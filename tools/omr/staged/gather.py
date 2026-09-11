@@ -1927,15 +1927,351 @@ def gather_margin_labels(log: Log, pws: Any, cells, local, *,
                     y_center_px=lab.y_center_px)
 
 
-def gather_direction_text(log: Log, pws, cells, local) -> None:
-    """⚠️ DECLARED STUB, and it sits behind one of the three HARD edges:
-    `direction_text._blank_detections` (`:301`) erases every detected glyph
-    from the mask before looking for words, so this cannot run before
-    detection. It is ordered last in `gather()` for that reason."""
+#: Glyph indices for direction-word CANDIDATES, offset far past any detector
+#: index so the OCR rung and the detector can never collide in one cell's key
+#: space. Same guard and same reason as `_CV_GLYPH_BASE`: a collision would
+#: not raise -- it would silently merge two readers' rows into one subject,
+#: which is precisely the "two rows from one reader are ONE signal" mistake
+#: made by accident.
+_DIRECTION_GLYPH_BASE = 90000
+
+
+def _direction_page_dict(pws: Any, cells: Sequence[Any],
+                         local: Dict[int, Tuple[int, int]],
+                         detections: Dict[str, List[Any]]) -> Dict[str, Any]:
+    """The page shape `direction_text` reads, built from what GATHER holds.
+
+    ⚠️ THE SHIM IS THE ALTERNATIVE TO REBUILDING THE READER, and that is why
+    it exists rather than a re-implementation. `find_candidates` wants a
+    `page_dict` because it was written against `transcribe`'s output: the
+    measure SPANS say which bar a word falls in, and the DETECTIONS are
+    subtracted from the page's ink so "find the text" becomes "find the ink".
+    Both facts are already in GATHER's hands; only their spelling differs.
+
+    ⚠️⚠️ `bbox_page` IS `(x, y, w, h)` AND `bbox_page_px` IS `(x0, y0, x1, y1)`.
+    Both conventions live in this repo, `_page_box` returns CORNERS and
+    `_blank_detections` reads WIDTHS -- and confusing them does not raise, it
+    blanks the wrong rectangle and leaves the word standing as unaccounted
+    ink. Converted here, once, explicitly, exactly as `gather_wedge_boxes`
+    converts for `blank_point_detections`.
+    """
+    page_staff_of = {v: k for k, v in local.items()}
+
+    by_staff: Dict[int, Dict[str, Any]] = {}
+    for c in cells:
+        staff = by_staff.setdefault(int(c.staff_index),
+                                    {"staff_index": int(c.staff_index),
+                                     "measures": {}})
+        box = getattr(c, "bbox_page_px", None)
+        staff["measures"][int(c.measure_index)] = {
+            "measure_index": int(c.measure_index),
+            "bbox_page_px": [int(v) for v in box] if box else None,
+            "detections": [],
+            "_cell": c,
+        }
+
+    for cell_key, dets in detections.items():
+        sub = Subject.from_key(cell_key)
+        page_staff = page_staff_of.get((sub.system, sub.staff))
+        if page_staff is None:
+            continue
+        staff = by_staff.get(int(page_staff))
+        if staff is None:
+            continue
+        m = staff["measures"].get(int(sub.cell))
+        if m is None:
+            continue
+        cell = m["_cell"]
+        for d in dets:
+            box = _page_box(cell, d)
+            if box is None:
+                continue
+            x0, y0, x1, y1 = box
+            m["detections"].append({
+                "class": d.smufl_name,
+                "category": d.category,
+                "bbox_page": [int(x0), int(y0),
+                              int(round(x1 - x0)), int(round(y1 - y0))],
+            })
+
+    staves = []
+    for k in sorted(by_staff):
+        st = by_staff[k]
+        measures = [dict(m) for _i, m in sorted(st["measures"].items())]
+        for m in measures:
+            m.pop("_cell", None)
+        staves.append({"staff_index": st["staff_index"], "measures": measures})
+    return {"systems": [{"staves": staves}]}
+
+
+def _direction_cells_abstain(log: Log, cells: Sequence[Any],
+                             local: Dict[int, Tuple[int, int]],
+                             reason: str, **detail: Any) -> int:
+    """File this page-wide state on EVERY cell, and say why that is needed.
+
+    ⚠️ A DECISION'S SUBJECTS ARE THE ROWS IN THE LOG. `adjudicate_direction`
+    takes its domain from `Q.DIRECTION_WORD`, so a page whose OCR rung could
+    not run would have NO `Q.DIRECTION` subject at all -- and a family that is
+    never ASKED reports `decided: 0, abstained: {}`, which is
+    indistinguishable from a family that was asked and had nothing to say.
+    That is the ABSENT/DECLINED collapse the record exists to prevent, and it
+    would collapse the one distinction this gatherer is built around.
+
+    So the page-level reason is also written per cell, which is exactly what
+    `gather_dynamic_letters` does and for a related reason. The page row is
+    kept as well: it carries the counts (`n_candidates`, `readers`) that are
+    properties of the PAGE and would be repeated N times here.
+    """
+    n = 0
+    for c in cells:
+        key = local.get(c.staff_index)
+        if key is None:
+            continue
+        sub = R.cell(c.page_index, key[0], key[1], c.measure_index)
+        log.abstain(sub, Q.DIRECTION_WORD, reader=READERS.SURYA,
+                    frame=frame_cell(c.measure_index), reason=reason,
+                    page_state=True, **detail)
+        n += 1
+    return n
+
+
+def gather_direction_words(log: Log, pws: Any, cells: Sequence[Any],
+                           local: Dict[int, Tuple[int, int]],
+                           detections: Dict[str, List[Any]]) -> None:
+    """The printed words inside a system -- `legato`, `Allegro con brio`.
+
+    ⚠️ IT SITS BEHIND ONE OF THE THREE HARD EDGES.
+    `direction_text._blank_detections` erases every detected glyph from the
+    mask before it looks for words, so this cannot run before detection, and
+    `gather()` orders it last for that reason.
+
+    ⚠️⚠️ THE LEXICON GATE IS THE READER'S, IT IS LOAD-BEARING, AND NOTHING
+    HERE TOUCHES IT. `direction_text.read_directions` subtracts the
+    detections, refuses the curves by fill ratio, OCRs the residue with Surya
+    and Tesseract and accepts only what `direction_lexicon.lookup` names. That
+    gate is what stops every smudge on a scan becoming a word, and CLAUDE.md
+    records it as never to be loosened. This gathers what that reader says.
+
+    ⚠️⚠️ FOUR STATES, NOT TWO, AND THE WHOLE POINT OF THIS FUNCTION IS THAT
+    THEY ARE DISTINGUISHABLE:
+
+    | what happened | what is written |
+    |---|---|
+    | no OCR rung exists on this machine | `READER_UNAVAILABLE`, on the PAGE |
+    | the CV found no word-shaped ink | `NO_INK`, on the PAGE |
+    | a rung read a crop and returned nothing | `NO_READING`, on the CANDIDATE |
+    | a rung read it and the lexicon refused | `NOT_IN_LEXICON`, on the CANDIDATE |
+    | the lexicon accepted it | an OBSERVATION, on the CANDIDATE |
+
+    The first two look identical in the legacy output and in every figure
+    derived from it -- a machine with no `.venv-surya` and no Tesseract reads
+    zero directions on every page, exactly as a page with no directions
+    printed on it does. `read_directions` says so in its own docstring ("the
+    only way to tell a page with no text from a reader that could not run")
+    and returns the counts to say it with; nothing consumed them. A GATHER
+    that recorded the zero and not the reason would be the fallback converting
+    *cannot tell* into a definite answer -- into "this page prints no words" --
+    which CLAUDE.md names as never the safe default. So the reason is written
+    down, the consumer refuses on it, and a `None` is never spelled as a fact.
+
+    ⚠️ THE CANDIDATES ARE GATHERED SEPARATELY FROM THE READINGS, AND THAT
+    COSTS A SECOND CV PASS, DELIBERATELY. `read_directions` returns only the
+    words the lexicon ACCEPTED; the ink it refused has no position in that
+    return, so a refusal could only be filed on the page as a count. Calling
+    `find_candidates` -- which is pure CV, no OCR, no subprocess, and is split
+    out of the reader precisely so its recall can be measured on its own --
+    gives every refusal a subject of its own. The denominator is the number
+    this family's reach is measured in: a word the CV never proposes is a word
+    no reader can find, and that is a different failure from one the OCR got
+    wrong.
+
+    ⚠️ NO OWNERSHIP QUESTION IS ASKED HERE, unlike the dynamic letters.
+    `_bands_for_page` splits the gap between two systems at its midpoint and
+    gives the whole within-system gap to the upper staff, so it "guarantees
+    that no word is ever offered to two staves" -- the ownership answer is
+    geometric and already made, in page pixels, before any cell padding is
+    involved. A letter needs `Q.GLYPH_OWNER` because it arrives through a
+    per-measure cell whose padding reaches into the neighbour; a direction
+    word never does.
+    """
     p = pws.page.page_index if hasattr(pws.page, "page_index") else 0
-    log.abstain(R.page(p), Q.DIRECTION_WORD, reader=READERS.SURYA,
-                frame=FRAME_PAGE, reason=ABSTAIN.NOT_IMPLEMENTED,
-                note="hard edge: must run AFTER detection")
+    page_sub = R.page(p)
+
+    try:
+        from .. import direction_text as DT
+    except Exception as exc:                                  # noqa: BLE001
+        log.abstain(page_sub, Q.DIRECTION_WORD, reader=READERS.SURYA,
+                    frame=FRAME_PAGE, reason=ABSTAIN.READER_UNAVAILABLE,
+                    error=type(exc).__name__, note=str(exc)[:200])
+        _direction_cells_abstain(log, cells, local,
+                                 ABSTAIN.READER_UNAVAILABLE,
+                                 note="direction_text did not import")
+        return
+
+    if os.environ.get("OMR_DIRECTION_TEXT", "1").strip().lower() in (
+            "0", "", "false", "no", "off"):
+        # ⚠️ The flag is read the way a DEFAULT-ON flag must be read -- an off
+        # WORD, never an allow-list -- so a typo leaves the reader ON rather
+        # than silently restoring a blind page. See CLAUDE.md, "A flag's OFF
+        # test must follow its DEFAULT".
+        log.abstain(page_sub, Q.DIRECTION_WORD, reader=READERS.SURYA,
+                    frame=FRAME_PAGE, reason=ABSTAIN.OUT_OF_SCOPE,
+                    note="OMR_DIRECTION_TEXT is off")
+        _direction_cells_abstain(log, cells, local, ABSTAIN.OUT_OF_SCOPE,
+                                 note="OMR_DIRECTION_TEXT is off")
+        return
+
+    page_dict = _direction_page_dict(pws, cells, local, detections)
+    page_staff_of = {v: k for k, v in local.items()}
+    key_of_page_staff = {v: k for k, v in page_staff_of.items()}
+
+    try:
+        candidates = DT.find_candidates(pws, page_dict)
+        readers = DT.default_readers(pws.page)
+    except Exception as exc:                                  # noqa: BLE001
+        log.abstain(page_sub, Q.DIRECTION_WORD, reader=READERS.SURYA,
+                    frame=FRAME_PAGE, reason=ABSTAIN.READER_UNAVAILABLE,
+                    error=type(exc).__name__, note=str(exc)[:200])
+        _direction_cells_abstain(log, cells, local,
+                                 ABSTAIN.READER_UNAVAILABLE,
+                                 error=type(exc).__name__)
+        return
+
+    if not readers:
+        # ⚠️ WRITTEN EVEN WHERE THERE ARE NO CANDIDATES, and that is the case
+        # this whole branch exists for. A machine with neither `.venv-surya`
+        # nor Tesseract produces the same zero on every page; without this row
+        # the record would carry the zero and not the blindness.
+        log.abstain(page_sub, Q.DIRECTION_WORD, reader=READERS.SURYA,
+                    frame=FRAME_PAGE, reason=ABSTAIN.READER_UNAVAILABLE,
+                    note="no OCR rung available: neither .venv-surya nor "
+                         "tesseract",
+                    n_candidates=len(candidates))
+        _direction_cells_abstain(log, cells, local,
+                                 ABSTAIN.READER_UNAVAILABLE,
+                                 note="no OCR rung available")
+        return
+
+    if not candidates:
+        log.abstain(page_sub, Q.DIRECTION_WORD, reader=READERS.SURYA,
+                    frame=FRAME_PAGE, reason=ABSTAIN.NO_INK,
+                    note="the CV proposed no word-shaped ink in any band",
+                    readers=[n for n, _f in readers])
+        _direction_cells_abstain(log, cells, local, ABSTAIN.NO_INK,
+                                 note="no word-shaped ink on this page")
+        return
+
+    try:
+        found, info = DT.read_directions(pws, page_dict, readers=readers)
+    except Exception as exc:                                  # noqa: BLE001
+        log.abstain(page_sub, Q.DIRECTION_WORD, reader=READERS.SURYA,
+                    frame=FRAME_PAGE, reason=ABSTAIN.READER_UNAVAILABLE,
+                    error=type(exc).__name__, note=str(exc)[:200],
+                    n_candidates=len(candidates))
+        _direction_cells_abstain(log, cells, local,
+                                 ABSTAIN.READER_UNAVAILABLE,
+                                 error=type(exc).__name__)
+        return
+
+    # ⚠️ JOINED ON THE THREE FIELDS A `DirectionText` COPIES STRAIGHT OFF ITS
+    # CANDIDATE (`read_directions`: `staff_index`, `measure_index`,
+    # `x_page=candidate.x_page`), never on list position. The two calls run
+    # the same pure-CV function on the same inputs so the orders do agree
+    # today -- but an index join would be silently wrong the day either side
+    # filters, and a wrong join here attributes one word's reading to another
+    # word's ink.
+    accepted: Dict[Tuple[int, int, int], List[Any]] = {}
+    for d in found:
+        accepted.setdefault(
+            (int(d.staff_index), int(d.measure_index), int(d.x_page)),
+            []).append(d)
+
+    n_read = int(info.get("n_read") or 0)
+    n_obs = 0
+    touched = set()
+    for ci, cand in enumerate(candidates):
+        key = key_of_page_staff.get(int(cand.staff_index))
+        if key is None:
+            continue
+        g = R.glyph(p, key[0], key[1], int(cand.measure_index),
+                    _DIRECTION_GLYPH_BASE + ci)
+        touched.add(g.at(R.Kind.CELL).to_key())
+        x0, y0, x1, y1 = (float(v) for v in cand.bbox_page)
+        shared: Dict[str, Any] = {
+            "bbox_page_px": [x0, y0, x1, y1],
+            "x_center_page": (x0 + x1) / 2.0,
+            "y_center_page": (y0 + y1) / 2.0,
+            "x_page": int(cand.bbox_page[0]),
+            "placement": cand.placement,
+            "n_components": int(cand.n_components),
+            "page_staff_index": int(cand.staff_index),
+        }
+        hits = accepted.get(
+            (int(cand.staff_index), int(cand.measure_index),
+             int(cand.x_page)))
+        if not hits:
+            # ⚠️ TWO REFUSALS, NOT ONE, AND THE RECORD CANNOT TELL THEM APART
+            # PER CANDIDATE. `read_directions` reports `n_read` and `rejected`
+            # for the PAGE, not per crop, so the split between "the decoder
+            # returned nothing" and "the lexicon refused what it returned" is
+            # a page-level fact here. Rather than guess which one this crop
+            # was, every unaccepted candidate is filed `NO_READING` -- the
+            # weaker claim -- with the page's own counts beside it so the
+            # split is recoverable. ⚠️ Making it per-crop means returning the
+            # per-rung readings from `read_directions`, which is a change to
+            # the reader and is NOT a wiring change.
+            log.abstain(g, Q.DIRECTION_WORD, reader=READERS.SURYA,
+                        frame=FRAME_PAGE, reason=ABSTAIN.NO_READING,
+                        page_n_read=n_read,
+                        page_n_candidates=len(candidates),
+                        page_n_rejected_by_lexicon=len(
+                            info.get("rejected") or ()),
+                        split_is_page_level=True, **shared)
+            continue
+        for d in hits:
+            reader = (READERS.TESSERACT if d.reader == "tesseract"
+                      else READERS.SURYA)
+            log.observe(g, Q.DIRECTION_WORD, d.text, reader=reader,
+                        frame=FRAME_PAGE,
+                        category=d.category, terms=list(d.terms),
+                        winning_reader=d.reader,
+                        readers_run=[n for n, _f in readers],
+                        # ⚠️ RECORDED, NOT RE-ASKED. Where the two rungs read
+                        # one crop differently the reader takes Surya by a
+                        # documented precedence and counts the disagreement.
+                        # That arbitration stays inside the reader in a wiring
+                        # pass; moving the two rungs into the record as two
+                        # independent rows is the obvious next step and is
+                        # deliberately not taken here.
+                        page_conflicts=len(info.get("conflicts") or ()),
+                        **shared)
+            n_obs += 1
+
+    # ⚠️ EVERY CELL ENDS WITH EXACTLY ONE STATE, so `coverage()`'s `abstained`
+    # dict is a partition over the page's bars rather than a selection. A bar
+    # the CV proposed no ink in is a MEASUREMENT ("the rungs ran, this bar
+    # prints no word") and is not the same fact as a bar nobody looked at.
+    for c in cells:
+        key = local.get(c.staff_index)
+        if key is None:
+            continue
+        sub = R.cell(c.page_index, key[0], key[1], c.measure_index)
+        if sub.to_key() in touched:
+            continue
+        log.abstain(sub, Q.DIRECTION_WORD, reader=READERS.SURYA,
+                    frame=frame_cell(c.measure_index), reason=ABSTAIN.NO_INK,
+                    readers=[n for n, _f in readers])
+
+    if n_obs == 0:
+        # ⚠️ A PAGE the rungs RAN over and accepted nothing on is a
+        # MEASUREMENT, not an absence -- the `0 accepted of N candidates`
+        # half of the reading. A consumer that cannot tell it from "no rung
+        # ran" cannot tell silence from blindness, which is the distinction
+        # this whole function is built around.
+        log.abstain(page_sub, Q.DIRECTION_WORD, reader=READERS.SURYA,
+                    frame=FRAME_PAGE, reason=ABSTAIN.NOT_IN_LEXICON,
+                    n_candidates=len(candidates), n_read=n_read,
+                    readers=[n for n, _f in readers])
 
 
 def gather_external(log: Log, pws, *, dossier: Any = None,
@@ -2036,7 +2372,7 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
         gather_margin_labels(log, pws, cells, local, pdf_path=pdf_path,
                              surya_fallback=surya_fallback,
                              ocr_fallback=ocr_fallback)
-        gather_direction_text(log, pws, cells, local)   # hard edge: last
+        gather_direction_words(log, pws, cells, local, detections)  # hard edge: last
 
     log.freeze()
     return log

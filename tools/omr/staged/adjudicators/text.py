@@ -220,15 +220,117 @@ def _close(run: List[Tuple[float, float, float, str, Any]]) -> Dict[str, Any]:
 
 @decision(
     quantity=Q.DIRECTION,
+    checkable=Checkable.UNCHECKABLE,
     composed_from=(Q.DIRECTION_WORD,),
     scope=Kind.CELL,
     wants=(Q.DIRECTION_WORD,),
-    reasons=("in_lexicon", "not_in_lexicon", "no_words"),
+    # ⚠️ The subjects are the cells `Q.DIRECTION_WORD` speaks about --
+    # OBSERVATIONS AND ABSTENTIONS ALIKE, because `subjects_for` reads
+    # `log.all_rows()`. That is what makes the reader-unavailable state
+    # REACHABLE: `gather_direction_words` files its page-wide reason on every
+    # cell, so a machine with no OCR rung still ASKS this decision and still
+    # gets a refusal back, rather than producing no subject and reporting a
+    # silent `decided: 0`.
+    subjects_from=Q.DIRECTION_WORD,
+    reasons=("in_lexicon", "no_words", "reader_unavailable", "out_of_scope"),
     mode=Mode.ADDITIVE,
-    stub=True,
 )
 def adjudicate_direction(ev: Evidence) -> Ruling:
-    """⚠️ DECLARED STUB. ⚠️ THE LEXICON GATE IS LOAD-BEARING AND MUST NOT BE
-    LOOSENED -- it is what stops every smudge on the page becoming a word.
+    """The direction words this bar of this staff carries.
+
+    ⚠️⚠️ THE LEXICON GATE IS THE READER'S AND NOTHING HERE TOUCHES IT.
+    `direction_text` subtracts every detection from the page's ink, refuses
+    the curves by fill ratio, OCRs the residue with Surya and Tesseract, and
+    accepts only what `direction_lexicon.lookup` names -- 181 musical terms,
+    which CLAUDE.md records as load-bearing and never to be loosened. A word
+    that reaches this decision has already been accepted; a word that did not
+    arrives as an abstention with the reader's own reason on it. Re-testing
+    the text here would be a second, differently spelled lexicon.
+
+    ⚠️⚠️ SO WHAT IS LEFT TO DECIDE IS THE THREE-STATE ANSWER, AND IT IS THE
+    WHOLE JOB. "There are no words in this bar" and "no reader ran over this
+    page" produce the SAME empty list in the legacy path and in every figure
+    derived from it, because a machine with neither `.venv-surya` nor
+    Tesseract reads zero directions on every page exactly as a page with no
+    directions printed on it does. `read_directions` says so in its own
+    docstring and returns the counts to say it with; nothing consumed them.
+    CLAUDE.md's governing rule is that **a fallback must never convert
+    *cannot tell* into a definite answer**, and "this bar carries no words" is
+    a definite answer. So the two are different outcomes here: a DECISION with
+    an empty value, and an ABSTENTION.
+
+    ⚠️ OWNERSHIP IS NOT RE-ASKED, unlike `adjudicate_dynamic`, and the
+    asymmetry is geometric rather than an oversight. A dynamic LETTER reaches
+    the exporter through a per-measure cell padded 4 to 6 staff spaces into
+    the neighbouring staff, so 24% of letters stand in the wrong cell and the
+    move is an ownership question. A direction word never passes through that
+    frame: `direction_text._bands_for_page` works in PAGE pixels, gives the
+    whole within-system gap to the upper staff and splits a between-system gap
+    at its midpoint, so it "guarantees that no word is ever offered to two
+    staves". The answer is already made, once, geometrically. Asking
+    `Q.GLYPH_OWNER` about a word the detector never detected would also have
+    nothing to answer with -- there is no contested detection to arbitrate.
+
+    ⚠️ THE TWO RUNGS' DISAGREEMENT IS RECORDED AND NOT RE-ARBITRATED. Where
+    Surya and Tesseract both accept and name different words the reader takes
+    Surya by a documented precedence and counts the conflict; that count rides
+    on the row. Moving the two rungs into the record as two INDEPENDENT
+    readings -- which is what `READERS` is for, and what would let this
+    decision weigh them -- means returning per-rung readings from
+    `read_directions`, a change to the reader itself. That is not a wiring
+    change and is deliberately not made here.
     """
-    return Ruling.abstain(ABSTAIN.NOT_IMPLEMENTED)
+    rows = ev.rows(Q.DIRECTION_WORD)
+    if rows:
+        # ⚠️ ORDERED BY PAGE x, the only frame these carry. It is used to
+        # order marks WITHIN one bar and is never compared against a notehead
+        # box: `Q.GLYPH_BOX` carries a CANONICAL x, and mixing the two frames
+        # is the fault that made `Q.ONSET_COLUMN` report 1,062 columns of
+        # nothing.
+        words = []
+        for row in rows:
+            d = row.detail or {}
+            words.append({
+                "text": str(row.value),
+                "category": d.get("category"),
+                "placement": d.get("placement"),
+                "x_page": d.get("x_page"),
+                "reader": d.get("winning_reader"),
+            })
+        words.sort(key=lambda w: (w["x_page"] if w["x_page"] is not None
+                                  else 0.0, w["text"]))
+        return Ruling(value=[w["text"] for w in words], reason="in_lexicon",
+                      used=tuple(r.id for r in rows),
+                      detail={"words": words, "n_words": len(words)})
+
+    blocked = [a for a in ev.refusals(Q.DIRECTION_WORD)
+               if a.reason in (ABSTAIN.READER_UNAVAILABLE,
+                               ABSTAIN.NOT_IMPLEMENTED)]
+    if blocked:
+        # ⚠️ AN ABSTENTION, NOT AN EMPTY VALUE. This is the one branch the
+        # whole family is built around; see the docstring.
+        return Ruling.abstain(ABSTAIN.READER_UNAVAILABLE,
+                              blocked_rows=len(blocked),
+                              note=(blocked[0].detail or {}).get("note"))
+    off = [a for a in ev.refusals(Q.DIRECTION_WORD)
+           if a.reason == ABSTAIN.OUT_OF_SCOPE]
+    if off:
+        return Ruling.abstain(ABSTAIN.OUT_OF_SCOPE, blocked_rows=len(off))
+
+    refusals = ev.refusals(Q.DIRECTION_WORD)
+    if not refusals:
+        # No row of any kind: the gatherer never spoke about this cell, which
+        # it is built never to do. Reported rather than assumed away.
+        return Ruling.abstain(ABSTAIN.ABSENT)
+    reasons: Dict[str, int] = {}
+    for a in refusals:
+        reasons[str(a.reason)] = reasons.get(str(a.reason), 0) + 1
+    # ⚠️ A DECISION, and it is entitled to be one: the rungs RAN over this
+    # bar's bands and either found no word-shaped ink or read nothing the
+    # lexicon names. That is a reading of the page, not a missing rung.
+    return Ruling(value=[], reason="no_words",
+                  detail={"refusals": reasons,
+                          "candidates_refused": sum(
+                              n for r, n in reasons.items()
+                              if r in (ABSTAIN.NO_READING,
+                                       ABSTAIN.NOT_IN_LEXICON))})

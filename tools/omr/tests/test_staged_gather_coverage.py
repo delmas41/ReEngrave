@@ -110,6 +110,31 @@ class TestNothingGrowsUnseen(unittest.TestCase):
                            "the class space failed to parse")
 
 
+def _starvation_sees_a_declared_stub() -> bool:
+    """Declare a stub whose input nothing gathers, and ask `stub_starvation`.
+
+    ⚠️ THE CONTROL THAT MAKES "NO STUBS LEFT" A RESULT RATHER THAN A SHRUG.
+    With Phase 1 complete every stub assertion in this file is an assertion
+    that a set is EMPTY, and an empty set is what a broken derivation returns
+    too. This fires the branch on purpose.
+    """
+    import dataclasses
+    from unittest import mock
+    from tools.omr.staged import adjudicate as A
+
+    A._ensure_decisions()
+    from tools.omr.staged.record import Q
+    real = A.REGISTRY[Q.DIRECTION]
+    fake = dataclasses.replace(
+        real, quantity="a_quantity_nothing_gathers",
+        wants=("a_quantity_no_rung_produces",), stub=True,
+        subjects_from=None)
+    with mock.patch.dict(A.REGISTRY,
+                         {"a_quantity_nothing_gathers": fake}):
+        starv = GC.stub_starvation()
+    return any(v.get("ungathered_inputs") for v in starv.values())
+
+
 class TestTheFindingsAreStillTrue(unittest.TestCase):
     """⚠️ AN ENTRY THAT IS CLOSED MUST LEAVE ITS TABLE.
 
@@ -257,26 +282,37 @@ class TestTheFindingsAreStillTrue(unittest.TestCase):
         # "one repair — write the adjudicator", and all four have now been
         # written. `direction` is the only one that was ever TWO pieces of
         # work, and it is the only one left.
-        self.assertEqual(len(starv), 1,
-                         f"expected 1 declared stub, got {sorted(starv)}")
-        for graduated in ("DYNAMIC", "ARTICULATION_OWNER", "WEDGE_ANCHOR"):
+        # ⚠️⚠️ ZERO SINCE 2026-09-11, WHEN `direction` -- the last, and the only
+        # one that was ever TWO pieces of work -- was closed with its gatherer
+        # and its adjudicator in one change. The count is asserted so that
+        # ADDING a stub is a deliberate edit here rather than a silent drift,
+        # and the names are in the message so the failure says which.
+        self.assertEqual(len(starv), 0,
+                         f"expected no declared stub, got {sorted(starv)}")
+        for graduated in ("DYNAMIC", "ARTICULATION_OWNER", "WEDGE_ANCHOR",
+                          "DIRECTION"):
             self.assertNotIn(graduated, starv,
                              f"`{graduated}` graduated: adjudicator written "
                              "and input gathered. A stub roster that keeps a "
                              "graduated entry describes history, not the "
                              "pipeline.")
         starved = {q for q, v in starv.items() if v["ungathered_inputs"]}
-        self.assertEqual(starved, {"DIRECTION"},
-                         "only the reading gap should still be starved; the "
-                         "four naming gaps were closed by the sibling "
-                         "sessions in this merge")
+        self.assertEqual(starved, set(),
+                         "the reading gap (`DIRECTION_WORD`) was the last "
+                         "ungathered input and its gatherer landed with its "
+                         "adjudicator")
+        # ⚠️ THE POSITIVE CONTROL FOR THE TWO EMPTY SETS ABOVE. Both would
+        # pass if `stub_starvation` were broken to return `{}`, which is the
+        # vacuous-assertion shape this repo has shipped twice. So the
+        # MECHANISM is exercised on a stub declared here.
+        self.assertTrue(_starvation_sees_a_declared_stub(),
+                        "`stub_starvation` cannot see a declared stub, so "
+                        "the empty results above prove nothing")
         # ⚠️ The four fed stubs are now ONE repair each: the adjudicator.
         # Assert that positively, so a gatherer being deleted underneath them
         # fails here instead of turning a written decision into a silent
         # abstention.
         for name, row in starv.items():
-            if name == "DIRECTION":
-                continue
             self.assertEqual(
                 row["ungathered_inputs"], [],
                 f"{name} lost an input it had after the merge -- writing its "

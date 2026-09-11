@@ -196,7 +196,20 @@ class TestStagedEndToEnd(unittest.TestCase):
             self.assertIn(Q.CLEF, quantities)
 
     def test_stubs_are_reported_not_hidden(self):
-        self.assertTrue(self.result["stubs"]["decisions"])
+        """⚠️⚠️ THE DECISIONS HALF IS EMPTY SINCE 2026-09-11 -- `direction`
+        was the last declared stub and Phase 1 of the wiring plan closed it.
+        The list is still REPORTED, and that is what this asserts: the key is
+        present and is a list. An empty list under a present key says "asked
+        and none"; a missing key says nothing at all, and the whole point of
+        this report is that the two are different.
+
+        The CONSEQUENCES half still has stubs, so it keeps its non-emptiness
+        assertion -- and that is also this test's own positive control, since
+        it proves the reporting machinery can produce a non-empty list.
+        """
+        self.assertIsInstance(self.result["stubs"]["decisions"], list)
+        self.assertEqual(self.result["stubs"]["decisions"], [],
+                         "a declared stub is new work or a regression")
         self.assertTrue(self.result["stubs"]["consequences"])
 
 

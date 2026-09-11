@@ -8,10 +8,32 @@ decision looked covered in every shape. A check that cannot fail is worse than
 no check, so the over-broad resolution was removed and this pins its absence.
 """
 
+import contextlib
 import unittest
 
 from tools.omr.staged import adjudicate as A
 from tools.omr.staged import health
+
+
+@contextlib.contextmanager
+def _a_declared_stub():
+    """Make one real decision a STUB for the duration, and yield its quantity.
+
+    ⚠️ THE CONTROL THAT KEEPS THE STUB ASSERTIONS IN THIS FILE FROM GOING
+    VACUOUS. With every stub closed, `A.stubs()` is `()` -- which is also what
+    a broken derivation returns. This fires the branch on purpose, using
+    `mock.patch.dict` on the registry rather than a second ownership helper so
+    the pattern matches `test_staged_export.py`'s.
+    """
+    import dataclasses
+    from unittest import mock
+    from tools.omr.staged.record import Q
+
+    A._ensure_decisions()
+    real = A.REGISTRY[Q.ARC_KIND]
+    with mock.patch.dict(A.REGISTRY,
+                         {Q.ARC_KIND: dataclasses.replace(real, stub=True)}):
+        yield Q.ARC_KIND
 
 
 class TestTheReportCoversEveryDecision(unittest.TestCase):
@@ -78,9 +100,24 @@ class TestDynamicNamingIsResolvedButBounded(unittest.TestCase):
         # graduated quantity here would assert something FALSE, and asserting
         # an empty list would be the `EMPTY CELLS: none` failure this file
         # exists to prevent — so the non-emptiness is required too.
-        self.assertTrue(A.stubs(), "no stub left to exercise this")
+        # ⚠️⚠️ `A.stubs()` IS EMPTY SINCE 2026-09-11 -- `direction` was the
+        # last one, and Phase 1 of the wiring plan closed it -- so the loop
+        # below now iterates NOTHING and the old `assertTrue(A.stubs())` went
+        # red on SUCCESS. The mechanism this test is named for (iterating
+        # `stubs()` credits whatever IS a stub) can no longer be exercised on
+        # a real stub, so it is exercised on a DECLARED one. Asserting the
+        # empty list alone would be the `EMPTY CELLS: none` failure this file
+        # exists to prevent.
         for quantity in A.stubs():
             self.assertIn(quantity.upper(), hit[0]["quantities"])
+        with _a_declared_stub() as quantity:
+            self.assertEqual(A.stubs(), (quantity,))
+            hit2 = [r for r in health.scan()
+                    if r["test"] == hit[0]["test"]]
+            self.assertTrue(hit2)
+            self.assertIn(quantity.upper(), hit2[0]["quantities"],
+                          "iterating `stubs()` no longer credits a stub -- "
+                          "the dynamic-naming resolution has broken")
 
     def test_iterating_the_REGISTRY_does_NOT_credit_every_decision(self):
         """⚠️ THE ONE THAT KEEPS THE REPORT HONEST. Resolving `REGISTRY` /

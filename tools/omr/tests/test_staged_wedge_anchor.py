@@ -67,9 +67,13 @@ class TestItIsNoLongerAStub(unittest.TestCase):
     def test_the_registry_says_it_decides(self):
         self.assertFalse(adjudicate.REGISTRY[Q.WEDGE_ANCHOR].stub)
 
-    def test_it_is_the_last_stub_that_graduated(self):
-        """⚠️ Asserted POSITIVELY, so a regression to a stub fails here."""
-        self.assertEqual(adjudicate.stubs(), (Q.DIRECTION,))
+    def test_it_is_not_the_last_stub_any_more(self):
+        """⚠️ This asserted `stubs() == (Q.DIRECTION,)` -- true for one day.
+        `direction` was closed on 2026-09-11 and the roster is empty, which is
+        asserted where the roster LIVES (`test_staged_stage_contract.py`).
+        What belongs in THIS file is the claim about THIS decision, so that is
+        all that is left here."""
+        self.assertNotIn(Q.WEDGE_ANCHOR, adjudicate.stubs())
 
     def test_it_runs_AFTER_voices(self):
         """⚠️⚠️ IT DID NOT, AND NO TEST COULD HAVE FOUND THAT. Placed beside

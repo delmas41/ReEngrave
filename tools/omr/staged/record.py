@@ -658,6 +658,14 @@ class ABSTAIN(_Vocab):
     BELOW_THRESHOLD = "below_threshold"
     AMBIGUOUS = "ambiguous"
     NOT_IN_LEXICON = "not_in_lexicon"
+    #: An OCR rung ran over a crop and returned NO CHARACTERS AT ALL. ⚠️ A
+    #: DIFFERENT FACT FROM `NOT_IN_LEXICON`, and the direction reader is why:
+    #: Surya "either reads a crop or says nothing", and on one 1870 Beethoven
+    #: 5 page it said nothing about 53 of 74 crops a person reads at a glance,
+    #: while Tesseract read 72 of 74 and the LEXICON refused most of them.
+    #: Folding the two together would report a silent decoder and a refused
+    #: reading as one number and hide which rung is the limit.
+    NO_READING = "no_reading"
     NEEDS_CLEF = "needs_clef"                    # key_signature_locator :310
     NO_TEMPLATE = "no_template"                  # e.g. 4/8 has none
     OUT_OF_SCOPE = "out_of_scope"

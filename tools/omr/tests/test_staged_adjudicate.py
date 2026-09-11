@@ -424,8 +424,31 @@ class TestStubsAreDeclared(unittest.TestCase):
         self.assertEqual(unowned, [])
 
     def test_stubs_are_enumerable(self):
+        """⚠️⚠️ THIS ASSERTED `stubs()` WAS NON-EMPTY, AND ON 2026-09-11 IT
+        BECAME EMPTY: `direction` was the last declared stub and Phase 1 of
+        the wiring plan closed it. An assertion that a stub EXISTS is a
+        property of the build's progress, not of the mechanism, and it goes
+        red on success -- so what is tested now is the MECHANISM, on a stub
+        declared here.
+
+        A check that cannot fail is worse than no check (`health.py`'s own
+        lesson), and `self.assertEqual(A.stubs(), ())` would be exactly that:
+        it would pass for as long as nobody declares a stub, including if
+        `stubs()` were broken to return `()` unconditionally. The positive
+        control below is what stops that -- a real stub, declared, found.
+        """
         from tools.omr.staged import adjudicators  # noqa: F401
-        self.assertTrue(A.stubs())
+        self.assertEqual(A.stubs(), (),
+                         "every declared stub is closed; a name here is new "
+                         "work, not a regression")
+        with _owns(Q.ARC_KIND):
+            @A.decision(quantity=Q.ARC_KIND, scope=R.Kind.GLYPH,
+                        wants=(Q.ARC_BOX,), reasons=("r",),
+                        composed_from=(Q.ARC_BOX,), stub=True)
+            def _s(ev):
+                return Ruling.abstain(ABSTAIN.NOT_IMPLEMENTED)
+            self.assertEqual(A.stubs(), (Q.ARC_KIND,),
+                             "`stubs()` cannot see a declared stub")
 
 
 if __name__ == "__main__":

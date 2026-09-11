@@ -291,12 +291,22 @@ class TestEveryDeclaredStubKeepsItsPromise(unittest.TestCase):
         merely un-asserted.
 
         ⚠️ `Q.WEDGE_ANCHOR` LEFT THIS LIST ON 2026-09-10 for the same reason
-        and moved to the graduation test below, which leaves `Q.DIRECTION`
-        alone here -- the last declared stub in the pipeline, and the only one
-        that was ever input-starved.
+        and moved to the graduation test below, which left `Q.DIRECTION` alone
+        here -- the last declared stub in the pipeline, and the only one that
+        was ever input-starved.
+
+        ⚠️⚠️ AND `Q.DIRECTION` LEFT IT ON 2026-09-11, SO THE LIST IS NOW
+        EMPTY AND THIS LOOP RUNS ZERO TIMES. That is not a reason to delete
+        the test: the loop is the SHAPE the roster is asserted in, and the day
+        somebody declares a new stub it must be named here rather than merely
+        appearing. What guards the empty case is the equality below -- and
+        what guards THAT from being vacuous is the graduation test after it,
+        which asserts each closed decision positively.
         """
-        for quantity in (Q.DIRECTION,):
+        for quantity in ():
             self.assertIn(quantity, adjudicate.stubs())
+        self.assertEqual(adjudicate.stubs(), (),
+                         "a declared stub must be named in the loop above")
 
     def test_dynamic_and_the_ARCS_have_GRADUATED_from_the_stub_roster(self):
         """The other half of the line above: assert the implementation, so a
@@ -304,10 +314,12 @@ class TestEveryDeclaredStubKeepsItsPromise(unittest.TestCase):
 
         ⚠️ `Q.ARC_KIND` and `Q.ARC_OWNER` joined `Q.DYNAMIC` here on
         2026-09-09, `Q.ARTICULATION_OWNER` and `Q.WEDGE_ANCHOR` on 2026-09-10.
-        FIVE of the six original stubs are now filled and ONE REMAINS —
-        `direction`, which is also the only one that was ever input-starved:
-        its `Q.DIRECTION_WORD` has no gatherer, so writing the adjudicator
-        alone would still produce nothing."""
+
+        ⚠️⚠️ AND `Q.DIRECTION` ON 2026-09-11, WHICH CLOSES ALL SIX. It was the
+        only one that was ever TWO pieces of work -- `Q.DIRECTION_WORD` had no
+        gatherer, so writing the adjudicator alone would have produced
+        nothing -- and both landed in one change with the emission and the
+        counter beside them."""
         for quantity in (Q.DYNAMIC, Q.ARC_KIND, Q.ARC_OWNER,
                          Q.ARTICULATION_OWNER, Q.WEDGE_ANCHOR):
             self.assertNotIn(quantity, adjudicate.stubs())

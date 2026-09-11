@@ -332,28 +332,57 @@ class TestCoverageNamesTheFourZEROS(unittest.TestCase):
         self.assertEqual(by["a_fake_family"]["status"], "starved")
         self.assertIn("never gathered", by["a_fake_family"]["why"])
 
-    def test_the_last_stub_is_the_only_stub(self):
-        """`direction` alone, asserted POSITIVELY so that a family regressing
-        to a stub fails here rather than passing quietly."""
+    def test_there_is_no_stub_left(self):
+        """⚠️⚠️ THIS ASSERTED `direction` WAS THE ONE REMAINING STUB UNTIL
+        2026-09-11, WHEN IT WAS CLOSED. Phase 1 of the wiring plan is
+        complete: every family in `FAMILIES` whose quantity is adjudicated has
+        a real decision behind it.
+
+        Asserted as an EMPTY LIST NAMING WHAT IT FOUND, so a family regressing
+        to a stub -- or a new family arriving as one -- fails here with the
+        name in the message rather than passing quietly. ⚠️ The mechanism that
+        REPORTS `stub` / `starved` is exercised separately below, because an
+        assertion that a list is empty passes just as well when the code that
+        fills it is broken.
+        """
         page = _one_staff_page(notes=[("C4", QUARTER)])
         by = {r["family"]: r for r in SX.coverage(page)["families"]}
         stubs = sorted(f for f, r in by.items()
                        if r["status"] in ("stub", "starved"))
-        self.assertEqual(stubs, ["direction"])
-        # ⚠️ `direction` reports `stub`, NOT `starved`, and the two tools
-        # disagree about it on purpose-by-accident: `coverage()` calls a
-        # quantity fed when a gather SITE exists, and `Q.DIRECTION_WORD` has
-        # one that only ever ABSTAINS (`gather_coverage`'s "abstain-only"
-        # category). So a rung that runs and reads nothing is "gathered" here
-        # and "starved" there. Asserted as it IS rather than as it reads,
-        # with the divergence named — an undocumented disagreement between
-        # two derived inventories is how one of them quietly stops being
-        # believed.
-        self.assertEqual(by["direction"]["status"], "stub")
-        # and the mechanism that reports `starved` still works
-        import tools.omr.staged.inventory as inv
-        sites, indirect = inv._gather_sites()
-        self.assertIn(Q.ARC_BOX, sites)
+        self.assertEqual(stubs, [],
+                         "a stub is new work or a regression, not a default")
+        # ⚠️ THE POSITIVE CONTROL IS ITS OWN TEST AND ALREADY EXISTS:
+        # `test_the_STARVED_branch_is_still_reachable` fires the `starved`
+        # branch with a fake quantity nothing gathers. Without it, an empty
+        # list here would pass just as well if `coverage()` reported
+        # "emitted" for everything unconditionally — the vacuous-assertion
+        # shape `health.py` and the ledger-zone audit have both been bitten
+        # by. Named rather than duplicated so the two cannot drift.
+        self.assertTrue(
+            hasattr(self, "test_the_STARVED_branch_is_still_reachable"),
+            "the positive control for the empty list above has been removed; "
+            "this assertion is now vacuous")
+
+    def test_direction_is_decided_and_has_a_counter(self):
+        """The family that was the last stub, asserted POSITIVELY.
+
+        ⚠️ `direction` is the only family with NO detector prefix -- a
+        direction word is not in the 208-class space at all -- so its reach is
+        reported in `cv_glyphs`, derived from `subjects_from`, and never in
+        `detector_glyphs`. A reader sizing this family off the detector column
+        would read zero on every page, which is the `wedge` under-report
+        (1 against 47) in a family where it is true by construction.
+        """
+        by = {r["family"]: r
+              for r in SX.coverage(_one_staff_page(notes=[("C4", QUARTER)]))
+              ["families"]}
+        row = by["direction"]
+        self.assertNotIn(row["status"], ("stub", "starved"))
+        self.assertEqual(row["detector_glyphs"], 0)
+        self.assertEqual(SX.FAMILIES["direction"][2], ("direction_words",),
+                         "a family with no counter reports "
+                         "`decided_uncounted` and cannot say whether it "
+                         "reached the file")
 
     def test_a_family_that_came_out_is_not_listed_as_missing(self):
         rep = SX.coverage(_one_staff_page(notes=[("C4", QUARTER)]))

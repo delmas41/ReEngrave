@@ -1163,6 +1163,28 @@ def _place_ornaments(rec: Record, runs: Dict[str, StaffRun]) -> Dict[str, int]:
     return dict(dropped)
 
 
+def _count_directions(counters: Dict[str, int],
+                      directions: Sequence[Tuple[float, str, str]]) -> None:
+    """One counter per KIND, at the place the element is written.
+
+    ⚠️⚠️ IT WAS ONE COUNTER AND THAT WOULD HAVE MIS-REPORTED BOTH FAMILIES THE
+    DAY WORDS ARRIVED. `counters["dynamics"] += len(directions)` counted every
+    entry of the list -- so a `<words>` would have been billed to the
+    `dynamic` family, `dynamic` would have read as emitting more than it does,
+    and `direction` would have read `decided_but_unwritten` while its elements
+    were in the file. `FAMILIES`'s own rule is that only the counter says what
+    reached the FILE; a counter that cannot tell two families apart says it of
+    neither.
+
+    ⚠️ `_mxl_direction` takes `(kind, text)` and `kind` is already the
+    MusicXML child name (`dynamics` / `words`), so the key is DERIVED from the
+    kind rather than from a second hand-written table that could drift from
+    it.
+    """
+    for _x, kind, _text in directions:
+        counters["dynamics" if kind == "dynamics" else "direction_words"] += 1
+
+
 def _place_directions(rec: Record, runs: Dict[str, StaffRun]) -> None:
     """Every decided dynamic word, in the cell its DECISION filed it on.
 
@@ -1220,6 +1242,65 @@ def _place_directions(rec: Record, runs: Dict[str, StaffRun]) -> None:
                 x = w.get("x_page")
                 cell.directions.append(
                     (float(x) if x is not None else 0.0, "dynamics", str(text)))
+            cell.directions.sort()
+    _place_direction_words(rec, runs)
+
+
+def _place_direction_words(rec: Record, runs: Dict[str, StaffRun]) -> None:
+    """Every decided direction word, in the cell its DECISION filed it on.
+
+    ⚠️⚠️ WRITTEN IN THE SAME CHANGE AS ITS ADJUDICATOR, DELIBERATELY. Three
+    separate sessions on this path each shipped a decision that decided into
+    no file for a day -- `adjudicate_dynamic` decided for a day with
+    `grep '<dynamics' staged/export.py` returning zero, and `Q.ARC_KIND`
+    likewise. `direction` was the LAST declared stub, so there is nowhere left
+    for that pattern to hide; the gatherer, the adjudicator, the emission and
+    the counter land together or the family is not done.
+
+    ⚠️ IT REUSES `Cell.directions` AND `_legacy._mxl_direction` UNCHANGED.
+    That renderer has always taken `(x, kind, text)` with `kind` either
+    `dynamics` or `words`, and the legacy path has always emitted words
+    through it (`export.measure_direction_words`). Nothing new is rendered
+    here -- the staged path stops being the only one that could not say them.
+
+    ⚠️ AT THE HEAD OF THE BAR, the same DECLARED simplification the dynamics
+    take, and the same reason: these carry a PAGE x and the noteheads a
+    CANONICAL one. ⚠️ AND THE FRAMES HAVE NOT CONVERGED, CHECKED RATHER THAN
+    ASSUMED: `gather_detections` does now carry `bbox_page_px` on a glyph row,
+    but `_place_notes` indexes its heads by GLYPH INDEX out of the voicing,
+    not by a box, and `Cell.directions` is consumed by a renderer that takes
+    no note argument. Placing a word against its nearest note is therefore a
+    real change to two functions and a separate, measurable question -- not a
+    drive-by inside a wiring pass. The legacy path's own placement
+    (`_direction_slots`) is where the measured rule lives if it is taken up.
+
+    ⚠️ AN ABSTAINING CELL WRITES NOTHING, WHICH IS THE POINT. `rec.value`
+    returns None for a `reader_unavailable` refusal and for a `no_words`
+    DECISION it returns `[]` -- and both write nothing, so the FILE cannot
+    distinguish them and is not asked to. The record can, which is where that
+    distinction belongs: MusicXML has no way to say "a reader could not run
+    over this bar", and inventing one would be the fabrication this family is
+    built to avoid.
+    """
+    for key, run in runs.items():
+        for cell_index in range(run.n_measures):
+            sub = f"cell/{run.page}/{run.system}/{run.staff}/{cell_index}"
+            words = rec.value(Q.DIRECTION, sub)
+            if not isinstance(words, list) or not words:
+                continue
+            verdict = rec.verdict(Q.DIRECTION, sub) or {}
+            detail = verdict.get("detail") or {}
+            by_text: Dict[str, Any] = {}
+            for w in (detail.get("words") or []):
+                if isinstance(w, dict):
+                    by_text.setdefault(w.get("text"), w)
+            cell = run.cells.setdefault(
+                cell_index, Cell(run.page, run.system, run.staff, cell_index))
+            for text in words:
+                w = by_text.get(text) or {}
+                x = w.get("x_page")
+                cell.directions.append(
+                    (float(x) if x is not None else 0.0, "words", str(text)))
             cell.directions.sort()
 
 
@@ -1395,7 +1476,7 @@ def _part_xml(rec: Record, part: Sequence[StaffRun], pid: str,
                 # rediscovering that.
                 lines.extend(_legacy._mxl_empty_measure(
                     meter, divisions, directions or None, "      "))
-                counters["dynamics"] += len(directions)
+                _count_directions(counters, directions)
             else:
                 # ⚠️ AT THE HEAD OF THE BAR, AND THAT IS A DECLARED
                 # SIMPLIFICATION, NOT AN OVERSIGHT. The legacy events path
@@ -1411,7 +1492,7 @@ def _part_xml(rec: Record, part: Sequence[StaffRun], pid: str,
                 # truth, so do not read a flat metric here as this being free.
                 lines.extend(_legacy._mxl_direction((kind, text), "      ")
                              for _x, kind, text in directions)
-                counters["dynamics"] += len(directions)
+                _count_directions(counters, directions)
                 lines.extend(_measure_xml(rec, run, i, events, divisions,
                                           counters))
             lines.append("    </measure>")
@@ -1861,6 +1942,53 @@ def to_musicxml(result: Dict[str, Any]) -> Tuple[str, Dict[str, Any]]:
         "balanced": (int(counters.get("wedges", 0))
                      + report["wedges_not_written_total"]) == w_decided,
     }
+    # ⚠️⚠️ THE DIRECTION CONTROL IS AN EXACT EQUALITY AND ITS RESIDUE HAS A
+    # NAME. The session before last warned in writing that a `<=` balance
+    # cannot fail; the session after it read that warning and still shipped a
+    # `<=`, which reported `balanced: True` while ten decided hairpins were
+    # counted by nobody. So this is `==`, and the gap between the words a
+    # verdict DECIDED and the words the FILE holds is a counted bucket rather
+    # than slack in an inequality.
+    #
+    # ⚠️ The only way a decided word can fail to be written is that its cell
+    # is not in the export at all -- its staff belongs to no part, or its
+    # index is past the run's `n_measures`. That is a PART-JOIN fact, not a
+    # direction fact, and naming it here is what stops it being read as one.
+    d_decided = 0
+    for v in rec.verdicts_of(Q.DIRECTION):
+        if v["outcome"] != "decided":
+            continue
+        d_decided += len(v["value"] or ())
+    d_placed = 0
+    for _part in parts:
+        for _run in _part:
+            for _cell in _run.cells.values():
+                d_placed += sum(1 for _x, _kind, _t in _cell.directions
+                                if _kind == "words")
+    d_written = int(counters.get("direction_words", 0))
+    report["direction_words_not_written"] = {
+        # ⚠️ TWO DIFFERENT LOSSES, REPORTED APART, because the repairs differ.
+        # The first is a verdict whose cell no part carries; the second would
+        # be a word placed on a cell the renderer never emitted.
+        "cell_not_in_any_part": d_decided - d_placed,
+        "placed_but_not_rendered": d_placed - d_written,
+    }
+    report["direction_words_not_written_total"] = d_decided - d_written
+    report["direction_balance"] = {
+        "words_decided": d_decided,
+        "placed": d_placed,
+        "written": d_written,
+        "not_written": report["direction_words_not_written_total"],
+        # ⚠️ A KNOWN EQUIVALENT MUTANT, named rather than chased: as written,
+        # `written + not_written` is `d_decided` by construction, so `==` and
+        # `<=` agree on every input this code can produce today. The `==` is
+        # the guard against a future emission path that drops a word silently
+        # -- exactly what the `<=` failed to catch for the wedges -- and the
+        # two RESIDUE buckets above are what actually go red, because they are
+        # differences rather than a sum.
+        "balanced": (d_written + report["direction_words_not_written_total"]
+                     == d_decided),
+    }
     fermata_marks = len(rec.obs_of(Q.FERMATA_MARK))
     report["fermatas_not_written"] = dict(fermatas_dropped)
     report["fermatas_not_written_total"] = sum(fermatas_dropped.values())
@@ -1953,7 +2081,14 @@ FAMILIES: Dict[str, Tuple[Optional[str], Tuple[str, ...], Tuple[str, ...]]] = {
     "dynamic": (Q.DYNAMIC, ("dynamic",), ("dynamics",)),
     "wedge": (Q.WEDGE_ANCHOR, ("dynamicCrescendoHairpin",
                                "dynamicDiminuendoHairpin"), ("wedges",)),
-    "direction": (Q.DIRECTION, (), ()),
+    # ⚠️ NO DETECTOR PREFIX, AND THAT IS CORRECT RATHER THAN AN OMISSION: a
+    # direction word is not in the 208-class space at all. `textDynamic` is the
+    # class that would have supplied one and it is the class Phase 3.4's
+    # expansion collapsed on, so the words are read by OCR over the ink the
+    # detections are SUBTRACTED from. `detector_glyphs` is therefore 0 by
+    # construction and `cv_glyphs` -- derived from `subjects_from` -- is where
+    # this family's reach is reported.
+    "direction": (Q.DIRECTION, (), ("direction_words",)),
     "ornament": (Q.ORNAMENT_OWNER, ("ornament", "tremolo"), ("ornaments",)),
     "fermata": (Q.FERMATA_OWNER, ("fermata",), ("fermatas",)),
     "clef": (Q.CLEF, ("clef",), ()),

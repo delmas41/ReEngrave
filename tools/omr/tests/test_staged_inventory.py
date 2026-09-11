@@ -29,7 +29,25 @@ class TestDerivedFromTheRegistry(unittest.TestCase):
         declared = set(A.stubs())
         derived = {r["quantity"] for r in self.inv["decisions"] if r["stub"]}
         self.assertEqual(declared, derived)
-        self.assertTrue(declared, "a zero here would be a broken derivation")
+        # ⚠️⚠️ BOTH SIDES ARE EMPTY SINCE 2026-09-11, so the equality above is
+        # `set() == set()` and would pass just as well if the derivation were
+        # broken to return nothing. It used to be guarded by
+        # `assertTrue(declared)` -- an assertion that a stub EXISTS, which is
+        # a property of the build's progress and goes red on success. What is
+        # guarded now is the DERIVATION itself: a stub declared here must
+        # appear in the inventory's own `stub` column.
+        import dataclasses
+        from unittest import mock
+        from tools.omr.staged.record import Q
+
+        real = A.REGISTRY[Q.ARC_KIND]
+        with mock.patch.dict(
+                A.REGISTRY,
+                {Q.ARC_KIND: dataclasses.replace(real, stub=True)}):
+            inv2 = inventory.build()
+        self.assertIn(Q.ARC_KIND,
+                      {r["quantity"] for r in inv2["decisions"] if r["stub"]},
+                      "`stub` is not derived from the decorator")
 
 
 class TestTheChecksHaveTeeth(unittest.TestCase):
