@@ -260,7 +260,11 @@ cause: two readings off one raster.
   Nothing in this file comes from the contaminated run. CLAUDE.md's warning
   about a staged gather picking up an edit made four minutes into it, arriving
   in a new shape: **an A/B arm that reads the working tree is not isolated from
-  anything else that writes it.**
+  anything else that writes it.** ⚠️ The two-arm runs DID predate the battery
+  and are clean, and that is checked rather than assumed: the snapshot-tree
+  three-arm run reproduces `fix = 34739` and `2530` exactly. Two arms run under
+  different conditions agreeing to the edit is the control; the argument that
+  the first run *happened* to finish first is not.
 * **Mutation battery**: [`probe/battery.sh`](probe/battery.sh), results in
   [`out/battery.txt`](out/battery.txt). Every mutation is anchored on a WHOLE
   expression and is **refused unless it applies exactly once** — the tie-chain
