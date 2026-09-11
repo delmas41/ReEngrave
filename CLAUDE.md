@@ -1392,6 +1392,20 @@ DEDUCED identity and has nothing to say about a slot that was **never an
 identity at all**. ⚠️ The reason word is wrong too: `full_lineup` is reported
 for the **8-stave** system, a vocabulary asserting what the code never checked.
 
+⚠️⚠️ **AND A THIRD DOCUMENTATION SHAPE, THE MIRROR OF
+*fixed-then-kept-open-in-prose*: A RULE DESCRIBED IN A DOCSTRING AND NEVER
+BUILT.** `adjudicate_slot_index` states, in bold, *"A FULL-LINEUP SYSTEM PAIRS
+BY POSITION; A SHORTER ONE MUST NOT … a short system pairs by INSTRUMENT NAME
+in order of appearance, and abstains where the name was not read."* **The
+function contains no such branch**: it returns `int(ordinal.value)` on every
+path, and `count` is read only to test it for `None`. A reader — human or
+agent — who trusts the docstring concludes the tacet case is handled. This is
+worse than a stale claim about the past, because it reads as a claim about the
+code in front of you. ⚠️ **The cheap check is the one this file already
+prescribes for prose: the claim is mechanically falsifiable.** A docstring
+naming a discriminator implies a branch; `grep` the function for the quantity
+it would have to read.
+
 **THE GRAFT: 12 of 75 staff-systems carry a different instrument from the part
 they are filed under** — `{p3/s1: 7, p4/s0: 5}` — reproducing from the MEASURE
 MATH the figure the key-signature session reached from the KEY SIGNATURES,
