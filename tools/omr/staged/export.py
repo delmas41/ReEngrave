@@ -237,6 +237,10 @@ class Cell:
     #: `_mxl_direction` already take, so the renderers are reused rather than
     #: re-spelled. `kind` is "dynamics" or "words".
     directions: List[Tuple[float, str, str]] = field(default_factory=list)
+    #: `(kind, [x, y, w, h])` per arc this bar holds, in PAGE pixels and in
+    #: the WIDTH form `_merge_arcs_across_barlines` reads -- see `_place_arcs`
+    #: for why the record's own corner form is converted here and not there.
+    arcs: List[Tuple[str, List[float]]] = field(default_factory=list)
 
 
 @dataclass
@@ -252,6 +256,17 @@ class StaffRun:
     n_measures: int = 0
     name: Optional[str] = None
     cells: Dict[int, Cell] = field(default_factory=dict)
+    #: This staff's own page geometry, read for the arc merge. ⚠️ BOTH ARE
+    #: PER STAFF AND NOT PER PAGE: a part spans systems, and the staff it is
+    #: printed on in system 0 is not the same object as the one in system 1.
+    #: A height is only comparable across a system break once it is relative
+    #: to each staff's OWN top line, which is why `tops` exists at all.
+    spacing: Optional[float] = None
+    top_line: Optional[float] = None
+    #: `{cell index: [x0, y0, x1, y1]}` -- each bar's own page rectangle,
+    #: CORNERS. Absent where `Q.CELL_BOX` abstained, and that absence BREAKS
+    #: the merge chain rather than being skipped over (see `_flatten_part`).
+    cell_boxes: Dict[int, List[float]] = field(default_factory=dict)
 
 
 def _staff_key(page: int, system: int, staff: int) -> str:
@@ -259,7 +274,7 @@ def _staff_key(page: int, system: int, staff: int) -> str:
 
 
 def build(rec: Record) -> Tuple[List[List[StaffRun]], Dict[str, Any],
-                               Dict[str, int]]:
+                               Dict[str, int], Dict[str, int]]:
     """The staged record -> parts, each a list of staff-runs in reading order.
 
     ⚠️ A PART IS THE SAME STAFF ON EVERY SYSTEM, and `part_partition` is the
@@ -287,9 +302,53 @@ def build(rec: Record) -> Tuple[List[List[StaffRun]], Dict[str, Any],
         run.meter = rec.value(Q.METER, f"system/{run.page}/{run.system}")
         name = rec.value(Q.PART_NAME, key)
         run.name = name if isinstance(name, str) else None
+        # ⚠️ `obs`, NOT `value`. Both are MEASUREMENTS -- a staff's lines and
+        # its spacing come off the raster in GATHER and no decision adjudicates
+        # them -- so `rec.value`, which reads VERDICTS, returns None for both.
+        # It did, silently, and the merge then saw a spacing of 0 and refused
+        # every bar: a rule that needs a unit, handed no unit, correctly
+        # declining to guess. The tests caught it; nothing in the shape of the
+        # output would have.
+        sp_rows = rec.obs(Q.STAFF_SPACING, key)
+        sp = sp_rows[-1]["value"] if sp_rows else None
+        run.spacing = float(sp) if isinstance(sp, (int, float)) else None
+        line_rows = rec.obs(Q.STAFF_LINES, key)
+        lines = line_rows[-1]["value"] if line_rows else None
+        # ⚠️ `min`, not `lines[0]`. The five y positions are a MEASUREMENT and
+        # nothing in `Q.STAFF_LINES`'s contract promises they arrive sorted;
+        # asking for the smallest says what "the top line" means.
+        if isinstance(lines, (list, tuple)) and lines:
+            try:
+                run.top_line = min(float(y) for y in lines)
+            except (TypeError, ValueError):
+                run.top_line = None
+
+    # ⚠️ INDEXED ONCE, not re-scanned per staff. `obs_of` is a linear filter
+    # over every observation on the record, so asking it inside the loop above
+    # makes this quadratic in a page's detections -- ~10,500 of them on three
+    # scanned pages.
+    for o in rec.obs_of(Q.CELL_BOX):
+        cs = _parse_subject(o["subject"])
+        if cs["cell"] is None:
+            continue
+        run = runs.get(_staff_key(cs["page"] or 0, cs["system"] or 0,
+                                  cs["staff"] or 0))
+        box = o["value"]
+        if (run is not None and isinstance(box, (list, tuple))
+                and len(box) == 4):
+            run.cell_boxes[cs["cell"]] = [float(v) for v in box]
 
     dropped = _place_notes(rec, runs)
     _place_directions(rec, runs)
+    # ⚠️⚠️ THE ARC SHORTFALL IS KEPT APART FROM `dropped`, AND THIS IS NOT
+    # TIDINESS. `dropped` feeds `notes_not_written`, which feeds the ACCOUNTING
+    # CONTROL: every notehead and rest in the log is either written or counted
+    # here, and the two must sum to the log's own rows exactly. Folding arc
+    # drops into it would inflate that total by symbols the control does not
+    # count on the other side, so `to_musicxml` would raise `Unbalanced` for a
+    # reason that has nothing to do with notes -- a control reporting a defect
+    # it was not built to see, which is worse than one that stays silent.
+    arcs_dropped = collections.Counter(_place_arcs(rec, runs))
 
     # ── the join ────────────────────────────────────────────────────────────
     join = rec.value(Q.PART_PARTITION, "document") or {}
@@ -361,7 +420,7 @@ def build(rec: Record) -> Tuple[List[List[StaffRun]], Dict[str, Any],
         "fragmented": used == "fragments",
         **provenance_extra,
     }
-    return parts, provenance, dropped
+    return parts, provenance, dropped, arcs_dropped
 
 
 def _place_notes(rec: Record, runs: Dict[str, StaffRun]) -> Dict[str, int]:
@@ -476,8 +535,287 @@ def _place_notes(rec: Record, runs: Dict[str, StaffRun]) -> Dict[str, int]:
             # shorten every untupleted note in it by a third.
             "tuplet": _tuplet_for(rec, run, cell_index, s["glyph"]),
             "glyph": sub,
+            # ⚠️⚠️ THE PAGE BOX, IN THE *WIDTH* FORM, AND THE TWO FRAMES HERE
+            # ARE A RECORDED TRAP. `bbox` above is CANONICAL -- measured
+            # inside one cell, rescaled so the staff span is constant -- and
+            # is the right frame for everything that stays inside a bar.
+            # An arc is cut in two by the barline and rejoined in PAGE pixels,
+            # the only frame two cells share, so `_noteheads_under` needs this
+            # one. ⚠️ The record spells a page box in CORNERS
+            # (`[x0, y0, x1, y1]`, as `_page_box` builds it and `arc_owner`
+            # reads it); every legacy DETECTION box is `(x, y, w, h)`. The two
+            # are indistinguishable on a fixture whose boxes start at 0, which
+            # is how this project has already paid for the confusion once.
+            "bbox_page": _corners_to_wh(_page_box_of(o)),
         })
     return dict(dropped)
+
+
+def _page_box_of(o: Dict[str, Any]) -> Optional[List[float]]:
+    """One observation's page rectangle, CORNERS, or None.
+
+    ⚠️ None is a real answer and must stay one: `gather` DECLINES a page box
+    for a cell it cannot place (`frame_note`) rather than defaulting to the
+    cell frame, and a consumer that substituted a canonical box here would be
+    comparing lengths that were never in the same units -- the fault that made
+    `Q.ONSET_COLUMN` report 1,062 columns of nothing.
+    """
+    box = (o.get("detail") or {}).get("bbox_page_px")
+    if not box or len(box) != 4:
+        return None
+    return [float(v) for v in box]
+
+
+def _corners_to_wh(box: Optional[Sequence[float]]) -> Optional[List[float]]:
+    """`[x0, y0, x1, y1]` -> `[x, y, w, h]`. The one place the two spellings
+    of a rectangle meet, so no second reader can get the conversion wrong."""
+    if box is None:
+        return None
+    x0, y0, x1, y1 = (float(v) for v in box)
+    return [x0, y0, x1 - x0, y1 - y0]
+
+
+def _place_arcs(rec: Record, runs: Dict[str, StaffRun]) -> Dict[str, int]:
+    """Every decided arc, in the cell its OWNER puts it in.
+
+    ⚠️ THE OWNER, NOT THE SUBJECT -- the same rule `_place_notes` states and
+    for a sharper reason. A notehead detected on the wrong staff is at least
+    detected twice, so a duplicate rule can see the contest; an arc need not
+    be. Where two staves sit far apart the upper cell reaches ink the lower
+    one does not, so on `brahms-sym1-mvt1` the Timpani exported 4 slurs and 1
+    tie against a truth of ZERO and every one of them was Violin 1's, drawn
+    over ITS ledger notes in the gap between the two staves.
+    `adjudicate_arc_owner` has already settled this; the exporter honours it.
+
+    ⚠️ AND IT WAS DECIDING FOR A DAY WITH NO ROUTE TO A FILE. `arc_kind` and
+    `arc_owner` decide 199 arcs on one page, `arc_owner` moves 12 of them, and
+    `grep '<slur' staged/export.py` returned ZERO -- the value existed and
+    nothing read it, inside the architecture built to stop exactly that.
+    """
+    dropped: Dict[str, int] = collections.Counter()
+    for o in rec.obs_of(Q.ARC_BOX):
+        sub = o["subject"]
+        s = _parse_subject(sub)
+        if s["glyph"] is None:
+            continue
+        kind_v = rec.verdict(Q.ARC_KIND, sub)
+        if not kind_v or kind_v["outcome"] != "decided":
+            # ⚠️ COUNTED BY ITS REASON, not lumped together. "I could not read
+            # this arc" and "there was no page box to read it in" send the
+            # next reader to different places.
+            dropped["kind_" + (kind_v["reason"] if kind_v else "absent")] += 1
+            continue
+        kind = str(kind_v["value"])
+        if kind not in ("slur", "tie"):
+            dropped["kind_not_an_arc"] += 1
+            continue
+
+        page_box = _corners_to_wh(_page_box_of(o))
+        if page_box is None:
+            # An arc with no page rectangle cannot be merged across a barline
+            # and cannot be compared with a notehead: both happen in page
+            # pixels. Dropped rather than placed in the wrong frame.
+            dropped["arc_no_page_frame"] += 1
+            continue
+
+        owner = rec.value(Q.ARC_OWNER, sub)
+        home = owner if isinstance(owner, str) else _staff_key(
+            s["page"] or 0, s["system"] or 0, s["staff"] or 0)
+        run = runs.get(home)
+        if run is None:
+            dropped["arc_owner_staff_has_no_measures"] += 1
+            continue
+        cell_index = s["cell"] or 0
+        cell = run.cells.setdefault(
+            cell_index, Cell(run.page, run.system, run.staff, cell_index))
+        cell.arcs.append((kind, page_box))
+    return dict(dropped)
+
+
+def _pair_arcs(parts: Sequence[Sequence[StaffRun]],
+               counters: Dict[str, int]) -> Dict[str, int]:
+    """Join each part's arcs across its barlines and mark the notes they bind.
+
+    ⚠️⚠️ THIS IS A PART PASS AND NOT A MEASURE ONE, AND THE NUMBER SAYS WHY.
+    Cells are cut per measure, so an arc crossing a barline is DETECTED AS TWO
+    -- **32 of 199 arcs on one page (16.1%) begin at their cell's left edge**,
+    the cross-barline signature. Emitting each half as its own `<slur>` writes
+    two where the music has one, which is what kept an implemented and tested
+    `annotate_slurs` out of the LEGACY exporter until 2026-09-01.
+
+    ⚠️ AND OMR-NED WOULD NOT HAVE CAUGHT IT. The metric is symmetric, so
+    emitting MORE symbols is rewarded: the legacy slur work's first cut
+    LOWERED pooled OMR-NED while RAISING the edit count. That is why this
+    lands with the merge rather than after it.
+
+    ⚠️ `_merge_arcs_across_barlines`, `_noteheads_under` and `_number_spans`
+    are IMPORTED AND CALLED, not ported. Their three measured constants
+    (`_SLUR_BOUNDARY_SPACES` 0.5, `_SLUR_CONTINUATION_DY_SPACES` 2.0,
+    `_SLUR_ARC_PAD_NOTEHEADS` 0.25) each sit in a gap the measurement found,
+    and each is a PLATEAU rather than a peak. Restating them here would give
+    this project two copies of a number it paid to measure once -- the drift
+    `LETTER_METERS` and the arc-attribution constants are both imported to
+    prevent.
+    """
+    dropped: Dict[str, int] = collections.Counter()
+    for part in parts:
+        measures, per_measure_arcs, kinds, spacings, tops, breaks = \
+            _flatten_part(part)
+        if not measures or not any(per_measure_arcs):
+            continue
+        # ⚠️⚠️ A BAR WHOSE GEOMETRY IS MISSING SWALLOWS ITS ARCS SILENTLY, and
+        # counting them is the whole difference between a gap and a hole.
+        # `_merge_arcs_across_barlines` opens each bar with "no box, or no
+        # spacing, then break the chain and move on" -- which is right, since
+        # there is no unit to measure a boundary in -- but its `continue`
+        # skips that bar's arcs entirely. They are not merged, not emitted,
+        # and without this line not counted either: the exact shape of
+        # `measure_dynamics` discarding a letter run, or the eventless-measure
+        # branch computing directions and never using them.
+        for i, cell_arcs in enumerate(per_measure_arcs):
+            if cell_arcs and not (measures[i]["bbox_page_px"] and spacings[i]):
+                dropped["arc_bar_has_no_geometry"] += len(cell_arcs)
+        # ⚠️⚠️ THE ARCS ARE PARTITIONED BY KIND AND EACH POOL IS PAIRED ON ITS
+        # OWN, and the first cut did NOT do this -- it paired everything at
+        # once and then asked each span's first notehead which kind it was.
+        # That is wrong wherever two spans share a note: a tie and a slur
+        # starting on the same head are one entry in a head-keyed map, so the
+        # later one silently renames the earlier. Overlapping spans are not
+        # exotic -- `_number_spans` exists precisely because they happen.
+        #
+        # ⚠️ THE PARTITION IS EXACT, WHICH IS WHY IT IS SAFE. The merge is
+        # GEOMETRIC and knows nothing about kind, so a group's arcs all carry
+        # one kind into one pool, and the merge inside `_paired_spans`
+        # re-derives that group exactly. Nothing is split by moving it.
+        by_kind, merged = _arcs_by_kind(measures, per_measure_arcs, kinds,
+                                        spacings, tops, breaks)
+        n_spans = 0
+        for kind, pools in by_kind.items():
+            spans = _legacy._paired_spans(measures, pools, spacings, tops,
+                                          breaks, {})
+            n_spans += len(spans)
+            if kind == "tie":
+                for (_a, _b, first, last) in spans:
+                    # ⚠️ A TIE IS NOT NUMBERED. MusicXML `<tie>`/`<tied>` join
+                    # the two notes they name and carry no `number=`, so there
+                    # is nothing to allocate and no ceiling to drop past -- the
+                    # one place a tie and a slur are genuinely different
+                    # spanners rather than the same one under two names.
+                    first["tied_to_next"] = True
+                    last["tied_from_prev"] = True
+                    counters["tie_spans_marked"] += 1
+                continue
+            # ⚠️ THE THIRD PLACE AN ARC CAN VANISH. `_number_spans` DROPS a
+            # span past the level ceiling rather than renumbering it -- six
+            # open at once is already pathological and a seventh would have to
+            # reuse a live number, which is worse than silence. Silence in the
+            # FILE; not silence in the report.
+            numbered = _legacy._number_spans(spans, _legacy._MAX_SLUR_NUMBER)
+            if len(numbered) < len(spans):
+                dropped["arc_past_the_slur_number_ceiling"] += (
+                    len(spans) - len(numbered))
+            for number, (_a, _b, first, last) in numbered:
+                first.setdefault("slur_states", []).append((number, "start"))
+                last.setdefault("slur_states", []).append((number, "stop"))
+                counters["slur_spans_marked"] += 1
+        # ⚠️ A merged arc that binds fewer than two noteheads of one voice is
+        # REFUSED by `_paired_spans` -- one end leaves an unpaired
+        # `<slur type="start">` and an INVALID file. On a scan the usual cause
+        # is that the notes under the arc were never detected, which is a
+        # READING shortfall and belongs in the record, not in the silence.
+        if merged > n_spans:
+            dropped["arc_binds_fewer_than_two_notes"] += merged - n_spans
+    return dict(dropped)
+
+
+def _flatten_part(part: Sequence[StaffRun]):
+    """One measure sequence for a whole part, with each measure's geometry.
+
+    Returns `(measures, arcs, kinds, spacings, tops, breaks)` -- the shape
+    `_legacy._paired_spans` takes, plus `kinds`, which is this path's own.
+
+    ⚠️ A BAR WITH NO PAGE RECTANGLE IS PASSED THROUGH AS `None`, NOT SKIPPED,
+    AND THE BREAKING IS `_merge_arcs_across_barlines`'S — said here because
+    that is where a reader will look for it and it is not in this function.
+    Keeping the bar in the sequence is what makes the merge break the chain
+    there (it clears `pending` on a bar it cannot measure); DROPPING the bar
+    would close the gap and let an arc pair with one two measures away that
+    happens to line up. `annotate_slurs_in_slot` reaches the same outcome from
+    the other side, splitting a slot into contiguous runs where a staff has no
+    line spacing.
+
+    ⚠️ The geometry travels BESIDE the measures and not on them. These shim
+    dicts hold the exporter's OWN detection dicts by reference -- that is how
+    a mark set on a span's first note reaches `group_chords_in_measure` -- so
+    anything stashed on them would be stashed on the pipeline's output.
+    """
+    measures: List[Dict[str, Any]] = []
+    arcs: List[List[List[float]]] = []
+    kinds: Dict[int, str] = {}
+    spacings: List[float] = []
+    tops: List[Optional[float]] = []
+    breaks = set()
+    for run in part:
+        # ⚠️ `if measures`, NOT `if run.n_measures` -- the FIRST staff's
+        # opening bar is not a system BREAK, it is the beginning. The legacy
+        # `_flatten_run` spells it the same way and the two must agree: a
+        # spurious break at index 0 sends bar 0 down `_resumes_after_system_
+        # break` instead of the cell-edge test, which is a different reading
+        # of the same ink.
+        if measures:
+            breaks.add(len(measures))
+        for i in range(run.n_measures):
+            cell = run.cells.get(i)
+            dets = cell.detections if cell else []
+            measures.append({"bbox_page_px": run.cell_boxes.get(i),
+                             "detections": dets})
+            cell_arcs = []
+            for kind, box in (cell.arcs if cell else []):
+                cell_arcs.append(box)
+                kinds[id(box)] = kind
+            arcs.append(cell_arcs)
+            spacings.append(run.spacing or 0.0)
+            tops.append(run.top_line)
+    return measures, arcs, kinds, spacings, tops, frozenset(breaks)
+
+
+def _arcs_by_kind(measures, arcs, kinds, spacings, tops, breaks
+                  ) -> Tuple[Dict[str, List[List[List[float]]]], int]:
+    """`({"slur" | "tie": per-measure arc lists}, n merged arcs)`.
+
+    ⚠️ THE KIND BELONGS TO AN ARC AND THE MERGE JOINS TWO OF THEM, so the
+    split has to happen after merging: before it, the two halves of one
+    cross-barline curve are two arcs, and half a curve is not a thing that has
+    a kind. The merge is pure and cheap, so it runs here to learn which arcs
+    became one group and again inside `_paired_spans` for the spans -- cheaper
+    than a second copy of the merge that could drift from the first.
+
+    ⚠️ A MERGED ARC CAN HOLD BOTH KINDS -- one half read `tie`, the other
+    `slur` -- and `tie` wins, deliberately. The halves are ONE printed curve,
+    so a disagreement is a reading error whichever way it is taken; the tie
+    keeps the pair joined at one pitch, where the slur would emit a span the
+    grammar could then contradict. ⚠️ It is NOT re-litigated here:
+    `OMR_ARC_RECLASS` measured the position grammar on both families and was
+    REFUSED (scan +130 edits), and `arc_kind` RECORDS the grammar's opinion
+    rather than acting on it. This picks between two readings we already have;
+    it does not form a third.
+    """
+    out: Dict[str, List[List[List[float]]]] = {}
+    # ⚠️ THE GROUP COUNT IS RETURNED, NOT DERIVED FROM `out`. `out[kind]` is a
+    # list per MEASURE, so `len()` on it is the number of bars and not the
+    # number of merged arcs -- which is what the first version summed, making
+    # the accounting control read 2 of 3 on a two-bar fixture. The control
+    # caught it; nothing in the exported file would have.
+    n_groups = 0
+    for segments in _legacy._merge_arcs_across_barlines(
+            measures, arcs, spacings, tops, breaks):
+        n_groups += 1
+        seen = {kinds.get(id(box)) for _m, box in segments}
+        kind = "tie" if "tie" in seen else "slur"
+        pool = out.setdefault(kind, [[] for _ in measures])
+        for m_idx, box in segments:
+            pool[m_idx].append(box)
+    return out, n_groups
 
 
 def _place_directions(rec: Record, runs: Dict[str, StaffRun]) -> None:
@@ -758,8 +1096,37 @@ def _measure_events_xml(events: List[Dict[str, Any]], divisions: int,
                 head["pitch"], "", xml_type, dots, beats, divisions,
                 is_chord=(n > 0), is_rest=False, indent="      ", voice=1,
                 time_modification=time_mod, tuplet_state=state,
+                # ⚠️ ON THE CHORD'S FIRST NOTE ONLY, which is the same rule
+                # `_mxl_voice_events` follows: MusicXML takes a chord's first
+                # `<note>` as its representative, so a span hung off every
+                # member would open one slur per notehead and close none of
+                # them. `group_chords_in_measure` has already sorted the group
+                # LOWEST FIRST and carried the marks up onto the EVENT, which
+                # is why they are read from `ev` here and not from `head`.
+                slur_states=(ev.get("slur_states") if n == 0 else None),
+                tied_to_next=bool(ev.get("tied_to_next")) if n == 0 else False,
+                tied_from_prev=(bool(ev.get("tied_from_prev"))
+                                if n == 0 else False),
                 accidental=head.get("accidental")))
             counters["notes"] += 1
+            if n == 0:
+                # ⚠️⚠️ COUNTED HERE, AT THE RENDER, AND NOT WHERE THE MARK WAS
+                # SET -- because the two numbers are DIFFERENT and the first
+                # cut reported the wrong one. `voicing._chord_span_states`
+                # DROPS a span whose start and stop landed in the SAME chord
+                # ("a slur from a note to itself is a curve to nowhere"), and
+                # `_paired_spans` cannot catch those: it refuses two ends on
+                # one DETECTION, while a chord is several detections at one x.
+                # On one real page that is 32 of 55 marked spans, so the
+                # report claimed 55 slurs where 23 reached the file.
+                #
+                # This is the rule the FAMILIES table already states one
+                # screen down: "only the counter says what reached the FILE".
+                for _num, kind in (ev.get("slur_states") or ()):
+                    if kind != "stop":
+                        counters["slurs"] += 1
+                if ev.get("tied_to_next"):
+                    counters["ties"] += 1
             if head.get("accidental"):
                 counters["accidentals"] += 1
     return out
@@ -792,9 +1159,18 @@ def _rest_xml(ev: Dict[str, Any], divisions: int,
 def to_musicxml(result: Dict[str, Any]) -> Tuple[str, Dict[str, Any]]:
     """The file, and the record of what did not reach it."""
     rec = Record(result)
-    parts, provenance, dropped = build(rec)
+    parts, provenance, dropped, arcs_dropped = build(rec)
     divisions = _divisions(parts)
     counters: Dict[str, int] = collections.Counter()
+    # ⚠️ AFTER the parts are joined and BEFORE any measure is rendered. A part
+    # is what an arc is merged along -- the junction between two systems is a
+    # junction of one PART, not of two staves -- so this cannot run inside
+    # `build`'s per-staff loop, and it must not run after `_part_xml`, which is
+    # where the marks are read.
+    # ⚠️ `+=`, not `update`. A Counter's `update` ADDS and a dict's REPLACES,
+    # and the two spellings are one character apart -- an arc counted in both
+    # halves would be silently overwritten rather than summed.
+    arcs_dropped += collections.Counter(_pair_arcs(parts, counters))
 
     part_list: List[str] = []
     parts_xml: List[str] = []
@@ -819,6 +1195,23 @@ def to_musicxml(result: Dict[str, Any]) -> Tuple[str, Dict[str, Any]]:
     # indistinguishable from ink that was never read.
     report["notes_not_written"] = dropped
     report["notes_not_written_total"] = sum(dropped.values())
+    # ⚠️ REPORTED APART FROM THE NOTES, and deliberately NOT inside the
+    # balance below: an arc is not a note, and a control that counts two
+    # different families on one side of an equation cannot say which one it
+    # lost. This is the `detected_and_unrepresented` / `decided_and_unwritten`
+    # split, arriving one family further down.
+    # ⚠️ THE GAP BETWEEN MARKED AND WRITTEN IS ITSELF A DROP, and naming it
+    # is what keeps `arcs_not_written` a partition rather than a sample. A
+    # span both of whose ends land in one chord is discarded by
+    # `voicing._chord_span_states`, correctly and silently, two modules away
+    # from anything that knows an arc was involved.
+    for fam, mark in (("slurs", "slur_spans_marked"),
+                      ("ties", "tie_spans_marked")):
+        lost = int(counters.get(mark, 0)) - int(counters.get(fam, 0))
+        if lost > 0:
+            arcs_dropped["arc_ends_in_one_chord"] += lost
+    report["arcs_not_written"] = dict(arcs_dropped)
+    report["arcs_not_written_total"] = sum(arcs_dropped.values())
     # ⚠️⚠️ THE ACCOUNTING CONTROL, AND IT IS READ. Every notehead the log
     # holds is either written or counted as not-written; the two must sum to
     # the `notehead_class` rows exactly. An unbalanced export is an
@@ -882,8 +1275,8 @@ def _default_name(part: Sequence[StaffRun]) -> str:
 FAMILIES: Dict[str, Tuple[Optional[str], Tuple[str, ...], Tuple[str, ...]]] = {
     "note": (Q.PITCH, ("notehead",), ("notes",)),
     "rest": (Q.REST, ("rest",), ("rests", "measure_rests_read")),
-    "slur": (Q.ARC_KIND, ("slur",), ()),
-    "tie": (Q.ARC_KIND, ("tie",), ()),
+    "slur": (Q.ARC_KIND, ("slur",), ("slurs",)),
+    "tie": (Q.ARC_KIND, ("tie",), ("ties",)),
     "articulation": (Q.ARTICULATION_OWNER, ("artic",), ()),
     "dynamic": (Q.DYNAMIC, ("dynamic",), ("dynamics",)),
     "wedge": (Q.WEDGE_ANCHOR, ("dynamicCrescendoHairpin",

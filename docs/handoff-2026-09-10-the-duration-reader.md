@@ -178,7 +178,27 @@ own row queries — one place, every decision.**
 (§5.5 is the exception: it CLOSED while this handoff was being written,
 and is kept because the correction is the point.)
 
-### 5.1 The dotted REST — an asymmetry this session INTRODUCED
+### 5.1 ✅ CLOSED 2026-09-10 — the dotted REST
+
+**Taken and landed by the session that picked up both 09-10 handoffs**, along
+with the arc export from the sibling's §5 list. Marked here rather than left
+standing, because this entry ENDS with *"whoever takes it should say so first —
+this repo has already built the hairpin export twice"*, and a discharged work
+order left in place is how that happens a third time.
+
+**What it cost and what it bought:** two changes (the read, and widening
+`_attached_dots`' pool to `noteheads + rests` — which is what
+`_pair_dots_to_targets` has always done, so this was a DIVERGENCE from the
+paid-for rule rather than a narrower reading of it), six tests, five mutation
+arms red. ⚠️ **On Litolff p1-3 NOTHING MOVED, and the zero is about REACH** —
+20 `aug_dot` rows over three pages, and the positive control's whole range
+there is ONE verdict. The "1 dot of 848" scale below stands; it
+is consistency, not payoff. ⚠️ The COST of the wider pool (a rest taking a dot
+from a notehead) is still unmeasured and wants Breitkopf Brahms 1.
+`benchmarks/omr-staged-dotted-rest-2026-09/`.
+
+The original entry, kept because its reasoning is what made the call:
+
 
 `_rest_ruling` still does `dots = ev.rows(Q.AUG_DOT)` on the REST's own glyph
 subject — **the exact fault fixed for noteheads, in the same function, one

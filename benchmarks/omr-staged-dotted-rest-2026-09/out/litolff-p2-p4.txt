@@ -1,0 +1,15 @@
+REACH (what this document can show):
+  aug_dot rows                       20
+  rest rows                          524
+  dots in a cell that holds a rest   8
+
+POSITIVE CONTROL — with ALL dots off, 1 verdicts move (instrument LIVE)
+
+subjects with a duration: old 1863  new 1863
+
+verdicts that MOVED, by kind : none
+  of those, dots gained      : none
+
+dotted verdicts, old -> new:
+  rest : 0 -> 0
+  note : 1 -> 1

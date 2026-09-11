@@ -300,17 +300,28 @@ def _attached_dots(ev: Evidence, cell, head_box, space):
     this decision sees one notehead. So a dot is claimed only where THIS head
     is the best target the dot has in the cell -- the same assignment, asked
     from the other end, so two heads can never both take one dot.
+
+    ⚠️⚠️ THE POOL IS EVENTS, NOT NOTEHEADS -- `Q.NOTEHEAD_CLASS` *AND*
+    `Q.REST` -- AND IT HAS TO BE, TWICE OVER. `_pair_dots_to_targets` builds
+    exactly this pool (`dot_targets = noteheads + rests`, "dots after rests
+    are rarer but real") under the same two constants, so a rest reading no
+    dot here was a divergence from the paid-for rule and not a narrower
+    reading of it. And the reciprocity above is only sound over the WHOLE
+    pool: scored against noteheads alone, a dot printed after a rest is
+    awarded to some notehead further off, because the rule asks which target
+    is best among those it can see. Widening the pool can therefore TAKE a
+    dot from a notehead, which is the rule working, not a regression.
     """
     if head_box is None or not space:
         return []
     boxes = _cell_boxes(ev, cell)
     heads = []
-    for r in ev.rows(Q.NOTEHEAD_CLASS, scope=Scope.SELF_AND_DESCENDANTS,
-                     subject=cell):
-        box_row = boxes.get(r.subject.to_key())
-        b = _xywh_head(box_row.value) if box_row else None
-        if b is not None:
-            heads.append((r.subject.to_key(), b))
+    for q in (Q.NOTEHEAD_CLASS, Q.REST):
+        for r in ev.rows(q, scope=Scope.SELF_AND_DESCENDANTS, subject=cell):
+            box_row = boxes.get(r.subject.to_key())
+            b = _xywh_head(box_row.value) if box_row else None
+            if b is not None:
+                heads.append((r.subject.to_key(), b))
     mine = None
     for key, b in heads:
         if b == head_box and key == ev.subject.to_key():
@@ -595,8 +606,27 @@ def _rest_ruling(ev: Evidence, rest_rows) -> Ruling:
                                    "value")
     base, written_type = found
 
-    dots = ev.rows(Q.AUG_DOT)
+    # ⚠️ THE SAME READ A NOTEHEAD MAKES, AND IT USED TO BE `ev.rows(Q.AUG_DOT)`
+    # ON THE REST'S OWN GLYPH SUBJECT -- the exact fault fixed for noteheads,
+    # in this same function, one branch over: GATHER files a dot at the DOT's
+    # subject, so asking the rest's own subject for one returns nothing and
+    # every dotted rest read as undotted. Measured over the three documents,
+    # 848 `aug_dot` rows attach 752 to a notehead and exactly ONE to a rest,
+    # so this is CONSISTENCY rather than payoff -- what it removes is a module
+    # that dots noteheads and silently not rests, which is worse than the
+    # even gap it replaced.
+    cell = ev.subject.at(Kind.CELL)
+    box = ev.rows(Q.GLYPH_BOX)
+    rest_box = _xywh_head(box[-1].value) if box else None
+    space_row = ev.rows(Q.CELL_STAFF_SPACE, scope=Scope.SELF_AND_ANCESTORS,
+                        subject=cell)
+    space = float(space_row[-1].value) if space_row else None
+    dots = _attached_dots(ev, cell, rest_box, space)
     used = [row.id] + [r.id for r in dots]
+    if box:
+        used.append(box[-1].id)
+    if space_row:
+        used.append(space_row[-1].id)
     total, add = base, base
     for _ in range(len(dots)):
         add /= 2.0

@@ -325,6 +325,26 @@ class Q(_Vocab):
     #: canonical x had to be: two frames under one name is how a consumer comes
     #: to compare lengths that were never in the same units.
     CELL_STAFF_SPACE = "cell_staff_space"
+    #: One measure CELL's own rectangle on the page, `[x0, y0, x1, y1]` in
+    #: page pixels -- CORNERS, like every other `bbox_page_px` here.
+    #:
+    #: ⚠️⚠️ IT IS THE FRAME THE ARC MERGE HAPPENS IN, AND NOTHING ELSE CAN
+    #: STAND IN FOR IT. Cells are cut per measure, so a slur crossing a
+    #: barline is DETECTED AS TWO ARCS, and the join asks whether an arc ends
+    #: ON its cell's right edge and the next begins on its left. That question
+    #: is about the CELL's boundary, not about its contents -- deriving the
+    #: box from the glyphs inside it would put the edge wherever the outermost
+    #: detection happens to fall, so an arc that genuinely reaches the barline
+    #: would test as ending in open space, and the wider the empty margin the
+    #: more certainly the two halves stay two slurs.
+    #:
+    #: ⚠️ `gather_detections` has read this off the cell since the day page
+    #: boxes arrived (`_page_box` opens with `getattr(cell, "bbox_page_px")`)
+    #: and threw it away after converting one glyph -- the value existed and
+    #: nothing carried it, this project's own named anti-pattern, and it is
+    #: why `Q.ARC_KIND` and `Q.ARC_OWNER` could decide 199 arcs a page with no
+    #: route to a file.
+    CELL_BOX = "cell_box"
     STAFF_EXTENT = "staff_extent"            # (x_start, x_end)
     STAFF_SKEW = "staff_skew"                # measured tilt/bow
     GAP_BRIDGING = "gap_bridging"            # ink crossing an inter-staff gap

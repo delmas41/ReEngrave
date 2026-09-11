@@ -804,6 +804,64 @@ each half as its own `<slur>` writes two where the music has one — and OMR-NED
 would not catch it, because the metric is symmetric and the legacy slur work's
 first cut LOWERED pooled OMR-NED while RAISING the edit count. It needs
 `_merge_arcs_across_barlines`'s three measured constants moved across first.
+⚠️⚠️ **DONE 2026-09-10, WITH THE MERGE — see the section below.**
+
+### Arcs reach the file — and the merge landed WITH the emission
+
+2026-09-10, no flag. `staged/export.py` read `Q.ARC_KIND` and emitted **zero**
+`<slur>`; the arcs decided for a day with no route to a file. Findings:
+[benchmarks/omr-staged-arc-export-2026-09/FINDINGS.md](benchmarks/omr-staged-arc-export-2026-09/FINDINGS.md).
+
+**MEASURED**, Litolff Beethoven 5 `--pages 1-3`, one gather exported twice:
+`<slur>` **0 → 46**, `<tied>` **0 → 98**, **23 slurs and 49 ties** written on
+12 parts, notes 1075 and rests 432 **identical**, and with the arc elements
+removed the two files are **byte-identical**. music21 reads back exactly 23
+Slur objects. The partition is exact: 514 arc rows → 476 merged groups (**38
+arcs, 7.4%, are one half of a cross-barline pair**) → 23 + 49 + 361 + 43 = 476.
+
+⚠️ **`Q.CELL_BOX` IS A GATHER CHANGE AND IT HAD TO BE.** `gather_detections`
+has read `cell.bbox_page_px` since page boxes arrived and threw it away after
+converting one glyph. The merge asks whether an arc ends ON its cell's right
+edge; deriving that edge from the glyphs inside would put it wherever the
+outermost detection falls, so an arc genuinely reaching the barline would test
+as ending in open space. ⚠️ It also means **`readjudicate` cannot measure this
+change** — it rebuilds from a saved record, so a new quantity never enters; the
+arm's own guard refuses a record predating `Q.CELL_BOX` rather than reporting
+the zero that follows.
+
+⚠️⚠️ **THE DOMINANT BUCKET IS A READING SHORTFALL, NOT AN EXPORT ONE: 361 of
+476 merged arcs (76%) bind fewer than two noteheads** and are refused, because
+one end leaves an unpaired `<slur type="start">` and an INVALID file. On a scan
+the usual cause is that the notes under the arc were never detected. So do not
+read 23 slurs as "the exporter recovers a quarter of the arcs" — it recovers
+all of the ones that had two notes to bind, and **the remaining three quarters
+are the detector's**, the same shape this file already records for hairpins.
+
+⚠️⚠️ **AND THE COUNTER SAID 55 SLURS WHERE THE FILE HELD 23 — found on a real
+page, not by review.** `voicing._chord_span_states` discards a span whose start
+and stop share a CHORD ("a slur from a note to itself is a curve to nowhere"),
+and `_paired_spans` cannot catch those: it refuses two ends on one DETECTION,
+while a chord is several detections at one x. **32 of 55 marked spans**, dropped
+correctly and silently two modules away. **The fix is where the counter LIVES,
+not what it counts** — it now increments where the ELEMENT is written, which is
+the `FAMILIES` table's own rule (*a verdict says what was DECIDED, only the
+counter says what reached the FILE*) arriving from a new direction. Four such
+holes were found and all four are now counted, with the PARTITION asserted
+rather than any one of them.
+
+⚠️ **Two of nine mutation arms survived the first run, and both were *a test
+named for a hazard it does not reach*.** Reading a CORNER box `[x0,y0,x1,y1]`
+as a WIDTH box `[x,y,w,h]` turned a 140px arc into a 1190px one and **every
+assertion still passed** — a wider arc still yields one span with one start and
+one stop, so **counting spans cannot see a frame error; only naming the NOTES
+can**. (The fixtures sit at page x 1000 for the same reason: at the origin the
+two spellings agree in every coordinate.) The other marked every chord member
+rather than the first, which every single-note fixture accepts. ⚠️ A third arm
+is an **equivalent mutant, not a coverage gap** — marking bar 0 a system break
+changes nothing, because at index 0 `pending` is empty.
+
+⚠️ **No OMR-NED figure is claimed, deliberately**, for the reason the paragraph
+above this section gives.
 
 #### The reporting defects the A/B found — read `status_census`, not a headline
 
@@ -1016,6 +1074,53 @@ they were assessable at all** (67 of 71 → 74 of 78): what moved is how MANY
 bars can speak, not whether they are believed. **Re-pricing
 `METER_CARRY_FLOOR` or `METER_FROM_BARS_FLOOR` still needs that second
 publisher.**
+
+### A dotted REST read as undotted — the asymmetry, closed
+
+2026-09-10, no flag. `_rest_ruling` did `ev.rows(Q.AUG_DOT)` on the REST's own
+glyph subject — **the exact fault fixed for noteheads the day before, in the
+same function, one branch over** — so the module dotted noteheads and silently
+not rests, *which is worse than the consistent gap it replaced*. Findings:
+[benchmarks/omr-staged-dotted-rest-2026-09/FINDINGS.md](benchmarks/omr-staged-dotted-rest-2026-09/FINDINGS.md).
+
+⚠️ **IT IS NOT A NEW RULE.** `rhythm._pair_dots_to_targets` has always built
+`dot_targets = noteheads + rests` under the SAME two constants (*"dots after
+rests are rarer but real"*), so the staged reader was **DIVERGING from the
+paid-for rule, not reading it more narrowly** — which settles the open question
+of whether a rest wants its own window with n=1 to calibrate on. It does not.
+
+⚠️ **The POOL had to widen, not just the read, and that is where the cost is.**
+The reciprocity that makes a per-glyph decision safe — a dot is claimed only
+where THIS event is the dot's best target — holds only over the whole pool:
+scored against noteheads alone, a dot printed after a rest goes to some
+notehead further off. So widening can TAKE a dot from a notehead.
+
+**MEASURED**, Litolff Beethoven 5 `--pages 1-3`, one gather adjudicated twice:
+**1863 subjects, ZERO verdicts moved**, dotted rests 0 → 0, dotted notes 1 → 1.
+So the cost is zero here — and so is the benefit.
+
+⚠️⚠️ **THE ZERO IS ABOUT REACH AND THE PROBE SAYS SO BEFORE IT SAYS ANYTHING
+ELSE.** This document holds **20 `aug_dot` rows over three pages**, 8 of them in
+a cell that also holds a rest. Litolff `984073` is the *"low-res bitonal"* scan
+already recorded as firing 49 flags / 35 dots where Breitkopf fires 371 / 656 —
+a DETECTION limit this thread has now hit three times. **A change that moves
+nothing because it is inert and one that moves nothing because the page holds
+nothing to move are the same number**, so `rest_dot_arm.py` prints its REACH
+first and takes `--positive-control` (all dots off — a change this page DOES
+hold ink for) so a dead instrument cannot read as a clean result. ⚠️⚠️ **The
+control ran and moves exactly ONE verdict — that is the probe's WHOLE dynamic
+range on this document.** It rules out a probe comparing a file with itself and
+**cannot detect a regression smaller than one verdict**, which is every
+regression this change could plausibly cause. Reading "instrument LIVE" as a
+clean bill of health would be the same mistake as reading the zero as a result,
+one step further back.
+
+⚠️ **What is NOT established is that it GAINS anything**: of 848 `aug_dot` rows
+across three documents, 752 attach to a notehead and **exactly ONE** to a rest.
+**This is CONSISTENCY, not payoff, and must never be quoted as a reading
+improvement.** The cost on a dot-rich page is also unmeasured — **Breitkopf
+Brahms 1 is the document to re-run it on**, the same second publisher the meter
+floors need.
 
 ### A meter CHANGE printed as a `C` was detected on 23 staves and dropped
 
@@ -2660,7 +2765,7 @@ has been bitten by before.
 
 ---
 
-## The GATHER stage collects 37 of 66 quantities, and cannot NAME 7 more
+## The GATHER stage collects most of its quantities, and cannot NAME 7 more
 
 Sean, 2026-09-09: *"I just found that we were not tracking chords - notes
 aligning in a bar. I want to know how many other things we are missing."*
@@ -2679,7 +2784,11 @@ four of the five naming gaps. **The tool is still right; its DOCUMENTATION was
 stale on arrival**, which is *fixed-then-kept-open-in-prose*, the third
 instance recorded in this file. It was caught by a trial merge, not by review.
 
-`record.Q` declares **66** quantities and a gatherer **OBSERVES 37**. Two more
+`record.Q` declares **69** quantities and a gatherer **OBSERVES 39** (at
+2026-09-10 — ⚠️ **the TOOL is the count, not this line**: it read 66/37 when
+this section was written and the heading above it said so, which is the
+hand-counted figure rotting exactly as the *"153 tests"* one did. Run
+`gather_coverage`; do not quote this sentence). Two more
 are declared and only ever ABSTAINED on (`DIRECTION_WORD`, `SYSTEMIC_COLUMN`).
 **One decision is still starved** — `DIRECTION` wants `DIRECTION_WORD`, whose
 gatherer is itself a stub. It was six.

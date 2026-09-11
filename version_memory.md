@@ -16,6 +16,47 @@ pointing at headings no longer in the file.)*
 
 ---
 
+## 2026-09-10 — arcs reach the file, and a dotted rest is dotted
+
+Two items from the two 09-10 handoffs' ranked/parked lists, taken together.
+
+**1. `<slur>` and `<tied>` reach the staged file (no flag).**
+`staged/export.py` read `Q.ARC_KIND` and emitted **zero** `<slur>` — the arcs
+decided for a day with no route to a file, the same
+*value-existed-and-nothing-read-it* shape found and fixed for the dynamics the
+day before. `Q.CELL_BOX` is now gathered (the cell's own page rectangle, which
+`gather_detections` had read and thrown away since page boxes arrived), and
+`_place_arcs` / `_pair_arcs` place each arc by its OWNER and merge across
+barlines by CALLING `_merge_arcs_across_barlines`, `_noteheads_under` and
+`_number_spans` rather than porting them — so the three measured constants stay
+in one place. Litolff Beethoven 5 p1-3: `<slur>` **0 → 46**, `<tied>` **0 → 98**,
+notes/rests identical, files byte-identical outside the arc elements, music21
+reads back exactly 23 Slur objects.
+⚠️ **76% of merged arcs bind fewer than two noteheads and are refused** — a
+READING shortfall, not an export one. ⚠️ **The counter said 55 slurs where the
+file held 23** until it was moved from where the mark is SET to where the
+ELEMENT is written; `voicing._chord_span_states` drops a span whose ends share a
+chord, silently, two modules away. Four such accounting holes found, all four
+counted, the PARTITION asserted rather than any one of them.
+⚠️ Two of nine mutation arms survived the first run and both were *a test named
+for a hazard it does not reach* — a corners-vs-width frame error that every
+span-COUNTING assertion accepted, and marking every chord member on
+single-note fixtures.
+
+**2. The dotted REST (handoff §5.1, parked and unclaimed by both sessions).**
+`_rest_ruling` read `Q.AUG_DOT` on the rest's own glyph subject — the notehead
+fault, one branch over. Not a new rule: `_pair_dots_to_targets` has always
+scored `noteheads + rests` as one pool under the same constants, so the staged
+reader was diverging from the paid-for rule. Five mutation arms red.
+⚠️ **On a real scan NOTHING MOVED — and the zero is about REACH**: 20 `aug_dot`
+rows over three pages. ⚠️⚠️ Its positive control (all dots off) moves **exactly
+one verdict**, which is the probe's whole dynamic range there: it rules out a
+dead probe and cannot detect a regression smaller than one verdict. It is CONSISTENCY, not payoff (1 rest dot in 848 rows
+across three documents) and must not be quoted as a reading gain; the cost on a
+dot-rich page is unmeasured and wants Breitkopf Brahms 1.
+
+---
+
 ## 2026-09-10 — ⚠️ a correction to my own §5.5: the gate was not crying wolf
 
 `health --check` went red on main while this handoff landed. I reported it

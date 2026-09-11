@@ -273,6 +273,22 @@ def gather_detections(log: Log, cells: Sequence[Any],
                         frame=frame, reason=ABSTAIN.READER_UNAVAILABLE)
             continue
 
+        # ⚠️ THE CELL'S OWN RECTANGLE, filed BEFORE the detections and
+        # independently of whether there are any. The arc merge asks where
+        # this bar's boundary is; a bar we detected nothing in still HAS one,
+        # and it is the neighbour of a bar that does. Declined rather than
+        # defaulted, exactly as the glyph boxes below are: a cell whose page
+        # rectangle is unknown must not be given a made-up one, because the
+        # merge would then read a fabricated edge as a real barline.
+        _cell_box = getattr(c, "bbox_page_px", None)
+        if _cell_box and len(_cell_box) == 4:
+            log.observe(cell_sub, Q.CELL_BOX, [float(v) for v in _cell_box],
+                        reader=READERS.GEOMETRY, frame=frame)
+        else:
+            log.abstain(cell_sub, Q.CELL_BOX, reader=READERS.GEOMETRY,
+                        frame=frame, reason=ABSTAIN.NO_STAFF_GEOMETRY,
+                        frame_note="cell carries no bbox_page_px")
+
         dets = detector.detect(c, conf_threshold=conf_threshold, imgsz=imgsz)
         if not dets:
             log.abstain(cell_sub, Q.GLYPH_BOX, reader=READERS.DETECTOR,

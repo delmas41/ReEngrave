@@ -959,3 +959,561 @@ class TestTheDotIsONEFactUnderALiveDurationReader(unittest.TestCase):
         import inspect
         src = inspect.getsource(SX._place_notes)
         self.assertIn('max(int(dur.get("dots") or 0), derived_dots)', src)
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Arcs — decided for a day with no route to a file
+# ─────────────────────────────────────────────────────────────────────────────
+
+#: ⚠️ NOT ZERO, AND THAT IS THE POINT. A page box in CORNERS `[x0,y0,x1,y1]`
+#: and a detection box in WIDTH form `[x,y,w,h]` are INDISTINGUISHABLE when
+#: x0 == 0 and y0 == 0, because then `x1 == w` and `y1 == h`. This project has
+#: already paid for that confusion once (the CV hairpin reader's fixture), so
+#: every fixture here is offset well away from the origin and the two
+#: spellings disagree in every coordinate.
+PX, PY = 1000.0, 400.0
+
+CELL_W, CELL_H = 500.0, 120.0
+SPACE = 10.0
+
+
+def _arc_page(*, arcs, n_measures=1, kinds=None, gap=0.0, chord_on=None):
+    """A one-staff part whose bars carry `arcs`, each `(cell, x0, x1)`.
+
+    Boxes are PAGE pixels: cell `m` spans `PX + m*(CELL_W+gap)` to that plus
+    `CELL_W`, so `gap` opens a real space between two bars and `gap=0` makes
+    them abut, which is what a barline looks like to the merge.
+    """
+    kinds = kinds or {}
+    obs, vrd = [], []
+    n = 0
+    gi = 0
+
+    def cell_x0(m):
+        return PX + m * (CELL_W + gap)
+
+    for m in range(n_measures):
+        x0 = cell_x0(m)
+        obs.append(_obs(n, f"cell/0/0/0/{m}", Q.CELL_BOX,
+                        [x0, PY, x0 + CELL_W, PY + CELL_H]))
+        n += 1
+        # four notes across the bar, in page pixels AND canonically
+        for k in range(4):
+            hx = x0 + 60 + k * 110
+            sub = f"glyph/0/0/0/{m}/{gi}"
+            obs.append(_obs(n, sub, Q.GLYPH_BOX,
+                            ["noteheadBlackOnLine", 60 + k * 110, 50, 30, 26],
+                            category="notehead",
+                            bbox_page_px=[hx, PY + 50, hx + 30, PY + 76]))
+            n += 1
+            obs.append(_obs(n, sub, Q.NOTEHEAD_CLASS, "noteheadBlackOnLine"))
+            n += 1
+            vrd.append(_vrd(n, sub, Q.PITCH, "CDEF"[k] + "4"))
+            n += 1
+            vrd.append(_vrd(n, sub, Q.DURATION, QUARTER))
+            n += 1
+            gi += 1
+            if chord_on is not None and (m, k) == chord_on:
+                # a SECOND head in the same column: one chord, two <note>s
+                sub2 = f"glyph/0/0/0/{m}/{gi}"
+                head2 = ["noteheadBlackOnLine", 60 + k * 110, 70, 30, 26]
+                obs.append(_obs(n, sub2, Q.GLYPH_BOX, head2,
+                                category="notehead",
+                                bbox_page_px=[hx, PY + 70, hx + 30, PY + 96]))
+                n += 1
+                obs.append(_obs(n, sub2, Q.NOTEHEAD_CLASS, head2[0]))
+                n += 1
+                vrd.append(_vrd(n, sub2, Q.PITCH, "A5"))
+                n += 1
+                vrd.append(_vrd(n, sub2, Q.DURATION, QUARTER))
+                n += 1
+                gi += 1
+
+    for a, (m, ax0, ax1) in enumerate(arcs):
+        sub = f"glyph/0/0/0/{m}/{500 + a}"
+        x0 = cell_x0(m)
+        box = [x0 + ax0, PY + 20, x0 + ax1, PY + 40]
+        obs.append(_obs(n, sub, Q.ARC_BOX, "slur", category="slur",
+                        bbox_page_px=box))
+        n += 1
+        vrd.append(_vrd(n, sub, Q.ARC_KIND, kinds.get(a, "slur")))
+        n += 1
+        vrd.append(_vrd(n, sub, Q.ARC_OWNER, "staff/0/0/0"))
+        n += 1
+
+    obs.append(_obs(n, "staff/0/0/0", Q.STAFF_SPACING, SPACE))
+    n += 1
+    obs.append(_obs(n, "staff/0/0/0", Q.STAFF_LINES,
+                    [PY + 40, PY + 50, PY + 60, PY + 70, PY + 80]))
+    n += 1
+    vrd.append(_vrd(900, "staff/0/0/0", Q.MEASURE_PARTITION, n_measures))
+    vrd.append(_vrd(901, "staff/0/0/0", Q.CLEF, "treble"))
+    vrd.append(_vrd(902, "system/0/0", Q.SYSTEM_STAFF_COUNT, 1))
+    vrd.append(_vrd(903, "document", Q.PART_PARTITION,
+                    {"join": "ordinal", "staves_per_system": 1},
+                    reason="ordinal"))
+    return _log_json(obs, vrd)
+
+
+class TestArcsReachTheFile(unittest.TestCase):
+    """⚠️⚠️ `arc_kind` AND `arc_owner` DECIDED 199 ARCS A PAGE AND
+    `grep '<slur' staged/export.py` RETURNED ZERO. The value existed and
+    nothing read it -- inside the architecture built to stop exactly that,
+    and one day after the same shape was found and fixed for the dynamics.
+    """
+
+    def test_a_slur_over_two_notes_writes_one_span(self):
+        xml, rep = SX.to_musicxml(_arc_page(arcs=[(0, 50, 190)]))
+        self.assertEqual(xml.count('<slur '), 2)
+        self.assertIn('<slur number="1" type="start"/>', xml)
+        self.assertIn('<slur number="1" type="stop"/>', xml)
+        self.assertEqual(rep["written"]["slurs"], 1)
+
+    def test_a_tie_writes_tied_and_NOT_a_slur(self):
+        """A tie carries no `number=` -- it names its two notes and there is
+        nothing to allocate."""
+        xml, rep = SX.to_musicxml(
+            _arc_page(arcs=[(0, 50, 190)], kinds={0: "tie"}))
+        self.assertEqual(xml.count('<slur '), 0)
+        self.assertIn('<tied type="start"/>', xml)
+        self.assertIn('<tied type="stop"/>', xml)
+        self.assertEqual(rep["written"]["ties"], 1)
+        self.assertEqual(rep["written"].get("slurs", 0), 0)
+
+    def test_the_file_still_parses(self):
+        xml, _ = SX.to_musicxml(_arc_page(arcs=[(0, 50, 190)]))
+        ET.fromstring(xml)
+
+    def test_a_page_with_no_arcs_writes_none(self):
+        """The positive control: a battery that only ever asserts a slur IS
+        written passes by writing slurs everywhere."""
+        xml, rep = SX.to_musicxml(_arc_page(arcs=[]))
+        self.assertEqual(xml.count('<slur '), 0)
+        self.assertEqual(rep["written"].get("slurs", 0), 0)
+
+
+class TestTheBarlineDoesNotMakeTwoSlurs(unittest.TestCase):
+    """⚠️⚠️ CELLS ARE CUT PER MEASURE, SO AN ARC CROSSING A BARLINE IS
+    DETECTED AS TWO -- 32 of 199 arcs on one real page (16.1%) begin at their
+    cell's left edge. Emitting each half as its own `<slur>` writes TWO where
+    the music has ONE, which is what kept an implemented and tested
+    `annotate_slurs` out of the legacy exporter until 2026-09-01.
+
+    ⚠️ AND OMR-NED WOULD NOT HAVE CAUGHT IT: the metric is symmetric, so
+    emitting MORE symbols is rewarded, and the legacy slur work's first cut
+    LOWERED pooled OMR-NED while RAISING the edit count. Only a test can hold
+    this.
+    """
+
+    #: an arc running to its cell's right edge, and one resuming at the next
+    #: cell's left edge, at the same height -- the cross-barline signature.
+    HALVES = [(0, 300, CELL_W), (1, 0, 200)]
+
+    def test_two_halves_at_the_edges_become_ONE_slur(self):
+        xml, rep = SX.to_musicxml(
+            _arc_page(arcs=self.HALVES, n_measures=2))
+        self.assertEqual(rep["written"]["slurs"], 1)
+        self.assertEqual(xml.count('<slur '), 2)      # one start, one stop
+
+    def test_it_starts_in_bar_1_and_stops_in_bar_2(self):
+        """A merged slur is only merged if its ends land in DIFFERENT bars;
+        counting one span would also pass if both ends collapsed into one."""
+        xml, _ = SX.to_musicxml(_arc_page(arcs=self.HALVES, n_measures=2))
+        root = ET.fromstring(xml)
+        bars = root.findall(".//measure")
+        starts = [i for i, m in enumerate(bars)
+                  if m.findall('.//slur[@type="start"]')]
+        stops = [i for i, m in enumerate(bars)
+                 if m.findall('.//slur[@type="stop"]')]
+        self.assertEqual((starts, stops), ([0], [1]))
+
+    def test_two_arcs_NOT_at_the_edges_stay_TWO_slurs(self):
+        """The control that makes the merge a reading rather than a rule that
+        joins whatever it finds: same two bars, same two arcs, moved off the
+        boundary."""
+        _xml, rep = SX.to_musicxml(
+            _arc_page(arcs=[(0, 60, 180), (1, 60, 180)], n_measures=2))
+        self.assertEqual(rep["written"]["slurs"], 2)
+
+    def test_halves_at_DIFFERENT_heights_stay_two(self):
+        """`_SLUR_CONTINUATION_DY_SPACES` is 2.0 staff spaces, and it is doing
+        work here: two arcs meeting at a barline are one curve only if they
+        meet at the same HEIGHT."""
+        page = _arc_page(arcs=self.HALVES, n_measures=2)
+        for o in page["record"]["observations"]:
+            if o["quantity"] == Q.ARC_BOX and o["subject"].endswith("/501"):
+                b = o["detail"]["bbox_page_px"]
+                o["detail"]["bbox_page_px"] = [b[0], b[1] + SPACE * 6,
+                                               b[2], b[3] + SPACE * 6]
+        _xml, rep = SX.to_musicxml(page)
+        self.assertEqual(rep["written"]["slurs"], 2)
+
+
+class TestAnArcGoesWhereItsOWNERSays(unittest.TestCase):
+    """⚠️ THE OWNER, NOT THE SUBJECT -- and for an arc the stakes are higher
+    than for a notehead. Where two staves sit far apart the upper cell reaches
+    ink the lower does not, so an arc can exist ONLY in the wrong staff and no
+    duplicate rule can see the contest. Brahms 1's Timpani exported 4 slurs
+    and 1 tie against a truth of ZERO, all of them Violin 1's.
+    """
+
+    def test_an_arc_owned_elsewhere_does_not_reach_this_part(self):
+        page = _arc_page(arcs=[(0, 50, 190)])
+        for v in page["record"]["verdicts"]:
+            if v["quantity"] == Q.ARC_OWNER:
+                v["value"] = "staff/0/0/9"        # a staff with no measures
+        xml, rep = SX.to_musicxml(page)
+        self.assertEqual(xml.count('<slur '), 0)
+        self.assertEqual(rep["arcs_not_written"],
+                         {"arc_owner_staff_has_no_measures": 1})
+
+    def test_an_undecided_kind_is_COUNTED_by_its_reason(self):
+        page = _arc_page(arcs=[(0, 50, 190)])
+        for v in page["record"]["verdicts"]:
+            if v["quantity"] == Q.ARC_KIND:
+                v["outcome"], v["value"] = "abstained", None
+                v["reason"] = "no_arc_box"
+        _xml, rep = SX.to_musicxml(page)
+        self.assertEqual(rep["arcs_not_written"], {"kind_no_arc_box": 1})
+
+    def test_an_arc_with_NO_PAGE_FRAME_is_refused_not_defaulted(self):
+        """⚠️ The merge and the note comparison both happen in page pixels. An
+        arc whose page rectangle gather DECLINED must not be placed in the
+        canonical frame instead -- that is the fault that made
+        `Q.ONSET_COLUMN` report 1,062 columns of nothing."""
+        page = _arc_page(arcs=[(0, 50, 190)])
+        for o in page["record"]["observations"]:
+            if o["quantity"] == Q.ARC_BOX:
+                o["detail"].pop("bbox_page_px")
+                o["detail"]["frame_note"] = "no page box"
+        xml, rep = SX.to_musicxml(page)
+        self.assertEqual(xml.count('<slur '), 0)
+        self.assertEqual(rep["arcs_not_written"], {"arc_no_page_frame": 1})
+
+
+class TestTheArcShortfallIsNOTInTheNoteBalance(unittest.TestCase):
+    """⚠️⚠️ AN ARC IS NOT A NOTE. `notes_not_written` feeds the accounting
+    control -- every notehead and rest in the log is written or counted, and
+    the two must sum to the log's own rows. Folding arc drops into it would
+    inflate one side by a family the other side does not count, so
+    `to_musicxml` would raise `Unbalanced` for a reason that has nothing to do
+    with notes: a control reporting a defect it was not built to see.
+    """
+
+    def test_a_dropped_arc_leaves_the_note_balance_intact(self):
+        page = _arc_page(arcs=[(0, 50, 190)])
+        for v in page["record"]["verdicts"]:
+            if v["quantity"] == Q.ARC_OWNER:
+                v["value"] = "staff/0/0/9"
+        _xml, rep = SX.to_musicxml(page)          # must not raise
+        self.assertTrue(rep["balance"]["balanced"])
+        self.assertEqual(rep["notes_not_written_total"], 0)
+        self.assertEqual(rep["arcs_not_written_total"], 1)
+
+
+def _slurred_pitches(xml):
+    """`(start pitches, stop pitches)` — WHICH notes each span binds."""
+    root = ET.fromstring(xml)
+    out = {"start": [], "stop": []}
+    for note in root.findall(".//note"):
+        p = note.find("pitch")
+        name = ((p.findtext("step") or "") + (p.findtext("octave") or "")
+                if p is not None else "rest")
+        for sl in note.findall(".//slur"):
+            out[sl.get("type")].append(name)
+    return out["start"], out["stop"]
+
+
+class TestASpanBindsTheRIGHTNotes(unittest.TestCase):
+    """⚠️⚠️ WRITTEN BECAUSE A MUTATION SURVIVED, and it was the trap this
+    module's own comment names. Reading a CORNER box `[x0,y0,x1,y1]` as a
+    WIDTH box `[x,y,w,h]` turns a 140px arc into a 1190px one -- and every
+    assertion above still passed, because a wider arc still produces exactly
+    one span with one start and one stop. **Counting spans cannot see the
+    frame error; only naming the NOTES can.**
+
+    ⚠️ The fixture's bars are offset to page x 1000 for the same reason: at
+    x0 == 0 the two spellings agree in every coordinate, so a fixture at the
+    origin cannot tell them apart either.
+    """
+
+    def test_a_slur_binds_only_the_notes_it_COVERS(self):
+        # bar 0's four heads sit at page x 1060, 1170, 1280, 1390 (w 30), so
+        # their centres are 1075, 1185, 1295, 1405. This arc spans the middle
+        # two and neither outer one.
+        xml, _ = SX.to_musicxml(_arc_page(arcs=[(0, 160, 310)]))
+        self.assertEqual(_slurred_pitches(xml), (["D4"], ["E4"]))
+
+    def test_a_WIDER_arc_binds_more_notes(self):
+        """The positive control: the test above must be reading the geometry,
+        not just reporting the second and third note of every bar."""
+        xml, _ = SX.to_musicxml(_arc_page(arcs=[(0, 160, 420)]))
+        self.assertEqual(_slurred_pitches(xml), (["D4"], ["F4"]))
+
+    def test_a_tie_binds_the_right_pair_too(self):
+        xml, _ = SX.to_musicxml(
+            _arc_page(arcs=[(0, 160, 310)], kinds={0: "tie"}))
+        root = ET.fromstring(xml)
+        tied = {t.get("type"): n.find("pitch").findtext("step") + "4"
+                for n in root.findall(".//note")
+                for t in n.findall(".//tied")}
+        self.assertEqual(tied, {"start": "D4", "stop": "E4"})
+
+
+class TestAChordCarriesOneSpanNotFour(unittest.TestCase):
+    """⚠️⚠️ ALSO WRITTEN BECAUSE A MUTATION SURVIVED. MusicXML takes a chord's
+    FIRST `<note>` as its representative, so a `<slur>` hung off every member
+    opens N spans of the same number and closes one -- an unpaired start per
+    extra head, which makes the file malformed rather than merely wrong.
+    Every test above used single notes, so marking all members passed all of
+    them.
+    """
+
+    def test_a_slur_starting_on_a_CHORD_marks_one_note(self):
+        xml, rep = SX.to_musicxml(
+            _arc_page(arcs=[(0, 160, 310)], chord_on=(0, 1)))
+        starts, stops = _slurred_pitches(xml)
+        self.assertEqual((len(starts), len(stops)), (1, 1))
+        self.assertEqual(rep["written"]["slurs"], 1)
+
+    def test_the_chord_really_is_a_chord(self):
+        """The positive control: without it, the assertion above would pass on
+        a fixture whose second head never became a note at all."""
+        xml, _ = SX.to_musicxml(
+            _arc_page(arcs=[(0, 160, 310)], chord_on=(0, 1)))
+        root = ET.fromstring(xml)
+        self.assertEqual(len(root.findall(".//note/chord")), 1)
+
+    def test_a_TIE_on_a_chord_also_marks_one_note(self):
+        """⚠️ A THIRD MUTATION SURVIVOR: the slur test above does not cover the
+        tie flags, which travel to `_mxl_note` as their own two arguments.
+
+        ⚠️ FIRST NOTE ONLY IS THE LEGACY POSITION, MATCHED RATHER THAN
+        RE-DECIDED: `_mxl_voice_events` writes `tied_to_next and ni == 0` with
+        the comment "a chord is beamed and slurred once, through its first
+        note". Whether a chord's every member ought to carry its own `<tie>`
+        is a real question about the convention; it is not one for the STAGED
+        exporter to answer differently from the legacy one, because then the
+        same record would export two ways depending on which path wrote it.
+        """
+        xml, _ = SX.to_musicxml(
+            _arc_page(arcs=[(0, 160, 310)], kinds={0: "tie"}, chord_on=(0, 1)))
+        root = ET.fromstring(xml)
+        self.assertEqual(len(root.findall('.//tied[@type="start"]')), 1)
+        self.assertEqual(len(root.findall('.//tied[@type="stop"]')), 1)
+        self.assertEqual(len(root.findall(".//note/chord")), 1)
+
+
+class TestNoArcVanishesUNCOUNTED(unittest.TestCase):
+    """⚠️⚠️ THE POINT OF AN EXPORT REPORT IS THAT A SHORTFALL IS A NUMBER AND
+    NOT A SILENCE. Both of these were live holes in the first cut of this
+    pass, and both are the shape this repo keeps paying for: a value computed,
+    then dropped on a branch that returns nothing.
+    """
+
+    def test_an_arc_binding_too_FEW_notes_is_counted(self):
+        """`_paired_spans` refuses a curve covering fewer than two heads --
+        one end would leave an unpaired `<slur type="start">` and an INVALID
+        file -- and returns only the survivors. On a scan the usual cause is
+        that the notes under the arc were never detected."""
+        # an arc sitting between two notes, covering neither centre
+        xml, rep = SX.to_musicxml(_arc_page(arcs=[(0, 100, 120)]))
+        self.assertEqual(xml.count('<slur '), 0)
+        self.assertEqual(rep["arcs_not_written"],
+                         {"arc_binds_fewer_than_two_notes": 1})
+
+    def test_an_arc_in_a_bar_with_NO_GEOMETRY_is_counted(self):
+        """`_merge_arcs_across_barlines` opens each bar with "no box, or no
+        spacing, then break the chain and move on" -- correct, there is no
+        unit to measure a boundary in -- but its `continue` skips that bar's
+        arcs whole."""
+        page = _arc_page(arcs=[(0, 50, 190)])
+        page["record"]["observations"] = [
+            o for o in page["record"]["observations"]
+            if o["quantity"] != Q.CELL_BOX]
+        xml, rep = SX.to_musicxml(page)
+        self.assertEqual(xml.count('<slur '), 0)
+        self.assertEqual(rep["arcs_not_written"],
+                         {"arc_bar_has_no_geometry": 1})
+
+    def test_every_placed_arc_is_written_or_counted(self):
+        """The accounting property itself, over a mixed page -- the control
+        that would catch a THIRD hole nobody has thought of yet."""
+        page = _arc_page(
+            arcs=[(0, 160, 310),       # binds D4..E4
+                  (0, 100, 120),       # binds nothing
+                  (1, 160, 310)],      # binds D4..E4 of bar 2
+            n_measures=2)
+        _xml, rep = SX.to_musicxml(page)
+        written = rep["written"]["slurs"] + rep["written"].get("ties", 0)
+        self.assertEqual(written + rep["arcs_not_written_total"], 3)
+
+
+def _two_system_page(*, arcs):
+    """One part printed on TWO systems, each one bar, each its own staff.
+
+    ⚠️ TWO STAVES, NOT TWO BARS OF ONE. That is what a system break IS: the
+    part continues on a different staff object further down the page, and the
+    two staves' lines sit at different page y. The merge has to compare a
+    resuming arc's height RELATIVE TO EACH STAFF'S OWN TOP LINE, because
+    absolute page y differs by a whole system — which is why `tops` exists.
+    """
+    obs, vrd = [], []
+    n, gi = 0, 0
+    for sysi in range(2):
+        # ⚠️ system 1's staff sits 600px lower on the page. If `tops` were
+        # ignored, its arcs would look 600px away from system 0's and nothing
+        # would ever join across the break.
+        dy = sysi * 600.0
+        x0 = PX
+        obs.append(_obs(n, f"cell/0/{sysi}/0/0", Q.CELL_BOX,
+                        [x0, PY + dy, x0 + CELL_W, PY + dy + CELL_H]))
+        n += 1
+        for k in range(4):
+            hx = x0 + 60 + k * 110
+            sub = f"glyph/0/{sysi}/0/0/{gi}"
+            obs.append(_obs(n, sub, Q.GLYPH_BOX,
+                            ["noteheadBlackOnLine", 60 + k * 110, 50, 30, 26],
+                            category="notehead",
+                            bbox_page_px=[hx, PY + dy + 50, hx + 30,
+                                          PY + dy + 76]))
+            n += 1
+            obs.append(_obs(n, sub, Q.NOTEHEAD_CLASS, "noteheadBlackOnLine"))
+            n += 1
+            vrd.append(_vrd(n, sub, Q.PITCH, "CDEF"[k] + str(4 + sysi)))
+            n += 1
+            vrd.append(_vrd(n, sub, Q.DURATION, QUARTER))
+            n += 1
+            gi += 1
+        obs.append(_obs(n, f"staff/0/{sysi}/0", Q.STAFF_SPACING, SPACE))
+        n += 1
+        obs.append(_obs(n, f"staff/0/{sysi}/0", Q.STAFF_LINES,
+                        [PY + dy + 40, PY + dy + 50, PY + dy + 60,
+                         PY + dy + 70, PY + dy + 80]))
+        n += 1
+        vrd.append(_vrd(900 + sysi, f"staff/0/{sysi}/0",
+                        Q.MEASURE_PARTITION, 1))
+        vrd.append(_vrd(910 + sysi, f"staff/0/{sysi}/0", Q.CLEF, "treble"))
+        vrd.append(_vrd(920 + sysi, f"system/0/{sysi}",
+                        Q.SYSTEM_STAFF_COUNT, 1))
+
+    for a, (sysi, ax0, ax1, ady) in enumerate(arcs):
+        dy = sysi * 600.0
+        sub = f"glyph/0/{sysi}/0/0/{500 + a}"
+        obs.append(_obs(n, sub, Q.ARC_BOX, "slur", category="slur",
+                        bbox_page_px=[PX + ax0, PY + dy + ady,
+                                      PX + ax1, PY + dy + ady + 20]))
+        n += 1
+        vrd.append(_vrd(n, sub, Q.ARC_KIND, "slur"))
+        n += 1
+        vrd.append(_vrd(n, sub, Q.ARC_OWNER, f"staff/0/{sysi}/0"))
+        n += 1
+
+    vrd.append(_vrd(903, "document", Q.PART_PARTITION,
+                    {"join": "ordinal", "staves_per_system": 1},
+                    reason="ordinal"))
+    return _log_json(obs, vrd)
+
+
+class TestASlurCrossesASystemBreak(unittest.TestCase):
+    """⚠️ THE JUNCTION IS NOT THE BARLINE'S, and `_merge_arcs_across_barlines`
+    recognises the two differently. A resuming half after a break begins some
+    way INSIDE its cell, because the cell opens with a clef and a key
+    signature — so a left-edge test would never fire and the two halves would
+    stay two slurs. `_resumes_after_system_break` anchors on the first NOTE
+    instead.
+
+    ⚠️ AND THIS IS WHY `_pair_arcs` IS A PART PASS. A part's junction between
+    two systems is a junction of ONE PART printed on TWO STAFF OBJECTS, so a
+    per-staff pass cannot see it at all.
+    """
+
+    def test_two_halves_across_the_break_become_ONE_slur(self):
+        # system 0: an arc running out to its cell's right edge.
+        # ⚠️ system 1: an arc running IN FROM THE MARGIN AND ENDING ON THE
+        # FIRST NOTE (centre 75). That end position is the whole rule, not an
+        # incidental of the fixture: a resuming fragment "lies entirely BEFORE
+        # that note -- it runs in from the margin and ends on it", while a
+        # slur merely BEGINNING on the first note runs the other way. The two
+        # are told apart by WHICH SIDE OF THE NOTE the ink is on, so a
+        # fixture whose fragment overshoots the note is not a resuming
+        # fragment at all -- as the first draft of this test discovered.
+        _xml, rep = SX.to_musicxml(_two_system_page(
+            arcs=[(0, 300, CELL_W, 20), (1, 0, 78, 20)]))
+        self.assertEqual(rep["written"]["slurs"], 1)
+        self.assertEqual(rep["arcs_not_written"], {})   # nothing left over
+
+    def test_it_really_spans_the_two_SYSTEMS(self):
+        """Counting one span would also pass if both ends collapsed into one
+        system — the pitches say which system each end is in, because system 1
+        is written an octave up."""
+        xml, _ = SX.to_musicxml(_two_system_page(
+            arcs=[(0, 300, CELL_W, 20), (1, 0, 78, 20)]))
+        starts, stops = _slurred_pitches(xml)
+        self.assertEqual([p[-1] for p in starts], ["4"])   # system 0
+        self.assertEqual([p[-1] for p in stops], ["5"])    # system 1
+
+    def test_halves_at_DIFFERENT_heights_stay_two(self):
+        """⚠️ THE CONTROL THAT PROVES `tops` IS BEING USED. Heights are
+        compared RELATIVE to each staff's own top line; if the rule fell back
+        to absolute page y, system 1's arc would be 600px away and NOTHING
+        would ever join, so this test would pass for the wrong reason and the
+        test above would fail. The two together pin it."""
+        _xml, rep = SX.to_musicxml(_two_system_page(
+            arcs=[(0, 300, CELL_W, 20), (1, 0, 78, 20 + SPACE * 6)]))
+        # ⚠️ NOT "two slurs" -- and the first draft asserted that and was
+        # wrong. A resuming fragment ENDS ON the first note of its system, so
+        # standing alone it binds exactly ONE note and `_paired_spans` refuses
+        # it: one end would leave an unpaired `<slur type="start">`. So the
+        # unmerged outcome is 1 written + 1 COUNTED, which is a sharper
+        # discriminator than a span total anyway -- it separates "the two did
+        # not join" from "the second one never existed".
+        self.assertEqual(rep["written"]["slurs"], 1)
+        self.assertEqual(rep["arcs_not_written"],
+                         {"arc_binds_fewer_than_two_notes": 1})
+
+    def test_the_part_really_is_ONE_part(self):
+        """The positive control: two systems that failed to join into one part
+        would make every assertion above vacuous."""
+        _xml, rep = SX.to_musicxml(_two_system_page(arcs=[]))
+        self.assertEqual(rep["written"]["parts"], 1)
+        self.assertEqual(rep["part_join"]["join_used"], "ordinal")
+
+
+class TestTheCounterCountsWhatREACHEDTheFile(unittest.TestCase):
+    """⚠️⚠️ FOUND ON A REAL PAGE, NOT BY REVIEW: the report said 55 slurs
+    where the file held 23. `voicing._chord_span_states` DROPS a span whose
+    start and stop landed in the SAME CHORD -- "a slur from a note to itself
+    is a curve to nowhere" -- and `_paired_spans` cannot catch those, because
+    it refuses two ends on one DETECTION while a chord is several detections
+    at one x. 32 of 55 marked spans on Litolff p.2.
+
+    ⚠️ The lesson is the FAMILIES table's own, arriving from a new direction:
+    a quantity's verdict says what was DECIDED, and only the exporter's
+    counter says what reached the FILE. A counter placed where the mark is SET
+    is measuring the first and reporting it as the second.
+    """
+
+    def test_a_slur_whose_ends_share_a_CHORD_is_not_counted_as_written(self):
+        # one arc covering only the chord column: both ends land in it
+        xml, rep = SX.to_musicxml(
+            _arc_page(arcs=[(0, 160, 200)], chord_on=(0, 1)))
+        self.assertEqual(xml.count('<slur '), 0)
+        self.assertEqual(rep["written"].get("slurs", 0), 0)
+        self.assertEqual(rep["arcs_not_written"], {"arc_ends_in_one_chord": 1})
+
+    def test_the_arc_really_WAS_marked_first(self):
+        """The positive control: without it the assertion above would pass on
+        an arc that was refused earlier and never marked at all -- a different
+        finding wearing the same number."""
+        xml, rep = SX.to_musicxml(
+            _arc_page(arcs=[(0, 160, 200)], chord_on=(0, 1)))
+        self.assertEqual(rep["written"]["slur_spans_marked"], 1)
+        self.assertEqual(len(ET.fromstring(xml).findall(".//note/chord")), 1)
+
+    def test_written_plus_dropped_still_accounts_for_every_arc(self):
+        page = _arc_page(arcs=[(0, 160, 310), (0, 100, 120)], chord_on=(0, 1))
+        _xml, rep = SX.to_musicxml(page)
+        w = rep["written"]
+        written = w.get("slurs", 0) + w.get("ties", 0)
+        self.assertEqual(written + rep["arcs_not_written_total"], 2)

@@ -817,3 +817,111 @@ class TestAMarkMustBeATTACHEDToItsNotehead(unittest.TestCase):
         _dot(log2, gi=60, x=X + 12, y=4)
         adjudicate.run(log2)
         self.assertEqual(log2.verdict(Q.DURATION, g2).value["beats"], 3.0)
+
+
+def _rest(log, gi, cls="restQuarter", *, x=None, y=0, h=32):
+    """One rest detection -- its own glyph, its own box, the GATHER shape.
+
+    ⚠️ `gather_glyph_families` files `Q.REST` on the REST's own glyph with the
+    class name as the value, and the box arrives as `Q.GLYPH_BOX` on that same
+    glyph. A fixture that files either anywhere else tests the fixture: it is
+    the mismatch that let `TestAMeterChangeIsReadFromTheInk` and the flag/dot
+    tests pass while not one mark of 291 reached a decision on a real page.
+
+    ⚠️ A rest is TALLER than a notehead (a quarter rest spans ~2 spaces), so
+    `h` defaults wide of `_note`'s 16 -- the dot is matched against the box's
+    CENTRE, and pretending a rest is notehead-shaped would make the vertical
+    window a different test than the one that runs on a page.
+    """
+    x = X if x is None else x
+    g = R.glyph(0, 0, 0, 0, gi)
+    log.observe(g, Q.GLYPH_BOX, (cls, x - 10, y, 20, h),
+                reader=READERS.DETECTOR, frame="cell:0", score=0.9)
+    log.observe(g, Q.REST, cls, reader=READERS.DETECTOR, frame="cell:0",
+                score=0.9)
+    return g
+
+
+class TestADottedRestIsDotted(unittest.TestCase):
+    """⚠️⚠️ `_rest_ruling` READ `ev.rows(Q.AUG_DOT)` ON THE REST'S OWN GLYPH
+    SUBJECT -- the exact fault `TestAMarkMustBeATTACHEDToItsNotehead` fixed for
+    noteheads, in the same function, one branch over. So a dotted rest read as
+    undotted while a dotted note read correctly, and the module handled dots
+    for one kind of ink and silently not for the other.
+
+    ⚠️ IT IS CONSISTENCY, NOT PAYOFF, AND THE NUMBER SAYS SO: of 848 `aug_dot`
+    rows over the three documents, 752 attach to a notehead and exactly ONE
+    would attach to a rest. What is worth having is not the one dot -- it is
+    that `rhythm._pair_dots_to_targets` has always scored `noteheads + rests`
+    as ONE pool under these two constants ("dots after rests are rarer but
+    real"), so the staged reader was DIVERGING from the paid-for rule rather
+    than reading it more narrowly.
+    """
+
+    def test_a_dotted_rest_is_one_and_a_half(self):
+        log = Log()
+        _staff_space(log)
+        g = _rest(log, 0, "restQuarter")
+        _dot(log, gi=500, x=X + 12, y=32 // 2 - 4)   # right of it, level
+        adjudicate.run(log)
+        v = log.verdict(Q.DURATION, g)
+        self.assertEqual(v.value["dots"], 1)
+        self.assertEqual(v.value["beats"], 1.5)
+
+    def test_an_undotted_rest_is_UNCHANGED(self):
+        """The positive control the fix must not buy its way past: a battery
+        that only ever asserts a dot IS found passes by finding dots
+        everywhere."""
+        log = Log()
+        _staff_space(log)
+        g = _rest(log, 0, "restQuarter")
+        adjudicate.run(log)
+        v = log.verdict(Q.DURATION, g)
+        self.assertEqual(v.value["dots"], 0)
+        self.assertEqual(v.value["beats"], 1.0)
+
+    def test_a_dot_FAR_from_the_rest_is_refused(self):
+        """The window still applies -- widening the pool is not admitting
+        every dot in the cell."""
+        log = Log()
+        _staff_space(log)
+        g = _rest(log, 0, "restQuarter")
+        _dot(log, gi=500, x=X + 12, y=32 // 2 - 4 - SPACE * 6)
+        adjudicate.run(log)
+        self.assertEqual(log.verdict(Q.DURATION, g).value["dots"], 0)
+
+    def test_a_dot_LEFT_of_the_rest_is_refused(self):
+        """A dot is printed to the RIGHT of what it lengthens."""
+        log = Log()
+        _staff_space(log)
+        g = _rest(log, 0, "restQuarter")
+        _dot(log, gi=500, x=X - 40, y=32 // 2 - 4)
+        adjudicate.run(log)
+        self.assertEqual(log.verdict(Q.DURATION, g).value["dots"], 0)
+
+    def test_ONE_dot_cannot_be_taken_by_BOTH_a_rest_and_a_note(self):
+        """⚠️ THE RECIPROCITY IS WHAT MAKES THE WIDER POOL SAFE, and it only
+        holds over the WHOLE pool. Both events see the same dot; each asks
+        whether IT is the dot's best target, so exactly one may claim it --
+        and it is the nearer one, not the one that happens to be a notehead.
+        """
+        log = Log()
+        _staff_space(log)
+        rest = _rest(log, 0, "restQuarter", x=X)
+        note = _note(log, 1, "noteheadHalf", x=X + 200)
+        _dot(log, gi=500, x=X + 12, y=32 // 2 - 4)   # hard by the REST
+        adjudicate.run(log)
+        self.assertEqual(log.verdict(Q.DURATION, rest).value["dots"], 1)
+        self.assertEqual(log.verdict(Q.DURATION, note).value["dots"], 0)
+
+    def test_the_note_still_wins_a_dot_that_is_ITS_own(self):
+        """The mirror, and the one that would catch a pool widened into a
+        rest-always-wins rule."""
+        log = Log()
+        _staff_space(log)
+        rest = _rest(log, 0, "restQuarter", x=X + 200)
+        note = _note(log, 1, "noteheadHalf", x=X)
+        _dot(log, gi=500, x=X + 12, y=4)            # hard by the NOTE
+        adjudicate.run(log)
+        self.assertEqual(log.verdict(Q.DURATION, note).value["dots"], 1)
+        self.assertEqual(log.verdict(Q.DURATION, rest).value["dots"], 0)
