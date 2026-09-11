@@ -352,7 +352,10 @@ All four are closed; the second run is all-red with ARM 0 SURVIVED.
    runs on any stored transcription. ⚠️ It does not say which end is wrong — but
    on an ENGRAVED fixture the pitch reading is near-perfect (noteheads 0.999
    F1), so a different-pitch pair there is almost certainly the PAIRING.
-   **Start on the engraved 20, not the scan 64.**
+   **Start on the engraved 20, not the scan 64** — and within those, on
+   **`mozart-sym41-mvt1`, which is 8 of 9**, against `beethoven-sym5-mvt1`'s
+   11 of 11 CORRECT. Two engraved pages of the same corpus at opposite ends of
+   the same measure is a boundary case handed over ready to run.
 2. **The 115 links with no end in the next event** — 49% of the scan links,
    larger than the different-pitch population and completely unexamined here. A
    `tied_to_next` whose partner is not in the following event is either a

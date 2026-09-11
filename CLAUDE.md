@@ -1359,7 +1359,9 @@ unresolved tie is certainly wrong; a resolved one may still be invented) and
 does not say WHICH end is wrong — the pairing, or the pitch read on one head.
 **The pairing is the ranked next work, and the ENGRAVED 20 is where to start**,
 because there the pitch reading is near-perfect and the pairing is left as the
-only suspect.
+only suspect — and inside those, on **`mozart-sym41-mvt1`, which is 8 of 9
+WRONG against `beethoven-sym5-mvt1`'s 11 of 11 RIGHT**, two engraved pages of
+one corpus at opposite ends of the same measure.
 
 ⚠️ **LilyPond is deliberately left alone and diverges.** `~` after a chord is a
 chord-level post-event LilyPond resolves against the following chord BY PITCH —
