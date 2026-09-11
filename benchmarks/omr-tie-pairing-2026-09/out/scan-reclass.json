@@ -36,7 +36,7 @@
         "omr_ned": 0.8047569262937794,
         "omr_ed": 6158,
         "categories": {
-          "wrong note": 3816,
+          "wrong note": 3820,
           "wrong note head": 4,
           "wrong flag/beam": 133,
           "wrong accidental": 6,
@@ -46,7 +46,7 @@
           "wrong timesig": 8,
           "wrong keysig": 10,
           "wrong direction": 18,
-          "wrong slur": 36,
+          "wrong slur": 32,
           "entire measure insert/delete": 1817,
           "entire staff insert/delete": 286
         },
@@ -130,10 +130,10 @@
         "n_wedge": 0
       },
       "on": {
-        "omr_ned": 0.8713415831860145,
-        "omr_ed": 4436,
+        "omr_ned": 0.8712151002752654,
+        "omr_ed": 4431,
         "categories": {
-          "wrong note": 678,
+          "wrong note": 680,
           "wrong note head": 188,
           "wrong flag/beam": 17,
           "wrong accidental": 1,
@@ -145,7 +145,7 @@
           "wrong keysig": 30,
           "wrong direction": 12,
           "wrong dynamic": 45,
-          "wrong slur": 22,
+          "wrong slur": 15,
           "entire measure insert/delete": 1855,
           "entire staff insert/delete": 1551
         },
@@ -228,10 +228,10 @@
         "n_wedge": 0
       },
       "on": {
-        "omr_ned": 0.8702,
-        "omr_ed": 4351,
+        "omr_ned": 0.8702259548090382,
+        "omr_ed": 4352,
         "categories": {
-          "wrong note": 754,
+          "wrong note": 755,
           "wrong note head": 218,
           "wrong flag/beam": 20,
           "wrong accidental": 1,
@@ -243,8 +243,8 @@
           "wrong keysig": 19,
           "wrong direction": 18,
           "wrong dynamic": 57,
-          "wrong slur": 6,
-          "entire measure insert/delete": 1670,
+          "wrong slur": 5,
+          "entire measure insert/delete": 1671,
           "entire staff insert/delete": 1551
         },
         "n_dynamics": 92,
@@ -280,10 +280,10 @@
         "n_wedge": 0
       },
       "on": {
-        "omr_ned": 0.9176845459373341,
-        "omr_ed": 3456,
+        "omr_ned": 0.9176626826029216,
+        "omr_ed": 3455,
         "categories": {
-          "wrong note": 832,
+          "wrong note": 833,
           "wrong note head": 4,
           "wrong flag/beam": 7,
           "wrong dot": 4,
@@ -295,8 +295,8 @@
           "wrong barline": 3,
           "wrong direction": 88,
           "wrong dynamic": 31,
-          "wrong slur": 60,
-          "entire measure insert/delete": 1362,
+          "wrong slur": 59,
+          "entire measure insert/delete": 1361,
           "entire staff insert/delete": 1001
         },
         "n_dynamics": 30,
@@ -336,10 +336,10 @@
         "n_wedge": 0
       },
       "on": {
-        "omr_ned": 0.9134546496632755,
-        "omr_ed": 6375,
+        "omr_ned": 0.9136845118809047,
+        "omr_ed": 6383,
         "categories": {
-          "wrong note": 1417,
+          "wrong note": 1421,
           "wrong note head": 144,
           "wrong flag/beam": 22,
           "wrong dot": 69,
@@ -356,7 +356,7 @@
           "wrong crescendo": 9,
           "wrong diminuendo": 5,
           "wrong slur": 48,
-          "entire measure insert/delete": 2856,
+          "entire measure insert/delete": 2860,
           "entire staff insert/delete": 1632
         },
         "n_dynamics": 63,
@@ -393,14 +393,14 @@
         "n_wedge": 0
       },
       "on": {
-        "omr_ned": 0.4250317662007624,
-        "omr_ed": 669,
+        "omr_ned": 0.4256670902160102,
+        "omr_ed": 670,
         "categories": {
           "wrong note": 497,
           "wrong note head": 12,
           "wrong flag/beam": 17,
           "wrong dot": 6,
-          "wrong tie": 6,
+          "wrong tie": 7,
           "wrong articulation": 5,
           "wrong clef": 3,
           "wrong timesig": 2,
@@ -447,10 +447,10 @@
         "n_wedge": 0
       },
       "on": {
-        "omr_ned": 0.7246055909216718,
-        "omr_ed": 2618,
+        "omr_ned": 0.7246817930271168,
+        "omr_ed": 2619,
         "categories": {
-          "wrong note": 2030,
+          "wrong note": 2031,
           "wrong note head": 82,
           "wrong flag/beam": 81,
           "wrong dot": 46,

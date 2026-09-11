@@ -372,9 +372,16 @@ env-switched — sound here because `OMR_ARC_RECLASS` is read inside
 
 ```
 off  OMR_ARC_RECLASS=0   summed edits 2530   <tied> 79 start / 80 stop
-on   OMR_ARC_RECLASS=1   summed edits 2538   <tied> 68 / 69     delta +8
+on   OMR_ARC_RECLASS=1   summed edits 2536   <tied> 69 / 70     delta +6
 files that DIFFER between arms: 7 of 11
 ```
+
+⚠️⚠️ **MEASURED TWICE, AND THE SECOND RUN IS THE REPORTED ONE, BECAUSE §5b's
+MIRROR MOVED IT.** Before the mirror landed the same arm read **2538 / +8** and
+`<tied>` 68/69. `_tie_flank_pair` is the veto's own re-derivation of the pairing
+relation, so improving the pairing improves what the veto sees — an interaction
+between two changes in one session, and a reader taking the first figure would
+be quoting a tree that no longer exists. Both are given rather than one.
 
 ⚠️ `off = 2530` reproduces the chord-tie session's `fix` arm **to the edit** on
 a different instrument — an independent control neither session planned.
@@ -383,16 +390,29 @@ a different instrument — an independent control neither session planned.
 [`probe/reclass_reasons.py`](probe/reclass_reasons.py) splits the firings by
 rule, and the four do not carry equal weight:
 
-| rule | engraved | scan | provable? |
+| rule | engraved (before / after §5b) | scan (before / after) | provable? |
 |---|--:|--:|---|
-| `tie_to_slur_flagged_diff_pitch` | 12 | 197 | **yes** — the flanked pair is step-different |
-| `tie_to_slur_unpaired_diff_pitch` | 6 | 14 | yes, but it can only ADD a slur |
-| `tie_to_slur_flagged_span` | 1 | 21 | no — a third event under the arc, and an empty measure spends no ordinal |
-| `tie_to_slur_unpaired_span` | 6 | 114 | no |
+| `tie_to_slur_flagged_diff_pitch` | 12 / **11** | 197 / **137** | **yes** — the flanked pair is step-different |
+| `tie_to_slur_unpaired_diff_pitch` | 6 / 6 | 14 / 14 | yes, but it can only ADD a slur |
+| `tie_to_slur_flagged_span` | 1 / 1 | 21 / **47** | no — a third event under the arc, and an empty measure spends no ordinal |
+| `tie_to_slur_unpaired_span` | 6 / 6 | 114 / 114 | no |
+
+⚠️⚠️ **AND THAT LEFT-TO-RIGHT MOVEMENT IS THE ONLY SCAN-SIDE EVIDENCE THIS
+SESSION HAS FOR THE REPAIR.** `_tie_flank_pair` mirrors the pairing relation, so
+running the veto over the SAME stored scan records before and after §5b asks
+what the new relation does on the scan family without re-transcribing anything:
+**step-different flanked pairs 197 → 137, sixty arcs that the veto would have
+had to delete as impossible and no longer must.** ⚠️ It carries §5c's warning
+exactly — a rule that prefers same-y produces fewer step-different pairs by
+construction, so this is the reach expressed in the veto's own currency and not
+an independent check. ⚠️ The 26 that moved into `flagged_span` are arcs that are
+still impossible, by a different and INFERRED rule; they are not repaired, only
+re-explained.
 
 On the **three works where only `flagged_diff_pitch` fires**
 (`mozart-sym41-mvt1`, `brahms-sym4-mvt1`, `beethoven-sym3-mvt1` — 11 of the 12
-provable removals) the arm is **-4 edits**, i.e. BETTER. Every other work fires
+provable removals under the pre-mirror tree) the arm is **-4 edits**, i.e.
+BETTER. Every other work fires
 a span or unpaired rule and every one of those is edit-positive. **So
 CLAUDE.md's "all +130 is in the tie->slur half" needs splitting: the tie->slur
 half is FOUR rules, and on the engraved family the provable one is
@@ -409,7 +429,7 @@ mozart-sym41-mvt1        1     9     1     +8 over-emission -> EXACTLY RIGHT
 brahms-sym4-mvt1         6     7     6     +1 -> +0
 beethoven-sym3-mvt1      3     2     1     -1 -> -2
 bruckner-sym5-mvt1       6     4     3     -2 -> -3
-summed |per-work error|       25    18
+summed |per-work error|       25    17
 ```
 
 ⚠️ **The two rows that get "worse" are removals of provably-impossible ties.**
@@ -419,8 +439,9 @@ cannot tell a wrong removal from a right one on an under-detecting page**,
 which is why the firing split above is reported beside it and neither is quoted
 alone.
 
-Scan, same instrument (`reexport_arm.py`): `off = 34739`, `on = 34883`,
-**+144** — CLAUDE.md records +130 at an older baseline. **The refusal stands**,
+Scan, same instrument (`reexport_arm.py`): `off = 34739`, `on = 34888`,
+**+149** — CLAUDE.md records +130 at an older baseline, and the pre-mirror run
+of this arm read +144. **The refusal stands**,
 and §4's scan table is now direct evidence for the reason CLAUDE.md already
 gives for it.
 

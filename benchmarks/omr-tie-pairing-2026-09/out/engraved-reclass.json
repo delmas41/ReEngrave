@@ -89,11 +89,11 @@
     "md5": "a5ab5127920ebaec0759346f0173bf9f"
    },
    "on": {
-    "omr_ned": 0.09788092835519677,
-    "omr_ed": 194,
-    "tied_start": 3,
-    "tied_stop": 3,
-    "md5": "c56e7e692095527024e82f3779fb24c5"
+    "omr_ned": 0.09687184661957618,
+    "omr_ed": 192,
+    "tied_start": 4,
+    "tied_stop": 4,
+    "md5": "3f9722c9c11ebca501186e5d8bec7d79"
    }
   },
   {
@@ -207,7 +207,7 @@
  ],
  "summed_edits": {
   "off": 2530,
-  "on": 2538
+  "on": 2536
  },
  "tied": {
   "off": [
@@ -215,8 +215,8 @@
    80
   ],
   "on": [
-   68,
-   69
+   69,
+   70
   ]
  },
  "files_that_differ": 7
