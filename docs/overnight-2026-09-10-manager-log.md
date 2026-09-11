@@ -634,3 +634,53 @@ figure **predated the chord-tie repair landed six hours earlier** (2530 → 2536
 is true and **not actionable as stated** — that half is FOUR rules, only one is
 provable, and on the three works where it fires alone the arm is **−4 edits**.
 **The refusal still stands.**
+
+### Job 6 — the Phase 2 INSTRUMENT: landed, and scoped to ONE page on Sean's call
+
+Merged at `55efe3c8`. Suite **3,779 / 11** unchanged, which is the expected
+result: this branch adds an instrument and an artefact, not pipeline behaviour.
+
+⚠️ **The commit ORDER is the deliverable as much as the artefact is**, and it
+holds: the four categories landed **first and alone** (`175812e9`), the
+instrument second, the artefact third, and the worked examples came back as
+their **own later commit** (`43b1d25c`) rather than as an amend of the first.
+So `git log` is the evidence the definitions were not fitted to what the
+artefact turned out to contain — the one discipline a cleanup count cannot
+recover after the fact.
+
+**Sean chose option 2 — one PAGE, not one movement**, to calibrate the
+categories before any wider count is trusted. The agent had already scoped
+itself to pp.1-4 (tighter than its brief) and then started a whole-movement
+gather, which died with the session; that gather was not asked for and nothing
+is lost. **Page 1 is the calibration unit**: one system, 12 staves, 16 bars —
+12 of the sheet's 77 rows. `out/counting-sheet-PAGE1-calibration.csv` is that
+slice, cut by the manager rather than by re-running the builder, which takes no
+page filter.
+
+⚠️ **It answered BOTH questions the manager had flagged as needing a human,
+and answered them in writing before measuring anything:**
+
+* **The unit** is *one FIX-ACTION — one edit in a score editor, counted at the
+  largest scope a single gesture repairs* — with a **closed** scope vocabulary
+  (`element` … `page`) and `other` requiring a description. Re-entering a whole
+  bar is **ONE** action even if the bar holds nine wrong notes, which is the
+  largest deliberate divergence from OMR-NED and is the right one: musicdiff's
+  amplification differs **6×-2× by error kind**, and a fix-action count is
+  amplification-free by construction.
+* **Whose eye** is **THE EDITOR'S** — *would you ship the file with this in
+  it?* — chosen over the engraver (who notices everything, emptying the
+  category) and the player (who notices almost nothing, swallowing it).
+
+⚠️⚠️ **And it named the counter-hazard of its own unit rather than leaving it
+for a reader to find: a fix-action count REWARDS a pipeline that fails in large
+contiguous blocks over one that fails in scattered singles**, and those are not
+equally good outputs — a scattered error is easier to MISS. Its repair is
+structural: `would-not-notice` is *cost zero*, while something the editor would
+fix if they saw it but might miss is `wrong` with a **`missable`** flag. ⚠️
+Collapsing those two would let the count launder exactly the hazard the unit
+creates.
+
+⚠️ The 132 MB staged record is correctly NOT committed. The `attention_score`
+that orders the sheet carries its own disclaimer — the weights are DISPLAY
+ORDER, read by nothing, and are *"not a claim that a staff costs thirty
+notes"*.
