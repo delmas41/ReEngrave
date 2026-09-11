@@ -1101,6 +1101,27 @@ BAND across the whole page, so its hairpins are never cut by a barline. What is
 open is a STAGE-BOUNDARY question (the legacy anchor rule wants the exporter's
 shims and three measured constants), not plumbing.
 
+⚠️⚠️ **MEASURED ON A SECOND PUBLISHER THE SAME DAY (Brahms 1 / Breitkopf
+p0-3, clean tree), AND IT CHANGES THE READING TWICE.** The straddle rate is
+**the same on both — 26.3% and 27.7%** — so *two grouping rules nothing forces
+to agree* is STRUCTURAL, and it is the largest single reason a decided
+two-voice split does not reach the file. And **the arc cost is not "one tie":
+on Brahms the one-voice rule refuses 22 ties and 9 slurs.** Each is either a
+correct refusal or a wrong voice split and **only the print can say which** —
+on a cleanup count it is 31 things a human might have to put back, so it is an
+unadjudicated COST and not a win. The divisi guard separates **80** chords
+there against 4, and the direction rate FALLS (62.5% → **53.7%**), so how much
+of a page this mechanism can speak about is a property of the printing.
+✅ It also CLOSED the previous session's unfinished articulation arm — 196
+marks → 156 decided, **153 written** — read off the fresh record rather than by
+the `readjudicate` rebuild that took >40 min and did not finish.
+
+⚠️ **AND A REPORTING GAP THAT MIS-SIZES THE NEXT ITEM: `coverage()` reports
+`wedge` as `detector_glyphs: 1` while the record holds 47 `Q.WEDGE_BOX` rows**,
+because that count is over the DETECTOR's class space and 46 of them are
+`cv_hairpins`. A family whose ink comes from a CV rung is under-reported by
+that headline.
+
 ⚠️ **A MUTATION BATTERY'S FIRST RUN REPORTED FOUR SURVIVORS AND THREE WERE THE
 BATTERY'S OWN FAULTS** — a test list that did not include the gather tests (*a
 battery whose tests do not reach the file it mutates measures its own scope*),
