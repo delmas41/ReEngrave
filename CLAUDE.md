@@ -26,6 +26,19 @@ Over time the analytics layer learns from human decisions, building auto-accept 
 - **Container:** Docker Compose (local) + Traefik (production, SSL via Let's Encrypt)
 
 ⚠️ **START HERE IF YOU ARE PICKING THIS UP:**
+[docs/handoff-2026-09-10-arcs-reach-the-file.md](docs/handoff-2026-09-10-arcs-reach-the-file.md)
+— **the newest, and the shortest to read**: the arc export is CLOSED (`<slur>`
+0 → 46, `<tied>` 0 → 98, byte-identical outside the arc elements, partition
+exact) and the dotted REST is closed with it. ⚠️ Read its **§3 and §4 before
+quoting anything**: **76% of merged arcs bind fewer than two noteheads** and
+are refused, so "23 slurs" is not a recovery rate and the residue is the
+DETECTOR's; and the dotted rest moved NOTHING on a real scan, with a positive
+control whose **whole dynamic range is one verdict**. ⚠️⚠️ Its **§5 is the
+constraint most likely to be forgotten**: `Q.CELL_BOX` is a GATHER change, so
+`readjudicate` is STRUCTURALLY BLIND to the arc path and any A/B there needs
+two full re-gathers. **§8 ranks the next work**, led by splitting that 361.
+Its two predecessors are below and NEITHER is superseded.
+
 [docs/handoff-2026-09-10-the-meter-arc-closed.md](docs/handoff-2026-09-10-the-meter-arc-closed.md)
 — **the meter arc is CLOSED**: the boundary case measured on engraved fixtures
 (true meter **+8.0** vs false **−8.0**), a second document and publisher (the
