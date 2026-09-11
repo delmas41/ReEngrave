@@ -152,3 +152,86 @@ class TestItComparesSTEPSNotPitches(unittest.TestCase):
         spec = adjudicate.REGISTRY[Q.ARC_KIND]
         self.assertIn(Q.NOTEHEAD_STAFF_POSITION, spec.wants)
         self.assertNotIn(Q.PITCH, spec.wants)
+
+
+class TestAHeadIsReachableAtItsStem(unittest.TestCase):
+    """⚠️⚠️ THE EXPORTER AND THIS DECISION ASK THE SAME QUESTION.
+
+    *Which heads does this arc bind?* `_noteheads_under` was repaired on
+    2026-09-11 -- an arc over stemmed notes is drawn from STEM TOP to STEM
+    TOP, and a stem stands at the SIDE of its notehead, so the ink stops about
+    half a head width inside both outer CENTRES (median 0.52 notehead widths,
+    measured). Until that repair reached here too, the two readers of one
+    question disagreed BY CONSTRUCTION -- the *two rules nothing forces to
+    agree* shape this project has already paid for twice.
+
+    Measured on Litolff Beethoven 5 p1-4: the grammar's availability goes
+    345 -> 371 of 779 arcs and NO verdict value moves.
+    """
+
+    def _log(self, arc_class, heads, stems, *, arc_x=(100.0, 300.0)):
+        log, cell = _log_with(arc_class, heads, arc_x=arc_x)
+        for x, y, w, h in stems:
+            log.observe(cell, Q.STEM, [x, y, w, h], reader=READERS.CV_LINES,
+                        frame="cell:0")
+        return log
+
+    def test_a_head_OUTSIDE_the_span_is_reached_at_its_stem(self):
+        """The head centre sits past the padded span; its stem does not.
+
+        ⚠️ THE FIXTURE IS THE POINT AND ITS NUMBERS ARE THE REAL GEOMETRY.
+        Arc 100..350, padded by its own height (20) to 80..370. The head's
+        centre is 375 -- OUTSIDE -- and its box runs 365..385, so the stem
+        standing at the head's left side (360..370, centre 365) is INSIDE.
+        That half-a-head-width offset is the whole mechanism: measured on this
+        document at a median 0.52 notehead widths.
+        """
+        log = self._log("slur", [(150.0, 3), (375.0, 5)],
+                        [(360.0, 60.0, 10.0, 60.0)], arc_x=(100.0, 350.0))
+        v = _decide(log)
+        self.assertEqual(v.detail["grammar"]["flanked_heads"], 2)
+        self.assertEqual(v.detail["grammar"]["reached_only_at_a_stem"], 1)
+        self.assertEqual(v.detail["grammar"]["says"], "slur")
+
+    def test_WITHOUT_the_stem_that_head_is_not_reached(self):
+        """The positive control's other half: same fixture, no stem row."""
+        log = self._log("slur", [(150.0, 3), (375.0, 5)], [],
+                        arc_x=(100.0, 350.0))
+        v = _decide(log)
+        self.assertEqual(v.detail["grammar"]["flanked_heads"], 1)
+        self.assertIsNone(v.detail["grammar"]["says"])
+
+    def test_a_stem_that_does_not_MEET_the_head_reaches_nothing(self):
+        """⚠️ The attachment rule is `_stem_joined`'s -- BOX OVERLAP, not
+        proximity. A stem elsewhere in the bar is not this head's stem."""
+        log = self._log("slur", [(150.0, 3), (375.0, 5)],
+                        [(200.0, 400.0, 10.0, 60.0)],
+                        arc_x=(100.0, 350.0))
+        v = _decide(log)
+        self.assertEqual(v.detail["grammar"]["flanked_heads"], 1)
+
+    def test_it_is_ADDITIVE_and_cannot_REMOVE_a_flanked_head(self):
+        """A cell whose stems the CV never read behaves exactly as before."""
+        heads = [(150.0, 3), (250.0, 3)]
+        bare = _decide(_log_with("tie", heads)[0])
+        with_stems = _decide(self._log("tie", heads,
+                                       [(145.0, 60.0, 10.0, 60.0)]))
+        self.assertEqual(bare.detail["grammar"]["says"],
+                         with_stems.detail["grammar"]["says"])
+        self.assertEqual(bare.value, with_stems.value)
+
+    def test_the_span_endpoints_stay_the_head_CENTRES(self):
+        """⚠️ A stem says a head is REACHABLE; it never widens what the arc is
+        taken to cover. The recorded steps are the heads', not the stems'."""
+        log = self._log("tie", [(150.0, 3), (375.0, 3)],
+                        [(360.0, 60.0, 10.0, 60.0)], arc_x=(100.0, 350.0))
+        v = _decide(log)
+        g = v.detail["grammar"]
+        self.assertEqual((g["first_step"], g["last_step"]), (3, 3))
+
+    def test_Q_STEM_is_DECLARED_or_the_read_would_be_refused(self):
+        """`Evidence` refuses a quantity the decision did not declare, which
+        is what makes `missing` and `declined` mean something."""
+        spec = adjudicate.REGISTRY[Q.ARC_KIND]
+        self.assertIn(Q.STEM, spec.wants)
+        self.assertIn(Q.STEM, spec.composed_from)

@@ -349,6 +349,29 @@ def adjudicate_arc_owner(ev: Evidence) -> Ruling:
                   detail={**detail, "moved_from": own})
 
 
+def _stem_xs_for_head(stems, head_box):
+    """The canonical x-centre of every stem that meets this notehead.
+
+    ⚠️ THE ATTACHMENT RULE IS `_stem_joined`'S, IMPORTED, never restated: a
+    head takes the stem whose BOX OVERLAPS its own -- measured, not chosen
+    (819 heads take exactly one stem and the nearest miss is 94 px). Both
+    boxes are canonical here, which is what makes this the cheap half of the
+    repair `staged.export._stem_probes` had to do through a frame conversion.
+
+    ⚠️ It is a MODULE-LEVEL seam so an A/B can switch exactly this rule off
+    without disabling `_boxes_overlap` for `stem_direction` and the duration
+    reader, which share it. An arm that silently turned off three rules while
+    naming one would be measuring its own scope.
+    """
+    from .rhythm import _boxes_overlap
+    out = []
+    for st in stems:
+        sb = tuple(float(v) for v in st.value[:4])
+        if _boxes_overlap(sb, head_box):
+            out.append(sb[0] + sb[2] / 2.0)
+    return out
+
+
 @decision(
     quantity=Q.ARC_KIND,
     checkable=Checkable.MIXED,
@@ -356,14 +379,14 @@ def adjudicate_arc_owner(ev: Evidence) -> Ruling:
         "a TIE joins two heads of the SAME staff step; an arc whose flanked heads sit on different steps is a SLUR",
     ),
     implicates=(Q.ARC_KIND, Q.NOTEHEAD_STAFF_POSITION, Q.CLEF),
-    composed_from=(Q.ARC_BOX, Q.NOTEHEAD_STAFF_POSITION, Q.GLYPH_BOX),
+    composed_from=(Q.ARC_BOX, Q.NOTEHEAD_STAFF_POSITION, Q.GLYPH_BOX, Q.STEM),
     scope=Kind.GLYPH,
     # ⚠️ `Q.GLYPH_BOX` is declared because a notehead's STEP row carries no x:
     # the step is joined to a position through the box on the SAME glyph. The
     # harness refused the read until it was declared (`UndeclaredEvidence`),
     # which is `Evidence` doing its job -- a decision may only read what it
     # says it reads, so `missing` and `declined` can mean something.
-    wants=(Q.ARC_BOX, Q.NOTEHEAD_STAFF_POSITION, Q.GLYPH_BOX),
+    wants=(Q.ARC_BOX, Q.NOTEHEAD_STAFF_POSITION, Q.GLYPH_BOX, Q.STEM),
     subjects_from=Q.ARC_BOX,
     reasons=("tie", "slur", "no_arc_box", "no_evidence"),
     mode=Mode.ADDITIVE,
@@ -399,6 +422,24 @@ def adjudicate_arc_kind(ev: Evidence) -> Ruling:
     that is CORRECT rather than a lapse: both the arc and the heads it flanks
     were cut from ONE cell, so they share a frame by construction. It is
     `arc_owner` -- which asks about OTHER staves -- that needs page pixels.
+
+    ⚠️⚠️ AND A HEAD IS REACHABLE AT ITS STEM, THE SAME WAY THE EXPORTER
+    REACHES IT. `_noteheads_under` was repaired on 2026-09-11: an arc over
+    stemmed notes is drawn from STEM TOP to STEM TOP and a stem stands at the
+    SIDE of its notehead, so an arc's ink stops about half a head width inside
+    both outer head CENTRES (median 0.52 notehead widths, measured) -- the
+    `_beam_levels` fault one family over. This decision asks the SAME question
+    the exporter asks -- *which heads does this arc bind* -- and until now
+    answered it differently by construction, which is the *two rules nothing
+    forces to agree* shape this project has already paid for twice. Measured
+    on Litolff Beethoven 5 p1-4 the repair takes the grammar's availability
+    from **345 to 371 of 779 arcs** and moves NO verdict value.
+
+    ⚠️ ADDITIVE, never subtractive: a stem can only make a head REACHABLE, so
+    a cell whose stems the CV never read behaves exactly as before -- the same
+    shape `_stem_probes` and the ledger ladder already have. And `Q.STEM` is
+    filed on the CELL in THIS decision's own canonical frame, so unlike the
+    exporter's version this one needs no frame conversion at all.
     """
     arcs = ev.rows(Q.ARC_BOX)
     if not arcs:
@@ -421,7 +462,11 @@ def adjudicate_arc_kind(ev: Evidence) -> Ruling:
     boxes = {r.subject.to_key(): r for r in
              ev.rows(Q.GLYPH_BOX, scope=Scope.SELF_AND_DESCENDANTS,
                      subject=cell)}
+    stems = [r for r in ev.rows(Q.STEM, scope=Scope.SELF_AND_ANCESTORS,
+                                subject=cell)
+             if isinstance(r.value, (list, tuple)) and len(r.value) >= 4]
     flanked = []
+    at_a_stem = 0
     for row in ev.rows(Q.NOTEHEAD_STAFF_POSITION,
                        scope=Scope.SELF_AND_DESCENDANTS, subject=cell):
         box = boxes.get(row.subject.to_key())
@@ -430,12 +475,26 @@ def adjudicate_arc_kind(ev: Evidence) -> Ruling:
         value = box.value
         if not isinstance(value, (list, tuple)) or len(value) < 5:
             continue
-        xc = float(value[1]) + float(value[3]) / 2.0
-        if x0 <= xc <= x1:
+        head_box = (float(value[1]), float(value[2]),
+                    float(value[3]), float(value[4]))
+        xc = head_box[0] + head_box[2] / 2.0
+        # ⚠️ THE HEAD'S OWN CENTRE FIRST, then its stems. The span's endpoints
+        # stay the CENTRES -- a stem only says the head is reachable, it never
+        # widens what the arc is taken to cover.
+        probes = [(xc, False)]
+        probes += [(x, True) for x in _stem_xs_for_head(stems, head_box)]
+        hit = [p for p in probes if x0 <= p[0] <= x1]
+        if hit:
+            if all(p[1] for p in hit):
+                at_a_stem += 1
             flanked.append((xc, row.detail.get("rounded"), row.id))
     flanked.sort()
 
-    grammar = {"flanked_heads": len(flanked), "reading": kind}
+    grammar = {"flanked_heads": len(flanked), "reading": kind,
+               # ⚠️ REPORTED APART so a later session can tell a head the arc
+               # covers from one it only reaches at its stem -- the two are
+               # different evidence and collapsing them would hide which.
+               "reached_only_at_a_stem": at_a_stem}
     if len(flanked) >= 2:
         first, last = flanked[0], flanked[-1]
         same_step = (first[1] is not None and first[1] == last[1])
