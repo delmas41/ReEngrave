@@ -409,3 +409,90 @@ confident zero: **`_pair_ties_in_staff` runs inside `transcribe`, not inside
 is **structurally blind to this change**. Named in the brief as something to
 check *before* trusting a zero — a control that cannot see its subject is this
 repo's single most repeated instrument failure.
+
+**LANDED — and PHASE 1 OF THE WIRING PLAN IS COMPLETE.** Merged at `7a1a0bf8`.
+**`adjudicate.stubs()` is `()`.** Suite on the MERGED tree: **3,765 passed / 11
+skipped**. Findings:
+[benchmarks/omr-staged-direction-2026-09/FINDINGS.md](../benchmarks/omr-staged-direction-2026-09/FINDINGS.md).
+
+⚠️ **The check itself needed care**: a bare `import adjudicate` leaves
+`REGISTRY` empty and `stubs()` returns `()` **for the wrong reason**. I hit
+that earlier tonight and nearly reported it as a discrepancy against job 1.
+The registry fills when the adjudicators package loads — *a passing check can
+mean nothing*, and this one has two ways of passing.
+
+**REACH, and this family has THREE ways of being empty**, which is the whole
+point of the job:
+
+| | Litolff p1-3 | Brahms p0-3 |
+|---|--:|--:|
+| word-shaped candidates (the CV's ink) | 42 | 56 |
+| accepted by the lexicon | **2** | **10** |
+| `<words>` written | 0 → **2** | 0 → **10** |
+
+Both OCR rungs live for every figure, so **none of these zeros is the
+machine's**. ⚠️ **Nothing here is a rate — it is 2 and 10.**
+
+**The acceptance condition was met, and with more structure than asked for:
+FOUR states, not two.** `READER_UNAVAILABLE` and `OUT_OF_SCOPE` are
+**abstentions**; `NO_INK` and `NO_READING` / `NOT_IN_LEXICON` are **a decision
+with an empty value**, because *"this bar carries no words"* is a definite
+answer. Both write nothing to the file — correctly, since **MusicXML cannot say
+"a reader could not run here" and the record can**, which is exactly where the
+distinction belongs.
+
+⚠️ **The load-bearing detail is where the page-wide reason is filed**: on every
+CELL as well as the page. Without that, a blind page has no `Q.DIRECTION`
+subject at all and reports `decided: 0, abstained: {}` — **a family never
+ASKED, indistinguishable from one asked and silent.** That is the same
+collapse, one level up, that the brief was written to prevent.
+
+⚠️ **The control that mattered was the shim, and the failure it guards against
+is invisible**: a wrong `bbox_page` convention **does not raise**, it just
+looks like *"this document has few directions"* — which is ALSO the true
+answer. Run against the legacy path on the same four pages: **10 accepted vs
+10, and 7 of 7 `(page, text)` pairs exact.** ⚠️ It compared the text SET and
+not just the count, *because 10 == 10 over different words is
+coincidence-as-diagnosis* — the lesson job 4 recorded, applied by a different
+agent before it could bite.
+
+#### ⚠️⚠️ Three corrections to this file and the handoff, one of them new
+
+1. **THE IMPORT HAZARD IS BIDIRECTIONAL AND ONLY ONE DIRECTION WAS RECORDED**,
+   and the missing half cost two gathers (~50 min). The handoff says the
+   exporter is imported AFTER the gather, so a mid-run edit **reaches** it. The
+   mirror: a module imported at process **START** keeps its code, so a mid-run
+   edit silently does **NOT** take effect — while `_provenance()` reads git at
+   the END and stamps the new commit. **A stamp taken at the end names the tree
+   that FINISHED the run; the code that RAN is whatever was on disk at first
+   import — and the stamp reports neither.** Three sessions have now each found
+   one fact about that single import order.
+2. **A FOURTH "declared input that could never answer"**, and it is the one no
+   derived tool can catch: `ev.rows(Q.DIRECTION_WORD)` at the default
+   `Scope.EXACT` can never see a word, because words are on glyph subjects.
+   `inventory --check` and `gather_coverage` are both blind to it — **the
+   `wants` entry IS read and the quantity IS gathered.** Only a test asserting
+   a word comes out of the file found it.
+3. `coverage()` under-reports this family **21× and 5.6×** — it counts accepted
+   WORDS where the family's ink is the CANDIDATES. Same shape as the wedge's
+   1-against-47, from the other direction. **Deliberately not fixed**: it would
+   move every family at once.
+
+⚠️ **Its mutation battery went 18/18 red on the first run and it recorded that
+as WORTH DISTRUSTING**, since the battery came from the same hazard list as the
+tests — the first agent tonight to treat its own clean result as suspicious
+rather than as a finish line.
+
+**Not established, in its own words**: no word checked against the print
+(equivalence, not truth), no recall figure, n = 2 documents / 7 pages / **12
+words**. ⚠️ **Brahms pages 2-3 yield 20 candidates and ZERO accepted words and
+were not opened** — the largest unexplained population, and the honest place
+for the next session to start.
+
+⚠️ One correction I made myself again: the wedge section's heading still read
+*"the LAST declared stub is now `direction`"*, true for exactly one day. The
+file's other two stub-count blocks already carry an explicit *"that was the
+state on \<date\>"* guard; this one relied on the superseding section sitting
+below it, which does not help a reader arriving by search. Same guard added.
+**Second manager-side prose correction in two jobs** — worth noting as a
+pattern rather than as two incidents.
