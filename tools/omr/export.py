@@ -3270,9 +3270,16 @@ def _mxl_voice_events(
     total_duration_units is the sum of CHORD-LEADING + REST durations
     (chord members past the first don't advance the cursor).
 
-    For chord events with tie flags set, only the FIRST notehead carries
-    the <tie>/<tied> markers — MusicXML treats a chord's first note as
-    its representative for tie/articulation marks.
+    ⚠️⚠️ A TIE IS WRITTEN PER NOTEHEAD, unlike every other mark on a chord.
+    `<slur>` carries a `number=` and hangs off the chord's representative
+    `<note>`; `<tied>` carries none and joins THE TWO NOTES IT NAMES, so a
+    chord's tie flags cannot be hoisted the way its slur, beam, tuplet,
+    articulation, ornament and fermata marks are. Reading the EVENT flag and
+    writing it at `ni == 0` put the mark on the WRONG NOTE wherever an upper
+    member was the tied one — `group_chords_in_measure` sorts lowest-first, so
+    a tied top voice handed its tie to the bass. Measured at 53 + 68 elements
+    over 22 stored scan transcriptions and 1 over the 11 engraved works
+    (`benchmarks/omr-chord-tie-2026-09/FINDINGS.md`).
     """
     lines: list[str] = []
     total_dur = 0
@@ -3303,8 +3310,6 @@ def _mxl_voice_events(
         tuplet_info = _event_tuplet(event)
         time_modification = tuplet_info[0] if tuplet_info else None
         tuplet_state = tuplet_state_at.get(event_index)
-        tied_to_next = bool(event.get("tied_to_next"))
-        tied_from_prev = bool(event.get("tied_from_prev"))
         if event["kind"] == "rest":
             lines.append(_mxl_note(
                 None, "", xml_type, dots, beats, divisions,
@@ -3319,8 +3324,11 @@ def _mxl_voice_events(
                     nh.get("pitch"), "", xml_type, dots, beats, divisions,
                     is_chord=(ni > 0), is_rest=False,
                     indent=indent, voice=voice,
-                    tied_to_next=(tied_to_next and ni == 0),
-                    tied_from_prev=(tied_from_prev and ni == 0),
+                    # ⚠️ PER NOTEHEAD — see this function's docstring. The
+                    # flag is read off the HEAD, never off the event: an
+                    # event-level flag cannot say WHICH note is tied.
+                    tied_to_next=bool(nh.get("tied_to_next")),
+                    tied_from_prev=bool(nh.get("tied_from_prev")),
                     # A chord is beamed and slurred once, through its first note.
                     beam_states=(beam_states if ni == 0 else None),
                     slur_states=(event.get("slur_states") if ni == 0 else None),

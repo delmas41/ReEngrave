@@ -1685,9 +1685,16 @@ def _measure_events_xml(events: List[Dict[str, Any]], divisions: int,
                 # LOWEST FIRST and carried the marks up onto the EVENT, which
                 # is why they are read from `ev` here and not from `head`.
                 slur_states=(ev.get("slur_states") if n == 0 else None),
-                tied_to_next=bool(ev.get("tied_to_next")) if n == 0 else False,
-                tied_from_prev=(bool(ev.get("tied_from_prev"))
-                                if n == 0 else False),
+                # ⚠️⚠️ ...BUT THE TIE IS PER HEAD, AND IS THE ONE SPANNER MARK
+                # THAT IS. `<slur>` carries a `number=` and hangs off the
+                # chord's representative note; `<tied>` carries none and joins
+                # THE TWO NOTES IT NAMES, which is why `_pair_arcs` calls this
+                # "the one place a tie and a slur are genuinely different
+                # spanners". Reading `ev` and writing at `n == 0` put the mark
+                # on the chord's LOWEST note whenever an upper member was the
+                # tied one. See `benchmarks/omr-chord-tie-2026-09/FINDINGS.md`.
+                tied_to_next=bool(head.get("tied_to_next")),
+                tied_from_prev=bool(head.get("tied_from_prev")),
                 # ⚠️ PER HEAD, NOT PER EVENT -- unlike the slur and tie marks
                 # just above, which sit on the chord's FIRST note because
                 # MusicXML takes that note as the chord's representative for a
@@ -1737,36 +1744,41 @@ def _measure_events_xml(events: List[Dict[str, Any]], divisions: int,
                 for _num, kind in (ev.get("slur_states") or ()):
                     if kind != "stop":
                         counters["slurs"] += 1
-                if ev.get("tied_to_next"):
-                    counters["ties"] += 1
-                # ⚠️⚠️ A TIE IS NOT A SPAN, AND THE CHORD RULE ABOVE TREATS IT
-                # AS ONE. `<slur>` carries a `number=` and hangs off the
-                # chord's representative `<note>`; `<tied>` carries none and
-                # joins THE TWO NOTES IT NAMES, which is why `_pair_arcs` says
-                # in its own docstring that this is "the one place a tie and a
-                # slur are genuinely different spanners". But
-                # `voicing.group_chords_in_measure` hoists the flag onto the
-                # EVENT with `any()` and this renderer writes it at `n == 0`,
-                # so a chord whose UPPER member is tied gets `<tie>` on its
-                # LOWEST note — a tie between two different pitches.
-                #
-                # MEASURED, Litolff `984073` p1-3: of 49 events carrying
-                # `tied_to_next`, 32 are chords and **17 write the tie on a
-                # note that carries none**; `tied_from_prev` 15 of 29.
-                # Under-emission is the smaller half (1 event).
-                #
-                # ⚠️ NOT FIXED HERE, DELIBERATELY. The hoist is in
-                # `voicing.py`, shared with the LEGACY exporter and therefore
-                # with the 11-work engraved benchmark, and the repair moves
-                # hundreds of elements on a scan — far more than can be
-                # adjudicated against the print in a wiring pass, which is not
-                # licensed to change behaviour it has not priced. Counted so
-                # the size of it is on every run instead of in one probe.
+            # ⚠️⚠️ OUTSIDE `if n == 0`, AND THAT IS THE FIX RATHER THAN A
+            # TIDY-UP. A TIE IS NOT A SPAN. `<slur>` carries a `number=` and
+            # hangs off the chord's representative `<note>`; `<tied>` carries
+            # none and joins THE TWO NOTES IT NAMES — `_pair_arcs` calls this
+            # "the one place a tie and a slur are genuinely different
+            # spanners". `voicing.group_chords_in_measure` hoists the flag
+            # onto the EVENT with `any()`, and reading THAT here wrote the
+            # mark at the chord's LOWEST note whenever an upper member was the
+            # tied one: 17 of 48 written ties on Litolff `984073` p1-3 and 103
+            # of 349 on Breitkopf Brahms 1 p0-3, two publishers agreeing to
+            # within six points. Repaired 2026-09-11 and priced on both
+            # families — `benchmarks/omr-chord-tie-2026-09/FINDINGS.md`.
+            #
+            # ⚠️ COUNTED AT THE RENDER, once per WRITTEN `<tie type="start">`,
+            # which is now once per tied HEAD and no longer once per event.
+            # That is the `FAMILIES` rule — only the counter says what reached
+            # the FILE — and it is why the number can legitimately exceed the
+            # old one on a chord with two tied members.
+            if head.get("tied_to_next"):
+                counters["ties"] += 1
+            # ⚠️ THE DEFECT'S OWN COUNTERS ARE REPLACED RATHER THAN KEPT AT
+            # ZERO. `tie_starts_written_on_an_untied_note` counted an element
+            # the exporter wrote; after the repair no such element exists, so
+            # keeping the name would be a counter that reports something the
+            # file does not contain — the "control that computes the wrong
+            # thing" family this repo has already recorded four times. What
+            # replaces it is a POSITIVE figure about the file: a tie written
+            # on a chord member that is NOT the first note, which is exactly
+            # the population the old hoist misplaced and is impossible to
+            # write at all under the old rule.
+            if n > 0:
                 for key, name in (("tied_to_next", "tie_starts"),
                                   ("tied_from_prev", "tie_stops")):
-                    if (ev.get(key) and len(heads) > 1
-                            and not head.get(key)):
-                        counters[name + "_written_on_an_untied_note"] += 1
+                    if head.get(key):
+                        counters[name + "_on_an_upper_chord_note"] += 1
             if head.get("accidental"):
                 counters["accidentals"] += 1
             if n == 0:

@@ -215,7 +215,7 @@ class TestAnAbstentionOnASharedQuantityIsReportedONCE(unittest.TestCase):
 
 
 # ─────────────────────────────────────────────────────────────────────────────
-# 3. A tie on a chord can reach the WRONG note, and that is now a number
+# 3. A tie on a chord is written on the TIED note, not on the chord's first
 # ─────────────────────────────────────────────────────────────────────────────
 
 
@@ -225,8 +225,9 @@ def _chord_tie_page(*, tied_head_is_the_upper):
 
     `voicing.group_chords_in_measure` sorts a chord LOWEST FIRST (larger
     canonical y is lower in pitch), so which head `_paired_spans` binds is
-    decided by DETECTION order while which head the renderer writes on is
-    decided by PITCH order. The two need not agree, and that is the defect.
+    decided by DETECTION order while which head the renderer wrote on used to
+    be decided by PITCH order. The two need not agree, and that WAS the defect
+    (`benchmarks/omr-chord-tie-2026-09/FINDINGS.md`).
     """
     page = _arc_page(arcs=[(0, 160, 310)], kinds={0: "tie"}, chord_on=(0, 1))
     obs = page["record"]["observations"]
@@ -246,50 +247,83 @@ def _chord_tie_page(*, tied_head_is_the_upper):
     return page
 
 
-class TestATieOnAChordCanLandOnANoteThatCarriesNone(unittest.TestCase):
-    """⚠️⚠️ A TIE IS NOT A SPAN AND THE CHORD RULE TREATS IT AS ONE. `<slur>`
-    carries a `number=` and hangs off the chord's representative `<note>`;
-    `<tied>` carries none and joins THE TWO NOTES IT NAMES -- `_pair_arcs`
-    says so in its own docstring. But `voicing.group_chords_in_measure` hoists
-    the flag onto the EVENT with `any()` and the renderer writes it at
-    `n == 0`, so a chord whose UPPER member is tied gets the tie on its LOWEST
-    note: a tie between two different pitches.
+def _tied_note_indices(xml, kind="start"):
+    """WHICH note of its chord carries `<tied>` -- 0 is the chord's first.
 
-    MEASURED, Litolff `984073` p1-3: of 48 events carrying `tied_to_next`,
-    **17 write the tie on a note that carries none**; `tied_from_prev` 15.
+    ⚠️ NAMES THE NOTE, never counts the elements. A count cannot see a mark
+    that MOVED, and moving one is exactly what this defect did; the arc-export
+    session paid for the same lesson when a frame error survived every
+    span-counting assertion.
+    """
+    out = []
+    for part in ET.fromstring(xml).iter("part"):
+        for measure in part.iter("measure"):
+            base = 0
+            for i, note in enumerate(measure.iter("note")):
+                # a chord run is a note followed by its `<chord/>` members
+                if note.find("chord") is None:
+                    base = i
+                if note.find('.//tied[@type="%s"]' % kind) is not None:
+                    out.append(i - base)
+    return out
 
-    ⚠️ NOT FIXED, DELIBERATELY -- the hoist is in `voicing.py`, shared with
-    the LEGACY exporter and so with the 11-work engraved benchmark, and the
-    repair moves hundreds of elements on a scan. This test pins the COUNTER,
-    which is what stops the size of it being lost again.
+
+class TestATieOnAChordIsWrittenOnTheTiedNote(unittest.TestCase):
+    """⚠️⚠️ A TIE IS NOT A SPAN AND THE CHORD RULE USED TO TREAT IT AS ONE.
+    `<slur>` carries a `number=` and hangs off the chord's representative
+    `<note>`; `<tied>` carries none and joins THE TWO NOTES IT NAMES --
+    `_pair_arcs` says so in its own docstring. `group_chords_in_measure`
+    hoists the flag onto the EVENT with `any()`, and the renderer used to
+    write it at `n == 0`, so a chord whose UPPER member was tied got the tie
+    on its LOWEST note: a tie between two different pitches.
+
+    REPAIRED 2026-09-11 and priced on both families:
+    `benchmarks/omr-chord-tie-2026-09/FINDINGS.md`. Both MusicXML renderers
+    now read the flag off the HEAD.
     """
 
-    def test_the_wrong_note_case_is_counted(self):
+    def test_a_tie_on_the_UPPER_head_is_written_on_the_upper_note(self):
+        xml, _rep = SX.to_musicxml(
+            _chord_tie_page(tied_head_is_the_upper=True))
+        self.assertEqual(_tied_note_indices(xml, "start"), [1])
+        self.assertEqual(_tied_note_indices(xml, "stop"), [0])
+
+    def test_a_tie_on_the_LOWER_head_is_written_on_the_lower_note(self):
+        """⚠️ THE POSITIVE CONTROL IN THE SAME CLASS, and the battery needs
+        it: a renderer that always wrote on the LAST chord member would pass
+        the test above and be exactly as wrong. Same fixture, same chord,
+        only which head the arc binds."""
+        xml, _rep = SX.to_musicxml(
+            _chord_tie_page(tied_head_is_the_upper=False))
+        self.assertEqual(_tied_note_indices(xml, "start"), [0])
+        self.assertEqual(_tied_note_indices(xml, "stop"), [0])
+
+    def test_the_upper_case_is_REPORTED_as_an_upper_chord_note(self):
+        """The counter says what reached the FILE, which is the `FAMILIES`
+        rule -- and it is a POSITIVE figure, so a run that wrote nothing
+        cannot read as a clean result."""
         _xml, rep = SX.to_musicxml(
             _chord_tie_page(tied_head_is_the_upper=True))
         self.assertEqual(
-            rep["written"]["tie_starts_written_on_an_untied_note"], 1)
-
-    def test_the_RIGHT_note_case_is_NOT_counted(self):
-        """⚠️ THE POSITIVE CONTROL, and the whole battery needs it: a counter
-        that incremented on every chord tie would pass the test above and mean
-        nothing. Same fixture, same chord, only which head the arc binds."""
-        _xml, rep = SX.to_musicxml(
+            rep["written"]["tie_starts_on_an_upper_chord_note"], 1)
+        _xml2, rep2 = SX.to_musicxml(
             _chord_tie_page(tied_head_is_the_upper=False))
         self.assertEqual(
-            rep["written"].get("tie_starts_written_on_an_untied_note", 0), 0)
+            rep2["written"].get("tie_starts_on_an_upper_chord_note", 0), 0)
 
-    def test_a_single_note_tie_is_never_counted(self):
-        _xml, rep = SX.to_musicxml(
+    def test_a_single_note_tie_is_unchanged(self):
+        xml, rep = SX.to_musicxml(
             _arc_page(arcs=[(0, 160, 310)], kinds={0: "tie"}))
-        self.assertEqual(
-            rep["written"].get("tie_starts_written_on_an_untied_note", 0), 0)
         self.assertEqual(rep["written"]["ties"], 1)
+        self.assertEqual(
+            rep["written"].get("tie_starts_on_an_upper_chord_note", 0), 0)
+        self.assertEqual(_tied_note_indices(xml, "start"), [0])
 
-    def test_the_file_still_carries_exactly_one_tie_either_way(self):
-        """⚠️ THE BEHAVIOUR IS UNCHANGED AND THIS SAYS SO. The counter reports
-        the defect; it does not repair it, and a future session must be able
-        to see from the tests that nothing moved."""
+    def test_the_file_still_carries_exactly_ONE_tie_either_way(self):
+        """⚠️ THE COUNT IS UNCHANGED AND THE POSITION IS NOT. Every moved
+        element must be accounted for: on this fixture one `<tied>` start and
+        one stop are written under both readings, and only WHICH note carries
+        the start differs."""
         for upper in (True, False):
             xml, _rep = SX.to_musicxml(
                 _chord_tie_page(tied_head_is_the_upper=upper))

@@ -2205,6 +2205,94 @@ class TestAccidentalReachesBothOutputs:
                         is_rest=True, indent="  ", accidental="#")
         assert "<accidental>" not in xml
 
+
+class TestAChordTieIsWrittenOnTheTiedNote:
+    """⚠️⚠️ A TIE IS THE OTHER PER-NOTE MARK, AND IT WAS BEING HOISTED.
+
+    `<slur>` carries a `number=` and hangs off the chord's representative
+    `<note>`; `<tied>` carries none and joins THE TWO NOTES IT NAMES, so a
+    chord's tie flags may not ride up the way its slur, beam, tuplet,
+    articulation, ornament and fermata marks do.
+    `voicing.group_chords_in_measure` sorts a chord LOWEST FIRST, so reading
+    the EVENT flag and writing it at `ni == 0` handed a tied top voice's tie
+    to the bass — a tie between two different pitches.
+
+    PRICED ON BOTH FAMILIES before it was repaired
+    (`benchmarks/omr-chord-tie-2026-09/FINDINGS.md`): 1 element over the 11
+    engraved works, 121 over 22 stored scan transcriptions.
+    """
+
+    @staticmethod
+    def _chord_result(tied_index):
+        """The four noteheads stacked at one x so they group as ONE chord,
+        with `tied_to_next` on exactly one of them. `_tiny_result`'s pitches
+        are C4/D4/E4/F4 and larger canonical y is LOWER in pitch, so index 0
+        of `noteheads` is NOT the detection order."""
+        result = _tiny_result()
+        measure = result["pages"][0]["systems"][0]["staves"][0]["measures"][0]
+        for i, d in enumerate(measure["detections"]):
+            d["bbox"] = [10, 10 + 8 * i, 5, 5]
+            d["bbox_page"] = [10, 10 + 8 * i, 5, 5]
+        measure["detections"][tied_index]["tied_to_next"] = True
+        return result, measure["detections"][tied_index]["pitch"]
+
+    @staticmethod
+    def _tied_pitches(xml):
+        """WHICH pitches carry a tie -- never how many ties there are. A
+        count cannot see a mark that MOVED, and moving one is the whole
+        defect."""
+        out = []
+        for note in ET.fromstring(xml).iter("note"):
+            if note.find('.//tied[@type="start"]') is None:
+                continue
+            pitch = note.find("pitch")
+            out.append(pitch.findtext("step") + pitch.findtext("octave"))
+        return out
+
+    def test_the_tie_lands_on_the_pitch_that_carries_it(self):
+        for index in range(4):
+            result, pitch = self._chord_result(index)
+            xml = to_musicxml(result)
+            assert xml.count("<chord/>") == 3, "the fixture must be ONE chord"
+            assert self._tied_pitches(xml) == [pitch], index
+
+    def test_a_chord_with_two_tied_members_writes_TWO(self):
+        """⚠️ THE UNDER-EMISSION HALF, and it is a real population: 12 events
+        over the stored scan transcriptions carry a second tied head that the
+        event-level flag could not express at all."""
+        result, _p = self._chord_result(0)
+        measure = result["pages"][0]["systems"][0]["staves"][0]["measures"][0]
+        measure["detections"][2]["tied_to_next"] = True
+        xml = to_musicxml(result)
+        assert sorted(self._tied_pitches(xml)) == ["C4", "E4"]
+
+    def test_an_untied_chord_writes_NONE(self):
+        """The positive control in the same class: a renderer that tied every
+        chord member would pass both tests above."""
+        result = _tiny_result()
+        measure = result["pages"][0]["systems"][0]["staves"][0]["measures"][0]
+        for i, d in enumerate(measure["detections"]):
+            d["bbox"] = d["bbox_page"] = [10, 10 + 8 * i, 5, 5]
+        assert self._tied_pitches(to_musicxml(result)) == []
+
+    def test_LILYPOND_KEEPS_THE_CHORD_LEVEL_TIE(self):
+        """⚠️ LILYPOND AND MUSICXML DIVERGE HERE, DELIBERATELY. `~` after a
+        chord is a chord-level post-event that LilyPond resolves against the
+        FOLLOWING chord BY PITCH -- verified by compiling
+        `benchmarks/omr-chord-tie-2026-09/out/lily_tie_semantics.ly`, where
+        `<c e g>~ <c e>` ties c and e SILENTLY and `<c e g>~ <d f a>` warns
+        three times. So a chord-level `~` cannot land on the wrong note the
+        way `<tied>` can, and the per-note form (`<c~ e g>`) would be an
+        UNPRICED change to an exporter this repo has no metric for. Same call
+        as `_lily_wedge_plan`, which drops what it cannot express rather than
+        approximating it."""
+        event = {"kind": "chord", "duration_beats": 1.0,
+                 "duration_type": "quarter", "dots": 0, "rest": None,
+                 "tied_to_next": True,
+                 "noteheads": [{"pitch": "C4", "tied_to_next": False},
+                               {"pitch": "E4", "tied_to_next": True}]}
+        assert _lily_event(event) == "<c' e'>4~"
+
     def test_lilypond_forces_the_read_glyph(self):
         event = {"kind": "chord", "duration_beats": 1.0,
                  "duration_type": "quarter", "dots": 0,
