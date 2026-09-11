@@ -1157,8 +1157,32 @@ was ever input-starved. Findings:
 ⚠️⚠️ **REACH IS THE FIRST NUMBER AND ONE DOCUMENT HAS NONE.** `Q.WEDGE_BOX` is
 **0 on Litolff `984073` p1-3** and **47 on Breitkopf Brahms 1 p0-3** (46
 `cv_hairpins`, 1 `detector`). Measured on Litolff this family produces a clean
-zero that means nothing, so `wedge_arm.py` prints reach first and **exits
-non-zero declaring itself DEAD** at zero. **Brahms is its only fixture.**
+zero that means nothing, so the arm prints reach first and **exits non-zero
+declaring itself DEAD** at zero. **Brahms is its only fixture.**
+
+**MEASURED**, one gather adjudicated over the pipeline's OWN `Q.GLYPH_OWNER`
+and `Q.VOICES` verdicts and exported twice: **46 decided / 1 abstained
+`no_page_frame`** (exactly the detector's box-less row), **`<wedge>` 0 → 20**,
+notes 2687 / rests 989 / slurs 227 / ties 349 / dynamics 181 / articulations
+153 **all identical**, the file **byte-identical outside the `<wedge>`
+elements**, and music21 reading back **exactly 20** (13 binding two notes, 7
+binding one). ⚠️ **29 of 46 had their `Q.VOICES` read** — the ORDER fix's price
+measured; it is NOT shown that any answer changed. ⚠️ **26 of 46 decided
+hairpins lost an anchor `_place_notes` never wrote**, which is a READING figure
+and belongs upstream, the same shape as *76% of merged arcs bind fewer than two
+noteheads*.
+
+⚠️⚠️ **AND OPENING THAT RESIDUE FOUND A BUG THREE COMMITS OLD: the balance
+reported `balanced: True` with TEN decided hairpins accounted for NOWHERE,
+BECAUSE IT WAS A `<=`.** The head index was built PER PART, so *"this anchor is
+not here"* meant both *it belongs to another part* and *it was never written*,
+and a hairpin with both ends unwritten was skipped by every part and counted by
+none. Indexed globally the balance is an **EQUALITY** (20 + 26 = 46).
+**Widening a control while teaching it about a legitimate-sounding exception is
+how a control stops being one** — this file's own lesson, arriving against its
+author. ⚠️ The `<=` is now an EQUIVALENT MUTANT, named and held OUT of the
+battery's arms, because an arm that can never go red trains the next reader to
+ignore the list.
 
 ⚠️ **THE ONE DESIGN DECISION: the legacy function was SPLIT, not called and not
 ported.** `_legacy._wedge_anchors` wants the exporter's `measures` shims and
@@ -1207,6 +1231,10 @@ category filter each occur TWICE in `ownership.py` — the arm would have mutate
 function), **1 EQUIVALENT MUTANT of my own writing**, and **6 genuine test
 gaps**. One arm was answered by **deleting code**: an idempotence guard whose
 rule could not fire, because `build()` makes fresh detection dicts every call.
+**Re-run after the accounting repair it paid again** — one survivor whose
+fixture had a single part where the hazard needs two, and one `BAD ANCHOR`
+because the restructure had moved the line it named, **reported as an error
+rather than a silent pass**. Final: **21 arms, all red, positive control red.**
 
 ⚠️ **The element ORDER is the pairing, not a style** — music21 binds a
 `crescendo` to the next note it parses and a `stop` to the last one, so the
