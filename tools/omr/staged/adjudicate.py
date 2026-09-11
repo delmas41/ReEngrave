@@ -730,6 +730,13 @@ ORDER: Tuple[str, ...] = (
     # too late and every triplet would export at its written value -- the
     # exact fault the ratio exists to fix. Found by wiring them, not by
     # reasoning: the ORDER list had them the other way round.
+    # ⚠️ STEM DIRECTION BEFORE THE EVENTS, because the divisi guard in
+    # `group_chords_in_measure` is what the events are grouped UNDER: a
+    # real chord shares one physical stem, so two heads at one x whose
+    # stems point opposite ways are two voices and not one chord. Decided
+    # afterwards it would arrive too late to separate them, which is the
+    # `TUPLET_RATIO` before `DURATION` lesson in a second family.
+    Q.STEM_DIRECTION,
     Q.TUPLET_RATIO,
     Q.DURATION,
     # ⚠️ EVENTS BEFORE THE METER, and it is the bar sum that forces it. A bar
@@ -739,6 +746,11 @@ ORDER: Tuple[str, ...] = (
     # `export._events`, at serialisation time, so every stage before EXPORT
     # counted each chord member as a separate event.
     Q.EVENT,
+    # ⚠️ AFTER `EVENT`, because a voice is a stream OF events -- and it
+    # calls `voicing.split_events_into_voices` rather than restating the
+    # rule, so the staged and legacy paths cannot come to disagree about
+    # a file's `<backup>` arithmetic.
+    Q.VOICES,
     # ⚠️ AFTER `EVENT`, because it consumes that verdict rather than
     # re-clustering the glyphs: within-staff simultaneity is decided per
     # cell, and this groups those decisions across the staves of one

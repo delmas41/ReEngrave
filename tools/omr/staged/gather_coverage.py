@@ -324,6 +324,17 @@ LEGACY_TO_Q: Dict[str, str] = {
     # itself. `Q.FERMATA_MARK` is the reading. CLOSED 2026-09-10; it was in
     # `NO_VOCABULARY`.
     "fermata": "FERMATA_OWNER",
+    # ⚠️ CLOSED 2026-09-10. `Q.STEM_DIRECTION` decides which way a notehead's
+    # stem points -- `Q.STEM` carries the BOX and says nothing about the
+    # direction, which is why `q_covering` is deliberately not a substring
+    # test. It is the discriminator the divisi guard runs on, and that guard
+    # reported `not_implemented` until this landed.
+    "stem_direction": "STEM_DIRECTION",
+    # ⚠️ THE VERDICT, and `voice_index` is a position inside its value. The
+    # split CALLS `voicing.split_events_into_voices` rather than restating it,
+    # so the two paths cannot disagree about a file's `<backup>` arithmetic.
+    "voices": "VOICES",
+    "voice_index": "VOICES",
     "direction_texts": "DIRECTION",
     "detections": "GLYPH_BOX",
     "bbox_page_px": "GLYPH_BOX",
@@ -362,11 +373,6 @@ LEGACY_TO_Q: Dict[str, str] = {
 #: neither table, and `test_gather_coverage.py` fails on an entry that has
 #: since grown a `Q`, the same contract `export_coverage.KNOWN_GAPS` holds.
 NO_VOCABULARY: Dict[str, str] = {
-    "stem_direction": (
-        "up | down, measured by `transcribe._stem_direction` from the stem "
-        "against its noteheads. `Q.STEM` carries the stem's BOX and not its "
-        "direction, so the quantity is derivable and undeclared -- and it is "
-        "the discriminator the divisi guard runs on."),
     "tied_to_next": (
         "tie state carried on the notehead, chained across barlines by "
         "`transcribe._pair_ties_in_staff`. `Q.ARC_KIND` decides tie-vs-slur "
@@ -376,14 +382,6 @@ NO_VOCABULARY: Dict[str, str] = {
         "trill / turn / mordent / tremolo, attached by "
         "`transcribe._attach_ornaments_in_cell`. The tenth export gap. "
         "`Q.ARTICULATION_MARK` is a different family and does not cover it."),
-    "voices": (
-        "a staff-measure's 1-2 VOICE STREAMS, split by "
-        "`voicing.split_events_into_voices` on stem direction. MusicXML pairs "
-        "`<slur>` WITHIN a `<voice>` and separates the streams with "
-        "`<backup>`, so `Q.ARC_OWNER` already depends on a quantity the "
-        "record cannot express -- and `export._lone_voice_is_the_second` "
-        "re-decides the lane per measure downstream of it."),
-    "voice_index": "which stream an event landed in; see `voices`.",
 }
 
 

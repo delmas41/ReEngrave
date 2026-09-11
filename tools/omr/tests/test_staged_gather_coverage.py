@@ -144,9 +144,14 @@ class TestTheFindingsAreStillTrue(unittest.TestCase):
         """The exact miss above, pinned so it cannot recur."""
         self.assertEqual(GC.q_covering("events"), "EVENT")
         self.assertEqual(GC.q_covering("rests"), "REST")
-        # ...and does NOT over-match: `Q.STEM` carries a stem's BOX and says
-        # nothing about which way it points, so these are different quantities.
-        self.assertIsNone(GC.q_covering("stem_direction"))
+        # ⚠️ ...and does NOT over-match. This used to assert
+        # `q_covering("stem_direction") is None`, which stopped being the
+        # right test on 2026-09-10 when `Q.STEM_DIRECTION` was declared: the
+        # hazard was never that the name is absent, it is that a SUBSTRING
+        # test would answer `STEM` for it. Asserted as INEQUALITY, which holds
+        # whether or not the quantity exists.
+        self.assertNotEqual(GC.q_covering("stem_direction"),
+                            GC.q_covering("stem"))
 
     def test_the_chord_gap_is_CLOSED_and_stays_accounted(self) -> None:
         """⚠️ THE FINDING THAT STARTED THIS IS FIXED — by sibling sessions,
@@ -173,8 +178,7 @@ class TestTheFindingsAreStillTrue(unittest.TestCase):
         """
         self.assertEqual(
             sorted(GC.NO_VOCABULARY),
-            ["ornaments", "stem_direction", "tied_from_prev",
-             "tied_to_next", "voice_index", "voices"])
+            ["ornaments", "tied_from_prev", "tied_to_next"])
 
     def test_the_fermata_gap_is_CLOSED_and_stays_accounted(self) -> None:
         """Closed 2026-09-10. A closed gap must leave `NO_VOCABULARY` or the
@@ -184,6 +188,26 @@ class TestTheFindingsAreStillTrue(unittest.TestCase):
         self.assertNotIn("fermata", GC.NO_VOCABULARY)
         self.assertEqual(GC.LEGACY_TO_Q["fermata"], "FERMATA_OWNER")
         self.assertEqual(GC.FAMILY_TO_Q["fermata"], "FERMATA_MARK")
+
+    def test_the_voice_gap_is_CLOSED_and_stays_accounted(self) -> None:
+        """Closed 2026-09-10. `stem_direction` was derivable from `Q.STEM` —
+        a row on the record since the CV rung was wired — and undeclared,
+        which is why `adjudicate_event`'s divisi guard read
+        `not_implemented`."""
+        for key in ("stem_direction", "voices", "voice_index"):
+            self.assertIn(key, GC.LEGACY_TO_Q, key)
+            self.assertNotIn(key, GC.NO_VOCABULARY, key)
+        self.assertEqual(GC.LEGACY_TO_Q["stem_direction"], "STEM_DIRECTION")
+        self.assertEqual(GC.LEGACY_TO_Q["voices"], "VOICES")
+
+    def test_STEM_and_STEM_DIRECTION_stay_DIFFERENT_quantities(self) -> None:
+        """⚠️ The reason `q_covering` is not a substring test, now that both
+        names exist: `Q.STEM` carries a stem's BOX and says nothing about
+        which way it points."""
+        self.assertIsNotNone(GC.q_covering("stem"))
+        self.assertEqual(GC.q_covering("stem_direction"), "STEM_DIRECTION")
+        self.assertNotEqual(GC.q_covering("stem"),
+                            GC.q_covering("stem_direction"))
 
     def test_every_declared_stub_is_reported_with_its_input_state(self) -> None:
         """⚠️ THE STRUCTURAL FINDING, AND THE MERGE THAT HALF-CLOSED IT.

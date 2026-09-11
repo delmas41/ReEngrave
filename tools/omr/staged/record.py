@@ -495,6 +495,40 @@ class Q(_Vocab):
     GLYPH_OWNER = "glyph_owner"
     ARC_OWNER = "arc_owner"
     ARC_KIND = "arc_kind"                    # tie | slur
+    #: Which way a notehead's STEM points -- up | down.
+    #:
+    #: ⚠️ IT BELONGS TO THE STEM AND IS FILED ON THE NOTEHEAD, which is not a
+    #: contradiction but the paid-for lesson. `transcribe._stem_direction`
+    #: takes ALL the noteheads on one stem at once, because a double stop is
+    #: two heads on one physical stem: comparing each head's centre against
+    #: the stem's midpoint hands the two members of one chord OPPOSITE
+    #: directions for any interval wider than the stem is long, which reads
+    #: as divisi and splits the chord into two voices. Measured on Brahms's
+    #: Viola, where `C4/C5` came out as `C4` then `C5` at the end of the bar.
+    #: The consumers want it per notehead, so it is decided per notehead from
+    #: the whole group hanging on the stem.
+    #:
+    #: ⚠️ `Q.STEM` carries the stem's BOX and says NOTHING about which way it
+    #: points -- which is why `gather_coverage.q_covering` is deliberately not
+    #: a substring test, and why this is a separate name rather than a detail
+    #: field on that row.
+    STEM_DIRECTION = "stem_direction"
+    #: A bar's 1-2 VOICE STREAMS, as a partition of its glyphs.
+    #:
+    #: ⚠️ MUSICXML PAIRS `<slur>` WITHIN A `<voice>`, so this is not a
+    #: presentation detail: an arc whose ends land in different streams is
+    #: UNPAIRED at both, which makes the file invalid rather than merely
+    #: wrong. `export._paired_spans` takes a `voice_of` map for exactly that
+    #: test, and the staged exporter passed it an EMPTY dict -- so the rule
+    #: was present, inert, and indistinguishable from a rule that had been
+    #: applied and found nothing.
+    #:
+    #: ⚠️ A REST IS IN BOTH STREAMS, and that is the engraving's convention
+    #: rather than a modelling choice: each voice needs its own bar to sum, so
+    #: `<rest>` is written once per voice with its own `<voice>` tag. It makes
+    #: this a COVER of the bar's glyphs and not a partition of them, which is
+    #: why the exporter's note-accounting control has to count the duplicate.
+    VOICES = "voices"
     TUPLET_RATIO = "tuplet_ratio"
     ARTICULATION_OWNER = "articulation_owner"
     #: Which EVENT -- notehead or rest -- a fermata hangs over.

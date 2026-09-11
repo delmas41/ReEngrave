@@ -22,11 +22,11 @@ from tools.omr.staged.record import Log, Outcome, Q, READERS, State
 CELL = R.cell(0, 0, 0, 0)
 
 
-def _head(log, gi, x, w=20, head="noteheadBlack"):
+def _head(log, gi, x, w=20, head="noteheadBlack", y=0):
     g = R.glyph(0, 0, 0, 0, gi)
     log.observe(g, Q.NOTEHEAD_CLASS, head, reader=READERS.DETECTOR,
                 frame="cell:0", score=0.9)
-    log.observe(g, Q.GLYPH_BOX, (head, x - w // 2, 0, w, 16),
+    log.observe(g, Q.GLYPH_BOX, (head, x - w // 2, y, w, 16),
                 reader=READERS.DETECTOR, frame="cell:0", score=0.9)
     return g
 
@@ -202,21 +202,43 @@ class TestTheBarSumCountsAnEventOnce(unittest.TestCase):
             consequences._event_totals(log, CELL, notes, current), 2.5)
 
 
-class TestTheDivisiGuardIsReportedAsMissing(unittest.TestCase):
-    """⚠️ AN EARLIER DRAFT WROTE `divisi_guard: "ran"` WHEREVER STEM ROWS
-    MERELY EXISTED — a field claiming a check that never happened, which is
-    exactly what this record exists to make impossible. The legacy rule
-    refuses to merge two same-x noteheads whose STEMS POINT OPPOSITE WAYS (two
-    divisi voices, not one chord); that tier is not built here, so what is
-    reported is the state of the INPUT it would need.
+def _events_after_stems(log):
+    """⚠️ `Q.STEM_DIRECTION` FIRST, because the guard reads its VERDICT and
+    not the stem rows. Running only `Q.EVENT` — which every other test here
+    does, correctly, since they have no stems — would report
+    `no_direction_decided` and pass a divisi test for the wrong reason."""
+    log.freeze()
+    adjudicate._ensure_decisions()
+    adjudicate.run(log, order=(Q.STEM_DIRECTION,))
+    return adjudicate.adjudicate_one(log, adjudicate.REGISTRY[Q.EVENT], CELL)
+
+
+def _stem(log, x, y, w=3, h=60):
+    """One CV stem stroke on the cell, in the shape `gather_cv_lines` emits."""
+    log.observe(CELL, Q.STEM, (x, y, w, h), reader=READERS.CV_LINES,
+                frame="cell:0", x0=x, x1=x + w, y_center=y + h / 2,
+                image="no_staff", staff_lines_erased=True)
+
+
+class TestTheDivisiGuardIsLIVE(unittest.TestCase):
+    """⚠️ IT REPORTED `not_implemented` UNTIL ITS INPUT EXISTED, 2026-09-10.
+    An earlier draft wrote `divisi_guard: "ran"` wherever stem ROWS merely
+    existed — a field claiming a check that never happened — so the field was
+    deliberately made to say so. `Q.STEM_DIRECTION` now decides, and the field
+    reports what the guard DID.
+
+    ⚠️ THE STATE OF THE INPUT IS STILL REPORTED BESIDE IT, because a guard
+    that ran over a bar whose stems were never read has separated nothing and
+    must not read as a clean bill.
     """
 
-    def test_it_never_claims_to_have_run(self):
+    def test_with_no_stems_it_says_no_direction_was_decided(self):
         log = Log()
         _head(log, 0, 100)
         _head(log, 1, 102)
         v = _events(log)
-        self.assertEqual(v.detail["divisi_guard"], "not_implemented")
+        self.assertEqual(v.detail["divisi_guard"], "no_direction_decided")
+        self.assertEqual(v.detail["divisi_separated"], 0)
 
     def test_the_stem_evidence_state_is_reported(self):
         log = Log()
@@ -224,6 +246,69 @@ class TestTheDivisiGuardIsReportedAsMissing(unittest.TestCase):
         _head(log, 1, 102)
         v = _events(log)
         self.assertEqual(v.detail["stem_evidence"], State.ABSENT.value)
+
+    # ⚠️ THE GEOMETRY IS REAL DIVISI AND THE FIXTURE HAD TO BE FIXED TO BE SO.
+    # A first cut put both heads at one y with both stems between their boxes,
+    # so EACH stem overlapped BOTH heads and every head abstained
+    # `stems_disagree` -- the guard then saw no directions at all and merged,
+    # which reads as the guard failing when it is the fixture that is not
+    # divisi. An upper voice takes its stem on the RIGHT going up and a lower
+    # voice on the LEFT going down, and the two heads are at different
+    # PITCHES, which is what separates them.
+    UPPER_X, LOWER_X = 100, 102        # boxes 90..110 and 92..112
+    UPPER_Y, LOWER_Y = 0, 40           # ...at different heights
+
+    def test_two_heads_at_one_x_on_OPPOSITE_stems_are_TWO_events(self):
+        """⚠️ THE FAULT THE GUARD EXISTS FOR: x-only grouping merged two
+        divisi voices into one "chord" and then mode-voted a single duration
+        over the pair, corrupting both."""
+        log = Log()
+        _head(log, 0, self.UPPER_X, y=self.UPPER_Y)
+        _head(log, 1, self.LOWER_X, y=self.LOWER_Y)
+        _stem(log, 88, -60, h=64)           # touches the UPPER head, rising
+        _stem(log, 111, 52, h=60)           # touches the LOWER head, falling
+        v = _events_after_stems(log)
+        self.assertEqual(v.detail["n_events"], 2, v.detail)
+        self.assertEqual(v.detail["divisi_guard"], "ran")
+        self.assertEqual(v.detail["divisi_separated"], 1)
+
+    def test_the_SAME_direction_still_merges(self):
+        """The positive control, and a battery of separation tests needs one:
+        a guard that separated EVERYTHING would pass the test above."""
+        log = Log()
+        _head(log, 0, self.UPPER_X, y=self.UPPER_Y)
+        _head(log, 1, self.LOWER_X, y=self.LOWER_Y)
+        _stem(log, 88, -60, h=64)           # upper, rising
+        _stem(log, 111, -60, h=104)         # lower, ALSO rising
+        v = _events_after_stems(log)
+        self.assertEqual(v.detail["divisi_separated"], 0, v.detail)
+        self.assertEqual(v.detail["n_events"], 1, v.detail)
+
+    def test_an_UNKNOWN_direction_never_blocks_a_merge(self):
+        """⚠️ Exactly as `voicing._directions_conflict` does not. A head whose
+        stem the CV rung missed must behave as it did before this quantity
+        existed."""
+        log = Log()
+        _head(log, 0, self.UPPER_X, y=self.UPPER_Y)
+        _head(log, 1, self.LOWER_X, y=self.LOWER_Y)
+        _stem(log, 88, -60, h=64)           # only the UPPER head gets a stem
+        v = _events_after_stems(log)
+        self.assertEqual(v.detail["n_events"], 1, v.detail)
+
+    def test_a_head_met_by_two_OPPOSING_stems_abstains_rather_than_voting(self):
+        """⚠️ `stems_disagree` is not `no_stem`, and the exporter must be able
+        to tell them apart: the first is ink we cannot read, the second is a
+        whole note or a stem the CV rung missed. Picking one would hand the
+        guard a confident wrong answer."""
+        log = Log()
+        _head(log, 0, 100)
+        _stem(log, 92, -60)                 # both cross this head's box
+        _stem(log, 108, 10)
+        log.freeze()
+        adjudicate._ensure_decisions()
+        v = adjudicate.run(log, order=(Q.STEM_DIRECTION,))[0]
+        self.assertIs(v.outcome, Outcome.ABSTAINED)
+        self.assertEqual(v.reason, "stems_disagree")
 
 
 if __name__ == "__main__":

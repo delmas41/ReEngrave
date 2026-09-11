@@ -30,6 +30,9 @@ from ..adjudicate import (Candidate, Checkable, Evidence, Mode, Ruling,
                           Term, decision, tally)
 from collections import Counter
 
+from ... import transcribe as _legacy_stems
+from ... import voicing as _legacy_voicing
+
 from ..record import (ABSTAIN, Kind, Outcome, Q, READERS, Scope, State,
                       Subject, meter_at)
 
@@ -764,7 +767,12 @@ def _box_of(rows):
     implicates=(Q.EVENT, Q.DURATION, Q.METER),
     composed_from=(Q.GLYPH_BOX,),
     scope=Kind.CELL,
-    wants=(Q.GLYPH_BOX, Q.NOTEHEAD_CLASS, Q.REST, Q.STEM),
+    # ⚠️ `Q.STEM` AND `Q.STEM_DIRECTION` ARE BOTH DECLARED AND THEY ARE NOT
+    # THE SAME INPUT. The first is read only to REPORT the guard's input state
+    # (`stem_evidence`); the second is what the guard actually runs on. A bar
+    # whose stems were read and whose directions all abstained is a real state
+    # and the two fields are how it is told from a bar with no stems at all.
+    wants=(Q.GLYPH_BOX, Q.NOTEHEAD_CLASS, Q.REST, Q.STEM, Q.STEM_DIRECTION),
     reasons=("x_clustered", "nothing_to_group"),
     mode=Mode.ADDITIVE,
     subjects_from=(Q.NOTEHEAD_CLASS, Q.REST),
@@ -818,20 +826,60 @@ def adjudicate_event(ev: Evidence) -> Ruling:
     else:
         tol = EVENT_X_TOLERANCE_FALLBACK_PX
 
+    # ⚠️⚠️ THE DIVISI GUARD IS LIVE, AND IT WAS `not_implemented` UNTIL ITS
+    # INPUT EXISTED. A real chord's noteheads share ONE physical stem, so two
+    # heads at nearly the same x whose stems point OPPOSITE ways are two
+    # simultaneous voices and not one chord -- x-only grouping merged them and
+    # then mode-voted one duration over the pair, corrupting both. That is the
+    # legacy rule (`voicing._directions_conflict`, an audit follow-up from
+    # 2026-07) and it is reproduced here rather than imported, because the
+    # legacy function reads a detection dict and this reads the record.
+    #
+    # ⚠️ AN UNKNOWN DIRECTION NEVER BLOCKS A MERGE, exactly as it does not
+    # there. A head whose stem the CV rung missed must behave as it did before
+    # this quantity existed; only an explicit CONFLICT separates.
+    directions = {}
+    for g in head_ids:
+        sub = Subject(Kind.GLYPH, page=ev.subject.page,
+                      system=ev.subject.system, staff=ev.subject.staff,
+                      cell=ev.subject.cell, glyph=g)
+        d = ev.verdict(Q.STEM_DIRECTION, subject=sub)
+        if d is not None and d.outcome == "decided":
+            directions[g] = d.value
+
+    def _conflicts(g, grp) -> bool:
+        mine = directions.get(g)
+        if not mine:
+            return False
+        theirs = {directions[i] for i in grp if directions.get(i)}
+        return bool(theirs) and mine not in theirs
+
     groups = []
+    separated = 0
     for g in sorted(head_ids, key=lambda i: boxes[i][0]):
         x = boxes[g][0]
         target = None
+        blocked = False
         # Backward scan: groups are created in non-decreasing x, so once one
         # is further than the tolerance every earlier one is too.
         for grp in reversed(groups):
             gx = sum(boxes[i][0] for i in grp) / len(grp)
             if abs(x - gx) > tol:
                 break
+            if _conflicts(g, grp):
+                # ⚠️ `continue`, NOT `break` -- a divisi split creates two
+                # groups at nearly the same x, back to back, so the group this
+                # head belongs to may be the one BEHIND the conflicting one.
+                # The legacy scan spells it the same way and the two must
+                # agree.
+                blocked = True
+                continue
             target = grp
             break
         if target is None:
             groups.append([g])
+            if blocked:
+                separated += 1
         else:
             target.append(g)
 
@@ -852,15 +900,18 @@ def adjudicate_event(ev: Evidence) -> Ruling:
                 "n_glyphs": len(head_ids) + len(rest_ids),
                 "n_chords": chorded,
                 "tolerance_px": round(tol, 2),
-                # ⚠️ THE GUARD IS NOT BUILT, AND THIS FIELD MUST NOT IMPLY
-                # IT IS. An earlier draft wrote `divisi_guard: "ran"` wherever
-                # stem rows merely EXISTED -- a field claiming a check that
-                # never happened, which is the failure this whole record
-                # exists to make impossible. What is reported is the STATE OF
-                # THE INPUT the guard would need. Where chords were formed and
-                # this says anything but `read`, two divisi voices may have
-                # been merged into one chord and nothing could have caught it.
-                "divisi_guard": "not_implemented",
+                # ⚠️ IT SAID `not_implemented` UNTIL `Q.STEM_DIRECTION`
+                # EXISTED, and the field was written that way on purpose: an
+                # earlier draft wrote `divisi_guard: "ran"` wherever stem rows
+                # merely EXISTED, which claims a check that never happened.
+                # Now it reports what the guard actually DID -- and it still
+                # reports the state of its input beside it, because a guard
+                # that ran over a bar whose stems were never read has
+                # separated nothing and must not read as a clean bill.
+                "divisi_guard": ("ran" if directions else
+                                 "no_direction_decided"),
+                "divisi_separated": separated,
+                "directions_decided": len(directions),
                 "stem_evidence": stem_state.value},
     )
 
@@ -2234,3 +2285,216 @@ def _system_spacing(ev: Evidence) -> Optional[float]:
         return None
     vals.sort()
     return vals[len(vals) // 2]
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Stem direction, and the voices it splits
+# ─────────────────────────────────────────────────────────────────────────────
+
+
+class _Shim:
+    """The three fields `transcribe._stem_direction` reads off a detection.
+
+    ⚠️ A SHIM AND NOT A REIMPLEMENTATION, deliberately. That function's rule
+    was paid for by a real regression -- comparing a single notehead's centre
+    against a stem's MIDPOINT handed the two members of a double stop opposite
+    directions, which reads as divisi and split Brahms's Viola chords into two
+    voices through a `<backup>` -- so the arithmetic is CALLED here rather
+    than restated, and the tested code is the code that runs.
+    """
+
+    __slots__ = ("y_canonical", "height_canonical", "x_canonical",
+                 "width_canonical")
+
+    def __init__(self, x, y, w, h):
+        self.x_canonical, self.y_canonical = x, y
+        self.width_canonical, self.height_canonical = w, h
+
+
+def _stems_on(head_box, stems):
+    """Every stem whose box overlaps this notehead's.
+
+    ⚠️ THE SAME ATTACHMENT TEST `_stem_joined` USES, and imported from beside
+    it rather than re-derived: box overlap with NO tolerance, because the
+    populations separate with nothing between them (819 heads take exactly one
+    stem; where none overlaps the nearest is 94 px away but for three pairs at
+    1-2 px).
+    """
+    return [s for s in stems if _xywh(s) and _boxes_overlap(_xywh(s), head_box)]
+
+
+@decision(
+    quantity=Q.STEM_DIRECTION,
+    composed_from=(Q.STEM, Q.GLYPH_BOX),
+    scope=Kind.GLYPH,
+    # ⚠️ `Q.NOTEHEAD_CLASS` is the DOMAIN, not a `wants`. A declaration the
+    # body never reads records nothing -- `Evidence` fills `missing`/`declined`
+    # only for quantities actually queried -- so it cannot be told from one
+    # that is read and always present. `inventory --check` fails on it.
+    wants=(Q.STEM, Q.GLYPH_BOX),
+    subjects_from=Q.NOTEHEAD_CLASS,
+    reasons=("stem_projection", "no_stem", "stems_disagree", "no_evidence"),
+    mode=Mode.ADDITIVE,
+)
+def adjudicate_stem_direction(ev: Evidence) -> Ruling:
+    """Which way this notehead's stem points.
+
+    ⚠️ DIRECTION BELONGS TO THE STEM AND IS DECIDED FROM THE WHOLE GROUP ON
+    IT. A double stop is two heads on ONE physical stem, so the direction is
+    computed once from every head that stem carries and handed to each of
+    them. Deciding it head-by-head against the stem's midpoint is the
+    documented regression: for any interval wider than the stem is long the
+    same stem comes out above the lower head and below the upper one, the two
+    members disagree, `group_chords_in_measure`'s divisi guard refuses to
+    merge them, and one chord exports as two voices one note each. Thirds were
+    unaffected, which is what made it look intermittent.
+
+    ⚠️ IT WAS GATHERED AND READ BY NOTHING FOR THE DIRECTION. `Q.STEM` has
+    carried 916 rows on a three-page fixture since the CV rung was wired, and
+    `gather_coverage` reported `stem_direction` in `NO_VOCABULARY` -- derivable
+    from a row already on the record and undeclared. It is what the divisi
+    guard runs on, so while it was undeclared that guard was inert in
+    `export._events` and `adjudicate_event` said so in its own docstring.
+
+    ⚠️ TWO DIFFERENT SILENCES, AND THEY MUST NOT COLLAPSE. `no_stem` means the
+    CV rung read no stem meeting this head -- a whole note has none, and on a
+    scan a stem is often simply missed -- while `stems_disagree` means two
+    stems meet it and point opposite ways, which is ink we cannot read. The
+    first is ordinary; the second is a warning.
+
+    ⚠️ NO CONSTANT, and the attachment test it borrows has none either: the
+    populations separate with nothing between them, so a tolerance would be
+    decoration.
+    """
+    box = ev.rows(Q.GLYPH_BOX)
+    head_box = _xywh_head(box[-1].value) if box else None
+    if head_box is None:
+        return Ruling.abstain("no_evidence")
+
+    cell = ev.subject.at(Kind.CELL)
+    stems = ev.rows(Q.STEM, scope=Scope.SELF_AND_ANCESTORS, subject=cell)
+    mine = _stems_on(head_box, stems)
+    if not mine:
+        return Ruling.abstain("no_stem", used=(box[-1].id,))
+
+    # Every notehead in this bar, so a stem's whole group can be found.
+    heads = [r for r in ev.rows(Q.GLYPH_BOX, scope=Scope.SELF_AND_DESCENDANTS,
+                                subject=cell)
+             if (r.detail or {}).get("category") == "notehead"
+             and _xywh_head(r.value) is not None]
+
+    answers, used = set(), [box[-1].id]
+    for s in mine:
+        sx, sy, sw, sh = _xywh(s)
+        group = [_Shim(*_xywh_head(h.value)) for h in heads
+                 if _boxes_overlap(_xywh_head(h.value), (sx, sy, sw, sh))]
+        if not group:
+            group = [_Shim(*head_box)]
+        answers.add(_legacy_stems._stem_direction(_Shim(sx, sy, sw, sh), group))
+        used.append(s.id)
+
+    if len(answers) != 1:
+        # ⚠️ ABSTAIN RATHER THAN VOTE. A head met by two stems pointing
+        # opposite ways is exactly the divisi/double-stop ambiguity this
+        # quantity exists to keep straight, and picking one would hand the
+        # guard downstream a confident wrong answer -- worse than the unknown
+        # it already tolerates (`_directions_conflict` never blocks a merge on
+        # an unknown direction).
+        return Ruling.abstain("stems_disagree", n_stems=len(mine),
+                              answers=sorted(answers))
+
+    return Ruling(value=answers.pop(), reason="stem_projection",
+                  used=tuple(used),
+                  detail={"n_stems": len(mine), "heads_on_stem": len(heads)})
+
+
+@decision(
+    quantity=Q.VOICES,
+    composed_from=(Q.STEM_DIRECTION, Q.EVENT),
+    scope=Kind.CELL,
+    wants=(Q.STEM_DIRECTION, Q.EVENT),
+    reasons=("one_voice", "two_voices", "nothing_to_split"),
+    mode=Mode.ADDITIVE,
+)
+def adjudicate_voices(ev: Evidence) -> Ruling:
+    """How many voice streams this bar holds, and which glyph is in each.
+
+    ⚠️ THE RULE IS `voicing.split_events_into_voices`'s AND IS CALLED, NOT
+    RESTATED: two streams only where BOTH directions appear, voice 1 taking
+    the stem-up events and the unknown-direction ones, voice 2 the stem-down,
+    and REST EVENTS APPEARING IN BOTH so each voice's bar can sum. Restating
+    that here is how the staged and legacy paths would come to disagree about
+    a file's `<backup>` arithmetic.
+
+    ⚠️ A COVER, NOT A PARTITION, because of that last clause. A rest is in
+    both streams and is written twice, so the exporter's note-accounting
+    control has to know the duplicate is deliberate -- an equality that did
+    not would raise `Unbalanced` for correct behaviour.
+
+    ⚠️ IT NAMES GLYPHS AND NOT EVENTS. The exporter re-derives its own events
+    from the detections it actually wrote, and a glyph key is the one address
+    both sides agree on -- the same join `_place_articulations` and
+    `_place_fermatas` use. It is also exactly the map `_paired_spans` wants:
+    MusicXML pairs `<slur>` WITHIN a `<voice>`, and the staged exporter has
+    been passing that test an EMPTY dict, so the rule was inert and
+    indistinguishable from one that had run and found nothing.
+    """
+    grouping = ev.verdict(Q.EVENT)
+    if grouping is None or grouping.outcome != "decided":
+        # ⚠️ NOT "there are no voices" -- "nobody grouped this bar". The
+        # exporter withholds a split rather than inventing one glyph per
+        # stream, which is what building shim events out of glyph boxes here
+        # would quietly have done.
+        return Ruling.abstain("nothing_to_split",
+                              event_outcome=(grouping.outcome if grouping
+                                             else None))
+    raw = (grouping.value or {}).get("events") or []
+    if not raw:
+        return Ruling.abstain("nothing_to_split", n_events=0)
+
+    # ⚠️ ONE SHIM PER RECORDED EVENT, carrying only what the legacy splitter
+    # reads. The record has already decided which glyphs sound together;
+    # re-clustering them here would be a second grouping rule nothing forces
+    # to agree with the first.
+    events, read = [], 0
+    for e in raw:
+        glyphs = list(e.get("glyphs") or ())
+        kind = e.get("kind") or "chord"
+        direction = None
+        if kind == "chord":
+            # ⚠️ THE MAJORITY OVER THE CHORD, which is what
+            # `group_chords_in_measure` puts on its own event. A chord whose
+            # members genuinely disagree has already been SPLIT by the divisi
+            # guard, so a disagreement surviving to here is one head whose
+            # stem was missed, not two voices.
+            votes = Counter()
+            for g in glyphs:
+                sub = Subject(Kind.GLYPH, page=ev.subject.page,
+                              system=ev.subject.system,
+                              staff=ev.subject.staff, cell=ev.subject.cell,
+                              glyph=g)
+                d = ev.verdict(Q.STEM_DIRECTION, subject=sub)
+                if d is not None and d.outcome == "decided":
+                    votes[d.value] += 1
+            if votes:
+                direction = votes.most_common(1)[0][0]
+                read += 1
+        events.append({"kind": kind, "x_position": float(e.get("x") or 0.0),
+                       "stem_direction": direction, "_glyphs": glyphs})
+
+    streams = _legacy_voicing.split_events_into_voices(events)
+    voices = [sorted(g for e in s for g in e["_glyphs"]) for s in streams]
+    n = len(voices)
+    rests = sorted(g for e in events if e["kind"] == "rest"
+                   for g in e["_glyphs"])
+    return Ruling(
+        value={"n_voices": n, "voices": voices,
+               # ⚠️ NAMED, because a rest in EVERY stream is the one place this
+               # value is not a partition and a consumer counting glyphs would
+               # otherwise report a loss. Empty in the one-voice case, where
+               # there is no duplication to declare.
+               "rests_in_every_voice": rests if n > 1 else []},
+        reason="two_voices" if n > 1 else "one_voice",
+        used=(grouping.id,),
+        detail={"n_events": len(events), "n_rests": len(rests),
+                "directions_read": read})

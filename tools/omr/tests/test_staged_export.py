@@ -1780,3 +1780,89 @@ class TestFermatasReachTheFile(unittest.TestCase):
         _xml, rep = SX.to_musicxml(_one_staff_page(notes=[("C4", QUARTER)]))
         self.assertEqual(rep["written"].get("fermatas", 0), 0)
         self.assertEqual(rep["fermata_balance"]["marks_in_log"], 0)
+
+
+def _two_voice_page(*, rest_gi=None):
+    """A one-staff bar the record says holds TWO voices."""
+    notes = [("C4", QUARTER), ("E4", QUARTER)]
+    page = _one_staff_page(notes=notes)
+    voices = [[0], [1]]
+    rests = []
+    if rest_gi is not None:
+        _add_rest(page, rest_gi, "restQuarter", QUARTER)
+        voices = [[0, rest_gi], [1, rest_gi]]
+        rests = [rest_gi]
+    page["record"]["verdicts"].append(
+        _vrd(950, "cell/0/0/0/0", Q.VOICES,
+             {"n_voices": 2, "voices": voices, "rests_in_every_voice": rests},
+             reason="two_voices"))
+    return page
+
+
+class TestTwoVoicesReachTheFile(unittest.TestCase):
+    """⚠️ THE STAGED PATH WROTE `<voice>1</voice>` ON EVERYTHING UNTIL
+    2026-09-10, which was not merely a simplification: `_paired_spans` takes a
+    `voice_of` map to refuse an arc whose ends land in different streams — such
+    an arc is unpaired at BOTH and makes the file INVALID — and this exporter
+    passed it an empty dict."""
+
+    def test_the_second_stream_is_voice_2_behind_a_backup(self):
+        xml, rep = SX.to_musicxml(_two_voice_page())
+        root = ET.fromstring(xml)
+        self.assertEqual(sorted(v.text for v in root.iter("voice")), ["1", "2"])
+        self.assertEqual(len(root.findall(".//backup")), 1)
+        self.assertEqual(rep["written"]["two_voice_bars"], 1)
+
+    def test_the_backup_duration_is_what_voice_1_CONSUMED(self):
+        """⚠️ Getting this wrong does not produce a wrong-LOOKING file, it
+        produces a second voice offset from the first by a beat."""
+        xml, rep = SX.to_musicxml(_two_voice_page())
+        root = ET.fromstring(xml)
+        divisions = rep["written"]["divisions"]
+        self.assertEqual(int(root.find(".//backup/duration").text), divisions)
+
+    def test_a_rest_is_written_ONCE_PER_VOICE_and_the_balance_survives(self):
+        """⚠️ THE COVER, NOT A PARTITION. Each voice needs its own bar to sum,
+        so the rest is written twice — and the note-accounting control is an
+        EQUALITY, so the duplicate has to be NAMED or it raises `Unbalanced`
+        for correct behaviour."""
+        xml, rep = SX.to_musicxml(_two_voice_page(rest_gi=7))
+        self.assertEqual(len(ET.fromstring(xml).findall(".//rest")), 2)
+        self.assertEqual(rep["written"]["rests_duplicated_across_voices"], 1)
+        self.assertTrue(rep["balance"]["balanced"])
+        self.assertEqual(rep["balance"]["rests_duplicated_across_voices"], 1)
+
+    def test_a_ONE_voice_verdict_writes_no_backup(self):
+        """The positive control: an exporter that split whatever it was given
+        would pass every test above."""
+        page = _one_staff_page(notes=[("C4", QUARTER), ("E4", QUARTER)])
+        page["record"]["verdicts"].append(
+            _vrd(950, "cell/0/0/0/0", Q.VOICES,
+                 {"n_voices": 1, "voices": [[0, 1]],
+                  "rests_in_every_voice": []}, reason="one_voice"))
+        xml, rep = SX.to_musicxml(page)
+        self.assertEqual(len(ET.fromstring(xml).findall(".//backup")), 0)
+        self.assertEqual(rep["written"].get("two_voice_bars", 0), 0)
+
+    def test_NO_verdict_behaves_exactly_as_before(self):
+        """A bar whose voices were never decided must be untouched — the
+        wiring pass may connect a decision, it may not let one guess."""
+        page = _one_staff_page(notes=[("C4", QUARTER), ("E4", QUARTER)])
+        xml, _rep = SX.to_musicxml(page)
+        root = ET.fromstring(xml)
+        self.assertEqual(len(root.findall(".//backup")), 0)
+        self.assertEqual({v.text for v in root.iter("voice")}, {"1"})
+
+    def test_a_stream_the_exporter_could_not_FILL_is_no_split_at_all(self):
+        """⚠️ The verdict saw two voices among the notes it READ. If every
+        note of one stream was dropped on the way out (no pitch, a narrowed
+        duration), writing an empty `<backup>`-separated voice puts a
+        `<backup>` in the file for nothing."""
+        page = _one_staff_page(notes=[("C4", QUARTER), (None, QUARTER)])
+        page["record"]["verdicts"].append(
+            _vrd(950, "cell/0/0/0/0", Q.VOICES,
+                 {"n_voices": 2, "voices": [[0], [1]],
+                  "rests_in_every_voice": []}, reason="two_voices"))
+        xml, rep = SX.to_musicxml(page)
+        self.assertEqual(len(ET.fromstring(xml).findall(".//backup")), 0)
+        self.assertEqual(rep["written"].get("two_voice_bars", 0), 0)

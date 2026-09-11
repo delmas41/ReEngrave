@@ -646,7 +646,52 @@ def _place_arcs(rec: Record, runs: Dict[str, StaffRun]) -> Dict[str, int]:
     return dict(dropped)
 
 
-def _pair_arcs(parts: Sequence[Sequence[StaffRun]],
+def _voice_of_notehead(rec: Record, part: Sequence[StaffRun]
+                       ) -> Dict[int, int]:
+    """`id(detection) -> voice number`, for every note of this part.
+
+    ⚠️⚠️ THE STAGED EXPORTER PASSED `_paired_spans` AN EMPTY DICT UNTIL
+    2026-09-10, so its one-voice rule was inert -- and an inert rule is
+    indistinguishable from one that ran and found nothing. MusicXML pairs
+    `<slur>` WITHIN a `<voice>`, so an arc whose ends land in different
+    streams is unpaired at BOTH and makes the file invalid rather than merely
+    wrong; the legacy rule prefers the longest run the curve covers inside one
+    voice over dropping it, and that preference cannot operate without this
+    map.
+
+    ⚠️ KEYED BY `id()`, which is what `_paired_spans` looks up, and safe only
+    because `_flatten_part` passes the exporter's OWN detection dicts by
+    reference. Keying by glyph would need a second lookup inside the legacy
+    function.
+
+    ⚠️ A NOTE THE VERDICT DOES NOT MENTION IS VOICE 0, the same default
+    `_paired_spans` already applies to an unmapped note -- so a bar whose
+    voices were never decided behaves exactly as it did before.
+    """
+    out: Dict[int, int] = {}
+    for run in part:
+        for cell_index, cell in run.cells.items():
+            v = rec.verdict(Q.VOICES, R_cell_key(run, cell_index))
+            if not v or v["outcome"] != "decided":
+                continue
+            value = v["value"] or {}
+            if int(value.get("n_voices") or 1) < 2:
+                continue
+            # ⚠️ A REST IS IN EVERY STREAM and is deliberately NOT given a
+            # voice here: this map exists to refuse an arc crossing streams,
+            # and a rest binds no arc. Assigning it one would make it look
+            # like a member of whichever stream was listed last.
+            in_both = set(value.get("rests_in_every_voice") or ())
+            for number, glyphs in enumerate(value.get("voices") or (), start=1):
+                wanted = set(glyphs) - in_both
+                for det in cell.detections:
+                    idx = _glyph_index(det.get("glyph") or "")
+                    if idx is not None and idx in wanted:
+                        out[id(det)] = number
+    return out
+
+
+def _pair_arcs(rec: Record, parts: Sequence[Sequence[StaffRun]],
                counters: Dict[str, int]) -> Dict[str, int]:
     """Join each part's arcs across its barlines and mark the notes they bind.
 
@@ -677,6 +722,7 @@ def _pair_arcs(parts: Sequence[Sequence[StaffRun]],
             _flatten_part(part)
         if not measures or not any(per_measure_arcs):
             continue
+        voice_of = _voice_of_notehead(rec, part)
         # ⚠️⚠️ A BAR WHOSE GEOMETRY IS MISSING SWALLOWS ITS ARCS SILENTLY, and
         # counting them is the whole difference between a gap and a hole.
         # `_merge_arcs_across_barlines` opens each bar with "no box, or no
@@ -706,7 +752,7 @@ def _pair_arcs(parts: Sequence[Sequence[StaffRun]],
         n_spans = 0
         for kind, pools in by_kind.items():
             spans = _legacy._paired_spans(measures, pools, spacings, tops,
-                                          breaks, {})
+                                          breaks, voice_of)
             n_spans += len(spans)
             if kind == "tie":
                 for (_a, _b, first, last) in spans:
@@ -1069,8 +1115,8 @@ def _events(cell: Optional[Cell]) -> List[Dict[str, Any]]:
     return group_chords_in_measure(cell.detections)
 
 
-def _part_xml(part: Sequence[StaffRun], pid: str, divisions: int,
-              counters: Dict[str, int]) -> str:
+def _part_xml(rec: Record, part: Sequence[StaffRun], pid: str,
+              divisions: int, counters: Dict[str, int]) -> str:
     """One `<part>`: every measure of every system this part appears on."""
     lines = [f'  <part id="{pid}">']
     number = 0
@@ -1161,18 +1207,126 @@ def _part_xml(part: Sequence[StaffRun], pid: str, divisions: int,
                 lines.extend(_legacy._mxl_direction((kind, text), "      ")
                              for _x, kind, text in directions)
                 counters["dynamics"] += len(directions)
-                lines.extend(_measure_events_xml(events, divisions, counters))
+                lines.extend(_measure_xml(rec, run, i, events, divisions,
+                                          counters))
             lines.append("    </measure>")
     lines.append("  </part>")
     return "\n".join(lines)
 
 
+def _voice_split(rec: Record, run: StaffRun, cell_index: int,
+                 events: List[Dict[str, Any]]
+                 ) -> Optional[List[List[Dict[str, Any]]]]:
+    """This bar's events partitioned into voices, or None for one stream.
+
+    ⚠️ THE RECORD'S DECISION, NOT A SECOND SPLIT. `adjudicate_voices` calls
+    `voicing.split_events_into_voices` and records the answer as GLYPH lists;
+    re-running the splitter here would be a second copy of a rule nothing
+    forces to agree with the first, which is how the staged and legacy
+    `<backup>` arithmetic would come apart.
+
+    ⚠️ AN EVENT GOES WHERE ITS GLYPHS GO, and a REST goes in EVERY stream --
+    that is the convention the verdict names in `rests_in_every_voice`, and
+    it is why this is a cover rather than a partition. An event whose glyphs
+    the verdict does not mention (the exporter writes only the notes it
+    could) falls to voice 1, which is where `split_events_into_voices` puts
+    an unknown-direction event too.
+    """
+    v = rec.verdict(Q.VOICES, R_cell_key(run, cell_index))
+    if not v or v["outcome"] != "decided":
+        return None
+    value = v["value"] or {}
+    if int(value.get("n_voices") or 1) < 2:
+        return None
+    streams = [set(vs) for vs in (value.get("voices") or [])]
+    if len(streams) < 2:
+        return None
+    out: List[List[Dict[str, Any]]] = [[] for _ in streams]
+    for ev in events:
+        glyphs = {d.get("glyph") for d in (ev.get("noteheads") or [])}
+        rest = ev.get("rest") or {}
+        if rest.get("glyph"):
+            glyphs.add(rest["glyph"])
+        indices = {_glyph_index(g) for g in glyphs if g}
+        placed = False
+        for i, s in enumerate(streams):
+            if indices & s:
+                out[i].append(ev)
+                placed = True
+        if not placed:
+            out[0].append(ev)
+    if any(not s for s in out):
+        # ⚠️ A STREAM THE EXPORTER COULD NOT FILL IS NO SPLIT AT ALL. The
+        # verdict saw two voices among the notes it READ; if every note of
+        # one of them was dropped on the way out, writing an empty
+        # `<backup>`-separated voice puts a `<backup>` in the file for
+        # nothing.
+        return None
+    return out
+
+
+def _glyph_index(key: str) -> Optional[int]:
+    try:
+        return int(str(key).rsplit("/", 1)[-1])
+    except (TypeError, ValueError):
+        return None
+
+
+def R_cell_key(run: StaffRun, cell_index: int) -> str:
+    return f"cell/{run.page}/{run.system}/{run.staff}/{cell_index}"
+
+
+def _measure_xml(rec: Record, run: StaffRun, cell_index: int,
+                 events: List[Dict[str, Any]], divisions: int,
+                 counters: Dict[str, int]) -> List[str]:
+    """One bar's notes — one voice, or two separated by a `<backup>`.
+
+    ⚠️⚠️ THE STAGED PATH WROTE `<voice>1</voice>` ON EVERYTHING UNTIL
+    2026-09-10, and that was not merely a simplification: `_paired_spans` takes
+    a `voice_of` map to refuse an arc whose ends land in different streams —
+    because such an arc is UNPAIRED at both ends and makes the file invalid —
+    and this exporter passed it an EMPTY dict. The rule was present, inert,
+    and indistinguishable from one that had run and found nothing.
+    """
+    streams = _voice_split(rec, run, cell_index, events)
+    if streams is None:
+        lines, _units = _measure_events_xml(events, divisions, counters)
+        return lines
+    counters["two_voice_bars"] += 1
+    out, units = _measure_events_xml(streams[0], divisions, counters, voice=1)
+    if units > 0:
+        out.append("      <backup>\n"
+                   f"        <duration>{units}</duration>\n"
+                   "      </backup>")
+    second, _ = _measure_events_xml(streams[1], divisions, counters, voice=2)
+    out.extend(second)
+    # ⚠️ THE DUPLICATED RESTS ARE COUNTED, because the note-accounting control
+    # is an EQUALITY and a rest written once per voice would break it for
+    # correct behaviour. Naming the duplicate is what keeps the control able
+    # to fail for the right reason.
+    counters["rests_duplicated_across_voices"] += sum(
+        1 for ev in streams[1] if ev.get("kind") == "rest"
+        and any(ev is other for other in streams[0]))
+    return out
+
+
 def _measure_events_xml(events: List[Dict[str, Any]], divisions: int,
-                        counters: Dict[str, int]) -> List[str]:
+                        counters: Dict[str, int], voice: int = 1
+                        ) -> Tuple[List[str], int]:
+    """`(lines, duration units this voice consumed)`.
+
+    ⚠️ THE SECOND RETURN IS WHAT `<backup>` IS WRITTEN FROM, and it counts
+    CHORD-LEADING notes and rests only -- a chord member past the first does
+    not advance the cursor. `_mxl_voice_events` computes the identical number
+    for the legacy path; getting it wrong does not produce a wrong-looking
+    file, it produces a second voice offset from the first by a beat.
+    """
     out: List[str] = []
+    units = 0
     for ev in events:
         if ev.get("kind") == "rest":
-            out.extend(_rest_xml(ev, divisions, counters))
+            out.extend(_rest_xml(ev, divisions, counters, voice=voice))
+            units += max(1, int(round(float(ev["duration_beats"]) * divisions)))
             continue
         heads = ev.get("noteheads") or []
         tup = next((h["tuplet"] for h in heads
@@ -1208,7 +1362,8 @@ def _measure_events_xml(events: List[Dict[str, Any]], divisions: int,
                 head["duration_type"], int(head.get("dots") or 0))
             out.append(_legacy._mxl_note(
                 head["pitch"], "", xml_type, dots, beats, divisions,
-                is_chord=(n > 0), is_rest=False, indent="      ", voice=1,
+                is_chord=(n > 0), is_rest=False, indent="      ",
+                voice=voice,
                 time_modification=time_mod, tuplet_state=state,
                 # ⚠️ ON THE CHORD'S FIRST NOTE ONLY, which is the same rule
                 # `_mxl_voice_events` follows: MusicXML takes a chord's first
@@ -1265,11 +1420,13 @@ def _measure_events_xml(events: List[Dict[str, Any]], divisions: int,
                     counters["ties"] += 1
             if head.get("accidental"):
                 counters["accidentals"] += 1
-    return out
+            if n == 0:
+                units += max(1, int(round(beats * divisions)))
+    return out, units
 
 
 def _rest_xml(ev: Dict[str, Any], divisions: int,
-              counters: Dict[str, int]) -> List[str]:
+              counters: Dict[str, int], voice: int = 1) -> List[str]:
     """One `<rest>`, and the one place the BAR convention is written out.
 
     ⚠️ `measure="yes"` CARRIES NO `<type>`, and the two go together. The glyph
@@ -1295,7 +1452,8 @@ def _rest_xml(ev: Dict[str, Any], divisions: int,
         counters["fermatas"] += 1
     return [_legacy._mxl_note(
         None, "", xml_type, dots, beats, divisions, is_chord=False,
-        is_rest=True, indent="      ", voice=1, measure_rest=measure_rest,
+        is_rest=True, indent="      ", voice=voice,
+        measure_rest=measure_rest,
         fermata=fermata)]
 
 
@@ -1314,7 +1472,7 @@ def to_musicxml(result: Dict[str, Any]) -> Tuple[str, Dict[str, Any]]:
     # ⚠️ `+=`, not `update`. A Counter's `update` ADDS and a dict's REPLACES,
     # and the two spellings are one character apart -- an arc counted in both
     # halves would be silently overwritten rather than summed.
-    arcs_dropped += collections.Counter(_pair_arcs(parts, counters))
+    arcs_dropped += collections.Counter(_pair_arcs(rec, parts, counters))
 
     part_list: List[str] = []
     parts_xml: List[str] = []
@@ -1325,7 +1483,7 @@ def to_musicxml(result: Dict[str, Any]) -> Tuple[str, Dict[str, Any]]:
             f'    <score-part id="{pid}">\n'
             f'      <part-name>{_legacy._xml_escape(name)}</part-name>\n'
             f'    </score-part>')
-        parts_xml.append(_part_xml(part, pid, divisions, counters))
+        parts_xml.append(_part_xml(rec, part, pid, divisions, counters))
 
     xml = _legacy._score_partwise(result.get("source", {}) or {},
                                   part_list, parts_xml)
@@ -1403,8 +1561,14 @@ def to_musicxml(result: Dict[str, Any]) -> Tuple[str, Dict[str, Any]]:
     # it existed. So `to_musicxml` raises rather than returning an unbalanced
     # report: a control nobody consults is not a control.
     events_in_log = (len(rec.obs_of(Q.NOTEHEAD_CLASS)) + len(rec.obs_of(Q.REST)))
+    # ⚠️ A REST IN A TWO-VOICE BAR IS WRITTEN ONCE PER VOICE, and subtracting
+    # the duplicate is what keeps this an EQUALITY rather than an inequality
+    # that can no longer fail. The convention is the engraving's — each voice
+    # needs its own bar to sum — and `Q.VOICES` names it in
+    # `rests_in_every_voice` rather than leaving the exporter to discover it.
+    duplicated = int(counters.get("rests_duplicated_across_voices", 0))
     written = (int(counters["notes"]) + int(counters["rests"])
-               + int(counters["measure_rests_read"]))
+               + int(counters["measure_rests_read"]) - duplicated)
     report["balance"] = {
         # ⚠️ RESTS ARE IN THE CONTROL NOW. They were outside it while they had
         # no quantity, which is exactly how 838 glyphs stayed invisible: a
@@ -1414,6 +1578,7 @@ def to_musicxml(result: Dict[str, Any]) -> Tuple[str, Dict[str, Any]]:
         "noteheads_in_log": len(rec.obs_of(Q.NOTEHEAD_CLASS)),
         "rests_in_log": len(rec.obs_of(Q.REST)),
         "events_written": written,
+        "rests_duplicated_across_voices": duplicated,
         "events_not_written": report["notes_not_written_total"],
         "balanced": events_in_log == written + report["notes_not_written_total"],
     }
