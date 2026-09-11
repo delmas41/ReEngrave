@@ -105,6 +105,7 @@ def run_staged(pdf_path: str, pages: Sequence[int], *,
                detector: Any = None, dpi: int = 600,
                conf_threshold: float = 0.25, imgsz: Optional[int] = None,
                dossier: Any = None, roster: Any = None,
+               surya_fallback: bool = False, ocr_fallback: bool = False,
                legacy: Optional[Dict[str, Dict[str, Any]]] = None,
                progress: bool = False) -> Dict[str, Any]:
     """GATHER -> ADJUDICATE -> EVALUATE, once, in that order.
@@ -112,18 +113,36 @@ def run_staged(pdf_path: str, pages: Sequence[int], *,
     `legacy` is `{quantity: {subject_key: value}}` from `legacy.load`. Pass it
     here rather than gathering a second time to build the divergence table --
     see `run_staged_on`.
+
+    ⚠️⚠️ `pdf_path` IS FORWARDED TO `gather`, AND UNTIL 2026-09-11 IT WAS NOT.
+    This function took the path, used it to RASTERISE, and dropped it --
+    so `gather_margin_labels` saw `pdf_path=None` and filed
+    `not_implemented: "no pdf_path supplied to gather()"` on every staff of
+    every staged run this repo has ever made. `Q.MARGIN_LABEL` therefore had
+    NO PRODUCER, which is why `Q.INSTRUMENT` abstains `no_evidence` and the
+    part join falls back to position. The parameter existed on `gather` and
+    the only call site that ever supplied it was `gather`'s own forward to
+    the reader -- *the value existed and nothing read it*, in its sharpest
+    form: a reader reporting "not implemented" on a page that prints labels.
+
+    Measured on Litolff Beethoven 5 p.1-4 (`probe/margin_label_reach.py` in
+    `benchmarks/omr-part-join-phase2-2026-09/`): the cascade reads **50 labels
+    over 75 staves**, twelve of twelve on the movement's opening system.
     """
     prepared = prepare_pages(pdf_path, pages, dpi=dpi)
     return run_staged_on(prepared, detector=detector,
                          conf_threshold=conf_threshold, imgsz=imgsz,
-                         dossier=dossier, roster=roster, legacy=legacy,
-                         progress=progress)
+                         dossier=dossier, roster=roster, pdf_path=pdf_path,
+                         surya_fallback=surya_fallback,
+                         ocr_fallback=ocr_fallback,
+                         legacy=legacy, progress=progress)
 
 
 def run_staged_on(prepared: Sequence[Tuple[Any, Sequence[Any]]], *,
                   detector: Any = None, conf_threshold: float = 0.25,
                   imgsz: Optional[int] = None, dossier: Any = None,
-                  roster: Any = None,
+                  roster: Any = None, pdf_path: Any = None,
+                  surya_fallback: bool = False, ocr_fallback: bool = False,
                   legacy: Optional[Dict[str, Dict[str, Any]]] = None,
                   progress: bool = False) -> Dict[str, Any]:
     """The stages, over pages someone else prepared.
@@ -157,7 +176,9 @@ def run_staged_on(prepared: Sequence[Tuple[Any, Sequence[Any]]], *,
         print("GATHER")
     log = gather.gather(prepared, detector=detector,
                         conf_threshold=conf_threshold, imgsz=imgsz,
-                        dossier=dossier, roster=roster, progress=progress)
+                        dossier=dossier, roster=roster, pdf_path=pdf_path,
+                        surya_fallback=surya_fallback,
+                        ocr_fallback=ocr_fallback, progress=progress)
 
     if progress:
         print("ADJUDICATE")

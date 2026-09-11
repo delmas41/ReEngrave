@@ -161,6 +161,35 @@ def adjudicate_slot_index(ev: Evidence) -> Ruling:
                           "note": "positional: no identity was read here"})
 
 
+def _slots_are_ordinals(slots) -> bool:
+    """Is this slot table just the staff's position within its own system?
+
+    True when EVERY system's slot values are exactly `0 .. n-1` for that
+    system's own staff count -- i.e. the table expresses no suppression
+    anywhere, and so carries no information the staff ordinal does not.
+
+    ⚠️ WHAT MAKES A SLOT WORTH MORE THAN AN ORDINAL IS THE GAP. `slots.align`
+    matches a system against a reference lineup with DELETIONS allowed, so a
+    tacet staff shows up as a missing slot and the staves below it keep their
+    identity. A contiguous table has made no such claim. This asks the VALUES,
+    not the provenance, because the same values reach here under two different
+    `reason`s and only one of them is about where they came from.
+
+    ⚠️ A system whose slots repeat is not contiguous either, and falls out as
+    False -- correctly: a repeat is a broken table, and `part_partition` has
+    other evidence to weigh. Only a clean 0..n-1 is the ordinal.
+    """
+    by_system = {}
+    for v in slots:
+        sub = v.subject
+        key = (getattr(sub, "page", None), getattr(sub, "system", None))
+        by_system.setdefault(key, []).append(v.value)
+    if not by_system:
+        return False
+    return all(sorted(vals) == list(range(len(vals)))
+               for vals in by_system.values())
+
+
 @decision(
     quantity=Q.PART_PARTITION,
     checkable=Checkable.MIXED,
@@ -205,6 +234,24 @@ def adjudicate_part_partition(ev: Evidence) -> Ruling:
     error NEVER SHIPS -- the row abstains from the slot join and behaves
     exactly as today.
 
+    ⚠️⚠️ AND IT SHIPPED THE MEASURED 3-OF-27 ERROR ANYWAY, BY A ROUTE THE
+    PARAGRAPH ABOVE DOES NOT COVER -- found 2026-09-11 on Litolff Beethoven 5
+    mvt 1 p.1-4 (`benchmarks/omr-part-join-phase2-2026-09/`). The circularity
+    filter excludes a DEDUCED identity; it has nothing to say about a slot
+    that was never an identity at all. `adjudicate_slot_index` returns the
+    staff's own ordinal when no name was read -- which it declares, in its own
+    docstring and in its `detail` -- so `ev.verdicts(Q.SLOT_INDEX)` came back
+    full, `usable` was non-empty, and this function reported `join: "slot"`
+    over a table that was the position and nothing else. The exporter then
+    joined systems of 12, 11 and 8 staves by ordinal: 12 of 75 staff-systems
+    on the wrong instrument, a Timpani part carrying the Viola's key
+    signature, and parts of 111 / 93 / 16 measures in one file.
+
+    **A value can be honest at its own scope and a guess at the consumer's.**
+    `_slots_are_ordinals` is the check that was missing, and it asks the
+    VALUES rather than the provenance -- see the comment at its call site for
+    why a reason string would not have held.
+
     ⚠️ AND A THIRD FAILURE SHAPE NEITHER THIS NOR THE GATE ADDRESSES:
     `beethoven-sym5-mvt1-984073-p4` prints 11 staves in BOTH systems with
     DIFFERENT lineups (one suppresses Timpani and splits the bottom staff,
@@ -229,6 +276,51 @@ def adjudicate_part_partition(ev: Evidence) -> Ruling:
     # touches, and it is where the slot join was measured wrong.
     slots = ev.verdicts(Q.SLOT_INDEX, scope=Scope.SELF_AND_DESCENDANTS)
     usable = [v for v in slots if v.value is not None]
+    if usable and _slots_are_ordinals(usable):
+        # ⚠️⚠️ A SLOT TABLE THAT IS THE ORDINAL *IS* THE ORDINAL, AND JOINING
+        # ON IT IS THE JOIN THIS BRANCH HAS JUST REFUSED.
+        #
+        # Reaching here means the systems disagree about staff count. The
+        # only reason to prefer a slot over the ordinal is that a slot
+        # EXPRESSES the tacet case -- a suppressed staff leaves a GAP, so
+        # the staves below it keep their identity instead of shifting up.
+        # A table that numbers every system 0..n-1 with no gap anywhere has
+        # expressed no such thing: it is the position, relabelled, and
+        # consuming it would graft one instrument's music onto another,
+        # which is the exact failure `export._stitch_slots`' refusal exists
+        # to prevent and which its own docstring calls "correct and stays".
+        #
+        # ⚠️ MEASURED, Litolff Beethoven 5 mvt 1 pdf p.1-4
+        # (`benchmarks/omr-part-join-phase2-2026-09/`): all 75 slots came
+        # back as the staff's own ordinal, `adjudicate_slot_index` having no
+        # document-wide reference to pair against -- which its own docstring
+        # declares ("NOT WIRED: the document-wide reference lineup ... uses
+        # the SYSTEM'S OWN ordinal ... and makes no document-wide claim").
+        # That value is honest AT STAFF SCOPE and was being consumed HERE as
+        # a document-wide claim. The result was 12 of 75 staff-systems joined
+        # to the wrong instrument, including a Timpani part carrying the
+        # Viola's key signature, and parts of 111 / 93 / 16 measures in one
+        # file.
+        #
+        # ⚠️ THE TEST IS STRUCTURAL, NOT A REASON STRING, and that is
+        # deliberate: `adjudicate_slot_index` returns the ordinal under BOTH
+        # its reasons -- `named` differs from `full_lineup` only in what it
+        # cites, not in what it computes -- so filtering on the reason would
+        # admit the identical graft the moment a margin label is read.
+        #
+        # ⚠️ IT IS ONE-SIDED AND THE COST IS REAL: a score that suppresses
+        # only its LAST staves has a genuine slot table that is also
+        # contiguous, and this refuses a join that would have been right.
+        # That is abstention, not error, and the repair is a slot table that
+        # can express a gap -- see `adjudicate_slot_index`.
+        return Ruling(value={"join": "ordinal", "reason": "slots_are_ordinals"},
+                      reason="deduced_anchor",
+                      used=tuple(v.id for v in counts),
+                      detail={"slots_are_ordinals": True,
+                              "staves_per_system": sorted(sizes),
+                              "note": "the slot table is the staff position, "
+                                      "so joining on it is the ordinal join "
+                                      "this branch refused"})
     if not usable:
         # Either no slot was decided, or every one that was is a deduced
         # identity the harness refused. Both land here; the verdict's

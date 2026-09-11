@@ -102,6 +102,21 @@ def main(argv=None) -> int:
                     help="also EXPORT the run to MusicXML here. The coverage "
                          "report -- what the record could NOT carry -- goes "
                          "beside it as <path>.coverage.json.")
+    # ⚠️ THE FREE RUNG NEEDS NO FLAG AND THE PAID ONES DO. `pdf_path` is now
+    # always forwarded to `gather`, which turns on the PDF TEXT LAYER reader
+    # -- free, and measured to read NOTHING on a 19th-century scan (0 labels
+    # over 75 staves on Litolff Beethoven 5 p.1-4). The OCR rungs are what
+    # actually read that edition (50 of 75) and they cost wall clock that
+    # CLAUDE.md measures at ~75% of a whole-work run, so they are OPT-IN
+    # rather than defaulted: a default that silently trebles a gather is a
+    # decision somebody should take deliberately.
+    ap.add_argument("--surya", action="store_true",
+                    help="read margin labels with Surya where the PDF has no "
+                         "text layer. Needed for ANY instrument identity on a "
+                         "scan -- without it Q.MARGIN_LABEL stays empty and "
+                         "the part join falls back to staff position.")
+    ap.add_argument("--ocr", action="store_true",
+                    help="also allow the Tesseract rung for margin labels.")
     ap.add_argument("--progress", action="store_true")
     args = ap.parse_args(argv)
 
@@ -121,6 +136,7 @@ def main(argv=None) -> int:
     result = pipeline.run_staged(
         args.pdf, parse_pages(args.pages), detector=detector, dpi=args.dpi,
         conf_threshold=args.conf, imgsz=args.imgsz,
+        surya_fallback=args.surya, ocr_fallback=args.ocr,
         legacy=legacy.load(args.against) if args.against else None,
         progress=args.progress)
 
