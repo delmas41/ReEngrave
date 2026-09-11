@@ -1423,6 +1423,17 @@ NOT reach it); and `staged/__main__.py` writes the record JSON BEFORE it
 imports the exporter, which is what the tie-chain section below turns into a
 structural argument about where a decision can live. Found by three sessions
 in two days, each from a different direction.
+⚠️⚠️ **A FOURTH FACT ABOUT THE SAME IMPORT ORDER, AND IT IS THE ONE THAT LOOKS
+LIKE A BROKEN CHANGE: a SOURCE-LEVEL TEST FAILS ON A MID-RUN EDIT.** Measured
+2026-09-11 — `test_staged_voices.TestTheExporterReadsIt` asserts on
+`inspect.getsource(export._voice_of_notehead)`, and `getsource` reads the file
+FROM DISK using the line numbers the module carried when it was IMPORTED. Edit
+`export.py` while the suite is running and the executing code is the old one
+while the source read back is the new one, so the assertion fails on a function
+that is perfectly correct. **The failure is attributed to the change under
+test**, which is the expensive part: a full run reported `1 failed, 3792
+passed` and the test passed in isolation. **Do not edit `tools/` while a suite
+is running, and re-run before believing a single source-level failure.**
 
 ⚠️ **`counters["dynamics"] += len(directions)` COUNTED EVERY ENTRY OF THE
 LIST**, so a `<words>` would have been billed to the `dynamic` family and
