@@ -153,3 +153,259 @@ stamp is no evidence the tree was clean while the page was read.**
 records may be compared. Queued as its own job: fixing it means stamping at the
 START as well, and whether a mismatched pair should then REFUSE is a decision
 rather than an edit.
+
+### Job 3 — `direction` (the LAST declared stub)
+
+Dispatched off `9f1ea83e`, in parallel with job 2. Job 1's `<direction>`
+emission work is already IN main, so the collision that kept this item back
+earlier tonight no longer exists.
+
+⚠️ **It is two jobs, not one**, which is why it was left for last:
+`Q.DIRECTION_WORD` is the last input-starved quantity on the record, so the
+gatherer must be written as well as the adjudicator. The READING half already
+exists on the legacy path (`direction_text.py`, default-on, gated on a
+181-word musical lexicon that CLAUDE.md marks *never loosen*) and the brief
+forbids rebuilding it.
+
+**The one line that matters most in that brief** is CLAUDE.md's own governing
+rule, because this family walks straight into it: the direction reader
+**self-disables where neither `.venv-surya` nor Tesseract exists**, so
+
+> A fallback must never convert *"cannot tell"* into a definite answer.
+
+An unavailable OCR rung gathering zero words is otherwise indistinguishable
+from a page with no words printed on it. Making those two states
+unrepresentable-as-one is the acceptance condition, ahead of any coverage
+figure.
+
+Three hazards measured in the last 24 hours were carried in by name, because
+each has already cost someone a re-run: **ORDER placement** (a decision reading
+`None` from a quantity settled later, which no page can detect); **a
+byte-identity control passing while the code never runs**; and **a mutation
+battery anchored on a fragment that occurs three times**, silently mutating a
+different function. The `<=` balance warning was repeated in the strongest
+terms available — it has now been ignored once by someone who had read it.
+
+**LANDED as an ARGUED NEGATIVE** — merged at `5f57e183`. Suite on the MERGED
+tree **3,728 passed / 11 skipped** (3,707 + 21); `NO VOCABULARY` still reads
+**2**, which is the negative standing rather than being papered over. Findings:
+[benchmarks/omr-staged-tie-chain-2026-09/FINDINGS.md](../benchmarks/omr-staged-tie-chain-2026-09/FINDINGS.md).
+
+**No `Q.TIE_LINK` was built, and that is the right answer.** The reason is
+structural and closes the item rather than deferring it: **nothing below EXPORT
+can contribute a record row at all.** `staged/__main__.py` writes the record
+JSON *before* it imports the exporter, and a part is built inside `export.build`
+from `Q.PART_PARTITION` — so the merge that makes two detected halves one tie
+has no home in the record. EVALUATE is excluded separately, on the plan's own
+testable rule: `_paired_spans` prefers the first head's VOICE over dropping the
+span, which is a tie-break, and **no EVALUATE consequence may contain one.**
+
+⚠️ The handoff's framing of this item (*"the exporter ALREADY sets both flags;
+what is missing is a quantity NAMING the chain"*) was accurate and **stopped one
+step short** — it did not say the record has no way to receive one. That is now
+written into `NO_VOCABULARY` itself, where the next person meets it.
+
+REACH, measured by calling the exporter's own functions so the figure cannot
+drift from what the exporter does:
+
+| | Litolff p1-3 | Brahms p0-3 |
+|---|--:|--:|
+| tie LINKS / CHAINS | 59 / 46 | 632 / 275 |
+| chains longer than two notes | 4 | **82** |
+| crossing a system break | **0** | 2 |
+
+⚠️ **One document would have got two things wrong**: on Litolff the
+system-break case looks IMPOSSIBLE and every chain looks like a pair. The
+second publisher correcting the first, for what is now at least the fifth time
+in this thread.
+
+#### ⚠️⚠️ The defect it found is worth more than the quantity would have been
+
+**A chord's tie is written on the wrong note.** `<tied>` carries no `number=`
+and joins the two notes it names, but `voicing.group_chords_in_measure` hoists
+the flag onto the EVENT with `any()` and the renderer writes it at `n == 0` —
+so a chord whose UPPER member is tied gets the tie on its LOWEST note.
+Measured: **17 of 48 written ties on Litolff (35%) and 103 of 349 on Brahms
+(29%)** land on a note carrying no tie — **two publishers agreeing to within
+six points**, which is what makes it structural rather than one page's luck.
+
+⚠️ It is the **fermata bug's shape, one week later, in a different function and
+worse**: that one LOST a mark, this one puts a mark on the WRONG NOTE.
+⚠️ **Correctly NOT fixed here.** The hoist is in `voicing.py`, shared with the
+legacy exporter and therefore with the 11-work engraved benchmark, and the
+repair moves hundreds of elements — *a wiring pass may not change behaviour it
+has not priced*, which is the plan's §2b applied to the agent's own temptation.
+It is now counted on every run. **Queued.**
+
+⚠️ A second defect, found and fixed: `FAMILIES` maps **both** `tie` and `slur`
+to `Q.ARC_KIND` and `coverage()` credited **each with the whole population** —
+`decided: 514` where the split is 270/244. A reader comparing `decided 514`
+against `written 49` would have concluded the exporter drops 465 ties. Now
+attributed by value, derived from `FAMILIES` itself.
+
+⚠️ Its own first reach probe failed in the way this repo predicts, and it said
+so: a `start -> stop` dict loses a head that begins two links and read
+`{2: 50}` — **a plausible histogram whose tell was that not one chain exceeded
+two notes** on a document that plainly holds longer ones. *A plausible
+aggregate is not evidence that its parts are real*, for the second recorded
+time.
+
+### Job 4 — the chord tie, repaired and PRICED
+
+Dispatched in parallel with job 3, off `818d8e26`. **Not a wiring job** — a
+measured correctness defect handed over with its price already taken, which is
+exactly the handoff job 2 was right to make rather than to do.
+
+The crux is a stated convention that is **wrong for MusicXML**, and the brief
+leads with it because the symmetric-looking line three rows below is CORRECT:
+
+> a `<tied>` element carries **no `number=`** — it binds the two notes it names.
+> A `<slur>` does carry one and legitimately attaches once per chord.
+
+So the slur hoist beside it must NOT be "fixed by symmetry", and the brief says
+so by name. The repair itself deletes a lossy collapse rather than adding a
+rule: the per-note flags already survive on the group members, so the renderer
+can read each note's own flag instead of the event-level `any()`.
+
+⚠️ **The pricing is the job, not the patch.** `voicing.py` is shared with the
+legacy exporter, so this reaches the 11-work engraved benchmark and the 20-row
+scan gate. Four traps were carried in by name, each already paid for here:
+`scan_eval` **caches by default** and a cached A/B reports *identical on every
+row* — the clean result a change like this hopes for, whose only tell is the
+wall clock; the gate's **±6 edit** noise floor; OMR-NED's symmetry
+**rewarding under-prediction**; and the real possibility that **the metric is
+blind to this entirely** — the same number of `<tied>` elements is written
+either way, just on different notes, which is precisely the whole-rest
+convention's situation (identical on both families while the symbol ledger
+recorded 1,251 corrections). If the metric cannot see it, the ledger scores it.
+
+⚠️ One judgement was named rather than left to be discovered: **LilyPond's `~`
+is a chord-level suffix and cannot express a per-note tie.** The two exporters
+may legitimately diverge — `_lily_wedge_plan` set that precedent by dropping
+what it cannot express rather than approximating — but the choice must be
+stated, not made silently.
+
+The brief ends by making a **measured refusal an acceptable outcome**: if the
+price is unacceptable, come back with the number. This repo's refusals are
+among its most valuable entries and an agent that believes it must ship will
+ship anyway.
+
+**LANDED** — merged at `11b8866b` (+ the branch's last two commits). Suite on
+the MERGED tree, run here rather than taken on trust: **3,741 passed / 11
+skipped** (3,728 + 13). Findings:
+[benchmarks/omr-chord-tie-2026-09/FINDINGS.md](../benchmarks/omr-chord-tie-2026-09/FINDINGS.md).
+
+**The repair is essentially free and it is not the headline.** Engraved
+**2532 → 2530** edits; scan (11 rows) **34,731 → 34,739**, +8 at 0.023%, and a
+third measurement-only arm SPLITS that +8: **relocation alone is +2, the twelve
+newly-expressible marks are +6** — the metric's under-prediction reward,
+charged for writing ties the record says are there. Shipping the cheaper
+relocation-only arm was **refused on exactly that ground**, which is the right
+call: it would have withheld twelve correct marks to please a metric.
+
+⚠️ **Every moved element was adjudicated, not sampled** — and with no print,
+because the record carries its own test: `record.Checkable`'s rule that *a
+tie's two ends must be the same pitch*. The one engraved element ties
+**G2 → D5** before and **D5 → D5** after. Decisive.
+
+#### ⚠️⚠️ The finding that outranks the repair
+
+**`transcribe._pair_ties_in_staff` pairs tie ends by GEOMETRY; `<tied>`
+resolves by PITCH.** **20 of 79 engraved links (25%) and 64 of 237 scan links
+(27%) bind two notes of different pitch** — thirds — and a further **115 of 237
+scan links (49%) have no end in the next event at all.** No renderer can write
+those correctly.
+
+⚠️ **The old hoist was MASKING it**, by writing both ends at the chord's bottom
+note so that any two chords sharing a bottom pitch agreed by accident. The
+proof the mask was accidental is the sharpest thing in the report: **the base
+arm resolves 60 ties where the record supports at most 58.** So the +8 is not
+the repair being wrong — it is a defect becoming *visible*.
+
+**The boundary case is handed over ready to run**, and it is the good kind —
+two ENGRAVED pages where the pitch reading is near-perfect, so the pairing is
+the only suspect: `mozart-sym41-mvt1` **8 of 9 wrong** against
+`beethoven-sym5-mvt1` **11 of 11 right**. `probe/pairing_pitches.py` needs no
+truth file.
+
+⚠️ **LilyPond diverges, deliberately and on evidence rather than on principle**:
+`~` after a chord resolves BY PITCH, verified by compiling both cases
+(`<c e g>~ <c e>` ties silently; `<c e g>~ <d f a>` warns three times), **so the
+defect does not exist there** and the exporter was left alone.
+
+#### ⚠️ Two instrument failures worth more than their fixes
+
+* **A race it created and caught**: the mutation battery `git checkout`s the
+  file it mutates while a three-arm A/B was reading the live worktree — and
+  `export.py` was in fact left mutated. Both killed, arms re-run against
+  snapshot trees, and the clean results **checked** (the snapshot run
+  reproduces 34739 and 2530 to the edit) rather than argued.
+* ⚠️⚠️ **`pytest` reported `577.54s` for a run that took hours of wall clock.**
+  That is TEST time, not elapsed — *the number that makes a starved run look
+  normal in a log*. Under a load average above 7 from sibling sessions it twice
+  nearly reported a starved run as a HANG, and what separated the two was the
+  process CPU clock, not the progress bar. ⚠️ And diagnosing it by running
+  candidates in parallel made it worse: **the instrument competed with its
+  subject.** Carry this into any overnight run on a loaded machine.
+
+#### ⚠️ A correction I had to make MYSELF, and it is the named failure
+
+The agent reported the tie-chain findings doc and CLAUDE.md *"both corrected in
+place"*. **CLAUDE.md was; the findings doc was not** — §2 still read
+**NOT FIXED, DELIBERATELY** with no supersession note, one day after it was
+fixed. That is *fixed-then-kept-open-in-prose*, the documentation dual of
+detected-then-dropped, which this repo has now paid for three times (the
+accents claim, the `Tp.` branch, this).
+
+⚠️ **The governing file being right is what makes the stale copy dangerous**:
+whoever opens the findings doc first meets a work order that no longer exists,
+and nothing contradicts them. Supersession note added here, with the original
+reasoning explicitly NOT retracted — declining to change unpriced shared
+behaviour was correct, and *a wiring pass may not change behaviour it has not
+priced* never forbade the repair, it named its precondition.
+
+⚠️ **The general lesson for this manager role: a report saying "docs corrected"
+is a claim about the tree and is one grep from being checked.** It was checked
+here because CLAUDE.md has a standing warning about exactly this shape.
+
+### Job 5 — tie pairing: GEOMETRY in, PITCH out
+
+Dispatched off `0b1efb31`, in parallel with job 3. **A diagnosis-first job**,
+and the brief says so in its first line: *do not open with a fix*. The defect
+has been invisible for months; naming its cause is worth more than a rushed
+patch, and **a diagnosis with no repair was declared a complete deliverable.**
+
+`_pair_ties_in_staff` (`transcribe.py:2390`) pairs a tie's two flanking
+noteheads by **page-pixel geometry** and sets two booleans. It **records no
+link** — and `<tied>` carries no `number=`, so the ends are re-associated
+downstream **by pitch**. Two mechanisms, no shared identifier.
+
+⚠️ **The boundary case is the gift and the brief leads with it.**
+`mozart-sym41-mvt1` is **8 of 9 wrong**; `beethoven-sym5-mvt1` is **11 of 11
+right** — both ENGRAVED, where the pitch reading is near-perfect, **so the
+pitch reading is ruled out as the confound and the pairing is the only
+suspect.** That is an unusually clean separation for this project. Four
+hypotheses were handed over unprivileged, with a note that the answer may be
+more than one — the leading one being that Mozart 41's Viola plays **divisi
+double stops**, which CLAUDE.md already records as distorting that work's note
+recall, and which is *exactly* the geometry (two heads a third apart at one x)
+that a nearest-flanking-head rule gets wrong.
+
+⚠️ **The invariant is what makes this measurable at scale with no truth file**:
+a tie joins two notes of the SAME pitch — that is what a tie IS, and
+`record.Checkable` already encodes it. So a pairing that binds a third is
+**provably** wrong off the print. The brief forbids weakening it to make a rule
+pass, and allows exactly one exception, handled as a spelling question rather
+than a tolerance: enharmonics.
+
+⚠️ One boundary drawn in advance, because it is the difference between a fix
+and a fabrication: **using the pitch invariant as a VETO is legitimate; using
+it to SEARCH for a same-pitch partner is not obviously so** — that manufactures
+ties between notes that merely share a pitch. Priced apart if attempted.
+
+⚠️ And one trap specific to this job, which would otherwise have produced a
+confident zero: **`_pair_ties_in_staff` runs inside `transcribe`, not inside
+`export`**, so the export-only A/B that every recent job has rightly preferred
+is **structurally blind to this change**. Named in the brief as something to
+check *before* trusting a zero — a control that cannot see its subject is this
+repo's single most repeated instrument failure.

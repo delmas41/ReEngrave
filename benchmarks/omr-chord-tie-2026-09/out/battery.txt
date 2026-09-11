@@ -1,0 +1,11 @@
+ARM 0 positive control on the unmutated tree: SURVIVED  (expected SURVIVED, 505 passed)
+RED: LEGACY: restore the hoist for tie STARTS (the original defect)
+RED: LEGACY: restore the hoist for tie STOPS
+RED: LEGACY: read the WRONG end's flag
+RED: LEGACY: tie EVERY member of a chord holding one tie
+RED: STAGED: restore the hoist for tie STARTS
+RED: STAGED: restore the hoist for tie STOPS
+RED: STAGED: count ties per EVENT again, not per written element
+RED: STAGED: the upper-note counter fires on every upper member
+RED: VOICING: the LilyPond chord flag reads only the lowest head
+RED: CONTROL: no note is ever tied (a single-note tie must fail too)

@@ -208,10 +208,29 @@ def group_chords_in_measure(
             n.get("stem_direction") for n in group if n.get("stem_direction")
         )
         stem_dir = directions.most_common(1)[0][0] if directions else None
-        # Tie flags: an event ties INTO the next event if ANY of its
-        # noteheads has `tied_to_next` set, and similarly for `tied_from_prev`.
-        # In practice most ties bind one notehead, but for chord-to-chord
-        # ties the convention is "if any voice is tied, the chord is tied."
+        # ⚠️⚠️ A TIE BELONGS TO A NOTEHEAD, NOT TO THE CHORD, AND THESE TWO
+        # FLAGS ARE A LOSSY SUMMARY OF THE PER-NOTE ONES.
+        #
+        # `<tied>` carries no `number=` and joins THE TWO NOTES IT NAMES; a
+        # `<slur>` carries one and legitimately hangs off the chord's
+        # representative note. That is the one place a tie and a slur are
+        # genuinely different spanners rather than the same one under two
+        # names — so the slur/wedge/articulation hoists below are correct and
+        # this one may NOT be read the same way.
+        #
+        # The per-note flags survive untouched on the members of `noteheads`,
+        # and THEY are the truth: `_mxl_voice_events` and the staged renderer
+        # both read `nh["tied_to_next"]` per head. Reading the event-level
+        # flag and writing it at the chord's first note put the tie on the
+        # WRONG NOTE wherever an upper member was the tied one — measured at
+        # 62 relocated marks plus 12 the event flag could not express at
+        # all, over 11 stored scan rows, and ONE mark over the 11 engraved
+        # works (`benchmarks/omr-chord-tie-2026-09/`).
+        #
+        # ⚠️ These stay, because LILYPOND WANTS EXACTLY THIS SHAPE: `~` after
+        # a chord is a chord-level post-event which LilyPond resolves against
+        # the FOLLOWING chord by pitch, so it cannot land on the wrong note
+        # the way `<tied>` can. `_lily_event` reads them; see its docstring.
         tied_to_next = any(n.get("tied_to_next") for n in group)
         tied_from_prev = any(n.get("tied_from_prev") for n in group)
         event = {

@@ -243,3 +243,48 @@ class TestSplitVoices:
         # Voice 1 = stem-up; Voice 2 = stem-down
         assert "C5" in v1_pitches and "D5" in v1_pitches
         assert "D4" in v2_pitches and "C4" in v2_pitches
+
+
+class TestTheChordTieFlagIsTheOrOfItsHeads:
+    """⚠️ `group_chords_in_measure`'s event-level tie flags are a LOSSY
+    summary of the per-head ones and the MusicXML renderers no longer read
+    them -- but LILYPOND does, where `~` is a chord-level post-event resolved
+    against the following chord BY PITCH. So the summary must stay an `any()`
+    over every head: reading only the lowest would drop the `~` from a chord
+    whose upper voice is the tied one, which is a LOST tie rather than a
+    misplaced one. A mutation battery arm making it `group[0]` SURVIVED until
+    this test existed.
+    """
+
+    @staticmethod
+    def _chord(tied_index):
+        dets = []
+        for i, pitch in enumerate(("C4", "E4", "G4")):
+            det = {"class": "noteheadBlackOnLine", "category": "notehead",
+                   "bbox": [10, 40 - 8 * i, 5, 5],
+                   "bbox_page": [10, 40 - 8 * i, 5, 5],
+                   "confidence": 0.9, "pitch": pitch,
+                   "duration_beats": 1.0, "duration_type": "quarter",
+                   "dots": 0}
+            if i == tied_index:
+                det["tied_to_next"] = True
+            dets.append(det)
+        events = group_chords_in_measure(dets)
+        assert len(events) == 1 and len(events[0]["noteheads"]) == 3, events
+        return events[0]
+
+    def test_any_head_sets_the_chord_flag(self):
+        for i in range(3):
+            assert self._chord(i)["tied_to_next"] is True, i
+
+    def test_the_flagged_HEAD_keeps_its_own_flag(self):
+        """The per-head flags are what the MusicXML renderers read, so they
+        must survive the grouping untouched -- and exactly one of them."""
+        for i in range(3):
+            heads = self._chord(i)["noteheads"]
+            flagged = [h["pitch"] for h in heads if h.get("tied_to_next")]
+            assert len(flagged) == 1, (i, flagged)
+
+    def test_an_untied_chord_sets_NOTHING(self):
+        """The positive control: a flag that is always True says nothing."""
+        assert self._chord(-1)["tied_to_next"] is False

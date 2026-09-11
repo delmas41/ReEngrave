@@ -1346,6 +1346,165 @@ today `read_directions` returns only winners, so a refused candidate cannot be
 split into *the decoder was silent* and *the lexicon refused*, and that is the
 one change that would make this decision more than a state machine.
 
+### The tie CHAIN — an argued NEGATIVE, and two defects found measuring it
+
+2026-09-10/11, no flag. Phase 1 item 5 of the wiring plan, and **the only item
+that runs the other way: the EXPORTER already does the job and the RECORD
+cannot name it.** `tied_to_next` / `tied_from_prev` are the last two entries in
+`gather_coverage.NO_VOCABULARY` and **they STAY there** — no `Q.TIE_LINK` was
+built, deliberately. Findings:
+[benchmarks/omr-staged-tie-chain-2026-09/FINDINGS.md](benchmarks/omr-staged-tie-chain-2026-09/FINDINGS.md).
+
+⚠️⚠️ **WHY NOT: a chain is a fact about a PART and EXPORT cannot write a record
+row.** `staged/__main__.py` writes the record JSON **before** it imports the
+exporter, and the part is built inside `staged/export.build` from
+`Q.PART_PARTITION` — so the merge that makes two detected halves ONE tie has no
+home below EXPORT. A `Kind.STAFF` decision would reach 630 of 632 links and
+would be **a SECOND pairing that can disagree with the exporter's**, with the
+FILE following the exporter; a per-arc decision adds nothing, because
+`adjudicate_arc_kind` already records the flanked head pair inside the cell.
+**A quantity nothing reads would have emptied `NO_VOCABULARY` for free while
+changing nothing** — the *`wants` entry the decision never reads is INERT*
+anti-pattern, bought with a green line. The entry now carries the measured
+boundary instead.
+
+**REACH** (one fresh gather each, the exporter's own pairing): Litolff
+`984073` p1-3 **270 tie arcs → 261 merged groups → 59 LINKS → 46 CHAINS**, 4
+longer than two notes, 10 crossing a barline, **0** crossing a system break;
+Breitkopf Brahms 1 `317803` p0-3 **1658 → 1227 → 632 LINKS → 275 CHAINS**, 82
+longer than two, 140 crossing a barline, **2** crossing a system break, with
+chains running to **nine** notes. ⚠️ **The dominant number is the DETECTOR's**:
+362 and 762 merged arcs bind fewer than two noteheads and are refused, the same
+76% the arc export already records, arriving from the tie side — so 59 links is
+not a recovery rate. ⚠️ **Litolff alone would have made the system-break case
+look impossible and the chain look like a pair**, which is why both documents
+were gathered.
+
+**What shipped is that the exporter SAYS what it did**, plus two defects:
+
+⚠️⚠️ **`tie` AND `slur` SHARE `Q.ARC_KIND` AND THE CENSUS GAVE BOTH ROWS THE
+WHOLE POPULATION** — each read `decided: 514` where the real split is 270 ties
+and 244 slurs, which `detector_glyphs` had right one column to the left. A
+reader comparing `decided 514` with `written 49` would conclude the exporter
+drops 465 ties. Now attributed by VALUE, **derived from `FAMILIES` itself**
+rather than a fourth hand-written column, with the partition asserted; an
+abstention on a shared quantity names no kind and is reported ONCE, as
+`abstained_without_a_family`.
+
+⚠️⚠️ **A TIE ON A CHORD COULD LAND ON A NOTE THAT CARRIES NO TIE, AND THIS
+SESSION MADE IT A NUMBER** (it is REPAIRED one section down — the description
+that follows is the defect AS FOUND, in the past tense). `<slur>` carries a
+`number=` and hangs off the chord's representative `<note>`; `<tied>` carries
+none and joins **the two notes it names** — `_pair_arcs` said so in its own
+docstring and the renderer ignored it. `voicing.group_chords_in_measure` hoists
+the flag onto the EVENT with `any()` and the renderer wrote it at `n == 0`, so
+a chord whose **upper** member is tied got the tie on its **lowest** note: a
+tie between two different pitches. Litolff p1-3: of 48 written ties **17 land on a note that carries
+none** (and 15 of the stops); Brahms p0-3 **103 of 349** and 101 — **35% and
+29%, two publishers agreeing to within six points.** **Under-emission is the
+SMALLER half (1 event on Litolff)** — the failure is *wrong note*, not *missing
+note*. ⚠️⚠️ **IT WAS NOT FIXED THERE, AND IT IS FIXED NOW — see the section
+below, which also records that repairing it uncovered a bigger defect
+underneath.** The reason it was deferred stands as written: the hoist is in
+`voicing.py`, shared with the LEGACY exporter, so *a wiring pass may not change
+behaviour it has not priced* — the pricing was a separate job and is done.
+
+⚠️ Controls: one gather exported twice, this exporter against `origin/main`'s —
+**the MusicXML is BYTE-IDENTICAL on BOTH documents** while the coverage reports differ
+exactly where intended, which is the positive control a byte-identical file
+needs. Mutation battery **8 arms, all red**, including a positive control in
+the same class; ⚠️ **a ninth arm SURVIVED and was an EQUIVALENT mutant** — a
+guard in front of an assignment cannot change the outcome, so the guard was
+DELETED rather than tested around.
+
+### The chord tie is REPAIRED — and it was masking a bigger defect
+
+2026-09-11, no flag. The job above, priced and done. Both MusicXML renderers
+read `tied_to_next` / `tied_from_prev` off the **HEAD** instead of the event's
+`any()`. Findings:
+[benchmarks/omr-chord-tie-2026-09/FINDINGS.md](benchmarks/omr-chord-tie-2026-09/FINDINGS.md).
+
+**REACH FIRST**, over the stored `.omr.json` files the A/B then re-exports:
+**62 marks RELOCATE and 12 are ADDED** on 11 scan rows (a chord with two
+genuinely tied members got one `<tied>` and now gets two); on the 11 engraved
+works it is **ONE** mark, relocating. ⚠️ **An event flag with no flagged head
+under it occurs ZERO times over all 33 transcriptions**, which is why the
+repair DELETES a branch rather than adding a fallback — there was nothing to
+fall back from, and a fallback would have guessed which note is tied.
+
+**PRICED export-only, one gather exported by two trees, so the transcribe half
+is byte-identical and the delta carries no detector jitter.** ENGRAVED
+**2532 → 2530 edits**, 1 of 11 files moving, the `<tied>` COUNT unchanged.
+SCAN (11 stored rows of the 20-row gate) **34,731 → 34,739**, `<tied>` 231 →
+237 starts. ⚠️ **A third, measurement-only arm splits that +8**: relocation
+alone is **+2** and the 12 added marks are **+6** — the metric's
+under-prediction reward, the same trade the articulation ship took at +97.
+⚠️ The ±6 noise floor does NOT apply: two exports of one transcription set are
+deterministic.
+
+⚠️ **The single engraved element was adjudicated and is decisive**: the base
+file ties **G2 → D5** across a barline and the fix ties **D5 → D5**. No print
+was needed — `record.Checkable`'s own rule is that a tie's two ends must be the
+same pitch.
+
+⚠️⚠️ **AND THAT RULE, RUN OVER THE WHOLE FILE, IS THE REAL FINDING: A QUARTER
+OF THE TIE PAIRINGS BIND TWO DIFFERENT PITCHES.** `transcribe._pair_ties_in_staff`
+flags a LEFT head and a RIGHT head by GEOMETRY and records no link between
+them; `<tied>` carries no `number=` and resolves BY PITCH, so a pairing whose
+ends differ in pitch **cannot be written correctly by any renderer**. The old
+hoist wrote both ends at the chord's LOWEST note and therefore MASKED such a
+pairing whenever two chords shared their bottom pitch. Measured with
+`probe/pairing_pitches.py`, no truth file: **20 of 79 engraved links (25%) and
+64 of 237 scan links (27%)** bind different pitches — thirds, not near misses
+(`F4→A4`, `E5→G5`, `Ab3→C4`) — and a further **115 of 237 scan links (49%) have
+no end in the next event at all**. ⚠️⚠️ The proof that the mask was accidental:
+scored on that invariant the base arm **resolves 60 ties where the record
+supports at most 58**, while the fix lands at 57. ⚠️ The check is ONE-SIDED (an
+unresolved tie is certainly wrong; a resolved one may still be invented) and
+does not say WHICH end is wrong — the pairing, or the pitch read on one head.
+**The pairing is the ranked next work, and the ENGRAVED 20 is where to start**,
+because there the pitch reading is near-perfect and the pairing is left as the
+only suspect — and inside those, on **`mozart-sym41-mvt1`, which is 8 of 9
+WRONG against `beethoven-sym5-mvt1`'s 11 of 11 RIGHT**, two engraved pages of
+one corpus at opposite ends of the same measure.
+
+⚠️ **LilyPond is deliberately left alone and diverges.** `~` after a chord is a
+chord-level post-event LilyPond resolves against the following chord BY PITCH —
+verified by compiling `out/lily_tie_semantics.ly`, where `<c e g>~ <c e>` ties c
+and e silently and `<c e g>~ <d f a>` warns three times — so the defect does not
+exist there, and `<c~ e g>` would be an unpriced change to an exporter with no
+metric. Same call as `_lily_wedge_plan`.
+
+⚠️ `tie_starts_written_on_an_untied_note` is **replaced, not pinned at zero**,
+by `tie_starts_on_an_upper_chord_note`: a counter naming an element the
+exporter no longer writes is the *control that computes the wrong thing*.
+
+Full suite **3741 passed / 11 skipped** (baseline 3728 / 11); `health --check`,
+`inventory --check`, `gather_coverage` all exit 0.
+
+⚠️⚠️ **THREE PROCESS LESSONS, all from the instruments rather than the code.**
+(1) **A mutation battery `git checkout`s the files it mutates, so an A/B arm
+that reads the WORKING TREE is not isolated from it** — the two were running
+together, the first three-arm run was discarded, and the arms were re-run
+against snapshot trees only. CLAUDE.md's staged-gather warning, one family
+over. (2) **FOUR of ten arms survived the first battery and all four were real
+gaps**, each a test naming a mechanism it only half exercised: the tie STOP was
+never asserted on either path, the staged counter's distinguishing case (two
+tied heads in one chord) could not be built from a page fixture, and nothing
+asserted the event-level flag is still the `any()` LilyPond reads. *One red arm
+is not a battery* — six were red immediately and would have been reported as a
+pass. (3) ⚠️ **A STARVED TEST RUN READS EXACTLY LIKE A HANG, AND PYTEST'S OWN
+TIMER HIDES IT.** On a machine at load 7 the suite stalled twice at the same
+position and was nearly reported as hung; the process's CPU clock said starved,
+and what NAMED it was mapping the dot count onto `--collect-only`'s ordered list
+and finding a test whose own docstring prices it (`instruments.lookup` at
+23-136 ms per string over a 1,422-label corpus). ⚠️ **Then pytest reported
+`577.54s` for a run that took hours of wall clock** — that figure is TEST time,
+not elapsed, so it is precisely the number that would make a starved run look
+normal in a log. And diagnosing the stall by running candidate tests in parallel
+added two more pytest processes to the same saturated machine: **the instrument
+competed with its subject.**
+
 ### A MARK must be attached to its notehead — bar sums on perfect ink
 
 `A-DUR-8` said bar sums are wrong on a clean LilyPond engraving, blocking the

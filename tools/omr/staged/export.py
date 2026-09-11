@@ -756,6 +756,31 @@ def _pair_arcs(rec: Record, parts: Sequence[Sequence[StaffRun]],
                                           breaks, voice_of)
             n_spans += len(spans)
             if kind == "tie":
+                # ⚠️⚠️ THE CHAIN IS COUNTED HERE BECAUSE THIS IS THE ONLY
+                # PLACE THAT KNOWS IT. `tied_to_next` / `tied_from_prev` are
+                # the last two entries in `gather_coverage.NO_VOCABULARY`: no
+                # `Q` names the chain, because a chain is a fact about a PART
+                # -- it crosses barlines and system breaks -- and the part is
+                # built HERE, after `Q.PART_PARTITION` is read. So the record
+                # cannot say how many ties this document has; the exporter
+                # can, and until this counter it did not say either.
+                #
+                # ⚠️ A CHAIN IS NOT A LINK AND THE NUMBERS DIFFER: on
+                # Breitkopf Brahms 1 p0-3 632 links make 275 chains, 82 of
+                # them longer than two notes. A report quoting links as
+                # "ties" over-counts every chain of three or more.
+                links: List[Tuple[int, int]] = []
+                for (sm, _sx), (tm, _tx), first, last in spans:
+                    counters["tie_links_marked"] += 1
+                    if sm != tm:
+                        counters["tie_links_crossing_a_barline"] += 1
+                    if any(b in range(sm + 1, tm + 1) for b in breaks):
+                        counters["tie_links_crossing_a_system_break"] += 1
+                    links.append((id(first), id(last)))
+                for n in _chain_sizes(links).values():
+                    counters["tie_chains_marked"] += 1
+                    if n > 2:
+                        counters["tie_chains_over_two_notes"] += 1
                 for (_a, _b, first, last) in spans:
                     # ⚠️ A TIE IS NOT NUMBERED. MusicXML `<tie>`/`<tied>` join
                     # the two notes they name and carry no `number=`, so there
@@ -934,6 +959,34 @@ def _place_wedges(rec: Record, parts: Sequence[Sequence[StaffRun]],
             first_det.setdefault("wedge_states", []).append((number, kind))
             last_det.setdefault("wedge_states", []).append((number, "stop"))
     return dict(dropped)
+def _chain_sizes(links: Sequence[Tuple[int, int]]) -> Dict[int, int]:
+    """`{chain root: how many NOTES it joins}` — union-find over shared ends.
+
+    ⚠️ NOT A `start -> stop` DICT, AND THE DIFFERENCE IS MEASURABLE. A
+    notehead can begin two links — a chord member tied onward in one voice
+    while the head beside it starts another — so keying on the start silently
+    drops the second and reports every chain as a pair. The first cut of the
+    reach probe did exactly that and read `{2: 50}` on a page whose chains run
+    to four notes.
+
+    ⚠️ A chain of N notes is N-1 links, so the value is the member COUNT and
+    never the link count; the two differ by one per chain and quoting the
+    wrong one is how "ties" and "tie links" drift apart.
+    """
+    parent: Dict[int, int] = {}
+
+    def find(x: int) -> int:
+        parent.setdefault(x, x)
+        while parent[x] != x:
+            parent[x] = parent[parent[x]]
+            x = parent[x]
+        return x
+
+    for a, b in links:
+        ra, rb = find(a), find(b)
+        if ra != rb:
+            parent[ra] = rb
+    return dict(collections.Counter(find(x) for x in parent))
 
 
 def _flatten_part(part: Sequence[StaffRun]):
@@ -1713,9 +1766,16 @@ def _measure_events_xml(events: List[Dict[str, Any]], divisions: int,
                 # LOWEST FIRST and carried the marks up onto the EVENT, which
                 # is why they are read from `ev` here and not from `head`.
                 slur_states=(ev.get("slur_states") if n == 0 else None),
-                tied_to_next=bool(ev.get("tied_to_next")) if n == 0 else False,
-                tied_from_prev=(bool(ev.get("tied_from_prev"))
-                                if n == 0 else False),
+                # ⚠️⚠️ ...BUT THE TIE IS PER HEAD, AND IS THE ONE SPANNER MARK
+                # THAT IS. `<slur>` carries a `number=` and hangs off the
+                # chord's representative note; `<tied>` carries none and joins
+                # THE TWO NOTES IT NAMES, which is why `_pair_arcs` calls this
+                # "the one place a tie and a slur are genuinely different
+                # spanners". Reading `ev` and writing at `n == 0` put the mark
+                # on the chord's LOWEST note whenever an upper member was the
+                # tied one. See `benchmarks/omr-chord-tie-2026-09/FINDINGS.md`.
+                tied_to_next=bool(head.get("tied_to_next")),
+                tied_from_prev=bool(head.get("tied_from_prev")),
                 # ⚠️ PER HEAD, NOT PER EVENT -- unlike the slur and tie marks
                 # just above, which sit on the chord's FIRST note because
                 # MusicXML takes that note as the chord's representative for a
@@ -1765,8 +1825,41 @@ def _measure_events_xml(events: List[Dict[str, Any]], divisions: int,
                 for _num, kind in (ev.get("slur_states") or ()):
                     if kind != "stop":
                         counters["slurs"] += 1
-                if ev.get("tied_to_next"):
-                    counters["ties"] += 1
+            # ⚠️⚠️ OUTSIDE `if n == 0`, AND THAT IS THE FIX RATHER THAN A
+            # TIDY-UP. A TIE IS NOT A SPAN. `<slur>` carries a `number=` and
+            # hangs off the chord's representative `<note>`; `<tied>` carries
+            # none and joins THE TWO NOTES IT NAMES — `_pair_arcs` calls this
+            # "the one place a tie and a slur are genuinely different
+            # spanners". `voicing.group_chords_in_measure` hoists the flag
+            # onto the EVENT with `any()`, and reading THAT here wrote the
+            # mark at the chord's LOWEST note whenever an upper member was the
+            # tied one: 17 of 48 written ties on Litolff `984073` p1-3 and 103
+            # of 349 on Breitkopf Brahms 1 p0-3, two publishers agreeing to
+            # within six points. Repaired 2026-09-11 and priced on both
+            # families — `benchmarks/omr-chord-tie-2026-09/FINDINGS.md`.
+            #
+            # ⚠️ COUNTED AT THE RENDER, once per WRITTEN `<tie type="start">`,
+            # which is now once per tied HEAD and no longer once per event.
+            # That is the `FAMILIES` rule — only the counter says what reached
+            # the FILE — and it is why the number can legitimately exceed the
+            # old one on a chord with two tied members.
+            if head.get("tied_to_next"):
+                counters["ties"] += 1
+            # ⚠️ THE DEFECT'S OWN COUNTERS ARE REPLACED RATHER THAN KEPT AT
+            # ZERO. `tie_starts_written_on_an_untied_note` counted an element
+            # the exporter wrote; after the repair no such element exists, so
+            # keeping the name would be a counter that reports something the
+            # file does not contain — the "control that computes the wrong
+            # thing" family this repo has already recorded four times. What
+            # replaces it is a POSITIVE figure about the file: a tie written
+            # on a chord member that is NOT the first note, which is exactly
+            # the population the old hoist misplaced and is impossible to
+            # write at all under the old rule.
+            if n > 0:
+                for key, name in (("tied_to_next", "tie_starts"),
+                                  ("tied_from_prev", "tie_stops")):
+                    if head.get(key):
+                        counters[name + "_on_an_upper_chord_note"] += 1
             if head.get("accidental"):
                 counters["accidentals"] += 1
             if n == 0:
@@ -2272,6 +2365,26 @@ def coverage(result: Dict[str, Any],
     from . import inventory
     sites, indirect = inventory._gather_sites()
 
+    # ⚠️⚠️ TWO FAMILIES CAN SHARE ONE QUANTITY, AND UNTIL THIS LINE BOTH ROWS
+    # REPORTED THE WHOLE POPULATION. `tie` and `slur` are both `Q.ARC_KIND`,
+    # so on Litolff `984073` p1-3 each row read `decided: 514` — the arcs of
+    # BOTH kinds, stated twice — against a real split of **270 ties and 244
+    # slurs**, which `detector_glyphs` had right all along (270 / 244) one
+    # column to the left. A reader comparing `decided 514` against `written
+    # 49` would conclude the exporter drops 465 ties.
+    #
+    # ⚠️ THE SPLIT IS DERIVED FROM `FAMILIES` ITSELF, never a second table: a
+    # quantity claimed by more than one family is attributed by VALUE, and the
+    # family names ARE the values `adjudicate_arc_kind` returns. A fourth
+    # hand-written column here would be one more thing to keep in step.
+    shared = collections.Counter(q for q, _p, _c in FAMILIES.values() if q)
+    # ⚠️ AN ABSTENTION ON A SHARED QUANTITY NAMES NO FAMILY, and that is the
+    # honest reading rather than a shortcut: `arc_kind` abstains `no_arc_box`
+    # precisely when it could not say WHICH kind, so filing it under `tie` and
+    # again under `slur` is the same double count one row up. Reported ONCE,
+    # at the top of the report, keyed by the quantity it belongs to.
+    unattributed: Dict[str, Dict[str, int]] = {}
+
     rows: List[Dict[str, Any]] = []
     for family, (quantity, prefixes, counter_keys) in sorted(FAMILIES.items()):
         n_detected = sum(n for cls, n in detected.items()
@@ -2310,11 +2423,34 @@ def coverage(result: Dict[str, Any],
             continue
 
         spec = A.REGISTRY.get(quantity)
-        decided = len([v for v in rec.verdicts_of(quantity)
-                       if v["outcome"] == "decided"])
-        abstained = collections.Counter(
-            v["reason"] for v in rec.verdicts_of(quantity)
-            if v["outcome"] != "decided")
+        verdicts = list(rec.verdicts_of(quantity))
+        is_shared = shared[quantity] > 1
+        if is_shared:
+            decided = len([v for v in verdicts if v["outcome"] == "decided"
+                           and str(v["value"]) == family])
+            abstained = collections.Counter()
+            # ⚠️⚠️ AN ASSIGNMENT, NOT AN ACCUMULATION, AND THE FIRST CUT WAS
+            # THE OTHER ONE. This loop runs once per FAMILY, so a
+            # `setdefault(...).update(...)` adds the same quantity's
+            # abstentions once for `tie` and again for `slur` -- the exact
+            # double count this key exists to end, reappearing one level up.
+            # A test asserting the whole map caught it.
+            #
+            # ⚠️ Written as an assignment rather than guarded by an
+            # `if quantity not in unattributed`, because that guard cannot
+            # change the outcome of an assignment: it is a check that cannot
+            # fail, and a mutation arm deleting it SURVIVED. Making the double
+            # count unrepresentable beats testing for it.
+            unattributed[quantity] = dict(collections.Counter(
+                v["reason"] for v in verdicts if v["outcome"] != "decided"))
+            # ⚠️ SAID ON THE ROW, not left to be inferred from an empty dict:
+            # `abstained: {}` on a shared quantity means "reported elsewhere",
+            # which is a different fact from "none".
+            row["abstentions_name_no_family"] = True
+        else:
+            decided = len([v for v in verdicts if v["outcome"] == "decided"])
+            abstained = collections.Counter(
+                v["reason"] for v in verdicts if v["outcome"] != "decided")
         row["decided"] = decided
         row["abstained"] = dict(abstained)
         # ⚠️ WHO produces it is a separate column from WHETHER it came out.
@@ -2408,6 +2544,12 @@ def coverage(result: Dict[str, Any],
         "decided_and_unwritten": unwritten,
         "decided_and_unwritten_total": sum(unwritten.values()),
         "decided_uncounted": uncounted,
+        # ⚠️ The abstentions of a quantity two families share, reported ONCE.
+        # See the note beside `shared` above: an abstention says the decision
+        # could not name a kind, so it belongs to neither family's row and
+        # counting it in both is the conflation this key exists to end.
+        "abstained_without_a_family": {
+            q: c for q, c in unattributed.items() if c},
         # ⚠️⚠️ THE CENSUS EXISTS BECAUSE BOTH HEADLINES ARE STATUS FILTERS,
         # AND A FILTER CANNOT SAY WHERE A FAMILY WENT. Raised by the
         # meter/boundary session against this very fix: `dynamic` left

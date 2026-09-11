@@ -1,0 +1,25 @@
+bach-brandenburg3-mvt1-468678-p1.restamp-composed.om   chords=  115 to_next=  21 wrong=   1 from_prev=  22 wrong=   2
+beethoven-sym5-mvt1-575951-p1.restamp-composed.omr.j   chords=   11 to_next=   8 wrong=   0 from_prev=   9 wrong=   1
+beethoven-sym5-mvt1-575951-p2.restamp-composed.omr.j   chords=   97 to_next=  28 wrong=   4 from_prev=  28 wrong=   9
+beethoven-sym5-mvt1-984073-p1.restamp-composed.omr.j   chords=    5 to_next=   1 wrong=   0 from_prev=   1 wrong=   0
+beethoven-sym5-mvt1-984073-p2.restamp-composed.omr.j   chords=   83 to_next=  17 wrong=   4 from_prev=  15 wrong=   3
+brahms-sym1-mvt1-317803-p1.restamp-composed.omr.json   chords=  117 to_next=  27 wrong=   6 from_prev=  29 wrong=   6
+brahms-sym1-mvt1-317803-p2.restamp-composed.omr.json   chords=  107 to_next=  98 wrong=   9 from_prev=  94 wrong=   8
+dvorak-sym9-mvt1-405834-p5.restamp-composed.omr.json   chords=   10 to_next=  10 wrong=   1 from_prev=  10 wrong=   1
+dvorak-sym9-mvt1-405834-p6.restamp-composed.omr.json   chords=   46 to_next=  11 wrong=   2 from_prev=  12 wrong=   2
+mahler-sym5-mvt1-local-p2.restamp-composed.omr.json    chords=    5 to_next=   1 wrong=   0 from_prev=   1 wrong=   0
+mahler-sym5-mvt1-local-p3.restamp-composed.omr.json    chords=   50 to_next=   9 wrong=   0 from_prev=  11 wrong=   3
+
+11 files
+  chord_events                                 646
+  chord_notes                                  1429
+  events                                       4974
+  notes                                        4359
+  tie_flag_events_from_prev                    232
+  tie_flag_events_to_next                      231
+  tie_from_prev_event_with_no_flagged_note     0
+  tie_from_prev_on_an_unflagged_note           35
+  tie_to_next_event_with_no_flagged_note       0
+  tie_to_next_on_an_unflagged_note             27
+  under_emitted_from_prev                      6
+  under_emitted_to_next                        6
