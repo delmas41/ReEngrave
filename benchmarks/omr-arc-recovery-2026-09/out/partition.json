@@ -1,0 +1,10793 @@
+{
+ "arc_rows": 779,
+ "placed": 779,
+ "arcs_dropped_at_placement": {},
+ "groups": [
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s0/st0/c5"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s0/st0/c5"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 2,
+   "bound": 1,
+   "would": 1,
+   "fates": {
+    "written": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s0/st0/c10",
+    "p2/s0/st0/c11"
+   ],
+   "subjects": [
+    "glyph/2/0/0/10/2"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s1/st0/c2"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 2,
+   "would": 3,
+   "fates": {
+    "written": 2,
+    "owned_by_another_staff": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s1/st0/c6"
+   ],
+   "subjects": [
+    "glyph/2/1/0/6/1",
+    "glyph/2/1/0/6/2",
+    "glyph/2/1/0/6/6"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 3,
+   "would": 4,
+   "fates": {
+    "written": 3,
+    "owned_by_another_staff": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s1/st0/c10"
+   ],
+   "subjects": [
+    "glyph/2/1/0/10/5",
+    "glyph/2/1/0/10/6",
+    "glyph/2/1/0/10/8",
+    "glyph/2/1/0/10/9"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s1/st0/c10"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 1,
+   "would": 2,
+   "fates": {
+    "owned_by_another_staff": 1,
+    "written": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s1/st0/c10"
+   ],
+   "subjects": [
+    "glyph/2/1/0/10/6",
+    "glyph/2/1/0/10/8"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 1,
+   "would": 2,
+   "fates": {
+    "owned_by_another_staff": 1,
+    "written": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s1/st0/c10"
+   ],
+   "subjects": [
+    "glyph/2/1/0/10/6",
+    "glyph/2/1/0/10/8"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 1,
+   "would": 1,
+   "fates": {
+    "written": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s1/st0/c11"
+   ],
+   "subjects": [
+    "glyph/2/1/0/11/7"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 4,
+   "would": 4,
+   "fates": {
+    "written": 4
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s1/st0/c11"
+   ],
+   "subjects": [
+    "glyph/2/1/0/11/2",
+    "glyph/2/1/0/11/3",
+    "glyph/2/1/0/11/4",
+    "glyph/2/1/0/11/7"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 4,
+   "would": 4,
+   "fates": {
+    "written": 4
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s1/st0/c11"
+   ],
+   "subjects": [
+    "glyph/2/1/0/11/2",
+    "glyph/2/1/0/11/3",
+    "glyph/2/1/0/11/4",
+    "glyph/2/1/0/11/7"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 4,
+   "would": 4,
+   "fates": {
+    "written": 4
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s1/st0/c11"
+   ],
+   "subjects": [
+    "glyph/2/1/0/11/2",
+    "glyph/2/1/0/11/3",
+    "glyph/2/1/0/11/4",
+    "glyph/2/1/0/11/7"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 1,
+   "fates": {
+    "owned_by_another_staff": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s1/st0/c12"
+   ],
+   "subjects": [
+    "glyph/2/1/0/12/3"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 1,
+   "fates": {
+    "owned_by_another_staff": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s1/st0/c12"
+   ],
+   "subjects": [
+    "glyph/2/1/0/12/3"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 1,
+   "fates": {
+    "owned_by_another_staff": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s1/st0/c12"
+   ],
+   "subjects": [
+    "glyph/2/1/0/12/3"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s1/st0/c13"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s1/st0/c14"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 1,
+   "fates": {
+    "owned_by_another_staff": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s1/st0/c14"
+   ],
+   "subjects": [
+    "glyph/2/1/0/14/4"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s0/st0/c0"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s0/st0/c0"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s0/st0/c0"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s0/st0/c0"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s0/st0/c0"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 3,
+   "would": 3,
+   "fates": {
+    "written": 3
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s0/st0/c0"
+   ],
+   "subjects": [
+    "glyph/3/0/0/0/8",
+    "glyph/3/0/0/0/13",
+    "glyph/3/0/0/0/15"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s0/st0/c1"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 1,
+   "fates": {
+    "duration_narrowed": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s0/st0/c3"
+   ],
+   "subjects": [
+    "glyph/3/0/0/3/4"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 2,
+   "would": 3,
+   "fates": {
+    "duration_narrowed": 1,
+    "written": 2
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s0/st0/c3"
+   ],
+   "subjects": [
+    "glyph/3/0/0/3/4",
+    "glyph/3/0/0/3/5",
+    "glyph/3/0/0/3/7"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s0/st0/c4"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s0/st0/c4"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 3,
+   "would": 3,
+   "fates": {
+    "written": 3
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s0/st0/c4"
+   ],
+   "subjects": [
+    "glyph/3/0/0/4/7",
+    "glyph/3/0/0/4/8",
+    "glyph/3/0/0/4/9"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s0/st0/c5"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s0/st0/c5"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s0/st0/c5"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s0/st0/c5"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s0/st0/c5"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s1/st0/c3"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 1,
+   "would": 1,
+   "fates": {
+    "written": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s1/st0/c9"
+   ],
+   "subjects": [
+    "glyph/3/1/0/9/2"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 2,
+   "would": 2,
+   "fates": {
+    "written": 2
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s1/st0/c9"
+   ],
+   "subjects": [
+    "glyph/3/1/0/9/0",
+    "glyph/3/1/0/9/2"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s0/st0/c1"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 1,
+   "would": 1,
+   "fates": {
+    "written": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s0/st0/c3"
+   ],
+   "subjects": [
+    "glyph/4/0/0/3/1"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s0/st0/c5"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 1,
+   "would": 1,
+   "fates": {
+    "written": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s0/st0/c6"
+   ],
+   "subjects": [
+    "glyph/4/0/0/6/2"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 1,
+   "would": 1,
+   "fates": {
+    "written": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s0/st0/c7"
+   ],
+   "subjects": [
+    "glyph/4/0/0/7/4"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 1,
+   "would": 1,
+   "fates": {
+    "written": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s0/st0/c8"
+   ],
+   "subjects": [
+    "glyph/4/0/0/8/2"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s0/st0/c11"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s0/st0/c11"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 6,
+   "would": 6,
+   "fates": {
+    "written": 6
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s0/st0/c11"
+   ],
+   "subjects": [
+    "glyph/4/0/0/11/4",
+    "glyph/4/0/0/11/7",
+    "glyph/4/0/0/11/8",
+    "glyph/4/0/0/11/10",
+    "glyph/4/0/0/11/13",
+    "glyph/4/0/0/11/15"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 2,
+   "bound": 0,
+   "would": 4,
+   "fates": {
+    "duration_narrowed": 4
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s1/st0/c4",
+    "p4/s1/st0/c5"
+   ],
+   "subjects": [
+    "glyph/4/1/0/5/1",
+    "glyph/4/1/0/5/3",
+    "glyph/4/1/0/5/6",
+    "glyph/4/1/0/5/9"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s1/st0/c4"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p1/s0/st1/c7"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 2,
+   "would": 2,
+   "fates": {
+    "written": 2
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s0/st1/c5"
+   ],
+   "subjects": [
+    "glyph/2/0/1/5/1",
+    "glyph/2/0/1/5/3"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 2,
+   "would": 2,
+   "fates": {
+    "written": 2
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s0/st1/c5"
+   ],
+   "subjects": [
+    "glyph/2/0/1/5/1",
+    "glyph/2/0/1/5/3"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 2,
+   "bound": 2,
+   "would": 2,
+   "fates": {
+    "written": 2
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s0/st1/c5",
+    "p2/s0/st1/c6"
+   ],
+   "subjects": [
+    "glyph/2/0/1/6/4",
+    "glyph/2/0/1/6/6"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 2,
+   "would": 2,
+   "fates": {
+    "written": 2
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s0/st1/c6"
+   ],
+   "subjects": [
+    "glyph/2/0/1/6/4",
+    "glyph/2/0/1/6/6"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s0/st1/c13"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 1,
+   "would": 1,
+   "fates": {
+    "written": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s0/st1/c15"
+   ],
+   "subjects": [
+    "glyph/2/0/1/15/5"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s1/st1/c2"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s1/st1/c2"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s1/st1/c2"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s1/st1/c10"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s1/st1/c11"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 2,
+   "bound": 3,
+   "would": 3,
+   "fates": {
+    "written": 3
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s1/st1/c12",
+    "p2/s1/st1/c13"
+   ],
+   "subjects": [
+    "glyph/2/1/1/12/1",
+    "glyph/2/1/1/12/2",
+    "glyph/2/1/1/12/4"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 3,
+   "would": 3,
+   "fates": {
+    "written": 3
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s1/st1/c12"
+   ],
+   "subjects": [
+    "glyph/2/1/1/12/1",
+    "glyph/2/1/1/12/2",
+    "glyph/2/1/1/12/4"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 2,
+   "bound": 4,
+   "would": 4,
+   "fates": {
+    "written": 4
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s1/st1/c12",
+    "p2/s1/st1/c13"
+   ],
+   "subjects": [
+    "glyph/2/1/1/12/1",
+    "glyph/2/1/1/12/2",
+    "glyph/2/1/1/12/4",
+    "glyph/2/1/1/13/0"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 1,
+   "would": 1,
+   "fates": {
+    "written": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s1/st1/c13"
+   ],
+   "subjects": [
+    "glyph/2/1/1/13/0"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 1,
+   "would": 1,
+   "fates": {
+    "written": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s1/st1/c14"
+   ],
+   "subjects": [
+    "glyph/2/1/1/14/2"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 1,
+   "would": 1,
+   "fates": {
+    "written": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s1/st1/c14"
+   ],
+   "subjects": [
+    "glyph/2/1/1/14/2"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 1,
+   "would": 1,
+   "fates": {
+    "written": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s1/st1/c14"
+   ],
+   "subjects": [
+    "glyph/2/1/1/14/2"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s0/st1/c0"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 2,
+   "bound": 2,
+   "would": 3,
+   "fates": {
+    "written": 2,
+    "duration_narrowed": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s0/st1/c0",
+    "p3/s0/st1/c1"
+   ],
+   "subjects": [
+    "glyph/3/0/1/0/10",
+    "glyph/3/0/1/1/2",
+    "glyph/3/0/1/1/7"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s0/st1/c1"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 1,
+   "fates": {
+    "duration_narrowed": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s0/st1/c1"
+   ],
+   "subjects": [
+    "glyph/3/0/1/1/2"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 1,
+   "fates": {
+    "duration_narrowed": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s0/st1/c1"
+   ],
+   "subjects": [
+    "glyph/3/0/1/1/2"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 1,
+   "would": 2,
+   "fates": {
+    "duration_narrowed": 1,
+    "written": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s0/st1/c1"
+   ],
+   "subjects": [
+    "glyph/3/0/1/1/2",
+    "glyph/3/0/1/1/7"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s0/st1/c1"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s0/st1/c3"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s0/st1/c3"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s0/st1/c3"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s0/st1/c3"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 3,
+   "would": 3,
+   "fates": {
+    "written": 3
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s0/st1/c3"
+   ],
+   "subjects": [
+    "glyph/3/0/1/3/6",
+    "glyph/3/0/1/3/8",
+    "glyph/3/0/1/3/10"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s0/st1/c4"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s0/st1/c4"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s0/st1/c4"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s0/st1/c4"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s0/st1/c4"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s0/st1/c4"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s0/st1/c5"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s0/st1/c5"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s0/st1/c5"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s0/st1/c5"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 3,
+   "fates": {
+    "duration_narrowed": 3
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s0/st1/c6"
+   ],
+   "subjects": [
+    "glyph/3/0/1/6/2",
+    "glyph/3/0/1/6/3",
+    "glyph/3/0/1/6/4"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s0/st1/c11"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s1/st1/c1"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s1/st1/c1"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 2,
+   "bound": 3,
+   "would": 3,
+   "fates": {
+    "written": 3
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s1/st1/c2",
+    "p3/s1/st1/c3"
+   ],
+   "subjects": [
+    "glyph/3/1/1/2/1",
+    "glyph/3/1/1/3/0",
+    "glyph/3/1/1/3/2"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 1,
+   "would": 1,
+   "fates": {
+    "written": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s1/st1/c4"
+   ],
+   "subjects": [
+    "glyph/3/1/1/4/2"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 1,
+   "would": 1,
+   "fates": {
+    "written": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s1/st1/c5"
+   ],
+   "subjects": [
+    "glyph/3/1/1/5/3"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 2,
+   "would": 2,
+   "fates": {
+    "written": 2
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s1/st1/c5"
+   ],
+   "subjects": [
+    "glyph/3/1/1/5/0",
+    "glyph/3/1/1/5/3"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s1/st1/c6"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s1/st1/c6"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s1/st1/c8"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s1/st1/c12"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 1,
+   "would": 1,
+   "fates": {
+    "written": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s1/st1/c14"
+   ],
+   "subjects": [
+    "glyph/3/1/1/14/5"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s1/st1/c16"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s0/st1/c0"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 1,
+   "would": 1,
+   "fates": {
+    "written": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s0/st1/c1"
+   ],
+   "subjects": [
+    "glyph/4/0/1/1/9"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 1,
+   "would": 1,
+   "fates": {
+    "written": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s0/st1/c1"
+   ],
+   "subjects": [
+    "glyph/4/0/1/1/9"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s0/st1/c3"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s0/st1/c3"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s0/st1/c4"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s0/st1/c5"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s0/st1/c6"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s0/st1/c6"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s0/st1/c7"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s0/st1/c7"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 1,
+   "fates": {
+    "duration_narrowed": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s0/st1/c7"
+   ],
+   "subjects": [
+    "glyph/4/0/1/7/4"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s0/st1/c8"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s0/st1/c8"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s0/st1/c9"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 2,
+   "bound": 1,
+   "would": 1,
+   "fates": {
+    "written": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s0/st1/c11",
+    "p4/s0/st1/c12"
+   ],
+   "subjects": [
+    "glyph/4/0/1/11/3"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 1,
+   "would": 1,
+   "fates": {
+    "written": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s0/st1/c11"
+   ],
+   "subjects": [
+    "glyph/4/0/1/11/3"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 1,
+   "would": 4,
+   "fates": {
+    "owned_by_another_staff": 3,
+    "written": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s1/st1/c4"
+   ],
+   "subjects": [
+    "glyph/4/1/1/4/1",
+    "glyph/4/1/1/4/2",
+    "glyph/4/1/1/4/3",
+    "glyph/4/1/1/4/7"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 1,
+   "would": 4,
+   "fates": {
+    "owned_by_another_staff": 3,
+    "written": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s1/st1/c4"
+   ],
+   "subjects": [
+    "glyph/4/1/1/4/1",
+    "glyph/4/1/1/4/2",
+    "glyph/4/1/1/4/3",
+    "glyph/4/1/1/4/7"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 1,
+   "would": 4,
+   "fates": {
+    "owned_by_another_staff": 3,
+    "written": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s1/st1/c4"
+   ],
+   "subjects": [
+    "glyph/4/1/1/4/1",
+    "glyph/4/1/1/4/2",
+    "glyph/4/1/1/4/3",
+    "glyph/4/1/1/4/7"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 2,
+   "would": 2,
+   "fates": {
+    "written": 2
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p1/s0/st2/c2"
+   ],
+   "subjects": [
+    "glyph/1/0/2/2/0",
+    "glyph/1/0/2/2/2"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 1,
+   "would": 1,
+   "fates": {
+    "written": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p1/s0/st2/c3"
+   ],
+   "subjects": [
+    "glyph/1/0/2/3/1"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p1/s0/st2/c6"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p1/s0/st2/c7"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p1/s0/st2/c9"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p1/s0/st2/c10"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p1/s0/st2/c14"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 1,
+   "would": 1,
+   "fates": {
+    "written": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s0/st2/c5"
+   ],
+   "subjects": [
+    "glyph/2/0/2/5/8"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s0/st2/c9"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 1,
+   "would": 1,
+   "fates": {
+    "written": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s0/st2/c15"
+   ],
+   "subjects": [
+    "glyph/2/0/2/15/2"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s1/st2/c2"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 1,
+   "fates": {
+    "owned_by_another_staff": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s1/st2/c2"
+   ],
+   "subjects": [
+    "glyph/2/1/2/2/3"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 1,
+   "fates": {
+    "owned_by_another_staff": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s1/st2/c2"
+   ],
+   "subjects": [
+    "glyph/2/1/2/2/3"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 2,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s1/st2/c10",
+    "p2/s1/st2/c11"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s1/st2/c10"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s1/st2/c11"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s1/st2/c12"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s1/st2/c12"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s1/st2/c14"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s1/st2/c14"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s1/st2/c14"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s1/st2/c14"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s0/st2/c0"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s0/st2/c0"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s0/st2/c1"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s0/st2/c2"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s0/st2/c3"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s0/st2/c3"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s0/st2/c3"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s0/st2/c4"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 2,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s0/st2/c4",
+    "p3/s0/st2/c5"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s0/st2/c4"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s0/st2/c5"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s0/st2/c5"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s0/st2/c5"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s1/st2/c0"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 1,
+   "would": 1,
+   "fates": {
+    "written": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s1/st2/c2"
+   ],
+   "subjects": [
+    "glyph/3/1/2/2/3"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 1,
+   "would": 1,
+   "fates": {
+    "written": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s1/st2/c2"
+   ],
+   "subjects": [
+    "glyph/3/1/2/2/3"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s1/st2/c4"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s1/st2/c4"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 2,
+   "would": 2,
+   "fates": {
+    "written": 2
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s1/st2/c5"
+   ],
+   "subjects": [
+    "glyph/3/1/2/5/0",
+    "glyph/3/1/2/5/2"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 2,
+   "would": 2,
+   "fates": {
+    "written": 2
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s1/st2/c6"
+   ],
+   "subjects": [
+    "glyph/3/1/2/6/1",
+    "glyph/3/1/2/6/3"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 2,
+   "would": 2,
+   "fates": {
+    "written": 2
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s1/st2/c6"
+   ],
+   "subjects": [
+    "glyph/3/1/2/6/1",
+    "glyph/3/1/2/6/3"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s1/st2/c8"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s1/st2/c8"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 2,
+   "would": 2,
+   "fates": {
+    "written": 2
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s1/st2/c10"
+   ],
+   "subjects": [
+    "glyph/3/1/2/10/1",
+    "glyph/3/1/2/10/2"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 2,
+   "would": 2,
+   "fates": {
+    "written": 2
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s1/st2/c10"
+   ],
+   "subjects": [
+    "glyph/3/1/2/10/1",
+    "glyph/3/1/2/10/2"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s1/st2/c10"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 2,
+   "would": 2,
+   "fates": {
+    "written": 2
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s1/st2/c10"
+   ],
+   "subjects": [
+    "glyph/3/1/2/10/1",
+    "glyph/3/1/2/10/2"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 2,
+   "bound": 1,
+   "would": 1,
+   "fates": {
+    "written": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s1/st2/c12",
+    "p3/s1/st2/c13"
+   ],
+   "subjects": [
+    "glyph/3/1/2/12/2"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 1,
+   "would": 1,
+   "fates": {
+    "written": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s1/st2/c12"
+   ],
+   "subjects": [
+    "glyph/3/1/2/12/2"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 1,
+   "would": 1,
+   "fates": {
+    "written": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s1/st2/c14"
+   ],
+   "subjects": [
+    "glyph/3/1/2/14/3"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 1,
+   "would": 1,
+   "fates": {
+    "written": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s1/st2/c14"
+   ],
+   "subjects": [
+    "glyph/3/1/2/14/3"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 1,
+   "would": 1,
+   "fates": {
+    "written": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s1/st2/c14"
+   ],
+   "subjects": [
+    "glyph/3/1/2/14/3"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 1,
+   "would": 1,
+   "fates": {
+    "written": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s1/st2/c14"
+   ],
+   "subjects": [
+    "glyph/3/1/2/14/3"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 2,
+   "bound": 2,
+   "would": 2,
+   "fates": {
+    "written": 2
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s1/st2/c16",
+    "p3/s1/st2/c17"
+   ],
+   "subjects": [
+    "glyph/3/1/2/16/2",
+    "glyph/3/1/2/16/3"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 2,
+   "would": 2,
+   "fates": {
+    "written": 2
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s1/st2/c16"
+   ],
+   "subjects": [
+    "glyph/3/1/2/16/2",
+    "glyph/3/1/2/16/3"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 2,
+   "would": 2,
+   "fates": {
+    "written": 2
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s1/st2/c16"
+   ],
+   "subjects": [
+    "glyph/3/1/2/16/2",
+    "glyph/3/1/2/16/3"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s1/st2/c17"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s0/st2/c1"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s0/st2/c1"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 1,
+   "fates": {
+    "duration_narrowed": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s0/st2/c1"
+   ],
+   "subjects": [
+    "glyph/4/0/2/1/9"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 1,
+   "fates": {
+    "duration_narrowed": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s0/st2/c1"
+   ],
+   "subjects": [
+    "glyph/4/0/2/1/9"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s0/st2/c1"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s0/st2/c3"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 3,
+   "would": 3,
+   "fates": {
+    "written": 3
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s0/st2/c3"
+   ],
+   "subjects": [
+    "glyph/4/0/2/3/2",
+    "glyph/4/0/2/3/3",
+    "glyph/4/0/2/3/9"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s0/st2/c3"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 3,
+   "would": 3,
+   "fates": {
+    "written": 3
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s0/st2/c3"
+   ],
+   "subjects": [
+    "glyph/4/0/2/3/2",
+    "glyph/4/0/2/3/3",
+    "glyph/4/0/2/3/9"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 2,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s0/st2/c5",
+    "p4/s0/st2/c6"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s0/st2/c5"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 2,
+   "would": 3,
+   "fates": {
+    "written": 2,
+    "owned_by_another_staff": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s0/st2/c5"
+   ],
+   "subjects": [
+    "glyph/4/0/2/5/4",
+    "glyph/4/0/2/5/6",
+    "glyph/4/0/2/5/8"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s0/st2/c5"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s0/st2/c6"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 4,
+   "fates": {
+    "duration_narrowed": 4
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s0/st2/c6"
+   ],
+   "subjects": [
+    "glyph/4/0/2/6/3",
+    "glyph/4/0/2/6/5",
+    "glyph/4/0/2/6/7",
+    "glyph/4/0/2/6/8"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s0/st2/c7"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 4,
+   "fates": {
+    "duration_narrowed": 4
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s0/st2/c7"
+   ],
+   "subjects": [
+    "glyph/4/0/2/7/7",
+    "glyph/4/0/2/7/9",
+    "glyph/4/0/2/7/10",
+    "glyph/4/0/2/7/11"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 4,
+   "fates": {
+    "duration_narrowed": 4
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s0/st2/c7"
+   ],
+   "subjects": [
+    "glyph/4/0/2/7/7",
+    "glyph/4/0/2/7/9",
+    "glyph/4/0/2/7/10",
+    "glyph/4/0/2/7/11"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s0/st2/c7"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 4,
+   "fates": {
+    "duration_narrowed": 4
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s0/st2/c7"
+   ],
+   "subjects": [
+    "glyph/4/0/2/7/7",
+    "glyph/4/0/2/7/9",
+    "glyph/4/0/2/7/10",
+    "glyph/4/0/2/7/11"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 1,
+   "would": 1,
+   "fates": {
+    "written": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s0/st2/c8"
+   ],
+   "subjects": [
+    "glyph/4/0/2/8/3"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 1,
+   "would": 1,
+   "fates": {
+    "written": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s0/st2/c8"
+   ],
+   "subjects": [
+    "glyph/4/0/2/8/3"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 2,
+   "bound": 4,
+   "would": 5,
+   "fates": {
+    "owned_by_another_staff": 1,
+    "written": 4
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s0/st2/c11",
+    "p4/s0/st2/c12"
+   ],
+   "subjects": [
+    "glyph/4/0/2/12/0",
+    "glyph/4/0/2/12/1",
+    "glyph/4/0/2/12/2",
+    "glyph/4/0/2/12/3",
+    "glyph/4/0/2/12/5"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 2,
+   "bound": 2,
+   "would": 2,
+   "fates": {
+    "written": 2
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s0/st2/c11",
+    "p4/s0/st2/c12"
+   ],
+   "subjects": [
+    "glyph/4/0/2/11/9",
+    "glyph/4/0/2/12/3"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 2,
+   "bound": 4,
+   "would": 5,
+   "fates": {
+    "owned_by_another_staff": 1,
+    "written": 4
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s0/st2/c11",
+    "p4/s0/st2/c12"
+   ],
+   "subjects": [
+    "glyph/4/0/2/12/0",
+    "glyph/4/0/2/12/1",
+    "glyph/4/0/2/12/2",
+    "glyph/4/0/2/12/3",
+    "glyph/4/0/2/12/5"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 1,
+   "would": 1,
+   "fates": {
+    "written": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s1/st2/c0"
+   ],
+   "subjects": [
+    "glyph/4/1/2/0/8"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 4,
+   "would": 4,
+   "fates": {
+    "written": 4
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s1/st2/c0"
+   ],
+   "subjects": [
+    "glyph/4/1/2/0/1",
+    "glyph/4/1/2/0/3",
+    "glyph/4/1/2/0/4",
+    "glyph/4/1/2/0/8"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 2,
+   "bound": 9,
+   "would": 13,
+   "fates": {
+    "written": 9,
+    "duration_narrowed": 4
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s1/st2/c3",
+    "p4/s1/st2/c4"
+   ],
+   "subjects": [
+    "glyph/4/1/2/3/1",
+    "glyph/4/1/2/3/3",
+    "glyph/4/1/2/3/5",
+    "glyph/4/1/2/3/11",
+    "glyph/4/1/2/3/14",
+    "glyph/4/1/2/4/0",
+    "glyph/4/1/2/4/1",
+    "glyph/4/1/2/4/2",
+    "glyph/4/1/2/4/3",
+    "glyph/4/1/2/4/7",
+    "glyph/4/1/2/4/8",
+    "glyph/4/1/2/4/9",
+    "glyph/4/1/2/4/11"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 2,
+   "would": 2,
+   "fates": {
+    "written": 2
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s1/st2/c3"
+   ],
+   "subjects": [
+    "glyph/4/1/2/3/3",
+    "glyph/4/1/2/3/14"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 4,
+   "would": 5,
+   "fates": {
+    "written": 4,
+    "duration_narrowed": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s1/st2/c3"
+   ],
+   "subjects": [
+    "glyph/4/1/2/3/1",
+    "glyph/4/1/2/3/3",
+    "glyph/4/1/2/3/5",
+    "glyph/4/1/2/3/11",
+    "glyph/4/1/2/3/14"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p1/s0/st3/c1"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p1/s0/st3/c1"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p1/s0/st3/c6"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p1/s0/st3/c6"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p1/s0/st3/c7"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p1/s0/st3/c7"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p1/s0/st3/c7"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 1,
+   "would": 1,
+   "fates": {
+    "written": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p1/s0/st3/c9"
+   ],
+   "subjects": [
+    "glyph/1/0/3/9/3"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p1/s0/st3/c10"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p1/s0/st3/c11"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p1/s0/st3/c11"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s0/st3/c2"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 1,
+   "would": 1,
+   "fates": {
+    "written": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s0/st3/c5"
+   ],
+   "subjects": [
+    "glyph/2/0/3/5/1"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 1,
+   "would": 1,
+   "fates": {
+    "written": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s0/st3/c5"
+   ],
+   "subjects": [
+    "glyph/2/0/3/5/1"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s0/st3/c7"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s1/st3/c0"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s1/st3/c0"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 1,
+   "would": 1,
+   "fates": {
+    "written": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s1/st3/c1"
+   ],
+   "subjects": [
+    "glyph/2/1/3/1/3"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s1/st3/c2"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 2,
+   "would": 2,
+   "fates": {
+    "written": 2
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s1/st3/c2"
+   ],
+   "subjects": [
+    "glyph/2/1/3/2/2",
+    "glyph/2/1/3/2/5"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s1/st3/c10"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s1/st3/c10"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s1/st3/c10"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s1/st3/c10"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 2,
+   "fates": {
+    "duration_narrowed": 2
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s1/st3/c11"
+   ],
+   "subjects": [
+    "glyph/2/1/3/11/5",
+    "glyph/2/1/3/11/8"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s1/st3/c11"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s1/st3/c11"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s1/st3/c11"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s1/st3/c11"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s1/st3/c11"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s1/st3/c12"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s1/st3/c12"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 2,
+   "bound": 4,
+   "would": 4,
+   "fates": {
+    "written": 4
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s1/st3/c12",
+    "p2/s1/st3/c13"
+   ],
+   "subjects": [
+    "glyph/2/1/3/13/2",
+    "glyph/2/1/3/13/3",
+    "glyph/2/1/3/13/4",
+    "glyph/2/1/3/13/8"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s1/st3/c12"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s1/st3/c14"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s1/st3/c14"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s1/st3/c14"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 1,
+   "fates": {
+    "duration_narrowed": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s0/st3/c0"
+   ],
+   "subjects": [
+    "glyph/3/0/3/0/9"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 1,
+   "fates": {
+    "duration_narrowed": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s0/st3/c0"
+   ],
+   "subjects": [
+    "glyph/3/0/3/0/9"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 1,
+   "fates": {
+    "duration_narrowed": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s0/st3/c0"
+   ],
+   "subjects": [
+    "glyph/3/0/3/0/14"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 1,
+   "fates": {
+    "duration_narrowed": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s0/st3/c0"
+   ],
+   "subjects": [
+    "glyph/3/0/3/0/14"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 2,
+   "bound": 0,
+   "would": 1,
+   "fates": {
+    "duration_narrowed": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s0/st3/c0",
+    "p3/s0/st3/c1"
+   ],
+   "subjects": [
+    "glyph/3/0/3/1/3"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 2,
+   "fates": {
+    "duration_narrowed": 2
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s0/st3/c0"
+   ],
+   "subjects": [
+    "glyph/3/0/3/0/9",
+    "glyph/3/0/3/0/14"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 2,
+   "bound": 0,
+   "would": 1,
+   "fates": {
+    "duration_narrowed": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s0/st3/c1",
+    "p3/s0/st3/c2"
+   ],
+   "subjects": [
+    "glyph/3/0/3/1/3"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 1,
+   "fates": {
+    "duration_narrowed": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s0/st3/c1"
+   ],
+   "subjects": [
+    "glyph/3/0/3/1/3"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s0/st3/c1"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 1,
+   "fates": {
+    "duration_narrowed": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s0/st3/c1"
+   ],
+   "subjects": [
+    "glyph/3/0/3/1/3"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s0/st3/c1"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s0/st3/c3"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s0/st3/c3"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 1,
+   "would": 1,
+   "fates": {
+    "written": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s0/st3/c4"
+   ],
+   "subjects": [
+    "glyph/3/0/3/4/6"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 2,
+   "would": 2,
+   "fates": {
+    "written": 2
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s0/st3/c4"
+   ],
+   "subjects": [
+    "glyph/3/0/3/4/4",
+    "glyph/3/0/3/4/6"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 2,
+   "would": 2,
+   "fates": {
+    "written": 2
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s0/st3/c4"
+   ],
+   "subjects": [
+    "glyph/3/0/3/4/4",
+    "glyph/3/0/3/4/6"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 2,
+   "bound": 3,
+   "would": 3,
+   "fates": {
+    "written": 3
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s0/st3/c4",
+    "p3/s0/st3/c5"
+   ],
+   "subjects": [
+    "glyph/3/0/3/4/6",
+    "glyph/3/0/3/5/2",
+    "glyph/3/0/3/5/10"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s0/st3/c5"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 2,
+   "would": 2,
+   "fates": {
+    "written": 2
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s0/st3/c5"
+   ],
+   "subjects": [
+    "glyph/3/0/3/5/2",
+    "glyph/3/0/3/5/10"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s0/st3/c5"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s0/st3/c5"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 2,
+   "bound": 5,
+   "would": 5,
+   "fates": {
+    "written": 5
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s0/st3/c5",
+    "p3/s0/st3/c6"
+   ],
+   "subjects": [
+    "glyph/3/0/3/5/2",
+    "glyph/3/0/3/5/10",
+    "glyph/3/0/3/6/2",
+    "glyph/3/0/3/6/3",
+    "glyph/3/0/3/6/5"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 2,
+   "would": 2,
+   "fates": {
+    "written": 2
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s0/st3/c5"
+   ],
+   "subjects": [
+    "glyph/3/0/3/5/2",
+    "glyph/3/0/3/5/10"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s0/st3/c5"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s0/st3/c5"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 2,
+   "would": 2,
+   "fates": {
+    "written": 2
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s1/st3/c0"
+   ],
+   "subjects": [
+    "glyph/3/1/3/0/6",
+    "glyph/3/1/3/0/7"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 2,
+   "would": 2,
+   "fates": {
+    "written": 2
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s1/st3/c0"
+   ],
+   "subjects": [
+    "glyph/3/1/3/0/6",
+    "glyph/3/1/3/0/7"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 2,
+   "bound": 2,
+   "would": 2,
+   "fates": {
+    "written": 2
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s1/st3/c1",
+    "p3/s1/st3/c2"
+   ],
+   "subjects": [
+    "glyph/3/1/3/2/3",
+    "glyph/3/1/3/2/4"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s1/st3/c2"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s1/st3/c3"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s1/st3/c4"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s1/st3/c4"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s1/st3/c4"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s1/st3/c4"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s1/st3/c5"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s1/st3/c6"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 1,
+   "fates": {
+    "duration_narrowed": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s1/st3/c7"
+   ],
+   "subjects": [
+    "glyph/3/1/3/7/1"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 1,
+   "fates": {
+    "duration_narrowed": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s1/st3/c7"
+   ],
+   "subjects": [
+    "glyph/3/1/3/7/1"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s1/st3/c8"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s1/st3/c12"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s1/st3/c15"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s1/st3/c16"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 2,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s0/st3/c1",
+    "p4/s0/st3/c2"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 2,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s0/st3/c1",
+    "p4/s0/st3/c2"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 3,
+   "would": 3,
+   "fates": {
+    "written": 3
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s0/st3/c1"
+   ],
+   "subjects": [
+    "glyph/4/0/3/1/2",
+    "glyph/4/0/3/1/3",
+    "glyph/4/0/3/1/6"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 4,
+   "would": 4,
+   "fates": {
+    "written": 4
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s0/st3/c3"
+   ],
+   "subjects": [
+    "glyph/4/0/3/3/4",
+    "glyph/4/0/3/3/6",
+    "glyph/4/0/3/3/7",
+    "glyph/4/0/3/3/10"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 4,
+   "would": 4,
+   "fates": {
+    "written": 4
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s0/st3/c3"
+   ],
+   "subjects": [
+    "glyph/4/0/3/3/4",
+    "glyph/4/0/3/3/6",
+    "glyph/4/0/3/3/7",
+    "glyph/4/0/3/3/10"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 4,
+   "would": 4,
+   "fates": {
+    "written": 4
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s0/st3/c3"
+   ],
+   "subjects": [
+    "glyph/4/0/3/3/4",
+    "glyph/4/0/3/3/6",
+    "glyph/4/0/3/3/7",
+    "glyph/4/0/3/3/10"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 4,
+   "would": 4,
+   "fates": {
+    "written": 4
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s0/st3/c3"
+   ],
+   "subjects": [
+    "glyph/4/0/3/3/4",
+    "glyph/4/0/3/3/6",
+    "glyph/4/0/3/3/7",
+    "glyph/4/0/3/3/10"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s0/st3/c5"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 1,
+   "would": 1,
+   "fates": {
+    "written": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s0/st3/c5"
+   ],
+   "subjects": [
+    "glyph/4/0/3/5/3"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 1,
+   "would": 1,
+   "fates": {
+    "written": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s0/st3/c5"
+   ],
+   "subjects": [
+    "glyph/4/0/3/5/3"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s0/st3/c5"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s0/st3/c5"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s0/st3/c5"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 3,
+   "would": 3,
+   "fates": {
+    "written": 3
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s0/st3/c6"
+   ],
+   "subjects": [
+    "glyph/4/0/3/6/1",
+    "glyph/4/0/3/6/2",
+    "glyph/4/0/3/6/4"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 3,
+   "would": 3,
+   "fates": {
+    "written": 3
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s0/st3/c6"
+   ],
+   "subjects": [
+    "glyph/4/0/3/6/1",
+    "glyph/4/0/3/6/2",
+    "glyph/4/0/3/6/4"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s0/st3/c7"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s0/st3/c7"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 2,
+   "would": 2,
+   "fates": {
+    "written": 2
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s0/st3/c8"
+   ],
+   "subjects": [
+    "glyph/4/0/3/8/3",
+    "glyph/4/0/3/8/4"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 2,
+   "would": 2,
+   "fates": {
+    "written": 2
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s0/st3/c8"
+   ],
+   "subjects": [
+    "glyph/4/0/3/8/3",
+    "glyph/4/0/3/8/4"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 2,
+   "would": 2,
+   "fates": {
+    "written": 2
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s0/st3/c11"
+   ],
+   "subjects": [
+    "glyph/4/0/3/11/9",
+    "glyph/4/0/3/11/10"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s0/st3/c12"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 3,
+   "would": 6,
+   "fates": {
+    "duration_narrowed": 3,
+    "written": 3
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s1/st3/c3"
+   ],
+   "subjects": [
+    "glyph/4/1/3/3/3",
+    "glyph/4/1/3/3/5",
+    "glyph/4/1/3/3/6",
+    "glyph/4/1/3/3/8",
+    "glyph/4/1/3/3/9",
+    "glyph/4/1/3/3/11"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 2,
+   "would": 2,
+   "fates": {
+    "written": 2
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s1/st3/c4"
+   ],
+   "subjects": [
+    "glyph/4/1/3/4/6",
+    "glyph/4/1/3/4/8"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 2,
+   "would": 2,
+   "fates": {
+    "written": 2
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s1/st3/c4"
+   ],
+   "subjects": [
+    "glyph/4/1/3/4/6",
+    "glyph/4/1/3/4/8"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 1,
+   "would": 1,
+   "fates": {
+    "written": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s1/st3/c4"
+   ],
+   "subjects": [
+    "glyph/4/1/3/4/6"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 2,
+   "would": 2,
+   "fates": {
+    "written": 2
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s1/st3/c4"
+   ],
+   "subjects": [
+    "glyph/4/1/3/4/6",
+    "glyph/4/1/3/4/8"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 1,
+   "would": 1,
+   "fates": {
+    "written": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s0/st4/c5"
+   ],
+   "subjects": [
+    "glyph/2/0/4/5/0"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s0/st4/c6"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s0/st4/c8"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s0/st4/c12"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s0/st4/c13"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s1/st4/c0"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s1/st4/c0"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 2,
+   "would": 2,
+   "fates": {
+    "written": 2
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s1/st4/c0"
+   ],
+   "subjects": [
+    "glyph/2/1/4/0/7",
+    "glyph/2/1/4/0/8"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 1,
+   "would": 1,
+   "fates": {
+    "written": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s1/st4/c4"
+   ],
+   "subjects": [
+    "glyph/2/1/4/4/3"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s1/st4/c5"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s1/st4/c6"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s1/st4/c8"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s1/st4/c10"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s1/st4/c10"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 2,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s1/st4/c11",
+    "p2/s1/st4/c12"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s1/st4/c11"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 2,
+   "bound": 1,
+   "would": 1,
+   "fates": {
+    "written": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s1/st4/c12",
+    "p2/s1/st4/c13"
+   ],
+   "subjects": [
+    "glyph/2/1/4/13/1"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s1/st4/c12"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 2,
+   "bound": 5,
+   "would": 5,
+   "fates": {
+    "written": 5
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s1/st4/c13",
+    "p2/s1/st4/c14"
+   ],
+   "subjects": [
+    "glyph/2/1/4/13/4",
+    "glyph/2/1/4/13/5",
+    "glyph/2/1/4/14/6",
+    "glyph/2/1/4/14/8",
+    "glyph/2/1/4/14/9"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s1/st4/c14"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s1/st4/c14"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 2,
+   "would": 2,
+   "fates": {
+    "written": 2
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s1/st4/c14"
+   ],
+   "subjects": [
+    "glyph/2/1/4/14/8",
+    "glyph/2/1/4/14/9"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 2,
+   "would": 2,
+   "fates": {
+    "written": 2
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s1/st4/c14"
+   ],
+   "subjects": [
+    "glyph/2/1/4/14/8",
+    "glyph/2/1/4/14/9"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 2,
+   "would": 2,
+   "fates": {
+    "written": 2
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s0/st4/c0"
+   ],
+   "subjects": [
+    "glyph/3/0/4/0/5",
+    "glyph/3/0/4/0/9"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 1,
+   "would": 1,
+   "fates": {
+    "written": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s0/st4/c0"
+   ],
+   "subjects": [
+    "glyph/3/0/4/0/5"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s0/st4/c0"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 1,
+   "would": 1,
+   "fates": {
+    "written": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s0/st4/c0"
+   ],
+   "subjects": [
+    "glyph/3/0/4/0/5"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s0/st4/c1"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 1,
+   "fates": {
+    "duration_narrowed": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s0/st4/c1"
+   ],
+   "subjects": [
+    "glyph/3/0/4/1/4"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 1,
+   "fates": {
+    "duration_narrowed": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s0/st4/c1"
+   ],
+   "subjects": [
+    "glyph/3/0/4/1/4"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s0/st4/c3"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s0/st4/c3"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 4,
+   "would": 4,
+   "fates": {
+    "written": 4
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s0/st4/c3"
+   ],
+   "subjects": [
+    "glyph/3/0/4/3/10",
+    "glyph/3/0/4/3/12",
+    "glyph/3/0/4/3/13",
+    "glyph/3/0/4/3/14"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 1,
+   "would": 1,
+   "fates": {
+    "written": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s0/st4/c3"
+   ],
+   "subjects": [
+    "glyph/3/0/4/3/10"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s0/st4/c4"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s0/st4/c4"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s0/st4/c4"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s0/st4/c4"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s0/st4/c4"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s0/st4/c4"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 2,
+   "bound": 0,
+   "would": 1,
+   "fates": {
+    "duration_narrowed": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s0/st4/c4",
+    "p3/s0/st4/c5"
+   ],
+   "subjects": [
+    "glyph/3/0/4/5/6"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s0/st4/c5"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s0/st4/c5"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s0/st4/c5"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 2,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s0/st4/c5",
+    "p3/s0/st4/c6"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 2,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s0/st4/c13",
+    "p3/s0/st4/c14"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s0/st4/c15"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 2,
+   "would": 2,
+   "fates": {
+    "written": 2
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s1/st4/c0"
+   ],
+   "subjects": [
+    "glyph/3/1/4/0/4",
+    "glyph/3/1/4/0/10"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 1,
+   "would": 1,
+   "fates": {
+    "written": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s1/st4/c0"
+   ],
+   "subjects": [
+    "glyph/3/1/4/0/10"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 3,
+   "would": 3,
+   "fates": {
+    "written": 3
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s1/st4/c1"
+   ],
+   "subjects": [
+    "glyph/3/1/4/1/0",
+    "glyph/3/1/4/1/1",
+    "glyph/3/1/4/1/4"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s1/st4/c2"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s1/st4/c3"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s1/st4/c3"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s1/st4/c4"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 2,
+   "bound": 4,
+   "would": 4,
+   "fates": {
+    "written": 4
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s1/st4/c6",
+    "p3/s1/st4/c7"
+   ],
+   "subjects": [
+    "glyph/3/1/4/6/1",
+    "glyph/3/1/4/6/2",
+    "glyph/3/1/4/7/0",
+    "glyph/3/1/4/7/1"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 1,
+   "would": 1,
+   "fates": {
+    "written": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s1/st4/c7"
+   ],
+   "subjects": [
+    "glyph/3/1/4/7/1"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 1,
+   "fates": {
+    "duration_narrowed": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s1/st4/c8"
+   ],
+   "subjects": [
+    "glyph/3/1/4/8/6"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 1,
+   "fates": {
+    "duration_narrowed": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s1/st4/c8"
+   ],
+   "subjects": [
+    "glyph/3/1/4/8/6"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 2,
+   "would": 2,
+   "fates": {
+    "written": 2
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s1/st4/c9"
+   ],
+   "subjects": [
+    "glyph/3/1/4/9/0",
+    "glyph/3/1/4/9/1"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 2,
+   "would": 2,
+   "fates": {
+    "written": 2
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s1/st4/c9"
+   ],
+   "subjects": [
+    "glyph/3/1/4/9/0",
+    "glyph/3/1/4/9/1"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 2,
+   "bound": 3,
+   "would": 4,
+   "fates": {
+    "written": 3,
+    "duration_narrowed": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s1/st4/c10",
+    "p3/s1/st4/c11"
+   ],
+   "subjects": [
+    "glyph/3/1/4/10/0",
+    "glyph/3/1/4/10/2",
+    "glyph/3/1/4/11/0",
+    "glyph/3/1/4/11/3"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 3,
+   "would": 3,
+   "fates": {
+    "written": 3
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s1/st4/c12"
+   ],
+   "subjects": [
+    "glyph/3/1/4/12/1",
+    "glyph/3/1/4/12/2",
+    "glyph/3/1/4/12/3"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 2,
+   "bound": 3,
+   "would": 3,
+   "fates": {
+    "written": 3
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s1/st4/c14",
+    "p3/s1/st4/c15"
+   ],
+   "subjects": [
+    "glyph/3/1/4/14/2",
+    "glyph/3/1/4/15/1",
+    "glyph/3/1/4/15/2"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 2,
+   "bound": 3,
+   "would": 3,
+   "fates": {
+    "written": 3
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s1/st4/c16",
+    "p3/s1/st4/c17"
+   ],
+   "subjects": [
+    "glyph/3/1/4/16/1",
+    "glyph/3/1/4/17/0",
+    "glyph/3/1/4/17/1"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s0/st4/c0"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s0/st4/c0"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "slur",
+   "n_segments": 2,
+   "bound": 2,
+   "would": 2,
+   "fates": {
+    "written": 2
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s0/st4/c1",
+    "p4/s0/st4/c2"
+   ],
+   "subjects": [
+    "glyph/4/0/4/2/1",
+    "glyph/4/0/4/2/4"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s0/st4/c1"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 1,
+   "would": 1,
+   "fates": {
+    "written": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s0/st4/c1"
+   ],
+   "subjects": [
+    "glyph/4/0/4/1/5"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s0/st4/c2"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 2,
+   "would": 2,
+   "fates": {
+    "written": 2
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s0/st4/c2"
+   ],
+   "subjects": [
+    "glyph/4/0/4/2/1",
+    "glyph/4/0/4/2/4"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 2,
+   "would": 2,
+   "fates": {
+    "written": 2
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s0/st4/c2"
+   ],
+   "subjects": [
+    "glyph/4/0/4/2/1",
+    "glyph/4/0/4/2/4"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 2,
+   "would": 2,
+   "fates": {
+    "written": 2
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s0/st4/c2"
+   ],
+   "subjects": [
+    "glyph/4/0/4/2/1",
+    "glyph/4/0/4/2/4"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s0/st4/c3"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s0/st4/c3"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s0/st4/c3"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s0/st4/c4"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 1,
+   "fates": {
+    "duration_narrowed": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s0/st4/c4"
+   ],
+   "subjects": [
+    "glyph/4/0/4/4/1"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s0/st4/c5"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 2,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s0/st4/c5",
+    "p4/s0/st4/c6"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s0/st4/c5"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s0/st4/c6"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s0/st4/c6"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "slur",
+   "n_segments": 2,
+   "bound": 2,
+   "would": 2,
+   "fates": {
+    "written": 2
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s0/st4/c6",
+    "p4/s0/st4/c7"
+   ],
+   "subjects": [
+    "glyph/4/0/4/7/3",
+    "glyph/4/0/4/7/5"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 2,
+   "would": 2,
+   "fates": {
+    "written": 2
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s0/st4/c7"
+   ],
+   "subjects": [
+    "glyph/4/0/4/7/3",
+    "glyph/4/0/4/7/5"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s0/st4/c7"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s0/st4/c8"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "slur",
+   "n_segments": 2,
+   "bound": 0,
+   "would": 4,
+   "fates": {
+    "duration_narrowed": 4
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s0/st4/c8",
+    "p4/s0/st4/c9"
+   ],
+   "subjects": [
+    "glyph/4/0/4/8/5",
+    "glyph/4/0/4/8/6",
+    "glyph/4/0/4/9/1",
+    "glyph/4/0/4/9/8"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 3,
+   "would": 3,
+   "fates": {
+    "written": 3
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s0/st4/c11"
+   ],
+   "subjects": [
+    "glyph/4/0/4/11/3",
+    "glyph/4/0/4/11/7",
+    "glyph/4/0/4/11/11"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s0/st4/c12"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 2,
+   "would": 3,
+   "fates": {
+    "owned_by_another_staff": 1,
+    "written": 2
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s1/st4/c0"
+   ],
+   "subjects": [
+    "glyph/4/1/4/0/1",
+    "glyph/4/1/4/0/2",
+    "glyph/4/1/4/0/10"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 1,
+   "would": 2,
+   "fates": {
+    "owned_by_another_staff": 1,
+    "written": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s1/st4/c0"
+   ],
+   "subjects": [
+    "glyph/4/1/4/0/1",
+    "glyph/4/1/4/0/2"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 4,
+   "would": 4,
+   "fates": {
+    "written": 4
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s1/st4/c3"
+   ],
+   "subjects": [
+    "glyph/4/1/4/3/1",
+    "glyph/4/1/4/3/2",
+    "glyph/4/1/4/3/3",
+    "glyph/4/1/4/3/4"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 2,
+   "would": 2,
+   "fates": {
+    "written": 2
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s1/st4/c3"
+   ],
+   "subjects": [
+    "glyph/4/1/4/3/3",
+    "glyph/4/1/4/3/4"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s1/st4/c4"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s1/st4/c4"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 1,
+   "fates": {
+    "duration_narrowed": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s1/st4/c5"
+   ],
+   "subjects": [
+    "glyph/4/1/4/5/6"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s0/st5/c0"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s0/st5/c0"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 2,
+   "would": 3,
+   "fates": {
+    "owned_by_another_staff": 1,
+    "written": 2
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s0/st5/c2"
+   ],
+   "subjects": [
+    "glyph/2/0/5/2/0",
+    "glyph/2/0/5/2/1",
+    "glyph/2/0/5/2/7"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s0/st5/c3"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s0/st5/c10"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s1/st5/c3"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s1/st5/c7"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 2,
+   "would": 2,
+   "fates": {
+    "written": 2
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s1/st5/c10"
+   ],
+   "subjects": [
+    "glyph/2/1/5/10/0",
+    "glyph/2/1/5/10/2"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 1,
+   "would": 1,
+   "fates": {
+    "written": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s1/st5/c12"
+   ],
+   "subjects": [
+    "glyph/2/1/5/12/3"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 3,
+   "would": 6,
+   "fates": {
+    "duration_narrowed": 3,
+    "written": 3
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s1/st5/c13"
+   ],
+   "subjects": [
+    "glyph/2/1/5/13/1",
+    "glyph/2/1/5/13/2",
+    "glyph/2/1/5/13/3",
+    "glyph/2/1/5/13/4",
+    "glyph/2/1/5/13/6",
+    "glyph/2/1/5/13/8"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s0/st5/c3"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 1,
+   "would": 1,
+   "fates": {
+    "written": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s0/st5/c3"
+   ],
+   "subjects": [
+    "glyph/3/0/5/3/7"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 1,
+   "would": 1,
+   "fates": {
+    "written": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s0/st5/c3"
+   ],
+   "subjects": [
+    "glyph/3/0/5/3/7"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s0/st5/c4"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s0/st5/c4"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 2,
+   "bound": 2,
+   "would": 2,
+   "fates": {
+    "written": 2
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s0/st5/c5",
+    "p3/s0/st5/c6"
+   ],
+   "subjects": [
+    "glyph/3/0/5/6/2",
+    "glyph/3/0/5/6/4"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 2,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s0/st5/c5",
+    "p3/s0/st5/c6"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s0/st5/c5"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 2,
+   "would": 2,
+   "fates": {
+    "written": 2
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s0/st5/c6"
+   ],
+   "subjects": [
+    "glyph/3/0/5/6/2",
+    "glyph/3/0/5/6/4"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 2,
+   "would": 2,
+   "fates": {
+    "written": 2
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s0/st5/c6"
+   ],
+   "subjects": [
+    "glyph/3/0/5/6/2",
+    "glyph/3/0/5/6/4"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s0/st5/c11"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s0/st5/c14"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s0/st5/c15"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s1/st5/c0"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 1,
+   "would": 1,
+   "fates": {
+    "written": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s1/st5/c2"
+   ],
+   "subjects": [
+    "glyph/3/1/5/2/2"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 2,
+   "bound": 2,
+   "would": 2,
+   "fates": {
+    "written": 2
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s1/st5/c4",
+    "p3/s1/st5/c5"
+   ],
+   "subjects": [
+    "glyph/3/1/5/5/0",
+    "glyph/3/1/5/5/2"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s1/st5/c5"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 2,
+   "would": 2,
+   "fates": {
+    "written": 2
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s1/st5/c6"
+   ],
+   "subjects": [
+    "glyph/3/1/5/6/2",
+    "glyph/3/1/5/6/6"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 1,
+   "would": 1,
+   "fates": {
+    "written": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s1/st5/c8"
+   ],
+   "subjects": [
+    "glyph/3/1/5/8/2"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 1,
+   "would": 1,
+   "fates": {
+    "written": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s1/st5/c10"
+   ],
+   "subjects": [
+    "glyph/3/1/5/10/1"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 1,
+   "would": 1,
+   "fates": {
+    "written": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s1/st5/c12"
+   ],
+   "subjects": [
+    "glyph/3/1/5/12/1"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 1,
+   "would": 1,
+   "fates": {
+    "written": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s1/st5/c14"
+   ],
+   "subjects": [
+    "glyph/3/1/5/14/2"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 1,
+   "would": 1,
+   "fates": {
+    "written": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s1/st5/c14"
+   ],
+   "subjects": [
+    "glyph/3/1/5/14/2"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 1,
+   "would": 1,
+   "fates": {
+    "written": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s1/st5/c14"
+   ],
+   "subjects": [
+    "glyph/3/1/5/14/2"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 2,
+   "bound": 2,
+   "would": 2,
+   "fates": {
+    "written": 2
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s1/st5/c16",
+    "p3/s1/st5/c17"
+   ],
+   "subjects": [
+    "glyph/3/1/5/16/1",
+    "glyph/3/1/5/17/0"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s0/st5/c0"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 1,
+   "would": 1,
+   "fates": {
+    "written": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s0/st5/c1"
+   ],
+   "subjects": [
+    "glyph/4/0/5/1/3"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 2,
+   "would": 2,
+   "fates": {
+    "written": 2
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s0/st5/c1"
+   ],
+   "subjects": [
+    "glyph/4/0/5/1/3",
+    "glyph/4/0/5/1/4"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s0/st5/c2"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s0/st5/c3"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 1,
+   "fates": {
+    "duration_narrowed": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s0/st5/c3"
+   ],
+   "subjects": [
+    "glyph/4/0/5/3/3"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s0/st5/c4"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s0/st5/c5"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 2,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s0/st5/c5",
+    "p4/s0/st5/c6"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s0/st5/c6"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 1,
+   "would": 1,
+   "fates": {
+    "written": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s0/st5/c6"
+   ],
+   "subjects": [
+    "glyph/4/0/5/6/10"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 1,
+   "fates": {
+    "duration_narrowed": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s0/st5/c7"
+   ],
+   "subjects": [
+    "glyph/4/0/5/7/6"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s0/st5/c8"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 1,
+   "would": 2,
+   "fates": {
+    "written": 1,
+    "duration_narrowed": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s0/st5/c9"
+   ],
+   "subjects": [
+    "glyph/4/0/5/9/0",
+    "glyph/4/0/5/9/1"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 3,
+   "would": 4,
+   "fates": {
+    "written": 3,
+    "owned_by_another_staff": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s0/st5/c10"
+   ],
+   "subjects": [
+    "glyph/4/0/5/10/1",
+    "glyph/4/0/5/10/2",
+    "glyph/4/0/5/10/4",
+    "glyph/4/0/5/10/5"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 1,
+   "would": 2,
+   "fates": {
+    "duration_narrowed": 1,
+    "written": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s0/st5/c11"
+   ],
+   "subjects": [
+    "glyph/4/0/5/11/7",
+    "glyph/4/0/5/11/11"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 1,
+   "would": 2,
+   "fates": {
+    "duration_narrowed": 1,
+    "written": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s0/st5/c11"
+   ],
+   "subjects": [
+    "glyph/4/0/5/11/7",
+    "glyph/4/0/5/11/11"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 1,
+   "would": 1,
+   "fates": {
+    "written": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s0/st5/c12"
+   ],
+   "subjects": [
+    "glyph/4/0/5/12/14"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 1,
+   "would": 3,
+   "fates": {
+    "owned_by_another_staff": 2,
+    "written": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s0/st5/c13"
+   ],
+   "subjects": [
+    "glyph/4/0/5/13/1",
+    "glyph/4/0/5/13/3",
+    "glyph/4/0/5/13/5"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 1,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s1/st5/c0"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 1,
+   "would": 1,
+   "fates": {
+    "written": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s1/st5/c4"
+   ],
+   "subjects": [
+    "glyph/4/1/5/4/7"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s1/st5/c4"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 1,
+   "would": 1,
+   "fates": {
+    "written": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s1/st5/c4"
+   ],
+   "subjects": [
+    "glyph/4/1/5/4/7"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 3,
+   "would": 3,
+   "fates": {
+    "written": 3
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s1/st5/c4"
+   ],
+   "subjects": [
+    "glyph/4/1/5/4/3",
+    "glyph/4/1/5/4/4",
+    "glyph/4/1/5/4/7"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 3,
+   "would": 3,
+   "fates": {
+    "written": 3
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s1/st5/c4"
+   ],
+   "subjects": [
+    "glyph/4/1/5/4/3",
+    "glyph/4/1/5/4/4",
+    "glyph/4/1/5/4/7"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 2,
+   "would": 2,
+   "fates": {
+    "written": 2
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s1/st5/c4"
+   ],
+   "subjects": [
+    "glyph/4/1/5/4/3",
+    "glyph/4/1/5/4/7"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s1/st5/c4"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s1/st5/c5"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s1/st5/c13"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p1/s0/st6/c1"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p1/s0/st6/c4"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s0/st6/c5"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s0/st6/c12"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s1/st6/c5"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 2,
+   "would": 2,
+   "fates": {
+    "written": 2
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s1/st6/c5"
+   ],
+   "subjects": [
+    "glyph/2/1/6/5/2",
+    "glyph/2/1/6/5/6"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 1,
+   "would": 2,
+   "fates": {
+    "owned_by_another_staff": 1,
+    "written": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s1/st6/c7"
+   ],
+   "subjects": [
+    "glyph/2/1/6/7/2",
+    "glyph/2/1/6/7/8"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 5,
+   "fates": {
+    "owned_by_another_staff": 5
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s1/st6/c8"
+   ],
+   "subjects": [
+    "glyph/2/1/6/8/0",
+    "glyph/2/1/6/8/1",
+    "glyph/2/1/6/8/3",
+    "glyph/2/1/6/8/5",
+    "glyph/2/1/6/8/13"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s1/st6/c11"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 2,
+   "would": 5,
+   "fates": {
+    "duration_narrowed": 1,
+    "written": 2,
+    "owned_by_another_staff": 2
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s1/st6/c13"
+   ],
+   "subjects": [
+    "glyph/2/1/6/13/0",
+    "glyph/2/1/6/13/1",
+    "glyph/2/1/6/13/2",
+    "glyph/2/1/6/13/3",
+    "glyph/2/1/6/13/7"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 2,
+   "would": 5,
+   "fates": {
+    "duration_narrowed": 1,
+    "written": 2,
+    "owned_by_another_staff": 2
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s1/st6/c13"
+   ],
+   "subjects": [
+    "glyph/2/1/6/13/0",
+    "glyph/2/1/6/13/1",
+    "glyph/2/1/6/13/2",
+    "glyph/2/1/6/13/3",
+    "glyph/2/1/6/13/7"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 3,
+   "fates": {
+    "owned_by_another_staff": 3
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s0/st6/c3"
+   ],
+   "subjects": [
+    "glyph/3/0/6/3/4",
+    "glyph/3/0/6/3/5",
+    "glyph/3/0/6/3/6"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 2,
+   "fates": {
+    "duration_narrowed": 2
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s0/st6/c4"
+   ],
+   "subjects": [
+    "glyph/3/0/6/4/3",
+    "glyph/3/0/6/4/4"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 2,
+   "bound": 0,
+   "would": 2,
+   "fates": {
+    "duration_narrowed": 2
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s0/st6/c4",
+    "p3/s0/st6/c5"
+   ],
+   "subjects": [
+    "glyph/3/0/6/4/3",
+    "glyph/3/0/6/4/4"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 1,
+   "would": 1,
+   "fates": {
+    "written": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s0/st6/c5"
+   ],
+   "subjects": [
+    "glyph/3/0/6/5/3"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 2,
+   "would": 2,
+   "fates": {
+    "written": 2
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s0/st6/c6"
+   ],
+   "subjects": [
+    "glyph/3/0/6/6/1",
+    "glyph/3/0/6/6/3"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 2,
+   "would": 2,
+   "fates": {
+    "written": 2
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s0/st6/c6"
+   ],
+   "subjects": [
+    "glyph/3/0/6/6/1",
+    "glyph/3/0/6/6/3"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s1/st6/c0"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s1/st6/c4"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 2,
+   "would": 2,
+   "fates": {
+    "written": 2
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s1/st6/c6"
+   ],
+   "subjects": [
+    "glyph/3/1/6/6/1",
+    "glyph/3/1/6/6/3"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s1/st6/c8"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 2,
+   "would": 2,
+   "fates": {
+    "written": 2
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s1/st6/c10"
+   ],
+   "subjects": [
+    "glyph/3/1/6/10/1",
+    "glyph/3/1/6/10/4"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 2,
+   "would": 2,
+   "fates": {
+    "written": 2
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s1/st6/c12"
+   ],
+   "subjects": [
+    "glyph/3/1/6/12/1",
+    "glyph/3/1/6/12/3"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 2,
+   "would": 2,
+   "fates": {
+    "written": 2
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s1/st6/c12"
+   ],
+   "subjects": [
+    "glyph/3/1/6/12/1",
+    "glyph/3/1/6/12/3"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 2,
+   "bound": 3,
+   "would": 3,
+   "fates": {
+    "written": 3
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s1/st6/c14",
+    "p3/s1/st6/c15"
+   ],
+   "subjects": [
+    "glyph/3/1/6/14/2",
+    "glyph/3/1/6/15/0",
+    "glyph/3/1/6/15/1"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 1,
+   "would": 1,
+   "fates": {
+    "written": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s1/st6/c14"
+   ],
+   "subjects": [
+    "glyph/3/1/6/14/2"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 2,
+   "bound": 2,
+   "would": 2,
+   "fates": {
+    "written": 2
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s1/st6/c16",
+    "p3/s1/st6/c17"
+   ],
+   "subjects": [
+    "glyph/3/1/6/17/1",
+    "glyph/3/1/6/17/2"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 2,
+   "would": 2,
+   "fates": {
+    "written": 2
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s0/st6/c1"
+   ],
+   "subjects": [
+    "glyph/4/0/6/1/0",
+    "glyph/4/0/6/1/2"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 1,
+   "would": 1,
+   "fates": {
+    "written": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s0/st6/c3"
+   ],
+   "subjects": [
+    "glyph/4/0/6/3/1"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 1,
+   "would": 1,
+   "fates": {
+    "written": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s0/st6/c3"
+   ],
+   "subjects": [
+    "glyph/4/0/6/3/1"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 1,
+   "would": 2,
+   "fates": {
+    "duration_narrowed": 1,
+    "written": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s0/st6/c6"
+   ],
+   "subjects": [
+    "glyph/4/0/6/6/0",
+    "glyph/4/0/6/6/1"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 2,
+   "would": 2,
+   "fates": {
+    "written": 2
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s0/st6/c7"
+   ],
+   "subjects": [
+    "glyph/4/0/6/7/0",
+    "glyph/4/0/6/7/1"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 2,
+   "would": 2,
+   "fates": {
+    "written": 2
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s0/st6/c8"
+   ],
+   "subjects": [
+    "glyph/4/0/6/8/0",
+    "glyph/4/0/6/8/2"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 2,
+   "would": 2,
+   "fates": {
+    "written": 2
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s0/st6/c9"
+   ],
+   "subjects": [
+    "glyph/4/0/6/9/1",
+    "glyph/4/0/6/9/2"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s0/st6/c11"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 3,
+   "fates": {
+    "duration_narrowed": 3
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s0/st6/c12"
+   ],
+   "subjects": [
+    "glyph/4/0/6/12/0",
+    "glyph/4/0/6/12/3",
+    "glyph/4/0/6/12/7"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 3,
+   "fates": {
+    "duration_narrowed": 3
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s0/st6/c12"
+   ],
+   "subjects": [
+    "glyph/4/0/6/12/0",
+    "glyph/4/0/6/12/3",
+    "glyph/4/0/6/12/7"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 2,
+   "would": 3,
+   "fates": {
+    "duration_narrowed": 1,
+    "written": 2
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s0/st6/c13"
+   ],
+   "subjects": [
+    "glyph/4/0/6/13/1",
+    "glyph/4/0/6/13/4",
+    "glyph/4/0/6/13/8"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 2,
+   "would": 3,
+   "fates": {
+    "duration_narrowed": 1,
+    "written": 2
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s0/st6/c13"
+   ],
+   "subjects": [
+    "glyph/4/0/6/13/1",
+    "glyph/4/0/6/13/4",
+    "glyph/4/0/6/13/8"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 2,
+   "would": 3,
+   "fates": {
+    "duration_narrowed": 1,
+    "written": 2
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s0/st6/c13"
+   ],
+   "subjects": [
+    "glyph/4/0/6/13/1",
+    "glyph/4/0/6/13/4",
+    "glyph/4/0/6/13/8"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 2,
+   "fates": {
+    "no_pitch": 2
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s1/st6/c0"
+   ],
+   "subjects": [
+    "glyph/4/1/6/0/0",
+    "glyph/4/1/6/0/2"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 2,
+   "fates": {
+    "owned_by_another_staff": 1,
+    "no_pitch": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s1/st6/c4"
+   ],
+   "subjects": [
+    "glyph/4/1/6/4/0",
+    "glyph/4/1/6/4/1"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s1/st6/c10"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s1/st6/c12"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s1/st6/c12"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s1/st6/c12"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s1/st6/c13"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s1/st6/c13"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 1,
+   "fates": {
+    "no_pitch": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s1/st6/c14"
+   ],
+   "subjects": [
+    "glyph/4/1/6/14/1"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 1,
+   "would": 1,
+   "fates": {
+    "written": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p1/s0/st7/c1"
+   ],
+   "subjects": [
+    "glyph/1/0/7/1/1"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 1,
+   "would": 1,
+   "fates": {
+    "written": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p1/s0/st7/c3"
+   ],
+   "subjects": [
+    "glyph/1/0/7/3/2"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p1/s0/st7/c9"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 1,
+   "would": 1,
+   "fates": {
+    "written": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p1/s0/st7/c12"
+   ],
+   "subjects": [
+    "glyph/1/0/7/12/1"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 1,
+   "would": 1,
+   "fates": {
+    "written": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p1/s0/st7/c14"
+   ],
+   "subjects": [
+    "glyph/1/0/7/14/1"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p1/s0/st7/c14"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s0/st7/c0"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 2,
+   "would": 2,
+   "fates": {
+    "written": 2
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s0/st7/c8"
+   ],
+   "subjects": [
+    "glyph/2/0/7/8/1",
+    "glyph/2/0/7/8/2"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s0/st7/c9"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s0/st7/c12"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s0/st7/c12"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s0/st7/c13"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 1,
+   "would": 1,
+   "fates": {
+    "written": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s1/st7/c0"
+   ],
+   "subjects": [
+    "glyph/2/1/7/0/5"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 1,
+   "would": 1,
+   "fates": {
+    "written": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s1/st7/c0"
+   ],
+   "subjects": [
+    "glyph/2/1/7/0/5"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 2,
+   "would": 2,
+   "fates": {
+    "written": 2
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s1/st7/c4"
+   ],
+   "subjects": [
+    "glyph/2/1/7/4/3",
+    "glyph/2/1/7/4/6"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 1,
+   "would": 1,
+   "fates": {
+    "written": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s1/st7/c5"
+   ],
+   "subjects": [
+    "glyph/2/1/7/5/4"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 3,
+   "would": 3,
+   "fates": {
+    "written": 3
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s1/st7/c6"
+   ],
+   "subjects": [
+    "glyph/2/1/7/6/3",
+    "glyph/2/1/7/6/4",
+    "glyph/2/1/7/6/12"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 3,
+   "would": 3,
+   "fates": {
+    "written": 3
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s1/st7/c6"
+   ],
+   "subjects": [
+    "glyph/2/1/7/6/3",
+    "glyph/2/1/7/6/4",
+    "glyph/2/1/7/6/12"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 1,
+   "would": 2,
+   "fates": {
+    "duration_narrowed": 1,
+    "written": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s1/st7/c7"
+   ],
+   "subjects": [
+    "glyph/2/1/7/7/3",
+    "glyph/2/1/7/7/4"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 2,
+   "would": 2,
+   "fates": {
+    "written": 2
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s1/st7/c8"
+   ],
+   "subjects": [
+    "glyph/2/1/7/8/0",
+    "glyph/2/1/7/8/4"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 2,
+   "would": 2,
+   "fates": {
+    "written": 2
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s1/st7/c8"
+   ],
+   "subjects": [
+    "glyph/2/1/7/8/0",
+    "glyph/2/1/7/8/4"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 1,
+   "would": 1,
+   "fates": {
+    "written": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s1/st7/c9"
+   ],
+   "subjects": [
+    "glyph/2/1/7/9/5"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 1,
+   "would": 1,
+   "fates": {
+    "written": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s1/st7/c9"
+   ],
+   "subjects": [
+    "glyph/2/1/7/9/5"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 2,
+   "would": 2,
+   "fates": {
+    "written": 2
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s0/st7/c4"
+   ],
+   "subjects": [
+    "glyph/3/0/7/4/1",
+    "glyph/3/0/7/4/13"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 2,
+   "bound": 3,
+   "would": 3,
+   "fates": {
+    "written": 3
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s0/st7/c14",
+    "p3/s0/st7/c15"
+   ],
+   "subjects": [
+    "glyph/3/0/7/14/2",
+    "glyph/3/0/7/15/0",
+    "glyph/3/0/7/15/1"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s1/st7/c15"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 1,
+   "would": 1,
+   "fates": {
+    "written": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s0/st7/c0"
+   ],
+   "subjects": [
+    "glyph/4/0/7/0/9"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 1,
+   "would": 1,
+   "fates": {
+    "written": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s0/st7/c2"
+   ],
+   "subjects": [
+    "glyph/4/0/7/2/0"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 1,
+   "would": 1,
+   "fates": {
+    "written": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s0/st7/c6"
+   ],
+   "subjects": [
+    "glyph/4/0/7/6/0"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 2,
+   "fates": {
+    "duration_narrowed": 2
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s0/st7/c12"
+   ],
+   "subjects": [
+    "glyph/4/0/7/12/2",
+    "glyph/4/0/7/12/18"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 1,
+   "fates": {
+    "duration_narrowed": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s0/st7/c12"
+   ],
+   "subjects": [
+    "glyph/4/0/7/12/18"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 1,
+   "would": 2,
+   "fates": {
+    "written": 1,
+    "duration_narrowed": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s0/st7/c13"
+   ],
+   "subjects": [
+    "glyph/4/0/7/13/0",
+    "glyph/4/0/7/13/1"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 2,
+   "would": 3,
+   "fates": {
+    "written": 2,
+    "duration_narrowed": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s0/st7/c13"
+   ],
+   "subjects": [
+    "glyph/4/0/7/13/0",
+    "glyph/4/0/7/13/1",
+    "glyph/4/0/7/13/2"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 1,
+   "would": 2,
+   "fates": {
+    "written": 1,
+    "duration_narrowed": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s1/st7/c0"
+   ],
+   "subjects": [
+    "glyph/4/1/7/0/3",
+    "glyph/4/1/7/0/8"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 1,
+   "would": 2,
+   "fates": {
+    "written": 1,
+    "duration_narrowed": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s1/st7/c0"
+   ],
+   "subjects": [
+    "glyph/4/1/7/0/3",
+    "glyph/4/1/7/0/8"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 4,
+   "fates": {
+    "duration_narrowed": 4
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s1/st7/c1"
+   ],
+   "subjects": [
+    "glyph/4/1/7/1/2",
+    "glyph/4/1/7/1/3",
+    "glyph/4/1/7/1/4",
+    "glyph/4/1/7/1/6"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 2,
+   "would": 2,
+   "fates": {
+    "written": 2
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s1/st7/c2"
+   ],
+   "subjects": [
+    "glyph/4/1/7/2/1",
+    "glyph/4/1/7/2/5"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 4,
+   "would": 4,
+   "fates": {
+    "written": 4
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s1/st7/c4"
+   ],
+   "subjects": [
+    "glyph/4/1/7/4/0",
+    "glyph/4/1/7/4/1",
+    "glyph/4/1/7/4/2",
+    "glyph/4/1/7/4/3"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 1,
+   "would": 5,
+   "fates": {
+    "owned_by_another_staff": 1,
+    "written": 1,
+    "duration_narrowed": 3
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s1/st7/c5"
+   ],
+   "subjects": [
+    "glyph/4/1/7/5/1",
+    "glyph/4/1/7/5/4",
+    "glyph/4/1/7/5/5",
+    "glyph/4/1/7/5/7",
+    "glyph/4/1/7/5/11"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 2,
+   "would": 5,
+   "fates": {
+    "owned_by_another_staff": 1,
+    "written": 2,
+    "duration_narrowed": 2
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s1/st7/c6"
+   ],
+   "subjects": [
+    "glyph/4/1/7/6/0",
+    "glyph/4/1/7/6/1",
+    "glyph/4/1/7/6/2",
+    "glyph/4/1/7/6/4",
+    "glyph/4/1/7/6/5"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 1,
+   "would": 4,
+   "fates": {
+    "owned_by_another_staff": 1,
+    "duration_narrowed": 2,
+    "written": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s1/st7/c6"
+   ],
+   "subjects": [
+    "glyph/4/1/7/6/0",
+    "glyph/4/1/7/6/2",
+    "glyph/4/1/7/6/4",
+    "glyph/4/1/7/6/5"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 2,
+   "would": 3,
+   "fates": {
+    "duration_narrowed": 1,
+    "written": 2
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s1/st7/c7"
+   ],
+   "subjects": [
+    "glyph/4/1/7/7/1",
+    "glyph/4/1/7/7/3",
+    "glyph/4/1/7/7/6"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 5,
+   "would": 6,
+   "fates": {
+    "written": 5,
+    "duration_narrowed": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s1/st7/c7"
+   ],
+   "subjects": [
+    "glyph/4/1/7/7/0",
+    "glyph/4/1/7/7/1",
+    "glyph/4/1/7/7/3",
+    "glyph/4/1/7/7/6",
+    "glyph/4/1/7/7/7",
+    "glyph/4/1/7/7/8"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 2,
+   "would": 2,
+   "fates": {
+    "written": 2
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s1/st7/c8"
+   ],
+   "subjects": [
+    "glyph/4/1/7/8/3",
+    "glyph/4/1/7/8/8"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 2,
+   "would": 2,
+   "fates": {
+    "written": 2
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s1/st7/c10"
+   ],
+   "subjects": [
+    "glyph/4/1/7/10/4",
+    "glyph/4/1/7/10/8"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s1/st7/c12"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 1,
+   "would": 1,
+   "fates": {
+    "written": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s1/st7/c12"
+   ],
+   "subjects": [
+    "glyph/4/1/7/12/2"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s1/st7/c13"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s1/st7/c14"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s1/st7/c14"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s1/st7/c14"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 1,
+   "would": 1,
+   "fates": {
+    "written": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p1/s0/st8/c3"
+   ],
+   "subjects": [
+    "glyph/1/0/8/3/2"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 1,
+   "would": 1,
+   "fates": {
+    "written": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p1/s0/st8/c3"
+   ],
+   "subjects": [
+    "glyph/1/0/8/3/2"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p1/s0/st8/c6"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p1/s0/st8/c7"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 1,
+   "would": 1,
+   "fates": {
+    "written": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p1/s0/st8/c7"
+   ],
+   "subjects": [
+    "glyph/1/0/8/7/3"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 1,
+   "would": 1,
+   "fates": {
+    "written": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p1/s0/st8/c7"
+   ],
+   "subjects": [
+    "glyph/1/0/8/7/3"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 2,
+   "would": 2,
+   "fates": {
+    "written": 2
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p1/s0/st8/c8"
+   ],
+   "subjects": [
+    "glyph/1/0/8/8/3",
+    "glyph/1/0/8/8/4"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 2,
+   "would": 2,
+   "fates": {
+    "written": 2
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p1/s0/st8/c8"
+   ],
+   "subjects": [
+    "glyph/1/0/8/8/3",
+    "glyph/1/0/8/8/4"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 1,
+   "would": 1,
+   "fates": {
+    "written": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p1/s0/st8/c10"
+   ],
+   "subjects": [
+    "glyph/1/0/8/10/2"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 2,
+   "would": 2,
+   "fates": {
+    "written": 2
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p1/s0/st8/c15"
+   ],
+   "subjects": [
+    "glyph/1/0/8/15/2",
+    "glyph/1/0/8/15/4"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 2,
+   "would": 2,
+   "fates": {
+    "written": 2
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p1/s0/st8/c15"
+   ],
+   "subjects": [
+    "glyph/1/0/8/15/2",
+    "glyph/1/0/8/15/4"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 1,
+   "fates": {
+    "duration_narrowed": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s0/st8/c0"
+   ],
+   "subjects": [
+    "glyph/2/0/8/0/3"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s0/st8/c5"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 3,
+   "would": 3,
+   "fates": {
+    "written": 3
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s0/st8/c8"
+   ],
+   "subjects": [
+    "glyph/2/0/8/8/0",
+    "glyph/2/0/8/8/1",
+    "glyph/2/0/8/8/2"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s0/st8/c9"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s0/st8/c9"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 4,
+   "would": 4,
+   "fates": {
+    "written": 4
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s0/st8/c12"
+   ],
+   "subjects": [
+    "glyph/2/0/8/12/0",
+    "glyph/2/0/8/12/1",
+    "glyph/2/0/8/12/2",
+    "glyph/2/0/8/12/9"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 4,
+   "would": 4,
+   "fates": {
+    "written": 4
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s0/st8/c12"
+   ],
+   "subjects": [
+    "glyph/2/0/8/12/0",
+    "glyph/2/0/8/12/1",
+    "glyph/2/0/8/12/2",
+    "glyph/2/0/8/12/9"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 1,
+   "fates": {
+    "duration_narrowed": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s0/st8/c13"
+   ],
+   "subjects": [
+    "glyph/2/0/8/13/3"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 1,
+   "fates": {
+    "duration_narrowed": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s0/st8/c13"
+   ],
+   "subjects": [
+    "glyph/2/0/8/13/3"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 1,
+   "fates": {
+    "duration_narrowed": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s0/st8/c13"
+   ],
+   "subjects": [
+    "glyph/2/0/8/13/3"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s1/st8/c0"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s1/st8/c0"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s1/st8/c2"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s1/st8/c2"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 1,
+   "would": 1,
+   "fates": {
+    "written": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s1/st8/c5"
+   ],
+   "subjects": [
+    "glyph/2/1/8/5/2"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 1,
+   "would": 1,
+   "fates": {
+    "written": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s0/st8/c14"
+   ],
+   "subjects": [
+    "glyph/3/0/8/14/3"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 1,
+   "fates": {
+    "no_pitch": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s0/st8/c0"
+   ],
+   "subjects": [
+    "glyph/4/0/8/0/5"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 4,
+   "fates": {
+    "no_pitch": 4
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s0/st8/c1"
+   ],
+   "subjects": [
+    "glyph/4/0/8/1/2",
+    "glyph/4/0/8/1/4",
+    "glyph/4/0/8/1/5",
+    "glyph/4/0/8/1/8"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 3,
+   "fates": {
+    "no_pitch": 3
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s0/st8/c3"
+   ],
+   "subjects": [
+    "glyph/4/0/8/3/6",
+    "glyph/4/0/8/3/8",
+    "glyph/4/0/8/3/9"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 3,
+   "fates": {
+    "no_pitch": 3
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s0/st8/c5"
+   ],
+   "subjects": [
+    "glyph/4/0/8/5/3",
+    "glyph/4/0/8/5/4",
+    "glyph/4/0/8/5/5"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 2,
+   "fates": {
+    "no_pitch": 2
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s0/st8/c5"
+   ],
+   "subjects": [
+    "glyph/4/0/8/5/3",
+    "glyph/4/0/8/5/5"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 4,
+   "fates": {
+    "no_pitch": 4
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s0/st8/c7"
+   ],
+   "subjects": [
+    "glyph/4/0/8/7/2",
+    "glyph/4/0/8/7/3",
+    "glyph/4/0/8/7/4",
+    "glyph/4/0/8/7/8"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 5,
+   "fates": {
+    "no_pitch": 5
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s0/st8/c9"
+   ],
+   "subjects": [
+    "glyph/4/0/8/9/0",
+    "glyph/4/0/8/9/1",
+    "glyph/4/0/8/9/2",
+    "glyph/4/0/8/9/3",
+    "glyph/4/0/8/9/12"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 4,
+   "fates": {
+    "no_pitch": 4
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s0/st8/c10"
+   ],
+   "subjects": [
+    "glyph/4/0/8/10/1",
+    "glyph/4/0/8/10/4",
+    "glyph/4/0/8/10/5",
+    "glyph/4/0/8/10/6"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 2,
+   "bound": 0,
+   "would": 8,
+   "fates": {
+    "no_pitch": 8
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s0/st8/c11",
+    "p4/s0/st8/c12"
+   ],
+   "subjects": [
+    "glyph/4/0/8/11/6",
+    "glyph/4/0/8/11/7",
+    "glyph/4/0/8/11/8",
+    "glyph/4/0/8/11/10",
+    "glyph/4/0/8/12/0",
+    "glyph/4/0/8/12/1",
+    "glyph/4/0/8/12/5",
+    "glyph/4/0/8/12/6"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 1,
+   "would": 2,
+   "fates": {
+    "written": 1,
+    "duration_narrowed": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s1/st8/c0"
+   ],
+   "subjects": [
+    "glyph/4/1/8/0/5",
+    "glyph/4/1/8/0/8"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 1,
+   "would": 1,
+   "fates": {
+    "written": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s1/st8/c1"
+   ],
+   "subjects": [
+    "glyph/4/1/8/1/2"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 2,
+   "would": 2,
+   "fates": {
+    "written": 2
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s1/st8/c2"
+   ],
+   "subjects": [
+    "glyph/4/1/8/2/3",
+    "glyph/4/1/8/2/9"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 2,
+   "would": 2,
+   "fates": {
+    "written": 2
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s1/st8/c4"
+   ],
+   "subjects": [
+    "glyph/4/1/8/4/5",
+    "glyph/4/1/8/4/11"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 1,
+   "would": 2,
+   "fates": {
+    "duration_narrowed": 1,
+    "written": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s1/st8/c6"
+   ],
+   "subjects": [
+    "glyph/4/1/8/6/0",
+    "glyph/4/1/8/6/1"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 1,
+   "would": 2,
+   "fates": {
+    "duration_narrowed": 1,
+    "written": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s1/st8/c6"
+   ],
+   "subjects": [
+    "glyph/4/1/8/6/0",
+    "glyph/4/1/8/6/1"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 1,
+   "would": 2,
+   "fates": {
+    "duration_narrowed": 1,
+    "written": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s1/st8/c7"
+   ],
+   "subjects": [
+    "glyph/4/1/8/7/3",
+    "glyph/4/1/8/7/4"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 2,
+   "would": 2,
+   "fates": {
+    "written": 2
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s1/st8/c8"
+   ],
+   "subjects": [
+    "glyph/4/1/8/8/4",
+    "glyph/4/1/8/8/5"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 2,
+   "bound": 2,
+   "would": 3,
+   "fates": {
+    "written": 2,
+    "duration_narrowed": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s1/st8/c12",
+    "p4/s1/st8/c13"
+   ],
+   "subjects": [
+    "glyph/4/1/8/12/2",
+    "glyph/4/1/8/12/4",
+    "glyph/4/1/8/13/4"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 1,
+   "fates": {
+    "duration_narrowed": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s1/st8/c14"
+   ],
+   "subjects": [
+    "glyph/4/1/8/14/1"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 2,
+   "fates": {
+    "duration_narrowed": 2
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p1/s0/st9/c3"
+   ],
+   "subjects": [
+    "glyph/1/0/9/3/2",
+    "glyph/1/0/9/3/5"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 1,
+   "would": 1,
+   "fates": {
+    "written": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p1/s0/st9/c4"
+   ],
+   "subjects": [
+    "glyph/1/0/9/4/3"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 3,
+   "would": 3,
+   "fates": {
+    "written": 3
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p1/s0/st9/c6"
+   ],
+   "subjects": [
+    "glyph/1/0/9/6/0",
+    "glyph/1/0/9/6/2",
+    "glyph/1/0/9/6/3"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p1/s0/st9/c7"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "slur",
+   "n_segments": 2,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p1/s0/st9/c7",
+    "p1/s0/st9/c8"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p1/s0/st9/c7"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 1,
+   "would": 1,
+   "fates": {
+    "written": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p1/s0/st9/c8"
+   ],
+   "subjects": [
+    "glyph/1/0/9/8/6"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 2,
+   "bound": 1,
+   "would": 4,
+   "fates": {
+    "written": 1,
+    "duration_narrowed": 3
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p1/s0/st9/c8",
+    "p1/s0/st9/c9"
+   ],
+   "subjects": [
+    "glyph/1/0/9/8/6",
+    "glyph/1/0/9/9/1",
+    "glyph/1/0/9/9/5",
+    "glyph/1/0/9/9/6"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 2,
+   "bound": 1,
+   "would": 4,
+   "fates": {
+    "written": 1,
+    "duration_narrowed": 3
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p1/s0/st9/c8",
+    "p1/s0/st9/c9"
+   ],
+   "subjects": [
+    "glyph/1/0/9/8/6",
+    "glyph/1/0/9/9/1",
+    "glyph/1/0/9/9/5",
+    "glyph/1/0/9/9/6"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 3,
+   "would": 3,
+   "fates": {
+    "written": 3
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p1/s0/st9/c10"
+   ],
+   "subjects": [
+    "glyph/1/0/9/10/2",
+    "glyph/1/0/9/10/3",
+    "glyph/1/0/9/10/4"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 3,
+   "would": 3,
+   "fates": {
+    "written": 3
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p1/s0/st9/c10"
+   ],
+   "subjects": [
+    "glyph/1/0/9/10/2",
+    "glyph/1/0/9/10/3",
+    "glyph/1/0/9/10/4"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 1,
+   "would": 1,
+   "fates": {
+    "written": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p1/s0/st9/c11"
+   ],
+   "subjects": [
+    "glyph/1/0/9/11/1"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p1/s0/st9/c13"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 1,
+   "would": 1,
+   "fates": {
+    "written": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p1/s0/st9/c15"
+   ],
+   "subjects": [
+    "glyph/1/0/9/15/2"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 1,
+   "would": 1,
+   "fates": {
+    "written": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s0/st9/c0"
+   ],
+   "subjects": [
+    "glyph/2/0/9/0/0"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 2,
+   "would": 2,
+   "fates": {
+    "written": 2
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s0/st9/c5"
+   ],
+   "subjects": [
+    "glyph/2/0/9/5/1",
+    "glyph/2/0/9/5/2"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 2,
+   "would": 2,
+   "fates": {
+    "written": 2
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s0/st9/c5"
+   ],
+   "subjects": [
+    "glyph/2/0/9/5/1",
+    "glyph/2/0/9/5/2"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 3,
+   "would": 3,
+   "fates": {
+    "written": 3
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s0/st9/c9"
+   ],
+   "subjects": [
+    "glyph/2/0/9/9/0",
+    "glyph/2/0/9/9/2",
+    "glyph/2/0/9/9/3"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 3,
+   "fates": {
+    "duration_narrowed": 3
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s0/st9/c10"
+   ],
+   "subjects": [
+    "glyph/2/0/9/10/1",
+    "glyph/2/0/9/10/3",
+    "glyph/2/0/9/10/4"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s0/st9/c12"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 2,
+   "would": 2,
+   "fates": {
+    "written": 2
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s0/st9/c14"
+   ],
+   "subjects": [
+    "glyph/2/0/9/14/3",
+    "glyph/2/0/9/14/4"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s1/st9/c0"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s1/st9/c0"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 2,
+   "fates": {
+    "no_pitch": 2
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s1/st9/c0"
+   ],
+   "subjects": [
+    "glyph/2/1/9/0/4",
+    "glyph/2/1/9/0/14"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 1,
+   "fates": {
+    "no_pitch": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s1/st9/c0"
+   ],
+   "subjects": [
+    "glyph/2/1/9/0/4"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 2,
+   "fates": {
+    "no_pitch": 2
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s1/st9/c0"
+   ],
+   "subjects": [
+    "glyph/2/1/9/0/4",
+    "glyph/2/1/9/0/14"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 1,
+   "fates": {
+    "no_pitch": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s1/st9/c2"
+   ],
+   "subjects": [
+    "glyph/2/1/9/2/3"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s1/st9/c2"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 1,
+   "fates": {
+    "no_pitch": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s1/st9/c2"
+   ],
+   "subjects": [
+    "glyph/2/1/9/2/3"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 2,
+   "fates": {
+    "no_pitch": 1,
+    "owned_by_another_staff": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s1/st9/c13"
+   ],
+   "subjects": [
+    "glyph/2/1/9/13/7",
+    "glyph/2/1/9/13/8"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 2,
+   "fates": {
+    "no_pitch": 1,
+    "owned_by_another_staff": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s1/st9/c13"
+   ],
+   "subjects": [
+    "glyph/2/1/9/13/7",
+    "glyph/2/1/9/13/8"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 2,
+   "fates": {
+    "no_pitch": 1,
+    "owned_by_another_staff": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s1/st9/c13"
+   ],
+   "subjects": [
+    "glyph/2/1/9/13/7",
+    "glyph/2/1/9/13/8"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 7,
+   "fates": {
+    "no_pitch": 7
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s0/st9/c0"
+   ],
+   "subjects": [
+    "glyph/3/0/9/0/1",
+    "glyph/3/0/9/0/2",
+    "glyph/3/0/9/0/5",
+    "glyph/3/0/9/0/6",
+    "glyph/3/0/9/0/7",
+    "glyph/3/0/9/0/9",
+    "glyph/3/0/9/0/12"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 1,
+   "fates": {
+    "no_pitch": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s0/st9/c14"
+   ],
+   "subjects": [
+    "glyph/3/0/9/14/3"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 2,
+   "fates": {
+    "no_pitch": 2
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s0/st9/c1"
+   ],
+   "subjects": [
+    "glyph/4/0/9/1/0",
+    "glyph/4/0/9/1/2"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 2,
+   "bound": 0,
+   "would": 2,
+   "fates": {
+    "no_pitch": 2
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s0/st9/c3",
+    "p4/s0/st9/c4"
+   ],
+   "subjects": [
+    "glyph/4/0/9/3/3",
+    "glyph/4/0/9/4/1"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 4,
+   "fates": {
+    "no_pitch": 2,
+    "owned_by_another_staff": 1,
+    "duration_narrowed": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s0/st9/c5"
+   ],
+   "subjects": [
+    "glyph/4/0/9/5/4",
+    "glyph/4/0/9/5/6",
+    "glyph/4/0/9/5/7",
+    "glyph/4/0/9/5/8"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 4,
+   "fates": {
+    "no_pitch": 1,
+    "duration_narrowed": 1,
+    "owned_by_another_staff": 2
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s0/st9/c7"
+   ],
+   "subjects": [
+    "glyph/4/0/9/7/3",
+    "glyph/4/0/9/7/6",
+    "glyph/4/0/9/7/7",
+    "glyph/4/0/9/7/8"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 2,
+   "bound": 0,
+   "would": 2,
+   "fates": {
+    "no_pitch": 2
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s0/st9/c11",
+    "p4/s0/st9/c12"
+   ],
+   "subjects": [
+    "glyph/4/0/9/11/6",
+    "glyph/4/0/9/11/8"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 2,
+   "fates": {
+    "no_pitch": 2
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s0/st9/c11"
+   ],
+   "subjects": [
+    "glyph/4/0/9/11/6",
+    "glyph/4/0/9/11/8"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 2,
+   "would": 2,
+   "fates": {
+    "written": 2
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s1/st9/c8"
+   ],
+   "subjects": [
+    "glyph/4/1/9/8/2",
+    "glyph/4/1/9/8/4"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 2,
+   "would": 2,
+   "fates": {
+    "written": 2
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s1/st9/c8"
+   ],
+   "subjects": [
+    "glyph/4/1/9/8/2",
+    "glyph/4/1/9/8/4"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 2,
+   "would": 2,
+   "fates": {
+    "written": 2
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s1/st9/c9"
+   ],
+   "subjects": [
+    "glyph/4/1/9/9/4",
+    "glyph/4/1/9/9/5"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 1,
+   "fates": {
+    "duration_narrowed": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s1/st9/c12"
+   ],
+   "subjects": [
+    "glyph/4/1/9/12/3"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s1/st9/c12"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s1/st9/c12"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s1/st9/c12"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s1/st9/c13"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s1/st9/c14"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s1/st9/c14"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s1/st9/c14"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s1/st9/c14"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s1/st9/c14"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s1/st9/c14"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s1/st9/c14"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 1,
+   "would": 1,
+   "fates": {
+    "written": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p1/s0/st10/c1"
+   ],
+   "subjects": [
+    "glyph/1/0/10/1/6"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p1/s0/st10/c6"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 2,
+   "would": 2,
+   "fates": {
+    "written": 2
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p1/s0/st10/c6"
+   ],
+   "subjects": [
+    "glyph/1/0/10/6/4",
+    "glyph/1/0/10/6/6"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p1/s0/st10/c7"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "slur",
+   "n_segments": 2,
+   "bound": 3,
+   "would": 3,
+   "fates": {
+    "written": 3
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p1/s0/st10/c8",
+    "p1/s0/st10/c9"
+   ],
+   "subjects": [
+    "glyph/1/0/10/8/1",
+    "glyph/1/0/10/9/1",
+    "glyph/1/0/10/9/2"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 1,
+   "would": 1,
+   "fates": {
+    "written": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p1/s0/st10/c10"
+   ],
+   "subjects": [
+    "glyph/1/0/10/10/2"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 1,
+   "would": 1,
+   "fates": {
+    "written": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p1/s0/st10/c11"
+   ],
+   "subjects": [
+    "glyph/1/0/10/11/2"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 1,
+   "would": 1,
+   "fates": {
+    "written": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p1/s0/st10/c11"
+   ],
+   "subjects": [
+    "glyph/1/0/10/11/2"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 2,
+   "would": 2,
+   "fates": {
+    "written": 2
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s0/st10/c0"
+   ],
+   "subjects": [
+    "glyph/2/0/10/0/3",
+    "glyph/2/0/10/0/11"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 1,
+   "would": 1,
+   "fates": {
+    "written": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s0/st10/c5"
+   ],
+   "subjects": [
+    "glyph/2/0/10/5/2"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 1,
+   "would": 1,
+   "fates": {
+    "written": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s0/st10/c5"
+   ],
+   "subjects": [
+    "glyph/2/0/10/5/2"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 3,
+   "would": 3,
+   "fates": {
+    "written": 3
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s0/st10/c10"
+   ],
+   "subjects": [
+    "glyph/2/0/10/10/0",
+    "glyph/2/0/10/10/2",
+    "glyph/2/0/10/10/3"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 4,
+   "would": 4,
+   "fates": {
+    "written": 4
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s0/st10/c14"
+   ],
+   "subjects": [
+    "glyph/2/0/10/14/0",
+    "glyph/2/0/10/14/1",
+    "glyph/2/0/10/14/2",
+    "glyph/2/0/10/14/9"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 5,
+   "would": 5,
+   "fates": {
+    "written": 5
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s0/st10/c14"
+   ],
+   "subjects": [
+    "glyph/2/0/10/14/0",
+    "glyph/2/0/10/14/1",
+    "glyph/2/0/10/14/2",
+    "glyph/2/0/10/14/6",
+    "glyph/2/0/10/14/9"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 1,
+   "would": 1,
+   "fates": {
+    "written": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s0/st10/c15"
+   ],
+   "subjects": [
+    "glyph/2/0/10/15/1"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s1/st10/c0"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 2,
+   "would": 2,
+   "fates": {
+    "written": 2
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s1/st10/c0"
+   ],
+   "subjects": [
+    "glyph/2/1/10/0/1",
+    "glyph/2/1/10/0/14"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 2,
+   "would": 5,
+   "fates": {
+    "written": 2,
+    "owned_by_another_staff": 3
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s1/st10/c10"
+   ],
+   "subjects": [
+    "glyph/2/1/10/10/2",
+    "glyph/2/1/10/10/3",
+    "glyph/2/1/10/10/5",
+    "glyph/2/1/10/10/7",
+    "glyph/2/1/10/10/8"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 2,
+   "would": 5,
+   "fates": {
+    "written": 2,
+    "owned_by_another_staff": 3
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s1/st10/c10"
+   ],
+   "subjects": [
+    "glyph/2/1/10/10/2",
+    "glyph/2/1/10/10/3",
+    "glyph/2/1/10/10/5",
+    "glyph/2/1/10/10/7",
+    "glyph/2/1/10/10/8"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s1/st10/c11"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s1/st10/c12"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s1/st10/c12"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 3,
+   "would": 3,
+   "fates": {
+    "written": 3
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s1/st10/c13"
+   ],
+   "subjects": [
+    "glyph/2/1/10/13/0",
+    "glyph/2/1/10/13/1",
+    "glyph/2/1/10/13/6"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s1/st10/c14"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 1,
+   "would": 1,
+   "fates": {
+    "written": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s1/st10/c14"
+   ],
+   "subjects": [
+    "glyph/2/1/10/14/2"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s1/st10/c14"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 1,
+   "would": 1,
+   "fates": {
+    "written": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s1/st10/c14"
+   ],
+   "subjects": [
+    "glyph/2/1/10/14/2"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 1,
+   "would": 1,
+   "fates": {
+    "written": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p2/s1/st10/c14"
+   ],
+   "subjects": [
+    "glyph/2/1/10/14/2"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s0/st10/c0"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 1,
+   "fates": {
+    "duration_narrowed": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s0/st10/c0"
+   ],
+   "subjects": [
+    "glyph/3/0/10/0/8"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 4,
+   "would": 4,
+   "fates": {
+    "written": 4
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p3/s0/st10/c6"
+   ],
+   "subjects": [
+    "glyph/3/0/10/6/2",
+    "glyph/3/0/10/6/3",
+    "glyph/3/0/10/6/4",
+    "glyph/3/0/10/6/6"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s0/st10/c0"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 2,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s1/st10/c12",
+    "p4/s1/st10/c13"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s1/st10/c13"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s1/st10/c13"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "tie",
+   "n_segments": 2,
+   "bound": 0,
+   "would": 1,
+   "fates": {
+    "no_pitch": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s1/st10/c13",
+    "p4/s1/st10/c14"
+   ],
+   "subjects": [
+    "glyph/4/1/10/14/3"
+   ]
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s1/st10/c13"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 0,
+   "fates": {},
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s1/st10/c14"
+   ],
+   "subjects": []
+  },
+  {
+   "kind": "slur",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 1,
+   "fates": {
+    "no_pitch": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s1/st10/c14"
+   ],
+   "subjects": [
+    "glyph/4/1/10/14/3"
+   ]
+  },
+  {
+   "kind": "tie",
+   "n_segments": 1,
+   "bound": 0,
+   "would": 1,
+   "fates": {
+    "no_pitch": 1
+   },
+   "heads_with_no_page_box_in_these_bars": 0,
+   "where": [
+    "p4/s1/st10/c14"
+   ],
+   "subjects": [
+    "glyph/4/1/10/14/3"
+   ]
+  }
+ ],
+ "notes_not_written": {
+  "duration_narrowed": 339,
+  "owned_by_another_staff": 176,
+  "no_pitch": 215
+ }
+}
