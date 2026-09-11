@@ -179,10 +179,15 @@ def _slots_are_ordinals(slots) -> bool:
     False -- correctly: a repeat is a broken table, and `part_partition` has
     other evidence to weigh. Only a clean 0..n-1 is the ordinal.
     """
+    # ⚠️ `sub.page` / `sub.system`, NOT `getattr(..., None)`. A `Q.SLOT_INDEX`
+    # verdict is STAFF-scoped by declaration, so those fields are always
+    # there; a defaulting read would bucket a wrongly-shaped subject under
+    # `(None, None)` and SILENTLY MERGE two systems into one table, which is
+    # this file's own rule that a fallback must never turn "cannot tell" into
+    # a definite answer. Let it raise instead.
     by_system = {}
     for v in slots:
-        sub = v.subject
-        key = (getattr(sub, "page", None), getattr(sub, "system", None))
+        key = (v.subject.page, v.subject.system)
         by_system.setdefault(key, []).append(v.value)
     if not by_system:
         return False

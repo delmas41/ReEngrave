@@ -43,7 +43,7 @@ MUTATIONS = {
         "    return all(len(set(vals)) == len(vals)"),
     "slots pooled instead of grouped by system": (
         IDENTITY,
-        '        key = (getattr(sub, "page", None), getattr(sub, "system", None))',
+        '        key = (v.subject.page, v.subject.system)',
         "        key = 0  # every system in one bucket"),
     "an empty table reads as the ordinal": (
         IDENTITY,
