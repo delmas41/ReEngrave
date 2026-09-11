@@ -936,3 +936,72 @@ it. Staged READ-ONLY at `library/_shared-records/beethoven5-p1-p4.record.json`
 All three are told that a refutation of the brief is a first-class result —
 **two of the last three jobs came back that way**, and both were worth more
 than their repair.
+
+### Item 4 (arcs) — LANDED, and it inverted the brief's premise
+
+Merged at `8b552a9e`. Suite **3,814 / 11** (3,805 + exactly its 9 tests); all
+four derived checks 0. Verified independently on the shared record: `<slur>`
+**32 → 40**, `<tied>` **84 → 91**, notes unchanged at 1,618. Findings:
+[benchmarks/omr-arc-recovery-2026-09/FINDINGS.md](../benchmarks/omr-arc-recovery-2026-09/FINDINGS.md).
+
+⚠️⚠️ **THE BRIEF SAID "ALMOST NO ARCS CONVERT — FIND OUT WHY WE LOSE THEM".
+THE DETECTOR IS LONG, NOT SHORT: 721 merged groups against 411 ENCODED
+CURVES**, on a plate condensing 18 parts onto 12 staves. Against the
+hand-verified truth for these bars (`works.json`, mm 1-112: **111 slurs / 300
+tie links**) we export 32/80. **A session starting from "detect more arcs"
+goes the wrong way**, and the brief would have sent one there.
+
+⚠️ **It reproduced CLAUDE.md's recorded 76% refusal rate TO THE TENTH**
+(550 of 721, against the arc-export session's 361 of 476) — which is not a
+coincidence but the **control**: it proves the notehead dedupe did not reach
+the arcs, exactly as that job's own report had said.
+
+**The 550 refusals split four ways, and the manager's leading lead was the
+SMALLEST:**
+
+| | of 550 | whose |
+|---|--:|---|
+| heads in the bar, **not under** the arc | 376 | geometry |
+| **nothing read in those bars at all** | 108 | DETECTION |
+| heads under it, held back by the exporter *(the brief's lead)* | **66** | export |
+
+⚠️ The 108 is worth looking at rather than counting: Litolff p.3/s1/st0/c3
+prints a slur over **six legible noteheads**, and the record's entire content
+for that bar is a `tie` at 0.83, a `restWhole` at 0.56 **where no whole rest
+exists**, an `accidentalFlat`, a `staff` and a `ledgerLine` — **not one
+notehead**.
+
+**The repair is the same fault one family over**: an arc is drawn to a **STEM**,
+not to a notehead — median offset **0.52 notehead widths**, the `_beam_levels`
+shape the duration work already paid for. ⚠️ **`Q.STEM` was gathered and read
+by nothing on this path, 1,920 rows — the THIRD instance of that pattern.**
+Additive, no new constant, the overlap rule imported.
+
+⚠️ **Two refusals, both priced rather than asserted.** Widening
+`_SLUR_ARC_PAD_NOTEHEADS` — its engraved plateau **does not exist on this
+scan** (a smooth slope, no gap), so a pad read off it is *fitted to a wish*.
+And the **cross-barline reach, worth +19 more** (super-additive: 171 → 199 →
+218): the window it needs sits on a distribution of **ENGRAVING** — a bar's
+first note is 2.0-2.5 spaces past the barline in **all 282 cases** — so any
+workable window admits every next-bar first note and the rule degenerates into
+a tie-break. **Filed as INFER-shaped work with its number attached.**
+
+#### Two corrections, and a second defect left deliberately unrepaired
+
+* CLAUDE.md's *"on a scan the usual cause is that the notes under the arc were
+  never detected"* is **right for 108 of 550 and wrong as a blanket** — the
+  majority have heads in the bar and none under the arc.
+* The brief's *"duplicated noteheads plausibly broke arc pairing"* moved the
+  arc partition by **nothing**.
+* ⚠️ **`_place_arcs` has no dedupe of its own**: 48 arc pairs in one cell at
+  IoU ≥ 0.7, **19 detected on two different staves**, some pairs disagreeing
+  about their own KIND (one `slur`, one `tie`, at IoU 0.995). The same shape
+  `_place_notes` was repaired for the same day — **not** the cause of Sean's
+  observation, and an arc has no `is_relocated_copy` equivalent, so it is its
+  own job rather than a bolt-on.
+
+⚠️ **Not established**: no added arc was checked against the print; n = 1
+document, 1 publisher, 4 pages, on the *low-res bitonal* end of the corpus.
+**Breitkopf Brahms 1 is where every figure here should be re-measured** — a
+print whose slurs sit over noteheads rather than stems would show a different
+offset distribution and a different reach.
