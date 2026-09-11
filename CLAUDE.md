@@ -25,6 +25,26 @@ Over time the analytics layer learns from human decisions, building auto-accept 
 - **Frontend:** React + Vite + React Query + TypeScript
 - **Container:** Docker Compose (local) + Traefik (production, SSL via Let's Encrypt)
 
+⚠️⚠️ **THE TARGET AND THE ORDER OF WORK CHANGED ON 2026-09-10 — SEAN, TWICE.
+READ THIS BEFORE THE HANDOFFS BELOW, WHICH ARE RANKED UNDER THE OLD ORDER:**
+[docs/plan-2026-09-10-wire-first-then-reconcile.md](docs/plan-2026-09-10-wire-first-then-reconcile.md)
+— (1) the finish line is **"how much work would I have to do to clean it up"**,
+a cleanup count on ONE real scanned movement, not a metric; and (2) that forces
+**WIRE EVERYTHING FIRST, then fix** — a cleanup count taken while whole families
+are missing measures the WIRING, not the READING. ⚠️ The condition that makes
+wiring-first safe: **a wiring pass may CONNECT a decision, it may not let one
+GUESS** — an abstaining decision shows up in the count as a gap and is fixed
+later; a guessing one puts wrong music in the file and the count cannot tell
+them apart. ⚠️ It also records Sean's **fourth stage, RECONCILE** (after
+EVALUATE, before EXPORT): where probable outcomes are weighed across
+decisions, which is the one place "guessing" belongs. Its inputs are ALREADY
+BUILT AND CONSUMED BY NOTHING — `Ruling.narrow`'s candidates and their support,
+`Verdict.correlated`, the groups layer's unanimous/majority/split, and
+`Q.ONSET_COLUMN`. ⚠️ Its two hazards are already paid for here: an
+uncalibrated probability is WORSE than none (ECE 0.1277), and two readers can
+fall silent TOGETHER. **Build it only AFTER the first cleanup count**, which is
+what says which abstentions are worth resolving.
+
 ⚠️ **START HERE IF YOU ARE PICKING THIS UP:**
 [docs/handoff-2026-09-10-arcs-reach-the-file.md](docs/handoff-2026-09-10-arcs-reach-the-file.md)
 — **the newest, and the shortest to read**: the arc export is CLOSED (`<slur>`

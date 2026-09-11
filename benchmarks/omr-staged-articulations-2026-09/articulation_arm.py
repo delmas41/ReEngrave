@@ -99,20 +99,48 @@ def main(argv) -> int:
     # two files must be IDENTICAL. A rule that quietly moved a note would
     # otherwise be invisible behind a plausible articulation count.
     def _strip(xml: str) -> str:
-        out, skip = [], False
-        for line in xml.splitlines():
-            t = line.strip()
-            if t.startswith("<articulations>"):
-                skip = True
-            if not skip:
-                out.append(line)
-            if t.startswith("</articulations>"):
-                skip = False
-        return "\n".join(out)
+        """The file with every `<articulations>` block removed — AND the
+        `<notations>` wrapper that existed only to hold one.
 
-    same = _strip(on_xml) == _strip(off_xml)
+        ⚠️ THE LINE-BASED VERSION OF THIS REPORTED "DIFFERENT" AND WAS WRONG.
+        `_mxl_note` emits `<notations>` only when that list is non-empty, so a
+        note whose ONLY mark is an articulation gains a `<notations>` wrapper
+        as well as the block inside it. Stripping the inner block alone leaves
+        the wrapper behind and the control fires on its own side effect — a
+        control reporting a defect it was not built to see, which is how a real
+        regression gets hidden behind an expected one.
+
+        So this strips STRUCTURALLY: drop the `<articulations>` elements, then
+        drop any `<notations>` left with no children.
+        """
+        import xml.etree.ElementTree as ET
+        root = ET.fromstring(xml)
+        for note in root.iter("note"):
+            for nots in list(note.findall("notations")):
+                for a in list(nots.findall("articulations")):
+                    nots.remove(a)
+                if len(nots) == 0:
+                    note.remove(nots)
+        return ET.tostring(root, encoding="unicode")
+
+    a, b = _strip(on_xml), _strip(off_xml)
+    same = a == b
     print(f"\noutside the <articulations> blocks, the two files are "
           f"{'IDENTICAL' if same else '⚠️ DIFFERENT'}")
+    if not same:
+        # ⚠️ NAME THE DIFFERENCE, never just report one. A control that says
+        # "different" and stops sends the next reader to diff two 50k-line
+        # files by hand -- and the first version of this control fired on its
+        # OWN side effect (it stripped the `<articulations>` block and left
+        # behind the `<notations>` wrapper that existed only to hold it).
+        import difflib
+        d = [l for l in difflib.unified_diff(b.split(">"), a.split(">"),
+                                             lineterm="", n=0)
+             if l[:1] in "+-" and l[:3] not in ("+++", "---")]
+        seen = collections.Counter(l[1:].strip()[:60] for l in d)
+        print(f"  {len(d)} differing fragments; most common:")
+        for k, v in seen.most_common(8):
+            print(f"    {v:>5}  {k}")
     for fam in ("notes", "rests", "slurs", "ties", "dynamics"):
         a, b = on_rep["written"].get(fam, 0), off_rep["written"].get(fam, 0)
         flag = "" if a == b else "   ⚠️ MOVED"
