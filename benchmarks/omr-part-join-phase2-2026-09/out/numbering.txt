@@ -1,0 +1,22 @@
+Each part's measure numbers, per printed system.
+Read DOWN a column: these are all the same printed bars.
+
+part  p1/s0       p2/s0       p2/s1       p3/s0       p3/s1       p4/s0       p4/s1     
+P1    1-16        17-32       33-47       48-63       64-81       82-96       97-111    
+P2    1-16        17-32       33-47       48-63       64-81       82-96       97-111    
+P3    1-16        17-32       33-47       48-63       64-81       82-96       97-111    
+P4    1-16        17-32       33-47       48-63       64-81       82-96       97-111    
+P5    1-16        17-32       33-47       48-63       64-81       82-96       97-111    
+P6    1-16        17-32       33-47       48-63       64-81       82-96       97-111    
+P7    1-16        17-32       33-47       48-63       64-81       82-96       97-111    
+P8    1-16        17-32       33-47       48-63       64-81       82-96       97-111    
+P9    1-16        17-32       33-47       48-63       --          64-78       79-93     
+P10   1-16        17-32       33-47       48-63       --          64-78       79-93     
+P11   1-16        17-32       33-47       48-63       --          64-78       79-93     
+P12   1-16        --          --          --          --          --          --        
+
+⚠️  DISAGREEMENTS -- one printed system, several numberings:
+   p4/s0 starts at [64, 82] depending on the part
+   p4/s1 starts at [79, 97] depending on the part
+
+So `<measure number=N>` names DIFFERENT instants instant across the file.
