@@ -125,9 +125,21 @@ def _forced_pairing(system: List[Optional[str]],
     best pairing, AND (b) no best pairing leaves it UNPAIRED. Without (b),
     reference `[A]` against a system reading `[A, A]` gives both staves the
     single candidate 0 -- each uniquely, and mutually exclusively -- and two
-    staves of one system land in one part. The repeated-name case is exactly
-    the one an orchestral page prints (two horn staves), so this is the
-    common case and not a corner.
+    staves of one system land in one part.
+
+    ⚠️⚠️ AND THIS DOCSTRING CLAIMED THAT CASE IS COMMON -- *"exactly the one an
+    orchestral page prints (two horn staves), so this is the common case and
+    not a corner"* -- WHICH A MEASUREMENT REFUTED. Over 7 systems and 75 staves
+    of Beethoven 5 / Litolff, condition (b) fires **0 times** and the
+    `cands != 1` branch fires **0 times**; deleting the latter outright changes
+    the measured result by nothing. The reason is structural rather than luck:
+    the only name repeated in that reference is `Violin`, and no short system
+    ever reads a violin label, because the strings are the family this edition
+    stops labelling on continuation systems -- so the guard is dormant BY THE
+    SAME MECHANISM that makes 25 staves abstain. Both conditions are still
+    right and are pinned by tests that go red without them; what is corrected
+    is the claim that real pages exercise them.
+    `benchmarks/omr-slot-index-2026-09/FINDINGS.md` §3a.
 
     ⚠️ IT NEVER SCORES POSITION. `slots.align` adds a position term and a
     bracket-group term, which PLACE A STAFF WHOSE NAME WAS NEVER READ; that

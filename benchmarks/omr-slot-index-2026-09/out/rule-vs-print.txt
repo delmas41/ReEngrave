@@ -1,0 +1,86 @@
+warning: The `fitz` API is deprecated and will be removed in future. Use `import pymupdf` instead.
+reference: p1/s0, 12 staves, 12 names read
+  read      ['Flute', 'Oboe', 'Clarinet', 'Bassoon', 'Horn', 'Trumpet', 'Timpani', 'Violin', 'Violin', 'Viola', 'Cello', 'Bass voice']
+  truth     ['Flauti', 'Oboi', 'Clarinetti', 'Fagotti', 'Corni', 'Trombe', 'Timpani', 'Violino I', 'Violino II', 'Viola', 'Violoncello', 'Basso']
+
+  system ord  printed                read           slot  verdict
+  p1/s0     0  Flauti                 Flute             0  ok
+  p1/s0     1  Oboi                   Oboe              1  ok
+  p1/s0     2  Clarinetti             Clarinet          2  ok
+  p1/s0     3  Fagotti                Bassoon           3  ok
+  p1/s0     4  Corni                  Horn              4  ok
+  p1/s0     5  Trombe                 Trumpet           5  ok
+  p1/s0     6  Timpani                Timpani           6  ok
+  p1/s0     7  Violino I              Violin            7  ok
+  p1/s0     8  Violino II             Violin            8  ok
+  p1/s0     9  Viola                  Viola             9  ok
+  p1/s0    10  Violoncello            Cello            10  ok
+  p1/s0    11  Basso                  Bass voice       11  ok
+  p2/s0     0  Flauti                 Flute             0  ok
+  p2/s0     1  Oboi                   Oboe              1  ok
+  p2/s0     2  Clarinetti             Clarinet          2  ok
+  p2/s0     3  Fagotti                Bassoon           3  ok
+  p2/s0     4  Corni                  Horn              4  ok
+  p2/s0     5  Trombe                 Trumpet           5  ok
+  p2/s0     6  Timpani                Timpani           6  ok
+  p2/s0     7  Violino I              None           None  abstain
+  p2/s0     8  Violino II             None           None  abstain
+  p2/s0     9  Viola                  None           None  abstain
+  p2/s0    10  Violoncello e Basso    None           None  abstain
+  p2/s1     0  Flauti                 Flute             0  ok
+  p2/s1     1  Oboi                   Oboe              1  ok
+  p2/s1     2  Clarinetti             Clarinet          2  ok
+  p2/s1     3  Fagotti                Bassoon           3  ok
+  p2/s1     4  Corni                  Horn              4  ok
+  p2/s1     5  Trombe                 Trumpet           5  ok
+  p2/s1     6  Timpani                Timpani           6  ok
+  p2/s1     7  Violino I              None           None  abstain
+  p2/s1     8  Violino II             None           None  abstain
+  p2/s1     9  Viola                  None           None  abstain
+  p2/s1    10  Violoncello e Basso    None           None  abstain
+  p3/s0     0  Flauti                 Flute             0  ok
+  p3/s0     1  Oboi                   Oboe              1  ok
+  p3/s0     2  Clarinetti             Clarinet          2  ok
+  p3/s0     3  Fagotti                Bassoon           3  ok
+  p3/s0     4  Corni                  Horn              4  ok
+  p3/s0     5  Trombe                 Trumpet           5  ok
+  p3/s0     6  Timpani                Timpani           6  ok
+  p3/s0     7  Violino I              None           None  abstain
+  p3/s0     8  Violino II             None           None  abstain
+  p3/s0     9  Viola                  None           None  abstain
+  p3/s0    10  Violoncello e Basso    None           None  abstain
+  p3/s1     0  Flauti                 Flute             0  ok
+  p3/s1     1  Clarinetti             Clarinet          2  ok
+  p3/s1     2  Fagotti                Bassoon           3  ok
+  p3/s1     3  Corni                  Horn              4  ok
+  p3/s1     4  Violino I              None           None  abstain
+  p3/s1     5  Violino II             None           None  abstain
+  p3/s1     6  Viola                  None           None  abstain
+  p3/s1     7  Violoncello e Basso    None           None  abstain
+  p4/s0     0  Flauti                 Flute             0  ok
+  p4/s0     1  Oboi                   Oboe              1  ok
+  p4/s0     2  Clarinetti             Clarinet          2  ok
+  p4/s0     3  Fagotti                Bassoon           3  ok
+  p4/s0     4  Corni                  Horn              4  ok
+  p4/s0     5  Trombe                 Trumpet           5  ok
+  p4/s0     6  Violino I              None           None  abstain
+  p4/s0     7  Violino II             None           None  abstain
+  p4/s0     8  Viola                  None           None  abstain
+  p4/s0     9  Violoncello            None           None  abstain
+  p4/s0    10  Basso                  None           None  abstain
+  p4/s1     0  Flauti                 Flute             0  ok
+  p4/s1     1  Oboi                   Oboe              1  ok
+  p4/s1     2  Clarinetti             Clarinet          2  ok
+  p4/s1     3  Fagotti                Bassoon           3  ok
+  p4/s1     4  Corni                  Horn              4  ok
+  p4/s1     5  Trombe                 Trumpet           5  ok
+  p4/s1     6  Timpani                Timpani           6  ok
+  p4/s1     7  Violino I              None           None  abstain
+  p4/s1     8  Violino II             None           None  abstain
+  p4/s1     9  Viola                  None           None  abstain
+  p4/s1    10  Violoncello e Basso    None           None  abstain
+
+THE RULE      75 staves: correct 50, WRONG 0, abstained 25, no truth slot 0
+THE ORDINAL   correct 63, WRONG 12   (the incumbent, every staff placed)
+
+REACH         50 of 75 staves carry a read name
