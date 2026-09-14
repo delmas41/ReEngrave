@@ -1,0 +1,47 @@
+REACH  notes with a resolvable staff step: 1786  (null 1672, lone 114)
+
+population                                         n  at step 5-6    share
+--------------------------------------------------------------------------
+EVERY OTHER NOTE IN THE FILE (the null)         1672          223    0.133
+lone-pitched bar, FULL length                     74            6    0.081
+lone-pitched bar, UNDERFULL                       40           15    0.375
+lone QUARTER in a 2/4 bar (Sean's population)     25            8    0.320
+
+EVERY OTHER NOTE IN THE FILE (the null)
+   step histogram: -12:3, -11:6, -8:10, -7:28, -6:5, -5:23, -4:26, -3:32, -2:58, -1:28, 0:97, 1:75, 2:127, 3:127, 4:81, 5:121, 6:102, 7:101, 8:120, 9:103, 10:92, 11:90, 12:69, 13:33, 14:24, 15:42, 16:30, 17:12, 19:1, 20:5, 21:1
+
+lone-pitched bar, FULL length
+   step histogram: -10:1, -3:6, -2:1, -1:10, 0:3, 1:6, 2:7, 3:4, 4:4, 5:3, 6:3, 7:4, 8:5, 9:8, 10:2, 11:3, 12:2, 14:1, 20:1
+
+lone-pitched bar, UNDERFULL
+   step histogram: -11:2, -3:1, -1:1, 0:2, 1:4, 2:2, 3:1, 4:1, 5:5, 6:10, 7:4, 8:3, 9:1, 10:2, 16:1
+
+lone QUARTER in a 2/4 bar (Sean's population)
+   step histogram: -11:2, -3:1, 1:2, 2:2, 3:1, 4:1, 5:2, 6:6, 7:1, 8:3, 9:1, 10:2, 16:1
+
+=== the lone quarters, one line each
+    P1 m45   C5   clef=treble  step=5     <-- REST SLOT
+    P1 m85   D5   clef=treble  step=6     <-- REST SLOT
+    P1 m88   D5   clef=treble  step=6     <-- REST SLOT
+    P1 m89   D5   clef=treble  step=6     <-- REST SLOT
+    P2 m49   F5   clef=treble  step=8   
+    P2 m87   A5   clef=treble  step=10  
+    P3 m22   G4   clef=treble  step=2   
+    P3 m49   A4   clef=treble  step=3   
+    P3 m82   F5   clef=treble  step=8   
+    P4 m16   C4   clef=bass    step=10  
+    P4 m27   F3   clef=bass    step=6     <-- REST SLOT
+    P6 m45   G6   clef=treble  step=16  
+    P6 m61   D5   clef=treble  step=6     <-- REST SLOT
+    P6 m65   G4   clef=treble  step=2   
+    P6 m93   F5   clef=treble  step=8   
+    P7 m44   C1   clef=bass    step=-11 
+    P7 m75   E4   clef=alto    step=6     <-- REST SLOT
+    P8 m31   F4   clef=treble  step=1   
+    P8 m69   E3   clef=bass    step=5     <-- REST SLOT
+    P8 m93   B4   clef=treble  step=4   
+    P9 m31   B3   clef=treble  step=-3  
+    P9 m33   F4   clef=treble  step=1   
+   P10 m5    B1   clef=alto    step=-11 
+   P10 m12   A4   clef=alto    step=9   
+   P11 m52   G3   clef=bass    step=7   

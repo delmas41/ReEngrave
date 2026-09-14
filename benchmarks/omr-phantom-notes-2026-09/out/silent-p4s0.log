@@ -1,0 +1,32 @@
+REACH  crop staves=11 vs map 11; crop bars=15 vs map 15
+
+bars on this system                : 165
+bars the PRINT shows as ONE REST-SHAPED MARK and nothing else: 27
+
+what OUR FILE writes in those bars:
+   1 rest(s)                 13
+   2 PITCHED NOTES            5  <-- A NOTE WHERE THE PAGE PRINTS SILENCE
+   PITCHED NOTE               4  <-- A NOTE WHERE THE PAGE PRINTS SILENCE
+   3 PITCHED NOTES            2  <-- A NOTE WHERE THE PAGE PRINTS SILENCE
+   1 note(s) + 1 rest(s)      2
+   2 note(s) + 1 rest(s)      1
+
+the offending bars:
+   P1 m85  staff 0 bar 3  -> PITCHED NOTE     pitches=['D5'] steps=[6] inside_staff=1/1 at_rest_slot=1
+   P1 m88  staff 0 bar 6  -> PITCHED NOTE     pitches=['D5'] steps=[6] inside_staff=1/1 at_rest_slot=1
+   P1 m89  staff 0 bar 7  -> PITCHED NOTE     pitches=['D5'] steps=[6] inside_staff=1/1 at_rest_slot=1
+   P1 m91  staff 0 bar 9  -> 3 PITCHED NOTES  pitches=['A6', 'A6', 'G6'] steps=[17, 17, 16] inside_staff=0/3 at_rest_slot=0
+   P1 m92  staff 0 bar 10  -> 2 PITCHED NOTES  pitches=['A6', 'A6'] steps=[17, 17] inside_staff=0/2 at_rest_slot=0
+   P2 m84  staff 1 bar 2  -> PITCHED NOTE     pitches=['C6'] steps=[12] inside_staff=0/1 at_rest_slot=0
+   P2 m90  staff 1 bar 8  -> 2 PITCHED NOTES  pitches=['B5', 'B5'] steps=[11, 11] inside_staff=0/2 at_rest_slot=0
+   P2 m92  staff 1 bar 10  -> 2 PITCHED NOTES  pitches=['A5', 'B5'] steps=[10, 11] inside_staff=0/2 at_rest_slot=0
+   P6 m83  staff 5 bar 1  -> 2 PITCHED NOTES  pitches=['F6', 'B4'] steps=[15, 4] inside_staff=1/2 at_rest_slot=0
+   P6 m88  staff 5 bar 6  -> 2 PITCHED NOTES  pitches=['D5', 'G6'] steps=[6, 16] inside_staff=1/2 at_rest_slot=1
+   P6 m92  staff 5 bar 10  -> 3 PITCHED NOTES  pitches=['G6', 'D5', 'G6'] steps=[16, 6, 16] inside_staff=1/3 at_rest_slot=1
+
+the 20 phantom NOTES, by where they stand on the staff:
+   at the WHOLE REST's own slot (step 5-6) : 5
+   OUTSIDE the staff (step <0 or >8)       : 14
+   inside the staff, elsewhere             : 1
+
+wrote out/silent-p4s0.json
