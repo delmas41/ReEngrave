@@ -254,6 +254,13 @@ class StaffRun:
     fifths: Optional[int] = None
     meter: Optional[Dict[str, Any]] = None
     n_measures: int = 0
+    #: Whether `measure_partition` DECIDED this staff's bar count, as opposed
+    #: to abstaining. ⚠️ `n_measures` collapses the two — an abstention and a
+    #: decided zero both read 0 — and the document-wide numbering needs them
+    #: apart: an abstaining staff says NOTHING about its system's bar count
+    #: and must not be counted as a dissenting vote for zero, while a system
+    #: on which NO staff decided is a system whose length we cannot tell.
+    n_measures_decided: bool = False
     name: Optional[str] = None
     cells: Dict[int, Cell] = field(default_factory=dict)
     #: This staff's own page geometry, read for the arc merge. ⚠️ BOTH ARE
@@ -294,6 +301,7 @@ def build(rec: Record) -> Tuple[List[List[StaffRun]], Dict[str, Any],
             key=key, page=s["page"] or 0, system=s["system"] or 0,
             staff=s["staff"] or 0))
         run.n_measures = int(v["value"]) if v["outcome"] == "decided" else 0
+        run.n_measures_decided = v["outcome"] == "decided"
 
     for key, run in runs.items():
         run.clef = rec.value(Q.CLEF, key)
@@ -1570,9 +1578,139 @@ def _events(cell: Optional[Cell]) -> List[Dict[str, Any]]:
     return group_chords_in_measure(cell.detections)
 
 
+def _document_bar_offsets(
+        parts: Sequence[Sequence[StaffRun]]
+) -> Tuple[Optional[Dict[Tuple[int, int], int]], Dict[str, Any]]:
+    """Where in the DOCUMENT's bar sequence each printed system begins.
+
+    ⚠️⚠️ A `<measure number=>` MUST NAME ONE INSTANT IN EVERY PART, AND UNTIL
+    2026-09-14 IT DID NOT. `_part_xml` counted 1, 2, 3 … down each part from
+    its own first bar, so a part whose staff is SUPPRESSED on a system — which
+    a printed orchestral score does constantly — simply skipped those bars and
+    every later number in that part was short by the skipped system's length.
+    Measured on Litolff Beethoven 5 pp.1-4 (7 systems, 12 parts): eight parts
+    hold 111 measures, three hold 93 (missing p3/s1's 18) and one holds 16, so
+    page 4's first system opened at measure **64 or 82 depending on which part
+    you read**. Verovio said `Mismatching measure number 87` out loud.
+
+    The bar sequence is a fact about the DOCUMENT: systems are read in order,
+    each contributes its own bars, and a system's offset is the sum of every
+    system before it. A part that is tacet on a system writes no measures for
+    it — that stretch of the number line is simply absent from that part — but
+    the bars it does write are named by where they stand in the document.
+
+    ⚠️ THIS WRITES NO MUSIC. It changes one attribute on `<measure>` and
+    nothing else. Padding the tacet spans is a SEPARATE job and must stay
+    separate: padding first would make the numbers line up while the wrong
+    notes stayed put, and a graft counted as a note error ranks the work into
+    the wrong module.
+
+    **Where the offset comes from.** Only from the record. A system's bar
+    count is the count its own staves agree on — the single value shared by
+    every staff whose `measure_partition` DECIDED. An ABSTAINING staff is not
+    a dissenting vote for zero; it says nothing and is not counted.
+
+    ⚠️⚠️ **AND WHERE IT CANNOT BE DETERMINED, NOTHING IS FABRICATED.** Three
+    conditions leave a document unnumberable, each reported by name:
+
+      * `no_staff_decided_its_bar_count` — nothing on that system read a bar
+        count, so its length is unknown. Taking it as zero would be a guess
+        about a system the page certainly prints bars on.
+      * `staves_disagree_about_the_bar_count` — two staves of one system read
+        different lengths. A majority vote is available and is REFUSED: *"what
+        is most LIKELY, given everything at once"* is INFER-stage work, and a
+        wiring pass may connect a decision, never let one guess.
+      * `a_part_holds_two_runs_on_one_system` — then two of its runs share an
+        offset and would emit the same number twice inside one part. Reachable
+        only through the slot join, where two staves could carry one slot.
+
+    ⚠️ **The refusal is WHOLE-FILE, and that is the load-bearing choice.** A
+    file numbered document-wide up to the bad system and part-wise after it is
+    a file in which `<measure number=N>` means two different things with
+    nothing saying where the boundary lies — *"cannot tell"* converted into a
+    definite answer by the shape of the output, which is the thing the refusal
+    exists to prevent. Refusing returns the exporter to EXACTLY its previous
+    behaviour, so this change can never leave a file worse numbered than the
+    one it replaces; what it can do is leave it unimproved, out loud.
+
+    Returns `(offsets, report)` — `offsets` is `{(page, system): bars standing
+    before it}` or None when refused, and `report` is what coverage says.
+    """
+    # ⚠️ TALLIED OVER `parts`, NOT OVER `runs`. A run belongs to exactly one
+    # part, so this cannot double-count — and it is `parts` that gets
+    # numbered, so a run the join left out of every part is also out of the
+    # file and has no business setting the number line.
+    votes: Dict[Tuple[int, int], "collections.Counter[int]"] = {}
+    collisions: List[str] = []
+    for part in parts:
+        seen: "collections.Counter[Tuple[int, int]]" = collections.Counter()
+        for run in part:
+            key = (run.page, run.system)
+            seen[key] += 1
+            tally = votes.setdefault(key, collections.Counter())
+            if run.n_measures_decided:
+                tally[int(run.n_measures)] += 1
+        for key, n in sorted(seen.items()):
+            if n > 1:
+                collisions.append(f"{key[0]}/{key[1]}")
+
+    rows: List[Dict[str, Any]] = []
+    undetermined: List[Dict[str, Any]] = []
+    offsets: Dict[Tuple[int, int], int] = {}
+    offset = 0
+    determined = True
+    for key in sorted(votes):
+        tally = votes[key]
+        bars = next(iter(tally)) if len(tally) == 1 else None
+        rows.append({
+            "system": f"{key[0]}/{key[1]}",
+            "bars": bars,
+            "staves_deciding": sum(tally.values()),
+            "readings": sorted(tally),
+            "offset": offset if (bars is not None and determined) else None})
+        if bars is None:
+            determined = False
+            undetermined.append({
+                "system": f"{key[0]}/{key[1]}",
+                "reason": ("no_staff_decided_its_bar_count" if not tally
+                           else "staves_disagree_about_the_bar_count"),
+                "readings": sorted(tally)})
+            continue
+        if determined:
+            offsets[key] = offset
+        offset += bars
+
+    report: Dict[str, Any] = {
+        "systems": rows,
+        "document_bars": offset if (determined and not collisions) else None,
+    }
+    if collisions:
+        report["scheme"] = "per_part"
+        report["refused"] = "a_part_holds_two_runs_on_one_system"
+        report["colliding_systems"] = sorted(set(collisions))
+        return None, report
+    if not determined:
+        report["scheme"] = "per_part"
+        report["refused"] = "a_system_bar_count_could_not_be_determined"
+        report["undetermined_systems"] = undetermined
+        return None, report
+    report["scheme"] = "document"
+    return offsets, report
+
+
 def _part_xml(rec: Record, part: Sequence[StaffRun], pid: str,
-              divisions: int, counters: Dict[str, int]) -> str:
-    """One `<part>`: every measure of every system this part appears on."""
+              divisions: int, counters: Dict[str, int],
+              offsets: Optional[Dict[Tuple[int, int], int]] = None) -> str:
+    """One `<part>`: every measure of every system this part appears on.
+
+    ⚠️ `offsets` is `_document_bar_offsets`'s answer: with it, a measure is
+    named by its place in the DOCUMENT's bar sequence, so one number means one
+    instant in every part. Without it — the refusal — the count runs down the
+    part from 1, which is this exporter's own previous behaviour and is
+    demonstrably wrong across parts; the coverage report says which happened
+    and why, because a number that means two different things in two files
+    must never be silent about which one it is.
+    """
     lines = [f'  <part id="{pid}">']
     number = 0
     prev = {"clef": object(), "key": object(), "time": object()}
@@ -1580,6 +1718,13 @@ def _part_xml(rec: Record, part: Sequence[StaffRun], pid: str,
     segments_on = meter_segments_enabled()
     for run in part:
         key = _key_dict(run.fifths)
+        # ⚠️ `.get`, and a MISSING key falls back rather than raising — but
+        # it cannot be missing on the document scheme, because the offsets are
+        # tallied over these same `parts`. The fallback is here so that a
+        # future caller passing a partial map degrades to the old numbering
+        # instead of crashing mid-file, which is the loud-but-recoverable end
+        # of the same choice the whole-file refusal makes.
+        base = None if offsets is None else offsets.get((run.page, run.system))
         for i in range(run.n_measures):
             # ⚠️⚠️ THE METER IS READ PER BAR, AND FOR A LONG TIME IT WAS NOT.
             # This line used to sit outside the loop, one meter for the whole
@@ -1600,7 +1745,8 @@ def _part_xml(rec: Record, part: Sequence[StaffRun], pid: str,
             meter = _meter_dict(meter_at(run.meter, i) if segments_on
                                 else run.meter)
             number += 1
-            lines.append(f'    <measure number="{number}">')
+            lines.append(
+                f'    <measure number="{number if base is None else base + i + 1}">')
             changed = (run.clef != prev["clef"] or key != prev["key"]
                        or meter != prev["time"])
             if first or changed:
@@ -2064,6 +2210,11 @@ def to_musicxml(result: Dict[str, Any]) -> Tuple[str, Dict[str, Any]]:
     # pass can see. Unlike the arcs it needs no merge -- see `_place_wedges`.
     wedges_dropped = collections.Counter(_place_wedges(rec, parts, counters))
 
+    # ⚠️ BEFORE any measure is rendered and AFTER the join, because the number
+    # line is a fact about the DOCUMENT's systems while what gets written on it
+    # is a fact about a PART — and only the join says which runs are one part.
+    offsets, numbering = _document_bar_offsets(parts)
+
     part_list: List[str] = []
     parts_xml: List[str] = []
     for i, part in enumerate(parts):
@@ -2073,7 +2224,8 @@ def to_musicxml(result: Dict[str, Any]) -> Tuple[str, Dict[str, Any]]:
             f'    <score-part id="{pid}">\n'
             f'      <part-name>{_legacy._xml_escape(name)}</part-name>\n'
             f'    </score-part>')
-        parts_xml.append(_part_xml(rec, part, pid, divisions, counters))
+        parts_xml.append(_part_xml(rec, part, pid, divisions, counters,
+                                   offsets))
 
     xml = _legacy._score_partwise(result.get("source", {}) or {},
                                   part_list, parts_xml)
@@ -2082,6 +2234,11 @@ def to_musicxml(result: Dict[str, Any]) -> Tuple[str, Dict[str, Any]]:
     report["written"]["parts"] = len(parts)
     report["written"]["divisions"] = divisions
     report["part_join"] = provenance
+    # ⚠️ REPORTED WHETHER OR NOT IT FIRED, and the `refused` key is the whole
+    # point rather than an afterthought. *"we numbered the document"* and
+    # *"this figure was never computed"* must not read alike — the same lesson
+    # `empty_bars_padded_without_meter` was fixed for, in the numbering path.
+    report["measure_numbering"] = numbering
     # ⚠️ A NOTE THE RECORD HOLDS AND THE FILE DOES NOT. Reported beside the
     # families for the same reason: a shortfall that is not counted is
     # indistinguishable from ink that was never read.
