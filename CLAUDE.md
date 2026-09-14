@@ -2797,6 +2797,72 @@ the wrong quantity for a real dependency and a missing
 
 ---
 
+## The slot index — a rule described in bold and never built
+
+`adjudicate_slot_index`, verified and measured 2026-09-14 (the ranked next work
+of the Phase 2 handoff §8.1). Findings:
+[benchmarks/omr-slot-index-2026-09/FINDINGS.md](benchmarks/omr-slot-index-2026-09/FINDINGS.md).
+
+⚠️⚠️ **THE DOCSTRING STATED THE RULE IN BOLD AND THE FUNCTION RETURNED THE
+ORDINAL ON EVERY PATH** — including on a branch labelled `reason="named"`. That
+is worse than a stale comment: a stale comment describes what *used to be* true,
+this described the code in front of you, in the imperative, and was false. Its
+consumer read the result as a document-wide identity.
+
+**Measured against hand-read PRINT TRUTH** — Beethoven 5 / Litolff pp.1-4, 7
+systems, **75 staves** — using two committed independent sources, neither a
+reading of the other: `printed-lineups.json` (a human on the print) and
+`margin-label-reach.log` (what the reader actually produced, **50 labels over 75
+staves**). The probe runs the decision's own `_forced_pairing` and lexicon.
+
+| | placed | correct | **wrong** | abstained |
+|---|--:|--:|--:|--:|
+| the ordinal (incumbent) | 75 | 63 | **12** | 0 |
+| the name rule | 50 | 50 | **0** | 25 |
+
+⚠️ **"IT FIXES 12" WOULD BE FALSE, AND THE CROSS-TAB IS THE RESULT**: 3 grafts
+become the right slot, **9 become abstentions**, **16 staves the ordinal placed
+correctly are withdrawn**, and **0 new grafts**. All 12 grafts go; only 3 are
+repaired. The trade is a fragment instead of a Timpani part carrying the Viola's
+key signature — which is `_stitch_slots`' own doctrine, applied one layer up.
+
+The 12 are two systems and both are **interior suppression** (p3/s1 suppresses
+Oboi/Trombe/Timpani, p4/s0 suppresses Timpani), where everything below the first
+gap shifts up. The page names its own suppression exactly where it happens:
+p3/s1 reads `Fl. Cl. Fag. Cor.` — **no `Ob.`**.
+
+⚠️⚠️ **THE MEASUREMENT REFUTED THE CODE'S OWN DOCSTRING, WHICH IS NOW
+CORRECTED.** `_forced_pairing` called the repeated-name case *"the common case
+and not a corner"*; over all 75 staves the `cands != 1` branch fires **0 times**
+and condition (b) fires **0 times**, and deleting the former changes the result
+by nothing. Structural, not luck: the only repeated reference name is `Violin`,
+and **no short system ever reads a violin label** — the strings are the family
+this edition stops labelling on continuation systems, so the guard is dormant BY
+THE SAME MECHANISM that makes 25 staves abstain. Both conditions remain right
+and mutation-test red; what was wrong is the claim that real pages reach them.
+
+⚠️ **The abstentions are the page's limit, not timidity** — checked: on p4/s0
+five unnamed staves remain for six reference slots, so *which* is suppressed is
+genuinely undetermined. The lever for the 25 is label reach on string staves,
+which this file already measures as structurally unavailable here (*29 of 29
+unresolved non-treble staves print no label at all*).
+
+⚠️ **The probe has teeth**: placing unnamed staves by position instead scores
+*more* correct (66 vs 50) and **grafts 9 staves** doing it — the guess wearing a
+number, priced.
+
+⚠️ **A separate defect, found in passing and NOT fixed**: the reference reads
+slot 11 as **`Bass voice`** (the page prints `Basso.`) — a singer on an
+orchestral score, the trap this file documents at length. It is **inert here**
+for the same reason the ambiguity guard is dormant, so the result does not rest
+on it.
+
+⚠️ **n = 1 document, 1 publisher, 4 pages**, and this measures the RULE on real
+reader output, **not an end-to-end run** — a cloud container has no weights and
+no library, so `slot_arm.py` (the end-to-end arm) cannot run there.
+
+---
+
 ## The central score library
 
 Every score the project uses lives in one place with its provenance attached:

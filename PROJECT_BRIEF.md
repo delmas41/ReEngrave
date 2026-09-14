@@ -509,6 +509,35 @@ Full reasoning, including what is deliberately not proposed:
 `docs/exploration-what-is-on-the-page-2026-09-09.md`; the measurement, the
 null control and a bug it caught: `benchmarks/omr-onset-columns-2026-09/FINDINGS.md`.
 
+## Which instrument is on which staff (Sept 14)
+
+A printed orchestral score leaves out the instruments that are silent. So the
+fifth staff down is not the fifth instrument — on one page here it is the
+seventh, because three above it were left out. The project had been matching
+staff to instrument **by counting down the page**, which is right only when
+nothing is missing.
+
+The code already described the better rule — read the instrument names printed
+in the margin and match those instead — in its own documentation, in bold. **It
+had never been written.** The function did the counting on every path, including
+in the branch that claimed to be doing the naming.
+
+Written and measured against a person's reading of the actual print: over 75
+staves, counting puts **12 on the wrong instrument**; reading the names puts
+**none** wrong. The honest part of that result is the cost — the new rule only
+*repairs* 3 of the 12. The other 9, and 16 staves counting happened to get right,
+it now declines to answer at all, because the page does not print enough to say.
+That is the intended trade: a gap in the output is recoverable, an instrument's
+music filed under another instrument's name is not.
+
+⚠️ It also refuted a claim the code made about itself — a safeguard the
+documentation called "the common case" turns out never to fire on a real page,
+for a reason worth knowing: it guards against repeated names, and the repeated
+names here are the string parts, which are exactly the ones this publisher stops
+labelling. The claim is corrected in the code, not just noted.
+
+Full reading: `benchmarks/omr-slot-index-2026-09/FINDINGS.md`.
+
 ## Running it
 
 - **Web app:** `docker compose up -d` → http://localhost

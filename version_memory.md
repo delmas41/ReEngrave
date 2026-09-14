@@ -16,6 +16,52 @@ pointing at headings no longer in the file.)*
 
 ---
 
+## 2026-09-14 — The slot index: verifying a rule that was described in bold and never built
+
+**What:** picked up the Phase 2 handoff's ranked next work (§8.1) — the
+`claude/slot-index-by-name` WIP left unverified at a usage cap. Merged it onto
+current main (242 commits had landed), ran the suite and the controls nobody had
+run, and **measured it against hand-read print truth**.
+
+**The defect it repairs:** `adjudicate_slot_index`'s docstring stated the
+short-system name rule IN BOLD and the function returned the staff's ordinal on
+every path — including a branch labelled `reason="named"`.
+
+**Measured** on Beethoven 5 / Litolff pp.1-4 (7 systems, 75 staves) from two
+committed independent sources — the hand-read `printed-lineups.json` and the
+reader's own `margin-label-reach.log` (50 labels / 75 staves):
+
+| | placed | correct | wrong | abstained |
+|---|--:|--:|--:|--:|
+| ordinal (incumbent) | 75 | 63 | **12** | 0 |
+| name rule | 50 | 50 | **0** | 25 |
+
+⚠️ **The cross-tab is the result and "it fixes 12" would be false**: 3 repaired,
+**9 grafts become abstentions**, **16 correct-by-position placements withdrawn**,
+0 new grafts.
+
+⚠️⚠️ **The measurement refuted the code's own docstring** — `_forced_pairing`
+called the repeated-name case *"the common case and not a corner"*; it fires **0
+times** over all 75 staves, and so does condition (b). Structural: the only
+repeated reference name is `Violin` and no short system reads a violin label.
+**The docstring is corrected in the tree**, not just in findings.
+
+⚠️ Also recorded, not fixed: the reference reads slot 11 as **`Bass voice`** for
+a printed `Basso.` — inert here, and it belongs to the lexicon channel.
+
+**Files:** `tools/omr/staged/adjudicators/identity.py` (merged WIP + docstring
+correction), `tools/omr/tests/test_staged_slot_by_name.py`,
+`benchmarks/omr-slot-index-2026-09/` (probe, FINDINGS, out/), CLAUDE.md,
+PROJECT_BRIEF.md, this file.
+
+**Suite:** 3,760 passed; 2 failed, both `test_direction_text.py::TestReaderSelection`
+and both **pre-existing on origin/main**, verified in a clean worktree.
+
+**Not done:** the end-to-end arm (`slot_arm.py`) — needs weights and library a
+cloud container does not have. n = 1 document, 1 publisher, 4 pages.
+
+---
+
 ## 2026-09-10 — arcs reach the file, and a dotted rest is dotted
 
 Two items from the two 09-10 handoffs' ranked/parked lists, taken together.
