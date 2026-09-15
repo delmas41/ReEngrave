@@ -2001,6 +2001,23 @@ class TestAnUncorroboratedChangeIsNotCarriedOffItsSystem(unittest.TestCase):
         got = rhythm_mod._meter_in_force_at_end(ok, 3)
         self.assertEqual((got["numerator"], got["denominator"]), (2, 4))
 
+    def test_a_falsy_value_has_NO_carryable_meter(self):
+        """⚠️ A GENUINE TEST GAP, FOUND BY A MUTATION ARM AND BY NOTHING ELSE.
+        `if not value: return None` was mutated to `return {}` and the whole
+        suite stayed green — `{}` is falsy but it is NOT None, and
+        `_carry_meter` tests `carried is None`, so an empty dict would walk
+        straight into `_corroborate` as if a meter had been handed on.
+
+        Unreachable from `_carry_meter` today (a DECIDED meter verdict always
+        carries a dict), which is exactly why nothing exercised it — and this
+        helper is called directly by `corroboration_arm.py` and by the tests
+        above, so the contract is worth stating rather than deleting.
+        """
+        for empty in (None, {}, {"segments": []}):
+            with self.subTest(value=empty):
+                self.assertIsNone(
+                    rhythm_mod._meter_in_force_at_end(empty, 3))
+
     def test_a_record_written_before_the_rule_still_carries(self):
         """⚠️ `seg.get("corroborated", True)` — a segment with NO flag is an
         OPENING (segment 0 never carries one) or a record written before

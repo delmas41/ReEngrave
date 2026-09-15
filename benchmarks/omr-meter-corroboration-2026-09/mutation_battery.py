@@ -62,6 +62,18 @@ ARMS = [
         return {}
     segments = value.get("segments")''',
      "an empty value carrying instead of abstaining"),
+    # ⚠️ ADDED AFTER `never_none` SURVIVED THE FIRST RUN. That arm was a
+    # GENUINE TEST GAP, not an equivalent mutant, and closing it found a second
+    # hazard the entry guard does not cover: `{"segments": []}` is TRUTHY, so
+    # the filter is skipped, `meter_at` falls back to the value itself, and the
+    # helper returned `{}` — which `_carry_meter` tests with `is None` and
+    # therefore ACCEPTS.
+    ("a_meter_or_nothing", RHYTHM,
+     '''    if carried.get("numerator") is None or carried.get("denominator") is None:
+        return None
+    return carried''',
+     '''    return carried''',
+     "the way-OUT guard: `{}` returned as though it were a meter"),
     ("carry_a_skipped_source_anyway", RHYTHM,
      '''        if carried is None:''',
      '''        if False:''',

@@ -246,6 +246,36 @@ sites, so the next field cannot be added to one of them.
 
 ---
 
+## 5b. THE MUTATION BATTERY — and the one survivor was a real gap
+
+**15 arms, all red, tree restored and VERIFIED byte-for-byte against a
+snapshot taken before the first arm** — not against the version control, since
+two days earlier a battery restored `export.py` from HEAD, HEAD did not have
+the function under test, and the tests that had just passed were testing code
+no longer on disk. `everything_refuses` is an arm, not a footnote: a battery of
+refusal tests passes for a rule that refuses everything.
+
+⚠️ **The first run reported 14 arms and one SURVIVOR: `never_none`.** Mutating
+`if not value: return None` to `return {}` left the whole suite green, and it
+was a genuine test gap rather than an equivalent mutant: `{}` is falsy but it
+is **not None**, and `_carry_meter` tests `carried is None`, so an empty dict
+walks straight into `_corroborate` as though a meter had been handed on.
+
+⚠️⚠️ **Closing it found a SECOND hazard the entry guard does not cover.** A
+value of `{"segments": []}` is **truthy**, so the filter is skipped entirely,
+`meter_at` falls back to the value itself, and the helper returned `{}` — the
+same accepted-as-a-meter path, reached a different way. The contract is now
+stated on the way OUT (*a meter or nothing*: no numerator or no denominator
+returns None) with its own arm, `a_meter_or_nothing`.
+
+Both are unreachable from `_carry_meter` today, because `_with_segments`
+always writes the opening — **which is exactly why nothing exercised them**.
+*"A fallback must never convert cannot-tell into a definite answer"* is about
+the value a caller READS, so the guard belongs on the way out and not only on
+the way in.
+
+---
+
 ## 6. ⚠️ THE HAZARD, STATED PLAINLY
 
 **A-METER-6 does not fix the scan meter problem, and this write-up must not be
@@ -323,6 +353,6 @@ refused that twice.
 |---|---|
 | `probe/reach.py` | the reach, TRUE/FALSE from the committed truth table; exits non-zero if dead |
 | `corroboration_arm.py` | what confinement does, calling the shipped helper; three controls |
-| `mutation_battery.py` | 14 arms, byte snapshot, **restore VERIFIED** |
+| `mutation_battery.py` | **15 arms, all red**, byte snapshot, **restore VERIFIED** |
 | `local_arm.sh` | the end-to-end pricing for Sean's machine — never run |
 | `out/reach.json`, `out/arm-m7.json` | the tables above, machine-readable |

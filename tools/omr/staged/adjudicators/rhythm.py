@@ -1840,11 +1840,25 @@ def _meter_in_force_at_end(value: dict, n_cells: int) -> Optional[dict]:
             return None
         value = dict(value, segments=kept)
     at_end = meter_at(value, n_cells - 1 if n_cells else 0) or value
-    return {k: v for k, v in at_end.items()
-            if k not in ("segments", "cautionary", "support",
-                         "staves_reading_it", "staves_reading_a_meter",
-                         "corroborated", "bars_fit", "bars_contradict",
-                         "from_cell")}
+    carried = {k: v for k, v in at_end.items()
+               if k not in ("segments", "cautionary", "support",
+                            "staves_reading_it", "staves_reading_a_meter",
+                            "corroborated", "bars_fit", "bars_contradict",
+                            "from_cell")}
+    # ⚠️⚠️ THE CONTRACT IS *A METER OR NOTHING*, AND SAYING SO TAKES A LINE.
+    # Found by a mutation arm: `{"segments": []}` is TRUTHY, so the filter
+    # above is skipped, `meter_at` falls back to the value itself and this
+    # returned `{}` — which `_carry_meter` tests with `carried is None` and
+    # therefore accepts, walking an empty dict into `_corroborate` as though a
+    # meter had been handed on. Unreachable today (`_with_segments` always
+    # writes the opening), which is why nothing exercised it.
+    #
+    # "A fallback must never convert *cannot tell* into a definite answer" is
+    # about the value a caller READS, so the guard belongs on the way OUT and
+    # not only on the way in.
+    if carried.get("numerator") is None or carried.get("denominator") is None:
+        return None
+    return carried
 
 
 METER_SOURCE_REASONS = ("voted", "change_only")
