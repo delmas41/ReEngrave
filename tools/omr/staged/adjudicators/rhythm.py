@@ -1486,8 +1486,104 @@ def _last_cell_per_staff(ev: Evidence) -> dict:
 # ─────────────────────────────────────────────────────────────────────────────
 
 
+# ─── BEGIN template-at-bar consumer ──────────────────────────────────────────
+# Everything between this marker and its END marker is the consumer for
+# `Q.METER_TEMPLATE_AT_BAR`, the template reader aimed at a mid-staff bar head
+# (`gather.gather_meter_at_bars`, default OFF). It is kept contiguous and
+# marked so it can be moved wholesale, because the WEIGHING around it
+# (`METER_CHANGE_FLOOR`, `W_CHANGE_*`) is being changed in parallel and this
+# block deliberately touches none of it.
+
+#: How many staves of one system must AGREE on one meter, read off their own
+#: bar heads at the same bar, before any of their readings is admitted.
+#:
+#: ⚠️⚠️ THIS IS WHERE THE SAFETY IS, AND IT IS MEASURED. A mid-staff crop is an
+#: EMPTY WINDOW almost everywhere, and `key_signature_template` already taught
+#: this project what that costs: *the reader that can say "zero" is the one
+#: that must never be given an empty window*. Over **1,612 mid-staff bar-head
+#: windows on ten real scanned pages of two publishers** (Brahms 1 /
+#: Breitkopf, Beethoven 5 / Litolff), none of which prints a meter change,
+#: the reader answered above its own floor:
+#:
+#:     admitted on 1 staff  ->  16 spurious readings, 16 spurious columns
+#:     admitted on 2        ->                         2 spurious columns
+#:     admitted on 3        ->                         **0**
+#:
+#: ⚠️ IT IS NOT A NUMBER READ OFF THAT CORPUS, WHICH IS WHY IT IS 3 AND NOT
+#: 2.5-ish. A meter change is printed on EVERY staff of the system at one bar
+#: — that is what an engraver does — so agreement across staves is the shape
+#: the real thing has, and this project has made that argument twice already
+#: (`vote_system_time_signature`'s `min_staff_fraction`, and
+#: `OMR_KEYSIG_CORROBORATION`). The corpus says where the noise stops; the
+#: convention says why the test is agreement at all.
+#:
+#: ⚠️ THE COST IS UNMEASURED AND IS ONE-SIDED: no page in reach prints a
+#: mid-staff meter change, so what this refuses has never been observed. A
+#: real change on a badly-read system where only two staves clear the floor is
+#: refused by this, and that refusal has not been priced.
+METER_TEMPLATE_AT_BAR_MIN_STAVES = 3
+
+
+def _template_readings_at_bars(ev: Evidence) -> dict:
+    """`{cell: {(num, den, raw): {staves}}}` from `Q.METER_TEMPLATE_AT_BAR`.
+
+    ⚠️ THE KEY CARRIES THE PRINTED FORM, for the same reason `_meter_changes`
+    already keys on it: `C` and `4/4` are one bar length and two engravings,
+    and a page must not average them into one answer.
+
+    Empty when the gatherer is off, which is its default — so with the flag
+    off this function returns `{}` and the block below is a no-op.
+    """
+    out: dict = {}
+    for row in ev.rows(Q.METER_TEMPLATE_AT_BAR, scope=Scope.SELF_AND_DESCENDANTS):
+        detail = row.detail or {}
+        cell = detail.get("cell")
+        value = row.value
+        if cell is None or not isinstance(value, (tuple, list)) or len(value) != 2:
+            continue
+        cell = int(cell)
+        if cell == 0:
+            continue                      # cell 0 states the staff's OPENING
+        num, den = int(value[0]), int(value[1])
+        raw = detail.get("raw") or f"{num}/{den}"
+        out.setdefault(cell, {}).setdefault((num, den, raw), set()).add(
+            row.subject.staff)
+    return out
+
+
+def _admit_template_consensus(readings: dict, at_this_bar: dict,
+                              already_read: set) -> dict:
+    """Fold an AGREEING set of bar-head template readings into `readings`.
+
+    Returns `{key: n_admitted}` for the record. A reading admitted here is
+    indistinguishable downstream from a glyph reading by the same staff, which
+    is the point: it IS a reading of a printed meter, taken by the better
+    reader on a crop the detector was never asked about.
+
+    ⚠️ GAPS ONLY, INHERITED RATHER THAN RE-DECIDED. A staff that already read
+    a meter from its own DIGITS at this bar keeps that reading and this adds
+    nothing for it — the same precedence `adjudicate_key_signature` applies to
+    `key_signature_template`, and for the same reason: the second reader is
+    the one that can OVER-produce, so it speaks where the first was silent.
+    """
+    admitted: dict = {}
+    for key, staves in sorted(at_this_bar.items()):
+        if len(staves) < METER_TEMPLATE_AT_BAR_MIN_STAVES:
+            continue
+        gained = sorted(st for st in staves if st not in already_read)
+        if not gained:
+            continue
+        seen = set(readings.setdefault(key, []))
+        for st in gained:
+            if st not in seen:
+                readings[key].append(st)
+        admitted[key] = len(gained)
+    return admitted
+# ─── END template-at-bar consumer ────────────────────────────────────────────
+
+
 def _meter_changes(ev: Evidence, opening: dict, bars: dict,
-                   last_cell: dict) -> tuple:
+                   last_cell: dict, templates: Optional[dict] = None) -> tuple:
     """Every mid-system meter change this system's own evidence supports.
 
     Takes its facts as arguments — `opening`, `bars` and `last_cell` — rather
@@ -1515,6 +1611,20 @@ def _meter_changes(ev: Evidence, opening: dict, bars: dict,
         if cell is None or int(cell) == 0:
             continue                      # cell 0 states the staff's OPENING
         by_cell.setdefault(int(cell), []).append(r)
+    # ─── BEGIN template-at-bar consumer ──────────────────────────────────────
+    # Empty dict when `OMR_METER_TEMPLATE_AT_BAR` is off, which is the default.
+    # ⚠️ A CANDIDATE COLUMN THE DETECTOR OPENED IS STILL WHAT MAKES A BAR
+    # ASKABLE — the gatherer only ever looks where some staff saw meter-shaped
+    # ink — so this can add staves to a bar, never a bar to the page.
+    #
+    # ⚠️ TAKEN AS AN ARGUMENT, NOT FETCHED HERE, and `inventory --check` is
+    # what said so: it follows a decision's own helpers to a bounded depth, and
+    # fetched here the read sat one level too deep, so `meter` was reported as
+    # declaring `meter_template_at_bar` in `wants` and never reading it — the
+    # INERT DECLARATION anti-pattern, bought with a green line. `last_cell` was
+    # moved for exactly this reason and this follows it.
+    templates = templates if templates is not None else {}
+    # ─── END template-at-bar consumer ────────────────────────────────────────
 
     out = []
     # ⚠️⚠️ THE METER IN FORCE, NOT THE OPENING — and comparing against the
@@ -1562,6 +1672,16 @@ def _meter_changes(ev: Evidence, opening: dict, bars: dict,
                 loose += len(staff_rows)
             else:
                 readings.setdefault(read, []).append(staff)
+        # ─── BEGIN template-at-bar consumer ──────────────────────────────────
+        # A no-op with the flag off (`templates` is `{}`), and a no-op wherever
+        # fewer than `METER_TEMPLATE_AT_BAR_MIN_STAVES` staves of this system
+        # read the SAME meter off their own bar heads at this bar.
+        template_admitted = _admit_template_consensus(
+            readings, templates.get(cell, {}),
+            already_read={st for st, rs in per_staff.items()
+                          if (_meter_from_digits(rs)
+                              or _meter_from_letter(rs)) is not None})
+        # ─── END template-at-bar consumer ────────────────────────────────────
         if not readings:
             continue
 
@@ -1597,6 +1717,16 @@ def _meter_changes(ev: Evidence, opening: dict, bars: dict,
                     "staves_reading_it": sorted(staves),
                     "bars_fit": fits, "bars_contradict": misses,
                     "loose_digits": loose}
+            # ─── BEGIN template-at-bar consumer ──────────────────────────────
+            # ⚠️ RECORDED, NEVER NETTED AWAY. A change that exists only because
+            # the template reader was asked at this bar must SAY so, or the
+            # flag's effect becomes invisible the moment the verdict is read
+            # rather than the log. Absent (not zero) when nothing was admitted,
+            # so a flag-off record carries no new key at all.
+            if template_admitted.get((num, den, raw)):
+                cand["staves_from_bar_head_template"] = (
+                    template_admitted[(num, den, raw)])
+            # ─── END template-at-bar consumer ────────────────────────────────
             if best is None or support > best["support"]:
                 best = cand
         if best is None or best["support"] < METER_CHANGE_FLOOR:
@@ -1623,8 +1753,10 @@ def _with_segments(ev: Evidence, opening: dict) -> dict:
     nothing changes -- so a consumer never has to ask whether this system is
     the special case. `record.meter_at` is how a bar's meter is read.
     """
-    changes, cautionaries = _meter_changes(ev, opening, _bar_lengths_for(ev),
-                                          _last_cell_per_staff(ev))
+    changes, cautionaries = _meter_changes(
+        ev, opening, _bar_lengths_for(ev), _last_cell_per_staff(ev),
+        # ─── template-at-bar consumer: `{}` with the flag off ───
+        _template_readings_at_bars(ev))
     segments = [dict(opening, from_cell=0)]
     for c in changes:
         segments.append({"from_cell": c["from_cell"],
@@ -1634,6 +1766,15 @@ def _with_segments(ev: Evidence, opening: dict) -> dict:
                          "staves_reading_it": c["staves_reading_it"],
                          "bars_fit": c["bars_fit"],
                          "bars_contradict": c["bars_contradict"]})
+        # ─── BEGIN template-at-bar consumer ──────────────────────────────────
+        # ⚠️ THIS PROJECTION IS A WHITELIST AND IT DROPPED THE KEY. The field
+        # was set on the candidate and never reached a segment — the
+        # *computed-and-thrown-away* shape, caught by a test asserting on the
+        # SEGMENT rather than on the candidate. Absent, never zero.
+        if c.get("staves_from_bar_head_template"):
+            segments[-1]["staves_from_bar_head_template"] = (
+                c["staves_from_bar_head_template"])
+        # ─── END template-at-bar consumer ────────────────────────────────────
     out = dict(opening, segments=segments)
     if cautionaries:
         # ⚠️ ON THE VALUE, NOT IN `detail`, because it is a fact about the
@@ -1917,8 +2058,10 @@ def _change_only(ev: Evidence, why: str, **detail) -> Ruling:
     nowhere to put the `3/4` its print states plainly at bar 155. As segments
     it says the true thing: *unknown until bar 8, 3/4 from there*.
     """
-    changes, cautionaries = _meter_changes(ev, {}, _bar_lengths_for(ev),
-                                          _last_cell_per_staff(ev))
+    changes, cautionaries = _meter_changes(
+        ev, {}, _bar_lengths_for(ev), _last_cell_per_staff(ev),
+        # ─── template-at-bar consumer: `{}` with the flag off ───
+        _template_readings_at_bars(ev))
     if cautionaries:
         detail = dict(detail, cautionary=cautionaries[-1])
     if not changes:
@@ -1987,9 +2130,11 @@ def _meter_fallbacks(ev: Evidence, why: str, **detail) -> Ruling:
         '"a meter is a SYSTEM fact: a mid-staff change no other staff witnessed is a misread (21 fired on scans, 0 survive)"',
     ),
     implicates=(Q.METER, Q.DURATION, Q.MEASURE_PARTITION),
-    composed_from=(Q.METER_GLYPH, Q.METER_TEMPLATE, Q.DURATION),
+    composed_from=(Q.METER_GLYPH, Q.METER_TEMPLATE, Q.METER_TEMPLATE_AT_BAR,
+                   Q.DURATION),
     scope=Kind.SYSTEM,
-    wants=(Q.METER_GLYPH, Q.METER_TEMPLATE, Q.DURATION, Q.DOSSIER_FACT,
+    wants=(Q.METER_GLYPH, Q.METER_TEMPLATE, Q.METER_TEMPLATE_AT_BAR,
+           Q.DURATION, Q.DOSSIER_FACT,
            Q.SYSTEM_STAFF_COUNT, Q.METER, Q.EVENT, Q.REST,
            Q.MEASURE_PARTITION),
     reasons=("voted", "no_agreement", "no_evidence",

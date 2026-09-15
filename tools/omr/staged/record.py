@@ -480,6 +480,21 @@ class Q(_Vocab):
     KEYSIG_TEMPLATE_FIT = "keysig_template_fit"
     METER_GLYPH = "meter_glyph"              # timeSig digits / C / cut-C
     METER_TEMPLATE = "meter_template"        # the template reader's score
+    #: The SAME template reader, aimed at a mid-staff BAR HEAD rather than at
+    #: the header window — a printed meter CHANGE.
+    #:
+    #: ⚠️⚠️ A SEPARATE QUANTITY, AND THAT IS THE WHOLE POINT. `adjudicate_meter`
+    #: takes every `Q.METER_TEMPLATE` row as a vote on the system's OPENING, so
+    #: filing a mid-staff reading there would make a change at bar 9 argue
+    #: about what bar 1 prints. The precedent is `Q.KEYSIG_TEMPLATE_FIT`, which
+    #: is separate from `Q.KEYSIG_CLEF_FIT` for exactly the same reason:
+    #: pooling two readings of two different questions moves the decision that
+    #: reads the pool.
+    #:
+    #: ⚠️ The BAR is in `detail["cell"]`, filed on the STAFF subject, which is
+    #: how `Q.METER_GLYPH` already carries it — a mid-staff reading whose bar
+    #: is unknown is not a change, it is noise.
+    METER_TEMPLATE_AT_BAR = "meter_template_at_bar"
 
     # ── text (measurements) ─────────────────────────────────────────────────
     MARGIN_LABEL = "margin_label"            # the STRING, before the lexicon
