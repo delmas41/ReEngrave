@@ -16,6 +16,91 @@ pointing at headings no longer in the file.)*
 
 ---
 
+## 2026-09-14 — `<measure number=N>` names one instant in every part
+
+⚠️ This entry and the phantom-notes entry below it were produced by two agents
+running CONCURRENTLY from the same `main` (`ce7b8ba7`) and are INDEPENDENT —
+neither builds on the other, and they touch disjoint files. They are ordered
+here by nothing more than which is a code change.
+
+`tools/omr/staged/export.py`: new `_document_bar_offsets(parts)`; `_part_xml`
+takes an `offsets` argument; `StaffRun` gains `n_measures_decided`;
+`to_musicxml` reports `measure_numbering`. No flag. **No music changes — one
+attribute moves.**
+
+Was: `_part_xml` counted `number += 1` down each part from its own first bar,
+so a part tacet on a system skipped those bars and every later number in it was
+short by that system's length. On Litolff Beethoven 5 pp.1-4, page 4's first
+system opened at measure **64 or 82 depending on the part**; Verovio reported
+`Mismatching measure number 87`.
+
+Now: systems in reading order, each contributing the bar count its own staves
+agree on (over runs whose `measure_partition` DECIDED — an abstention is not a
+vote for zero), and a measure is `offset + i + 1`. Three conditions refuse the
+scheme for the WHOLE file and fall back to the previous per-part count, naming
+the reason: `no_staff_decided_its_bar_count`,
+`staves_disagree_about_the_bar_count`, `a_part_holds_two_runs_on_one_system`.
+A majority vote is deliberately refused (INFER-stage work).
+
+Measured, one artefact numbered twice (the shipped rule called over StaffRuns
+rebuilt from the committed system map — no staged record is committed and a
+cloud container has no weights):
+- 90 of 1,183 measures move (7.6%), 30 each on P9-P11, zero on the other nine
+- ambiguous measure numbers **30 → 0**; 0 instants carry more than one number
+  (music21 read-back, not inspection)
+- identical-music controls: byte-identical outside `number=`, files DO differ
+  with it in, incumbent scheme reproduces the committed file byte for byte;
+  parsed, the same 1,986-event note sequence per part
+- mutation battery 10 arms, all red, positive control green
+
+Also: `benchmarks/omr-cleanup-count-2026-09/export_arm.py` builds its system map
+through the shipped rule rather than restating the per-part count (its
+map-vs-file assertion: 4 problems under the old formula, 0 under the new).
+
+Tests: `tools/omr/tests/test_staged_measure_numbering.py` (13). Full suite
+3773 passed / 2 failed / 67 skipped — the two are the known
+`test_direction_text.py::TestReaderSelection` baseline failures (no
+`.venv-surya`). `health --check`, `inventory --check`, `gather_coverage` all 0.
+
+Findings: `benchmarks/omr-measure-numbering-2026-09/FINDINGS.md`.
+
+⚠️ Process: the mutation battery's first run reverted the uncommitted change it
+had just certified, because it ended with a checkout from HEAD. Batteries now
+restore from their own pre-run snapshot and verify it; commit a checkpoint
+before running one.
+
+---
+
+## 2026-09-14 — phantom notes: Sean's obs. 3 opened, and it is two faults
+
+**No code outside `benchmarks/`** — `git diff --name-only -- tools/` is empty.
+
+* Added `benchmarks/omr-phantom-notes-2026-09/` — FINDINGS, README, 8 probes,
+  recorded output. Everything reads COMMITTED artefacts only; this ran in a
+  cloud container with no weights, no `library/` and no staged record.
+* **`probe/extract_crops.py` recovers the printed page from the side-by-side
+  HTML artefact's data-URI PNGs** — the route by which a container with no
+  `library/` can still adjudicate against the print.
+* **Reproduced** the handoff's population at 117 / 43 / 26 (it says 118/44/26;
+  the 26 agrees to the unit) with all six named bars exact.
+* **Refuted the population's shape**: against the print on p4/s0, the filter
+  catches 3 of 11 offending bars and mis-attributes 10 of its own 13.
+* **Partitioned the fault**: 25 phantom notes → **8 at the whole rest's slot,
+  14 outside the staff, 3 elsewhere**. The brief's mechanism is confirmed on
+  crops of `P1 m85/m88/m89` and is a third of the problem; the larger half is
+  cross-staff padding ink.
+* **Scoped and did not merge** `claude/note-where-silence-is-printed` — its rule
+  reaches at most 8 of 25 notes and clears at most 6 of 13 bars.
+* Ranked next: **one re-export of the shared record on current main** (no
+  weights) to see how much the dedupe repair already fixed. ⚠️ That re-export
+  **cannot be run in a cloud container** — `library/_shared-records/` is absent
+  and the record is nowhere on disk — so it needs a machine that holds it.
+* Suite 3,690 passed / 63 skipped with `tools/` untouched, plus the two known
+  `test_direction_text.py::TestReaderSelection` failures. No mutation battery —
+  no rule shipped.
+
+---
+
 ## 2026-09-14 — The slot index: verifying a rule that was described in bold and never built
 
 **What:** picked up the Phase 2 handoff's ranked next work (§8.1) — the

@@ -538,6 +538,45 @@ labelling. The claim is corrected in the code, not just noted.
 
 Full reading: `benchmarks/omr-slot-index-2026-09/FINDINGS.md`.
 
+### A bar number that means the same bar in every part
+
+The same score, a different complaint of Sean's: *"none of the measure math
+makes sense"*. A part that is silent on one system printed no bars for it, and
+the exporter numbered each part by counting down from its own first bar — so
+measure 82 in one instrument and measure 82 in another were **different moments
+of music**. Anything reading the file downstream, including the notation
+renderer we preview with, said so out loud.
+
+Measures are now numbered by where the bar falls in the **document**, so a
+number names one instant. 90 of 1,183 numbers move and **no note, rest or slur
+changes** — the file is byte-identical apart from that one attribute. Where the
+page cannot say how many bars a system holds, the change declines for the whole
+file and leaves the old numbering rather than inventing an answer.
+
+Full reading: `benchmarks/omr-measure-numbering-2026-09/FINDINGS.md`.
+
+### A note printed nowhere — opened, and it is two problems
+
+Sean's last unanswered complaint: bars the page prints as silent come out of our
+system holding an actual note. Read against photographs of the print, that turns
+out to be **two different faults wearing one symptom**. About a third are the
+one he guessed at — a rest and a notehead are both small blobs of ink, and we
+read the rest as a note. The larger half are notes belonging to the instrument
+on the staff *above or below*, which drift into the silent bar because each bar
+is cut out of the page with a margin of space around it.
+
+Nothing was changed. Two reasons, both deliberate: a half-built fix already on a
+shelf turns out to address only the smaller cause, and the file Sean read was
+made **before** a repair that landed since and may already have removed much of
+the larger one. Confirming that needs a machine holding the score library.
+
+⚠️ It also found that the way the problem had been counted is wrong in both
+directions — it was defined by our own output rather than by the page, so it
+misses bars where we invent *two* notes and wrongly blames bars we simply
+under-read.
+
+Full reading: `benchmarks/omr-phantom-notes-2026-09/FINDINGS.md`.
+
 ## Running it
 
 - **Web app:** `docker compose up -d` → http://localhost

@@ -1179,6 +1179,72 @@ its evidence would become *what the exporter failed to write*, which is both a
 guess about silence and an **uphill** dependency (EVALUATE runs before EXPORT);
 and sizing the 168 unread bars from a meter we do not have.
 
+### PHASE 2 obs. 3 — the pitched note where silence is printed: TWO faults, not one
+
+2026-09-14, no code outside `benchmarks/`. The last unanswered of Sean's seven,
+and the one a previous job answered the wrong question about. Findings:
+[benchmarks/omr-phantom-notes-2026-09/FINDINGS.md](benchmarks/omr-phantom-notes-2026-09/FINDINGS.md).
+
+⚠️⚠️ **THE BRIEF'S MECHANISM IS REAL AND IS THE SMALLER HALF.** Of **25 phantom
+notes** measured against the print, **8 stand at the whole rest's own slot**
+(steps 5-6) and **14 stand OUTSIDE THE STAFF ALTOGETHER** (steps 10-17) — where
+no whole rest can be, because the bar's own ink is one rest. That ink entered
+through the measure cell's 4-6-space PADDING from a neighbour. 3 more sit
+inside the staff elsewhere. **Two faults, one symptom**, and the brief named the
+smaller.
+
+⚠️⚠️ **AND THE 118 / 44 / 26 IS THE WRONG SHAPE IN BOTH DIRECTIONS** — it is
+defined by OUR OUTPUT, and a bar we UNDER-READ is indistinguishable from one we
+invented a note in. On the one system where the whole population is
+adjudicable: the print shows **27** bars as one rest-shaped mark; **11** get
+pitched notes; the "entire content is one pitched note" filter catches **3 of
+the 11** — seven hold TWO OR THREE notes, which that filter can never see — and
+only **3 of its own 13** underfull lone-pitched bars are print-silent at all.
+**Do not quote 118/44/26 as a measure of this fault again**; `silent_bars.py`'s
+print-side denominator is the honest one.
+
+⚠️ **THE TWO SYSTEMS DISAGREE BY AN ORDER OF MAGNITUDE** — 11 of 27 on the `ff`
+crescendo page, **2 of 67** on a sparse one — so this is a property of *what
+stands NEXT to a resting staff*, not of the resting staff.
+
+⚠️ **THE ARTEFACT PREDATES THE DEDUPE REPAIR AND THE RANKED NEXT WORK FOLLOWS
+FROM IT.** The file Sean read carries **1,793** notes — the count before
+*A CONTEST is RESOLVED, not relocated* took it to 1,618 by refusing **176 as
+`owned_by_another_staff`**, which is exactly the outside-the-staff population.
+**One re-export of the shared record on current main, no weights and no gather,
+settles how much is already fixed**, and nothing should ship before it.
+
+**The WIP branch `claude/note-where-silence-is-printed` is SCOPED and NOT
+MERGED.** Its `Q.NOTEHEAD_IS_A_WHOLE_REST` rule is probably right — its shape
+window matches what the print holds at those bars (h 0.77 spaces, aspect
+1.92-2.08) — and it reaches **at most 8 of the 25 notes and clears at most 6 of
+the 13 bars**, because two bars hold a slot note AND an outside-the-staff note.
+⚠️ **Its own reach (20 flagged glyphs) was never joined to a single BAR**, so
+nothing on that branch said whether it addressed the observation.
+
+⚠️ **THE PRINT REACHED A CONTAINER WITH NO `library/` ONLY BECAUSE IT WAS
+EMBEDDED IN AN HTML ARTEFACT** — system PNGs carried as data URIs inside
+`omr-cleanup-count-2026-09/out/side-by-side-p1-p4.html` (14 of them), recovered
+by `probe/extract_crops.py`. **A cloud session can adjudicate against the print
+after all, on any page a side-by-side was built for.**
+
+⚠️ **THREE OF THIS SESSION'S OWN INSTRUMENTS WERE WRONG FIRST**, each fixed and
+documented at its site: a greedy five-line grouper that found **9 staves of 11
+and silently renumbered the rest**; a fixed-row staff-line eraser that reported
+**residue 9.6 staff spaces wide as a glyph** (the documented 8-17 px warp
+defeating a constant comb — a run-length rule is tilt-independent); and
+⚠️⚠️ **an absolute staff step read off a crop that DRIFTS 1.4 STEPS ACROSS ONE
+SYSTEM** (the same printed mark reads 3.78, 4.03, 4.29, 4.54, 4.80, 5.06, 5.18
+across seven consecutive bars) — **more than the gap between a whole rest (5.5)
+and a half rest (4.5), so a crop-side step may not tell those apart** and this
+probe does not try.
+
+⚠️ **What is NOT established**: n = 1 document, 1 publisher, **2 printed systems
+of 7** (five crops are REFUSED because their barline grid disagrees with the
+exporter's map — a refusal, not a measurement); the census cannot tell a whole
+rest from a half rest; nothing was re-gathered or re-exported; and the 176
+refused notes were never inspected.
+
 ### Three families wired in one pass — fermata, voices, ornaments
 
 2026-09-10, no flag, **Phase 1 of the wire-first plan**. Findings:
@@ -1711,6 +1777,90 @@ which the equal-count branch still accepts and where 5 of the 12 grafts live.
 **The ranked next work is `adjudicate_slot_index` implementing the short-system
 rule its own docstring already states**, reusing `slots.align` rather than
 restating it, and reading its `build_reference` warning first.
+
+### A measure is numbered by the DOCUMENT's bar sequence — repair (2) of three
+
+2026-09-14, no flag. The second of the three repairs the *measure math* section
+above puts in order, and the one its own text calls out: *"a measure must be
+numbered by its place in the DOCUMENT's bar sequence rather than its part's own
+running count — **which alone makes `<measure number=N>` mean one instant,
+writes no music and needs no meter**."* Findings:
+[benchmarks/omr-measure-numbering-2026-09/FINDINGS.md](benchmarks/omr-measure-numbering-2026-09/FINDINGS.md).
+
+`export._document_bar_offsets`: systems in reading order, a system's offset is
+the sum of the bars before it, a measure is `offset + i + 1`. **A system's bar
+count is the single value its own staves AGREE on**, over the runs whose
+`measure_partition` DECIDED. ⚠️ `StaffRun` gained `n_measures_decided` because
+`n_measures` reads 0 for an abstention AND for a decided zero, and an
+abstaining staff must not count as a dissenting vote for zero.
+
+⚠️⚠️ **WHERE IT CANNOT TELL IT FABRICATES NOTHING, AND THE REFUSAL IS
+WHOLE-FILE.** Three named conditions — `no_staff_decided_its_bar_count`,
+`staves_disagree_about_the_bar_count`, `a_part_holds_two_runs_on_one_system` —
+each return the exporter to its PREVIOUS per-part count for the entire file,
+naming the reason in `report["measure_numbering"]`, which is written whether or
+not the scheme fires. Per-system refusal was refused: a file numbered
+document-wide up to the bad system and part-wise after it is
+`<measure number=N>` meaning two things with **nothing saying where the
+boundary lies** — *"cannot tell"* converted into a definite answer by the SHAPE
+of the output. ⚠️ **A MAJORITY VOTE IS AVAILABLE AND IS REFUSED**: nine staves
+reading 4 against one reading 3 is *most likely* 4, which is INFER-stage work,
+and a wiring pass may CONNECT a decision and may not let one GUESS.
+
+**MEASURED**, one artefact numbered twice — ⚠️ **and it is not a re-export**: no
+staged record is committed and a cloud container has no weights, so the arm
+reconstructs the exporter's own `StaffRun`s from the committed SYSTEM MAP (which
+was asserted measure-for-measure against that XML when written) and calls the
+**SHIPPED** rule on them; only the INPUT is reconstructed. Reach first — 12
+parts, 7 systems, 75 staff-systems, 1,183 measures, **4 of 12 parts tacet on at
+least one system**, and the arm exits non-zero declaring itself DEAD at zero.
+**90 of 1,183 measures move (7.6%)** — 30 each on P9-P11 and **zero on the other
+nine**, which is the result agreeing with itself; p4/s0 opens **64 → 82** and
+p4/s1 **79 → 97**. **Ambiguous numbers 30 → 0**, and **0 instants carry more
+than one number**, verified by a **music21 READ-BACK** rather than by reading
+back the attribute we just wrote — the defect was reported by a parser
+(Verovio's `Mismatching measure number 87`), so the repair is checked by one.
+
+⚠️ **Three identical-music controls, each able to fail**: byte-identical outside
+`number=`; the two files DO differ with it in (positive control); **re-applying
+the INCUMBENT scheme reproduces the committed file byte for byte**, which is
+what makes the first two mean anything. Parsed, the same 12 parts, 1,183
+measures and **1,986-event note sequence**. Mutation battery **10 arms, all red,
+positive control `everything_refuses` green**.
+
+⚠️ `export_arm.py`'s system map now calls the shipped rule instead of restating
+the per-part count — checked both ways on a synthetic tacet record: new formula
+7 of 7 pairs clean, **old formula 4 problems**, so the change was necessary and
+that assertion is not vacuous.
+
+⚠️ **What is NOT established**: n = 1 document, 1 publisher, 4 pages; **no print
+was consulted**, so this says a number NAMES one instant and nothing about
+whether those bars hold the right music (the 12-of-75 graft is repair 1, landed
+separately); the three refusal branches are reachable only by INJECTION, since
+no real record here has ever carried a disagreeing system; an export-only arm is
+structurally blind to a GATHER change; and **no OMR-NED figure is claimed** —
+musicdiff pairs measures positionally within a part, so blindness is expected by
+construction, and an unmeasured expectation is not a measurement. **The tacet
+spans are still unpadded** (repair 3), deliberately: padding first would hide
+the graft, and it needs a bar length the meter does not supply here.
+
+⚠️⚠️ **AND THE MUTATION BATTERY'S FIRST RUN DESTROYED THE CHANGE IT HAD JUST
+CERTIFIED — the recorded hazard, arriving from a new direction.** This file
+records *"a mutation battery `git checkout`s the files it mutates, so an A/B arm
+that reads the WORKING TREE is not isolated from it"*, which is about a
+CONCURRENT reader. With nothing else running, that same line harmed the
+battery's own subject: ten arms went red, the battery restored `export.py` from
+**HEAD**, and HEAD did not have the function — `git diff --stat` afterwards
+listed only the benchmark script, and the tests that had just passed were
+testing code no longer on disk. The battery now restores byte-for-byte from the
+snapshot it took before the first arm and **VERIFIES** the restore. The
+governing form is one clause wider:
+
+> **A mutation battery must leave the tree as it FOUND it — which is not the
+> same as leaving it as GIT has it.**
+
+The cheap prophylactic: **commit a checkpoint before running a battery**, so the
+checkout and the snapshot agree.
 
 ### Direction words reach the file — the LAST stub, and PHASE 1 IS COMPLETE
 
