@@ -1,13 +1,5 @@
-r"""The cautionary as a COMPETING CANDIDATE — measured, and it is n = 1.
+The cautionary as a COMPETING CANDIDATE — measured, and it is n = 1.
 
-⚠️ THIS MODULE IS THE WRITE-UP. Every other benchmark in this repository
-carries a `FINDINGS.md`; the session that produced this one was run under a
-harness that refuses to create report `.md` files, so the same content lives
-here as a module docstring and prints with `python3 -m ... findings`. **If you
-are reorganising this directory, move this text into `FINDINGS.md` and delete
-the module** — nothing imports it.
-
-    python3 benchmarks/omr-meter-cautionary-2026-09/findings.py
     python3 benchmarks/omr-meter-cautionary-2026-09/run_all.py   # the numbers
 
 ────────────────────────────────────────────────────────────────────────────
@@ -410,7 +402,3 @@ cannot be fitted afterwards:
 
 **The cheapest thing that would move any of this is `beethoven-sym5-mvt4` bar
 364 — a fixture that already exists.**
-"""
-
-if __name__ == "__main__":
-    print(__doc__)
