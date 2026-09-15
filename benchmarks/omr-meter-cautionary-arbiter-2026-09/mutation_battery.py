@@ -49,6 +49,35 @@ REACH = HERE / "arbiter_reach.py"
 FAST = ["--only", "beet5lit-p056", "brahms1-p045"]
 
 
+#: WRITTEN BEFORE THE FIRST ARM AND DELETED ON A CLEAN EXIT -- because this
+#: battery was KILLED mid-arm and left its subject MUTATED, with the in-memory
+#: snapshot that would have restored it dying with the process. The tree then
+#: looked like an ordinary uncommitted edit, and a later probe run reported an
+#: impossible zero. The recorded rule is that a battery must leave the tree as
+#: it FOUND it, which is not the same as leaving it as version control has it --
+#: and an INTERRUPTED battery obeys neither. The sentinel makes that state LOUD:
+#: a run that finds one refuses to start and names the files at risk with the
+#: hash each should have.
+SENTINEL = HERE / "out" / ".battery-in-flight"
+
+
+def _arm_sentinel(snap):
+    SENTINEL.parent.mkdir(parents=True, exist_ok=True)
+    SENTINEL.write_text("\n".join(
+        f"{q}  {hashlib.sha256(d).hexdigest()}" for q, d in snap.items())
+        + "\n")
+
+
+def _refuse_if_stranded():
+    if not SENTINEL.exists():
+        return
+    raise SystemExit(
+        "REFUSING TO START: a previous battery did not finish, so one of "
+        "these files may still carry a MUTATION. Check each against its hash "
+        "and restore it before re-running, then delete the sentinel:\n"
+        + SENTINEL.read_text() + str(SENTINEL))
+
+
 def _snapshot(paths):
     return {p: p.read_bytes() for p in paths}
 
@@ -177,8 +206,10 @@ def main() -> int:
     ap.add_argument("--out", default=str(HERE / "out" / "mutation-battery.log"))
     args = ap.parse_args()
 
+    _refuse_if_stranded()
     files = sorted({SCORE_FRAMES, OPENING, REACH})
     snap = _snapshot(files)
+    _arm_sentinel(snap)
     lines = []
 
     def say(s):
@@ -220,6 +251,7 @@ def main() -> int:
         _restore(snap)
         say("BASELINE WRONG — every arm below would be meaningless. Stopping.")
         pathlib.Path(args.out).write_text("\n".join(lines) + "\n")
+        SENTINEL.unlink(missing_ok=True)
         return 2
 
     survivors = []
@@ -245,6 +277,7 @@ def main() -> int:
         say(f"    SURVIVOR: {s}")
     pathlib.Path(args.out).parent.mkdir(parents=True, exist_ok=True)
     pathlib.Path(args.out).write_text("\n".join(lines) + "\n")
+    SENTINEL.unlink(missing_ok=True)
     return 1 if survivors else 0
 
 

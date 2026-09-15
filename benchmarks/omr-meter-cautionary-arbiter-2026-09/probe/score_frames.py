@@ -318,6 +318,11 @@ def main():
                     help="use only the first N pages (a smoke run)")
     ap.add_argument("--only", nargs="*", default=None,
                     help="run only these page names (a fast, targeted arm)")
+    ap.add_argument("--exclude", nargs="*", default=None,
+                    help="drop these pages — ⚠️ USE ONLY FOR A PAGE THE "
+                         "PREMISE CHECK HAS ALREADY NAMED, and say why in the "
+                         "write-up; excluding to make `--check` green is how "
+                         "a control stops being one")
     ap.add_argument("--spaces", type=float,
                     default=METER_TEMPLATE_AT_BAR_WINDOW_SPACES)
     ap.add_argument("--out", default=str(
@@ -333,6 +338,14 @@ def main():
             return 2
     else:
         pages = PAGES[:args.pages] if args.pages else PAGES
+    if args.exclude:
+        dropped = [p for p in pages if p[0] in set(args.exclude)]
+        pages = [p for p in pages if p[0] not in set(args.exclude)]
+        print(f"⚠️ EXCLUDED {[d[0] for d in dropped]} — every figure below is "
+              f"for the REMAINING pages only.")
+        if not pages:
+            print("DEAD: --exclude left no page")
+            return 2
     floor = DEFAULT_LOCATOR_CONFIG.min_score
     rows, control = run(pages, args.spaces)
 
