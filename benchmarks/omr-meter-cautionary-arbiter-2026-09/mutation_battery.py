@@ -108,20 +108,32 @@ ARMS = [
      "        pages = [p for p in PAGES if p[0] in set(args.only)]",
      "        pages = []",
      _dead),
+    # ⚠️ ANCHORED IN THE PROBE, NOT IN `tools/`. `_bar_head_window` is IMPORTED
+    # from the gatherer — mutating it would make this battery edit the base
+    # branch's shipped code, which is exactly the kind of collateral CLAUDE.md
+    # records a battery causing. The probe's own call site carries the same
+    # hazard: hand the window a width that is not the bar head's.
     ("score_frames: the bar-head window is the whole cell", SCORE_FRAMES,
-     "    width = int(round(spaces * spacing))",
-     "    width = 10 ** 6",
-     lambda rc, out: "head_last" in out and _head_last_rate(out) > 0.10),
+     "window = _bar_head_window(c, spaces)",
+     "window = _bar_head_window(c, 1000.0)",
+     lambda rc, out: _head_last_rate(out) > 0.10),
     ("opening sweep: the reader never reads the printed meter", OPENING,
-     "            found = locate_time_signature(crop)",
-     "            found = None",
+     "        found = locate_time_signature(crop)",
+     "        found = None",
      _dead),
     ("arbiter_reach: the artefact grep loses its positive control", REACH,
      "        if '\"raw\"' in text:",
      "        if False:",
      lambda rc, out: "the positive control is ZERO" in out),
+    # ⚠️ THE FIRST DRAFT OF THIS ARM SURVIVED, AND IT WAS THE ARM'S FAULT: it
+    # swapped in a regex that matches NEITHER function, so `_trace` returned
+    # `variable=None` and the probe printed "NOT FOUND" instead of the
+    # single-quantity line. The mutation has to make both rows trace the SAME
+    # reader, which is what the claim under test denies.
     ("arbiter_reach: both counts read one quantity", REACH,
+     '            _trace(R.adjudicate_meter, "n_staves_spoke",\n'
      '                   r"n_staves_spoke[=:]\\s*len\\((\\w+)\\)"),',
+     '            _trace(R._meter_changes, "staves_reading_it",\n'
      '                   r\'"staves_reading_it":\\s*sorted\\((\\w+)\\)\'),',
      lambda rc, out: "the 'two readers' claim is FALSE" in out),
 ]
