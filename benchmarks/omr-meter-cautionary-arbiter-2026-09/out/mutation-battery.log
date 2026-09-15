@@ -6,14 +6,10 @@ POSITIVE_unmutated — the baseline every arm is judged against
  2. RED   score_frames: the positive control is never stamped   (rc=2)
  3. RED   score_frames: the premise check can never fire   (rc=0)
  4. RED   score_frames: --only silently matches nothing   (rc=2)
- 5. score_frames: the bar-head window is the whole cell
-    BAD ANCHOR in score_frames.py: 0 occurrences of '    width = int(round(spaces * spacing))' (need exactly 1). Reported as an ERROR, never as a silent pass.
- 6. opening sweep: the reader never reads the printed meter
-    BAD ANCHOR in where_the_opening_sits.py: 0 occurrences of '            found = locate_time_signature(crop)' (need exactly 1). Reported as an ERROR, never as a silent pass.
+ 5. SURVIVED score_frames: the bar-head window is the whole cell   (rc=2)
+ 6. RED   opening sweep: the reader never reads the printed meter   (rc=2)
  7. RED   arbiter_reach: the artefact grep loses its positive control   (rc=3)
- 8. SURVIVED arbiter_reach: both counts read one quantity   (rc=3)
+ 8. RED   arbiter_reach: both counts read one quantity   (rc=3)
 
-8 arms, 5 red, 3 survivors
-    SURVIVOR: score_frames: the bar-head window is the whole cell (BAD ANCHOR)
-    SURVIVOR: opening sweep: the reader never reads the printed meter (BAD ANCHOR)
-    SURVIVOR: arbiter_reach: both counts read one quantity
+8 arms, 7 red, 1 survivors
+    SURVIVOR: score_frames: the bar-head window is the whole cell

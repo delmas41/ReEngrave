@@ -80,14 +80,14 @@ def _patch(path, old, new):
 
 # ── the arms ────────────────────────────────────────────────────────────────
 #
-# (name, file, old, new, expectation) — `expectation(rc, out)` returns True
+# (name, file, old, new, expectation) — `expectation(rc, out, base)` returns True
 # when the probe NOTICED the mutation.
 
-def _dead(rc, out):
+def _dead(rc, out, base=""):
     return rc != 0 and ("DEAD" in out or "PREMISE BROKEN" in out)
 
 
-def _premise_fired(rc, out):
+def _premise_fired(rc, out, base=""):
     return "PREMISE BROKEN" in out
 
 
@@ -103,7 +103,7 @@ ARMS = [
     ("score_frames: the premise check can never fire", SCORE_FRAMES,
      "        voted = vote_system_time_signature(reads, n_staves=len(reads))",
      "        voted = None",
-     lambda rc, out: not _premise_fired(rc, out)),
+     lambda rc, out, base: not _premise_fired(rc, out)),
     ("score_frames: --only silently matches nothing", SCORE_FRAMES,
      "        pages = [p for p in PAGES if p[0] in set(args.only)]",
      "        pages = []",
@@ -113,10 +113,18 @@ ARMS = [
     # branch's shipped code, which is exactly the kind of collateral CLAUDE.md
     # records a battery causing. The probe's own call site carries the same
     # hazard: hand the window a width that is not the bar head's.
+    # ⚠️ ITS FIRST EXPECTATION SURVIVED, AND THE ARM WAS RIGHT WHILE THE
+    # EXPECTATION WAS UNREACHABLE. Widening the window to the whole cell does
+    # not push the `head_last` ANSWER RATE over a floor on a two-page fixture —
+    # neither page prints a mid-staff meter and the ink is still not a meter.
+    # What it MUST move is the MEDIAN best score, because a maximum over a
+    # superset of positions can only be greater or equal (§2's identity). So
+    # the expectation is the identity itself, which also makes this arm a live
+    # check of the finding rather than a proxy for it.
     ("score_frames: the bar-head window is the whole cell", SCORE_FRAMES,
      "window = _bar_head_window(c, spaces)",
      "window = _bar_head_window(c, 1000.0)",
-     lambda rc, out: _head_last_rate(out) > 0.10),
+     lambda rc, out, base: _median(out, "head_mid") > _median(base, "head_mid")),
     ("opening sweep: the reader never reads the printed meter", OPENING,
      "        found = locate_time_signature(crop)",
      "        found = None",
@@ -124,7 +132,7 @@ ARMS = [
     ("arbiter_reach: the artefact grep loses its positive control", REACH,
      "        if '\"raw\"' in text:",
      "        if False:",
-     lambda rc, out: "the positive control is ZERO" in out),
+     lambda rc, out, base: "the positive control is ZERO" in out),
     # ⚠️ THE FIRST DRAFT OF THIS ARM SURVIVED, AND IT WAS THE ARM'S FAULT: it
     # swapped in a regex that matches NEITHER function, so `_trace` returned
     # `variable=None` and the probe printed "NOT FOUND" instead of the
@@ -135,8 +143,21 @@ ARMS = [
      '                   r"n_staves_spoke[=:]\\s*len\\((\\w+)\\)"),',
      '            _trace(R._meter_changes, "staves_reading_it",\n'
      '                   r\'"staves_reading_it":\\s*sorted\\((\\w+)\\)\'),',
-     lambda rc, out: "the 'two readers' claim is FALSE" in out),
+     lambda rc, out, base: "the 'two readers' claim is FALSE" in out),
 ]
+
+
+def _median(out, population):
+    """The `med` this probe printed for one population, or 0.0."""
+    for line in out.splitlines():
+        if line.strip().startswith(population):
+            toks = line.split()
+            if "median" in toks:
+                try:
+                    return float(toks[toks.index("median") + 1])
+                except (ValueError, IndexError):
+                    return 0.0
+    return 0.0
 
 
 def _head_last_rate(out):
@@ -179,8 +200,10 @@ def main() -> int:
     # ── POSITIVE CONTROL ────────────────────────────────────────────────────
     say("POSITIVE_unmutated — the baseline every arm is judged against")
     ok = True
+    baselines = {}
     for path, cmd in cmds.items():
         rc, out = _run(cmd)
+        baselines[path] = out
         note = ""
         if path is SCORE_FRAMES:
             good = _premise_fired(rc, out) and "DEAD" not in out
@@ -209,7 +232,7 @@ def main() -> int:
             survivors.append(name + " (BAD ANCHOR)")
             continue
         rc, out = _run(cmds[path])
-        caught = bool(expect(rc, out))
+        caught = bool(expect(rc, out, baselines[path]))
         _restore(snap)
         say(f"{i:>2}. {'RED  ' if caught else 'SURVIVED'} {name}   (rc={rc})")
         if not caught:

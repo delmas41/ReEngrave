@@ -131,18 +131,21 @@ def same_frame_openings(pdf, pages, spaces):
     no inference. ⚠️ It slices with the GATHERER's `_bar_head_window`, imported,
     because a restated slice would be a different reader.
     """
-    import cv2
-
     from tools.omr.measure_extractor import detect_barlines, extract_measures
-    from tools.omr.preprocessing import render_pdf_pages
+    from tools.omr.preprocessing import render_page
     from tools.omr.staff_detector import detect_staves
     from tools.omr.staff_line_removal import remove_staff_lines
+    from tools.omr.staged.__main__ import parse_pages
     from tools.omr.staged.gather import _bar_head_window
     from tools.omr.time_signature_locator import locate_time_signature
 
-    del cv2  # imported for the side effect of failing early if absent
     out = collections.defaultdict(list)
-    for page in render_pdf_pages(pathlib.Path(pdf), pages=pages):
+    # ⚠️ THE PAGE SPEC IS PARSED BY THE STAGED CLI'S OWN `parse_pages`, imported
+    # rather than restated — this arm must look at exactly the pages the gather
+    # looked at, and two spellings of "0-3" is how they would come apart.
+    for page_index in parse_pages(pages):
+        page = render_page(pathlib.Path(pdf), page_index)
+        page.page_index = page_index
         pws = detect_barlines(detect_staves(page))
         cells = extract_measures(pws)
         remove_staff_lines(cells)
