@@ -96,10 +96,16 @@ ARMS = [
      '            if False:  # MUTANT\n                cand["staves_from_bar_head_template"] = (',
      "the flag's effect becomes invisible in the verdict"),
     ("the_segment_projection_drops_it", RHYTHM,
-     '        if c.get("staves_from_bar_head_template"):\n            segments[-1]["staves_from_bar_head_template"] = (',
-     '        if False:  # MUTANT\n            segments[-1]["staves_from_bar_head_template"] = (',
+     '                   "corroborated", "bars_fit", "bars_contradict",\n                   "staves_from_bar_head_template")',
+     '                   "corroborated", "bars_fit", "bars_contradict")  # MUTANT',
      "⚠️ THE REAL BUG THIS BATTERY'S SUBJECT ALREADY HAD ONCE: the field was "
-     "set on the candidate and the whitelist projection dropped it"),
+     "set on the candidate and the projection dropped it. ⚠️ RE-POINTED AT "
+     "THE MERGE: the hand-written literal this used to mutate was DELETED "
+     "when `claude/meter-corroboration` landed `_SEGMENT_FIELDS`, so the arm "
+     "read BAD ANCHOR (occurs 0x) — reported rather than silently passing. "
+     "The hazard did not go away, it moved into the one derived projection, "
+     "and mutating it now covers BOTH segment-building sites where the "
+     "literal only ever covered `_with_segments`."),
     # ⚠️ POSITIVE CONTROL, in the same class as the refusal arms.
     ("POSITIVE_everything_refuses", RHYTHM,
      "METER_TEMPLATE_AT_BAR_MIN_STAVES = 3",

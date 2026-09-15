@@ -319,3 +319,102 @@ that.
    measurement; it is not a tweak to this one.
 4. ⚠️ **Do not raise `min_score` for this population without a gap.** Measured
    here: there is not one.
+
+---
+
+## 9. THE MERGE WITH `claude/meter-corroboration` — and one claim above is now stale
+
+2026-09-15, branch `claude/meter-template-merged`, merging integration
+`878c0a7c` (which carries A-METER-6 and flips `OMR_METER_CARRY` /
+`OMR_METER_FROM_BARS` ON) into `6522d26c`. Two conflicting hunks in
+`rhythm.py`, both in the meter change path.
+
+⚠️⚠️ **SECTION 6's SECOND DEFECT NOW DESCRIBES CODE THAT NO LONGER EXISTS.**
+It says *"`_with_segments`' projection is a WHITELIST, so it was dropped on the
+way out"*. That whitelist was a **hand-written dict literal**, and the merge
+DELETED it. Saying so here rather than editing section 6 keeps the history —
+the defect was real and the test that caught it still guards the field — but a
+reader must not go looking for that literal. It is gone.
+
+**(1) The per-cell `readings` loop — two independent additions, one anchor.**
+Theirs adds `staves_with_a_meter.add(staff)` INSIDE the per-staff `else:`;
+mine adds `template_admitted = _admit_template_consensus(...)` AFTER the loop.
+Git cannot sequence two insertions at one point. Both kept, correctly scoped —
+theirs at 16 spaces inside the loop, mine at 8 after it — because later code
+both branches agree on reads `staves_with_a_meter` in
+`cand["staves_reading_a_meter"]` and `template_admitted` in
+`if template_admitted.get((num, den, raw))`.
+
+⚠️ **A SEMANTIC CHOICE WAS TAKEN HERE AND IS DOCUMENTED AT THE SITE: the
+template's staves DO NOT feed `staves_with_a_meter`.** That set is A-METER-6's
+WEAKER witness, defined over what the DETECTOR's glyphs said, and recorded
+precisely so the weaker rule can be priced later **without a re-gather**.
+Folding a second reader into it would silently change what such a pricing
+measures — two readers pooled into one number defined over one of them. The
+template's contribution is reported APART as
+`staves_from_bar_head_template`, which is this repository's own convention
+(`cv_glyphs` beside `detector_glyphs`; `detector` beside `cv_hairpins`) rather
+than a new one.
+
+**(2) `_with_segments` — resolved toward the DERIVED helper, and the literal
+deleted.** Theirs calls `_meter_changes` with four positional args and builds
+segments through `_segment_from_change` / `_SEGMENT_FIELDS`; mine called it
+with five and hand-wrote the segment dict, then patched the field in
+afterwards. **The five-arg call is kept and the literal is gone**;
+`staves_from_bar_head_template` is now declared in `_SEGMENT_FIELDS` and
+reaches the segment through that one projection.
+
+⚠️ **ABSENT-NOT-ZERO IS PRESERVED FOR FREE**: `_segment_from_change` is
+`{k: change[k] for k in _SEGMENT_FIELDS if k in change}`, so a change the
+template did not contribute to carries no such key at all. No extra guard was
+needed and none was added.
+
+⚠️⚠️ **THIS IS STRICTLY BETTER THAN WHAT EITHER SIDE HAD, and it is the same
+bug on both sides of the collision.** `_meter_changes` has TWO segment-building
+callers — `_with_segments` and `_change_only` — and their branch introduced
+`_SEGMENT_FIELDS` *because* A-METER-6's `corroborated` had been added to the
+first and not the second, so a `change_only` verdict silently carried no flag
+while every unit test stayed green. My literal had the identical shape one
+field later: `staves_from_bar_head_template` could never have reached
+`_change_only`'s segments. Through the helper it now does.
+
+**⚠️ THE 5-ARG SIGNATURE WAS CHECKED, NOT ASSUMED.** `878c0a7c`'s
+`_meter_changes` takes **four** positional parameters — `git show
+878c0a7c:tools/omr/staged/adjudicators/rhythm.py` confirms it — so a five-arg
+call against their tree alone would be a `TypeError`. It works after the merge
+only because git auto-merged my `templates: Optional[dict] = None` parameter
+into their function body outside the conflict region. Both call sites were then
+read back and both are five-arg.
+
+**⚠️ ONE MUTATION ARM WENT `BAD ANCHOR (occurs 0x)` AND THAT IS THE BATTERY
+WORKING.** `the_segment_projection_drops_it` mutated the deleted literal. It
+was **re-pointed at `_SEGMENT_FIELDS`** rather than dropped: the hazard did not
+go away, it moved into the derived projection — and mutating it there covers
+BOTH segment sites where the literal only ever covered one. An arm that can
+never go red trains the next reader to ignore the list, which is why a
+`BAD ANCHOR` is reported as a problem rather than counted as a pass.
+
+### Results on the MERGED tree
+
+| | |
+|---|---|
+| `test_meter_template_at_bar.py` | **33 passed** |
+| `test_staged_header_rhythm.py` + `test_flag_default_direction.py` | **96 passed**, 7 subtests |
+| flag directions | **12 default-ON / 11 default-OFF**, all consistent; `OMR_METER_TEMPLATE_AT_BAR` still derived default-OFF; `OMR_METER_CARRY`, `OMR_METER_FROM_BARS`, `OMR_METER_SEGMENTS` now ON |
+| `health --check` | **0** |
+| `inventory --check` | **0** — 14 problems, **0 not on `KNOWN_GAPS`**, and `meter_template_at_bar` is NOT reported inert |
+| `gather_coverage` | **0** |
+| mutation battery | **15 arms, 15 red, 0 survivors**, restore VERIFIED |
+
+⚠️ `inventory --check` was re-run on the MERGED tree specifically, because the
+merge changes what reads what and that check is what caught this branch's inert
+declaration the first time.
+
+⚠️ **Nothing in sections 1-8 is re-measured by this merge.** The reach and
+empty-window figures are properties of the READER over crops and the merge does
+not touch it. **Nothing is priced, still** — `local_arm.py` is unchanged and its
+two full re-gathers remain the only thing that can price it. ⚠️ With both meter
+flags now ON by default, that arm's output will differ from what sections 1-8
+would predict: the OFF arm is no longer a plain reader baseline but a
+carry-and-bars baseline, and the comparison is still valid because both arms
+inherit those defaults equally.
