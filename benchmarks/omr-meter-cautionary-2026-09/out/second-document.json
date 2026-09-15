@@ -1,0 +1,2217 @@
+{
+ "n_dossiers": 97,
+ "n_with_change": 32,
+ "n_with_change_and_edition": 21,
+ "unjoined": [
+  "boulanger-printemps-mvt1",
+  "dvorak-sym9-full",
+  "h186",
+  "holst-planets-full",
+  "holst-planets-mvt1",
+  "holst-planets-mvt2",
+  "holst-planets-mvt3",
+  "holst-planets-mvt4",
+  "holst-planets-mvt5",
+  "holst-planets-mvt6",
+  "holst-planets-mvt7",
+  "mozart-sym41-full",
+  "ravel-bolero-pt1",
+  "ravel-bolero-pt2",
+  "ravel-bolero",
+  "tchaikovsky-1812-overture",
+  "tchaikovsky-sym6-full"
+ ],
+ "works": [
+  {
+   "dossier": "beethoven-sym1-mvt1",
+   "library_work_id": "beethoven--symphony-1",
+   "total_measures": 300,
+   "constant_meter": false,
+   "n_mid_movement_changes": 1,
+   "changes": [
+    {
+     "measure": 13,
+     "raw": "2/2"
+    }
+   ],
+   "held_editions": [
+    {
+     "path": "editions/beethoven/symphony-1-op21/beethoven--symphony-1-op21--henry-litolff-s-verlag-1870--imslp74.pdf",
+     "publisher": "Henry Litolff's Verlag, Braunschweig, 1870, plate 2765",
+     "image_type": "Normal Scan",
+     "pages": 43
+    }
+   ]
+  },
+  {
+   "dossier": "beethoven-sym1-mvt2",
+   "library_work_id": "beethoven--symphony-1",
+   "total_measures": 196,
+   "constant_meter": true,
+   "n_mid_movement_changes": 0,
+   "changes": [],
+   "held_editions": [
+    {
+     "path": "editions/beethoven/symphony-1-op21/beethoven--symphony-1-op21--henry-litolff-s-verlag-1870--imslp74.pdf",
+     "publisher": "Henry Litolff's Verlag, Braunschweig, 1870, plate 2765",
+     "image_type": "Normal Scan",
+     "pages": 43
+    }
+   ]
+  },
+  {
+   "dossier": "beethoven-sym1-mvt3",
+   "library_work_id": "beethoven--symphony-1",
+   "total_measures": 141,
+   "constant_meter": true,
+   "n_mid_movement_changes": 0,
+   "changes": [],
+   "held_editions": [
+    {
+     "path": "editions/beethoven/symphony-1-op21/beethoven--symphony-1-op21--henry-litolff-s-verlag-1870--imslp74.pdf",
+     "publisher": "Henry Litolff's Verlag, Braunschweig, 1870, plate 2765",
+     "image_type": "Normal Scan",
+     "pages": 43
+    }
+   ]
+  },
+  {
+   "dossier": "beethoven-sym1-mvt4",
+   "library_work_id": "beethoven--symphony-1",
+   "total_measures": 306,
+   "constant_meter": true,
+   "n_mid_movement_changes": 0,
+   "changes": [],
+   "held_editions": [
+    {
+     "path": "editions/beethoven/symphony-1-op21/beethoven--symphony-1-op21--henry-litolff-s-verlag-1870--imslp74.pdf",
+     "publisher": "Henry Litolff's Verlag, Braunschweig, 1870, plate 2765",
+     "image_type": "Normal Scan",
+     "pages": 43
+    }
+   ]
+  },
+  {
+   "dossier": "beethoven-sym2-mvt1",
+   "library_work_id": "beethoven--symphony-2",
+   "total_measures": 364,
+   "constant_meter": false,
+   "n_mid_movement_changes": 1,
+   "changes": [
+    {
+     "measure": 35,
+     "raw": "4/4"
+    }
+   ],
+   "held_editions": [
+    {
+     "path": "editions/beethoven/symphony-2-op36/beethoven--symphony-2-op36--henry-litolff-s-verlag-1870--imslp503997.pdf",
+     "publisher": "Henry Litolff's Verlag, Braunschweig, 1870, plate 2766",
+     "image_type": "Normal Scan",
+     "pages": 61
+    }
+   ]
+  },
+  {
+   "dossier": "beethoven-sym2-mvt2",
+   "library_work_id": "beethoven--symphony-2",
+   "total_measures": 276,
+   "constant_meter": true,
+   "n_mid_movement_changes": 0,
+   "changes": [],
+   "held_editions": [
+    {
+     "path": "editions/beethoven/symphony-2-op36/beethoven--symphony-2-op36--henry-litolff-s-verlag-1870--imslp503997.pdf",
+     "publisher": "Henry Litolff's Verlag, Braunschweig, 1870, plate 2766",
+     "image_type": "Normal Scan",
+     "pages": 61
+    }
+   ]
+  },
+  {
+   "dossier": "beethoven-sym2-mvt3",
+   "library_work_id": "beethoven--symphony-2",
+   "total_measures": 133,
+   "constant_meter": true,
+   "n_mid_movement_changes": 0,
+   "changes": [],
+   "held_editions": [
+    {
+     "path": "editions/beethoven/symphony-2-op36/beethoven--symphony-2-op36--henry-litolff-s-verlag-1870--imslp503997.pdf",
+     "publisher": "Henry Litolff's Verlag, Braunschweig, 1870, plate 2766",
+     "image_type": "Normal Scan",
+     "pages": 61
+    }
+   ]
+  },
+  {
+   "dossier": "beethoven-sym2-mvt4",
+   "library_work_id": "beethoven--symphony-2",
+   "total_measures": 443,
+   "constant_meter": true,
+   "n_mid_movement_changes": 0,
+   "changes": [],
+   "held_editions": [
+    {
+     "path": "editions/beethoven/symphony-2-op36/beethoven--symphony-2-op36--henry-litolff-s-verlag-1870--imslp503997.pdf",
+     "publisher": "Henry Litolff's Verlag, Braunschweig, 1870, plate 2766",
+     "image_type": "Normal Scan",
+     "pages": 61
+    }
+   ]
+  },
+  {
+   "dossier": "beethoven-sym3-mvt1",
+   "library_work_id": "beethoven--symphony-3",
+   "total_measures": 695,
+   "constant_meter": true,
+   "n_mid_movement_changes": 0,
+   "changes": [],
+   "held_editions": [
+    {
+     "path": "editions/beethoven/symphony-3-op55/beethoven--symphony-3-op55--henry-litolff-s-verlag-1870--imslp504077.pdf",
+     "publisher": "Henry Litolff's Verlag, Braunschweig, 1870, plate 2767",
+     "image_type": "Normal Scan",
+     "pages": 89
+    }
+   ]
+  },
+  {
+   "dossier": "beethoven-sym3-mvt2",
+   "library_work_id": "beethoven--symphony-3",
+   "total_measures": 248,
+   "constant_meter": true,
+   "n_mid_movement_changes": 0,
+   "changes": [],
+   "held_editions": [
+    {
+     "path": "editions/beethoven/symphony-3-op55/beethoven--symphony-3-op55--henry-litolff-s-verlag-1870--imslp504077.pdf",
+     "publisher": "Henry Litolff's Verlag, Braunschweig, 1870, plate 2767",
+     "image_type": "Normal Scan",
+     "pages": 89
+    }
+   ]
+  },
+  {
+   "dossier": "beethoven-sym3-mvt3",
+   "library_work_id": "beethoven--symphony-3",
+   "total_measures": 453,
+   "constant_meter": false,
+   "n_mid_movement_changes": 2,
+   "changes": [
+    {
+     "measure": 392,
+     "raw": "2/2"
+    },
+    {
+     "measure": 396,
+     "raw": "3/4"
+    }
+   ],
+   "held_editions": [
+    {
+     "path": "editions/beethoven/symphony-3-op55/beethoven--symphony-3-op55--henry-litolff-s-verlag-1870--imslp504077.pdf",
+     "publisher": "Henry Litolff's Verlag, Braunschweig, 1870, plate 2767",
+     "image_type": "Normal Scan",
+     "pages": 89
+    }
+   ]
+  },
+  {
+   "dossier": "beethoven-sym3-mvt4",
+   "library_work_id": "beethoven--symphony-3",
+   "total_measures": 479,
+   "constant_meter": true,
+   "n_mid_movement_changes": 0,
+   "changes": [],
+   "held_editions": [
+    {
+     "path": "editions/beethoven/symphony-3-op55/beethoven--symphony-3-op55--henry-litolff-s-verlag-1870--imslp504077.pdf",
+     "publisher": "Henry Litolff's Verlag, Braunschweig, 1870, plate 2767",
+     "image_type": "Normal Scan",
+     "pages": 89
+    }
+   ]
+  },
+  {
+   "dossier": "beethoven-sym4-mvt1",
+   "library_work_id": "beethoven--symphony-4",
+   "total_measures": 512,
+   "constant_meter": true,
+   "n_mid_movement_changes": 0,
+   "changes": [],
+   "held_editions": [
+    {
+     "path": "editions/beethoven/symphony-4-op60/beethoven--symphony-4-op60--henry-litolff-s-verlag-1870--imslp504078.pdf",
+     "publisher": "Henry Litolff's Verlag, Braunschweig, 1870, plate 2768",
+     "image_type": "Normal Scan",
+     "pages": 73
+    }
+   ]
+  },
+  {
+   "dossier": "beethoven-sym4-mvt2",
+   "library_work_id": "beethoven--symphony-4",
+   "total_measures": 104,
+   "constant_meter": true,
+   "n_mid_movement_changes": 0,
+   "changes": [],
+   "held_editions": [
+    {
+     "path": "editions/beethoven/symphony-4-op60/beethoven--symphony-4-op60--henry-litolff-s-verlag-1870--imslp504078.pdf",
+     "publisher": "Henry Litolff's Verlag, Braunschweig, 1870, plate 2768",
+     "image_type": "Normal Scan",
+     "pages": 73
+    }
+   ]
+  },
+  {
+   "dossier": "beethoven-sym4-mvt3",
+   "library_work_id": "beethoven--symphony-4",
+   "total_measures": 228,
+   "constant_meter": true,
+   "n_mid_movement_changes": 0,
+   "changes": [],
+   "held_editions": [
+    {
+     "path": "editions/beethoven/symphony-4-op60/beethoven--symphony-4-op60--henry-litolff-s-verlag-1870--imslp504078.pdf",
+     "publisher": "Henry Litolff's Verlag, Braunschweig, 1870, plate 2768",
+     "image_type": "Normal Scan",
+     "pages": 73
+    }
+   ]
+  },
+  {
+   "dossier": "beethoven-sym4-mvt4",
+   "library_work_id": "beethoven--symphony-4",
+   "total_measures": 359,
+   "constant_meter": true,
+   "n_mid_movement_changes": 0,
+   "changes": [],
+   "held_editions": [
+    {
+     "path": "editions/beethoven/symphony-4-op60/beethoven--symphony-4-op60--henry-litolff-s-verlag-1870--imslp504078.pdf",
+     "publisher": "Henry Litolff's Verlag, Braunschweig, 1870, plate 2768",
+     "image_type": "Normal Scan",
+     "pages": 73
+    }
+   ]
+  },
+  {
+   "dossier": "beethoven-sym5-mvt1",
+   "library_work_id": "beethoven--symphony-5",
+   "total_measures": 502,
+   "constant_meter": true,
+   "n_mid_movement_changes": 0,
+   "changes": [],
+   "held_editions": [
+    {
+     "path": "editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp575951.pdf",
+     "publisher": "Henry Litolff's Verlag, Braunschweig, 1870, plate 2769",
+     "image_type": "Normal Scan",
+     "pages": 87
+    },
+    {
+     "path": "editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf",
+     "publisher": "Henry Litolff's Verlag, Braunschweig, 1870, plate 2769",
+     "image_type": "Normal Scan",
+     "pages": 88
+    }
+   ]
+  },
+  {
+   "dossier": "beethoven-sym5-mvt2",
+   "library_work_id": "beethoven--symphony-5",
+   "total_measures": 248,
+   "constant_meter": true,
+   "n_mid_movement_changes": 0,
+   "changes": [],
+   "held_editions": [
+    {
+     "path": "editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp575951.pdf",
+     "publisher": "Henry Litolff's Verlag, Braunschweig, 1870, plate 2769",
+     "image_type": "Normal Scan",
+     "pages": 87
+    },
+    {
+     "path": "editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf",
+     "publisher": "Henry Litolff's Verlag, Braunschweig, 1870, plate 2769",
+     "image_type": "Normal Scan",
+     "pages": 88
+    }
+   ]
+  },
+  {
+   "dossier": "beethoven-sym5-mvt3",
+   "library_work_id": "beethoven--symphony-5",
+   "total_measures": 376,
+   "constant_meter": true,
+   "n_mid_movement_changes": 0,
+   "changes": [],
+   "held_editions": [
+    {
+     "path": "editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp575951.pdf",
+     "publisher": "Henry Litolff's Verlag, Braunschweig, 1870, plate 2769",
+     "image_type": "Normal Scan",
+     "pages": 87
+    },
+    {
+     "path": "editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf",
+     "publisher": "Henry Litolff's Verlag, Braunschweig, 1870, plate 2769",
+     "image_type": "Normal Scan",
+     "pages": 88
+    }
+   ]
+  },
+  {
+   "dossier": "beethoven-sym5-mvt4",
+   "library_work_id": "beethoven--symphony-5",
+   "total_measures": 446,
+   "constant_meter": false,
+   "n_mid_movement_changes": 3,
+   "changes": [
+    {
+     "measure": 155,
+     "raw": "3/4"
+    },
+    {
+     "measure": 209,
+     "raw": "4/4"
+    },
+    {
+     "measure": 364,
+     "raw": "2/2"
+    }
+   ],
+   "held_editions": [
+    {
+     "path": "editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp575951.pdf",
+     "publisher": "Henry Litolff's Verlag, Braunschweig, 1870, plate 2769",
+     "image_type": "Normal Scan",
+     "pages": 87
+    },
+    {
+     "path": "editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf",
+     "publisher": "Henry Litolff's Verlag, Braunschweig, 1870, plate 2769",
+     "image_type": "Normal Scan",
+     "pages": 88
+    }
+   ]
+  },
+  {
+   "dossier": "beethoven-sym6-mvt1",
+   "library_work_id": "beethoven--symphony-6",
+   "total_measures": 512,
+   "constant_meter": true,
+   "n_mid_movement_changes": 0,
+   "changes": [],
+   "held_editions": [
+    {
+     "path": "editions/beethoven/symphony-6-op68/beethoven--symphony-6-op68--henry-litolff-s-verlag-1870--imslp504082.pdf",
+     "publisher": "Henry Litolff's Verlag, Braunschweig, 1870, plate 2770",
+     "image_type": "Normal Scan",
+     "pages": 79
+    }
+   ]
+  },
+  {
+   "dossier": "beethoven-sym6-mvt2",
+   "library_work_id": "beethoven--symphony-6",
+   "total_measures": 139,
+   "constant_meter": true,
+   "n_mid_movement_changes": 0,
+   "changes": [],
+   "held_editions": [
+    {
+     "path": "editions/beethoven/symphony-6-op68/beethoven--symphony-6-op68--henry-litolff-s-verlag-1870--imslp504082.pdf",
+     "publisher": "Henry Litolff's Verlag, Braunschweig, 1870, plate 2770",
+     "image_type": "Normal Scan",
+     "pages": 79
+    }
+   ]
+  },
+  {
+   "dossier": "beethoven-sym6-mvt3",
+   "library_work_id": "beethoven--symphony-6",
+   "total_measures": 266,
+   "constant_meter": false,
+   "n_mid_movement_changes": 2,
+   "changes": [
+    {
+     "measure": 166,
+     "raw": "2/4"
+    },
+    {
+     "measure": 206,
+     "raw": "3/4"
+    }
+   ],
+   "held_editions": [
+    {
+     "path": "editions/beethoven/symphony-6-op68/beethoven--symphony-6-op68--henry-litolff-s-verlag-1870--imslp504082.pdf",
+     "publisher": "Henry Litolff's Verlag, Braunschweig, 1870, plate 2770",
+     "image_type": "Normal Scan",
+     "pages": 79
+    }
+   ]
+  },
+  {
+   "dossier": "beethoven-sym6-mvt4",
+   "library_work_id": "beethoven--symphony-6",
+   "total_measures": 155,
+   "constant_meter": true,
+   "n_mid_movement_changes": 0,
+   "changes": [],
+   "held_editions": [
+    {
+     "path": "editions/beethoven/symphony-6-op68/beethoven--symphony-6-op68--henry-litolff-s-verlag-1870--imslp504082.pdf",
+     "publisher": "Henry Litolff's Verlag, Braunschweig, 1870, plate 2770",
+     "image_type": "Normal Scan",
+     "pages": 79
+    }
+   ]
+  },
+  {
+   "dossier": "beethoven-sym6-mvt5",
+   "library_work_id": "beethoven--symphony-6",
+   "total_measures": 264,
+   "constant_meter": true,
+   "n_mid_movement_changes": 0,
+   "changes": [],
+   "held_editions": [
+    {
+     "path": "editions/beethoven/symphony-6-op68/beethoven--symphony-6-op68--henry-litolff-s-verlag-1870--imslp504082.pdf",
+     "publisher": "Henry Litolff's Verlag, Braunschweig, 1870, plate 2770",
+     "image_type": "Normal Scan",
+     "pages": 79
+    }
+   ]
+  },
+  {
+   "dossier": "beethoven-sym7-mvt1",
+   "library_work_id": "beethoven--symphony-7",
+   "total_measures": 450,
+   "constant_meter": false,
+   "n_mid_movement_changes": 1,
+   "changes": [
+    {
+     "measure": 63,
+     "raw": "6/8"
+    }
+   ],
+   "held_editions": [
+    {
+     "path": "editions/beethoven/symphony-7-op92/beethoven--symphony-7-op92--henry-litolff-s-verlag-1870--imslp504084.pdf",
+     "publisher": "Henry Litolff's Verlag, Braunschweig, 1870, plate 2771",
+     "image_type": "Normal Scan",
+     "pages": 89
+    }
+   ]
+  },
+  {
+   "dossier": "beethoven-sym7-mvt2",
+   "library_work_id": "beethoven--symphony-7",
+   "total_measures": 278,
+   "constant_meter": true,
+   "n_mid_movement_changes": 0,
+   "changes": [],
+   "held_editions": [
+    {
+     "path": "editions/beethoven/symphony-7-op92/beethoven--symphony-7-op92--henry-litolff-s-verlag-1870--imslp504084.pdf",
+     "publisher": "Henry Litolff's Verlag, Braunschweig, 1870, plate 2771",
+     "image_type": "Normal Scan",
+     "pages": 89
+    }
+   ]
+  },
+  {
+   "dossier": "beethoven-sym7-mvt3",
+   "library_work_id": "beethoven--symphony-7",
+   "total_measures": 661,
+   "constant_meter": true,
+   "n_mid_movement_changes": 0,
+   "changes": [],
+   "held_editions": [
+    {
+     "path": "editions/beethoven/symphony-7-op92/beethoven--symphony-7-op92--henry-litolff-s-verlag-1870--imslp504084.pdf",
+     "publisher": "Henry Litolff's Verlag, Braunschweig, 1870, plate 2771",
+     "image_type": "Normal Scan",
+     "pages": 89
+    }
+   ]
+  },
+  {
+   "dossier": "beethoven-sym7-mvt4",
+   "library_work_id": "beethoven--symphony-7",
+   "total_measures": 490,
+   "constant_meter": true,
+   "n_mid_movement_changes": 0,
+   "changes": [],
+   "held_editions": [
+    {
+     "path": "editions/beethoven/symphony-7-op92/beethoven--symphony-7-op92--henry-litolff-s-verlag-1870--imslp504084.pdf",
+     "publisher": "Henry Litolff's Verlag, Braunschweig, 1870, plate 2771",
+     "image_type": "Normal Scan",
+     "pages": 89
+    }
+   ]
+  },
+  {
+   "dossier": "beethoven-sym8-mvt1",
+   "library_work_id": "beethoven--symphony-8",
+   "total_measures": 374,
+   "constant_meter": true,
+   "n_mid_movement_changes": 0,
+   "changes": [],
+   "held_editions": [
+    {
+     "path": "editions/beethoven/symphony-8-op93/beethoven--symphony-8-op93--henry-litolff-s-verlag-1870--imslp504091.pdf",
+     "publisher": "Henry Litolff's Verlag, Braunschweig, 1870, plate 2772",
+     "image_type": "Normal Scan",
+     "pages": 63
+    }
+   ]
+  },
+  {
+   "dossier": "beethoven-sym8-mvt2",
+   "library_work_id": "beethoven--symphony-8",
+   "total_measures": 81,
+   "constant_meter": true,
+   "n_mid_movement_changes": 0,
+   "changes": [],
+   "held_editions": [
+    {
+     "path": "editions/beethoven/symphony-8-op93/beethoven--symphony-8-op93--henry-litolff-s-verlag-1870--imslp504091.pdf",
+     "publisher": "Henry Litolff's Verlag, Braunschweig, 1870, plate 2772",
+     "image_type": "Normal Scan",
+     "pages": 63
+    }
+   ]
+  },
+  {
+   "dossier": "beethoven-sym8-mvt3",
+   "library_work_id": "beethoven--symphony-8",
+   "total_measures": 83,
+   "constant_meter": true,
+   "n_mid_movement_changes": 0,
+   "changes": [],
+   "held_editions": [
+    {
+     "path": "editions/beethoven/symphony-8-op93/beethoven--symphony-8-op93--henry-litolff-s-verlag-1870--imslp504091.pdf",
+     "publisher": "Henry Litolff's Verlag, Braunschweig, 1870, plate 2772",
+     "image_type": "Normal Scan",
+     "pages": 63
+    }
+   ]
+  },
+  {
+   "dossier": "beethoven-sym8-mvt4",
+   "library_work_id": "beethoven--symphony-8",
+   "total_measures": 503,
+   "constant_meter": true,
+   "n_mid_movement_changes": 0,
+   "changes": [],
+   "held_editions": [
+    {
+     "path": "editions/beethoven/symphony-8-op93/beethoven--symphony-8-op93--henry-litolff-s-verlag-1870--imslp504091.pdf",
+     "publisher": "Henry Litolff's Verlag, Braunschweig, 1870, plate 2772",
+     "image_type": "Normal Scan",
+     "pages": 63
+    }
+   ]
+  },
+  {
+   "dossier": "beethoven-sym9-mvt1",
+   "library_work_id": "beethoven--symphony-9",
+   "total_measures": 547,
+   "constant_meter": true,
+   "n_mid_movement_changes": 0,
+   "changes": [],
+   "held_editions": [
+    {
+     "path": "editions/beethoven/symphony-9-op125/beethoven--symphony-9-op125--henry-litolff-s-verlag-1870--imslp516488.pdf",
+     "publisher": "Henry Litolff's Verlag, Braunschweig, 1870, plate 2773",
+     "image_type": "Normal Scan",
+     "pages": 189
+    }
+   ]
+  },
+  {
+   "dossier": "beethoven-sym9-mvt2",
+   "library_work_id": "beethoven--symphony-9",
+   "total_measures": 575,
+   "constant_meter": false,
+   "n_mid_movement_changes": 3,
+   "changes": [
+    {
+     "measure": 424,
+     "raw": "2/2"
+    },
+    {
+     "measure": 547,
+     "raw": "3/4"
+    },
+    {
+     "measure": 563,
+     "raw": "2/2"
+    }
+   ],
+   "held_editions": [
+    {
+     "path": "editions/beethoven/symphony-9-op125/beethoven--symphony-9-op125--henry-litolff-s-verlag-1870--imslp516488.pdf",
+     "publisher": "Henry Litolff's Verlag, Braunschweig, 1870, plate 2773",
+     "image_type": "Normal Scan",
+     "pages": 189
+    }
+   ]
+  },
+  {
+   "dossier": "beethoven-sym9-mvt3",
+   "library_work_id": "beethoven--symphony-9",
+   "total_measures": 157,
+   "constant_meter": false,
+   "n_mid_movement_changes": 5,
+   "changes": [
+    {
+     "measure": 25,
+     "raw": "3/4"
+    },
+    {
+     "measure": 43,
+     "raw": "4/4"
+    },
+    {
+     "measure": 65,
+     "raw": "3/4"
+    },
+    {
+     "measure": 83,
+     "raw": "4/4"
+    },
+    {
+     "measure": 99,
+     "raw": "12/8"
+    }
+   ],
+   "held_editions": [
+    {
+     "path": "editions/beethoven/symphony-9-op125/beethoven--symphony-9-op125--henry-litolff-s-verlag-1870--imslp516488.pdf",
+     "publisher": "Henry Litolff's Verlag, Braunschweig, 1870, plate 2773",
+     "image_type": "Normal Scan",
+     "pages": 189
+    }
+   ]
+  },
+  {
+   "dossier": "beethoven-sym9-mvt4",
+   "library_work_id": "beethoven--symphony-9",
+   "total_measures": 943,
+   "constant_meter": false,
+   "n_mid_movement_changes": 15,
+   "changes": [
+    {
+     "measure": 31,
+     "raw": "2/4"
+    },
+    {
+     "measure": 39,
+     "raw": "3/4"
+    },
+    {
+     "measure": 64,
+     "raw": "4/4"
+    },
+    {
+     "measure": 66,
+     "raw": "3/4"
+    },
+    {
+     "measure": 78,
+     "raw": "4/4"
+    },
+    {
+     "measure": 82,
+     "raw": "3/4"
+    },
+    {
+     "measure": 93,
+     "raw": "4/4"
+    },
+    {
+     "measure": 209,
+     "raw": "3/4"
+    },
+    {
+     "measure": 238,
+     "raw": "4/4"
+    },
+    {
+     "measure": 332,
+     "raw": "6/8"
+    },
+    {
+     "measure": 596,
+     "raw": "3/2"
+    },
+    {
+     "measure": 657,
+     "raw": "6/4"
+    },
+    {
+     "measure": 766,
+     "raw": "2/2"
+    },
+    {
+     "measure": 919,
+     "raw": "3/4"
+    },
+    {
+     "measure": 923,
+     "raw": "2/2"
+    }
+   ],
+   "held_editions": [
+    {
+     "path": "editions/beethoven/symphony-9-op125/beethoven--symphony-9-op125--henry-litolff-s-verlag-1870--imslp516488.pdf",
+     "publisher": "Henry Litolff's Verlag, Braunschweig, 1870, plate 2773",
+     "image_type": "Normal Scan",
+     "pages": 189
+    }
+   ]
+  },
+  {
+   "dossier": "boulanger-printemps-mvt1",
+   "library_work_id": null,
+   "total_measures": 207,
+   "constant_meter": false,
+   "n_mid_movement_changes": 6,
+   "changes": [
+    {
+     "measure": 57,
+     "raw": "4/4"
+    },
+    {
+     "measure": 58,
+     "raw": "3/4"
+    },
+    {
+     "measure": 61,
+     "raw": "4/4"
+    },
+    {
+     "measure": 62,
+     "raw": "3/4"
+    },
+    {
+     "measure": 63,
+     "raw": "4/4"
+    },
+    {
+     "measure": 64,
+     "raw": "3/4"
+    }
+   ],
+   "held_editions": []
+  },
+  {
+   "dossier": "brahms-sym1-mvt1",
+   "library_work_id": "brahms--symphony-1",
+   "total_measures": 513,
+   "constant_meter": false,
+   "n_mid_movement_changes": 2,
+   "changes": [
+    {
+     "measure": 8,
+     "raw": "9/8"
+    },
+    {
+     "measure": 9,
+     "raw": "6/8"
+    }
+   ],
+   "held_editions": [
+    {
+     "path": "editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf",
+     "publisher": "Breitkopf & H\u00e4rtel (Brahms S\u00e4mtliche Werke)",
+     "image_type": "Normal Scan",
+     "pages": 86
+    },
+    {
+     "path": "editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp516790.pdf",
+     "publisher": "Breitkopf & H\u00e4rtel (Brahms S\u00e4mtliche Werke)",
+     "image_type": "Normal Scan",
+     "pages": 86
+    }
+   ]
+  },
+  {
+   "dossier": "brahms-sym1-mvt2",
+   "library_work_id": "brahms--symphony-1",
+   "total_measures": 128,
+   "constant_meter": true,
+   "n_mid_movement_changes": 0,
+   "changes": [],
+   "held_editions": [
+    {
+     "path": "editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf",
+     "publisher": "Breitkopf & H\u00e4rtel (Brahms S\u00e4mtliche Werke)",
+     "image_type": "Normal Scan",
+     "pages": 86
+    },
+    {
+     "path": "editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp516790.pdf",
+     "publisher": "Breitkopf & H\u00e4rtel (Brahms S\u00e4mtliche Werke)",
+     "image_type": "Normal Scan",
+     "pages": 86
+    }
+   ]
+  },
+  {
+   "dossier": "brahms-sym1-mvt3",
+   "library_work_id": "brahms--symphony-1",
+   "total_measures": 165,
+   "constant_meter": false,
+   "n_mid_movement_changes": 2,
+   "changes": [
+    {
+     "measure": 71,
+     "raw": "6/8"
+    },
+    {
+     "measure": 110,
+     "raw": "2/4"
+    }
+   ],
+   "held_editions": [
+    {
+     "path": "editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf",
+     "publisher": "Breitkopf & H\u00e4rtel (Brahms S\u00e4mtliche Werke)",
+     "image_type": "Normal Scan",
+     "pages": 86
+    },
+    {
+     "path": "editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp516790.pdf",
+     "publisher": "Breitkopf & H\u00e4rtel (Brahms S\u00e4mtliche Werke)",
+     "image_type": "Normal Scan",
+     "pages": 86
+    }
+   ]
+  },
+  {
+   "dossier": "brahms-sym1-mvt4",
+   "library_work_id": "brahms--symphony-1",
+   "total_measures": 458,
+   "constant_meter": false,
+   "n_mid_movement_changes": 1,
+   "changes": [
+    {
+     "measure": 392,
+     "raw": "2/2"
+    }
+   ],
+   "held_editions": [
+    {
+     "path": "editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf",
+     "publisher": "Breitkopf & H\u00e4rtel (Brahms S\u00e4mtliche Werke)",
+     "image_type": "Normal Scan",
+     "pages": 86
+    },
+    {
+     "path": "editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp516790.pdf",
+     "publisher": "Breitkopf & H\u00e4rtel (Brahms S\u00e4mtliche Werke)",
+     "image_type": "Normal Scan",
+     "pages": 86
+    }
+   ]
+  },
+  {
+   "dossier": "brahms-sym2-mvt1",
+   "library_work_id": "brahms--symphony-2",
+   "total_measures": 531,
+   "constant_meter": true,
+   "n_mid_movement_changes": 0,
+   "changes": [],
+   "held_editions": [
+    {
+     "path": "editions/brahms/symphony-2-op73/brahms--symphony-2-op73--simrock-1878--imslp23103.pdf",
+     "publisher": "N. Simrock, Berlin, 1878, plate 8028",
+     "image_type": "Normal Scan",
+     "pages": 73
+    }
+   ]
+  },
+  {
+   "dossier": "brahms-sym2-mvt2",
+   "library_work_id": "brahms--symphony-2",
+   "total_measures": 105,
+   "constant_meter": false,
+   "n_mid_movement_changes": 4,
+   "changes": [
+    {
+     "measure": 34,
+     "raw": "12/8"
+    },
+    {
+     "measure": 63,
+     "raw": "4/4"
+    },
+    {
+     "measure": 93,
+     "raw": "12/8"
+    },
+    {
+     "measure": 98,
+     "raw": "4/4"
+    }
+   ],
+   "held_editions": [
+    {
+     "path": "editions/brahms/symphony-2-op73/brahms--symphony-2-op73--simrock-1878--imslp23103.pdf",
+     "publisher": "N. Simrock, Berlin, 1878, plate 8028",
+     "image_type": "Normal Scan",
+     "pages": 73
+    }
+   ]
+  },
+  {
+   "dossier": "brahms-sym2-mvt3",
+   "library_work_id": "brahms--symphony-2",
+   "total_measures": 240,
+   "constant_meter": false,
+   "n_mid_movement_changes": 5,
+   "changes": [
+    {
+     "measure": 33,
+     "raw": "2/4"
+    },
+    {
+     "measure": 107,
+     "raw": "3/4"
+    },
+    {
+     "measure": 126,
+     "raw": "3/8"
+    },
+    {
+     "measure": 188,
+     "raw": "9/8"
+    },
+    {
+     "measure": 190,
+     "raw": "3/4"
+    }
+   ],
+   "held_editions": [
+    {
+     "path": "editions/brahms/symphony-2-op73/brahms--symphony-2-op73--simrock-1878--imslp23103.pdf",
+     "publisher": "N. Simrock, Berlin, 1878, plate 8028",
+     "image_type": "Normal Scan",
+     "pages": 73
+    }
+   ]
+  },
+  {
+   "dossier": "brahms-sym2-mvt4",
+   "library_work_id": "brahms--symphony-2",
+   "total_measures": 429,
+   "constant_meter": true,
+   "n_mid_movement_changes": 0,
+   "changes": [],
+   "held_editions": [
+    {
+     "path": "editions/brahms/symphony-2-op73/brahms--symphony-2-op73--simrock-1878--imslp23103.pdf",
+     "publisher": "N. Simrock, Berlin, 1878, plate 8028",
+     "image_type": "Normal Scan",
+     "pages": 73
+    }
+   ]
+  },
+  {
+   "dossier": "brahms-sym3-mvt1",
+   "library_work_id": "brahms--symphony-3",
+   "total_measures": 226,
+   "constant_meter": false,
+   "n_mid_movement_changes": 4,
+   "changes": [
+    {
+     "measure": 36,
+     "raw": "9/4"
+    },
+    {
+     "measure": 49,
+     "raw": "6/4"
+    },
+    {
+     "measure": 151,
+     "raw": "9/4"
+    },
+    {
+     "measure": 160,
+     "raw": "6/4"
+    }
+   ],
+   "held_editions": [
+    {
+     "path": "editions/brahms/symphony-3-op90/brahms--symphony-3-op90--breitkopf-hartel-brahms--imslp317593.pdf",
+     "publisher": "Breitkopf & H\u00e4rtel (Brahms S\u00e4mtliche Werke)",
+     "image_type": "Normal Scan",
+     "pages": 86
+    }
+   ]
+  },
+  {
+   "dossier": "brahms-sym3-mvt2",
+   "library_work_id": "brahms--symphony-3",
+   "total_measures": 134,
+   "constant_meter": true,
+   "n_mid_movement_changes": 0,
+   "changes": [],
+   "held_editions": [
+    {
+     "path": "editions/brahms/symphony-3-op90/brahms--symphony-3-op90--breitkopf-hartel-brahms--imslp317593.pdf",
+     "publisher": "Breitkopf & H\u00e4rtel (Brahms S\u00e4mtliche Werke)",
+     "image_type": "Normal Scan",
+     "pages": 86
+    }
+   ]
+  },
+  {
+   "dossier": "brahms-sym3-mvt3",
+   "library_work_id": "brahms--symphony-3",
+   "total_measures": 166,
+   "constant_meter": true,
+   "n_mid_movement_changes": 0,
+   "changes": [],
+   "held_editions": [
+    {
+     "path": "editions/brahms/symphony-3-op90/brahms--symphony-3-op90--breitkopf-hartel-brahms--imslp317593.pdf",
+     "publisher": "Breitkopf & H\u00e4rtel (Brahms S\u00e4mtliche Werke)",
+     "image_type": "Normal Scan",
+     "pages": 86
+    }
+   ]
+  },
+  {
+   "dossier": "brahms-sym3-mvt4",
+   "library_work_id": "brahms--symphony-3",
+   "total_measures": 309,
+   "constant_meter": true,
+   "n_mid_movement_changes": 0,
+   "changes": [],
+   "held_editions": [
+    {
+     "path": "editions/brahms/symphony-3-op90/brahms--symphony-3-op90--breitkopf-hartel-brahms--imslp317593.pdf",
+     "publisher": "Breitkopf & H\u00e4rtel (Brahms S\u00e4mtliche Werke)",
+     "image_type": "Normal Scan",
+     "pages": 86
+    }
+   ]
+  },
+  {
+   "dossier": "brahms-sym4-mvt1",
+   "library_work_id": "brahms--symphony-4",
+   "total_measures": 441,
+   "constant_meter": true,
+   "n_mid_movement_changes": 0,
+   "changes": [],
+   "held_editions": [
+    {
+     "path": "editions/brahms/symphony-4-op98/brahms--symphony-4-op98--breitkopf-hartel-brahms--imslp317596.pdf",
+     "publisher": "Breitkopf & H\u00e4rtel (Brahms S\u00e4mtliche Werke)",
+     "image_type": "Normal Scan",
+     "pages": 99
+    }
+   ]
+  },
+  {
+   "dossier": "brahms-sym4-mvt2",
+   "library_work_id": "brahms--symphony-4",
+   "total_measures": 118,
+   "constant_meter": true,
+   "n_mid_movement_changes": 0,
+   "changes": [],
+   "held_editions": [
+    {
+     "path": "editions/brahms/symphony-4-op98/brahms--symphony-4-op98--breitkopf-hartel-brahms--imslp317596.pdf",
+     "publisher": "Breitkopf & H\u00e4rtel (Brahms S\u00e4mtliche Werke)",
+     "image_type": "Normal Scan",
+     "pages": 99
+    }
+   ]
+  },
+  {
+   "dossier": "brahms-sym4-mvt3",
+   "library_work_id": "brahms--symphony-4",
+   "total_measures": 357,
+   "constant_meter": true,
+   "n_mid_movement_changes": 0,
+   "changes": [],
+   "held_editions": [
+    {
+     "path": "editions/brahms/symphony-4-op98/brahms--symphony-4-op98--breitkopf-hartel-brahms--imslp317596.pdf",
+     "publisher": "Breitkopf & H\u00e4rtel (Brahms S\u00e4mtliche Werke)",
+     "image_type": "Normal Scan",
+     "pages": 99
+    }
+   ]
+  },
+  {
+   "dossier": "brahms-sym4-mvt4",
+   "library_work_id": "brahms--symphony-4",
+   "total_measures": 311,
+   "constant_meter": false,
+   "n_mid_movement_changes": 2,
+   "changes": [
+    {
+     "measure": 97,
+     "raw": "3/2"
+    },
+    {
+     "measure": 129,
+     "raw": "3/4"
+    }
+   ],
+   "held_editions": [
+    {
+     "path": "editions/brahms/symphony-4-op98/brahms--symphony-4-op98--breitkopf-hartel-brahms--imslp317596.pdf",
+     "publisher": "Breitkopf & H\u00e4rtel (Brahms S\u00e4mtliche Werke)",
+     "image_type": "Normal Scan",
+     "pages": 99
+    }
+   ]
+  },
+  {
+   "dossier": "bruckner-sym5-mvt1",
+   "library_work_id": "bruckner--symphony-5",
+   "total_measures": 635,
+   "constant_meter": true,
+   "n_mid_movement_changes": 0,
+   "changes": [],
+   "held_editions": [
+    {
+     "path": "editions/bruckner/symphony-5-in-b-flat-major-wab-105/bruckner--symphony-5-in-b-flat-major-wab-105--bruckneraga-1935--imslp518282.pdf",
+     "publisher": "BrucknerAGA, 1935",
+     "image_type": "Normal Scan",
+     "pages": 180
+    }
+   ]
+  },
+  {
+   "dossier": "bruckner-sym5-mvt2",
+   "library_work_id": "bruckner--symphony-5",
+   "total_measures": 211,
+   "constant_meter": false,
+   "n_mid_movement_changes": 1,
+   "changes": [
+    {
+     "measure": 163,
+     "raw": "4/4"
+    }
+   ],
+   "held_editions": [
+    {
+     "path": "editions/bruckner/symphony-5-in-b-flat-major-wab-105/bruckner--symphony-5-in-b-flat-major-wab-105--bruckneraga-1935--imslp518282.pdf",
+     "publisher": "BrucknerAGA, 1935",
+     "image_type": "Normal Scan",
+     "pages": 180
+    }
+   ]
+  },
+  {
+   "dossier": "bruckner-sym5-mvt3",
+   "library_work_id": "bruckner--symphony-5",
+   "total_measures": 382,
+   "constant_meter": true,
+   "n_mid_movement_changes": 0,
+   "changes": [],
+   "held_editions": [
+    {
+     "path": "editions/bruckner/symphony-5-in-b-flat-major-wab-105/bruckner--symphony-5-in-b-flat-major-wab-105--bruckneraga-1935--imslp518282.pdf",
+     "publisher": "BrucknerAGA, 1935",
+     "image_type": "Normal Scan",
+     "pages": 180
+    }
+   ]
+  },
+  {
+   "dossier": "bruckner-sym5-mvt4",
+   "library_work_id": "bruckner--symphony-5",
+   "total_measures": 511,
+   "constant_meter": true,
+   "n_mid_movement_changes": 0,
+   "changes": [],
+   "held_editions": [
+    {
+     "path": "editions/bruckner/symphony-5-in-b-flat-major-wab-105/bruckner--symphony-5-in-b-flat-major-wab-105--bruckneraga-1935--imslp518282.pdf",
+     "publisher": "BrucknerAGA, 1935",
+     "image_type": "Normal Scan",
+     "pages": 180
+    }
+   ]
+  },
+  {
+   "dossier": "dvorak-sym9-full",
+   "library_work_id": null,
+   "total_measures": 127,
+   "constant_meter": false,
+   "n_mid_movement_changes": 2,
+   "changes": [
+    {
+     "measure": 34,
+     "raw": "2/4"
+    },
+    {
+     "measure": 35,
+     "raw": "4/4"
+    }
+   ],
+   "held_editions": []
+  },
+  {
+   "dossier": "dvorak-sym9-mvt1",
+   "library_work_id": "dvorak--symphony-9",
+   "total_measures": 452,
+   "constant_meter": false,
+   "n_mid_movement_changes": 1,
+   "changes": [
+    {
+     "measure": 24,
+     "raw": "2/4"
+    }
+   ],
+   "held_editions": [
+    {
+     "path": "editions/dvorak/symphony-9-op95/dvorak--symphony-9-op95--simrock-1894--imslp405834.pdf",
+     "publisher": "N. Simrock, Berlin, 1894, plate 10139",
+     "image_type": "Normal Scan",
+     "pages": 80
+    }
+   ]
+  },
+  {
+   "dossier": "dvorak-sym9-mvt3",
+   "library_work_id": "dvorak--symphony-9",
+   "total_measures": 300,
+   "constant_meter": true,
+   "n_mid_movement_changes": 0,
+   "changes": [],
+   "held_editions": [
+    {
+     "path": "editions/dvorak/symphony-9-op95/dvorak--symphony-9-op95--simrock-1894--imslp405834.pdf",
+     "publisher": "N. Simrock, Berlin, 1894, plate 10139",
+     "image_type": "Normal Scan",
+     "pages": 80
+    }
+   ]
+  },
+  {
+   "dossier": "dvorak-sym9-mvt4",
+   "library_work_id": "dvorak--symphony-9",
+   "total_measures": 348,
+   "constant_meter": true,
+   "n_mid_movement_changes": 0,
+   "changes": [],
+   "held_editions": [
+    {
+     "path": "editions/dvorak/symphony-9-op95/dvorak--symphony-9-op95--simrock-1894--imslp405834.pdf",
+     "publisher": "N. Simrock, Berlin, 1894, plate 10139",
+     "image_type": "Normal Scan",
+     "pages": 80
+    }
+   ]
+  },
+  {
+   "dossier": "h186",
+   "library_work_id": null,
+   "total_measures": 32,
+   "constant_meter": true,
+   "n_mid_movement_changes": 0,
+   "changes": [],
+   "held_editions": []
+  },
+  {
+   "dossier": "holst-planets-full",
+   "library_work_id": null,
+   "total_measures": 1537,
+   "constant_meter": false,
+   "n_mid_movement_changes": 45,
+   "changes": [
+    {
+     "measure": 95,
+     "raw": "5/2"
+    },
+    {
+     "measure": 110,
+     "raw": "5/4"
+    },
+    {
+     "measure": 167,
+     "raw": "5/2"
+    },
+    {
+     "measure": 172,
+     "raw": "3/4"
+    },
+    {
+     "measure": 186,
+     "raw": "4/4"
+    },
+    {
+     "measure": 205,
+     "raw": "2/4"
+    },
+    {
+     "measure": 206,
+     "raw": "4/4"
+    },
+    {
+     "measure": 215,
+     "raw": "3/4"
+    },
+    {
+     "measure": 268,
+     "raw": "4/4"
+    },
+    {
+     "measure": 284,
+     "raw": "3/4"
+    },
+    {
+     "measure": 301,
+     "raw": "4/4"
+    },
+    {
+     "measure": 327,
+     "raw": "6/8"
+    },
+    {
+     "measure": 404,
+     "raw": "2/4"
+    },
+    {
+     "measure": 406,
+     "raw": "2/4"
+    },
+    {
+     "measure": 425,
+     "raw": "2/4"
+    },
+    {
+     "measure": 427,
+     "raw": "6/8"
+    },
+    {
+     "measure": 433,
+     "raw": "2/4"
+    },
+    {
+     "measure": 445,
+     "raw": "6/8"
+    },
+    {
+     "measure": 451,
+     "raw": "6/8"
+    },
+    {
+     "measure": 483,
+     "raw": "6/8"
+    },
+    {
+     "measure": 623,
+     "raw": "2/4"
+    },
+    {
+     "measure": 730,
+     "raw": "3/4"
+    },
+    {
+     "measure": 778,
+     "raw": "2/4"
+    },
+    {
+     "measure": 816,
+     "raw": "3/4"
+    },
+    {
+     "measure": 856,
+     "raw": "2/4"
+    },
+    {
+     "measure": 970,
+     "raw": "3/4"
+    },
+    {
+     "measure": 1017,
+     "raw": "2/4"
+    },
+    {
+     "measure": 1032,
+     "raw": "4/4"
+    },
+    {
+     "measure": 1136,
+     "raw": "3/2"
+    },
+    {
+     "measure": 1187,
+     "raw": "6/4"
+    },
+    {
+     "measure": 1334,
+     "raw": "9/4"
+    },
+    {
+     "measure": 1335,
+     "raw": "6/4"
+    },
+    {
+     "measure": 1345,
+     "raw": "9/4"
+    },
+    {
+     "measure": 1346,
+     "raw": "6/4"
+    },
+    {
+     "measure": 1378,
+     "raw": "9/4"
+    },
+    {
+     "measure": 1379,
+     "raw": "6/4"
+    },
+    {
+     "measure": 1389,
+     "raw": "9/4"
+    },
+    {
+     "measure": 1390,
+     "raw": "6/4"
+    },
+    {
+     "measure": 1400,
+     "raw": "9/4"
+    },
+    {
+     "measure": 1401,
+     "raw": "6/4"
+    },
+    {
+     "measure": 1407,
+     "raw": "9/4"
+    },
+    {
+     "measure": 1408,
+     "raw": "4/4"
+    },
+    {
+     "measure": 1417,
+     "raw": "6/4"
+    },
+    {
+     "measure": 1425,
+     "raw": "4/4"
+    },
+    {
+     "measure": 1437,
+     "raw": "5/4"
+    }
+   ],
+   "held_editions": []
+  },
+  {
+   "dossier": "holst-planets-mvt1",
+   "library_work_id": null,
+   "total_measures": 185,
+   "constant_meter": false,
+   "n_mid_movement_changes": 4,
+   "changes": [
+    {
+     "measure": 95,
+     "raw": "5/2"
+    },
+    {
+     "measure": 110,
+     "raw": "5/4"
+    },
+    {
+     "measure": 167,
+     "raw": "5/2"
+    },
+    {
+     "measure": 172,
+     "raw": "3/4"
+    }
+   ],
+   "held_editions": []
+  },
+  {
+   "dossier": "holst-planets-mvt2",
+   "library_work_id": null,
+   "total_measures": 141,
+   "constant_meter": false,
+   "n_mid_movement_changes": 6,
+   "changes": [
+    {
+     "measure": 20,
+     "raw": "2/4"
+    },
+    {
+     "measure": 21,
+     "raw": "4/4"
+    },
+    {
+     "measure": 30,
+     "raw": "3/4"
+    },
+    {
+     "measure": 83,
+     "raw": "4/4"
+    },
+    {
+     "measure": 99,
+     "raw": "3/4"
+    },
+    {
+     "measure": 116,
+     "raw": "4/4"
+    }
+   ],
+   "held_editions": []
+  },
+  {
+   "dossier": "holst-planets-mvt3",
+   "library_work_id": null,
+   "total_measures": 296,
+   "constant_meter": false,
+   "n_mid_movement_changes": 8,
+   "changes": [
+    {
+     "measure": 78,
+     "raw": "2/4"
+    },
+    {
+     "measure": 80,
+     "raw": "2/4"
+    },
+    {
+     "measure": 99,
+     "raw": "2/4"
+    },
+    {
+     "measure": 101,
+     "raw": "6/8"
+    },
+    {
+     "measure": 107,
+     "raw": "2/4"
+    },
+    {
+     "measure": 119,
+     "raw": "6/8"
+    },
+    {
+     "measure": 125,
+     "raw": "6/8"
+    },
+    {
+     "measure": 157,
+     "raw": "6/8"
+    }
+   ],
+   "held_editions": []
+  },
+  {
+   "dossier": "holst-planets-mvt4",
+   "library_work_id": null,
+   "total_measures": 409,
+   "constant_meter": false,
+   "n_mid_movement_changes": 6,
+   "changes": [
+    {
+     "measure": 108,
+     "raw": "3/4"
+    },
+    {
+     "measure": 156,
+     "raw": "2/4"
+    },
+    {
+     "measure": 194,
+     "raw": "3/4"
+    },
+    {
+     "measure": 234,
+     "raw": "2/4"
+    },
+    {
+     "measure": 348,
+     "raw": "3/4"
+    },
+    {
+     "measure": 395,
+     "raw": "2/4"
+    }
+   ],
+   "held_editions": []
+  },
+  {
+   "dossier": "holst-planets-mvt5",
+   "library_work_id": null,
+   "total_measures": 155,
+   "constant_meter": false,
+   "n_mid_movement_changes": 1,
+   "changes": [
+    {
+     "measure": 105,
+     "raw": "3/2"
+    }
+   ],
+   "held_editions": []
+  },
+  {
+   "dossier": "holst-planets-mvt6",
+   "library_work_id": null,
+   "total_measures": 250,
+   "constant_meter": false,
+   "n_mid_movement_changes": 14,
+   "changes": [
+    {
+     "measure": 148,
+     "raw": "9/4"
+    },
+    {
+     "measure": 149,
+     "raw": "6/4"
+    },
+    {
+     "measure": 159,
+     "raw": "9/4"
+    },
+    {
+     "measure": 160,
+     "raw": "6/4"
+    },
+    {
+     "measure": 192,
+     "raw": "9/4"
+    },
+    {
+     "measure": 193,
+     "raw": "6/4"
+    },
+    {
+     "measure": 203,
+     "raw": "9/4"
+    },
+    {
+     "measure": 204,
+     "raw": "6/4"
+    },
+    {
+     "measure": 214,
+     "raw": "9/4"
+    },
+    {
+     "measure": 215,
+     "raw": "6/4"
+    },
+    {
+     "measure": 221,
+     "raw": "9/4"
+    },
+    {
+     "measure": 222,
+     "raw": "4/4"
+    },
+    {
+     "measure": 231,
+     "raw": "6/4"
+    },
+    {
+     "measure": 239,
+     "raw": "4/4"
+    }
+   ],
+   "held_editions": []
+  },
+  {
+   "dossier": "holst-planets-mvt7",
+   "library_work_id": null,
+   "total_measures": 101,
+   "constant_meter": true,
+   "n_mid_movement_changes": 0,
+   "changes": [],
+   "held_editions": []
+  },
+  {
+   "dossier": "mahler-sym5-mvt1",
+   "library_work_id": "mahler--symphony-5",
+   "total_measures": 416,
+   "constant_meter": true,
+   "n_mid_movement_changes": 0,
+   "changes": [],
+   "held_editions": [
+    {
+     "path": "editions/mahler/symphony-5/mahler--symphony-5--unidentified-scan-2016--local.pdf",
+     "publisher": null,
+     "image_type": null,
+     "pages": 245
+    }
+   ]
+  },
+  {
+   "dossier": "mahler-sym5-mvt2",
+   "library_work_id": "mahler--symphony-5",
+   "total_measures": 577,
+   "constant_meter": true,
+   "n_mid_movement_changes": 0,
+   "changes": [],
+   "held_editions": [
+    {
+     "path": "editions/mahler/symphony-5/mahler--symphony-5--unidentified-scan-2016--local.pdf",
+     "publisher": null,
+     "image_type": null,
+     "pages": 245
+    }
+   ]
+  },
+  {
+   "dossier": "mahler-sym5-mvt3",
+   "library_work_id": "mahler--symphony-5",
+   "total_measures": 819,
+   "constant_meter": true,
+   "n_mid_movement_changes": 0,
+   "changes": [],
+   "held_editions": [
+    {
+     "path": "editions/mahler/symphony-5/mahler--symphony-5--unidentified-scan-2016--local.pdf",
+     "publisher": null,
+     "image_type": null,
+     "pages": 245
+    }
+   ]
+  },
+  {
+   "dossier": "mahler-sym5-mvt4",
+   "library_work_id": "mahler--symphony-5",
+   "total_measures": 103,
+   "constant_meter": true,
+   "n_mid_movement_changes": 0,
+   "changes": [],
+   "held_editions": [
+    {
+     "path": "editions/mahler/symphony-5/mahler--symphony-5--unidentified-scan-2016--local.pdf",
+     "publisher": null,
+     "image_type": null,
+     "pages": 245
+    }
+   ]
+  },
+  {
+   "dossier": "mahler-sym5-mvt5",
+   "library_work_id": "mahler--symphony-5",
+   "total_measures": 791,
+   "constant_meter": true,
+   "n_mid_movement_changes": 0,
+   "changes": [],
+   "held_editions": [
+    {
+     "path": "editions/mahler/symphony-5/mahler--symphony-5--unidentified-scan-2016--local.pdf",
+     "publisher": null,
+     "image_type": null,
+     "pages": 245
+    }
+   ]
+  },
+  {
+   "dossier": "mozart-sym40-mvt1",
+   "library_work_id": "mozart--symphony-40",
+   "total_measures": 299,
+   "constant_meter": true,
+   "n_mid_movement_changes": 0,
+   "changes": [],
+   "held_editions": [
+    {
+     "path": "editions/mozart/symphony-40-in-g-minor-k550/mozart--symphony-40-in-g-minor-k550--breitkopf-hartel-mozart-1880--imslp984555.pdf",
+     "publisher": "Breitkopf & H\u00e4rtel (Mozart's Werke), VIII: Symphonien, Bd.3, No.40, 1880",
+     "image_type": "Normal Scan",
+     "pages": 49
+    }
+   ]
+  },
+  {
+   "dossier": "mozart-sym40-mvt2",
+   "library_work_id": "mozart--symphony-40",
+   "total_measures": 125,
+   "constant_meter": true,
+   "n_mid_movement_changes": 0,
+   "changes": [],
+   "held_editions": [
+    {
+     "path": "editions/mozart/symphony-40-in-g-minor-k550/mozart--symphony-40-in-g-minor-k550--breitkopf-hartel-mozart-1880--imslp984555.pdf",
+     "publisher": "Breitkopf & H\u00e4rtel (Mozart's Werke), VIII: Symphonien, Bd.3, No.40, 1880",
+     "image_type": "Normal Scan",
+     "pages": 49
+    }
+   ]
+  },
+  {
+   "dossier": "mozart-sym40-mvt3",
+   "library_work_id": "mozart--symphony-40",
+   "total_measures": 88,
+   "constant_meter": true,
+   "n_mid_movement_changes": 0,
+   "changes": [],
+   "held_editions": [
+    {
+     "path": "editions/mozart/symphony-40-in-g-minor-k550/mozart--symphony-40-in-g-minor-k550--breitkopf-hartel-mozart-1880--imslp984555.pdf",
+     "publisher": "Breitkopf & H\u00e4rtel (Mozart's Werke), VIII: Symphonien, Bd.3, No.40, 1880",
+     "image_type": "Normal Scan",
+     "pages": 49
+    }
+   ]
+  },
+  {
+   "dossier": "mozart-sym40-mvt4",
+   "library_work_id": "mozart--symphony-40",
+   "total_measures": 312,
+   "constant_meter": true,
+   "n_mid_movement_changes": 0,
+   "changes": [],
+   "held_editions": [
+    {
+     "path": "editions/mozart/symphony-40-in-g-minor-k550/mozart--symphony-40-in-g-minor-k550--breitkopf-hartel-mozart-1880--imslp984555.pdf",
+     "publisher": "Breitkopf & H\u00e4rtel (Mozart's Werke), VIII: Symphonien, Bd.3, No.40, 1880",
+     "image_type": "Normal Scan",
+     "pages": 49
+    }
+   ]
+  },
+  {
+   "dossier": "mozart-sym41-full",
+   "library_work_id": null,
+   "total_measures": 925,
+   "constant_meter": false,
+   "n_mid_movement_changes": 3,
+   "changes": [
+    {
+     "measure": 314,
+     "raw": "3/4"
+    },
+    {
+     "measure": 415,
+     "raw": "3/4"
+    },
+    {
+     "measure": 502,
+     "raw": "2/2"
+    }
+   ],
+   "held_editions": []
+  },
+  {
+   "dossier": "mozart-sym41-mvt1",
+   "library_work_id": "mozart--symphony-41",
+   "total_measures": 313,
+   "constant_meter": true,
+   "n_mid_movement_changes": 0,
+   "changes": [],
+   "held_editions": [
+    {
+     "path": "editions/mozart/symphony-41-in-c-major-k551/mozart--symphony-41-in-c-major-k551--breitkopf-hartel-mozart-1880--imslp73.pdf",
+     "publisher": "Breitkopf & H\u00e4rtel (Mozart's Werke), VIII: Symphonien, Bd.3, No.41, 1880",
+     "image_type": null,
+     "pages": 56
+    },
+    {
+     "path": "editions/mozart/symphony-41-in-c-major-k551/mozart--symphony-41-in-c-major-k551--breitkopf-hartel-mozart-1880--imslp984556.pdf",
+     "publisher": "Breitkopf & H\u00e4rtel (Mozart's Werke), VIII: Symphonien, Bd.3, No.41, 1880",
+     "image_type": "Normal Scan",
+     "pages": 56
+    }
+   ]
+  },
+  {
+   "dossier": "mozart-sym41-mvt2",
+   "library_work_id": "mozart--symphony-41",
+   "total_measures": 101,
+   "constant_meter": true,
+   "n_mid_movement_changes": 0,
+   "changes": [],
+   "held_editions": [
+    {
+     "path": "editions/mozart/symphony-41-in-c-major-k551/mozart--symphony-41-in-c-major-k551--breitkopf-hartel-mozart-1880--imslp73.pdf",
+     "publisher": "Breitkopf & H\u00e4rtel (Mozart's Werke), VIII: Symphonien, Bd.3, No.41, 1880",
+     "image_type": null,
+     "pages": 56
+    },
+    {
+     "path": "editions/mozart/symphony-41-in-c-major-k551/mozart--symphony-41-in-c-major-k551--breitkopf-hartel-mozart-1880--imslp984556.pdf",
+     "publisher": "Breitkopf & H\u00e4rtel (Mozart's Werke), VIII: Symphonien, Bd.3, No.41, 1880",
+     "image_type": "Normal Scan",
+     "pages": 56
+    }
+   ]
+  },
+  {
+   "dossier": "mozart-sym41-mvt3",
+   "library_work_id": "mozart--symphony-41",
+   "total_measures": 87,
+   "constant_meter": true,
+   "n_mid_movement_changes": 0,
+   "changes": [],
+   "held_editions": [
+    {
+     "path": "editions/mozart/symphony-41-in-c-major-k551/mozart--symphony-41-in-c-major-k551--breitkopf-hartel-mozart-1880--imslp73.pdf",
+     "publisher": "Breitkopf & H\u00e4rtel (Mozart's Werke), VIII: Symphonien, Bd.3, No.41, 1880",
+     "image_type": null,
+     "pages": 56
+    },
+    {
+     "path": "editions/mozart/symphony-41-in-c-major-k551/mozart--symphony-41-in-c-major-k551--breitkopf-hartel-mozart-1880--imslp984556.pdf",
+     "publisher": "Breitkopf & H\u00e4rtel (Mozart's Werke), VIII: Symphonien, Bd.3, No.41, 1880",
+     "image_type": "Normal Scan",
+     "pages": 56
+    }
+   ]
+  },
+  {
+   "dossier": "mozart-sym41-mvt4",
+   "library_work_id": "mozart--symphony-41",
+   "total_measures": 424,
+   "constant_meter": true,
+   "n_mid_movement_changes": 0,
+   "changes": [],
+   "held_editions": [
+    {
+     "path": "editions/mozart/symphony-41-in-c-major-k551/mozart--symphony-41-in-c-major-k551--breitkopf-hartel-mozart-1880--imslp73.pdf",
+     "publisher": "Breitkopf & H\u00e4rtel (Mozart's Werke), VIII: Symphonien, Bd.3, No.41, 1880",
+     "image_type": null,
+     "pages": 56
+    },
+    {
+     "path": "editions/mozart/symphony-41-in-c-major-k551/mozart--symphony-41-in-c-major-k551--breitkopf-hartel-mozart-1880--imslp984556.pdf",
+     "publisher": "Breitkopf & H\u00e4rtel (Mozart's Werke), VIII: Symphonien, Bd.3, No.41, 1880",
+     "image_type": "Normal Scan",
+     "pages": 56
+    }
+   ]
+  },
+  {
+   "dossier": "ravel-bolero-pt1",
+   "library_work_id": null,
+   "total_measures": 260,
+   "constant_meter": true,
+   "n_mid_movement_changes": 0,
+   "changes": [],
+   "held_editions": []
+  },
+  {
+   "dossier": "ravel-bolero-pt2",
+   "library_work_id": null,
+   "total_measures": 91,
+   "constant_meter": true,
+   "n_mid_movement_changes": 0,
+   "changes": [],
+   "held_editions": []
+  },
+  {
+   "dossier": "ravel-bolero",
+   "library_work_id": null,
+   "total_measures": 340,
+   "constant_meter": true,
+   "n_mid_movement_changes": 0,
+   "changes": [],
+   "held_editions": []
+  },
+  {
+   "dossier": "tchaikovsky-1812-overture",
+   "library_work_id": null,
+   "total_measures": 422,
+   "constant_meter": false,
+   "n_mid_movement_changes": 3,
+   "changes": [
+    {
+     "measure": 77,
+     "raw": "4/4"
+    },
+    {
+     "measure": 347,
+     "raw": "3/4"
+    },
+    {
+     "measure": 380,
+     "raw": "4/4"
+    }
+   ],
+   "held_editions": []
+  },
+  {
+   "dossier": "tchaikovsky-sym4-mvt1",
+   "library_work_id": "tchaikovsky--symphony-4",
+   "total_measures": 424,
+   "constant_meter": false,
+   "n_mid_movement_changes": 2,
+   "changes": [
+    {
+     "measure": 27,
+     "raw": "9/8"
+    },
+    {
+     "measure": 414,
+     "raw": "3/4"
+    }
+   ],
+   "held_editions": [
+    {
+     "path": "editions/tchaikovsky/symphony-4-op36/tchaikovsky--symphony-4-op36--jurgenson--imslp377460.pdf",
+     "publisher": "P. Jurgenson, Moscow, plate 3376",
+     "image_type": "Normal Scan",
+     "pages": 226
+    }
+   ]
+  },
+  {
+   "dossier": "tchaikovsky-sym4-mvt2",
+   "library_work_id": "tchaikovsky--symphony-4",
+   "total_measures": 304,
+   "constant_meter": true,
+   "n_mid_movement_changes": 0,
+   "changes": [],
+   "held_editions": [
+    {
+     "path": "editions/tchaikovsky/symphony-4-op36/tchaikovsky--symphony-4-op36--jurgenson--imslp377460.pdf",
+     "publisher": "P. Jurgenson, Moscow, plate 3376",
+     "image_type": "Normal Scan",
+     "pages": 226
+    }
+   ]
+  },
+  {
+   "dossier": "tchaikovsky-sym4-mvt3",
+   "library_work_id": "tchaikovsky--symphony-4",
+   "total_measures": 414,
+   "constant_meter": true,
+   "n_mid_movement_changes": 0,
+   "changes": [],
+   "held_editions": [
+    {
+     "path": "editions/tchaikovsky/symphony-4-op36/tchaikovsky--symphony-4-op36--jurgenson--imslp377460.pdf",
+     "publisher": "P. Jurgenson, Moscow, plate 3376",
+     "image_type": "Normal Scan",
+     "pages": 226
+    }
+   ]
+  },
+  {
+   "dossier": "tchaikovsky-sym4-mvt4",
+   "library_work_id": "tchaikovsky--symphony-4",
+   "total_measures": 293,
+   "constant_meter": false,
+   "n_mid_movement_changes": 2,
+   "changes": [
+    {
+     "measure": 199,
+     "raw": "3/4"
+    },
+    {
+     "measure": 223,
+     "raw": "2/2"
+    }
+   ],
+   "held_editions": [
+    {
+     "path": "editions/tchaikovsky/symphony-4-op36/tchaikovsky--symphony-4-op36--jurgenson--imslp377460.pdf",
+     "publisher": "P. Jurgenson, Moscow, plate 3376",
+     "image_type": "Normal Scan",
+     "pages": 226
+    }
+   ]
+  },
+  {
+   "dossier": "tchaikovsky-sym6-full",
+   "library_work_id": null,
+   "total_measures": 171,
+   "constant_meter": true,
+   "n_mid_movement_changes": 0,
+   "changes": [],
+   "held_editions": []
+  },
+  {
+   "dossier": "tchaikovsky-sym6-mvt1",
+   "library_work_id": "tchaikovsky--symphony-6",
+   "total_measures": 354,
+   "constant_meter": false,
+   "n_mid_movement_changes": 2,
+   "changes": [
+    {
+     "measure": 30,
+     "raw": "2/4"
+    },
+    {
+     "measure": 31,
+     "raw": "4/4"
+    }
+   ],
+   "held_editions": [
+    {
+     "path": "editions/tchaikovsky/symphony-6-op74/tchaikovsky--symphony-6-op74--breitkopf-und-hartel--imslp504312.pdf",
+     "publisher": "Breitkopf und H\u00e4rtel, Leipzig, plate Part.B. 4959",
+     "image_type": null,
+     "pages": 159
+    },
+    {
+     "path": "editions/tchaikovsky/symphony-6-op74/tchaikovsky--symphony-6-op74--eulenburg--imslp922722.pdf",
+     "publisher": "Eulenburg, Leipzig, plate 3892",
+     "image_type": "Normal Scan",
+     "pages": 224
+    }
+   ]
+  },
+  {
+   "dossier": "tchaikovsky-sym6-mvt2",
+   "library_work_id": "tchaikovsky--symphony-6",
+   "total_measures": 179,
+   "constant_meter": true,
+   "n_mid_movement_changes": 0,
+   "changes": [],
+   "held_editions": [
+    {
+     "path": "editions/tchaikovsky/symphony-6-op74/tchaikovsky--symphony-6-op74--breitkopf-und-hartel--imslp504312.pdf",
+     "publisher": "Breitkopf und H\u00e4rtel, Leipzig, plate Part.B. 4959",
+     "image_type": null,
+     "pages": 159
+    },
+    {
+     "path": "editions/tchaikovsky/symphony-6-op74/tchaikovsky--symphony-6-op74--eulenburg--imslp922722.pdf",
+     "publisher": "Eulenburg, Leipzig, plate 3892",
+     "image_type": "Normal Scan",
+     "pages": 224
+    }
+   ]
+  },
+  {
+   "dossier": "tchaikovsky-sym6-mvt3",
+   "library_work_id": "tchaikovsky--symphony-6",
+   "total_measures": 347,
+   "constant_meter": true,
+   "n_mid_movement_changes": 0,
+   "changes": [],
+   "held_editions": [
+    {
+     "path": "editions/tchaikovsky/symphony-6-op74/tchaikovsky--symphony-6-op74--breitkopf-und-hartel--imslp504312.pdf",
+     "publisher": "Breitkopf und H\u00e4rtel, Leipzig, plate Part.B. 4959",
+     "image_type": null,
+     "pages": 159
+    },
+    {
+     "path": "editions/tchaikovsky/symphony-6-op74/tchaikovsky--symphony-6-op74--eulenburg--imslp922722.pdf",
+     "publisher": "Eulenburg, Leipzig, plate 3892",
+     "image_type": "Normal Scan",
+     "pages": 224
+    }
+   ]
+  }
+ ]
+}
