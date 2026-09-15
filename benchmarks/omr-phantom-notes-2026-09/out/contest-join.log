@@ -1,0 +1,50 @@
+REACH
+  pairs table: iou=0.3  n_subjects=4508  pairs=1418
+  systems in the exporter's map: 7
+  systems the pairs table sees : 7
+  every pair address lies inside its system's (staves, bars) from the exporter's own map
+  -- so the record's CELL index is the bar index this join needs, checked rather than assumed
+  cross-staff pairs sharing a CELL index: 857 | differing: 0
+  POSITIVE CONTROL (the hand-named `ffff` cells): {(1, 0, 7, 0): 2, (1, 0, 8, 0): 5}
+  notehead CROSS-STAFF contests: 234 at IoU>=0.5  (286 in the 0.3 superset)
+  notehead SAME-CELL duplicates: 284   -- OUTSIDE the repair's domain by construction
+  notehead cross-staff pairs REFUSED by the same-class gate for the InSpace/OnLine suffix ALONE: 37 at IoU>=0.5
+
+POPULATION
+  print-silent bars holding a pitched note     : 18
+  ...of those, holding NO rest (FINDINGS §4's) : 13
+  phantom notes in those bars                  : 25
+
+JOIN  -- does the repair's domain reach these bars?
+  bar                    notes  x>=.5  x>=.3  sufx incell  verdict
+  P1 m85 st0 b3              1      0      0     0      0  UNREACHABLE by the repair
+  P1 m88 st0 b6              1      0      0     0      0  UNREACHABLE by the repair
+  P1 m89 st0 b7              1      0      0     0      0  UNREACHABLE by the repair
+  P1 m90 st0 b8              2      0      0     0      0  UNREACHABLE by the repair  (+rest, outside §4's 13)
+  P1 m91 st0 b9              3      0      0     0      1  UNREACHABLE by the repair
+  P1 m92 st0 b10             2      0      0     0      0  UNREACHABLE by the repair
+  P2 m84 st1 b2              1      0      0     0      0  UNREACHABLE by the repair
+  P2 m90 st1 b8              2      0      0     0      1  UNREACHABLE by the repair
+  P2 m92 st1 b10             2      0      0     0      0  UNREACHABLE by the repair
+  P6 m83 st5 b1              2      0      0     0      0  UNREACHABLE by the repair
+  P6 m88 st5 b6              2      1      1     0      1  in the domain -- CANNOT TELL
+  P6 m91 st5 b9              1      1      2     0      0  in the domain -- CANNOT TELL  (+rest, outside §4's 13)
+  P6 m92 st5 b10             3      1      3     0      0  in the domain -- CANNOT TELL
+  P6 m95 st5 b13             1      2      3     0      1  in the domain -- CANNOT TELL  (+rest, outside §4's 13)
+  P1 m58 st0 b10             1      0      0     0      0  UNREACHABLE by the repair  (+rest, outside §4's 13)
+  P5 m51 st4 b3              4      0      0     0      2  UNREACHABLE by the repair
+  P6 m61 st5 b13             1      0      0     0      0  UNREACHABLE by the repair
+  P7 m61 st6 b13             1      0      0     0      0  UNREACHABLE by the repair  (+rest, outside §4's 13)
+
+THE ANSWER, over the 13 bars / 25 notes FINDINGS §4 counts:
+   11 bars   20 notes   UNREACHABLE by the repair
+    2 bars    5 notes   in the domain -- CANNOT TELL
+
+CROSS-TAB  (the 25 notes: where they stand x whether the repair reaches their bar)
+                        UNREACHABLE    reachable   total
+  at_the_rest_slot                6            2       8
+  outside_the_staff              11            3      14
+  inside_elsewhere                3            0       3
+  TOTAL                          20            5      25
+
+wrote benchmarks/omr-phantom-notes-2026-09/out/contest-join.json
