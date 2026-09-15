@@ -6,10 +6,9 @@ POSITIVE_unmutated — the baseline every arm is judged against
  2. RED   score_frames: the positive control is never stamped   (rc=2)
  3. RED   score_frames: the premise check can never fire   (rc=0)
  4. RED   score_frames: --only silently matches nothing   (rc=2)
- 5. SURVIVED score_frames: the bar-head window is the whole cell   (rc=2)
+ 5. RED   score_frames: the bar-head window is the whole cell   (rc=2)
  6. RED   opening sweep: the reader never reads the printed meter   (rc=2)
  7. RED   arbiter_reach: the artefact grep loses its positive control   (rc=3)
  8. RED   arbiter_reach: both counts read one quantity   (rc=3)
 
-8 arms, 7 red, 1 survivors
-    SURVIVOR: score_frames: the bar-head window is the whole cell
+8 arms, 8 red, 0 survivors
