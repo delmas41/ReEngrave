@@ -16,6 +16,90 @@ pointing at headings no longer in the file.)*
 
 ---
 
+## 2026-09-15 — meter corroboration, and both meter flags default ON
+
+`OMR_METER_CARRY` and `OMR_METER_FROM_BARS` default **ON** (Sean's call),
+converted from allow-lists to deny-lists. ⚠️ The derived flag-direction guard
+**could not see either flag** — `test_flag_default_direction.py` matches a
+membership test and both were `== "1"` — so the guard built for this hazard was
+blind to the two flags that had it; it now reads 12 ON / 10 OFF.
+
+`A-METER-6`: an uncorroborated meter change **governs its own system and is not
+carried off it**. It gates the document-wide claim only; the change still
+reaches the file on its own system, to the byte.
+`METER_CHANGE_MIN_STAVES = 2`, asserted equal to
+`key_signature_corroboration.MIN_WITNESSES`.
+
+⚠️⚠️ **The briefed veto was REFUSED, and the reach figures behind it were the
+MANAGER'S ERROR**: `benchmarks/omr-staged-meter-boundary-2026-09/out/` holds
+SEVEN GENERATIONS of six fixtures and the `m2…m7` files were deduped as if they
+were repeat runs of one tree. Deduped on the newest generation instead, TRUE
+changes read `staves = [1, 21, 23, 24]` and FALSE `[1×8, 9, 19]` — **the
+populations overlap at 1**, the claimed empty interval does not exist, the two
+"TRUE" segments at 9 and 19 staves are CAUTIONARIES that `TRUTH_CHANGES` records
+as `None`, and refusing one-staff changes would have deleted Litolff p.62's
+printed `3/4`, the one true meter change this project has found on a scan.
+*A reach measurement must name its generation.*
+
+Measured, newest generation, deduped: 7 change segments, 3 corroborated /
+4 confined; every TRUE change still in `segments` 4 of 4; a corroborated carry
+moves 0 of 3 (positive control), an uncorroborated carry 4 of 4. ⚠️ One
+confinement swaps one wrong answer for another (Breitkopf p1 carries `4/4`
+before, the misread `9/4` after). ⚠️ **No end-to-end arm ran** —
+`benchmarks/omr-meter-corroboration-2026-09/local_arm.sh` is written and never
+executed; the cost of the flip is unpriced.
+
+Found on the way: both segment builders hand-listed their fields, so the flag
+reached one of two (now `_segment_from_change`, with a source-level anti-drift
+assertion); and a surviving mutation arm exposed `{}` and `{"segments": []}`
+being returned as though they were meters — the contract is now stated on the
+way out, *a meter or nothing*. 15 mutation arms all red; suite 3810 passed /
+2 pre-existing failures; `health`, `inventory`, `gather_coverage` all 0.
+
+---
+
+## 2026-09-15 — `OMR_METER_TEMPLATE_AT_BAR` (default OFF)
+
+The template reader, aimed at mid-staff bar heads as well as the header, so a
+printed meter CHANGE is not left to the detector alone. New
+`Q.METER_TEMPLATE_AT_BAR` (separate from `Q.METER_TEMPLATE` so the opening vote
+cannot see it), `gather.gather_meter_at_bars`, and a marked consumer block in
+`rhythm._meter_changes` admitting a reading only on a 3-staff consensus.
+
+⚠️ **The briefed design assumption was refuted**: a detection does not name a
+handful of candidate bars — **38 of 51 columns (74.5%)** on Brahms 1 /
+Breitkopf p1-3 are candidates — so the safety was moved from candidacy to
+acceptance. Empty-window false-positive rate measured without weights over
+**1,612 mid-staff windows on 10 real scanned pages of 2 publishers** printing no
+meter change: **16 / 2 / 0** spurious columns at a 1 / 2 / 3-staff quorum.
+⚠️ That quorum is safe at a 4-space window and **not at 8**. ⚠️ `min_score` was
+not moved: the false answers thin smoothly with no gap, and the positive
+control's minimum (0.542) sits BELOW the worst false answer (0.6141).
+**Nothing priced** — a GATHER change needs two full re-gathers; `local_arm.py`
+does them. 33 tests, 15/15 mutation arms red.
+
+---
+
+## 2026-09-15 — the meter cautionary as a competing candidate: measured, refused on n
+
+`benchmarks/omr-meter-cautionary-2026-09/`, **no code outside `benchmarks/`**.
+Reach: **3 cautionaries on 1 piece of music** across 67 committed arms and 6
+fixtures. **No common currency** between a cautionary and the opening it
+announces, and the one shared quantity (staves) prefers the WRONG reading
+10-to-9 on the only contested pair. **The cell-0 alternative is refuted**: the
+detector's digit reader forms an opening stack on 1 of 6 systems (an implausible
+`1/1`), is silent at both printed meters, and produces 67 spurious `4/4` stacks.
+**Corrects boundary §4c**: its fill-an-abstention route has reach 1, not 0, and
+that one instance is wrong. Verdict DON'T SHIP; the shortlist for a second
+document is derived from 97 dossiers × 235 catalog editions, led by
+`beethoven-sym5-mvt4` bar 364.
+
+⚠️ Its write-up was stranded in a Python module docstring because the subagent
+was refused permission to create a report file; extracted verbatim to
+`FINDINGS.md` and the module deleted.
+
+---
+
 ## 2026-09-15 — tacet spans padded (repair 3 of 3), and it reaches zero bars
 
 `tools/omr/staged/export.py`: `_tacet_walk` / `_pad_tacet_span` / `_tacet_report`.

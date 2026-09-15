@@ -609,6 +609,39 @@ the time signature better would be worth, not a result.
 
 Full reading: `benchmarks/omr-tacet-padding-2026-09/FINDINGS.md`.
 
+### Reading the time signature — two switches turned on, and a guard with them
+
+A time signature is printed once, at the start of a movement, and nowhere else.
+Everything downstream needs it: how long a bar should be, how long a whole-bar
+rest is, whether a bar adds up. From a movement's second page onward the system
+simply had none, and two mechanisms that could fill the gap were built, measured
+and left switched off for want of a second test score.
+
+**Both are now on.** With them, on the pages we have been reading, bars that add
+up go from **38% to 69%**.
+
+They landed with a guard, because turning them on is exactly what makes a
+misreading dangerous: without it a time signature read on a single staff spreads
+across pages. The guard is narrow on purpose — a reading nothing else confirms
+still governs its own line of music, it just may not decide the next one.
+
+⚠️ **The obvious version of that guard was measured and refused**, which is the
+more useful result. Refusing any reading only one staff saw would have deleted
+the one real time-signature change this system has ever found on a scanned page.
+The true and false readings overlap exactly where a rule would want to cut.
+
+⚠️ **And the measurement that motivated the refused version was ours and was
+wrong** — it pooled seven generations of saved results as though they were
+repeat runs of one program. Recorded, with the rule it produces: a measurement
+of "how often does this happen" has to say which version of the program it was
+measured on.
+
+⚠️ **What is still not known** is the cost. The two switches are on, and the
+run that would price what they cost on a badly-printed score is written and has
+not been executed — it needs the full score library.
+
+Full reading: `benchmarks/omr-meter-corroboration-2026-09/FINDINGS.md`.
+
 ## Running it
 
 - **Web app:** `docker compose up -d` → http://localhost
