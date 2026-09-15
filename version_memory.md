@@ -16,6 +16,70 @@ pointing at headings no longer in the file.)*
 
 ---
 
+## 2026-09-15 — tacet spans padded (repair 3 of 3), and it reaches zero bars
+
+`tools/omr/staged/export.py`: `_tacet_walk` / `_pad_tacet_span` / `_tacet_report`.
+A part tacet on a system now writes that system's bars as full-measure rests at
+the document-numbered positions repair (2) settled, sized by the system's own
+`Q.METER`, asked per BAR. **Where the meter is unknown the bar is NOT written**
+and is counted (`tacet_bars_not_padded_without_meter`), because a MusicXML rest
+must carry a `<duration>` and the fallback is 4.0 quarters — twice the bar on a
+2/4 movement — and nothing forces a tacet bar to exist at all. Padding is gated
+on the numbering: when `_document_bar_offsets` refused there is no number line,
+and `report["tacet_padding"]["refused"]` says so with `tacet_bar_total: null`.
+`empty_bars_padded` and `tacet_bars_padded` stay separate counters.
+
+MEASURED on Litolff Beethoven 5 pp.1-4 (`benchmarks/omr-tacet-padding-2026-09/`):
+149 tacet bars across 4 of 12 parts, **0 padded / 149 refused** — the one system
+with a meter is the one no part is tacet on. A labelled COUNTERFACTUAL arm with
+2/4 supplied pads all 149, takes every part from 111/93/16 to **111**, measures
+1183 → 1332, and lifts "parts returned when asking the score for bars 70-72"
+from 8 of 12 to 12 of 12. Controls: existing measures byte-identical and in
+order, deleting exactly the inserted blocks restores the base byte for byte,
+music21 note sequence per part unchanged, with positive controls on each.
+Mutation battery 12 arms, all red, 0 survivors.
+
+Suite 3788 passed (2 pre-existing `test_direction_text` failures, missing
+`.venv-surya`); `health --check`, `inventory --check`, `gather_coverage` all 0.
+Not established: nothing was padded on this document; no print consulted; no
+OMR-NED; and the arm pads the committed record's STALE 12-part join, which
+predates the slot-index short-system rule.
+
+---
+
+## 2026-09-15 — Phase 2 obs. 3: the artefact is NOT stale for 20 of 25 phantom notes
+
+`benchmarks/omr-phantom-notes-2026-09/` + `tools/omr/tests/test_contest_join.py`.
+**No change to `tools/omr/*.py` outside that one test file.**
+
+* **`probe/contest_join.py`** — joins the 18 print-silent bars to
+  `omr-staged-dedupe-2026-09/out/pairs-p1-p4.json` on `(page, system, staff,
+  cell)`. **11 of 13 bars / 20 of 25 notes hold no cross-staff notehead
+  contest**, so the dedupe repair cannot have touched them; the cross-tab
+  reproduces FINDINGS §4's 8/14/3 exactly from an independently computed step.
+  Controls: cell-index agreement (857/857, 0 differ) and the hand-named `ffff`
+  cells re-found through the same index. `--check`.
+* **`probe/padding_ink.py`** — what the print holds in the measure cell's
+  PADDING, which `print_ink.census` never looks at. Reports its own reach; its
+  first run's `above: nothing` on staff 0 was a truncated crop, not an empty
+  page.
+* **`FINDINGS_2026-09-15_STALENESS.md`** — closes §7.1 without the re-export and
+  **corrects §4**: the 14 outside-the-staff notes are NOT the dedupe repair's
+  target population, and 5 of them stand above the TOP staff, where the
+  "padding from a neighbour" account has no neighbour. §5 ranks three separate
+  repairs and records why nothing shipped.
+* **`mutants.py`** — 9 arms, all red, 0 survived, restoring from an in-memory
+  snapshot and verifying it.
+
+⚠️ CLAUDE.md's own phantom-notes section, written the day before, claimed the 14
+were "exactly that repair's target population". That claim is **corrected in
+place** rather than quietly dropped.
+
+Suite: 2 failed / 3781 passed / 67 skipped — the 2 pre-existing.
+`health --check`, `inventory --check`, `gather_coverage` all 0.
+
+---
+
 ## 2026-09-14 — `<measure number=N>` names one instant in every part
 
 ⚠️ This entry and the phantom-notes entry below it were produced by two agents

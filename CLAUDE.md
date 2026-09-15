@@ -1207,12 +1207,13 @@ print-side denominator is the honest one.
 crescendo page, **2 of 67** on a sparse one — so this is a property of *what
 stands NEXT to a resting staff*, not of the resting staff.
 
-⚠️ **THE ARTEFACT PREDATES THE DEDUPE REPAIR AND THE RANKED NEXT WORK FOLLOWS
-FROM IT.** The file Sean read carries **1,793** notes — the count before
-*A CONTEST is RESOLVED, not relocated* took it to 1,618 by refusing **176 as
-`owned_by_another_staff`**, which is exactly the outside-the-staff population.
-**One re-export of the shared record on current main, no weights and no gather,
-settles how much is already fixed**, and nothing should ship before it.
+⚠️ **THE ARTEFACT PREDATES THE DEDUPE REPAIR.** The file Sean read carries
+**1,793** notes — the count before *A CONTEST is RESOLVED, not relocated* took
+it to 1,618 by refusing **176 as `owned_by_another_staff`**. ⚠️⚠️ **THIS
+PARAGRAPH ORIGINALLY ADDED "which is exactly the outside-the-staff population"
+AND THAT IS FALSE — see the correction immediately below, measured the next
+day.** It also ranked a re-export of the shared record as the work that would
+settle how much is already fixed; that question is now ANSWERED WITHOUT ONE.
 
 **The WIP branch `claude/note-where-silence-is-printed` is SCOPED and NOT
 MERGED.** Its `Q.NOTEHEAD_IS_A_WHOLE_REST` rule is probably right — its shape
@@ -1244,6 +1245,62 @@ of 7** (five crops are REFUSED because their barline grid disagrees with the
 exporter's map — a refusal, not a measurement); the census cannot tell a whole
 rest from a half rest; nothing was re-gathered or re-exported; and the 176
 refused notes were never inspected.
+
+⚠️⚠️ **AND THAT §7.1 RE-EXPORT IS UNNECESSARY: THE STALENESS QUESTION WAS
+ANSWERED WITHOUT ONE, AND IT REFUTES THE PARAGRAPH ABOVE** (2026-09-15, no code
+outside `benchmarks/` and one test file). Findings:
+[benchmarks/omr-phantom-notes-2026-09/FINDINGS_2026-09-15_STALENESS.md](benchmarks/omr-phantom-notes-2026-09/FINDINGS_2026-09-15_STALENESS.md).
+Joining the print-silent bars to the dedupe session's committed contest table
+on the SUBJECT ADDRESS `(page, system, staff, cell)` — **no box comparison, so
+the page-pixel frame error cannot arise** — **11 of the 13 offending bars, 20 of
+the 25 notes, and 11 of the 14 outside-the-staff ones hold NO cross-staff
+notehead contest at all**, not even in a 0.3 superset. `glyph_owner` declares
+`subjects_from=Q.GLYPH_BAND_DISTANCE`, so it files no verdict there and
+`_place_notes` refuses nothing: **those bars are byte-identical between the two
+arms.** Only `P6 m88` and `P6 m92` (5 notes) are in its domain, and those
+genuinely cannot be told apart from a container with no record.
+
+⚠️ **AND 5 OF THE 14 STAND ABOVE THE TOP STAFF OF THEIR SYSTEM** — `P1 m91`
+(`A6 A6 G6`) and `P1 m92` (`A6 A6`) on staff 0 of p4/s0 — where *"the PADDING
+from a neighbour"* has no neighbour to name.
+
+⚠️⚠️ **SO `Q.GLYPH_OWNER` IS NOT WHERE THE PADDING HALF LIVES** — for 11 of 13
+bars that decision is never asked, because the ink was detected in ONE cell and
+the neighbour's cell did not see it. The next work is three different jobs, not
+one. ⚠️ **Widening `glyph_owner`'s DOMAIN would make `is_relocated_copy`
+UNSAFE** — that predicate is safe only because the domain guarantees a twin — so
+any widening must land a rule for the uncontested subset in the SAME change, or
+it deletes one printed note per rescue. ⚠️ Two openings in the gate were
+measured and **neither is shippable nor relevant to this fault**: the same-class
+gate refuses **37 cross-staff notehead pairs at IoU ≥ 0.5 (47 at 0.3) differing
+ONLY in the `InSpace`/`OnLine` suffix** — the one thing two staves' grids MUST
+disagree about for ink in the gap between them — and `CONTEST_IOU = 0.5` against
+the legacy `0.3`. Both are GATHER changes (`readjudicate` and `reexport_arm` are
+structurally blind), and **the suffix column is 0 on all eighteen print-silent
+bars.**
+
+⚠️ **THE WIP IS STILL NOT MERGED AND THE REASON HAS CHANGED**: it reaches at
+most the 8 at the rest slot, **6 of which the dedupe repair never touched**, so
+it is now the only candidate for those 6 — but it cannot be measured without a
+record, and its own reach is still not joined to a single BAR.
+
+⚠️ **A FALSE ZERO FROM A CROP THAT DID NOT HAVE THE PADDING.**
+`print_ink.census` looks at the staff band plus **0.6 spaces** and never at the
+4-6 spaces a measure cell is cut with, so `padding_ink.py` was written to ask;
+its first run said `above: nothing` on staff 0 where the crop supplies **3.2 of
+6 spaces** and reaches **step 15.6** against notes at 16-17. *A control that
+reports "the print holds nothing there" must first be able to say "I could not
+look there."* Controls: 857 of 857 cross-staff pairs share a cell index (0
+differ), and the dedupe session's hand-named `ffff` cells are re-found through
+the same index. Mutation battery **9 arms, all red, 0 survived**, restoring from
+its own snapshot; ⚠️ its first run's four problems were all its own, and both
+survivors were real test gaps — one being *a reader stubbed to return a fixed
+number left the equality test GREEN because both sides returned the stub*.
+
+⚠️ **What is NOT established**: the re-export still has not run (this says where
+the notes are NOT, not what the other 5 did), n = 1 document / 1 publisher / 2
+systems of 7, no accuracy check against the print, and the 176 refused notes
+were still not inspected.
 
 ### Three families wired in one pass — fermata, voices, ornaments
 
@@ -1724,11 +1781,15 @@ instrument's bars.** Three repairs, and the order is load-bearing: (1) the JOIN
 must stop guessing; (2) a measure must be numbered by its place in the
 DOCUMENT's bar sequence rather than its part's own running count — which alone
 makes `<measure number=N>` mean one instant, writes no music and needs no
-meter; (3) the tacet spans must be PADDED. ⚠️ **Padding first would have hidden
-the graft** — the numbers would line up and the wrong notes would remain,
+meter; (3) the tacet spans must be PADDED — **DONE 2026-09-15, and it reaches
+ZERO bars here**: all 149 tacet bars sit on systems whose meter was never read,
+so the rule refuses every one and counts them. ⚠️ **Padding first would have
+hidden the graft** — the numbers would line up and the wrong notes would remain,
 which is worse, because a graft counted as a note error ranks the work into the
 wrong module. ⚠️ And padding needs a bar length: the meter is decided on **1
-system of 7** here and `OMR_METER_CARRY` is off on **n**.
+system of 7** here and `OMR_METER_CARRY` is off on **n** — which is now priced
+from a third direction. ⚠️ **(1) and (2) are DONE too** — the slot index by
+name, and the document-wide measure numbering; see their own sections.
 
 **SHIPPED: (1) `run_staged` forwards `pdf_path`**, with `--surya` / `--ocr`
 opt-in on the staged CLI. **REACH, measured first** (`probe/margin_label_reach.py`,
@@ -1861,6 +1922,59 @@ governing form is one clause wider:
 
 The cheap prophylactic: **commit a checkpoint before running a battery**, so the
 checkout and the snapshot agree.
+
+### The tacet spans are PADDED — repair (3), and it reaches ZERO bars on this document
+
+2026-09-15, no flag. The last of the three repairs the *measure math* section
+ranks, and the one its own text says needs a bar length. Findings:
+[benchmarks/omr-tacet-padding-2026-09/FINDINGS.md](benchmarks/omr-tacet-padding-2026-09/FINDINGS.md).
+
+`export._tacet_walk` + `_pad_tacet_span`: a part's systems are walked in
+DOCUMENT order rather than in the part's own run order, and a system the part
+is tacet on is written as full-measure rests at the numbers repair (2) settled.
+The meter is asked PER BAR, not per system.
+
+⚠️⚠️ **WHERE THE LENGTH IS UNKNOWN THE BAR IS NOT WRITTEN, AND IS COUNTED.** A
+MusicXML rest must carry a `<duration>` and `_measure_rest_beats(None)` falls
+back to **4.0 quarters** — twice the bar on this 2/4 movement. **The asymmetry
+with the eventless branch is the whole argument**: a bar of a PRESENT part that
+we read nothing in *has* to be written somehow, so it takes that fallback with
+`measure="yes"` withheld; **a tacet bar does not have to exist at all**, so
+inventing one at a length nobody read is pure fiction. `report["tacet_padding"]`
+is a PARTITION with `balanced`, written whether or not it fired, and on a
+refused number line `tacet_bar_total` is **`null` rather than 0** — nothing was
+even looked at. ⚠️ `empty_bars_padded` and `tacet_bars_padded` are SEPARATE
+counters (a reading gap against a join fact) and a test asserts the first never
+absorbs the second.
+
+⚠️⚠️ **REACH IS ZERO ON THE ONLY DOCUMENT AVAILABLE, AND THAT IS THE RULE
+WORKING.** Litolff Beethoven 5 pp.1-4 holds **149 tacet bars** across 4 of 12
+parts (P9-P11 miss p3/s1's 18; P12 misses 95) — and **`p1/s0`, the one system of
+seven whose meter was read, is the one system no part is tacet on**. So ARM A
+pads **0 and refuses 149**. The lever is the METER, not this rule.
+
+⚠️ **A COUNTERFACTUAL ARM says what the flip is worth and is labelled one**: with
+2/4 supplied to every system (the meter `p1/s0` itself READS, and what
+`OMR_METER_CARRY=1` is recorded deciding on all six abstaining systems of this
+record), all **149** pad, parts go `111/93/16` → **111 on all twelve**, measures
+**1183 → 1332**, and asking the SCORE for bars 70-72 returns **8 of 12 parts
+before and 12 of 12 after** — the ABSENT/DECLINED collapse, in the music.
+
+⚠️ **Controls, each able to fail**: every existing measure byte-identical and in
+order; **deleting exactly the inserted blocks restores the base file BYTE FOR
+BYTE** (which is what leaving `prev` untouched buys); the files DO differ
+(positive control); music21 reads back the same 12 parts with the **note
+sequence of every part unchanged**; and the parts held 16/93/111 numbers before
+and 111 each after. Mutation battery **12 arms, all red, 0 survivors**, positive
+control `everything_refuses`, with a BYTE snapshot taken before the first arm
+and the restore VERIFIED.
+
+⚠️ **What is NOT established**: nothing was padded on this document; **no print
+was consulted**; no OMR-NED figure (no committed reference for these pages);
+n = 1 document, 1 publisher, 4 pages. ⚠️⚠️ **And the arm pads a STALE JOIN** —
+the committed record predates `adjudicate_slot_index`'s short-system rule, so
+its 12-part join still carries the 12-of-75 graft, and a fresh gather would
+produce a different tacet population that **no cloud session can determine**.
 
 ### Direction words reach the file — the LAST stub, and PHASE 1 IS COMPLETE
 

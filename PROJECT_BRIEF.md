@@ -577,6 +577,38 @@ under-read.
 
 Full reading: `benchmarks/omr-phantom-notes-2026-09/FINDINGS.md`.
 
+⚠️ **Followed up the next day, and the follow-up overturned part of the above.**
+The worry was that the file Sean read was made before a repair that has since
+landed, so some of the problem might already be gone. That question was answered
+**without** needing the score library: the earlier repair only ever acts on ink
+that two staves both detected, and for **11 of the 13 bars — 20 of the 25
+notes — no second staff saw it at all**. Those bars come out identical either
+way, so the artefact is not stale for them. It also killed the tidy story about
+where the strays come from: **five of them sit above the topmost instrument on
+the page**, with nothing above to have leaked in.
+
+Nothing was changed, again deliberately: the fix on the shelf reaches at most
+the smaller group, and shipping it would have meant declaring the complaint
+closed while most of it remained.
+
+### Bars where an instrument is silent now appear
+
+The last of the three measure-math repairs. A part that doesn't play on a
+system previously had **no bars at all** there, so parts were different lengths
+and one simply stopped partway. Those spans are now written as full-bar rests
+in the right places.
+
+⚠️ **On the one score available it fills in nothing, and that is the rule
+behaving correctly.** A rest has to say how long it is, and the length comes
+from the time signature — which we read on exactly one of this score's seven
+systems, and it is the one system where no instrument is silent. So all 149
+silent bars are declined and counted rather than invented at a guessed length.
+A clearly-labelled what-if run, with the time signature supplied, fills all 149
+and makes every part the same length — which is a measurement of what reading
+the time signature better would be worth, not a result.
+
+Full reading: `benchmarks/omr-tacet-padding-2026-09/FINDINGS.md`.
+
 ## Running it
 
 - **Web app:** `docker compose up -d` → http://localhost
