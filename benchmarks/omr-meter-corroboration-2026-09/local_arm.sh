@@ -9,7 +9,7 @@
 # Example (paths as CLAUDE.md records them on Sean's machine):
 #
 #   bash benchmarks/omr-meter-corroboration-2026-09/local_arm.sh \
-#     library/editions/brahms/symphony-1/brahms--symphony-1--breitkopf--imslp317803.pdf \
+#     library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf \
 #     omr-weights/deepscoresv2-yolov8l-hollow-graft-shift09-2026-09-04.pt \
 #     0-3
 #

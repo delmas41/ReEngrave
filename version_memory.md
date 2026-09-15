@@ -16,6 +16,62 @@ pointing at headings no longer in the file.)*
 
 ---
 
+## 2026-09-15 — the cautionary's arbiter: MEASURED AND REFUSED
+
+`claude/meter-cautionary-arbiter`, merged. **No file under `tools/` is touched**
+(`git diff base..HEAD -- tools/` is EMPTY) — no rule, no flag, no test in the
+suite. The substitution the meter thread wanted (the template reader's `score`
+in place of the silent bar math) is **refuted, not merely unbuilt**.
+
+* **The score is monotone in window width BY CONSTRUCTION.**
+  `locate_time_signature` is `matchTemplate` + `minMaxLoc`, a maximum over every
+  x in the strip with no normalisation for trial count. Over the base branch's
+  own 1,612 committed windows re-read at 4 and 8 spaces: **968 rise, 0 fall**.
+  The opening is read at **16.0** spaces and a cautionary at **4.0**, so the
+  comparison is a maximum over a subset against a maximum over a superset.
+* **The same-frame repair is BLIND.** On Brahms 1 / Breitkopf p.45, a movement
+  start whose print was looked at (*Adagio*, a common-time `C` on 16 staves), a
+  4-space bar head reads **0 of 16** where 14 spaces reads **16 of 16** — an
+  opening meter sits 10-12 staff spaces in, behind the clef and key signature.
+  It does **not** argue against `OMR_METER_TEMPLATE_AT_BAR`: a mid-staff CHANGE
+  has no clef in front of it.
+* **The absolute score does not separate.** TRUE header readings 0.5563-0.6850
+  against FALSE reaching **0.6318**, 9 of 191 false at or above the weakest
+  true. `head_last` — the cautionary's own cell — is the worst bar-head
+  population (2.62% vs `head_mid`'s 0.84%, max 0.6141, above the true minimum).
+* **The "one shared quantity" is TWO READERS**, derived from source:
+  `staves_reading_it` ← `Q.METER_GLYPH` (detector digit stacks),
+  `n_staves_spoke` ← `Q.METER_TEMPLATE` (NCC over a header window). "9 against
+  10" compares a detector count with a template count — *incoherent*, not merely
+  unfavourable.
+* **Reach is ZERO**: 0 of 68 committed `*.meter.json` carry a template score,
+  with `raw` on 66 as the grep's positive control. No cautionary has ever been
+  scored by that reader.
+* **The premise check FIRED and finding p.45 is the result.** Over 18
+  continuation header systems the SHIPPED vote declares a meter on none, while a
+  fixed 3-staff quorum would fire falsely on 4 — one with **7 staves** agreeing
+  on `C`. **Do not port `METER_TEMPLATE_AT_BAR_MIN_STAVES = 3` into the header
+  frame**; the shipped vote survives on a FRACTION, not a count.
+
+Mutation battery **8 arms, 8 red, 0 survivors**. ⚠️ A battery was killed mid-arm
+and **left its subject mutated** — the byte snapshot died with the process, and
+`git status` could not distinguish it from a legitimate edit; an impossible zero
+in a later probe run is what found it. New clause: *a mutation battery must
+leave the tree as it FOUND it — which is not the same as leaving it as GIT has
+it, and an interrupted battery obeys neither.* Repaired with an in-flight
+sentinel that refuses to start a run and names each file at risk.
+
+⚠️ `FINDINGS.md` was written by the managing session because the harness refused
+the subagent permission to create a report file — returned as text and written
+verbatim, rather than buried in a module docstring (the shape this repo already
+paid for once) or slipped past the guard with a heredoc.
+
+⚠️ Also corrected in four places: the example Breitkopf Brahms 1 path in both
+local arms and both FINDINGS, which read `symphony-1/…--breitkopf--…` where the
+catalog holds `symphony-1-op68/…--breitkopf-hartel-brahms--…`.
+
+---
+
 ## 2026-09-15 — meter corroboration, and both meter flags default ON
 
 `OMR_METER_CARRY` and `OMR_METER_FROM_BARS` default **ON** (Sean's call),

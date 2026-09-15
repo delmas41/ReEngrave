@@ -642,6 +642,45 @@ not been executed — it needs the full score library.
 
 Full reading: `benchmarks/omr-meter-corroboration-2026-09/FINDINGS.md`.
 
+### The second opinion the page prints, and why it cannot settle the argument
+
+When an engraver is about to change the time signature, they print it twice —
+once as a courtesy at the end of the line that is ending, and again at the head
+of the line that begins. So on the one page where our reading of the time
+signature is known to be wrong, the page itself carries a second, correct
+reading a few inches earlier. Sean asked the obvious question: if the two
+disagree, can we use the courtesy copy to overrule the misreading?
+
+**Measured, and the answer is no — for a reason worth having.** The two
+readings are not on the same scale. The reader scores how well printed ink
+matches a template, and it scores a *wide* strip of the page higher than a
+narrow one simply because a wide strip gives it more places to look — 968 of
+1,612 real cases went up when the strip was widened, and **not one went down**.
+The opening is read in a wide strip and the courtesy copy in a narrow one, so
+comparing their scores is rigged in favour of the reading we already know is
+wrong.
+
+The natural repair — read both in the same narrow strip — **is blind**: a time
+signature at the start of a line sits behind the clef and the key signature, ten
+to twelve staff-widths in. Given a narrow strip the reader found **0 of 16**
+real time signatures on a page that prints one on every staff, and invented
+plausible-looking wrong ones out of the clef. Widened, it found **16 of 16**.
+
+⚠️ And the one number both readings *do* state — how many staves saw it — turns
+out to be **two different counts from two different readers**, which makes that
+route incoherent rather than merely unhelpful.
+
+None of this argues against reading time-signature changes mid-line, which is a
+separate mechanism built the same week: a change mid-line has no clef in front
+of it, which is exactly why its window is narrow.
+
+**What is not known:** this is one piece of music with three courtesy copies,
+and the case that would cost us something — a courtesy copy that is wrong where
+the opening is right — has never once been seen. The cheapest thing that would
+move it is a second score, and its test fixture already exists.
+
+Full reading: `benchmarks/omr-meter-cautionary-arbiter-2026-09/FINDINGS.md`.
+
 ## Running it
 
 - **Web app:** `docker compose up -d` → http://localhost

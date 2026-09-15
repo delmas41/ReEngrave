@@ -44,7 +44,7 @@ one-predicate scope change in `_meter_candidate_columns`, which today skips
 cell 0.
 
     python3 benchmarks/omr-meter-cautionary-arbiter-2026-09/local_arm.py \\
-        --pdf "$HOME/Desktop/ReEngrave/library/editions/brahms/symphony-1/brahms--symphony-1--breitkopf--imslp317803.pdf" \\
+        --pdf "$HOME/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf" \\
         --weights "$HOME/Desktop/ReEngrave/omr-weights/deepscoresv2-yolov8l-hollow-graft-shift09-2026-09-04.pt" \\
         --pages 0-3 --out-dir /tmp/meter-arbiter
 

@@ -3033,6 +3033,109 @@ checked against the print. **The ranked next work is `beethoven-sym5-mvt4` bar
 rendered** (155 and 209 are); then `beethoven-sym9-mvt4` on the held Litolff
 scan, 15 mid-movement changes on a different publisher's plate.
 
+### The cautionary's arbiter — the score is not a currency, and the frames are three
+
+2026-09-15, no code outside `benchmarks/`. The substitution the meter thread
+asked for — the template reader's `score` in place of the silent bar math —
+**measured and REFUSED**, on a branch that touches no file under `tools/`
+(`git diff base..HEAD -- tools/` is EMPTY). Findings:
+[benchmarks/omr-meter-cautionary-arbiter-2026-09/FINDINGS.md](benchmarks/omr-meter-cautionary-arbiter-2026-09/FINDINGS.md).
+
+⚠️⚠️ **THE SCORE IS MONOTONE IN WINDOW WIDTH BY CONSTRUCTION, SO IT IS NOT A
+CURRENCY TWO READINGS CAN BE COMPARED IN.** `locate_time_signature` is
+`matchTemplate` + `minMaxLoc` — a MAXIMUM over every x in the strip, with no
+normalisation for how many positions there were. Measured on the base branch's
+own 1,612 committed windows re-read at 4 and 8 spaces: **968 rise, 0 fall**,
+mean +0.0725. The opening is read in a **16.0-space** header window and a
+cautionary would be read in a **4.0-space** bar head, so `caut_score >
+open_score` compares a maximum over a subset with a maximum over a superset —
+biased toward the OPENING, which is the direction the staff count already fails
+in.
+
+⚠️⚠️ **AND THE SAME-FRAME REPAIR IS BLIND, NOT MERELY BIASED.** The obvious fix
+is to read the opening in the bar-head frame too, so both sides are maxima over
+equal strips. On Brahms 1 / Breitkopf p.45 — a movement start whose print was
+LOOKED AT (page 46, *Adagio*, full margin names, a common-time `C` on every
+staff) — the 4-space bar head of cell 0 reads **0 of 16** and spells
+`4/4`/`9/4`/`12/16`/`5/4` out of clef ink, while **14 spaces reads 16 of 16**
+and the shipped header window reads 16 of 16. **An opening meter sits 10-12
+staff spaces into its bar, behind the clef and the key signature.** ⚠️ It does
+NOT argue against `OMR_METER_TEMPLATE_AT_BAR`: a mid-staff CHANGE is printed
+straight after a barline with no clef in front of it, which is exactly why that
+window is four spaces. ⚠️ The header row is the POSITIVE CONTROL — had the
+reader failed at every width the zeros would measure a dead instrument.
+
+⚠️ **THE ABSOLUTE SCORE DOES NOT SEPARATE EITHER, EVEN INSIDE ONE FRAME.** TRUE
+header readings **0.5563-0.6850** against FALSE ones reaching **0.6318**, with
+**9 of 191** false readings at or above the weakest true one. ⚠️ And
+`head_last` — the cell a cautionary lives in — is the **WORST** of the four
+bar-head populations: **2.62%** answer against `head_mid`'s 0.84%, max
+**0.6141**, which is *above* the true minimum. So a floor admitting a real
+reading admits the worst cautionary-slot fake. **This undercuts the score route
+the section above parks as promising** — read that paragraph with this one.
+
+⚠️⚠️ **THE "ONE SHARED QUANTITY" IS TWO READERS, derived from the source with a
+positive control**: the cautionary's `staves_reading_it` comes from
+`Q.METER_GLYPH` (the detector's stacked digit pairs, read inside a measure cell)
+and the opening's `n_staves_spoke` from `Q.METER_TEMPLATE` (an NCC over a
+16-space header window). **"9 against 10" compares a detector count with a
+template count** — a third frame error in the same contest, which makes the
+staff-count route *incoherent* rather than merely unfavourable. That is a firmer
+reason to refuse it than the one the section above gives.
+
+⚠️⚠️ **THE PREMISE CHECK FIRED AND FINDING p.45 IS THE RESULT.** The probe does
+not assume its pages print no meter — it asks the SHIPPED
+`vote_system_time_signature`, because the question is not *"do some staves
+agree"* but *"would this pipeline declare a meter here"*. Over **18
+continuation header systems the shipped vote declares a meter on NONE**, so the
+opening reader's 16.75% per-staff false rate is contained by the cross-staff
+vote. ⚠️ **A fixed 3-staff quorum would NOT contain it: it fires falsely on 4 of
+those 18 — one with SEVEN staves agreeing on `C`.** So **do not port
+`METER_TEMPLATE_AT_BAR_MIN_STAVES = 3` into the header frame**; the shipped vote
+survives because `min_staff_fraction` is a FRACTION of the system, not a count.
+The bar-head frames score 0/18, 0/18 and 0/119 on the same pages, independently
+reproducing the base branch's own empty-window result.
+
+⚠️ **A CAUTIONARY'S VALUE IS RIGHT EVEN THOUGH IT IS NOT A CHANGE AT ITS CELL.**
+`report_boundary.TRUTH_CHANGES` records both cautionaries as `None` because
+proposing a CHANGE there would re-size a bar the courtesy does not govern —
+**a statement about placement, not about value.** A reader who meets that
+`None` and concludes the cautionary is junk has read the wrong column.
+
+⚠️ **What is NOT established**: reach of the substituted arbiter is **ZERO** on
+the corpus — 0 of 68 committed `*.meter.json` carry a template score, with `raw`
+on 66 as the grep's positive control — so **no cautionary has ever been scored
+by that reader**, and §2-§4 say the score *cannot* arbitrate rather than what it
+*would* have said. The TRUE population is **one page, 16 staves, one meter**,
+and that meter is a `C`, the cheapest shape to fake (21 of 32 false header
+readings spell it) — an uncomfortable coincidence, uncontrolled. The pages are
+downscaled renders, not 600-dpi originals. n = 1 piece of music, 3 cautionaries,
+and the cost case (cautionary wrong / opening right) has still never been
+observed. `min_score` was **not** moved and is not proposed to move. **The
+cheapest thing that would move it is still `beethoven-sym5-mvt4` bar 364**,
+whose fixture already exists; the cheapest thing that would close the reach zero
+is `local_arm.py`, on Sean's machine, never run.
+
+⚠️⚠️ **AND A NEW CLAUSE ON THE MUTATION-BATTERY RULE, PAID FOR HERE.** A battery
+was killed mid-arm; its byte snapshot lived in memory and **died with the
+process**, so the mutation stayed on disk and `git status` showed one modified
+file — indistinguishable from the legitimate edit made minutes earlier. What
+found it was a later probe run reporting an impossible zero (`windows=0` on a
+page that had given 100), not review and not version control.
+
+> **A mutation battery must leave the tree as it FOUND it — which is not the
+> same as leaving it as GIT has it, AND AN INTERRUPTED BATTERY OBEYS NEITHER.**
+
+The repair is an **in-flight sentinel**: written before the first arm, deleted
+on a clean exit, and a run that finds one refuses to start and names each file
+at risk with the hash it should have. Final battery: **8 arms, 8 red, 0
+survivors**, positive control first. ⚠️ Three of the first run's four faults were
+the battery's OWN (two BAD ANCHORs — one naming a function that is *imported*
+and not in the probe at all — and one arm surviving by producing a different
+failure than it checked for), and the fourth was an expectation **unreachable on
+the fixture**, re-expressed as the monotonicity identity itself so the arm now
+doubles as a live check of the finding above.
+
 ### ⚠️⚠️ `Q.METER` carries `segments` and NOTHING DOWNSTREAM READS THEM
 
 Measured 2026-09-09 on an engraved Brahms 1 finale printing `C` → `¢` at bar
