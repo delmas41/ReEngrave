@@ -3,6 +3,13 @@
 Sean's observation 3 on the first cleanup artefact, opened 2026-09-14.
 **Read [FINDINGS.md](FINDINGS.md).** No code outside this directory changed.
 
+⚠️⚠️ **THEN READ
+[FINDINGS_2026-09-15_STALENESS.md](FINDINGS_2026-09-15_STALENESS.md), WHICH
+CORRECTS FINDINGS §4's ATTRIBUTION AND CLOSES ITS §7.1.** The dedupe repair
+**cannot reach 11 of the 13 offending bars (20 of the 25 notes)** — they hold
+no cross-staff contest — so the artefact is not stale for them and the padding
+half does not live in `Q.GLYPH_OWNER`. Run `probe/contest_join.py --check`.
+
 ⚠️ **Every probe here reads COMMITTED ARTEFACTS ONLY** — the cleanup artefact's
 MusicXML, its system map, and the seven printed-system PNGs embedded in its
 side-by-side HTML. None of them needs `omr-weights/`, `library/`, or the staged
