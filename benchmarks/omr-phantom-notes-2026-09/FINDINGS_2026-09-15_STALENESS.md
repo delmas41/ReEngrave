@@ -102,6 +102,14 @@ returns `False` on `None`.
 > **=> A bar holding no member of such a contest is byte-identical between the
 > two arms.**
 
+⚠️ **AND THE DEDUPE A/B'S OWN SUMMARY CORROBORATES THAT THE NOTE PATH HAS NO
+OTHER DIFFERENCE.** `out/export-only-summary.json` reports
+`notes_not_written` as `{duration_narrowed: 339, no_pitch: 215}` on the base
+arm and the **same two numbers plus `owned_by_another_staff: 176`** on the fix
+arm — so every note the two arms disagree about was refused under that one
+reason, and `events_not_written` moves 554 → 730 to the unit. Nothing else in
+`_place_notes` moved.
+
 ⚠️ **It is ONE-SIDED and the probe says so on every row.** A bar that *does*
 hold a contest may or may not have moved, because which copy is refused is the
 owner's verdict and this container does not hold it. There are two such bars.
