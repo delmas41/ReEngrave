@@ -989,10 +989,32 @@ METER_CARRY_ENV = "OMR_METER_CARRY"
 
 
 def meter_carry_enabled() -> bool:
-    """Read the flag. Anything but an explicit "1" is off -- a typo must not
-    switch a document onto a mechanism whose hazard is a whole wrong
-    movement."""
-    return os.environ.get(METER_CARRY_ENV, "0").strip() == "1"
+    """Read the flag. **ON by default since 2026-09-15** (Sean's call).
+
+    ⚠️⚠️ **THE TEST FOLLOWS THE DEFAULT, AND FLIPPING ONE WITHOUT THE OTHER IS
+    THE FAILURE THAT HIDES.** This read was `== "1"` — the right shape for a
+    default-OFF mechanism, where a typo must not switch a document ONTO
+    something whose hazard is a whole wrong movement. Left as an allow-list
+    with the default ON, `OMR_METER_CARRY=`, `=yess` and `=ON!` would every
+    one of them read as FALSE and **silently restore** the behaviour the
+    default exists to replace. So it is now a DENY-list: only an explicit off
+    word turns it off. See CLAUDE.md, *"A flag's OFF test must follow its
+    DEFAULT"*, where five shipped flags had exactly this backwards, and
+    `tools/omr/tests/test_flag_default_direction.py`, which derives the
+    direction from the predicate rather than from a written list.
+
+    ⚠️ The flip does NOT close the objection recorded at `METER_CARRY_ENV`
+    above — on a scan whose meter GLYPHS are misread the weighing never gets a
+    fair candidate, and Brahms 1 / Breitkopf still votes `9/4` for a printed
+    `9/8`. What changed is that `A-METER-6` stops a ONE-STAFF change being
+    spread across pages by this mechanism; a misread OPENING is untouched by
+    it and remains open.
+    """
+    # ⚠️ The default literal is `"1"` and `""` is in the OFF set, which is
+    # `OMR_METER_SEGMENTS`' shape exactly -- copied rather than invented so
+    # this repo does not grow a third convention for what an empty value means.
+    return os.environ.get(METER_CARRY_ENV, "1").strip().lower() not in (
+        "0", "", "false", "no", "off")
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -1104,8 +1126,23 @@ METER_FROM_BARS_ENV = "OMR_METER_FROM_BARS"
 
 
 def meter_from_bars_enabled() -> bool:
-    """Read the flag. Anything but an explicit "1" is off."""
-    return os.environ.get(METER_FROM_BARS_ENV, "0").strip() == "1"
+    """Read the flag. **ON by default since 2026-09-15** (Sean's call).
+
+    ⚠️⚠️ A DENY-LIST, NOT AN ALLOW-LIST, and for the reason
+    `meter_carry_enabled` states above: with the default ON an allow-list
+    (`in ("1","true","yes","on")`) makes an empty value or a typo silently
+    restore the old behaviour, which is the direction that hides. Same shape
+    as `OMR_METER_SEGMENTS`; `tools/omr/tests/test_flag_default_direction.py`
+    derives the direction from this predicate and fails if the two disagree.
+
+    ⚠️ **THIS RUNG IS THE ONE THAT CANNOT CROSS A MOVEMENT BOUNDARY**, which
+    is why flipping it is a different act from flipping the carry: every term
+    comes from bars inside ONE system, so the *Andante* cannot be handed
+    movement 1's `2/4` by this route however many pages of it precede. Only
+    the SPELLING reaches back, and only where the length already matches.
+    """
+    return os.environ.get(METER_FROM_BARS_ENV, "1").strip().lower() not in (
+        "0", "", "false", "no", "off")
 
 
 #: ⚠️⚠️ THERE IS ONE CONSTANT HERE AND THERE WERE TWO. A separate
@@ -1316,6 +1353,74 @@ W_CHANGE_BAR_CONTRADICTS = -1.0
 #: contradicting bars sink it again -- the same structural ordering the carry
 #: uses, with the glyph in the place the carry gives to a prior reading.
 METER_CHANGE_FLOOR = 3.0
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# AN UNCORROBORATED CHANGE GOVERNS ITS OWN SYSTEM AND IS NOT CARRIED OFF IT.
+# (A-METER-6)
+#
+# A meter change is printed at ONE bar of ONE system, ON EVERY STAFF of that
+# system — the same convention `key_signature_corroboration` transplants for
+# key signatures. So a change read on exactly one staff of a twelve-staff
+# system is the weakest meter fact this pipeline can produce: at
+# `W_CHANGE_GLYPH_PAIR = 3.0` it clears `METER_CHANGE_FLOOR` alone, by design
+# (*"a printed time signature IS the biggest sign"*), and nothing else is
+# asked of it.
+#
+# ⚠️⚠️ THE OBVIOUS RULE — REFUSE AN UNCORROBORATED CHANGE — WAS MEASURED AND IS
+# REFUSED, BECAUSE IT DELETES THE ONE TRUE METER CHANGE THIS PROJECT HAS EVER
+# FOUND ON A SCAN. Beethoven 5 / Litolff p.62 prints `3/4` at the bar the
+# reference names; we read it on **ONE staff of seventeen**, at support 3.0
+# with its bars silent (0 fit / 0 contradict). The three false changes on the
+# same corpus read one staff too, at support 3.0, 4.0 and 4.5 — two of them
+# HIGHER than the true one, and the only one whose bars say anything at all
+# (p.61's `C`, 1 bar fitting) is FALSE. **Stave count, support and bar math all
+# fail to separate the populations**, and CLAUDE.md already records the same
+# fact from the other direction: *"the p.62 `3/4` this project celebrates is
+# also one staff of seventeen"*.
+#
+# ⚠️ SO THE ACTION IS WEAKENED UNTIL IT IS ONE-SIDED. A change does TWO things,
+# and only the second is where one staff's reading gets amplified:
+#
+#   1. it governs the bars of ITS OWN system, through `record.meter_at` —
+#      local, visible in the file, and checkable against the print;
+#   2. it becomes, through `_meter_in_force_at_end`, the meter CARRIED onto
+#      every following system that abstains — a document-wide claim built out
+#      of a single glyph on a single staff.
+#
+# This rule gates (2) and leaves (1) exactly as it was. The p.62 `3/4` still
+# reaches the file on its own system, to the byte; what it may no longer do is
+# decide page 63. That is the `METER_SOURCE_REASONS` discipline — *"neither is
+# ink on the source's own page, so admitting either would make
+# `pages_since_read` a lie about the distance back to ink"* — extended one
+# step, from WHICH VERDICTS may be carried from to WHICH SEGMENTS of them.
+#
+# ⚠️ IT IS THE STRONGER WITNESS (other staves reading THE SAME meter) PAIRED
+# WITH THE WEAKER ACTION, and that pairing is deliberate.
+# `key_signature_corroboration` takes the opposite pair for a stated reason: it
+# REVERTS, so it needs the weakest possible witness (another staff changes at
+# the same BAR, whatever value it reads) or it would break transposing
+# instruments, which genuinely carry different keys at one bar. A meter has no
+# such exemption — its own docstring says so: *"A meter change is corroborated
+# by other staves reading THE SAME METER, because a meter is one fact shared by
+# the system"* — and confining costs at most a carry where reverting costs the
+# music. `staves_reading_a_meter` is recorded beside it so the weaker witness
+# can be priced later without a re-gather.
+# ─────────────────────────────────────────────────────────────────────────────
+
+#: How many staves of a system must read the SAME meter at one bar for that
+#: change to be carried off the system — the staff itself plus one witness.
+#:
+#: ⚠️ NOT A TUNED CONSTANT, and on this corpus it could not be one: the TRUE
+#: and FALSE one-staff populations OVERLAP at exactly 1 (see A-METER-6), so no
+#: threshold separates them and every value above 1 confines the same four
+#: segments here. 2 is the weakest bar that can confine anything at all —
+#: `key_signature_corroboration.MIN_WITNESSES`' own reasoning, and for the same
+#: reason it is not a fraction of the system: the sibling meter guard's
+#: `max(2, round(0.5 * n_staves))` would demand twelve witnesses on a 24-staff
+#: score, and a mid-system meter glyph is detected on one staff far more often
+#: than on twelve.
+METER_CHANGE_MIN_STAVES = 2
 
 
 #: The meters the repertoire actually prints, from the template reader's own
@@ -1549,6 +1654,7 @@ def _meter_changes(ev: Evidence, opening: dict, bars: dict,
         # a tie-break rule.
         readings: dict = {}
         loose = 0
+        staves_with_a_meter: set = set()
         for staff, staff_rows in per_staff.items():
             # ⚠️ DIGITS FIRST AND THE LETTER ONLY AFTER, so a bar that prints
             # digits is never re-read as a letter by a stray detection.
@@ -1562,6 +1668,13 @@ def _meter_changes(ev: Evidence, opening: dict, bars: dict,
                 loose += len(staff_rows)
             else:
                 readings.setdefault(read, []).append(staff)
+                # ⚠️ ACROSS ALL READINGS, so this counts staves that read a
+                # COMPLETE meter here whatever value they read. It is the
+                # WEAKER witness of A-METER-6 and NOTHING DECIDES ON IT — it is
+                # recorded so the weaker rule can be priced later without a
+                # re-gather, the way `cautionary` was recorded before anything
+                # consumed it.
+                staves_with_a_meter.add(staff)
         if not readings:
             continue
 
@@ -1595,6 +1708,15 @@ def _meter_changes(ev: Evidence, opening: dict, bars: dict,
             cand = {"from_cell": cell, "numerator": num, "denominator": den,
                     "raw": raw, "support": round(support, 3),
                     "staves_reading_it": sorted(staves),
+                    "staves_reading_a_meter": len(staves_with_a_meter),
+                    # ⚠️ A-METER-6. Written on EVERY change, including the
+                    # corroborated ones, so `True` means "asked and answered"
+                    # rather than "this build did not look" -- the
+                    # `empty_bars_padded_without_meter` lesson, where a counter
+                    # written only on the bad branch made "we sized all 184
+                    # correctly" and "this figure was never computed" read
+                    # identically.
+                    "corroborated": len(staves) >= METER_CHANGE_MIN_STAVES,
                     "bars_fit": fits, "bars_contradict": misses,
                     "loose_digits": loose}
             if best is None or support > best["support"]:
@@ -1616,6 +1738,29 @@ def _meter_changes(ev: Evidence, opening: dict, bars: dict,
     return out, cautionaries
 
 
+#: Which fields of a change candidate reach the SEGMENT, written ONCE.
+#:
+#: ⚠️⚠️ THERE ARE TWO SEGMENT-BUILDING SITES — `_with_segments` and
+#: `_change_only` — AND THEY EACH HAND-LISTED THESE FIELDS. A-METER-6 added
+#: `corroborated` to the first and not the second, so a `change_only` verdict's
+#: segment carried no flag, `_meter_in_force_at_end`'s
+#: `seg.get("corroborated", True)` read it as an OLD record, and a one-staff
+#: change was carried forward exactly as before. Green everywhere: the
+#: behavioural test that caught it is the one asserting the walk RUNS OUT.
+#:
+#: A field list written twice is the *two records of one thing nothing forces
+#: to agree* shape this project has paid for repeatedly. Derived once here, so
+#: the next field cannot be added to one site only.
+_SEGMENT_FIELDS = ("from_cell", "numerator", "denominator", "raw", "support",
+                   "staves_reading_it", "staves_reading_a_meter",
+                   "corroborated", "bars_fit", "bars_contradict")
+
+
+def _segment_from_change(change: dict) -> dict:
+    """One `_meter_changes` candidate, projected onto a `segments` entry."""
+    return {k: change[k] for k in _SEGMENT_FIELDS if k in change}
+
+
 def _with_segments(ev: Evidence, opening: dict) -> dict:
     """The system's meter, plus any change its own evidence supports.
 
@@ -1625,15 +1770,11 @@ def _with_segments(ev: Evidence, opening: dict) -> dict:
     """
     changes, cautionaries = _meter_changes(ev, opening, _bar_lengths_for(ev),
                                           _last_cell_per_staff(ev))
+    # ⚠️ A-METER-6's flag rides along in `_segment_from_change`: a segment still
+    # governs THIS system's bars through `record.meter_at` exactly as before,
+    # and the flag is read only by `_meter_in_force_at_end`, on the way OFF.
     segments = [dict(opening, from_cell=0)]
-    for c in changes:
-        segments.append({"from_cell": c["from_cell"],
-                         "numerator": c["numerator"],
-                         "denominator": c["denominator"],
-                         "raw": c["raw"], "support": c["support"],
-                         "staves_reading_it": c["staves_reading_it"],
-                         "bars_fit": c["bars_fit"],
-                         "bars_contradict": c["bars_contradict"]})
+    segments.extend(_segment_from_change(c) for c in changes)
     out = dict(opening, segments=segments)
     if cautionaries:
         # ⚠️ ON THE VALUE, NOT IN `detail`, because it is a fact about the
@@ -1657,13 +1798,28 @@ def _with_segments(ev: Evidence, opening: dict) -> dict:
 #: system's answer repeated, and `derived_from_bars` is arithmetic with a
 #: BORROWED spelling -- neither is ink on the source's own page, so admitting
 #: either would make `pages_since_read` a lie about the distance back to ink.
-def _meter_in_force_at_end(value: dict, n_cells: int) -> dict:
-    """The source system's LAST meter, read off its own `segments`.
+def _meter_in_force_at_end(value: dict, n_cells: int) -> Optional[dict]:
+    """The source system's LAST CORROBORATED meter, or None if it has none.
 
     ⚠️ THE READ-OFF GOES THROUGH `record.meter_at`, which is the whole reason
     that helper exists -- its docstring says it *is* how a bar's meter is read
     and it was called by nothing but its own tests. Asking it for the source's
     last bar is the question a carry has always been asking.
+
+    ⚠️⚠️ AN UNCORROBORATED SEGMENT IS SKIPPED HERE AND ONLY HERE (A-METER-6).
+    A change one staff read governs its own system's bars through `meter_at`
+    exactly as before; what this refuses is letting it become the meter handed
+    to every following system that abstains. The segments are filtered BEFORE
+    `meter_at` runs, so the fallback is the previous corroborated meter -- the
+    opening, usually -- rather than nothing.
+
+    ⚠️ **None IS A REAL OUTCOME AND IS NOT A FAILURE.** A `change_only`
+    verdict's only segment IS the change, so where that change is
+    uncorroborated the system has NO meter anyone corroborated and is not a
+    carry source at all. Returning the unfiltered value there would reinstate
+    exactly the amplification this rule exists to stop, and returning a
+    default would be a fallback converting *cannot tell* into a definite
+    answer -- the one conversion this project's own rule forbids outright.
 
     ⚠️ THE SOURCE'S OWN BAR-SCOPED FIELDS ARE STRIPPED, and must be: they
     describe the SOURCE's bar ranges and mean nothing in this system's
@@ -1671,10 +1827,23 @@ def _meter_in_force_at_end(value: dict, n_cells: int) -> dict:
     its own ink -- including its own `cautionary`, which is a statement about
     the system AFTER it and travels with neither.
     """
+    if not value:
+        return None
+    segments = value.get("segments")
+    if segments:
+        # ⚠️ `seg.get("corroborated", True)` -- a segment with no flag is an
+        # OPENING (segment 0 never carries one) or a record written before
+        # A-METER-6, and neither is a single-staff mid-system change. Defaulting
+        # to False there would silently refuse every carry on an older record.
+        kept = [s for s in segments if s.get("corroborated", True)]
+        if not kept:
+            return None
+        value = dict(value, segments=kept)
     at_end = meter_at(value, n_cells - 1 if n_cells else 0) or value
     return {k: v for k, v in at_end.items()
             if k not in ("segments", "cautionary", "support",
-                         "staves_reading_it", "bars_fit", "bars_contradict",
+                         "staves_reading_it", "staves_reading_a_meter",
+                         "corroborated", "bars_fit", "bars_contradict",
                          "from_cell")}
 
 
@@ -1696,6 +1865,10 @@ def _carry_meter(ev: Evidence, instead_of: str) -> Optional[Ruling]:
     if not meter_carry_enabled():
         return None
     here = ev.subject
+    #: Sources walked PAST because A-METER-6 left them nothing carryable.
+    #: ⚠️ A page with no carry source and a page that walked past one are two
+    #: different pages and must not read the same in the log.
+    skipped_uncorroborated: list = []
     for src in reversed([s for s in ev.subjects(Kind.SYSTEM) if s < here]):
         found = ev.verdict(Q.METER, subject=src)
         if found is None or found.outcome is not Outcome.DECIDED:
@@ -1732,12 +1905,24 @@ def _carry_meter(ev: Evidence, instead_of: str) -> Optional[Ruling]:
             if mp.outcome is Outcome.DECIDED and isinstance(mp.value, int):
                 n_cells = max(n_cells, mp.value)
         carried = _meter_in_force_at_end(found.value, n_cells)
+        if carried is None:
+            # ⚠️ A-METER-6: this source's only meter is a change ONE staff
+            # read, so it has nothing anyone corroborated to hand on. Keep
+            # walking back — a source with no carryable meter is not a source,
+            # the same treatment `METER_SOURCE_REASONS` gives a `carried` one.
+            # ⚠️ RECORDED, NOT SILENT: skipping is a decision, and a page that
+            # found no source at all and a page that walked past one must not
+            # read the same in the log.
+            skipped_uncorroborated.append(src.to_key())
+            continue
         check = _corroborate(ev, carried)
         if "terms" not in check:
             return Ruling.abstain("carry_not_corroborated",
                                   carried_from=src.to_key(),
                                   pages_since_read=pages,
-                                  instead_of=instead_of, **check)
+                                  instead_of=instead_of,
+                                  skipped_uncorroborated=skipped_uncorroborated,
+                                  **check)
         # ⚠️ THE CARRY IS A TERM, NOT A DECISION. It enters the sum on the
         # same footing as the bars and can be outweighed by them.
         terms = [Term("carried_from_read_meter", W_METER_CARRIED,
@@ -1753,7 +1938,8 @@ def _carry_meter(ev: Evidence, instead_of: str) -> Optional[Ruling]:
                   "floor": METER_CARRY_FLOOR,
                   "bars_agree": check["bars_agree"],
                   "bars_disagree": check["bars_disagree"],
-                  "bar_lengths_seen": check["bar_lengths_seen"]}
+                  "bar_lengths_seen": check["bar_lengths_seen"],
+                  "skipped_uncorroborated": skipped_uncorroborated}
         if support < METER_CARRY_FLOOR:
             # ⚠️ Its own reason, and the SUPPORT is on the record beside it: a
             # carry the bars outweighed, a carry with nothing to check against
@@ -1765,6 +1951,18 @@ def _carry_meter(ev: Evidence, instead_of: str) -> Optional[Ruling]:
         # standing at bar N says it stopped doing it there.
         return Ruling(value=_with_segments(ev, carried), reason="carried",
                       used=(found.id,), margin=support, detail=detail)
+    if skipped_uncorroborated:
+        # ⚠️ A-METER-6, and this is the ONLY path where the rule alone changes
+        # the OUTCOME rather than the value carried: every source back to the
+        # start of the document had nothing corroborated to hand on. Before
+        # this rule that page took a single staff's reading and spread it
+        # forward; now it abstains, NAMING the sources it walked past.
+        # ⚠️ `_meter_fallbacks` prefers this over `_change_only`'s bare
+        # "nothing here", which is its own documented ordering — the most
+        # INFORMATIVE refusal, not the last one tried.
+        return Ruling.abstain("carry_source_uncorroborated",
+                              instead_of=instead_of,
+                              skipped_uncorroborated=skipped_uncorroborated)
     return None
 
 
@@ -1924,12 +2122,9 @@ def _change_only(ev: Evidence, why: str, **detail) -> Ruling:
     if not changes:
         return Ruling.abstain(why, **detail)
     first = changes[0]
-    segments = [{"from_cell": c["from_cell"], "numerator": c["numerator"],
-                 "denominator": c["denominator"], "raw": c["raw"],
-                 "support": c["support"],
-                 "staves_reading_it": c["staves_reading_it"],
-                 "bars_fit": c["bars_fit"],
-                 "bars_contradict": c["bars_contradict"]} for c in changes]
+    # ⚠️ `_segment_from_change`, NOT a second hand-written field list — see its
+    # docstring: this site is where A-METER-6's flag was silently missing.
+    segments = [_segment_from_change(c) for c in changes]
     return Ruling(value={"numerator": first["numerator"],
                          "denominator": first["denominator"],
                          "raw": first["raw"], "segments": segments},
@@ -1995,6 +2190,7 @@ def _meter_fallbacks(ev: Evidence, why: str, **detail) -> Ruling:
     reasons=("voted", "no_agreement", "no_evidence",
              "too_few_staves_read_it", "carried",
              "carry_not_corroborated", "carry_outweighed_by_the_bars",
+             "carry_source_uncorroborated",
              "change_only", "derived_from_bars",
              "bars_name_a_length_without_a_form"),
     mode=Mode.ADDITIVE,
