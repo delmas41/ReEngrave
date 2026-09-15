@@ -284,6 +284,19 @@ artefact that predates the dedupe repair.
 
 ## 7. THE RANKED NEXT WORK, AND EXACTLY WHICH ARM NEEDS A MACHINE
 
+⚠️⚠️ **ITEM 1 WAS ANSWERED WITHOUT THE RE-EXPORT ON 2026-09-15, AND THE ANSWER
+REFUTES THIS SECTION'S OWN PREMISE — READ
+[FINDINGS_2026-09-15_STALENESS.md](FINDINGS_2026-09-15_STALENESS.md) BEFORE
+QUOTING ANY OF §4 OR §7 BELOW.** *"the 14 outside-the-staff phantoms are its
+target population"* is false: **11 of the 13 offending bars — 20 of the 25
+notes, and 11 of the 14 outside-the-staff ones — hold NO cross-staff notehead
+contest at all**, so `glyph_owner` has no domain there and the dedupe repair
+cannot have moved them. Only `P6 m88` and `P6 m92` (5 notes) are in its
+domain, and those two genuinely cannot be told apart from here. **And 5 of the
+14 stand ABOVE THE TOP STAFF of their system**, where §4's *"the PADDING from a
+neighbour"* has no neighbour to name. The text below is kept as written,
+because the correction is the finding.
+
 1. ⚠️⚠️ **RE-EXPORT THE SHARED RECORD ON CURRENT MAIN AND RE-RUN
    `probe/silent_bars.py`.** This needs a machine holding
    `library/_shared-records/beethoven5-p1-p4.record.json` (md5

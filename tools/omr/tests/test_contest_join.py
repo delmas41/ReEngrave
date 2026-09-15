@@ -20,6 +20,7 @@ three conditions are asserted against the source of the gather site too.
 from __future__ import annotations
 
 import ast
+import importlib.util
 import pathlib
 import unittest
 
@@ -71,6 +72,85 @@ class TestTheProbeAgreesWithTheGatherSite(unittest.TestCase):
             _module_constant(GATHER, "CONTEST_IOU_THAT_DOES_NOT_EXIST")
         with self.assertRaises(AssertionError):
             _function_source(GATHER, "a_function_that_does_not_exist")
+
+    def test_the_reader_really_reads_the_file(self):
+        """⚠️ FOUND BY A MUTATION ARM THAT SURVIVED.
+
+        Replacing `_module_constant`'s body with `return 0.5` left the equality
+        test GREEN -- both sides returned the stub, so the test agreed with
+        itself and said nothing about either file.  A reader that returns one
+        fixed number is caught by asking it for a constant whose value is NOT
+        that number.
+        """
+        self.assertEqual(_module_constant(GATHER, "LEDGER_ROUND_UP"), 0.25)
+        self.assertEqual(_module_constant(GATHER, "_CV_GLYPH_BASE"), 100000)
+        self.assertEqual(_module_constant(GATHER, "FRAME_PAGE"), "page")
+
+
+def _load_probe():
+    spec = importlib.util.spec_from_file_location("_contest_join", PROBE)
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    return mod
+
+
+def _pair(a, b, klass_a, klass_b, iou=0.9, family="notehead_class"):
+    return {"a": a, "b": b, "family": family,
+            "scope": ("same_cell" if a.split("/")[1:5] == b.split("/")[1:5]
+                      else "same_system_other_staff"),
+            "class_a": klass_a, "class_b": klass_b,
+            "same_class": klass_a == klass_b, "iou": iou}
+
+
+class TestTheSplitTheJoinDependsOn(unittest.TestCase):
+    """⚠️ FOUND BY A MUTATION ARM THAT SURVIVED on the real document.
+
+    Dropping the probe's `same_class` gate moved 47 suffix-only pairs into the
+    contest index and **changed no answer**, because not one of the eighteen
+    print-silent bars carries a suffix-only pair.  That makes the arm an
+    equivalent mutant *for this page* and a real hole *for the mechanism*, so
+    the split is exercised directly instead.
+    """
+
+    def setUp(self):
+        self.m = _load_probe()
+
+    def test_a_suffix_only_pair_is_not_a_contest(self):
+        pairs = [_pair("glyph/1/0/4/7/2", "glyph/1/0/5/7/9",
+                       "noteheadBlackOnLine", "noteheadBlackInSpace")]
+        cross, suffix, incell = self.m.index_pairs(pairs)
+        self.assertEqual(cross, {})
+        self.assertEqual(len(suffix[(1, 0, 4, 7)]), 1)
+        self.assertEqual(len(suffix[(1, 0, 5, 7)]), 1)
+        self.assertEqual(incell, {})
+
+    def test_a_same_class_cross_staff_pair_IS_a_contest(self):
+        # The positive control: without it every assertion above is satisfied
+        # by an index_pairs that files nothing anywhere.
+        pairs = [_pair("glyph/1/0/4/7/2", "glyph/1/0/5/7/9",
+                       "noteheadBlackOnLine", "noteheadBlackOnLine")]
+        cross, suffix, incell = self.m.index_pairs(pairs)
+        self.assertEqual(len(cross[(1, 0, 4, 7)]), 1)
+        self.assertEqual(len(cross[(1, 0, 5, 7)]), 1)
+        self.assertEqual(suffix, {})
+
+    def test_a_same_cell_pair_is_neither(self):
+        pairs = [_pair("glyph/1/0/4/7/2", "glyph/1/0/4/7/9",
+                       "noteheadBlackOnLine", "noteheadBlackOnLine")]
+        cross, suffix, incell = self.m.index_pairs(pairs)
+        self.assertEqual(cross, {})
+        self.assertEqual(suffix, {})
+        self.assertEqual(len(incell[(1, 0, 4, 7)]), 1)
+
+    def test_head_base_strips_only_the_position_suffix(self):
+        self.assertEqual(self.m.head_base("noteheadHalfInSpace"),
+                         "noteheadHalf")
+        self.assertEqual(self.m.head_base("noteheadHalfOnLine"),
+                         "noteheadHalf")
+        # ⚠️ A half and a black head are NOT the same ink, and folding them
+        # would make the suffix column a claim about note VALUE.
+        self.assertNotEqual(self.m.head_base("noteheadHalfOnLine"),
+                            self.m.head_base("noteheadBlackOnLine"))
 
 
 if __name__ == "__main__":
