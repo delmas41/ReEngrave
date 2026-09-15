@@ -514,5 +514,92 @@ class TestTheReaderIsSaneOnBlankPaper(unittest.TestCase):
         self.assertEqual(found.raw, "3/4")
 
 
+class TestTheLOCALArmCanReadARealRecord(unittest.TestCase):
+    """⚠️⚠️ THE ARM CANNOT BE RUN HERE, SO ITS PARSER IS PINNED HERE.
+
+    `local_arm.py` needs weights and a PDF and is written for a machine that
+    has them. Its riskiest line is not the gather — that either runs or
+    raises — it is the READER: if `record.Log.to_json`'s shape moves, the arm
+    reports "0 rows, DEAD" on a run that worked perfectly, and the person
+    holding the weights concludes the change is inert. So the arm's parsers
+    are driven over a record this suite BUILDS, and the positive control is
+    that they come back non-empty.
+    """
+
+    def _arm(self):
+        import importlib.util
+        import pathlib
+        path = (pathlib.Path(__file__).resolve().parents[3] / "benchmarks"
+                / "omr-meter-template-changes-2026-09" / "local_arm.py")
+        if not path.is_file():                        # pragma: no cover
+            self.skipTest("arm not present")
+        spec = importlib.util.spec_from_file_location("_arm", path)
+        mod = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(mod)
+        return mod
+
+    def _record_file(self, tmp):
+        import json
+        log = Log()
+        log.observe(R.staff(0, 0, 1), Q.METER_TEMPLATE_AT_BAR, (3, 4),
+                    reader=READERS.TEMPLATE, frame=G.frame_bar_head(5),
+                    cell=5, raw="3/4", score=0.61)
+        log.abstain(R.staff(0, 0, 2), Q.METER_TEMPLATE_AT_BAR,
+                    reader=READERS.TEMPLATE, frame=G.frame_bar_head(5),
+                    reason="below_threshold", cell=5)
+        log.record(adjudicate.Verdict(
+            id=log._next_id("vrd"), subject=R.system(0, 0), quantity=Q.METER,
+            outcome=Outcome.DECIDED,
+            value={"numerator": 3, "denominator": 4, "raw": "3/4",
+                   "segments": [{"from_cell": 0, "raw": "3/4"},
+                                {"from_cell": 5, "raw": "4/4",
+                                 "staves_from_bar_head_template": 3}]},
+            decider="t", reason="voted"))
+        path = tmp / "arm.staged.json"
+        path.write_text(json.dumps({"record": log.to_json(),
+                                    "provenance": {"commit": "x",
+                                                   "dirty": False}},
+                                   default=str))
+        return path
+
+    def test_it_finds_both_the_observations_and_the_abstentions(self):
+        import pathlib
+        import tempfile
+        arm = self._arm()
+        with tempfile.TemporaryDirectory() as td:
+            path = self._record_file(pathlib.Path(td))
+            rows = arm._bar_head_rows(path)
+            self.assertEqual(len(rows), 2)
+            answered = [r for r in rows if "value" in r]
+            self.assertEqual(len(answered), 1)
+            self.assertEqual((answered[0]["detail"]["cell"],
+                              answered[0]["detail"]["raw"]), (5, "3/4"))
+
+    def test_it_finds_the_meter_verdict_and_its_segments(self):
+        import pathlib
+        import tempfile
+        arm = self._arm()
+        with tempfile.TemporaryDirectory() as td:
+            path = self._record_file(pathlib.Path(td))
+            meters = arm._meters(path)
+            self.assertEqual(list(meters), ["system/0/0"])
+            segs = arm._segments(meters["system/0/0"])
+            self.assertEqual([s["from_cell"] for s in segs], [0, 5])
+            self.assertEqual(segs[1]["staves_from_bar_head_template"], 3)
+
+    def test_a_file_that_is_not_a_record_is_REFUSED_not_read_as_empty(self):
+        """⚠️ A parser returning `{}` for an unrecognised file reports
+        *nothing moved* for a run that never happened — the fallback that
+        converts *cannot tell* into a definite answer."""
+        import pathlib
+        import tempfile
+        arm = self._arm()
+        with tempfile.TemporaryDirectory() as td:
+            bad = pathlib.Path(td) / "not-a-record.json"
+            bad.write_text('{"pages": []}')
+            with self.assertRaises(SystemExit):
+                arm._bar_head_rows(bad)
+
+
 if __name__ == "__main__":       # pragma: no cover
     unittest.main()
