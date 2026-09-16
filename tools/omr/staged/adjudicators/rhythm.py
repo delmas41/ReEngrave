@@ -2408,6 +2408,234 @@ def adjudicate_stem_direction(ev: Evidence) -> Ruling:
                   detail={"n_stems": len(mine), "heads_on_stem": len(heads)})
 
 
+# ─────────────────────────────────────────────────────────────────────────────
+# A WHOLE REST WEARING A NOTEHEAD'S LABEL
+#
+# ⚠️ STAFF SPACES AND STAFF STEPS, NEVER PIXELS. The staves of one plate differ
+# in spacing and the DPI differs between runs, so a pixel constant here would be
+# a property of one render of one page.
+#
+# Every cut below is DERIVED from a population the rule never judges -- the
+# document's own 395 correctly-detected `restWhole` glyphs on Beethoven 5 /
+# Litolff `984073` pp.1-4 -- and is then SWEPT, because a constant read off the
+# population it is about to judge is a constant fitted to it.
+# (`benchmarks/omr-note-where-silence-2026-09/probe/sweep.py`.)
+#
+#   height  p05 0.46  p95 0.84 staff spaces   (a notehead's median is 1.31)
+#   aspect  p05 1.63  p95 3.09                (a notehead's median is 1.14)
+
+#: ⚠️ A NARROW PLATEAU, and saying so is the point. 0.80 and 0.84 fire on the
+#: same 25 glyphs; 0.90 admits two more and 0.75 loses eight. The two it admits
+#: were cropped and are ambiguous ink in bars that hold real notes, so the cut
+#: is LOAD-BEARING rather than cosmetic -- which is an argument for keeping it
+#: at the conservative edge, not for trusting it on a second document.
+WHOLE_REST_INK_MAX_HEIGHT_SPACES = 0.84
+#: ⚠️ Also narrow: 1.40 admits two more (both ambiguous), 1.80 loses two real
+#: whole rests. There is no plateau here at all; it is the document's own p05.
+WHOLE_REST_INK_MIN_ASPECT = 1.63
+#: ⚠️ THE UPPER BOUND SITS IN A MEASURED EMPTY INTERVAL and costs nothing: the
+#: widest of the 25 catches is 2.35 and the next thing a one-sided rule admitted
+#: is a 5.49 sliver of line residue. Anywhere in 2.40-4.50 gives the identical
+#: answer. It exists because that sliver is not a whole rest EITHER, and a
+#: decision may only claim what it can support -- excluding it by description
+#: rather than reaching the right outcome through a wrong one.
+WHOLE_REST_INK_MAX_ASPECT = 3.09
+#: Where a whole rest HANGS: under the fourth staff line from the bottom. With
+#: the bottom line 0 and one step per half space its body spans step 6 down to
+#: step 5, so its centre is 5.5. ⚠️ NOT TUNED -- it is the engraving convention,
+#: and it is an obligation rather than a preference, which is what makes it
+#: usable as a witness at all.
+WHOLE_REST_STEP = 5.5
+#: ⚠️ THE TOLERANCE IS STAFF-LINE REGISTRATION ERROR, NOT ENGRAVING SLACK.
+#: `Q.STAFF_LINES` models a staff as five ideal rows while a scanned staff tilts
+#: and bows 8-17 page px across its width (CLAUDE.md, `OMR_CELL_LINE_TRACE`),
+#: which on this plate is up to a whole step. Measured: the document's own
+#: correctly-read whole rests spread over steps 2.5-5.9. Plateau 1.0-1.5.
+WHOLE_REST_STEP_TOLERANCE = 1.0
+#: How far along the staff the NEIGHBOUR witness looks, in bars. ⚠️ Deliberately
+#: SHORT: a tacet part prints a whole rest in every bar, so a real one always
+#: has a neighbour within a bar or two, while a long reach would let one distant
+#: rest vouch for ink anywhere on the staff. 3, 4 and 8 all admit the same one
+#: extra glyph, which on the crop is a blob beside a slur.
+WHOLE_REST_NEIGHBOUR_BARS = 2
+#: How closely the neighbour's height must agree, in staff steps. Plateau
+#: 1.0-3.0; below 1.0 it loses a real catch. It can be loose precisely because
+#: it is only ever the SECOND witness.
+WHOLE_REST_NEIGHBOUR_STEPS = 1.5
+
+
+def _staff_step(page_box, line_ys, spacing) -> Optional[float]:
+    """This ink's centre as a STAFF STEP -- bottom line 0, one step per half
+    space, up positive.
+
+    ⚠️ EVERYTHING IS IN PAGE PIXELS. `Q.STAFF_LINES` and `Q.STAFF_SPACING` are
+    filed in the page frame and `Q.GLYPH_BOX` carries `bbox_page_px` beside its
+    CANONICAL box. Mixing the two is the fault `Q.ONSET_COLUMN` paid for: a
+    canonical box is measured inside one cell rescaled so the staff span is
+    constant, so it cannot be compared with a staff's own lines at all.
+    """
+    if not page_box or len(page_box) != 4 or not line_ys or not spacing:
+        return None
+    try:
+        bottom = max(float(y) for y in line_ys)
+        half = float(spacing) / 2.0
+    except (TypeError, ValueError):
+        return None
+    if half <= 0:
+        return None
+    return (bottom - (float(page_box[1]) + float(page_box[3])) / 2.0) / half
+
+
+def _rest_shaped(height_spaces: float, aspect: float) -> bool:
+    """Is this ink the SIZE AND PROPORTION of a whole rest?"""
+    return (height_spaces <= WHOLE_REST_INK_MAX_HEIGHT_SPACES
+            and WHOLE_REST_INK_MIN_ASPECT <= aspect
+            <= WHOLE_REST_INK_MAX_ASPECT)
+
+
+@decision(
+    quantity=Q.NOTEHEAD_IS_A_WHOLE_REST,
+    composed_from=(Q.GLYPH_BOX, Q.STAFF_LINES, Q.STAFF_SPACING, Q.REST),
+    scope=Kind.GLYPH,
+    wants=(Q.GLYPH_BOX, Q.STAFF_LINES, Q.STAFF_SPACING, Q.REST),
+    subjects_from=Q.NOTEHEAD_CLASS,
+    reasons=("shape_and_position_agree", "not_rest_shaped",
+             "not_where_a_whole_rest_can_hang", "no_page_frame",
+             ABSTAIN.NO_STAFF_GEOMETRY),
+    mode=Mode.ADDITIVE,
+)
+def adjudicate_notehead_is_a_whole_rest(ev: Evidence) -> Ruling:
+    """Is this glyph the detector called a notehead actually a WHOLE REST?
+
+    ⚠️⚠️ SEAN, 2026-09-11, reading the first cleanup artefact against the
+    print: *"in bars where it should be just whole note rest in two four. It's
+    showing an actual quarter note, not a quarter note rest."* On a bitonal
+    1870 plate a whole rest is a small filled RECTANGLE hanging under a line
+    and a notehead is a small filled OVAL, and the detector confuses them.
+
+    ⚠️ THE MIRROR OF THIS IS ALREADY ON THE RECORD, which is what says the
+    confusion runs both ways rather than being one page's bad luck: the arc
+    work found a `restWhole` read at 0.56 in a bar of this same document where
+    the print shows no whole rest at all.
+
+    ⚠️ TWO WITNESSES, AND THE RULE IS THEIR AGREEMENT -- see
+    `Q.NOTEHEAD_IS_A_WHOLE_REST` for the measurement that says neither is
+    admissible alone (SHAPE alone 148 of 2,347, POSITION alone 310, together
+    25, and all 25 hand-adjudicated against the print).
+
+    ⚠️ POSITION IS ESTABLISHED TWO WAYS, and the second is not decoration.
+    The absolute slot is measured against `Q.STAFF_LINES`, which models a staff
+    as five ideal rows; a scanned staff tilts and bows, and this document's own
+    correctly-read whole rests spread over steps 2.5-5.9 as a result. So a
+    NEIGHBOURING BAR of the SAME STAFF holding a detected `restWhole` at nearly
+    the same height counts as well -- a tacet part prints one in every bar, and
+    a shared registration error cancels between two rows of one staff. It is
+    what catches `P1 m85`, one of the instances Sean named, which the absolute
+    slot misses at step 4.21.
+
+    ⚠️ CONFIDENCE IS NOT A WITNESS, deliberately. The flagged glyphs do sit low
+    (median 0.36 against 0.66 for noteheads generally) and CLAUDE.md records a
+    confidence filter measured and REFUSED one family over, at 233 good dynamic
+    letters lost to remove half of 35 bad ones. A tier that is a proxy for ink
+    quality is not evidence about what a glyph IS.
+
+    ⚠️ IT DOES NOT RECLASSIFY, and the stage boundary is the reason. What ink
+    is on the page is a GATHER fact; this is ADJUDICATE answering *what does
+    this ONE thing mean*. A `True` verdict is consumed by the exporter as a
+    refusal to write a NOTE; nothing manufactures a `Q.REST` row, so the bar
+    falls to the existing padded measure rest -- *we read nothing here*, which
+    is weaker than *we read silence* and is the statement the record can
+    support.
+
+    ⚠️ FALSE IS A DECISION AND ITS REASON NAMES WHICH WITNESS REFUSED.
+    *"the ink is not rest-shaped"* and *"it is rest-shaped but stands where no
+    whole rest can hang"* are different facts about the page, and folding them
+    together would hide that the second names the population a shape-only rule
+    would have deleted.
+    """
+    box_rows = ev.rows(Q.GLYPH_BOX)
+    page_box = None
+    for r in box_rows:
+        page_box = (r.detail or {}).get("bbox_page_px") or page_box
+    if not page_box:
+        # ⚠️ DECLINED, NOT DEFAULTED. `gather_detections` carries the page box
+        # beside the canonical one and OMITS it rather than inventing one, and
+        # the canonical frame cannot answer a question about a staff's lines.
+        return Ruling.abstain("no_page_frame")
+
+    staff = ev.subject.at(Kind.STAFF)
+    lines = ev.rows(Q.STAFF_LINES, scope=Scope.SELF_AND_ANCESTORS, subject=staff)
+    space = ev.rows(Q.STAFF_SPACING, scope=Scope.SELF_AND_ANCESTORS,
+                    subject=staff)
+    if not lines or not space:
+        return Ruling.abstain(ABSTAIN.NO_STAFF_GEOMETRY)
+    step = _staff_step(page_box, lines[-1].value, space[-1].value)
+    if step is None:
+        return Ruling.abstain(ABSTAIN.NO_STAFF_GEOMETRY)
+    try:
+        spacing = float(space[-1].value)
+        w = (float(page_box[2]) - float(page_box[0])) / spacing
+        h = (float(page_box[3]) - float(page_box[1])) / spacing
+    except (TypeError, ValueError, ZeroDivisionError):
+        return Ruling.abstain(ABSTAIN.NO_STAFF_GEOMETRY)
+    if h <= 0:
+        return Ruling.abstain(ABSTAIN.NO_STAFF_GEOMETRY)
+    aspect = w / h
+
+    used = [box_rows[-1].id, lines[-1].id, space[-1].id]
+    detail: Dict[str, Any] = {"height_spaces": round(h, 3),
+                              "aspect": round(aspect, 3),
+                              "staff_step": round(step, 3)}
+
+    if not _rest_shaped(h, aspect):
+        return Ruling(value=False, reason="not_rest_shaped",
+                      used=tuple(used), detail=detail)
+
+    at_the_slot = abs(step - WHOLE_REST_STEP) <= WHOLE_REST_STEP_TOLERANCE
+    neighbour = None
+    if not at_the_slot:
+        # ⚠️ THE SAME STAFF'S OTHER BARS, never another staff's. A staff two
+        # rows down is a different part with its own registration error and
+        # its own music, so its rests say nothing about this one.
+        my_index = getattr(ev.subject.at(Kind.CELL), "cell", None)
+        # ⚠️ THE NEIGHBOUR'S PAGE BOX IS ON ITS `Q.GLYPH_BOX` ROW, NOT ON ITS
+        # `Q.REST` ROW. `gather_glyph_families` files the KIND of rest under
+        # `Q.REST` and the geometry under `Q.GLYPH_BOX`, so reading
+        # `detail.bbox_page_px` off the rest row finds nothing -- silently, and
+        # the witness would simply never fire. A test caught it; no count
+        # would have, because "no neighbour on this staff" and "the witness is
+        # dead" are the same number.
+        near = {r.subject for r in ev.rows(Q.REST,
+                                           scope=Scope.SELF_AND_DESCENDANTS,
+                                           subject=staff)
+                if str(r.value).lower().startswith("restwhole")
+                and my_index is not None
+                and getattr(r.subject.at(Kind.CELL), "cell", None) is not None
+                and abs(r.subject.at(Kind.CELL).cell - my_index)
+                <= WHOLE_REST_NEIGHBOUR_BARS}
+        for b in (ev.rows(Q.GLYPH_BOX, scope=Scope.SELF_AND_DESCENDANTS,
+                          subject=staff) if near else ()):
+            if b.subject not in near:
+                continue
+            other_step = _staff_step((b.detail or {}).get("bbox_page_px"),
+                                     lines[-1].value, space[-1].value)
+            if (other_step is not None
+                    and abs(other_step - step) <= WHOLE_REST_NEIGHBOUR_STEPS):
+                neighbour = {"cell": b.subject.at(Kind.CELL).cell,
+                             "staff_step": round(other_step, 3)}
+                used.append(b.id)
+                break
+
+    if at_the_slot or neighbour is not None:
+        detail["witness"] = "slot" if at_the_slot else "neighbouring_bar"
+        if neighbour is not None:
+            detail["neighbour"] = neighbour
+        return Ruling(value=True, reason="shape_and_position_agree",
+                      used=tuple(used), detail=detail)
+    return Ruling(value=False, reason="not_where_a_whole_rest_can_hang",
+                  used=tuple(used), detail=detail)
+
+
 @decision(
     quantity=Q.VOICES,
     composed_from=(Q.STEM_DIRECTION, Q.EVENT),
