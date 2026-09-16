@@ -1,0 +1,100 @@
+{
+  "all_disagreeing_stack_pairs": {
+    "disagreeing_pairs": 181,
+    "S6_agreement": 0.6298,
+    "S6_p_binomial": 0.00029,
+    "HUGS_answers": 157,
+    "HUGS_agreement": 0.5796,
+    "arms_make_the_SAME_prediction": 79,
+    "arms_coincide_rate": 0.4365,
+    "COIN": 0.5
+  },
+  "by_y_gap_staff_spaces": [
+    {
+      "gap_spaces": "0-1",
+      "disagreeing_pairs": 9,
+      "S6_agreement": 0.8889,
+      "S6_p_binomial": 0.01953,
+      "HUGS_answers": 8,
+      "HUGS_agreement": 0.75,
+      "arms_make_the_SAME_prediction": 5,
+      "arms_coincide_rate": 0.5556,
+      "COIN": 0.5
+    },
+    {
+      "gap_spaces": "1-2",
+      "disagreeing_pairs": 16,
+      "S6_agreement": 0.75,
+      "S6_p_binomial": 0.03841,
+      "HUGS_answers": 10,
+      "HUGS_agreement": 0.4,
+      "arms_make_the_SAME_prediction": 8,
+      "arms_coincide_rate": 0.5,
+      "COIN": 0.5
+    },
+    {
+      "gap_spaces": "2-3",
+      "disagreeing_pairs": 48,
+      "S6_agreement": 0.7083,
+      "S6_p_binomial": 0.00276,
+      "HUGS_answers": 40,
+      "HUGS_agreement": 0.5,
+      "arms_make_the_SAME_prediction": 25,
+      "arms_coincide_rate": 0.5208,
+      "COIN": 0.5
+    },
+    {
+      "gap_spaces": "0-3",
+      "disagreeing_pairs": 73,
+      "S6_agreement": 0.7397,
+      "S6_p_binomial": 3e-05,
+      "HUGS_answers": 58,
+      "HUGS_agreement": 0.5172,
+      "arms_make_the_SAME_prediction": 38,
+      "arms_coincide_rate": 0.5205,
+      "COIN": 0.5
+    },
+    {
+      "gap_spaces": "3-5",
+      "disagreeing_pairs": 66,
+      "S6_agreement": 0.5606,
+      "S6_p_binomial": 0.19453,
+      "HUGS_answers": 61,
+      "HUGS_agreement": 0.6721,
+      "arms_make_the_SAME_prediction": 25,
+      "arms_coincide_rate": 0.3788,
+      "COIN": 0.5
+    },
+    {
+      "gap_spaces": "5-99",
+      "disagreeing_pairs": 42,
+      "S6_agreement": 0.5476,
+      "S6_p_binomial": 0.32198,
+      "HUGS_answers": 38,
+      "HUGS_agreement": 0.5263,
+      "arms_make_the_SAME_prediction": 16,
+      "arms_coincide_rate": 0.381,
+      "COIN": 0.5
+    }
+  ],
+  "same_owner": {
+    "disagreeing_pairs": 171,
+    "S6_agreement": 0.655,
+    "S6_p_binomial": 3e-05,
+    "HUGS_answers": 148,
+    "HUGS_agreement": 0.5676,
+    "arms_make_the_SAME_prediction": 76,
+    "arms_coincide_rate": 0.4444,
+    "COIN": 0.5
+  },
+  "different_owner": {
+    "disagreeing_pairs": 10,
+    "S6_agreement": 0.2,
+    "S6_p_binomial": 0.98926,
+    "HUGS_answers": 9,
+    "HUGS_agreement": 0.7778,
+    "arms_make_the_SAME_prediction": 3,
+    "arms_coincide_rate": 0.3,
+    "COIN": 0.5
+  }
+}
