@@ -217,3 +217,117 @@ which would have made LD attach instead of spawn. The precheck gate caught
 it and refused the arm. **A run can be contaminated by the previous run's
 leak, and `--check` between arms is what stands between that and a silently
 wrong number.**
+
+---
+
+# ADDENDUM — `OMR_DIRECTION_TEXT` repriced on a scan (2026-09-16)
+
+Sean's instruction after the verdict: *flip both defaults on, reprice and
+merge the surya subprocesses*. This is the reprice. **Nothing is flipped
+here** — the cost side was already measured in §5, and this is the value side.
+
+**COST (§5):** ~**1067 s over four pages, 267 s/page**, drift-corrected from
+the `LD` arm against the L drift line.
+
+**VALUE:** the two records differ ONLY in that flag, so the two exports can
+be diffed directly. `record-L3.json` (directions ON) and `record-LD.json`
+(directions OFF), exported by one tree:
+
+| element | directions ON | directions OFF |
+|---|--:|--:|
+| **`<words>`** | **6** | **0** |
+| `<direction>` | 211 | 205 |
+| `<note>` | 2459 | 2459 |
+| `<rest>` | 851 | 851 |
+| `<dynamics>` | 205 | 205 |
+| `<slur>` / `<tied>` | 80 / 177 | 80 / 177 |
+| `<measure>` / `<part-name>` | 1183 / 37 | 1183 / 37 |
+| `<pitch>` / `<articulations>` / `<fermata>` / `<key>` / `<time>` | 1608 / 47 / 41 / 43 / 12 | identical |
+
+**With the `<words>` and the `<direction>` wrappers they emptied removed, the
+two files are BYTE-IDENTICAL.**
+
+And the six words are one word:
+
+```
+   3 x 'CRESC.'
+   2 x 'Cresc.'
+   1 x 'cresc.'
+```
+
+**Three distinct strings for one marking.** So on this document
+`OMR_DIRECTION_TEXT` costs **~178 seconds per word**, and every word is
+`cresc.` in a different casing.
+
+⚠️⚠️ **THIS IS NOT AN ARGUMENT FOR TURNING IT OFF, and it must not be read as
+one.** CLAUDE.md measures the same reader at **144 edits on the ENGRAVED
+orchestral benchmark, 18.8 % of the pooled figure**, where `wrong direction`
+is the third-largest bucket. Nothing here touches that, and the engraved
+family is not re-measured. What is established is narrower and was simply
+never known: **on a low-res bitonal scan the reader is the most expensive
+thing in the run and returns almost nothing.**
+
+⚠️ **The shape of the fix is therefore a DOMAIN GATE, not a default flip** —
+and the machinery already exists and is already used by this very reader:
+`direction_text.default_readers` drops the Tesseract rung on a page that
+`page_is_engraved` proves is vector. That classifier is the same one
+`OMR_WEIGHT_ROUTING` uses, it is measured (428–2058 paths on engravings
+against 0–4 on scans, the gap empty over 147 probed pages), and it answers
+False on any doubt. A gate that reads the whole rung out on a proven scan
+would keep every engraved edit and return ~267 s/page on scans. **Unbuilt,
+unmeasured, and Sean's call — it is a default.**
+
+⚠️ **n = 1 document, 1 publisher, 4 pages.** Litolff `984073` is the
+pessimistic end of the corpus, and a Breitkopf scan fires **371 flag boxes
+and 656 dots** where this one fires 49 and 35 — so a scan with more printed
+text could yield far more words for the same money. The Brahms staged record
+now exists and is where this should be re-run.
+
+---
+
+# ADDENDUM — the two Surya subprocesses are merged (2026-09-16)
+
+§7 item 4. `gather()` calls Surya twice on every page and the two calls are
+ADJACENT in its own body, yet shared nothing: each spawned a fresh worker
+which spawned a fresh `llama-server`.
+
+⚠️⚠️ **A RUN-PRIVATE SERVER VIA surya's OWN KEEP-ALIVE IS IMPOSSIBLE**, which
+the scope listed as unverified rather than guessing. Checked in the venv:
+`surya.inference.backends.spawn._cache_dir()` **hardcodes**
+`~/.cache/datalab/surya` with no environment override, so its sentinel is
+machine-global and any keep-alive server is SHARED — the hazard CLAUDE.md
+records costing a sibling agent a multi-hour run. `OMR_SURYA_SENTINEL` steers
+only our own `--check` / `--stop`. **That question is now closed: no.**
+
+So the worker itself is kept alive instead. `staff_labels_surya.worker_session()`
+starts ONE worker for the gather, streams line-delimited jobs to it, and both
+callers go through one dispatcher. Its `llama-server` is its own child, inside
+our process tree, and `SURYA_INFERENCE_KEEP_ALIVE` is deliberately NOT set.
+
+**MEASURED**, Litolff p.2, 12 staves, identical output (12 labels every way):
+
+| | call 0 | call 1 |
+|---|--:|--:|
+| one-shot (today) | 20.32 s | 17.15 s |
+| **session** | **5.72 s** | **4.17 s** |
+
+**~17 s → ~5 s per call.** A four-page staged run makes eight such calls, so
+~80 s a run, ~20 s/page — more than §7's ~10–15 s estimate, and more than the
+label flag costs in the first place.
+
+Every failure is a fallback: a worker that will not start, reports no ready
+line, goes silent, answers garbage or dies closes the session and every later
+call spawns one-shot exactly as before. Five failure arms, each with a
+positive control in the same class.
+
+⚠️⚠️ **AND A CORRECTION TO THIS SESSION'S OWN FIRST CLAIM ABOUT IT.** The
+commit message says the session "left no llama-server and no sentinel —
+better hygiene than the one-shot path". A check straight after the run
+supported that. **Thirty minutes later a `llama-server` was resident whose
+start time and pid sit inside that test's own range, so the session most
+likely DID leak one and the check was taken too early.** The claim is
+withdrawn pending an explicit teardown: the session should record the
+sentinel at open and stop a server that appeared during its life, rather
+than trusting surya's atexit — which does not run if the worker is killed
+rather than closed. **Until that lands, the merge's correctness is
+established and its cleanup is not.**
