@@ -736,7 +736,112 @@ hazards are already paid for here: **an uncalibrated probability is WORSE than
 none** (ECE 0.1277, failing worst at the top of the range), and **two readers
 can fall silent TOGETHER** (*the bars are not an independent umpire over a bad
 reading*), so a stage counting correlated witnesses as independent
-double-counts one. ⚠️ **Build it only AFTER the first cleanup count.**
+double-counts one. ⚠️⚠️ **"Build it only AFTER the first cleanup count" was
+OVERRIDDEN by Sean on 2026-09-15 and the stage is BUILT — see *INFER, the
+fourth stage* below.** The sentence is corrected rather than deleted because
+this file's own rule is that a stale instruction reads as a work order.
+
+---
+
+## INFER, the fourth stage — built, default OFF, and bypassable by construction
+
+2026-09-15, `OMR_INFER` (**default `0`**). `tools/omr/staged/infer.py` +
+`inferences.py`. Findings:
+[benchmarks/omr-infer-stage-2026-09/FINDINGS.md](benchmarks/omr-infer-stage-2026-09/FINDINGS.md).
+
+⚠️ **SEAN OVERRODE THE PLAN'S PHASING** (*"our best advances will come from
+building out the 4th stage and making sure all our info gets to where it needs
+to"*), which said this may not be built before the first cleanup count. The
+plan's reasoning is satisfied rather than ignored: Phase 2 is open and the
+unwritten notes are this stage's population. ⚠️ **Calibration from the score
+library — the plan's named first piece — was deliberately NOT built**: it is a
+corpus run, and it is the one thing this repo has measured failing (ECE
+0.1277). The first rule needs no probability at all.
+
+**The property it keeps sayable:** *everything in the record before EXPORT was
+READ or ENTAILED; everything after INFER was read, entailed, or INFERRED — and
+LABELLED.*
+
+**Five rules, in the HARNESS rather than in a docstring**, each with a
+mutation arm: it may not run before EVALUATE (`run()` REQUIRES its report); it
+may not loosen GATHER (it refuses an unfrozen log); it may only speak where
+the record has no answer (`INFERABLE` is `{NARROWED, ABSTAINED}` — **it may
+never overturn a DECIDED reading**); it may not invent a value (collapsing a
+narrowing, the value must be one of *that reader's own* candidates); and it
+supersedes VISIBLY — a rule returns a `Proposal` with **no `decider` and no
+`outcome` field**, so there is no path by which an inference reaches the log
+unstamped. ⚠️ **`export.py`'s refusal to argmax is UNTOUCHED** and must stay.
+
+⚠️ **BYPASS: off means ABSENT, not quiet.** `pipeline` omits the `inference`
+key entirely when the stage did not run, so a record from a tree carrying
+INFER is byte-identical to one from a tree without it — `"inference": None`
+would break exactly that. Asserted with a positive control that the comparison
+has teeth. `inventory --check`, `health --check`, `gather_coverage` and
+`export_coverage` all exit 0. ⚠️ `readjudicate.py` / `reexport_arm.py` were
+**reasoned about, not run** — neither imports `infer`.
+
+**MEASURED**, one gather (Litolff Beethoven 5 mvt 1, pdf p1-4) INFER'd once
+and exported twice; `reinfer.py --control` reproduces **16,923 of 16,923
+verdicts and 33,736 of 33,736 observations** first. Reach: **357 narrowed
+durations**, all on noteheads. `<note>` elements **2,460 → 2,466**,
+`duration_narrowed` **339 → 333**, parts and measures identical, and the
+accounting **IDENTITY holds as an equality** (`+6 == +6 − 0`). **7 inferred, 6
+reach the file** — the seventh is a cross-staff duplicate `glyph_owner` had
+already disowned, which is two stages agreeing.
+
+⚠️⚠️ **THE FIRST RULE WAS TOO STRICT AND THE FUNNEL IS THE FINDING.**
+It required the narrowed note's next onset to be the very NEXT column and
+inferred **1** of 357. **A column is an instant on the SYSTEM**, so a staff
+playing a half note while its neighbours play eighths SKIPS columns — and
+adjacency admitted only the finest-subdivided staff in each bar, which is the
+staff least likely to have been narrowed. The claim never needed adjacency,
+only that the witness ENDS WHERE THIS NOTE ENDS. Generalised to `k -> m`:
+**1 → 7**, with the funnel 357 → 356 in a column → **165** with a next onset
+(191 run to the barline) → 40 with a witness → 35 unanimous → 7 independent.
+
+⚠️ **HAZARD (b) IS A COMPUTATION HERE, NOT AN ARGUMENT, AND IT IS NOT A
+NO-OP.** `independent_groups` partitions witnesses by whether their
+`Log.closure` provenance sets intersect, and writes the partition to
+**`Verdict.correlated`** — built for this and consumed by nothing until now.
+It **refuses 8 of 35** unanimous cases whose 2-3 witnesses collapse to ONE
+group. ⚠️ It is ONE-SIDED: disjoint closures prove the ROWS differ, not that
+the READINGS fail independently. ⚠️ `COLUMN_MIN_INDEPENDENT_WITNESSES = 2` is
+**unmeasured and its price is 28**.
+
+⚠️ **THE ARGMAX REFUSAL EARNS ITS KEEP: 2 of the 7 chose the reader's SECOND
+candidate**, so the sideways evidence overturned the support ordering twice —
+which an argmax would have got wrong silently.
+
+**SELF-CHECK, on an invariant the rule did NOT read.** `probe/self_check.py`
+proves independence before printing anything and **REFUSES (exit 2)**
+otherwise. Two conditions: the rule reads no `Q.METER`; and ⚠️
+**`OMR_METER_FROM_BARS` must be OFF**, because that flag derives the meter
+from the bar sums this rule moves, making `bar_fill` circular through a flag
+nobody would think to check. Result: bars that add up **449 → 451 of 1,183**,
+none newly overfull. ⚠️ **+2 of 1,183 is a REPORT and an alarm, never an
+objective** — bar fill is gamed by emitting FEWER symbols.
+
+⚠️⚠️ **IT FOUND THAT `Verdict.single_pass_revision` IS NEVER SERIALISED.** It
+is SET (`record.py:835`) and READ by the fixpoint guard (`:1026`) and is
+absent from `Verdict.to_json`, so **no saved record can be replayed through
+that guard** — ten verdicts on this record need it, and `reinfer --control`
+died on it. **NOT fixed**: adding a key to `to_json` changes every record in
+the tree, which is the "perturbs upstream by existing" hazard this stage is
+required not to cause. The replay restores it and prints the count.
+
+⚠️ **The derived flag check had the drift it exists to prevent, AGAIN.**
+`test_flag_default_direction.py` resolved a module constant on the LEFT (the
+flag NAME) and not on the RIGHT, so `OMR_INFER`'s `in _ON_WORDS` was invisible
+to it. Widened; the widening surfaced exactly ONE new flag (20 → 21), mine.
+
+⚠️ **What is NOT established: ACCURACY.** Six notes were added and **no human
+has looked at one of them** — on a cleanup count they are six things a human
+might have to take back out. n = 1 document, 1 publisher, 4 pages, on the
+*low-res bitonal* end of the corpus; **Breitkopf Brahms 1 is where to
+re-measure**. The engraved family is untouched by construction. The 191
+barline-bounded notes are out of reach BY DESIGN (their length is the meter,
+which this rule may not read without destroying its own self-check) and the
+125 that lose every witness are a READING shortfall upstream.
 
 ---
 
@@ -6332,6 +6437,7 @@ All in `backend/.env` (local) or `backend/.env.production` (prod):
 | `OMR_METER_SEGMENTS` | **`1` on (default since 2026-09-09, Sean's call)** → staged pipeline only: the exporter reads the meter in force at each BAR out of `Q.METER`'s `segments`, so a printed mid-system meter change can reach a file at all. Engraved 4 printed / 4 found / 1 → 0 false. ⚠️ On a SCAN its false segments now reach the file too (one page: `<time>` 41 → 138) — priced, and overridden rather than resolved. `0` restores the per-run meter. See the knobs table. |
 | `OMR_WHOLE_REST_INK` | **`1` on (default, and the behaviour that shipped 2026-09-15)** → staged pipeline only: refuse to write a pitched `<note>` where the record says the ink is a WHOLE REST. Notes 1618 → 1596, 22 removed / 0 added, on 25 of 25 hand-adjudicated crops. ⚠️ Flagged because it is the one staged repair that DELETES music, on n = 1 document with two of six cuts off a plateau. `0` restores the pre-2026-09-15 exporter exactly, leaving the verdict decided and on the record. See the knobs table. |
 | `OMR_METER_TEMPLATE_AT_BAR` | `0` off (default) → staged pipeline only: ask the TEMPLATE reader at candidate mid-staff bar heads, of every staff of the system, and admit a reading only where 3 staves agree on one meter at one bar. Measured on 1,612 empty windows over 2 publishers: 16 / 2 / **0** spurious columns at a 1 / 2 / 3-staff quorum. UNPRICED — a GATHER change needs two full re-gathers. See the knobs table. |
+| `OMR_INFER` | `0` off (default) → the FOURTH STAGE, INFER: after EVALUATE and before EXPORT, it collapses a NARROWED verdict to one of that reader's OWN candidates using evidence EVALUATE structurally cannot look at — the other staves of the same system. Every inference is LABELLED (`decider="infer:…"`), names what it supersedes, and leaves the narrowing in the record. ⚠️ Off means ABSENT, not quiet: `pipeline` omits the `inference` key entirely, so a flag-off record is byte-identical to a tree without the stage. 7 inferred / 6 reach the file on Litolff Beethoven 5 p1-4; n = 1 document and NO accuracy check against the print. See the *INFER, the fourth stage* section. |
 | `OMR_PARTIAL_DYNAMICS` | `off` (default) → a dynamic letter run that spells no known word is dropped whole; `complete` exports only what every surviving completion agrees on (`s` → `sf`); `other` adds `<other-dynamics>`. Measured over the 20-row gate: +15 / +30 edits, NOT ONE ROW BETTER. See the knobs table. |
 | `OMR_ROSTER_LABELS` | `0` off (default) → resolve margin labels against the work's catalog roster: recover a truncated name, disambiguate `Basso.`, veto a singer on a work with no singers. Measured; 1.4% of real margin labels. See the knobs table. |
 | `OMR_WORK_ID` | Name the catalogued work for a PDF the score library does not hold — the score LIBRARY's id (`tchaikovsky--symphony-6`), never the dossier's (`tchaikovsky-sym6-mvt2`). Consumed only by `OMR_ROSTER_LABELS`; nothing sets it by default. |

@@ -1,0 +1,42 @@
+{
+  "funnel": {
+    "1 narrowed durations reached": 357,
+    "2 its event is in a column": 356,
+    "3 STOP: its own next onset is not the next column": 335,
+    "3 its own next onset is the next column": 21,
+    "4 STOP: no witness goes k->k+1 with a decided length": 15,
+    "4 at least one witness votes": 6,
+    "5 STOP: the witnesses disagree": 2,
+    "5 the witnesses are unanimous": 4,
+    "6 STOP: fewer than 2 INDEPENDENT witnesses": 3,
+    "2 STOP: its event matched no column": 1,
+    "6 two or more independent witnesses": 1,
+    "7 exactly one candidate carries that length": 1
+  },
+  "detail": {
+    "   own next column = None": 191,
+    "   own next column = 7": 13,
+    "   own next column = 11": 15,
+    "   own next column = 9": 18,
+    "   own next column = 3": 9,
+    "   own next column = 8": 11,
+    "   own next column = 2": 4,
+    "   own next column = 15": 1,
+    "   own next column = 19": 1,
+    "   own next column = 12": 9,
+    "   own next column = 23": 1,
+    "   own next column = 5": 13,
+    "   staves at this column = 5": 2,
+    "   own next column = 13": 9,
+    "   own next column = 4": 7,
+    "   own next column = 6": 12,
+    "   own next column = 14": 3,
+    "   witness verdicts=1 independent groups=1": 3,
+    "   staves at this column = 1": 4,
+    "   own next column = 10": 18,
+    "   staves at this column = 3": 6,
+    "   staves at this column = 0": 3
+  },
+  "would_infer": 1,
+  "rule_proposes": 1
+}

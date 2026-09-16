@@ -1,0 +1,43 @@
+{
+  "funnel": {
+    "1 narrowed durations reached": 357,
+    "2 its event is in a column": 356,
+    "3 STOP: no next onset in this bar (runs to the barline)": 191,
+    "3 it has a next onset in this bar": 165,
+    "4 STOP: no witness spans k->m with a decided length": 125,
+    "4 at least one witness votes": 40,
+    "5 the witnesses are unanimous": 35,
+    "6 two or more independent witnesses": 7,
+    "7 exactly one candidate carries that length": 7,
+    "6 STOP: fewer than 2 INDEPENDENT witnesses": 28,
+    "5 STOP: the witnesses disagree": 5,
+    "2 STOP: its event matched no column": 1
+  },
+  "detail": {
+    "   spans 4 column(s)": 29,
+    "   staves at this column = 0": 34,
+    "   staves at this column = 1": 28,
+    "   spans 2 column(s)": 33,
+    "   spans 6 column(s)": 18,
+    "   staves at this column = 2": 14,
+    "   spans 9 column(s)": 2,
+    "   spans 5 column(s)": 13,
+    "   spans 22 column(s)": 1,
+    "   staves at this column = 3": 32,
+    "   spans 8 column(s)": 3,
+    "   staves at this column = 4": 4,
+    "   spans 1 column(s)": 21,
+    "   staves at this column = 5": 3,
+    "   spans 3 column(s)": 43,
+    "   witness verdicts=1 independent groups=1": 20,
+    "   witness verdicts=2 independent groups=1": 4,
+    "   spans 10 column(s)": 1,
+    "   staves at this column = 8": 3,
+    "   staves at this column = 7": 2,
+    "   witness verdicts=3 independent groups=1": 4,
+    "   staves at this column = 6": 5,
+    "   spans 11 column(s)": 1
+  },
+  "would_infer": 7,
+  "rule_proposes": 7
+}
