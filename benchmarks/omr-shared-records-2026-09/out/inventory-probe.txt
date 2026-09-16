@@ -1,0 +1,142 @@
+==================================================================
+PROVENANCE: {"commit": "e282ae0c02a346db6f248d2c0c7ead69de8a84c6", "dirty": false}
+==================================================================
+
+── 1. LABEL REACH per system (the number that says whether this
+      record is useful at all) ─────────────────────────────────
+  page 0 system 0: 14 staves, 14 labels  ['2 Flöten', '2 Oboen', '2 Klarinetten in B', '2 Fagotte', 'Kontrafagott', 'in C 1 2', 'Horner 4 | : |', '2 Trompeten in C', 'Pauken in C u. G', '1. Violine', '2. Violine', 'Bratsche', 'Violoncell', 'Kontrabaß']
+  page 1 system 0: 14 staves, 14 labels  ['Fl.', 'Ob.', 'Klar. (B)', 'Fag.', 'K-Fag.', '(C)', '(Es)', 'Trpt.', 'Pk. (C)', '1.Viol.', '2.Viol.', 'Br.', 'Vcl.', 'K-B.']
+  page 1 system 1: 13 staves, 13 labels  ['Fl.', 'Ob.', 'Klar. (B)', 'Fag.', 'K-Fag.', 'Hr.', 'Hr. (Es)', 'Pk.', '1.Viol.', '2.Viol.', 'Br.', 'Vcl.', 'K-B.']
+  page 2 system 0: 14 staves, 14 labels  ['Fl.', 'Ob.', 'Klar. (B)', 'Fag.', 'K-Fag.', '(C) Hr.', '(Es)', 'Trpt. (C)', 'Pk.', '1.Viol.', '2.Viol.', 'Br.', 'Vcl.', 'K-B.']
+  page 2 system 1: 14 staves, 14 labels  ['F1.', 'Ob.', 'Klar. (B)', 'Fag.', 'K-Fag.', '(C) Hr.', 'Hr. (Es)', 'Trpt. (C)', 'Pk.', '1.Viol.', '2.Viol.', 'Br.', 'Vcl.', 'K-B.']
+  page 3 system 0: 14 staves, 14 labels  ['F1.', 'Ob.', 'Klar. (B)', 'Fag.', 'K-Fag.', '| | Hr.', '(Es)', 'Trpt. (C)', 'Pk.', '1.Viol.', '2.Viol.', 'Br.', 'Vcl.', 'K-B.']
+  page 3 system 1: 14 staves, 14 labels  ['Fl.', 'Ob.', 'Klar. (B)', 'Fag.', 'K-Fag.', '(C) Hr.', '(Es)', 'Trpt. (C)', 'Pk.', '1.Viol.', '2.Viol.', 'Br.', 'Vcl.', 'K-B.']
+  TOTAL: 97 labels over 97 staves
+
+── 2. STAFF COUNTS vs the print ───────────────────────────────
+  read   : [14, 27, 28, 28] (pages [0, 1, 2, 3])
+  printed: [14, 27, 28, 28]
+  ✅ AGREES with the hand-read print on every page
+
+── 3. ADJUDICATION ────────────────────────────────────────────
+  arc_kind                 decided  2207
+  arc_owner                decided  2207
+  articulation_owner       decided   156
+  clef                     decided    97
+  direction                decided   818
+  duration                 decided  3819
+  dynamic                  decided   800
+  event                    decided   800
+  glyph_owner              decided  3012
+  group_symbol             decided     7
+  instrument               decided    91
+  key_signature            decided    76
+  measure_partition        decided    97
+  meter                    decided     7
+  notehead_is_a_whole_rest decided  3337
+  onset_column             decided     7
+  ornament_owner           decided     4
+  part_partition           decided     1
+  slot_index               decided    97
+  staff_group              decided    97
+  staff_ordinal            decided    97
+  stem_direction           decided  1791
+  system_membership        decided     7
+  system_staff_count       decided     7
+  voices                   decided   800
+  wedge_anchor             decided    46
+  -- abstentions --
+  articulation_owner       {'no_notehead': 40}
+  duration                 {'beams_ambiguous': 542, 'unreadable_rest': 4}
+  dynamic                  {'unspellable': 18}
+  glyph_owner              {'tied': 3}
+  instrument               {'not_in_lexicon': 6}
+  key_signature            {'no_evidence': 20, 'run_fits_no_slot_table': 1}
+  ornament_owner           {'no_notehead': 3}
+  stem_direction           {'no_stem': 1529, 'stems_disagree': 17}
+  voices                   {'nothing_to_split': 18}
+  wedge_anchor             {'no_page_frame': 1}
+
+── 4. QUANTITIES OBSERVED (what a later job can read) ─────────
+  arc_box                        2207
+  articulation_mark               196
+  aug_dot                         656
+  barline_column                   97
+  beam_stroke                    2084
+  bracket_block                    97
+  cell_box                        818
+  cell_staff_space                817
+  clef_glyph                      143
+  clef_located                     19
+  clef_position                   143
+  direction_word                   10
+  dynamic_letter                  531
+  flag                            371
+  gap_bridging                      4
+  glyph_band_distance            6030
+  glyph_box                     12932
+  glyph_conf                    12932
+  glyph_ladder                   1021
+  keysig_clef_fit                 130
+  keysig_marker                   146
+  keysig_run_position              41
+  keysig_template_fit             108
+  margin_label                     97
+  meter_glyph                     197
+  meter_template                   33
+  notehead_class                 3337
+  notehead_staff_position        3337
+  ornament_mark                     7
+  rest                           1028
+  staff_extent                     97
+  staff_lines                      97
+  staff_ordinal                    97
+  staff_skew                       97
+  staff_spacing                    97
+  stem                           2305
+  system_staff_count                7
+  wedge_box                        47
+
+── 5. VERDICT quantities ──────────────────────────────────────
+  accidental                      671
+  arc_kind                       2207
+  arc_owner                      2207
+  articulation_owner              196
+  clef                             97
+  direction                       818
+  duration                       4503
+  dynamic                         818
+  event                           800
+  glyph_owner                    3015
+  group_symbol                      7
+  instrument                       97
+  key_signature                    97
+  measure_partition                97
+  meter                             7
+  notehead_is_a_whole_rest       3337
+  onset_column                      7
+  ornament_owner                    7
+  part_name                        91
+  part_partition                    1
+  pitch                          4828
+  slot_index                       97
+  staff_group                      97
+  staff_ordinal                    97
+  stem_direction                 3337
+  system_membership                 7
+  system_staff_count                7
+  voices                          818
+  wedge_anchor                     47
+
+── 6. THE METER — this document is the KNOWN-BAD arm ──────────
+  system/0/0             {'numerator': 6, 'denominator': 8, 'raw': '6/8', 'segments': [{'numerator': 6, 'denominator': 8, 'raw': '6/8', 'from_cell': 0}], 'cautionary': {'from_cell': 7, 'numerator': 9, 'denominator': 8, 'raw': '9/8', 'support': 26.5, 'staves_reading_it': [0, 1, 2, 3, 4, 6, 8, 10, 12], 'bars_fit': 0, 'bars_contradict': 1, 'loose_digits': 1, 'cautionary': True}}  reason=voted support=None
+  system/1/0             {'numerator': 9, 'denominator': 4, 'raw': '9/4', 'segments': [{'numerator': 9, 'denominator': 4, 'raw': '9/4', 'from_cell': 0}, {'from_cell': 2, 'numerator': 4, 'denominator': 4, 'raw': '4/4', 'support': 4.0, 'staves_reading_it': [7], 'bars_fit': 0, 'bars_contradict': 0}], 'cautionary': {'from_cell': 6, 'numerator': 4, 'denominator': 4, 'raw': '4/4', 'support': 3.5, 'staves_reading_it': [7], 'bars_fit': 0, 'bars_contradict': 0, 'loose_digits': 1, 'cautionary': True}}  reason=voted support=None
+  system/1/1             {'numerator': 4, 'denominator': 4, 'raw': '4/4', 'segments': [{'from_cell': 4, 'numerator': 4, 'denominator': 4, 'raw': '4/4', 'support': 3.0, 'staves_reading_it': [7], 'bars_fit': 0, 'bars_contradict': 1}]}  reason=change_only support=None
+  system/2/0             {'numerator': 4, 'denominator': 4, 'raw': '4/4', 'segments': [{'from_cell': 4, 'numerator': 4, 'denominator': 4, 'raw': '4/4', 'support': 6.0, 'staves_reading_it': [6, 8], 'bars_fit': 0, 'bars_contradict': 0}]}  reason=change_only support=None
+  system/2/1             {'numerator': 4, 'denominator': 4, 'raw': '4/4', 'segments': [{'from_cell': 1, 'numerator': 4, 'denominator': 4, 'raw': '4/4', 'support': 4.5, 'staves_reading_it': [7, 8], 'bars_fit': 0, 'bars_contradict': 2}]}  reason=change_only support=None
+  system/3/0             {'numerator': 4, 'denominator': 4, 'raw': '4/4', 'segments': [{'from_cell': 6, 'numerator': 4, 'denominator': 4, 'raw': '4/4', 'support': 11.5, 'staves_reading_it': [2, 4, 5, 7], 'bars_fit': 0, 'bars_contradict': 1}]}  reason=change_only support=None
+  system/3/1             {'numerator': 4, 'denominator': 4, 'raw': '4/4', 'segments': [{'from_cell': 3, 'numerator': 4, 'denominator': 4, 'raw': '4/4', 'support': 7.0, 'staves_reading_it': [5, 6, 7], 'bars_fit': 0, 'bars_contradict': 2}]}  reason=change_only support=None
+  meter_glyph observations: 197
+
+── 7. STUBS ───────────────────────────────────────────────────
+  {"decisions": [], "consequences": ["join_parts(part_partition->part_name)"]}
