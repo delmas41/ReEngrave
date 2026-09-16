@@ -76,9 +76,12 @@ class TestTheMarginLabelReaderIsReachable(unittest.TestCase):
     def test_the_ocr_rungs_are_forwarded_and_default_off(self):
         """⚠️ OFF by default and the default is the claim: the free text-layer
         rung costs nothing and reads nothing on a 19th-century scan (measured
-        0 of 75), while the OCR rungs read 50 of 75 and cost wall clock
-        CLAUDE.md measures at ~75% of a whole-work run. Defaulting them on
-        would treble a gather without anyone deciding to."""
+        0 of 75), while the OCR rungs read 50 of 75 and cost wall clock.
+        Until 2026-09-16 this docstring priced that at ~75% of a whole-work
+        run -- a figure never measured anywhere; the one same-pages pair is
+        +18%, n=1 (docs/scope-surya-staged-optin-2026-09-16.md). This test
+        pins the DEFAULT, not the price: flipping it is a decision somebody
+        takes deliberately, with that document's experiment in hand."""
         self.assertIs(self._run()["surya_fallback"], False)
         self.assertIs(self._run()["ocr_fallback"], False)
         on = self._run(surya_fallback=True, ocr_fallback=True)

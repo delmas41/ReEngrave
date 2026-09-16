@@ -1,0 +1,462 @@
+{
+  "provenance": {
+    "commit": "f459b61bca455b0ba6e10e63f894600992ee44e5",
+    "dirty": true,
+    "dirty_files": [
+      "benchmarks/omr-surya-staged-cost-2026-09/out/"
+    ]
+  },
+  "args": {
+    "pdf": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/reengraved-meter-range-9814dc/library/editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf",
+    "pages": "1-4",
+    "repeats": 3,
+    "dpi": 600,
+    "json_out": "out/rung-cost.json",
+    "allow_resident": false
+  },
+  "summary": {
+    "n_page_runs": 12,
+    "attributable_median_s": 17.83,
+    "attributable_max_s": 18.75,
+    "surya_spawn_median_s": 16.73,
+    "surya_second_median_s": 16.58,
+    "tesseract_median_s": 1.1,
+    "prepare_median_s": 0.75,
+    "census_surya_read_nothing": [],
+    "allow_resident": false
+  },
+  "rows": [
+    {
+      "page": 1,
+      "repeat": 0,
+      "n_staves": 12,
+      "n_systems": 1,
+      "t_prepare_s": 0.571,
+      "t_text_s": 0.078,
+      "t_surya_spawn_s": 17.889,
+      "t_surya_second_s": 17.758,
+      "t_tesseract_s": 0.863,
+      "t_attributable_s": 18.752,
+      "resident_before": null,
+      "resident_after": null,
+      "counts": {
+        "text_layer": {
+          "raw": 0,
+          "usable": 0,
+          "consumable": 0
+        },
+        "surya": {
+          "raw": 12,
+          "usable": 12,
+          "consumable": 11
+        },
+        "surya_second": {
+          "raw": 12,
+          "usable": 12,
+          "consumable": 11
+        },
+        "tesseract": {
+          "raw": 12,
+          "usable": 12,
+          "consumable": 12
+        }
+      }
+    },
+    {
+      "page": 1,
+      "repeat": 1,
+      "n_staves": 12,
+      "n_systems": 1,
+      "t_prepare_s": 0.646,
+      "t_text_s": 0.078,
+      "t_surya_spawn_s": 17.382,
+      "t_surya_second_s": 17.227,
+      "t_tesseract_s": 0.837,
+      "t_attributable_s": 18.219,
+      "resident_before": null,
+      "resident_after": null,
+      "counts": {
+        "text_layer": {
+          "raw": 0,
+          "usable": 0,
+          "consumable": 0
+        },
+        "surya": {
+          "raw": 12,
+          "usable": 12,
+          "consumable": 11
+        },
+        "surya_second": {
+          "raw": 12,
+          "usable": 12,
+          "consumable": 11
+        },
+        "tesseract": {
+          "raw": 12,
+          "usable": 12,
+          "consumable": 12
+        }
+      }
+    },
+    {
+      "page": 1,
+      "repeat": 2,
+      "n_staves": 12,
+      "n_systems": 1,
+      "t_prepare_s": 0.664,
+      "t_text_s": 0.078,
+      "t_surya_spawn_s": 17.444,
+      "t_surya_second_s": 16.554,
+      "t_tesseract_s": 0.859,
+      "t_attributable_s": 18.303,
+      "resident_before": null,
+      "resident_after": null,
+      "counts": {
+        "text_layer": {
+          "raw": 0,
+          "usable": 0,
+          "consumable": 0
+        },
+        "surya": {
+          "raw": 12,
+          "usable": 12,
+          "consumable": 11
+        },
+        "surya_second": {
+          "raw": 12,
+          "usable": 12,
+          "consumable": 11
+        },
+        "tesseract": {
+          "raw": 12,
+          "usable": 12,
+          "consumable": 12
+        }
+      }
+    },
+    {
+      "page": 2,
+      "repeat": 0,
+      "n_staves": 22,
+      "n_systems": 2,
+      "t_prepare_s": 0.789,
+      "t_text_s": 0.105,
+      "t_surya_spawn_s": 16.313,
+      "t_surya_second_s": 16.598,
+      "t_tesseract_s": 1.495,
+      "t_attributable_s": 17.808,
+      "resident_before": null,
+      "resident_after": null,
+      "counts": {
+        "text_layer": {
+          "raw": 0,
+          "usable": 0,
+          "consumable": 0
+        },
+        "surya": {
+          "raw": 14,
+          "usable": 14,
+          "consumable": 14
+        },
+        "surya_second": {
+          "raw": 14,
+          "usable": 14,
+          "consumable": 14
+        },
+        "tesseract": {
+          "raw": 14,
+          "usable": 12,
+          "consumable": 10
+        }
+      }
+    },
+    {
+      "page": 2,
+      "repeat": 1,
+      "n_staves": 22,
+      "n_systems": 2,
+      "t_prepare_s": 0.774,
+      "t_text_s": 0.103,
+      "t_surya_spawn_s": 17.125,
+      "t_surya_second_s": 16.468,
+      "t_tesseract_s": 1.476,
+      "t_attributable_s": 18.601,
+      "resident_before": null,
+      "resident_after": null,
+      "counts": {
+        "text_layer": {
+          "raw": 0,
+          "usable": 0,
+          "consumable": 0
+        },
+        "surya": {
+          "raw": 14,
+          "usable": 14,
+          "consumable": 14
+        },
+        "surya_second": {
+          "raw": 14,
+          "usable": 14,
+          "consumable": 14
+        },
+        "tesseract": {
+          "raw": 14,
+          "usable": 12,
+          "consumable": 10
+        }
+      }
+    },
+    {
+      "page": 2,
+      "repeat": 2,
+      "n_staves": 22,
+      "n_systems": 2,
+      "t_prepare_s": 0.755,
+      "t_text_s": 0.103,
+      "t_surya_spawn_s": 16.827,
+      "t_surya_second_s": 16.844,
+      "t_tesseract_s": 1.476,
+      "t_attributable_s": 18.303,
+      "resident_before": null,
+      "resident_after": null,
+      "counts": {
+        "text_layer": {
+          "raw": 0,
+          "usable": 0,
+          "consumable": 0
+        },
+        "surya": {
+          "raw": 14,
+          "usable": 14,
+          "consumable": 14
+        },
+        "surya_second": {
+          "raw": 14,
+          "usable": 14,
+          "consumable": 14
+        },
+        "tesseract": {
+          "raw": 14,
+          "usable": 12,
+          "consumable": 10
+        }
+      }
+    },
+    {
+      "page": 3,
+      "repeat": 0,
+      "n_staves": 19,
+      "n_systems": 2,
+      "t_prepare_s": 0.736,
+      "t_text_s": 0.092,
+      "t_surya_spawn_s": 15.855,
+      "t_surya_second_s": 16.028,
+      "t_tesseract_s": 1.145,
+      "t_attributable_s": 17.0,
+      "resident_before": null,
+      "resident_after": null,
+      "counts": {
+        "text_layer": {
+          "raw": 0,
+          "usable": 0,
+          "consumable": 0
+        },
+        "surya": {
+          "raw": 11,
+          "usable": 11,
+          "consumable": 11
+        },
+        "surya_second": {
+          "raw": 11,
+          "usable": 11,
+          "consumable": 11
+        },
+        "tesseract": {
+          "raw": 10,
+          "usable": 8,
+          "consumable": 8
+        }
+      }
+    },
+    {
+      "page": 3,
+      "repeat": 1,
+      "n_staves": 19,
+      "n_systems": 2,
+      "t_prepare_s": 0.747,
+      "t_text_s": 0.093,
+      "t_surya_spawn_s": 15.973,
+      "t_surya_second_s": 15.993,
+      "t_tesseract_s": 1.139,
+      "t_attributable_s": 17.112,
+      "resident_before": null,
+      "resident_after": null,
+      "counts": {
+        "text_layer": {
+          "raw": 0,
+          "usable": 0,
+          "consumable": 0
+        },
+        "surya": {
+          "raw": 11,
+          "usable": 11,
+          "consumable": 11
+        },
+        "surya_second": {
+          "raw": 11,
+          "usable": 11,
+          "consumable": 11
+        },
+        "tesseract": {
+          "raw": 10,
+          "usable": 8,
+          "consumable": 8
+        }
+      }
+    },
+    {
+      "page": 3,
+      "repeat": 2,
+      "n_staves": 19,
+      "n_systems": 2,
+      "t_prepare_s": 0.734,
+      "t_text_s": 0.093,
+      "t_surya_spawn_s": 16.103,
+      "t_surya_second_s": 16.15,
+      "t_tesseract_s": 1.152,
+      "t_attributable_s": 17.255,
+      "resident_before": null,
+      "resident_after": null,
+      "counts": {
+        "text_layer": {
+          "raw": 0,
+          "usable": 0,
+          "consumable": 0
+        },
+        "surya": {
+          "raw": 11,
+          "usable": 11,
+          "consumable": 11
+        },
+        "surya_second": {
+          "raw": 11,
+          "usable": 11,
+          "consumable": 11
+        },
+        "tesseract": {
+          "raw": 10,
+          "usable": 8,
+          "consumable": 8
+        }
+      }
+    },
+    {
+      "page": 4,
+      "repeat": 0,
+      "n_staves": 22,
+      "n_systems": 2,
+      "t_prepare_s": 0.753,
+      "t_text_s": 0.106,
+      "t_surya_spawn_s": 16.662,
+      "t_surya_second_s": 16.519,
+      "t_tesseract_s": 1.064,
+      "t_attributable_s": 17.726,
+      "resident_before": null,
+      "resident_after": null,
+      "counts": {
+        "text_layer": {
+          "raw": 0,
+          "usable": 0,
+          "consumable": 0
+        },
+        "surya": {
+          "raw": 13,
+          "usable": 13,
+          "consumable": 13
+        },
+        "surya_second": {
+          "raw": 13,
+          "usable": 13,
+          "consumable": 13
+        },
+        "tesseract": {
+          "raw": 13,
+          "usable": 12,
+          "consumable": 12
+        }
+      }
+    },
+    {
+      "page": 4,
+      "repeat": 1,
+      "n_staves": 22,
+      "n_systems": 2,
+      "t_prepare_s": 0.767,
+      "t_text_s": 0.106,
+      "t_surya_spawn_s": 16.664,
+      "t_surya_second_s": 16.721,
+      "t_tesseract_s": 1.056,
+      "t_attributable_s": 17.72,
+      "resident_before": null,
+      "resident_after": null,
+      "counts": {
+        "text_layer": {
+          "raw": 0,
+          "usable": 0,
+          "consumable": 0
+        },
+        "surya": {
+          "raw": 13,
+          "usable": 13,
+          "consumable": 13
+        },
+        "surya_second": {
+          "raw": 13,
+          "usable": 13,
+          "consumable": 13
+        },
+        "tesseract": {
+          "raw": 13,
+          "usable": 12,
+          "consumable": 12
+        }
+      }
+    },
+    {
+      "page": 4,
+      "repeat": 2,
+      "n_staves": 22,
+      "n_systems": 2,
+      "t_prepare_s": 0.754,
+      "t_text_s": 0.106,
+      "t_surya_spawn_s": 16.795,
+      "t_surya_second_s": 16.764,
+      "t_tesseract_s": 1.058,
+      "t_attributable_s": 17.853,
+      "resident_before": null,
+      "resident_after": null,
+      "counts": {
+        "text_layer": {
+          "raw": 0,
+          "usable": 0,
+          "consumable": 0
+        },
+        "surya": {
+          "raw": 13,
+          "usable": 13,
+          "consumable": 13
+        },
+        "surya_second": {
+          "raw": 13,
+          "usable": 13,
+          "consumable": 13
+        },
+        "tesseract": {
+          "raw": 13,
+          "usable": 12,
+          "consumable": 12
+        }
+      }
+    }
+  ]
+}

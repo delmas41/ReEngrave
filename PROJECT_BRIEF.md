@@ -747,3 +747,54 @@ Full reading: `benchmarks/omr-meter-fixture-pool-2026-09/FINDINGS.md`.
 
 Full setup and environment variables: CLAUDE.md → "Running locally" and
 "Environment variables".
+
+## Surya, measured: it is switched on now (2026-09-16)
+
+The question above was answered by measuring it, and both OCR rungs are now
+**on by default**. Reading the instrument names off a scan's margin costs
+about a minute and a half per page of a run that takes half an hour, and on
+the test document it produced **fifty names over seventy-five staves, every
+one of them correct** when checked against what a human read off the printed
+page. The free alternative — the text hidden inside the PDF — read nothing at
+all on that 1870 edition, so this is the difference between knowing which
+instrument each staff belongs to and guessing from its position.
+
+The surprise was elsewhere. A *second* use of the same OCR, reading tempo and
+expression words printed inside the music, has been switched on since early
+September and had never been timed on a scan. It costs nearly three times as
+much as the switch under discussion and, on this document, recovered six
+words. Turning it off while leaving the instrument-name reader on makes the
+whole run faster than it is today. That is now the thing to look at, and its
+value on cleanly engraved scores is not in doubt — only on scans.
+
+## The Surya opt-in, and a number that was never measured (2026-09-16)
+
+Sean asked whether the staged pipeline should opt in to the free local OCR
+(Surya) for reading instrument names off a scan's margin, what it adds per
+page, and whether an in-house OCR model would be worth training. The answer
+was scoped from committed artefacts without running anything.
+
+Three things turned out to be different from how they were remembered. The
+"time it adds" figure the opt-out cited — three quarters of a run — **does not
+exist in the file that was cited for it**; the one real comparison on the same
+pages says about 18%, once, on different code. The OCR is **already running on
+every staged page** for a different job (reading tempo and expression words),
+so the switch in question saves one of two model loads, not the load. And the
+staged record cannot currently tell a machine with no OCR installed from a
+page that prints no instrument names — which is the exact shape of failure
+this project has been burned by most, and the fix that has to land before any
+default moves.
+
+⚠️ **Training our own OCR is the wrong spend.** The free reader ties the paid
+one on every label the ground truth can check; what it loses is crop clipping,
+one-letter lexicon slips, and the ability to read a smudged name from the
+names above it — none of which a retrained recognizer fixes. The project has
+already run eleven small-corpus fine-tunes on this pipeline and every one
+deleted whole symbol classes. The cheap, well-aimed work is elsewhere:
+render the dynamics glyphs from the music font already in the repo, widen the
+margin crop, and wire the per-work instrument roster into the staged path.
+
+Decision: turn both free OCR readers on together, after the record fix and a
+short pre-registered timing run — Sean's call at the flip. Full reading and
+the start prompt for the next local session:
+[docs/scope-surya-staged-optin-2026-09-16.md](docs/scope-surya-staged-optin-2026-09-16.md).
