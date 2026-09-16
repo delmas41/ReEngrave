@@ -1,3 +1,25 @@
+⚠️⚠️ SUPERSEDED — THIS ARM RAN ON THE PRE-FIX GRAFT CLASSIFIER.
+Its `GRAFTS: 10` / `condensation (apart): 6` are WRONG. The corrected run is
+`part-join-arm.txt` in this directory: `GRAFTS: 12` (split {p3/s1: 7, p4/s0: 5})
+and `condensation (apart): 4`.
+
+The classifier asked `startswith` / `" e " in printed` -- three string accidents
+-- so two real grafts were filed as harmless CONDENSATION and are absent from the
+enumeration below:
+    p3/s1 staff 7   prints Violoncello e Basso   -> part Violino I
+    p4/s0 staff 7   prints Violino II            -> part Violino I
+10 + 2 = 12 and 6 - 2 = 4, which is how this file is known to be the stale one.
+
+⚠️ 12 is corroborated by TWO PRIOR INDEPENDENT MEASUREMENTS -- the hand-read
+print probe (`probe_rule_vs_print.py`) and the phase-2 measure-math partition
+(`benchmarks/omr-part-join-phase2-2026-09/`) -- so it is not merely re-asserted
+here. This file is KEPT rather than deleted: a superseded measurement with its
+correction beside it is worth more than a gap.
+
+The AFTER arm below (`GRAFTS: 0`) is unaffected -- it holds zero under either
+classifier.
+========================================================================
+
 provenance: {'commit': 'ce7b8ba7f317736733cd163e356c30d2117cf580', 'dirty': False}
 ========================================================================
 REACH
