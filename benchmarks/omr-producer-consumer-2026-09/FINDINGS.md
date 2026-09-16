@@ -423,7 +423,7 @@ that.** Ranked, not built.
   descending through `environ.get`, `gather_coverage`'s anti-drift guard
   comparing `events` to `Q.EVENT`).
 - **`--check` is green on this tree**: 41 problems, **0 unaccounted, 0 stale**.
-- **Mutation battery**: `mutate.py`, **22 arms, all RED, 0 survived, positive control GREEN**.
+- **Mutation battery**: `mutate.py`, **18 arms, all RED, 0 survived, positive control GREEN** (22 before the four producer arms left with their question).
   ⚠⚠ **Its first run reported ONE genuine survivor and it was the better
   camouflage fault**: `test_an_unresolvable_subject_is_NAMED_never_defaulted`
   is NAMED for the hazard and reached only the `Call` branch — defaulting an

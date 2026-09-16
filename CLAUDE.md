@@ -3057,7 +3057,7 @@ python3 -m tools.omr.staged.wiring --check    # non-zero on anything unaccounted
 python3 -m tools.omr.staged.wiring --run rec.json
 ```
 
-⚠⚠ **IT IS THE SIBLING OF `tools/omr/no_producer.py` AND WAS VERY NEARLY A
+⚠️⚠️ **IT IS THE SIBLING OF `tools/omr/no_producer.py` AND WAS VERY NEARLY A
 DUPLICATE OF IT.** That tool — landed on main the same day — asks *a parameter
 threaded with no supplier*; this one asks the other three. This session built
 a fourth, producer-shaped question before merging main, and deleted it:

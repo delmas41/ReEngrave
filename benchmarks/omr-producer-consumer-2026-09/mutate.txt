@@ -1,10 +1,6 @@
 ── baseline ──
    green
 
-  RED     a forward counts as a supply
-  RED     positional arguments are ignored
-  RED     the fixpoint runs one pass only
-  RED     a splat counts as a supply
   RED     subject=/scope= reads are judged as EXACT
   RED     an unresolvable Kind defaults to a real one
   RED     the gather walk skips its interprocedural round
@@ -25,4 +21,4 @@
   RED     --run reports zero instead of refusing
   GREEN   POSITIVE CONTROL: a no-op edit must stay GREEN
 
-── 22 red, 0 survived, 0 errors
+── 18 red, 0 survived, 0 errors
