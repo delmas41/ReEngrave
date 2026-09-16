@@ -46,11 +46,11 @@
   ⚠️ Q.WEDGE_BOX.y_center_page                    gather_wedge_boxes:1199
 
 4. ROUNDTRIP — a field declared and dropped by its own `to_json`
-  ⚠️⚠️ Verdict.single_pass_revision  READ (3 mentions) — a saved record cannot carry it
+  ⚠️⚠️ Verdict.single_pass_revision  READ (4 mentions) — a saved record cannot carry it
 
 ── POSITIVE CONTROLS (a zero means the question did not run) ────────
    producer_params_examined             56
-   producer_call_sites_seen             10324
+   producer_call_sites_seen             10343
    producer_with_a_real_supplier        53
    frame_reads_that_line_up             30
    frame_reads_with_their_own_reach     46

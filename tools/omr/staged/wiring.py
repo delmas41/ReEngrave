@@ -20,10 +20,12 @@ The 2026-09-11 handoff, after the second missing producer in two days, wrote
 the conclusion this module implements: *"worth a derived check rather than a
 third discovery."*
 
-## The three questions this asks
+## The four questions this asks
 
 Each has a live instance in the tree today, and the first two are asked by
-nothing else here.
+nothing else here. ⚠️ **The COUNT is the `controls()` table's, not this
+heading's** — a hand-counted figure in prose is exactly what rots in this
+repo, and this heading said THREE for one commit after the fourth landed.
 
 **1. PRODUCER — a parameter threaded with no supplier.** A keyword argument
 passed down a call chain that every caller merely FORWARDS and nobody ever
@@ -47,6 +49,14 @@ of the same fault, and the one `Q.METER_GLYPH`'s `letter` flag lived in for
 months: `log.observe(..., letter=True)` writes a field on the row, and a
 `grep` for it finds the write and nothing else. A quantity-level check cannot
 see it, because the QUANTITY is read — it is one field of it that is not.
+
+**4. ROUNDTRIP — a field dropped by its own `to_json`.** A field a class
+declares, a consumer READS, and the class's own projection does not write —
+so it cannot survive a saved record and the consumer silently gets the
+default on every replay. `Verdict.single_pass_revision` is exactly that, and
+it is the fixpoint guard's one sanctioned exemption. This is the `works.json`
+`lines` fault with producer and projection in one place, where the comparison
+is exact.
 
 ## ⚠️ DERIVED, NEVER A HAND LIST — and it must be able to FAIL
 
