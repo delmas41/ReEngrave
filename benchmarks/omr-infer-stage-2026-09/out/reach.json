@@ -1,0 +1,38 @@
+{
+  "record": "benchmarks/omr-cleanup-count-2026-09/out/record-p1-p4.json",
+  "duration": {
+    "decided": 2636,
+    "narrowed": 357,
+    "abstained": 0,
+    "total": 2993,
+    "narrowed_on_a_notehead": 357,
+    "n_candidates": {
+      "2": 304,
+      "3": 53
+    }
+  },
+  "pitch": {
+    "noteheads": 2347,
+    "with_a_decided_pitch": 2132,
+    "no_pitch": 215,
+    "clef_state_of_those_staves": {
+      "abstained": 108,
+      "narrowed": 107
+    }
+  },
+  "sideways_funnel": {
+    "narrowed": 357,
+    "system_has_onset_columns": 357,
+    "other_staves_decided_in_this_bar": 357
+  },
+  "other_staves_per_narrowed_bar": {
+    "6": 338,
+    "4": 3,
+    "5": 16
+  },
+  "independence": {
+    "duration_verdict_pairs_sampled": 3101,
+    "pairs_sharing_a_provenance_row": 874,
+    "note": "a pair sharing a row is ONE witness, not two"
+  }
+}

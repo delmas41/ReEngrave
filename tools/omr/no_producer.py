@@ -584,15 +584,15 @@ def scan(roots: Sequence[Path], *, tests_produce: bool = False,
 # `KNOWN_GAPS` rule, so the list describes the tree and never its history.
 
 RECORDED: Dict[str, str] = {
-    "run_staged.roster": (
-        "OPEN FINDING, NOT EXCUSED — recorded 2026-09-15 so --check gates NEW "
-        "instances while this one is still live. `staged/__main__.py` has no "
-        "roster argument at all, so nothing can supply one and "
-        "gather_external files OUT_OF_SCOPE on every staged run. Wiring it is "
-        "a separate job (Sean's ruling: the roster is ADJUDICATE, not INFER). "
-        "REMOVE THIS ENTRY the day a producer lands — the stale-entry test "
-        "fails if the chain stops firing."
-    ),
+    # ⚠️ `run_staged.roster` LEFT THIS LIST 2026-09-15, THE SAME DAY IT
+    # ARRIVED, and its own entry said to: "REMOVE THIS ENTRY the day a
+    # producer lands". `staged/__main__.py` gained `--work-id` / `--no-roster`
+    # and `adjudicate_instrument` now READS the row (at
+    # `Scope.SELF_AND_ANCESTORS` — it is filed on the DOCUMENT and the
+    # decision runs at STAFF, which is a second fault this chain could not
+    # see). Measured: the label `Basso.` on Litolff Beethoven 5 goes
+    # `Bass voice` -> `Contrabass`. See `benchmarks/omr-producer-consumer-
+    # 2026-09/FINDINGS.md`. The stale-entry test is what made it leave.
     "run_staged.dossier": (
         "OPEN FINDING, NOT EXCUSED — recorded 2026-09-15, same chain, same "
         "shape, found by this check rather than by accident. `--dossier` "
