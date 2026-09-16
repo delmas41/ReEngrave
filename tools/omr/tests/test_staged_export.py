@@ -2653,3 +2653,176 @@ class TestTheLegacyArcPathIsUntouched(unittest.TestCase):
         from tools.omr import export as LX
         src = inspect.getsource(LX._pair_slurs_in_run)
         self.assertNotIn("x_probes", src)
+
+
+def _tacet_page(*, widths=((0, 2), (1, 3), (2, 2)), absent_from=(1,),
+                slots=(0, 1), absent_slot=1):
+    """Two slots across N systems, with slot 1 SUPPRESSED on some of them.
+
+    ⚠️ THIS IS THE PRINTED SHAPE, NOT AN INVENTED ONE. A score suppresses a
+    tacet staff, so a system prints FEWER staves than the lineup — measured on
+    Litolff Beethoven 5 pdf p1-4, where p3/s1 prints 8 staves against the
+    other systems' 11 and 12, and the three parts absent from it are exactly
+    the three whose measure numbers slid.
+    """
+    obs, vrd = [], []
+    n = [0]
+
+    def add(subject, quantity, value, **kw):
+        n[0] += 1
+        vrd.append(_vrd(n[0], subject, quantity, value, **kw))
+
+    for sysi, width in widths:
+        here = [s for s in slots
+                if not (s == absent_slot and sysi in absent_from)]
+        for st, slot in enumerate(here):
+            key = f"staff/0/{sysi}/{st}"
+            add(key, Q.MEASURE_PARTITION, width)
+            add(key, Q.CLEF, "treble")
+            add(key, Q.SLOT_INDEX, slot)
+        add(f"system/0/{sysi}", Q.SYSTEM_STAFF_COUNT, len(here))
+    add("document", Q.PART_PARTITION, {"join": "slot", "slots": list(slots)},
+        reason="slot")
+    return _log_json(obs, vrd)
+
+
+def _numbers_by_part(xml):
+    return {p.get("id"): [int(m.get("number")) for m in p.findall("measure")]
+            for p in ET.fromstring(xml).findall("part")}
+
+
+class TestAMeasureIsNumberedByTheDOCUMENT(unittest.TestCase):
+    """⚠️⚠️ `<measure number="N">` MUST NAME ONE INSTANT OF MUSIC.
+
+    `_part_xml` used to keep a running count per part, so a part absent from a
+    system had every later bar slide forward by that system's width. Measured
+    on the shared Litolff record: P9-P11 are absent from p3/s1 (18 bars) and
+    their `<measure number="82">` named a different instant from P1-P8's.
+    """
+
+    def test_a_suppressed_part_SKIPS_the_bars_it_does_not_play(self):
+        xml, _rep = SX.to_musicxml(_tacet_page())
+        got = _numbers_by_part(xml)
+        self.assertEqual(got["P1"], [1, 2, 3, 4, 5, 6, 7])
+        # 3, 4 and 5 are system 1, which this part does not print.
+        self.assertEqual(got["P2"], [1, 2, 6, 7],
+                         "a running per-part count would give [1, 2, 3, 4]")
+
+    def test_it_WRITES_NO_MUSIC_and_invents_no_measure(self):
+        """⚠️ Numbering is RENAMING. Padding the tacet span is a REST-path
+        question that needs a bar length, and doing it before the join is
+        repaired would hide a graft behind right-looking numbers."""
+        xml, _rep = SX.to_musicxml(_tacet_page())
+        got = _numbers_by_part(xml)
+        self.assertEqual(len(got["P2"]), 4, "the gap stays a GAP")
+        self.assertEqual(sum(len(v) for v in got.values()), 11)
+
+    def test_every_system_carries_ONE_range_across_its_parts(self):
+        """The property the whole change exists for, asserted directly."""
+        page = _tacet_page()
+        parts, *_ = SX.build(SX.Record(page))
+        starts = SX.system_bar_starts(parts)
+        self.assertEqual(starts, {(0, 0): 0, (0, 1): 2, (0, 2): 5})
+
+    def test_the_width_is_a_MAX_so_the_ranges_cannot_OVERLAP(self):
+        """⚠️ Staves are read independently and may disagree about how many
+        bars a system prints. Taking the widest keeps the ranges DISJOINT, so
+        one over-read staff cannot spill its numbers into the next system and
+        re-create the defect one system later. A `min` here would."""
+        page = _tacet_page()
+        # make ONE staff of system 0 read two bars more than its sibling
+        for v in page["record"]["verdicts"]:
+            if (v["quantity"] == Q.MEASURE_PARTITION
+                    and v["subject"] == "staff/0/0/1"):
+                v["value"] = 4
+        parts, *_ = SX.build(SX.Record(page))
+        starts = SX.system_bar_starts(parts)
+        self.assertEqual(starts[(0, 1)], 4, "system 1 starts past the widest")
+        xml, _ = SX.to_musicxml(page)
+        got = _numbers_by_part(xml)
+        self.assertEqual(got["P1"], [1, 2, 5, 6, 7, 8, 9])
+        self.assertEqual(got["P2"], [1, 2, 3, 4, 8, 9])
+        for pid, nums in got.items():
+            self.assertEqual(len(set(nums)), len(nums), pid)
+        self.assertTrue(set(got["P1"]).isdisjoint({3, 4}),
+                        "no number of system 0 may also be a number of "
+                        "system 1")
+
+    def test_the_systems_are_ordered_by_the_DOCUMENT_not_by_arrival(self):
+        """⚠️ A MUTATION ARM FOUND THIS GAP AND NOTHING ELSE DID. `width` is
+        filled by walking the parts, so its INSERTION order is the first
+        part's view of the document followed by whatever the later parts add.
+        Here the FIRST part is the suppressed one — it contributes systems 0
+        and 2, and system 1 arrives afterwards — so insertion order is
+        `0, 2, 1` and only the `sorted` makes the offsets accumulate in
+        reading order. Every fixture whose first part is present everywhere
+        passes either way, which is exactly why the arm survived."""
+        page = _tacet_page(absent_slot=0)
+        parts, *_ = SX.build(SX.Record(page))
+        width_insertion_order = []
+        for part in parts:
+            for run in part:
+                k = (run.page, run.system)
+                if k not in width_insertion_order:
+                    width_insertion_order.append(k)
+        self.assertEqual(width_insertion_order,
+                         [(0, 0), (0, 2), (0, 1)],
+                         "the fixture must actually exercise the hazard")
+        self.assertEqual(SX.system_bar_starts(parts),
+                         {(0, 0): 0, (0, 1): 2, (0, 2): 5})
+        got = _numbers_by_part(SX.to_musicxml(page)[0])
+        self.assertEqual(got["P1"], [1, 2, 6, 7])
+        self.assertEqual(got["P2"], [1, 2, 3, 4, 5, 6, 7])
+
+    def test_the_duplicate_counter_is_WRITTEN_even_when_it_is_ZERO(self):
+        """⚠️ `empty_bars_padded_without_meter`'s lesson in the numbering
+        path: a counter incremented only on the bad branch is ABSENT on a
+        healthy file, and "nobody wrote a number twice" then reads exactly
+        like "this figure was never computed"."""
+        _, rep = SX.to_musicxml(_tacet_page())
+        self.assertIn("measure_number_written_twice", rep["written"])
+        self.assertEqual(rep["written"]["measure_number_written_twice"], 0)
+
+    def test_two_runs_of_ONE_part_on_ONE_system_are_COUNTED_not_silent(self):
+        """The positive control for that counter. Two staves of one system
+        landing in one slot write one number twice — it cannot happen on the
+        join this document takes and it is not structurally impossible, so it
+        must be reported rather than trusted away."""
+        obs, vrd = [], []
+        for st in (0, 1):
+            vrd.append(_vrd(len(vrd), f"staff/0/0/{st}",
+                            Q.MEASURE_PARTITION, 2))
+            vrd.append(_vrd(len(vrd) + 50, f"staff/0/0/{st}", Q.CLEF,
+                            "treble"))
+            vrd.append(_vrd(len(vrd) + 100, f"staff/0/0/{st}",
+                            Q.SLOT_INDEX, 0))          # BOTH in slot 0
+        vrd.append(_vrd(300, "system/0/0", Q.SYSTEM_STAFF_COUNT, 2))
+        vrd.append(_vrd(999, "document", Q.PART_PARTITION,
+                        {"join": "slot", "slots": [0]}, reason="slot"))
+        _, rep = SX.to_musicxml(_log_json(obs, vrd))
+        self.assertEqual(rep["written"]["measure_number_written_twice"], 2)
+
+    def test_a_part_on_EVERY_system_is_numbered_exactly_as_before(self):
+        """⚠️ The other half of the reach claim: where nothing is suppressed
+        the document count and the per-part count AGREE, so this change can
+        move nothing on a page that prints its full lineup throughout."""
+        page = _tacet_page(absent_from=())
+        got = _numbers_by_part(SX.to_musicxml(page)[0])
+        self.assertEqual(got["P1"], [1, 2, 3, 4, 5, 6, 7])
+        self.assertEqual(got["P2"], [1, 2, 3, 4, 5, 6, 7])
+
+    def test_the_system_map_calls_the_exporters_numbering(self):
+        """⚠️ ANTI-DRIFT. `benchmarks/omr-cleanup-count-2026-09/export_arm.py`
+        kept a SECOND copy of the numbering rule and its own map-vs-file
+        control went red on 108 (part, measure) pairs the day the exporter's
+        rule changed. The repair was to call `system_bar_starts`; this asserts
+        it still does, because a re-derived copy is how the artefact starts
+        sending a human to the wrong bars."""
+        import inspect
+        from pathlib import Path
+        src = Path(inspect.getsourcefile(SX)).resolve()
+        arm = (src.parents[3] / "benchmarks" / "omr-cleanup-count-2026-09"
+               / "export_arm.py")
+        if not arm.is_file():                        # pragma: no cover
+            self.skipTest("benchmark not present in this tree")
+        self.assertIn("system_bar_starts", arm.read_text())
