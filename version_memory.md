@@ -16,6 +16,72 @@ pointing at headings no longer in the file.)*
 
 ---
 
+## 2026-09-16 — The pricing arm RAN, its reach is ZERO, and two instruments were wrong
+
+**The arm.** `benchmarks/omr-meter-corroboration-2026-09/local_arm.sh`, recorded
+here as *"written and never run"* since the 09-15 default flip, was run by Sean
+on his own machine (Breitkopf Brahms 1 mvt 1, pdf 0-3). Raw output committed at
+`out/local/RUN_2026-09-16_brahms1.md` with its provenance.
+
+**Every reported number is identical in both arms — a REACH ZERO, not a null
+cost.** The meter is decided on **7 systems of 7** (`voted` 2, `change_only` 5)
+with no abstention, and `_meter_fallbacks` is reached only when a system's own
+reading FAILED. Neither flag has a domain here; `carry sources SKIPPED = 0`
+says the same of `A-METER-6`. **`OMR_METER_CARRY`'s cost side is still
+unpriced** and this run must not be quoted as the measurement it was meant to
+take.
+
+**The instrument was checked before the zero was believed**, because under a
+default-ON flag an OFF arm that fails to express itself IS the ON arm — the
+hazard this ledger already records twice. Four checks: bash (not zsh), an
+explicit prefix assignment per arm (not a pop), the arm's own header printing
+`=0 =0` / `=1 =1`, and the stamped tree `0ea7a726` differing from the tip in no
+file under `tools/`.
+
+**⚠️ The arm did not declare itself DEAD at zero reach**, where every sibling
+probe in this thread does. Recorded, not repaired.
+
+**⚠️ The bar-fill half is VOID: it scored Brahms against Beethoven's bar.**
+`bar_fill.py --bar-beats` defaulted to **2.0** (Litolff 2/4) and the arm never
+passed it; Brahms 1 mvt 1 is **6/8 = 3.0**. The 96.3% OVERFULL / 0.6% exact is
+the constant, and the giveaway is 684 bars at exactly 3.0 — the right length —
+counted OVERFULL. **REPAIRED as a refusal:** `--bar-beats` is now REQUIRED in
+the probe and `$4` REQUIRED in the arm, since a default converts *"I do not
+know this document's bar length"* into a definite answer.
+
+**⚠️ CLAUDE.md described that probe as reading *"the `<time>` the same file
+declares"*. It never did.** On a 2/4 document the constant and the declaration
+coincide, which is why the claim survived one document. Corrected at the site.
+
+**Two things the run does establish, both in BOTH arms and therefore not the
+flip's:** `<time>` reads `{6/8: 97, 9/4: 14, 4/4: 83}` on a movement printing
+6/8 plus one 9/8 bar — 97 declarations the page does not print, identical with
+the flags off, so it is `OMR_METER_SEGMENTS` + `change_only` and the 09-15
+flags are **acquitted**; and the bar-fill denominator is the PART JOIN, with
+**3407 of 4225 bars (80.6%) tacet padding** across **97 fragment parts**, so no
+bar-fill figure here is comparable to Litolff's 38.0% → 69.2% at any
+`--bar-beats`.
+
+**⚠️ What the flag is actually waiting for, named at last: a document that
+ABSTAINS *and* MISREADS.** Litolff abstains on 6 of 7 systems but its one read
+meter is correct; Breitkopf misreads badly but abstains nowhere. The two halves
+of the hazard have never been present in one document, and every "n = 1" in
+this thread was about the wrong axis.
+
+**A stale default claim fixed, and made un-driftable.**
+`tools/omr/staged/ASSUMPTIONS.md` still said `OMR_METER_CARRY (default `0`)`
+and `OMR_METER_FROM_BARS (default `0`)` beside the very functions that
+implement them — a claim about the code in front of you, false since 09-15.
+Corrected, and `test_flag_default_direction.py` gained
+`TestTheProseAgreesWithThePredicate`, which parses the prose claims and
+compares them against the AST-derived default rather than a second written
+list. **Mutation battery 3 arms, all red** (wrong prose; a neutered regex,
+caught by the positive control; a claim naming a flag no predicate reads), and
+the first attempt at arm 2 was a **BAD ANCHOR** that silently did not apply —
+found and re-run rather than reported as a pass.
+
+---
+
 ## 2026-09-15 (later) — The phantom-note rule, verified independently and put behind a flag
 
 A verification pass was dispatched to land `claude/note-where-silence-opened`

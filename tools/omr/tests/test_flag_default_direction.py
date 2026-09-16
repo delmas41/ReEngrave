@@ -20,6 +20,7 @@ would be forgotten.
 """
 
 import ast
+import re
 import pathlib
 import unittest
 
@@ -152,6 +153,67 @@ class TestADefaultOnFlagFailsSafe(unittest.TestCase):
                 continue
             bad.append(f"{path}:{line} {flag} (default {default!r}) "
                        f"uses {op} {sorted(members)} — a typo would turn it ON")
+        self.assertEqual(bad, [], "\n".join(bad))
+
+
+
+#: The prose claims. `ASSUMPTIONS.md` states a flag's default beside the
+#: functions that implement it, in the form ``OMR_X` (default `N`)`.
+ASSUMPTIONS = ROOT / "tools" / "omr" / "staged" / "ASSUMPTIONS.md"
+_CLAIM = re.compile(r"`(OMR_[A-Z_]+)` \(default `([01])`")
+
+
+def assumption_claims():
+    """Yield (lineno, flag, claimed_on) for every default claim in the prose."""
+    if not ASSUMPTIONS.is_file():
+        return
+    for n, line in enumerate(ASSUMPTIONS.read_text().splitlines(), 1):
+        for m in _CLAIM.finditer(line):
+            yield n, m.group(1), m.group(2) == "1"
+
+
+class TestTheProseAgreesWithThePredicate(unittest.TestCase):
+    """⚠️ A DEFAULT STATED IN PROSE IS A CLAIM ABOUT THE CODE IN FRONT OF YOU,
+    AND THIS ONE WAS FALSE FOR A DAY. `OMR_METER_CARRY` and
+    `OMR_METER_FROM_BARS` went default-ON on 2026-09-15; `ASSUMPTIONS.md`
+    went on saying `(default `0`)` beside the very functions that implement
+    them. That is worse than a stale note about the past — a reader takes it
+    for the present state and sizes work against it.
+
+    CLAUDE.md already prescribes the remedy for exactly this shape: *the claim
+    is mechanically falsifiable*. So falsify it. The predicate is the only
+    thing that knows the default (see `default_on_flags`), and this compares
+    the sentence against it rather than against a second written list.
+    """
+
+    def setUp(self):
+        self.claims = list(assumption_claims())
+        self.derived = {}
+        for _, _, flag, _, _, _, on in default_on_flags():
+            self.derived.setdefault(flag, set()).add(on)
+
+    def test_the_scan_finds_the_claims(self):
+        """⚠️ The positive control. A regex that matches nothing agrees with
+        everything — the failure this repo has shipped twice."""
+        self.assertGreaterEqual(
+            len(self.claims), 2,
+            "no default claim was parsed out of ASSUMPTIONS.md; the prose "
+            "form changed and this guard went vacuous")
+
+    def test_every_claimed_default_matches_the_predicate(self):
+        bad = []
+        for line, flag, claimed in self.claims:
+            seen = self.derived.get(flag)
+            if seen is None:
+                bad.append(
+                    f"ASSUMPTIONS.md:{line} claims a default for {flag}, "
+                    f"which no `os.environ.get` predicate in tools/ reads")
+                continue
+            if seen != {claimed}:
+                bad.append(
+                    f"ASSUMPTIONS.md:{line} says {flag} defaults "
+                    f"{'ON' if claimed else 'OFF'}; the predicate says "
+                    f"{sorted('ON' if s else 'OFF' for s in seen)}")
         self.assertEqual(bad, [], "\n".join(bad))
 
 

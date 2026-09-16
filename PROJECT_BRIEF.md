@@ -49,6 +49,58 @@ research ideas not yet scheduled. Both are living documents — check them at
 the start of a session rather than trusting this brief for anything that
 changes week to week.
 
+## A test that could not test anything (2026-09-16)
+
+Yesterday a setting was switched on by default: it lets the program carry the
+beat-count from one line of music onto the next line, where the printing does
+not repeat it. It clearly helps on one scanned book. Nobody had ever checked
+whether it *hurts* on a book where the program misreads the beat markings in
+the first place — and a mistake that gets carried forward is worse than one
+that stays put.
+
+That check was finally run, on a Brahms symphony. **It could not answer the
+question, and understanding why is the result.**
+
+The setting only does anything when the program **gives up** on a line of
+music and needs to borrow an answer. On these Brahms pages it never gave up —
+it produced an answer for every single line. So the setting had nothing to do,
+and both halves of the test came out identical. That is not "the setting is
+free"; it is "this book cannot test it." **The cost is still unknown.**
+
+Two lessons came out of it, and both are about the measuring, not the music.
+
+**The test did not admit it had failed.** It printed a full comparison table,
+as though it had measured something, over a question it never got to ask.
+Every other test of its kind in this project announces up front how much it
+can actually see and stops if the answer is "nothing." This one owes the same
+and did not pay it.
+
+**One of its numbers was measured against the wrong yardstick.** A second tool
+in the test checks whether each bar of music holds the right amount of time.
+It had a built-in assumption about how long a bar is — taken from a
+*Beethoven* score studied earlier — and nobody had told it this was Brahms,
+whose bars are half again as long. So it reported that 96% of the bars were
+too full, while quietly counting 684 perfectly correct bars as wrong. The
+built-in assumption is now removed: the tool refuses to run until it is told
+what it is looking at. Guessing was the whole problem.
+
+**And the project's own notes described that tool as doing something it has
+never done** — reading each bar's length from the music itself. It doesn't. It
+only looked right because, on the one score it had been used on, the guess and
+the truth happened to match.
+
+**One useful thing did come out of it.** The Brahms file really does contain 97
+beat-markings the printed page does not have. But that was equally true with
+the new setting turned off — so the blame lies elsewhere, and yesterday's
+change is cleared.
+
+**And the real obstacle finally has a name.** To test this properly we need a
+score that does *both* things at once: gives up on some lines *and* misreads
+others. One book we have gives up often but reads correctly. Another misreads
+badly but never gives up. Nobody had noticed that the two halves of the
+problem have never appeared together in one book — which means every previous
+worry about "not enough examples" was counting the wrong thing.
+
 ## Where the work is now (2026-09-03)
 
 - Engraved benchmark: pooled OMR-NED **0.1306 / 2745 edits** over 11 works

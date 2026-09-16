@@ -49,9 +49,14 @@
 # with, so an edit made mid-run reaches one half and not the other.
 set -euo pipefail
 
-PDF="${1:?usage: local_arm.sh <pdf> [weights] [pages]}"
+PDF="${1:?usage: local_arm.sh <pdf> [weights] [pages] [bar-beats]}"
 WEIGHTS="${2:-omr-weights/deepscoresv2-yolov8l-hollow-graft-shift09-2026-09-04.pt}"
 PAGES="${3:-0-3}"
+# ⚠️ THE DOCUMENT'S BAR LENGTH IN QUARTER NOTES, and it has no safe default.
+# Brahms 1 mvt 1 is 6/8 = 3.0; Litolff Beethoven 5 mvt 1 is 2/4 = 2.0. The
+# 2026-09-16 run took `bar_fill.py`'s old default of 2.0 on the Brahms and
+# reported 96.3% OVERFULL, counting every correctly-sized 3.0 bar as too long.
+BAR_BEATS="${4:?bar-beats is REQUIRED: the bar length in quarter notes for THIS document -- 6/8=3.0, 2/4=2.0, 4/4=4.0. There is no safe default; see the comment above.}"
 
 HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ROOT="$(cd "$HERE/../.." && pwd)"
@@ -157,7 +162,12 @@ echo "BAR FILL -- the instrument Sean's observation 5 became"
 echo "=============================================================="
 for ARM in OFF ON; do
   echo "--- $ARM ---"
+  # ⚠️ `--bar-beats` IS NOW REQUIRED AND THIS ARM USED TO OMIT IT, taking the
+  # probe's old default of 2.0 — Litolff Beethoven 5's 2/4 — on a Brahms 6/8
+  # document. The 2026-09-16 run reported 96.3% OVERFULL / 0.6% exact and the
+  # whole figure was that constant. 6/8 is 3.0 quarter notes.
   python3 benchmarks/omr-rest-sizing-2026-09/probe/bar_fill.py \
+    --bar-beats "$BAR_BEATS" \
     "$OUT/brahms1-$ARM.musicxml" || true
 done
 
