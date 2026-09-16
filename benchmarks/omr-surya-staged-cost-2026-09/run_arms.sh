@@ -1,0 +1,154 @@
+#!/bin/bash
+# Part B of the staged-Surya experiment: the FRACTION OF A REAL GATHER.
+#
+# docs/scope-surya-staged-optin-2026-09-16.md §9. Four ABAB arms (L = both OCR
+# rungs on, C = the current default) plus LD, which asks whether the two Surya
+# consumers share a model load.
+#
+#     bash benchmarks/omr-surya-staged-cost-2026-09/run_arms.sh
+#     ARMS="L1" bash .../run_arms.sh          # one arm
+#
+# ⚠️⚠️ FOUR CORRECTIONS TO THE SCRIPT AS THE SCOPE SKETCHES IT, each against a
+# trap this repo has already paid for:
+#
+#  1. IT RUNS FROM THE REPO ROOT. The sketch `cd`s into the benchmark dir and
+#     then calls `python3 -m tools.omr.staged`, which cannot resolve.
+#
+#  2. NO `| tee` ON A COMMAND WHOSE EXIT CODE MATTERS. CLAUDE.md records a
+#     `| tail` swallowing a real failure's status, and the 2026-09-15 pass
+#     records a background suite exiting 0 having run nothing. Output goes to
+#     a file and the status is read from the command itself.
+#
+#  3. THE CENSUS COUNTS OBSERVATIONS, NOT `grep -c '"margin_label"'`. Step 1
+#     of this session made `gather_margin_labels` write an ABSTENTION per
+#     staff, so that grep now reports ~75 for a C arm that must census ZERO --
+#     the control inverts. See census.py.
+#
+#  4. `--check` IS A GATE, NOT A NOTE. A resident server means the arm
+#     measures queueing (CLAUDE.md, 2026-09-11), so the run aborts. NEVER
+#     `pkill`; `python3 -m tools.omr.staff_labels_surya --stop`.
+#
+# ⚠️ AND IT REFUSES A DIRTY TREE AND A RE-RUN OVER AN EXISTING RECORD. An
+# unprovenanced A/B is the documented failure where "nothing moved" cannot be
+# told from "you compared a file with itself"; a silently reused arm is the
+# `scan_eval` caching trap, whose signature is an A/B that looks perfectly
+# clean and ran once.
+
+set -u
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
+BENCH="$ROOT/benchmarks/omr-surya-staged-cost-2026-09"
+OUT="$BENCH/out"
+cd "$ROOT" || exit 2
+mkdir -p "$OUT"
+
+PDF="${PDF:-$ROOT/library/editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf}"
+W="${W:-$ROOT/tools/omr/training/data/weights/deepscoresv2-yolov8l-hollow-graft-shift09-2026-09-04.pt}"
+PAGES="${PAGES:-1-4}"
+ARMS="${ARMS:-L1 C1 L2 C2 LD}"
+export OMR_SURYA_KEEP_ALIVE=0
+
+[ -f "$PDF" ] || { echo "ABORT: no PDF at $PDF"; exit 2; }
+[ -f "$W" ]   || { echo "ABORT: no weights at $W"; exit 2; }
+
+DIRTY="$(git status --porcelain | grep -v '^?? benchmarks/omr-surya-staged-cost-2026-09/out/' | wc -l | tr -d ' ')"
+if [ "$DIRTY" != "0" ]; then
+  echo "ABORT: the tree is dirty; every arm must share ONE commit with"
+  echo "       dirty=false or the records name no tree."
+  git status --porcelain | grep -v '^?? benchmarks/omr-surya-staged-cost-2026-09/out/'
+  exit 2
+fi
+COMMIT="$(git rev-parse HEAD)"
+echo "tree: $COMMIT (clean)"
+echo "pdf : $PDF"
+echo "arms: $ARMS   pages: $PAGES"
+echo
+
+for arm in $ARMS; do
+  REC="$OUT/record-$arm.json"
+  if [ -f "$REC" ]; then
+    echo "ABORT: $REC already exists. A silently reused arm reports"
+    echo "       'identical on every row' whatever the change did. Move it"
+    echo "       aside deliberately."
+    exit 2
+  fi
+
+  # GATE 1 -- nothing else may be reading the machine.
+  python3 -m tools.omr.staff_labels_surya --check > "$OUT/$arm.precheck" 2>&1
+  if grep -q '^persistent server: yes' "$OUT/$arm.precheck"; then
+    echo "ABORT at $arm: a keep-alive server is resident -- this arm would"
+    echo "       measure QUEUEING. Stop it with"
+    echo "       python3 -m tools.omr.staff_labels_surya --stop"
+    echo "       (never pkill), once nothing else is reading."
+    cat "$OUT/$arm.precheck"
+    exit 2
+  fi
+  OTHER="$(pgrep -f 'tools\.omr\.(staged|transcribe)' | grep -v "^$$\$" | wc -l | tr -d ' ')"
+  if [ "$OTHER" != "0" ]; then
+    echo "ABORT at $arm: another OMR run is in flight (pgrep: $OTHER)."
+    exit 2
+  fi
+
+  case "$arm" in
+    L*) FLAGS="--surya --ocr"; DIRTEXT=1 ;;
+    C*) FLAGS="";              DIRTEXT=1 ;;
+    LD) FLAGS="--surya --ocr"; DIRTEXT=0 ;;
+  esac
+
+  {
+    echo "arm=$arm"
+    echo "commit=$COMMIT"
+    echo "dirty=0"
+    echo "flags=$FLAGS"
+    echo "OMR_DIRECTION_TEXT=$DIRTEXT"
+    echo "OMR_SURYA_KEEP_ALIVE=$OMR_SURYA_KEEP_ALIVE"
+    echo "start_epoch=$(date -u +%s)"
+    echo "start_utc=$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+  } > "$OUT/$arm.timing"
+
+  echo "── $arm  flags='$FLAGS' OMR_DIRECTION_TEXT=$DIRTEXT  $(date -u +%H:%M:%SZ)"
+  OMR_DIRECTION_TEXT=$DIRTEXT python3 -u -m tools.omr.staged "$PDF" \
+      --pages "$PAGES" --weights "$W" $FLAGS \
+      --out "$REC" --progress > "$OUT/$arm.log" 2>&1
+  RC=$?
+  {
+    echo "end_epoch=$(date -u +%s)"
+    echo "end_utc=$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+    echo "exit=$RC"
+  } >> "$OUT/$arm.timing"
+
+  if [ "$RC" != "0" ]; then
+    echo "   arm $arm FAILED (exit $RC); tail of its log:"
+    tail -20 "$OUT/$arm.log"
+    exit 1
+  fi
+
+  # The rung header -- §9 control 3. An arm cannot assert it was measuring
+  # Surya unless the run said Surya was up.
+  grep -m1 '^  rungs:' "$OUT/$arm.log" >> "$OUT/$arm.timing" \
+      || echo "rungs=MISSING" >> "$OUT/$arm.timing"
+
+  case "$arm" in
+    C*) EXPECT="--expect-observations-exactly 0" ;;
+    *)  EXPECT="--expect-observations-at-least 45" ;;
+  esac
+  python3 "$BENCH/census.py" "$REC" $EXPECT \
+      --json-out "$OUT/$arm.census.json" > "$OUT/$arm.census.txt" 2>&1
+  CRC=$?
+  echo "census_exit=$CRC" >> "$OUT/$arm.timing"
+  S=$(grep start_epoch "$OUT/$arm.timing" | cut -d= -f2)
+  E=$(grep end_epoch "$OUT/$arm.timing" | cut -d= -f2)
+  echo "   $arm: $((E - S)) s, census exit $CRC"
+  tail -2 "$OUT/$arm.census.txt"
+  if [ "$CRC" != "0" ]; then
+    echo "   ⚠️ arm $arm is VOID by its own census."
+  fi
+done
+
+echo
+echo "── wall clock ────────────────────────────────────────────"
+for arm in $ARMS; do
+  S=$(grep start_epoch "$OUT/$arm.timing" | cut -d= -f2)
+  E=$(grep end_epoch "$OUT/$arm.timing" | cut -d= -f2)
+  N=$(python3 -c "import json;print(json.load(open('$OUT/$arm.census.json'))['margin_label_observations'])" 2>/dev/null || echo "?")
+  printf "  %-3s %6s s   %s labels\n" "$arm" "$((E - S))" "$N"
+done
