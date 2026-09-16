@@ -716,6 +716,24 @@ enough to read the change off, are two further questions — but they are checka
 questions about our library, where before we thought the problem was that the
 music itself did not exist.
 
+⚠️ **And the follow-up question answered itself the same afternoon.** Having
+found 32 candidate works, the obvious next question was whether we actually own
+printed editions of them — which I said would need the big score library on the
+desktop machine. That was wrong for the same reason: the library's *catalogue*
+is committed even though the PDFs are not, so it records what we hold. **We hold
+all 23 of the ones we can match by name, and none is missing.**
+
+The sharper version: the "printed one way, sounds another" case had been
+measured on a single publisher. All six unmeasured instances are on disk across
+**four** publishers — including two whose printing this project has never once
+read. That was the part most likely to make our conclusions parochial, and it
+turns out to be fixable from files we already have.
+
+⚠️ **What is still genuinely unknown** is whether those pages are legible enough,
+and which page of each PDF the change actually falls on. The second one needs a
+human checking a page against the printed bar numbers — that is real work, and it
+is now the only part that needs the desktop.
+
 Full reading: `benchmarks/omr-meter-fixture-pool-2026-09/FINDINGS.md`.
 
 ## Running it

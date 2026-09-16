@@ -55,6 +55,20 @@ are both unchecked**; Holst `-full` overlaps its `-mvt*` entries so 32 is not 32
 distinct pieces. **The blocker is now a claim about editions and legibility,
 which is checkable, rather than about the corpus, which is refuted.**
 
+⚠️⚠️ **THE EDITION HALF WAS THEN CHECKED THE SAME DAY AND IT DID NOT NEED THE
+DESKTOP EITHER — 23 of 23 HELD, 0 not held.** `data/score-library/catalog.json`
+is committed (1980 entries, 228 works with an edition) and records every held
+edition's path, publisher and scan type; only the PDF bytes are gitignored. The
+9 works the id rule cannot reach ABSTAIN and are reported, never forced — the
+`OMR_WORK_ID` two-id-space trap. ⚠️ **"n = 1 publisher" is refuted harder than
+"n = 1 piece"**: all six unrendered engraving-shape fixtures are held across
+FOUR publishers (Litolff ×3, Bruckneraga, Simrock, plus the measured Breitkopf),
+two of them plates this thread has never touched. ⚠️ `beethoven-sym9-mvt4`
+carries **14 length changes AND the engraving change in one movement**. ⚠️ Still
+unestablished: legibility (`Normal Scan` is IMSLP's label, not a measurement),
+whether the file is on disk, and **which PDF page a given bar falls on** — that
+needs a hand-verified window row and is the real remaining cost.
+
 ---
 
 ## 2026-09-15 — the cautionary's arbiter: MEASURED AND REFUSED

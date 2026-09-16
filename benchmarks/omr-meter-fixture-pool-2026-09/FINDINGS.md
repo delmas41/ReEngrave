@@ -172,5 +172,80 @@ an n argument); `min_score` is not proposed to move.
 4. The remaining 4 engraving-shape works, as controls across publishers.
 
 **The cheapest thing that would move the whole thread is no longer a render —
-it is one query joining these 32 `work_id`s against `library/editions/`.** That
-needs the library, so it belongs on the desktop.
+it is one query joining these 32 `work_id`s against `library/editions/`.**
+⚠️ §4 of this file said that query *"needs the library, so it belongs on the
+desktop"*. **That was wrong and §7 is the correction** — it was run here.
+
+---
+
+## 7. THE EDITION JOIN — 23 of 23 HELD, and it did NOT need the desktop
+
+`probe_edition_join.py --check --json`. ⚠️ **§4 called this a desktop job and
+that was an error of the same kind this whole file is about**: I assumed a
+capability boundary instead of checking it. `data/score-library/catalog.json` is
+**COMMITTED** — 1980 entries, 228 works with an edition, 235 editions indexed —
+and records every held edition's path, publisher, page count, scan type and
+text-layer flag. **Only the PDF bytes are gitignored.**
+
+| | |
+|---|--:|
+| dossiers carrying a real mid-movement change | 32 |
+| mapped across the two id spaces | **23** |
+| **whose work IS held as a printed edition** | **23** |
+| whose work is NOT held | **0** |
+| abstained — the id rule does not reach them | 9 |
+
+⚠️⚠️ **THE JOIN CROSSES TWO ID SPACES AND THE REPO HAS BEEN BITTEN BY IT
+TWICE.** A dossier is keyed `beethoven-sym5-mvt4` (composer + genre + number +
+MOVEMENT); the library is keyed `beethoven--symphony-5` (no movement). CLAUDE.md
+states the trap twice — `OMR_WORK_ID` is *"the score LIBRARY's id, never the
+dossier's"*, and `mxl_verdicts` records the wrong one being *"refused as 'no
+usable window rows', not silently matched to nothing"*. The probe maps
+explicitly and **ABSTAINS** where it cannot: the 9 it cannot reach
+(`holst-planets-*` ×7, `boulanger-printemps-mvt1`, `tchaikovsky-1812-overture`)
+carry no genre+number and are **reported, never forced to a nearest match**.
+
+### The six unrendered engraving-shape fixtures, and their publishers
+
+**This is the result.** The designed limit is measured on ONE publisher. All six
+unrendered instances are held, across **five**:
+
+| work | bar | change | publisher | scan |
+|---|--:|---|---|---|
+| `beethoven-sym1-mvt1` | m13 | 4/4 → 2/2 | Litolff 1870 | Normal Scan |
+| `beethoven-sym5-mvt4` | m364 | 4/4 → 2/2 | Litolff 1870 (**2 editions**) | Normal Scan |
+| `beethoven-sym9-mvt4` | m657 | 3/2 → 6/4 | Litolff 1870 | Normal Scan |
+| **`brahms-sym1-mvt4`** | **m392** | 4/4 → 2/2 | Breitkopf (2 ed.) | ← **the measured one** |
+| `bruckner-sym5-mvt2` | m163 | 2/2 → 4/4 | **Bruckneraga 1935** | Normal Scan |
+| `dvorak-sym9-mvt1` | m24 | 4/8 → 2/4 | **Simrock 1894** | Normal Scan |
+| `holst-planets-full` | m1187 | 3/2 → 6/4 | — | **abstained** |
+
+So *"n = 1 publisher"* is refuted on this shape too, and by a wider margin than
+*"n = 1 piece"*: **Litolff, Breitkopf, Bruckneraga and Simrock**, four
+publishers, six instances, all on disk. Bruckneraga and Simrock are the valuable
+ones — a plate neither of the two publishers this thread has measured.
+
+### And the density fixture
+
+`beethoven-sym9-mvt4` carries **14 length changes AND 1 engraving change in one
+movement**, on a held Litolff scan. The arbiter findings named it second by
+hand; it is by a wide margin the densest meter fixture in the corpus, and the
+only one where a single render can exercise the change detector more than a
+dozen times.
+
+### ⚠️ WHAT THE JOIN STILL DOES NOT ESTABLISH
+
+* **Nothing about legibility.** `image_type: "Normal Scan"` is IMSLP's own
+  label, not a measurement — this thread's history is that the same 22 bars
+  score 4-found/0-false engraved and 1-found/9-false scanned on the SAME music.
+  Two rows read `?` for scan type and were not investigated.
+* **Nothing about whether the file is on disk.** The catalog is a record of what
+  was ingested; `library/` is gitignored and unverifiable here. A `verify` pass
+  exists for exactly this and was not run.
+* **Nothing about which PAGE the change falls on.** Going from "bar 364" to "pdf
+  page N" needs a hand-verified window row, which exists for a handful of pages
+  and not for these. That is real work and it is the actual next cost.
+* **The abstained 9 are not "not held"** — they are unasked. `holst-planets-*`
+  alone carries 45 changes.
+* A movement is not a work: several dossiers collapse onto one edition, so the
+  edition counts are printings of the piece, not fixtures.

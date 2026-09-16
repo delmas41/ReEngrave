@@ -3204,10 +3204,38 @@ is structural (window width, frame, two readers) and none of its reasons is an
 n argument.
 
 **So the blocker is now a claim about EDITIONS AND LEGIBILITY, which is
-checkable, rather than about the corpus, which is refuted.** The cheapest thing
-that would move the whole thread is no longer a render — it is one query joining
-those 32 `work_id`s against `library/editions/`, which needs the library and
-belongs on the desktop.
+checkable, rather than about the corpus, which is refuted.**
+
+⚠️⚠️ **AND THE EDITION HALF WAS CHECKED THE SAME DAY: 23 of 23 HELD, 0 NOT
+HELD — AND IT DID NOT NEED THE DESKTOP EITHER.** The paragraph this replaces
+said that query *"needs the library and belongs on the desktop"*, which was the
+same error one layer on: `data/score-library/catalog.json` is **COMMITTED**
+(1980 entries, 228 works with an edition) and records every held edition's path,
+publisher, page count and scan type. **Only the PDF bytes are gitignored.** Of
+the 32 changing works, 23 map across the two id spaces and **every one of the 23
+is held**; the 9 the id rule cannot reach (`holst-planets-*`,
+`boulanger-printemps-mvt1`, `tchaikovsky-1812-overture`) **ABSTAIN and are
+reported, never forced** — the `OMR_WORK_ID` trap, which this file states twice
+and which has bitten the repo twice.
+
+⚠️⚠️ **"n = 1 PUBLISHER" IS REFUTED HARDER THAN "n = 1 PIECE".** The designed
+limit is measured on Breitkopf alone. All six unrendered instances are held
+across **four publishers**: `beethoven-sym1-mvt1` m13, `beethoven-sym5-mvt4`
+m364 and `beethoven-sym9-mvt4` m657 on **Litolff**, `bruckner-sym5-mvt2` m163 on
+**Bruckneraga 1935**, `dvorak-sym9-mvt1` m24 on **Simrock 1894**. The last two
+are plates neither publisher this thread has ever measured. ⚠️ And
+`beethoven-sym9-mvt4` carries **14 length changes AND the engraving change in
+one movement** — by a wide margin the densest meter fixture in the corpus.
+
+⚠️ **WHAT THE JOIN STILL DOES NOT ESTABLISH.** Nothing about **legibility** —
+`image_type: "Normal Scan"` is IMSLP's own label, not a measurement, and this
+thread's own history is 4-found/0-false engraved against 1-found/9-false scanned
+on the SAME 22 bars. Nothing about whether the file is **on disk** (the catalog
+records what was ingested; `library/` is gitignored and a `verify` pass exists
+and was not run). And nothing about **which PDF page** a bar falls on — going
+from "bar 364" to "page N" needs a hand-verified window row, which does not
+exist for these. **That last one is the real remaining cost**, and it is the
+only part of this that genuinely needs the desktop.
 
 ### ⚠️⚠️ `Q.METER` carries `segments` and NOTHING DOWNSTREAM READS THEM
 
