@@ -538,6 +538,204 @@ labelling. The claim is corrected in the code, not just noted.
 
 Full reading: `benchmarks/omr-slot-index-2026-09/FINDINGS.md`.
 
+### A bar number that means the same bar in every part
+
+The same score, a different complaint of Sean's: *"none of the measure math
+makes sense"*. A part that is silent on one system printed no bars for it, and
+the exporter numbered each part by counting down from its own first bar — so
+measure 82 in one instrument and measure 82 in another were **different moments
+of music**. Anything reading the file downstream, including the notation
+renderer we preview with, said so out loud.
+
+Measures are now numbered by where the bar falls in the **document**, so a
+number names one instant. 90 of 1,183 numbers move and **no note, rest or slur
+changes** — the file is byte-identical apart from that one attribute. Where the
+page cannot say how many bars a system holds, the change declines for the whole
+file and leaves the old numbering rather than inventing an answer.
+
+Full reading: `benchmarks/omr-measure-numbering-2026-09/FINDINGS.md`.
+
+### A note printed nowhere — opened, and it is two problems
+
+Sean's last unanswered complaint: bars the page prints as silent come out of our
+system holding an actual note. Read against photographs of the print, that turns
+out to be **two different faults wearing one symptom**. About a third are the
+one he guessed at — a rest and a notehead are both small blobs of ink, and we
+read the rest as a note. The larger half are notes belonging to the instrument
+on the staff *above or below*, which drift into the silent bar because each bar
+is cut out of the page with a margin of space around it.
+
+Nothing was changed. Two reasons, both deliberate: a half-built fix already on a
+shelf turns out to address only the smaller cause, and the file Sean read was
+made **before** a repair that landed since and may already have removed much of
+the larger one. Confirming that needs a machine holding the score library.
+
+⚠️ It also found that the way the problem had been counted is wrong in both
+directions — it was defined by our own output rather than by the page, so it
+misses bars where we invent *two* notes and wrongly blames bars we simply
+under-read.
+
+Full reading: `benchmarks/omr-phantom-notes-2026-09/FINDINGS.md`.
+
+⚠️ **Followed up the next day, and the follow-up overturned part of the above.**
+The worry was that the file Sean read was made before a repair that has since
+landed, so some of the problem might already be gone. That question was answered
+**without** needing the score library: the earlier repair only ever acts on ink
+that two staves both detected, and for **11 of the 13 bars — 20 of the 25
+notes — no second staff saw it at all**. Those bars come out identical either
+way, so the artefact is not stale for them. It also killed the tidy story about
+where the strays come from: **five of them sit above the topmost instrument on
+the page**, with nothing above to have leaked in.
+
+Nothing was changed, again deliberately: the fix on the shelf reaches at most
+the smaller group, and shipping it would have meant declaring the complaint
+closed while most of it remained.
+
+### Bars where an instrument is silent now appear
+
+The last of the three measure-math repairs. A part that doesn't play on a
+system previously had **no bars at all** there, so parts were different lengths
+and one simply stopped partway. Those spans are now written as full-bar rests
+in the right places.
+
+⚠️ **On the one score available it fills in nothing, and that is the rule
+behaving correctly.** A rest has to say how long it is, and the length comes
+from the time signature — which we read on exactly one of this score's seven
+systems, and it is the one system where no instrument is silent. So all 149
+silent bars are declined and counted rather than invented at a guessed length.
+A clearly-labelled what-if run, with the time signature supplied, fills all 149
+and makes every part the same length — which is a measurement of what reading
+the time signature better would be worth, not a result.
+
+Full reading: `benchmarks/omr-tacet-padding-2026-09/FINDINGS.md`.
+
+### Reading the time signature — two switches turned on, and a guard with them
+
+A time signature is printed once, at the start of a movement, and nowhere else.
+Everything downstream needs it: how long a bar should be, how long a whole-bar
+rest is, whether a bar adds up. From a movement's second page onward the system
+simply had none, and two mechanisms that could fill the gap were built, measured
+and left switched off for want of a second test score.
+
+**Both are now on.** With them, on the pages we have been reading, bars that add
+up go from **38% to 69%**.
+
+They landed with a guard, because turning them on is exactly what makes a
+misreading dangerous: without it a time signature read on a single staff spreads
+across pages. The guard is narrow on purpose — a reading nothing else confirms
+still governs its own line of music, it just may not decide the next one.
+
+⚠️ **The obvious version of that guard was measured and refused**, which is the
+more useful result. Refusing any reading only one staff saw would have deleted
+the one real time-signature change this system has ever found on a scanned page.
+The true and false readings overlap exactly where a rule would want to cut.
+
+⚠️ **And the measurement that motivated the refused version was ours and was
+wrong** — it pooled seven generations of saved results as though they were
+repeat runs of one program. Recorded, with the rule it produces: a measurement
+of "how often does this happen" has to say which version of the program it was
+measured on.
+
+⚠️ **What is still not known** is the cost. The two switches are on, and the
+run that would price what they cost on a badly-printed score is written and has
+not been executed — it needs the full score library.
+
+Full reading: `benchmarks/omr-meter-corroboration-2026-09/FINDINGS.md`.
+
+### The second opinion the page prints, and why it cannot settle the argument
+
+When an engraver is about to change the time signature, they print it twice —
+once as a courtesy at the end of the line that is ending, and again at the head
+of the line that begins. So on the one page where our reading of the time
+signature is known to be wrong, the page itself carries a second, correct
+reading a few inches earlier. Sean asked the obvious question: if the two
+disagree, can we use the courtesy copy to overrule the misreading?
+
+**Measured, and the answer is no — for a reason worth having.** The two
+readings are not on the same scale. The reader scores how well printed ink
+matches a template, and it scores a *wide* strip of the page higher than a
+narrow one simply because a wide strip gives it more places to look — 968 of
+1,612 real cases went up when the strip was widened, and **not one went down**.
+The opening is read in a wide strip and the courtesy copy in a narrow one, so
+comparing their scores is rigged in favour of the reading we already know is
+wrong.
+
+The natural repair — read both in the same narrow strip — **is blind**: a time
+signature at the start of a line sits behind the clef and the key signature, ten
+to twelve staff-widths in. Given a narrow strip the reader found **0 of 16**
+real time signatures on a page that prints one on every staff, and invented
+plausible-looking wrong ones out of the clef. Widened, it found **16 of 16**.
+
+⚠️ And the one number both readings *do* state — how many staves saw it — turns
+out to be **two different counts from two different readers**, which makes that
+route incoherent rather than merely unhelpful.
+
+None of this argues against reading time-signature changes mid-line, which is a
+separate mechanism built the same week: a change mid-line has no clef in front
+of it, which is exactly why its window is narrow.
+
+**What is not known:** this is one piece of music with three courtesy copies,
+and the case that would cost us something — a courtesy copy that is wrong where
+the opening is right — has never once been seen. The cheapest thing that would
+move it is a second score, and its test fixture already exists.
+
+Full reading: `benchmarks/omr-meter-cautionary-arbiter-2026-09/FINDINGS.md`.
+
+### The thing that was blocking us turned out not to be true
+
+Almost every finding about time signatures ends the same way: *we only have one
+piece of music that does this, so we cannot tell whether what we learned is
+about the program or about that one score.* It appears in five separate
+write-ups, and each one names a single candidate second score to try next.
+
+Nobody had counted how many we actually have. **We have 32.**
+
+The project keeps a small committed fact-file for each of 97 works, generated
+from the reference sheet music — what meter it is in, how many bars, where the
+meter changes. Those files answer the question directly and need none of the
+large machinery: no score library, no trained model, no engraving software. The
+count was a two-minute query nobody had run, because each session reached for the
+next score by name instead.
+
+⚠️ **And the shape matters more than the number.** A time-signature change that
+makes bars a different LENGTH can be checked by adding up the notes in a bar. One
+that changes only how the meter is *written* — `4/4` printed as a `¢`, same
+length — cannot be, ever, by construction rather than by bad printing. Of the 143
+changes, **7 are that second kind**, and we have measured exactly one of them.
+Six are sitting there unused.
+
+⚠️ That also re-reads the piece we were about to spend a long run on: Beethoven
+5's finale at bar 364 is one of the seven, not one of the ordinary ones, so the
+bar-counting check would have been silent there by design. Worth knowing before
+the run rather than after. And a **cheaper** version of the same test was never
+considered — Beethoven's First Symphony makes the identical change at bar 13.
+
+⚠️ **What this does not show:** nothing was read, rendered or scored. Whether we
+hold a printed edition of each of those 32 works, and whether its pages are legible
+enough to read the change off, are two further questions — but they are checkable
+questions about our library, where before we thought the problem was that the
+music itself did not exist.
+
+⚠️ **And the follow-up question answered itself the same afternoon.** Having
+found 32 candidate works, the obvious next question was whether we actually own
+printed editions of them — which I said would need the big score library on the
+desktop machine. That was wrong for the same reason: the library's *catalogue*
+is committed even though the PDFs are not, so it records what we hold. **We hold
+all 23 of the ones we can match by name, and none is missing.**
+
+The sharper version: the "printed one way, sounds another" case had been
+measured on a single publisher. All six unmeasured instances are on disk across
+**four** publishers — including two whose printing this project has never once
+read. That was the part most likely to make our conclusions parochial, and it
+turns out to be fixable from files we already have.
+
+⚠️ **What is still genuinely unknown** is whether those pages are legible enough,
+and which page of each PDF the change actually falls on. The second one needs a
+human checking a page against the printed bar numbers — that is real work, and it
+is now the only part that needs the desktop.
+
+Full reading: `benchmarks/omr-meter-fixture-pool-2026-09/FINDINGS.md`.
+
 ## Running it
 
 - **Web app:** `docker compose up -d` → http://localhost

@@ -1,0 +1,75 @@
+{
+  "numbering": {
+    "systems": [
+      {
+        "system": "1/0",
+        "bars": 16,
+        "staves_deciding": 12,
+        "readings": [
+          16
+        ],
+        "offset": 0
+      },
+      {
+        "system": "2/0",
+        "bars": 16,
+        "staves_deciding": 11,
+        "readings": [
+          16
+        ],
+        "offset": 16
+      },
+      {
+        "system": "2/1",
+        "bars": 15,
+        "staves_deciding": 11,
+        "readings": [
+          15
+        ],
+        "offset": 32
+      },
+      {
+        "system": "3/0",
+        "bars": 16,
+        "staves_deciding": 11,
+        "readings": [
+          16
+        ],
+        "offset": 47
+      },
+      {
+        "system": "3/1",
+        "bars": 18,
+        "staves_deciding": 8,
+        "readings": [
+          18
+        ],
+        "offset": 63
+      },
+      {
+        "system": "4/0",
+        "bars": 15,
+        "staves_deciding": 11,
+        "readings": [
+          15
+        ],
+        "offset": 81
+      },
+      {
+        "system": "4/1",
+        "bars": 15,
+        "staves_deciding": 11,
+        "readings": [
+          15
+        ],
+        "offset": 96
+      }
+    ],
+    "document_bars": 111,
+    "scheme": "document"
+  },
+  "moved": 90,
+  "measures": 1183,
+  "per_part_ambiguous_numbers": 30,
+  "document_ambiguous_numbers": 0
+}

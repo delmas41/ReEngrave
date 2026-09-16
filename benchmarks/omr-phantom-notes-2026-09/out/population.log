@@ -1,0 +1,22 @@
+REACH  file=beethoven5-mvt1-p1-p4.musicxml
+REACH  measures=1183  parts=12
+
+bars whose ENTIRE content is one PITCHED note : 117
+  ...of which UNDERFULL                       : 43
+  ...of which a lone QUARTER in a 2/4 bar     : 26
+
+the handoff's six named bars, found here     : 6/6
+   P1 m45   C5   dur=96 of 192  type=quarter
+   P1 m85   D5   dur=96 of 192  type=quarter
+   P1 m88   D5   dur=96 of 192  type=quarter
+   P1 m89   D5   dur=96 of 192  type=quarter
+   P2 m49   F5   dur=96 of 192  type=quarter
+   P2 m87   A5   dur=96 of 192  type=quarter
+
+lone-pitched bars by (duration, bar length, type):
+   dur=192   bar=192   type=half       n=74
+   dur=96    bar=192   type=quarter    n=26
+   dur=48    bar=192   type=eighth     n=16
+   dur=24    bar=192   type=16th       n=1
+
+by part: {'P1': 5, 'P2': 5, 'P3': 15, 'P4': 8, 'P5': 8, 'P6': 14, 'P7': 9, 'P8': 17, 'P9': 11, 'P10': 8, 'P11': 17}

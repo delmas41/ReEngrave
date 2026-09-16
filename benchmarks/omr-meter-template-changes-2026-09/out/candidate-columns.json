@@ -1,0 +1,131 @@
+{
+ "brahms1-breitkopf-p1-3": {
+  "cells": 706,
+  "non_opening_cells": 623,
+  "columns_total": 51,
+  "columns_non_opening": 45,
+  "staff_systems": 83,
+  "header_probes_today": 83,
+  "gates": {
+   ">= 1 staff/staves carry a meter-shaped detection": {
+    "columns": 38,
+    "probes": 525
+   },
+   ">= 2 staff/staves carry a meter-shaped detection": {
+    "columns": 30,
+    "probes": 413
+   },
+   ">= 3 staff/staves carry a meter-shaped detection": {
+    "columns": 23,
+    "probes": 316
+   },
+   ">= 4 staff/staves carry a meter-shaped detection": {
+    "columns": 11,
+    "probes": 153
+   },
+   ">= 5 staff/staves carry a meter-shaped detection": {
+    "columns": 7,
+    "probes": 97
+   },
+   ">= 1 staff/staves carry TWO of them": {
+    "columns": 32,
+    "probes": 441
+   },
+   ">= 2 staff/staves carry TWO of them": {
+    "columns": 18,
+    "probes": 249
+   },
+   ">= 3 staff/staves carry TWO of them": {
+    "columns": 12,
+    "probes": 166
+   }
+  },
+  "what": "Brahms 1 / Breitkopf, 3 pages, 83 staves \u2014 the scan gate's own row"
+ },
+ "beet5-litolff-p1": {
+  "cells": 132,
+  "non_opening_cells": 120,
+  "columns_total": 33,
+  "columns_non_opening": 30,
+  "staff_systems": 12,
+  "header_probes_today": 12,
+  "gates": {
+   ">= 1 staff/staves carry a meter-shaped detection": {
+    "columns": 0,
+    "probes": 0
+   },
+   ">= 2 staff/staves carry a meter-shaped detection": {
+    "columns": 0,
+    "probes": 0
+   },
+   ">= 3 staff/staves carry a meter-shaped detection": {
+    "columns": 0,
+    "probes": 0
+   },
+   ">= 4 staff/staves carry a meter-shaped detection": {
+    "columns": 0,
+    "probes": 0
+   },
+   ">= 5 staff/staves carry a meter-shaped detection": {
+    "columns": 0,
+    "probes": 0
+   },
+   ">= 1 staff/staves carry TWO of them": {
+    "columns": 0,
+    "probes": 0
+   },
+   ">= 2 staff/staves carry TWO of them": {
+    "columns": 0,
+    "probes": 0
+   },
+   ">= 3 staff/staves carry TWO of them": {
+    "columns": 0,
+    "probes": 0
+   }
+  },
+  "what": "Beethoven 5 / Litolff p.1 \u2014 a MOVEMENT OPENING (meter in the header)"
+ },
+ "mahler5-peters-p11": {
+  "cells": 221,
+  "non_opening_cells": 195,
+  "columns_total": 25,
+  "columns_non_opening": 22,
+  "staff_systems": 26,
+  "header_probes_today": 26,
+  "gates": {
+   ">= 1 staff/staves carry a meter-shaped detection": {
+    "columns": 9,
+    "probes": 90
+   },
+   ">= 2 staff/staves carry a meter-shaped detection": {
+    "columns": 4,
+    "probes": 46
+   },
+   ">= 3 staff/staves carry a meter-shaped detection": {
+    "columns": 3,
+    "probes": 33
+   },
+   ">= 4 staff/staves carry a meter-shaped detection": {
+    "columns": 2,
+    "probes": 20
+   },
+   ">= 5 staff/staves carry a meter-shaped detection": {
+    "columns": 1,
+    "probes": 13
+   },
+   ">= 1 staff/staves carry TWO of them": {
+    "columns": 2,
+    "probes": 20
+   },
+   ">= 2 staff/staves carry TWO of them": {
+    "columns": 0,
+    "probes": 0
+   },
+   ">= 3 staff/staves carry TWO of them": {
+    "columns": 0,
+    "probes": 0
+   }
+  },
+  "what": "Mahler 5 / Peters p.11 \u2014 a continuation page"
+ }
+}
