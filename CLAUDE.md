@@ -1688,8 +1688,15 @@ opt-in on the staged CLI. **REACH, measured first** (`probe/margin_label_reach.p
 no weights): the cascade reads **50 labels over 75 staves** — **12 of 12 on the
 opening system**, naming the full lineup — while the free text-layer rung reads
 **0 of 75** on this 1870 scan, which is why the OCR rungs are the ones that
-matter and why they are not defaulted on (CLAUDE.md measures Surya at ~75% of a
-whole-work run). ⚠️⚠️ **And page 3's 8-stave system reads `Fl.` `Cl.` `Fag.`
+matter and why they are not defaulted on. ⚠️⚠️ **The "~75% of a whole-work run"
+this sentence cited until 2026-09-16 DOES NOT EXIST ANYWHERE IN THIS FILE** —
+scoped in [docs/scope-surya-staged-optin-2026-09-16.md](docs/scope-surya-staged-optin-2026-09-16.md): the only same-pages
+pair (`omr-cleanup-count-2026-09` vs `omr-part-join-phase2-2026-09`, both
+`run_gather.sh`, 2026-09-11) is **+282 s over 4 pages, +17.8%, n=1, different
+trees**; the direction-text reader already spawns Surya on every staged page by
+default, so `--surya` saves one of TWO spawns; and the staged record stamps every
+label `READERS.TEXT_LAYER` whichever rung read it, so it cannot yet tell an absent
+OCR rung from a page that prints no label — fix that BEFORE any default moves. ⚠️⚠️ **And page 3's 8-stave system reads `Fl.` `Cl.` `Fag.`
 `Cor.` — no `Ob.`: the PRINT itself confirming the suppression**, so the
 anchors a name-based pairing needs sit exactly where the graft is (the
 suppressed families are winds and brass, which this edition labels on every

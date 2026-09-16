@@ -16,6 +16,51 @@ pointing at headings no longer in the file.)*
 
 ---
 
+## 2026-09-16 — The staged Surya opt-in scoped: the figure it rested on was never measured
+
+Sean asked whether to opt Surya in for the staged pipeline, what it adds per
+page, what the alternatives are, and whether to train an in-house OCR instead.
+Scoped remotely, **no arm run** — every figure read off committed artefacts and
+the tree at `da2c9c1`. Full reading: [docs/scope-surya-staged-optin-2026-09-16.md](docs/scope-surya-staged-optin-2026-09-16.md).
+
+- **Only the staged CLI opts Surya out.** `transcribe` has `surya_fallback=True`
+  and `OMR_DIRECTION_TEXT` has been on since 09-02; `run_staged` is the one
+  place `surya_fallback=False, ocr_fallback=False`.
+- ⚠️⚠️ **The "~75% of a whole-work run" cited by `staged/__main__.py` and
+  CLAUDE.md does not exist anywhere in CLAUDE.md.** Its only timing table gives
+  49% spawn-and-kill / 23% resident, and neither is a gather. Both citations
+  corrected in this commit; the default is NOT changed.
+- **The one same-pages pair says +282 s over 4 pages (+17.8%, ~70 s/page)** —
+  `omr-cleanup-count-2026-09` vs `omr-part-join-phase2-2026-09` `run_gather.sh`,
+  2026-09-11. n=1, different trees, same day as the shared-server queueing, and
+  ~200 s of it is unexplained against the ~65–80 s the spawn arithmetic predicts.
+- **Surya is spawned TWICE per staged page and `--surya` off stops one.**
+  `gather_direction_words` runs last on every page and `default_readers`
+  appends Surya whenever `available()` — no flag. The "time it adds" memory
+  most plausibly belongs to the direction-text flag, flipped on 09-02.
+- **`--ocr` alone is the wrong default; reordering the cascade is a trap.**
+  Staged has no vision rung and identity takes a matched label straight
+  through `lookup`, so Tesseract's in-word-and-resolving misreads ARE the
+  graft. With `OMR_LABEL_MERGE_QUALITY` on (default since 09-06) there is no
+  early return between the free rungs, so Tesseract-first saves zero spawns
+  and its strict-tie rule would keep Tesseract's text over Surya's.
+- **A prerequisite before any flip:** `gather_margin_labels` stamps every
+  label `READERS.TEXT_LAYER` and every empty staff `NO_INK` whichever rung ran,
+  so the record cannot tell a venv-less machine from a page with no labels —
+  the green-check-that-reached-nothing shape, verbatim.
+- **Train our own OCR: no.** Surya's misses are crop clipping, lexicon
+  single-slips, decoder runaway and running-order reasoning — none of them
+  character recognition; and the project's eleven fine-tune arms on ~600
+  cells deleted whole classes. Cheap and well-aimed instead: crop width
+  w20→w26, dynamics templates rendered from the `Bravura.otf` already in
+  `symbol_library/`, and the roster veto wired into staged (`Q.ROSTER_ENTRY`
+  has no producer).
+- **Decision: conditional YES, both flags together, Surya-first untouched,
+  after the record fix and a `--check`-gated ABAB experiment** whose
+  pre-registered flip/keep rules are in the doc's §9. The flip itself is
+  Sean's call. Start prompt for the next local session: §11.
+
+
 ## 2026-09-15 — Six jobs in parallel: five landed, and five of six reports were wrong about the tree
 
 A managing session ran six agents down

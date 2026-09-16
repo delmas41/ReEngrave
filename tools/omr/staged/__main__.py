@@ -106,10 +106,17 @@ def main(argv=None) -> int:
     # always forwarded to `gather`, which turns on the PDF TEXT LAYER reader
     # -- free, and measured to read NOTHING on a 19th-century scan (0 labels
     # over 75 staves on Litolff Beethoven 5 p.1-4). The OCR rungs are what
-    # actually read that edition (50 of 75) and they cost wall clock that
-    # CLAUDE.md measures at ~75% of a whole-work run, so they are OPT-IN
-    # rather than defaulted: a default that silently trebles a gather is a
+    # actually read that edition (50 of 75). They are OPT-IN rather than
+    # defaulted because a default that silently changes a gather's cost is a
     # decision somebody should take deliberately.
+    # ⚠️ This comment used to cite "CLAUDE.md measures Surya at ~75% of a
+    # whole-work run". No such measurement exists. The only same-pages pair
+    # (benchmarks/omr-cleanup-count-2026-09 vs omr-part-join-phase2-2026-09,
+    # both run_gather.sh, 2026-09-11) is +282 s over 4 pages, +17.8%, n=1 on
+    # different trees -- and gather_direction_words already spawns Surya on
+    # every page by default, so this flag saves one of TWO spawns. Scoped,
+    # with the pre-registered experiment that settles it, in
+    # docs/scope-surya-staged-optin-2026-09-16.md.
     ap.add_argument("--surya", action="store_true",
                     help="read margin labels with Surya where the PDF has no "
                          "text layer. Needed for ANY instrument identity on a "
