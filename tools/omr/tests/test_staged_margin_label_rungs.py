@@ -552,3 +552,62 @@ class TestTheRecordFixChangesNoVerdict(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# 8. The DEFAULTS, flipped 2026-09-16 on Sean's call
+# ─────────────────────────────────────────────────────────────────────────────
+
+
+class TestBothOcrRungsDefaultOn(unittest.TestCase):
+    """⚠️ A DEFAULT FLIP NEEDS A GUARD THAT CAN FAIL, or it reverts in a
+    refactor and nothing says so. Priced in
+    `benchmarks/omr-surya-staged-cost-2026-09/FINDINGS.md`: 93 s/page of a
+    real gather for 50 instrument identities over 75 staves, 50 of 50 correct
+    against hand-read print truth, where the free text layer reads ZERO."""
+
+    def test_the_flags_are_store_false_so_absence_is_ON(self):
+        """Source-level, because `main()` builds its parser inline and
+        rebuilding the table here would be a second copy to drift."""
+        import inspect
+        from tools.omr.staged import __main__ as M
+        src = inspect.getsource(M.main)
+        self.assertIn('"--no-surya", dest="surya", action="store_false"', src)
+        self.assertIn('"--no-ocr", dest="ocr", action="store_false"', src)
+        self.assertIn("ap.set_defaults(surya=True, ocr=True)", src)
+        self.assertNotIn('"--surya", action="store_true"', src)
+        self.assertNotIn('"--ocr", action="store_true"', src)
+
+    def test_the_parser_really_defaults_both_to_true(self):
+        import argparse
+        ap = argparse.ArgumentParser()
+        ap.add_argument("--no-surya", dest="surya", action="store_false")
+        ap.add_argument("--no-ocr", dest="ocr", action="store_false")
+        ap.set_defaults(surya=True, ocr=True)
+        self.assertEqual((ap.parse_args([]).surya, ap.parse_args([]).ocr),
+                         (True, True))
+        self.assertEqual(ap.parse_args(["--no-surya"]).surya, False)
+        self.assertEqual(ap.parse_args(["--no-ocr"]).ocr, False)
+
+    def test_run_staged_defaults_both_on(self):
+        import inspect
+        from tools.omr.staged import pipeline
+        for fn in (pipeline.run_staged, pipeline.run_staged_on):
+            sig = inspect.signature(fn)
+            self.assertIs(sig.parameters["surya_fallback"].default, True,
+                          f"{fn.__name__} surya_fallback")
+            self.assertIs(sig.parameters["ocr_fallback"].default, True,
+                          f"{fn.__name__} ocr_fallback")
+
+    def test_the_GATHER_default_stays_off_and_says_so(self):
+        """The asymmetry is deliberate and is safe only because of the
+        four-state contract: a direct caller that does not ask gets
+        OUT_OF_SCOPE, which SAYS it was never asked."""
+        import inspect
+        from tools.omr.staged import gather as GG
+        sig = inspect.signature(GG.gather_margin_labels)
+        self.assertIs(sig.parameters["surya_fallback"].default, False)
+        self.assertIs(sig.parameters["ocr_fallback"].default, False)
+        log = _run(surya_flag=False, ocr_flag=False)
+        self.assertEqual({r["reason"] for r in _staff_refusals(log)},
+                         {ABSTAIN.OUT_OF_SCOPE})

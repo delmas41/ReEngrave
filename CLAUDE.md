@@ -1684,20 +1684,33 @@ which is worse, because a graft counted as a note error ranks the work into the
 wrong module. ⚠️ And padding needs a bar length: the meter is decided on **1
 system of 7** here and `OMR_METER_CARRY` is off on **n**.
 
-**SHIPPED: (1) `run_staged` forwards `pdf_path`**, with `--surya` / `--ocr`
-opt-in on the staged CLI. **REACH, measured first** (`probe/margin_label_reach.py`,
-no weights): the cascade reads **50 labels over 75 staves** — **12 of 12 on the
-opening system**, naming the full lineup — while the free text-layer rung reads
-**0 of 75** on this 1870 scan, which is why the OCR rungs are the ones that
-matter and why they are not defaulted on. ⚠️⚠️ **The "~75% of a whole-work run"
-this sentence cited until 2026-09-16 DOES NOT EXIST ANYWHERE IN THIS FILE** —
-scoped in [docs/scope-surya-staged-optin-2026-09-16.md](docs/scope-surya-staged-optin-2026-09-16.md): the only same-pages
-pair (`omr-cleanup-count-2026-09` vs `omr-part-join-phase2-2026-09`, both
-`run_gather.sh`, 2026-09-11) is **+282 s over 4 pages, +17.8%, n=1, different
-trees**; the direction-text reader already spawns Surya on every staged page by
-default, so `--surya` saves one of TWO spawns; and the staged record stamps every
-label `READERS.TEXT_LAYER` whichever rung read it, so it cannot yet tell an absent
-OCR rung from a page that prints no label — fix that BEFORE any default moves. ⚠️⚠️ **And page 3's 8-stave system reads `Fl.` `Cl.` `Fag.`
+**SHIPPED: (1) `run_staged` forwards `pdf_path`**, and ⚠️⚠️ **BOTH OCR RUNGS
+NOW DEFAULT ON — `--no-surya` / `--no-ocr`, absence is ON** (2026-09-16,
+Sean's call, on the measurement below). **REACH, measured first**
+(`probe/margin_label_reach.py`, no weights): the cascade reads **50 labels
+over 75 staves** — **12 of 12 on the opening system**, naming the full
+lineup — while the free text-layer rung reads **0 of 75** on this 1870 scan,
+which is why the OCR rungs are the ones that matter. ⚠️⚠️ **The "~75% of a
+whole-work run" this sentence cited until 2026-09-16 DOES NOT EXIST ANYWHERE
+IN THIS FILE**, and the measured figure is **20.5% of a real gather, 93
+s/page** — six ABAB arms, drift-corrected, in
+[benchmarks/omr-surya-staged-cost-2026-09/FINDINGS.md](benchmarks/omr-surya-staged-cost-2026-09/FINDINGS.md).
+What it buys: **50 of 50 labels CORRECT** against a truth assembled from
+hand-read suppression lists and `works.json`'s hand-confirmed names —
+deliberately NOT `printed-lineups.json`, whose own provenance says its names
+came from the OCR, so scoring against it is the reader agreeing with itself.
+⚠️⚠️ **AND THE EXPERIMENT FOUND A BIGGER READER THAN THE ONE IT WAS ASKED
+ABOUT: `OMR_DIRECTION_TEXT` costs ~267 s/page on the same document and
+yields SIX accepted words** — 2.9× the flag under discussion — and it has
+been ON by default since 2026-09-02. The `LD` arm (labels on, directions
+off) is **faster than every other arm, including both arms that carry no
+label reader at all**. Its engraved value (144 edits) is not in question;
+what was never priced is a scan. ⚠️ Before any of this the staged record
+stamped every label `READERS.TEXT_LAYER` whichever rung read it and could
+not tell an absent OCR rung from a page that prints no label; that was fixed
+FIRST (the four-state contract, `gather_margin_labels`), and the committed
+Brahms record shows the old fault in the wild — **97 labels all filed under
+`text_layer`, on a PDF with no text layer on any of its four pages.** ⚠️⚠️ **And page 3's 8-stave system reads `Fl.` `Cl.` `Fag.`
 `Cor.` — no `Ob.`: the PRINT itself confirming the suppression**, so the
 anchors a name-based pairing needs sit exactly where the graft is (the
 suppressed families are winds and brass, which this edition labels on every

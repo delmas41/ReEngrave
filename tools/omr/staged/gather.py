@@ -1998,6 +1998,15 @@ _RUNG_READER = {
 }
 
 
+#: ⚠️ THESE TWO DEFAULT **OFF** HERE WHILE THE PIPELINE AND THE CLI DEFAULT
+#: THEM **ON** (2026-09-16), AND THE ASYMMETRY IS DELIBERATE. `run_staged`
+#: always passes both explicitly, so this default is reached only by a DIRECT
+#: caller -- which in practice means a test, and a test must never spawn a
+#: 650M-parameter OCR subprocess by accident. What makes the asymmetry safe
+#: is the four-state contract below: a direct caller that does not ask now
+#: gets `OUT_OF_SCOPE` on every staff, which SAYS it was never asked. Before
+#: that contract existed this default was a silent blinding, which is exactly
+#: why it could not have been left this way.
 def gather_margin_labels(log: Log, pws: Any, cells, local, *,
                          pdf_path: Any = None, surya_fallback: bool = False,
                          ocr_fallback: bool = False) -> None:

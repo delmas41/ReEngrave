@@ -146,7 +146,7 @@ def run_staged(pdf_path: str, pages: Sequence[int], *,
                detector: Any = None, dpi: int = 600,
                conf_threshold: float = 0.25, imgsz: Optional[int] = None,
                dossier: Any = None, roster: Any = None,
-               surya_fallback: bool = False, ocr_fallback: bool = False,
+               surya_fallback: bool = True, ocr_fallback: bool = True,
                legacy: Optional[Dict[str, Dict[str, Any]]] = None,
                progress: bool = False) -> Dict[str, Any]:
     """GATHER -> ADJUDICATE -> EVALUATE, once, in that order.
@@ -183,7 +183,7 @@ def run_staged_on(prepared: Sequence[Tuple[Any, Sequence[Any]]], *,
                   detector: Any = None, conf_threshold: float = 0.25,
                   imgsz: Optional[int] = None, dossier: Any = None,
                   roster: Any = None, pdf_path: Any = None,
-                  surya_fallback: bool = False, ocr_fallback: bool = False,
+                  surya_fallback: bool = True, ocr_fallback: bool = True,
                   legacy: Optional[Dict[str, Dict[str, Any]]] = None,
                   progress: bool = False) -> Dict[str, Any]:
     """The stages, over pages someone else prepared.

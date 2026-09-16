@@ -550,6 +550,25 @@ Full reading: `benchmarks/omr-slot-index-2026-09/FINDINGS.md`.
 Full setup and environment variables: CLAUDE.md → "Running locally" and
 "Environment variables".
 
+## Surya, measured: it is switched on now (2026-09-16)
+
+The question above was answered by measuring it, and both OCR rungs are now
+**on by default**. Reading the instrument names off a scan's margin costs
+about a minute and a half per page of a run that takes half an hour, and on
+the test document it produced **fifty names over seventy-five staves, every
+one of them correct** when checked against what a human read off the printed
+page. The free alternative — the text hidden inside the PDF — read nothing at
+all on that 1870 edition, so this is the difference between knowing which
+instrument each staff belongs to and guessing from its position.
+
+The surprise was elsewhere. A *second* use of the same OCR, reading tempo and
+expression words printed inside the music, has been switched on since early
+September and had never been timed on a scan. It costs nearly three times as
+much as the switch under discussion and, on this document, recovered six
+words. Turning it off while leaving the instrument-name reader on makes the
+whole run faster than it is today. That is now the thing to look at, and its
+value on cleanly engraved scores is not in doubt — only on scans.
+
 ## The Surya opt-in, and a number that was never measured (2026-09-16)
 
 Sean asked whether the staged pipeline should opt in to the free local OCR

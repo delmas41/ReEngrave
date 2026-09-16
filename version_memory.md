@@ -16,6 +16,64 @@ pointing at headings no longer in the file.)*
 
 ---
 
+## 2026-09-16 — Surya measured, both OCR rungs DEFAULT ON, and the reader nobody was asking about
+
+The experiment §9 of the scope pre-registered, run on Sean's machine with the
+machine taken exclusively. **Both OCR rungs now default ON** (`--no-surya` /
+`--no-ocr`, absence is ON) — Sean's call, on the pre-registered rule.
+
+- **The record was fixed FIRST, because the flip was unsafe without it.**
+  `gather_margin_labels` wrote `reader=text_layer, reason=no_ink` for four
+  different facts. It now spells them apart: `READER_UNAVAILABLE` (a
+  requested rung is missing, or was installed and threw), `OUT_OF_SCOPE` (no
+  rung was asked), `NO_INK` (every asked rung ran and read nothing). An
+  observation names the rung that actually read it, via a `sources`
+  out-parameter beside `tiers` — a per-page COUNT cannot say which staff a
+  rung read, and list order is an implementation detail, not a join.
+  ⚠️ **The old fault, in the wild:** the committed Brahms record carries 97
+  labels all filed under `text_layer`, on a PDF with **no text layer on any
+  of its four pages**.
+- **Cost: 17.8 / 17.9 s per page attributable**, two independent runs, 12
+  page-runs each, no detector. **The model load is NOT shared between
+  spawns** — the second call in one process costs **+0.12 s MORE** — so the
+  cost is per spawn. **It does not scale with the page**: 12 staves/1 system
+  and 22 staves/2 systems both cost ~17 s.
+- **In a real gather: 93 s/page, 20.5% of it**, six ABAB arms,
+  drift-corrected. ⚠️ Every successive arm was slower in BOTH conditions
+  **while machine load fell** — that drift is +93 s per arm position and was
+  first mistaken for a noise floor; once modelled the real scatter is ±25 s.
+  The drift's cause is unknown.
+- **Accuracy: 50 of 50 labels correct**, against a truth assembled from
+  hand-read suppression lists plus `works.json`'s hand-confirmed names.
+  ⚠️ `printed-lineups.json` was deliberately NOT used: its own provenance
+  says its names came from the OCR's read of page 1.
+- ⚠️⚠️ **THE FINDING THE EXPERIMENT WAS NOT ASKED FOR.** `OMR_DIRECTION_TEXT`
+  — on by default since 2026-09-02, never priced on a scan — costs **~267
+  s/page on the same document and yields SIX accepted words**, 2.9× the flag
+  under discussion. The `LD` arm (labels on, directions off) is **faster than
+  every other arm, including both that carry no label reader at all.** Its
+  engraved value (144 edits) is not in question.
+- ⚠️ **A pre-registered hypothesis was REFUTED**, which is why it was written
+  first: the ~300 s the attributable figure does not explain is NOT downstream
+  work. The arms do near-identical work — ~100 extra decisions out of
+  eighteen thousand. The surviving candidate is that a spawn costs more from
+  a multi-GB gather process than from a small probe. Unmeasured.
+- **Five instrument defects, all of one family** — computing the wrong thing
+  while looking fine. The scope's own census `grep` inverts after the record
+  fix; the census's first draft printed `census OK: 0` off a wrong indent;
+  the in-flight gate failed closed, then open (macOS truncates `comm` to 15
+  chars), then right; `case` matched `L*` before `LD`, so the decomposition
+  arm ran as a duplicate — caught only because the arm prints its own
+  configuration, and kept as a third L arm, which is what revealed the drift.
+- ⚠️ **An operational hazard:** an arm left an orphaned `llama-server` and a
+  LIVE SENTINEL behind despite `OMR_SURYA_KEEP_ALIVE=0`. The next arm's
+  precheck caught it and refused to run. A run can be contaminated by the
+  previous run's leak.
+
+Findings: `benchmarks/omr-surya-staged-cost-2026-09/FINDINGS.md`.
+
+---
+
 ## 2026-09-16 — The staged Surya opt-in scoped: the figure it rested on was never measured
 
 Sean asked whether to opt Surya in for the staged pipeline, what it adds per

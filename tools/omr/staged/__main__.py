@@ -102,13 +102,25 @@ def main(argv=None) -> int:
                     help="also EXPORT the run to MusicXML here. The coverage "
                          "report -- what the record could NOT carry -- goes "
                          "beside it as <path>.coverage.json.")
-    # ⚠️ THE FREE RUNG NEEDS NO FLAG AND THE PAID ONES DO. `pdf_path` is now
-    # always forwarded to `gather`, which turns on the PDF TEXT LAYER reader
-    # -- free, and measured to read NOTHING on a 19th-century scan (0 labels
-    # over 75 staves on Litolff Beethoven 5 p.1-4). The OCR rungs are what
-    # actually read that edition (50 of 75). They are OPT-IN rather than
-    # defaulted because a default that silently changes a gather's cost is a
-    # decision somebody should take deliberately.
+    # ⚠️⚠️ BOTH OCR RUNGS DEFAULT **ON** SINCE 2026-09-16 (Sean's call), and
+    # the flags are `--no-surya` / `--no-ocr` so ABSENCE IS ON. The text
+    # layer is free and reads NOTHING on a 19th-century scan (0 labels over
+    # 75 staves on Litolff Beethoven 5 p.1-4); the OCR rungs are what
+    # actually read that edition (50 of 75, and 50 of 50 CORRECT against
+    # hand-read print truth).
+    #
+    # They were opt-in "because a default that silently changes a gather's
+    # cost is a decision somebody should take deliberately". That decision is
+    # now taken ON MEASUREMENT rather than on caution:
+    # `benchmarks/omr-surya-staged-cost-2026-09/FINDINGS.md` -- 17.8 s/page
+    # attributable, 93 s/page of a real gather (20.5% of it, drift-corrected
+    # over six ABAB arms).
+    #
+    # ⚠️ The "~75% of a whole-work run" this comment once cited never
+    # existed. The measured figure is 20.5%, and the reader that actually
+    # dominates a staged run is `OMR_DIRECTION_TEXT` at ~267 s/page for SIX
+    # accepted words on the same document -- which has been ON by default
+    # since 2026-09-02 and is repriced in that same FINDINGS.
     # ⚠️ This comment used to cite "CLAUDE.md measures Surya at ~75% of a
     # whole-work run". No such measurement exists. The only same-pages pair
     # (benchmarks/omr-cleanup-count-2026-09 vs omr-part-join-phase2-2026-09,
@@ -117,13 +129,24 @@ def main(argv=None) -> int:
     # every page by default, so this flag saves one of TWO spawns. Scoped,
     # with the pre-registered experiment that settles it, in
     # docs/scope-surya-staged-optin-2026-09-16.md.
-    ap.add_argument("--surya", action="store_true",
-                    help="read margin labels with Surya where the PDF has no "
-                         "text layer. Needed for ANY instrument identity on a "
-                         "scan -- without it Q.MARGIN_LABEL stays empty and "
-                         "the part join falls back to staff position.")
-    ap.add_argument("--ocr", action="store_true",
-                    help="also allow the Tesseract rung for margin labels.")
+    ap.add_argument("--no-surya", dest="surya", action="store_false",
+                    help="do NOT read margin labels with Surya. On by "
+                         "default since 2026-09-16: measured at 93 s/page on "
+                         "Litolff Beethoven 5 p1-4, buying 50 instrument "
+                         "identities over 75 staves, 50 of 50 correct "
+                         "against hand-read print truth, where the free text "
+                         "layer reads ZERO. Without it Q.MARGIN_LABEL stays "
+                         "empty and the part join falls back to staff "
+                         "position.")
+    ap.add_argument("--no-ocr", dest="ocr", action="store_false",
+                    help="do NOT allow the Tesseract rung for margin labels. "
+                         "Both rungs default ON together and should be "
+                         "turned off together: Tesseract's measured value is "
+                         "as an additive rung UNDER Surya, and alone its "
+                         "error mode is in-word and RESOLVING (`Ki.Tr.` -> "
+                         "Trumpet at high confidence), which in the staged "
+                         "path nothing outranks.")
+    ap.set_defaults(surya=True, ocr=True)
     ap.add_argument("--progress", action="store_true")
     args = ap.parse_args(argv)
 
