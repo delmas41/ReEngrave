@@ -443,7 +443,12 @@ that.** Ranked, not built.
   forwards. It also **refuses to run on a dirty tree**, because a battery that
   `git checkout`s a dirty file destroys work and cannot tell its own mutation
   from yours.
-- **Full suite**: SUITE_PLACEHOLDER. `no_producer --check`,
+- **Full suite**: **3958 passed, 11 skipped, 0 failed** on the merged tree.
+  ⚠️ An EARLIER run reported 8 failures and every one was this repo's own documented
+  hazard, hit by merging main mid-suite: `test_staged_voices.TestTheExporterReadsIt`
+  asserts on `inspect.getsource`, which reads from DISK using the line numbers the
+  module carried when it was IMPORTED. *Do not believe a single source-level
+  failure; re-run.*. `no_producer --check`,
   `inventory --check`, `gather_coverage`, `health --check` and
   `wiring --check` all exit 0.
 
