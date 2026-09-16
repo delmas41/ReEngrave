@@ -1,0 +1,224 @@
+{
+ "tally": {
+  "writable": 11,
+  "owned_by_another_staff": 1
+ },
+ "rows": [
+  {
+   "subject": "glyph/1/0/13/0/29",
+   "witness": "slot",
+   "staff_step": 5.152,
+   "my_staff": "staff/1/0/13",
+   "owner": null,
+   "relocated": false,
+   "pitch": "E3",
+   "pitch_outcome": "decided",
+   "duration": {
+    "beats": 2.0,
+    "written": 2.0,
+    "dots": 0,
+    "beam_levels": 0
+   },
+   "duration_outcome": "decided",
+   "state": "writable"
+  },
+  {
+   "subject": "glyph/1/0/2/5/32",
+   "witness": "neighbouring_bar",
+   "staff_step": 15.565,
+   "my_staff": "staff/1/0/2",
+   "owner": null,
+   "relocated": false,
+   "pitch": "G6",
+   "pitch_outcome": "decided",
+   "duration": {
+    "beats": 1.0,
+    "written": 1.0,
+    "dots": 0,
+    "beam_levels": 0
+   },
+   "duration_outcome": "decided",
+   "state": "writable"
+  },
+  {
+   "subject": "glyph/1/1/5/7/11",
+   "witness": "neighbouring_bar",
+   "staff_step": -7.1,
+   "my_staff": "staff/1/1/5",
+   "owner": "staff/1/1/6",
+   "relocated": true,
+   "pitch": "D5",
+   "pitch_outcome": "decided",
+   "duration": {
+    "beats": 2.0,
+    "written": 2.0,
+    "dots": 0,
+    "beam_levels": 0
+   },
+   "duration_outcome": "decided",
+   "state": "owned_by_another_staff"
+  },
+  {
+   "subject": "glyph/2/1/6/0/10",
+   "witness": "neighbouring_bar",
+   "staff_step": -7.54,
+   "my_staff": "staff/2/1/6",
+   "owner": null,
+   "relocated": false,
+   "pitch": "E3",
+   "pitch_outcome": "decided",
+   "duration": {
+    "beats": 1.0,
+    "written": 1.0,
+    "dots": 0,
+    "beam_levels": 0
+   },
+   "duration_outcome": "decided",
+   "state": "writable"
+  },
+  {
+   "subject": "glyph/2/1/6/0/8",
+   "witness": "neighbouring_bar",
+   "staff_step": -7.554,
+   "my_staff": "staff/2/1/6",
+   "owner": null,
+   "relocated": false,
+   "pitch": "E3",
+   "pitch_outcome": "decided",
+   "duration": {
+    "beats": 1.0,
+    "written": 1.0,
+    "dots": 0,
+    "beam_levels": 0
+   },
+   "duration_outcome": "decided",
+   "state": "writable"
+  },
+  {
+   "subject": "glyph/3/0/6/0/12",
+   "witness": "neighbouring_bar",
+   "staff_step": -7.55,
+   "my_staff": "staff/3/0/6",
+   "owner": null,
+   "relocated": false,
+   "pitch": "E3",
+   "pitch_outcome": "decided",
+   "duration": {
+    "beats": 1.0,
+    "written": 1.0,
+    "dots": 0,
+    "beam_levels": 0
+   },
+   "duration_outcome": "decided",
+   "state": "writable"
+  },
+  {
+   "subject": "glyph/3/0/6/0/16",
+   "witness": "neighbouring_bar",
+   "staff_step": -7.627,
+   "my_staff": "staff/3/0/6",
+   "owner": null,
+   "relocated": false,
+   "pitch": "E3",
+   "pitch_outcome": "decided",
+   "duration": {
+    "beats": 1.0,
+    "written": 1.0,
+    "dots": 0,
+    "beam_levels": 0
+   },
+   "duration_outcome": "decided",
+   "state": "writable"
+  },
+  {
+   "subject": "glyph/3/0/6/4/12",
+   "witness": "neighbouring_bar",
+   "staff_step": -7.62,
+   "my_staff": "staff/3/0/6",
+   "owner": null,
+   "relocated": false,
+   "pitch": "E3",
+   "pitch_outcome": "decided",
+   "duration": {
+    "beats": 1.5,
+    "written": 1.5,
+    "dots": 1,
+    "beam_levels": 0
+   },
+   "duration_outcome": "decided",
+   "state": "writable"
+  },
+  {
+   "subject": "glyph/3/0/6/4/8",
+   "witness": "neighbouring_bar",
+   "staff_step": -7.57,
+   "my_staff": "staff/3/0/6",
+   "owner": null,
+   "relocated": false,
+   "pitch": "E3",
+   "pitch_outcome": "decided",
+   "duration": {
+    "beats": 1.5,
+    "written": 1.5,
+    "dots": 1,
+    "beam_levels": 0
+   },
+   "duration_outcome": "decided",
+   "state": "writable"
+  },
+  {
+   "subject": "glyph/3/0/6/8/1",
+   "witness": "neighbouring_bar",
+   "staff_step": -7.48,
+   "my_staff": "staff/3/0/6",
+   "owner": null,
+   "relocated": false,
+   "pitch": "E3",
+   "pitch_outcome": "decided",
+   "duration": {
+    "beats": 0.5,
+    "written": 0.5,
+    "dots": 0,
+    "beam_levels": 1
+   },
+   "duration_outcome": "decided",
+   "state": "writable"
+  },
+  {
+   "subject": "glyph/3/1/7/9/15",
+   "witness": "neighbouring_bar",
+   "staff_step": -7.63,
+   "my_staff": "staff/3/1/7",
+   "owner": null,
+   "relocated": false,
+   "pitch": "D3",
+   "pitch_outcome": "decided",
+   "duration": {
+    "beats": 1.0,
+    "written": 1.0,
+    "dots": 0,
+    "beam_levels": 0
+   },
+   "duration_outcome": "decided",
+   "state": "writable"
+  },
+  {
+   "subject": "glyph/3/1/7/9/9",
+   "witness": "neighbouring_bar",
+   "staff_step": -7.61,
+   "my_staff": "staff/3/1/7",
+   "owner": null,
+   "relocated": false,
+   "pitch": "D3",
+   "pitch_outcome": "decided",
+   "duration": {
+    "beats": 1.0,
+    "written": 1.0,
+    "dots": 0,
+    "beam_levels": 0
+   },
+   "duration_outcome": "decided",
+   "state": "writable"
+  }
+ ]
+}

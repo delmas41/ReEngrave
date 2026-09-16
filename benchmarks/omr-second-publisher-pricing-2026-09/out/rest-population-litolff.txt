@@ -1,0 +1,20 @@
+=== Litolff Beethoven 5 p1-4 (CONTROL): 395 `restWhole` detections with staff geometry ===
+
+  THE SHIPPED SHAPE BAND, run over this document's OWN whole rests
+  inside the SHIPPED shape band                      355  ( 89.9%)
+  refused: TALLER than the shipped max height         20  (  5.1%)
+  refused: NARROWER than the shipped min aspect        1  (  0.3%)
+  refused: WIDER than the shipped max aspect          19  (  4.8%)
+
+  below the staff by more than a space (< -2)          0  (  0.0%)
+  just below the bottom line (-2..0)                  13  (  3.3%)
+  INSIDE the staff (0..8)                            381  ( 96.5%)
+  just above the top line (8..10)                      0  (  0.0%)
+  above the staff by more than a space (> 10)          1  (  0.3%)
+
+  at the SLOT (|step - 5.5| <= 1.0)                342  ( 86.6%)
+  OUTSIDE their own staff entirely                    14  (  3.5%)
+
+  ⚠️ Every row outside its own staff is a rest the neighbour witness can use to vouch for a suspect ALSO outside the staff — which is the population a whole-rest rule has no business speaking about.
+
+wrote -> benchmarks/omr-second-publisher-pricing-2026-09/out/rest-population-litolff.json

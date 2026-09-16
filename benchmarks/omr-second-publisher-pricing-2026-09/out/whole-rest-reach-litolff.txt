@@ -1,0 +1,32 @@
+=== 1. POSITIVE CONTROL — Litolff Beethoven 5 p1-4 (CONTROL: the document the cuts came from) ===
+  provenance                    {'commit': '9d4ccc85b9a77652f7166c31b10dbb615176d50c', 'dirty': True}
+  noteheads with a page box     2347
+  restWhole  with a page box    395
+
+=== 2. THE BAND — Litolff Beethoven 5 p1-4 (CONTROL: the document the cuts came from)'s OWN 395 whole rests ===
+                          SHIPPED (Litolff)    THIS DOCUMENT     delta
+  max height (spaces)                 0.840            0.840    +0.000
+  min aspect                          1.630            1.631    +0.001
+  max aspect                          3.090            3.087    -0.003
+  (p05 height)                        0.460            0.460
+  whole-rest step                     5.500            5.540  (median of this doc's own)
+     its p05 / p95                          2.47 / 5.93
+  noteheads here: height median 1.310, aspect median 1.143
+
+=== 3. THE FIRES over 2347 noteheads with geometry ===
+  SHAPE alone (shipped cuts)                 145
+  POSITION alone (slot or neighbouring bar)  397
+  SHIPPED RULE  = shape+position             25   <-- these are the notes it DELETES
+  rebuilt on THIS document's own band        25
+  in both                                     25   (shipped-only 0, mine-only 0)
+  witness split (shipped)                    {'slot': 20, 'neighbouring_bar': 5}
+
+  every SHIPPED fire:
+     0  glyph/1/0/0/15/1           h= 0.68 asp=  1.99 step= +5.24 conf=0.50 cls=noteheadBlackInSpace     alone=1 nb=None
+     1  glyph/1/0/2/15/5           h= 0.74 asp=  1.85 step= +5.06 conf=0.26 cls=noteheadWholeInSpace     alone=1 nb=None
+     2  glyph/1/0/5/4/1            h= 0.71 asp=  2.35 step= +5.61 conf=0.36 cls=noteheadBlackInSpace     alone=1 nb=None
+     3  glyph/2/0/0/10/2           h= 0.64 asp=  1.98 step= +5.68 conf=0.31 cls=noteheadBlackInSpace     alone=1 nb=None
+     4  glyph/2/0/0/15/3           h= 0.74 asp=  2.11 step= +5.86 conf=0.34 cls=noteheadWholeOnLine      alone=1 nb=None
+     5  glyph/2/0/2/11/3           h= 0.73 asp=  2.25 step= +5.77 conf=0.26 cls=noteheadBlackInSpace     alone=1 nb=None
+     6  glyph/2/0/3/10/1           h= 0.79 asp=  1.87 step= +5.53 conf=0.52 cls=noteheadBlackOnLine      alone=1 nb=None
+     7  glyph/2/1/0/5/7            h= 0.77 asp=  1.94 step= -0.41 conf=0.33 cls=noteheadWholeInSpace     alone=1 nb={'cell': 6, 'staff_step': -0.413}

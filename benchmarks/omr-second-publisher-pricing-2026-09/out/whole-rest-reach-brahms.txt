@@ -1,0 +1,40 @@
+=== 1. POSITIVE CONTROL — Breitkopf Brahms 1 p0-3 ===
+  provenance                    {'commit': 'e282ae0c02a346db6f248d2c0c7ead69de8a84c6', 'dirty': False}
+  noteheads with a page box     3337
+  restWhole  with a page box    398
+
+=== 2. THE BAND — Breitkopf Brahms 1 p0-3's OWN 398 whole rests ===
+                          SHIPPED (Litolff)    THIS DOCUMENT     delta
+  max height (spaces)                 0.840            0.670    -0.170
+  min aspect                          1.630            1.615    -0.015
+  max aspect                          3.090            4.633    +1.543
+  (p05 height)                        0.460            0.308
+  whole-rest step                     5.500            5.271  (median of this doc's own)
+     its p05 / p95                          -7.53 / 6.28
+  noteheads here: height median 1.150, aspect median 1.173
+
+=== 3. THE FIRES over 3337 noteheads with geometry ===
+  SHAPE alone (shipped cuts)                 110
+  POSITION alone (slot or neighbouring bar)  621
+  SHIPPED RULE  = shape+position             12   <-- these are the notes it DELETES
+  rebuilt on THIS document's own band        10
+  in both                                     10   (shipped-only 2, mine-only 0)
+  witness split (shipped)                    {'neighbouring_bar': 11, 'slot': 1}
+
+  every SHIPPED fire:
+     0  glyph/1/0/13/0/29          h= 0.75 asp=  1.74 step= +5.15 conf=0.26 cls=noteheadHalfInSpace      alone=1 nb=None
+     1  glyph/1/0/2/5/32           h= 0.43 asp=  3.02 step=+15.56 conf=0.27 cls=noteheadBlackOnLine      alone=1 nb={'cell': 3, 'staff_step': 15.58}
+     2  glyph/1/1/5/7/11           h= 0.82 asp=  2.00 step= -7.10 conf=0.33 cls=noteheadHalfInSpace      alone=1 nb={'cell': 5, 'staff_step': -7.43}
+     3  glyph/2/1/6/0/10           h= 0.44 asp=  1.73 step= -7.54 conf=0.40 cls=noteheadBlackInSpace     alone=1 nb={'cell': 1, 'staff_step': -7.37}
+     4  glyph/2/1/6/0/8            h= 0.42 asp=  1.76 step= -7.55 conf=0.51 cls=noteheadBlackInSpace     alone=1 nb={'cell': 1, 'staff_step': -7.37}
+     5  glyph/3/0/6/0/12           h= 0.45 asp=  1.69 step= -7.55 conf=0.54 cls=noteheadBlackInSpace     alone=1 nb={'cell': 2, 'staff_step': -7.33}
+     6  glyph/3/0/6/0/16           h= 0.37 asp=  2.17 step= -7.63 conf=0.33 cls=noteheadBlackInSpace     alone=1 nb={'cell': 2, 'staff_step': -7.33}
+     7  glyph/3/0/6/4/12           h= 0.38 asp=  1.84 step= -7.62 conf=0.42 cls=noteheadBlackOnLine      alone=1 nb={'cell': 2, 'staff_step': -7.33}
+     8  glyph/3/0/6/4/8            h= 0.43 asp=  1.70 step= -7.57 conf=0.54 cls=noteheadBlackOnLine      alone=1 nb={'cell': 2, 'staff_step': -7.33}
+     9  glyph/3/0/6/8/1            h= 0.40 asp=  2.58 step= -7.48 conf=0.55 cls=noteheadBlackInSpace     alone=1 nb={'cell': 7, 'staff_step': -7.44}
+    10  glyph/3/1/7/9/15           h= 0.37 asp=  2.24 step= -7.63 conf=0.32 cls=noteheadBlackInSpace     alone=1 nb={'cell': 7, 'staff_step': -7.64}
+    11  glyph/3/1/7/9/9            h= 0.39 asp=  1.67 step= -7.61 conf=0.39 cls=noteheadBlackInSpace     alone=1 nb={'cell': 7, 'staff_step': -7.64}
+
+  wrote 12 fires -> benchmarks/omr-second-publisher-pricing-2026-09/out/fires-brahms.json
+  wrote 248 NEAR MISSES -> benchmarks/omr-second-publisher-pricing-2026-09/out/near-miss-brahms.json
+  wrote reach -> benchmarks/omr-second-publisher-pricing-2026-09/out/whole-rest-reach-brahms.json

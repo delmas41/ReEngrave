@@ -1,0 +1,14 @@
+=== Breitkopf Brahms 1 p0-3 ===
+  gathered   `aug_dot` rows             656
+  gathered   `rest` rows               1028
+  decided    NOTE durations            2828   of which DOTTED   454
+  decided    REST durations            1129   of which DOTTED     1   <-- the repair's reach
+      glyph/2/1/6/1/1            dots=1 beats=6.0
+
+=== Litolff Beethoven 5 p1-4 (CONTROL — where it moved ZERO) ===
+  gathered   `aug_dot` rows              35
+  gathered   `rest` rows                646
+  decided    NOTE durations            2000   of which DOTTED     4
+  decided    REST durations             738   of which DOTTED     0   <-- the repair's reach
+
+wrote -> benchmarks/omr-second-publisher-pricing-2026-09/out/dotted-rest-reach.json
