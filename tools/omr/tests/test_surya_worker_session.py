@@ -185,3 +185,38 @@ class TestBothCallersShareOneDispatcher(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class TestItStopsOnlyTheServerItStarted(unittest.TestCase):
+    """⚠️ The first version trusted surya's atexit and the claim was
+    WITHDRAWN -- a server turned up half an hour later whose pid sat inside
+    the test's own range. An atexit does not run on a kill, and the check had
+    been taken too early. These arms pin the narrow rule that replaced it."""
+
+    def _teardown(self, before_pid, after):
+        stopped = {"called": False}
+        with mock.patch.object(S, "resident_server", lambda: after), \
+                mock.patch.object(S, "stop_server",
+                                  lambda: stopped.__setitem__("called", True)):
+            S._stop_server_this_session_started(before_pid)
+        return stopped["called"]
+
+    def test_a_server_that_APPEARED_is_ours_and_is_stopped(self):
+        self.assertTrue(self._teardown(None, {"pid": 999}))
+
+    def test_a_server_that_was_ALREADY_THERE_is_left_alone(self):
+        """Somebody else's. CLAUDE.md: never blanket-kill by name, and only
+        stop one when you know nothing else is reading."""
+        self.assertFalse(self._teardown("999", {"pid": 999}))
+
+    def test_a_DIFFERENT_pid_than_the_one_that_was_there_is_ours(self):
+        self.assertTrue(self._teardown("111", {"pid": 222}))
+
+    def test_no_server_at_all_is_a_no_op(self):
+        self.assertFalse(self._teardown(None, None))
+
+    def test_the_session_calls_it_on_the_way_out(self):
+        import inspect
+        src = inspect.getsource(S.worker_session)
+        self.assertIn("_stop_server_this_session_started(before_pid)", src)
+        self.assertIn("before = resident_server()", src)

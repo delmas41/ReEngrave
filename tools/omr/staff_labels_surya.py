@@ -338,6 +338,13 @@ def worker_session(*, enabled: bool = True):
     if not enabled or _SESSION is not None or not available():
         yield None
         return
+    # ⚠️⚠️ WHOSE SERVER WAS ALREADY THERE. Recorded BEFORE the worker starts,
+    # because the teardown below has to tell a server WE caused from one that
+    # was already running for somebody else -- and `pkill` and a blind
+    # `--stop` both get that wrong, which CLAUDE.md records costing a sibling
+    # agent a multi-hour run.
+    before = resident_server()
+    before_pid = None if before is None else str(before.get("pid"))
     proc = None
     try:
         proc = subprocess.Popen(
@@ -367,6 +374,46 @@ def worker_session(*, enabled: bool = True):
                 proc.wait(timeout=30)
             except Exception:                                 # noqa: BLE001
                 proc.kill()
+        _stop_server_this_session_started(before_pid)
+
+
+def _stop_server_this_session_started(before_pid: str | None) -> None:
+    """Stop a `llama-server` that appeared DURING this session, and only that.
+
+    ⚠️⚠️ THIS EXISTS BECAUSE THE FIRST VERSION OF THE SESSION TRUSTED surya's
+    ATEXIT AND THAT CLAIM WAS WITHDRAWN. The merge commit said the session
+    "left no llama-server and no sentinel", on a check taken straight after
+    the run; half an hour later one was resident whose start time and pid sat
+    inside that very test's range. An atexit does not run when a process is
+    killed rather than closed, and the check was simply taken too early --
+    so the cleanup was never established, only believed.
+
+    ⚠️ IT IS NARROW ON PURPOSE. A server whose pid is the one that was already
+    there when the session opened is SOMEBODY ELSE'S and is left alone; only
+    a sentinel that appeared, or that names a different pid, is ours to stop.
+    That is the discipline CLAUDE.md states as "never blanket-kill by name"
+    and "only when you know nothing else is reading", made mechanical instead
+    of remembered.
+    """
+    try:
+        after = resident_server()
+    except Exception:                                         # noqa: BLE001
+        return
+    if after is None:
+        return
+    after_pid = str(after.get("pid"))
+    if before_pid is not None and after_pid == before_pid:
+        logger.debug("surya: leaving the pre-existing server (pid %s) alone",
+                     after_pid)
+        return
+    logger.info("surya: stopping the server this session started (pid %s)",
+                after_pid)
+    try:
+        stop_server()
+    except Exception as exc:                                  # noqa: BLE001
+        logger.warning("surya: could not stop pid %s (%s) -- it is an ORPHAN "
+                       "and the next run's precheck will refuse on it",
+                       after_pid, exc)
 
 
 def _session_dispatch(job: dict, timeout_s: float) -> dict | None:
