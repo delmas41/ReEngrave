@@ -57,6 +57,25 @@ including the **two GATHER divergences it found and deliberately did not
 change**, and the **`ff` 47 → 39 that is an unadjudicated COST and not a win**.
 
 ⚠️ **START HERE IF YOU ARE PICKING THIS UP:**
+[docs/handoff-2026-09-15-six-jobs-in-parallel.md](docs/handoff-2026-09-15-six-jobs-in-parallel.md)
+— **the newest.** Six agents were run down the ranked list of the handoff below
+and **five landed**: the part join goes **75 fragments → 37 parts with 12 grafts
+→ 0**; Sean's last open observation is closed by a rule that **DELETES 22 notes**
+on 25-of-25 hand-adjudicated crops; measure numbers are keyed to the DOCUMENT's
+bar sequence; **S4 is REFUTED AT FULL WIDTH** and S6 recorded-not-gated; and a
+derived **no-producer check** found a THIRD instance (`dossier` — the staged
+pipeline can receive neither a roster nor a dossier). ⚠️⚠️ **READ ITS §7 BEFORE
+TRUSTING ANY AGENT REPORT IN THIS REPO: five of six reports contained a claim
+the tree contradicted**, including safety evidence for a note-DELETING change
+that existed only in a transcript, and a whole measurement pass that was STAGED
+AND NEVER COMMITTED. Every one was caught by a one-line check; none by reading
+the report. ⚠️ Its §5 records that **`OMR_ARC_RECLASS` scores BELOW its own
+baseline alone (0.5043 vs 0.5275) and reaches 0.750 in concurrence with S6,
+p = 0.0104** — the refusal STANDS, but it was refused for what it COSTS and this
+is what it is WORTH. ⚠️ **§10 is what is waiting for Sean** and **§11 the gap
+three separate jobs found independently: there is no Breitkopf staged record on
+this machine**, which is what stands between four `n = 1` results and knowing
+whether any generalise. Its predecessor
 [docs/handoff-2026-09-11-phase-2-opened.md](docs/handoff-2026-09-11-phase-2-opened.md)
 — **the newest. PHASE 2 IS OPEN AND THERE IS STILL NO CLEANUP COUNT** — Sean
 read one page against the print and **declined to count**, which is the
