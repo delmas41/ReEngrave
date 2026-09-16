@@ -1,0 +1,34 @@
+{
+  "n_arcs": 779,
+  "confidence_median": 0.5063512921333313,
+  "reach_stages": {
+    "arcs_total": 779,
+    "with_any_flanked_head": 535,
+    "grammar_available_two_heads": 345,
+    "with_a_stemmed_flanked_head": 420,
+    "arc_on_the_stems_side": 206,
+    "endpoint_lands_ON_the_stem": 143
+  },
+  "by_confidence": {
+    "low_conf": {
+      "n": 389,
+      "median_score": 0.3497,
+      "grammar_available": 164,
+      "s4_available": 93,
+      "s4_rate": 0.2391,
+      "s6_candidate": 212,
+      "s6_rate": 0.545
+    },
+    "high_conf": {
+      "n": 390,
+      "median_score": 0.7394,
+      "grammar_available": 181,
+      "s4_available": 50,
+      "s4_rate": 0.1282,
+      "s6_candidate": 230,
+      "s6_rate": 0.5897
+    }
+  },
+  "s4_available_total": 143,
+  "s6_candidate_total": 442
+}

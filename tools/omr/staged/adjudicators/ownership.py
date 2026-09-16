@@ -349,21 +349,179 @@ def adjudicate_arc_owner(ev: Evidence) -> Ruling:
                   detail={**detail, "moved_from": own})
 
 
+def _median(xs):
+    xs = sorted(xs)
+    n = len(xs)
+    return xs[n // 2] if n % 2 else (xs[n // 2 - 1] + xs[n // 2]) / 2.0
+
+
+def _boxes_overlap(a, b) -> bool:
+    """`rhythm._boxes_overlap`, IMPORTED — the measured attachment rule.
+
+    ⚠️ IT IS IMPORTED AND NOT RESTATED. Box overlap with NO tolerance is not
+    a choice here: 819 heads take exactly one stem and where none overlaps the
+    nearest is 94 px away but for three pairs at 1-2 px. Two spellings of that
+    number is how the two drift.
+    """
+    from .rhythm import _boxes_overlap as _impl
+    return _impl(a, b)
+
+
+def _s4_stem_view(arc_box, heads, stems):
+    """S4: where along its STEM does this arc's near edge sit? — RECORDED.
+
+    Sean, 2026-09-11: *"if it connects to the stem near the note it could be
+    either but if it is connected to the stems edge away from the notehead
+    then it is a slur."*
+
+    ⚠️⚠️ IT READS GEOMETRY AND NEVER A RESOLVED PITCH, and that is the whole
+    reason it is allowed here at all. The pitch-reading half of this grammar
+    is `OMR_ARC_RECLASS`, measured on both families and REFUSED at +149 scan
+    edits *because a scan's resolved pitch at an arc's ends is downstream of
+    exactly what scans get wrong*. A stem's box and an arc's box are read off
+    the same ink the arc itself is. If this function ever grows a pitch, it
+    has become the refused thing.
+
+    ⚠️ AN ARC BOX DOES NOT SAY WHICH EDGE ITS ENDPOINTS ARE ON, and assuming
+    is how a frame error looks like a result. A slur drawn OVER its notes is a
+    `∩` whose endpoints sit at the bbox's LOWER edge; one drawn under is a `∪`
+    whose endpoints sit at the UPPER edge. The side is read off the flanked
+    heads.
+
+    ⚠️ NO CONSTANT, BY CONSTRUCTION. `t` is the fraction along the stem from
+    the HEAD end (0.0) to the FAR end (1.0) — unit-free, so there is nothing
+    here to tune. `same_side` is the test Sean's words actually name: an arc
+    on the far side of the head from its stem is CONNECTED TO NO STEM and his
+    rule is silent about it. Both are RECORDED, never thresholded, so a later
+    session can price any cut from the record alone.
+
+    ⚠️⚠️ AND THE MEASUREMENT SAYS IT SHOULD NOT BE PROMOTED. On Litolff
+    Beethoven 5 p1-4 the endpoint lands on a stem for **137 of 779 arcs**
+    under the strict `[0, 1]` this function applies (143 under the ±0.05
+    tolerance band `probe/reach.py` declares, reconciled to the unit), the
+    two readings' `t` distributions OVERLAP COMPLETELY (tie 0.057-1.044,
+    slur 0.213-1.048 — widest empty interval **-0.83**, i.e. none), and the
+    one-sided sweep is NON-MONOTONIC with a lift over base of at most 0.11 at
+    n=30. ⚠️ Worse, the availability gradient INVERTS the one this family
+    already records: the arcs S4 can speak about sit at median confidence
+    **0.4196** against **0.5409** for the ones it cannot — so where the
+    grammar merely goes quiet on bad ink, S4 goes quiet on GOOD ink and
+    speaks preferentially about the weakest readings.
+    """
+    if not heads:
+        return None
+    ax0, ay0, ax1, ay1 = arc_box
+    head_yc = _median([h[2] for h in heads])
+    above = (ay0 + ay1) / 2.0 < head_yc
+    near_edge = ay1 if above else ay0
+
+    out = []
+    for (_xc, head_box, h_yc, _step), ex in ((heads[0], ax0), (heads[-1], ax1)):
+        for sx, sy, sw, sh in [s for s in stems
+                               if _boxes_overlap(s, head_box)]:
+            sy1 = sy + sh
+            head_end, far_end = ((sy, sy1) if abs(sy - h_yc) < abs(sy1 - h_yc)
+                                 else (sy1, sy))
+            span = far_end - head_end
+            if abs(span) < 1e-6:
+                continue
+            out.append(dict(
+                t=round((near_edge - head_end) / span, 4),
+                # `far_end < head_end` in canonical (y-down) coordinates is a
+                # stem pointing UP.
+                same_side=bool(above == (far_end < head_end)),
+                dx_widths=round(abs(ex - (sx + sw / 2.0))
+                                / max(head_box[2], 1.0), 4)))
+    if not out:
+        return None
+    return {"endpoints": out, "arc_above_heads": bool(above),
+            "t_median": round(_median([e["t"] for e in out]), 4),
+            "any_endpoint_on_a_stem": any(
+                e["same_side"] and 0.0 <= e["t"] <= 1.0 for e in out)}
+
+
+def _s6_stack_view(arc_id, arc_box, siblings):
+    """S6: is a SECOND arc stacked over or under this one? — RECORDED.
+
+    Sean, 2026-09-11: *"If there are 2 arcs on top of each other then the
+    lower is a tie and the upper is a slur."*
+
+    ⚠️ A STACK IS NOT A DUPLICATE, and this document is recorded as full of
+    the second: `_place_arcs` has no dedupe and 48 pairs sit in one cell at
+    IoU >= 0.7, several disagreeing about their own kind. So the pair's OWN
+    geometry travels with it — `y_gap`, `x_overlap_frac`, `iou` — and NOTHING
+    here thresholds any of them. A consumer separates the populations by
+    measurement; this only says what was seen.
+
+    ⚠️ IT READS ONLY BOXES — no pitch, no step, no duration.
+
+    ⚠️⚠️ AND UNLIKE S4 THE MEASUREMENT SUPPORTS IT, on a narrow and thin
+    population. Litolff Beethoven 5 p1-4: **502 arcs get a row here** (any
+    x-overlapping sibling, duplicates included), of which 442 have a sibling
+    that is also DISJOINT IN Y — a stack candidate; **181 pairs read DIFFERENT
+    kinds**, which is the
+    only population S6 addresses. Over those, *the lower one is the tie*
+    agrees with the detector **0.630** (p = 3e-4) and the agreement is a
+    clean DOSE-RESPONSE in the pair's separation — **0.889 / 0.750 / 0.708**
+    at 0-1 / 1-2 / 2-3 staff spaces (**0.740 pooled over the 73 pairs inside
+    3 spaces, p = 3e-5**) decaying to 0.561 and 0.548 beyond, exactly as an
+    engraving rule must. ⚠️ The informative end is the THIN end (n = 9 and
+    16) and the numbers are quoted with their n for that reason.
+
+    ⚠️ IT IS NOT THE HUGGING RULE RESTATED — checked, because on arcs above
+    the staff the lower arc is also the nearer one. An independent arm
+    predicting *the arc nearer the noteheads is the tie* scores **0.517** on
+    the same 3-space band where S6 scores 0.740, and the two arms make the
+    same prediction on only **43.7%** of pairs. ⚠️ A first version of that
+    control was DEGENERATE — it classified each arc against its cell's median
+    arc height, which for a same-cell pair IS S6 restricted to an easier
+    subset — and reported a flattering 0.702; recorded rather than quietly
+    replaced.
+
+    ⚠️ The `arc_owner` split is the positive control that could have failed
+    and did not: pairs whose two arcs the record gives to the SAME staff score
+    0.655, and the 10 pairs given to DIFFERENT staves score **0.200** — the
+    measure-cell padding reaching into the neighbour, which is not a stack.
+    """
+    ax0, ay0, ax1, ay1 = arc_box
+    out = []
+    for sid, box in siblings:
+        if sid == arc_id:
+            continue
+        bx0, by0, bx1, by1 = box
+        ox = min(ax1, bx1) - max(ax0, bx0)
+        if ox <= 0:
+            continue
+        oy = min(ay1, by1) - max(ay0, by0)
+        inter = max(0.0, ox) * max(0.0, oy)
+        union = (ax1 - ax0) * (ay1 - ay0) + (bx1 - bx0) * (by1 - by0) - inter
+        out.append(dict(
+            other=sid,
+            x_overlap_frac=round(ox / max(1.0, min(ax1 - ax0, bx1 - bx0)), 4),
+            y_gap=round(-oy, 2),
+            iou=round(inter / union, 4) if union > 0 else 0.0,
+            # ⚠️ `this_is_upper` is the fact S6 turns on, and it is stated
+            # about THIS arc so the row reads without the sibling's own row.
+            this_is_upper=bool((ay0 + ay1) < (by0 + by1))))
+    return out
+
+
 @decision(
     quantity=Q.ARC_KIND,
     checkable=Checkable.MIXED,
     checked_by=(
         "a TIE joins two heads of the SAME staff step; an arc whose flanked heads sit on different steps is a SLUR",
+        "of two arcs STACKED over the same notes the lower is a tie and the upper a slur (Sean, 2026-09-11) -- recorded, never acted on",
     ),
     implicates=(Q.ARC_KIND, Q.NOTEHEAD_STAFF_POSITION, Q.CLEF),
-    composed_from=(Q.ARC_BOX, Q.NOTEHEAD_STAFF_POSITION, Q.GLYPH_BOX),
+    composed_from=(Q.ARC_BOX, Q.NOTEHEAD_STAFF_POSITION, Q.GLYPH_BOX, Q.STEM),
     scope=Kind.GLYPH,
     # ⚠️ `Q.GLYPH_BOX` is declared because a notehead's STEP row carries no x:
     # the step is joined to a position through the box on the SAME glyph. The
     # harness refused the read until it was declared (`UndeclaredEvidence`),
     # which is `Evidence` doing its job -- a decision may only read what it
     # says it reads, so `missing` and `declined` can mean something.
-    wants=(Q.ARC_BOX, Q.NOTEHEAD_STAFF_POSITION, Q.GLYPH_BOX),
+    wants=(Q.ARC_BOX, Q.NOTEHEAD_STAFF_POSITION, Q.GLYPH_BOX, Q.STEM),
     subjects_from=Q.ARC_BOX,
     reasons=("tie", "slur", "no_arc_box", "no_evidence"),
     mode=Mode.ADDITIVE,
@@ -412,8 +570,9 @@ def adjudicate_arc_kind(ev: Evidence) -> Ruling:
     # unpadded, the Contrabass read `n1 -> n4` in every bar whose truth is
     # `n0 -> n5`. Here the pad is expressed in the arc's own height, which is
     # the only size this row carries.
-    pad = max(float(arc.detail.get("y1", 0)) - float(arc.detail.get("y0", 0)),
-              1.0)
+    arc_y0 = float(arc.detail.get("y0", 0))
+    arc_y1 = float(arc.detail.get("y1", 0))
+    pad = max(arc_y1 - arc_y0, 1.0)
     x0 = float(arc.detail.get("x0", 0)) - pad
     x1 = float(arc.detail.get("x1", 0)) + pad
 
@@ -422,6 +581,10 @@ def adjudicate_arc_kind(ev: Evidence) -> Ruling:
              ev.rows(Q.GLYPH_BOX, scope=Scope.SELF_AND_DESCENDANTS,
                      subject=cell)}
     flanked = []
+    #: `(x_centre, (x, y, w, h), y_centre, step)` for S4 — the SAME heads, in
+    #: the SAME order, so the two witnesses can never be reading different
+    #: populations of one arc.
+    geom = []
     for row in ev.rows(Q.NOTEHEAD_STAFF_POSITION,
                        scope=Scope.SELF_AND_DESCENDANTS, subject=cell):
         box = boxes.get(row.subject.to_key())
@@ -430,12 +593,39 @@ def adjudicate_arc_kind(ev: Evidence) -> Ruling:
         value = box.value
         if not isinstance(value, (list, tuple)) or len(value) < 5:
             continue
-        xc = float(value[1]) + float(value[3]) / 2.0
+        hx, hy = float(value[1]), float(value[2])
+        hw, hh = float(value[3]), float(value[4])
+        xc = hx + hw / 2.0
         if x0 <= xc <= x1:
             flanked.append((xc, row.detail.get("rounded"), row.id))
+            geom.append((xc, (hx, hy, hw, hh), hy + hh / 2.0,
+                         row.detail.get("rounded")))
     flanked.sort()
+    geom.sort(key=lambda g: g[0])
 
     grammar = {"flanked_heads": len(flanked), "reading": kind}
+
+    # ⚠️ TWO MORE WITNESSES, RECORDED AND NEVER ACTED ON — Sean's S4 and S6.
+    # Both read BOXES ONLY. The docstring says why that distinction is what
+    # lets them be here at all while `OMR_ARC_RECLASS`'s pitch half stays
+    # refused, and each helper carries its own measurement.
+    stems = [tuple(float(v) for v in r.value[:4])
+             for r in ev.rows(Q.STEM, scope=Scope.SELF_AND_ANCESTORS,
+                              subject=cell)
+             if isinstance(r.value, (list, tuple)) and len(r.value) >= 4]
+    s4 = _s4_stem_view((x0 + pad, arc_y0, x1 - pad, arc_y1), geom, stems)
+    if s4 is not None:
+        grammar["s4_stem_position"] = s4
+    siblings = [(r.subject.to_key(),
+                 (float(r.detail.get("x0", 0)), float(r.detail.get("y0", 0)),
+                  float(r.detail.get("x1", 0)), float(r.detail.get("y1", 0))))
+                for r in ev.rows(Q.ARC_BOX, scope=Scope.SELF_AND_DESCENDANTS,
+                                 subject=cell)]
+    s6 = _s6_stack_view(ev.subject.to_key(),
+                        (x0 + pad, arc_y0, x1 - pad, arc_y1), siblings)
+    if s6:
+        grammar["s6_stacked_with"] = s6
+
     if len(flanked) >= 2:
         first, last = flanked[0], flanked[-1]
         same_step = (first[1] is not None and first[1] == last[1])
