@@ -167,7 +167,8 @@ were run against these):
 | `gather_coverage` | **exit 0** |
 | `export_coverage --all` | **exit 0**, and it reported *"no fixtures on disk"* — it exercised the code path and **not** the comparison, because the engraved fixtures are build products and gitignored in a worktree. Stated rather than counted as a pass. |
 | `test_flag_default_direction.py` | 3 passed — **after a repair, see §5a** |
-| full suite | §6a |
+| the two new files | 45 passed |
+| full suite | **3,888 passed / 17 skipped**, exit 0 (586.99 s of TEST time) |
 | `readjudicate.py`, `reexport_arm.py` | **reasoned about, NOT run** — see below |
 
 ⚠️ **The two arms were not run and the reason is structural rather than
@@ -178,6 +179,16 @@ the module is never imported by it. `reexport_arm.py` re-exports a stored
 So the claim that they are unaffected rests on the bypass tests above plus
 one grep: neither imports `infer`, and `pipeline`'s call site is the only one.
 **That is weaker than running them and is labelled as such.**
+
+
+⚠️ **THE FIRST FULL-SUITE RUN WAS DISCARDED AND SAYING SO MATTERS.** It was
+started before the rule was generalised and `tools/omr/staged/inferences.py`
+was edited WHILE IT RAN — which CLAUDE.md records as making a source-level
+result untrustworthy (`test_staged_voices` asserts on `inspect.getsource`,
+read from disk with import-time line numbers). It was killed BY EXPLICIT PID —
+mine, not by name — and re-run clean with no edit in flight. ⚠️ Its waiter
+loop also had a bug worth not repeating: `until ! pgrep -f 'pytest tools/omr'`
+**matches its own command line**, so it would never have exited.
 
 ---
 
