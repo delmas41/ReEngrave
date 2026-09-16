@@ -102,21 +102,72 @@ def main(argv=None) -> int:
                     help="also EXPORT the run to MusicXML here. The coverage "
                          "report -- what the record could NOT carry -- goes "
                          "beside it as <path>.coverage.json.")
-    # ⚠️ THE FREE RUNG NEEDS NO FLAG AND THE PAID ONES DO. `pdf_path` is now
-    # always forwarded to `gather`, which turns on the PDF TEXT LAYER reader
-    # -- free, and measured to read NOTHING on a 19th-century scan (0 labels
-    # over 75 staves on Litolff Beethoven 5 p.1-4). The OCR rungs are what
-    # actually read that edition (50 of 75) and they cost wall clock that
-    # CLAUDE.md measures at ~75% of a whole-work run, so they are OPT-IN
-    # rather than defaulted: a default that silently trebles a gather is a
-    # decision somebody should take deliberately.
-    ap.add_argument("--surya", action="store_true",
-                    help="read margin labels with Surya where the PDF has no "
-                         "text layer. Needed for ANY instrument identity on a "
-                         "scan -- without it Q.MARGIN_LABEL stays empty and "
-                         "the part join falls back to staff position.")
-    ap.add_argument("--ocr", action="store_true",
-                    help="also allow the Tesseract rung for margin labels.")
+    # ⚠️⚠️ BOTH OCR RUNGS DEFAULT **ON** SINCE 2026-09-16 (Sean's call), and
+    # the flags are `--no-surya` / `--no-ocr` so ABSENCE IS ON. The text
+    # layer is free and reads NOTHING on a 19th-century scan (0 labels over
+    # 75 staves on Litolff Beethoven 5 p.1-4); the OCR rungs are what
+    # actually read that edition (50 of 75, and 50 of 50 CORRECT against
+    # hand-read print truth).
+    #
+    # They were opt-in "because a default that silently changes a gather's
+    # cost is a decision somebody should take deliberately". That decision is
+    # now taken ON MEASUREMENT rather than on caution:
+    # `benchmarks/omr-surya-staged-cost-2026-09/FINDINGS.md` -- 17.8 s/page
+    # attributable, 93 s/page of a real gather (20.5% of it, drift-corrected
+    # over six ABAB arms).
+    #
+    # ⚠️ The "~75% of a whole-work run" this comment once cited never
+    # existed. The measured figure is 20.5%, and the reader that actually
+    # dominates a staged run is `OMR_DIRECTION_TEXT` at ~267 s/page for SIX
+    # accepted words on the same document -- which has been ON by default
+    # since 2026-09-02 and is repriced in that same FINDINGS.
+    # ⚠️ This comment used to cite "CLAUDE.md measures Surya at ~75% of a
+    # whole-work run". No such measurement exists. The only same-pages pair
+    # (benchmarks/omr-cleanup-count-2026-09 vs omr-part-join-phase2-2026-09,
+    # both run_gather.sh, 2026-09-11) is +282 s over 4 pages, +17.8%, n=1 on
+    # different trees -- and gather_direction_words already spawns Surya on
+    # every page by default, so this flag saves one of TWO spawns. Scoped,
+    # with the pre-registered experiment that settles it, in
+    # docs/scope-surya-staged-optin-2026-09-16.md.
+    ap.add_argument("--no-surya", dest="surya", action="store_false",
+                    help="do NOT read margin labels with Surya. On by "
+                         "default since 2026-09-16: measured at 93 s/page on "
+                         "Litolff Beethoven 5 p1-4, buying 50 instrument "
+                         "identities over 75 staves, 50 of 50 correct "
+                         "against hand-read print truth, where the free text "
+                         "layer reads ZERO. Without it Q.MARGIN_LABEL stays "
+                         "empty and the part join falls back to staff "
+                         "position.")
+    ap.add_argument("--no-ocr", dest="ocr", action="store_false",
+                    help="do NOT allow the Tesseract rung for margin labels. "
+                         "Both rungs default ON together and should be "
+                         "turned off together: Tesseract's measured value is "
+                         "as an additive rung UNDER Surya, and alone its "
+                         "error mode is in-word and RESOLVING (`Ki.Tr.` -> "
+                         "Trumpet at high confidence), which in the staged "
+                         "path nothing outranks.")
+    ap.set_defaults(surya=True, ocr=True)
+    # ⚠️⚠️ `roster` WAS THREADED END TO END WITH NO PRODUCER — the SECOND
+    # missing producer found in this pipeline, after `pdf_path` cost 75 of 75
+    # staves their margin labels on every staged run this repo had ever made.
+    # `run_staged` -> `run_staged_on` -> `gather` -> `gather_external` all
+    # took `roster`, every link FORWARDED it, and no call site anywhere in
+    # `tools/` ever supplied one, so `Q.ROSTER_ENTRY` was dead on every run.
+    # Found by `staged.wiring`, which exists so there is not a third.
+    #
+    # ⚠️ ON BY DEFAULT AND THAT IS A JUDGEMENT, not an oversight. The roster
+    # is `source_kind: "catalog"` — read off the work's IMSLP page,
+    # independent of the raster and of the MusicXML the benchmarks score
+    # against — and `work_roster.roster_for_pdf` ABSTAINS (returns None) for
+    # any PDF the store does not hold, which is every generated fixture and
+    # every upload. So the default is a no-op everywhere it has no business
+    # acting, and `--no-roster` turns it off outright.
+    ap.add_argument("--work-id", default=None,
+                    help="the score LIBRARY's work id (e.g. "
+                         "`beethoven--symphony-5-op67`), for a PDF the store "
+                         "does not hold. NOT the dossier's id.")
+    ap.add_argument("--no-roster", action="store_true",
+                    help="do not look the work's catalog roster up at all.")
     ap.add_argument("--progress", action="store_true")
     args = ap.parse_args(argv)
 
@@ -127,6 +178,20 @@ def main(argv=None) -> int:
         from ..yolo_detector import YoloDetector
         detector = YoloDetector(args.weights)
 
+    # ⚠️ THE DOSSIER STAYS WITHOUT A PRODUCER, DELIBERATELY, and
+    # `wiring.KNOWN_GAPS` says so in terms: a dossier is generated from the
+    # same MusicXML the benchmarks score against, so the scan gate is
+    # dossier-free BY PROTOCOL and a `--dossier` flag would put a truth file
+    # inside a measurement path. The roster is the tier that is admissible.
+    roster = None
+    if not args.no_roster:
+        from ..work_roster import roster_for_pdf, work_roster as _by_id
+        roster = (_by_id(args.work_id) if args.work_id
+                  else roster_for_pdf(args.pdf))
+        if args.progress:
+            print(f"ROSTER: {roster.work_id if roster else 'none'}"
+                  f"{'' if roster else ' (this PDF is not in the catalog)'}")
+
     # ⚠️ ONE gather, including under `--against`. The legacy side is loaded
     # BEFORE the run and handed in, so the divergence table is built from the
     # same log the adjudication report describes. Until 2026-09-08 this
@@ -135,7 +200,7 @@ def main(argv=None) -> int:
     # run-to-run jitter.
     result = pipeline.run_staged(
         args.pdf, parse_pages(args.pages), detector=detector, dpi=args.dpi,
-        conf_threshold=args.conf, imgsz=args.imgsz,
+        conf_threshold=args.conf, imgsz=args.imgsz, roster=roster,
         surya_fallback=args.surya, ocr_fallback=args.ocr,
         legacy=legacy.load(args.against) if args.against else None,
         progress=args.progress)
@@ -206,6 +271,16 @@ def _report(result: dict) -> None:
     ev = result["evaluation"]
     print(f"── EVALUATE: {ev['counts']['fired']} fired, "
           f"{ev['counts']['skipped']} skipped", file=sys.stderr)
+    # ⚠️ GUARDED ON THE KEY'S PRESENCE, NOT ON THE FLAG. With INFER off the
+    # key is absent and nothing is printed, so the stderr report of a
+    # flag-off run is identical to one from a tree with no INFER at all.
+    # Reading the flag here instead would print "INFER: off" and break that.
+    inf = result.get("inference")
+    if inf is not None:
+        print(f"── INFER: {inf['counts']['inferred']} inferred, "
+              f"{inf['counts']['skipped']} skipped  "
+              f"⚠️ every one is LABELLED and supersedes a recorded narrowing",
+              file=sys.stderr)
     print(f"── DECLARED STUBS: {len(result['stubs']['decisions'])} decisions, "
           f"{len(result['stubs']['consequences'])} consequences", file=sys.stderr)
     if "divergence" in result:

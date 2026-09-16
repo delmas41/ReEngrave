@@ -26,7 +26,7 @@ from ..record import ABSTAIN, Kind, Q, Scope, State
     scope=Kind.STAFF,
     wants=(Q.MARGIN_LABEL, Q.ROSTER_ENTRY, Q.STAFF_ORDINAL, Q.STAFF_GROUP),
     reasons=("label", "roster", "score_order", "not_in_lexicon",
-             "no_evidence"),
+             "no_evidence", "vetoed_by_the_work_roster"),
     mode=Mode.ADDITIVE,
 )
 def adjudicate_instrument(ev: Evidence) -> Ruling:
@@ -68,25 +68,109 @@ def adjudicate_instrument(ev: Evidence) -> Ruling:
         return Ruling.abstain("no_evidence")
 
     from ...instruments import lookup
+    from ... import work_roster as WR
 
     text = str(labels[-1].value)
     match = lookup(text)
-    if match is None:
+
+    # ⚠️⚠️ `Scope.SELF_AND_ANCESTORS`, AND AN `EXACT` READ HERE WOULD HAVE
+    # RETURNED NOTHING FOREVER. `Q.ROSTER_ENTRY` is filed on the DOCUMENT —
+    # it is a fact about the WORK, not about this staff — and this decision
+    # runs at `Kind.STAFF`, where `Evidence.rows`' default `Scope.EXACT`
+    # reaches only the staff's own rows. The declaration would have been
+    # present, the quantity gathered, the `wants` entry satisfied, and the
+    # answer empty: the FRAME fault CLAUDE.md records four instances of and
+    # states neither `inventory --check` nor `gather_coverage` can see.
+    # `staged.wiring` flagged it as LATENT before this line existed.
+    roster_rows = ev.rows(Q.ROSTER_ENTRY, scope=Scope.SELF_AND_ANCESTORS)
+    roster = _work_roster(roster_rows[-1].value) if roster_rows else None
+
+    # ⚠️ THE RULE IS IMPORTED, NOT RESTATED, and this project has paid to
+    # learn why. `work_roster.decide` is the measured one: 28 firings over
+    # 1,422 real margin labels, every one hand-adjudicated correct, with four
+    # outcomes whose risks differ and an ORDER between them that was MEASURED
+    # (recovery before disambiguation — the other order reads `mbone Basso`
+    # as a Contrabass, confidently and wrongly). Restating any of that here
+    # would give this repo two copies of numbers it paid to measure once, and
+    # the copies would drift.
+    decided = WR.decide(text, roster, hit=match)
+    used = tuple(r.id for r in labels) + tuple(r.id for r in roster_rows)
+
+    if decided.kind == "vetoed":
+        # ⚠️ A VETO REMOVES A NAME; IT NEVER INSTALLS ONE. `Decision.
+        # names_a_staff` is False here by construction, which is what makes
+        # this the safe half of the layer: the lexicon had already got this
+        # staff wrong (a SINGER on a work with no singers), and the answer is
+        # to stop saying so — not to guess what it is instead.
+        #
+        # ⚠️ CONSTRUCTED RATHER THAN `Ruling.abstain`, AND THE DIFFERENCE IS
+        # THE BASIS. `Ruling.abstain` takes no `used`, so an abstention it
+        # builds names NOTHING it looked at — and an abstention CAUSED by a
+        # roster row that cannot name that row is a refusal with no
+        # provenance, which is exactly what the circularity filter and every
+        # later reader need. `abstained` is `value is None and not
+        # candidates`, so this is an abstention by the same definition.
+        return Ruling(value=None, reason="vetoed_by_the_work_roster",
+                      used=used,
+                      detail={"reader_text": text,
+                              "lexicon_said": decided.before,
+                              "why": decided.reason})
+    if decided.match is None:
         # ⚠️ NOT a fallback to position. A label we cannot spell is a
         # different state from a staff with no label, and guessing here would
         # destroy the distinction the row was kept for.
         return Ruling.abstain("not_in_lexicon", text=text)
 
+    match = decided.match
     inst = match.instrument
     return Ruling(
         value={"name": inst.name, "family": inst.family,
                "expected_clef": inst.default_clef,
                "written_range": list(inst.written_range),
                "unpitched": inst.unpitched},
-        reason="label",
-        used=tuple(r.id for r in labels),
+        # ⚠️ THE REASON IS THE PROVENANCE AND THE VOCABULARY ALREADY HELD THE
+        # WORD. `roster` was a declared reason of this decision from the day
+        # it was written, and nothing could ever return it — the tier was
+        # reserved and never wired, which is the same fault one layer up from
+        # the parameter with no producer.
+        reason="roster" if decided.kind != "unchanged" else "label",
+        used=used,
         detail={"alias": match.alias, "coverage": match.coverage,
-                "reader_text": text})
+                "reader_text": text, "roster_decision": decided.kind,
+                "roster_reason": decided.reason or None,
+                "lexicon_said": decided.before or None})
+
+
+def _work_roster(value):
+    """The `WorkRoster` a `Q.ROSTER_ENTRY` row stands for, or None.
+
+    ⚠️ The row carries a plain dict so the RECORD is readable (`gather_
+    external` says why); the rule that consumes it wants the dataclass. The
+    reconstruction is here rather than in GATHER because GATHER decides
+    nothing — and it REFUSES a row whose `source_kind` is not `catalog`, a
+    second time, at the point of use.
+
+    ⚠️⚠️ THE SECOND REFUSAL IS NOT BELT-AND-BRACES. `work_roster()` enforces
+    the tier when it BUILDS a roster from the catalog; nothing enforces it on
+    a row that arrived some other way, and the `editions` tier is
+    `source_kind: "page"` — an OMR output of the same raster. A witness read
+    off the ink it is arbitrating falls silent exactly when it is needed,
+    which is this file's own recorded hazard. The check is cheap; the failure
+    is silent.
+    """
+    from ... import work_roster as WR
+    if isinstance(value, WR.WorkRoster):
+        return value if value.source_kind == "catalog" else None
+    if not isinstance(value, dict):
+        return None
+    if value.get("source_kind") != "catalog":
+        return None
+    return WR.WorkRoster(
+        work_id=str(value.get("work_id") or ""),
+        instruments=frozenset(value.get("instruments") or ()),
+        families=frozenset(value.get("families") or ()),
+        complete=bool(value.get("complete")),
+        source_kind="catalog")
 
 
 def _lcs_table(a: List[Optional[str]], b: List[Optional[str]]) -> List[List[int]]:

@@ -1,0 +1,19 @@
+{
+  "abstention_subject_kinds": {
+    "staff": 75
+  },
+  "margin_label_abstention_reasons": {
+    "out_of_scope": 75
+  },
+  "margin_label_observations": 0,
+  "readers": {
+    "text_layer": 75
+  },
+  "summary_instrument": {
+    "abstained": 75
+  },
+  "summary_margin_label": {
+    "declined": 75
+  }
+}
+census OK: 0 margin_label observations

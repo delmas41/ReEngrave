@@ -73,17 +73,31 @@ class TestTheMarginLabelReaderIsReachable(unittest.TestCase):
         kwargs = self._run()
         self.assertEqual(kwargs["pdf_path"], "/some/score.pdf")
 
-    def test_the_ocr_rungs_are_forwarded_and_default_off(self):
-        """⚠️ OFF by default and the default is the claim: the free text-layer
-        rung costs nothing and reads nothing on a 19th-century scan (measured
-        0 of 75), while the OCR rungs read 50 of 75 and cost wall clock
-        CLAUDE.md measures at ~75% of a whole-work run. Defaulting them on
-        would treble a gather without anyone deciding to."""
-        self.assertIs(self._run()["surya_fallback"], False)
-        self.assertIs(self._run()["ocr_fallback"], False)
-        on = self._run(surya_fallback=True, ocr_fallback=True)
-        self.assertIs(on["surya_fallback"], True)
-        self.assertIs(on["ocr_fallback"], True)
+    def test_the_ocr_rungs_are_forwarded_and_default_ON(self):
+        """⚠️⚠️ ON by default since 2026-09-16 (Sean's call), and THIS TEST
+        WAS SHIPPED RED PINNING THE OLD DEFAULT. It asserted `False` for two
+        days after PR #34 flipped `run_staged`'s defaults to `True`; PR #34's
+        own description said these modules could not be run in its container
+        and asked for them to be run locally, and they were not. Found at
+        landing time by running them, with a control on pristine main to
+        prove the failure was not the merge's.
+
+        That is CLAUDE.md's *"A flag's OFF test must follow its DEFAULT"*
+        arriving one layer up: not the flag's own off-word test this time,
+        but the TEST THAT PINS THE DEFAULT. The failure direction is the
+        dangerous one -- a red test that looks like somebody else's problem
+        is a red test nobody attributes.
+
+        The claim is now the current one: both rungs ON, both switchable OFF.
+        The measured price is in
+        `benchmarks/omr-surya-staged-cost-2026-09/FINDINGS.md` (17.8 s/page
+        attributable, 20.5% of a real gather), not the "~75%" that never
+        existed."""
+        self.assertIs(self._run()["surya_fallback"], True)
+        self.assertIs(self._run()["ocr_fallback"], True)
+        off = self._run(surya_fallback=False, ocr_fallback=False)
+        self.assertIs(off["surya_fallback"], False)
+        self.assertIs(off["ocr_fallback"], False)
 
     def test_the_cli_exposes_the_rungs(self):
         """A forward nothing can switch on is still unreachable from the
@@ -98,8 +112,15 @@ class TestTheMarginLabelReaderIsReachable(unittest.TestCase):
             with self.assertRaises(SystemExit):
                 main(["--help"])
         text = buf.getvalue()
-        self.assertIn("--surya", text)
-        self.assertIn("--ocr", text)
+        # ⚠️ ABSENCE IS ON: the flags are `--no-surya` / `--no-ocr` since
+        # 2026-09-16. Asserting the bare `--surya` is what made this test red
+        # on main -- and note a bare `assertIn("--surya", text)` would PASS
+        # vacuously against the string `--no-surya`, so each is asserted with
+        # its `--no-` prefix and the bare opt-in form is asserted ABSENT.
+        self.assertIn("--no-surya", text)
+        self.assertIn("--no-ocr", text)
+        self.assertNotIn(" --surya", text)
+        self.assertNotIn(" --ocr", text)
 
 
 # ─────────────────────────────────────────────────────────────────────────────

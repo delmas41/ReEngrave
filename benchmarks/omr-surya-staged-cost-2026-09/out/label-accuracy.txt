@@ -1,0 +1,56 @@
+page sys st   read text              conf    -> instrument  hand-read truth      -> instrument  
+1    0   0    'Flauti.'              high    Flute          Flauti               Flute          ok
+1    0   1    'Obol.'                low     Oboe           Oboi                 Oboe           ok
+1    0   2    'Clarinetti in B.'     high    Clarinet       Clarinetti in B      Clarinet       ok
+1    0   3    'Fagotti.'             high    Bassoon        Fagotti              Bassoon        ok
+1    0   4    'Corni in Es.'         medium  Horn           Corni in Es          Horn           ok
+1    0   5    'Trombe in C.'         high    Trumpet        Trombe in C          Trumpet        ok
+1    0   6    'Timpani in C.G.'      high    Timpani        Timpani in C.G.      Timpani        ok
+1    0   7    'Violino I.'           high    Violin         Violino I            Violin         ok
+1    0   8    'Violino II.'          high    Violin         Violino II           Violin         ok
+1    0   9    'Viola.'               high    Viola          Viola                Viola          ok
+1    0   10   'Violoncello.'         high    Cello          Violoncello          Cello          ok
+1    0   11   'Basso.'               high    Bass voice     Basso                Bass voice     ok
+2    0   0    'Fl.'                  high    Flute          Flauti               Flute          ok
+2    0   1    'Ob.'                  high    Oboe           Oboi                 Oboe           ok
+2    0   2    'Cl.'                  high    Clarinet       Clarinetti in B      Clarinet       ok
+2    0   3    'Fag.'                 high    Bassoon        Fagotti              Bassoon        ok
+2    0   4    'Cor.'                 high    Horn           Corni in Es          Horn           ok
+2    0   5    'Tr.'                  high    Trumpet        Trombe in C          Trumpet        ok
+2    0   6    'Tp.'                  high    Timpani        Timpani in C.G.      Timpani        ok
+2    1   11   'Fl.'                  high    Flute          Flauti               Flute          ok
+2    1   12   'Ob.'                  high    Oboe           Oboi                 Oboe           ok
+2    1   13   'Cl.'                  high    Clarinet       Clarinetti in B      Clarinet       ok
+2    1   14   'Fag.'                 high    Bassoon        Fagotti              Bassoon        ok
+2    1   15   'Cor.'                 high    Horn           Corni in Es          Horn           ok
+2    1   16   'Tr.'                  high    Trumpet        Trombe in C          Trumpet        ok
+2    1   17   'Tp.'                  high    Timpani        Timpani in C.G.      Timpani        ok
+3    0   0    'Fl.'                  high    Flute          Flauti               Flute          ok
+3    0   1    'Ob.'                  high    Oboe           Oboi                 Oboe           ok
+3    0   2    'Cl.'                  high    Clarinet       Clarinetti in B      Clarinet       ok
+3    0   3    'Fag.'                 high    Bassoon        Fagotti              Bassoon        ok
+3    0   4    'Cor.'                 high    Horn           Corni in Es          Horn           ok
+3    0   5    'Tr.'                  high    Trumpet        Trombe in C          Trumpet        ok
+3    0   6    'Tp.'                  high    Timpani        Timpani in C.G.      Timpani        ok
+3    1   11   'Fl.'                  high    Flute          Flauti               Flute          ok
+3    1   12   'Cl.'                  high    Clarinet       Clarinetti in B      Clarinet       ok
+3    1   13   'Fag.'                 high    Bassoon        Fagotti              Bassoon        ok
+3    1   14   'Cor.'                 high    Horn           Corni in Es          Horn           ok
+4    0   0    'Fl.'                  high    Flute          Flauti               Flute          ok
+4    0   1    'Ob.'                  high    Oboe           Oboi                 Oboe           ok
+4    0   2    'Cl.'                  high    Clarinet       Clarinetti in B      Clarinet       ok
+4    0   3    'Fag.'                 high    Bassoon        Fagotti              Bassoon        ok
+4    0   4    'Cor.'                 high    Horn           Corni in Es          Horn           ok
+4    0   5    'Tr.'                  high    Trumpet        Trombe in C          Trumpet        ok
+4    1   11   'Fl.'                  high    Flute          Flauti               Flute          ok
+4    1   12   'Ob.'                  high    Oboe           Oboi                 Oboe           ok
+4    1   13   'Cl.'                  high    Clarinet       Clarinetti in B      Clarinet       ok
+4    1   14   'Fag.'                 high    Bassoon        Fagotti              Bassoon        ok
+4    1   15   'Cor.'                 high    Horn           Corni in Es          Horn           ok
+4    1   16   'Tr.'                  high    Trumpet        Trombe in C          Trumpet        ok
+4    1   17   'Tp.'                  high    Timpani        Timpani in C.G.      Timpani        ok
+
+ACCURACY  50 labels scored: correct 50, WRONG 0  (100.0%)
+REACH     25 staves carry no read label (not scored here)
+
+⚠️ names from works.json (hand-confirmed, carries transpositions the reader never read); structure from printed-lineups.json's hand-read suppression lists. Neither is an OCR output.

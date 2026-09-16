@@ -1,0 +1,51 @@
+═══ DOES THE INFORMATION REACH ITS CONSUMER? ═══════════════════════
+
+1. FRAME — a declared input read where it is never filed
+   none
+   LATENT — declared, filed elsewhere, unreadable the obvious way:
+  ⚠️ adjudicate_clef declares Q.NOTEHEAD_STAFF_POSITION (scope staff), filed at glyph — needs subject=
+  ⚠️ adjudicate_key_signature declares Q.DOSSIER_FACT (scope staff), filed at document — needs scope=Scope.SELF_AND_ANCESTORS
+  ⚠️ adjudicate_meter declares Q.DOSSIER_FACT (scope system), filed at document — needs scope=Scope.SELF_AND_ANCESTORS
+  ⚠️ adjudicate_part_partition declares Q.INSTRUMENT (scope document), filed at staff — needs subject=
+  ⚠️ adjudicate_part_partition declares Q.STAFF_ORDINAL (scope document), filed at staff — needs subject=
+  ⚠️ adjudicate_system_membership declares Q.GAP_BRIDGING (scope system), filed at page — needs scope=Scope.SELF_AND_ANCESTORS
+   (filed nowhere this tool sees — `gather_coverage` owns these: CELL_STAFF_SPACE, GLYPH_BAND_DISTANCE, GLYPH_LADDER)
+   ⚠️ UNRESOLVED gather sites: 11
+
+2. DETAIL — a key written on a row and named nowhere else
+  ⚠️ Q.<loop-bound>.staff_lines_erased            gather_cv_lines:1295
+  ⚠️ Q.BEAM_STROKE.staff_lines_erased             gather_detector_beams:1349
+  ⚠️ Q.BRACKET_BLOCK.mirror                       _gather_bracket_blocks:165
+  ⚠️ Q.CELL_STAFF_SPACE.half_step                 gather_notehead_positions:426
+  ⚠️ Q.CLEF_LOCATED.line_source                   gather_clef_locator:1590
+  ⚠️ Q.CLEF_LOCATED.locator_branch                gather_clef_locator:1544
+  ⚠️ Q.DIRECTION_WORD.page_conflicts              gather_direction_words:2333
+  ⚠️ Q.DIRECTION_WORD.page_n_candidates           gather_direction_words:2322
+  ⚠️ Q.DIRECTION_WORD.page_n_read                 gather_direction_words:2322
+  ⚠️ Q.DIRECTION_WORD.page_n_rejected_by_lexicon  gather_direction_words:2322
+  ⚠️ Q.DIRECTION_WORD.page_state                  _direction_cells_abstain:2122
+  ⚠️ Q.DIRECTION_WORD.split_is_page_level         gather_direction_words:2322
+  ⚠️ Q.GAP_BRIDGING.mirror                        gather_systems:206
+  ⚠️ Q.KEYSIG_RUN_POSITION.clefs_tried            gather_key_signature:1759
+  ⚠️ Q.MARGIN_LABEL.reader_alias                  gather_margin_labels:2015
+  ⚠️ Q.MARGIN_LABEL.reader_confidence             gather_margin_labels:2015
+  ⚠️ Q.ROSTER_ENTRY.n_instruments                 gather_external:2419
+  ⚠️ Q.STAFF_LINES.page_staff_index               gather_geometry:98
+  ⚠️ Q.SYSTEMIC_COLUMN.mirror                     _gather_bracket_blocks:169
+  ⚠️ Q.WEDGE_BOX.page_staff_index                 gather_wedge_boxes:1199
+  ⚠️ Q.WEDGE_BOX.staff_bottom_line_page           gather_wedge_boxes:1199
+  ⚠️ Q.WEDGE_BOX.y_center_page                    gather_wedge_boxes:1199
+
+3. ROUNDTRIP — a field declared and dropped by its own `to_json`
+  ⚠️⚠️ Verdict.single_pass_revision  READ (4 mentions) — a saved record cannot carry it
+
+── POSITIVE CONTROLS (a zero means the question did not run) ────────
+   frame_reads_that_line_up             31
+   frame_reads_with_their_own_reach     50
+   frame_quantities_filed               71
+   detail_keys_written                  113
+   detail_keys_read                     91
+   roundtrip_classes_with_to_json       9
+   roundtrip_fields_emitted             56
+
+── 40 problems, 0 unaccounted, 0 stale gap entries

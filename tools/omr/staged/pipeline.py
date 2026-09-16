@@ -37,6 +37,11 @@ from typing import Any, Dict, List, Optional, Sequence, Tuple
 from . import consequences  # noqa: F401  -- registers the EVALUATE rules
 from . import adjudicators  # noqa: F401  -- registers the decisions
 from . import adjudicate, evaluate, gather, groups
+# ⚠️ `infer` imports ONLY `record`, and it loads its own rules lazily inside
+# `_ensure_rules`. So importing it here costs nothing and -- more to the
+# point -- changes nothing: with the flag off this module registers no rule,
+# writes no verdict and adds no key to the result. See `test_infer_bypass.py`.
+from . import infer
 from .record import Kind, Log, Outcome, Q, State, Subject
 
 MODE_OFF = "0"
@@ -101,11 +106,52 @@ def prepare_pages(pdf_path: str, pages: Sequence[int], *,
 # ─────────────────────────────────────────────────────────────────────────────
 
 
+def _rung_header(surya_fallback: bool, ocr_fallback: bool) -> str:
+    """One line naming every OCR rung, requested or not, present or not.
+
+    ⚠️ IT IS A CONTROL, NOT A COURTESY. A run whose `.venv-surya` is missing
+    reads no margin labels and no direction words and says nothing about it --
+    which is the failure that makes a timing arm or a reach figure void
+    without looking void, and the reason a benchmark arm has to be able to
+    assert "both rungs were up" before it believes its own numbers
+    (`docs/scope-surya-staged-optin-2026-09-16.md` §9, control 3).
+
+    ⚠️ BOTH CONSUMERS ARE NAMED, because they are gated differently and a
+    header that showed only one would licence exactly the wrong conclusion:
+    the LABEL rungs are opt-in per run (`--surya` / `--ocr`), while the
+    DIRECTION reader is on by default under `OMR_DIRECTION_TEXT` and spawns
+    Surya on every page regardless. A run with neither flag is not a run
+    without Surya.
+    """
+    def _installed(mod_name: str) -> bool:
+        try:
+            import importlib
+            mod = importlib.import_module("." + mod_name, "tools.omr")
+            return bool(mod.available())
+        except Exception:                                     # noqa: BLE001
+            return False
+
+    def _state(mod_name: str, requested: bool) -> str:
+        ok = _installed(mod_name)
+        if not requested:
+            return "off" + ("" if ok else " (not installed)")
+        return "on" if ok else "on BUT NOT INSTALLED"
+
+    directions_on = os.environ.get("OMR_DIRECTION_TEXT", "1").strip().lower() \
+        not in ("0", "", "false", "no", "off")
+    return ("  rungs: labels text_layer=on"
+            f" surya={_state('staff_labels_surya', surya_fallback)}"
+            f" tesseract={_state('staff_labels_tesseract', ocr_fallback)}"
+            f" | directions OMR_DIRECTION_TEXT={'1' if directions_on else '0'}"
+            f" surya={_state('staff_labels_surya', directions_on)}"
+            f" tesseract={_state('staff_labels_tesseract', directions_on)}")
+
+
 def run_staged(pdf_path: str, pages: Sequence[int], *,
                detector: Any = None, dpi: int = 600,
                conf_threshold: float = 0.25, imgsz: Optional[int] = None,
                dossier: Any = None, roster: Any = None,
-               surya_fallback: bool = False, ocr_fallback: bool = False,
+               surya_fallback: bool = True, ocr_fallback: bool = True,
                legacy: Optional[Dict[str, Dict[str, Any]]] = None,
                progress: bool = False) -> Dict[str, Any]:
     """GATHER -> ADJUDICATE -> EVALUATE, once, in that order.
@@ -142,7 +188,7 @@ def run_staged_on(prepared: Sequence[Tuple[Any, Sequence[Any]]], *,
                   detector: Any = None, conf_threshold: float = 0.25,
                   imgsz: Optional[int] = None, dossier: Any = None,
                   roster: Any = None, pdf_path: Any = None,
-                  surya_fallback: bool = False, ocr_fallback: bool = False,
+                  surya_fallback: bool = True, ocr_fallback: bool = True,
                   legacy: Optional[Dict[str, Dict[str, Any]]] = None,
                   progress: bool = False) -> Dict[str, Any]:
     """The stages, over pages someone else prepared.
@@ -174,11 +220,27 @@ def run_staged_on(prepared: Sequence[Tuple[Any, Sequence[Any]]], *,
     """
     if progress:
         print("GATHER")
-    log = gather.gather(prepared, detector=detector,
-                        conf_threshold=conf_threshold, imgsz=imgsz,
-                        dossier=dossier, roster=roster, pdf_path=pdf_path,
-                        surya_fallback=surya_fallback,
-                        ocr_fallback=ocr_fallback, progress=progress)
+        print(_rung_header(surya_fallback, ocr_fallback))
+    # ⚠️⚠️ ONE SURYA WORKER FOR THE WHOLE GATHER, so the model load is paid
+    # ONCE instead of twice per page. `gather()` calls Surya twice on every
+    # page -- `gather_margin_labels` then `gather_direction_words`, adjacent
+    # in its own body -- and until 2026-09-16 each spawned a fresh worker
+    # which spawned a fresh `llama-server`. Measured over 24 paired calls,
+    # the second spawn in one process costs +0.12 s MORE than the first:
+    # there was no sharing to lose.
+    #
+    # ⚠️ Opened HERE and not inside `gather` because the saving is a property
+    # of the RUN, and because this is the level that already owns the other
+    # run-scoped decisions. It is a no-op when Surya is absent, when neither
+    # consumer asks for it, or when the worker will not start -- in which
+    # case every call spawns one-shot exactly as before.
+    from ..staff_labels_surya import worker_session
+    with worker_session():
+        log = gather.gather(prepared, detector=detector,
+                            conf_threshold=conf_threshold, imgsz=imgsz,
+                            dossier=dossier, roster=roster, pdf_path=pdf_path,
+                            surya_fallback=surya_fallback,
+                            ocr_fallback=ocr_fallback, progress=progress)
 
     if progress:
         print("ADJUDICATE")
@@ -200,6 +262,28 @@ def run_staged_on(prepared: Sequence[Tuple[Any, Sequence[Any]]], *,
         print("EVALUATE")
     report = evaluate.run(log, progress=progress)
 
+    # ⚠️⚠️ INFER — AFTER EVALUATE, BEFORE EXPORT, AND OFF BY DEFAULT.
+    #
+    # The position is the claim: this stage weighs what is most LIKELY, and it
+    # cannot do that before the consequences of the settled decisions are in
+    # the log. `infer.run` takes `report` as an argument rather than trusting
+    # this call site, so the ordering is structural rather than a convention
+    # somebody has to preserve when editing this function.
+    #
+    # ⚠️ OFF MEANS ABSENT, NOT QUIET. The key is omitted entirely when the
+    # stage did not run -- the same `**({} if ... else {...})` shape the
+    # divergence table uses below -- so a record from a tree carrying INFER is
+    # byte-identical to one from a tree without it, and an arm isolating an
+    # EARLIER stage (`readjudicate`, `reexport_arm`) never has to know this
+    # stage exists. Writing `"inference": None` instead would break exactly
+    # that, and is the kind of harmless-looking addition that reaches an arm
+    # which was supposed to be blind to it.
+    inference_report = None
+    if infer.infer_enabled():
+        if progress:
+            print("INFER")
+        inference_report = infer.run(log, report, progress=progress)
+
     return {
         "record": log.to_json(),
         "summary": log.summary(),
@@ -217,6 +301,8 @@ def run_staged_on(prepared: Sequence[Tuple[Any, Sequence[Any]]], *,
         },
         **({} if divergence_report is None
            else {"divergence": divergence_report}),
+        **({} if inference_report is None
+           else {"inference": inference_report.to_json()}),
     }
 
 

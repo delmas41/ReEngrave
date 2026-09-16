@@ -145,25 +145,21 @@ def _read_crops(predictor, Image, crops: list[str]) -> list[dict]:
     return out
 
 
-def main() -> int:
-    job = json.load(sys.stdin)
+def _handle(job, predictor, Image) -> dict:
+    """One job in, one payload out. The whole of what a call does.
+
+    Split out of `main` so a SERVE loop and a one-shot invocation run the
+    SAME code -- a second copy would be a second thing to drift, and the
+    one-shot path is the fallback the serve path degrades to.
+    """
     systems = job.get("systems") or []
     crops = job.get("crops")
 
-    from PIL import Image                                  # noqa: PLC0415
-    from surya.inference import SuryaInferenceManager      # noqa: PLC0415
-    from surya.recognition import RecognitionPredictor     # noqa: PLC0415
-
     if crops is not None:
-        predictor = RecognitionPredictor(SuryaInferenceManager())
-        json.dump({"crops": _read_crops(predictor, Image, crops)}, sys.stdout)
-        return 0
+        return {"crops": _read_crops(predictor, Image, crops)}
 
     if not systems:
-        json.dump({"error": "no systems supplied"}, sys.stdout)
-        return 2
-
-    predictor = RecognitionPredictor(SuryaInferenceManager())
+        return {"error": "no systems supplied"}
 
     results = []
     for system in systems:
@@ -195,8 +191,60 @@ def main() -> int:
             "raw_lines": [{"text": t, "height": h} for t, _y, h in lines],
         })
 
-    json.dump({"systems": results}, sys.stdout)
-    return 0
+    return {"systems": results}
+
+
+def main() -> int:
+    """One-shot by default; `--serve` keeps the MODEL LOADED between jobs.
+
+    ⚠️⚠️ THE SERVE MODE EXISTS BECAUSE THE MODEL LOAD IS PAID PER SPAWN AND
+    NOTHING SHARES IT. Measured 2026-09-16 over 24 paired calls
+    (`benchmarks/omr-surya-staged-cost-2026-09/FINDINGS.md`): a second
+    `read_staff_labels_surya` in the SAME python process costs **+0.12 s MORE**
+    than the first, not less -- there is no warm-cache discount, because every
+    call spawns a fresh worker which spawns a fresh `llama-server`. A staged
+    page pays that twice, once for margin labels and once for direction words.
+
+    ⚠️ A RUN-PRIVATE `llama-server` VIA surya's OWN KEEP-ALIVE IS IMPOSSIBLE,
+    checked in the venv rather than assumed: `surya.inference.backends.spawn.
+    _cache_dir()` hardcodes `~/.cache/datalab/surya` with no environment
+    override, so its sentinel is machine-global and any keep-alive server is
+    SHARED -- the hazard CLAUDE.md records a session losing hours to. Keeping
+    OUR worker alive instead keeps its own `llama-server` alive inside this
+    process tree, and surya's atexit kills it when the session closes. So the
+    saving is taken without ever touching shared state.
+
+    One JSON job per line in, one JSON payload per line out. Line-delimited
+    because a job is a single `json.dumps` with no embedded newlines, and
+    `flush` after every write because the client is blocked on read.
+    """
+    from PIL import Image                                  # noqa: PLC0415
+    from surya.inference import SuryaInferenceManager      # noqa: PLC0415
+    from surya.recognition import RecognitionPredictor     # noqa: PLC0415
+
+    if "--serve" in sys.argv[1:]:
+        predictor = RecognitionPredictor(SuryaInferenceManager())
+        # Tell the client the model is up BEFORE it sends anything, so a slow
+        # load is distinguishable from a hung worker.
+        sys.stdout.write(json.dumps({"ready": True}) + "\n")
+        sys.stdout.flush()
+        for line in sys.stdin:
+            line = line.strip()
+            if not line:
+                continue
+            try:
+                payload = _handle(json.loads(line), predictor, Image)
+            except Exception as exc:                        # noqa: BLE001
+                payload = {"error": f"{type(exc).__name__}: {exc}"}
+            sys.stdout.write(json.dumps(payload) + "\n")
+            sys.stdout.flush()
+        return 0
+
+    job = json.load(sys.stdin)
+    predictor = RecognitionPredictor(SuryaInferenceManager())
+    payload = _handle(job, predictor, Image)
+    json.dump(payload, sys.stdout)
+    return 2 if payload.get("error") == "no systems supplied" else 0
 
 
 if __name__ == "__main__":

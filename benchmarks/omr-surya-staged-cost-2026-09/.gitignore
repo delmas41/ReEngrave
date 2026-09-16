@@ -1,0 +1,3 @@
+# ⚠️ A four-page staged record is ~130 MB. The MEASUREMENT is the timing, the
+# census and the log; the record is the (large, reproducible) intermediate.
+out/record-*.json

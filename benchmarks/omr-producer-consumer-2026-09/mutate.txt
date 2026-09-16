@@ -1,0 +1,24 @@
+── baseline ──
+   green
+
+  RED     subject=/scope= reads are judged as EXACT
+  RED     an unresolvable Kind defaults to a real one
+  RED     the gather walk skips its interprocedural round
+  RED     a TEST naming a key counts as reading it
+  RED     this module's own gap list counts as reading
+  RED     the row-kwarg list is hand-written
+  RED     a dead question exits like an ordinary finding
+  RED     ⚠️ THE FRAME FAULT RESTORED: read the roster at EXACT
+  RED     the veto names nothing it looked at
+  RED     a PAGE-sourced roster is admitted
+  RED     the record carries the object, not a dict
+  RED     the CLI has the flag and does not pass it
+  RED     --no-roster is ignored
+  RED     roundtrip compares KEY NAMES, so a rename reads as a drop
+  RED     roundtrip skips fields nothing reads, so the live one is lost
+  RED     a dropped field's READ flag is always False
+  RED     --run looks for the rows under the wrong key
+  RED     --run reports zero instead of refusing
+  GREEN   POSITIVE CONTROL: a no-op edit must stay GREEN
+
+── 18 red, 0 survived, 0 errors

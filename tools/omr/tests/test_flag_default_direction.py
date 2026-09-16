@@ -32,12 +32,28 @@ TRUEY = {"1", "true", "yes", "on"}
 FALSEY = {"0", "", "false", "no", "off"}
 
 
-def _string_set(node):
-    """The literal strings a comparison's right-hand side names, or None."""
+def _string_set(node, word_sets=None):
+    """The literal strings a comparison's right-hand side names, or None.
+
+    ⚠️⚠️ THE WORD SET MAY ALSO BE A MODULE CONSTANT, AND UNTIL 2026-09-15 THIS
+    SCAN COULD NOT SEE ONE. The docstring below already records that fix for
+    the flag NAME (`OMR_METER_SEGMENTS` is read through `METER_SEGMENTS_ENV`);
+    the right-hand side had exactly the same hole, and `OMR_INFER` -- written
+    as `... in _ON_WORDS` -- was silently skipped by the check written to
+    catch that class of mistake.
+
+    **So this is the anti-drift check having the drift it exists to prevent,
+    a second time, in the mirror position.** The lesson is the one CLAUDE.md
+    already draws about `gather_coverage`'s own guard: an anti-drift check is
+    itself an artefact that drifts, and the only defence is a positive
+    control naming a flag it must find.
+    """
     if isinstance(node, (ast.Tuple, ast.List, ast.Set)):
         vals = {e.value for e in node.elts
                 if isinstance(e, ast.Constant) and isinstance(e.value, str)}
         return vals or None
+    if isinstance(node, ast.Name) and word_sets and node.id in word_sets:
+        return word_sets[node.id] or None
     return None
 
 
@@ -66,18 +82,27 @@ def default_on_flags():
         except (SyntaxError, UnicodeDecodeError):
             continue
         consts = {}
+        word_sets = {}
         for node in ast.walk(tree):
-            if (isinstance(node, ast.Assign) and len(node.targets) == 1
-                    and isinstance(node.targets[0], ast.Name)
-                    and isinstance(node.value, ast.Constant)
+            if not (isinstance(node, ast.Assign) and len(node.targets) == 1
+                    and isinstance(node.targets[0], ast.Name)):
+                continue
+            name = node.targets[0].id
+            if (isinstance(node.value, ast.Constant)
                     and isinstance(node.value.value, str)):
-                consts[node.targets[0].id] = node.value.value
+                consts[name] = node.value.value
+            elif isinstance(node.value, (ast.Tuple, ast.List, ast.Set)):
+                vals = {e.value for e in node.value.elts
+                        if isinstance(e, ast.Constant)
+                        and isinstance(e.value, str)}
+                if vals:
+                    word_sets[name] = vals
         for node in ast.walk(tree):
             if not isinstance(node, ast.Compare) or len(node.ops) != 1:
                 continue
             if not isinstance(node.ops[0], (ast.In, ast.NotIn)):
                 continue
-            members = _string_set(node.comparators[0])
+            members = _string_set(node.comparators[0], word_sets)
             if not members or not (members <= TRUEY or members <= FALSEY):
                 continue
             call = node.left
@@ -126,7 +151,12 @@ class TestADefaultOnFlagFailsSafe(unittest.TestCase):
         nothing passes forever — this repo has shipped exactly that twice."""
         self.assertGreater(len(self.rows), 6, "the AST scan matched too little")
         flags = {r[2] for r in self.rows}
-        for expect in ("OMR_SLOT_STITCH", "OMR_METER_SEGMENTS", "OMR_ROSTER"):
+        # ⚠️ `OMR_INFER` is in this list BECAUSE the scan could not see it
+        # until 2026-09-15: its word set is a module constant. A named flag
+        # is the only thing that keeps a derived check honest about its own
+        # blind spots.
+        for expect in ("OMR_SLOT_STITCH", "OMR_METER_SEGMENTS", "OMR_ROSTER",
+                       "OMR_INFER"):
             self.assertIn(expect, flags)
 
     def test_every_default_ON_flag_uses_a_deny_list(self):
