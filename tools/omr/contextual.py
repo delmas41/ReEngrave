@@ -562,11 +562,51 @@ def _well_covered(labels: list[StaffLabel], pws) -> bool:
     return best >= LABEL_COVERAGE_OK * widest
 
 
+#: Rung names for `_read_labels_for_page`'s `sources` out-parameter. The same
+#: words `READERS` uses, so a consumer can hand one straight to `log.observe`
+#: without a translation table -- a table is where the two would drift.
+LABEL_RUNGS = ("text_layer", "surya", "tesseract", "vision", "human")
+
+
+def _credit_labels(sources: dict[int, str] | None,
+                   labels, rung: str, *, replaces: bool = False) -> None:
+    """Record WHICH RUNG produced each label, per staff.
+
+    ⚠️ THIS EXISTS BECAUSE `tiers` CANNOT ANSWER IT. `tiers` is a per-page
+    COUNT, so a page whose text layer named four staves and whose Tesseract
+    rung added three carries `[4, 0, 3, 0, 0]` and no way to say which staff
+    came from which -- and the one consumer that needs it, `gather_margin_
+    labels`, was filing every label under `READERS.TEXT_LAYER` regardless.
+    Attributing a Surya read to the text layer is not a cosmetic error: two
+    rows from ONE reader are ONE signal (`adjudicate.Evidence.independent`),
+    so a mis-named reader is a mis-counted witness.
+
+    ⚠️ AND IT IS NOT DERIVABLE FROM LIST ORDER EITHER, which is the tempting
+    shortcut: Tesseract's additions really are the tail of the list today,
+    but that is an implementation detail of the merge two rungs below, and an
+    index join here would be silently wrong the day either side filters --
+    the same refusal `gather_direction_words` makes about joining candidates
+    to readings by position.
+
+    `replaces` is the wholesale case: Surya and the vision rung REPLACE the
+    page rather than adding to it, and their credit has to erase the rung
+    they overruled or the map would name two producers for one staff.
+    """
+    if sources is None:
+        return
+    if replaces:
+        sources.clear()
+    for lab in labels:
+        sources[int(lab.staff_index)] = rung
+
+
 def _labels_for_page(pws, pdf_path: Path, page_index: int, *,
                      assist, budget: list[int],
                      surya_fallback: bool = True,
                      ocr_fallback: bool = True,
                      tiers: list[int] | None = None,
+                     sources: dict[int, str] | None = None,
+                     failures: list[dict] | None = None,
                      review_dir: Path | None = None) -> list[StaffLabel]:
     """`_read_labels_for_page`, then the work's roster read over the result.
 
@@ -584,7 +624,8 @@ def _labels_for_page(pws, pdf_path: Path, page_index: int, *,
     labels = _read_labels_for_page(
         pws, pdf_path, page_index, assist=assist, budget=budget,
         surya_fallback=surya_fallback, ocr_fallback=ocr_fallback,
-        tiers=tiers, review_dir=review_dir)
+        tiers=tiers, sources=sources, failures=failures,
+        review_dir=review_dir)
     if not work_roster.enabled() or not labels:
         return labels
     try:
@@ -690,6 +731,8 @@ def _read_labels_for_page(pws, pdf_path: Path, page_index: int, *,
                           surya_fallback: bool = True,
                           ocr_fallback: bool = True,
                           tiers: list[int] | None = None,
+                          sources: dict[int, str] | None = None,
+                          failures: list[dict] | None = None,
                           review_dir: Path | None = None) -> list[StaffLabel]:
     """Instrument labels, cheapest reader first.
 
@@ -726,8 +769,19 @@ def _read_labels_for_page(pws, pdf_path: Path, page_index: int, *,
     least. Measured, Surya and Claude disagree on nothing the ground truth can
     check; the gap is reach, not correctness. See
     `benchmarks/omr-margin-labels-2026-08/SURYA_BAKEOFF_2026-08-31.md`.
+
+    THREE OUT-PARAMETERS, and they answer three different questions. `tiers`
+    is the per-page COUNT this module already reported as `label_tiers`.
+    `sources` maps staff index -> rung, because a count cannot say WHICH
+    staff a rung read (see `_credit_labels`). `failures` collects a rung that
+    was asked, was installed, and threw -- the one state the cascade
+    deliberately swallows and which is otherwise indistinguishable from a
+    page that prints nothing. All three are optional and inert when omitted,
+    so every existing caller is unchanged.
     """
     tiers = tiers if tiers is not None else [0, 0, 0, 0, 0]
+    if sources is not None:
+        sources.clear()
     # Tier 1, free and instant: the PDF's own text layer.
     labels = read_staff_labels(pws)
     # NOT `if labels` — a PARTIAL text layer must not stop the ladder. A scanned
@@ -737,6 +791,7 @@ def _read_labels_for_page(pws, pdf_path: Path, page_index: int, *,
     # and the four it names are all winds. Measured, reading the margin there
     # takes the page from 18 of 20 clefs to 20 of 20.
     tiers[0] += len(labels)
+    _credit_labels(sources, labels, "text_layer")
     # ⚠️ THIS EARLY RETURN CONTRADICTS THIS FUNCTION'S OWN DOCSTRING, twice
     # over: "the three free rungs run unconditionally" and "the two free rungs
     # are tried unconditionally; the paid one is still gated". They are not —
@@ -767,8 +822,22 @@ def _read_labels_for_page(pws, pdf_path: Path, page_index: int, *,
             try:
                 read = staff_labels_surya.read_staff_labels_surya(pws)
             except Exception as exc:                      # noqa: BLE001
+                # ⚠️ A RUNG THAT CRASHED IS "CANNOT TELL", NOT "NO INK", AND
+                # UNTIL 2026-09-16 IT LEFT NO TRACE BUT A LOG LINE. The
+                # cascade is right to swallow it -- an optional reader must
+                # not lose the page -- but a caller that keeps a record has
+                # to be able to say a rung was asked, was installed, and
+                # failed. Without this the staged record reports the page as
+                # carrying no printed label, which is the fallback converting
+                # *cannot tell* into a definite answer. NOTES.md records the
+                # same blindness in `transcribe`.
                 logger.warning("surya label fallback failed on page %s: %s",
                                page_index, exc)
+                if failures is not None:
+                    failures.append({"rung": "surya",
+                                     "error": type(exc).__name__,
+                                     "note": str(exc)[:200],
+                                     "page_index": int(page_index)})
             else:
                 # Keep whichever read more — counting USABLE labels, for the
                 # reason the paid rung below already states: a label the
@@ -796,6 +865,7 @@ def _read_labels_for_page(pws, pdf_path: Path, page_index: int, *,
                     tiers[0] = 0
                     tiers[1] += len(read)
                     labels = read
+                    _credit_labels(sources, read, "surya", replaces=True)
                 if not quality_merge_enabled() and _well_covered(labels, pws):
                     return labels
 
@@ -864,6 +934,7 @@ def _read_labels_for_page(pws, pdf_path: Path, page_index: int, *,
                 labels = [lab for lab in labels
                           if lab.staff_index not in superseded] + added
                 tiers[2] += len(added)
+                _credit_labels(sources, added, "tesseract")
 
     if assist.mode == "none" or _well_covered(labels, pws):
         return labels
@@ -878,8 +949,17 @@ def _read_labels_for_page(pws, pdf_path: Path, page_index: int, *,
             out_dir=Path(review_dir or ".omr-review"))
         if answered:
             already = {lab.staff_index for lab in labels}
-            labels = labels + [a for a in answered if a.staff_index not in already]
+            taken = [a for a in answered if a.staff_index not in already]
+            labels = labels + taken
+            # ⚠️ `tiers[4]` counts what the human ANSWERED and `sources`
+            # credits only what was KEPT, so the two can disagree on this
+            # rung alone. Deliberate: correcting `tiers` here would change
+            # `label_tiers` in the legacy summary, which is a behaviour
+            # change this record fix has not priced. The staged path runs
+            # `Assist("none")` and never reaches this rung, so the partition
+            # control in `gather_margin_labels` is exact where it is used.
             tiers[4] += len(answered)
+            _credit_labels(sources, taken, "human")
         # A human may have handed the rest over mid-question; fall through so
         # the new mode takes effect on this page rather than the next.
         if assist.mode != "vision":
@@ -957,6 +1037,7 @@ def _read_labels_for_page(pws, pdf_path: Path, page_index: int, *,
         # does too — otherwise the summary would name tiers that were overruled.
         tiers[0] = tiers[1] = tiers[2] = 0
         tiers[3] += len(read)
+        _credit_labels(sources, read, "vision", replaces=True)
         return read
     return labels
 

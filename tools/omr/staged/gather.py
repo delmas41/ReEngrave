@@ -1953,6 +1953,51 @@ def _meter_cells(detections, p: int, key):
     return sorted(out)
 
 
+def _label_rung_state(surya_fallback: bool, ocr_fallback: bool) -> Dict[str, Any]:
+    """Which margin-label rungs were ASKED FOR, and which of those can run.
+
+    ⚠️ `available()` IS THE WHOLE POINT. Both free rungs self-disable where
+    their install is missing -- Surya wants a Python 3.10 venv and llama.cpp,
+    Tesseract wants a brew binary -- and they do it SILENTLY, which is exactly
+    right for the reader and exactly wrong for the record. A machine with
+    neither reads zero labels on every page, identically to a page that prints
+    none, and nothing anywhere said which. Asking here, once, before the
+    cascade runs, is what lets the rows below name the difference.
+    """
+    requested, available, unavailable = [], ["text_layer"], []
+    if surya_fallback:
+        requested.append("surya")
+        try:
+            from ..staff_labels_surya import available as _surya_available
+            ok = bool(_surya_available())
+        except Exception:                                     # noqa: BLE001
+            ok = False
+        (available if ok else unavailable).append("surya")
+    if ocr_fallback:
+        requested.append("tesseract")
+        try:
+            from ..staff_labels_tesseract import available as _tess_available
+            ok = bool(_tess_available())
+        except Exception:                                     # noqa: BLE001
+            ok = False
+        (available if ok else unavailable).append("tesseract")
+    return {"requested": requested, "available": available,
+            "unavailable": unavailable}
+
+
+#: `_credit_labels`'s rung words -> the reader vocabulary. Written out rather
+#: than derived from the string, because `READERS` is a vocabulary a row is
+#: validated against and a silent `getattr` miss would file a real reading
+#: under a name no consumer knows.
+_RUNG_READER = {
+    "text_layer": READERS.TEXT_LAYER,
+    "surya": READERS.SURYA,
+    "tesseract": READERS.TESSERACT,
+    "vision": READERS.VISION,
+    "human": READERS.VISION,
+}
+
+
 def gather_margin_labels(log: Log, pws: Any, cells, local, *,
                          pdf_path: Any = None, surya_fallback: bool = False,
                          ocr_fallback: bool = False) -> None:
@@ -1975,6 +2020,42 @@ def gather_margin_labels(log: Log, pws: Any, cells, local, *,
     The reader's own `confidence` and `alias` are kept in `detail` as its
     annotation, deliberately NOT as the row's value or score: they describe
     a lexicon match this row is not making.
+
+    ⚠️⚠️ FOUR STATES FOR AN EMPTY STAFF, NOT ONE, AND UNTIL 2026-09-16 THIS
+    FUNCTION COULD SPELL ONLY THE LAST OF THEM:
+
+    | what happened | what is written |
+    |---|---|
+    | a requested rung is not installed here | `READER_UNAVAILABLE` |
+    | a requested rung was installed and threw | `READER_UNAVAILABLE` |
+    | no OCR rung was requested at all | `OUT_OF_SCOPE` |
+    | every requested rung ran and read nothing here | `NO_INK` |
+
+    The first three used to be written as the fourth. That is the fallback
+    converting *cannot tell* into a definite answer -- here into "this page
+    prints no instrument name" -- which CLAUDE.md names as never the safe
+    default, and it is live on the staged path's OWN DEFAULT: `--surya` and
+    `--ocr` are opt-in, so every staged run this repo has made records 75 of
+    75 scanned staves as printing no label, when in truth no rung that could
+    read a scan was ever asked. `gather_direction_words` already makes this
+    exact distinction for the word reader and says why; this is that contract
+    for the label reader.
+
+    ⚠️ A REQUESTED-BUT-MISSING RUNG POISONS THE WHOLE PAGE, not only the
+    staves that rung would have read, and that is the WEAKER claim on
+    purpose. Where Surya is absent and Tesseract ran, a staff Tesseract found
+    nothing on is still one Surya might have read -- so the row says
+    "cannot tell" and carries `rungs_ran` / `rungs_unavailable` beside it, and
+    the split stays recoverable. Same reasoning as the direction reader
+    filing `NO_READING` rather than guessing which of two refusals a crop hit.
+
+    ⚠️ AND THE READER NAMED ON AN OBSERVATION IS NOW THE RUNG THAT READ IT.
+    Every label used to be filed under `READERS.TEXT_LAYER` whatever produced
+    it -- on a 19th-century scan the text layer reads NOTHING, so all 50
+    labels the cascade found were attributed to the one rung that certainly
+    did not find them. Two rows from one reader are ONE signal
+    (`adjudicate.Evidence.independent`), so a mis-named reader is a
+    mis-counted witness, not a cosmetic slip.
     """
     if pdf_path is None:
         _stub_per_staff(log, cells, local, Q.MARGIN_LABEL, READERS.TEXT_LAYER,
@@ -1982,20 +2063,71 @@ def gather_margin_labels(log: Log, pws: Any, cells, local, *,
         return
 
     p = pws.page.page_index if hasattr(pws.page, "page_index") else 0
+    page_sub = R.page(p)
+    rungs = _label_rung_state(surya_fallback, ocr_fallback)
+
+    # One PAGE row per rung that was asked for and cannot run. The reader
+    # named is the ABSENT one, so `gather_coverage` and any census can see
+    # which install is missing without parsing a note.
+    for name in rungs["unavailable"]:
+        log.abstain(page_sub, Q.MARGIN_LABEL, reader=_RUNG_READER[name],
+                    frame=FRAME_MARGIN, reason=ABSTAIN.READER_UNAVAILABLE,
+                    note=f"{name} was requested and is not installed here",
+                    rungs_requested=list(rungs["requested"]),
+                    rungs_available=list(rungs["available"]),
+                    rungs_unavailable=list(rungs["unavailable"]))
+
+    tiers: List[int] = [0, 0, 0, 0, 0]
+    sources: Dict[int, str] = {}
+    failures: List[Dict[str, Any]] = []
     try:
         from pathlib import Path as _Path
         from ..assist import Assist
         from ..contextual import _labels_for_page
         labels = _labels_for_page(
             pws, _Path(str(pdf_path)), p, assist=Assist("none"), budget=[0],
-            surya_fallback=surya_fallback, ocr_fallback=ocr_fallback)
+            surya_fallback=surya_fallback, ocr_fallback=ocr_fallback,
+            tiers=tiers, sources=sources, failures=failures)
     except Exception as exc:                                  # noqa: BLE001
         # ⚠️ An optional reader that cannot run ABSTAINS -- it does not lose
         # the page. But it abstains LOUDLY enough to be told from a reader
         # that ran and found nothing: the exception class goes in the detail.
-        _stub_per_staff(log, cells, local, Q.MARGIN_LABEL, READERS.TEXT_LAYER,
-                        FRAME_MARGIN, f"reader failed: {type(exc).__name__}")
+        # ⚠️ AND THE REASON IS `READER_UNAVAILABLE`, NOT `NOT_IMPLEMENTED`.
+        # A cascade that threw is not a declared stub, and filing it as one
+        # put a real defect in the bucket reserved for unwritten code --
+        # where `gather_coverage` reports it as build progress.
+        log.abstain(page_sub, Q.MARGIN_LABEL, reader=READERS.TEXT_LAYER,
+                    frame=FRAME_MARGIN, reason=ABSTAIN.READER_UNAVAILABLE,
+                    error=type(exc).__name__, note=str(exc)[:200],
+                    rungs_requested=list(rungs["requested"]))
+        _labels_abstain_per_staff(
+            log, cells, local, ABSTAIN.READER_UNAVAILABLE,
+            note=f"the label cascade failed: {type(exc).__name__}",
+            error=type(exc).__name__)
         return
+
+    # A rung that was installed, was asked, and threw. The cascade swallows
+    # it by design; without this row the page reads as one that prints no
+    # labels. Routed out of `contextual._read_labels_for_page`.
+    for f in failures:
+        log.abstain(page_sub, Q.MARGIN_LABEL,
+                    reader=_RUNG_READER.get(str(f.get("rung")),
+                                            READERS.TEXT_LAYER),
+                    frame=FRAME_MARGIN, reason=ABSTAIN.READER_UNAVAILABLE,
+                    error=str(f.get("error") or ""),
+                    note=str(f.get("note") or "")[:200],
+                    rung_failed=str(f.get("rung")))
+
+    census = {"text_layer": tiers[0], "surya": tiers[1],
+              "tesseract": tiers[2], "vision": tiers[3], "human": tiers[4]}
+    # ⚠️ THE WEAKER CLAIM WINS. Only where every rung that was asked for
+    # actually ran can an empty staff mean "nothing is printed here".
+    if rungs["unavailable"] or failures:
+        empty_reason = ABSTAIN.READER_UNAVAILABLE
+    elif not rungs["requested"]:
+        empty_reason = ABSTAIN.OUT_OF_SCOPE
+    else:
+        empty_reason = ABSTAIN.NO_INK
 
     by_staff = {lab.staff_index: lab for lab in labels}
     seen = set()
@@ -2010,12 +2142,46 @@ def gather_margin_labels(log: Log, pws: Any, cells, local, *,
         lab = by_staff.get(c.staff_index)
         if lab is None or not (lab.text or "").strip():
             log.abstain(sub, Q.MARGIN_LABEL, reader=READERS.TEXT_LAYER,
-                        frame=FRAME_MARGIN, reason=ABSTAIN.NO_INK)
+                        frame=FRAME_MARGIN, reason=empty_reason,
+                        rungs_requested=list(rungs["requested"]),
+                        rungs_ran=list(rungs["available"]),
+                        rungs_unavailable=list(rungs["unavailable"]),
+                        rungs_failed=[str(f.get("rung")) for f in failures],
+                        label_tiers=dict(census))
             continue
+        rung = sources.get(int(lab.staff_index), "text_layer")
         log.observe(sub, Q.MARGIN_LABEL, lab.text,
-                    reader=READERS.TEXT_LAYER, frame=FRAME_MARGIN,
+                    reader=_RUNG_READER.get(rung, READERS.TEXT_LAYER),
+                    frame=FRAME_MARGIN,
                     reader_confidence=lab.confidence, reader_alias=lab.alias,
-                    y_center_px=lab.y_center_px)
+                    y_center_px=lab.y_center_px,
+                    rung=rung, label_tiers=dict(census))
+
+
+def _labels_abstain_per_staff(log: Log, cells: Sequence[Any],
+                              local: Dict[int, Tuple[int, int]],
+                              reason: str, **detail: Any) -> int:
+    """One margin-label abstention per staff, with an EXPLICIT reason.
+
+    ⚠️ NOT `_stub_per_staff`, which hardcodes `NOT_IMPLEMENTED`. That word
+    means "this decision is not written"; a reader that was asked and could
+    not run is a different fact, and `gather_coverage` reads the two
+    differently -- one is build progress, the other is a blind page.
+    """
+    n = 0
+    seen = set()
+    for c in cells:
+        key = local.get(c.staff_index)
+        if key is None:
+            continue
+        sub = R.staff(c.page_index, key[0], key[1])
+        if sub.to_key() in seen:
+            continue
+        seen.add(sub.to_key())
+        log.abstain(sub, Q.MARGIN_LABEL, reader=READERS.TEXT_LAYER,
+                    frame=FRAME_MARGIN, reason=reason, **detail)
+        n += 1
+    return n
 
 
 #: Glyph indices for direction-word CANDIDATES, offset far past any detector
