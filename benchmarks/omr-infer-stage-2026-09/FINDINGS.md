@@ -460,6 +460,36 @@ defect.
 `duration_narrowed` 339, `no_pitch` 215 — which is the evidence that this is
 the same document and the same pipeline the Phase 2 count was taken on.
 
+⚠️ **EVERY DIFF HUNK IS AN ADDITION — 6 of 6, zero deletions and zero
+changes** — which is the containment control arriving from the raw text as
+well as from the parse.
+
+⚠️ **AND ONE ADDED NOTE UNBLOCKED A SLUR: `<slur>` 80 -> 82, `<tied>` 179 ->
+179.** An arc that previously bound fewer than two noteheads — the dominant
+refusal in the arc export, 76% of merged arcs — got its second note and became
+a real slur. So an inference on one quantity can free an element of another,
+which is a downstream effect worth watching rather than a number to claim: it
+is ONE slur, and it has not been checked against the print either.
+
+### 7c-bis. SEPARABILITY, and the stage boundary, on the REAL artefacts
+
+`probe/separability.py` over both records — not a fixture:
+
+| | OFF (as gathered) | ON (after INFER) |
+|---|--:|--:|
+| verdicts | 16,923 | 16,930 |
+| labelled `infer:` | **0** | **7** |
+| supersede a NARROWING | **0** | **7** |
+| ...of those NOT inferred | **0** | **0** |
+| top-level `inference` key | **ABSENT** | present |
+
+⚠️⚠️ **THE STAGE BOUNDARY, ASSERTED ON 16,930 REAL VERDICTS: every verdict in
+the record that collapses a narrowing is an inference, and no other decider
+collapses one.** That is the plan's own testable form of the boundary (*no
+EVALUATE consequence may contain a tie-break*) checked from the other side. If
+a consequence ever starts choosing, this probe goes red and nothing else
+would notice.
+
 ### 7d. Hazard (b) is not a no-op: it refuses 8 of 35
 
 Of the 28 unanimous cases stopped for want of two INDEPENDENT witnesses:
