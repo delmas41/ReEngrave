@@ -383,9 +383,12 @@ work.
 
 ## 7. Which of the six questions this does NOT reach
 
+⚠️ **Row 1 moved out of this tool mid-session, and the row says so** rather than being quietly deleted — a question answered
+somewhere else is a different fact from one nobody asks.
+
 | # | question | where it stands |
 |---|---|---|
-| 1 | a parameter threaded with no producer | **asked here** (PRODUCER) |
+| 1 | a parameter threaded with no producer | **`tools/omr/no_producer.py`'s**, landed on main the same day; this session built a duplicate and removed it. The REPAIR it asks for is §3 |
 | 2 | a quantity declared and never gathered, or gathered and never read | **already owned** by `gather_coverage`; not duplicated |
 | 3 | a `wants` entry the body never reads | **already owned** by `inventory._never_read`; LATENT builds ON it |
 | 4 | a declared input read at a SCOPE that cannot reach it | **asked here** (FRAME), and asked by nothing else |
