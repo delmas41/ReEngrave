@@ -9,6 +9,27 @@ all five, and all four exports are BYTE-IDENTICAL. The misread `9/4` does not
 propagate, because it structurally cannot.** The brief's premise is refuted by
 the mechanism rather than by the number.
 
+⚠️⚠️ **LANDING STAMP, 2026-09-16 — THIS ARM MEASURED A TREE THAT NO LONGER
+EXISTS, AND THE RULES THAT SUPERSEDE IT ARE THE ONES IT IS ABOUT.** Merged to
+main at `328c7ac0`. The gather provenance below names `ce7b8ba7`; verified at
+landing time, that commit **does not carry `METER_CHANGE_MIN_STAVES`** and main
+does (2 occurrences in `tools/omr/staged/adjudicators/rhythm.py`). `A-METER-6`
+— *an uncorroborated change is not carried off its system* — landed in PR #35
+(`000812bd`) **after this arm ran**, together with the default-ON flip of both
+meter flags.
+
+⚠️ **The direction is expected to be preserved and was NOT re-measured.**
+`A-METER-6` only ever makes a carry MORE conservative, so *the bars refuse it*
+and *the exports are byte-identical* should hold at least as strongly on
+current main. **That is a prediction, not a measurement** — nothing here was
+re-run, and if the byte-identity figure is ever load-bearing for a decision it
+wants the arm re-running against `328c7ac0` or later. The record is on disk
+(`library/_shared-records/brahms1-breitkopf-p0-p3.record.json`, md5 verified at
+landing) and the arm is the scripts in this directory.
+
+⚠️ Kept rather than dropped, per this repo's own rule: *a superseded
+measurement with its correction beside it is worth more than a gap.*
+
 ---
 
 ## 1. Control, before any arm is read
