@@ -161,6 +161,26 @@ KNOWN_GAPS: Dict[str, str] = {
         "the tier that is admissible (`source_kind: catalog`) and it is the "
         "one this session wired."),
 
+    # ── ROUNDTRIP
+    "ROUNDTRIP Verdict.single_pass_revision": (
+        "⚠️⚠️ A LIVE FAULT, REPORTED WITH ITS PRICE AND DELIBERATELY NOT "
+        "REPAIRED. The field is declared on `Verdict`, READ by the fixpoint "
+        "guard (`record.py:1026`) and ABSENT from `Verdict.to_json` — so it "
+        "cannot survive a saved record: a replayed verdict comes back "
+        "`False`, and the guard's ONE sanctioned exemption, the "
+        "durations -> meter -> durations loop `reconcile_duration` is "
+        "explicitly allowed, is silently not there. **No saved record can be "
+        "replayed through that guard as written.** ⚠️ THE PRICE OF THE FIX "
+        "IS WHY IT IS NOT TAKEN HERE: adding a key to `Verdict.to_json` "
+        "changes EVERY record this repo writes, so every byte-identity "
+        "control over a record — and this project runs several, including "
+        "`regather_control.py`, which exits non-zero on an unstamped or "
+        "mismatched pair — would report a difference that is not the change "
+        "under test. That is the *perturbs upstream by existing* hazard, and "
+        "pricing it is Sean's call. Found independently by a sibling agent; "
+        "this check reproduces it from the tree with no hand-listing, which "
+        "is the proof the question is live."),
+
     # ── UNRESOLVED gather sites, by SHAPE
     #
     # ⚠️ NAMED, NOT SHRUGGED AT. Eleven sites over three shapes, all of them
@@ -1054,6 +1074,90 @@ def details() -> Dict[str, Any]:
 
 
 # ─────────────────────────────────────────────────────────────────────────────
+# 4. ROUNDTRIP — a field declared on a serialisable class and dropped by its
+#    own projection
+# ─────────────────────────────────────────────────────────────────────────────
+
+def roundtrip() -> Dict[str, Any]:
+    """Fields a class declares and its own `to_json` does not emit.
+
+    ⚠️⚠️ **THIS IS THE `works.json` `lines` FAULT, ONE LAYER IN.** That field
+    was computed on the way in and dropped by **four separate projections**,
+    and the repair that worked was to DERIVE the shape from the function that
+    consumes it. Here the producer and the projection sit in one class, so
+    the comparison is exact: the dataclass's declared fields against the keys
+    its `to_json` writes.
+
+    ⚠️ **A DROPPED FIELD THAT IS READ IS A DIFFERENT FACT FROM ONE THAT IS
+    NOT**, and they are reported apart. A field nobody reads is dead weight; a
+    field a real consumer reads **cannot survive a saved record**, so the
+    consumer silently gets the default on every replay. `Verdict.
+    single_pass_revision` is the second kind: it is the fixpoint guard's one
+    sanctioned exemption, and a replayed record comes back `False`.
+
+    ⚠️ Deliberately NOT extended to `from_json`: a class may legitimately
+    re-derive a field on the way in. What it may not do is fail to WRITE one
+    its own consumer reads.
+    """
+    out_dropped: List[Dict[str, Any]] = []
+    emitted_total = 0
+    classes = 0
+    for rootname in _PRODUCER_ROOTS:
+        for path in _py_files(_ROOT / rootname):
+            tree = _parse(path)
+            if tree is None:
+                continue
+            src = path.read_text()
+            for node in ast.walk(tree):
+                if not isinstance(node, ast.ClassDef):
+                    continue
+                to_json = next((n for n in node.body
+                                if isinstance(n, ast.FunctionDef)
+                                and n.name == "to_json"), None)
+                if to_json is None:
+                    continue
+                classes += 1
+                declared = [n.target.id for n in node.body
+                            if isinstance(n, ast.AnnAssign)
+                            and isinstance(n.target, ast.Name)
+                            and not n.target.id.startswith("_")]
+                # ⚠️⚠️ THE FIELD'S VALUE, NOT ITS NAME — AND THE FIRST CUT
+                # COMPARED NAMES AND REPORTED A RENAME AS A DROP. `Witness`
+                # emits `self.row_id` under the key `"row"`; the field
+                # survives the round trip perfectly and a name comparison
+                # calls it dropped. A check that cannot tell a RENAME from a
+                # DROP has one false positive per renamed key and trains the
+                # next reader to skim the list.
+                emitted: Set[str] = set()
+                for n in ast.walk(to_json):
+                    if (isinstance(n, ast.Attribute)
+                            and isinstance(n.value, ast.Name)
+                            and n.value.id == "self"):
+                        emitted.add(n.attr)
+                emitted_total += len(emitted & set(declared))
+                for f in declared:
+                    if f in emitted:
+                        continue
+                    # ⚠️ "READ" IS COUNTED GENEROUSLY — any `.field` anywhere
+                    # in the package outside this class's own `to_json`. What
+                    # survives as `dropped_and_read` is a field with a real
+                    # consumer that a saved record cannot carry to it.
+                    n_uses = sum(
+                        p.read_text().count(f".{f}")
+                        for p in _py_files(_ROOT / rootname))
+                    out_dropped.append({
+                        "class": node.name, "field": f,
+                        "file": _rel(path), "line": node.lineno,
+                        "read": n_uses > 1,
+                        "uses": n_uses})
+    return {"classes_with_to_json": classes,
+            "fields_emitted": emitted_total,
+            "dropped": sorted(out_dropped,
+                              key=lambda r: (not r["read"], r["class"],
+                                             r["field"]))}
+
+
+# ─────────────────────────────────────────────────────────────────────────────
 # The report
 # ─────────────────────────────────────────────────────────────────────────────
 
@@ -1078,6 +1182,9 @@ def controls(rep: Dict[str, Any]) -> Dict[str, Any]:
         "frame_quantities_filed": len(rep["frames"]["filed"]),
         "detail_keys_written": rep["details"]["written"],
         "detail_keys_read": rep["details"]["read"],
+        "roundtrip_classes_with_to_json":
+            rep["roundtrip"]["classes_with_to_json"],
+        "roundtrip_fields_emitted": rep["roundtrip"]["fields_emitted"],
     }
 
 
@@ -1120,11 +1227,19 @@ def problems(rep: Dict[str, Any]) -> List[str]:
     for d in rep["details"]["unread"]:
         out.append(f"DETAIL {d['key']} — written at {d['sites'][0]}, "
                    f"named nowhere else in the tree")
+    for r in rep["roundtrip"]["dropped"]:
+        out.append(
+            f"ROUNDTRIP {r['class']}.{r['field']} — declared at "
+            f"{r['file']}:{r['line']} and ABSENT from {r['class']}.to_json"
+            + (f", and READ ({r['uses']} mentions): a saved record cannot "
+               f"carry it to its consumer" if r["read"]
+               else " (read by nothing)"))
     return out
 
 
 def report() -> Dict[str, Any]:
-    rep = {"producers": producers(), "frames": frames(), "details": details()}
+    rep = {"producers": producers(), "frames": frames(),
+           "details": details(), "roundtrip": roundtrip()}
     rep["controls"] = controls(rep)
     rep["problems"] = problems(rep)
     rep["unaccounted"] = unaccounted(rep["problems"])
@@ -1204,6 +1319,15 @@ def render(rep: Dict[str, Any]) -> str:
         A("   none")
     for d in rep["details"]["unread"]:
         A("  ⚠️ %-44s %s" % (d["key"], d["sites"][0]))
+    A("")
+    A("4. ROUNDTRIP — a field declared and dropped by its own `to_json`")
+    if not rep["roundtrip"]["dropped"]:
+        A("   none")
+    for r in rep["roundtrip"]["dropped"]:
+        A("  %s %s.%s  %s"
+          % ("⚠️⚠️" if r["read"] else "  ⚠️", r["class"], r["field"],
+             f"READ ({r['uses']} mentions) — a saved record cannot carry it"
+             if r["read"] else "(read by nothing)"))
     A("")
     A("── POSITIVE CONTROLS (a zero means the question did not run) ────────")
     for k, v in rep["controls"].items():

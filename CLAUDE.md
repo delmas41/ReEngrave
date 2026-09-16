@@ -2863,6 +2863,100 @@ no library, so `slot_arm.py` (the end-to-end arm) cannot run there.
 
 ---
 
+## Does the information REACH its consumer? — a derived check, and the second missing producer
+
+`tools/omr/staged/wiring.py`, 2026-09-15, no flag. **The highest-yield bug
+class in this repo finally has an instrument.** *The value existed and nothing
+read it* has been found here **ten or more times, every one by accident** —
+`Q.STEM` gathered and unread THREE separate times; `pdf_path` rasterised and
+dropped, so `gather_margin_labels` filed `not_implemented` on **75 of 75
+staves on every staged run this repo had ever made**; `Q.METER`'s `segments`
+reaching no file; `adjudicate_dynamic` deciding while `grep '<dynamics'
+export.py` returned 0. The 2026-09-11 handoff wrote the conclusion this
+implements: *"worth a derived check rather than a third discovery."* Findings:
+[benchmarks/omr-producer-consumer-2026-09/FINDINGS.md](benchmarks/omr-producer-consumer-2026-09/FINDINGS.md).
+
+```bash
+python3 -m tools.omr.staged.wiring --check    # non-zero on anything unaccounted
+python3 -m tools.omr.staged.wiring --run rec.json
+```
+
+**Three questions, all DERIVED, each with a POSITIVE CONTROL** — `--check`
+exits **2** on a control at zero, *before* it looks at a finding, because a
+question that can only ever answer "nothing wrong" is not a question. Numbers
+are the TOOL's, never this line's.
+
+| question | examined | healthy | findings |
+|---|--:|--:|--:|
+| **PRODUCER** — a parameter threaded with no supplier | 56 params / 10,319 call sites | 53 fed | **1 dead** (`dossier`), 1 repaired |
+| **FRAME** — a declared input read where it is never filed | 76 declared reads | 30 EXACT + 46 scoped | **0 broken, 6 LATENT**, 1 repaired |
+| **DETAIL** — a key written on a row and named nowhere else | 113 keys | 91 read | **22 unread** |
+
+⚠️⚠️ **THE `FRAME` QUESTION IS THE ONE NOTHING ELSE ASKS, and this file
+already said so**: *"Neither `inventory --check` nor `gather_coverage` can
+catch that — the `wants` entry IS read and the quantity IS gathered."* Its new
+**LATENT** tier is the point: a `wants` entry that is INERT *and* whose
+quantity is filed only at a Kind `Scope.EXACT` cannot reach is **a trap armed
+for whoever closes it**, visible BEFORE the consumer exists. ⚠️ Of the six
+that remain, **`adjudicate_part_partition declares Q.INSTRUMENT` is RANKED
+WORK**: the Phase 2 part-join repair needs a short system to pair by
+instrument NAME, the identity is on the STAVES, that decision runs at
+DOCUMENT — so a bare `ev.rows(Q.INSTRUMENT)` returns nothing, silently.
+
+⚠️⚠️ **THE SECOND MISSING PRODUCER IS CONFIRMED AND REPAIRED: `roster`.**
+Threaded `run_staged` → `run_staged_on` → `gather` → `gather_external`,
+forwarded at every link and supplied by NOBODY, so `Q.ROSTER_ENTRY` was dead
+on every staged run this repo had made — and `adjudicate_instrument` declared
+it in `wants`, `composed_from` AND `checked_by` while reading it never.
+**Three legs, because it was three faults**: `--work-id` / `--no-roster` on
+the staged CLI (default ON — `roster_for_pdf` ABSTAINS for any PDF the store
+does not hold, so it is a no-op everywhere it has no business acting); the
+read at `Scope.SELF_AND_ANCESTORS`, because the roster is a fact about the
+WORK and is filed on the DOCUMENT; and `work_roster.decide` **imported, not
+restated** — the measured rule, 28 firings over 1,422 labels, all
+hand-adjudicated. ⚠️ **Sean's ruling is what put it in ADJUDICATE** (handoff
+§7): a roster is `source_kind: "catalog"` and **does not fall silent when the
+scan is bad**, which is this file's own *a second witness must not come off
+the same raster*. ⚠️ `source_kind` is re-checked AT THE POINT OF USE:
+`work_roster()` enforces the tier when it BUILDS one, and nothing enforced it
+on a row that arrived some other way. ⚠️ **The reason word `roster` was a
+declared reason of that decision from the day it was written and nothing could
+ever return it** — *a vocabulary word with no branch*, the third documentation
+shape after *fixed-then-kept-open-in-prose* and *a rule described in a
+docstring and never built*.
+
+⚠️⚠️ **THE TOOL'S OWN GAP LIST SILENCED THE TOOL.** Writing each unread DETAIL
+key into `KNOWN_GAPS` *with its reason* put every one of those names into a
+file under `tools/`, the scan found them, and the question that had just
+reported eighteen findings reported **NONE**. *The inventory written to
+account for the findings closed the check that produced them* — the
+vacuous-assertion family arriving inside the tool built to catch it. **A gap
+list naming a key is not a consumer of it, for the same reason a test naming
+one is not**; both trees are excluded and the count went **18 → 22** when they
+were. ⚠️ And the reach probe's work-id map was HAND-TYPED and every entry was
+wrong (the catalog keys on genre+number, `beethoven--symphony-5`, never the
+opus) — it reported *"works the CATALOG holds a roster for: 0"* rather than
+reporting zero MOVES, which is the reach-first rule paying for itself, but it
+was still a hand list inside a probe for a tool whose thesis is *derive, never
+hand-list*.
+
+⚠️ **WHAT IT DOES NOT REACH, stated rather than implied.** *A verdict DECIDED
+that reaches no file* is **not asked** — `export.status_census` already
+answers it at RUN time as a PARTITION, and a static twin would be a second
+record of one thing that nothing forces to agree. *A field dropped by a
+projection* is only **partly** asked: DETAIL catches 22 row-field instances
+and would NOT have caught `works.json`'s `lines`, which was named in four
+places each of which dropped it. ⚠️ And FRAME judges only the 30 reads whose
+reach is fixed by the decision's own declaration; the other 46 carry a
+`subject=`/`scope=` it cannot evaluate.
+
+⚠️ **NOT ESTABLISHED: accuracy.** Nothing was checked against a print, no
+MusicXML was exported, no metric was run, and the staged path has NOT been run
+end to end with a roster. `<part-name>` is not scored by musicdiff, which is
+why the roster layer has never had a pooled figure and does not get one here.
+
+---
+
 ## The central score library
 
 Every score the project uses lives in one place with its provenance attached:

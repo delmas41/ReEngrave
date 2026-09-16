@@ -190,6 +190,62 @@ class TestTheDetailQuestion(unittest.TestCase):
                                            "named somewhere")
 
 
+class TestTheRoundTripQuestion(unittest.TestCase):
+    """A field declared on a serialisable class and dropped by its own
+    `to_json` — the `works.json` `lines` fault, one layer in."""
+
+    def test_it_finds_the_live_instance_WITHOUT_being_told(self):
+        """⚠️ `Verdict.single_pass_revision` is declared, READ by the fixpoint
+        guard, and absent from `Verdict.to_json` — so a replayed record comes
+        back `False` and the guard's one sanctioned exemption is silently not
+        there. Found independently by a sibling agent; this asserts the check
+        reproduces it FROM THE TREE, with no hand-listing."""
+        rep = wiring.roundtrip()
+        hit = [r for r in rep["dropped"]
+               if (r["class"], r["field"]) == ("Verdict",
+                                               "single_pass_revision")]
+        self.assertEqual(len(hit), 1)
+        self.assertTrue(hit[0]["read"],
+                        "a dropped field a real consumer READS is a different "
+                        "fact from dead weight, and they are reported apart")
+
+    def test_a_RENAME_is_not_a_DROP(self):
+        """⚠️⚠️ THE FIRST CUT COMPARED KEY NAMES AND REPORTED A RENAME AS A
+        DROP. `Witness` emits `self.row_id` under the key `"row"` — the field
+        survives the round trip perfectly. A check that cannot tell those
+        apart has one false positive per renamed key and trains the next
+        reader to skim the list."""
+        rep = wiring.roundtrip()
+        pairs = {(r["class"], r["field"]) for r in rep["dropped"]}
+        self.assertNotIn(("Witness", "row_id"), pairs)
+
+    def test_the_question_reached_its_subject(self):
+        rep = wiring.roundtrip()
+        self.assertGreater(rep["classes_with_to_json"], 1)
+        self.assertGreater(rep["fields_emitted"], 10)
+
+    def test_it_is_REPORTED_and_NOT_repaired(self):
+        """⚠️ DELIBERATE. Adding a key to `Verdict.to_json` changes EVERY
+        record this repo writes, so every byte-identity control over a record
+        would report a difference that is not the change under test. Pricing
+        that is Sean's call. This test exists so a later session cannot
+        quietly repair it and leave the reasoning behind."""
+        from tools.omr.staged.record import Verdict
+        self.assertIn("single_pass_revision",
+                      {f for f in Verdict.__dataclass_fields__})
+        # ⚠️ AND IT IS STILL DROPPED — asserted against the CLASS's own
+        # `to_json` output rather than against the tool, so this goes red the
+        # moment somebody repairs it without pricing it.
+        import tools.omr.staged.record as _R
+        v = _R.Verdict(id="v", subject=_R.DOCUMENT, quantity="q",
+                       outcome=_R.Outcome.DECIDED, value=1, decider="d",
+                       reason="r")
+        self.assertNotIn("single_pass_revision", v.to_json())
+        key = "ROUNDTRIP Verdict.single_pass_revision"
+        self.assertIn(key, wiring.KNOWN_GAPS)
+        self.assertIn("price", wiring.KNOWN_GAPS[key].lower())
+
+
 class TestTheGapListIsAnInventoryNotASuppressionList(unittest.TestCase):
     """⚠️ Same contract as `export_coverage.KNOWN_GAPS` and
     `inventory.KNOWN_GAPS`: a CLOSED gap must LEAVE, or the list stops
