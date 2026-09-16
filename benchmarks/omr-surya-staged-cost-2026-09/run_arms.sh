@@ -103,6 +103,13 @@ for arm in $ARMS; do
     echo "OMR_SURYA_KEEP_ALIVE=$OMR_SURYA_KEEP_ALIVE"
     echo "start_epoch=$(date -u +%s)"
     echo "start_utc=$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+    # ⚠️ WHAT THE ARM WAS COMPETING WITH. This machine idles near load 7 on
+    # unrelated desktop processes, and CLAUDE.md records a suite stalling at
+    # load 7 in a way that reads exactly like a hang. A wall-clock figure
+    # with no load beside it cannot be compared to one taken on a quiet
+    # machine -- which is half of why the 2026-09-11 pair's residue is
+    # unexplained.
+    echo "load_before=$(uptime | sed 's/.*averages*: //')"
   } > "$OUT/$arm.timing"
 
   echo "── $arm  flags='$FLAGS' OMR_DIRECTION_TEXT=$DIRTEXT  $(date -u +%H:%M:%SZ)"
@@ -113,6 +120,7 @@ for arm in $ARMS; do
   {
     echo "end_epoch=$(date -u +%s)"
     echo "end_utc=$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+    echo "load_after=$(uptime | sed 's/.*averages*: //')"
     echo "exit=$RC"
   } >> "$OUT/$arm.timing"
 
