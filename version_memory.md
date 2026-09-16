@@ -60,6 +60,47 @@ the tree at `da2c9c1`. Full reading: [docs/scope-surya-staged-optin-2026-09-16.m
   pre-registered flip/keep rules are in the doc's §9. The flip itself is
   Sean's call. Start prompt for the next local session: §11.
 
+## 2026-09-15 (later) — The phantom-note rule, verified independently and put behind a flag
+
+A verification pass was dispatched to land `claude/note-where-silence-opened`
+and found **the branch was already fully contained in `main`** — PR #32 merged
+it hours earlier, `git rev-list --count origin/main..origin/claude/note-where-
+silence-opened` is **0**. So the job became verification of shipped code
+instead, which is the more useful half.
+
+**EVERY LOAD-BEARING CLAIM REPRODUCED**, by re-running rather than reading:
+the record's md5 matches the artefact's own stamp; the fire set re-derived from
+the shipped constants is **identical to `adjudicated-25-fires.json` subject for
+subject with zero measurement drift**; the witnesses re-derive (**shape 148,
+slot 310, together 25** of 2,347 noteheads) and the shipped cuts are confirmed
+to be the p05/p95 of the document's own 395 `restWhole` glyphs; **all 25 fires
+were re-cropped from the PDF by a second instrument and 25 of 25 are a filled
+rectangle at the whole-rest slot, not one oval notehead**; the cause reproduces
+on the Flauti tacet run (`restWhole` h=0.67/asp 2.33 beside
+`noteheadBlackInSpace` h=0.79/asp 2.22 — same ink, two class names); the
+mutation battery is **11 of 11 red** including its positive control; the four
+`--check` tools exit 0; and the one failing test is **pre-existing**, confirmed
+by checking it out at the merge base *and* at `main` in the same environment.
+
+**SHIPPED: `OMR_WHOLE_REST_INK`, default ON** — the behaviour that already
+shipped, now reversible in one word. ⚠️ It is the **one staged repair behind a
+flag, because it is the one that DELETES music**: 22 pitched notes removed from
+a file, on **n = 1 document, 1 publisher, 4 pages**, with **two of six cuts on
+a plateau one step wide or less**. Off restores the pre-2026-09-15 exporter
+exactly and leaves the verdict DECIDED and on the record, so the evidence is
+never thrown out with the behaviour. Deny-list, as a default-ON flag must be.
+
+⚠️ **TWO LEDGER DEFECTS, NEITHER BEHAVIOURAL, both the shape this file exists
+to catch.** The commit message states the crops *"are committed under
+`crops/`"* — `.gitignore:112` excludes `benchmarks/**/crops/` and always did,
+so they were never in the tree (the README is correct and treats them as
+regenerable). And the adjudicator's comment says a `Q.REST` row carries no page
+box; **all 646 rest rows in the record carry `detail.bbox_page_px`** and
+`gather.py`'s emit site passes it. The code reads `Q.GLYPH_BOX` and is right
+either way. *The tree outranks the ledger, including a ledger written as a
+commit message inside it.*
+
+---
 
 ## 2026-09-15 — Six jobs in parallel: five landed, and five of six reports were wrong about the tree
 
