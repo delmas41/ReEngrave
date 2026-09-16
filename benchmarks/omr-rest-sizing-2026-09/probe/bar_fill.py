@@ -48,7 +48,33 @@ def bar_total(meas, div):
 def main(argv=None):
     ap = argparse.ArgumentParser()
     ap.add_argument("musicxml")
-    ap.add_argument("--bar-beats", type=float, default=2.0)
+    # ⚠️⚠️ REQUIRED, AND IT USED TO DEFAULT TO 2.0 — Litolff Beethoven 5's
+    # 2/4 bar, silently carried onto every other document. Run against
+    # Breitkopf Brahms 1 mvt 1 (6/8 = 3.0 quarters) on 2026-09-16 the default
+    # scored 96.3% OVERFULL and 0.6% exact, counting 684 bars of exactly 3.0
+    # — the RIGHT length — as too long. The number was a property of the
+    # constant, not of the file.
+    #
+    # ⚠️ CLAUDE.md describes this probe as asking whether a bar sums to *"the
+    # `<time>` the same file declares"*. It never did; it compares against
+    # this one value. On a 2/4 document the two coincide, which is why the
+    # claim read as true for as long as there was one document.
+    #
+    # A default here converts *"I do not know this document's bar length"*
+    # into a definite answer, which is the one conversion this project bans.
+    # So there is no default: the caller states it, and a caller that cannot
+    # is told to say so rather than being handed Beethoven's.
+    #
+    # ⚠️ STILL A SINGLE VALUE, so a document whose meter CHANGES is only
+    # partly assessable by it — Brahms 1 mvt 1 prints one bar of 9/8 among
+    # its 6/8. Reading the `<time>` in force per bar is the real repair and
+    # is NOT done here, because it would move every committed figure this
+    # probe has produced and that re-measurement needs the score library.
+    ap.add_argument("--bar-beats", type=float, required=True,
+                    help="the bar's length in quarter notes (2/4 = 2.0, "
+                         "6/8 = 3.0, 4/4 = 4.0). REQUIRED: see the comment "
+                         "above — a default silently carried one document's "
+                         "meter onto another.")
     ap.add_argument("--show", type=int, default=8)
     ap.add_argument("--check", action="store_true",
                     help="exit non-zero when the instrument measured NOTHING")
