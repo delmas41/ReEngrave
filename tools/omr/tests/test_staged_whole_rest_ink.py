@@ -213,23 +213,40 @@ class TestTheNeighbouringBarIsTheSecondWayToEstablishPosition(unittest.TestCase)
 
     def test_a_neighbour_TOO_FAR_ALONG_THE_STAFF_does_not_vouch(self):
         """A long reach would let one distant rest vouch for ink anywhere on
-        the staff."""
+        the staff.
+
+        ⚠️ THE DISTANCE IS A LITERAL, NOT THE CONSTANT. Placing the neighbour
+        at `WHOLE_REST_NEIGHBOUR_BARS + 1` moves the fixture whenever the
+        constant moves, so the test passes for every value of it and pins
+        nothing — measured: two mutation arms widening these two constants to
+        99 SURVIVED a green suite. Eight bars away must stay refused whatever
+        the constant says, and widening it to reach there is a behaviour
+        change that should have to be re-argued.
+        """
         log = Log()
         _staff(log)
         y = self._off_slot_y()
-        far = 2 + rhythm.WHOLE_REST_NEIGHBOUR_BARS + 1
-        _whole_rest(log, far, 0, cy=y)
+        _whole_rest(log, 10, 0, cy=y)          # eight bars away
         g = _glyph(log, 2, 0, cy=y, h_spaces=0.7, aspect=2.1)
         self.assertIs(_verdict(_run(log), g).value, False)
 
     def test_a_neighbour_AT_A_DIFFERENT_HEIGHT_does_not_vouch(self):
+        """⚠️ Also a LITERAL: five staff steps is most of a staff, and a rest
+        that far from this ink is a different row of music."""
         log = Log()
         _staff(log)
         _whole_rest(log, 1, 0,
-                    cy=self._off_slot_y()
-                    + (rhythm.WHOLE_REST_NEIGHBOUR_STEPS + 1.0) * SPACING / 2.0)
+                    cy=self._off_slot_y() + 5.0 * SPACING / 2.0)
         g = _glyph(log, 2, 0, cy=self._off_slot_y(), h_spaces=0.7, aspect=2.1)
         self.assertIs(_verdict(_run(log), g).value, False)
+
+    def test_the_neighbour_constants_are_narrow_enough_to_mean_something(self):
+        """⚠️ The two tests above use literals so they cannot move with the
+        constants; this is the other half of that pair — the constants must
+        stay inside the window those literals describe, or the rule would
+        reach past what has been adjudicated."""
+        self.assertLess(rhythm.WHOLE_REST_NEIGHBOUR_BARS, 8)
+        self.assertLess(rhythm.WHOLE_REST_NEIGHBOUR_STEPS, 5.0)
 
 
 class TestItAbstainsRatherThanGuessing(unittest.TestCase):
