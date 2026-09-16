@@ -6,7 +6,7 @@
   RED     the fixpoint runs one pass only
   RED     a splat counts as a supply
   RED     subject=/scope= reads are judged as EXACT
-  SURVIVED an unresolvable Kind defaults to a real one  ⚠️ the test does not reach this
+  RED     an unresolvable Kind defaults to a real one
   RED     the gather walk skips its interprocedural round
   RED     a TEST naming a key counts as reading it
   RED     this module's own gap list counts as reading
@@ -25,6 +25,4 @@
   RED     --run reports zero instead of refusing
   GREEN   POSITIVE CONTROL: a no-op edit must stay GREEN
 
-── 21 red, 2 survived, 0 errors
-   SURVIVED: an unresolvable Kind defaults to a real one
-   SURVIVED: POSITIVE CONTROL: a no-op edit must stay GREEN
+── 22 red, 0 survived, 0 errors
