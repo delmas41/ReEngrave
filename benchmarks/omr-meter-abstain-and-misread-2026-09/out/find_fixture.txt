@@ -1,0 +1,99 @@
+  source dirs: 4
+    benchmarks/omr-staged-meter-boundary-2026-09/out           68
+    benchmarks/omr-staged-meter-carry-2026-09/out              4
+    benchmarks/omr-staged-meter-engraved-2026-09/out           16
+    benchmarks/omr-staged-meter-from-bars-2026-09/out          17
+==========================================================================
+REACH  (committed records only -- nothing was gathered)
+==========================================================================
+  records   : 105
+  fixtures  : 28  ['brahms1eng', 'brahms1scan', 'brahms4eng', 'e209A', 'e209B', 'e209C', 'eng', 'fixed-e209A', 'fixed-p012', 'fixed-p1p17', 'fixed-p1p63', 'full', 'fullfix', 'hazard', 'lit012fix', 'lit6162', 'lit6162fix', 'merged-p012', 'merged-p1p17', 'p012', 'p0p3', 'p0p63', 'p1p17', 'p1p63', 'p2p3', 'rev', 'rev-p1p2', 'revfix']
+  generations: [1, 2, 3, 4, 5, 7]
+  fixtures with a hand-read OPENING truth: 9 of 28  ['brahms1eng', 'brahms1scan', 'brahms4eng', 'e209A', 'e209B', 'e209C', 'lit6162', 'p012', 'p0p3']
+  fixtures ABSTAINED on (no truth entry): ['eng', 'fixed-e209A', 'fixed-p012', 'fixed-p1p17', 'fixed-p1p63', 'full', 'fullfix', 'hazard', 'lit012fix', 'lit6162fix', 'merged-p012', 'merged-p1p17', 'p0p63', 'p1p17', 'p1p63', 'p2p3', 'rev', 'rev-p1p2', 'revfix']
+
+==========================================================================
+PER DOCUMENT: does it ABSTAIN, and does it MISREAD?
+==========================================================================
+fixture        arm   gen    systems  abstain  openings read         
+--------------------------------------------------------------------------
+brahms1eng     BARS  m1           3        1  6/8 x1, 9/8 x1        
+brahms1eng     CARRY m1           3        1  6/8 x1, 9/8 x1        
+brahms1scan    BARS  m1           3        0  6/8 x1, 9/4 x1, 4/4 x1
+brahms1scan    CARRY m1           3        1  6/8 x1, 9/4 x1          <<< ABSTAINS *AND* MISREADS
+brahms4eng     BARS  m1           3        1  C x1, 4/4 x1          
+brahms4eng     CARRY m1           3        0  C x3                  
+e209A          BOTH  m1           3        2  3/4 x1                
+e209A          OFF   m1           3        2  3/4 x1                
+e209B          BARS  m1           3        3                        
+e209B          BOTH  m1           3        3                        
+e209B          CARRY m1           3        3                        
+e209B          OFF   m1           3        3                        
+e209C          BARS  m1           3        2  3/4 x1                
+e209C          BOTH  m1           3        2  3/4 x1                
+e209C          CARRY m1           3        2  3/4 x1                
+e209C          OFF   m1           3        2  3/4 x1                
+eng            BARS  m1           5        2  3/4 x2, C x1          
+eng            BOTH  m1           5        2  3/4 x2, C x1          
+eng            CARRY m1           5        2  3/4 x2, C x1          
+eng            OFF   m1           5        3  C x1, 3/4 x1          
+fixed-e209A    BOTH  m1           3        1  3/4 x1, C x1          
+fixed-e209A    OFF   m1           3        1  3/4 x1, C x1          
+fixed-p012     BARS  m1           3        0  2/4 x3                
+fixed-p012     OFF   m1           3        2  2/4 x1                
+fixed-p1p17    BOTH  m1           4        3  2/4 x1                
+fixed-p1p63    BOTH  m1           4        3  2/4 x1                
+fixed-p1p63    CARRY m1           4        3  2/4 x1                
+full           BARS  m1           4        1  3/4 x2, C x1          
+full           BOTH  m1           4        1  3/4 x2, C x1          
+full           OFF   m1           4        2  C x1, 3/4 x1          
+fullfix        OFF   m1           4        2  C x1, 3/4 x1          
+hazard         OFF   m1           4        3  2/4 x1                
+hazard         ON    m1           4        0  2/4 x4                
+lit012fix      OFF   m1           3        2  2/4 x1                
+merged-p012    BARS  m1           3        0  2/4 x3                
+merged-p012    OFF   m1           3        2  2/4 x1                
+merged-p1p17   BARS  m1           4        3  2/4 x1                
+p012           BARS  m1           3        0  2/4 x3                
+p012           OFF   m1           3        2  2/4 x1                
+p012           ON    m1           3        0  2/4 x3                
+p0p3           OFF   m1           2        1  C x1                    <<< ABSTAINS *AND* MISREADS
+p0p63          BARS  m1           3        3                        
+p0p63          OFF   m1           3        3                        
+p1p17          BARS  m1           4        3  2/4 x1                
+p1p63          BARS  m1           4        3  2/4 x1                
+p1p63          BOTH  m1           4        3  2/4 x1                
+p1p63          CARRY m1           4        3  2/4 x1                
+p1p63          OFF   m1           4        3  2/4 x1                
+p2p3           BARS  m1           2        0  3/4 x2                
+p2p3           CARRY m1           2        0  3/4 x2                
+p2p3           OFF   m1           2        1  3/4 x1                
+rev            BARS  m1           3        2  3/4 x1                
+rev            BOTH  m1           3        2  3/4 x1                
+rev            CARRY m1           3        2  3/4 x1                
+rev-p1p2       BARS  m1           2        2                        
+rev-p1p2       CARRY m1           2        2                        
+revfix         BARS  m1           3        1  3/4 x1, C x1          
+revfix         CARRY m1           3        2  3/4 x1                
+revfix         OFF   m1           3        1  3/4 x1, C x1          
+brahms1eng     OFF   m7           3        1  6/8 x1, 9/8 x1        
+brahms1scan    OFF   m7           3        0  6/8 x1, 9/4 x1, 4/4 x1
+brahms4eng     OFF   m7           3        2  C x1                  
+full           CARRY m7           4        1  3/4 x2, C x1          
+lit6162        OFF   m7           2        0  C x1, 3/4 x1          
+lit6162fix     OFF   m7           2        0  C x1, 3/4 x1          
+p0p3           BARS  m7           2        1  C x1                    <<< ABSTAINS *AND* MISREADS
+p0p3           BOTH  m7           2        1  C x1                    <<< ABSTAINS *AND* MISREADS
+p0p3           CARRY m7           2        1  C x1                    <<< ABSTAINS *AND* MISREADS
+rev            OFF   m7           3        1  3/4 x1, C x1          
+
+==========================================================================
+THE ANSWER
+==========================================================================
+  ABSTAINS *and* MISREADS : ['brahms1scan', 'p0p3']
+  abstains only           : ['brahms1eng', 'brahms4eng', 'e209A', 'e209B', 'e209C', 'p012']
+  misreads only           : ['lit6162']
+  neither                 : none
+
+  ⚠️ POSITIVE CONTROL: the probe must be able to see BOTH halves
+     somewhere, or a NONE above is the instrument. abstain>0 on 8 fixture(s), misread>0 on 3 fixture(s).
