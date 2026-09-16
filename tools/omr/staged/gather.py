@@ -2540,6 +2540,17 @@ def _direction_cells_abstain(log: Log, cells: Sequence[Any],
     return n
 
 
+def _scan_gate_enabled() -> bool:
+    """`OMR_DIRECTION_TEXT_SCAN_GATE` -- skip the word reader on a proven scan.
+
+    **Default OFF**, and written as an ALLOW-list so a typo leaves it off:
+    CLAUDE.md's "A flag's OFF test must follow its DEFAULT". Turning it on
+    changes what reaches a file, and every default here is Sean's.
+    """
+    return os.environ.get("OMR_DIRECTION_TEXT_SCAN_GATE", "0").strip().lower() \
+        in ("1", "true", "yes", "on")
+
+
 def gather_direction_words(log: Log, pws: Any, cells: Sequence[Any],
                            local: Dict[int, Tuple[int, int]],
                            detections: Dict[str, List[Any]]) -> None:
@@ -2633,6 +2644,49 @@ def gather_direction_words(log: Log, pws: Any, cells: Sequence[Any],
         _direction_cells_abstain(log, cells, local, ABSTAIN.OUT_OF_SCOPE,
                                  note="OMR_DIRECTION_TEXT is off")
         return
+
+    # ⚠️⚠️ THE DOMAIN GATE. On a page PROVED to be a photograph of paper this
+    # reader is the most expensive thing in a staged run and returns almost
+    # nothing: measured 2026-09-16 on Litolff Beethoven 5 p1-4 at **~267
+    # s/page** -- against 93 s/page for the margin-label rungs it shares a
+    # model with -- for **six `<words>`, all of them `cresc.` in three
+    # casings**, with the exported file BYTE-IDENTICAL once those and the
+    # `<direction>` wrappers they emptied are removed. ~178 seconds per word.
+    # See `benchmarks/omr-surya-staged-cost-2026-09/FINDINGS.md`.
+    #
+    # ⚠️ IT GATES ON A POSITIVE PROOF OF SCAN, never on "not proven
+    # engraved". `page_is_engraved` answers False on any doubt, so its
+    # negation is also true of a hybrid, a blank page, a PDF that will not
+    # open and a page with no `pdf_path` -- and skipping on those would look
+    # exactly like a document that prints no words. `page_is_scanned` proves
+    # its own side; the ambiguous band between them keeps the reader ON,
+    # which is the direction that costs money rather than evidence.
+    #
+    # ⚠️ AND IT IS `OUT_OF_SCOPE`, NOT `READER_UNAVAILABLE`. The rungs are
+    # installed and would run; we declined to spend them. Filing that as an
+    # absent reader would say this machine cannot read directions, which is
+    # false and is exactly the confusion the four-state contract exists to
+    # prevent.
+    #
+    # ⚠️ STAGED ONLY, because that is where it was measured. `transcribe`
+    # pays the same cost and is untouched: its 144 engraved edits are the
+    # figure that makes this reader worth having, and nothing here re-measures
+    # the legacy path.
+    if _scan_gate_enabled():
+        try:
+            scanned = DT.page_is_scanned(pws.page)
+        except Exception:                                     # noqa: BLE001
+            scanned = False
+        if scanned:
+            log.abstain(page_sub, Q.DIRECTION_WORD, reader=READERS.SURYA,
+                        frame=FRAME_PAGE, reason=ABSTAIN.OUT_OF_SCOPE,
+                        note="OMR_DIRECTION_TEXT_SCAN_GATE: this page is "
+                             "provably a scan, where the reader measured "
+                             "~267 s/page for ~6 words",
+                        gate="scan")
+            _direction_cells_abstain(log, cells, local, ABSTAIN.OUT_OF_SCOPE,
+                                     note="scan gate", gate="scan")
+            return
 
     page_dict = _direction_page_dict(pws, cells, local, detections)
     page_staff_of = {v: k for k, v in local.items()}
