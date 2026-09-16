@@ -2943,6 +2943,29 @@ ever return it** — *a vocabulary word with no branch*, the third documentation
 shape after *fixed-then-kept-open-in-prose* and *a rule described in a
 docstring and never built*.
 
+⚠️ **REACH, AND IT CLOSES A DEFECT A SIBLING SESSION RECORDED AND LEFT
+OPEN.** `benchmarks/omr-producer-consumer-2026-09/roster_reach.py` drives the
+STAGED decision (never `work_roster.decide` directly — the RULE was measured
+a week ago; what was never measured is the rule ARRIVING). On Litolff
+Beethoven 5, whose catalog roster is 10 instruments at `parse_rate 1.0`, the
+label `Basso.` goes **`Bass voice` → `Contrabass`** the moment the roster is
+supplied — which is exactly the row the slot-index findings record as *"a
+separate defect, found in passing and NOT fixed: the reference reads slot 11
+as `Bass voice` (the page prints `Basso.`) — a singer on an orchestral
+score."* ⚠️ **ACCURACY IS NOT ESTABLISHED**: nothing here was checked against
+a print, no MusicXML was exported, and `<part-name>` is not scored by
+musicdiff — which is why the roster layer has never had a pooled figure and
+does not get one here.
+
+⚠️⚠️ **AND THE TOOL COMMITTED THE BUG CLASS TWICE, IN ITSELF.** Its
+`--run` arm read `data["log"]` while `pipeline.run_staged` writes
+`result["record"]` — so on EVERY real record it would have found nothing and
+reported `agree: 0`, which reads as *"the static table disagrees with every
+run"* rather than as *"this consumer is looking in the wrong place"*. Found by
+grepping the PRODUCER instead of trusting the name, which is the whole method;
+it now RAISES rather than reporting a zero, because a fallback must never
+convert *cannot tell* into a definite answer.
+
 ⚠️⚠️ **THE TOOL'S OWN GAP LIST SILENCED THE TOOL.** Writing each unread DETAIL
 key into `KNOWN_GAPS` *with its reason* put every one of those names into a
 file under `tools/`, the scan found them, and the question that had just
