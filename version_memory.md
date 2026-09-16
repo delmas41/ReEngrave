@@ -16,6 +16,58 @@ pointing at headings no longer in the file.)*
 
 ---
 
+## 2026-09-15 — Six jobs in parallel: five landed, and five of six reports were wrong about the tree
+
+A managing session ran six agents down
+[docs/handoff-2026-09-11-phase-2-opened.md](docs/handoff-2026-09-11-phase-2-opened.md)
+§8, fenced their file lanes by function name before dispatch, and verified every
+result against the tree rather than its report. Full reading:
+[docs/handoff-2026-09-15-six-jobs-in-parallel.md](docs/handoff-2026-09-15-six-jobs-in-parallel.md).
+
+**Landed** (five branches, merged into `integrate-2026-09-15`):
+
+- **`Q.NOTEHEAD_IS_A_WHOLE_REST`** — Sean's last open observation. Notes
+  **1618 → 1596, 22 removed / 0 added**, on **25 of 25 hand-adjudicated crops**.
+  ⚠️ **18 of his 26 named bars were the OPPOSITE fault — real notes in bars whose
+  other music was never read** — so a repair that emptied all 26 would have
+  deleted 18 real notes. A REFUSAL to write a note, never a manufactured rest.
+- **The part join end to end** — **75 fragments → 37 parts, 12 grafts → 0**,
+  reproducing its probe in every cell (50/50/0/25) with the arms differing on 28
+  of 75. ⚠️ Sean's §5.2 decision is now *37 parts with the graft gone*, not
+  *75 fragments*.
+- **`system_bar_starts`** — a measure numbered by the DOCUMENT's bar sequence.
+  90 of 1,183 renumbered, byte-identical once the numbers are normalised away.
+  ⚠️ **`tools/omr/export.py` already did this** and says so at `export.py:3871`.
+- **S4 REFUTED AT FULL WIDTH, S6 recorded not gated.** ⚠️ Sean: *"don't give up
+  — adjust the rules to be broader."* Widened to 420 arcs with contact dropped,
+  **SIDE is flat and the sweep never clears p = 0.079.** ⚠️⚠️ **The joint result
+  is the headline: `OMR_ARC_RECLASS` scores BELOW its own baseline alone (0.5043
+  vs 0.5275) and reaches 0.750 in concurrence with S6, p = 0.0104.** The refusal
+  stands; it was refused for what it COSTS and this is what it is WORTH.
+- **`tools/omr/no_producer.py`** — 9,143 parameters → **2 findings** in 2.8 s,
+  the discriminator being *a layer ABSTAINS when the value is absent*.
+  ⚠️ **A third instance: `dossier`** — the staged pipeline can receive neither a
+  roster nor a dossier.
+
+⚠️⚠️ **THE PATTERN OF THE DAY: FIVE OF SIX AGENT REPORTS CONTAINED A CLAIM THE
+TREE CONTRADICTED**, every one caught by a one-line check and none by reading
+the report — two naming the manager's own branch, one reporting a completed pass
+that was **staged and never committed**, one an A/B launched against uncommitted
+code, one the **safety evidence for a note-DELETING change existing only in a
+transcript**. **A final report is a ledger, and the tree outranks it.**
+⚠️ The manager's own instruments failed the same way twice: `timeout` (which
+macOS lacks) exited 0 having run nothing, and `| tail` swallowed a failure's
+exit code.
+
+⚠️ **The merged tree is the one thing no agent ran.** Its four non-zero derived
+checks **exit non-zero identically on `origin/main`** — pre-existing, and the
+control was run before any conclusion was drawn.
+
+⚠️⚠️ **THE STANDING GAP, FOUND INDEPENDENTLY BY THREE JOBS: there is no
+Breitkopf Brahms 1 staged record on this machine.** Everything above is
+**n = 1 document, 1 publisher, 4 pages**, on the low-res bitonal Litolff
+`984073`.
+
 ## 2026-09-14 — The slot index: verifying a rule that was described in bold and never built
 
 **What:** picked up the Phase 2 handoff's ranked next work (§8.1) — the

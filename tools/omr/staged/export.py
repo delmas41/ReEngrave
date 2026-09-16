@@ -474,6 +474,30 @@ def _place_notes(rec: Record, runs: Dict[str, StaffRun]) -> Dict[str, int]:
         is_rest = bool(rec.obs(Q.REST, sub))
         if not is_rest and not rec.obs(Q.NOTEHEAD_CLASS, sub):
             continue                 # neither a notehead nor a rest
+        if not is_rest and rec.value(Q.NOTEHEAD_IS_A_WHOLE_REST, sub) is True:
+            # ⚠️⚠️ SEAN'S OWN OBSERVATION, AND THE ASYMMETRY IS THE REASON.
+            # *"in bars where it should be just whole note rest in two four.
+            # It's showing an actual quarter note, not a quarter note rest."*
+            # `adjudicate_notehead_is_a_whole_rest` has two witnesses saying
+            # this ink is a whole rest -- its outline, and the slot an
+            # engraver is obliged to hang one in (or a neighbouring bar of
+            # this same staff holding one at the same height). Writing a
+            # PITCHED NOTE here puts music where the page prints silence, and
+            # a wrong note has to be hunted down while a missing one is
+            # visible as a gap.
+            #
+            # ⚠️ REFUSED, NOT CONVERTED. No `<rest>` is written from here: the
+            # bar falls to `_mxl_empty_measure`'s padded measure rest, which
+            # says *we read nothing in this bar* rather than *we read
+            # silence*. Claiming the second needs a `Q.REST` row, and what ink
+            # is on the page is a GATHER fact this stage may not manufacture.
+            #
+            # ⚠️ FIRST, before the pitch and duration tests, so the count says
+            # the load-bearing thing about the row -- *this is not a note* --
+            # rather than filing it under `no_pitch`, which would be true and
+            # beside the point.
+            dropped["ink_is_a_whole_rest"] += 1
+            continue
         # ⚠️ A REST HAS NO PITCH AND MUST NOT BE ASKED FOR ONE. Requiring a
         # pitch is what kept rests out of the file for as long as they had no
         # quantity at all; asking for one now would keep them out for a
@@ -1570,16 +1594,77 @@ def _events(cell: Optional[Cell]) -> List[Dict[str, Any]]:
     return group_chords_in_measure(cell.detections)
 
 
+def system_bar_starts(
+        parts: Sequence[Sequence[StaffRun]]) -> Dict[Tuple[int, int], int]:
+    """The DOCUMENT bar number each printed system opens on, 0-based.
+
+    ⚠️⚠️ A MEASURE NUMBER IS A FACT ABOUT THE DOCUMENT, NOT ABOUT ITS PART,
+    AND `_part_xml` USED TO COUNT IT PER PART. A printed score suppresses a
+    tacet staff, so a part absent from a system gets no measures for those
+    bars — and a running per-part count then slides every later bar of that
+    part forward. Measured on Litolff Beethoven 5 pdf p1-4: P9-P11 are absent
+    from p3/s1 (18 bars), so their `<measure number="82">` and P1-P8's
+    `<measure number="82">` named two different instants of music in ONE FILE.
+    `build_sidebyside.py` asks for one printed system by number across the
+    parts and Verovio answers `Mismatching measure number` — thirty times on
+    that one system.
+
+    This numbers a bar by WHERE IT STANDS IN THE DOCUMENT. It writes no music,
+    invents no measure and needs no meter: the systems are put in reading
+    order, each is as wide as the widest staff-run standing on it, and the
+    offsets accumulate. A part absent from a system simply skips that system's
+    range, which is what a tacet instrument IS.
+
+    ⚠️ IT IS NOT PADDING, AND MUST NOT BE MISTAKEN FOR IT. The gap stays a
+    gap — P9-P11 still hold 93 measures — so a reader of the file can still
+    see that those bars were never written. Filling them is a REST-path
+    question that needs a bar length, and the meter is decided on 1 system of
+    7 here. ⚠️ And padding BEFORE the join is repaired would hide the graft:
+    the numbers would line up while the wrong instrument's music stayed, which
+    is the one failure a cleanup count exists to prevent.
+
+    ⚠️ THE WIDTH IS A `max`, NOT AN ASSERTION THAT THE STAVES AGREE. They are
+    read independently and may disagree about how many bars a system prints
+    (on this document they do not — all 75 staff-runs agree with their
+    system). Taking the widest is what keeps the ranges DISJOINT, so a staff
+    that read one bar too many cannot spill its number into the next system's
+    range and re-create the defect one system later.
+
+    ⚠️ DERIVED OVER EVERY PART, never over one — a system nobody in a given
+    part stands on has no width to contribute, and a part's own view of the
+    document is exactly the thing that was wrong.
+    """
+    width: Dict[Tuple[int, int], int] = {}
+    for part in parts:
+        for run in part:
+            k = (run.page, run.system)
+            width[k] = max(width.get(k, 0), int(run.n_measures))
+    starts: Dict[Tuple[int, int], int] = {}
+    at = 0
+    for k in sorted(width):
+        starts[k] = at
+        at += width[k]
+    return starts
+
+
 def _part_xml(rec: Record, part: Sequence[StaffRun], pid: str,
-              divisions: int, counters: Dict[str, int]) -> str:
+              divisions: int, counters: Dict[str, int],
+              starts: Dict[Tuple[int, int], int]) -> str:
     """One `<part>`: every measure of every system this part appears on."""
     lines = [f'  <part id="{pid}">']
-    number = 0
     prev = {"clef": object(), "key": object(), "time": object()}
     first = True
     segments_on = meter_segments_enabled()
+    seen: set = set()
     for run in part:
         key = _key_dict(run.fifths)
+        # ⚠️ THE OFFSET IS THE SYSTEM'S, NOT A RUNNING TOTAL. See
+        # `system_bar_starts`. A run whose system is somehow unknown to the
+        # map has no number to write, so this REFUSES rather than falling back
+        # to a count — a fallback here would convert "I cannot tell where this
+        # system sits" into a definite bar number, which is the one conversion
+        # this file's own doctrine forbids.
+        base = starts[(run.page, run.system)]
         for i in range(run.n_measures):
             # ⚠️⚠️ THE METER IS READ PER BAR, AND FOR A LONG TIME IT WAS NOT.
             # This line used to sit outside the loop, one meter for the whole
@@ -1599,7 +1684,24 @@ def _part_xml(rec: Record, part: Sequence[StaffRun], pid: str,
             # instead of inheriting the meter that follows it.
             meter = _meter_dict(meter_at(run.meter, i) if segments_on
                                 else run.meter)
-            number += 1
+            number = base + i + 1
+            # ⚠️ COUNTED, NOT ASSERTED AWAY. Two runs of ONE part standing on
+            # ONE system would write one number twice — the join putting two
+            # staves of a system in the same slot. It cannot happen on the
+            # join this document takes and it is not structurally impossible,
+            # so it is REPORTED rather than trusted: a duplicate number is the
+            # very defect this function exists to remove, and a silent one
+            # would be worse than the running count it replaces.
+            #
+            # ⚠️ `+= 0`, WRITTEN EVERY BAR, and that is the point rather than a
+            # clumsy `if` — `empty_bars_padded_without_meter`'s own lesson, in
+            # the numbering path. Incremented only on the bad branch this key
+            # would be ABSENT from the report on a healthy file, and "no part
+            # ever wrote a number twice" would read identically to "this
+            # figure was never computed".
+            counters["measure_number_written_twice"] += (
+                1 if number in seen else 0)
+            seen.add(number)
             lines.append(f'    <measure number="{number}">')
             changed = (run.clef != prev["clef"] or key != prev["key"]
                        or meter != prev["time"])
@@ -2064,6 +2166,10 @@ def to_musicxml(result: Dict[str, Any]) -> Tuple[str, Dict[str, Any]]:
     # pass can see. Unlike the arcs it needs no merge -- see `_place_wedges`.
     wedges_dropped = collections.Counter(_place_wedges(rec, parts, counters))
 
+    # ⚠️ ONCE, OVER EVERY PART, BEFORE ANY MEASURE IS RENDERED. A bar's number
+    # is a fact about the DOCUMENT and no per-part pass can see it.
+    starts = system_bar_starts(parts)
+
     part_list: List[str] = []
     parts_xml: List[str] = []
     for i, part in enumerate(parts):
@@ -2073,7 +2179,8 @@ def to_musicxml(result: Dict[str, Any]) -> Tuple[str, Dict[str, Any]]:
             f'    <score-part id="{pid}">\n'
             f'      <part-name>{_legacy._xml_escape(name)}</part-name>\n'
             f'    </score-part>')
-        parts_xml.append(_part_xml(rec, part, pid, divisions, counters))
+        parts_xml.append(_part_xml(rec, part, pid, divisions, counters,
+                                   starts))
 
     xml = _legacy._score_partwise(result.get("source", {}) or {},
                                   part_list, parts_xml)

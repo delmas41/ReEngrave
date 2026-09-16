@@ -57,6 +57,25 @@ including the **two GATHER divergences it found and deliberately did not
 change**, and the **`ff` 47 → 39 that is an unadjudicated COST and not a win**.
 
 ⚠️ **START HERE IF YOU ARE PICKING THIS UP:**
+[docs/handoff-2026-09-15-six-jobs-in-parallel.md](docs/handoff-2026-09-15-six-jobs-in-parallel.md)
+— **the newest.** Six agents were run down the ranked list of the handoff below
+and **five landed**: the part join goes **75 fragments → 37 parts with 12 grafts
+→ 0**; Sean's last open observation is closed by a rule that **DELETES 22 notes**
+on 25-of-25 hand-adjudicated crops; measure numbers are keyed to the DOCUMENT's
+bar sequence; **S4 is REFUTED AT FULL WIDTH** and S6 recorded-not-gated; and a
+derived **no-producer check** found a THIRD instance (`dossier` — the staged
+pipeline can receive neither a roster nor a dossier). ⚠️⚠️ **READ ITS §7 BEFORE
+TRUSTING ANY AGENT REPORT IN THIS REPO: five of six reports contained a claim
+the tree contradicted**, including safety evidence for a note-DELETING change
+that existed only in a transcript, and a whole measurement pass that was STAGED
+AND NEVER COMMITTED. Every one was caught by a one-line check; none by reading
+the report. ⚠️ Its §5 records that **`OMR_ARC_RECLASS` scores BELOW its own
+baseline alone (0.5043 vs 0.5275) and reaches 0.750 in concurrence with S6,
+p = 0.0104** — the refusal STANDS, but it was refused for what it COSTS and this
+is what it is WORTH. ⚠️ **§10 is what is waiting for Sean** and **§11 the gap
+three separate jobs found independently: there is no Breitkopf staged record on
+this machine**, which is what stands between four `n = 1` results and knowing
+whether any generalise. Its predecessor
 [docs/handoff-2026-09-11-phase-2-opened.md](docs/handoff-2026-09-11-phase-2-opened.md)
 — **the newest. PHASE 2 IS OPEN AND THERE IS STILL NO CLEANUP COUNT** — Sean
 read one page against the print and **declined to count**, which is the
@@ -2220,6 +2239,163 @@ SURVIVING copy is the right one — which this session did not test, and the
 same-cell triple above shows the copies can disagree about both class and
 duration. n = 1 document, 1 publisher, 4 pages of ~16, on the pessimistic
 *low-res bitonal* end of the corpus.
+
+### Five repairs landed in one parallel pass — and the tree-vs-report rate
+
+2026-09-15. Six agents down the ranked list of
+[docs/handoff-2026-09-11-phase-2-opened.md](docs/handoff-2026-09-11-phase-2-opened.md)
+§8; five landed on branches, each verified against the TREE rather than its
+report. Full reading:
+[docs/handoff-2026-09-15-six-jobs-in-parallel.md](docs/handoff-2026-09-15-six-jobs-in-parallel.md).
+
+⚠️⚠️ **FIVE OF SIX AGENT REPORTS CONTAINED A CLAIM THE TREE CONTRADICTED, AND
+EVERY ONE WAS CAUGHT BY A ONE-LINE CHECK.** Two named the MANAGER's branch as
+where their work sat (it was on neither that branch nor any remote); one
+reported a second measurement pass complete that was **STAGED AND NEVER
+COMMITTED**, one `git checkout` from annihilation — the hazard its own mutation
+battery had bitten it with hours earlier; one reported an A/B whose run had been
+launched against **uncommitted** code; one shipped a note-DELETING change whose
+**safety evidence existed only in a transcript**. *The tree outranks the ledger*
+now has a hit rate, and **a final report is a ledger.** ⚠️ The manager's own
+instruments failed the same way twice: a background suite invoked with
+`timeout` (**macOS does not have it**) exited **0** having run nothing, and a
+`| tail` swallowed a real failure's exit code. **Read the OUTPUT, not the
+STATUS.**
+
+⚠️ **A STALE ARTEFACT IS THE QUIET MEMBER OF THE FAMILY.**
+`omr-slot-index-2026-09/out/slot-arm-e2e.txt` (pre-fix, `GRAFTS: 10`) sat beside
+`part-join-arm.txt` (post-fix, **12**) **under the headline arm's own name**.
+The arithmetic identifies the stale one — the two rows absent from it are
+exactly the two its broken `startswith` / `" e " in printed` classifier mis-filed
+as condensation, and 10 + 2 = 12, 6 − 2 = 4. **STAMPED, not deleted**: a
+superseded measurement with its correction beside it is worth more than a gap.
+
+**A whole rest wearing a notehead's label** (`Q.NOTEHEAD_IS_A_WHOLE_REST`,
+ADJUDICATE, `Kind.GLYPH`; `benchmarks/omr-note-where-silence-2026-09/`). Sean's
+last open observation. ⚠️⚠️ **THE BRIEF'S POPULATION WAS 26 BARS AND 18 WERE THE
+OPPOSITE FAULT** — 5 whole rests called noteheads, **18 REAL NOTES** in bars
+whose other music was never read, 3 junk. **A repair that emptied all 26 would
+have deleted 18 real notes.** What settled it was a **STRIP** — one printed
+staff rendered end to end labelled with what our file says — where two
+*identical* blobs of a tacet run are classed `restWhole` and
+`noteheadBlackInSpace`: **a detector classification error UPSTREAM of GATHER**,
+where routing is by class, so it can never become a `Q.REST` row. **Two
+witnesses, neither admissible alone** (shape 148, position 310 and it fires on
+real music; together **25**). It is a **REFUSAL TO WRITE A NOTE, never a
+manufactured rest**. Notes **1618 → 1596, 22 removed / 0 added**; 25 fires,
+**25 of 25 hand-adjudicated whole rests, 0 real notes, 0 overlap with the 18**.
+⚠️ **20 of the 25 sit OUTSIDE the lone-quarter-in-2/4 window Sean saw it
+through**, and the detector's classes are 22 BLACK noteheads to 3 whole — not a
+hollow-vs-filled confusion. ⚠️ **No OMR-NED figure is claimed: the metric
+rewards under-prediction and would have paid for these deletions either way,
+which is why the evidence is crops.** Two of six cuts sit on a plateau one step
+wide.
+
+**The part join, end to end** (`benchmarks/omr-slot-index-2026-09/`). The name
+rule reproduces its probe **in every cell** — 50 placed / 50 correct / **0
+wrong** / 25 abstained — with the arms differing on **28 of 75** staves before
+any count is read. **75 fragments → 37 parts, 12 grafts → 0**; measures and
+notes identical. ⚠️⚠️ **SEAN'S §5.2 DECISION HAS CHANGED SHAPE: it is now
+*37 parts with ZERO grafts*, not *75 fragments*.** The file reads 111/93/78 —
+**exactly what the phase-2 measure math predicted from a different direction.**
+⚠️ Two things now reach a real file, unrepaired: the 25 stranded fragments are
+written FIRST so part order is no longer printed top-to-bottom, and **slot 11
+exports as `Bass voice`** — the lexicon defect this file documents at length,
+**previously inert, now a joined part's `<part-name>`.**
+
+**A measure is numbered by the DOCUMENT's bar sequence** (`system_bar_starts`).
+90 of 1,183 renumbered, all +18; systems carrying two number ranges **2 of 7 →
+0 of 7**; **byte-identical once the numbers are normalised away.**
+⚠️⚠️ **VEROVIO IS SILENT ON THE WHOLE FILE IN BOTH ARMS** — the recorded
+`Mismatching measure number 87` is **a property of an OPERATION, not of the
+file**; only the side-by-side's *take one system's bars BY NUMBER from every
+part* sees it (30 errors before, silent after), **and the simplified
+single-window route on the before file raises nothing and silently returns the
+WRONG SYSTEM's bars.** ⚠️⚠️ **`tools/omr/export.py` ALREADY DOES THIS and says
+so at `export.py:3871`** — the staged exporter re-converging on a position the
+legacy one had paid for. ⚠️ **A correction to this file's own record: a mutation
+battery is SELF-destructive too**, not only a sibling-session hazard — run over
+an uncommitted change it restored the file from the index and the change under
+test vanished. `mutate.py` now refuses a dirty tree with no `--force`.
+
+**Sean's arc rules S4/S6, and a joint result** (`benchmarks/omr-arc-grammar-2026-09/`).
+⚠️ Sean, on being shown a first narrow refutation: ***"don't give up — adjust the
+rules to be broader."*** **A narrow operationalisation failing is evidence about
+the operationalisation, not about the convention.** ⚠️⚠️ The first pass had
+**measured a precondition and thrown it away** — 420 stemmed → **206 on the
+stem's side** → 143 touching stem ink, using the middle number as a FILTER and
+never scoring it. Widened (contact dropped, projected onto the head→stem-tip
+axis, scored ONE-SIDED as Sean stated it), **S4 is REFUTED AT FULL WIDTH**:
+reach 143 → **420 of 779**, **SIDE flat at −0.001 / −0.030**, the sweep never
+clearing **p = 0.079**, lift negative in all four strata. **It is the WIDE test
+that fails, which is the strong negative**; the narrow sweep's non-monotonicity
+was a POWER problem. ⚠️⚠️ **S4'S AVAILABILITY GRADIENT INVERTS THE RECORDED
+ONE** — its arcs sit at median confidence **0.4196 against 0.5409** for those it
+cannot reach, because a confident long slur is drawn clear of the stem tips, so
+it speaks *preferentially about the WEAKEST readings*. **A harder shape than an
+arbiter that merely falls silent, and it is new.** **S6 holds at 0.740** on the
+tight band and survives every relaxation while gaining only 8% population —
+robustness, not a bigger result; the absolute-position form is already refuted
+at **0.517**, so its power is PAIRWISE. ⚠️⚠️ **THE JOINT RESULT IS THE LARGEST
+FINDING: `OMR_ARC_RECLASS` (S2/S5) scores BELOW its own majority baseline alone
+(0.5043 vs 0.5275) and reaches 0.750 where it concurs with S6 (p = 0.0104,
+20,000-draw permutation null).** **The refusal STANDS** — it was refused for what
+it COSTS and this measures what it is WORTH. **Neither is promoted**: S6 would
+flip ~30 arcs a page and get **19 of 73 wrong** against a detector that is not
+truth. ⚠️ **The price to settle S6 is SEVENTY CROPS, not more arcs.** ⚠️ A new
+member of the *control that computes the wrong thing* family: a combined table
+**vacuous by construction**, every cell reading `agreement == base_rate` to four
+decimals — **the diagnostic is "is this number suspiciously EXACTLY some other
+number", not "is it believable".**
+
+**A derived check for a parameter with NO PRODUCER** (`tools/omr/no_producer.py`,
+2.8 s, no weights). The fault had been found **twice in two days by accident**.
+**9,143 declared → 324 `None`-defaulted → 148 edge-touched → 39 unsupplied → 9
+chains → 2 reported**, the discriminator being *some layer ABSTAINS when the
+value is absent* (`p = p or DEFAULT` is not a guard). ⚠️ **The naive version
+reports 323** — the *gets ignored, gets deleted* outcome. ⚠️ **D2 must be
+SYMMETRIC**: the chain HEAD has nothing forwarding into it, so a target-only
+test reports every chain **without the layer the repair lives in**. Both known
+instances caught with no hint, and instance 1 caught on the pre-fix tree and
+gone on the post-fix one — **the delta IS the repair.** ⚠️⚠️ **A THIRD INSTANCE:
+`dossier`** — `staged/__main__.py` mentions neither dossier nor roster, so **the
+staged pipeline can receive NEITHER**, and `Q.DOSSIER_FACT` abstains on every
+run. ⚠️⚠️ **WIDENING THE SCAN TO `backend/` SILENCED IT, 2 → 0** —
+`asyncio.gather(*tasks)` matched `staged.gather` by name and its splat marked
+every parameter supplied. **The failure direction was SILENCE, which is exactly
+what a working check reports**; every remaining imprecision also runs toward
+silence, so **the findings can be trusted and the silence cannot.** ⚠️
+`pdf_path` was invisible to BOTH `inventory --check` and `gather_coverage`
+because the reader *was* reading its input and reporting honestly —
+**read-by-nothing and supplied-by-nothing are different questions.** ⚠️ **A
+DEFECT, found at merge time and NOT repaired: `--check` exits 1 while reporting
+its findings as `RECORDED`**, so as written it can never pass and cannot be a CI
+gate.
+
+⚠️ **THE LANE MAP IS WHY FOUR AGENTS SHARED `staged/export.py` WITHOUT
+COLLIDING.** Lanes were fenced **by function name before dispatch**, after
+grepping the file: the measure-number emission (~1603) and the notehead refusal
+in `_place_notes` (~474) never touched the same hunks and **auto-merged
+clean**. ⚠️ The arc agent was deliberately pushed OUT of the exporter — the
+obvious home for tie-vs-slur geometry is `_pair_arcs`, which was another agent's
+file *and* the wrong stage; `adjudicate_arc_kind` already records the grammar
+without acting on it. **The collision fix and the architectural fix were the
+same move.**
+
+⚠️ **THE MERGED TREE IS THE ONE THING NO AGENT EVER RAN.** Derived checks on it
+(`health`, `inventory`, `export_coverage`, `accuracy_record`) exit non-zero —
+**and exit non-zero IDENTICALLY on `origin/main`**, so they are pre-existing.
+**The control was run before any conclusion was drawn**: *"checks fail after a
+merge"* and *"checks were already failing"* look identical in a terminal.
+
+⚠️⚠️ **THE STANDING GAP THREE JOBS FOUND INDEPENDENTLY: there is no Breitkopf
+Brahms 1 staged record on this machine.** The arc thread, the note-deletion
+thread and the meter thread each stopped at the same missing artefact;
+`library/_shared-records/` holds only the Beethoven one. **Making it once and
+sharing it is probably worth more than the next feature** — it is what stands
+between four `n = 1` results and knowing whether any generalise. **Everything in
+this section is n = 1 document, 1 publisher, 4 pages of ~16, on the low-res
+bitonal Litolff `984073`.**
 
 ### A MARK must be attached to its notehead — bar sums on perfect ink
 
