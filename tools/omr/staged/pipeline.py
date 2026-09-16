@@ -216,11 +216,26 @@ def run_staged_on(prepared: Sequence[Tuple[Any, Sequence[Any]]], *,
     if progress:
         print("GATHER")
         print(_rung_header(surya_fallback, ocr_fallback))
-    log = gather.gather(prepared, detector=detector,
-                        conf_threshold=conf_threshold, imgsz=imgsz,
-                        dossier=dossier, roster=roster, pdf_path=pdf_path,
-                        surya_fallback=surya_fallback,
-                        ocr_fallback=ocr_fallback, progress=progress)
+    # ⚠️⚠️ ONE SURYA WORKER FOR THE WHOLE GATHER, so the model load is paid
+    # ONCE instead of twice per page. `gather()` calls Surya twice on every
+    # page -- `gather_margin_labels` then `gather_direction_words`, adjacent
+    # in its own body -- and until 2026-09-16 each spawned a fresh worker
+    # which spawned a fresh `llama-server`. Measured over 24 paired calls,
+    # the second spawn in one process costs +0.12 s MORE than the first:
+    # there was no sharing to lose.
+    #
+    # ⚠️ Opened HERE and not inside `gather` because the saving is a property
+    # of the RUN, and because this is the level that already owns the other
+    # run-scoped decisions. It is a no-op when Surya is absent, when neither
+    # consumer asks for it, or when the worker will not start -- in which
+    # case every call spawns one-shot exactly as before.
+    from ..staff_labels_surya import worker_session
+    with worker_session():
+        log = gather.gather(prepared, detector=detector,
+                            conf_threshold=conf_threshold, imgsz=imgsz,
+                            dossier=dossier, roster=roster, pdf_path=pdf_path,
+                            surya_fallback=surya_fallback,
+                            ocr_fallback=ocr_fallback, progress=progress)
 
     if progress:
         print("ADJUDICATE")

@@ -47,10 +47,12 @@ bridge and it has no Surya either, by the same personal-use logic.
 from __future__ import annotations
 
 import base64
+import contextlib
 import json
 import logging
 import os
 import re
+import select
 import shutil
 import subprocess
 import sys
@@ -285,6 +287,177 @@ def _plain_text(text: str) -> str:
     return re.sub(r"\s+", " ", folded).strip()
 
 
+
+# ─────────────────────────────────────────────────────────────────────────────
+# A worker the RUN owns, so the model load is paid once instead of per call
+# ─────────────────────────────────────────────────────────────────────────────
+
+#: The open session, or None. Module-level because the two consumers
+#: (`read_staff_labels_surya` for margin labels, `read_crops_text` for
+#: direction words) sit in different modules and must not have to thread a
+#: handle through the whole pipeline to share one process.
+_SESSION: dict | None = None
+
+
+class _SessionGone(Exception):
+    """The worker died or stopped answering. Never raised to a caller: the
+    dispatcher falls back to a one-shot spawn, because losing a page to an
+    optimisation is a strictly worse outcome than paying the model load."""
+
+
+@contextlib.contextmanager
+def worker_session(*, enabled: bool = True):
+    """Keep ONE worker alive for the block, model loaded, jobs streamed to it.
+
+    ⚠️⚠️ WHAT THIS IS FOR, MEASURED. The model load is paid PER SPAWN and
+    nothing shares it: over 24 paired calls a second
+    `read_staff_labels_surya` in the same python process costs **+0.12 s
+    MORE** than the first (`benchmarks/omr-surya-staged-cost-2026-09/
+    FINDINGS.md`). A staged page pays ~17 s twice -- margin labels, then
+    direction words -- and the two calls are ADJACENT in `gather()` yet share
+    nothing, because each spawns a fresh worker which spawns a fresh
+    `llama-server`.
+
+    ⚠️ IT DOES NOT TOUCH SHARED STATE, and that is the design constraint
+    rather than a nicety. surya's own keep-alive writes a MACHINE-GLOBAL
+    sentinel -- `surya.inference.backends.spawn._cache_dir()` hardcodes
+    `~/.cache/datalab/surya` with no env override, checked in the venv -- so a
+    keep-alive server is shared with every other session on the machine, which
+    CLAUDE.md records costing a sibling agent a multi-hour run. Here the
+    process tree is ours: our worker holds the model, its `llama-server` is
+    its child, and surya's atexit kills that child when we close the session.
+    `SURYA_INFERENCE_KEEP_ALIVE` is deliberately NOT set, so nothing outlives
+    the block.
+
+    ⚠️ FAILURE IS ALWAYS A FALLBACK, NEVER AN ERROR. If the worker will not
+    start, dies, or answers with something unparseable, the session closes
+    itself and every later call spawns one-shot exactly as before. An
+    optimisation that can lose a page is not one.
+    """
+    global _SESSION
+    if not enabled or _SESSION is not None or not available():
+        yield None
+        return
+    proc = None
+    try:
+        proc = subprocess.Popen(
+            [str(interpreter()), str(_WORKER), "--serve"],
+            stdin=subprocess.PIPE, stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE, text=True, env=dict(os.environ))
+        ready = proc.stdout.readline()
+        if not ready or "ready" not in ready:
+            raise _SessionGone("worker did not report ready")
+        _SESSION = {"proc": proc, "jobs": 0, "fell_back": 0}
+        logger.info("surya: worker session open (pid %s) -- the model load is "
+                    "paid once for this run", proc.pid)
+        yield _SESSION
+    except Exception as exc:                                  # noqa: BLE001
+        logger.warning("surya: could not open a worker session (%s); every "
+                       "call will spawn one-shot as before", exc)
+        yield None
+    finally:
+        st = _SESSION
+        _SESSION = None
+        if st is not None:
+            logger.info("surya: worker session closing after %d job(s), "
+                        "%d fell back", st["jobs"], st["fell_back"])
+        if proc is not None and proc.poll() is None:
+            try:
+                proc.stdin.close()
+                proc.wait(timeout=30)
+            except Exception:                                 # noqa: BLE001
+                proc.kill()
+
+
+def _session_dispatch(job: dict, timeout_s: float) -> dict | None:
+    """Run `job` on the open session, or return None to mean "spawn one-shot"."""
+    st = _SESSION
+    if st is None:
+        return None
+    proc = st["proc"]
+    try:
+        if proc.poll() is not None:
+            raise _SessionGone(f"worker exited {proc.returncode}")
+        proc.stdin.write(json.dumps(job) + "\n")
+        proc.stdin.flush()
+        # ⚠️ A BLOCKING readline ON A DEAD WORKER IS A HANG, and CLAUDE.md
+        # records a starved run reading exactly like one. The deadline makes
+        # the failure a fallback instead.
+        ready, _, _ = select.select([proc.stdout], [], [], timeout_s)
+        if not ready:
+            raise _SessionGone(f"worker silent for {timeout_s}s")
+        line = proc.stdout.readline()
+        if not line:
+            raise _SessionGone("worker closed its output")
+        st["jobs"] += 1
+        return json.loads(line)
+    except Exception as exc:                                  # noqa: BLE001
+        logger.warning("surya: session job failed (%s); falling back to a "
+                       "one-shot spawn and closing the session", exc)
+        st["fell_back"] += 1
+        _close_broken_session()
+        return None
+
+
+def _close_broken_session() -> None:
+    global _SESSION
+    st, _SESSION = _SESSION, None
+    if st is None:
+        return
+    proc = st["proc"]
+    if proc.poll() is None:
+        try:
+            proc.kill()
+        except Exception:                                     # noqa: BLE001
+            pass
+
+
+def _dispatch(job: dict, *, timeout_s: float | None,
+              keep_alive: bool | None) -> dict:
+    """The payload for one job: through the open session if there is one,
+    else a one-shot spawn exactly as before.
+
+    ⚠️ BOTH CALLERS GO THROUGH HERE so the session can never serve one of
+    them and not the other -- which would leave the per-page saving half
+    taken and make any timing of it meaningless.
+    """
+    timeout = timeout_s if timeout_s is not None else DEFAULT_TIMEOUT_S
+    payload = _session_dispatch(job, timeout)
+    if payload is not None:
+        if "error" in payload:
+            raise SuryaLabelError(payload["error"])
+        return payload
+
+    python = interpreter()
+    env = dict(os.environ)
+    if KEEP_ALIVE if keep_alive is None else keep_alive:
+        env["SURYA_INFERENCE_KEEP_ALIVE"] = "true"
+    try:
+        proc = subprocess.run(
+            [str(python), str(_WORKER)],
+            input=json.dumps(job), capture_output=True, text=True, env=env,
+            timeout=timeout,
+        )
+    except subprocess.TimeoutExpired as exc:
+        raise SuryaLabelError(f"surya timed out after {exc.timeout}s") from exc
+    if proc.returncode != 0 and not proc.stdout.strip():
+        raise SuryaLabelError(
+            f"surya worker failed (exit {proc.returncode}):\n"
+            f"{proc.stderr.strip()[-2000:]}"
+        )
+    try:
+        payload = json.loads(proc.stdout)
+    except json.JSONDecodeError as exc:
+        raise SuryaLabelError(
+            "surya worker returned non-JSON:\n"
+            f"stdout: {proc.stdout.strip()[:400]}\n"
+            f"stderr: {proc.stderr.strip()[-1200:]}"
+        ) from exc
+    if "error" in payload:
+        raise SuryaLabelError(payload["error"])
+    return payload
+
+
 def read_crops_surya(crops: list[MarginCrop], *,
                      timeout_s: float | None = None,
                      keep_alive: bool | None = None) -> list[dict[int, str]]:
@@ -302,34 +475,8 @@ def read_crops_surya(crops: list[MarginCrop], *,
         "gutter_px": crop.gutter_px,
     } for crop in crops]}
 
-    python = interpreter()
-    env = dict(os.environ)
-    if KEEP_ALIVE if keep_alive is None else keep_alive:
-        env["SURYA_INFERENCE_KEEP_ALIVE"] = "true"
-    try:
-        proc = subprocess.run(
-            [str(python), str(_WORKER)],
-            input=json.dumps(job), capture_output=True, text=True, env=env,
-            timeout=timeout_s if timeout_s is not None else DEFAULT_TIMEOUT_S,
-        )
-    except subprocess.TimeoutExpired as exc:
-        raise SuryaLabelError(f"surya timed out after {exc.timeout}s") from exc
-
-    if proc.returncode != 0 and not proc.stdout.strip():
-        raise SuryaLabelError(
-            f"surya worker failed (exit {proc.returncode}):\n"
-            f"{proc.stderr.strip()[-2000:]}"
-        )
-    try:
-        payload: dict[str, Any] = json.loads(proc.stdout)
-    except json.JSONDecodeError as exc:
-        raise SuryaLabelError(
-            "surya worker returned non-JSON:\n"
-            f"stdout: {proc.stdout.strip()[:400]}\n"
-            f"stderr: {proc.stderr.strip()[-1200:]}"
-        ) from exc
-    if "error" in payload:
-        raise SuryaLabelError(payload["error"])
+    payload: dict[str, Any] = _dispatch(job, timeout_s=timeout_s,
+                                        keep_alive=keep_alive)
 
     out: list[dict[int, str]] = []
     for entry in payload.get("systems", []):
@@ -367,34 +514,9 @@ def read_crops_text(crops: list, *,
         encoded.append(base64.standard_b64encode(buf.tobytes()).decode("ascii")
                        if ok else "")
 
-    python = interpreter()
-    env = dict(os.environ)
-    if KEEP_ALIVE if keep_alive is None else keep_alive:
-        env["SURYA_INFERENCE_KEEP_ALIVE"] = "true"
-    try:
-        proc = subprocess.run(
-            [str(python), str(_WORKER)],
-            input=json.dumps({"crops": encoded}), capture_output=True,
-            text=True, env=env,
-            timeout=timeout_s if timeout_s is not None else DEFAULT_TIMEOUT_S,
-        )
-    except subprocess.TimeoutExpired as exc:
-        raise SuryaLabelError(f"surya timed out after {exc.timeout}s") from exc
-    if proc.returncode != 0 and not proc.stdout.strip():
-        raise SuryaLabelError(
-            f"surya worker failed (exit {proc.returncode}):\n"
-            f"{proc.stderr.strip()[-2000:]}"
-        )
-    try:
-        payload: dict[str, Any] = json.loads(proc.stdout)
-    except json.JSONDecodeError as exc:
-        raise SuryaLabelError(
-            "surya worker returned non-JSON:\n"
-            f"stdout: {proc.stdout.strip()[:400]}\n"
-            f"stderr: {proc.stderr.strip()[-1200:]}"
-        ) from exc
-    if "error" in payload:
-        raise SuryaLabelError(payload["error"])
+    payload: dict[str, Any] = _dispatch({"crops": encoded},
+                                        timeout_s=timeout_s,
+                                        keep_alive=keep_alive)
 
     out = []
     n_runaway = 0
