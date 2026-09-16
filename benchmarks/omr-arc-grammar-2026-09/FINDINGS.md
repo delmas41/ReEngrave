@@ -664,7 +664,32 @@ contact requirement and no threshold. **Still RECORD, still not a gate.**
 
 ### Controls, second pass
 
-- **A/B unchanged in kind:** `arc_kind` VALUES must still reproduce exactly.
+- **A/B, RUN ON THE COMMITTED TREE** (`3a2e51b8`, working tree clean — a
+  structural diff of the value path does not cover code that is not yet
+  committed, so the empirical control was run against `HEAD` rather than a
+  working copy):
+
+  ```
+  CONTROL: 779 of 779 arc_kind VALUES reproduced exactly, 0 differ, +0 extra
+  WITNESSES: s4 recorded on 420 arcs (was 0), of which endpoint-on-a-stem 137;
+             s6 recorded on 502 arcs (was 0)
+  grammar 'says': [(None, 434), ('slur', 265), ('tie', 80)]
+  ```
+
+  ⚠️ **The witness counts are IDENTICAL to the first pass's, and that is the
+  correct result rather than a stale one**: `t_axis` adds a FIELD to each
+  endpoint, not a row, so the populations cannot move — 420 and 502 either
+  side of the widening is what a field-only change must produce. The
+  `grammar 'says'` distribution is unchanged too, so the existing position
+  grammar's own output is untouched.
+- **Full suite on the committed tree: `1 failed, 3861 passed, 19 skipped`
+  (581s).** ⚠️ The single failure is the same PRE-EXISTING worktree Surya trap
+  proved in §6 against a clean `origin/main` archive with none of this work
+  present — not a regression, and named here so a reader does not attribute it
+  to the widening.
+- Mutation battery and the three derived checks were re-run on the committed
+  tree: **18 arms all RED**, `inventory --check` / `health --check` /
+  `gather_coverage` all exit 0.
 - **Mutation battery: 18 arms, ALL RED** — the original 15 plus three for
   `t_axis` (measured from the stem's head end rather than the head centre; an
   alias of `t`, i.e. the widening silently undone; running to the head end
