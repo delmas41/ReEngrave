@@ -54,8 +54,10 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
 from tools.omr.staged import evaluate, infer                     # noqa: E402
 from tools.omr.staged import inferences                          # noqa: E402,F401
+from dataclasses import replace                                  # noqa: E402
 from tools.omr.staged.record import (Candidate, Log, Outcome,     # noqa: E402
-                                     Subject, Verdict)
+                                     Subject, UphillConsequence,
+                                     Verdict)
 
 
 def _row_no(row_id: str) -> int:
@@ -94,8 +96,29 @@ def rebuild(rec: dict) -> Log:
             log.abstain(sub, r["quantity"], reader=r["reader"],
                         frame=r["frame"], reason=r["reason"], **detail)
 
+    # ⚠️⚠️ `Verdict.single_pass_revision` IS SET, IS READ BY THE FIXPOINT
+    # GUARD, AND IS NEVER SERIALISED. `record.py` sets it at :835 and reads it
+    # at :1026, and `Verdict.to_json` does not carry it — so **no saved record
+    # can be replayed through `Log.record`'s guard**, and the first attempt
+    # here died on `UphillConsequence` for a verdict the original run had
+    # accepted (`reconcile_duration`, the pipeline's one sanctioned loop:
+    # durations vote the meter, the meter re-reads the durations).
+    #
+    # It is a REAL DEFECT in the record layer and it is NOT FIXED HERE, on
+    # purpose: adding a key to `Verdict.to_json` changes the serialisation of
+    # every record in the tree, which is exactly the "perturbs upstream by
+    # existing" hazard this stage is required not to cause. It is reported in
+    # FINDINGS §5g and ranked for a session that can price it.
+    #
+    # The replay is faithful instead, and COUNTED: a verdict the guard refuses
+    # is retried once with the flag set — justified because the ORIGINAL run
+    # accepted it, so this is restoring a fact the record lost rather than
+    # granting a new exemption. ⚠️ The count is printed. A silent blanket
+    # `single_pass_revision=True` would hide a genuine fixpoint, which is the
+    # one thing that guard exists to catch.
+    restored = 0
     for v in sorted(rec["verdicts"], key=lambda v: _row_no(v["id"])):
-        log.record(Verdict(
+        built = Verdict(
             id=v["id"], subject=Subject.from_key(v["subject"]),
             quantity=v["quantity"], outcome=Outcome(v["outcome"]),
             value=v.get("value"), decider=v["decider"], reason=v["reason"],
@@ -110,7 +133,15 @@ def rebuild(rec: dict) -> Log:
             basis=tuple(v.get("basis") or ()),
             margin=v.get("margin"), supersedes=v.get("supersedes"),
             detail=dict(v.get("detail") or {}),
-        ))
+        )
+        try:
+            log.record(built)
+        except UphillConsequence:
+            log.record(replace(built, single_pass_revision=True))
+            restored += 1
+    if restored:
+        print(f"⚠️ {restored} verdicts replayed with single_pass_revision "
+              f"restored — the record does not carry that field (FINDINGS §5g)")
 
     highest = max([_row_no(r["id"]) for r in rec["observations"]]
                   + [_row_no(r["id"]) for r in rec.get("abstentions", [])]

@@ -1,0 +1,14 @@
+{
+  "reach": {
+    "collapse_duration_by_column": {
+      "inferred": 1
+    }
+  },
+  "inferred": 1,
+  "skipped_reasons": {},
+  "by_rule": {
+    "collapse_duration_by_column": 1
+  },
+  "new_verdicts": 1,
+  "all_new_are_labelled": true
+}
