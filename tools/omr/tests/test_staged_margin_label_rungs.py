@@ -88,11 +88,15 @@ class _Rungs:
     """
 
     def __init__(self, *, surya=True, tesseract=True, labels=None,
-                 raises=None, credit=None):
+                 raises=None, credit=None, reports=None):
         self.surya, self.tesseract = surya, tesseract
         self.labels = list(labels or ())
         self.raises = raises
         self.credit = dict(credit or {})
+        #: A rung that was installed, was asked, THREW, and was swallowed --
+        #: so the cascade RETURNS normally and the only trace is `failures`.
+        #: A different path from `raises`, which kills the whole cascade.
+        self.reports = list(reports or ())
         self.seen = {}
 
     def __enter__(self):
@@ -114,6 +118,8 @@ class _Rungs:
                 tiers[0] += len(self.labels)
             if sources is not None:
                 sources.update(self.credit)
+            if failures is not None:
+                failures.extend(self.reports)
             return list(self.labels)
 
         contextual._labels_for_page = _fake
@@ -328,6 +334,36 @@ class TestASuryaFailureIsRecorded(unittest.TestCase):
         reasons = {r["reason"] for r in _staff_refusals(log)}
         self.assertEqual(reasons, {ABSTAIN.READER_UNAVAILABLE})
 
+    def test_A_SWALLOWED_FAILURE_ALSO_POISONS_THE_PAGE(self):
+        """⚠️ THE MUTATION BATTERY FOUND THIS GAP, not review. Dropping
+        `or failures` from the empty-staff predicate left the whole suite
+        green: every existing test drove the cascade CRASHING, which takes
+        the outer `except`, and none drove it RETURNING while reporting a
+        rung that threw and was swallowed. Those are two different paths and
+        only one of them was reached -- a test named for a hazard it does not
+        touch."""
+        log = _run(surya_flag=True, ocr_flag=True,
+                   labels=[_label(0, "Flauti")],
+                   credit={0: "text_layer"},
+                   reports=[{"rung": "surya", "error": "RuntimeError",
+                             "note": "llama-server gone", "page_index": 0}])
+        self.assertEqual({r["reason"] for r in _staff_refusals(log)},
+                         {ABSTAIN.READER_UNAVAILABLE})
+
+    def test_the_swallowed_failure_names_its_rung_on_a_page_row(self):
+        log = _run(surya_flag=True, ocr_flag=True,
+                   reports=[{"rung": "surya", "error": "RuntimeError",
+                             "note": "llama-server gone", "page_index": 0}])
+        rows = [r for r in _page_refusals(log)
+                if r["detail"].get("rung_failed") == "surya"]
+        self.assertEqual([r["reader"] for r in rows], [READERS.SURYA])
+        self.assertEqual(rows[0]["detail"]["error"], "RuntimeError")
+
+    def test_POSITIVE_CONTROL_no_failure_reported_leaves_no_ink(self):
+        log = _run(surya_flag=True, ocr_flag=True, reports=[])
+        self.assertEqual({r["reason"] for r in _staff_refusals(log)},
+                         {ABSTAIN.NO_INK})
+
     def test_a_crash_is_never_filed_as_an_unwritten_stub(self):
         """`NOT_IMPLEMENTED` means the code does not exist. Filing a defect
         there puts it in the bucket `gather_coverage` reports as build
@@ -394,6 +430,21 @@ class TestCreditIsPerStaffNotPerCount(unittest.TestCase):
                         _label(1, "Viola", alias="viola")],
             tess_read=None)
         self.assertEqual(sources, {0: "surya", 1: "surya"})
+
+    def test_a_surya_win_drops_the_credit_for_a_label_it_DISCARDED(self):
+        """⚠️ THE MUTATION BATTERY FOUND THIS GAP TOO. The erase-on-replace
+        arm survived because the case above cannot see it: Surya read BOTH
+        staves the text layer had, so plain assignment overwrote the stale
+        credit anyway and `replaces=True` was doing nothing observable. The
+        discriminating page is one where the text layer names a staff Surya
+        does NOT -- that label is thrown away by the replacement, and without
+        the erase `sources` still names a producer for it."""
+        _labels, _tiers, sources = self._cascade(
+            text_layer=[_label(0, "Yiolino II."), _label(2, "Flauti")],
+            surya_read=[_label(0, "Violino II."), _label(1, "Viola")],
+            tess_read=None)
+        self.assertEqual(sources, {0: "surya", 1: "surya"})
+        self.assertNotIn(2, sources)
 
     def test_THE_PARTITION_the_credit_agrees_with_the_page_census(self):
         """A control, not a restatement: `sources` and `tiers` are written at
