@@ -363,3 +363,64 @@ class TestS6IsRecordedAndNeverActedOn(unittest.TestCase):
         from tools.omr.staged.adjudicators import ownership
         body = inspect.getsource(ownership._s6_stack_view).split('"""')[-1]
         self.assertNotIn("pitch", body)
+
+
+class TestTheWidenedS4QuantityIsRecordedToo(unittest.TestCase):
+    """`t_axis` — the NOTEHEAD CENTRE (0.0) to STEM TIP (1.0) axis, 2026-09-15.
+
+    ⚠️ IT EXISTS BECAUSE THE NARROW FORM MEASURED OUR READING, NOT SEAN'S
+    ENGRAVING. `t` needs the arc's endpoint to lie on stem ink, which a scan
+    breaks constantly; `t_axis` is defined for every stemmed head — 420 arcs
+    against 137 on the measured document. Both are recorded: they answer
+    different questions and the narrow one was measured first.
+
+    ⚠️ SIDE IS `sign(t_axis)`, which is why there is no separate `side` field:
+    two spellings of one quantity is how the two drift.
+    """
+
+    def _g(self, **kw):
+        log, _ = _log_with_stems("tie", _HEADS, [_STEM_UP, _STEM_UP_2], **kw)
+        v = _decide(log)
+        return v.detail["grammar"]["s4_stem_position"]["endpoints"]
+
+    def test_at_the_HEAD_CENTRE_t_axis_is_zero(self):
+        """The head centre is y 90; the stem tip is y 20. An arc whose near
+        edge sits at 90 is AT the head, so `t_axis` is 0.0 — and note this is
+        a DIFFERENT zero from `t`'s, which is at the stem's head END (82)."""
+        eps = self._g(arc_y=(70.0, 90.0))
+        self.assertAlmostEqual(eps[0]["t_axis"], 0.0, places=3)
+
+    def test_at_the_STEM_TIP_t_axis_is_one(self):
+        eps = self._g(arc_y=(0.0, 20.0))
+        self.assertAlmostEqual(eps[0]["t_axis"], 1.0, places=3)
+
+    def test_PAST_the_tip_exceeds_one_with_NO_contact_required(self):
+        """⚠️ THE WIDENING ITSELF. The arc's near edge at y -50 touches no
+        stem ink at all — the stem stops at 20 — and `t_axis` still answers,
+        which `t` combined with its contact test would not."""
+        eps = self._g(arc_y=(-70.0, -50.0))
+        self.assertGreater(eps[0]["t_axis"], 1.0)
+
+    def test_on_the_HEAD_side_t_axis_is_NEGATIVE(self):
+        """SIDE is the sign. An arc below heads whose stems point up sits on
+        the far side of the head from its stem, where a tie is drawn."""
+        eps = self._g(arc_y=(100.0, 120.0))
+        self.assertLess(eps[0]["t_axis"], 0.0)
+        self.assertFalse(any(e["same_side"] for e in eps))
+
+    def test_t_and_t_axis_are_BOTH_recorded_and_are_NOT_equal(self):
+        """They share a direction and not an origin: `t` measures from the
+        stem's head END, `t_axis` from the notehead CENTRE. Asserting they
+        differ is what stops one silently becoming an alias of the other."""
+        eps = self._g(arc_y=(50.0, 70.0))
+        self.assertIn("t", eps[0])
+        self.assertIn("t_axis", eps[0])
+        self.assertNotAlmostEqual(eps[0]["t"], eps[0]["t_axis"], places=3)
+
+    def test_it_still_changes_NO_verdict(self):
+        bare = _decide(_log_with("tie", _HEADS, arc_y=(0.0, 20.0))[0])
+        log, _ = _log_with_stems("tie", _HEADS, [_STEM_UP, _STEM_UP_2],
+                                 arc_y=(0.0, 20.0))
+        v = _decide(log)
+        self.assertEqual(v.value, bare.value)
+        self.assertEqual(v.reason, bare.reason)

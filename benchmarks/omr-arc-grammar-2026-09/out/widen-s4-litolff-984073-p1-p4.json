@@ -1,0 +1,433 @@
+{
+  "n_arcs": 779,
+  "reach": {
+    "arcs_total": 779,
+    "S4_NARROW_endpoint_on_stem_ink": "see probe/reach.py: 143 of 779",
+    "S4_WIDE_any_stemmed_flanked_head": 420,
+    "S4_abstains_no_stemmed_flanked_head": 359
+  },
+  "S4_WIDE_agg_max": {
+    "n": 420,
+    "base_rate_slur": 0.5571,
+    "reading_tie": {
+      "n": 186,
+      "min": -2.5,
+      "p10": -0.5356,
+      "p25": -0.2547,
+      "median": 0.2857,
+      "p75": 0.7069,
+      "p90": 1.3645,
+      "max": 2.876
+    },
+    "reading_slur": {
+      "n": 234,
+      "min": -3.8993,
+      "p10": -0.4711,
+      "p25": -0.2672,
+      "median": -0.0443,
+      "p75": 0.7567,
+      "p90": 1.5339,
+      "max": 4.2119
+    },
+    "widest_empty_interval": {
+      "lower_max": 4.2119,
+      "upper_min": -2.5,
+      "gap": -6.7119,
+      "empty": false
+    },
+    "SIDE": {
+      "arc_on_the_STEM_side": 225,
+      "...reads_slur": 111,
+      "...slur_share": 0.4933,
+      "arc_on_the_HEAD_side": 195,
+      "...reads_tie": 72,
+      "...tie_share": 0.3692,
+      "lift_of_stem_side_over_base": -0.0638,
+      "p_binomial_stem_side": 0.97663
+    },
+    "one_sided_sweep_ABSTAINING": [
+      {
+        "t_axis_at_least": 0.0,
+        "fires": 225,
+        "abstains": 554,
+        "reading_says_slur": 111,
+        "reading_says_tie": 114,
+        "agreement": 0.4933,
+        "lift_over_base": -0.0638,
+        "p_binomial": 0.97663
+      },
+      {
+        "t_axis_at_least": 0.25,
+        "fires": 194,
+        "abstains": 585,
+        "reading_says_slur": 94,
+        "reading_says_tie": 100,
+        "agreement": 0.4845,
+        "lift_over_base": -0.0726,
+        "p_binomial": 0.98222
+      },
+      {
+        "t_axis_at_least": 0.5,
+        "fires": 144,
+        "abstains": 635,
+        "reading_says_slur": 78,
+        "reading_says_tie": 66,
+        "agreement": 0.5417,
+        "lift_over_base": -0.0155,
+        "p_binomial": 0.67727
+      },
+      {
+        "t_axis_at_least": 0.75,
+        "fires": 101,
+        "abstains": 678,
+        "reading_says_slur": 59,
+        "reading_says_tie": 42,
+        "agreement": 0.5842,
+        "lift_over_base": 0.027,
+        "p_binomial": 0.32886
+      },
+      {
+        "t_axis_at_least": 1.0,
+        "fires": 83,
+        "abstains": 696,
+        "reading_says_slur": 51,
+        "reading_says_tie": 32,
+        "agreement": 0.6145,
+        "lift_over_base": 0.0573,
+        "p_binomial": 0.17358
+      },
+      {
+        "t_axis_at_least": 1.25,
+        "fires": 59,
+        "abstains": 720,
+        "reading_says_slur": 35,
+        "reading_says_tie": 24,
+        "agreement": 0.5932,
+        "lift_over_base": 0.0361,
+        "p_binomial": 0.33644
+      },
+      {
+        "t_axis_at_least": 1.5,
+        "fires": 40,
+        "abstains": 739,
+        "reading_says_slur": 26,
+        "reading_says_tie": 14,
+        "agreement": 0.65,
+        "lift_over_base": 0.0929,
+        "p_binomial": 0.15304
+      },
+      {
+        "t_axis_at_least": 2.0,
+        "fires": 20,
+        "abstains": 759,
+        "reading_says_slur": 15,
+        "reading_says_tie": 5,
+        "agreement": 0.75,
+        "lift_over_base": 0.1929,
+        "p_binomial": 0.06281
+      }
+    ],
+    "by_confidence": {
+      "low_conf": {
+        "n": 195,
+        "base_rate_slur": 0.2513,
+        "stem_side_n": 124,
+        "stem_side_slur_share": 0.25,
+        "SIDE_lift": -0.0013,
+        "sweep_within_band": [
+          {
+            "t_axis_at_least": 0.0,
+            "fires": 124,
+            "agreement": 0.25,
+            "lift_over_band_base": -0.0013,
+            "p_binomial": 0.54751
+          },
+          {
+            "t_axis_at_least": 0.5,
+            "fires": 71,
+            "agreement": 0.2817,
+            "lift_over_band_base": 0.0304,
+            "p_binomial": 0.31862
+          },
+          {
+            "t_axis_at_least": 1.0,
+            "fires": 31,
+            "agreement": 0.2581,
+            "lift_over_band_base": 0.0068,
+            "p_binomial": 0.53386
+          },
+          {
+            "t_axis_at_least": 1.5,
+            "fires": 16,
+            "agreement": 0.3125,
+            "lift_over_band_base": 0.0612,
+            "p_binomial": 0.37444
+          },
+          {
+            "t_axis_at_least": 2.0,
+            "fires": 7,
+            "agreement": 0.2857,
+            "lift_over_band_base": 0.0344,
+            "p_binomial": 0.55824
+          }
+        ]
+      },
+      "high_conf": {
+        "n": 225,
+        "base_rate_slur": 0.8222,
+        "stem_side_n": 101,
+        "stem_side_slur_share": 0.7921,
+        "SIDE_lift": -0.0301,
+        "sweep_within_band": [
+          {
+            "t_axis_at_least": 0.0,
+            "fires": 101,
+            "agreement": 0.7921,
+            "lift_over_band_base": -0.0301,
+            "p_binomial": 0.82314
+          },
+          {
+            "t_axis_at_least": 0.5,
+            "fires": 73,
+            "agreement": 0.7945,
+            "lift_over_band_base": -0.0277,
+            "p_binomial": 0.78397
+          },
+          {
+            "t_axis_at_least": 1.0,
+            "fires": 52,
+            "agreement": 0.8269,
+            "lift_over_band_base": 0.0047,
+            "p_binomial": 0.55235
+          },
+          {
+            "t_axis_at_least": 1.5,
+            "fires": 24,
+            "agreement": 0.875,
+            "lift_over_band_base": 0.0528,
+            "p_binomial": 0.36049
+          },
+          {
+            "t_axis_at_least": 2.0,
+            "fires": 13,
+            "agreement": 1.0,
+            "lift_over_band_base": 0.1778,
+            "p_binomial": 0.0785
+          }
+        ]
+      }
+    }
+  },
+  "S4_WIDE_agg_median": {
+    "n": 420,
+    "base_rate_slur": 0.5571,
+    "reading_tie": {
+      "n": 186,
+      "min": -5.412,
+      "p10": -0.7397,
+      "p25": -0.3444,
+      "median": 0.0534,
+      "p75": 0.51,
+      "p90": 0.9837,
+      "max": 2.0962
+    },
+    "reading_slur": {
+      "n": 234,
+      "min": -4.4412,
+      "p10": -0.5665,
+      "p25": -0.3201,
+      "median": -0.1178,
+      "p75": 0.4338,
+      "p90": 1.3826,
+      "max": 2.8511
+    },
+    "widest_empty_interval": {
+      "lower_max": 2.8511,
+      "upper_min": -5.412,
+      "gap": -8.263,
+      "empty": false
+    },
+    "SIDE": {
+      "arc_on_the_STEM_side": 201,
+      "...reads_slur": 100,
+      "...slur_share": 0.4975,
+      "arc_on_the_HEAD_side": 219,
+      "...reads_tie": 85,
+      "...tie_share": 0.3881,
+      "lift_of_stem_side_over_base": -0.0596,
+      "p_binomial_stem_side": 0.96154
+    },
+    "one_sided_sweep_ABSTAINING": [
+      {
+        "t_axis_at_least": 0.0,
+        "fires": 201,
+        "abstains": 578,
+        "reading_says_slur": 100,
+        "reading_says_tie": 101,
+        "agreement": 0.4975,
+        "lift_over_base": -0.0596,
+        "p_binomial": 0.96154
+      },
+      {
+        "t_axis_at_least": 0.25,
+        "fires": 147,
+        "abstains": 632,
+        "reading_says_slur": 72,
+        "reading_says_tie": 75,
+        "agreement": 0.4898,
+        "lift_over_base": -0.0673,
+        "p_binomial": 0.95752
+      },
+      {
+        "t_axis_at_least": 0.5,
+        "fires": 100,
+        "abstains": 679,
+        "reading_says_slur": 52,
+        "reading_says_tie": 48,
+        "agreement": 0.52,
+        "lift_over_base": -0.0371,
+        "p_binomial": 0.80214
+      },
+      {
+        "t_axis_at_least": 0.75,
+        "fires": 67,
+        "abstains": 712,
+        "reading_says_slur": 38,
+        "reading_says_tie": 29,
+        "agreement": 0.5672,
+        "lift_over_base": 0.01,
+        "p_binomial": 0.48508
+      },
+      {
+        "t_axis_at_least": 1.0,
+        "fires": 53,
+        "abstains": 726,
+        "reading_says_slur": 34,
+        "reading_says_tie": 19,
+        "agreement": 0.6415,
+        "lift_over_base": 0.0844,
+        "p_binomial": 0.13573
+      },
+      {
+        "t_axis_at_least": 1.25,
+        "fires": 39,
+        "abstains": 740,
+        "reading_says_slur": 27,
+        "reading_says_tie": 12,
+        "agreement": 0.6923,
+        "lift_over_base": 0.1352,
+        "p_binomial": 0.06038
+      },
+      {
+        "t_axis_at_least": 1.5,
+        "fires": 26,
+        "abstains": 753,
+        "reading_says_slur": 21,
+        "reading_says_tie": 5,
+        "agreement": 0.8077,
+        "lift_over_base": 0.2505,
+        "p_binomial": 0.00705
+      },
+      {
+        "t_axis_at_least": 2.0,
+        "fires": 13,
+        "abstains": 766,
+        "reading_says_slur": 12,
+        "reading_says_tie": 1,
+        "agreement": 0.9231,
+        "lift_over_base": 0.3659,
+        "p_binomial": 0.00565
+      }
+    ],
+    "by_confidence": {
+      "low_conf": {
+        "n": 195,
+        "base_rate_slur": 0.2513,
+        "stem_side_n": 110,
+        "stem_side_slur_share": 0.2545,
+        "SIDE_lift": 0.0033,
+        "sweep_within_band": [
+          {
+            "t_axis_at_least": 0.0,
+            "fires": 110,
+            "agreement": 0.2545,
+            "lift_over_band_base": 0.0033,
+            "p_binomial": 0.50505
+          },
+          {
+            "t_axis_at_least": 0.5,
+            "fires": 49,
+            "agreement": 0.2041,
+            "lift_over_band_base": -0.0472,
+            "p_binomial": 0.82195
+          },
+          {
+            "t_axis_at_least": 1.0,
+            "fires": 15,
+            "agreement": 0.1333,
+            "lift_over_band_base": -0.1179,
+            "p_binomial": 0.9214
+          },
+          {
+            "t_axis_at_least": 1.5,
+            "fires": 6,
+            "agreement": 0.3333,
+            "lift_over_band_base": 0.0821,
+            "p_binomial": 0.4691
+          },
+          {
+            "t_axis_at_least": 2.0,
+            "fires": 2,
+            "agreement": 0.5,
+            "lift_over_band_base": 0.2487,
+            "p_binomial": 0.43942
+          }
+        ]
+      },
+      "high_conf": {
+        "n": 225,
+        "base_rate_slur": 0.8222,
+        "stem_side_n": 91,
+        "stem_side_slur_share": 0.7912,
+        "SIDE_lift": -0.031,
+        "sweep_within_band": [
+          {
+            "t_axis_at_least": 0.0,
+            "fires": 91,
+            "agreement": 0.7912,
+            "lift_over_band_base": -0.031,
+            "p_binomial": 0.82035
+          },
+          {
+            "t_axis_at_least": 0.5,
+            "fires": 51,
+            "agreement": 0.8235,
+            "lift_over_band_base": 0.0013,
+            "p_binomial": 0.57814
+          },
+          {
+            "t_axis_at_least": 1.0,
+            "fires": 38,
+            "agreement": 0.8421,
+            "lift_over_band_base": 0.0199,
+            "p_binomial": 0.47529
+          },
+          {
+            "t_axis_at_least": 1.5,
+            "fires": 20,
+            "agreement": 0.95,
+            "lift_over_band_base": 0.1278,
+            "p_binomial": 0.10618
+          },
+          {
+            "t_axis_at_least": 2.0,
+            "fires": 11,
+            "agreement": 1.0,
+            "lift_over_band_base": 0.1778,
+            "p_binomial": 0.11611
+          }
+        ]
+      }
+    }
+  }
+}

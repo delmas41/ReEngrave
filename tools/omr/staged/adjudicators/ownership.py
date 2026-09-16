@@ -395,18 +395,34 @@ def _s4_stem_view(arc_box, heads, stems):
     rule is silent about it. Both are RECORDED, never thresholded, so a later
     session can price any cut from the record alone.
 
-    ⚠️⚠️ AND THE MEASUREMENT SAYS IT SHOULD NOT BE PROMOTED. On Litolff
-    Beethoven 5 p1-4 the endpoint lands on a stem for **137 of 779 arcs**
-    under the strict `[0, 1]` this function applies (143 under the ±0.05
-    tolerance band `probe/reach.py` declares, reconciled to the unit), the
-    two readings' `t` distributions OVERLAP COMPLETELY (tie 0.057-1.044,
-    slur 0.213-1.048 — widest empty interval **-0.83**, i.e. none), and the
-    one-sided sweep is NON-MONOTONIC with a lift over base of at most 0.11 at
-    n=30. ⚠️ Worse, the availability gradient INVERTS the one this family
-    already records: the arcs S4 can speak about sit at median confidence
+    ⚠️⚠️ AND THE MEASUREMENT SAYS IT SHOULD NOT BE PROMOTED — **NARROW AND
+    WIDE, WHICH ARE TWO SEPARATE REFUTATIONS AND THE WIDE ONE IS THE REAL
+    ONE.** NARROW (`t`, endpoint on stem ink, 137-143 of 779): the two
+    readings' distributions overlap completely (tie 0.057-1.044, slur
+    0.213-1.048, widest empty interval **-0.83**, i.e. none) and the one-sided
+    sweep is non-monotonic at n=30. That could have been a POWER problem, so
+    the rule was re-measured at full width (Sean, 2026-09-15: *the convention
+    is not the operationalisation*). WIDE (`t_axis`, contact dropped, **420 of
+    779**, one-sided with an explicit abstain population of 359):
+
+      * **SIDE ALONE IS FLAT.** 225 arcs lie on the stem's side and read slur
+        **0.4933** against a base of 0.5571 — a lift of **-0.064**. Within
+        confidence band, where the detector's class mix cannot confound it,
+        the lift is **-0.001** (low) and **-0.030** (high). Sean's cleanest
+        binary reading of his own sentence carries no signal on this document.
+      * **The distance sweep never reaches significance.** Within band the
+        best cell is 13 of 13 at `t_axis >= 2.0`, p = **0.079** — an arc whose
+        near edge sits more than twice the head-to-tip distance beyond the
+        head, which is barely a stem-connected arc at all.
+      * **And conditioned on either other witness S4 adds nothing**: the
+        difference in slur share between firing and silent is **negative in
+        all four strata** at `t_axis >= 0` and changes sign thereafter.
+
+    ⚠️ Worse, the availability gradient INVERTS the one this family already
+    records: the arcs the NARROW form can speak about sit at median confidence
     **0.4196** against **0.5409** for the ones it cannot — so where the
-    grammar merely goes quiet on bad ink, S4 goes quiet on GOOD ink and
-    speaks preferentially about the weakest readings.
+    grammar merely goes quiet on bad ink, S4 goes quiet on GOOD ink and speaks
+    preferentially about the weakest readings.
     """
     if not heads:
         return None
@@ -425,8 +441,22 @@ def _s4_stem_view(arc_box, heads, stems):
             span = far_end - head_end
             if abs(span) < 1e-6:
                 continue
+            # ⚠️ `t_axis` IS THE WIDENED FORM AND IS RECORDED BESIDE `t`, not
+            # instead of it, because they answer different questions and the
+            # narrow one was measured first. `t` is the fraction along the
+            # STEM's own span and needs the arc's endpoint to lie on stem ink;
+            # `t_axis` runs from the NOTEHEAD CENTRE (0.0) to the STEM TIP
+            # (1.0) with NO contact requirement, so it is defined for every
+            # stemmed head — 420 arcs against 137. A scan breaks ink
+            # constantly, and demanding contact is our limitation rather than
+            # the engraver's (Sean, 2026-09-15). ⚠️ SIDE is `sign(t_axis)`, so
+            # the two widenings are ONE quantity rather than two rules that
+            # could drift.
+            axis_span = far_end - h_yc
             out.append(dict(
                 t=round((near_edge - head_end) / span, 4),
+                t_axis=(round((near_edge - h_yc) / axis_span, 4)
+                        if abs(axis_span) > 1e-6 else None),
                 # `far_end < head_end` in canonical (y-down) coordinates is a
                 # stem pointing UP.
                 same_side=bool(above == (far_end < head_end)),
@@ -434,6 +464,13 @@ def _s4_stem_view(arc_box, heads, stems):
                                 / max(head_box[2], 1.0), 4)))
     if not out:
         return None
+    # ⚠️ `t_axis` GETS NO SUMMARY FIELD, DELIBERATELY, where `t` has
+    # `t_median`. An arc has TWO ends and *"connected to the stem's edge away
+    # from the notehead"* is EXISTENTIAL, so `max` and `median` are different
+    # readings of Sean's sentence — both were scored (`probe/widen.py`) and
+    # neither is chosen. Recording a summary would be this function making
+    # that choice for every consumer; the per-endpoint values are raw and a
+    # consumer aggregates them the way it can defend.
     return {"endpoints": out, "arc_above_heads": bool(above),
             "t_median": round(_median([e["t"] for e in out]), 4),
             "any_endpoint_on_a_stem": any(
@@ -482,6 +519,30 @@ def _s6_stack_view(arc_id, arc_box, siblings):
     and did not: pairs whose two arcs the record gives to the SAME staff score
     0.655, and the 10 pairs given to DIFFERENT staves score **0.200** — the
     measure-cell padding reaching into the neighbour, which is not a stack.
+
+    ⚠️⚠️ **IT SURVIVED EVERY RELAXATION OF WHAT COUNTS AS A STACK** (2026-09-15,
+    `probe/widen_s6.py`): an x GAP of up to 1.0 arc widths, a y OVERLAP of up
+    to half the shallower box, and `arc_owner` as the pairing rather than
+    geometry. Candidate pairs move only **428 -> 463 (+8%)** and agreement
+    holds at **0.62-0.66**; the tight band is **73 -> 77 pairs at 0.740**, and
+    the dose-response is if anything sharper on the loosest relaxation (0-1
+    space **10 of 11**, p = 0.006). So the widening buys almost no reach and
+    costs no agreement — the result is robust to how a stack is defined rather
+    than fitted to one definition. **Restricting to a shared `arc_owner` is
+    the one relaxation that IMPROVES it (0.663, p = 1e-5).**
+
+    ⚠️⚠️ **AND THE JOINT RESULT IS BIGGER THAN EITHER WITNESS.** Over the 83
+    arcs where S6 and the position grammar (S2/S5) both speak they CONCUR on
+    only 40 — near-independent — and where they concur, agreement with the
+    reading is **0.750** against S2/S5 alone at 0.602 and S6 alone at 0.639 on
+    that same population. ⚠️ **Conditioning on two noisy predictors agreeing
+    raises measured accuracy even when one is pure noise**, so a permutation
+    null was run before this was believed: shuffling S2/S5's labels 20,000
+    times within the joint population gives a median of 0.625 and a p95 of
+    0.711, and the observed 0.750 lands at **p = 0.010**. ⚠️ The finding is
+    stranger than it looks — S2/S5 is MARGINALLY UNINFORMATIVE (0.5043 over
+    345 arcs, against a majority-class baseline of 0.5275, i.e. worse than
+    always saying slur) and JOINTLY informative.
     """
     ax0, ay0, ax1, ay1 = arc_box
     out = []

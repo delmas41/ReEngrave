@@ -79,6 +79,17 @@ ARMS = [
      "        if sid == arc_id:\n            continue",
      "        pass"),
 
+    # ── S4's WIDENED quantity (2026-09-15) ──────────────────────────────────
+    ("15 t_axis measured from the stem's head END, not the head CENTRE",
+     "axis_span = far_end - h_yc",
+     "axis_span = far_end - head_end"),
+    ("16 t_axis is an alias of t (the widening silently undone)",
+     "t_axis=(round((near_edge - h_yc) / axis_span, 4)",
+     "t_axis=(round((near_edge - head_end) / span, 4)"),
+    ("17 t_axis runs to the stem's HEAD end instead of its TIP",
+     "            axis_span = far_end - h_yc",
+     "            axis_span = head_end - h_yc"),
+
     # ── the seam: the declaration that makes the read legal at all ──────────
     ("14 Q.STEM is not declared, so `Evidence` must refuse the read",
      "    wants=(Q.ARC_BOX, Q.NOTEHEAD_STAFF_POSITION, Q.GLYPH_BOX, Q.STEM),",
