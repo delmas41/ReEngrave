@@ -288,6 +288,55 @@ now. *A test named for a hazard it does not reach*, arriving against its author.
 
 ---
 
+## 5b. ⚠️⚠️ TWO POPULATIONS, AND THE SAFETY CLAIM IS ABOUT THE SECOND ONE
+
+[`adjudicated-26.json`](adjudicated-26.json) is the adjudication of **the bars
+SEAN SAW** — the 26 whose whole exported content is one lone quarter in a 2/4
+bar. [`adjudicated-25-fires.json`](adjudicated-25-fires.json) is the
+adjudication of **every cell the SHIPPED RULE ACTS ON**. They are different,
+overlapping sets, and **only the second one licenses deleting a note from a
+file** — so it is committed rather than reported. Its population is recomputed
+from the shipped constants by `probe/build_fire_artefact.py`, and the arm
+reaches the identical 25 through the real decision by an independent path
+(slot 20, neighbouring_bar 5).
+
+⚠️ **Stating the two apart is not bookkeeping.** An 18-of-26 error rate in the
+first population is exactly what says a hand adjudication of the second cannot
+be taken on trust — and a report is a ledger, which this repo's own rule says
+the tree outranks.
+
+| | |
+|---|--:|
+| cells the rule fires on | **25** |
+| ...hand verdict **`whole_rest`** | **25** |
+| ...hand verdict `notehead` (a REAL NOTE deleted) | **0** |
+| ...hand verdict `junk` | **0** |
+| also present in the 26 | **5** |
+| **new — outside Sean's observed population** | **20** |
+
+⚠️ **ZERO of the 18 rows the 26-bar artefact calls a REAL NOTE is a fire**, and
+zero of its 3 `junk` rows is. The 5 that overlap are exactly the 5 the 26 calls
+`whole_rest`. **The rule and the 18 real notes do not intersect at all** —
+which is the claim the recommendation rests on, computed rather than asserted.
+
+⚠️ **20 of the 25 are OUTSIDE the window Sean was looking through**, which is
+the reach argument arriving as a number: the fault is not confined to
+lone-quarter bars, and the lone-quarter filter would have found five of it.
+
+### 25 fires, 22 notes removed — the three, by name
+
+| subject | part / measure | why it was already unwritten |
+|---|---|---|
+| `glyph/3/0/9/1/3` | P10 m49 | `no_pitch` |
+| `glyph/4/0/0/4/3` | P1 m86 | `duration_narrowed` |
+| `glyph/4/1/6/14/1` | P7 m111 | `no_pitch` |
+
+**25 − 3 = 22**, and it matches the arm's bucket movement to the unit
+(`no_pitch` 215 → 213, `duration_narrowed` 339 → 338). Those three were being
+dropped for an unrelated reason and the rule now drops them for the right one,
+which is why `ink_is_a_whole_rest` counts **25** while the file loses **22**.
+---
+
 ## 6. What is NOT established
 
 * **ACCURACY of the 18.** The hand verdict on those rows is only that ink of a
