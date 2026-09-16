@@ -1,0 +1,25 @@
+REACH: 7 systems carry a meter verdict, 7 DECIDED, 0 abstained
+   system/0/0     decided   voted                          6/8  support=None
+   system/1/0     decided   voted                          9/4  support=None
+   system/1/1     decided   change_only                    4/4  support=None
+   system/2/0     decided   change_only                    4/4  support=None
+   system/2/1     decided   change_only                    4/4  support=None
+   system/3/0     decided   change_only                    4/4  support=None
+   system/3/1     decided   change_only                    4/4  support=None
+
+RESTS IN THE FILE: 1102, 1082 not the printed bar length (3.0)
+   0.0625   x1      !!
+   0.25     x4      !!
+   0.5      x430    !!
+   1.0      x259    !!
+   2.0      x3      !!
+   3.0      x20     OK
+   4.0      x373    !!
+   6.0      x1      !!
+   9.0      x11     !!
+   rests                              949
+   measure_rests_read                 104
+   empty_bars_padded                  49
+   empty_bars_padded_without_meter    14
+   notes                              2444
+   notes_not_written_total            945
