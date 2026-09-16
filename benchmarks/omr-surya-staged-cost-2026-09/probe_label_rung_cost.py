@@ -95,8 +95,18 @@ def _provenance() -> dict:
                                 check=True).stdout
     except Exception:                                         # noqa: BLE001
         return {"commit": None, "dirty": None}
-    return {"commit": commit, "dirty": bool(status.strip()),
-            "dirty_files": [ln[3:] for ln in status.splitlines()][:20]}
+    # ⚠️ THIS PROBE'S OWN OUTPUT IS NOT A DIRTY TREE, and the first run
+    # reported `dirty=True` for exactly one reason: the untracked directory
+    # it had just written its own log into. A stamp that is always dirty is
+    # a stamp nobody reads -- the same way a check that cannot fail stops
+    # being a check -- so the run's own artefacts are excluded BY PATH and
+    # everything else still counts. `run_arms.sh` makes the identical
+    # exclusion for the identical reason.
+    lines = [ln for ln in status.splitlines()
+             if "benchmarks/omr-surya-staged-cost-2026-09/out/" not in ln]
+    return {"commit": commit, "dirty": bool([ln for ln in lines if ln.strip()]),
+            "dirty_files": [ln[3:] for ln in lines][:20],
+            "excluded_own_output": len(status.splitlines()) - len(lines)}
 
 
 def main(argv=None) -> int:
