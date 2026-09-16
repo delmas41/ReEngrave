@@ -354,6 +354,8 @@ work.
 | `source_kind` enforced at the point of use | `identity._work_roster` refuses a non-`catalog` row |
 | the record is parseable | `Q.ROSTER_ENTRY` carries a dict, not a dataclass `repr()` |
 | `inventory.KNOWN_GAPS` | the now-closed `instrument declares 'roster_entry'` removed |
+| `no_producer.RECORDED` | the sibling tool's `run_staged.roster` entry removed — its own text said *"REMOVE THIS ENTRY the day a producer lands"*, and its stale-entry test is what made it leave |
+| `test_no_producer.py` | two tests that asserted `roster` is still a finding, CONVERTED (never deleted) to the mirror of `test_pdf_path_is_no_longer_a_finding`, with `dossier` kept as the live instance that keeps the zero interpretable |
 
 ---
 
