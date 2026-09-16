@@ -258,14 +258,61 @@ session.
 
 ---
 
-## 8. IN FLIGHT
+## 8. THE SECOND-PUBLISHER PRICING — landed, and the cuts DO NOT transfer
 
-**`claude/second-publisher-pricing`** — pricing `OMR_WHOLE_REST_INK` on
-Breitkopf against the shared record: does the p05/p95 band derived from
-Litolff's rests transfer, with every fire cropped and adjudicated, plus the
-false-negative side nobody has looked at. Its meter half was **withdrawn
-mid-flight** per §6. Secondary: the **dotted rest**, whose own FINDINGS name
-this document (656 dots here against Litolff's 35).
+PR #41 (`d8341787`). `OMR_WHOLE_REST_INK` priced on Breitkopf against the
+shared record. **The rule's OUTCOME survives and its stated SAFETY CASE does
+not.**
+
+| | Litolff (the cuts came from here) | **Breitkopf** |
+|---|--:|--:|
+| shipped band over that document's OWN whole rests | **89.9%** | **52.5%** |
+| `restWhole` more than a space BELOW its own staff | **0** | **64** |
+| witness split of the fires | slot 20 / nb 5 | **slot 1 / nb 11** |
+| hand-adjudicated as a whole rest | **25 of 25** | **1 of 12** |
+
+The two cuts move in **opposite** directions (max height p95 0.840 → 0.670,
+max aspect p95 3.087 → 4.633) and the witness inverts. The mechanism is the
+neighbour witness, which assumes rests stand inside their own staff and here
+vouches out of a 64-row cross-staff population Litolff does not have.
+
+⚠️⚠️ **THE FLAG STAYS ON, AND THE REASON IS NOT THE ONE ON RECORD.** The 11
+non-whole-rest fires are not real music either — committed adjudication
+(`adjudicated-12-fires.json`, verified against the artefact rather than the
+report): **8 eighth-rest hooks from the staff below, 2 noteheads on
+neighbouring staves, 1 the top arc of the printed `6` of the `6/8`.** Off puts
+11 spurious notes back here and 22 on Litolff. **So the rule does the right
+thing for the wrong reason, and "25 of 25, zero real notes" is a LITOLFF
+FIGURE that must stop being quoted as its warrant.** Sharper still: the one
+real note among the fires is spared by the 2026-09-11 **ownership contest**, a
+different mechanism — so even *"zero real notes deleted"* is not this rule's
+doing.
+
+⚠️ **The false-negative side, which nobody had ever looked at, found §3 of the
+09-11 handoff UN-REPAIRED on this publisher**: the closest of 248 non-fires is
+a **real whole rest**, refused because its clipped box reads aspect 1.51
+against the 1.63 floor — and exported as an **eighth note C5**. A pitched note
+where the page prints silence, which is Sean's original observation.
+
+⚠️ **Priced as a measurement and explicitly NOT recommended:** *the glyph must
+stand inside its own staff* takes Litolff 25 → 22 fires (still 22 of 22 whole
+rests) and Breitkopf 12 → 1, costing 3 correct Litolff catches and **11 useful
+Breitkopf deletions**. Needs a human and a third publisher.
+
+**Dotted rest, at 33× the dot density:** 691 `aug_dot` rows across two
+publishers attach to a rest **once**, and that once is a **false dot** — the
+smallest of all 656 — on a crop showing an undotted whole rest. Consistency,
+not payoff; **an argument that no work should be ranked by it.**
+
+⚠️ **Its meter half was WITHDRAWN mid-flight** per §6, after `89620d27` landed
+the same arm on the same document at reach zero. Two arms had run 20 minutes
+and were killed **by PID, never by name.**
+
+⚠️ **FINDINGS.md was written by a DIFFERENT session from the one that
+measured.** That environment refused both the Write tool and a heredoc, so the
+write-up went into the PR body; it was transcribed verbatim into
+`benchmarks/omr-second-publisher-pricing-2026-09/FINDINGS.md` before merge,
+with a provenance note saying so. **Nothing was re-derived or re-worded.**
 
 ---
 
@@ -273,8 +320,10 @@ this document (656 dots here against Litolff's 35).
 
 1. **`OMR_METER_CARRY`** — still off on **n**, and now blocked on a CORPUS
    rather than a measurement (§6). Nothing on this machine settles it.
-2. **`OMR_WHOLE_REST_INK` stays ON or goes off** — pending the Breitkopf
-   pricing in flight (§8). He set it ON knowing it was n = 1.
+2. **`OMR_WHOLE_REST_INK`** — ANSWERED for the default (**stays ON**, §8) and
+   OPEN for the hardening: *the glyph must stand inside its own staff* trades
+   11 useful Breitkopf deletions for 11 fewer wrong-reason fires, and **wants a
+   third publisher** before anyone takes it.
 3. **`Verdict.single_pass_revision` is never serialised** — declared at
    `record.py:835`, read by the fixpoint guard at `:1026`, absent from
    `to_json`. Verified on main. ⚠️ **The recommended repair is NOT the
@@ -299,6 +348,10 @@ note-deleting rule none can be: the metric is symmetric and rewards
 under-prediction, so it would pay for those deletions whether or not they are
 right.
 
-**n is still 1 for most of it.** The second publisher's record now exists, and
-as of this writing it has priced exactly one thing — the meter flags, to a
-reach of zero.
+**n is still 1 for most of it.** The second publisher's record now exists and
+has priced two things: the meter flags, to a **reach of zero** (§6), and
+`OMR_WHOLE_REST_INK`, whose **cuts do not transfer** (§8). Everything else here
+— the fourth stage, the wiring findings, the roster re-decisions — remains
+n = 1 document, 4 pages, on the pessimistic end of the corpus. ⚠️ And the
+whole-rest result is n = 2 **documents**, 7 pages: it establishes that the cuts
+are a property of a plate, **not** how a third publisher behaves.
