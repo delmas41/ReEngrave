@@ -103,9 +103,12 @@ and is silent about the one it cannot.
 `Q.EVENT`, `Q.DURATION`, `Q.GLYPH_BOX`.
 
 > An onset column is an instant. If this staff's event stands at column k and
-> its own next event stands at column k+1, this note sounds for exactly the
-> gap between those two instants. If a NEIGHBOURING staff also goes k to k+1
-> and its note there is DECIDED at d, then the gap IS d — so this note is d.
+> its own next event stands at column m, this note sounds for exactly the gap
+> between those two instants. If a NEIGHBOURING staff also goes k to m and its
+> note there is DECIDED at d, then the gap IS d — so this note is d.
+
+⚠️ **m, NOT k+1.** The rule shipped strict (k+1) first and inferred ONE of
+357; §7b is the measurement that generalised it and why.
 
 ⚠️⚠️ **This is the thing EVALUATE structurally cannot do.** Every consequence
 is `cause -> effect`, vertical; a bar sitting in a system with eleven other
@@ -175,6 +178,40 @@ the module is never imported by it. `reexport_arm.py` re-exports a stored
 So the claim that they are unaffected rests on the bypass tests above plus
 one grep: neither imports `infer`, and `pipeline`'s call site is the only one.
 **That is weaker than running them and is labelled as such.**
+
+---
+
+## 3. REACH, MEASURED BEFORE THE RULE WAS CHOSEN
+
+One fresh gather, Litolff Beethoven 5 mvt 1, pdf pages 1-4, 26 min 37 s
+(`probe/reach.py`, `out/reach.json`). The probe exits non-zero if the record
+holds no narrowed durations at all, so a clean zero could not be mistaken for
+a clean result.
+
+| | |
+|---|--:|
+| `duration` verdicts | **2,993** — decided 2,636, **narrowed 357**, abstained 0 |
+| narrowed, on a notehead | **357** (all of them) |
+| narrowed with 2 / 3 candidates | 304 / 53 |
+| noteheads with no decided pitch | **215** |
+
+⚠️⚠️ **THE `no_pitch` REFUSAL IS THE DATA'S, NOT A PREFERENCE.** Of those 215
+noteheads, their staff's CLEF verdict is **abstained 108 / narrowed 107 —
+decided ZERO**. So filling a pitch means inferring a clef, and the only
+sideways route for a clef is the same part's staff on another system, which is
+keyed on the PART JOIN — measured wrong on this very document for 12 of 75
+staff-systems, with `P7` (Timpani) holding the VIOLA's staff on p3/s1. §4.
+
+**The coarse funnel said the sideways evidence is universally present:** all
+357 narrowed durations sit on a system with a DECIDED `Q.ONSET_COLUMN` and
+have other staves deciding in the same bar (338 of them with 6+ other staves).
+So nothing about the choice of population was speculative.
+
+⚠️ One probe artefact, stated so nobody quotes it: `reach.py`'s independence
+sample (874 of 3,101 pairs sharing a provenance row) keys a bar without the
+staff, so it includes SAME-STAFF pairs, which of course share their cell's
+rows. It is an upper bound and not the rule's number. The rule's own figure is
+in §7 and it is measured only across different staves.
 
 ---
 
@@ -361,40 +398,6 @@ reported a survivor that was really a mis-aimed arm.
 
 ---
 
-## 3. REACH, MEASURED BEFORE THE RULE WAS CHOSEN
-
-One fresh gather, Litolff Beethoven 5 mvt 1, pdf pages 1-4, 26 min 37 s
-(`probe/reach.py`, `out/reach.json`). The probe exits non-zero if the record
-holds no narrowed durations at all, so a clean zero could not be mistaken for
-a clean result.
-
-| | |
-|---|--:|
-| `duration` verdicts | **2,993** — decided 2,636, **narrowed 357**, abstained 0 |
-| narrowed, on a notehead | **357** (all of them) |
-| narrowed with 2 / 3 candidates | 304 / 53 |
-| noteheads with no decided pitch | **215** |
-
-⚠️⚠️ **THE `no_pitch` REFUSAL IS THE DATA'S, NOT A PREFERENCE.** Of those 215
-noteheads, their staff's CLEF verdict is **abstained 108 / narrowed 107 —
-decided ZERO**. So filling a pitch means inferring a clef, and the only
-sideways route for a clef is the same part's staff on another system, which is
-keyed on the PART JOIN — measured wrong on this very document for 12 of 75
-staff-systems, with `P7` (Timpani) holding the VIOLA's staff on p3/s1. §4.
-
-**The coarse funnel said the sideways evidence is universally present:** all
-357 narrowed durations sit on a system with a DECIDED `Q.ONSET_COLUMN` and
-have other staves deciding in the same bar (338 of them with 6+ other staves).
-So nothing about the choice of population was speculative.
-
-⚠️ One probe artefact, stated so nobody quotes it: `reach.py`'s independence
-sample (874 of 3,101 pairs sharing a provenance row) keys a bar without the
-staff, so it includes SAME-STAFF pairs, which of course share their cell's
-rows. It is an upper bound and not the rule's number. The rule's own figure is
-in §7 and it is measured only across different staves.
-
----
-
 ## 7. THE MEASUREMENT
 
 ⚠️ **ONE gather, adjudicated once, INFER'd once, exported twice.** The arms
@@ -471,7 +474,7 @@ a real slur. So an inference on one quantity can free an element of another,
 which is a downstream effect worth watching rather than a number to claim: it
 is ONE slur, and it has not been checked against the print either.
 
-### 7c-bis. SEPARABILITY, and the stage boundary, on the REAL artefacts
+### 7d. SEPARABILITY, and the stage boundary, on the REAL artefacts
 
 `probe/separability.py` over both records — not a fixture:
 
@@ -490,7 +493,7 @@ EVALUATE consequence may contain a tie-break*) checked from the other side. If
 a consequence ever starts choosing, this probe goes red and nothing else
 would notice.
 
-### 7d. Hazard (b) is not a no-op: it refuses 8 of 35
+### 7e. Hazard (b) is not a no-op: it refuses 8 of 35
 
 Of the 28 unanimous cases stopped for want of two INDEPENDENT witnesses:
 
@@ -507,14 +510,14 @@ provenance row. And among the 7 that landed, five witness verdicts reduce to
 known: 28**. It is not lowered to 1 — a single witness is exactly what hazard
 (b) says cannot be trusted — but the number is stated rather than buried.
 
-### 7e. ⚠️ THE ARGMAX REFUSAL EARNS ITS KEEP: 2 of 7 chose the reader's SECOND candidate
+### 7f. ⚠️ THE ARGMAX REFUSAL EARNS ITS KEEP: 2 of 7 chose the reader's SECOND candidate
 
 `was_readers_top_candidate` is **False on 2 of the 7**. So in two cases the
 sideways evidence overturned the reader's own support ordering — which is
 precisely what an argmax on `support` would have got wrong, silently, with a
 number that reads as evidence.
 
-### 7f. The self-check, on an invariant the rule did not read
+### 7g. The self-check, on an invariant the rule did not read
 
 `probe/self_check.py` proved independence first (the rule reads no `meter`;
 `OMR_METER_FROM_BARS` is off) and then ran `bar_fill.py` on both arms:
