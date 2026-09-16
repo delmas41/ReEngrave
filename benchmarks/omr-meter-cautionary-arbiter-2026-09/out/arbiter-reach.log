@@ -1,0 +1,26 @@
+REACH — the SUBSTITUTED arbiter
+  cautionary/opening pairs in the whole corpus ......... 3
+  ...with a hand-read print truth ...................... 3
+  ...carrying a CAUTIONARY-side template score ......... 0
+  ...carrying an OPENING-side template score ........... 0
+  ...carrying BOTH — the arbiter's own reach ........... 0
+
+WHY — the committed artefacts, greppd rather than assumed
+  committed *.meter.json files ......................... 68
+  ...carrying a template `score` ....................... 0
+  ...carrying `raw` (THE POSITIVE CONTROL for this grep) 66
+  ...carrying any `meter_template_at_bar` row .......... 0
+
+THE STATES THE TABLE HAS TO FACE, and what each pair carries
+  brahms1-317803     system/0/0   DISAGREE         caut=9/8   open=9/4   truth=9/8   caut_staves=9 open_staves=10 caut_bars=0/1
+  brahms1-317803     system/1/0   OPENING_UNKNOWN  caut=4/4   open=None  truth=6/8   caut_staves=1 open_staves=None caut_bars=0/0
+  brahms1-m1-22      system/0/0   AGREE            caut=9/8   open=9/8   truth=9/8   caut_staves=19 open_staves=21 caut_bars=0/0
+warning: The `fitz` API is deprecated and will be removed in future. Use `import pymupdf` instead.
+
+THE 'SHARED' QUANTITY, DERIVED FROM THE SOURCE
+  cautionary staves (_meter_changes.staves_reading_it) `staves` <- Q.METER_GLYPH   candidates ['METER_GLYPH']
+  opening staves (adjudicate_meter.n_staves_spoke)     `rows` <- Q.METER_TEMPLATE
+  ⚠️⚠️ TWO DIFFERENT QUANTITIES: the one currency the contest shares is not one currency.
+
+wrote /home/user/ReEngrave/.claude/worktrees/agent-af6d1c124ec900ba1/benchmarks/omr-meter-cautionary-arbiter-2026-09/out/arbiter-reach.json
+DEAD: the substituted arbiter has reach ZERO — not one pair carries a template score on both sides.

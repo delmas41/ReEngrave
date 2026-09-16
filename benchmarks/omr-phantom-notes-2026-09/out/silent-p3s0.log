@@ -1,0 +1,23 @@
+REACH  crop staves=11 vs map 11; crop bars=16 vs map 16
+
+bars on this system                : 176
+bars the PRINT shows as ONE REST-SHAPED MARK and nothing else: 67
+
+what OUR FILE writes in those bars:
+   1 rest(s)                 61
+   1 note(s) + 1 rest(s)      2
+   4 PITCHED NOTES            1  <-- A NOTE WHERE THE PAGE PRINTS SILENCE
+   3 rest(s)                  1
+   PITCHED NOTE               1  <-- A NOTE WHERE THE PAGE PRINTS SILENCE
+   2 rest(s)                  1
+
+the offending bars:
+   P5 m51  staff 4 bar 3  -> 4 PITCHED NOTES  pitches=['C5', 'C5', 'E5', 'E5'] steps=[5, 5, 7, 7] inside_staff=4/4 at_rest_slot=2
+   P6 m61  staff 5 bar 13  -> PITCHED NOTE     pitches=['D5'] steps=[6] inside_staff=1/1 at_rest_slot=1
+
+the 5 phantom NOTES, by where they stand on the staff:
+   at the WHOLE REST's own slot (step 5-6) : 3
+   OUTSIDE the staff (step <0 or >8)       : 0
+   inside the staff, elsewhere             : 2
+
+wrote out/silent-p3s0.json

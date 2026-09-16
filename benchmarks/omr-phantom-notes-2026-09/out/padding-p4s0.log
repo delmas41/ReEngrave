@@ -1,0 +1,38 @@
+REACH  crop staves=11 vs map 11; crop bars=15 vs map 15
+
+PADDING INK  (staff band is step -1.2 .. 9.2; padding reported out to +/-6.0 spaces = step +/-12)
+  staff 0 bar  3
+     above: [3.2/5.4sp, reaches step 15.6] nothing
+     below: [5.4/5.4sp, reaches step -11.9] step-7.2 1.66x4.16sp 618px; step-4.1 2.24x0.58sp 259px
+  staff 0 bar  6
+     above: [3.2/5.4sp, reaches step 15.6] nothing
+     below: [5.4/5.4sp, reaches step -11.9] step-7.7 1.73x3.71sp 547px; step-5.5 0.45x0.58sp 53px
+  staff 0 bar  7
+     above: [3.2/5.4sp, reaches step 15.6] nothing
+     below: [5.4/5.4sp, reaches step -11.9] step-7.5 1.73x3.52sp 503px; step-5.6 2.18x0.64sp 249px
+  staff 0 bar  9
+     above: [3.2/5.4sp, reaches step 15.6] step+14.8 1.28x0.83sp 258px
+     below: [5.4/5.4sp, reaches step -11.9] step-7.3 1.54x3.52sp 522px; step-7.5 1.41x3.2sp 493px; step-8.8 0.77x3.07sp 377px
+  staff 0 bar 10
+     above: [3.2/5.4sp, reaches step 15.6] nothing
+     below: [5.4/5.4sp, reaches step -11.9] step-7.2 1.47x3.65sp 556px; step-7.4 1.54x3.14sp 510px; step-8.8 0.77x3.07sp 372px
+  staff 1 bar  2
+     above: [5.3/5.3sp, reaches step 20.0] step+12.8 1.74x3.42sp 522px
+     below: [5.4/5.4sp, reaches step -12.0] step-10.6 1.68x1.35sp 386px; step-7.3 0.06x4.58sp 71px
+  staff 1 bar  8
+     above: [5.3/5.3sp, reaches step 20.0] step+12.5 1.74x3.16sp 493px; step+16.6 0.52x1.29sp 99px; step+13.8 0.9x0.45sp 98px; step+16.8 0.45x1.29sp 84px
+     below: [5.4/5.4sp, reaches step -12.0] step-9.9 1.68x2.0sp 429px; step-4.5 1.1x0.71sp 127px
+  staff 1 bar 10
+     above: [5.3/5.3sp, reaches step 20.0] step+12.8 1.48x3.48sp 526px; step+12.4 1.55x3.1sp 505px; step+11.7 0.77x2.39sp 266px
+     below: [5.4/5.4sp, reaches step -12.0] step-9.9 1.55x2.0sp 456px; step-9.9 1.48x2.0sp 438px; step-10.5 0.97x1.42sp 167px
+  staff 5 bar  1
+     above: [5.3/5.3sp, reaches step 20.0] step+17.4 1.87x2.71sp 663px; step+13.7 3.16x0.71sp 385px; step+11.6 0.77x1.42sp 170px; step+12.3 0.84x2.97sp 138px
+     below: [5.4/5.4sp, reaches step -12.0] step-8.4 1.16x0.45sp 126px; step-10.3 0.39x1.68sp 115px; step-8.4 1.03x0.45sp 112px; step-8.7 0.84x0.45sp 91px
+  staff 5 bar  6
+     above: [5.3/5.3sp, reaches step 20.0] step+18.1 1.74x2.0sp 464px; step+13.6 0.39x0.84sp 51px
+     below: [5.4/5.4sp, reaches step -12.0] nothing
+  staff 5 bar 10
+     above: [5.3/5.3sp, reaches step 20.0] step+18.4 1.61x1.61sp 424px; step+18.5 1.48x1.55sp 402px
+     below: [5.4/5.4sp, reaches step -12.0] step-10.1 1.55x1.81sp 424px; step-9.2 0.84x2.71sp 382px; step-10.8 1.35x1.1sp 301px; step-9.4 0.39x2.52sp 179px
+
+wrote padding-p4s0.json

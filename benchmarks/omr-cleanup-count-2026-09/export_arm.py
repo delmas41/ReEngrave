@@ -41,7 +41,16 @@ from tools.omr.staged import export as sx          # noqa: E402
 
 
 def system_map(result):
-    """{(page, system): [{part_index, part_name, staff, measures:[n..]}]}"""
+    """{(page, system): [{part_index, part_name, staff, measures:[n..]}]}
+
+    ⚠️ THE NUMBERS COME FROM THE EXPORTER'S OWN RULE, CALLED, NOT RESTATED.
+    Since 2026-09-14 a measure is numbered by its place in the DOCUMENT's bar
+    sequence rather than by its part's own running count, and a map that kept
+    the old count would name the wrong bars — which is the one failure this
+    map exists to prevent, since it sends a human to the wrong music. The
+    per-part fallback below is reached only where `_document_bar_offsets`
+    refused, and then it is again exactly what the exporter did.
+    """
     rec = sx.Record(result)
     parts = sx.build(rec)[0]
     # ⚠️ CALLED, NOT RE-DERIVED -- the one thing this map used to compute for
@@ -50,11 +59,14 @@ def system_map(result):
     # by the DOCUMENT's bar sequence instead, the copy disagreed and the
     # map-vs-file control below went red on 108 (part, measure) pairs. That is
     # the control working, and the repair is to stop holding the rule twice.
-    starts = sx.system_bar_starts(parts)
+    offsets, _numbering = sx._document_bar_offsets(parts)
     out = collections.defaultdict(list)
     for pi, part in enumerate(parts):
         name = next((r.name for r in part if r.name), None) or sx._default_name(part)
         for run in part:
+            base = None if offsets is None else offsets.get((run.page, run.system))
+            first = (n + 1) if base is None else (base + 1)
+            n = (n + run.n_measures) if base is None else (base + run.n_measures)
             if run.n_measures == 0:
                 continue
             first = starts[(run.page, run.system)] + 1

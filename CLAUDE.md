@@ -659,11 +659,12 @@ ReEngrave/
 | `OMR_CHOIR_GROUPING`  | `1` (on) | **On by default since 2026-09-05** (Sean's call, coupled with the Bach row's pool re-admission; the re-stamped 11-row baseline is recorded beside WIDENED_BASELINE_2026-09-04.md). Two cues for choir-grouped / differently-indented pages, both riding this one flag. The Bach Brandenburg 3 stress row shatters (6 "systems", 122 measure-cells vs 10) because the wide connectivity window and cue A's band are both anchored on the page-MEDIAN `x_start`, and on a page whose systems are indented differently (792–836 vs 178–200) the median lands between the modes and cuts the full-width system's bracket + systemic barline out of the scan — while the page is also choir-barred (interior barlines stop at choir edges), so nothing else crosses its choir gaps. **Cue B** (merge-only mirror of cue A, `system_grouping.py`): a break the wide rule made for lack of evidence is re-examined in the cue-A band anchored at the PAIR's own left edge; a crossing column there cancels the break. A cue-B merge is exempt from cue A's re-split (the cues act on disjoint gap sets — bridging > 0 vs == 0). **Cue C** (`measure_extractor.py`): a system whose staves form ≥2 bracket-groups (≥ half in multi-staff groups) AND that holds a **window-blind internal gap** — a gap nothing in-window crosses, the choir-barred signature, impossible for a true open score — is never flipped into open-score mode, so a merged rhythm-unison tutti's aligned stems stop out-voting its barlines. ⚠️ Bracket-groups ALONE was falsified on the engraved benchmark (LilyPond open scores manufacture "groups" from bridging jitter; pooled 0.1306 → 0.8560, nine works' barlines deleted) and repaired before shipping — do not loosen the second condition. Flag ON: Bach row 0.9241 → **0.8152** OMR-NED, 6735 → 6236 edits, 122 → 11 cells vs true 10; all ten pooled scan rows byte-identical (pooled 0.8387 untouched); the 11-work engraved benchmark **edit-for-edit identical** (0.1306 / 2745) and the `boulanger` structure canary byte-identical; 969-page library probe: 757 examined break-gaps read 0 ×735 / ≥4 ×22 with nothing at 1–3, and the 10 pages that change were each hand-adjudicated toward the truth (7 exact heals incl. both operas' vocal systems; zero false merges). Flag OFF: byte-identical by construction (Bach flag-off hash-matches the widened-graft baseline fixture). Re-admitting the Bach row to the scan pool is coupled to a default-ON decision and a re-stamped pool. See `benchmarks/omr-choir-grouping-2026-09/FINDINGS.md`. |
 | `OMR_BRACKET_COLUMNS` | `1` (on) | **On by default since 2026-09-07** (Sean's call). Which staves form a bracket GROUP — the instrument-family boundaries. ⚠️ **Nothing detects a bracket**: `bracket` is not in the 208-class space (only `tupletbracket`, a tuplet marker), and `gap_bridging_counts` counts *columns of ink crossing each inter-staff gap* knowing nothing about what the ink is. Family boundaries are INFERRED from where the interior barlines stop. The fault was a UNIT error: that count is `(crossing objects) × (each object's width)`, mixing systemic columns (bracket, systemic barline, interior barlines — same x in every gap) with incidental ink (stems, slurs, measure numbers — no shared x). On Beethoven 5 / Litolff p.38 the two systems print the same 12 staves; system 1's winds|brass gap keeps 3 crossing runs, system 0's keeps 9 with six at no barline column — 52 px against a median of 66 → 0.788 → no split. **No threshold could have worked**: the numerator is ~3 spanning objects and the denominator is *how many bars the system prints*, so the ratio is ≈ `3/(n_bars+3)` and crosses 0.5 near three bars a system; over 2841 gaps the largest value below the cut is **0.4962** and the smallest above is **0.5000**. This rule counts systemic COLUMNS instead and drops any cluster crossing *every* gap (a constant on both sides of a ratio is not neutral). Within-page instability **0.384 → 0.055** over 144 pages and all five publishers; the 0.5 constant moves onto an EMPTY interval (0.3333 / 0.7778). ⚠️ `BRACKET_COLUMN_MIN_EVIDENCE = 3` is load-bearing — a LilyPond render bars per staff, a 25-staff Bruckner system carries two crossing columns total, and without the floor the rule manufactured **11 groups** from it, which is `OMR_CHOIR_GROUPING` cue C's falsification arriving by the same road. **Why it is ON**: it shipped OFF at zero measured edits (exports byte-identical on 11 of 11 engraved fixtures and both exposed scan-gate pages; an exact cue-C control found zero reachable pages across 144), asking to be flipped alongside the measurement that turns *"the readings agree"* into *"the readings are RIGHT"*. That measurement arrived the same day from the independent bracket-READING investigation, against hand-read print truth: Bach / Peters printed 3|3|3 — pixel rule **16/22**, this rule **22/22**; Brahms / Breitkopf printed 9|5 — pixel rule **0/15**, this rule **15/15**. The incumbent is not merely unstable, it is wrong on 15 of 15 Brahms systems. Set `0` to restore the pixel rule. See [benchmarks/omr-bracket-stability-2026-09/FINDINGS.md](benchmarks/omr-bracket-stability-2026-09/FINDINGS.md) and [benchmarks/omr-bracket-reading-2026-09/FINDINGS.md](benchmarks/omr-bracket-reading-2026-09/FINDINGS.md) (which also measures that READING the bracket loses to inferring it — 5/22 and 1/15 — and that two of five publishers print no family bracket at all). |
 | `OMR_KEYSIG_CORROBORATION` | `1` (on) | **On by default since 2026-09-07** (Sean's call). Reverts a mid-staff key-signature change that no other staff of the same system corroborates changing AT THE SAME BAR — a key change is printed at one bar of one system, on every staff of that system, so the BAR is the shared fact even where the VALUE differs by transposition. Measured over 11 scanned + 11 engraved stored transcriptions: **7 of 7** spurious mid-staff flips on the scan corpus are stopped (5 of the 7 had already been rejected once by the cross-page header vote and the mid-staff reader overturned it anyway), flag-ON changes 5 of 11 scan fixtures and 0 of 11 engraved (the engraved family prints no later-cell key markers at all). ⚠️ **The corpus contains ZERO real mid-staff key changes, so only the BENEFIT is measured — the cost of a wrong revert is not**, and there is concrete reason to expect it non-trivial: later-cell key markers appear on only 15 cells across 193 scanned staves with no two sharing a bar, so a genuine mid-staff change would more likely fail its own witness test than pass it. Shipped ON anyway because the guard is structurally the WEAKER of two possible claims (needing only that another staff changes at the same bar, not that it reads the same key) and fails safe relative to the untaken alternative. Flag OFF is byte-identical by construction — verified with `diff` against `main`'s output on one scan and one engraved fixture, controlled by a before/before run of the unchanged tree first. See `tools/omr/key_signature_corroboration.py` and `benchmarks/omr-keysig-corroboration-2026-09/`. |
-| `OMR_METER_CARRY` | `0` (off) | **Staged pipeline only. The carry is WEIGHED, not gated — the bars it claims to govern confirm or refuse it, so a movement boundary needs no movement detector.** A meter is a fact of the MOVEMENT, printed at its start and nowhere else, so the staged pipeline had no meter from a movement's second page onward while the answer sat in the same log one page earlier. A system whose own meter decision ABSTAINED takes the last meter that was READ — as a **candidate**. It then enters a signed-term sum with every bar of its system: `carried_from_read_meter` **+1.0**, each bar that FITS **+1.0**, each bar that does NOT **−1.0**, against `METER_CARRY_FLOOR` **2.0** and `METER_CARRY_MIN_BARS` **2**. ⚠️ **The ordering is STRUCTURAL, not tuned**: two net contradicting bars outweigh ANY carry and no amount of carrying outweighs the bars — Sean's rule that *"the math that can be determined by its own equation"* outranks what can only be derived, asserted directly on the constants so a sweep that breaks it fails even when every behavioural test passes. ⚠️ **Not a probability**, and the ban it respects is narrower than it reads: `adjudicate`'s docstring forbids them because calibrated IDENTITY probabilities measured ECE 0.1277 and failed worst at the top of the range — but that failure was diagnosed as the CORPUS, and a bar sum is `Checkable.CHECKABLE`, provable against itself with no truth file, so this family could be genuinely calibrated later from the score library alone (nothing does that yet). **MEASURED**, Beethoven 5 / Litolff `984073`: page 2's two systems (continuation, truth 2/4) carry at support **+7.0** and **+8.0**; all three systems of page 17 — the *Andante con moto*, a NEW MOVEMENT in 3/8 — refuse the carried 2/4. ⚠️⚠️ **BUT THE ANDANTE REFUSAL IS SAFE, NOT DISCRIMINATING, and an earlier draft of this row overstated it.** The control: scored against `3/8`, the meter that page ACTUALLY PRINTS, page 17 **refuses that too** (−1.0 and −1.0). Its durations are noise and a noisy page refuses everything, so the protection there is *"when the page cannot speak, abstain"* rather than *"the bars know it is 3/8"*. What IS established is that **where the bars can speak they discriminate in both directions** — on the three well-read systems the true meter scores +14/+7/+16 and the wrong one −12/−9/−14. ⚠️⚠️ **THAT LAST GAP IS NOW CLOSED — a movement boundary on a page that READS WELL was MEASURED 2026-09-09** on an engraved render of `beethoven-sym5-mvt4` (4/4 → 3/4 at bar 155), where legibility cannot be the confound: the same page, asked twice with only the preceding page differing, carries the TRUE meter at **+8.0** (8 bars fit / 1 not) and refuses the FALSE one at **−8.0** (0 / 9) — a swing of 16.0, widened from 14.0 when a sibling's DURATION work made the bars read better, which is the dependency the design predicts. In that file whole rests written at 4.0 ql inside a 3.0 ql bar go **196 → 38** and the carry's export is **byte-identical to `OMR_METER_FROM_BARS`'s**. ⚠️ Two costs came with it: `METER_CARRY_MIN_BARS = 2` was seen refusing a CORRECT carry (a one-bar system whose single bar agrees), the first time that constant's price has been observed; and **bar assessability falls with DENSITY, not with print quality** — 100% / 100% / 78% / **33%** over four systems as events per bar go 1.0 / 1.5 / 3.1 / **4.5** — so these mechanisms are strongest exactly where the music is SPARSE. ⚠️⚠️ **AND A NEW BLOCKING OBJECTION TOOK THEIR PLACE, measured on the second publisher: on a Breitkopf scan of the same 22 bars the meter GLYPHS are misread badly enough that the weighing never gets a fair candidate** — `9/8` read as `9/4`, the real change missed, five spurious `4/4` changes just over `METER_CHANGE_FLOOR`. The engraved arm of the identical music is 4-for-4. See [benchmarks/omr-staged-meter-boundary-2026-09/FINDINGS.md](benchmarks/omr-staged-meter-boundary-2026-09/FINDINGS.md). In the file, whole rests written at 4.0 ql inside a 2.0 ql bar go **194 → 70**, `written.notes` 648 → 665 against `not_written.duration_narrowed` 163 → 146, and `reconcile_duration` fires **13 → 47**. ⚠️ **A LONE WHOLE REST MAY NOT CORROBORATE ANYTHING and is never even read** — it stands for THE BAR whatever the meter and its 4.0 is our own default for want of one, so counting it reads that default back as evidence (measured: left in, 13 of 17 agreeing bars vote 4.0 and the true 1.5 gets none); it is also what `size_measure_rest` supersedes, so touching it puts it in the meter's basis and the record reports a real fixpoint. ⚠️ **Still `0`, and objections (1) AND (2) are now retired** — the boundary case is measured and a second document and publisher followed the same day (Brahms 1 / Breitkopf, the same 22 bars engraved and scanned). ⚠️⚠️ **A NEW BLOCKING OBJECTION TOOK THEIR PLACE, measured on that second publisher: on a Breitkopf scan the meter GLYPHS are misread badly enough that the weighing never gets a fair candidate** — `9/8` read as `9/4`, the real change missed, five spurious `4/4` changes just over `METER_CHANGE_FLOOR`; the engraved arm of the identical music is 4-for-4. See [benchmarks/omr-staged-meter-boundary-2026-09/FINDINGS.md](benchmarks/omr-staged-meter-boundary-2026-09/FINDINGS.md). What also remains is (3) weights that are asserted, not measured — `METER_CARRY_MIN_STAVES_PER_BAR = 3` is set by analogy to `METER_COVERAGE_FLOOR` and never measured at all. See [benchmarks/omr-staged-meter-carry-2026-09/FINDINGS.md](benchmarks/omr-staged-meter-carry-2026-09/FINDINGS.md). |
-| `OMR_METER_FROM_BARS` | `0` (off) | **Staged pipeline only. A bar sum is a LENGTH, and a meter is a length AND an engraving — so the bars may name half of it and may not invent the other half.** A system that read no meter and could not carry one takes the bar length its own bars agree on, in the carry's own currency (`+1.0` per bar that fits, `−1.0` per bar that does not, floor **4.0**, weights imported rather than restated so the two cannot drift). The printed FORM is borrowed from the nearest preceding system whose meter was `voted` **and whose length already matches**; where none exists the decision abstains `bars_name_a_length_without_a_form` **recording the length, the support and every spelling it could be**. ⚠️ **The letter is never borrowed**: `raw` reaches `staged.export` as `symbol="common"`, a positive claim that a `C` is PRINTED on a system that printed nothing we could read, so a borrowed meter is spelled in digits and the source's own `raw` is recorded beside it. ⚠️⚠️ **IT CANNOT CROSS A MOVEMENT BOUNDARY, and that is what makes it a different mechanism from the carry rather than a second copy** — every term comes from bars inside ONE system, so the *Andante* cannot be handed movement 1's `2/4` however many pages of it precede; its four assessable bars read four different lengths and it scores **−2.0**. Only the SPELLING reaches back, and only where the length matches. ⚠️ **"For 6 measures" is NOT a run**: measured over 24 systems the longest CONSECUTIVE run of assessable bars is 5 where the meter is read, 3 where it is wanted, 1 on the dense finale pages — a run breaks on an *unassessable* bar, which measures the page's legibility and not its meter — so run length is expressed by the terms ACCUMULATING, with no run-length constant. **MEASURED**, Beethoven 5 / Litolff `984073`: `--pages 0-2` takes both continuation systems from abstaining to **`derived_from_bars` 2/4** at +6.0 (8+/2−) and +7.0 (8+/1−); all three *Andante* systems are **unchanged**; `--pages 1,63` records **length 3.0, forms `3/4`/`6/8`/`12/16`** on two systems the pipeline previously had nothing to say about — **truth `3/4`, hand-read off the print** (p.62 numbers its first bar 147, p.63 numbers its first 160, and the reference's 3/4 runs 155-208) — while correctly refusing to borrow the `2/4` standing in front of them. In the file: `empty_bars_padded_without_meter` 47 → **0**, `measure_rests_read` 92 → **169**, `written.notes` 648 → 665. ⚠️⚠️ **THOSE ARE THE CARRY'S OWN NUMBERS TO THE UNIT** — on this document the DECIDED branch never fires on a system the carry does not already serve, so this is **not** a gain on top of it; what is new is the abstaining branch and the fact that this one cannot cross a boundary. ✅ **The case that separates it from the carry is MEASURED** (p.63: carry refused at −6.0 with 1 agree/8 disagree, the same bars naming 3.0 at +5.0 — the printed 3/4). ⚠️ A movement-START page is still unmeasured and this document has none that reads well: p.17, p.32 and p.44 were all located and all read badly, for OPPOSITE reasons (a sparse opening with most instruments resting, vs a dense tutti). ⚠️ Still `0` on **n** — one document. ⚠️⚠️ **The two flags did not COMPOSE until 2026-09-09**: `adjudicate_meter` chained its fallbacks with `or` and `_carry_meter` returns a truthy `Ruling` when the bars REFUSE it, so with both flags on p.63 abstained on the carry's refusal and the bar reader was never reached — unreachable behind the refusal it had itself caused. `_meter_fallbacks` orders the rungs by what each KNOWS (corroborated carry → this system's own bars → a printed change → the **most informative refusal, not the last one tried**); carry-only and flag-off arms are byte-identical. ⚠️ Half that gap predates this flag — `_change_only` sat behind the same `or`, so a refused carry also suppressed a meter change printed on its own system. ⚠️ A second constant (`METER_FROM_BARS_MIN_ASSESSABLE`) was written, **proved inert by a mutation arm** (a bar is worth 1.0, so a floor of 4.0 already implies four assessable bars) and DELETED rather than left as decoration. See [benchmarks/omr-staged-meter-from-bars-2026-09/FINDINGS.md](benchmarks/omr-staged-meter-from-bars-2026-09/FINDINGS.md). |
+| `OMR_METER_CARRY` | **`1` (on)** | **ON BY DEFAULT SINCE 2026-09-15 (Sean's call), landed WITH `A-METER-6` below, because the flip is what turns a misread change from a one-system fact into a document-wide one.** ⚠️ **The flip OVERRIDES the standing misread-glyph objection rather than resolving it** — everything below this sentence is the record as it stood while the flag was OFF, and its objections are unchanged. ⚠️ Its OFF test is now a **deny-list**, and the conversion was not cosmetic: it was `== "1"`, which `test_flag_default_direction.py` **could not see at all** (that scan matches a membership test), so the guard built for this exact hazard was blind to the two flags that had it — 10/10 → **12/10**. ⚠️ The COST side is **still unmeasured end to end**: `benchmarks/omr-meter-corroboration-2026-09/local_arm.sh` is written and **never run**. Staged pipeline only. **The carry is WEIGHED, not gated — the bars it claims to govern confirm or refuse it, so a movement boundary needs no movement detector.** A meter is a fact of the MOVEMENT, printed at its start and nowhere else, so the staged pipeline had no meter from a movement's second page onward while the answer sat in the same log one page earlier. A system whose own meter decision ABSTAINED takes the last meter that was READ — as a **candidate**. It then enters a signed-term sum with every bar of its system: `carried_from_read_meter` **+1.0**, each bar that FITS **+1.0**, each bar that does NOT **−1.0**, against `METER_CARRY_FLOOR` **2.0** and `METER_CARRY_MIN_BARS` **2**. ⚠️ **The ordering is STRUCTURAL, not tuned**: two net contradicting bars outweigh ANY carry and no amount of carrying outweighs the bars — Sean's rule that *"the math that can be determined by its own equation"* outranks what can only be derived, asserted directly on the constants so a sweep that breaks it fails even when every behavioural test passes. ⚠️ **Not a probability**, and the ban it respects is narrower than it reads: `adjudicate`'s docstring forbids them because calibrated IDENTITY probabilities measured ECE 0.1277 and failed worst at the top of the range — but that failure was diagnosed as the CORPUS, and a bar sum is `Checkable.CHECKABLE`, provable against itself with no truth file, so this family could be genuinely calibrated later from the score library alone (nothing does that yet). **MEASURED**, Beethoven 5 / Litolff `984073`: page 2's two systems (continuation, truth 2/4) carry at support **+7.0** and **+8.0**; all three systems of page 17 — the *Andante con moto*, a NEW MOVEMENT in 3/8 — refuse the carried 2/4. ⚠️⚠️ **BUT THE ANDANTE REFUSAL IS SAFE, NOT DISCRIMINATING, and an earlier draft of this row overstated it.** The control: scored against `3/8`, the meter that page ACTUALLY PRINTS, page 17 **refuses that too** (−1.0 and −1.0). Its durations are noise and a noisy page refuses everything, so the protection there is *"when the page cannot speak, abstain"* rather than *"the bars know it is 3/8"*. What IS established is that **where the bars can speak they discriminate in both directions** — on the three well-read systems the true meter scores +14/+7/+16 and the wrong one −12/−9/−14. ⚠️⚠️ **THAT LAST GAP IS NOW CLOSED — a movement boundary on a page that READS WELL was MEASURED 2026-09-09** on an engraved render of `beethoven-sym5-mvt4` (4/4 → 3/4 at bar 155), where legibility cannot be the confound: the same page, asked twice with only the preceding page differing, carries the TRUE meter at **+8.0** (8 bars fit / 1 not) and refuses the FALSE one at **−8.0** (0 / 9) — a swing of 16.0, widened from 14.0 when a sibling's DURATION work made the bars read better, which is the dependency the design predicts. In that file whole rests written at 4.0 ql inside a 3.0 ql bar go **196 → 38** and the carry's export is **byte-identical to `OMR_METER_FROM_BARS`'s**. ⚠️ Two costs came with it: `METER_CARRY_MIN_BARS = 2` was seen refusing a CORRECT carry (a one-bar system whose single bar agrees), the first time that constant's price has been observed; and **bar assessability falls with DENSITY, not with print quality** — 100% / 100% / 78% / **33%** over four systems as events per bar go 1.0 / 1.5 / 3.1 / **4.5** — so these mechanisms are strongest exactly where the music is SPARSE. ⚠️⚠️ **AND A NEW BLOCKING OBJECTION TOOK THEIR PLACE, measured on the second publisher: on a Breitkopf scan of the same 22 bars the meter GLYPHS are misread badly enough that the weighing never gets a fair candidate** — `9/8` read as `9/4`, the real change missed, five spurious `4/4` changes just over `METER_CHANGE_FLOOR`. The engraved arm of the identical music is 4-for-4. See [benchmarks/omr-staged-meter-boundary-2026-09/FINDINGS.md](benchmarks/omr-staged-meter-boundary-2026-09/FINDINGS.md). In the file, whole rests written at 4.0 ql inside a 2.0 ql bar go **194 → 70**, `written.notes` 648 → 665 against `not_written.duration_narrowed` 163 → 146, and `reconcile_duration` fires **13 → 47**. ⚠️ **A LONE WHOLE REST MAY NOT CORROBORATE ANYTHING and is never even read** — it stands for THE BAR whatever the meter and its 4.0 is our own default for want of one, so counting it reads that default back as evidence (measured: left in, 13 of 17 agreeing bars vote 4.0 and the true 1.5 gets none); it is also what `size_measure_rest` supersedes, so touching it puts it in the meter's basis and the record reports a real fixpoint. ⚠️ **Still `0`, and objections (1) AND (2) are now retired** — the boundary case is measured and a second document and publisher followed the same day (Brahms 1 / Breitkopf, the same 22 bars engraved and scanned). ⚠️⚠️ **A NEW BLOCKING OBJECTION TOOK THEIR PLACE, measured on that second publisher: on a Breitkopf scan the meter GLYPHS are misread badly enough that the weighing never gets a fair candidate** — `9/8` read as `9/4`, the real change missed, five spurious `4/4` changes just over `METER_CHANGE_FLOOR`; the engraved arm of the identical music is 4-for-4. See [benchmarks/omr-staged-meter-boundary-2026-09/FINDINGS.md](benchmarks/omr-staged-meter-boundary-2026-09/FINDINGS.md). What also remains is (3) weights that are asserted, not measured — `METER_CARRY_MIN_STAVES_PER_BAR = 3` is set by analogy to `METER_COVERAGE_FLOOR` and never measured at all. See [benchmarks/omr-staged-meter-carry-2026-09/FINDINGS.md](benchmarks/omr-staged-meter-carry-2026-09/FINDINGS.md). |
+| `OMR_METER_FROM_BARS` | **`1` (on)** | **ON BY DEFAULT SINCE 2026-09-15 (Sean's call), with the carry.** ⚠️ It **cannot cross a movement boundary**, which is why flipping it is a different act from flipping the carry, and why the two bound each other: when `A-METER-6` confines Litolff p.62's one-staff `3/4` so the carry cannot hand it to p.63, **p.63's own bars name length 3.0 at +5.0 independently**. ⚠️ Deny-list OFF test, same conversion and same reason as the carry. Everything below is the record as it stood while the flag was OFF. Staged pipeline only. **A bar sum is a LENGTH, and a meter is a length AND an engraving — so the bars may name half of it and may not invent the other half.** A system that read no meter and could not carry one takes the bar length its own bars agree on, in the carry's own currency (`+1.0` per bar that fits, `−1.0` per bar that does not, floor **4.0**, weights imported rather than restated so the two cannot drift). The printed FORM is borrowed from the nearest preceding system whose meter was `voted` **and whose length already matches**; where none exists the decision abstains `bars_name_a_length_without_a_form` **recording the length, the support and every spelling it could be**. ⚠️ **The letter is never borrowed**: `raw` reaches `staged.export` as `symbol="common"`, a positive claim that a `C` is PRINTED on a system that printed nothing we could read, so a borrowed meter is spelled in digits and the source's own `raw` is recorded beside it. ⚠️⚠️ **IT CANNOT CROSS A MOVEMENT BOUNDARY, and that is what makes it a different mechanism from the carry rather than a second copy** — every term comes from bars inside ONE system, so the *Andante* cannot be handed movement 1's `2/4` however many pages of it precede; its four assessable bars read four different lengths and it scores **−2.0**. Only the SPELLING reaches back, and only where the length matches. ⚠️ **"For 6 measures" is NOT a run**: measured over 24 systems the longest CONSECUTIVE run of assessable bars is 5 where the meter is read, 3 where it is wanted, 1 on the dense finale pages — a run breaks on an *unassessable* bar, which measures the page's legibility and not its meter — so run length is expressed by the terms ACCUMULATING, with no run-length constant. **MEASURED**, Beethoven 5 / Litolff `984073`: `--pages 0-2` takes both continuation systems from abstaining to **`derived_from_bars` 2/4** at +6.0 (8+/2−) and +7.0 (8+/1−); all three *Andante* systems are **unchanged**; `--pages 1,63` records **length 3.0, forms `3/4`/`6/8`/`12/16`** on two systems the pipeline previously had nothing to say about — **truth `3/4`, hand-read off the print** (p.62 numbers its first bar 147, p.63 numbers its first 160, and the reference's 3/4 runs 155-208) — while correctly refusing to borrow the `2/4` standing in front of them. In the file: `empty_bars_padded_without_meter` 47 → **0**, `measure_rests_read` 92 → **169**, `written.notes` 648 → 665. ⚠️⚠️ **THOSE ARE THE CARRY'S OWN NUMBERS TO THE UNIT** — on this document the DECIDED branch never fires on a system the carry does not already serve, so this is **not** a gain on top of it; what is new is the abstaining branch and the fact that this one cannot cross a boundary. ✅ **The case that separates it from the carry is MEASURED** (p.63: carry refused at −6.0 with 1 agree/8 disagree, the same bars naming 3.0 at +5.0 — the printed 3/4). ⚠️ A movement-START page is still unmeasured and this document has none that reads well: p.17, p.32 and p.44 were all located and all read badly, for OPPOSITE reasons (a sparse opening with most instruments resting, vs a dense tutti). ⚠️ Still `0` on **n** — one document. ⚠️⚠️ **The two flags did not COMPOSE until 2026-09-09**: `adjudicate_meter` chained its fallbacks with `or` and `_carry_meter` returns a truthy `Ruling` when the bars REFUSE it, so with both flags on p.63 abstained on the carry's refusal and the bar reader was never reached — unreachable behind the refusal it had itself caused. `_meter_fallbacks` orders the rungs by what each KNOWS (corroborated carry → this system's own bars → a printed change → the **most informative refusal, not the last one tried**); carry-only and flag-off arms are byte-identical. ⚠️ Half that gap predates this flag — `_change_only` sat behind the same `or`, so a refused carry also suppressed a meter change printed on its own system. ⚠️ A second constant (`METER_FROM_BARS_MIN_ASSESSABLE`) was written, **proved inert by a mutation arm** (a bar is worth 1.0, so a floor of 4.0 already implies four assessable bars) and DELETED rather than left as decoration. See [benchmarks/omr-staged-meter-from-bars-2026-09/FINDINGS.md](benchmarks/omr-staged-meter-from-bars-2026-09/FINDINGS.md). |
 
 | `OMR_METER_SEGMENTS` | **`1` (on)** | **On by default since 2026-09-09 (Sean's call). Staged pipeline only. A METER IS A FACT ABOUT A RANGE OF BARS, AND UNTIL THIS FLAG THAT FACT REACHED NO FILE.** `Q.METER` has carried `segments` since 2026-09-09 and `staged/export.py` took **one meter per staff-run**, so a printed mid-system meter change could not be exported at all — while `record.meter_at`, whose own docstring says it *is* how a bar's meter is read, was **called by nothing but its own tests**. On, the exporter reads the meter in force at each BAR. ⚠️ Two sibling gaps travel with it and are already gated by the other two meter flags: `_carry_meter` took the source system's **OPENING** and deleted its segments (so a source that PRINTED a change handed on the meter it had already left — Brahms 1 i was handed the ONE-bar `9/8` instead of the `6/8` governing seven of eight bars, and Brahms 1 iv `C` instead of the `¢` the same system had just read on 24 staves), and a system whose meter came from a READ change could be **neither a carry source nor a form source** (`reason == "voted"` alone), which excluded exactly the ink the gate exists to require — `METER_SOURCE_REASONS` now admits `change_only` while still refusing `carried` and `derived_from_bars`, so a carry never chains. ⚠️ **Fixing the value the carry RETURNS was half that bug**: `_corroborate` was still weighing the opening, so a correct carry was refused `carry_outweighed_by_the_bars` at **−2.0, 0 agreeing / 3 disagreeing**. **MEASURED**, controlled A/B on the saved records so no detector jitter enters: Brahms 1 iv `{4/4(common): 24}` → `{4/4(common): 24, 2/2(cut): 24}`; Litolff p.61-62's printed `3/4` moves from measure 8, the first bar of its system, to **measure 16, its ninth**, which is where the hand-read truth puts it. ⚠️⚠️ **THE CAUTIONARY HALF OF THIS ROW WAS A DUPLICATE AND IS GONE** — a sibling session landed the same rule first and **theirs is kept**, discriminating on the LAST CELL of each staff rather than on where the glyph sits in its bar's ink; it reaches the Breitkopf scan's courtesy too, which the ink rule could not (that degenerate final cell holds five detections, so nothing lies left of the glyph). The ink measurement survives as an independent SECOND READING of the same convention — the one visible cautionary at **1.000 on all 19 staves** against **≤ 0.118 for every other segment** — which is a real cross-check rather than a second implementation. **Tally: ENGRAVED 4 printed / 4 found / 1 → 0 false; SCANNED 2 / 1 / 9 unchanged — 1 of 9 false segments removed, 0 of 4 true positives lost.** ⚠️ **The scan being untouched is the EXPECTED result, not a shortfall**: every one of its false segments reads left-fraction **0.000**, at the head of its bar where a real change stands, so they are misreads and no placement rule can reach them — FINDINGS §4b's conclusion arriving from the other side. ⚠️⚠️ **THE FIRST ARM CAME BACK BYTE-IDENTICAL TO ITS BASELINE AND THAT IS WHAT CAUGHT A BUG FIVE GREEN UNIT TESTS AND THREE MUTATION ARMS DID NOT**: `gather` files `Q.METER_GLYPH` on the **STAFF** with the bar in `detail["cell"]`, the test fixture filed it on a **GLYPH**, and `subject.at(Kind.CELL)` returns None for a staff — so the rule read no boxes on any real page. *A fixture that does not match GATHER tests the test*; the pre-existing `TestAMeterChangeIsReadFromTheInk` fixture had the same mismatch, and the shape is now asserted against the gather site **by AST**. ⚠️⚠️ **FLIPPED ON 2026-09-09 (Sean), and the flip OVERRIDES the standing objection rather than resolving it.** It shipped off on **n** — the mechanism was never in doubt, the scan's READING was. That objection is unchanged and is now PRICED rather than described: on Brahms 1 / Breitkopf p.1-2 (14 parts) the default takes `<time>` elements from **41 to 138** — `4/4` declarations 13 → 96 from the five spurious one-staff changes, plus 14 spurious `9/8` from the courtesy this rule cannot reach on that degenerate final cell — so **a scan can now export a meter change its page does not print.** Every engraved fixture gains only correct changes, and 4 of the 9 committed boundary records are byte-identical either way. **The lever is the meter GLYPH readers** (`_meter_from_digits`, `time_signature_locator`), not the weighing and not a placement rule. ⚠️ `OMR_METER_SEGMENTS=0` restores the per-run meter exactly, and the OFF test is a **deny-list, not an allow-list**: with the default on, an allow-list (`in ("1","true","yes","on")` — what `OMR_SLOT_STITCH` and the other default-on flags here use) would let an empty value or a typo silently RESTORE the bug. Only an explicit off word turns it off; **the allow-list default-on flags carry that hazard today and this one deliberately does not copy it.** See [benchmarks/omr-staged-meter-segments-2026-09/FINDINGS.md](benchmarks/omr-staged-meter-segments-2026-09/FINDINGS.md). |
 | `OMR_WHOLE_REST_INK` | **`1` (on)** | **Staged pipeline only. THE ONE STAGED REPAIR BEHIND A FLAG, BECAUSE IT IS THE ONE THAT DELETES MUSIC.** `staged/export._place_notes` refuses to write a pitched `<note>` where `Q.NOTEHEAD_IS_A_WHOLE_REST` is `True` — Sean's last open Phase 2 observation, *"in bars where it should be just whole note rest in two four. It's showing an actual quarter note"*. **On is the behaviour that shipped 2026-09-15**; the flag was added 2026-09-15 by an independent verification pass so the call is Sean's and reversible in one word, and **nothing measured against the rule**. ⚠️ **VERIFIED INDEPENDENTLY, and the load-bearing artefact reproduced exactly**: the fire set re-derived from the shipped constants over the record is **identical to `adjudicated-25-fires.json`, subject for subject, with zero measurement drift**, and all 25 were re-cropped from the PDF by a second instrument — **25 of 25 are a small filled RECTANGLE hanging at the whole-rest slot, not one oval notehead**. The two witnesses re-derive too (shape **148**, slot **310**, together **25** of 2,347 noteheads), as does the cause: on the Flauti's tacet run `staff/4/0/0` cell1 is `restWhole` at h=0.67/aspect 2.33 and cell3 `noteheadBlackInSpace` at h=0.79/2.22 — **near-identical ink, two class names, a DETECTOR error upstream of GATHER**. ⚠️⚠️ **WHY IT IS FLAGGED ANYWAY: n = 1 document, 1 publisher, 4 pages of ~16**, on the *low-res bitonal* end of the corpus, and FINDINGS §3 records that **two of the six cuts sit on a plateau one step wide or less**. The cuts are the p05/p95 of that document's own 395 `restWhole` glyphs — a derivation rather than a fit, which is **not** the same as generalising. **Breitkopf Brahms 1 p0-3 is where it should be re-measured**, the same second document the meter floors and the dotted rest need. ⚠️ **No OMR-NED figure can settle it**: the metric is symmetric and rewards under-prediction, so it would pay for these deletions either way — the evidence is crops, and a score must never be quoted as the reason to leave this on. ⚠️ `0` restores the pre-2026-09-15 exporter exactly — the verdict stays DECIDED and on the record, only the refusal and its `ink_is_a_whole_rest` count go away, so the evidence is never thrown out with the behaviour. OFF test is a **deny-list** (default-ON), derived and pinned by `test_flag_default_direction.py`. See [benchmarks/omr-note-where-silence-2026-09/FINDINGS.md](benchmarks/omr-note-where-silence-2026-09/FINDINGS.md). |
+| `OMR_METER_TEMPLATE_AT_BAR` | `0` (off) | **Staged pipeline only, and UNPRICED — it is a GATHER change and this container cannot price one.** `gather_meter` hands `locate_time_signature` the HEADER window and nothing else, so a meter CHANGE is read by the DETECTOR alone — the weak reader on the ink it is worst at, which is what produces the Breitkopf `9/4`-for-`9/8` and its five spurious `4/4`. On, one staff's detection names a COLUMN and the template reader is asked of **every staff of that system at that bar, including staves that detected nothing**, over the first **4.0 staff spaces** of the cell (a slice of the measure cell the pipeline already cut — not a second, unpriced cutting path). ⚠️⚠️ **THE BRIEFED ASSUMPTION THAT A DETECTION NAMES A FEW BARS IS FALSE ON A SCAN: 38 of 51 columns (74.5%) on Brahms 1 / Breitkopf p1-3 are candidates** (≥2 staves still leaves 58.8%, ≥3 leaves 45.1%), so candidacy is NOT where the safety is — 525 probes at 20.2 ms ≈ 11 s / 3 pages. ⚠️⚠️ **THE SAFETY IS A CROSS-STAFF CONSENSUS AND IT IS MEASURED ON THE EMPTY-WINDOW HAZARD THE KEY-SIGNATURE FAMILY ALREADY PAID FOR** (*the reader that can say "zero" must never be given an empty window*): over **1,612 mid-staff bar-head windows on ten real scanned pages of two publishers printing NO meter change**, admitted on 1 staff the reader yields **16** spurious columns, on 2 **two**, on 3 **ZERO** — so `METER_TEMPLATE_AT_BAR_MIN_STAVES = 3`. ⚠️ **That quorum is safe AT 4 SPACES AND NOT AT 8** (rate 0.99% / 1.55% / 2.48% at 4 / 6 / 8, and one three-staff false consensus appears at 8): the width and the quorum are ONE safeguard at one operating point, not two independent ones. ⚠️ `min_score` is deliberately NOT moved — the false answers thin SMOOTHLY (16/7/2/1 across 0.50-0.55) with no gap, **and the positive control's own minimum (0.542) sits BELOW the worst false answer (0.6141), so the populations overlap and no score threshold separates them.** Positive control: a real Bravura `3/4` stamped into 225 of the same windows, **225 answered, 225 right** (an UPPER bound — clean ink on a real surround). ⚠️ The false population is **13 of 16 `C`**, recorded and not gated on. ⚠️ Filed under a SEPARATE quantity `Q.METER_TEMPLATE_AT_BAR` because `adjudicate_meter` votes the system's OPENING off every `Q.METER_TEMPLATE` row — the `Q.KEYSIG_TEMPLATE_FIT` precedent — so a mid-staff reading filed there would make a change at bar 9 argue about bar 1. Admission is **GAPS ONLY**, inherited from `adjudicate_key_signature` rather than re-decided. ⚠️ Structural bound, asserted not assumed: this pass can add STAVES to a bar and **never a bar to the page**. Flag-off writes **nothing at all**, so the record is byte-identical. ⚠️⚠️ **ACCURACY IS UNMEASURED IN ONE DIRECTION**: no page in reach prints a mid-staff change, so the false-positive side is measured and **it has never been shown this reads a real one**. See [benchmarks/omr-meter-template-changes-2026-09/FINDINGS.md](benchmarks/omr-meter-template-changes-2026-09/FINDINGS.md). |
 | `OMR_PARTIAL_DYNAMICS` | `off` | **Measured over the 20-row scan gate 2026-09-08 and REFUSED.** `export.measure_dynamics` assembles adjacent `dynamic*` letters into a word and DISCARDS the run whole where it spells none of the 17 in `_DYNAMIC_WORDS` — a mark the detector READ, thrown away on the way out. ⚠️ **The obvious fix — export the run's own text — is refused, because most of what is dropped is not one mark**: on the committed Brahms 1 / Breitkopf transcription 15 of 20 dropped runs are a prefix of NOTHING and the shape is `ppmsf` / `ppzmf`, five letters run together, which no dynamic is. ⚠️ Re-assembling on the MEDIAN letter width instead of the max was tried and is NOT the lever (kept runs 159 → 162, dropped still 20, `ppmsf` intact). So the modes are graded by how much they assert: `complete` exports only what **every surviving completion agrees on** — a lone `s` can only become `sf`/`sfp`/`sfz`, all of which begin `sf`, so nothing is guessed; a lone `m` could be `mf` or `mp`, which agree on nothing further, and stays dropped. `other` adds `<other-dynamics>` carrying the run's own text for a prefix whose completions disagree. A prefix of NOTHING is dropped under every mode. **Priced with `probe/reexport_arm.py`, which re-exports the scan arm's own `.omr.json` files so the transcribe half is held byte-identical: `complete` +15 edits, `other` +30, and NOT ONE ROW BETTER under either.** `complete` adds 19 dynamics for +15 edits, so roughly 4 of 19 paired. ⚠️ The buckets are reported and not used for attribution (`entire measure insert/delete` FALLS while `wrong note` RISES on the two big Beethoven rows — the block diff re-planning around an added symbol). It stays off because the recovery is real ink the metric will not pay for **in an exporter that has no ownership**, and placement is exactly what stops a correctly recovered `sf` from pairing; re-price on the staged path. Flag-off is byte-identical to `main`, verified by md5. See [benchmarks/omr-dynamics-staged-2026-09/FINDINGS.md](benchmarks/omr-dynamics-staged-2026-09/FINDINGS.md). |
 | `OMR_ROSTER_LABELS`   | `0` (off) | **Measured, deliberately dormant — the reach is small and the number says so.** A margin label whose leading characters are gone (`'larinetti in A'`, `'orni in F I II'`) either abstains or, worse, is CAPTURED by a shorter alias inside what survives: `Tromboni Alto e Tenore` cut to `Alto e Tenore` reads as **Tenor**, `Trombone Basso` cut to `mbone Basso` as **Bass voice** — two singers on a Tchaikovsky symphony, at `medium` confidence, invisible to the unmatched-label report, feeding `clef_correction`, the written-range veto and the part→staff join. Widening the lexicon stays refused (an alias is GLOBAL: `orni` admitted for Tchaikovsky is admitted for every score ever read); this narrows the QUESTION instead, matching the surviving tail against the ~10 instruments the **catalog's `works` tier** says the work is scored for (`source_kind: "catalog"`, independent of the truth MusicXML — the `editions` tier is `page`, an OMR output of the same raster, and is refused). Four outcomes, reported apart because the risk differs: **recovered** and **disambiguated** (`Basso.` → Contrabass, the ambiguity the edition-tier work prices at 35 rows) NAME a staff; **vetoed** only removes a name that was already wrong. ⚠️ A truncation is the tail of a WORD — matching across a space would read a truncated `Fl. Alt.` (an ALTO FLUTE) as a trombone via `tr alt` — and ambiguity ABSTAINS (91 distinct tails are owned by two instruments of the Brahms 1 roster alone). ⚠️ **A roster is a POSITIVE list and the parse loses families two ways**: Tchaikovsky 6's `strings` went to `segments_ignored` so its roster names no string at `parse_rate 1.0`, and the parse reads ONE field, so *Egmont*'s `soprano` is nowhere in it — **4 works with real singers admitted no voice family** until families were also read off both RAW fields through `instruments.lookup` per segment. Measured: **20 of 1422 real margin labels change (1.4%)** across 4 of 13 editions, 8 of 223 engraved-fixture labels, and all 28 firings were hand-adjudicated correct. ⚠️ The reference corpus fires 0 BY CONSTRUCTION (those strings carry no work), so the false-positive test is a 1651 × 223 cross-product instead — which is what found `Vier Flöten` → **Piano** (`vier` is a tail of `klavier`) and `Soprano Saxophone` → **Alto** (`soprano` is a tail of `mezzosoprano`); both guards came out of that table and cost none of the 28. ⚠️ Reach limits: 205 of the 1422 labels are on works the `works` tier does not hold (Mahler 5, Messiah), and the engraved fixtures are build products OUTSIDE the store, so the layer is a **no-op on the eleven-work benchmark** unless a harness names the work with `OMR_WORK_ID`. No pooled figure is claimed — musicdiff does not score `<part-name>`. See [benchmarks/omr-roster-constrained-labels-2026-09/FINDINGS.md](benchmarks/omr-roster-constrained-labels-2026-09/FINDINGS.md). |
 
@@ -1199,6 +1200,129 @@ its evidence would become *what the exporter failed to write*, which is both a
 guess about silence and an **uphill** dependency (EVALUATE runs before EXPORT);
 and sizing the 168 unread bars from a meter we do not have.
 
+### PHASE 2 obs. 3 — the pitched note where silence is printed: TWO faults, not one
+
+2026-09-14, no code outside `benchmarks/`. The last unanswered of Sean's seven,
+and the one a previous job answered the wrong question about. Findings:
+[benchmarks/omr-phantom-notes-2026-09/FINDINGS.md](benchmarks/omr-phantom-notes-2026-09/FINDINGS.md).
+
+⚠️⚠️ **THE BRIEF'S MECHANISM IS REAL AND IS THE SMALLER HALF.** Of **25 phantom
+notes** measured against the print, **8 stand at the whole rest's own slot**
+(steps 5-6) and **14 stand OUTSIDE THE STAFF ALTOGETHER** (steps 10-17) — where
+no whole rest can be, because the bar's own ink is one rest. That ink entered
+through the measure cell's 4-6-space PADDING from a neighbour. 3 more sit
+inside the staff elsewhere. **Two faults, one symptom**, and the brief named the
+smaller.
+
+⚠️⚠️ **AND THE 118 / 44 / 26 IS THE WRONG SHAPE IN BOTH DIRECTIONS** — it is
+defined by OUR OUTPUT, and a bar we UNDER-READ is indistinguishable from one we
+invented a note in. On the one system where the whole population is
+adjudicable: the print shows **27** bars as one rest-shaped mark; **11** get
+pitched notes; the "entire content is one pitched note" filter catches **3 of
+the 11** — seven hold TWO OR THREE notes, which that filter can never see — and
+only **3 of its own 13** underfull lone-pitched bars are print-silent at all.
+**Do not quote 118/44/26 as a measure of this fault again**; `silent_bars.py`'s
+print-side denominator is the honest one.
+
+⚠️ **THE TWO SYSTEMS DISAGREE BY AN ORDER OF MAGNITUDE** — 11 of 27 on the `ff`
+crescendo page, **2 of 67** on a sparse one — so this is a property of *what
+stands NEXT to a resting staff*, not of the resting staff.
+
+⚠️ **THE ARTEFACT PREDATES THE DEDUPE REPAIR.** The file Sean read carries
+**1,793** notes — the count before *A CONTEST is RESOLVED, not relocated* took
+it to 1,618 by refusing **176 as `owned_by_another_staff`**. ⚠️⚠️ **THIS
+PARAGRAPH ORIGINALLY ADDED "which is exactly the outside-the-staff population"
+AND THAT IS FALSE — see the correction immediately below, measured the next
+day.** It also ranked a re-export of the shared record as the work that would
+settle how much is already fixed; that question is now ANSWERED WITHOUT ONE.
+
+**The WIP branch `claude/note-where-silence-is-printed` is SCOPED and NOT
+MERGED.** Its `Q.NOTEHEAD_IS_A_WHOLE_REST` rule is probably right — its shape
+window matches what the print holds at those bars (h 0.77 spaces, aspect
+1.92-2.08) — and it reaches **at most 8 of the 25 notes and clears at most 6 of
+the 13 bars**, because two bars hold a slot note AND an outside-the-staff note.
+⚠️ **Its own reach (20 flagged glyphs) was never joined to a single BAR**, so
+nothing on that branch said whether it addressed the observation.
+
+⚠️ **THE PRINT REACHED A CONTAINER WITH NO `library/` ONLY BECAUSE IT WAS
+EMBEDDED IN AN HTML ARTEFACT** — system PNGs carried as data URIs inside
+`omr-cleanup-count-2026-09/out/side-by-side-p1-p4.html` (14 of them), recovered
+by `probe/extract_crops.py`. **A cloud session can adjudicate against the print
+after all, on any page a side-by-side was built for.**
+
+⚠️ **THREE OF THIS SESSION'S OWN INSTRUMENTS WERE WRONG FIRST**, each fixed and
+documented at its site: a greedy five-line grouper that found **9 staves of 11
+and silently renumbered the rest**; a fixed-row staff-line eraser that reported
+**residue 9.6 staff spaces wide as a glyph** (the documented 8-17 px warp
+defeating a constant comb — a run-length rule is tilt-independent); and
+⚠️⚠️ **an absolute staff step read off a crop that DRIFTS 1.4 STEPS ACROSS ONE
+SYSTEM** (the same printed mark reads 3.78, 4.03, 4.29, 4.54, 4.80, 5.06, 5.18
+across seven consecutive bars) — **more than the gap between a whole rest (5.5)
+and a half rest (4.5), so a crop-side step may not tell those apart** and this
+probe does not try.
+
+⚠️ **What is NOT established**: n = 1 document, 1 publisher, **2 printed systems
+of 7** (five crops are REFUSED because their barline grid disagrees with the
+exporter's map — a refusal, not a measurement); the census cannot tell a whole
+rest from a half rest; nothing was re-gathered or re-exported; and the 176
+refused notes were never inspected.
+
+⚠️⚠️ **AND THAT §7.1 RE-EXPORT IS UNNECESSARY: THE STALENESS QUESTION WAS
+ANSWERED WITHOUT ONE, AND IT REFUTES THE PARAGRAPH ABOVE** (2026-09-15, no code
+outside `benchmarks/` and one test file). Findings:
+[benchmarks/omr-phantom-notes-2026-09/FINDINGS_2026-09-15_STALENESS.md](benchmarks/omr-phantom-notes-2026-09/FINDINGS_2026-09-15_STALENESS.md).
+Joining the print-silent bars to the dedupe session's committed contest table
+on the SUBJECT ADDRESS `(page, system, staff, cell)` — **no box comparison, so
+the page-pixel frame error cannot arise** — **11 of the 13 offending bars, 20 of
+the 25 notes, and 11 of the 14 outside-the-staff ones hold NO cross-staff
+notehead contest at all**, not even in a 0.3 superset. `glyph_owner` declares
+`subjects_from=Q.GLYPH_BAND_DISTANCE`, so it files no verdict there and
+`_place_notes` refuses nothing: **those bars are byte-identical between the two
+arms.** Only `P6 m88` and `P6 m92` (5 notes) are in its domain, and those
+genuinely cannot be told apart from a container with no record.
+
+⚠️ **AND 5 OF THE 14 STAND ABOVE THE TOP STAFF OF THEIR SYSTEM** — `P1 m91`
+(`A6 A6 G6`) and `P1 m92` (`A6 A6`) on staff 0 of p4/s0 — where *"the PADDING
+from a neighbour"* has no neighbour to name.
+
+⚠️⚠️ **SO `Q.GLYPH_OWNER` IS NOT WHERE THE PADDING HALF LIVES** — for 11 of 13
+bars that decision is never asked, because the ink was detected in ONE cell and
+the neighbour's cell did not see it. The next work is three different jobs, not
+one. ⚠️ **Widening `glyph_owner`'s DOMAIN would make `is_relocated_copy`
+UNSAFE** — that predicate is safe only because the domain guarantees a twin — so
+any widening must land a rule for the uncontested subset in the SAME change, or
+it deletes one printed note per rescue. ⚠️ Two openings in the gate were
+measured and **neither is shippable nor relevant to this fault**: the same-class
+gate refuses **37 cross-staff notehead pairs at IoU ≥ 0.5 (47 at 0.3) differing
+ONLY in the `InSpace`/`OnLine` suffix** — the one thing two staves' grids MUST
+disagree about for ink in the gap between them — and `CONTEST_IOU = 0.5` against
+the legacy `0.3`. Both are GATHER changes (`readjudicate` and `reexport_arm` are
+structurally blind), and **the suffix column is 0 on all eighteen print-silent
+bars.**
+
+⚠️ **THE WIP IS STILL NOT MERGED AND THE REASON HAS CHANGED**: it reaches at
+most the 8 at the rest slot, **6 of which the dedupe repair never touched**, so
+it is now the only candidate for those 6 — but it cannot be measured without a
+record, and its own reach is still not joined to a single BAR.
+
+⚠️ **A FALSE ZERO FROM A CROP THAT DID NOT HAVE THE PADDING.**
+`print_ink.census` looks at the staff band plus **0.6 spaces** and never at the
+4-6 spaces a measure cell is cut with, so `padding_ink.py` was written to ask;
+its first run said `above: nothing` on staff 0 where the crop supplies **3.2 of
+6 spaces** and reaches **step 15.6** against notes at 16-17. *A control that
+reports "the print holds nothing there" must first be able to say "I could not
+look there."* Controls: 857 of 857 cross-staff pairs share a cell index (0
+differ), and the dedupe session's hand-named `ffff` cells are re-found through
+the same index. Mutation battery **9 arms, all red, 0 survived**, restoring from
+its own snapshot; ⚠️ its first run's four problems were all its own, and both
+survivors were real test gaps — one being *a reader stubbed to return a fixed
+number left the equality test GREEN because both sides returned the stub*.
+
+⚠️ **What is NOT established**: the re-export still has not run (this says where
+the notes are NOT, not what the other 5 did), n = 1 document / 1 publisher / 2
+systems of 7, no accuracy check against the print, and the 176 refused notes
+were still not inspected.
+
 ### Three families wired in one pass — fermata, voices, ornaments
 
 2026-09-10, no flag, **Phase 1 of the wire-first plan**. Findings:
@@ -1678,11 +1802,15 @@ instrument's bars.** Three repairs, and the order is load-bearing: (1) the JOIN
 must stop guessing; (2) a measure must be numbered by its place in the
 DOCUMENT's bar sequence rather than its part's own running count — which alone
 makes `<measure number=N>` mean one instant, writes no music and needs no
-meter; (3) the tacet spans must be PADDED. ⚠️ **Padding first would have hidden
-the graft** — the numbers would line up and the wrong notes would remain,
+meter; (3) the tacet spans must be PADDED — **DONE 2026-09-15, and it reaches
+ZERO bars here**: all 149 tacet bars sit on systems whose meter was never read,
+so the rule refuses every one and counts them. ⚠️ **Padding first would have
+hidden the graft** — the numbers would line up and the wrong notes would remain,
 which is worse, because a graft counted as a note error ranks the work into the
 wrong module. ⚠️ And padding needs a bar length: the meter is decided on **1
-system of 7** here and `OMR_METER_CARRY` is off on **n**.
+system of 7** here and `OMR_METER_CARRY` is off on **n** — which is now priced
+from a third direction. ⚠️ **(1) and (2) are DONE too** — the slot index by
+name, and the document-wide measure numbering; see their own sections.
 
 **SHIPPED: (1) `run_staged` forwards `pdf_path`**, with `--surya` / `--ocr`
 opt-in on the staged CLI. **REACH, measured first** (`probe/margin_label_reach.py`,
@@ -1731,6 +1859,143 @@ which the equal-count branch still accepts and where 5 of the 12 grafts live.
 **The ranked next work is `adjudicate_slot_index` implementing the short-system
 rule its own docstring already states**, reusing `slots.align` rather than
 restating it, and reading its `build_reference` warning first.
+
+### A measure is numbered by the DOCUMENT's bar sequence — repair (2) of three
+
+2026-09-14, no flag. The second of the three repairs the *measure math* section
+above puts in order, and the one its own text calls out: *"a measure must be
+numbered by its place in the DOCUMENT's bar sequence rather than its part's own
+running count — **which alone makes `<measure number=N>` mean one instant,
+writes no music and needs no meter**."* Findings:
+[benchmarks/omr-measure-numbering-2026-09/FINDINGS.md](benchmarks/omr-measure-numbering-2026-09/FINDINGS.md).
+
+`export._document_bar_offsets`: systems in reading order, a system's offset is
+the sum of the bars before it, a measure is `offset + i + 1`. **A system's bar
+count is the single value its own staves AGREE on**, over the runs whose
+`measure_partition` DECIDED. ⚠️ `StaffRun` gained `n_measures_decided` because
+`n_measures` reads 0 for an abstention AND for a decided zero, and an
+abstaining staff must not count as a dissenting vote for zero.
+
+⚠️⚠️ **WHERE IT CANNOT TELL IT FABRICATES NOTHING, AND THE REFUSAL IS
+WHOLE-FILE.** Three named conditions — `no_staff_decided_its_bar_count`,
+`staves_disagree_about_the_bar_count`, `a_part_holds_two_runs_on_one_system` —
+each return the exporter to its PREVIOUS per-part count for the entire file,
+naming the reason in `report["measure_numbering"]`, which is written whether or
+not the scheme fires. Per-system refusal was refused: a file numbered
+document-wide up to the bad system and part-wise after it is
+`<measure number=N>` meaning two things with **nothing saying where the
+boundary lies** — *"cannot tell"* converted into a definite answer by the SHAPE
+of the output. ⚠️ **A MAJORITY VOTE IS AVAILABLE AND IS REFUSED**: nine staves
+reading 4 against one reading 3 is *most likely* 4, which is INFER-stage work,
+and a wiring pass may CONNECT a decision and may not let one GUESS.
+
+**MEASURED**, one artefact numbered twice — ⚠️ **and it is not a re-export**: no
+staged record is committed and a cloud container has no weights, so the arm
+reconstructs the exporter's own `StaffRun`s from the committed SYSTEM MAP (which
+was asserted measure-for-measure against that XML when written) and calls the
+**SHIPPED** rule on them; only the INPUT is reconstructed. Reach first — 12
+parts, 7 systems, 75 staff-systems, 1,183 measures, **4 of 12 parts tacet on at
+least one system**, and the arm exits non-zero declaring itself DEAD at zero.
+**90 of 1,183 measures move (7.6%)** — 30 each on P9-P11 and **zero on the other
+nine**, which is the result agreeing with itself; p4/s0 opens **64 → 82** and
+p4/s1 **79 → 97**. **Ambiguous numbers 30 → 0**, and **0 instants carry more
+than one number**, verified by a **music21 READ-BACK** rather than by reading
+back the attribute we just wrote — the defect was reported by a parser
+(Verovio's `Mismatching measure number 87`), so the repair is checked by one.
+
+⚠️ **Three identical-music controls, each able to fail**: byte-identical outside
+`number=`; the two files DO differ with it in (positive control); **re-applying
+the INCUMBENT scheme reproduces the committed file byte for byte**, which is
+what makes the first two mean anything. Parsed, the same 12 parts, 1,183
+measures and **1,986-event note sequence**. Mutation battery **10 arms, all red,
+positive control `everything_refuses` green**.
+
+⚠️ `export_arm.py`'s system map now calls the shipped rule instead of restating
+the per-part count — checked both ways on a synthetic tacet record: new formula
+7 of 7 pairs clean, **old formula 4 problems**, so the change was necessary and
+that assertion is not vacuous.
+
+⚠️ **What is NOT established**: n = 1 document, 1 publisher, 4 pages; **no print
+was consulted**, so this says a number NAMES one instant and nothing about
+whether those bars hold the right music (the 12-of-75 graft is repair 1, landed
+separately); the three refusal branches are reachable only by INJECTION, since
+no real record here has ever carried a disagreeing system; an export-only arm is
+structurally blind to a GATHER change; and **no OMR-NED figure is claimed** —
+musicdiff pairs measures positionally within a part, so blindness is expected by
+construction, and an unmeasured expectation is not a measurement. **The tacet
+spans are still unpadded** (repair 3), deliberately: padding first would hide
+the graft, and it needs a bar length the meter does not supply here.
+
+⚠️⚠️ **AND THE MUTATION BATTERY'S FIRST RUN DESTROYED THE CHANGE IT HAD JUST
+CERTIFIED — the recorded hazard, arriving from a new direction.** This file
+records *"a mutation battery `git checkout`s the files it mutates, so an A/B arm
+that reads the WORKING TREE is not isolated from it"*, which is about a
+CONCURRENT reader. With nothing else running, that same line harmed the
+battery's own subject: ten arms went red, the battery restored `export.py` from
+**HEAD**, and HEAD did not have the function — `git diff --stat` afterwards
+listed only the benchmark script, and the tests that had just passed were
+testing code no longer on disk. The battery now restores byte-for-byte from the
+snapshot it took before the first arm and **VERIFIES** the restore. The
+governing form is one clause wider:
+
+> **A mutation battery must leave the tree as it FOUND it — which is not the
+> same as leaving it as GIT has it.**
+
+The cheap prophylactic: **commit a checkpoint before running a battery**, so the
+checkout and the snapshot agree.
+
+### The tacet spans are PADDED — repair (3), and it reaches ZERO bars on this document
+
+2026-09-15, no flag. The last of the three repairs the *measure math* section
+ranks, and the one its own text says needs a bar length. Findings:
+[benchmarks/omr-tacet-padding-2026-09/FINDINGS.md](benchmarks/omr-tacet-padding-2026-09/FINDINGS.md).
+
+`export._tacet_walk` + `_pad_tacet_span`: a part's systems are walked in
+DOCUMENT order rather than in the part's own run order, and a system the part
+is tacet on is written as full-measure rests at the numbers repair (2) settled.
+The meter is asked PER BAR, not per system.
+
+⚠️⚠️ **WHERE THE LENGTH IS UNKNOWN THE BAR IS NOT WRITTEN, AND IS COUNTED.** A
+MusicXML rest must carry a `<duration>` and `_measure_rest_beats(None)` falls
+back to **4.0 quarters** — twice the bar on this 2/4 movement. **The asymmetry
+with the eventless branch is the whole argument**: a bar of a PRESENT part that
+we read nothing in *has* to be written somehow, so it takes that fallback with
+`measure="yes"` withheld; **a tacet bar does not have to exist at all**, so
+inventing one at a length nobody read is pure fiction. `report["tacet_padding"]`
+is a PARTITION with `balanced`, written whether or not it fired, and on a
+refused number line `tacet_bar_total` is **`null` rather than 0** — nothing was
+even looked at. ⚠️ `empty_bars_padded` and `tacet_bars_padded` are SEPARATE
+counters (a reading gap against a join fact) and a test asserts the first never
+absorbs the second.
+
+⚠️⚠️ **REACH IS ZERO ON THE ONLY DOCUMENT AVAILABLE, AND THAT IS THE RULE
+WORKING.** Litolff Beethoven 5 pp.1-4 holds **149 tacet bars** across 4 of 12
+parts (P9-P11 miss p3/s1's 18; P12 misses 95) — and **`p1/s0`, the one system of
+seven whose meter was read, is the one system no part is tacet on**. So ARM A
+pads **0 and refuses 149**. The lever is the METER, not this rule.
+
+⚠️ **A COUNTERFACTUAL ARM says what the flip is worth and is labelled one**: with
+2/4 supplied to every system (the meter `p1/s0` itself READS, and what
+`OMR_METER_CARRY=1` is recorded deciding on all six abstaining systems of this
+record), all **149** pad, parts go `111/93/16` → **111 on all twelve**, measures
+**1183 → 1332**, and asking the SCORE for bars 70-72 returns **8 of 12 parts
+before and 12 of 12 after** — the ABSENT/DECLINED collapse, in the music.
+
+⚠️ **Controls, each able to fail**: every existing measure byte-identical and in
+order; **deleting exactly the inserted blocks restores the base file BYTE FOR
+BYTE** (which is what leaving `prev` untouched buys); the files DO differ
+(positive control); music21 reads back the same 12 parts with the **note
+sequence of every part unchanged**; and the parts held 16/93/111 numbers before
+and 111 each after. Mutation battery **12 arms, all red, 0 survivors**, positive
+control `everything_refuses`, with a BYTE snapshot taken before the first arm
+and the restore VERIFIED.
+
+⚠️ **What is NOT established**: nothing was padded on this document; **no print
+was consulted**; no OMR-NED figure (no committed reference for these pages);
+n = 1 document, 1 publisher, 4 pages. ⚠️⚠️ **And the arm pads a STALE JOIN** —
+the committed record predates `adjudicate_slot_index`'s short-system rule, so
+its 12-part join still carries the 12-of-75 graft, and a fresh gather would
+produce a different tacet population that **no cloud session can determine**.
 
 ### Direction words reach the file — the LAST stub, and PHASE 1 IS COMPLETE
 
@@ -2708,6 +2973,103 @@ adjacent in y"* (TRUE `dy` 32-548 vs FALSE 26-555 — total overlap) and *"the
 false ones sit at `x_canonical == 0`"* (decisive in a per-cell table; **1 of 110
 TRUE vs 4 of 50 FALSE** once restricted to clean two-digit stacks).
 
+### An uncorroborated meter CHANGE is not carried off its system — and the obvious guard is REFUSED
+
+2026-09-15, landing with **both meter flags going default-ON** (Sean's call).
+Findings:
+[benchmarks/omr-meter-corroboration-2026-09/FINDINGS.md](benchmarks/omr-meter-corroboration-2026-09/FINDINGS.md).
+
+⚠️⚠️ **THE OBVIOUS RULE — REFUSE A CHANGE NO SECOND STAFF READ — WAS MEASURED
+AND IS REFUSED, BECAUSE IT DELETES THE ONE TRUE METER CHANGE THIS PROJECT HAS
+EVER FOUND ON A SCAN.** Litolff p.62 prints `3/4` at the bar the reference
+names and we read it on **ONE staff of seventeen** at support 3.0 — which this
+file already records from the other direction in the letter-meter section. The
+three FALSE changes on the same corpus read one staff at 3.0, **4.0 and 4.5**,
+so two of them score HIGHER than the true one, and the only one-staff row whose
+bars say anything (p.61's `C`, 1 bar fitting) is FALSE. **Stave count, support
+and bar math all fail in the same place** — *the bars are not an independent
+umpire over a bad reading*, a fourth time.
+
+⚠️⚠️ **AND THE REACH FIGURES THAT MOTIVATED THE VETO WERE AN ARTEFACT OF POOLING
+PRE-FIX RUNS — AN ERROR MADE BY THE MANAGER AND HANDED TO THREE AGENTS AS
+FACT.** `benchmarks/omr-staged-meter-boundary-2026-09/out/` holds **SEVEN
+GENERATIONS** of six fixtures and the cautionary + meter-in-force fixes landed
+BETWEEN them. Pooled, the `m2…m7` files look like duplicate runs of one tree and
+were deduped as such; they are runs of DIFFERENT trees. The damage was exact and
+in both directions: the two segments the pooled scan called TRUE at **9 and 19
+staves are the two CAUTIONARIES**, which `report_boundary.TRUTH_CHANGES` records
+as `None` in terms and which the shipped cautionary rule had **already
+removed** — neither appears in the newest generation at all — while the pooled
+scan **missed the one TRUE one-staff change entirely**. Deduped on the newest
+generation: TRUE `staves = [1, 21, 23, 24]`, FALSE `staves = [1×8, 9, 19]`.
+**The populations OVERLAP AT 1 and the claimed "empty interval 1 → 9" does not
+exist.** *A reach measurement must name its generation*, and the agent that was
+handed the wrong one checked it rather than building to it.
+
+**SO THE ACTION IS WEAKENED UNTIL IT IS ONE-SIDED.** A change (1) governs its
+own system's bars through `record.meter_at` and (2) becomes, through
+`_meter_in_force_at_end`, the meter CARRIED onto every following system that
+abstains. `A-METER-6` gates **(2) only**: the p.62 `3/4` still reaches the file
+on its own system, to the byte; what it may no longer do is decide page 63.
+That is `METER_SOURCE_REASONS`' own discipline extended from *which verdicts
+may be carried from* to *which segments of them*. Where a source has nothing
+corroborated, `_meter_in_force_at_end` returns **None** and `_carry_meter` walks
+past and **names** what it skipped (`carry_source_uncorroborated`).
+`METER_CHANGE_MIN_STAVES = 2`, **asserted equal to
+`key_signature_corroboration.MIN_WITNESSES`** — not a tuned constant, because
+the populations overlap at 1 and every value above 1 confines the same four
+segments.
+
+⚠️ **The witness is the STRONGER one (same VALUE) paired with the WEAKER
+action, and the key-signature guard takes the opposite pair for a stated
+reason**: it REVERTS, so it needs the weakest witness or it breaks transposing
+instruments. Confining costs at most a carry; reverting costs the music.
+`staves_reading_a_meter` is recorded and **read by nothing**, so the weaker
+witness can be priced later without a re-gather.
+
+**MEASURED** on the committed records, newest generation, deduped: 7 change
+segments, 3 corroborated / 4 confined; **every TRUE change still in `segments`
+4 of 4**, a corroborated carry moves **0 of 3** (the positive control), an
+uncorroborated carry moves **4 of 4**. ⚠️ **One confinement swaps one wrong
+answer for another** — Breitkopf p1 s0 carries `4/4` before and the misread
+**`9/4`** after — so the FALSE column is **not three repairs**. ⚠️ **The cost is
+ONE row** (p.62's `3/4`), bounded only because `OMR_METER_FROM_BARS` reaches 3.0
+on p.63 independently, which is read off a committed measurement and was not
+re-run.
+
+⚠️⚠️ **THE FLAG GUARD WAS BLIND TO THE TWO FLAGS IT EXISTS FOR.**
+`test_flag_default_direction.py` matches `environ.get(FLAG, default)` compared
+to a **literal word set**; both meter flags were `== "1"`, which is neither, so
+the scan never listed them: **10 ON / 10 OFF → 12 / 10**. The residual gap is
+the COMPARISON FORM, not the flag list, and is recorded rather than fixed.
+⚠️ Ten tests went red on the flip and all ten were one thing: three harnesses
+expressed "off" by **popping** the variable, which under a default-ON flag is
+the ON arm.
+
+⚠️⚠️ **A DEFECT THE TESTS FOUND, AND IT IS THE `works.json` ARITY SHAPE AGAIN:
+`_with_segments` AND `_change_only` BOTH BUILD `segments` AND EACH HAND-LISTED
+ITS FIELDS.** The flag reached the first only, so a `change_only` verdict's
+segment carried none, `seg.get("corroborated", True)` read it as a pre-rule
+record, and the change was carried forward **exactly as before with every unit
+test green** — on precisely the shape Litolff p.61-62 has. The projection is
+written ONCE (`_segment_from_change`) with a source-level anti-drift assertion.
+
+⚠️ **A surviving mutation arm was a real gap and closing it found a second
+hazard**: `{}` is falsy but is NOT None while `_carry_meter` tests
+`carried is None`, and `{"segments": []}` is TRUTHY so the filter is skipped
+entirely. The contract is now stated on the way OUT — *a meter or nothing*.
+**A fallback must never convert "cannot tell" into a definite answer** is about
+the value a CALLER READS.
+
+⚠️ **THE HAZARD: none of this fixes the scan meter problem.** Corroboration
+kills one-staff false CHANGES; the misread `9/8` → `9/4` **opening** is
+untouched, because there the majority is wrong — the template reader returns
+`[9,4]` on 10 staves, and asking for a second witness gets ten. **The flip makes
+that misread TRAVEL; that is what `local_arm.sh` prices, and it has never been
+run.** Battery 15 arms, all red, restore verified. ⚠️ **What is NOT
+established**: no end-to-end arm ran, no OMR-NED, no print consulted, n = 4
+documents / 2 publishers / 7 change segments.
+
 ### ⚠️⚠️ The bars are not an independent umpire over a bad reading
 
 Found 2026-09-09 while trying to fix a scanned `9/8` voted as `9/4`. The
@@ -2791,6 +3153,283 @@ absolute SCORE does separate with an empty interval (0.531 to 0.656 against
 the legacy path and set on an 11-source corpus — 7 correct / 1 wrong over 4
 documents is not the evidence to move it on. See
 [benchmarks/omr-staged-meter-boundary-2026-09/FINDINGS.md](benchmarks/omr-staged-meter-boundary-2026-09/FINDINGS.md) §4c.
+
+### The cautionary as a COMPETING CANDIDATE — measured, refused on n, and one route refuted
+
+2026-09-15, no code outside `benchmarks/`. The `9/4` misread's own answer sits
+one system earlier in a recorded `cautionary`, and the question was whether it
+can be put to the voted opening GLYPH AGAINST GLYPH — a different evidence
+structure from the refused bars route, since the two readings are two physical
+printings read by two different readers. Findings:
+[benchmarks/omr-meter-cautionary-2026-09/FINDINGS.md](benchmarks/omr-meter-cautionary-2026-09/FINDINGS.md).
+
+⚠️⚠️ **REACH IS THE RESULT: THREE cautionaries in the whole committed corpus, on
+ONE piece of music.** 67 arms, 6 fixtures, deduped on the address of the INK
+rather than of the run (only the `m5`/`m7` trees carry the rule, so a file count
+reports the rule's arrival as the ink's absence). The three happen to span all
+three situations a contest faces — one DISAGREE, one AGREE control, one
+OPENING-UNKNOWN fill.
+
+⚠️⚠️ **THE CONTEST CANNOT BE DECIDED, AND THE SHARED QUANTITY POINTS THE WRONG
+WAY.** The cautionary carries `support`, the opening carries `share`: **no
+common currency**. The one quantity both state is HOW MANY STAVES READ IT, and
+on the contested pair it reads **9 for the correct cautionary and 10 for the
+wrong opening** (19 vs 21 on the engraved control). A floor on the cautionary's
+own support or staff count is the only shape that scores 1 fixed / 0 broken /
+0 abstentions lost — **on three rows, with one boundary point on each side, and
+with the cost side (a cautionary wrong where the opening is right) NEVER ONCE
+OBSERVED.**
+
+⚠️⚠️ **THE CHEAPER, HIGHER-REACH VERSION IS REFUTED, AND THAT IS THE BEST
+RESULT.** If the DETECTOR's digit reader could read CELL 0 the contest would
+need no cautionary and would reach every system. Driving `_meter_from_digits`
+over the committed Breitkopf transcription (706 staff-cells): it forms an
+opening stack on **1 of 6 systems** and that one is `1/1`, refused as
+implausible. **At cell 0 of the very system voting `9/4` it holds a `timeSig1`
+and a `timeSig6` and forms nothing**; at cell 1, where the page prints `6/8`,
+one `timeSig4` and nothing. It is not silent elsewhere — **69 stacks, 67 of them
+`4/4`, on a movement printing only `6/8` and `9/8`.** So the digit reader's one
+right answer on this whole document IS the cautionary, and its correctness
+cannot be attributed to the reader being good.
+
+⚠️⚠️ **IT CORRECTS THE BOUNDARY FINDINGS' OWN RECOMMENDATION.** §4c parks the
+fill-an-abstention route as *"available and unbuilt"* on the ground that its
+**reach on this corpus is ZERO**. It is **one**, and that one would be filled
+**WRONG** — `system/1/1` abstains on its opening (`reason=change_only`,
+`share=None`) and is preceded by a cautionary reading `4/4` against a printed
+`6/8`. **The branch that looked safe BECAUSE it only fills abstentions is the
+one that converts an honest abstention into a confident error**, which is why
+`ABSTENTION → WRONG` is scored apart from `kept_wrong`: netted in, it reads as
+costless.
+
+⚠️ **A fourth `the value existed and nothing read it` in the meter family**:
+`Q.METER_TEMPLATE` carries `score`, `runner_up`, `runner_up_score` and
+`score_margin`, and `adjudicate_meter` reads only `raw`. `score_margin` is
+already refuted (gap 0.0006); the ABSOLUTE `score` is the candidate separator
+(inherited from §4c, **not re-measured**). ⚠️ **One thing DID change about it: a
+STAGED consumer of the recorded score shares nothing with the legacy path, so
+§4c's SCOPE objection to moving `min_score` does not transfer** — the n
+objection does, and it is a gate with a fallback rather than a contest, since
+the template reader never looks at a last cell.
+
+⚠️⚠️ **AND THE SCORE ROUTE HAS SINCE BEEN UNDERCUT FROM THE OTHER SIDE.** The
+bar-head study below measured, over 1,612 empty mid-staff windows, a worst FALSE
+answer of **0.6141** against a clean-ink positive control whose MINIMUM is
+**0.542** — **the score populations OVERLAP**, which is why that job used a
+cross-staff quorum and refused to move `min_score`. Whether the score can
+arbitrate this contest is therefore open, not promising.
+
+⚠️ **What is NOT established**: n = 1 document; nothing re-gathered or
+re-exported; no OMR-NED; the digit-reader counts are a LOWER BOUND from a
+legacy-NMS transcription that does not cover the cautionary's own page; nothing
+checked against the print. **The ranked next work is `beethoven-sym5-mvt4` bar
+364 — a third meter change on a fixture that already exists and has never been
+rendered** (155 and 209 are); then `beethoven-sym9-mvt4` on the held Litolff
+scan, 15 mid-movement changes on a different publisher's plate.
+
+### The cautionary's arbiter — the score is not a currency, and the frames are three
+
+2026-09-15, no code outside `benchmarks/`. The substitution the meter thread
+asked for — the template reader's `score` in place of the silent bar math —
+**measured and REFUSED**, on a branch that touches no file under `tools/`
+(`git diff base..HEAD -- tools/` is EMPTY). Findings:
+[benchmarks/omr-meter-cautionary-arbiter-2026-09/FINDINGS.md](benchmarks/omr-meter-cautionary-arbiter-2026-09/FINDINGS.md).
+
+⚠️⚠️ **THE SCORE IS MONOTONE IN WINDOW WIDTH BY CONSTRUCTION, SO IT IS NOT A
+CURRENCY TWO READINGS CAN BE COMPARED IN.** `locate_time_signature` is
+`matchTemplate` + `minMaxLoc` — a MAXIMUM over every x in the strip, with no
+normalisation for how many positions there were. Measured on the base branch's
+own 1,612 committed windows re-read at 4 and 8 spaces: **968 rise, 0 fall**,
+mean +0.0725. The opening is read in a **16.0-space** header window and a
+cautionary would be read in a **4.0-space** bar head, so `caut_score >
+open_score` compares a maximum over a subset with a maximum over a superset —
+biased toward the OPENING, which is the direction the staff count already fails
+in.
+
+⚠️⚠️ **AND THE SAME-FRAME REPAIR IS BLIND, NOT MERELY BIASED.** The obvious fix
+is to read the opening in the bar-head frame too, so both sides are maxima over
+equal strips. On Brahms 1 / Breitkopf p.45 — a movement start whose print was
+LOOKED AT (page 46, *Adagio*, full margin names, a common-time `C` on every
+staff) — the 4-space bar head of cell 0 reads **0 of 16** and spells
+`4/4`/`9/4`/`12/16`/`5/4` out of clef ink, while **14 spaces reads 16 of 16**
+and the shipped header window reads 16 of 16. **An opening meter sits 10-12
+staff spaces into its bar, behind the clef and the key signature.** ⚠️ It does
+NOT argue against `OMR_METER_TEMPLATE_AT_BAR`: a mid-staff CHANGE is printed
+straight after a barline with no clef in front of it, which is exactly why that
+window is four spaces. ⚠️ The header row is the POSITIVE CONTROL — had the
+reader failed at every width the zeros would measure a dead instrument.
+
+⚠️ **THE ABSOLUTE SCORE DOES NOT SEPARATE EITHER, EVEN INSIDE ONE FRAME.** TRUE
+header readings **0.5563-0.6850** against FALSE ones reaching **0.6318**, with
+**9 of 191** false readings at or above the weakest true one. ⚠️ And
+`head_last` — the cell a cautionary lives in — is the **WORST** of the four
+bar-head populations: **2.62%** answer against `head_mid`'s 0.84%, max
+**0.6141**, which is *above* the true minimum. So a floor admitting a real
+reading admits the worst cautionary-slot fake. **This undercuts the score route
+the section above parks as promising** — read that paragraph with this one.
+
+⚠️⚠️ **THE "ONE SHARED QUANTITY" IS TWO READERS, derived from the source with a
+positive control**: the cautionary's `staves_reading_it` comes from
+`Q.METER_GLYPH` (the detector's stacked digit pairs, read inside a measure cell)
+and the opening's `n_staves_spoke` from `Q.METER_TEMPLATE` (an NCC over a
+16-space header window). **"9 against 10" compares a detector count with a
+template count** — a third frame error in the same contest, which makes the
+staff-count route *incoherent* rather than merely unfavourable. That is a firmer
+reason to refuse it than the one the section above gives.
+
+⚠️⚠️ **THE PREMISE CHECK FIRED AND FINDING p.45 IS THE RESULT.** The probe does
+not assume its pages print no meter — it asks the SHIPPED
+`vote_system_time_signature`, because the question is not *"do some staves
+agree"* but *"would this pipeline declare a meter here"*. Over **18
+continuation header systems the shipped vote declares a meter on NONE**, so the
+opening reader's 16.75% per-staff false rate is contained by the cross-staff
+vote. ⚠️ **A fixed 3-staff quorum would NOT contain it: it fires falsely on 4 of
+those 18 — one with SEVEN staves agreeing on `C`.** So **do not port
+`METER_TEMPLATE_AT_BAR_MIN_STAVES = 3` into the header frame**; the shipped vote
+survives because `min_staff_fraction` is a FRACTION of the system, not a count.
+The bar-head frames score 0/18, 0/18 and 0/119 on the same pages, independently
+reproducing the base branch's own empty-window result.
+
+⚠️ **A CAUTIONARY'S VALUE IS RIGHT EVEN THOUGH IT IS NOT A CHANGE AT ITS CELL.**
+`report_boundary.TRUTH_CHANGES` records both cautionaries as `None` because
+proposing a CHANGE there would re-size a bar the courtesy does not govern —
+**a statement about placement, not about value.** A reader who meets that
+`None` and concludes the cautionary is junk has read the wrong column.
+
+⚠️ **What is NOT established**: reach of the substituted arbiter is **ZERO** on
+the corpus — 0 of 68 committed `*.meter.json` carry a template score, with `raw`
+on 66 as the grep's positive control — so **no cautionary has ever been scored
+by that reader**, and §2-§4 say the score *cannot* arbitrate rather than what it
+*would* have said. The TRUE population is **one page, 16 staves, one meter**,
+and that meter is a `C`, the cheapest shape to fake (21 of 32 false header
+readings spell it) — an uncomfortable coincidence, uncontrolled. The pages are
+downscaled renders, not 600-dpi originals. n = 1 piece of music, 3 cautionaries,
+and the cost case (cautionary wrong / opening right) has still never been
+observed. `min_score` was **not** moved and is not proposed to move. **The
+cheapest thing that would move it is still `beethoven-sym5-mvt4` bar 364**,
+whose fixture already exists; the cheapest thing that would close the reach zero
+is `local_arm.py`, on Sean's machine, never run.
+
+⚠️⚠️ **AND A NEW CLAUSE ON THE MUTATION-BATTERY RULE, PAID FOR HERE.** A battery
+was killed mid-arm; its byte snapshot lived in memory and **died with the
+process**, so the mutation stayed on disk and `git status` showed one modified
+file — indistinguishable from the legitimate edit made minutes earlier. What
+found it was a later probe run reporting an impossible zero (`windows=0` on a
+page that had given 100), not review and not version control.
+
+> **A mutation battery must leave the tree as it FOUND it — which is not the
+> same as leaving it as GIT has it, AND AN INTERRUPTED BATTERY OBEYS NEITHER.**
+
+The repair is an **in-flight sentinel**: written before the first arm, deleted
+on a clean exit, and a run that finds one refuses to start and names each file
+at risk with the hash it should have. Final battery: **8 arms, 8 red, 0
+survivors**, positive control first. ⚠️ Three of the first run's four faults were
+the battery's OWN (two BAD ANCHORs — one naming a function that is *imported*
+and not in the probe at all — and one arm surviving by producing a different
+failure than it checked for), and the fourth was an expectation **unreachable on
+the fixture**, re-expressed as the monotonicity identity itself so the arm now
+doubles as a live check of the finding above.
+
+### ⚠️⚠️ "n = 1 piece of music" WAS A PROPERTY OF WHAT WAS LOOKED AT — the pool is 32
+
+2026-09-16, no code outside `benchmarks/`. Scoped while answering *"should I
+render `beethoven-sym5-mvt4` bar 364?"*, and the answer changed the question.
+Findings:
+[benchmarks/omr-meter-fixture-pool-2026-09/FINDINGS.md](benchmarks/omr-meter-fixture-pool-2026-09/FINDINGS.md).
+
+**Every meter result above ends on the same sentence** — the cautionary
+arbiter's *"n = 1 piece of music"*, the corroboration guard's *"n = 4 documents
+/ 2 publishers"*, `OMR_METER_CARRY` held off on **n** for weeks and then flipped
+with the objection *overridden rather than resolved*. Each names ONE candidate
+second document **by hand**. Nobody counted the pool.
+
+**Measured over the committed dossiers: 97 works, 97 carrying a
+`meter_changes` field, 32 with a real mid-movement change, 143 changes in all.**
+
+⚠️⚠️ **AND IT NEEDS NO `library/`, NO WEIGHTS AND NO LILYPOND.**
+`data/dossiers/*.json` are **committed**, built by
+`tools.omr.training.build_dossiers` from the reference MusicXML, and carry the
+meter, the measure count and every meter change per work — so *which* works
+change meter, *where* and *to what* is answerable in a cloud container.
+`docs/cloud-session-capabilities-2026-09-09.md` inventories what a cloud session
+can reach and **did not record this**; it does now.
+
+⚠️ **THE SHAPE SPLIT IS THE RESULT, NOT THE COUNT.** A change that alters the
+BAR LENGTH can be arbitrated by bar sums; one that does not **cannot —
+structurally, not by degradation** — which `report_boundary.length_of` already
+encodes (a `C` and a `C|` are both 4.0 quarter notes, and its own comment
+records that line being WRONG until a fixture made it matter). Split on that
+predicate: **143 length changes, 7 ENGRAVING changes across 7 works**, and
+`brahms-sym1-mvt4` m392 — the one this file already calls **"the designed
+limit"** — is ONE of the seven. **Six are unrendered.**
+
+⚠️ **THAT RE-READS THE RANKED NEXT WORK.** `beethoven-sym5-mvt4` **m364 is
+4/4 → 2/2**, so it is *not* a second instance of the 155/209 shape (those alter
+the length); it is a second instance of the designed limit. A bar-weighing term
+is **INERT** there by construction, and a zero it produces is the premise rather
+than a measurement. The arbiter findings ranked that fixture without recording
+what kind of change it is.
+
+⚠️⚠️ **AND A THIRD CLASS FELL OUT THAT IS NOT A CHANGE AT ALL: 9 IDENTICAL
+RESTATEMENTS** (`2/4 → 2/4`, `6/8 → 6/8`; Holst ×8, Mozart 41 ×1) — exactly the
+population `_meter_changes`' *"against the meter IN FORCE"* rule exists to
+suppress. Folded in, the engraving pool reads 16 and two thirds of it is an
+encoding artefact; they are reported apart and must never be counted as fixtures.
+
+⚠️ **THE CHEAPEST FIXTURE IS NOT THE ONE THAT WAS RANKED.**
+`beethoven-sym1-mvt1` **m13** is the same 4/4 → 2/2 at bar THIRTEEN — the Adagio
+molto introduction is twelve bars of 4/4 and the Allegro con brio begins at 13
+in 2/2 — against bar 364 of a 446-bar finale. Smaller render, no hand-verified
+measure map needed to locate it, and a famous structural boundary rather than an
+interior one. **It was never considered, because the ranking was made by naming
+a work rather than by counting the pool.**
+
+⚠️ **What this does NOT do.** Nothing was rendered, gathered or scored; every
+figure is a property of committed JSON. A dossier is an **ENCODING** truth, not
+a PAGE truth (the `page_truth` distinction, arriving in the meter family).
+**Edition coverage is unchecked** — which of the 32 works pair a change with a
+held PDF is a query nobody has run, and it needs the library. Legibility is
+unchecked and this thread's own history says it dominates (the same 22 bars
+score 4-found/0-false engraved and 1-found/9-false scanned). ⚠️ The Holst `-full`
+dossier is the whole suite and the `-mvt*` ones its movements, so **32 is not 32
+distinct pieces** — the ENGRAVING table is unaffected, only `-full` m1187
+appears there. **The standing objections are untouched**: the arbiter's refusal
+is structural (window width, frame, two readers) and none of its reasons is an
+n argument.
+
+**So the blocker is now a claim about EDITIONS AND LEGIBILITY, which is
+checkable, rather than about the corpus, which is refuted.**
+
+⚠️⚠️ **AND THE EDITION HALF WAS CHECKED THE SAME DAY: 23 of 23 HELD, 0 NOT
+HELD — AND IT DID NOT NEED THE DESKTOP EITHER.** The paragraph this replaces
+said that query *"needs the library and belongs on the desktop"*, which was the
+same error one layer on: `data/score-library/catalog.json` is **COMMITTED**
+(1980 entries, 228 works with an edition) and records every held edition's path,
+publisher, page count and scan type. **Only the PDF bytes are gitignored.** Of
+the 32 changing works, 23 map across the two id spaces and **every one of the 23
+is held**; the 9 the id rule cannot reach (`holst-planets-*`,
+`boulanger-printemps-mvt1`, `tchaikovsky-1812-overture`) **ABSTAIN and are
+reported, never forced** — the `OMR_WORK_ID` trap, which this file states twice
+and which has bitten the repo twice.
+
+⚠️⚠️ **"n = 1 PUBLISHER" IS REFUTED HARDER THAN "n = 1 PIECE".** The designed
+limit is measured on Breitkopf alone. All six unrendered instances are held
+across **four publishers**: `beethoven-sym1-mvt1` m13, `beethoven-sym5-mvt4`
+m364 and `beethoven-sym9-mvt4` m657 on **Litolff**, `bruckner-sym5-mvt2` m163 on
+**Bruckneraga 1935**, `dvorak-sym9-mvt1` m24 on **Simrock 1894**. The last two
+are plates neither publisher this thread has ever measured. ⚠️ And
+`beethoven-sym9-mvt4` carries **14 length changes AND the engraving change in
+one movement** — by a wide margin the densest meter fixture in the corpus.
+
+⚠️ **WHAT THE JOIN STILL DOES NOT ESTABLISH.** Nothing about **legibility** —
+`image_type: "Normal Scan"` is IMSLP's own label, not a measurement, and this
+thread's own history is 4-found/0-false engraved against 1-found/9-false scanned
+on the SAME 22 bars. Nothing about whether the file is **on disk** (the catalog
+records what was ingested; `library/` is gitignored and a `verify` pass exists
+and was not run). And nothing about **which PDF page** a bar falls on — going
+from "bar 364" to "page N" needs a hand-verified window row, which does not
+exist for these. **That last one is the real remaining cost**, and it is the
+only part of this that genuinely needs the desktop.
 
 ### ⚠️⚠️ `Q.METER` carries `segments` and NOTHING DOWNSTREAM READS THEM
 
@@ -5519,11 +6158,12 @@ All in `backend/.env` (local) or `backend/.env.production` (prod):
 | `OMR_CHOIR_GROUPING` | `1` on (default since 2026-09-05) → cues for choir-barred / differently-indented pages (pair-local left-edge merge + grouped-system open-score guard). `0` disables. See the knobs table. |
 | `OMR_BRACKET_COLUMNS` | `1` on (default since 2026-09-07) → decide bracket groups by counting systemic COLUMNS rather than crossing pixels; within-page instability 0.384 → 0.055, and 22/22 + 15/15 against print truth where the pixel rule reads 16/22 and 0/15. `0` restores the pixel rule. See the knobs table. |
 | `OMR_KEYSIG_CORROBORATION` | `1` on (default since 2026-09-07) → revert a mid-staff key-signature change no other staff of the same system also changes at the same bar; stops all 7 spurious flips measured. ⚠️ The corpus has no real mid-staff key change, so only the benefit is measured — the cost of a wrong revert is not. `0` disables. See the knobs table. |
-| `OMR_METER_CARRY` | `0` off (default) → staged pipeline only: a system that read no meter takes the last one that WAS read, as a CANDIDATE the bars then confirm or refuse (signed terms; two contradicting bars outweigh any carry). All three *Andante* systems refuse the wrong meter with no movement detector. Off on **n**, not on the hazard. See the knobs table. |
-| `OMR_METER_FROM_BARS` | `0` off (default) → staged pipeline only: a system with no meter and no carry takes the bar LENGTH its own bars agree on; the printed FORM is borrowed only from a system that READ one of that length, else it abstains naming the length and every spelling it could be. Cannot cross a movement boundary — it never looks at another system. See the knobs table. |
+| `OMR_METER_CARRY` | **`1` on (default since 2026-09-15, Sean's call)** → staged pipeline only: a system that read no meter takes the last one that WAS read, as a CANDIDATE the bars confirm or refuse. Landed with `A-METER-6`: an uncorroborated change may not be carried off its system. ⚠️ The misread-glyph objection is OVERRIDDEN, not resolved, and the cost side is unpriced. `0`/`off` disables. See the knobs table. |
+| `OMR_METER_FROM_BARS` | **`1` on (default since 2026-09-15, Sean's call)** → staged pipeline only: a system with no meter and no carry takes the bar LENGTH its own bars agree on; the FORM is borrowed only from a system that READ one of that length. Cannot cross a movement boundary. `0`/`off` disables. See the knobs table. |
 | `OMR_SCORE_LANGUAGE` | `0` off (default) → read the document's printing tradition (Italian `Flauti/Corni/Trombe` vs German `Flöten/Hörner/Trompeten`) from its own unambiguous labels, and use it to settle abbreviations the lexicon resolves one way for every score. DETECTION is unconditional and recorded in `contextual.score_language`; only the re-decision is behind the flag. Decides ONLY aliases `AMBIGUOUS_ALIASES` does not declare — a declared one is owned by the clef-informed position channel, and two signals sharing an ancestor are one signal. Measured: 167 of 1422 labels ambiguous, 167 reachable, **9 re-decided** — all `Tb.` → Trombone on Litolff's Beethoven 6, a work whose IMSLP roster has 2 trombones and no tuba. See [benchmarks/omr-score-language-2026-09/FINDINGS.md](benchmarks/omr-score-language-2026-09/FINDINGS.md). |
 | `OMR_METER_SEGMENTS` | **`1` on (default since 2026-09-09, Sean's call)** → staged pipeline only: the exporter reads the meter in force at each BAR out of `Q.METER`'s `segments`, so a printed mid-system meter change can reach a file at all. Engraved 4 printed / 4 found / 1 → 0 false. ⚠️ On a SCAN its false segments now reach the file too (one page: `<time>` 41 → 138) — priced, and overridden rather than resolved. `0` restores the per-run meter. See the knobs table. |
 | `OMR_WHOLE_REST_INK` | **`1` on (default, and the behaviour that shipped 2026-09-15)** → staged pipeline only: refuse to write a pitched `<note>` where the record says the ink is a WHOLE REST. Notes 1618 → 1596, 22 removed / 0 added, on 25 of 25 hand-adjudicated crops. ⚠️ Flagged because it is the one staged repair that DELETES music, on n = 1 document with two of six cuts off a plateau. `0` restores the pre-2026-09-15 exporter exactly, leaving the verdict decided and on the record. See the knobs table. |
+| `OMR_METER_TEMPLATE_AT_BAR` | `0` off (default) → staged pipeline only: ask the TEMPLATE reader at candidate mid-staff bar heads, of every staff of the system, and admit a reading only where 3 staves agree on one meter at one bar. Measured on 1,612 empty windows over 2 publishers: 16 / 2 / **0** spurious columns at a 1 / 2 / 3-staff quorum. UNPRICED — a GATHER change needs two full re-gathers. See the knobs table. |
 | `OMR_PARTIAL_DYNAMICS` | `off` (default) → a dynamic letter run that spells no known word is dropped whole; `complete` exports only what every surviving completion agrees on (`s` → `sf`); `other` adds `<other-dynamics>`. Measured over the 20-row gate: +15 / +30 edits, NOT ONE ROW BETTER. See the knobs table. |
 | `OMR_ROSTER_LABELS` | `0` off (default) → resolve margin labels against the work's catalog roster: recover a truncated name, disambiguate `Basso.`, veto a singer on a work with no singers. Measured; 1.4% of real margin labels. See the knobs table. |
 | `OMR_WORK_ID` | Name the catalogued work for a PDF the score library does not hold — the score LIBRARY's id (`tchaikovsky--symphony-6`), never the dossier's (`tchaikovsky-sym6-mvt2`). Consumed only by `OMR_ROSTER_LABELS`; nothing sets it by default. |

@@ -1,0 +1,291 @@
+### probe_reach.py   (exit 0)
+═══ REACH ═══
+  committed arms read ............ 67
+  distinct fixtures .............. 6
+        boundary-m150-180
+        boundary-m204-232
+        brahms1-317803
+        brahms1-m1-22
+        brahms4-m386-412
+        litolff-984073
+  tree generations .............. [1, 2, 3, 4, 5, 7]
+      ⚠️ only generations >= 5 carry the cautionary rule at all
+  DISTINCT CAUTIONARIES ......... 3
+  ...on how many fixtures ....... 2 of 6
+        brahms1-317803: 2
+        brahms1-m1-22: 1
+  fixtures with ZERO ............ 4
+        boundary-m150-180
+        boundary-m204-232
+        brahms4-m386-412
+        litolff-984073
+
+═══ CONTESTABLE PAIRS ═══
+  A cautionary names the meter of the NEXT system, so a pair exists
+  only where that next system is in the same run.
+
+  brahms1-317803  system/0/0  cell 7
+      CAUTIONARY    9/8   support   26.5   staves   9   loose 1
+      it announces system/1/0
+      OPENING       9/4   share      1.0   staves  10
+      TRUTH         9/8   -> DISAGREE   cautionary=RIGHT  opening=WRONG
+      seen in 2 arms: ['m5brahms1scan-OFF', 'm7brahms1scan-OFF']
+
+  brahms1-317803  system/1/0  cell 6
+      CAUTIONARY    4/4   support    3.5   staves   1   loose 1
+      it announces system/1/1
+      OPENING      None   share     None   staves None
+      TRUTH         6/8   -> OPENING_UNKNOWN   cautionary=WRONG  opening=n/a
+      seen in 2 arms: ['m5brahms1scan-OFF', 'm7brahms1scan-OFF']
+
+  brahms1-m1-22  system/0/0  cell 6
+      CAUTIONARY    9/8   support   57.0   staves  19   loose 0
+      it announces system/1/0
+      OPENING       9/8   share      1.0   staves  21
+      TRUTH         9/8   -> AGREE   cautionary=RIGHT  opening=RIGHT
+      seen in 2 arms: ['m5brahms1eng-OFF', 'm7brahms1eng-OFF']
+
+
+═══ THE STRUCTURAL BLIND SPOT (checked against the source) ═══
+  `_meter_changes` skips cell 0 ...... True
+  -> a system whose only cell IS cell 0 cannot produce a cautionary row,
+     however clearly the courtesy signature is printed on it.
+═══ SUMMARY ═══
+  cautionaries ................... 3
+  ...with a next system in the run 3
+      AGREE (a control) .......... 1
+      DISAGREE (a CONTEST) ....... 1
+      OPENING UNKNOWN (a FILL) ... 1
+  fixtures carrying one .......... 2  ['brahms1-317803', 'brahms1-m1-22']
+  DISTINCT PIECES OF MUSIC ....... 1
+
+wrote /home/user/ReEngrave/.claude/worktrees/agent-a726bdda9bcf96da4/benchmarks/omr-meter-cautionary-2026-09/out/reach.json
+
+### probe_contest.py   (exit 0)
+═══ REACH ═══
+  contestable pairs .............. 3
+      AGREE            1
+      DISAGREE         1
+      OPENING_UNKNOWN  1
+
+═══ 1. THE TWO SIDES, IN EVERY QUANTITY THE RECORD CARRIES ═══
+  pair                                caut  open  truth c.support  c.staves   c.loosec.bars_fitc.bars_contradict   o.share  o.staves
+  brahms1-317803 system/0/0            9/8   9/4    9/8      26.5         9         1         0         1       1.0        10
+  brahms1-317803 system/1/0            4/4  None    6/8       3.5         1         1         0         0      None      None
+  brahms1-m1-22 system/0/0             9/8   9/8    9/8      57.0        19         0         0         0       1.0        21
+
+  quantities BOTH sides state ... 1  ['staves']
+  ⚠️ `support` is the cautionary's alone; `share` is the opening's alone.
+     There is no common currency for the contest to be decided IN.
+  ⚠️ on the ONE contested pair, the shared quantity reads caut 9 vs opening 10 — the WRONG reading has MORE
+
+═══ 2. TRUE vs FALSE CAUTIONARY (the cautionary side alone) ═══
+  ⚠️ This is a DIFFERENT question from the contest: it asks whether
+     the cautionary can be trusted at all, not whether it beats the opening.
+  cautionaries that match the print   2
+  cautionaries that do not            1
+  caut_support           TRUE [26.5, 57.0]  FALSE [3.5]   SEPARATES, empty interval 3.5 -> 26.5
+  caut_staves            TRUE [9, 19]  FALSE [1]   SEPARATES, empty interval 1 -> 9
+  caut_loose             TRUE [0, 1]  FALSE [1]   does NOT separate
+  caut_bars_fit          TRUE [0, 0]  FALSE [0]   does NOT separate
+  caut_bars_contradict   TRUE [0, 1]  FALSE [0]   does NOT separate
+
+═══ 3. CANDIDATE RULES, SCORED AGAINST THE PRINT ═══
+
+  R0 do nothing (incumbent)
+      fixed 0   BROKEN 0   ABSTENTION->WRONG 0   kept-right 1   kept-wrong 2
+        brahms1-317803 system/0/0          DISAGREE           9/4 ->   9/4 (truth 9/8)  kept wrong
+        brahms1-317803 system/1/0          OPENING_UNKNOWN   None ->  None (truth 6/8)  kept wrong
+        brahms1-m1-22 system/0/0           AGREE              9/8 ->   9/8 (truth 9/8)  kept right
+
+  R1 cautionary always wins
+      fixed 1   BROKEN 0   ABSTENTION->WRONG 1   kept-right 1   kept-wrong 0
+        brahms1-317803 system/0/0          DISAGREE           9/4 ->   9/8 (truth 9/8)  FIXED
+        brahms1-317803 system/1/0          OPENING_UNKNOWN   None ->   4/4 (truth 6/8)  ⚠️ ABSTENTION -> A WRONG ANSWER
+        brahms1-m1-22 system/0/0           AGREE              9/8 ->   9/8 (truth 9/8)  kept right
+
+  R2 more staves wins
+      fixed 0   BROKEN 0   ABSTENTION->WRONG 1   kept-right 1   kept-wrong 1
+        brahms1-317803 system/0/0          DISAGREE           9/4 ->   9/4 (truth 9/8)  kept wrong
+        brahms1-317803 system/1/0          OPENING_UNKNOWN   None ->   4/4 (truth 6/8)  ⚠️ ABSTENTION -> A WRONG ANSWER
+        brahms1-m1-22 system/0/0           AGREE              9/8 ->   9/8 (truth 9/8)  kept right
+
+  R3 support >= 10.0
+      fixed 1   BROKEN 0   ABSTENTION->WRONG 0   kept-right 1   kept-wrong 1
+        brahms1-317803 system/0/0          DISAGREE           9/4 ->   9/8 (truth 9/8)  FIXED
+        brahms1-317803 system/1/0          OPENING_UNKNOWN   None ->  None (truth 6/8)  kept wrong
+        brahms1-m1-22 system/0/0           AGREE              9/8 ->   9/8 (truth 9/8)  kept right
+
+  R4 >= 3 staves read it
+      fixed 1   BROKEN 0   ABSTENTION->WRONG 0   kept-right 1   kept-wrong 1
+        brahms1-317803 system/0/0          DISAGREE           9/4 ->   9/8 (truth 9/8)  FIXED
+        brahms1-317803 system/1/0          OPENING_UNKNOWN   None ->  None (truth 6/8)  kept wrong
+        brahms1-m1-22 system/0/0           AGREE              9/8 ->   9/8 (truth 9/8)  kept right
+
+  R5 fill an unknown opening only
+      fixed 0   BROKEN 0   ABSTENTION->WRONG 1   kept-right 1   kept-wrong 1
+        brahms1-317803 system/0/0          DISAGREE           9/4 ->   9/4 (truth 9/8)  kept wrong
+        brahms1-317803 system/1/0          OPENING_UNKNOWN   None ->   4/4 (truth 6/8)  ⚠️ ABSTENTION -> A WRONG ANSWER
+        brahms1-m1-22 system/0/0           AGREE              9/8 ->   9/8 (truth 9/8)  kept right
+
+  RX inverted cautionary (POSITIVE CONTROL for BROKEN)
+      fixed 0   BROKEN 1   ABSTENTION->WRONG 1   kept-right 0   kept-wrong 1
+        brahms1-317803 system/0/0          DISAGREE           9/4 ->   8/9 (truth 9/8)  still wrong
+        brahms1-317803 system/1/0          OPENING_UNKNOWN   None ->   4/4 (truth 6/8)  ⚠️ ABSTENTION -> A WRONG ANSWER
+        brahms1-m1-22 system/0/0           AGREE              9/8 ->   8/9 (truth 9/8)  BROKEN
+
+═══ 4. THE OPENING'S EVIDENCE, AND WHO READS IT ═══
+warning: The `fitz` API is deprecated and will be removed in future. Use `import pymupdf` instead.
+  score            written by GATHER True    read by adjudicate_meter False   <- ON THE RECORD AND READ BY NOTHING
+  runner_up        written by GATHER True    read by adjudicate_meter False   <- ON THE RECORD AND READ BY NOTHING
+  runner_up_score  written by GATHER True    read by adjudicate_meter False   <- ON THE RECORD AND READ BY NOTHING
+  score_margin     written by GATHER True    read by adjudicate_meter False   <- ON THE RECORD AND READ BY NOTHING
+  raw              written by GATHER True    read by adjudicate_meter True 
+  ✓ `raw` is this grep's own POSITIVE CONTROL: it is written AND read,
+     so a `False` in the read column is a fact and not a broken search.
+  ⚠️ `score` is the ONE quantity FINDINGS §4c measured separating this
+     document's true votes (0.744-0.781) from its false one (0.514) —
+     and the vote does not look at it. That figure is INHERITED, not
+     re-measured here: it needs the locator and the page.
+
+  ⚠️ CONTROL CHECK: the inverted rule breaks 1 pair(s).
+  ✓ the `BROKEN` column can go non-zero, so the zeros above are results.
+
+wrote /home/user/ReEngrave/.claude/worktrees/agent-a726bdda9bcf96da4/benchmarks/omr-meter-cautionary-2026-09/out/contest.json
+
+### probe_digit_reader.py   (exit 0)
+warning: The `fitz` API is deprecated and will be removed in future. Use `import pymupdf` instead.
+═══ PROVENANCE ═══
+  source_pdf           library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf
+  weights              tools/omr/training/data/weights/deepscoresv2-yolov8l-imgsz2048-ft-30ep.pt
+  dpi                  600
+  conf_threshold       0.25
+  iou_threshold        0.5
+  agnostic_nms         True
+  n_detections_total   10523
+  ⚠️ LEGACY arm: agnostic_nms=True where gather.py uses False, so
+     every count below is a LOWER BOUND on the staged path's.
+
+═══ REACH ═══
+  staff-cells walked ............. 706
+  ...holding any timeSig glyph ... 116
+  ...that form a DIGIT STACK ..... 69
+  ...that form a LETTER meter .... 0
+  ✓ positive control: the reader DOES form stacks on this artefact, so a zero at cell 0 is a fact about cell 0.
+
+═══ 1. CELL 0 — the opening, read by the DETECTOR ═══
+  This is the cell `adjudicate_meter` votes on via the TEMPLATE reader.
+  If the detector reads a stack here, a contest needs no cautionary.
+
+  page 1 system 0:  2 staves with a glyph at cell 0,  0 form a stack,  0 a letter
+        staff  5  ['timeSig1']  stack=None  letter=None
+        staff  9  ['timeSig6']  stack=None  letter=None
+  page 1 system 1:  0 staves with a glyph at cell 0,  0 form a stack,  0 a letter
+  page 2 system 0:  0 staves with a glyph at cell 0,  0 form a stack,  0 a letter
+  page 2 system 1:  0 staves with a glyph at cell 0,  0 form a stack,  0 a letter
+  page 3 system 0:  2 staves with a glyph at cell 0,  1 form a stack,  0 a letter   -> ['1/1']
+        staff  9  ['timeSig1', 'timeSig1']  stack=1/1  letter=None
+        staff 13  ['timeSig1']  stack=None  letter=None
+  page 3 system 1:  2 staves with a glyph at cell 0,  0 form a stack,  0 a letter
+        staff  2  ['timeSig1']  stack=None  letter=None
+        staff  9  ['timeSig1']  stack=None  letter=None
+
+  systems where the DETECTOR forms an opening stack: 1 of 6
+
+═══ 2. LAST CELL — how often does a cautionary get proposed ═══
+  ⚠️ Brahms 1 mvt 1 prints its ONLY meter change at m8, announced by the
+     cautionary at the end of pdf page 0. Pages 1-3 print NO cautionary at
+     all, so every last-cell reading here is a FALSE one — which is what
+     makes this the false-positive measurement.
+
+  staff-last-cells holding a glyph ... 7
+  ...forming a stack ................. 3
+  ...forming a letter ................ 0
+      page 1 sys 0 staff 13 cell 6/6  ['timeSig4', 'timeSig4', 'timeSig4']  -> 4/4
+      page 1 sys 1 staff 9 cell 7/7  ['timeSig4', 'timeSig4', 'timeSig4']  -> 4/4
+      page 2 sys 1 staff 7 cell 8/8  ['timeSig4', 'timeSig4', 'timeSig4']  -> 4/4
+
+═══ 2b. WHAT THE STACKS SAY ═══
+  69 stacks: {'1/1': 1, '4/1': 1, '4/4': 67}
+  ...of which `_PLAUSIBLE_METERS` refuses outright: {'1/1': 1, '4/1': 1}
+
+  where the committed truth says a meter IS printed (pdf page 1 only):
+      page 1 sys 0 cell 0  prints  9/8  ->  2 staves hold a glyph, 0 form a stack []
+      page 1 sys 0 cell 1  prints  6/8  ->  1 staves hold a glyph, 0 form a stack []
+  ⚠️ pdf pages 2-3 carry no committed per-cell truth here and are NOT scored.
+
+═══ 3. THE NOISE FLOOR ═══
+  staff-cells with a glyph that names NOTHING ... 47
+  glyph classes seen: {'timeSig1': 8, 'timeSig3': 1, 'timeSig4': 234, 'timeSig6': 1}
+  glyph-bearing cells at cell 0 .... 6   mid/late ... 110
+
+wrote /home/user/ReEngrave/.claude/worktrees/agent-a726bdda9bcf96da4/benchmarks/omr-meter-cautionary-2026-09/out/digits.json
+
+### probe_second_document.py   (exit 0)
+═══ REACH ═══
+  dossiers ....................... 97
+  committed catalog editions ..... 235
+
+═══ CONTROL: the derived work-id join ═══
+  catalog rows carrying an explicit dossier_prefix  41 rows, 6 distinct (work_id, prefix) pairs
+  ...reproduced by the derived mapping ............. 6
+  ✓ every explicit pair is reproduced.
+
+═══ CANDIDATES ═══
+  dossier works .................. 97
+  ...with a MID-MOVEMENT change .. 32
+  ...and a held edition PDF ...... 21
+  dossier ids the mapping refuses  17  ['boulanger-printemps-mvt1', 'dvorak-sym9-full', 'h186', 'holst-planets-full', 'holst-planets-mvt1', 'holst-planets-mvt2', 'holst-planets-mvt3', 'holst-planets-mvt4', 'holst-planets-mvt5', 'holst-planets-mvt6', 'holst-planets-mvt7', 'mozart-sym41-full', 'ravel-bolero-pt1', 'ravel-bolero-pt2', 'ravel-bolero', 'tchaikovsky-1812-overture', 'tchaikovsky-sym6-full']
+
+  ranked by how many changes the encoding holds (more changes = more chances one falls on a system break):
+
+  beethoven-sym9-mvt4           15 changes   943 bars   1 ed.  ["Henry Litolff's Verlag, Braunschwe"]
+        at bars [31, 39, 64, 66, 78, 82, 93, 209, 238, 332, 596, 657] ...
+  beethoven-sym9-mvt3            5 changes   157 bars   1 ed.  ["Henry Litolff's Verlag, Braunschwe"]
+        at bars [25, 43, 65, 83, 99]
+  brahms-sym2-mvt3               5 changes   240 bars   1 ed.  ['N. Simrock, Berlin, 1878, plate 80']
+        at bars [33, 107, 126, 188, 190]
+  brahms-sym2-mvt2               4 changes   105 bars   1 ed.  ['N. Simrock, Berlin, 1878, plate 80']
+        at bars [34, 63, 93, 98]
+  brahms-sym3-mvt1               4 changes   226 bars   1 ed.  ['Breitkopf & Härtel (Brahms Sämtlic']
+        at bars [36, 49, 151, 160]
+  beethoven-sym5-mvt4            3 changes   446 bars   2 ed.  ["Henry Litolff's Verlag, Braunschwe"]
+        at bars [155, 209, 364]
+  beethoven-sym9-mvt2            3 changes   575 bars   1 ed.  ["Henry Litolff's Verlag, Braunschwe"]
+        at bars [424, 547, 563]
+  beethoven-sym3-mvt3            2 changes   453 bars   1 ed.  ["Henry Litolff's Verlag, Braunschwe"]
+        at bars [392, 396]
+  beethoven-sym6-mvt3            2 changes   266 bars   1 ed.  ["Henry Litolff's Verlag, Braunschwe"]
+        at bars [166, 206]
+  brahms-sym1-mvt1               2 changes   513 bars   2 ed.  ['Breitkopf & Härtel (Brahms Sämtlic']
+        at bars [8, 9]
+  brahms-sym1-mvt3               2 changes   165 bars   2 ed.  ['Breitkopf & Härtel (Brahms Sämtlic']
+        at bars [71, 110]
+  brahms-sym4-mvt4               2 changes   311 bars   1 ed.  ['Breitkopf & Härtel (Brahms Sämtlic']
+        at bars [97, 129]
+  tchaikovsky-sym4-mvt1          2 changes   424 bars   1 ed.  ['P. Jurgenson, Moscow, plate 3376']
+        at bars [27, 414]
+  tchaikovsky-sym4-mvt4          2 changes   293 bars   1 ed.  ['P. Jurgenson, Moscow, plate 3376']
+        at bars [199, 223]
+  tchaikovsky-sym6-mvt1          2 changes   354 bars   2 ed.  ['Breitkopf und Härtel, Leipzig, pla', 'Eulenburg, Leipzig, plate 3892']
+        at bars [30, 31]
+  beethoven-sym1-mvt1            1 changes   300 bars   1 ed.  ["Henry Litolff's Verlag, Braunschwe"]
+        at bars [13]
+  beethoven-sym2-mvt1            1 changes   364 bars   1 ed.  ["Henry Litolff's Verlag, Braunschwe"]
+        at bars [35]
+  beethoven-sym7-mvt1            1 changes   450 bars   1 ed.  ["Henry Litolff's Verlag, Braunschwe"]
+        at bars [63]
+  brahms-sym1-mvt4               1 changes   458 bars   2 ed.  ['Breitkopf & Härtel (Brahms Sämtlic']
+        at bars [392]
+  bruckner-sym5-mvt2             1 changes   211 bars   1 ed.  ['BrucknerAGA, 1935']
+        at bars [163]
+
+  ⚠️ ALREADY IN THE METER CORPUS (cheapest to run):
+      beethoven-sym5-mvt1      0 mid-movement changes at []
+      beethoven-sym5-mvt4      3 mid-movement changes at [155, 209, 364]
+      brahms-sym1-mvt1         2 mid-movement changes at [8, 9]
+      brahms-sym1-mvt4         1 mid-movement changes at [392]
+
+wrote /home/user/ReEngrave/.claude/worktrees/agent-a726bdda9bcf96da4/benchmarks/omr-meter-cautionary-2026-09/out/second-document.json
+
+### worst exit code across all probes: 0

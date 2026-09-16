@@ -1,0 +1,12 @@
+REACH  staves with a cell 0 = 16  headers = 16  floor = 0.5  truth = C
+  bar head   4.0 spaces   answered   0/16   RIGHT (C)   0   median best score 0.3571
+  bar head   6.0 spaces   answered   0/16   RIGHT (C)   0   median best score 0.3746
+  bar head   8.0 spaces   answered   0/16   RIGHT (C)   0   median best score 0.3794
+  bar head  10.0 spaces   answered   0/16   RIGHT (C)   0   median best score 0.3794
+  bar head  12.0 spaces   answered  12/16   RIGHT (C)   9   median best score 0.5996
+  bar head  14.0 spaces   answered  16/16   RIGHT (C)  15   median best score 0.6254
+  bar head  16.0 spaces   answered  16/16   RIGHT (C)  15   median best score 0.6254
+  bar head  20.0 spaces   answered  16/16   RIGHT (C)  15   median best score 0.6254
+  HEADER window 16.0 spaces   answered 16/16   RIGHT (C) 15
+wrote /home/user/ReEngrave/.claude/worktrees/agent-af6d1c124ec900ba1/benchmarks/omr-meter-cautionary-arbiter-2026-09/out/where-the-opening-sits.json
+CHECK OK

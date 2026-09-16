@@ -1,0 +1,64 @@
+REACH  measures=1183  placed on a printed staff=1183
+
+=== ALL lone-pitched: 117
+   page 1 system 0: 35
+   page 2 system 0: 16
+   page 2 system 1: 11
+   page 3 system 0: 15
+   page 3 system 1: 21
+   page 4 system 0: 16
+   page 4 system 1: 3
+
+=== UNDERFULL lone-pitched: 43
+   page 1 system 0: 4
+   page 2 system 0: 6
+   page 2 system 1: 5
+   page 3 system 0: 8
+   page 3 system 1: 5
+   page 4 system 0: 13
+   page 4 system 1: 2
+
+=== the underfull bars, located
+    P1 m45   C5   quarter  dur=96   | page 2 sys 1 staff 0 bar 12/15 clef=treble
+    P1 m85   D5   quarter  dur=96   | page 4 sys 0 staff 0 bar 3/15 clef=treble
+    P1 m88   D5   quarter  dur=96   | page 4 sys 0 staff 0 bar 6/15 clef=treble
+    P1 m89   D5   quarter  dur=96   | page 4 sys 0 staff 0 bar 7/15 clef=treble
+    P2 m49   F5   quarter  dur=96   | page 3 sys 0 staff 1 bar 1/16 clef=treble
+    P2 m87   A5   quarter  dur=96   | page 4 sys 0 staff 1 bar 5/15 clef=treble
+    P3 m22   G4   quarter  dur=96   | page 2 sys 0 staff 2 bar 5/16 clef=treble
+    P3 m28   D5   eighth   dur=48   | page 2 sys 0 staff 2 bar 11/16 clef=treble
+    P3 m49   A4   quarter  dur=96   | page 3 sys 0 staff 2 bar 1/16 clef=treble
+    P3 m82   F5   quarter  dur=96   | page 4 sys 0 staff 2 bar 0/15 clef=treble
+    P4 m16   C4   quarter  dur=96   | page 1 sys 0 staff 3 bar 15/16 clef=bass
+    P4 m27   F3   quarter  dur=96   | page 2 sys 0 staff 3 bar 10/16 clef=bass
+    P5 m36   D5   eighth   dur=48   | page 2 sys 1 staff 4 bar 3/15 clef=treble
+    P5 m50   D5   eighth   dur=48   | page 3 sys 0 staff 4 bar 2/16 clef=treble
+    P5 m75   D5   eighth   dur=48   | page 3 sys 1 staff 4 bar 11/18 clef=treble
+    P6 m45   G6   quarter  dur=96   | page 2 sys 1 staff 5 bar 12/15 clef=treble
+    P6 m61   D5   quarter  dur=96   | page 3 sys 0 staff 5 bar 13/16 clef=treble
+    P6 m65   G4   quarter  dur=96   | page 3 sys 1 staff 5 bar 1/18 clef=treble
+    P6 m93   F5   quarter  dur=96   | page 4 sys 0 staff 5 bar 11/15 clef=treble
+    P6 m100  C5   eighth   dur=48   | page 4 sys 1 staff 5 bar 3/15 clef=treble
+    P7 m44   C1   quarter  dur=96   | page 2 sys 1 staff 6 bar 11/15 clef=bass
+    P7 m64   D4   16th     dur=24   | page 3 sys 1 staff 6 bar 0/18 clef=alto
+    P7 m75   E4   quarter  dur=96   | page 3 sys 1 staff 6 bar 11/18 clef=alto
+    P7 m86   E5   eighth   dur=48   | page 4 sys 0 staff 6 bar 4/15 clef=treble
+    P7 m88   E5   eighth   dur=48   | page 4 sys 0 staff 6 bar 6/15 clef=treble
+    P8 m2    D4   eighth   dur=48   | page 1 sys 0 staff 7 bar 1/16 clef=treble
+    P8 m31   F4   quarter  dur=96   | page 2 sys 0 staff 7 bar 14/16 clef=treble
+    P8 m62   E5   eighth   dur=48   | page 3 sys 0 staff 7 bar 14/16 clef=treble
+    P8 m69   E3   quarter  dur=96   | page 3 sys 1 staff 7 bar 5/18 clef=bass
+    P8 m82   F4   eighth   dur=48   | page 4 sys 0 staff 7 bar 0/15 clef=treble
+    P8 m84   E4   eighth   dur=48   | page 4 sys 0 staff 7 bar 2/15 clef=treble
+    P8 m86   E4   eighth   dur=48   | page 4 sys 0 staff 7 bar 4/15 clef=treble
+    P8 m87   F4   eighth   dur=48   | page 4 sys 0 staff 7 bar 5/15 clef=treble
+    P8 m93   B4   quarter  dur=96   | page 4 sys 0 staff 7 bar 11/15 clef=treble
+    P9 m31   B3   quarter  dur=96   | page 2 sys 0 staff 8 bar 14/16 clef=treble
+    P9 m33   F4   quarter  dur=96   | page 2 sys 1 staff 8 bar 0/15 clef=treble
+   P10 m5    B1   quarter  dur=96   | page 1 sys 0 staff 9 bar 4/16 clef=alto
+   P10 m12   A4   quarter  dur=96   | page 1 sys 0 staff 9 bar 11/16 clef=alto
+   P10 m18   D4   eighth   dur=48   | page 2 sys 0 staff 9 bar 1/16 clef=alto
+   P10 m50   B4   eighth   dur=48   | page 3 sys 0 staff 9 bar 2/16 clef=None
+   P10 m51   B4   quarter  dur=96   | page 3 sys 0 staff 9 bar 3/16 clef=None
+   P11 m52   G3   quarter  dur=96   | page 3 sys 0 staff 10 bar 4/16 clef=bass
+   P11 m88   F2   eighth   dur=48   | page 4 sys 1 staff 10 bar 9/15 clef=None
