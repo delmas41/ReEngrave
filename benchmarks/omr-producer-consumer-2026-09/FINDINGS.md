@@ -245,7 +245,43 @@ RULE was measured a week ago. What was never measured, because it could not
 happen, is the rule ARRIVING. A probe calling `decide()` directly would
 re-measure the rule and say nothing about either fault.
 
-RESULTS_PLACEHOLDER
+**THE DECISIVE CASE, and it closes a defect a sibling session recorded and
+explicitly left open.** Litolff Beethoven 5 is the document the whole Phase 2
+cleanup count is taken on; `work_id_for_pdf` resolves its PDF to
+`beethoven--symphony-5`, whose catalog roster is 10 instruments at
+`parse_rate 1.0`, `source_kind: catalog`, `complete=True`. Driving the staged
+decision on the label the page prints at slot 11:
+
+| | verdict | reason | roster outcome |
+|---|---|---|---|
+| WITHOUT a roster | **`Bass voice`** | `label` | `unchanged` |
+| WITH the roster | **`Contrabass`** | `roster` | `disambiguated` |
+
+That is exactly the row `benchmarks/omr-slot-index-2026-09/FINDINGS.md`
+records as *"a separate defect, found in passing and NOT fixed: the reference
+reads slot 11 as **`Bass voice`** (the page prints `Basso.`) — a singer on an
+orchestral score, the trap this file documents at length."* The rule to fix it
+already existed and had already been measured; **what was missing was three
+wires.**
+
+⚠️ **REACH IS SMALL AND THE CEILING IS THE CATALOG, NOT THE RULE.** The
+catalog holds 223 works, all `source_kind: catalog` — but a roster only
+reaches a document the store's editions map can join to one. `roster_for_pdf`
+ABSTAINS otherwise, which is every generated fixture and every upload, so the
+layer is a **no-op on the eleven-work engraved benchmark** unless a harness
+sets `OMR_WORK_ID`.
+
+⚠️ **A POPULATION ARM OVER THE 1,386-LABEL LEXICON CORPUS WAS RUN AND IS SLOW
+FOR A DOCUMENTED REASON**: `instruments.lookup` costs ~0.6 s on a string that
+matches NOTHING (it walks ~400 aliases twice, compiling a regex per alias),
+and Ravel's dump is 427 LaTeX-mangled Surya strings that match nothing —
+×2 arms, ×2 decisions that each call `lookup`. Its committed output is
+`roster-reach.txt`. ⚠️ **On the partial run that completed before the arm was
+rebuilt, 17 of 534 comparable verdicts moved**, every one Ravel's
+`V^{\text{elles}}` family recovering to **Cello** — a truncation the lexicon
+abstains on and the roster resolves. Treat that as an order of magnitude, not
+a rate: it is one work, and the arm it came from had a broken work-id map for
+the others (§4).
 
 ---
 
@@ -381,7 +417,15 @@ that.** Ranked, not built.
   descending through `environ.get`, `gather_coverage`'s anti-drift guard
   comparing `events` to `Q.EVENT`).
 - **`--check` is green on this tree**: 41 problems, **0 unaccounted, 0 stale**.
-- **Mutation battery**: `mutate.py`, MUTATION_PLACEHOLDER. Anchors are checked
+- **Mutation battery**: `mutate.py`, **22 arms, all RED, 0 survived, positive control GREEN**.
+  ⚠⚠ **Its first run reported ONE genuine survivor and it was the better
+  camouflage fault**: `test_an_unresolvable_subject_is_NAMED_never_defaulted`
+  is NAMED for the hazard and reached only the `Call` branch — defaulting an
+  unbound local Name to `'staff'` left it GREEN. *The name is what a reviewer
+  trusts and the only part they cannot check by reading.* Closed, and the arm
+  is red. ⚠ The run also mis-counted: the positive control was listed beside
+  the survivors as *"2 survived"* when there was one — the kind of miscount
+  that gets a genuine gap waved through. It is now reported apart.. Anchors are checked
   for **exactly one** occurrence and an ambiguous anchor is an ERROR, never a
   silent pass — the fault that made the fermata battery mutate a different
   function and the part-join battery pick the wrong of two `pdf_path`
