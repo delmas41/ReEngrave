@@ -82,9 +82,20 @@ for arm in $ARMS; do
     cat "$OUT/$arm.precheck"
     exit 2
   fi
-  OTHER="$(pgrep -f 'tools\.omr\.(staged|transcribe)' | grep -v "^$$\$" | wc -l | tr -d ' ')"
+  # ⚠️ THE EXECUTABLE MUST BE PYTHON, NOT MERELY A COMMAND LINE MENTIONING
+  # THE MODULE. `pgrep -f 'tools\.omr\.staged'` matches every shell whose
+  # command line happens to contain the string -- including this session's
+  # own tool-call wrappers and any commit message quoting it. Measured: it
+  # reported EIGHT in-flight OMR runs when there were none, and aborted the
+  # first arm. It failed CLOSED, which is the safe direction, but a gate
+  # that can never pass is not a gate. Matching `comm` (the executable)
+  # excludes a shell by construction.
+  OTHER="$(ps -axo comm=,args= 2>/dev/null \
+           | awk '$1 ~ /[Pp]ython/ && $0 ~ /-m tools\.omr\.(staged|transcribe)/' \
+           | wc -l | tr -d ' ')"
   if [ "$OTHER" != "0" ]; then
-    echo "ABORT at $arm: another OMR run is in flight (pgrep: $OTHER)."
+    echo "ABORT at $arm: another OMR run is in flight ($OTHER python process(es))."
+    ps -axo comm=,args= | awk '$1 ~ /[Pp]ython/ && $0 ~ /-m tools\.omr\.(staged|transcribe)/' | cut -c1-140
     exit 2
   fi
 
