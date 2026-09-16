@@ -2397,9 +2397,30 @@ def gather_external(log: Log, pws, *, dossier: Any = None,
                     frame=FRAME_PAGE, reason=ABSTAIN.OUT_OF_SCOPE,
                     note="no work id / roster supplied")
     else:
-        row = log.observe(R.DOCUMENT, Q.ROSTER_ENTRY, roster,
+        # ⚠️ A PLAIN DICT, NOT THE `WorkRoster` OBJECT, and the record is why.
+        # `staged/__main__.py` serialises with `default=str`, so a frozen
+        # dataclass reaches the file as its own `repr()` — a value a reader
+        # can look at and a consumer cannot parse. A quantity that survives
+        # the round trip only as prose is one step from being unread.
+        #
+        # ⚠️ `source_kind` TRAVELS WITH IT AND IS LOAD-BEARING. `work_roster`
+        # already refuses anything that is not `catalog`, but a consumer must
+        # be able to see the tier on the ROW: the `editions` tier is `page`,
+        # an OMR output of the same raster, and the whole reason a roster is
+        # admissible evidence here is that it does NOT fall silent when the
+        # scan is bad. Recording it is what lets a later reader check that.
+        value = {
+            "work_id": getattr(roster, "work_id", None),
+            "instruments": sorted(getattr(roster, "instruments", ()) or ()),
+            "families": sorted(getattr(roster, "families", ()) or ()),
+            "complete": bool(getattr(roster, "complete", False)),
+            "source_kind": getattr(roster, "source_kind", None),
+        } if not isinstance(roster, dict) else dict(roster)
+        row = log.observe(R.DOCUMENT, Q.ROSTER_ENTRY, value,
                           reader=READERS.CATALOG, frame=FRAME_PAGE,
-                          tier="roster")
+                          tier="roster",
+                          n_instruments=len(value["instruments"]),
+                          n_families=len(value["families"]))
         sources["roster"] = row.id
     return sources
 
