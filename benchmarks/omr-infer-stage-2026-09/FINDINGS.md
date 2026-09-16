@@ -304,6 +304,30 @@ prose. Repaired in the test. ⚠️ The third is worth the line: **a check that
 fails for the wrong reason is worse than no check**, because the next reader
 deletes it.
 
+### 5g. ⚠️⚠️ `Verdict.single_pass_revision` IS NEVER SERIALISED, SO NO RECORD CAN BE REPLAYED
+
+Found by `reinfer --control` failing on its first run against the real record,
+with `UphillConsequence` on a verdict **the original run had accepted**.
+
+`record.py` SETS that field (`:835`) and the fixpoint guard READS it
+(`:1026`), and `Verdict.to_json` does not carry it. It is the ONE exemption
+from the guard — the pipeline's single sanctioned loop, where durations vote
+the meter and the meter re-reads the durations — so **any consumer rebuilding
+a `Log` from a saved record hits a guard that refuses ten verdicts this
+document legitimately holds.**
+
+It is the *value computed and nothing reads it* family in a new form: a value
+computed, read by the guard, and **never written down**.
+
+⚠️ **NOT FIXED HERE, deliberately.** Adding a key to `Verdict.to_json` changes
+the serialisation of every record in the tree — which is precisely the
+"perturbs upstream by existing" hazard this stage is required not to cause,
+and `test_infer_bypass.py` asserts against it. `reinfer.py` restores the flag
+on replay and **prints the count**, because a silent blanket
+`single_pass_revision=True` would hide a genuine fixpoint, which is the one
+thing that guard exists to catch. Ranked in §9 for a session that can price
+the serialisation change.
+
 ---
 
 ## 6. THE MUTATION BATTERY
@@ -334,3 +358,200 @@ cost a session its first three-arm run; and an anchor that does not occur
 exactly once is reported as a **BAD ANCHOR error, not a skip** — two batteries
 here have silently mutated the wrong occurrence of a repeated line and
 reported a survivor that was really a mis-aimed arm.
+
+---
+
+## 3. REACH, MEASURED BEFORE THE RULE WAS CHOSEN
+
+One fresh gather, Litolff Beethoven 5 mvt 1, pdf pages 1-4, 26 min 37 s
+(`probe/reach.py`, `out/reach.json`). The probe exits non-zero if the record
+holds no narrowed durations at all, so a clean zero could not be mistaken for
+a clean result.
+
+| | |
+|---|--:|
+| `duration` verdicts | **2,993** — decided 2,636, **narrowed 357**, abstained 0 |
+| narrowed, on a notehead | **357** (all of them) |
+| narrowed with 2 / 3 candidates | 304 / 53 |
+| noteheads with no decided pitch | **215** |
+
+⚠️⚠️ **THE `no_pitch` REFUSAL IS THE DATA'S, NOT A PREFERENCE.** Of those 215
+noteheads, their staff's CLEF verdict is **abstained 108 / narrowed 107 —
+decided ZERO**. So filling a pitch means inferring a clef, and the only
+sideways route for a clef is the same part's staff on another system, which is
+keyed on the PART JOIN — measured wrong on this very document for 12 of 75
+staff-systems, with `P7` (Timpani) holding the VIOLA's staff on p3/s1. §4.
+
+**The coarse funnel said the sideways evidence is universally present:** all
+357 narrowed durations sit on a system with a DECIDED `Q.ONSET_COLUMN` and
+have other staves deciding in the same bar (338 of them with 6+ other staves).
+So nothing about the choice of population was speculative.
+
+⚠️ One probe artefact, stated so nobody quotes it: `reach.py`'s independence
+sample (874 of 3,101 pairs sharing a provenance row) keys a bar without the
+staff, so it includes SAME-STAFF pairs, which of course share their cell's
+rows. It is an upper bound and not the rule's number. The rule's own figure is
+in §7 and it is measured only across different staves.
+
+---
+
+## 7. THE MEASUREMENT
+
+⚠️ **ONE gather, adjudicated once, INFER'd once, exported twice.** The arms
+carry no detector jitter and no adjudication jitter; they differ only in
+whether INFER ran.
+
+### 7a. The control, before any arm is read
+
+    CONTROL: 16,923 of 16,923 verdicts reproduced exactly, 0 differ, +0 extra
+             33,736 of 33,736 observations replayed
+
+### 7b. ⚠️⚠️ THE FIRST RULE WAS TOO STRICT, THE FUNNEL SAID SO, AND THE FIX IS THE FINDING
+
+The rule first required the narrowed note's own next onset to be the very
+**next** column, and it inferred **1** of 357. `probe/funnel.py` — which
+CHECKS ITSELF against the rule's own count, so a duplicated loop cannot drift
+— put **335 of 356** at that one condition.
+
+**A column is an instant on the SYSTEM.** A staff playing a half note while
+its neighbours play eighths SKIPS columns, so adjacency only ever admitted the
+finest-subdivided staff in each bar — which is the staff least likely to have
+been narrowed in the first place. The claim never needed adjacency: it needs
+the witness to END WHERE THIS NOTE ENDS. If both go k -> m, the stretch of
+time is the same one for both, whatever lies between. Generalised:
+
+| | strict (k+1) | **general (k -> m)** |
+|---|--:|--:|
+| narrowed durations reached | 357 | 357 |
+| its event is in a column | 356 | 356 |
+| it has a next onset in this bar | 21 | **165** |
+| a witness spans the same k -> m | 6 | **40** |
+| the witnesses are unanimous | 4 | **35** |
+| **two or more INDEPENDENT witnesses** | 1 | **7** |
+| exactly one candidate carries that length | 1 | **7** |
+
+### 7c. What reached the file
+
+One record exported twice by one tree (`export_arm.py`, which stamps the
+exporting tree into the coverage JSON):
+
+| | OFF | ON |
+|---|--:|--:|
+| parts | 75 | 75 |
+| measures | 1,183 | 1,183 |
+| note + rest elements | 2,460 | **2,466** (+6) |
+| `notes_not_written: duration_narrowed` | 339 | **333** (−6) |
+| `notes_not_written: no_pitch` | 215 | 215 |
+| `notes_not_written: owned_by_another_staff` | 176 | 176 |
+
+**The accounting IDENTITY holds:**
+`notes(ON) − notes(OFF) == Δnarrowed − Δno_pitch`, i.e. `+6 == +6 − 0`. The
+containment control holds too: every note the OFF arm wrote is still in the ON
+arm, in order, in the same bar.
+
+⚠️ **7 inferred, 6 reach the file.** The seventh is `glyph/4/0/8/9/3`, whose
+`Q.GLYPH_OWNER` names a different staff — so the exporter refuses it as
+`owned_by_another_staff` before it ever looks at the duration. **The one note
+the rule could speak about there is a cross-staff duplicate the ownership
+decision had already disowned**, which is the two stages agreeing, not a
+defect.
+
+⚠️ **The OFF arm reproduces the cleanup artefact to the unit** —
+`duration_narrowed` 339, `no_pitch` 215 — which is the evidence that this is
+the same document and the same pipeline the Phase 2 count was taken on.
+
+### 7d. Hazard (b) is not a no-op: it refuses 8 of 35
+
+Of the 28 unanimous cases stopped for want of two INDEPENDENT witnesses:
+
+* **20** had only ONE witness verdict — a single witness is not corroboration;
+* **8** had TWO or THREE witness verdicts that **collapsed into ONE
+  independent group** (4 at 2→1, 4 at 3→1).
+
+So the correlation computation is doing real work on real data: a naive count
+of distinct witnesses would have made 8 more inferences that rest on a shared
+provenance row. And among the 7 that landed, five witness verdicts reduce to
+**3** independent groups in four cases.
+
+⚠️ `COLUMN_MIN_INDEPENDENT_WITNESSES = 2` is **UNMEASURED and its price is now
+known: 28**. It is not lowered to 1 — a single witness is exactly what hazard
+(b) says cannot be trusted — but the number is stated rather than buried.
+
+### 7e. ⚠️ THE ARGMAX REFUSAL EARNS ITS KEEP: 2 of 7 chose the reader's SECOND candidate
+
+`was_readers_top_candidate` is **False on 2 of the 7**. So in two cases the
+sideways evidence overturned the reader's own support ordering — which is
+precisely what an argmax on `support` would have got wrong, silently, with a
+number that reads as evidence.
+
+### 7f. The self-check, on an invariant the rule did not read
+
+`probe/self_check.py` proved independence first (the rule reads no `meter`;
+`OMR_METER_FROM_BARS` is off) and then ran `bar_fill.py` on both arms:
+
+| bars (1,183) | OFF | ON |
+|---|--:|--:|
+| **exact** | 449 (38.0%) | **451 (38.1%)** |
+| SHORT | 218 (18.4%) | 216 (18.3%) |
+| OVERFULL | 516 (43.6%) | 516 (43.6%) |
+
+**Two bars became exact and none became overfull.** One-sided and in the right
+direction, on a quantity the rule never consulted.
+
+⚠️⚠️ **+2 of 1,183 IS NOT A RESULT TO CELEBRATE AND MUST NOT BECOME A TARGET.**
+Four of the six written notes landed in bars that are still short. The number
+is a REPORT and an alarm: bar fill is gamed by emitting FEWER symbols, so an
+inference stage optimising it would learn to suppress. Nothing in `tools/`
+reads it.
+
+---
+
+## 8. ⚠️ WHAT IS NOT ESTABLISHED
+
+* **ACCURACY. Nothing here was checked against the print.** Six notes were
+  added to the file and **no human has looked at one of them**. The self-check
+  is an internal-consistency invariant, not truth. On a cleanup count these
+  six are six things a human might have to take back out — an unadjudicated
+  COST, exactly as the voices work's 31 refused ties and the dedupe work's
+  `ff` 47 → 39 were.
+* **n = 1 document, 1 publisher, 4 pages of ~16**, and Litolff `984073` is the
+  *low-res bitonal* scan this file already calls the pessimistic end of the
+  corpus. **Breitkopf Brahms 1 is where every figure here should be
+  re-measured** — it fires 371 flag boxes and 656 dots against this
+  document's 49 and 35, so its duration readings, its narrowings and its
+  onset columns are all a different population.
+* **The ENGRAVED family is untouched, by construction, and was not measured.**
+* **Whether the witnesses are truly independent.** `independent_groups` is
+  ONE-SIDED: disjoint provenance closures prove the ROWS differ, they do not
+  prove the READINGS fail independently. Two staves of one badly-printed page
+  share no row and still degrade together — the convention/ink correlation
+  this repo records as real and unquantified. **Nothing here measures it.**
+* **`COLUMN_MIN_INDEPENDENT_WITNESSES = 2` is asserted, not measured** (§7d).
+* **`readjudicate.py` and `reexport_arm.py` were not run** (§2a) — the bypass
+  claim for those two rests on the tests plus a grep, which is weaker.
+* **The 191 narrowed notes that run to the barline are out of reach BY
+  DESIGN**, not by accident: their length is the bar's, which is the meter,
+  which this rule may not read without destroying its own self-check.
+* **The 125 that lose every witness are a READING shortfall upstream**, not
+  this rule's — the other staves in those bars have no decided duration to
+  offer. The same shape as *76% of merged arcs bind fewer than two noteheads*.
+
+---
+
+## 9. WHAT A HUMAN STILL OWES A DECISION ON
+
+1. ⚠️⚠️ **`Verdict.single_pass_revision` is not serialised** (§5g). It is SET
+   (`record.py:835`) and READ by the fixpoint guard (`:1026`) and absent from
+   `Verdict.to_json`, so **no saved record can be replayed through that
+   guard** — ten verdicts on this record need it. Adding it to `to_json`
+   changes the serialisation of every record in the tree, which is the exact
+   hazard this stage was required not to cause, so it was **deliberately not
+   fixed here**. Someone should price it.
+2. **Whether the six added notes are right.** They need the print. Until then
+   the flag stays off.
+3. **Whether `OMR_INFER` should ever default on.** Not on this evidence: n = 1
+   document, no accuracy, 6 notes.
+4. **Whether the 191 barline-bounded notes are worth a second rule** that
+   reads the meter — which would be a legitimate INFER rule but would need a
+   different self-check, since `bar_fill` would then be scoring the quantity
+   it optimises.

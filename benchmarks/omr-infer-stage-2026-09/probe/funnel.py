@@ -100,19 +100,19 @@ def main() -> int:
                         f["2 STOP: its event matched no column"] += 1
                         continue
                     f["2 its event is in a column"] += 1
-                    follow = nxt.get((staff, k))
-                    if follow != k + 1:
-                        f["3 STOP: its own next onset is not the next column"] += 1
-                        detail[f"   own next column = {follow}"] += 1
+                    end = nxt.get((staff, k))
+                    if end is None:
+                        f["3 STOP: no next onset in this bar (runs to the barline)"] += 1
                         continue
-                    f["3 its own next onset is the next column"] += 1
+                    f["3 it has a next onset in this bar"] += 1
+                    detail[f"   spans {end - k} column(s)"] += 1
 
                     votes, wit = {}, []
                     n_at_col = len(at_col.get(k, {})) - 1
                     for st2, e2 in sorted(at_col.get(k, {}).items()):
                         if st2 == staff:
                             continue
-                        if nxt.get((st2, k)) != k + 1:
+                        if nxt.get((st2, k)) != end:
                             continue
                         beats, ids = I._event_beats(log, st2, cell, system,
                                                     e2["glyphs"])
@@ -121,7 +121,7 @@ def main() -> int:
                         votes.setdefault(beats, []).extend(ids)
                         wit.extend(ids)
                     if not votes:
-                        f["4 STOP: no witness goes k->k+1 with a decided length"] += 1
+                        f["4 STOP: no witness spans k->m with a decided length"] += 1
                         detail[f"   staves at this column = {n_at_col}"] += 1
                         continue
                     f["4 at least one witness votes"] += 1

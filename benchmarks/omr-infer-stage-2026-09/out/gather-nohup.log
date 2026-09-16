@@ -1200,3 +1200,43 @@ ADJUDICATE
   adjudicate ornament_owner: 3657 verdicts so far
   adjudicate stem_direction: 6004 verdicts so far
   adjudicate tuplet_ratio: 6005 verdicts so far
+  adjudicate duration: 8998 verdicts so far
+  adjudicate event: 10115 verdicts so far
+  adjudicate voices: 11298 verdicts so far
+  adjudicate onset_column: 11305 verdicts so far
+  adjudicate wedge_anchor: 11306 verdicts so far
+  adjudicate meter: 11313 verdicts so far
+  adjudicate dynamic: 12496 verdicts so far
+  adjudicate direction: 13679 verdicts so far
+GROUPS
+  groups meter_across_staves: 7 facts, 0 disagree
+  groups measure_count_across_staves: 7 facts, 0 disagree
+  groups instrument_across_systems: 13 facts, 0 disagree
+  groups clef_across_systems: 13 facts, 0 disagree
+  groups staff_group_across_systems: 13 facts, 0 disagree
+  groups key_signature_across_systems: 13 facts, 0 disagree
+EVALUATE
+  evaluate name_part: 0 fired so far
+  evaluate restate_pitch: 2094 fired so far
+  evaluate respell_accidental: 2513 fired so far
+  evaluate move_glyph: 3142 fired so far
+  evaluate size_measure_rest: 3234 fired so far
+  evaluate reconcile_duration: 3244 fired so far
+wrote benchmarks/omr-cleanup-count-2026-09/out/record-p1-p4.json
+
+── ADJUDICATE ─────────────────────────────────────────
+  decided:   {'arc_kind': 779, 'arc_owner': 779, 'articulation_owner': 82, 'clef': 69, 'direction': 1183, 'duration': 2636, 'dynamic': 1175, 'event': 1117, 'fermata_owner': 55, 'glyph_owner': 1386, 'key_signature': 48, 'measure_partition': 75, 'meter': 1, 'onset_column': 7, 'part_partition': 1, 'slot_index': 12, 'staff_group': 75, 'staff_ordinal': 75, 'stem_direction': 1443, 'system_membership': 7, 'system_staff_count': 7, 'tuplet_ratio': 1, 'voices': 1117, 'wedge_anchor': 1}
+  abstained: {'articulation_owner': {'no_notehead': 16}, 'clef': {'no_candidates': 3, 'margin_below_floor': 3}, 'duration': {'beams_ambiguous': 357}, 'dynamic': {'unspellable': 8}, 'fermata_owner': {'no_carrier': 12}, 'group_symbol': {'no_identity': 7}, 'instrument': {'no_evidence': 75}, 'key_signature': {'no_evidence': 17, 'needs_clef': 6, 'run_fits_no_slot_table': 4}, 'meter': {'no_evidence': 2, 'too_few_staves_read_it': 4}, 'ornament_owner': {'no_notehead': 1}, 'slot_index': {'reference_names_nothing': 63}, 'stem_direction': {'no_stem': 793, 'stems_disagree': 111}, 'voices': {'nothing_to_split': 66}}
+── GROUPS ─────────────────────────────────────────────
+  clef_across_systems: 13 facts, 69 witnesses, 13 uninformative, {'none': 1, 'single': 12, 'unanimous': 0, 'majority': 0, 'split': 0}
+  instrument_across_systems: 13 facts, 0 witnesses, 13 uninformative, {'none': 13, 'single': 0, 'unanimous': 0, 'majority': 0, 'split': 0}
+  key_signature_across_systems: 13 facts, 48 witnesses, 13 uninformative, {'none': 1, 'single': 12, 'unanimous': 0, 'majority': 0, 'split': 0}
+  measure_count_across_staves: 7 facts, 75 witnesses, 0 uninformative, {'none': 0, 'single': 0, 'unanimous': 7, 'majority': 0, 'split': 0}
+  meter_across_staves: 7 facts, 25 witnesses, 3 uninformative, {'none': 2, 'single': 1, 'unanimous': 4, 'majority': 0, 'split': 0}
+  staff_group_across_systems: 13 facts, 75 witnesses, 13 uninformative, {'none': 1, 'single': 12, 'unanimous': 0, 'majority': 0, 'split': 0}
+  ⚠️ witnessed_by_nobody (no witness spoke): ['instrument_across_systems']
+  ⚠️ checked_nothing (never two independent signals -- corroborated NOTHING, however busy it looks): ['clef_across_systems', 'instrument_across_systems', 'key_signature_across_systems', 'staff_group_across_systems']
+  ⚠️ DISAGREEMENTS: 0 (each implicates its WHOLE group, not its dissenter)
+── EVALUATE: 3244 fired, 9260 skipped
+── DECLARED STUBS: 0 decisions, 1 consequences
+end    2026-09-16T03:45:44Z

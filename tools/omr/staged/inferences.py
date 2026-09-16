@@ -137,12 +137,13 @@ def _event_beats(log: Log, staff: int, cell: int, system: Subject,
     sideways=True,
     bound=(
         "It collapses a NARROWED duration to one of that reader's OWN "
-        "candidates and nothing else; it acts only on an event standing in a "
-        "corroborated onset column whose own next event is in the very next "
-        "column; every independent witness must agree on one length, and one "
-        "dissenter refuses the whole inference; where two candidates carry "
-        "that length it refuses rather than choosing. It writes at most one "
-        "verdict per glyph and reads no value it has written."),
+        "candidates and nothing else; it acts only on an event that stands in "
+        "a corroborated onset column k and has a next onset at some column m "
+        "IN THE SAME BAR, and only on witnesses that span that same k to m; "
+        "every independent witness must agree on one length, and one dissenter "
+        "refuses the whole inference; where two candidates carry that length "
+        "it refuses rather than choosing. It writes at most one verdict per "
+        "glyph and reads no value it has written."),
     why_witnesses_are_independent=(
         "Each witness is a DIFFERENT STAFF's reading of DIFFERENT INK, and "
         "that is checked rather than asserted: `independent_groups` "
@@ -165,9 +166,15 @@ def collapse_duration_by_column(log: Log, system: Subject) -> List[Proposal]:
 
     **The claim, stated so it can be argued with.** An onset column is an
     instant. If this staff's event stands at column k and its own next event
-    stands at column k+1, then this note sounds for exactly the gap between
-    those two instants. If a NEIGHBOURING staff also goes k -> k+1 and its
-    note there is DECIDED at d, then the gap IS d -- so this note is d too.
+    stands at column m, then this note sounds for exactly the gap between
+    those two instants. If a NEIGHBOURING staff also goes k -> m and its note
+    there is DECIDED at d, then the gap IS d -- so this note is d too.
+
+    ⚠️ **m, NOT k+1**, and the first draft got that wrong in a way worth
+    keeping: a column is an instant on the SYSTEM, so a staff playing a half
+    note while its neighbours play eighths skips columns, and adjacency
+    admitted only the finest-subdivided staff in each bar. Measured, that cost
+    335 of 356. See the comment at the `end` lookup.
 
     ⚠️ IT IS NOT ENTAILMENT AND THAT IS WHY IT IS HERE AND NOT IN EVALUATE.
     Three ways it can be wrong, all real: the note may be followed by a rest
@@ -230,9 +237,27 @@ def collapse_duration_by_column(log: Log, system: Subject) -> List[Proposal]:
             k = _column_index(columns, e["x"], tol_px)
             if k is None:
                 continue
-            if nxt_col.get((staff, k)) != k + 1:
-                # This staff's own next onset is not the very next instant, so
-                # the neighbours' single-gap length does not describe it.
+            # ⚠️⚠️ THE NEXT ONSET, NOT THE NEXT COLUMN, AND THE FIRST DRAFT HAD
+            # IT WRONG. A column is an instant on the SYSTEM, so a staff
+            # playing a half note while its neighbours play eighths SKIPS
+            # several columns — and requiring `k + 1` therefore only ever
+            # admitted the staff with the finest subdivision in the bar, which
+            # is the staff least likely to have been narrowed in the first
+            # place. Measured on Litolff Beethoven 5 p1-4: **335 of 356
+            # narrowed durations stopped here**, and only 191 of those had no
+            # next onset at all — the other 144 simply jumped.
+            #
+            # The claim never needed adjacency. It needs the WITNESS TO END
+            # WHERE THIS NOTE ENDS: if both go from column k to column m, the
+            # stretch of time is the same one for both, whatever lies between.
+            # `k + 1` is just the special case m == k + 1.
+            end = nxt_col.get((staff, k))
+            if end is None:
+                # No next onset in this bar, so this note runs to the BARLINE
+                # and its length is the bar's — which is the meter, which this
+                # rule may not read (it would make `bar_fill` a measurement of
+                # the quantity the rule optimises). 191 of 357 land here and
+                # they are out of reach BY DESIGN, not by accident.
                 continue
             for g in e["glyphs"]:
                 sub = Subject(Kind.GLYPH, page=system.page,
@@ -241,23 +266,29 @@ def collapse_duration_by_column(log: Log, system: Subject) -> List[Proposal]:
                 prior = log.verdict(Q.DURATION, sub)
                 if prior is None or prior.outcome is not Outcome.NARROWED:
                     continue
-                p = _propose(log, system, prior, sub, cell, staff, k,
+                p = _propose(log, system, prior, sub, cell, staff, k, end,
                              at_col, nxt_col, col_v, bar)
                 if p is not None:
                     out.append(p)
     return out
 
 
-def _propose(log, system, prior, sub, cell, staff, k, at_col, nxt_col,
+def _propose(log, system, prior, sub, cell, staff, k, end, at_col, nxt_col,
              col_v, bar) -> Optional[Proposal]:
-    """Gather the witnesses for one narrowed glyph and propose, or not."""
+    """Gather the witnesses for one narrowed glyph and propose, or not.
+
+    ⚠️ A witness must begin at column `k` AND END AT COLUMN `end` — the same
+    two instants this note spans. A witness that ends anywhere else is
+    measuring a different stretch of time and is not a witness to this note's
+    length at all.
+    """
     votes: Dict[float, List[str]] = {}
     witness_ids: List[str] = []
     for st2, e2 in sorted(at_col.get(k, {}).items()):
         if st2 == staff:
             continue
-        if nxt_col.get((st2, k)) != k + 1:
-            continue                     # its note spans more than this gap
+        if nxt_col.get((st2, k)) != end:
+            continue                # it ends elsewhere: a different stretch
         beats, ids = _event_beats(log, st2, cell, system, e2["glyphs"])
         if beats is None:
             continue

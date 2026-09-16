@@ -1,14 +1,14 @@
 {
   "reach": {
     "collapse_duration_by_column": {
-      "inferred": 1
+      "inferred": 7
     }
   },
-  "inferred": 1,
+  "inferred": 7,
   "skipped_reasons": {},
   "by_rule": {
-    "collapse_duration_by_column": 1
+    "collapse_duration_by_column": 7
   },
-  "new_verdicts": 1,
+  "new_verdicts": 7,
   "all_new_are_labelled": true
 }
