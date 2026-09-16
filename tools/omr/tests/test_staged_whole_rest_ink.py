@@ -21,6 +21,7 @@ becomes when the one witness it is missing is supplied.
 from __future__ import annotations
 
 import inspect
+import os
 import unittest
 import xml.etree.ElementTree as ET
 
@@ -428,6 +429,93 @@ class TestInkTheRecordCallsAWholeRestIsNotWrittenAsANote(unittest.TestCase):
             _vrd(952, "glyph/0/0/0/0/0", Q.NOTEHEAD_IS_A_WHOLE_REST, None,
                  outcome="abstained", reason="no_page_frame"))
         self.assertEqual(self._pitches(SX.to_musicxml(page)[0]), ["C5", "D5"])
+
+
+class TestTheFlagTurnsTheREFUSALOffAndNothingElse(unittest.TestCase):
+    """`OMR_WHOLE_REST_INK` — default ON, and off restores the pre-2026-09-15
+    exporter exactly.
+
+    ⚠️ IT IS FLAGGED BECAUSE IT DELETES MUSIC. Every other staged repair adds
+    an element or withholds one the record never decided; this one removes
+    pitched notes from a file on the evidence of ONE document, where two of the
+    six cuts sit on a plateau one step wide or less. The flag makes the call
+    Sean's and reversible in a word.
+
+    ⚠️ WHAT IT MUST **NOT** TURN OFF IS THE DECISION. The verdict is an
+    ADJUDICATE fact and stays on the record either way; only the exporter's
+    refusal is gated. Gating the decision instead would throw away the evidence
+    along with the behaviour, and a later consumer — a bar sum that should not
+    count this ink — would find the quantity missing rather than decided.
+    """
+
+    def setUp(self):
+        self._prior = os.environ.get(SX.WHOLE_REST_INK_ENV)
+
+    def tearDown(self):
+        if self._prior is None:
+            os.environ.pop(SX.WHOLE_REST_INK_ENV, None)
+        else:
+            os.environ[SX.WHOLE_REST_INK_ENV] = self._prior
+
+    @staticmethod
+    def _pitches(xml):
+        return [p.find("step").text + p.find("octave").text
+                for p in ET.fromstring(xml).iter("pitch")]
+
+    def test_the_default_REFUSES(self):
+        """⚠️ THE POSITIVE CONTROL FOR EVERY TEST BELOW. A flag suite that only
+        ever asserted the off state would pass against a rule that never fires
+        — the `a battery of refusal tests can pass by refusing everything`
+        lesson, pointed the other way."""
+        os.environ.pop(SX.WHOLE_REST_INK_ENV, None)
+        self.assertEqual(
+            self._pitches(SX.to_musicxml(_two_note_page(flagged=True))[0]),
+            ["D5"])
+
+    def test_OFF_writes_the_note_the_rule_would_have_refused(self):
+        os.environ[SX.WHOLE_REST_INK_ENV] = "0"
+        self.assertEqual(
+            self._pitches(SX.to_musicxml(_two_note_page(flagged=True))[0]),
+            ["C5", "D5"])
+
+    def test_OFF_does_not_COUNT_a_refusal_it_did_not_make(self):
+        """A counter naming an element the exporter still wrote is the
+        `control that computes the wrong thing`."""
+        os.environ[SX.WHOLE_REST_INK_ENV] = "0"
+        _, rep = SX.to_musicxml(_two_note_page(flagged=True))
+        self.assertNotIn("ink_is_a_whole_rest", rep["notes_not_written"])
+
+    def test_the_accounting_control_balances_under_BOTH_settings(self):
+        for val, written in (("1", 1), ("0", 2)):
+            os.environ[SX.WHOLE_REST_INK_ENV] = val
+            _, rep = SX.to_musicxml(_two_note_page(flagged=True))
+            self.assertEqual(rep["written"]["notes"], written, val)
+            self.assertEqual(
+                rep["written"]["notes"] + rep["notes_not_written_total"], 2,
+                val)
+
+    def test_every_OFF_WORD_turns_it_off_and_a_TYPO_does_not(self):
+        """⚠️⚠️ THE DIRECTION FOLLOWS THE DEFAULT. On by default, so the test
+        is a DENY-list: `OMR_WHOLE_REST_INK=yess` must leave the refusal ON,
+        because an allow-list would silently put the phantom notes back on a
+        misspelling. `test_flag_default_direction.py` derives this from the
+        source; this pins the behaviour it derives."""
+        for off in ("0", "", "false", "no", "off", "OFF", " off "):
+            os.environ[SX.WHOLE_REST_INK_ENV] = off
+            self.assertFalse(SX.whole_rest_ink_enabled(), repr(off))
+        for on in ("1", "true", "yes", "on", "yess", "ON!", "banana"):
+            os.environ[SX.WHOLE_REST_INK_ENV] = on
+            self.assertTrue(SX.whole_rest_ink_enabled(), repr(on))
+
+    def test_the_DECISION_is_untouched_by_the_flag(self):
+        """The flag is the exporter's, not the adjudicator's — `stubs()` and
+        the registry do not move, and neither does the verdict."""
+        os.environ[SX.WHOLE_REST_INK_ENV] = "0"
+        log = Log()
+        _staff(log)
+        g = _glyph(log, 0, 0, cy=SLOT_Y, h_spaces=0.7, aspect=2.0)
+        _run(log)
+        self.assertIs(_verdict(log, g).value, True)
 
 
 if __name__ == "__main__":

@@ -61,6 +61,7 @@ from .record import Q, meter_at
 
 
 METER_SEGMENTS_ENV = "OMR_METER_SEGMENTS"
+WHOLE_REST_INK_ENV = "OMR_WHOLE_REST_INK"
 
 
 def meter_segments_enabled() -> bool:
@@ -129,6 +130,56 @@ def meter_segments_enabled() -> bool:
     course read empty as ON, or its default would be off.
 """
     return os.environ.get(METER_SEGMENTS_ENV, "1").strip().lower() not in (
+        "0", "", "false", "no", "off")
+
+
+def whole_rest_ink_enabled() -> bool:
+    """`OMR_WHOLE_REST_INK` — refuse to write a NOTE where the record says the
+    ink is a whole rest (`Q.NOTEHEAD_IS_A_WHOLE_REST`).
+
+    **DEFAULT ON, which is the behaviour that shipped on 2026-09-15.** The flag
+    exists so the decision to keep it is Sean's and reversible in one word, not
+    because anything measured against it. Off restores the pre-2026-09-15
+    exporter exactly: the verdict is still DECIDED and still on the record, and
+    only the refusal — and its `ink_is_a_whole_rest` count — goes away.
+
+    ⚠️⚠️ **WHY IT IS FLAGGED AT ALL WHEN NOTHING ELSE IN THIS FAMILY IS: IT
+    DELETES NOTES.** Every other staged repair adds an element or withholds one
+    the record never decided; this one removes 22 pitched `<note>` elements
+    from a file a human would otherwise clean up by hand. The evidence for it
+    is strong and it is the right kind — 25 of 25 fires cropped and read
+    against the print, zero of them a real note — but it is **one document, one
+    publisher, four pages of ~16**, on the *low-res bitonal* end of the corpus,
+    and `benchmarks/omr-note-where-silence-2026-09/FINDINGS.md` §3 records that
+    **two of the six cuts sit on a plateau one step wide or less**. A
+    behaviour that deletes music on evidence that thin belongs behind a switch.
+
+    ⚠️ **THE CUTS ARE A DERIVATION, NOT A FIT, AND THAT IS NOT THE SAME AS
+    GENERALISING.** They are the p05/p95 of the document's OWN 395 correctly
+    detected `restWhole` glyphs, so they were not chosen to fit the suspects —
+    but they are percentiles of one plate's rests. A print whose whole rests
+    are thinner, or whose staves are cleaner, gives a different band, and two
+    of the cuts have no plateau to absorb it. **Breitkopf Brahms 1 p0-3 is
+    where this should be re-measured**, the same second document the meter
+    floors and the dotted rest both need.
+
+    ⚠️ **NO OMR-NED FIGURE CAN SETTLE IT.** The metric is symmetric and rewards
+    under-prediction, so it would pay for these deletions whether or not they
+    were right — which is why the evidence is crops, and why a score must never
+    be quoted as the reason to leave this on.
+
+    ⚠️ **A DENY-LIST, BECAUSE THE DEFAULT IS ON.** With an allow-list
+    (`in ("1", "true", "yes", "on")`) an empty value or a typo would silently
+    restore the pre-flag behaviour — here that means silently putting the
+    phantom notes back — and `tools/omr/tests/test_flag_default_direction.py`
+    derives this from the source and fails on the wrong direction. Only an
+    explicit off word turns it off. ⚠️ `""` counts as OFF, matching
+    `OMR_METER_SEGMENTS` and `OMR_LEFT_EDGE_SPLIT`, the repo's idiom for a
+    `"1"`-defaulted flag.
+
+    See `benchmarks/omr-note-where-silence-2026-09/FINDINGS.md`.
+    """
+    return os.environ.get(WHOLE_REST_INK_ENV, "1").strip().lower() not in (
         "0", "", "false", "no", "off")
 
 
@@ -466,6 +517,11 @@ def _place_notes(rec: Record, runs: Dict[str, StaffRun]) -> Dict[str, int]:
     the subject placement and the 263-edit failure comes straight back.
     """
     dropped: Dict[str, int] = collections.Counter()
+    # ⚠️ READ ONCE, NOT PER NOTEHEAD. It is 2,347 environment lookups on a
+    # four-page record, and a flag re-read inside the loop could in principle
+    # split one export between two behaviours — which is exactly the kind of
+    # half-applied change no count would show.
+    refuse_whole_rest_ink = whole_rest_ink_enabled()
     for o in rec.obs_of(Q.GLYPH_BOX):
         sub = o["subject"]
         s = _parse_subject(sub)
@@ -474,7 +530,8 @@ def _place_notes(rec: Record, runs: Dict[str, StaffRun]) -> Dict[str, int]:
         is_rest = bool(rec.obs(Q.REST, sub))
         if not is_rest and not rec.obs(Q.NOTEHEAD_CLASS, sub):
             continue                 # neither a notehead nor a rest
-        if not is_rest and rec.value(Q.NOTEHEAD_IS_A_WHOLE_REST, sub) is True:
+        if (not is_rest and refuse_whole_rest_ink
+                and rec.value(Q.NOTEHEAD_IS_A_WHOLE_REST, sub) is True):
             # ⚠️⚠️ SEAN'S OWN OBSERVATION, AND THE ASYMMETRY IS THE REASON.
             # *"in bars where it should be just whole note rest in two four.
             # It's showing an actual quarter note, not a quarter note rest."*
@@ -496,6 +553,13 @@ def _place_notes(rec: Record, runs: Dict[str, StaffRun]) -> Dict[str, int]:
             # the load-bearing thing about the row -- *this is not a note* --
             # rather than filing it under `no_pitch`, which would be true and
             # beside the point.
+            #
+            # ⚠️ AND IT IS THE ONE STAGED REPAIR BEHIND A FLAG, because it is
+            # the one that DELETES music: `OMR_WHOLE_REST_INK=0` restores the
+            # pre-2026-09-15 exporter exactly, leaving the verdict decided and
+            # on the record. See `whole_rest_ink_enabled` for why the evidence
+            # is strong and still thin -- n = 1 document, and two of the six
+            # cuts have no plateau.
             dropped["ink_is_a_whole_rest"] += 1
             continue
         # ⚠️ A REST HAS NO PITCH AND MUST NOT BE ASKED FOR ONE. Requiring a
