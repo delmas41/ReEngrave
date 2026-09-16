@@ -3402,9 +3402,93 @@ measured is padding for fragments.
 ABSTAINS *and* MISREADS.** Litolff Beethoven 5 pp.1-4 abstains on 6 of 7
 systems — but its one read meter is CORRECT, so the carry can never be handed
 a wrong candidate there. Breitkopf Brahms 1 misreads badly — but abstains
-nowhere, so the carry never runs. **The two halves of the hazard have never
-been present in one document**, and every "n = 1" in this thread has been
-about the wrong axis.
+nowhere, so the carry never runs. ⚠️⚠️ **AND THAT CLAIM — "the two halves of
+the hazard have never been present in one document" — WAS REFUTED THE SAME DAY
+BY LOOKING, NOT BY GATHERING; it is kept here because the correction is the
+finding.** See the section below.
+
+### ⚠️⚠️ THE DOCUMENT THAT ABSTAINS *AND* MISREADS IS ALREADY IN THE CORPUS
+
+2026-09-16, no code outside `benchmarks/`. The sentence above named what
+`OMR_METER_CARRY` waits for and asserted no document has it. **`p0p3` —
+Breitkopf Brahms 1 mvt 1 — has had both halves the whole time, in 11 of 11
+committed arms across 5 generations.** Findings:
+[benchmarks/omr-meter-abstain-and-misread-2026-09/FINDINGS.md](benchmarks/omr-meter-abstain-and-misread-2026-09/FINDINGS.md).
+
+⚠️ **REACH: 105 committed meter records, 28 fixtures, 4 benchmark dirs,
+generations 1-7, and NOTHING WAS GATHERED** — so this asks only whether a
+fixture already run holds both halves, and a negative would have been a
+statement about the corpus and never about the repertoire. 9 of 28 fixtures
+carry a hand-read opening truth; **the other 19 ABSTAIN and are reported.**
+⚠️ `p012` landing in *abstains only* is the POSITIVE CONTROL on the truth
+table — the probe independently reproduces this file's own characterisation of
+the Litolff document.
+
+**`system/0/0` reads `C` (4.0 quarters) at `voted` on a movement the committed
+dossier says is 6/8 (3.0) — a LENGTH misread, the kind bar sums can arbitrate —
+and `system/3/0` abstains. Both, every arm, every tree.**
+
+⚠️⚠️ **AND THE NEWEST GENERATION IS THE *DISCRIMINATING* CASE, NOT THE
+ANDANTE'S SAFE-BUT-BLIND ONE.** `m7p0p3-CARRY`, `system/3/0`: the misread `C`
+is carried from `system/0/0` and refused at support **−8.0** against a floor of
+2.0, `bars_agree 0 / disagree 9`, `bar_lengths_seen {3.0: 8, 5.0: 1}` — **the
+bars positively name 3.0, which IS 6/8, the printed meter.** This is the first
+observation in this thread of the bar arbitration doing the exact job the flag
+was held off for, on the exact hazard shape, rather than falling silent.
+⚠️ **It does NOT price the flip**: a 2-system fixture says nothing about a
+misread propagating across a movement, which is what `local_arm.sh` is for.
+
+⚠️⚠️ **THE ACTIONABLE FINDING: THE BARS HAVE THE ANSWER AND CANNOT SPELL IT.**
+The BARS arm on that same system reaches **length 3.0 at +7.0** against a floor
+of 4.0 and abstains `bars_name_a_length_without_a_form` — because the printed
+FORM is borrowed only from a preceding system whose length already matches, and
+**the only candidate source is the system that misread `C` = 4.0. The misread
+poisons the borrow.** So what stands between the pipeline and the correct meter
+on this document is the FORM-BORROWING rule, not the weighing — and that rule
+is right to refuse, since inventing `6/8` from a length is the laundered guess
+its own docstring bans. What is new is that
+`bars_name_a_length_without_a_form` is **not a rare fallback here: it is the
+outcome on the fixture the flag has been waiting for.** ⚠️ Borrowing a form
+from the DOSSIER — a reader that does not fail with the raster, the
+`source_kind` doctrine — is INFER-shaped and is NOT proposed.
+
+⚠️ **The weaker second instance is reported APART and pooling them would be
+wrong**: `brahms1scan` also qualifies, but there the bars refuse at **−1.0**
+naming `{4.0: 2}` — neither the truth (3.0) nor the misread (9.0) — which is
+the safe-but-not-discriminating shape. ⚠️ And **Litolff `p012` hides a
+SUPPRESSED misread**: `would_have_been: "C"` on a 2/4 document, held back by
+`too_few_staves_read_it` at coverage 0.273. Reported, never scored — counting a
+candidate the pipeline refused to make would score the gate's success as a
+failure.
+
+⚠️⚠️ **THREE FAULTS IN THE PROBE, AND TWO WERE FOUND BY A ROW THAT WAS
+*MISSING*.** (1) **Two committed reduction shapes exist and the second has no
+`quantity` key** — `omr-staged-meter-carry-2026-09` and its siblings commit a
+bare `{subject, outcome, reason, value, detail}` list — so filtering on
+`quantity == "meter"` read **12 records as zero rows, including Litolff
+`p012`, the abstaining document**. The tell was not the table: it was four
+truth-carrying fixtures appearing in NONE of the four buckets. *A filter that
+silently empties a file looks exactly like a file with nothing in it.*
+(2) A per-DOCUMENT truth table falsely flagged `brahms1eng`, whose `system/1/0`
+opening `9/8` is the PRINTED one-bar 9/8 that `report_boundary.TRUTH_CHANGES`
+already records — found by opening the candidate, not by counting. (3) The
+first glob covered **68 of 105** records.
+
+⚠️ Battery **5 arms, all red, positive control first, restore verified**, byte
+snapshot on disk plus an in-flight sentinel. **Its first run reported 3
+survivors and all three were the battery's OWN faults**: a comparator reading
+only the headline bucket (so an arm moving a different bucket read as a
+survivor); an arm that **could never fire** and was DELETED rather than tested
+around; and an arm that was a **no-op because `{}` is FALSY**
+(`OPENING_TRUTH = {} or {...}` hands back the full dict) — the `_carry_meter`
+hazard this file already records, arriving in the instrument.
+
+⚠️ **What is NOT established**: nothing gathered, no print consulted, no
+OMR-NED; **which PDF pages `p0p3` names cannot be confirmed from committed
+data** (the tag is free-form and `run_arms.py` takes `--pages` on the command
+line) — the finding survives because Brahms 1 mvt 1 is 6/8 for 512 of 513 bars
+and the bars independently read 3.0; n = 2 fixtures, 1 document, 1 publisher;
+the 19 truth-less fixtures are **unscored, not clean**.
 
 ### ⚠️⚠️ The bars are not an independent umpire over a bad reading
 
