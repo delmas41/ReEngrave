@@ -1,0 +1,11 @@
+Litolff adjudicated rows: 25 Counter({'whole_rest': 25})
+
+=== Litolff ===
+  SHIPPED                                 25 fires  {'whole_rest': 25}
+  + glyph must be INSIDE its own staff    22 fires  {'whole_rest': 22}
+  + SLOT witness only (drop neighbour)    20 fires  {'whole_rest': 20}
+
+=== Breitkopf ===
+  SHIPPED                                 12 fires  {'real_notehead_on_a_neighbouring_staff': 2, 'time_signature_digit': 1, 'eighth_rest_on_the_staff_below': 8, 'whole_rest': 1}
+  + glyph must be INSIDE its own staff     1 fires  {'time_signature_digit': 1}
+  + SLOT witness only (drop neighbour)     1 fires  {'time_signature_digit': 1}
