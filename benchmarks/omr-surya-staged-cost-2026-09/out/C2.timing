@@ -1,0 +1,15 @@
+arm=C2
+commit=d2a412af848b3bc9eddbc5274690428ee3964c93
+dirty=0
+flags=
+OMR_DIRECTION_TEXT=1
+OMR_SURYA_KEEP_ALIVE=0
+start_epoch=1789542607
+start_utc=2026-09-16T07:10:07Z
+load_before=2.74 2.74 2.77
+end_epoch=1789544479
+end_utc=2026-09-16T07:41:19Z
+load_after=2.91 2.88 3.02
+exit=0
+  rungs: labels text_layer=on surya=off tesseract=off | directions OMR_DIRECTION_TEXT=1 surya=on tesseract=on
+census_exit=0

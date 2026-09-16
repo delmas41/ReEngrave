@@ -1,0 +1,11 @@
+tree: 4d25f991d7ab20ea7da5a912d62a3fc7b9e53357 (clean)
+pdf : /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/reengraved-meter-range-9814dc/library/editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf
+arms: LD   pages: 1-4
+
+── LD  flags='--surya --ocr' OMR_DIRECTION_TEXT=1  07:44:28Z
+   LD: 2352 s, census exit 0
+}
+census OK: 50 margin_label observations
+
+── wall clock ────────────────────────────────────────────
+  LD    2352 s   50 labels
