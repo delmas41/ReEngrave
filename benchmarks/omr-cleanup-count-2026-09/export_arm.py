@@ -44,15 +44,21 @@ def system_map(result):
     """{(page, system): [{part_index, part_name, staff, measures:[n..]}]}"""
     rec = sx.Record(result)
     parts = sx.build(rec)[0]
+    # ⚠️ CALLED, NOT RE-DERIVED -- the one thing this map used to compute for
+    # itself. It kept its own running per-part count, which was a second copy
+    # of the exporter's numbering rule; the day the exporter started numbering
+    # by the DOCUMENT's bar sequence instead, the copy disagreed and the
+    # map-vs-file control below went red on 108 (part, measure) pairs. That is
+    # the control working, and the repair is to stop holding the rule twice.
+    starts = sx.system_bar_starts(parts)
     out = collections.defaultdict(list)
     for pi, part in enumerate(parts):
         name = next((r.name for r in part if r.name), None) or sx._default_name(part)
-        n = 0
         for run in part:
-            first = n + 1
-            n += run.n_measures
             if run.n_measures == 0:
                 continue
+            first = starts[(run.page, run.system)] + 1
+            n = first + run.n_measures - 1
             out[(run.page, run.system)].append({
                 "part_index": pi,
                 "part_id": f"P{pi + 1}",
