@@ -61,58 +61,14 @@ class TestTheToolIsAliveAtAll(unittest.TestCase):
             self.assertEqual(wiring.main(["--check"]), 2)
 
 
-class TestTheProducerQuestion(unittest.TestCase):
-    """A parameter threaded down a chain that nobody supplies."""
-
-    def test_it_finds_the_live_instance(self):
-        rows = wiring.producers()["rows"]
-        dead = {r["param"] for r in rows if r["verdict"] == "NO PRODUCER"}
-        self.assertIn("dossier", dead)
-
-    def test_roster_now_HAS_a_producer(self):
-        """The repair, asserted from the tool rather than remembered."""
-        rows = wiring.producers()["rows"]
-        dead = {r["param"] for r in rows if r["verdict"] == "NO PRODUCER"}
-        self.assertNotIn("roster", dead)
-
-    def test_a_POSITIONAL_supply_counts(self):
-        """⚠️ WITHOUT THIS THE CHECK REPORTS ITS OWN FIXED BUG AS OPEN.
-        `staged/__main__.py` passes the PDF path POSITIONALLY and every link
-        after it is `pdf_path=pdf_path`, a pure forward. A keyword-only
-        walker sees a chain of forwards and no supplier."""
-        rows = {r["param"]: r for r in wiring.producers()["rows"]}
-        self.assertIn("pdf_path", rows)
-        self.assertNotEqual(rows["pdf_path"]["verdict"], "NO PRODUCER")
-
-    def test_a_forward_from_a_FED_parameter_is_fed_too(self):
-        """The fixpoint. `detector` is forwarded at the same three links
-        `roster` is, and is alive because the CLI supplies it at the top."""
-        rows = {r["param"]: r for r in wiring.producers()["rows"]}
-        self.assertEqual(rows["detector"]["verdict"], "production")
-
-    def test_a_splat_is_never_a_supplier(self):
-        """`f(**kwargs)` forwards by construction. Counting it as a supply
-        would make every splatted chain read as fed."""
-        sigs = wiring._signatures()
-        sites = wiring._call_sites(sigs)
-        self.assertTrue(any(s["shape"] == "splat" for s in sites),
-                        "positive control: the tree does splat somewhere")
-        self.assertFalse(any(s["shape"] == "splat" and s["param"] != "**"
-                             for s in sites))
-
-    def test_only_NO_PRODUCER_is_a_problem_not_a_test_only_seam(self):
-        """⚠️ `run_staged_on` EXISTS so a test can drive the pipeline with no
-        PDF, no weights and no venv. Failing on a test-only parameter would
-        make `--check` permanently red, which is this repo's own stated
-        reason a check stops being read."""
-        rep = wiring.report()
-        seams = [r for r in rep["producers"]["rows"]
-                 if r["verdict"].endswith("only")]
-        self.assertTrue(seams, "positive control: the tree has seams")
-        for s in seams:
-            self.assertFalse(
-                any(p.startswith(f"PRODUCER {s['param']} — supplied")
-                    for p in rep["problems"]))
+# ⚠⚠ THE PRODUCER TESTS LEFT THIS FILE 2026-09-15 WITH THE QUESTION THEY
+# COVERED. *A parameter threaded with no supplier* is
+# `tools/omr/no_producer.py`'s question — a sibling session landed it on main
+# the same day this module was written, derived from the AST over the whole of
+# `tools/`, finding `pdf_path` and `roster` with no hint. This module had a
+# duplicate and it is gone. `tools/omr/tests/test_no_producer.py` is where
+# that question is tested; what survives here is the roster REPAIR, which
+# closes one of that tool's own open findings.
 
 
 class TestTheFrameQuestion(unittest.TestCase):

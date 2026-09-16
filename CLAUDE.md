@@ -3057,15 +3057,24 @@ python3 -m tools.omr.staged.wiring --check    # non-zero on anything unaccounted
 python3 -m tools.omr.staged.wiring --run rec.json
 ```
 
-**Four questions, all DERIVED, each with a POSITIVE CONTROL** — `--check`
+⚠⚠ **IT IS THE SIBLING OF `tools/omr/no_producer.py` AND WAS VERY NEARLY A
+DUPLICATE OF IT.** That tool — landed on main the same day — asks *a parameter
+threaded with no supplier*; this one asks the other three. This session built
+a fourth, producer-shaped question before merging main, and deleted it:
+**CLAUDE.md states the rule and the session did not follow it** — *`git log
+--all --oneline -S "<the thing>" -- tools/omr/` before building anything*,
+written here after the hairpin export was built twice. ~200 lines written and
+removed. **The two tools do not overlap now**, and this one's roster repair
+CLOSES one of that one's open findings.
+
+**Three questions, all DERIVED, each with a POSITIVE CONTROL** — `--check`
 exits **2** on a control at zero, *before* it looks at a finding, because a
 question that can only ever answer "nothing wrong" is not a question. Numbers
 are the TOOL's, never this line's.
 
 | question | examined | healthy | findings |
 |---|--:|--:|--:|
-| **PRODUCER** — a parameter threaded with no supplier | 56 params / 10,324 call sites | 53 fed | **1 dead** (`dossier`), 1 repaired |
-| **FRAME** — a declared input read where it is never filed | 76 declared reads | 30 EXACT + 46 scoped | **0 broken, 6 LATENT**, 1 repaired |
+| **FRAME** — a declared input read where it is never filed | 81 declared reads | 31 EXACT + 50 scoped | **0 broken, 6 LATENT**, 1 repaired |
 | **DETAIL** — a key written on a row and named nowhere else | 113 keys | 91 read | **22 unread** |
 | **ROUNDTRIP** — a field dropped by its own `to_json` | 9 classes / 56 fields emitted | — | **1, and it is READ** |
 
@@ -3097,7 +3106,8 @@ WORK**: the Phase 2 part-join repair needs a short system to pair by
 instrument NAME, the identity is on the STAVES, that decision runs at
 DOCUMENT — so a bare `ev.rows(Q.INSTRUMENT)` returns nothing, silently.
 
-⚠️⚠️ **THE SECOND MISSING PRODUCER IS CONFIRMED AND REPAIRED: `roster`.**
+⚠️⚠️ **THE SECOND MISSING PRODUCER — FOUND BY `no_producer.py`, REPAIRED
+HERE: `roster`.**
 Threaded `run_staged` → `run_staged_on` → `gather` → `gather_external`,
 forwarded at every link and supplied by NOBODY, so `Q.ROSTER_ENTRY` was dead
 on every staged run this repo had made — and `adjudicate_instrument` declared
@@ -3125,7 +3135,10 @@ STAGED decision (never `work_roster.decide` directly — the RULE was measured
 a week ago; what was never measured is the rule ARRIVING). On Litolff
 Beethoven 5, whose catalog roster is 10 instruments at `parse_rate 1.0`, the
 label `Basso.` goes **`Bass voice` → `Contrabass`** the moment the roster is
-supplied — which is exactly the row the slot-index findings record as *"a
+supplied — **1 of 50 verdicts on those pages, and 20 of 1236 over the whole
+1,422-label lexicon corpus, which reproduces the legacy layer's own recorded
+"20 of 1422 (1.4%)" to the unit** — which is exactly the row the slot-index
+findings record as *"a
 separate defect, found in passing and NOT fixed: the reference reads slot 11
 as `Bass voice` (the page prints `Basso.`) — a singer on an orchestral
 score."* ⚠️ **ACCURACY IS NOT ESTABLISHED**: nothing here was checked against

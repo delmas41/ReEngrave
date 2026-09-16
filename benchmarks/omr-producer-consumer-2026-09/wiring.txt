@@ -1,15 +1,6 @@
 ═══ DOES THE INFORMATION REACH ITS CONSUMER? ═══════════════════════
 
-1. PRODUCER — a parameter threaded with no supplier
-   param                  function                           verdict
-  ⚠️ stub                   decision                           test only
-  ⚠️ dossier                gather                             NO PRODUCER
-  ⚠️ dossier                gather_external                    NO PRODUCER
-  ⚠️ source                 gathered                           test only
-  ⚠️ argv                   main                               benchmark+test only
-  ⚠️ dossier                run_staged_on                      NO PRODUCER
-
-2. FRAME — a declared input read where it is never filed
+1. FRAME — a declared input read where it is never filed
    none
    LATENT — declared, filed elsewhere, unreadable the obvious way:
   ⚠️ adjudicate_clef declares Q.NOTEHEAD_STAFF_POSITION (scope staff), filed at glyph — needs subject=
@@ -21,7 +12,7 @@
    (filed nowhere this tool sees — `gather_coverage` owns these: CELL_STAFF_SPACE, GLYPH_BAND_DISTANCE, GLYPH_LADDER)
    ⚠️ UNRESOLVED gather sites: 11
 
-3. DETAIL — a key written on a row and named nowhere else
+2. DETAIL — a key written on a row and named nowhere else
   ⚠️ Q.<loop-bound>.staff_lines_erased            gather_cv_lines:1295
   ⚠️ Q.BEAM_STROKE.staff_lines_erased             gather_detector_beams:1349
   ⚠️ Q.BRACKET_BLOCK.mirror                       _gather_bracket_blocks:165
@@ -45,19 +36,16 @@
   ⚠️ Q.WEDGE_BOX.staff_bottom_line_page           gather_wedge_boxes:1199
   ⚠️ Q.WEDGE_BOX.y_center_page                    gather_wedge_boxes:1199
 
-4. ROUNDTRIP — a field declared and dropped by its own `to_json`
+3. ROUNDTRIP — a field declared and dropped by its own `to_json`
   ⚠️⚠️ Verdict.single_pass_revision  READ (4 mentions) — a saved record cannot carry it
 
 ── POSITIVE CONTROLS (a zero means the question did not run) ────────
-   producer_params_examined             56
-   producer_call_sites_seen             10343
-   producer_with_a_real_supplier        53
-   frame_reads_that_line_up             30
-   frame_reads_with_their_own_reach     46
-   frame_quantities_filed               70
+   frame_reads_that_line_up             31
+   frame_reads_with_their_own_reach     50
+   frame_quantities_filed               71
    detail_keys_written                  113
    detail_keys_read                     91
    roundtrip_classes_with_to_json       9
    roundtrip_fields_emitted             56
 
-── 41 problems, 0 unaccounted, 0 stale gap entries
+── 40 problems, 0 unaccounted, 0 stale gap entries

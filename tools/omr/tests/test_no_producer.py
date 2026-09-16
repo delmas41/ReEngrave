@@ -47,16 +47,33 @@ class TestTheKnownInstances(unittest.TestCase):
     def setUpClass(cls) -> None:
         cls.report = NP.scan([REPO / "tools"])
 
-    def test_roster_is_found_with_no_hint(self) -> None:
-        # Instance 2. `staged/__main__.py` has no roster argument at all.
-        self.assertIn("roster", _names(self.report))
+    def test_roster_is_no_longer_a_finding(self) -> None:
+        """⚠⚠ RED ON SUCCESS, AND CONVERTED RATHER THAN DELETED. This
+        asserted `roster` IS found, which was true on the day it was written
+        and stopped being true when `staged/__main__.py` gained `--work-id`
+        the same day. *An assertion that a finding exists is a property of
+        the BUILD'S PROGRESS, not of the mechanism* — so it is now the mirror
+        of `test_pdf_path_is_no_longer_a_finding`.
+
+        ⚠️ The MECHANISM is still exercised by a live instance
+        (`test_dossier_is_found_with_no_hint`) and by the synthetic trees
+        below, which is what keeps this conversion honest: an empty result is
+        also what a broken derivation returns."""
+        self.assertNotIn("roster", _names(self.report))
+        self.assertIn("dossier", _names(self.report),
+                      "the question must still fire on a LIVE instance, or "
+                      "this file is asserting a zero it cannot interpret")
 
     def test_dossier_is_found_with_no_hint(self) -> None:
         # Found BY this check, not by accident — the same chain, same shape.
         self.assertIn("dossier", _names(self.report))
 
-    def test_the_roster_chain_names_every_layer(self) -> None:
-        chain = [f for f in self.report.findings if f.param == "roster"][0]
+    def test_a_chain_names_every_layer(self) -> None:
+        """⚠️ RE-POINTED AT `dossier` WHEN `roster` WAS REPAIRED. The two
+        travel the identical chain, so the property this test exists for —
+        that a finding names every layer rather than only its ends — is
+        unchanged; what moved is which live instance carries it."""
+        chain = [f for f in self.report.findings if f.param == "dossier"][0]
         self.assertEqual(
             [k[0] for k in chain.keys],
             ["run_staged", "run_staged_on", "gather", "gather_external"],

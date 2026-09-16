@@ -20,21 +20,26 @@ The 2026-09-11 handoff, after the second missing producer in two days, wrote
 the conclusion this module implements: *"worth a derived check rather than a
 third discovery."*
 
-## The four questions this asks
+## The three questions this asks
 
-Each has a live instance in the tree today, and the first two are asked by
-nothing else here. ⚠️ **The COUNT is the `controls()` table's, not this
-heading's** — a hand-counted figure in prose is exactly what rots in this
-repo, and this heading said THREE for one commit after the fourth landed.
+Each has a live instance in the tree today, and neither of the two existing
+staged instruments asks any of them. ⚠️ **The COUNT is the `controls()`
+table's, not this heading's** — a hand-counted figure in prose is exactly
+what rots in this repo, and this heading has already been wrong twice: it
+said THREE after a fourth question landed, and FOUR after one left.
 
-**1. PRODUCER — a parameter threaded with no supplier.** A keyword argument
-passed down a call chain that every caller merely FORWARDS and nobody ever
-supplies a real value for. `pdf_path` was this until 2026-09-11. `roster` and
-`dossier` still are: `staged/__main__.py` has no `--roster`, no `--work-id`
-and no `--dossier`, so `Q.ROSTER_ENTRY` and `Q.DOSSIER_FACT` are dead on
-every staged run ever made.
+⚠️⚠️ **THE PRODUCER QUESTION IS NOT HERE, AND WAS NOT REMOVED FOR BEING
+WRONG.** *A parameter threaded with no supplier* is asked by
+**`tools/omr/no_producer.py`**, which a sibling session landed on main the
+same day this was written — derived from the AST over the whole of `tools/`,
+finding `pdf_path` and `roster` with no hint. This module had its own, and it
+was a DUPLICATE. CLAUDE.md's record of the hairpin export built twice says
+*run `git log --all --oneline -S "<the thing>"` before building anything*,
+and this session did not — so ~200 lines were written and then deleted.
+**Ask that question there.** What survives of it here is the roster REPAIR,
+which closes one of that tool's own open findings.
 
-**2. FRAME — a declared input read where it is never filed.** A decision that
+**1. FRAME — a declared input read where it is never filed.** A decision that
 reads `ev.rows(Q.X)` at the default `Scope.EXACT` reads its OWN subject, whose
 Kind is the decision's declared `scope`. If `Q.X` is only ever filed at a
 DIFFERENT Kind, the declared input is present, declared, gathered — and
@@ -44,13 +49,13 @@ catch it*: the `wants` entry IS read and the quantity IS gathered, so both
 tools see a healthy row. Only a test asserting the ANSWER comes out has ever
 caught one.
 
-**3. DETAIL — a key written into a row and read by nobody.** The finest grain
+**2. DETAIL — a key written into a row and read by nobody.** The finest grain
 of the same fault, and the one `Q.METER_GLYPH`'s `letter` flag lived in for
 months: `log.observe(..., letter=True)` writes a field on the row, and a
 `grep` for it finds the write and nothing else. A quantity-level check cannot
 see it, because the QUANTITY is read — it is one field of it that is not.
 
-**4. ROUNDTRIP — a field dropped by its own `to_json`.** A field a class
+**3. ROUNDTRIP — a field dropped by its own `to_json`.** A field a class
 declares, a consumer READS, and the class's own projection does not write —
 so it cannot survive a saved record and the consumer silently gets the
 default on every replay. `Verdict.single_pass_revision` is exactly that, and
@@ -116,15 +121,6 @@ _ROOT = _TOOLS.parent                             # repo root
 # ─────────────────────────────────────────────────────────────────────────────
 
 KNOWN_GAPS: Dict[str, str] = {
-    "PRODUCER dossier": (
-        "⚠️ NO PRODUCER. `dossier` is threaded `run_staged` -> `run_staged_on` "
-        "-> `gather` -> `gather_external` and `gather_clef_seed`, and nothing "
-        "in `tools/` supplies one. DELIBERATELY LEFT OPEN: a dossier is "
-        "generated from the same MusicXML the benchmarks score against, so "
-        "the scan gate is dossier-free BY PROTOCOL and wiring a `--dossier` "
-        "flag would put a truth file inside a measurement path. The roster is "
-        "the tier that is admissible (`source_kind: catalog`) and it is the "
-        "one this session wired."),
     # ── FRAME, latent: declared, filed elsewhere, unreadable the obvious way
     #
     # ⚠️ EACH IS A TRAP ARMED FOR THE NEXT PERSON, not a bug today. The
@@ -141,35 +137,25 @@ KNOWN_GAPS: Dict[str, str] = {
         "wiring it also needs `subject=` — the positions are on the GLYPHS."),
     "FRAME-LATENT adjudicate_key_signature declares Q.DOSSIER_FACT": (
         "no dossier is supplied on the scan path BY PROTOCOL, and the "
-        "`dossier` parameter has no producer at all (see below). Closing "
+        "`dossier` parameter has no producer at all — which is "
+        "`tools/omr/no_producer.py`'s finding, not this module's. Closing "
         "this needs `Scope.SELF_AND_ANCESTORS`, not just a read."),
     "FRAME-LATENT adjudicate_meter declares Q.DOSSIER_FACT": (
-        "as above — the meter's dossier tier, inert for the same reason and "
-        "with the same frame trap waiting under it."),
+        "the meter's dossier tier, inert for the same reason as the key "
+        "signature's and with the same frame trap waiting under it."),
     "FRAME-LATENT adjudicate_part_partition declares Q.INSTRUMENT": (
         "the join is decided from staff COUNTS and slots. ⚠️ THIS ONE IS "
         "RANKED WORK, not a permanent gap: the Phase 2 part-join finding is "
         "that a short system must pair by INSTRUMENT NAME, and the identity "
-        "is on the STAFVES while this decision runs at DOCUMENT — so the "
+        "is on the STAVES while this decision runs at DOCUMENT — so the "
         "repair needs `subject=` per staff, not a bare read."),
     "FRAME-LATENT adjudicate_part_partition declares Q.STAFF_ORDINAL": (
         "inert declaration; the partition reads slots. Same frame shape as "
-        "the row above and the same `subject=` requirement."),
+        "`Q.INSTRUMENT` above and the same `subject=` requirement."),
     "FRAME-LATENT adjudicate_system_membership declares Q.GAP_BRIDGING": (
         "inert declaration — the connectivity veto already ran in GATHER and "
         "the decision records its RESULT rather than the bridging. The "
         "bridging row is filed on the PAGE and the decision runs at SYSTEM."),
-
-    # ── PRODUCER
-    "PRODUCER dossier": (
-        "⚠️ NO PRODUCER. `dossier` is threaded `run_staged` -> `run_staged_on` "
-        "-> `gather` -> `gather_external` and `gather_clef_seed`, and nothing "
-        "in `tools/` supplies one. DELIBERATELY LEFT OPEN: a dossier is "
-        "generated from the same MusicXML the benchmarks score against, so "
-        "the scan gate is dossier-free BY PROTOCOL and wiring a `--dossier` "
-        "flag would put a truth file inside a measurement path. The roster is "
-        "the tier that is admissible (`source_kind: catalog`) and it is the "
-        "one this session wired."),
 
     # ── ROUNDTRIP
     "ROUNDTRIP Verdict.single_pass_revision": (
@@ -373,218 +359,21 @@ def _tree_of(path: pathlib.Path) -> str:
     return "production"
 
 
-# ─────────────────────────────────────────────────────────────────────────────
-# 1. PRODUCER — a parameter threaded with no supplier
-# ─────────────────────────────────────────────────────────────────────────────
+# Helpers the remaining questions share (the PRODUCER question itself moved
+# out — see the module docstring).
+# ────────────────────────────────────────────────────────────────────────────────
 
-#: Where a threaded parameter is DECLARED. The staged package plus the two
-#: legacy entry points a staged run reaches through.
+#: Where a quantity is FILED and where a detail key is WRITTEN.
 _PRODUCER_ROOTS = ("tools/omr/staged",)
 
-#: Where a call site may live. Everything, so a benchmark-only supplier is
-#: VISIBLE rather than invisible.
+#: Where a key might be READ.
 _CALLSITE_ROOTS = ("tools", "benchmarks", "backend")
 
 
-def _param_names(fn: ast.FunctionDef) -> Set[str]:
-    a = fn.args
-    out = {p.arg for p in (*a.posonlyargs, *a.args, *a.kwonlyargs)}
-    if a.vararg:
-        out.add(a.vararg.arg)
-    if a.kwarg:
-        out.add(a.kwarg.arg)
-    return out
-
-
 def _positional_order(fn: ast.FunctionDef) -> List[str]:
-    """The parameters a POSITIONAL argument lands on, in order.
-
-    ⚠️ WITHOUT THIS THE CHECK REPORTS ITS OWN FLAGSHIP CASE AS DEAD.
-    `staged/__main__.py` calls `pipeline.run_staged(args.pdf, ...)` — the PDF
-    path is supplied POSITIONALLY and every link after it is `pdf_path=
-    pdf_path`, a pure forward. A keyword-only walker sees a chain of forwards
-    with no supplier and reports the parameter repaired on 2026-09-11 as
-    still broken. A check that cannot tell its own fixed bug from its own
-    open one is not measuring what it says.
-    """
+    """The parameters a POSITIONAL argument lands on, in order."""
     a = fn.args
     return [p.arg for p in (*a.posonlyargs, *a.args)]
-
-
-def _defaulted_kwargs(fn: ast.FunctionDef) -> Set[str]:
-    """Parameters with a CONSTANT default — the ones that can go unsupplied.
-
-    ⚠️ A constant default is what makes the failure SILENT: a parameter with
-    no default raises on the first call that omits it, so it cannot be dead.
-    `roster: Any = None` cannot.
-    """
-    a = fn.args
-    out: Set[str] = set()
-    positional = (*a.posonlyargs, *a.args)
-    for p, d in zip(positional[len(positional) - len(a.defaults):], a.defaults):
-        if isinstance(d, ast.Constant):
-            out.add(p.arg)
-    for p, d in zip(a.kwonlyargs, a.kw_defaults):
-        if isinstance(d, ast.Constant):
-            out.add(p.arg)
-    return out
-
-
-def _signatures() -> Dict[str, Dict[str, Any]]:
-    """Every function in the staged package, by name, with its parameters."""
-    out: Dict[str, Dict[str, Any]] = {}
-    for rootname in _PRODUCER_ROOTS:
-        for path in _py_files(_ROOT / rootname):
-            tree = _parse(path)
-            if tree is None:
-                continue
-            for node in ast.walk(tree):
-                if not isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)):
-                    continue
-                out.setdefault(node.name, {
-                    "function": node.name, "declared_in": _rel(path),
-                    "line": node.lineno,
-                    "positional": _positional_order(node),
-                    "defaulted": sorted(_defaulted_kwargs(node)),
-                    "all": sorted(_param_names(node)),
-                })
-    return out
-
-
-def _call_sites(sigs: Dict[str, Dict[str, Any]]) -> List[Dict[str, Any]]:
-    """Every argument passed to a staged function, with its SHAPE.
-
-    `forward` means the value is a bare Name that is also a PARAMETER of the
-    ENCLOSING function — the call is passing its own argument along and
-    supplies nothing itself. That is the whole discrimination this rests on,
-    and it is why the answer needs a FIXPOINT rather than a single pass: a
-    forward is dead or alive according to whether the enclosing parameter is
-    fed, which is the same question one level up.
-    """
-    out: List[Dict[str, Any]] = []
-    for rootname in _CALLSITE_ROOTS:
-        base = _ROOT / rootname
-        if not base.is_dir():
-            continue
-        for path in _py_files(base):
-            tree = _parse(path)
-            if tree is None:
-                continue
-            stack: List[Tuple[str, Set[str]]] = [("<module>", set())]
-
-            def record(called, param, value, node):
-                if called not in sigs:
-                    return
-                shape, via = "value", None
-                if isinstance(value, ast.Name) and value.id in stack[-1][1]:
-                    shape, via = "forward", (stack[-1][0], value.id)
-                elif isinstance(value, ast.Constant) and value.value is None:
-                    shape = "none"
-                out.append({"called": called, "param": param, "shape": shape,
-                            "via": via, "file": _rel(path),
-                            "line": node.lineno, "tree": _tree_of(path)})
-
-            class Walk(ast.NodeVisitor):
-                def visit_FunctionDef(self, node):      # noqa: N802
-                    stack.append((node.name, _param_names(node)))
-                    self.generic_visit(node)
-                    stack.pop()
-
-                visit_AsyncFunctionDef = visit_FunctionDef   # noqa: N815
-
-                def visit_Call(self, node):             # noqa: N802
-                    f = node.func
-                    called = (f.id if isinstance(f, ast.Name)
-                              else f.attr if isinstance(f, ast.Attribute)
-                              else None)
-                    if called in sigs:
-                        order = sigs[called]["positional"]
-                        for i, arg in enumerate(node.args):
-                            if isinstance(arg, ast.Starred):
-                                break     # a splat: position is unknowable
-                            if i < len(order):
-                                record(called, order[i], arg, node)
-                        for kw in node.keywords:
-                            if kw.arg is None:
-                                # `**kwargs` — a forward by construction and
-                                # NEVER a supplier. Recorded, not dropped, so
-                                # a splat cannot silently read as a producer.
-                                out.append({
-                                    "called": called, "param": "**",
-                                    "shape": "splat", "via": None,
-                                    "file": _rel(path), "line": node.lineno,
-                                    "tree": _tree_of(path)})
-                                continue
-                            record(called, kw.arg, kw.value, node)
-                    self.generic_visit(node)
-
-            Walk().visit(tree)
-    return out
-
-
-def producers() -> Dict[str, Any]:
-    """Which threaded parameters have a real supplier, and which have none.
-
-    ⚠️⚠️ A FIXPOINT, NOT A SINGLE PASS, AND THE FIRST DRAFT WAS THE SINGLE
-    PASS. `roster` is forwarded at three links and supplied at none — dead,
-    correctly. `detector` is forwarded at exactly the same three links and
-    SUPPLIED at the top by `staged/__main__.py`, so it is alive. A pass that
-    looks only at the link in front of it cannot tell them apart and reports
-    both dead, which is the shape of a check that fails so often nobody reads
-    it. FED propagates DOWN the chain from a real supply; what never receives
-    it is what has no producer.
-    """
-    sigs = _signatures()
-    sites = _call_sites(sigs)
-
-    #: (function, param) -> {tree: [site, ...]}. The TREE is carried as its
-    #: own field and never parsed back out of a rendered string.
-    fed: Dict[Tuple[str, str], Dict[str, List[str]]] = {}
-
-    def add(dst, tree, where):
-        fed.setdefault(dst, {}).setdefault(tree, []).append(where)
-
-    for s in sites:
-        if s["shape"] == "value":
-            add((s["called"], s["param"]), s["tree"],
-                f"{s['file']}:{s['line']}")
-
-    forwards = [s for s in sites if s["shape"] == "forward"]
-    changed = True
-    while changed:                      # small graph; converges in a few turns
-        changed = False
-        for s in forwards:
-            src, dst = tuple(s["via"]), (s["called"], s["param"])
-            for tree, wheres in list(fed.get(src, {}).items()):
-                have = fed.get(dst, {}).get(tree)
-                if have is None:
-                    add(dst, tree, f"{wheres[0]} (via {src[0]}.{src[1]})")
-                    changed = True
-
-    by_param: Dict[Tuple[str, str], List[Dict[str, Any]]] = {}
-    for s in sites:
-        by_param.setdefault((s["called"], s["param"]), []).append(s)
-
-    rows: List[Dict[str, Any]] = []
-    for name, spec in sorted(sigs.items()):
-        if name.startswith("_"):
-            continue                  # a private helper has no outside caller
-        for param in spec["defaulted"]:
-            mine = by_param.get((name, param), [])
-            if not mine:
-                continue              # never threaded — not this question
-            supply = fed.get((name, param), {})
-            trees = sorted(supply)
-            rows.append({
-                "function": name, "param": param,
-                "declared_in": spec["declared_in"], "line": spec["line"],
-                "call_sites": len(mine),
-                "fed_by": {t: v[:3] for t, v in supply.items()},
-                "verdict": ("NO PRODUCER" if not supply
-                            else "production" if "production" in trees
-                            else "+".join(trees) + " only"),
-            })
-    return {"rows": rows, "n_call_sites": len(sites)}
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -1183,10 +972,6 @@ def controls(rep: Dict[str, Any]) -> Dict[str, Any]:
     finding.
     """
     return {
-        "producer_params_examined": len(rep["producers"]["rows"]),
-        "producer_call_sites_seen": rep["producers"]["n_call_sites"],
-        "producer_with_a_real_supplier": sum(
-            1 for r in rep["producers"]["rows"] if r["fed_by"]),
         "frame_reads_that_line_up": rep["frames"]["healthy"],
         "frame_reads_with_their_own_reach": rep["frames"]["reach_elsewhere"],
         "frame_quantities_filed": len(rep["frames"]["filed"]),
@@ -1203,25 +988,6 @@ def problems(rep: Dict[str, Any]) -> List[str]:
     # ⚠️ ONE PROBLEM PER PARAMETER, NOT PER LINK. `roster` is declared on
     # three functions of one chain and is ONE fault; reporting it three times
     # inflates the count and makes the list read as three separate repairs.
-    #
-    # ⚠️ ONLY `NO PRODUCER` IS A PROBLEM, AND THE OTHER CLASS IS DELIBERATELY
-    # NOT ONE. "supplied only by a test" describes a SEAM, and this project
-    # builds them on purpose — `run_staged_on` exists so a test can drive the
-    # whole pipeline with no PDF, no weights and no venv, which is what makes
-    # the coherence tests cheap enough to run every time. Failing on those
-    # would make `--check` permanently red, which is this repo's own stated
-    # reason a check stops being read. They are RENDERED, so a reader can see
-    # which parameters only a harness can reach, and they are not counted.
-    seen: Set[str] = set()
-    for r in rep["producers"]["rows"]:
-        if r["verdict"] != "NO PRODUCER" or r["param"] in seen:
-            continue
-        chain = sorted({x["function"] for x in rep["producers"]["rows"]
-                        if x["param"] == r["param"]
-                        and x["verdict"] == "NO PRODUCER"})
-        seen.add(r["param"])
-        out.append(f"PRODUCER {r['param']} — threaded through "
-                   f"{', '.join(chain)} and supplied by NOBODY")
     for b in rep["frames"]["broken"]:
         out.append(f"FRAME {b['decision']} reads Q.{b['quantity']} at "
                    f"{b['reads_at']}, filed at {'/'.join(b['filed_at'])} "
@@ -1248,8 +1014,8 @@ def problems(rep: Dict[str, Any]) -> List[str]:
 
 
 def report() -> Dict[str, Any]:
-    rep = {"producers": producers(), "frames": frames(),
-           "details": details(), "roundtrip": roundtrip()}
+    rep = {"frames": frames(), "details": details(),
+           "roundtrip": roundtrip()}
     rep["controls"] = controls(rep)
     rep["problems"] = problems(rep)
     rep["unaccounted"] = unaccounted(rep["problems"])
@@ -1312,14 +1078,7 @@ def render(rep: Dict[str, Any]) -> str:
     A = L.append
     A("═══ DOES THE INFORMATION REACH ITS CONSUMER? ═══════════════════════")
     A("")
-    A("1. PRODUCER — a parameter threaded with no supplier")
-    A("   %-22s %-34s %s" % ("param", "function", "verdict"))
-    for r in rep["producers"]["rows"]:
-        if r["verdict"] == "production":
-            continue                  # healthy; counted in the controls
-        A("  ⚠️ %-22s %-34s %s" % (r["param"], r["function"], r["verdict"]))
-    A("")
-    A("2. FRAME — a declared input read where it is never filed")
+    A("1. FRAME — a declared input read where it is never filed")
     if not rep["frames"]["broken"]:
         A("   none")
     for b in rep["frames"]["broken"]:
@@ -1340,13 +1099,13 @@ def render(rep: Dict[str, Any]) -> str:
         A("   ⚠️ UNRESOLVED gather sites: %d"
           % len(rep["frames"]["unresolved"]))
     A("")
-    A("3. DETAIL — a key written on a row and named nowhere else")
+    A("2. DETAIL — a key written on a row and named nowhere else")
     if not rep["details"]["unread"]:
         A("   none")
     for d in rep["details"]["unread"]:
         A("  ⚠️ %-44s %s" % (d["key"], d["sites"][0]))
     A("")
-    A("4. ROUNDTRIP — a field declared and dropped by its own `to_json`")
+    A("3. ROUNDTRIP — a field declared and dropped by its own `to_json`")
     if not rep["roundtrip"]["dropped"]:
         A("   none")
     for r in rep["roundtrip"]["dropped"]:

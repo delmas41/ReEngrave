@@ -1,0 +1,47 @@
+ROSTER REACH — what a supplied roster changes, measured through the STAGED decision
+
+── the cleanup-count pages (Litolff Beethoven 5 p.1-4) ─────────
+   labels read from the committed dump : 50
+   works in the group                  : 1
+   works the CATALOG holds a roster for: 1
+      beethoven--symphony-5                          10 instruments, complete=True
+   verdicts compared                   : 50
+   roster outcome                      : {'unchanged': 49, 'disambiguated': 1}
+   VERDICTS THAT MOVED                 : 1
+      beethoven--symphony-5              'Basso.'                   Bass voice -> Contrabass  (roster)
+
+   ⚠️ sources with no work_id mapping (EXCLUDED, not skipped): [('bach-wtc1', 4), ('dvorak9-simrock-scan', 15), ('handel-messiah-leadsheet', 28), ('handel-messiah-reduction', 4), ('mahler5-local-scan', 135)]
+
+── the 1,422-label lexicon corpus ──────────────────────────────
+   labels read from the committed dump : 1236
+   works in the group                  : 6
+   works the CATALOG holds a roster for: 6
+      bach--concerto-3                               3 instruments, complete=True
+      beethoven--symphony-5                          10 instruments, complete=True
+      beethoven--symphony-6                          9 instruments, complete=True
+      brahms--symphony-1                             9 instruments, complete=True
+      debussy--la-mer                                11 instruments, complete=True
+      ravel--bolero                                  17 instruments, complete=True
+   verdicts compared                   : 1236
+   roster outcome                      : {'unchanged': 1216, 'disambiguated': 3, 'recovered': 17}
+   VERDICTS THAT MOVED                 : 20
+      beethoven--symphony-5              'Basso.'                   Bass voice -> Contrabass  (roster)
+      beethoven--symphony-5              'Basso.'                   Bass voice -> Contrabass  (roster)
+      beethoven--symphony-5              'Basso.'                   Bass voice -> Contrabass  (roster)
+      ravel--bolero                      'V elles'                  None -> Cello  (roster)
+      ravel--bolero                      'V elles'                  None -> Cello  (roster)
+      ravel--bolero                      'V elles'                  None -> Cello  (roster)
+      ravel--bolero                      'V elles'                  None -> Cello  (roster)
+      ravel--bolero                      'V elles'                  None -> Cello  (roster)
+      ravel--bolero                      'V elles'                  None -> Cello  (roster)
+      ravel--bolero                      'V elles'                  None -> Cello  (roster)
+      ravel--bolero                      'V^{\\text{elles}}'        None -> Cello  (roster)
+      ravel--bolero                      '\\text{V}^{\\text{elles}}' None -> Cello  (roster)
+      ravel--bolero                      'V elles'                  None -> Cello  (roster)
+      ravel--bolero                      'V elles'                  None -> Cello  (roster)
+      ravel--bolero                      '\\mathbf{v}^{\\text{elles}}' None -> Cello  (roster)
+      ravel--bolero                      'V elles'                  None -> Cello  (roster)
+      ravel--bolero                      'V^{\\text{elles}}'        None -> Cello  (roster)
+      ravel--bolero                      'V elles'                  None -> Cello  (roster)
+      ravel--bolero                      'V^{\\text{elles}}'        None -> Cello  (roster)
+      ravel--bolero                      'elles'                    None -> Cello  (roster)

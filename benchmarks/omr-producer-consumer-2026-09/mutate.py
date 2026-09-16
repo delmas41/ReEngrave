@@ -40,26 +40,6 @@ TESTS = "tools/omr/tests/test_staged_wiring.py"
 
 #: `(name, file, anchor, replacement, the test that must go RED)`
 ARMS = [
-    # ── the PRODUCER question ────────────────────────────────────────────────
-    ("a forward counts as a supply", W,
-     'if isinstance(value, ast.Name) and value.id in stack[-1][1]:',
-     'if False:',
-     "TestTheProducerQuestion::test_it_finds_the_live_instance"),
-    ("positional arguments are ignored", W,
-     '    return [p.arg for p in (*a.posonlyargs, *a.args)]',
-     '    return []',
-     "TestTheProducerQuestion::test_a_POSITIONAL_supply_counts"),
-    ("the fixpoint runs one pass only", W,
-     '    changed = True\n    while changed:                      # small graph',
-     '    changed = False\n    while changed:                      # small graph',
-     "TestTheProducerQuestion::test_a_forward_from_a_FED_parameter_is_fed_too"),
-    ("a splat counts as a supply", W,
-     '                                    "called": called, "param": "**",\n'
-     '                                    "shape": "splat", "via": None,',
-     '                                    "called": called, "param": "**",\n'
-     '                                    "shape": "value", "via": None,',
-     "TestTheProducerQuestion::test_a_splat_is_never_a_supplier"),
-
     # ── the FRAME question ───────────────────────────────────────────────────
     ("subject=/scope= reads are judged as EXACT", W,
      '                    (scoped if ("subject" in kws or "scope" in kws)\n'

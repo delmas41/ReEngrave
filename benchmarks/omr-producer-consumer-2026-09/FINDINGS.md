@@ -33,8 +33,20 @@ The 2026-09-11 handoff, after the second missing producer in two days, wrote
 the conclusion this session implements: ***"Worth a derived check rather than a
 third discovery."***
 
-`tools/omr/staged/wiring.py` asks four of the six questions the brief listed.
-Which four, and why the other two are not here, is §7.
+`tools/omr/staged/wiring.py` asks three of the six questions the brief listed.
+Which three, and why the others are not here, is §7.
+
+⚠⚠ **AND ONE OF THEM WAS BUILT TWICE.** *A parameter threaded with no
+supplier* is **`tools/omr/no_producer.py`**, which a sibling session landed on
+main the same day — derived from the AST over the whole of `tools/`, finding
+`pdf_path` and `roster` with no hint. This session built its own before
+merging main, and it was a DUPLICATE: **CLAUDE.md states the rule and this
+session did not follow it** — *`git log --all --oneline -S "<the thing>" --
+tools/omr/` before building anything*, written there after the hairpin export
+was built twice. ~200 lines were written and deleted. The question is theirs;
+what survives here is the roster REPAIR, which **closes one of their tool's
+own open findings** — their entry said *"REMOVE THIS ENTRY the day a producer
+lands"*, and their stale-entry test is what made it leave.
 
 ---
 
@@ -44,8 +56,7 @@ Numbers are the tool's, on the tree that shipped (`wiring.txt`).
 
 | question | examined | healthy | **findings** |
 |---|--:|--:|--:|
-| **PRODUCER** — a parameter threaded with no supplier | 56 params, 10,324 call sites | 53 fed | **1 chain dead** (`dossier`), 1 repaired (`roster`) |
-| **FRAME** — a declared input read where it is never filed | 76 declared reads | 30 EXACT + 46 scoped | **0 broken, 6 LATENT**, 1 repaired |
+| **FRAME** — a declared input read where it is never filed | 81 declared reads | 31 EXACT + 50 scoped | **0 broken, 6 LATENT**, 1 repaired |
 | **DETAIL** — a key written on a row and named nowhere else | 113 keys | 91 read | **22 written and unread** |
 | **ROUNDTRIP** — a field dropped by its own `to_json` | 9 classes, 56 fields emitted | — | **1, and it is READ** |
 
@@ -53,36 +64,14 @@ Plus **11 gather sites whose subject Kind cannot be derived statically**, over
 **3 named shapes** — reported rather than dropped, each on `KNOWN_GAPS` with
 the reason it cannot be derived.
 
-### 2a. PRODUCER: the second missing producer, confirmed
+### 2a. PRODUCER — moved out, and the repair stayed
 
-`roster` was threaded `run_staged` -> `run_staged_on` -> `gather` ->
-`gather_external`, **forwarded at every link and supplied by nobody in
-`tools/`**, so `Q.ROSTER_ENTRY` was dead on every staged run this repo has
-made. That is the `pdf_path` fault exactly, one parameter over. `dossier` is
-the same shape and is **deliberately left open** — §6.
-
-⚠️⚠️ **THE QUESTION NEEDS A FIXPOINT AND THE FIRST DRAFT WAS A SINGLE PASS.**
-`roster` is forwarded at three links and supplied at none. `detector` is
-forwarded at *exactly the same three links* and supplied at the top by
-`staged/__main__.py`. A pass that looks only at the link in front of it cannot
-tell them apart and reports both dead — a check that fails so often nobody
-reads it. `FED` propagates DOWN from a real supply; what never receives it has
-no producer.
-
-⚠️⚠️ **AND WITHOUT POSITIONAL ARGUMENTS IT REPORTS ITS OWN FIXED BUG AS OPEN.**
-`staged/__main__.py` calls `pipeline.run_staged(args.pdf, ...)` — the PDF path
-is supplied POSITIONALLY, and every link after it is `pdf_path=pdf_path`, a
-pure forward. A keyword-only walker sees a chain of forwards with no supplier
-and reports the parameter repaired on 2026-09-11 as still broken. **A check
-that cannot tell its own fixed bug from its own open one is not measuring what
-it says.**
-
-⚠️ **"SUPPLIED ONLY BY A TEST" IS REPORTED AND IS DELIBERATELY NOT A PROBLEM.**
-`run_staged_on` exists so a test can drive the whole pipeline with no PDF, no
-weights and no venv — that seam is why the coherence tests are cheap enough to
-run every time. Failing on it would make `--check` permanently red, which is
-this repo's own stated reason a check stops being read. The rows are rendered;
-only `NO PRODUCER` counts.
+The question is `tools/omr/no_producer.py`'s (above). Its finding stands
+exactly as that tool states it: `roster` was threaded `run_staged` ->
+`run_staged_on` -> `gather` -> `gather_external`, **forwarded at every link
+and supplied by nobody**, so `Q.ROSTER_ENTRY` was dead on every staged run
+this repo has made. §3 is the repair; `dossier` is the same shape and stays
+open, deliberately (§6).
 
 ### 2b. FRAME: zero broken, six traps armed for the next person
 
@@ -271,17 +260,34 @@ ABSTAINS otherwise, which is every generated fixture and every upload, so the
 layer is a **no-op on the eleven-work engraved benchmark** unless a harness
 sets `OMR_WORK_ID`.
 
-⚠️ **A POPULATION ARM OVER THE 1,386-LABEL LEXICON CORPUS WAS RUN AND IS SLOW
-FOR A DOCUMENTED REASON**: `instruments.lookup` costs ~0.6 s on a string that
-matches NOTHING (it walks ~400 aliases twice, compiling a regex per alias),
-and Ravel's dump is 427 LaTeX-mangled Surya strings that match nothing —
-×2 arms, ×2 decisions that each call `lookup`. Its committed output is
-`roster-reach.txt`. ⚠️ **On the partial run that completed before the arm was
-rebuilt, 17 of 534 comparable verdicts moved**, every one Ravel's
-`V^{\text{elles}}` family recovering to **Cello** — a truncation the lexicon
-abstains on and the roster resolves. Treat that as an order of magnitude, not
-a rate: it is one work, and the arm it came from had a broken work-id map for
-the others (§4).
+**THE TWO ARMS, in full** (`roster-reach.txt`):
+
+| arm | labels | works with a roster | verdicts compared | **moved** |
+|---|--:|--:|--:|--:|
+| cleanup-count pages (Litolff Beethoven 5 p.1-4) | 50 | 1 of 1 | 50 | **1** |
+| the lexicon corpus | 1236 | 6 of 6 | 1236 | **20** |
+
+On the lexicon corpus the outcomes are `unchanged` 1216, `recovered` 17,
+`disambiguated` 3 — the 17 are Ravel's `Violoncelles` truncations (which the
+lexicon abstains on) recovering to **Cello**, the 3 are `Basso.` to
+Contrabass on Beethoven 5.
+
+⚠️ **THAT 20 OF 1236 REPRODUCES THE LEGACY LAYER'S OWN RECORDED FIGURE.**
+CLAUDE.md states `OMR_ROSTER_LABELS` as *"20 of 1422 real margin labels change
+(1.4%)"*; the staged wiring, over the subset whose work the catalog holds,
+moves 20 of 1236. **The rule was already measured; what this session added is
+that it ARRIVES.**
+
+⚠️ **150 labels are EXCLUDED, NOT SKIPPED**, and the probe says which: five
+sources whose work the catalog does not hold or whose id could not be derived
+(`mahler5-local-scan` 135, `handel-messiah` 32, `bach-wtc1` 4,
+`dvorak9-simrock-scan` 15). **A denominator that quietly shrinks is how a
+reach figure flatters itself.**
+
+⚠️ **IT IS SLOW FOR A DOCUMENTED REASON**: `instruments.lookup` costs ~0.6 s
+on a string that matches NOTHING (it walks ~400 aliases twice, compiling a
+regex per alias), and Ravel's dump is 427 LaTeX-mangled Surya strings that
+match nothing — x2 arms, x2 decisions that each call it. ~55 min of CPU.
 
 ---
 
@@ -432,8 +438,9 @@ that.** Ranked, not built.
   forwards. It also **refuses to run on a dirty tree**, because a battery that
   `git checkout`s a dirty file destroys work and cannot tell its own mutation
   from yours.
-- **Full suite**: SUITE_PLACEHOLDER. `inventory --check`, `gather_coverage`,
-  `health --check` and `wiring --check` all exit 0.
+- **Full suite**: SUITE_PLACEHOLDER. `no_producer --check`,
+  `inventory --check`, `gather_coverage`, `health --check` and
+  `wiring --check` all exit 0.
 
 ---
 
