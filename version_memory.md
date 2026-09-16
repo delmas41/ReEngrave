@@ -16,6 +16,59 @@ pointing at headings no longer in the file.)*
 
 ---
 
+## 2026-09-16 (later) — The document that ABSTAINS *and* MISREADS was already in the corpus
+
+**The entry above ended by naming what `OMR_METER_CARRY` waits for — a document
+that abstains AND misreads — and asserting that no document has both halves.
+That was refuted the same day by looking rather than gathering, and the
+correction is the finding.** Findings:
+`benchmarks/omr-meter-abstain-and-misread-2026-09/FINDINGS.md`.
+
+**`p0p3` — Breitkopf Brahms 1 mvt 1 — has had both halves the whole time**, in
+**11 of 11 committed arms across 5 generations**: `system/0/0` reads `C` (4.0
+quarters) at `voted` on a movement the committed dossier says is 6/8 (3.0), and
+`system/3/0` abstains.
+
+**⚠️ And the newest generation is the DISCRIMINATING case, not the Andante's
+safe-but-blind one.** The misread `C` is carried onto `system/3/0` and refused
+at support **−8.0** against a floor of 2.0, `bars_agree 0 / disagree 9`,
+`bar_lengths_seen {3.0: 8, 5.0: 1}` — **the bars positively name 3.0, which IS
+6/8.** First observation in this thread of the bar arbitration doing the job
+the flag was held off for rather than falling silent. **⚠️ It does not price
+the flip**: a 2-system fixture says nothing about propagation across a
+movement.
+
+**⚠️ The actionable finding: the bars have the answer and cannot SPELL it.**
+The BARS arm reaches length **3.0 at +7.0** against a floor of 4.0 and abstains
+`bars_name_a_length_without_a_form`, because the only borrow source is the
+system that misread `C`. **The form-borrowing rule is what stands between the
+pipeline and the correct meter here** — and it is right to refuse.
+
+**Reported apart:** `brahms1scan` also qualifies and is weaker (bars refuse at
+−1.0 naming 4.0, neither truth nor misread). Litolff `p012` hides a
+**suppressed** misread — `would_have_been: "C"` on a 2/4 document, held back by
+`too_few_staves_read_it` — reported and never scored as a reading.
+
+**⚠️ Three faults in the probe, two found by a row that was MISSING.** A filter
+on `quantity == "meter"` read **12 records as zero rows** because a second
+committed reduction shape has no such key, and it took out Litolff `p012`, the
+abstaining document — the tell was four truth-carrying fixtures appearing in
+none of the four buckets. A per-document truth table falsely flagged
+`brahms1eng`, whose `9/8` opening is the printed one-bar 9/8 `TRUTH_CHANGES`
+records. The first glob covered 68 of 105 records.
+
+**Battery 5 arms, all red, positive control first, restore verified**, byte
+snapshot on disk plus an in-flight sentinel. ⚠️ Its first run reported 3
+survivors and **all three were the battery's own faults**: a comparator reading
+only the headline bucket, an arm that could never fire (deleted rather than
+tested around), and an arm that was a **no-op because `{}` is falsy** — the
+`_carry_meter` hazard arriving in the instrument.
+
+⚠️ Nothing gathered, no print consulted, no OMR-NED; n = 2 fixtures, 1
+document, 1 publisher.
+
+---
+
 ## 2026-09-16 — The pricing arm RAN, its reach is ZERO, and two instruments were wrong
 
 **The arm.** `benchmarks/omr-meter-corroboration-2026-09/local_arm.sh`, recorded

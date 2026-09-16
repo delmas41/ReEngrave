@@ -49,6 +49,47 @@ research ideas not yet scheduled. Both are living documents — check them at
 the start of a session rather than trusting this brief for anything that
 changes week to week.
 
+## The example we needed was already on the shelf (2026-09-16)
+
+The note below explains why yesterday's test couldn't answer its question: the
+setting it was testing only does anything when the program **gives up** on a
+line of music, and the Brahms pages never gave up. So we said what we'd need —
+a score that *both* gives up somewhere *and* misreads somewhere else — and
+added that no score we have does both.
+
+**That was wrong, and it took twenty minutes to find out.** One does. It is the
+same Brahms, different pages, and the evidence has been sitting in our own
+saved results for weeks — across five different versions of the program, every
+single time.
+
+On that score: one line of music is misread as having four beats to the bar
+where the printed page says three. Another line the program gives up on
+entirely. Both faults, one score — exactly the case nobody could find.
+
+**And then the good part.** On the line it gave up on, the program borrows the
+misread answer from the line above, then checks it against the bars actually
+printed there — and **throws it out.** Not by shrugging: the bars positively
+say *three beats*, eight times out of nine, which is the right answer. That
+matters because the one previous example of this check had it refusing
+*everything*, right answers included, which tells you nothing. This one
+discriminates.
+
+**What it can't do is spell the answer.** The program works out the bar is three
+beats long, and then won't write it down — because to write a time signature it
+has to copy the printed form from a nearby line that agrees, and the only
+nearby line is the one that misread it. So it knows the length and refuses to
+guess the notation. That refusal is correct. But it means the thing standing
+between us and the right answer here is a copying rule, not the arithmetic —
+and that is a much more specific place to look than "the meter is hard".
+
+Two honest limits. This does **not** mean yesterday's question is answered: the
+example covers two lines of music, not a whole movement, so how far a misread
+travels is still unmeasured. And three things about my own search tool were
+wrong before it was right — the worst being a filter that quietly read twelve
+saved files as empty, including the one file about the score that gives up. I
+noticed because four scores I had answers for turned up in none of the answer
+columns. **A filter that empties a file looks exactly like an empty file.**
+
 ## A test that could not test anything (2026-09-16)
 
 Yesterday a setting was switched on by default: it lets the program carry the
