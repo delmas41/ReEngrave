@@ -2656,7 +2656,7 @@ class TestTheLegacyArcPathIsUntouched(unittest.TestCase):
 
 
 def _tacet_page(*, widths=((0, 2), (1, 3), (2, 2)), absent_from=(1,),
-                slots=(0, 1)):
+                slots=(0, 1), absent_slot=1):
     """Two slots across N systems, with slot 1 SUPPRESSED on some of them.
 
     ⚠️ THIS IS THE PRINTED SHAPE, NOT AN INVENTED ONE. A score suppresses a
@@ -2673,7 +2673,8 @@ def _tacet_page(*, widths=((0, 2), (1, 3), (2, 2)), absent_from=(1,),
         vrd.append(_vrd(n[0], subject, quantity, value, **kw))
 
     for sysi, width in widths:
-        here = [s for s in slots if not (s == 1 and sysi in absent_from)]
+        here = [s for s in slots
+                if not (s == absent_slot and sysi in absent_from)]
         for st, slot in enumerate(here):
             key = f"staff/0/{sysi}/{st}"
             add(key, Q.MEASURE_PARTITION, width)
@@ -2746,6 +2747,32 @@ class TestAMeasureIsNumberedByTheDOCUMENT(unittest.TestCase):
         self.assertTrue(set(got["P1"]).isdisjoint({3, 4}),
                         "no number of system 0 may also be a number of "
                         "system 1")
+
+    def test_the_systems_are_ordered_by_the_DOCUMENT_not_by_arrival(self):
+        """⚠️ A MUTATION ARM FOUND THIS GAP AND NOTHING ELSE DID. `width` is
+        filled by walking the parts, so its INSERTION order is the first
+        part's view of the document followed by whatever the later parts add.
+        Here the FIRST part is the suppressed one — it contributes systems 0
+        and 2, and system 1 arrives afterwards — so insertion order is
+        `0, 2, 1` and only the `sorted` makes the offsets accumulate in
+        reading order. Every fixture whose first part is present everywhere
+        passes either way, which is exactly why the arm survived."""
+        page = _tacet_page(absent_slot=0)
+        parts, *_ = SX.build(SX.Record(page))
+        width_insertion_order = []
+        for part in parts:
+            for run in part:
+                k = (run.page, run.system)
+                if k not in width_insertion_order:
+                    width_insertion_order.append(k)
+        self.assertEqual(width_insertion_order,
+                         [(0, 0), (0, 2), (0, 1)],
+                         "the fixture must actually exercise the hazard")
+        self.assertEqual(SX.system_bar_starts(parts),
+                         {(0, 0): 0, (0, 1): 2, (0, 2): 5})
+        got = _numbers_by_part(SX.to_musicxml(page)[0])
+        self.assertEqual(got["P1"], [1, 2, 6, 7])
+        self.assertEqual(got["P2"], [1, 2, 3, 4, 5, 6, 7])
 
     def test_the_duplicate_counter_is_WRITTEN_even_when_it_is_ZERO(self):
         """⚠️ `empty_bars_padded_without_meter`'s lesson in the numbering

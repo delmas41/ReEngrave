@@ -36,10 +36,16 @@ TESTS = ["tools/omr/tests/test_staged_export.py"]
 
 #: (name, file, anchor, replacement, why)
 ARMS = [
-    ("number-runs-per-part", EXPORT,
+    # ⚠️ AN EARLIER VERSION OF THIS ARM SURVIVED AND WAS AN EQUIVALENT MUTANT
+    # OF ITS OWN WRITING: `i + 1 if run is part[0] else base + i + 1` differs
+    # from the real rule only when a part's FIRST system is not the
+    # document's, which no fixture here builds. Replaced rather than tested
+    # around -- an arm that cannot go red teaches the next reader to skim the
+    # list.
+    ("number-restarts-every-system", EXPORT,
      "            number = base + i + 1",
-     "            number = i + 1 if run is part[0] else base + i + 1",
-     "the defect itself, in its purest form: number from the part"),
+     "            number = i + 1",
+     "the bar's number must not restart at each system"),
     ("base-is-a-running-total", EXPORT,
      "        base = starts[(run.page, run.system)]",
      "        base = sum(r.n_measures for r in "
