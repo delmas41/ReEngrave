@@ -551,6 +551,66 @@ class Q(_Vocab):
     #: a substring test, and why this is a separate name rather than a detail
     #: field on that row.
     STEM_DIRECTION = "stem_direction"
+    #: Whether a glyph the DETECTOR called a notehead is in fact the ink of a
+    #: WHOLE REST -- `True`, `False`, or an abstention where it cannot be told.
+    #:
+    #: ⚠️ IT EXISTS BECAUSE SEAN READ THE FILE AGAINST THE PRINT AND SAID SO
+    #: (2026-09-11): *"in bars where it should be just whole note rest in two
+    #: four. It's showing an actual quarter note, not a quarter note rest."*
+    #: A pitched note standing where the page prints silence is the worst
+    #: SHAPE of error this pipeline makes -- a missing note leaves a visible
+    #: gap, an invented one has to be hunted down and deleted -- and that
+    #: asymmetry, not the count, is why it is a decision rather than a
+    #: tolerated misread. The count is small: 25 of 2,347 noteheads on the
+    #: four pages measured.
+    #:
+    #: ⚠️⚠️ IT IS NOT THE WHOLE OF SEAN'S OBSERVATION AND MUST NOT BE QUOTED
+    #: AS IF IT WERE. Of the 26 bars whose entire exported content is one
+    #: lone quarter in a 2/4 bar, **5 are this fault and 18 are REAL NOTES**
+    #: whose bar-mates were never detected -- a reading shortfall wearing the
+    #: costume of an invented note -- with 3 more spurious heads on slur and
+    #: stem ink. A rule that emptied all 26 bars would delete real music.
+    #:
+    #: ⚠️ TWO WITNESSES, AND NEITHER IS ADMISSIBLE ALONE. This is the
+    #: structure `_drop_unladdered_noteheads` already states for the same
+    #: family of problem, and here it is measured rather than asserted:
+    #:   * SHAPE alone fires on 148 of 2,347 noteheads. Most are not whole
+    #:     rests -- bled heads, beam residue, letters of the word *cresc.* --
+    #:     so shape alone would delete real music.
+    #:   * POSITION alone fires on 310 and is nearly uninformative: the band a
+    #:     whole rest hangs in is where C5 and D5 live in treble, i.e. where
+    #:     ordinary music is.
+    #:   * Together they fire on 25, and all 25 were cropped and looked at
+    #:     against the print. All 25 are whole rests.
+    #:
+    #: ⚠️ POSITION IS ESTABLISHED TWO WAYS AND THE SECOND ONE MATTERS. A whole
+    #: rest HANGS UNDER THE FOURTH STAFF LINE FROM THE BOTTOM whatever the
+    #: clef, key or music -- the engraver has no freedom about it -- so its
+    #: centre sits at one staff step. But that step is measured against the
+    #: staff's RECORDED lines, and on a warped scan those are up to a step out
+    #: (the document's own correctly-read whole rests spread over steps
+    #: 2.5-5.9). So a NEIGHBOURING BAR of the same staff holding a detected
+    #: `restWhole` at nearly the same height counts too: a tacet part prints
+    #: one in EVERY bar, and a shared registration error cancels between two
+    #: rows of one staff. It caught `P1 m85`, which the absolute slot missed.
+    #:
+    #: ⚠️ THE NEIGHBOUR WITNESS IS NOT INDEPENDENT OF THE DETECTOR, only of
+    #: THIS GLYPH. That is weaker than CLAUDE.md's *"a second witness must not
+    #: come off the same raster"* and it is the strongest thing available
+    #: here; it is stated rather than dressed up.
+    #:
+    #: ⚠️ THE VALUE IS NOT A RECLASSIFICATION. A `True` verdict stops the
+    #: exporter writing a NOTE there and is counted; nothing manufactures a
+    #: `Q.REST` row, because what ink is on the page is a GATHER fact and this
+    #: is an ADJUDICATE decision. The bar then falls to the exporter's padded
+    #: measure rest, which says *we read nothing in this bar* -- weaker than
+    #: *we read silence*, and true.
+    #:
+    #: ⚠️ A LOWER BOUND ON THE FAULT, NOT A MEASUREMENT OF IT. Scored against
+    #: the document's own correctly-read whole rests these cuts re-describe
+    #: only the middle of that population, so a phantom note whose rest is
+    #: shaped unlike the median is not caught here.
+    NOTEHEAD_IS_A_WHOLE_REST = "notehead_is_a_whole_rest"
     #: A bar's 1-2 VOICE STREAMS, as a partition of its glyphs.
     #:
     #: ⚠️ MUSICXML PAIRS `<slur>` WITHIN A `<voice>`, so this is not a

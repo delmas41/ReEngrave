@@ -779,6 +779,14 @@ ORDER: Tuple[str, ...] = (
     # afterwards it would arrive too late to separate them, which is the
     # `TUPLET_RATIO` before `DURATION` lesson in a second family.
     Q.STEM_DIRECTION,
+    # ⚠️ BEFORE THE DURATION AND THE EVENTS, though nothing in ADJUDICATE reads
+    # its verdict today: this asks whether a glyph is a notehead AT ALL, and a
+    # question about what a thing IS cannot honestly be settled after the
+    # questions that assume the answer. Filed here so the first consumer that
+    # wants it -- a bar sum that should not count this ink, an event grouping
+    # that should not admit it -- finds it already decided rather than having
+    # to move it and rediscover `wedge_anchor`'s ORDER fault.
+    Q.NOTEHEAD_IS_A_WHOLE_REST,
     Q.TUPLET_RATIO,
     Q.DURATION,
     # ⚠️ EVENTS BEFORE THE METER, and it is the bar sum that forces it. A bar

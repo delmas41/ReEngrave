@@ -474,6 +474,30 @@ def _place_notes(rec: Record, runs: Dict[str, StaffRun]) -> Dict[str, int]:
         is_rest = bool(rec.obs(Q.REST, sub))
         if not is_rest and not rec.obs(Q.NOTEHEAD_CLASS, sub):
             continue                 # neither a notehead nor a rest
+        if not is_rest and rec.value(Q.NOTEHEAD_IS_A_WHOLE_REST, sub) is True:
+            # ⚠️⚠️ SEAN'S OWN OBSERVATION, AND THE ASYMMETRY IS THE REASON.
+            # *"in bars where it should be just whole note rest in two four.
+            # It's showing an actual quarter note, not a quarter note rest."*
+            # `adjudicate_notehead_is_a_whole_rest` has two witnesses saying
+            # this ink is a whole rest -- its outline, and the slot an
+            # engraver is obliged to hang one in (or a neighbouring bar of
+            # this same staff holding one at the same height). Writing a
+            # PITCHED NOTE here puts music where the page prints silence, and
+            # a wrong note has to be hunted down while a missing one is
+            # visible as a gap.
+            #
+            # ⚠️ REFUSED, NOT CONVERTED. No `<rest>` is written from here: the
+            # bar falls to `_mxl_empty_measure`'s padded measure rest, which
+            # says *we read nothing in this bar* rather than *we read
+            # silence*. Claiming the second needs a `Q.REST` row, and what ink
+            # is on the page is a GATHER fact this stage may not manufacture.
+            #
+            # ⚠️ FIRST, before the pitch and duration tests, so the count says
+            # the load-bearing thing about the row -- *this is not a note* --
+            # rather than filing it under `no_pitch`, which would be true and
+            # beside the point.
+            dropped["ink_is_a_whole_rest"] += 1
+            continue
         # ⚠️ A REST HAS NO PITCH AND MUST NOT BE ASKED FOR ONE. Requiring a
         # pitch is what kept rests out of the file for as long as they had no
         # quantity at all; asking for one now would keep them out for a
