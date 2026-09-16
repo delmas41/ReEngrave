@@ -208,9 +208,14 @@ def main() -> int:
             subprocess.run(["git", "checkout", "--", rel], cwd=ROOT,
                            capture_output=True)
         if test is None:
+            # ⚠️ THE POSITIVE CONTROL IS NOT A SURVIVOR AND MUST NOT BE
+            # COUNTED AS ONE. Listing it beside the real survivors made the
+            # summary read "2 survived" when there was one, which is exactly
+            # the kind of miscount that gets a genuine gap waved through.
             ok = rc == 0
             print(f"  {'GREEN ' if ok else 'RED   '}  {name}")
-            (survived if ok else errors).append(name)
+            if not ok:
+                errors.append(f"{name}: a no-op edit turned the suite RED")
             continue
         if rc != 0:
             red.append(name)

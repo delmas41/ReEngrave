@@ -149,6 +149,20 @@ class TestTheFrameQuestion(unittest.TestCase):
         guarded against in their own fallback branches."""
         self.assertIsNone(wiring._kind_of_expr(
             ast.parse("Subject.from_key(k)", mode="eval").body, {}))
+        # ⚠️⚠️ THE BARE NAME BRANCH, AND THE MUTATION BATTERY IS WHAT FOUND
+        # IT MISSING. This test was NAMED for the hazard and reached only the
+        # Call branch: defaulting an unbound local to `'staff'` left it GREEN.
+        # *A test named for a hazard it does not reach is the better
+        # CAMOUFLAGE* — the name is what a reviewer trusts and the only part
+        # they cannot check by reading. Only a mutation says otherwise.
+        self.assertIsNone(wiring._kind_of_expr(
+            ast.parse("sub", mode="eval").body, {}))
+        self.assertEqual("cell", wiring._kind_of_expr(
+            ast.parse("sub", mode="eval").body, {"sub": "cell"}))
+        # and the SHAPE that names an unbound local must still be reported
+        shapes = {u["shape"] for u in wiring.report()["frames"]["unresolved"]}
+        self.assertTrue(any(sh.startswith("local ") for sh in shapes),
+                        "a defaulted local would silently leave this set")
         rep = wiring.report()
         for u in rep["frames"]["unresolved"]:
             self.assertTrue(u["shape"],
