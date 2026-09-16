@@ -57,8 +57,29 @@ including the **two GATHER divergences it found and deliberately did not
 change**, and the **`ff` 47 → 39 that is an unadjudicated COST and not a win**.
 
 ⚠️ **START HERE IF YOU ARE PICKING THIS UP:**
+[docs/handoff-2026-09-16-the-fourth-stage-and-the-second-publisher.md](docs/handoff-2026-09-16-the-fourth-stage-and-the-second-publisher.md)
+— **the newest.** **THE FOURTH STAGE EXISTS** (`OMR_INFER`, default off, its
+five disciplines enforced by the HARNESS rather than described) — and **its
+REACH NUMBER is the finding: 357 narrowed durations yielded 7**, which is the
+stage answering the question the cleanup count was meant to answer. The
+**roster finally reaches ADJUDICATE** (three faults wearing one name; dead on
+every staged run this repo had ever made), found by a new derived **wiring
+check** that flagged its own author's scope trap as LATENT *before the line
+existed*. **`OMR_WHOLE_REST_INK` is default ON by Sean's call** — the one rule
+that DELETES notes, and the second-publisher pricing of it is in flight.
+⚠️ **The 09-15 handoff's §11 is CLOSED**: both shared staged records exist
+(`library/_shared-records/`, md5-receipted and tagged). ⚠️⚠️ **And
+`OMR_METER_CARRY`'s blocker is NAMED at last and it is the CORPUS** — the flag
+needs a document that ABSTAINS *and* MISREADS, and **neither document on this
+machine does both** (Litolff abstains but reads its one meter right;
+Breitkopf misreads but abstains nowhere), so its cost side is STILL UNPRICED
+at reach ZERO. ⚠️⚠️ **READ ITS §7 BEFORE DISPATCHING ANYTHING: three briefs
+were overtaken by work already on main in one session** — a branch already
+merged, a check a sibling had already built, and a gather already run — so
+`git log --all -S` and `origin/main` are a measurement to take, not a
+courtesy. Its predecessor
 [docs/handoff-2026-09-15-six-jobs-in-parallel.md](docs/handoff-2026-09-15-six-jobs-in-parallel.md)
-— **the newest.** Six agents were run down the ranked list of the handoff below
+— Six agents were run down the ranked list of the handoff below
 and **five landed**: the part join goes **75 fragments → 37 parts with 12 grafts
 → 0**; Sean's last open observation is closed by a rule that **DELETES 22 notes**
 on 25-of-25 hand-adjudicated crops; measure numbers are keyed to the DOCUMENT's
