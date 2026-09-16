@@ -273,3 +273,32 @@ that holds only on Litolff is a property of that scan.** Say which you have.
 - **The recipe was committed BEFORE the run** so the provenance stamp — taken at
   the END — could be clean. This is the cheap move that makes a shared artefact
   worth more than a private one.
+
+---
+
+## 8. ⚠️ THE STAMPED COMMIT WAS ORPHANED BY A REBASE — resolved, and worth recording
+
+`origin/main` advanced from `da2c9c11` to `fa054a61` **while the gather was
+running**, so rebasing this branch onto it rewrote the very commit the record's
+provenance names. `e282ae0c` is reachable from no branch.
+
+**It is preserved as the tag `record/brahms1-breitkopf-p0-p3`**, pushed with
+this branch, so `git show e282ae0c` keeps working and the stamp keeps meaning
+something.
+
+⚠️ **And the load-bearing fact is stronger than the tag.** `e282ae0c` differs
+from `da2c9c11` by **two benchmark files and nothing else**, so their `tools/`
+trees are the SAME object (`40b68273`). **The code that produced this record is
+`da2c9c11`'s `tools/`, which is permanently on main.**
+
+⚠️⚠️ **`fa054a61`'s `tools/` tree is DIFFERENT (`b76bd3fd`).** So this record
+does **not** describe the code on current main, and an A/B that re-gathers on
+today's tree and compares against it is **not** controlled. Check
+`git diff da2c9c11 origin/main -- tools/omr` before treating the two as
+interchangeable. This is the same shape as CLAUDE.md's warning that the scan
+gate's `0.8444` *"is not a baseline for the current tree"* — arriving on the
+first day this artefact existed.
+
+⚠️ **A shared record can be stamped clean and still be orphaned by ordinary
+branch hygiene.** The stamp records a SHA; nothing makes that SHA reachable.
+Tag it, or record the tree equivalence, or both.
