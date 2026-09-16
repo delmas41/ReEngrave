@@ -1,0 +1,117 @@
+provenance: {'commit': 'ce7b8ba7f317736733cd163e356c30d2117cf580', 'dirty': False}
+========================================================================
+REACH
+========================================================================
+  staff-systems               : 75
+  Q.MARGIN_LABEL observations : 50
+  printed systems             : 7  sizes [(8, 1), (11, 5), (12, 1)]
+  SHORT systems (< 12 staves) : 6, holding 63 staves
+
+========================================================================
+BEFORE
+========================================================================
+  slot decided / staves : 75 / 75
+  abstentions           : {}
+  GRAFTS                : 10
+  condensation (apart)  : 6
+  part_partition        : deduced_anchor  {'join': 'ordinal', 'reason': 'slots_are_ordinals'}
+      p3/s1 staff 1   prints Clarinetti             -> part Oboi
+      p3/s1 staff 2   prints Fagotti                -> part Clarinetti
+      p3/s1 staff 3   prints Corni                  -> part Fagotti
+      p3/s1 staff 4   prints Violino I              -> part Corni
+      p3/s1 staff 5   prints Violino II             -> part Trombe
+      p3/s1 staff 6   prints Viola                  -> part Timpani
+      p4/s0 staff 6   prints Violino I              -> part Timpani
+      p4/s0 staff 8   prints Viola                  -> part Violino II
+      p4/s0 staff 9   prints Violoncello            -> part Viola
+      p4/s0 staff 10  prints Basso                  -> part Violoncello
+
+========================================================================
+AFTER
+========================================================================
+  slot decided / staves : 50 / 75
+  abstentions           : {'unnamed_in_short_system': 25}
+  GRAFTS                : 0
+  condensation (apart)  : 0
+  part_partition        : slot  {'join': 'slot', 'slots': [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]}
+
+========================================================================
+PER STAFF  (printed | before | after)
+========================================================================
+  p1/s0 0   Flauti                  Flauti                  Flauti
+  p1/s0 1   Oboi                    Oboi                    Oboi
+  p1/s0 2   Clarinetti              Clarinetti              Clarinetti
+  p1/s0 3   Fagotti                 Fagotti                 Fagotti
+  p1/s0 4   Corni                   Corni                   Corni
+  p1/s0 5   Trombe                  Trombe                  Trombe
+  p1/s0 6   Timpani                 Timpani                 Timpani
+  p1/s0 7   Violino I               Violino I               Violino I
+  p1/s0 8   Violino II              Violino II              Violino II
+  p1/s0 9   Viola                   Viola                   Viola
+  p1/s0 10  Violoncello             Violoncello             Violoncello
+  p1/s0 11  Basso                   Basso                   Basso
+  p2/s0 0   Flauti                  Flauti                  Flauti
+  p2/s0 1   Oboi                    Oboi                    Oboi
+  p2/s0 2   Clarinetti              Clarinetti              Clarinetti
+  p2/s0 3   Fagotti                 Fagotti                 Fagotti
+  p2/s0 4   Corni                   Corni                   Corni
+  p2/s0 5   Trombe                  Trombe                  Trombe
+  p2/s0 6   Timpani                 Timpani                 Timpani
+  p2/s0 7   Violino I               Violino I               unnamed_in_short_system
+  p2/s0 8   Violino II              Violino II              unnamed_in_short_system
+  p2/s0 9   Viola                   Viola                   unnamed_in_short_system
+  p2/s0 10  Violoncello e Basso     Violoncello             unnamed_in_short_system
+  p2/s1 0   Flauti                  Flauti                  Flauti
+  p2/s1 1   Oboi                    Oboi                    Oboi
+  p2/s1 2   Clarinetti              Clarinetti              Clarinetti
+  p2/s1 3   Fagotti                 Fagotti                 Fagotti
+  p2/s1 4   Corni                   Corni                   Corni
+  p2/s1 5   Trombe                  Trombe                  Trombe
+  p2/s1 6   Timpani                 Timpani                 Timpani
+  p2/s1 7   Violino I               Violino I               unnamed_in_short_system
+  p2/s1 8   Violino II              Violino II              unnamed_in_short_system
+  p2/s1 9   Viola                   Viola                   unnamed_in_short_system
+  p2/s1 10  Violoncello e Basso     Violoncello             unnamed_in_short_system
+  p3/s0 0   Flauti                  Flauti                  Flauti
+  p3/s0 1   Oboi                    Oboi                    Oboi
+  p3/s0 2   Clarinetti              Clarinetti              Clarinetti
+  p3/s0 3   Fagotti                 Fagotti                 Fagotti
+  p3/s0 4   Corni                   Corni                   Corni
+  p3/s0 5   Trombe                  Trombe                  Trombe
+  p3/s0 6   Timpani                 Timpani                 Timpani
+  p3/s0 7   Violino I               Violino I               unnamed_in_short_system
+  p3/s0 8   Violino II              Violino II              unnamed_in_short_system
+  p3/s0 9   Viola                   Viola                   unnamed_in_short_system
+  p3/s0 10  Violoncello e Basso     Violoncello             unnamed_in_short_system
+  p3/s1 0   Flauti                  Flauti                  Flauti
+  p3/s1 1   Clarinetti              Oboi                    Clarinetti
+  p3/s1 2   Fagotti                 Clarinetti              Fagotti
+  p3/s1 3   Corni                   Fagotti                 Corni
+  p3/s1 4   Violino I               Corni                   unnamed_in_short_system
+  p3/s1 5   Violino II              Trombe                  unnamed_in_short_system
+  p3/s1 6   Viola                   Timpani                 unnamed_in_short_system
+  p3/s1 7   Violoncello e Basso     Violino I               unnamed_in_short_system
+  p4/s0 0   Flauti                  Flauti                  Flauti
+  p4/s0 1   Oboi                    Oboi                    Oboi
+  p4/s0 2   Clarinetti              Clarinetti              Clarinetti
+  p4/s0 3   Fagotti                 Fagotti                 Fagotti
+  p4/s0 4   Corni                   Corni                   Corni
+  p4/s0 5   Trombe                  Trombe                  Trombe
+  p4/s0 6   Violino I               Timpani                 unnamed_in_short_system
+  p4/s0 7   Violino II              Violino I               unnamed_in_short_system
+  p4/s0 8   Viola                   Violino II              unnamed_in_short_system
+  p4/s0 9   Violoncello             Viola                   unnamed_in_short_system
+  p4/s0 10  Basso                   Violoncello             unnamed_in_short_system
+  p4/s1 0   Flauti                  Flauti                  Flauti
+  p4/s1 1   Oboi                    Oboi                    Oboi
+  p4/s1 2   Clarinetti              Clarinetti              Clarinetti
+  p4/s1 3   Fagotti                 Fagotti                 Fagotti
+  p4/s1 4   Corni                   Corni                   Corni
+  p4/s1 5   Trombe                  Trombe                  Trombe
+  p4/s1 6   Timpani                 Timpani                 Timpani
+  p4/s1 7   Violino I               Violino I               unnamed_in_short_system
+  p4/s1 8   Violino II              Violino II              unnamed_in_short_system
+  p4/s1 9   Viola                   Viola                   unnamed_in_short_system
+  p4/s1 10  Violoncello e Basso     Violoncello             unnamed_in_short_system
+
+[exited with code 0]
