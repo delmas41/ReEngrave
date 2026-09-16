@@ -3195,6 +3195,82 @@ run.** Battery 15 arms, all red, restore verified. ⚠️ **What is NOT
 established**: no end-to-end arm ran, no OMR-NED, no print consulted, n = 4
 documents / 2 publishers / 7 change segments.
 
+### ⚠️⚠️ THE PRICING ARM RAN — and its REACH IS ZERO, so the flip is STILL UNPRICED
+
+2026-09-16, Sean's own machine. `benchmarks/omr-meter-corroboration-2026-09/local_arm.sh`
+— the arm this file has recorded as *"written and never run"* since the
+default flip — was run on Breitkopf Brahms 1 mvt 1, pdf pages 0-3. Raw output
+with provenance:
+[out/local/RUN_2026-09-16_brahms1.md](benchmarks/omr-meter-corroboration-2026-09/out/local/RUN_2026-09-16_brahms1.md);
+findings: [FINDINGS.md](benchmarks/omr-meter-corroboration-2026-09/FINDINGS.md) §2026-09-16.
+
+⚠️⚠️ **EVERY REPORTED NUMBER IS IDENTICAL IN BOTH ARMS, AND IT IS A REACH ZERO
+RATHER THAN A NULL COST.** The meter is **decided on 7 systems of 7**
+(`voted` 2, `change_only` 5) with **no abstention of any kind** — and
+`_meter_fallbacks`, whose own docstring opens *"Everything to try when this
+system's own READING failed"*, is reached only from failure paths. **Neither
+flag has a domain on this document.** `carry sources SKIPPED = 0` says the
+same of `A-METER-6`: nothing was carried, so nothing could be confined.
+**So `OMR_METER_CARRY`'s cost side is still unmeasured**, and this run must
+never be quoted as the measurement it was written to take.
+
+⚠️ **THE INSTRUMENT WAS CHECKED BEFORE THE ZERO WAS BELIEVED**, because under a
+**default-ON** flag an OFF arm that fails to express itself **is the ON arm**,
+and two ON arms are identical — the hazard this file already records twice
+(*zsh does not word-split `env $3`*; *three harnesses expressed off by POPPING
+the variable*). Four checks, in order: the script is **bash** and was invoked
+as bash; OFF is an explicit **prefix assignment per arm**, not a pop; the arm's
+own header printed `=0 =0` and `=1 =1`; and the stamped tree `0ea7a726` is
+nine commits behind the tip with `git diff -- tools/` **EMPTY**, both
+predicates already reading *ON by default*. Only then does `decided 7 of 7`
+become the explanation.
+
+⚠️⚠️ **THE ARM DID NOT DECLARE ITSELF DEAD AT ZERO REACH, AND EVERY SIBLING
+PROBE IN THIS THREAD DOES.** It printed a full BEFORE/AFTER table, a `<time>`
+census and a bar-fill report over a domain of zero — the shape of an arm that
+measured something. `direction_arm.py`, `rest_dot_arm.py`, the wedge arm and
+`export_arm.py` all print REACH first and exit non-zero declaring themselves
+DEAD; this one owes the same and does not pay it, on the very quantity its own
+*HOW TO READ IT* calls *"the one thing this arm exists to get"*. **Recorded,
+not repaired** — the repair belongs with whoever can re-run it.
+
+⚠️⚠️ **THE BAR-FILL HALF IS VOID: IT SCORED BRAHMS AGAINST BEETHOVEN'S BAR.**
+`bar_fill.py`'s `--bar-beats` **defaulted to 2.0** — Litolff Beethoven 5's 2/4
+— and the arm never passed it; Brahms 1 mvt 1 is **6/8 = 3.0**. The reported
+**96.3% OVERFULL / 0.6% exact** is a property of that constant, and the
+giveaway sits in the arm's own table: **684 bars holding one measure rest at
+exactly 3.0 — the RIGHT length — counted OVERFULL.** ⚠️ **And this file
+describes that probe as doing something it has never done** — *"bars that sum
+to the `<time>` the same file declares"*. It does not read `<time>` at all; on
+a 2/4 document the constant and the declaration coincide, which is why the
+claim read as true for as long as there was one document. **REPAIRED as a
+REFUSAL, not a better default**: `--bar-beats` is REQUIRED in the probe and
+`$4` is REQUIRED in the arm, since a default converts *"I do not know this
+document's bar length"* into a definite answer. ⚠️ The deeper repair — reading
+the meter in force per bar, which is what the prose already claims — is **NOT
+done**, because it moves every committed figure this probe has produced.
+
+⚠️ **TWO THINGS THE RUN DOES ESTABLISH, and both are in BOTH arms and therefore
+NOT the flip's.** (1) The misread reaches the file — `<time>` reads
+`{6/8: 97, 9/4: 14, 4/4: 83}` on a movement printing 6/8 with one bar of 9/8,
+**97 declarations the page does not print** — but identically with the flags
+OFF, so it is `OMR_METER_SEGMENTS` + `change_only`, exactly as that flag's own
+row predicts (41 → 138 on this document), and the two flags flipped on 09-15
+are **acquitted**. (2) The bar-fill denominator is the **PART JOIN**, not the
+meter: `join_used: fragments`, **97 parts**, and **3407 of 4225 bars (80.6%)
+are tacet padding** — `_slots_are_ordinals` refusing the graft as designed. So
+**no bar-fill figure from this document is comparable to Litolff's
+38.0% → 69.2% at any `--bar-beats`**, because four fifths of what is being
+measured is padding for fragments.
+
+⚠️ **WHAT THE FLAG IS ACTUALLY WAITING FOR, NAMED AT LAST: a document that
+ABSTAINS *and* MISREADS.** Litolff Beethoven 5 pp.1-4 abstains on 6 of 7
+systems — but its one read meter is CORRECT, so the carry can never be handed
+a wrong candidate there. Breitkopf Brahms 1 misreads badly — but abstains
+nowhere, so the carry never runs. **The two halves of the hazard have never
+been present in one document**, and every "n = 1" in this thread has been
+about the wrong axis.
+
 ### ⚠️⚠️ The bars are not an independent umpire over a bad reading
 
 Found 2026-09-09 while trying to fix a scanned `9/8` voted as `9/4`. The

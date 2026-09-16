@@ -356,3 +356,119 @@ refused that twice.
 | `mutation_battery.py` | **15 arms, all red**, byte snapshot, **restore VERIFIED** |
 | `local_arm.sh` | the end-to-end pricing for Sean's machine — never run |
 | `out/reach.json`, `out/arm-m7.json` | the tables above, machine-readable |
+
+---
+
+## 2026-09-16 — THE ARM RAN, AND ITS REACH IS ZERO
+
+The arm this file records as *"written and never run"* was run by Sean on his
+own machine (Breitkopf Brahms 1 mvt 1, pdf pages 0-3, both flags default-ON).
+Raw output, with provenance:
+[out/local/RUN_2026-09-16_brahms1.md](out/local/RUN_2026-09-16_brahms1.md).
+
+⚠️⚠️ **EVERY REPORTED NUMBER IS IDENTICAL IN BOTH ARMS — AND THAT IS A REACH
+ZERO, NOT A NULL COST.** The meter is **decided on 7 systems of 7**
+(`voted` 2, `change_only` 5) with **no abstention of any kind**.
+`_meter_fallbacks` — whose own docstring opens *"Everything to try when this
+system's own READING failed"* — is reached from three call sites and all three
+are failure paths, so on this document **neither flag has a domain**.
+`carry sources SKIPPED = 0` says the same thing about `A-METER-6`: nothing was
+ever carried, so nothing could be confined.
+
+**So the cost of the 2026-09-15 flip is STILL UNPRICED.** The flip's standing
+objection is that a misread meter TRAVELS; this document never lets it start
+travelling, because every system answers for itself. What was measured is that
+the flip is **inert here**, which is a different sentence and must not be
+quoted as the one the flag was held off for.
+
+### 1 · The instrument was checked BEFORE the zero was believed
+
+This project has twice recorded a clean, believable zero that was the harness:
+*"zsh does not word-split `env $3`"*, and *"three harnesses expressed off by
+POPPING the variable, which under a default-ON flag is the ON arm."* Under a
+default-ON flag an OFF arm that fails to express itself **is the ON arm**, and
+two ON arms are identical. Ruled out, in order:
+
+| check | result |
+|---|---|
+| shell | `#!/usr/bin/env bash`, invoked `bash …` — the zsh splitting hazard does not apply |
+| how OFF is expressed | `OMR_METER_CARRY=$CARRY OMR_METER_FROM_BARS=$BARS python3 …`, an explicit prefix assignment per arm — **not** a pop |
+| did the values differ | the arm's own header printed `(OMR_METER_CARRY=0 …=0)` and `(…=1 …=1)` |
+| did the code carry the flip | stamped tree `0ea7a726`; `git diff --stat 0ea7a726 1de03c82 -- tools/` is EMPTY and both predicates read *ON by default since 2026-09-15* |
+
+Only after all four does `decided 7 of 7` become the explanation.
+
+### 2 · ⚠️ THE ARM DID NOT DECLARE ITSELF DEAD, AND IT SHOULD HAVE
+
+It printed a full BEFORE / AFTER table, a `<time>` census and a bar-fill
+report — the shape of an arm that measured something — over a domain of zero.
+Every other probe in this thread prints its REACH first and **exits non-zero
+declaring itself DEAD at zero** (`direction_arm.py`, `rest_dot_arm.py`, the
+wedge arm, `export_arm.py`). This one has the same obligation and does not
+meet it: `carry sources SKIPPED` is, by its own *HOW TO READ IT* note, *"the
+one thing this arm exists to get"*, and a zero there is the arm reporting that
+it could not run — not that the flip is free. **Not repaired here**, because
+the repair belongs with the person who can re-run it; recorded so the next
+reader does not mistake the table for a measurement.
+
+### 3 · ⚠️⚠️ THE BAR-FILL HALF IS VOID: IT SCORED BRAHMS AGAINST BEETHOVEN'S BAR
+
+`bar_fill.py` compared every bar against `--bar-beats`, which **defaulted to
+2.0** — Litolff Beethoven 5's 2/4 — and `local_arm.sh` never passed it. Brahms
+1 mvt 1 is **6/8 = 3.0 quarter notes**. So the reported **96.3% OVERFULL /
+0.6% exact** is a property of the constant, and the giveaway is in the arm's
+own table: **684 bars holding exactly one measure rest at 3.0 — the RIGHT
+length — are counted OVERFULL.** The 2685 bars at 4.0 and 177 at 9.0 are real
+faults; the 684 are the instrument.
+
+⚠️ **AND CLAUDE.md DESCRIBES THIS PROBE AS DOING SOMETHING IT HAS NEVER
+DONE** — *"only 38.0% of the 1,183 exported bars sum to the `<time>` the same
+file declares"*. It does not read the file's `<time>` at all. On a 2/4
+document the constant and the declaration coincide, which is exactly why the
+claim read as true for as long as there was one document. Same family as the
+`ASSUMPTIONS.md` default drift fixed the same day: **a sentence about the code
+in front of you, checked by nothing.**
+
+**REPAIRED, and the repair is a refusal rather than a better default.**
+`--bar-beats` is now REQUIRED in the probe and `$4` is REQUIRED in the arm — a
+default converts *"I do not know this document's bar length"* into a definite
+answer, which is the one conversion this project bans. The three-argument
+invocation that produced the void number now exits with a usage error naming
+6/8 = 3.0.
+
+⚠️ **The deeper repair is NOT done**: a single value still cannot assess a
+document whose meter changes, and Brahms 1 mvt 1 prints one bar of 9/8 among
+its 6/8. Reading the `<time>` in force per bar is what the prose already
+claims; doing it would move every committed figure this probe has produced,
+and that re-measurement needs the score library.
+
+### 4 · What the run DOES establish, in both arms and therefore not the flip's
+
+⚠️ **The misread is in the file and it is `OMR_METER_SEGMENTS`' + `change_only`'s,
+not the carry's.** `<time>` reads `{6/8: 97, 9/4: 14, 4/4: 83}` on a movement
+printing 6/8 with one bar of 9/8 — **97 declarations the page does not print**,
+byte-for-byte the same with the flags OFF. This file's `OMR_METER_SEGMENTS`
+row already predicts it (41 → 138 on this document for the SEGMENTS flag
+alone); the run confirms it and **acquits the two flags flipped on 09-15**.
+
+⚠️ **The bar-fill denominator is dominated by the PART JOIN, not the meter.**
+`join_used: fragments`, **97 parts** from 7 staff-systems of 13-14, and
+**3407 of 4225 bars (80.6%) are `tacet_bars_padded`**. That is
+`_slots_are_ordinals` refusing the graft, as designed and as CLAUDE.md prices
+it (*"12 parts → 75 fragment parts … the graft is silent and fragments are
+loud"*). It also means **no bar-fill figure from this document is comparable
+to Litolff's 38.0% → 69.2%**, at any `--bar-beats`: four fifths of the bars
+being measured are padding for fragments.
+
+### 5 · What is NOT established
+
+n = 1 document, 1 publisher, 4 pages. **No cost was measured**, because the
+mechanism never fired. No OMR-NED. No print was consulted. The bar-fill half
+has not been re-run at `--bar-beats 3.0` and **this session cannot re-run it**
+— it needs weights and the library. **The document that would price the flip
+is one whose systems ABSTAIN on their meter**, which is the opposite of this
+one; Litolff Beethoven 5 pp.1-4 is such a document (6 of 7 systems abstain)
+and is where the 38.0% → 69.2% came from — but there the one read meter is
+CORRECT, so it can never hand the carry a wrong candidate. **A document that
+both abstains and misreads has not been found, and that is the fixture this
+flag has been waiting for all along.**
