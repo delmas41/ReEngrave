@@ -96,31 +96,43 @@ REACH_LOG = (ROOT / "benchmarks/omr-part-join-phase2-2026-09/out/"
 LEXICON = ROOT / "benchmarks/omr-lexicon-2026-09/labels.json"
 
 
+#: ⚠️ A REAL SYSTEM IS NOT 427 STAVES. Ravel's dump is 427 labels over many
+#: pages; putting them all in one `Q.SYSTEM_STAFF_COUNT` makes
+#: `adjudicate_part_partition` and `adjudicate_slot_index` do work no printed
+#: page ever asks for, and the first run of this probe spent 28 minutes of CPU
+#: on it. Chunking is BOTH faster and more faithful — and it changes no
+#: verdict here, because `Q.INSTRUMENT` depends on the staff's own label and
+#: the DOCUMENT's roster, neither of which crosses a chunk.
+SYSTEM_MAX = 24
+
+
 def verdicts_for(texts, roster):
     """Run GATHER + ADJUDICATE over one system's labels, with/without roster.
 
     One staff per label, so every label gets its own verdict and the
     `Q.MARGIN_LABEL` row is the only evidence in play.
     """
-    log = Log()
-    if roster is not None:
-        gather.gather_external(log, None, roster=roster)
-    for i, text in enumerate(texts):
-        sub = R.staff(0, 0, i)
-        log.observe(sub, Q.STAFF_ORDINAL, i, reader=READERS.GEOMETRY,
-                    frame="system")
-        log.observe(sub, Q.MARGIN_LABEL, text, reader=READERS.TEXT_LAYER,
-                    frame="system_margin")
-    log.observe(R.system(0, 0), Q.SYSTEM_STAFF_COUNT, len(texts),
-                reader=READERS.GEOMETRY, frame="system")
-    adjudicate.run(log)
     out = []
-    for i in range(len(texts)):
-        v = log.verdict(Q.INSTRUMENT, R.staff(0, 0, i))
-        out.append((None if v is None or v.outcome is Outcome.ABSTAINED
-                    else v.value["name"],
-                    None if v is None else v.reason,
-                    {} if v is None else (v.detail or {})))
+    for start in range(0, len(texts), SYSTEM_MAX):
+        chunk = texts[start:start + SYSTEM_MAX]
+        log = Log()
+        if roster is not None:
+            gather.gather_external(log, None, roster=roster)
+        for i, text in enumerate(chunk):
+            sub = R.staff(0, 0, i)
+            log.observe(sub, Q.STAFF_ORDINAL, i, reader=READERS.GEOMETRY,
+                        frame="system")
+            log.observe(sub, Q.MARGIN_LABEL, text, reader=READERS.TEXT_LAYER,
+                        frame="system_margin")
+        log.observe(R.system(0, 0), Q.SYSTEM_STAFF_COUNT, len(chunk),
+                    reader=READERS.GEOMETRY, frame="system")
+        adjudicate.run(log)
+        for i in range(len(chunk)):
+            v = log.verdict(Q.INSTRUMENT, R.staff(0, 0, i))
+            out.append((None if v is None or v.outcome is Outcome.ABSTAINED
+                        else v.value["name"],
+                        None if v is None else v.reason,
+                        {} if v is None else (v.detail or {})))
     return out
 
 

@@ -2881,16 +2881,34 @@ python3 -m tools.omr.staged.wiring --check    # non-zero on anything unaccounted
 python3 -m tools.omr.staged.wiring --run rec.json
 ```
 
-**Three questions, all DERIVED, each with a POSITIVE CONTROL** — `--check`
+**Four questions, all DERIVED, each with a POSITIVE CONTROL** — `--check`
 exits **2** on a control at zero, *before* it looks at a finding, because a
 question that can only ever answer "nothing wrong" is not a question. Numbers
 are the TOOL's, never this line's.
 
 | question | examined | healthy | findings |
 |---|--:|--:|--:|
-| **PRODUCER** — a parameter threaded with no supplier | 56 params / 10,319 call sites | 53 fed | **1 dead** (`dossier`), 1 repaired |
+| **PRODUCER** — a parameter threaded with no supplier | 56 params / 10,324 call sites | 53 fed | **1 dead** (`dossier`), 1 repaired |
 | **FRAME** — a declared input read where it is never filed | 76 declared reads | 30 EXACT + 46 scoped | **0 broken, 6 LATENT**, 1 repaired |
 | **DETAIL** — a key written on a row and named nowhere else | 113 keys | 91 read | **22 unread** |
+| **ROUNDTRIP** — a field dropped by its own `to_json` | 9 classes / 56 fields emitted | — | **1, and it is READ** |
+
+⚠️⚠️ **THE ROUNDTRIP ROW IS A LIVE FAULT, REPORTED WITH ITS PRICE AND
+DELIBERATELY NOT REPAIRED.** `Verdict.single_pass_revision` is declared
+(`record.py:835`), **READ by the fixpoint guard** (`:1026`), and **absent from
+`Verdict.to_json`** — so a replayed record comes back `False` and the guard's
+one sanctioned exemption, the durations → meter → durations loop
+`reconcile_duration` is explicitly allowed, is **silently not there. No saved
+record can be replayed through that guard as written.** Surfaced
+independently by a sibling agent; this check reproduces it **from the tree
+with no hand-listing**, which is the proof the question is live. ⚠️ The fix is
+not taken here because adding a key to `Verdict.to_json` changes EVERY record
+this repo writes, so every byte-identity control over a record would report a
+difference that is not the change under test — the *perturbs upstream by
+existing* hazard. **Pricing it is Sean's call.** ⚠️ Its first cut compared KEY
+NAMES and reported a RENAME as a DROP (`Witness` emits `self.row_id` under the
+key `"row"`); it compares the field's VALUE now, because a check that cannot
+tell those apart trains the next reader to skim the list.
 
 ⚠️⚠️ **THE `FRAME` QUESTION IS THE ONE NOTHING ELSE ASKS, and this file
 already said so**: *"Neither `inventory --check` nor `gather_coverage` can
