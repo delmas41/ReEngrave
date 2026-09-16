@@ -315,10 +315,11 @@ class TestTheMeterCarry(unittest.TestCase):
         systems = sorted(log.subjects(R.Kind.SYSTEM))
         self.assertEqual(systems, sorted(systems))
         prev = os.environ.get(rhythm_mod.METER_CARRY_ENV)
-        if on:
-            os.environ[rhythm_mod.METER_CARRY_ENV] = "1"
-        else:
-            os.environ.pop(rhythm_mod.METER_CARRY_ENV, None)
+        # ⚠️ THE OFF ARM SETS "0" AND MUST NOT POP. `OMR_METER_CARRY` went
+        # DEFAULT-ON on 2026-09-15, so an ABSENT variable is now ON -- popping
+        # it would silently run the on-arm code and every "off" assertion below
+        # would be testing the wrong branch.
+        os.environ[rhythm_mod.METER_CARRY_ENV] = "1" if on else "0"
         try:
             for sysj in systems:
                 adjudicate.adjudicate_one(log, spec, sysj)
@@ -328,15 +329,48 @@ class TestTheMeterCarry(unittest.TestCase):
             else:
                 os.environ[rhythm_mod.METER_CARRY_ENV] = prev
 
-    def test_off_by_default_the_system_still_abstains(self):
+    def test_with_the_flag_OFF_the_system_still_abstains(self):
         """⚠️ The control for every claim below. Measured on the real page
         too: flag-OFF reproduced all 4,498 verdicts of the pre-change run
-        identically, reasons and values included."""
+        identically, reasons and values included.
+
+        ⚠️ **RENAMED 2026-09-15, WHEN THE DEFAULT FLIPPED.** It was
+        `test_off_by_default_...`, and that name asserted a property of the
+        BUILD'S PROGRESS rather than of the mechanism -- the same shape as the
+        eight `stubs()` assertions this project records. The behaviour under
+        `OMR_METER_CARRY=0` is what this test is for and is unchanged; where
+        the DEFAULT sits is asserted separately, right below, so the two facts
+        cannot be confused for one another again.
+        """
         log, _src, dst = self._log()
         self._run(log, on=False)
         v = log.verdict(Q.METER, dst)
         self.assertIs(v.outcome, Outcome.ABSTAINED)
         self.assertEqual(v.reason, "no_evidence")
+
+    def test_the_DEFAULT_is_now_ON(self):
+        """Sean's call, 2026-09-15. Asserted on the PREDICATE, not on a run.
+
+        ⚠️ It reads an ABSENT variable, which is the whole point: the previous
+        default made absence mean OFF, and every harness in this file expressed
+        "off" by popping the variable. A flip that changed the predicate and
+        left those harnesses alone would have run the ON code under every
+        "off" arm, green.
+        """
+        import os
+        prev = os.environ.pop(rhythm_mod.METER_CARRY_ENV, None)
+        try:
+            self.assertTrue(rhythm_mod.meter_carry_enabled())
+            os.environ[rhythm_mod.METER_CARRY_ENV] = "0"
+            self.assertFalse(rhythm_mod.meter_carry_enabled())
+            # ⚠️ A typo must NOT turn a default-ON flag off. See CLAUDE.md,
+            # "A flag's OFF test must follow its DEFAULT".
+            os.environ[rhythm_mod.METER_CARRY_ENV] = "yess"
+            self.assertTrue(rhythm_mod.meter_carry_enabled())
+        finally:
+            os.environ.pop(rhythm_mod.METER_CARRY_ENV, None)
+            if prev is not None:
+                os.environ[rhythm_mod.METER_CARRY_ENV] = prev
 
     def test_on_it_takes_the_last_meter_that_was_READ(self):
         log, src, dst = self._log()
@@ -629,8 +663,10 @@ class TestTheBarsMayNameTheMeter(unittest.TestCase):
         log.freeze()
         adjudicate._ensure_decisions()
         spec = adjudicate.REGISTRY[Q.METER]
-        env = {rhythm_mod.METER_FROM_BARS_ENV: "1" if from_bars else None,
-               rhythm_mod.METER_CARRY_ENV: "1" if carry else None}
+        # ⚠️ "0", never None -- both flags are DEFAULT-ON since 2026-09-15,
+        # so popping the variable is the ON arm, not the off one.
+        env = {rhythm_mod.METER_FROM_BARS_ENV: "1" if from_bars else "0",
+               rhythm_mod.METER_CARRY_ENV: "1" if carry else "0"}
         prev = {k: os.environ.get(k) for k in env}
         try:
             for k, v in env.items():
@@ -649,13 +685,33 @@ class TestTheBarsMayNameTheMeter(unittest.TestCase):
 
     # ── the control ─────────────────────────────────────────────────────────
 
-    def test_off_by_default_the_system_still_abstains(self):
-        """The control for every claim below."""
+    def test_with_the_flag_OFF_the_system_still_abstains(self):
+        """The control for every claim below.
+
+        ⚠️ RENAMED 2026-09-15 with the default flip — see the sibling test in
+        `TestTheMeterCarry` for why the old name was a claim about the build
+        rather than about the mechanism.
+        """
         log, _src, dst = self._log([2.0] * 6)
         self._run(log, from_bars=False)
         v = log.verdict(Q.METER, dst)
         self.assertIs(v.outcome, Outcome.ABSTAINED)
         self.assertEqual(v.reason, "no_evidence")
+
+    def test_the_DEFAULT_is_now_ON(self):
+        """Sean's call, 2026-09-15. On the PREDICATE, with an ABSENT variable."""
+        import os
+        prev = os.environ.pop(rhythm_mod.METER_FROM_BARS_ENV, None)
+        try:
+            self.assertTrue(rhythm_mod.meter_from_bars_enabled())
+            os.environ[rhythm_mod.METER_FROM_BARS_ENV] = "off"
+            self.assertFalse(rhythm_mod.meter_from_bars_enabled())
+            os.environ[rhythm_mod.METER_FROM_BARS_ENV] = "ON!"
+            self.assertTrue(rhythm_mod.meter_from_bars_enabled())
+        finally:
+            os.environ.pop(rhythm_mod.METER_FROM_BARS_ENV, None)
+            if prev is not None:
+                os.environ[rhythm_mod.METER_FROM_BARS_ENV] = prev
 
     # ── what it does ────────────────────────────────────────────────────────
 
@@ -843,10 +899,16 @@ class TestAMeterChangeIsReadFromTheInk(unittest.TestCase):
     N_STAVES = 4
 
     def _log(self, *, opening=(3, 4), opening_raw="3/4", glyphs=(),
-             per_cell=(3.0, 3.0, 3.0)):
+             per_cell=(3.0, 3.0, 3.0), glyph_staves=None):
         """One system: an opening read by the template reader on every staff,
         bars of the given lengths, and `glyphs` as (cell, class) pairs printed
         on EVERY staff.
+
+        ⚠️ `glyph_staves` narrows the glyphs to those staff indices, which is
+        what A-METER-6 is about: a change one staff read is not a change every
+        staff read, and until this parameter existed no fixture in this file
+        could express the difference. It defaults to None = every staff, so
+        every test written before it is unchanged.
         """
         log = Log()
         sysj = R.system(0, 0)
@@ -859,7 +921,8 @@ class TestAMeterChangeIsReadFromTheInk(unittest.TestCase):
                 log.observe(R.staff(0, 0, st), Q.METER_TEMPLATE, opening,
                             reader=READERS.TEMPLATE, frame="header_window",
                             score=0.7, raw=opening_raw)
-            for cell, klass in glyphs:
+            printed = glyphs if (glyph_staves is None or st in glyph_staves) else ()
+            for cell, klass in printed:
                 # ⚠️ `y_center` differs per digit on purpose: it is the WHOLE
                 # of what tells a numerator from a denominator.
                 y = 10.0 if klass.endswith(("2", "3", "6", "9", "12")) else 30.0
@@ -1091,8 +1154,10 @@ class TestARefusalMayNotBlockALaterRung(unittest.TestCase):
         log.freeze()
         adjudicate._ensure_decisions()
         spec = adjudicate.REGISTRY[Q.METER]
-        env = {rhythm_mod.METER_CARRY_ENV: "1" if carry else None,
-               rhythm_mod.METER_FROM_BARS_ENV: "1" if from_bars else None}
+        # ⚠️ "0", never None -- see the sibling helpers: both flags are
+        # DEFAULT-ON since 2026-09-15 and an absent variable means ON.
+        env = {rhythm_mod.METER_CARRY_ENV: "1" if carry else "0",
+               rhythm_mod.METER_FROM_BARS_ENV: "1" if from_bars else "0"}
         prev = {k: os.environ.get(k) for k in env}
         try:
             for k, v in env.items():
@@ -1697,3 +1762,336 @@ class TestACautionaryIsNotAChange(unittest.TestCase):
         v = self._verdict(log, sysj)
         self.assertEqual(self._segments(v), [(0, "6/8"), (6, "9/8")])
         self.assertIsNone((v.value or {}).get("cautionary"))
+
+class TestAnUncorroboratedChangeIsNotCarriedOffItsSystem(unittest.TestCase):
+    """A-METER-6. A meter change is printed at ONE bar of ONE system, ON EVERY
+    STAFF of that system — the convention `key_signature_corroboration` already
+    transplants for key signatures. A change ONE staff read is the weakest meter
+    fact this pipeline produces, and at `W_CHANGE_GLYPH_PAIR = 3.0` it clears
+    `METER_CHANGE_FLOOR` alone, by design.
+
+    ⚠️⚠️ **WHAT THIS CLASS DOES NOT DO IS REFUSE SUCH A CHANGE, AND THAT IS THE
+    MEASUREMENT RATHER THAN A PREFERENCE.** On the committed boundary records
+    the TRUE and FALSE one-staff populations OVERLAP: Beethoven 5 / Litolff
+    p.62's printed `3/4` — the one true meter change this project has ever
+    found on a scan — reads on **ONE staff of seventeen** at support 3.0, and
+    the three false changes on the same corpus read one staff at support 3.0,
+    4.0 and 4.5. Two of the false ones score HIGHER than the true one, and the
+    only one whose bars say anything (p.61's `C`, 1 bar fitting) is FALSE. So a
+    veto keyed on stave count, on support or on bar math deletes the flagship
+    result to remove the noise.
+
+    What IS one-sided is confining it: the change still governs its own
+    system's bars through `record.meter_at`, and may not become the meter
+    handed to every following system that abstains. The tests below assert both
+    halves, because asserting only the second would pass for a rule that
+    deleted the segment outright.
+    """
+
+    N_STAVES = 4
+
+    def _bars(self, log, page, beats, n_bars=3, n_staves=None):
+        for st in range(n_staves or self.N_STAVES):
+            for c in range(n_bars):
+                cell, g = R.cell(page, 0, st, c), R.glyph(page, 0, st, c, 0)
+                log.observe(g, Q.NOTEHEAD_CLASS, "noteheadBlack",
+                            reader=READERS.DETECTOR, frame="cell:%d" % c,
+                            score=0.9)
+                log.observe(g, Q.GLYPH_BOX, ("noteheadBlack", 400, 0, 600, 16),
+                            reader=READERS.DETECTOR, frame="cell:%d" % c,
+                            score=0.9)
+                log.record(adjudicate.Verdict(
+                    id=log._next_id("vrd"), subject=g, quantity=Q.DURATION,
+                    outcome=Outcome.DECIDED,
+                    value={"beats": beats, "written": beats,
+                           "duration_type": "quarter", "dots": 0},
+                    decider="t", reason="head_and_marks"))
+                log.record(adjudicate.Verdict(
+                    id=log._next_id("vrd"), subject=cell, quantity=Q.EVENT,
+                    outcome=Outcome.DECIDED,
+                    value={"events": [{"glyphs": [0], "x": 500.0,
+                                       "kind": "chord"}]},
+                    decider="t", reason="x_clustered"))
+
+    def _skeleton(self, log, systems):
+        for sysj in systems:
+            log.record(adjudicate.Verdict(
+                id=log._next_id("vrd"), subject=sysj,
+                quantity=Q.SYSTEM_STAFF_COUNT, outcome=Outcome.DECIDED,
+                value=self.N_STAVES, decider="t", reason="counted"))
+            for st in range(self.N_STAVES):
+                log.record(adjudicate.Verdict(
+                    id=log._next_id("vrd"),
+                    subject=R.staff(sysj.page, 0, st),
+                    quantity=Q.MEASURE_PARTITION, outcome=Outcome.DECIDED,
+                    value=3, decider="t", reason="barlines"))
+
+    def _change_glyphs(self, log, staff_index, cell=1):
+        """A complete `2/4` — a numerator over a denominator — on one staff.
+
+        ⚠️ Filed on the STAFF with the bar in `cell`, which is where
+        `gather.gather_meter_glyphs` puts it. A fixture filing it on a GLYPH
+        passes its own tests and reads no boxes on any real page — the
+        `Q.METER_GLYPH` mismatch this file already records.
+        """
+        for klass, y in (("timeSig2", 10.0), ("timeSig4", 30.0)):
+            log.observe(R.staff(0, 0, staff_index), Q.METER_GLYPH, klass,
+                        reader=READERS.DETECTOR, frame="cell:%d" % cell,
+                        score=0.9, cell=cell, x=10.0, y_center=y, letter=False)
+
+    def _log(self, *, change_staves, dst_beats=3.0):
+        """Page 0 opens `3/4` on every staff, with a change to `2/4` printed at
+        its bar 1 on `change_staves`. Page 1 reads NO meter at all and its bars
+        measure `dst_beats`, so what it is carried is visible in one verdict.
+
+        ⚠️ Page 0's own bars 1-2 measure 2.0 so the change is supported ON ITS
+        OWN SYSTEM under every arm — otherwise a confinement result could not
+        be told from the change simply never clearing the floor.
+        """
+        log = Log()
+        src, dst = R.system(0, 0), R.system(1, 0)
+        self._skeleton(log, (src, dst))
+        for st in range(self.N_STAVES):
+            log.observe(R.staff(0, 0, st), Q.METER_TEMPLATE, (3, 4),
+                        reader=READERS.TEMPLATE, frame="header_window",
+                        score=0.7, raw="3/4")
+            if st in change_staves:
+                self._change_glyphs(log, st)
+        for st in range(self.N_STAVES):
+            for c, beats in enumerate((3.0, 2.0, 2.0)):
+                cell, g = R.cell(0, 0, st, c), R.glyph(0, 0, st, c, 0)
+                log.observe(g, Q.NOTEHEAD_CLASS, "noteheadBlack",
+                            reader=READERS.DETECTOR, frame="cell:%d" % c,
+                            score=0.9)
+                log.observe(g, Q.GLYPH_BOX, ("noteheadBlack", 400, 0, 600, 16),
+                            reader=READERS.DETECTOR, frame="cell:%d" % c,
+                            score=0.9)
+                log.record(adjudicate.Verdict(
+                    id=log._next_id("vrd"), subject=g, quantity=Q.DURATION,
+                    outcome=Outcome.DECIDED,
+                    value={"beats": beats, "written": beats,
+                           "duration_type": "quarter", "dots": 0},
+                    decider="t", reason="head_and_marks"))
+                log.record(adjudicate.Verdict(
+                    id=log._next_id("vrd"), subject=cell, quantity=Q.EVENT,
+                    outcome=Outcome.DECIDED,
+                    value={"events": [{"glyphs": [0], "x": 500.0,
+                                       "kind": "chord"}]},
+                    decider="t", reason="x_clustered"))
+        self._bars(log, 1, dst_beats)
+        return log, src, dst
+
+    def _run(self, log):
+        """Adjudicate METER over both systems in reading order, carry ON."""
+        import os
+        log.freeze()
+        adjudicate._ensure_decisions()
+        spec = adjudicate.REGISTRY[Q.METER]
+        prev = {k: os.environ.get(k) for k in
+                (rhythm_mod.METER_CARRY_ENV, rhythm_mod.METER_FROM_BARS_ENV)}
+        os.environ[rhythm_mod.METER_CARRY_ENV] = "1"
+        # ⚠️ The bars reader is switched OFF so a carried meter and a locally
+        # derived one cannot be confused: this class is about the CARRY.
+        os.environ[rhythm_mod.METER_FROM_BARS_ENV] = "0"
+        try:
+            for sysj in sorted(log.subjects(R.Kind.SYSTEM)):
+                adjudicate.adjudicate_one(log, spec, sysj)
+        finally:
+            for k, v in prev.items():
+                if v is None:
+                    os.environ.pop(k, None)
+                else:
+                    os.environ[k] = v
+
+    def _segments(self, v):
+        segs = (v.value or {}).get("segments") or []
+        return [(s["from_cell"], s["raw"]) for s in segs]
+
+    # ── the change REACHES ITS OWN system either way ────────────────────────
+
+    def test_a_one_staff_change_still_governs_its_own_system(self):
+        """⚠️ THE HALF THAT MUST NOT MOVE. Litolff p.62 is exactly this shape,
+        and a rule that deleted the segment would delete the printed `3/4`
+        this project celebrates."""
+        log, src, _dst = self._log(change_staves={0})
+        self._run(log)
+        v = log.verdict(Q.METER, src)
+        self.assertEqual(self._segments(v), [(0, "3/4"), (1, "2/4")])
+        # and `meter_at` — how a bar's meter is READ — still answers 2/4.
+        self.assertEqual(R.meter_at(v.value, 2)["raw"], "2/4")
+
+    def test_the_segment_records_the_corroboration_either_way(self):
+        """⚠️ WRITTEN ON EVERY CHANGE, corroborated or not, so `True` means
+        "asked and answered" rather than "this build did not look" — the
+        `empty_bars_padded_without_meter` lesson, where a counter written only
+        on the bad branch made "all correct" and "never computed" identical."""
+        for staves, want in (({0}, False), (set(range(self.N_STAVES)), True)):
+            with self.subTest(staves=len(staves)):
+                log, src, _dst = self._log(change_staves=staves)
+                self._run(log)
+                seg = (log.verdict(Q.METER, src).value or {})["segments"][1]
+                self.assertIn("corroborated", seg)
+                self.assertIs(seg["corroborated"], want)
+                self.assertEqual(seg["staves_reading_a_meter"], len(staves))
+
+    # ── what confinement does ───────────────────────────────────────────────
+
+    def test_a_CORROBORATED_change_is_what_the_next_system_is_carried(self):
+        """The positive control, and it has to come first: a class whose every
+        test asserts a refusal passes for a rule that refuses everything."""
+        log, _src, dst = self._log(change_staves=set(range(self.N_STAVES)),
+                                   dst_beats=2.0)
+        self._run(log)
+        v = log.verdict(Q.METER, dst)
+        self.assertIs(v.outcome, Outcome.DECIDED)
+        self.assertEqual(v.reason, "carried")
+        self.assertEqual((v.value["numerator"], v.value["denominator"]), (2, 4))
+
+    def test_an_UNCORROBORATED_change_is_not_carried_and_the_opening_is(self):
+        """The rule. The source's own bar 2 is in 2/4 and the next system is
+        handed `3/4` — the last meter anybody corroborated — because one
+        staff's reading may not become a document-wide fact.
+
+        ⚠️ The destination's bars measure 3.0 here, so the carried `3/4` is
+        CONFIRMED by them; the assertion is about which meter travelled, not
+        about whether the carry survives its own weighing.
+        """
+        log, _src, dst = self._log(change_staves={0}, dst_beats=3.0)
+        self._run(log)
+        v = log.verdict(Q.METER, dst)
+        self.assertIs(v.outcome, Outcome.DECIDED)
+        self.assertEqual(v.reason, "carried")
+        self.assertEqual((v.value["numerator"], v.value["denominator"]), (3, 4))
+
+    def test_the_skipped_source_is_NAMED_rather_than_skipped_silently(self):
+        """⚠️ A page that found no carry source and a page that walked past one
+        are two different pages. `change_only` gives the source NO corroborated
+        meter at all, so the walk runs out and must say why."""
+        log = Log()
+        src, dst = R.system(0, 0), R.system(1, 0)
+        self._skeleton(log, (src, dst))
+        # No METER_TEMPLATE anywhere: the source's ONLY meter fact is a change
+        # one staff read, which is the `change_only` shape Litolff p.61-62 has.
+        self._change_glyphs(log, 0)
+        self._bars(log, 0, 2.0)
+        self._bars(log, 1, 2.0)
+        self._run(log)
+        srcv = log.verdict(Q.METER, src)
+        self.assertEqual(srcv.reason, "change_only")   # it still reads its own
+        v = log.verdict(Q.METER, dst)
+        self.assertIs(v.outcome, Outcome.ABSTAINED)
+        self.assertEqual(v.reason, "carry_source_uncorroborated")
+        self.assertEqual(v.detail["skipped_uncorroborated"], [src.to_key()])
+
+    def test_the_helper_returns_None_rather_than_an_unfiltered_value(self):
+        """⚠️ Asserted DIRECTLY, because the fallback is where "cannot tell"
+        gets silently converted into a definite answer. A value whose only
+        segment is uncorroborated has no carryable meter, and returning the
+        unfiltered dict there would reinstate exactly the amplification the
+        rule exists to stop."""
+        only_a_change = {"numerator": 2, "denominator": 4, "raw": "2/4",
+                         "segments": [{"from_cell": 1, "numerator": 2,
+                                       "denominator": 4, "raw": "2/4",
+                                       "corroborated": False}]}
+        self.assertIsNone(rhythm_mod._meter_in_force_at_end(only_a_change, 3))
+        # positive control: the same shape, corroborated, DOES carry.
+        ok = {"numerator": 2, "denominator": 4, "raw": "2/4",
+              "segments": [dict(only_a_change["segments"][0],
+                                corroborated=True)]}
+        got = rhythm_mod._meter_in_force_at_end(ok, 3)
+        self.assertEqual((got["numerator"], got["denominator"]), (2, 4))
+
+    def test_a_falsy_value_has_NO_carryable_meter(self):
+        """⚠️ A GENUINE TEST GAP, FOUND BY A MUTATION ARM AND BY NOTHING ELSE.
+        `if not value: return None` was mutated to `return {}` and the whole
+        suite stayed green — `{}` is falsy but it is NOT None, and
+        `_carry_meter` tests `carried is None`, so an empty dict would walk
+        straight into `_corroborate` as if a meter had been handed on.
+
+        Unreachable from `_carry_meter` today (a DECIDED meter verdict always
+        carries a dict), which is exactly why nothing exercised it — and this
+        helper is called directly by `corroboration_arm.py` and by the tests
+        above, so the contract is worth stating rather than deleting.
+        """
+        for empty in (None, {}, {"segments": []}):
+            with self.subTest(value=empty):
+                self.assertIsNone(
+                    rhythm_mod._meter_in_force_at_end(empty, 3))
+
+    def test_a_record_written_before_the_rule_still_carries(self):
+        """⚠️ `seg.get("corroborated", True)` — a segment with NO flag is an
+        OPENING (segment 0 never carries one) or a record written before
+        A-METER-6. Defaulting to False would refuse every carry on every
+        record this repo has already committed."""
+        legacy = {"numerator": 6, "denominator": 8, "raw": "6/8",
+                  "segments": [{"from_cell": 0, "numerator": 6,
+                                "denominator": 8, "raw": "6/8"}]}
+        got = rhythm_mod._meter_in_force_at_end(legacy, 3)
+        self.assertEqual((got["numerator"], got["denominator"]), (6, 8))
+
+    def test_the_bar_scoped_fields_do_not_travel(self):
+        """The pre-existing contract, re-asserted because this change added two
+        more fields to strip. `staves_reading_a_meter` and `corroborated`
+        describe the SOURCE's bar and mean nothing in this system."""
+        val = {"numerator": 3, "denominator": 4, "raw": "3/4",
+               "segments": [{"from_cell": 0, "numerator": 3, "denominator": 4,
+                             "raw": "3/4"},
+                            {"from_cell": 1, "numerator": 2, "denominator": 4,
+                             "raw": "2/4", "support": 12.0, "bars_fit": 2,
+                             "bars_contradict": 0, "staves_reading_it": [0, 1],
+                             "staves_reading_a_meter": 2,
+                             "corroborated": True}]}
+        got = rhythm_mod._meter_in_force_at_end(val, 3)
+        for gone in ("segments", "support", "staves_reading_it", "from_cell",
+                     "staves_reading_a_meter", "corroborated", "bars_fit",
+                     "bars_contradict"):
+            self.assertNotIn(gone, got)
+        self.assertEqual((got["numerator"], got["denominator"]), (2, 4))
+
+    def test_BOTH_segment_builders_go_through_the_one_projection(self):
+        """⚠️⚠️ THE DEFECT THIS TEST EXISTS FOR WAS FOUND BY A BEHAVIOURAL TEST
+        AND SHOULD HAVE BEEN FOUND HERE.
+
+        `_with_segments` and `_change_only` both build `segments`, and each
+        hand-listed its fields. A-METER-6 added `corroborated` to the first
+        only, so a `change_only` verdict's segment carried no flag,
+        `_meter_in_force_at_end`'s `seg.get("corroborated", True)` read it as a
+        pre-rule record, and a one-staff change was carried forward exactly as
+        before — with every unit test green.
+
+        A field list written twice is *two records of one thing nothing forces
+        to agree*. Asserted on the SOURCE so the next field cannot be added to
+        one site only. ⚠️ A source-level test reads the file from DISK: do not
+        edit `tools/` while the suite is running, and re-run before believing a
+        lone failure here.
+        """
+        import inspect
+        for fn in (rhythm_mod._with_segments, rhythm_mod._change_only):
+            with self.subTest(fn=fn.__name__):
+                body = inspect.getsource(fn)
+                self.assertIn("_segment_from_change", body)
+                self.assertNotIn('"staves_reading_it": c[', body)
+
+    def test_the_projection_carries_the_corroboration_flag(self):
+        """The positive control for the test above: naming the function is only
+        worth asserting if the function carries the field."""
+        seg = rhythm_mod._segment_from_change(
+            {"from_cell": 1, "numerator": 2, "denominator": 4, "raw": "2/4",
+             "support": 3.0, "staves_reading_it": [0],
+             "staves_reading_a_meter": 1, "corroborated": False,
+             "bars_fit": 0, "bars_contradict": 0, "loose_digits": 0})
+        self.assertIs(seg["corroborated"], False)
+        # and it does NOT smuggle a candidate-only field into the record.
+        self.assertNotIn("loose_digits", seg)
+
+    def test_the_constant_is_the_weakest_bar_that_can_confine_anything(self):
+        """⚠️ NOT A TUNED CONSTANT, and on the committed corpus it could not be
+        one: the TRUE and FALSE one-staff populations overlap at exactly 1, so
+        every value above 1 confines the same segments. Asserted so a sweep
+        that "optimises" it fails even where every behavioural test passes."""
+        from tools.omr import key_signature_corroboration as ksc
+        self.assertEqual(rhythm_mod.METER_CHANGE_MIN_STAVES, 2)
+        self.assertEqual(
+            rhythm_mod.METER_CHANGE_MIN_STAVES, ksc.MIN_WITNESSES,
+            "the two corroboration guards express the same claim — the staff "
+            "itself plus one witness — and must not drift apart")

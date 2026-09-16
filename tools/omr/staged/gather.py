@@ -49,6 +49,19 @@ def frame_cell(measure_index: int) -> str:
     return f"cell:{measure_index}"
 
 
+def frame_bar_head(measure_index: int) -> str:
+    """The first few staff spaces of a measure cell — where a meter CHANGE is
+    printed, right after the barline.
+
+    ⚠️ A DIFFERENT FRAME FROM `frame_cell`, deliberately. Two readers of the
+    same quantity on different crops are two signals; on the same crop they
+    are one, and this module's own header says so. A reading taken over four
+    staff spaces of a bar's head and one taken over the whole bar are not the
+    same observation and must never be pooled as if they were.
+    """
+    return f"bar_head:{measure_index}"
+
+
 # ─────────────────────────────────────────────────────────────────────────────
 # ⚠️ Staff index normalisation -- a real ambiguity, resolved here once
 # ─────────────────────────────────────────────────────────────────────────────
@@ -1953,6 +1966,232 @@ def _meter_cells(detections, p: int, key):
     return sorted(out)
 
 
+# ─────────────────────────────────────────────────────────────────────────────
+# The template reader, aimed at a mid-staff BAR HEAD — a printed meter CHANGE
+# ─────────────────────────────────────────────────────────────────────────────
+#
+# `gather_meter` hands `locate_time_signature` nothing but the HEADER window,
+# one crop per staff, so a time signature printed anywhere else on the staff is
+# read by the DETECTOR alone — which is the weak reader on exactly the ink it
+# is worst at. Measured on Beethoven 5 / Litolff p.62, where a change is
+# printed on every staff mid-system, `_meter_from_digits` gets it from a
+# handful of staves and the same page's scan twin produces five spurious `4/4`
+# changes just over the floor. The template reader is the best thing this
+# project has for this family — 12 correct / 0 wrong / 3 missed / 40 correct
+# abstentions across 11 sources — and it was never asked.
+#
+# ⚠️⚠️ THE HAZARD IS THE ONE THE KEY-SIGNATURE FAMILY ALREADY PAID FOR: *the
+# reader that can say "zero" is the one that must never be given an empty
+# window*. A mid-staff crop is an empty window almost everywhere, and
+# `min_score` was calibrated on HEADER windows where a meter is usually
+# present. So the acceptance question was MEASURED before the search was
+# written, over 1,612 mid-staff bar-head windows on ten real scanned pages of
+# two publishers (`benchmarks/omr-meter-template-changes-2026-09/`):
+#
+#   staves that must AGREE      false readings      false COLUMNS
+#   ------------------------    --------------      -------------
+#   1 (no consensus at all)     16                  16
+#   2                            -                   2
+#   3                            -                   0
+#
+# ⚠️ NOTHING HERE MOVES `min_score`, AND THAT IS A DECISION. Raising it looked
+# tempting — the false answers thin out from 16 to 1 between 0.50 and 0.55 —
+# but they thin out SMOOTHLY (16 / 7 / 2 / 1 at 0.50 / 0.52 / 0.54 / 0.55),
+# with no gap anywhere, and a constant read off a smooth slope is fitted to a
+# wish. It is also shared with the legacy path and set on an 11-source corpus.
+# The safety is the CONSENSUS, which is a structural claim about how an
+# engraver prints a meter change and not a number read off this corpus.
+
+#: Flag. DEFAULT OFF: this is a GATHER change, and a GATHER change cannot be
+#: priced without two full re-gathers — `readjudicate` rebuilds ADJUDICATE from
+#: a saved record so a new quantity never enters it, and `reexport_arm` has the
+#: mirror blind spot. Nothing in a container without weights can say what this
+#: costs on a real page, so the default flip is a human's on a measurement.
+#:
+#: ⚠️ AN ALLOW-LIST, BECAUSE THE DEFAULT IS OFF. See CLAUDE.md, *A flag's OFF
+#: test must follow its DEFAULT*: a default-OFF flag written as a deny-list is
+#: switched ON by a typo, which for this mechanism means a meter change
+#: appearing in a file on evidence nobody asked for.
+METER_TEMPLATE_AT_BAR_ENV = "OMR_METER_TEMPLATE_AT_BAR"
+
+#: How wide the bar-head window is, in staff spaces.
+#:
+#: ⚠️ MEASURED, AND IT IS THE ONE LEVER THAT IS NOT A THRESHOLD. NCC's maximum
+#: over a strip grows with the strip, so window width IS false-positive rate:
+#: over the same 1,612 windows the answer rate at the shipped floor runs
+#: **0.59% at 4 spaces, 1.34% at 6, 2.19% at 8**. Four spaces is also more
+#: than a meter needs — a digit stack is 2-3 spaces wide — and the positive
+#: control answers 225 of 225 inside it.
+METER_TEMPLATE_AT_BAR_WINDOW_SPACES = 4.0
+
+#: How many staves of one system must the column be meter-shaped on before the
+#: template reader is asked there at all.
+#:
+#: ⚠️ ONE, DELIBERATELY, AND IT IS NOT WHERE THE SAFETY LIVES. The whole point
+#: of this pass is to ask the staves that detected NOTHING — Sean's framing,
+#: *"if something is seen but undetermined we still need that ... that would
+#: still likely happen across all staves in the system for that measure"* — so
+#: narrowing candidacy is narrowing the thing being built. ⚠️ The COST is
+#: real and is measured rather than hoped: on Brahms 1 / Breitkopf pp.1-3
+#: **38 of 51 columns (74.5%)** carry a meter-shaped detection somewhere, so
+#: this pass asks 525 windows where the header pass asks 83. At 20 ms a window
+#: that is ~11 s for a three-page document. **The briefed assumption that a
+#: detection names a handful of candidate bars is FALSE on a scan**, which is
+#: why the consensus below, and not this number, is what makes it safe.
+METER_TEMPLATE_AT_BAR_MIN_CANDIDATE_STAVES = 1
+
+
+def _meter_template_at_bar_enabled() -> bool:
+    return os.environ.get(METER_TEMPLATE_AT_BAR_ENV, "0").strip().lower() in (
+        "1", "true", "yes", "on")
+
+
+def _bar_head_window(cell: Any, spaces: float):
+    """`cell`, sliced to the first `spaces` staff spaces of its own width.
+
+    ⚠️ A SLICE OF THE CELL THE PIPELINE ALREADY CUT, not a new extraction. The
+    measure cell starts at the barline and a meter change is printed directly
+    after one, so the crop this reader needs is already on disk — and building
+    a fresh one would put this pass on a second, unpriced cutting path with its
+    own padding and its own canonical scale.
+
+    Returns None where the cell has no five-line geometry to measure against,
+    which is an ABSTENTION and not a zero.
+    """
+    import dataclasses
+
+    from ..header_ink import staff_metrics
+
+    metrics = staff_metrics(cell)
+    if metrics is None:
+        return None
+    spacing = metrics[0]
+    image = getattr(cell, "image", None)
+    if image is None or image.size == 0:
+        return None
+    width = int(round(spaces * spacing))
+    if width < 8:
+        return None
+    width = min(int(image.shape[1]), width)
+    no_staff = getattr(cell, "image_no_staff", None)
+    return dataclasses.replace(
+        cell,
+        image=image[:, :width],
+        image_no_staff=(no_staff[:, :width] if no_staff is not None else None),
+    )
+
+
+def _meter_candidate_columns(detections: Dict[str, List[Any]], p: int,
+                             local: Dict[int, Tuple[int, int]]
+                             ) -> Dict[int, Dict[int, int]]:
+    """`{system_index: {cell_index: how many staves saw meter-shaped ink}}`.
+
+    ⚠️ CELL 0 IS EXCLUDED, exactly as `_meter_changes` excludes it: a glyph at
+    the head of the staff states the OPENING and is the header reader's
+    business, not a change.
+    """
+    per_system: Dict[int, Dict[int, int]] = {}
+    for _staff_index, key in sorted(local.items()):
+        sys_idx = key[0]
+        for cell_index, cell_dets in _meter_cells(detections, p, key):
+            if cell_index == 0:
+                continue
+            if not any(d.smufl_name.startswith("timeSig") for d in cell_dets):
+                continue
+            per_system.setdefault(sys_idx, {})
+            per_system[sys_idx][cell_index] = (
+                per_system[sys_idx].get(cell_index, 0) + 1)
+    return per_system
+
+
+def gather_meter_at_bars(log: Log, cells: Sequence[Any],
+                         local: Dict[int, Tuple[int, int]],
+                         detections: Dict[str, List[Any]]) -> None:
+    """Ask the template reader at every candidate mid-staff BAR HEAD.
+
+    One staff's detection names the COLUMN; the reader is then asked of EVERY
+    staff of that system at that same bar, **including the staves that
+    detected nothing** — which is the only part of this that the detector
+    cannot already do, and the reason a column is the unit rather than a cell.
+
+    ⚠️ FLAG OFF WRITES NOTHING AT ALL, not even an abstention, so the record is
+    byte-identical with the flag off. An `OUT_OF_SCOPE` row per staff per
+    candidate column would be the direction reader's convention and would cost
+    a few hundred rows a page to say *"a flag is off"* — a fact the flag
+    already knows. The trade is stated rather than hidden: with the flag off a
+    record cannot distinguish this pass from one that ran and found nothing,
+    and for an unpriced default-OFF mechanism that is the right side to err on.
+    """
+    if not _meter_template_at_bar_enabled():
+        return
+    try:
+        from ..time_signature_locator import locate_time_signature
+    except Exception:                                         # noqa: BLE001
+        for staff_index, key in sorted(local.items()):
+            log.abstain(R.staff(0, key[0], key[1]), Q.METER_TEMPLATE_AT_BAR,
+                        reader=READERS.TEMPLATE, frame=FRAME_HEADER_WINDOW,
+                        reason=ABSTAIN.READER_UNAVAILABLE)
+        return
+
+    by_staff_cell: Dict[Tuple[int, int], Any] = {}
+    page_index = 0
+    for c in cells:
+        if c.staff_index in local:
+            by_staff_cell[(c.staff_index, c.measure_index)] = c
+            page_index = c.page_index
+
+    columns = _meter_candidate_columns(detections, page_index, local)
+    for staff_index, key in sorted(local.items()):
+        sys_idx, st_idx = key
+        sub = R.staff(page_index, sys_idx, st_idx)
+        for cell_index, n_seen in sorted(columns.get(sys_idx, {}).items()):
+            if n_seen < METER_TEMPLATE_AT_BAR_MIN_CANDIDATE_STAVES:
+                continue
+            frame = frame_bar_head(cell_index)
+            cell = by_staff_cell.get((staff_index, cell_index))
+            if cell is None:
+                # This staff has no bar there at all — a shorter staff, or a
+                # partition that disagrees. Recorded, because "this staff was
+                # not asked" and "this staff was asked and said nothing" are
+                # different facts about the same column.
+                log.abstain(sub, Q.METER_TEMPLATE_AT_BAR,
+                            reader=READERS.TEMPLATE, frame=frame,
+                            reason=ABSTAIN.NO_BARLINE, cell=cell_index)
+                continue
+            window = _bar_head_window(
+                cell, METER_TEMPLATE_AT_BAR_WINDOW_SPACES)
+            if window is None:
+                log.abstain(sub, Q.METER_TEMPLATE_AT_BAR,
+                            reader=READERS.TEMPLATE, frame=frame,
+                            reason=ABSTAIN.NO_STAFF_GEOMETRY, cell=cell_index)
+                continue
+            trace: Dict[str, Any] = {}
+            try:
+                found = locate_time_signature(window, trace=trace)
+            except Exception:                                 # noqa: BLE001
+                log.abstain(sub, Q.METER_TEMPLATE_AT_BAR,
+                            reader=READERS.TEMPLATE, frame=frame,
+                            reason=ABSTAIN.READER_UNAVAILABLE, cell=cell_index)
+                continue
+            if found is None:
+                # ⚠️ THE COMMON AND CORRECT OUTCOME. A bar that prints no meter
+                # is almost every bar, and this abstention is the reader doing
+                # its job — 1,596 of 1,612 measured windows.
+                log.abstain(sub, Q.METER_TEMPLATE_AT_BAR,
+                            reader=READERS.TEMPLATE, frame=frame,
+                            reason=ABSTAIN.BELOW_THRESHOLD, cell=cell_index,
+                            **{k: v for k, v in trace.items() if k != "reason"})
+                continue
+            log.observe(sub, Q.METER_TEMPLATE_AT_BAR,
+                        (int(found.numerator), int(found.denominator)),
+                        reader=READERS.TEMPLATE, frame=frame,
+                        cell=cell_index, score=float(found.score),
+                        raw=found.raw, runner_up=found.runner_up_raw,
+                        runner_up_score=found.runner_up_score,
+                        score_margin=found.score_margin,
+                        candidate_staves=n_seen)
+
+
 def gather_margin_labels(log: Log, pws: Any, cells, local, *,
                          pdf_path: Any = None, surya_fallback: bool = False,
                          ocr_fallback: bool = False) -> None:
@@ -2468,6 +2707,10 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
         gather_clef_seed(log, cells, local, dossier=dossier, sources=sources)
         gather_key_signature(log, pws, cells, local, detections)
         gather_meter(log, pws, cells, local, detections)
+        # ⚠️ AFTER `gather_meter`, because it reads the SAME reader on a
+        # DIFFERENT crop and the header reading is the one a consumer reaches
+        # for first. Off by default — see `METER_TEMPLATE_AT_BAR_ENV`.
+        gather_meter_at_bars(log, cells, local, detections)
         gather_margin_labels(log, pws, cells, local, pdf_path=pdf_path,
                              surya_fallback=surya_fallback,
                              ocr_fallback=ocr_fallback)

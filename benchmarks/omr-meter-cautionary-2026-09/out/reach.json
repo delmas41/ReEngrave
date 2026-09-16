@@ -1,0 +1,102 @@
+{
+ "arms_read": 67,
+ "fixtures": [
+  "boundary-m150-180",
+  "boundary-m204-232",
+  "brahms1-317803",
+  "brahms1-m1-22",
+  "brahms4-m386-412",
+  "litolff-984073"
+ ],
+ "generations": [
+  1,
+  2,
+  3,
+  4,
+  5,
+  7
+ ],
+ "cautionaries": [
+  {
+   "fixture": "brahms1-317803",
+   "system": "system/0/0",
+   "from_cell": 7,
+   "cautionary_raw": "9/8",
+   "support": 26.5,
+   "staves_reading_it": 9,
+   "loose_digits": 1,
+   "bars_fit": 0,
+   "bars_contradict": 1,
+   "next_system": "system/1/0",
+   "next_opening_raw": "9/4",
+   "next_opening_n_staves_spoke": 10,
+   "next_opening_share": 1.0,
+   "truth_of_next_system": "9/8",
+   "cautionary_correct": true,
+   "opening_correct": false,
+   "state": "DISAGREE",
+   "generations": [
+    5,
+    7
+   ],
+   "arms": [
+    "m5brahms1scan-OFF",
+    "m7brahms1scan-OFF"
+   ]
+  },
+  {
+   "fixture": "brahms1-317803",
+   "system": "system/1/0",
+   "from_cell": 6,
+   "cautionary_raw": "4/4",
+   "support": 3.5,
+   "staves_reading_it": 1,
+   "loose_digits": 1,
+   "bars_fit": 0,
+   "bars_contradict": 0,
+   "next_system": "system/1/1",
+   "next_opening_raw": null,
+   "next_opening_n_staves_spoke": null,
+   "next_opening_share": null,
+   "truth_of_next_system": "6/8",
+   "cautionary_correct": false,
+   "opening_correct": null,
+   "state": "OPENING_UNKNOWN",
+   "generations": [
+    5,
+    7
+   ],
+   "arms": [
+    "m5brahms1scan-OFF",
+    "m7brahms1scan-OFF"
+   ]
+  },
+  {
+   "fixture": "brahms1-m1-22",
+   "system": "system/0/0",
+   "from_cell": 6,
+   "cautionary_raw": "9/8",
+   "support": 57.0,
+   "staves_reading_it": 19,
+   "loose_digits": 0,
+   "bars_fit": 0,
+   "bars_contradict": 0,
+   "next_system": "system/1/0",
+   "next_opening_raw": "9/8",
+   "next_opening_n_staves_spoke": 21,
+   "next_opening_share": 1.0,
+   "truth_of_next_system": "9/8",
+   "cautionary_correct": true,
+   "opening_correct": true,
+   "state": "AGREE",
+   "generations": [
+    5,
+    7
+   ],
+   "arms": [
+    "m5brahms1eng-OFF",
+    "m7brahms1eng-OFF"
+   ]
+  }
+ ]
+}

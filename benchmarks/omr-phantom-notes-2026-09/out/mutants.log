@@ -1,0 +1,31 @@
+BASELINE  probe rc=0  suite rc=0
+cross-staff pairs sharing a CELL index: 857 | differing: 0
+POSITIVE CONTROL (the hand-named `ffff` cells): {(1, 0, 7, 0): 2, (1, 0, 8, 0): 5}
+at_the_rest_slot                6            2       8
+outside_the_staff              11            3      14
+inside_elsewhere                3            0       3
+TOTAL                          20            5      25
+
+  RED   contest_iou_drifts
+          caught by: suite fails, probe answer moved   (test_contest_join: the restated constant no longer equals gather's)
+  RED   contest_iou_drifts_down
+          caught by: suite fails, probe --check non-zero, probe answer moved   (test_contest_join: same, the other direction)
+  RED   join_ignores_the_staff_index
+          caught by: suite fails, probe --check non-zero, probe answer moved   (the probe: every bar becomes reachable and the answer inverts)
+  RED   join_ignores_the_cell_index
+          caught by: suite fails, probe answer moved   (the probe: the cell-agreement control and the answer both move)
+  RED   scope_filter_dropped
+          caught by: suite fails, probe answer moved   (the probe: same-cell pairs leak into the cross-staff index)
+  RED   same_class_gate_dropped
+          caught by: suite fails   (test_contest_join: a suffix-only pair must not become a contest)
+  RED   rest_slot_window_widened
+          caught by: probe answer moved   (the probe: the cross-tab stops reproducing FINDINGS §4's 8/14/3)
+  RED   staff_span_widened
+          caught by: probe answer moved   (the probe: outside_the_staff collapses and 8/14/3 breaks)
+  RED   the_test_stops_reading_the_source
+          caught by: suite fails   (POSITIVE CONTROL: the test must still fail when the probe drifts)
+
+restored every mutated file from the in-memory snapshot, verified byte for byte
+post-battery probe rc=0, answer unchanged: True
+
+ARMS: 9 red, 0 survived, 0 bad anchors

@@ -1,0 +1,16 @@
+⚠️ EXCLUDED ['brahms1-p045'] — every figure below is for the REMAINING pages only.
+REACH  pages=9  windows=1882  bar-head width=4.0 spaces  floor=0.5
+  header     n=  191  >=floor  32 (16.75%)  median 0.4459  p90 0.5134  p99 0.5828  max 0.6318   [('C', 21), ('4/4', 11)]
+  head0      n=  191  >=floor   3 (1.57%)  median 0.3411  p90 0.4236  p99 0.5188  max 0.5229   [('4/4', 3)]
+  head_last  n=  191  >=floor   5 (2.62%)  median 0.3428  p90 0.4292  p99 0.5121  max 0.6141   [('C', 3), ('4/4', 2)]
+  head_mid   n= 1309  >=floor  11 (0.84%)  median 0.3294  p90 0.4247  p99 0.4939  max 0.5408   [('C', 10), ('7/4', 1)]
+POSITIVE CONTROL  tried=274 answered=266 right=265  min=0.5007
+FALSE CONSENSUS (3+ staves of one system agreeing on one meter at one column):
+  header       4 of    18 columns   [{'page': 'beet5lit-p056', 'system': 0, 'cell': -1, 'raw': 'C', 'staves': 3}, {'page': 'beet5lit-p057', 'system': 1, 'cell': -1, 'raw': 'C', 'staves': 7}, {'page': 'brahms1-p006', 'system': 0, 'cell': -1, 'raw': 'C', 'staves': 3}, {'page': 'brahms1-p006', 'system': 1, 'cell': -1, 'raw': '4/4', 'staves': 3}]
+  head0        0 of    18 columns
+  head_last    0 of    18 columns
+  head_mid     0 of   119 columns
+PREMISE CHECK (would the SHIPPED vote declare a meter here?): OK — no system votes one
+wrote benchmarks/omr-meter-cautionary-arbiter-2026-09/out/score-frames-nine.json
+CHECK OK
+EXIT=0

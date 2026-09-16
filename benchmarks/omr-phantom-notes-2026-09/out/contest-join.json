@@ -1,0 +1,384 @@
+{
+ "pairs_iou": 0.3,
+ "contest_gate": 0.5,
+ "controls": {
+  "cross_pairs_same_cell_index": 857,
+  "cross_pairs_differing_cell_index": 0,
+  "positive_control_ffff_cells": {
+   "1/0/7/0": 2,
+   "1/0/8/0": 5
+  }
+ },
+ "notehead_cross_at_gate": 234,
+ "notehead_cross_superset": 286,
+ "notehead_same_cell": 284,
+ "notehead_cross_suffix_only_at_gate": 37,
+ "bars": [
+  {
+   "page": 4,
+   "system": 0,
+   "staff": 0,
+   "cell": 3,
+   "part": "P1",
+   "measure": "85",
+   "pitches": [
+    "D5"
+   ],
+   "clef": "treble",
+   "wrote": "PITCHED NOTE",
+   "rest_too": false,
+   "cross_at_gate": 0,
+   "cross_superset": 0,
+   "cross_suffix_only": 0,
+   "same_cell": 0,
+   "verdict": "UNREACHABLE by the repair"
+  },
+  {
+   "page": 4,
+   "system": 0,
+   "staff": 0,
+   "cell": 6,
+   "part": "P1",
+   "measure": "88",
+   "pitches": [
+    "D5"
+   ],
+   "clef": "treble",
+   "wrote": "PITCHED NOTE",
+   "rest_too": false,
+   "cross_at_gate": 0,
+   "cross_superset": 0,
+   "cross_suffix_only": 0,
+   "same_cell": 0,
+   "verdict": "UNREACHABLE by the repair"
+  },
+  {
+   "page": 4,
+   "system": 0,
+   "staff": 0,
+   "cell": 7,
+   "part": "P1",
+   "measure": "89",
+   "pitches": [
+    "D5"
+   ],
+   "clef": "treble",
+   "wrote": "PITCHED NOTE",
+   "rest_too": false,
+   "cross_at_gate": 0,
+   "cross_superset": 0,
+   "cross_suffix_only": 0,
+   "same_cell": 0,
+   "verdict": "UNREACHABLE by the repair"
+  },
+  {
+   "page": 4,
+   "system": 0,
+   "staff": 0,
+   "cell": 8,
+   "part": "P1",
+   "measure": "90",
+   "pitches": [
+    "F6",
+    "G6"
+   ],
+   "clef": "treble",
+   "wrote": "2 note(s) + 1 rest(s)",
+   "rest_too": true,
+   "cross_at_gate": 0,
+   "cross_superset": 0,
+   "cross_suffix_only": 0,
+   "same_cell": 0,
+   "verdict": "UNREACHABLE by the repair"
+  },
+  {
+   "page": 4,
+   "system": 0,
+   "staff": 0,
+   "cell": 9,
+   "part": "P1",
+   "measure": "91",
+   "pitches": [
+    "A6",
+    "A6",
+    "G6"
+   ],
+   "clef": "treble",
+   "wrote": "3 PITCHED NOTES",
+   "rest_too": false,
+   "cross_at_gate": 0,
+   "cross_superset": 0,
+   "cross_suffix_only": 0,
+   "same_cell": 1,
+   "verdict": "UNREACHABLE by the repair"
+  },
+  {
+   "page": 4,
+   "system": 0,
+   "staff": 0,
+   "cell": 10,
+   "part": "P1",
+   "measure": "92",
+   "pitches": [
+    "A6",
+    "A6"
+   ],
+   "clef": "treble",
+   "wrote": "2 PITCHED NOTES",
+   "rest_too": false,
+   "cross_at_gate": 0,
+   "cross_superset": 0,
+   "cross_suffix_only": 0,
+   "same_cell": 0,
+   "verdict": "UNREACHABLE by the repair"
+  },
+  {
+   "page": 4,
+   "system": 0,
+   "staff": 1,
+   "cell": 2,
+   "part": "P2",
+   "measure": "84",
+   "pitches": [
+    "C6"
+   ],
+   "clef": "treble",
+   "wrote": "PITCHED NOTE",
+   "rest_too": false,
+   "cross_at_gate": 0,
+   "cross_superset": 0,
+   "cross_suffix_only": 0,
+   "same_cell": 0,
+   "verdict": "UNREACHABLE by the repair"
+  },
+  {
+   "page": 4,
+   "system": 0,
+   "staff": 1,
+   "cell": 8,
+   "part": "P2",
+   "measure": "90",
+   "pitches": [
+    "B5",
+    "B5"
+   ],
+   "clef": "treble",
+   "wrote": "2 PITCHED NOTES",
+   "rest_too": false,
+   "cross_at_gate": 0,
+   "cross_superset": 0,
+   "cross_suffix_only": 0,
+   "same_cell": 1,
+   "verdict": "UNREACHABLE by the repair"
+  },
+  {
+   "page": 4,
+   "system": 0,
+   "staff": 1,
+   "cell": 10,
+   "part": "P2",
+   "measure": "92",
+   "pitches": [
+    "A5",
+    "B5"
+   ],
+   "clef": "treble",
+   "wrote": "2 PITCHED NOTES",
+   "rest_too": false,
+   "cross_at_gate": 0,
+   "cross_superset": 0,
+   "cross_suffix_only": 0,
+   "same_cell": 0,
+   "verdict": "UNREACHABLE by the repair"
+  },
+  {
+   "page": 4,
+   "system": 0,
+   "staff": 5,
+   "cell": 1,
+   "part": "P6",
+   "measure": "83",
+   "pitches": [
+    "F6",
+    "B4"
+   ],
+   "clef": "treble",
+   "wrote": "2 PITCHED NOTES",
+   "rest_too": false,
+   "cross_at_gate": 0,
+   "cross_superset": 0,
+   "cross_suffix_only": 0,
+   "same_cell": 0,
+   "verdict": "UNREACHABLE by the repair"
+  },
+  {
+   "page": 4,
+   "system": 0,
+   "staff": 5,
+   "cell": 6,
+   "part": "P6",
+   "measure": "88",
+   "pitches": [
+    "D5",
+    "G6"
+   ],
+   "clef": "treble",
+   "wrote": "2 PITCHED NOTES",
+   "rest_too": false,
+   "cross_at_gate": 1,
+   "cross_superset": 1,
+   "cross_suffix_only": 0,
+   "same_cell": 1,
+   "verdict": "in the domain -- CANNOT TELL"
+  },
+  {
+   "page": 4,
+   "system": 0,
+   "staff": 5,
+   "cell": 9,
+   "part": "P6",
+   "measure": "91",
+   "pitches": [
+    "G6"
+   ],
+   "clef": "treble",
+   "wrote": "1 note(s) + 1 rest(s)",
+   "rest_too": true,
+   "cross_at_gate": 1,
+   "cross_superset": 2,
+   "cross_suffix_only": 0,
+   "same_cell": 0,
+   "verdict": "in the domain -- CANNOT TELL"
+  },
+  {
+   "page": 4,
+   "system": 0,
+   "staff": 5,
+   "cell": 10,
+   "part": "P6",
+   "measure": "92",
+   "pitches": [
+    "G6",
+    "D5",
+    "G6"
+   ],
+   "clef": "treble",
+   "wrote": "3 PITCHED NOTES",
+   "rest_too": false,
+   "cross_at_gate": 1,
+   "cross_superset": 3,
+   "cross_suffix_only": 0,
+   "same_cell": 0,
+   "verdict": "in the domain -- CANNOT TELL"
+  },
+  {
+   "page": 4,
+   "system": 0,
+   "staff": 5,
+   "cell": 13,
+   "part": "P6",
+   "measure": "95",
+   "pitches": [
+    "A2"
+   ],
+   "clef": "treble",
+   "wrote": "1 note(s) + 1 rest(s)",
+   "rest_too": true,
+   "cross_at_gate": 2,
+   "cross_superset": 3,
+   "cross_suffix_only": 0,
+   "same_cell": 1,
+   "verdict": "in the domain -- CANNOT TELL"
+  },
+  {
+   "page": 3,
+   "system": 0,
+   "staff": 0,
+   "cell": 10,
+   "part": "P1",
+   "measure": "58",
+   "pitches": [
+    "C5"
+   ],
+   "clef": "treble",
+   "wrote": "1 note(s) + 1 rest(s)",
+   "rest_too": true,
+   "cross_at_gate": 0,
+   "cross_superset": 0,
+   "cross_suffix_only": 0,
+   "same_cell": 0,
+   "verdict": "UNREACHABLE by the repair"
+  },
+  {
+   "page": 3,
+   "system": 0,
+   "staff": 4,
+   "cell": 3,
+   "part": "P5",
+   "measure": "51",
+   "pitches": [
+    "C5",
+    "C5",
+    "E5",
+    "E5"
+   ],
+   "clef": "treble",
+   "wrote": "4 PITCHED NOTES",
+   "rest_too": false,
+   "cross_at_gate": 0,
+   "cross_superset": 0,
+   "cross_suffix_only": 0,
+   "same_cell": 2,
+   "verdict": "UNREACHABLE by the repair"
+  },
+  {
+   "page": 3,
+   "system": 0,
+   "staff": 5,
+   "cell": 13,
+   "part": "P6",
+   "measure": "61",
+   "pitches": [
+    "D5"
+   ],
+   "clef": "treble",
+   "wrote": "PITCHED NOTE",
+   "rest_too": false,
+   "cross_at_gate": 0,
+   "cross_superset": 0,
+   "cross_suffix_only": 0,
+   "same_cell": 0,
+   "verdict": "UNREACHABLE by the repair"
+  },
+  {
+   "page": 3,
+   "system": 0,
+   "staff": 6,
+   "cell": 13,
+   "part": "P7",
+   "measure": "61",
+   "pitches": [
+    "F3"
+   ],
+   "clef": "bass",
+   "wrote": "1 note(s) + 1 rest(s)",
+   "rest_too": true,
+   "cross_at_gate": 0,
+   "cross_superset": 0,
+   "cross_suffix_only": 0,
+   "same_cell": 0,
+   "verdict": "UNREACHABLE by the repair"
+  }
+ ],
+ "cross_tab": {
+  "at_the_rest_slot|UNREACHABLE": 6,
+  "at_the_rest_slot|reachable": 2,
+  "inside_elsewhere|UNREACHABLE": 3,
+  "outside_the_staff|UNREACHABLE": 11,
+  "outside_the_staff|reachable": 3
+ },
+ "outside_the_staff_side": {
+  "ABOVE the TOP staff -- no neighbour above": 5,
+  "a neighbouring staff is on that side": 9
+ }
+}

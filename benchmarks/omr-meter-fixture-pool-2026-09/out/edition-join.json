@@ -1,0 +1,403 @@
+{
+  "held": [
+    {
+      "dossier": "beethoven-sym1-mvt1",
+      "work_id": "beethoven--symphony-1",
+      "length_changes": 0,
+      "engraving_changes": 1,
+      "editions": [
+        {
+          "path": "editions/beethoven/symphony-1-op21/beethoven--symphony-1-op21--henry-litolff-s-verlag-1870--imslp74.pdf",
+          "variant": "henry-litolff-s-verlag-1870",
+          "pages": 43,
+          "image_type": "Normal Scan",
+          "has_text_layer": true
+        }
+      ]
+    },
+    {
+      "dossier": "beethoven-sym2-mvt1",
+      "work_id": "beethoven--symphony-2",
+      "length_changes": 1,
+      "engraving_changes": 0,
+      "editions": [
+        {
+          "path": "editions/beethoven/symphony-2-op36/beethoven--symphony-2-op36--henry-litolff-s-verlag-1870--imslp503997.pdf",
+          "variant": "henry-litolff-s-verlag-1870",
+          "pages": 61,
+          "image_type": "Normal Scan",
+          "has_text_layer": true
+        }
+      ]
+    },
+    {
+      "dossier": "beethoven-sym3-mvt3",
+      "work_id": "beethoven--symphony-3",
+      "length_changes": 2,
+      "engraving_changes": 0,
+      "editions": [
+        {
+          "path": "editions/beethoven/symphony-3-op55/beethoven--symphony-3-op55--henry-litolff-s-verlag-1870--imslp504077.pdf",
+          "variant": "henry-litolff-s-verlag-1870",
+          "pages": 89,
+          "image_type": "Normal Scan",
+          "has_text_layer": true
+        }
+      ]
+    },
+    {
+      "dossier": "beethoven-sym5-mvt4",
+      "work_id": "beethoven--symphony-5",
+      "length_changes": 2,
+      "engraving_changes": 1,
+      "editions": [
+        {
+          "path": "editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp575951.pdf",
+          "variant": "henry-litolff-s-verlag-1870",
+          "pages": 87,
+          "image_type": "Normal Scan",
+          "has_text_layer": true
+        },
+        {
+          "path": "editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf",
+          "variant": "henry-litolff-s-verlag-1870",
+          "pages": 88,
+          "image_type": "Normal Scan",
+          "has_text_layer": false
+        }
+      ]
+    },
+    {
+      "dossier": "beethoven-sym6-mvt3",
+      "work_id": "beethoven--symphony-6",
+      "length_changes": 2,
+      "engraving_changes": 0,
+      "editions": [
+        {
+          "path": "editions/beethoven/symphony-6-op68/beethoven--symphony-6-op68--henry-litolff-s-verlag-1870--imslp504082.pdf",
+          "variant": "henry-litolff-s-verlag-1870",
+          "pages": 79,
+          "image_type": "Normal Scan",
+          "has_text_layer": true
+        }
+      ]
+    },
+    {
+      "dossier": "beethoven-sym7-mvt1",
+      "work_id": "beethoven--symphony-7",
+      "length_changes": 1,
+      "engraving_changes": 0,
+      "editions": [
+        {
+          "path": "editions/beethoven/symphony-7-op92/beethoven--symphony-7-op92--henry-litolff-s-verlag-1870--imslp504084.pdf",
+          "variant": "henry-litolff-s-verlag-1870",
+          "pages": 89,
+          "image_type": "Normal Scan",
+          "has_text_layer": true
+        }
+      ]
+    },
+    {
+      "dossier": "beethoven-sym9-mvt2",
+      "work_id": "beethoven--symphony-9",
+      "length_changes": 3,
+      "engraving_changes": 0,
+      "editions": [
+        {
+          "path": "editions/beethoven/symphony-9-op125/beethoven--symphony-9-op125--henry-litolff-s-verlag-1870--imslp516488.pdf",
+          "variant": "henry-litolff-s-verlag-1870",
+          "pages": 189,
+          "image_type": "Normal Scan",
+          "has_text_layer": true
+        }
+      ]
+    },
+    {
+      "dossier": "beethoven-sym9-mvt3",
+      "work_id": "beethoven--symphony-9",
+      "length_changes": 5,
+      "engraving_changes": 0,
+      "editions": [
+        {
+          "path": "editions/beethoven/symphony-9-op125/beethoven--symphony-9-op125--henry-litolff-s-verlag-1870--imslp516488.pdf",
+          "variant": "henry-litolff-s-verlag-1870",
+          "pages": 189,
+          "image_type": "Normal Scan",
+          "has_text_layer": true
+        }
+      ]
+    },
+    {
+      "dossier": "beethoven-sym9-mvt4",
+      "work_id": "beethoven--symphony-9",
+      "length_changes": 14,
+      "engraving_changes": 1,
+      "editions": [
+        {
+          "path": "editions/beethoven/symphony-9-op125/beethoven--symphony-9-op125--henry-litolff-s-verlag-1870--imslp516488.pdf",
+          "variant": "henry-litolff-s-verlag-1870",
+          "pages": 189,
+          "image_type": "Normal Scan",
+          "has_text_layer": true
+        }
+      ]
+    },
+    {
+      "dossier": "brahms-sym1-mvt1",
+      "work_id": "brahms--symphony-1",
+      "length_changes": 2,
+      "engraving_changes": 0,
+      "editions": [
+        {
+          "path": "editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf",
+          "variant": "breitkopf-hartel-brahms",
+          "pages": 86,
+          "image_type": "Normal Scan",
+          "has_text_layer": false
+        },
+        {
+          "path": "editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp516790.pdf",
+          "variant": "breitkopf-hartel-brahms",
+          "pages": 86,
+          "image_type": "Normal Scan",
+          "has_text_layer": true
+        }
+      ]
+    },
+    {
+      "dossier": "brahms-sym1-mvt3",
+      "work_id": "brahms--symphony-1",
+      "length_changes": 2,
+      "engraving_changes": 0,
+      "editions": [
+        {
+          "path": "editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf",
+          "variant": "breitkopf-hartel-brahms",
+          "pages": 86,
+          "image_type": "Normal Scan",
+          "has_text_layer": false
+        },
+        {
+          "path": "editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp516790.pdf",
+          "variant": "breitkopf-hartel-brahms",
+          "pages": 86,
+          "image_type": "Normal Scan",
+          "has_text_layer": true
+        }
+      ]
+    },
+    {
+      "dossier": "brahms-sym1-mvt4",
+      "work_id": "brahms--symphony-1",
+      "length_changes": 0,
+      "engraving_changes": 1,
+      "editions": [
+        {
+          "path": "editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf",
+          "variant": "breitkopf-hartel-brahms",
+          "pages": 86,
+          "image_type": "Normal Scan",
+          "has_text_layer": false
+        },
+        {
+          "path": "editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp516790.pdf",
+          "variant": "breitkopf-hartel-brahms",
+          "pages": 86,
+          "image_type": "Normal Scan",
+          "has_text_layer": true
+        }
+      ]
+    },
+    {
+      "dossier": "brahms-sym2-mvt2",
+      "work_id": "brahms--symphony-2",
+      "length_changes": 4,
+      "engraving_changes": 0,
+      "editions": [
+        {
+          "path": "editions/brahms/symphony-2-op73/brahms--symphony-2-op73--simrock-1878--imslp23103.pdf",
+          "variant": "simrock-1878",
+          "pages": 73,
+          "image_type": "Normal Scan",
+          "has_text_layer": false
+        }
+      ]
+    },
+    {
+      "dossier": "brahms-sym2-mvt3",
+      "work_id": "brahms--symphony-2",
+      "length_changes": 5,
+      "engraving_changes": 0,
+      "editions": [
+        {
+          "path": "editions/brahms/symphony-2-op73/brahms--symphony-2-op73--simrock-1878--imslp23103.pdf",
+          "variant": "simrock-1878",
+          "pages": 73,
+          "image_type": "Normal Scan",
+          "has_text_layer": false
+        }
+      ]
+    },
+    {
+      "dossier": "brahms-sym3-mvt1",
+      "work_id": "brahms--symphony-3",
+      "length_changes": 4,
+      "engraving_changes": 0,
+      "editions": [
+        {
+          "path": "editions/brahms/symphony-3-op90/brahms--symphony-3-op90--breitkopf-hartel-brahms--imslp317593.pdf",
+          "variant": "breitkopf-hartel-brahms",
+          "pages": 86,
+          "image_type": "Normal Scan",
+          "has_text_layer": false
+        }
+      ]
+    },
+    {
+      "dossier": "brahms-sym4-mvt4",
+      "work_id": "brahms--symphony-4",
+      "length_changes": 2,
+      "engraving_changes": 0,
+      "editions": [
+        {
+          "path": "editions/brahms/symphony-4-op98/brahms--symphony-4-op98--breitkopf-hartel-brahms--imslp317596.pdf",
+          "variant": "breitkopf-hartel-brahms",
+          "pages": 99,
+          "image_type": "Normal Scan",
+          "has_text_layer": false
+        }
+      ]
+    },
+    {
+      "dossier": "bruckner-sym5-mvt2",
+      "work_id": "bruckner--symphony-5",
+      "length_changes": 0,
+      "engraving_changes": 1,
+      "editions": [
+        {
+          "path": "editions/bruckner/symphony-5-in-b-flat-major-wab-105/bruckner--symphony-5-in-b-flat-major-wab-105--bruckneraga-1935--imslp518282.pdf",
+          "variant": "bruckneraga-1935",
+          "pages": 180,
+          "image_type": "Normal Scan",
+          "has_text_layer": false
+        }
+      ]
+    },
+    {
+      "dossier": "dvorak-sym9-full",
+      "work_id": "dvorak--symphony-9",
+      "length_changes": 2,
+      "engraving_changes": 0,
+      "editions": [
+        {
+          "path": "editions/dvorak/symphony-9-op95/dvorak--symphony-9-op95--simrock-1894--imslp405834.pdf",
+          "variant": "simrock-1894",
+          "pages": 80,
+          "image_type": "Normal Scan",
+          "has_text_layer": false
+        }
+      ]
+    },
+    {
+      "dossier": "dvorak-sym9-mvt1",
+      "work_id": "dvorak--symphony-9",
+      "length_changes": 0,
+      "engraving_changes": 1,
+      "editions": [
+        {
+          "path": "editions/dvorak/symphony-9-op95/dvorak--symphony-9-op95--simrock-1894--imslp405834.pdf",
+          "variant": "simrock-1894",
+          "pages": 80,
+          "image_type": "Normal Scan",
+          "has_text_layer": false
+        }
+      ]
+    },
+    {
+      "dossier": "mozart-sym41-full",
+      "work_id": "mozart--symphony-41",
+      "length_changes": 2,
+      "engraving_changes": 0,
+      "editions": [
+        {
+          "path": "editions/mozart/symphony-41-in-c-major-k551/mozart--symphony-41-in-c-major-k551--breitkopf-hartel-mozart-1880--imslp73.pdf",
+          "variant": "breitkopf-hartel-mozart-1880",
+          "pages": 56,
+          "image_type": null,
+          "has_text_layer": true
+        },
+        {
+          "path": "editions/mozart/symphony-41-in-c-major-k551/mozart--symphony-41-in-c-major-k551--breitkopf-hartel-mozart-1880--imslp984556.pdf",
+          "variant": "breitkopf-hartel-mozart-1880",
+          "pages": 56,
+          "image_type": "Normal Scan",
+          "has_text_layer": false
+        }
+      ]
+    },
+    {
+      "dossier": "tchaikovsky-sym4-mvt1",
+      "work_id": "tchaikovsky--symphony-4",
+      "length_changes": 2,
+      "engraving_changes": 0,
+      "editions": [
+        {
+          "path": "editions/tchaikovsky/symphony-4-op36/tchaikovsky--symphony-4-op36--jurgenson--imslp377460.pdf",
+          "variant": "jurgenson",
+          "pages": 226,
+          "image_type": "Normal Scan",
+          "has_text_layer": false
+        }
+      ]
+    },
+    {
+      "dossier": "tchaikovsky-sym4-mvt4",
+      "work_id": "tchaikovsky--symphony-4",
+      "length_changes": 2,
+      "engraving_changes": 0,
+      "editions": [
+        {
+          "path": "editions/tchaikovsky/symphony-4-op36/tchaikovsky--symphony-4-op36--jurgenson--imslp377460.pdf",
+          "variant": "jurgenson",
+          "pages": 226,
+          "image_type": "Normal Scan",
+          "has_text_layer": false
+        }
+      ]
+    },
+    {
+      "dossier": "tchaikovsky-sym6-mvt1",
+      "work_id": "tchaikovsky--symphony-6",
+      "length_changes": 2,
+      "engraving_changes": 0,
+      "editions": [
+        {
+          "path": "editions/tchaikovsky/symphony-6-op74/tchaikovsky--symphony-6-op74--breitkopf-und-hartel--imslp504312.pdf",
+          "variant": "breitkopf-und-hartel",
+          "pages": 159,
+          "image_type": null,
+          "has_text_layer": true
+        },
+        {
+          "path": "editions/tchaikovsky/symphony-6-op74/tchaikovsky--symphony-6-op74--eulenburg--imslp922722.pdf",
+          "variant": "eulenburg",
+          "pages": 224,
+          "image_type": "Normal Scan",
+          "has_text_layer": true
+        }
+      ]
+    }
+  ],
+  "not_held": [],
+  "abstained": [
+    "boulanger-printemps-mvt1",
+    "holst-planets-full",
+    "holst-planets-mvt1",
+    "holst-planets-mvt2",
+    "holst-planets-mvt3",
+    "holst-planets-mvt4",
+    "holst-planets-mvt5",
+    "holst-planets-mvt6",
+    "tchaikovsky-1812-overture"
+  ]
+}

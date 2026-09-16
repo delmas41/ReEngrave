@@ -1,0 +1,86 @@
+{
+ "pairs": [
+  {
+   "fixture": "brahms1-317803",
+   "system": "system/0/0",
+   "cell": 7,
+   "caut_raw": "9/8",
+   "caut_support": 26.5,
+   "caut_staves": 9,
+   "caut_loose": 1,
+   "caut_bars_fit": 0,
+   "caut_bars_contradict": 1,
+   "next": "system/1/0",
+   "open_raw": "9/4",
+   "open_share": 1.0,
+   "open_staves": 10,
+   "open_reason": "voted",
+   "truth": "9/8",
+   "state": "DISAGREE"
+  },
+  {
+   "fixture": "brahms1-317803",
+   "system": "system/1/0",
+   "cell": 6,
+   "caut_raw": "4/4",
+   "caut_support": 3.5,
+   "caut_staves": 1,
+   "caut_loose": 1,
+   "caut_bars_fit": 0,
+   "caut_bars_contradict": 0,
+   "next": "system/1/1",
+   "open_raw": null,
+   "open_share": null,
+   "open_staves": null,
+   "open_reason": "change_only",
+   "truth": "6/8",
+   "state": "OPENING_UNKNOWN"
+  },
+  {
+   "fixture": "brahms1-m1-22",
+   "system": "system/0/0",
+   "cell": 6,
+   "caut_raw": "9/8",
+   "caut_support": 57.0,
+   "caut_staves": 19,
+   "caut_loose": 0,
+   "caut_bars_fit": 0,
+   "caut_bars_contradict": 0,
+   "next": "system/1/0",
+   "open_raw": "9/8",
+   "open_share": 1.0,
+   "open_staves": 21,
+   "open_reason": "voted",
+   "truth": "9/8",
+   "state": "AGREE"
+  }
+ ],
+ "artefacts": {
+  "files": 68,
+  "with_score": 0,
+  "with_raw": 66,
+  "with_template_at_bar": 0
+ },
+ "readers": {
+  "cautionary staves (_meter_changes.staves_reading_it)": {
+   "found": true,
+   "variable": "staves",
+   "quantity": "METER_GLYPH",
+   "candidates": [
+    "METER_GLYPH"
+   ]
+  },
+  "opening staves (adjudicate_meter.n_staves_spoke)": {
+   "found": true,
+   "variable": "rows",
+   "quantity": "METER_TEMPLATE"
+  }
+ },
+ "reach": {
+  "pairs": 3,
+  "truthed": 3,
+  "caut_score": 0,
+  "open_score": 0,
+  "both": 0
+ }
+}
