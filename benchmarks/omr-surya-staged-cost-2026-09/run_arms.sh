@@ -99,10 +99,18 @@ for arm in $ARMS; do
     exit 2
   fi
 
+  # ⚠️ `LD` MUST COME BEFORE `L*`, AND IT DID NOT. `case` takes the FIRST
+  # match, so `L*` swallowed `LD` and the arm built to answer "is the model
+  # load shared between the two Surya consumers" ran with
+  # OMR_DIRECTION_TEXT=1 -- an exact duplicate of an L arm. It cost 39
+  # minutes and was caught only because the run's own echo prints DIRTEXT
+  # beside the arm name. A `case` whose patterns overlap is ordered, not
+  # matched, and the specific one has to be first.
   case "$arm" in
+    LD) FLAGS="--surya --ocr"; DIRTEXT=0 ;;
     L*) FLAGS="--surya --ocr"; DIRTEXT=1 ;;
     C*) FLAGS="";              DIRTEXT=1 ;;
-    LD) FLAGS="--surya --ocr"; DIRTEXT=0 ;;
+    *)  echo "ABORT: unknown arm '$arm'"; exit 2 ;;
   esac
 
   {
