@@ -214,7 +214,77 @@ with this one quantity removed, which is exactly what `main` does.
 ⚠️ **It is structurally blind to a GATHER change.** Nothing in this repair is
 in GATHER, so that is a statement about the instrument and not a hedge.
 
-<!--ARM-->
+**CONTROL FIRST: the OFF arm reproduces 2,993 of 2,993 of the record's own
+duration verdicts** before any arm is read. **REACH: 2,347 noteheads asked, 25
+answered *this is a whole rest*** — the same 25 the offline probe found, by an
+independent path — `slot` 20, `neighbouring_bar` 5, `not_rest_shaped` 2,202,
+`not_where_a_whole_rest_can_hang` 120.
+
+| | OFF | ON |
+|---|--:|--:|
+| pitched `<note>` | **1,618** | **1,596** |
+| `<rest>` written | 566 | 566 |
+| `measure_rests_read` | 92 | 92 |
+| `empty_bars_padded` | 184 | **193** |
+| slurs / dynamics / articulations / fermatas / parts | 40 / 195 / 48 / 41 / 75 | identical |
+| ties | 91 | **90** |
+
+**22 pitched notes removed and ZERO added**, which is the shape the rule
+promises — it can only ever refuse.
+
+⚠️ **THE 25 VERDICTS ACCOUNT EXACTLY**: 22 reached the file as a refusal
+(`ink_is_a_whole_rest` 0 → 25 counts all of them), and the other 3 were already
+being dropped for another reason — `no_pitch` 215 → 213 and `duration_narrowed`
+339 → 338. The accounting control stays an EQUALITY on both arms.
+
+**What happened to the 22 bars that changed**, keyed on the bar rather than the
+part so the join cannot move it:
+
+| | bars |
+|---|--:|
+| the bar's ONLY note goes, and it takes a padded measure rest | **9** |
+| the bar's only note goes and a detected rest was ALREADY there | **7** |
+| a note goes and the bar keeps its others | **6** |
+
+⚠️ **THE SEVEN ARE THEIR OWN SMALL FINDING**: those bars held a `restWhole`
+detection *and* a notehead reading of a second whole rest, so the file printed
+a measure rest and a quarter note side by side in one silent bar — visibly
+absurd, and exactly the shape Sean was describing.
+
+⚠️ **AND THE SIX SAY THE LONE-QUARTER WINDOW WAS NEVER THE FAULT'S SIZE.** Six
+of the 22 phantoms stood in bars that hold other music, where no
+underfull-bar filter would ever have found them. The removed notes are written
+as quarters, halves, eighths and wholes — *"a lone quarter in 2/4"* was one
+window onto the fault, not its extent.
+
+⚠️ **ONE TIE IS LOST** (91 → 90): an arc that was binding a phantom head. It is
+counted here as a cost and **was not adjudicated against the print** — though a
+tie bound to a whole rest cannot have been right.
+
+⚠️⚠️ **THE ARM'S OFF FILE IS NOT THE PIPELINE'S ARTEFACT, and quoting its bar
+figures against §1's would be an error.** The part join is itself an ADJUDICATE
+decision and has changed since this record was gathered (handoff §5.2), so
+re-running ADJUDICATE gives **75 fragment parts** where the pipeline's own
+export gives 12 — which renumbers every measure and strips the `<time>` most
+bars are scored against. What IS comparable is the note count, and it matches
+the pipeline export exactly at 1,618. The per-bar table above is computed OFF
+ARM vs ON ARM, never against §1.
+
+**Suite 3,867 passed / 19 skipped**; `inventory --check`, `health --check`,
+`gather_coverage` and `export_coverage --all` all exit 0, and `health`'s
+`EMPTY CELLS` is `none`. ⚠️ One test fails, `test_direction_text.py::
+TestReaderSelection::test_the_env_var_restricts_the_rungs`, and it is
+**PRE-EXISTING and environmental** — checked out at the merge base `ce7b8ba7`
+it fails identically, because `default_readers()` returns `[]` where there is
+no `.venv-surya`, which is the worktree symlink trap CLAUDE.md already records.
+
+**Mutation battery: 11 arms, all RED**, including the positive control in the
+same class (*refuse everything*, which fails exactly the accept tests).
+⚠️ **The first run had TWO SURVIVORS and both were the same test fault**: the
+neighbour fixtures placed the far rest at `WHOLE_REST_NEIGHBOUR_BARS + 1`, so
+widening the constant to 99 moved the fixture with it and the test passed for
+every value of the thing it was supposed to pin. The distances are literals
+now. *A test named for a hazard it does not reach*, arriving against its author.
 
 ---
 
