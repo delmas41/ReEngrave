@@ -1,0 +1,262 @@
+{
+ "env": [
+  "OMR_METER_CARRY=0",
+  "OMR_METER_FROM_BARS=0"
+ ],
+ "rests": {
+  "3.0": 20,
+  "4.0": 373,
+  "1.0": 259,
+  "0.5": 430,
+  "2.0": 3,
+  "9.0": 11,
+  "0.25": 4,
+  "0.0625": 1,
+  "6.0": 1
+ },
+ "written": {
+  "arc_notes_reachable_at_a_stem": 1435,
+  "slur_spans_marked": 279,
+  "tie_links_marked": 646,
+  "tie_links_crossing_a_barline": 134,
+  "tie_chains_marked": 271,
+  "tie_chains_over_two_notes": 78,
+  "tie_spans_marked": 646,
+  "dynamics": 196,
+  "notes": 2444,
+  "articulations": 114,
+  "ornaments": 3,
+  "slurs": 240,
+  "ties": 347,
+  "tie_stops_on_an_upper_chord_note": 72,
+  "accidentals": 475,
+  "tie_starts_on_an_upper_chord_note": 110,
+  "empty_bars_padded": 49,
+  "empty_bars_padded_without_meter": 14,
+  "two_voice_bars": 69,
+  "rests_duplicated_across_voices": 77,
+  "fermatas_duplicated_across_voices": 0,
+  "rests": 949,
+  "measure_rests_read": 104,
+  "two_voice_bars_refused_event_straddles_two_streams": 26,
+  "wedges": 18,
+  "direction_words": 5,
+  "two_voice_bars_refused_a_stream_has_no_written_note": 9,
+  "two_voice_bars_in_an_unread_bar": 8,
+  "parts": 97,
+  "divisions": 64
+ },
+ "meters": [
+  {
+   "subject": "system/0/0",
+   "outcome": "decided",
+   "reason": "voted",
+   "value": {
+    "numerator": 6,
+    "denominator": 8,
+    "raw": "6/8",
+    "segments": [
+     {
+      "numerator": 6,
+      "denominator": 8,
+      "raw": "6/8",
+      "from_cell": 0
+     }
+    ],
+    "cautionary": {
+     "from_cell": 7,
+     "numerator": 9,
+     "denominator": 8,
+     "raw": "9/8",
+     "support": 26.5,
+     "staves_reading_it": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      6,
+      8,
+      10,
+      12
+     ],
+     "bars_fit": 0,
+     "bars_contradict": 1,
+     "loose_digits": 1,
+     "cautionary": true
+    }
+   }
+  },
+  {
+   "subject": "system/1/0",
+   "outcome": "decided",
+   "reason": "voted",
+   "value": {
+    "numerator": 9,
+    "denominator": 4,
+    "raw": "9/4",
+    "segments": [
+     {
+      "numerator": 9,
+      "denominator": 4,
+      "raw": "9/4",
+      "from_cell": 0
+     },
+     {
+      "from_cell": 2,
+      "numerator": 4,
+      "denominator": 4,
+      "raw": "4/4",
+      "support": 4.0,
+      "staves_reading_it": [
+       7
+      ],
+      "bars_fit": 0,
+      "bars_contradict": 0
+     }
+    ],
+    "cautionary": {
+     "from_cell": 6,
+     "numerator": 4,
+     "denominator": 4,
+     "raw": "4/4",
+     "support": 3.5,
+     "staves_reading_it": [
+      7
+     ],
+     "bars_fit": 0,
+     "bars_contradict": 0,
+     "loose_digits": 1,
+     "cautionary": true
+    }
+   }
+  },
+  {
+   "subject": "system/1/1",
+   "outcome": "decided",
+   "reason": "change_only",
+   "value": {
+    "numerator": 4,
+    "denominator": 4,
+    "raw": "4/4",
+    "segments": [
+     {
+      "from_cell": 4,
+      "numerator": 4,
+      "denominator": 4,
+      "raw": "4/4",
+      "support": 3.0,
+      "staves_reading_it": [
+       7
+      ],
+      "bars_fit": 0,
+      "bars_contradict": 1
+     }
+    ]
+   }
+  },
+  {
+   "subject": "system/2/0",
+   "outcome": "decided",
+   "reason": "change_only",
+   "value": {
+    "numerator": 4,
+    "denominator": 4,
+    "raw": "4/4",
+    "segments": [
+     {
+      "from_cell": 4,
+      "numerator": 4,
+      "denominator": 4,
+      "raw": "4/4",
+      "support": 6.0,
+      "staves_reading_it": [
+       6,
+       8
+      ],
+      "bars_fit": 0,
+      "bars_contradict": 0
+     }
+    ]
+   }
+  },
+  {
+   "subject": "system/2/1",
+   "outcome": "decided",
+   "reason": "change_only",
+   "value": {
+    "numerator": 4,
+    "denominator": 4,
+    "raw": "4/4",
+    "segments": [
+     {
+      "from_cell": 1,
+      "numerator": 4,
+      "denominator": 4,
+      "raw": "4/4",
+      "support": 4.5,
+      "staves_reading_it": [
+       7,
+       8
+      ],
+      "bars_fit": 0,
+      "bars_contradict": 2
+     }
+    ]
+   }
+  },
+  {
+   "subject": "system/3/0",
+   "outcome": "decided",
+   "reason": "change_only",
+   "value": {
+    "numerator": 4,
+    "denominator": 4,
+    "raw": "4/4",
+    "segments": [
+     {
+      "from_cell": 6,
+      "numerator": 4,
+      "denominator": 4,
+      "raw": "4/4",
+      "support": 11.5,
+      "staves_reading_it": [
+       2,
+       4,
+       5,
+       7
+      ],
+      "bars_fit": 0,
+      "bars_contradict": 1
+     }
+    ]
+   }
+  },
+  {
+   "subject": "system/3/1",
+   "outcome": "decided",
+   "reason": "change_only",
+   "value": {
+    "numerator": 4,
+    "denominator": 4,
+    "raw": "4/4",
+    "segments": [
+     {
+      "from_cell": 3,
+      "numerator": 4,
+      "denominator": 4,
+      "raw": "4/4",
+      "support": 7.0,
+      "staves_reading_it": [
+       5,
+       6,
+       7
+      ],
+      "bars_fit": 0,
+      "bars_contradict": 2
+     }
+    ]
+   }
+  }
+ ]
+}
