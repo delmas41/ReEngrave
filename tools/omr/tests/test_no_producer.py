@@ -192,6 +192,31 @@ def entry(a, *, thing=None):
 '''})
         self.assertEqual(_names(r), set())
 
+    def test_a_LONE_unsupplied_node_that_an_edge_touches_is_not_a_chain(self) -> None:
+        """⚠️ The test above is named for a hazard it does not REACH.
+
+        Its `thing` never enters D3 at all — no edge touches it — so the
+        chain-size rule is never consulted and a mutation to `len(keys) < 0`
+        walked straight past it (mutation battery, first run). The case that
+        exercises the rule is a node that IS unsupplied and IS touched by an
+        edge whose OTHER end is supplied: `caller` hands to `consumer`, and
+        somebody else hands `consumer` a real value. `caller(thing)` is then
+        a perfectly ordinary optional argument, and the value does arrive.
+        """
+        r = self._scan({"m.py": '''
+def other():
+    return consumer(1, thing="a real value")
+
+def caller(a, *, thing=None):
+    if thing is None:
+        report("no thing in caller")
+        return None
+    return consumer(a, thing=thing)
+''' + _GUARD_BODY})
+        self.assertEqual(_names(r), set())
+        self.assertEqual(r.unsupplied, 1)   # the node IS in D3
+        self.assertEqual(r.chains, 0)       # and the size rule is what drops it
+
     def test_a_test_file_is_not_a_producer(self) -> None:
         """The choice that separates 2 findings from 0 on the real tree."""
         files = {"m.py": '''
@@ -249,16 +274,27 @@ def entry(a, *, thing=None):
         self.assertEqual(_names(r), {"thing"})
 
     def test_a_decorator_argument_is_not_this_functions_parameter(self) -> None:
-        """A decorator is evaluated in the OUTER scope; a name in it is not a forward."""
-        r = self._scan({"m.py": '''
-def deco(**kw):
-    return lambda f: f
+        """A decorator is evaluated in the OUTER scope; a name in it is not a forward.
 
-@deco(thing="declared on the decorator")
+        ⚠️ The first version of this test passed a STRING on the decorator, so
+        it could not distinguish the two placements at all — a test named for a
+        hazard it does not reach, caught by the mutation battery. The name in
+        the decorator has to be one that ALSO names a parameter of the function
+        below it: read in the outer scope it is the module global and a real
+        producer; read inside the function it is a forward from an unsupplied
+        parameter, and the whole chain goes dark.
+        """
+        r = self._scan({"m.py": '''
+thing = "a real value, supplied at the decorator"
+
+def deco(*, thing=None):
+    return consumer(1, thing=thing)
+
+@deco(thing=thing)
 def entry(a, *, thing=None):
-    return consumer(a, thing=thing)
+    return a
 ''' + _GUARD_BODY})
-        self.assertEqual(_names(r), {"thing"})
+        self.assertEqual(_names(r), set())
 
     def test_THE_PDF_PATH_TOPOLOGY(self) -> None:
         """Instance 1's exact shape, reconstructed.
