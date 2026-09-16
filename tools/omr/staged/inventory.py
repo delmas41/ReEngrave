@@ -68,10 +68,16 @@ KNOWN_GAPS: Dict[str, str] = {
         "inert declaration. The connectivity veto already ran in GATHER and "
         "`adjudicate_system_membership` records its result, so the decision "
         "reads the count and not the bridging.",
-    "instrument declares 'roster_entry'":
-        "inert declaration; the roster tier is not wired into the staged "
-        "identity decision yet (`OMR_ROSTER_LABELS` is off on the legacy path "
-        "too).",
+    # ⚠️ `instrument declares 'roster_entry'` LEFT THIS LIST 2026-09-15, and
+    # the stale-gap test is what made it leave. It was inert for as long as it
+    # stood and it was TWO faults, not one: the quantity had NO PRODUCER
+    # (`roster` was threaded `run_staged` -> `run_staged_on` -> `gather` ->
+    # `gather_external`, forwarded at every link and supplied by nobody, so
+    # `Q.ROSTER_ENTRY` was dead on every staged run this repo had made), AND
+    # it is filed on the DOCUMENT while the decision runs at STAFF — so the
+    # obvious `ev.rows(Q.ROSTER_ENTRY)` would have returned nothing forever.
+    # Both found by `staged.wiring`; see `benchmarks/omr-producer-consumer-
+    # 2026-09/FINDINGS.md`.
     "instrument declares 'staff_ordinal'": "inert declaration.",
     "instrument declares 'staff_group'": "inert declaration.",
     "part_partition declares 'staff_ordinal'": "inert declaration.",
