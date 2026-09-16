@@ -474,6 +474,31 @@ a real slur. So an inference on one quantity can free an element of another,
 which is a downstream effect worth watching rather than a number to claim: it
 is ONE slur, and it has not been checked against the print either.
 
+### 7c-ii. It parses back — and that sharpens the claim
+
+`probe/m21_parse.py` (under `.venv-omrned`; the host is 3.9 and music21 needs
+3.10+). ⚠️ `byte_control.py` only proves WELL-FORMED XML, which is a weaker
+claim than it looks: a `<note>` whose `<duration>` does not fit its voice's
+timeline is well-formed and still broken.
+
+| music21 | OFF | ON |
+|---|--:|--:|
+| parts | 75 | 75 |
+| Note | 770 | 770 |
+| Rest | 842 | 842 |
+| **Chord** | 357 | **360** |
+| **Slur** | 40 | **41** |
+
+⚠️⚠️ **THE SIX ADDED `<note>` ELEMENTS ARE ALL CHORD MEMBERS**, which is why
+music21's `Note` count does not move and `Chord` goes 357 → 360. So *"six
+notes added"* is true at the MusicXML element level and would be **misleading
+stated as six new musical events**: three chords gained members. The XML diff
+agrees — the added elements carry `<chord/>`.
+
+That is worth having as a caution about this whole family: a narrowed duration
+sits on a notehead, and on a conductor's page a notehead is often one member of
+a chord the exporter was already writing.
+
 ### 7d. SEPARABILITY, and the stage boundary, on the REAL artefacts
 
 `probe/separability.py` over both records — not a fixture:
