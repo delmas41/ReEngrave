@@ -1,0 +1,319 @@
+{
+ "pairs": [
+  {
+   "fixture": "brahms1-317803",
+   "system": "system/0/0",
+   "cell": 7,
+   "caut_raw": "9/8",
+   "caut_support": 26.5,
+   "caut_staves": 9,
+   "caut_loose": 1,
+   "caut_bars_fit": 0,
+   "caut_bars_contradict": 1,
+   "next": "system/1/0",
+   "open_raw": "9/4",
+   "open_share": 1.0,
+   "open_staves": 10,
+   "open_reason": "voted",
+   "truth": "9/8",
+   "state": "DISAGREE"
+  },
+  {
+   "fixture": "brahms1-317803",
+   "system": "system/1/0",
+   "cell": 6,
+   "caut_raw": "4/4",
+   "caut_support": 3.5,
+   "caut_staves": 1,
+   "caut_loose": 1,
+   "caut_bars_fit": 0,
+   "caut_bars_contradict": 0,
+   "next": "system/1/1",
+   "open_raw": null,
+   "open_share": null,
+   "open_staves": null,
+   "open_reason": "change_only",
+   "truth": "6/8",
+   "state": "OPENING_UNKNOWN"
+  },
+  {
+   "fixture": "brahms1-m1-22",
+   "system": "system/0/0",
+   "cell": 6,
+   "caut_raw": "9/8",
+   "caut_support": 57.0,
+   "caut_staves": 19,
+   "caut_loose": 0,
+   "caut_bars_fit": 0,
+   "caut_bars_contradict": 0,
+   "next": "system/1/0",
+   "open_raw": "9/8",
+   "open_share": 1.0,
+   "open_staves": 21,
+   "open_reason": "voted",
+   "truth": "9/8",
+   "state": "AGREE"
+  }
+ ],
+ "rules": {
+  "R0 do nothing (incumbent)": {
+   "fixed": 0,
+   "broken": 0,
+   "kept_right": 1,
+   "kept_wrong": 2,
+   "unscored": 0,
+   "abstention_lost": 0,
+   "detail": [
+    {
+     "pair": "brahms1-317803 system/0/0",
+     "state": "DISAGREE",
+     "before": "9/4",
+     "installed": null,
+     "after": "9/4",
+     "truth": "9/8",
+     "outcome": "kept wrong"
+    },
+    {
+     "pair": "brahms1-317803 system/1/0",
+     "state": "OPENING_UNKNOWN",
+     "before": null,
+     "installed": null,
+     "after": null,
+     "truth": "6/8",
+     "outcome": "kept wrong"
+    },
+    {
+     "pair": "brahms1-m1-22 system/0/0",
+     "state": "AGREE",
+     "before": "9/8",
+     "installed": null,
+     "after": "9/8",
+     "truth": "9/8",
+     "outcome": "kept right"
+    }
+   ]
+  },
+  "R1 cautionary always wins": {
+   "fixed": 1,
+   "broken": 0,
+   "kept_right": 1,
+   "kept_wrong": 0,
+   "unscored": 0,
+   "abstention_lost": 1,
+   "detail": [
+    {
+     "pair": "brahms1-317803 system/0/0",
+     "state": "DISAGREE",
+     "before": "9/4",
+     "installed": "9/8",
+     "after": "9/8",
+     "truth": "9/8",
+     "outcome": "FIXED"
+    },
+    {
+     "pair": "brahms1-317803 system/1/0",
+     "state": "OPENING_UNKNOWN",
+     "before": null,
+     "installed": "4/4",
+     "after": "4/4",
+     "truth": "6/8",
+     "outcome": "\u26a0\ufe0f ABSTENTION -> A WRONG ANSWER"
+    },
+    {
+     "pair": "brahms1-m1-22 system/0/0",
+     "state": "AGREE",
+     "before": "9/8",
+     "installed": "9/8",
+     "after": "9/8",
+     "truth": "9/8",
+     "outcome": "kept right"
+    }
+   ]
+  },
+  "R2 more staves wins": {
+   "fixed": 0,
+   "broken": 0,
+   "kept_right": 1,
+   "kept_wrong": 1,
+   "unscored": 0,
+   "abstention_lost": 1,
+   "detail": [
+    {
+     "pair": "brahms1-317803 system/0/0",
+     "state": "DISAGREE",
+     "before": "9/4",
+     "installed": null,
+     "after": "9/4",
+     "truth": "9/8",
+     "outcome": "kept wrong"
+    },
+    {
+     "pair": "brahms1-317803 system/1/0",
+     "state": "OPENING_UNKNOWN",
+     "before": null,
+     "installed": "4/4",
+     "after": "4/4",
+     "truth": "6/8",
+     "outcome": "\u26a0\ufe0f ABSTENTION -> A WRONG ANSWER"
+    },
+    {
+     "pair": "brahms1-m1-22 system/0/0",
+     "state": "AGREE",
+     "before": "9/8",
+     "installed": null,
+     "after": "9/8",
+     "truth": "9/8",
+     "outcome": "kept right"
+    }
+   ]
+  },
+  "R3 support >= 10.0": {
+   "fixed": 1,
+   "broken": 0,
+   "kept_right": 1,
+   "kept_wrong": 1,
+   "unscored": 0,
+   "abstention_lost": 0,
+   "detail": [
+    {
+     "pair": "brahms1-317803 system/0/0",
+     "state": "DISAGREE",
+     "before": "9/4",
+     "installed": "9/8",
+     "after": "9/8",
+     "truth": "9/8",
+     "outcome": "FIXED"
+    },
+    {
+     "pair": "brahms1-317803 system/1/0",
+     "state": "OPENING_UNKNOWN",
+     "before": null,
+     "installed": null,
+     "after": null,
+     "truth": "6/8",
+     "outcome": "kept wrong"
+    },
+    {
+     "pair": "brahms1-m1-22 system/0/0",
+     "state": "AGREE",
+     "before": "9/8",
+     "installed": "9/8",
+     "after": "9/8",
+     "truth": "9/8",
+     "outcome": "kept right"
+    }
+   ]
+  },
+  "R4 >= 3 staves read it": {
+   "fixed": 1,
+   "broken": 0,
+   "kept_right": 1,
+   "kept_wrong": 1,
+   "unscored": 0,
+   "abstention_lost": 0,
+   "detail": [
+    {
+     "pair": "brahms1-317803 system/0/0",
+     "state": "DISAGREE",
+     "before": "9/4",
+     "installed": "9/8",
+     "after": "9/8",
+     "truth": "9/8",
+     "outcome": "FIXED"
+    },
+    {
+     "pair": "brahms1-317803 system/1/0",
+     "state": "OPENING_UNKNOWN",
+     "before": null,
+     "installed": null,
+     "after": null,
+     "truth": "6/8",
+     "outcome": "kept wrong"
+    },
+    {
+     "pair": "brahms1-m1-22 system/0/0",
+     "state": "AGREE",
+     "before": "9/8",
+     "installed": "9/8",
+     "after": "9/8",
+     "truth": "9/8",
+     "outcome": "kept right"
+    }
+   ]
+  },
+  "R5 fill an unknown opening only": {
+   "fixed": 0,
+   "broken": 0,
+   "kept_right": 1,
+   "kept_wrong": 1,
+   "unscored": 0,
+   "abstention_lost": 1,
+   "detail": [
+    {
+     "pair": "brahms1-317803 system/0/0",
+     "state": "DISAGREE",
+     "before": "9/4",
+     "installed": null,
+     "after": "9/4",
+     "truth": "9/8",
+     "outcome": "kept wrong"
+    },
+    {
+     "pair": "brahms1-317803 system/1/0",
+     "state": "OPENING_UNKNOWN",
+     "before": null,
+     "installed": "4/4",
+     "after": "4/4",
+     "truth": "6/8",
+     "outcome": "\u26a0\ufe0f ABSTENTION -> A WRONG ANSWER"
+    },
+    {
+     "pair": "brahms1-m1-22 system/0/0",
+     "state": "AGREE",
+     "before": "9/8",
+     "installed": null,
+     "after": "9/8",
+     "truth": "9/8",
+     "outcome": "kept right"
+    }
+   ]
+  },
+  "RX inverted cautionary (POSITIVE CONTROL for BROKEN)": {
+   "fixed": 0,
+   "broken": 1,
+   "kept_right": 0,
+   "kept_wrong": 1,
+   "unscored": 0,
+   "abstention_lost": 1,
+   "detail": [
+    {
+     "pair": "brahms1-317803 system/0/0",
+     "state": "DISAGREE",
+     "before": "9/4",
+     "installed": "8/9",
+     "after": "8/9",
+     "truth": "9/8",
+     "outcome": "still wrong"
+    },
+    {
+     "pair": "brahms1-317803 system/1/0",
+     "state": "OPENING_UNKNOWN",
+     "before": null,
+     "installed": "4/4",
+     "after": "4/4",
+     "truth": "6/8",
+     "outcome": "\u26a0\ufe0f ABSTENTION -> A WRONG ANSWER"
+    },
+    {
+     "pair": "brahms1-m1-22 system/0/0",
+     "state": "AGREE",
+     "before": "9/8",
+     "installed": "8/9",
+     "after": "8/9",
+     "truth": "9/8",
+     "outcome": "BROKEN"
+    }
+   ]
+  }
+ }
+}

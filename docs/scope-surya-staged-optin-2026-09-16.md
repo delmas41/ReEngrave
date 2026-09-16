@@ -242,16 +242,16 @@ machine that read them all. The fix is hours, and it is needed whichever way
 untouched, after (1) and (2) below.** Flag shape `--no-surya` / `--no-ocr`
 (`store_false`) so absence is ON.
 
-- [ ] **1. Fix the record first** (§6) — `READER_UNAVAILABLE` when a
+- [x] **1. Fix the record first** (§6) — `READER_UNAVAILABLE` when a
       requested rung's `available()` is False; attribute each label to the
       rung that read it (pass `tiers=[0]*5` into `_labels_for_page` and read
       them back); route the Surya-rung `except` into a recorded failure; print
       the rungs available in the `--progress` header. Hours. Needed regardless.
-- [ ] **2. Run §9** — half a day of machine time, `--check`-gated, ABAB,
+- [x] **2. Run §9** — half a day of machine time, `--check`-gated, ABAB,
       census-checked. Retire the "75%" with the record path either way.
-- [ ] **3. Flip both defaults ON** — conditional on 2. *Every default flip
+- [x] **3. Flip both defaults ON** — conditional on 2. *Every default flip
       here is Sean's call.*
-- [ ] **4. Merge the two Surya subprocesses per page into one job** —
+- [x] **4. Merge the two Surya subprocesses per page into one job** —
       ~10–15 s/page back.
 - [ ] **5. Wire the roster producer into staged** — the structural fix for
       unlabelled pages and the matched-wrong tail.
@@ -259,6 +259,8 @@ untouched, after (1) and (2) below.** Flag shape `--no-surya` / `--no-ocr`
 - [ ] **7. Crop width w26 re-measure.**
 - [ ] **8. Do not train an OCR. Do not reorder the cascade. Do not ship
       Tesseract-alone.**
+
+**Status 2026-09-16 (later):** items 1–4 are DONE — see [benchmarks/omr-surya-staged-cost-2026-09/FINDINGS.md](../benchmarks/omr-surya-staged-cost-2026-09/FINDINGS.md). The experiment passed every pre-registered clause and both rungs are default ON (Sean's call). Item 2's control (ii) `dirty=false` turned out to be unsatisfiable as written (every arm dirties the tree with its own output); the substantive check — one commit, no tracked modification — held. The direction-text repricing in that document is now the ranked next item.
 
 ## 9. The experiment that settles it
 

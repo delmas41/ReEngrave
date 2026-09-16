@@ -305,6 +305,13 @@ class StaffRun:
     fifths: Optional[int] = None
     meter: Optional[Dict[str, Any]] = None
     n_measures: int = 0
+    #: Whether `measure_partition` DECIDED this staff's bar count, as opposed
+    #: to abstaining. ⚠️ `n_measures` collapses the two — an abstention and a
+    #: decided zero both read 0 — and the document-wide numbering needs them
+    #: apart: an abstaining staff says NOTHING about its system's bar count
+    #: and must not be counted as a dissenting vote for zero, while a system
+    #: on which NO staff decided is a system whose length we cannot tell.
+    n_measures_decided: bool = False
     name: Optional[str] = None
     cells: Dict[int, Cell] = field(default_factory=dict)
     #: This staff's own page geometry, read for the arc merge. ⚠️ BOTH ARE
@@ -345,6 +352,7 @@ def build(rec: Record) -> Tuple[List[List[StaffRun]], Dict[str, Any],
             key=key, page=s["page"] or 0, system=s["system"] or 0,
             staff=s["staff"] or 0))
         run.n_measures = int(v["value"]) if v["outcome"] == "decided" else 0
+        run.n_measures_decided = v["outcome"] == "decided"
 
     for key, run in runs.items():
         run.clef = rec.value(Q.CLEF, key)
@@ -1658,77 +1666,329 @@ def _events(cell: Optional[Cell]) -> List[Dict[str, Any]]:
     return group_chords_in_measure(cell.detections)
 
 
-def system_bar_starts(
-        parts: Sequence[Sequence[StaffRun]]) -> Dict[Tuple[int, int], int]:
-    """The DOCUMENT bar number each printed system opens on, 0-based.
+def _document_bar_offsets(
+        parts: Sequence[Sequence[StaffRun]]
+) -> Tuple[Optional[Dict[Tuple[int, int], int]], Dict[str, Any]]:
+    """Where in the DOCUMENT's bar sequence each printed system begins.
 
-    ⚠️⚠️ A MEASURE NUMBER IS A FACT ABOUT THE DOCUMENT, NOT ABOUT ITS PART,
-    AND `_part_xml` USED TO COUNT IT PER PART. A printed score suppresses a
-    tacet staff, so a part absent from a system gets no measures for those
-    bars — and a running per-part count then slides every later bar of that
-    part forward. Measured on Litolff Beethoven 5 pdf p1-4: P9-P11 are absent
-    from p3/s1 (18 bars), so their `<measure number="82">` and P1-P8's
-    `<measure number="82">` named two different instants of music in ONE FILE.
-    `build_sidebyside.py` asks for one printed system by number across the
-    parts and Verovio answers `Mismatching measure number` — thirty times on
-    that one system.
+    ⚠️⚠️ A `<measure number=>` MUST NAME ONE INSTANT IN EVERY PART, AND UNTIL
+    2026-09-14 IT DID NOT. `_part_xml` counted 1, 2, 3 … down each part from
+    its own first bar, so a part whose staff is SUPPRESSED on a system — which
+    a printed orchestral score does constantly — simply skipped those bars and
+    every later number in that part was short by the skipped system's length.
+    Measured on Litolff Beethoven 5 pp.1-4 (7 systems, 12 parts): eight parts
+    hold 111 measures, three hold 93 (missing p3/s1's 18) and one holds 16, so
+    page 4's first system opened at measure **64 or 82 depending on which part
+    you read**. Verovio said `Mismatching measure number 87` out loud.
 
-    This numbers a bar by WHERE IT STANDS IN THE DOCUMENT. It writes no music,
-    invents no measure and needs no meter: the systems are put in reading
-    order, each is as wide as the widest staff-run standing on it, and the
-    offsets accumulate. A part absent from a system simply skips that system's
-    range, which is what a tacet instrument IS.
+    The bar sequence is a fact about the DOCUMENT: systems are read in order,
+    each contributes its own bars, and a system's offset is the sum of every
+    system before it. A part that is tacet on a system writes no measures for
+    it — that stretch of the number line is simply absent from that part — but
+    the bars it does write are named by where they stand in the document.
 
-    ⚠️ IT IS NOT PADDING, AND MUST NOT BE MISTAKEN FOR IT. The gap stays a
-    gap — P9-P11 still hold 93 measures — so a reader of the file can still
-    see that those bars were never written. Filling them is a REST-path
-    question that needs a bar length, and the meter is decided on 1 system of
-    7 here. ⚠️ And padding BEFORE the join is repaired would hide the graft:
-    the numbers would line up while the wrong instrument's music stayed, which
-    is the one failure a cleanup count exists to prevent.
+    ⚠️ THIS WRITES NO MUSIC. It changes one attribute on `<measure>` and
+    nothing else. Padding the tacet spans is a SEPARATE job and must stay
+    separate: padding first would make the numbers line up while the wrong
+    notes stayed put, and a graft counted as a note error ranks the work into
+    the wrong module.
 
-    ⚠️ THE WIDTH IS A `max`, NOT AN ASSERTION THAT THE STAVES AGREE. They are
-    read independently and may disagree about how many bars a system prints
-    (on this document they do not — all 75 staff-runs agree with their
-    system). Taking the widest is what keeps the ranges DISJOINT, so a staff
-    that read one bar too many cannot spill its number into the next system's
-    range and re-create the defect one system later.
+    **Where the offset comes from.** Only from the record. A system's bar
+    count is the count its own staves agree on — the single value shared by
+    every staff whose `measure_partition` DECIDED. An ABSTAINING staff is not
+    a dissenting vote for zero; it says nothing and is not counted.
 
-    ⚠️ DERIVED OVER EVERY PART, never over one — a system nobody in a given
-    part stands on has no width to contribute, and a part's own view of the
-    document is exactly the thing that was wrong.
+    ⚠️⚠️ **AND WHERE IT CANNOT BE DETERMINED, NOTHING IS FABRICATED.** Three
+    conditions leave a document unnumberable, each reported by name:
+
+      * `no_staff_decided_its_bar_count` — nothing on that system read a bar
+        count, so its length is unknown. Taking it as zero would be a guess
+        about a system the page certainly prints bars on.
+      * `staves_disagree_about_the_bar_count` — two staves of one system read
+        different lengths. A majority vote is available and is REFUSED: *"what
+        is most LIKELY, given everything at once"* is INFER-stage work, and a
+        wiring pass may connect a decision, never let one guess.
+      * `a_part_holds_two_runs_on_one_system` — then two of its runs share an
+        offset and would emit the same number twice inside one part. Reachable
+        only through the slot join, where two staves could carry one slot.
+
+    ⚠️ **The refusal is WHOLE-FILE, and that is the load-bearing choice.** A
+    file numbered document-wide up to the bad system and part-wise after it is
+    a file in which `<measure number=N>` means two different things with
+    nothing saying where the boundary lies — *"cannot tell"* converted into a
+    definite answer by the shape of the output, which is the thing the refusal
+    exists to prevent. Refusing returns the exporter to EXACTLY its previous
+    behaviour, so this change can never leave a file worse numbered than the
+    one it replaces; what it can do is leave it unimproved, out loud.
+
+    Returns `(offsets, report)` — `offsets` is `{(page, system): bars standing
+    before it}` or None when refused, and `report` is what coverage says.
     """
-    width: Dict[Tuple[int, int], int] = {}
+    # ⚠️ TALLIED OVER `parts`, NOT OVER `runs`. A run belongs to exactly one
+    # part, so this cannot double-count — and it is `parts` that gets
+    # numbered, so a run the join left out of every part is also out of the
+    # file and has no business setting the number line.
+    votes: Dict[Tuple[int, int], "collections.Counter[int]"] = {}
+    collisions: List[str] = []
     for part in parts:
+        seen: "collections.Counter[Tuple[int, int]]" = collections.Counter()
         for run in part:
-            k = (run.page, run.system)
-            width[k] = max(width.get(k, 0), int(run.n_measures))
-    starts: Dict[Tuple[int, int], int] = {}
-    at = 0
-    for k in sorted(width):
-        starts[k] = at
-        at += width[k]
-    return starts
+            key = (run.page, run.system)
+            seen[key] += 1
+            tally = votes.setdefault(key, collections.Counter())
+            if run.n_measures_decided:
+                tally[int(run.n_measures)] += 1
+        for key, n in sorted(seen.items()):
+            if n > 1:
+                collisions.append(f"{key[0]}/{key[1]}")
+
+    rows: List[Dict[str, Any]] = []
+    undetermined: List[Dict[str, Any]] = []
+    offsets: Dict[Tuple[int, int], int] = {}
+    offset = 0
+    determined = True
+    for key in sorted(votes):
+        tally = votes[key]
+        bars = next(iter(tally)) if len(tally) == 1 else None
+        rows.append({
+            "system": f"{key[0]}/{key[1]}",
+            # ⚠️ THE INT KEY BESIDE THE DISPLAY STRING, and it is here so that
+            # the ONE tally above serves both consumers. The tacet padding
+            # needs each system's own bar count — `spans` in `to_musicxml` is
+            # built from these rows — and re-tallying it would give this file
+            # two copies of a number it counts once, which is the drift shape
+            # `_document_bar_offsets`' own docstring exists to prevent.
+            "page": key[0],
+            "system_index": key[1],
+            "bars": bars,
+            "staves_deciding": sum(tally.values()),
+            "readings": sorted(tally),
+            "offset": offset if (bars is not None and determined) else None})
+        if bars is None:
+            determined = False
+            undetermined.append({
+                "system": f"{key[0]}/{key[1]}",
+                "reason": ("no_staff_decided_its_bar_count" if not tally
+                           else "staves_disagree_about_the_bar_count"),
+                "readings": sorted(tally)})
+            continue
+        if determined:
+            offsets[key] = offset
+        offset += bars
+
+    report: Dict[str, Any] = {
+        "systems": rows,
+        "document_bars": offset if (determined and not collisions) else None,
+    }
+    if collisions:
+        report["scheme"] = "per_part"
+        report["refused"] = "a_part_holds_two_runs_on_one_system"
+        report["colliding_systems"] = sorted(set(collisions))
+        return None, report
+    if not determined:
+        report["scheme"] = "per_part"
+        report["refused"] = "a_system_bar_count_could_not_be_determined"
+        report["undetermined_systems"] = undetermined
+        return None, report
+    report["scheme"] = "document"
+    return offsets, report
+
+
+def _tacet_walk(
+        part: Sequence[StaffRun],
+        offsets: Optional[Dict[Tuple[int, int], int]],
+        spans: Optional[Sequence[Tuple[Tuple[int, int], int]]],
+) -> List[Tuple[Tuple[int, int], Optional[StaffRun], int]]:
+    """This part's systems in DOCUMENT order, with a hole where it is tacet.
+
+    `[(system key, the part's run there or None, that system's bar count)]`.
+
+    ⚠️ WITHOUT THE NUMBER LINE THERE IS NO WALK, and the `None` guard is that
+    statement rather than defensiveness. A tacet span has to be written at a
+    definite place in the document's bar sequence; when `_document_bar_offsets`
+    REFUSED there is no such sequence, and padding anyway would put invented
+    bars at numbers chosen by this function — *"cannot tell"* converted into a
+    definite answer by a second route. So the walk falls back to the part's own
+    runs, which is exactly the file this exporter writes today.
+    """
+    if offsets is None or spans is None:
+        return [((r.page, r.system), r, r.n_measures) for r in part]
+    by_system: Dict[Tuple[int, int], StaffRun] = {
+        (r.page, r.system): r for r in part}
+    return [(key, by_system.get(key), bars) for key, bars in spans]
+
+
+def _tacet_report(parts: Sequence[Sequence[StaffRun]],
+                  offsets: Optional[Dict[Tuple[int, int], int]],
+                  spans: Optional[Sequence[Tuple[Tuple[int, int], int]]],
+                  counters: Dict[str, int]) -> Dict[str, Any]:
+    """What the padding reached, what it wrote, and what it refused.
+
+    ⚠️ IT IS A PARTITION AND IT IS ASSERTED, not three numbers side by side:
+    every tacet bar the document holds is padded, refused for want of a meter,
+    or refused for want of a number, and `balanced` says whether they sum. The
+    controls in this file that were allowed to be inequalities are the ones
+    that hid ten hairpins and 595 notes.
+    """
+    total = 0
+    rows: List[Dict[str, Any]] = []
+    if spans is not None:
+        for pi, part in enumerate(parts):
+            here = {(r.page, r.system) for r in part}
+            missing = [(k, n) for k, n in spans if k not in here]
+            total += sum(n for _k, n in missing)
+            if missing:
+                rows.append({
+                    "part": f"P{pi + 1}",
+                    "systems": [f"{k[0]}/{k[1]}" for k, _n in missing],
+                    "bars": sum(n for _k, n in missing)})
+    padded = int(counters.get("tacet_bars_padded", 0))
+    no_meter = int(counters.get("tacet_bars_not_padded_without_meter", 0))
+    no_number = int(counters.get("tacet_bars_not_padded_without_a_number", 0))
+    out: Dict[str, Any] = {
+        "tacet_bar_total": total,
+        "parts_tacet_somewhere": len(rows),
+        "bars_padded": padded,
+        "bars_not_padded_without_meter": no_meter,
+        "bars_not_padded_without_a_number": no_number,
+        "balanced": padded + no_meter + no_number == total,
+        "spans": rows,
+    }
+    if offsets is None:
+        # ⚠️ NOT A ZERO. With no number line nothing was even LOOKED at, and
+        # the two must not read alike.
+        out["refused"] = "the_document_bar_sequence_was_refused"
+        out["tacet_bar_total"] = None
+        out["balanced"] = None
+    return out
+
+
+def _pad_tacet_span(lines: List[str], sys_key: Tuple[int, int], sys_bars: int,
+                    offsets: Dict[Tuple[int, int], int],
+                    meters: Dict[Tuple[int, int], Any],
+                    divisions: int, counters: Dict[str, int],
+                    segments_on: bool, first: bool) -> bool:
+    """The bars of one system this part does not print. Returns the new `first`.
+
+    ⚠️ ONE BAR AT A TIME, AND THE METER IS ASKED PER BAR, because a system can
+    print a meter CHANGE part-way through (`Q.METER`'s `segments`). A span that
+    took one meter for the whole system would be the same fault
+    `_part_xml` carried for a year, reintroduced in a new branch.
+
+    ⚠️ `prev` IS DELIBERATELY NOT TOUCHED, and that is what makes the change
+    checkable. A padded bar states no clef and no key — this part is not
+    printed here, so we have neither — so leaving the attribute state alone
+    means the next REAL run emits exactly the attributes it emits today, and
+    the file is byte-identical outside the inserted `<measure>` blocks. A
+    control that strong is worth more than a tidier-looking attribute stream.
+
+    ⚠️ THE ONE EXCEPTION IS `divisions`, WHICH IS A FACT ABOUT THE FILE AND NOT
+    ABOUT THE STAFF. A part tacet on the document's FIRST system would
+    otherwise open with a measure carrying no `<attributes>` at all, so a
+    LEADING pad emits the divisions block (and the meter it just proved it
+    knows) and hands `first=False` on. `prev` still holds its sentinels, so the
+    first real run's `changed` test fires and its clef and key are written as
+    usual.
+    """
+    base = offsets.get(sys_key)
+    sys_meter = meters.get(sys_key)
+    if base is None:
+        # Unreachable while `offsets` and `spans` come from one tally, and a
+        # refusal rather than a fabricated number if that ever stops being so.
+        counters["tacet_bars_not_padded_without_a_number"] += sys_bars
+        return first
+    for i in range(sys_bars):
+        meter = _meter_dict(meter_at(sys_meter, i) if segments_on
+                            else sys_meter)
+        if meter is None:
+            # ⚠️⚠️ THE REFUSAL, AND IT IS THE POINT OF THE WHOLE FUNCTION.
+            # `_mxl_measure_rest(None)` returns 4.0 quarters — a whole rest —
+            # and on this document's 2/4 that is twice the bar. An eventless
+            # bar of a PRESENT part has to be written somehow and takes that
+            # fallback with `measure="yes"` withheld; a tacet bar does not
+            # have to be written at all, so inventing one at a length nobody
+            # read buys alignment with fiction. Counted, and visible in
+            # `report["tacet_padding"]`.
+            counters["tacet_bars_not_padded_without_meter"] += 1
+            continue
+        lines.append(f'    <measure number="{base + i + 1}">')
+        if first:
+            lines.append(_legacy._mxl_attributes_block(
+                None, None, meter, divisions, "      ",
+                include_divisions=True))
+            first = False
+        # ⚠️ NO DIRECTIONS AND NO WEDGES, unlike the eventless branch. Those
+        # come off THIS STAFF's cells and a tacet part has no staff here; a
+        # mark printed in the gap belongs to whichever staff `glyph_owner`
+        # gave it, which is never this one.
+        lines.extend(_legacy._mxl_empty_measure(
+            meter, divisions, None, "      "))
+        lines.append("    </measure>")
+        counters["tacet_bars_padded"] += 1
+    return first
 
 
 def _part_xml(rec: Record, part: Sequence[StaffRun], pid: str,
               divisions: int, counters: Dict[str, int],
-              starts: Dict[Tuple[int, int], int]) -> str:
-    """One `<part>`: every measure of every system this part appears on."""
+              offsets: Optional[Dict[Tuple[int, int], int]] = None,
+              spans: Optional[Sequence[Tuple[Tuple[int, int], int]]] = None,
+              meters: Optional[Dict[Tuple[int, int], Any]] = None) -> str:
+    """One `<part>`: every measure of every system this part appears on.
+
+    ⚠️ `offsets` is `_document_bar_offsets`'s answer: with it, a measure is
+    named by its place in the DOCUMENT's bar sequence, so one number means one
+    instant in every part. Without it — the refusal — the count runs down the
+    part from 1, which is this exporter's own previous behaviour and is
+    demonstrably wrong across parts; the coverage report says which happened
+    and why, because a number that means two different things in two files
+    must never be silent about which one it is.
+
+    ⚠️⚠️ `spans` AND `meters` ARE THE TACET PADDING, AND IT WRITES SILENCE
+    ONLY WHERE IT KNOWS HOW LONG THE SILENCE IS. A printed orchestral score
+    suppresses a tacet staff, so a part absent from a system held no measures
+    for it at all and came out SHORT — 93 against 111 on Litolff Beethoven 5
+    pp.1-4, and one part that simply stopped after bar 16. With the number
+    line settled those bars have a definite place, so they can be written as
+    full-measure rests: the instrument really is silent there, which is what
+    suppression MEANS, and this is the one padding case where the rest is
+    musically right rather than a stand-in for ink we failed to read.
+
+    ⚠️ ITS LENGTH IS A DIFFERENT QUESTION, AND IT IS REFUSED RATHER THAN
+    GUESSED. A MusicXML rest must carry a `<duration>`, and
+    `_measure_rest_beats` falls back to 4.0 for an unknown meter — so padding
+    a 2/4 bar with no meter read writes a rest twice too long, *"cannot tell"*
+    converted into a definite answer. Nothing forces these bars to exist: they
+    are ours to invent or not. So a tacet bar whose system has no meter is
+    NOT WRITTEN and is COUNTED (`tacet_bars_not_padded_without_meter`), and
+    the lever on that count is the meter — `OMR_METER_CARRY` — not this rule.
+
+    ⚠️ AND THIS IS *NOT* THE EVENTLESS-BAR BRANCH BELOW, THOUGH BOTH EMIT A
+    RESTING BAR. That one is a bar THE PAGE PRINTS for this staff and we read
+    nothing in; this one is a bar the page prints for this part not at all.
+    The repairs differ — one is a reading gap, the other a join fact — so the
+    counters are separate, and `empty_bars_padded` must never absorb a padded
+    tacet bar.
+    """
     lines = [f'  <part id="{pid}">']
+    number = 0
     prev = {"clef": object(), "key": object(), "time": object()}
     first = True
     segments_on = meter_segments_enabled()
-    seen: set = set()
-    for run in part:
+    for sys_key, maybe_run, sys_bars in _tacet_walk(part, offsets, spans):
+        if maybe_run is None:
+            first = _pad_tacet_span(
+                lines, sys_key, sys_bars, offsets or {}, meters or {},
+                divisions, counters, segments_on, first)
+            continue
+        run = maybe_run
         key = _key_dict(run.fifths)
-        # ⚠️ THE OFFSET IS THE SYSTEM'S, NOT A RUNNING TOTAL. See
-        # `system_bar_starts`. A run whose system is somehow unknown to the
-        # map has no number to write, so this REFUSES rather than falling back
-        # to a count — a fallback here would convert "I cannot tell where this
-        # system sits" into a definite bar number, which is the one conversion
-        # this file's own doctrine forbids.
-        base = starts[(run.page, run.system)]
+        # ⚠️ `.get`, and a MISSING key falls back rather than raising — but
+        # it cannot be missing on the document scheme, because the offsets are
+        # tallied over these same `parts`. The fallback is here so that a
+        # future caller passing a partial map degrades to the old numbering
+        # instead of crashing mid-file, which is the loud-but-recoverable end
+        # of the same choice the whole-file refusal makes.
+        base = None if offsets is None else offsets.get((run.page, run.system))
         for i in range(run.n_measures):
             # ⚠️⚠️ THE METER IS READ PER BAR, AND FOR A LONG TIME IT WAS NOT.
             # This line used to sit outside the loop, one meter for the whole
@@ -1748,25 +2008,9 @@ def _part_xml(rec: Record, part: Sequence[StaffRun], pid: str,
             # instead of inheriting the meter that follows it.
             meter = _meter_dict(meter_at(run.meter, i) if segments_on
                                 else run.meter)
-            number = base + i + 1
-            # ⚠️ COUNTED, NOT ASSERTED AWAY. Two runs of ONE part standing on
-            # ONE system would write one number twice — the join putting two
-            # staves of a system in the same slot. It cannot happen on the
-            # join this document takes and it is not structurally impossible,
-            # so it is REPORTED rather than trusted: a duplicate number is the
-            # very defect this function exists to remove, and a silent one
-            # would be worse than the running count it replaces.
-            #
-            # ⚠️ `+= 0`, WRITTEN EVERY BAR, and that is the point rather than a
-            # clumsy `if` — `empty_bars_padded_without_meter`'s own lesson, in
-            # the numbering path. Incremented only on the bad branch this key
-            # would be ABSENT from the report on a healthy file, and "no part
-            # ever wrote a number twice" would read identically to "this
-            # figure was never computed".
-            counters["measure_number_written_twice"] += (
-                1 if number in seen else 0)
-            seen.add(number)
-            lines.append(f'    <measure number="{number}">')
+            number += 1
+            lines.append(
+                f'    <measure number="{number if base is None else base + i + 1}">')
             changed = (run.clef != prev["clef"] or key != prev["key"]
                        or meter != prev["time"])
             if first or changed:
@@ -2230,9 +2474,36 @@ def to_musicxml(result: Dict[str, Any]) -> Tuple[str, Dict[str, Any]]:
     # pass can see. Unlike the arcs it needs no merge -- see `_place_wedges`.
     wedges_dropped = collections.Counter(_place_wedges(rec, parts, counters))
 
-    # ⚠️ ONCE, OVER EVERY PART, BEFORE ANY MEASURE IS RENDERED. A bar's number
-    # is a fact about the DOCUMENT and no per-part pass can see it.
-    starts = system_bar_starts(parts)
+    # ⚠️ BEFORE any measure is rendered and AFTER the join, because the number
+    # line is a fact about the DOCUMENT's systems while what gets written on it
+    # is a fact about a PART — and only the join says which runs are one part.
+    offsets, numbering = _document_bar_offsets(parts)
+    # ⚠️ BOTH DERIVED FROM THAT ONE TALLY, never re-counted. `spans` is the
+    # document's systems in order with each one's own bar count — the tacet
+    # padding's whole input — and reading it off `numbering["systems"]` is what
+    # keeps a padded span and the number written on it answering to the same
+    # arithmetic. When the numbering REFUSED there is no bar sequence to pad
+    # into, so `spans` is None and `_tacet_walk` falls back to the part's runs.
+    spans: Optional[List[Tuple[Tuple[int, int], int]]] = (
+        None if offsets is None else
+        [((r["page"], r["system_index"]), int(r["bars"]))
+         for r in numbering["systems"] if r["bars"] is not None])
+    # ⚠️ THE METER OF A SYSTEM THIS PART IS NOT ON, taken off the runs that ARE
+    # on it. `Q.METER` is scoped to `system/<page>/<system>`, so every run of a
+    # system carries the same object and there is no second read of the record
+    # here — a tacet bar is sized by exactly the meter a present part's
+    # eventless bar on that system is sized by.
+    meters: Dict[Tuple[int, int], Any] = {}
+    for _p in parts:
+        for _r in _p:
+            meters[(_r.page, _r.system)] = _r.meter
+    # ⚠️ WRITTEN EVEN WHEN ZERO. A `Counter` holds only the keys something
+    # touched, so a document with no tacet part would report neither figure at
+    # all and *"nothing needed padding"* would read exactly like *"this was
+    # never computed"* — the `empty_bars_padded_without_meter` lesson, in the
+    # branch next door.
+    counters["tacet_bars_padded"] += 0
+    counters["tacet_bars_not_padded_without_meter"] += 0
 
     part_list: List[str] = []
     parts_xml: List[str] = []
@@ -2244,7 +2515,7 @@ def to_musicxml(result: Dict[str, Any]) -> Tuple[str, Dict[str, Any]]:
             f'      <part-name>{_legacy._xml_escape(name)}</part-name>\n'
             f'    </score-part>')
         parts_xml.append(_part_xml(rec, part, pid, divisions, counters,
-                                   starts))
+                                   offsets, spans, meters))
 
     xml = _legacy._score_partwise(result.get("source", {}) or {},
                                   part_list, parts_xml)
@@ -2253,6 +2524,19 @@ def to_musicxml(result: Dict[str, Any]) -> Tuple[str, Dict[str, Any]]:
     report["written"]["parts"] = len(parts)
     report["written"]["divisions"] = divisions
     report["part_join"] = provenance
+    # ⚠️ REPORTED WHETHER OR NOT IT FIRED, and the `refused` key is the whole
+    # point rather than an afterthought. *"we numbered the document"* and
+    # *"this figure was never computed"* must not read alike — the same lesson
+    # `empty_bars_padded_without_meter` was fixed for, in the numbering path.
+    report["measure_numbering"] = numbering
+    # ⚠️ REPORTED WHETHER OR NOT IT FIRED, and the `refused` key carries the
+    # reason rather than leaving a zero to be read as a success. A tacet span
+    # is a bar the page prints for no staff of this part; `tacet_bar_total` is
+    # how many exist, `bars_padded` how many we could size, and the difference
+    # is bars this file still does not hold — which is a METER shortfall, not
+    # a padding one, and the report must say so or the next reader will come
+    # back to this function.
+    report["tacet_padding"] = _tacet_report(parts, offsets, spans, counters)
     # ⚠️ A NOTE THE RECORD HOLDS AND THE FILE DOES NOT. Reported beside the
     # families for the same reason: a shortfall that is not counted is
     # indistinguishable from ink that was never read.

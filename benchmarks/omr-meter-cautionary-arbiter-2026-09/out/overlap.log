@@ -1,0 +1,7 @@
+POPULATION: header   floor 0.5
+  TRUE  (brahms1-p045, a movement start printing `C`) n=16   spellings [('C', 16)]
+  FALSE (nine continuation pages)                     n=191   spellings [('C', 98), ('4/4', 43), ('5/4', 19)]
+  TRUE  min 0.5563  median 0.6158  max 0.6850
+  FALSE min 0.3569  median 0.4459  max 0.6318
+  ⚠️⚠️ THEY OVERLAP: 9 of 191 FALSE readings score at or above the weakest TRUE one (0.5563), the highest at 0.6318. **No absolute floor separates them.**
+CHECK OK

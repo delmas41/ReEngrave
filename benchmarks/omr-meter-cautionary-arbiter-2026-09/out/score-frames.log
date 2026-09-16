@@ -1,0 +1,14 @@
+REACH  pages=10  windows=2026  bar-head width=4.0 spaces  floor=0.5
+  header     n=  207  >=floor  48 (23.19%)  median 0.4507  p90 0.5660  p99 0.6318  max 0.6850   [('C', 37), ('4/4', 11)]
+  head0      n=  207  >=floor   3 (1.45%)  median 0.3431  p90 0.4169  p99 0.4971  max 0.5229   [('4/4', 3)]
+  head_last  n=  207  >=floor   5 (2.42%)  median 0.3394  p90 0.4245  p99 0.5120  max 0.6141   [('C', 3), ('4/4', 2)]
+  head_mid   n= 1405  >=floor  11 (0.78%)  median 0.3271  p90 0.4229  p99 0.4855  max 0.5408   [('C', 10), ('7/4', 1)]
+POSITIVE CONTROL  tried=295 answered=287 right=286  min=0.5007
+FALSE CONSENSUS (3+ staves of one system agreeing on one meter at one column):
+  header       5 of    19 columns   [{'page': 'beet5lit-p056', 'system': 0, 'cell': -1, 'raw': 'C', 'staves': 3}, {'page': 'beet5lit-p057', 'system': 1, 'cell': -1, 'raw': 'C', 'staves': 7}, {'page': 'brahms1-p006', 'system': 0, 'cell': -1, 'raw': 'C', 'staves': 3}, {'page': 'brahms1-p006', 'system': 1, 'cell': -1, 'raw': '4/4', 'staves': 3}]
+  head0        0 of    19 columns
+  head_last    0 of    19 columns
+  head_mid     0 of   125 columns
+PREMISE CHECK (would the SHIPPED vote declare a meter here?): [{'page': 'brahms1-p045', 'system': 0, 'voted': {'numerator': 4, 'denominator': 4, 'raw': 'C', 'source': 'header_reader', 'votes': 16, 'voters': 16, 'median_score': 0.6162, 'symbol': 'common'}, 'n_staves': 16}]
+wrote /home/user/ReEngrave/.claude/worktrees/agent-af6d1c124ec900ba1/benchmarks/omr-meter-cautionary-arbiter-2026-09/out/score-frames.json
+PREMISE BROKEN: a page prints a meter
