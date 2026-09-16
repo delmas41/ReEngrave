@@ -1,0 +1,6304 @@
+[
+ {
+  "near_miss_because": [
+   "aspect_just_under"
+  ],
+  "subject": "glyph/3/0/6/3/6",
+  "where": {
+   "page": 3,
+   "system": 0,
+   "staff": 6,
+   "cell": 3,
+   "glyph": 6
+  },
+  "part": "p3s0st6",
+  "measure": 3,
+  "height_spaces": 0.41,
+  "aspect": 1.537,
+  "staff_step": -7.59,
+  "conf": 0.4087268114089966,
+  "cls": "noteheadBlackInSpace",
+  "witness": "neighbouring_bar",
+  "excess": 0.0571,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "aspect_just_under"
+  ],
+  "subject": "glyph/3/0/9/1/2",
+  "where": {
+   "page": 3,
+   "system": 0,
+   "staff": 9,
+   "cell": 1,
+   "glyph": 2
+  },
+  "part": "p3s0st9",
+  "measure": 1,
+  "height_spaces": 0.47,
+  "aspect": 1.511,
+  "staff_step": 5.27,
+  "conf": 0.514232337474823,
+  "cls": "noteheadBlackInSpace",
+  "witness": "slot",
+  "excess": 0.073,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "height_just_over",
+   "aspect_just_under"
+  ],
+  "subject": "glyph/3/1/6/8/17",
+  "where": {
+   "page": 3,
+   "system": 1,
+   "staff": 6,
+   "cell": 8,
+   "glyph": 17
+  },
+  "part": "p3s1st6",
+  "measure": 8,
+  "height_spaces": 0.93,
+  "aspect": 1.548,
+  "staff_step": 6.85,
+  "conf": 0.4777270555496216,
+  "cls": "noteheadBlackInSpace",
+  "witness": "neighbouring_bar",
+  "excess": 0.1071,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "height_just_over",
+   "aspect_just_under"
+  ],
+  "subject": "glyph/2/1/5/1/7",
+  "where": {
+   "page": 2,
+   "system": 1,
+   "staff": 5,
+   "cell": 1,
+   "glyph": 7
+  },
+  "part": "p2s1st5",
+  "measure": 1,
+  "height_spaces": 0.94,
+  "aspect": 1.543,
+  "staff_step": 4.88,
+  "conf": 0.5981430411338806,
+  "cls": "noteheadBlackInSpace",
+  "witness": "slot",
+  "excess": 0.119,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "height_just_over",
+   "aspect_just_under"
+  ],
+  "subject": "glyph/3/0/11/7/27",
+  "where": {
+   "page": 3,
+   "system": 0,
+   "staff": 11,
+   "cell": 7,
+   "glyph": 27
+  },
+  "part": "p3s0st11",
+  "measure": 7,
+  "height_spaces": 0.94,
+  "aspect": 1.511,
+  "staff_step": 5.46,
+  "conf": 0.3129618763923645,
+  "cls": "noteheadBlackInSpace",
+  "witness": "slot",
+  "excess": 0.119,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "aspect_just_under"
+  ],
+  "subject": "glyph/3/0/6/3/8",
+  "where": {
+   "page": 3,
+   "system": 0,
+   "staff": 6,
+   "cell": 3,
+   "glyph": 8
+  },
+  "part": "p3s0st6",
+  "measure": 3,
+  "height_spaces": 0.46,
+  "aspect": 1.413,
+  "staff_step": -7.54,
+  "conf": 0.36611682176589966,
+  "cls": "noteheadBlackOnLine",
+  "witness": "neighbouring_bar",
+  "excess": 0.1331,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "aspect_just_under"
+  ],
+  "subject": "glyph/1/0/7/1/16",
+  "where": {
+   "page": 1,
+   "system": 0,
+   "staff": 7,
+   "cell": 1,
+   "glyph": 16
+  },
+  "part": "p1s0st7",
+  "measure": 1,
+  "height_spaces": 0.741,
+  "aspect": 1.406,
+  "staff_step": -5.442,
+  "conf": 0.28181254863739014,
+  "cls": "noteheadWholeInSpace",
+  "witness": "neighbouring_bar",
+  "excess": 0.1374,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "height_just_over",
+   "aspect_just_under"
+  ],
+  "subject": "glyph/3/1/11/0/16",
+  "where": {
+   "page": 3,
+   "system": 1,
+   "staff": 11,
+   "cell": 0,
+   "glyph": 16
+  },
+  "part": "p3s1st11",
+  "measure": 0,
+  "height_spaces": 0.962,
+  "aspect": 1.6,
+  "staff_step": 5.116,
+  "conf": 0.443267285823822,
+  "cls": "noteheadHalfInSpace",
+  "witness": "slot",
+  "excess": 0.1452,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "height_just_over",
+   "aspect_just_under"
+  ],
+  "subject": "glyph/3/1/1/2/8",
+  "where": {
+   "page": 3,
+   "system": 1,
+   "staff": 1,
+   "cell": 2,
+   "glyph": 8
+  },
+  "part": "p3s1st1",
+  "measure": 2,
+  "height_spaces": 0.95,
+  "aspect": 1.384,
+  "staff_step": 4.89,
+  "conf": 0.44351157546043396,
+  "cls": "noteheadBlackInSpace",
+  "witness": "slot",
+  "excess": 0.1509,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "height_just_over",
+   "aspect_just_under"
+  ],
+  "subject": "glyph/1/0/8/1/19",
+  "where": {
+   "page": 1,
+   "system": 0,
+   "staff": 8,
+   "cell": 1,
+   "glyph": 19
+  },
+  "part": "p1s0st8",
+  "measure": 1,
+  "height_spaces": 0.841,
+  "aspect": 1.361,
+  "staff_step": 4.737,
+  "conf": 0.32229578495025635,
+  "cls": "noteheadBlackOnLine",
+  "witness": "slot",
+  "excess": 0.165,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "height_just_over",
+   "aspect_just_under"
+  ],
+  "subject": "glyph/1/1/7/7/5",
+  "where": {
+   "page": 1,
+   "system": 1,
+   "staff": 7,
+   "cell": 7,
+   "glyph": 5
+  },
+  "part": "p1s1st7",
+  "measure": 7,
+  "height_spaces": 0.98,
+  "aspect": 1.602,
+  "staff_step": 6.96,
+  "conf": 0.46187108755111694,
+  "cls": "noteheadBlackOnLine",
+  "witness": "neighbouring_bar",
+  "excess": 0.1667,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "height_just_over",
+   "aspect_just_under"
+  ],
+  "subject": "glyph/3/1/11/3/24",
+  "where": {
+   "page": 3,
+   "system": 1,
+   "staff": 11,
+   "cell": 3,
+   "glyph": 24
+  },
+  "part": "p3s1st11",
+  "measure": 3,
+  "height_spaces": 0.98,
+  "aspect": 1.398,
+  "staff_step": 4.9,
+  "conf": 0.32977625727653503,
+  "cls": "noteheadBlackInSpace",
+  "witness": "slot",
+  "excess": 0.1667,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "aspect_just_under"
+  ],
+  "subject": "glyph/0/0/4/4/7",
+  "where": {
+   "page": 0,
+   "system": 0,
+   "staff": 4,
+   "cell": 4,
+   "glyph": 7
+  },
+  "part": "p0s0st4",
+  "measure": 4,
+  "height_spaces": 0.81,
+  "aspect": 1.346,
+  "staff_step": 2.25,
+  "conf": 0.37990936636924744,
+  "cls": "noteheadBlackOnLine",
+  "witness": "neighbouring_bar",
+  "excess": 0.1742,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "height_just_over",
+   "aspect_just_under"
+  ],
+  "subject": "glyph/0/0/1/4/7",
+  "where": {
+   "page": 0,
+   "system": 0,
+   "staff": 1,
+   "cell": 4,
+   "glyph": 7
+  },
+  "part": "p0s0st1",
+  "measure": 4,
+  "height_spaces": 0.97,
+  "aspect": 1.34,
+  "staff_step": 4.83,
+  "conf": 0.7672757506370544,
+  "cls": "noteheadBlackInSpace",
+  "witness": "slot",
+  "excess": 0.1779,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "height_just_over",
+   "aspect_just_under"
+  ],
+  "subject": "glyph/1/0/11/5/2",
+  "where": {
+   "page": 1,
+   "system": 0,
+   "staff": 11,
+   "cell": 5,
+   "glyph": 2
+  },
+  "part": "p1s0st11",
+  "measure": 5,
+  "height_spaces": 1.0,
+  "aspect": 1.457,
+  "staff_step": 4.939,
+  "conf": 0.6526623368263245,
+  "cls": "noteheadBlackInSpace",
+  "witness": "slot",
+  "excess": 0.1905,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "height_just_over",
+   "aspect_just_under"
+  ],
+  "subject": "glyph/2/0/1/3/4",
+  "where": {
+   "page": 2,
+   "system": 0,
+   "staff": 1,
+   "cell": 3,
+   "glyph": 4
+  },
+  "part": "p2s0st1",
+  "measure": 3,
+  "height_spaces": 1.006,
+  "aspect": 1.417,
+  "staff_step": 5.042,
+  "conf": 0.737217128276825,
+  "cls": "noteheadBlackInSpace",
+  "witness": "slot",
+  "excess": 0.1976,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "aspect_just_under"
+  ],
+  "subject": "glyph/1/0/12/0/18",
+  "where": {
+   "page": 1,
+   "system": 0,
+   "staff": 12,
+   "cell": 0,
+   "glyph": 18
+  },
+  "part": "p1s0st12",
+  "measure": 0,
+  "height_spaces": 0.777,
+  "aspect": 1.306,
+  "staff_step": 5.895,
+  "conf": 0.7165929079055786,
+  "cls": "noteheadBlackOnLine",
+  "witness": "slot",
+  "excess": 0.1988,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "height_just_over",
+   "aspect_just_under"
+  ],
+  "subject": "glyph/0/0/3/5/6",
+  "where": {
+   "page": 0,
+   "system": 0,
+   "staff": 3,
+   "cell": 5,
+   "glyph": 6
+  },
+  "part": "p0s0st3",
+  "measure": 5,
+  "height_spaces": 1.01,
+  "aspect": 1.307,
+  "staff_step": 4.899,
+  "conf": 0.7577870488166809,
+  "cls": "noteheadBlackInSpace",
+  "witness": "slot",
+  "excess": 0.2024,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "height_just_over",
+   "aspect_just_under"
+  ],
+  "subject": "glyph/0/0/4/7/3",
+  "where": {
+   "page": 0,
+   "system": 0,
+   "staff": 4,
+   "cell": 7,
+   "glyph": 3
+  },
+  "part": "p0s0st4",
+  "measure": 7,
+  "height_spaces": 1.01,
+  "aspect": 1.366,
+  "staff_step": 2.85,
+  "conf": 0.2984125018119812,
+  "cls": "noteheadWholeInSpace",
+  "witness": "neighbouring_bar",
+  "excess": 0.2024,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "height_just_over",
+   "aspect_just_under"
+  ],
+  "subject": "glyph/2/1/1/4/6",
+  "where": {
+   "page": 2,
+   "system": 1,
+   "staff": 1,
+   "cell": 4,
+   "glyph": 6
+  },
+  "part": "p2s1st1",
+  "measure": 4,
+  "height_spaces": 1.01,
+  "aspect": 1.446,
+  "staff_step": 5.05,
+  "conf": 0.6286494731903076,
+  "cls": "noteheadBlackInSpace",
+  "witness": "slot",
+  "excess": 0.2024,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "height_just_over",
+   "aspect_just_under"
+  ],
+  "subject": "glyph/0/0/3/5/3",
+  "where": {
+   "page": 0,
+   "system": 0,
+   "staff": 3,
+   "cell": 5,
+   "glyph": 3
+  },
+  "part": "p0s0st3",
+  "measure": 5,
+  "height_spaces": 1.01,
+  "aspect": 1.297,
+  "staff_step": 4.939,
+  "conf": 0.7707938551902771,
+  "cls": "noteheadBlackInSpace",
+  "witness": "slot",
+  "excess": 0.2043,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "aspect_just_under"
+  ],
+  "subject": "glyph/1/0/7/1/19",
+  "where": {
+   "page": 1,
+   "system": 0,
+   "staff": 7,
+   "cell": 1,
+   "glyph": 19
+  },
+  "part": "p1s0st7",
+  "measure": 1,
+  "height_spaces": 0.556,
+  "aspect": 1.292,
+  "staff_step": -7.364,
+  "conf": 0.25146499276161194,
+  "cls": "noteheadBlackOnLine",
+  "witness": "neighbouring_bar",
+  "excess": 0.2074,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "height_just_over",
+   "aspect_just_under"
+  ],
+  "subject": "glyph/1/0/9/3/11",
+  "where": {
+   "page": 1,
+   "system": 0,
+   "staff": 9,
+   "cell": 3,
+   "glyph": 11
+  },
+  "part": "p1s0st9",
+  "measure": 3,
+  "height_spaces": 1.02,
+  "aspect": 1.392,
+  "staff_step": 5.06,
+  "conf": 0.6228402853012085,
+  "cls": "noteheadBlackInSpace",
+  "witness": "slot",
+  "excess": 0.2143,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "height_just_over",
+   "aspect_just_under"
+  ],
+  "subject": "glyph/2/0/1/3/11",
+  "where": {
+   "page": 2,
+   "system": 0,
+   "staff": 1,
+   "cell": 3,
+   "glyph": 11
+  },
+  "part": "p2s0st1",
+  "measure": 3,
+  "height_spaces": 1.02,
+  "aspect": 1.37,
+  "staff_step": 5.168,
+  "conf": 0.6549415588378906,
+  "cls": "noteheadBlackInSpace",
+  "witness": "slot",
+  "excess": 0.2143,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "height_just_over",
+   "aspect_just_under"
+  ],
+  "subject": "glyph/2/1/2/4/6",
+  "where": {
+   "page": 2,
+   "system": 1,
+   "staff": 2,
+   "cell": 4,
+   "glyph": 6
+  },
+  "part": "p2s1st2",
+  "measure": 4,
+  "height_spaces": 1.02,
+  "aspect": 1.324,
+  "staff_step": 5.08,
+  "conf": 0.6633080840110779,
+  "cls": "noteheadBlackInSpace",
+  "witness": "slot",
+  "excess": 0.2143,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "height_just_over",
+   "aspect_just_under"
+  ],
+  "subject": "glyph/3/0/5/7/8",
+  "where": {
+   "page": 3,
+   "system": 0,
+   "staff": 5,
+   "cell": 7,
+   "glyph": 8
+  },
+  "part": "p3s0st5",
+  "measure": 7,
+  "height_spaces": 1.02,
+  "aspect": 1.314,
+  "staff_step": 5.12,
+  "conf": 0.4114789664745331,
+  "cls": "noteheadBlackInSpace",
+  "witness": "slot",
+  "excess": 0.2143,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "height_just_over",
+   "aspect_just_under"
+  ],
+  "subject": "glyph/0/0/3/1/9",
+  "where": {
+   "page": 0,
+   "system": 0,
+   "staff": 3,
+   "cell": 1,
+   "glyph": 9
+  },
+  "part": "p0s0st3",
+  "measure": 1,
+  "height_spaces": 1.0,
+  "aspect": 1.28,
+  "staff_step": 5.009,
+  "conf": 0.6579463481903076,
+  "cls": "noteheadBlackInSpace",
+  "witness": "slot",
+  "excess": 0.2147,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "height_just_over",
+   "aspect_just_under"
+  ],
+  "subject": "glyph/0/0/3/3/4",
+  "where": {
+   "page": 0,
+   "system": 0,
+   "staff": 3,
+   "cell": 3,
+   "glyph": 4
+  },
+  "part": "p0s0st3",
+  "measure": 3,
+  "height_spaces": 1.0,
+  "aspect": 1.28,
+  "staff_step": 4.889,
+  "conf": 0.7817248702049255,
+  "cls": "noteheadBlackInSpace",
+  "witness": "slot",
+  "excess": 0.2147,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "height_just_over",
+   "aspect_just_under"
+  ],
+  "subject": "glyph/0/0/1/0/15",
+  "where": {
+   "page": 0,
+   "system": 0,
+   "staff": 1,
+   "cell": 0,
+   "glyph": 15
+  },
+  "part": "p0s0st1",
+  "measure": 0,
+  "height_spaces": 1.021,
+  "aspect": 1.32,
+  "staff_step": 4.878,
+  "conf": 0.7003375291824341,
+  "cls": "noteheadBlackInSpace",
+  "witness": "slot",
+  "excess": 0.2155,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "height_just_over",
+   "aspect_just_under"
+  ],
+  "subject": "glyph/1/0/13/4/14",
+  "where": {
+   "page": 1,
+   "system": 0,
+   "staff": 13,
+   "cell": 4,
+   "glyph": 14
+  },
+  "part": "p1s0st13",
+  "measure": 4,
+  "height_spaces": 1.022,
+  "aspect": 1.476,
+  "staff_step": 5.081,
+  "conf": 0.6675738096237183,
+  "cls": "noteheadBlackInSpace",
+  "witness": "slot",
+  "excess": 0.2167,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "height_just_over",
+   "aspect_just_under"
+  ],
+  "subject": "glyph/0/0/0/0/20",
+  "where": {
+   "page": 0,
+   "system": 0,
+   "staff": 0,
+   "cell": 0,
+   "glyph": 20
+  },
+  "part": "p0s0st0",
+  "measure": 0,
+  "height_spaces": 1.026,
+  "aspect": 1.316,
+  "staff_step": 4.978,
+  "conf": 0.5487566590309143,
+  "cls": "noteheadBlackInSpace",
+  "witness": "slot",
+  "excess": 0.2214,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "aspect_just_under"
+  ],
+  "subject": "glyph/1/0/8/1/20",
+  "where": {
+   "page": 1,
+   "system": 0,
+   "staff": 8,
+   "cell": 1,
+   "glyph": 20
+  },
+  "part": "p1s0st8",
+  "measure": 1,
+  "height_spaces": 0.608,
+  "aspect": 1.269,
+  "staff_step": 5.088,
+  "conf": 0.3090920150279999,
+  "cls": "noteheadBlackInSpace",
+  "witness": "slot",
+  "excess": 0.2215,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "height_just_over",
+   "aspect_just_under"
+  ],
+  "subject": "glyph/0/0/11/3/10",
+  "where": {
+   "page": 0,
+   "system": 0,
+   "staff": 11,
+   "cell": 3,
+   "glyph": 10
+  },
+  "part": "p0s0st11",
+  "measure": 3,
+  "height_spaces": 1.02,
+  "aspect": 1.265,
+  "staff_step": 4.929,
+  "conf": 0.7513463497161865,
+  "cls": "noteheadBlackInSpace",
+  "witness": "slot",
+  "excess": 0.2239,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "height_just_over",
+   "aspect_just_under"
+  ],
+  "subject": "glyph/1/0/12/4/14",
+  "where": {
+   "page": 1,
+   "system": 0,
+   "staff": 12,
+   "cell": 4,
+   "glyph": 14
+  },
+  "part": "p1s0st12",
+  "measure": 4,
+  "height_spaces": 1.031,
+  "aspect": 1.354,
+  "staff_step": 4.981,
+  "conf": 0.7526629567146301,
+  "cls": "noteheadBlackInSpace",
+  "witness": "slot",
+  "excess": 0.2274,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "height_just_over",
+   "aspect_just_under"
+  ],
+  "subject": "glyph/0/0/10/0/7",
+  "where": {
+   "page": 0,
+   "system": 0,
+   "staff": 10,
+   "cell": 0,
+   "glyph": 7
+  },
+  "part": "p0s0st10",
+  "measure": 0,
+  "height_spaces": 1.007,
+  "aspect": 1.257,
+  "staff_step": 4.783,
+  "conf": 0.8221504092216492,
+  "cls": "noteheadBlackInSpace",
+  "witness": "slot",
+  "excess": 0.2288,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "height_just_over",
+   "aspect_just_under"
+  ],
+  "subject": "glyph/1/1/12/3/10",
+  "where": {
+   "page": 1,
+   "system": 1,
+   "staff": 12,
+   "cell": 3,
+   "glyph": 10
+  },
+  "part": "p1s1st12",
+  "measure": 3,
+  "height_spaces": 1.033,
+  "aspect": 1.319,
+  "staff_step": 5.361,
+  "conf": 0.6636523604393005,
+  "cls": "noteheadBlackInSpace",
+  "witness": "slot",
+  "excess": 0.2298,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "height_just_over",
+   "aspect_just_under"
+  ],
+  "subject": "glyph/0/0/11/4/16",
+  "where": {
+   "page": 0,
+   "system": 0,
+   "staff": 11,
+   "cell": 4,
+   "glyph": 16
+  },
+  "part": "p0s0st11",
+  "measure": 4,
+  "height_spaces": 1.03,
+  "aspect": 1.252,
+  "staff_step": 5.019,
+  "conf": 0.6761026382446289,
+  "cls": "noteheadBlackInSpace",
+  "witness": "slot",
+  "excess": 0.2319,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "aspect_just_under"
+  ],
+  "subject": "glyph/1/0/7/1/15",
+  "where": {
+   "page": 1,
+   "system": 0,
+   "staff": 7,
+   "cell": 1,
+   "glyph": 15
+  },
+  "part": "p1s0st7",
+  "measure": 1,
+  "height_spaces": 0.556,
+  "aspect": 1.25,
+  "staff_step": -7.341,
+  "conf": 0.3035953938961029,
+  "cls": "noteheadBlackOnLine",
+  "witness": "neighbouring_bar",
+  "excess": 0.2331,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "height_just_over",
+   "aspect_just_under"
+  ],
+  "subject": "glyph/1/0/6/0/5",
+  "where": {
+   "page": 1,
+   "system": 0,
+   "staff": 6,
+   "cell": 0,
+   "glyph": 5
+  },
+  "part": "p1s0st6",
+  "measure": 0,
+  "height_spaces": 1.036,
+  "aspect": 1.333,
+  "staff_step": 4.979,
+  "conf": 0.7772622108459473,
+  "cls": "noteheadBlackInSpace",
+  "witness": "slot",
+  "excess": 0.2333,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "aspect_just_under"
+  ],
+  "subject": "glyph/0/0/4/4/4",
+  "where": {
+   "page": 0,
+   "system": 0,
+   "staff": 4,
+   "cell": 4,
+   "glyph": 4
+  },
+  "part": "p0s0st4",
+  "measure": 4,
+  "height_spaces": 0.65,
+  "aspect": 1.246,
+  "staff_step": 3.09,
+  "conf": 0.4618445336818695,
+  "cls": "noteheadBlackInSpace",
+  "witness": "neighbouring_bar",
+  "excess": 0.2356,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "height_just_over",
+   "aspect_just_under"
+  ],
+  "subject": "glyph/0/0/1/2/6",
+  "where": {
+   "page": 0,
+   "system": 0,
+   "staff": 1,
+   "cell": 2,
+   "glyph": 6
+  },
+  "part": "p0s0st1",
+  "measure": 2,
+  "height_spaces": 1.04,
+  "aspect": 1.308,
+  "staff_step": 4.92,
+  "conf": 0.7149848341941833,
+  "cls": "noteheadBlackInSpace",
+  "witness": "slot",
+  "excess": 0.2381,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "height_just_over",
+   "aspect_just_under"
+  ],
+  "subject": "glyph/1/0/12/6/6",
+  "where": {
+   "page": 1,
+   "system": 0,
+   "staff": 12,
+   "cell": 6,
+   "glyph": 6
+  },
+  "part": "p1s0st12",
+  "measure": 6,
+  "height_spaces": 1.04,
+  "aspect": 1.263,
+  "staff_step": 5.019,
+  "conf": 0.6836676001548767,
+  "cls": "noteheadBlackInSpace",
+  "witness": "slot",
+  "excess": 0.2381,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "height_just_over",
+   "aspect_just_under"
+  ],
+  "subject": "glyph/3/1/10/1/17",
+  "where": {
+   "page": 3,
+   "system": 1,
+   "staff": 10,
+   "cell": 1,
+   "glyph": 17
+  },
+  "part": "p3s1st10",
+  "measure": 1,
+  "height_spaces": 1.04,
+  "aspect": 1.337,
+  "staff_step": 5.16,
+  "conf": 0.5783177614212036,
+  "cls": "noteheadBlackInSpace",
+  "witness": "slot",
+  "excess": 0.2381,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "height_just_over",
+   "aspect_just_under"
+  ],
+  "subject": "glyph/0/0/3/2/8",
+  "where": {
+   "page": 0,
+   "system": 0,
+   "staff": 3,
+   "cell": 2,
+   "glyph": 8
+  },
+  "part": "p0s0st3",
+  "measure": 2,
+  "height_spaces": 1.04,
+  "aspect": 1.24,
+  "staff_step": 4.849,
+  "conf": 0.6556309461593628,
+  "cls": "noteheadBlackInSpace",
+  "witness": "slot",
+  "excess": 0.2393,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "height_just_over",
+   "aspect_just_under"
+  ],
+  "subject": "glyph/0/0/1/6/8",
+  "where": {
+   "page": 0,
+   "system": 0,
+   "staff": 1,
+   "cell": 6,
+   "glyph": 8
+  },
+  "part": "p0s0st1",
+  "measure": 6,
+  "height_spaces": 1.042,
+  "aspect": 1.258,
+  "staff_step": 5.144,
+  "conf": 0.6703208684921265,
+  "cls": "noteheadBlackInSpace",
+  "witness": "slot",
+  "excess": 0.2405,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "height_just_over",
+   "aspect_just_under"
+  ],
+  "subject": "glyph/1/0/13/4/20",
+  "where": {
+   "page": 1,
+   "system": 0,
+   "staff": 13,
+   "cell": 4,
+   "glyph": 20
+  },
+  "part": "p1s0st13",
+  "measure": 4,
+  "height_spaces": 1.047,
+  "aspect": 1.333,
+  "staff_step": 5.056,
+  "conf": 0.5259098410606384,
+  "cls": "noteheadBlackInSpace",
+  "witness": "slot",
+  "excess": 0.2464,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "height_just_over",
+   "aspect_just_under"
+  ],
+  "subject": "glyph/3/1/13/1/10",
+  "where": {
+   "page": 3,
+   "system": 1,
+   "staff": 13,
+   "cell": 1,
+   "glyph": 10
+  },
+  "part": "p3s1st13",
+  "measure": 1,
+  "height_spaces": 0.97,
+  "aspect": 1.227,
+  "staff_step": 5.17,
+  "conf": 0.4892784059047699,
+  "cls": "noteheadBlackInSpace",
+  "witness": "slot",
+  "excess": 0.2472,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "height_just_over",
+   "aspect_just_under"
+  ],
+  "subject": "glyph/1/0/2/0/35",
+  "where": {
+   "page": 1,
+   "system": 0,
+   "staff": 2,
+   "cell": 0,
+   "glyph": 35
+  },
+  "part": "p1s0st2",
+  "measure": 0,
+  "height_spaces": 1.048,
+  "aspect": 1.265,
+  "staff_step": 5.195,
+  "conf": 0.4262421727180481,
+  "cls": "noteheadBlackInSpace",
+  "witness": "slot",
+  "excess": 0.2476,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "height_just_over",
+   "aspect_just_under"
+  ],
+  "subject": "glyph/0/0/9/6/15",
+  "where": {
+   "page": 0,
+   "system": 0,
+   "staff": 9,
+   "cell": 6,
+   "glyph": 15
+  },
+  "part": "p0s0st9",
+  "measure": 6,
+  "height_spaces": 1.045,
+  "aspect": 1.224,
+  "staff_step": 5.089,
+  "conf": 0.6068524122238159,
+  "cls": "noteheadBlackInSpace",
+  "witness": "slot",
+  "excess": 0.2491,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "height_just_over",
+   "aspect_just_under"
+  ],
+  "subject": "glyph/0/0/11/3/11",
+  "where": {
+   "page": 0,
+   "system": 0,
+   "staff": 11,
+   "cell": 3,
+   "glyph": 11
+  },
+  "part": "p0s0st11",
+  "measure": 3,
+  "height_spaces": 1.05,
+  "aspect": 1.238,
+  "staff_step": 4.979,
+  "conf": 0.7322524189949036,
+  "cls": "noteheadBlackInSpace",
+  "witness": "slot",
+  "excess": 0.25,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "height_just_over",
+   "aspect_just_under"
+  ],
+  "subject": "glyph/3/1/10/8/3",
+  "where": {
+   "page": 3,
+   "system": 1,
+   "staff": 10,
+   "cell": 8,
+   "glyph": 3
+  },
+  "part": "p3s1st10",
+  "measure": 8,
+  "height_spaces": 1.05,
+  "aspect": 1.238,
+  "staff_step": 4.87,
+  "conf": 0.7170467972755432,
+  "cls": "noteheadBlackInSpace",
+  "witness": "slot",
+  "excess": 0.25,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "height_just_over",
+   "aspect_just_under"
+  ],
+  "subject": "glyph/3/1/11/1/11",
+  "where": {
+   "page": 3,
+   "system": 1,
+   "staff": 11,
+   "cell": 1,
+   "glyph": 11
+  },
+  "part": "p3s1st11",
+  "measure": 1,
+  "height_spaces": 1.05,
+  "aspect": 1.352,
+  "staff_step": 5.15,
+  "conf": 0.6768247485160828,
+  "cls": "noteheadBlackInSpace",
+  "witness": "slot",
+  "excess": 0.25,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "height_just_over",
+   "aspect_just_under"
+  ],
+  "subject": "glyph/3/1/2/3/2",
+  "where": {
+   "page": 3,
+   "system": 1,
+   "staff": 2,
+   "cell": 3,
+   "glyph": 2
+  },
+  "part": "p3s1st2",
+  "measure": 3,
+  "height_spaces": 1.05,
+  "aspect": 1.324,
+  "staff_step": 5.03,
+  "conf": 0.6626253724098206,
+  "cls": "noteheadBlackInSpace",
+  "witness": "slot",
+  "excess": 0.25,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "height_just_over",
+   "aspect_just_under"
+  ],
+  "subject": "glyph/1/0/13/1/13",
+  "where": {
+   "page": 1,
+   "system": 0,
+   "staff": 13,
+   "cell": 1,
+   "glyph": 13
+  },
+  "part": "p1s0st13",
+  "measure": 1,
+  "height_spaces": 1.051,
+  "aspect": 1.467,
+  "staff_step": 5.462,
+  "conf": 0.5430422425270081,
+  "cls": "noteheadWholeOnLine",
+  "witness": "slot",
+  "excess": 0.2512,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "height_just_over",
+   "aspect_just_under"
+  ],
+  "subject": "glyph/1/0/12/5/6",
+  "where": {
+   "page": 1,
+   "system": 0,
+   "staff": 12,
+   "cell": 5,
+   "glyph": 6
+  },
+  "part": "p1s0st12",
+  "measure": 5,
+  "height_spaces": 1.053,
+  "aspect": 1.375,
+  "staff_step": 5.078,
+  "conf": 0.596332311630249,
+  "cls": "noteheadBlackInSpace",
+  "witness": "slot",
+  "excess": 0.2536,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "height_just_over",
+   "aspect_just_under"
+  ],
+  "subject": "glyph/2/0/5/5/9",
+  "where": {
+   "page": 2,
+   "system": 0,
+   "staff": 5,
+   "cell": 5,
+   "glyph": 9
+  },
+  "part": "p2s0st5",
+  "measure": 5,
+  "height_spaces": 1.054,
+  "aspect": 1.333,
+  "staff_step": 5.732,
+  "conf": 0.6980711221694946,
+  "cls": "noteheadBlackInSpace",
+  "witness": "slot",
+  "excess": 0.2548,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "height_just_over",
+   "aspect_just_under"
+  ],
+  "subject": "glyph/2/0/12/0/33",
+  "where": {
+   "page": 2,
+   "system": 0,
+   "staff": 12,
+   "cell": 0,
+   "glyph": 33
+  },
+  "part": "p2s0st12",
+  "measure": 0,
+  "height_spaces": 0.965,
+  "aspect": 1.212,
+  "staff_step": 5.676,
+  "conf": 0.2927994728088379,
+  "cls": "noteheadBlackOnLine",
+  "witness": "slot",
+  "excess": 0.2564,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "height_just_over",
+   "aspect_just_under"
+  ],
+  "subject": "glyph/0/0/11/3/6",
+  "where": {
+   "page": 0,
+   "system": 0,
+   "staff": 11,
+   "cell": 3,
+   "glyph": 6
+  },
+  "part": "p0s0st11",
+  "measure": 3,
+  "height_spaces": 1.05,
+  "aspect": 1.21,
+  "staff_step": 4.899,
+  "conf": 0.769085705280304,
+  "cls": "noteheadBlackInSpace",
+  "witness": "slot",
+  "excess": 0.2577,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "height_just_over",
+   "aspect_just_under"
+  ],
+  "subject": "glyph/1/0/12/0/8",
+  "where": {
+   "page": 1,
+   "system": 0,
+   "staff": 12,
+   "cell": 0,
+   "glyph": 8
+  },
+  "part": "p1s0st12",
+  "measure": 0,
+  "height_spaces": 1.058,
+  "aspect": 1.306,
+  "staff_step": 4.967,
+  "conf": 0.8012490272521973,
+  "cls": "noteheadBlackInSpace",
+  "witness": "slot",
+  "excess": 0.2595,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "height_just_over",
+   "aspect_just_under"
+  ],
+  "subject": "glyph/1/0/3/0/18",
+  "where": {
+   "page": 1,
+   "system": 0,
+   "staff": 3,
+   "cell": 0,
+   "glyph": 18
+  },
+  "part": "p1s0st3",
+  "measure": 0,
+  "height_spaces": 1.058,
+  "aspect": 1.327,
+  "staff_step": 5.043,
+  "conf": 0.7179335951805115,
+  "cls": "noteheadBlackInSpace",
+  "witness": "slot",
+  "excess": 0.2595,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "height_just_over",
+   "aspect_just_under"
+  ],
+  "subject": "glyph/2/0/12/0/6",
+  "where": {
+   "page": 2,
+   "system": 0,
+   "staff": 12,
+   "cell": 0,
+   "glyph": 6
+  },
+  "part": "p2s0st12",
+  "measure": 0,
+  "height_spaces": 1.058,
+  "aspect": 1.333,
+  "staff_step": 4.878,
+  "conf": 0.7845619916915894,
+  "cls": "noteheadBlackInSpace",
+  "witness": "slot",
+  "excess": 0.2595,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "height_just_over",
+   "aspect_just_under"
+  ],
+  "subject": "glyph/0/0/6/1/17",
+  "where": {
+   "page": 0,
+   "system": 0,
+   "staff": 6,
+   "cell": 1,
+   "glyph": 17
+  },
+  "part": "p0s0st6",
+  "measure": 1,
+  "height_spaces": 1.06,
+  "aspect": 1.302,
+  "staff_step": 4.94,
+  "conf": 0.4777365028858185,
+  "cls": "noteheadBlackInSpace",
+  "witness": "slot",
+  "excess": 0.2619,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "height_just_over",
+   "aspect_just_under"
+  ],
+  "subject": "glyph/3/1/10/1/15",
+  "where": {
+   "page": 3,
+   "system": 1,
+   "staff": 10,
+   "cell": 1,
+   "glyph": 15
+  },
+  "part": "p3s1st10",
+  "measure": 1,
+  "height_spaces": 1.06,
+  "aspect": 1.377,
+  "staff_step": 5.16,
+  "conf": 0.6421326398849487,
+  "cls": "noteheadBlackInSpace",
+  "witness": "slot",
+  "excess": 0.2619,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "height_just_over",
+   "aspect_just_under"
+  ],
+  "subject": "glyph/2/0/6/3/10",
+  "where": {
+   "page": 2,
+   "system": 0,
+   "staff": 6,
+   "cell": 3,
+   "glyph": 10
+  },
+  "part": "p2s0st6",
+  "measure": 3,
+  "height_spaces": 1.062,
+  "aspect": 1.368,
+  "staff_step": 6.999,
+  "conf": 0.4094851613044739,
+  "cls": "noteheadBlackInSpace",
+  "witness": "neighbouring_bar",
+  "excess": 0.2643,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "height_just_over",
+   "aspect_just_under"
+  ],
+  "subject": "glyph/3/1/10/2/20",
+  "where": {
+   "page": 3,
+   "system": 1,
+   "staff": 10,
+   "cell": 2,
+   "glyph": 20
+  },
+  "part": "p3s1st10",
+  "measure": 2,
+  "height_spaces": 1.062,
+  "aspect": 1.34,
+  "staff_step": 5.132,
+  "conf": 0.455060750246048,
+  "cls": "noteheadBlackInSpace",
+  "witness": "slot",
+  "excess": 0.2643,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "height_just_over"
+  ],
+  "subject": "glyph/0/0/11/2/4",
+  "where": {
+   "page": 0,
+   "system": 0,
+   "staff": 11,
+   "cell": 2,
+   "glyph": 4
+  },
+  "part": "p0s0st11",
+  "measure": 2,
+  "height_spaces": 1.06,
+  "aspect": 1.198,
+  "staff_step": 4.829,
+  "conf": 0.7822852730751038,
+  "cls": "noteheadBlackInSpace",
+  "witness": "slot",
+  "excess": 0.265,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "height_just_over",
+   "aspect_just_under"
+  ],
+  "subject": "glyph/2/0/7/5/4",
+  "where": {
+   "page": 2,
+   "system": 0,
+   "staff": 7,
+   "cell": 5,
+   "glyph": 4
+  },
+  "part": "p2s0st7",
+  "measure": 5,
+  "height_spaces": 1.064,
+  "aspect": 1.359,
+  "staff_step": 5.828,
+  "conf": 0.8097164630889893,
+  "cls": "noteheadBlackInSpace",
+  "witness": "slot",
+  "excess": 0.2667,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "height_just_over",
+   "aspect_just_under"
+  ],
+  "subject": "glyph/2/0/11/3/11",
+  "where": {
+   "page": 2,
+   "system": 0,
+   "staff": 11,
+   "cell": 3,
+   "glyph": 11
+  },
+  "part": "p2s0st11",
+  "measure": 3,
+  "height_spaces": 1.065,
+  "aspect": 1.266,
+  "staff_step": 5.012,
+  "conf": 0.6609309315681458,
+  "cls": "noteheadBlackInSpace",
+  "witness": "slot",
+  "excess": 0.2679,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "height_just_over",
+   "aspect_just_under"
+  ],
+  "subject": "glyph/2/0/2/5/14",
+  "where": {
+   "page": 2,
+   "system": 0,
+   "staff": 2,
+   "cell": 5,
+   "glyph": 14
+  },
+  "part": "p2s0st2",
+  "measure": 5,
+  "height_spaces": 1.067,
+  "aspect": 1.38,
+  "staff_step": 5.367,
+  "conf": 0.5916854739189148,
+  "cls": "noteheadBlackInSpace",
+  "witness": "slot",
+  "excess": 0.2702,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "height_just_over",
+   "aspect_just_under"
+  ],
+  "subject": "glyph/1/0/0/4/7",
+  "where": {
+   "page": 1,
+   "system": 0,
+   "staff": 0,
+   "cell": 4,
+   "glyph": 7
+  },
+  "part": "p1s0st0",
+  "measure": 4,
+  "height_spaces": 1.069,
+  "aspect": 1.271,
+  "staff_step": 4.906,
+  "conf": 0.7999379634857178,
+  "cls": "noteheadBlackInSpace",
+  "witness": "slot",
+  "excess": 0.2726,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "height_just_over",
+   "aspect_just_under"
+  ],
+  "subject": "glyph/1/0/12/4/16",
+  "where": {
+   "page": 1,
+   "system": 0,
+   "staff": 12,
+   "cell": 4,
+   "glyph": 16
+  },
+  "part": "p1s0st12",
+  "measure": 4,
+  "height_spaces": 1.069,
+  "aspect": 1.329,
+  "staff_step": 4.918,
+  "conf": 0.744669497013092,
+  "cls": "noteheadBlackInSpace",
+  "witness": "slot",
+  "excess": 0.2726,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "height_just_over",
+   "aspect_just_under"
+  ],
+  "subject": "glyph/0/0/11/4/12",
+  "where": {
+   "page": 0,
+   "system": 0,
+   "staff": 11,
+   "cell": 4,
+   "glyph": 12
+  },
+  "part": "p0s0st11",
+  "measure": 4,
+  "height_spaces": 1.07,
+  "aspect": 1.224,
+  "staff_step": 5.039,
+  "conf": 0.7379408478736877,
+  "cls": "noteheadBlackInSpace",
+  "witness": "slot",
+  "excess": 0.2738,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "height_just_over",
+   "aspect_just_under"
+  ],
+  "subject": "glyph/0/0/2/3/6",
+  "where": {
+   "page": 0,
+   "system": 0,
+   "staff": 2,
+   "cell": 3,
+   "glyph": 6
+  },
+  "part": "p0s0st2",
+  "measure": 3,
+  "height_spaces": 1.07,
+  "aspect": 1.215,
+  "staff_step": 4.87,
+  "conf": 0.7463278770446777,
+  "cls": "noteheadBlackInSpace",
+  "witness": "slot",
+  "excess": 0.2738,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "height_just_over",
+   "aspect_just_under"
+  ],
+  "subject": "glyph/1/0/2/0/33",
+  "where": {
+   "page": 1,
+   "system": 0,
+   "staff": 2,
+   "cell": 0,
+   "glyph": 33
+  },
+  "part": "p1s0st2",
+  "measure": 0,
+  "height_spaces": 1.07,
+  "aspect": 1.3,
+  "staff_step": 5.174,
+  "conf": 0.46576789021492004,
+  "cls": "noteheadBlackInSpace",
+  "witness": "slot",
+  "excess": 0.2738,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "height_just_over",
+   "aspect_just_under"
+  ],
+  "subject": "glyph/2/1/9/6/3",
+  "where": {
+   "page": 2,
+   "system": 1,
+   "staff": 9,
+   "cell": 6,
+   "glyph": 3
+  },
+  "part": "p2s1st9",
+  "measure": 6,
+  "height_spaces": 1.07,
+  "aspect": 1.477,
+  "staff_step": 5.15,
+  "conf": 0.6138988137245178,
+  "cls": "noteheadHalfInSpace",
+  "witness": "slot",
+  "excess": 0.2738,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "height_just_over",
+   "aspect_just_under"
+  ],
+  "subject": "glyph/3/0/11/9/10",
+  "where": {
+   "page": 3,
+   "system": 0,
+   "staff": 11,
+   "cell": 9,
+   "glyph": 10
+  },
+  "part": "p3s0st11",
+  "measure": 9,
+  "height_spaces": 1.07,
+  "aspect": 1.271,
+  "staff_step": 4.95,
+  "conf": 0.6898283362388611,
+  "cls": "noteheadBlackInSpace",
+  "witness": "slot",
+  "excess": 0.2738,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "height_just_over",
+   "aspect_just_under"
+  ],
+  "subject": "glyph/3/1/6/9/11",
+  "where": {
+   "page": 3,
+   "system": 1,
+   "staff": 6,
+   "cell": 9,
+   "glyph": 11
+  },
+  "part": "p3s1st6",
+  "measure": 9,
+  "height_spaces": 1.07,
+  "aspect": 1.28,
+  "staff_step": 6.99,
+  "conf": 0.386711984872818,
+  "cls": "noteheadBlackInSpace",
+  "witness": "neighbouring_bar",
+  "excess": 0.2738,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "height_just_over"
+  ],
+  "subject": "glyph/0/0/10/6/15",
+  "where": {
+   "page": 0,
+   "system": 0,
+   "staff": 10,
+   "cell": 6,
+   "glyph": 15
+  },
+  "part": "p0s0st10",
+  "measure": 6,
+  "height_spaces": 1.074,
+  "aspect": 1.18,
+  "staff_step": 5.176,
+  "conf": 0.7529771327972412,
+  "cls": "noteheadBlackInSpace",
+  "witness": "slot",
+  "excess": 0.2786,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "height_just_over",
+   "aspect_just_under"
+  ],
+  "subject": "glyph/1/0/2/6/3",
+  "where": {
+   "page": 1,
+   "system": 0,
+   "staff": 2,
+   "cell": 6,
+   "glyph": 3
+  },
+  "part": "p1s0st2",
+  "measure": 6,
+  "height_spaces": 1.074,
+  "aspect": 1.293,
+  "staff_step": 4.75,
+  "conf": 0.8171008229255676,
+  "cls": "noteheadBlackInSpace",
+  "witness": "slot",
+  "excess": 0.2786,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "height_just_over"
+  ],
+  "subject": "glyph/0/0/6/2/12",
+  "where": {
+   "page": 0,
+   "system": 0,
+   "staff": 6,
+   "cell": 2,
+   "glyph": 12
+  },
+  "part": "p0s0st6",
+  "measure": 2,
+  "height_spaces": 1.07,
+  "aspect": 1.168,
+  "staff_step": 4.93,
+  "conf": 0.5449180006980896,
+  "cls": "noteheadBlackInSpace",
+  "witness": "slot",
+  "excess": 0.2834,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "height_just_over"
+  ],
+  "subject": "glyph/0/0/3/4/14",
+  "where": {
+   "page": 0,
+   "system": 0,
+   "staff": 3,
+   "cell": 4,
+   "glyph": 14
+  },
+  "part": "p0s0st3",
+  "measure": 4,
+  "height_spaces": 1.08,
+  "aspect": 1.167,
+  "staff_step": 4.989,
+  "conf": 0.679976224899292,
+  "cls": "noteheadBlackInSpace",
+  "witness": "slot",
+  "excess": 0.2857,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "height_just_over",
+   "aspect_just_under"
+  ],
+  "subject": "glyph/1/1/11/7/2",
+  "where": {
+   "page": 1,
+   "system": 1,
+   "staff": 11,
+   "cell": 7,
+   "glyph": 2
+  },
+  "part": "p1s1st11",
+  "measure": 7,
+  "height_spaces": 1.08,
+  "aspect": 1.278,
+  "staff_step": 6.82,
+  "conf": 0.7810143232345581,
+  "cls": "noteheadBlackInSpace",
+  "witness": "neighbouring_bar",
+  "excess": 0.2857,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "height_just_over",
+   "aspect_just_under"
+  ],
+  "subject": "glyph/1/1/11/7/5",
+  "where": {
+   "page": 1,
+   "system": 1,
+   "staff": 11,
+   "cell": 7,
+   "glyph": 5
+  },
+  "part": "p1s1st11",
+  "measure": 7,
+  "height_spaces": 1.08,
+  "aspect": 1.361,
+  "staff_step": 6.32,
+  "conf": 0.7237514853477478,
+  "cls": "noteheadBlackInSpace",
+  "witness": "slot",
+  "excess": 0.2857,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "height_just_over",
+   "aspect_just_under"
+  ],
+  "subject": "glyph/1/1/3/5/6",
+  "where": {
+   "page": 1,
+   "system": 1,
+   "staff": 3,
+   "cell": 5,
+   "glyph": 6
+  },
+  "part": "p1s1st3",
+  "measure": 5,
+  "height_spaces": 1.08,
+  "aspect": 1.306,
+  "staff_step": 7.383,
+  "conf": 0.7235753536224365,
+  "cls": "noteheadBlackInSpace",
+  "witness": "neighbouring_bar",
+  "excess": 0.2857,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "height_just_over",
+   "aspect_just_under"
+  ],
+  "subject": "glyph/1/1/6/7/3",
+  "where": {
+   "page": 1,
+   "system": 1,
+   "staff": 6,
+   "cell": 7,
+   "glyph": 3
+  },
+  "part": "p1s1st6",
+  "measure": 7,
+  "height_spaces": 1.08,
+  "aspect": 1.5,
+  "staff_step": 5.94,
+  "conf": 0.6320772171020508,
+  "cls": "noteheadHalfInSpace",
+  "witness": "slot",
+  "excess": 0.2857,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "height_just_over",
+   "aspect_just_under"
+  ],
+  "subject": "glyph/2/1/11/6/2",
+  "where": {
+   "page": 2,
+   "system": 1,
+   "staff": 11,
+   "cell": 6,
+   "glyph": 2
+  },
+  "part": "p2s1st11",
+  "measure": 6,
+  "height_spaces": 1.08,
+  "aspect": 1.491,
+  "staff_step": 5.3,
+  "conf": 0.6164620518684387,
+  "cls": "noteheadHalfInSpace",
+  "witness": "slot",
+  "excess": 0.2857,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "height_just_over",
+   "aspect_just_under"
+  ],
+  "subject": "glyph/3/0/11/9/4",
+  "where": {
+   "page": 3,
+   "system": 0,
+   "staff": 11,
+   "cell": 9,
+   "glyph": 4
+  },
+  "part": "p3s0st11",
+  "measure": 9,
+  "height_spaces": 1.08,
+  "aspect": 1.259,
+  "staff_step": 5.0,
+  "conf": 0.7643573880195618,
+  "cls": "noteheadBlackInSpace",
+  "witness": "slot",
+  "excess": 0.2857,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "height_just_over",
+   "aspect_just_under"
+  ],
+  "subject": "glyph/3/1/1/7/3",
+  "where": {
+   "page": 3,
+   "system": 1,
+   "staff": 1,
+   "cell": 7,
+   "glyph": 3
+  },
+  "part": "p3s1st1",
+  "measure": 7,
+  "height_spaces": 1.08,
+  "aspect": 1.278,
+  "staff_step": 4.94,
+  "conf": 0.6606569290161133,
+  "cls": "noteheadBlackInSpace",
+  "witness": "slot",
+  "excess": 0.2857,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "height_just_over",
+   "aspect_just_under"
+  ],
+  "subject": "glyph/1/0/9/4/11",
+  "where": {
+   "page": 1,
+   "system": 0,
+   "staff": 9,
+   "cell": 4,
+   "glyph": 11
+  },
+  "part": "p1s0st9",
+  "measure": 4,
+  "height_spaces": 1.082,
+  "aspect": 1.314,
+  "staff_step": 4.981,
+  "conf": 0.7522012591362,
+  "cls": "noteheadBlackInSpace",
+  "witness": "slot",
+  "excess": 0.2881,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "height_just_over",
+   "aspect_just_under"
+  ],
+  "subject": "glyph/1/0/0/1/31",
+  "where": {
+   "page": 1,
+   "system": 0,
+   "staff": 0,
+   "cell": 1,
+   "glyph": 31
+  },
+  "part": "p1s0st0",
+  "measure": 1,
+  "height_spaces": 1.085,
+  "aspect": 1.348,
+  "staff_step": 2.49,
+  "conf": 0.3263048827648163,
+  "cls": "noteheadWholeOnLine",
+  "witness": "neighbouring_bar",
+  "excess": 0.2917,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "height_just_over",
+   "aspect_just_under"
+  ],
+  "subject": "glyph/1/0/9/3/9",
+  "where": {
+   "page": 1,
+   "system": 0,
+   "staff": 9,
+   "cell": 3,
+   "glyph": 9
+  },
+  "part": "p1s0st9",
+  "measure": 3,
+  "height_spaces": 1.09,
+  "aspect": 1.275,
+  "staff_step": 5.05,
+  "conf": 0.6510725021362305,
+  "cls": "noteheadBlackInSpace",
+  "witness": "slot",
+  "excess": 0.2976,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "height_just_over",
+   "aspect_just_under"
+  ],
+  "subject": "glyph/2/0/2/3/15",
+  "where": {
+   "page": 2,
+   "system": 0,
+   "staff": 2,
+   "cell": 3,
+   "glyph": 15
+  },
+  "part": "p2s0st2",
+  "measure": 3,
+  "height_spaces": 1.09,
+  "aspect": 1.256,
+  "staff_step": 5.042,
+  "conf": 0.6876615881919861,
+  "cls": "noteheadBlackInSpace",
+  "witness": "slot",
+  "excess": 0.2976,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "height_just_over",
+   "aspect_just_under"
+  ],
+  "subject": "glyph/2/1/1/3/18",
+  "where": {
+   "page": 2,
+   "system": 1,
+   "staff": 1,
+   "cell": 3,
+   "glyph": 18
+  },
+  "part": "p2s1st1",
+  "measure": 3,
+  "height_spaces": 1.09,
+  "aspect": 1.339,
+  "staff_step": 4.95,
+  "conf": 0.5782731771469116,
+  "cls": "noteheadBlackInSpace",
+  "witness": "slot",
+  "excess": 0.2976,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "height_just_over",
+   "aspect_just_under"
+  ],
+  "subject": "glyph/2/1/5/2/9",
+  "where": {
+   "page": 2,
+   "system": 1,
+   "staff": 5,
+   "cell": 2,
+   "glyph": 9
+  },
+  "part": "p2s1st5",
+  "measure": 2,
+  "height_spaces": 1.09,
+  "aspect": 1.505,
+  "staff_step": 4.73,
+  "conf": 0.46369004249572754,
+  "cls": "noteheadHalfInSpace",
+  "witness": "slot",
+  "excess": 0.2976,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "height_just_over",
+   "aspect_just_under"
+  ],
+  "subject": "glyph/3/0/11/9/9",
+  "where": {
+   "page": 3,
+   "system": 0,
+   "staff": 11,
+   "cell": 9,
+   "glyph": 9
+  },
+  "part": "p3s0st11",
+  "measure": 9,
+  "height_spaces": 1.09,
+  "aspect": 1.339,
+  "staff_step": 4.93,
+  "conf": 0.6940236687660217,
+  "cls": "noteheadBlackInSpace",
+  "witness": "slot",
+  "excess": 0.2976,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "height_just_over",
+   "aspect_just_under"
+  ],
+  "subject": "glyph/3/0/3/7/5",
+  "where": {
+   "page": 3,
+   "system": 0,
+   "staff": 3,
+   "cell": 7,
+   "glyph": 5
+  },
+  "part": "p3s0st3",
+  "measure": 7,
+  "height_spaces": 1.09,
+  "aspect": 1.22,
+  "staff_step": 5.05,
+  "conf": 0.6165447235107422,
+  "cls": "noteheadBlackInSpace",
+  "witness": "slot",
+  "excess": 0.2976,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "height_just_over",
+   "aspect_just_under"
+  ],
+  "subject": "glyph/3/0/9/4/14",
+  "where": {
+   "page": 3,
+   "system": 0,
+   "staff": 9,
+   "cell": 4,
+   "glyph": 14
+  },
+  "part": "p3s0st9",
+  "measure": 4,
+  "height_spaces": 1.09,
+  "aspect": 1.312,
+  "staff_step": 4.89,
+  "conf": 0.45937517285346985,
+  "cls": "noteheadBlackInSpace",
+  "witness": "slot",
+  "excess": 0.2976,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "height_just_over",
+   "aspect_just_under"
+  ],
+  "subject": "glyph/3/1/1/1/12",
+  "where": {
+   "page": 3,
+   "system": 1,
+   "staff": 1,
+   "cell": 1,
+   "glyph": 12
+  },
+  "part": "p3s1st1",
+  "measure": 1,
+  "height_spaces": 1.09,
+  "aspect": 1.33,
+  "staff_step": 5.15,
+  "conf": 0.4968836307525635,
+  "cls": "noteheadBlackInSpace",
+  "witness": "slot",
+  "excess": 0.2976,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "height_just_over",
+   "aspect_just_under"
+  ],
+  "subject": "glyph/3/1/1/8/14",
+  "where": {
+   "page": 3,
+   "system": 1,
+   "staff": 1,
+   "cell": 8,
+   "glyph": 14
+  },
+  "part": "p3s1st1",
+  "measure": 8,
+  "height_spaces": 1.09,
+  "aspect": 1.303,
+  "staff_step": 4.97,
+  "conf": 0.5338994860649109,
+  "cls": "noteheadBlackInSpace",
+  "witness": "slot",
+  "excess": 0.2976,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "height_just_over",
+   "aspect_just_under"
+  ],
+  "subject": "glyph/3/1/10/1/19",
+  "where": {
+   "page": 3,
+   "system": 1,
+   "staff": 10,
+   "cell": 1,
+   "glyph": 19
+  },
+  "part": "p3s1st10",
+  "measure": 1,
+  "height_spaces": 1.09,
+  "aspect": 1.367,
+  "staff_step": 5.17,
+  "conf": 0.5039511322975159,
+  "cls": "noteheadBlackInSpace",
+  "witness": "slot",
+  "excess": 0.2976,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "height_just_over",
+   "aspect_just_under"
+  ],
+  "subject": "glyph/3/1/9/8/11",
+  "where": {
+   "page": 3,
+   "system": 1,
+   "staff": 9,
+   "cell": 8,
+   "glyph": 11
+  },
+  "part": "p3s1st9",
+  "measure": 8,
+  "height_spaces": 1.09,
+  "aspect": 1.275,
+  "staff_step": 4.974,
+  "conf": 0.6233021020889282,
+  "cls": "noteheadBlackInSpace",
+  "witness": "slot",
+  "excess": 0.2976,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "height_just_over",
+   "aspect_just_under"
+  ],
+  "subject": "glyph/2/0/1/4/7",
+  "where": {
+   "page": 2,
+   "system": 0,
+   "staff": 1,
+   "cell": 4,
+   "glyph": 7
+  },
+  "part": "p2s0st1",
+  "measure": 4,
+  "height_spaces": 1.091,
+  "aspect": 1.315,
+  "staff_step": 5.039,
+  "conf": 0.7115926146507263,
+  "cls": "noteheadBlackInSpace",
+  "witness": "slot",
+  "excess": 0.2988,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "height_just_over",
+   "aspect_just_under"
+  ],
+  "subject": "glyph/2/0/2/4/12",
+  "where": {
+   "page": 2,
+   "system": 0,
+   "staff": 2,
+   "cell": 4,
+   "glyph": 12
+  },
+  "part": "p2s0st2",
+  "measure": 4,
+  "height_spaces": 1.091,
+  "aspect": 1.315,
+  "staff_step": 5.158,
+  "conf": 0.6895995736122131,
+  "cls": "noteheadBlackInSpace",
+  "witness": "slot",
+  "excess": 0.2988,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "height_just_over",
+   "aspect_just_under"
+  ],
+  "subject": "glyph/2/0/2/4/15",
+  "where": {
+   "page": 2,
+   "system": 0,
+   "staff": 2,
+   "cell": 4,
+   "glyph": 15
+  },
+  "part": "p2s0st2",
+  "measure": 4,
+  "height_spaces": 1.091,
+  "aspect": 1.293,
+  "staff_step": 5.229,
+  "conf": 0.5431928038597107,
+  "cls": "noteheadBlackInSpace",
+  "witness": "slot",
+  "excess": 0.2988,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "height_just_over"
+  ],
+  "subject": "glyph/2/0/8/0/20",
+  "where": {
+   "page": 2,
+   "system": 0,
+   "staff": 8,
+   "cell": 0,
+   "glyph": 20
+  },
+  "part": "p2s0st8",
+  "measure": 0,
+  "height_spaces": 0.965,
+  "aspect": 1.135,
+  "staff_step": 6.463,
+  "conf": 0.2981570363044739,
+  "cls": "noteheadBlackInSpace",
+  "witness": "slot",
+  "excess": 0.3037,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "height_just_over",
+   "aspect_just_under"
+  ],
+  "subject": "glyph/1/0/2/6/8",
+  "where": {
+   "page": 1,
+   "system": 0,
+   "staff": 2,
+   "cell": 6,
+   "glyph": 8
+  },
+  "part": "p1s0st2",
+  "measure": 6,
+  "height_spaces": 1.096,
+  "aspect": 1.297,
+  "staff_step": 4.706,
+  "conf": 0.7721362709999084,
+  "cls": "noteheadBlackInSpace",
+  "witness": "slot",
+  "excess": 0.3048,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "height_just_over",
+   "aspect_just_under"
+  ],
+  "subject": "glyph/3/1/5/0/11",
+  "where": {
+   "page": 3,
+   "system": 1,
+   "staff": 5,
+   "cell": 0,
+   "glyph": 11
+  },
+  "part": "p3s1st5",
+  "measure": 0,
+  "height_spaces": 1.096,
+  "aspect": 1.241,
+  "staff_step": 6.002,
+  "conf": 0.6697686910629272,
+  "cls": "noteheadBlackOnLine",
+  "witness": "slot",
+  "excess": 0.3048,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "height_just_over",
+   "aspect_just_under"
+  ],
+  "subject": "glyph/1/0/11/5/6",
+  "where": {
+   "page": 1,
+   "system": 0,
+   "staff": 11,
+   "cell": 5,
+   "glyph": 6
+  },
+  "part": "p1s0st11",
+  "measure": 5,
+  "height_spaces": 1.098,
+  "aspect": 1.337,
+  "staff_step": 5.015,
+  "conf": 0.5382542014122009,
+  "cls": "noteheadBlackInSpace",
+  "witness": "slot",
+  "excess": 0.3071,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "height_just_over",
+   "aspect_just_under"
+  ],
+  "subject": "glyph/2/0/11/2/2",
+  "where": {
+   "page": 2,
+   "system": 0,
+   "staff": 11,
+   "cell": 2,
+   "glyph": 2
+  },
+  "part": "p2s0st11",
+  "measure": 2,
+  "height_spaces": 1.098,
+  "aspect": 1.304,
+  "staff_step": 4.909,
+  "conf": 0.776593804359436,
+  "cls": "noteheadBlackInSpace",
+  "witness": "slot",
+  "excess": 0.3071,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "height_just_over",
+   "aspect_just_under"
+  ],
+  "subject": "glyph/3/1/13/0/9",
+  "where": {
+   "page": 3,
+   "system": 1,
+   "staff": 13,
+   "cell": 0,
+   "glyph": 9
+  },
+  "part": "p3s1st13",
+  "measure": 0,
+  "height_spaces": 1.099,
+  "aspect": 1.3,
+  "staff_step": 5.254,
+  "conf": 0.6916357278823853,
+  "cls": "noteheadBlackInSpace",
+  "witness": "slot",
+  "excess": 0.3083,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "height_just_over"
+  ],
+  "subject": "glyph/0/0/1/3/10",
+  "where": {
+   "page": 0,
+   "system": 0,
+   "staff": 1,
+   "cell": 3,
+   "glyph": 10
+  },
+  "part": "p0s0st1",
+  "measure": 3,
+  "height_spaces": 1.1,
+  "aspect": 1.173,
+  "staff_step": 4.92,
+  "conf": 0.7233390808105469,
+  "cls": "noteheadBlackInSpace",
+  "witness": "slot",
+  "excess": 0.3095,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "height_just_over"
+  ],
+  "subject": "glyph/0/0/11/4/9",
+  "where": {
+   "page": 0,
+   "system": 0,
+   "staff": 11,
+   "cell": 4,
+   "glyph": 9
+  },
+  "part": "p0s0st11",
+  "measure": 4,
+  "height_spaces": 1.1,
+  "aspect": 1.136,
+  "staff_step": 4.989,
+  "conf": 0.7590823173522949,
+  "cls": "noteheadBlackInSpace",
+  "witness": "slot",
+  "excess": 0.3095,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "height_just_over",
+   "aspect_just_under"
+  ],
+  "subject": "glyph/0/0/11/5/8",
+  "where": {
+   "page": 0,
+   "system": 0,
+   "staff": 11,
+   "cell": 5,
+   "glyph": 8
+  },
+  "part": "p0s0st11",
+  "measure": 5,
+  "height_spaces": 1.1,
+  "aspect": 1.227,
+  "staff_step": 5.969,
+  "conf": 0.7710612416267395,
+  "cls": "noteheadBlackOnLine",
+  "witness": "slot",
+  "excess": 0.3095,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "height_just_over",
+   "aspect_just_under"
+  ],
+  "subject": "glyph/1/0/9/3/3",
+  "where": {
+   "page": 1,
+   "system": 0,
+   "staff": 9,
+   "cell": 3,
+   "glyph": 3
+  },
+  "part": "p1s0st9",
+  "measure": 3,
+  "height_spaces": 1.1,
+  "aspect": 1.291,
+  "staff_step": 5.08,
+  "conf": 0.767414927482605,
+  "cls": "noteheadBlackInSpace",
+  "witness": "slot",
+  "excess": 0.3095,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "height_just_over",
+   "aspect_just_under"
+  ],
+  "subject": "glyph/3/0/10/3/15",
+  "where": {
+   "page": 3,
+   "system": 0,
+   "staff": 10,
+   "cell": 3,
+   "glyph": 15
+  },
+  "part": "p3s0st10",
+  "measure": 3,
+  "height_spaces": 1.1,
+  "aspect": 1.227,
+  "staff_step": 6.92,
+  "conf": 0.6226646304130554,
+  "cls": "noteheadBlackInSpace",
+  "witness": "neighbouring_bar",
+  "excess": 0.3095,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "height_just_over",
+   "aspect_just_under"
+  ],
+  "subject": "glyph/3/0/10/4/6",
+  "where": {
+   "page": 3,
+   "system": 0,
+   "staff": 10,
+   "cell": 4,
+   "glyph": 6
+  },
+  "part": "p3s0st10",
+  "measure": 4,
+  "height_spaces": 1.1,
+  "aspect": 1.309,
+  "staff_step": 4.84,
+  "conf": 0.6800799369812012,
+  "cls": "noteheadBlackInSpace",
+  "witness": "slot",
+  "excess": 0.3095,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "height_just_over",
+   "aspect_just_under"
+  ],
+  "subject": "glyph/3/1/11/5/5",
+  "where": {
+   "page": 3,
+   "system": 1,
+   "staff": 11,
+   "cell": 5,
+   "glyph": 5
+  },
+  "part": "p3s1st11",
+  "measure": 5,
+  "height_spaces": 1.1,
+  "aspect": 1.264,
+  "staff_step": 4.92,
+  "conf": 0.6424974203109741,
+  "cls": "noteheadBlackInSpace",
+  "witness": "slot",
+  "excess": 0.3095,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "height_just_over",
+   "aspect_just_under"
+  ],
+  "subject": "glyph/3/1/12/10/2",
+  "where": {
+   "page": 3,
+   "system": 1,
+   "staff": 12,
+   "cell": 10,
+   "glyph": 2
+  },
+  "part": "p3s1st12",
+  "measure": 10,
+  "height_spaces": 1.1,
+  "aspect": 1.2,
+  "staff_step": 5.0,
+  "conf": 0.6693383455276489,
+  "cls": "noteheadBlackInSpace",
+  "witness": "slot",
+  "excess": 0.3095,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "height_just_over"
+  ],
+  "subject": "glyph/3/1/4/1/11",
+  "where": {
+   "page": 3,
+   "system": 1,
+   "staff": 4,
+   "cell": 1,
+   "glyph": 11
+  },
+  "part": "p3s1st4",
+  "measure": 1,
+  "height_spaces": 1.1,
+  "aspect": 1.164,
+  "staff_step": 5.08,
+  "conf": 0.6465036869049072,
+  "cls": "noteheadBlackInSpace",
+  "witness": "slot",
+  "excess": 0.3095,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "height_just_over",
+   "aspect_just_under"
+  ],
+  "subject": "glyph/3/1/5/8/10",
+  "where": {
+   "page": 3,
+   "system": 1,
+   "staff": 5,
+   "cell": 8,
+   "glyph": 10
+  },
+  "part": "p3s1st5",
+  "measure": 8,
+  "height_spaces": 1.1,
+  "aspect": 1.273,
+  "staff_step": 4.98,
+  "conf": 0.5869753360748291,
+  "cls": "noteheadBlackInSpace",
+  "witness": "slot",
+  "excess": 0.3095,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "aspect_just_under"
+  ],
+  "subject": "glyph/2/0/1/4/9",
+  "where": {
+   "page": 2,
+   "system": 0,
+   "staff": 1,
+   "cell": 4,
+   "glyph": 9
+  },
+  "part": "p2s0st1",
+  "measure": 4,
+  "height_spaces": 1.103,
+  "aspect": 1.312,
+  "staff_step": 5.217,
+  "conf": 0.6207878589630127,
+  "cls": "noteheadBlackInSpace",
+  "witness": "slot",
+  "excess": 0.3131,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "aspect_just_under"
+  ],
+  "subject": "glyph/3/1/10/2/22",
+  "where": {
+   "page": 3,
+   "system": 1,
+   "staff": 10,
+   "cell": 2,
+   "glyph": 22
+  },
+  "part": "p3s1st10",
+  "measure": 2,
+  "height_spaces": 1.105,
+  "aspect": 1.277,
+  "staff_step": 5.285,
+  "conf": 0.41521957516670227,
+  "cls": "noteheadBlackInSpace",
+  "witness": "slot",
+  "excess": 0.3155,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "aspect_just_under"
+  ],
+  "subject": "glyph/1/0/2/6/13",
+  "where": {
+   "page": 1,
+   "system": 0,
+   "staff": 2,
+   "cell": 6,
+   "glyph": 13
+  },
+  "part": "p1s0st2",
+  "measure": 6,
+  "height_spaces": 1.107,
+  "aspect": 1.265,
+  "staff_step": 6.757,
+  "conf": 0.6873143315315247,
+  "cls": "noteheadBlackInSpace",
+  "witness": "neighbouring_bar",
+  "excess": 0.3179,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "aspect_just_under"
+  ],
+  "subject": "glyph/1/0/12/5/9",
+  "where": {
+   "page": 1,
+   "system": 0,
+   "staff": 12,
+   "cell": 5,
+   "glyph": 9
+  },
+  "part": "p1s0st12",
+  "measure": 5,
+  "height_spaces": 1.108,
+  "aspect": 1.257,
+  "staff_step": 5.067,
+  "conf": 0.37584683299064636,
+  "cls": "noteheadBlackInSpace",
+  "witness": "slot",
+  "excess": 0.319,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "aspect_just_under"
+  ],
+  "subject": "glyph/1/1/11/3/7",
+  "where": {
+   "page": 1,
+   "system": 1,
+   "staff": 11,
+   "cell": 3,
+   "glyph": 7
+  },
+  "part": "p1s1st11",
+  "measure": 3,
+  "height_spaces": 1.109,
+  "aspect": 1.21,
+  "staff_step": 5.352,
+  "conf": 0.7440791130065918,
+  "cls": "noteheadBlackInSpace",
+  "witness": "slot",
+  "excess": 0.3202,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "aspect_just_under"
+  ],
+  "subject": "glyph/3/1/11/1/10",
+  "where": {
+   "page": 3,
+   "system": 1,
+   "staff": 11,
+   "cell": 1,
+   "glyph": 10
+  },
+  "part": "p3s1st11",
+  "measure": 1,
+  "height_spaces": 1.11,
+  "aspect": 1.252,
+  "staff_step": 5.11,
+  "conf": 0.67869633436203,
+  "cls": "noteheadBlackInSpace",
+  "witness": "slot",
+  "excess": 0.3214,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "aspect_just_under"
+  ],
+  "subject": "glyph/2/0/12/0/8",
+  "where": {
+   "page": 2,
+   "system": 0,
+   "staff": 12,
+   "cell": 0,
+   "glyph": 8
+  },
+  "part": "p2s0st12",
+  "measure": 0,
+  "height_spaces": 1.113,
+  "aspect": 1.25,
+  "staff_step": 4.785,
+  "conf": 0.7399115562438965,
+  "cls": "noteheadBlackInSpace",
+  "witness": "slot",
+  "excess": 0.325,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "aspect_just_under"
+  ],
+  "subject": "glyph/3/1/11/2/21",
+  "where": {
+   "page": 3,
+   "system": 1,
+   "staff": 11,
+   "cell": 2,
+   "glyph": 21
+  },
+  "part": "p3s1st11",
+  "measure": 2,
+  "height_spaces": 1.116,
+  "aspect": 1.304,
+  "staff_step": 5.077,
+  "conf": 0.30640339851379395,
+  "cls": "noteheadBlackInSpace",
+  "witness": "slot",
+  "excess": 0.3286,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "aspect_just_under"
+  ],
+  "subject": "glyph/2/1/11/8/1",
+  "where": {
+   "page": 2,
+   "system": 1,
+   "staff": 11,
+   "cell": 8,
+   "glyph": 1
+  },
+  "part": "p2s1st11",
+  "measure": 8,
+  "height_spaces": 1.12,
+  "aspect": 1.25,
+  "staff_step": 5.88,
+  "conf": 0.8337743878364563,
+  "cls": "noteheadBlackInSpace",
+  "witness": "slot",
+  "excess": 0.3333,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "aspect_just_under"
+  ],
+  "subject": "glyph/2/1/9/5/3",
+  "where": {
+   "page": 2,
+   "system": 1,
+   "staff": 9,
+   "cell": 5,
+   "glyph": 3
+  },
+  "part": "p2s1st9",
+  "measure": 5,
+  "height_spaces": 1.12,
+  "aspect": 1.321,
+  "staff_step": 5.1,
+  "conf": 0.6034021973609924,
+  "cls": "noteheadHalfInSpace",
+  "witness": "slot",
+  "excess": 0.3333,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "aspect_just_under"
+  ],
+  "subject": "glyph/3/1/11/1/6",
+  "where": {
+   "page": 3,
+   "system": 1,
+   "staff": 11,
+   "cell": 1,
+   "glyph": 6
+  },
+  "part": "p3s1st11",
+  "measure": 1,
+  "height_spaces": 1.12,
+  "aspect": 1.214,
+  "staff_step": 5.12,
+  "conf": 0.7737318873405457,
+  "cls": "noteheadBlackInSpace",
+  "witness": "slot",
+  "excess": 0.3333,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "aspect_just_under"
+  ],
+  "subject": "glyph/3/1/2/7/4",
+  "where": {
+   "page": 3,
+   "system": 1,
+   "staff": 2,
+   "cell": 7,
+   "glyph": 4
+  },
+  "part": "p3s1st2",
+  "measure": 7,
+  "height_spaces": 1.12,
+  "aspect": 1.25,
+  "staff_step": 4.86,
+  "conf": 0.7584062814712524,
+  "cls": "noteheadBlackInSpace",
+  "witness": "slot",
+  "excess": 0.3333,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "aspect_just_under"
+  ],
+  "subject": "glyph/1/0/3/0/25",
+  "where": {
+   "page": 1,
+   "system": 0,
+   "staff": 3,
+   "cell": 0,
+   "glyph": 25
+  },
+  "part": "p1s0st3",
+  "measure": 0,
+  "height_spaces": 1.123,
+  "aspect": 1.365,
+  "staff_step": 5.065,
+  "conf": 0.6420685648918152,
+  "cls": "noteheadBlackInSpace",
+  "witness": "slot",
+  "excess": 0.3369,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "aspect_just_under"
+  ],
+  "subject": "glyph/1/1/3/1/13",
+  "where": {
+   "page": 1,
+   "system": 1,
+   "staff": 3,
+   "cell": 1,
+   "glyph": 13
+  },
+  "part": "p1s1st3",
+  "measure": 1,
+  "height_spaces": 1.123,
+  "aspect": 1.359,
+  "staff_step": 4.918,
+  "conf": 0.5314615964889526,
+  "cls": "noteheadBlackInSpace",
+  "witness": "slot",
+  "excess": 0.3369,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "height_just_over"
+  ],
+  "subject": "glyph/0/0/11/6/13",
+  "where": {
+   "page": 0,
+   "system": 0,
+   "staff": 11,
+   "cell": 6,
+   "glyph": 13
+  },
+  "part": "p0s0st11",
+  "measure": 6,
+  "height_spaces": 1.098,
+  "aspect": 1.078,
+  "staff_step": 5.185,
+  "conf": 0.6734700202941895,
+  "cls": "noteheadBlackInSpace",
+  "witness": "slot",
+  "excess": 0.3387,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "aspect_just_under"
+  ],
+  "subject": "glyph/3/1/10/2/19",
+  "where": {
+   "page": 3,
+   "system": 1,
+   "staff": 10,
+   "cell": 2,
+   "glyph": 19
+  },
+  "part": "p3s1st10",
+  "measure": 2,
+  "height_spaces": 1.127,
+  "aspect": 1.301,
+  "staff_step": 5.22,
+  "conf": 0.4638909697532654,
+  "cls": "noteheadBlackInSpace",
+  "witness": "slot",
+  "excess": 0.3417,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "aspect_just_under"
+  ],
+  "subject": "glyph/3/1/4/0/17",
+  "where": {
+   "page": 3,
+   "system": 1,
+   "staff": 4,
+   "cell": 0,
+   "glyph": 17
+  },
+  "part": "p3s1st4",
+  "measure": 0,
+  "height_spaces": 1.127,
+  "aspect": 1.268,
+  "staff_step": 5.061,
+  "conf": 0.6632823944091797,
+  "cls": "noteheadBlackInSpace",
+  "witness": "slot",
+  "excess": 0.3417,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "aspect_just_under"
+  ],
+  "subject": "glyph/0/0/12/5/6",
+  "where": {
+   "page": 0,
+   "system": 0,
+   "staff": 12,
+   "cell": 5,
+   "glyph": 6
+  },
+  "part": "p0s0st12",
+  "measure": 5,
+  "height_spaces": 1.13,
+  "aspect": 1.23,
+  "staff_step": 5.09,
+  "conf": 0.7890920042991638,
+  "cls": "noteheadBlackInSpace",
+  "witness": "slot",
+  "excess": 0.3452,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "aspect_just_under"
+  ],
+  "subject": "glyph/1/1/11/7/3",
+  "where": {
+   "page": 1,
+   "system": 1,
+   "staff": 11,
+   "cell": 7,
+   "glyph": 3
+  },
+  "part": "p1s1st11",
+  "measure": 7,
+  "height_spaces": 1.13,
+  "aspect": 1.23,
+  "staff_step": 6.53,
+  "conf": 0.7531028389930725,
+  "cls": "noteheadBlackInSpace",
+  "witness": "neighbouring_bar",
+  "excess": 0.3452,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "aspect_just_under"
+  ],
+  "subject": "glyph/3/0/11/8/18",
+  "where": {
+   "page": 3,
+   "system": 0,
+   "staff": 11,
+   "cell": 8,
+   "glyph": 18
+  },
+  "part": "p3s0st11",
+  "measure": 8,
+  "height_spaces": 1.13,
+  "aspect": 1.221,
+  "staff_step": 5.05,
+  "conf": 0.5852178335189819,
+  "cls": "noteheadBlackInSpace",
+  "witness": "slot",
+  "excess": 0.3452,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "aspect_just_under"
+  ],
+  "subject": "glyph/3/1/2/6/14",
+  "where": {
+   "page": 3,
+   "system": 1,
+   "staff": 2,
+   "cell": 6,
+   "glyph": 14
+  },
+  "part": "p3s1st2",
+  "measure": 6,
+  "height_spaces": 1.13,
+  "aspect": 1.283,
+  "staff_step": 4.89,
+  "conf": 0.5458590984344482,
+  "cls": "noteheadBlackInSpace",
+  "witness": "slot",
+  "excess": 0.3452,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "aspect_just_under"
+  ],
+  "subject": "glyph/1/0/3/4/11",
+  "where": {
+   "page": 1,
+   "system": 0,
+   "staff": 3,
+   "cell": 4,
+   "glyph": 11
+  },
+  "part": "p1s0st3",
+  "measure": 4,
+  "height_spaces": 1.132,
+  "aspect": 1.256,
+  "staff_step": 4.994,
+  "conf": 0.7689781188964844,
+  "cls": "noteheadBlackInSpace",
+  "witness": "slot",
+  "excess": 0.3476,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "aspect_just_under"
+  ],
+  "subject": "glyph/1/0/3/4/21",
+  "where": {
+   "page": 1,
+   "system": 0,
+   "staff": 3,
+   "cell": 4,
+   "glyph": 21
+  },
+  "part": "p1s0st3",
+  "measure": 4,
+  "height_spaces": 1.132,
+  "aspect": 1.256,
+  "staff_step": 4.944,
+  "conf": 0.7028477191925049,
+  "cls": "noteheadBlackInSpace",
+  "witness": "slot",
+  "excess": 0.3476,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "aspect_just_under"
+  ],
+  "subject": "glyph/1/0/9/4/18",
+  "where": {
+   "page": 1,
+   "system": 0,
+   "staff": 9,
+   "cell": 4,
+   "glyph": 18
+  },
+  "part": "p1s0st9",
+  "measure": 4,
+  "height_spaces": 1.132,
+  "aspect": 1.2,
+  "staff_step": 5.082,
+  "conf": 0.6001023054122925,
+  "cls": "noteheadBlackInSpace",
+  "witness": "slot",
+  "excess": 0.3476,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "aspect_just_under"
+  ],
+  "subject": "glyph/1/0/11/0/32",
+  "where": {
+   "page": 1,
+   "system": 0,
+   "staff": 11,
+   "cell": 0,
+   "glyph": 32
+  },
+  "part": "p1s0st11",
+  "measure": 0,
+  "height_spaces": 1.134,
+  "aspect": 1.226,
+  "staff_step": 4.916,
+  "conf": 0.6630114912986755,
+  "cls": "noteheadBlackInSpace",
+  "witness": "slot",
+  "excess": 0.35,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "aspect_just_under"
+  ],
+  "subject": "glyph/1/1/3/1/4",
+  "where": {
+   "page": 1,
+   "system": 1,
+   "staff": 3,
+   "cell": 1,
+   "glyph": 4
+  },
+  "part": "p1s1st3",
+  "measure": 1,
+  "height_spaces": 1.136,
+  "aspect": 1.398,
+  "staff_step": 4.93,
+  "conf": 0.7521482706069946,
+  "cls": "noteheadBlackInSpace",
+  "witness": "slot",
+  "excess": 0.3524,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "aspect_just_under"
+  ],
+  "subject": "glyph/2/1/2/0/22",
+  "where": {
+   "page": 2,
+   "system": 1,
+   "staff": 2,
+   "cell": 0,
+   "glyph": 22
+  },
+  "part": "p2s1st2",
+  "measure": 0,
+  "height_spaces": 1.137,
+  "aspect": 1.291,
+  "staff_step": 4.874,
+  "conf": 0.33292680978775024,
+  "cls": "noteheadBlackInSpace",
+  "witness": "slot",
+  "excess": 0.3536,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "aspect_just_under"
+  ],
+  "subject": "glyph/3/1/12/2/9",
+  "where": {
+   "page": 3,
+   "system": 1,
+   "staff": 12,
+   "cell": 2,
+   "glyph": 9
+  },
+  "part": "p3s1st12",
+  "measure": 2,
+  "height_spaces": 1.138,
+  "aspect": 1.252,
+  "staff_step": 5.033,
+  "conf": 0.6121593713760376,
+  "cls": "noteheadBlackInSpace",
+  "witness": "slot",
+  "excess": 0.3548,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "height_just_over"
+  ],
+  "subject": "glyph/1/0/12/0/11",
+  "where": {
+   "page": 1,
+   "system": 0,
+   "staff": 12,
+   "cell": 0,
+   "glyph": 11
+  },
+  "part": "p1s0st12",
+  "measure": 0,
+  "height_spaces": 0.842,
+  "aspect": 1.051,
+  "staff_step": 5.096,
+  "conf": 0.7734894752502441,
+  "cls": "noteheadBlackInSpace",
+  "witness": "slot",
+  "excess": 0.3552,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "aspect_just_under"
+  ],
+  "subject": "glyph/0/0/1/3/3",
+  "where": {
+   "page": 0,
+   "system": 0,
+   "staff": 1,
+   "cell": 3,
+   "glyph": 3
+  },
+  "part": "p0s0st1",
+  "measure": 3,
+  "height_spaces": 1.14,
+  "aspect": 1.202,
+  "staff_step": 5.94,
+  "conf": 0.8073945641517639,
+  "cls": "noteheadBlackOnLine",
+  "witness": "slot",
+  "excess": 0.3571,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "aspect_just_under"
+  ],
+  "subject": "glyph/1/1/3/5/1",
+  "where": {
+   "page": 1,
+   "system": 1,
+   "staff": 3,
+   "cell": 5,
+   "glyph": 1
+  },
+  "part": "p1s1st3",
+  "measure": 5,
+  "height_spaces": 1.14,
+  "aspect": 1.263,
+  "staff_step": 5.423,
+  "conf": 0.7942057251930237,
+  "cls": "noteheadBlackInSpace",
+  "witness": "slot",
+  "excess": 0.3571,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "aspect_just_under"
+  ],
+  "subject": "glyph/3/0/5/9/6",
+  "where": {
+   "page": 3,
+   "system": 0,
+   "staff": 5,
+   "cell": 9,
+   "glyph": 6
+  },
+  "part": "p3s0st5",
+  "measure": 9,
+  "height_spaces": 1.14,
+  "aspect": 1.219,
+  "staff_step": 6.02,
+  "conf": 0.7336423993110657,
+  "cls": "noteheadBlackOnLine",
+  "witness": "slot",
+  "excess": 0.3571,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "aspect_just_under"
+  ],
+  "subject": "glyph/3/0/7/4/6",
+  "where": {
+   "page": 3,
+   "system": 0,
+   "staff": 7,
+   "cell": 4,
+   "glyph": 6
+  },
+  "part": "p3s0st7",
+  "measure": 4,
+  "height_spaces": 1.14,
+  "aspect": 1.237,
+  "staff_step": 4.86,
+  "conf": 0.7184646725654602,
+  "cls": "noteheadBlackInSpace",
+  "witness": "slot",
+  "excess": 0.3571,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "aspect_just_under"
+  ],
+  "subject": "glyph/3/1/1/6/6",
+  "where": {
+   "page": 3,
+   "system": 1,
+   "staff": 1,
+   "cell": 6,
+   "glyph": 6
+  },
+  "part": "p3s1st1",
+  "measure": 6,
+  "height_spaces": 1.14,
+  "aspect": 1.237,
+  "staff_step": 4.02,
+  "conf": 0.6564250588417053,
+  "cls": "noteheadBlackOnLine",
+  "witness": "neighbouring_bar",
+  "excess": 0.3571,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "aspect_just_under"
+  ],
+  "subject": "glyph/3/1/1/6/7",
+  "where": {
+   "page": 3,
+   "system": 1,
+   "staff": 1,
+   "cell": 6,
+   "glyph": 7
+  },
+  "part": "p3s1st1",
+  "measure": 6,
+  "height_spaces": 1.14,
+  "aspect": 1.228,
+  "staff_step": 4.94,
+  "conf": 0.6550408601760864,
+  "cls": "noteheadBlackInSpace",
+  "witness": "slot",
+  "excess": 0.3571,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "aspect_just_under"
+  ],
+  "subject": "glyph/3/1/12/8/3",
+  "where": {
+   "page": 3,
+   "system": 1,
+   "staff": 12,
+   "cell": 8,
+   "glyph": 3
+  },
+  "part": "p3s1st12",
+  "measure": 8,
+  "height_spaces": 1.14,
+  "aspect": 1.211,
+  "staff_step": 5.02,
+  "conf": 0.6787135004997253,
+  "cls": "noteheadBlackInSpace",
+  "witness": "slot",
+  "excess": 0.3571,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "aspect_just_under"
+  ],
+  "subject": "glyph/3/1/2/1/3",
+  "where": {
+   "page": 3,
+   "system": 1,
+   "staff": 2,
+   "cell": 1,
+   "glyph": 3
+  },
+  "part": "p3s1st2",
+  "measure": 1,
+  "height_spaces": 1.14,
+  "aspect": 1.202,
+  "staff_step": 6.18,
+  "conf": 0.7440298795700073,
+  "cls": "noteheadBlackOnLine",
+  "witness": "slot",
+  "excess": 0.3571,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "aspect_just_under"
+  ],
+  "subject": "glyph/1/0/6/0/3",
+  "where": {
+   "page": 1,
+   "system": 0,
+   "staff": 6,
+   "cell": 0,
+   "glyph": 3
+  },
+  "part": "p1s0st6",
+  "measure": 0,
+  "height_spaces": 1.144,
+  "aspect": 1.264,
+  "staff_step": 5.0,
+  "conf": 0.7880498766899109,
+  "cls": "noteheadBlackInSpace",
+  "witness": "slot",
+  "excess": 0.3619,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "aspect_just_under"
+  ],
+  "subject": "glyph/1/1/10/3/7",
+  "where": {
+   "page": 1,
+   "system": 1,
+   "staff": 10,
+   "cell": 3,
+   "glyph": 7
+  },
+  "part": "p1s1st10",
+  "measure": 3,
+  "height_spaces": 1.144,
+  "aspect": 1.257,
+  "staff_step": 5.315,
+  "conf": 0.7129752039909363,
+  "cls": "noteheadBlackInSpace",
+  "witness": "slot",
+  "excess": 0.3619,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "aspect_just_under"
+  ],
+  "subject": "glyph/1/1/3/0/13",
+  "where": {
+   "page": 1,
+   "system": 1,
+   "staff": 3,
+   "cell": 0,
+   "glyph": 13
+  },
+  "part": "p1s1st3",
+  "measure": 0,
+  "height_spaces": 1.146,
+  "aspect": 1.227,
+  "staff_step": 4.761,
+  "conf": 0.7522128820419312,
+  "cls": "noteheadBlackInSpace",
+  "witness": "slot",
+  "excess": 0.3643,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "aspect_just_under"
+  ],
+  "subject": "glyph/2/0/2/3/4",
+  "where": {
+   "page": 2,
+   "system": 0,
+   "staff": 2,
+   "cell": 3,
+   "glyph": 4
+  },
+  "part": "p2s0st2",
+  "measure": 3,
+  "height_spaces": 1.146,
+  "aspect": 1.244,
+  "staff_step": 6.021,
+  "conf": 0.7828480005264282,
+  "cls": "noteheadBlackOnLine",
+  "witness": "slot",
+  "excess": 0.3643,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "aspect_just_under"
+  ],
+  "subject": "glyph/3/1/1/2/4",
+  "where": {
+   "page": 3,
+   "system": 1,
+   "staff": 1,
+   "cell": 2,
+   "glyph": 4
+  },
+  "part": "p3s1st1",
+  "measure": 2,
+  "height_spaces": 1.149,
+  "aspect": 1.212,
+  "staff_step": 5.155,
+  "conf": 0.6552249789237976,
+  "cls": "noteheadBlackInSpace",
+  "witness": "slot",
+  "excess": 0.3679,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "aspect_just_under"
+  ],
+  "subject": "glyph/3/1/11/2/16",
+  "where": {
+   "page": 3,
+   "system": 1,
+   "staff": 11,
+   "cell": 2,
+   "glyph": 16
+  },
+  "part": "p3s1st11",
+  "measure": 2,
+  "height_spaces": 1.149,
+  "aspect": 1.314,
+  "staff_step": 5.22,
+  "conf": 0.48048847913742065,
+  "cls": "noteheadBlackInSpace",
+  "witness": "slot",
+  "excess": 0.3679,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "aspect_just_under"
+  ],
+  "subject": "glyph/2/1/1/1/5",
+  "where": {
+   "page": 2,
+   "system": 1,
+   "staff": 1,
+   "cell": 1,
+   "glyph": 5
+  },
+  "part": "p2s1st1",
+  "measure": 1,
+  "height_spaces": 1.15,
+  "aspect": 1.278,
+  "staff_step": 4.91,
+  "conf": 0.8154751658439636,
+  "cls": "noteheadBlackInSpace",
+  "witness": "slot",
+  "excess": 0.369,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "aspect_just_under"
+  ],
+  "subject": "glyph/2/1/5/1/1",
+  "where": {
+   "page": 2,
+   "system": 1,
+   "staff": 5,
+   "cell": 1,
+   "glyph": 1
+  },
+  "part": "p2s1st5",
+  "measure": 1,
+  "height_spaces": 1.15,
+  "aspect": 1.287,
+  "staff_step": 6.01,
+  "conf": 0.7655359506607056,
+  "cls": "noteheadBlackOnLine",
+  "witness": "slot",
+  "excess": 0.369,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "aspect_just_under"
+  ],
+  "subject": "glyph/3/0/1/4/7",
+  "where": {
+   "page": 3,
+   "system": 0,
+   "staff": 1,
+   "cell": 4,
+   "glyph": 7
+  },
+  "part": "p3s0st1",
+  "measure": 4,
+  "height_spaces": 1.15,
+  "aspect": 1.209,
+  "staff_step": 4.85,
+  "conf": 0.5781075358390808,
+  "cls": "noteheadBlackInSpace",
+  "witness": "slot",
+  "excess": 0.369,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "aspect_just_under"
+  ],
+  "subject": "glyph/3/0/3/3/10",
+  "where": {
+   "page": 3,
+   "system": 0,
+   "staff": 3,
+   "cell": 3,
+   "glyph": 10
+  },
+  "part": "p3s0st3",
+  "measure": 3,
+  "height_spaces": 1.15,
+  "aspect": 1.348,
+  "staff_step": 5.03,
+  "conf": 0.2928674519062042,
+  "cls": "noteheadHalfOnLine",
+  "witness": "slot",
+  "excess": 0.369,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "aspect_just_under"
+  ],
+  "subject": "glyph/3/1/3/8/8",
+  "where": {
+   "page": 3,
+   "system": 1,
+   "staff": 3,
+   "cell": 8,
+   "glyph": 8
+  },
+  "part": "p3s1st3",
+  "measure": 8,
+  "height_spaces": 1.15,
+  "aspect": 1.304,
+  "staff_step": 4.99,
+  "conf": 0.6153053045272827,
+  "cls": "noteheadBlackInSpace",
+  "witness": "slot",
+  "excess": 0.369,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "aspect_just_under"
+  ],
+  "subject": "glyph/3/1/5/1/9",
+  "where": {
+   "page": 3,
+   "system": 1,
+   "staff": 5,
+   "cell": 1,
+   "glyph": 9
+  },
+  "part": "p3s1st5",
+  "measure": 1,
+  "height_spaces": 1.15,
+  "aspect": 1.235,
+  "staff_step": 5.93,
+  "conf": 0.658930242061615,
+  "cls": "noteheadBlackOnLine",
+  "witness": "slot",
+  "excess": 0.369,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "aspect_just_under"
+  ],
+  "subject": "glyph/2/0/12/1/8",
+  "where": {
+   "page": 2,
+   "system": 0,
+   "staff": 12,
+   "cell": 1,
+   "glyph": 8
+  },
+  "part": "p2s0st12",
+  "measure": 1,
+  "height_spaces": 1.153,
+  "aspect": 1.292,
+  "staff_step": 5.011,
+  "conf": 0.7626925110816956,
+  "cls": "noteheadBlackInSpace",
+  "witness": "slot",
+  "excess": 0.3726,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "aspect_just_under"
+  ],
+  "subject": "glyph/0/0/2/5/7",
+  "where": {
+   "page": 0,
+   "system": 0,
+   "staff": 2,
+   "cell": 5,
+   "glyph": 7
+  },
+  "part": "p0s0st2",
+  "measure": 5,
+  "height_spaces": 1.16,
+  "aspect": 1.207,
+  "staff_step": 5.08,
+  "conf": 0.7555328011512756,
+  "cls": "noteheadBlackInSpace",
+  "witness": "slot",
+  "excess": 0.381,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "aspect_just_under"
+  ],
+  "subject": "glyph/2/0/2/3/5",
+  "where": {
+   "page": 2,
+   "system": 0,
+   "staff": 2,
+   "cell": 3,
+   "glyph": 5
+  },
+  "part": "p2s0st2",
+  "measure": 3,
+  "height_spaces": 1.16,
+  "aspect": 1.229,
+  "staff_step": 6.063,
+  "conf": 0.7781627774238586,
+  "cls": "noteheadBlackOnLine",
+  "witness": "slot",
+  "excess": 0.381,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "aspect_just_under"
+  ],
+  "subject": "glyph/2/1/11/7/1",
+  "where": {
+   "page": 2,
+   "system": 1,
+   "staff": 11,
+   "cell": 7,
+   "glyph": 1
+  },
+  "part": "p2s1st11",
+  "measure": 7,
+  "height_spaces": 1.16,
+  "aspect": 1.422,
+  "staff_step": 5.5,
+  "conf": 0.6290557384490967,
+  "cls": "noteheadHalfInSpace",
+  "witness": "slot",
+  "excess": 0.381,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "aspect_just_under"
+  ],
+  "subject": "glyph/2/1/2/4/3",
+  "where": {
+   "page": 2,
+   "system": 1,
+   "staff": 2,
+   "cell": 4,
+   "glyph": 3
+  },
+  "part": "p2s1st2",
+  "measure": 4,
+  "height_spaces": 1.16,
+  "aspect": 1.241,
+  "staff_step": 5.96,
+  "conf": 0.7554324865341187,
+  "cls": "noteheadBlackOnLine",
+  "witness": "slot",
+  "excess": 0.381,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "aspect_just_under"
+  ],
+  "subject": "glyph/2/1/5/2/4",
+  "where": {
+   "page": 2,
+   "system": 1,
+   "staff": 5,
+   "cell": 2,
+   "glyph": 4
+  },
+  "part": "p2s1st5",
+  "measure": 2,
+  "height_spaces": 1.16,
+  "aspect": 1.207,
+  "staff_step": 4.96,
+  "conf": 0.721491813659668,
+  "cls": "noteheadBlackInSpace",
+  "witness": "slot",
+  "excess": 0.381,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "aspect_just_under"
+  ],
+  "subject": "glyph/3/0/6/4/6",
+  "where": {
+   "page": 3,
+   "system": 0,
+   "staff": 6,
+   "cell": 4,
+   "glyph": 6
+  },
+  "part": "p3s0st6",
+  "measure": 4,
+  "height_spaces": 1.16,
+  "aspect": 1.233,
+  "staff_step": 4.9,
+  "conf": 0.6568415760993958,
+  "cls": "noteheadBlackInSpace",
+  "witness": "slot",
+  "excess": 0.381,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "aspect_just_under"
+  ],
+  "subject": "glyph/3/1/9/6/1",
+  "where": {
+   "page": 3,
+   "system": 1,
+   "staff": 9,
+   "cell": 6,
+   "glyph": 1
+  },
+  "part": "p3s1st9",
+  "measure": 6,
+  "height_spaces": 1.16,
+  "aspect": 1.25,
+  "staff_step": 4.924,
+  "conf": 0.750004768371582,
+  "cls": "noteheadBlackInSpace",
+  "witness": "slot",
+  "excess": 0.381,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "aspect_just_under"
+  ],
+  "subject": "glyph/1/0/0/5/13",
+  "where": {
+   "page": 1,
+   "system": 0,
+   "staff": 0,
+   "cell": 5,
+   "glyph": 13
+  },
+  "part": "p1s0st0",
+  "measure": 5,
+  "height_spaces": 1.162,
+  "aspect": 1.245,
+  "staff_step": 6.102,
+  "conf": 0.7203298807144165,
+  "cls": "noteheadBlackOnLine",
+  "witness": "slot",
+  "excess": 0.3833,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "aspect_just_under"
+  ],
+  "subject": "glyph/2/0/2/4/2",
+  "where": {
+   "page": 2,
+   "system": 0,
+   "staff": 2,
+   "cell": 4,
+   "glyph": 2
+  },
+  "part": "p2s0st2",
+  "measure": 4,
+  "height_spaces": 1.162,
+  "aspect": 1.235,
+  "staff_step": 6.226,
+  "conf": 0.8140209317207336,
+  "cls": "noteheadBlackOnLine",
+  "witness": "slot",
+  "excess": 0.3833,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "aspect_just_under"
+  ],
+  "subject": "glyph/2/0/2/5/10",
+  "where": {
+   "page": 2,
+   "system": 0,
+   "staff": 2,
+   "cell": 5,
+   "glyph": 10
+  },
+  "part": "p2s0st2",
+  "measure": 5,
+  "height_spaces": 1.162,
+  "aspect": 1.209,
+  "staff_step": 6.299,
+  "conf": 0.7153794765472412,
+  "cls": "noteheadBlackOnLine",
+  "witness": "slot",
+  "excess": 0.3833,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "aspect_just_under"
+  ],
+  "subject": "glyph/3/0/2/0/8",
+  "where": {
+   "page": 3,
+   "system": 0,
+   "staff": 2,
+   "cell": 0,
+   "glyph": 8
+  },
+  "part": "p3s0st2",
+  "measure": 0,
+  "height_spaces": 1.164,
+  "aspect": 1.275,
+  "staff_step": 5.933,
+  "conf": 0.7887586355209351,
+  "cls": "noteheadBlackOnLine",
+  "witness": "slot",
+  "excess": 0.3857,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "aspect_just_under"
+  ],
+  "subject": "glyph/1/0/2/2/10",
+  "where": {
+   "page": 1,
+   "system": 0,
+   "staff": 2,
+   "cell": 2,
+   "glyph": 10
+  },
+  "part": "p1s0st2",
+  "measure": 2,
+  "height_spaces": 1.17,
+  "aspect": 1.359,
+  "staff_step": 4.31,
+  "conf": 0.5257372856140137,
+  "cls": "noteheadHalfOnLine",
+  "witness": "neighbouring_bar",
+  "excess": 0.3929,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "aspect_just_under"
+  ],
+  "subject": "glyph/1/0/3/4/19",
+  "where": {
+   "page": 1,
+   "system": 0,
+   "staff": 3,
+   "cell": 4,
+   "glyph": 19
+  },
+  "part": "p1s0st3",
+  "measure": 4,
+  "height_spaces": 1.17,
+  "aspect": 1.247,
+  "staff_step": 5.938,
+  "conf": 0.7207500338554382,
+  "cls": "noteheadBlackOnLine",
+  "witness": "slot",
+  "excess": 0.3929,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "aspect_just_under"
+  ],
+  "subject": "glyph/3/0/1/8/16",
+  "where": {
+   "page": 3,
+   "system": 0,
+   "staff": 1,
+   "cell": 8,
+   "glyph": 16
+  },
+  "part": "p3s0st1",
+  "measure": 8,
+  "height_spaces": 1.17,
+  "aspect": 1.205,
+  "staff_step": 4.19,
+  "conf": 0.31195372343063354,
+  "cls": "noteheadBlackOnLine",
+  "witness": "neighbouring_bar",
+  "excess": 0.3929,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "aspect_just_under"
+  ],
+  "subject": "glyph/2/0/12/1/5",
+  "where": {
+   "page": 2,
+   "system": 0,
+   "staff": 12,
+   "cell": 1,
+   "glyph": 5
+  },
+  "part": "p2s0st12",
+  "measure": 1,
+  "height_spaces": 1.171,
+  "aspect": 1.242,
+  "staff_step": 4.994,
+  "conf": 0.7983977794647217,
+  "cls": "noteheadBlackInSpace",
+  "witness": "slot",
+  "excess": 0.394,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "aspect_just_under"
+  ],
+  "subject": "glyph/3/1/11/2/12",
+  "where": {
+   "page": 3,
+   "system": 1,
+   "staff": 11,
+   "cell": 2,
+   "glyph": 12
+  },
+  "part": "p3s1st11",
+  "measure": 2,
+  "height_spaces": 1.171,
+  "aspect": 1.234,
+  "staff_step": 5.198,
+  "conf": 0.5728734731674194,
+  "cls": "noteheadBlackInSpace",
+  "witness": "slot",
+  "excess": 0.394,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "aspect_just_under"
+  ],
+  "subject": "glyph/1/1/12/4/2",
+  "where": {
+   "page": 1,
+   "system": 1,
+   "staff": 12,
+   "cell": 4,
+   "glyph": 2
+  },
+  "part": "p1s1st12",
+  "measure": 4,
+  "height_spaces": 1.172,
+  "aspect": 1.226,
+  "staff_step": 6.532,
+  "conf": 0.7842047214508057,
+  "cls": "noteheadBlackOnLine",
+  "witness": "neighbouring_bar",
+  "excess": 0.3952,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "aspect_just_under"
+  ],
+  "subject": "glyph/1/1/3/1/11",
+  "where": {
+   "page": 1,
+   "system": 1,
+   "staff": 3,
+   "cell": 1,
+   "glyph": 11
+  },
+  "part": "p1s1st3",
+  "measure": 1,
+  "height_spaces": 1.172,
+  "aspect": 1.24,
+  "staff_step": 4.942,
+  "conf": 0.5493669509887695,
+  "cls": "noteheadBlackInSpace",
+  "witness": "slot",
+  "excess": 0.3952,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "aspect_just_under"
+  ],
+  "subject": "glyph/2/0/1/5/2",
+  "where": {
+   "page": 2,
+   "system": 0,
+   "staff": 1,
+   "cell": 5,
+   "glyph": 2
+  },
+  "part": "p2s0st1",
+  "measure": 5,
+  "height_spaces": 1.175,
+  "aspect": 1.218,
+  "staff_step": 6.475,
+  "conf": 0.7611613273620605,
+  "cls": "noteheadBlackOnLine",
+  "witness": "slot",
+  "excess": 0.3988,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "aspect_just_under"
+  ],
+  "subject": "glyph/2/0/2/5/3",
+  "where": {
+   "page": 2,
+   "system": 0,
+   "staff": 2,
+   "cell": 5,
+   "glyph": 3
+  },
+  "part": "p2s0st2",
+  "measure": 5,
+  "height_spaces": 1.175,
+  "aspect": 1.23,
+  "staff_step": 6.475,
+  "conf": 0.7806419134140015,
+  "cls": "noteheadBlackOnLine",
+  "witness": "slot",
+  "excess": 0.3988,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "aspect_just_under"
+  ],
+  "subject": "glyph/3/1/1/8/2",
+  "where": {
+   "page": 3,
+   "system": 1,
+   "staff": 1,
+   "cell": 8,
+   "glyph": 2
+  },
+  "part": "p3s1st1",
+  "measure": 8,
+  "height_spaces": 1.18,
+  "aspect": 1.271,
+  "staff_step": 3.96,
+  "conf": 0.7787596583366394,
+  "cls": "noteheadBlackOnLine",
+  "witness": "neighbouring_bar",
+  "excess": 0.4048,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "aspect_just_under"
+  ],
+  "subject": "glyph/3/1/1/8/5",
+  "where": {
+   "page": 3,
+   "system": 1,
+   "staff": 1,
+   "cell": 8,
+   "glyph": 5
+  },
+  "part": "p3s1st1",
+  "measure": 8,
+  "height_spaces": 1.18,
+  "aspect": 1.203,
+  "staff_step": 6.02,
+  "conf": 0.7320685386657715,
+  "cls": "noteheadBlackOnLine",
+  "witness": "slot",
+  "excess": 0.4048,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "aspect_just_under"
+  ],
+  "subject": "glyph/3/1/5/8/12",
+  "where": {
+   "page": 3,
+   "system": 1,
+   "staff": 5,
+   "cell": 8,
+   "glyph": 12
+  },
+  "part": "p3s1st5",
+  "measure": 8,
+  "height_spaces": 1.18,
+  "aspect": 1.203,
+  "staff_step": 4.94,
+  "conf": 0.5791990756988525,
+  "cls": "noteheadBlackInSpace",
+  "witness": "slot",
+  "excess": 0.4048,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "aspect_just_under"
+  ],
+  "subject": "glyph/2/0/1/2/4",
+  "where": {
+   "page": 2,
+   "system": 0,
+   "staff": 1,
+   "cell": 2,
+   "glyph": 4
+  },
+  "part": "p2s0st1",
+  "measure": 2,
+  "height_spaces": 1.183,
+  "aspect": 1.236,
+  "staff_step": 5.975,
+  "conf": 0.7835769653320312,
+  "cls": "noteheadBlackOnLine",
+  "witness": "slot",
+  "excess": 0.4083,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "height_just_over"
+  ],
+  "subject": "glyph/2/0/8/1/4",
+  "where": {
+   "page": 2,
+   "system": 0,
+   "staff": 8,
+   "cell": 1,
+   "glyph": 4
+  },
+  "part": "p2s0st8",
+  "measure": 1,
+  "height_spaces": 0.94,
+  "aspect": 0.962,
+  "staff_step": 4.736,
+  "conf": 0.6518685221672058,
+  "cls": "noteheadBlackInSpace",
+  "witness": "slot",
+  "excess": 0.4098,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "aspect_just_under"
+  ],
+  "subject": "glyph/1/0/0/0/31",
+  "where": {
+   "page": 1,
+   "system": 0,
+   "staff": 0,
+   "cell": 0,
+   "glyph": 31
+  },
+  "part": "p1s0st0",
+  "measure": 0,
+  "height_spaces": 1.188,
+  "aspect": 1.273,
+  "staff_step": 5.173,
+  "conf": 0.6990309953689575,
+  "cls": "noteheadBlackInSpace",
+  "witness": "slot",
+  "excess": 0.4143,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "aspect_just_under"
+  ],
+  "subject": "glyph/1/0/3/0/15",
+  "where": {
+   "page": 1,
+   "system": 0,
+   "staff": 3,
+   "cell": 0,
+   "glyph": 15
+  },
+  "part": "p1s0st3",
+  "measure": 0,
+  "height_spaces": 1.188,
+  "aspect": 1.291,
+  "staff_step": 6.123,
+  "conf": 0.7442833185195923,
+  "cls": "noteheadBlackOnLine",
+  "witness": "slot",
+  "excess": 0.4143,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "aspect_just_under"
+  ],
+  "subject": "glyph/1/0/3/0/17",
+  "where": {
+   "page": 1,
+   "system": 0,
+   "staff": 3,
+   "cell": 0,
+   "glyph": 17
+  },
+  "part": "p1s0st3",
+  "measure": 0,
+  "height_spaces": 1.188,
+  "aspect": 1.218,
+  "staff_step": 5.173,
+  "conf": 0.7205188870429993,
+  "cls": "noteheadBlackInSpace",
+  "witness": "slot",
+  "excess": 0.4143,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "aspect_just_under"
+  ],
+  "subject": "glyph/1/0/6/0/11",
+  "where": {
+   "page": 1,
+   "system": 0,
+   "staff": 6,
+   "cell": 0,
+   "glyph": 11
+  },
+  "part": "p1s0st6",
+  "measure": 0,
+  "height_spaces": 1.188,
+  "aspect": 1.273,
+  "staff_step": 4.18,
+  "conf": 0.7447251081466675,
+  "cls": "noteheadBlackOnLine",
+  "witness": "neighbouring_bar",
+  "excess": 0.4143,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "aspect_just_under"
+  ],
+  "subject": "glyph/2/0/12/0/16",
+  "where": {
+   "page": 2,
+   "system": 0,
+   "staff": 12,
+   "cell": 0,
+   "glyph": 16
+  },
+  "part": "p2s0st12",
+  "measure": 0,
+  "height_spaces": 1.188,
+  "aspect": 1.219,
+  "staff_step": 5.008,
+  "conf": 0.6372888088226318,
+  "cls": "noteheadBlackInSpace",
+  "witness": "slot",
+  "excess": 0.4143,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "aspect_just_under"
+  ],
+  "subject": "glyph/1/0/13/3/4",
+  "where": {
+   "page": 1,
+   "system": 0,
+   "staff": 13,
+   "cell": 3,
+   "glyph": 4
+  },
+  "part": "p1s0st13",
+  "measure": 3,
+  "height_spaces": 1.19,
+  "aspect": 1.227,
+  "staff_step": 4.07,
+  "conf": 0.7948964834213257,
+  "cls": "noteheadBlackOnLine",
+  "witness": "neighbouring_bar",
+  "excess": 0.4167,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "aspect_just_under"
+  ],
+  "subject": "glyph/1/1/11/6/4",
+  "where": {
+   "page": 1,
+   "system": 1,
+   "staff": 11,
+   "cell": 6,
+   "glyph": 4
+  },
+  "part": "p1s1st11",
+  "measure": 6,
+  "height_spaces": 1.19,
+  "aspect": 1.21,
+  "staff_step": 6.19,
+  "conf": 0.6056115031242371,
+  "cls": "noteheadBlackInSpace",
+  "witness": "slot",
+  "excess": 0.4167,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "aspect_just_under"
+  ],
+  "subject": "glyph/3/0/11/7/33",
+  "where": {
+   "page": 3,
+   "system": 0,
+   "staff": 11,
+   "cell": 7,
+   "glyph": 33
+  },
+  "part": "p3s0st11",
+  "measure": 7,
+  "height_spaces": 1.19,
+  "aspect": 1.227,
+  "staff_step": 5.07,
+  "conf": 0.25419628620147705,
+  "cls": "noteheadBlackInSpace",
+  "witness": "slot",
+  "excess": 0.4167,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "aspect_just_under"
+  ],
+  "subject": "glyph/3/1/3/1/5",
+  "where": {
+   "page": 3,
+   "system": 1,
+   "staff": 3,
+   "cell": 1,
+   "glyph": 5
+  },
+  "part": "p3s1st3",
+  "measure": 1,
+  "height_spaces": 1.19,
+  "aspect": 1.202,
+  "staff_step": 6.13,
+  "conf": 0.8054112792015076,
+  "cls": "noteheadBlackOnLine",
+  "witness": "slot",
+  "excess": 0.4167,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "aspect_just_under"
+  ],
+  "subject": "glyph/2/0/6/2/5",
+  "where": {
+   "page": 2,
+   "system": 0,
+   "staff": 6,
+   "cell": 2,
+   "glyph": 5
+  },
+  "part": "p2s0st6",
+  "measure": 2,
+  "height_spaces": 1.194,
+  "aspect": 1.439,
+  "staff_step": 6.857,
+  "conf": 0.4941057860851288,
+  "cls": "noteheadHalfInSpace",
+  "witness": "neighbouring_bar",
+  "excess": 0.4214,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "aspect_just_under"
+  ],
+  "subject": "glyph/2/0/6/0/5",
+  "where": {
+   "page": 2,
+   "system": 0,
+   "staff": 6,
+   "cell": 0,
+   "glyph": 5
+  },
+  "part": "p2s0st6",
+  "measure": 0,
+  "height_spaces": 1.198,
+  "aspect": 1.219,
+  "staff_step": 4.503,
+  "conf": 0.5770089626312256,
+  "cls": "noteheadHalfInSpace",
+  "witness": "slot",
+  "excess": 0.4262,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "aspect_just_under"
+  ],
+  "subject": "glyph/1/1/0/5/13",
+  "where": {
+   "page": 1,
+   "system": 1,
+   "staff": 0,
+   "cell": 5,
+   "glyph": 13
+  },
+  "part": "p1s1st0",
+  "measure": 5,
+  "height_spaces": 1.2,
+  "aspect": 1.225,
+  "staff_step": 7.22,
+  "conf": 0.4706941246986389,
+  "cls": "noteheadBlackInSpace",
+  "witness": "neighbouring_bar",
+  "excess": 0.4286,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "aspect_just_under"
+  ],
+  "subject": "glyph/3/0/2/4/5",
+  "where": {
+   "page": 3,
+   "system": 0,
+   "staff": 2,
+   "cell": 4,
+   "glyph": 5
+  },
+  "part": "p3s0st2",
+  "measure": 4,
+  "height_spaces": 1.2,
+  "aspect": 1.2,
+  "staff_step": 5.84,
+  "conf": 0.7011972665786743,
+  "cls": "noteheadBlackOnLine",
+  "witness": "slot",
+  "excess": 0.4286,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "aspect_just_under"
+  ],
+  "subject": "glyph/2/0/12/0/5",
+  "where": {
+   "page": 2,
+   "system": 0,
+   "staff": 12,
+   "cell": 0,
+   "glyph": 5
+  },
+  "part": "p2s0st12",
+  "measure": 0,
+  "height_spaces": 1.206,
+  "aspect": 1.215,
+  "staff_step": 4.915,
+  "conf": 0.8182197213172913,
+  "cls": "noteheadBlackInSpace",
+  "witness": "slot",
+  "excess": 0.4357,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "aspect_just_under"
+  ],
+  "subject": "glyph/2/0/12/1/14",
+  "where": {
+   "page": 2,
+   "system": 0,
+   "staff": 12,
+   "cell": 1,
+   "glyph": 14
+  },
+  "part": "p2s0st12",
+  "measure": 1,
+  "height_spaces": 1.206,
+  "aspect": 1.25,
+  "staff_step": 5.065,
+  "conf": 0.6703366637229919,
+  "cls": "noteheadBlackInSpace",
+  "witness": "slot",
+  "excess": 0.4357,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "aspect_just_under"
+  ],
+  "subject": "glyph/2/0/11/0/4",
+  "where": {
+   "page": 2,
+   "system": 0,
+   "staff": 11,
+   "cell": 0,
+   "glyph": 4
+  },
+  "part": "p2s0st11",
+  "measure": 0,
+  "height_spaces": 1.21,
+  "aspect": 1.299,
+  "staff_step": 5.723,
+  "conf": 0.8408229351043701,
+  "cls": "noteheadBlackOnLine",
+  "witness": "slot",
+  "excess": 0.4405,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "aspect_just_under"
+  ],
+  "subject": "glyph/2/1/9/7/1",
+  "where": {
+   "page": 2,
+   "system": 1,
+   "staff": 9,
+   "cell": 7,
+   "glyph": 1
+  },
+  "part": "p2s1st9",
+  "measure": 7,
+  "height_spaces": 1.21,
+  "aspect": 1.339,
+  "staff_step": 5.65,
+  "conf": 0.5837111473083496,
+  "cls": "noteheadHalfInSpace",
+  "witness": "slot",
+  "excess": 0.4405,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "aspect_just_under"
+  ],
+  "subject": "glyph/2/0/7/5/6",
+  "where": {
+   "page": 2,
+   "system": 0,
+   "staff": 7,
+   "cell": 5,
+   "glyph": 6
+  },
+  "part": "p2s0st7",
+  "measure": 5,
+  "height_spaces": 1.214,
+  "aspect": 1.225,
+  "staff_step": 5.923,
+  "conf": 0.684502363204956,
+  "cls": "noteheadBlackInSpace",
+  "witness": "slot",
+  "excess": 0.4452,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "aspect_just_under"
+  ],
+  "subject": "glyph/2/0/6/1/16",
+  "where": {
+   "page": 2,
+   "system": 0,
+   "staff": 6,
+   "cell": 1,
+   "glyph": 16
+  },
+  "part": "p2s0st6",
+  "measure": 1,
+  "height_spaces": 1.217,
+  "aspect": 1.426,
+  "staff_step": 4.687,
+  "conf": 0.2550961971282959,
+  "cls": "noteheadHalfOnLine",
+  "witness": "slot",
+  "excess": 0.4488,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "height_just_over"
+  ],
+  "subject": "glyph/2/0/8/1/13",
+  "where": {
+   "page": 2,
+   "system": 0,
+   "staff": 8,
+   "cell": 1,
+   "glyph": 13
+  },
+  "part": "p2s0st8",
+  "measure": 1,
+  "height_spaces": 1.029,
+  "aspect": 0.897,
+  "staff_step": 6.422,
+  "conf": 0.43013566732406616,
+  "cls": "noteheadBlackInSpace",
+  "witness": "slot",
+  "excess": 0.4497,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "aspect_just_under"
+  ],
+  "subject": "glyph/1/1/3/5/2",
+  "where": {
+   "page": 1,
+   "system": 1,
+   "staff": 3,
+   "cell": 5,
+   "glyph": 2
+  },
+  "part": "p1s1st3",
+  "measure": 5,
+  "height_spaces": 1.22,
+  "aspect": 1.221,
+  "staff_step": 6.423,
+  "conf": 0.7827686667442322,
+  "cls": "noteheadBlackOnLine",
+  "witness": "slot",
+  "excess": 0.4524,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "aspect_just_under"
+  ],
+  "subject": "glyph/3/1/3/2/6",
+  "where": {
+   "page": 3,
+   "system": 1,
+   "staff": 3,
+   "cell": 2,
+   "glyph": 6
+  },
+  "part": "p3s1st3",
+  "measure": 2,
+  "height_spaces": 1.226,
+  "aspect": 1.216,
+  "staff_step": 4.039,
+  "conf": 0.7878317832946777,
+  "cls": "noteheadBlackOnLine",
+  "witness": "neighbouring_bar",
+  "excess": 0.4595,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "aspect_just_under"
+  ],
+  "subject": "glyph/3/0/2/3/3",
+  "where": {
+   "page": 3,
+   "system": 0,
+   "staff": 2,
+   "cell": 3,
+   "glyph": 3
+  },
+  "part": "p3s0st2",
+  "measure": 3,
+  "height_spaces": 1.23,
+  "aspect": 1.228,
+  "staff_step": 4.93,
+  "conf": 0.4707508981227875,
+  "cls": "noteheadHalfInSpace",
+  "witness": "slot",
+  "excess": 0.4643,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "aspect_just_under"
+  ],
+  "subject": "glyph/1/0/1/0/30",
+  "where": {
+   "page": 1,
+   "system": 0,
+   "staff": 1,
+   "cell": 0,
+   "glyph": 30
+  },
+  "part": "p1s0st1",
+  "measure": 0,
+  "height_spaces": 1.231,
+  "aspect": 1.246,
+  "staff_step": 5.096,
+  "conf": 0.5354533195495605,
+  "cls": "noteheadBlackInSpace",
+  "witness": "slot",
+  "excess": 0.4655,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "aspect_just_under"
+  ],
+  "subject": "glyph/1/0/3/3/7",
+  "where": {
+   "page": 1,
+   "system": 0,
+   "staff": 3,
+   "cell": 3,
+   "glyph": 7
+  },
+  "part": "p1s0st3",
+  "measure": 3,
+  "height_spaces": 1.24,
+  "aspect": 1.202,
+  "staff_step": 6.023,
+  "conf": 0.8189345002174377,
+  "cls": "noteheadBlackOnLine",
+  "witness": "slot",
+  "excess": 0.4762,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "aspect_just_under"
+  ],
+  "subject": "glyph/1/1/3/2/6",
+  "where": {
+   "page": 1,
+   "system": 1,
+   "staff": 3,
+   "cell": 2,
+   "glyph": 6
+  },
+  "part": "p1s1st3",
+  "measure": 2,
+  "height_spaces": 1.24,
+  "aspect": 1.298,
+  "staff_step": 6.136,
+  "conf": 0.7180978059768677,
+  "cls": "noteheadBlackOnLine",
+  "witness": "slot",
+  "excess": 0.4762,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "aspect_just_under"
+  ],
+  "subject": "glyph/2/1/12/6/3",
+  "where": {
+   "page": 2,
+   "system": 1,
+   "staff": 12,
+   "cell": 6,
+   "glyph": 3
+  },
+  "part": "p2s1st12",
+  "measure": 6,
+  "height_spaces": 1.24,
+  "aspect": 1.226,
+  "staff_step": 4.5,
+  "conf": 0.8319823741912842,
+  "cls": "noteheadBlackOnLine",
+  "witness": "slot",
+  "excess": 0.4762,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "aspect_just_under"
+  ],
+  "subject": "glyph/2/0/12/1/13",
+  "where": {
+   "page": 2,
+   "system": 0,
+   "staff": 12,
+   "cell": 1,
+   "glyph": 13
+  },
+  "part": "p2s0st12",
+  "measure": 1,
+  "height_spaces": 1.242,
+  "aspect": 1.214,
+  "staff_step": 4.994,
+  "conf": 0.7008678913116455,
+  "cls": "noteheadBlackInSpace",
+  "witness": "slot",
+  "excess": 0.4786,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "aspect_just_under"
+  ],
+  "subject": "glyph/1/0/2/1/26",
+  "where": {
+   "page": 1,
+   "system": 0,
+   "staff": 2,
+   "cell": 1,
+   "glyph": 26
+  },
+  "part": "p1s0st2",
+  "measure": 1,
+  "height_spaces": 1.262,
+  "aspect": 1.213,
+  "staff_step": 5.952,
+  "conf": 0.4497866928577423,
+  "cls": "noteheadWholeInSpace",
+  "witness": "slot",
+  "excess": 0.5024,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "aspect_just_under"
+  ],
+  "subject": "glyph/1/0/3/2/0",
+  "where": {
+   "page": 1,
+   "system": 0,
+   "staff": 3,
+   "cell": 2,
+   "glyph": 0
+  },
+  "part": "p1s0st3",
+  "measure": 2,
+  "height_spaces": 1.27,
+  "aspect": 1.205,
+  "staff_step": 6.053,
+  "conf": 0.8648537993431091,
+  "cls": "noteheadBlackOnLine",
+  "witness": "slot",
+  "excess": 0.5119,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "height_just_over"
+  ],
+  "subject": "glyph/0/0/4/3/5",
+  "where": {
+   "page": 0,
+   "system": 0,
+   "staff": 4,
+   "cell": 3,
+   "glyph": 5
+  },
+  "part": "p0s0st4",
+  "measure": 3,
+  "height_spaces": 1.1,
+  "aspect": 0.755,
+  "staff_step": 3.04,
+  "conf": 0.3168441355228424,
+  "cls": "noteheadHalfInSpace",
+  "witness": "neighbouring_bar",
+  "excess": 0.5368,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "aspect_just_under"
+  ],
+  "subject": "glyph/1/0/6/1/12",
+  "where": {
+   "page": 1,
+   "system": 0,
+   "staff": 6,
+   "cell": 1,
+   "glyph": 12
+  },
+  "part": "p1s0st6",
+  "measure": 1,
+  "height_spaces": 1.297,
+  "aspect": 1.209,
+  "staff_step": 5.768,
+  "conf": 0.4580298066139221,
+  "cls": "noteheadWholeOnLine",
+  "witness": "slot",
+  "excess": 0.544,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "height_just_over"
+  ],
+  "subject": "glyph/1/0/12/6/10",
+  "where": {
+   "page": 1,
+   "system": 0,
+   "staff": 12,
+   "cell": 6,
+   "glyph": 10
+  },
+  "part": "p1s0st12",
+  "measure": 6,
+  "height_spaces": 0.887,
+  "aspect": 0.457,
+  "staff_step": 5.304,
+  "conf": 0.43039196729660034,
+  "cls": "noteheadBlackInSpace",
+  "witness": "slot",
+  "excess": 0.7196,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "height_just_over"
+  ],
+  "subject": "glyph/3/1/11/3/17",
+  "where": {
+   "page": 3,
+   "system": 1,
+   "staff": 11,
+   "cell": 3,
+   "glyph": 17
+  },
+  "part": "p3s1st11",
+  "measure": 3,
+  "height_spaces": 0.98,
+  "aspect": 0.367,
+  "staff_step": 4.82,
+  "conf": 0.3985986113548279,
+  "cls": "noteheadBlackInSpace",
+  "witness": "slot",
+  "excess": 0.7748,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "height_just_over"
+  ],
+  "subject": "glyph/1/1/3/1/24",
+  "where": {
+   "page": 1,
+   "system": 1,
+   "staff": 3,
+   "cell": 1,
+   "glyph": 24
+  },
+  "part": "p1s1st3",
+  "measure": 1,
+  "height_spaces": 0.867,
+  "aspect": 0.366,
+  "staff_step": 5.419,
+  "conf": 0.3040017783641815,
+  "cls": "noteheadBlackOnLine",
+  "witness": "slot",
+  "excess": 0.7755,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "height_just_over"
+  ],
+  "subject": "glyph/1/0/2/3/23",
+  "where": {
+   "page": 1,
+   "system": 0,
+   "staff": 2,
+   "cell": 3,
+   "glyph": 23
+  },
+  "part": "p1s0st2",
+  "measure": 3,
+  "height_spaces": 0.89,
+  "aspect": 0.36,
+  "staff_step": 5.05,
+  "conf": 0.29132282733917236,
+  "cls": "noteheadBlackInSpace",
+  "witness": "slot",
+  "excess": 0.7791,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "height_just_over"
+  ],
+  "subject": "glyph/1/1/8/2/17",
+  "where": {
+   "page": 1,
+   "system": 1,
+   "staff": 8,
+   "cell": 2,
+   "glyph": 17
+  },
+  "part": "p1s1st8",
+  "measure": 2,
+  "height_spaces": 0.906,
+  "aspect": 0.342,
+  "staff_step": 5.034,
+  "conf": 0.46602383255958557,
+  "cls": "noteheadBlackInSpace",
+  "witness": "slot",
+  "excess": 0.7902,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "height_just_over"
+  ],
+  "subject": "glyph/3/1/4/9/5",
+  "where": {
+   "page": 3,
+   "system": 1,
+   "staff": 4,
+   "cell": 9,
+   "glyph": 5
+  },
+  "part": "p3s1st4",
+  "measure": 9,
+  "height_spaces": 0.88,
+  "aspect": 0.341,
+  "staff_step": 5.18,
+  "conf": 0.295883446931839,
+  "cls": "noteheadBlackInSpace",
+  "witness": "slot",
+  "excess": 0.7908,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "height_just_over"
+  ],
+  "subject": "glyph/3/1/9/8/15",
+  "where": {
+   "page": 3,
+   "system": 1,
+   "staff": 9,
+   "cell": 8,
+   "glyph": 15
+  },
+  "part": "p3s1st9",
+  "measure": 8,
+  "height_spaces": 0.92,
+  "aspect": 0.315,
+  "staff_step": 5.204,
+  "conf": 0.3443169891834259,
+  "cls": "noteheadBlackInSpace",
+  "witness": "slot",
+  "excess": 0.8067,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "aspect_just_under"
+  ],
+  "subject": "glyph/2/0/8/0/24",
+  "where": {
+   "page": 2,
+   "system": 0,
+   "staff": 8,
+   "cell": 0,
+   "glyph": 24
+  },
+  "part": "p2s0st8",
+  "measure": 0,
+  "height_spaces": 1.521,
+  "aspect": 1.317,
+  "staff_step": 6.092,
+  "conf": 0.27222907543182373,
+  "cls": "noteheadBlackOnLine",
+  "witness": "slot",
+  "excess": 0.8107,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "height_just_over"
+  ],
+  "subject": "glyph/3/1/10/8/17",
+  "where": {
+   "page": 3,
+   "system": 1,
+   "staff": 10,
+   "cell": 8,
+   "glyph": 17
+  },
+  "part": "p3s1st10",
+  "measure": 8,
+  "height_spaces": 0.9,
+  "aspect": 0.3,
+  "staff_step": 5.0,
+  "conf": 0.3880573809146881,
+  "cls": "noteheadBlackInSpace",
+  "witness": "slot",
+  "excess": 0.816,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "height_just_over"
+  ],
+  "subject": "glyph/2/0/10/2/18",
+  "where": {
+   "page": 2,
+   "system": 0,
+   "staff": 10,
+   "cell": 2,
+   "glyph": 18
+  },
+  "part": "p2s0st10",
+  "measure": 2,
+  "height_spaces": 1.04,
+  "aspect": 0.298,
+  "staff_step": 5.336,
+  "conf": 0.3089149594306946,
+  "cls": "noteheadBlackInSpace",
+  "witness": "slot",
+  "excess": 0.8172,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "height_just_over"
+  ],
+  "subject": "glyph/3/0/13/4/8",
+  "where": {
+   "page": 3,
+   "system": 0,
+   "staff": 13,
+   "cell": 4,
+   "glyph": 8
+  },
+  "part": "p3s0st13",
+  "measure": 4,
+  "height_spaces": 0.85,
+  "aspect": 0.294,
+  "staff_step": 5.23,
+  "conf": 0.43180257081985474,
+  "cls": "noteheadBlackInSpace",
+  "witness": "slot",
+  "excess": 0.8196,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "height_just_over"
+  ],
+  "subject": "glyph/3/1/6/8/20",
+  "where": {
+   "page": 3,
+   "system": 1,
+   "staff": 6,
+   "cell": 8,
+   "glyph": 20
+  },
+  "part": "p3s1st6",
+  "measure": 8,
+  "height_spaces": 0.89,
+  "aspect": 0.292,
+  "staff_step": 5.25,
+  "conf": 0.3541714549064636,
+  "cls": "noteheadBlackInSpace",
+  "witness": "slot",
+  "excess": 0.8209,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "height_just_over"
+  ],
+  "subject": "glyph/3/1/10/3/15",
+  "where": {
+   "page": 3,
+   "system": 1,
+   "staff": 10,
+   "cell": 3,
+   "glyph": 15
+  },
+  "part": "p3s1st10",
+  "measure": 3,
+  "height_spaces": 0.93,
+  "aspect": 0.29,
+  "staff_step": 5.23,
+  "conf": 0.5464069247245789,
+  "cls": "noteheadBlackInSpace",
+  "witness": "slot",
+  "excess": 0.8221,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "height_just_over"
+  ],
+  "subject": "glyph/1/0/6/0/27",
+  "where": {
+   "page": 1,
+   "system": 0,
+   "staff": 6,
+   "cell": 0,
+   "glyph": 27
+  },
+  "part": "p1s0st6",
+  "measure": 0,
+  "height_spaces": 0.993,
+  "aspect": 0.283,
+  "staff_step": 5.238,
+  "conf": 0.3585420250892639,
+  "cls": "noteheadBlackInSpace",
+  "witness": "slot",
+  "excess": 0.8264,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "height_just_over"
+  ],
+  "subject": "glyph/2/1/9/6/8",
+  "where": {
+   "page": 2,
+   "system": 1,
+   "staff": 9,
+   "cell": 6,
+   "glyph": 8
+  },
+  "part": "p2s1st9",
+  "measure": 6,
+  "height_spaces": 1.06,
+  "aspect": 0.283,
+  "staff_step": 6.76,
+  "conf": 0.3001968562602997,
+  "cls": "noteheadBlackInSpace",
+  "witness": "neighbouring_bar",
+  "excess": 0.8264,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "height_just_over"
+  ],
+  "subject": "glyph/3/1/5/9/10",
+  "where": {
+   "page": 3,
+   "system": 1,
+   "staff": 5,
+   "cell": 9,
+   "glyph": 10
+  },
+  "part": "p3s1st5",
+  "measure": 9,
+  "height_spaces": 1.05,
+  "aspect": 0.257,
+  "staff_step": 5.17,
+  "conf": 0.38430649042129517,
+  "cls": "noteheadBlackInSpace",
+  "witness": "slot",
+  "excess": 0.8423,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "height_just_over"
+  ],
+  "subject": "glyph/3/0/9/4/20",
+  "where": {
+   "page": 3,
+   "system": 0,
+   "staff": 9,
+   "cell": 4,
+   "glyph": 20
+  },
+  "part": "p3s0st9",
+  "measure": 4,
+  "height_spaces": 1.07,
+  "aspect": 0.243,
+  "staff_step": 5.29,
+  "conf": 0.2622181177139282,
+  "cls": "noteheadBlackInSpace",
+  "witness": "slot",
+  "excess": 0.8509,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "height_just_over"
+  ],
+  "subject": "glyph/1/1/3/6/11",
+  "where": {
+   "page": 1,
+   "system": 1,
+   "staff": 3,
+   "cell": 6,
+   "glyph": 11
+  },
+  "part": "p1s1st3",
+  "measure": 6,
+  "height_spaces": 1.08,
+  "aspect": 0.241,
+  "staff_step": 5.743,
+  "conf": 0.26551276445388794,
+  "cls": "noteheadBlackInSpace",
+  "witness": "slot",
+  "excess": 0.8521,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "height_just_over"
+  ],
+  "subject": "glyph/3/1/2/5/13",
+  "where": {
+   "page": 3,
+   "system": 1,
+   "staff": 2,
+   "cell": 5,
+   "glyph": 13
+  },
+  "part": "p3s1st2",
+  "measure": 5,
+  "height_spaces": 1.07,
+  "aspect": 0.234,
+  "staff_step": 5.27,
+  "conf": 0.35332632064819336,
+  "cls": "noteheadBlackInSpace",
+  "witness": "slot",
+  "excess": 0.8564,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "aspect_just_under"
+  ],
+  "subject": "glyph/2/0/12/1/29",
+  "where": {
+   "page": 2,
+   "system": 0,
+   "staff": 12,
+   "cell": 1,
+   "glyph": 29
+  },
+  "part": "p2s0st12",
+  "measure": 1,
+  "height_spaces": 1.685,
+  "aspect": 1.295,
+  "staff_step": 4.266,
+  "conf": 0.2986702024936676,
+  "cls": "noteheadBlackOnLine",
+  "witness": "neighbouring_bar",
+  "excess": 1.006,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ },
+ {
+  "near_miss_because": [
+   "aspect_just_under"
+  ],
+  "subject": "glyph/3/1/12/2/16",
+  "where": {
+   "page": 3,
+   "system": 1,
+   "staff": 12,
+   "cell": 2,
+   "glyph": 16
+  },
+  "part": "p3s1st12",
+  "measure": 2,
+  "height_spaces": 1.844,
+  "aspect": 1.24,
+  "staff_step": 6.403,
+  "conf": 0.47235605120658875,
+  "cls": "noteheadBlackInSpace",
+  "witness": "slot",
+  "excess": 1.1952,
+  "shape_shipped": false,
+  "shape_mine": false,
+  "alone_in_bar": true
+ }
+]

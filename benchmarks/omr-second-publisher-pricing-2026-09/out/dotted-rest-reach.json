@@ -1,0 +1,26 @@
+{
+ "Breitkopf Brahms 1 p0-3": {
+  "aug_dot_rows": 656,
+  "rest_rows": 1028,
+  "note_durations": 2828,
+  "dotted_notes": 454,
+  "rest_durations": 1129,
+  "dotted_rests": 1,
+  "dotted_rest_rows": [
+   {
+    "subject": "glyph/2/1/6/1/1",
+    "dots": 1,
+    "beats": 6.0
+   }
+  ]
+ },
+ "Litolff Beethoven 5 p1-4 (CONTROL \u2014 where it moved ZERO)": {
+  "aug_dot_rows": 35,
+  "rest_rows": 646,
+  "note_durations": 2000,
+  "dotted_notes": 4,
+  "rest_durations": 738,
+  "dotted_rests": 0,
+  "dotted_rest_rows": []
+ }
+}

@@ -1,0 +1,22 @@
+positive control: 3015 glyph_owner verdicts, 4521 pitch, 4365 duration in the record
+
+subject                       step witness           owner              pitch    dur  state
+glyph/1/0/13/0/29            +5.15 slot              -                     E3 {'beats': 2.0, 'written': 2.0, 'dots': 0, 'beam_levels': 0}  writable
+glyph/1/0/2/5/32            +15.56 neighbouring_bar  -                     G6 {'beats': 1.0, 'written': 1.0, 'dots': 0, 'beam_levels': 0}  writable
+glyph/1/1/5/7/11             -7.10 neighbouring_bar  1/1/6                 D5 {'beats': 2.0, 'written': 2.0, 'dots': 0, 'beam_levels': 0}  owned_by_another_staff
+glyph/2/1/6/0/10             -7.54 neighbouring_bar  -                     E3 {'beats': 1.0, 'written': 1.0, 'dots': 0, 'beam_levels': 0}  writable
+glyph/2/1/6/0/8              -7.55 neighbouring_bar  -                     E3 {'beats': 1.0, 'written': 1.0, 'dots': 0, 'beam_levels': 0}  writable
+glyph/3/0/6/0/12             -7.55 neighbouring_bar  -                     E3 {'beats': 1.0, 'written': 1.0, 'dots': 0, 'beam_levels': 0}  writable
+glyph/3/0/6/0/16             -7.63 neighbouring_bar  -                     E3 {'beats': 1.0, 'written': 1.0, 'dots': 0, 'beam_levels': 0}  writable
+glyph/3/0/6/4/12             -7.62 neighbouring_bar  -                     E3 {'beats': 1.5, 'written': 1.5, 'dots': 1, 'beam_levels': 0}  writable
+glyph/3/0/6/4/8              -7.57 neighbouring_bar  -                     E3 {'beats': 1.5, 'written': 1.5, 'dots': 1, 'beam_levels': 0}  writable
+glyph/3/0/6/8/1              -7.48 neighbouring_bar  -                     E3 {'beats': 0.5, 'written': 0.5, 'dots': 0, 'beam_levels': 1}  writable
+glyph/3/1/7/9/15             -7.63 neighbouring_bar  -                     D3 {'beats': 1.0, 'written': 1.0, 'dots': 0, 'beam_levels': 0}  writable
+glyph/3/1/7/9/9              -7.61 neighbouring_bar  -                     D3 {'beats': 1.0, 'written': 1.0, 'dots': 0, 'beam_levels': 0}  writable
+
+SUMMARY: {'writable': 11, 'owned_by_another_staff': 1}
+
+  `owned_by_another_staff`  the exporter ALREADY refuses it; a fire here costs nothing
+  `writable`                the exporter WOULD have written a note; a fire here DELETES it
+
+wrote -> benchmarks/omr-second-publisher-pricing-2026-09/out/fires-ownership.json
