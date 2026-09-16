@@ -663,6 +663,86 @@ def page_is_engraved(page: PageImage) -> bool:
     return True
 
 
+#: A scan carries 0-1 vector drawings; an engraving carries 467-2058. The
+#: populations do not touch and this sits in the gap -- it is READ OFF the
+#: measurement in `page_is_engraved`'s own docstring, not chosen. An OCR text
+#: layer someone attached later adds fonts, not drawings, which is why the
+#: font count was refused as a signal there and the drawing count survives.
+SCAN_MAX_DRAWINGS = 8
+
+#: Total image coverage of the sheet. A TILED scan has no single big raster,
+#: so the one-image test above cannot prove it. Taken from
+#: `OMR_WEIGHT_ROUTING`'s own measured rule -- "total coverage >= 0.95 on
+#: every scan measured, incl. one tiled into 8 strips" (CLAUDE.md) -- rather
+#: than fitted here, so the two classifications cannot drift apart.
+SCAN_MIN_TOTAL_COVER = 0.95
+
+
+def page_is_scanned(page: PageImage) -> bool:
+    """Is this page PROVABLY a photograph of paper?
+
+    ⚠️⚠️ NOT `not page_is_engraved(page)`, AND THE DIFFERENCE IS THE WHOLE
+    POINT. That function answers False on any doubt, so its negation is
+    "not proven vector" -- which is true of a hybrid, a blank page, a PDF
+    that will not open, and a page with no `pdf_path` at all. Using it to
+    decide whether to SKIP work would skip on every one of those, silently,
+    and the failure would look exactly like a document that prints no words.
+    Both functions must prove their own side; between them sits an ambiguous
+    band that neither claims, and a caller must treat that band as unknown.
+
+    The proof is two-sided and both halves are required: a page-sized raster
+    (a scanner emits one sheet-covering image) AND essentially no vector
+    drawings. Measured populations, from `page_is_engraved`:
+
+                             vector paths   images   image cover
+        engraved  (3)          467-2058        0         0.00
+        scanned  (14)             0-1        1-2      0.86-1.41
+
+    ⚠️ False on any doubt, exactly as its mirror is. A page wrongly called
+    scanned loses the direction reader on material where it may be worth
+    144 edits; a page wrongly called engraved merely pays for a reader it
+    did not need. The asymmetry runs the same way for both functions --
+    each refuses to claim its own side without proof -- which is why they
+    are two functions and not one tri-state whose middle nobody reads.
+    """
+    pdf_path = getattr(page, "pdf_path", None)
+    if not pdf_path:
+        return False
+    try:
+        import fitz                                          # noqa: PLC0415
+
+        with fitz.open(pdf_path) as doc:
+            index = getattr(page, "page_index", 0)
+            if not 0 <= index < doc.page_count:
+                return False
+            pdf_page = doc[index]
+            if len(pdf_page.get_drawings()) > SCAN_MAX_DRAWINGS:
+                return False          # vector art: engraved, or a hybrid
+            area = abs(pdf_page.rect.width * pdf_page.rect.height) or 1.0
+            total = 0.0
+            for image in pdf_page.get_images(full=True):
+                for rect in pdf_page.get_image_rects(image[0]) or []:
+                    cover = abs(rect.width * rect.height) / area
+                    if cover > 0.5:
+                        return True   # one sheet-covering raster
+                    total += cover
+            # ⚠️ A TILED SCAN HAS NO SINGLE BIG IMAGE, and refusing it here
+            # would leave the commonest residue unclaimed: measured over 180
+            # library pages the only scans this function could not prove were
+            # a Chaminade printing cut into TEN strips (max cover 0.11, total
+            # 1.1) and two near the boundary. CLAUDE.md already records the
+            # same shape and the same fix for `OMR_WEIGHT_ROUTING` -- "one
+            # tiled into 8 strips", total coverage >= 0.95 on every scan
+            # measured -- so this is that rule reused at its own measured
+            # threshold, not a second convention invented here.
+            if total >= SCAN_MIN_TOTAL_COVER:
+                return True
+    except Exception as exc:                                  # noqa: BLE001
+        logger.debug("could not classify %s: %s", pdf_path, exc)
+        return False
+    return False
+
+
 def default_readers(page: PageImage | None = None) -> list[tuple[str, Reader]]:
     """The rungs to ask, in precedence order, skipping any that cannot run.
 

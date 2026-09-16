@@ -331,3 +331,56 @@ sentinel at open and stop a server that appeared during its life, rather
 than trusting surya's atexit — which does not run if the worker is killed
 rather than closed. **Until that lands, the merge's correctness is
 established and its cleanup is not.**
+
+
+---
+
+# ADDENDUM — the gate measured end to end, and it revises the cost (2026-09-16)
+
+Two full staged runs on the current tree, adjacent in time, differing ONLY in
+`OMR_DIRECTION_TEXT_SCAN_GATE`, both with the worker session live and the
+flipped defaults:
+
+| | wall | `<words>` | gated cells |
+|---|--:|--:|--:|
+| **S1** gate off | **1883 s** | 6 | 0 of 1186 |
+| **S2** gate on | **1353 s** | 0 | **1187 of 1187** |
+
+**530 s saved over four pages = 132 s/page = 28 % of the run.** The gate
+fired on every cell, the exports are **byte-identical once the six `<words>`
+are removed**, and notes (2459), dynamics (205) and part names (37) are
+untouched — so it costs the words and nothing else, which is what a gate on a
+single reader should do.
+
+⚠️⚠️ **AND IT REVISES §5's COST FIGURE DOWNWARDS, BECAUSE THE TWO CHANGES
+OVERLAP.** Part B measured the direction reader at **~267 s/page** — but that
+was with every Surya call paying a fresh model load. With the worker session
+in place the same reader costs **132 s/page**. So roughly **half of what this
+reader cost was model-load overhead that the session has already removed,
+without losing a single word.**
+
+That is the honest ordering of the two repairs, and it makes the gate a
+smaller decision than it looked:
+
+- the **session** took ~135 s/page and cost NOTHING — no word is lost;
+- the **gate** takes the remaining ~132 s/page and costs every word on the page.
+
+⚠️ The free half is already banked. What is left to decide is only whether
+the words are worth 132 s/page — and §5's answer ("six copies of one word")
+is **one document**. The second document says otherwise: Brahms 1 /
+Breitkopf p0-3 yields **10 words and they are substantive** — `pizz.` x3,
+`dim.` x2, `arco`, `unis.`, `Cresc.`, `espr. e legato`, `pesante`. `pizz.`
+and `arco` change how every note in a passage is played, which a duplicate
+`cresc.` does not.
+
+**So the recommendation is OFF by default**, and it is a recommendation
+against the gate this session built: the premise it was built on — that the
+reader returns nothing useful on a scan — held on Litolff and did not survive
+Brahms. It stays available for whole-work batch runs, where at ~132 s/page a
+90-page symphony spends **3.3 hours** on it.
+
+⚠️ **The better lever is neither**: 42 candidates proposed and 2 accepted on
+Litolff, 56 and 10 on Brahms, means **~90 % of the remaining cost is reading
+ink that is not a word**. Cutting the candidate proposal keeps every word and
+costs nothing in evidence. UNMEASURED — the split between the CV hunt and the
+per-crop OCR has not been timed, and optimising before that is guessing.
