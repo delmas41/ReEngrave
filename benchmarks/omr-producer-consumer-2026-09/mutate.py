@@ -147,6 +147,16 @@ ARMS = [
      '                        "read": False,',
      "TestTheRoundTripQuestion::test_it_finds_the_live_instance_WITHOUT_being_told"),
 
+    # ── the --run corroboration ─────────────────────────
+    ("--run looks for the rows under the wrong key", W,
+     '    record = data.get("record")',
+     '    record = data.get("log")',
+     "TestTheRunCorroboration::test_it_reads_the_rows_a_real_record_carries"),
+    ("--run reports zero instead of refusing", W,
+     '    if record is None:\n        raise KeyError(',
+     '    if record is None and False:\n        raise KeyError(',
+     "TestTheRunCorroboration::test_a_record_with_no_rows_key_RAISES_rather_than_reporting_zero"),
+
     # ── the POSITIVE CONTROL ─────────────────────────────────────────────────
     ("POSITIVE CONTROL: a no-op edit must stay GREEN", W,
      '_HERE = pathlib.Path(__file__).resolve().parent',

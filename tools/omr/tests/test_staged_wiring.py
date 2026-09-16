@@ -190,6 +190,69 @@ class TestTheDetailQuestion(unittest.TestCase):
                                            "named somewhere")
 
 
+class TestTheRunCorroboration(unittest.TestCase):
+    """`--run` resolves the 11 sites the static walk cannot.
+
+    ⚠️⚠️ THIS TEST EXISTS BECAUSE THE FIRST DRAFT OF `with_run` READ
+    `data["log"]` AND THE REAL RECORD WRITES `data["record"]` —
+    `pipeline.run_staged` does `result["record"] = log.to_json()`. A reader of
+    `"log"` finds NOTHING on every real record and reports `agree: 0`, which
+    reads as *"the static table disagrees with every run"* rather than as
+    *"this consumer is looking in the wrong place"*. The bug class this module
+    exists to catch, committed inside it, in the path its own gap list cites
+    as the answer.
+
+    ⚠️ **THE FIXTURE IS BUILT BY THE REAL PRODUCER**, never typed. *A fixture
+    that does not match GATHER tests the test* — this repo's own recorded
+    lesson, which cost `Q.METER_GLYPH` a rule that read no boxes on any real
+    page while five unit tests stayed green."""
+
+    def _record(self):
+        import json
+        from tools.omr.staged import pipeline
+        log = Log()
+        gather.gather_external(log, None, roster=_ROSTER)
+        sub = R.staff(0, 0, 0)
+        log.observe(sub, Q.MARGIN_LABEL, "Flauti", reader=READERS.TEXT_LAYER,
+                    frame="system_margin")
+        # the shape the CLI writes, from the PRODUCER's own key
+        return json.loads(json.dumps({"record": log.to_json()}, default=str))
+
+    def test_it_reads_the_rows_a_real_record_carries(self):
+        import json, tempfile, os
+        rep = wiring.report()
+        with tempfile.NamedTemporaryFile("w", suffix=".json",
+                                         delete=False) as f:
+            json.dump(self._record(), f)
+            path = f.name
+        try:
+            out = wiring.with_run(rep, path)
+        finally:
+            os.unlink(path)
+        self.assertGreater(out["run"]["agree"]
+                           + len(out["run"]["disagree"]), 0,
+                           "zero rows seen means the consumer is looking in "
+                           "the wrong place, not that the record is empty")
+        # the roster row is on the DOCUMENT in the record, as the static
+        # table says — the corroboration the flag is for
+        static = rep["frames"]["filed"].get("ROSTER_ENTRY")
+        self.assertEqual(static, ["document"])
+
+    def test_a_record_with_no_rows_key_RAISES_rather_than_reporting_zero(self):
+        """⚠️ A fallback must never convert "cannot tell" into a definite
+        answer. Silently reporting `agree: 0` is that conversion."""
+        import json, tempfile, os
+        with tempfile.NamedTemporaryFile("w", suffix=".json",
+                                         delete=False) as f:
+            json.dump({"log": {"observations": []}}, f)
+            path = f.name
+        try:
+            with self.assertRaises(KeyError):
+                wiring.with_run(wiring.report(), path)
+        finally:
+            os.unlink(path)
+
+
 class TestTheRoundTripQuestion(unittest.TestCase):
     """A field declared on a serialisable class and dropped by its own
     `to_json` — the `works.json` `lines` fault, one layer in."""

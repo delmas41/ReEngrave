@@ -1260,9 +1260,25 @@ def with_run(rep: Dict[str, Any], run_path: str) -> Dict[str, Any]:
     from .record import Q
     by_value = {getattr(Q, n): n for n in vars(Q)
                 if n.isupper() and not n.startswith("_")}
+    # ⚠️⚠️ `record`, NOT `log` — AND THE FIRST DRAFT READ `log`, WHICH IS THE
+    # EXACT BUG CLASS THIS MODULE EXISTS TO CATCH, COMMITTED INSIDE IT.
+    # `pipeline.run_staged` writes `result["record"] = log.to_json()`; a
+    # reader of `data["log"]` finds nothing on EVERY real record and reports
+    # `agree: 0` — which reads as *"the static table disagrees with every
+    # run"* rather than as *"this consumer is looking in the wrong place"*. It
+    # was found by grepping the producer instead of trusting the name, which
+    # is the whole method. The key is DERIVED from `Log.to_json`'s own call
+    # site rather than hard-coded a second time.
+    record = data.get("record")
+    if record is None:
+        raise KeyError(
+            "this record has no 'record' key. `pipeline.run_staged` writes "
+            "`result['record'] = log.to_json()`; if that name has changed, "
+            "change it HERE too rather than adding a fallback — a fallback "
+            "would convert 'I cannot find the rows' into 'there are no rows'.")
     seen: Dict[str, Set[str]] = {}
     for bucket in ("observations", "abstentions", "verdicts"):
-        for row in (data.get("log", {}) or {}).get(bucket, []) or []:
+        for row in (record or {}).get(bucket, []) or []:
             name = by_value.get(row.get("quantity"), row.get("quantity"))
             key = str(row.get("subject") or "")
             if name and key:
