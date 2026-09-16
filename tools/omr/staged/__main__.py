@@ -206,6 +206,16 @@ def _report(result: dict) -> None:
     ev = result["evaluation"]
     print(f"── EVALUATE: {ev['counts']['fired']} fired, "
           f"{ev['counts']['skipped']} skipped", file=sys.stderr)
+    # ⚠️ GUARDED ON THE KEY'S PRESENCE, NOT ON THE FLAG. With INFER off the
+    # key is absent and nothing is printed, so the stderr report of a
+    # flag-off run is identical to one from a tree with no INFER at all.
+    # Reading the flag here instead would print "INFER: off" and break that.
+    inf = result.get("inference")
+    if inf is not None:
+        print(f"── INFER: {inf['counts']['inferred']} inferred, "
+              f"{inf['counts']['skipped']} skipped  "
+              f"⚠️ every one is LABELLED and supersedes a recorded narrowing",
+              file=sys.stderr)
     print(f"── DECLARED STUBS: {len(result['stubs']['decisions'])} decisions, "
           f"{len(result['stubs']['consequences'])} consequences", file=sys.stderr)
     if "divergence" in result:

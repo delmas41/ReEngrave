@@ -37,6 +37,11 @@ from typing import Any, Dict, List, Optional, Sequence, Tuple
 from . import consequences  # noqa: F401  -- registers the EVALUATE rules
 from . import adjudicators  # noqa: F401  -- registers the decisions
 from . import adjudicate, evaluate, gather, groups
+# ⚠️ `infer` imports ONLY `record`, and it loads its own rules lazily inside
+# `_ensure_rules`. So importing it here costs nothing and -- more to the
+# point -- changes nothing: with the flag off this module registers no rule,
+# writes no verdict and adds no key to the result. See `test_infer_bypass.py`.
+from . import infer
 from .record import Kind, Log, Outcome, Q, State, Subject
 
 MODE_OFF = "0"
@@ -200,6 +205,28 @@ def run_staged_on(prepared: Sequence[Tuple[Any, Sequence[Any]]], *,
         print("EVALUATE")
     report = evaluate.run(log, progress=progress)
 
+    # ⚠️⚠️ INFER — AFTER EVALUATE, BEFORE EXPORT, AND OFF BY DEFAULT.
+    #
+    # The position is the claim: this stage weighs what is most LIKELY, and it
+    # cannot do that before the consequences of the settled decisions are in
+    # the log. `infer.run` takes `report` as an argument rather than trusting
+    # this call site, so the ordering is structural rather than a convention
+    # somebody has to preserve when editing this function.
+    #
+    # ⚠️ OFF MEANS ABSENT, NOT QUIET. The key is omitted entirely when the
+    # stage did not run -- the same `**({} if ... else {...})` shape the
+    # divergence table uses below -- so a record from a tree carrying INFER is
+    # byte-identical to one from a tree without it, and an arm isolating an
+    # EARLIER stage (`readjudicate`, `reexport_arm`) never has to know this
+    # stage exists. Writing `"inference": None` instead would break exactly
+    # that, and is the kind of harmless-looking addition that reaches an arm
+    # which was supposed to be blind to it.
+    inference_report = None
+    if infer.infer_enabled():
+        if progress:
+            print("INFER")
+        inference_report = infer.run(log, report, progress=progress)
+
     return {
         "record": log.to_json(),
         "summary": log.summary(),
@@ -217,6 +244,8 @@ def run_staged_on(prepared: Sequence[Tuple[Any, Sequence[Any]]], *,
         },
         **({} if divergence_report is None
            else {"divergence": divergence_report}),
+        **({} if inference_report is None
+           else {"inference": inference_report.to_json()}),
     }
 
 
