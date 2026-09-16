@@ -1,0 +1,70 @@
+provenance: {'commit': 'ce7b8ba7f317736733cd163e356c30d2117cf580', 'dirty': False}
+========================================================================
+REACH
+========================================================================
+  staff-systems               : 75
+  Q.MARGIN_LABEL observations : 50
+      p1/s0 : 12 labels
+      p2/s0 : 7 labels
+      p2/s1 : 7 labels
+      p3/s0 : 7 labels
+      p3/s1 : 4 labels
+      p4/s0 : 6 labels
+      p4/s1 : 7 labels
+
+  SEGMENTATION   printed | ours
+      p1/s0 : 12 | 12
+      p2/s0 : 11 | 11
+      p2/s1 : 11 | 11
+      p3/s0 : 11 | 11
+      p3/s1 :  8 |  8
+      p4/s0 : 11 | 11
+      p4/s1 : 11 | 11
+
+========================================================================
+CONTROL — the two arms differ on 28 of 75 staff-systems
+========================================================================
+
+========================================================================
+BEFORE
+========================================================================
+  instrument decided    : 50  {'p1/s0': 12, 'p2/s0': 7, 'p2/s1': 7, 'p3/s0': 7, 'p3/s1': 4, 'p4/s0': 6, 'p4/s1': 7}
+  slot decided / staves : 75 / 75
+  abstentions           : {}
+  GRAFTS                : 12
+  condensation (apart)  : 4
+  part_partition        : deduced_anchor  {'join': 'ordinal', 'reason': 'slots_are_ordinals'}
+  EXPORTED <part>s      : 75
+  join provenance       : {'join_decided': 'ordinal', 'join_used': 'fragments', 'join_reason': 'deduced_anchor', 'systems': ['1/0', '2/0', '2/1', '3/0', '3/1', '4/0', '4/1'], 'staves_per_system': [8, 11, 12], 'parts': 75, 'fragmented': True}
+      p3/s1 staff 1   prints Clarinetti             -> part Oboi
+      p3/s1 staff 2   prints Fagotti                -> part Clarinetti
+      p3/s1 staff 3   prints Corni                  -> part Fagotti
+      p3/s1 staff 4   prints Violino I              -> part Corni
+      p3/s1 staff 5   prints Violino II             -> part Trombe
+      p3/s1 staff 6   prints Viola                  -> part Timpani
+      p3/s1 staff 7   prints Violoncello e Basso    -> part Violino I
+      p4/s0 staff 6   prints Violino I              -> part Timpani
+      p4/s0 staff 7   prints Violino II             -> part Violino I
+      p4/s0 staff 8   prints Viola                  -> part Violino II
+      p4/s0 staff 9   prints Violoncello            -> part Viola
+      p4/s0 staff 10  prints Basso                  -> part Violoncello
+
+========================================================================
+AFTER
+========================================================================
+  instrument decided    : 50  {'p1/s0': 12, 'p2/s0': 7, 'p2/s1': 7, 'p3/s0': 7, 'p3/s1': 4, 'p4/s0': 6, 'p4/s1': 7}
+  slot decided / staves : 50 / 75
+  abstentions           : {'unnamed_in_short_system': 25}
+  GRAFTS                : 0
+  condensation (apart)  : 0
+  part_partition        : slot  {'join': 'slot', 'slots': [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]}
+  EXPORTED <part>s      : 37
+  join provenance       : {'join_decided': 'slot', 'join_used': 'slot', 'join_reason': 'slot', 'systems': ['1/0', '2/0', '2/1', '3/0', '3/1', '4/0', '4/1'], 'staves_per_system': [8, 11, 12], 'parts': 37, 'fragmented': False, 'slots': [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11], 'stranded': 25}
+
+========================================================================
+CROSS-TAB   incumbent(ordinal) -> rule
+========================================================================
+  ok       -> abstain  : 16
+  ok       -> ok       : 47
+  wrong    -> abstain  : 9
+  wrong    -> ok       : 3

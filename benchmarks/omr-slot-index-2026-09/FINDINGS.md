@@ -145,3 +145,197 @@ than repaired: it belongs to the lexicon/position channel, not to this decision.
 PYTHONPATH=. python3 benchmarks/omr-slot-index-2026-09/probe_rule_vs_print.py
 PYTHONPATH=. python3 -m pytest tools/omr/tests/test_staged_slot_by_name.py -q
 ```
+
+---
+---
+
+# 2026-09-15 — the END-TO-END arm, on a machine with weights and a library
+
+**§6 above says what the 2026-09-14 measurement does not establish: it ran the
+RULE over recorded reader output in a container with no `omr-weights/` and no
+`library/`, so "how names *reach* the decision (`_names_by_system`, ordinal
+indexing)" was covered by unit tests and by nothing else.** `slot_arm.py` is the
+end-to-end arm and had never been run. This is that run. **The measurement above
+stands unchanged**; everything here is new.
+
+One gather (`run_gather.sh`, unmodified), **33 min**, clean tree
+`ce7b8ba7`, `provenance.dirty: false` — then that ONE gather adjudicated twice
+and, separately, **exported** twice, so the two arms differ only in
+`adjudicate_slot_index` and no detector jitter enters.
+
+---
+
+## 1. REACH, and the segmentation under it
+
+| | |
+|---|--:|
+| staff-systems gathered | **75** |
+| `Q.MARGIN_LABEL` observations | **50** |
+| `Q.INSTRUMENT` decided | **50** (`no_evidence` 25) |
+| `Q.SLOT_INDEX` decided | **50** (`unnamed_in_short_system` 25) |
+
+Per system: **12 / 7 / 7 / 7 / 4 / 6 / 7**, reproducing the committed
+`margin-label-reach.log` distribution exactly. ⚠️ Without `--surya --ocr` this
+arm is DEAD and says so: the free text-layer rung reads 0 of 75 on this 1870
+scan, and both arms would then abstain identically.
+
+⚠️ **AND THE THING THE PROBE COULD NOT CHECK, CHECKED FIRST: our segmentation
+agrees with the print on 7 systems of 7** (12 / 11 / 11 / 11 / 8 / 11 / 11).
+That matters because the probe keys its truth on the PRINT while the record
+keys on OUR OWN reading, and because `_pick_reference` takes **the widest
+system WE READ**, not the widest the page prints — one mis-segmented system
+would have moved every slot silently. `part_join_arm.py` prints this table
+before any slot is read.
+
+## 2. It reproduces the probe EXACTLY — to the staff, not to the total
+
+| | placed | correct | **wrong** | abstained |
+|---|--:|--:|--:|--:|
+| probe, 2026-09-14 (recorded reader output) | 50 | 50 | **0** | 25 |
+| **this run, end to end** | **50** | **50** | **0** | **25** |
+
+And the cross-tab, which is the claim that can actually fail — the probe's
+numbers are in §2 above and these are this run's:
+
+| incumbent → rule | probe | **end to end** |
+|---|--:|--:|
+| wrong → ok | 3 | **3** |
+| wrong → abstain | 9 | **9** |
+| ok → abstain | 16 | **16** |
+| ok → ok | 47 | **47** |
+| **ok → wrong** | 0 | **0** |
+
+**Every cell identical.** So `_names_by_system`'s ordinal indexing and the
+reference pick behave on a real record exactly as they did on the reader log,
+and §6's open item is closed for this document. ⚠️ **The CONTROL that makes
+that a result rather than a tautology**: the two arms are compared per staff
+before any count is read, and they **differ on 28 of 75** — a run in which they
+agreed would exit non-zero rather than report a clean equality.
+
+## 3. ⚠️⚠️ THE NUMBER SEAN IS WAITING ON: **75 fragments → 37 parts**, and the graft is gone
+
+`adjudicate_part_partition` stops refusing. `_slots_are_ordinals` is now
+**False**, because the 8-stave system p3/s1 places its four read names at slots
+**0, 2, 3, 4** — a table with a GAP, which is the whole thing the predicate asks
+for.
+
+| | BEFORE (the ordinal) | **AFTER (the rule)** |
+|---|---|---|
+| `part_partition` | `deduced_anchor` `{join: ordinal, reason: slots_are_ordinals}` | **`slot`** `{join: slot, slots: [0..11]}` |
+| `join_used` in the file | `fragments` | **`slot`** |
+| **exported `<part>`** | **75** | **37** = 12 joined + **25 stranded** |
+| **GRAFTS** | **12** | **0** |
+| condensation (reported apart) | 4 | 0 |
+| measures / notes | 1183 / 2473 | **1183 / 2473, identical** |
+| parts with a real `<part-name>` | 50 of 75 | 12 of 37 |
+
+Both files parse. **The accounting control holds on both arms, and it holds by
+RAISING**: `to_musicxml` throws `Unbalanced` rather than returning a flag, so
+two completed exports *are* the balance check passing — not a number anyone had
+to read.
+
+⚠️ **37 is not 12, and the 25 are the abstentions arriving in the file.** The
+exporter strands a staff with no slot into its own part. That is the §2 trade
+made visible: 25 staff-systems that the ordinal placed (16 of them correctly)
+are now separate fragments rather than sitting — 9 of them wrongly — inside
+another instrument's part.
+
+### ⚠️⚠️ AND THE PHASE-2 PREDICTION IS CONFIRMED TO THE MEASURE
+
+`benchmarks/omr-part-join-phase2-2026-09/FINDINGS.md` predicted from the measure
+math alone that a correct join gives **111 / 93 / 78**, not equal parts, because
+the plate suppresses Oboi and Trombe on one system and Timpani on two. The
+exported file:
+
+```
+Flute 111   Clarinet 111   Bassoon 111   Horn 111      (all 7 systems)
+Oboe   93   Trumpet   93                               (111 - 18: no p3/s1)
+Timpani 78                                             (111 - 18 - 15)
+Violin 16   Violin 16   Viola 16   Cello 16   Bass voice 16
+```
+
+**111 / 93 / 78 exactly**, reached from a different direction by an independent
+run. The five string parts sit at **16** — page 1's system only — because this
+edition stops labelling its strings on continuation systems, which is the same
+mechanism as the 25 abstentions and not a second fault.
+
+⚠️ **Two file-shape observations, neither repaired here.** The 25 stranded
+fragments are written FIRST and the 12 joined parts last, so the score's part
+order is no longer the printed top-to-bottom order. And **slot 11 is exported as
+`Bass voice`** — §5's lexicon defect, previously inert, now reaching the FILE as
+the `<part-name>` of a real joined part.
+
+## 4. ⚠️⚠️ WHAT THIS RUN REFUTED: `slot_arm.py`'s OWN graft classifier under-counted
+
+The first end-to-end run reported the incumbent at **10 grafts and 6
+condensations**. The probe and the measure-math partition both say **12**, split
+`{p3/s1: 7, p4/s0: 5}`. `_report`'s test was
+`printed.startswith(slot) or slot.startswith(printed) or " e " in printed`,
+which asks nothing about instruments:
+
+* **`Violino II` STARTSWITH `Violino I`** — the p4/s0 staff the ordinal files
+  under the FIRST violin's part read as condensation;
+* the third clause excuses **any** name containing ` e ` against **any** slot,
+  so `Violoncello e Basso` filed under `Violino I` read as condensation too.
+
+Both are grafts. **Fixed** (`slot_arm.classify`): a printed staff condenses
+reference parts iff the slot's name is one of the ` e `-separated parts it
+prints — an exact membership test, **no threshold, nothing tuned**. It is
+CHECKED rather than chosen: it lands on `{p3/s1: 7, p4/s0: 5}` = 12, agreeing
+with two prior independent measurements where the old rule agreed with neither.
+
+⚠️ **It moves the AFTER arm by NOTHING** — that arm has zero of both under
+either rule — so the RULE's result never rested on this. What it corrects is the
+incumbent it is measured against, in the direction that flattered the incumbent.
+
+⚠️ **The same shape this file already records, one layer out**: §2 warns that
+conflating condensation with a graft *"was already measured turning 12 into
+16"*. This is that hazard in the other direction, and it was in the instrument
+written to avoid it.
+
+**Controls**: `slot_arm.py --self-check` (no record, no weights) asserts the
+whole 16-row table, the 12/4 split and the by-system split, with a positive
+control in the same class — *a staff under its own part reads `ok`* — because a
+rule calling every disagreement a graft would satisfy the graft count alone.
+`mutate_classify.py`: **6 arms, all red, positive control green**, every anchor
+asserted unique before it is applied. ⚠️ **A seventh arm SURVIVED and was an
+EQUIVALENT MUTANT**: deleting a `.strip()` on the split components changed
+nothing, because the separator carries its own spaces — so the **code was
+deleted** rather than a fixture invented to make the arm go red.
+
+## 5. What is NOT established
+
+* **Not accuracy of the 50 names.** This reproduces the probe's placements; it
+  does not re-adjudicate whether the reader's strings are right (`Obol.` still
+  reads at low confidence, and slot 11 is still `Bass voice`).
+* **Not that 37 is better than 75 for a human.** This measures what the join
+  does, not what a cleanup count costs. Sean's §5.2 decision in
+  `docs/handoff-2026-09-11-phase-2-opened.md` is still open — what has changed
+  is that it is now *37 parts with the graft gone*, not *75 fragments*, and the
+  25 fragments are exactly the staves nothing named.
+* **Not the 72-hour claim about other documents.** `_pick_reference`'s
+  tie-break, the `cands != 1` branch and condition (b) still fire **0 times**
+  here, for §3a's structural reason.
+* **Nothing about a second publisher or a second edition**, and nothing about
+  pdf page 5 onward.
+
+**n = 1 document, 1 publisher, 1 movement, pdf pages 1-4, 7 systems, 75
+staves** — the same window as every figure above it, and the *low-res bitonal*
+Litolff `984073` that CLAUDE.md calls the pessimistic end of the corpus.
+
+## 6. Reproduce
+
+```bash
+bash   benchmarks/omr-slot-index-2026-09/run_gather.sh          # ~33 min, needs weights + library
+python3 benchmarks/omr-slot-index-2026-09/slot_arm.py      OUT/record-labels.json --verbose
+python3 benchmarks/omr-slot-index-2026-09/part_join_arm.py OUT/record-labels.json --xml-dir OUT/xml
+python3 benchmarks/omr-slot-index-2026-09/slot_arm.py --self-check     # no record needed
+python3 benchmarks/omr-slot-index-2026-09/mutate_classify.py
+```
+
+⚠️ The record is **134 MB** and is deliberately not committed; `out/` holds the
+gather log and both arms' output. ⚠️ Each arm rebuilds the whole `Log` and
+re-runs ADJUDICATE, so `slot_arm.py` took **44 min** here (two arms) and
+`part_join_arm.py`, which also runs EVALUATE and exports, **31-50 min** —
+bracketed rather than stated, because it was observed running at 31 min and
+finished before the next check.

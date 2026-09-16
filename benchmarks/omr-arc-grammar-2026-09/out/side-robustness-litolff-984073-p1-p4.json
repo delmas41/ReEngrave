@@ -1,0 +1,16 @@
+{
+  "stemmed_outer_endpoints": 763,
+  "the_two_determinations_AGREE": 742,
+  "they_DISAGREE": 21,
+  "disagreement_rate": 0.0275,
+  "flips": {
+    "median says above, its own head says below": 13,
+    "median says below, its own head says above": 8
+  },
+  "vertical_spread_of_the_outer_flanked_heads_canonical_px": {
+    "n": 345,
+    "median": 121.0,
+    "p90": 728.0,
+    "max": 1323.5
+  }
+}

@@ -1,0 +1,306 @@
+{
+  "n_arcs": 779,
+  "relaxations": [
+    {
+      "relaxation": "NARROW (x-overlap >= 0.5 narrower width, y-disjoint)",
+      "x_gap_widths": 0.0,
+      "y_overlap_frac": 0.0,
+      "same_owner_only": false,
+      "ALL": {
+        "candidate_pairs": 435,
+        "disagreeing": 182,
+        "lower_is_the_tie": 114,
+        "agreement": 0.6264,
+        "p_binomial": 0.0004
+      },
+      "x_overlap_at_least_0.5": {
+        "candidate_pairs": 428,
+        "disagreeing": 181,
+        "lower_is_the_tie": 114,
+        "agreement": 0.6298,
+        "p_binomial": 0.00029
+      },
+      "within_3_staff_spaces": {
+        "candidate_pairs": 178,
+        "disagreeing": 73,
+        "lower_is_the_tie": 54,
+        "agreement": 0.7397,
+        "p_binomial": 3e-05
+      }
+    },
+    {
+      "relaxation": "A: x gap up to 0.25 widths",
+      "x_gap_widths": 0.25,
+      "y_overlap_frac": 0.0,
+      "same_owner_only": false,
+      "ALL": {
+        "candidate_pairs": 446,
+        "disagreeing": 189,
+        "lower_is_the_tie": 118,
+        "agreement": 0.6243,
+        "p_binomial": 0.00039
+      },
+      "x_overlap_at_least_0.5": {
+        "candidate_pairs": 428,
+        "disagreeing": 181,
+        "lower_is_the_tie": 114,
+        "agreement": 0.6298,
+        "p_binomial": 0.00029
+      },
+      "within_3_staff_spaces": {
+        "candidate_pairs": 183,
+        "disagreeing": 76,
+        "lower_is_the_tie": 56,
+        "agreement": 0.7368,
+        "p_binomial": 2e-05
+      }
+    },
+    {
+      "relaxation": "A: x gap up to 0.5 widths",
+      "x_gap_widths": 0.5,
+      "y_overlap_frac": 0.0,
+      "same_owner_only": false,
+      "ALL": {
+        "candidate_pairs": 450,
+        "disagreeing": 190,
+        "lower_is_the_tie": 119,
+        "agreement": 0.6263,
+        "p_binomial": 0.00031
+      },
+      "x_overlap_at_least_0.5": {
+        "candidate_pairs": 428,
+        "disagreeing": 181,
+        "lower_is_the_tie": 114,
+        "agreement": 0.6298,
+        "p_binomial": 0.00029
+      },
+      "within_3_staff_spaces": {
+        "candidate_pairs": 183,
+        "disagreeing": 76,
+        "lower_is_the_tie": 56,
+        "agreement": 0.7368,
+        "p_binomial": 2e-05
+      }
+    },
+    {
+      "relaxation": "A: x gap up to 1.0 widths",
+      "x_gap_widths": 1.0,
+      "y_overlap_frac": 0.0,
+      "same_owner_only": false,
+      "ALL": {
+        "candidate_pairs": 461,
+        "disagreeing": 193,
+        "lower_is_the_tie": 120,
+        "agreement": 0.6218,
+        "p_binomial": 0.00044
+      },
+      "x_overlap_at_least_0.5": {
+        "candidate_pairs": 428,
+        "disagreeing": 181,
+        "lower_is_the_tie": 114,
+        "agreement": 0.6298,
+        "p_binomial": 0.00029
+      },
+      "within_3_staff_spaces": {
+        "candidate_pairs": 187,
+        "disagreeing": 77,
+        "lower_is_the_tie": 57,
+        "agreement": 0.7403,
+        "p_binomial": 1e-05
+      }
+    },
+    {
+      "relaxation": "B: y overlap up to 0.25 of the shallower",
+      "x_gap_widths": 0.0,
+      "y_overlap_frac": 0.25,
+      "same_owner_only": false,
+      "ALL": {
+        "candidate_pairs": 448,
+        "disagreeing": 186,
+        "lower_is_the_tie": 118,
+        "agreement": 0.6344,
+        "p_binomial": 0.00015
+      },
+      "x_overlap_at_least_0.5": {
+        "candidate_pairs": 440,
+        "disagreeing": 185,
+        "lower_is_the_tie": 118,
+        "agreement": 0.6378,
+        "p_binomial": 0.00011
+      },
+      "within_3_staff_spaces": {
+        "candidate_pairs": 178,
+        "disagreeing": 73,
+        "lower_is_the_tie": 54,
+        "agreement": 0.7397,
+        "p_binomial": 3e-05
+      }
+    },
+    {
+      "relaxation": "B: y overlap up to 0.5",
+      "x_gap_widths": 0.0,
+      "y_overlap_frac": 0.5,
+      "same_owner_only": false,
+      "ALL": {
+        "candidate_pairs": 457,
+        "disagreeing": 187,
+        "lower_is_the_tie": 119,
+        "agreement": 0.6364,
+        "p_binomial": 0.00012
+      },
+      "x_overlap_at_least_0.5": {
+        "candidate_pairs": 449,
+        "disagreeing": 186,
+        "lower_is_the_tie": 119,
+        "agreement": 0.6398,
+        "p_binomial": 8e-05
+      },
+      "within_3_staff_spaces": {
+        "candidate_pairs": 178,
+        "disagreeing": 73,
+        "lower_is_the_tie": 54,
+        "agreement": 0.7397,
+        "p_binomial": 3e-05
+      }
+    },
+    {
+      "relaxation": "A+B: x gap 0.5, y overlap 0.25",
+      "x_gap_widths": 0.5,
+      "y_overlap_frac": 0.25,
+      "same_owner_only": false,
+      "ALL": {
+        "candidate_pairs": 463,
+        "disagreeing": 194,
+        "lower_is_the_tie": 123,
+        "agreement": 0.634,
+        "p_binomial": 0.00012
+      },
+      "x_overlap_at_least_0.5": {
+        "candidate_pairs": 440,
+        "disagreeing": 185,
+        "lower_is_the_tie": 118,
+        "agreement": 0.6378,
+        "p_binomial": 0.00011
+      },
+      "within_3_staff_spaces": {
+        "candidate_pairs": 183,
+        "disagreeing": 76,
+        "lower_is_the_tie": 56,
+        "agreement": 0.7368,
+        "p_binomial": 2e-05
+      }
+    },
+    {
+      "relaxation": "C: same arc_owner only, else NARROW",
+      "x_gap_widths": 0.0,
+      "y_overlap_frac": 0.0,
+      "same_owner_only": true,
+      "ALL": {
+        "candidate_pairs": 409,
+        "disagreeing": 172,
+        "lower_is_the_tie": 112,
+        "agreement": 0.6512,
+        "p_binomial": 4e-05
+      },
+      "x_overlap_at_least_0.5": {
+        "candidate_pairs": 402,
+        "disagreeing": 171,
+        "lower_is_the_tie": 112,
+        "agreement": 0.655,
+        "p_binomial": 3e-05
+      },
+      "within_3_staff_spaces": {
+        "candidate_pairs": 174,
+        "disagreeing": 71,
+        "lower_is_the_tie": 53,
+        "agreement": 0.7465,
+        "p_binomial": 2e-05
+      }
+    },
+    {
+      "relaxation": "A+B+C: x 0.5, y 0.25, same owner",
+      "x_gap_widths": 0.5,
+      "y_overlap_frac": 0.25,
+      "same_owner_only": true,
+      "ALL": {
+        "candidate_pairs": 434,
+        "disagreeing": 182,
+        "lower_is_the_tie": 119,
+        "agreement": 0.6538,
+        "p_binomial": 2e-05
+      },
+      "x_overlap_at_least_0.5": {
+        "candidate_pairs": 414,
+        "disagreeing": 175,
+        "lower_is_the_tie": 116,
+        "agreement": 0.6629,
+        "p_binomial": 1e-05
+      },
+      "within_3_staff_spaces": {
+        "candidate_pairs": 178,
+        "disagreeing": 73,
+        "lower_is_the_tie": 54,
+        "agreement": 0.7397,
+        "p_binomial": 3e-05
+      }
+    }
+  ],
+  "dose_response_on_the_loosest": [
+    {
+      "gap_spaces": "-99-0",
+      "candidate_pairs": 13,
+      "disagreeing": 4,
+      "lower_is_the_tie": 4,
+      "agreement": 1.0,
+      "p_binomial": 0.0625
+    },
+    {
+      "gap_spaces": "0-1",
+      "candidate_pairs": 45,
+      "disagreeing": 11,
+      "lower_is_the_tie": 10,
+      "agreement": 0.9091,
+      "p_binomial": 0.00586
+    },
+    {
+      "gap_spaces": "1-2",
+      "candidate_pairs": 50,
+      "disagreeing": 16,
+      "lower_is_the_tie": 12,
+      "agreement": 0.75,
+      "p_binomial": 0.03841
+    },
+    {
+      "gap_spaces": "2-3",
+      "candidate_pairs": 89,
+      "disagreeing": 50,
+      "lower_is_the_tie": 35,
+      "agreement": 0.7,
+      "p_binomial": 0.0033
+    },
+    {
+      "gap_spaces": "0-3",
+      "candidate_pairs": 184,
+      "disagreeing": 77,
+      "lower_is_the_tie": 57,
+      "agreement": 0.7403,
+      "p_binomial": 1e-05
+    },
+    {
+      "gap_spaces": "3-5",
+      "candidate_pairs": 135,
+      "disagreeing": 69,
+      "lower_is_the_tie": 38,
+      "agreement": 0.5507,
+      "p_binomial": 0.23518
+    },
+    {
+      "gap_spaces": "5-99",
+      "candidate_pairs": 131,
+      "disagreeing": 44,
+      "lower_is_the_tie": 24,
+      "agreement": 0.5455,
+      "p_binomial": 0.32579
+    }
+  ]
+}

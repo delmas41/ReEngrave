@@ -136,19 +136,127 @@ def _report(log, lineups, slot_names, label):
                 continue
             got = slot_names.get(v.value, f"slot{v.value}")
             rows.append((page, system, i, want, v.value, got))
-            if got != want:
-                if want.startswith(got) or got.startswith(want) or " e " in want:
-                    condensed.append((page, system, i, want, got))
-                else:
-                    grafts.append((page, system, i, want, got))
+            verdict = classify(want, got)
+            if verdict == "condensed":
+                condensed.append((page, system, i, want, got))
+            elif verdict == "graft":
+                grafts.append((page, system, i, want, got))
     return rows, grafts, condensed, abstained
+
+
+def classify(printed: str, slot_name: str) -> str:
+    """`ok` | `condensed` | `graft` -- is this staff filed under its own part?
+
+    ⚠️⚠️ THIS REPLACES THREE STRING ACCIDENTS THAT UNDER-COUNTED THE GRAFTS,
+    AND THE FIRST END-TO-END RUN IS WHAT EXPOSED THEM. Until 2026-09-15 the
+    test was `printed.startswith(slot) or slot.startswith(printed) or " e " in
+    printed`, which asks nothing about instruments:
+
+      * `Violino II` STARTSWITH `Violino I`, so the p4/s0 staff the ordinal
+        files under the FIRST violin's part read as condensation;
+      * the third clause excuses ANY printed name containing ` e ` against ANY
+        slot whatever, so `Violoncello e Basso` filed under `Violino I` -- two
+        different families -- read as condensation too.
+
+    Both are grafts. The BEFORE arm therefore reported **10 grafts and 6
+    condensations** where the truth is **12 and 4**.
+
+    ⚠️ THE CORRECTION IS NOT A LOOSER OR TIGHTER THRESHOLD -- there is no
+    number here. A printed staff condenses reference parts iff the slot's name
+    is one of the ` e `-separated parts it prints, an EXACT membership test.
+    And it is checked against two prior measurements rather than chosen: it
+    takes the BEFORE arm to `{p3/s1: 7, p4/s0: 5}` = 12, which is both
+    `probe_rule_vs_print.py`'s incumbent column and the measure-math
+    partition's named split in `benchmarks/omr-part-join-phase2-2026-09`. The
+    old rule reported 10 and agreed with neither.
+
+    ⚠️ IT MOVES THE `AFTER` ARM BY NOTHING -- that arm has zero of both under
+    either rule -- so the RULE's measured result never depended on this. What
+    it corrects is the incumbent it is measured against, in the incumbent's
+    favour-looking direction.
+    """
+    if printed == slot_name:
+        return "ok"
+    # ⚠️ NO `.strip()` HERE, AND ITS ABSENCE IS A MEASURED DECISION. The first
+    # draft had one and a mutation arm that deleted it SURVIVED -- the
+    # separator carries its own spaces, so a component can never come back
+    # padded. An EQUIVALENT MUTANT, so the code went rather than a fixture
+    # being invented to make the arm go red.
+    if slot_name in printed.split(" e "):
+        return "condensed"
+    return "graft"
+
+
+#: Every staff of the 2026-09-15 BEFORE arm whose slot did not name its own
+#: printed instrument, as that arm reported them. The two rows the old rule
+#: got wrong are marked; `--self-check` asserts the whole table.
+_KNOWN_DISAGREEMENTS = (
+    # page, system, staff, printed, the slot's name, expected
+    (2, 0, 10, "Violoncello e Basso", "Violoncello", "condensed"),
+    (2, 1, 10, "Violoncello e Basso", "Violoncello", "condensed"),
+    (3, 0, 10, "Violoncello e Basso", "Violoncello", "condensed"),
+    (3, 1, 1, "Clarinetti", "Oboi", "graft"),
+    (3, 1, 2, "Fagotti", "Clarinetti", "graft"),
+    (3, 1, 3, "Corni", "Fagotti", "graft"),
+    (3, 1, 4, "Violino I", "Corni", "graft"),
+    (3, 1, 5, "Violino II", "Trombe", "graft"),
+    (3, 1, 6, "Viola", "Timpani", "graft"),
+    (3, 1, 7, "Violoncello e Basso", "Violino I", "graft"),   # old rule: condensed
+    (4, 0, 6, "Violino I", "Timpani", "graft"),
+    (4, 0, 7, "Violino II", "Violino I", "graft"),            # old rule: condensed
+    (4, 0, 8, "Viola", "Violino II", "graft"),
+    (4, 0, 9, "Violoncello", "Viola", "graft"),
+    (4, 0, 10, "Basso", "Violoncello", "graft"),
+    (4, 1, 10, "Violoncello e Basso", "Violoncello", "condensed"),
+)
+
+
+def self_check() -> int:
+    """Does `classify` reproduce the two prior independent measurements?
+
+    ⚠️ THE POSITIVE CONTROL IS IN THE SAME CLASS AS THE REFUSALS, because a
+    rule that called EVERY disagreement a graft would satisfy the graft count
+    and nothing else: the condensation rows and the `ok` row are what stop it.
+    Needs no record and no weights -- it runs anywhere.
+    """
+    bad = []
+    for page, system, staff, printed, slot, want in _KNOWN_DISAGREEMENTS:
+        got = classify(printed, slot)
+        if got != want:
+            bad.append("p%d/s%d st%-2d  %-22s -> %-14s  want %s got %s"
+                       % (page, system, staff, printed, slot, want, got))
+    # the positive control: a staff filed under its own part is neither
+    if classify("Flauti", "Flauti") != "ok":
+        bad.append("a staff under its OWN part did not read as ok")
+    grafts = sum(1 for r in _KNOWN_DISAGREEMENTS if classify(r[3], r[4]) == "graft")
+    cond = sum(1 for r in _KNOWN_DISAGREEMENTS if classify(r[3], r[4]) == "condensed")
+    by_system = collections.Counter(
+        (r[0], r[1]) for r in _KNOWN_DISAGREEMENTS
+        if classify(r[3], r[4]) == "graft")
+    if grafts != 12 or cond != 4:
+        bad.append("grafts %d (want 12), condensation %d (want 4)" % (grafts, cond))
+    if dict(by_system) != {(3, 1): 7, (4, 0): 5}:
+        bad.append("graft split %s, want {(3,1): 7, (4,0): 5}" % dict(by_system))
+    print("SELF-CHECK  grafts %d  condensation %d  split %s"
+          % (grafts, cond, dict(by_system)))
+    for line in bad:
+        print("  FAIL " + line)
+    print("SELF-CHECK %s" % ("PASS" if not bad else "FAIL"))
+    return 0 if not bad else 1
 
 
 def main() -> int:
     ap = argparse.ArgumentParser()
-    ap.add_argument("record")
+    ap.add_argument("record", nargs="?")
     ap.add_argument("--verbose", action="store_true")
+    ap.add_argument("--self-check", action="store_true",
+                    help="check `classify` against the two prior measurements; "
+                         "no record, no weights")
     args = ap.parse_args()
+    if args.self_check:
+        return self_check()
+    if not args.record:
+        ap.error("a record is required (or --self-check)")
 
     d = json.loads(Path(args.record).read_text())
     rec = d["record"]
