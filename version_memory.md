@@ -16,6 +16,47 @@ pointing at headings no longer in the file.)*
 
 ---
 
+## 2026-09-16 — the meter thread's blocker was never the corpus
+
+`benchmarks/omr-meter-fixture-pool-2026-09/`, no code outside `benchmarks/`.
+Scoped while answering *"should I render `beethoven-sym5-mvt4` bar 364?"*, and
+the answer changed the question.
+
+Every meter write-up ends on **n** — *"n = 1 piece of music"*, *"n = 4
+documents"* — and each names ONE candidate second document by hand. **Measured:
+97 committed dossiers, 97 carrying a `meter_changes` field, 32 works with a real
+mid-movement change, 143 changes.**
+
+⚠️ **It needs no `library/`, no weights and no LilyPond.** `data/dossiers/*.json`
+are committed and carry the meter, measure count and every change per work — so
+this is answerable in a cloud container, which
+`docs/cloud-session-capabilities-2026-09-09.md` did not record and now does.
+
+⚠️ **The shape split is the result, not the count.** A change that alters the bar
+LENGTH can be arbitrated by bar sums; one that does not cannot — structurally,
+not by degradation. Split on that predicate: **143 length changes, 7 ENGRAVING
+changes across 7 works**, of which `brahms-sym1-mvt4` m392 ("the designed limit")
+is one. **Six are unrendered.**
+
+⚠️ **It re-reads the ranked next work.** `beethoven-sym5-mvt4` m364 is
+**4/4 → 2/2** — the designed-limit shape, not the 155/209 shape — so a
+bar-weighing term is INERT there by construction and any zero is the premise,
+not a measurement. ⚠️ And a **cheaper fixture was never considered**:
+`beethoven-sym1-mvt1` **m13**, the same 4/4 → 2/2 at bar thirteen.
+
+⚠️ **A third class fell out that is not a change at all**: 9 identical
+restatements (`2/4 → 2/4`), the population `_meter_changes`' "against the meter
+IN FORCE" rule exists to suppress. Folded in, the engraving pool reads 16 and
+two thirds is an encoding artefact.
+
+⚠️ **What it does NOT establish**: nothing rendered, gathered or scored; a
+dossier is an ENCODING truth not a PAGE truth; **edition coverage and legibility
+are both unchecked**; Holst `-full` overlaps its `-mvt*` entries so 32 is not 32
+distinct pieces. **The blocker is now a claim about editions and legibility,
+which is checkable, rather than about the corpus, which is refuted.**
+
+---
+
 ## 2026-09-15 — the cautionary's arbiter: MEASURED AND REFUSED
 
 `claude/meter-cautionary-arbiter`, merged. **No file under `tools/` is touched**

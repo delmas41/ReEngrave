@@ -3136,6 +3136,79 @@ failure than it checked for), and the fourth was an expectation **unreachable on
 the fixture**, re-expressed as the monotonicity identity itself so the arm now
 doubles as a live check of the finding above.
 
+### ⚠️⚠️ "n = 1 piece of music" WAS A PROPERTY OF WHAT WAS LOOKED AT — the pool is 32
+
+2026-09-16, no code outside `benchmarks/`. Scoped while answering *"should I
+render `beethoven-sym5-mvt4` bar 364?"*, and the answer changed the question.
+Findings:
+[benchmarks/omr-meter-fixture-pool-2026-09/FINDINGS.md](benchmarks/omr-meter-fixture-pool-2026-09/FINDINGS.md).
+
+**Every meter result above ends on the same sentence** — the cautionary
+arbiter's *"n = 1 piece of music"*, the corroboration guard's *"n = 4 documents
+/ 2 publishers"*, `OMR_METER_CARRY` held off on **n** for weeks and then flipped
+with the objection *overridden rather than resolved*. Each names ONE candidate
+second document **by hand**. Nobody counted the pool.
+
+**Measured over the committed dossiers: 97 works, 97 carrying a
+`meter_changes` field, 32 with a real mid-movement change, 143 changes in all.**
+
+⚠️⚠️ **AND IT NEEDS NO `library/`, NO WEIGHTS AND NO LILYPOND.**
+`data/dossiers/*.json` are **committed**, built by
+`tools.omr.training.build_dossiers` from the reference MusicXML, and carry the
+meter, the measure count and every meter change per work — so *which* works
+change meter, *where* and *to what* is answerable in a cloud container.
+`docs/cloud-session-capabilities-2026-09-09.md` inventories what a cloud session
+can reach and **did not record this**; it does now.
+
+⚠️ **THE SHAPE SPLIT IS THE RESULT, NOT THE COUNT.** A change that alters the
+BAR LENGTH can be arbitrated by bar sums; one that does not **cannot —
+structurally, not by degradation** — which `report_boundary.length_of` already
+encodes (a `C` and a `C|` are both 4.0 quarter notes, and its own comment
+records that line being WRONG until a fixture made it matter). Split on that
+predicate: **143 length changes, 7 ENGRAVING changes across 7 works**, and
+`brahms-sym1-mvt4` m392 — the one this file already calls **"the designed
+limit"** — is ONE of the seven. **Six are unrendered.**
+
+⚠️ **THAT RE-READS THE RANKED NEXT WORK.** `beethoven-sym5-mvt4` **m364 is
+4/4 → 2/2**, so it is *not* a second instance of the 155/209 shape (those alter
+the length); it is a second instance of the designed limit. A bar-weighing term
+is **INERT** there by construction, and a zero it produces is the premise rather
+than a measurement. The arbiter findings ranked that fixture without recording
+what kind of change it is.
+
+⚠️⚠️ **AND A THIRD CLASS FELL OUT THAT IS NOT A CHANGE AT ALL: 9 IDENTICAL
+RESTATEMENTS** (`2/4 → 2/4`, `6/8 → 6/8`; Holst ×8, Mozart 41 ×1) — exactly the
+population `_meter_changes`' *"against the meter IN FORCE"* rule exists to
+suppress. Folded in, the engraving pool reads 16 and two thirds of it is an
+encoding artefact; they are reported apart and must never be counted as fixtures.
+
+⚠️ **THE CHEAPEST FIXTURE IS NOT THE ONE THAT WAS RANKED.**
+`beethoven-sym1-mvt1` **m13** is the same 4/4 → 2/2 at bar THIRTEEN — the Adagio
+molto introduction is twelve bars of 4/4 and the Allegro con brio begins at 13
+in 2/2 — against bar 364 of a 446-bar finale. Smaller render, no hand-verified
+measure map needed to locate it, and a famous structural boundary rather than an
+interior one. **It was never considered, because the ranking was made by naming
+a work rather than by counting the pool.**
+
+⚠️ **What this does NOT do.** Nothing was rendered, gathered or scored; every
+figure is a property of committed JSON. A dossier is an **ENCODING** truth, not
+a PAGE truth (the `page_truth` distinction, arriving in the meter family).
+**Edition coverage is unchecked** — which of the 32 works pair a change with a
+held PDF is a query nobody has run, and it needs the library. Legibility is
+unchecked and this thread's own history says it dominates (the same 22 bars
+score 4-found/0-false engraved and 1-found/9-false scanned). ⚠️ The Holst `-full`
+dossier is the whole suite and the `-mvt*` ones its movements, so **32 is not 32
+distinct pieces** — the ENGRAVING table is unaffected, only `-full` m1187
+appears there. **The standing objections are untouched**: the arbiter's refusal
+is structural (window width, frame, two readers) and none of its reasons is an
+n argument.
+
+**So the blocker is now a claim about EDITIONS AND LEGIBILITY, which is
+checkable, rather than about the corpus, which is refuted.** The cheapest thing
+that would move the whole thread is no longer a render — it is one query joining
+those 32 `work_id`s against `library/editions/`, which needs the library and
+belongs on the desktop.
+
 ### ⚠️⚠️ `Q.METER` carries `segments` and NOTHING DOWNSTREAM READS THEM
 
 Measured 2026-09-09 on an engraved Brahms 1 finale printing `C` → `¢` at bar

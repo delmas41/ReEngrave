@@ -681,6 +681,43 @@ move it is a second score, and its test fixture already exists.
 
 Full reading: `benchmarks/omr-meter-cautionary-arbiter-2026-09/FINDINGS.md`.
 
+### The thing that was blocking us turned out not to be true
+
+Almost every finding about time signatures ends the same way: *we only have one
+piece of music that does this, so we cannot tell whether what we learned is
+about the program or about that one score.* It appears in five separate
+write-ups, and each one names a single candidate second score to try next.
+
+Nobody had counted how many we actually have. **We have 32.**
+
+The project keeps a small committed fact-file for each of 97 works, generated
+from the reference sheet music — what meter it is in, how many bars, where the
+meter changes. Those files answer the question directly and need none of the
+large machinery: no score library, no trained model, no engraving software. The
+count was a two-minute query nobody had run, because each session reached for the
+next score by name instead.
+
+⚠️ **And the shape matters more than the number.** A time-signature change that
+makes bars a different LENGTH can be checked by adding up the notes in a bar. One
+that changes only how the meter is *written* — `4/4` printed as a `¢`, same
+length — cannot be, ever, by construction rather than by bad printing. Of the 143
+changes, **7 are that second kind**, and we have measured exactly one of them.
+Six are sitting there unused.
+
+⚠️ That also re-reads the piece we were about to spend a long run on: Beethoven
+5's finale at bar 364 is one of the seven, not one of the ordinary ones, so the
+bar-counting check would have been silent there by design. Worth knowing before
+the run rather than after. And a **cheaper** version of the same test was never
+considered — Beethoven's First Symphony makes the identical change at bar 13.
+
+⚠️ **What this does not show:** nothing was read, rendered or scored. Whether we
+hold a printed edition of each of those 32 works, and whether its pages are legible
+enough to read the change off, are two further questions — but they are checkable
+questions about our library, where before we thought the problem was that the
+music itself did not exist.
+
+Full reading: `benchmarks/omr-meter-fixture-pool-2026-09/FINDINGS.md`.
+
 ## Running it
 
 - **Web app:** `docker compose up -d` → http://localhost
