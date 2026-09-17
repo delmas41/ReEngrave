@@ -188,6 +188,51 @@ ARMS = [
      "    return LETTERBOXED",
      "TestTheResolutionQuestion::test_letterboxed_and_direct_pixels_are_NOT_flattened"),
 
+    # ── no exemptions, and LOCATION vs POSITION ─────────────────────────────
+    ("an_annotated_assignment_is_not_resolved", CAP,
+     "        if isinstance(node, ast.AnnAssign):\n"
+     "            tgt, val = node.target, node.value",
+     "        if False and isinstance(node, ast.AnnAssign):\n"
+     "            tgt, val = node.target, node.value",
+     "TestLocationIsNotPosition::test_a_staff_relative_fact_DOES_compose"),
+
+    ("a_family_with_no_position_produces_no_finding", CAP,
+     '        if r["position"]:\n            continue',
+     '        if r["position"] or r["side_in_class_name"]:\n            continue',
+     "TestThereAreNoExemptions::test_every_family_without_a_position_is_REPORTED"),
+
+    ("nothing_composes_so_the_grading_is_vacuous", CAP,
+     "    if d & set(_STAFF_RELATIVE_KEYS):\n        out.append(COMPOSES)",
+     "    if False:\n        out.append(COMPOSES)",
+     "TestLocationIsNotPosition::test_a_staff_relative_fact_DOES_compose"),
+
+    ("everything_composes_so_the_grading_is_vacuous_the_other_way", CAP,
+     "def _location_grade(detail: Sequence[str]) -> List[str]:",
+     "def _location_grade(detail: Sequence[str]) -> List[str]:\n"
+     "    return [COMPOSES]",
+     "TestLocationIsNotPosition::test_a_family_with_only_page_and_cell_frames_does_not_compose"),
+
+    ("a_position_value_stops_counting_as_staff_relative", CAP,
+     "                | ({COMPOSES} if position else set())),",
+     "                | set()),",
+     "TestLocationIsNotPosition::test_a_position_quantitys_VALUE_counts_even_with_cell_detail_keys"),
+
+    ("placement_is_folded_back_into_the_class_name_side", CAP,
+     '_SIDE_KEYS = ("side",)',
+     '_SIDE_KEYS = ("side", "placement")',
+     "TestLocationIsNotPosition::test_placement_is_not_filed_as_a_class_name_side"),
+
+    # ── the cross-document question ─────────────────────────────────────────
+    ("the_publisher_scan_matches_comments_so_it_looks_reachable", CAP,
+     "    code_hits = sum(1 for n in ast.walk(tree)",
+     '    code_hits = gather_src.lower().count("publisher") + sum(0 for n in ast.walk(tree)',
+     "TestNothingAccumulatesAcrossDocuments::test_publisher_is_unreachable_in_gather"),
+
+    ("the_catalog_half_is_dropped_so_the_zero_looks_like_an_absent_fact", CAP,
+     "                with_publisher=sum(1 for e in eds if e.get(\"publisher\")),",
+     "                with_publisher=0,",
+     "TestNothingAccumulatesAcrossDocuments::test_but_the_catalog_HAS_it"),
+
     # ── it must not SILENCE its siblings ───────────────────────────────────
     ("the_derived_check_marker_is_dropped_and_wiring_goes_quiet", WIR,
      "            if _declares_derived_check(path):\n"

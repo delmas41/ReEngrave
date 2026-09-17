@@ -375,7 +375,29 @@ READER_RASTER_ALSO: Dict[str, List[Tuple[str, str]]] = {
 # ─────────────────────────────────────────────────────────────────────────────
 
 KNOWN_GAPS: Dict[str, str] = {
-    # ── POSITION: families with a shape fact and no staff-grid position ─────
+    # ── POSITION: EVERY family with no staff-grid position of its own ──────
+    #
+    # ⚠️⚠️ THERE ARE NO EXEMPTIONS IN THIS BLOCK AND THAT IS SEAN'S RULING,
+    # 2026-09-17: *"Theoretically every position can at some point contribute
+    # even if that is not with our current pipeline. We are still discovering
+    # what works best and for testing we need to hold on to everything because
+    # we can't yet know all of what will be helpful."*
+    #
+    # So the test is NOT *does this family need a position to read itself*, and
+    # NOT *does recording it compose into a useful prior*. It is: **we cannot
+    # yet know, therefore yes.** Two earlier framings of this list were
+    # withdrawn — one exempting families whose CLASS NAME states a side, one
+    # allowing an exemption argued from the aggregate — and every entry below
+    # is a reason a gap EXISTS, never a reason it is acceptable.
+    #
+    # ⚠️ THE SCOPE IS DISCOVERY AND A LATER READER MUST NOT TAKE IT AS
+    # PERMANENT. Sean scoped it to *"for testing"* — a phase-appropriate call
+    # about a pipeline still being figured out, not a standing claim that the
+    # record may grow without bound. The cost to watch is measured in
+    # `benchmarks/omr-ink-gather-2026-09/FINDINGS.md`: the ink layer alone adds
+    # **0.6 MB per Litolff page and 3.1 MB per Breitkopf page**, against
+    # records already measured in the hundreds of MB. Noted as the thing to
+    # watch, NOT as an argument against.
     "POSITION time": (
         "⚠️⚠️ THE MOTIVATING CASE. A time signature's placement is RIGID — "
         "numerator in the upper two spaces, denominator in the lower two, "
@@ -396,29 +418,34 @@ KNOWN_GAPS: Dict[str, str] = {
         "neighbour 11`) because it is reconstructed per-document from the "
         "detector's boxes rather than read once from the grid."),
     "POSITION dynamic": (
-        "MEASURED and unbuilt. `benchmarks/omr-dynamics-band-2026-09` reports "
-        "73% of letters in their own staff's band and 24% in the band of the "
-        "staff immediately ABOVE, distance exactly 1, no exceptions — a clean "
-        "band with a measured empty interval (-3.04..-0.52 spaces). "
-        "`gather_dynamic_letters` even computes `band_offset_spaces` on the "
-        "row. ⚠️ It is a DETAIL of a scored row, so it is the absorbed-witness "
-        "shape, and `wiring` reports the key unread."),
+        "MEASURED and in the unusable place. `benchmarks/omr-dynamics-band-"
+        "2026-09` reports 73% of letters in their own staff's band and 24% in "
+        "the band of the staff immediately ABOVE, distance exactly 1, no "
+        "exceptions, with a measured empty interval (-3.04..-0.52 spaces). "
+        "`gather_dynamic_letters` even computes `band_offset_spaces` — as a "
+        "DETAIL of a SCORED row, which is the absorbed-witness shape, and "
+        "`wiring` reports the key unread."),
     "POSITION direction": (
-        "a direction word carries `placement` (above/below), derived from its "
-        "band, and no staff-grid coordinate. Whether one would help is "
-        "UNMEASURED — the lexicon gate, not placement, is what refuses these."),
+        "a direction word carries `placement` (above/below) derived from its "
+        "band, and no staff-grid coordinate. ⚠️ It is a GAP and not an "
+        "exemption: where words fall on a plate — how far clear of the staff, "
+        "where in the bar, on which staff of a system — is exactly the kind "
+        "of distribution an unnamed blob would later be scored against, and "
+        "`placement` is far too coarse to carry it."),
     "POSITION wedge": (
         "⚠️ HALF-ANSWERED, and by the reader that was not asked to. The "
         "`CV_HAIRPINS` rows carry `band_offset_spaces` measured against the "
         "staff's own bottom line with NO score — the exemplar's shape, by "
         "accident of that rung working in page pixels per staff. The "
         "`DETECTOR` rows carry a score and no position. So the family's "
-        "answer depends on which rung fired."),
+        "answer depends on which rung fired, which is not an answer."),
     "POSITION slur": (
         "an arc is a SPAN and the record has no shape for one (register "
         "§3.1). `arc_kind` reads `notehead_staff_position` — the NOTES' "
         "positions, not the arc's — which is the right evidence for the "
-        "tie/slur grammar and says nothing about where the curve is."),
+        "tie/slur grammar and says nothing about where the curve is. Where "
+        "arcs sit relative to the staff is a real distribution and nothing "
+        "holds it."),
     "POSITION tie": (
         "as `slur` — one quantity (`Q.ARC_KIND`) and one missing record "
         "shape. ⚠️ It is the sharper half: a tie's two ends are at ONE STAFF "
@@ -427,24 +454,48 @@ KNOWN_GAPS: Dict[str, str] = {
         "did (`TIE_SAME_POSITION_MAX_SPACES`) reads the flanking NOTEHEADS' "
         "boxes, not the arc's, because the arc has no position row to read."),
     "POSITION articulation": (
-        "the class name states the SIDE (`articStaccatoAbove`) and the "
-        "gather site records it as `side=`. ⚠️ THAT IS NOT A POSITION FACT "
-        "AND MUST NOT BE COUNTED AS ONE — see `side_is_not_a_ruler` in the "
-        "report: it is DERIVED FROM THE CLASS, so it fails together with the "
-        "classification and is not an independent witness."),
+        "⚠️⚠️ THE CLASS NAME STATES A SIDE AND THAT IS NOT A POSITION. An "
+        "earlier draft of this list exempted this family on those grounds and "
+        "the exemption is WITHDRAWN. `side` is DERIVED FROM THE CLASS, so it "
+        "fails together with the classification; and above/below is a BIT "
+        "where the question is a distribution — how many spaces clear of the "
+        "staff a staccato sits on this publisher's plates is what would let "
+        "an unnamed dot be scored, and a side cannot express it."),
     "POSITION fermata": (
-        "as `articulation` — `side=` off the class name. ⚠️ And CLAUDE.md "
-        "already records that a fermata's side is NOT the articulation side "
-        "test: a `fermataAbove` over a bar's only rest stands above ink it "
-        "belongs to."),
+        "as `articulation`, and CLAUDE.md already records that a fermata's "
+        "side is NOT even the articulation side test: a `fermataAbove` over a "
+        "bar's only rest stands above ink it belongs to. The distribution "
+        "that matters — how far clear of the staff, where in the bar, on "
+        "which staff of a system — has nowhere to be recorded."),
     "POSITION ornament": (
-        "as `articulation`, with a documented hole: a TREMOLO's side is "
-        "`None` because it rides the stem, so for that class the class name "
-        "carries no position either."),
+        "as `articulation`, with a hole the side field cannot cover at all: a "
+        "TREMOLO's side is `None` because it rides the stem, so for that "
+        "class the class name carries no position of any kind."),
     "POSITION tuplet": (
-        "a tuplet marker is a digit or a bracket printed clear of the staff; "
         "`Q.TUPLET_MARKER` carries `x0`/`x1`/`x_center` — a HORIZONTAL span, "
-        "which is what the group membership needs — and no vertical slot."),
+        "which is what group membership needs — and no vertical slot. A "
+        "tuplet digit is printed clear of the staff on the beam's side, which "
+        "is a staff-relative fact nothing records."),
+    # ── ACROSS DOCUMENTS: nothing accumulates, and the key is unreachable ───
+    "CROSS-DOCUMENT": (
+        "⚠️⚠️ SEAN, 2026-09-17: *\"We need every bit of information gathered "
+        "and stored in one place where the different stages can continue to "
+        "learn how to better identify as it processes all of the "
+        "information.\"* **There is no such place.** `data/` holds "
+        "`dossiers/` (per-work ENCODING facts, not measured geometry), "
+        "`score-library/` (a catalog of files) and three `user-labeled*/` "
+        "training sets. No store of measured positions exists, so a "
+        "distribution of where fermatas actually fall cannot be accumulated "
+        "even for the families that DO have a position fact. "
+        "⚠️ AND THE NATURAL CONDITIONING VARIABLE IS UNREACHABLE AT GATHER: "
+        "`grep publisher tools/omr/staged/gather.py` returns ONE LINE and it "
+        "is a comment in a docstring. The catalog records a publisher on 231 "
+        "of 235 edition entries (212 distinct) and an `image_type` on 226, "
+        "keyed by PATH — so the fact exists, is populated, and never reaches "
+        "the stage that would use it. ⚠️ It is on `entries`, NOT on the "
+        "`editions` map, which carries only "
+        "`instrumentation`/`path`/`sha256`/`work_id` — a reader that went to "
+        "`editions` for it would find nothing and conclude it was absent."),
 
     # ── RESOLUTION: a constant DPI over sources of two different kinds ──────
     "RESOLUTION nothing reads the source's native": (
@@ -558,12 +609,26 @@ def _dict_literals(fn: ast.AST) -> Dict[str, Set[str]]:
     """
     out: Dict[str, Set[str]] = {}
     for node in ast.walk(fn):
-        if not isinstance(node, ast.Assign) or len(node.targets) != 1:
+        # ⚠️⚠️ AN ANNOTATED ASSIGNMENT IS STILL AN ASSIGNMENT, and missing it
+        # is the `**common` trap recurring in a second form. `gather.py` binds
+        # `shared: Dict[str, Any] = {...}` and `detail: Dict[str, Any] = {...}`
+        # as `ast.AnnAssign`, so an `ast.Assign`-only walk resolved neither —
+        # and `Q.DIRECTION_WORD` came back without `bbox_page_px`/`placement`
+        # and `Q.DYNAMIC_LETTER` without `band_offset_spaces`. The location
+        # grading then reported both families as carrying NO page location,
+        # which is the reverse of the truth. Found by reading the emitted
+        # detail lists against the source, not by any assertion.
+        if isinstance(node, ast.AnnAssign):
+            tgt, val = node.target, node.value
+            if val is None or not isinstance(tgt, ast.Name):
+                continue
+        elif isinstance(node, ast.Assign) and len(node.targets) == 1:
+            tgt = node.targets[0]
+            if not isinstance(tgt, ast.Name):
+                continue
+            val = node.value
+        else:
             continue
-        tgt = node.targets[0]
-        if not isinstance(tgt, ast.Name):
-            continue
-        val = node.value
         if isinstance(val, ast.Call) and isinstance(val.func, ast.Name) \
                 and val.func.id == "dict":
             out.setdefault(tgt.id, set()).update(
@@ -838,6 +903,67 @@ _IMAGE_INFO_CALLS = ("get_image_info", "get_images")
 _NATIVE_KEYS = ("width", "height", "xres", "yres", "bpc")
 
 
+#: Directories under `data/` that would hold an accumulated store if one
+#: existed. ⚠️ DERIVED BY LISTING, not asserted: the check reports what IS
+#: there, so the claim *"no store of measured geometry"* is falsifiable by
+#: anyone adding one.
+def across_documents() -> Dict[str, Any]:
+    """Does anything accumulate MEASURED GEOMETRY across documents — and is the
+    obvious conditioning variable even reachable where it would be populated?
+
+    ⚠️⚠️ SEAN, 2026-09-17: *"We need every bit of information gathered and
+    stored in one place where the different stages can continue to learn how to
+    better identify as it processes all of the information."* The aggregate is
+    the point — recording where fermatas fall is what later lets an unnamed
+    blob three spaces above the top staff at a bar end be scored as
+    fermata-shaped. A per-run record cannot do that; only a store can.
+
+    ⚠️ AND `publisher` IS THE NATURAL CONDITIONING VARIABLE AND IS UNREACHABLE
+    AT GATHER. The catalog holds it — but on `entries`, NOT on the `editions`
+    map, so a reader that went to `editions` would find nothing and conclude
+    it was absent. This reports both, with counts, so neither half is taken on
+    trust.
+    """
+    data = _ROOT / "data"
+    dirs = sorted(p.name for p in data.iterdir()
+                  if p.is_dir() and not p.name.startswith(".")) \
+        if data.is_dir() else []
+
+    # Is `publisher` read anywhere GATHER can see?
+    gather_src = (_HERE / "gather.py").read_text()
+    tree = ast.parse(gather_src)
+    code_hits = sum(1 for n in ast.walk(tree)
+                    if (isinstance(n, ast.Constant)
+                        and isinstance(n.value, str)
+                        and "publisher" in n.value.lower())
+                    or (isinstance(n, (ast.Name, ast.Attribute))
+                        and "publisher" in (getattr(n, "id", "")
+                                            or getattr(n, "attr", "")).lower()))
+
+    cat = _ROOT / "data/score-library/catalog.json"
+    catalog: Dict[str, Any] = {"present": cat.is_file()}
+    if cat.is_file():
+        try:
+            doc = json.loads(cat.read_text())
+            eds = [e for e in doc.get("entries", [])
+                   if e.get("kind") == "edition"]
+            catalog.update(
+                editions=len(eds),
+                with_publisher=sum(1 for e in eds if e.get("publisher")),
+                distinct_publishers=len({e["publisher"] for e in eds
+                                         if e.get("publisher")}),
+                with_image_type=sum(1 for e in eds if e.get("image_type")),
+                # ⚠️ The field is on `entries`; the `editions` MAP does not
+                # carry it, and that is where a reader would look first.
+                on_editions_map=sorted(
+                    (list(doc.get("editions", {}).values()) or [{}])[0].keys()),
+            )
+        except (OSError, ValueError):                        # noqa: BLE001
+            catalog["present"] = False
+    return {"data_dirs": dirs, "publisher_in_gather_code": code_hits,
+            "catalog": catalog}
+
+
 def native_resolution() -> Dict[str, Any]:
     """Does anything read the SOURCE's native pixel dimensions?
 
@@ -965,8 +1091,61 @@ def rasters() -> Dict[str, Any]:
 
 #: A detail key that states a side or a band. ⚠️ SEPARATE FROM A POSITION FACT
 #: AND THE SEPARATION IS THE FINDING — see `side_is_not_a_ruler`.
-_SIDE_KEYS = ("side", "placement")
+#: ⚠️ `side` ONLY, and `placement` is deliberately NOT here. A `side` is read
+#: off the CLASS NAME (`fermataBelow`) and therefore fails together with the
+#: classification; a `placement` is DERIVED FROM THE BAND by measurement, so it
+#: has the opposite provenance. Folding them made the `direction` family report
+#: "the class name states a SIDE" about a word that is not in the class space
+#: at all — a confident wrong label produced by the instrument.
+_SIDE_KEYS = ("side",)
 _BAND_KEYS = ("band_offset_spaces", "position_in_candidate")
+#: A band-derived above/below. Real evidence, and far too coarse to carry a
+#: distribution — reported apart from both of the above.
+_COARSE_BAND_KEYS = ("placement",)
+
+# ─────────────────────────────────────────────────────────────────────────────
+# LOCATION vs POSITION — a grading of what is there, NEVER an exemption
+#
+# ⚠️⚠️ A LOCATION IS NOT A POSITION, and the difference is whether it COMPOSES
+# ACROSS DOCUMENTS. Sean's aggregate question — *where do things fall on THIS
+# publisher's plates* — can only be asked of a quantity that means the same
+# thing on two different pages. A staff-space float does; a raw page pixel does
+# not, because pages differ in size and in render DPI; a CANONICAL CELL box
+# does not either, and worse: `Q.ONSET_COLUMN` already paid for that one —
+# canonical x is measured inside ONE cell rescaled so the staff span is
+# constant, so **two staves' canonical frames coincide by construction** and
+# agreeing there is evidence of nothing.
+#
+# ⚠️ This grades a family that HAS something; it never excuses one that has
+# nothing. Every family without a staff-grid position is a finding regardless
+# of what it scores here.
+# ─────────────────────────────────────────────────────────────────────────────
+
+#: A staff-space float. Comparable across staves, pages and documents.
+COMPOSES = "staff_relative"
+#: Page pixels. A LOCATION on one raster; not comparable to another page's.
+PAGE_ONLY = "page_pixels"
+#: A canonical-cell box. Not comparable across staves, let alone documents.
+CELL_ONLY = "canonical_cell"
+
+_STAFF_RELATIVE_KEYS = ("band_offset_spaces", "position_in_candidate",
+                        "width_spaces", "height_spaces", "open_spaces",
+                        "outline_rms_spaces", "half_step")
+_PAGE_KEYS = ("bbox_page_px", "x_center_page", "y_center_page", "y_center_px")
+_CELL_KEYS = ("x0", "x1", "y0", "y1", "x_center", "y_center")
+
+
+def _location_grade(detail: Sequence[str]) -> List[str]:
+    """What FRAMES this row's location is expressed in — all of them."""
+    d = set(detail)
+    out: List[str] = []
+    if d & set(_STAFF_RELATIVE_KEYS):
+        out.append(COMPOSES)
+    if d & set(_PAGE_KEYS):
+        out.append(PAGE_ONLY)
+    if d & set(_CELL_KEYS):
+        out.append(CELL_ONLY)
+    return out
 
 #: Rows `gather_detections` emits for EVERY detection, with no class guard —
 #: so any family whose ink comes from the detector has a shape fact whether or
@@ -1103,6 +1282,8 @@ def families() -> Dict[str, Any]:
                            if set(by_q[q]["detail"]) & set(_SIDE_KEYS)})
         band = sorted({q for q in reads
                        if set(by_q[q]["detail"]) & set(_BAND_KEYS)})
+        coarse = sorted({q for q in reads
+                         if set(by_q[q]["detail"]) & set(_COARSE_BAND_KEYS)})
 
         variants: Dict[str, List[str]] = {}
         for q in reads:
@@ -1123,8 +1304,19 @@ def families() -> Dict[str, Any]:
             "position_declared_but_unread": position_unread,
             "side_in_class_name": in_class,
             "band_as_a_detail": band,
+            "coarse_band_only": coarse,
             "rasters": {k: sorted(set(v)) for k, v in sorted(variants.items())},
             "records_its_raster": records_image,
+            # ⚠️ A GRADING OF WHAT IS THERE, NEVER AN EXEMPTION.
+            #
+            # ⚠️ A POSITION QUANTITY'S *VALUE* IS THE STAFF-RELATIVE FACT, and
+            # grading only its DETAIL keys got `clef` and `key` wrong: both
+            # carry a staff-grid float as the value and cell-frame keys beside
+            # it, so they read as `canonical/page` — *"does not compose"* about
+            # the two families that do.
+            "location_frames": sorted(
+                {g for q in reads for g in _location_grade(by_q[q]["detail"])}
+                | ({COMPOSES} if position else set())),
         })
     return {"rows": rows, "observe": obs, "rasters": ras}
 
@@ -1145,6 +1337,7 @@ def report() -> Dict[str, Any]:
     rep["side_is_not_a_ruler"] = sorted(
         {q for q, v in by_q.items() if set(v["detail"]) & set(_SIDE_KEYS)})
 
+    rep["across_documents"] = across_documents()
     rep["controls"] = controls(rep)
     rep["problems"] = problems(rep)
     rep["unaccounted"] = unaccounted(rep["problems"])
@@ -1218,8 +1411,20 @@ def problems(rep: Dict[str, Any]) -> List[str]:
         elif r["band_as_a_detail"]:
             extra = (" — a band offset exists as a DETAIL of a scored row "
                      f"({', '.join(r['band_as_a_detail'])})")
+        elif r["coarse_band_only"]:
+            extra = (" — its only staff-relative fact is a band-derived "
+                     f"above/below ({', '.join(r['coarse_band_only'])}), which "
+                     "is far too coarse to carry a distribution")
         else:
             extra = ""
+        # ⚠️ THE GRADING RIDES ALONG AND DOES NOT SOFTEN THE FINDING. A family
+        # whose ink is located only in page pixels or only in a canonical cell
+        # has a LOCATION and not a POSITION, and neither composes across
+        # documents — which is a second, distinct fact about the same row.
+        frames = r["location_frames"]
+        if frames and COMPOSES not in frames:
+            extra += (f" — and its ink is located only in {'/'.join(frames)}, "
+                      f"which does not compose across documents")
         out.append(f"POSITION {r['family']} has no staff-grid position fact of "
                    f"its own{extra}")
 
@@ -1285,6 +1490,21 @@ def problems(rep: Dict[str, Any]) -> List[str]:
             f"it), so the zero is the walker working. Every reader is handed "
             f"a CONSTANT render DPI whatever the plate holds")
 
+    # ⚠️ ONE FINDING. There is no store, so there is one repair, not one per
+    # family — and the conditioning variable being unreachable is part of the
+    # same fact rather than a second gap.
+    xd = rep["across_documents"]
+    cat = xd["catalog"]
+    if not xd["publisher_in_gather_code"] and cat.get("present"):
+        out.append(
+            f"CROSS-DOCUMENT nothing accumulates measured geometry across "
+            f"documents — `data/` holds {', '.join(xd['data_dirs'])} and no "
+            f"store of positions — and `publisher`, the conditioning variable "
+            f"the aggregate would need, appears in NO code in gather.py while "
+            f"the catalog carries it on {cat.get('with_publisher')} of "
+            f"{cat.get('editions')} editions "
+            f"({cat.get('distinct_publishers')} distinct)")
+
     for q in rep["unclassified_scoreless"]:
         out.append(f"UNCLASSIFIED Q.{q} is observed with no score and is in "
                    f"neither UNSCORED nor KNOWN_GAPS — say what kind of fact "
@@ -1314,10 +1534,11 @@ _SHORT = {INTACT: "intact", ERASED: "erased",
 def render(rep: Dict[str, Any]) -> str:
     lines: List[str] = []
     A = lines.append
-    A("SHAPE, POSITION, IMAGE — what we capture about each family's ink")
+    A("SHAPE · POSITION · IMAGE · RESOLUTION — what we capture about ink")
     A("=" * 78)
     A("")
-    A(f"{'family':14s} {'shape':>5s}  {'position':>8s}  {'side':>4s}  rasters")
+    A(f"{'family':14s} {'shape':>5s}  {'position':>8s}  {'location':>9s}  "
+      f"{'side':>4s}  rasters")
     A("-" * 78)
     for r in rep["rows"]:
         shape = "yes" if r["shape"] else "NO"
@@ -1326,17 +1547,35 @@ def render(rep: Dict[str, Any]) -> str:
         elif r["band_as_a_detail"]:
             pos = "band*"
         else:
-            pos = "none"
+            pos = "NONE"
+        loc = ("composes" if COMPOSES in r["location_frames"]
+               else "/".join({"canonical_cell": "cell", "page_pixels": "page"}.get(f, f)
+                            for f in r["location_frames"])
+               or "-")
         side = "cls" if r["side_in_class_name"] else "-"
         ras = ",".join(_SHORT.get(k, k) for k in r["rasters"]
                        if k != NO_RASTER) or "-"
-        A(f"{r['family']:14s} {shape:>5s}  {pos:>8s}  {side:>4s}  {ras}")
+        A(f"{r['family']:14s} {shape:>5s}  {pos:>8s}  {loc:>9s}  "
+          f"{side:>4s}  {ras}")
     A("")
     A("  shape    = an observed quantity carrying the detector's confidence")
     A("  position = a staff-grid coordinate, scoreless, from its own reader")
     A("  band*    = a staff-relative offset, but as a DETAIL of a SCORED row")
+    A("  location = does the ink's frame COMPOSE across documents? page")
+    A("             pixels and canonical-cell boxes do not — pages differ in")
+    A("             size and dpi, and two staves' canonical frames coincide")
+    A("             BY CONSTRUCTION. A grading of what is there, NEVER an")
+    A("             exemption.")
     A("  side     = above/below read off the CLASS NAME — not a ruler, and")
     A("             not independent of the classification it comes from")
+    A("")
+    A("  ⚠️⚠️ EVERY `NONE` IS A FINDING AND THERE ARE NO EXEMPTIONS. Sean,")
+    A("     2026-09-17: the test is not whether a family needs a position or")
+    A("     whether one would compose — it is that we cannot yet know, so we")
+    A("     hold on to everything. ⚠️ SCOPED TO DISCOVERY, not a standing")
+    A("     claim that the record may grow for ever; the cost to watch is")
+    A("     0.6 MB/page (Litolff) and 3.1 MB/page (Breitkopf) for the ink")
+    A("     layer alone — `benchmarks/omr-ink-gather-2026-09/FINDINGS.md`.")
     A("")
 
     A("── THE POSITION FACTS THAT EXIST ───────────────────────────────────")

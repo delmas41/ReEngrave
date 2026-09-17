@@ -33,7 +33,8 @@ import unittest
 
 from tools.omr.staged import capture
 from tools.omr.staged import gather  # noqa: F401  -- the subject of the walk
-from tools.omr.staged.capture import (DIRECT_PIXELS, ERASED, ERASED_ELSE_INTACT,
+from tools.omr.staged.capture import (COMPOSES, DIRECT_PIXELS, ERASED,
+                                      ERASED_ELSE_INTACT,
                                       INTACT, LETTERBOXED,
                                       NO_RASTER, OWN_ERASURE, PAGE_RASTER,
                                       STAFF_GRID_POSITION, UNSCORED)
@@ -411,6 +412,140 @@ class TestTheImageQuestion(unittest.TestCase):
 # ─────────────────────────────────────────────────────────────────────────────
 # The instrument on synthetic code — each question, driven to a KNOWN fault
 # ─────────────────────────────────────────────────────────────────────────────
+
+class TestThereAreNoExemptions(unittest.TestCase):
+    """⚠️⚠️ SEAN'S RULING, 2026-09-17, after two earlier framings of the
+    POSITION question were withdrawn.
+
+    The test for whether a family should carry a position is not *does it need
+    one*, and not *does recording it compose into a useful prior*. It is: **we
+    cannot yet know, therefore yes.** So EVERY family with no staff-grid
+    position of its own is a finding, and `KNOWN_GAPS` holds reasons a gap
+    EXISTS — never reasons one is acceptable.
+
+    ⚠️ Scoped to DISCOVERY. A later reader must not take it as a standing claim
+    that the record may grow without bound.
+    """
+
+    @classmethod
+    def setUpClass(cls) -> None:
+        cls.rep = capture.report()
+        cls.rows = {r["family"]: r for r in cls.rep["rows"]}
+
+    def test_every_family_without_a_position_is_REPORTED(self) -> None:
+        missing = {f for f, r in self.rows.items() if not r["position"]}
+        self.assertTrue(missing, "positive control: some family must lack one")
+        reported = {p.split()[1] for p in self.rep["problems"]
+                    if p.startswith("POSITION ")}
+        self.assertEqual(missing, reported,
+                         "a family with no position that produces no finding "
+                         "is an exemption, and there are none")
+
+    def test_a_class_name_SIDE_does_not_exempt_a_family(self) -> None:
+        # The withdrawn framing, pinned so it cannot come back: these three
+        # state a side in the class name AND are still findings.
+        for family in ("articulation", "fermata", "ornament"):
+            with self.subTest(family=family):
+                self.assertTrue(self.rows[family]["side_in_class_name"])
+                self.assertEqual(self.rows[family]["position"], [])
+                self.assertTrue(any(p.startswith(f"POSITION {family} ")
+                                    for p in self.rep["problems"]))
+
+    def test_no_gap_reason_reads_as_an_exemption(self) -> None:
+        """⚠️ A reason saying a gap is FINE is the category that was deleted."""
+        banned = ("probably fine", "no gap", "not a gap", "acceptable",
+                  "needs none", "does not need", "no position is needed")
+        for key, reason in capture.KNOWN_GAPS.items():
+            low = reason.lower()
+            for phrase in banned:
+                with self.subTest(key=key, phrase=phrase):
+                    self.assertNotIn(phrase, low)
+
+
+class TestLocationIsNotPosition(unittest.TestCase):
+    """⚠️ A GRADING OF WHAT IS THERE, NEVER AN EXEMPTION.
+
+    A staff-space float composes across documents; a raw page pixel does not,
+    because pages differ in size and dpi; a canonical-cell box does not either,
+    and `Q.ONSET_COLUMN` already paid for that — two staves' canonical frames
+    coincide BY CONSTRUCTION, so agreeing there is evidence of nothing.
+    """
+
+    @classmethod
+    def setUpClass(cls) -> None:
+        cls.rows = {r["family"]: r for r in capture.report()["rows"]}
+
+    def test_a_family_with_only_page_and_cell_frames_does_not_compose(self):
+        for family in ("rest", "time", "slur"):
+            with self.subTest(family=family):
+                self.assertNotIn(COMPOSES, self.rows[family]["location_frames"])
+
+    def test_a_staff_relative_fact_DOES_compose(self) -> None:
+        # ⚠️ The positive control. A grader that answered "does not compose"
+        # for everything would pass the test above for the wrong reason.
+        for family in ("note", "dynamic", "wedge"):
+            with self.subTest(family=family):
+                self.assertIn(COMPOSES, self.rows[family]["location_frames"])
+
+    def test_a_position_quantitys_VALUE_counts_even_with_cell_detail_keys(self):
+        """⚠️ REGRESSION. `Q.CLEF_POSITION` and `Q.KEYSIG_RUN_POSITION` carry a
+        staff-grid float as the VALUE and cell-frame keys beside it, so grading
+        the detail keys alone reported `clef` and `key` as not composing — the
+        two families that certainly do.
+        """
+        for family in ("clef", "key"):
+            with self.subTest(family=family):
+                self.assertTrue(self.rows[family]["position"])
+                self.assertIn(COMPOSES, self.rows[family]["location_frames"])
+
+    def test_placement_is_not_filed_as_a_class_name_side(self) -> None:
+        """⚠️ REGRESSION. `placement` is DERIVED FROM THE BAND and `side` is
+        read off the CLASS NAME — opposite provenances. Folding them made the
+        `direction` family report *"the class name states a SIDE"* about a word
+        that is not in the class space at all.
+        """
+        self.assertEqual(self.rows["direction"]["side_in_class_name"], [])
+        self.assertTrue(self.rows["direction"]["coarse_band_only"])
+
+
+class TestNothingAccumulatesAcrossDocuments(unittest.TestCase):
+    """⚠️ Sean's aggregate question needs a store and a conditioning variable,
+    and the tool reports that neither is reachable. Derived, with counts, so
+    neither half is taken on trust.
+    """
+
+    @classmethod
+    def setUpClass(cls) -> None:
+        cls.xd = capture.across_documents()
+
+    def test_data_holds_no_store_of_measured_geometry(self) -> None:
+        # Reported by LISTING, so adding a store falsifies the claim.
+        self.assertTrue(self.xd["data_dirs"], "positive control: data/ exists")
+        for d in self.xd["data_dirs"]:
+            with self.subTest(d=d):
+                self.assertIn(d, {"dossiers", "score-library", "user-labeled",
+                                  "user-labeled-clef-fix",
+                                  "user-labeled-distill25"})
+
+    def test_publisher_is_unreachable_in_gather(self) -> None:
+        self.assertEqual(self.xd["publisher_in_gather_code"], 0)
+
+    def test_but_the_catalog_HAS_it(self) -> None:
+        """⚠️ THE POSITIVE CONTROL: the zero above is a wiring gap, not an
+        absent fact. If the catalog held no publisher the finding would be a
+        different one entirely.
+        """
+        cat = self.xd["catalog"]
+        self.assertTrue(cat["present"])
+        self.assertGreater(cat["with_publisher"], 200)
+        self.assertGreater(cat["distinct_publishers"], 100)
+
+    def test_it_is_on_entries_NOT_on_the_editions_map(self) -> None:
+        """⚠️ A reader that went to `editions` for it would find nothing and
+        conclude it was absent — so the tool states where it actually lives.
+        """
+        self.assertNotIn("publisher", self.xd["catalog"]["on_editions_map"])
+
 
 class TestTheResolutionQuestion(unittest.TestCase):
     """⚠️ QUESTION 4 (`A-INK-2`) — is the consumer getting the resolution the
