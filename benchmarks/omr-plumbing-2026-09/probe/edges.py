@@ -102,6 +102,7 @@ def measure(paths: list) -> dict:
     asked_absent = collections.defaultdict(set)
     consumer_ran = collections.defaultdict(set)
     produced = collections.defaultdict(set)
+    transitive = collections.defaultdict(set)
     arms = []
     for p in paths:
         arm = pathlib.Path(p).stem
@@ -121,11 +122,21 @@ def measure(paths: list) -> dict:
             consumer_ran[who].add(arm)
             if v.get("outcome") == "decided":
                 produced[v["quantity"]].add(arm)
-            for rid in set(v.get("used") or ()) | set(v.get("considered") or ()) \
-                    | set(v.get("basis") or ()):
+            # ⚠️⚠️ `considered` ∪ `used` ONLY — NEVER `basis`. A declared
+            # `wants` edge is a DIRECT read, and `basis` is the TRANSITIVE
+            # closure: on one arm `adjudicate_part_partition` showed
+            # `instrument` and `staff_ordinal` in its basis purely because
+            # `slot_index`'s own verdict rests on them. Crediting basis
+            # reported an indirect ancestry as a direct read and contradicted
+            # `inventory --check`, which was right.
+            for rid in set(v.get("used") or ()) | set(v.get("considered") or ()):
                 q = q_of.get(rid)
                 if q:
                     carried[(q, who)].add(arm)
+            for rid in set(v.get("basis") or ()):
+                q = q_of.get(rid)
+                if q:
+                    transitive[(q, who)].add(arm)
             for q in (v.get("missing") or ()):
                 asked_absent[(q, who)].add(arm)
             for q in (v.get("declined") or ()):
@@ -147,6 +158,15 @@ def measure(paths: list) -> dict:
             rule = (entry or {}).get("rule") if isinstance(entry, dict) else None
             if rule:
                 consumer_ran[f"inference:{rule}"].add(arm)
+        # ⚠️ AN INFER EDGE COULD NEVER BE LIVE UNTIL THIS EXISTED. A firing is
+        # the only proof an inference read anything -- the record does not name
+        # what a rule consulted -- so a fired rule marks its DECLARED reads as
+        # carried, at `strength: inferred`. Without this the four edges of rule
+        # 1 reported NEVER_ASKED across 143 arms in which it fired 46 times.
+        if (inf.get("inferred") or ()):
+            for r in getattr(infer, "RULES", ()):
+                for q in getattr(r, "reads", ()):
+                    carried[(q, f"inference:{_infer_name(r)}")].add(arm)
         for r in getattr(infer, "RULES", ()):
             if inf:                       # the stage ran at all
                 consumer_ran[f"inference:{_infer_name(r)}"].add(arm)
@@ -156,12 +176,43 @@ def measure(paths: list) -> dict:
             consumer_ran["export"].add(arm)
             break
     return {"carried": carried, "asked_absent": asked_absent,
-            "consumer_ran": consumer_ran, "produced": produced, "arms": arms}
+            "consumer_ran": consumer_ran, "produced": produced,
+            "transitive": transitive, "arms": arms}
 
 
 #: decider name -> the quantity its subjects come from, for decisions that
 #: declare one. A decision with no subject has nothing to decide, and that is
 #: the PAGE being silent, not a broken wire.
+def _state_only_reads() -> set:
+    """(decider, quantity) pairs the record CANNOT witness.
+
+    ⚠️⚠️ `Evidence.state()` calls `_check()` (which enforces the declaration)
+    and NOT `_note()` (which records the row) -- so a quantity read only
+    through `state()` never enters `Verdict.considered`/`used`/`basis`, and a
+    NEVER_ASKED verdict about it is unprovable rather than false.
+    """
+    by = {k: v for k, v in vars(Q).items()
+          if isinstance(v, str) and not k.startswith("_")}
+    out = set()
+    root = pathlib.Path(__file__).resolve().parents[3] / "tools/omr/staged"
+    for path in sorted(root.rglob("*.py")):
+        for fn in [n for n in ast.walk(ast.parse(path.read_text()))
+                   if isinstance(n, ast.FunctionDef)]:
+            via = {}
+            for n in ast.walk(fn):
+                if (isinstance(n, ast.Call) and isinstance(n.func, ast.Attribute)
+                        and n.args):
+                    a = n.args[0]
+                    if (isinstance(a, ast.Attribute)
+                            and getattr(a.value, "id", None) == "Q"
+                            and a.attr in by):
+                        via.setdefault(by[a.attr], set()).add(n.func.attr)
+            for q, methods in via.items():
+                if methods == {"state"}:
+                    out.add((fn.name, q))
+    return out
+
+
 def _subject_sources() -> dict:
     out = {}
     for _, spec in adjudicate.REGISTRY.items():
@@ -173,6 +224,7 @@ def _subject_sources() -> dict:
 
 def classify(edges: list, m: dict) -> list:
     subj = _subject_sources()
+    STATE_ONLY = _state_only_reads()
     out = []
     for q, consumer, stage, kind in edges:
         arms = m["carried"].get((q, consumer), set())
@@ -199,6 +251,11 @@ def classify(edges: list, m: dict) -> list:
             state = "ASKED_ABSENT"
         elif not m["produced"].get(q):
             state = "PRODUCER_DEAD"
+        elif m["transitive"].get((q, consumer)):
+            # read by nothing directly, but present in the decision's ancestry
+            state, strength = "INDIRECT_ONLY", "ancestry"
+        elif (consumer, q) in STATE_ONLY:
+            state, strength = "READ_UNTRACEABLE", "unprovable"
         else:
             state = "NEVER_ASKED"
         out.append({"producer": q, "consumer": consumer, "stage": stage,
@@ -217,8 +274,8 @@ def main(argv=None) -> int:
     m = measure(args.records)
     rows = classify(edges, m)
 
-    order = ["LIVE", "ASKED_ABSENT", "NOT_EXERCISED", "NEVER_ASKED",
-             "PRODUCER_DEAD", "CONSUMER_DEAD"]
+    order = ["LIVE", "ASKED_ABSENT", "NOT_EXERCISED", "READ_UNTRACEABLE",
+             "INDIRECT_ONLY", "NEVER_ASKED", "PRODUCER_DEAD", "CONSUMER_DEAD"]
     by_state = collections.Counter(r["state"] for r in rows)
     print("═══ EVERY DECLARED CONNECTION, MEASURED ═══════════════════════════")
     print(f"arms pooled: {len(m['arms'])}  {m['arms']}")
