@@ -16,6 +16,60 @@ pointing at headings no longer in the file.)*
 
 ---
 
+## 2026-09-16 (late) — the meter carry's cost side, measured at last, and rescued from an ended session
+
+`OMR_METER_CARRY` has been ON by default since 2026-09-15 (verified at the
+predicate, not in prose: `os.environ.get(METER_CARRY_ENV, "1") ... not in`,
+a deny-list, and `meter_carry_enabled()` is True with the env unset). Its row
+in CLAUDE.md nonetheless said the cost arm was *"written and **never run**"*.
+
+**It had been run.** Session `meter-pricing-abstaining-a5daee` ran
+`local_arm.sh` on the ABSTAINING document — Litolff Beethoven 5 mvt 1, pdf
+p1-3, 34 min, exit 0, tree `916cfcb6`, `tools/` byte-identical across both arms
+— and **ended before committing**, leaving the result in two transcripts and a
+worktree. Recovered and committed on its behalf, credited to it:
+
+* systems decided **1 of 5 → 5 of 5** (`carried` ×4, support +6.0/+13.0/+9.0/+18.0)
+* `<time>` **28 → 54, all `2/4` in both arms** — the one figure re-derived here
+  from the committed exports rather than relayed
+* bars that add up **54.4% → 81.2%** like-for-like over the 1,109 bars in BOTH
+  arms, **298 wrong→exact, 0 exact→wrong**
+
+⚠️ **The raw 90.8% is not quotable** — it includes 1,159 tacet bars the ON arm
+adds that are exact by construction. The measuring session flagged that against
+its own result unprompted, and the warning is recorded beside the number.
+
+⚠️ **The carry was never handed a misread on that document.** Litolff p1-3
+holds two (`would_have_been` `C` and `4/4`, both 4.0 on a 2/4 page) and both are
+SUPPRESSED by the coverage gate BEFORE the carry runs. *"The carry handled it"*
+and *"the carry never saw it"* produce an identical file, so the distinction had
+to be written down.
+
+**The taxonomy is the durable part, and its third cell is empty:** a misread
+VOTED with an abstaining neighbour (Brahms `p0p3`, 2 systems, no propagation);
+abstaining with misreads SUPPRESSED (Litolff p1-3, propagates only the correct
+meter); and **a VOTED misread propagating across many systems — neither
+document supplies it.** The experiment that fills it is named: the arm on
+`p0p3` with `--bar-beats 3.0`.
+
+Also fixed: `docs/handoff-2026-09-16-the-fourth-stage-and-the-second-publisher.md`
+contradicted itself. PR #44 corrected §6 when PR #39 refuted *"the flag waits on
+a corpus"* and left §9.1 saying *"blocked on a CORPUS … nothing on this machine
+settles it"* — in the section headed WHAT IS WAITING FOR SEAN, the one most
+likely to be read as a work order.
+
+⚠️ The two `.json` records (82 MB + 83 MB) are deliberately NOT committed, per
+`benchmarks/omr-shared-records-2026-09/`: record machine-local, everything
+derived committed. ⚠️ The two exports are MISNAMED `brahms1-*` and hold a
+LITOLFF run — the arm fixes its output name regardless of document. Kept under
+the arm's own name so nothing that reads them breaks, with the trap stated at
+the top of the write-up.
+
+PRs #45. See
+`benchmarks/omr-meter-corroboration-2026-09/out/local/RUN_2026-09-16_litolff-p1-p3.md`.
+
+---
+
 ## 2026-09-16 — Surya measured, both OCR rungs DEFAULT ON, and the reader nobody was asking about
 
 The experiment §9 of the scope pre-registered, run on Sean's machine with the
