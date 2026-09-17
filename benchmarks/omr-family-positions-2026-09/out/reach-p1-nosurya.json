@@ -1,0 +1,90 @@
+{
+  "cell_position_basis_abstentions": 0,
+  "control_ok": true,
+  "dpi": 600,
+  "families": {
+    "articulation": {
+      "abstained": 0,
+      "observed": 0,
+      "quantity": "articulation_position"
+    },
+    "clef": {
+      "abstained": 0,
+      "observed": 13,
+      "quantity": "clef_position"
+    },
+    "direction": {
+      "abstained": 0,
+      "observed": 0,
+      "quantity": "direction_band_position"
+    },
+    "dynamic": {
+      "abstained": 0,
+      "observed": 34,
+      "quantity": "dynamic_band_position"
+    },
+    "fermata": {
+      "abstained": 0,
+      "observed": 28,
+      "quantity": "fermata_position"
+    },
+    "key": {
+      "abstained": 7,
+      "observed": 5,
+      "quantity": "keysig_run_position"
+    },
+    "note": {
+      "abstained": 0,
+      "observed": 154,
+      "quantity": "notehead_staff_position"
+    },
+    "ornament": {
+      "abstained": 0,
+      "observed": 0,
+      "quantity": "ornament_position"
+    },
+    "rest": {
+      "abstained": 0,
+      "observed": 142,
+      "quantity": "rest_position"
+    },
+    "slur": {
+      "abstained": 0,
+      "observed": 64,
+      "quantity": "arc_position"
+    },
+    "tie": {
+      "abstained": 0,
+      "observed": 64,
+      "quantity": "arc_position"
+    },
+    "time": {
+      "abstained": 0,
+      "observed": 12,
+      "quantity": "meter_glyph_position"
+    },
+    "tuplet": {
+      "abstained": 0,
+      "observed": 0,
+      "quantity": "tuplet_marker_position"
+    },
+    "wedge": {
+      "abstained": 0,
+      "observed": 0,
+      "quantity": "wedge_band_position"
+    }
+  },
+  "pages": [
+    1
+  ],
+  "pdf": "library/editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf",
+  "rows_off": 4714,
+  "rows_on": 4994,
+  "seconds": {
+    "gather_off": 28.78442621231079,
+    "gather_on": 25.90971088409424,
+    "prepare": 2.4221620559692383
+  },
+  "surya": false,
+  "weights": "omr-weights/deepscoresv2-yolov8l-hollow-graft-shift09-2026-09-04.pt"
+}

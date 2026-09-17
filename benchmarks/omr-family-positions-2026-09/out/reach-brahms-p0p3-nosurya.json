@@ -1,0 +1,93 @@
+{
+  "cell_position_basis_abstentions": 0,
+  "control_ok": true,
+  "dpi": 600,
+  "families": {
+    "articulation": {
+      "abstained": 0,
+      "observed": 196,
+      "quantity": "articulation_position"
+    },
+    "clef": {
+      "abstained": 0,
+      "observed": 143,
+      "quantity": "clef_position"
+    },
+    "direction": {
+      "abstained": 22,
+      "observed": 10,
+      "quantity": "direction_band_position"
+    },
+    "dynamic": {
+      "abstained": 0,
+      "observed": 531,
+      "quantity": "dynamic_band_position"
+    },
+    "fermata": {
+      "abstained": 0,
+      "observed": 0,
+      "quantity": "fermata_position"
+    },
+    "key": {
+      "abstained": 56,
+      "observed": 41,
+      "quantity": "keysig_run_position"
+    },
+    "note": {
+      "abstained": 0,
+      "observed": 3337,
+      "quantity": "notehead_staff_position"
+    },
+    "ornament": {
+      "abstained": 0,
+      "observed": 7,
+      "quantity": "ornament_position"
+    },
+    "rest": {
+      "abstained": 0,
+      "observed": 1028,
+      "quantity": "rest_position"
+    },
+    "slur": {
+      "abstained": 0,
+      "observed": 2207,
+      "quantity": "arc_position"
+    },
+    "tie": {
+      "abstained": 0,
+      "observed": 2207,
+      "quantity": "arc_position"
+    },
+    "time": {
+      "abstained": 0,
+      "observed": 197,
+      "quantity": "meter_glyph_position"
+    },
+    "tuplet": {
+      "abstained": 0,
+      "observed": 0,
+      "quantity": "tuplet_marker_position"
+    },
+    "wedge": {
+      "abstained": 88,
+      "observed": 47,
+      "quantity": "wedge_band_position"
+    }
+  },
+  "pages": [
+    0,
+    1,
+    2,
+    3
+  ],
+  "pdf": "library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf",
+  "rows_off": 70444,
+  "rows_on": 74777,
+  "seconds": {
+    "gather_off": 198.5812590122223,
+    "gather_on": 201.7927758693695,
+    "prepare": 25.72211980819702
+  },
+  "surya": false,
+  "weights": "omr-weights/deepscoresv2-yolov8l-hollow-graft-shift09-2026-09-04.pt"
+}

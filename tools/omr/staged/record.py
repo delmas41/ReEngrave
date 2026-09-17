@@ -482,6 +482,17 @@ class Q(_Vocab):
     # already made -- a measured, scoreless, staff-relative offset living as
     # a DETAIL of a scored row. Those two are PROMOTED here, not invented.
     #
+    # ⚠️⚠️ EVERY ONE OF THESE IS EVIDENCE, NOT A RULE. Sean, 2026-09-17:
+    # *"position is an option for helping us determine something but will
+    # rarely be a clear rule that determines by itself... Quick rules will
+    # give us quick results that could be poor."* They are `Mode.ADDITIVE`
+    # inputs to be weighed against the ink, the other staves and whatever
+    # else a consumer holds -- never a veto, never a gate. Where a
+    # measurement is ambiguous the AMBIGUITY is recorded (`attach_margin`,
+    # `centre_steps_from_middle`, `opens: None`) rather than resolved, because
+    # a mark that could be one thing or two is precisely what a later stage
+    # exists to weigh.
+    #
     # ⚠️ TWO UNITS ON PURPOSE. `unit` is on every row: marks ON the grid are
     # in STAFF STEPS from the top line (the `NOTEHEAD_STAFF_POSITION` unit);
     # marks in the row of the page BELOW the staff are in STAFF SPACES below
@@ -536,13 +547,21 @@ class Q(_Vocab):
     #: nowhere on the record today.
     TUPLET_MARKER_POSITION = "tuplet_marker_position"
 
-    #: ⚠️⚠️ A METER IS TWO MARKS, ONE IN EACH HALF OF THE STAFF. The Litolff
-    #: p.62 `3/4` this project cited for weeks is ONE BARLINE BROKEN INTO TWO
-    #: FRAGMENTS at the cell's left edge, accepted because `_meter_from_digits`
-    #: asks only for two digit glyphs at two different `y_center` values --
-    #: and nothing anywhere measures what a digit's position has to BE. A
-    #: numerator lies wholly above the middle line and a denominator wholly
-    #: below it; a stroke crosses it.
+    #: Where a meter glyph sits relative to the staff's own middle line. A
+    #: printed meter is TWO marks, one in each half, centred on each other,
+    #: and nothing anywhere measures that today: `_meter_from_digits` asks
+    #: only for two `timeSig*` glyphs at two different `y_center` values, with
+    #: no width, height, x or half test -- which is how the Litolff p.62 `3/4`
+    #: this project cited for weeks came to be ONE BARLINE BROKEN INTO TWO
+    #: FRAGMENTS at the cell's left edge.
+    #:
+    #: ⚠️⚠️ IT CONTRIBUTES; IT DOES NOT DECIDE. Ink bleed fuses a numerator
+    #: and a denominator into one stroke, so `spans` is compatible with a real
+    #: meter -- and two fragments in two halves are what a broken barline also
+    #: looks like. **Neither reading settles anything alone**, and a rule
+    #: treating either as decisive is the quick rule with the poor result.
+    #: `centre_steps_from_middle` is recorded FOR that ambiguity, not to
+    #: resolve it.
     #:
     #: ⚠️ FILED ON THE STAFF with the bar in `detail["cell"]`, exactly as
     #: `METER_GLYPH` is -- a fixture that files it on a GLYPH tests the test.

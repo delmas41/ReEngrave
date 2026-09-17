@@ -87,6 +87,44 @@ module reads the detections rather than the log for it. That is a finding
 about that row and is **reported, not silently patched**: adding `y` to a
 shape row would change a row this flag is supposed to leave byte-identical.
 
+## ⚠️⚠️ WHAT A POSITION FACT IS FOR — AND WHAT IT IS NOT
+
+**Sean, 2026-09-17, and this governs every field below:**
+
+> *"I want to make sure that we keep clear that position is an option for
+> helping us determine something but will rarely be a clear rule that
+> determines by itself. 2 numbers not connected, one in the upper half and
+> one in the lower half, could be a time signature. Due to ink bleed they may
+> appear connected, or other things that we can't determine... Quick rules
+> will give us quick results that could be poor."*
+
+> *"this architecture of the new pipeline with stages and retaining all of
+> the information is made so that when we get to something we can't easily
+> figure out, we have other paths for determining what it is. It may be a
+> specific rule or it could be a deduction from many data points."*
+
+So a position is **one more path**: evidence to be weighed later against
+everything else, in `Mode.ADDITIVE`, alongside the ink, the other staves of
+the system and whatever a consumer else holds. **It is not a veto, not a gate
+and not a discriminator on its own**, and nothing in this module rules
+anything out — every field is a measurement or a COMPARATIVE with both sides
+recorded, and there is not one threshold in the file.
+
+⚠️ **WHERE A MEASUREMENT IS AMBIGUOUS, THE AMBIGUITY IS RECORDED RATHER THAN
+RESOLVED.** `attach_margin` says how decisive a rest's edge pick was;
+`centre_steps_from_middle` is written FOR the fused-stroke case rather than to
+settle it; `opens` is `None` because a box cannot say which way an arc bends.
+A mark that could be one thing or two is exactly what a later stage is meant
+to weigh, and collapsing it here would destroy the thing the architecture
+exists to use.
+
+⚠️ **THE STEP THIS IS.** *"First we needed the stages... Next we need to make
+sure that ALL information that could ever be possibly helpful is gathered and
+available to all stages and decision points. Then we have to test each point
+to see what is helpful in making a decision."* This module is squarely step
+two. **Step three is not its job**, and a rule here that looked obviously
+right would pre-empt it.
+
 ## WHAT THIS MODULE DELIBERATELY DOES NOT DO
 
 ⚠️ **NO CONSUMER IS WIRED, AND THAT IS THE POINT.** `gather_ink` landed the
@@ -279,6 +317,17 @@ def _rest_discriminator(core: Dict[str, Any]) -> Dict[str, Any]:
     "on" a line is decided by which edge is NEARER one, with both residuals
     recorded, so a consumer can see how near and this module never has to
     invent a tolerance it measured on one document.
+
+    ⚠️⚠️ **AND IT CONTRIBUTES RATHER THAN DECIDES — `attach_margin` IS THERE
+    SO THE AMBIGUITY SURVIVES.** A rest whose two edges are nearly equally
+    near a line has not told us which line it hangs from, and the pick is then
+    a coin flip wearing a field name. The margin is the difference between the
+    two residuals: near zero means *this measurement did not separate them*,
+    and a consumer weighing it must see that rather than read `hangs: below`
+    as a fact. Both edges' own lines and residuals are recorded regardless, so
+    nothing is lost to the pick. Sean, 2026-09-17: *"position is an option for
+    helping us determine something but will rarely be a clear rule that
+    determines by itself."*
     """
     top, bottom = core["top"], core["bottom"]
     t_line, t_res = _nearest_line(top)
@@ -297,26 +346,45 @@ def _rest_discriminator(core: Dict[str, Any]) -> Dict[str, Any]:
         "attached_line": line,
         "attach_residual": resid,
         "hangs": hangs,
+        # ⚠️ HOW DECISIVE THE PICK WAS. Near 0.0 the two edges are equally
+        # near a line and this fact separates nothing.
+        "attach_margin": abs(abs(t_res) - abs(b_res)),
         "top_line": t_line, "top_residual": t_res,
         "bottom_line": b_line, "bottom_residual": b_res,
     }
 
 
 def _meter_discriminator(core: Dict[str, Any]) -> Dict[str, Any]:
-    """A METER IS TWO MARKS, ONE IN EACH HALF OF THE STAFF.
+    """Where this mark sits relative to the staff's own middle line.
 
-    ⚠️⚠️ THE MOTIVATING FAILURE. The Litolff p.62 `3/4` this project cited for
-    weeks is **one barline broken into two fragments** — a stroke at the
-    cell's left edge — accepted because `_meter_from_digits` asks only for
-    "two stacked digits" and nothing measures what a digit's position has to
-    be. A numerator stands in the upper half, a denominator in the lower, and
-    the two are centred on each other; a single stroke CROSSES the middle
-    line and belongs to neither half.
+    A printed meter is TWO marks, one in each half, centred on each other, and
+    `time_signature_locator` already relies on that placement INSIDE a template
+    search as a constraint it then throws away. These fields put it on the
+    record so a later stage can weigh it.
+
+    ⚠️⚠️ **THEY CONTRIBUTE. THEY DO NOT DECIDE, AND A `spans` READING IS NOT A
+    REFUSAL.** Sean, 2026-09-17: *"2 numbers not connected, one in the upper
+    half and one in the lower half, could be a time signature. Due to ink
+    bleed they may appear connected, or other things that we can't
+    determine... Quick rules will give us quick results that could be poor."*
+    On a bitonal plate bleed fuses a numerator and a denominator into one
+    stroke, so **`spans` is entirely compatible with a real meter** — and the
+    converse holds too: two fragments in two halves are what a BROKEN BARLINE
+    also looks like, which is the Litolff p.62 case. Neither reading settles
+    anything on its own, and a rule that treated either as decisive would be
+    exactly the quick rule with the poor result.
+
+    ⚠️ `centre_steps_from_middle` is recorded FOR the ambiguous case rather
+    than to resolve it: a fused numerator+denominator is centred ON the middle
+    line because that is where the two halves meet, while a barline fragment
+    is centred wherever the break happened to fall. That is one more number
+    for a later stage to weigh against the ink, the other staves of the system
+    and whatever else it has — not a discriminator, and nothing here thresholds
+    it.
 
     `half` is a pure geometric predicate against the staff's own middle line
-    and needs no constant: a box is `upper` if it lies wholly above the middle
-    line, `lower` if wholly below, `spans` if it crosses. `outside` is the
-    fourth answer and is not a digit either.
+    and needs no constant: `upper` if the box lies wholly above it, `lower` if
+    wholly below, `spans` if it crosses, `outside` if it clears the staff.
     """
     top, bottom = core["top"], core["bottom"]
     if core["steps_outside_staff"] != 0.0:
@@ -330,8 +398,11 @@ def _meter_discriminator(core: Dict[str, Any]) -> Dict[str, Any]:
     return {
         "half": half,
         "crosses_middle_line": top < MIDDLE_LINE_STEP < bottom,
+        # ⚠️ RECORDED FOR THE AMBIGUOUS CASE, NOT TO RESOLVE IT. See above.
+        "centre_steps_from_middle": core["_centre"] - MIDDLE_LINE_STEP,
         # how much of the staff's own height this mark occupies. A digit is
-        # about a quarter of it; a stroke that crosses all five lines is 1.0.
+        # about half of it; a stroke crossing all five lines is 1.0. ⚠️ A
+        # FUSED PAIR IS ALSO ~1.0, which is the whole point of the warning.
         "staff_height_fraction": (bottom - top) / BOTTOM_LINE_STEP,
     }
 
@@ -658,15 +729,41 @@ def gather_band_positions(log: Log, pws: Any, cells: Sequence[Any],
                           detector_class=d.smufl_name)
 
     # ── the two read from the LOG, because no detection carries their ink ───
+    #
+    # ⚠️⚠️ THE PAGE INDEX IS LOAD-BEARING AND THIS IS A BUG THAT WAS SHIPPED
+    # AND CAUGHT BY A NUMBER THAT NEEDED EXPLAINING. `gather()` calls this
+    # once PER PAGE, and `Log.all_rows()` is the whole log — so without the
+    # filter, page 2's pass re-walks page 0's and page 1's rows and measures
+    # them AGAIN against page 2's staff bands. The damage is doubled: every
+    # earlier page's marks get duplicate position rows, and they get them as
+    # ABSTENTIONS, because `bands` is keyed on this page's staff subjects and
+    # an earlier page's key is not in it. On a 4-page Brahms run that read 10
+    # direction words it produced 32 rows, 22 of them spurious refusals.
+    # ⚠️ The per-page gatherers above do not have this problem: they iterate
+    # `detections`, which `gather()` rebuilds per page. Only a reader of the
+    # LOG has it, and that is the price of reading the record instead of the
+    # detections — paid here, named here.
+    page = _page_index(pws, cells)
     _promote_from_log(log, bands, Q.WEDGE_BOX, Q.WEDGE_BAND_POSITION,
-                      only_reader=READERS.CV_HAIRPINS)
+                      only_reader=READERS.CV_HAIRPINS, page=page)
     _promote_from_log(log, bands, Q.DIRECTION_WORD,
-                      Q.DIRECTION_BAND_POSITION, only_reader=None)
+                      Q.DIRECTION_BAND_POSITION, only_reader=None, page=page)
+
+
+def _page_index(pws: Any, cells: Sequence[Any]) -> Optional[int]:
+    """This page's index, from the same place every other gatherer takes it."""
+    p = getattr(getattr(pws, "page", None), "page_index", None)
+    if p is not None:
+        return int(p)
+    for c in (cells or ()):
+        return int(c.page_index)
+    return None
 
 
 def _promote_from_log(log: Log, bands: Dict[str, Tuple[float, float, float]],
                       source: str, quantity: str,
-                      only_reader: Optional[str]) -> None:
+                      only_reader: Optional[str],
+                      page: Optional[int]) -> None:
     """Measure a band position off a row already on the record.
 
     ⚠️ THE SOURCE DIFFERS BECAUSE THE READER DOES. A CV hairpin is found by
@@ -682,6 +779,10 @@ def _promote_from_log(log: Log, bands: Dict[str, Tuple[float, float, float]],
     """
     for row in log.all_rows():
         if not isinstance(row, Observation) or row.quantity != source:
+            continue
+        # ⚠️ THIS PAGE ONLY — see the call site. Without it every earlier page
+        # is re-measured against this page's bands, once per remaining page.
+        if page is not None and row.subject.page != page:
             continue
         if only_reader is not None and row.reader != only_reader:
             continue

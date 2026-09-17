@@ -1,0 +1,139 @@
+{
+  "cells_with_meter_ink": [
+    1,
+    5,
+    7,
+    8,
+    10
+  ],
+  "dpi": 600,
+  "half_distribution": {
+    "lower": 4,
+    "spans": 3,
+    "upper": 3
+  },
+  "page": 62,
+  "pdf": "library/editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf",
+  "rows": [
+    {
+      "bottom": 8.14,
+      "cell": 1,
+      "centre_steps_from_middle": 2.99,
+      "class": "timeSig4",
+      "conf": 0.4553225040435791,
+      "half": "lower",
+      "height_steps": 2.3000000000000007,
+      "staff": "2",
+      "staff_height_fraction": 0.2875000000000001,
+      "top": 5.84
+    },
+    {
+      "bottom": 3.8,
+      "cell": 5,
+      "centre_steps_from_middle": -2.18,
+      "class": "timeSig4",
+      "conf": 0.2633705735206604,
+      "half": "upper",
+      "height_steps": 3.96,
+      "staff": "14",
+      "staff_height_fraction": 0.495,
+      "top": -0.16
+    },
+    {
+      "bottom": 2.5,
+      "cell": 7,
+      "centre_steps_from_middle": -3.92,
+      "class": "timeSig1",
+      "conf": 0.26607540249824524,
+      "half": "upper",
+      "height_steps": 4.84,
+      "staff": "2",
+      "staff_height_fraction": 0.605,
+      "top": -2.34
+    },
+    {
+      "bottom": 3.46,
+      "cell": 8,
+      "centre_steps_from_middle": -2.62,
+      "class": "timeSig4",
+      "conf": 0.5557445287704468,
+      "half": "upper",
+      "height_steps": 4.16,
+      "staff": "11",
+      "staff_height_fraction": 0.52,
+      "top": -0.7
+    },
+    {
+      "bottom": 8.14,
+      "cell": 8,
+      "centre_steps_from_middle": 1.9700000000000006,
+      "class": "timeSig4",
+      "conf": 0.5557445287704468,
+      "half": "spans",
+      "height_steps": 4.340000000000001,
+      "staff": "11",
+      "staff_height_fraction": 0.5425000000000001,
+      "top": 3.8
+    },
+    {
+      "bottom": 4.36,
+      "cell": 8,
+      "centre_steps_from_middle": -0.8099999999999996,
+      "class": "timeSig4",
+      "conf": 0.6956937313079834,
+      "half": "spans",
+      "height_steps": 2.3400000000000003,
+      "staff": "9",
+      "staff_height_fraction": 0.29250000000000004,
+      "top": 2.02
+    },
+    {
+      "bottom": 6.64,
+      "cell": 8,
+      "centre_steps_from_middle": 1.38,
+      "class": "timeSig4",
+      "conf": 0.6956937313079834,
+      "half": "lower",
+      "height_steps": 2.5199999999999996,
+      "staff": "9",
+      "staff_height_fraction": 0.31499999999999995,
+      "top": 4.12
+    },
+    {
+      "bottom": 7.76,
+      "cell": 8,
+      "centre_steps_from_middle": 1.9699999999999998,
+      "class": "timeSig4",
+      "conf": 0.6956937313079834,
+      "half": "lower",
+      "height_steps": 3.58,
+      "staff": "9",
+      "staff_height_fraction": 0.4475,
+      "top": 4.18
+    },
+    {
+      "bottom": 8.18,
+      "cell": 8,
+      "centre_steps_from_middle": 2.9499999999999993,
+      "class": "timeSig4",
+      "conf": 0.6956937313079834,
+      "half": "lower",
+      "height_steps": 2.46,
+      "staff": "9",
+      "staff_height_fraction": 0.3075,
+      "top": 5.72
+    },
+    {
+      "bottom": 4.12,
+      "cell": 10,
+      "centre_steps_from_middle": -0.81,
+      "class": "timeSig1",
+      "conf": 0.4486106038093567,
+      "half": "spans",
+      "height_steps": 1.8600000000000003,
+      "staff": "14",
+      "staff_height_fraction": 0.23250000000000004,
+      "top": 2.26
+    }
+  ]
+}

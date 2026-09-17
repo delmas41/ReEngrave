@@ -71,14 +71,27 @@ fragments**: `timeSig3` and `timeSig4`, both at `x = 0.00` — the cell's LEFT
 EDGE — **0.35 and 0.40 staff spaces wide**. `_meter_from_digits` needs two
 stacked digits and a broken barline supplies exactly that.
 
-A POSITION fact refuses it on geometry alone. A time signature is *numerator in
-the upper two spaces, denominator in the lower two, centred on each other* —
-two marks in two halves of the staff, each about a digit's width. The project
-already knows the placement is rigid; that is why `time_signature_locator`
-exists. But the geometry lives INSIDE a template search as a constraint and is
-thrown away: nothing records where the ink stood, so no later stage can
-reconsider it. The `time` family has a SHAPE fact and no POSITION fact, and
-this is what that costs.
+⚠️⚠️ **A POSITION FACT DOES NOT REFUSE IT, AND AN EARLIER DRAFT OF THIS
+PARAGRAPH SAID IT DID — *"refuses it on geometry alone"*. THAT IS WITHDRAWN.**
+Sean, 2026-09-17: *"position is an option for helping us determine something
+but will rarely be a clear rule that determines by itself. 2 numbers not
+connected, one in the upper half and one in the lower half, could be a time
+signature. Due to ink bleed they may appear connected, or other things that we
+can't determine... Quick rules will give us quick results that could be poor."*
+On a bitonal plate bleed fuses two digits into one stroke, so a stroke crossing
+the staff does not disprove a meter — and two fragments in two halves are
+exactly what this broken barline looks like, so that shape does not prove one
+either. **Geometry alone settles neither direction.**
+
+What a position fact DOES is CONTRIBUTE. A time signature's placement is rigid
+— *numerator in the upper two spaces, denominator in the lower two, centred on
+each other* — and the project already knows it, which is why
+`time_signature_locator` exists. But the geometry lives INSIDE a template
+search as a constraint and is thrown away: nothing records where the ink
+stood, so no later stage can weigh it against the ink, the other staves of the
+system, or anything else. The `time` family has a SHAPE fact and no POSITION
+fact, and this is what that costs — **one path missing, not one rule
+missing.**
 
 ## ⚠️ DERIVED WHERE IT CAN BE, DECLARED WHERE IT CANNOT — and the split is stated
 
