@@ -332,8 +332,24 @@ with a provenance note saying so. **Nothing was re-derived or re-worded.**
 
 ## 9. WHAT IS WAITING FOR SEAN
 
-1. **`OMR_METER_CARRY`** — still off on **n**, and now blocked on a CORPUS
-   rather than a measurement (§6). Nothing on this machine settles it.
+1. **`OMR_METER_CARRY`** — still off, and ⚠️ **NOT blocked on a corpus; that
+   claim was refuted the same day and §6 carries the correction.** This entry
+   said *"nothing on this machine settles it"* while §6 above already said the
+   opposite — the document contradicted itself in the section headed *what is
+   waiting for Sean*, which is the one most likely to be read as a work order.
+   **Where it actually stands:** the blocker is the **form-borrowing rule**
+   (the bars reach length 3.0 at +7.0 and cannot SPELL it, because the only
+   system to borrow a spelling from is the one that misread `C`), and the
+   evidence FOR the flip is now the strongest it has been —
+   `local_arm.sh` on Litolff p1-3 takes systems decided **1 of 5 → 5 of 5** and
+   bars that add up **54.4% → 81.2%** like-for-like, with **298 wrong→exact and
+   0 exact→wrong**. ⚠️ **What is still missing is one CELL, not a document:**
+   a **VOTED** misread propagating across many systems. Brahms `p0p3` has the
+   voted misread but only 2 systems; Litolff p1-3 runs across a movement but
+   its misreads are SUPPRESSED by the coverage gate before the carry sees them.
+   **The experiment that closes it is named**: the arm on `p0p3` with
+   `--bar-beats 3.0`. See
+   `benchmarks/omr-meter-corroboration-2026-09/out/local/RUN_2026-09-16_litolff-p1-p3.md`.
 2. **`OMR_WHOLE_REST_INK`** — ANSWERED for the default (**stays ON**, §8) and
    OPEN for the hardening: *the glyph must stand inside its own staff* trades
    11 useful Breitkopf deletions for 11 fewer wrong-reason fires, and **wants a
