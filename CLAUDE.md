@@ -3339,15 +3339,32 @@ with provenance:
 [out/local/RUN_2026-09-16_brahms1.md](benchmarks/omr-meter-corroboration-2026-09/out/local/RUN_2026-09-16_brahms1.md);
 findings: [FINDINGS.md](benchmarks/omr-meter-corroboration-2026-09/FINDINGS.md) §2026-09-16.
 
-⚠️⚠️ **EVERY REPORTED NUMBER IS IDENTICAL IN BOTH ARMS, AND IT IS A REACH ZERO
-RATHER THAN A NULL COST.** The meter is **decided on 7 systems of 7**
-(`voted` 2, `change_only` 5) with **no abstention of any kind** — and
-`_meter_fallbacks`, whose own docstring opens *"Everything to try when this
-system's own READING failed"*, is reached only from failure paths. **Neither
-flag has a domain on this document.** `carry sources SKIPPED = 0` says the
-same of `A-METER-6`: nothing was carried, so nothing could be confined.
-**So `OMR_METER_CARRY`'s cost side is still unmeasured**, and this run must
-never be quoted as the measurement it was written to take.
+⚠️⚠️ **EVERY REPORTED NUMBER IS IDENTICAL IN BOTH ARMS, AND THE ARM CANNOT SAY
+WHY.** The meter is **decided on 7 systems of 7** (`voted` 2, `change_only` 5)
+with **no abstention of any kind**, and `carry sources SKIPPED = 0` says nothing
+was carried. **So `OMR_METER_CARRY`'s cost side is still unmeasured**, and this
+run must never be quoted as the measurement it was written to take.
+⚠️⚠️ **THIS PARAGRAPH SAID "IT IS A REACH ZERO" AND "NEITHER FLAG HAS A DOMAIN
+ON THIS DOCUMENT". THAT IS REFUTED — the domain is 5 of 7** (2026-09-17,
+[benchmarks/omr-meter-abstain-and-misread-2026-09/FINDINGS.md](benchmarks/omr-meter-abstain-and-misread-2026-09/FINDINGS.md)
+§11). The reasoning was that `_meter_fallbacks`, whose docstring opens
+*"Everything to try when this system's own READING failed"*, is reached only
+from failure paths and nothing failed. The premise is right and the inference
+runs backwards: **`change_only` IS a fallback rung — the THIRD of three
+(`_carry_meter` → `_meter_from_bars` → `_change_only`)** — so a `change_only`
+verdict is positive evidence that the fallbacks ran and that the carry was
+asked first. The five systems read as *"nothing failed here"* are the five where
+the reading failed and the third rung answered. **Identical arms are what you
+get whether the carry was never asked or asked five times and refused five
+times, and `local_arm.sh` prints no per-system carry outcome** — so the
+reporting defect in §2 below is what made the wrong reading available, and it
+now has a cost. The corrected statement: **the cost side is unmeasured, on a
+document where the carry IS asked with a wrong candidate in hand.** The arm that
+prices it needs no re-gather — the flags are ADJUDICATE-stage, so
+`rest_sizing_arm.py` over the **shared Breitkopf record** answers it in minutes
+(§13 there), and ⚠️ that record's own `tools/` tree has both meter flags
+**default OFF**, which makes it the OFF arm already taken rather than a
+measurement.
 
 ⚠️ **THE INSTRUMENT WAS CHECKED BEFORE THE ZERO WAS BELIEVED**, because under a
 **default-ON** flag an OFF arm that fails to express itself **is the ON arm**,
