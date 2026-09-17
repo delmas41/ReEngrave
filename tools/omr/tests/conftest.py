@@ -67,9 +67,22 @@ def _do_not_require_an_optional_local_install(monkeypatch):
     already does exactly this for itself. That is per-file discipline, whose
     failure mode is every file that forgot — which is the other three.
 
+    ⚠️⚠️ IT FALLS BACK, IT DOES NOT OVERRIDE — and the first version got that
+    wrong. Setting the env unconditionally pointed a tree that HAS
+    `.venv-surya` at a plain `python3` with no surya in it, which broke
+    `test_a_block_that_swallows_the_whole_crop_is_rejected_not_assigned`: that
+    test builds a real image and takes the real read path. 32 passed without
+    the fixture, 2 failed with it. **A fix for a missing dependency must not
+    replace a present one.**
+
     ⚠️ Safe because NO test asserts the missing-interpreter error; the one
     place that failure mode is exercised raises `SuryaLabelError` directly.
-    Nothing real is run: `interpreter()` only has to find a FILE, and every
-    call that would use it is mocked.
+    Nothing real is run in the mocked tests: `interpreter()` only has to find
+    a FILE, and every call that would use it is mocked.
     """
+    from tools.omr import staff_labels_surya
+
+    if (staff_labels_surya.VENV_DIR / "bin" / "python").is_file():
+        return          # a real interpreter exists — do NOT override it
+
     monkeypatch.setenv("OMR_SURYA_PYTHON", sys.executable)
