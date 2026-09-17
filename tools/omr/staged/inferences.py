@@ -1,18 +1,33 @@
-"""The inference rules. One so far.
+"""The inference rules. Two so far, and they are two on purpose.
 
 ⚠️ Registered by importing this module, which `infer._ensure_rules` does
 LAZILY -- so a tree carrying INFER imports nothing extra until the stage is
 actually asked to run. That is part of the bypass: off means ABSENT, not
 quiet.
+
+⚠️⚠️ BOTH RULES MAKE ONE CLAIM AND DIFFER IN THEIR ENDPOINT. *An onset column
+is an instant; if this note and a neighbour span the same two instants, they
+are the same length.* `COLLAPSE_DURATION_BY_COLUMN` takes the case where the
+second instant is another onset column; `COLLAPSE_DURATION_TO_BARLINE` takes
+the case where it is the BARLINE. They share `_walk` and `_propose` so the
+guards cannot drift apart, and they are nonetheless two registered rules
+rather than one with a branch, because:
+
+  * the barline case needs a guard the column case does not (a witness whose
+    length came from the METER is refused), and a guard hidden behind a
+    branch is a guard a later reader will not know is there; and
+  * `Report.reach` is per rule, so one bucket would hide what the second
+    claim actually bought.
 """
 
 from __future__ import annotations
 
-from typing import Dict, List, Optional, Sequence, Tuple
+from dataclasses import dataclass
+from typing import Any, Dict, List, Optional, Sequence, Tuple
 
 from .adjudicators.rhythm import ONSET_COLUMN_TOLERANCE_SPACES, _page_x_of
 from .infer import Inference, Proposal, independent_groups, rule
-from .record import Kind, Log, Outcome, Q, Scope, Subject
+from .record import Kind, Log, Outcome, Q, Scope, Subject, Verdict
 
 # ─────────────────────────────────────────────────────────────────────────────
 # Collapse a narrowed duration by the COLUMN — the sideways rule
@@ -121,6 +136,153 @@ def _event_beats(log: Log, staff: int, cell: int, system: Subject,
         ids.append(v.id)
     return beats, tuple(ids)
 
+# ─────────────────────────────────────────────────────────────────────────────
+# The walk — ONE traversal, shared by both rules
+# ─────────────────────────────────────────────────────────────────────────────
+
+
+@dataclass(frozen=True)
+class _Span:
+    """One NARROWED note, the stretch of time it occupies, and its bar.
+
+    ⚠️ `end` IS THE WHOLE DIFFERENCE BETWEEN THE TWO RULES. An integer is the
+    column index of this staff's own next onset; `None` means there is no
+    further onset in the bar, so the note runs to the BARLINE. Everything
+    else about the two claims is identical, which is why one walk serves both
+    and the endpoint is a field rather than a fork in the traversal.
+    """
+
+    sub: Subject
+    prior: Verdict
+    staff: int
+    cell: int
+    k: int
+    #: This note's endpoint, as `(next_column, no_events_follow)`.
+    #:
+    #: ⚠️⚠️ THREE STATES, NOT TWO, AND THE THIRD IS WHY THIS IS A PAIR.
+    #:   `(m, False)`     -> it ends at onset column m.
+    #:   `(None, True)`   -> nothing follows it in the bar: the BARLINE.
+    #:   `(None, False)`  -> something follows it and that something landed
+    #:                       in NO column, so where this note ends is
+    #:                       UNKNOWN and both rules must decline.
+    #: The first draft collapsed the last two, because it derived "runs to
+    #: the barline" from *no later COLUMNED event* rather than from *no later
+    #: event*. An event that misses every column centre by more than the
+    #: tolerance is dropped by `_column_index` -- `probe/reach.py` counts
+    #: them on the real page -- so that draft would have called a note
+    #: barline-bound while an undetected-column event sat after it, and then
+    #: borrowed a neighbour's whole-bar length for a note that is not whole.
+    endpoint: Tuple[Optional[int], bool]
+    at_col: Dict[int, Dict[int, dict]]
+    #: (staff, column) -> that staff's endpoint pair, same three states.
+    endpoints: Dict[Tuple[int, int], Tuple[Optional[int], bool]]
+    col_v: Verdict
+    bar: dict
+
+    @property
+    def end(self) -> Optional[int]:
+        """The column this note ends at, or None for the barline/unknown."""
+        return self.endpoint[0]
+
+    @property
+    def runs_to_barline(self) -> bool:
+        return self.endpoint == (None, True)
+
+    @property
+    def endpoint_is_unknown(self) -> bool:
+        """Something follows, and it landed in no column."""
+        return self.endpoint == (None, False)
+
+
+def _walk(log: Log, system: Subject) -> List[_Span]:
+    """Every narrowed duration on this system that stands in a known column.
+
+    ⚠️ IT DECIDES NOTHING AND REFUSES NOTHING ABOUT THE ENDPOINT. Both
+    endpoints come back and each rule filters for its own, so the two reach
+    numbers are taken from one population and are therefore comparable --
+    which they would not be if each rule did its own traversal.
+    """
+    col_v = log.verdict(Q.ONSET_COLUMN, system)
+    if col_v is None or col_v.outcome is not Outcome.DECIDED:
+        return []
+    spacing = (col_v.detail or {}).get("staff_spacing_px")
+    if not spacing:
+        return []
+    # ⚠️ The unit is the COLUMN VERDICT'S OWN, read off its detail rather than
+    # re-measured, so the lookup cannot drift from the partition it looks into.
+    tol_px = float(spacing) * ONSET_COLUMN_TOLERANCE_SPACES
+
+    bars = {int(b["measure"]): b for b in (col_v.value or {}).get("bars", ())
+            if "columns" in b}
+    if not bars:
+        return []
+
+    events = _events_with_x(log, system)
+    out: List[_Span] = []
+
+    for (staff, cell), evs in sorted(events.items()):
+        bar = bars.get(cell)
+        if bar is None:
+            continue
+        columns = sorted(bar["columns"], key=lambda c: float(c["x_page"]))
+        # every staff's events in this bar, keyed by column index
+        at_col: Dict[int, Dict[int, dict]] = {}
+        endpoints: Dict[Tuple[int, int], Tuple[Optional[int], bool]] = {}
+        for (st2, c2), evs2 in events.items():
+            if c2 != cell:
+                continue
+            idx = [(_column_index(columns, e["x"], tol_px), e) for e in evs2]
+            for pos, (ci, e) in enumerate(idx):
+                if ci is None:
+                    continue
+                at_col.setdefault(ci, {})[st2] = e
+                # Where THIS staff's note ends, in three states -- see
+                # `_Span.endpoint`. `follow` is the next COLUMNED event;
+                # `nothing_follows` is the stronger fact that there is no
+                # further event of any kind, which is the only thing that
+                # licenses calling this note barline-bound.
+                later = idx[pos + 1:]
+                follow = next((ci2 for ci2, _e in later if ci2 is not None),
+                              None)
+                endpoints[(st2, ci)] = (follow, not later)
+
+        for e in evs:
+            k = _column_index(columns, e["x"], tol_px)
+            if k is None:
+                continue
+            # ⚠️⚠️ THE NEXT ONSET, NOT THE NEXT COLUMN, AND THE FIRST DRAFT HAD
+            # IT WRONG. A column is an instant on the SYSTEM, so a staff
+            # playing a half note while its neighbours play eighths SKIPS
+            # several columns — and requiring `k + 1` therefore only ever
+            # admitted the staff with the finest subdivision in the bar, which
+            # is the staff least likely to have been narrowed in the first
+            # place. Measured on Litolff Beethoven 5 p1-4: **335 of 356
+            # narrowed durations stopped here**, and only 191 of those had no
+            # next onset at all — the other 144 simply jumped.
+            #
+            # The claim never needed adjacency. It needs the WITNESS TO END
+            # WHERE THIS NOTE ENDS: if both go from column k to column m, the
+            # stretch of time is the same one for both, whatever lies between.
+            # `k + 1` is just the special case m == k + 1.
+            endpoint = endpoints.get((staff, k), (None, False))
+            for g in e["glyphs"]:
+                sub = Subject(Kind.GLYPH, page=system.page,
+                              system=system.system, staff=staff, cell=cell,
+                              glyph=g)
+                prior = log.verdict(Q.DURATION, sub)
+                if prior is None or prior.outcome is not Outcome.NARROWED:
+                    continue
+                out.append(_Span(sub=sub, prior=prior, staff=staff,
+                                 cell=cell, k=k, endpoint=endpoint,
+                                 at_col=at_col, endpoints=endpoints,
+                                 col_v=col_v, bar=bar))
+    return out
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Rule 1 — the second instant is another ONSET COLUMN
+# ─────────────────────────────────────────────────────────────────────────────
+
 
 @rule(
     inference=Inference.COLLAPSE_DURATION_BY_COLUMN,
@@ -174,7 +336,7 @@ def collapse_duration_by_column(log: Log, system: Subject) -> List[Proposal]:
     keeping: a column is an instant on the SYSTEM, so a staff playing a half
     note while its neighbours play eighths skips columns, and adjacency
     admitted only the finest-subdivided staff in each bar. Measured, that cost
-    335 of 356. See the comment at the `end` lookup.
+    335 of 356. See the comment at the `end` lookup in `_walk`.
 
     ⚠️ IT IS NOT ENTAILMENT AND THAT IS WHY IT IS HERE AND NOT IN EVALUATE.
     Three ways it can be wrong, all real: the note may be followed by a rest
@@ -190,107 +352,198 @@ def collapse_duration_by_column(log: Log, system: Subject) -> List[Proposal]:
     `bar_fill.py` -- the only self-check this stage has that needs no truth
     file -- a measurement of the quantity the rule optimises.
     """
-    col_v = log.verdict(Q.ONSET_COLUMN, system)
-    if col_v is None or col_v.outcome is not Outcome.DECIDED:
-        return []
-    spacing = (col_v.detail or {}).get("staff_spacing_px")
-    if not spacing:
-        return []
-    # ⚠️ The unit is the COLUMN VERDICT'S OWN, read off its detail rather than
-    # re-measured, so the lookup cannot drift from the partition it looks into.
-    tol_px = float(spacing) * ONSET_COLUMN_TOLERANCE_SPACES
-
-    bars = {int(b["measure"]): b for b in (col_v.value or {}).get("bars", ())
-            if "columns" in b}
-    if not bars:
-        return []
-
-    events = _events_with_x(log, system)
     out: List[Proposal] = []
-
-    for (staff, cell), evs in sorted(events.items()):
-        bar = bars.get(cell)
-        if bar is None:
+    for span in _walk(log, system):
+        if span.end is None:
+            # Either it runs to the BARLINE -- which is
+            # `collapse_duration_to_barline`'s population, and needs a guard
+            # this rule does not carry -- or its endpoint is UNKNOWN, which
+            # is nobody's population.
             continue
-        columns = sorted(bar["columns"], key=lambda c: float(c["x_page"]))
-        # every staff's events in this bar, keyed by column index
-        at_col: Dict[int, Dict[int, dict]] = {}
-        nxt_col: Dict[Tuple[int, int], Optional[int]] = {}
-        for (st2, c2), evs2 in events.items():
-            if c2 != cell:
-                continue
-            idx = [(_column_index(columns, e["x"], tol_px), e) for e in evs2]
-            for pos, (ci, e) in enumerate(idx):
-                if ci is None:
-                    continue
-                at_col.setdefault(ci, {})[st2] = e
-                # The column index of THIS staff's own next event, which is
-                # what says where its note ends.
-                follow = None
-                for ci2, _e2 in idx[pos + 1:]:
-                    if ci2 is not None:
-                        follow = ci2
-                        break
-                nxt_col[(st2, ci)] = follow
-
-        for e in evs:
-            k = _column_index(columns, e["x"], tol_px)
-            if k is None:
-                continue
-            # ⚠️⚠️ THE NEXT ONSET, NOT THE NEXT COLUMN, AND THE FIRST DRAFT HAD
-            # IT WRONG. A column is an instant on the SYSTEM, so a staff
-            # playing a half note while its neighbours play eighths SKIPS
-            # several columns — and requiring `k + 1` therefore only ever
-            # admitted the staff with the finest subdivision in the bar, which
-            # is the staff least likely to have been narrowed in the first
-            # place. Measured on Litolff Beethoven 5 p1-4: **335 of 356
-            # narrowed durations stopped here**, and only 191 of those had no
-            # next onset at all — the other 144 simply jumped.
-            #
-            # The claim never needed adjacency. It needs the WITNESS TO END
-            # WHERE THIS NOTE ENDS: if both go from column k to column m, the
-            # stretch of time is the same one for both, whatever lies between.
-            # `k + 1` is just the special case m == k + 1.
-            end = nxt_col.get((staff, k))
-            if end is None:
-                # No next onset in this bar, so this note runs to the BARLINE
-                # and its length is the bar's — which is the meter, which this
-                # rule may not read (it would make `bar_fill` a measurement of
-                # the quantity the rule optimises). 191 of 357 land here and
-                # they are out of reach BY DESIGN, not by accident.
-                continue
-            for g in e["glyphs"]:
-                sub = Subject(Kind.GLYPH, page=system.page,
-                              system=system.system, staff=staff, cell=cell,
-                              glyph=g)
-                prior = log.verdict(Q.DURATION, sub)
-                if prior is None or prior.outcome is not Outcome.NARROWED:
-                    continue
-                p = _propose(log, system, prior, sub, cell, staff, k, end,
-                             at_col, nxt_col, col_v, bar)
-                if p is not None:
-                    out.append(p)
+        p = _propose(log, system, span,
+                     reason="the_neighbours_name_this_gap")
+        if p is not None:
+            out.append(p)
     return out
 
 
-def _propose(log, system, prior, sub, cell, staff, k, end, at_col, nxt_col,
-             col_v, bar) -> Optional[Proposal]:
+# ─────────────────────────────────────────────────────────────────────────────
+# Rule 2 — the second instant is the BARLINE
+# ─────────────────────────────────────────────────────────────────────────────
+
+
+@rule(
+    inference=Inference.COLLAPSE_DURATION_TO_BARLINE,
+    target=Q.DURATION,
+    # ⚠️⚠️ `Q.METER` IS ABSENT HERE TOO, AND FOR THIS RULE THAT IS A CLAIM
+    # THAT HAD TO BE EARNED RATHER THAN DECLARED. A note running to the
+    # barline has the BAR's length, and the bar's length is the meter -- so
+    # the obvious way to reach this population is to read `Q.METER`, and that
+    # is exactly what would make `probe/bar_fill.py` a measurement of the
+    # quantity this rule optimises. This rule never reads it. It borrows a
+    # NEIGHBOUR'S READING of the same stretch of time, and refuses any
+    # neighbour whose own reading came from the meter -- see
+    # `_witness_is_meter_derived`. `infer.scoring_conflict` stays empty and
+    # the self-check stays legitimate.
+    reads=(Q.ONSET_COLUMN, Q.EVENT, Q.DURATION, Q.GLYPH_BOX),
+    scope=Kind.SYSTEM,
+    sideways=True,
+    bound=(
+        "It collapses a NARROWED duration to one of that reader's OWN "
+        "candidates and nothing else; it acts only on an event that stands in "
+        "a corroborated onset column k and has NO further onset in its bar, "
+        "so it runs to the barline; its witnesses are the other staves "
+        "standing at that same column k that ALSO have no further onset, so "
+        "they run to the SAME barline; a witness whose own length reaches "
+        "`Q.METER` through its provenance closure is REFUSED, so no borrowed "
+        "length is one the meter handed out; every independent witness must "
+        "agree on one length, one dissenter refuses the whole inference, and "
+        "where two candidates carry that length it refuses rather than "
+        "choosing. It writes at most one verdict per glyph and reads no value "
+        "it has written."),
+    why_witnesses_are_independent=(
+        "Each witness is a DIFFERENT STAFF's reading of DIFFERENT INK, "
+        "checked by `independent_groups` against the provenance closures -- "
+        "plus a SECOND refusal this rule needs and the column rule does not: "
+        "a witness whose closure contains `Q.METER` is dropped, because a "
+        "length the meter handed out is not a reading and borrowing it would "
+        "launder the meter into an answer this rule claims not to read. "
+        "⚠️ BOTH TESTS ARE ONE-SIDED, and here there is a NAMED correlation "
+        "neither can see: the subject and its witness take their barline from "
+        "the SAME CELL SEGMENTATION, so a bar cut in the wrong place is wrong "
+        "for both together. That is the CONVENTION correlation CLAUDE.md "
+        "records as real and unquantified, and it is one of the reasons this "
+        "answer is BEST rather than FORCED."),
+)
+def collapse_duration_to_barline(log: Log, system: Subject) -> List[Proposal]:
+    """The last note of a bar, settled by a neighbour that ends where it ends.
+
+    ⚠️⚠️ THIS IS THE BIGGEST BUCKET IN THE FIRST RULE'S FUNNEL, AND IT WAS
+    OUT OF REACH BY DESIGN RATHER THAN BY ACCIDENT. Measured on Litolff
+    Beethoven 5 p1-4, **191 of 357 narrowed durations have no next onset in
+    their bar** -- more than half the population, and the first rule declines
+    every one of them with a comment saying why: *"its length is the bar's --
+    which is the meter, which this rule may not read"*.
+
+    **That reasoning is right about the METER and wrong about the NEIGHBOUR.**
+    The note's length is indeed the gap from column k to the barline. But we
+    do not have to compute that gap from the meter to know it: if a
+    neighbouring staff ALSO stands at column k, ALSO has no further onset in
+    the bar, and its note there is DECIDED at d, then that staff has already
+    measured the same gap and called it d. The barline is a system-wide
+    event, so both notes end at the same instant. The claim is the first
+    rule's, with the barline standing in for column m.
+
+    ⚠️⚠️ THE GUARD THAT MAKES IT LEGAL. A witness's length is only evidence
+    if the witness READ it. Two consequences in this pipeline hand a duration
+    out FROM the meter -- `size_measure_rest` (a lone whole rest takes the
+    bar's length) and `reconcile_duration` (a bar that does not sum is
+    re-read until it does) -- and both put the meter row in their `basis`.
+    Borrowing such a length would be reading `Q.METER` through a proxy: the
+    value would be meter-derived while `reads` truthfully said it was not,
+    `infer.scoring_conflict` would report clean, and `bar_fill.py` would
+    quietly become a measurement of this rule's own output. So a witness
+    whose provenance closure contains `Q.METER` is refused, by
+    `Log.quantities_in_closure` -- the same primitive `adjudicate.py` already
+    uses for circularity, not a new mechanism.
+
+    ⚠️ IT IS STILL NOT ENTAILMENT. Every hazard the first rule lists applies
+    -- an unread rest, a merged column, a tie crossing without a new onset --
+    and this rule adds one of its own: **the two staves share a barline
+    because they share a cell segmentation**, so a mis-cut bar is mis-cut for
+    witness and subject alike. That correlation is invisible to the closure
+    test, is declared in `why_witnesses_are_independent`, and is why the
+    answer is labelled.
+    """
+    out: List[Proposal] = []
+    for span in _walk(log, system):
+        if not span.runs_to_barline:
+            # ⚠️ Two different exclusions and only one of them is rule 1's.
+            # `span.end is not None` is the column case; `endpoint_is_unknown`
+            # is a note followed by an event that landed in NO column, where
+            # nobody knows when this note stops. Declining it is the whole
+            # reason the endpoint is a pair.
+            continue
+        p = _propose(log, system, span,
+                     reason="the_neighbours_run_to_the_same_barline",
+                     meter_free_witnesses=True)
+        if p is not None:
+            out.append(p)
+    return out
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# The witness gathering — ONE path, both rules
+# ─────────────────────────────────────────────────────────────────────────────
+
+
+def _witness_is_meter_derived(log: Log, verdict_ids: Sequence[str]) -> bool:
+    """True if any of these duration verdicts reached its value via the METER.
+
+    ⚠️⚠️ THE GUARD THAT LETS `collapse_duration_to_barline` EXIST WITHOUT
+    READING `Q.METER`. `size_measure_rest` and `reconcile_duration` both put
+    the meter verdict in their `basis`, so a length they handed out carries
+    `Q.METER` in its provenance closure and a length the reader READ does
+    not. Borrowing the former would put a meter-derived number into an answer
+    whose `reads` list truthfully says it never read the meter -- the value
+    would be laundered, `infer.scoring_conflict` would report clean, and
+    `probe/bar_fill.py` would silently become a measurement of this rule's
+    own output rather than an independent invariant.
+
+    ⚠️ `Log.quantities_in_closure` IS BORROWED, NOT INVENTED: `adjudicate.py`
+    already uses exactly this primitive for its circularity filter. A second
+    implementation of provenance-walking would be a second thing to keep in
+    agreement with the first.
+    """
+    return any(Q.METER in log.quantities_in_closure(vid) for vid in verdict_ids)
+
+
+def _propose(log: Log, system: Subject, span: _Span, *, reason: str,
+             meter_free_witnesses: bool = False) -> Optional[Proposal]:
     """Gather the witnesses for one narrowed glyph and propose, or not.
 
-    ⚠️ A witness must begin at column `k` AND END AT COLUMN `end` — the same
-    two instants this note spans. A witness that ends anywhere else is
-    measuring a different stretch of time and is not a witness to this note's
-    length at all.
+    ⚠️ A witness must begin at column `k` AND END WHERE THIS NOTE ENDS -- the
+    same two instants. `span.end` carries the endpoint for both rules: a
+    column index, or `None` for the barline. A witness that ends anywhere
+    else is measuring a different stretch of time and is not a witness to
+    this note's length at all.
+
+    ⚠️ ONE FUNCTION FOR BOTH RULES ON PURPOSE. Every guard below -- unanimity,
+    independence, the single-candidate requirement -- then runs for both
+    claims with no chance of one rule's version drifting from the other's.
+    The only difference either rule may express is `meter_free_witnesses`,
+    and it is a refusal, so it can only ever make a rule speak LESS.
     """
+    prior = span.prior
     votes: Dict[float, List[str]] = {}
     witness_ids: List[str] = []
-    for st2, e2 in sorted(at_col.get(k, {}).items()):
-        if st2 == staff:
+    refused_meter_derived = 0
+
+    for st2, e2 in sorted(span.at_col.get(span.k, {}).items()):
+        if st2 == span.staff:
             continue
-        if nxt_col.get((st2, k)) != end:
-            continue                # it ends elsewhere: a different stretch
-        beats, ids = _event_beats(log, st2, cell, system, e2["glyphs"])
+        if span.endpoints.get((st2, span.k)) != span.endpoint:
+            # ⚠️ THE WHOLE PAIR, not just the column, so a witness that runs
+            # to the barline is never matched against one that stops at a
+            # column and vice versa.
+            #
+            # ⚠️⚠️ IT DOES NOT ALSO EXCLUDE THE UNKNOWN-ENDPOINT CASE, AND AN
+            # EARLIER COMMENT HERE CLAIMED IT DID. Two unknown endpoints
+            # compare EQUAL as `(None, False)`, so this test would happily
+            # pair them. What actually keeps them apart is one layer up:
+            # BOTH rules exclude an unknown SUBJECT before calling this, so
+            # `_propose` is never reached with one. The exclusion is real and
+            # this line is not where it lives -- and a comment claiming a
+            # guard that sits elsewhere is how an unreachable branch gets
+            # read as a live one.
+            continue
+        beats, ids = _event_beats(log, st2, span.cell, system, e2["glyphs"])
         if beats is None:
+            continue
+        if meter_free_witnesses and _witness_is_meter_derived(log, ids):
+            # ⚠️ Its length came from the meter, so it is not a READING of
+            # this gap and borrowing it would read `Q.METER` by proxy.
+            refused_meter_derived += 1
             continue
         votes.setdefault(beats, []).extend(ids)
         witness_ids.extend(ids)
@@ -322,17 +575,33 @@ def _propose(log, system, prior, sub, cell, staff, k, end, at_col, nxt_col,
         return None
 
     return Proposal(
-        subject=sub,
+        subject=span.sub,
         value=matching[0].value,
-        reason="the_neighbours_name_this_gap",
-        basis=(col_v.id,) + tuple(witness_ids),
+        reason=reason,
+        basis=(span.col_v.id,) + tuple(witness_ids),
         witnesses=tuple(witness_ids),
         detail={
             "beats": beats,
-            "column": k,
-            "measure": cell,
+            "column": span.k,
+            "measure": span.cell,
+            # ⚠️ `None` HERE MEANS THE BARLINE and is not a missing value.
+            # Reported so a reader of the record can tell the two claims
+            # apart without consulting the rule name.
+            "ends_at_column": span.end,
+            "runs_to_barline": span.runs_to_barline,
             "witness_staves": sorted(
-                st for st in at_col.get(k, {}) if st != staff),
+                st for st in span.at_col.get(span.k, {}) if st != span.staff),
+            # ⚠️⚠️ THE FLAG AND THE COUNT, BECAUSE A LONE ZERO IS AMBIGUOUS
+            # IN EXACTLY THE WAY THIS REPOSITORY KEEPS PAYING FOR. "this rule
+            # checked and refused nobody" and "this rule does not check" are
+            # different facts and both render as 0. The flag separates them;
+            # the count is written even when zero so an absent key never
+            # stands for either. Same lesson as
+            # `empty_bars_padded_without_meter`, which was incremented only
+            # on the bad branch and so vanished from the report exactly when
+            # everything was fine.
+            "refuses_meter_derived_witnesses": meter_free_witnesses,
+            "witnesses_refused_meter_derived": refused_meter_derived,
             "n_candidates_before": len(prior.candidates or ()),
             # ⚠️ REPORTED, NEVER THE REASON. See hazard (a): `support` is in
             # the reader's own units and is not a probability. It is here so a
@@ -342,6 +611,6 @@ def _propose(log, system, prior, sub, cell, staff, k, end, at_col, nxt_col,
             "was_readers_top_candidate": bool(
                 prior.candidates and prior.candidates[0].value
                 is matching[0].value),
-            "events_per_space": bar.get("events_per_space"),
+            "events_per_space": span.bar.get("events_per_space"),
         },
     )
