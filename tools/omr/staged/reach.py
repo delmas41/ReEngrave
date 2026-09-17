@@ -96,6 +96,19 @@ KNOWN_GAPS: Dict[str, str] = {
         "to be confused with `READERS.TEXT_LAYER`, which is alive and is what "
         "`gather_margin_labels` files a label under."),
 
+    Q.INK: (
+        "⚠️ BY DESIGN, NOT A FAULT — recorded 2026-09-17 when `gather_ink` "
+        "landed. `A-DUR-5` was deliberately built as the PRODUCER ONLY: it "
+        "makes GATHER's population the INK rather than the detector's output, "
+        "and wires into no consumer, so that its reach could be measured "
+        "without the measurement being circular. The consumers it is aimed at "
+        "already exist and are waiting — `Q.ONSET_COLUMN`, the groups layer's "
+        "unanimous/majority/split, `Verdict.correlated` and the INFER stage. "
+        "⚠️ THE FIRST CONSUMER IS THE RESIDUE ADJUDICATOR: *what is this ink?* "
+        "-- a decision that may answer `staff_residue` and must live in "
+        "ADJUDICATE, because nothing may be filtered at the gather site. "
+        "REMOVE THIS ENTRY the day a consumer lands."),
+
     # ── OPEN FINDINGS. Reported by NO other instrument. Recorded rather than
     #    excused, so `--check` can pass while the finding stays visible.
     Q.STAFF_EXTENT: (

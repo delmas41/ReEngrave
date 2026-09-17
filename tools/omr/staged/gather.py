@@ -1344,7 +1344,7 @@ def _stub_cv_lines(log: Log, cells, local, note: str) -> None:
 
 #: `OMR_INK` -- gather one row per connected piece of a cell's ink.
 #:
-#: **Default OFF**, and written as an ALLOW-list so a typo leaves it off:
+#: **Default ON since 2026-09-17 (Sean's call)**, written as a DENY-list:
 #: CLAUDE.md's "A flag's OFF test must follow its DEFAULT", where five shipped
 #: flags had it backwards. Turning it on ADDS ROWS TO EVERY RECORD the staged
 #: pipeline writes, which is the widest blast radius a gather change has, and
@@ -1359,8 +1359,13 @@ _INK_GLYPH_BASE = 200_000
 
 
 def _ink_enabled() -> bool:
-    return os.environ.get(INK_ENV, "0").strip().lower() \
-        in ("1", "true", "yes", "on")
+    #: ⚠️ A DENY-LIST, because this is now DEFAULT ON. An allow-list under a
+    #: default-ON flag lets an empty value or a typo silently restore the old
+    #: behaviour -- CLAUDE.md's "A flag's OFF test must follow its DEFAULT",
+    #: where five shipped flags had it backwards. Only an explicit off word
+    #: turns it off.
+    return os.environ.get(INK_ENV, "1").strip().lower() \
+        not in ("0", "", "false", "no", "off")
 
 
 def _ink_components(cell: Any):

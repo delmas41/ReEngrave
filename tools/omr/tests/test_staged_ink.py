@@ -81,10 +81,13 @@ def _local():
 def _run(cells, detections=None, *, on=True):
     log = Log()
     old = os.environ.get(G.INK_ENV)
-    if on:
-        os.environ[G.INK_ENV] = "1"
-    else:
-        os.environ.pop(G.INK_ENV, None)
+    # ⚠️⚠️ OFF MUST BE AN EXPLICIT OFF WORD, NEVER A POP. Under a default-ON
+    # flag, popping the variable IS the ON arm -- so the two arms would be
+    # identical and every off-test would pass by measuring nothing. CLAUDE.md
+    # records exactly this costing ten red tests on the meter flip: "three
+    # harnesses expressed 'off' by POPPING the variable". This helper had it,
+    # and the flip is what exposed it.
+    os.environ[G.INK_ENV] = "1" if on else "0"
     try:
         G.gather_ink(log, cells, _local(), detections or {})
     finally:
@@ -106,11 +109,19 @@ def _rows(log, cell=None):
     return out
 
 
-class TestTheFlagIsOffByDefault(unittest.TestCase):
+class TestTheFlagIsOnByDefault(unittest.TestCase):
     """⚠️ A GATHER change adds rows to EVERY record the pipeline writes, which
     is the widest blast radius a change here has. `test_flag_default_direction`
-    derives the flag list and checks the OFF-test direction; what it cannot
-    check is that the default actually produces nothing."""
+    derives the flag list and checks the OFF-test DIRECTION; what it cannot
+    check is what the default actually PRODUCES, which is this class's job.
+
+    ⚠️⚠️ FLIPPED 2026-09-17 ON SEAN'S CALL, default OFF -> ON. These two tests
+    went red ON SUCCESS, which is the shape CLAUDE.md records when the last
+    stub closed: eight assertions failed because the thing they asserted had
+    been achieved. They are REWRITTEN to the new contract rather than deleted,
+    and each still exercises the mechanism in BOTH directions -- a test that
+    only pins a default is a property of the build's progress, not of the
+    code."""
 
     def setUp(self):
         self._old = os.environ.pop(G.INK_ENV, None)
@@ -119,25 +130,33 @@ class TestTheFlagIsOffByDefault(unittest.TestCase):
         if self._old is not None:
             os.environ[G.INK_ENV] = self._old
 
-    def test_the_default_writes_no_row_at_all(self):
+    def test_the_default_writes_rows(self):
+        c = _Cell().ink(300, 130, 24, 24)
+        self.assertTrue(_rows(_run([c])),
+                        "the default must now GATHER the ink, not skip it")
+
+    def test_turning_it_off_is_still_a_complete_no_op(self):
+        """⚠️ The negative control, and it is the one that matters on a flip.
+
+        A default-ON flag whose OFF branch has rotted is indistinguishable
+        from one that has no OFF branch, and the escape hatch Sean is owed is
+        exactly that branch."""
         c = _Cell().ink(300, 130, 24, 24)
         log = _run([c], on=False)
         self.assertEqual(log.all_rows(), (),
                          "flag-off must be a no-op, not a quiet row")
 
-    def test_the_positive_control_writes_rows(self):
-        """⚠️ Without this, the assertion above passes on a broken reader."""
-        c = _Cell().ink(300, 130, 24, 24)
-        self.assertTrue(_rows(_run([c])))
-
-    def test_an_allow_list_leaves_a_typo_off(self):
-        for word in ("", "0", "off", "yess", "ON!", "1 1", "no"):
+    def test_a_deny_list_leaves_a_typo_ON(self):
+        """⚠️ THE DIRECTION REVERSED WITH THE DEFAULT, and that is the whole
+        point of the rewrite: under an allow-list an empty value or a typo
+        would silently restore the pre-flip behaviour."""
+        for word in ("", "0", "off", "OFF", "false", "no", " off "):
             os.environ[G.INK_ENV] = word
-            self.assertFalse(G._ink_enabled(), f"{word!r} must not turn it on")
-        # ⚠️ Surrounding whitespace IS stripped, as every flag here strips it.
-        for word in ("1", "true", "YES", " on ", "true "):
+            self.assertFalse(G._ink_enabled(), f"{word!r} must turn it off")
+        for word in ("1", "true", "YES", " on ", "yess", "ON!", "1 1"):
             os.environ[G.INK_ENV] = word
-            self.assertTrue(G._ink_enabled(), f"{word!r} must turn it on")
+            self.assertTrue(G._ink_enabled(),
+                            f"{word!r} is not an off word and must leave it ON")
 
 
 class TestOneRowPerPieceOfInk(unittest.TestCase):
