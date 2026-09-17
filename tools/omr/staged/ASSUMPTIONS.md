@@ -894,7 +894,7 @@ rather than defaulted.
 | 4 | the same bar's sum on every other staff | ✅ the per-bar modal vote |
 | 5 | the surrounding bars' sums | ⚠️ PARTIAL — forward of a candidate (`_bar_run`), and now the whole system's own bars as a proposer of the LENGTH (`A-DUR-7`) |
 | 6 | beat subdivision agrees with the meter | ❌ not built; beams are gathered, grouping is not read — ⚠️ and a note is now joined to its beam by its STEM (`A-DUR-8`), which is the association such a rule would need |
-| 7 | undefined blobs of ink | ❌ not built — see A-DUR-5 |
+| 7 | undefined blobs of ink | ✅ GATHERED 2026-09-17 (`Q.INK`, `OMR_INK`, default OFF) and **consumed by nothing, deliberately** — see A-DUR-5 |
 
 **Three things to carry into building it, each paid for by a measurement here:**
 
@@ -928,7 +928,54 @@ for it. Also a tempo word at that
 bar ("Tempo I.", "Allegro") — the engraver's own section marker, blocked only
 on `direction` being a stub.
 
-### A-DUR-5 · ⚠️⚠️ UNBUILT AND WANTED — unclassified ink as a first-class fact
+### A-DUR-5 · ✅ BUILT 2026-09-17 as `Q.INK` — the ink is the POPULATION
+
+**PRODUCER ONLY, `OMR_INK`, default OFF. Findings:
+[benchmarks/omr-ink-gather-2026-09/FINDINGS.md](../../../benchmarks/omr-ink-gather-2026-09/FINDINGS.md).**
+The entry below is the request as it stood; what follows corrects it in three
+places and the corrections are the finding.
+
+⚠️⚠️ **THE FRAME CHANGED AND IT IS NOT A WORDING PREFERENCE.** Sean,
+2026-09-17: *"Missing doesn't make sense to me. We can only gather what we see.
+We may or may not be able to classify it correctly initially - or at all - but
+ink is ink. There is nothing that should be classified as unseen - only
+unclassified."* So this is not a supplementary tier of "blobs" beside the
+detections: **GATHER's population should be THE INK, and the detector is one
+CLASSIFIER over it.** `Q.INK` is a row per connected piece of a cell's ink with
+`ink_detector_coverage` as an ATTRIBUTE that may be zero.
+
+⚠️⚠️ **AND NOTHING IS FILTERED.** Sean, same day: *"even staff residue should
+go through the process and hopefully our rules and measurements will determine
+at the appropriate stage that it is just that - staff residue."* A threshold at
+the gather site is a decision taken in the wrong stage and the one kind that
+cannot be revisited — a row that was never created is evidence no later rule
+can reconsider. The residue adjudicator is RANKED NEXT WORK, not part of this.
+
+⚠️⚠️ **THE CELL NAMED BELOW IS WRONG. The printed `3/4` on p.62 is at CELL 6,
+not cell 8**, verified by cropping the plate
+(`benchmarks/omr-ink-gather-2026-09/out/print/`). Every `timeSig*` detection
+this pipeline has at cell 8 sits at `x_canonical = 0`, 0.33-0.40 staff spaces
+wide and 1.17-2.17 tall — **a barline**, at the head of an empty rest bar — and
+**cell 6 produces ZERO `timeSig*` detections on any of the seventeen staves**.
+So the *"we classify it on 2 of 17"* below is generous to the reader in one
+direction and wrong in the other: at the bar the meter is actually printed, it
+is classified on **0 of 17**. ⚠️ What that means for the *bar number* is NOT
+settled here and needs a hand-verified window row.
+
+✅ **THE PRE-REGISTERED TEST PASSES. At cell 6, 17 of 17 staves carry an ink
+row at the printed meter and 16 of 17 are unclassified** (staff 5's is covered
+by notehead boxes, a misclassification rather than a reading). Its page x
+drifts **13.9 px** — most of a staff space — down the plate, which is why the
+count is taken in page pixels.
+
+⚠️ **THE ALIGNMENT HOLDS ON ONE PUBLISHER AND IS MUCH WEAKER ON A SECOND.**
+Against a circular-shift null, Litolff p.62 needs **0.63×** the columns and
+leaves **0.43×** as many rows standing alone — and *unclassified* ink scores
+identically to *all* ink (0.63 / 0.43), which is the claim this entry rests on.
+Breitkopf Brahms 1 p.1 reads **0.87 / 0.83**, because 56% of its rows are
+specks where Litolff's are 1%. **The component representation is
+publisher-dependent: Litolff MERGES and Breitkopf SHATTERS, and neither is one
+row per mark.**
 
 **SEAN'S REQUEST, 2026-09-09, recorded so it is not lost.**
 

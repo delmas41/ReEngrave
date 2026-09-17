@@ -1,0 +1,6 @@
+origin/main, flag absent : 8f8bf9ee595a190688b0e4107b33486f  rows 6564
+this tree,  OMR_INK off  : 8f8bf9ee595a190688b0e4107b33486f  rows 6564
+this tree,  OMR_INK=1    : ae4aeef8f49d35e2a3215be9a08f2802  rows 7808
+
+flag-off == origin/main, to the byte
+positive control: the flag DOES change the log (+1244 rows)
