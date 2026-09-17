@@ -627,6 +627,36 @@ KNOWN_GAPS: Dict[str, str] = {
         "POSITIONAL distinction, made by where the digit stands* — and "
         "`adjudicate_tuplet` fired ZERO times across 286 runs of the "
         "plumbing matrix."),
+    # ── THE WALKER CANNOT DERIVE A QUANTITY PASSED AS A PARAMETER ──────────
+    #
+    # ⚠️⚠️ REPORTED RATHER THAN DESIGNED AROUND, AND THE ALTERNATIVE WAS
+    # WORSE. `positions.py` funnels its ten quantities through two helpers
+    # (`_observe_step`, `_observe_band`) so that *scoreless, `READERS.
+    # GEOMETRY`, no `derived_from`* is written ONCE — the contract that would
+    # otherwise be restated at ten call sites and drift at one of them. The
+    # cost is that `_ObserveWalker` reads the quantity ARGUMENT and finds a
+    # name rather than a literal, so it cannot attribute the site.
+    #
+    # Inlining `log.observe(g, Q.REST_POSITION, ...)` six times inside one
+    # data-driven loop would make this walker happy and the code worse, which
+    # is BUILDING TO THE INSTRUMENT. The same shape is already accepted one
+    # module over: `wiring` reports `Q.<loop-bound>.promoted_from` for the
+    # same reason and that entry is in ITS gap list.
+    #
+    # ⚠️ WHAT IS LOST, STATED: `by_quantity` cannot confirm that the ten
+    # position quantities are OBSERVED, only that they are DECLARED. What
+    # covers that instead is a measurement on real pages —
+    # `benchmarks/omr-family-positions-2026-09/probe/position_reach.py`,
+    # which counts the rows each family actually produces and exits non-zero
+    # at zero.
+    "UNRESOLVED observe site _observe_step": (
+        "⚠️ `positions.py` — the quantity is a PARAMETER, not a literal. See "
+        "the block comment above this entry: the helper exists so the "
+        "scoreless/GEOMETRY/no-ancestors contract is written once, and the "
+        "reach probe is what confirms the rows exist."),
+    "UNRESOLVED observe site _observe_band": (
+        "as `_observe_step` — the band-frame half of the same helper pair."),
+
     # ── ACROSS DOCUMENTS: nothing accumulates, and the key is unreachable ───
     "CROSS-DOCUMENT": (
         "⚠️⚠️ SEAN, 2026-09-17: *\"We need every bit of information gathered "
@@ -936,11 +966,40 @@ class _ObserveWalker(ast.NodeVisitor):
     _RESOLVED = {"common": "DETECTOR"}
 
 
+def _gather_stage_sources() -> List[str]:
+    """The source of every GATHER-stage module. ⚠️ DERIVED, NOT `gather.py`.
+
+    ⚠️⚠️ **THE SECOND INSTRUMENT IN ONE DAY TO HARD-CODE `gather.py` AND GO
+    BLIND WHEN A SECOND GATHER MODULE LANDED.** `wiring.details()` had it as
+    its write-site exclusion, where the consequence was that a second module
+    WRITING a detail key registered as a READ and silently closed a live gap.
+    Here the consequence is the mirror: `positions.py` observes ten quantities
+    and this walk could not see one of them, so `UNSCORED` declared ten
+    position facts that the tool reported as *declared and never observed*.
+
+    Both are the same root — *the set of files that GATHER is a fact about the
+    pipeline, not a constant* — and both now read it from
+    `reach.STAGE_OF_FILE`, which `reach.unaccounted_modules()` already forces
+    to be complete. ⚠️ The import is local because `reach` imports this
+    package too, and both are instruments rather than stages.
+    """
+    from .reach import STAGE_OF_FILE
+    names = sorted(n for n, stage in STAGE_OF_FILE.items()
+                   if stage == "GATHER")
+    out = []
+    for name in names:
+        path = _HERE / name
+        if path.is_file():
+            out.append(path.read_text())
+    return out
+
+
 def observe_sites(source: Optional[str] = None) -> Dict[str, Any]:
-    """Every `log.observe` in `gather.py`, keyed by quantity."""
-    src = source if source is not None else (_HERE / "gather.py").read_text()
+    """Every `log.observe` in a GATHER-stage module, keyed by quantity."""
+    sources = ([source] if source is not None else _gather_stage_sources())
     w = _ObserveWalker()
-    w.visit(ast.parse(src))
+    for src in sources:
+        w.visit(ast.parse(src))
 
     by_q: Dict[str, Dict[str, Any]] = {}
     for s in w.sites:
