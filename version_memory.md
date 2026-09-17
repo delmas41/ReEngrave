@@ -16,6 +16,73 @@ pointing at headings no longer in the file.)*
 
 ---
 
+## 2026-09-17 (latest) — SHAPE, POSITION, IMAGE: a derived check for what we capture about ink
+
+⚠️ Placed at the head on the file's own CAUSAL-ORDER rule: it is a new derived
+instrument and depends on no entry below it. No other session's block was
+re-dated or re-sorted.
+
+Sean asked three questions about one family's ink and then said they should be
+asked of every kind: do we record the SHAPE with a confidence, the POSITION
+against the staff grid as a separate scoreless fact, and WHICH RASTER it was
+measured on? `tools/omr/staged/capture.py`, in the shape of its four siblings
+— derived from `record.Q`, `adjudicate.REGISTRY`, `evaluate.RULES`,
+`export.FAMILIES` and the AST of `gather.py`; positive controls on every
+question; `--check` exits 2 on a control at zero BEFORE it reads a finding.
+**The tool is the count — no figure is restated here.**
+
+**The exemplar is real and serves three families.** A notehead's class carries
+the detector's score; its staff-grid position is a SEPARATE row from a
+DIFFERENT reader with `score=None`; `restate_pitch` combines them. ⚠️ **A
+position may not be a field on the shape row** — `correlated_groups` calls one
+reader's rows on one crop ONE SIGNAL and `tally` takes the strongest term, so
+it is absorbed. That makes it a missing CATEGORY, not a missing wire.
+
+⚠️ **A side off the class name is not a ruler**: `fermataBelow` states a side
+and fails together with the classification it is derived from.
+
+⚠️ **"Erased" is not one image.** Three erased rasters exist
+(`staff_line_removal`'s binary, `header_ink_mask`'s own erasure, and none), six
+readers choose between them by a SILENT runtime fallback, and only `Q.STEM` /
+`Q.BEAM_STROKE` record which answered. `gather_key_signature` runs two readers
+on ONE crop on OPPOSITE rasters. The standing *never erase for the detector*
+rule is untouched and derives correctly.
+
+**Two modelling bugs of the tool's own first run are pinned as regressions**,
+because both produced a plausible table: `restate_pitch` and `move_glyph` both
+declare `effect=Q.PITCH`, so a dict keyed on the effect kept the second and the
+exemplar family reported no shape and no position; and keying position on *does
+this decision read a position quantity* gave `slur`/`tie` a MEASURED position
+off the NOTEHEADS' positions, contradicting the module's own gap text.
+
+⚠️ **INSTRUMENT FINDING: `gather_coverage` reports five quantities as having no
+reader** (`ARC_BOX`, `ARTICULATION_MARK`, `FERMATA_MARK`, `ORNAMENT_MARK`,
+`REST`) because their `reader`/`score` arrive through a `**common` dict.
+Reusing that walker would have reported five families as capturing no shape
+confidence.
+
+⚠️⚠️ **Committing the tool broke `wiring --check` — the FOURTH member of a
+family `wiring` documents.** An auditor names a detail key without consuming
+it, like a gap list, a test and a benchmark probe — but lives in the same tree
+as real consumers, so `staff_lines_erased` read as consumed and two live gaps
+went STALE. Repaired with a module-level `DERIVED_CHECK = True`, read from the
+AST. **The control was run first**: `wiring` exits 0 on the base and 1 with the
+module added; `gather_coverage` exits 2 on both, which is what pre-existing
+looks like. `reach.NOT_A_STAGE` gained the module too, its own guard working.
+
+Battery **22 arms, 22 as expected, restore VERIFIED**; its first run found
+**three genuine test gaps**, one being this session's own *a test asserting a
+list is EMPTY cannot detect a computation that always returns empty*.
+
+⚠️ **NOT ESTABLISHED**: nothing gathered, exported or measured on a page; the
+two declared tables are guarded but a WRONG classification would pass; the
+raster answer is static code, so nothing says how often a fallback takes which
+branch; and whether a position fact would HELP any family is unmeasured. The
+ranked next work — a position fact for the meter, and the two-pass read — is
+scoped and deliberately not built.
+
+---
+
 ## 2026-09-17 (later) — the p0p3 experiment RAN, and the empty cell is still empty
 
 ⚠️ Placed at the head on the file's own CAUSAL-ORDER rule: it follows the
