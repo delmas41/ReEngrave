@@ -4436,14 +4436,15 @@ why the roster layer has never had a pooled figure and does not get one here.
 
 ---
 
-## SHAPE, POSITION, IMAGE — what we capture about a piece of ink
+## SHAPE, POSITION, IMAGE, RESOLUTION — what we capture about a piece of ink
 
-Sean, 2026-09-17, asked three things about one family's ink and then said they
+Sean, 2026-09-17, asked about one family's ink and then said the questions
 should be asked of every kind: *"are we collecting both the ink shape as well
 as the location of the ink on the page? ... since we are removing fine lines
 like the staff, at which stage we are reading the ink of what will become the
 numbers ... I think these questions should be applied to every bit of ink we
-are trying to capture and classify."*
+are trying to capture and classify."* A fourth followed — **is the consumer
+getting the resolution the SOURCE actually has?** (`A-INK-2`).
 
 ```bash
 python3 -m tools.omr.staged.capture --check   # the per-family table
@@ -4489,6 +4490,23 @@ crop on OPPOSITE rasters, so its two verdicts are not derived from the same
 pixels and nothing says so. ⚠️ **None of this questions the standing rule** —
 *erase for the CV consumer, bound the search for everyone else, NEVER erase for
 the detector* (measured at 7-13 pooled reading points).
+
+⚠️⚠️ **THE RENDER DPI IS A CONSTANT AND THE SOURCE'S NATIVE RESOLUTION IS READ
+BY NOBODY** (`A-INK-2`). `render_page(..., dpi=dpi)` takes its DPI from an
+argument **no call site derives from the PDF**, and the two kinds of source
+want opposite things from it: a SCANNED plate has a native resolution fixed at
+scan time (above it is upsampling, below it discards plate), a VECTOR page has
+none. ⚠️ **The classifier already exists and already opens the dictionary** —
+`input_domain._classify_page`, `OMR_WEIGHT_ROUTING`'s shipped domain test,
+reads `bbox` and `Filter` out of the image dict and leaves `width`/`height`
+untouched. ⚠️⚠️ **DO NOT QUOTE `OMR_IMGSZ`'s *larger is NOT better* AGAINST
+THIS**: that is a fact about the DETECTOR's letterboxing and anchors, and the
+tool's `resolution` column separates `letterboxed` from `direct_pixels` —
+derived from each entry point's signature — so one reader's measured result
+cannot be spent on thirteen others. ⚠️ The p.62 *16x the pixels, zero new
+structure* figure cuts ONE way: it says rendering ABOVE native buys nothing,
+and says nothing about a plate whose native resolution sits BELOW what we
+render. **The reach figure needs the library and has not been taken.**
 
 ⚠️ **What a missing position fact cost once**: Litolff Beethoven 5 p.62's `3/4`
 is **one barline broken into two fragments**, `timeSig3` + `timeSig4` at the

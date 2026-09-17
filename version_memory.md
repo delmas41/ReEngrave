@@ -16,7 +16,7 @@ pointing at headings no longer in the file.)*
 
 ---
 
-## 2026-09-17 (latest) — SHAPE, POSITION, IMAGE: a derived check for what we capture about ink
+## 2026-09-17 (latest) — SHAPE, POSITION, IMAGE, RESOLUTION: what we capture about ink
 
 ⚠️ Placed at the head on the file's own CAUSAL-ORDER rule: it is a new derived
 instrument and depends on no entry below it. No other session's block was
@@ -70,9 +70,21 @@ AST. **The control was run first**: `wiring` exits 0 on the base and 1 with the
 module added; `gather_coverage` exits 2 on both, which is what pre-existing
 looks like. `reach.NOT_A_STAGE` gained the module too, its own guard working.
 
-Battery **22 arms, 22 as expected, restore VERIFIED**; its first run found
+Battery **26 arms, 26 as expected, restore VERIFIED**; its first run found
 **three genuine test gaps**, one being this session's own *a test asserting a
 list is EMPTY cannot detect a computation that always returns empty*.
+
+⚠️ **A FOURTH QUESTION arrived mid-task and is wired in: RESOLUTION**
+(`A-INK-2`). `OMR_DPI` is a CONSTANT and `render_page(..., dpi=dpi)` takes it
+from an argument no call site derives from the PDF — while a SCANNED plate has
+a native resolution and a VECTOR page has none. **Nothing anywhere reads the
+native size**, and `input_domain._classify_page` — the shipped
+`OMR_WEIGHT_ROUTING` classifier — already opens the very dict that carries it
+and reads only `bbox` and `Filter`. Reported with the keys it DOES see read
+beside it, so the zero is the walker working. ⚠️ The table separates
+`letterboxed` from `direct_pixels` so the measured `OMR_IMGSZ` result — a fact
+about the DETECTOR's letterboxing and anchors — cannot be quoted against the
+readers it says nothing about.
 
 ⚠️ **NOT ESTABLISHED**: nothing gathered, exported or measured on a page; the
 two declared tables are guarded but a WRONG classification would pass; the

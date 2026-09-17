@@ -101,7 +101,7 @@ scars of that pattern recorded in CLAUDE.md a dozen times over.
 | `wiring` | frame / detail / roundtrip faults | `python3 -m tools.omr.staged.wiring --check` |
 | `no_producer` | a parameter threaded with no supplier | `python3 -m tools.omr.no_producer --check` |
 | `edges` | which declared CONNECTIONS ever carried a value | `probe/edges.py out/matrix/*.record.json` |
-| `capture` | is the ink's SHAPE, its staff-grid POSITION and the RASTER it was measured on recorded — per notation FAMILY? | `python3 -m tools.omr.staged.capture --check` |
+| `capture` | per notation FAMILY: is the ink's SHAPE recorded with a confidence, its staff-grid POSITION as a separate scoreless fact, the RASTER it was measured on, and the RESOLUTION it was handed? | `python3 -m tools.omr.staged.capture --check` |
 
 ⚠️ `collect.py` prints a per-source count and says **SOURCE SILENT** where one
 did not run, because *a source that did not run and a source that found
@@ -341,7 +341,47 @@ the erasure removed correctly, the second pass adds noise rather than strokes �
 and the discriminator is ALIGNMENT, the same one §3.0 already stakes the ink
 work on. **If residue does not separate, that is the more important finding.**
 
-### 3.9 INSTRUMENT — `gather_coverage` reports five quantities as having no reader
+### 3.9 WIRING — the render DPI is a constant, and the native resolution is read by nobody
+
+`A-INK-2`, and `capture`'s fourth question. **It is filed WIRING rather than
+VOCABULARY because nothing is missing**: the value exists, in a dictionary a
+shipped module already opens, and no code reads it.
+
+`OMR_DPI` is 300 on the backend and 600 on the CLI, and
+`render_page(..., dpi=dpi)` takes it from an argument **no call site derives
+from the PDF**. The two kinds of source want opposite things from that one
+constant: a SCANNED plate has a native resolution fixed at scan time, so
+rendering above it is pure upsampling and below it discards plate that is
+there; a VECTOR page has none and genuinely renders sharper.
+
+⚠️⚠️ **THE CLASSIFIER ALREADY EXISTS AND ALREADY OPENS THE DICTIONARY.**
+`input_domain._classify_page` — `OMR_WEIGHT_ROUTING`'s shipped, measured domain
+test — calls `get_image_info()` and reads `bbox` for coverage, and
+`get_images(full=True)` to fetch the `Filter`. **`width` and `height` sit in
+the same dicts, untouched.** *The value existed and nothing read it*, in the
+one module already asking the adjacent question. The tool reports this with the
+keys it DID find being read beside it, so the zero is the walker working.
+
+⚠️⚠️ **THE `OMR_IMGSZ` RESULT MUST NOT BE QUOTED AGAINST THIS, AND THE TABLE
+REFUSES TO FLATTEN THEM.** *Larger is NOT better* is a fact about the
+**DETECTOR**: ultralytics letterboxes to `imgsz²` whatever the cell's size, so
+a bigger value buys anchors and false noteheads. A geometry or CV consumer has
+no letterboxing and no anchors — it measures the raster's own pixels — and that
+finding says nothing about it. `capture`'s `resolution` column separates
+`letterboxed` from `direct_pixels`, derived from each entry point's own
+signature, precisely so one reader's measured result cannot be spent on
+thirteen others.
+
+⚠️ **WHAT IS AND IS NOT EVIDENCE.** On Litolff `984073` p.62 — 1-bit, 600 dpi
+native — components carrying a HOLE number 31 at 300 dpi and the same 31 at
+1200: 16x the pixels, zero new structure. That is one page of one publisher and
+it cuts one way only. It is evidence that rendering ABOVE native buys nothing;
+it is **not** evidence about a plate whose native resolution sits BELOW what we
+render, which is the case that would be losing plate today. **The reach figure
+— how many held editions render above or below native — needs the library and
+has not been taken.**
+
+### 3.10 INSTRUMENT — `gather_coverage` reports five quantities as having no reader
 
 `gather_glyph_families` passes `reader`, `frame` and `score` through a
 `**common` dict built one line above the call, and `gather_coverage.gathered()`
