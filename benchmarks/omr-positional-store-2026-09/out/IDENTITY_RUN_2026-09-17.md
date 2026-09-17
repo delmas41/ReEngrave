@@ -387,3 +387,33 @@ report the split is a design decision about the store's contract, not a bug to
 patch mid-session, and this session's brief was one measurement. The probe
 prints REACH first and **exits 3 declaring itself DEAD** on a store with no
 `ink` rows, since a clean table there would mean nothing.
+
+## 11. THE HANDOFF'S §3 — what was deliberately NOT concluded, and NOT built
+
+Recorded because compliance with a *"do not conclude X"* instruction is
+invisible unless stated.
+
+⚠️ **`A-INK-4`, first half: a measurement retires a concept only within the
+factor set it was taken in.** Nothing here asks whether the identity fact
+HELPS, and no such answer is offered. It cannot be asked: `Q.DOCUMENT_IDENTITY`
+is read by nothing, by design, so its partners do not exist and a "no" would
+measure their absence. `Q.STEM` is the standing near-miss — gathered and unread
+through THREE discoveries, worth 114 narrowed durations the day something read
+it. ⚠️ §10 is the same rule biting from a direction the handoff did not
+anticipate: `source_quantity` was a factor **nobody was holding**, and pooling
+across it turns a clean cross-publisher agreement (0.280 vs 0.288) into an
+apparent 3× discrepancy.
+
+⚠️ **`A-INK-4`, second half: a factor CONTRIBUTES, it does not decide.** No
+rule, veto or threshold using a position was added. Checked rather than
+asserted: the only `tools/` Python change in this branch is a comment, proved
+**AST-identical** to its parent, and the only new executable code is a TEST
+comparing prose to predicates. The store's own `--ask` was left alone even
+though §10 gives a reason to change it.
+
+⚠️ **And one thing the handoff did NOT warn about, which this session nearly
+did anyway:** I read a stale CLAUDE.md table and "corrected" a handoff command
+that was already right, killing a good 15-minute run (§2). The instruction to
+distrust a negative result has an obvious twin — **distrust a defect you find
+in someone else's instructions until you have read the code it describes.**
+The predicate was one `grep` away the whole time.
