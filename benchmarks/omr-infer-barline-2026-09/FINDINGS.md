@@ -266,3 +266,47 @@ re-measure**, and its shared record exists.
 **The `71`** — subjects lost to the independent-witness floor — is a reach
 figure and says nothing about whether those 71 would have been inferred
 *correctly*.
+
+---
+
+## 10. THE RANKED NEXT WORK, WITH WHAT EACH IS BLOCKED ON
+
+1. **Measure `COLUMN_MIN_INDEPENDENT_WITNESSES`.** It is the stage's one
+   unmeasured constant and it is now the largest single stop in both rules'
+   funnels — **71 here, 28 in the first rule's**. Measuring it needs no new
+   code: the two arms are `2` and `3`, and the honest score is not *how many
+   more fire* but **how many of the extra ones a human accepts**, which needs
+   crops. ⚠️ **Lowering it to 1 is the one change that must not be made on a
+   reach argument**: one witness is not corroboration, and the whole stage
+   rests on that.
+
+2. **An export arm, so *inferred* becomes *reached the file*.** The first
+   rule's own measurement lost one of seven to a cross-staff duplicate
+   `glyph_owner` had already disowned — two stages agreeing, and invisible
+   without the export. `benchmarks/omr-infer-stage-2026-09/export_arm.py`
+   already exists.
+
+3. **Re-measure on Breitkopf.** Its shared record exists
+   (`brahms1-breitkopf-p0-p3.record.json`, md5
+   `52b98f1cdfee3b39f10e56c592828ea4`). Everything here is n = 1 document on
+   the *low-res bitonal* end of the corpus; a plate whose columns read better
+   would move the funnel's first two stops and a plate whose columns read
+   worse would move the `UNKNOWN` count off 1.
+
+4. ⚠️ **A meter-FORM rule is the obvious third rule and it is NOT a quick
+   win.** `bars_name_a_length_without_a_form` is a genuine ABSTENTION on
+   `Q.METER` and is the named blocker on Brahms `p0p3` — the bars reach length
+   3.0 at +7.0 and cannot spell it, because the only system to borrow a
+   spelling from is the one that misread. Widening the borrow to *any* system
+   of the document is exactly sideways and exactly this stage's remit. **But a
+   rule that writes `Q.METER` and reads other systems' `Q.METER` puts the
+   meter in its `reads`, so `infer.scoring_conflict` fires and
+   `probe/self_check.py` refuses to score it** — correctly. It would need a
+   different invariant before it could be believed, and that is a design
+   question rather than a rule.
+
+5. **The `no_pitch` population stays REFUSED** on the ground the first rule's
+   findings give: filling a pitch means inferring the clef, the sideways route
+   is the same part on another system, and that is keyed on the PART JOIN,
+   which this document is measured getting wrong on 12 of 75 staff-systems.
+   Unchanged by anything here.
