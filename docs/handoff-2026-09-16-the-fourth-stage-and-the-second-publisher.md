@@ -354,9 +354,16 @@ with a provenance note saying so. **Nothing was re-derived or re-worded.**
    a **VOTED** misread propagating across many systems. Brahms `p0p3` has the
    voted misread but only 2 systems; Litolff p1-3 runs across a movement but
    its misreads are SUPPRESSED by the coverage gate before the carry sees them.
-   **The experiment that closes it is named**: the arm on `p0p3` with
-   `--bar-beats 3.0`. See
-   `benchmarks/omr-meter-corroboration-2026-09/out/local/RUN_2026-09-16_litolff-p1-p3.md`.
+   ⚠️⚠️ **THAT EXPERIMENT HAS BEEN RUN AND THE CELL IS STILL EMPTY.**
+   `p0p3` at `--bar-beats 3.0`: 7 systems, **7 decided, 0 abstained**, arms
+   **byte-identical**, `system/1/0` votes the misread `9/4` and **no system
+   reads `carried`** — so a voted misread exists there and **does not
+   propagate**, which is the flag working rather than the hazard. The cell
+   needs a document where the carry **ACCEPTS** a misread. ⚠️ And the fixture
+   PR #39 named is not what the shared record produces now: `system/0/0` reads
+   **`6/8`, correct**, and nothing abstains. See
+   `benchmarks/omr-meter-corroboration-2026-09/out/p0p3/RUN_2026-09-16_p0p3-bar-beats-3.md`
+   and `.../out/local/RUN_2026-09-16_litolff-p1-p3.md`.
 2. **`OMR_WHOLE_REST_INK`** — ANSWERED for the default (**stays ON**, §8) and
    OPEN for the hardening: *the glyph must stand inside its own staff* trades
    11 useful Breitkopf deletions for 11 fewer wrong-reason fires, and **wants a
