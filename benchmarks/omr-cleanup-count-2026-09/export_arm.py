@@ -38,6 +38,23 @@ ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
 
 from tools.omr.staged import export as sx          # noqa: E402
+from tools.omr.staged.__main__ import (               # noqa: E402
+    _provenance, _settings)
+
+
+def _export_stamp() -> dict:
+    """The tree and settings of the EXPORTING process, not the gathering one.
+
+    ⚠️ Two processes, two stamps. A record is gathered once and exported many
+    times, sometimes hours later off a different tree, and the export is where
+    every element count in the artefact comes from.
+    """
+    stamp = _provenance()
+    # ⚠️ NO `args`: this arm's own `--record`/`--tag`/`--out-dir` say nothing
+    # about how the music was read, and `--out`-shaped arguments are exactly
+    # what `_settings` excludes for making two arms of one A/B look different.
+    stamp["settings"] = _settings()
+    return stamp
 
 
 def system_map(result):
@@ -145,7 +162,20 @@ def main(argv=None):
                    "Derived by calling export.build; asserted against the "
                    "emitted XML measure-for-measure.",
         "record": str(Path(args.record)),
+        # ⚠️ THE TREE THAT GATHERED IT ...
         "provenance": result.get("provenance"),
+        # ⚠️⚠️ ... AND THE TREE THAT EXPORTED IT, which nothing recorded until
+        # 2026-09-17. FINDINGS.md's own note on the first count: *"the base arm
+        # is not the artefact Sean looked at and the difference CANNOT BE
+        # ATTRIBUTED -- export_arm.py writes no provenance stamp. The record
+        # names the tree that GATHERED it and nothing names the tree that
+        # EXPORTED it, hours later in a separate process. A cleanup artefact
+        # whose own numbers cannot be reproduced is a gap worth closing before
+        # the next count."* This is that gap, closed before this count.
+        # ⚠️ IMPORTED, never restated: `_provenance` carries the atomicity rule
+        # (commit and dirty are set together or neither is) and `_settings` the
+        # OMR_-only rule, and a second copy here would drift from both.
+        "export_provenance": _export_stamp(),
         "part_join": report.get("part_join"),
         "systems": [
             {"page": p, "system": s, "staves": rows}
