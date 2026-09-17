@@ -1803,8 +1803,47 @@ established that way is invisible to `independent_groups`.
 
 **And the standard this sets for ruling anything out:** *"This is a complex
 system that requires concepts to be tested before ruling out simply, and an
-understanding of the interdependent nature of the data."* A concept is retired
-by a MEASUREMENT, never by an argument that it sounds unlikely.
+understanding of the interdependent nature of the data."* A concept is never
+retired by an argument that it sounds unlikely.
+
+⚠️⚠️ **AND A MEASUREMENT DOES NOT RETIRE ONE EITHER — NOT AT FIRST.** Sean,
+2026-09-17, correcting the line that stood here:
+
+> *"even measurement should not retire at first, because a measurement can only
+> take into account the current factors but we are building something that has
+> changing factors."*
+
+**A measurement is taken under the factor set that exists on the day.** In a
+system being built, that set changes — so a negative result is a statement
+about *the factors present*, not about the idea. **Every refusal must therefore
+record WHAT ELSE EXISTED when it was taken**, and is re-openable when that
+changes.
+
+⚠️ **THIS PROJECT HAS ALREADY PROVED IT TWICE, and both are in CLAUDE.md:**
+
+* **`OMR_ARC_RECLASS`** was measured and REFUSED — it scored **below its own
+  majority baseline alone (0.5043 vs 0.5275)**. Later, measured in concurrence
+  with S6, the same rule reaches **0.750, p = 0.0104** on a 20,000-draw
+  permutation null. The idea did not change; a second signal came into
+  existence. *"The refusal STANDS — it was refused for what it COSTS and this
+  is what it is WORTH"* is that distinction being drawn correctly.
+* **The duration reader's two halves** measured **+15 and +13 separately and
+  +66 together** — super-additive, *"because a bar is right only when EVERY
+  note in it is"*. Either half, measured alone and judged, looks marginal.
+
+**So the operative rule is:** a measurement retires a concept **within the
+factor set it was taken in**, and a refusal that does not name that set is
+overstated. ⚠️ The practical form, since this file cannot enforce prose: when
+recording a refusal, say what would RE-OPEN it. Many entries already do
+(*"if any half ever defaults on it is slur->tie"*, *"the cheapest thing that
+would settle it is..."*), and those are the model.
+
+⚠️ **The failure mode this guards against is the expensive one**: a factor
+gathered in step 2 measures useless in step 3 *because its partner does not
+exist yet*, is deleted, and the partner arrives a month later with nothing left
+to combine with. `Q.STEM` is the near-miss — gathered and unread through THREE
+separate discoveries, and worth 114 narrowed durations the day something read
+it.
 
 ### A-INK-2 · ⚠️ DPI is a CONSTANT and should be a property of the SOURCE
 
