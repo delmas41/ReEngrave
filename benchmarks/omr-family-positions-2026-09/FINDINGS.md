@@ -228,6 +228,14 @@ with no hairpins).
 | tuplet | **1** | **0** |
 | wedge | **1** | **47** |
 | rows in the record (flag off) | 44,879 | 70,444 |
+| committed artefact | `out/reach-litolff-p1p4.json` | `out/reach-brahms-p0p3.json` |
+
+⚠️ The Litolff artefact records **`control_ok: false`** and a note pointing at
+§6a — its control fails for a reason that is not this flag's and not about
+reach. The probe now writes the artefact BEFORE judging the control, because
+the first version wrote it only on the success path and a REACH measurement
+was thrown away by an unrelated failure. **A measurement lost to an unrelated
+failure is a measurement you pay for twice.**
 
 ⚠️ **EVERY ONE OF THE TEN FAMILIES PRODUCES ROWS ON AT LEAST ONE DOCUMENT, AND
 NO FAMILY IS DEAD.** On Litolff all ten fire; on Brahms eight do.

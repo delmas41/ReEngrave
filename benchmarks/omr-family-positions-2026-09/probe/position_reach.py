@@ -325,6 +325,31 @@ def main() -> int:
               "ordinary arm WOULD be attributable to the flag.")
         return 0
 
+    # ⚠️⚠️ THE ARTEFACT IS WRITTEN BEFORE THE CONTROL IS JUDGED, AND THAT IS
+    # DELIBERATE. It used to be written only on the success path, so the
+    # Litolff p1-4 REACH measurement — which is about how many rows each
+    # family produces and has nothing to do with the control — was thrown away
+    # by a control failure caused by the direction reader's own
+    # non-determinism. A measurement lost to an unrelated failure is a
+    # measurement you pay for twice. `control_ok` is recorded ON the artefact
+    # so nobody can mistake one for the other.
+    if a.out:
+        pathlib.Path(a.out).parent.mkdir(parents=True, exist_ok=True)
+        pathlib.Path(a.out).write_text(json.dumps({
+            "pdf": a.pdf, "pages": pages, "dpi": a.dpi,
+            "weights": a.weights, "surya": surya,
+            "seconds": {"prepare": t_prep, "gather_off": t_off,
+                        "gather_on": t_on},
+            "families": families,
+            "cell_position_basis_abstentions": basis,
+            "rows_off": sum(off.values()), "rows_on": sum(on.values()),
+            "control_ok": ok,
+            "control_note": (None if ok else
+                             "see FINDINGS 6a: run --off-vs-off TWICE before "
+                             "attributing this to the flag"),
+        }, indent=2, sort_keys=True))
+        print(f"   wrote {a.out}  (control_ok={ok})")
+
     if not ok:
         print("\n⚠️⚠️ CONTROL FAILED — flag-off is NOT byte-identical.")
         print("   ⚠️ DO NOT ATTRIBUTE THIS TO THE FLAG WITHOUT RUNNING "
@@ -363,20 +388,6 @@ def main() -> int:
 
     print("\n✅ CONTROL: every OFF row is unchanged in ON, and the whole "
           "surplus is position rows.")
-
-    if a.out:
-        pathlib.Path(a.out).parent.mkdir(parents=True, exist_ok=True)
-        pathlib.Path(a.out).write_text(json.dumps({
-            "pdf": a.pdf, "pages": pages, "dpi": a.dpi,
-            "weights": a.weights, "surya": surya,
-            "seconds": {"prepare": t_prep, "gather_off": t_off,
-                        "gather_on": t_on},
-            "families": families,
-            "cell_position_basis_abstentions": basis,
-            "rows_off": sum(off.values()), "rows_on": sum(on.values()),
-            "control_ok": ok,
-        }, indent=2, sort_keys=True))
-        print(f"   wrote {a.out}")
 
     if total == 0:
         print("\n⚠️⚠️ DEAD: ZERO position rows on this document. This probe "
