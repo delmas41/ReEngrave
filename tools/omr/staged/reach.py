@@ -159,6 +159,13 @@ ORDER = ["GATHER", "ADJUDICATE", "EVALUATE", "INFER", "EXPORT", "HARNESS"]
 NOT_A_STAGE = frozenset({
     "inventory.py", "health.py", "wiring.py", "gather_coverage.py",
     "record_coverage.py", "reach.py", "__init__.py", "__main__.py",
+    # ⚠️ `capture.py` is a DERIVED CHECK, like the six above it: it asks, per
+    # notation family, whether the ink's SHAPE, its staff-grid POSITION and
+    # the RASTER it was measured on are recorded. It names quantities in
+    # order to audit them and reads none of them at runtime — the same reason
+    # it declares `DERIVED_CHECK = True` for `wiring`'s DETAIL question,
+    # which counted its mention of `staff_lines_erased` as a consumer.
+    "capture.py",
 })
 
 

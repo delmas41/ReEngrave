@@ -1,0 +1,100 @@
+SHAPE · POSITION · IMAGE · RESOLUTION — what we capture about ink
+==============================================================================
+
+family         shape  position   location  side  rasters
+------------------------------------------------------------------------------
+articulation     yes      NONE  cell/page   cls  intact
+clef             yes  MEASURED   composes     -  erased?intact,intact,own-erase
+direction         NO      NONE       page     -  -
+dynamic          yes     band*   composes     -  intact
+fermata          yes      NONE  cell/page   cls  intact
+key              yes  MEASURED   composes     -  erased?intact,intact,own-erase
+note             yes  MEASURED   composes     -  intact
+ornament         yes      NONE  cell/page   cls  intact
+rest             yes      NONE  cell/page     -  intact
+slur             yes      NONE  cell/page     -  erased?intact,intact
+tie              yes      NONE  cell/page     -  erased?intact,intact
+time             yes      NONE  cell/page     -  erased?intact,intact
+tuplet           yes      NONE  cell/page     -  erased?intact,intact
+wedge            yes     band*   composes     -  intact,page
+
+  shape    = an observed quantity carrying the detector's confidence
+  position = a staff-grid coordinate, scoreless, from its own reader
+  band*    = a staff-relative offset, but as a DETAIL of a SCORED row
+  location = does the ink's frame COMPOSE across documents? page
+             pixels and canonical-cell boxes do not — pages differ in
+             size and dpi, and two staves' canonical frames coincide
+             BY CONSTRUCTION. A grading of what is there, NEVER an
+             exemption.
+  side     = above/below read off the CLASS NAME — not a ruler, and
+             not independent of the classification it comes from
+
+  ⚠️⚠️ EVERY `NONE` IS A FINDING AND THERE ARE NO EXEMPTIONS. Sean,
+     2026-09-17: the test is not whether a family needs a position or
+     whether one would compose — it is that we cannot yet know, so we
+     hold on to everything. ⚠️ SCOPED TO DISCOVERY, not a standing
+     claim that the record may grow for ever; the cost to watch is
+     0.6 MB/page (Litolff) and 3.1 MB/page (Breitkopf) for the ink
+     layer alone — `benchmarks/omr-ink-gather-2026-09/FINDINGS.md`.
+
+── THE POSITION FACTS THAT EXIST ───────────────────────────────────
+  Q.CLEF_POSITION
+      the same measurement from the same grid for a clef glyph, and a SEPARATE row from a separate reader because a detail field on the glyph row is absorbed by that glyph's own detector term.
+  Q.KEYSIG_RUN_POSITION
+      the accidental run's positions, CLEF-FREE — so a run that fits treble's slots and not bass's is evidence about the CLEF.
+  Q.NOTEHEAD_STAFF_POSITION
+      THE EXEMPLAR. `(y_center - top_y) / half_step` off the cell's own measured line grid, carrying `residual` and `rounded`. Consumed by `consequences.restate_pitch` together with the clef.
+
+── WHICH RASTER EACH READER MEASURES (derived from its own source) ──
+     CATALOG          -             px        
+     CV_HAIRPINS      page          px        hairpin_detection.py::detect_hairpins
+     CV_HEADER        own-erase     px        header_ink.py::header_ink_mask
+     CV_INK           erased        px        staged/gather.py::_ink_components
+  ⚠️ CV_LINES         erased?intact px        line_detection.py::detect_stems
+  ⚠️ CV_LINES         erased?intact px        line_detection.py::detect_beams
+  ⚠️ CV_LOCATOR       erased?intact px        clef_locator.py::_ink_mask
+     CV_LOCATOR       intact        px        clef_locator.py::_staff_left_column
+     DETECTOR         intact        letterbox yolo_detector.py::detect
+     DOSSIER          -             px        
+     GEOMETRY         -             px        
+  ⚠️ TEMPLATE         erased?intact px        key_signature_template.py::read_key_signature
+  ⚠️ TEMPLATE         erased?intact px        time_signature_locator.py::locate_time_signature
+
+  ⚠️ `letterbox` vs `px` is QUESTION 4 and must not be flattened: the
+     measured `OMR_IMGSZ` result (*larger is NOT better*) is a fact
+     about the DETECTOR's letterboxing and anchors. A `px` reader has
+     neither, and that finding says nothing about it.
+  ⚠️ `erased?intact` is a SILENT FALLBACK: which raster answered is a
+     runtime fact, and only `Q.STEM`/`Q.BEAM_STROKE` record it.
+  ⚠️ `own-erase` is a THIRD raster — the reader erases the lines
+     itself, by a different algorithm from `staff_line_removal`'s.
+
+── POSITIVE CONTROLS (a zero means the question did not run) ────────
+      20  shape_quantities_with_a_score
+      13  families_with_a_shape_fact
+       3  staff_grid_position_quantities
+       3  families_with_a_position_fact
+      17  readers_whose_raster_resolved
+      11  readers_that_touch_a_raster
+      10  image_dict_keys_seen_being_read
+       2  modules_that_open_the_image_dict
+      17  readers_whose_resolution_resolved
+      49  observe_sites_walked
+
+── FINDINGS (16) ─────────────────────────────
+  POSITION articulation has no staff-grid position fact of its own — the class name states a SIDE (ARTICULATION_MARK), which is NOT an independent witness: it fails together with the classification it is read off — and its ink is located only in canonical_cell/page_pixels, which does not compose across documents
+  POSITION direction has no staff-grid position fact of its own — its only staff-relative fact is a band-derived above/below (DIRECTION_WORD), which is far too coarse to carry a distribution — and its ink is located only in page_pixels, which does not compose across documents
+  POSITION dynamic has no staff-grid position fact of its own — a band offset exists as a DETAIL of a scored row (DYNAMIC_LETTER)
+  POSITION fermata has no staff-grid position fact of its own — the class name states a SIDE (FERMATA_MARK), which is NOT an independent witness: it fails together with the classification it is read off — and its ink is located only in canonical_cell/page_pixels, which does not compose across documents
+  POSITION ornament has no staff-grid position fact of its own — the class name states a SIDE (ORNAMENT_MARK), which is NOT an independent witness: it fails together with the classification it is read off — and its ink is located only in canonical_cell/page_pixels, which does not compose across documents
+  POSITION rest has no staff-grid position fact of its own — and its ink is located only in canonical_cell/page_pixels, which does not compose across documents
+  POSITION slur has no staff-grid position fact of its own — it reads Q.NOTEHEAD_STAFF_POSITION (the `note` family's), which is not a fact about its OWN ink — and its ink is located only in canonical_cell/page_pixels, which does not compose across documents
+  POSITION tie has no staff-grid position fact of its own — it reads Q.NOTEHEAD_STAFF_POSITION (the `note` family's), which is not a fact about its OWN ink — and its ink is located only in canonical_cell/page_pixels, which does not compose across documents
+  POSITION time has no staff-grid position fact of its own — and its ink is located only in canonical_cell/page_pixels, which does not compose across documents
+  POSITION tuplet has no staff-grid position fact of its own — and its ink is located only in canonical_cell/page_pixels, which does not compose across documents
+  POSITION wedge has no staff-grid position fact of its own — a band offset exists as a DETAIL of a scored row (WEDGE_BOX)
+  IMAGE CV_LOCATOR falls back silently (clef_locator.py::_ink_mask) and its rows do not record which raster answered
+  IMAGE TEMPLATE falls back silently (key_signature_template.py::read_key_signature; time_signature_locator.py::locate_time_signature) and its rows do not record which raster answered
+  IMAGE CV_INK measures the erased raster and its rows do not say so, so an INK row and a DETECTOR row of the same ink cannot be told apart by raster
+  RESOLUTION nothing reads the source's native bpc/height/width/xres/yres anywhere in tools/omr — direction_text.py, input_domain.py already open the image dictionary, and the same walk sees 10 other string keys read in those modules (including `bbox` and `Filter`, which ARE taken from it), so the zero is the walker working. Every reader is handed a CONSTANT render DPI whatever the plate holds
+  CROSS-DOCUMENT nothing accumulates measured geometry across documents — `data/` holds dossiers, score-library, user-labeled, user-labeled-clef-fix, user-labeled-distill25 and no store of positions — and `publisher`, the conditioning variable the aggregate would need, appears in NO code in gather.py while the catalog carries it on 231 of 235 editions (212 distinct)

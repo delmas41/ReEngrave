@@ -4436,6 +4436,154 @@ why the roster layer has never had a pooled figure and does not get one here.
 
 ---
 
+## SHAPE, POSITION, IMAGE, RESOLUTION — what we capture about a piece of ink
+
+Sean, 2026-09-17, asked about one family's ink and then said the questions
+should be asked of every kind: *"are we collecting both the ink shape as well
+as the location of the ink on the page? ... since we are removing fine lines
+like the staff, at which stage we are reading the ink of what will become the
+numbers ... I think these questions should be applied to every bit of ink we
+are trying to capture and classify."* A fourth followed — **is the consumer
+getting the resolution the SOURCE actually has?** (`A-INK-2`).
+
+```bash
+python3 -m tools.omr.staged.capture --check   # the per-family table
+python3 benchmarks/omr-capture-facts-2026-09/mutate.py
+```
+
+⚠️ **THE TOOL IS THE COUNT.** Every figure is derived from `record.Q`,
+`adjudicate.REGISTRY`, `evaluate.RULES`, `export.FAMILIES` and the AST of
+`gather.py`; do not quote one from prose. What follows is the PRINCIPLE.
+
+**The exemplar exists for one family and the triad is what makes it work.**
+`Q.GLYPH_BOX` carries a notehead's class WITH the detector's score; a SEPARATE
+row, `Q.NOTEHEAD_STAFF_POSITION`, carries its staff-grid coordinate from a
+DIFFERENT reader with **`score=None`** — a ruler reading is not a guess — and
+`consequences.restate_pitch` combines position + clef with both in its basis.
+**Three quantities in the whole vocabulary are of that kind.**
+
+⚠️⚠️ **A POSITION MAY NOT BE ADDED AS A FIELD ON THE SHAPE ROW, AND THAT IS
+MEASURED, NOT STYLISTIC.** `Evidence.correlated_groups` calls every row from
+one reader on one crop ONE SIGNAL and `tally` takes the group's strongest term,
+so a position hung off the glyph row is **absorbed by that glyph's own detector
+term** (*a 1.5 beside a 3.0 left the contest at 3.0 against 3.0*). A position
+refined onto the shape row is **not a second witness**. It needs its own
+quantity, its own reader and no score — which is why this is a missing
+CATEGORY, and why *"just put it in `detail`"* is already refuted rather than
+untried. Two families have their band offset in exactly that unusable place.
+
+⚠️⚠️ **THERE ARE NO EXEMPTIONS — EVERY FAMILY WITHOUT A POSITION IS A
+FINDING.** Sean, 2026-09-17: *"Theoretically every position can at some point
+contribute even if that is not with our current pipeline. We are still
+discovering what works best and for testing we need to hold on to everything
+because we can't yet know all of what will be helpful."* The test is **not**
+whether a family needs a position to read itself, and **not** whether recording
+one composes into a useful prior — two earlier framings of this list were
+withdrawn for allowing exactly those. `KNOWN_GAPS` holds reasons a gap EXISTS,
+never reasons one is acceptable, and a test bans exemption language outright.
+⚠️ **SCOPED TO DISCOVERY**, and a later reader must not take it as permanent:
+the cost to watch is **0.6 MB/page (Litolff) and 3.1 MB/page (Breitkopf)** for
+the ink layer alone, against records already in the hundreds of MB.
+
+⚠️ **A SIDE READ OFF THE CLASS NAME IS NOT A RULER.** `articStaccatoAbove` /
+`fermataBelow` state a side and three families record it — but it is DERIVED
+FROM the classification, so it fails together with the reading it would
+arbitrate, and above/below is a BIT where the question is a DISTRIBUTION (how
+many spaces clear of the staff a staccato sits *on this publisher's plates*).
+⚠️ `placement` is NOT the same and is reported apart — it is derived from the
+BAND by measurement, the opposite provenance.
+
+⚠️ **LOCATION IS NOT POSITION, and that grading is not an exemption either.** A
+staff-space float composes across documents; a raw `bbox_page_px` does not,
+because pages differ in size and dpi; and a CANONICAL-CELL box does not either
+— `Q.ONSET_COLUMN` already paid for that, since two staves' canonical frames
+coincide BY CONSTRUCTION. A family carrying only page pixels has a LOCATION and
+not a POSITION, reported as a second, distinct fact.
+
+⚠️⚠️ **AND NOTHING ACCUMULATES ACROSS DOCUMENTS.** Sean: *"We need every bit of
+information gathered and stored in one place where the different stages can
+continue to learn."* There is no such place — `data/` holds dossiers (ENCODING
+facts), a file catalog and training sets, and no store of measured geometry. ⚠️
+**`publisher`, the conditioning variable that aggregate needs, appears in NO
+code in `gather.py`** (the one hit is a word in a docstring) while the catalog
+carries it on **231 of 235 editions, 212 distinct** — on `entries`, NOT on the
+`editions` map, so a reader that went to `editions` would conclude it was
+absent. Neither the store nor the priors are proposed here.
+
+⚠️⚠️ **"ERASED" IS NOT ONE IMAGE, AND MOST READERS CHOOSE AT RUNTIME.**
+`Observation.frame` names a COORDINATE frame, never the RASTER. There are
+THREE erased rasters — `staff_line_removal`'s binary `image_no_staff`,
+`header_ink_mask`'s OWN erasure from the intact cell, and not-erased — and the
+shape `cell.image_no_staff if ... is not None else cell.image` appears in six
+readers including the ones that read the METER and the KEY SIGNATURE. **Which
+raster answered is a runtime fact the row does not carry**; only `Q.STEM` and
+`Q.BEAM_STROKE` record it. ⚠️ `gather_key_signature` runs two readers on ONE
+crop on OPPOSITE rasters, so its two verdicts are not derived from the same
+pixels and nothing says so. ⚠️ **None of this questions the standing rule** —
+*erase for the CV consumer, bound the search for everyone else, NEVER erase for
+the detector* (measured at 7-13 pooled reading points).
+
+⚠️⚠️ **THE RENDER DPI IS A CONSTANT AND THE SOURCE'S NATIVE RESOLUTION IS READ
+BY NOBODY** (`A-INK-2`). `render_page(..., dpi=dpi)` takes its DPI from an
+argument **no call site derives from the PDF**, and the two kinds of source
+want opposite things from it: a SCANNED plate has a native resolution fixed at
+scan time (above it is upsampling, below it discards plate), a VECTOR page has
+none. ⚠️ **The classifier already exists and already opens the dictionary** —
+`input_domain._classify_page`, `OMR_WEIGHT_ROUTING`'s shipped domain test,
+reads `bbox` and `Filter` out of the image dict and leaves `width`/`height`
+untouched. ⚠️⚠️ **DO NOT QUOTE `OMR_IMGSZ`'s *larger is NOT better* AGAINST
+THIS**: that is a fact about the DETECTOR's letterboxing and anchors, and the
+tool's `resolution` column separates `letterboxed` from `direct_pixels` —
+derived from each entry point's signature — so one reader's measured result
+cannot be spent on thirteen others. ⚠️ The p.62 *16x the pixels, zero new
+structure* figure cuts ONE way: it says rendering ABOVE native buys nothing,
+and says nothing about a plate whose native resolution sits BELOW what we
+render. **The reach figure needs the library and has not been taken.**
+
+⚠️ **What a missing position fact cost once**: Litolff Beethoven 5 p.62's `3/4`
+is **one barline broken into two fragments**, `timeSig3` + `timeSig4` at the
+cell's left edge, 0.35 and 0.40 staff spaces wide. A meter's placement is rigid
+and `time_signature_locator` already relies on it — INSIDE a template search,
+as a constraint that is thrown away. **Ranked next, and it is a GATHER change**,
+so pricing it needs two full re-gathers.
+
+⚠️ **The ranked work after it is the TWO-PASS READ, scoped and NOT built**: a
+thin glyph is BROKEN by erasure where the lines crossed it and MERGED INTO the
+lines if they are kept, so find the component on the ERASED image and measure
+its ink inside that box on the ORIGINAL. `gather_ink` does the first half only.
+**What would falsify it**: if the recovered ink cannot be told from residue the
+erasure removed correctly, it adds noise rather than strokes — and *if residue
+does not separate, that is the more important finding.*
+
+⚠️ **THE INSTRUMENT FINDING: `gather_coverage` reports five quantities as
+having NO READER** — `ARC_BOX`, `ARTICULATION_MARK`, `FERMATA_MARK`,
+`ORNAMENT_MARK`, `REST` — because `gather_glyph_families` passes `reader`,
+`frame` and `score` through a `**common` dict and that walker reads literal
+keywords only. All five carry `READERS.DETECTOR` and a real confidence. Reusing
+it would have reported five families as capturing no shape confidence.
+
+⚠️⚠️ **AND COMMITTING THE TOOL BROKE `wiring --check` — THE FOURTH MEMBER OF A
+FAMILY `wiring` ALREADY DOCUMENTS.** An auditor NAMES a detail key without
+CONSUMING it, exactly as a gap list, a test and a benchmark probe do — but it
+lives in the SAME tree as the real consumers, so no tree test separates it, and
+its mention of `staff_lines_erased` turned two live gaps STALE. Modules now
+declare `DERIVED_CHECK = True`, read from the AST so a comment cannot opt a real
+consumer out. ⚠️ It fails LOUD: a forgotten marker makes entries report STALE,
+which `--check` catches; it cannot silently close a gap. ⚠️ **The control was
+run before the conclusion** — `wiring` exits 0 on the base and 1 with the module
+added, while `gather_coverage` exits 2 on BOTH, which is what pre-existing looks
+like.
+
+⚠️ **NOT ESTABLISHED**: nothing was gathered, exported or measured on a page;
+`UNSCORED` and `READER_RASTER` are DECLARED (guarded, so a new entry is loud —
+but a WRONG classification would pass); the raster answer is the reader's
+STATIC code, so nothing here says how often a fallback takes which branch; and
+**whether a position fact would HELP any family is unmeasured.** Full reasons
+are in the module's own `KNOWN_GAPS`, one per family — each a reason the gap
+EXISTS, never a reason it is acceptable.
+
+---
+
 ## The central score library
 
 Every score the project uses lives in one place with its provenance attached:
