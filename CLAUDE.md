@@ -57,6 +57,22 @@ including the **two GATHER divergences it found and deliberately did not
 change**, and the **`ff` 47 → 39 that is an unadjudicated COST and not a win**.
 
 ⚠️ **START HERE IF YOU ARE PICKING THIS UP:**
+[docs/handoff-2026-09-17-infer-rule-two.md](docs/handoff-2026-09-17-infer-rule-two.md)
+— **the newest, and a DIFFERENT THREAD from the meter chain below it**: INFER
+gained a second rule (`collapse_duration_to_barline`, no flag, **7 → 17** on
+Litolff and **25 → 41** on Breitkopf), taking the 191-note bucket the first
+rule declined by design. ⚠️ Its guard is what makes it a rule rather than a
+shortcut — a witness whose length reached it THROUGH `Q.METER` is refused, so
+it never reads the meter it would otherwise need. ⚠️⚠️ **It also found the
+stage's OWN self-check silently circular since the 09-15 flip** — it restated
+`OMR_METER_FROM_BARS`'s default as OFF against an allow-list while the owning
+predicate is ON against a deny-list, so the check printed `ok` while the flag
+was on. Repaired by importing the predicate; **the self-check now correctly
+REFUSES under current defaults**, which is an open item. ⚠️ **The registered
+rules had NO unit fixture at all** — either could have stopped firing with the
+suite green. ⚠️ Its §9 names one un-isolated suite failure, reported rather
+than omitted. **The meter chain continues below and is untouched by it.**
+
 [docs/handoff-2026-09-16-abstains-and-misreads-was-already-there.md](docs/handoff-2026-09-16-abstains-and-misreads-was-already-there.md)
 — **the newest, and short: a pointer, not a session.** ⚠️⚠️ **THE CLAIM BELOW
 THAT NEITHER DOCUMENT ON THIS MACHINE ABSTAINS *AND* MISREADS WAS REFUTED THE
@@ -840,14 +856,80 @@ only that the witness ENDS WHERE THIS NOTE ENDS. Generalised to `k -> m`:
 **1 → 7**, with the funnel 357 → 356 in a column → **165** with a next onset
 (191 run to the barline) → 40 with a witness → 35 unanimous → 7 independent.
 
+⚠️⚠️ **AND THE 191 THAT FUNNEL DECLINES IS NOW A SECOND RULE —
+`collapse_duration_to_barline`, 2026-09-17, no flag, INFER 7 → 17.** The stop
+above carries a comment saying *"its length is the bar's — which is the METER,
+which this rule may not read"*. That is right about the meter and **wrong
+about the NEIGHBOUR**: a staff standing at the same column with nothing after
+it has already measured the same gap. ⚠️ **The guard that makes it legal is
+not a declaration**: `size_measure_rest` and `reconcile_duration` both hand a
+duration out FROM the meter and both put the meter row in their `basis`, so a
+witness whose provenance closure contains `Q.METER` is REFUSED — via
+`Log.quantities_in_closure`, the primitive `adjudicate.py` already uses for
+circularity. **It fires on 3 subjects, refusing 2, 2 and 3 witnesses**, so the
+guard is not theoretical. ⚠️ **The `191` is NOT this rule's population**: it is
+*no next COLUMNED onset*, which is **190 barline + 1 UNKNOWN** — a note
+followed by an event that landed in no column, where nobody knows when it
+stops, and which BOTH rules now decline (the endpoint is a PAIR, and deriving
+"barline" from *no later columned event* would hand such a note a neighbour's
+whole-bar length). ⚠️ Rule 1 is behaviourally UNCHANGED. **Funnel: 190 → 134
+with another staff running k → barline → 97 with a decided non-meter length →
+82 unanimous → 11 independent → 10.** ⚠️⚠️ **MEASURED ON BOTH PUBLISHERS, AND
+THE FUNNEL SHAPE INVERTS.** Breitkopf Brahms 1 p0-3 (record md5 `52b98f1c…`,
+provenance **clean**, where Litolff's is dirty): 536 narrowed in a column, 297
+rule 1 / **239 rule 2 / 0 UNKNOWN**, and INFER **25 → 41**. The claim
+transfers; the refusals do not. On Litolff the dominant stop is
+AVAILABILITY (93 of 190 have no usable witness); on Breitkopf it is
+**DISAGREEMENT — 96 of 239 against Litolff's 15**, plus 20 where the
+neighbours name a length the reader never admitted. That is corroborated from
+outside: this file already records Breitkopf reading **22%** of per-staff
+durations right against Litolff's **59%**, so the worse-read plate makes the
+unanimity rule **go quiet rather than go wrong**, which is what *one dissenter
+refuses the whole inference* was written to do — observed rather than
+asserted. The meter guard is **4.7× busier** there (14 subjects vs 3). ⚠️⚠️ **The largest stop is
+`COLUMN_MIN_INDEPENDENT_WITNESSES` at 71** — the stage's one unmeasured
+constant, priced at 28 by the first rule and now costing 71, which is a reason
+to MEASURE it and not to lower it. ⚠️ **Accuracy is not established**: none of
+the 10 has been checked against the print, no export arm ran, and n = 1
+document. ⚠️⚠️ **It also found that the stage's OWN self-check has been
+silently circular since 2026-09-15**: `probe/self_check.py` restated
+`OMR_METER_FROM_BARS`'s default as `"0"` against an ALLOW-list while the
+owning predicate is `"1"` against a DENY-list, so with the variable unset the
+pipeline had the flag ON and the check printed `'0' -> ok` — the guard failing
+exactly as written to prevent. Repaired by IMPORTING
+`rhythm.meter_from_bars_enabled()`; **the consequence is that INFER's only
+truth-free self-check now correctly REFUSES under current defaults**, which is
+the honest state and not a regression. ⚠️ The registered rules had **no unit
+fixture at all** until this job (the harness tests install one-off rules), so
+either could have stopped firing with the suite green. Battery **14 arms, 14
+red**, first run's 2 survivors being one mis-aimed arm and one real test gap.
+[benchmarks/omr-infer-barline-2026-09/FINDINGS.md](benchmarks/omr-infer-barline-2026-09/FINDINGS.md).
+
 ⚠️ **HAZARD (b) IS A COMPUTATION HERE, NOT AN ARGUMENT, AND IT IS NOT A
 NO-OP.** `independent_groups` partitions witnesses by whether their
 `Log.closure` provenance sets intersect, and writes the partition to
 **`Verdict.correlated`** — built for this and consumed by nothing until now.
 It **refuses 8 of 35** unanimous cases whose 2-3 witnesses collapse to ONE
 group. ⚠️ It is ONE-SIDED: disjoint closures prove the ROWS differ, not that
-the READINGS fail independently. ⚠️ `COLUMN_MIN_INDEPENDENT_WITNESSES = 2` is
-**unmeasured and its price is 28**.
+the READINGS fail independently. ⚠️⚠️ **`COLUMN_MIN_INDEPENDENT_WITNESSES = 2` IS NO LONGER UNMEASURED
+(2026-09-17), AND THE SHAPE SAYS IT SITS ON A BOUNDARY RATHER THAN A
+MIDPOINT.** Priced in REACH on both shared records by
+`benchmarks/omr-infer-barline-2026-09/probe/witness_floor.py`, which
+reproduces all four shipped totals independently and whose Litolff `by_column`
+population is exactly the **n = 35 unanimous** published above — so it measures
+the rule, not itself. Survivors at floor 1 / **2** / 3: Litolff **25/7/4** and
+**52/10/3**, Breitkopf **55/25/3** and **56/16/10**. The informative artefact
+is the DISTRIBUTION of independent-group counts over the cases that reach the
+floor: **the mass is at exactly ONE on both documents and both rules** — 28 of
+35, 71 of 82, 49 of 82, 70 of 106. So the refused population is overwhelmingly
+SINGLE-WITNESS and the floor is not slicing a continuum; it separates *one
+staff said so* from *two independent staves agree*, which is the justification
+the constant never had. ⚠️ **Floor 3 is expensive AND erratic** (−70%, −88%,
+−38% across the three rule/document pairs), so it is not one to raise on
+either document's evidence. ⚠️⚠️ **Floor 1 is PRINTED AND NOT PROPOSED** — it
+takes Litolff's barline rule 10 → 52 and abolishes corroboration, which is the
+one thing the stage rests on not doing. ⚠️ **Reach only**: whether the extra
+inferences at a lower floor are RIGHT is unmeasured and needs crops.
 
 ⚠️ **THE ARGMAX REFUSAL EARNS ITS KEEP: 2 of the 7 chose the reader's SECOND
 candidate**, so the sideways evidence overturned the support ordering twice —
@@ -6794,7 +6876,7 @@ All in `backend/.env` (local) or `backend/.env.production` (prod):
 | `OMR_METER_SEGMENTS` | **`1` on (default since 2026-09-09, Sean's call)** → staged pipeline only: the exporter reads the meter in force at each BAR out of `Q.METER`'s `segments`, so a printed mid-system meter change can reach a file at all. Engraved 4 printed / 4 found / 1 → 0 false. ⚠️ On a SCAN its false segments now reach the file too (one page: `<time>` 41 → 138) — priced, and overridden rather than resolved. `0` restores the per-run meter. See the knobs table. |
 | `OMR_WHOLE_REST_INK` | **`1` on (default, and the behaviour that shipped 2026-09-15)** → staged pipeline only: refuse to write a pitched `<note>` where the record says the ink is a WHOLE REST. Notes 1618 → 1596, 22 removed / 0 added, on 25 of 25 hand-adjudicated crops. ⚠️ Flagged because it is the one staged repair that DELETES music, on n = 1 document with two of six cuts off a plateau. `0` restores the pre-2026-09-15 exporter exactly, leaving the verdict decided and on the record. See the knobs table. |
 | `OMR_METER_TEMPLATE_AT_BAR` | `0` off (default) → staged pipeline only: ask the TEMPLATE reader at candidate mid-staff bar heads, of every staff of the system, and admit a reading only where 3 staves agree on one meter at one bar. Measured on 1,612 empty windows over 2 publishers: 16 / 2 / **0** spurious columns at a 1 / 2 / 3-staff quorum. UNPRICED — a GATHER change needs two full re-gathers. See the knobs table. |
-| `OMR_INFER` | `0` off (default) → the FOURTH STAGE, INFER: after EVALUATE and before EXPORT, it collapses a NARROWED verdict to one of that reader's OWN candidates using evidence EVALUATE structurally cannot look at — the other staves of the same system. Every inference is LABELLED (`decider="infer:…"`), names what it supersedes, and leaves the narrowing in the record. ⚠️ Off means ABSENT, not quiet: `pipeline` omits the `inference` key entirely, so a flag-off record is byte-identical to a tree without the stage. 7 inferred / 6 reach the file on Litolff Beethoven 5 p1-4; n = 1 document and NO accuracy check against the print. See the *INFER, the fourth stage* section. |
+| `OMR_INFER` | `0` off (default) → the FOURTH STAGE, INFER: after EVALUATE and before EXPORT, it collapses a NARROWED verdict to one of that reader's OWN candidates using evidence EVALUATE structurally cannot look at — the other staves of the same system. **TWO rules since 2026-09-17** (`collapse_duration_by_column` 7, `collapse_duration_to_barline` 10 — the barline rule refuses any witness whose length reached it through `Q.METER`, so it never reads the meter it would otherwise need). Every inference is LABELLED (`decider="infer:…"`), names what it supersedes, and leaves the narrowing in the record. ⚠️ Off means ABSENT, not quiet: `pipeline` omits the `inference` key entirely, so a flag-off record is byte-identical to a tree without the stage. 7 inferred / 6 reach the file on Litolff Beethoven 5 p1-4; n = 1 document and NO accuracy check against the print. See the *INFER, the fourth stage* section. |
 | `OMR_PARTIAL_DYNAMICS` | `off` (default) → a dynamic letter run that spells no known word is dropped whole; `complete` exports only what every surviving completion agrees on (`s` → `sf`); `other` adds `<other-dynamics>`. Measured over the 20-row gate: +15 / +30 edits, NOT ONE ROW BETTER. See the knobs table. |
 | `OMR_ROSTER_LABELS` | `0` off (default) → resolve margin labels against the work's catalog roster: recover a truncated name, disambiguate `Basso.`, veto a singer on a work with no singers. Measured; 1.4% of real margin labels. See the knobs table. |
 | `OMR_WORK_ID` | Name the catalogued work for a PDF the score library does not hold — the score LIBRARY's id (`tchaikovsky--symphony-6`), never the dossier's (`tchaikovsky-sym6-mvt2`). Consumed only by `OMR_ROSTER_LABELS`; nothing sets it by default. |

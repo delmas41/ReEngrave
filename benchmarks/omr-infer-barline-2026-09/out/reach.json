@@ -1,0 +1,19 @@
+{
+  "endpoint_split": {
+    "runs to the BARLINE (rule 2)": 190,
+    "ends at an onset column (rule 1)": 165,
+    "UNKNOWN: something follows, in no column": 1
+  },
+  "funnel": {
+    "4 STOP: fewer than 2 INDEPENDENT witnesses": 71,
+    "(witnesses refused as meter-derived: 3)": 1,
+    "3 STOP: the witnesses disagree": 15,
+    "1 STOP: no other staff runs k -> barline": 56,
+    "(witnesses refused as meter-derived: 2)": 2,
+    "SURVIVES": 10,
+    "5 STOP: 0 candidates carry that length": 1,
+    "2 STOP: no witness with a DECIDED, non-meter length": 37
+  },
+  "proposed": 10,
+  "self_check_ok": true
+}

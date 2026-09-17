@@ -44,6 +44,7 @@ ROOT = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(ROOT))
 
 from tools.omr.staged import infer                                # noqa: E402
+from tools.omr.staged.adjudicators import rhythm                  # noqa: E402
 from tools.omr.staged.record import Q                             # noqa: E402
 
 BAR_FILL = ROOT / "benchmarks/omr-rest-sizing-2026-09/probe/bar_fill.py"
@@ -67,9 +68,31 @@ def independence_report() -> int:
               + (f" (shares {list(clash)})" if clash else ""))
         bad += bool(clash)
 
-    from_bars = os.environ.get("OMR_METER_FROM_BARS", "0").strip()
-    on = from_bars in ("1", "true", "yes", "on")
-    print(f"  OMR_METER_FROM_BARS={from_bars!r} -> "
+    # ⚠️⚠️ THE PREDICATE IS IMPORTED, NEVER RESTATED, AND THIS LINE USED TO
+    # RESTATE IT — WITH THE WRONG DEFAULT AND THE WRONG DIRECTION.
+    #
+    # It read `os.environ.get("OMR_METER_FROM_BARS", "0")` against an
+    # ALLOW-list, i.e. it believed the flag was default-OFF. `OMR_METER_FROM_
+    # BARS` was flipped default-ON on 2026-09-15 and its real predicate is a
+    # DENY-list (`rhythm.py`: default `"1"`, off only on an explicit off
+    # word). So with the variable unset — the default configuration, and what
+    # every run here has had — the pipeline had the flag ON while this check
+    # printed `'0' -> ok`.
+    #
+    # That is this guard failing in exactly the way it was written to
+    # prevent: bar-fill's denominator derived from the bar sums the rule
+    # moves, reported as independent. It is also CLAUDE.md's own recorded
+    # flag-direction hazard (five shipped flags had the test backwards) and
+    # its fallback rule (*a fallback must never convert "cannot tell" into a
+    # definite answer*) arriving inside a probe.
+    #
+    # Importing the owning predicate makes the two unable to drift, which is
+    # the discipline this repository already applies to `LETTER_METERS`,
+    # `_REST_DURATIONS` and the wedge constants.
+    on = rhythm.meter_from_bars_enabled()
+    raw = os.environ.get(rhythm.METER_FROM_BARS_ENV, "<unset>")
+    print(f"  {rhythm.METER_FROM_BARS_ENV}={raw!r} (resolved: "
+          f"{'ON' if on else 'OFF'}) -> "
           + ("REFUSED: the meter would be derived from the bar sums this "
              "rule moves" if on else "ok"))
     bad += bool(on)
