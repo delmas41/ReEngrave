@@ -70,9 +70,43 @@ AST. **The control was run first**: `wiring` exits 0 on the base and 1 with the
 module added; `gather_coverage` exits 2 on both, which is what pre-existing
 looks like. `reach.NOT_A_STAGE` gained the module too, its own guard working.
 
-Battery **26 arms, 26 as expected, restore VERIFIED**; its first run found
+⚠️⚠️ **TWO CORRECTIONS ARRIVED MID-TASK AND BOTH NARROWED THE POSITION
+QUESTION.** Sean withdrew, in two steps, every exemption: first the families
+whose CLASS NAME states a side, then any exemption argued from the aggregate.
+Final ruling: *"Theoretically every position can at some point contribute even
+if that is not with our current pipeline... for testing we need to hold on to
+everything because we can't yet know all of what will be helpful."* **Every
+family without a staff-grid position is a finding**; `KNOWN_GAPS` holds reasons
+a gap EXISTS and a test bans exemption language outright. ⚠️ **Scoped to
+DISCOVERY** — the cost to watch is 0.6 MB/page (Litolff) and 3.1 MB/page
+(Breitkopf) for the ink layer alone, against records already in the hundreds.
+
+Two gradings survive because they are NOT exemptions: **LOCATION vs POSITION**
+(a staff-space float composes across documents; page pixels and canonical-cell
+boxes do not — the latter because two staves' canonical frames coincide BY
+CONSTRUCTION) and the class-name **side**, which fails together with the
+classification it is read off. ⚠️ `placement` had been wrongly folded into
+`side` and is now reported apart: it is derived from the BAND by measurement,
+the opposite provenance, and the conflation made `direction` report *"the class
+name states a SIDE"* about a word that is not in the class space at all.
+
+⚠️⚠️ **AND NOTHING ACCUMULATES ACROSS DOCUMENTS**, which is the consumer the
+aggregate question needs. `data/` holds no store of measured geometry, and
+`publisher` appears in **NO code** in `gather.py` while the catalog carries it
+on **231 of 235 editions (212 distinct)** — on `entries`, NOT on the `editions`
+map, so a reader going to `editions` would conclude the fact was absent.
+
+⚠️ **A THIRD DERIVATION BUG, the `**common` trap in a second form**: `gather.py`
+binds `shared:` and `detail:` as ANNOTATED assignments, and an
+`ast.Assign`-only walk resolved neither — so `Q.DIRECTION_WORD` came back
+without `bbox_page_px`/`placement` and the location grading reported two
+families as carrying no page location. Found by reading the emitted detail
+lists against the source.
+
+Battery **34 arms, 34 as expected, restore VERIFIED**; its first run found
 **three genuine test gaps**, one being this session's own *a test asserting a
-list is EMPTY cannot detect a computation that always returns empty*.
+list is EMPTY cannot detect a computation that always returns empty*, and a
+later arm SURVIVED because its target test could not reach the probe at all.
 
 ⚠️ **A FOURTH QUESTION arrived mid-task and is wired in: RESOLUTION**
 (`A-INK-2`). `OMR_DPI` is a CONSTANT and `render_page(..., dpi=dpi)` takes it

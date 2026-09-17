@@ -4472,11 +4472,43 @@ quantity, its own reader and no score — which is why this is a missing
 CATEGORY, and why *"just put it in `detail`"* is already refuted rather than
 untried. Two families have their band offset in exactly that unusable place.
 
+⚠️⚠️ **THERE ARE NO EXEMPTIONS — EVERY FAMILY WITHOUT A POSITION IS A
+FINDING.** Sean, 2026-09-17: *"Theoretically every position can at some point
+contribute even if that is not with our current pipeline. We are still
+discovering what works best and for testing we need to hold on to everything
+because we can't yet know all of what will be helpful."* The test is **not**
+whether a family needs a position to read itself, and **not** whether recording
+one composes into a useful prior — two earlier framings of this list were
+withdrawn for allowing exactly those. `KNOWN_GAPS` holds reasons a gap EXISTS,
+never reasons one is acceptable, and a test bans exemption language outright.
+⚠️ **SCOPED TO DISCOVERY**, and a later reader must not take it as permanent:
+the cost to watch is **0.6 MB/page (Litolff) and 3.1 MB/page (Breitkopf)** for
+the ink layer alone, against records already in the hundreds of MB.
+
 ⚠️ **A SIDE READ OFF THE CLASS NAME IS NOT A RULER.** `articStaccatoAbove` /
 `fermataBelow` state a side and three families record it — but it is DERIVED
 FROM the classification, so it fails together with the reading it would
-arbitrate. The correlated-witness hazard, with the correlation running through
-the class name.
+arbitrate, and above/below is a BIT where the question is a DISTRIBUTION (how
+many spaces clear of the staff a staccato sits *on this publisher's plates*).
+⚠️ `placement` is NOT the same and is reported apart — it is derived from the
+BAND by measurement, the opposite provenance.
+
+⚠️ **LOCATION IS NOT POSITION, and that grading is not an exemption either.** A
+staff-space float composes across documents; a raw `bbox_page_px` does not,
+because pages differ in size and dpi; and a CANONICAL-CELL box does not either
+— `Q.ONSET_COLUMN` already paid for that, since two staves' canonical frames
+coincide BY CONSTRUCTION. A family carrying only page pixels has a LOCATION and
+not a POSITION, reported as a second, distinct fact.
+
+⚠️⚠️ **AND NOTHING ACCUMULATES ACROSS DOCUMENTS.** Sean: *"We need every bit of
+information gathered and stored in one place where the different stages can
+continue to learn."* There is no such place — `data/` holds dossiers (ENCODING
+facts), a file catalog and training sets, and no store of measured geometry. ⚠️
+**`publisher`, the conditioning variable that aggregate needs, appears in NO
+code in `gather.py`** (the one hit is a word in a docstring) while the catalog
+carries it on **231 of 235 editions, 212 distinct** — on `entries`, NOT on the
+`editions` map, so a reader that went to `editions` would conclude it was
+absent. Neither the store nor the priors are proposed here.
 
 ⚠️⚠️ **"ERASED" IS NOT ONE IMAGE, AND MOST READERS CHOOSE AT RUNTIME.**
 `Observation.frame` names a COORDINATE frame, never the RASTER. There are
@@ -4547,8 +4579,8 @@ like.
 but a WRONG classification would pass); the raster answer is the reader's
 STATIC code, so nothing here says how often a fallback takes which branch; and
 **whether a position fact would HELP any family is unmeasured.** Full reasons
-are in the module's own `KNOWN_GAPS`, one per family, with why several
-legitimately need none.
+are in the module's own `KNOWN_GAPS`, one per family — each a reason the gap
+EXISTS, never a reason it is acceptable.
 
 ---
 

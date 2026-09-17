@@ -250,42 +250,66 @@ needed, it must not come off the same raster.*
 
 ---
 
-### 3.7 VOCABULARY — a position fact is a SEPARATE ROW, and most families have none
+### 3.7 VOCABULARY — a position fact is a SEPARATE ROW, and there are NO exemptions
 
 Sean, 2026-09-17: *"are we collecting both the ink shape as well as the
 location of the ink on the page? ... I think these questions should be applied
 to every bit of ink we are trying to capture and classify."*
 
 **The derived half is `capture` and the counts are its**, never this section's.
-What belongs here is the judgement the tool cannot make: **which families
-legitimately need no staff-grid position, and which are a real gap.** Reporting
-every family without one as a repair would be a list fitted to the question.
 
-⚠️⚠️ **THE PROPERTY THAT MAKES THIS A VOCABULARY FINDING RATHER THAN A WIRING
-ONE: a position CANNOT be added as a field on the shape row.**
-`Q.CLEF_POSITION`'s own docstring carries the measurement —
-`Evidence.correlated_groups` calls every row from one reader on one crop **one
-signal**, `tally` counts the group once and takes its strongest term, so a
-position hung off the glyph row is **absorbed by that glyph's own detector
-term** (measured: *a 1.5 beside a 3.0 left the contest at 3.0 against 3.0*).
-**A position refined onto the shape row is not a second witness.** It needs its
-own quantity, its own reader and `score=None` — which is why this is a missing
-CATEGORY and not a missing wire, and why *"just put it in `detail`"* is
-already refuted rather than untried.
+⚠️⚠️ **THIS SECTION WAS WRITTEN TWICE AND BOTH DRAFTS WERE WRONG IN THE SAME
+DIRECTION — they let families off.** The first exempted the three whose CLASS
+NAME states a side (`fermataBelow`) on the ground that the shape already
+carries it. The second allowed an exemption if it could be argued from the
+AGGREGATE rather than the instance. Sean withdrew both:
 
-Two families have exactly that shape today and their band offsets are in the
-unusable place: the dynamics band is MEASURED (73% own staff / 24% the staff
-above, **distance exactly 1, no exceptions**) and lives as a detail of a scored
-row; the wedge's `band_offset_spaces` is scoreless and staff-relative — the
-exemplar's shape **by accident** of that rung working in page pixels per staff.
+> *"Theoretically every position can at some point contribute even if that is
+> not with our current pipeline. We are still discovering what works best and
+> for testing we need to hold on to everything because we can't yet know all of
+> what will be helpful."*
 
-⚠️ **A SIDE READ OFF THE CLASS NAME IS NOT A RULER.** `articStaccatoAbove` and
-`fermataBelow` state a side, and three families record it. It fails TOGETHER
-with the classification it is derived from, so it cannot arbitrate the reading
-it comes from — the correlated-witness hazard with the correlation running
-through the class name, a fourth door onto the room §"the bars are not an
-independent umpire" opened. The tool reports it in its own column for exactly
-that reason.
+**So the test is not whether a family needs a position to read itself, and not
+whether recording one composes into a useful prior. It is: we cannot yet know,
+therefore yes.** Every family without one is a finding; `KNOWN_GAPS` holds
+reasons a gap EXISTS, never reasons one is acceptable, and a test bans
+exemption language from those reasons outright.
+
+⚠️ **THE SCOPE IS DISCOVERY AND IS LOAD-BEARING.** Sean scoped it to *"for
+testing"* — a phase-appropriate call about a pipeline still being figured out,
+not a standing claim that the record may grow without bound. **The cost to
+watch, measured:** the ink layer alone adds **0.6 MB per Litolff page and
+3.1 MB per Breitkopf page**, against records already in the hundreds of MB
+(`benchmarks/omr-ink-gather-2026-09/FINDINGS.md`). Noted as the thing to watch,
+not as an argument against.
+
+⚠️⚠️ **WHY THIS IS A VOCABULARY FINDING RATHER THAN A WIRING ONE: a position
+CANNOT be added as a field on the shape row.** `Q.CLEF_POSITION`'s own
+docstring carries the measurement — `Evidence.correlated_groups` calls every
+row from one reader on one crop **one signal**, `tally` counts the group once
+and takes its strongest term, so a position hung off the glyph row is
+**absorbed by that glyph's own detector term** (measured: *a 1.5 beside a 3.0
+left the contest at 3.0 against 3.0*). It needs its own quantity, its own
+reader and `score=None`. *"Just put it in `detail`"* is already refuted rather
+than untried — and two families have their band offset in exactly that place.
+
+⚠️ **A SIDE READ OFF THE CLASS NAME IS NOT A RULER.** It fails TOGETHER with
+the classification it is derived from, so it cannot arbitrate the reading it
+comes from — the correlated-witness hazard with the correlation running through
+the class name. And above/below is a BIT where the question is a distribution:
+how many spaces clear of the staff a staccato sits on **this publisher's
+plates** is what would let an unnamed dot be scored, and a side cannot express
+it. ⚠️ `placement` is NOT the same thing and is reported apart — it is DERIVED
+FROM THE BAND by measurement, the opposite provenance.
+
+⚠️ **LOCATION IS NOT POSITION, and that grading is not an exemption either.**
+A staff-space float composes across documents; a raw `bbox_page_px` does not,
+because pages differ in size and dpi; and a CANONICAL-CELL box does not either
+— `Q.ONSET_COLUMN` already paid for that one, since canonical x is measured
+inside one cell rescaled so the staff span is constant, so **two staves'
+canonical frames coincide by construction** and agreeing there is evidence of
+nothing. A family carrying only page pixels has a LOCATION and not a POSITION;
+the tool reports it as a second, distinct fact about the same row.
 
 **Where the absence has a measured cost: `time`.** Litolff Beethoven 5 p.62's
 `3/4` is **one barline broken into two fragments** — `timeSig3` + `timeSig4` at
@@ -293,6 +317,32 @@ the cell's left edge, 0.35 and 0.40 staff spaces wide. A time signature's
 placement is rigid and `time_signature_locator` already relies on it, INSIDE a
 template search, as a constraint that is thrown away. ⚠️ It is a GATHER change,
 so pricing one needs two full re-gathers.
+
+### 3.7a WIRING — nothing accumulates across documents, and `publisher` cannot reach GATHER
+
+The consumer Sean's aggregate question needs:
+
+> *"We need every bit of information gathered and stored in one place where the
+> different stages can continue to learn how to better identify as it processes
+> all of the information."*
+
+**There is no such place.** `data/` holds `dossiers/` (per-work ENCODING facts,
+not measured geometry), `score-library/` (a catalog of files) and three
+`user-labeled*/` training sets. So even the three families that DO have a
+position fact cannot accumulate a distribution from it.
+
+⚠️⚠️ **AND THE NATURAL CONDITIONING VARIABLE IS UNREACHABLE WHERE IT WOULD BE
+POPULATED.** `publisher` appears in **no code** in `gather.py` — the one hit is
+a word inside a docstring. The catalog carries it on **231 of 235** edition
+entries (**212 distinct**), plus an `image_type` on 226. ⚠️ It lives on
+`entries`, **not** on the `editions` map, which carries only
+`instrumentation`/`path`/`sha256`/`work_id` — so a reader that went to
+`editions` for it would find nothing and conclude the fact was absent. The
+value exists, is populated, and never reaches the stage that would use it.
+
+⚠️ **NOT PROPOSED HERE**: neither the store nor the priors. This is an audit —
+what it establishes is that the producer and the conditioning variable are both
+missing, and what it would take to make the second reachable.
 
 ### 3.8 FRAME — "erased" is not one image, and most readers choose at runtime
 

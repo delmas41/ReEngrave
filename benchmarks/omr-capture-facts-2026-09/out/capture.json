@@ -21,6 +21,7 @@
         "ARTICULATION_MARK"
       ],
       "band_as_a_detail": [],
+      "coarse_band_only": [],
       "rasters": {
         "intact": [
           "ARTICULATION_MARK/DETECTOR",
@@ -28,7 +29,11 @@
           "GLYPH_CONF/DETECTOR"
         ]
       },
-      "records_its_raster": []
+      "records_its_raster": [],
+      "location_frames": [
+        "canonical_cell",
+        "page_pixels"
+      ]
     },
     {
       "family": "clef",
@@ -57,6 +62,7 @@
       "position_declared_but_unread": [],
       "side_in_class_name": [],
       "band_as_a_detail": [],
+      "coarse_band_only": [],
       "rasters": {
         "erased_else_intact": [
           "CLEF_LOCATED/CV_LOCATOR"
@@ -76,7 +82,12 @@
           "KEYSIG_CLEF_FIT/CV_HEADER"
         ]
       },
-      "records_its_raster": []
+      "records_its_raster": [],
+      "location_frames": [
+        "canonical_cell",
+        "page_pixels",
+        "staff_relative"
+      ]
     },
     {
       "family": "direction",
@@ -91,8 +102,14 @@
       "position_declared_but_unread": [],
       "side_in_class_name": [],
       "band_as_a_detail": [],
+      "coarse_band_only": [
+        "DIRECTION_WORD"
+      ],
       "rasters": {},
-      "records_its_raster": []
+      "records_its_raster": [],
+      "location_frames": [
+        "page_pixels"
+      ]
     },
     {
       "family": "dynamic",
@@ -112,7 +129,10 @@
       "position": [],
       "position_declared_but_unread": [],
       "side_in_class_name": [],
-      "band_as_a_detail": [],
+      "band_as_a_detail": [
+        "DYNAMIC_LETTER"
+      ],
+      "coarse_band_only": [],
       "rasters": {
         "intact": [
           "DYNAMIC_LETTER/DETECTOR",
@@ -120,7 +140,11 @@
           "GLYPH_CONF/DETECTOR"
         ]
       },
-      "records_its_raster": []
+      "records_its_raster": [],
+      "location_frames": [
+        "page_pixels",
+        "staff_relative"
+      ]
     },
     {
       "family": "fermata",
@@ -143,6 +167,7 @@
         "FERMATA_MARK"
       ],
       "band_as_a_detail": [],
+      "coarse_band_only": [],
       "rasters": {
         "intact": [
           "FERMATA_MARK/DETECTOR",
@@ -150,7 +175,11 @@
           "GLYPH_CONF/DETECTOR"
         ]
       },
-      "records_its_raster": []
+      "records_its_raster": [],
+      "location_frames": [
+        "canonical_cell",
+        "page_pixels"
+      ]
     },
     {
       "family": "key",
@@ -177,6 +206,7 @@
       "position_declared_but_unread": [],
       "side_in_class_name": [],
       "band_as_a_detail": [],
+      "coarse_band_only": [],
       "rasters": {
         "erased_else_intact": [
           "KEYSIG_TEMPLATE_FIT/TEMPLATE"
@@ -194,7 +224,12 @@
           "KEYSIG_RUN_POSITION/CV_HEADER"
         ]
       },
-      "records_its_raster": []
+      "records_its_raster": [],
+      "location_frames": [
+        "canonical_cell",
+        "page_pixels",
+        "staff_relative"
+      ]
     },
     {
       "family": "note",
@@ -219,6 +254,7 @@
       "band_as_a_detail": [
         "GLYPH_BAND_DISTANCE"
       ],
+      "coarse_band_only": [],
       "rasters": {
         "intact": [
           "GLYPH_BOX/DETECTOR",
@@ -229,7 +265,11 @@
           "NOTEHEAD_STAFF_POSITION/GEOMETRY"
         ]
       },
-      "records_its_raster": []
+      "records_its_raster": [],
+      "location_frames": [
+        "page_pixels",
+        "staff_relative"
+      ]
     },
     {
       "family": "ornament",
@@ -252,6 +292,7 @@
         "ORNAMENT_MARK"
       ],
       "band_as_a_detail": [],
+      "coarse_band_only": [],
       "rasters": {
         "intact": [
           "GLYPH_BOX/DETECTOR",
@@ -259,7 +300,11 @@
           "ORNAMENT_MARK/DETECTOR"
         ]
       },
-      "records_its_raster": []
+      "records_its_raster": [],
+      "location_frames": [
+        "canonical_cell",
+        "page_pixels"
+      ]
     },
     {
       "family": "rest",
@@ -280,6 +325,7 @@
       "position_declared_but_unread": [],
       "side_in_class_name": [],
       "band_as_a_detail": [],
+      "coarse_band_only": [],
       "rasters": {
         "intact": [
           "GLYPH_BOX/DETECTOR",
@@ -287,7 +333,11 @@
           "REST/DETECTOR"
         ]
       },
-      "records_its_raster": []
+      "records_its_raster": [],
+      "location_frames": [
+        "canonical_cell",
+        "page_pixels"
+      ]
     },
     {
       "family": "slur",
@@ -310,6 +360,7 @@
       "position_declared_but_unread": [],
       "side_in_class_name": [],
       "band_as_a_detail": [],
+      "coarse_band_only": [],
       "rasters": {
         "erased_else_intact": [
           "STEM/CV_LINES"
@@ -325,6 +376,10 @@
       },
       "records_its_raster": [
         "STEM"
+      ],
+      "location_frames": [
+        "canonical_cell",
+        "page_pixels"
       ]
     },
     {
@@ -348,6 +403,7 @@
       "position_declared_but_unread": [],
       "side_in_class_name": [],
       "band_as_a_detail": [],
+      "coarse_band_only": [],
       "rasters": {
         "erased_else_intact": [
           "STEM/CV_LINES"
@@ -363,6 +419,10 @@
       },
       "records_its_raster": [
         "STEM"
+      ],
+      "location_frames": [
+        "canonical_cell",
+        "page_pixels"
       ]
     },
     {
@@ -392,6 +452,7 @@
       "position_declared_but_unread": [],
       "side_in_class_name": [],
       "band_as_a_detail": [],
+      "coarse_band_only": [],
       "rasters": {
         "erased_else_intact": [
           "METER_TEMPLATE/TEMPLATE",
@@ -408,7 +469,11 @@
           "SYSTEM_STAFF_COUNT/GEOMETRY"
         ]
       },
-      "records_its_raster": []
+      "records_its_raster": [],
+      "location_frames": [
+        "canonical_cell",
+        "page_pixels"
+      ]
     },
     {
       "family": "tuplet",
@@ -433,6 +498,7 @@
       "position_declared_but_unread": [],
       "side_in_class_name": [],
       "band_as_a_detail": [],
+      "coarse_band_only": [],
       "rasters": {
         "erased_else_intact": [
           "BEAM_STROKE/CV_LINES"
@@ -447,6 +513,10 @@
       },
       "records_its_raster": [
         "BEAM_STROKE"
+      ],
+      "location_frames": [
+        "canonical_cell",
+        "page_pixels"
       ]
     },
     {
@@ -470,6 +540,7 @@
       "band_as_a_detail": [
         "WEDGE_BOX"
       ],
+      "coarse_band_only": [],
       "rasters": {
         "intact": [
           "GLYPH_BOX/DETECTOR",
@@ -480,7 +551,11 @@
           "WEDGE_BOX/CV_HAIRPINS"
         ]
       },
-      "records_its_raster": []
+      "records_its_raster": [],
+      "location_frames": [
+        "page_pixels",
+        "staff_relative"
+      ]
     }
   ],
   "observe": {
@@ -685,9 +760,14 @@
           "DETECTOR"
         ],
         "detail": [
+          "bbox_page_px",
+          "category",
           "frame",
+          "frame_note",
           "reader",
-          "score"
+          "score",
+          "x_center_page",
+          "y_center_page"
         ]
       },
       "GLYPH_CONF": {
@@ -1049,9 +1129,19 @@
           "DETECTOR"
         ],
         "detail": [
+          "band_offset_spaces",
+          "bbox_page_px",
+          "cell_frame",
           "frame",
+          "frame_note",
+          "in_hairpin_band",
+          "letter",
           "reader",
-          "score"
+          "score",
+          "staff_bottom_line_page",
+          "staff_spacing_px",
+          "x_center_page",
+          "y_center_page"
         ]
       },
       "WEDGE_BOX": {
@@ -1158,7 +1248,11 @@
           "CV_INK"
         ],
         "detail": [
+          "bbox_page_px",
+          "cell_staff_space_px",
           "frame",
+          "frame_note",
+          "height_spaces",
           "ink_area_px",
           "ink_bbox_canonical",
           "ink_detector_coverage",
@@ -1166,7 +1260,10 @@
           "ink_fill",
           "ink_n_components",
           "ink_share_of_cell",
-          "reader"
+          "reader",
+          "width_spaces",
+          "x_center_page",
+          "y_center_page"
         ]
       },
       "CLEF_GLYPH": {
@@ -1441,13 +1538,20 @@
         "scored": false,
         "readers": [],
         "detail": [
+          "bbox_page_px",
           "category",
           "frame",
+          "n_components",
           "page_conflicts",
+          "page_staff_index",
+          "placement",
           "reader",
           "readers_run",
           "terms",
-          "winning_reader"
+          "winning_reader",
+          "x_center_page",
+          "x_page",
+          "y_center_page"
         ]
       },
       "DOSSIER_FACT": {
@@ -1777,6 +1881,29 @@
     "FERMATA_MARK",
     "ORNAMENT_MARK"
   ],
+  "across_documents": {
+    "data_dirs": [
+      "dossiers",
+      "score-library",
+      "user-labeled",
+      "user-labeled-clef-fix",
+      "user-labeled-distill25"
+    ],
+    "publisher_in_gather_code": 0,
+    "catalog": {
+      "present": true,
+      "editions": 235,
+      "with_publisher": 231,
+      "distinct_publishers": 212,
+      "with_image_type": 226,
+      "on_editions_map": [
+        "instrumentation",
+        "path",
+        "sha256",
+        "work_id"
+      ]
+    }
+  },
   "controls": {
     "shape_quantities_with_a_score": 20,
     "families_with_a_shape_fact": 13,
@@ -1790,21 +1917,22 @@
     "observe_sites_walked": 49
   },
   "problems": [
-    "POSITION articulation has no staff-grid position fact of its own \u2014 the class name states a SIDE (ARTICULATION_MARK), which is NOT an independent witness: it fails together with the classification it is read off",
-    "POSITION direction has no staff-grid position fact of its own",
-    "POSITION dynamic has no staff-grid position fact of its own",
-    "POSITION fermata has no staff-grid position fact of its own \u2014 the class name states a SIDE (FERMATA_MARK), which is NOT an independent witness: it fails together with the classification it is read off",
-    "POSITION ornament has no staff-grid position fact of its own \u2014 the class name states a SIDE (ORNAMENT_MARK), which is NOT an independent witness: it fails together with the classification it is read off",
-    "POSITION rest has no staff-grid position fact of its own",
-    "POSITION slur has no staff-grid position fact of its own \u2014 it reads Q.NOTEHEAD_STAFF_POSITION (the `note` family's), which is not a fact about its OWN ink",
-    "POSITION tie has no staff-grid position fact of its own \u2014 it reads Q.NOTEHEAD_STAFF_POSITION (the `note` family's), which is not a fact about its OWN ink",
-    "POSITION time has no staff-grid position fact of its own",
-    "POSITION tuplet has no staff-grid position fact of its own",
+    "POSITION articulation has no staff-grid position fact of its own \u2014 the class name states a SIDE (ARTICULATION_MARK), which is NOT an independent witness: it fails together with the classification it is read off \u2014 and its ink is located only in canonical_cell/page_pixels, which does not compose across documents",
+    "POSITION direction has no staff-grid position fact of its own \u2014 its only staff-relative fact is a band-derived above/below (DIRECTION_WORD), which is far too coarse to carry a distribution \u2014 and its ink is located only in page_pixels, which does not compose across documents",
+    "POSITION dynamic has no staff-grid position fact of its own \u2014 a band offset exists as a DETAIL of a scored row (DYNAMIC_LETTER)",
+    "POSITION fermata has no staff-grid position fact of its own \u2014 the class name states a SIDE (FERMATA_MARK), which is NOT an independent witness: it fails together with the classification it is read off \u2014 and its ink is located only in canonical_cell/page_pixels, which does not compose across documents",
+    "POSITION ornament has no staff-grid position fact of its own \u2014 the class name states a SIDE (ORNAMENT_MARK), which is NOT an independent witness: it fails together with the classification it is read off \u2014 and its ink is located only in canonical_cell/page_pixels, which does not compose across documents",
+    "POSITION rest has no staff-grid position fact of its own \u2014 and its ink is located only in canonical_cell/page_pixels, which does not compose across documents",
+    "POSITION slur has no staff-grid position fact of its own \u2014 it reads Q.NOTEHEAD_STAFF_POSITION (the `note` family's), which is not a fact about its OWN ink \u2014 and its ink is located only in canonical_cell/page_pixels, which does not compose across documents",
+    "POSITION tie has no staff-grid position fact of its own \u2014 it reads Q.NOTEHEAD_STAFF_POSITION (the `note` family's), which is not a fact about its OWN ink \u2014 and its ink is located only in canonical_cell/page_pixels, which does not compose across documents",
+    "POSITION time has no staff-grid position fact of its own \u2014 and its ink is located only in canonical_cell/page_pixels, which does not compose across documents",
+    "POSITION tuplet has no staff-grid position fact of its own \u2014 and its ink is located only in canonical_cell/page_pixels, which does not compose across documents",
     "POSITION wedge has no staff-grid position fact of its own \u2014 a band offset exists as a DETAIL of a scored row (WEDGE_BOX)",
     "IMAGE CV_LOCATOR falls back silently (clef_locator.py::_ink_mask) and its rows do not record which raster answered",
     "IMAGE TEMPLATE falls back silently (key_signature_template.py::read_key_signature; time_signature_locator.py::locate_time_signature) and its rows do not record which raster answered",
     "IMAGE CV_INK measures the erased raster and its rows do not say so, so an INK row and a DETECTOR row of the same ink cannot be told apart by raster",
-    "RESOLUTION nothing reads the source's native bpc/height/width/xres/yres anywhere in tools/omr \u2014 direction_text.py, input_domain.py already open the image dictionary, and the same walk sees 10 other string keys read in those modules (including `bbox` and `Filter`, which ARE taken from it), so the zero is the walker working. Every reader is handed a CONSTANT render DPI whatever the plate holds"
+    "RESOLUTION nothing reads the source's native bpc/height/width/xres/yres anywhere in tools/omr \u2014 direction_text.py, input_domain.py already open the image dictionary, and the same walk sees 10 other string keys read in those modules (including `bbox` and `Filter`, which ARE taken from it), so the zero is the walker working. Every reader is handed a CONSTANT render DPI whatever the plate holds",
+    "CROSS-DOCUMENT nothing accumulates measured geometry across documents \u2014 `data/` holds dossiers, score-library, user-labeled, user-labeled-clef-fix, user-labeled-distill25 and no store of positions \u2014 and `publisher`, the conditioning variable the aggregate would need, appears in NO code in gather.py while the catalog carries it on 231 of 235 editions (212 distinct)"
   ],
   "unaccounted": [],
   "stale_gaps": []
