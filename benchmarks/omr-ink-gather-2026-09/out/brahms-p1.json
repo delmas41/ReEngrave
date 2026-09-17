@@ -1,0 +1,150 @@
+{
+ "reach": {
+  "rows": 6055,
+  "refusals": 0,
+  "staves": 27,
+  "cells": 202,
+  "detections": 3951
+ },
+ "cost_s": {
+  "prepare": 6.62,
+  "detect": 14.49,
+  "ink": 2.575
+ },
+ "composition": {
+  "mark_sized": 2322,
+  "blob": 252,
+  "speck": 3395,
+  "vertical": 70,
+  "line_residue": 16
+ },
+ "classified": {
+  "mark_sized": 1120,
+  "speck": 632,
+  "line_residue": 5,
+  "blob": 1,
+  "vertical": 2
+ },
+ "tolerance_spaces": 0.1,
+ "staff_spacing_page_px": 27.5,
+ "arms": {
+  "all ink": {
+   "real": {
+    "cells": 15,
+    "rows": 6055,
+    "columns": 1409,
+    "corroborated": 964,
+    "alone": 445,
+    "rows_per_column": 4.297
+   },
+   "null_mean": {
+    "cells": 15,
+    "rows": 6055,
+    "columns": 1614.8,
+    "corroborated": 1076.4,
+    "alone": 538.4,
+    "rows_per_column": 3.7502
+   },
+   "null_seeds": 5
+  },
+  "unclassified only": {
+   "real": {
+    "cells": 15,
+    "rows": 4295,
+    "columns": 1159,
+    "corroborated": 676,
+    "alone": 483,
+    "rows_per_column": 3.706
+   },
+   "null_mean": {
+    "cells": 15,
+    "rows": 4295,
+    "columns": 1395.2,
+    "corroborated": 731,
+    "alone": 664.2,
+    "rows_per_column": 3.0786
+   },
+   "null_seeds": 5
+  },
+  "shape:speck": {
+   "real": {
+    "cells": 15,
+    "rows": 3395,
+    "columns": 944,
+    "corroborated": 486,
+    "alone": 458,
+    "rows_per_column": 3.596
+   },
+   "null_mean": {
+    "cells": 15,
+    "rows": 3395,
+    "columns": 1132.2,
+    "corroborated": 492.2,
+    "alone": 640,
+    "rows_per_column": 2.9988
+   },
+   "null_seeds": 5
+  },
+  "shape:mark_sized": {
+   "real": {
+    "cells": 15,
+    "rows": 2322,
+    "columns": 912,
+    "corroborated": 506,
+    "alone": 406,
+    "rows_per_column": 2.546
+   },
+   "null_mean": {
+    "cells": 15,
+    "rows": 2322,
+    "columns": 1170.6,
+    "corroborated": 519.4,
+    "alone": 651.2,
+    "rows_per_column": 1.9838
+   },
+   "null_seeds": 5
+  },
+  "shape:blob": {
+   "real": {
+    "cells": 15,
+    "rows": 252,
+    "columns": 128,
+    "corroborated": 36,
+    "alone": 92,
+    "rows_per_column": 1.969
+   },
+   "null_mean": {
+    "cells": 15,
+    "rows": 252,
+    "columns": 217,
+    "corroborated": 28,
+    "alone": 189,
+    "rows_per_column": 1.1614
+   },
+   "null_seeds": 5
+  },
+  "shape:vertical": {
+   "real": {
+    "cells": 15,
+    "rows": 70,
+    "columns": 36,
+    "corroborated": 20,
+    "alone": 16,
+    "rows_per_column": 1.944
+   },
+   "null_mean": {
+    "cells": 15,
+    "rows": 70,
+    "columns": 51.6,
+    "corroborated": 2.8,
+    "alone": 48.8,
+    "rows_per_column": 1.3576
+   },
+   "null_seeds": 5
+  },
+  "shape:line_residue": {
+   "rows": 16,
+   "note": "too few"
+  }
+ }
+}
