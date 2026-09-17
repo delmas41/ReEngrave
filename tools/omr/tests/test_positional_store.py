@@ -328,6 +328,23 @@ class TestPublisherReachesGather(unittest.TestCase):
         self.assertEqual(rows[0].detail.get("source_kind"), "catalog")
         self.assertIn("Litolff", rows[0].detail.get("publisher") or "")
 
+    def test_it_files_ONCE_per_document_not_once_per_page(self) -> None:
+        """⚠️ `gather()` calls this once per PAGE, and the identity is a fact
+        about the DOCUMENT.
+
+        Measured before the guard existed: a four-page run filed FOUR identical
+        rows on the one DOCUMENT subject, so a consumer counting rows would
+        over-count the plate fourfold. The guard is inside the function rather
+        than at the call site so it holds wherever it is called from — and it
+        demonstrably CAN fire, which is what this repo requires of an
+        idempotence guard, having once deleted one whose rule could not.
+        """
+        os.environ[G.DOCUMENT_IDENTITY_ENV] = "1"
+        log = Log()
+        for _page in range(4):
+            G.gather_document_identity(log, "/nowhere/not-held.pdf")
+        self.assertEqual(len(log._obs) + len(log._abs), 1)
+
     def test_a_publisher_key_collapses_plates_of_one_house(self) -> None:
         self.assertEqual(
             publisher_label("Henry Litolff's Verlag, Braunschweig, 1870, "

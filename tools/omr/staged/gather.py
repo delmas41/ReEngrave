@@ -3118,6 +3118,23 @@ def gather_document_identity(log: Log, pdf_path: Any) -> None:
         # "perturbs upstream by existing" hazard. Flag-off must be
         # byte-identical to a tree without this rung.
         return
+    # ⚠️⚠️ ONCE PER DOCUMENT, AND `gather()` CALLS THIS ONCE PER PAGE. Measured
+    # rather than assumed: a four-page run filed FOUR identical
+    # `document_identity` rows on the one DOCUMENT subject, so a consumer
+    # counting rows would over-count the plate fourfold. The guard lives in the
+    # function rather than at the call site so it holds wherever this is
+    # called from, and it CAN fire -- which is the test this repo requires of
+    # an idempotence guard, having once deleted one whose rule could not.
+    # ⚠️ `gather_external` has the same shape and files its dossier/roster rows
+    # per page too; that is PRE-EXISTING and is not changed here.
+    # ⚠️ BOTH ROW TYPES, and the test caught this: a first call on an UNHELD
+    # pdf writes an ABSTENTION, which `rows()` does not return, so a guard
+    # asking only for observations let four abstentions through -- the
+    # ABSENT/DECLINED distinction biting the guard that was written to respect
+    # it.
+    if log.rows(Q.DOCUMENT_IDENTITY, R.DOCUMENT) \
+            or log.refusals(Q.DOCUMENT_IDENTITY, R.DOCUMENT):
+        return
     if not pdf_path:
         log.abstain(R.DOCUMENT, Q.DOCUMENT_IDENTITY, reader=READERS.CATALOG,
                     frame=FRAME_PAGE, reason=ABSTAIN.OUT_OF_SCOPE,
