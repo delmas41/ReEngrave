@@ -215,6 +215,20 @@ misreads badly but abstains nowhere. **The two halves of the hazard have never
 been present in one document.** That is a CORPUS problem, and no record on this
 machine can solve it.
 
+⚠️⚠️ **CORRECTED THE SAME DAY, PR #39, MERGED — THAT LAST SENTENCE WAS WRONG
+AND WAS REFUTED BY LOOKING, NOT BY GATHERING.** `p0p3` (Breitkopf Brahms 1
+mvt 1) has had both halves the whole time, stable in 11 of 11 committed arms
+across 5 generations: `system/0/0` reads `C` (4/4) where the dossier says 6/8,
+and `system/3/0` abstains, `carried_from: system/0/0`, refused at support
+**−8.0** with `bars_agree 0 / disagree 9`. **It still does not price the
+flip** — the newer finding is narrower and sharper: the BARS arm on that same
+system reaches length **3.0 at +7.0** (which IS 6/8) and abstains
+`bars_name_a_length_without_a_form`, because the only system it could borrow a
+*spelling* from is the one that misread `C`. **The blocker is the
+form-borrowing rule, not a missing corpus.** See
+[docs/handoff-2026-09-16-abstains-and-misreads-was-already-there.md](handoff-2026-09-16-abstains-and-misreads-was-already-there.md)
+and `benchmarks/omr-meter-abstain-and-misread-2026-09/FINDINGS.md`.
+
 ⚠️ **Two instruments were wrong, and one of them is quoted in CLAUDE.md.**
 `probe/bar_fill.py`'s `--bar-beats` **defaulted to 2.0** — Litolff's 2/4 — so
 on a 6/8 document it reported 96.3% OVERFULL / 0.6% exact, with 684 bars
