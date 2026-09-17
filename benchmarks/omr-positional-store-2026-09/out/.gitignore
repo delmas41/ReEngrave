@@ -4,3 +4,18 @@
 # the gitignored `library/`.
 store.jsonl
 store.jsonl.gz
+
+# ⚠️ AND THE `.json` SPELLING, because the 2026-09-17 handoff's own command
+# wrote `--out store.json` -- which the two names above do not match on the
+# EXTENSION, so a 9 MB build product sat one `git add` from the tree. The CLI
+# says "write the base store (JSONL) here" and the file IS JSONL, so `.json`
+# is the wrong spelling rather than a second format; ignored so that either
+# spelling is safe.
+store.json
+store-two-publishers.jsonl
+
+# ⚠️ AND THE RECORDS THEMSELVES (140-423 MB). The convention is
+# `library/_shared-records/` -- machine-local, md5-receipted, read by explicit
+# path -- so a record written here by the handoff's command is a DUPLICATE of
+# the shared copy, not a second artefact. See IDENTITY_RUN_2026-09-17.md.
+*.record.json
