@@ -332,7 +332,14 @@ with a provenance note saying so. **Nothing was re-derived or re-worded.**
 
 ## 9. WHAT IS WAITING FOR SEAN
 
-1. **`OMR_METER_CARRY`** — still off, and ⚠️ **NOT blocked on a corpus; that
+1. **`OMR_METER_CARRY`** — ⚠️⚠️ **CORRECTED 2026-09-16: NOT "still off" — ON by
+   default since 09-15 (`rhythm.py:1016`, deny-list), so the question is
+   whether to KEEP it and widen the form-borrowing rule, not whether to flip.
+   And "the experiment that closes it" named below WAS RUN ON 09-15:
+   `benchmarks/omr-meter-carry-brahms-2026-09/FINDINGS.md` — carry asked on 5
+   of 7 systems, refused on all 5, four exports byte-identical, candidate `4/4`
+   never the voted `9/4`. This entry is the §7 pattern a fourth time, in the
+   section written to prevent it.** As originally written: still off, and ⚠️ **NOT blocked on a corpus; that
    claim was refuted the same day and §6 carries the correction.** This entry
    said *"nothing on this machine settles it"* while §6 above already said the
    opposite — the document contradicted itself in the section headed *what is

@@ -42,7 +42,10 @@ instead is INFER-shaped and is not proposed here.
 Carried forward from the 09-15 and 09-16 handoffs, none of it touched in this
 pass:
 
-1. **`OMR_METER_CARRY`** — still off. The flip is his; the question it's
+1. **`OMR_METER_CARRY`** — ⚠️ **corrected 2026-09-16: ON since 09-15, not off,
+   and the per-system Breitkopf arm was run on 09-15
+   (`benchmarks/omr-meter-carry-brahms-2026-09/`: asked 5 of 7, refused 5,
+   byte-identical).** As written: still off. The flip is his; the question it's
    waiting on has moved from *"does a fixture exist"* to *"is refusing to
    borrow a poisoned spelling the right call, or should the form-borrowing
    rule widen."*
