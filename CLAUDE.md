@@ -840,6 +840,43 @@ only that the witness ENDS WHERE THIS NOTE ENDS. Generalised to `k -> m`:
 **1 → 7**, with the funnel 357 → 356 in a column → **165** with a next onset
 (191 run to the barline) → 40 with a witness → 35 unanimous → 7 independent.
 
+⚠️⚠️ **AND THE 191 THAT FUNNEL DECLINES IS NOW A SECOND RULE —
+`collapse_duration_to_barline`, 2026-09-17, no flag, INFER 7 → 17.** The stop
+above carries a comment saying *"its length is the bar's — which is the METER,
+which this rule may not read"*. That is right about the meter and **wrong
+about the NEIGHBOUR**: a staff standing at the same column with nothing after
+it has already measured the same gap. ⚠️ **The guard that makes it legal is
+not a declaration**: `size_measure_rest` and `reconcile_duration` both hand a
+duration out FROM the meter and both put the meter row in their `basis`, so a
+witness whose provenance closure contains `Q.METER` is REFUSED — via
+`Log.quantities_in_closure`, the primitive `adjudicate.py` already uses for
+circularity. **It fires on 3 subjects, refusing 2, 2 and 3 witnesses**, so the
+guard is not theoretical. ⚠️ **The `191` is NOT this rule's population**: it is
+*no next COLUMNED onset*, which is **190 barline + 1 UNKNOWN** — a note
+followed by an event that landed in no column, where nobody knows when it
+stops, and which BOTH rules now decline (the endpoint is a PAIR, and deriving
+"barline" from *no later columned event* would hand such a note a neighbour's
+whole-bar length). ⚠️ Rule 1 is behaviourally UNCHANGED. **Funnel: 190 → 134
+with another staff running k → barline → 97 with a decided non-meter length →
+82 unanimous → 11 independent → 10.** ⚠️⚠️ **The largest stop is
+`COLUMN_MIN_INDEPENDENT_WITNESSES` at 71** — the stage's one unmeasured
+constant, priced at 28 by the first rule and now costing 71, which is a reason
+to MEASURE it and not to lower it. ⚠️ **Accuracy is not established**: none of
+the 10 has been checked against the print, no export arm ran, and n = 1
+document. ⚠️⚠️ **It also found that the stage's OWN self-check has been
+silently circular since 2026-09-15**: `probe/self_check.py` restated
+`OMR_METER_FROM_BARS`'s default as `"0"` against an ALLOW-list while the
+owning predicate is `"1"` against a DENY-list, so with the variable unset the
+pipeline had the flag ON and the check printed `'0' -> ok` — the guard failing
+exactly as written to prevent. Repaired by IMPORTING
+`rhythm.meter_from_bars_enabled()`; **the consequence is that INFER's only
+truth-free self-check now correctly REFUSES under current defaults**, which is
+the honest state and not a regression. ⚠️ The registered rules had **no unit
+fixture at all** until this job (the harness tests install one-off rules), so
+either could have stopped firing with the suite green. Battery **14 arms, 14
+red**, first run's 2 survivors being one mis-aimed arm and one real test gap.
+[benchmarks/omr-infer-barline-2026-09/FINDINGS.md](benchmarks/omr-infer-barline-2026-09/FINDINGS.md).
+
 ⚠️ **HAZARD (b) IS A COMPUTATION HERE, NOT AN ARGUMENT, AND IT IS NOT A
 NO-OP.** `independent_groups` partitions witnesses by whether their
 `Log.closure` provenance sets intersect, and writes the partition to
@@ -6794,7 +6831,7 @@ All in `backend/.env` (local) or `backend/.env.production` (prod):
 | `OMR_METER_SEGMENTS` | **`1` on (default since 2026-09-09, Sean's call)** → staged pipeline only: the exporter reads the meter in force at each BAR out of `Q.METER`'s `segments`, so a printed mid-system meter change can reach a file at all. Engraved 4 printed / 4 found / 1 → 0 false. ⚠️ On a SCAN its false segments now reach the file too (one page: `<time>` 41 → 138) — priced, and overridden rather than resolved. `0` restores the per-run meter. See the knobs table. |
 | `OMR_WHOLE_REST_INK` | **`1` on (default, and the behaviour that shipped 2026-09-15)** → staged pipeline only: refuse to write a pitched `<note>` where the record says the ink is a WHOLE REST. Notes 1618 → 1596, 22 removed / 0 added, on 25 of 25 hand-adjudicated crops. ⚠️ Flagged because it is the one staged repair that DELETES music, on n = 1 document with two of six cuts off a plateau. `0` restores the pre-2026-09-15 exporter exactly, leaving the verdict decided and on the record. See the knobs table. |
 | `OMR_METER_TEMPLATE_AT_BAR` | `0` off (default) → staged pipeline only: ask the TEMPLATE reader at candidate mid-staff bar heads, of every staff of the system, and admit a reading only where 3 staves agree on one meter at one bar. Measured on 1,612 empty windows over 2 publishers: 16 / 2 / **0** spurious columns at a 1 / 2 / 3-staff quorum. UNPRICED — a GATHER change needs two full re-gathers. See the knobs table. |
-| `OMR_INFER` | `0` off (default) → the FOURTH STAGE, INFER: after EVALUATE and before EXPORT, it collapses a NARROWED verdict to one of that reader's OWN candidates using evidence EVALUATE structurally cannot look at — the other staves of the same system. Every inference is LABELLED (`decider="infer:…"`), names what it supersedes, and leaves the narrowing in the record. ⚠️ Off means ABSENT, not quiet: `pipeline` omits the `inference` key entirely, so a flag-off record is byte-identical to a tree without the stage. 7 inferred / 6 reach the file on Litolff Beethoven 5 p1-4; n = 1 document and NO accuracy check against the print. See the *INFER, the fourth stage* section. |
+| `OMR_INFER` | `0` off (default) → the FOURTH STAGE, INFER: after EVALUATE and before EXPORT, it collapses a NARROWED verdict to one of that reader's OWN candidates using evidence EVALUATE structurally cannot look at — the other staves of the same system. **TWO rules since 2026-09-17** (`collapse_duration_by_column` 7, `collapse_duration_to_barline` 10 — the barline rule refuses any witness whose length reached it through `Q.METER`, so it never reads the meter it would otherwise need). Every inference is LABELLED (`decider="infer:…"`), names what it supersedes, and leaves the narrowing in the record. ⚠️ Off means ABSENT, not quiet: `pipeline` omits the `inference` key entirely, so a flag-off record is byte-identical to a tree without the stage. 7 inferred / 6 reach the file on Litolff Beethoven 5 p1-4; n = 1 document and NO accuracy check against the print. See the *INFER, the fourth stage* section. |
 | `OMR_PARTIAL_DYNAMICS` | `off` (default) → a dynamic letter run that spells no known word is dropped whole; `complete` exports only what every surviving completion agrees on (`s` → `sf`); `other` adds `<other-dynamics>`. Measured over the 20-row gate: +15 / +30 edits, NOT ONE ROW BETTER. See the knobs table. |
 | `OMR_ROSTER_LABELS` | `0` off (default) → resolve margin labels against the work's catalog roster: recover a truncated name, disambiguate `Basso.`, veto a singer on a work with no singers. Measured; 1.4% of real margin labels. See the knobs table. |
 | `OMR_WORK_ID` | Name the catalogued work for a PDF the score library does not hold — the score LIBRARY's id (`tchaikovsky--symphony-6`), never the dossier's (`tchaikovsky-sym6-mvt2`). Consumed only by `OMR_ROSTER_LABELS`; nothing sets it by default. |

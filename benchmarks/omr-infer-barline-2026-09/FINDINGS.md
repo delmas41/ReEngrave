@@ -1,0 +1,268 @@
+# `collapse_duration_to_barline` — the bucket the first rule declined by design
+
+**2026-09-17.** A second INFER rule, its unit fixture, its mutation battery,
+and one live defect found in the stage's own self-check on the way past.
+
+Record: `library/_shared-records/beethoven5-p1-p4.record.json`, md5
+`d3620ba9cb70fc93f6b7ee91b6cbe40a`, **verified against three committed
+receipts before a byte was read**. Instrument:
+`benchmarks/omr-infer-stage-2026-09/reinfer.py`, an INFER-only replay over a
+fixed gather AND a fixed adjudication. **Control first: 16,773 of 16,773
+verdicts reproduced exactly, 33,647 of 33,647 observations, 0 differ, 0
+extra.**
+
+⚠️ The replay is **blind by construction** to a GATHER change and to an
+ADJUDICATE change. Nothing here is evidence about either.
+
+---
+
+## 1. THE CLAIM, AND WHY IT IS NOT THE FIRST RULE'S
+
+`collapse_duration_by_column` stops at one condition with a comment saying
+why:
+
+> No next onset in this bar, so this note runs to the BARLINE and its length
+> is the bar's — which is the meter, which this rule may not read.
+
+**Right about the METER, wrong about the NEIGHBOUR.** The note's length is the
+gap from its onset column to the barline, and we do not have to compute that
+gap from the meter to know it. A neighbouring staff standing at the same
+column with nothing after it has already measured the same gap and called it
+something. The barline is a system-wide event, so both notes end at the same
+instant.
+
+It is the first rule's claim with the barline standing in for column *m*.
+
+---
+
+## 2. ⚠️⚠️ THE GUARD THAT MAKES IT LEGAL, AND IT IS NOT A NO-OP
+
+`Q.METER` stays out of `reads`, and for this rule that had to be **earned**
+rather than declared. Two consequences hand a duration out FROM the meter —
+`size_measure_rest` (a lone whole rest takes the bar's length) and
+`reconcile_duration` (a bar that does not sum is re-read until it does) — and
+**both put the meter row in their `basis`**, checked at
+`consequences.py:176` and `:334`.
+
+Borrowing such a length would read the meter by proxy: the value would be
+meter-derived while `reads` truthfully said it was not,
+`infer.scoring_conflict` would report clean, and `probe/bar_fill.py` would
+quietly stop being an independent self-check. So a witness whose provenance
+closure contains `Q.METER` is refused, via `Log.quantities_in_closure` — **the
+primitive `adjudicate.py` already uses for its circularity filter**, not a new
+mechanism.
+
+**Measured: it fires on 3 subjects, refusing 2, 2 and 3 witnesses.** Not a
+theoretical guard.
+
+---
+
+## 3. THE ENDPOINT IS A PAIR, AND THE THIRD STATE IS THE POINT
+
+Deriving *runs to the barline* from **no later COLUMNED event** would call a
+note barline-bound whenever the event after it missed every column centre —
+and then hand it a neighbour's whole-bar length. Three states:
+
+| endpoint | meaning | who takes it |
+|---|---|---|
+| `(m, False)` | ends at onset column *m* | rule 1 |
+| `(None, True)` | nothing follows: the BARLINE | rule 2 |
+| `(None, False)` | something follows, in no column: **UNKNOWN** | neither |
+
+⚠️ **Rule 1 is behaviourally UNCHANGED by this.** `follow` non-None implies
+later events exist, so `(m, True)` is unreachable and the pair comparison is
+equivalent to the old column comparison there. Its 7 inferences are the same 7.
+
+---
+
+## 4. REACH FIRST — and the `191` in the first rule's findings is NOT this
+##    rule's population
+
+`probe/reach.py`, which **self-checks against the rule's own output** (funnel
+survivors must equal what the rule proposes; they do, 10 == 10).
+
+| | |
+|---|--:|
+| narrowed durations standing in a column | 356 |
+| ends at an onset column — **rule 1** | 165 |
+| **runs to the BARLINE — rule 2** | **190** |
+| UNKNOWN endpoint — neither | **1** |
+
+⚠️ The first rule's FINDINGS records **191** at this stop. That figure is
+*no next **COLUMNED** onset*, which is the barline case and the unknown case
+added together: **190 + 1**. Citing 191 as rule 2's population would be wrong,
+and the split is why `probe/reach.py` exists rather than a note in the margin.
+
+⚠️ **The three-state fix is worth exactly ONE note on this document.** It is a
+correctness guard, not a reach play, and saying so is the point — on a worse
+page, or one whose columns are read less well, that number is not 1.
+
+### Rule 2's funnel
+
+| stop | |
+|---|--:|
+| no other staff runs k → barline | 56 |
+| no witness with a DECIDED, non-meter length | 37 |
+| the witnesses disagree | 15 |
+| **fewer than 2 INDEPENDENT witnesses** | **71** |
+| 0 candidates carry that length | 1 |
+| **SURVIVES** | **10** |
+
+⚠️ **The largest stop is `COLUMN_MIN_INDEPENDENT_WITNESSES`, which is the
+stage's one UNMEASURED constant**, and it now costs **71** where the first
+rule's write-up priced it at 28. That is a bigger number attached to the same
+unmeasured 2, and it is a reason to measure it, **not** a reason to lower it —
+lowering it buys reach with the one thing this stage cannot afford to be
+wrong about.
+
+---
+
+## 5. WHAT THE STAGE NOW PRODUCES
+
+```
+collapse_duration_by_column   7
+collapse_duration_to_barline  10
+                             ──
+                              17    all labelled, 0 skipped
+```
+
+**7 → 17.** The population the stage can speak about at all goes 165 → 355 of
+the 356 narrowed durations standing in a column.
+
+---
+
+## 6. ⚠️⚠️ A LIVE DEFECT FOUND ON THE WAY PAST: THE STAGE'S SELF-CHECK HAS
+##    BEEN SILENTLY CIRCULAR SINCE 2026-09-15
+
+`probe/self_check.py` exists to prove `bar_fill` is independent of the rule
+under test, and its condition 2 is stated in its own docstring:
+
+> ⚠️ `OMR_METER_FROM_BARS` MUST BE OFF … With it on, the denominator is
+> derived from the very quantity the rule moves, and the test becomes
+> circular through a flag nobody would think to check. **Off by default;
+> asserted here rather than assumed.**
+
+It was neither off by default nor asserted. The check read
+
+```python
+os.environ.get("OMR_METER_FROM_BARS", "0")   # allow-list: default OFF
+```
+
+while the owning predicate at `staged/adjudicators/rhythm.py:1144` reads
+
+```python
+os.environ.get(METER_FROM_BARS_ENV, "1") ... not in ("0","","false","no","off")
+```
+
+— **default ON, deny-list**, since the 2026-09-15 flip. So with the variable
+unset, which is the default configuration and what every run in this thread
+has had, the pipeline had the flag **ON** and the check printed
+`'0' -> ok`.
+
+**That is the guard failing in precisely the manner it was written to
+prevent**, and it is three of this repository's recorded patterns at once: the
+flag-direction hazard (five shipped flags had the test backwards), *a fallback
+must never convert "cannot tell" into a definite answer*, and a constant
+restated instead of imported.
+
+**REPAIRED** by importing `rhythm.meter_from_bars_enabled()` so the two cannot
+drift. It now reports:
+
+```
+OMR_METER_FROM_BARS='<unset>' (resolved: ON) -> REFUSED
+```
+
+⚠️ **The consequence is that INFER's only truth-free self-check does not run
+under current defaults**, and that is the honest state rather than a
+regression introduced here. A replay arm may legitimately assert
+`OMR_METER_FROM_BARS=0` — the flag acts in ADJUDICATE and this record's meter
+verdicts are already fixed — but that is a decision with a reason, which is
+what the refusal now forces someone to supply.
+
+---
+
+## 7. THE TESTS, AND THE BATTERY
+
+⚠️⚠️ **THE REGISTERED RULES HAD NO UNIT FIXTURE AT ALL.**
+`test_infer_stage.py` asserts the HARNESS's five disciplines using one-off
+rules installed per test — right for what it covers, and it means either real
+rule could have stopped firing entirely with the suite green. The only thing
+exercising them was a benchmark arm over a 132 MB record needing `library/`.
+
+`tools/omr/tests/test_infer_barline_rule.py` builds the smallest system the
+rules can actually walk — three staves, one bar, two onset columns,
+page-frame glyph boxes, `Q.ONSET_COLUMN` in the shape `adjudicate_onset_column`
+really writes — and asserts **both** rules on it. 23 tests. The INFER suite is
+**66 green**.
+
+⚠️ The closed `READERS` vocabulary rejected the first fixture outright
+(`'test' is not a known reader`). A vocabulary that refuses a plausible typo
+refuses a plausible fixture too, which is the design working.
+
+**Mutation battery: 14 arms, 14 red, restore verified by hash, positive
+control (`refuse_everything`) red.** It carries an **in-flight sentinel** and
+**refuses a dirty `tools/` tree** without `--force`, both from CLAUDE.md's
+record of a battery killed mid-arm leaving its mutation on disk
+indistinguishable from a real edit.
+
+⚠️ **The first run reported 2 survivors and they were the two recorded
+kinds**, one each:
+
+* **a MIS-AIMED ARM** — `an_unknown_endpoint_is_treated_as_the_barline` aimed
+  at a fixture where the witnesses run to the barline while the subject's
+  endpoint is unknown, so the *witness* comparison refuses them and the
+  subject filter never gets a chance to act. Retargeted at the fixture where
+  every staff shares the unknown endpoint.
+* **a REAL TEST GAP** — comparing the endpoint on the column half alone
+  survived, because in the existing fixture the rejected witness ends at a
+  *column*, so the halves already differ. The discriminating case is a witness
+  whose endpoint is **unknown**: it shares the `None` column with a
+  barline-bound subject and only the pair separates them. That test did not
+  exist and now does.
+
+---
+
+## 8. TWO FAULTS OF MY OWN, RECORDED RATHER THAN SMOOTHED OVER
+
+1. **A detail field where a lone `0` was ambiguous.**
+   `witnesses_refused_meter_derived: 0` reads identically for *this rule
+   checked and refused nobody* and *this rule does not check* — and rule 1
+   does not check. Now a flag travels beside the count
+   (`refuses_meter_derived_witnesses`), and both are written even when zero.
+   Same lesson as `empty_bars_padded_without_meter`, which was incremented
+   only on the bad branch and so vanished from the report exactly when
+   everything was fine.
+
+2. **A comment claiming a guard that lives somewhere else.** The witness
+   comparison carried a note saying it excluded the unknown-endpoint case. It
+   does not: two unknowns compare **equal** as `(None, False)`. What keeps
+   them apart is one layer up, where both rules exclude an unknown *subject*.
+   The test that covered it was passing for a different reason than it
+   claimed, and now asserts on the span's own state instead of the outcome it
+   happened to produce.
+
+---
+
+## 9. ⚠️ WHAT IS NOT ESTABLISHED
+
+**Accuracy.** Not one of the 10 inferred notes has been checked against the
+print. On a cleanup count they are 10 things a human might have to take back
+out. The stage's guarantee is that each is **labelled**, supersedes visibly,
+and chose among candidates the reader itself admitted — not that it is right.
+
+**No export arm was run**, so *"10 inferred"* is not *"10 reached the file"*.
+The first rule's own measurement had 7 inferred and 6 reaching the file, the
+seventh being a cross-staff duplicate `glyph_owner` had already disowned.
+
+**No OMR-NED figure**, deliberately: the metric is symmetric and rewards
+under-prediction, so it would pay for suppression here in the direction that
+makes the file worse.
+
+**n = 1 document, 1 publisher, 4 pages**, on the *low-res bitonal* Litolff
+`984073` this file already calls the pessimistic end of the corpus. The
+engraved family is untouched by construction. **Breitkopf Brahms 1 is where to
+re-measure**, and its shared record exists.
+
+**The `71`** — subjects lost to the independent-witness floor — is a reach
+figure and says nothing about whether those 71 would have been inferred
+*correctly*.
