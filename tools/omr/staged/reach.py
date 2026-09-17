@@ -182,6 +182,12 @@ NOT_A_STAGE = frozenset({
     # it declares `DERIVED_CHECK = True` for `wiring`'s DETAIL question,
     # which counted its mention of `staff_lines_erased` as a consumer.
     "capture.py",
+    # ⚠️ `meaning.py` is the seventh derived check: what KIND of measurement
+    # is a quantity, and may two of its rows be COMBINED. It names detail
+    # keys and frame tokens in order to audit them and reads none of them at
+    # run time, so it declares `DERIVED_CHECK = True` for the same reason
+    # `capture.py` does.
+    "meaning.py",
 })
 
 
