@@ -67,6 +67,59 @@ the thing to do. That is the third time in one day this project's
 earlier by the same session now fixing it.
 
 PR #48, and the documentation commit that follows it.
+## 2026-09-17 — INFER gains a SECOND rule: the bucket the first one declined by design
+
+⚠️ Placed BELOW the p0p3 entry above deliberately. That block claims
+the head on the file's CAUSAL-ORDER rule with a stated reason, and this
+one is an independent thread — the INFER stage, not the meter — so it
+breaks no chain by sitting here and re-sorting it would only disturb
+one.
+
+`collapse_duration_to_barline`, no flag, `tools/omr/staged/inferences.py`.
+The first rule's funnel stopped at *no next onset in this bar* with a comment
+saying *"its length is the bar's — which is the METER, which this rule may not
+read"*. **Right about the meter, wrong about the neighbour**: a staff standing
+at the same onset column with nothing after it has already measured the same
+gap and called it something. The barline is a system-wide event, so both notes
+end at the same instant.
+
+**INFER 7 → 17** on the shared Litolff record (control first: 16,773 of 16,773
+verdicts reproduced exactly). Reach: of 356 narrowed durations standing in a
+column, **165 end at a column (rule 1) and 190 run to the barline (rule 2)**.
+
+⚠️ **The guard that makes it legal is a computation, not a declaration.**
+`size_measure_rest` and `reconcile_duration` both hand a duration out FROM the
+meter and both put the meter row in their `basis`, so a witness whose
+provenance closure contains `Q.METER` is REFUSED — via
+`Log.quantities_in_closure`, the primitive `adjudicate.py` already uses for
+circularity. It fires on 3 subjects, refusing 2, 2 and 3 witnesses.
+
+⚠️ **The `191` in the first rule's findings is NOT this rule's population**: it
+is *no next COLUMNED onset* = **190 barline + 1 UNKNOWN**. The endpoint is now
+a PAIR, because deriving "barline" from *no later columned event* would hand a
+note whose successor missed every column a neighbour's whole-bar length. Rule 1
+is behaviourally unchanged.
+
+⚠️⚠️ **It also found the stage's OWN self-check silently circular since
+2026-09-15.** `probe/self_check.py` restated `OMR_METER_FROM_BARS`'s default as
+`"0"` against an allow-list while the owning predicate is `"1"` against a
+deny-list — so with the variable unset the pipeline had the flag ON and the
+check printed `'0' -> ok`, the guard failing exactly as written to prevent.
+Repaired by importing `rhythm.meter_from_bars_enabled()`. **INFER's only
+truth-free self-check now correctly REFUSES under current defaults**, which is
+the honest state rather than a regression.
+
+⚠️ The registered rules had **no unit fixture at all** — the harness tests
+install one-off rules — so either could have stopped firing with the suite
+green. 23 tests now build the smallest system the rules can walk. Battery **14
+arms, 14 red**, restore verified; its first run's 2 survivors were one
+mis-aimed arm and one real test gap, both closed.
+
+⚠️ **Not established**: accuracy — none of the 10 checked against a print; no
+export arm, so *"10 inferred"* is not *"10 reached the file"*; n = 1 document.
+The largest remaining stop is `COLUMN_MIN_INDEPENDENT_WITNESSES` at **71**,
+the stage's one unmeasured constant.
+[benchmarks/omr-infer-barline-2026-09/FINDINGS.md](benchmarks/omr-infer-barline-2026-09/FINDINGS.md)
 
 ---
 

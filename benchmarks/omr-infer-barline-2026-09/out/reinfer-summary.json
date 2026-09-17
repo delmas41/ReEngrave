@@ -1,0 +1,18 @@
+{
+  "reach": {
+    "collapse_duration_by_column": {
+      "inferred": 7
+    },
+    "collapse_duration_to_barline": {
+      "inferred": 10
+    }
+  },
+  "inferred": 17,
+  "skipped_reasons": {},
+  "by_rule": {
+    "collapse_duration_by_column": 7,
+    "collapse_duration_to_barline": 10
+  },
+  "new_verdicts": 17,
+  "all_new_are_labelled": true
+}

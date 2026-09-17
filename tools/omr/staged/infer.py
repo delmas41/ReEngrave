@@ -137,6 +137,17 @@ class Inference(str, Enum):
     #: say about the same stretch of time.
     COLLAPSE_DURATION_BY_COLUMN = "collapse_duration_by_column"
 
+    #: The same claim for a note that runs to the BARLINE -- the bucket the
+    #: rule above declines by design, because a note with no further onset
+    #: has the bar's own length and the bar's length is the METER.
+    #:
+    #: ⚠️⚠️ IT IS A SEPARATE RULE AND NOT A WIDENING, because it needs a
+    #: guard the other one does not: a witness whose own length reached it
+    #: THROUGH the meter is refused. Folding the two together would hide that
+    #: guard behind a branch and put the two reach numbers in one bucket,
+    #: which is exactly what stops a reader seeing what the new claim bought.
+    COLLAPSE_DURATION_TO_BARLINE = "collapse_duration_to_barline"
+
 
 #: The only prior states an inference may speak into.
 #:
