@@ -273,6 +273,27 @@ class TestTheEndpointIsAPairAndNotAColumn(unittest.TestCase):
         self.assertEqual(
             _fired(r, infer.Inference.COLLAPSE_DURATION_TO_BARLINE), [])
 
+    def test_a_witness_whose_endpoint_is_unknown_is_not_a_witness(self):
+        """⚠️ THE ARM THAT FOUND THIS GAP IS WHY THE ENDPOINT IS A PAIR.
+
+        Staff 2 stops at some unread instant, so its endpoint is
+        `(None, False)`; the subject runs to the barline, `(None, True)`.
+        They share the COLUMN half -- both `None` -- so a comparison on the
+        column alone would count staff 2 as a witness to a gap it never
+        measured. Only the pair keeps it out, and with it out one witness
+        remains and the inference is refused."""
+        b = _Builder()
+        b.note(0, 0, COL_X[0]).narrowed(0, 0, beats=(2.0, 4.0))
+        b.note(1, 0, COL_X[0]).decided(1, 0, 2.0)        # to the barline
+        b.note(2, 0, COL_X[0]).decided(2, 0, 2.0)        # stops somewhere
+        b.note(2, 1, 150.0).decided(2, 1, 1.0)           # ...in no column
+        log = b.finish()
+        spans = {(s.staff, s.k): s for s in inferences._walk(log, _system())}
+        self.assertTrue(spans[(0, 0)].runs_to_barline)
+        r = _run(log)
+        self.assertEqual(
+            _fired(r, infer.Inference.COLLAPSE_DURATION_TO_BARLINE), [])
+
     def test_an_event_in_no_column_makes_the_endpoint_unknown(self):
         """Something follows, and nobody knows when this note stops."""
         b = _Builder()

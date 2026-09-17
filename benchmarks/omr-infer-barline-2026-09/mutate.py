@@ -83,13 +83,26 @@ ARMS = [
     ("an_unknown_endpoint_is_treated_as_the_barline", INF,
      "        if not span.runs_to_barline:",
      "        if span.end is not None:",
-     "test_an_event_in_no_column_makes_the_endpoint_unknown"),
+     # ⚠️ RETARGETED AFTER THE FIRST RUN. Aimed at
+     # `test_an_event_in_no_column...` this arm SURVIVED, and it was
+     # mis-aimed rather than a gap: there the witnesses run to the barline
+     # while the subject's endpoint is unknown, so the WITNESS comparison
+     # refuses them and the subject filter never gets a chance to. The
+     # fixture that isolates this filter is the one where every staff shares
+     # the unknown endpoint, so the witness comparison lets them through.
+     "test_two_unknown_endpoints_infer_nothing"),
 
     ("the_witness_endpoint_is_compared_on_the_column_alone", INF,
      "        if span.endpoints.get((st2, span.k)) != span.endpoint:",
      "        if (span.endpoints.get((st2, span.k)) or (None, None))[0] "
      "!= span.end:",
-     "test_a_witness_that_ends_elsewhere_is_not_a_witness"),
+     # ⚠️ RETARGETED AFTER THE FIRST RUN, and this one was a REAL TEST GAP.
+     # `test_a_witness_that_ends_elsewhere...` cannot see it: there the
+     # rejected witness ends at a COLUMN, so the column half already differs
+     # and comparing on it alone is enough. The discriminating case is a
+     # witness whose endpoint is UNKNOWN -- it shares the `None` column with
+     # a barline-bound subject and only the pair separates them.
+     "test_a_witness_whose_endpoint_is_unknown_is_not_a_witness"),
 
     # ── the partition between the two rules ─────────────────────────────────
     ("the_column_rule_also_claims_the_barline_population", INF,
