@@ -16,6 +16,119 @@ pointing at headings no longer in the file.)*
 
 ---
 
+## 2026-09-17 (latest) — SHAPE, POSITION, IMAGE, RESOLUTION: what we capture about ink
+
+⚠️ Placed at the head on the file's own CAUSAL-ORDER rule: it is a new derived
+instrument and depends on no entry below it. No other session's block was
+re-dated or re-sorted.
+
+Sean asked three questions about one family's ink and then said they should be
+asked of every kind: do we record the SHAPE with a confidence, the POSITION
+against the staff grid as a separate scoreless fact, and WHICH RASTER it was
+measured on? `tools/omr/staged/capture.py`, in the shape of its four siblings
+— derived from `record.Q`, `adjudicate.REGISTRY`, `evaluate.RULES`,
+`export.FAMILIES` and the AST of `gather.py`; positive controls on every
+question; `--check` exits 2 on a control at zero BEFORE it reads a finding.
+**The tool is the count — no figure is restated here.**
+
+**The exemplar is real and serves three families.** A notehead's class carries
+the detector's score; its staff-grid position is a SEPARATE row from a
+DIFFERENT reader with `score=None`; `restate_pitch` combines them. ⚠️ **A
+position may not be a field on the shape row** — `correlated_groups` calls one
+reader's rows on one crop ONE SIGNAL and `tally` takes the strongest term, so
+it is absorbed. That makes it a missing CATEGORY, not a missing wire.
+
+⚠️ **A side off the class name is not a ruler**: `fermataBelow` states a side
+and fails together with the classification it is derived from.
+
+⚠️ **"Erased" is not one image.** Three erased rasters exist
+(`staff_line_removal`'s binary, `header_ink_mask`'s own erasure, and none), six
+readers choose between them by a SILENT runtime fallback, and only `Q.STEM` /
+`Q.BEAM_STROKE` record which answered. `gather_key_signature` runs two readers
+on ONE crop on OPPOSITE rasters. The standing *never erase for the detector*
+rule is untouched and derives correctly.
+
+**Two modelling bugs of the tool's own first run are pinned as regressions**,
+because both produced a plausible table: `restate_pitch` and `move_glyph` both
+declare `effect=Q.PITCH`, so a dict keyed on the effect kept the second and the
+exemplar family reported no shape and no position; and keying position on *does
+this decision read a position quantity* gave `slur`/`tie` a MEASURED position
+off the NOTEHEADS' positions, contradicting the module's own gap text.
+
+⚠️ **INSTRUMENT FINDING: `gather_coverage` reports five quantities as having no
+reader** (`ARC_BOX`, `ARTICULATION_MARK`, `FERMATA_MARK`, `ORNAMENT_MARK`,
+`REST`) because their `reader`/`score` arrive through a `**common` dict.
+Reusing that walker would have reported five families as capturing no shape
+confidence.
+
+⚠️⚠️ **Committing the tool broke `wiring --check` — the FOURTH member of a
+family `wiring` documents.** An auditor names a detail key without consuming
+it, like a gap list, a test and a benchmark probe — but lives in the same tree
+as real consumers, so `staff_lines_erased` read as consumed and two live gaps
+went STALE. Repaired with a module-level `DERIVED_CHECK = True`, read from the
+AST. **The control was run first**: `wiring` exits 0 on the base and 1 with the
+module added; `gather_coverage` exits 2 on both, which is what pre-existing
+looks like. `reach.NOT_A_STAGE` gained the module too, its own guard working.
+
+⚠️⚠️ **TWO CORRECTIONS ARRIVED MID-TASK AND BOTH NARROWED THE POSITION
+QUESTION.** Sean withdrew, in two steps, every exemption: first the families
+whose CLASS NAME states a side, then any exemption argued from the aggregate.
+Final ruling: *"Theoretically every position can at some point contribute even
+if that is not with our current pipeline... for testing we need to hold on to
+everything because we can't yet know all of what will be helpful."* **Every
+family without a staff-grid position is a finding**; `KNOWN_GAPS` holds reasons
+a gap EXISTS and a test bans exemption language outright. ⚠️ **Scoped to
+DISCOVERY** — the cost to watch is 0.6 MB/page (Litolff) and 3.1 MB/page
+(Breitkopf) for the ink layer alone, against records already in the hundreds.
+
+Two gradings survive because they are NOT exemptions: **LOCATION vs POSITION**
+(a staff-space float composes across documents; page pixels and canonical-cell
+boxes do not — the latter because two staves' canonical frames coincide BY
+CONSTRUCTION) and the class-name **side**, which fails together with the
+classification it is read off. ⚠️ `placement` had been wrongly folded into
+`side` and is now reported apart: it is derived from the BAND by measurement,
+the opposite provenance, and the conflation made `direction` report *"the class
+name states a SIDE"* about a word that is not in the class space at all.
+
+⚠️⚠️ **AND NOTHING ACCUMULATES ACROSS DOCUMENTS**, which is the consumer the
+aggregate question needs. `data/` holds no store of measured geometry, and
+`publisher` appears in **NO code** in `gather.py` while the catalog carries it
+on **231 of 235 editions (212 distinct)** — on `entries`, NOT on the `editions`
+map, so a reader going to `editions` would conclude the fact was absent.
+
+⚠️ **A THIRD DERIVATION BUG, the `**common` trap in a second form**: `gather.py`
+binds `shared:` and `detail:` as ANNOTATED assignments, and an
+`ast.Assign`-only walk resolved neither — so `Q.DIRECTION_WORD` came back
+without `bbox_page_px`/`placement` and the location grading reported two
+families as carrying no page location. Found by reading the emitted detail
+lists against the source.
+
+Battery **34 arms, 34 as expected, restore VERIFIED**; its first run found
+**three genuine test gaps**, one being this session's own *a test asserting a
+list is EMPTY cannot detect a computation that always returns empty*, and a
+later arm SURVIVED because its target test could not reach the probe at all.
+
+⚠️ **A FOURTH QUESTION arrived mid-task and is wired in: RESOLUTION**
+(`A-INK-2`). `OMR_DPI` is a CONSTANT and `render_page(..., dpi=dpi)` takes it
+from an argument no call site derives from the PDF — while a SCANNED plate has
+a native resolution and a VECTOR page has none. **Nothing anywhere reads the
+native size**, and `input_domain._classify_page` — the shipped
+`OMR_WEIGHT_ROUTING` classifier — already opens the very dict that carries it
+and reads only `bbox` and `Filter`. Reported with the keys it DOES see read
+beside it, so the zero is the walker working. ⚠️ The table separates
+`letterboxed` from `direct_pixels` so the measured `OMR_IMGSZ` result — a fact
+about the DETECTOR's letterboxing and anchors — cannot be quoted against the
+readers it says nothing about.
+
+⚠️ **NOT ESTABLISHED**: nothing gathered, exported or measured on a page; the
+two declared tables are guarded but a WRONG classification would pass; the
+raster answer is static code, so nothing says how often a fallback takes which
+branch; and whether a position fact would HELP any family is unmeasured. The
+ranked next work — a position fact for the meter, and the two-pass read — is
+scoped and deliberately not built.
+
+---
+
 ## 2026-09-17 (later) — the p0p3 experiment RAN, and the empty cell is still empty
 
 ⚠️ Placed at the head on the file's own CAUSAL-ORDER rule: it follows the

@@ -426,6 +426,65 @@ class Q(_Vocab):
     ORNAMENT_MARK = "ornament_mark"
     WEDGE_BOX = "wedge_box"                  # hairpin ink
     DYNAMIC_LETTER = "dynamic_letter"        # one letter, before spelling
+    #: ONE CONNECTED PIECE OF INK in a measure cell, named or not.
+    #:
+    #: ⚠️⚠️ IT IS THE POPULATION THE OTHER MEASUREMENTS ARE A CLASSIFICATION
+    #: OF, AND THAT IS THE WHOLE POINT. Every other row in this section starts
+    #: from a DETECTION, so GATHER's population has always been the detector's
+    #: output rather than the page's ink -- and ink the detector did not fire
+    #: on produced no row at all. Sean, 2026-09-17: *"We can only gather what
+    #: we see. We may or may not be able to classify it correctly initially -
+    #: or at all - but ink is ink. There is nothing that should be classified
+    #: as unseen - only unclassified."* A record that holds no row where the
+    #: page holds ink says ABSENT where the truth is DECLINED, which is the
+    #: one collapse this module exists to prevent, happening to the ink itself.
+    #:
+    #: ⚠️ MEASURED, AND IT IS NOT REACHABLE FROM THE DETECTION RECORD.
+    #: Litolff Beethoven 5 p.62 prints a `3/4` on all seventeen staves at one
+    #: bar; the detector fires no `timeSig*` glyph there on ANY of them. There
+    #: is no unclassified DETECTION to re-weight -- the ink was never detected
+    #: -- so this is a raster pass, and the precedent it reuses is
+    #: `direction_text._blank_detections`, which already subtracts every
+    #: detection from a page's ink so "find the text" becomes "find the ink".
+    #:
+    #: ⚠️ A PIECE OF INK IS NOT A MARK, and the row says so rather than
+    #: pretending otherwise. Print bleeds: on a scan a notehead merges with
+    #: its ledger line and a staff-line remnant can bridge two glyphs, so one
+    #: component may be several marks and one mark may be several components.
+    #: Which it is belongs to a later stage; GATHER decides nothing.
+    #:
+    #: ⚠️ NOTHING IS FILTERED. No size gate, no shape gate, no confidence cut
+    #: -- staff-line residue, barlines, stems and scanner speckle all get a
+    #: row. A threshold here is a DECISION taken in the wrong stage and it is
+    #: the one kind that cannot be revisited: a row that was never created is
+    #: evidence no later rule can reconsider. `detail` carries the shape and
+    #: the detector coverage so a rule can weigh them; this reader applies
+    #: neither.
+    INK = "ink"
+
+    #: WHICH PRINTING THIS IS -- the edition, its publisher, its work and its
+    #: scan type, on the DOCUMENT.
+    #:
+    #: ⚠️⚠️ THE CONDITIONING VARIABLE THAT NEVER REACHED THIS STAGE. Sean,
+    #: 2026-09-17: *"it might be helpful to have general information based on
+    #: publisher or common practice of where a certain things fall so if we
+    #: have an undiagnosed blob or dot, we have gathered a lot of information
+    #: on what sorts of things are more likely where."* Where a mark falls is
+    #: a property of the PLATE -- this repo has already measured two houses
+    #: disagreeing about nearly everything, from ledger pitch (Litolff ~1.10x
+    #: the staff spacing, Peters/Breitkopf/Simrock ~0.975x) to dot density
+    #: (35 against 656) to whether a family bracket is printed at all. Until
+    #: this row, `grep publisher tools/omr/staged/gather.py` returned ONE
+    #: COMMENT: the variable everything would be conditioned on was not on the
+    #: record.
+    #:
+    #: ⚠️ `source_kind` IS WHY IT IS ADMISSIBLE. It comes from the COMMITTED
+    #: catalog, which reads IMSLP's own work page -- not from the plate -- so
+    #: it does not fall silent when the raster is bad. That is the property
+    #: `A-INK` and the `source_kind` doctrine both require of a second
+    #: witness, and it is the reason the `editions` tier (an OMR output of the
+    #: same raster) would NOT be admissible here.
+    DOCUMENT_IDENTITY = "document_identity"
 
     # ── header readings (measurements) ──────────────────────────────────────
     CLEF_GLYPH = "clef_glyph"                # detector's clef, with frame
@@ -694,6 +753,19 @@ class READERS(_Vocab):
     #: Filing them together would collapse two genuinely independent readings
     #: of the same band into one.
     CV_HAIRPINS = "cv_hairpins"              # hairpin_detection: wedge ink
+    #: `gather_ink` -- connected components of a cell's ink.
+    #:
+    #: ⚠️⚠️ IT IS NOT INDEPENDENT OF `CV_LINES` AND A CONSUMER MUST NOT COUNT
+    #: THEM AS TWO WITNESSES. This rung reads the SAME image `line_detection`
+    #: reads -- `cell.image_no_staff`, the staff-line-erased cell -- so a stem
+    #: this reader reports as a tall thin component and a stem `CV_LINES`
+    #: reports are ONE reading of ONE crop wearing two names. It is a separate
+    #: READER name only because it answers a different question (where is the
+    #: ink) from a different algorithm (components, not morphology), which is
+    #: what makes the rows separately interpretable; it is emphatically NOT
+    #: the `CV_HAIRPINS` case one line up, where the two rungs read different
+    #: images and the independence is real.
+    CV_INK = "cv_ink"                        # gather_ink: connected components
     CV_HEADER = "cv_header"                  # header_ink
     TEMPLATE = "template"                    # symbol_library NCC matching
     GEOMETRY = "geometry"                    # staff_detector / measure_extractor
@@ -762,6 +834,16 @@ class ABSTAIN(_Vocab):
     NEEDS_CLEF = "needs_clef"                    # key_signature_locator :310
     NO_TEMPLATE = "no_template"                  # e.g. 4/8 has none
     OUT_OF_SCOPE = "out_of_scope"
+    #: We LOOKED IN THE CATALOG and it does not hold this document.
+    #:
+    #: ⚠️ A DIFFERENT FACT FROM `OUT_OF_SCOPE`, which means we declined to
+    #: look, and the document-identity rung is why both are needed: flag-off
+    #: and *this PDF is not in the score library* are different situations
+    #: with different repairs (flip the flag; or name the work with
+    #: `OMR_WORK_ID`). Folding them together would report a disabled reader
+    #: and an unknown plate as one number -- the shape `NO_READING` was added
+    #: to prevent one family over.
+    NOT_IN_CATALOG = "not_in_catalog"
 
     # the build itself
     NOT_IMPLEMENTED = "not_implemented"           # ⚠️ a declared stub

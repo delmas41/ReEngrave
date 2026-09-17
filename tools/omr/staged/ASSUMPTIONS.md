@@ -894,7 +894,7 @@ rather than defaulted.
 | 4 | the same bar's sum on every other staff | ✅ the per-bar modal vote |
 | 5 | the surrounding bars' sums | ⚠️ PARTIAL — forward of a candidate (`_bar_run`), and now the whole system's own bars as a proposer of the LENGTH (`A-DUR-7`) |
 | 6 | beat subdivision agrees with the meter | ❌ not built; beams are gathered, grouping is not read — ⚠️ and a note is now joined to its beam by its STEM (`A-DUR-8`), which is the association such a rule would need |
-| 7 | undefined blobs of ink | ❌ not built — see A-DUR-5 |
+| 7 | undefined blobs of ink | ✅ GATHERED 2026-09-17 (`Q.INK`, `OMR_INK`, default OFF) and **consumed by nothing, deliberately** — see A-DUR-5 |
 
 **Three things to carry into building it, each paid for by a measurement here:**
 
@@ -928,7 +928,54 @@ for it. Also a tempo word at that
 bar ("Tempo I.", "Allegro") — the engraver's own section marker, blocked only
 on `direction` being a stub.
 
-### A-DUR-5 · ⚠️⚠️ UNBUILT AND WANTED — unclassified ink as a first-class fact
+### A-DUR-5 · ✅ BUILT 2026-09-17 as `Q.INK` — the ink is the POPULATION
+
+**PRODUCER ONLY, `OMR_INK`, default OFF. Findings:
+[benchmarks/omr-ink-gather-2026-09/FINDINGS.md](../../../benchmarks/omr-ink-gather-2026-09/FINDINGS.md).**
+The entry below is the request as it stood; what follows corrects it in three
+places and the corrections are the finding.
+
+⚠️⚠️ **THE FRAME CHANGED AND IT IS NOT A WORDING PREFERENCE.** Sean,
+2026-09-17: *"Missing doesn't make sense to me. We can only gather what we see.
+We may or may not be able to classify it correctly initially - or at all - but
+ink is ink. There is nothing that should be classified as unseen - only
+unclassified."* So this is not a supplementary tier of "blobs" beside the
+detections: **GATHER's population should be THE INK, and the detector is one
+CLASSIFIER over it.** `Q.INK` is a row per connected piece of a cell's ink with
+`ink_detector_coverage` as an ATTRIBUTE that may be zero.
+
+⚠️⚠️ **AND NOTHING IS FILTERED.** Sean, same day: *"even staff residue should
+go through the process and hopefully our rules and measurements will determine
+at the appropriate stage that it is just that - staff residue."* A threshold at
+the gather site is a decision taken in the wrong stage and the one kind that
+cannot be revisited — a row that was never created is evidence no later rule
+can reconsider. The residue adjudicator is RANKED NEXT WORK, not part of this.
+
+⚠️⚠️ **THE CELL NAMED BELOW IS WRONG. The printed `3/4` on p.62 is at CELL 6,
+not cell 8**, verified by cropping the plate
+(`benchmarks/omr-ink-gather-2026-09/out/print/`). Every `timeSig*` detection
+this pipeline has at cell 8 sits at `x_canonical = 0`, 0.33-0.40 staff spaces
+wide and 1.17-2.17 tall — **a barline**, at the head of an empty rest bar — and
+**cell 6 produces ZERO `timeSig*` detections on any of the seventeen staves**.
+So the *"we classify it on 2 of 17"* below is generous to the reader in one
+direction and wrong in the other: at the bar the meter is actually printed, it
+is classified on **0 of 17**. ⚠️ What that means for the *bar number* is NOT
+settled here and needs a hand-verified window row.
+
+✅ **THE PRE-REGISTERED TEST PASSES. At cell 6, 17 of 17 staves carry an ink
+row at the printed meter and 16 of 17 are unclassified** (staff 5's is covered
+by notehead boxes, a misclassification rather than a reading). Its page x
+drifts **13.9 px** — most of a staff space — down the plate, which is why the
+count is taken in page pixels.
+
+⚠️ **THE ALIGNMENT HOLDS ON ONE PUBLISHER AND IS MUCH WEAKER ON A SECOND.**
+Against a circular-shift null, Litolff p.62 needs **0.63×** the columns and
+leaves **0.43×** as many rows standing alone — and *unclassified* ink scores
+identically to *all* ink (0.63 / 0.43), which is the claim this entry rests on.
+Breitkopf Brahms 1 p.1 reads **0.87 / 0.83**, because 56% of its rows are
+specks where Litolff's are 1%. **The component representation is
+publisher-dependent: Litolff MERGES and Breitkopf SHATTERS, and neither is one
+row per mark.**
 
 **SEAN'S REQUEST, 2026-09-09, recorded so it is not lost.**
 
@@ -1536,6 +1583,283 @@ with no weights file, which today **fails the run**.
 **Blast radius.** None: it only makes a failure into an abstention.
 
 ---
+
+## A-INK — the representation of ink itself
+
+### A-INK-1 · ⚠️⚠️ HALF REFUTED 2026-09-17 — the LINE/GLYPH case is SHIPPED; the SPLIT case is open
+
+**SEAN'S IDEA, 2026-09-17, recorded so it is not lost** — the same standing
+shape as `A-DUR-5`, which sat here unbuilt for a week and then landed.
+
+> *"Would it make sense to take every dot from an image and turn it into a
+> format where every spot that is black becomes a digital point of reference.
+> Then each dot of the dpi could get labeled as belonging to a category. Right
+> now we are trying to get a computer to see but it doesn't see, it is 1's and
+> 0's. Why not create a format of digitizing the ink where each black dpi can
+> hold metadata like where it is, what it is connected to, things like that."*
+
+> *"Each dot being able to belong to multiple things feels like it could be
+> really helpful."*
+
+**THE CORE CLAIM, separated from the storage question.** The valuable part is
+not per-pixel storage — it is **MULTI-MEMBERSHIP**: one piece of ink belonging
+to more than one thing at once.
+
+⚠️⚠️ **THE LINE-vs-GLYPH HALF WAS REFUTED THE SAME DAY, AND THE PREMISE WAS
+MINE RATHER THAN SEAN'S.** This entry first argued that a dilemma is
+*"structurally unsolvable"* — erase the staff lines and a glyph loses ink where
+a line crossed it; keep them and every mark merges. **The first half is false
+for this pipeline and has been since Phase 1.4.**
+`staff_line_removal.py`'s own opening line is *"Staff line removal **preserving
+symbol-crossing pixels**"*, and its rule — a vertical ink run no taller than
+the line's printed thickness IS the line and is erased; a taller one is
+something crossing and is left entirely alone — **IS multi-membership, decided
+at erasure time**, with `LINE_CROSSING_FACTOR = 2.0` as its constant. Measured:
+a reconstruction bridge makes **0 joins on 1,244 components across 221 cells**
+— not because it fails, but because nothing on the page needs joining.
+`benchmarks/omr-multi-membership-2026-09/`.
+
+⚠️ **AND THE STRONGER RESULT RUNS FOR THE EXISTING DESIGN.** Re-erased NAIVELY
+(shipped code, one predicate changed) the page shatters **1,244 → 5,143**
+components; bridging rejoins 81.1% and saturates at **1,982 — still 59% short
+of the shipped 1,244**. **Multi-membership decided at ERASURE time beats
+multi-membership reconstructed afterwards**, because erasure knows which pixels
+to KEEP while a bridge can only restore connectivity between pixels already
+destroyed.
+
+⚠️⚠️ **WHAT SURVIVES, AND IT RUNS THE OTHER DIRECTION: the SPLIT question.**
+Everything above concerns a pixel that is *line AND glyph*. A pixel belonging
+to several **MARKS** — a notehead and the slur touching it, a stem and its beam
+— is **untested**, and it is where merging actually costs us: **5.7% of this
+page's components are blobs too big to be one mark**. That is a SPLIT problem,
+nothing in the 2026-09-17 experiment addresses it, and it is the open form of
+Sean's idea. ⚠️ Note the asymmetry that makes it harder: the line/glyph case
+has a rule that needs no appeal to what a symbol looks like (compare a run to
+the line's own measured thickness); two overlapping MARKS have no such
+thickness to compare against.
+
+⚠️ **THE GRAIN IS THE COMPONENT, NOT THE PIXEL, AND THE ARITHMETIC SAYS SO.**
+That page is 34.8M pixels, **0.82M of them black** — per-pixel metadata is
+~820,000 records a page. Per-component it is 91 (clean engraving) to 6,055
+(Breitkopf scan), and every pixel inherits from its component: a **~9,000x**
+reduction that loses nothing for this purpose. `gather_ink` already computes
+exactly these components. What it does NOT carry is membership in more than
+one thing.
+
+**Why it is worth taking seriously rather than filing as a nice idea:** every
+time this project moved a symbol from *classify the box* to *measure the ink*
+it won — stems and beams to classical CV, clefs by geometry, key signatures by
+slot fit, meters by template. This is that move one level deeper. And the
+2026-09-17 p.62 error was a REPRESENTATION failure, not a model one: a barline
+broken in two became a `3/4` because nothing recorded that the ink crossed the
+whole staff.
+
+⚠️⚠️ **WHAT WOULD KILL IT, MEASURED BEFORE THE EXPERIMENT WAS DISPATCHED.**
+The ceiling may be the plate. Litolff `984073` is **1-bit at 600 dpi native**
+(`extract_image`: 2897x3813, colorspace 1, 0 vector drawings) — thresholded
+before we ever received it, with no grey to recover. Components carrying a
+HOLE (the counter that makes a `4` a `4`, a `3` a `3`, a hollow notehead
+hollow) number **31 at 300 dpi and the same 31 at 1200** — the information
+SATURATES at 300 and rendering above native is pure upsampling. **If the
+scanner's own threshold already merged the `3` into the `4`, no representation
+un-merges them.**
+
+⚠️⚠️ **AND IT DID.** Measured on the target: the printed `3/4` is already **ONE
+erased component on 17 of 17 staves**, and the digits are fused in the
+SURVIVING ink — cutting at every staff line gives **4-6 pieces, never 2**, on
+17 of 17; the narrowest interior row still carries **34%** of the blob's width,
+and that row sits at a staff line on **0 of 17**. At 15.0-15.8 native px per
+staff space the whole stack is **28-31 x 68 px** and the 1-bit threshold has
+filled both counters. The reading half is CLOSED for this document.
+
+**The experiment, with its criterion pre-registered** (`CRITERION.md` committed
+alone and first, on Sean's instruction not to waste time): on p.62 **cell 6**,
+where the printed `3/4` stands on all 17 staves and the detector fires **zero**
+`timeSig*`, can multi-membership read it — and does it REFUSE the cell-8
+barline that currently fools `_meter_from_digits`? Three scores, reported
+apart: the reading (uncertain), the refusal (equally important — a method that
+reads a meter at both cells has learned nothing), and **the mechanical half**
+(does correspondence between components-with-lines and components-without
+recover ink that either image alone loses). ⚠️ **The mechanical half is the one
+that generalises, and a positive there is a real result even if the digits
+fail** — it is what would let every thin glyph keep its strokes.
+
+⚠️ **NOT to be built as a second gather mode on spec.** This project already
+runs staged-beside-legacy and the 2026-09-17 plumbing audit established that
+the staged path has **no production consumer**; two half-built pipelines is a
+measured failure mode here, not a hypothetical.
+
+### A-INK-3 · ⚠️⚠️ THE GOVERNING PRINCIPLE — GATHER IS LOSSLESS WHILE WE ARE STILL DISCOVERING
+
+**SEAN, 2026-09-17.** The other two rules he stated the same day are corollaries
+of this one, and it should be read first.
+
+> *"Theoretically every position can at some point contribute even if that is
+> not with our current pipeline. We are still discovering what works best and
+> for testing we need to hold on to everything because we can't yet know all of
+> what will be helpful."*
+
+**THE RULE.** A value is gathered because it MIGHT matter, not because a
+present consumer wants it. The test for recording something is never *does a
+decision need this today* — it is *could this contribute at some point* — and
+during discovery that answers YES by default. **Discarding is a DECISION, and
+decisions belong in a later stage.**
+
+The two rules it generates, both already recorded here in their own terms:
+
+* **Nothing may be filtered at the gather site**, staff residue and speckle
+  included (`A-INK-1`, and `gather_ink` ships with four mutation arms pinning
+  the ABSENCE of a size gate and a shape gate). The reason is that a threshold
+  in GATHER is the one decision no later stage can revisit: **a row that was
+  never created is evidence nothing can reconsider.**
+* **There is no "unseen" ink, only unclassified** — GATHER's population is the
+  INK on the page, and the detector is one CLASSIFIER over it rather than the
+  authority on what exists. Recording ink we cannot name is the ABSENT/DECLINED
+  distinction, which `record.py` enforces everywhere else, finally applied to
+  ink itself.
+
+**And its third consequence, which is what prompted it:** POSITION is recorded
+for every family, with no exemptions. Not because each family needs its own
+position to be read — a `fermataAbove` already says which side it is on — but
+because *where things actually fall*, aggregated by publisher and by common
+practice, is what lets a later stage score an unnamed blob. **The value is in
+the aggregate, not the instance**, so no per-family argument can license
+leaving it out.
+
+⚠️ **SCOPED TO DISCOVERY, AND THAT SCOPE IS LOAD-BEARING.** Sean said *"for
+testing"*. This is a phase-appropriate decision about a pipeline still being
+figured out, **not** a standing claim that records grow without bound forever.
+The cost is real and should be watched rather than argued against: a staged
+record is ~1.5 MB on a ONE-PAGE fixture with the ink layer on, and that layer
+alone is 0.6-3.1 MB/page. The day the consumers are known, this rule is the
+one to revisit — and it must be revisited deliberately, not eroded by someone
+adding a threshold because a page looked noisy.
+
+⚠️ **WHAT IT DOES NOT LICENSE.** It is a rule about GATHER. It is not licence
+for a later stage to guess: `Ruling.narrow`'s candidates still may not be
+argmaxed in EXPORT, an uncalibrated probability is still worse than none, and
+INFER may still only speak where the record has no answer. **Keeping everything
+is the opposite of deciding everything.**
+
+### A-INK-4 · ⚠️⚠️ A FACTOR CONTRIBUTES; IT DOES NOT DECIDE — and the order of the programme
+
+**SEAN, 2026-09-17.** `A-INK-3` governs what is CAPTURED. This governs what is
+DONE with it, and the two are easy to conflate.
+
+> *"position is an option for helping us determine something but will rarely be
+> a clear rule that determines by itself. 2 numbers not connected, one in the
+> upper half and one in the lower half, could be a time signature. Due to ink
+> bleed they may appear connected, or other things that we can't determine...
+> Quick rules will give us quick results that could be poor."*
+
+> *"this architecture of the new pipeline with stages and retaining all of the
+> information is made so that when we get to something we can't easily figure
+> out, we have other paths for determining what it is. It may be a specific
+> rule or it could be a deduction from many data points."*
+
+**THE RULE.** No single factor decides. A factor is one more PATH to an answer,
+weighed with everything else — never a veto, a gate or a discriminator on its
+own. ⚠️ **A signal that looks decisive is the most dangerous kind**, because it
+invites exactly the quick rule that produces quick poor results.
+
+⚠️ **THE WORKED EXAMPLE IS A CORRECTION TO THIS FILE'S OWN AUTHOR.** The
+2026-09-17 position brief claimed a position fact *"refuses the p.62 barline on
+geometry alone"* and called that case *"the falsifier for the whole idea"*.
+Both false. On a bitonal plate **ink bleed fuses two digits into one stroke**,
+so *one connected stroke* does not disprove a meter and *two marks in two
+halves* does not prove one. The geometry CONTRIBUTES and does not settle it.
+
+⚠️ **WHERE A FACT IS AMBIGUOUS, THE AMBIGUITY IS THE INFORMATION.** A fused
+stroke that could be one mark or two is precisely the case a later stage exists
+to weigh; collapsing it at capture destroys what the architecture was built to
+use. This is `A-INK-3` again from the other side — **resolving early is a form
+of discarding.**
+
+**THE ORDER OF THE PROGRAMME, and it is why step 3 must not be pre-empted:**
+
+1. **Stages**, so that different functions have somewhere to live and there is
+   flexibility in determining what something is. **DONE** — GATHER, ADJUDICATE,
+   EVALUATE, INFER, EXPORT.
+2. **ALL information that could ever be helpful, gathered and available to
+   every stage and decision point.** IN PROGRESS — `Q.INK`, the position facts,
+   the memory store, publisher reaching GATHER.
+3. **Test each decision point to see what is actually helpful** — which may be
+   raw data, or how raw data was used in a DIFFERENT decision to reach a new
+   conclusion or a likelihood.
+
+⚠️ **A rule written during step 2 because it "looks obviously right" is step 3
+done badly, with no measurement and no alternative considered.** The whole
+point of holding everything is that what helps is discovered, not assumed.
+
+⚠️ **CIRCULARITY IS MANAGED, NOT AVOIDED.** Step 3 necessarily uses the output
+of one decision as input to another, and Sean's answer is not to forbid it:
+*"We need to be careful of circularity but that is why we will be evaluating
+the quality of the determination and tracking what was used to make that
+decision."* The machinery already exists and is the reason it is safe to
+proceed — `Verdict.basis`/`used`/`considered`, `Log.closure`, `correlated`, the
+`source_kind` tiers, and `checked_by`/`implicates`. ⚠️ Its one measured hole is
+recorded: **an `ev.state()` read never enters `basis`**, so a dependency
+established that way is invisible to `independent_groups`.
+
+**And the standard this sets for ruling anything out:** *"This is a complex
+system that requires concepts to be tested before ruling out simply, and an
+understanding of the interdependent nature of the data."* A concept is never
+retired by an argument that it sounds unlikely.
+
+⚠️⚠️ **AND A MEASUREMENT DOES NOT RETIRE ONE EITHER — NOT AT FIRST.** Sean,
+2026-09-17, correcting the line that stood here:
+
+> *"even measurement should not retire at first, because a measurement can only
+> take into account the current factors but we are building something that has
+> changing factors."*
+
+**A measurement is taken under the factor set that exists on the day.** In a
+system being built, that set changes — so a negative result is a statement
+about *the factors present*, not about the idea. **Every refusal must therefore
+record WHAT ELSE EXISTED when it was taken**, and is re-openable when that
+changes.
+
+⚠️ **THIS PROJECT HAS ALREADY PROVED IT TWICE, and both are in CLAUDE.md:**
+
+* **`OMR_ARC_RECLASS`** was measured and REFUSED — it scored **below its own
+  majority baseline alone (0.5043 vs 0.5275)**. Later, measured in concurrence
+  with S6, the same rule reaches **0.750, p = 0.0104** on a 20,000-draw
+  permutation null. The idea did not change; a second signal came into
+  existence. *"The refusal STANDS — it was refused for what it COSTS and this
+  is what it is WORTH"* is that distinction being drawn correctly.
+* **The duration reader's two halves** measured **+15 and +13 separately and
+  +66 together** — super-additive, *"because a bar is right only when EVERY
+  note in it is"*. Either half, measured alone and judged, looks marginal.
+
+**So the operative rule is:** a measurement retires a concept **within the
+factor set it was taken in**, and a refusal that does not name that set is
+overstated. ⚠️ The practical form, since this file cannot enforce prose: when
+recording a refusal, say what would RE-OPEN it. Many entries already do
+(*"if any half ever defaults on it is slur->tie"*, *"the cheapest thing that
+would settle it is..."*), and those are the model.
+
+⚠️ **The failure mode this guards against is the expensive one**: a factor
+gathered in step 2 measures useless in step 3 *because its partner does not
+exist yet*, is deleted, and the partner arrives a month later with nothing left
+to combine with. `Q.STEM` is the near-miss — gathered and unread through THREE
+separate discoveries, and worth 114 narrowed durations the day something read
+it.
+
+### A-INK-2 · ⚠️ DPI is a CONSTANT and should be a property of the SOURCE
+
+Found alongside A-INK-1 and unbuilt. `OMR_DPI` is 300 on the backend and 600
+on the CLI, applied to every document. But a scanned PDF has a NATIVE
+resolution fixed at scan time — `extract_image` returns it in one call — and
+rendering above it interpolates: **16x the pixels for zero new structure**,
+measured. Rendering BELOW it throws away plate that is there. A vector PDF has
+no native resolution at all and genuinely renders sharper.
+
+⚠️ `OMR_WEIGHT_ROUTING` already classifies input domain by exactly this signal
+(0 vector drawings = scan) and is measured and shipped, so the classifier
+exists; nothing reads the native resolution. ⚠️ The measured *"larger is NOT
+better"* result for `OMR_IMGSZ` is a fact about the DETECTOR's letterboxing and
+anchors — **it is not a fact about the image**, and must not be quoted against
+giving a GEOMETRY consumer more pixels.
 
 ## ⚠️ Things this build found that are NOT assumptions
 

@@ -335,7 +335,8 @@ work**: a RUN of bar sums proposing a meter where no glyph stands — ⚠️ **D
 2026-09-09, and it is not a run**: consecutiveness measures a page's
 legibility, not its meter, so the evidence ACCUMULATES instead (see the newer
 handoff) — the per-bar evidence order (`A-DUR-6`), and **unclassified ink as a
-gathered fact** (`A-DUR-5`, flagged below, still unbuilt). Its predecessor
+gathered fact** (`A-DUR-5`, flagged below — ✅ BUILT 2026-09-17 as `Q.INK`,
+producer only, and it corrected the record's own p.62 cell index). Its predecessor
 [docs/handoff-2026-09-09-gather-and-the-record-that-answers.md](docs/handoff-2026-09-09-gather-and-the-record-that-answers.md)
 — the staged pipeline now EXPORTS A FILE, gathers the five families it used to
 drop, and answers *which decision* held a note back. It ranks the next three
@@ -404,8 +405,34 @@ opened Step 2 and posed the Viola question (now answered). Then read
 totals can no longer rank work** (amplification differs 6×–2× by error kind; one
 changed `<type>` scores ZERO on 10 of 20 files), and the ranked next steps.
 
-⚠️⚠️ **STANDING REQUEST FROM SEAN, 2026-09-09 — UNCLASSIFIED INK AS A
-FIRST-CLASS GATHERED FACT, NOT YET BUILT.** *"I really don't want to lose the
+✅⚠️ **SEAN'S STANDING REQUEST — INK AS A FIRST-CLASS GATHERED FACT — IS BUILT
+(2026-09-17, `Q.INK` / `OMR_INK`, default OFF, PRODUCER ONLY) AND THE FRAME
+CHANGED TWICE WHILE IT WAS BEING BUILT.** It is NOT a "blob" tier beside the
+detections: *"ink is ink. There is nothing that should be classified as unseen
+- only unclassified"* — so GATHER's population is THE INK and the detector is
+one CLASSIFIER over it, with `ink_detector_coverage` an attribute that may be
+zero. And **nothing is filtered**: *"even staff residue should go through the
+process and hopefully our rules and measurements will determine at the
+appropriate stage that it is just that."* ✅ **The pre-registered target passes
+— 17 of 17 staves carry a row at the printed `3/4`, 16 of 17 unclassified** —
+and against a circular-shift null **unclassified ink aligns exactly as strongly
+as all ink** (0.63× columns / 0.43× standing alone, reproducing
+`Q.ONSET_COLUMN`'s own 1.62×/2.29× from a different population). ⚠️⚠️ **IT DOES
+NOT TRANSFER AT FULL STRENGTH: Breitkopf reads 0.87 / 0.83 and its composition
+INVERTS (56% specks against 1%) — Litolff MERGES and Breitkopf SHATTERS, and
+neither plate gives one row per mark.** ⚠️⚠️ **AND THE PRE-REGISTERED TEST
+CORRECTED THE RECORD: the printed `3/4` on p.62 is at CELL 6, not cell 8, and
+the `timeSig3`+`timeSig4` this project reads at cell 8 is ONE BARLINE broken
+into two fragments** (both 0.35-0.40 spaces wide at `x_canonical = 0`, at the
+head of an empty rest bar) — **cell 6 fires ZERO `timeSig*` on any of 17
+staves.** That inverts `omr-staged-meter-carry-2026-09`'s own correction, which
+called the cell-6 bar math *"two cells early"*. The BAR NUMBER is not settled
+and needs a hand-verified window row. See
+[benchmarks/omr-ink-gather-2026-09/FINDINGS.md](benchmarks/omr-ink-gather-2026-09/FINDINGS.md)
+and the crops in its `out/print/`. The original request follows.
+
+⚠️⚠️ **STANDING REQUEST FROM SEAN, 2026-09-09 — the wording it was built
+from.** *"I really don't want to lose the
 'here is a blob of ink but we don't know what it is' gather data point. It can
 be used in every decision point ... this is the same unrecognizable blob on
 every system at bar 51 ... or we know what this blob is in 3 of the 10 systems
@@ -418,7 +445,8 @@ classified on 2 of 17, and the other 15 carry no unclassified detection at that
 column: the ink was never detected at all. It needs a RASTER pass in GATHER,
 and the precedent is `direction_text._blank_detections`, which already subtracts
 every detection from the page's ink so "find the text" becomes "find the ink".
-Full statement: `tools/omr/staged/ASSUMPTIONS.md` **A-DUR-5**.
+Full statement: `tools/omr/staged/ASSUMPTIONS.md` **A-DUR-5**, which now
+carries the result and the two frame corrections that came with it.
 
 **Backlog / research notes:** see [NOTES.md](NOTES.md) — surface these at the start of a ReEngrave session.
 
@@ -722,6 +750,7 @@ ReEngrave/
 | `OMR_METER_SEGMENTS` | **`1` (on)** | **On by default since 2026-09-09 (Sean's call). Staged pipeline only. A METER IS A FACT ABOUT A RANGE OF BARS, AND UNTIL THIS FLAG THAT FACT REACHED NO FILE.** `Q.METER` has carried `segments` since 2026-09-09 and `staged/export.py` took **one meter per staff-run**, so a printed mid-system meter change could not be exported at all — while `record.meter_at`, whose own docstring says it *is* how a bar's meter is read, was **called by nothing but its own tests**. On, the exporter reads the meter in force at each BAR. ⚠️ Two sibling gaps travel with it and are already gated by the other two meter flags: `_carry_meter` took the source system's **OPENING** and deleted its segments (so a source that PRINTED a change handed on the meter it had already left — Brahms 1 i was handed the ONE-bar `9/8` instead of the `6/8` governing seven of eight bars, and Brahms 1 iv `C` instead of the `¢` the same system had just read on 24 staves), and a system whose meter came from a READ change could be **neither a carry source nor a form source** (`reason == "voted"` alone), which excluded exactly the ink the gate exists to require — `METER_SOURCE_REASONS` now admits `change_only` while still refusing `carried` and `derived_from_bars`, so a carry never chains. ⚠️ **Fixing the value the carry RETURNS was half that bug**: `_corroborate` was still weighing the opening, so a correct carry was refused `carry_outweighed_by_the_bars` at **−2.0, 0 agreeing / 3 disagreeing**. **MEASURED**, controlled A/B on the saved records so no detector jitter enters: Brahms 1 iv `{4/4(common): 24}` → `{4/4(common): 24, 2/2(cut): 24}`; Litolff p.61-62's printed `3/4` moves from measure 8, the first bar of its system, to **measure 16, its ninth**, which is where the hand-read truth puts it. ⚠️⚠️ **THE CAUTIONARY HALF OF THIS ROW WAS A DUPLICATE AND IS GONE** — a sibling session landed the same rule first and **theirs is kept**, discriminating on the LAST CELL of each staff rather than on where the glyph sits in its bar's ink; it reaches the Breitkopf scan's courtesy too, which the ink rule could not (that degenerate final cell holds five detections, so nothing lies left of the glyph). The ink measurement survives as an independent SECOND READING of the same convention — the one visible cautionary at **1.000 on all 19 staves** against **≤ 0.118 for every other segment** — which is a real cross-check rather than a second implementation. **Tally: ENGRAVED 4 printed / 4 found / 1 → 0 false; SCANNED 2 / 1 / 9 unchanged — 1 of 9 false segments removed, 0 of 4 true positives lost.** ⚠️ **The scan being untouched is the EXPECTED result, not a shortfall**: every one of its false segments reads left-fraction **0.000**, at the head of its bar where a real change stands, so they are misreads and no placement rule can reach them — FINDINGS §4b's conclusion arriving from the other side. ⚠️⚠️ **THE FIRST ARM CAME BACK BYTE-IDENTICAL TO ITS BASELINE AND THAT IS WHAT CAUGHT A BUG FIVE GREEN UNIT TESTS AND THREE MUTATION ARMS DID NOT**: `gather` files `Q.METER_GLYPH` on the **STAFF** with the bar in `detail["cell"]`, the test fixture filed it on a **GLYPH**, and `subject.at(Kind.CELL)` returns None for a staff — so the rule read no boxes on any real page. *A fixture that does not match GATHER tests the test*; the pre-existing `TestAMeterChangeIsReadFromTheInk` fixture had the same mismatch, and the shape is now asserted against the gather site **by AST**. ⚠️⚠️ **FLIPPED ON 2026-09-09 (Sean), and the flip OVERRIDES the standing objection rather than resolving it.** It shipped off on **n** — the mechanism was never in doubt, the scan's READING was. That objection is unchanged and is now PRICED rather than described: on Brahms 1 / Breitkopf p.1-2 (14 parts) the default takes `<time>` elements from **41 to 138** — `4/4` declarations 13 → 96 from the five spurious one-staff changes, plus 14 spurious `9/8` from the courtesy this rule cannot reach on that degenerate final cell — so **a scan can now export a meter change its page does not print.** Every engraved fixture gains only correct changes, and 4 of the 9 committed boundary records are byte-identical either way. **The lever is the meter GLYPH readers** (`_meter_from_digits`, `time_signature_locator`), not the weighing and not a placement rule. ⚠️ `OMR_METER_SEGMENTS=0` restores the per-run meter exactly, and the OFF test is a **deny-list, not an allow-list**: with the default on, an allow-list (`in ("1","true","yes","on")` — what `OMR_SLOT_STITCH` and the other default-on flags here use) would let an empty value or a typo silently RESTORE the bug. Only an explicit off word turns it off; **the allow-list default-on flags carry that hazard today and this one deliberately does not copy it.** See [benchmarks/omr-staged-meter-segments-2026-09/FINDINGS.md](benchmarks/omr-staged-meter-segments-2026-09/FINDINGS.md). |
 | `OMR_WHOLE_REST_INK` | **`1` (on)** | **Staged pipeline only. THE ONE STAGED REPAIR BEHIND A FLAG, BECAUSE IT IS THE ONE THAT DELETES MUSIC.** `staged/export._place_notes` refuses to write a pitched `<note>` where `Q.NOTEHEAD_IS_A_WHOLE_REST` is `True` — Sean's last open Phase 2 observation, *"in bars where it should be just whole note rest in two four. It's showing an actual quarter note"*. **On is the behaviour that shipped 2026-09-15**; the flag was added 2026-09-15 by an independent verification pass so the call is Sean's and reversible in one word, and **nothing measured against the rule**. ⚠️ **VERIFIED INDEPENDENTLY, and the load-bearing artefact reproduced exactly**: the fire set re-derived from the shipped constants over the record is **identical to `adjudicated-25-fires.json`, subject for subject, with zero measurement drift**, and all 25 were re-cropped from the PDF by a second instrument — **25 of 25 are a small filled RECTANGLE hanging at the whole-rest slot, not one oval notehead**. The two witnesses re-derive too (shape **148**, slot **310**, together **25** of 2,347 noteheads), as does the cause: on the Flauti's tacet run `staff/4/0/0` cell1 is `restWhole` at h=0.67/aspect 2.33 and cell3 `noteheadBlackInSpace` at h=0.79/2.22 — **near-identical ink, two class names, a DETECTOR error upstream of GATHER**. ⚠️⚠️ **WHY IT IS FLAGGED ANYWAY: n = 1 document, 1 publisher, 4 pages of ~16**, on the *low-res bitonal* end of the corpus, and FINDINGS §3 records that **two of the six cuts sit on a plateau one step wide or less**. The cuts are the p05/p95 of that document's own 395 `restWhole` glyphs — a derivation rather than a fit, which is **not** the same as generalising. ⚠️⚠️ **DONE 2026-09-16 AND THE CUTS DO NOT TRANSFER — see the section *`OMR_WHOLE_REST_INK` ON THE SECOND PUBLISHER* below, and do not read the rest of this row without it.** On Breitkopf the shipped band describes **52.5%** of that document's own whole rests against Litolff's 89.9%, the witness inverts (`slot 20 / neighbour 5` → **`slot 1 / neighbour 11`**), and of 12 fires **one is a whole rest** against 25 of 25 here. The file still loses **11 spurious notes and no printed music** — but the one fire that WAS printed music is spared by the ownership contest and not by this rule, so *"25 of 25, zero real notes"* is a Litolff figure and must stop being quoted as the safety case. **The flag was left ON and nothing was tuned.** ⚠️ **No OMR-NED figure can settle it**: the metric is symmetric and rewards under-prediction, so it would pay for these deletions either way — the evidence is crops, and a score must never be quoted as the reason to leave this on. ⚠️ `0` restores the pre-2026-09-15 exporter exactly — the verdict stays DECIDED and on the record, only the refusal and its `ink_is_a_whole_rest` count go away, so the evidence is never thrown out with the behaviour. OFF test is a **deny-list** (default-ON), derived and pinned by `test_flag_default_direction.py`. See [benchmarks/omr-note-where-silence-2026-09/FINDINGS.md](benchmarks/omr-note-where-silence-2026-09/FINDINGS.md). |
 | `OMR_METER_TEMPLATE_AT_BAR` | `0` (off) | **Staged pipeline only, and UNPRICED — it is a GATHER change and this container cannot price one.** `gather_meter` hands `locate_time_signature` the HEADER window and nothing else, so a meter CHANGE is read by the DETECTOR alone — the weak reader on the ink it is worst at, which is what produces the Breitkopf `9/4`-for-`9/8` and its five spurious `4/4`. On, one staff's detection names a COLUMN and the template reader is asked of **every staff of that system at that bar, including staves that detected nothing**, over the first **4.0 staff spaces** of the cell (a slice of the measure cell the pipeline already cut — not a second, unpriced cutting path). ⚠️⚠️ **THE BRIEFED ASSUMPTION THAT A DETECTION NAMES A FEW BARS IS FALSE ON A SCAN: 38 of 51 columns (74.5%) on Brahms 1 / Breitkopf p1-3 are candidates** (≥2 staves still leaves 58.8%, ≥3 leaves 45.1%), so candidacy is NOT where the safety is — 525 probes at 20.2 ms ≈ 11 s / 3 pages. ⚠️⚠️ **THE SAFETY IS A CROSS-STAFF CONSENSUS AND IT IS MEASURED ON THE EMPTY-WINDOW HAZARD THE KEY-SIGNATURE FAMILY ALREADY PAID FOR** (*the reader that can say "zero" must never be given an empty window*): over **1,612 mid-staff bar-head windows on ten real scanned pages of two publishers printing NO meter change**, admitted on 1 staff the reader yields **16** spurious columns, on 2 **two**, on 3 **ZERO** — so `METER_TEMPLATE_AT_BAR_MIN_STAVES = 3`. ⚠️ **That quorum is safe AT 4 SPACES AND NOT AT 8** (rate 0.99% / 1.55% / 2.48% at 4 / 6 / 8, and one three-staff false consensus appears at 8): the width and the quorum are ONE safeguard at one operating point, not two independent ones. ⚠️ `min_score` is deliberately NOT moved — the false answers thin SMOOTHLY (16/7/2/1 across 0.50-0.55) with no gap, **and the positive control's own minimum (0.542) sits BELOW the worst false answer (0.6141), so the populations overlap and no score threshold separates them.** Positive control: a real Bravura `3/4` stamped into 225 of the same windows, **225 answered, 225 right** (an UPPER bound — clean ink on a real surround). ⚠️ The false population is **13 of 16 `C`**, recorded and not gated on. ⚠️ Filed under a SEPARATE quantity `Q.METER_TEMPLATE_AT_BAR` because `adjudicate_meter` votes the system's OPENING off every `Q.METER_TEMPLATE` row — the `Q.KEYSIG_TEMPLATE_FIT` precedent — so a mid-staff reading filed there would make a change at bar 9 argue about bar 1. Admission is **GAPS ONLY**, inherited from `adjudicate_key_signature` rather than re-decided. ⚠️ Structural bound, asserted not assumed: this pass can add STAVES to a bar and **never a bar to the page**. Flag-off writes **nothing at all**, so the record is byte-identical. ⚠️⚠️ **ACCURACY IS UNMEASURED IN ONE DIRECTION**: no page in reach prints a mid-staff change, so the false-positive side is measured and **it has never been shown this reads a real one**. See [benchmarks/omr-meter-template-changes-2026-09/FINDINGS.md](benchmarks/omr-meter-template-changes-2026-09/FINDINGS.md). |
+| `OMR_INK` | `0` (off) | **Staged pipeline only. THE INK IS THE POPULATION, AND THE DETECTOR IS ONE CLASSIFIER OVER IT.** `A-DUR-5`, Sean's standing request since 2026-09-09, built 2026-09-17 as the **PRODUCER ONLY** — `Q.INK`, one row per connected piece of a cell's staff-line-erased ink, carrying the box in BOTH frames, the shape, and `ink_detector_coverage` / `ink_explained_by` as an ATTRIBUTE that may be zero. ⚠️⚠️ **IT IS NOT A "BLOB" TIER BESIDE THE DETECTIONS**: until this rung every measurement in GATHER started from a DETECTION, so ink the detector did not fire on produced no row at all — the ABSENT/DECLINED collapse `record.py` exists to prevent, happening to the ink itself. Sean, 2026-09-17: *"ink is ink. There is nothing that should be classified as unseen - only unclassified."* ⚠️⚠️ **NOTHING IS FILTERED** — no size, shape or confidence gate; a one-pixel speck, a staff-line remnant and a barline all get a row, because a threshold at the gather site is a decision taken in the wrong stage and the one kind that cannot be revisited (*"even staff residue should go through the process and hopefully our rules and measurements will determine at the appropriate stage that it is just that"*). ⚠️ **REACH AND COST**: 1,244 rows on Litolff Beethoven 5 p.62 at **1.8 s** and 6,055 on Breitkopf Brahms 1 p.1 at **2.6 s**, against 13-15 s for the detector on the same page; 0 refusals on either. ⚠️ **The cost that is not time is RECORD SIZE**: a row serialises to **529 bytes**, so the layer adds ~**0.6 MB per Litolff page and ~3.1 MB per Breitkopf page** — ~10 MB and ~50 MB over a sixteen-page movement — which is the standing argument for the flag being off until a consumer exists. ✅ **THE PRE-REGISTERED TARGET PASSES: 17 of 17 staves carry a row at the printed `3/4`, 16 of 17 unclassified** (the 17th is covered by notehead boxes — a misclassification, not a reading). ✅ **Against a circular-shift null, UNCLASSIFIED ink aligns exactly as strongly as ALL ink** — 0.63× the columns and 0.43× the rows standing alone, either way — which **reproduces `Q.ONSET_COLUMN`'s own 1.62× / 2.29× from a completely different population** (ink components against note events, on a different document) and was not designed for. The shape arms separate in the predicted order: `vertical` (barlines) 0.04 alone, `mark_sized` 0.42, **`blob` weakest at 0.53**, which is a merge having no well-defined x. ⚠️⚠️ **IT DOES NOT TRANSFER AT FULL STRENGTH AND THE HONEST HEADLINE IS THE PAIR**: Breitkopf reads **0.87 / 0.83**, because its composition INVERTS — **56% specks against Litolff's 1%**, 5.6 components per cell against 30. **Litolff MERGES and Breitkopf SHATTERS, and neither plate gives one row per mark**: the median Litolff cell's largest component holds 46% of its ink, which is why every row carries `ink_n_components` and `ink_share_of_cell` as a MERGE WARNING rather than the merge being repaired. ⚠️ **Staff residue does not come out as residue-shaped rows** (2 of 1,244; 16 of 6,055) — it is glued into the blobs — so Sean's *residue-aligns-with-the-lines* discriminator **could not be tested** and the residue adjudicator is ranked next work with a population to decide over. ⚠️ **NOTHING READS IT, deliberately**: a consumer landing in the same change would move the very numbers used to decide whether the rows are worth having, so all seven always-written detail keys are on `wiring.KNOWN_GAPS` as OPEN. Flag-off is **byte-identical to `origin/main`** (md5 `8f8bf9ee`, positive control +1,244 rows). ⚠️ `readjudicate`/`reexport_arm` are STRUCTURALLY BLIND to it — a GATHER change needs two full re-gathers. ⚠️ **What is NOT established**: accuracy anywhere but the one target; that a row is a MARK; any engraved page at all; any effect on a file. See [benchmarks/omr-ink-gather-2026-09/FINDINGS.md](benchmarks/omr-ink-gather-2026-09/FINDINGS.md). |
 | `OMR_PARTIAL_DYNAMICS` | `off` | **Measured over the 20-row scan gate 2026-09-08 and REFUSED.** `export.measure_dynamics` assembles adjacent `dynamic*` letters into a word and DISCARDS the run whole where it spells none of the 17 in `_DYNAMIC_WORDS` — a mark the detector READ, thrown away on the way out. ⚠️ **The obvious fix — export the run's own text — is refused, because most of what is dropped is not one mark**: on the committed Brahms 1 / Breitkopf transcription 15 of 20 dropped runs are a prefix of NOTHING and the shape is `ppmsf` / `ppzmf`, five letters run together, which no dynamic is. ⚠️ Re-assembling on the MEDIAN letter width instead of the max was tried and is NOT the lever (kept runs 159 → 162, dropped still 20, `ppmsf` intact). So the modes are graded by how much they assert: `complete` exports only what **every surviving completion agrees on** — a lone `s` can only become `sf`/`sfp`/`sfz`, all of which begin `sf`, so nothing is guessed; a lone `m` could be `mf` or `mp`, which agree on nothing further, and stays dropped. `other` adds `<other-dynamics>` carrying the run's own text for a prefix whose completions disagree. A prefix of NOTHING is dropped under every mode. **Priced with `probe/reexport_arm.py`, which re-exports the scan arm's own `.omr.json` files so the transcribe half is held byte-identical: `complete` +15 edits, `other` +30, and NOT ONE ROW BETTER under either.** `complete` adds 19 dynamics for +15 edits, so roughly 4 of 19 paired. ⚠️ The buckets are reported and not used for attribution (`entire measure insert/delete` FALLS while `wrong note` RISES on the two big Beethoven rows — the block diff re-planning around an added symbol). It stays off because the recovery is real ink the metric will not pay for **in an exporter that has no ownership**, and placement is exactly what stops a correctly recovered `sf` from pairing; re-price on the staged path. Flag-off is byte-identical to `main`, verified by md5. See [benchmarks/omr-dynamics-staged-2026-09/FINDINGS.md](benchmarks/omr-dynamics-staged-2026-09/FINDINGS.md). |
 | `OMR_ROSTER_LABELS`   | `0` (off) | **Measured, deliberately dormant — the reach is small and the number says so.** A margin label whose leading characters are gone (`'larinetti in A'`, `'orni in F I II'`) either abstains or, worse, is CAPTURED by a shorter alias inside what survives: `Tromboni Alto e Tenore` cut to `Alto e Tenore` reads as **Tenor**, `Trombone Basso` cut to `mbone Basso` as **Bass voice** — two singers on a Tchaikovsky symphony, at `medium` confidence, invisible to the unmatched-label report, feeding `clef_correction`, the written-range veto and the part→staff join. Widening the lexicon stays refused (an alias is GLOBAL: `orni` admitted for Tchaikovsky is admitted for every score ever read); this narrows the QUESTION instead, matching the surviving tail against the ~10 instruments the **catalog's `works` tier** says the work is scored for (`source_kind: "catalog"`, independent of the truth MusicXML — the `editions` tier is `page`, an OMR output of the same raster, and is refused). Four outcomes, reported apart because the risk differs: **recovered** and **disambiguated** (`Basso.` → Contrabass, the ambiguity the edition-tier work prices at 35 rows) NAME a staff; **vetoed** only removes a name that was already wrong. ⚠️ A truncation is the tail of a WORD — matching across a space would read a truncated `Fl. Alt.` (an ALTO FLUTE) as a trombone via `tr alt` — and ambiguity ABSTAINS (91 distinct tails are owned by two instruments of the Brahms 1 roster alone). ⚠️ **A roster is a POSITIVE list and the parse loses families two ways**: Tchaikovsky 6's `strings` went to `segments_ignored` so its roster names no string at `parse_rate 1.0`, and the parse reads ONE field, so *Egmont*'s `soprano` is nowhere in it — **4 works with real singers admitted no voice family** until families were also read off both RAW fields through `instruments.lookup` per segment. Measured: **20 of 1422 real margin labels change (1.4%)** across 4 of 13 editions, 8 of 223 engraved-fixture labels, and all 28 firings were hand-adjudicated correct. ⚠️ The reference corpus fires 0 BY CONSTRUCTION (those strings carry no work), so the false-positive test is a 1651 × 223 cross-product instead — which is what found `Vier Flöten` → **Piano** (`vier` is a tail of `klavier`) and `Soprano Saxophone` → **Alto** (`soprano` is a tail of `mezzosoprano`); both guards came out of that table and cost none of the 28. ⚠️ Reach limits: 205 of the 1422 labels are on works the `works` tier does not hold (Mahler 5, Messiah), and the engraved fixtures are build products OUTSIDE the store, so the layer is a **no-op on the eleven-work benchmark** unless a harness names the work with `OMR_WORK_ID`. No pooled figure is claimed — musicdiff does not score `<part-name>`. See [benchmarks/omr-roster-constrained-labels-2026-09/FINDINGS.md](benchmarks/omr-roster-constrained-labels-2026-09/FINDINGS.md). |
 
@@ -4407,6 +4436,154 @@ why the roster layer has never had a pooled figure and does not get one here.
 
 ---
 
+## SHAPE, POSITION, IMAGE, RESOLUTION — what we capture about a piece of ink
+
+Sean, 2026-09-17, asked about one family's ink and then said the questions
+should be asked of every kind: *"are we collecting both the ink shape as well
+as the location of the ink on the page? ... since we are removing fine lines
+like the staff, at which stage we are reading the ink of what will become the
+numbers ... I think these questions should be applied to every bit of ink we
+are trying to capture and classify."* A fourth followed — **is the consumer
+getting the resolution the SOURCE actually has?** (`A-INK-2`).
+
+```bash
+python3 -m tools.omr.staged.capture --check   # the per-family table
+python3 benchmarks/omr-capture-facts-2026-09/mutate.py
+```
+
+⚠️ **THE TOOL IS THE COUNT.** Every figure is derived from `record.Q`,
+`adjudicate.REGISTRY`, `evaluate.RULES`, `export.FAMILIES` and the AST of
+`gather.py`; do not quote one from prose. What follows is the PRINCIPLE.
+
+**The exemplar exists for one family and the triad is what makes it work.**
+`Q.GLYPH_BOX` carries a notehead's class WITH the detector's score; a SEPARATE
+row, `Q.NOTEHEAD_STAFF_POSITION`, carries its staff-grid coordinate from a
+DIFFERENT reader with **`score=None`** — a ruler reading is not a guess — and
+`consequences.restate_pitch` combines position + clef with both in its basis.
+**Three quantities in the whole vocabulary are of that kind.**
+
+⚠️⚠️ **A POSITION MAY NOT BE ADDED AS A FIELD ON THE SHAPE ROW, AND THAT IS
+MEASURED, NOT STYLISTIC.** `Evidence.correlated_groups` calls every row from
+one reader on one crop ONE SIGNAL and `tally` takes the group's strongest term,
+so a position hung off the glyph row is **absorbed by that glyph's own detector
+term** (*a 1.5 beside a 3.0 left the contest at 3.0 against 3.0*). A position
+refined onto the shape row is **not a second witness**. It needs its own
+quantity, its own reader and no score — which is why this is a missing
+CATEGORY, and why *"just put it in `detail`"* is already refuted rather than
+untried. Two families have their band offset in exactly that unusable place.
+
+⚠️⚠️ **THERE ARE NO EXEMPTIONS — EVERY FAMILY WITHOUT A POSITION IS A
+FINDING.** Sean, 2026-09-17: *"Theoretically every position can at some point
+contribute even if that is not with our current pipeline. We are still
+discovering what works best and for testing we need to hold on to everything
+because we can't yet know all of what will be helpful."* The test is **not**
+whether a family needs a position to read itself, and **not** whether recording
+one composes into a useful prior — two earlier framings of this list were
+withdrawn for allowing exactly those. `KNOWN_GAPS` holds reasons a gap EXISTS,
+never reasons one is acceptable, and a test bans exemption language outright.
+⚠️ **SCOPED TO DISCOVERY**, and a later reader must not take it as permanent:
+the cost to watch is **0.6 MB/page (Litolff) and 3.1 MB/page (Breitkopf)** for
+the ink layer alone, against records already in the hundreds of MB.
+
+⚠️ **A SIDE READ OFF THE CLASS NAME IS NOT A RULER.** `articStaccatoAbove` /
+`fermataBelow` state a side and three families record it — but it is DERIVED
+FROM the classification, so it fails together with the reading it would
+arbitrate, and above/below is a BIT where the question is a DISTRIBUTION (how
+many spaces clear of the staff a staccato sits *on this publisher's plates*).
+⚠️ `placement` is NOT the same and is reported apart — it is derived from the
+BAND by measurement, the opposite provenance.
+
+⚠️ **LOCATION IS NOT POSITION, and that grading is not an exemption either.** A
+staff-space float composes across documents; a raw `bbox_page_px` does not,
+because pages differ in size and dpi; and a CANONICAL-CELL box does not either
+— `Q.ONSET_COLUMN` already paid for that, since two staves' canonical frames
+coincide BY CONSTRUCTION. A family carrying only page pixels has a LOCATION and
+not a POSITION, reported as a second, distinct fact.
+
+⚠️⚠️ **AND NOTHING ACCUMULATES ACROSS DOCUMENTS.** Sean: *"We need every bit of
+information gathered and stored in one place where the different stages can
+continue to learn."* There is no such place — `data/` holds dossiers (ENCODING
+facts), a file catalog and training sets, and no store of measured geometry. ⚠️
+**`publisher`, the conditioning variable that aggregate needs, appears in NO
+code in `gather.py`** (the one hit is a word in a docstring) while the catalog
+carries it on **231 of 235 editions, 212 distinct** — on `entries`, NOT on the
+`editions` map, so a reader that went to `editions` would conclude it was
+absent. Neither the store nor the priors are proposed here.
+
+⚠️⚠️ **"ERASED" IS NOT ONE IMAGE, AND MOST READERS CHOOSE AT RUNTIME.**
+`Observation.frame` names a COORDINATE frame, never the RASTER. There are
+THREE erased rasters — `staff_line_removal`'s binary `image_no_staff`,
+`header_ink_mask`'s OWN erasure from the intact cell, and not-erased — and the
+shape `cell.image_no_staff if ... is not None else cell.image` appears in six
+readers including the ones that read the METER and the KEY SIGNATURE. **Which
+raster answered is a runtime fact the row does not carry**; only `Q.STEM` and
+`Q.BEAM_STROKE` record it. ⚠️ `gather_key_signature` runs two readers on ONE
+crop on OPPOSITE rasters, so its two verdicts are not derived from the same
+pixels and nothing says so. ⚠️ **None of this questions the standing rule** —
+*erase for the CV consumer, bound the search for everyone else, NEVER erase for
+the detector* (measured at 7-13 pooled reading points).
+
+⚠️⚠️ **THE RENDER DPI IS A CONSTANT AND THE SOURCE'S NATIVE RESOLUTION IS READ
+BY NOBODY** (`A-INK-2`). `render_page(..., dpi=dpi)` takes its DPI from an
+argument **no call site derives from the PDF**, and the two kinds of source
+want opposite things from it: a SCANNED plate has a native resolution fixed at
+scan time (above it is upsampling, below it discards plate), a VECTOR page has
+none. ⚠️ **The classifier already exists and already opens the dictionary** —
+`input_domain._classify_page`, `OMR_WEIGHT_ROUTING`'s shipped domain test,
+reads `bbox` and `Filter` out of the image dict and leaves `width`/`height`
+untouched. ⚠️⚠️ **DO NOT QUOTE `OMR_IMGSZ`'s *larger is NOT better* AGAINST
+THIS**: that is a fact about the DETECTOR's letterboxing and anchors, and the
+tool's `resolution` column separates `letterboxed` from `direct_pixels` —
+derived from each entry point's signature — so one reader's measured result
+cannot be spent on thirteen others. ⚠️ The p.62 *16x the pixels, zero new
+structure* figure cuts ONE way: it says rendering ABOVE native buys nothing,
+and says nothing about a plate whose native resolution sits BELOW what we
+render. **The reach figure needs the library and has not been taken.**
+
+⚠️ **What a missing position fact cost once**: Litolff Beethoven 5 p.62's `3/4`
+is **one barline broken into two fragments**, `timeSig3` + `timeSig4` at the
+cell's left edge, 0.35 and 0.40 staff spaces wide. A meter's placement is rigid
+and `time_signature_locator` already relies on it — INSIDE a template search,
+as a constraint that is thrown away. **Ranked next, and it is a GATHER change**,
+so pricing it needs two full re-gathers.
+
+⚠️ **The ranked work after it is the TWO-PASS READ, scoped and NOT built**: a
+thin glyph is BROKEN by erasure where the lines crossed it and MERGED INTO the
+lines if they are kept, so find the component on the ERASED image and measure
+its ink inside that box on the ORIGINAL. `gather_ink` does the first half only.
+**What would falsify it**: if the recovered ink cannot be told from residue the
+erasure removed correctly, it adds noise rather than strokes — and *if residue
+does not separate, that is the more important finding.*
+
+⚠️ **THE INSTRUMENT FINDING: `gather_coverage` reports five quantities as
+having NO READER** — `ARC_BOX`, `ARTICULATION_MARK`, `FERMATA_MARK`,
+`ORNAMENT_MARK`, `REST` — because `gather_glyph_families` passes `reader`,
+`frame` and `score` through a `**common` dict and that walker reads literal
+keywords only. All five carry `READERS.DETECTOR` and a real confidence. Reusing
+it would have reported five families as capturing no shape confidence.
+
+⚠️⚠️ **AND COMMITTING THE TOOL BROKE `wiring --check` — THE FOURTH MEMBER OF A
+FAMILY `wiring` ALREADY DOCUMENTS.** An auditor NAMES a detail key without
+CONSUMING it, exactly as a gap list, a test and a benchmark probe do — but it
+lives in the SAME tree as the real consumers, so no tree test separates it, and
+its mention of `staff_lines_erased` turned two live gaps STALE. Modules now
+declare `DERIVED_CHECK = True`, read from the AST so a comment cannot opt a real
+consumer out. ⚠️ It fails LOUD: a forgotten marker makes entries report STALE,
+which `--check` catches; it cannot silently close a gap. ⚠️ **The control was
+run before the conclusion** — `wiring` exits 0 on the base and 1 with the module
+added, while `gather_coverage` exits 2 on BOTH, which is what pre-existing looks
+like.
+
+⚠️ **NOT ESTABLISHED**: nothing was gathered, exported or measured on a page;
+`UNSCORED` and `READER_RASTER` are DECLARED (guarded, so a new entry is loud —
+but a WRONG classification would pass); the raster answer is the reader's
+STATIC code, so nothing here says how often a fallback takes which branch; and
+**whether a position fact would HELP any family is unmeasured.** Full reasons
+are in the module's own `KNOWN_GAPS`, one per family — each a reason the gap
+EXISTS, never a reason it is acceptable.
+
+---
+
 ## The central score library
 
 Every score the project uses lives in one place with its provenance attached:
@@ -5920,6 +6097,135 @@ events here against 1,706 in the null), ranked by its bar's own density.
 
 ---
 
+## The INK is the population — `A-DUR-5` built, and the record's own p.62 corrected
+
+2026-09-17, `Q.INK` + `gather_ink` behind `OMR_INK`, **default OFF**, PRODUCER
+ONLY. Sean's standing request since 2026-09-09, and **the frame changed twice
+while it was being built**. Findings:
+[benchmarks/omr-ink-gather-2026-09/FINDINGS.md](benchmarks/omr-ink-gather-2026-09/FINDINGS.md).
+
+⚠️⚠️ **IT IS NOT A "BLOB" TIER BESIDE THE DETECTIONS — GATHER'S POPULATION
+SHOULD BE THE INK.** Sean, 2026-09-17: *"We can only gather what we see. We may
+or may not be able to classify it correctly initially - or at all - but ink is
+ink. There is nothing that should be classified as unseen - only
+unclassified."* Until this rung **every** measurement in GATHER started from a
+DETECTION, so ink the detector did not fire on produced **no row at all** —
+the ABSENT/DECLINED collapse `record.py` exists to prevent, happening to the
+ink itself, at the base of the pipeline. `Q.INK` makes the classification an
+ATTRIBUTE (`ink_detector_coverage`, `ink_explained_by`) that may be zero and
+may later be revised.
+
+⚠️⚠️ **AND NOTHING IS FILTERED**, which was the second correction: *"even staff
+residue should go through the process and hopefully our rules and measurements
+will determine at the appropriate stage that it is just that - staff
+residue."* No size, shape or confidence gate. A threshold at the gather site is
+a decision taken in the WRONG STAGE and the one kind that cannot be revisited —
+**a row that was never created is evidence no later rule can reconsider.** Four
+mutation arms pin the absence of a filter. The honest metric is therefore a
+COMPOSITION, never a false-positive rate.
+
+✅ **THE PRE-REGISTERED TARGET PASSES.** Litolff Beethoven 5 p.62 prints a `3/4`
+on every staff; **17 of 17 staves carry an ink row at it and 16 of 17 are
+unclassified** (the 17th is covered by notehead boxes — a misclassification of
+the meter, not a reading of it). Its page x drifts **13.9 px, 0.88 staff
+spaces**, down the plate, which is why the count is taken in page pixels.
+
+✅ **UNCLASSIFIED INK ALIGNS EXACTLY AS STRONGLY AS ALL INK** — against a
+circular-shift null that keeps every within-staff interval and destroys only
+the cross-staff phase, both read **0.63× the columns and 0.43× the rows
+standing alone**. ⚠️ That **reproduces `Q.ONSET_COLUMN`'s own 1.62× / 2.29×
+from a different population** — ink components against note events, on a
+different document — which is the strongest corroboration here and was not
+designed for. The shape arms separate in the predicted order: `vertical`
+(barlines) **0.04** alone, `mark_sized` 0.42, `blob` 0.53.
+
+⚠️⚠️ **IT DOES NOT TRANSFER AT FULL STRENGTH AND THE COMPOSITION INVERTS.**
+Breitkopf Brahms 1 p.1 reads **0.87 / 0.83**, because **56% of its rows are
+specks against Litolff's 1%** — 30 components per cell against 5.6.
+**Litolff MERGES and Breitkopf SHATTERS, and neither plate gives one row per
+mark**: the median Litolff cell's largest component holds **46%** of its ink,
+and `remove_staff_lines` clears only a median 55% there. The merge is
+**REPORTED, not repaired** (`ink_n_components`, `ink_share_of_cell`), because
+deciding where one mark ends is not GATHER's business.
+
+⚠️ **SEAN'S RESIDUE DISCRIMINATOR COULD NOT BE TESTED.** Residue does not come
+out as residue-shaped rows — **2 of 1,244 and 16 of 6,055** — because the
+surviving line ink is CONNECTED to everything else and lives inside the blobs.
+What the shape arms do show is that the more merged a row is, the less it
+aligns, which is consistent with the claim and is not it. **The residue
+adjudicator is ranked next work and now has a population to decide over**; what
+it still lacks is the cell's own staff-line rows in the row's frame, which is
+one more detail key rather than a new quantity.
+
+⚠️⚠️ **THE PRE-REGISTERED TEST CORRECTED THE RECORD, AND THE CORRECTION REACHES
+THE METER THREAD.** `A-DUR-5`, the 2026-09-09 handoff and
+`omr-staged-meter-boundary-2026-09/FINDINGS.md` all put p.62's printed `3/4` at
+**cell 8**. Cropping the plate puts it at the head of **CELL 6**, right after
+the double barline under *Tempo I.* — and every `timeSig*` detection the
+pipeline has at cell 8 sits at `x_canonical = 0`, **0.33-0.40 staff spaces wide
+and 1.17-2.17 tall: a BARLINE**, at the head of an empty rest bar. Staff 11's
+`timeSig3` + `timeSig4` — the pair that makes the celebrated `3/4` — are two
+vertically-adjacent fragments of ONE barline, and `_meter_from_digits` needs
+two stacked digits. **Cell 6 fires ZERO `timeSig*` on any of the 17 staves.**
+⚠️ This **inverts a correction that was itself a correction**:
+`omr-staged-meter-carry-2026-09/FINDINGS.md` calls the cell-6 bar-math anomaly
+*"two cells early"* and concludes *"the glyph is the precise signal and the
+arithmetic is the noisy corroborator"* — under the crops the bar math was
+pointing at the right bar. ⚠️ **The BAR NUMBER is NOT settled here** (the page
+prints 147 and segments 13 cells; the reference encodes the change at 155) and
+needs a hand-verified `works.json` window row. The crops are committed under
+`out/print/` — **not `crops/`, which `.gitignore:112` excludes**, the defect
+CLAUDE.md already records a commit message committing.
+
+⚠️ **NOTHING READS `Q.INK`, DELIBERATELY.** A consumer landing in the same
+change would move the very numbers used to decide whether the rows are worth
+having. All seven always-written detail keys are on `wiring.KNOWN_GAPS` as OPEN
+entries. ⚠️⚠️ **Making the tool SAY so exposed TWO blind spots in it.** (a) Its
+DETAIL question reads the AST for LITERAL keyword names, so a key passed as
+`**detail` never enters the WRITTEN inventory, and a key the tool does not know
+is written can never be reported unread — checked exactly:
+**`Q.GLYPH_BOX.bbox_page_px`, `.x_center_page` and `.category` are absent from
+all 138 written pairs**, because `gather_detections` passes them as a splat.
+Recorded, and left OPEN. (b) ⚠️⚠️ **A BENCHMARK PROBE
+COUNTED AS A CONSUMER, and it was caught by `--check` going RED in the full
+suite having been green standalone an hour earlier**: the moment this work's
+own probes were committed, FOUR of the seven `Q.INK` entries read as STALE —
+closed — because a file under `benchmarks/` had read them **to take the
+measurement those entries exist to describe.** *The instrument that measures a
+gap is not a consumer that closes it*, for the same reason a test naming a key
+is not and the tool's own gap list is not — **the third instance of a family it
+already documents twice**, and `_tree_of`'s own docstring already argues the
+distinction for the PRODUCER question. **Fixed**: `details()` excludes the
+benchmark tree. ⚠️⚠️ **And the first draft of that fix's comment claimed it was
+confined to those four keys, written BEFORE the measurement and false** — the
+exclusion surfaces **SEVEN MORE keys whose only reader anywhere is a probe**
+(`Q.BRACKET_BLOCK.n_blocks`, `Q.DIRECTION_WORD.gate` / `.readers_run`,
+`Q.GLYPH_BAND_DISTANCE.own`, `Q.GLYPH_LADDER.found`,
+`Q.MARGIN_LABEL.y_center_px`, `Q.STAFF_SKEW.thickness_px`). **Not new faults —
+newly visible ones**, each now inventoried with its reason. `--check` 61 / 0 /
+0 against main's 47 / 0 / 0, which balances as 47 + 7 + 7.
+
+⚠️ Controls: flag-off is **byte-identical to `origin/main`** (md5 `8f8bf9ee`,
+positive control +1,244 rows, memoised detector so jitter cannot enter); all
+four derived checks exit 0 **and were re-run with `origin/main`'s own three
+files checked out in place, where they also exit 0** — *"checks fail after a
+change"* and *"checks were already failing"* look identical in a terminal;
+mutation battery **19 arms, 19 red**, restore verified, with a positive control
+in the same class. ⚠️ Its first run had one survivor and it was a real gap —
+`ink_n_components = 1` is an EQUIVALENT MUTANT on a fixture whose true value is
+1. ⚠️ A probe defect the second publisher found immediately: columns keyed on
+the **cell index alone**, and a cell index RESTARTS per system, so a two-system
+page pooled unrelated bars and read as *"this publisher's ink does not line
+up"*.
+
+⚠️ **What is NOT established**: accuracy anywhere but the one target (1,227 of
+1,244 rows on that page are unadjudicated, and all 6,055 on Brahms); that a row
+is a MARK; any ENGRAVED page at all; any effect on a file. **`readjudicate` and
+`reexport_arm` are STRUCTURALLY BLIND to this** — a GATHER change needs two
+full re-gathers, and a zero from either is not evidence about it.
+
+---
+
 ## Instrument identity — three readers, cheapest first
 
 `contextual._labels_for_page` runs them in order and only pays when the free
@@ -6876,6 +7182,7 @@ All in `backend/.env` (local) or `backend/.env.production` (prod):
 | `OMR_METER_SEGMENTS` | **`1` on (default since 2026-09-09, Sean's call)** → staged pipeline only: the exporter reads the meter in force at each BAR out of `Q.METER`'s `segments`, so a printed mid-system meter change can reach a file at all. Engraved 4 printed / 4 found / 1 → 0 false. ⚠️ On a SCAN its false segments now reach the file too (one page: `<time>` 41 → 138) — priced, and overridden rather than resolved. `0` restores the per-run meter. See the knobs table. |
 | `OMR_WHOLE_REST_INK` | **`1` on (default, and the behaviour that shipped 2026-09-15)** → staged pipeline only: refuse to write a pitched `<note>` where the record says the ink is a WHOLE REST. Notes 1618 → 1596, 22 removed / 0 added, on 25 of 25 hand-adjudicated crops. ⚠️ Flagged because it is the one staged repair that DELETES music, on n = 1 document with two of six cuts off a plateau. `0` restores the pre-2026-09-15 exporter exactly, leaving the verdict decided and on the record. See the knobs table. |
 | `OMR_METER_TEMPLATE_AT_BAR` | `0` off (default) → staged pipeline only: ask the TEMPLATE reader at candidate mid-staff bar heads, of every staff of the system, and admit a reading only where 3 staves agree on one meter at one bar. Measured on 1,612 empty windows over 2 publishers: 16 / 2 / **0** spurious columns at a 1 / 2 / 3-staff quorum. UNPRICED — a GATHER change needs two full re-gathers. See the knobs table. |
+| `OMR_INK` | `0` off (default) → staged pipeline only: `Q.INK`, one row per connected piece of a cell's ink, named or not — the base layer, with the detector's classification as an ATTRIBUTE. **Nothing is filtered** and **nothing reads it**, both deliberately. 1,244 rows / 1.8 s on one page; 17 of 17 staves get a row at a printed meter the detector fires on none of. Alignment against a null holds on one publisher (0.63 / 0.43) and is much weaker on a second (0.87 / 0.83). See the knobs table. |
 | `OMR_INFER` | `0` off (default) → the FOURTH STAGE, INFER: after EVALUATE and before EXPORT, it collapses a NARROWED verdict to one of that reader's OWN candidates using evidence EVALUATE structurally cannot look at — the other staves of the same system. **TWO rules since 2026-09-17** (`collapse_duration_by_column` 7, `collapse_duration_to_barline` 10 — the barline rule refuses any witness whose length reached it through `Q.METER`, so it never reads the meter it would otherwise need). Every inference is LABELLED (`decider="infer:…"`), names what it supersedes, and leaves the narrowing in the record. ⚠️ Off means ABSENT, not quiet: `pipeline` omits the `inference` key entirely, so a flag-off record is byte-identical to a tree without the stage. 7 inferred / 6 reach the file on Litolff Beethoven 5 p1-4; n = 1 document and NO accuracy check against the print. See the *INFER, the fourth stage* section. |
 | `OMR_PARTIAL_DYNAMICS` | `off` (default) → a dynamic letter run that spells no known word is dropped whole; `complete` exports only what every surviving completion agrees on (`s` → `sf`); `other` adds `<other-dynamics>`. Measured over the 20-row gate: +15 / +30 edits, NOT ONE ROW BETTER. See the knobs table. |
 | `OMR_ROSTER_LABELS` | `0` off (default) → resolve margin labels against the work's catalog roster: recover a truncated name, disambiguate `Basso.`, veto a singer on a work with no singers. Measured; 1.4% of real margin labels. See the knobs table. |

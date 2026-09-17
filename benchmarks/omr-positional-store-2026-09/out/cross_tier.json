@@ -1,0 +1,254 @@
+{
+ "reach": {
+  "observed": {
+   "litolff": 8486,
+   "breitkopf": 12932
+  },
+  "true": {
+   "beethoven5": 651,
+   "brahms1": 1317
+  }
+ },
+ "true_separation": {
+  "beethoven5": {
+   "0.1": {
+    "observed": 2.3438,
+    "null_mean": 0.4624,
+    "null_sd": 0.01676,
+    "margin_sd": 112.3,
+    "n": 651
+   },
+   "0.25": {
+    "observed": 1.9657,
+    "null_mean": 0.3557,
+    "null_sd": 0.01593,
+    "margin_sd": 101.1,
+    "n": 651
+   },
+   "0.5": {
+    "observed": 1.4997,
+    "null_mean": 0.212,
+    "null_sd": 0.01847,
+    "margin_sd": 69.7,
+    "n": 651
+   }
+  },
+  "brahms1": {
+   "0.1": {
+    "observed": 1.3656,
+    "null_mean": 0.4569,
+    "null_sd": 0.01743,
+    "margin_sd": 52.1,
+    "n": 1317
+   },
+   "0.25": {
+    "observed": 1.0001,
+    "null_mean": 0.228,
+    "null_sd": 0.01359,
+    "margin_sd": 56.8,
+    "n": 1317
+   },
+   "0.5": {
+    "observed": 0.7423,
+    "null_mean": 0.1232,
+    "null_sd": 0.00861,
+    "margin_sd": 71.9,
+    "n": 1317
+   }
+  }
+ },
+ "families": {
+  "notehead": {
+   "true": {
+    "n": 652,
+    "median": 3.97,
+    "iqr": 4.39
+   },
+   "observed": {
+    "breitkopf": {
+     "n": 3337,
+     "median": 2.92,
+     "iqr": 7.97
+    },
+    "litolff": {
+     "n": 2347,
+     "median": 3.22,
+     "iqr": 8.07
+    }
+   },
+   "max_abs_median_delta": 1.05
+  },
+  "rest": {
+   "true": {
+    "n": 245,
+    "median": 2.52,
+    "iqr": 0.0
+   },
+   "observed": {
+    "breitkopf": {
+     "n": 1028,
+     "median": 3.88,
+     "iqr": 1.63
+    },
+    "litolff": {
+     "n": 646,
+     "median": 2.76,
+     "iqr": 1.0
+    }
+   },
+   "max_abs_median_delta": 1.36
+  },
+  "accidental": {
+   "true": {
+    "n": 179,
+    "median": 2.02,
+    "iqr": 3.26
+   },
+   "observed": {
+    "breitkopf": {
+     "n": 733,
+     "median": 1.96,
+     "iqr": 6.86
+    },
+    "litolff": {
+     "n": 256,
+     "median": 3.7,
+     "iqr": 13.16
+    }
+   },
+   "max_abs_median_delta": 1.68
+  },
+  "beam": {
+   "true": {
+    "n": 108,
+    "median": 3.0,
+    "iqr": 8.54
+   },
+   "observed": {
+    "breitkopf": {
+     "n": 1672,
+     "median": 6.29,
+     "iqr": 15.35
+    },
+    "litolff": {
+     "n": 536,
+     "median": 0.18,
+     "iqr": 14.12
+    }
+   },
+   "max_abs_median_delta": 3.29
+  },
+  "augmentation_dot": {
+   "true": {
+    "n": 108,
+    "median": 2.45,
+    "iqr": 3.79
+   },
+   "observed": {
+    "breitkopf": {
+     "n": 656,
+     "median": 1.16,
+     "iqr": 9.96
+    },
+    "litolff": {
+     "n": 35,
+     "median": 3.61,
+     "iqr": 9.74
+    }
+   },
+   "max_abs_median_delta": 1.29
+  },
+  "tie": {
+   "true": {
+    "n": 99,
+    "median": 1.42,
+    "iqr": 9.11
+   },
+   "observed": {
+    "breitkopf": {
+     "n": 1658,
+     "median": 3.6,
+     "iqr": 7.82
+    },
+    "litolff": {
+     "n": 414,
+     "median": 2.95,
+     "iqr": 8.41
+    }
+   },
+   "max_abs_median_delta": 2.18
+  },
+  "slur": {
+   "true": {
+    "n": 83,
+    "median": 0.28,
+    "iqr": 9.51
+   },
+   "observed": {
+    "breitkopf": {
+     "n": 549,
+     "median": -1.15,
+     "iqr": 17.81
+    },
+    "litolff": {
+     "n": 365,
+     "median": -0.71,
+     "iqr": 15.38
+    }
+   },
+   "max_abs_median_delta": 1.43
+  },
+  "clef": {
+   "true": {
+    "n": 79,
+    "median": 4.27,
+    "iqr": 0.01
+   },
+   "observed": {
+    "breitkopf": {
+     "n": 169,
+     "median": 4.01,
+     "iqr": 1.41
+    },
+    "litolff": {
+     "n": 111,
+     "median": 4.4,
+     "iqr": 2.45
+    }
+   },
+   "max_abs_median_delta": 0.26
+  },
+  "flag": {
+   "true": {
+    "n": 58,
+    "median": 4.98,
+    "iqr": 2.26
+   },
+   "observed": {
+    "breitkopf": {
+     "n": 371,
+     "median": 3.87,
+     "iqr": 5.99
+    },
+    "litolff": {
+     "n": 49,
+     "median": 4.84,
+     "iqr": 10.68
+    }
+   },
+   "max_abs_median_delta": 1.11
+  },
+  "barline": {
+   "true": {
+    "n": 23,
+    "median": -2.77,
+    "iqr": 9.17
+   },
+   "observed": {}
+  }
+ },
+ "agreement": {
+  "within_one_space": 7,
+  "total_compared": 9
+ }
+}

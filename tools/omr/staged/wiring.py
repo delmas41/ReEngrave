@@ -303,20 +303,136 @@ KNOWN_GAPS: Dict[str, str] = {
         "record of which side of it a row came from."),
     "DETAIL Q.BEAM_STROKE.staff_lines_erased":
         "as `Q.<loop-bound>.staff_lines_erased`.",
+    # ── DETAIL, surfaced 2026-09-17 when a BENCHMARK PROBE stopped counting
+    # as a consumer (see the exclusion in `details()`).
+    #
+    # ⚠️⚠️ NOT NEW FAULTS — NEWLY VISIBLE ONES. Each key below is written by
+    # `gather.py` and named, in the whole tree, only by a probe under
+    # `benchmarks/`. A measuring instrument reading a value is not a pipeline
+    # consuming it, so before the exclusion every one of these read as closed.
+    # This is the same family as the two exclusions above (a test, and this
+    # module's own gap list) and it is the third instance.
+    "DETAIL Q.BRACKET_BLOCK.n_blocks": (
+        "how many DISTINCT bracket blocks the system was cut into, carried on "
+        "every staff's row. `adjudicate_staff_group` reads the block index "
+        "and not the count — so a consumer cannot currently ask *did this "
+        "system resolve into one family or six*, which is the question "
+        "`BRACKET_COLUMN_MIN_EVIDENCE` exists to make answerable (without "
+        "that floor a 25-staff Bruckner system manufactured ELEVEN groups)."),
+    "DETAIL Q.DIRECTION_WORD.gate": (
+        "why `OMR_DIRECTION_TEXT_SCAN_GATE` skipped this page. ⚠️ It is the "
+        "reason string for an OUT_OF_SCOPE abstention, so the ABSTENTION is "
+        "consumed and the explanation is not — a reader can tell the word "
+        "reader did not run and cannot tell whether it was skipped, absent or "
+        "refused without reading the note."),
+    "DETAIL Q.DIRECTION_WORD.readers_run": (
+        "which OCR rungs actually ran for this word, beside "
+        "`winning_reader`. The ranked next step of the direction work is to "
+        "put the two rungs on the record as INDEPENDENT readings; this is "
+        "half of what that needs and nothing reads it yet."),
+    "DETAIL Q.GLYPH_BAND_DISTANCE.own": (
+        "whether THIS candidate is the staff the glyph was detected in — the "
+        "contested/uncontested split. `adjudicate_glyph_owner` re-derives the "
+        "same fact from the subject rather than reading it, so the two could "
+        "disagree and nothing would say so."),
+    "DETAIL Q.GLYPH_LADDER.found": (
+        "how many ledger rungs were actually seen, against `expected`. The "
+        "VALUE is the boolean `found == expected`, so a consumer can weigh "
+        "'complete ladder' and cannot weigh 'three of four' — and the legacy "
+        "rule this is derived from is COMPLETENESS ONLY *because* counting "
+        "was measured worse (a ghost's one rung WAS the real note's own). "
+        "⚠️ Recorded so that refusal stays checkable, not so it is reversed."),
+    "DETAIL Q.MARGIN_LABEL.y_center_px": (
+        "where in the margin this label sits. The label→staff assignment "
+        "happens inside the reader (`_assign`, on block centroids) and the "
+        "record keeps the result; this is the evidence that decision was made "
+        "on, unread — which is the shape that let a whole-crop OCR block be "
+        "assigned to one staff for months before block HEIGHT was recorded."),
+    "DETAIL Q.STAFF_SKEW.thickness_px": (
+        "the staff's measured printed line thickness, beside its wander. "
+        "`staff_line_removal` measures thickness AGAIN, per cell, from the "
+        "cell's own ink — deliberately, since it varies 0.06-0.31 spaces "
+        "across the corpus — so this page-level figure is a second reading "
+        "that nothing compares against the first."),
+
+    # ── DETAIL, Q.INK — a PRODUCER shipped deliberately without a consumer
+    #
+    # ⚠️⚠️ THESE SEVEN ARE OPEN BY DESIGN AND MUST NOT BE READ AS AN OVERSIGHT.
+    # `gather_ink` (flag `OMR_INK`, default OFF) is the base ink layer Sean
+    # asked for in `ASSUMPTIONS.md` A-DUR-5; it was built as the PRODUCER
+    # ONLY, and no decision was wired to it in the same change, deliberately.
+    # The reason is that the deliverable of that job is a REACH MEASUREMENT —
+    # does unnamed ink line up across staves, against a null — and a consumer
+    # landing in the same change would make that measurement unfalsifiable,
+    # since a rule reading the rows would move the very numbers being used to
+    # decide whether the rows are worth having.
+    #
+    # ⚠️ THE KEYS ARE SPELLED OUT AS LITERAL KWARGS AT THE EMIT SITE SO THIS
+    # TOOL CAN SEE THEM, and that is itself a finding: this question reads the
+    # AST for LITERAL keyword names, so a key passed as `**detail` never
+    # enters the WRITTEN inventory at all -- and a key this tool does not know
+    # is written can never be reported unread, whoever reads it.
+    #
+    # ⚠️ CHECKED EXACTLY, because the first wording of this comment said
+    # "`gather_detections`' `bbox_page_px` has never been reported", which is
+    # true and is the wrong grain: the bare NAME does appear, from gatherers
+    # that spell it out. The blind spot is per `(quantity, key)` PAIR, which
+    # is what this question reports in -- `Q.GLYPH_BOX.bbox_page_px`,
+    # `Q.GLYPH_BOX.x_center_page` and `Q.GLYPH_BOX.category` are absent from
+    # all 138 written pairs, because that gatherer passes them as
+    # `**box_detail`. Widening the scan to follow a dict built in the same
+    # function is ranked next work and was NOT taken here: it belongs to
+    # whoever owns this tool, and it would surface findings across several
+    # gatherers at once.
+    #
+    # Each entry LEAVES this list the day a decision reads it.
+    "DETAIL Q.INK.ink_bbox_canonical": (
+        "the component's box in the CELL's own canonical frame, beside the "
+        "page-frame one. Kept because a cell-local consumer (a residue rule, "
+        "which compares a component against this cell's own staff-line rows) "
+        "wants the frame the rows are measured in, and converting back from "
+        "page pixels would reintroduce the rounding the cell already paid."),
+    "DETAIL Q.INK.ink_area_px": (
+        "ink pixels in the component, as against the AREA OF ITS BOX. The "
+        "pair is the discriminator a residue rule needs and neither half is "
+        "enough: a staff-line remnant and a beam are both wide and flat, and "
+        "what separates them is how densely they fill the rectangle."),
+    # ⚠️⚠️ FOUR `Q.INK` KEYS LEFT THIS LIST ON 2026-09-17, AND THAT IS THE
+    # TOOL WORKING. `ink_fill`, `ink_n_components`, `ink_detector_coverage`
+    # and `ink_explained_by` were all recorded here as *gathered and read by
+    # nothing*; `tools/omr/positional_store.py` now reads all four --
+    # `ink_explained_by` most pointedly, since it is a LIST of the classes
+    # overlapping a component and is the record's one existing piece of
+    # many-to-many evidence. A CLOSED gap must LEAVE, so they are gone rather
+    # than annotated. `ink_share_of_cell` stays: nothing reads it yet.
+    "DETAIL Q.INK.ink_share_of_cell": (
+        "this component's share of its cell's ink — the per-row half of "
+        "`ink_n_components`. A component holding 0.9 of a cell is a merge, "
+        "whatever its shape says."),
+
     "DETAIL Q.STAFF_LINES.page_staff_index": (
         "the RASTER's own staff index — the join key back to `pws.staves`. "
         "Nothing downstream joins that way today; every consumer goes "
         "through the `Subject`. A debugging affordance."),
     "DETAIL Q.WEDGE_BOX.page_staff_index":
         "as `Q.STAFF_LINES.page_staff_index`.",
-    "DETAIL Q.WEDGE_BOX.y_center_page": (
-        "⚠️ NAMED ONLY BY A TEST, which is why it appears here at all: this "
-        "question excludes test trees, because a test asserting a key exists "
-        "is not a consumer of it. The page-pixel centre a cross-staff "
-        "question would need — the frame `Q.ONSET_COLUMN` paid to learn "
-        "about — gathered and, in production, unread."),
-    "DETAIL Q.WEDGE_BOX.staff_bottom_line_page":
-        "as `Q.WEDGE_BOX.y_center_page`.",
+    # ⚠️⚠️ `Q.WEDGE_BOX.y_center_page` LEFT THIS LIST ON 2026-09-17 AND IT WAS
+    # **NOT** GENUINELY CLOSED — recorded here because removing it silently
+    # would turn a known gap into a false "someone reads it".
+    # This question credits a key by its LEAF NAME, matched textually anywhere
+    # under `tools/` (see the scan below), and `positional_store.py` reads
+    # `y_center_page` off `Q.GLYPH_BOX` and `Q.INK` rows. It never touches a
+    # `Q.WEDGE_BOX` row. So the hit is a COINCIDENCE OF A SHARED KEY NAME, the
+    # textual-classifier limit `health.py` warns about in its own output
+    # (*"the shape classifier is TEXTUAL"*), and the entry could not be kept
+    # without failing `--check`. **The wedge's page-pixel centre is still
+    # gathered and still unread in production.** Making this question
+    # quantity-aware rather than leaf-aware is the repair; it is a change to
+    # the tool, not to the gap list, and it is not taken here.
+    "DETAIL Q.WEDGE_BOX.staff_bottom_line_page": (
+        "the staff's own bottom line in page pixels — the origin a hairpin's "
+        "band offset is measured from. Gathered and, in production, unread; "
+        "the page-pixel frame `Q.ONSET_COLUMN` paid to learn about."),
     "DETAIL Q.CELL_STAFF_SPACE.half_step": (
         "the half-step the spacing was doubled from. The duration reader "
         "consumes the SPACING; the half-step is the intermediate it came "
@@ -384,6 +500,26 @@ def _rel(path: pathlib.Path) -> str:
         return str(path.relative_to(_ROOT))
     except ValueError:
         return str(path)
+
+
+def _declares_derived_check(path: pathlib.Path) -> bool:
+    """Does this module declare itself a DERIVED CHECK rather than a consumer?
+
+    ⚠️ READ FROM THE AST, not by a substring, so a mention of the name in a
+    comment or a docstring cannot opt a real consumer out. The marker has to
+    be a module-level `DERIVED_CHECK = True` assignment.
+    """
+    tree = _parse(path)
+    if tree is None:
+        return False
+    for node in tree.body:
+        if (isinstance(node, ast.Assign)
+                and any(isinstance(t, ast.Name) and t.id == "DERIVED_CHECK"
+                        for t in node.targets)
+                and isinstance(node.value, ast.Constant)
+                and node.value.value is True):
+            return True
+    return False
 
 
 def _tree_of(path: pathlib.Path) -> str:
@@ -887,6 +1023,39 @@ def details() -> Dict[str, Any]:
             # through the back door.
             if _tree_of(path) == "test":
                 continue
+            # ⚠️⚠️ AND NOR IS A BENCHMARK PROBE — THE THIRD INSTANCE OF THE
+            # SAME FAMILY, FOUND 2026-09-17 WHEN `Q.INK` LANDED. That
+            # quantity ships as a PRODUCER with no consumer, deliberately, and
+            # all seven of its keys were written into `KNOWN_GAPS` to say so.
+            # The moment its measuring probes were committed, `--check` went
+            # RED reporting FOUR of the seven as STALE — closed — because a
+            # probe under `benchmarks/` had read them to take the measurement
+            # the gap entries exist to describe. **The instrument that
+            # measures a gap is not a consumer that closes it.**
+            #
+            # ⚠️ THE ARGUMENT WAS ALREADY WRITTEN DOWN IN THIS MODULE AND IS
+            # APPLIED NOWHERE. `_tree_of`'s own docstring says collapsing the
+            # three trees "would have reported `roster` as fed the moment any
+            # probe passed one" -- and it was written for the PRODUCER
+            # question, which has since MOVED OUT to `tools/omr/no_producer.py`
+            # (this module's docstring says so). Checked rather than assumed:
+            # `grep -n benchmark tools/omr/no_producer.py` returns one line and
+            # it is a path in a comment, so that tool does not make the
+            # distinction either. So before this line `_tree_of` was reachable
+            # from exactly one caller -- the `test` exclusion below -- and the
+            # `benchmark` branch it defines was dead. ⚠️ Whether the producer
+            # question WANTS it is a separate job and is not decided here.
+            #
+            # ⚠️⚠️ AND THE FIRST DRAFT OF THIS COMMENT CLAIMED THE CHANGE WAS
+            # CONFINED TO THE FOUR `Q.INK` KEYS THAT EXPOSED IT. IT IS NOT,
+            # AND THE CLAIM WAS WRITTEN BEFORE THE MEASUREMENT — the exact
+            # shape CLAUDE.md records as *asserting a mechanism without
+            # measuring it*. Run: it surfaces **SEVEN more keys**, listed in
+            # `KNOWN_GAPS` below, every one of them a detail key whose ONLY
+            # reader anywhere in the tree is a benchmark probe. They were
+            # not new faults; they were invisible.
+            if _tree_of(path) == "benchmark":
+                continue
             # ⚠️⚠️ AND NOR IS THIS MODULE'S OWN GAP LIST — FOUND THE HARD
             # WAY, BY WATCHING THIS QUESTION GO TO ZERO. Writing each unread
             # key into `KNOWN_GAPS` with its reason put every one of those
@@ -899,6 +1068,30 @@ def details() -> Dict[str, Any]:
             # none" by accident. A gap list naming a key is not a consumer of
             # it, for the same reason a test naming one is not.
             if path.resolve() == pathlib.Path(__file__).resolve():
+                continue
+            # ⚠️⚠️ NOR IS A SIBLING INSTRUMENT — THE FOURTH INSTANCE OF THE
+            # SAME FAMILY, FOUND 2026-09-17 WHEN `staged.capture` LANDED.
+            # That module AUDITS detail keys: it asks, per notation family,
+            # whether a row records which raster it was measured on, so it
+            # necessarily names `staff_lines_erased` in its own source. It
+            # lives in `tools/omr/staged/`, so `_tree_of` calls it
+            # PRODUCTION — and the moment it was committed, the two
+            # `staff_lines_erased` entries below read as STALE and `--check`
+            # went red on a key still consumed by nothing.
+            #
+            # The three exclusions above are one rule and this is its fourth
+            # application: **a gap list, a test, a benchmark probe and an
+            # auditor all NAME a key without CONSUMING it.** What separates
+            # them from a real reader is not the tree they live in — this one
+            # lives in the same tree as the consumers — so the module DECLARES
+            # itself with a module-level `DERIVED_CHECK = True`.
+            #
+            # ⚠️ IT FAILS LOUD, WHICH IS WHY A MARKER IS ACCEPTABLE HERE. A
+            # new instrument that forgets it does not silence this question;
+            # it makes the affected entries report STALE, which `--check`
+            # fails on. The dangerous direction — an instrument silently
+            # closing a gap — is the one the marker's absence cannot cause.
+            if _declares_derived_check(path):
                 continue
             try:
                 text = path.read_text()

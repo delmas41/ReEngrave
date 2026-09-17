@@ -1,0 +1,44 @@
+── BASELINE ──────────────────────────────────────────────────
+  unmutated tree: GREEN  25 passed in 0.15s
+
+── ARMS ──────────────────────────────────────────────────────
+  red                      the_flag_defaults_ON
+                           -> test_the_default_writes_no_row_at_all
+  red                      the_flag_is_a_deny_list_so_a_typo_turns_it_ON
+                           -> test_an_allow_list_leaves_a_typo_off
+  red                      the_flag_is_not_consulted_at_all
+                           -> test_the_default_writes_no_row_at_all
+  red                      it_reads_the_cell_with_its_staff_lines_still_in
+                           -> test_a_cell_with_no_erased_image_refuses_by_name
+  red                      a_size_gate_is_applied_at_the_gather_site
+                           -> test_a_single_pixel_gets_a_row
+  red                      a_shape_gate_drops_the_long_flat_residue
+                           -> test_a_staff_line_remnant_gets_a_row_and_is_not_marked_bad
+  red                      a_span_detection_explains_the_ink_it_encloses
+                           -> test_a_SPAN_detection_explains_nothing
+  red                      the_span_cut_is_restated_instead_of_imported
+                           -> test_the_span_cut_is_the_direction_readers_own_constant
+  red                      overlapping_detections_are_summed_not_unioned
+                           -> test_two_overlapping_detections_do_not_over_count
+  red                      the_page_box_is_DEFAULTED_to_the_cell_frame
+                           -> test_a_cell_with_no_page_frame_DECLINES_it
+  red                      the_unit_is_the_nominal_staff_space_not_the_cells_own
+                           -> test_the_unit_is_the_CELLS_own_staff_space
+  red                      the_canonical_box_is_dropped
+                           -> test_the_box_is_reported_in_BOTH_frames
+  red                      an_empty_cell_says_nothing_at_all
+                           -> test_a_blank_cell_abstains_rather_than_saying_nothing
+  red                      a_missing_erased_image_falls_through_silently
+                           -> test_a_cell_with_no_erased_image_refuses_by_name
+  red                      ink_indices_collide_with_the_detectors_own
+                           -> test_ink_indices_sit_past_the_detector_and_the_cv_rung
+  red                      the_merge_warning_is_not_written
+                           -> test_a_bridge_makes_two_marks_one_row_and_the_row_admits_it
+  red                      share_of_cell_is_computed_against_this_component
+                           -> test_share_of_cell_ink_is_per_row_and_sums_to_one
+  red                      it_runs_before_the_detections_exist
+                           -> test_gather_calls_it_after_detection
+  red                      it_never_writes_an_observation
+                           -> test_the_positive_control_writes_rows
+
+19 of 19 arms RED; restore VERIFIED

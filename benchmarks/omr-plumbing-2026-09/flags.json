@@ -1,0 +1,353 @@
+{
+ "on": [
+  "OMR_BRACKET_COLUMNS",
+  "OMR_CHOIR_GROUPING",
+  "OMR_DIRECTION_TEXT",
+  "OMR_LABEL_MERGE_QUALITY",
+  "OMR_LEFT_EDGE_SPLIT",
+  "OMR_METER_CARRY",
+  "OMR_METER_FROM_BARS",
+  "OMR_METER_SEGMENTS",
+  "OMR_MOVEMENT_REFERENCE",
+  "OMR_ROSTER",
+  "OMR_SLOT_STITCH",
+  "OMR_WHOLE_REST_INK"
+ ],
+ "off": [
+  "OMR_ARC_RECLASS",
+  "OMR_CONTEST_DUMP",
+  "OMR_CV_HAIRPINS",
+  "OMR_DIRECTION_TEXT_SCAN_GATE",
+  "OMR_INFER",
+  "OMR_INSTRUMENT_CLEF_DEFAULT",
+  "OMR_LINEUP_SWAP_SPLIT",
+  "OMR_METER_TEMPLATE_AT_BAR",
+  "OMR_ROSTER_CLEF",
+  "OMR_ROSTER_LABELS",
+  "OMR_SCORE_LANGUAGE",
+  "OMR_SURYA_KEEP_ALIVE"
+ ],
+ "sites": {
+  "OMR_LABEL_MERGE_QUALITY": {
+   "file": "tools/omr/contextual.py",
+   "line": 541,
+   "default": "1",
+   "op": "NotIn",
+   "members": [
+    "",
+    "0",
+    "false",
+    "no",
+    "off"
+   ],
+   "default_on": true
+  },
+  "OMR_ROSTER_CLEF": {
+   "file": "tools/omr/contextual.py",
+   "line": 1575,
+   "default": "0",
+   "op": "In",
+   "members": [
+    "1",
+    "on",
+    "true",
+    "yes"
+   ],
+   "default_on": false
+  },
+  "OMR_INSTRUMENT_CLEF_DEFAULT": {
+   "file": "tools/omr/contextual.py",
+   "line": 1103,
+   "default": "0",
+   "op": "In",
+   "members": [
+    "1",
+    "on",
+    "true",
+    "yes"
+   ],
+   "default_on": false
+  },
+  "OMR_ARC_RECLASS": {
+   "file": "tools/omr/export.py",
+   "line": 2149,
+   "default": "0",
+   "op": "In",
+   "members": [
+    "1",
+    "on",
+    "true",
+    "yes"
+   ],
+   "default_on": false
+  },
+  "OMR_SLOT_STITCH": {
+   "file": "tools/omr/export.py",
+   "line": 3670,
+   "default": "1",
+   "op": "NotIn",
+   "members": [
+    "",
+    "0",
+    "false",
+    "no",
+    "off"
+   ],
+   "default_on": true
+  },
+  "OMR_MOVEMENT_REFERENCE": {
+   "file": "tools/omr/movement_reference.py",
+   "line": 137,
+   "default": "1",
+   "op": "NotIn",
+   "members": [
+    "",
+    "0",
+    "false",
+    "no",
+    "off"
+   ],
+   "default_on": true
+  },
+  "OMR_LINEUP_SWAP_SPLIT": {
+   "file": "tools/omr/movement_reference.py",
+   "line": 224,
+   "default": "0",
+   "op": "In",
+   "members": [
+    "1",
+    "on",
+    "true",
+    "yes"
+   ],
+   "default_on": false
+  },
+  "OMR_ROSTER": {
+   "file": "tools/omr/roster.py",
+   "line": 140,
+   "default": "1",
+   "op": "NotIn",
+   "members": [
+    "",
+    "0",
+    "false",
+    "no",
+    "off"
+   ],
+   "default_on": true
+  },
+  "OMR_SCORE_LANGUAGE": {
+   "file": "tools/omr/score_language.py",
+   "line": 438,
+   "default": "0",
+   "op": "In",
+   "members": [
+    "1",
+    "on",
+    "true",
+    "yes"
+   ],
+   "default_on": false
+  },
+  "OMR_SURYA_KEEP_ALIVE": {
+   "file": "tools/omr/staff_labels_surya.py",
+   "line": 93,
+   "default": "",
+   "op": "In",
+   "members": [
+    "1",
+    "true",
+    "yes"
+   ],
+   "default_on": false
+  },
+  "OMR_METER_CARRY": {
+   "file": "tools/omr/staged/adjudicators/rhythm.py",
+   "line": 1016,
+   "default": "1",
+   "op": "NotIn",
+   "members": [
+    "",
+    "0",
+    "false",
+    "no",
+    "off"
+   ],
+   "default_on": true
+  },
+  "OMR_METER_FROM_BARS": {
+   "file": "tools/omr/staged/adjudicators/rhythm.py",
+   "line": 1144,
+   "default": "1",
+   "op": "NotIn",
+   "members": [
+    "",
+    "0",
+    "false",
+    "no",
+    "off"
+   ],
+   "default_on": true
+  },
+  "OMR_METER_SEGMENTS": {
+   "file": "tools/omr/staged/export.py",
+   "line": 132,
+   "default": "1",
+   "op": "NotIn",
+   "members": [
+    "",
+    "0",
+    "false",
+    "no",
+    "off"
+   ],
+   "default_on": true
+  },
+  "OMR_WHOLE_REST_INK": {
+   "file": "tools/omr/staged/export.py",
+   "line": 182,
+   "default": "1",
+   "op": "NotIn",
+   "members": [
+    "",
+    "0",
+    "false",
+    "no",
+    "off"
+   ],
+   "default_on": true
+  },
+  "OMR_METER_TEMPLATE_AT_BAR": {
+   "file": "tools/omr/staged/gather.py",
+   "line": 2045,
+   "default": "0",
+   "op": "In",
+   "members": [
+    "1",
+    "on",
+    "true",
+    "yes"
+   ],
+   "default_on": false
+  },
+  "OMR_DIRECTION_TEXT_SCAN_GATE": {
+   "file": "tools/omr/staged/gather.py",
+   "line": 2550,
+   "default": "0",
+   "op": "In",
+   "members": [
+    "1",
+    "on",
+    "true",
+    "yes"
+   ],
+   "default_on": false
+  },
+  "OMR_DIRECTION_TEXT": {
+   "file": "tools/omr/staged/gather.py",
+   "line": 2638,
+   "default": "1",
+   "op": "NotIn",
+   "members": [
+    "",
+    "0",
+    "false",
+    "no",
+    "off"
+   ],
+   "default_on": true
+  },
+  "OMR_INFER": {
+   "file": "tools/omr/staged/infer.py",
+   "line": 125,
+   "default": "0",
+   "op": "In",
+   "members": [
+    "1",
+    "on",
+    "true",
+    "yes"
+   ],
+   "default_on": false
+  },
+  "OMR_LEFT_EDGE_SPLIT": {
+   "file": "tools/omr/system_grouping.py",
+   "line": 160,
+   "default": "1",
+   "op": "NotIn",
+   "members": [
+    "",
+    "0",
+    "false",
+    "no",
+    "off"
+   ],
+   "default_on": true
+  },
+  "OMR_CHOIR_GROUPING": {
+   "file": "tools/omr/system_grouping.py",
+   "line": 215,
+   "default": "",
+   "op": "NotIn",
+   "members": [
+    "0",
+    "false",
+    "no",
+    "off"
+   ],
+   "default_on": true
+  },
+  "OMR_BRACKET_COLUMNS": {
+   "file": "tools/omr/system_grouping.py",
+   "line": 523,
+   "default": "",
+   "op": "NotIn",
+   "members": [
+    "0",
+    "false",
+    "no",
+    "off"
+   ],
+   "default_on": true
+  },
+  "OMR_CV_HAIRPINS": {
+   "file": "tools/omr/transcribe.py",
+   "line": 3274,
+   "default": "0",
+   "op": "In",
+   "members": [
+    "1",
+    "on",
+    "true",
+    "yes"
+   ],
+   "default_on": false
+  },
+  "OMR_CONTEST_DUMP": {
+   "file": "tools/omr/transcribe.py",
+   "line": 3286,
+   "default": "0",
+   "op": "In",
+   "members": [
+    "1",
+    "on",
+    "true",
+    "yes"
+   ],
+   "default_on": false
+  },
+  "OMR_ROSTER_LABELS": {
+   "file": "tools/omr/work_roster.py",
+   "line": 136,
+   "default": "0",
+   "op": "In",
+   "members": [
+    "1",
+    "on",
+    "true",
+    "yes"
+   ],
+   "default_on": false
+  }
+ }
+}

@@ -1,0 +1,126 @@
+═══ GATHER VOCABULARY ═══
+
+─── 1. REACH: what the vocabulary IS ───
+  detector class space         208 (168 distinct names)
+  ...what gather_coverage audits 146   ⚠️ a 146-name SNAPSHOT of an older release
+  record.Q declared            78
+  record.Q observed by GATHER  44
+  non-detector readers         10
+      CATALOG         1 quantities  ROSTER_ENTRY
+      CV_HAIRPINS     1 quantities  WEDGE_BOX
+      CV_HEADER       2 quantities  KEYSIG_CLEF_FIT, KEYSIG_RUN_POSITION
+      CV_LINES        2 quantities  BEAM_STROKE, STEM
+      CV_LOCATOR      1 quantities  CLEF_LOCATED
+      DOSSIER         2 quantities  CLEF_SEED, DOSSIER_FACT
+      GEOMETRY       15 quantities  BARLINE_COLUMN, BRACKET_BLOCK, CELL_BOX, CELL_STAFF_SPACE ...
+      SURYA           1 quantities  DIRECTION_WORD
+      TEMPLATE        3 quantities  KEYSIG_TEMPLATE_FIT, METER_TEMPLATE, METER_TEMPLATE_AT_BAR
+      TEXT_LAYER      1 quantities  MARGIN_LABEL
+
+  corpus: 1745 of 1745 .mxl parsed, 152 with >= 8 parts, 0 failed
+
+─── 2. CASE (a): a detector class no quantity names ───
+  families over the FULL 168 classes: 36, of which unnamed 16
+  families over the 146-class snapshot: 35, of which unnamed 12
+  ⚠️ families the snapshot cannot see at all: arpeggio, articulation, leger, numeral, tuple
+  ⚠️ families FAMILY_Q has no entry for: arpeggio, articulation, leger, numeral, tuple
+      accidental        8  accidentalDoubleFlat, accidentalDoubleSharp, accidentalFlat, accidentalFlatSmall ...
+      arpeggiato        1  arpeggiato
+      arpeggio          1  arpeggio
+      articulation      5  articulationAccent, articulationMarcatoAbove, articulationMarcatoBelow, articulationStaccato ...
+      brace             1  brace
+      caesura           1  caesura
+      coda              1  coda
+      grace             5  graceNoteAcciaccatura, graceNoteAcciaccaturaStemDown, graceNoteAcciaccaturaStemUp, graceNoteAppoggiaturaStemDown ...
+      keyboard          2  keyboardPedalPed, keyboardPedalUp
+      leger             1  legerLine
+      numeral          11  numeral, numeral0, numeral1, numeral2 ...
+      ottava            1  ottavaBracket
+      repeat            1  repeatDot
+      segno             1  segno
+      strings           2  stringsDownBow, stringsUpBow
+      tuple             2  tuple, tupleBracket
+
+─── 3. CASE (b): ink with NO category anywhere ───
+  ranked by occurrences in the 152 orchestral encodings
+  element                     orch  files       all   why
+  dashes                      2709     39      4974   the dotted continuation after `cresc.` / `dim.` that says how far it runs; no 
+  figured-bass                2010      7      3652   the continuo figures under a bass line.  Same caveat as <harmony>: real, and m
+  wavy-line                   1647     56      2363   a trill's continuation squiggle; the trill HEAD is classed (103) and its exten
+  detached-legato             1303      4      1990   tenuto AND staccato on one note.  Both marks ARE classed separately, so this i
+  rehearsal                    605     30       650   a boxed letter or number above the top staff.  `numeral` (189) is the COARSE n
+  ending                       558     29      1128   a VOLTA bracket (1., 2.) -- not in the 208, no CV rung, and its absence means 
+  inverted-mordent             491     10       860   ⚠️ THE 208 HOLD `ornamentMordent` (106) AND NO INVERTED FORM.  The two are dif
+  metronome                    351     90      1439   a note glyph plus `= 120`.  No class; the note glyph would be read as a notehe
+  open-string                  347      6       347   the small `o` over a note; no class
+  breath-mark                  271     11       841   the comma over a staff; `caesura` (82) is the RAILROAD TRACKS, a different mar
+  bracket                      168      6       377   a direction BRACKET (the horizontal line with end hooks over a passage).  Dist
+  slide                        112      7       130   glissando's unlabelled twin; same gap
+  accidental-mark               86     11       108   a small accidental printed ABOVE an ornament.  The accidental classes exist; w
+  glissando                     64      3        72   a straight line between two noteheads, usually with the word `gliss.`; no clas
+  harmony                       44      4     10613   a chord symbol.  Real ink, and ⚠️ NOT an orchestral one: it is counted here be
+  stopped                       35      5        35   the `+` over a note -- a HORN stopping mark, so it is an orchestral mark and n
+  open                          19      2        20   the `o` marking an OPEN brass note, the partner of <stopped>; no class
+  non-arpeggiate                15      4       173   the square bracket forbidding a roll; no class
+  other-notation                10      2        68   by definition unnamed
+  soft-accent                    2      1        72   no class
+  pluck                          1      1         1   no class
+  other-ornament                 0      0         1   by definition unnamed
+  measure-numbering              0      0         9   ⚠️ MusicXML states the CONVENTION, not the number; the printed measure number 
+  other-direction                0      0        66   by definition unnamed
+  doit                           0      0         1   a jazz brass rip upward; no class
+  scoop                          0      0         1   a jazz brass scoop; no class
+  string                         0      0        25   the roman numeral naming a string; no class
+  other-articulation             0      0         1   by definition unnamed
+  mute                           0      0         1   `con sordino` as a TECHNICAL mark rather than as words.  The direction_text ru
+
+  POSITIVE CONTROL: 61 element kinds ARE covered (detector class or CV rung), 4,249,398 orchestral occurrences
+  29 uncovered kinds OCCUR; 0 adjudicated uncovered and never seen in this corpus (reported, not counted)
+
+─── 4. CASE (c): the category exists and is the wrong SHAPE ───
+  accidental                249181 orch   accidentalFlat/Natural/Sharp/DoubleSharp/DoubleFlat (+Small), 8 fine classes
+      CASE (c), and ALSO case (a): `FAMILY_TO_Q['accidental']` is None, so the glyph reaches the log only as an anonymous `Q.GLYPH_BOX` -- and the fact it states is a SCOPE holding to the barline (`transcribe.py:2210`), which no point-addressed row can carry
+  staff-lines                   49 orch   staff (134, 207) + GEOMETRY (Q.STAFF_LINES)
+      CASE (c): `Q.STAFF_LINES` is FIVE y positions and `staff_detector` finds five-line staves, so a one-line percussion rule has no shape to be filed as -- CLAUDE.md records 11 real one-line staves dropped on Mahler 5
+  multiple-rest                  0 orch   restHBar (123, 202) + numeral* (144-153)
+      CASE (c): a MULTI-MEASURE REST is ONE mark standing for N BARS, and both halves are classed -- the H-bar and the digits above it.  What is missing is that the record's finest address is a CELL, i.e. one bar, so nothing can say `this glyph IS bars 12-27`.  On a conductor's page this is the commonest span of all
+
+  4b. THE STRUCTURAL FORM: a SPAN has nowhere to be filed
+  record.Kind = document, page, system, staff, cell, glyph
+  a Kind naming a range: False
+  span-shaped occurrences in orchestral encodings: 587,590
+      slur                 268,888
+      tied                 178,597
+      tuplet                83,570
+      wedge                 50,823
+      dashes                 2,709
+      wavy-line              1,647
+      ending                   558
+      octave-shift             438
+      bracket                  168
+      slide                    112
+      glissando                 64
+      pedal                     16
+
+─── 4c. CASE (b) the element census is BLIND to: header ink ───
+  <part-group> over 1745 files: 2,457  (<group-barline> 645)
+      group-symbol=bracket        718   NO CLASS -- case (b)
+      group-symbol=square         296   NO CLASS -- case (b)
+      group-symbol=brace          166   class `brace` (0, 136), NO QUANTITY -- case (a)
+      group-symbol=line            24   NO CLASS -- case (b)
+      group-symbol=none            12   no symbol is printed -- not ink
+
+─── 5. CONTROL: can direction_text stand in for a class? ───
+  the shipped lexicon holds 140 terms
+      lookup('A'       ) -> REFUSED
+      lookup('B'       ) -> REFUSED
+      lookup('C'       ) -> REFUSED
+      lookup('12'      ) -> REFUSED
+      lookup('120'     ) -> REFUSED
+      lookup('Allegro' ) -> Allegro
+      lookup('cresc.'  ) -> cresc.
+      lookup('dolce'   ) -> dolce
+
+─── 6. CONTROLS ───
+  unaccounted elements (must be 0): 0  
+  matcher contradicts a NO_CATEGORY verdict (must be 0): 0  []
