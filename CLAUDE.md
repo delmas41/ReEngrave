@@ -57,6 +57,22 @@ including the **two GATHER divergences it found and deliberately did not
 change**, and the **`ff` 47 → 39 that is an unadjudicated COST and not a win**.
 
 ⚠️ **START HERE IF YOU ARE PICKING THIS UP:**
+[docs/handoff-2026-09-17-infer-rule-two.md](docs/handoff-2026-09-17-infer-rule-two.md)
+— **the newest, and a DIFFERENT THREAD from the meter chain below it**: INFER
+gained a second rule (`collapse_duration_to_barline`, no flag, **7 → 17** on
+Litolff and **25 → 41** on Breitkopf), taking the 191-note bucket the first
+rule declined by design. ⚠️ Its guard is what makes it a rule rather than a
+shortcut — a witness whose length reached it THROUGH `Q.METER` is refused, so
+it never reads the meter it would otherwise need. ⚠️⚠️ **It also found the
+stage's OWN self-check silently circular since the 09-15 flip** — it restated
+`OMR_METER_FROM_BARS`'s default as OFF against an allow-list while the owning
+predicate is ON against a deny-list, so the check printed `ok` while the flag
+was on. Repaired by importing the predicate; **the self-check now correctly
+REFUSES under current defaults**, which is an open item. ⚠️ **The registered
+rules had NO unit fixture at all** — either could have stopped firing with the
+suite green. ⚠️ Its §9 names one un-isolated suite failure, reported rather
+than omitted. **The meter chain continues below and is untouched by it.**
+
 [docs/handoff-2026-09-16-abstains-and-misreads-was-already-there.md](docs/handoff-2026-09-16-abstains-and-misreads-was-already-there.md)
 — **the newest, and short: a pointer, not a session.** ⚠️⚠️ **THE CLAIM BELOW
 THAT NEITHER DOCUMENT ON THIS MACHINE ABSTAINS *AND* MISREADS WAS REFUTED THE
