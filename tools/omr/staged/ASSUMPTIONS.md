@@ -1584,6 +1584,93 @@ with no weights file, which today **fails the run**.
 
 ---
 
+## A-INK — the representation of ink itself
+
+### A-INK-1 · ⚠️⚠️ UNBUILT AND WANTED — one piece of ink may belong to MORE THAN ONE THING
+
+**SEAN'S IDEA, 2026-09-17, recorded so it is not lost** — the same standing
+shape as `A-DUR-5`, which sat here unbuilt for a week and then landed.
+
+> *"Would it make sense to take every dot from an image and turn it into a
+> format where every spot that is black becomes a digital point of reference.
+> Then each dot of the dpi could get labeled as belonging to a category. Right
+> now we are trying to get a computer to see but it doesn't see, it is 1's and
+> 0's. Why not create a format of digitizing the ink where each black dpi can
+> hold metadata like where it is, what it is connected to, things like that."*
+
+> *"Each dot being able to belong to multiple things feels like it could be
+> really helpful."*
+
+**THE CORE CLAIM, separated from the storage question.** The valuable part is
+not per-pixel storage — it is **MULTI-MEMBERSHIP**. Today a piece of ink
+belongs to whichever reader claimed it, and that makes one dilemma structurally
+unsolvable: **erase the staff lines and a glyph loses ink wherever a line
+crossed it; keep them and every mark on the staff merges into one component.**
+Measured on a clean engraved page at 600 dpi: **91 components for the whole
+page, the largest 683,000 pixels** — with lines in, there is essentially ONE
+blob. *"This pixel is staff line AND notehead"* dissolves it. No amount of
+better classification can, because the current representation cannot form the
+sentence.
+
+⚠️ **THE GRAIN IS THE COMPONENT, NOT THE PIXEL, AND THE ARITHMETIC SAYS SO.**
+That page is 34.8M pixels, **0.82M of them black** — per-pixel metadata is
+~820,000 records a page. Per-component it is 91 (clean engraving) to 6,055
+(Breitkopf scan), and every pixel inherits from its component: a **~9,000x**
+reduction that loses nothing for this purpose. `gather_ink` already computes
+exactly these components. What it does NOT carry is membership in more than
+one thing.
+
+**Why it is worth taking seriously rather than filing as a nice idea:** every
+time this project moved a symbol from *classify the box* to *measure the ink*
+it won — stems and beams to classical CV, clefs by geometry, key signatures by
+slot fit, meters by template. This is that move one level deeper. And the
+2026-09-17 p.62 error was a REPRESENTATION failure, not a model one: a barline
+broken in two became a `3/4` because nothing recorded that the ink crossed the
+whole staff.
+
+⚠️⚠️ **WHAT WOULD KILL IT, MEASURED BEFORE THE EXPERIMENT WAS DISPATCHED.**
+The ceiling may be the plate. Litolff `984073` is **1-bit at 600 dpi native**
+(`extract_image`: 2897x3813, colorspace 1, 0 vector drawings) — thresholded
+before we ever received it, with no grey to recover. Components carrying a
+HOLE (the counter that makes a `4` a `4`, a `3` a `3`, a hollow notehead
+hollow) number **31 at 300 dpi and the same 31 at 1200** — the information
+SATURATES at 300 and rendering above native is pure upsampling. **If the
+scanner's own threshold already merged the `3` into the `4`, no representation
+un-merges them.**
+
+**The experiment, with its criterion pre-registered** (`CRITERION.md` committed
+alone and first, on Sean's instruction not to waste time): on p.62 **cell 6**,
+where the printed `3/4` stands on all 17 staves and the detector fires **zero**
+`timeSig*`, can multi-membership read it — and does it REFUSE the cell-8
+barline that currently fools `_meter_from_digits`? Three scores, reported
+apart: the reading (uncertain), the refusal (equally important — a method that
+reads a meter at both cells has learned nothing), and **the mechanical half**
+(does correspondence between components-with-lines and components-without
+recover ink that either image alone loses). ⚠️ **The mechanical half is the one
+that generalises, and a positive there is a real result even if the digits
+fail** — it is what would let every thin glyph keep its strokes.
+
+⚠️ **NOT to be built as a second gather mode on spec.** This project already
+runs staged-beside-legacy and the 2026-09-17 plumbing audit established that
+the staged path has **no production consumer**; two half-built pipelines is a
+measured failure mode here, not a hypothetical.
+
+### A-INK-2 · ⚠️ DPI is a CONSTANT and should be a property of the SOURCE
+
+Found alongside A-INK-1 and unbuilt. `OMR_DPI` is 300 on the backend and 600
+on the CLI, applied to every document. But a scanned PDF has a NATIVE
+resolution fixed at scan time — `extract_image` returns it in one call — and
+rendering above it interpolates: **16x the pixels for zero new structure**,
+measured. Rendering BELOW it throws away plate that is there. A vector PDF has
+no native resolution at all and genuinely renders sharper.
+
+⚠️ `OMR_WEIGHT_ROUTING` already classifies input domain by exactly this signal
+(0 vector drawings = scan) and is measured and shipped, so the classifier
+exists; nothing reads the native resolution. ⚠️ The measured *"larger is NOT
+better"* result for `OMR_IMGSZ` is a fact about the DETECTOR's letterboxing and
+anchors — **it is not a fact about the image**, and must not be quoted against
+giving a GEOMETRY consumer more pixels.
+
 ## ⚠️ Things this build found that are NOT assumptions
 
 Recorded here because they are the opposite — facts discovered while building,
