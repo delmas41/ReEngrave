@@ -215,6 +215,20 @@ misreads badly but abstains nowhere. **The two halves of the hazard have never
 been present in one document.** That is a CORPUS problem, and no record on this
 machine can solve it.
 
+⚠️⚠️ **CORRECTED THE SAME DAY, PR #39, MERGED — THAT LAST SENTENCE WAS WRONG
+AND WAS REFUTED BY LOOKING, NOT BY GATHERING.** `p0p3` (Breitkopf Brahms 1
+mvt 1) has had both halves the whole time, stable in 11 of 11 committed arms
+across 5 generations: `system/0/0` reads `C` (4/4) where the dossier says 6/8,
+and `system/3/0` abstains, `carried_from: system/0/0`, refused at support
+**−8.0** with `bars_agree 0 / disagree 9`. **It still does not price the
+flip** — the newer finding is narrower and sharper: the BARS arm on that same
+system reaches length **3.0 at +7.0** (which IS 6/8) and abstains
+`bars_name_a_length_without_a_form`, because the only system it could borrow a
+*spelling* from is the one that misread `C`. **The blocker is the
+form-borrowing rule, not a missing corpus.** See
+[docs/handoff-2026-09-16-abstains-and-misreads-was-already-there.md](handoff-2026-09-16-abstains-and-misreads-was-already-there.md)
+and `benchmarks/omr-meter-abstain-and-misread-2026-09/FINDINGS.md`.
+
 ⚠️ **Two instruments were wrong, and one of them is quoted in CLAUDE.md.**
 `probe/bar_fill.py`'s `--bar-beats` **defaulted to 2.0** — Litolff's 2/4 — so
 on a 6/8 document it reported 96.3% OVERFULL / 0.6% exact, with 684 bars
@@ -318,8 +332,24 @@ with a provenance note saying so. **Nothing was re-derived or re-worded.**
 
 ## 9. WHAT IS WAITING FOR SEAN
 
-1. **`OMR_METER_CARRY`** — still off on **n**, and now blocked on a CORPUS
-   rather than a measurement (§6). Nothing on this machine settles it.
+1. **`OMR_METER_CARRY`** — still off, and ⚠️ **NOT blocked on a corpus; that
+   claim was refuted the same day and §6 carries the correction.** This entry
+   said *"nothing on this machine settles it"* while §6 above already said the
+   opposite — the document contradicted itself in the section headed *what is
+   waiting for Sean*, which is the one most likely to be read as a work order.
+   **Where it actually stands:** the blocker is the **form-borrowing rule**
+   (the bars reach length 3.0 at +7.0 and cannot SPELL it, because the only
+   system to borrow a spelling from is the one that misread `C`), and the
+   evidence FOR the flip is now the strongest it has been —
+   `local_arm.sh` on Litolff p1-3 takes systems decided **1 of 5 → 5 of 5** and
+   bars that add up **54.4% → 81.2%** like-for-like, with **298 wrong→exact and
+   0 exact→wrong**. ⚠️ **What is still missing is one CELL, not a document:**
+   a **VOTED** misread propagating across many systems. Brahms `p0p3` has the
+   voted misread but only 2 systems; Litolff p1-3 runs across a movement but
+   its misreads are SUPPRESSED by the coverage gate before the carry sees them.
+   **The experiment that closes it is named**: the arm on `p0p3` with
+   `--bar-beats 3.0`. See
+   `benchmarks/omr-meter-corroboration-2026-09/out/local/RUN_2026-09-16_litolff-p1-p3.md`.
 2. **`OMR_WHOLE_REST_INK`** — ANSWERED for the default (**stays ON**, §8) and
    OPEN for the hardening: *the glyph must stand inside its own staff* trades
    11 useful Breitkopf deletions for 11 fewer wrong-reason fires, and **wants a
