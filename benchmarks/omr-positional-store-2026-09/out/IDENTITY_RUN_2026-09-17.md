@@ -308,3 +308,29 @@ DESCRIPTION is true; the nine undocumented flags, two of which
 (`OMR_MOVEMENT_REFERENCE`, `OMR_LABEL_MERGE_QUALITY`, plus `OMR_ROSTER`) are
 **default-ON and described in no table**, which is the same hazard as
 `OMR_INK`'s waiting to be paid.
+
+## 9. ⚠️ TWO RECORDED SHELL HAZARDS, BOTH HIT IN THIS SESSION, BOTH CAUGHT BY READING OUTPUT
+
+Worth logging together, because they are the same lesson in two costumes and
+CLAUDE.md already names both.
+
+1. **zsh does not word-split an unquoted `$m`.** Re-running the eight derived
+   checks as `for m in "staged.capture --check" …; do python3 -m tools.omr.$m`
+   reported **exit 1 on all eight** — it ran `-m "tools.omr.staged.capture
+   --check"`, one module name containing a space. The recorded form is *"a
+   clean, believable zero that was the shell"*; this is a clean, believable
+   **all-red**, which is worse, since eight simultaneous failures right after a
+   merge read as a broken tree. Named by `git diff HEAD -- tools/` being empty.
+2. **`| tail` swallows the exit code.** `pytest … --timeout=1800 | tail -6`
+   reported **`exited with code 0`** and the suite **never ran at all** —
+   `pytest-timeout` is not installed, pytest errored on the unrecognised
+   argument, and the pipeline's status was `tail`'s. CLAUDE.md records exactly
+   this (*"a `| tail` swallowed a real failure's exit code … **Read the
+   OUTPUT, not the STATUS**"*). Re-run writing to a file and echoing
+   `$?` directly.
+
+⚠️ The generalisation both share, and the one worth carrying: **in this repo a
+shell wrapper fails by producing a BELIEVABLE status, never an implausible
+one.** Neither an all-green nor an all-red is self-evidently wrong; what
+settles it is a fact from outside the wrapper — an empty diff, or the body of
+the log.
