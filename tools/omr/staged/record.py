@@ -865,6 +865,331 @@ class Q(_Vocab):
     PART_NAME = "part_name"
 
 
+# ─────────────────────────────────────────────────────────────────────────────
+# WHAT KIND OF CLAIM DOES A QUANTITY'S VALUE MAKE?
+#
+# Sean, 2026-09-17: "yes every fact should carry what kind of claim."
+#
+# ⚠️⚠️ THE AXIS IS *WHAT WOULD MAKE THIS ROW WRONG*, and it is chosen that way
+# because the one fault this field is known to have cost anything is a POOLING
+# fault. `positional_store.PositionIndex` pooled a detector's
+# `noteheadBlackOnLine` box with the INK BLOB that box merely overlaps and
+# reported Litolff's notehead at mean height **3.646 staff spaces**; split on
+# the claim, the same rows read `detector_class` **1.316 ± 0.133** and
+# `overlaps` **6.872 ± 2.346**, and the two publishers then AGREE on all four
+# shared classes. Nothing was re-measured -- the store had been recording the
+# distinction all along and the index was not reading it.
+#
+# ⚠️⚠️ IT IS A SECOND AXIS, NOT A REFINEMENT OF `capture.UNSCORED`, AND THAT IS
+# MEASURED RATHER THAN ASSERTED. `UNSCORED` partitions the SCORELESS quantities
+# by what kind of scoreless FACT the value is (a unit, a page geometry, a
+# staff-grid position). Neither table determines the other:
+#
+#   * `UNSCORED`'s `not_a_mark` holds `DOCUMENT_IDENTITY`, `ROSTER_ENTRY`,
+#     `DOSSIER_FACT` and `CLEF_SEED` -- which come from a CATALOG or a DOSSIER
+#     and cannot fall silent when the plate is bad -- BESIDE `MARGIN_LABEL` and
+#     `DIRECTION_WORD`, which are OCR readings of this raster and fail exactly
+#     when it degrades. That is the `source_kind` doctrine's own distinction,
+#     pooled under one word.
+#   * `MEASUREMENT` here spans four of `UNSCORED`'s seven words.
+#
+# So they are kept APART and made unable to CONTRADICT: `CLAIM_OF_UNSCORED`
+# below states which claim kinds each `UNSCORED` word admits, and
+# `capture.unaccounted()` fails on a violation. One rule, two tables, checked --
+# never a fifth hand-written copy.
+#
+# ⚠️ A CLAIM KIND CONTRIBUTES; IT NEVER DECIDES (`A-INK-4`). Nothing here
+# vetoes, gates or thresholds anything. It is a LABEL, so that a consumer that
+# wants to weigh an identity claim differently from a coverage claim is able to
+# see the difference at all -- which today it is not.
+# ─────────────────────────────────────────────────────────────────────────────
+
+
+class CLAIM(_Vocab):
+    """What kind of claim a quantity's value makes -- i.e. what would make it
+    wrong. Five words, each naming a distinct failure mode.
+
+    ⚠️ The test for membership is the FAILURE MODE, never the stage that
+    produced the value and never the reader. `READERS.DETECTOR` yields a CLASS
+    (an argmax, scored) and a BOX (a ruler reading) on one row, so the reader
+    cannot tell you which this is -- measured before this vocabulary was
+    written, and it is why the declaration is keyed on the QUANTITY.
+    """
+
+    #: A ruler applied to THIS raster. A length, a coordinate, a box.
+    #:
+    #: ⚠️ It asserts NO identity, so it cannot be wrong about what the ink is
+    #: -- only about where the ruler was laid (wrong frame, wrong grid, wrong
+    #: unit). `score is None` follows from that rather than being a separate
+    #: rule: a ruler reading is not a guess, and `Q.NOTEHEAD_STAFF_POSITION`
+    #: has carried `score=None` for exactly this reason since it was written.
+    MEASUREMENT = "measurement"
+
+    #: THIS raster's ink named from a vocabulary -- an argmax, a template
+    #: match, an OCR decode.
+    #:
+    #: ⚠️ It CAN be wrong about what the ink is, which is the whole of the
+    #: difference from `COVERAGE`. It is also the claim that falls silent with
+    #: the plate: an identification and a bar-sum arbitration of it are read
+    #: off the same ink, which is CLAUDE.md's "the bars are not an independent
+    #: umpire over a bad reading".
+    IDENTIFICATION = "identification"
+
+    #: One piece of ink OVERLAPS, ENCLOSES or is EXPLAINED BY another.
+    #:
+    #: ⚠️⚠️ EXPLICITLY NOT AN ASSERTION OF IDENTITY, and this is the word the
+    #: measured fault crossed. `positional_store.Membership.kind`'s own
+    #: docstring already said so -- "`overlaps` is `ink_explained_by`, which
+    #: its own docstring says is coverage and NOT an assertion of identity" --
+    #: and the index pooled it with `detector_class` anyway. A coverage claim
+    #: is wrong only if the two things do not in fact overlap; it is NOT wrong
+    #: when the name is wrong, because it never made the name its own.
+    COVERAGE = "coverage"
+
+    #: Asserted by a document that is NOT this raster -- a catalog, a dossier,
+    #: the encoding a page was rendered from.
+    #:
+    #: ⚠️ It is wrong if the external document is wrong or was joined to the
+    #: wrong subject, and it CANNOT be wrong because the plate is bad. That is
+    #: exactly the property CLAUDE.md's `source_kind` doctrine turns on -- "if
+    #: you want a second witness that does not fall silent exactly when it is
+    #: needed, it must not come off the same raster" -- and it is why pooling
+    #: these with OCR readings under one word loses the distinction the
+    #: doctrine is made of. `Observation.derived_from` is the structural half
+    #: of the same fact and stays exactly as it is.
+    EXTERNAL = "external"
+
+    #: The outcome of weighing other facts already on the record -- a fit, a
+    #: vote, an adjudication, a consequence.
+    #:
+    #: ⚠️ Its ancestry is other rows, not the raster, so it is wrong if the
+    #: weighing was wrong OR if anything under it was. It is the one kind
+    #: whose error is inherited.
+    INTERPRETATION = "interpretation"
+
+
+#: ⚠️⚠️ EVERY MEMBER OF `Q` DECLARES ONE, and `claims_unaccounted()` fails when
+#: a new quantity does not -- so a quantity cannot enter the vocabulary without
+#: its author saying what sort of claim it makes. The table lives HERE, beside
+#: `Q`, so it cannot drift from the thing it describes.
+#:
+#: ⚠️ A quantity declares the claim its VALUE makes, not every claim its
+#: producer makes in passing. `Q.GLYPH_BOX`'s value is a class AND a box; the
+#: class is what a consumer reads it for and what can be wrong about the ink,
+#: so it is an IDENTIFICATION -- and its box being a ruler reading is precisely
+#: why `Q.GLYPH_CONF` and the family POSITION facts are separate quantities at
+#: all. That is `capture`'s own argument for why a position may not be a field
+#: on the shape row, arriving here from the other side.
+CLAIMS: "dict[str, str]" = {
+    # ── page and cell geometry: rulers, all of them ────────────────────────
+    "STAFF_LINES": CLAIM.MEASUREMENT,
+    "STAFF_SPACING": CLAIM.MEASUREMENT,
+    "CELL_STAFF_SPACE": CLAIM.MEASUREMENT,
+    "CELL_BOX": CLAIM.MEASUREMENT,
+    "CELL_POSITION_BASIS": CLAIM.MEASUREMENT,
+    "STAFF_EXTENT": CLAIM.MEASUREMENT,
+    "STAFF_SKEW": CLAIM.MEASUREMENT,
+    "BARLINE_COLUMN": CLAIM.MEASUREMENT,
+    "LEFT_EDGE_INK": CLAIM.MEASUREMENT,
+    "STAFF_ORDINAL": CLAIM.MEASUREMENT,
+    "SYSTEM_STAFF_COUNT": CLAIM.MEASUREMENT,
+
+    #: ⚠️ COVERAGE, not measurement: `gap_bridging_counts` is ink CROSSING a
+    #: gap and `Q.SYSTEMIC_COLUMN` a column crossing EVERY gap. Both say that
+    #: something spans something else and neither says what the something IS
+    #: -- `OMR_BRACKET_COLUMNS` exists because that count was read as though
+    #: it named brackets, and CLAUDE.md records that nothing detects a bracket
+    #: at all.
+    "GAP_BRIDGING": CLAIM.COVERAGE,
+    "SYSTEMIC_COLUMN": CLAIM.COVERAGE,
+    #: ⚠️ INTERPRETATION: the block index `_assign_groups` READ, which is the
+    #: output of the grouping rule rather than a property of the page.
+    "BRACKET_BLOCK": CLAIM.INTERPRETATION,
+
+    # ── detection: the ink, and what we call it ────────────────────────────
+    "GLYPH_BOX": CLAIM.IDENTIFICATION,
+    "NOTEHEAD_CLASS": CLAIM.IDENTIFICATION,
+    "REST": CLAIM.IDENTIFICATION,
+    "FLAG": CLAIM.IDENTIFICATION,
+    "AUG_DOT": CLAIM.IDENTIFICATION,
+    "TUPLET_MARKER": CLAIM.IDENTIFICATION,
+    "ARC_BOX": CLAIM.IDENTIFICATION,
+    "ARTICULATION_MARK": CLAIM.IDENTIFICATION,
+    "FERMATA_MARK": CLAIM.IDENTIFICATION,
+    "ORNAMENT_MARK": CLAIM.IDENTIFICATION,
+    "DYNAMIC_LETTER": CLAIM.IDENTIFICATION,
+    "WEDGE_BOX": CLAIM.IDENTIFICATION,
+    "BEAM_STROKE": CLAIM.IDENTIFICATION,
+    "CLEF_GLYPH": CLAIM.IDENTIFICATION,
+    "CLEF_LOCATED": CLAIM.IDENTIFICATION,
+    "KEYSIG_MARKER": CLAIM.IDENTIFICATION,
+    "METER_GLYPH": CLAIM.IDENTIFICATION,
+    "METER_TEMPLATE": CLAIM.IDENTIFICATION,
+    "METER_TEMPLATE_AT_BAR": CLAIM.IDENTIFICATION,
+    #: ⚠️ A JUDGEMENT CALL, NAMED. A CV stem is scoreless and is a pair of
+    #: endpoints, which reads like a ruler -- but the rung has already decided
+    #: the run of ink IS a stem, and `_stem_joined` consumes it as one. It is
+    #: filed with the thing it can be wrong about.
+    "STEM": CLAIM.IDENTIFICATION,
+    #: ⚠️ OCR OF THIS RASTER, so it fails with the plate -- the half of
+    #: `UNSCORED`'s `not_a_mark` that is NOT external. `MARGIN_LABEL` reading
+    #: `Tr. Alt.` as a singer is this claim being wrong about ink.
+    "MARGIN_LABEL": CLAIM.IDENTIFICATION,
+    "DIRECTION_WORD": CLAIM.IDENTIFICATION,
+    "TEXT_LAYER": CLAIM.IDENTIFICATION,
+    #: ⚠️ A SCORE, NOT A SECOND CLAIM ABOUT INK. The detector's own confidence
+    #: in an identification, carried apart so a consumer can read it without
+    #: reading the class. Its failure mode is the identification's.
+    "GLYPH_CONF": CLAIM.IDENTIFICATION,
+
+    #: ⚠️⚠️ RAW INK IS NOT AN IDENTIFICATION AND THAT IS THE POINT OF THE
+    #: LAYER. `Q.INK` is one connected piece of ink with a box and no name;
+    #: Sean, 2026-09-17: "ink is ink. There is nothing that should be
+    #: classified as unseen - only unclassified." Its detector coverage is an
+    #: ATTRIBUTE that may be zero -- a COVERAGE claim riding on a MEASUREMENT
+    #: row, which is the DETAIL-GRAIN limit `claims_unaccounted` records.
+    "INK": CLAIM.MEASUREMENT,
+
+    # ── relations between things already located ───────────────────────────
+    "GLYPH_BAND_DISTANCE": CLAIM.MEASUREMENT,
+    #: ⚠️ COVERAGE: whether an unbroken run of ledger rungs JOINS a notehead to
+    #: a staff. It names nothing; it says one thing reaches another.
+    "GLYPH_LADDER": CLAIM.COVERAGE,
+
+    # ── the family POSITION facts: rulers on their own ink ─────────────────
+    "NOTEHEAD_STAFF_POSITION": CLAIM.MEASUREMENT,
+    "REST_POSITION": CLAIM.MEASUREMENT,
+    "ARC_POSITION": CLAIM.MEASUREMENT,
+    "ARTICULATION_POSITION": CLAIM.MEASUREMENT,
+    "FERMATA_POSITION": CLAIM.MEASUREMENT,
+    "ORNAMENT_POSITION": CLAIM.MEASUREMENT,
+    "TUPLET_MARKER_POSITION": CLAIM.MEASUREMENT,
+    "METER_GLYPH_POSITION": CLAIM.MEASUREMENT,
+    "CLEF_POSITION": CLAIM.MEASUREMENT,
+    "KEYSIG_RUN_POSITION": CLAIM.MEASUREMENT,
+    "DYNAMIC_BAND_POSITION": CLAIM.MEASUREMENT,
+    "DIRECTION_BAND_POSITION": CLAIM.MEASUREMENT,
+    "WEDGE_BAND_POSITION": CLAIM.MEASUREMENT,
+
+    # ── facts from a document that is not this raster ──────────────────────
+    "DOCUMENT_IDENTITY": CLAIM.EXTERNAL,
+    "ROSTER_ENTRY": CLAIM.EXTERNAL,
+    "DOSSIER_FACT": CLAIM.EXTERNAL,
+    "CLEF_SEED": CLAIM.EXTERNAL,
+    #: ⚠️ A JUDGEMENT CALL, NAMED. `Q.INPUT_DOMAIN` is scanned-vs-engraved, and
+    #: `input_domain._classify_page` reads the PDF's own object graph -- vector
+    #: drawings against one full-page raster -- not the rendered pixels. It is
+    #: a fact about the FILE, and like the other externals it does not degrade
+    #: with the print.
+    "INPUT_DOMAIN": CLAIM.EXTERNAL,
+
+    # ── fits, votes, adjudications and consequences ────────────────────────
+    "KEYSIG_CLEF_FIT": CLAIM.INTERPRETATION,
+    "KEYSIG_TEMPLATE_FIT": CLAIM.INTERPRETATION,
+    "CLEF_REFUSAL_BRANCH": CLAIM.INTERPRETATION,
+    "SYSTEM_MEMBERSHIP": CLAIM.INTERPRETATION,
+    "STAFF_GROUP": CLAIM.INTERPRETATION,
+    "MEASURE_PARTITION": CLAIM.INTERPRETATION,
+    "GROUP_SYMBOL": CLAIM.INTERPRETATION,
+    "CLEF": CLAIM.INTERPRETATION,
+    "KEY_SIGNATURE": CLAIM.INTERPRETATION,
+    "METER": CLAIM.INTERPRETATION,
+    "DURATION": CLAIM.INTERPRETATION,
+    "EVENT": CLAIM.INTERPRETATION,
+    "ONSET_COLUMN": CLAIM.INTERPRETATION,
+    "VOICES": CLAIM.INTERPRETATION,
+    "STEM_DIRECTION": CLAIM.INTERPRETATION,
+    "TUPLET_RATIO": CLAIM.INTERPRETATION,
+    "GLYPH_OWNER": CLAIM.INTERPRETATION,
+    "NOTEHEAD_IS_A_WHOLE_REST": CLAIM.INTERPRETATION,
+    "ARC_KIND": CLAIM.INTERPRETATION,
+    "ARC_OWNER": CLAIM.INTERPRETATION,
+    "ARTICULATION_OWNER": CLAIM.INTERPRETATION,
+    "FERMATA_OWNER": CLAIM.INTERPRETATION,
+    "ORNAMENT_OWNER": CLAIM.INTERPRETATION,
+    "WEDGE_ANCHOR": CLAIM.INTERPRETATION,
+    "DYNAMIC": CLAIM.INTERPRETATION,
+    "DIRECTION": CLAIM.INTERPRETATION,
+    "INSTRUMENT": CLAIM.INTERPRETATION,
+    "SLOT_INDEX": CLAIM.INTERPRETATION,
+    "PART_PARTITION": CLAIM.INTERPRETATION,
+    "PITCH": CLAIM.INTERPRETATION,
+    "ACCIDENTAL": CLAIM.INTERPRETATION,
+    "PART_NAME": CLAIM.INTERPRETATION,
+}
+
+
+#: ⚠️⚠️ THE RECONCILIATION WITH `capture.UNSCORED`, STATED AS A CONSTRAINT
+#: RATHER THAN AS A FIFTH COPY OF THE RULE. Each `UNSCORED` word admits only
+#: these claim kinds; `capture.unaccounted()` imports this and fails on a
+#: violation, so the two tables can disagree about a quantity for exactly as
+#: long as it takes a derived check to run.
+#:
+#: ⚠️ It is a CONSTRAINT and not a mapping, because the relation is genuinely
+#: many-to-many: `not_a_mark` admits two claim kinds, and `MEASUREMENT` is
+#: admitted by four `UNSCORED` words. Writing it as a function in either
+#: direction would have forced a merge the evidence refuses.
+CLAIM_OF_UNSCORED: "dict[str, tuple]" = {
+    "staff_grid_position": (CLAIM.MEASUREMENT,),
+    "page_geometry": (CLAIM.MEASUREMENT, CLAIM.COVERAGE,
+                      CLAIM.INTERPRETATION),
+    "unit": (CLAIM.MEASUREMENT,),
+    "raw_ink": (CLAIM.MEASUREMENT, CLAIM.IDENTIFICATION),
+    "relation": (CLAIM.MEASUREMENT, CLAIM.COVERAGE),
+    "not_a_mark": (CLAIM.EXTERNAL, CLAIM.IDENTIFICATION),
+    "derived_fit": (CLAIM.INTERPRETATION,),
+}
+
+
+#: value -> NAME, so `claim_of` takes either spelling and the two cannot
+#: drift. Derived from `Q` itself; never hand-listed.
+_QNAME: "dict[str, str]" = {
+    v: k for k, v in vars(Q).items()
+    if not k.startswith("_") and isinstance(v, str)}
+_QNAME.update({k: k for k in list(_QNAME.values())})
+
+
+def claim_of(quantity: str) -> str:
+    """The kind of claim `quantity`'s value makes.
+
+    ⚠️ Raises on an undeclared quantity rather than returning a default. A
+    fallback here would convert "nobody said" into a definite answer, which is
+    the failure this repo has paid for at three levels in one day -- and the
+    whole value of the field is that it cannot be wrong by omission.
+    """
+    try:
+        return CLAIMS[_QNAME[quantity]]
+    except KeyError:
+        raise ValueError(
+            f"{quantity!r} declares no claim kind. Add it to record.CLAIMS "
+            f"beside Q -- say whether its value is a ruler reading, a naming "
+            f"of ink, a statement of coverage, an external document's "
+            f"assertion, or the outcome of weighing other facts.") from None
+
+
+def claims_unaccounted() -> "list[str]":
+    """Every `Q` member with no declared claim kind, and every declaration
+    that names no `Q` member.
+
+    ⚠️ THE HARD TIER, AND IT IS AT ZERO WHEN THIS LANDS -- so it CAN be a
+    gate, which `no_producer --check` notoriously cannot. There is
+    deliberately NO `KNOWN_GAPS` beside this one: a claim kind costs one word,
+    so an "accounted" tier here could only ever record that somebody declined
+    to think. The entries that genuinely need a REASON are the JUDGEMENT
+    CALLS, and those live in `capture.CLAIM_JUDGEMENT_CALLS`, where closing
+    one removes its entry and a stale-entry test enforces the removal.
+    """
+    qs = {k for k, v in vars(Q).items()
+          if not k.startswith("_") and isinstance(v, str)}
+    out = [f"Q.{q} declares no claim kind" for q in sorted(qs - set(CLAIMS))]
+    out += [f"CLAIMS names {q!r}, which is not a member of Q"
+            for q in sorted(set(CLAIMS) - qs)]
+    for q, c in sorted(CLAIMS.items()):
+        if c not in CLAIM.all():
+            out.append(f"CLAIMS[{q!r}] is {c!r}, which is not a CLAIM word")
+    return out
+
+
 class READERS(_Vocab):
     """Who produced a row. Named, because two rows from the same reader on
     the same crop are ONE signal (see `adjudicate.Evidence.independent`)."""
@@ -1021,6 +1346,29 @@ class Observation:
     #: be walked uniformly by the circularity filter.
     basis: tuple[str, ...] = ()
 
+    @property
+    def claim(self) -> str:
+        """What kind of claim this row makes -- see `CLAIM`.
+
+        ⚠️⚠️ DERIVED, NOT STORED, AND THAT IS THE STRONGER FORM OF "no row can
+        carry a wrong one by omission". A field with a default can be left
+        unset by any of the construction paths `Log.observe` does not own --
+        `dataclasses.replace`, a test fixture, a record rebuilt by
+        `readjudicate` -- and would then read as a definite answer nobody
+        gave. A property cannot be omitted, cannot be set to the wrong word,
+        and cannot go stale when `CLAIMS` is corrected.
+
+        ⚠️ It is also why every committed record stays BYTE-IDENTICAL: no
+        field means nothing new in `to_json`. Serialising it would change
+        every record this repo has written, which is the hazard CLAUDE.md
+        already records paying for `Verdict.single_pass_revision` -- that key
+        was left out of `to_json` for exactly this reason. Whether to pay it
+        here is a separate decision and it is Sean's, not this change's; a
+        JSON-only consumer derives the claim from the `quantity` the row
+        already carries, which is what `claim_of` takes.
+        """
+        return claim_of(self.quantity)
+
     def to_json(self) -> dict:
         return {"id": self.id, "subject": self.subject.to_key(),
                 "quantity": self.quantity, "value": self.value,
@@ -1130,6 +1478,22 @@ class Verdict:
     #: asserted on a field that did not exist; fixed in the code rather than
     #: the test.
     detail: Mapping[str, Any] = field(default_factory=dict)
+
+    @property
+    def claim(self) -> str:
+        """What kind of claim this verdict's VALUE makes -- see `CLAIM`.
+
+        ⚠️ A verdict is not automatically `CLAIM.INTERPRETATION`. The claim is
+        a property of the QUANTITY, and the two questions come apart: an
+        INTERPRETATION is a value whose ancestry is other rows, while "this
+        row was produced in ADJUDICATE" is already on the record structurally
+        (it is a `Verdict` and not an `Observation`). Keying the field on the
+        row type would have made it a second, weaker copy of that fact.
+
+        ⚠️ Derived and not serialised, for the reason `Observation.claim`
+        gives at length.
+        """
+        return claim_of(self.quantity)
 
     def __post_init__(self) -> None:
         if self.outcome is Outcome.ABSTAINED:
@@ -1251,6 +1615,13 @@ class Log:
             raise RuntimeError("the log is frozen; GATHER is over")
         Q.check(quantity, "quantity")
         READERS.check(reader, "reader")
+        # ⚠️ THE CLAIM KIND IS CHECKED AT THE WRITE, not at serialisation.
+        # `Observation.claim` derives it, so a quantity with no declaration
+        # would otherwise raise the first time somebody READ the field --
+        # arbitrarily far from the gather site that produced the row, and
+        # quite possibly never. Asking here makes an undeclared quantity fail
+        # on the run that introduces it.
+        claim_of(quantity)
         for rid in derived_from:
             if self.row(rid) is None:
                 raise ValueError(

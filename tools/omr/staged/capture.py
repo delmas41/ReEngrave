@@ -142,6 +142,14 @@ import pathlib
 import sys
 from typing import Any, Dict, List, Optional, Sequence, Set, Tuple
 
+#: ⚠️ IMPORTED, NEVER RESTATED. `record.py` owns what kind of claim each
+#: quantity makes; this module owns only the CONSTRAINT between that table and
+#: `UNSCORED`. Aliased on the way in so a reader of `claim_consistency` can see
+#: at a glance that the answer comes from elsewhere.
+from .record import (CLAIM, CLAIM_OF_UNSCORED, CLAIMS,
+                     claim_of as record_claim_of,
+                     claims_unaccounted as record_claims_unaccounted)
+
 _HERE = pathlib.Path(__file__).resolve().parent
 _OMR = _HERE.parent
 _ROOT = _OMR.parent.parent
@@ -504,6 +512,31 @@ READER_RASTER_ALSO: Dict[str, List[Tuple[str, str]]] = {
 # ─────────────────────────────────────────────────────────────────────────────
 
 KNOWN_GAPS: Dict[str, str] = {
+    # ── the claim kind against UNSCORED: ONE disagreement, and it is real ──
+    "CLAIM-DISAGREES Q.WEDGE_BOX": (
+        "⚠️⚠️ THE ONE ENTRY IN `UNSCORED` THAT IS NOT SCORELESS, and the "
+        "constraint found it on its first run rather than being written "
+        "around it. `Q.WEDGE_BOX` is observed by TWO readers — `DETECTOR` "
+        "with a score at gather.py:1131 and `CV_HAIRPINS` without one at "
+        ":1212 — so it is the only member of a table of scoreless quantities "
+        "that is scored, measured over all 38 entries. `UNSCORED` filed it "
+        "'relation' as the least-bad fit for a quantity only half of which "
+        "its axis can see, and its own reason text says so: *'SPLIT BY "
+        "READER … the DETECTOR rows carry a score and are a SHAPE fact.'* "
+        "`record.CLAIMS` calls it IDENTIFICATION because BOTH halves assert "
+        "the same thing about ink — *there is a hairpin here* — and a "
+        "hairpin that is not there is how either half is wrong. "
+        "⚠️ NOT REPAIRED HERE, deliberately, and in neither direction: "
+        "widening 'relation' to admit an identification is widening a "
+        "control until it passes, and re-filing `Q.WEDGE_BOX` is a judgement "
+        "about `UNSCORED`'s OWN axis, which this change does not own. "
+        "⚠️ It is also the case the brief expected to force per-reader "
+        "declarations and did NOT: `Q.BEAM_STROKE` and `Q.WEDGE_BOX` are the "
+        "only two reader-split quantities in the vocabulary and both split "
+        "on SCORE, not on CLAIM, so the claim stayed a property of the "
+        "quantity alone. Closing this means one of the two tables moving, "
+        "and the entry leaves when it does."),
+
     # ── POSITION: EVERY family with no staff-grid position of its own ──────
     #
     # ⚠️⚠️ THERE ARE NO EXEMPTIONS IN THIS BLOCK AND THAT IS SEAN'S RULING,
@@ -734,6 +767,50 @@ KNOWN_GAPS: Dict[str, str] = {
         "row is joining two different rasters with nothing on either saying "
         "so."),
 }
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# 3b. THE CLAIM KIND — reconciled with `UNSCORED`, never restated beside it
+#
+# ⚠️⚠️ `record.CLAIMS` IS THE ONLY TABLE AND IT IS IMPORTED, NOT COPIED. On
+# 2026-09-17 this repo repaired FOUR separate hand-written copies of one rule
+# and THREE of the four had silently gone stale, so a fifth copy of "what kind
+# of claim is this" was the one outcome this job was told to avoid.
+#
+# What lives here is the CONSTRAINT between the two tables, not a second
+# answer. `record.CLAIM_OF_UNSCORED` says which claim kinds each `UNSCORED`
+# word admits; this asks whether every entry obeys it. The two tables can
+# therefore disagree about a quantity for exactly as long as it takes a
+# derived check to run — and they are NOT merged, because the evidence refuses
+# it: `UNSCORED`'s `not_a_mark` holds a catalog fact and an OCR reading, which
+# is the `source_kind` doctrine's own distinction, while `CLAIM.MEASUREMENT`
+# spans four of `UNSCORED`'s seven words. Neither determines the other.
+# ─────────────────────────────────────────────────────────────────────────────
+
+
+def claim_consistency() -> List[str]:
+    """Where `UNSCORED` and `record.CLAIMS` disagree about one quantity.
+
+    ⚠️ A finding here is NEVER repaired by widening `CLAIM_OF_UNSCORED` until
+    it passes. That is "widening a control while teaching it about a
+    legitimate-sounding exception", which this file's own history records as
+    how a control stops being one. A genuine disagreement goes on
+    `KNOWN_GAPS` with its reason, and closing it removes the entry.
+    """
+    out: List[str] = []
+    for q, (word, _reason, _fam) in sorted(UNSCORED.items()):
+        admits = CLAIM_OF_UNSCORED.get(word)
+        if admits is None:
+            out.append(f"CLAIM-WORD UNSCORED word '{word}' (on Q.{q}) is in "
+                       f"no record.CLAIM_OF_UNSCORED entry — say which claim "
+                       f"kinds it admits")
+            continue
+        got = record_claim_of(q)
+        if got not in admits:
+            out.append(
+                f"CLAIM-DISAGREES Q.{q} is UNSCORED '{word}' (admitting "
+                f"{'/'.join(admits)}) and record.CLAIMS calls it '{got}'")
+    return out
 
 
 def _gap_key(problem: str) -> Optional[str]:
@@ -1598,6 +1675,18 @@ def controls(rep: Dict[str, Any]) -> Dict[str, int]:
 
 def problems(rep: Dict[str, Any]) -> List[str]:
     out: List[str] = []
+
+    # ⚠️⚠️ THE HARD TIER FIRST, AND IT IS NOT ON `KNOWN_GAPS`. A `Q` member
+    # with no declared claim kind is `record.claims_unaccounted()`'s finding,
+    # not this table's, and it has no accounted tier by design: a claim kind
+    # costs one word, so an entry excusing one could only ever record that
+    # somebody declined to think. It is at ZERO when this lands, which is what
+    # lets `--check` be a gate — the thing `no_producer --check` cannot be.
+    out += [f"CLAIM-UNDECLARED {p}" for p in record_claims_unaccounted()]
+
+    # The CONSTRAINT between the two tables. A real disagreement lands on
+    # KNOWN_GAPS with its reason; it is never fixed by widening the constraint.
+    out += claim_consistency()
 
     for r in rep["rows"]:
         if r["position"]:
