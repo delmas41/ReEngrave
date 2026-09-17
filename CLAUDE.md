@@ -6034,8 +6034,11 @@ change would move the very numbers used to decide whether the rows are worth
 having. All seven always-written detail keys are on `wiring.KNOWN_GAPS` as OPEN
 entries. ⚠️⚠️ **Making the tool SAY so exposed TWO blind spots in it.** (a) Its
 DETAIL question reads the AST for LITERAL keyword names, so a key passed as
-`**detail` is invisible — **`gather_detections`' own `bbox_page_px` has never
-been reported by it**; recorded, and left OPEN. (b) ⚠️⚠️ **A BENCHMARK PROBE
+`**detail` never enters the WRITTEN inventory, and a key the tool does not know
+is written can never be reported unread — checked exactly:
+**`Q.GLYPH_BOX.bbox_page_px`, `.x_center_page` and `.category` are absent from
+all 138 written pairs**, because `gather_detections` passes them as a splat.
+Recorded, and left OPEN. (b) ⚠️⚠️ **A BENCHMARK PROBE
 COUNTED AS A CONSUMER, and it was caught by `--check` going RED in the full
 suite having been green standalone an hour earlier**: the moment this work's
 own probes were committed, FOUR of the seven `Q.INK` entries read as STALE —

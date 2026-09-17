@@ -423,9 +423,14 @@ recorded and left open, one fixed because it made `--check` RED.**
 
 **(a) A `**dict` SPLAT IS INVISIBLE TO IT, and that one is left open.**
 `wiring.py`'s DETAIL question reads the AST for **literal keyword names**, so a
-key passed as `**detail` is never seen. `gather_detections` has written
-`bbox_page_px`, `x_center_page` and `y_center_page` through a splat since page
-boxes arrived and **this tool has never reported one of them.** This reader
+key passed as `**detail` never enters the WRITTEN inventory at all — and a key
+the tool does not know is written can never be reported unread, whoever reads
+it. Checked exactly rather than asserted: `Q.GLYPH_BOX.bbox_page_px`,
+`Q.GLYPH_BOX.x_center_page` and `Q.GLYPH_BOX.category` are **absent from all
+138 written pairs**, because `gather_detections` passes them as `**box_detail`.
+⚠️ The bare NAMES do appear, from other gatherers that spell them out — so the
+blind spot is per `(quantity, key)` PAIR, which is the grain this question
+reports in. This reader
 spells its unconditional keys out at the emit site so the gap is visible; the
 conditional ones stay in a splat because they are DECLINED by omission, which
 cannot be expressed as a literal kwarg. **Widening the scan to follow a dict
