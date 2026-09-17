@@ -325,7 +325,13 @@ class TestTheMergeIsReportedRatherThanRepaired(unittest.TestCase):
 
     def test_a_bridge_makes_two_marks_one_row_and_the_row_admits_it(self):
         sep = _Cell().ink(100, 130, 24, 24).ink(300, 130, 24, 24)
-        self.assertEqual(len(_rows(_run([sep]))), 2)
+        sep_rows = _rows(_run([sep]))
+        self.assertEqual(len(sep_rows), 2)
+        # ⚠️ ASSERTED ON THE SEPARATED CELL TOO, and a mutation battery is why:
+        # pinning `ink_n_components` only on the merged cell is vacuous, because
+        # there the true value IS 1 and `= 1` is an equivalent mutant. The
+        # counter is only worth anything if it can say TWO.
+        self.assertEqual({r.detail["ink_n_components"] for r in sep_rows}, {2})
 
         merged = _Cell(measure=1)
         merged.ink(100, 130, 24, 24).ink(300, 130, 24, 24)
