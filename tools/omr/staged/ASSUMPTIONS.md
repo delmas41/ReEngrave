@@ -1586,7 +1586,7 @@ with no weights file, which today **fails the run**.
 
 ## A-INK — the representation of ink itself
 
-### A-INK-1 · ⚠️⚠️ UNBUILT AND WANTED — one piece of ink may belong to MORE THAN ONE THING
+### A-INK-1 · ⚠️⚠️ HALF REFUTED 2026-09-17 — the LINE/GLYPH case is SHIPPED; the SPLIT case is open
 
 **SEAN'S IDEA, 2026-09-17, recorded so it is not lost** — the same standing
 shape as `A-DUR-5`, which sat here unbuilt for a week and then landed.
@@ -1602,15 +1602,41 @@ shape as `A-DUR-5`, which sat here unbuilt for a week and then landed.
 > really helpful."*
 
 **THE CORE CLAIM, separated from the storage question.** The valuable part is
-not per-pixel storage — it is **MULTI-MEMBERSHIP**. Today a piece of ink
-belongs to whichever reader claimed it, and that makes one dilemma structurally
-unsolvable: **erase the staff lines and a glyph loses ink wherever a line
-crossed it; keep them and every mark on the staff merges into one component.**
-Measured on a clean engraved page at 600 dpi: **91 components for the whole
-page, the largest 683,000 pixels** — with lines in, there is essentially ONE
-blob. *"This pixel is staff line AND notehead"* dissolves it. No amount of
-better classification can, because the current representation cannot form the
-sentence.
+not per-pixel storage — it is **MULTI-MEMBERSHIP**: one piece of ink belonging
+to more than one thing at once.
+
+⚠️⚠️ **THE LINE-vs-GLYPH HALF WAS REFUTED THE SAME DAY, AND THE PREMISE WAS
+MINE RATHER THAN SEAN'S.** This entry first argued that a dilemma is
+*"structurally unsolvable"* — erase the staff lines and a glyph loses ink where
+a line crossed it; keep them and every mark merges. **The first half is false
+for this pipeline and has been since Phase 1.4.**
+`staff_line_removal.py`'s own opening line is *"Staff line removal **preserving
+symbol-crossing pixels**"*, and its rule — a vertical ink run no taller than
+the line's printed thickness IS the line and is erased; a taller one is
+something crossing and is left entirely alone — **IS multi-membership, decided
+at erasure time**, with `LINE_CROSSING_FACTOR = 2.0` as its constant. Measured:
+a reconstruction bridge makes **0 joins on 1,244 components across 221 cells**
+— not because it fails, but because nothing on the page needs joining.
+`benchmarks/omr-multi-membership-2026-09/`.
+
+⚠️ **AND THE STRONGER RESULT RUNS FOR THE EXISTING DESIGN.** Re-erased NAIVELY
+(shipped code, one predicate changed) the page shatters **1,244 → 5,143**
+components; bridging rejoins 81.1% and saturates at **1,982 — still 59% short
+of the shipped 1,244**. **Multi-membership decided at ERASURE time beats
+multi-membership reconstructed afterwards**, because erasure knows which pixels
+to KEEP while a bridge can only restore connectivity between pixels already
+destroyed.
+
+⚠️⚠️ **WHAT SURVIVES, AND IT RUNS THE OTHER DIRECTION: the SPLIT question.**
+Everything above concerns a pixel that is *line AND glyph*. A pixel belonging
+to several **MARKS** — a notehead and the slur touching it, a stem and its beam
+— is **untested**, and it is where merging actually costs us: **5.7% of this
+page's components are blobs too big to be one mark**. That is a SPLIT problem,
+nothing in the 2026-09-17 experiment addresses it, and it is the open form of
+Sean's idea. ⚠️ Note the asymmetry that makes it harder: the line/glyph case
+has a rule that needs no appeal to what a symbol looks like (compare a run to
+the line's own measured thickness); two overlapping MARKS have no such
+thickness to compare against.
 
 ⚠️ **THE GRAIN IS THE COMPONENT, NOT THE PIXEL, AND THE ARITHMETIC SAYS SO.**
 That page is 34.8M pixels, **0.82M of them black** — per-pixel metadata is
@@ -1637,6 +1663,14 @@ hollow) number **31 at 300 dpi and the same 31 at 1200** — the information
 SATURATES at 300 and rendering above native is pure upsampling. **If the
 scanner's own threshold already merged the `3` into the `4`, no representation
 un-merges them.**
+
+⚠️⚠️ **AND IT DID.** Measured on the target: the printed `3/4` is already **ONE
+erased component on 17 of 17 staves**, and the digits are fused in the
+SURVIVING ink — cutting at every staff line gives **4-6 pieces, never 2**, on
+17 of 17; the narrowest interior row still carries **34%** of the blob's width,
+and that row sits at a staff line on **0 of 17**. At 15.0-15.8 native px per
+staff space the whole stack is **28-31 x 68 px** and the 1-bit threshold has
+filled both counters. The reading half is CLOSED for this document.
 
 **The experiment, with its criterion pre-registered** (`CRITERION.md` committed
 alone and first, on Sean's instruction not to waste time): on p.62 **cell 6**,
