@@ -157,11 +157,23 @@ class TestARowCarriesIt(unittest.TestCase):
         """⚠️ A verdict is not automatically INTERPRETATION. The claim is a
         property of the QUANTITY; "produced in ADJUDICATE" is already on the
         record structurally, and keying on the row type would make the field a
-        second, weaker copy of that fact."""
+        second, weaker copy of that fact.
+
+        ⚠️⚠️ THE DISCRIMINATING CASE IS A VERDICT ON A NON-INTERPRETATION
+        QUANTITY. Asserting only that `Q.CLEF` comes out INTERPRETATION is
+        satisfied by a property that returns INTERPRETATION unconditionally —
+        the first draft of this test did exactly that, and the mutation arm
+        that should have killed it would have survived.
+        """
         from tools.omr.staged.record import Outcome
-        v = Verdict("vrd1", staff(0, 0, 0), Q.CLEF, Outcome.DECIDED,
-                    "treble", "adjudicate_clef", "read")
-        self.assertEqual(v.claim, CLAIM.INTERPRETATION)
+        clef = Verdict("vrd1", staff(0, 0, 0), Q.CLEF, Outcome.DECIDED,
+                       "treble", "adjudicate_clef", "read")
+        self.assertEqual(clef.claim, CLAIM.INTERPRETATION)
+
+        box = Verdict("vrd2", staff(0, 0, 0), Q.GLYPH_BOX, Outcome.DECIDED,
+                      [1, 2, 3, 4], "probe", "read")
+        self.assertEqual(box.claim, CLAIM.IDENTIFICATION)
+        self.assertNotEqual(box.claim, clef.claim)
 
 
 class TestTheRecordStaysByteIdentical(unittest.TestCase):
