@@ -16,7 +16,64 @@ pointing at headings no longer in the file.)*
 
 ---
 
+## 2026-09-17 (later) — the p0p3 experiment RAN, and the empty cell is still empty
+
+⚠️ Placed at the head on the file's own CAUSAL-ORDER rule: it follows the
+`2026-09-17 — the carry's DOMAIN ... is 5 of 7` entry below, whose named
+instrument it uses. No other session's block was re-dated or re-sorted.
+
+The experiment the three-shape taxonomy named — `p0p3` at `--bar-beats 3.0` —
+was run on the shared Breitkopf record (md5 `52b98f1c…` verified against the
+receipt before a byte was read), tree `ab448cc8`, clean. Instrument
+`rest_sizing_arm.py` per `9e175f2d`: ADJUDICATE-stage, no re-gather, and its
+reading rule followed — **the per-system table, not the reach header**, which
+counts abstentions and reads 0 on this document.
+
+**7 systems, 7 DECIDED, 0 abstained, and the two arms are BYTE-IDENTICAL**
+(both exports md5 `420136cb`; the JSONs differ in the `env` line and nowhere
+else). `system/0/0` votes `6/8` — correct. `system/1/0` votes the misread
+`9/4`. Five read `change_only` `4/4`. **No system reads `carried`.**
+
+**So a VOTED misread exists on that page and does NOT propagate** — the carry
+accepts it nowhere. That is the flag behaving correctly and therefore **not**
+the hazard case, so the cell stays empty: filling it needs a document where the
+carry **ACCEPTS** a misread.
+
+⚠️ Two limits recorded with the result rather than left implicit:
+*asked-and-refused* is **INFERRED** from `_change_only` being the third rung,
+not observed — a refused carry and an unasked carry both fall through to the
+identical `change_only` with `support: None`, so this arm does **not** escape
+the ambiguity `9e175f2d` named for `local_arm.sh`. And ⚠️⚠️ **the fixture
+PR #39 names is not what the shared record produces now**: re-adjudicated on
+today's tree `system/0/0` reads `6/8`, is correct, and nothing abstains, where
+that PR — reading committed fixtures across five generations — reports it
+reading `C` at `voted`. Not a refutation of its argument; a warning that the
+two artefacts differ.
+
+⚠️ Independent of the flag: at the printed 3.0, **1,079 of 1,099 rests are not
+the bar length** (433 at 0.5, 366 at 4.0, 20 correct), `notes_not_written_total`
+**876** — identical in both arms. The meter carry is not the lever on that page;
+nothing abstains for it to act on.
+
+Both exports are committed although identical: **git stores one blob for
+identical content** (verified — both paths resolve to one object), so it costs
+nothing and a checkout can verify the byte-identity with `md5` rather than
+trusting it.
+
+⚠️ **The two stale work orders this result created were retired in the same
+commit** — CLAUDE.md and the handoff §9.1 both still *named* the experiment as
+the thing to do. That is the third time in one day this project's
+`fixed-then-kept-open-in-prose` pattern has been caught in text written hours
+earlier by the same session now fixing it.
+
+PR #48, and the documentation commit that follows it.
 ## 2026-09-17 — INFER gains a SECOND rule: the bucket the first one declined by design
+
+⚠️ Placed BELOW the p0p3 entry above deliberately. That block claims
+the head on the file's CAUSAL-ORDER rule with a stated reason, and this
+one is an independent thread — the INFER stage, not the meter — so it
+breaks no chain by sitting here and re-sorting it would only disturb
+one.
 
 `collapse_duration_to_barline`, no flag, `tools/omr/staged/inferences.py`.
 The first rule's funnel stopped at *no next onset in this bar* with a comment
