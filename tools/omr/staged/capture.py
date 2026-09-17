@@ -35,7 +35,7 @@ broken by erasure where the lines crossed it and merged INTO the lines if they
 are kept, so the two rasters do not agree about thin ink — and today a row
 mostly cannot say which one it came from.
 
-**4. RESOLUTION** (`A-INK-1`) — is the consumer getting the resolution the
+**4. RESOLUTION** (`A-INK-2`) — is the consumer getting the resolution the
 SOURCE actually has? `OMR_DPI` is a CONSTANT applied to every document, and the
 two kinds of source want opposite things from it: a SCANNED plate has a native
 resolution fixed at scan time, so rendering above it is pure upsampling and
@@ -448,7 +448,7 @@ KNOWN_GAPS: Dict[str, str] = {
 
     # ── RESOLUTION: a constant DPI over sources of two different kinds ──────
     "RESOLUTION nothing reads the source's native": (
-        "⚠️⚠️ `A-INK-1`. `OMR_DPI` is a CONSTANT — 300 on the backend, 600 on "
+        "⚠️⚠️ `A-INK-2`. `OMR_DPI` is a CONSTANT — 300 on the backend, 600 on "
         "the CLI — and `render_page(..., dpi=dpi)` takes it from an argument "
         "NO call site derives from the PDF. A SCANNED plate has a native "
         "resolution fixed at scan time, so rendering ABOVE it is pure "
@@ -847,7 +847,7 @@ def native_resolution() -> Dict[str, Any]:
     resolution fixed at scan time: rendering above it is pure upsampling, and
     rendering below it discards plate that is there. A VECTOR page has none and
     genuinely renders sharper. **The two want opposite things from one
-    constant.** (`A-INK-1`.)
+    constant.** (`A-INK-2`.)
 
     ⚠️⚠️ AND THE CLASSIFIER THAT WOULD ROUTE THEM ALREADY EXISTS AND ALREADY
     OPENS THE DICTIONARY. `input_domain._classify_page` — `OMR_WEIGHT_ROUTING`'s

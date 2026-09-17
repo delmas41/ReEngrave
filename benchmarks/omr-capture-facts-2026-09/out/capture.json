@@ -1503,7 +1503,8 @@
             "why": "declared: touches no raster",
             "at": null
           }
-        ]
+        ],
+        "resolution": "no_raster"
       },
       "CATALOG": {
         "variants": [
@@ -1512,7 +1513,8 @@
             "why": "declared: touches no raster",
             "at": null
           }
-        ]
+        ],
+        "resolution": "no_raster"
       },
       "CV_HAIRPINS": {
         "variants": [
@@ -1522,7 +1524,8 @@
             "at": "hairpin_detection.py::detect_hairpins",
             "line": 165
           }
-        ]
+        ],
+        "resolution": "direct_pixels"
       },
       "CV_HEADER": {
         "variants": [
@@ -1532,7 +1535,8 @@
             "at": "header_ink.py::header_ink_mask",
             "line": 588
           }
-        ]
+        ],
+        "resolution": "direct_pixels"
       },
       "CV_INK": {
         "variants": [
@@ -1542,7 +1546,8 @@
             "at": "staged/gather.py::_ink_components",
             "line": 1371
           }
-        ]
+        ],
+        "resolution": "direct_pixels"
       },
       "CV_LINES": {
         "variants": [
@@ -1558,7 +1563,8 @@
             "at": "line_detection.py::detect_beams",
             "line": 558
           }
-        ]
+        ],
+        "resolution": "direct_pixels"
       },
       "CV_LOCATOR": {
         "variants": [
@@ -1574,7 +1580,8 @@
             "at": "clef_locator.py::_staff_left_column",
             "line": 437
           }
-        ]
+        ],
+        "resolution": "direct_pixels"
       },
       "DETECTOR": {
         "variants": [
@@ -1584,7 +1591,8 @@
             "at": "yolo_detector.py::detect",
             "line": 300
           }
-        ]
+        ],
+        "resolution": "letterboxed"
       },
       "DETECTOR_HEADER": {
         "variants": [
@@ -1594,7 +1602,8 @@
             "at": "yolo_detector.py::detect",
             "line": 300
           }
-        ]
+        ],
+        "resolution": "letterboxed"
       },
       "DOSSIER": {
         "variants": [
@@ -1603,7 +1612,8 @@
             "why": "declared: touches no raster",
             "at": null
           }
-        ]
+        ],
+        "resolution": "no_raster"
       },
       "GEOMETRY": {
         "variants": [
@@ -1612,7 +1622,8 @@
             "why": "declared: touches no raster",
             "at": null
           }
-        ]
+        ],
+        "resolution": "no_raster"
       },
       "SPECIALIST": {
         "variants": [
@@ -1622,7 +1633,8 @@
             "at": "yolo_detector.py::detect",
             "line": 300
           }
-        ]
+        ],
+        "resolution": "letterboxed"
       },
       "SURYA": {
         "variants": [
@@ -1632,7 +1644,8 @@
             "at": "direction_text.py::_page_ink",
             "line": 273
           }
-        ]
+        ],
+        "resolution": "direct_pixels"
       },
       "TEMPLATE": {
         "variants": [
@@ -1648,7 +1661,8 @@
             "at": "time_signature_locator.py::locate_time_signature",
             "line": 400
           }
-        ]
+        ],
+        "resolution": "direct_pixels"
       },
       "TESSERACT": {
         "variants": [
@@ -1658,7 +1672,8 @@
             "at": "direction_text.py::_page_ink",
             "line": 273
           }
-        ]
+        ],
+        "resolution": "direct_pixels"
       },
       "TEXT_LAYER": {
         "variants": [
@@ -1667,7 +1682,8 @@
             "why": "declared: touches no raster",
             "at": null
           }
-        ]
+        ],
+        "resolution": "no_raster"
       },
       "VISION": {
         "variants": [
@@ -1676,10 +1692,57 @@
             "why": "declared: touches no raster",
             "at": null
           }
-        ]
+        ],
+        "resolution": "no_raster"
       }
     },
-    "undeclared_readers": []
+    "undeclared_readers": [],
+    "native": {
+      "modules_opening_the_image_dict": [
+        "direction_text.py",
+        "input_domain.py"
+      ],
+      "keys_they_read": {
+        "Filter": [
+          "input_domain.py"
+        ],
+        "bbox": [
+          "input_domain.py"
+        ],
+        "by_reader": [
+          "direction_text.py"
+        ],
+        "conflicts": [
+          "direction_text.py"
+        ],
+        "n_accepted": [
+          "direction_text.py"
+        ],
+        "n_read": [
+          "direction_text.py"
+        ],
+        "page_is_engraved": [
+          "direction_text.py"
+        ],
+        "readers": [
+          "direction_text.py"
+        ],
+        "reason": [
+          "direction_text.py"
+        ],
+        "rejected": [
+          "direction_text.py"
+        ]
+      },
+      "native_keys_read": [],
+      "native_keys_unread": [
+        "bpc",
+        "height",
+        "width",
+        "xres",
+        "yres"
+      ]
+    }
   },
   "unclassified_scoreless": [],
   "scoreless": [
@@ -1721,6 +1784,9 @@
     "families_with_a_position_fact": 3,
     "readers_whose_raster_resolved": 17,
     "readers_that_touch_a_raster": 11,
+    "image_dict_keys_seen_being_read": 10,
+    "modules_that_open_the_image_dict": 2,
+    "readers_whose_resolution_resolved": 17,
     "observe_sites_walked": 49
   },
   "problems": [
@@ -1737,7 +1803,8 @@
     "POSITION wedge has no staff-grid position fact of its own \u2014 a band offset exists as a DETAIL of a scored row (WEDGE_BOX)",
     "IMAGE CV_LOCATOR falls back silently (clef_locator.py::_ink_mask) and its rows do not record which raster answered",
     "IMAGE TEMPLATE falls back silently (key_signature_template.py::read_key_signature; time_signature_locator.py::locate_time_signature) and its rows do not record which raster answered",
-    "IMAGE CV_INK measures the erased raster and its rows do not say so, so an INK row and a DETECTOR row of the same ink cannot be told apart by raster"
+    "IMAGE CV_INK measures the erased raster and its rows do not say so, so an INK row and a DETECTOR row of the same ink cannot be told apart by raster",
+    "RESOLUTION nothing reads the source's native bpc/height/width/xres/yres anywhere in tools/omr \u2014 direction_text.py, input_domain.py already open the image dictionary, and the same walk sees 10 other string keys read in those modules (including `bbox` and `Filter`, which ARE taken from it), so the zero is the walker working. Every reader is handed a CONSTANT render DPI whatever the plate holds"
   ],
   "unaccounted": [],
   "stale_gaps": []

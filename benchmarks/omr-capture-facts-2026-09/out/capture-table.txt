@@ -33,20 +33,24 @@ wedge            yes     band*     -  intact,page
       THE EXEMPLAR. `(y_center - top_y) / half_step` off the cell's own measured line grid, carrying `residual` and `rounded`. Consumed by `consequences.restate_pitch` together with the clef.
 
 ── WHICH RASTER EACH READER MEASURES (derived from its own source) ──
-     CATALOG          -             
-     CV_HAIRPINS      page          hairpin_detection.py::detect_hairpins
-     CV_HEADER        own-erase     header_ink.py::header_ink_mask
-     CV_INK           erased        staged/gather.py::_ink_components
-  ⚠️ CV_LINES         erased?intact line_detection.py::detect_stems
-  ⚠️ CV_LINES         erased?intact line_detection.py::detect_beams
-  ⚠️ CV_LOCATOR       erased?intact clef_locator.py::_ink_mask
-     CV_LOCATOR       intact        clef_locator.py::_staff_left_column
-     DETECTOR         intact        yolo_detector.py::detect
-     DOSSIER          -             
-     GEOMETRY         -             
-  ⚠️ TEMPLATE         erased?intact key_signature_template.py::read_key_signature
-  ⚠️ TEMPLATE         erased?intact time_signature_locator.py::locate_time_signature
+     CATALOG          -             px        
+     CV_HAIRPINS      page          px        hairpin_detection.py::detect_hairpins
+     CV_HEADER        own-erase     px        header_ink.py::header_ink_mask
+     CV_INK           erased        px        staged/gather.py::_ink_components
+  ⚠️ CV_LINES         erased?intact px        line_detection.py::detect_stems
+  ⚠️ CV_LINES         erased?intact px        line_detection.py::detect_beams
+  ⚠️ CV_LOCATOR       erased?intact px        clef_locator.py::_ink_mask
+     CV_LOCATOR       intact        px        clef_locator.py::_staff_left_column
+     DETECTOR         intact        letterbox yolo_detector.py::detect
+     DOSSIER          -             px        
+     GEOMETRY         -             px        
+  ⚠️ TEMPLATE         erased?intact px        key_signature_template.py::read_key_signature
+  ⚠️ TEMPLATE         erased?intact px        time_signature_locator.py::locate_time_signature
 
+  ⚠️ `letterbox` vs `px` is QUESTION 4 and must not be flattened: the
+     measured `OMR_IMGSZ` result (*larger is NOT better*) is a fact
+     about the DETECTOR's letterboxing and anchors. A `px` reader has
+     neither, and that finding says nothing about it.
   ⚠️ `erased?intact` is a SILENT FALLBACK: which raster answered is a
      runtime fact, and only `Q.STEM`/`Q.BEAM_STROKE` record it.
   ⚠️ `own-erase` is a THIRD raster — the reader erases the lines
@@ -59,9 +63,12 @@ wedge            yes     band*     -  intact,page
        3  families_with_a_position_fact
       17  readers_whose_raster_resolved
       11  readers_that_touch_a_raster
+      10  image_dict_keys_seen_being_read
+       2  modules_that_open_the_image_dict
+      17  readers_whose_resolution_resolved
       49  observe_sites_walked
 
-── FINDINGS (14) ─────────────────────────────
+── FINDINGS (15) ─────────────────────────────
   POSITION articulation has no staff-grid position fact of its own — the class name states a SIDE (ARTICULATION_MARK), which is NOT an independent witness: it fails together with the classification it is read off
   POSITION direction has no staff-grid position fact of its own
   POSITION dynamic has no staff-grid position fact of its own
@@ -76,3 +83,4 @@ wedge            yes     band*     -  intact,page
   IMAGE CV_LOCATOR falls back silently (clef_locator.py::_ink_mask) and its rows do not record which raster answered
   IMAGE TEMPLATE falls back silently (key_signature_template.py::read_key_signature; time_signature_locator.py::locate_time_signature) and its rows do not record which raster answered
   IMAGE CV_INK measures the erased raster and its rows do not say so, so an INK row and a DETECTOR row of the same ink cannot be told apart by raster
+  RESOLUTION nothing reads the source's native bpc/height/width/xres/yres anywhere in tools/omr — direction_text.py, input_domain.py already open the image dictionary, and the same walk sees 10 other string keys read in those modules (including `bbox` and `Filter`, which ARE taken from it), so the zero is the walker working. Every reader is handed a CONSTANT render DPI whatever the plate holds

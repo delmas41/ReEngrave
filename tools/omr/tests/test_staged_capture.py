@@ -413,7 +413,7 @@ class TestTheImageQuestion(unittest.TestCase):
 # ─────────────────────────────────────────────────────────────────────────────
 
 class TestTheResolutionQuestion(unittest.TestCase):
-    """⚠️ QUESTION 4 (`A-INK-1`) — is the consumer getting the resolution the
+    """⚠️ QUESTION 4 (`A-INK-2`) — is the consumer getting the resolution the
     SOURCE actually has? `OMR_DPI` is a constant applied to a scanned plate,
     which has a native resolution, and to a vector page, which has none.
     """
