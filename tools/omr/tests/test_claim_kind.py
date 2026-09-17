@@ -189,6 +189,19 @@ class TestClaimOf(unittest.TestCase):
         self.assertEqual(ocr.claim, CLAIM.IDENTIFICATION)
         self.assertNotEqual(free.claim, ocr.claim)
 
+    def test_the_split_declares_every_reader_its_gather_site_can_emit(self):
+        """⚠️⚠️ THE OPERATIONAL RISK OF RAISING AT THE WRITE SITE. `observe`
+        now refuses an undeclared (quantity, reader) pair, so a reader the
+        gather site can produce and the table does not declare would abort a
+        real run — turning a labelling change into an outage. Derived from
+        `gather._RUNG_READER` rather than hand-listed, so adding a rung there
+        goes red here instead of in a four-page gather."""
+        from tools.omr.staged.gather import _RUNG_READER
+        from tools.omr.staged.record import READERS
+        reachable = set(_RUNG_READER.values()) | {READERS.TEXT_LAYER}
+        self.assertTrue(reachable, "positive control: the map is populated")
+        self.assertEqual(reachable - set(CLAIMS["MARGIN_LABEL"]), set())
+
     def test_an_unknown_quantity_RAISES_rather_than_defaulting(self):
         """⚠️ A fallback here would convert "nobody said" into a definite
         answer — the failure this repo has paid for at three levels in one
