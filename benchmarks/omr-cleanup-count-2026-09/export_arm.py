@@ -76,28 +76,56 @@ def system_map(result):
     # by the DOCUMENT's bar sequence instead, the copy disagreed and the
     # map-vs-file control below went red on 108 (part, measure) pairs. That is
     # the control working, and the repair is to stop holding the rule twice.
-    offsets, _numbering = sx._document_bar_offsets(parts)
+    offsets, numbering = sx._document_bar_offsets(parts)
+    # ⚠️⚠️ AND THE TACET SPANS, because since 2026-09-15 the exporter WRITES
+    # BARS FOR A SYSTEM A PART IS NOT PRINTED ON. This map walked the part's
+    # `StaffRun`s only, so padded bars belonged to no row and the control
+    # below fired on 2,924 (part, measure) pairs -- exactly the run's own
+    # `tacet_bars_padded` count. The control was RIGHT and the map was
+    # incomplete; the repair is to walk what the exporter walks.
+    spans = None if offsets is None else sx._spans_from_numbering(numbering)
     out = collections.defaultdict(list)
     for pi, part in enumerate(parts):
         name = next((r.name for r in part if r.name), None) or sx._default_name(part)
-        for run in part:
-            base = None if offsets is None else offsets.get((run.page, run.system))
-            first = (n + 1) if base is None else (base + 1)
-            n = (n + run.n_measures) if base is None else (base + run.n_measures)
-            if run.n_measures == 0:
+        # ⚠️⚠️ THIS LOOP WAS BROKEN ON MAIN AND RAISED `NameError: starts` ON
+        # EVERY RUN (found 2026-09-17, the first re-run since the numbering
+        # change). The 2026-09-14 repair computed `first`/`last` from
+        # `offsets` and left the two pre-repair lines BELOW it, which
+        # overwrote both from a `starts` dict that no longer exists -- so the
+        # arm could not build a map at all, and the per-part fallback also
+        # read `n` before assignment. Repaired here rather than worked
+        # around: this map's whole job is to send a human to the RIGHT bars.
+        # ⚠️ `running` is the part's OWN count and is used only where
+        # `_document_bar_offsets` refused; it is kept separate from `first`
+        # so a single missing offset key cannot poison the fallback for the
+        # rest of the part.
+        running = 0
+        for sys_key, run, sys_bars in sx._tacet_walk(part, offsets, spans):
+            # ⚠️ A TACET SPAN'S LENGTH IS THE SYSTEM'S, a present run's is its
+            # OWN -- which is what the exporter writes, and they can differ
+            # wherever a staff read fewer bars than its system voted for.
+            n_meas = sys_bars if run is None else run.n_measures
+            if n_meas == 0:
                 continue
-            first = starts[(run.page, run.system)] + 1
-            n = first + run.n_measures - 1
-            out[(run.page, run.system)].append({
+            base = None if offsets is None else offsets.get(sys_key)
+            first = (running + 1) if base is None else (base + 1)
+            last = first + n_meas - 1
+            running += n_meas
+            out[sys_key].append({
                 "part_index": pi,
                 "part_id": f"P{pi + 1}",
                 "part_name": name,
-                "staff": run.staff,
-                "clef": run.clef,
-                "fifths": run.fifths,
-                "n_measures": run.n_measures,
+                # ⚠️ `tacet` IS THE FIELD THE HUMAN NEEDS: these bars are in
+                # the FILE and are NOT on the PRINT, so they are padding and
+                # never a fix-action. A map that did not say so would invite
+                # counting silence as missing music.
+                "tacet": run is None,
+                "staff": None if run is None else run.staff,
+                "clef": None if run is None else run.clef,
+                "fifths": None if run is None else run.fifths,
+                "n_measures": n_meas,
                 "first_measure": first,
-                "last_measure": n,
+                "last_measure": last,
             })
     return out
 

@@ -222,6 +222,12 @@ def main(argv=None):
     ap = argparse.ArgumentParser()
     ap.add_argument("--tag", default="p1-p4")
     ap.add_argument("--out-dir", default=str(HERE / "out"))
+    # ⚠️ Same option as `export_arm.py` and `build_sheet.py`: all three halves
+    # of one recipe must agree about where a 140 MB record lives, and this one
+    # hardcoded `out/record-<tag>.json`. The old path stays the default.
+    ap.add_argument("--record", default=None,
+                    help="staged record JSON (default: "
+                         "<out-dir>/record-<tag>.json)")
     ap.add_argument("--dpi", type=int, default=600)
     args = ap.parse_args(argv)
 
@@ -229,7 +235,8 @@ def main(argv=None):
     crops = out / "crops"
     crops.mkdir(parents=True, exist_ok=True)
 
-    result = json.loads((out / f"record-{args.tag}.json").read_text())
+    result = json.loads((Path(args.record) if args.record
+                         else out / f"record-{args.tag}.json").read_text())
     xml_text = (out / f"beethoven5-mvt1-{args.tag}.musicxml").read_text()
     smap = json.loads((out / f"system-map-{args.tag}.json").read_text())
     props = json.loads((out / f"proposals-{args.tag}.json").read_text())

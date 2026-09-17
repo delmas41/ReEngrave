@@ -135,16 +135,36 @@ def main(argv=None):
     ap = argparse.ArgumentParser()
     ap.add_argument("--tag", default="p1-p4")
     ap.add_argument("--out-dir", default=str(HERE / "out"))
+    # ⚠️ The record is 132-140 MB and lives in `library/_shared-records/`
+    # (machine-local) as often as beside this arm, and `export_arm.py` has
+    # always taken `--record` while this one hardcoded `out/record-<tag>.json`
+    # -- so the two halves of one recipe disagreed about where a record is.
+    # Same option, same meaning; the old path stays the default.
+    ap.add_argument("--record", default=None,
+                    help="staged record JSON (default: "
+                         "<out-dir>/record-<tag>.json)")
     args = ap.parse_args(argv)
     out = Path(args.out_dir)
 
-    result = json.loads((out / f"record-{args.tag}.json").read_text())
+    record_path = Path(args.record) if args.record \
+        else out / f"record-{args.tag}.json"
+    result = json.loads(record_path.read_text())
     xml_text = (out / f"beethoven5-mvt1-{args.tag}.musicxml").read_text()
     smap = json.loads((out / f"system-map-{args.tag}.json").read_text())
     coverage = json.loads((out / f"coverage-{args.tag}.json").read_text())
 
     rec = sx.Record(result)
-    held = held_back_by_system(rec)
+    # ⚠️⚠️ READ OFF THE EXPORTER, NOT RE-DERIVED. `held_back_by_system` below
+    # held a SECOND copy of `_place_notes`' refusals -- its docstring said
+    # *"mirrors `_place_notes`' three refusals in order"* -- and by 2026-09-17
+    # there were FIVE. It had never heard of `ink_is_a_whole_rest` or
+    # `owned_by_another_staff`, so it counted 542 held-back notes where the
+    # exporter refuses 738, and the control below caught it and refused to
+    # write. The repair is to stop holding the rule twice, which is the move
+    # `system_map` already made for `_document_bar_offsets`.
+    held = {tuple(int(x) for x in k.split("/")): collections.Counter(v)
+            for k, v in (coverage.get("notes_not_written_by_system")
+                         or {}).items()}
     empty_cells = cells_with_no_ink(rec)
 
     # ⚠️ THE ONE PROPOSAL THAT IS NOT READ OFF THE SAME RASTER. Every other
@@ -157,20 +177,32 @@ def main(argv=None):
     # ⚠️ A page with no entry gets NO proposal. Not a zero.
     printed = json.loads((HERE / "printed-staves.json").read_text())["pages"]
 
-    # ── the control: my decomposition against the exporter's own totals ──
+    # ── the control, and what it now asks ──────────────────────────────────
+    #
+    # ⚠️ It used to compare an INDEPENDENT decomposition against the
+    # exporter's totals, which is what caught that decomposition going three
+    # repairs stale. With the duplicate gone there is nothing to drift, and
+    # re-deriving it only to compare would be a control computing the wrong
+    # thing. What IS still worth asserting is that the per-system breakdown
+    # PARTITIONS the flat total -- a refusal reaching one counter and not the
+    # other is exactly how the stale copy started -- and that it is not empty,
+    # since an absent key would otherwise read as *"nothing was held back"*.
     mine = collections.Counter()
     for c in held.values():
         mine.update(c)
     theirs = collections.Counter(coverage.get("notes_not_written") or {})
-    theirs.pop("owner_staff_has_no_measures", None)
-    theirs.pop("written_value_fits_no_note", None)
-    shared = set(mine) | set(theirs)
-    bad = {k: (mine[k], theirs[k]) for k in shared if mine[k] != theirs[k]}
-    if bad:
-        print("DECOMPOSITION DISAGREES WITH THE EXPORTER -- refusing to write",
-              file=sys.stderr)
-        for k, (a, b) in sorted(bad.items()):
-            print(f"  {k}: mine {a}, exporter {b}", file=sys.stderr)
+    if not held:
+        print("NO PER-SYSTEM REFUSALS IN THE COVERAGE REPORT -- refusing to "
+              "write. Re-run export_arm.py on a tree that writes "
+              "`notes_not_written_by_system`.", file=sys.stderr)
+        return 2
+    if mine != theirs:
+        print("THE PER-SYSTEM REFUSALS DO NOT PARTITION THE TOTAL -- refusing "
+              "to write", file=sys.stderr)
+        for k in sorted(set(mine) | set(theirs)):
+            if mine[k] != theirs[k]:
+                print(f"  {k}: by system {mine[k]}, total {theirs[k]}",
+                      file=sys.stderr)
         return 2
 
     systems = []
@@ -271,7 +303,7 @@ def main(argv=None):
         "_README": "MACHINE PROPOSALS. Never a count. `proposed_spurious` is "
                    "null everywhere BY DESIGN: deciding it needs the print. "
                    "See CATEGORIES.md section 3.",
-        "record": f"record-{args.tag}.json",
+        "record": record_path.name,
         "provenance": result.get("provenance"),
         "attention_score": "30 * proposed_missing_staff_systems + "
                            "3 * proposed_missing_bars + "

@@ -217,8 +217,13 @@ class TestTheAccountingControl(unittest.TestCase):
         page = _one_staff_page(notes=[("C4", QUARTER)])
         original = SX._place_notes
 
-        def swallow(rec, runs):
-            original(rec, runs)
+        # ⚠️ `by_system=` was added 2026-09-17 so the cleanup artefact could
+        # ask its question per printed system without holding a second copy of
+        # these refusals. The stub takes it and ignores it: this test pins the
+        # ACCOUNTING CONTROL, not the signature, and the control it pins still
+        # fires for the reason it always did — written and counted disagree.
+        def swallow(rec, runs, by_system=None):
+            original(rec, runs, by_system=by_system)
             for run in runs.values():
                 run.cells.clear()
             return {}                       # ... and count nothing

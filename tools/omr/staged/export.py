@@ -397,7 +397,21 @@ def build(rec: Record) -> Tuple[List[List[StaffRun]], Dict[str, Any],
                 and len(box) == 4):
             run.cell_boxes[cs["cell"]] = [float(v) for v in box]
 
-    dropped = _place_notes(rec, runs)
+    # ⚠️ PER-SYSTEM AS WELL AS PER-REASON, because the cleanup artefact asks
+    # its question one PRINTED SYSTEM at a time and used to re-derive these
+    # refusals itself. See `_place_notes._drop`.
+    notes_dropped_by_system: Dict[Tuple[int, int], Any] = {}
+    dropped = _place_notes(rec, runs, by_system=notes_dropped_by_system)
+    # ⚠️ AN EQUALITY, and it is not decoration: it is the only thing that
+    # catches a refusal added later at one call site and not the other, which
+    # is precisely how the arm's copy went stale in the first place.
+    _by_sys_total = sum(sum(c.values())
+                        for c in notes_dropped_by_system.values())
+    if _by_sys_total != sum(dropped.values()):
+        raise Unbalanced(
+            "notes refused per system (%d) do not sum to the per-reason total "
+            "(%d) -- a refusal reaches one counter and not the other"
+            % (_by_sys_total, sum(dropped.values())))
     _place_directions(rec, runs)
     # ⚠️⚠️ THE ARC SHORTFALL IS KEPT APART FROM `dropped`, AND THIS IS NOT
     # TIDINESS. `dropped` feeds `notes_not_written`, which feeds the ACCOUNTING
@@ -494,10 +508,11 @@ def build(rec: Record) -> Tuple[List[List[StaffRun]], Dict[str, Any],
     # prevent: a hairpin claimed by both `dynamic` and `wedge` was counted
     # twice, and a reader cannot unpick one number into two afterwards.
     return (parts, provenance, dropped, arcs_dropped, artics_dropped,
-            fermatas_dropped, ornaments_dropped)
+            fermatas_dropped, ornaments_dropped, notes_dropped_by_system)
 
 
-def _place_notes(rec: Record, runs: Dict[str, StaffRun]) -> Dict[str, int]:
+def _place_notes(rec: Record, runs: Dict[str, StaffRun],
+                 by_system: Optional[Dict[Tuple[int, int], Any]] = None) -> Dict[str, int]:
     """Every decided note, ONCE PER PIECE OF INK.
 
     ⚠️ A measure cell is cut with padding above and below so ledger notes are
@@ -525,6 +540,29 @@ def _place_notes(rec: Record, runs: Dict[str, StaffRun]) -> Dict[str, int]:
     the subject placement and the 263-edit failure comes straight back.
     """
     dropped: Dict[str, int] = collections.Counter()
+
+    def _drop(reason: str, s: Dict[str, Any]) -> None:
+        """Count one refused note, BY REASON and BY SYSTEM at once.
+
+        ⚠️⚠️ `by_system` EXISTS BECAUSE A SECOND COPY OF THESE REFUSALS WENT
+        STALE. `benchmarks/omr-cleanup-count-2026-09/build_sheet.py` held its
+        own decomposition -- its docstring said *"mirrors `_place_notes`' three
+        refusals in order"* -- and by 2026-09-17 there were FIVE: it had never
+        heard of `ink_is_a_whole_rest` (2026-09-15) or `owned_by_another_staff`
+        (2026-09-11), so it reported 542 held-back notes where this function
+        refuses 738. Its own control caught it and refused to write, which is
+        the control working; the repair is to stop holding the rule twice, the
+        same move `system_map` already made for `_document_bar_offsets`.
+
+        ⚠️ ONE CALL SITE PER REFUSAL, so a refusal added later cannot reach
+        the flat total and miss the per-system one. Asserted by the caller:
+        the per-system counts must SUM to this function's own return.
+        """
+        dropped[reason] += 1
+        if by_system is not None:
+            key = (s["page"], s["system"])
+            by_system.setdefault(key, collections.Counter())[reason] += 1
+
     # ⚠️ READ ONCE, NOT PER NOTEHEAD. It is 2,347 environment lookups on a
     # four-page record, and a flag re-read inside the loop could in principle
     # split one export between two behaviours — which is exactly the kind of
@@ -568,7 +606,7 @@ def _place_notes(rec: Record, runs: Dict[str, StaffRun]) -> Dict[str, int]:
             # on the record. See `whole_rest_ink_enabled` for why the evidence
             # is strong and still thin -- n = 1 document, and two of the six
             # cuts have no plateau.
-            dropped["ink_is_a_whole_rest"] += 1
+            _drop("ink_is_a_whole_rest", s)
             continue
         # ⚠️ A REST HAS NO PITCH AND MUST NOT BE ASKED FOR ONE. Requiring a
         # pitch is what kept rests out of the file for as long as they had no
@@ -582,7 +620,7 @@ def _place_notes(rec: Record, runs: Dict[str, StaffRun]) -> Dict[str, int]:
             # ⚠️ NO POSITIONAL DEFAULT. A staff whose clef abstained produces
             # no pitches at all (`consequences.restate_pitch`), deliberately,
             # and the exporter must not undo that by writing treble.
-            dropped["no_pitch"] += 1
+            _drop("no_pitch", s)
             continue
         if not isinstance(dur, dict):
             # ⚠️⚠️ THE EXPORTER DOES NOT DECIDE, AND THIS IS THE PLACE IT
@@ -597,9 +635,8 @@ def _place_notes(rec: Record, runs: Dict[str, StaffRun]) -> Dict[str, int]:
             # A `<note>` needs ONE duration, so a note whose duration is
             # narrowed cannot be written. It is dropped and COUNTED: the
             # shortfall belongs in the record, not in the silence.
-            dropped[("rest_" if is_rest else "")
-                    + "duration_"
-                    + (dur_v["outcome"] if dur_v else "absent")] += 1
+            _drop(("rest_" if is_rest else "") + "duration_"
+                  + (dur_v["outcome"] if dur_v else "absent"), s)
             continue
 
         owner = rec.value(Q.GLYPH_OWNER, sub)
@@ -613,14 +650,14 @@ def _place_notes(rec: Record, runs: Dict[str, StaffRun]) -> Dict[str, int]:
             # connected to the same stem"*, and it is what the legacy
             # `_dedupe_cross_staff_detections` achieves by DELETING the loser
             # rather than relocating it.
-            dropped["owned_by_another_staff"] += 1
+            _drop("owned_by_another_staff", s)
             continue
         home = _staff_key(s["page"] or 0, s["system"] or 0, s["staff"] or 0)
         run = runs.get(home)
         if run is None:
             # The owner names a staff with no `measure_partition` verdict, so
             # there is no bar to put the note in. Counted, not swallowed.
-            dropped["owner_staff_has_no_measures"] += 1
+            _drop("owner_staff_has_no_measures", s)
             continue
 
         cell_index = s["cell"] or 0
@@ -649,7 +686,7 @@ def _place_notes(rec: Record, runs: Dict[str, StaffRun]) -> Dict[str, int]:
             # ⚠️ NO GUESS. A written value that reduces to no note value is
             # not a note we read; emitting a nearest match would put a wrong
             # rhythm in the file and call it a reading.
-            dropped["written_value_fits_no_note"] += 1
+            _drop("written_value_fits_no_note", s)
             continue
         dtype, derived_dots = fit
         cell.detections.append({
@@ -1794,6 +1831,25 @@ def _document_bar_offsets(
     return offsets, report
 
 
+def _spans_from_numbering(
+        numbering: Dict[str, Any]) -> List[Tuple[Tuple[int, int], int]]:
+    """The document's systems in order, each with its own bar count.
+
+    ⚠️⚠️ ONE PROJECTION, TWO CALLERS, AND THAT IS THE POINT. `to_musicxml`
+    pads tacet spans with it, and `benchmarks/omr-cleanup-count-2026-09/
+    export_arm.py` must name the SAME bars or the system map sends a human to
+    the wrong music -- the one failure that map exists to prevent. Held twice
+    it would drift, which is the `works.json` arity shape and the
+    `_segment_from_change` lesson: a projection with two hand-written copies
+    is a defect waiting for one of them to be edited.
+
+    ⚠️ Read off `numbering["systems"]`, never re-counted, so a padded span and
+    the number written on it answer to the same tally.
+    """
+    return [((r["page"], r["system_index"]), int(r["bars"]))
+            for r in numbering["systems"] if r["bars"] is not None]
+
+
 def _tacet_walk(
         part: Sequence[StaffRun],
         offsets: Optional[Dict[Tuple[int, int], int]],
@@ -2457,7 +2513,8 @@ def to_musicxml(result: Dict[str, Any]) -> Tuple[str, Dict[str, Any]]:
     """The file, and the record of what did not reach it."""
     rec = Record(result)
     (parts, provenance, dropped, arcs_dropped, artics_dropped,
-     fermatas_dropped, ornaments_dropped) = build(rec)
+     fermatas_dropped, ornaments_dropped,
+     notes_dropped_by_system) = build(rec)
     divisions = _divisions(parts)
     counters: Dict[str, int] = collections.Counter()
     # ⚠️ AFTER the parts are joined and BEFORE any measure is rendered. A part
@@ -2485,9 +2542,7 @@ def to_musicxml(result: Dict[str, Any]) -> Tuple[str, Dict[str, Any]]:
     # arithmetic. When the numbering REFUSED there is no bar sequence to pad
     # into, so `spans` is None and `_tacet_walk` falls back to the part's runs.
     spans: Optional[List[Tuple[Tuple[int, int], int]]] = (
-        None if offsets is None else
-        [((r["page"], r["system_index"]), int(r["bars"]))
-         for r in numbering["systems"] if r["bars"] is not None])
+        None if offsets is None else _spans_from_numbering(numbering))
     # ⚠️ THE METER OF A SYSTEM THIS PART IS NOT ON, taken off the runs that ARE
     # on it. `Q.METER` is scoped to `system/<page>/<system>`, so every run of a
     # system carries the same object and there is no second read of the record
@@ -2542,6 +2597,14 @@ def to_musicxml(result: Dict[str, Any]) -> Tuple[str, Dict[str, Any]]:
     # indistinguishable from ink that was never read.
     report["notes_not_written"] = dropped
     report["notes_not_written_total"] = sum(dropped.values())
+    # ⚠️ THE SAME REFUSALS, KEYED BY PRINTED SYSTEM. Written so the cleanup
+    # artefact can ask its question one system at a time without holding a
+    # second copy of the rule -- which is how `build_sheet.py`'s own
+    # decomposition came to be three repairs out of date. `build()` asserts
+    # these sum to the flat total.
+    report["notes_not_written_by_system"] = {
+        f"{p}/{s}": dict(c)
+        for (p, s), c in sorted(notes_dropped_by_system.items())}
     # ⚠️ REPORTED APART FROM THE NOTES, and deliberately NOT inside the
     # balance below: an arc is not a note, and a control that counts two
     # different families on one side of an equation cannot say which one it
