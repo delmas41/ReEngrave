@@ -5,7 +5,7 @@ highest-yield bug class.
     python3 -m tools.omr.staged.wiring --json
     python3 -m tools.omr.staged.wiring --check    # non-zero on anything
                                                   # not on KNOWN_GAPS
-    python3 -m tools.omr.staged.wiring --run rec.json   # confirm FRAME from a
+    python3 -m tools.omr.staged.wiring --run rec.json   # confirm SCOPE from a
                                                         # real record
 
 ⚠️⚠️ **THE BUG CLASS, AND WHY IT NEEDED AN INSTRUMENT.** *The value existed
@@ -39,7 +39,16 @@ and this session did not — so ~200 lines were written and then deleted.
 **Ask that question there.** What survives of it here is the roster REPAIR,
 which closes one of that tool's own open findings.
 
-**1. FRAME — a declared input read where it is never filed.** A decision that
+**1. SCOPE — a declared input read where it is never filed.**
+
+⚠️⚠️ **THIS QUESTION WAS CALLED "FRAME" UNTIL 2026-09-17 AND IS NOT ABOUT ONE.**
+It asks whether a decision reads an input at a `Scope` that can REACH where the
+input is FILED — subject reach. A COORDINATE frame (`page`, `cell:N`,
+`header_window`) is a different axis entirely, recorded on every row as
+`Observation.frame` and, as of 2026-09-17, checked by nothing that decides
+whether two values may be combined. The collision was actively misleading: a
+green `wiring --check` read as *"the frames are checked"*, and they are not.
+Renamed on the measurement-meaning audit's first recommendation. A decision that
 reads `ev.rows(Q.X)` at the default `Scope.EXACT` reads its OWN subject, whose
 Kind is the decision's declared `scope`. If `Q.X` is only ever filed at a
 DIFFERENT Kind, the declared input is present, declared, gathered — and
@@ -121,38 +130,38 @@ _ROOT = _TOOLS.parent                             # repo root
 # ─────────────────────────────────────────────────────────────────────────────
 
 KNOWN_GAPS: Dict[str, str] = {
-    # ── FRAME, latent: declared, filed elsewhere, unreadable the obvious way
+    # ── SCOPE, latent: declared, filed elsewhere, unreadable the obvious way
     #
     # ⚠️ EACH IS A TRAP ARMED FOR THE NEXT PERSON, not a bug today. The
     # declaration is inert (`inventory --check` owns that half); what this
     # adds is that the naive `ev.rows(Q.X)` which closes it would return
     # NOTHING, silently. `instrument declares roster_entry` was the seventh
     # and LEFT this list on 2026-09-15 when it was wired.
-    "FRAME-LATENT adjudicate_clef declares Q.NOTEHEAD_STAFF_POSITION": (
+    "SCOPE-LATENT adjudicate_clef declares Q.NOTEHEAD_STAFF_POSITION": (
         "the clef's OWN first `checked_by` entry — implied pitches against "
         "the instrument's written range — and the body never reads it. "
         "⚠️ MEASURED UNREACHABLE ON A SCAN (`inventory.KNOWN_GAPS`): the "
         "range test needs `Q.INSTRUMENT`, which abstains on 22 of 22 and 27 "
         "of 27 staves of the two scanned pages. What this row adds is that "
         "wiring it also needs `subject=` — the positions are on the GLYPHS."),
-    "FRAME-LATENT adjudicate_key_signature declares Q.DOSSIER_FACT": (
+    "SCOPE-LATENT adjudicate_key_signature declares Q.DOSSIER_FACT": (
         "no dossier is supplied on the scan path BY PROTOCOL, and the "
         "`dossier` parameter has no producer at all — which is "
         "`tools/omr/no_producer.py`'s finding, not this module's. Closing "
         "this needs `Scope.SELF_AND_ANCESTORS`, not just a read."),
-    "FRAME-LATENT adjudicate_meter declares Q.DOSSIER_FACT": (
+    "SCOPE-LATENT adjudicate_meter declares Q.DOSSIER_FACT": (
         "the meter's dossier tier, inert for the same reason as the key "
         "signature's and with the same frame trap waiting under it."),
-    "FRAME-LATENT adjudicate_part_partition declares Q.INSTRUMENT": (
+    "SCOPE-LATENT adjudicate_part_partition declares Q.INSTRUMENT": (
         "the join is decided from staff COUNTS and slots. ⚠️ THIS ONE IS "
         "RANKED WORK, not a permanent gap: the Phase 2 part-join finding is "
         "that a short system must pair by INSTRUMENT NAME, and the identity "
         "is on the STAVES while this decision runs at DOCUMENT — so the "
         "repair needs `subject=` per staff, not a bare read."),
-    "FRAME-LATENT adjudicate_part_partition declares Q.STAFF_ORDINAL": (
+    "SCOPE-LATENT adjudicate_part_partition declares Q.STAFF_ORDINAL": (
         "inert declaration; the partition reads slots. Same frame shape as "
         "`Q.INSTRUMENT` above and the same `subject=` requirement."),
-    "FRAME-LATENT adjudicate_system_membership declares Q.GAP_BRIDGING": (
+    "SCOPE-LATENT adjudicate_system_membership declares Q.GAP_BRIDGING": (
         "inert declaration — the connectivity veto already ran in GATHER and "
         "the decision records its RESULT rather than the bridging. The "
         "bridging row is filed on the PAGE and the decision runs at SYSTEM."),
@@ -188,7 +197,7 @@ KNOWN_GAPS: Dict[str, str] = {
         "mean tracing which collection the key came from, across the module "
         "— and a wrong answer there is worse than none, because it would "
         "file a quantity at a Kind nothing files it at and manufacture a "
-        "FRAME finding against working code. `--run` answers it exactly."),
+        "SCOPE finding against working code. `--run` answers it exactly."),
     "UNRESOLVED local 'sub' (bound from a collection or a caller)": (
         "`sub` is unpacked from a dict or a list (`for cell_key, dets in "
         "detections.items()`), so its Kind is a property of the collection "
@@ -558,7 +567,7 @@ def _positional_order(fn: ast.FunctionDef) -> List[str]:
 
 
 # ─────────────────────────────────────────────────────────────────────────────
-# 2. FRAME — a declared input read where it is never filed
+# 2. SCOPE — a declared input read where it is never filed
 # ─────────────────────────────────────────────────────────────────────────────
 
 #: `record`'s subject constructors, by the Kind they build.
@@ -1227,11 +1236,11 @@ def problems(rep: Dict[str, Any]) -> List[str]:
     # three functions of one chain and is ONE fault; reporting it three times
     # inflates the count and makes the list read as three separate repairs.
     for b in rep["frames"]["broken"]:
-        out.append(f"FRAME {b['decision']} reads Q.{b['quantity']} at "
+        out.append(f"SCOPE {b['decision']} reads Q.{b['quantity']} at "
                    f"{b['reads_at']}, filed at {'/'.join(b['filed_at'])} "
                    f"— the declared input CANNOT ANSWER (fix: {b['fix']})")
     for b in rep["frames"]["latent"]:
-        out.append(f"FRAME-LATENT {b['decision']} declares Q.{b['quantity']} "
+        out.append(f"SCOPE-LATENT {b['decision']} declares Q.{b['quantity']} "
                    f"(scope {b['reads_at']}) filed only at "
                    f"{'/'.join(b['filed_at'])} — an EXACT read would return "
                    f"nothing (needs: {b['fix']})")

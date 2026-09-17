@@ -362,17 +362,35 @@ def _report(s: dict, check: bool) -> int:
     print(f"   write accessors derived  {len(c['write_accessors'])} {c['write_accessors']}")
     print(f"   call sites unresolved    {len(s['unresolved'])}")
 
+    # ⚠️⚠️ THE MODULE ROSTER, WHICH THIS CHECK PROMISED TO ENFORCE AND DID
+    # NOT. `NOT_A_STAGE`'s own comment says *"every `.py` under `staged/` must
+    # be in one list or the other, and `--check` fails otherwise"* — and until
+    # 2026-09-17 `unaccounted_modules()` was called by NOTHING but
+    # `test_staged_reach.py:61`, so the CHECK exited 0 on an unregistered
+    # module while the docstring said it would not. `STAGE_OF_FILE` is a HAND
+    # LIST keyed on filename, so an unregistered staged module makes every
+    # quantity only it reads read as UNREAD — the exact silent failure this
+    # roster exists to prevent. CLAUDE.md's *a rule described in a docstring
+    # and never built*, inside a derived check; found by the
+    # measurement-meaning audit, which tripped it with its own new module.
+    orphan_modules = unaccounted_modules()
+
     print(f"\n── {len(bad)} not LIVE, {len(unaccounted)} unaccounted, "
-          f"{len(stale)} stale gap entries")
+          f"{len(stale)} stale gap entries, "
+          f"{len(orphan_modules)} unregistered modules")
     for q in unaccounted:
         print(f"   ⚠️ UNACCOUNTED {q}")
     for q in stale:
         print(f"   ⚠️ STALE GAP   {q} — nothing reports it any more; delete the entry")
+    for m in orphan_modules:
+        print(f"   ⚠️ UNREGISTERED MODULE {m} — put it in `STAGE_OF_FILE` or "
+              f"`NOT_A_STAGE`; until then every quantity only it reads counts "
+              f"as UNREAD")
 
     if c["with_a_reader"] == 0 or c["quantity_stage_read_pairs"] == 0:
         print("\n⚠️ POSITIVE CONTROL AT ZERO — the question did not run.")
         return 2
-    return 1 if check and (unaccounted or stale) else 0
+    return 1 if check and (unaccounted or stale or orphan_modules) else 0
 
 
 def main(argv=None) -> int:
