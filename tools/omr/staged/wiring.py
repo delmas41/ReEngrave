@@ -303,6 +303,58 @@ KNOWN_GAPS: Dict[str, str] = {
         "record of which side of it a row came from."),
     "DETAIL Q.BEAM_STROKE.staff_lines_erased":
         "as `Q.<loop-bound>.staff_lines_erased`.",
+    # ── DETAIL, surfaced 2026-09-17 when a BENCHMARK PROBE stopped counting
+    # as a consumer (see the exclusion in `details()`).
+    #
+    # ⚠️⚠️ NOT NEW FAULTS — NEWLY VISIBLE ONES. Each key below is written by
+    # `gather.py` and named, in the whole tree, only by a probe under
+    # `benchmarks/`. A measuring instrument reading a value is not a pipeline
+    # consuming it, so before the exclusion every one of these read as closed.
+    # This is the same family as the two exclusions above (a test, and this
+    # module's own gap list) and it is the third instance.
+    "DETAIL Q.BRACKET_BLOCK.n_blocks": (
+        "how many DISTINCT bracket blocks the system was cut into, carried on "
+        "every staff's row. `adjudicate_staff_group` reads the block index "
+        "and not the count — so a consumer cannot currently ask *did this "
+        "system resolve into one family or six*, which is the question "
+        "`BRACKET_COLUMN_MIN_EVIDENCE` exists to make answerable (without "
+        "that floor a 25-staff Bruckner system manufactured ELEVEN groups)."),
+    "DETAIL Q.DIRECTION_WORD.gate": (
+        "why `OMR_DIRECTION_TEXT_SCAN_GATE` skipped this page. ⚠️ It is the "
+        "reason string for an OUT_OF_SCOPE abstention, so the ABSTENTION is "
+        "consumed and the explanation is not — a reader can tell the word "
+        "reader did not run and cannot tell whether it was skipped, absent or "
+        "refused without reading the note."),
+    "DETAIL Q.DIRECTION_WORD.readers_run": (
+        "which OCR rungs actually ran for this word, beside "
+        "`winning_reader`. The ranked next step of the direction work is to "
+        "put the two rungs on the record as INDEPENDENT readings; this is "
+        "half of what that needs and nothing reads it yet."),
+    "DETAIL Q.GLYPH_BAND_DISTANCE.own": (
+        "whether THIS candidate is the staff the glyph was detected in — the "
+        "contested/uncontested split. `adjudicate_glyph_owner` re-derives the "
+        "same fact from the subject rather than reading it, so the two could "
+        "disagree and nothing would say so."),
+    "DETAIL Q.GLYPH_LADDER.found": (
+        "how many ledger rungs were actually seen, against `expected`. The "
+        "VALUE is the boolean `found == expected`, so a consumer can weigh "
+        "'complete ladder' and cannot weigh 'three of four' — and the legacy "
+        "rule this is derived from is COMPLETENESS ONLY *because* counting "
+        "was measured worse (a ghost's one rung WAS the real note's own). "
+        "⚠️ Recorded so that refusal stays checkable, not so it is reversed."),
+    "DETAIL Q.MARGIN_LABEL.y_center_px": (
+        "where in the margin this label sits. The label→staff assignment "
+        "happens inside the reader (`_assign`, on block centroids) and the "
+        "record keeps the result; this is the evidence that decision was made "
+        "on, unread — which is the shape that let a whole-crop OCR block be "
+        "assigned to one staff for months before block HEIGHT was recorded."),
+    "DETAIL Q.STAFF_SKEW.thickness_px": (
+        "the staff's measured printed line thickness, beside its wander. "
+        "`staff_line_removal` measures thickness AGAIN, per cell, from the "
+        "cell's own ink — deliberately, since it varies 0.06-0.31 spaces "
+        "across the corpus — so this page-level figure is a second reading "
+        "that nothing compares against the first."),
+
     # ── DETAIL, Q.INK — a PRODUCER shipped deliberately without a consumer
     #
     # ⚠️⚠️ THESE SEVEN ARE OPEN BY DESIGN AND MUST NOT BE READ AS AN OVERSIGHT.
@@ -948,6 +1000,32 @@ def details() -> Dict[str, Any]:
             # test silences it is the vacuous-assertion family, arriving
             # through the back door.
             if _tree_of(path) == "test":
+                continue
+            # ⚠️⚠️ AND NOR IS A BENCHMARK PROBE — THE THIRD INSTANCE OF THE
+            # SAME FAMILY, FOUND 2026-09-17 WHEN `Q.INK` LANDED. That
+            # quantity ships as a PRODUCER with no consumer, deliberately, and
+            # all seven of its keys were written into `KNOWN_GAPS` to say so.
+            # The moment its measuring probes were committed, `--check` went
+            # RED reporting FOUR of the seven as STALE — closed — because a
+            # probe under `benchmarks/` had read them to take the measurement
+            # the gap entries exist to describe. **The instrument that
+            # measures a gap is not a consumer that closes it.**
+            #
+            # ⚠️ This module already argues exactly this distinction for the
+            # PRODUCER question: `_tree_of`'s own docstring says collapsing
+            # the three trees "would have reported `roster` as fed the moment
+            # any probe passed one". That reasoning was applied there and not
+            # here.
+            #
+            # ⚠️⚠️ AND THE FIRST DRAFT OF THIS COMMENT CLAIMED THE CHANGE WAS
+            # CONFINED TO THE FOUR `Q.INK` KEYS THAT EXPOSED IT. IT IS NOT,
+            # AND THE CLAIM WAS WRITTEN BEFORE THE MEASUREMENT — the exact
+            # shape CLAUDE.md records as *asserting a mechanism without
+            # measuring it*. Run: it surfaces **SEVEN more keys**, listed in
+            # `KNOWN_GAPS` below, every one of them a detail key whose ONLY
+            # reader anywhere in the tree is a benchmark probe. They were
+            # not new faults; they were invisible.
+            if _tree_of(path) == "benchmark":
                 continue
             # ⚠️⚠️ AND NOR IS THIS MODULE'S OWN GAP LIST — FOUND THE HARD
             # WAY, BY WATCHING THIS QUESTION GO TO ZERO. Writing each unread
