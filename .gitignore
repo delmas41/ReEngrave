@@ -177,3 +177,7 @@ benchmarks/omr-scan-e2e-2026-09/works.json.bak-*
 # writes to disk so an interrupted run can be detected and the tree restored.
 # Never evidence; a committed one would look like a live interruption.
 benchmarks/**/.mutate-*
+
+# the plumbing matrix writes 140+ records here; ignoring them keeps the
+# tree clean so `provenance.dirty` on each record means something
+benchmarks/omr-plumbing-2026-09/out/
