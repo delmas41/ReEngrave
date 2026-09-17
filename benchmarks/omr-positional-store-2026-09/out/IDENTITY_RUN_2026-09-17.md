@@ -334,3 +334,56 @@ shell wrapper fails by producing a BELIEVABLE status, never an implausible
 one.** Neither an all-green nor an all-red is self-evidently wrong; what
 settles it is a fact from outside the wrapper — an empty diff, or the body of
 the log.
+
+## 10. ⚠️⚠️ A NAMED CLASS'S GEOMETRY IN THE STORE IS A MIXTURE — found by asking §4's own query
+
+§4 says `per_publisher` is a real partition. It is, and **the first
+conditioning query anyone runs is nonetheless misleading.** Asking the
+two-publisher store for staff position 0 gives Litolff a `mean_h` of **3.646**
+for `noteheadBlackOnLine` against Breitkopf's **1.199** — and a notehead is
+one staff space tall, so the larger number is not a fact about a plate.
+
+**The mechanism, isolated on `source_quantity`** (`probe/source_quantity_mixing.py`,
+output in `out/source-quantity-mixing.txt`):
+
+| name | publisher | source | n | median | p95 |
+|---|---|---|--:|--:|--:|
+| `noteheadBlackOnLine` | breitkopf | `glyph_box` | 1425 | **1.200** | 1.290 |
+| `noteheadBlackOnLine` | litolff | `glyph_box` | 978 | **1.340** | 1.530 |
+| `noteheadBlackOnLine` | litolff | **`ink`** | 799 | **5.290** | **12.000** |
+| `ledgerLine` | breitkopf | `glyph_box` | 1057 | **0.288** | 0.384 |
+| `ledgerLine` | litolff | `glyph_box` | 1878 | **0.280** | 0.370 |
+| `ledgerLine` | litolff | **`ink`** | 1178 | **7.050** | **12.000** |
+
+⚠️⚠️ **`Q.INK`'s `ink_explained_by` becomes a `membership` exactly as a
+detection's own class does, so a MERGED BLOB lands in the NAMED class's height
+distribution.** A blob five to seven staff spaces tall, explained by
+`noteheadBlackOnLine`, sits beside real 1.3-space noteheads; every one of those
+`ink` rows has p95 **exactly 12.000**, which is the measure cell's own height
+(4 staff spaces plus 4 of padding either side). Pooled, a named class's
+geometry is a mixture of the glyph and of whatever ink its class happened to
+overlap.
+
+✅ **SPLIT ON `source_quantity`, THE TWO PUBLISHERS AGREE** — `ledgerLine`
+0.288 against 0.280, **eight thousandths of a staff space** — which is both
+the refutation of the alarming number and the positive control that these two
+records are geometrically comparable at all.
+
+⚠️ **What it is NOT**: not a bug in `height_spaces`, and not a schema gap —
+`source_quantity` is on every entry. It is a **QUERY DISCIPLINE**, and
+`positional_store --ask` does not apply it.
+
+⚠️⚠️ **AND IT CONFOUNDS EXACTLY THE COMPARISON THE STORE EXISTS FOR.** Today
+Litolff has ink rows and Breitkopf has none (§4), so **a pooled per-name
+`mean_h` between them measures which record was gathered with ink, not the two
+plates.** That is `A-INK-4` — *a measurement retires a concept only within the
+factor set it was taken in* — with `source_quantity` as the factor nobody was
+holding. It is a second, independent reason the ranked next work in §4 (gather
+Breitkopf WITH ink) is the right next step: it removes the confound rather
+than working around it.
+
+⚠️ **DELIBERATELY NOT FIXED.** Whether `--ask` should split, filter or merely
+report the split is a design decision about the store's contract, not a bug to
+patch mid-session, and this session's brief was one measurement. The probe
+prints REACH first and **exits 3 declaring itself DEAD** on a store with no
+`ink` rows, since a clean table there would mean nothing.

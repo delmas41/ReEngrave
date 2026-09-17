@@ -1,0 +1,29 @@
+entries by publisher / source_quantity:
+    breitkopf   glyph_box   12932
+    litolff     glyph_box    8486
+    litolff     ink          7093
+
+ink entries in this store: 7093
+
+name                   publisher   source         n  median    mean     p95
+  noteheadBlackOnLine  breitkopf   glyph_box   1425   1.200   1.135   1.290
+  noteheadBlackOnLine  litolff     glyph_box    978   1.340   1.305   1.530
+  noteheadBlackOnLine  litolff     ink          799   5.290   5.795  12.000
+
+  noteheadBlackInSpace breitkopf   glyph_box   1656   1.091   1.002   1.244
+  noteheadBlackInSpace litolff     glyph_box    916   1.250   1.254   1.640
+  noteheadBlackInSpace litolff     ink          719   5.270   5.657  12.000
+
+  ledgerLine           breitkopf   glyph_box   1057   0.288   0.292   0.384
+  ledgerLine           litolff     glyph_box   1878   0.280   0.284   0.370
+  ledgerLine           litolff     ink         1178   7.050   7.035  12.000
+
+  tie                  breitkopf   glyph_box   1658   0.724   0.818   1.540
+  tie                  litolff     glyph_box    414   0.690   0.717   1.280
+  tie                  litolff     ink          139   7.160   6.393  12.000
+
+  beam                 breitkopf   glyph_box   1672   0.800   1.029   2.420
+  beam                 litolff     glyph_box    536   0.630   0.879   2.040
+  beam                 litolff     ink          222   6.520   6.244  12.000
+
+worst `ink`-row median height over these names: 7.160 staff spaces — against ~1.0 for a notehead and ~0.3 for a ledger line.
