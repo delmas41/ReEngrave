@@ -894,7 +894,7 @@ rather than defaulted.
 | 4 | the same bar's sum on every other staff | ✅ the per-bar modal vote |
 | 5 | the surrounding bars' sums | ⚠️ PARTIAL — forward of a candidate (`_bar_run`), and now the whole system's own bars as a proposer of the LENGTH (`A-DUR-7`) |
 | 6 | beat subdivision agrees with the meter | ❌ not built; beams are gathered, grouping is not read — ⚠️ and a note is now joined to its beam by its STEM (`A-DUR-8`), which is the association such a rule would need |
-| 7 | undefined blobs of ink | ✅ GATHERED 2026-09-17 (`Q.INK`, `OMR_INK`, default OFF) and **consumed by nothing, deliberately** — see A-DUR-5 |
+| 7 | undefined blobs of ink | ✅ GATHERED 2026-09-17 (`Q.INK`, `OMR_INK`, **default ON since 2026-09-17**; this line read *default OFF*) and **consumed by nothing, deliberately** — see A-DUR-5 |
 
 **Three things to carry into building it, each paid for by a measurement here:**
 
@@ -930,7 +930,7 @@ on `direction` being a stub.
 
 ### A-DUR-5 · ✅ BUILT 2026-09-17 as `Q.INK` — the ink is the POPULATION
 
-**PRODUCER ONLY, `OMR_INK`, default OFF. Findings:
+**PRODUCER ONLY, `OMR_INK`, **default ON since 2026-09-17 (Sean's call, deny-list)** — this line read *default OFF* until 2026-09-17 evening, one of EIGHT ledgers that did; see `test_flag_docs_match_predicates.py`. Findings:
 [benchmarks/omr-ink-gather-2026-09/FINDINGS.md](../../../benchmarks/omr-ink-gather-2026-09/FINDINGS.md).**
 The entry below is the request as it stood; what follows corrects it in three
 places and the corrections are the finding.

@@ -51,20 +51,62 @@ must land in one bucket set."* The imprint is kept, verbatim, as the
 `document_identity` row's own value and `detail.publisher`. So the criterion
 is met in substance and the form it names belongs to the record, not the store.
 
-## 2. ⚠️ THE HANDOFF'S COMMAND OMITS `OMR_INK=1`, AND IT IS LOAD-BEARING
+## 2. ⚠️⚠️ I CALLED THE HANDOFF'S COMMAND DEFECTIVE AND IT IS NOT — `OMR_INK` IS DEFAULT ON, AND EIGHT LEDGERS SAID OTHERWISE
 
-Caught before it cost the run. The store reads TWO quantities — `glyph_box`
-(named) and `ink` (unnamed) — and the prior record is **7,093 `ink` + 8,486
-`glyph_box` = 15,579**, exactly the entry count the handoff quotes. Run as
-written, the arm would have dropped the whole unnamed-ink half of the store
-(7,093 of 15,579 entries) **and changed two variables instead of one**, which
-is the only thing this measurement was for.
+**The correction is the finding, and it cost a killed run.** The first version
+of this section claimed the handoff's command omits a load-bearing
+`OMR_INK=1`. That is **FALSE**. `gather._ink_enabled()` reads
+`environ.get("OMR_INK", "1") not in ("0", "", "false", "no", "off")` — **default
+ON since 2026-09-17 (Sean's call), a DENY-list** — so the handoff's command as
+written gathers ink, and the explicit `OMR_INK=1` in §1 is a **no-op**.
 
-The prior arm's flags are not recoverable from its provenance (§5); they were
-recovered from the OUTPUT — `OMR_INK` from the 7,093 ink rows, the scan gate
+⚠️ **The arm is unharmed and that is checkable rather than hopeful:** a no-op
+cannot change a variable, and the ink counters come back **identical to the
+prior record in all four** (§3). Had I actually altered the ink configuration
+they could not have. So the A/B is still one-variable; what was wasted was a
+kill and a relaunch, ~15 minutes, on a run that was already correct.
+
+⚠️⚠️ **WHAT MISLED ME IS THE LEDGER, NOT THE CODE — AND IT IS THE FIRST THING
+AN AGENT READS.** The flag flipped to default-ON and **EIGHT places still stated
+it OFF**, four of them in the governing file — the eighth and seventh found by
+`grep`ing for the claim after fixing the first six:
+
+| where | says |
+|---|---|
+| `CLAUDE.md:409` | "`OMR_INK`, default OFF, PRODUCER ONLY" |
+| `CLAUDE.md:753` (knobs table) | `` `OMR_INK` │ `0` (off) `` — and argues *"the standing argument for the flag being off until a consumer exists"* |
+| `CLAUDE.md:6102` | "behind `OMR_INK`, **default OFF**" |
+| `CLAUDE.md:7185` (env table) | "`0` off (default)" |
+| `tools/omr/staged/wiring.py:361` | "flag `OMR_INK`, default OFF" |
+| `benchmarks/omr-ink-gather-2026-09/FINDINGS.md:4` | "**default OFF**, allow-list" — wrong about BOTH halves |
+| `tools/omr/staged/ASSUMPTIONS.md:897` | "`OMR_INK`, default OFF" |
+| `tools/omr/staged/ASSUMPTIONS.md:933` | "PRODUCER ONLY, `OMR_INK`, default OFF" |
+
+⚠️ **The findings file is wrong about BOTH halves** — the default *and* the
+list kind. The predicate is a deny-list, which is exactly what CLAUDE.md's own
+*"A flag's OFF test must follow its DEFAULT"* rule REQUIRES of a default-ON
+flag. **So the code is correct and every description of it is stale**: this is
+`fixed-then-kept-open-in-prose` inverted — **flipped-then-kept-off-in-prose** —
+and unlike a stale claim about the past, a wrong DEFAULT in a knobs table is
+read as a fact about the run you are about to make.
+
+⚠️ **The cheap check is that the claim is mechanically falsifiable, and the
+instrument already existed.** `test_flag_default_direction.default_on_flags()`
+derives every flag, its default and its list kind from the AST, and evaluates
+the predicate on its own default rather than guessing — it reports
+`ON OMR_INK`. Nothing compared that roster to the table. **Closed in this
+commit** (§8): the table is now derived-checked against the predicates.
+
+### What IS true about the prior arm, and how its flags were recovered
+
+The prior record is **7,093 `ink` + 8,486 `glyph_box` = 15,579**, exactly the
+entry count the handoff quotes — so the store does read two quantities and the
+ink half is real. Its flags are **not recoverable from its provenance** (§5);
+they were recovered from the OUTPUT — ink from the 7,093 rows, the scan gate
 from `direction_word` abstaining `out_of_scope` ×1187. Both happen to leave a
 trace. **A flag that changes a VALUE rather than a row's existence would leave
-none.**
+none**, which is §5's point and is why that gap is worth more than this
+section's original mistake.
 
 ## 3. THE ARMS ARE IDENTICAL ON EVERY INK COUNTER — and the off-by-one is two definitions
 
@@ -210,3 +252,59 @@ anything, which is `A-INK-4`'s point and cannot be asked yet because the
 partners do not exist; anything about unnamed ink on a second plate (§4); and
 anything about an ENGRAVED page. n = 1 document for the ink half, 2 publishers
 for the named half, 4 pages.
+
+## 8. THE DURABLE FIX — the flag tables are now derived-checked against the predicates
+
+`tools/omr/tests/test_flag_docs_match_predicates.py`. Nothing compared
+CLAUDE.md's two flag tables to the code, so §2's eight stale statements were
+invisible, and a ninth would be too.
+
+⚠️ **It IMPORTS the roster rather than re-deriving it.**
+`test_flag_default_direction.default_on_flags()` already walks the AST for
+every `environ.get(<FLAG>, <default>)`, resolves a flag named through a module
+constant, and settles the direction by **evaluating the predicate on its own
+default** — two copies of a derived list is exactly the drift this check is
+about. It reports **29 read sites over 26 distinct flags, 15 ON / 14 OFF**.
+
+**TWO TIERS, because one of them has to be able to pass.**
+
+| tier | meaning | count |
+|---|---|--:|
+| **CONTRADICTION** — a table row stating the wrong default | hard failure | **1 → 0** (`OMR_INK`, both rows) |
+| absent from both tables | recorded in `UNDOCUMENTED`, with a reason | 10 → **9** |
+
+⚠️ **A check that can never pass cannot be a gate**, which CLAUDE.md already
+records against `no_producer --check` (*"exits 1 while reporting its findings
+as `RECORDED`"*). Ten pre-existing undocumented flags would have made this
+permanently red, so they are ACCOUNTED rather than failed — and **documenting
+one must remove it from the list**, the `export_coverage` stale-entry rule, so
+the list describes the tables and not their history. `OMR_DOCUMENT_IDENTITY`
+was documented in this commit and duly left it.
+
+⚠️ **Three ways it was kept from passing vacuously**, since a check of prose
+against code is the kind that reads green while measuring nothing:
+1. a **POSITIVE CONTROL** injecting a row that states the opposite of a real
+   predicate, which must be caught;
+2. a guard that the imported roster is not tiny or empty — **a derivation over
+   an empty roster passes everything**;
+3. the **stale-entry test run RED on purpose**: putting
+   `OMR_DOCUMENT_IDENTITY` back into `UNDOCUMENTED` fails with
+   `documented now; remove from UNDOCUMENTED: ['OMR_DOCUMENT_IDENTITY']`, and
+   the restore was verified.
+
+⚠️ `states_on` **ABSTAINS rather than guessing.** The default column is
+written at least six ways (`` `1` (on) ``, `` **`1` ON since 2026-09-08** ``,
+`` `move` (on) ``, `_(unset)_`). It reads the first backticked token — which
+IS the default value — and the words `on`/`off`, and returns None where they
+CONTRADICT or neither appears. ⚠️ My own first unit expectation for it was
+wrong (I asserted an abstention for a cell the rule scores by its token, which
+is the stronger signal); the rule was kept and the expectation corrected.
+
+⚠️ **What it does NOT check**: the prose BODIES, only the default COLUMN — a
+body says many things and is not a claim about this run's default (the
+`OMR_INK` row's body arguing *"the standing argument for the flag being off"*
+is now stamped by hand, not by this check); that a documented flag's
+DESCRIPTION is true; the nine undocumented flags, two of which
+(`OMR_MOVEMENT_REFERENCE`, `OMR_LABEL_MERGE_QUALITY`, plus `OMR_ROSTER`) are
+**default-ON and described in no table**, which is the same hazard as
+`OMR_INK`'s waiting to be paid.

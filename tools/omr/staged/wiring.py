@@ -358,7 +358,9 @@ KNOWN_GAPS: Dict[str, str] = {
     # ── DETAIL, Q.INK — a PRODUCER shipped deliberately without a consumer
     #
     # ⚠️⚠️ THESE SEVEN ARE OPEN BY DESIGN AND MUST NOT BE READ AS AN OVERSIGHT.
-    # `gather_ink` (flag `OMR_INK`, default OFF) is the base ink layer Sean
+    # `gather_ink` (flag `OMR_INK`, **default ON since 2026-09-17** —
+    # this comment read `default OFF` until 2026-09-17 evening) is the
+    # base ink layer Sean
     # asked for in `ASSUMPTIONS.md` A-DUR-5; it was built as the PRODUCER
     # ONLY, and no decision was wired to it in the same change, deliberately.
     # The reason is that the deliverable of that job is a REACH MEASUREMENT —

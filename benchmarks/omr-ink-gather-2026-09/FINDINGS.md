@@ -1,7 +1,15 @@
 # `Q.INK` — the ink is the population, and classification is an attribute
 
 2026-09-17. `A-DUR-5`, Sean's standing request since 2026-09-09, built as the
-**PRODUCER ONLY**. `OMR_INK`, **default OFF**, allow-list.
+**PRODUCER ONLY**. `OMR_INK`, ~~**default OFF**, allow-list~~ —
+⚠️⚠️ **CORRECTED 2026-09-17 EVENING AND WRONG ABOUT BOTH HALVES: the flag
+is DEFAULT ON (Sean's call, same day) and the predicate is a DENY-list**,
+which is what CLAUDE.md's *"A flag's OFF test must follow its DEFAULT"*
+requires of a default-ON flag. The line is struck rather than deleted
+because it is what four other ledgers copied, and because it cost a later
+session a killed 15-minute gather. Now derived-checked by
+`tools/omr/tests/test_flag_docs_match_predicates.py`. Everything measured
+below is unaffected — the arms named their flags explicitly.
 
 > *"I really don't want to lose the 'here is a blob of ink but we don't know
 > what it is' gather data point. It can be used in every decision point if
