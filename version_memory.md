@@ -16,6 +16,49 @@ pointing at headings no longer in the file.)*
 
 ---
 
+## 2026-09-17 — the carry's DOMAIN on the Breitkopf record is 5 of 7, not zero
+
+**A correction to yesterday's entry, on this repo's own rule that the tree
+outranks the ledger — including when the ledger is mine.** No code under
+`tools/` changed; nothing was gathered, exported or scored.
+
+Yesterday's pricing-arm entry read Breitkopf Brahms 1 p0-3's
+`decided 7 of 7  {'voted': 2, 'change_only': 5}` and concluded **"neither flag
+has a domain on this document"**, reasoning that `_meter_fallbacks` is reached
+only from failure paths and nothing failed. The premise is right and the
+inference runs backwards: **`change_only` is itself a fallback rung — the THIRD
+of three** (`_carry_meter` → `_meter_from_bars` → `_change_only`) — so a
+`change_only` verdict is positive evidence that the fallbacks ran and that the
+carry was asked first. **Domain: 5 of 7 systems**, the flag's first reach number
+on a document that misreads its meter.
+
+- `probe/carry_domain.py` derives it by AST rather than by grep, because
+  `_change_only` has two call sites and the inference holds only through
+  `_meter_from_bars` being called from nowhere else. It closes the transitive
+  set to a fixpoint and REFUSES if any rung becomes reachable from outside it.
+- ⚠️ **The shared Breitkopf record is the OFF arm, not a measurement.** Its
+  `tools/` tree has both meter flags **defaulting to `"0"`**, and
+  `_carry_meter` returns `None` before reading any evidence when the flag is
+  off. The shared-records write-up's §3 is STAMPED with that rather than
+  rewritten. Its reason column doubles as the reach figure.
+- ⚠️ **The pricing arm cannot separate the two readings and that is its
+  defect, now priced.** Identical ON/OFF arms are what you get whether the
+  carry was never asked or asked five times and refused five times;
+  `local_arm.sh` prints no per-system carry outcome.
+- **The arm that would price it needs no re-gather** — the flags are
+  ADJUDICATE-stage, so `rest_sizing_arm.py` over the shared record
+  (`--bar-beats 3.0`) answers it in minutes. ⚠️ Read its per-system table, not
+  its reach header, which counts abstentions and reads 0 here — inviting the
+  very misreading this entry corrects.
+- Mutation battery **5 arms, all red, positive control green**, byte snapshot
+  per target on disk, in-flight sentinel, restores VERIFIED — and it refuses to
+  start against a dirty tree, because it mutates production code.
+- ⚠️ Independent corroboration worth having: the probe reads the census
+  `{'voted': 2, 'change_only': 5}` out of the shared record's committed table,
+  and the desktop arm printed the identical dict from a fresh gather on a
+  different tree. **Two sources, one census** — which no single artefact
+  establishes.
+
 ## 2026-09-16 (late) — the meter carry's cost side, measured at last, and rescued from an ended session
 
 `OMR_METER_CARRY` has been ON by default since 2026-09-15 (verified at the

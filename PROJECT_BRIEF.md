@@ -49,6 +49,40 @@ research ideas not yet scheduled. Both are living documents — check them at
 the start of a session rather than trusting this brief for anything that
 changes week to week.
 
+## I read a "nothing happened" backwards (2026-09-17)
+
+Yesterday's note said a measurement on the Brahms score came back with both
+settings producing identical results because **the setting never got a chance
+to do anything**. That was wrong, and the code says so plainly once you read it
+in the right order.
+
+The pipeline has three things it tries, in turn, when it cannot read a bar's
+time signature off the page: *reuse the last one we read*, *work it out from
+how long the bars are*, and *look for a printed change mid-page*. Five of the
+seven systems on those Brahms pages ended up on the **third** one — which can
+only happen if the first two were tried and came up empty. So far from never
+getting a chance, the setting was asked five times out of seven, each time with
+a **wrong** time signature available to be spread around. It just did not take
+the bait.
+
+Two consequences, and the second saves real time:
+
+- **Identical results were never evidence of nothing happening.** They look the
+  same whether the setting was never asked or was asked five times and declined
+  five times, because the test does not print which. That is a gap in the test,
+  not a finding about the score.
+- **Measuring this properly does not need another two-hour re-read of the
+  pages.** The setting acts at a later stage than the page-reading, so an
+  existing tool can replay the saved result with the setting on and off in a
+  couple of minutes. The previous plan — re-read four pages of Beethoven — is
+  no longer the cheapest way to get the answer, and would have measured the
+  safer case anyway: Beethoven's time signature is read *correctly* there, so
+  it can never show what happens when a wrong one travels.
+
+What did not change: no code was altered, nothing was re-read, and no page was
+compared against the print. This is a correction to a conclusion, made by
+reading the program rather than by running it.
+
 ## The example we needed was already on the shelf (2026-09-16)
 
 The note below explains why yesterday's test couldn't answer its question: the

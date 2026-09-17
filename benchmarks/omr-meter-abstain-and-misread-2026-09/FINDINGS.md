@@ -182,3 +182,125 @@ faults**, which is the recorded pattern arriving again:
 - **No print was consulted**, and no OMR-NED figure is claimed.
 - n = 2 fixtures of one document and one publisher (Breitkopf).
 - The 19 truth-less fixtures are **unscored, not clean**.
+
+---
+
+# 2026-09-17 — ⚠️⚠️ THE CARRY'S DOMAIN ON THAT DOCUMENT IS 5 OF 7, NOT ZERO
+
+`probe/carry_domain.py`, derived from the tree, no weights, nothing gathered.
+**This section corrects a claim this thread committed to main yesterday**, on
+this repo's own governing rule — *the tree outranks the ledger, including when
+the ledger is mine.*
+
+## 11 · What was claimed, and why it was wrong
+
+The 2026-09-16 pricing-arm write-up read Breitkopf Brahms 1 p0-3's
+`decided 7 of 7  {'voted': 2, 'change_only': 5}` and concluded:
+
+> *"`_meter_fallbacks`, whose own docstring opens "Everything to try when this
+> system's own READING failed", is reached only from failure paths. **Neither
+> flag has a domain on this document.**"*
+
+The premise is correct and the inference runs backwards. **`change_only` IS a
+fallback rung — the THIRD of three** — so a `change_only` verdict is positive
+evidence that `_meter_fallbacks` ran, and therefore that `_carry_meter` was
+called *before* it. The five systems I read as *"nothing failed here"* are the
+five where the reading failed and the third rung answered.
+
+| | |
+|---|---|
+| rung order in `_meter_fallbacks` | `_carry_meter` → `_meter_from_bars` → `_change_only` |
+| every call site of all three | inside the fallback chain — **derived, not grepped** |
+| carry domain on Breitkopf p0-3 | **5 of 7 systems** |
+
+⚠️ **THE REACHABILITY STEP IS WHY THIS IS AN AST WALK AND NOT A `grep`.**
+`_change_only` has TWO call sites — one in `_meter_fallbacks` and one inside
+`_meter_from_bars` — and the inference holds only because `_meter_from_bars` is
+itself called from nowhere else. A grep shows two sites and says nothing about
+whether the second is also downstream of the carry. The probe closes the
+transitive set to a fixpoint and **refuses** if any rung becomes reachable from
+outside it.
+
+## 12 · ⚠️⚠️ AND THE SHARED RECORD IS A *BEFORE* ARM — the flags were OFF in it
+
+`benchmarks/omr-shared-records-2026-09/` built the Breitkopf staged record three
+jobs had been blocked on, and its §3 says in terms: *"this record is the arm
+`OMR_METER_CARRY` has been blocked on … That cost is now measurable."* Right
+about the document and **not yet true of the record**:
+
+| | |
+|---|---|
+| record provenance | `e282ae0c`, orphaned by a rebase; its `tools/` tree is **identical to `da2c9c11`**, which is on main |
+| `OMR_METER_CARRY` default at `da2c9c11` | **`"0"` — OFF** |
+| the same default today | `"1"` — ON |
+| what `_carry_meter` does with the flag off | `return None` **before reading any evidence** |
+
+So the carry could not act anywhere in that record. Its `change_only` ×5 is the
+**OFF arm, already taken** — which is better than nothing, because it is the
+control an A/B needs, but it is not the measurement and must not be quoted as
+one. ⚠️ The probe's **positive control is that the two defaults DIFFER**: made
+to read alike, it refuses rather than concluding, because a check that cannot
+tell a before-arm from an after-arm would report this document's zero as a
+result either way.
+
+⚠️ **The desktop run is consistent with both readings and cannot separate
+them.** `local_arm.sh`'s ON and OFF arms came back identical in every reported
+number, which is what you get whether the carry was *never asked* or *asked on
+five systems and refused on all five*. It prints no per-system carry outcome, so
+the instrument has no way to say which — the reporting defect §2 of the
+corroboration findings already records, now with a concrete cost.
+
+⚠️ **The census independently corroborates the document.** The probe reads
+`{'voted': 2, 'change_only': 5}` out of the shared record's committed table;
+the desktop arm printed the identical dict from a fresh gather on a different
+tree. Two sources, one census — so the pricing arm and the shared record are the
+same document and the same window, which no single artefact establishes.
+
+## 13 · The arm that would price it — and it needs no re-gather
+
+⚠️⚠️ **THE FLAGS ARE ADJUDICATE-STAGE, SO A 1 h 44 min RE-GATHER IS THE WRONG
+INSTRUMENT.** `benchmarks/omr-rest-sizing-2026-09/rest_sizing_arm.py` already
+does exactly this A/B: it rebuilds a `Log` from a **saved record's** GATHER rows
+(`readjudicate.rebuild`), re-runs ADJUDICATE and EVALUATE under a named
+environment, then exports — the precedent being its own recorded result, *"with
+`OMR_METER_CARRY=1` all six abstaining systems decide `carried` 2/4"*. Pointed
+at the shared Breitkopf record it prices the flag on a document whose candidate
+is **wrong**, in minutes, with the gather held byte-identical between arms.
+
+```
+python3 benchmarks/omr-rest-sizing-2026-09/rest_sizing_arm.py \
+    library/_shared-records/brahms1-breitkopf-p0-p3.record.json \
+    --bar-beats 3.0 --env OMR_METER_CARRY=0
+# then the same with --env OMR_METER_CARRY=1
+```
+
+⚠️ **READ THE PER-SYSTEM TABLE, NOT THE REACH HEADER.** That arm's header counts
+`outcome != decided`, which is **0** on this document — so it would print
+`0 abstained` and invite exactly the misreading §11 corrects. What answers the
+question is the table underneath it, which prints each system's `reason` and
+`support`: the carry's outcome shows up there as `carried` (it won),
+`carry_outweighed_by_the_bars` (the bars refused it — the designed behaviour on
+a wrong candidate), `carry_source_uncorroborated` (A-METER-6 confined it), or
+`change_only` (it was asked and produced nothing).
+
+⚠️ **`--bar-beats 3.0`.** Brahms 1 mvt 1 is 6/8. That argument was made
+REQUIRED yesterday precisely because its old default of 2.0 was Litolff's 2/4
+and scored this document against the wrong bar.
+
+## 14 · What is NOT established
+
+- **Whether the carry is refused or merely finds no source.** §11 proves it is
+  ASKED five times; nothing here says what it answers. Only §13's arm does.
+- **Nothing was gathered, adjudicated, exported or scored**, and no print was
+  consulted. Every figure is a property of committed text and of the AST.
+- **The census is read off another job's prose table**, not off the record. It
+  agrees with an independent fresh gather, which is why it is usable — but the
+  record itself (443.7 MB, gitignored `library/`) is not present in this
+  container and was not opened.
+- **`da2c9c11`'s equivalence to the record's stamped tree is that job's claim,
+  not a re-derivation**: its §8 records the two `tools/` trees as one object
+  (`40b68273`). The probe abstains with a named message where the commit is
+  unreadable, rather than guessing.
+- n = 1 document, 1 publisher, 4 pages. This says nothing about Litolff, whose
+  one read meter is correct and which therefore cannot price the cost side at
+  all.

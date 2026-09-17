@@ -142,6 +142,24 @@ p1 s0 would propagate `9/4` forward across three pages. That cost is now
 measurable. **This job did not measure it** — that is the meter job's, and it
 must be run as a controlled arm.
 
+> ⚠️⚠️ **STAMPED 2026-09-17 BY THE METER JOB — two things a consumer of this
+> table needs, and neither contradicts it.** (1) **This record is the OFF arm,
+> not a neutral starting point.** Its `tools/` tree (`da2c9c11`, per §8) has
+> `OMR_METER_CARRY` **defaulting to `"0"`**, and `_carry_meter` returns `None`
+> before reading any evidence when the flag is off — so the carry could not act
+> anywhere in it, and the `change_only` ×5 above is the control an A/B needs
+> rather than a measurement. (2) **The reason column is itself the reach
+> figure.** `change_only` is the THIRD rung of `_meter_fallbacks`
+> (`_carry_meter` → `_meter_from_bars` → `_change_only`), so those five systems
+> are exactly where the carry gets asked on a default-ON tree: **domain 5 of
+> 7**, the flag's first reach number on a misreading document. ⚠️ And pricing
+> it needs **no re-gather** — the flags are ADJUDICATE-stage, so
+> `benchmarks/omr-rest-sizing-2026-09/rest_sizing_arm.py` over this record
+> (`--bar-beats 3.0`) is the controlled arm §3 asks for.
+> Derivation and its mutation battery:
+> [omr-meter-abstain-and-misread-2026-09/FINDINGS.md](../omr-meter-abstain-and-misread-2026-09/FINDINGS.md)
+> §11-§13.
+
 ---
 
 ## 4. WHAT THE RECORD CONTAINS — and four exact reproductions

@@ -172,3 +172,8 @@ data/specialist-*/
 
 # merge_additions.py backups — build products, not evidence
 benchmarks/omr-scan-e2e-2026-09/works.json.bak-*
+
+# mutation-battery scratch — the BYTE snapshot and in-flight sentinel a battery
+# writes to disk so an interrupted run can be detected and the tree restored.
+# Never evidence; a committed one would look like a live interruption.
+benchmarks/**/.mutate-*
