@@ -1,0 +1,27 @@
+{
+  "shipped_floor": 2,
+  "survivors": {
+    "by_column": {
+      "1": 25,
+      "2": 7,
+      "3": 4
+    },
+    "to_barline": {
+      "1": 52,
+      "2": 10,
+      "3": 3
+    }
+  },
+  "independent_group_counts": {
+    "by_column": {
+      "2": 3,
+      "1": 28,
+      "3": 4
+    },
+    "to_barline": {
+      "1": 71,
+      "2": 8,
+      "3": 3
+    }
+  }
+}

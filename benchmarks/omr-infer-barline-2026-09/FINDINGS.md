@@ -189,6 +189,68 @@ duration standing in a column.
 
 ---
 
+## 5b. ⚠️⚠️ THE UNMEASURED CONSTANT, NOW PRICED — AND THE SHAPE SAYS 2 IS A
+##     BOUNDARY, NOT A MIDPOINT
+
+`COLUMN_MIN_INDEPENDENT_WITNESSES` is the stage's one unmeasured constant and
+is the largest single stop in both rules' funnels. `probe/witness_floor.py`
+prices it in **reach**, which is the half a machine can answer — its own
+docstring refuses to pretend otherwise.
+
+⚠️ **The probe reproduces all four shipped totals independently** (Litolff 7
+and 10, Breitkopf 25 and 16 at the shipped floor of 2), and its Litolff
+`by_column` population of **n = 35 unanimous** is exactly the figure the first
+rule's FINDINGS published. So it is measuring the rule, not itself.
+
+### Survivors by floor
+
+| | | floor 1 | **floor 2 (shipped)** | floor 3 |
+|---|---|--:|--:|--:|
+| Litolff | by column | 25 | **7** | 4 |
+| Litolff | to barline | 52 | **10** | 3 |
+| Breitkopf | by column | 55 | **25** | 3 |
+| Breitkopf | to barline | 56 | **16** | 10 |
+
+### The distribution — the informative artefact
+
+Independent-group counts over the cases that reached the floor at all
+(unanimous, at least one witness):
+
+| | n | 1 | 2 | 3 | 4 | 5 |
+|---|--:|--:|--:|--:|--:|--:|
+| Litolff, by column | 35 | **28** | 3 | 4 | | |
+| Litolff, to barline | 82 | **71** | 8 | 3 | | |
+| Breitkopf, by column | 82 | **49** | 28 | 2 | 3 | |
+| Breitkopf, to barline | 106 | **70** | 18 | 5 | 5 | 8 |
+
+⚠️⚠️ **THE MASS IS AT EXACTLY ONE, ON BOTH DOCUMENTS AND BOTH RULES** — 80%,
+87%, 60% and 66%. So the population the floor refuses is **overwhelmingly
+single-witness**, and the floor at 2 is not slicing a continuum: it is sitting
+on the boundary between *one staff said so* and *two independent staves agree*.
+
+**That is the justification the constant never had.** It was set at 2 because
+*one witness is not corroboration*, with its docstring admitting the number was
+not measured. Measured, the number turns out to sit where the population
+actually separates, which is a different and much better reason to keep it.
+
+⚠️ **Floor 3 is both expensive and erratic** — Litolff's barline rule loses
+70% of its inferences, Breitkopf's `by_column` loses 88%, but Breitkopf's
+barline rule only 38%. A constant whose cost swings that far between two
+documents is not one to raise on either document's evidence.
+
+⚠️⚠️ **Floor 1 is printed and is NOT proposed.** It would take Litolff's
+barline rule 10 → 52 — and it abolishes corroboration entirely, making a single
+staff's reading an inference about another staff's note. That is the one thing
+the stage's whole design rests on not doing, and a reach number is not an
+argument for it.
+
+⚠️ **This prices only reach.** Whether the extra inferences at a lower floor
+are RIGHT is unmeasured and needs crops. Breitkopf's richer tail (cases with 4
+and 5 independent groups, absent on Litolff) is a property of a 27-stave
+system against a 12-stave one, not of the rule.
+
+---
+
 ## 6. ⚠️⚠️ A LIVE DEFECT FOUND ON THE WAY PAST: THE STAGE'S SELF-CHECK HAS
 ##    BEEN SILENTLY CIRCULAR SINCE 2026-09-15
 
