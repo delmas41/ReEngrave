@@ -1689,6 +1689,58 @@ runs staged-beside-legacy and the 2026-09-17 plumbing audit established that
 the staged path has **no production consumer**; two half-built pipelines is a
 measured failure mode here, not a hypothetical.
 
+### A-INK-3 · ⚠️⚠️ THE GOVERNING PRINCIPLE — GATHER IS LOSSLESS WHILE WE ARE STILL DISCOVERING
+
+**SEAN, 2026-09-17.** The other two rules he stated the same day are corollaries
+of this one, and it should be read first.
+
+> *"Theoretically every position can at some point contribute even if that is
+> not with our current pipeline. We are still discovering what works best and
+> for testing we need to hold on to everything because we can't yet know all of
+> what will be helpful."*
+
+**THE RULE.** A value is gathered because it MIGHT matter, not because a
+present consumer wants it. The test for recording something is never *does a
+decision need this today* — it is *could this contribute at some point* — and
+during discovery that answers YES by default. **Discarding is a DECISION, and
+decisions belong in a later stage.**
+
+The two rules it generates, both already recorded here in their own terms:
+
+* **Nothing may be filtered at the gather site**, staff residue and speckle
+  included (`A-INK-1`, and `gather_ink` ships with four mutation arms pinning
+  the ABSENCE of a size gate and a shape gate). The reason is that a threshold
+  in GATHER is the one decision no later stage can revisit: **a row that was
+  never created is evidence nothing can reconsider.**
+* **There is no "unseen" ink, only unclassified** — GATHER's population is the
+  INK on the page, and the detector is one CLASSIFIER over it rather than the
+  authority on what exists. Recording ink we cannot name is the ABSENT/DECLINED
+  distinction, which `record.py` enforces everywhere else, finally applied to
+  ink itself.
+
+**And its third consequence, which is what prompted it:** POSITION is recorded
+for every family, with no exemptions. Not because each family needs its own
+position to be read — a `fermataAbove` already says which side it is on — but
+because *where things actually fall*, aggregated by publisher and by common
+practice, is what lets a later stage score an unnamed blob. **The value is in
+the aggregate, not the instance**, so no per-family argument can license
+leaving it out.
+
+⚠️ **SCOPED TO DISCOVERY, AND THAT SCOPE IS LOAD-BEARING.** Sean said *"for
+testing"*. This is a phase-appropriate decision about a pipeline still being
+figured out, **not** a standing claim that records grow without bound forever.
+The cost is real and should be watched rather than argued against: a staged
+record is ~1.5 MB on a ONE-PAGE fixture with the ink layer on, and that layer
+alone is 0.6-3.1 MB/page. The day the consumers are known, this rule is the
+one to revisit — and it must be revisited deliberately, not eroded by someone
+adding a threshold because a page looked noisy.
+
+⚠️ **WHAT IT DOES NOT LICENSE.** It is a rule about GATHER. It is not licence
+for a later stage to guess: `Ruling.narrow`'s candidates still may not be
+argmaxed in EXPORT, an uncalibrated probability is still worse than none, and
+INFER may still only speak where the record has no answer. **Keeping everything
+is the opposite of deciding everything.**
+
 ### A-INK-2 · ⚠️ DPI is a CONSTANT and should be a property of the SOURCE
 
 Found alongside A-INK-1 and unbuilt. `OMR_DPI` is 300 on the backend and 600
