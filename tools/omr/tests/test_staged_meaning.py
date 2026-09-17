@@ -89,6 +89,53 @@ class TestTheUpdateSpellingIsResolved(unittest.TestCase):
         self.assertIn("frame", got["d"])
 
 
+class TestTheValueFrameArm(unittest.TestCase):
+    """⚠️ Section 2b exists because `Q.CELL_BOX` defeated sections 1 and 2.
+
+    Its value is `c.bbox_page_px` -- page pixels -- filed at `cell:*`, with
+    no unit-declaring detail key and only one frame. Both earlier arms
+    reported it CLEAN.
+    """
+
+    @classmethod
+    def setUpClass(cls):
+        cls.s = meaning.survey()
+
+    def test_cell_box_is_found(self):
+        qs = {q for q, *_ in self.s["value_frame"]}
+        self.assertIn("cell_box", qs)
+
+    def test_sections_one_and_two_really_are_blind_to_it(self):
+        """The claim in the docstring, asserted rather than asserted-in-prose."""
+        self.assertNotIn("cell_box", self.s["multi_frame"])
+        self.assertNotIn("cell_box", {q for q, *_ in self.s["mixed_detail"]})
+
+    def test_the_page_token_is_reached_through_a_local(self):
+        """⚠️ Without `_page_valued_locals` this arm reported ZERO.
+
+        `Q.CELL_BOX`'s value expression is `[float(v) for v in _cell_box]`
+        and contains no page token at all; the token is one line earlier.
+        """
+        src = "\n".join([
+            "def f(log, sub, c):",
+            "    box = getattr(c, 'bbox_page_px', None)",
+            "    log.observe(sub, Q.X, [float(v) for v in box],",
+            "                reader=R, frame=frame_cell(1))",
+        ])
+        fn = ast.parse(src).body[0]
+        names = meaning._page_valued_locals(fn)
+        self.assertIn("box", names)
+        call = next(n for n in ast.walk(fn)
+                    if isinstance(n, ast.Call)
+                    and getattr(n.func, "attr", None) == "observe")
+        self.assertEqual(
+            meaning._value_frame_hint(call.args[2], names), "page/px")
+        self.assertIsNone(
+            meaning._value_frame_hint(call.args[2], set()),
+            "without the local map the hint must be None — that is the "
+            "vacuous-zero this arm's first run produced")
+
+
 class TestEveryFrameIsPlaced(unittest.TestCase):
     """A frame token the check cannot place is one it cannot reason about."""
 

@@ -54,10 +54,16 @@ nothing asks. 4 of the written quantities are.
 **2. A ROW'S OWN DETAIL DISAGREES WITH ITS `frame` FIELD** — ten quantities are
 filed at `cell:*` and carry page-pixel geometry in `detail`. ⚠️ These are **not
 ten bugs**: they are the `Q.ONSET_COLUMN` repair, applied deliberately. What it
-costs is that `Observation.frame` describes the row's `value` and **not the
-row**, so the field cannot be used for comparability even though it looks like
-it could. That is the finding, and it is about the RECORD's shape rather than
-any one site.
+costs is that the field cannot be used for comparability even though it looks
+like it could. That is a finding about the RECORD's shape, not about any site.
+
+**2b. A ROW'S VALUE IS IN A FRAME ITS `frame` FIELD DOES NOT NAME** — one:
+`Q.CELL_BOX`, filed `cell:*` with `c.bbox_page_px` as its value. ⚠️⚠️ **IT IS
+WHY SECTION 2 IS NOT ENOUGH, AND IT MAKES THE HEADLINE STRONGER.** It carries
+no unit-declaring detail key and is written in only one frame, so sections 1
+and 2 BOTH reported it clean. So the honest statement is not *"frame describes
+the value"* -- it is that **`Observation.frame` names the frame of the CROP THE
+READER WORKED IN, and not the frame of anything the row carries.**
 
 **3. SCOPE COARSER THAN FRAME** — the arm above. The only arm here that would
 have caught `Q.ONSET_COLUMN` before its repair.
@@ -238,6 +244,21 @@ KNOWN_GAPS: Dict[str, str] = {
         "meter's page x drifts 13.9 px (0.88 staff spaces) down the plate. "
         "PRODUCER ONLY; nothing reads either yet."),
 
+    # -- section 2b: a row's VALUE is in a frame its `frame` does not name -
+    "value:cell_box": (
+        "OPEN FINDING, and the one that FORCED section 2b to exist. "
+        "`Q.CELL_BOX`'s value is `c.bbox_page_px` -- PAGE PIXELS -- filed at "
+        "`frame=cell:*`. It carries no unit-declaring detail key, so section "
+        "2 cannot see it, and it is written in only one frame, so section 1 "
+        "cannot either: BOTH reported it clean. It makes the honest statement "
+        "stronger than 'frame describes the value' -- **`Observation.frame` "
+        "names the frame of the CROP THE READER WORKED IN, not the frame of "
+        "anything the row carries.** The CONSUMER is correct: `export.build` "
+        "compares an arc's page box against this page box, which is exactly "
+        "why `Q.CELL_BOX` had to be a GATHER change rather than a derived "
+        "edge. Nothing is broken; the FIELD is misleading. REMOVE THIS ENTRY "
+        "the day the row says `page`."),
+
     # ── section 3: a decision pooling rows finer-framed than its scope ────
     "onset_column/glyph_box": (
         "⚠️⚠️ THE REPAIRED CASE, AND THIS CHECK'S ONLY CALIBRATION POINT. "
@@ -407,6 +428,62 @@ def _unpacked_frames(scope: ast.AST, locals_: Dict[str, str]) -> Dict[str, str]:
     return out
 
 
+#: Tokens in a VALUE expression that betray a page-frame measurement.
+#:
+#: ⚠️⚠️ THIS ARM EXISTS BECAUSE `Q.CELL_BOX` PROVED SECTIONS 1 AND 2 BOTH
+#: BLIND TO IT. That row is filed `frame="cell:*"` and its VALUE is
+#: `c.bbox_page_px` -- page pixels. It carries no unit-declaring detail key,
+#: so section 2 cannot see it, and it is written in one frame, so section 1
+#: cannot either. Both reported it CLEAN. The honest statement is therefore
+#: stronger than "frame describes the value": **`Observation.frame` names the
+#: frame of the CROP the reader worked in, and not the frame of anything the
+#: row carries.**
+VALUE_PAGE_TOKENS = ("bbox_page_px", "_page_px", "x_center_page",
+                     "y_center_page", "page_px")
+
+
+def _page_valued_locals(scope: ast.AST) -> Set[str]:
+    """Local names whose assignment expression is visibly a page measurement.
+
+    ⚠️ NEEDED, and `Q.CELL_BOX` is why. Its value expression is
+    `[float(v) for v in _cell_box]`, which contains no page token at all --
+    the token is one line earlier, in
+    `_cell_box = getattr(c, "bbox_page_px", None)`. Without this the arm
+    reported ZERO, i.e. reported the question clean by failing to ask it.
+    The same shape as `_local_frames` and `_dict_kwargs`: in this codebase a
+    value is nearly always bound to a name before it is written.
+    """
+    out: Set[str] = set()
+    for n in ast.walk(scope):
+        if isinstance(n, ast.Assign) and len(n.targets) == 1:
+            t = n.targets[0]
+            if not isinstance(t, ast.Name):
+                continue
+            try:
+                src = ast.unparse(n.value)
+            except Exception:              # pragma: no cover
+                continue
+            if any(tok in src for tok in VALUE_PAGE_TOKENS):
+                out.add(t.id)
+    return out
+
+
+def _value_frame_hint(node: ast.AST, page_names: Set[str] | None = None
+                      ) -> str | None:
+    """`"page/px"` if a value expression is visibly a page measurement."""
+    try:
+        src = ast.unparse(node)
+    except Exception:                      # pragma: no cover - old pythons
+        return None
+    if any(t in src for t in VALUE_PAGE_TOKENS):
+        return "page/px"
+    if page_names:
+        names = {n.id for n in ast.walk(node) if isinstance(n, ast.Name)}
+        if names & page_names:
+            return "page/px"
+    return None
+
+
 def _unit_of_key(key: str) -> str | None:
     for suf, unit in UNIT_SUFFIX:
         if key.endswith(suf):
@@ -432,6 +509,7 @@ def survey() -> dict:
     reads: Dict[str, Set[str]] = collections.defaultdict(set)
     detail: Dict[str, Dict[tuple, Set[tuple]]] = collections.defaultdict(
         lambda: collections.defaultdict(set))
+    value_frame: List[tuple] = []
     files = 0
 
     for p in _files():
@@ -456,18 +534,21 @@ def survey() -> dict:
                                     ast.Module)):
                     chain.append(cur)
             loc, unp = {}, {}
+            pnames: Set[str] = set()
             dkw: Dict[str, Set[str]] = collections.defaultdict(set)
             for scope in reversed(chain):             # outermost first
                 if id(scope) not in cache:
                     l = _local_frames(scope)
                     cache[id(scope)] = (l, _unpacked_frames(scope, l),
-                                        _dict_kwargs(scope))
-                l, u, d = cache[id(scope)]
+                                        _dict_kwargs(scope),
+                                        _page_valued_locals(scope))
+                l, u, d, pv = cache[id(scope)]
                 loc.update(l)
                 unp.update(u)
+                pnames |= pv
                 for k, v in d.items():
                     dkw[k] |= v
-            return loc, unp, dkw
+            return loc, unp, dkw, pnames
 
         for node in ast.walk(tree):
             if not isinstance(node, ast.Call):
@@ -480,7 +561,7 @@ def survey() -> dict:
                 q = q_of(node.args[idx]) if len(node.args) > idx else None
                 if q is None:
                     continue
-                loc, unp, dkw = maps(node)
+                loc, unp, dkw, pnames = maps(node)
                 fr = "<unspecified>"
                 for kw in node.keywords:
                     if kw.arg == "frame":
@@ -494,6 +575,13 @@ def survey() -> dict:
                             break
                 writes[q].add(fr)
                 write_sites[q].append((rel, node.lineno, fr))
+                # the VALUE's own frame, where the expression betrays it
+                if name == "observe" and len(node.args) > idx + 1:
+                    vh = _value_frame_hint(node.args[idx + 1], pnames)
+                    if vh:
+                        ok = FRAME_OF_UNIT.get(vh, set())
+                        if fr not in ok:
+                            value_frame.append((q, vh, fr, rel, node.lineno))
                 keys = [kw.arg for kw in node.keywords if kw.arg]
                 for kw in node.keywords:
                     if kw.arg is None and isinstance(kw.value, ast.Name):
@@ -564,6 +652,7 @@ def survey() -> dict:
         "n_unit_keys": unit_keys,
         "multi_frame": multi_frame,
         "mixed_detail": mixed,
+        "value_frame": sorted(set(value_frame)),
         "scope_vs_frame": scope_vs_frame,
         "unknown_frames": sorted(unknown_frames),
         "frame_histogram": dict(
@@ -581,6 +670,7 @@ def _keys_reported(s: dict) -> Set[str]:
     out = set(s["multi_frame"])
     out |= {q for q, *_ in s["mixed_detail"]}
     out |= {"%s/%s" % (n, q) for n, _, q, _, _, _ in s["scope_vs_frame"]}
+    out |= {"value:%s" % q for q, *_ in s["value_frame"]}
     return out
 
 
@@ -605,6 +695,16 @@ def report(s: dict) -> int:
     print("    what it costs is that `frame` describes the VALUE, not the row")
     for q, k, u, bad, rel, ln in s["mixed_detail"]:
         print(f"      {q:24s} {k:24s} says {u:12s} frame={bad}"
+              f"   {rel.rsplit('/', 1)[-1]}:{ln}")
+    print()
+
+    vf = s["value_frame"]
+    print(f"[2b] A ROW'S VALUE IS IN A FRAME ITS `frame` FIELD DOES NOT NAME"
+          f"  ({len(vf)})")
+    print("    section 1 and section 2 are BOTH blind to this: no")
+    print("    unit-declaring detail key, and written in only one frame")
+    for q, u, fr, rel, ln in vf:
+        print(f"      {q:24s} value is {u:10s} frame={fr:10s}"
               f"   {rel.rsplit('/', 1)[-1]}:{ln}")
     print()
 

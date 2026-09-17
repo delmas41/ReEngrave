@@ -88,6 +88,21 @@ ARMS = [
      "PAGE_FRAME_KEYS = frozenset()",
      "onset_column stops being exempt; the calibration point dies"),
 
+    ("page_valued_locals_dropped",
+     "    if page_names:\n"
+     "        names = {n.id for n in ast.walk(node) if isinstance(n, ast.Name)}\n"
+     "        if names & page_names:\n"
+     "            return \"page/px\"",
+     "    pass",
+     "section 2b goes to ZERO: `Q.CELL_BOX`'s page token is one line "
+     "earlier, so without the local map the arm reports the question clean"),
+
+    ("value_page_tokens_emptied",
+     'VALUE_PAGE_TOKENS = ("bbox_page_px", "_page_px", "x_center_page",\n'
+     '                     "y_center_page", "page_px")',
+     "VALUE_PAGE_TOKENS = ()",
+     "section 2b goes silent altogether"),
+
     ("stale_detection_removed",
      "    for k in sorted(set(KNOWN_GAPS) - reported):",
      "    for k in []:",
