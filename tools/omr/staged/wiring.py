@@ -508,6 +508,26 @@ def _rel(path: pathlib.Path) -> str:
         return str(path)
 
 
+def _declares_derived_check(path: pathlib.Path) -> bool:
+    """Does this module declare itself a DERIVED CHECK rather than a consumer?
+
+    ⚠️ READ FROM THE AST, not by a substring, so a mention of the name in a
+    comment or a docstring cannot opt a real consumer out. The marker has to
+    be a module-level `DERIVED_CHECK = True` assignment.
+    """
+    tree = _parse(path)
+    if tree is None:
+        return False
+    for node in tree.body:
+        if (isinstance(node, ast.Assign)
+                and any(isinstance(t, ast.Name) and t.id == "DERIVED_CHECK"
+                        for t in node.targets)
+                and isinstance(node.value, ast.Constant)
+                and node.value.value is True):
+            return True
+    return False
+
+
 def _tree_of(path: pathlib.Path) -> str:
     """Which TREE a call site lives in — and the distinction is the finding.
 
@@ -1054,6 +1074,30 @@ def details() -> Dict[str, Any]:
             # none" by accident. A gap list naming a key is not a consumer of
             # it, for the same reason a test naming one is not.
             if path.resolve() == pathlib.Path(__file__).resolve():
+                continue
+            # ⚠️⚠️ NOR IS A SIBLING INSTRUMENT — THE FOURTH INSTANCE OF THE
+            # SAME FAMILY, FOUND 2026-09-17 WHEN `staged.capture` LANDED.
+            # That module AUDITS detail keys: it asks, per notation family,
+            # whether a row records which raster it was measured on, so it
+            # necessarily names `staff_lines_erased` in its own source. It
+            # lives in `tools/omr/staged/`, so `_tree_of` calls it
+            # PRODUCTION — and the moment it was committed, the two
+            # `staff_lines_erased` entries below read as STALE and `--check`
+            # went red on a key still consumed by nothing.
+            #
+            # The three exclusions above are one rule and this is its fourth
+            # application: **a gap list, a test, a benchmark probe and an
+            # auditor all NAME a key without CONSUMING it.** What separates
+            # them from a real reader is not the tree they live in — this one
+            # lives in the same tree as the consumers — so the module DECLARES
+            # itself with a module-level `DERIVED_CHECK = True`.
+            #
+            # ⚠️ IT FAILS LOUD, WHICH IS WHY A MARKER IS ACCEPTABLE HERE. A
+            # new instrument that forgets it does not silence this question;
+            # it makes the affected entries report STALE, which `--check`
+            # fails on. The dangerous direction — an instrument silently
+            # closing a gap — is the one the marker's absence cannot cause.
+            if _declares_derived_check(path):
                 continue
             try:
                 text = path.read_text()

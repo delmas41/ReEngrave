@@ -121,6 +121,20 @@ _HERE = pathlib.Path(__file__).resolve().parent
 _OMR = _HERE.parent
 _ROOT = _OMR.parent.parent
 
+#: ⚠️⚠️ THIS MODULE NAMES DETAIL KEYS IN ORDER TO AUDIT THEM AND IS NOT A
+#: CONSUMER OF ANY OF THEM. It asks whether a row records which raster it was
+#: measured on, so `"staff_lines_erased"` has to appear in its own source —
+#: and `wiring`'s DETAIL question, which reports a key written and read by
+#: nobody, counted that as a read. Committing this module turned the two
+#: `staff_lines_erased` entries in `wiring.KNOWN_GAPS` STALE and took
+#: `wiring --check` from 0 to 1 on a key still consumed by nothing.
+#:
+#: It is the FOURTH member of a family `wiring` already documents — a gap
+#: list, a test and a benchmark probe are not consumers either — and the
+#: first that lives in the same tree as the real consumers, which is why a
+#: tree test cannot separate it and a declaration can.
+DERIVED_CHECK = True
+
 
 # ─────────────────────────────────────────────────────────────────────────────
 # 1. WHAT KIND OF FACT IS EACH SCORELESS QUANTITY?

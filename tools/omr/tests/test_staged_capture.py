@@ -452,6 +452,61 @@ class TestTheWalkerOnSyntheticCode(unittest.TestCase):
 # The gap inventory
 # ─────────────────────────────────────────────────────────────────────────────
 
+class TestItDoesNotSILENCEItsSiblings(unittest.TestCase):
+    """⚠️⚠️ AN AUDITOR THAT NAMES A KEY IS NOT A CONSUMER OF IT.
+
+    This module asks whether a row records which raster it came from, so
+    `"staff_lines_erased"` appears in its own source. `wiring`'s DETAIL
+    question reports a key written and read by nobody — and it counted that
+    mention as a read, turning its own two entries STALE and taking
+    `wiring --check` from 0 to 1 on a key still consumed by nothing.
+
+    The control was run BEFORE the conclusion: `wiring --check` exits 0 on the
+    base commit and 1 with this module added, so the break is this module's
+    and not pre-existing. (`gather_coverage --check` exits 2 on BOTH, which is
+    what a pre-existing failure looks like.)
+    """
+
+    def test_this_module_declares_itself_a_derived_check(self) -> None:
+        self.assertIs(capture.DERIVED_CHECK, True)
+
+    def test_wiring_skips_it_and_NOT_a_real_consumer(self) -> None:
+        from tools.omr.staged import wiring
+        self.assertTrue(wiring._declares_derived_check(
+            capture._HERE / "capture.py"))
+        # ⚠️ THE POSITIVE CONTROL. A predicate that answered True for
+        # everything would pass the assertion above and silence the question
+        # for every module in the tree.
+        for other in ("gather.py", "export.py", "record.py"):
+            with self.subTest(other=other):
+                self.assertFalse(wiring._declares_derived_check(
+                    capture._HERE / other))
+
+    def test_the_marker_is_read_from_the_AST_not_by_substring(self) -> None:
+        """A mention in a comment must not opt a real consumer out."""
+        import pathlib
+        import tempfile
+        from tools.omr.staged import wiring
+        with tempfile.TemporaryDirectory() as d:
+            p = pathlib.Path(d) / "pretend.py"
+            p.write_text("# DERIVED_CHECK = True\n"
+                         "x = 'DERIVED_CHECK = True'\n")
+            self.assertFalse(wiring._declares_derived_check(p))
+            p.write_text("DERIVED_CHECK = True\n")
+            self.assertTrue(wiring._declares_derived_check(p))
+
+    def test_wiring_still_reports_the_key_this_module_names(self) -> None:
+        """The repair must not close the finding — only stop this module from
+        closing it. Both `staff_lines_erased` entries must still be LIVE.
+        """
+        from tools.omr.staged import wiring
+        rep = wiring.report()
+        live = [p for p in rep["problems"] if "staff_lines_erased" in p]
+        self.assertEqual(len(live), 2, rep["problems"])
+        self.assertEqual(rep["unaccounted"], [])
+        self.assertEqual(rep["stale_gaps"], [])
+
+
 class TestTheGapInventory(unittest.TestCase):
 
     @classmethod

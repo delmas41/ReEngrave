@@ -41,8 +41,11 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 CAP = ROOT / "tools/omr/staged/capture.py"
+WIR = ROOT / "tools/omr/staged/wiring.py"
 SENTINEL = Path(__file__).resolve().parent / ".mutation-in-flight.json"
 TESTS = ["tools/omr/tests/test_staged_capture.py"]
+#: ⚠️ A test selector needs the file its class lives in; every class here is
+#: in TESTS[0], asserted by the battery refusing an unknown target.
 
 #: (name, file, anchor, replacement, the test that MUST go red)
 ARMS = [
@@ -156,6 +159,33 @@ ARMS = [
      "    dead = []",
      "TestTheToolIsAliveAtAll::test_check_exits_TWO_on_a_dead_control"),
 
+    # ── it must not SILENCE its siblings ───────────────────────────────────
+    ("the_derived_check_marker_is_dropped_and_wiring_goes_quiet", WIR,
+     "            if _declares_derived_check(path):\n"
+     "                continue",
+     "            if False and _declares_derived_check(path):\n"
+     "                continue",
+     "TestItDoesNotSILENCEItsSiblings::test_wiring_still_reports_the_key_this_module_names"),
+
+    ("the_marker_predicate_answers_True_for_everything", WIR,
+     "    for node in tree.body:\n"
+     "        if (isinstance(node, ast.Assign)",
+     "    return True\n"
+     "    for node in tree.body:\n"
+     "        if (isinstance(node, ast.Assign)",
+     "TestItDoesNotSILENCEItsSiblings::test_wiring_skips_it_and_NOT_a_real_consumer"),
+
+    ("the_marker_is_matched_by_substring_so_a_comment_opts_out", WIR,
+     "    tree = _parse(path)\n"
+     "    if tree is None:\n"
+     "        return False",
+     '    if "DERIVED_CHECK = True" in path.read_text():\n'
+     "        return True\n"
+     "    tree = _parse(path)\n"
+     "    if tree is None:\n"
+     "        return False",
+     "TestItDoesNotSILENCEItsSiblings::test_the_marker_is_read_from_the_AST_not_by_substring"),
+
     # ── POSITIVE CONTROL ────────────────────────────────────────────────────
     ("POSITIVE_CONTROL_a_no_op_edit_must_stay_GREEN", CAP,
      "_HERE = pathlib.Path(__file__).resolve().parent",
@@ -199,7 +229,7 @@ def main() -> int:
         print(dirty, file=sys.stderr)
         return 2
 
-    files = {CAP}
+    files = {CAP, WIR}
     before = {f: _hash(f) for f in files}
     snap = Path(tempfile.mkdtemp(prefix="capture-mutate-"))
     for f in files:
