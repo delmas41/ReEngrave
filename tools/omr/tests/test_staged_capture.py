@@ -1,4 +1,4 @@
-"""`staged.capture` — SHAPE, POSITION and IMAGE, asked of every family.
+"""`staged.capture` — SHAPE, POSITION, IMAGE and RESOLUTION, per family.
 
 ⚠️ THREE KINDS OF TEST LIVE HERE AND THEY ARE NOT INTERCHANGEABLE.
 
@@ -33,7 +33,8 @@ import unittest
 
 from tools.omr.staged import capture
 from tools.omr.staged import gather  # noqa: F401  -- the subject of the walk
-from tools.omr.staged.capture import (ERASED, ERASED_ELSE_INTACT, INTACT,
+from tools.omr.staged.capture import (DIRECT_PIXELS, ERASED, ERASED_ELSE_INTACT,
+                                      INTACT, LETTERBOXED,
                                       NO_RASTER, OWN_ERASURE, PAGE_RASTER,
                                       STAFF_GRID_POSITION, UNSCORED)
 
@@ -410,6 +411,65 @@ class TestTheImageQuestion(unittest.TestCase):
 # ─────────────────────────────────────────────────────────────────────────────
 # The instrument on synthetic code — each question, driven to a KNOWN fault
 # ─────────────────────────────────────────────────────────────────────────────
+
+class TestTheResolutionQuestion(unittest.TestCase):
+    """⚠️ QUESTION 4 (`A-INK-1`) — is the consumer getting the resolution the
+    SOURCE actually has? `OMR_DPI` is a constant applied to a scanned plate,
+    which has a native resolution, and to a vector page, which has none.
+    """
+
+    @classmethod
+    def setUpClass(cls) -> None:
+        cls.nat = capture.native_resolution()
+        cls.ras = capture.rasters()["by_reader"]
+
+    def test_nothing_reads_the_native_pixel_dimensions(self) -> None:
+        self.assertEqual(self.nat["native_keys_read"], [])
+        for k in ("width", "height"):
+            with self.subTest(k=k):
+                self.assertIn(k, self.nat["native_keys_unread"])
+
+    def test_the_walk_CAN_see_a_key_being_read(self) -> None:
+        """⚠️⚠️ THE POSITIVE CONTROL, AND WITHOUT IT THE ZERO ABOVE IS
+        WORTHLESS. A walker that could not see a subscript reports every key
+        as unread — which is exactly how the flag-direction guard's first
+        version passed vacuously. `bbox` and `Filter` ARE read from the image
+        dictionary by `input_domain._classify_page`, so they must appear.
+        """
+        self.assertIn("bbox", self.nat["keys_they_read"])
+        self.assertIn("Filter", self.nat["keys_they_read"])
+
+    def test_it_finds_the_module_that_already_opens_the_dictionary(self) -> None:
+        # `OMR_WEIGHT_ROUTING`'s shipped classifier: it reads the adjacent
+        # facts out of the very dict that carries the native resolution.
+        self.assertIn("input_domain.py",
+                      self.nat["modules_opening_the_image_dict"])
+
+    def test_letterboxed_and_direct_pixels_are_NOT_flattened(self) -> None:
+        """⚠️⚠️ The distinction the measured `OMR_IMGSZ` result turns on.
+        *Larger is NOT better* is about the DETECTOR — ultralytics letterboxes
+        to `imgsz²` whatever the cell's size, so a big value buys anchors and
+        false noteheads. A geometry or CV reader has neither, so that finding
+        says nothing about it, and a table with one column for both would
+        licence quoting it against every reader in the pipeline.
+        """
+        self.assertEqual(self.ras["DETECTOR"]["resolution"], LETTERBOXED)
+        for reader in ("CV_LINES", "CV_INK", "CV_HAIRPINS", "TEMPLATE"):
+            with self.subTest(reader=reader):
+                self.assertEqual(self.ras[reader]["resolution"], DIRECT_PIXELS)
+
+    def test_a_reader_with_no_raster_is_not_called_direct_pixels(self) -> None:
+        self.assertEqual(self.ras["GEOMETRY"]["resolution"], NO_RASTER)
+
+    def test_the_resolution_probe_reads_the_signature_not_a_name_list(self) -> None:
+        # Driven straight at the derivation: `imgsz` in the signature is what
+        # makes a reader letterboxed, so the real entry point must answer.
+        self.assertEqual(
+            capture._resolution_of("yolo_detector.py", "detect"), LETTERBOXED)
+        self.assertEqual(
+            capture._resolution_of("line_detection.py", "detect_stems"),
+            DIRECT_PIXELS)
+
 
 class TestTheWalkerOnSyntheticCode(unittest.TestCase):
 

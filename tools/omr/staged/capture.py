@@ -1,5 +1,5 @@
-"""What do we CAPTURE about a piece of ink? — shape, position, and the raster
-it was measured on, asked of every notation family.
+"""What do we CAPTURE about a piece of ink? — its shape, its position, the
+raster it was measured on and the resolution it was handed, per family.
 
     python3 -m tools.omr.staged.capture            # the per-family table
     python3 -m tools.omr.staged.capture --json
@@ -34,6 +34,18 @@ different reader.
 broken by erasure where the lines crossed it and merged INTO the lines if they
 are kept, so the two rasters do not agree about thin ink — and today a row
 mostly cannot say which one it came from.
+
+**4. RESOLUTION** (`A-INK-1`) — is the consumer getting the resolution the
+SOURCE actually has? `OMR_DPI` is a CONSTANT applied to every document, and the
+two kinds of source want opposite things from it: a SCANNED plate has a native
+resolution fixed at scan time, so rendering above it is pure upsampling and
+below it discards plate; a VECTOR page has none and genuinely renders sharper.
+⚠️⚠️ **The classifier that would route them is already shipped and already
+opens the dictionary that carries the answer** — `input_domain._classify_page`
+reads `bbox` and `Filter` out of it and leaves `width`/`height` untouched.
+⚠️ **The measured `OMR_IMGSZ` result must not be quoted against this**: *larger
+is NOT better* is a fact about the DETECTOR's letterboxing and anchors, and the
+`resolution` column exists so a direct-pixel reader cannot be tarred with it.
 
 ## The exemplar, which exists for exactly one family
 
@@ -286,6 +298,19 @@ UNSCORED: Dict[str, Tuple[str, str, Optional[str]]] = {
 # that actually reads pixels and the comment records how it is reached.
 # ─────────────────────────────────────────────────────────────────────────────
 
+#: ── QUESTION 4: RESOLUTION ──────────────────────────────────────────────────
+#:
+#: What the render DPI MEANS to a reader, and the distinction must not be
+#: flattened. ⚠️⚠️ THE MEASURED *"larger is NOT better"* RESULT IS ABOUT
+#: `OMR_IMGSZ` AND IS A FACT ABOUT THE DETECTOR, NOT ABOUT THE IMAGE:
+#: ultralytics letterboxes to `imgsz²` whatever the cell's size, so a bigger
+#: value buys anchors and false noteheads. A geometry or CV consumer has no
+#: letterboxing and no anchors, measures the raster's own pixels, and that
+#: finding says nothing about it. These two values are how the table refuses
+#: to flatten them.
+LETTERBOXED = "letterboxed"
+DIRECT_PIXELS = "direct_pixels"
+
 #: Rasters a reader can measure. ⚠️ `OWN_ERASURE` is a THIRD image and not a
 #: synonym for `ERASED`: `header_ink_mask` starts from the INTACT cell and
 #: erases the lines ITSELF, by its own algorithm, because *"on the material
@@ -420,6 +445,36 @@ KNOWN_GAPS: Dict[str, str] = {
         "a tuplet marker is a digit or a bracket printed clear of the staff; "
         "`Q.TUPLET_MARKER` carries `x0`/`x1`/`x_center` — a HORIZONTAL span, "
         "which is what the group membership needs — and no vertical slot."),
+
+    # ── RESOLUTION: a constant DPI over sources of two different kinds ──────
+    "RESOLUTION nothing reads the source's native": (
+        "⚠️⚠️ `A-INK-1`. `OMR_DPI` is a CONSTANT — 300 on the backend, 600 on "
+        "the CLI — and `render_page(..., dpi=dpi)` takes it from an argument "
+        "NO call site derives from the PDF. A SCANNED plate has a native "
+        "resolution fixed at scan time, so rendering ABOVE it is pure "
+        "upsampling and rendering BELOW it discards plate that is there; a "
+        "VECTOR page has none and genuinely renders sharper. One constant, "
+        "two sources that want opposite things. "
+        "⚠️⚠️ THE CLASSIFIER ALREADY EXISTS AND ALREADY OPENS THE DICTIONARY: "
+        "`input_domain._classify_page` is `OMR_WEIGHT_ROUTING`'s shipped, "
+        "measured domain test (0 vector drawings = scan) and it reads `bbox` "
+        "for coverage and `Filter` for compression while `width` and `height` "
+        "sit in the same dicts untouched — *the value existed and nothing "
+        "read it*, in the one module already asking the adjacent question. "
+        "⚠️ THE `OMR_IMGSZ` RESULT MUST NOT BE QUOTED AGAINST THIS: *larger "
+        "is NOT better* is a fact about the DETECTOR, whose letterboxing to "
+        "`imgsz²` buys anchors and false noteheads; the `resolution` column "
+        "separates that reader from the direct-pixel ones, which have neither "
+        "letterboxing nor anchors and about which it says nothing. "
+        "⚠️ WHAT WOULD FALSIFY A PER-DOCUMENT DPI: on Litolff `984073` p.62 — "
+        "1-bit, 600 dpi native — components carrying a HOLE number 31 at 300 "
+        "dpi and the same 31 at 1200, so 16x the pixels bought zero new "
+        "structure THERE. That is one page of one publisher and it cuts both "
+        "ways: it is evidence that rendering above native is free of benefit, "
+        "and NOT evidence about a plate whose native resolution is below what "
+        "we render. ⚠️ NOTHING HERE IS MEASURED BY THIS TOOL — the reach "
+        "figure (how many held editions render above or below native) needs "
+        "the library and has not been taken."),
 
     # ── IMAGE: a silent fallback the row does not record ────────────────────
     "IMAGE TEMPLATE": (
@@ -775,6 +830,100 @@ def _raster_of(rel: str, fn_name: str) -> Dict[str, Any]:
             "at": f"{rel}::{fn_name}", "line": getattr(fn, "lineno", None)}
 
 
+#: Calls that hand back a PDF image's own dictionary — the one place the
+#: SOURCE's native pixel dimensions are available.
+_IMAGE_INFO_CALLS = ("get_image_info", "get_images")
+
+#: Keys on that dictionary which ARE a native resolution.
+_NATIVE_KEYS = ("width", "height", "xres", "yres", "bpc")
+
+
+def native_resolution() -> Dict[str, Any]:
+    """Does anything read the SOURCE's native pixel dimensions?
+
+    ⚠️⚠️ `OMR_DPI` IS A CONSTANT — 300 on the backend, 600 on the CLI — applied
+    to every document, and `render_page(..., dpi=dpi)` takes it from an
+    argument no call site derives from the PDF. A SCANNED plate has a native
+    resolution fixed at scan time: rendering above it is pure upsampling, and
+    rendering below it discards plate that is there. A VECTOR page has none and
+    genuinely renders sharper. **The two want opposite things from one
+    constant.** (`A-INK-1`.)
+
+    ⚠️⚠️ AND THE CLASSIFIER THAT WOULD ROUTE THEM ALREADY EXISTS AND ALREADY
+    OPENS THE DICTIONARY. `input_domain._classify_page` — `OMR_WEIGHT_ROUTING`'s
+    shipped, measured domain test — calls `get_image_info()` and reads only
+    `bbox` (for coverage), and `get_images(full=True)` to fetch the `Filter`.
+    `width` and `height` sit in the same dicts, untouched. *The value existed
+    and nothing read it*, in the one module already asking the adjacent
+    question.
+
+    ⚠️ THE POSITIVE CONTROL IS THE POINT: this walk reports the keys that ARE
+    read. A walker that could not see a subscript would report every key as
+    unread and its zero for `width` would mean nothing — so the answer is a
+    zero BESIDE a non-empty list, never a bare zero.
+
+    ⚠️ THE CONTROL IS MODULE-SCOPED, NOT DICT-SCOPED, AND SAYING SO IS PART OF
+    IT. `keys_they_read` is every string-constant subscript ANYWHERE in a
+    module that opens the image dictionary, so it includes keys belonging to
+    other dicts entirely (`direction_text` subscripts its own reader report).
+    Narrowing it to *keys of THIS dict* would need a hand list of what a
+    PyMuPDF image dict carries — a hand list inside a derivation, which is the
+    thing this repo has been bitten by. The looser control still does its one
+    job: it proves the walker can SEE a subscript, so the zero for `width` is
+    the absence of a read and not the absence of a walker.
+    """
+    read: Dict[str, List[str]] = {}
+    callers: List[str] = []
+    for path in sorted(_OMR.rglob("*.py")):
+        rel = str(path.relative_to(_OMR))
+        if "__pycache__" in rel or "/tests/" in rel or rel.startswith("tests/"):
+            continue
+        try:
+            tree = ast.parse(path.read_text())
+        except (OSError, SyntaxError, UnicodeDecodeError):    # noqa: BLE001
+            continue
+        calls = {n.func.attr for n in ast.walk(tree)
+                 if isinstance(n, ast.Call)
+                 and isinstance(n.func, ast.Attribute)}
+        if not (set(_IMAGE_INFO_CALLS) & calls):
+            continue
+        callers.append(rel)
+        # Every string-constant subscript and `xref_get_key` literal in the
+        # module: what it actually asks the image dictionary for.
+        for n in ast.walk(tree):
+            if (isinstance(n, ast.Subscript)
+                    and isinstance(n.slice, ast.Constant)
+                    and isinstance(n.slice.value, str)):
+                read.setdefault(n.slice.value, []).append(rel)
+            if (isinstance(n, ast.Call) and isinstance(n.func, ast.Attribute)
+                    and n.func.attr == "xref_get_key"):
+                for a in n.args:
+                    if isinstance(a, ast.Constant) and isinstance(a.value, str):
+                        read.setdefault(a.value, []).append(rel)
+    return {
+        "modules_opening_the_image_dict": sorted(callers),
+        "keys_they_read": {k: sorted(set(v)) for k, v in sorted(read.items())},
+        "native_keys_read": sorted(k for k in _NATIVE_KEYS if k in read),
+        "native_keys_unread": sorted(k for k in _NATIVE_KEYS if k not in read),
+    }
+
+
+def _resolution_of(rel: str, fn_name: str) -> str:
+    """`LETTERBOXED` when the reader renormalises to its own input size.
+
+    ⚠️ DERIVED from the entry point's own signature and body — a reader that
+    names `imgsz` resizes whatever it is handed, so the render DPI is NOT what
+    it measures. Everything else measures the raster's own pixels.
+    """
+    fn = _fn_node(_OMR / rel, fn_name)
+    if fn is None:
+        return NO_RASTER
+    names = {n.id for n in ast.walk(fn) if isinstance(n, ast.Name)}
+    names |= {a.arg for a in getattr(fn.args, "args", ())}
+    names |= {a.arg for a in getattr(fn.args, "kwonlyargs", ())}
+    return LETTERBOXED if "imgsz" in names else DIRECT_PIXELS
+
+
 def rasters() -> Dict[str, Any]:
     """Per READERS member: the raster(s) it measures, derived."""
     try:
@@ -793,12 +942,21 @@ def rasters() -> Dict[str, Any]:
         if entry is None:
             out[m] = {"variants": [{"variant": NO_RASTER,
                                     "why": "declared: touches no raster",
-                                    "at": None}]}
+                                    "at": None}],
+                      "resolution": NO_RASTER}
             continue
         found = [_raster_of(*entry)]
         found += [_raster_of(*e) for e in READER_RASTER_ALSO.get(m, ())]
-        out[m] = {"variants": found}
-    return {"by_reader": out, "undeclared_readers": missing}
+        res = {_resolution_of(*e)
+               for e in (entry, *READER_RASTER_ALSO.get(m, ()))}
+        # ⚠️ A reader whose entry points DISAGREE is reported as letterboxed —
+        # the stronger claim — rather than averaged into a word that is true
+        # of neither.
+        out[m] = {"variants": found,
+                  "resolution": (LETTERBOXED if LETTERBOXED in res
+                                 else DIRECT_PIXELS)}
+    return {"by_reader": out, "undeclared_readers": missing,
+            "native": native_resolution()}
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -1023,6 +1181,14 @@ def controls(rep: Dict[str, Any]) -> Dict[str, int]:
             sum(1 for v in ras.values()
                 if any(x["variant"] not in (NO_RASTER, None)
                        for x in v["variants"])),
+        # Q4: the walk has to be able to SEE a key, or its zero for `width`
+        # means nothing. This is the count of keys it DID find being read.
+        "image_dict_keys_seen_being_read":
+            len(rep["rasters"]["native"]["keys_they_read"]),
+        "modules_that_open_the_image_dict":
+            len(rep["rasters"]["native"]["modules_opening_the_image_dict"]),
+        "readers_whose_resolution_resolved":
+            sum(1 for v in ras.values() if v.get("resolution")),
         # the walk itself
         "observe_sites_walked": rep["observe"]["n_sites"],
     }
@@ -1105,6 +1271,20 @@ def problems(rep: Dict[str, Any]) -> List[str]:
             out.append(f"UNRESOLVED Q.{q} names family '{fam}', which is not "
                        f"in export.FAMILIES")
 
+    # ⚠️ ONE FINDING, NOT ONE PER READER. Every reader is handed the same
+    # constant, so this is one repair at the render, not fourteen.
+    nat = rep["rasters"]["native"]
+    if nat["native_keys_unread"] and nat["modules_opening_the_image_dict"]:
+        out.append(
+            f"RESOLUTION nothing reads the source's native "
+            f"{'/'.join(nat['native_keys_unread'])} anywhere in tools/omr — "
+            f"{', '.join(nat['modules_opening_the_image_dict'])} already open "
+            f"the image dictionary, and the same walk sees "
+            f"{len(nat['keys_they_read'])} other string keys read in those "
+            f"modules (including `bbox` and `Filter`, which ARE taken from "
+            f"it), so the zero is the walker working. Every reader is handed "
+            f"a CONSTANT render DPI whatever the plate holds")
+
     for q in rep["unclassified_scoreless"]:
         out.append(f"UNCLASSIFIED Q.{q} is observed with no score and is in "
                    f"neither UNSCORED nor KNOWN_GAPS — say what kind of fact "
@@ -1174,9 +1354,14 @@ def render(rep: Dict[str, Any]) -> str:
             continue
         for x in v["variants"]:
             mark = "⚠️" if x["variant"] == ERASED_ELSE_INTACT else "  "
+            res = "letterbox" if v.get("resolution") == LETTERBOXED else "px"
             A(f"  {mark} {reader:16s} {_SHORT.get(x['variant'], '?'):13s} "
-              f"{x['at'] or ''}")
+              f"{res:9s} {x['at'] or ''}")
     A("")
+    A("  ⚠️ `letterbox` vs `px` is QUESTION 4 and must not be flattened: the")
+    A("     measured `OMR_IMGSZ` result (*larger is NOT better*) is a fact")
+    A("     about the DETECTOR's letterboxing and anchors. A `px` reader has")
+    A("     neither, and that finding says nothing about it.")
     A("  ⚠️ `erased?intact` is a SILENT FALLBACK: which raster answered is a")
     A("     runtime fact, and only `Q.STEM`/`Q.BEAM_STROKE` record it.")
     A("  ⚠️ `own-erase` is a THIRD raster — the reader erases the lines")

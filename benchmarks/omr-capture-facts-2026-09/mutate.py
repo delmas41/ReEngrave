@@ -159,6 +159,29 @@ ARMS = [
      "    dead = []",
      "TestTheToolIsAliveAtAll::test_check_exits_TWO_on_a_dead_control"),
 
+    # ── Q4 RESOLUTION ───────────────────────────────────────────────────────
+    ("the_native_resolution_walk_sees_no_keys_at_all", CAP,
+     "            if (isinstance(n, ast.Subscript)\n"
+     "                    and isinstance(n.slice, ast.Constant)",
+     "            if (False and isinstance(n, ast.Subscript)\n"
+     "                    and isinstance(n.slice, ast.Constant)",
+     "TestTheResolutionQuestion::test_the_walk_CAN_see_a_key_being_read"),
+
+    ("a_native_key_reads_as_READ_when_it_is_not", CAP,
+     '        "native_keys_read": sorted(k for k in _NATIVE_KEYS if k in read),',
+     '        "native_keys_read": sorted(_NATIVE_KEYS),',
+     "TestTheResolutionQuestion::test_nothing_reads_the_native_pixel_dimensions"),
+
+    ("letterboxing_is_flattened_into_direct_pixels", CAP,
+     '    return LETTERBOXED if "imgsz" in names else DIRECT_PIXELS',
+     "    return DIRECT_PIXELS",
+     "TestTheResolutionQuestion::test_letterboxed_and_direct_pixels_are_NOT_flattened"),
+
+    ("every_reader_reads_as_letterboxed", CAP,
+     '    return LETTERBOXED if "imgsz" in names else DIRECT_PIXELS',
+     "    return LETTERBOXED",
+     "TestTheResolutionQuestion::test_a_reader_with_no_raster_is_not_called_direct_pixels"),
+
     # ── it must not SILENCE its siblings ───────────────────────────────────
     ("the_derived_check_marker_is_dropped_and_wiring_goes_quiet", WIR,
      "            if _declares_derived_check(path):\n"
