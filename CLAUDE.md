@@ -895,8 +895,25 @@ NO-OP.** `independent_groups` partitions witnesses by whether their
 **`Verdict.correlated`** — built for this and consumed by nothing until now.
 It **refuses 8 of 35** unanimous cases whose 2-3 witnesses collapse to ONE
 group. ⚠️ It is ONE-SIDED: disjoint closures prove the ROWS differ, not that
-the READINGS fail independently. ⚠️ `COLUMN_MIN_INDEPENDENT_WITNESSES = 2` is
-**unmeasured and its price is 28**.
+the READINGS fail independently. ⚠️⚠️ **`COLUMN_MIN_INDEPENDENT_WITNESSES = 2` IS NO LONGER UNMEASURED
+(2026-09-17), AND THE SHAPE SAYS IT SITS ON A BOUNDARY RATHER THAN A
+MIDPOINT.** Priced in REACH on both shared records by
+`benchmarks/omr-infer-barline-2026-09/probe/witness_floor.py`, which
+reproduces all four shipped totals independently and whose Litolff `by_column`
+population is exactly the **n = 35 unanimous** published above — so it measures
+the rule, not itself. Survivors at floor 1 / **2** / 3: Litolff **25/7/4** and
+**52/10/3**, Breitkopf **55/25/3** and **56/16/10**. The informative artefact
+is the DISTRIBUTION of independent-group counts over the cases that reach the
+floor: **the mass is at exactly ONE on both documents and both rules** — 28 of
+35, 71 of 82, 49 of 82, 70 of 106. So the refused population is overwhelmingly
+SINGLE-WITNESS and the floor is not slicing a continuum; it separates *one
+staff said so* from *two independent staves agree*, which is the justification
+the constant never had. ⚠️ **Floor 3 is expensive AND erratic** (−70%, −88%,
+−38% across the three rule/document pairs), so it is not one to raise on
+either document's evidence. ⚠️⚠️ **Floor 1 is PRINTED AND NOT PROPOSED** — it
+takes Litolff's barline rule 10 → 52 and abolishes corroboration, which is the
+one thing the stage rests on not doing. ⚠️ **Reach only**: whether the extra
+inferences at a lower floor are RIGHT is unmeasured and needs crops.
 
 ⚠️ **THE ARGMAX REFUSAL EARNS ITS KEEP: 2 of the 7 chose the reader's SECOND
 candidate**, so the sideways evidence overturned the support ordering twice —
