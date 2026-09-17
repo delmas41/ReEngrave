@@ -16,6 +16,33 @@ pointing at headings no longer in the file.)*
 
 ---
 
+## 2026-09-16 (docs) — the meter-carry ledger reconciled with the tree, and PR #43 merged
+
+No code. A check-in found three claims the tree contradicts, all in the
+section of the handoffs headed *what is waiting for Sean*:
+
+- Both 09-16 handoffs list `OMR_METER_CARRY` as *"still off"*. It has been
+  ON since 09-15 (`rhythm.py:1016`, deny-list). Corrected in place at both.
+- Both name *"the arm on `p0p3` with `--bar-beats 3.0`"* as the experiment
+  that closes the cost question. **It ran on 2026-09-15 and has been on main
+  since `328c7ac0`** — `benchmarks/omr-meter-carry-brahms-2026-09/`: carry
+  asked on 5 of 7 systems, refused on all 5, four exports byte-identical,
+  candidate `4/4` never the voted `9/4`. CLAUDE.md cited it zero times; PR #43
+  independently reproduced its 5-of-7 census by AST. The 09-16 handoff's own
+  §7 pattern (a brief overtaken by work already on main), a fourth time.
+- CLAUDE.md's *"REACH IS ZERO"* section: heading corrected, PR #43's
+  refutation merged (`52b13f39`, its `version_memory` conflict resolved by
+  keeping both entries), and a stamp added that the arm PR #43 asks for is the
+  one above. Pointers stamped at the START HERE block, the `OMR_METER_CARRY`
+  knobs row, the abstains-and-misreads section and the cautionary-arbiter tail.
+
+What stands after the reconciliation: the misread does not propagate on
+Breitkopf (structurally, via `_meter_in_force_at_end`); the benefit on Litolff
+p1-3 is 1 of 5 → 5 of 5 systems, 298 wrong→exact / 0 exact→wrong; and the open
+decision is the **form-borrowing rule** (bars name 3.0 at +7.0 and cannot spell
+6/8), not the flip. ⚠️ All seven derived checks exit 0 on this tree; the full
+suite was not run.
+
 ## 2026-09-17 — the carry's DOMAIN on the Breitkopf record is 5 of 7, not zero
 
 **A correction to yesterday's entry, on this repo's own rule that the tree
