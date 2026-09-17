@@ -454,7 +454,7 @@ the narrow test rather than the obvious one.
 
 ## 9a. THE SUITE AND THE DERIVED CHECKS
 
-Full `tools/omr/tests/`: **4301 passed, 17 skipped, 0 failed** (722 s).
+Full `tools/omr/tests/` on the MERGED tree: **4325 passed, 17 skipped, 0 failed** (717 s).
 `capture --check`, `reach --check`, `wiring --check`, `inventory --check`,
 `health --check` and `gather_coverage` all exit **0**.
 
@@ -509,3 +509,53 @@ Two smaller, cheap follow-ups: a **third publisher**, to say whether the fermata
 and tuplet zeros are these two plates or the repertoire; and the **arc's
 curvature**, which needs `Q.INK` joined to `Q.ARC_POSITION` and would turn a
 bounding box into an actual curve.
+
+---
+
+## 12. ⚠️⚠️ A SIBLING SESSION BUILT THE OTHER HALF WHILE THIS RAN — and the two fit
+
+The base branch moved **12 commits** during this work, and one of them is
+`832fbfab A position-keyed store: where things fall, kept at full grain`, with
+`Q.DOCUMENT_IDENTITY` and `tools/omr/positional_store.py`. This is the §7
+pattern CLAUDE.md records — *three briefs overtaken by work already on main in
+one session* — arriving a fifth time. **`git log --all -S` before dispatching,
+and again before pushing.**
+
+⚠️ **THEY DO NOT DUPLICATE EACH OTHER; THEY ARE THE TWO HALVES OF ONE THING**,
+and the join is Sean's own framing: *"it might be helpful to have general
+information based on publisher or common practice of where a certain things
+fall so if we have an undiagnosed blob or dot, we have gathered a lot of
+information on what sorts of things are more likely where."*
+
+| | this branch | the sibling |
+|---|---|---|
+| what it adds | a POSITION fact per family, per mark | a STORE those facts accumulate in, and the key it conditions on |
+| the gap it closes | `capture`'s `position: NONE` on eleven families | `capture`'s `CROSS-DOCUMENT` finding |
+| without the other | positions with nowhere to accumulate | a store with three families' positions to hold |
+
+**Together they are the aggregate Sean asked for**: eleven more families'
+worth of *where things actually fall*, keyed by the edition and publisher that
+`Q.DOCUMENT_IDENTITY` now puts on the record.
+
+### The merge, and what the tool arbitrated
+
+Three conflicts, all additive collisions in the same registries, and **the
+derived checks decided two of them rather than my judgement**:
+
+* `record.py` — both sides added a quantity block at the same point. **Both
+  kept.**
+* `wiring.py` — they removed `DETAIL Q.WEDGE_BOX.y_center_page` with a measured
+  argument (`positional_store` reads that LEAF NAME off other quantities, so
+  the credit is a textual coincidence their comment documents). **Their
+  treatment kept, plus this branch's two new entries** — and my
+  `_row_writer_files` repair is what stops `positions.py` writing
+  `staff_bottom_line_page` from closing their remaining entry the same way.
+* `capture.py` — their side still carried `"POSITION tuplet"`, which **this
+  branch's producers make stale**; mine supersedes it. Then `--check` reported
+  **`CROSS-DOCUMENT` STALE**, because THEIR change closed it. It has left the
+  list, with a note saying why, exactly as the contract requires.
+
+⚠️ **I did not decide that last one — the instrument did.** A closed gap must
+LEAVE the list, and neither session could have seen it alone: the entry was
+live on both branches and dead only on the merge. **The merged tree is the one
+thing no session ran**, which is why it was checked before anything was pushed.

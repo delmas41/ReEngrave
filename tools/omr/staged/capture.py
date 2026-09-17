@@ -214,6 +214,18 @@ DERIVED_FIT = "derived_fit"
 #: from one reader are ONE signal' mistake, made by accident"*. So one
 #: quantity names both families it measures. `_families_of` normalises.
 UNSCORED: Dict[str, Tuple[str, str, Any]] = {
+    # ── the document's own identity, from the CATALOG rather than the raster ─
+    "DOCUMENT_IDENTITY": (
+        NOT_A_MARK,
+        "⚠️ NOT A MEASUREMENT OF INK, so it is scoreless for a DIFFERENT "
+        "reason from the position facts: edition / publisher / work / "
+        "scan-type, filed once per document by `gather_document_identity` at "
+        "`source_kind: catalog`. Admissible as a conditioning variable "
+        "precisely BECAUSE it does not come off the raster and cannot fall "
+        "silent when the plate is bad (CLAUDE.md's `source_kind` doctrine). "
+        "It is the key the positional store conditions on, and it is what "
+        "CLOSED this tool's own CROSS-DOCUMENT finding on 2026-09-17.",
+        None),
     # ── the three that answer question 2 ────────────────────────────────────
     "NOTEHEAD_STAFF_POSITION": (
         STAFF_GRID_POSITION,
@@ -657,26 +669,14 @@ KNOWN_GAPS: Dict[str, str] = {
     "UNRESOLVED observe site _observe_band": (
         "as `_observe_step` — the band-frame half of the same helper pair."),
 
-    # ── ACROSS DOCUMENTS: nothing accumulates, and the key is unreachable ───
-    "CROSS-DOCUMENT": (
-        "⚠️⚠️ SEAN, 2026-09-17: *\"We need every bit of information gathered "
-        "and stored in one place where the different stages can continue to "
-        "learn how to better identify as it processes all of the "
-        "information.\"* **There is no such place.** `data/` holds "
-        "`dossiers/` (per-work ENCODING facts, not measured geometry), "
-        "`score-library/` (a catalog of files) and three `user-labeled*/` "
-        "training sets. No store of measured positions exists, so a "
-        "distribution of where fermatas actually fall cannot be accumulated "
-        "even for the families that DO have a position fact. "
-        "⚠️ AND THE NATURAL CONDITIONING VARIABLE IS UNREACHABLE AT GATHER: "
-        "`grep publisher tools/omr/staged/gather.py` returns ONE LINE and it "
-        "is a comment in a docstring. The catalog records a publisher on 231 "
-        "of 235 edition entries (212 distinct) and an `image_type` on 226, "
-        "keyed by PATH — so the fact exists, is populated, and never reaches "
-        "the stage that would use it. ⚠️ It is on `entries`, NOT on the "
-        "`editions` map, which carries only "
-        "`instrumentation`/`path`/`sha256`/`work_id` — a reader that went to "
-        "`editions` for it would find nothing and conclude it was absent."),
+    # ⚠️⚠️ `CROSS-DOCUMENT` LEFT THIS LIST ON 2026-09-17, AND IT LEFT BECAUSE
+    # IT WAS CLOSED. The finding was *nothing accumulates measured geometry
+    # across documents, and `publisher` — the conditioning variable — appears
+    # in NO code in gather.py*. `Q.DOCUMENT_IDENTITY` and
+    # `tools/omr/positional_store.py` closed both halves, and this tool's own
+    # `--check` reported the entry STALE the moment the two branches met. A
+    # closed gap must LEAVE the list or the list stops describing the pipeline
+    # and starts describing its history.
 
     # ── RESOLUTION: a constant DPI over sources of two different kinds ──────
     "RESOLUTION nothing reads the source's native": (

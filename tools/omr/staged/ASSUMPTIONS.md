@@ -1741,6 +1741,110 @@ argmaxed in EXPORT, an uncalibrated probability is still worse than none, and
 INFER may still only speak where the record has no answer. **Keeping everything
 is the opposite of deciding everything.**
 
+### A-INK-4 · ⚠️⚠️ A FACTOR CONTRIBUTES; IT DOES NOT DECIDE — and the order of the programme
+
+**SEAN, 2026-09-17.** `A-INK-3` governs what is CAPTURED. This governs what is
+DONE with it, and the two are easy to conflate.
+
+> *"position is an option for helping us determine something but will rarely be
+> a clear rule that determines by itself. 2 numbers not connected, one in the
+> upper half and one in the lower half, could be a time signature. Due to ink
+> bleed they may appear connected, or other things that we can't determine...
+> Quick rules will give us quick results that could be poor."*
+
+> *"this architecture of the new pipeline with stages and retaining all of the
+> information is made so that when we get to something we can't easily figure
+> out, we have other paths for determining what it is. It may be a specific
+> rule or it could be a deduction from many data points."*
+
+**THE RULE.** No single factor decides. A factor is one more PATH to an answer,
+weighed with everything else — never a veto, a gate or a discriminator on its
+own. ⚠️ **A signal that looks decisive is the most dangerous kind**, because it
+invites exactly the quick rule that produces quick poor results.
+
+⚠️ **THE WORKED EXAMPLE IS A CORRECTION TO THIS FILE'S OWN AUTHOR.** The
+2026-09-17 position brief claimed a position fact *"refuses the p.62 barline on
+geometry alone"* and called that case *"the falsifier for the whole idea"*.
+Both false. On a bitonal plate **ink bleed fuses two digits into one stroke**,
+so *one connected stroke* does not disprove a meter and *two marks in two
+halves* does not prove one. The geometry CONTRIBUTES and does not settle it.
+
+⚠️ **WHERE A FACT IS AMBIGUOUS, THE AMBIGUITY IS THE INFORMATION.** A fused
+stroke that could be one mark or two is precisely the case a later stage exists
+to weigh; collapsing it at capture destroys what the architecture was built to
+use. This is `A-INK-3` again from the other side — **resolving early is a form
+of discarding.**
+
+**THE ORDER OF THE PROGRAMME, and it is why step 3 must not be pre-empted:**
+
+1. **Stages**, so that different functions have somewhere to live and there is
+   flexibility in determining what something is. **DONE** — GATHER, ADJUDICATE,
+   EVALUATE, INFER, EXPORT.
+2. **ALL information that could ever be helpful, gathered and available to
+   every stage and decision point.** IN PROGRESS — `Q.INK`, the position facts,
+   the memory store, publisher reaching GATHER.
+3. **Test each decision point to see what is actually helpful** — which may be
+   raw data, or how raw data was used in a DIFFERENT decision to reach a new
+   conclusion or a likelihood.
+
+⚠️ **A rule written during step 2 because it "looks obviously right" is step 3
+done badly, with no measurement and no alternative considered.** The whole
+point of holding everything is that what helps is discovered, not assumed.
+
+⚠️ **CIRCULARITY IS MANAGED, NOT AVOIDED.** Step 3 necessarily uses the output
+of one decision as input to another, and Sean's answer is not to forbid it:
+*"We need to be careful of circularity but that is why we will be evaluating
+the quality of the determination and tracking what was used to make that
+decision."* The machinery already exists and is the reason it is safe to
+proceed — `Verdict.basis`/`used`/`considered`, `Log.closure`, `correlated`, the
+`source_kind` tiers, and `checked_by`/`implicates`. ⚠️ Its one measured hole is
+recorded: **an `ev.state()` read never enters `basis`**, so a dependency
+established that way is invisible to `independent_groups`.
+
+**And the standard this sets for ruling anything out:** *"This is a complex
+system that requires concepts to be tested before ruling out simply, and an
+understanding of the interdependent nature of the data."* A concept is never
+retired by an argument that it sounds unlikely.
+
+⚠️⚠️ **AND A MEASUREMENT DOES NOT RETIRE ONE EITHER — NOT AT FIRST.** Sean,
+2026-09-17, correcting the line that stood here:
+
+> *"even measurement should not retire at first, because a measurement can only
+> take into account the current factors but we are building something that has
+> changing factors."*
+
+**A measurement is taken under the factor set that exists on the day.** In a
+system being built, that set changes — so a negative result is a statement
+about *the factors present*, not about the idea. **Every refusal must therefore
+record WHAT ELSE EXISTED when it was taken**, and is re-openable when that
+changes.
+
+⚠️ **THIS PROJECT HAS ALREADY PROVED IT TWICE, and both are in CLAUDE.md:**
+
+* **`OMR_ARC_RECLASS`** was measured and REFUSED — it scored **below its own
+  majority baseline alone (0.5043 vs 0.5275)**. Later, measured in concurrence
+  with S6, the same rule reaches **0.750, p = 0.0104** on a 20,000-draw
+  permutation null. The idea did not change; a second signal came into
+  existence. *"The refusal STANDS — it was refused for what it COSTS and this
+  is what it is WORTH"* is that distinction being drawn correctly.
+* **The duration reader's two halves** measured **+15 and +13 separately and
+  +66 together** — super-additive, *"because a bar is right only when EVERY
+  note in it is"*. Either half, measured alone and judged, looks marginal.
+
+**So the operative rule is:** a measurement retires a concept **within the
+factor set it was taken in**, and a refusal that does not name that set is
+overstated. ⚠️ The practical form, since this file cannot enforce prose: when
+recording a refusal, say what would RE-OPEN it. Many entries already do
+(*"if any half ever defaults on it is slur->tie"*, *"the cheapest thing that
+would settle it is..."*), and those are the model.
+
+⚠️ **The failure mode this guards against is the expensive one**: a factor
+gathered in step 2 measures useless in step 3 *because its partner does not
+exist yet*, is deleted, and the partner arrives a month later with nothing left
+to combine with. `Q.STEM` is the near-miss — gathered and unread through THREE
+separate discoveries, and worth 114 narrowed durations the day something read
+it.
+
 ### A-INK-2 · ⚠️ DPI is a CONSTANT and should be a property of the SOURCE
 
 Found alongside A-INK-1 and unbuilt. `OMR_DPI` is 300 on the backend and 600

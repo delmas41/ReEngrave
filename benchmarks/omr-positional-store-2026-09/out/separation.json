@@ -1,0 +1,590 @@
+{
+ "reach": [
+  {
+   "record": "beethoven5-p1-p4.record.json",
+   "publisher": "litolff",
+   "entries": 8486,
+   "named": 8486,
+   "unknown": 0,
+   "several_memberships": 0,
+   "positioned": 8486,
+   "seconds": 0.3
+  },
+  {
+   "record": "brahms1-breitkopf-p0-p3.record.json",
+   "publisher": "breitkopf",
+   "entries": 12932,
+   "named": 12932,
+   "unknown": 0,
+   "several_memberships": 0,
+   "positioned": 12932,
+   "seconds": 0.5
+  }
+ ],
+ "by_width": {
+  "0.05": {
+   "breitkopf": {
+    "observed": 1.3481,
+    "null_mean": 0.5262,
+    "null_sd": 0.00455,
+    "margin_sd": 180.6,
+    "n": 12932
+   },
+   "litolff": {
+    "observed": 1.3351,
+    "null_mean": 0.5812,
+    "null_sd": 0.00588,
+    "margin_sd": 128.2,
+    "n": 8486
+   }
+  },
+  "0.1": {
+   "breitkopf": {
+    "observed": 1.1802,
+    "null_mean": 0.3148,
+    "null_sd": 0.00422,
+    "margin_sd": 205.0,
+    "n": 12932
+   },
+   "litolff": {
+    "observed": 1.1235,
+    "null_mean": 0.3524,
+    "null_sd": 0.00536,
+    "margin_sd": 143.8,
+    "n": 8486
+   }
+  },
+  "0.25": {
+   "breitkopf": {
+    "observed": 0.9641,
+    "null_mean": 0.151,
+    "null_sd": 0.0029,
+    "margin_sd": 280.3,
+    "n": 12932
+   },
+   "litolff": {
+    "observed": 0.9327,
+    "null_mean": 0.1735,
+    "null_sd": 0.0054,
+    "margin_sd": 140.6,
+    "n": 8486
+   }
+  },
+  "0.5": {
+   "breitkopf": {
+    "observed": 0.6771,
+    "null_mean": 0.084,
+    "null_sd": 0.00265,
+    "margin_sd": 223.8,
+    "n": 12932
+   },
+   "litolff": {
+    "observed": 0.7989,
+    "null_mean": 0.0965,
+    "null_sd": 0.00446,
+    "margin_sd": 157.5,
+    "n": 8486
+   }
+  },
+  "1.0": {
+   "breitkopf": {
+    "observed": 0.5058,
+    "null_mean": 0.0455,
+    "null_sd": 0.00219,
+    "margin_sd": 210.1,
+    "n": 12932
+   },
+   "litolff": {
+    "observed": 0.6433,
+    "null_mean": 0.0522,
+    "null_sd": 0.00278,
+    "margin_sd": 212.4,
+    "n": 8486
+   }
+  },
+  "2.0": {
+   "breitkopf": {
+    "observed": 0.3683,
+    "null_mean": 0.0232,
+    "null_sd": 0.00133,
+    "margin_sd": 260.3,
+    "n": 12932
+   },
+   "litolff": {
+    "observed": 0.4836,
+    "null_mean": 0.0268,
+    "null_sd": 0.002,
+    "margin_sd": 227.9,
+    "n": 8486
+   }
+  },
+  "4.0": {
+   "breitkopf": {
+    "observed": 0.2623,
+    "null_mean": 0.0129,
+    "null_sd": 0.00097,
+    "margin_sd": 257.8,
+    "n": 12932
+   },
+   "litolff": {
+    "observed": 0.3585,
+    "null_mean": 0.0154,
+    "null_sd": 0.00158,
+    "margin_sd": 217.0,
+    "n": 8486
+   }
+  }
+ },
+ "per_class": {
+  "clause3": {
+   "breitkopf": {
+    "top_class": "restWhole",
+    "margin_sd": 198.5,
+    "n": 12534
+   },
+   "litolff": {
+    "top_class": "staff",
+    "margin_sd": 201.4,
+    "n": 7855
+   }
+  },
+  "breitkopf": [
+   {
+    "cls": "beam",
+    "n": 1672,
+    "median": 6.29,
+    "iqr": 15.35,
+    "entropy_bits": 4.68
+   },
+   {
+    "cls": "tie",
+    "n": 1658,
+    "median": 3.6,
+    "iqr": 7.82,
+    "entropy_bits": 4.4
+   },
+   {
+    "cls": "noteheadBlackInSpace",
+    "n": 1656,
+    "median": 2.92,
+    "iqr": 7.8,
+    "entropy_bits": 4.5
+   },
+   {
+    "cls": "noteheadBlackOnLine",
+    "n": 1425,
+    "median": 2.12,
+    "iqr": 8.07,
+    "entropy_bits": 4.45
+   },
+   {
+    "cls": "ledgerLine",
+    "n": 1057,
+    "median": -1.85,
+    "iqr": 10.07,
+    "entropy_bits": 4.27
+   },
+   {
+    "cls": "augmentationDot",
+    "n": 656,
+    "median": 1.16,
+    "iqr": 9.96,
+    "entropy_bits": 4.46
+   },
+   {
+    "cls": "slur",
+    "n": 549,
+    "median": -1.15,
+    "iqr": 17.81,
+    "entropy_bits": 4.6
+   },
+   {
+    "cls": "restWhole",
+    "n": 398,
+    "median": 2.73,
+    "iqr": 0.33,
+    "entropy_bits": 1.54
+   },
+   {
+    "cls": "rest8th",
+    "n": 380,
+    "median": 4.25,
+    "iqr": 0.22,
+    "entropy_bits": 1.23
+   },
+   {
+    "cls": "staff",
+    "n": 360,
+    "median": 4.13,
+    "iqr": 0.54,
+    "entropy_bits": 1.86
+   },
+   {
+    "cls": "accidentalFlat",
+    "n": 340,
+    "median": 1.64,
+    "iqr": 8.04,
+    "entropy_bits": 4.4
+   },
+   {
+    "cls": "dynamicF",
+    "n": 331,
+    "median": 9.69,
+    "iqr": 16.4,
+    "entropy_bits": 3.67
+   },
+   {
+    "cls": "restQuarter",
+    "n": 238,
+    "median": 3.8,
+    "iqr": 2.77,
+    "entropy_bits": 3.39
+   },
+   {
+    "cls": "arpeggiato",
+    "n": 214,
+    "median": 3.61,
+    "iqr": 3.82,
+    "entropy_bits": 3.84
+   },
+   {
+    "cls": "flag8thDown",
+    "n": 193,
+    "median": 3.89,
+    "iqr": 5.24,
+    "entropy_bits": 3.68
+   },
+   {
+    "cls": "accidentalNatural",
+    "n": 183,
+    "median": 0.88,
+    "iqr": 7.05,
+    "entropy_bits": 4.23
+   },
+   {
+    "cls": "accidentalSharp",
+    "n": 176,
+    "median": 2.21,
+    "iqr": 5.72,
+    "entropy_bits": 4.13
+   },
+   {
+    "cls": "dynamicP",
+    "n": 160,
+    "median": 9.61,
+    "iqr": 16.49,
+    "entropy_bits": 3.84
+   },
+   {
+    "cls": "flag8thUp",
+    "n": 145,
+    "median": 2.94,
+    "iqr": 5.81,
+    "entropy_bits": 4.17
+   },
+   {
+    "cls": "keyFlat",
+    "n": 143,
+    "median": 2.95,
+    "iqr": 2.93,
+    "entropy_bits": 3.13
+   },
+   {
+    "cls": "timeSig4",
+    "n": 121,
+    "median": 4.89,
+    "iqr": 4.48,
+    "entropy_bits": 3.55
+   },
+   {
+    "cls": "clefG",
+    "n": 107,
+    "median": 4.25,
+    "iqr": 9.38,
+    "entropy_bits": 2.82
+   },
+   {
+    "cls": "articStaccatoAbove",
+    "n": 95,
+    "median": -0.99,
+    "iqr": 14.63,
+    "entropy_bits": 3.88
+   },
+   {
+    "cls": "noteheadHalfInSpace",
+    "n": 94,
+    "median": 4.97,
+    "iqr": 12.7,
+    "entropy_bits": 4.33
+   },
+   {
+    "cls": "articStaccatoBelow",
+    "n": 81,
+    "median": 7.62,
+    "iqr": 14.98,
+    "entropy_bits": 3.81
+   },
+   {
+    "cls": "noteheadWholeInSpace",
+    "n": 75,
+    "median": 5.9,
+    "iqr": 2.03,
+    "entropy_bits": 2.59
+   },
+   {
+    "cls": "noteheadHalfOnLine",
+    "n": 58,
+    "median": 7.34,
+    "iqr": 6.19,
+    "entropy_bits": 3.74
+   },
+   {
+    "cls": "clefF",
+    "n": 47,
+    "median": 3.35,
+    "iqr": 0.45,
+    "entropy_bits": 1.61
+   },
+   {
+    "cls": "timeSig8",
+    "n": 35,
+    "median": 6.06,
+    "iqr": 1.0,
+    "entropy_bits": 1.26
+   },
+   {
+    "cls": "accidentalDoubleSharp",
+    "n": 34,
+    "median": 4.15,
+    "iqr": 1.47,
+    "entropy_bits": 2.67
+   },
+   {
+    "cls": "stem",
+    "n": 30,
+    "median": 6.01,
+    "iqr": 8.99,
+    "entropy_bits": 3.71
+   },
+   {
+    "cls": "noteheadWholeOnLine",
+    "n": 29,
+    "median": 5.28,
+    "iqr": 11.85,
+    "entropy_bits": 3.04
+   },
+   {
+    "cls": "flag16thUp",
+    "n": 26,
+    "median": 13.92,
+    "iqr": 7.45,
+    "entropy_bits": 2.84
+   },
+   {
+    "cls": "dynamicM",
+    "n": 23,
+    "median": 10.14,
+    "iqr": 16.65,
+    "entropy_bits": 2.87
+   },
+   {
+    "cls": "timeSig6",
+    "n": 20,
+    "median": 2.01,
+    "iqr": 0.12,
+    "entropy_bits": 1.23
+   }
+  ],
+  "litolff": [
+   {
+    "cls": "ledgerLine",
+    "n": 1878,
+    "median": 3.84,
+    "iqr": 5.13,
+    "entropy_bits": 3.92
+   },
+   {
+    "cls": "noteheadBlackOnLine",
+    "n": 978,
+    "median": 3.88,
+    "iqr": 8.73,
+    "entropy_bits": 4.54
+   },
+   {
+    "cls": "noteheadBlackInSpace",
+    "n": 916,
+    "median": 3.05,
+    "iqr": 7.98,
+    "entropy_bits": 4.48
+   },
+   {
+    "cls": "staff",
+    "n": 631,
+    "median": 4.2,
+    "iqr": 0.75,
+    "entropy_bits": 1.57
+   },
+   {
+    "cls": "beam",
+    "n": 536,
+    "median": 0.18,
+    "iqr": 14.12,
+    "entropy_bits": 4.42
+   },
+   {
+    "cls": "tie",
+    "n": 414,
+    "median": 2.95,
+    "iqr": 8.41,
+    "entropy_bits": 4.51
+   },
+   {
+    "cls": "restWhole",
+    "n": 395,
+    "median": 2.46,
+    "iqr": 0.43,
+    "entropy_bits": 1.23
+   },
+   {
+    "cls": "arpeggiato",
+    "n": 377,
+    "median": 3.99,
+    "iqr": 2.41,
+    "entropy_bits": 2.9
+   },
+   {
+    "cls": "slur",
+    "n": 365,
+    "median": -0.71,
+    "iqr": 15.38,
+    "entropy_bits": 4.52
+   },
+   {
+    "cls": "dynamicF",
+    "n": 345,
+    "median": 7.79,
+    "iqr": 17.27,
+    "entropy_bits": 3.6
+   },
+   {
+    "cls": "noteheadHalfInSpace",
+    "n": 279,
+    "median": 1.79,
+    "iqr": 7.87,
+    "entropy_bits": 4.35
+   },
+   {
+    "cls": "restQuarter",
+    "n": 209,
+    "median": 3.19,
+    "iqr": 0.7,
+    "entropy_bits": 1.91
+   },
+   {
+    "cls": "accidentalFlat",
+    "n": 158,
+    "median": 3.37,
+    "iqr": 15.26,
+    "entropy_bits": 3.98
+   },
+   {
+    "cls": "noteheadHalfOnLine",
+    "n": 157,
+    "median": 3.37,
+    "iqr": 6.39,
+    "entropy_bits": 4.09
+   },
+   {
+    "cls": "keyFlat",
+    "n": 123,
+    "median": 3.89,
+    "iqr": 3.36,
+    "entropy_bits": 3.32
+   },
+   {
+    "cls": "clefG",
+    "n": 82,
+    "median": 4.59,
+    "iqr": 11.48,
+    "entropy_bits": 3.11
+   },
+   {
+    "cls": "dynamicS",
+    "n": 81,
+    "median": 10.76,
+    "iqr": 17.16,
+    "entropy_bits": 2.87
+   },
+   {
+    "cls": "articStaccatoAbove",
+    "n": 69,
+    "median": -1.8,
+    "iqr": 17.09,
+    "entropy_bits": 4.11
+   },
+   {
+    "cls": "fermataAbove",
+    "n": 66,
+    "median": -2.2,
+    "iqr": 15.68,
+    "entropy_bits": 2.53
+   },
+   {
+    "cls": "accidentalNatural",
+    "n": 63,
+    "median": 0.34,
+    "iqr": 9.53,
+    "entropy_bits": 4.04
+   },
+   {
+    "cls": "dynamicP",
+    "n": 56,
+    "median": 10.87,
+    "iqr": 17.85,
+    "entropy_bits": 3.44
+   },
+   {
+    "cls": "rest8th",
+    "n": 38,
+    "median": 4.39,
+    "iqr": 0.66,
+    "entropy_bits": 2.08
+   },
+   {
+    "cls": "augmentationDot",
+    "n": 35,
+    "median": 3.61,
+    "iqr": 9.74,
+    "entropy_bits": 4.11
+   },
+   {
+    "cls": "articStaccatoBelow",
+    "n": 28,
+    "median": 9.28,
+    "iqr": 16.38,
+    "entropy_bits": 2.97
+   },
+   {
+    "cls": "clefF",
+    "n": 27,
+    "median": 3.7,
+    "iqr": 1.34,
+    "entropy_bits": 2.23
+   },
+   {
+    "cls": "flag8thUp",
+    "n": 27,
+    "median": 2.86,
+    "iqr": 15.59,
+    "entropy_bits": 3.71
+   },
+   {
+    "cls": "stem",
+    "n": 26,
+    "median": 5.5,
+    "iqr": 1.8,
+    "entropy_bits": 2.64
+   }
+  ]
+ }
+}

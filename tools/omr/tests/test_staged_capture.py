@@ -617,13 +617,26 @@ class TestNothingAccumulatesAcrossDocuments(unittest.TestCase):
                                   "user-labeled-clef-fix",
                                   "user-labeled-distill25"})
 
-    def test_publisher_is_unreachable_in_gather(self) -> None:
-        self.assertEqual(self.xd["publisher_in_gather_code"], 0)
+    def test_publisher_IS_now_reachable_in_gather(self) -> None:
+        """⚠️⚠️ RED ON SUCCESS, 2026-09-17, and REWRITTEN rather than deleted.
+
+        This asserted `== 0` — *publisher reaches no code in GATHER* — and it
+        was true when written. `gather_document_identity` closed it, so the
+        assertion became a claim the tree contradicts. CLAUDE.md records the
+        same shape the day the last stub closed: eight assertions went red
+        because the thing they asserted had been achieved, and none was
+        deleted. The mechanism is still exercised — the number must now be
+        NON-zero, so the tool still has to find it.
+        """
+        self.assertGreater(
+            self.xd["publisher_in_gather_code"], 0,
+            "publisher stopped reaching GATHER — the positional store's "
+            "conditioning variable is gone")
 
     def test_but_the_catalog_HAS_it(self) -> None:
-        """⚠️ THE POSITIVE CONTROL: the zero above is a wiring gap, not an
-        absent fact. If the catalog held no publisher the finding would be a
-        different one entirely.
+        """⚠️ THE POSITIVE CONTROL, and it still earns its keep after the
+        closure: the reachability above is worth nothing if the catalog holds
+        no publisher to reach for.
         """
         cat = self.xd["catalog"]
         self.assertTrue(cat["present"])
