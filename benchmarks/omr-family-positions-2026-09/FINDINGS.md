@@ -239,6 +239,16 @@ plate while *zero positions with ink present* would be a fault in me. On Brahms
 both `fermata` and `tuplet` read **0 ink rows** — that plate yields no fermata
 and no tuplet detection at all — and the same families fire 67 and 1 on Litolff.
 
+⚠️ **THE `ink` COLUMN IS EXACT FOR THE TEN NEW FAMILIES AND DELIBERATELY LOOSE
+FOR THE THREE OLD ONES.** Each of the ten measures one position per ink row and
+the two columns match to the unit. The three pre-existing families are in the
+table only as a control and their `INK_OF` entry is an approximation — `note`
+maps to `Q.GLYPH_BOX`, which counts EVERY detection and not just noteheads
+(8,486 against 2,347 positions on Litolff), and `key` maps to the per-accidental
+marker rather than the per-staff run. **Those two gaps are a property of this
+probe's convenience mapping, not a shortfall in the readers**, and no conclusion
+here rests on them.
+
 ⚠️ **AND THE THIN ONES ARE THIN, WHICH IS ALSO THE DOCUMENT.** `tuplet` fires
 ONCE across eight pages of two publishers; `wedge` and `ornament` once each on
 Litolff. Those are DETECTION figures, the same shape this repo already records
@@ -441,6 +451,18 @@ the value:
 
 The fourth was the battery's own bad anchor, and one arm needed retargeting onto
 the narrow test rather than the obvious one.
+
+## 9a. THE SUITE AND THE DERIVED CHECKS
+
+Full `tools/omr/tests/`: **4301 passed, 17 skipped, 0 failed** (722 s).
+`capture --check`, `reach --check`, `wiring --check`, `inventory --check`,
+`health --check` and `gather_coverage` all exit **0**.
+
+⚠️ `capture --check` and `wiring --check` were each run on the BASE tree first:
+`capture` exits 0 there too, and `wiring` exits 0 with 61 problems against my
+63 — so neither green is a green I inherited, and neither of my two extra
+`wiring` problems is a regression (both are this module's own detail keys,
+newly VISIBLE because that question now walks a second write site).
 
 ## 10. REPRODUCING
 
