@@ -177,10 +177,16 @@ ARMS = [
      "    return DIRECT_PIXELS",
      "TestTheResolutionQuestion::test_letterboxed_and_direct_pixels_are_NOT_flattened"),
 
+    # ⚠️ RETARGETED after it SURVIVED. It was aimed at the NO_RASTER test,
+    # which `rasters()` answers from the declared table WITHOUT calling this
+    # probe — so the mutation was unreachable from that assertion and the arm
+    # "survived" for a reason with nothing to do with the code under test.
+    # The two resolution arms now mutate in OPPOSITE directions against the
+    # same test, which is what makes that test more than a one-sided check.
     ("every_reader_reads_as_letterboxed", CAP,
      '    return LETTERBOXED if "imgsz" in names else DIRECT_PIXELS',
      "    return LETTERBOXED",
-     "TestTheResolutionQuestion::test_a_reader_with_no_raster_is_not_called_direct_pixels"),
+     "TestTheResolutionQuestion::test_letterboxed_and_direct_pixels_are_NOT_flattened"),
 
     # ── it must not SILENCE its siblings ───────────────────────────────────
     ("the_derived_check_marker_is_dropped_and_wiring_goes_quiet", WIR,
