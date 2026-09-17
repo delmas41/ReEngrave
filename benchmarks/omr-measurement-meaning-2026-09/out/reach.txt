@@ -1,0 +1,194 @@
+============================================================================
+REACH — is there a population for a UNIT/FRAME/COMPARABILITY check?
+============================================================================
+  files walked                        142
+  Q vocabulary                        80
+  quantities WRITTEN                  46
+  quantities READ                     66
+  quantities POOLED (read + combined) 42
+
+[1] written in >1 FRAME               4
+      direction_word                   ['cell:*', 'page']
+      dynamic_letter                   ['cell:*', 'page']
+      meter_template_at_bar            ['bar_head:*', 'header_window']
+      wedge_box                        ['cell:*', 'page']
+
+[2] read by >1 MODULE                 28
+      accidental                       ['consequences.py', 'export.py']
+      arc_box                          ['ownership.py', 'export.py']
+      articulation_mark                ['ownership.py', 'export.py']
+      clef                             ['header.py', 'ownership.py', 'consequences.py', 'export.py']
+      duration                         ['rhythm.py', 'export.py', 'inferences.py']
+      event                            ['rhythm.py', 'consequences.py', 'inferences.py']
+      fermata_mark                     ['ownership.py', 'export.py']
+      glyph_band_distance              ['ownership.py', 'consequences.py']
+      glyph_box                        ['ownership.py', 'rhythm.py', 'export.py', 'inferences.py']
+      glyph_owner                      ['ownership.py', 'text.py', 'export.py']
+      instrument                       ['clef.py', 'identity.py', 'ownership.py', 'structure.py']
+      keysig_clef_fit                  ['clef.py', 'header.py']
+      measure_partition                ['rhythm.py', 'export.py']
+      meter                            ['rhythm.py', 'export.py']
+      notehead_class                   ['rhythm.py', 'export.py']
+      notehead_staff_position          ['ownership.py', 'consequences.py']
+      ornament_mark                    ['ownership.py', 'export.py']
+      pitch                            ['consequences.py', 'export.py']
+      rest                             ['rhythm.py', 'export.py']
+      slot_index                       ['identity.py', 'consequences.py', 'export.py', 'groups.py']
+      staff_lines                      ['rhythm.py', 'export.py']
+      staff_ordinal                    ['identity.py', 'structure.py']
+      staff_spacing                    ['ownership.py', 'rhythm.py', 'export.py']
+      stem                             ['ownership.py', 'rhythm.py', 'export.py']
+      system_staff_count               ['identity.py', 'rhythm.py', 'structure.py', 'groups.py']
+      tuplet_ratio                     ['rhythm.py', 'export.py']
+      voices                           ['ownership.py', 'export.py']
+      wedge_box                        ['ownership.py', 'export.py']
+
+[3] functions reading rows + combining numbers   54
+      clef.py             :139   _c_family_support                ['clef_glyph']
+      clef.py             :174   _detector_terms                  ['clef_glyph']
+      clef.py             :221   _carry_terms                     ['clef_seed']
+      clef.py             :264   adjudicate_clef                  ['keysig_clef_fit']
+      header.py           :26    adjudicate_key_signature         ['keysig_clef_fit', 'keysig_template_fit']
+      identity.py         :32    adjudicate_instrument            ['margin_label', 'roster_entry']
+      identity.py         :277   adjudicate_slot_index            ['system_staff_count']
+      identity.py         :398   _names_by_system                 ['instrument']
+      identity.py         :496   adjudicate_part_partition        ['slot_index', 'system_staff_count']
+      ownership.py        :50    adjudicate_glyph_owner           ['glyph_band_distance', 'glyph_ladder']
+      ownership.py        :211   adjudicate_arc_owner             ['arc_box', 'glyph_box', 'staff_spacing']
+      ownership.py        :590   adjudicate_arc_kind              ['arc_box', 'glyph_box', 'notehead_staff_position', 'stem']
+      ownership.py        :721   adjudicate_articulation_owner    ['articulation_mark', 'glyph_box']
+      ownership.py        :850   adjudicate_wedge_anchor          ['glyph_box', 'wedge_box']
+      ownership.py        :1036  adjudicate_fermata_owner         ['fermata_mark', 'glyph_box']
+      ownership.py        :1145  adjudicate_ornament_owner        ['glyph_box', 'ornament_mark']
+      rhythm.py           :67    _kept_beams                      ['beam_stroke']
+      rhythm.py           :234   _attached_flags                  ['flag']
+      rhythm.py           :284   _attached_dots                   ['aug_dot']
+      rhythm.py           :398   _head_class                      ['notehead_class']
+      rhythm.py           :433   adjudicate_duration              ['cell_staff_space', 'glyph_box', 'notehead_class', 'rest', 'stem']
+      rhythm.py           :579   _rest_ruling                     ['cell_staff_space', 'glyph_box']
+      rhythm.py           :671   adjudicate_tuplet                ['notehead_class', 'tuplet_marker']
+      rhythm.py           :780   adjudicate_event                 ['glyph_box', 'notehead_class', 'rest']
+      rhythm.py           :1187  _corroborate                     ['rest']
+      rhythm.py           :1229  _bar_lengths_for                 ['event', 'rest']
+      rhythm.py           :1541  _last_cell_per_staff             ['measure_partition']
+      rhythm.py           :1632  _template_readings_at_bars       ['meter_template_at_bar']
+      rhythm.py           :1690  _meter_changes                   ['meter_glyph']
+      rhythm.py           :2025  _carry_meter                     ['measure_partition']
+      rhythm.py           :2374  adjudicate_meter                 ['meter_template']
+      rhythm.py           :2514  adjudicate_onset_column          ['event', 'glyph_box']
+      rhythm.py           :2640  _system_spacing                  ['staff_spacing']
+      rhythm.py           :2711  adjudicate_stem_direction        ['glyph_box', 'stem']
+      rhythm.py           :2879  adjudicate_notehead_is_a_whole_rest ['glyph_box', 'rest', 'staff_lines', 'staff_spacing']
+      structure.py        :126   adjudicate_staff_group           ['bracket_block']
+      structure.py        :168   adjudicate_group_symbol          ['instrument', 'staff_group']
+      text.py             :64    adjudicate_dynamic               ['dynamic_letter']
+      text.py             :272   adjudicate_direction             ['direction_word']
+      consequences.py     :55    restate_pitch                    ['notehead_staff_position']
+      consequences.py     :372   move_glyph                       ['glyph_band_distance']
+      consequences.py     :422   respell_accidental               ['pitch']
+      export.py           :334   build                            ['cell_box', 'measure_partition', 'staff_lines', 'staff_spacing']
+      export.py           :500   _place_notes                     ['glyph_box', 'notehead_class', 'rest']
+      export.py           :717   _place_arcs                      ['arc_box']
+      export.py           :819   _stem_boxes_by_cell              ['stem']
+      export.py           :1062  _place_wedges                    ['wedge_box']
+      export.py           :1304  _place_articulations             ['articulation_mark']
+      export.py           :1349  _place_fermatas                  ['fermata_mark']
+      export.py           :1395  _place_ornaments                 ['ornament_mark']
+      export.py           :2456  to_musicxml                      ['articulation_mark', 'direction', 'fermata_mark', 'notehead_class', 'ornament_mark', 'rest', 'wedge_anchor', 'wedge_box']
+      export.py           :2937  coverage                         ['glyph_box']
+      gather.py           :3093  gather_document_identity         ['document_identity']
+      inferences.py       :53    _events_with_x                   ['event', 'glyph_box']
+
+[1 AND 3] multi-frame AND pooled      4
+      direction_word                   ['cell:*', 'page']
+      dynamic_letter                   ['cell:*', 'page']
+      meter_template_at_bar            ['bar_head:*', 'header_window']
+      wedge_box                        ['cell:*', 'page']
+
+[4] detail keys DECLARING a unit      54
+    rows whose frame field and own detail keys DISAGREE  29
+      arc_box                    bbox_page_px           says page/px       row frame ['cell:*']
+          gather.py:883
+      arc_box                    x_center_page          says page/px       row frame ['cell:*']
+          gather.py:883
+      arc_box                    y_center_page          says page/px       row frame ['cell:*']
+          gather.py:883
+      articulation_mark          bbox_page_px           says page/px       row frame ['cell:*']
+          gather.py:885
+      articulation_mark          x_center_page          says page/px       row frame ['cell:*']
+          gather.py:885
+      articulation_mark          y_center_page          says page/px       row frame ['cell:*']
+          gather.py:885
+      direction_word             bbox_page_px           says page/px       row frame ['cell:*']
+          gather.py:2773
+      direction_word             staff_bottom_line_page says page/px       row frame ['cell:*']
+          gather.py:2773
+      direction_word             x_center_page          says page/px       row frame ['cell:*']
+          gather.py:2773
+      direction_word             y_center_page          says page/px       row frame ['cell:*']
+          gather.py:2773
+      dynamic_letter             bbox_page_px           says page/px       row frame ['cell:*']
+          gather.py:1047
+      dynamic_letter             staff_bottom_line_page says page/px       row frame ['cell:*']
+          gather.py:1047
+      dynamic_letter             x_center_page          says page/px       row frame ['cell:*']
+          gather.py:1047
+      dynamic_letter             y_center_page          says page/px       row frame ['cell:*']
+          gather.py:1047
+      fermata_mark               bbox_page_px           says page/px       row frame ['cell:*']
+          gather.py:912
+      fermata_mark               x_center_page          says page/px       row frame ['cell:*']
+          gather.py:912
+      fermata_mark               y_center_page          says page/px       row frame ['cell:*']
+          gather.py:912
+      glyph_box                  bbox_page_px           says page/px       row frame ['cell:*']
+          gather.py:358
+      glyph_box                  x_center_page          says page/px       row frame ['cell:*']
+          gather.py:358
+      glyph_box                  y_center_page          says page/px       row frame ['cell:*']
+          gather.py:358
+      ink                        bbox_page_px           says page/px       row frame ['cell:*']
+          gather.py:1559
+      ink                        x_center_page          says page/px       row frame ['cell:*']
+          gather.py:1559
+      ink                        y_center_page          says page/px       row frame ['cell:*']
+          gather.py:1559
+      ornament_mark              bbox_page_px           says page/px       row frame ['cell:*']
+          gather.py:897
+      ornament_mark              x_center_page          says page/px       row frame ['cell:*']
+          gather.py:897
+      ornament_mark              y_center_page          says page/px       row frame ['cell:*']
+          gather.py:897
+      rest                       bbox_page_px           says page/px       row frame ['cell:*']
+          gather.py:888
+      rest                       x_center_page          says page/px       row frame ['cell:*']
+          gather.py:888
+      rest                       y_center_page          says page/px       row frame ['cell:*']
+          gather.py:888
+
+[5] decision SCOPE coarser than row FRAME   13
+    (rows whose coordinate systems coincide BY CONSTRUCTION)
+      clef                           scope=STAFF    clef_glyph               frame=cell:*     ** no page-frame key **
+      clef                           scope=STAFF    clef_located             frame=bar_head:* ** no page-frame key **
+      clef                           scope=STAFF    clef_position            frame=cell:*     ** no page-frame key **
+      clef                           scope=STAFF    notehead_staff_position  frame=cell:*     ** no page-frame key **
+      key_signature                  scope=STAFF    keysig_marker            frame=cell:*     ** no page-frame key **
+      meter                          scope=SYSTEM   meter_glyph              frame=cell:*     ** no page-frame key **
+      meter                          scope=SYSTEM   meter_template           frame=header_window ** no page-frame key **
+      meter                          scope=SYSTEM   meter_template_at_bar    frame=bar_head:* ** no page-frame key **
+      meter                          scope=SYSTEM   meter_template_at_bar    frame=header_window ** no page-frame key **
+      meter                          scope=SYSTEM   rest                     frame=cell:*     ** no page-frame key **
+      onset_column                   scope=SYSTEM   glyph_box                frame=cell:*     reads x_page
+      part_partition                 scope=DOCUMENT staff_ordinal            frame=system     ** no page-frame key **
+      part_partition                 scope=DOCUMENT system_staff_count       frame=system     ** no page-frame key **
+    of which the decision reads NO page-frame detail key: 12
+
+frame tokens (number of quantities carrying each):
+      cell:*                     23
+      page                       15
+      header_window              5
+      system                     4
+      bar_head:*                 2
+      system_margin              1
+
+wrote /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a3b616ad6dc60a313/benchmarks/omr-measurement-meaning-2026-09/out/reach.json

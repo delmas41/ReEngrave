@@ -1,0 +1,7 @@
+✗ REFUSING TO START: the tree is dirty. A mutation left on disk is indistinguishable from a legitimate edit.
+     M benchmarks/omr-measurement-meaning-2026-09/out/reach.json
+    ?? benchmarks/omr-measurement-meaning-2026-09/out/battery.txt
+    ?? benchmarks/omr-measurement-meaning-2026-09/out/meaning.json
+    ?? benchmarks/omr-measurement-meaning-2026-09/out/meaning.txt
+    ?? benchmarks/omr-measurement-meaning-2026-09/out/reach.txt
+  commit a checkpoint, or pass --force deliberately.
