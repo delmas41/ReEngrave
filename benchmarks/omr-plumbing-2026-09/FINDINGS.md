@@ -89,3 +89,60 @@ it propagates: `tuplet_ratio → export` reads PRODUCER_DEAD for the same reason
   pipeline code changed — but the stamp cannot say that itself, which is its
   own finding: **in a shared worktree the dirty flag saturates and stops
   carrying information.**
+
+---
+
+# Second pass: INFER rule 2, and what a change looks like in this instrument
+
+Tree `37a051c0` (merged `origin/main`, both INFER rules). **143 runs, 0
+non-zero exits.** Diffed against the baseline with `probe/diff_edges.py`.
+
+```
+BEFORE 143 edges        AFTER 147 edges
+NEW EDGES (4)           all LIVE
+  duration      → inference:collapse_duration_to_barline
+  event         → inference:collapse_duration_to_barline
+  glyph_box     → inference:collapse_duration_to_barline
+  onset_column  → inference:collapse_duration_to_barline
+EDGES THAT DISAPPEARED (0)
+STATE CHANGED (0)
+```
+
+**LIVE 120 → 124; every other bucket identical, member for member.** A new
+rule declared four connections, all four carry, and nothing that worked before
+stopped working. Rule 2 fires **48 times on 16 arms** (from the record's own
+`reach` block, not a re-derivation).
+
+⚠️ This is the shape the instrument was built to produce: a change should show
+up as NEW EDGES and nothing else. A `STATE CHANGED` row would be the
+interesting one, and there are none.
+
+# Two further results from the baseline arms
+
+## The EXPORT seam closes on every arm
+
+Pooled over 143 coverage reports: **`unaccounted` 0, `starved` 0, `stub` 0,
+`NO_QUANTITY` 0**, and `balanced` on 143 of 143.
+
+`decided_but_unwritten` fires 278 times over five families (`dynamic` 94 arms,
+`direction` 89, `tie` 49, `slur` 23, `fermata` 23) — and the counters say every
+one is a DOCUMENTED REFUSAL, not a silent drop: `duration_narrowed` 282 (the
+exporter declining to argmax a narrowing), `owned_by_another_staff` 254,
+`tacet_bars_not_padded_without_meter` 50,
+`two_voice_bars_refused_event_straddles_two_streams` 49.
+
+⚠️ **But that is a reporting limit worth recording: `decided_but_unwritten`
+POOLS a principled refusal with a silent gap.** On these fixtures it is all
+refusals; the bucket cannot say so itself and you have to go to the counters to
+find out. Same shape as `entire staff` conflating four causes.
+
+## Determinism, scoped
+
+`base__plumbing` against `determinism__plumbing`, same tree: observations 873,
+verdicts 495, abstentions 102 all equal; **490 of 490 unique
+`(quantity, subject)` verdicts identical**; MusicXML **md5 identical**.
+
+⚠️ **Not a claim that "the pipeline is deterministic."** One engraved page, one
+fixture. It says nothing about detector confidences moving on byte-identical
+code — measured elsewhere in this project at 0.83 → 0.69 on a hairpin box — or
+about the legacy gate's ±6 edit floor.
