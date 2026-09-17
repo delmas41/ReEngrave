@@ -111,12 +111,19 @@ ARMS = [
      "FRAME_OF_UNIT: Dict[str, Set[str]] = {}",
      "section 2 goes silent: no unit makes a frame claim any more"),
 
+    # ⚠️ THE ANCHOR HERE IS DELIBERATELY LONG. The bare string
+    # `DERIVED_CHECK = True` occurs TWICE — once in the docstring, which
+    # explains why the marker is load-bearing, and once as the assignment —
+    # so the battery's first run reported `ANCHOR occurs 2 times` and mutated
+    # nothing. That is this repo's recorded "anchor occurring twice" fault,
+    # the one the fermata battery paid for, arriving again. Reported as an
+    # ERROR rather than as a silent pass, which is what made it visible.
     ("derived_check_marker_removed",
-     "DERIVED_CHECK = True",
-     "DERIVED_CHECK = True  # noqa\nDERIVED_CHECK_SHADOW = False",
-     "POSITIVE CONTROL of the OPPOSITE sign: this arm changes nothing that "
-     "matters and must stay GREEN. If it goes red the battery is measuring "
-     "noise."),
+     "See the docstring.\nDERIVED_CHECK = True",
+     "See the docstring.\nDERIVED_CHECK = True\nDERIVED_CHECK_SHADOW = False",
+     "POSITIVE CONTROL of the OPPOSITE sign: this arm adds a name nothing "
+     "reads and must stay GREEN. If it goes red the battery is measuring "
+     "noise rather than the mechanism."),
 ]
 
 #: Arms expected GREEN. An arm that can never go red trains the next reader
