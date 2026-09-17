@@ -65,6 +65,55 @@ ARMS = [
      "        return CLAIM.MEASUREMENT\n    if False:",
      "test_an_unknown_quantity_RAISES_rather_than_defaulting"),
 
+    # ── the ONE reader-split quantity: text layer vs OCR ───────────────────
+    #
+    # ⚠️ `Q.MARGIN_LABEL` is EXTERNAL off the PDF's own text layer (reads no
+    # ink) and IDENTIFICATION off Surya/Tesseract/Vision (OCR of this raster).
+    # Collapsing it hands a consumer the `source_kind` guarantee on a reading
+    # that DOES fall silent with the plate.
+    ("the_reader_split_is_collapsed_to_the_stronger_claim", RECORD,
+     '        "text_layer": CLAIM.EXTERNAL,\n'
+     '        "surya": CLAIM.IDENTIFICATION,',
+     '        "text_layer": CLAIM.IDENTIFICATION,\n'
+     '        "surya": CLAIM.IDENTIFICATION,',
+     "test_the_reader_split_case_answers_per_reader"),
+
+    ("a_split_quantity_asked_without_a_reader_PICKS_ONE", RECORD,
+     "    if reader is None:\n        raise ValueError(",
+     "    if reader is None:\n        return sorted(declared.values())[0]\n"
+     "    if False:\n        raise ValueError(",
+     "test_a_split_quantity_asked_WITHOUT_a_reader_RAISES"),
+
+    ("an_unlisted_reader_falls_back_instead_of_raising", RECORD,
+     "    try:\n        return declared[reader]\n    except KeyError:",
+     "    try:\n        return declared[reader]\n    except KeyError:\n"
+     "        return CLAIM.IDENTIFICATION\n    if False:",
+     "test_a_reader_missing_from_a_split_declaration_RAISES"),
+
+    ("a_row_does_not_pass_its_own_reader_to_the_lookup", RECORD,
+     "        return claim_of(self.quantity, self.reader)",
+     "        return claim_of(self.quantity, 'surya')",
+     "test_a_row_of_the_split_quantity_answers_from_its_own_reader"),
+
+    ("a_split_that_splits_nothing_is_accepted", RECORD,
+     "        if isinstance(c, dict) and len(set(c.values())) == 1:",
+     "        if False:",
+     "test_a_reader_split_declaration_that_splits_NOTHING_is_CAUGHT"),
+
+    ("the_constraint_reads_ONE_claim_where_a_quantity_has_two", CAPTURE,
+     "        got = record_claims_of(q)\n        bad = [g for g in got if g not in admits]",
+     "        got = (record_claims_of(q)[0],)\n"
+     "        bad = [g for g in got if g not in admits]",
+     "test_the_only_disagreement_is_the_accounted_one"),
+
+    # ── the docstring may not name a table that does not exist ─────────────
+    ("the_docstring_names_a_table_that_does_not_exist", RECORD,
+     "    ⚠️ The entries that genuinely need a REASON are the DISAGREEMENTS "
+     "between",
+     "    ⚠️ See `capture.CLAIM_JUDGEMENT_CALLS`. The entries that genuinely "
+     "need a REASON are the DISAGREEMENTS between",
+     "test_no_table_named_by_the_docstring_is_missing"),
+
     # ── the claim is a property of the QUANTITY, not of the row type ───────
     ("a_verdicts_claim_is_keyed_on_its_being_a_verdict", RECORD,
      "        ⚠️ Derived and not serialised, for the reason `Observation.claim`\n"

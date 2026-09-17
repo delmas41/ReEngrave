@@ -148,6 +148,7 @@ from typing import Any, Dict, List, Optional, Sequence, Set, Tuple
 #: at a glance that the answer comes from elsewhere.
 from .record import (CLAIM, CLAIM_OF_UNSCORED, CLAIMS,
                      claim_of as record_claim_of,
+                     claims_of as record_claims_of,
                      claims_unaccounted as record_claims_unaccounted)
 
 _HERE = pathlib.Path(__file__).resolve().parent
@@ -805,11 +806,20 @@ def claim_consistency() -> List[str]:
                        f"no record.CLAIM_OF_UNSCORED entry — say which claim "
                        f"kinds it admits")
             continue
-        got = record_claim_of(q)
-        if got not in admits:
+        # ⚠️ THE UNION OVER READERS, because the constraint asks about a
+        # QUANTITY and has no row in hand. `Q.MARGIN_LABEL` is EXTERNAL off
+        # the text layer and IDENTIFICATION off an OCR rung, and `not_a_mark`
+        # admits both -- which is the constraint doing its job rather than
+        # being loose: it was written to admit exactly that pair BEFORE the
+        # reader split was found, from the four catalog facts sitting beside
+        # the two OCR ones.
+        got = record_claims_of(q)
+        bad = [g for g in got if g not in admits]
+        if bad:
             out.append(
                 f"CLAIM-DISAGREES Q.{q} is UNSCORED '{word}' (admitting "
-                f"{'/'.join(admits)}) and record.CLAIMS calls it '{got}'")
+                f"{'/'.join(admits)}) and record.CLAIMS calls it "
+                f"'{'/'.join(got)}'")
     return out
 
 

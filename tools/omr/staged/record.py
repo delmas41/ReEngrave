@@ -990,11 +990,17 @@ CLAIMS: "dict[str, str]" = {
     "STAFF_EXTENT": CLAIM.MEASUREMENT,
     "STAFF_SKEW": CLAIM.MEASUREMENT,
     "BARLINE_COLUMN": CLAIM.MEASUREMENT,
+    #: ⚠️ A JUDGEMENT CALL, NAMED — a narrow scan at a system's shared left
+    #: edge, filed MEASUREMENT because its value is *how much ink stands
+    #: there*. `OMR_LEFT_EDGE_SPLIT` then reads it as evidence of a system
+    #: break, which is the INTERPRETATION built ON it and not this row.
     "LEFT_EDGE_INK": CLAIM.MEASUREMENT,
     "STAFF_ORDINAL": CLAIM.MEASUREMENT,
     "SYSTEM_STAFF_COUNT": CLAIM.MEASUREMENT,
 
-    #: ⚠️ COVERAGE, not measurement: `gap_bridging_counts` is ink CROSSING a
+    #: ⚠️ A JUDGEMENT CALL, NAMED — COVERAGE, not measurement, though both are
+    #: counts and `UNSCORED` files them as page geometry.
+    #: `gap_bridging_counts` is ink CROSSING a
     #: gap and `Q.SYSTEMIC_COLUMN` a column crossing EVERY gap. Both say that
     #: something spans something else and neither says what the something IS
     #: -- `OMR_BRACKET_COLUMNS` exists because that count was read as though
@@ -1002,8 +1008,11 @@ CLAIMS: "dict[str, str]" = {
     #: at all.
     "GAP_BRIDGING": CLAIM.COVERAGE,
     "SYSTEMIC_COLUMN": CLAIM.COVERAGE,
-    #: ⚠️ INTERPRETATION: the block index `_assign_groups` READ, which is the
-    #: output of the grouping rule rather than a property of the page.
+    #: ⚠️ A JUDGEMENT CALL, NAMED — INTERPRETATION against `UNSCORED`'s
+    #: `page_geometry`. It is the block index `_assign_groups` READ, i.e. the
+    #: output of the grouping rule rather than a property of the page, and
+    #: CLAUDE.md records that NOTHING DETECTS A BRACKET at all: family
+    #: boundaries are INFERRED from where the interior barlines stop.
     "BRACKET_BLOCK": CLAIM.INTERPRETATION,
 
     # ── detection: the ink, and what we call it ────────────────────────────
@@ -1024,6 +1033,13 @@ CLAIMS: "dict[str, str]" = {
     "CLEF_LOCATED": CLAIM.IDENTIFICATION,
     "KEYSIG_MARKER": CLAIM.IDENTIFICATION,
     "METER_GLYPH": CLAIM.IDENTIFICATION,
+    #: ⚠️ A JUDGEMENT CALL, NAMED, for both template rows: an NCC match
+    #: produces a SCORE, which reads like a fit, and `UNSCORED` files the
+    #: key-signature template's fit as `derived_fit`. These are filed
+    #: IDENTIFICATION because the VALUE is the meter the ink is read AS, and
+    #: a template reading `9/4` where the plate prints `9/8` is wrong about
+    #: ink — which is the scan-side blocker CLAUDE.md records at length. The
+    #: score is how confident that naming is, not a second claim.
     "METER_TEMPLATE": CLAIM.IDENTIFICATION,
     "METER_TEMPLATE_AT_BAR": CLAIM.IDENTIFICATION,
     #: ⚠️ A JUDGEMENT CALL, NAMED. A CV stem is scoreless and is a pair of
@@ -1031,17 +1047,54 @@ CLAIMS: "dict[str, str]" = {
     #: the run of ink IS a stem, and `_stem_joined` consumes it as one. It is
     #: filed with the thing it can be wrong about.
     "STEM": CLAIM.IDENTIFICATION,
-    #: ⚠️ OCR OF THIS RASTER, so it fails with the plate -- the half of
-    #: `UNSCORED`'s `not_a_mark` that is NOT external. `MARGIN_LABEL` reading
-    #: `Tr. Alt.` as a singer is this claim being wrong about ink.
-    "MARGIN_LABEL": CLAIM.IDENTIFICATION,
+    #: ⚠️⚠️ THE ONE QUANTITY WHOSE CLAIM DEPENDS ON ITS READER, and the only
+    #: one in the vocabulary. `gather_margin_labels` resolves the rung at
+    #: RUNTIME (`_RUNG_READER.get(rung, READERS.TEXT_LAYER)`), and the rungs
+    #: do not make the same kind of claim: the PDF's own TEXT LAYER reads no
+    #: ink at all, so it cannot be wrong because the plate is bad, while
+    #: Surya, Tesseract and the paid Vision rung are OCR of this raster and
+    #: fail exactly when it degrades. `MARGIN_LABEL` reading `Tr. Alt.` as a
+    #: SINGER is the OCR half being wrong about ink; the text-layer half
+    #: cannot make that mistake.
+    #:
+    #: ⚠️ Declaring one word for both would have to pick the WEAKER claim
+    #: (IDENTIFICATION) to stay safe, which silently denies the free rung the
+    #: standing `source_kind` doctrine gives it -- exactly the pooling this
+    #: whole axis exists to stop, one layer down from the notehead height.
+    #:
+    #: ⚠️⚠️ IT WAS MISSED BY MEASUREMENT FIRST. A walk of `gather.py`'s AST
+    #: reported only TWO reader-split quantities (`BEAM_STROKE`, `WEDGE_BOX`)
+    #: and both split on SCORE rather than on claim -- so the first draft of
+    #: this table retired the per-reader form as unnecessary. The walker sees
+    #: LITERAL reader arguments and this site has none. **An AST measurement
+    #: of a runtime-resolved value is a measurement of the AST.**
+    "MARGIN_LABEL": {
+        "text_layer": CLAIM.EXTERNAL,
+        "surya": CLAIM.IDENTIFICATION,
+        "tesseract": CLAIM.IDENTIFICATION,
+        "vision": CLAIM.IDENTIFICATION,
+    },
+    #: ⚠️ Reader-split too (`READERS.TESSERACT` / `READERS.SURYA`, resolved at
+    #: runtime) and NOT claim-split: both rungs are OCR of this raster, so one
+    #: word is the honest answer rather than a simplification.
     "DIRECTION_WORD": CLAIM.IDENTIFICATION,
-    "TEXT_LAYER": CLAIM.IDENTIFICATION,
-    #: ⚠️ A SCORE, NOT A SECOND CLAIM ABOUT INK. The detector's own confidence
-    #: in an identification, carried apart so a consumer can read it without
-    #: reading the class. Its failure mode is the identification's.
+    #: ⚠️ A JUDGEMENT CALL, NAMED.
+    #: ⚠️ THE PDF'S OWN TEXT OBJECTS, not a reading of ink -- "the PDF's own
+    #: text, if any", the FREE rung of the identity cascade. It reads no
+    #: raster, so it does not degrade with the print, which is the property
+    #: `CLAIM.EXTERNAL` names. Filed IDENTIFICATION in this table's first
+    #: draft by its neighbours rather than by its source; corrected by
+    #: reading the producer.
+    "TEXT_LAYER": CLAIM.EXTERNAL,
+    #: ⚠️ A JUDGEMENT CALL, NAMED — a SCORE, not a second claim about ink. It
+    #: is the detector's own confidence in an identification, carried apart so
+    #: a consumer can read it without reading the class, and its failure mode
+    #: is that identification's. Filed with the claim it is a confidence IN
+    #: rather than given a word of its own, because a claim kind is about what
+    #: would make a row WRONG and this row is wrong exactly when the class is.
     "GLYPH_CONF": CLAIM.IDENTIFICATION,
 
+    #: ⚠️ A JUDGEMENT CALL, NAMED, AND THE ONE THE QUANTITY GRAIN CANNOT HOLD.
     #: ⚠️⚠️ RAW INK IS NOT AN IDENTIFICATION AND THAT IS THE POINT OF THE
     #: LAYER. `Q.INK` is one connected piece of ink with a box and no name;
     #: Sean, 2026-09-17: "ink is ink. There is nothing that should be
@@ -1051,9 +1104,16 @@ CLAIMS: "dict[str, str]" = {
     "INK": CLAIM.MEASUREMENT,
 
     # ── relations between things already located ───────────────────────────
+    #: ⚠️ A JUDGEMENT CALL, NAMED — MEASUREMENT and not COVERAGE, though
+    #: `UNSCORED` files both this and `GLYPH_LADDER` as `relation`. A distance
+    #: to each candidate staff is a ruler reading between two things already
+    #: located; it asserts no overlap and no identity, which is why CLAUDE.md
+    #: can say of it that "distance is nearly a coin flip" without that being
+    #: a claim about what the glyph IS.
     "GLYPH_BAND_DISTANCE": CLAIM.MEASUREMENT,
-    #: ⚠️ COVERAGE: whether an unbroken run of ledger rungs JOINS a notehead to
-    #: a staff. It names nothing; it says one thing reaches another.
+    #: ⚠️ A JUDGEMENT CALL, NAMED — COVERAGE against the same `relation` word.
+    #: Whether an unbroken run of ledger rungs JOINS a notehead to a staff. It
+    #: names nothing; it says one thing reaches another.
     "GLYPH_LADDER": CLAIM.COVERAGE,
 
     # ── the family POSITION facts: rulers on their own ink ─────────────────
@@ -1149,22 +1209,56 @@ _QNAME: "dict[str, str]" = {
 _QNAME.update({k: k for k in list(_QNAME.values())})
 
 
-def claim_of(quantity: str) -> str:
+def claim_of(quantity: str, reader: "str | None" = None) -> str:
     """The kind of claim `quantity`'s value makes.
 
     ⚠️ Raises on an undeclared quantity rather than returning a default. A
     fallback here would convert "nobody said" into a definite answer, which is
     the failure this repo has paid for at three levels in one day -- and the
     whole value of the field is that it cannot be wrong by omission.
+
+    ⚠️⚠️ AND IT RAISES ON A READER-SPLIT QUANTITY ASKED WITHOUT A READER,
+    rather than picking one. `Q.MARGIN_LABEL` is EXTERNAL off the PDF's text
+    layer and IDENTIFICATION off an OCR rung; answering with either where the
+    caller did not say would be this repo's own "a fallback must never convert
+    cannot-tell into a definite answer", in the one place the whole field
+    exists to prevent it.
     """
     try:
-        return CLAIMS[_QNAME[quantity]]
+        declared = CLAIMS[_QNAME[quantity]]
     except KeyError:
         raise ValueError(
             f"{quantity!r} declares no claim kind. Add it to record.CLAIMS "
             f"beside Q -- say whether its value is a ruler reading, a naming "
             f"of ink, a statement of coverage, an external document's "
             f"assertion, or the outcome of weighing other facts.") from None
+    if isinstance(declared, str):
+        return declared
+    if reader is None:
+        raise ValueError(
+            f"{quantity!r} makes a different kind of claim depending on which "
+            f"reader produced the row ({'/'.join(sorted(set(declared.values())))}"
+            f"), so it cannot be answered without one. Pass the row's reader.")
+    try:
+        return declared[reader]
+    except KeyError:
+        raise ValueError(
+            f"{quantity!r} is reader-split and declares no claim for reader "
+            f"{reader!r}. Add it to record.CLAIMS -- a reader missing from a "
+            f"split declaration is a row nobody has said anything about."
+        ) from None
+
+
+def claims_of(quantity: str) -> "tuple":
+    """Every claim kind `quantity` can make, over all its readers.
+
+    For the cross-table constraint, which asks about a QUANTITY and has no
+    row in hand.
+    """
+    declared = CLAIMS[_QNAME[quantity]]
+    if isinstance(declared, str):
+        return (declared,)
+    return tuple(sorted(set(declared.values())))
 
 
 def claims_unaccounted() -> "list[str]":
@@ -1173,11 +1267,17 @@ def claims_unaccounted() -> "list[str]":
 
     ⚠️ THE HARD TIER, AND IT IS AT ZERO WHEN THIS LANDS -- so it CAN be a
     gate, which `no_producer --check` notoriously cannot. There is
-    deliberately NO `KNOWN_GAPS` beside this one: a claim kind costs one word,
-    so an "accounted" tier here could only ever record that somebody declined
-    to think. The entries that genuinely need a REASON are the JUDGEMENT
-    CALLS, and those live in `capture.CLAIM_JUDGEMENT_CALLS`, where closing
-    one removes its entry and a stale-entry test enforces the removal.
+    deliberately NO gap list beside this one: a claim kind costs one word, so
+    an "accounted" tier here could only ever record that somebody declined to
+    think.
+
+    ⚠️ The entries that genuinely need a REASON are the DISAGREEMENTS between
+    this table and `capture.UNSCORED`, and they live on `capture.KNOWN_GAPS`
+    with the rest -- one gap machinery, not a second one, so closing an entry
+    removes it and the existing stale-entry test enforces the removal. The
+    JUDGEMENT CALLS inside this table are marked at their own entries above
+    with `⚠️ A JUDGEMENT CALL, NAMED`, because a judgement is a decision with
+    a reason and not a gap waiting to close.
     """
     qs = {k for k, v in vars(Q).items()
           if not k.startswith("_") and isinstance(v, str)}
@@ -1185,8 +1285,23 @@ def claims_unaccounted() -> "list[str]":
     out += [f"CLAIMS names {q!r}, which is not a member of Q"
             for q in sorted(set(CLAIMS) - qs)]
     for q, c in sorted(CLAIMS.items()):
-        if c not in CLAIM.all():
-            out.append(f"CLAIMS[{q!r}] is {c!r}, which is not a CLAIM word")
+        # ⚠️ A reader-split declaration is checked PER READER. A dict whose
+        # values are fine but which is empty, or which maps a reader to a
+        # non-word, would otherwise walk past the same guard the plain form
+        # gets.
+        words = [c] if isinstance(c, str) else list(c.values())
+        if not words:
+            out.append(f"CLAIMS[{q!r}] is a reader-split declaration naming "
+                       f"no reader at all")
+        for w in words:
+            if w not in CLAIM.all():
+                out.append(f"CLAIMS[{q!r}] is {w!r}, which is not a CLAIM "
+                           f"word")
+        if isinstance(c, dict) and len(set(c.values())) == 1:
+            out.append(
+                f"CLAIMS[{q!r}] is split by reader and every reader makes the "
+                f"SAME claim -- say it once, or the split implies a "
+                f"distinction the pipeline does not have")
     return out
 
 
@@ -1364,10 +1479,16 @@ class Observation:
         already records paying for `Verdict.single_pass_revision` -- that key
         was left out of `to_json` for exactly this reason. Whether to pay it
         here is a separate decision and it is Sean's, not this change's; a
-        JSON-only consumer derives the claim from the `quantity` the row
-        already carries, which is what `claim_of` takes.
+        JSON-only consumer derives the claim from the `quantity` and `reader`
+        the row already carries, which is what `claim_of` takes.
+
+        ⚠️ The READER is passed because one quantity's claim depends on it:
+        `Q.MARGIN_LABEL` is EXTERNAL off the PDF's own text layer and
+        IDENTIFICATION off an OCR rung. A row knows its own reader, so the
+        right answer is always available here -- which is exactly why the
+        split belongs on the row and not on the quantity alone.
         """
-        return claim_of(self.quantity)
+        return claim_of(self.quantity, self.reader)
 
     def to_json(self) -> dict:
         return {"id": self.id, "subject": self.subject.to_key(),
@@ -1616,12 +1737,13 @@ class Log:
         Q.check(quantity, "quantity")
         READERS.check(reader, "reader")
         # ⚠️ THE CLAIM KIND IS CHECKED AT THE WRITE, not at serialisation.
-        # `Observation.claim` derives it, so a quantity with no declaration
-        # would otherwise raise the first time somebody READ the field --
-        # arbitrarily far from the gather site that produced the row, and
-        # quite possibly never. Asking here makes an undeclared quantity fail
-        # on the run that introduces it.
-        claim_of(quantity)
+        # `Observation.claim` derives it, so a quantity with no declaration --
+        # or a reader missing from a split one -- would otherwise raise the
+        # first time somebody READ the field, arbitrarily far from the gather
+        # site that produced the row and quite possibly never. Asking here
+        # makes it fail on the run that introduces it, with the reader in
+        # hand.
+        claim_of(quantity, reader)
         for rid in derived_from:
             if self.row(rid) is None:
                 raise ValueError(

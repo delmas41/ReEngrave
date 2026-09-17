@@ -19,7 +19,7 @@ import unittest
 from tools.omr.staged import capture
 from tools.omr.staged.record import (
     CLAIM, CLAIM_OF_UNSCORED, CLAIMS, Log, Observation, Q, Verdict,
-    claim_of, claims_unaccounted, glyph, staff)
+    claim_of, claims_of, claims_unaccounted, glyph, staff)
 from tools.omr import positional_store as PS
 
 
@@ -44,10 +44,28 @@ class TestEveryQuantityDeclaresOne(unittest.TestCase):
         self.assertEqual(claims_unaccounted(), [])
 
     def test_every_declaration_is_a_real_claim_word(self):
-        self.assertTrue(set(CLAIMS.values()) <= CLAIM.all())
+        words = set()
+        for q in CLAIMS:
+            words |= set(claims_of(q))
+        self.assertTrue(words <= CLAIM.all())
         # and every word is USED — an unused word is a vocabulary that has
         # stopped describing the code.
-        self.assertEqual(set(CLAIMS.values()), CLAIM.all())
+        self.assertEqual(words, CLAIM.all())
+
+    def test_a_reader_split_declaration_that_splits_NOTHING_is_CAUGHT(self):
+        """⚠️ A split whose readers all say the same thing implies a
+        distinction the pipeline does not have — the mirror of declaring one
+        word where two are needed, and just as misleading to a consumer."""
+        original = dict(CLAIMS)
+        try:
+            CLAIMS["DIRECTION_WORD"] = {"surya": CLAIM.IDENTIFICATION,
+                                        "tesseract": CLAIM.IDENTIFICATION}
+            found = claims_unaccounted()
+            self.assertTrue(any("DIRECTION_WORD" in f for f in found), found)
+        finally:
+            CLAIMS.clear()
+            CLAIMS.update(original)
+        self.assertEqual(claims_unaccounted(), [])
 
     def test_an_undeclared_quantity_is_CAUGHT(self):
         """Inject the exact omission the check exists for."""
@@ -84,12 +102,92 @@ class TestEveryQuantityDeclaresOne(unittest.TestCase):
         self.assertEqual(claims_unaccounted(), [])
 
 
+class TestTheJudgementCallsAreMarked(unittest.TestCase):
+    """⚠️ `claims_unaccounted`'s docstring says the judgement calls are marked
+    at their own entries. A claim about the code, made IN the code, is exactly
+    the shape CLAUDE.md calls *a rule described in a docstring and never
+    built* — so it is asserted rather than trusted.
+
+    ⚠️ The first draft of that docstring named a table
+    (`capture.CLAIM_JUDGEMENT_CALLS`) that did not exist. Caught by grep, not
+    by review.
+    """
+
+    MARKER = "A JUDGEMENT CALL, NAMED"
+
+    def _source(self) -> str:
+        import inspect
+        from tools.omr.staged import record
+        return inspect.getsource(record)
+
+    def test_the_docstring_names_the_marker_that_is_actually_used(self):
+        import tools.omr.staged.record as record
+        doc = record.claims_unaccounted.__doc__ or ""
+        self.assertIn(self.MARKER, doc)
+        self.assertNotIn("CLAIM_JUDGEMENT_CALLS", doc)
+
+    def test_the_marker_is_on_real_entries(self):
+        src = self._source()
+        # one use in the docstring, the rest on entries
+        n = src.count(self.MARKER)
+        self.assertGreaterEqual(n, 6, "the docstring claims entries are "
+                                      "marked; too few carry the marker")
+
+    def test_no_table_named_by_the_docstring_is_missing(self):
+        """The dangling-reference check, generalised: every `capture.X` the
+        docstring names must exist."""
+        import re
+        import tools.omr.staged.record as record
+        from tools.omr.staged import capture
+        doc = record.claims_unaccounted.__doc__ or ""
+        for name in re.findall(r"`capture\.([A-Za-z_]+)`", doc):
+            self.assertTrue(hasattr(capture, name),
+                            f"the docstring names capture.{name}, "
+                            f"which does not exist")
+
+
 class TestClaimOf(unittest.TestCase):
 
     def test_it_takes_either_spelling(self):
         self.assertEqual(claim_of("glyph_box"), claim_of("GLYPH_BOX"))
         self.assertEqual(claim_of(Q.NOTEHEAD_STAFF_POSITION),
                          CLAIM.MEASUREMENT)
+
+    def test_the_reader_split_case_answers_per_reader(self):
+        """⚠️⚠️ `Q.MARGIN_LABEL` IS THE ONE QUANTITY WHOSE CLAIM DEPENDS ON
+        ITS READER. The PDF's own text layer reads no ink and cannot be wrong
+        because the plate is bad; Surya, Tesseract and Vision are OCR of this
+        raster and fail exactly when it degrades. That is the `source_kind`
+        doctrine's distinction, INSIDE one quantity."""
+        self.assertEqual(claim_of(Q.MARGIN_LABEL, "text_layer"),
+                         CLAIM.EXTERNAL)
+        for ocr in ("surya", "tesseract", "vision"):
+            self.assertEqual(claim_of(Q.MARGIN_LABEL, ocr),
+                             CLAIM.IDENTIFICATION, ocr)
+
+    def test_a_split_quantity_asked_WITHOUT_a_reader_RAISES(self):
+        """⚠️ It must not pick one. Answering EXTERNAL where the row may be
+        OCR would hand a consumer the `source_kind` guarantee on a reading
+        that does fall silent with the plate — the exact pooling this axis
+        exists to stop."""
+        with self.assertRaises(ValueError) as cm:
+            claim_of(Q.MARGIN_LABEL)
+        self.assertIn("depending on which reader", str(cm.exception))
+
+    def test_a_reader_missing_from_a_split_declaration_RAISES(self):
+        with self.assertRaises(ValueError) as cm:
+            claim_of(Q.MARGIN_LABEL, "geometry")
+        self.assertIn("declares no claim for reader", str(cm.exception))
+
+    def test_a_row_of_the_split_quantity_answers_from_its_own_reader(self):
+        log = Log()
+        free = log.observe(staff(0, 0, 0), Q.MARGIN_LABEL, "Fl.",
+                           reader="text_layer", frame="system_margin")
+        ocr = log.observe(staff(0, 0, 1), Q.MARGIN_LABEL, "Ob.",
+                          reader="surya", frame="system_margin")
+        self.assertEqual(free.claim, CLAIM.EXTERNAL)
+        self.assertEqual(ocr.claim, CLAIM.IDENTIFICATION)
+        self.assertNotEqual(free.claim, ocr.claim)
 
     def test_an_unknown_quantity_RAISES_rather_than_defaulting(self):
         """⚠️ A fallback here would convert "nobody said" into a definite
@@ -227,7 +325,7 @@ class TestReconciledWithUNSCORED(unittest.TestCase):
         """
         by_word = {}
         for q, (word, _r, _f) in capture.UNSCORED.items():
-            by_word.setdefault(word, set()).add(claim_of(q))
+            by_word.setdefault(word, set()).update(claims_of(q))
         # one UNSCORED word, two claim kinds
         self.assertEqual(by_word["not_a_mark"],
                          {CLAIM.EXTERNAL, CLAIM.IDENTIFICATION})
