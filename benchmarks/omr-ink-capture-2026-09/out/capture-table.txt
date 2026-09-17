@@ -1,0 +1,78 @@
+SHAPE, POSITION, IMAGE — what we capture about each family's ink
+==============================================================================
+
+family         shape  position  side  rasters
+------------------------------------------------------------------------------
+articulation     yes      none   cls  intact
+clef             yes  MEASURED     -  erased?intact,intact,own-erase
+direction         NO      none     -  -
+dynamic          yes      none     -  intact
+fermata          yes      none   cls  intact
+key              yes  MEASURED     -  erased?intact,intact,own-erase
+note             yes  MEASURED     -  intact
+ornament         yes      none   cls  intact
+rest             yes      none     -  intact
+slur             yes      none     -  erased?intact,intact
+tie              yes      none     -  erased?intact,intact
+time             yes      none     -  erased?intact,intact
+tuplet           yes      none     -  erased?intact,intact
+wedge            yes     band*     -  intact,page
+
+  shape    = an observed quantity carrying the detector's confidence
+  position = a staff-grid coordinate, scoreless, from its own reader
+  band*    = a staff-relative offset, but as a DETAIL of a SCORED row
+  side     = above/below read off the CLASS NAME — not a ruler, and
+             not independent of the classification it comes from
+
+── THE POSITION FACTS THAT EXIST ───────────────────────────────────
+  Q.CLEF_POSITION
+      the same measurement from the same grid for a clef glyph, and a SEPARATE row from a separate reader because a detail field on the glyph row is absorbed by that glyph's own detector term.
+  Q.KEYSIG_RUN_POSITION
+      the accidental run's positions, CLEF-FREE — so a run that fits treble's slots and not bass's is evidence about the CLEF.
+  Q.NOTEHEAD_STAFF_POSITION
+      THE EXEMPLAR. `(y_center - top_y) / half_step` off the cell's own measured line grid, carrying `residual` and `rounded`. Consumed by `consequences.restate_pitch` together with the clef.
+
+── WHICH RASTER EACH READER MEASURES (derived from its own source) ──
+     CATALOG          -             
+     CV_HAIRPINS      page          hairpin_detection.py::detect_hairpins
+     CV_HEADER        own-erase     header_ink.py::header_ink_mask
+     CV_INK           erased        staged/gather.py::_ink_components
+  ⚠️ CV_LINES         erased?intact line_detection.py::detect_stems
+  ⚠️ CV_LINES         erased?intact line_detection.py::detect_beams
+  ⚠️ CV_LOCATOR       erased?intact clef_locator.py::_ink_mask
+     CV_LOCATOR       intact        clef_locator.py::_staff_left_column
+     DETECTOR         intact        yolo_detector.py::detect
+     DOSSIER          -             
+     GEOMETRY         -             
+  ⚠️ TEMPLATE         erased?intact key_signature_template.py::read_key_signature
+  ⚠️ TEMPLATE         erased?intact time_signature_locator.py::locate_time_signature
+
+  ⚠️ `erased?intact` is a SILENT FALLBACK: which raster answered is a
+     runtime fact, and only `Q.STEM`/`Q.BEAM_STROKE` record it.
+  ⚠️ `own-erase` is a THIRD raster — the reader erases the lines
+     itself, by a different algorithm from `staff_line_removal`'s.
+
+── POSITIVE CONTROLS (a zero means the question did not run) ────────
+      20  shape_quantities_with_a_score
+      13  families_with_a_shape_fact
+       3  staff_grid_position_quantities
+       3  families_with_a_position_fact
+      17  readers_whose_raster_resolved
+      11  readers_that_touch_a_raster
+      49  observe_sites_walked
+
+── FINDINGS (14) ─────────────────────────────
+  POSITION articulation has no staff-grid position fact of its own — the class name states a SIDE (ARTICULATION_MARK), which is NOT an independent witness: it fails together with the classification it is read off
+  POSITION direction has no staff-grid position fact of its own
+  POSITION dynamic has no staff-grid position fact of its own
+  POSITION fermata has no staff-grid position fact of its own — the class name states a SIDE (FERMATA_MARK), which is NOT an independent witness: it fails together with the classification it is read off
+  POSITION ornament has no staff-grid position fact of its own — the class name states a SIDE (ORNAMENT_MARK), which is NOT an independent witness: it fails together with the classification it is read off
+  POSITION rest has no staff-grid position fact of its own
+  POSITION slur has no staff-grid position fact of its own — it reads Q.NOTEHEAD_STAFF_POSITION (the `note` family's), which is not a fact about its OWN ink
+  POSITION tie has no staff-grid position fact of its own — it reads Q.NOTEHEAD_STAFF_POSITION (the `note` family's), which is not a fact about its OWN ink
+  POSITION time has no staff-grid position fact of its own
+  POSITION tuplet has no staff-grid position fact of its own
+  POSITION wedge has no staff-grid position fact of its own — a band offset exists as a DETAIL of a scored row (WEDGE_BOX)
+  IMAGE CV_LOCATOR falls back silently (clef_locator.py::_ink_mask) and its rows do not record which raster answered
+  IMAGE TEMPLATE falls back silently (key_signature_template.py::read_key_signature; time_signature_locator.py::locate_time_signature) and its rows do not record which raster answered
+  IMAGE CV_INK measures the erased raster and its rows do not say so, so an INK row and a DETECTOR row of the same ink cannot be told apart by raster

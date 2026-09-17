@@ -28,9 +28,9 @@ radius — which is the whole reason the register is worth more than a list.
 
 | kind | the fault | who can state it |
 |---|---|---|
-| **VOCABULARY** | no category exists for the ink | `gather_coverage`, `probe_vocabulary` |
+| **VOCABULARY** | no category exists for the ink | `gather_coverage`, `probe_vocabulary`, `capture` |
 | **WIRING** | the value exists and nothing reads it | `reach`, `wiring`, `edges` |
-| **FRAME** | the value exists in units the reader cannot answer in | `wiring` |
+| **FRAME** | the value exists in units the reader cannot answer in | `wiring`, `capture` |
 | **SHAPE** | the record has nowhere to PUT the fact | ⚠️ nobody — judgement |
 | **REACH** | the wire is sound; no ROW was ever made for the ink | `edges`, the detector |
 | **ARCHITECTURE** | the fix crosses a stage boundary, or needs a stage | ⚠️ nobody — judgement |
@@ -101,6 +101,7 @@ scars of that pattern recorded in CLAUDE.md a dozen times over.
 | `wiring` | frame / detail / roundtrip faults | `python3 -m tools.omr.staged.wiring --check` |
 | `no_producer` | a parameter threaded with no supplier | `python3 -m tools.omr.no_producer --check` |
 | `edges` | which declared CONNECTIONS ever carried a value | `probe/edges.py out/matrix/*.record.json` |
+| `capture` | is the ink's SHAPE, its staff-grid POSITION and the RASTER it was measured on recorded — per notation FAMILY? | `python3 -m tools.omr.staged.capture --check` |
 
 ⚠️ `collect.py` prints a per-source count and says **SOURCE SILENT** where one
 did not run, because *a source that did not run and a source that found
@@ -246,6 +247,113 @@ made. The roster half was repaired 2026-09-15; the dossier half is open.
 project's only arbiter that **does not fall silent when the raster is bad** —
 *if you want a second witness that does not fall silent exactly when it is
 needed, it must not come off the same raster.*
+
+---
+
+### 3.7 VOCABULARY — a position fact is a SEPARATE ROW, and most families have none
+
+Sean, 2026-09-17: *"are we collecting both the ink shape as well as the
+location of the ink on the page? ... I think these questions should be applied
+to every bit of ink we are trying to capture and classify."*
+
+**The derived half is `capture` and the counts are its**, never this section's.
+What belongs here is the judgement the tool cannot make: **which families
+legitimately need no staff-grid position, and which are a real gap.** Reporting
+every family without one as a repair would be a list fitted to the question.
+
+⚠️⚠️ **THE PROPERTY THAT MAKES THIS A VOCABULARY FINDING RATHER THAN A WIRING
+ONE: a position CANNOT be added as a field on the shape row.**
+`Q.CLEF_POSITION`'s own docstring carries the measurement —
+`Evidence.correlated_groups` calls every row from one reader on one crop **one
+signal**, `tally` counts the group once and takes its strongest term, so a
+position hung off the glyph row is **absorbed by that glyph's own detector
+term** (measured: *a 1.5 beside a 3.0 left the contest at 3.0 against 3.0*).
+**A position refined onto the shape row is not a second witness.** It needs its
+own quantity, its own reader and `score=None` — which is why this is a missing
+CATEGORY and not a missing wire, and why *"just put it in `detail`"* is
+already refuted rather than untried.
+
+Two families have exactly that shape today and their band offsets are in the
+unusable place: the dynamics band is MEASURED (73% own staff / 24% the staff
+above, **distance exactly 1, no exceptions**) and lives as a detail of a scored
+row; the wedge's `band_offset_spaces` is scoreless and staff-relative — the
+exemplar's shape **by accident** of that rung working in page pixels per staff.
+
+⚠️ **A SIDE READ OFF THE CLASS NAME IS NOT A RULER.** `articStaccatoAbove` and
+`fermataBelow` state a side, and three families record it. It fails TOGETHER
+with the classification it is derived from, so it cannot arbitrate the reading
+it comes from — the correlated-witness hazard with the correlation running
+through the class name, a fourth door onto the room §"the bars are not an
+independent umpire" opened. The tool reports it in its own column for exactly
+that reason.
+
+**Where the absence has a measured cost: `time`.** Litolff Beethoven 5 p.62's
+`3/4` is **one barline broken into two fragments** — `timeSig3` + `timeSig4` at
+the cell's left edge, 0.35 and 0.40 staff spaces wide. A time signature's
+placement is rigid and `time_signature_locator` already relies on it, INSIDE a
+template search, as a constraint that is thrown away. ⚠️ It is a GATHER change,
+so pricing one needs two full re-gathers.
+
+### 3.8 FRAME — "erased" is not one image, and most readers choose at runtime
+
+The third of Sean's questions — *"should we read them before the staff is
+removed or after, or both?"* — and the record mostly cannot say which happened.
+
+`Observation.frame` names a COORDINATE frame (page, cell, header window,
+system, margin). **It does not name the RASTER**, and nothing else does either
+except `Q.STEM` / `Q.BEAM_STROKE`, where `gather_cv_lines` computes the flag
+itself before the call. `wiring` reports even those two as written-and-unread.
+
+Three facts the tool derives, each of which breaks a natural assumption:
+
+* **There are THREE erased rasters, not one.** `staff_line_removal`'s
+  `image_no_staff` (a single-channel BINARY image, not a grayscale twin of
+  `image`); `header_ink.header_ink_mask`, which starts from the INTACT cell and
+  erases the lines ITSELF because *"on the material this exists for that
+  variant is the problem"*; and not-erased. A row stamped
+  `staff_lines_erased=True` would not distinguish the first two.
+* **Most readers fall back SILENTLY.** `x.image_no_staff if ... is not None
+  else x.image` is in `line_detection` (both entry points),
+  `time_signature_locator`, `key_signature_template`, `clef_locator._ink_mask`,
+  `header_ink.ink_mask` and four sites in `template_matcher` — so which raster
+  answered is a RUNTIME fact the return value does not carry. It reaches the
+  meter and the key signature, i.e. exactly the thin ink the question is about.
+* **Two readers of ONE crop read OPPOSITE rasters.** `gather_key_signature`
+  runs the locator through `header_ink_mask` (own-erasure) and the template
+  through `key_signature_template` (erased-else-intact). Both docstrings argue
+  their choice on measured data, so it looks deliberate — but
+  `Q.KEYSIG_RUN_POSITION` and `Q.KEYSIG_TEMPLATE_FIT` are **not derived from
+  the same pixels** and nothing on either row says so. Whether that matters is
+  unmeasured; it is the kind of thing `Evidence.independent` would want to know.
+
+⚠️ **NOT a proposal to erase for the detector.** That was measured at 7-13
+pooled reading points and refused; `READERS.DETECTOR` derives as INTACT and
+should stay so. The standing rule is unchanged: *erase for the CV consumer,
+bound the search for everyone else, never erase for the detector.*
+
+**Ranked, scoped, and NOT built: the two-pass read.** A thin glyph is BROKEN by
+erasure where the lines crossed it and MERGED INTO the lines if they are kept,
+so neither raster alone is right for a digit — find the component on the ERASED
+image so it separates, then measure its ink inside that box on the ORIGINAL so
+the strokes come back. `gather_ink` does the first half only. ⚠️ **What would
+falsify it**: if the ink recovered on the original cannot be told from residue
+the erasure removed correctly, the second pass adds noise rather than strokes —
+and the discriminator is ALIGNMENT, the same one §3.0 already stakes the ink
+work on. **If residue does not separate, that is the more important finding.**
+
+### 3.9 INSTRUMENT — `gather_coverage` reports five quantities as having no reader
+
+`gather_glyph_families` passes `reader`, `frame` and `score` through a
+`**common` dict built one line above the call, and `gather_coverage.gathered()`
+reads literal keywords only — so `ARC_BOX`, `ARTICULATION_MARK`,
+`FERMATA_MARK`, `ORNAMENT_MARK` and `REST` come back with **no reader at all**.
+All five carry `READERS.DETECTOR` and a real confidence.
+
+**It is a live blind spot, not a cosmetic one**: a tool built on that walker
+would have reported five families as capturing no shape confidence — the
+reverse of the truth, and a finding manufactured by the instrument. `capture`
+resolves the unpack; `gather_coverage` is not repaired here because it is a
+different tool's contract.
 
 ---
 

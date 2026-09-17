@@ -1,0 +1,1744 @@
+{
+  "rows": [
+    {
+      "family": "articulation",
+      "quantity": "articulation_owner",
+      "via": "declared",
+      "decision": "articulation_owner",
+      "reads_gathered": [
+        "ARTICULATION_MARK",
+        "GLYPH_BOX",
+        "GLYPH_CONF"
+      ],
+      "shape": [
+        "ARTICULATION_MARK",
+        "GLYPH_BOX",
+        "GLYPH_CONF"
+      ],
+      "position": [],
+      "position_declared_but_unread": [],
+      "side_in_class_name": [
+        "ARTICULATION_MARK"
+      ],
+      "band_as_a_detail": [],
+      "rasters": {
+        "intact": [
+          "ARTICULATION_MARK/DETECTOR",
+          "GLYPH_BOX/DETECTOR",
+          "GLYPH_CONF/DETECTOR"
+        ]
+      },
+      "records_its_raster": []
+    },
+    {
+      "family": "clef",
+      "quantity": "clef",
+      "via": "declared",
+      "decision": "clef",
+      "reads_gathered": [
+        "CLEF_GLYPH",
+        "CLEF_LOCATED",
+        "CLEF_POSITION",
+        "CLEF_SEED",
+        "GLYPH_BOX",
+        "GLYPH_CONF",
+        "KEYSIG_CLEF_FIT",
+        "NOTEHEAD_STAFF_POSITION"
+      ],
+      "shape": [
+        "CLEF_GLYPH",
+        "CLEF_LOCATED",
+        "GLYPH_BOX",
+        "GLYPH_CONF"
+      ],
+      "position": [
+        "CLEF_POSITION"
+      ],
+      "position_declared_but_unread": [],
+      "side_in_class_name": [],
+      "band_as_a_detail": [],
+      "rasters": {
+        "erased_else_intact": [
+          "CLEF_LOCATED/CV_LOCATOR"
+        ],
+        "intact": [
+          "CLEF_GLYPH/DETECTOR",
+          "CLEF_LOCATED/CV_LOCATOR",
+          "GLYPH_BOX/DETECTOR",
+          "GLYPH_CONF/DETECTOR"
+        ],
+        "no_raster": [
+          "CLEF_POSITION/GEOMETRY",
+          "CLEF_SEED/DOSSIER",
+          "NOTEHEAD_STAFF_POSITION/GEOMETRY"
+        ],
+        "own_erasure": [
+          "KEYSIG_CLEF_FIT/CV_HEADER"
+        ]
+      },
+      "records_its_raster": []
+    },
+    {
+      "family": "direction",
+      "quantity": "direction",
+      "via": "declared",
+      "decision": "direction",
+      "reads_gathered": [
+        "DIRECTION_WORD"
+      ],
+      "shape": [],
+      "position": [],
+      "position_declared_but_unread": [],
+      "side_in_class_name": [],
+      "band_as_a_detail": [],
+      "rasters": {},
+      "records_its_raster": []
+    },
+    {
+      "family": "dynamic",
+      "quantity": "dynamic",
+      "via": "declared",
+      "decision": "dynamic",
+      "reads_gathered": [
+        "DYNAMIC_LETTER",
+        "GLYPH_BOX",
+        "GLYPH_CONF"
+      ],
+      "shape": [
+        "DYNAMIC_LETTER",
+        "GLYPH_BOX",
+        "GLYPH_CONF"
+      ],
+      "position": [],
+      "position_declared_but_unread": [],
+      "side_in_class_name": [],
+      "band_as_a_detail": [],
+      "rasters": {
+        "intact": [
+          "DYNAMIC_LETTER/DETECTOR",
+          "GLYPH_BOX/DETECTOR",
+          "GLYPH_CONF/DETECTOR"
+        ]
+      },
+      "records_its_raster": []
+    },
+    {
+      "family": "fermata",
+      "quantity": "fermata_owner",
+      "via": "declared",
+      "decision": "fermata_owner",
+      "reads_gathered": [
+        "FERMATA_MARK",
+        "GLYPH_BOX",
+        "GLYPH_CONF"
+      ],
+      "shape": [
+        "FERMATA_MARK",
+        "GLYPH_BOX",
+        "GLYPH_CONF"
+      ],
+      "position": [],
+      "position_declared_but_unread": [],
+      "side_in_class_name": [
+        "FERMATA_MARK"
+      ],
+      "band_as_a_detail": [],
+      "rasters": {
+        "intact": [
+          "FERMATA_MARK/DETECTOR",
+          "GLYPH_BOX/DETECTOR",
+          "GLYPH_CONF/DETECTOR"
+        ]
+      },
+      "records_its_raster": []
+    },
+    {
+      "family": "key",
+      "quantity": "key_signature",
+      "via": "declared",
+      "decision": "key_signature",
+      "reads_gathered": [
+        "DOSSIER_FACT",
+        "GLYPH_BOX",
+        "GLYPH_CONF",
+        "KEYSIG_CLEF_FIT",
+        "KEYSIG_MARKER",
+        "KEYSIG_RUN_POSITION",
+        "KEYSIG_TEMPLATE_FIT"
+      ],
+      "shape": [
+        "KEYSIG_MARKER",
+        "GLYPH_BOX",
+        "GLYPH_CONF"
+      ],
+      "position": [
+        "KEYSIG_RUN_POSITION"
+      ],
+      "position_declared_but_unread": [],
+      "side_in_class_name": [],
+      "band_as_a_detail": [],
+      "rasters": {
+        "erased_else_intact": [
+          "KEYSIG_TEMPLATE_FIT/TEMPLATE"
+        ],
+        "intact": [
+          "GLYPH_BOX/DETECTOR",
+          "GLYPH_CONF/DETECTOR",
+          "KEYSIG_MARKER/DETECTOR"
+        ],
+        "no_raster": [
+          "DOSSIER_FACT/DOSSIER"
+        ],
+        "own_erasure": [
+          "KEYSIG_CLEF_FIT/CV_HEADER",
+          "KEYSIG_RUN_POSITION/CV_HEADER"
+        ]
+      },
+      "records_its_raster": []
+    },
+    {
+      "family": "note",
+      "quantity": "pitch",
+      "via": "rule_body",
+      "decision": "move_glyph+restate_pitch",
+      "reads_gathered": [
+        "GLYPH_BAND_DISTANCE",
+        "GLYPH_BOX",
+        "GLYPH_CONF",
+        "NOTEHEAD_STAFF_POSITION"
+      ],
+      "shape": [
+        "GLYPH_BOX",
+        "GLYPH_CONF"
+      ],
+      "position": [
+        "NOTEHEAD_STAFF_POSITION"
+      ],
+      "position_declared_but_unread": [],
+      "side_in_class_name": [],
+      "band_as_a_detail": [
+        "GLYPH_BAND_DISTANCE"
+      ],
+      "rasters": {
+        "intact": [
+          "GLYPH_BOX/DETECTOR",
+          "GLYPH_CONF/DETECTOR"
+        ],
+        "no_raster": [
+          "GLYPH_BAND_DISTANCE/GEOMETRY",
+          "NOTEHEAD_STAFF_POSITION/GEOMETRY"
+        ]
+      },
+      "records_its_raster": []
+    },
+    {
+      "family": "ornament",
+      "quantity": "ornament_owner",
+      "via": "declared",
+      "decision": "ornament_owner",
+      "reads_gathered": [
+        "GLYPH_BOX",
+        "GLYPH_CONF",
+        "ORNAMENT_MARK"
+      ],
+      "shape": [
+        "GLYPH_BOX",
+        "ORNAMENT_MARK",
+        "GLYPH_CONF"
+      ],
+      "position": [],
+      "position_declared_but_unread": [],
+      "side_in_class_name": [
+        "ORNAMENT_MARK"
+      ],
+      "band_as_a_detail": [],
+      "rasters": {
+        "intact": [
+          "GLYPH_BOX/DETECTOR",
+          "GLYPH_CONF/DETECTOR",
+          "ORNAMENT_MARK/DETECTOR"
+        ]
+      },
+      "records_its_raster": []
+    },
+    {
+      "family": "rest",
+      "quantity": "rest",
+      "via": "gather_only",
+      "decision": null,
+      "reads_gathered": [
+        "GLYPH_BOX",
+        "GLYPH_CONF",
+        "REST"
+      ],
+      "shape": [
+        "REST",
+        "GLYPH_BOX",
+        "GLYPH_CONF"
+      ],
+      "position": [],
+      "position_declared_but_unread": [],
+      "side_in_class_name": [],
+      "band_as_a_detail": [],
+      "rasters": {
+        "intact": [
+          "GLYPH_BOX/DETECTOR",
+          "GLYPH_CONF/DETECTOR",
+          "REST/DETECTOR"
+        ]
+      },
+      "records_its_raster": []
+    },
+    {
+      "family": "slur",
+      "quantity": "arc_kind",
+      "via": "declared",
+      "decision": "arc_kind",
+      "reads_gathered": [
+        "ARC_BOX",
+        "GLYPH_BOX",
+        "GLYPH_CONF",
+        "NOTEHEAD_STAFF_POSITION",
+        "STEM"
+      ],
+      "shape": [
+        "ARC_BOX",
+        "GLYPH_BOX",
+        "GLYPH_CONF"
+      ],
+      "position": [],
+      "position_declared_but_unread": [],
+      "side_in_class_name": [],
+      "band_as_a_detail": [],
+      "rasters": {
+        "erased_else_intact": [
+          "STEM/CV_LINES"
+        ],
+        "intact": [
+          "ARC_BOX/DETECTOR",
+          "GLYPH_BOX/DETECTOR",
+          "GLYPH_CONF/DETECTOR"
+        ],
+        "no_raster": [
+          "NOTEHEAD_STAFF_POSITION/GEOMETRY"
+        ]
+      },
+      "records_its_raster": [
+        "STEM"
+      ]
+    },
+    {
+      "family": "tie",
+      "quantity": "arc_kind",
+      "via": "declared",
+      "decision": "arc_kind",
+      "reads_gathered": [
+        "ARC_BOX",
+        "GLYPH_BOX",
+        "GLYPH_CONF",
+        "NOTEHEAD_STAFF_POSITION",
+        "STEM"
+      ],
+      "shape": [
+        "ARC_BOX",
+        "GLYPH_BOX",
+        "GLYPH_CONF"
+      ],
+      "position": [],
+      "position_declared_but_unread": [],
+      "side_in_class_name": [],
+      "band_as_a_detail": [],
+      "rasters": {
+        "erased_else_intact": [
+          "STEM/CV_LINES"
+        ],
+        "intact": [
+          "ARC_BOX/DETECTOR",
+          "GLYPH_BOX/DETECTOR",
+          "GLYPH_CONF/DETECTOR"
+        ],
+        "no_raster": [
+          "NOTEHEAD_STAFF_POSITION/GEOMETRY"
+        ]
+      },
+      "records_its_raster": [
+        "STEM"
+      ]
+    },
+    {
+      "family": "time",
+      "quantity": "meter",
+      "via": "declared",
+      "decision": "meter",
+      "reads_gathered": [
+        "DOSSIER_FACT",
+        "GLYPH_BOX",
+        "GLYPH_CONF",
+        "METER_GLYPH",
+        "METER_TEMPLATE",
+        "METER_TEMPLATE_AT_BAR",
+        "REST",
+        "SYSTEM_STAFF_COUNT"
+      ],
+      "shape": [
+        "METER_GLYPH",
+        "METER_TEMPLATE",
+        "METER_TEMPLATE_AT_BAR",
+        "REST",
+        "GLYPH_BOX",
+        "GLYPH_CONF"
+      ],
+      "position": [],
+      "position_declared_but_unread": [],
+      "side_in_class_name": [],
+      "band_as_a_detail": [],
+      "rasters": {
+        "erased_else_intact": [
+          "METER_TEMPLATE/TEMPLATE",
+          "METER_TEMPLATE_AT_BAR/TEMPLATE"
+        ],
+        "intact": [
+          "GLYPH_BOX/DETECTOR",
+          "GLYPH_CONF/DETECTOR",
+          "METER_GLYPH/DETECTOR",
+          "REST/DETECTOR"
+        ],
+        "no_raster": [
+          "DOSSIER_FACT/DOSSIER",
+          "SYSTEM_STAFF_COUNT/GEOMETRY"
+        ]
+      },
+      "records_its_raster": []
+    },
+    {
+      "family": "tuplet",
+      "quantity": "tuplet_ratio",
+      "via": "declared",
+      "decision": "tuplet_ratio",
+      "reads_gathered": [
+        "BEAM_STROKE",
+        "GLYPH_BOX",
+        "GLYPH_CONF",
+        "NOTEHEAD_CLASS",
+        "TUPLET_MARKER"
+      ],
+      "shape": [
+        "BEAM_STROKE",
+        "NOTEHEAD_CLASS",
+        "TUPLET_MARKER",
+        "GLYPH_BOX",
+        "GLYPH_CONF"
+      ],
+      "position": [],
+      "position_declared_but_unread": [],
+      "side_in_class_name": [],
+      "band_as_a_detail": [],
+      "rasters": {
+        "erased_else_intact": [
+          "BEAM_STROKE/CV_LINES"
+        ],
+        "intact": [
+          "BEAM_STROKE/DETECTOR",
+          "GLYPH_BOX/DETECTOR",
+          "GLYPH_CONF/DETECTOR",
+          "NOTEHEAD_CLASS/DETECTOR",
+          "TUPLET_MARKER/DETECTOR"
+        ]
+      },
+      "records_its_raster": [
+        "BEAM_STROKE"
+      ]
+    },
+    {
+      "family": "wedge",
+      "quantity": "wedge_anchor",
+      "via": "declared",
+      "decision": "wedge_anchor",
+      "reads_gathered": [
+        "GLYPH_BOX",
+        "GLYPH_CONF",
+        "WEDGE_BOX"
+      ],
+      "shape": [
+        "GLYPH_BOX",
+        "WEDGE_BOX",
+        "GLYPH_CONF"
+      ],
+      "position": [],
+      "position_declared_but_unread": [],
+      "side_in_class_name": [],
+      "band_as_a_detail": [
+        "WEDGE_BOX"
+      ],
+      "rasters": {
+        "intact": [
+          "GLYPH_BOX/DETECTOR",
+          "GLYPH_CONF/DETECTOR",
+          "WEDGE_BOX/DETECTOR"
+        ],
+        "page_raster": [
+          "WEDGE_BOX/CV_HAIRPINS"
+        ]
+      },
+      "records_its_raster": []
+    }
+  ],
+  "observe": {
+    "by_quantity": {
+      "STAFF_LINES": {
+        "sites": [
+          {
+            "where": "gather_geometry",
+            "line": 111,
+            "reader": "GEOMETRY",
+            "scored": false
+          }
+        ],
+        "scored": false,
+        "readers": [
+          "GEOMETRY"
+        ],
+        "detail": [
+          "frame",
+          "page_staff_index",
+          "reader"
+        ]
+      },
+      "STAFF_SPACING": {
+        "sites": [
+          {
+            "where": "gather_geometry",
+            "line": 119,
+            "reader": "GEOMETRY",
+            "scored": false
+          }
+        ],
+        "scored": false,
+        "readers": [
+          "GEOMETRY"
+        ],
+        "detail": [
+          "frame",
+          "reader"
+        ]
+      },
+      "STAFF_EXTENT": {
+        "sites": [
+          {
+            "where": "gather_geometry",
+            "line": 121,
+            "reader": "GEOMETRY",
+            "scored": false
+          }
+        ],
+        "scored": false,
+        "readers": [
+          "GEOMETRY"
+        ],
+        "detail": [
+          "frame",
+          "reader"
+        ]
+      },
+      "STAFF_SKEW": {
+        "sites": [
+          {
+            "where": "gather_geometry",
+            "line": 133,
+            "reader": "GEOMETRY",
+            "scored": false
+          }
+        ],
+        "scored": false,
+        "readers": [
+          "GEOMETRY"
+        ],
+        "detail": [
+          "frame",
+          "reader",
+          "thickness_px"
+        ]
+      },
+      "BRACKET_BLOCK": {
+        "sites": [
+          {
+            "where": "_gather_bracket_blocks",
+            "line": 208,
+            "reader": "GEOMETRY",
+            "scored": false
+          }
+        ],
+        "scored": false,
+        "readers": [
+          "GEOMETRY"
+        ],
+        "detail": [
+          "frame",
+          "mirror",
+          "n_blocks",
+          "reader"
+        ]
+      },
+      "GAP_BRIDGING": {
+        "sites": [
+          {
+            "where": "gather_systems",
+            "line": 222,
+            "reader": "GEOMETRY",
+            "scored": false
+          }
+        ],
+        "scored": false,
+        "readers": [
+          "GEOMETRY"
+        ],
+        "detail": [
+          "frame",
+          "mirror",
+          "reader"
+        ]
+      },
+      "BARLINE_COLUMN": {
+        "sites": [
+          {
+            "where": "gather_measures",
+            "line": 238,
+            "reader": "GEOMETRY",
+            "scored": false
+          }
+        ],
+        "scored": false,
+        "readers": [
+          "GEOMETRY"
+        ],
+        "detail": [
+          "frame",
+          "note",
+          "reader"
+        ]
+      },
+      "SYSTEM_STAFF_COUNT": {
+        "sites": [
+          {
+            "where": "gather_measures",
+            "line": 246,
+            "reader": "GEOMETRY",
+            "scored": false
+          }
+        ],
+        "scored": false,
+        "readers": [
+          "GEOMETRY"
+        ],
+        "detail": [
+          "frame",
+          "reader"
+        ]
+      },
+      "STAFF_ORDINAL": {
+        "sites": [
+          {
+            "where": "gather_measures",
+            "line": 249,
+            "reader": "GEOMETRY",
+            "scored": false
+          }
+        ],
+        "scored": false,
+        "readers": [
+          "GEOMETRY"
+        ],
+        "detail": [
+          "frame",
+          "reader"
+        ]
+      },
+      "CELL_BOX": {
+        "sites": [
+          {
+            "where": "gather_detections",
+            "line": 298,
+            "reader": "GEOMETRY",
+            "scored": false
+          }
+        ],
+        "scored": false,
+        "readers": [
+          "GEOMETRY"
+        ],
+        "detail": [
+          "frame",
+          "reader"
+        ]
+      },
+      "GLYPH_BOX": {
+        "sites": [
+          {
+            "where": "gather_detections",
+            "line": 358,
+            "reader": "DETECTOR",
+            "scored": true
+          }
+        ],
+        "scored": true,
+        "readers": [
+          "DETECTOR"
+        ],
+        "detail": [
+          "frame",
+          "reader",
+          "score"
+        ]
+      },
+      "GLYPH_CONF": {
+        "sites": [
+          {
+            "where": "gather_detections",
+            "line": 369,
+            "reader": "DETECTOR",
+            "scored": true
+          }
+        ],
+        "scored": true,
+        "readers": [
+          "DETECTOR"
+        ],
+        "detail": [
+          "frame",
+          "reader",
+          "score"
+        ]
+      },
+      "NOTEHEAD_CLASS": {
+        "sites": [
+          {
+            "where": "gather_detections",
+            "line": 373,
+            "reader": "DETECTOR",
+            "scored": true
+          }
+        ],
+        "scored": true,
+        "readers": [
+          "DETECTOR"
+        ],
+        "detail": [
+          "frame",
+          "reader",
+          "score"
+        ]
+      },
+      "CELL_STAFF_SPACE": {
+        "sites": [
+          {
+            "where": "gather_notehead_positions",
+            "line": 423,
+            "reader": "GEOMETRY",
+            "scored": false
+          },
+          {
+            "where": "gather_notehead_positions",
+            "line": 439,
+            "reader": "GEOMETRY",
+            "scored": false
+          }
+        ],
+        "scored": false,
+        "readers": [
+          "GEOMETRY"
+        ],
+        "detail": [
+          "frame",
+          "half_step",
+          "lines",
+          "reader"
+        ]
+      },
+      "NOTEHEAD_STAFF_POSITION": {
+        "sites": [
+          {
+            "where": "gather_notehead_positions",
+            "line": 448,
+            "reader": "GEOMETRY",
+            "scored": false
+          }
+        ],
+        "scored": false,
+        "readers": [
+          "GEOMETRY"
+        ],
+        "detail": [
+          "frame",
+          "reader",
+          "residual",
+          "rounded"
+        ]
+      },
+      "GLYPH_BAND_DISTANCE": {
+        "sites": [
+          {
+            "where": "gather_ownership_evidence",
+            "line": 627,
+            "reader": "GEOMETRY",
+            "scored": false
+          }
+        ],
+        "scored": false,
+        "readers": [
+          "GEOMETRY"
+        ],
+        "detail": [
+          "candidate",
+          "frame",
+          "own",
+          "position_in_candidate",
+          "reader"
+        ]
+      },
+      "GLYPH_LADDER": {
+        "sites": [
+          {
+            "where": "_observe_ladder",
+            "line": 674,
+            "reader": "DETECTOR",
+            "scored": false
+          }
+        ],
+        "scored": false,
+        "readers": [
+          "DETECTOR"
+        ],
+        "detail": [
+          "candidate",
+          "expected",
+          "found",
+          "frame",
+          "reader"
+        ]
+      },
+      "FLAG": {
+        "sites": [
+          {
+            "where": "gather_rhythm_marks",
+            "line": 718,
+            "reader": "DETECTOR",
+            "scored": true
+          }
+        ],
+        "scored": true,
+        "readers": [
+          "DETECTOR"
+        ],
+        "detail": [
+          "frame",
+          "reader",
+          "score",
+          "x_center",
+          "y_center"
+        ]
+      },
+      "AUG_DOT": {
+        "sites": [
+          {
+            "where": "gather_rhythm_marks",
+            "line": 722,
+            "reader": "DETECTOR",
+            "scored": true
+          }
+        ],
+        "scored": true,
+        "readers": [
+          "DETECTOR"
+        ],
+        "detail": [
+          "frame",
+          "reader",
+          "score"
+        ]
+      },
+      "TUPLET_MARKER": {
+        "sites": [
+          {
+            "where": "gather_rhythm_marks",
+            "line": 726,
+            "reader": "DETECTOR",
+            "scored": true
+          }
+        ],
+        "scored": true,
+        "readers": [
+          "DETECTOR"
+        ],
+        "detail": [
+          "frame",
+          "is_bracket",
+          "reader",
+          "score",
+          "x0",
+          "x1",
+          "x_center"
+        ]
+      },
+      "ARC_BOX": {
+        "sites": [
+          {
+            "where": "gather_glyph_families",
+            "line": 883,
+            "reader": "DETECTOR",
+            "scored": true
+          }
+        ],
+        "scored": true,
+        "readers": [
+          "DETECTOR"
+        ],
+        "detail": [
+          "bbox_page_px",
+          "frame",
+          "frame_note",
+          "reader",
+          "score",
+          "x0",
+          "x1",
+          "x_center",
+          "x_center_page",
+          "y0",
+          "y1",
+          "y_center",
+          "y_center_page"
+        ]
+      },
+      "ARTICULATION_MARK": {
+        "sites": [
+          {
+            "where": "gather_glyph_families",
+            "line": 885,
+            "reader": "DETECTOR",
+            "scored": true
+          }
+        ],
+        "scored": true,
+        "readers": [
+          "DETECTOR"
+        ],
+        "detail": [
+          "bbox_page_px",
+          "frame",
+          "frame_note",
+          "reader",
+          "score",
+          "side",
+          "x0",
+          "x1",
+          "x_center",
+          "x_center_page",
+          "y0",
+          "y1",
+          "y_center",
+          "y_center_page"
+        ]
+      },
+      "REST": {
+        "sites": [
+          {
+            "where": "gather_glyph_families",
+            "line": 888,
+            "reader": "DETECTOR",
+            "scored": true
+          }
+        ],
+        "scored": true,
+        "readers": [
+          "DETECTOR"
+        ],
+        "detail": [
+          "bbox_page_px",
+          "frame",
+          "frame_note",
+          "reader",
+          "score",
+          "x0",
+          "x1",
+          "x_center",
+          "x_center_page",
+          "y0",
+          "y1",
+          "y_center",
+          "y_center_page"
+        ]
+      },
+      "ORNAMENT_MARK": {
+        "sites": [
+          {
+            "where": "gather_glyph_families",
+            "line": 897,
+            "reader": "DETECTOR",
+            "scored": true
+          }
+        ],
+        "scored": true,
+        "readers": [
+          "DETECTOR"
+        ],
+        "detail": [
+          "bbox_page_px",
+          "frame",
+          "frame_note",
+          "kind",
+          "reader",
+          "score",
+          "side",
+          "strokes",
+          "x0",
+          "x1",
+          "x_center",
+          "x_center_page",
+          "y0",
+          "y1",
+          "y_center",
+          "y_center_page"
+        ]
+      },
+      "FERMATA_MARK": {
+        "sites": [
+          {
+            "where": "gather_glyph_families",
+            "line": 912,
+            "reader": "DETECTOR",
+            "scored": true
+          }
+        ],
+        "scored": true,
+        "readers": [
+          "DETECTOR"
+        ],
+        "detail": [
+          "bbox_page_px",
+          "frame",
+          "frame_note",
+          "reader",
+          "score",
+          "side",
+          "x0",
+          "x1",
+          "x_center",
+          "x_center_page",
+          "y0",
+          "y1",
+          "y_center",
+          "y_center_page"
+        ]
+      },
+      "DYNAMIC_LETTER": {
+        "sites": [
+          {
+            "where": "gather_dynamic_letters",
+            "line": 1047,
+            "reader": "DETECTOR",
+            "scored": true
+          },
+          {
+            "where": "gather_dynamic_letters",
+            "line": 1066,
+            "reader": "DETECTOR",
+            "scored": true
+          }
+        ],
+        "scored": true,
+        "readers": [
+          "DETECTOR"
+        ],
+        "detail": [
+          "frame",
+          "reader",
+          "score"
+        ]
+      },
+      "WEDGE_BOX": {
+        "sites": [
+          {
+            "where": "gather_wedge_boxes",
+            "line": 1131,
+            "reader": "DETECTOR",
+            "scored": true
+          },
+          {
+            "where": "gather_wedge_boxes",
+            "line": 1212,
+            "reader": "CV_HAIRPINS",
+            "scored": false
+          }
+        ],
+        "scored": true,
+        "readers": [
+          "CV_HAIRPINS",
+          "DETECTOR"
+        ],
+        "detail": [
+          "band_offset_spaces",
+          "bbox_page_px",
+          "detector_class",
+          "frame",
+          "open_spaces",
+          "outline_rms_spaces",
+          "page_staff_index",
+          "reader",
+          "score",
+          "staff_bottom_line_page",
+          "staff_spacing_px",
+          "x_center_page",
+          "y_center_page"
+        ]
+      },
+      "STEM": {
+        "sites": [
+          {
+            "where": "gather_cv_lines",
+            "line": 1314,
+            "reader": "CV_LINES",
+            "scored": false
+          }
+        ],
+        "scored": false,
+        "readers": [
+          "CV_LINES"
+        ],
+        "detail": [
+          "frame",
+          "image",
+          "reader",
+          "staff_lines_erased",
+          "x0",
+          "x1",
+          "y_center"
+        ]
+      },
+      "BEAM_STROKE": {
+        "sites": [
+          {
+            "where": "gather_cv_lines",
+            "line": 1314,
+            "reader": "CV_LINES",
+            "scored": false
+          },
+          {
+            "where": "gather_detector_beams",
+            "line": 1599,
+            "reader": "DETECTOR",
+            "scored": true
+          }
+        ],
+        "scored": true,
+        "readers": [
+          "CV_LINES",
+          "DETECTOR"
+        ],
+        "detail": [
+          "frame",
+          "image",
+          "reader",
+          "score",
+          "staff_lines_erased",
+          "x0",
+          "x1",
+          "y_center"
+        ]
+      },
+      "INK": {
+        "sites": [
+          {
+            "where": "gather_ink",
+            "line": 1559,
+            "reader": "CV_INK",
+            "scored": false
+          }
+        ],
+        "scored": false,
+        "readers": [
+          "CV_INK"
+        ],
+        "detail": [
+          "frame",
+          "ink_area_px",
+          "ink_bbox_canonical",
+          "ink_detector_coverage",
+          "ink_explained_by",
+          "ink_fill",
+          "ink_n_components",
+          "ink_share_of_cell",
+          "reader"
+        ]
+      },
+      "CLEF_GLYPH": {
+        "sites": [
+          {
+            "where": "gather_clef",
+            "line": 1687,
+            "reader": "DETECTOR",
+            "scored": true
+          }
+        ],
+        "scored": true,
+        "readers": [
+          "DETECTOR"
+        ],
+        "detail": [
+          "frame",
+          "reader",
+          "score",
+          "x_center",
+          "y_center"
+        ]
+      },
+      "CLEF_POSITION": {
+        "sites": [
+          {
+            "where": "gather_clef",
+            "line": 1705,
+            "reader": "GEOMETRY",
+            "scored": false
+          }
+        ],
+        "scored": false,
+        "readers": [
+          "GEOMETRY"
+        ],
+        "detail": [
+          "frame",
+          "glyph",
+          "reader",
+          "y_center"
+        ]
+      },
+      "CLEF_LOCATED": {
+        "sites": [
+          {
+            "where": "gather_clef_locator",
+            "line": 1840,
+            "reader": "CV_LOCATOR",
+            "scored": true
+          }
+        ],
+        "scored": true,
+        "readers": [
+          "CV_LOCATOR"
+        ],
+        "detail": [
+          "bbox",
+          "family",
+          "frame",
+          "line",
+          "line_source",
+          "reader",
+          "score",
+          "x_center"
+        ]
+      },
+      "CLEF_SEED": {
+        "sites": [
+          {
+            "where": "gather_clef_seed",
+            "line": 1919,
+            "reader": "DOSSIER",
+            "scored": false
+          }
+        ],
+        "scored": false,
+        "readers": [
+          "DOSSIER"
+        ],
+        "detail": [
+          "derived_from",
+          "frame",
+          "reader",
+          "tier"
+        ]
+      },
+      "KEYSIG_CLEF_FIT": {
+        "sites": [
+          {
+            "where": "gather_key_signature",
+            "line": 1995,
+            "reader": "CV_HEADER",
+            "scored": false
+          }
+        ],
+        "scored": false,
+        "readers": [
+          "CV_HEADER"
+        ],
+        "detail": [
+          "accidental",
+          "decided_by",
+          "fifths",
+          "frame",
+          "n_accidentals",
+          "reader"
+        ]
+      },
+      "KEYSIG_RUN_POSITION": {
+        "sites": [
+          {
+            "where": "gather_key_signature",
+            "line": 2015,
+            "reader": "CV_HEADER",
+            "scored": false
+          }
+        ],
+        "scored": false,
+        "readers": [
+          "CV_HEADER"
+        ],
+        "detail": [
+          "frame",
+          "n_accidentals",
+          "reader"
+        ]
+      },
+      "KEYSIG_TEMPLATE_FIT": {
+        "sites": [
+          {
+            "where": "_gather_keysig_template",
+            "line": 2064,
+            "reader": "TEMPLATE",
+            "scored": false
+          }
+        ],
+        "scored": false,
+        "readers": [
+          "TEMPLATE"
+        ],
+        "detail": [
+          "accidental",
+          "fifths",
+          "frame",
+          "n_accidentals",
+          "reader"
+        ]
+      },
+      "KEYSIG_MARKER": {
+        "sites": [
+          {
+            "where": "_gather_keysig_markers",
+            "line": 2082,
+            "reader": "DETECTOR",
+            "scored": true
+          }
+        ],
+        "scored": true,
+        "readers": [
+          "DETECTOR"
+        ],
+        "detail": [
+          "frame",
+          "reader",
+          "score",
+          "x",
+          "y_center"
+        ]
+      },
+      "METER_TEMPLATE": {
+        "sites": [
+          {
+            "where": "gather_meter",
+            "line": 2146,
+            "reader": "TEMPLATE",
+            "scored": true
+          }
+        ],
+        "scored": true,
+        "readers": [
+          "TEMPLATE"
+        ],
+        "detail": [
+          "frame",
+          "raw",
+          "reader",
+          "runner_up",
+          "runner_up_score",
+          "score",
+          "score_margin"
+        ]
+      },
+      "METER_GLYPH": {
+        "sites": [
+          {
+            "where": "_gather_meter_glyphs",
+            "line": 2185,
+            "reader": "DETECTOR",
+            "scored": true
+          }
+        ],
+        "scored": true,
+        "readers": [
+          "DETECTOR"
+        ],
+        "detail": [
+          "cell",
+          "frame",
+          "letter",
+          "reader",
+          "score",
+          "x",
+          "y_center"
+        ]
+      },
+      "METER_TEMPLATE_AT_BAR": {
+        "sites": [
+          {
+            "where": "gather_meter_at_bars",
+            "line": 2422,
+            "reader": "TEMPLATE",
+            "scored": true
+          }
+        ],
+        "scored": true,
+        "readers": [
+          "TEMPLATE"
+        ],
+        "detail": [
+          "candidate_staves",
+          "cell",
+          "frame",
+          "raw",
+          "reader",
+          "runner_up",
+          "runner_up_score",
+          "score",
+          "score_margin"
+        ]
+      },
+      "MARGIN_LABEL": {
+        "sites": [
+          {
+            "where": "gather_margin_labels",
+            "line": 2638,
+            "reader": null,
+            "scored": false
+          }
+        ],
+        "scored": false,
+        "readers": [],
+        "detail": [
+          "frame",
+          "label_tiers",
+          "reader",
+          "reader_alias",
+          "reader_confidence",
+          "rung",
+          "y_center_px"
+        ]
+      },
+      "DIRECTION_WORD": {
+        "sites": [
+          {
+            "where": "gather_direction_words",
+            "line": 3038,
+            "reader": null,
+            "scored": false
+          }
+        ],
+        "scored": false,
+        "readers": [],
+        "detail": [
+          "category",
+          "frame",
+          "page_conflicts",
+          "reader",
+          "readers_run",
+          "terms",
+          "winning_reader"
+        ]
+      },
+      "DOSSIER_FACT": {
+        "sites": [
+          {
+            "where": "gather_external",
+            "line": 3096,
+            "reader": "DOSSIER",
+            "scored": false
+          }
+        ],
+        "scored": false,
+        "readers": [
+          "DOSSIER"
+        ],
+        "detail": [
+          "frame",
+          "reader",
+          "tier"
+        ]
+      },
+      "ROSTER_ENTRY": {
+        "sites": [
+          {
+            "where": "gather_external",
+            "line": 3124,
+            "reader": "CATALOG",
+            "scored": false
+          }
+        ],
+        "scored": false,
+        "readers": [
+          "CATALOG"
+        ],
+        "detail": [
+          "frame",
+          "n_families",
+          "n_instruments",
+          "reader",
+          "tier"
+        ]
+      }
+    },
+    "unresolved": [],
+    "n_sites": 49
+  },
+  "rasters": {
+    "by_reader": {
+      "CARRY": {
+        "variants": [
+          {
+            "variant": "no_raster",
+            "why": "declared: touches no raster",
+            "at": null
+          }
+        ]
+      },
+      "CATALOG": {
+        "variants": [
+          {
+            "variant": "no_raster",
+            "why": "declared: touches no raster",
+            "at": null
+          }
+        ]
+      },
+      "CV_HAIRPINS": {
+        "variants": [
+          {
+            "variant": "page_raster",
+            "why": "measures a whole-page array",
+            "at": "hairpin_detection.py::detect_hairpins",
+            "line": 165
+          }
+        ]
+      },
+      "CV_HEADER": {
+        "variants": [
+          {
+            "variant": "own_erasure",
+            "why": "reads `.image` and erases lines ITSELF",
+            "at": "header_ink.py::header_ink_mask",
+            "line": 588
+          }
+        ]
+      },
+      "CV_INK": {
+        "variants": [
+          {
+            "variant": "erased",
+            "why": "reads `image_no_staff` and refuses otherwise",
+            "at": "staged/gather.py::_ink_components",
+            "line": 1371
+          }
+        ]
+      },
+      "CV_LINES": {
+        "variants": [
+          {
+            "variant": "erased_else_intact",
+            "why": "a silent `no_staff else image`",
+            "at": "line_detection.py::detect_stems",
+            "line": 217
+          },
+          {
+            "variant": "erased_else_intact",
+            "why": "a silent `no_staff else image`",
+            "at": "line_detection.py::detect_beams",
+            "line": 558
+          }
+        ]
+      },
+      "CV_LOCATOR": {
+        "variants": [
+          {
+            "variant": "erased_else_intact",
+            "why": "a silent `no_staff else image`",
+            "at": "clef_locator.py::_ink_mask",
+            "line": 405
+          },
+          {
+            "variant": "intact",
+            "why": "reads `.image`",
+            "at": "clef_locator.py::_staff_left_column",
+            "line": 437
+          }
+        ]
+      },
+      "DETECTOR": {
+        "variants": [
+          {
+            "variant": "intact",
+            "why": "reads `.image`",
+            "at": "yolo_detector.py::detect",
+            "line": 300
+          }
+        ]
+      },
+      "DETECTOR_HEADER": {
+        "variants": [
+          {
+            "variant": "intact",
+            "why": "reads `.image`",
+            "at": "yolo_detector.py::detect",
+            "line": 300
+          }
+        ]
+      },
+      "DOSSIER": {
+        "variants": [
+          {
+            "variant": "no_raster",
+            "why": "declared: touches no raster",
+            "at": null
+          }
+        ]
+      },
+      "GEOMETRY": {
+        "variants": [
+          {
+            "variant": "no_raster",
+            "why": "declared: touches no raster",
+            "at": null
+          }
+        ]
+      },
+      "SPECIALIST": {
+        "variants": [
+          {
+            "variant": "intact",
+            "why": "reads `.image`",
+            "at": "yolo_detector.py::detect",
+            "line": 300
+          }
+        ]
+      },
+      "SURYA": {
+        "variants": [
+          {
+            "variant": "page_raster",
+            "why": "measures a whole-page array",
+            "at": "direction_text.py::_page_ink",
+            "line": 273
+          }
+        ]
+      },
+      "TEMPLATE": {
+        "variants": [
+          {
+            "variant": "erased_else_intact",
+            "why": "a silent `no_staff else image`",
+            "at": "key_signature_template.py::read_key_signature",
+            "line": 116
+          },
+          {
+            "variant": "erased_else_intact",
+            "why": "a silent `no_staff else image`",
+            "at": "time_signature_locator.py::locate_time_signature",
+            "line": 400
+          }
+        ]
+      },
+      "TESSERACT": {
+        "variants": [
+          {
+            "variant": "page_raster",
+            "why": "measures a whole-page array",
+            "at": "direction_text.py::_page_ink",
+            "line": 273
+          }
+        ]
+      },
+      "TEXT_LAYER": {
+        "variants": [
+          {
+            "variant": "no_raster",
+            "why": "declared: touches no raster",
+            "at": null
+          }
+        ]
+      },
+      "VISION": {
+        "variants": [
+          {
+            "variant": "no_raster",
+            "why": "declared: touches no raster",
+            "at": null
+          }
+        ]
+      }
+    },
+    "undeclared_readers": []
+  },
+  "unclassified_scoreless": [],
+  "scoreless": [
+    "BARLINE_COLUMN",
+    "BRACKET_BLOCK",
+    "CELL_BOX",
+    "CELL_STAFF_SPACE",
+    "CLEF_POSITION",
+    "CLEF_SEED",
+    "DIRECTION_WORD",
+    "DOSSIER_FACT",
+    "GAP_BRIDGING",
+    "GLYPH_BAND_DISTANCE",
+    "GLYPH_LADDER",
+    "INK",
+    "KEYSIG_CLEF_FIT",
+    "KEYSIG_RUN_POSITION",
+    "KEYSIG_TEMPLATE_FIT",
+    "MARGIN_LABEL",
+    "NOTEHEAD_STAFF_POSITION",
+    "ROSTER_ENTRY",
+    "STAFF_EXTENT",
+    "STAFF_LINES",
+    "STAFF_ORDINAL",
+    "STAFF_SKEW",
+    "STAFF_SPACING",
+    "STEM",
+    "SYSTEM_STAFF_COUNT"
+  ],
+  "side_is_not_a_ruler": [
+    "ARTICULATION_MARK",
+    "FERMATA_MARK",
+    "ORNAMENT_MARK"
+  ],
+  "controls": {
+    "shape_quantities_with_a_score": 20,
+    "families_with_a_shape_fact": 13,
+    "staff_grid_position_quantities": 3,
+    "families_with_a_position_fact": 3,
+    "readers_whose_raster_resolved": 17,
+    "readers_that_touch_a_raster": 11,
+    "observe_sites_walked": 49
+  },
+  "problems": [
+    "POSITION articulation has no staff-grid position fact of its own \u2014 the class name states a SIDE (ARTICULATION_MARK), which is NOT an independent witness: it fails together with the classification it is read off",
+    "POSITION direction has no staff-grid position fact of its own",
+    "POSITION dynamic has no staff-grid position fact of its own",
+    "POSITION fermata has no staff-grid position fact of its own \u2014 the class name states a SIDE (FERMATA_MARK), which is NOT an independent witness: it fails together with the classification it is read off",
+    "POSITION ornament has no staff-grid position fact of its own \u2014 the class name states a SIDE (ORNAMENT_MARK), which is NOT an independent witness: it fails together with the classification it is read off",
+    "POSITION rest has no staff-grid position fact of its own",
+    "POSITION slur has no staff-grid position fact of its own \u2014 it reads Q.NOTEHEAD_STAFF_POSITION (the `note` family's), which is not a fact about its OWN ink",
+    "POSITION tie has no staff-grid position fact of its own \u2014 it reads Q.NOTEHEAD_STAFF_POSITION (the `note` family's), which is not a fact about its OWN ink",
+    "POSITION time has no staff-grid position fact of its own",
+    "POSITION tuplet has no staff-grid position fact of its own",
+    "POSITION wedge has no staff-grid position fact of its own \u2014 a band offset exists as a DETAIL of a scored row (WEDGE_BOX)",
+    "IMAGE CV_LOCATOR falls back silently (clef_locator.py::_ink_mask) and its rows do not record which raster answered",
+    "IMAGE TEMPLATE falls back silently (key_signature_template.py::read_key_signature; time_signature_locator.py::locate_time_signature) and its rows do not record which raster answered",
+    "IMAGE CV_INK measures the erased raster and its rows do not say so, so an INK row and a DETECTOR row of the same ink cannot be told apart by raster"
+  ],
+  "unaccounted": [],
+  "stale_gaps": []
+}
