@@ -395,9 +395,11 @@ true value IS 1 — an **equivalent mutant on that fixture**. The counter is onl
 worth having if it can say TWO, so the separated cell is now asserted too.
 
 **Derived checks**: `wiring --check`, `inventory --check`, `gather_coverage`
-and `health --check` all exit 0 — and they exited 0 BEFORE the change too,
-checked, because *"checks fail after a change"* and *"checks were already
-failing"* look identical in a terminal.
+and `health --check` all exit 0 on this tree — and **all four were run again
+with `origin/main`'s own `record.py`, `gather.py` and `wiring.py` checked out
+in place, where they also exit 0**, because *"checks fail after a change"* and
+*"checks were already failing"* look identical in a terminal. Main's wiring
+reports **47 problems**; this tree reports 61, and 47 + 7 + 7 balances (§8).
 
 **Unit tests**: `tools/omr/tests/test_staged_ink.py`, 25 tests, every fixture
 drawn as pixels rather than mocked — a component test whose input is a
@@ -416,17 +418,54 @@ decide whether the rows are worth having.
 unread and are on `KNOWN_GAPS` as OPEN entries, each leaving the list the day a
 decision reads it.
 
-⚠️⚠️ **AND MAKING IT SAY SO EXPOSED A BLIND SPOT IN THE TOOL.** `wiring.py`'s
-DETAIL question reads the AST for **literal keyword names**, so a key passed as
-`**detail` is invisible to it. `gather_detections` has written `bbox_page_px`,
-`x_center_page` and `y_center_page` through a splat since page boxes arrived and
-**this tool has never reported one of them.** This reader spells its
-unconditional keys out at the emit site so the gap is visible; the conditional
-ones stay in a splat because they are DECLINED by omission, which cannot be
-expressed as a literal kwarg. **Widening the scan to follow a dict built in the
-same function is ranked next work and was NOT taken here** — it belongs to
-whoever owns that tool and would surface findings across several gatherers at
-once.
+⚠️⚠️ **AND MAKING IT SAY SO EXPOSED TWO BLIND SPOTS IN THE TOOL — one
+recorded and left open, one fixed because it made `--check` RED.**
+
+**(a) A `**dict` SPLAT IS INVISIBLE TO IT, and that one is left open.**
+`wiring.py`'s DETAIL question reads the AST for **literal keyword names**, so a
+key passed as `**detail` is never seen. `gather_detections` has written
+`bbox_page_px`, `x_center_page` and `y_center_page` through a splat since page
+boxes arrived and **this tool has never reported one of them.** This reader
+spells its unconditional keys out at the emit site so the gap is visible; the
+conditional ones stay in a splat because they are DECLINED by omission, which
+cannot be expressed as a literal kwarg. **Widening the scan to follow a dict
+built in the same function is ranked next work and was NOT taken here.**
+
+**(b) ⚠️⚠️ A BENCHMARK PROBE COUNTED AS A CONSUMER — THE THIRD INSTANCE OF A
+FAMILY THE TOOL ALREADY DOCUMENTS TWICE, AND IT WAS CAUGHT BY `--check` GOING
+RED IN THE FULL SUITE HAVING BEEN GREEN STANDALONE AN HOUR EARLIER.** The
+moment this work's own probes were committed, **four of the seven `Q.INK`
+entries were reported STALE — closed** — because a file under `benchmarks/` had
+read them **to take the measurement those entries exist to describe**. The tool
+already excludes a TEST ("a test naming a key is not a consumer of it") and its
+OWN gap list ("the inventory written to account for the findings closed the
+check that produced them"); a probe is the same thing. `_tree_of`'s own
+docstring even argues the distinction for the PRODUCER question — *"collapsing
+the three would have reported `roster` as fed the moment any probe passed
+one"* — and that reasoning had simply not been applied here. **Fixed**:
+`details()` now excludes the `benchmark` tree.
+
+⚠️⚠️ **AND THE FIRST DRAFT OF THAT FIX'S COMMENT CLAIMED IT WAS CONFINED TO THE
+FOUR `Q.INK` KEYS. IT WAS WRITTEN BEFORE THE MEASUREMENT AND IT IS FALSE** —
+this repo's own *asserting a mechanism without measuring it*, committed by the
+session that was writing up a measurement. Run, the exclusion surfaces **SEVEN
+MORE keys, each written by `gather.py` and named in the whole tree only by a
+probe**:
+
+| key | what is unread |
+|---|---|
+| `Q.BRACKET_BLOCK.n_blocks` | how many family blocks a system was cut into — the question `BRACKET_COLUMN_MIN_EVIDENCE` exists to make answerable |
+| `Q.DIRECTION_WORD.gate` | why the scan gate skipped this page (the abstention is consumed, the reason is not) |
+| `Q.DIRECTION_WORD.readers_run` | which OCR rungs ran — half of what the ranked "two rungs as independent readings" step needs |
+| `Q.GLYPH_BAND_DISTANCE.own` | the contested/uncontested split, re-derived by the adjudicator instead of read |
+| `Q.GLYPH_LADDER.found` | how many ledger rungs were SEEN against `expected`; the value is only the boolean |
+| `Q.MARGIN_LABEL.y_center_px` | the evidence the label→staff assignment was made on |
+| `Q.STAFF_SKEW.thickness_px` | a page-level line thickness nothing compares against the per-cell one |
+
+**They are not new faults; they were invisible.** Each is now inventoried with
+its reason. `--check`: **61 problems, 0 unaccounted, 0 stale, exit 0** — against
+47 / 0 / 0 on `origin/main`'s own files, which is 47 + 7 (`Q.INK`) + 7 (newly
+visible) and balances exactly.
 
 ---
 
@@ -474,8 +513,14 @@ once.
 3. **A third publisher**, and an ENGRAVED page. The composition inverted
    between two scans; an engraving is where the component representation should
    be at its best and has not been looked at once.
-4. **Widen `wiring.py`'s DETAIL scan to follow a splat** (§8).
-5. ⚠️ **Not ranked: moving `ONSET_COLUMN_TOLERANCE_SPACES`.** §5 shows it does
+4. **Widen `wiring.py`'s DETAIL scan to follow a `**dict` splat** (§8a) —
+   still open, and it is the half of that tool's blind spot this change did not
+   touch. The seven keys §8b surfaced are each their own small job.
+5. **The seven newly visible detail keys** (§8b), in the order a consumer wants
+   them: `Q.GLYPH_LADDER.found` first, because the COMPLETENESS-only rule it
+   would let someone revisit is a measured refusal and the count is the
+   evidence that refusal rests on.
+6. ⚠️ **Not ranked: moving `ONSET_COLUMN_TOLERANCE_SPACES`.** §5 shows it does
    not carry a column across this plate. It is the right thing to argue about
    and the wrong thing to change from one page.
 

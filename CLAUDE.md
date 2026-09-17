@@ -6032,14 +6032,33 @@ CLAUDE.md already records a commit message committing.
 ⚠️ **NOTHING READS `Q.INK`, DELIBERATELY.** A consumer landing in the same
 change would move the very numbers used to decide whether the rows are worth
 having. All seven always-written detail keys are on `wiring.KNOWN_GAPS` as OPEN
-entries. ⚠️⚠️ **Making the tool SAY so exposed a blind spot in it**:
-`wiring.py`'s DETAIL question reads the AST for LITERAL keyword names, so a key
-passed as `**detail` is invisible — **`gather_detections`' own `bbox_page_px`
-has never been reported by it.** Widening that scan is ranked work and was not
-taken here.
+entries. ⚠️⚠️ **Making the tool SAY so exposed TWO blind spots in it.** (a) Its
+DETAIL question reads the AST for LITERAL keyword names, so a key passed as
+`**detail` is invisible — **`gather_detections`' own `bbox_page_px` has never
+been reported by it**; recorded, and left OPEN. (b) ⚠️⚠️ **A BENCHMARK PROBE
+COUNTED AS A CONSUMER, and it was caught by `--check` going RED in the full
+suite having been green standalone an hour earlier**: the moment this work's
+own probes were committed, FOUR of the seven `Q.INK` entries read as STALE —
+closed — because a file under `benchmarks/` had read them **to take the
+measurement those entries exist to describe.** *The instrument that measures a
+gap is not a consumer that closes it*, for the same reason a test naming a key
+is not and the tool's own gap list is not — **the third instance of a family it
+already documents twice**, and `_tree_of`'s own docstring already argues the
+distinction for the PRODUCER question. **Fixed**: `details()` excludes the
+benchmark tree. ⚠️⚠️ **And the first draft of that fix's comment claimed it was
+confined to those four keys, written BEFORE the measurement and false** — the
+exclusion surfaces **SEVEN MORE keys whose only reader anywhere is a probe**
+(`Q.BRACKET_BLOCK.n_blocks`, `Q.DIRECTION_WORD.gate` / `.readers_run`,
+`Q.GLYPH_BAND_DISTANCE.own`, `Q.GLYPH_LADDER.found`,
+`Q.MARGIN_LABEL.y_center_px`, `Q.STAFF_SKEW.thickness_px`). **Not new faults —
+newly visible ones**, each now inventoried with its reason. `--check` 61 / 0 /
+0 against main's 47 / 0 / 0, which balances as 47 + 7 + 7.
 
 ⚠️ Controls: flag-off is **byte-identical to `origin/main`** (md5 `8f8bf9ee`,
-positive control +1,244 rows, memoised detector so jitter cannot enter);
+positive control +1,244 rows, memoised detector so jitter cannot enter); all
+four derived checks exit 0 **and were re-run with `origin/main`'s own three
+files checked out in place, where they also exit 0** — *"checks fail after a
+change"* and *"checks were already failing"* look identical in a terminal;
 mutation battery **19 arms, 19 red**, restore verified, with a positive control
 in the same class. ⚠️ Its first run had one survivor and it was a real gap —
 `ink_n_components = 1` is an EQUIVALENT MUTANT on a fixture whose true value is
