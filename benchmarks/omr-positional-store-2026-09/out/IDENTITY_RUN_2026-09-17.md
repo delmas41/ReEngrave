@@ -231,6 +231,11 @@ unaccounted, 0 stale), `inventory --check`, `gather_coverage`,
 `health --check`, `no_producer --check`, `export_coverage --all`,
 `accuracy_record --check`.
 
+**FULL SUITE: 4,297 passed, 11 skipped, 12m13s** — and the exit code was
+captured with an explicit `echo $?` rather than through a pipe, because an
+earlier attempt in this same session reported success for a run that never
+started (§9).
+
 ⚠️⚠️ **AND THE RE-RUN OF THOSE CHECKS CAME BACK ALL-RED FROM THE SHELL, WHICH
 IS THIS FILE'S OWN RECORDED HAZARD.** Looping `for m in "staged.capture
 --check" …; do python3 -m tools.omr.$m; done` reports **exit 1 on all eight**,
