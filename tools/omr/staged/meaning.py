@@ -51,9 +51,9 @@ calibration a static check gets.
 coordinate frame? Then two of its rows are not comparable without asking, and
 nothing asks. 4 of the written quantities are.
 
-**2. A ROW'S OWN DETAIL DISAGREES WITH ITS `frame` FIELD** — ten quantities are
-filed at `cell:*` and carry page-pixel geometry in `detail`. ⚠️ These are **not
-ten bugs**: they are the `Q.ONSET_COLUMN` repair, applied deliberately. What it
+**2. A ROW'S OWN DETAIL DISAGREES WITH ITS `frame` FIELD** — nine quantities
+are filed at `cell:*` and carry page-pixel geometry in `detail`. ⚠️ These are
+**not nine bugs**: they are the `Q.ONSET_COLUMN` repair, deliberately. What it
 costs is that the field cannot be used for comparability even though it looks
 like it could. That is a finding about the RECORD's shape, not about any site.
 
