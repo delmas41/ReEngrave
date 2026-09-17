@@ -84,6 +84,50 @@ class TestTheFallbackBranchesNobodyExercises(unittest.TestCase):
         self.assertIsNone(p["commit"], "a half-named tree is not a named tree")
         self.assertIsNone(p["dirty"])
 
+    def test_the_settings_stamp_records_only_OMR_overrides(self):
+        """⚠️ `OMR_`-PREFIXED ONLY. Stamping the whole environment would put
+        credentials into every record this repo writes."""
+        import os as _os
+        from tools.omr.staged.__main__ import _settings
+        old = dict(_os.environ)
+        try:
+            _os.environ["OMR_TEST_ONLY_FLAG"] = "7"
+            _os.environ["ANTHROPIC_API_KEY"] = "sk-must-not-appear"
+            s = _settings()
+            self.assertEqual(s["env_overrides"].get("OMR_TEST_ONLY_FLAG"), "7")
+            self.assertNotIn("ANTHROPIC_API_KEY", s["env_overrides"])
+            self.assertFalse([k for k in s["env_overrides"]
+                              if not k.startswith("OMR_")])
+        finally:
+            _os.environ.clear()
+            _os.environ.update(old)
+
+    def test_the_settings_stamp_EXCLUDES_output_only_arguments(self):
+        """⚠️⚠️ `out` MUST be excluded or the guard it feeds becomes USELESS:
+        two arms of one A/B always write different files, so including it
+        would make every pair look like a different configuration and a
+        record compared with ITSELF would be accepted."""
+        import argparse as _ap
+        from tools.omr.staged.__main__ import _settings
+        a = _ap.Namespace(dpi=600, out="/tmp/a.json", musicxml=None,
+                          progress=True, pages="1-4")
+        b = _ap.Namespace(dpi=600, out="/tmp/b.json", musicxml=None,
+                          progress=True, pages="1-4")
+        self.assertEqual(_settings(a)["args"], _settings(b)["args"],
+                         "two arms differing only in --out must stamp the "
+                         "SAME settings")
+        self.assertIn("dpi", _settings(a)["args"])
+        self.assertNotIn("out", _settings(a)["args"])
+
+    def test_a_reading_affecting_argument_is_captured_by_DEFAULT(self):
+        """⚠️ The exclude list is an EXCLUDE list on purpose: a new argument
+        that changes what we read is captured without anyone remembering to
+        add it. An include list would silently drop it."""
+        import argparse as _ap
+        from tools.omr.staged.__main__ import _settings
+        s = _settings(_ap.Namespace(some_future_reading_knob=3, out="x"))
+        self.assertEqual(s["args"].get("some_future_reading_knob"), 3)
+
     def test_it_uses_check_output_and_never_a_silent_run(self):
         """⚠️ Anti-drift on the meter session's second hole: `subprocess.run`
         without `check=True` returns a non-zero exit as EMPTY STDOUT with no
@@ -144,6 +188,34 @@ class TestTheConsumerActuallyRefuses(unittest.TestCase):
         """⚠️ `MOVED: nothing` from one tree compared with itself is the
         headline failure this guard exists for."""
         self._refuses(self.CLEAN_A, dict(self.CLEAN_A))
+
+    # ── the settings stamp: a flag arm is a LEGITIMATE same-tree pair ──────
+    #
+    # ⚠️⚠️ Refusing every same-clean-tree pair was wrong on a FLAG-DRIVEN
+    # pipeline. An arm that changes `OMR_METER_CARRY` and nothing else MUST
+    # come from one commit, so same-tree is the REQUIRED condition there. The
+    # refusal was right only while records could not say what settings they
+    # were built under -- and the cost was that NO flag arm in the repo ever
+    # called this guard.
+    S_OFF = {"env_overrides": {}}
+    S_ON = {"env_overrides": {"OMR_INK": "1"}}
+
+    def test_the_same_clean_tree_with_DIFFERENT_settings_is_a_flag_arm(self):
+        self._accepts({**self.CLEAN_A, "settings": self.S_OFF},
+                      {**self.CLEAN_A, "settings": self.S_ON})
+
+    def test_the_same_clean_tree_with_IDENTICAL_settings_is_still_refused(self):
+        """⚠️ THE ORIGINAL FAILURE, still caught: same code, same settings,
+        so `MOVED: nothing` means nothing."""
+        self._refuses({**self.CLEAN_A, "settings": self.S_OFF},
+                      {**self.CLEAN_A, "settings": dict(self.S_OFF)})
+
+    def test_same_tree_and_UNSTAMPED_settings_is_refused_not_assumed(self):
+        """⚠️ A fallback must never convert *cannot tell* into a definite
+        answer. A record with no settings block could be either arm, so it is
+        refused rather than read as a flag arm."""
+        self._refuses({**self.CLEAN_A, "settings": self.S_OFF},
+                      dict(self.CLEAN_A))
 
     def test_a_DIRTY_tree_is_refused_even_at_a_different_commit(self):
         """⚠️ A SHA cannot tell two sets of uncommitted edits apart, so a

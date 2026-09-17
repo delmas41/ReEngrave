@@ -83,10 +83,34 @@ def check_provenance(before, after, allow_unstamped=False):
             "one or both records carry no provenance -- they predate the "
             "stamp, or were written by something that does not set it")
     elif pa["commit"] == pb["commit"] and not (pa.get("dirty") or pb.get("dirty")):
-        problems.append(
-            f"both records were built from the SAME clean tree "
-            f"({pa['commit'][:12]}): this comparison cannot show a code "
-            f"change and 'MOVED: nothing' would mean nothing")
+        # ⚠️⚠️ A SAME-CLEAN-TREE PAIR IS EXACTLY WHAT A FLAG ARM LOOKS LIKE,
+        # and refusing it outright was wrong. This pipeline is flag-driven:
+        # an arm that changes `OMR_METER_CARRY` and nothing else MUST come
+        # from one commit, so same-tree is the REQUIRED condition there, not
+        # a defect. Before records stamped their settings there was no way to
+        # tell such an arm from a file compared with itself, so the
+        # conservative refusal was the only safe answer; it also meant this
+        # guard could not be used for most A/Bs this repo runs, and no flag
+        # arm ever called it. Now `provenance.settings` distinguishes them.
+        sa, sb = pa.get("settings"), pb.get("settings")
+        if sa is None or sb is None:
+            problems.append(
+                f"both records were built from the SAME clean tree "
+                f"({pa['commit'][:12]}) and at least one does not stamp its "
+                f"SETTINGS, so a flag arm cannot be told from a file "
+                f"compared with itself")
+        elif sa == sb:
+            problems.append(
+                f"both records were built from the SAME clean tree "
+                f"({pa['commit'][:12]}) with IDENTICAL settings: this "
+                f"comparison can show neither a code change nor a flag "
+                f"change, and 'MOVED: nothing' would mean nothing")
+        else:
+            print("  same tree, DIFFERENT settings — reading this as a FLAG "
+                  "ARM:")
+            for k in sorted(set(sa) | set(sb)):
+                if sa.get(k) != sb.get(k):
+                    print(f"    {k}: {sa.get(k)!r} -> {sb.get(k)!r}")
     # ⚠️⚠️ UNKNOWN DIRTINESS IS NOT CLEAN. `dirty is None` means the writer
     # could not determine it, and reading a falsy None as "clean" is the same
     # class of bug as a magic-string fallback comparing equal to itself: it

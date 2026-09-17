@@ -24,8 +24,10 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import sys
 from pathlib import Path
+from typing import Any
 
 
 def parse_pages(spec: str) -> list:
@@ -37,6 +39,54 @@ def parse_pages(spec: str) -> list:
             out.extend(range(int(a), int(b) + 1))
         elif part:
             out.append(int(part))
+    return out
+
+
+#: ⚠️ ARGUMENTS THAT CHANGE WHERE THE OUTPUT GOES, NOT WHAT IT SAYS -- and
+#: this is an EXCLUDE list on purpose. An INCLUDE list would silently drop a
+#: new reading-affecting argument the day someone adds one, which is the
+#: hand-list drift this repo keeps paying for; excluding means a new argument
+#: is captured by DEFAULT and only a deliberate entry here opts it out.
+#: ⚠️⚠️ `out` MUST be excluded or the guard it feeds becomes USELESS: two arms
+#: of one A/B always write to different files, so including it would make
+#: every pair look like a different configuration and
+#: `regather_control.check_provenance` would accept a record compared with
+#: itself -- the exact trap that guard exists to catch.
+_OUTPUT_ONLY_ARGS = ("out", "musicxml", "progress")
+
+
+def _settings(args: Any = None) -> dict:
+    """THE CONFIGURATION this record was built under, beside the tree.
+
+    ⚠️⚠️ **THE COMMIT DOES NOT NAME THE CONFIGURATION, AND THIS COST A
+    SESSION A RUN.** `_provenance` names the TREE and argues, correctly, that
+    *anything that cannot uniquely name a tree must never compare equal to
+    anything, including itself*. On a FLAG-DRIVEN pipeline that is not enough:
+    two records from one clean commit with different `OMR_*` settings differ
+    in content and were stamped IDENTICALLY. On 2026-09-17 a session could
+    only recover an earlier run's flags by reverse-engineering them from the
+    output -- 7,093 ink rows implying `OMR_INK`, an `out_of_scope` abstention
+    count implying the scan gate -- and that worked only because those two
+    happen to leave a trace. **A flag that changes a VALUE rather than a
+    row's existence leaves none**, which is every meter flag.
+
+    ⚠️ **ONLY THE OVERRIDES ARE NEEDED, and that is what makes this complete
+    without enumerating anything.** A flag's DEFAULT is a property of the
+    commit, which is already stamped -- so `commit` + the environment
+    overrides + the arguments together determine the configuration, with no
+    flag roster to drift. Sean, 2026-09-17, on why it is worth stamping:
+    *"Settings are important because those will be things we can tweak later
+    on."*
+
+    ⚠️ `OMR_`-prefixed variables ONLY. Stamping the whole environment would
+    put credentials (`ANTHROPIC_API_KEY`) into every record.
+    """
+    env = {k: v for k, v in sorted(os.environ.items())
+           if k.startswith("OMR_")}
+    out: dict = {"env_overrides": env}
+    if args is not None:
+        out["args"] = {k: v for k, v in sorted(vars(args).items())
+                       if k not in _OUTPUT_ONLY_ARGS}
     return out
 
 
@@ -217,7 +267,13 @@ def main(argv=None) -> int:
     # uncommitted edits apart, so `dirty` is recorded and any consumer must
     # refuse to treat two dirty stamps as different-or-same. That rule is the
     # meter session's, adopted rather than re-derived.
-    result["provenance"] = _provenance()
+    prov = _provenance()
+    # ⚠️ SETTINGS SIT BESIDE THE TREE, not inside it: the tree is a fact
+    # about the CODE and the settings a fact about the RUN, and a consumer
+    # comparing two records needs them apart to tell a code change from a
+    # flag arm. See `_settings`.
+    prov["settings"] = _settings(args)
+    result["provenance"] = prov
     text = json.dumps(result, indent=2, default=str)
     if args.out:
         Path(args.out).write_text(text)

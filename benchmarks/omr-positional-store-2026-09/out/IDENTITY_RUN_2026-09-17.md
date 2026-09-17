@@ -488,3 +488,66 @@ pooled mean 4.65 — *neither a notehead nor a blob* — can no longer appear.
 `demo-query.txt` regenerated; `separation.json` and `cross_tier.json` do not
 use the query and are unaffected. 34 tests pass; `wiring --check` and
 `capture --check` still exit 0.
+
+## 13. A RECORD NOW STAMPS ITS SETTINGS — §5 closed, on Sean's call
+
+Sean, 2026-09-17: *"Settings are important because those will be things we can
+tweak later on."*
+
+`provenance` gains a `settings` block beside `commit`/`dirty`:
+
+```json
+"settings": {
+  "env_overrides": {"OMR_DOCUMENT_IDENTITY": "1", "OMR_INK": "1",
+                    "OMR_SURYA_KEEP_ALIVE": "1"},
+  "args": {"pages": "1-4", "dpi": 600, "conf": 0.25, "weights": "w.pt",
+           "surya": true, "ocr": true, "work_id": null, ...}
+}
+```
+
+⚠️⚠️ **ONLY THE OVERRIDES ARE NEEDED, AND THAT IS WHAT MAKES IT COMPLETE WITH
+NO ROSTER TO DRIFT.** A flag's DEFAULT is a property of the commit, which is
+already stamped — so **commit + environment overrides + arguments** determine
+the configuration, and nothing has to enumerate the flags. That matters here
+specifically: §2 of this document is a session being misled by a flag roster
+written in prose, and a stamp built on a second such roster would rot the same
+way.
+
+⚠️ **`OMR_`-prefixed variables only** — stamping the environment wholesale
+would put `ANTHROPIC_API_KEY` into every record this repo writes. Pinned by a
+test that sets a fake key and requires its absence.
+
+⚠️⚠️ **THE ARGUMENT LIST IS AN *EXCLUDE* LIST, AND `out` MUST BE ON IT.** Two
+arms of one A/B always write to different files, so capturing `--out` would
+make **every** pair look like a different configuration and the guard below
+would accept a record compared with ITSELF — the exact trap it exists to
+catch. Excluding rather than including also means a future argument that
+changes what we READ is captured by default, instead of being silently dropped
+until someone remembers a list.
+
+✅ **IT EARNED ITSELF IMMEDIATELY.** The first real stamp printed
+`OMR_SURYA_KEEP_ALIVE=1` — set in this machine's shell, **not by this session,
+and in force during the gather in §1.** So the run this document reports had a
+setting its author did not know about and could not have reported. That is
+§5's hazard, observed rather than argued.
+
+### And the consumer's half: a flag arm is a LEGITIMATE same-tree pair
+
+§5 records that `regather_control.check_provenance` **refuses** a
+same-clean-tree pair as *"this comparison cannot show a code change"*. With
+settings on the record that refusal is now wrong for the case it most often
+meets, and it is fixed: same tree + **different** settings is read as a FLAG
+ARM and **accepted**, printing which settings moved. Same tree + **identical**
+settings is still refused — the original failure, intact. Same tree + **no**
+settings block is **also refused**, because *a fallback must never convert
+"cannot tell" into a definite answer*: an unstamped record could be either arm.
+
+All four branches were exercised directly, and the positive control (two
+distinct clean trees) still passes. That removes the reason **no flag arm in
+the repo ever called this guard** — §5's measured reach of zero.
+
+⚠️ **NOT established**: no existing arm has been wired to the guard yet, so
+its reach is still zero until one is; and the stamp changes every record this
+repo writes from now on, which is additive (no test pins the key set, and
+byte-identity controls compare exports and observations, not `provenance`) but
+means records made before today cannot be told apart by settings at all.
