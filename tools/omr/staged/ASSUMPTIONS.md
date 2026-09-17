@@ -1741,6 +1741,71 @@ argmaxed in EXPORT, an uncalibrated probability is still worse than none, and
 INFER may still only speak where the record has no answer. **Keeping everything
 is the opposite of deciding everything.**
 
+### A-INK-4 · ⚠️⚠️ A FACTOR CONTRIBUTES; IT DOES NOT DECIDE — and the order of the programme
+
+**SEAN, 2026-09-17.** `A-INK-3` governs what is CAPTURED. This governs what is
+DONE with it, and the two are easy to conflate.
+
+> *"position is an option for helping us determine something but will rarely be
+> a clear rule that determines by itself. 2 numbers not connected, one in the
+> upper half and one in the lower half, could be a time signature. Due to ink
+> bleed they may appear connected, or other things that we can't determine...
+> Quick rules will give us quick results that could be poor."*
+
+> *"this architecture of the new pipeline with stages and retaining all of the
+> information is made so that when we get to something we can't easily figure
+> out, we have other paths for determining what it is. It may be a specific
+> rule or it could be a deduction from many data points."*
+
+**THE RULE.** No single factor decides. A factor is one more PATH to an answer,
+weighed with everything else — never a veto, a gate or a discriminator on its
+own. ⚠️ **A signal that looks decisive is the most dangerous kind**, because it
+invites exactly the quick rule that produces quick poor results.
+
+⚠️ **THE WORKED EXAMPLE IS A CORRECTION TO THIS FILE'S OWN AUTHOR.** The
+2026-09-17 position brief claimed a position fact *"refuses the p.62 barline on
+geometry alone"* and called that case *"the falsifier for the whole idea"*.
+Both false. On a bitonal plate **ink bleed fuses two digits into one stroke**,
+so *one connected stroke* does not disprove a meter and *two marks in two
+halves* does not prove one. The geometry CONTRIBUTES and does not settle it.
+
+⚠️ **WHERE A FACT IS AMBIGUOUS, THE AMBIGUITY IS THE INFORMATION.** A fused
+stroke that could be one mark or two is precisely the case a later stage exists
+to weigh; collapsing it at capture destroys what the architecture was built to
+use. This is `A-INK-3` again from the other side — **resolving early is a form
+of discarding.**
+
+**THE ORDER OF THE PROGRAMME, and it is why step 3 must not be pre-empted:**
+
+1. **Stages**, so that different functions have somewhere to live and there is
+   flexibility in determining what something is. **DONE** — GATHER, ADJUDICATE,
+   EVALUATE, INFER, EXPORT.
+2. **ALL information that could ever be helpful, gathered and available to
+   every stage and decision point.** IN PROGRESS — `Q.INK`, the position facts,
+   the memory store, publisher reaching GATHER.
+3. **Test each decision point to see what is actually helpful** — which may be
+   raw data, or how raw data was used in a DIFFERENT decision to reach a new
+   conclusion or a likelihood.
+
+⚠️ **A rule written during step 2 because it "looks obviously right" is step 3
+done badly, with no measurement and no alternative considered.** The whole
+point of holding everything is that what helps is discovered, not assumed.
+
+⚠️ **CIRCULARITY IS MANAGED, NOT AVOIDED.** Step 3 necessarily uses the output
+of one decision as input to another, and Sean's answer is not to forbid it:
+*"We need to be careful of circularity but that is why we will be evaluating
+the quality of the determination and tracking what was used to make that
+decision."* The machinery already exists and is the reason it is safe to
+proceed — `Verdict.basis`/`used`/`considered`, `Log.closure`, `correlated`, the
+`source_kind` tiers, and `checked_by`/`implicates`. ⚠️ Its one measured hole is
+recorded: **an `ev.state()` read never enters `basis`**, so a dependency
+established that way is invisible to `independent_groups`.
+
+**And the standard this sets for ruling anything out:** *"This is a complex
+system that requires concepts to be tested before ruling out simply, and an
+understanding of the interdependent nature of the data."* A concept is retired
+by a MEASUREMENT, never by an argument that it sounds unlikely.
+
 ### A-INK-2 · ⚠️ DPI is a CONSTANT and should be a property of the SOURCE
 
 Found alongside A-INK-1 and unbuilt. `OMR_DPI` is 300 on the backend and 600
