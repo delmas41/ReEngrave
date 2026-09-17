@@ -117,17 +117,75 @@ wrong about.
 
 ---
 
+## 4b. ⚠️ THE SECOND PUBLISHER — n = 2, AND THE FUNNELS DO NOT LOOK ALIKE
+
+Breitkopf Brahms 1 mvt 1, pdf p0-3, `brahms1-breitkopf-p0-p3.record.json`,
+md5 `52b98f1cdfee3b39f10e56c592828ea4` verified against its receipt. ⚠️ Its
+provenance is **`dirty: False`**, where the Litolff record's is `dirty: True` —
+so the second document is the better-provenanced of the two.
+
+| | Litolff | Breitkopf |
+|---|--:|--:|
+| narrowed durations standing in a column | 356 | **536** |
+| ends at an onset column (rule 1) | 165 | 297 |
+| **runs to the BARLINE (rule 2)** | **190** | **239** |
+| UNKNOWN endpoint (neither) | 1 | **0** |
+| **rule 2 infers** | **10** | **16** |
+
+**The claim transfers.** Rule 2's population is a third to a half of all
+narrowed durations on both plates, and the self-check holds on both (16 == 16).
+
+⚠️⚠️ **BUT THE FUNNEL'S SHAPE INVERTS, AND THAT IS THE FINDING.**
+
+| stop | Litolff | Breitkopf |
+|---|--:|--:|
+| no other staff runs k → barline | 56 | 17 |
+| no witness with a DECIDED, non-meter length | 37 | 20 |
+| **the witnesses DISAGREE** | **15** | **96** |
+| fewer than 2 INDEPENDENT witnesses | 71 | 70 |
+| 0 candidates carry that length | 1 | **20** |
+| SURVIVES | 10 | 16 |
+
+On Litolff the dominant refusal is **availability** — 56 + 37 = 93 of 190 have
+no usable witness at all. On Breitkopf it is **disagreement**: 96 of 239, more
+than six times Litolff's count, with a further 20 where the neighbours name a
+length this reader never admitted.
+
+**That is the unanimity requirement doing its job on the worse-read plate, and
+it is corroborated from outside this work.** CLAUDE.md already records
+Breitkopf reading **108 of 493 per-staff durations right (22%)** against
+Litolff's **59%**. A document whose staves disagree with each other more is a
+document whose staves are read worse, and the rule responds by **going quiet
+rather than going wrong** — which is what *one dissenter refuses the whole
+inference* was written to do, observed rather than asserted.
+
+⚠️ **The meter guard is 4.7× busier there**: it refuses a witness on **14**
+subjects against Litolff's 3, consistent with a plate carrying more
+measure-rest and reconciled durations.
+
+⚠️ **The UNKNOWN endpoint is 0 on Breitkopf.** So the three-state fix is worth
+1 note on one document and 0 on the other. It remains a correctness guard
+whose value is that it cannot be wrong, not a reach mechanism — and two
+documents is not enough to call it rare.
+
+---
+
 ## 5. WHAT THE STAGE NOW PRODUCES
 
-```
-collapse_duration_by_column   7
-collapse_duration_to_barline  10
-                             ──
-                              17    all labelled, 0 skipped
-```
 
-**7 → 17.** The population the stage can speak about at all goes 165 → 355 of
-the 356 narrowed durations standing in a column.
+| | Litolff | Breitkopf |
+|---|--:|--:|
+| `collapse_duration_by_column` | 7 | 25 |
+| **`collapse_duration_to_barline`** | **10** | **16** |
+| **total** | **17** | **41** |
+
+All labelled, 0 skipped, on both. **7 → 17 and 25 → 41**: the new rule adds
+**+143%** on Litolff and **+64%** on Breitkopf.
+
+The population the stage can speak about at all goes **165 → 355 of 356** on
+Litolff and **297 → 536 of 536** on Breitkopf — where, the UNKNOWN endpoint
+being absent there, the two rules between them now reach **every** narrowed
+duration standing in a column.
 
 ---
 

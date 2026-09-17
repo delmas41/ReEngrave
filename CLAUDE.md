@@ -858,7 +858,19 @@ stops, and which BOTH rules now decline (the endpoint is a PAIR, and deriving
 "barline" from *no later columned event* would hand such a note a neighbour's
 whole-bar length). ⚠️ Rule 1 is behaviourally UNCHANGED. **Funnel: 190 → 134
 with another staff running k → barline → 97 with a decided non-meter length →
-82 unanimous → 11 independent → 10.** ⚠️⚠️ **The largest stop is
+82 unanimous → 11 independent → 10.** ⚠️⚠️ **MEASURED ON BOTH PUBLISHERS, AND
+THE FUNNEL SHAPE INVERTS.** Breitkopf Brahms 1 p0-3 (record md5 `52b98f1c…`,
+provenance **clean**, where Litolff's is dirty): 536 narrowed in a column, 297
+rule 1 / **239 rule 2 / 0 UNKNOWN**, and INFER **25 → 41**. The claim
+transfers; the refusals do not. On Litolff the dominant stop is
+AVAILABILITY (93 of 190 have no usable witness); on Breitkopf it is
+**DISAGREEMENT — 96 of 239 against Litolff's 15**, plus 20 where the
+neighbours name a length the reader never admitted. That is corroborated from
+outside: this file already records Breitkopf reading **22%** of per-staff
+durations right against Litolff's **59%**, so the worse-read plate makes the
+unanimity rule **go quiet rather than go wrong**, which is what *one dissenter
+refuses the whole inference* was written to do — observed rather than
+asserted. The meter guard is **4.7× busier** there (14 subjects vs 3). ⚠️⚠️ **The largest stop is
 `COLUMN_MIN_INDEPENDENT_WITNESSES` at 71** — the stage's one unmeasured
 constant, priced at 28 by the first rule and now costing 71, which is a reason
 to MEASURE it and not to lower it. ⚠️ **Accuracy is not established**: none of
