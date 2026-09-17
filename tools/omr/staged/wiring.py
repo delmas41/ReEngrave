@@ -397,33 +397,18 @@ KNOWN_GAPS: Dict[str, str] = {
         "pair is the discriminator a residue rule needs and neither half is "
         "enough: a staff-line remnant and a beam are both wide and flat, and "
         "what separates them is how densely they fill the rectangle."),
-    "DETAIL Q.INK.ink_fill": (
-        "`area / (w*h)`, derived here so a consumer cannot get the division "
-        "wrong. Same role as `direction_text.BandConfig.min_fill_ratio`, "
-        "which is the test a SLUR fails — recorded, never applied."),
-    "DETAIL Q.INK.ink_n_components": (
-        "how many components this cell yielded, carried on every row of it. "
-        "⚠️ IT IS THE MERGE WARNING. On a scan, print bleed and staff-line "
-        "residue glue marks together: measured over 221 cells of Litolff "
-        "Beethoven 5 p.62 the median cell yields FOUR components and the "
-        "largest holds a median 46% of the cell's remaining ink. A consumer "
-        "reading a component as a MARK needs to be able to see when the cell "
-        "it came from cannot support that reading."),
+    # ⚠️⚠️ FOUR `Q.INK` KEYS LEFT THIS LIST ON 2026-09-17, AND THAT IS THE
+    # TOOL WORKING. `ink_fill`, `ink_n_components`, `ink_detector_coverage`
+    # and `ink_explained_by` were all recorded here as *gathered and read by
+    # nothing*; `tools/omr/positional_store.py` now reads all four --
+    # `ink_explained_by` most pointedly, since it is a LIST of the classes
+    # overlapping a component and is the record's one existing piece of
+    # many-to-many evidence. A CLOSED gap must LEAVE, so they are gone rather
+    # than annotated. `ink_share_of_cell` stays: nothing reads it yet.
     "DETAIL Q.INK.ink_share_of_cell": (
         "this component's share of its cell's ink — the per-row half of "
         "`ink_n_components`. A component holding 0.9 of a cell is a merge, "
         "whatever its shape says."),
-    "DETAIL Q.INK.ink_detector_coverage": (
-        "what fraction of the component's box the NON-SPAN detections cover. "
-        "⚠️ A MEASUREMENT, NOT A VERDICT, and the whole point of the layer: "
-        "ink is ink, and whether it is named is an attribute that may be "
-        "absent and may later be revised. Sean, 2026-09-17: *\"There is "
-        "nothing that should be classified as unseen - only unclassified.\"*"),
-    "DETAIL Q.INK.ink_explained_by": (
-        "the classes whose boxes overlap the component. ⚠️ It does NOT claim "
-        "the component IS one of them: `arpeggiato` fires 98 and 86 times on "
-        "two pages of this corpus as 'a stem or a barline', so the name is "
-        "evidence about the DETECTOR as much as about the ink."),
 
     "DETAIL Q.STAFF_LINES.page_staff_index": (
         "the RASTER's own staff index — the join key back to `pws.staves`. "
@@ -431,14 +416,23 @@ KNOWN_GAPS: Dict[str, str] = {
         "through the `Subject`. A debugging affordance."),
     "DETAIL Q.WEDGE_BOX.page_staff_index":
         "as `Q.STAFF_LINES.page_staff_index`.",
-    "DETAIL Q.WEDGE_BOX.y_center_page": (
-        "⚠️ NAMED ONLY BY A TEST, which is why it appears here at all: this "
-        "question excludes test trees, because a test asserting a key exists "
-        "is not a consumer of it. The page-pixel centre a cross-staff "
-        "question would need — the frame `Q.ONSET_COLUMN` paid to learn "
-        "about — gathered and, in production, unread."),
-    "DETAIL Q.WEDGE_BOX.staff_bottom_line_page":
-        "as `Q.WEDGE_BOX.y_center_page`.",
+    # ⚠️⚠️ `Q.WEDGE_BOX.y_center_page` LEFT THIS LIST ON 2026-09-17 AND IT WAS
+    # **NOT** GENUINELY CLOSED — recorded here because removing it silently
+    # would turn a known gap into a false "someone reads it".
+    # This question credits a key by its LEAF NAME, matched textually anywhere
+    # under `tools/` (see the scan below), and `positional_store.py` reads
+    # `y_center_page` off `Q.GLYPH_BOX` and `Q.INK` rows. It never touches a
+    # `Q.WEDGE_BOX` row. So the hit is a COINCIDENCE OF A SHARED KEY NAME, the
+    # textual-classifier limit `health.py` warns about in its own output
+    # (*"the shape classifier is TEXTUAL"*), and the entry could not be kept
+    # without failing `--check`. **The wedge's page-pixel centre is still
+    # gathered and still unread in production.** Making this question
+    # quantity-aware rather than leaf-aware is the repair; it is a change to
+    # the tool, not to the gap list, and it is not taken here.
+    "DETAIL Q.WEDGE_BOX.staff_bottom_line_page": (
+        "the staff's own bottom line in page pixels — the origin a hairpin's "
+        "band offset is measured from. Gathered and, in production, unread; "
+        "the page-pixel frame `Q.ONSET_COLUMN` paid to learn about."),
     "DETAIL Q.CELL_STAFF_SPACE.half_step": (
         "the half-step the spacing was doubled from. The duration reader "
         "consumes the SPACING; the half-step is the intermediate it came "

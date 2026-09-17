@@ -3078,6 +3078,94 @@ def gather_direction_words(log: Log, pws: Any, cells: Sequence[Any],
                     readers=[n for n, _f in readers])
 
 
+#: ⚠️ DEFAULT OFF, ALLOW-LIST -- CLAUDE.md's *"A flag's OFF test must follow
+#: its DEFAULT"*, under which five shipped flags had it backwards. A
+#: default-OFF mechanism must be an allow-list, so that a typo or an empty
+#: value leaves it OFF rather than silently switching a document onto it.
+DOCUMENT_IDENTITY_ENV = "OMR_DOCUMENT_IDENTITY"
+
+
+def _document_identity_enabled() -> bool:
+    return os.environ.get(DOCUMENT_IDENTITY_ENV, "0").strip().lower() \
+        in ("1", "true", "yes", "on")
+
+
+def gather_document_identity(log: Log, pdf_path: Any) -> None:
+    """WHICH PRINTING THIS IS, on the DOCUMENT.
+
+    ⚠️⚠️ **THE CONDITIONING VARIABLE HAD NO PRODUCER.** `grep publisher
+    tools/omr/staged/gather.py` returned exactly ONE COMMENT before this rung,
+    so a record could not say which plate it came from -- while the catalog
+    that knows has been COMMITTED all along, holds 234 editions, and the
+    library filename itself carries the IMSLP id. That is the *value existed
+    and nothing read it* shape from the producer side, and it is the same
+    class of fault `no_producer.py` was written to catch: `pdf_path` reaches
+    `gather()` already and was used only to rasterise.
+
+    ⚠️ `source_kind` IS THE REASON IT IS ADMISSIBLE. These facts come from
+    IMSLP's work page through the catalog, NOT from reading the plate, so they
+    do not fall silent when the raster is bad -- the property this repo
+    requires of any second witness, and why the catalog's `editions` tier (an
+    OMR output of the same raster) would not be usable here.
+
+    ⚠️ IT DECIDES NOTHING AND NOTHING READS IT YET. It is producer-only, the
+    discipline `Q.INK` shipped under: a fact and its first consumer landing
+    together makes the reach measurement circular.
+    """
+    if not _document_identity_enabled():
+        # ⚠️ SILENT, and that is the point of a default-OFF flag: writing an
+        # abstention would change every record in the tree, which is the
+        # "perturbs upstream by existing" hazard. Flag-off must be
+        # byte-identical to a tree without this rung.
+        return
+    # ⚠️⚠️ ONCE PER DOCUMENT, AND `gather()` CALLS THIS ONCE PER PAGE. Measured
+    # rather than assumed: a four-page run filed FOUR identical
+    # `document_identity` rows on the one DOCUMENT subject, so a consumer
+    # counting rows would over-count the plate fourfold. The guard lives in the
+    # function rather than at the call site so it holds wherever this is
+    # called from, and it CAN fire -- which is the test this repo requires of
+    # an idempotence guard, having once deleted one whose rule could not.
+    # ⚠️ `gather_external` has the same shape and files its dossier/roster rows
+    # per page too; that is PRE-EXISTING and is not changed here.
+    # ⚠️ BOTH ROW TYPES, and the test caught this: a first call on an UNHELD
+    # pdf writes an ABSTENTION, which `rows()` does not return, so a guard
+    # asking only for observations let four abstentions through -- the
+    # ABSENT/DECLINED distinction biting the guard that was written to respect
+    # it.
+    if log.rows(Q.DOCUMENT_IDENTITY, R.DOCUMENT) \
+            or log.refusals(Q.DOCUMENT_IDENTITY, R.DOCUMENT):
+        return
+    if not pdf_path:
+        log.abstain(R.DOCUMENT, Q.DOCUMENT_IDENTITY, reader=READERS.CATALOG,
+                    frame=FRAME_PAGE, reason=ABSTAIN.OUT_OF_SCOPE,
+                    note="no pdf_path supplied to gather()")
+        return
+    try:
+        from tools.omr.positional_store import edition_for_pdf
+        facts = edition_for_pdf(pdf_path)
+    except Exception:            # pragma: no cover - catalog absent/unreadable
+        facts = {}
+    if not facts:
+        # ⚠️ A PDF THE STORE DOES NOT HOLD ABSTAINS. It is NOT defaulted to
+        # "unknown publisher": a fallback that converts *cannot tell* into a
+        # definite answer is the failure this file records at four sites.
+        log.abstain(R.DOCUMENT, Q.DOCUMENT_IDENTITY, reader=READERS.CATALOG,
+                    frame=FRAME_PAGE, reason=ABSTAIN.NOT_IN_CATALOG,
+                    note="no catalog edition matches %s"
+                         % os.path.basename(str(pdf_path)))
+        return
+    log.observe(R.DOCUMENT, Q.DOCUMENT_IDENTITY,
+                facts.get("publisher"), reader=READERS.CATALOG,
+                frame=FRAME_PAGE, tier="catalog",
+                edition_path=facts.get("path"),
+                publisher=facts.get("publisher"),
+                work_id=facts.get("work_id"),
+                composer=facts.get("composer"),
+                image_type=facts.get("image_type"),
+                imslp_id=facts.get("imslp_id"),
+                source_kind="catalog")
+
+
 def gather_external(log: Log, pws, *, dossier: Any = None,
                     roster: Any = None) -> Dict[str, str]:
     """Facts that are not read off THIS raster.
@@ -3169,6 +3257,7 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
         # reference would silently restore the double-counting this ordering
         # exists to prevent.
         sources = gather_external(log, pws, dossier=dossier, roster=roster)
+        gather_document_identity(log, pdf_path)
         local = gather_geometry(log, pws)
         gather_systems(log, pws, getattr(pws, "used_bridging", True))
         gather_measures(log, pws, cells, local)

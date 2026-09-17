@@ -1,0 +1,6 @@
+# The base store is a BUILD PRODUCT, not an artefact: it is rebuilt from the
+# committed records in 1.1 s, and it is 13 MB.  The MEASUREMENTS beside it are
+# committed, because those are what a later reader cannot regenerate without
+# the gitignored `library/`.
+store.jsonl
+store.jsonl.gz

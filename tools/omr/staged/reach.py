@@ -96,6 +96,22 @@ KNOWN_GAPS: Dict[str, str] = {
         "to be confused with `READERS.TEXT_LAYER`, which is alive and is what "
         "`gather_margin_labels` files a label under."),
 
+    Q.DOCUMENT_IDENTITY: (
+        "⚠️ BY DESIGN, NOT A FAULT — recorded 2026-09-17 with "
+        "`gather_document_identity`, and the same producer-only discipline as "
+        "`Q.INK` below. It files WHICH PRINTING this is (edition, publisher, "
+        "work, scan type) on the DOCUMENT at `source_kind: \"catalog\"`, "
+        "because where a mark falls is a property of the PLATE and the "
+        "conditioning variable had no producer at all: `grep publisher "
+        "tools/omr/staged/gather.py` returned ONE COMMENT while the catalog "
+        "that knows has been committed all along. ⚠️ IT IS ALSO DEFAULT-OFF "
+        "(`OMR_DOCUMENT_IDENTITY`, allow-list), so on a default run nothing "
+        "observes it either. The consumer it is aimed at is "
+        "`tools/omr/positional_store.py`, which reads it through "
+        "`identity_of_record` on a SAVED record rather than through a staged "
+        "accessor — which is why this tool cannot see the read. REMOVE THIS "
+        "ENTRY the day a DECISION reads it."),
+
     Q.INK: (
         "⚠️ BY DESIGN, NOT A FAULT — recorded 2026-09-17 when `gather_ink` "
         "landed. `A-DUR-5` was deliberately built as the PRODUCER ONLY: it "
