@@ -14,7 +14,8 @@ import unittest
 from pathlib import Path
 
 from tools.omr.positional_store import (
-    KIND_DETECTOR_CLASS, KIND_OVERLAPS, TIER_OBSERVED, TIER_TRUE, UNKNOWN,
+    KIND_DETECTOR_CLASS, KIND_OVERLAPS, KIND_UNNAMED, TIER_OBSERVED,
+    TIER_TRUE, UNKNOWN,
     Entry, EntryStore, Membership, PositionIndex, entries_from_record,
     publisher_label, vbucket,
 )
@@ -183,6 +184,92 @@ class TestThePositionComposesAcrossDocuments(unittest.TestCase):
         self.assertEqual(PositionIndex(st).unpositioned, 1)
 
 
+class TestAnIdentityClaimNeverPoolsWithAnOverlap(unittest.TestCase):
+    """⚠️⚠️ THE INDEX KEYS ON THE MEMBERSHIP KIND, and until 2026-09-17 it did
+    not. `Membership`'s docstring says `overlaps` *"is coverage and NOT an
+    assertion of identity"*, and the index pooled it with `detector_class`
+    anyway -- so one merged ink blob explained by `noteheadBlackOnLine`
+    averaged into the real noteheads' geometry and reported a notehead three
+    times too tall. Measured on Litolff: median 5.29 staff spaces for the
+    overlap rows against 1.34 for the identity rows, p95 exactly 12.000, which
+    is the measure cell's own height."""
+
+    def _store(self):
+        st = EntryStore()
+        # one REAL notehead, one staff space tall
+        st.extend([Entry(tier=TIER_OBSERVED, publisher="litolff",
+                         memberships=(Membership(KIND_DETECTOR_CLASS,
+                                                 "noteheadBlackOnLine",
+                                                 "detector"),),
+                         staff_position=2.0, width_spaces=1.1, height_spaces=1.3,
+                         source_quantity="glyph_box")])
+        # one MERGED BLOB a notehead's box merely covers, eight spaces tall
+        st.extend([Entry(tier=TIER_OBSERVED, publisher="litolff",
+                         memberships=(Membership(KIND_OVERLAPS,
+                                                 "noteheadBlackOnLine",
+                                                 "detector_coverage"),),
+                         staff_position=2.0, width_spaces=3.0, height_spaces=8.0,
+                         source_quantity="ink")])
+        return st
+
+    def test_one_name_two_kinds_is_two_rows(self):
+        r = PositionIndex(self._store()).ask(2.0, tier=TIER_OBSERVED)
+        rows = {c["kind"]: c for c in r["candidates"]
+                if c["name"] == "noteheadBlackOnLine"}
+        self.assertEqual(set(rows), {KIND_DETECTOR_CLASS, KIND_OVERLAPS},
+                         "an identity claim and an overlap claim pooled into "
+                         "one row — the 2026-09-17 defect")
+        self.assertEqual(rows[KIND_DETECTOR_CLASS]["count"], 1)
+        self.assertEqual(rows[KIND_OVERLAPS]["count"], 1)
+
+    def test_the_geometry_does_not_mix(self):
+        """⚠️ THE POINT OF THE SPLIT. Pooled, the mean height is 4.65 — which
+        is neither a notehead nor a blob, and is the number that made a
+        cross-publisher comparison meaningless."""
+        r = PositionIndex(self._store()).ask(2.0, tier=TIER_OBSERVED)
+        rows = {c["kind"]: c for c in r["candidates"]
+                if c["name"] == "noteheadBlackOnLine"}
+        self.assertAlmostEqual(
+            rows[KIND_DETECTOR_CLASS]["mean_height_spaces"], 1.3, places=3)
+        self.assertAlmostEqual(
+            rows[KIND_OVERLAPS]["mean_height_spaces"], 8.0, places=3)
+        for row in rows.values():
+            self.assertNotAlmostEqual(row["mean_height_spaces"], 4.65,
+                                      places=2)
+
+    def test_share_is_within_a_kind_not_across_the_position(self):
+        """Each row is the whole of its own kind here, so both are 1.0. Across
+        the position they would each read 0.5, which invites the reader to
+        compare two claims about different ink."""
+        r = PositionIndex(self._store()).ask(2.0, tier=TIER_OBSERVED)
+        for c in r["candidates"]:
+            self.assertAlmostEqual(c["share_of_this_kind_here"], 1.0)
+        self.assertEqual(r["per_kind"],
+                         {KIND_DETECTOR_CLASS: 1, KIND_OVERLAPS: 1})
+
+    def test_unclaimed_ink_is_its_own_kind(self):
+        """⚠️ Ink NOTHING claims must not share a bucket with claims about
+        other ink, and `KIND_UNNAMED` is named rather than `None` because the
+        kind is part of the key and `None` compares equal to itself
+        everywhere."""
+        st = EntryStore()
+        st.extend([Entry(tier=TIER_OBSERVED, publisher="litolff",
+                         memberships=(), staff_position=2.0,
+                         width_spaces=2.0, height_spaces=7.0, source_quantity="ink")])
+        r = PositionIndex(st).ask(2.0, tier=TIER_OBSERVED)
+        self.assertEqual([(c["kind"], c["name"]) for c in r["candidates"]],
+                         [(KIND_UNNAMED, UNKNOWN)])
+
+    def test_the_kinds_filter_has_a_producer_now(self):
+        """⚠️ `PositionIndex(kinds=...)` was declared and NOTHING passed one —
+        this repo's own *the value existed and nothing read it*. It is
+        exercised here so it cannot rot unnoticed."""
+        idx = PositionIndex(self._store(), kinds=(KIND_DETECTOR_CLASS,))
+        r = idx.ask(2.0, tier=TIER_OBSERVED)
+        self.assertEqual([c["kind"] for c in r["candidates"]],
+                         [KIND_DETECTOR_CLASS])
+
+
 class TestTheIndexIsADerivedView(unittest.TestCase):
     """Bucket size must not be a decision taken at storage time."""
 
@@ -201,7 +288,8 @@ class TestTheIndexIsADerivedView(unittest.TestCase):
         st = EntryStore()
         st.extend([_e(2.0, ("x",)), _e(2.0, ("x",))])
         idx = PositionIndex(st)
-        cell = list(idx._c[(TIER_OBSERVED, "litolff", "x")].values())[0]
+        cell = list(idx._c[(TIER_OBSERVED, "litolff",
+                            KIND_DETECTOR_CLASS, "x")].values())[0]
         self.assertEqual(sorted(cell.rows), [0, 1])
 
     def test_the_store_round_trips_through_JSONL(self) -> None:
@@ -228,7 +316,11 @@ class TestTheIndexIsADerivedView(unittest.TestCase):
         r = idx.ask(2.0, tier=TIER_OBSERVED)
         self.assertEqual(len(r["candidates"]), 1)
         self.assertEqual(r["candidates"][0]["count"], 3)
-        self.assertAlmostEqual(r["candidates"][0]["share_of_this_position"], 1.0)
+        # ⚠️ `share_of_this_position` became `share_of_this_kind_here` when the
+        # index started keying on the membership KIND: a denominator spanning
+        # an identity claim and an overlap claim answers no question.
+        self.assertAlmostEqual(
+            r["candidates"][0]["share_of_this_kind_here"], 1.0)
         # ⚠️ and naming the axis still narrows to one of them
         self.assertEqual(
             idx.ask(2.0, tier=TIER_OBSERVED, bar_fraction=0.5)

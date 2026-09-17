@@ -1,11 +1,11 @@
-STORE: 23386 entries | tiers {'observed': 21418, 'true': 1968} | publishers {'litolff': 8486, 'breitkopf': 12932, 'rendered': 1968}
-INDEX (derived, rebuildable): {'keys': 135, 'buckets': 9327, 'entries_indexed': 23386, 'unpositioned': 0, 'vbucket_spaces': 0.25, 'hbuckets': 20}
+STORE: 15579 entries | tiers {'observed': 15579} | publishers {'litolff': 15579}
+INDEX (derived, rebuildable): {'keys': 99, 'buckets': 7862, 'entries_indexed': 15579, 'unpositioned': 0, 'vbucket_spaces': 0.25, 'hbuckets': 20}
 
 ==============================================================================
 1. An undiagnosed blob at staff position 2.5, ~0.5 spaces tall, on a LITOLFF plate
 ==============================================================================
   position 2.50 steps (1.25 spaces) | tier=observed publisher=litolff height=0.5
-  -> vbucket 5 at 0.25-space resolution; 143 observations, 11 candidate names
+  -> vbucket 5 at 0.25-space resolution; 435 observations, 30 candidate names
   name                             n    share     mean_h       sd_h   eds
   restWhole                      117    0.818      0.609      0.117     1
   tie                             13    0.091      0.762      0.284     1
@@ -22,24 +22,14 @@ INDEX (derived, rebuildable): {'keys': 135, 'buckets': 9327, 'entries_indexed': 
 2. THE SAME QUERY on a BREITKOPF plate — publisher is a conditioning variable, not decoration
 ==============================================================================
   position 2.50 steps (1.25 spaces) | tier=observed publisher=breitkopf height=0.5
-  -> vbucket 5 at 0.25-space resolution; 367 observations, 12 candidate names
-  name                             n    share     mean_h       sd_h   eds
-  restWhole                      242    0.659      0.474      0.116     1
-  augmentationDot                 56    0.153      0.487      0.049     1
-  tie                             27    0.074      1.398      0.719     1
-  arpeggiato                      15    0.041      4.039      2.178     1
-  noteheadBlackOnLine             12    0.033      0.547      0.118     1
-  beam                             7    0.019      0.461      0.316     1
-  rest8th                          2    0.005      1.471      0.974     1
-  accidentalDoubleSharp            2    0.005      1.887      1.538     1
-  slur                             1    0.003      1.845       None     1
-  noteheadHalfOnLine               1    0.003       1.15       None     1
+  -> vbucket 5 at 0.25-space resolution; 0 observations, 0 candidate names
+     NOTHING HAS BEEN SEEN HERE. That is an answer.
 
 ==============================================================================
 3. The same position with NO shape constraint — everything ever seen there (Litolff)
 ==============================================================================
   position 2.50 steps (1.25 spaces) | tier=observed publisher=litolff height=None
-  -> vbucket 5 at 0.25-space resolution; 366 observations, 22 candidate names
+  -> vbucket 5 at 0.25-space resolution; 780 observations, 51 candidate names
   name                             n    share     mean_h       sd_h   eds
   restWhole                      117    0.320      0.609      0.117     1
   ledgerLine                      58    0.159       0.26      0.045     1
@@ -56,23 +46,14 @@ INDEX (derived, rebuildable): {'keys': 135, 'buckets': 9327, 'entries_indexed': 
 4. THE SAME POSITION IN THE TRUE TIER — rendered ground truth, no detector anywhere in it
 ==============================================================================
   position 2.50 steps (1.25 spaces) | tier=true publisher=None height=None
-  -> vbucket 5 at 0.25-space resolution; 289 observations, 9 candidate names
-  name                             n    share     mean_h       sd_h   eds
-  mRest                          199    0.689      0.491        0.0     2
-  E260                            31    0.107      2.419      0.286     2
-  note                            24    0.083      0.689      0.192     2
-  beam                            14    0.048      0.328        0.0     1
-  accid                           11    0.038      0.443      0.776     1
-  tie                              5    0.017      0.565      0.095     2
-  flag                             2    0.007      2.174        0.0     1
-  E088                             2    0.007      0.988        0.0     1
-  dots                             1    0.004      0.225       None     1
+  -> vbucket 5 at 0.25-space resolution; 0 observations, 0 candidate names
+     NOTHING HAS BEEN SEEN HERE. That is an answer.
 
 ==============================================================================
 5. Well ABOVE the staff (position -6) — a different neighbourhood entirely
 ==============================================================================
   position -6.00 steps (-3.00 spaces) | tier=observed publisher=litolff height=None
-  -> vbucket -12 at 0.25-space resolution; 88 observations, 17 candidate names
+  -> vbucket -12 at 0.25-space resolution; 248 observations, 33 candidate names
   name                             n    share     mean_h       sd_h   eds
   dynamicF                        32    0.364      2.225      0.142     1
   noteheadBlackOnLine              8    0.091      1.333      0.057     1
@@ -90,4 +71,4 @@ INDEX (derived, rebuildable): {'keys': 135, 'buckets': 9327, 'entries_indexed': 
 ==============================================================================
   ask(tier=None) raised, as it must:
     ask() requires a provenance tier. Pass tier='true' or tier='observed'; to pool them deliberately pass tier=None with require_tier=False.
-  ask(tier=None, require_tier=False) -> 1265 observations pooled across 58 rows, which the caller has now said in as many words.
+  ask(tier=None, require_tier=False) -> 780 observations pooled across 51 rows, which the caller has now said in as many words.

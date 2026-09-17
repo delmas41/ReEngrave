@@ -422,3 +422,69 @@ that was already right, killing a good 15-minute run (§2). The instruction to
 distrust a negative result has an obvious twin — **distrust a defect you find
 in someone else's instructions until you have read the code it describes.**
 The predicate was one `grep` away the whole time.
+
+## 12. FIXED — the index keys on the membership KIND, on Sean's call
+
+Sean, 2026-09-17, on §10: *"unless it is possible to redo the measurements
+using all the same kind of measuring standard. Up to you — whatever is best
+long term: fewer mistakes, clarity and flexibility."*
+
+**They cannot be put on one standard, and they should not be.** A
+`glyph_box` height is *how tall this notehead is*; an `ink` height is *how
+tall the merged blob this notehead's box overlaps is*. Different objects,
+different questions. Unifying them would destroy a real fact — Litolff merges
+and Breitkopf shatters — which is the fact the ink layer exists to capture.
+
+⚠️⚠️ **AND THE DATA MODEL ALREADY SAID SO. `Membership.kind` distinguishes
+them exactly**, and its own docstring is the rule the index was breaking:
+*"`detector_class` is an argmax over a box; `overlaps` is `ink_explained_by`,
+which its own docstring says is coverage and NOT an assertion of identity"*.
+So this needed **no re-measurement, no re-gather and no schema change** — only
+for the index to respect a distinction the store had been recording all along.
+
+`PositionIndex._build` now keys on `(tier, publisher, KIND, name)`:
+
+| | before | after |
+|---|---|---|
+| `noteheadBlackOnLine` @ position 0, Litolff | ONE row, `mean_h` **3.646** | `detector_class` **1.316 ± 0.133** · `overlaps` **6.872 ± 2.346** |
+| cross-publisher notehead | 3.646 vs 1.199 — looked 3× | **1.316 vs 1.199** |
+| cross-publisher ledger line | mixed | **0.280 vs 0.295** |
+
+✅ **Split, the two publishers agree on all four shared classes.** The store
+now answers the question it was built for, and what remains between the plates
+(Litolff ledger-heavy at 0.456 share, Breitkopf tie-heavy at 0.332) is the
+kind of difference it exists to learn.
+
+**Against Sean's three criteria:** *fewer mistakes* — pooling is now
+structurally impossible rather than documented; *clarity* — every row says
+which claim it is, with a one-line gloss in the output (`the detector says
+this IS that class` / `a detection merely COVERS part of this ink; not
+identity` / `nothing claims this ink`); *flexibility* — nothing is hidden or
+dropped, both rows are returned, and `share` is computed WITHIN a kind, since
+a detection and an overlapping blob are not competing hypotheses about one
+object.
+
+⚠️ **Filtering by default was considered and REFUSED.** Defaulting `--ask` to
+`detector_class` would have hidden the ink half behind a flag — and hiding the
+newest, least-understood layer is exactly how `Q.STEM` went unread through
+three separate discoveries. Sean's own instruction on the ink work was *"we
+need to hold on to everything because we can't yet know all of what will be
+helpful."*
+
+⚠️⚠️ **AND IT FOUND A LATENT BUG IN `kinds`, THE PARAMETER THAT HAD NO
+PRODUCER.** `PositionIndex(kinds=…)` was declared and **nothing ever passed
+one**, so it had never run. The first test to pass it showed that an entry
+whose only memberships the filter EXCLUDED fell through to
+`UNNAMED`/`UNKNOWN` — so asking for identity claims alone reported every ink
+row as *unclaimed ink* and inflated the unnamed bucket by the size of the
+filter. **That is the ABSENT/DECLINED collapse `record.py` exists to prevent,
+inside the index.** Now only an entry with no memberships AT ALL is unnamed;
+one whose claims we declined to look at is skipped.
+
+⚠️ Two existing tests were **rewritten to the new contract, not deleted** (a
+renamed share field, and an index key that gained an element — the behaviour
+each pinned is intact). Five new tests pin the split, including that the
+pooled mean 4.65 — *neither a notehead nor a blob* — can no longer appear.
+`demo-query.txt` regenerated; `separation.json` and `cross_tier.json` do not
+use the query and are unaffected. 34 tests pass; `wiring --check` and
+`capture --check` still exit 0.

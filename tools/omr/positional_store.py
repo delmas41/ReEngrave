@@ -145,6 +145,20 @@ KIND_DETECTOR_CLASS = "detector_class"
 KIND_OVERLAPS = "overlaps"
 #: What a renderer was asked to draw.  TRUE tier only.
 KIND_DRAWN_AS = "drawn_as"
+#: What each kind MEANS, in the output, so a reader of a table does not have
+#: to come here to find out whether a row is an identity or an overlap.
+KIND_MEANING = {
+    "detector_class": "the detector says this IS that class",
+    "overlaps": "a detection merely COVERS part of this ink; not identity",
+    "drawn_as": "the renderer's own answer; cannot be wrong",
+    "unnamed": "nothing claims this ink",
+}
+
+#: ⚠️ NOT A CLAIM — the kind an entry gets when NOTHING claims it, so that
+#: unclaimed ink is a row in its own right rather than sharing a bucket with
+#: claims about other ink.  Named because `PositionIndex` keys on the kind and
+#: `None` would compare equal to itself across every tier and publisher.
+KIND_UNNAMED = "unnamed"
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -483,10 +497,42 @@ class PositionIndex:
             self.entries_indexed += 1
             bk = (vbucket(e.staff_position, self.vbucket_spaces),
                   hbucket(e.bar_fraction, self.hbuckets))
-            names = {m.name for m in e.memberships
+            # ⚠️⚠️ THE KIND IS PART OF THE KEY, AND UNTIL 2026-09-17 IT WAS
+            # NOT -- so a `detector_class` claim ("this IS a notehead") and an
+            # `overlaps` claim ("a notehead's box merely covers part of this
+            # blob") pooled into ONE row per name, and their GEOMETRY pooled
+            # with them.  `Membership`'s own docstring forbids exactly that:
+            # *"`overlaps` is `ink_explained_by`, which its own docstring says
+            # is coverage and NOT an assertion of identity"*.  Measured cost
+            # of the pooling: on Litolff a merged ink blob explained by
+            # `noteheadBlackOnLine` has a median height of 5.29 staff spaces
+            # and a p95 of exactly 12.000 -- the measure cell's own height --
+            # against 1.34 for the real noteheads it was averaged with,
+            # reporting a notehead three times too tall and making a
+            # cross-publisher comparison measure WHICH RECORD WAS GATHERED
+            # WITH INK.  Keying on the kind makes that pooling impossible
+            # rather than merely documented, and throws nothing away: both
+            # rows are returned, each saying which claim it is.
+            pairs = {(m.kind, m.name) for m in e.memberships
                      if self.kinds is None or m.kind in self.kinds}
-            for name in (names or {UNKNOWN}):
-                d = self._c[(e.tier, e.publisher, name)]
+            if not pairs:
+                # ⚠️⚠️ A FILTERED-OUT CLAIM IS NOT AN ABSENT ONE, and the
+                # first cut of the kind key got this wrong: an entry whose
+                # only memberships the `kinds` filter excluded fell through to
+                # `UNNAMED/UNKNOWN`, so asking for `detector_class` alone
+                # reported every ink row as UNCLAIMED INK and inflated the
+                # unnamed bucket by the size of the filter. That is the
+                # ABSENT/DECLINED collapse `record.py` exists to prevent,
+                # inside the index. Only an entry with NO memberships AT ALL
+                # is unnamed; one whose claims we declined to look at is
+                # skipped. ⚠️ Found by the first test ever to pass `kinds` —
+                # the parameter was declared and had NO producer, so this was
+                # unreachable and untested from the day it was written.
+                if e.memberships:
+                    continue
+                pairs = {(KIND_UNNAMED, UNKNOWN)}
+            for kind, name in pairs:
+                d = self._c[(e.tier, e.publisher, kind, name)]
                 if bk not in d:
                     d[bk] = Cell()
                 d[bk].add(e, i)
@@ -519,7 +565,7 @@ class PositionIndex:
         vb = vbucket(staff_position, self.vbucket_spaces)
         hb = hbucket(bar_fraction, self.hbuckets)
         hits: List[Dict[str, Any]] = []
-        for (t, pub, name), d in self._c.items():
+        for (t, pub, kind, name), d in self._c.items():
             if tier is not None and t != tier:
                 continue
             if publisher is not None and pub != publisher:
@@ -565,12 +611,20 @@ class PositionIndex:
                 if not (mh - shape_tolerance * sd <= height_spaces
                         <= mh + shape_tolerance * sd):
                     continue
-            hits.append(dict(tier=t, publisher=pub, name=name,
+            hits.append(dict(tier=t, publisher=pub, kind=kind, name=name,
                              vbucket=vb, hbucket=hb, **j))
-        total = sum(h["count"] for h in hits) or 1
+        # ⚠️ SHARE IS WITHIN A KIND, not across the position.  A detection and
+        # an overlapping ink blob are not competing hypotheses about one
+        # object -- they are different objects -- so a denominator spanning
+        # both answers no question anyone asked, and it silently diluted every
+        # `detector_class` share by however much ink happened to be gathered.
+        per_kind_total: Dict[str, int] = defaultdict(int)
         for h in hits:
-            h["share_of_this_position"] = round(h["count"] / total, 4)
-        hits.sort(key=lambda h: -h["count"])
+            per_kind_total[h["kind"]] += h["count"]
+        for h in hits:
+            h["share_of_this_kind_here"] = round(
+                h["count"] / (per_kind_total[h["kind"]] or 1), 4)
+        hits.sort(key=lambda h: (h["kind"], -h["count"]))
         return {
             "query": dict(staff_position=staff_position, tier=tier,
                           publisher=publisher, bar_fraction=bar_fraction,
@@ -578,6 +632,10 @@ class PositionIndex:
                           hbucket=hb, vbucket_spaces=self.vbucket_spaces),
             "n_candidates": len(hits),
             "observations_here": sum(h["count"] for h in hits),
+            # ⚠️ REPORTED PER KIND, because the total is a sum over
+            # incommensurable claims and is kept only so a caller can see the
+            # split does not lose anything.
+            "per_kind": {k: per_kind_total[k] for k in sorted(per_kind_total)},
             "candidates": hits,
         }
 
@@ -1054,15 +1112,23 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
                     height_spaces=args.height_spaces,
                     bar_fraction=args.bar_fraction)
         print("\nQUERY %s" % json.dumps(r["query"]))
-        print("  %d observations here, %d candidate names"
+        print("  %d observations here, %d candidate rows"
               % (r["observations_here"], r["n_candidates"]))
-        print("  %-26s %7s %7s %9s %9s %5s"
-              % ("name", "n", "share", "mean_h", "sd_h", "eds"))
-        for c in r["candidates"][:12]:
-            print("    %-24s %7d %7.3f %9s %9s %5d"
-                  % (c["name"], c["count"], c["share_of_this_position"],
-                     c.get("mean_height_spaces"), c.get("sd_height_spaces"),
-                     c["editions"]))
+        # ⚠️ GROUPED BY KIND, because a `detector_class` row and an
+        # `overlaps` row are claims about DIFFERENT INK and their geometry may
+        # not be read side by side -- see `PositionIndex._build`.
+        print("  per kind      : %s" % json.dumps(r["per_kind"]))
+        for kind in sorted(r["per_kind"]):
+            rows = [c for c in r["candidates"] if c["kind"] == kind][:12]
+            print("\n  %s  (%s)" % (kind, KIND_MEANING.get(kind, "")))
+            print("    %-24s %7s %7s %9s %9s %5s"
+                  % ("name", "n", "share", "mean_h", "sd_h", "eds"))
+            for c in rows:
+                print("      %-22s %7d %7.3f %9s %9s %5d"
+                      % (c["name"], c["count"],
+                         c["share_of_this_kind_here"],
+                         c.get("mean_height_spaces"),
+                         c.get("sd_height_spaces"), c["editions"]))
     return 0
 
 

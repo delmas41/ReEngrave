@@ -49,7 +49,7 @@ def show(idx, title, **kw):
           % ("name", "n", "share", "mean_h", "sd_h", "eds"))
     for c in r["candidates"][:10]:
         print("  %-26s %7d %8.3f %10s %10s %5d"
-              % (c["name"], c["count"], c["share_of_this_position"],
+              % (c["name"], c["count"], c["share_of_this_kind_here"],
                  c.get("mean_height_spaces"), c.get("sd_height_spaces"),
                  c["editions"]))
 
