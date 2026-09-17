@@ -23,7 +23,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[3]))
 
 from tools.omr.positional_store import (  # noqa: E402
-    UNKNOWN, entries_from_record, identity_of_record, publisher_label, vbucket,
+    entries_from_record, identity_of_record, publisher_label, vbucket,
 )
 
 
