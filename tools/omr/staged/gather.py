@@ -1475,8 +1475,8 @@ def gather_ink(log: Log, cells: Sequence[Any],
     over 221 cells of Litolff Beethoven 5 p.62, staff-line removal clears a
     median 55% of a cell's ink and the largest surviving component holds a
     median 46% of what is left, at 5.6 components per cell. That is reported
-    on the row (`n_components`, `share_of_cell_ink`) rather than repaired, so
-    a consumer can see when it is looking at a merge.
+    on the row (`ink_n_components`, `ink_share_of_cell`) rather than
+    repaired, so a consumer can see when it is looking at a merge.
     """
     if not _ink_enabled():
         return

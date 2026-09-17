@@ -369,13 +369,21 @@ KNOWN_GAPS: Dict[str, str] = {
     #
     # ⚠️ THE KEYS ARE SPELLED OUT AS LITERAL KWARGS AT THE EMIT SITE SO THIS
     # TOOL CAN SEE THEM, and that is itself a finding: this question reads the
-    # AST for literal keyword names, so a key passed as `**detail` is
-    # INVISIBLE to it. `gather_detections` has written `bbox_page_px`,
-    # `x_center_page` and `y_center_page` through a splat since the day page
-    # boxes arrived and this tool has never reported one of them. Widening the
-    # scan to follow a dict built in the same function is ranked next work and
-    # was NOT taken here: it belongs to whoever owns this tool, and it would
-    # surface findings across several gatherers at once.
+    # AST for LITERAL keyword names, so a key passed as `**detail` never
+    # enters the WRITTEN inventory at all -- and a key this tool does not know
+    # is written can never be reported unread, whoever reads it.
+    #
+    # ⚠️ CHECKED EXACTLY, because the first wording of this comment said
+    # "`gather_detections`' `bbox_page_px` has never been reported", which is
+    # true and is the wrong grain: the bare NAME does appear, from gatherers
+    # that spell it out. The blind spot is per `(quantity, key)` PAIR, which
+    # is what this question reports in -- `Q.GLYPH_BOX.bbox_page_px`,
+    # `Q.GLYPH_BOX.x_center_page` and `Q.GLYPH_BOX.category` are absent from
+    # all 138 written pairs, because that gatherer passes them as
+    # `**box_detail`. Widening the scan to follow a dict built in the same
+    # function is ranked next work and was NOT taken here: it belongs to
+    # whoever owns this tool, and it would surface findings across several
+    # gatherers at once.
     #
     # Each entry LEAVES this list the day a decision reads it.
     "DETAIL Q.INK.ink_bbox_canonical": (
@@ -1011,11 +1019,18 @@ def details() -> Dict[str, Any]:
             # the gap entries exist to describe. **The instrument that
             # measures a gap is not a consumer that closes it.**
             #
-            # ⚠️ This module already argues exactly this distinction for the
-            # PRODUCER question: `_tree_of`'s own docstring says collapsing
-            # the three trees "would have reported `roster` as fed the moment
-            # any probe passed one". That reasoning was applied there and not
-            # here.
+            # ⚠️ THE ARGUMENT WAS ALREADY WRITTEN DOWN IN THIS MODULE AND IS
+            # APPLIED NOWHERE. `_tree_of`'s own docstring says collapsing the
+            # three trees "would have reported `roster` as fed the moment any
+            # probe passed one" -- and it was written for the PRODUCER
+            # question, which has since MOVED OUT to `tools/omr/no_producer.py`
+            # (this module's docstring says so). Checked rather than assumed:
+            # `grep -n benchmark tools/omr/no_producer.py` returns one line and
+            # it is a path in a comment, so that tool does not make the
+            # distinction either. So before this line `_tree_of` was reachable
+            # from exactly one caller -- the `test` exclusion below -- and the
+            # `benchmark` branch it defines was dead. ⚠️ Whether the producer
+            # question WANTS it is a separate job and is not decided here.
             #
             # ⚠️⚠️ AND THE FIRST DRAFT OF THIS COMMENT CLAIMED THE CHANGE WAS
             # CONFINED TO THE FOUR `Q.INK` KEYS THAT EXPOSED IT. IT IS NOT,
