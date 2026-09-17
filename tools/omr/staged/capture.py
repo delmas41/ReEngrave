@@ -71,14 +71,27 @@ fragments**: `timeSig3` and `timeSig4`, both at `x = 0.00` — the cell's LEFT
 EDGE — **0.35 and 0.40 staff spaces wide**. `_meter_from_digits` needs two
 stacked digits and a broken barline supplies exactly that.
 
-A POSITION fact refuses it on geometry alone. A time signature is *numerator in
-the upper two spaces, denominator in the lower two, centred on each other* —
-two marks in two halves of the staff, each about a digit's width. The project
-already knows the placement is rigid; that is why `time_signature_locator`
-exists. But the geometry lives INSIDE a template search as a constraint and is
-thrown away: nothing records where the ink stood, so no later stage can
-reconsider it. The `time` family has a SHAPE fact and no POSITION fact, and
-this is what that costs.
+⚠️⚠️ **A POSITION FACT DOES NOT REFUSE IT, AND AN EARLIER DRAFT OF THIS
+PARAGRAPH SAID IT DID — *"refuses it on geometry alone"*. THAT IS WITHDRAWN.**
+Sean, 2026-09-17: *"position is an option for helping us determine something
+but will rarely be a clear rule that determines by itself. 2 numbers not
+connected, one in the upper half and one in the lower half, could be a time
+signature. Due to ink bleed they may appear connected, or other things that we
+can't determine... Quick rules will give us quick results that could be poor."*
+On a bitonal plate bleed fuses two digits into one stroke, so a stroke crossing
+the staff does not disprove a meter — and two fragments in two halves are
+exactly what this broken barline looks like, so that shape does not prove one
+either. **Geometry alone settles neither direction.**
+
+What a position fact DOES is CONTRIBUTE. A time signature's placement is rigid
+— *numerator in the upper two spaces, denominator in the lower two, centred on
+each other* — and the project already knows it, which is why
+`time_signature_locator` exists. But the geometry lives INSIDE a template
+search as a constraint and is thrown away: nothing records where the ink
+stood, so no later stage can weigh it against the ink, the other staves of the
+system, or anything else. The `time` family has a SHAPE fact and no POSITION
+fact, and this is what that costs — **one path missing, not one rule
+missing.**
 
 ## ⚠️ DERIVED WHERE IT CAN BE, DECLARED WHERE IT CANNOT — and the split is stated
 
@@ -192,7 +205,15 @@ DERIVED_FIT = "derived_fit"
 #:
 #: Guarded: every family named here must be in `export.FAMILIES`, and a
 #: position declared for a family whose decision cannot READ it is reported.
-UNSCORED: Dict[str, Tuple[str, str, Optional[str]]] = {
+#:
+#: ⚠️ THE THIRD FIELD TAKES A TUPLE, AND `Q.ARC_POSITION` IS WHY. `slur` and
+#: `tie` are two rows of `export.FAMILIES` reading ONE quantity (`Q.ARC_KIND`)
+#: over ONE piece of ink, and the split between them is an ADJUDICATION. Two
+#: position quantities for one arc would put **two rows from one reader on one
+#: glyph**, which `gather_glyph_families`' own comment names as *"the 'two rows
+#: from one reader are ONE signal' mistake, made by accident"*. So one
+#: quantity names both families it measures. `_families_of` normalises.
+UNSCORED: Dict[str, Tuple[str, str, Any]] = {
     # ── the document's own identity, from the CATALOG rather than the raster ─
     "DOCUMENT_IDENTITY": (
         NOT_A_MARK,
@@ -223,6 +244,85 @@ UNSCORED: Dict[str, Tuple[str, str, Optional[str]]] = {
         "the accidental run's positions, CLEF-FREE — so a run that fits "
         "treble's slots and not bass's is evidence about the CLEF.",
         "key"),
+
+    # ── the eleven that answered it, 2026-09-17 ─────────────────────────────
+    # ⚠️ SYMBOL-SPECIFIC BY INSTRUCTION, not one schema eleven times. Produced
+    # by `positions.py` behind `OMR_FAMILY_POSITIONS` (default OFF) and READ
+    # BY NOTHING — every one is `position_declared_but_unread` below, which is
+    # the honest state of a producer whose first consumer deliberately has not
+    # landed. See `reach.KNOWN_GAPS`.
+    "REST_POSITION": (
+        STAFF_GRID_POSITION,
+        "WHICH SIDE OF WHICH LINE this rest hangs from. A whole rest and a "
+        "half rest are the SAME SHAPE and differ only in that: a whole hangs "
+        "BELOW the second line from the top, a half SITS ON the middle one. "
+        "The attachment is COMPARATIVE (which edge is nearer a line) with "
+        "both residuals recorded, so it carries no threshold.",
+        "rest"),
+    "ARC_POSITION": (
+        STAFF_GRID_POSITION,
+        "the ARC's own ink — `depth_steps` and which side of the staff it "
+        "stands on. ⚠️ Curvature is NOT claimed: a bounding box is identical "
+        "for an arc opening up and one opening down.",
+        ("slur", "tie")),
+    "ARTICULATION_POSITION": (
+        STAFF_GRID_POSITION,
+        "measured above/below/inside — the ruler beside the class name's own "
+        "suffix, recorded so it CAN contradict it.",
+        "articulation"),
+    "FERMATA_POSITION": (
+        STAFF_GRID_POSITION,
+        "the same measurement, APART from the articulation's: a fermata hangs "
+        "over whatever sounds beneath it (most often a whole-bar rest) while "
+        "an articulation attaches to one notehead, so they are two "
+        "distributions and pooling them would average them.",
+        "fermata"),
+    "ORNAMENT_POSITION": (
+        STAFF_GRID_POSITION,
+        "the same again, apart for its own reason: a tremolo rides the STEM "
+        "and its class states no side at all, so position is the only thing "
+        "that ever says which side it is on.",
+        "ornament"),
+    "TUPLET_MARKER_POSITION": (
+        STAFF_GRID_POSITION,
+        "WHERE THE DIGIT STANDS, which for a tuplet is the whole question — "
+        "one `numeral` class covers meters, tuplet digits, fingerings and "
+        "measure numbers, a POSITIONAL distinction. ⚠️ `Q.TUPLET_MARKER` "
+        "records `x0`, `x1`, `x_center` and NO `y` at all.",
+        "tuplet"),
+    "METER_GLYPH_POSITION": (
+        STAFF_GRID_POSITION,
+        "a meter is TWO MARKS, one in each half of the staff, centred on each "
+        "other. `half` is `upper`/`lower`/`spans`/`outside` against the "
+        "staff's own middle line — a pure predicate, no constant. ⚠️ Filed on "
+        "the STAFF with the bar in `detail['cell']`, exactly as `METER_GLYPH` "
+        "is.",
+        "time"),
+    "DYNAMIC_BAND_POSITION": (
+        STAFF_GRID_POSITION,
+        "PROMOTED, not invented: `DYNAMIC_LETTER.band_offset_spaces` is the "
+        "same measurement living as a DETAIL of a SCORED row, which is the "
+        "`band*` grade this table gives it. Staff SPACES below the bottom "
+        "line, because a dynamic is not on the grid at all.",
+        "dynamic"),
+    "WEDGE_BAND_POSITION": (
+        STAFF_GRID_POSITION,
+        "PROMOTED from the `CV_HAIRPINS` half of `WEDGE_BOX`, and MEASURED "
+        "for the DETECTOR half, which never carried one.",
+        "wedge"),
+    "DIRECTION_BAND_POSITION": (
+        STAFF_GRID_POSITION,
+        "the one that is genuinely new — this family has no detector row to "
+        "hang a detail off (`shape: NO`), and its only staff-relative fact is "
+        "`placement`, graded `coarse_band_only` here. The OFFSET separates a "
+        "`cresc.` in the dynamics row from an `Allegro` above the system.",
+        "direction"),
+    "CELL_POSITION_BASIS": (
+        UNIT,
+        "⚠️ NOT A POSITION — the REFUSAL. A cell with no five-line grid (a "
+        "one-line percussion staff) can measure nothing, and the abstention "
+        "is filed ONCE per cell rather than once per mark.",
+        None),
 
     # ── geometry of PLACES, not of marks ────────────────────────────────────
     "STAFF_LINES": (PAGE_GEOMETRY, "the five y positions the grid IS.", None),
@@ -293,6 +393,23 @@ UNSCORED: Dict[str, Tuple[str, str, Optional[str]]] = {
     "KEYSIG_CLEF_FIT": (DERIVED_FIT, "which clef's slot table fits.", None),
     "KEYSIG_TEMPLATE_FIT": (DERIVED_FIT, "the template reader's answer.", None),
 }
+
+
+def _families_of(quantity: str) -> Tuple[str, ...]:
+    """Which families a position quantity measures the ink OF. `()` for none.
+
+    ⚠️ ONE ACCESSOR, because the third field is `str | tuple | None` and three
+    separate call sites read it. A fourth reader that unpacked it its own way
+    is exactly how a table grows two meanings.
+    """
+    fam = UNSCORED.get(quantity, ("", "", None))[2]
+    if fam is None:
+        return ()
+    return (fam,) if isinstance(fam, str) else tuple(fam)
+
+
+def _is_position(quantity: str) -> bool:
+    return UNSCORED.get(quantity, ("", "", None))[0] == STAFF_GRID_POSITION
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -410,84 +527,157 @@ KNOWN_GAPS: Dict[str, str] = {
     # **0.6 MB per Litolff page and 3.1 MB per Breitkopf page**, against
     # records already measured in the hundreds of MB. Noted as the thing to
     # watch, NOT as an argument against.
-    "POSITION time": (
-        "⚠️⚠️ THE MOTIVATING CASE. A time signature's placement is RIGID — "
-        "numerator in the upper two spaces, denominator in the lower two, "
-        "centred on each other — and `time_signature_locator` already relies "
-        "on it, INSIDE a template search, as a constraint that is thrown "
-        "away. Nothing records where the ink stood, so nothing downstream can "
-        "refuse the Litolff p.62 `3/4`: `timeSig3` + `timeSig4` at x=0.00, "
-        "0.35 and 0.40 staff spaces wide, two fragments of ONE BARLINE. "
-        "RANKED FIRST, and it is a GATHER change."),
-    "POSITION rest": (
+    #
+    # ⚠️⚠️ THESE ELEVEN WERE `POSITION <family>` — *"has no staff-grid
+    # position fact of its own"* — UNTIL 2026-09-17, AND THEY CLOSED. Eleven
+    # families now have one (`positions.py`, `OMR_FAMILY_POSITIONS`, default
+    # OFF), so the old entries went STALE and `--check` said so; a closed gap
+    # must LEAVE the list or the list stops describing the pipeline and starts
+    # describing its history. What replaces them is the WEAKER, TRUER finding:
+    # the fact exists and the family's deciding rule does not read it. The
+    # repair changed from *write a reader* to *wire the input you already
+    # have*, and each entry below keeps the reason its predecessor gave for
+    # WHY the position matters, because that argument did not close.
+    #
+    # ⚠️ NOT READING THEM IS DELIBERATE, NOT AN OVERSIGHT. A producer and its
+    # first consumer landing together makes the reach measurement circular —
+    # `gather_ink`'s discipline, one day older. The table's `position` column
+    # therefore still reads NONE for all eleven, and that grading is correct:
+    # nothing has reached a decision.
+    "UNREAD-POSITION Q.METER_GLYPH_POSITION": (
+        "⚠️⚠️ THE MOTIVATING CASE, and the fact now exists. A time "
+        "signature's placement is RIGID — numerator in the upper two spaces, "
+        "denominator in the lower two, centred on each other — and "
+        "`time_signature_locator` already relies on it INSIDE a template "
+        "search, as a constraint thrown away. `Q.METER_GLYPH_POSITION` "
+        "records `half` (upper/lower/spans/outside) against the staff's own "
+        "middle line. ⚠️ `adjudicate_meter` does not read it, so the Litolff "
+        "p.62 fragments are STILL not refused: `_meter_from_digits` asks for "
+        "two digit glyphs at two different `y_center` values and nothing "
+        "else. Wiring that is the repair, and it is an ADJUDICATE change."),
+    "UNREAD-POSITION Q.REST_POSITION": (
         "a rest's vertical slot is its IDENTITY, not decoration: a whole rest "
         "hangs UNDER the 4th line and a half rest sits ON the 3rd, same "
-        "rectangle, different duration. `Q.REST` carries the class and a box "
-        "and no staff-grid position, so `adjudicate_duration` reads the "
-        "class name and nothing else. ⚠️ `OMR_WHOLE_REST_INK` is the shipped "
-        "workaround and its own findings record the cost: on Breitkopf the "
+        "rectangle, different duration. The fact is now recorded — "
+        "`attached_line`, `hangs`, both edge residuals — and "
+        "`adjudicate_duration` still reads the class name and nothing else. "
+        "⚠️ `OMR_WHOLE_REST_INK` remains the shipped workaround, and its own "
+        "findings record the cost this would remove: on Breitkopf its "
         "position witness INVERTS (`slot 20 / neighbour 5` -> `slot 1 / "
         "neighbour 11`) because it is reconstructed per-document from the "
-        "detector's boxes rather than read once from the grid."),
-    "POSITION dynamic": (
-        "MEASURED and in the unusable place. `benchmarks/omr-dynamics-band-"
-        "2026-09` reports 73% of letters in their own staff's band and 24% in "
-        "the band of the staff immediately ABOVE, distance exactly 1, no "
-        "exceptions, with a measured empty interval (-3.04..-0.52 spaces). "
-        "`gather_dynamic_letters` even computes `band_offset_spaces` — as a "
-        "DETAIL of a SCORED row, which is the absorbed-witness shape, and "
-        "`wiring` reports the key unread."),
-    "POSITION direction": (
-        "a direction word carries `placement` (above/below) derived from its "
-        "band, and no staff-grid coordinate. ⚠️ It is a GAP and not an "
-        "exemption: where words fall on a plate — how far clear of the staff, "
-        "where in the bar, on which staff of a system — is exactly the kind "
-        "of distribution an unnamed blob would later be scored against, and "
-        "`placement` is far too coarse to carry it."),
-    "POSITION wedge": (
-        "⚠️ HALF-ANSWERED, and by the reader that was not asked to. The "
-        "`CV_HAIRPINS` rows carry `band_offset_spaces` measured against the "
+        "detector's boxes instead of read once from the grid."),
+    "UNREAD-POSITION Q.DYNAMIC_BAND_POSITION": (
+        "PROMOTED out of the unusable place and not yet read. `benchmarks/"
+        "omr-dynamics-band-2026-09` reports 73% of letters in their own "
+        "staff's band and 24% in the band of the staff immediately ABOVE, "
+        "distance exactly 1, no exceptions, with a measured empty interval "
+        "(-3.04..-0.52 spaces). The number was always computed; what it "
+        "lacked was a row of its own, so `correlated_groups` folded it into "
+        "the glyph's detector term. It now has one. `adjudicate_dynamic` "
+        "still does not read it."),
+    "UNREAD-POSITION Q.DIRECTION_BAND_POSITION": (
+        "the only one of the eleven that is genuinely NEW rather than "
+        "promoted or measured-from-a-box-already-on-the-record — this family "
+        "has no detector row at all (`shape: NO`). Its band offset is what "
+        "separates a `cresc.` standing in the dynamics row from an `Allegro "
+        "con brio` printed clear above the system, which `placement` cannot. "
+        "⚠️ Its REACH is bounded by the OCR rungs: on a machine with neither "
+        "Surya nor Tesseract it is zero, and that zero is the reader's "
+        "absence rather than the page's silence."),
+    "UNREAD-POSITION Q.WEDGE_BAND_POSITION": (
+        "⚠️ WAS HALF-ANSWERED BY THE READER THAT WAS NOT ASKED TO. The "
+        "`CV_HAIRPINS` rows already carried `band_offset_spaces` against the "
         "staff's own bottom line with NO score — the exemplar's shape, by "
-        "accident of that rung working in page pixels per staff. The "
-        "`DETECTOR` rows carry a score and no position. So the family's "
-        "answer depends on which rung fired, which is not an answer."),
-    "POSITION slur": (
-        "an arc is a SPAN and the record has no shape for one (register "
-        "§3.1). `arc_kind` reads `notehead_staff_position` — the NOTES' "
-        "positions, not the arc's — which is the right evidence for the "
-        "tie/slur grammar and says nothing about where the curve is. Where "
-        "arcs sit relative to the staff is a real distribution and nothing "
-        "holds it."),
-    "POSITION tie": (
-        "as `slur` — one quantity (`Q.ARC_KIND`) and one missing record "
-        "shape. ⚠️ It is the sharper half: a tie's two ends are at ONE STAFF "
-        "POSITION BY DEFINITION, and `_pair_ties_in_cell`'s own docstring "
-        "says so while neither pairing rule ever used it — the repair that "
-        "did (`TIE_SAME_POSITION_MAX_SPACES`) reads the flanking NOTEHEADS' "
-        "boxes, not the arc's, because the arc has no position row to read."),
-    "POSITION articulation": (
-        "⚠️⚠️ THE CLASS NAME STATES A SIDE AND THAT IS NOT A POSITION. An "
+        "accident of that rung working in page pixels per staff — while the "
+        "`DETECTOR` rows carried a score and no position, so the family's "
+        "answer depended on which rung fired. Both now produce the same row "
+        "under `READERS.GEOMETRY`. `adjudicate_wedge_anchor` does not read "
+        "it."),
+    "UNREAD-POSITION Q.ARC_POSITION": (
+        "covers BOTH `slur` and `tie`, because they are two families reading "
+        "ONE quantity over ONE piece of ink and two position rows on one "
+        "glyph would be the *two rows from one reader are ONE signal* fault "
+        "made by accident. `adjudicate_arc_kind` reads "
+        "`notehead_staff_position` — the NOTES' positions, the right evidence "
+        "for the grammar and silent about where the curve is. ⚠️ The tie half "
+        "is the sharper one: a tie's two ends are at ONE STAFF POSITION BY "
+        "DEFINITION, `_pair_ties_in_cell`'s own docstring says so, and the "
+        "repair that finally used it (`TIE_SAME_POSITION_MAX_SPACES`) reads "
+        "the flanking NOTEHEADS' boxes because the arc had no position row. "
+        "⚠️ CURVATURE IS STILL MISSING and is not claimed here: a bounding "
+        "box is identical for an arc opening up and one opening down, so "
+        "which end is an END and which the APEX needs the ink."),
+    "UNREAD-POSITION Q.ARTICULATION_POSITION": (
+        "⚠️⚠️ THE CLASS NAME STATES A SIDE AND THAT IS NOT A POSITION — an "
         "earlier draft of this list exempted this family on those grounds and "
-        "the exemption is WITHDRAWN. `side` is DERIVED FROM THE CLASS, so it "
-        "fails together with the classification; and above/below is a BIT "
-        "where the question is a distribution — how many spaces clear of the "
-        "staff a staccato sits on this publisher's plates is what would let "
-        "an unnamed dot be scored, and a side cannot express it."),
-    "POSITION fermata": (
-        "as `articulation`, and CLAUDE.md already records that a fermata's "
-        "side is NOT even the articulation side test: a `fermataAbove` over a "
-        "bar's only rest stands above ink it belongs to. The distribution "
-        "that matters — how far clear of the staff, where in the bar, on "
-        "which staff of a system — has nowhere to be recorded."),
-    "POSITION ornament": (
+        "the exemption was WITHDRAWN. `side` is DERIVED FROM THE CLASS so it "
+        "fails together with the classification, and above/below is a BIT "
+        "where the question is a distribution. `measured_side` and "
+        "`steps_clear_of_staff` are now recorded beside it and can contradict "
+        "it. ⚠️ Whether they DO is unmeasured: nothing compares them, because "
+        "that comparison is a decision with a right to abstain."),
+    "UNREAD-POSITION Q.FERMATA_POSITION": (
+        "as `articulation`, and apart from it on purpose — CLAUDE.md records "
+        "that a fermata's side is not even the articulation side test, since "
+        "a `fermataAbove` over a bar's only rest stands above ink it belongs "
+        "to. Two populations, two distributions; pooling them into one "
+        "quantity would average a mark that attaches to a notehead with one "
+        "that does not."),
+    "UNREAD-POSITION Q.ORNAMENT_POSITION": (
         "as `articulation`, with a hole the side field cannot cover at all: a "
         "TREMOLO's side is `None` because it rides the stem, so for that "
-        "class the class name carries no position of any kind."),
-    "POSITION tuplet": (
-        "`Q.TUPLET_MARKER` carries `x0`/`x1`/`x_center` — a HORIZONTAL span, "
-        "which is what group membership needs — and no vertical slot. A "
-        "tuplet digit is printed clear of the staff on the beam's side, which "
-        "is a staff-relative fact nothing records."),
+        "class the class name carries no position of any kind and the ruler "
+        "is the only thing that does."),
+    "UNREAD-POSITION Q.TUPLET_MARKER_POSITION": (
+        "⚠️ `Q.TUPLET_MARKER` carries `x0`/`x1`/`x_center` — a HORIZONTAL "
+        "span, which is what group membership needs — and NO `y` AT ALL, so "
+        "the position is read from the detections rather than from that row. "
+        "That is reported and NOT silently patched: adding `y` to a shape row "
+        "would change a row this flag must leave byte-identical. ⚠️ The "
+        "family matters more than its size suggests: one `numeral` class "
+        "covers meters, tuplet digits, fingerings AND measure numbers — *a "
+        "POSITIONAL distinction, made by where the digit stands* — and "
+        "`adjudicate_tuplet` fired ZERO times across 286 runs of the "
+        "plumbing matrix."),
+    # ── THE WALKER CANNOT DERIVE A QUANTITY PASSED AS A PARAMETER ──────────
+    #
+    # ⚠️⚠️ REPORTED RATHER THAN DESIGNED AROUND, AND THE ALTERNATIVE WAS
+    # WORSE. `positions.py` funnels its ten quantities through two helpers
+    # (`_observe_step`, `_observe_band`) so that *scoreless, `READERS.
+    # GEOMETRY`, no `derived_from`* is written ONCE — the contract that would
+    # otherwise be restated at ten call sites and drift at one of them. The
+    # cost is that `_ObserveWalker` reads the quantity ARGUMENT and finds a
+    # name rather than a literal, so it cannot attribute the site.
+    #
+    # Inlining `log.observe(g, Q.REST_POSITION, ...)` six times inside one
+    # data-driven loop would make this walker happy and the code worse, which
+    # is BUILDING TO THE INSTRUMENT. The same shape is already accepted one
+    # module over: `wiring` reports `Q.<loop-bound>.promoted_from` for the
+    # same reason and that entry is in ITS gap list.
+    #
+    # ⚠️ WHAT IS LOST, STATED: `by_quantity` cannot confirm that the ten
+    # position quantities are OBSERVED, only that they are DECLARED. What
+    # covers that instead is a measurement on real pages —
+    # `benchmarks/omr-family-positions-2026-09/probe/position_reach.py`,
+    # which counts the rows each family actually produces and exits non-zero
+    # at zero.
+    "UNRESOLVED observe site _observe_step": (
+        "⚠️ `positions.py` — the quantity is a PARAMETER, not a literal. See "
+        "the block comment above this entry: the helper exists so the "
+        "scoreless/GEOMETRY/no-ancestors contract is written once, and the "
+        "reach probe is what confirms the rows exist."),
+    "UNRESOLVED observe site _observe_band": (
+        "as `_observe_step` — the band-frame half of the same helper pair."),
+
+    # ⚠️⚠️ `CROSS-DOCUMENT` LEFT THIS LIST ON 2026-09-17, AND IT LEFT BECAUSE
+    # IT WAS CLOSED. The finding was *nothing accumulates measured geometry
+    # across documents, and `publisher` — the conditioning variable — appears
+    # in NO code in gather.py*. `Q.DOCUMENT_IDENTITY` and
+    # `tools/omr/positional_store.py` closed both halves, and this tool's own
+    # `--check` reported the entry STALE the moment the two branches met. A
+    # closed gap must LEAVE the list or the list stops describing the pipeline
+    # and starts describing its history.
+
     # ── RESOLUTION: a constant DPI over sources of two different kinds ──────
     "RESOLUTION nothing reads the source's native": (
         "⚠️⚠️ `A-INK-2`. `OMR_DPI` is a CONSTANT — 300 on the backend, 600 on "
@@ -776,11 +966,40 @@ class _ObserveWalker(ast.NodeVisitor):
     _RESOLVED = {"common": "DETECTOR"}
 
 
+def _gather_stage_sources() -> List[str]:
+    """The source of every GATHER-stage module. ⚠️ DERIVED, NOT `gather.py`.
+
+    ⚠️⚠️ **THE SECOND INSTRUMENT IN ONE DAY TO HARD-CODE `gather.py` AND GO
+    BLIND WHEN A SECOND GATHER MODULE LANDED.** `wiring.details()` had it as
+    its write-site exclusion, where the consequence was that a second module
+    WRITING a detail key registered as a READ and silently closed a live gap.
+    Here the consequence is the mirror: `positions.py` observes ten quantities
+    and this walk could not see one of them, so `UNSCORED` declared ten
+    position facts that the tool reported as *declared and never observed*.
+
+    Both are the same root — *the set of files that GATHER is a fact about the
+    pipeline, not a constant* — and both now read it from
+    `reach.STAGE_OF_FILE`, which `reach.unaccounted_modules()` already forces
+    to be complete. ⚠️ The import is local because `reach` imports this
+    package too, and both are instruments rather than stages.
+    """
+    from .reach import STAGE_OF_FILE
+    names = sorted(n for n, stage in STAGE_OF_FILE.items()
+                   if stage == "GATHER")
+    out = []
+    for name in names:
+        path = _HERE / name
+        if path.is_file():
+            out.append(path.read_text())
+    return out
+
+
 def observe_sites(source: Optional[str] = None) -> Dict[str, Any]:
-    """Every `log.observe` in `gather.py`, keyed by quantity."""
-    src = source if source is not None else (_HERE / "gather.py").read_text()
+    """Every `log.observe` in a GATHER-stage module, keyed by quantity."""
+    sources = ([source] if source is not None else _gather_stage_sources())
     w = _ObserveWalker()
-    w.visit(ast.parse(src))
+    for src in sources:
+        w.visit(ast.parse(src))
 
     by_q: Dict[str, Dict[str, Any]] = {}
     for s in w.sites:
@@ -1261,11 +1480,10 @@ def families() -> Dict[str, Any]:
         # on "does this decision read A position fact", `slur` and `tie` came
         # out MEASURED off the NOTEHEADS' positions.
         position = [q for q in reads
-                    if UNSCORED.get(q, ("", "", None))[0] == STAFF_GRID_POSITION
-                    and UNSCORED[q][2] == family]
+                    if _is_position(q) and family in _families_of(q)]
         # A position declared for this family that its decision cannot reach.
-        position_unread = [q for q, (k, _r, fam) in UNSCORED.items()
-                           if k == STAFF_GRID_POSITION and fam == family
+        position_unread = [q for q in UNSCORED
+                           if _is_position(q) and family in _families_of(q)
                            and q not in reads]
 
         # ⚠️ REPORTED APART FROM `position`, NEVER FOLDED IN.
@@ -1384,15 +1602,29 @@ def problems(rep: Dict[str, Any]) -> List[str]:
     for r in rep["rows"]:
         if r["position"]:
             continue
+        # ⚠️⚠️ "THERE IS NONE" AND "THERE IS ONE AND NOTHING READS IT" ARE
+        # DIFFERENT FINDINGS AND DIFFERENT REPAIRS — write the adjudicator's
+        # input against wire the input it already has. Until 2026-09-17 they
+        # could not be different, because no family had a position its
+        # decision did not read; `positions.py` landed ten producers with no
+        # consumers and this branch would have gone on reporting *"has no
+        # staff-grid position fact of its own"* about eleven families that now
+        # have one. That is `fixed-then-kept-open-in-prose`, the failure this
+        # repo has recorded three times, arriving inside the instrument built
+        # to catch it. The UNREAD-POSITION finding below is the accurate
+        # report for these rows, so this one stands down rather than
+        # double-counting one fact in two vocabularies.
+        if r["position_declared_but_unread"]:
+            continue
         # ⚠️ THE SHARPEST CASE FIRST, because it is the one that reads as
         # healthy: a family that reads SOMEBODY ELSE'S position fact has the
         # word "position" all over its declaration and still has no ruler on
         # its own ink.
-        borrowed = [q for q in r["reads_gathered"]
-                    if UNSCORED.get(q, ("", "", None))[0] == STAFF_GRID_POSITION]
+        borrowed = [q for q in r["reads_gathered"] if _is_position(q)]
         if borrowed:
-            whose = ", ".join(f"Q.{q} (the `{UNSCORED[q][2]}` family's)"
-                              for q in borrowed)
+            whose = ", ".join(
+                f"Q.{q} (the `{'/'.join(_families_of(q))}` family's)"
+                for q in borrowed)
             extra = f" — it reads {whose}, which is not a fact about its OWN ink"
         elif r["side_in_class_name"]:
             extra = (" — the class name states a SIDE "
@@ -1462,10 +1694,21 @@ def problems(rep: Dict[str, Any]) -> List[str]:
 
     # Every family a position fact names must exist.
     known = {r["family"] for r in rep["rows"]}
-    for q, (kind, _reason, fam) in sorted(UNSCORED.items()):
-        if kind == STAFF_GRID_POSITION and fam not in known:
-            out.append(f"UNRESOLVED Q.{q} names family '{fam}', which is not "
-                       f"in export.FAMILIES")
+    for q in sorted(UNSCORED):
+        if not _is_position(q):
+            continue
+        # ⚠️ A POSITION QUANTITY NAMING NO FAMILY IS ALSO A FINDING. The third
+        # field is what makes "does this decision read A position" into "does
+        # it read ITS OWN", and an empty one silently restores the weaker
+        # question this table grew the field to stop asking.
+        fams = _families_of(q)
+        if not fams:
+            out.append(f"UNRESOLVED Q.{q} is a staff-grid position naming NO "
+                       f"family — say whose ink it measures")
+        for fam in fams:
+            if fam not in known:
+                out.append(f"UNRESOLVED Q.{q} names family '{fam}', which is "
+                           f"not in export.FAMILIES")
 
     # ⚠️ ONE FINDING, NOT ONE PER READER. Every reader is handed the same
     # constant, so this is one repair at the render, not fourteen.

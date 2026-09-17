@@ -125,6 +125,86 @@ KNOWN_GAPS: Dict[str, str] = {
         "ADJUDICATE, because nothing may be filtered at the gather site. "
         "REMOVE THIS ENTRY the day a consumer lands."),
 
+    # ── THE TEN FAMILY POSITIONS + their refusal. OPEN BY DESIGN. ──────────
+    #
+    # ⚠️⚠️ THE SAME DISCIPLINE AS `Q.INK` ONE DAY EARLIER, AND FOR THE SAME
+    # REASON: a producer and its first consumer landing together makes the
+    # reach measurement circular. `positions.py` answers Sean's 2026-09-17
+    # instruction — *"give the families real position information - or if it
+    # should be symbol specific then make it so"* — for the eleven families
+    # `capture.py` graded `position: NONE`, and wires NOTHING to read them.
+    #
+    # ⚠️ EACH ONE'S FIRST CONSUMER IS NAMED, because *UNREAD and unremarked*
+    # is how `Q.STEM` stayed unread through three separate discoveries.
+    # **REMOVE AN ENTRY THE DAY ITS CONSUMER LANDS.**
+    Q.REST_POSITION: (
+        "⚠️ OPEN BY DESIGN — producer only, `OMR_FAMILY_POSITIONS`. FIRST "
+        "CONSUMER: `adjudicate_duration`, which reads a rest's CLASS NAME and "
+        "nothing else, while a whole rest and a half rest are the same shape "
+        "differing only in which line they touch and on which side. Second: "
+        "`OMR_WHOLE_REST_INK`, whose position witness is reconstructed "
+        "per-document from the detector's boxes and INVERTS between two "
+        "publishers."),
+    Q.ARC_POSITION: (
+        "⚠️ OPEN BY DESIGN — producer only. FIRST CONSUMER: "
+        "`adjudicate_arc_kind`, which declares `notehead_staff_position` (the "
+        "NOTES' positions) and has nothing about the curve's own ink. "
+        "`depth_steps` is the geometric half of the tie/slur grammar that "
+        "`OMR_ARC_RECLASS` decides without."),
+    Q.ARTICULATION_POSITION: (
+        "⚠️ OPEN BY DESIGN — producer only. FIRST CONSUMER: "
+        "`adjudicate_articulation_owner`, whose attach rule requires the "
+        "geometry to AGREE with the side the class names — and the side is "
+        "read off that class, so today the two cannot disagree."),
+    Q.FERMATA_POSITION: (
+        "⚠️ OPEN BY DESIGN — producer only. FIRST CONSUMER: "
+        "`adjudicate_fermata_owner`. ⚠️ Its `nearest_in_bar` fallback fired "
+        "ZERO times on the page it was measured on, so this family's own "
+        "reach is the thing to measure before its accuracy."),
+    Q.ORNAMENT_POSITION: (
+        "⚠️ OPEN BY DESIGN — producer only. FIRST CONSUMER: "
+        "`adjudicate_ornament_owner`. The sharpest case is the TREMOLO, whose "
+        "class states no side at all because it rides the stem."),
+    Q.TUPLET_MARKER_POSITION: (
+        "⚠️ OPEN BY DESIGN — producer only. FIRST CONSUMER: "
+        "`adjudicate_tuplet_ratio`, which fired ZERO times across 286 runs of "
+        "the plumbing matrix on fixtures printing explicit tuplets. One "
+        "`numeral` class covers meters, tuplet digits, fingerings and measure "
+        "numbers — *a POSITIONAL distinction, made by where the digit "
+        "stands* — so shape structurally cannot answer this and position is "
+        "the only thing that can."),
+    Q.METER_GLYPH_POSITION: (
+        "⚠️ OPEN BY DESIGN — producer only. FIRST CONSUMER: "
+        "`_meter_from_digits`, which accepts ANY two `timeSig*` glyphs at two "
+        "different `y_center` values — no width, height, x or half test — and "
+        "is how one barline broken into two fragments became the Litolff p.62 "
+        "`3/4` this project cited for weeks."),
+    Q.DYNAMIC_BAND_POSITION: (
+        "⚠️ OPEN BY DESIGN — producer only, and PROMOTED rather than "
+        "invented: the number was already on `Q.DYNAMIC_LETTER` as a detail "
+        "of a SCORED row. FIRST CONSUMER: `adjudicate_glyph_owner`, which "
+        "resolves a contested letter by DISTANCE — a quantity this repo has "
+        "already measured being a coin flip (5-62 px) — where the band says "
+        "24% of letters stand in the band of the staff immediately above, "
+        "distance exactly 1, no exceptions."),
+    Q.WEDGE_BAND_POSITION: (
+        "⚠️ OPEN BY DESIGN — producer only, PROMOTED for the CV rung and "
+        "MEASURED for the detector rung, which never carried one. FIRST "
+        "CONSUMER: `adjudicate_wedge_anchor`."),
+    Q.DIRECTION_BAND_POSITION: (
+        "⚠️ OPEN BY DESIGN — producer only, and the only one of the ten that "
+        "is genuinely NEW: this family has no detector row to promote a "
+        "detail off. FIRST CONSUMER: `adjudicate_direction`, whose only "
+        "staff-relative input today is `placement`, an above/below far too "
+        "coarse to separate a `cresc.` in the dynamics row from an `Allegro` "
+        "above the system."),
+    Q.CELL_POSITION_BASIS: (
+        "⚠️ ABSTAIN-ONLY BY CONSTRUCTION, never observed — it is the REFUSAL "
+        "a cell with no five-line grid files, once, instead of the position "
+        "rows it cannot measure. Same shape as `Q.SYSTEMIC_COLUMN` above. Its "
+        "consumer is a HUMAN reading the record: it is what separates *this "
+        "page prints no rests* from *this staff has one line and no ruler*."),
+
     # ── OPEN FINDINGS. Reported by NO other instrument. Recorded rather than
     #    excused, so `--check` can pass while the finding stays visible.
     Q.STAFF_EXTENT: (
@@ -153,6 +233,12 @@ KNOWN_GAPS: Dict[str, str] = {
 
 STAGE_OF_FILE = {
     "gather.py": "GATHER", "legacy.py": "GATHER",
+    # ⚠️ A GATHER MODULE, and this tool's `unaccounted_modules()` is what
+    # caught it being in neither list on the day it landed — a new staged
+    # module is otherwise silently skipped and every quantity only it reads
+    # reads as UNREAD, which for a module of ten producers would have been a
+    # very plausible-looking table.
+    "positions.py": "GATHER",
     "adjudicate.py": "ADJUDICATE", "groups.py": "ADJUDICATE",
     "evaluate.py": "EVALUATE", "consequences.py": "EVALUATE",
     "infer.py": "INFER", "inferences.py": "INFER",

@@ -462,6 +462,134 @@ class Q(_Vocab):
     #: neither.
     INK = "ink"
 
+    # ── EVERY FAMILY'S OWN POSITION (measurements, scoreless) ───────────────
+    #
+    # ⚠️⚠️ ELEVEN FAMILIES HAD NO POSITION FACT AT ALL, and `capture.py`'s
+    # table is what made that sayable: only `note`, `clef` and `key` graded
+    # `MEASURED`. Sean, 2026-09-17 -- *"give the families real position
+    # information - or if it should be symbol specific then make it so"* --
+    # and the second clause is why these are TEN quantities rather than one
+    # field. A rest's position is WHICH SIDE OF WHICH LINE it hangs from; a
+    # meter's is TWO MARKS, one in each half of the staff; a dynamic's is HOW
+    # FAR BELOW the bottom line, because it is not on the grid at all. One
+    # schema wide enough for all of those would hold none of them well.
+    #
+    # ⚠️ ITS OWN QUANTITY, NEVER A FIELD ON THE SHAPE ROW, for the reason
+    # `CLEF_POSITION` states below at length: `correlated_groups` treats one
+    # reader's rows on one crop as ONE SIGNAL, so a position hung off the
+    # glyph's row is absorbed into that glyph's detector term. The `band*`
+    # grades `capture.py` reports for `dynamic` and `wedge` are that mistake
+    # already made -- a measured, scoreless, staff-relative offset living as
+    # a DETAIL of a scored row. Those two are PROMOTED here, not invented.
+    #
+    # ⚠️⚠️ EVERY ONE OF THESE IS EVIDENCE, NOT A RULE. Sean, 2026-09-17:
+    # *"position is an option for helping us determine something but will
+    # rarely be a clear rule that determines by itself... Quick rules will
+    # give us quick results that could be poor."* They are `Mode.ADDITIVE`
+    # inputs to be weighed against the ink, the other staves and whatever
+    # else a consumer holds -- never a veto, never a gate. Where a
+    # measurement is ambiguous the AMBIGUITY is recorded (`attach_margin`,
+    # `centre_steps_from_middle`, `opens: None`) rather than resolved, because
+    # a mark that could be one thing or two is precisely what a later stage
+    # exists to weigh.
+    #
+    # ⚠️ TWO UNITS ON PURPOSE. `unit` is on every row: marks ON the grid are
+    # in STAFF STEPS from the top line (the `NOTEHEAD_STAFF_POSITION` unit);
+    # marks in the row of the page BELOW the staff are in STAFF SPACES below
+    # the bottom line (the `_band_offset_spaces` / `hairpin_detection` unit).
+    # Giving a `ff` a step coordinate would report it at step 14, a number
+    # that composes across documents and means nothing.
+    #
+    # Produced by `positions.py` behind `OMR_FAMILY_POSITIONS`, default OFF.
+    # ⚠️ READ BY NOTHING, DELIBERATELY -- see `reach.KNOWN_GAPS`. A producer
+    # and its first consumer landing together makes the reach measurement
+    # circular, which is the discipline `gather_ink` shipped under one day
+    # earlier.
+
+    #: A rest's attachment: whole and half rests are THE SAME SHAPE and differ
+    #: only in which line they touch and on which side. No shape fact can
+    #: separate them, which is why the phantom-note census could not and why
+    #: `OMR_WHOLE_REST_INK` -- the one staged rule that DELETES notes -- leans
+    #: on a shape window plus a slot witness instead.
+    REST_POSITION = "rest_position"
+
+    #: The arc's OWN ink. ⚠️ `adjudicate_arc_kind` declares
+    #: `notehead_staff_position`: the NOTES' positions, which is the right
+    #: evidence for the tie/slur grammar and says nothing about where the
+    #: CURVE is. `depth_steps` is what a tie (shallow, hugging its two heads)
+    #: and a slur (arcing clear) differ in.
+    ARC_POSITION = "arc_position"
+
+    #: Measured above/below/inside for an articulation -- the ruler beside the
+    #: class name's own suffix, which is not an independent witness because it
+    #: fails together with the classification it is read off.
+    ARTICULATION_POSITION = "articulation_position"
+
+    #: The same for a fermata. ⚠️ A DIFFERENT QUANTITY FROM THE ARTICULATION'S
+    #: and for the reason `FERMATA_MARK` already gives: an articulation is
+    #: printed against ONE notehead on the side its class names, a fermata
+    #: hangs over whatever sounds beneath it -- most often a whole-bar rest.
+    #: Two populations, two distributions, and pooling them would average
+    #: a mark that attaches with one that does not.
+    FERMATA_POSITION = "fermata_position"
+
+    #: The same for an ornament. ⚠️ Apart again: a tremolo rides the STEM and
+    #: its class states no side at all, so its position is the only thing that
+    #: ever says which side it is on.
+    ORNAMENT_POSITION = "ornament_position"
+
+    #: ⚠️⚠️ WHERE THE DIGIT STANDS, WHICH FOR A TUPLET IS THE WHOLE QUESTION.
+    #: One `numeral` class covers time signatures, tuplet digits, fingerings
+    #: AND measure numbers -- a POSITIONAL distinction made by where the digit
+    #: stands, which DSv2 splits into `tuplet3` / `fingering3` and reproduces
+    #: badly on orchestral pages. `TUPLET_MARKER` records `x0`, `x1`,
+    #: `x_center` and NO `y` AT ALL, so a tuplet's vertical position is
+    #: nowhere on the record today.
+    TUPLET_MARKER_POSITION = "tuplet_marker_position"
+
+    #: Where a meter glyph sits relative to the staff's own middle line. A
+    #: printed meter is TWO marks, one in each half, centred on each other,
+    #: and nothing anywhere measures that today: `_meter_from_digits` asks
+    #: only for two `timeSig*` glyphs at two different `y_center` values, with
+    #: no width, height, x or half test -- which is how the Litolff p.62 `3/4`
+    #: this project cited for weeks came to be ONE BARLINE BROKEN INTO TWO
+    #: FRAGMENTS at the cell's left edge.
+    #:
+    #: ⚠️⚠️ IT CONTRIBUTES; IT DOES NOT DECIDE. Ink bleed fuses a numerator
+    #: and a denominator into one stroke, so `spans` is compatible with a real
+    #: meter -- and two fragments in two halves are what a broken barline also
+    #: looks like. **Neither reading settles anything alone**, and a rule
+    #: treating either as decisive is the quick rule with the poor result.
+    #: `centre_steps_from_middle` is recorded FOR that ambiguity, not to
+    #: resolve it.
+    #:
+    #: ⚠️ FILED ON THE STAFF with the bar in `detail["cell"]`, exactly as
+    #: `METER_GLYPH` is -- a fixture that files it on a GLYPH tests the test.
+    METER_GLYPH_POSITION = "meter_glyph_position"
+
+    #: PROMOTED from `DYNAMIC_LETTER.band_offset_spaces`: the same number, on
+    #: a row of its own so it can be a second witness.
+    DYNAMIC_BAND_POSITION = "dynamic_band_position"
+
+    #: PROMOTED from the `CV_HAIRPINS` half of `WEDGE_BOX.band_offset_spaces`,
+    #: and MEASURED for the detector half, which never carried one.
+    WEDGE_BAND_POSITION = "wedge_band_position"
+
+    #: ⚠️ THE ONE THAT IS GENUINELY NEW, and the family `capture.py` also
+    #: grades `shape: NO` -- a direction word is not in the 208-class space,
+    #: so it has no detector row to hang a detail off. Its only staff-relative
+    #: fact is `placement`, an above/below the reader derives from the band it
+    #: searched, graded `coarse_band_only`: too coarse to carry a
+    #: distribution. The OFFSET separates a `cresc.` standing in the dynamics
+    #: row from an `Allegro con brio` printed clear above the system.
+    DIRECTION_BAND_POSITION = "direction_band_position"
+
+    #: ⚠️ THE REFUSAL, NOT A POSITION. A cell with no five-line grid -- a
+    #: one-line percussion staff -- can measure nothing, and the abstention is
+    #: filed ONCE for the cell rather than once per mark, so the record says
+    #: "this cell has no ruler" instead of reporting one fault twenty times.
+    CELL_POSITION_BASIS = "cell_position_basis"
+
     #: WHICH PRINTING THIS IS -- the edition, its publisher, its work and its
     #: scan type, on the DOCUMENT.
     #:
