@@ -116,12 +116,6 @@ def load_rows(pdf: str, page: int):
     }
 
 
-def spacing_of(rows) -> float:
-    vals = [r.detail["cell_staff_space_px"] / (r.detail["width_spaces"] or 1)
-            for r in rows[:1]]                      # unused; kept explicit
-    return 0.0
-
-
 def page_spacing(pws) -> float:
     """Staff-line spacing in PAGE pixels — the unit a cross-staff column is in.
 

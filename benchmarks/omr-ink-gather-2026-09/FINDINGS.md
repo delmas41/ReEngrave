@@ -94,6 +94,15 @@ needs no model. `probe/ink_reach.py` prints reach before anything else and
 **exits 2 declaring itself DEAD** if the gatherer produced no row — the
 discipline every sibling arm in this repo has and `local_arm.sh` did not.
 
+⚠️ **THE COST THAT IS NOT TIME IS RECORD SIZE, AND IT IS THE ONE A WHOLE-WORK
+RUN WOULD FEEL.** A `Q.INK` row serialises to **529 bytes** (measured over 20
+rows of the unit fixture), so the layer adds roughly **0.6 MB per Litolff page
+and 3.1 MB per Breitkopf page** — and Breitkopf is the expensive one precisely
+because its ink fragments (§3). Over a sixteen-page movement that is ~10 MB and
+~50 MB against records this project already measures in the hundreds of MB.
+**That is a real argument for the flag staying off by default** and for a
+consumer being built before anyone turns it on for a whole work.
+
 ---
 
 ## 3. COMPOSITION — the whole population, nothing removed
