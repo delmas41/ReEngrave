@@ -1338,6 +1338,238 @@ def _stub_cv_lines(log: Log, cells, local, note: str) -> None:
                         reason=ABSTAIN.NOT_IMPLEMENTED, note=note)
 
 
+# ─────────────────────────────────────────────────────────────────────────────
+# The ink — every connected piece of it, named or not
+# ─────────────────────────────────────────────────────────────────────────────
+
+#: `OMR_INK` -- gather one row per connected piece of a cell's ink.
+#:
+#: **Default OFF**, and written as an ALLOW-list so a typo leaves it off:
+#: CLAUDE.md's "A flag's OFF test must follow its DEFAULT", where five shipped
+#: flags had it backwards. Turning it on ADDS ROWS TO EVERY RECORD the staged
+#: pipeline writes, which is the widest blast radius a gather change has, and
+#: every default here is Sean's.
+INK_ENV = "OMR_INK"
+
+#: ⚠️ Glyph indices for ink components, offset past both the detector's
+#: ordinals and `_CV_GLYPH_BASE`, so three readers can never collide in one
+#: cell's key space. A collision would not raise; it would silently merge a
+#: component row and a detection row into one subject.
+_INK_GLYPH_BASE = 200_000
+
+
+def _ink_enabled() -> bool:
+    return os.environ.get(INK_ENV, "0").strip().lower() \
+        in ("1", "true", "yes", "on")
+
+
+def _ink_components(cell: Any):
+    """(x, y, w, h, area) for every connected piece of this cell's ink.
+
+    Read off `cell.image_no_staff` -- the staff-line-erased variant, 0 = ink.
+    NOT off `cell.image`: with the lines in, every mark a line passes through
+    is one component with every other mark on that line, and the population
+    would be five components a cell whatever the page prints.
+    """
+    import cv2
+    import numpy as np
+    img = getattr(cell, "image_no_staff", None)
+    if img is None or getattr(img, "ndim", 0) != 2:
+        return None
+    ink = (img == 0).astype(np.uint8)
+    n, _labels, stats, _cent = cv2.connectedComponentsWithStats(ink, 8)
+    return [tuple(int(stats[i, k]) for k in range(5)) for i in range(1, n)]
+
+
+def _explaining_detections(dets: Sequence[Any], spacing: float
+                           ) -> List[Tuple[float, float, float, float, str]]:
+    """The detections whose BOX is a fair account of the ink inside it.
+
+    ⚠️ A DETECTION WIDER THAN A GLYPH CAN BE IS EXCLUDED, and the constant is
+    IMPORTED from `direction_text.BandConfig.max_blank_width_spaces` rather
+    than restated -- the same rule, measured for the same reason, and this
+    repo has paid twice for two copies of one number. A `staff` box is 26.6
+    staff spaces wide and a `slur` box is the rectangle its arc travels
+    through; both are mostly paper, so counting them as an account of the ink
+    they enclose would report EVERY component of a cell as explained. Measured
+    on Litolff p.62 cell 6 before the rule was applied: all seventeen staves'
+    printed `3/4` read as fully covered, by the `staff` box.
+    """
+    from ..direction_text import DEFAULT_BAND_CONFIG
+    cut = DEFAULT_BAND_CONFIG.max_blank_width_spaces * spacing
+    out = []
+    for d in dets:
+        if d.width_canonical > cut:
+            continue
+        out.append((float(d.x_canonical), float(d.y_canonical),
+                    float(d.x_canonical + d.width_canonical),
+                    float(d.y_canonical + d.height_canonical),
+                    d.smufl_name))
+    return out
+
+
+def _coverage(box: Tuple[int, int, int, int],
+              boxes: Sequence[Tuple[float, float, float, float, str]]):
+    """What share of this component's box the detections account for, and who.
+
+    ⚠️ THE UNION, NOT A SUM. Two overlapping detections over one component
+    must not add up to more than the component, and on a scan they routinely
+    overlap -- the same notehead survives NMS as three rows at IoU 0.91-0.96
+    on the staged path, which `gather_detections` records and does not fix.
+    """
+    import numpy as np
+    x, y, w, h = box
+    if w <= 0 or h <= 0:
+        return 0.0, ()
+    mask = np.zeros((h, w), dtype=bool)
+    who: List[str] = []
+    for (bx0, by0, bx1, by1, name) in boxes:
+        ix0, iy0 = max(x, bx0), max(y, by0)
+        ix1, iy1 = min(x + w, bx1), min(y + h, by1)
+        if ix1 <= ix0 or iy1 <= iy0:
+            continue
+        mask[int(iy0) - y:int(iy1) - y, int(ix0) - x:int(ix1) - x] = True
+        who.append(name)
+    return float(mask.sum()) / float(w * h), tuple(sorted(set(who)))
+
+
+def gather_ink(log: Log, cells: Sequence[Any],
+               local: Dict[int, Tuple[int, int]],
+               detections: Dict[str, List[Any]], *,
+               progress: bool = False) -> None:
+    """Every connected piece of ink in every cell, whether or not it is named.
+
+    ⚠️⚠️ THIS IS THE BASE LAYER, NOT A SUPPLEMENT, AND THE DISTINCTION IS
+    SEAN'S. `A-DUR-5`, 2026-09-09: *"I really don't want to lose the 'here is
+    a blob of ink but we don't know what it is' gather data point. It can be
+    used in every decision point ... this is the same unrecognizable blob on
+    every system at bar 51 ... or we know what this blob is in 3 of the 10
+    systems and they all line up."* And 2026-09-17, on what the population
+    is: *"ink is ink. There is nothing that should be classified as unseen -
+    only unclassified."* Every other measurement in GATHER starts from a
+    DETECTION, so until this rung the record's population was the detector's
+    output and ink it did not fire on produced no row at all.
+    THE POWER IS ALIGNMENT: unnamed ink at one column across many staves is a
+    printed event whatever it is, and where a few staves classify it the
+    minority names what the majority corroborates.
+
+    ⚠️ IT DECIDES NOTHING AND IT FILTERS NOTHING. Staff-line residue,
+    barlines, stems, page edges and scanner speckle all get a row, because a
+    threshold applied here is a decision taken in the wrong stage and the one
+    kind that cannot be revisited -- a row that was never created is evidence
+    no later rule can reconsider. Sean, 2026-09-17: *"even staff residue
+    should go through the process and hopefully our rules and measurements
+    will determine at the appropriate stage that it is just that."* The row
+    carries the shape and the detector coverage so a later rule can NAME the
+    residue; naming it is that rule's job, not this one's.
+
+    ⚠️ THE PAGE FRAME IS THE POINT. A canonical x is measured inside one cell
+    rescaled so the staff span is constant, so two staves' canonical x are not
+    the same quantity -- `Q.ONSET_COLUMN` reported 1,062 columns of nothing
+    before page pixels arrived, and this quantity's whole purpose is a
+    cross-staff column. A cell that cannot supply a page frame gets
+    `frame_note` and NO page fields, declined rather than defaulted.
+
+    ⚠️ A COMPONENT IS A PIECE OF INK, NOT A MARK. On a scan a notehead merges
+    with its ledger line and a staff-line remnant bridges two glyphs. Measured
+    over 221 cells of Litolff Beethoven 5 p.62, staff-line removal clears a
+    median 55% of a cell's ink and the largest surviving component holds a
+    median 46% of what is left, at 5.6 components per cell. That is reported
+    on the row (`n_components`, `share_of_cell_ink`) rather than repaired, so
+    a consumer can see when it is looking at a merge.
+    """
+    if not _ink_enabled():
+        return
+    for c in cells:
+        key = local.get(c.staff_index)
+        if key is None:
+            continue
+        sys_idx, st_idx = key
+        sub = R.cell(c.page_index, key[0], key[1], c.measure_index)
+        frame = frame_cell(c.measure_index)
+
+        comps = _ink_components(c)
+        if comps is None:
+            # ⚠️ The erased variant is missing, which `prepare_pages` calls
+            # "not optional" -- and `line_detection` SILENTLY falls back to
+            # `cell.image` in the same situation. Refusing by name is what
+            # keeps a whole-rung failure from reading as a blank page.
+            log.abstain(sub, Q.INK, reader=READERS.CV_INK, frame=frame,
+                        reason=ABSTAIN.NO_MASK,
+                        note="cell carries no image_no_staff")
+            continue
+        if not comps:
+            log.abstain(sub, Q.INK, reader=READERS.CV_INK, frame=frame,
+                        reason=ABSTAIN.NO_INK)
+            continue
+
+        # ⚠️ THE UNIT IS THE CELL'S OWN, NOT THE PAGE'S, and not the nominal
+        # `CANONICAL_STAFF_SPAN_PX / 4`. `_upscale_to_canonical` scales a
+        # too-wide cell by WIDTH, so on one engraved fixture 184 of 368 cells
+        # read 100 px per space and the other 184 read 38.5-56 -- which is why
+        # `Q.CELL_STAFF_SPACE` exists as a quantity at all. Taken from
+        # `_cell_grid`, the one spelling of this measurement.
+        grid = _cell_grid(c)
+        spacing = grid[1] * 2.0 if grid else None
+        dets = detections.get(sub.to_key(), ())
+        boxes = _explaining_detections(dets, spacing) if spacing else []
+        total_ink = float(sum(a for (_x, _y, _w, _h, a) in comps)) or 1.0
+        up = getattr(c, "upscale_factor", None)
+        cell_box = getattr(c, "bbox_page_px", None)
+        page_ok = bool(up) and bool(cell_box) and len(cell_box or ()) == 4
+
+        for i, (x, y, w, h, area) in enumerate(comps):
+            cov, who = _coverage((x, y, w, h), boxes)
+            g = R.glyph(c.page_index, sys_idx, st_idx, c.measure_index,
+                        _INK_GLYPH_BASE + i)
+            # ⚠️ THE OPTIONAL HALF GOES THROUGH A SPLAT AND THE REST DOES NOT,
+            # AND THAT IS DELIBERATE. `wiring.py`'s DETAIL question reads the
+            # AST for LITERAL keyword names, so a key passed as `**detail` is
+            # invisible to it -- which is why `gather_detections`' own
+            # `bbox_page_px` has never been reported. Every key this reader
+            # ALWAYS writes is spelled out below so the tool can say that
+            # nothing reads it, because nothing does: `Q.INK` ships with no
+            # consumer on purpose (see `benchmarks/omr-ink-gather-2026-09`).
+            # The conditional keys stay in the splat because they are DECLINED
+            # by omission, which is this module's rule and cannot be expressed
+            # as a literal kwarg.
+            optional: Dict[str, Any] = {}
+            if spacing:
+                optional.update(width_spaces=round(w / spacing, 3),
+                                height_spaces=round(h / spacing, 3),
+                                cell_staff_space_px=round(spacing, 2))
+            else:
+                optional["frame_note"] = "cell has no staff-space unit"
+            if page_ok:
+                px0 = cell_box[0] + x / up
+                py0 = cell_box[1] + y / up
+                px1 = cell_box[0] + (x + w) / up
+                py1 = cell_box[1] + (y + h) / up
+                optional.update(bbox_page_px=[px0, py0, px1, py1],
+                                x_center_page=(px0 + px1) / 2.0,
+                                y_center_page=(py0 + py1) / 2.0)
+            else:
+                optional["frame_note"] = (
+                    "no page box: cell has no bbox_page_px/upscale_factor")
+            log.observe(
+                g, Q.INK, "ink", reader=READERS.CV_INK, frame=frame,
+                ink_bbox_canonical=[x, y, x + w, y + h],
+                ink_area_px=int(area),
+                ink_fill=round(area / float(w * h), 4),
+                ink_n_components=len(comps),
+                ink_share_of_cell=round(area / total_ink, 4),
+                # ⚠️ The COVERAGE, never a verdict about it. `explained_by`
+                # names the classes whose boxes overlap; it does NOT claim the
+                # component IS one of them, and on this corpus it frequently
+                # is not -- `arpeggiato` fires 98 and 86 times on two pages as
+                # "a stem or a barline".
+                ink_detector_coverage=round(cov, 4),
+                ink_explained_by=list(who),
+                **optional)
+        if progress:
+            print(f"  gather ink {sub.to_key()}: {len(comps)}")
+
+
 def gather_detector_beams(log: Log, detections: Dict[str, List[Any]]) -> None:
     """The DETECTOR's beam boxes, kept as rows beside the CV strokes.
 
@@ -2951,6 +3183,13 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
         gather_dynamic_letters(log, pws, cells, local, detections)
         gather_wedge_boxes(log, pws, cells, local, detections)
         gather_cv_lines(log, cells, local)
+        # ⚠️ AFTER detection, because a component's row records how much of it
+        # the detections account for -- the same edge `gather_direction_words`
+        # has and for the same reason. BESIDE `gather_cv_lines` because the
+        # two read the SAME erased image, which `READERS.CV_INK` states so a
+        # consumer cannot mistake them for independent witnesses. Off by
+        # default -- see `INK_ENV`.
+        gather_ink(log, cells, local, detections, progress=progress)
         gather_detector_beams(log, detections)
         gather_clef(log, cells, local, detections)
         gather_clef_locator(log, pws, cells, local, detections)

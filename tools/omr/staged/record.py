@@ -426,6 +426,41 @@ class Q(_Vocab):
     ORNAMENT_MARK = "ornament_mark"
     WEDGE_BOX = "wedge_box"                  # hairpin ink
     DYNAMIC_LETTER = "dynamic_letter"        # one letter, before spelling
+    #: ONE CONNECTED PIECE OF INK in a measure cell, named or not.
+    #:
+    #: ⚠️⚠️ IT IS THE POPULATION THE OTHER MEASUREMENTS ARE A CLASSIFICATION
+    #: OF, AND THAT IS THE WHOLE POINT. Every other row in this section starts
+    #: from a DETECTION, so GATHER's population has always been the detector's
+    #: output rather than the page's ink -- and ink the detector did not fire
+    #: on produced no row at all. Sean, 2026-09-17: *"We can only gather what
+    #: we see. We may or may not be able to classify it correctly initially -
+    #: or at all - but ink is ink. There is nothing that should be classified
+    #: as unseen - only unclassified."* A record that holds no row where the
+    #: page holds ink says ABSENT where the truth is DECLINED, which is the
+    #: one collapse this module exists to prevent, happening to the ink itself.
+    #:
+    #: ⚠️ MEASURED, AND IT IS NOT REACHABLE FROM THE DETECTION RECORD.
+    #: Litolff Beethoven 5 p.62 prints a `3/4` on all seventeen staves at one
+    #: bar; the detector fires no `timeSig*` glyph there on ANY of them. There
+    #: is no unclassified DETECTION to re-weight -- the ink was never detected
+    #: -- so this is a raster pass, and the precedent it reuses is
+    #: `direction_text._blank_detections`, which already subtracts every
+    #: detection from a page's ink so "find the text" becomes "find the ink".
+    #:
+    #: ⚠️ A PIECE OF INK IS NOT A MARK, and the row says so rather than
+    #: pretending otherwise. Print bleeds: on a scan a notehead merges with
+    #: its ledger line and a staff-line remnant can bridge two glyphs, so one
+    #: component may be several marks and one mark may be several components.
+    #: Which it is belongs to a later stage; GATHER decides nothing.
+    #:
+    #: ⚠️ NOTHING IS FILTERED. No size gate, no shape gate, no confidence cut
+    #: -- staff-line residue, barlines, stems and scanner speckle all get a
+    #: row. A threshold here is a DECISION taken in the wrong stage and it is
+    #: the one kind that cannot be revisited: a row that was never created is
+    #: evidence no later rule can reconsider. `detail` carries the shape and
+    #: the detector coverage so a rule can weigh them; this reader applies
+    #: neither.
+    INK = "ink"
 
     # ── header readings (measurements) ──────────────────────────────────────
     CLEF_GLYPH = "clef_glyph"                # detector's clef, with frame
@@ -694,6 +729,19 @@ class READERS(_Vocab):
     #: Filing them together would collapse two genuinely independent readings
     #: of the same band into one.
     CV_HAIRPINS = "cv_hairpins"              # hairpin_detection: wedge ink
+    #: `gather_ink` -- connected components of a cell's ink.
+    #:
+    #: ⚠️⚠️ IT IS NOT INDEPENDENT OF `CV_LINES` AND A CONSUMER MUST NOT COUNT
+    #: THEM AS TWO WITNESSES. This rung reads the SAME image `line_detection`
+    #: reads -- `cell.image_no_staff`, the staff-line-erased cell -- so a stem
+    #: this reader reports as a tall thin component and a stem `CV_LINES`
+    #: reports are ONE reading of ONE crop wearing two names. It is a separate
+    #: READER name only because it answers a different question (where is the
+    #: ink) from a different algorithm (components, not morphology), which is
+    #: what makes the rows separately interpretable; it is emphatically NOT
+    #: the `CV_HAIRPINS` case one line up, where the two rungs read different
+    #: images and the independence is real.
+    CV_INK = "cv_ink"                        # gather_ink: connected components
     CV_HEADER = "cv_header"                  # header_ink
     TEMPLATE = "template"                    # symbol_library NCC matching
     GEOMETRY = "geometry"                    # staff_detector / measure_extractor

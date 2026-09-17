@@ -303,6 +303,68 @@ KNOWN_GAPS: Dict[str, str] = {
         "record of which side of it a row came from."),
     "DETAIL Q.BEAM_STROKE.staff_lines_erased":
         "as `Q.<loop-bound>.staff_lines_erased`.",
+    # ── DETAIL, Q.INK — a PRODUCER shipped deliberately without a consumer
+    #
+    # ⚠️⚠️ THESE SEVEN ARE OPEN BY DESIGN AND MUST NOT BE READ AS AN OVERSIGHT.
+    # `gather_ink` (flag `OMR_INK`, default OFF) is the base ink layer Sean
+    # asked for in `ASSUMPTIONS.md` A-DUR-5; it was built as the PRODUCER
+    # ONLY, and no decision was wired to it in the same change, deliberately.
+    # The reason is that the deliverable of that job is a REACH MEASUREMENT —
+    # does unnamed ink line up across staves, against a null — and a consumer
+    # landing in the same change would make that measurement unfalsifiable,
+    # since a rule reading the rows would move the very numbers being used to
+    # decide whether the rows are worth having.
+    #
+    # ⚠️ THE KEYS ARE SPELLED OUT AS LITERAL KWARGS AT THE EMIT SITE SO THIS
+    # TOOL CAN SEE THEM, and that is itself a finding: this question reads the
+    # AST for literal keyword names, so a key passed as `**detail` is
+    # INVISIBLE to it. `gather_detections` has written `bbox_page_px`,
+    # `x_center_page` and `y_center_page` through a splat since the day page
+    # boxes arrived and this tool has never reported one of them. Widening the
+    # scan to follow a dict built in the same function is ranked next work and
+    # was NOT taken here: it belongs to whoever owns this tool, and it would
+    # surface findings across several gatherers at once.
+    #
+    # Each entry LEAVES this list the day a decision reads it.
+    "DETAIL Q.INK.ink_bbox_canonical": (
+        "the component's box in the CELL's own canonical frame, beside the "
+        "page-frame one. Kept because a cell-local consumer (a residue rule, "
+        "which compares a component against this cell's own staff-line rows) "
+        "wants the frame the rows are measured in, and converting back from "
+        "page pixels would reintroduce the rounding the cell already paid."),
+    "DETAIL Q.INK.ink_area_px": (
+        "ink pixels in the component, as against the AREA OF ITS BOX. The "
+        "pair is the discriminator a residue rule needs and neither half is "
+        "enough: a staff-line remnant and a beam are both wide and flat, and "
+        "what separates them is how densely they fill the rectangle."),
+    "DETAIL Q.INK.ink_fill": (
+        "`area / (w*h)`, derived here so a consumer cannot get the division "
+        "wrong. Same role as `direction_text.BandConfig.min_fill_ratio`, "
+        "which is the test a SLUR fails — recorded, never applied."),
+    "DETAIL Q.INK.ink_n_components": (
+        "how many components this cell yielded, carried on every row of it. "
+        "⚠️ IT IS THE MERGE WARNING. On a scan, print bleed and staff-line "
+        "residue glue marks together: measured over 221 cells of Litolff "
+        "Beethoven 5 p.62 the median cell yields FOUR components and the "
+        "largest holds a median 46% of the cell's remaining ink. A consumer "
+        "reading a component as a MARK needs to be able to see when the cell "
+        "it came from cannot support that reading."),
+    "DETAIL Q.INK.ink_share_of_cell": (
+        "this component's share of its cell's ink — the per-row half of "
+        "`ink_n_components`. A component holding 0.9 of a cell is a merge, "
+        "whatever its shape says."),
+    "DETAIL Q.INK.ink_detector_coverage": (
+        "what fraction of the component's box the NON-SPAN detections cover. "
+        "⚠️ A MEASUREMENT, NOT A VERDICT, and the whole point of the layer: "
+        "ink is ink, and whether it is named is an attribute that may be "
+        "absent and may later be revised. Sean, 2026-09-17: *\"There is "
+        "nothing that should be classified as unseen - only unclassified.\"*"),
+    "DETAIL Q.INK.ink_explained_by": (
+        "the classes whose boxes overlap the component. ⚠️ It does NOT claim "
+        "the component IS one of them: `arpeggiato` fires 98 and 86 times on "
+        "two pages of this corpus as 'a stem or a barline', so the name is "
+        "evidence about the DETECTOR as much as about the ink."),
+
     "DETAIL Q.STAFF_LINES.page_staff_index": (
         "the RASTER's own staff index — the join key back to `pws.staves`. "
         "Nothing downstream joins that way today; every consumer goes "
