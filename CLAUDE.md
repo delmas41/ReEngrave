@@ -57,8 +57,21 @@ including the **two GATHER divergences it found and deliberately did not
 change**, and the **`ff` 47 → 39 that is an unadjudicated COST and not a win**.
 
 ⚠️ **START HERE IF YOU ARE PICKING THIS UP:**
+[docs/handoff-2026-09-16-abstains-and-misreads-was-already-there.md](docs/handoff-2026-09-16-abstains-and-misreads-was-already-there.md)
+— **the newest, and short: a pointer, not a session.** ⚠️⚠️ **THE CLAIM BELOW
+THAT NEITHER DOCUMENT ON THIS MACHINE ABSTAINS *AND* MISREADS WAS REFUTED THE
+SAME DAY, BY LOOKING RATHER THAN GATHERING.** `p0p3` (Breitkopf Brahms 1 mvt 1)
+has had both halves the whole time, in 11 of 11 committed arms across 5
+generations — `system/0/0` misreads `C` for the dossier's 6/8, `system/3/0`
+abstains, carried from it, refused at support −8.0. **It still does not price
+the flip**: the sharper finding is that the bars already name the right
+LENGTH (3.0 = 6/8) and abstain on the FORM, because the only system to borrow
+a spelling from is the one that misread `C` — **the misread poisons the
+borrow**, and that is the blocker now, not a missing corpus.
+[FINDINGS](benchmarks/omr-meter-abstain-and-misread-2026-09/FINDINGS.md).
+Its predecessor
 [docs/handoff-2026-09-16-the-fourth-stage-and-the-second-publisher.md](docs/handoff-2026-09-16-the-fourth-stage-and-the-second-publisher.md)
-— **the newest.** **THE FOURTH STAGE EXISTS** (`OMR_INFER`, default off, its
+— **THE FOURTH STAGE EXISTS** (`OMR_INFER`, default off, its
 five disciplines enforced by the HARNESS rather than described) — and **its
 REACH NUMBER is the finding: 357 narrowed durations yielded 7**, which is the
 stage answering the question the cleanup count was meant to answer. The
@@ -68,16 +81,11 @@ check** that flagged its own author's scope trap as LATENT *before the line
 existed*. **`OMR_WHOLE_REST_INK` is default ON by Sean's call** — the one rule
 that DELETES notes, and the second-publisher pricing of it is in flight.
 ⚠️ **The 09-15 handoff's §11 is CLOSED**: both shared staged records exist
-(`library/_shared-records/`, md5-receipted and tagged). ⚠️⚠️ **And
-`OMR_METER_CARRY`'s blocker is NAMED at last and it is the CORPUS** — the flag
-needs a document that ABSTAINS *and* MISREADS, and **neither document on this
-machine does both** (Litolff abstains but reads its one meter right;
-Breitkopf misreads but abstains nowhere), so its cost side is STILL UNPRICED
-at reach ZERO. ⚠️⚠️ **READ ITS §7 BEFORE DISPATCHING ANYTHING: three briefs
-were overtaken by work already on main in one session** — a branch already
-merged, a check a sibling had already built, and a gather already run — so
-`git log --all -S` and `origin/main` are a measurement to take, not a
-courtesy. Its predecessor
+(`library/_shared-records/`, md5-receipted and tagged). ⚠️⚠️ **READ ITS §7
+BEFORE DISPATCHING ANYTHING: three briefs were overtaken by work already on
+main in one session** — a branch already merged, a check a sibling had already
+built, and a gather already run — so `git log --all -S` and `origin/main` are a
+measurement to take, not a courtesy. Its predecessor
 [docs/handoff-2026-09-15-six-jobs-in-parallel.md](docs/handoff-2026-09-15-six-jobs-in-parallel.md)
 — Six agents were run down the ranked list of the handoff below
 and **five landed**: the part join goes **75 fragments → 37 parts with 12 grafts
