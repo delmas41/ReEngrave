@@ -185,12 +185,10 @@ ARMS = [
 
     # ── the frames are NAMED, so a consumer cannot mix two units ───────────
     ("the_band_row_is_filed_in_the_cell_frame", POSITIONS,
-     '    return log.observe(subject, quantity, float(core["_centre"]),\n'
-     "                       reader=READERS.GEOMETRY, frame=G.FRAME_PAGE,\n"
-     "                       **detail)",
-     '    return log.observe(subject, quantity, float(core["_centre"]),\n'
-     "                       reader=READERS.GEOMETRY, frame='cell/0',\n"
-     "                       **detail)",
+     "                       reader=READERS.GEOMETRY, frame=G.FRAME_PAGE, "
+     "**detail)",
+     "                       reader=READERS.GEOMETRY, frame='cell/0', "
+     "**detail)",
      "test_a_band_row_names_the_band_unit_and_is_in_page_pixels"),
 
     ("the_two_frames_share_one_unit_name", POSITIONS,

@@ -333,6 +333,22 @@ class TestEachFamilyGetsItsOwnFact(unittest.TestCase):
         self.assertLess(upper["centre_steps_from_middle"], 0)
         self.assertGreater(lower["centre_steps_from_middle"], 0)
 
+    def test_the_half_is_cut_at_the_MIDDLE_LINE_and_not_some_other_step(self):
+        """⚠️⚠️ A TEST GAP THE MUTATION BATTERY FOUND. The pair above touches
+        the middle line from both sides, so it stays correct for ANY cut in
+        [4.0, 8.0] — an arm moving the constant to 6.0 survived it. These two
+        boxes sit WHOLLY inside one half and change their answer the moment
+        the cut moves off the middle line, which is what makes the constant
+        testable rather than merely present."""
+        lower = self._detail(_Det("timeSig4", top_step=4.5, bottom_step=5.5),
+                             Q.METER_GLYPH_POSITION)
+        upper = self._detail(_Det("timeSig3", top_step=2.5, bottom_step=3.5),
+                             Q.METER_GLYPH_POSITION)
+        self.assertEqual(lower["half"], "lower")
+        self.assertEqual(upper["half"], "upper")
+        self.assertEqual(POS.MIDDLE_LINE_STEP, 4.0)
+        self.assertEqual(POS.BOTTOM_LINE_STEP, 8.0)
+
     def test_a_tuplet_digit_says_whether_it_clears_the_staff(self):
         over = self._detail(_Det("tuplet3", top_step=-4.0, bottom_step=-2.0),
                             Q.TUPLET_MARKER_POSITION)
@@ -391,26 +407,43 @@ class TestTheTwoFramesAreNamedOnEveryRow(unittest.TestCase):
                          .detail["unit"], POS.UNIT_STEP)
 
     def test_a_band_row_names_the_band_unit_and_is_in_page_pixels(self):
+        """⚠️⚠️ THE LITERAL, NOT THE CONSTANT — a mutation arm that set
+        `UNIT_BAND` equal to `UNIT_STEP` SURVIVED an earlier version of this,
+        because `assertEqual(detail["unit"], POS.UNIT_BAND)` compares the
+        constant with itself. That is the vacuous-assertion family this repo
+        records at length, arriving in a test written to prevent exactly the
+        confusion it then could not see. The two units must DIFFER and each
+        must be the string it claims to be."""
         cell = _Cell()
         dets = {_key(cell): [_Det("dynamicF", top_step=12.0,
                                   bottom_step=14.0)]}
         row = _one(_run([cell], dets), Q.DYNAMIC_BAND_POSITION)
-        self.assertEqual(row.detail["unit"], POS.UNIT_BAND)
+        self.assertEqual(row.detail["unit"], "staff_spaces_below_bottom_line")
+        self.assertNotEqual(POS.UNIT_BAND, POS.UNIT_STEP)
         self.assertEqual(row.frame, G.FRAME_PAGE)
 
     def test_the_band_value_is_spaces_below_the_bottom_line(self):
         """Hand-derived: the staff fixture's bottom line is page y 2100 with
-        25 px spacing, so a mark centred at 2150 is +2.0 spaces below it."""
+        25 px spacing, so a mark spanning page y 2125..2175 is centred +2.0
+        spaces below it and runs from +1.0 to +3.0.
+
+        ⚠️ ALL THREE ARE ASSERTED, and the battery is why: an arm that
+        restated `_band_offset_spaces` for the TOP edge only survived a
+        version of this test that checked `row.value` alone. A helper used
+        three times needs all three answers checked, or two thirds of it is
+        untested."""
         cell = _Cell()
         det = _Det("dynamicF", top_step=0.0, bottom_step=1.0)
-        # place the page box directly: centre at page y 2150
-        det.y_canonical, det.height_canonical = 0.0, 100.0
+        det.y_canonical, det.height_canonical = 25.0, 50.0
         det.y_center = 50.0
         cell.bbox_page_px = (1000, 2100, 1400, 2300)
         cell.upscale_factor = 1.0
         row = _one(_run([cell], {_key(cell): [det]}),
                    Q.DYNAMIC_BAND_POSITION)
         self.assertAlmostEqual(row.value, 2.0, places=6)
+        self.assertAlmostEqual(row.detail["top_spaces"], 1.0, places=6)
+        self.assertAlmostEqual(row.detail["bottom_spaces"], 3.0, places=6)
+        self.assertAlmostEqual(row.detail["height_spaces"], 2.0, places=6)
 
 
 class TestTheGridIsRequiredAndItsAbsenceIsRecordedOnce(unittest.TestCase):
