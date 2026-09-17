@@ -276,6 +276,31 @@ class TestReconciledWithUNSCORED(unittest.TestCase):
         self.assertEqual(capture.unaccounted(hit), [])
         self.assertNotIn(CLAIM.IDENTIFICATION, CLAIM_OF_UNSCORED["relation"])
 
+    def test_an_undeclared_quantity_REACHES_capture_check(self):
+        """⚠️⚠️ FOUND BY THE MUTATION BATTERY, NOT BY REVIEW. Deleting the
+        hard tier's line from `capture.problems()` survived the first run:
+        `claims_unaccounted()` is at ZERO, so today that line contributes
+        nothing and removing it changes no output — an EQUIVALENT MUTANT under
+        current data and a real hole under any other. Nothing asserted that an
+        undeclared quantity actually reaches `--check`; the hard tier could
+        have been silently unwired and the suite stayed green.
+        """
+        original = dict(CLAIMS)
+        try:
+            del CLAIMS["GLYPH_BOX"]
+            found = capture.problems(capture.report())
+            hit = [p for p in found if p.startswith("CLAIM-UNDECLARED")]
+            self.assertTrue(hit, "the hard tier does not reach capture")
+            # and it must be UNACCOUNTED, or `--check` would still exit 0
+            self.assertTrue(capture.unaccounted(hit), hit)
+        finally:
+            CLAIMS.clear()
+            CLAIMS.update(original)
+        # positive control: with the declaration back, it reports nothing
+        self.assertEqual(
+            [p for p in capture.problems(capture.report())
+             if p.startswith("CLAIM-UNDECLARED")], [])
+
     def test_a_closed_gap_must_LEAVE_the_list(self):
         """The stale-entry direction, on the entry this change adds."""
         stale = capture.stale_gaps(

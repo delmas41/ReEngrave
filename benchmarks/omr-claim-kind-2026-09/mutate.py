@@ -117,20 +117,31 @@ ARMS = [
      "                 CLAIM.IDENTIFICATION),",
      "test_the_disagreement_is_ACCOUNTED_and_not_widened_away"),
 
+    # ⚠️ RE-AIMED AFTER THE FIRST RUN. This arm survived against
+    # `test_neither_axis_determines_the_other`, which derives its table from
+    # `CLAIMS` and never reads `CLAIM_OF_UNSCORED` — a MIS-AIMED ARM, not a
+    # test gap. Narrowing the constraint really does produce findings (the two
+    # OCR readings, `MARGIN_LABEL` and `DIRECTION_WORD`), and the test that
+    # sees them is the one that counts the disagreements.
     ("the_two_axes_are_MERGED_so_not_a_mark_means_external", RECORD,
      '    "not_a_mark": (CLAIM.EXTERNAL, CLAIM.IDENTIFICATION),',
      '    "not_a_mark": (CLAIM.EXTERNAL,),',
-     "test_neither_axis_determines_the_other"),
+     "test_the_only_disagreement_is_the_accounted_one"),
 
     ("the_claim_findings_never_reach_capture_check", CAPTURE,
      "    out += claim_consistency()",
      "    out += []",
      "test_the_disagreement_is_ACCOUNTED_and_not_widened_away"),
 
+    # ⚠️⚠️ THIS ARM FOUND A REAL TEST GAP ON THE FIRST RUN and is the reason
+    # `test_an_undeclared_quantity_REACHES_capture_check` exists. Because
+    # `claims_unaccounted()` is at ZERO, deleting this line changes no output
+    # TODAY — an equivalent mutant under current data and a real hole under
+    # any other — so nothing caught the hard tier being silently unwired.
     ("the_hard_tier_never_reaches_capture_check", CAPTURE,
      '    out += [f"CLAIM-UNDECLARED {p}" for p in record_claims_unaccounted()]',
      "    out += []",
-     "test_a_closed_gap_must_LEAVE_the_list"),
+     "test_an_undeclared_quantity_REACHES_capture_check"),
 
     # ── the positional store is a PROJECTION, not a second answer ──────────
     ("the_store_collapses_identity_and_coverage_into_one_word", STORE,
