@@ -99,10 +99,15 @@ ARMS = [
      "            _observe_step(log, staff_sub, Q.METER_GLYPH_POSITION,",
      "test_a_meter_glyph_crossing_the_middle_line_is_still_recorded"),
 
+    # ⚠️ THE TARGET IS THE NARROW TEST, NOT THE OBVIOUS ONE. This arm first
+    # named `test_a_meter_digit_names_the_half_it_stands_in` and SURVIVED:
+    # that fixture's two boxes touch the middle line from both sides, so they
+    # stay correct for any cut in [4.0, 8.0]. The gap was real and closing it
+    # took a new fixture whose boxes sit WHOLLY inside one half.
     ("the_half_is_decided_against_a_constant_not_the_middle_line", POSITIONS,
      "    elif bottom <= MIDDLE_LINE_STEP:",
      "    elif bottom <= 6.0:",
-     "test_a_meter_digit_names_the_half_it_stands_in"),
+     "test_the_half_is_cut_at_the_MIDDLE_LINE_and_not_some_other_step"),
 
     ("the_fused_stroke_case_loses_its_own_measurement", POSITIONS,
      '        "centre_steps_from_middle": core["_centre"] - MIDDLE_LINE_STEP,',
