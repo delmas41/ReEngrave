@@ -361,19 +361,25 @@ class TestReconciledWithUNSCORED(unittest.TestCase):
         ordering exposes the shortcut — an equivalent mutant under current
         data and a real hole the moment one reader's claim is not admitted.
 
-        Planted so that one reader IS admitted and the other is NOT, which is
-        the only shape that can tell the union from a pick.
+        ⚠️⚠️ THE ADMITTED CLAIM MUST SORT FIRST, or the test cannot tell the
+        two apart either — `claims_of` returns a SORTED tuple, so a plant
+        whose unadmitted claim happens to sort first is reported by the union
+        AND by the pick, and the arm survives a second time. It did. Here
+        `coverage` < `identification` and `page_geometry` admits the first and
+        not the second, so only a reader of BOTH produces a finding.
         """
         original = dict(CLAIMS)
         try:
-            # 'staff_grid_position' admits MEASUREMENT alone.
-            CLAIMS["NOTEHEAD_STAFF_POSITION"] = {
-                "cv_lines": CLAIM.MEASUREMENT,        # admitted
+            # `Q.STAFF_LINES` is UNSCORED 'page_geometry', which admits
+            # measurement / coverage / interpretation — and NOT identification.
+            CLAIMS["STAFF_LINES"] = {
+                "geometry": CLAIM.COVERAGE,           # admitted, sorts FIRST
                 "detector": CLAIM.IDENTIFICATION,     # NOT admitted
             }
+            self.assertEqual(claims_of("STAFF_LINES")[0], CLAIM.COVERAGE)
             found = capture.claim_consistency()
             self.assertTrue(
-                any("NOTEHEAD_STAFF_POSITION" in f for f in found),
+                any("STAFF_LINES" in f for f in found),
                 f"a split quantity's second claim was not read: {found}")
         finally:
             CLAIMS.clear()
