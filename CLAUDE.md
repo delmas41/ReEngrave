@@ -4447,7 +4447,7 @@ are trying to capture and classify."*
 
 ```bash
 python3 -m tools.omr.staged.capture --check   # the per-family table
-python3 benchmarks/omr-ink-capture-2026-09/mutate.py
+python3 benchmarks/omr-capture-facts-2026-09/mutate.py
 ```
 
 ⚠️ **THE TOOL IS THE COUNT.** Every figure is derived from `record.Q`,

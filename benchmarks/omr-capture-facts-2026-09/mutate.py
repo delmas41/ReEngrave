@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """MUTATION BATTERY — `staged.capture` and the three questions it asks.
 
-    python3 benchmarks/omr-ink-capture-2026-09/mutate.py
-    python3 benchmarks/omr-ink-capture-2026-09/mutate.py --force   # dirty tree
+    python3 benchmarks/omr-capture-facts-2026-09/mutate.py
+    python3 benchmarks/omr-capture-facts-2026-09/mutate.py --force   # dirty tree
 
 ⚠️⚠️ ONE RED ARM IS NOT A BATTERY. Every arm runs and is reported. Measured in
 this repo once at five of six surviving behind one that did not, and it
