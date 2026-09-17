@@ -1,0 +1,46 @@
+{
+ "page": 62,
+ "cell": 6,
+ "controls": [
+  7,
+  8,
+  9
+ ],
+ "bound_mult": 1.0,
+ "arms": {
+  "bridge": {
+   "seconds": 13.45,
+   "components": 1244,
+   "joined_groups": 0,
+   "merged_and_broken": 0,
+   "gap_min": null,
+   "gap_median": null,
+   "gap_max": null,
+   "score1_staves_with_meter_shape": 17,
+   "score1_built_by_the_join": 0,
+   "score2": {
+    "7": 0,
+    "8": 0,
+    "9": 1
+   },
+   "n_staves": 17
+  },
+  "dilate": {
+   "seconds": 13.44,
+   "components": 1244,
+   "joined_groups": 68,
+   "merged_and_broken": 56,
+   "gap_min": 6,
+   "gap_median": 19,
+   "gap_max": 26,
+   "score1_staves_with_meter_shape": 17,
+   "score1_built_by_the_join": 3,
+   "score2": {
+    "7": 0,
+    "8": 0,
+    "9": 1
+   },
+   "n_staves": 17
+  }
+ }
+}

@@ -1,0 +1,15 @@
+{
+ "cells": 221,
+ "components": {
+  "shipped": 1244,
+  "naive": 5143,
+  "naive_bridged": 1982
+ },
+ "bridges": 198033,
+ "gap_min": 21,
+ "gap_median": 25,
+ "gap_max": 35,
+ "rejoined": 3161,
+ "created_by_naive": 3899,
+ "cells_exactly_recovered": 13
+}
