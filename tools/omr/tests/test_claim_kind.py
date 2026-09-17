@@ -354,6 +354,32 @@ class TestReconciledWithUNSCORED(unittest.TestCase):
             CLAIMS.update(original)
         self.assertEqual(len(capture.claim_consistency()), 1)
 
+    def test_the_constraint_reads_EVERY_claim_a_split_quantity_makes(self):
+        """⚠️⚠️ FOUND BY THE MUTATION BATTERY. Taking only the FIRST claim of a
+        reader-split quantity survived: `Q.MARGIN_LABEL` sorts to
+        `('external', 'identification')` and `not_a_mark` admits BOTH, so no
+        ordering exposes the shortcut — an equivalent mutant under current
+        data and a real hole the moment one reader's claim is not admitted.
+
+        Planted so that one reader IS admitted and the other is NOT, which is
+        the only shape that can tell the union from a pick.
+        """
+        original = dict(CLAIMS)
+        try:
+            # 'staff_grid_position' admits MEASUREMENT alone.
+            CLAIMS["NOTEHEAD_STAFF_POSITION"] = {
+                "cv_lines": CLAIM.MEASUREMENT,        # admitted
+                "detector": CLAIM.IDENTIFICATION,     # NOT admitted
+            }
+            found = capture.claim_consistency()
+            self.assertTrue(
+                any("NOTEHEAD_STAFF_POSITION" in f for f in found),
+                f"a split quantity's second claim was not read: {found}")
+        finally:
+            CLAIMS.clear()
+            CLAIMS.update(original)
+        self.assertEqual(len(capture.claim_consistency()), 1)
+
     def test_an_UNSCORED_word_with_no_constraint_is_CAUGHT(self):
         original = dict(capture.UNSCORED)
         try:

@@ -54,14 +54,14 @@ ARMS = [
      "test_a_declaration_naming_no_quantity_is_CAUGHT"),
 
     ("a_misspelled_claim_word_is_accepted", RECORD,
-     "        if c not in CLAIM.all():",
-     "        if False:",
+     "            if w not in CLAIM.all():",
+     "            if False:",
      "test_a_misspelled_claim_word_is_CAUGHT"),
 
     # ── the fallback rule: cannot-tell may not become a definite answer ────
     ("claim_of_DEFAULTS_instead_of_raising", RECORD,
-     "    try:\n        return CLAIMS[_QNAME[quantity]]\n    except KeyError:",
-     "    try:\n        return CLAIMS[_QNAME[quantity]]\n    except KeyError:\n"
+     "        declared = CLAIMS[_QNAME[quantity]]\n    except KeyError:",
+     "        declared = CLAIMS[_QNAME[quantity]]\n    except KeyError:\n"
      "        return CLAIM.MEASUREMENT\n    if False:",
      "test_an_unknown_quantity_RAISES_rather_than_defaulting"),
 
@@ -100,11 +100,18 @@ ARMS = [
      "        if False:",
      "test_a_reader_split_declaration_that_splits_NOTHING_is_CAUGHT"),
 
+    # ⚠️ RE-AIMED AFTER THE SECOND RUN. This survived against
+    # `test_the_only_disagreement_is_the_accounted_one`, and NOT because the
+    # arm was mis-aimed: `Q.MARGIN_LABEL` sorts to ('external',
+    # 'identification') and `not_a_mark` admits BOTH, so taking the first is
+    # an EQUIVALENT MUTANT under current data. The test it now names plants a
+    # split where one reader's claim is admitted and the other is not, which
+    # is the only shape that can tell a union from a pick.
     ("the_constraint_reads_ONE_claim_where_a_quantity_has_two", CAPTURE,
      "        got = record_claims_of(q)\n        bad = [g for g in got if g not in admits]",
      "        got = (record_claims_of(q)[0],)\n"
      "        bad = [g for g in got if g not in admits]",
-     "test_the_only_disagreement_is_the_accounted_one"),
+     "test_the_constraint_reads_EVERY_claim_a_split_quantity_makes"),
 
     # ── the docstring may not name a table that does not exist ─────────────
     ("the_docstring_names_a_table_that_does_not_exist", RECORD,
@@ -128,7 +135,7 @@ ARMS = [
 
     # ── the write site refuses an undeclared quantity ──────────────────────
     ("observe_does_not_ask_for_the_claim_at_the_write", RECORD,
-     "        claim_of(quantity)\n        for rid in derived_from:",
+     "        claim_of(quantity, reader)\n        for rid in derived_from:",
      "        for rid in derived_from:",
      "test_observe_REFUSES_an_undeclared_quantity_at_the_write"),
 
@@ -151,8 +158,8 @@ ARMS = [
 
     # ── the two axes are reconciled, never merged and never widened ────────
     ("the_cross_table_constraint_reports_nothing", CAPTURE,
-     "        got = record_claim_of(q)\n        if got not in admits:",
-     "        got = record_claim_of(q)\n        if False:",
+     "        bad = [g for g in got if g not in admits]\n        if bad:",
+     "        bad = [g for g in got if g not in admits]\n        if False:",
      "test_a_planted_disagreement_is_CAUGHT"),
 
     ("an_UNSCORED_word_with_no_constraint_passes_silently", CAPTURE,
