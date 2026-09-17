@@ -150,8 +150,13 @@ class TestThePositionComposesAcrossDocuments(unittest.TestCase):
         self.assertAlmostEqual(pa.staff_position, 4.0)
         self.assertAlmostEqual(pb.staff_position, 4.0)
         # ⚠️ AND THE SHAPE COMPOSES TOO, for the same reason: it is measured
-        # in the staff's own spaces, not in pixels.
+        # in the staff's own spaces, not in pixels.  BOTH AXES are asserted --
+        # a mutation battery caught this file asserting only the height while
+        # the width silently reverted to pixels, which is the same fault as a
+        # page-pixel position one field over.
         self.assertAlmostEqual(pa.height_spaces, pb.height_spaces)
+        self.assertAlmostEqual(pa.width_spaces, pb.width_spaces)
+        self.assertAlmostEqual(pa.width_spaces, 1.0)
 
     def test_a_staff_with_no_span_DECLINES_rather_than_defaulting(self) -> None:
         """A one-line percussion staff has no origin and no spacing.  A
@@ -228,6 +233,32 @@ class TestTheIndexIsADerivedView(unittest.TestCase):
         self.assertEqual(
             idx.ask(2.0, tier=TIER_OBSERVED, bar_fraction=0.5)
             ["candidates"][0]["count"], 1)
+
+    def test_an_entry_with_NO_bar_fraction_survives_a_bar_fraction_query(self) -> None:
+        """⚠️ AN ENTRY CANNOT BE EXCLUDED ON AN AXIS IT HAS NO VALUE FOR.
+
+        A mark whose cell box was never read has `bar_fraction=None`, and a
+        query naming a bar fraction must still return it -- that is the
+        ABSENT/DECLINED distinction, in the query.  A mutation battery found
+        this untested: the fixture above gives every entry a bar fraction, so
+        the branch that handles a MISSING one was unreachable and dropping it
+        changed nothing.
+        """
+        st = EntryStore()
+        st.extend([_e(2.0, ("restWhole",)),                 # no bar_fraction
+                   _e(2.0, ("noteheadBlack",), frac=0.5)])
+        idx = PositionIndex(st)
+        got = {c["name"]: c["count"]
+               for c in idx.ask(2.0, tier=TIER_OBSERVED,
+                                bar_fraction=0.5)["candidates"]}
+        self.assertEqual(got, {"restWhole": 1, "noteheadBlack": 1})
+        # ⚠️ and one that genuinely sits elsewhere in the bar IS excluded, so
+        # the clause above is not simply ignoring the constraint.
+        st2 = EntryStore()
+        st2.extend([_e(2.0, ("elsewhere",), frac=0.05)])
+        self.assertEqual(
+            PositionIndex(st2).ask(2.0, tier=TIER_OBSERVED,
+                                   bar_fraction=0.95)["candidates"], [])
 
 
 class TestPublisherReachesGather(unittest.TestCase):
