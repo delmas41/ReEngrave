@@ -462,6 +462,30 @@ class Q(_Vocab):
     #: neither.
     INK = "ink"
 
+    #: WHICH PRINTING THIS IS -- the edition, its publisher, its work and its
+    #: scan type, on the DOCUMENT.
+    #:
+    #: ⚠️⚠️ THE CONDITIONING VARIABLE THAT NEVER REACHED THIS STAGE. Sean,
+    #: 2026-09-17: *"it might be helpful to have general information based on
+    #: publisher or common practice of where a certain things fall so if we
+    #: have an undiagnosed blob or dot, we have gathered a lot of information
+    #: on what sorts of things are more likely where."* Where a mark falls is
+    #: a property of the PLATE -- this repo has already measured two houses
+    #: disagreeing about nearly everything, from ledger pitch (Litolff ~1.10x
+    #: the staff spacing, Peters/Breitkopf/Simrock ~0.975x) to dot density
+    #: (35 against 656) to whether a family bracket is printed at all. Until
+    #: this row, `grep publisher tools/omr/staged/gather.py` returned ONE
+    #: COMMENT: the variable everything would be conditioned on was not on the
+    #: record.
+    #:
+    #: ⚠️ `source_kind` IS WHY IT IS ADMISSIBLE. It comes from the COMMITTED
+    #: catalog, which reads IMSLP's own work page -- not from the plate -- so
+    #: it does not fall silent when the raster is bad. That is the property
+    #: `A-INK` and the `source_kind` doctrine both require of a second
+    #: witness, and it is the reason the `editions` tier (an OMR output of the
+    #: same raster) would NOT be admissible here.
+    DOCUMENT_IDENTITY = "document_identity"
+
     # ── header readings (measurements) ──────────────────────────────────────
     CLEF_GLYPH = "clef_glyph"                # detector's clef, with frame
     CLEF_LOCATED = "clef_located"            # CV locator: shape, line, symmetry
@@ -810,6 +834,16 @@ class ABSTAIN(_Vocab):
     NEEDS_CLEF = "needs_clef"                    # key_signature_locator :310
     NO_TEMPLATE = "no_template"                  # e.g. 4/8 has none
     OUT_OF_SCOPE = "out_of_scope"
+    #: We LOOKED IN THE CATALOG and it does not hold this document.
+    #:
+    #: ⚠️ A DIFFERENT FACT FROM `OUT_OF_SCOPE`, which means we declined to
+    #: look, and the document-identity rung is why both are needed: flag-off
+    #: and *this PDF is not in the score library* are different situations
+    #: with different repairs (flip the flag; or name the work with
+    #: `OMR_WORK_ID`). Folding them together would report a disabled reader
+    #: and an unknown plate as one number -- the shape `NO_READING` was added
+    #: to prevent one family over.
+    NOT_IN_CATALOG = "not_in_catalog"
 
     # the build itself
     NOT_IMPLEMENTED = "not_implemented"           # ⚠️ a declared stub
