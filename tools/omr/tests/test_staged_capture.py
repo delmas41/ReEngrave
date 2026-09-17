@@ -70,6 +70,35 @@ class TestTheToolIsAliveAtAll(unittest.TestCase):
                     and n.func.attr == "observe")
         self.assertGreaterEqual(self.rep["observe"]["n_sites"], calls)
 
+    def test_check_exits_TWO_on_a_dead_control(self) -> None:
+        """⚠️⚠️ THE CONTROLS ARE CHECKED BEFORE THE FINDINGS, and a test that
+        only asserts they are non-zero TODAY does not test that.
+
+        Found by a mutation arm: deleting the dead-control guard from `main`
+        left every test green, because the controls are non-zero on this tree
+        — so the guard could stop existing and nothing would notice. This
+        forces one to zero and requires exit 2, which must beat the ordinary
+        findings path (exit 0/1).
+        """
+        import contextlib
+        import io
+        real = capture.report
+
+        def dead_report():
+            rep = real()
+            rep["controls"]["observe_sites_walked"] = 0
+            return rep
+
+        capture.report = dead_report
+        try:
+            with contextlib.redirect_stdout(io.StringIO()), \
+                    contextlib.redirect_stderr(io.StringIO()) as err:
+                rc = capture.main(["--check"])
+        finally:
+            capture.report = real
+        self.assertEqual(rc, 2)
+        self.assertIn("DEAD QUESTION", err.getvalue())
+
     def test_nothing_is_unresolved(self) -> None:
         self.assertEqual(self.rep["observe"]["unresolved"], [])
         self.assertEqual(self.rep["rasters"]["undeclared_readers"], [])
@@ -261,6 +290,31 @@ class TestThePositionQuestion(unittest.TestCase):
         """
         self.assertEqual(self.rep["unclassified_scoreless"], [])
 
+    def test_an_UNCLASSIFIED_quantity_IS_reported(self) -> None:
+        """⚠️⚠️ THE POSITIVE CONTROL THE TEST ABOVE CANNOT BE.
+
+        A mutation battery found this: asserting a list is EMPTY cannot
+        distinguish *nothing is wrong* from *the computation always returns
+        empty*. Replacing the whole derivation with `[]` left
+        `test_every_scoreless_quantity_is_classified` GREEN. This drops a real
+        entry from `UNSCORED` and requires the finding to appear — the same
+        shape as *a battery of refusal tests needs an input that is accepted*,
+        arriving against its author.
+        """
+        original = dict(capture.UNSCORED)
+        try:
+            capture.UNSCORED.pop("STEM")
+            rep = capture.report()
+            self.assertIn("STEM", rep["unclassified_scoreless"])
+            self.assertTrue(any(p.startswith("UNCLASSIFIED Q.STEM")
+                                for p in rep["problems"]))
+            self.assertTrue(rep["unaccounted"], "and `--check` must fail on it")
+        finally:
+            capture.UNSCORED.clear()
+            capture.UNSCORED.update(original)
+        # The tree is restored: the clean result comes back.
+        self.assertEqual(capture.report()["unclassified_scoreless"], [])
+
     def test_a_side_read_off_the_class_name_is_NOT_a_position(self) -> None:
         """⚠️ The distinction this module refuses to collapse. `side` is
         DERIVED FROM THE CLASS, so it fails together with the classification
@@ -329,6 +383,22 @@ class TestTheImageQuestion(unittest.TestCase):
         # would be a guess about which row came from which.
         self.assertEqual(sorted(self._variants("CV_LOCATOR")),
                          sorted([ERASED_ELSE_INTACT, INTACT]))
+
+    def test_an_unfound_function_is_None_and_NEVER_defaulted(self) -> None:
+        """⚠️⚠️ A fallback must never convert *cannot tell* into a definite
+        answer — not into "same", not into "clean", and not into "intact".
+
+        Found by a mutation arm: returning `INTACT` for a function that does
+        not exist left every test green, because every function named in
+        `READER_RASTER` IS found on this tree. The branch is unreachable from
+        the real table, so only a direct drive can reach it.
+        """
+        got = capture._raster_of("yolo_detector.py", "no_such_function")
+        self.assertIsNone(got["variant"])
+        self.assertIn("not found", got["why"])
+        # The positive control: the same call with a REAL function answers.
+        real = capture._raster_of("yolo_detector.py", "detect")
+        self.assertEqual(real["variant"], INTACT)
 
     def test_the_only_rows_that_record_their_raster_are_the_cv_line_ones(self):
         by_q = capture.observe_sites()["by_quantity"]
