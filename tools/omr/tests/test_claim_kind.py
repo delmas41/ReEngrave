@@ -274,6 +274,30 @@ class TestARowCarriesIt(unittest.TestCase):
         self.assertNotEqual(box.claim, clef.claim)
 
 
+class TestNoAdjudicatedQuantityIsReaderSplit(unittest.TestCase):
+    """⚠️⚠️ A VERDICT HAS NO READER, so `Verdict.claim` RAISES on a
+    reader-split quantity rather than picking one. That is correct and is only
+    SAFE while no such quantity is adjudicated — a property of the pipeline
+    today, not a guarantee of the design, so it is asserted rather than
+    assumed. The day a reader-split quantity gains an adjudicator, this goes
+    red and whoever lands it has to decide what a verdict's claim means.
+    """
+
+    def test_it(self):
+        # ⚠️ The registry is populated by the `@decision` decorator, so the
+        # ADJUDICATORS package must be imported or it is empty — a zero here
+        # would otherwise pass vacuously, which is this file's whole hazard.
+        from tools.omr.staged import adjudicate, adjudicators  # noqa: F401
+        split = {q for q in CLAIMS if not isinstance(CLAIMS[q], str)}
+        self.assertTrue(split, "positive control: there IS a split quantity")
+        names = {v: k for k, v in vars(Q).items()
+                 if not k.startswith("_") and isinstance(v, str)}
+        decided = {names[q] for q in adjudicate.REGISTRY if q in names}
+        self.assertGreater(len(decided), 20,
+                           "positive control: the registry is populated")
+        self.assertEqual(split & decided, set())
+
+
 class TestTheRecordStaysByteIdentical(unittest.TestCase):
     """⚠️⚠️ THE BLAST RADIUS, ASSERTED RATHER THAN ARGUED. A stored field
     would change every record this repo has ever written — the hazard CLAUDE.md

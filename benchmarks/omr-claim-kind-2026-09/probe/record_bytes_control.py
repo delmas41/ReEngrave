@@ -35,6 +35,26 @@ from tools.omr.staged.record import (            # noqa: E402
     CLAIMS, Log, Outcome, Q, Verdict, claim_of, glyph, staff)
 
 
+#: ⚠️⚠️ A LITERAL RULE, NOT A LOOKUP, so that BOTH ARMS BUILD THE SAME ROWS.
+#: The baseline tree has no `CLAIMS` table at all, so a reader chosen by
+#: reading it would make the two arms construct different logs and the hash
+#: comparison would be meaningless — the "control that computes the wrong
+#: thing" family, one step from shipping.
+#:
+#: ⚠️ `Q.MARGIN_LABEL` needs a reader it declares: this probe's first version
+#: wrote every row as `detector` and `Log.observe` REFUSED it, because no such
+#: (quantity, reader) pair is declared. The write-site check working, on the
+#: instrument rather than on the pipeline.
+_READER = {"MARGIN_LABEL": "text_layer"}
+
+#: ⚠️ A VERDICT HAS NO READER, so a reader-split quantity cannot answer for
+#: one — `Verdict.claim` RAISES rather than picking. No quantity in the
+#: pipeline is both reader-split and adjudicated (a test pins that), but this
+#: probe builds a verdict for EVERY quantity, so it must skip the split ones
+#: or it would be asserting something the pipeline never does.
+_NO_VERDICT = set(_READER)
+
+
 def build() -> Log:
     """One row per quantity, so no quantity can slip the comparison."""
     log = Log()
@@ -45,9 +65,11 @@ def build() -> Log:
         # SHAPE of the serialised row, not whether a real gatherer would emit
         # this quantity here.
         log.observe(glyph(0, 0, 0, 0, i), q, [i, i + 1],
-                    reader="detector", frame="cell:0",
+                    reader=_READER.get(name, "detector"), frame="cell:0",
                     score=(0.5 if i % 2 else None), note=f"row-{i}")
     for i, (name, q) in enumerate(sorted(names.items())):
+        if name in _NO_VERDICT:
+            continue
         log.record(Verdict(f"vrd{i}", staff(0, 0, i), q, Outcome.DECIDED,
                            i, "probe", "read"))
     return log
@@ -63,8 +85,9 @@ def main() -> int:
     blob = log.to_json()
     if args.positive_control:
         for row in blob["observations"]:
-            row["claim"] = claim_of(row["quantity"])
+            row["claim"] = claim_of(row["quantity"], row["reader"])
         for row in blob["verdicts"]:
+            # a verdict has no reader; no reader-split quantity is adjudicated
             row["claim"] = claim_of(row["quantity"])
 
     text = json.dumps(blob, sort_keys=True, default=str)
