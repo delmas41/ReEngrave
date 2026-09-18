@@ -182,6 +182,14 @@ NOT_A_STAGE = frozenset({
     # it declares `DERIVED_CHECK = True` for `wiring`'s DETAIL question,
     # which counted its mention of `staff_lines_erased` as a consumer.
     "capture.py",
+    # ⚠️ `brakes.py` is a DERIVED CHECK for the same reason: it asks whether a
+    # REFUSAL's premise was written against a capability the staged
+    # architecture has since grown, and it NAMES quantities and reasons in
+    # order to audit them while reading none of them at run time. It declares
+    # `DERIVED_CHECK = True` for `wiring`'s DETAIL question too. Registering it
+    # here is not optional — `unaccounted_modules()` fails `--check` on any
+    # staged `.py` in neither list, which is that guard working.
+    "brakes.py",
 })
 
 
