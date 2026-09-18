@@ -10,7 +10,7 @@ from __future__ import annotations
 from typing import Dict, List, Optional, Tuple
 
 from ..adjudicate import Checkable, Evidence, Mode, Ruling, Term, decision, tally
-from ..record import ABSTAIN, Kind, Q, Scope, State
+from ..record import ABSTAIN, Candidate, Kind, Q, Scope, State
 
 
 @decision(
@@ -271,7 +271,8 @@ def _forced_pairing(system: List[Optional[str]],
     wants=(Q.INSTRUMENT, Q.STAFF_ORDINAL, Q.SYSTEM_STAFF_COUNT),
     reasons=("full_lineup", "named", "paired_by_name", "no_reference",
              "no_ordinal", "reference_names_nothing", "unnamed_in_short_system",
-             "not_in_reference", "ambiguous_pairing"),
+             "not_in_reference", "ambiguous_pairing",
+             "family_block", "family_block_not_forced"),
     mode=Mode.ADDITIVE,
 )
 def adjudicate_slot_index(ev: Evidence) -> Ruling:
@@ -371,11 +372,24 @@ def adjudicate_slot_index(ev: Evidence) -> Ruling:
 
     mine = names.get(ev.subject.at(Kind.SYSTEM), [])
     here = int(ordinal.value)
+    pairing = _forced_pairing(mine, ref_names)
     if here >= len(mine) or mine[here] is None:
+        # ⚠️⚠️ THE BLANKET ABSTENTION HERE WAS A BRAKE WHOSE PREMISE EXPIRED.
+        # It read as *"a staff with no name cannot be placed"*, and it was
+        # written when the only options were ANSWER or DISCARD -- so refusing
+        # was the only honest thing to do with a staff the reference could
+        # not be pinned to. The record now holds a PARTIAL answer
+        # (`Ruling.narrow`) and a fourth stage exists for best-rather-than-
+        # forced, so the question is no longer *"name it or not"* but *"how
+        # much does the page force"*. See `_place_in_family_block`.
+        placed = _place_in_family_block(
+            ev, here, mine, pairing, ref_system, ref_names,
+            n_staves=int(count.value), used=(ordinal.id, count.id))
+        if placed is not None:
+            return placed
         return Ruling.abstain("unnamed_in_short_system",
                               reference=ref_system.to_key())
 
-    pairing = _forced_pairing(mine, ref_names)
     slot = pairing[here]
     if slot is None:
         # ⚠️ TWO ABSTENTIONS, NOT ONE. A name the reference never prints wants
@@ -444,6 +458,210 @@ def _pick_reference(sizes, widest, names):
         return None
     return best[0], first
 
+
+# ─────────────────────────────────────────────────────────────────────────────
+# The unnamed block at the foot of a system
+# ─────────────────────────────────────────────────────────────────────────────
+
+#: How many reference slots the block may fall short of and still be placed at
+#: all.
+#:
+#: ⚠️⚠️ THIS IS NOT SEAN'S "4 OR 5" AS A CONSTANT -- IT IS THE STRUCTURE THAT
+#: PRODUCES IT. Sean's rule is *"4 or 5 staves that showed up last in the
+#: system without a name in the margin are almost surely strings"*, and on a
+#: document whose reference string run is FIVE slots long a deficit of at most
+#: one admits exactly a block of four or five. Written as a deficit it carries
+#: to a plate whose string run is a different length, and it says WHY the
+#: window is where it is: at a deficit of one the block is short by a single
+#: slot, which on an orchestral page is the condensed `Violoncello e Basso`.
+#: At two or more, front-aligning is a guess about WHICH slots went missing
+#: and the rule refuses rather than picking.
+#:
+#: ⚠️ A block of 1-2 staves is refused by this same number rather than by a
+#: separate floor, which matters because that case is UNMEASURED -- this plate
+#: never prints one.
+FAMILY_BLOCK_MAX_DEFICIT = 1
+
+
+def _reference_instruments(ev: Evidence, ref_system) -> List[Optional[dict]]:
+    """`[the instrument verdict's value or None, by staff ordinal]`.
+
+    ⚠️ THE FAMILY IS READ OFF THE VERDICT, NEVER RE-DERIVED FROM THE NAME.
+    `adjudicate_instrument` already puts `family` on the value it returns, so
+    asking `instruments.lookup` again here would be a second resolution of a
+    question this pipeline has already answered -- two copies of one rule,
+    free to drift, which is the fault `work_roster.decide` is imported rather
+    than restated to avoid.
+    """
+    out: List[Optional[dict]] = []
+    for v in ev.verdicts(Q.INSTRUMENT, scope=Scope.SELF_AND_DESCENDANTS,
+                         subject=ref_system):
+        sub = v.subject
+        if sub.kind is not Kind.STAFF or not isinstance(v.value, dict):
+            continue
+        while len(out) <= sub.staff:
+            out.append(None)
+        out[sub.staff] = dict(v.value)
+    return out
+
+
+def _trailing_family_run(families: List[Optional[str]]) -> Tuple[Optional[int],
+                                                                Optional[str]]:
+    """`(first index, family)` of the reference's TRAILING same-family run.
+
+    ⚠️⚠️ THIS IS WHERE "THE STRINGS" COMES FROM, AND IT IS NOT A WORD LIST.
+    The probe that measured this rule found the string slots with a tuple of
+    spellings (`Violino`, `Viola`, ...), which is the hand-list antipattern
+    and would also have been WRONG here: the lexicon reads a printed `Basso.`
+    as a BASS VOICE, so a family test over the printed strings drops the
+    bottom slot and the whole block slides. What the reference actually says
+    is that its last five slots are `string`, `string`, `string`, `string`,
+    `string` -- a run this walks off the end of the lineup, naming no
+    instrument and no publisher.
+    #
+    ⚠️ IT CLAIMS NOTHING ABOUT WHICH FAMILY. On an orchestral score the
+    trailing run is the strings because that is where an engraver puts them;
+    on a wind band it would be something else and the rule would still be
+    asking the same question -- *what is the block of like instruments at the
+    bottom of this lineup* -- rather than looking for a word it knows.
+    """
+    i = len(families)
+    fam = None
+    while i > 0 and families[i - 1] is not None and \
+            (fam is None or families[i - 1] == fam):
+        fam = families[i - 1]
+        i -= 1
+    if fam is None or i >= len(families):
+        return None, None
+    return i, fam
+
+
+def _place_in_family_block(ev: Evidence, here: int,
+                           mine: List[Optional[str]],
+                           pairing: List[Optional[int]],
+                           ref_system, ref_names: List[Optional[str]],
+                           n_staves: int,
+                           used: Tuple[str, ...]) -> Optional[Ruling]:
+    """Place an unnamed staff by the BLOCK it stands in, or return None.
+
+    Sean, 2026-09-17, on a plate whose strings are labelled on the opening
+    system and nowhere else: *"If we had 4 or 5 staves that showed up last in
+    the system without a name in the margin they are almost surely strings."*
+    That is a claim about a SUFFIX, and the suffix is what makes it safe: the
+    rule never looks above the block, so whatever is wrong up there -- a
+    tacet trumpet, an unread horn -- cannot move it.
+
+    **What this returns, and the difference is the whole point.**
+
+    * a DECIDED slot, where the block exactly fills the reference's trailing
+      family run and position is therefore FORCED by counting alone. Nothing
+      is being guessed: there is one order-preserving map and this is it;
+    * a NARROWED verdict naming every slot the staff could still be, where
+      the block is SHORT of the run. That is *"it is one of these"*, and
+      until `Ruling.narrow` existed it had nowhere to live -- which is why
+      this decision abstained on all 25 of them;
+    * `None`, where the block is not a suffix, or is longer than the run, or
+      falls short by more than `FAMILY_BLOCK_MAX_DEFICIT`. The caller
+      abstains exactly as it did before.
+
+    ⚠️⚠️ THE CONVENTION THAT CHOOSES AMONG A NARROWING IS NOT HERE, AND MUST
+    NOT COME HERE. Front-aligning a short block -- *"the missing slot is the
+    condensed pair at the BOTTOM"* -- is true of every system of this
+    document and is a claim about ENGRAVING PRACTICE, not about anything the
+    page forces. It is BEST rather than FORCED, so it belongs in INFER, where
+    it is labelled and where the clef may argue with it. See
+    `inferences.collapse_slot_index_to_family_block`.
+
+    ⚠️ NO CLEF IS READ HERE, and that is what dissolves the circularity this
+    rule has been blocked on. `adjudicate_clef` weights the instrument at 1.0
+    in the other direction and is ORDER 9 against this decision's 6, so
+    reading `Q.CLEF` would close a cycle and read `None` besides. The raw
+    `Q.CLEF_GLYPH` observation is not the verdict and carries no such
+    dependency -- and even that is left to INFER, so that ADJUDICATE's answer
+    here rests on POSITION and nothing else.
+
+    ⚠️ THE RUN IS TRIMMED BY WHAT THE NAMED STAVES ALREADY TOOK. A system
+    that labels its Violino I puts a named staff inside the trailing run, and
+    the block below it is then not the whole section. Slots at or below the
+    highest FORCED named pairing are removed before anything is counted.
+    """
+    # ⚠️⚠️ `mine` STOPS AT THE LAST NAMED STAFF, AND THE FIRST VERSION OF
+    # THIS RULE REACHED NOTHING BECAUSE OF IT. `_names_by_system` grows its
+    # row only when it has a name to put in one, so a system of eleven staves
+    # whose last four are unnamed hands back a list of SEVEN -- and a list
+    # that ends early is indistinguishable from a system that ends early.
+    # That is the ABSENT/DECLINED collapse `record.py` exists to prevent,
+    # happening in a local variable: the unnamed suffix this rule is entirely
+    # about is exactly the part the structure cannot represent. The system's
+    # own staff count is the only thing that says how long the row really is.
+    n = int(n_staves)
+    mine = list(mine[:n]) + [None] * max(0, n - len(mine))
+    if here >= n or mine[here] is not None:
+        return None
+
+    # The block: the trailing run of staves this system did not name.
+    b0 = n
+    while b0 > 0 and mine[b0 - 1] is None:
+        b0 -= 1
+    if here < b0:
+        # ⚠️ AN INTERIOR UNNAMED STAFF IS A DIFFERENT QUESTION AND GETS NO
+        # ANSWER HERE. The claim is about a block at the FOOT of the system;
+        # a staff with names both above and below it is bounded on both
+        # sides and wants the name pairing, which already refused it.
+        return None
+
+    ref_instruments = _reference_instruments(ev, ref_system)
+    families = [(d or {}).get("family") for d in ref_instruments]
+    start, family = _trailing_family_run(families)
+    if start is None:
+        return None
+
+    # ⚠️ Slots the named staves above have already been FORCED onto are not
+    # available to the block. `pairing` is `_forced_pairing`'s answer, so an
+    # unforced name removes nothing -- which is the conservative direction:
+    # it leaves the run wider and the answer less forced, never more.
+    taken = [p for p in pairing[:b0] if p is not None]
+    floor = max(taken) if taken else -1
+    run = [s for s in range(start, len(ref_names)) if s > floor]
+
+    k = n - b0
+    if not run or k > len(run):
+        return None
+    deficit = len(run) - k
+    if deficit > FAMILY_BLOCK_MAX_DEFICIT:
+        return None
+
+    i = here - b0
+    def _expected_clef(slot):
+        d = ref_instruments[slot] if slot < len(ref_instruments) else None
+        return (d or {}).get("expected_clef")
+
+    shared = {"block_size": k, "block_first_ordinal": b0, "block_index": i,
+              "deficit": deficit, "family": family,
+              "run": list(run), "front_aligned": run[i],
+              # ⚠️ CARRIED HERE SO THAT INFER NEED NOT RE-READ THE REFERENCE.
+              # The clef a slot's instrument is WRITTEN IN is a fact about
+              # that instrument (`Instrument.default_clef`) and is already on
+              # the verdict this function is reading; a rule that went back
+              # for it would be a second traversal free to disagree with this
+              # one about which system the reference is.
+              "run_clefs": [_expected_clef(s) for s in run],
+              "reference": ref_system.to_key(),
+              "instrument": ref_names[run[i]] if run[i] < len(ref_names) else None}
+
+    if deficit == 0:
+        return Ruling(value=int(run[i]), reason="family_block",
+                      used=used, detail=shared)
+
+    # ⚠️⚠️ EVERY CANDIDATE CARRIES THE SAME SUPPORT, DELIBERATELY. The reader
+    # genuinely cannot choose between them -- `Candidate.support`'s own
+    # docstring says *"the ORDER is the claim"*, so ordering these would be
+    # this decision asserting the very convention it is handing on. An equal
+    # support is the honest statement that position alone has run out.
+    cands = [Candidate(value=int(run[i + j]), support=1.0)
+             for j in range(deficit + 1)]
+    return Ruling.narrow(cands, "family_block_not_forced",
+                         used=used, **shared)
 
 def _slots_are_ordinals(slots) -> bool:
     """Is this slot table just the staff's position within its own system?
