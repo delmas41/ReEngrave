@@ -95,6 +95,42 @@ doubles.** See the section *A CONTEST is RESOLVED, not relocated* below —
 including the **two GATHER divergences it found and deliberately did not
 change**, and the **`ff` 47 → 39 that is an unadjudicated COST and not a win**.
 
+⚠️⚠️⚠️ **THE GOVERNING DOCUMENT — READ IT FIRST, IT IS WHY FOUR UNRELATED
+LANES KEPT ARRIVING AT THE SAME PLACE:**
+[docs/breakthrough-2026-09-18-the-unit-of-enquiry.md](docs/breakthrough-2026-09-18-the-unit-of-enquiry.md)
+— **EVERY DECISION IN THIS PIPELINE IS FILED AGAINST AN ADDRESS WHOSE LAST
+COORDINATE IS AN INDEX INTO THE DETECTOR'S OUTPUT LIST.** `gather.py:330-331`
+is `for gi, d in enumerate(dets): g = R.glyph(…, gi)`, so `glyph/1/0/2/4/1` —
+the subject this file's own worked example traces through all five stages —
+means *"the second thing the detector returned for this cell"*. **Five stages,
+28 adjudicators, 69 quantities, ten derived checks and every accounting
+identity are rigorous about a population the DETECTOR INVENTED.** ⚠️ When it
+errs there is **no subject for the real mark and no stage can create one** —
+missed ink has no address, so it is not *wrongly decided*, it is **outside the
+domain of every decision in the system**, and an abstention abstains about the
+GUESS rather than about the page. ⚠️ The tell was already in the tree:
+`gather_ink` files at `_INK_GLYPH_BASE + i` because it had to **offset its
+ordinals out of the detector's address space**. ⚠️⚠️ **It explains, from one
+cause: why a width off the detector's box can never corroborate its class (box
+and class are ONE assertion); why the misses include the two round counters of
+a printed time-signature `8` (a sub-part carved out of a bigger glyph, which
+nothing INSIDE the box can see); why the width cap discards 217/345 stems (one
+address for two marks — the filter was handed the wrong extent); why the stroke
+turned out separable (the information was there, a SUBJECT was missing); why
+2,377 `no_ink` claims are false; and why all ten derived checks missed it —
+they verify the wiring BETWEEN subjects, and the subjects are their axis.**
+⚠️ **THE STAGES ARE NOT THE PROBLEM**: they abstain, correct each other and
+balance. The complexity is sound and **pointed at the wrong population.**
+⚠️⚠️ **Its §6 is the counter-argument and it is not dismissed — the INK is also
+badly segmented** (Litolff MERGES, Breitkopf SHATTERS, a component is not a
+mark), so this trades one wrong segmentation for another; the case for it is
+that the ink is **EXHAUSTIVE, UN-OPINIONATED and REPORTS ITS OWN UNCERTAINTY**
+— *not that it is correct, but that it is HONEST*. ⚠️ **§7 is a falsification
+test that is also the cheapest experiment available** (compare ink extent
+against the box; if the disagreement does not sort already-adjudicated failures
+into distinct shapes, **the framing is wrong**) — no threshold, no routing
+change, no default. ⚠️ **NOTHING IN IT IS MEASURED.**
+
 ⚠️⚠️ **READ THIS BEFORE ANY READING-QUALITY WORK — IT ANSWERS "WHO ACTUALLY
 DECIDED IT", AND THE ANSWER IS THAT THE TWO MOST BASIC CLAIMS NEVER REACH A
 STAGE:**
