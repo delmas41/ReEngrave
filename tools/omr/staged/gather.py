@@ -1260,6 +1260,101 @@ def _cell_of(cells: Sequence[Any], local: Dict[int, Tuple[int, int]],
     return best if best is not None else 0
 
 
+#: `OMR_VERTICAL_RUNS` -- file one `Q.VERTICAL_RUN` row per vertical candidate
+#: the stem opening produced, ACCEPTED OR REFUSED.
+#:
+#: **Default OFF**, so the ON test is an ALLOW-LIST: a typo or an empty value
+#: must not switch a document ONTO an unpriced GATHER change that adds rows to
+#: every record (CLAUDE.md, *A flag's OFF test must follow its DEFAULT*, where
+#: five shipped flags had it backwards in one direction or the other).
+VERTICAL_RUNS_ENV = "OMR_VERTICAL_RUNS"
+
+#: ⚠️ Glyph indices for vertical-run candidates, offset past the detector's
+#: ordinals, past `_CV_GLYPH_BASE` and past `_INK_GLYPH_BASE`, so FOUR readers
+#: can never collide in one cell's key space. A collision would not raise; it
+#: would silently merge a candidate row and some other reader's row into one
+#: subject -- and a subject's last coordinate being a positional index is
+#: exactly how `omr-ink-extent-2026-09` got 11 of 26 subjects to "match" across
+#: two different documents.
+_VERTICAL_RUN_GLYPH_BASE = 300_000
+
+
+def vertical_runs_enabled() -> bool:
+    """Is the vertical-run candidate population gathered? Default OFF."""
+    return os.environ.get(VERTICAL_RUNS_ENV, "0").strip().lower() in (
+        "1", "true", "yes", "on")
+
+
+def _emit_vertical_runs(log: Log, cell: Any, sub, frame, sys_idx: int,
+                        st_idx: int, candidates: Sequence[Any],
+                        erased: bool) -> None:
+    """One row per vertical candidate, with its fate and its page box.
+
+    ⚠️⚠️ THE PAGE FRAME IS THE WHOLE REASON THIS FUNCTION EXISTS RATHER THAN
+    A WIDER `Q.STEM`. Sean's barline test -- *a barline's two ends sit ON the
+    outer staff lines; a stem's do not* -- needs the run's endpoints and
+    `Q.STAFF_LINES` in ONE coordinate system, and `Q.STAFF_LINES` is PAGE px
+    while every `Q.STEM` row is CELL canonical with no page fields at all. A
+    canonical y is measured inside one cell rescaled so the staff span is
+    constant, so two staves' canonical y are not the same quantity --
+    `Q.ONSET_COLUMN` reported 1,062 columns of nothing before page pixels
+    arrived. A cell that cannot supply the page frame gets `frame_note` and NO
+    page fields: DECLINED, never defaulted.
+
+    ⚠️ THE STAFF-SPACE UNIT IS THE CELL'S OWN, from `_cell_grid` -- the one
+    spelling of that measurement -- and never the nominal 100 px.
+    `_upscale_to_canonical` scales a too-wide cell by WIDTH, so the nominal is
+    wrong on a minority of cells and silently so.
+    """
+    from ..line_detection import RUN_DIMENSION_REASONS, RUN_ACCEPTED
+    up = getattr(cell, "upscale_factor", None)
+    cell_box = getattr(cell, "bbox_page_px", None)
+    page_ok = bool(up) and bool(cell_box) and len(cell_box or ()) == 4
+    for i, cand in enumerate(candidates):
+        g = R.glyph(cell.page_index, sys_idx, st_idx, cell.measure_index,
+                    _VERTICAL_RUN_GLYPH_BASE + i)
+        optional: Dict[str, Any] = {}
+        if cand.line_spacing > 0:
+            optional.update(
+                run_width_spaces=round(cand.width_spaces, 3),
+                run_height_spaces=round(cand.height_spaces, 3),
+                run_staff_space_px=round(cand.line_spacing, 2))
+        else:
+            optional["frame_note"] = "cell has no staff-space unit"
+        if page_ok:
+            px0 = cell_box[0] + cand.x / up
+            py0 = cell_box[1] + cand.y / up
+            px1 = cell_box[0] + (cand.x + cand.w) / up
+            py1 = cell_box[1] + (cand.y + cand.h) / up
+            optional.update(run_bbox_page_px=[px0, py0, px1, py1],
+                            run_y_top_page=py0, run_y_bottom_page=py1,
+                            run_x_center_page=(px0 + px1) / 2.0)
+        else:
+            optional["frame_note"] = (
+                "no page box: cell has no bbox_page_px/upscale_factor")
+        log.observe(
+            g, Q.VERTICAL_RUN,
+            # ⚠️ `[x, y, w, h]`, the `Q.STEM` spelling -- NOT corners. See
+            # `Q.VERTICAL_RUN`'s own comment: three box conventions disagree
+            # in one record and reading one as another gives a negative width.
+            (cand.x, cand.y, cand.w, cand.h),
+            reader=READERS.CV_LINES, frame=frame,
+            # ⚠️ WHICH FILTER FIRED, NOT A NAME FOR THE INK.
+            run_outcome=cand.outcome,
+            run_accepted=(cand.outcome == RUN_ACCEPTED),
+            # ⚠️ Derived from the vocabulary, never a hand-list at this site:
+            # §9 of the boxing proposal asks how much of this population is
+            # refused BY DIMENSION, and enumerating six words here is how the
+            # answer drifts from the chain that produced it.
+            run_refused_by_dimension=(cand.outcome in RUN_DIMENSION_REASONS),
+            run_ink_area_px=int(cand.area),
+            run_ink_fill=round(cand.area / float(max(1, cand.w * cand.h)), 4),
+            run_n_candidates=len(candidates),
+            image="no_staff" if erased else "original",
+            staff_lines_erased=erased,
+            **optional)
+
+
 def gather_cv_lines(log: Log, cells: Sequence[Any],
                     local: Dict[int, Tuple[int, int]]) -> None:
     """Stems and beams from the classical-CV rung, on the ERASED image.
@@ -1293,14 +1388,45 @@ def gather_cv_lines(log: Log, cells: Sequence[Any],
         sub = R.cell(c.page_index, key[0], key[1], c.measure_index)
         frame = frame_cell(c.measure_index)
         erased = getattr(c, "image_no_staff", None) is not None
+        # ⚠️⚠️ FLAG-OFF PASSES NOTHING, so `detect_stems` runs exactly as it
+        # always has and this rung writes not one row -- a flag-off record is
+        # byte-identical to a tree without this quantity, which is the
+        # `OMR_INFER` discipline ("off means ABSENT, not quiet") applied to a
+        # gather change. `None` rather than an empty list is load-bearing:
+        # `detect_stems` tests `candidates_out is not None`.
+        runs: Optional[list] = [] if vertical_runs_enabled() else None
         try:
-            found = detect_lines(c)
+            found = detect_lines(c, candidates_out=runs)
         except Exception as exc:                              # noqa: BLE001
             for quantity in (Q.BEAM_STROKE, Q.STEM):
                 log.abstain(sub, quantity, reader=READERS.CV_LINES,
                             frame=frame, reason=ABSTAIN.READER_UNAVAILABLE,
                             error=type(exc).__name__)
+            # ⚠️ AND THE CANDIDATE POPULATION ABSTAINS TOO, for the same
+            # reason: a reader that threw and a page with no vertical ink must
+            # not produce the same record. `runs` may hold a partial list here
+            # and it is DISCARDED -- half a population reported as a
+            # population is worse than an abstention.
+            if runs is not None:
+                log.abstain(sub, Q.VERTICAL_RUN, reader=READERS.CV_LINES,
+                            frame=frame, reason=ABSTAIN.READER_UNAVAILABLE,
+                            error=type(exc).__name__)
             continue
+        if runs is not None:
+            if runs:
+                _emit_vertical_runs(log, c, sub, frame, key[0], key[1],
+                                    runs, erased)
+            else:
+                # ⚠️ THE ONE PLACE `NO_INK` IS HONEST FOR THIS FAMILY: the
+                # opening produced no component at all, so there genuinely is
+                # no vertical run here. The `Q.STEM` abstention below says the
+                # same words about a different fact -- a cell whose every
+                # candidate was REFUSED -- and that is the collapse this
+                # quantity exists to make visible rather than to fix.
+                log.abstain(sub, Q.VERTICAL_RUN, reader=READERS.CV_LINES,
+                            frame=frame, reason=ABSTAIN.NO_INK,
+                            image="no_staff" if erased else "original",
+                            staff_lines_erased=erased)
 
         for quantity, kind in ((Q.STEM, "stems"), (Q.BEAM_STROKE, "beams")):
             rows = found.get(kind) or []

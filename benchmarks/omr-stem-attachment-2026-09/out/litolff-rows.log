@@ -1,0 +1,10 @@
+Litolff Beethoven 5 pp.1-4: 2330 heads (whole notes excluded)
+
+stem_direction says       n   speaks    both   neither
+DECIDED                1435      938     178       319
+no_stem                 784      472     122       190
+stems_disagree          111       37      72         2
+
+control agreement with the stems we already read: 0.9595 over 938
+wrote benchmarks/omr-stem-attachment-2026-09/out/litolff-rows.json
+CONTROL: reproduces litolff-convention.json exactly

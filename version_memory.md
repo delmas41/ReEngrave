@@ -16,6 +16,94 @@ pointing at headings no longer in the file.)*
 
 ---
 
+## 2026-09-18 — ASK FIRST: the convention before the mechanism (standing rule)
+
+⚠️ Placed at the head on the file's own CAUSAL-ORDER rule: it depends on no
+entry below it. ⚠️ The block beneath still reads *"(latest)"* — left exactly as
+its author wrote it, per this file's own rule that rewriting another session's
+heading is the ledger overwriting the tree. The DATE is what orders them.
+
+**Documentation only. No code, no test, no benchmark, no measurement** — `git
+diff --numstat` is five prose files and one new doc, additions only, zero
+deletions.
+
+**What Sean asked for:** *"I want to make sure that in our process of building
+out that the agent takes one moment before building to ask me what I or a human
+would do to get the information, or what are the main conventions of engraving
+that apply to the current job. Many times I feel like the agent is building in
+a counter-intuitive way, or blind to obvious conventions."*
+
+**The rule, in three parts, before the first line of code:** (1) how would a
+HUMAN get this off the page; (2) what ENGRAVING CONVENTION governs it — an
+engraver does not place ink freely, and a convention is usually rigid enough to
+be a **search constraint rather than a statistic**; (3) **ASK SEAN**, one line.
+
+**Why it is a measured claim and not an exhortation.** The argument is this
+repository's own record: at least a dozen of the largest wins on file ARE
+conventions, and most were found only AFTER a mechanism had been built the
+other way, measured, tuned and defended —
+
+- [x] the whole rest that means **THE BAR** whatever the meter — 1,251 attribute
+      errors, and OMR-NED charged **nothing** for one of them
+- [x] the dot that sits a space HIGHER on a line note — 52 at 0.00 / 52 at
+      +0.50, **nothing between +0.57 and +3.75**
+- [x] a slur drawn OVER its notes and a hairpin BETWEEN them — a perfectly good
+      overlap test scoring **0 of 4**
+- [x] the beam that runs stem-to-stem — engraved fixture **12 of 7 → 16 of 16**
+- [x] the cautionary meter that governs no bar — false changes **10 → 3**
+- [x] the key change printed at ONE bar on EVERY staff — **7 of 7** flips stopped
+- [x] ⚠️⚠️ and the sharpest: `_pair_ties_in_cell`'s own docstring states *"real
+      tied notes are at the same y-position by definition"* and **NEITHER
+      PAIRING RULE EVER USED IT**, with the empty interval that would have
+      proved it (0.168 vs 0.435 spaces) measurable from day one
+
+**The guard shipped WITH the rule, because it makes confident wrongness
+cheaper.** A convention is a HYPOTHESIS AND A CHEAP TEST, never a licence: the
+doc's §3 records the conventions this repo has **refuted**, including Sean's
+own S4 (refuted at full width, SIDE flat at −0.001 / −0.030) and the
+label-splitting rule that is a property of the ENCODING not the engraving
+(74/74 on Beethoven, **+2,181 edits on Dvořák**). The tell that a convention is
+real is a **measured empty interval**; the tell that it is a story is a smooth
+slope with a threshold fitted into it.
+
+**And the unattended case, which is where this rule would otherwise rot.**
+A cloud session or overnight run has nobody to ask, so *could not ask* must
+never become *did not think about it*: write **CONVENTION ASSUMED / WHAT WOULD
+FALSIFY IT / NOT CONFIRMED WITH SEAN** at the top of the brief and proceed —
+the ABSENT/DECLINED discipline `record.py` enforces on the pipeline, applied to
+the people building it.
+
+**Files touched:**
+
+- [x] `docs/ask-first-conventions.md` — **NEW**, the canonical statement: the
+      rule, the evidence table, the guard, the unattended case, the handoff
+      requirement, and the failure family it joins
+- [x] `CLAUDE.md` — prominent block at the head, above the 2026-09-10 target
+      block, so it is the first thing a session reads after the stack; plus a
+      sibling cross-reference inside *A PREMISE ENCODED IN A REFUSAL OUTLIVES
+      ITS REASON*, which it is close enough to be confused with and whose
+      repair differs (*why does this rule still refuse?* against *why was this
+      mechanism ever aimed here?*)
+- [x] `PROJECT_BRIEF.md` — a permanent section in plain language, placed above
+      every dated note rather than among them
+- [x] `PROJECT_STATUS.md`, `NOTES.md` — the pointer at the head of each
+- [x] `docs/handoff-2026-09-17-infer-rule-two.md` — the pointer, as a **dated
+      addition changing none of its findings**, because CLAUDE.md names that
+      file as START HERE and a pointer nobody reaches is not a pointer
+
+⚠️ **OLDER HANDOFFS ARE DELIBERATELY NOT RETROFITTED** — a dated record is what
+that session knew on that day. The one exception above is stated in the doc as
+an exception rather than left for a reader to notice.
+
+⚠️ **NOT DONE, and it is the obvious next question:** there is **no derived
+check** for this. Every other discipline in this repo eventually got one
+(`wiring.py`, `no_producer.py`, `capture.py`, `test_flag_default_direction.py`),
+and this one is enforced by prose alone — which this file's own history says is
+the weaker instrument. Whether a brief without a stated convention can be made
+to fail something is unscoped.
+
+---
+
 ## 2026-09-17 (latest) — SHAPE, POSITION, IMAGE, RESOLUTION: what we capture about ink
 
 ⚠️ Placed at the head on the file's own CAUSAL-ORDER rule: it is a new derived

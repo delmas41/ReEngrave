@@ -1,0 +1,20 @@
+   ⚠️ `side+legal` is graded on the rule it was BUILT to satisfy. Read its REACH, never its rate.
+
+== PLAUSIBILITY of the `no_stem` boxes themselves (a notehead is ~1.3 spaces wide)
+   at or above 1.0 spaces wide: 953
+   THINNER, i.e. probably not a notehead: 576 (37.7%)
+   no page box or staff lines: 0
+
+== REACH and QUALITY over PLAUSIBLE heads only
+variant           heads  of plaus  AGREES  disagrees    rate
+raw                 535    56.1%     357         14  96.2%
+side                532    55.8%     355         14  96.2%
+side+end            531    55.7%     355         14  96.2%
+side+end+legal      526    55.2%     354         13  96.5%   <- CIRCULAR
+side+end@0.20       531    55.7%     355         14  96.2%
+side+end@0.50       531    55.7%     355         14  96.2%
+side+end@0.75       531    55.7%     355         14  96.2%
+   REFERENCE, same restriction: 1476/1503 = 98.2%   <- the bar
+   WARNING: the THIN boxes are reported apart and never netted in -- a box on a barline that BOTH readers agree about is not evidence about a stem.
+
+wrote benchmarks/omr-stem-stroke-2026-09/out/breitkopf-arm.json

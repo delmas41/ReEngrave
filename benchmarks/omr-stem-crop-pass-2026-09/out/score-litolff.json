@@ -1,0 +1,189 @@
+{
+ "label": "Litolff Beethoven 5 pp.1-4",
+ "control": {
+  "n": 16,
+  "agree": 5,
+  "disagree": 0,
+  "cannot_tell": 10,
+  "not_a_stem": 1,
+  "agreement_where_the_eye_spoke": 1.0
+ },
+ "cannot_tell_rate": {
+  "control": 0.625,
+  "sample": 0.5888888888888889
+ },
+ "per_bucket": {
+  "NO component overlaps the head at all": {
+   "n": 12,
+   "stem_printed_up": 0,
+   "stem_printed_down": 2,
+   "no_stem_printed": 0,
+   "not_a_notehead": 3,
+   "cannot_tell": 7
+  },
+  "a component WAS accepted (pair rule dropped it)": {
+   "n": 12,
+   "stem_printed_up": 0,
+   "stem_printed_down": 3,
+   "no_stem_printed": 0,
+   "not_a_notehead": 3,
+   "cannot_tell": 6
+  },
+  "at a CELL EDGE (0.8 spaces)": {
+   "n": 12,
+   "stem_printed_up": 3,
+   "stem_printed_down": 0,
+   "no_stem_printed": 0,
+   "not_a_notehead": 1,
+   "cannot_tell": 8
+  },
+  "too SHORT (h < 2.0 spaces)": {
+   "n": 12,
+   "stem_printed_up": 2,
+   "stem_printed_down": 2,
+   "no_stem_printed": 1,
+   "not_a_notehead": 0,
+   "cannot_tell": 7
+  },
+  "too TALL (h > 8.0 spaces)": {
+   "n": 12,
+   "stem_printed_up": 1,
+   "stem_printed_down": 0,
+   "no_stem_printed": 0,
+   "not_a_notehead": 7,
+   "cannot_tell": 4
+  },
+  "too WIDE (w > 0.6 spaces)": {
+   "n": 30,
+   "stem_printed_up": 1,
+   "stem_printed_down": 8,
+   "no_stem_printed": 0,
+   "not_a_notehead": 0,
+   "cannot_tell": 21
+  }
+ },
+ "width_cap": {
+  "n_sampled": 27,
+  "by_verdict": {
+   "stem_printed_up": 1,
+   "stem_printed_down": 8,
+   "cannot_tell": 18
+  },
+  "real": 9,
+  "junk": 0,
+  "settled": 9,
+  "real_share_of_settled": 1.0
+ },
+ "convention": {
+  "n_sides_settled": 26,
+  "obey": 26,
+  "violate": 0,
+  "counter_examples": []
+ },
+ "hollow": {
+  "n": 12,
+  "with_stem": 3,
+  "no_stem": 2,
+  "cannot_tell": 7
+ },
+ "not_a_notehead": [
+  {
+   "id": "L015",
+   "subject": "glyph/2/0/0/10/2",
+   "cls": "noteheadBlackInSpace",
+   "bucket": "NO component overlaps the head at all",
+   "reason": "a solid rectangle ~1.35 x 0.5 spaces hanging BELOW a staff line, with no other ink anywhere in a 10-space window: a WHOLE REST"
+  },
+  {
+   "id": "L016",
+   "subject": "glyph/1/0/2/0/9",
+   "cls": "noteheadBlackOnLine",
+   "bucket": "too TALL (h > 8.0 spaces)",
+   "reason": "the box sits on one of TWO full-height vertical rules with a round dot beside them: a repeat barline"
+  },
+  {
+   "id": "L018",
+   "subject": "glyph/2/0/5/14/5",
+   "cls": "noteheadBlackOnLine",
+   "bucket": "too TALL (h > 8.0 spaces)",
+   "reason": "box 0.45 x 1.3 spaces (taller than wide) sitting ON a full-height vertical rule"
+  },
+  {
+   "id": "L025",
+   "subject": "glyph/3/0/0/3/4",
+   "cls": "noteheadBlackOnLine",
+   "bucket": "NO component overlaps the head at all",
+   "reason": "header region; the box covers the upper-right arm of a key-signature accidental"
+  },
+  {
+   "id": "L036",
+   "subject": "glyph/1/0/11/2/3",
+   "cls": "noteheadBlackOnLine",
+   "bucket": "NO component overlaps the head at all",
+   "reason": "a solid rectangle 0.5 space tall hanging BELOW a staff line, with a second like it alongside: a WHOLE REST (second instance)"
+  },
+  {
+   "id": "L047",
+   "subject": "glyph/1/0/6/6/1",
+   "cls": "noteheadBlackOnLine",
+   "bucket": "too TALL (h > 8.0 spaces)",
+   "reason": "box 0.5 x 1.05 spaces ON a full-height vertical crossing all five staff lines: a barline"
+  },
+  {
+   "id": "L048",
+   "subject": "glyph/3/0/2/0/9",
+   "cls": "noteheadHalfOnLine",
+   "bucket": "a component WAS accepted (pair rule dropped it)",
+   "reason": "diagonal script strokes with no oval anywhere in the box: dynamic/ornament ink"
+  },
+  {
+   "id": "L049",
+   "subject": "glyph/3/0/0/3/5",
+   "cls": "noteheadHalfInSpace",
+   "bucket": "a component WAS accepted (pair rule dropped it)",
+   "reason": "script letterforms with counters, standing above the staff: dynamic text"
+  },
+  {
+   "id": "L060",
+   "subject": "glyph/4/1/7/2/10",
+   "cls": "noteheadBlackOnLine",
+   "bucket": "at a CELL EDGE (0.8 spaces)",
+   "reason": "box 0.4 x 1.35 spaces on a full-height vertical rule"
+  },
+  {
+   "id": "L067",
+   "subject": "glyph/1/0/2/0/14",
+   "cls": "noteheadBlackOnLine",
+   "bucket": "too TALL (h > 8.0 spaces)",
+   "reason": "two full-height vertical rules with a round dot beside them: a repeat barline (second instance)"
+  },
+  {
+   "id": "L071",
+   "subject": "glyph/2/1/3/12/2",
+   "cls": "noteheadBlackOnLine",
+   "bucket": "too TALL (h > 8.0 spaces)",
+   "reason": "box 0.55 x 1.4 spaces on a vertical stroke"
+  },
+  {
+   "id": "L086",
+   "subject": "glyph/2/1/4/4/3",
+   "cls": "noteheadBlackOnLine",
+   "bucket": "too TALL (h > 8.0 spaces)",
+   "reason": "box 0.45 x 0.75 spaces on a full-height vertical rule: a barline"
+  },
+  {
+   "id": "L087",
+   "subject": "glyph/3/0/3/3/8",
+   "cls": "noteheadHalfInSpace",
+   "bucket": "a component WAS accepted (pair rule dropped it)",
+   "reason": "diagonal script strokes; printed `ff` letterforms above"
+  },
+  {
+   "id": "L106",
+   "subject": "glyph/2/1/0/12/10",
+   "cls": "noteheadBlackInSpace",
+   "bucket": "too TALL (h > 8.0 spaces)",
+   "reason": "box 0.77 x 1.2 spaces containing almost NO INK - a white gap beside a vertical rule"
+  }
+ ]
+}

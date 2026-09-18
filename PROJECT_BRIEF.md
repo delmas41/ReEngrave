@@ -32,6 +32,54 @@ A third, optional piece — the **Maestro theory layer**
 (`tools/maestro_bridge/`) — adds harmony/rhythm validation and pitch
 re-ranking against music-theory rules. Host-side only, off by default.
 
+## How the work gets done — ask first (standing, 2026-09-18)
+
+**Before building anything, the agent stops for one moment and says how a
+*human* would get this information off the page, and which conventions of
+engraving apply to the job — then asks Sean.**
+
+Sean's reason for the rule: *"Many times I feel like the agent is building in
+a counter-intuitive way, or blind to obvious conventions."*
+
+This is not politeness or a request for permission. It is the cheapest
+evidence the project has, and the record shows it plainly: **at least a dozen
+of the biggest improvements in this repository are engraving conventions**,
+not clever algorithms. An engraver fills a silent bar with one whole rest
+whatever the meter — that one fact corrected 1,251 errors. A dot beside a note
+that sits on a line goes in the space *above* it. A slur is drawn over its
+notes and a hairpin between them, which is why a perfectly sensible overlap
+test found **none** of the hairpins on a page. A beam runs from the first stem
+to the last, and a stem stands at the side of its notehead, not its middle.
+A courtesy time signature printed at the end of a line governs no bar at all.
+
+Each of those was true of the page before any code was written, and each was
+found *after* a mechanism had already been built the other way — and measured,
+and tuned, and defended. **A measurement cannot rescue a mechanism aimed at
+the wrong thing; it will faithfully report how well the wrong thing was
+done.**
+
+The sharpest case is not even an algorithm. On one job the question Sean asked
+was paraphrased slightly wrong on the way down — "quarter note" became
+"quarter rest" — and a whole session rigorously answered the wrong question.
+One clarifying line would have cost a message.
+
+⚠️ **The guard, which matters as much as the rule.** A convention says *where
+to look* and *what would prove it wrong*. It is never on its own a reason to
+ship. Some conventions turn out to belong to the file format rather than the
+printed page, and some turn out not to hold: one of Sean's own rules about
+slurs was tested properly and **refused**, and that refusal was worth more than
+the feature would have been. A real convention shows up as a clean gap in the
+measurements with nothing in the middle; a story shows up as a smooth slope
+with a threshold picked out of it.
+
+And when there is nobody to ask — an overnight run, a session in the cloud —
+the assumption gets **written down** along with what would disprove it, rather
+than buried inside the mechanism. *Could not ask* must never quietly become
+*did not think about it*.
+
+Full statement, with the evidence and what to do in each case:
+[docs/ask-first-conventions.md](docs/ask-first-conventions.md).
+
 ## How progress is measured
 
 The project adopted **OMR-NED** (the metric used in published OMR research)

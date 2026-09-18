@@ -1,0 +1,19 @@
+A STAGE CLAIMS THE PAGE IS EMPTY WHILE A WITNESS SHOWS INK
+
+witness ink: 0 cells carry an ink row; 817 carry a detection
+reason words that claim ink is absent (derived): ['no_ink']
+such claims on the record: 2374, of which 0 are the ink reader's own (the one honest use, excluded)
+
+⚠️  CONTRADICTED: 2295
+     direction_word/no_ink                    767
+     beam_stroke/no_ink                       649
+     dynamic_letter/no_ink                    623
+     stem/no_ink                              256
+   witness mix: {'Q.GLYPH_BOX': 2295}
+
+HONEST empty claims, for contrast (a reader saying what it actually knows):
+     meter_glyph/no_detections                42
+     keysig_marker/no_detections              40
+     clef_glyph/no_detections                 10
+     glyph_box/no_detections                  1
+     dynamic_letter/no_detections             1

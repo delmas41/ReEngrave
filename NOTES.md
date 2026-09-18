@@ -2,6 +2,21 @@
 
 Forward-looking ideas. Not yet scoped, not yet scheduled. Surface these to Sean at the start of a ReEngrave session.
 
+⚠️⚠️ **ASK FIRST, ON EVERY JOB — say how a HUMAN would read it off the page and
+what ENGRAVING CONVENTION governs it, and ask Sean in one line, BEFORE
+building.** Standing instruction, Sean 2026-09-18:
+[docs/ask-first-conventions.md](docs/ask-first-conventions.md) — *"Many times I
+feel like the agent is building in a counter-intuitive way, or blind to obvious
+conventions."* At least a dozen of the largest wins on record here ARE
+conventions (the whole rest that means the BAR; the dot a space higher on a
+line note; the beam that runs stem-to-stem; the courtesy meter that governs no
+bar), and most were found only AFTER a mechanism had been built the other way
+and measured. ⚠️ A hypothesis and a cheap test, **never a licence** — §3 there
+lists the conventions this repo has refuted, one of them Sean's own. ⚠️ Nobody
+to ask → write **CONVENTION ASSUMED / WHAT WOULD FALSIFY IT / NOT CONFIRMED
+WITH SEAN** and proceed.
+
+
 ➡️ **START HERE: [docs/next-steps-omr-2026-09-01.md](docs/next-steps-omr-2026-09-01.md)**
 — accuracy is measurable against an outside standard now (pooled OMR-NED; the
 current figure lives in ONE place, [CLAUDE.md](CLAUDE.md)'s OMR-NED section,

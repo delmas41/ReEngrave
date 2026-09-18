@@ -1,0 +1,315 @@
+{
+ "label": "Breitkopf Brahms 1 pp.0-3",
+ "control": {
+  "n": 16,
+  "agree": 13,
+  "disagree": 0,
+  "cannot_tell": 2,
+  "not_a_stem": 1,
+  "agreement_where_the_eye_spoke": 1.0
+ },
+ "cannot_tell_rate": {
+  "control": 0.125,
+  "sample": 0.17777777777777778
+ },
+ "per_bucket": {
+  "NO component overlaps the head at all": {
+   "n": 12,
+   "stem_printed_up": 1,
+   "stem_printed_down": 2,
+   "no_stem_printed": 0,
+   "not_a_notehead": 6,
+   "cannot_tell": 3
+  },
+  "a component WAS accepted (pair rule dropped it)": {
+   "n": 12,
+   "stem_printed_up": 0,
+   "stem_printed_down": 4,
+   "no_stem_printed": 0,
+   "not_a_notehead": 1,
+   "cannot_tell": 7
+  },
+  "at a CELL EDGE (0.8 spaces)": {
+   "n": 12,
+   "stem_printed_up": 1,
+   "stem_printed_down": 0,
+   "no_stem_printed": 0,
+   "not_a_notehead": 11,
+   "cannot_tell": 0
+  },
+  "too SHORT (h < 2.0 spaces)": {
+   "n": 12,
+   "stem_printed_up": 2,
+   "stem_printed_down": 6,
+   "no_stem_printed": 1,
+   "not_a_notehead": 1,
+   "cannot_tell": 2
+  },
+  "too TALL (h > 8.0 spaces)": {
+   "n": 12,
+   "stem_printed_up": 0,
+   "stem_printed_down": 0,
+   "no_stem_printed": 0,
+   "not_a_notehead": 12,
+   "cannot_tell": 0
+  },
+  "too WIDE (w > 0.6 spaces)": {
+   "n": 30,
+   "stem_printed_up": 6,
+   "stem_printed_down": 19,
+   "no_stem_printed": 0,
+   "not_a_notehead": 1,
+   "cannot_tell": 4
+  }
+ },
+ "width_cap": {
+  "n_sampled": 28,
+  "by_verdict": {
+   "stem_printed_down": 19,
+   "stem_printed_up": 5,
+   "cannot_tell": 4
+  },
+  "real": 24,
+  "junk": 0,
+  "settled": 24,
+  "real_share_of_settled": 1.0
+ },
+ "convention": {
+  "n_sides_settled": 54,
+  "obey": 54,
+  "violate": 0,
+  "counter_examples": []
+ },
+ "hollow": {
+  "n": 5,
+  "with_stem": 2,
+  "no_stem": 1,
+  "cannot_tell": 2
+ },
+ "not_a_notehead": [
+  {
+   "id": "B005",
+   "subject": "glyph/2/0/2/1/12",
+   "cls": "noteheadBlackInSpace",
+   "bucket": "at a CELL EDGE (0.8 spaces)",
+   "reason": "box 0.45 x 0.7 spaces ON a vertical spanning exactly the staff: a barline. Two `ff` dynamics above and below"
+  },
+  {
+   "id": "B006",
+   "subject": "glyph/1/0/1/2/16",
+   "cls": "noteheadBlackInSpace",
+   "bucket": "too TALL (h > 8.0 spaces)",
+   "reason": "box 0.45 x 0.75 spaces ON a full-height vertical rule"
+  },
+  {
+   "id": "B016",
+   "subject": "glyph/3/0/9/2/1",
+   "cls": "noteheadBlackInSpace",
+   "bucket": "at a CELL EDGE (0.8 spaces)",
+   "reason": "box 0.45 x 0.75 spaces ON a vertical spanning exactly the staff: a barline"
+  },
+  {
+   "id": "B018",
+   "subject": "glyph/2/1/5/5/3",
+   "cls": "noteheadBlackInSpace",
+   "bucket": "too TALL (h > 8.0 spaces)",
+   "reason": "box 0.45 x 0.8 spaces ON a full-height vertical rule"
+  },
+  {
+   "id": "B020",
+   "subject": "glyph/2/1/9/2/0",
+   "cls": "noteheadBlackOnLine",
+   "bucket": "at a CELL EDGE (0.8 spaces)",
+   "reason": "box 0.45 x 0.75 spaces ON a full-height vertical rule"
+  },
+  {
+   "id": "B022",
+   "subject": "glyph/2/1/9/6/5",
+   "cls": "noteheadBlackInSpace",
+   "bucket": "at a CELL EDGE (0.8 spaces)",
+   "reason": "box 0.4 x 0.75 spaces ON a vertical spanning the staff: a barline"
+  },
+  {
+   "id": "B024",
+   "subject": "glyph/2/0/12/1/29",
+   "cls": "noteheadBlackOnLine",
+   "bucket": "too WIDE (w > 0.6 spaces)",
+   "reason": "the box contains the printed capital letter **B** - both bowls legible. A rehearsal mark or label, read directly off the plate"
+  },
+  {
+   "id": "B025",
+   "subject": "glyph/2/0/9/2/16",
+   "cls": "noteheadBlackOnLine",
+   "bucket": "too SHORT (h < 2.0 spaces)",
+   "reason": "a round blob with a diagonal stroke rising to a hook: the shape of an EIGHTH REST on this plate, not an oval head"
+  },
+  {
+   "id": "B027",
+   "subject": "glyph/3/0/4/8/12",
+   "cls": "noteheadBlackInSpace",
+   "bucket": "too TALL (h > 8.0 spaces)",
+   "reason": "box 0.45 x 0.8 spaces ON a full-height vertical rule"
+  },
+  {
+   "id": "B028",
+   "subject": "glyph/3/1/12/2/12",
+   "cls": "noteheadBlackOnLine",
+   "bucket": "too TALL (h > 8.0 spaces)",
+   "reason": "box 0.4 x 0.75 spaces ON a full-height vertical rule"
+  },
+  {
+   "id": "B029",
+   "subject": "glyph/3/0/9/2/7",
+   "cls": "noteheadBlackInSpace",
+   "bucket": "at a CELL EDGE (0.8 spaces)",
+   "reason": "box 0.45 x 0.5 spaces ON a vertical spanning exactly the staff: a barline"
+  },
+  {
+   "id": "B033",
+   "subject": "glyph/2/1/6/2/6",
+   "cls": "noteheadBlackInSpace",
+   "bucket": "too TALL (h > 8.0 spaces)",
+   "reason": "box 0.4 x 0.7 spaces ON a full-height vertical rule"
+  },
+  {
+   "id": "B045",
+   "subject": "glyph/2/1/9/6/10",
+   "cls": "noteheadBlackInSpace",
+   "bucket": "at a CELL EDGE (0.8 spaces)",
+   "reason": "box 0.45 x 0.95 spaces ON a vertical running ~8.5 spaces: too long for a stem, a barline"
+  },
+  {
+   "id": "B048",
+   "subject": "glyph/2/1/4/4/1",
+   "cls": "noteheadBlackInSpace",
+   "bucket": "too TALL (h > 8.0 spaces)",
+   "reason": "box 0.45 x 0.75 spaces ON a full-height vertical rule"
+  },
+  {
+   "id": "B049",
+   "subject": "glyph/3/0/9/2/4",
+   "cls": "noteheadBlackOnLine",
+   "bucket": "NO component overlaps the head at all",
+   "reason": "script letterforms with a bowl and stem - a dynamic word; the box holds the start of one"
+  },
+  {
+   "id": "B051",
+   "subject": "glyph/3/1/1/9/10",
+   "cls": "noteheadBlackInSpace",
+   "bucket": "too TALL (h > 8.0 spaces)",
+   "reason": "box 0.45 x 0.85 spaces ON a full-height vertical rule"
+  },
+  {
+   "id": "B053",
+   "subject": "glyph/1/0/2/1/7",
+   "cls": "noteheadBlackOnLine",
+   "bucket": "NO component overlaps the head at all",
+   "reason": "a round dot ~0.5 space across, alone in a staff space beside a notehead: an AUGMENTATION DOT"
+  },
+  {
+   "id": "B054",
+   "subject": "glyph/2/0/1/0/12",
+   "cls": "noteheadBlackInSpace",
+   "bucket": "too TALL (h > 8.0 spaces)",
+   "reason": "box 0.45 x 0.85 spaces ON a full-height vertical rule"
+  },
+  {
+   "id": "B057",
+   "subject": "glyph/1/0/3/1/31",
+   "cls": "noteheadBlackInSpace",
+   "bucket": "too TALL (h > 8.0 spaces)",
+   "reason": "box 0.45 x 0.9 spaces ON a full-height vertical rule"
+  },
+  {
+   "id": "B058",
+   "subject": "glyph/1/0/3/1/18",
+   "cls": "noteheadBlackOnLine",
+   "bucket": "a component WAS accepted (pair rule dropped it)",
+   "reason": "the box sits on a script `f`-shaped glyph with a curl and a round terminal"
+  },
+  {
+   "id": "B059",
+   "subject": "glyph/1/0/13/6/3",
+   "cls": "noteheadBlackInSpace",
+   "bucket": "at a CELL EDGE (0.8 spaces)",
+   "reason": "box 0.45 x 0.8 spaces on the vertical at which ALL ink stops - the system's FINAL barline; everything right of it is blank paper"
+  },
+  {
+   "id": "B062",
+   "subject": "glyph/1/1/5/6/9",
+   "cls": "noteheadBlackInSpace",
+   "bucket": "at a CELL EDGE (0.8 spaces)",
+   "reason": "box 0.45 x 0.85 spaces ON a full-height vertical rule"
+  },
+  {
+   "id": "B064",
+   "subject": "glyph/1/1/11/1/22",
+   "cls": "noteheadHalfInSpace",
+   "bucket": "NO component overlaps the head at all",
+   "reason": "the box contains the letter `e` of the printed word **cresc** - the word is legible on the plate"
+  },
+  {
+   "id": "B073",
+   "subject": "glyph/2/0/8/3/17",
+   "cls": "noteheadBlackOnLine",
+   "bucket": "NO component overlaps the head at all",
+   "reason": "the box sits on a repeating horizontal ZIGZAG - a trill/wavy line, unmistakable over ~5 spaces of width"
+  },
+  {
+   "id": "B077",
+   "subject": "glyph/2/0/5/2/6",
+   "cls": "noteheadBlackInSpace",
+   "bucket": "too TALL (h > 8.0 spaces)",
+   "reason": "box 0.45 x 0.75 spaces ON a full-height vertical rule"
+  },
+  {
+   "id": "B079",
+   "subject": "glyph/2/0/2/1/9",
+   "cls": "noteheadBlackInSpace",
+   "bucket": "at a CELL EDGE (0.8 spaces)",
+   "reason": "box 0.45 x 0.55 spaces ON a vertical spanning the staff; `ff` below"
+  },
+  {
+   "id": "B080",
+   "subject": "glyph/2/1/9/6/6",
+   "cls": "noteheadBlackInSpace",
+   "bucket": "at a CELL EDGE (0.8 spaces)",
+   "reason": "box 0.35 x 0.8 spaces holding a thin VERTICAL stroke - a stem or barline fragment, not a head"
+  },
+  {
+   "id": "B082",
+   "subject": "glyph/2/0/2/1/19",
+   "cls": "noteheadBlackInSpace",
+   "bucket": "at a CELL EDGE (0.8 spaces)",
+   "reason": "box 0.45 x 0.85 spaces ON a vertical spanning the staff; `ff` below"
+  },
+  {
+   "id": "B086",
+   "subject": "glyph/3/0/2/2/5",
+   "cls": "noteheadBlackOnLine",
+   "bucket": "NO component overlaps the head at all",
+   "reason": "the box is on one of TWO stacked round dots beside a DOUBLE vertical rule: a repeat barline's dot"
+  },
+  {
+   "id": "B091",
+   "subject": "glyph/3/0/6/3/6",
+   "cls": "noteheadBlackInSpace",
+   "bucket": "NO component overlaps the head at all",
+   "reason": "box 0.65 x 0.55 spaces on a round blob with a hook to its lower right - the same eighth-REST shape as B025, and its neighbour is another"
+  },
+  {
+   "id": "B092",
+   "subject": "glyph/3/0/7/2/5",
+   "cls": "noteheadBlackInSpace",
+   "bucket": "too TALL (h > 8.0 spaces)",
+   "reason": "box 0.45 x 0.8 spaces ON a full-height vertical rule"
+  },
+  {
+   "id": "B103",
+   "subject": "glyph/1/1/9/3/26",
+   "cls": "noteheadBlackInSpace",
+   "bucket": "too TALL (h > 8.0 spaces)",
+   "reason": "box 0.4 x 0.8 spaces ON a full-height vertical rule"
+  }
+ ]
+}

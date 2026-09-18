@@ -85,6 +85,18 @@ KNOWN_GAPS: Dict[str, str] = {
     Q.KEYSIG_MARKER: (
         "inert declaration, owned by `inventory --check`: the decision reads "
         "`keysig_clef_fit`, which the markers already feed in GATHER."),
+    Q.VERTICAL_RUN: (
+        "PRODUCER ONLY and deliberately unread, the `Q.INK` discipline: a "
+        "producer and its first consumer landing in one change makes the reach "
+        "measurement circular. ⚠️ Its first intended consumer is NAMED in "
+        "`wiring.KNOWN_GAPS` -- an ADJUDICATE decision asking WHAT KIND of "
+        "vertical mark a run is, reading the page frame these rows carry "
+        "against `Q.STAFF_LINES`. It does not exist. ⚠️ AND THE REACH IS "
+        "MEASURED RATHER THAN PROMISED: 6,128 candidates on Litolff pp.1-4 "
+        "against 1,920 `Q.STEM` strokes and 6,816 against 2,305 on Breitkopf "
+        "pp.0-3, so the record was carrying about a third of the population "
+        "the pipeline looked at. This entry LEAVES the day a decision reads "
+        "it."),
     Q.SYSTEMIC_COLUMN: (
         "ABSTAIN-ONLY, and `gather_coverage` section 1b already reports it as "
         "such -- a reader declared it and never observed one."),
@@ -293,6 +305,20 @@ NOT_A_STAGE = frozenset({
     # written and false the moment the trees met, which is exactly the
     # 'merged tree is the one thing nobody runs' hazard.
     "brakes.py",
+    # ⚠️ `trace.py` is the ninth derived check, and the only one that is
+    # PER-SUBJECT rather than aggregate: given a saved record and a subject
+    # key it replays what each stage DID to that symbol, and given a family
+    # it walks the stage funnel. Like the eight above it, it NAMES quantities
+    # and reason words in order to audit them and reads none of them at run
+    # time, so it declares `DERIVED_CHECK = True` for `wiring`'s DETAIL
+    # question as well.
+    #
+    # ⚠️ REGISTERING IT HERE IS NOT OPTIONAL, and the control was run in both
+    # directions rather than assumed: with `trace.py` on disk and this line
+    # absent, `reach --check` exits 1 naming it; move the file aside and it
+    # exits 0. That is the guard the brake audit's mutation arm asked for,
+    # doing its job on the next module to arrive.
+    "trace.py",
 })
 
 

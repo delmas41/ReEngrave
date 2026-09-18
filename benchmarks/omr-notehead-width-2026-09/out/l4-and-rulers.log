@@ -1,0 +1,35 @@
+== litolff: two rulers over 2347 boxes
+   max |diff| 0.0 spaces, median 0.0; boxes swapping sides of the floor: 0
+   thin boxes  published 44  | staff_spacing ruler 44  | line-gap ruler 44
+   [L4] DECIDED, by detector class (w p5/med/p95):
+      Black  n=1126  1.300 / 1.460 / 1.750
+      Half   n=309   1.410 / 1.610 / 1.830
+      Whole  n=8     1.380 / 1.590 / 1.960
+== breitkopf: two rulers over 3337 boxes
+   max |diff| 0.0 spaces, median 0.0; boxes swapping sides of the floor: 0
+   thin boxes  published 576  | staff_spacing ruler 576  | line-gap ruler 576
+   [L4] DECIDED, by detector class (w p5/med/p95):
+      Black  n=1661  1.260 / 1.400 / 1.521
+      Half   n=113   1.230 / 1.560 / 1.734
+      Whole  n=17    1.240 / 1.440 / 2.679
+
+== [L4] against the print: 17 of 17 whole-class boxes joined
+   V006 breitkopf  w=1.37 h=1.21 noteheadWholeInSpace   None
+   W005 litolff    w=1.38 h=1.23 noteheadWholeInSpace   None
+   V002 breitkopf  w=1.39 h=0.78 noteheadWholeInSpace   None
+   V015 breitkopf  w=1.40 h=0.86 noteheadWholeInSpace   None
+   V009 breitkopf  w=1.43 h=1.05 noteheadWholeInSpace   None
+   V005 breitkopf  w=1.44 h=1.01 noteheadWholeInSpace   None
+   V001 breitkopf  w=1.47 h=0.46 noteheadWholeOnLine    None
+   V011 breitkopf  w=1.47 h=0.89 noteheadWholeInSpace   None
+   V017 breitkopf  w=1.48 h=1.02 noteheadWholeInSpace   None
+   W004 litolff    w=1.51 h=1.40 noteheadWholeInSpace   None
+   V022 breitkopf  w=1.58 h=0.97 noteheadWholeInSpace   None
+   V018 breitkopf  w=1.62 h=0.98 noteheadWholeOnLine    None
+   W003 litolff    w=1.74 h=0.97 noteheadWholeInSpace   None
+   V019 breitkopf  w=1.93 h=1.22 noteheadWholeOnLine    None
+   W002 litolff    w=1.94 h=1.21 noteheadWholeInSpace   None
+   W001 litolff    w=1.96 h=1.23 noteheadWholeInSpace   None
+   V004 breitkopf  w=2.68 h=1.17 noteheadWholeOnLine    None
+
+wrote benchmarks/omr-notehead-width-2026-09/out/l4-and-rulers.json

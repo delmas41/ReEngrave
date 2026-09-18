@@ -1,0 +1,28 @@
+{
+ "by_head_kind": {
+  "whole": {
+   "stem_found": 8,
+   "no_stem": 9,
+   "share_stemless": 0.529
+  },
+  "half": {
+   "stem_found": 309,
+   "no_stem": 103,
+   "share_stemless": 0.25
+  },
+  "black": {
+   "stem_found": 1126,
+   "no_stem": 681,
+   "share_stemless": 0.377
+  }
+ },
+ "bands": {
+  "no stem ink ANYWHERE in the bar": 211,
+  "1-3 spaces": 247,
+  "further than 3 spaces": 170,
+  "0.25-1 space": 119,
+  "within 0.25 space": 45,
+  "touching (0)": 1
+ },
+ "median_gap_spaces": 2.007
+}

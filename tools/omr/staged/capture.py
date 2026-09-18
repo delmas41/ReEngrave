@@ -357,6 +357,24 @@ UNSCORED: Dict[str, Tuple[str, str, Any]] = {
         "against the grid would say which. Nothing converts them.",
         None),
 
+    "VERTICAL_RUN": (
+        RAW_INK,
+        "EVERY component the stem opening produced, accepted AND refused, "
+        "scoreless for the same reason `STEM` is: morphology returns no "
+        "confidence, and this row asserts no identity to be confident about. "
+        "⚠️ It is `STEM`'s own population BEFORE the six filters cut it, which "
+        "is why the two sit under one word rather than one being a refinement "
+        "of the other. ⚠️ AND IT ANSWERS HALF OF `STEM`'s ENTRY ABOVE: that "
+        "entry says a stem's endpoints ARE a staff-grid measurement waiting to "
+        "be made and that NOTHING CONVERTS THEM — these rows carry the "
+        "endpoints in PAGE PIXELS, which is the frame `Q.STAFF_LINES` is in, "
+        "so the conversion is now possible. ⚠️ It does NOT itself carry a "
+        "staff-grid position, and that is the same gap `INK` reports below: "
+        "the position would be an ADJUDICATED reading of the run against the "
+        "lines, and putting it on the gather row would put the decision in "
+        "GATHER, which is the fault this quantity exists to expose.",
+        None),
+
     # ── relations between things already placed ─────────────────────────────
     "GLYPH_BAND_DISTANCE": (
         RELATION,

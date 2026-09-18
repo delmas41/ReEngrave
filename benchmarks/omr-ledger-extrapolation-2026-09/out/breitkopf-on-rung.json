@@ -1,0 +1,83 @@
+{
+ "label": "Breitkopf Brahms 1 pp.0-3",
+ "record": "/Users/seanjohnson/Desktop/ReEngrave/library/_shared-records/brahms1-breitkopf-p0-p3.record.json",
+ "population": {
+  "SCORED: head on a counted ladder (line)": 183,
+  "SCORED: head on a counted ladder (space)": 148,
+  "outside, ladder broken or head unplaceable": 309,
+  "inside the staff": 1717,
+  "outside, NO rung in its x-column": 976,
+  "outside, ON-a-line vs IN-a-space is AMBIGUOUS": 4
+ },
+ "ALL scored heads": {
+  "n": 331,
+  "mean_error": -0.0677,
+  "median_error": -0.06,
+  "wrong": 4,
+  "wrong_rate": 0.0121
+ },
+ "owned by THIS staff": {
+  "n": 222,
+  "mean_error": -0.062,
+  "median_error": -0.0522,
+  "wrong": 2,
+  "wrong_rate": 0.009
+ },
+ "relocated copies": {
+  "n": 109,
+  "mean_error": -0.0792,
+  "median_error": -0.06,
+  "wrong": 2,
+  "wrong_rate": 0.0183
+ },
+ "by_rung": {
+  "above 1": {
+   "n": 174,
+   "mean_error": -0.0773,
+   "wrong": 1,
+   "wrong_rate": 0.0057
+  },
+  "above 2": {
+   "n": 75,
+   "mean_error": -0.102,
+   "wrong": 2,
+   "wrong_rate": 0.0267
+  },
+  "above 3": {
+   "n": 14,
+   "mean_error": -0.0795,
+   "wrong": 0,
+   "wrong_rate": 0.0
+  },
+  "above 4": {
+   "n": 14,
+   "mean_error": -0.0594,
+   "wrong": 0,
+   "wrong_rate": 0.0
+  },
+  "above 5": {
+   "n": 1,
+   "mean_error": 0.22,
+   "wrong": 0,
+   "wrong_rate": 0.0
+  },
+  "below 1": {
+   "n": 32,
+   "mean_error": -0.0108,
+   "wrong": 0,
+   "wrong_rate": 0.0
+  },
+  "below 2": {
+   "n": 20,
+   "mean_error": 0.0296,
+   "wrong": 1,
+   "wrong_rate": 0.05
+  },
+  "below 4": {
+   "n": 1,
+   "mean_error": 0.16,
+   "wrong": 0,
+   "wrong_rate": 0.0
+  }
+ }
+}

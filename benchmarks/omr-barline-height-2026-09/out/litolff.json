@@ -1,0 +1,682 @@
+{
+ "label": "Litolff Beethoven 5 pp.1-4",
+ "barlines": 82,
+ "by_position": {
+  "FIRST": {
+   "n": 7,
+   "crosses_all": 7,
+   "crosses_none": 0,
+   "median_share": 1.0
+  },
+  "interior": {
+   "n": 68,
+   "crosses_all": 0,
+   "crosses_none": 1,
+   "median_share": 0.714
+  },
+  "LAST": {
+   "n": 7,
+   "crosses_all": 4,
+   "crosses_none": 0,
+   "median_share": 1.0
+  }
+ },
+ "rows": [
+  {
+   "page": 1,
+   "system": 0,
+   "where": "FIRST",
+   "x": 651,
+   "gaps_crossed": 11,
+   "gaps": 11
+  },
+  {
+   "page": 1,
+   "system": 0,
+   "where": "interior",
+   "x": 833,
+   "gaps_crossed": 0,
+   "gaps": 11
+  },
+  {
+   "page": 1,
+   "system": 0,
+   "where": "interior",
+   "x": 999,
+   "gaps_crossed": 8,
+   "gaps": 11
+  },
+  {
+   "page": 1,
+   "system": 0,
+   "where": "interior",
+   "x": 1069,
+   "gaps_crossed": 9,
+   "gaps": 11
+  },
+  {
+   "page": 1,
+   "system": 0,
+   "where": "interior",
+   "x": 1200,
+   "gaps_crossed": 9,
+   "gaps": 11
+  },
+  {
+   "page": 1,
+   "system": 0,
+   "where": "interior",
+   "x": 1266,
+   "gaps_crossed": 9,
+   "gaps": 11
+  },
+  {
+   "page": 1,
+   "system": 0,
+   "where": "interior",
+   "x": 1335,
+   "gaps_crossed": 9,
+   "gaps": 11
+  },
+  {
+   "page": 1,
+   "system": 0,
+   "where": "interior",
+   "x": 1462,
+   "gaps_crossed": 9,
+   "gaps": 11
+  },
+  {
+   "page": 1,
+   "system": 0,
+   "where": "interior",
+   "x": 1585,
+   "gaps_crossed": 7,
+   "gaps": 11
+  },
+  {
+   "page": 1,
+   "system": 0,
+   "where": "interior",
+   "x": 1711,
+   "gaps_crossed": 7,
+   "gaps": 11
+  },
+  {
+   "page": 1,
+   "system": 0,
+   "where": "interior",
+   "x": 1781,
+   "gaps_crossed": 8,
+   "gaps": 11
+  },
+  {
+   "page": 1,
+   "system": 0,
+   "where": "LAST",
+   "x": 1905,
+   "gaps_crossed": 5,
+   "gaps": 11
+  },
+  {
+   "page": 2,
+   "system": 0,
+   "where": "FIRST",
+   "x": 342,
+   "gaps_crossed": 10,
+   "gaps": 10
+  },
+  {
+   "page": 2,
+   "system": 0,
+   "where": "interior",
+   "x": 619,
+   "gaps_crossed": 5,
+   "gaps": 10
+  },
+  {
+   "page": 2,
+   "system": 0,
+   "where": "interior",
+   "x": 776,
+   "gaps_crossed": 2,
+   "gaps": 10
+  },
+  {
+   "page": 2,
+   "system": 0,
+   "where": "interior",
+   "x": 874,
+   "gaps_crossed": 8,
+   "gaps": 10
+  },
+  {
+   "page": 2,
+   "system": 0,
+   "where": "interior",
+   "x": 981,
+   "gaps_crossed": 8,
+   "gaps": 10
+  },
+  {
+   "page": 2,
+   "system": 0,
+   "where": "interior",
+   "x": 1084,
+   "gaps_crossed": 8,
+   "gaps": 10
+  },
+  {
+   "page": 2,
+   "system": 0,
+   "where": "interior",
+   "x": 1221,
+   "gaps_crossed": 8,
+   "gaps": 10
+  },
+  {
+   "page": 2,
+   "system": 0,
+   "where": "interior",
+   "x": 1290,
+   "gaps_crossed": 8,
+   "gaps": 10
+  },
+  {
+   "page": 2,
+   "system": 0,
+   "where": "interior",
+   "x": 1368,
+   "gaps_crossed": 8,
+   "gaps": 10
+  },
+  {
+   "page": 2,
+   "system": 0,
+   "where": "interior",
+   "x": 1511,
+   "gaps_crossed": 7,
+   "gaps": 10
+  },
+  {
+   "page": 2,
+   "system": 0,
+   "where": "interior",
+   "x": 1799,
+   "gaps_crossed": 5,
+   "gaps": 10
+  },
+  {
+   "page": 2,
+   "system": 0,
+   "where": "LAST",
+   "x": 2479,
+   "gaps_crossed": 8,
+   "gaps": 10
+  },
+  {
+   "page": 2,
+   "system": 1,
+   "where": "FIRST",
+   "x": 335,
+   "gaps_crossed": 10,
+   "gaps": 10
+  },
+  {
+   "page": 2,
+   "system": 1,
+   "where": "interior",
+   "x": 347,
+   "gaps_crossed": 9,
+   "gaps": 10
+  },
+  {
+   "page": 2,
+   "system": 1,
+   "where": "interior",
+   "x": 755,
+   "gaps_crossed": 7,
+   "gaps": 10
+  },
+  {
+   "page": 2,
+   "system": 1,
+   "where": "interior",
+   "x": 1016,
+   "gaps_crossed": 8,
+   "gaps": 10
+  },
+  {
+   "page": 2,
+   "system": 1,
+   "where": "interior",
+   "x": 1175,
+   "gaps_crossed": 8,
+   "gaps": 10
+  },
+  {
+   "page": 2,
+   "system": 1,
+   "where": "interior",
+   "x": 1357,
+   "gaps_crossed": 8,
+   "gaps": 10
+  },
+  {
+   "page": 2,
+   "system": 1,
+   "where": "interior",
+   "x": 1489,
+   "gaps_crossed": 8,
+   "gaps": 10
+  },
+  {
+   "page": 2,
+   "system": 1,
+   "where": "interior",
+   "x": 1627,
+   "gaps_crossed": 7,
+   "gaps": 10
+  },
+  {
+   "page": 2,
+   "system": 1,
+   "where": "interior",
+   "x": 1769,
+   "gaps_crossed": 8,
+   "gaps": 10
+  },
+  {
+   "page": 2,
+   "system": 1,
+   "where": "interior",
+   "x": 1931,
+   "gaps_crossed": 8,
+   "gaps": 10
+  },
+  {
+   "page": 2,
+   "system": 1,
+   "where": "interior",
+   "x": 2080,
+   "gaps_crossed": 8,
+   "gaps": 10
+  },
+  {
+   "page": 2,
+   "system": 1,
+   "where": "LAST",
+   "x": 2622,
+   "gaps_crossed": 10,
+   "gaps": 10
+  },
+  {
+   "page": 3,
+   "system": 0,
+   "where": "FIRST",
+   "x": 351,
+   "gaps_crossed": 10,
+   "gaps": 10
+  },
+  {
+   "page": 3,
+   "system": 0,
+   "where": "interior",
+   "x": 998,
+   "gaps_crossed": 8,
+   "gaps": 10
+  },
+  {
+   "page": 3,
+   "system": 0,
+   "where": "interior",
+   "x": 1339,
+   "gaps_crossed": 8,
+   "gaps": 10
+  },
+  {
+   "page": 3,
+   "system": 0,
+   "where": "interior",
+   "x": 1693,
+   "gaps_crossed": 6,
+   "gaps": 10
+  },
+  {
+   "page": 3,
+   "system": 0,
+   "where": "interior",
+   "x": 1805,
+   "gaps_crossed": 6,
+   "gaps": 10
+  },
+  {
+   "page": 3,
+   "system": 0,
+   "where": "interior",
+   "x": 1886,
+   "gaps_crossed": 7,
+   "gaps": 10
+  },
+  {
+   "page": 3,
+   "system": 0,
+   "where": "interior",
+   "x": 1991,
+   "gaps_crossed": 6,
+   "gaps": 10
+  },
+  {
+   "page": 3,
+   "system": 0,
+   "where": "LAST",
+   "x": 2143,
+   "gaps_crossed": 6,
+   "gaps": 10
+  },
+  {
+   "page": 3,
+   "system": 1,
+   "where": "FIRST",
+   "x": 342,
+   "gaps_crossed": 7,
+   "gaps": 7
+  },
+  {
+   "page": 3,
+   "system": 1,
+   "where": "interior",
+   "x": 652,
+   "gaps_crossed": 5,
+   "gaps": 7
+  },
+  {
+   "page": 3,
+   "system": 1,
+   "where": "interior",
+   "x": 757,
+   "gaps_crossed": 4,
+   "gaps": 7
+  },
+  {
+   "page": 3,
+   "system": 1,
+   "where": "interior",
+   "x": 865,
+   "gaps_crossed": 5,
+   "gaps": 7
+  },
+  {
+   "page": 3,
+   "system": 1,
+   "where": "interior",
+   "x": 974,
+   "gaps_crossed": 5,
+   "gaps": 7
+  },
+  {
+   "page": 3,
+   "system": 1,
+   "where": "interior",
+   "x": 1125,
+   "gaps_crossed": 5,
+   "gaps": 7
+  },
+  {
+   "page": 3,
+   "system": 1,
+   "where": "interior",
+   "x": 1232,
+   "gaps_crossed": 5,
+   "gaps": 7
+  },
+  {
+   "page": 3,
+   "system": 1,
+   "where": "interior",
+   "x": 1341,
+   "gaps_crossed": 4,
+   "gaps": 7
+  },
+  {
+   "page": 3,
+   "system": 1,
+   "where": "interior",
+   "x": 1459,
+   "gaps_crossed": 5,
+   "gaps": 7
+  },
+  {
+   "page": 3,
+   "system": 1,
+   "where": "interior",
+   "x": 1607,
+   "gaps_crossed": 5,
+   "gaps": 7
+  },
+  {
+   "page": 3,
+   "system": 1,
+   "where": "interior",
+   "x": 1714,
+   "gaps_crossed": 3,
+   "gaps": 7
+  },
+  {
+   "page": 3,
+   "system": 1,
+   "where": "interior",
+   "x": 1921,
+   "gaps_crossed": 5,
+   "gaps": 7
+  },
+  {
+   "page": 3,
+   "system": 1,
+   "where": "interior",
+   "x": 2142,
+   "gaps_crossed": 3,
+   "gaps": 7
+  },
+  {
+   "page": 3,
+   "system": 1,
+   "where": "interior",
+   "x": 2474,
+   "gaps_crossed": 3,
+   "gaps": 7
+  },
+  {
+   "page": 3,
+   "system": 1,
+   "where": "LAST",
+   "x": 2605,
+   "gaps_crossed": 7,
+   "gaps": 7
+  },
+  {
+   "page": 4,
+   "system": 0,
+   "where": "FIRST",
+   "x": 354,
+   "gaps_crossed": 10,
+   "gaps": 10
+  },
+  {
+   "page": 4,
+   "system": 0,
+   "where": "interior",
+   "x": 595,
+   "gaps_crossed": 7,
+   "gaps": 10
+  },
+  {
+   "page": 4,
+   "system": 0,
+   "where": "interior",
+   "x": 766,
+   "gaps_crossed": 7,
+   "gaps": 10
+  },
+  {
+   "page": 4,
+   "system": 0,
+   "where": "interior",
+   "x": 886,
+   "gaps_crossed": 7,
+   "gaps": 10
+  },
+  {
+   "page": 4,
+   "system": 0,
+   "where": "interior",
+   "x": 1609,
+   "gaps_crossed": 7,
+   "gaps": 10
+  },
+  {
+   "page": 4,
+   "system": 0,
+   "where": "interior",
+   "x": 1719,
+   "gaps_crossed": 8,
+   "gaps": 10
+  },
+  {
+   "page": 4,
+   "system": 0,
+   "where": "interior",
+   "x": 1874,
+   "gaps_crossed": 7,
+   "gaps": 10
+  },
+  {
+   "page": 4,
+   "system": 0,
+   "where": "interior",
+   "x": 2036,
+   "gaps_crossed": 8,
+   "gaps": 10
+  },
+  {
+   "page": 4,
+   "system": 0,
+   "where": "interior",
+   "x": 2317,
+   "gaps_crossed": 7,
+   "gaps": 10
+  },
+  {
+   "page": 4,
+   "system": 0,
+   "where": "interior",
+   "x": 2463,
+   "gaps_crossed": 7,
+   "gaps": 10
+  },
+  {
+   "page": 4,
+   "system": 0,
+   "where": "LAST",
+   "x": 2622,
+   "gaps_crossed": 10,
+   "gaps": 10
+  },
+  {
+   "page": 4,
+   "system": 1,
+   "where": "FIRST",
+   "x": 350,
+   "gaps_crossed": 10,
+   "gaps": 10
+  },
+  {
+   "page": 4,
+   "system": 1,
+   "where": "interior",
+   "x": 872,
+   "gaps_crossed": 5,
+   "gaps": 10
+  },
+  {
+   "page": 4,
+   "system": 1,
+   "where": "interior",
+   "x": 1187,
+   "gaps_crossed": 8,
+   "gaps": 10
+  },
+  {
+   "page": 4,
+   "system": 1,
+   "where": "interior",
+   "x": 1334,
+   "gaps_crossed": 8,
+   "gaps": 10
+  },
+  {
+   "page": 4,
+   "system": 1,
+   "where": "interior",
+   "x": 1463,
+   "gaps_crossed": 8,
+   "gaps": 10
+  },
+  {
+   "page": 4,
+   "system": 1,
+   "where": "interior",
+   "x": 1590,
+   "gaps_crossed": 7,
+   "gaps": 10
+  },
+  {
+   "page": 4,
+   "system": 1,
+   "where": "interior",
+   "x": 1728,
+   "gaps_crossed": 8,
+   "gaps": 10
+  },
+  {
+   "page": 4,
+   "system": 1,
+   "where": "interior",
+   "x": 1852,
+   "gaps_crossed": 8,
+   "gaps": 10
+  },
+  {
+   "page": 4,
+   "system": 1,
+   "where": "interior",
+   "x": 1982,
+   "gaps_crossed": 8,
+   "gaps": 10
+  },
+  {
+   "page": 4,
+   "system": 1,
+   "where": "interior",
+   "x": 2294,
+   "gaps_crossed": 8,
+   "gaps": 10
+  },
+  {
+   "page": 4,
+   "system": 1,
+   "where": "interior",
+   "x": 2465,
+   "gaps_crossed": 8,
+   "gaps": 10
+  },
+  {
+   "page": 4,
+   "system": 1,
+   "where": "LAST",
+   "x": 2625,
+   "gaps_crossed": 10,
+   "gaps": 10
+  }
+ ]
+}

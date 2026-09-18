@@ -614,3 +614,217 @@ def _propose(log: Log, system: Subject, span: _Span, *, reason: str,
             "events_per_space": span.bar.get("events_per_space"),
         },
     )
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Rule 3 — the unnamed block at the foot of a system
+# ─────────────────────────────────────────────────────────────────────────────
+
+#: The glyph a detected clef names, imported rather than restated.
+#:
+#: ⚠️ THE FIRST DRAFT OF THE PROBE THAT MEASURED THIS RULE SPELLED THEM
+#: `gClef`/`fClef`/`cClef` AND MATCHED NOTHING, so it reported *"0 of 0
+#: spoke"* on a document holding 91 clef rows -- a corroboration that was
+#: silent because of the map rather than because of the page, and which reads
+#: exactly like a plate that prints no clef. `adjudicators.clef` already holds
+#: the one true map; taking a copy is how the two would drift into that
+#: failure a second time.
+from .adjudicators.clef import _clef_of as _clef_named_by  # noqa: E402
+
+
+def _block_members(log: Log, system: Subject) -> Dict[int, List[Verdict]]:
+    """`{block_first_ordinal: [narrowed slot verdicts, by block index]}`.
+
+    One entry per unnamed block of this system -- in practice one, because a
+    block is by definition the system's own trailing run, but keyed rather
+    than assumed so that a record holding something else is reported instead
+    of silently merged.
+    """
+    out: Dict[int, List[Verdict]] = {}
+    for v in log.verdicts(Q.SLOT_INDEX, system,
+                          scope=Scope.SELF_AND_DESCENDANTS):
+        if v.outcome is not Outcome.NARROWED:
+            continue
+        if v.reason != "family_block_not_forced":
+            continue
+        d = v.detail or {}
+        b0 = d.get("block_first_ordinal")
+        k = d.get("block_size")
+        i = d.get("block_index")
+        if not isinstance(b0, int) or not isinstance(k, int) \
+                or not isinstance(i, int):
+            continue
+        row = out.setdefault(b0, [None] * k)          # type: ignore[list-item]
+        if i < len(row):
+            row[i] = v
+    return out
+
+
+def _clef_read_on(log: Log, staff: Subject) -> Tuple[Optional[str], Tuple[str, ...]]:
+    """`(the clef this staff's glyphs name, the row ids)`, or `(None, ())`.
+
+    ⚠️ ONE ANSWER OR NONE, NEVER A VOTE. Where a staff's glyph rows name two
+    different clefs this returns None: a staff that cannot agree with itself
+    is not a witness, and picking its majority here would be a second clef
+    DECISION sitting outside `adjudicate_clef` and disagreeing with it.
+
+    ⚠️ THESE ARE `Q.CLEF_GLYPH` OBSERVATIONS AND NOT THE `Q.CLEF` VERDICT.
+    The verdict weights the INSTRUMENT at 1.0, so consuming it to place a
+    staff's instrument would close a loop; the raw detection is a reading of
+    ink and closes nothing. It is also why this term lives here rather than
+    in ADJUDICATE, where `Q.CLEF` is ORDER 9 against `slot_index`'s 6 and
+    would simply have read `None`.
+    """
+    named: Dict[str, List[str]] = {}
+    for o in log.rows(Q.CLEF_GLYPH, staff):
+        name = _clef_named_by(str(o.value))
+        if name is not None:
+            named.setdefault(name, []).append(o.id)
+    if len(named) != 1:
+        return None, ()
+    (name, ids), = named.items()
+    return name, tuple(ids)
+
+
+@rule(
+    inference=Inference.COLLAPSE_SLOT_INDEX_TO_FAMILY_BLOCK,
+    target=Q.SLOT_INDEX,
+    # ⚠️ `Q.CLEF` IS NOT HERE AND MUST NOT BE. The raw glyph is a reading of
+    # ink; the verdict is an argument that already weighs the instrument this
+    # rule is placing, and consuming it would close exactly the loop
+    # `clef_correction.py:566` exists to prevent.
+    reads=(Q.SLOT_INDEX, Q.INSTRUMENT, Q.CLEF_GLYPH),
+    scope=Kind.SYSTEM,
+    sideways=True,
+    bound=(
+        "It collapses a NARROWED slot index to one of that reader's OWN "
+        "candidates and nothing else; it acts only on a staff inside a "
+        "bottom-contiguous unnamed block that `adjudicate_slot_index` has "
+        "already matched to the reference's trailing family run and found "
+        "SHORT by exactly one slot, and only on the members ABOVE the last, "
+        "since the last is where the missing slot is claimed to be; and it "
+        "proposes nothing at all for the whole block if any member's own "
+        "clef glyph contradicts the alignment. It can move a staff onto "
+        "another slot of the same family and can never move one out of the "
+        "block, because every candidate the reader admitted is inside the "
+        "run."),
+    why_witnesses_are_independent=(
+        "The witnesses are the block members' own `Q.CLEF_GLYPH` "
+        "observations, one per staff. An observation's provenance closure is "
+        "itself, so two staves' clef detections share no row and "
+        "`independent_groups` returns one group each -- they are separate "
+        "detections of separate ink. ⚠️ THEY ARE NOT INDEPENDENT OF THE "
+        "PLACEMENT in the stronger sense a reader might hope: they corroborate "
+        "the ALIGNMENT, which is one claim, so agreeing clefs raise "
+        "confidence in that claim and do not independently establish each "
+        "staff's slot. ⚠️ AND THE CORROBORATION IS HALF-BLIND ON THE ONE "
+        "DOCUMENT IT IS MEASURED ON: the record holds 74 `clefG`, 17 `clefF` "
+        "and ZERO `clefC`, so the ALTO clef -- the only clef that uniquely "
+        "names a member of a string block -- is never read. What the bass "
+        "clef still catches is a block shifted by one, which is the failure "
+        "this term is here for."),
+)
+def collapse_slot_index_to_family_block(log: Log,
+                                        system: Subject) -> List[Proposal]:
+    """The missing slot of a short block is the CONDENSED PAIR at its foot.
+
+    Sean, 2026-09-17: *"If we had 4 or 5 staves that showed up last in the
+    system without a name in the margin they are almost surely strings. If
+    the first 2 clefs are treble the 3rd is alto and the 4th is bass clef it
+    is further reinforcement."*
+
+    `adjudicate_slot_index` does the first half of that and stops where the
+    page stops forcing it: a block that exactly fills the reference's
+    trailing family run is DECIDED there, and a block one slot short is
+    NARROWED, because four staves can sit on five slots five ways and
+    position alone cannot choose. This rule chooses, and says so.
+
+    **The claim.** A string section printed on four staves rather than five
+    is short because the bottom two parts share one -- `Violoncello e Basso`,
+    the condensation this plate prints on six systems of seven. So the
+    deficit is at the FOOT of the block: every member above the last is
+    front-aligned, and the last one covers both remaining slots and is left
+    exactly as the reader left it.
+
+    ⚠️⚠️ IT IS A CLAIM ABOUT ENGRAVING PRACTICE AND NOT ABOUT THIS PAGE, which
+    is why it is here and not one stage earlier. Two ways it is wrong, both
+    real: a tacet Violino II would put the deficit at the TOP and shift three
+    staves, and a plate that condenses a DIFFERENT pair would put it in the
+    middle. Neither is refuted by anything the record holds, so the answer is
+    BEST rather than FORCED -- and it is labelled, and the narrowing stays in
+    the log underneath it with every candidate it admitted.
+
+    ⚠️ THE CLEF IS A TERM THAT CAN PULL INTO ABSTENTION AND IS NEVER A GATE.
+    It is not consulted to CHOOSE a slot -- the alignment does that -- it is
+    consulted to CONTRADICT one, and a block with no clef readings at all is
+    inferred exactly as before. That asymmetry is deliberate: a clef that
+    agrees adds nothing the alignment did not already claim, while a clef
+    that disagrees is the one signal here that is not downstream of the
+    margin labels.
+
+    ⚠️ THE REFUSAL IS WHOLE-BLOCK. One contradicting clef withdraws the
+    inference from every member, because the alignment is ONE claim: if the
+    third staff is in bass clef where the run says alto, the block is shifted
+    and the two staves above it are wrong too. Refusing only the
+    contradicting member would keep the two errors the contradiction is
+    evidence for.
+    """
+    out: List[Proposal] = []
+    for b0, members in sorted(_block_members(log, system).items()):
+        if any(m is None for m in members):
+            # A block whose narrowings do not cover `0..k-1` is not the shape
+            # this rule reasons about. Reported by absence rather than
+            # guessed around.
+            continue
+        run = list((members[0].detail or {}).get("run") or ())
+        run_clefs = list((members[0].detail or {}).get("run_clefs") or ())
+        if len(run) != len(members) + 1:
+            # The reader admitted a deficit this rule does not claim to
+            # resolve. `FAMILY_BLOCK_MAX_DEFICIT` already holds it to one;
+            # this is the same statement made where the value is used.
+            continue
+
+        reads = [_clef_read_on(log, m.subject) for m in members]
+        conflict = None
+        witnesses: List[str] = []
+        for i, (name, ids) in enumerate(reads):
+            if name is None:
+                continue
+            want = run_clefs[i] if i < len(run_clefs) else None
+            if want is None:
+                continue
+            if name != want:
+                conflict = {"block_index": i, "read": name, "expected": want,
+                            "staff": members[i].subject.to_key()}
+                break
+            witnesses.extend(ids)
+        if conflict is not None:
+            continue
+
+        for i, m in enumerate(members[:-1]):
+            d = m.detail or {}
+            out.append(Proposal(
+                subject=m.subject,
+                value=int(d.get("front_aligned")),
+                reason="the_short_block_is_condensed_at_its_foot",
+                basis=tuple(witnesses),
+                witnesses=tuple(witnesses),
+                detail={
+                    "block_size": d.get("block_size"),
+                    "block_index": i,
+                    "family": d.get("family"),
+                    "instrument": d.get("instrument"),
+                    "run": run,
+                    # ⚠️ WRITTEN EVEN WHEN ZERO, and the flag beside it, for
+                    # the reason rule 2 records: "checked and found nothing
+                    # to contradict me" and "did not check" both render as 0.
+                    "clefs_read_in_block": sum(1 for n, _ in reads
+                                               if n is not None),
+                    "clefs_agreeing": len(witnesses),
+                    "refuses_on_a_contradicting_clef": True,
+                    # ⚠️ The member this rule DECLINES, named so a reader of
+                    # the record can see the condensed pair was left alone
+                    # rather than missed.
+                    "member_left_narrowed": members[-1].subject.to_key(),
+                }))
+    return out

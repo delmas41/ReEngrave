@@ -1,0 +1,67 @@
+{
+ "positive_control": "green",
+ "arms": [
+  {
+   "name": "POSITIVE CONTROL",
+   "result": "green"
+  },
+  {
+   "name": "width-box read as a CORNER box",
+   "result": "RED"
+  },
+  {
+   "name": "the floor moved to 1.5 spaces",
+   "result": "RED"
+  },
+  {
+   "name": "the census join keyed on the CELL not the glyph",
+   "result": "RED"
+  },
+  {
+   "name": "the notehead filter dropped",
+   "result": "RED"
+  },
+  {
+   "name": "the partition control made vacuous",
+   "result": "HELD OUT (equivalent/named)"
+  },
+  {
+   "name": "the ruler-agreement control loosened to 10 spaces",
+   "result": "HELD OUT (equivalent/named)"
+  },
+  {
+   "name": "the truth-mapping controls' GUARD disabled",
+   "result": "HELD OUT (equivalent/named)"
+  },
+  {
+   "name": "publisher pinned by PAGE NUMBER instead of the manifest",
+   "result": "RED"
+  },
+  {
+   "name": "`cannot_tell` collapsed back into IS-a-notehead",
+   "result": "RED"
+  },
+  {
+   "name": "an unknown vocabulary word defaulted to IS-a-notehead",
+   "result": "HELD OUT (equivalent/named)"
+  },
+  {
+   "name": "a vocabulary word REMOVED, so the unknown branch goes live",
+   "result": "RED"
+  },
+  {
+   "name": "the whole-note vocabulary mapped to the wrong side",
+   "result": "RED"
+  },
+  {
+   "name": "the stroke lane's figures taken on trust",
+   "result": "HELD OUT (equivalent/named)"
+  },
+  {
+   "name": "the stroke reader's CIRCULAR variant used as the headline",
+   "result": "HELD OUT (equivalent/named)"
+  }
+ ],
+ "red": 8,
+ "live": 8
+}

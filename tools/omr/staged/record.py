@@ -378,8 +378,81 @@ class Q(_Vocab):
     #: to read it is the honest pair; dropping it at the gather site is how
     #: this quantity came to be missing in the first place.
     REST = "rest"
-    STEM = "stem"                            # CV stem: x, y0, y1
+    STEM = "stem"                            # CV stem: x, y, w, h (NOT x,y0,y1)
+    #: ⚠⚠ THE VALUE IS `[x, y, w, h]`, AND THIS COMMENT SAID `x, y0, y1`
+    #: until 2026-09-18. Verified against the record: `detail.x0 == value[0]`
+    #: and `detail.x1 - detail.x0 == value[2]` on 400 of 400 rows, and the
+    #: h/w distributions land inside the shipped filters exactly (h p05 2.14
+    #: / median 3.93 / p95 6.78 spaces against `min_height` 2.0 and
+    #: `max_height` 8.0; w median 0.32 against `max_width` 0.6).
+    #:
+    #: ⚠ THIRD BOX-CONVENTION TRAP IN ONE RECORD, and they disagree:
+    #: `Q.GLYPH_BOX.value` is `[name, x, y, w, h]`, `Q.INK.detail.
+    #: ink_bbox_canonical` is `[x0, y0, x1, y1]` CORNERS, and this is
+    #: `[x, y, w, h]`. Reading one as another gives a NEGATIVE width and a
+    #: clean believable zero -- it cost `benchmarks/omr-ink-extent-2026-09`
+    #: a run that reported `NO_INK_UNDER_BOX` on 100 of 106 rows. ASSERT
+    #: the convention against the row's own stated spans before comparing.
     BEAM_STROKE = "beam_stroke"              # CV beam stroke centre
+    #: EVERY vertical run the stem opening produced -- ACCEPTED OR REFUSED --
+    #: with which filter first refused it and its extent in page pixels.
+    #:
+    #: ⚠️⚠️ IT EXISTS BECAUSE `Q.STEM` IS THE SURVIVORS ONLY, AND SEAN ASKED A
+    #: QUESTION THE RECORD COULD NOT ANSWER. Asked whether the stages hold what
+    #: is needed to tell one kind of vertical line from another, the answer was
+    #: no, for two reasons this quantity closes:
+    #:
+    #:   1. **There was no quantity for "a vertical run."** `detect_stems`
+    #:      finds every vertical candidate, applies SIX filters and emits only
+    #:      the survivors, so a candidate the pipeline FOUND AND DISCARDED left
+    #:      no row at all and the population arrived at every stage already
+    #:      named `stem`. Naming and filtering are fused inside GATHER, against
+    #:      its own charter that it *decides nothing* --
+    #:      `docs/breakthrough-2026-09-18-the-unit-of-enquiry.md`, and Sean
+    #:      unprompted: *"NO_INK shows me that we are discarding information
+    #:      that should be black and white."*
+    #:   2. **The strongest discriminator could not be computed.** Sean's
+    #:      barline test is *a barline's two ends sit ON the outer staff lines;
+    #:      a stem's do not*, which needs the run's endpoints and the staff
+    #:      lines in ONE coordinate system. `Q.STEM` is CELL canonical and its
+    #:      row carries no page coordinates at all, while `Q.STAFF_LINES` is
+    #:      PAGE px. The two could not be compared, so the test could not be
+    #:      asked. Every row here carries `run_bbox_page_px`.
+    #:
+    #: ⚠️ `run_outcome` IS A FACT ABOUT WHICH FILTER FIRED, NOT A NAME FOR THE
+    #: INK. A refused run is not thereby "not a stem" -- the crop pass
+    #: adjudicated the width cap's discards **33 of 33 REAL** -- and an accepted
+    #: one is not thereby a stem. Recording the fate without asserting the
+    #: identity is the whole point; asserting it is what `Q.STEM` already does
+    #: and what §9 of `docs/proposal-2026-09-18-boxing-is-a-decision.md` argues
+    #: it cannot do by dimension, because *"length is helpful in all of them
+    #: except stems."*
+    #:
+    #: ⚠️ THE UNIT IS THE CELL'S OWN STAFF SPACE, never a flat 100 px.
+    #: `_upscale_to_canonical` scales a too-wide cell by WIDTH, which is why
+    #: `Q.CELL_STAFF_SPACE` exists -- measured here, 1,167 of 1,180 Litolff
+    #: cells sit at exactly 100 and 13 do not, so the flat constant is right
+    #: 98.9% of the time and silently wrong on the rest.
+    #:
+    #: ⚠ THE BOX IS `[x, y, w, h]` CANONICAL, matching `Q.STEM.value` and NOT
+    #: `Q.INK`'s canonical box, which is corners. Three conventions disagree in
+    #: one record (see `STEM` above); reading one as another gives a NEGATIVE
+    #: width and a clean believable zero. The page box is corners, like
+    #: `Q.INK`'s and `Q.GLYPH_BOX`'s, and is spelled `run_bbox_page_px` so the
+    #: two cannot be confused at a read site.
+    #:
+    #: ⚠️ NAMED WITHOUT ITS LEAF KEY, DELIBERATELY. `wiring.py`'s DETAIL
+    #: question credits a key by its LEAF NAME matched textually anywhere under
+    #: `tools/`, so a COMMENT that spells `Q.INK`'s box key closes that key's
+    #: open gap entry -- which `--check` caught the first time this comment was
+    #: written. A doc mention is not a consumer; the family `wiring.py` already
+    #: documents three times, arriving a fourth.
+    #:
+    #: ⚠️ PRODUCER ONLY, default OFF (`OMR_VERTICAL_RUNS`). Nothing reads it,
+    #: deliberately -- the `Q.INK` discipline: a producer and its first consumer
+    #: landing together makes the reach measurement circular. Its first
+    #: intended consumer is named in `wiring.KNOWN_GAPS`.
+    VERTICAL_RUN = "vertical_run"
     FLAG = "flag"                            # detected flag
     AUG_DOT = "aug_dot"                      # dot offset from its notehead
     TUPLET_MARKER = "tuplet_marker"          # digit or bracket, with its span
@@ -1047,6 +1120,13 @@ CLAIMS: "dict[str, str]" = {
     #: the run of ink IS a stem, and `_stem_joined` consumes it as one. It is
     #: filed with the thing it can be wrong about.
     "STEM": CLAIM.IDENTIFICATION,
+    #: ⚠️ A MEASUREMENT WHERE `STEM` IS AN IDENTIFICATION, AND THE PAIR IS THE
+    #: POINT. `Q.STEM` has already decided the run of ink IS a stem and
+    #: `_stem_joined` consumes it as one; this row asserts no identity at all
+    #: -- it is a box, an area, and a note of which filter fired. So it cannot
+    #: be wrong about what the ink is, only about where the ruler was laid.
+    #: `score is None` follows, as it does for `NOTEHEAD_STAFF_POSITION`.
+    "VERTICAL_RUN": CLAIM.MEASUREMENT,
     #: ⚠️⚠️ THE ONE QUANTITY WHOSE CLAIM DEPENDS ON ITS READER, and the only
     #: one in the vocabulary. `gather_margin_labels` resolves the rung at
     #: RUNTIME (`_RUNG_READER.get(rung, READERS.TEXT_LAYER)`), and the rungs

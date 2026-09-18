@@ -67,7 +67,7 @@ def _row_no(row_id: str) -> int:
         return 0
 
 
-def rebuild(rec: dict) -> Log:
+def rebuild(rec: dict, skip_verdicts: frozenset = frozenset()) -> Log:
     """One Log holding exactly the saved record's rows, in emission order.
 
     ⚠️ VERDICTS ARE REPLAYED TOO, WITH THEIR ORIGINAL IDS, which is what makes
@@ -118,6 +118,15 @@ def rebuild(rec: dict) -> Log:
     # one thing that guard exists to catch.
     restored = 0
     for v in sorted(rec["verdicts"], key=lambda v: _row_no(v["id"])):
+        # ⚠️ `skip_verdicts` LEAVES A QUANTITY OUT SO A CALLER CAN RE-DECIDE
+        # IT over this record's own GATHER rows and everything else the run
+        # concluded. It defaults to nothing, so every existing caller gets the
+        # faithful replay this function was written for; a caller that skips
+        # something owns its own control, because `control()` below compares
+        # against the FULL record and will report the omission as a difference
+        # rather than hiding it.
+        if v["quantity"] in skip_verdicts:
+            continue
         built = Verdict(
             id=v["id"], subject=Subject.from_key(v["subject"]),
             quantity=v["quantity"], outcome=Outcome(v["outcome"]),

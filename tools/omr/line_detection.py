@@ -32,7 +32,7 @@ doesn't confuse the vertical-projection step.
 
 from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from typing import Any
 
 import cv2
@@ -170,6 +170,276 @@ STEM_KERNEL_MARGIN = 0.8
 STEM_MAX_HEIGHT_LINES = 8.0
 
 
+#: `OMR_STEM_STROKE` — read a stem from a COLUMN PROFILE as well as from a
+#: connected component. Default OFF, so the OFF test is an ALLOW-LIST: a typo
+#: must not switch a document ONTO an unpriced GATHER change (CLAUDE.md, *A
+#: flag's OFF test must follow its DEFAULT*).
+STEM_STROKE_ENV = "OMR_STEM_STROKE"
+
+#: How far two adjacent columns' run endpoints may differ and still be read as
+#: one stroke, in staff spaces. A stem is a hairline the engraver drew in one
+#: stroke, so its columns share both endpoints to within the plate's bleed; a
+#: fused blob's neighbouring columns do not.
+#:
+#: ⚠️ It sits on a PLATEAU, not in an empty interval: swept 0.10 / 0.15 / 0.25
+#: / 0.40 / 0.60 the heads a band covers read 293 / 287 / 287 / 286 / 284 on
+#: Litolff and 397 at every value on Breitkopf, while the positive control
+#: (re-finding the strokes `detect_stems` already accepts) reads 98.8 / 98.2 /
+#: 98.2 / 98.2 / 97.6 and 99.0 / 98.9 / 98.7 / 98.4 / 98.4. Nothing separates;
+#: the value is the middle of a flat region and is not tuned to either plate.
+STEM_STROKE_AGREE_SPACES = 0.25
+
+
+def stem_stroke_enabled() -> bool:
+    """Is the column-profile stroke reader on? Default OFF, allow-list."""
+    import os
+    return os.environ.get(STEM_STROKE_ENV, "0").strip().lower() in (
+        "1", "true", "yes", "on")
+
+
+def _column_stroke_bands(ink: np.ndarray, line_spacing: float, cell_w: int, *,
+                         min_height_lines: float, max_height_lines: float,
+                         max_width_lines: float,
+                         agree_spaces: float = STEM_STROKE_AGREE_SPACES):
+    """Find stems by COLUMN PROFILE, labelling no components at all.
+
+    ⚠️⚠️ WHY THIS EXISTS: ON THESE PLATES THE INK IS FUSED, AND A COMPONENT
+    READER HAS NOTHING STEM-SHAPED TO FIND. `rejection_census.py` names the
+    first filter each missing stem's component fails, and on BOTH publishers
+    the overwhelming majority is *a component EXISTS and is the wrong SHAPE*
+    — WIDE+TALL+SHORT is 683 of 793 (86%) on Litolff and 1,132 of 1,529 (74%)
+    on Breitkopf, against *no component at all* at only 21% and 13%. The
+    largest single bucket INVERTS between the two (Litolff WIDE 29.9%,
+    Breitkopf TALL 31.1%), so no constant serves both.
+
+    STEP 1 IS `detect_stems`' OWN STEP 3, UNCHANGED. `runs()` keeps the pixels
+    lying in a vertical ink run of at least `k` rows, which is exactly a
+    (1, k) morphological opening: erode keeps a pixel only where all k rows of
+    its column window are ink, dilate puts the run back.
+
+    ⚠️⚠️ THE DIFFERENCE IS STEP 2, AND IT IS THE WHOLE POINT. `detect_stems`
+    then runs 2D connected components at connectivity 8 and measures the BLOB,
+    so a stem fused to its own notehead is measured at the NOTEHEAD's width
+    and the width cap throws the stem away with the blob — the failure this
+    function's own kernel comment already describes and shrank the kernel from
+    1.0 to 0.8 spaces to mitigate. This never labels a component. It reads the
+    profile COLUMN BY COLUMN and bands adjacent columns only where they AGREE
+    about where their run starts and ends, which is a property a stem has and
+    a fused blob does not. A band is CUT rather than widened when a column
+    disagrees, and cut again at `max_width_lines` — both are refusals to
+    merge, so this can only ever produce a NARROWER stroke than a connected
+    component would, never a wider one.
+
+    ⚠️ A band's height is the MEDIAN of its columns' run extents, not their
+    union: a union hands one column that caught a beam or a neighbour its
+    length to the whole band.
+
+    ⚠️ NO EROSION AND NO RE-THRESHOLDING, deliberately. The registry entry
+    *Stacked beams are set 0.75 staff spaces centre to centre* [C79 + L20]
+    measures a beam stroke at 0.5 spaces thick with a 0.25-space gap — "the
+    gap is NARROWER than the stroke, so an erosion tuned to open the gaps will
+    eat the strokes first" — and the handoff's dead hypothesis agrees from the
+    other side: horizontal pre-dilation at 2/3/5 px recovered 3, 3 and 4 heads
+    of 793. A profile reads the ink it is given.
+
+    Every filter below is `detect_stems`' own, passed in rather than restated.
+    """
+    min_h = int(round(line_spacing * min_height_lines))
+    max_h = int(round(line_spacing * max_height_lines))
+    max_w = max(3, int(round(line_spacing * max_width_lines)))
+    edge_margin = max(int(round(line_spacing * 0.8)), 12)
+    agree_px = max(1, int(round(line_spacing * agree_spaces)))
+    if min_h <= 1:
+        return []
+
+    long_mask = cv2.morphologyEx(
+        ink, cv2.MORPH_OPEN,
+        cv2.getStructuringElement(cv2.MORPH_RECT, (1, min_h)))
+    m = long_mask > 0
+    if not m.any():
+        return []
+    # ⚠️ THE LONGEST RUN PER COLUMN, NOT ITS FIRST-TO-LAST EXTENT. A column
+    # holding two long runs -- two notes stacked in it, or a stem crossing a
+    # second one -- has a first-to-last extent spanning both, and taking that
+    # reports one stroke where there are two. Measured on a synthetic pair of
+    # 2.5-space runs 1.5 spaces apart, the extent rule reported NOTHING at all
+    # (its own single-run guard rejected the column), so the cost was reach
+    # rather than a wrong box -- which is the failure that is hard to notice.
+    h_px, w_px = m.shape
+    cur = np.zeros(w_px, dtype=np.int32)
+    best = np.zeros(w_px, dtype=np.int32)
+    bend = np.zeros(w_px, dtype=np.int32)
+    for y in range(h_px):
+        cur = np.where(m[y], cur + 1, 0)
+        upd = cur > best
+        best = np.where(upd, cur, best)
+        bend = np.where(upd, y, bend)
+    has = best > 0
+    bot = bend
+    top = bend - best + 1
+
+    out: list[LineDetection] = []
+    i, n = 0, len(has)
+    while i < n:
+        if not has[i]:
+            i += 1
+            continue
+        # ⚠️⚠️ THE SEGMENT IS CUT BY DISAGREEMENT ALONE, AND THE WIDTH CAP IS
+        # THEN APPLIED TO THE WHOLE OF IT. Cutting at the cap instead is what
+        # this module's own unit test caught, twice over: a solid block 2
+        # staff spaces wide and 4 tall is sliced into strips of 0.6 spaces,
+        # every strip agrees with its neighbours and passes the height, width
+        # and 3:1 aspect filters, so a blob came out as three stems. Refusing
+        # the strips that hit the cap was not enough either -- the LAST
+        # remnant strip terminates on ordinary non-ink and escaped. A stem is
+        # thin AND ISOLATED (`[L14]`, "about a tenth of a staff space
+        # thick"), so the property that has to hold is of the agreeing region
+        # as a whole: an agreeing region wider than a stem is not a stem, and
+        # no part of it is either.
+        j = i + 1
+        while j < n and has[j]:
+            d = max(abs(int(top[j]) - int(top[j - 1])),
+                    abs(int(bot[j]) - int(bot[j - 1])))
+            if d > agree_px:
+                break
+            j += 1
+        x0, w = i, j - i
+        i = j
+        cols = slice(x0, x0 + w)
+        t = int(np.median(top[cols]))
+        b = int(np.median(bot[cols]))
+        h = b - t + 1
+        if h < min_h or h > max_h or w > max_w:
+            continue
+        if x0 < edge_margin or x0 + w > cell_w - edge_margin:
+            continue
+        if w * h < max(4, line_spacing * 0.5):
+            continue
+        if h / max(1, w) < 3.0:
+            continue
+        out.append(LineDetection(
+            smufl_name="stem", category="stem",
+            x_canonical=int(x0), y_canonical=int(t),
+            width_canonical=int(w), height_canonical=int(h),
+            confidence=1.0,
+        ))
+    return out
+
+
+# ---------------------------------------------------------------------------
+# The vertical-run CANDIDATE population -- accepted AND refused
+# ---------------------------------------------------------------------------
+#
+# ⚠️⚠️ WHY THIS EXISTS: `detect_stems` NAMES AND FILTERS IN ONE ACT, INSIDE
+# GATHER. It finds every vertical candidate, applies six filters, and returns
+# only the survivors -- so a candidate the pipeline FOUND and DISCARDED leaves
+# no row at all, the population arrives at every stage already named `stem`,
+# and `gather_cv_lines` reports a cell whose every candidate was refused as
+# `ABSTAIN.NO_INK`, i.e. as an EMPTY PAGE. That is the exact fault
+# `docs/breakthrough-2026-09-18-the-unit-of-enquiry.md` diagnoses and Sean
+# identified unprompted: *"NO_INK shows me that we are discarding information
+# that should be black and white."*
+#
+# ⚠️ IT CHANGES NOTHING `detect_stems` RETURNS. The candidates go out through
+# an APPEND-ONLY out-parameter, never through the return value, because this
+# file is on the path every stem arm in this repo proves faithful before it
+# reports a delta (1,920 = 1,920 strokes on Litolff, 2,305 = 2,305 on
+# Breitkopf). A flag-off difference here would break their instruments and
+# read as their bug.
+#
+# ⚠️ THE REASON WORDS ARE THE CENSUS'S OWN, TO THE CHARACTER.
+# `benchmarks/omr-stem-ink-2026-09/rejection_census.py` already replicates
+# this chain component by component and ASSERTS per cell that its accepted set
+# is identical to the real `detect_stems`, so its six categories are the
+# measured vocabulary and this is the one spelling of them.
+# `tools/omr/tests/test_vertical_runs.py` asserts each string appears in that
+# file's source -- two copies of a vocabulary is how they drift, and the
+# anti-drift check is cheaper than the drift.
+RUN_TOO_SHORT = "too SHORT (h < 2.0 spaces)"
+RUN_TOO_TALL = "too TALL (h > 8.0 spaces)"
+RUN_TOO_WIDE = "too WIDE (w > 0.6 spaces)"
+RUN_AT_CELL_EDGE = "at a CELL EDGE (0.8 spaces)"
+RUN_TOO_LITTLE_AREA = "too little AREA"
+RUN_ASPECT = "ASPECT < 3:1"
+
+#: ⚠️ THE SEVENTH OUTCOME, AND IT IS NOT ONE OF THE SIX. `_drop_paired_strokes`
+#: runs AFTER the range filters, over the set that already passed all of them,
+#: so a candidate it drops was ACCEPTED by every dimension bound and refused by
+#: a RELATION to its neighbour. The census names it separately for the same
+#: reason ("a component WAS accepted (pair rule dropped it)") and pooling the
+#: two would hide that this rejection is the only one a single candidate's own
+#: measurements cannot explain.
+RUN_PAIRED = "PAIRED with a neighbour (the accidental rule)"
+
+#: What a candidate that survived everything is called.
+RUN_ACCEPTED = "accepted"
+
+#: Every outcome, in the order the chain produces them. ⚠️ An outcome NOT in
+#: this tuple is a drift in `detect_stems`' filter chain and the test fails.
+RUN_OUTCOMES = (
+    RUN_ACCEPTED,
+    RUN_TOO_SHORT,
+    RUN_TOO_TALL,
+    RUN_TOO_WIDE,
+    RUN_AT_CELL_EDGE,
+    RUN_TOO_LITTLE_AREA,
+    RUN_ASPECT,
+    RUN_PAIRED,
+)
+
+#: The six DIMENSION bounds, apart from the relational one. §9 of
+#: `docs/proposal-2026-09-18-boxing-is-a-decision.md` is the argument that all
+#: six are size windows on an object the engraver varies on purpose -- *"length
+#: is helpful in all of them except stems"* -- so a consumer that wants to ask
+#: "how much of this population is refused BY DIMENSION" needs them named as a
+#: group rather than enumerated by hand at the call site.
+RUN_DIMENSION_REASONS = (
+    RUN_TOO_SHORT, RUN_TOO_TALL, RUN_TOO_WIDE,
+    RUN_AT_CELL_EDGE, RUN_TOO_LITTLE_AREA, RUN_ASPECT,
+)
+
+
+@dataclass(frozen=True)
+class VerticalRunCandidate:
+    """One connected component of the vertical opening, with its fate.
+
+    ⚠️ THE BOX IS `[x, y, w, h]` IN CANONICAL CELL COORDINATES -- the same
+    spelling `Q.STEM.value` uses, and DELIBERATELY not corners. Three
+    mutually-disagreeing box conventions exist in one record
+    (`Q.GLYPH_BOX.value` is `[name, x, y, w, h]`, `Q.INK`'s canonical box is
+    CORNERS, `Q.STEM.value` is `[x, y, w, h]`) and reading one as another gives
+    a NEGATIVE width and a clean believable zero. ⚠️ `Q.INK`'s key is named
+    here WITHOUT its leaf spelling on purpose: `wiring.py` credits a detail key
+    by leaf name matched anywhere under `tools/`, so a comment that spells it
+    closes that key's open gap entry. The fields are named `w`/`h` rather than `x1`/`y1`
+    so the convention is unmistakable at every read site.
+
+    `outcome` is one of `RUN_OUTCOMES`. It is a fact about WHICH FILTER FIRED,
+    not a name for the ink: a refused candidate is not thereby "not a stem",
+    and an accepted one is not thereby a stem. That distinction is the whole
+    point of recording the population.
+    """
+    x: int
+    y: int
+    w: int
+    h: int
+    area: int
+    outcome: str
+    line_spacing: float
+
+    @property
+    def accepted(self) -> bool:
+        return self.outcome == RUN_ACCEPTED
+
+    @property
+    def width_spaces(self) -> float:
+        return self.w / self.line_spacing if self.line_spacing > 0 else 0.0
+
+    @property
+    def height_spaces(self) -> float:
+        return self.h / self.line_spacing if self.line_spacing > 0 else 0.0
+
+
 def _drop_paired_strokes(stems, line_spacing: float, gap: float, min_overlap: float):
     """Reject vertical strokes that come in PAIRS, which stems do not.
 
@@ -223,6 +493,8 @@ def detect_stems(
     accidental_pair_gap_lines: float = 0.9,
     accidental_pair_overlap: float = 0.6,
     drop_accidental_pairs: bool = True,
+    enable_stroke_reader: bool | None = None,
+    candidates_out: list | None = None,
 ) -> list[LineDetection]:
     """Find stem-like vertical ink runs in `cell`.
 
@@ -250,6 +522,24 @@ def detect_stems(
          stems by any of the filters above.
 
     Returns LineDetection objects in canonical-cell coordinates.
+
+    `enable_stroke_reader` overrides `OMR_STEM_STROKE` for a test or an arm;
+    `None` (the default) reads the flag, which is OFF, so the returned set is
+    exactly what it has always been. See step 7 at the foot of this function
+    and `_column_stroke_bands`.
+
+    ⚠️⚠️ `candidates_out`, WHEN GIVEN, IS APPENDED WITH EVERY COMPONENT THE
+    OPENING PRODUCED -- accepted AND refused, each carrying the FIRST filter
+    that refused it (`VerticalRunCandidate`, `RUN_OUTCOMES`). It is the only
+    way the refused population leaves this function, and it leaves through a
+    SIDE CHANNEL rather than the return value **on purpose**: the returned
+    list is what every stem arm in this repo proves faithful before reporting
+    a delta, and the stroke reader's own comment below says why a difference
+    here would read as somebody else's bug. Passing it changes no filter, no
+    order and no returned stroke; omitting it costs nothing at all. It is
+    ADDITIVE in exactly the sense the stroke reader is not -- the stroke
+    reader adds STROKES, this adds only a record of what was already
+    happening.
 
     Measured against 14 hand-counted cells across four scores, the pair rule
     takes summed |error| from 60 to 24, and against the LilyPond reference
@@ -305,20 +595,40 @@ def detect_stems(
     min_h = int(round(line_spacing * min_height_lines))
     max_h = int(round(line_spacing * max_height_lines))
     max_w = max(3, int(round(line_spacing * max_width_lines)))
+    # ⚠️ The refused population is recorded and the CONTROL FLOW IS UNCHANGED.
+    # Each `continue` below still fires exactly where it did; what is new is a
+    # `_note` call in front of it, appending to `candidates_out` when one was
+    # supplied and doing nothing at all when it was not. Rewriting this as a
+    # chain that computes a reason and then branches on it would put the
+    # recording INSIDE the decision, which is the one change that could move a
+    # stroke -- so the reason is derived beside the test that already exists.
+    def _note(x, y, w, h, area, outcome):
+        if candidates_out is not None:
+            candidates_out.append(VerticalRunCandidate(
+                x=int(x), y=int(y), w=int(w), h=int(h), area=int(area),
+                outcome=outcome, line_spacing=float(line_spacing)))
+
     for i in range(1, num):  # skip background (label 0)
         x, y, w, h, area = stats[i]
         # Range filters
         if h < min_h or h > max_h:
+            _note(x, y, w, h, area,
+                  RUN_TOO_SHORT if h < min_h else RUN_TOO_TALL)
             continue
         if w > max_w:
+            _note(x, y, w, h, area, RUN_TOO_WIDE)
             continue
         # Edge filter — barlines live at the cell boundaries.
         if x < edge_margin or x + w > cell_w - edge_margin:
+            _note(x, y, w, h, area, RUN_AT_CELL_EDGE)
             continue
         if area < max(4, line_spacing * 0.5):
+            _note(x, y, w, h, area, RUN_TOO_LITTLE_AREA)
             continue
         if h / max(1, w) < 3.0:
+            _note(x, y, w, h, area, RUN_ASPECT)
             continue
+        _note(x, y, w, h, area, RUN_ACCEPTED)
         out.append(LineDetection(
             smufl_name="stem",
             category="stem",
@@ -329,10 +639,63 @@ def detect_stems(
             confidence=1.0,
         ))
     if drop_accidental_pairs:
+        before = out
         out = _drop_paired_strokes(
             out, line_spacing, accidental_pair_gap_lines, accidental_pair_overlap
         )
+        # ⚠️ RE-STAMPED, NOT RE-DERIVED. The pair rule runs over the SET, so
+        # whether a candidate is paired cannot be known at the moment that
+        # candidate is measured -- and re-implementing the relation here to
+        # decide who was dropped is the drift `rejection_census.py` exists to
+        # refuse. `_drop_paired_strokes` returns the SURVIVORS, so the dropped
+        # set is a set difference over identity, and the row that was already
+        # written `accepted` is replaced by one written `RUN_PAIRED`.
+        if candidates_out is not None and len(out) != len(before):
+            kept_boxes = {(s.x_canonical, s.y_canonical,
+                           s.width_canonical, s.height_canonical)
+                          for s in out}
+            for i, cand in enumerate(candidates_out):
+                if cand.outcome != RUN_ACCEPTED:
+                    continue
+                if (cand.x, cand.y, cand.w, cand.h) in kept_boxes:
+                    continue
+                candidates_out[i] = replace(cand, outcome=RUN_PAIRED)
+    # ── `OMR_STEM_STROKE`: the column profile, ADDED, never substituted ──
+    #
+    # ⚠️ FLAG-OFF IS BYTE-IDENTICAL BY CONSTRUCTION, and that is load-bearing
+    # rather than tidy: this file is on the path every arm of
+    # `benchmarks/omr-stem-ink-2026-09/` proves faithful before it reports a
+    # delta (783/783 cells, 1,920 = 1,920 strokes). A flag-off difference here
+    # would break their instruments and read as their bug. Asserted directly:
+    # a re-cut with the flag off reproduces the shared records stroke for
+    # stroke, 1,920 = 1,920 on Litolff and 2,305 = 2,305 on Breitkopf, every
+    # cell matching (`benchmarks/omr-stem-stroke-2026-09/stroke_arm.py`).
+    #
+    # ⚠️ It runs AFTER the pair rule so the shipped set is untouched, which
+    # also means the added bands DO NOT get that rule. That is what was
+    # measured and it is therefore what ships; whether the pair rule should
+    # also police them is an open question and is NOT answered here.
+    if enable_stroke_reader is None:
+        enable_stroke_reader = stem_stroke_enabled()
+    if enable_stroke_reader:
+        for band in _column_stroke_bands(
+                ink, line_spacing, cell_w,
+                min_height_lines=min_height_lines,
+                max_height_lines=max_height_lines,
+                max_width_lines=max_width_lines):
+            if any(_boxes_overlap(band, s) for s in out):
+                continue
+            out.append(band)
     return out
+
+
+def _boxes_overlap(a, b) -> bool:
+    return (min(a.x_canonical + a.width_canonical,
+                b.x_canonical + b.width_canonical)
+            - max(a.x_canonical, b.x_canonical) > 0
+            and min(a.y_canonical + a.height_canonical,
+                    b.y_canonical + b.height_canonical)
+            - max(a.y_canonical, b.y_canonical) > 0)
 
 
 # ---------------------------------------------------------------------------
@@ -691,14 +1054,19 @@ def detect_beams(
 # ---------------------------------------------------------------------------
 
 
-def detect_lines(cell) -> dict[str, list[LineDetection]]:
+def detect_lines(cell, *, candidates_out: list | None = None
+                 ) -> dict[str, list[LineDetection]]:
     """Return {'stems': [...], 'beams': [...]}.
 
     Stems are found first and handed to the beam pass, which needs them to tell
     a beam from a slur, a tie or a ledger line — and computing them once here
     keeps that from costing a second detection.
+
+    `candidates_out` is forwarded to `detect_stems` unchanged; see there. It
+    is NOT forwarded to `detect_beams`, which has its own filter chain and
+    whose refused population is a separate, unmeasured question.
     """
-    stems = detect_stems(cell)
+    stems = detect_stems(cell, candidates_out=candidates_out)
     return {
         "stems": stems,
         "beams": detect_beams(cell, stems=stems),

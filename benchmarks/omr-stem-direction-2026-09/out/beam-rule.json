@@ -1,0 +1,34 @@
+{
+ "overlap_any_side": {
+  "fires": 772,
+  "right": 585,
+  "wrong": 187,
+  "accuracy": 0.7578,
+  "reach_on_no_stem": 304
+ },
+ "overlap_unambiguous": {
+  "fires": 640,
+  "right": 511,
+  "wrong": 129,
+  "accuracy": 0.7984,
+  "reach_on_no_stem": 282
+ },
+ "centre_any_side": {
+  "fires": 571,
+  "right": 451,
+  "wrong": 120,
+  "accuracy": 0.7898,
+  "reach_on_no_stem": 241
+ },
+ "centre_unambiguous": {
+  "fires": 490,
+  "right": 406,
+  "wrong": 84,
+  "accuracy": 0.8286,
+  "reach_on_no_stem": 228
+ },
+ "baseline": {
+  "value": "down",
+  "accuracy": 0.5059
+ }
+}

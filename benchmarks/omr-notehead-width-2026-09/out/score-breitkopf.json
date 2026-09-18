@@ -1,0 +1,242 @@
+{
+ "label": "Breitkopf Brahms 1 pp.0-3",
+ "floor_staff_spaces": 1.0,
+ "controls": {
+  "notehead_total": {
+   "got": 3337,
+   "want": 3337
+  },
+  "decided": {
+   "got": 1791,
+   "want": 1791
+  },
+  "no_stem": {
+   "got": 1529,
+   "want": 1529
+  },
+  "stems_disagree": {
+   "got": 17,
+   "want": 17
+  },
+  "partition": {
+   "got": 3337,
+   "want": 3337
+  },
+  "census_covers_no_stem": {
+   "got": 1529,
+   "want": 1529
+  },
+  "census_subjects_are_heads": {
+   "got": 1529,
+   "want": 1529
+  },
+  "ruler_agreement_max": {
+   "got": 0.0142,
+   "want": "<0.02"
+  }
+ },
+ "n": 3337,
+ "decided": {
+  "n": 1791,
+  "min": 0.443,
+  "p5": 1.26,
+  "median": 1.4,
+  "p95": 1.58,
+  "max": 4.071,
+  "under_floor": 12,
+  "share_under_floor": 0.0067
+ },
+ "decided_under_floor_subjects": [
+  "glyph/0/0/4/3/1",
+  "glyph/0/0/4/3/5",
+  "glyph/0/0/4/4/4",
+  "glyph/0/0/8/5/3",
+  "glyph/1/0/10/0/17",
+  "glyph/1/0/12/0/11",
+  "glyph/1/0/9/0/14",
+  "glyph/2/0/10/1/23",
+  "glyph/2/0/8/1/13",
+  "glyph/2/0/8/1/4",
+  "glyph/2/0/8/1/7",
+  "glyph/2/1/5/3/9"
+ ],
+ "populations": {
+  "DECIDED": {
+   "n": 1791,
+   "min": 0.443,
+   "p5": 1.26,
+   "median": 1.4,
+   "p95": 1.58,
+   "max": 4.071,
+   "under_floor": 12,
+   "share_under_floor": 0.0067
+  },
+  "stems_disagree": {
+   "n": 17,
+   "min": 1.254,
+   "p5": 1.254,
+   "median": 1.384,
+   "p95": 3.24,
+   "max": 3.24,
+   "under_floor": 0,
+   "share_under_floor": 0.0
+  },
+  "no_stem": {
+   "n": 1529,
+   "min": 0.237,
+   "p5": 0.26,
+   "median": 1.315,
+   "p95": 1.535,
+   "max": 2.395,
+   "under_floor": 576,
+   "share_under_floor": 0.3767
+  },
+  "no_stem / NO component overlaps the head at all": {
+   "n": 197,
+   "min": 0.357,
+   "p5": 0.49,
+   "median": 1.125,
+   "p95": 1.57,
+   "max": 1.846,
+   "under_floor": 83,
+   "share_under_floor": 0.4213
+  },
+  "no_stem / a component WAS accepted (pair rule dropped it)": {
+   "n": 178,
+   "min": 0.54,
+   "p5": 1.18,
+   "median": 1.39,
+   "p95": 1.554,
+   "max": 2.344,
+   "under_floor": 6,
+   "share_under_floor": 0.0337
+  },
+  "no_stem / at a CELL EDGE (0.8 spaces)": {
+   "n": 22,
+   "min": 0.25,
+   "p5": 0.26,
+   "median": 0.33,
+   "p95": 1.144,
+   "max": 1.44,
+   "under_floor": 19,
+   "share_under_floor": 0.8636
+  },
+  "no_stem / too SHORT (h < 2.0 spaces)": {
+   "n": 298,
+   "min": 0.68,
+   "p5": 1.27,
+   "median": 1.414,
+   "p95": 1.641,
+   "max": 2.038,
+   "under_floor": 6,
+   "share_under_floor": 0.0201
+  },
+  "no_stem / too TALL (h > 8.0 spaces)": {
+   "n": 476,
+   "min": 0.237,
+   "p5": 0.25,
+   "median": 0.3,
+   "p95": 0.841,
+   "max": 1.816,
+   "under_floor": 459,
+   "share_under_floor": 0.9643
+  },
+  "no_stem / too WIDE (w > 0.6 spaces)": {
+   "n": 358,
+   "min": 0.741,
+   "p5": 1.26,
+   "median": 1.4,
+   "p95": 1.533,
+   "max": 2.395,
+   "under_floor": 3,
+   "share_under_floor": 0.0084
+  }
+ },
+ "L4": {
+  "all": {
+   "Black": {
+    "n": 3081,
+    "min": 0.237,
+    "p5": 0.28,
+    "median": 1.378,
+    "p95": 1.52,
+    "max": 4.071,
+    "under_floor": 585
+   },
+   "Half": {
+    "n": 152,
+    "min": 0.422,
+    "p5": 1.096,
+    "median": 1.54,
+    "p95": 1.719,
+    "max": 1.771,
+    "under_floor": 3
+   },
+   "Whole": {
+    "n": 104,
+    "min": 1.042,
+    "p5": 1.27,
+    "median": 1.447,
+    "p95": 1.641,
+    "max": 2.679,
+    "under_floor": 0
+   }
+  },
+  "decided": {
+   "Black": {
+    "n": 1661,
+    "min": 0.443,
+    "p5": 1.26,
+    "median": 1.4,
+    "p95": 1.521,
+    "max": 4.071,
+    "under_floor": 10
+   },
+   "Half": {
+    "n": 113,
+    "min": 0.81,
+    "p5": 1.23,
+    "median": 1.56,
+    "p95": 1.734,
+    "max": 1.771,
+    "under_floor": 2
+   },
+   "Whole": {
+    "n": 17,
+    "min": 1.24,
+    "p5": 1.24,
+    "median": 1.44,
+    "p95": 2.679,
+    "max": 2.679,
+    "under_floor": 0
+   }
+  }
+ },
+ "issue2": {
+  "too_WIDE_n": 358,
+  "too_WIDE_under_floor": 3,
+  "too_TALL_n": 476,
+  "too_TALL_under_floor": 459,
+  "no_stem_n": 1529,
+  "no_stem_under_floor": 576
+ },
+ "issue1": {
+  "standoff_rows": 26,
+  "joined_to_a_width": 26,
+  "under_floor": 3,
+  "band": {
+   "n": 26,
+   "min": 0.513,
+   "p5": 0.569,
+   "median": 1.391,
+   "p95": 1.5,
+   "max": 2.344,
+   "under_floor": 3
+  },
+  "under_floor_subjects": [
+   "glyph/1/0/5/0/3",
+   "glyph/2/0/5/2/4",
+   "glyph/3/0/12/8/13"
+  ]
+ }
+}

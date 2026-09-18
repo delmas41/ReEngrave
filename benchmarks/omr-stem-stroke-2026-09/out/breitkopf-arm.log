@@ -1,0 +1,47 @@
+Breitkopf Brahms 1 pp.0-3: 1529 heads abstain `no_stem`; the record holds 2305 stem rows
+
+== CONTROL 1 (flag OFF vs the record): 2305 strokes against 2305; cells matching exactly 818 of 818
+== CONTROL 2 (the arm has teeth): strokes held by each arm
+   raw            4462  (+2157 added)
+   side           3379  (+1074 added)
+   side+end       3320  (+1015 added)
+   side+end+legal   3275  (+970 added)
+   side+end@0.20   3285  (+980 added)
+   side+end@0.50   3344  (+1039 added)
+   side+end@0.75   3358  (+1053 added)
+
+== REACH: `no_stem` heads newly covered, of 1529
+variant       heads   share  added strokes  heads per stroke
+raw             548  35.8%           2157              0.25
+side            544  35.6%           1074              0.51
+side+end        542  35.4%           1015              0.53
+side+end+legal    532  34.8%            970              0.55
+side+end@0.20    542  35.4%            980              0.55
+side+end@0.50    542  35.4%           1039              0.52
+side+end@0.75    542  35.4%           1053              0.51
+
+== is this the WIDTH CAP by another name?  (`max_width_lines` 0.6 -> 1.5 reaches 345)
+variant        both  ONLY column  ONLY width cap   shared
+raw             344          204               1   62.8%
+side            344          200               1   63.2%
+side+end        344          198               1   63.5%
+side+end+legal    343          189               2   64.5%
+side+end@0.20    344          198               1   63.5%
+side+end@0.50    344          198               1   63.5%
+side+end@0.75    344          198               1   63.5%
+
+== QUALITY: do the recovered strokes agree with the engraving convention, read off the ORIGINAL page raster?
+variant       AGREES  disagrees  silent    rate
+raw              362         14     172  96.3%
+side             360         14     170  96.3%
+side+end         360         14     168  96.3%
+side+end+legal     358         13     161  96.5%   <- CIRCULAR
+side+end@0.20     360         14     168  96.3%
+side+end@0.50     360         14     168  96.3%
+side+end@0.75     360         14     168  96.3%
+
+   REFERENCE (stems we already read): 1479/1511 = 97.9%   <- the bar
+   (`width_cap_check.py` measured the width cap's recoveries at 83.6% against this bar and REFUSED them)
+   ⚠️ `side+legal` is graded on the rule it was BUILT to satisfy. Read its REACH, never its rate.
+
+wrote benchmarks/omr-stem-stroke-2026-09/out/breitkopf-arm.json

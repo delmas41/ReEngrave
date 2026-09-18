@@ -1,0 +1,8 @@
+# The full staged record is 150 MB and the 7.9 MB GATHER-only dump beside it
+# gives byte-identical answers to every question this lane asks -- proved by
+# out/ink-first-FULLRECORD.txt, which differs from out/ink-first.txt by ONE
+# observation row (`roster_entry`, a difference in the call and not in the
+# stages). Committing both would cost 150 MB for a reproduced control.
+brahms1-breitkopf-p2.staged.json
+.mutate-snapshot.py
+.mutate-in-flight

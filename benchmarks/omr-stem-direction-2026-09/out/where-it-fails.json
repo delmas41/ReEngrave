@@ -1,0 +1,83 @@
+{
+ "by_distance": {
+  "0-1": {
+   "n": 231,
+   "right": 124,
+   "accuracy": 0.5368
+  },
+  "1-2": {
+   "n": 228,
+   "right": 177,
+   "accuracy": 0.7763
+  },
+  "2-4": {
+   "n": 387,
+   "right": 333,
+   "accuracy": 0.8605
+  },
+  "4-6": {
+   "n": 261,
+   "right": 245,
+   "accuracy": 0.9387
+  },
+  "6+": {
+   "n": 336,
+   "right": 257,
+   "accuracy": 0.7649
+  }
+ },
+ "by_owner": {
+  "no ownership verdict": {
+   "n": 1234,
+   "accuracy": 0.7804
+  },
+  "owned by ANOTHER staff": {
+   "n": 206,
+   "accuracy": 0.8252
+  },
+  "ownership abstained": {
+   "n": 3,
+   "accuracy": 1.0
+  }
+ },
+ "by_residual": {
+  "0.15-0.30": {
+   "n": 381,
+   "accuracy": 0.8136
+  },
+  "clean (<0.15)": {
+   "n": 774,
+   "accuracy": 0.7868
+  },
+  "off-grid (>=0.30)": {
+   "n": 288,
+   "accuracy": 0.7535
+  }
+ },
+ "cross": {
+  "inside the staff (<=4) / off-grid": {
+   "n": 90,
+   "accuracy": 0.6556
+  },
+  "inside the staff (<=4) / on-grid": {
+   "n": 756,
+   "accuracy": 0.7606
+  },
+  "just outside (4-6) / off-grid": {
+   "n": 50,
+   "accuracy": 0.92
+  },
+  "just outside (4-6) / on-grid": {
+   "n": 211,
+   "accuracy": 0.9431
+  },
+  "ledger country (6+) / off-grid": {
+   "n": 148,
+   "accuracy": 0.7568
+  },
+  "ledger country (6+) / on-grid": {
+   "n": 188,
+   "accuracy": 0.7713
+  }
+ }
+}
