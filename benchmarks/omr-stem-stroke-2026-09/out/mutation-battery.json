@@ -13,7 +13,7 @@
   {
    "arm": "the OFF test becomes a DENY-list",
    "test": "test_only_an_explicit_ON_word_turns_it_on",
-   "result": "not red"
+   "result": "RED"
   },
   {
    "arm": "the reader runs regardless of the flag",
@@ -52,8 +52,8 @@
   },
   {
    "arm": "the ASPECT filter is dropped",
-   "test": "test_a_wide_block_yields_no_band",
-   "result": "not red"
+   "test": "test_the_3_to_1_ASPECT_filter_binds_only_at_a_tiny_staff_spacing",
+   "result": "RED"
   },
   {
    "arm": "the agree tolerance is ignored (all columns band together)",
@@ -61,8 +61,8 @@
    "result": "RED"
   }
  ],
- "red": 10,
- "survived": 2,
+ "red": 12,
+ "survived": 0,
  "bad_anchor": 0,
  "baseline_passes": true
 }

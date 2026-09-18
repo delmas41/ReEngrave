@@ -30,6 +30,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import os
 import shutil
 import subprocess
 import sys
@@ -98,7 +99,7 @@ ARMS = [
      "LineDetection(\n            smufl_name=\"stem\", category=\"stem\",",
      "        if False:\n            continue\n        out.append("
      "LineDetection(\n            smufl_name=\"stem\", category=\"stem\",",
-     "test_a_wide_block_yields_no_band"),
+     "test_the_3_to_1_ASPECT_filter_binds_only_at_a_tiny_staff_spacing"),
     ("the agree tolerance is ignored (all columns band together)", TARGET,
      "            if d > agree_px:",
      "            if False:",
@@ -157,13 +158,31 @@ def run_tests(node: str | None) -> tuple[bool, str]:
     cmd = [sys.executable, "-m", "pytest", "-q", "-x", TESTS]
     if node:
         cmd += ["-k", node]
-    r = subprocess.run(cmd, cwd=ROOT, capture_output=True, text=True)
+    # ⚠️⚠️ `PYTHONDONTWRITEBYTECODE` IS LOAD-BEARING AND COST THIS SESSION AN
+    # HOUR. `restore()` copies the snapshot back with `shutil.copy2`, which
+    # PRESERVES THE ORIGINAL mtime -- so across a mutate/restore cycle a
+    # `.pyc` written from one arm can still satisfy Python's (mtime, size)
+    # validity check for a later one, and that arm then imports the
+    # UNMUTATED code. It reports NOT RED, which is indistinguishable from a
+    # test gap: one arm here was hand-debugged as a missing assertion, and
+    # the same mutation applied by hand outside the battery went red
+    # immediately. Turning bytecode off took the battery from 10 RED / 2
+    # survived to 11 RED / 1.
+    env = dict(os.environ, PYTHONDONTWRITEBYTECODE="1")
+    r = subprocess.run(cmd, cwd=ROOT, capture_output=True, text=True, env=env)
     tail = [ln for ln in (r.stdout or "").splitlines() if ln.strip()]
     last = tail[-1] if tail else (r.stderr or "").strip()[:120]
-    # ⚠️ NO TESTS COLLECTED EXITS 5, NOT 0 -- but a `-k` that matches nothing
-    # is still a dead arm, so it is named rather than counted as a pass.
-    if "no tests ran" in last or "deselected" in last and "passed" not in last:
-        return True, f"COLLECTED NOTHING: {last}"
+    # ⚠️⚠️ THE STATUS IS READ FROM PYTEST'S EXIT CODE, NOT FROM ITS PROSE,
+    # AND THE FIRST VERSION OF THIS GUARD INVERTED TEN ARMS. It read
+    # `if "no tests ran" in last or "deselected" in last and "passed" not in
+    # last` -- which parses as `A or (B and C)`, so a perfectly good
+    # `1 failed, 28 deselected` matched B and C and was reported as
+    # COLLECTED NOTHING, i.e. as a PASS. A guard's fallback branch converting
+    # *cannot tell* into a definite answer, inside the battery built to catch
+    # exactly that. Exit 5 is pytest's "no tests collected" and is the only
+    # thing that means a dead arm.
+    if r.returncode == 5:
+        return True, f"COLLECTED NOTHING (exit 5): {last}"
     return r.returncode == 0, last
 
 
@@ -224,6 +243,18 @@ def main() -> int:
                 print(f"  {'BAD ANCHOR':<12} {name}")
                 continue
             Path(f).write_text(src.replace(find, repl))
+            # ⚠️⚠️ THE MUTATION MUST HAVE CHANGED THE FILE. An arm whose
+            # replacement text happens to equal what was there is a NO-OP,
+            # and a no-op arm reports NOT RED while looking exactly like a
+            # test gap -- which cost this session a round of blind debugging.
+            # The anchor count cannot see it: the anchor matched once and the
+            # write succeeded.
+            rel = str(Path(f).relative_to(ROOT))
+            if sha(Path(f)) == hashes[rel]:
+                restore()
+                rows.append((name, node, "NO-OP MUTATION (file unchanged)"))
+                print(f"  {'NO-OP':<12} {name}   [{node}]")
+                continue
             try:
                 passed, why = run_tests(node)
             finally:
@@ -243,7 +274,8 @@ def main() -> int:
     print(f"   {'PASS' if base else 'FAIL'}   {base_why}")
 
     red = sum(1 for _n, _t, r in rows if r == "RED")
-    bad = [r for r in rows if r[2].startswith("BAD ANCHOR")]
+    bad = [r for r in rows if r[2].startswith("BAD ANCHOR")
+           or r[2].startswith("NO-OP")]
     survived = [r for r in rows if r[2].startswith("not red")]
     print(f"\n{len(rows)} arms: {red} RED, {len(survived)} survived, "
           f"{len(bad)} BAD ANCHOR")

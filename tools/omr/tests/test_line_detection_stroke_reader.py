@@ -235,6 +235,30 @@ class TestTheBandingRules:
         tops = sorted(b.y_canonical for b in got)
         assert tops[1] - tops[0] > SPACING, tops
 
+    def test_the_3_to_1_ASPECT_filter_binds_only_at_a_tiny_staff_spacing(self):
+        """⚠️ THE ASPECT FILTER IS INERT AT ANY REAL SPACING, and this test is
+        what says so rather than leaving a mutation arm surviving.
+
+        In the profile a band's width is already capped at `0.6 * spacing` and
+        its height floored at `2.0 * spacing`, so the ratio is at least
+        `2.0 / 0.6 = 3.33` — above the 3.0 cut — whenever `round(0.6 * sp)`
+        is the binding width, i.e. for every spacing at or above about 5 px.
+        Real cells are 100. It can only bind where `max(3, ...)` takes over,
+        so it is exercised HERE at `line_spacing = 2.0`, directly on the
+        function, and nowhere else.
+
+        ⚠️ It is kept rather than deleted because every filter in this reader
+        is `detect_stems`' own, and dropping one would make that claim false.
+        In the COMPONENT reader it is not inert at all — there a blob's width
+        is unbounded.
+        """
+        img = np.full((40, 200), 255, dtype=np.uint8)
+        img[10:14, 100:103] = 0              # 4 px tall, 3 wide: aspect 1.33
+        ink = _binary_ink(img)
+        got = _column_stroke_bands(ink, 2.0, 200, min_height_lines=2.0,
+                                   max_height_lines=8.0, max_width_lines=0.6)
+        assert got == [], f"aspect 1.33 was accepted as a stem: {got}"
+
     def test_the_agree_tolerance_sits_on_a_plateau(self):
         """Not a tuned constant. Swept 0.10-0.60 the heads a band covers read
         293/287/287/286/284 on Litolff and 397 at every value on Breitkopf, so
