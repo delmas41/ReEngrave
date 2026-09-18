@@ -1,0 +1,143 @@
+# The missing stems are PRINTED, and the convention can read them
+
+2026-09-17. **No code outside `benchmarks/`.** Nothing re-gathered, no flag
+flipped, no default changed. Prompted by Sean: *"we are still missing 90% of
+the stems without a diagnosis"*, then *"does the direction as well as the side
+of the note head it is connected to -- right-up and left-down -- help us at
+all?"* and *"I am also wondering if the problem is not only the probe but also
+afterwards in the later stages where it is actually determined that it is a
+stem."*
+
+## 0. FOUR ANSWERS
+
+1. ⚠️ **It is not 90%.** It is **34%** (Litolff, 793 of 2,347) and **46%**
+   (Breitkopf, 1,529 of 3,337). Still the largest unexplained hole on the
+   thread; a third, not nine tenths.
+2. **The ink is there.** 95.8% / 93.1% of `no_stem` heads have a vertical run
+   of ink ≥1.75 staff spaces beside them, at a median of ~3.9 spaces.
+   ⚠️ On its own that is nearly content-free (§2).
+3. **The convention reads them.** *Right-and-up or left-and-down* agrees with
+   the stems we ALREADY read **95.9%** and **98.2%** of the time, and it
+   speaks for **472 + 653 = 1,125 heads that currently abstain**.
+4. **Sean's "later stages" hypothesis is supported and has a named constant.**
+   Where the convention speaks, the arms of the MISSING stems run over
+   `line_detection.STEM_MAX_HEIGHT_LINES = 8.0` at **16.9%** and **4.7%**,
+   against **4.6%** and **0.1%** for the stems we read — 3.7× and 47×.
+
+## 1. THE HANDOFF'S DIAGNOSIS COMPARED A READING WITH A READING
+
+`docs/handoff-2026-09-17-two-brakes-and-a-ruler.md` §4 measured, per `no_stem`
+head, the distance to the nearest **stem row in the record** and concluded
+*"not mislabelled, not disregarded — not read"*, with 26.6% having no stem row
+anywhere in the bar.
+
+The conclusion is right and the evidence could not establish it: a head whose
+stem is absent from the page and a head whose stem the CV rung never found are
+the same number there. This asks the RASTER.
+
+## 2. ⚠️ "THERE IS INK" IS NEARLY CONTENT-FREE, AND THE CONTROL SAID SO
+
+First run: ink beside **95.8%** of `no_stem` heads — and beside **100%** of
+heads that already had a stem. On a conductor's page something vertical stands
+near almost every notehead, so the test barely discriminates.
+
+⚠️ **And the first cut of that probe FAILED its own positive control at 30.9%**,
+which is what caught it. A stem is a HAIRLINE that TOUCHES the head; the probe
+was sweeping a column three times too wide, placed just outside a generous
+detector box. Fixed (0.12-space column, swept across both edges), the control
+reads 100.0% / 99.8%.
+
+Shape helps but not enough: scored on *attached AND one-directional*, `no_stem`
+heads read **43.9% / 36.6%** against a reference of **65.2% / 76.0%**.
+
+## 3. THE CONVENTION IS THE DISCRIMINATOR, AND IT IS ALSO A READER
+
+**A stem is attached on the RIGHT and goes UP, or on the LEFT and goes DOWN.**
+Right-and-down does not exist. Of the four (side, direction) cells two are
+music and two are a barline, a neighbour's stem, a beam or a slur edge.
+
+⚠️ **It is not the convention PR #54 measured at 0.787.** That one is *stem up
+if the head is below the middle line*, which two-voice writing and chords break
+constantly. This one they do not break: an upper voice stemmed up still carries
+its stem on the right. The two are independent, and only this one is a rule the
+engraver has no freedom about.
+
+| | Litolff | Breitkopf |
+|---|--:|--:|
+| heads where exactly ONE legal cell is filled — DECIDED | 938 / 1,435 (65%) | 1,495 / 1,774 (84%) |
+| the same, `no_stem` | **472 / 784 (60%)** | **653 / 1,442 (45%)** |
+| **agreement with the stem we already read** | **95.9%** (900/938) | **98.2%** (1,468/1,495) |
+
+⚠️ **The agreement row is the positive control and it is what makes the rest
+usable**: the convention reproduces our own readings on the population where we
+have one. The `no_stem` reach is then a claim of the same kind, not a new one.
+
+⚠️ **It goes SILENT rather than wrong where it cannot speak** — "both cells
+filled" is 16% of Litolff's `no_stem` heads and **44% of Breitkopf's**, which
+is the dense-column signature (a chord, two voices, or an adjacent barline).
+That is the behaviour wanted from an arbiter.
+
+⚠️ Whole notes are excluded throughout: they correctly have no stem (9 and 87
+of the `no_stem` populations).
+
+## 4. ⚠️⚠️ THE FAULT IS DOWNSTREAM OF THE INK, AND `STEM_MAX_HEIGHT_LINES` IS NAMED
+
+Arm length where the convention speaks, in staff spaces:
+
+| | n | median | p90 | **over 8.0** |
+|---|--:|--:|--:|--:|
+| Litolff, DECIDED | 938 | 3.62 | 6.54 | **4.6%** |
+| Litolff, `no_stem` | 472 | 4.56 | **9.97** | **16.9%** |
+| Breitkopf, DECIDED | 1,495 | 3.45 | 6.11 | **0.1%** |
+| Breitkopf, `no_stem` | 653 | 4.16 | 6.59 | **4.7%** |
+
+Both groups are measured by the same rule, so the comparison is like for like.
+**The stems we fail to read are systematically longer than the ones we read**,
+and they cross the shipped cap at 3.7× and 47× the rate.
+
+⚠️ **This is a repeat of a fault this repo has already found once.** CLAUDE.md
+records `STEM_MAX_HEIGHT_LINES` being raised 6.0 → 8.0 because *"a note two
+ledger lines above the staff beamed to notes inside it carries a stem longer
+than that — so the notes furthest from their beam were silently un-stemmed"*.
+The population that forced that change is the population still failing.
+
+**And the same split says where the missing heads are**: `no_stem` runs at
+**44.8% outside the staff against 22.3% inside** on Litolff (51.8% / 40.2% on
+Breitkopf) — the long-stem population, exactly.
+
+⚠️ **The arm is an over-estimate where a beam is involved**: the vertical run
+does not stop at the beam, it continues through it. That inflates BOTH groups
+and is why the comparison, not the absolute 8.0, is the claim.
+
+## 5. TWO ROUTES MEASURED AND REFUSED
+
+* **Attachment tolerance is NOT the lever.** 73.4% / 80.3% of `no_stem` heads
+  sit in a cell that HAS stem rows, none overlapping the head — but the
+  vertical gap to the nearest one is a **median 2.85 / 2.63 spaces**, and only
+  **7 / 20 heads** are within half a space. Those rows are other notes' stems.
+  ⚠️ **This also retires the handoff's ranked item 3**, "the attachment
+  near-misses (45 heads, 6%) are the only cheap stem win left": measured as box
+  gaps rather than centre distances the population is ~7-20, and worth less
+  still.
+* **Crowding is refuted.** `no_stem` rate against noteheads-per-cell is flat on
+  Litolff (31.5 / 32.5 / 40.7 / 32.4%) and **inverted** on Breitkopf (54.5%
+  at 1-2 heads falling to 45.2% at 11+).
+
+## 6. WHAT IS NOT ESTABLISHED
+
+* **Nothing was built and nothing was changed.** No constant was moved, and
+  raising `STEM_MAX_HEIGHT_LINES` is **not** proposed here — its own docstring
+  says 8.0 is *"where the two populations separate"*, so moving it needs the
+  measurement that constant was set on, re-taken. What is established is that
+  the missing stems are on the wrong side of it far more often than the read
+  ones.
+* **No note was checked against the print by eye.** Every figure is the raster
+  against the record.
+* **The convention's 1,125 heads are REACH, not accuracy.** Its 95.9% / 98.2%
+  is measured where we already had an answer — which is, by construction, the
+  population that was easy enough to read once.
+* ⚠️ `_drop_paired_strokes` in `line_detection` was noticed as a second
+  downstream candidate (it deletes vertical strokes coming in pairs half a
+  space apart, which is what an accidental looks like) and **was not tested** —
+  doing so needs the cell images, i.e. a re-gather.
+* n = 2 documents, 2 publishers, 8 pages.
