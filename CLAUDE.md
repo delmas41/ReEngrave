@@ -25,6 +25,45 @@ Over time the analytics layer learns from human decisions, building auto-accept 
 - **Frontend:** React + Vite + React Query + TypeScript
 - **Container:** Docker Compose (local) + Traefik (production, SSL via Let's Encrypt)
 
+⚠️⚠️ **ASK FIRST — BEFORE YOU BUILD ANYTHING, SAY HOW A HUMAN WOULD READ IT OFF
+THE PAGE, AND WHAT ENGRAVING CONVENTION GOVERNS IT. STANDING INSTRUCTION FROM
+SEAN, 2026-09-18, AND IT APPLIES TO EVERY JOB IN THIS REPOSITORY:**
+[docs/ask-first-conventions.md](docs/ask-first-conventions.md)
+— *"Many times I feel like the agent is building in a counter-intuitive way, or
+blind to obvious conventions."* Three questions, out loud, before the first
+line of code: **(1) how would a HUMAN get this** — which mark do they look at,
+and what do they already know that makes it unambiguous; **(2) what CONVENTION
+of engraving governs it** — an engraver does not place ink freely, and a
+convention is usually rigid enough to be a **search constraint rather than a
+statistic**; **(3) ASK SEAN**, one line, before the code — he is a musician and
+reads these plates, and this is the **cheapest evidence in the project**.
+⚠️⚠️ **THE MEASUREMENT CANNOT SAVE YOU FROM SKIPPING THIS: it will faithfully
+report how well you did the wrong thing.** `_noteheads_under` is a perfectly
+good overlap test that scores **0 of 4** on hairpins, because a slur is drawn
+OVER its notes and a hairpin BETWEEN them. ⚠️ **At least a dozen of the largest
+wins recorded in this file ARE conventions** — the whole rest that means the
+BAR (1,251 attribute errors, and OMR-NED charged nothing for one of them), the
+dot that sits a space HIGHER on a line note (52 at 0.00 / 52 at +0.50, nothing
+between), the beam that runs stem-to-stem (12 of 7 → 16 of 16), the cautionary
+meter that governs no bar (false changes 10 → 3), the key change printed at ONE
+bar on EVERY staff (7 of 7 flips stopped). ⚠️⚠️ **AND THE TIE IS WHERE IT
+STINGS: `_pair_ties_in_cell`'s own docstring says *"real tied notes are at the
+same y-position by definition"* and NEITHER PAIRING RULE EVER USED IT** — the
+convention was known, written down, correct, and read by nothing, with a
+measured empty interval (0.168 vs 0.435 spaces) sitting there the whole time.
+⚠️ **IT IS A HYPOTHESIS AND A CHEAP TEST, NEVER A LICENCE** — Sean's own S4 is
+REFUTED at full width, the label-splitting "convention" is a property of the
+ENCODING not the engraving (74/74 on Beethoven and **+2,181 edits on Dvořák**),
+and a PAGE truth is not an ENCODING truth. The tell that a convention is real
+is a **measured empty interval**; the tell that it is a story is a smooth slope
+with a threshold fitted into it. ⚠️ **NOBODY TO ASK** (a cloud session, an
+overnight run) → write **CONVENTION ASSUMED / WHAT WOULD FALSIFY IT / NOT
+CONFIRMED WITH SEAN** at the top of the brief and proceed — *cannot ask* must
+never become *did not think about it*, which is this project's own
+ABSENT/DECLINED discipline applied to the people building it. ⚠️ **Every
+handoff, brief and dispatched job carries the pointer** (§5 there); past
+handoffs are NOT retrofitted.
+
 ⚠️⚠️ **THE TARGET AND THE ORDER OF WORK CHANGED ON 2026-09-10 — SEAN, TWICE.
 READ THIS BEFORE THE HANDOFFS BELOW, WHICH ARE RANKED UNDER THE OLD ORDER:**
 [docs/plan-2026-09-10-wire-first-then-reconcile.md](docs/plan-2026-09-10-wire-first-then-reconcile.md)
@@ -4846,6 +4885,17 @@ This is the third named family beside *the value existed and nothing read it*
 and *a rule described in a docstring and never built* — and it is the hardest
 to see, because the code is not wrong, the tests pass, and the refusal looks
 like discipline.
+
+⚠️ **AND THERE IS NOW A FOURTH, WHICH RUNS BEFORE ALL THREE:
+*the convention was on the page and nobody asked what it was*** —
+[docs/ask-first-conventions.md](docs/ask-first-conventions.md), Sean's standing
+instruction of 2026-09-18, stated in full at the head of this file. The two
+families are close enough to be confused and the repair differs: this one asks
+*why does this rule still refuse?*, that one asks *why was this mechanism ever
+aimed here?* ⚠️ **The tie pairing is where all four meet** — `_pair_ties_in_cell`
+states the convention in its own docstring, no rule reads it, and the empty
+interval that would have proved it (0.168 vs 0.435 spaces) was measurable from
+day one.
 
 **THE DISCRIMINATOR, and the whole thing hangs on it:** does the rule stop
 because it CANNOT KNOW, or because it WAS NOT GIVEN what it needs? The first

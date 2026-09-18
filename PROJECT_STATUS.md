@@ -22,6 +22,21 @@ Previously 2026-09-16 (docs reconciled) — the meter-carry ledger corrected aga
 This document is a snapshot. For day-to-day reference docs see
 [CLAUDE.md](CLAUDE.md). For parked research ideas see [NOTES.md](NOTES.md).
 
+⚠️⚠️ **ASK FIRST, ON EVERY JOB — say how a HUMAN would read it off the page and
+what ENGRAVING CONVENTION governs it, and ask Sean in one line, BEFORE
+building.** Standing instruction, Sean 2026-09-18:
+[docs/ask-first-conventions.md](docs/ask-first-conventions.md) — *"Many times I
+feel like the agent is building in a counter-intuitive way, or blind to obvious
+conventions."* At least a dozen of the largest wins on record here ARE
+conventions (the whole rest that means the BAR; the dot a space higher on a
+line note; the beam that runs stem-to-stem; the courtesy meter that governs no
+bar), and most were found only AFTER a mechanism had been built the other way
+and measured. ⚠️ A hypothesis and a cheap test, **never a licence** — §3 there
+lists the conventions this repo has refuted, one of them Sean's own. ⚠️ Nobody
+to ask → write **CONVENTION ASSUMED / WHAT WOULD FALSIFY IT / NOT CONFIRMED
+WITH SEAN** and proceed.
+
+
 ---
 
 ## Scope
