@@ -1001,6 +1001,125 @@ which this rule may not read without destroying its own self-check) and the
 
 ---
 
+## The stem direction: what INK can say, and what the STAFF cannot
+
+2026-09-17, no flag. R3 of the 2026-09-17 handoff — the largest abstention
+population on both documents. Findings:
+[benchmarks/omr-stem-direction-2026-09/FINDINGS.md](benchmarks/omr-stem-direction-2026-09/FINDINGS.md).
+
+**Shipped**: a second tier in `adjudicate_stem_direction` that borrows from a
+head sharing the same BEAM (`reason="beam_mate"`). **Refused**: two other
+rules, each with its number.
+
+⚠️ **THE POPULATION IS SPLIT BEFORE IT IS A NUMBER: 9 of the 793 `no_stem`
+abstentions are WHOLE NOTES**, which carry no stem — those are the decision
+being right, and a rule aimed at the whole population is aimed partly at
+correct answers.
+
+**Scored on the 1,443 heads a stem already decided, LEAVE-ONE-OUT:**
+
+| reading | accuracy | reach |
+|---|--:|--:|
+| baseline, always the commoner direction | 0.506 | — |
+| where the beam SITS relative to the head | 0.829 | 228 |
+| the CONVENTION (above the middle line → down) | 0.787 | — |
+| beam-mate, majority | 0.938 | 167 |
+| **beam-mate, UNANIMOUS** | **0.984** | **152** |
+
+**The claim that works is PHYSICAL, not geometric**: a beam joins stem TIPS,
+so every stem on one stroke points the same way. ⚠️ The 0.829 rule is REFUSED
+rather than unbuilt — `adjudicate_event`'s divisi guard reasons that an
+UNKNOWN beats a confident wrong answer, and one head in six is not an unknown.
+
+⚠️⚠️ **INFER IS THE RIGHT STAGE AND CANNOT SERVE THIS QUANTITY.**
+`Q.STEM_DIRECTION` is ORDER 17 and its only consumers, `Q.EVENT` (21) and
+`Q.VOICES` (22), read it inside ADJUDICATE — so a rule in the fourth stage
+would write the verdict **after both readers had already looked**. The
+handoff's *"evidence exists sideways and no rule takes it"* has a reason: the
+stage that may take it runs too late. The tier lives in ADJUDICATE and
+honours the boundary by its REASON instead.
+
+### ⚠️⚠️ SEAN'S CONVENTION IS STRONG, AND WHERE IT LOOKS WRONG IT IS MEASURING THE GRID
+
+Sean, 2026-09-17: *"the stem rules are very consistent unless there are
+multiple voices per staff. If it is just one voice where the note falls
+compared to the middle line of the staff determines direction"* — and, shown
+0.787: *"The convention is strong. The failure is elsewhere."* **He is right,
+and the split says so.** Accuracy by distance from the middle line, in steps:
+
+| 0-1 | 1-2 | 2-4 | **4-6** | 6+ |
+|--:|--:|--:|--:|--:|
+| **0.537** | 0.776 | 0.860 | **0.939** | **0.765** |
+
+**It rises steeply and then REVERSES**, and neither end is the convention's
+fault. At the boundary it is a coin flip — half a step of grid error flips the
+answer, and two-voice writing lives there. In **ledger country it reverses**,
+and a note three spaces clear of the middle line is the LEAST ambiguous case
+the convention has, so the failure is the POSITION: 44% of ledger-country
+heads are off-grid against 11% inside the staff, and that is where
+`benchmarks/omr-phantom-notes-2026-09` already measured **14 of 25 phantom
+notes standing OUTSIDE THE STAFF ALTOGETHER**. ⚠️ Crossing with the residual
+does not move it (0.757 vs 0.771), so it is not simple grid noise.
+⚠️ `glyph_owner` does not explain it either (0.825 vs 0.780) — and that is
+consistent: ownership files a verdict only where ink was detected TWICE, and
+this file already records that for 11 of 13 phantom bars *"that decision is
+never asked"*.
+
+**So the convention is NOT shipped as a stem reader — it would inherit the
+position's faults — and what it is good for is the opposite: a confident stem
+and a confident convention that disagree mean one of
+`Q.NOTEHEAD_STAFF_POSITION` and `Q.STEM` is wrong, and this says which zones
+to look in.** ⚠️ A per-STAFF fitted boundary lifts agreement 0.804 → 0.925 and
+must NOT be read as a repair: its boundaries span −4.5 to 7.0 with only 34.7%
+landing on 4.0, so a free parameter per staff is fitting VOICE STRUCTURE.
+
+### ⚠️⚠️ AND THE ARBITER THAT SETTLED IT WRONG WAS CORRELATED WITH ONE PARTY
+
+Before Sean's correction this session put the projection and the convention to
+a third reading — the beam — and found it siding with the projection **79
+times in 83**, concluding the convention does not hold. The probe's own
+docstring claimed the beam *"shares an input with neither"*. **False**: the
+projection and the beam-mate rule are BOTH readings of ink inside the measure
+cell, and the convention is the only one of the three that depends on where
+the STAFF LINES are. An arbiter correlated with one party will side with its
+own family. *The bars are not an independent umpire over a bad reading*,
+arriving in the stem family — with the correlation running through **the
+frame**, a fourth door onto that room after ink, convention and a shared
+assumption.
+
+### What it does in the file, and three zeros that were mine
+
+Control **4,647 of 4,647** verdicts reproduced across `stem_direction`,
+`event` and `voices` with the tier disabled. `no_stem` **793 → 641**,
+`beam_mate` **0 → 152** — and the FILE gains **two `<voice>2</voice>` tags**,
+with pitched notes and the voice split otherwise unmoved. ⚠️ **A record
+improvement, not a file improvement, and it must not be quoted as one.**
+
+⚠️ **THE FIRST DRAFT WAS SLOW AND THE AUTHOR CAUSED IT**: hoisting the
+whole-cell notehead scan above the tier branch so both tiers could share it
+made all 793 STEMLESS heads pay for a `SELF_AND_DESCENDANTS` walk they had
+never paid for. Repaired by asking the BEAM rows first, so only the 245 heads
+actually standing on one reach the scan — **51.52 s → 59.89 s, 1.2x**, down
+from minutes. **Where `ev.rows` is called matters more than how the loop is
+written.**
+
+⚠️ Three probe defects, each a clean believable ZERO, each caught by a
+POSITIVE control that announced itself by printing nothing at all: beams keyed
+by STAFF where heads were keyed by CELL; `Q.GLYPH_BOX` read as `[x,y,w,h]`
+when it is `(smufl_name, x, y, w, h)` — from a helper whose docstring says it
+exists *"so a second reader of the same row cannot get it wrong"*; and
+`key.rsplit("/", 1)[0]` on a subject key, which carries its KIND in the FIRST
+segment.
+
+⚠️ **NOT ESTABLISHED**: n = 1 document, 1 publisher, 4 pages; **there is no
+truth here** — every accuracy is agreement with our own `stem_projection`,
+which is a reading and not a print; no head was checked against the print; the
+second publisher was not run; and a whole note under a beam IS answered by the
+tier (9 heads here), pinned by a test rather than fixed, because the first
+tier has the identical exposure.
+
+---
+
 ## The unnamed block at the foot of a system — FORCED here, INFERRED there
 
 2026-09-17, no flag. Sean's own rule, measured the same day

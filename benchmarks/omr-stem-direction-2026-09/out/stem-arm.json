@@ -1,0 +1,50 @@
+{
+ "control_reproduced": 4647,
+ "off": {
+  "verdicts": {
+   "stem_direction/abstained/no_stem": 793,
+   "stem_direction/abstained/stems_disagree": 111,
+   "stem_direction/decided/stem_projection": 1443,
+   "event/decided/x_clustered": 1117,
+   "voices/decided/one_voice": 1079,
+   "voices/decided/two_voices": 38,
+   "voices/abstained/nothing_to_split": 66
+  },
+  "voices": {
+   "1": 1079,
+   "2": 38
+  },
+  "file": {
+   "pitched_notes": 965,
+   "backups": 9,
+   "voice_2": 24,
+   "notes_not_written_total": 1521,
+   "balanced": true,
+   "divisi_separated": null
+  }
+ },
+ "on": {
+  "verdicts": {
+   "stem_direction/abstained/no_stem": 641,
+   "stem_direction/abstained/stems_disagree": 111,
+   "stem_direction/decided/stem_projection": 1443,
+   "stem_direction/decided/beam_mate": 152,
+   "event/decided/x_clustered": 1117,
+   "voices/decided/one_voice": 1079,
+   "voices/decided/two_voices": 38,
+   "voices/abstained/nothing_to_split": 66
+  },
+  "voices": {
+   "1": 1079,
+   "2": 38
+  },
+  "file": {
+   "pitched_notes": 965,
+   "backups": 9,
+   "voice_2": 26,
+   "notes_not_written_total": 1521,
+   "balanced": true,
+   "divisi_separated": null
+  }
+ }
+}
