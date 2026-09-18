@@ -3613,6 +3613,101 @@ two plates this thread has always used. No OMR-NED, deliberately — the metric 
 symmetric and would pay for emitting fewer stems. The engraved family is
 untouched by construction.
 
+## The STAGE TRACE — what each stage DID to one symbol, and the loss is IDENTITY not reading
+
+2026-09-18, `tools/omr/staged/trace.py`, **read-only**, no flag. Sean asked for
+*"a systematic process for walking each symbol through the whole process and
+testing what each stage does to the recognition"*, noteheads first because
+*"historically we have been best at recognizing notes."* Findings:
+[benchmarks/omr-stage-trace-2026-09/FINDINGS.md](benchmarks/omr-stage-trace-2026-09/FINDINGS.md).
+
+```bash
+python3 -m tools.omr.staged.trace --run rec.json --subject glyph/1/0/2/4/1
+python3 -m tools.omr.staged.trace --run rec.json --family note
+```
+
+⚠️⚠️ **WHY IT WAS NEEDED, VERIFIED RATHER THAN ASSUMED: all TEN derived checks
+are AGGREGATE AND STATIC.** The complete set of value-taking options across all
+of them is `--out`, `--run`, `--root`, `--scan` — **none can be given a SUBJECT
+and asked what happened to it.** That is why the wiring keeps passing while the
+surprises keep coming: the connections are verified in the abstract and
+**nothing replays one symbol.** ⚠️ **Positive control: it reproduces this
+file's OWN hand-written five-stages worked example to the value, unprompted**,
+and carries a step the hand trace omitted (`stem_direction` abstained there).
+
+| noteheads | Litolff | Breitkopf |
+|---|--:|--:|
+| population | 2,347 | 3,337 |
+| `<note>` **written** | **965 (41%)** | **2,513 (75%)** |
+| refused `staff_not_identified` | **783** | **0** |
+| refused `no_pitch` | **205** | **0** |
+| refused `duration_narrowed` | 335 | **537** |
+| `stem_direction` abstained | 904 (38.5%) | 1,546 (46.3%) |
+
+⚠️⚠️ **ON LITOLFF THE DOMINANT LOSS IS IDENTITY, NOT RECOGNITION.**
+`staff_not_identified` + `no_pitch` is **988**, both **ZERO on Breitkopf** —
+those notes were gathered, decided, pitched and arbitrated, and are absent
+**because nobody could NAME THE STAFF.** ⚠️ It is
+`OMR_HOLD_OUT_UNIDENTIFIED` **working as designed** (default-ON by Sean's call,
+*"hold out — I want truth"*), so **41% is not a measure of how well that page
+was read** — the music is counted rather than swallowed. ⚠️ On Breitkopf the
+dominant loss is `duration_narrowed`, which is **INFER's exact population and
+INFER is default OFF**. **Two publishers, two entirely different bottlenecks,
+neither of them detector recall.** ⚠️ **CAVEAT: three of the five export refusal
+reasons POOL noteheads with rests**, so no notes-only partition closes from the
+report; the direction holds (both pooled reasons are 0 on Breitkopf) but the
+exact share is not a notes-only figure.
+
+⚠️ **It separates rows WRITTEN from STAND** (whose FINAL answer a stage owns)
+with the direction of each move, which is what makes stage-correction visible:
+EVALUATE **changes 50 duration values and collapses 5 narrowings**, and `pitch`
+**changes 186 values as `reowned`** — the ownership repair reaching pitch, which
+no net count would show.
+
+⚠️⚠️ **A STAGE CLAIMS THE PAGE IS EMPTY WHILE A WITNESS SHOWS INK — 2,377 TIMES
+ON ONE RECORD**: `dynamic_letter/no_ink` **997**, `beam_stroke/no_ink` **980**,
+`stem/no_ink` **400**. `Q.INK` covers all 1,183 cells and **its own `no_ink`
+fires ZERO times**, so **every `no_ink` on that record is false about the ink**;
+the honest contrast on the same record is `meter_glyph/no_detections`, 60.
+⚠️ Breitkopf reads 2,295 but **predates `OMR_INK`**, so its figure rests on the
+weaker `Q.GLYPH_BOX` witness and is **reported apart, never pooled.** ⚠️ This is
+the **first use of `Q.INK` as a witness by anything**, and exactly what it was
+built for.
+
+⚠️⚠️ **AND THE SHARPEST FAULT IS TEN LINES APART INSIDE ONE GATHERER, AND IT IS
+BACKWARDS**: `gather.py:1070` writes `ABSTAIN.NO_INK` for a cell that **HAD
+detections** and merely no dynamic among them (**997 firings**), while
+`gather.py:1079` writes the honest `ABSTAIN.NO_DETECTIONS` for a cell with **no
+detections at all** (3). **The emptier case gets the honest word and the fuller
+case gets the overclaiming one.** **NOT FIXED** — another lane's file and a
+default-affecting call.
+
+⚠️ **ABLATION VERSUS TRACE, and the brief's framing was corrected in the module
+rather than worked around: exactly 1 of 4 row-writing stages is genuinely
+ablatable** (`OMR_INFER`). `export.py` reads ADJUDICATE's verdicts, so **there
+is no GATHER-only arm** — switching a stage off yields **no file, not a worse
+one.**
+
+⚠️⚠️ **`Q.PITCH`, THE NOTE FAMILY'S OWN DECIDING QUANTITY, HAS NO ADJUDICATOR**
+(`grep "def adjudicate_pitch"` returns nothing). It is an EVALUATE consequence
+(`restate_pitch`, position + clef), which is right by design — but it means a
+`subjects_from`-only derivation reports **the best-read family in the project as
+DEAD.**
+
+⚠️ **Two faults its own tests found in it**: `balanced` absorbed `unaccounted`
+into its own sum and **could never fail** — *a control that computes the wrong
+thing, inside the tool built to find them* — and a fixture passing `id=""`
+stored one verdict of four. Battery **20 arms, 20 red, 0 survived**.
+
+⚠️ **WHAT IT CANNOT SEE: ACCURACY.** Both records are SCANS and `page_truth`
+exists only for a page we RENDER, so **this funnel says where symbols are LOST
+and never whether the survivors are RIGHT** — it needs one ENGRAVED staged
+record. Also blind to any GATHER change and to **the DETECTOR**, the largest
+blind spot, which points the same way the funnel does. n = 2 publishers, 8
+pages; no OMR-NED, deliberately. Suite **4521 passed / 19 skipped / 0 failed**
+(base 4477); `inventory`, `health`, `wiring`, `capture`, `reach`, `brakes`,
+`trace --check` and `no_producer` all exit 0.
+
 ### A notehead is ~1.4 staff spaces WIDE — the floor priced, and the contamination has TWO shapes
 
 2026-09-18, **no code outside `benchmarks/`, nothing proposed for any
