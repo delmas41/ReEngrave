@@ -1,7 +1,7 @@
 # Handoff: the brakes, the unnamed staves, and the merge
 
-**START HERE.** Five branches are MERGED onto `claude/integration-2026-09-17`
-(see §3). Read §1 before touching anything: the session's headline is a
+**START HERE. EVERYTHING IS ON MAIN** — `c9582f6d`, six branches landed,
+`4428 passed / 11 skipped`, eleven derived checks green ON THE MERGED TREE. Read §1 before touching anything: the session's headline is a
 FAILURE CLASS, and it caught this session's author twice.
 
 ⚠️⚠️ **THE BIGGEST SINGLE FINDING IS §2a, NOT ANY BRAKE: of 28 decisions,
@@ -157,6 +157,22 @@ rule and REPORTED it; branch 1 had FIXED it the same afternoon. Neither branch
 could see the other and only the merged tree has both. Corrected in the
 resolution — *the merged tree is the one thing nobody runs*, caught on
 schedule.
+
+⚠️⚠️ **AND THE MERGED SUITE FAILED FIRST — 3 failed / 4425 passed — WHICH IS
+THE WHOLE REASON TO RUN IT.** No branch could see any of the three; each was a
+contract changed on one side. **The task harness reported "exit code 0" while
+pytest returned 1**, and the only reason it was caught is an explicit
+`echo $?`. *Read the OUTPUT, not the STATUS.*
+
+1. `CLAIM_OF_MEMBERSHIP_KIND` stopped being TOTAL when branch 1 added
+   `KIND_UNNAMED`. ⚠️ Both obvious fixes are wrong: a claim word files
+   UNCLAIMED ink under an identification, and `None` puts a non-claim in a
+   table of claims (a sibling test correctly rejects it). It belongs OUTSIDE
+   the map; the exclusion is now STATED as `CLAIMLESS_KINDS`, itself asserted
+   to name only kinds the store declares.
+2. The flag-docs check went red on `OMR_FAMILY_POSITIONS` — undocumented.
+   Working across a merge, the case it was built for.
+3. The accounting-control stub needed `held_out=` — second signature today.
 
 **ELEVEN derived checks exit 0 on the merged tree** (`capture`, `wiring`,
 `inventory`, `gather_coverage`, `health`, `reach`, `meaning`, `brakes`,
