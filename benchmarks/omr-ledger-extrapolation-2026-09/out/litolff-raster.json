@@ -1,0 +1,36 @@
+{
+ "label": "Litolff Beethoven 5 pp.1-4",
+ "strips": 1061,
+ "gaps": {
+  "gap 1": {
+   "n": 379,
+   "median": 1.0323,
+   "mean": 1.0172,
+   "cumulative": 1.0323
+  },
+  "gap 2": {
+   "n": 132,
+   "median": 1.0794,
+   "mean": 1.0576,
+   "cumulative": 2.1116
+  },
+  "gap 3": {
+   "n": 50,
+   "median": 1.0476,
+   "mean": 1.0271,
+   "cumulative": 3.1592
+  },
+  "gap 4": {
+   "n": 10,
+   "median": 1.1111,
+   "mean": 1.0776,
+   "cumulative": 4.2704
+  }
+ },
+ "error_at_rung": {
+  "rung 1": 0.0646,
+  "rung 2": 0.2234,
+  "rung 3": 0.3186,
+  "rung 4": 0.5408
+ }
+}

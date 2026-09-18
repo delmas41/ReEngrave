@@ -1,0 +1,12 @@
+{
+ "label": "Breitkopf Brahms 1 pp.0-3",
+ "no_stem": 1529,
+ "reasons": {
+  "too TALL (h > 8.0 spaces)": 476,
+  "too WIDE (w > 0.6 spaces)": 358,
+  "too SHORT (h < 2.0 spaces)": 298,
+  "NO component overlaps the head at all": 197,
+  "a component WAS accepted (pair rule dropped it)": 178,
+  "at a CELL EDGE (0.8 spaces)": 22
+ }
+}

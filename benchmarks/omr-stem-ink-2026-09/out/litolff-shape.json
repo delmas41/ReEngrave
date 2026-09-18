@@ -1,0 +1,34 @@
+{
+ "label": "Litolff Beethoven 5 pp.1-4",
+ "groups": {
+  "DECIDED": {
+   "n": 1443,
+   "attached": 0.9563,
+   "one_way": 0.6958,
+   "stem_shaped": 0.6521,
+   "median_share": 0.875
+  },
+  "no_stem": {
+   "n": 760,
+   "attached": 0.8566,
+   "one_way": 0.5829,
+   "stem_shaped": 0.4395,
+   "median_share": 0.873
+  },
+  "stems_disagree": {
+   "n": 111,
+   "attached": 0.973,
+   "one_way": 0.7297,
+   "stem_shaped": 0.7027,
+   "median_share": 0.885
+  }
+ },
+ "no_stem_by_class": {
+  "noteheadHalfInSpace": 65,
+  "noteheadBlackInSpace": 326,
+  "noteheadBlackOnLine": 355,
+  "noteheadWholeInSpace": 4,
+  "noteheadWholeOnLine": 5,
+  "noteheadHalfOnLine": 38
+ }
+}

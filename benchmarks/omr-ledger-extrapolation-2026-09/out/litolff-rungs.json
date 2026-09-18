@@ -1,0 +1,82 @@
+{
+ "label": "Litolff Beethoven 5 pp.1-4",
+ "record": "/Users/seanjohnson/Desktop/ReEngrave/library/_shared-records/beethoven5-p1-p4.record.json",
+ "ledger_detections": 1878,
+ "control_max_error": 0.0,
+ "rungs": {
+  "above 1": {
+   "n": 106,
+   "mean_spaces": 1.1778,
+   "median_spaces": 1.19,
+   "k_mean": 1.1778,
+   "k_median": 1.19
+  },
+  "above 2": {
+   "n": 43,
+   "mean_spaces": 2.2047,
+   "median_spaces": 2.26,
+   "k_mean": 1.1023,
+   "k_median": 1.13
+  },
+  "above 3": {
+   "n": 39,
+   "mean_spaces": 3.2128,
+   "median_spaces": 3.28,
+   "k_mean": 1.0709,
+   "k_median": 1.0933
+  },
+  "above 4": {
+   "n": 21,
+   "mean_spaces": 3.9448,
+   "median_spaces": 3.91,
+   "k_mean": 0.9862,
+   "k_median": 0.9775
+  },
+  "below 1": {
+   "n": 52,
+   "mean_spaces": 1.0002,
+   "median_spaces": 1.0,
+   "k_mean": 1.0002,
+   "k_median": 1.0
+  },
+  "below 2": {
+   "n": 14,
+   "mean_spaces": 1.9736,
+   "median_spaces": 2.0,
+   "k_mean": 0.9868,
+   "k_median": 1.0
+  },
+  "below 3": {
+   "n": 14,
+   "mean_spaces": 3.3093,
+   "median_spaces": 3.33,
+   "k_mean": 1.1031,
+   "k_median": 1.11
+  },
+  "below 4": {
+   "n": 5,
+   "mean_spaces": 4.064,
+   "median_spaces": 4.25,
+   "k_mean": 1.016,
+   "k_median": 1.0625
+  }
+ },
+ "gaps": {
+  "gap 1": {
+   "n": 158,
+   "pitch": 1.13
+  },
+  "gap 2": {
+   "n": 57,
+   "pitch": 1.09
+  },
+  "gap 3": {
+   "n": 53,
+   "pitch": 1.08
+  },
+  "gap 4": {
+   "n": 26,
+   "pitch": 0.665
+  }
+ }
+}

@@ -1,0 +1,50 @@
+{
+ "label": "Breitkopf Brahms 1 pp.0-3",
+ "strips": 1354,
+ "gaps": {
+  "gap 1": {
+   "n": 604,
+   "median": 1.0,
+   "mean": 0.9963,
+   "cumulative": 1.0
+  },
+  "gap 2": {
+   "n": 279,
+   "median": 0.9922,
+   "mean": 1.0134,
+   "cumulative": 1.9922
+  },
+  "gap 3": {
+   "n": 121,
+   "median": 0.9908,
+   "mean": 1.0007,
+   "cumulative": 2.9831
+  },
+  "gap 4": {
+   "n": 54,
+   "median": 0.9688,
+   "mean": 0.9971,
+   "cumulative": 3.9518
+  },
+  "gap 5": {
+   "n": 17,
+   "median": 1.0,
+   "mean": 0.9979,
+   "cumulative": 4.9518
+  },
+  "gap 6": {
+   "n": 6,
+   "median": 0.9727,
+   "mean": 0.952,
+   "cumulative": 5.9246
+  }
+ },
+ "error_at_rung": {
+  "rung 1": 0.0,
+  "rung 2": -0.0156,
+  "rung 3": -0.034,
+  "rung 4": -0.0964,
+  "rung 5": -0.0964,
+  "rung 6": -0.151
+ }
+}

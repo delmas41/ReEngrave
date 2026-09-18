@@ -16,7 +16,64 @@ pointing at headings no longer in the file.)*
 
 ---
 
-## 2026-09-17 (latest) — SHAPE, POSITION, IMAGE, RESOLUTION: what we capture about ink
+## 2026-09-17 (latest) — MEASUREMENT ONLY: the stem gap diagnosed, and four dead hypotheses
+
+⚠️ **NO CODE UNDER `tools/` OR `backend/` CHANGED.** `git diff origin/main --
+tools/ backend/` is empty. This block is here because the file's rule is a log
+of what was *done*, and what was done is measurement plus one correction to
+CLAUDE.md's own text. No flag was flipped and no constant was moved.
+
+**The stem gap is fully attributed.** Of the noteheads whose stem direction
+abstains `no_stem` — 793 of 2,347 (Litolff), 1,529 of 3,337 (Breitkopf) —
+every one has a named cause and the causes SUM EXACTLY. Litolff: too WIDE 237,
+too SHORT 199, no component 167, pair rule 73, cell edge 70, too TALL 47.
+Breitkopf: too TALL 476, WIDE 358, SHORT 298, none 197, pair 178, edge 22.
+The replication is asserted faithful against `detect_stems` per cell, 0 drift,
+and every arm proves its re-cut reproduces the record (783/783 cells,
+1,920 = 1,920 strokes) before reporting a delta.
+
+⚠️⚠️ **FOUR HYPOTHESES DIED, INCLUDING SEAN'S AND MINE**, two of them after
+reaching him as recommendations: staff-line ERASURE is not the cause (the
+original raster recovers FEWER, 268 vs 287); the 1-pixel opening kernel
+against a bowed plate is not either (pre-dilation recovers 3-4 of 793);
+`_drop_paired_strokes` is 9.2%, not the bulk; `STEM_MAX_HEIGHT_LINES` is 17
+heads, not the 80 a raster proxy implied. **The lesson: a proxy for a
+FILTER'S PREDICATE is not a proxy for the filter** — the filter's input is
+connected COMPONENTS after a morphological opening, not ink.
+
+⚠️⚠️ **WHAT IT IS:** one cell's opening yields 3 components of median height
+811 px where the staff spacing is 100 px — 8.1 staff spaces, one blob holding
+stems, beams and noteheads. `detect_stems` is a connected-component reader and
+this plate has no stem component. Third independent arrival at *"Litolff
+MERGES and Breitkopf SHATTERS"*. ⚠️ **The top cause INVERTS between
+publishers** (WIDE 29.9% vs TALL 31.1%), and what survives is the claim the
+next job rests on: on both plates a component EXISTS and is the wrong SHAPE
+(86% / 74%).
+
+**Also landed, all documentation or measurement:**
+- `docs/handoff-2026-09-17-the-ink-is-fused.md` — the handoff, and CLAUDE.md's
+  START HERE now points at it.
+- **The ledger extrapolation** (PR #56's original subject): the grid
+  extrapolates past the staff at 1.000× while Litolff prints rungs at
+  1.032/1.079/1.048/1.111 — 66 of 2,347 heads read a diatonic step wrong,
+  against 0 of 3,337 on Breitkopf. Two of four pre-registered predictions
+  FAILED and are reported as failures. **Not the ranked next work** (Sean).
+- **`docs/engraving-conventions.md`** — 114 entries merged from 87 measured
+  here + 79 from the literature, conservation balancing both ways, REFUTED
+  conventions included on purpose.
+- ⚠️ **A CORRECTION TO CLAUDE.md, applied in place and not deleted**: the
+  system-grouping paragraph's *"a barline runs a system's full height and the
+  bracket encloses exactly it"* is false in BOTH halves — interior barlines
+  cross every gap 0 of 68 (Litolff) and 4 of 35 (Breitkopf) — while the rule
+  it justifies is sound, resting on the SYSTEMIC barline. A correct rule with
+  a false reason beside it.
+
+⚠️ **NO STEM OR LEDGER NOTE WAS CHECKED AGAINST THE PRINT**; every accuracy
+figure is one of our readings against another.
+
+---
+
+## 2026-09-17 — SHAPE, POSITION, IMAGE, RESOLUTION: what we capture about ink
 
 ⚠️ Placed at the head on the file's own CAUSAL-ORDER rule: it is a new derived
 instrument and depends on no entry below it. No other session's block was

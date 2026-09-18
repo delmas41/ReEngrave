@@ -57,6 +57,55 @@ including the **two GATHER divergences it found and deliberately did not
 change**, and the **`ff` 47 → 39 that is an unadjudicated COST and not a win**.
 
 ⚠️ **START HERE IF YOU ARE PICKING THIS UP:**
+[docs/handoff-2026-09-17-the-ink-is-fused.md](docs/handoff-2026-09-17-the-ink-is-fused.md)
+— **the newest. NO CODE UNDER `tools/` CHANGED: it is all measurement.** The
+stem gap is DIAGNOSED and the answer is not a filter. Of the noteheads whose
+stem direction abstains `no_stem` — **793 of 2,347 on Litolff, 1,529 of 3,337
+on Breitkopf** — every one now has a named cause and **the causes SUM
+EXACTLY** (a replication asserted faithful against `detect_stems` per cell, 0
+drift). ⚠️⚠️ **FOUR HYPOTHESES DIED GETTING THERE, INCLUDING SEAN'S AND MINE**,
+and two of mine reached him as recommendations before the arm ran: reading the
+ORIGINAL raster instead of the staff-line-ERASED one recovers **fewer** (268
+vs 287), so **erasure-breakage is NOT the cause**; horizontal pre-dilation
+against a bowed plate recovers **3-4 heads of 793**, so the 1-pixel opening
+kernel is not either; `_drop_paired_strokes` is **9.2%**, not the bulk; and
+`STEM_MAX_HEIGHT_LINES` is **17 heads (2.1%)**, not the 80 a raster proxy
+implied. ⚠️ **The generalisable lesson is why that proxy lied: a proxy for a
+FILTER'S PREDICATE is not a proxy for the filter, because the filter's input
+population is connected COMPONENTS after a morphological opening, not ink.**
+⚠️⚠️ **WHAT IT ACTUALLY IS: THERE IS NO STEM COMPONENT TO FIND.** One cell's
+opening yields **3 components of median height 811 px where the staff spacing
+is 100 px** — 8.1 staff spaces, one blob holding stems, beams and noteheads,
+failing a cap of 8.0. `detect_stems` is a CONNECTED-COMPONENT reader and this
+plate has no stem component. That is a third independent arrival at *"Litolff
+MERGES and Breitkopf SHATTERS"* and at `Q.INK`'s *median largest component
+holds 46% of the cell's ink*. ⚠️⚠️ **THE SECOND PUBLISHER WAS RUN AND THE TOP
+CAUSE INVERTS** — Litolff's largest bucket is `too WIDE` (29.9%) where
+Breitkopf's is `too TALL` (**31.1% against Litolff's 5.9%**), so a repair
+tuned to one table misses the other's biggest cause. **What survives the
+inversion is the claim the next job rests on**: on BOTH plates a component
+EXISTS and is the wrong SHAPE (86% and 74%) while *no component at all* is
+only 21% and 13%. ⚠️ **The next work is a RASTER reader, and it is TWO
+UNEQUAL JOBS**: the right-up/left-down convention reader already agrees with
+the stems we read **95.9% / 98.2%** and can speak for **1,125 abstaining
+heads** using no components at all — but it gives DIRECTION, which PR #54
+measured as worth **two `<voice>` tags**; the within-blob STROKE reader gives
+beams and therefore DURATION and is unbuilt and unmeasured. ⚠️ **NO STEM HAS
+BEEN CHECKED AGAINST THE PRINT in any arm** — every accuracy figure is one of
+our readings against another. ⚠️⚠️ **IT ALSO RECORDS TWO ERRORS IN THIS FILE,
+LEFT UNFIXED BY DELIBERATE CHOICE — see the annotation at the system-grouping
+paragraph below.** Its sibling result, the ledger extrapolation, is **PR #56's
+original subject and is NOT the ranked next work** (Sean's call): the grid
+extrapolates past the staff at 1.000× while Litolff prints rungs at
+1.032/1.079/1.048/1.111, half a step behind by the 4th ledger line — **66 of
+2,347 heads read a diatonic step wrong against 0 of 3,337 on Breitkopf**, and
+a publisher-specific constant is REFUSED because no factor serves 1.10 and
+0.975. ⚠️ **A conventions registry now exists**:
+[docs/engraving-conventions.md](docs/engraving-conventions.md), 114 entries
+merged from 87 measured here and 79 from the literature, conservation
+balancing both ways with none dropped — **and it carries the REFUTED ones on
+purpose**, because a convention is a hypothesis and a cheap test, never a
+licence. Its predecessor
 [docs/handoff-2026-09-17-infer-rule-two.md](docs/handoff-2026-09-17-infer-rule-two.md)
 — **the newest, and a DIFFERENT THREAD from the meter chain below it**: INFER
 gained a second rule (`collapse_duration_to_barline`, no flag, **7 → 17** on
@@ -4895,7 +4944,21 @@ the gaps BETWEEN systems on a piano page — and x-overlap is 1.00 for every pai
 so no distance threshold can separate them. It used to report one 21-staff
 Brahms system as *twelve*. A barline runs a system's full height and the bracket
 encloses exactly it, so a column inked through the whole gap VETOES a gap-based
-break (veto only — it can merge an over-split page, never split a correct one).
+break — ⚠️⚠️ **AND BOTH HALVES OF THAT SENTENCE ARE FALSE, MEASURED, WHILE THE
+RULE THEY JUSTIFY IS SOUND.** The BRACKET half is recorded as an error in this
+file by `benchmarks/omr-system-grouping-2026-09/research/publisher-conventions.md:127`
+(*"is FALSE and is an error in our CLAUDE.md"*) — standard orchestral layout
+prints per-FAMILY brackets and no outer whole-system one, and two of five
+editions print no family bracket at all. The BARLINE half was measured
+2026-09-17 on Sean's own correction (*"a barline goes all the way through at
+the beginning and end of the system but not necessarily in the other bars"*):
+on Litolff the FIRST barline crosses every inter-staff gap **7 of 7** and
+**interior barlines 0 of 68**; on Breitkopf **nothing crosses every gap, the
+first included**. So the sentence describes no interior barline on either
+plate, and Sean's version is itself PUBLISHER-DEPENDENT. ⚠️ The veto still
+works, on the SYSTEMIC barline — *a correct rule with a false reason printed
+beside it*, which is the shape that misleads anyone reasoning forward from it.
+See [benchmarks/omr-barline-height-2026-09/FINDINGS.md](benchmarks/omr-barline-height-2026-09/FINDINGS.md) (veto only — it can merge an over-split page, never split a correct one).
 Brahms 12 → 1 system, Beethoven 4 → 1, and Beethoven's measure count went 14/8 →
 **8/8 exact**. The dossier join still falls back to page level
 (`slot_facts_for_page`) for pages where grouping is still imperfect.
