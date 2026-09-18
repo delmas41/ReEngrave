@@ -1,0 +1,25 @@
+== litolff
+   ok   reproduced thin 44 (published 44) / plausible 749 (published 749)
+   issue 2 reach: 337 of 793 raw = 42.5%   of 749 plausible = 45.0%   (+2.5 pts)
+   where the thin boxes live:
+      too TALL (h > 8.0 spaces)                        19 of 47      40.4%
+      NO component overlaps the head at all            12 of 167      7.2%
+      too WIDE (w > 0.6 spaces)                         6 of 237      2.5%
+      too SHORT (h < 2.0 spaces)                        5 of 199      2.5%
+      a component WAS accepted (pair rule dropped it)    1 of 73       1.4%
+      at a CELL EDGE (0.8 spaces)                       1 of 70       1.4%
+== breitkopf
+   ok   reproduced thin 576 (published 576) / plausible 953 (published 953)
+   issue 2 reach: 531 of 1529 raw = 34.7%   of 953 plausible = 55.7%   (+21.0 pts)
+   where the thin boxes live:
+      too TALL (h > 8.0 spaces)                       459 of 476     96.4%
+      NO component overlaps the head at all            83 of 197     42.1%
+      at a CELL EDGE (0.8 spaces)                      19 of 22      86.4%
+      a component WAS accepted (pair rule dropped it)    6 of 178      3.4%
+      too SHORT (h < 2.0 spaces)                        6 of 298      2.0%
+      too WIDE (w > 0.6 spaces)                         3 of 358      0.8%
+
+== issue 1: the 16-0 is UNCHANGED by the width test: 0 of the 16 settled heads is under the floor
+   {'stem_printed_down': 11, 'stem_printed_up': 5, 'cannot_tell': 8, 'not_a_notehead': 2}
+
+wrote benchmarks/omr-notehead-width-2026-09/out/issues.json

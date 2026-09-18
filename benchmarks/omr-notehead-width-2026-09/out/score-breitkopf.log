@@ -1,0 +1,23 @@
+== Breitkopf Brahms 1 pp.0-3
+   ok   notehead_total               3337 (want 3337)
+   ok   decided                      1791 (want 1791)
+   ok   no_stem                      1529 (want 1529)
+   ok   stems_disagree               17 (want 17)
+   ok   partition                    3337 (want 3337)
+   ok   census_covers_no_stem        1529 (want 1529)
+   ok   census_subjects_are_heads    1529 (want 1529)
+   ok   ruler_agreement_max          0.0142 (want <0.02)
+
+wrote benchmarks/omr-notehead-width-2026-09/out/score-breitkopf.json
+
+-- width in staff spaces, floor = 1.0
+   population                                          n     p5    med    p95   <1.0   share
+   DECIDED                                          1791  1.260  1.400  1.580     12  0.67%
+   stems_disagree                                     17  1.254  1.384  3.240      0  0.00%
+   no_stem                                          1529  0.260  1.315  1.535    576 37.67%
+   no_stem / NO component overlaps the head at all    197  0.490  1.125  1.570     83 42.13%
+   no_stem / a component WAS accepted (pair rule dropped it)    178  1.180  1.390  1.554      6  3.37%
+   no_stem / at a CELL EDGE (0.8 spaces)              22  0.260  0.330  1.144     19 86.36%
+   no_stem / too SHORT (h < 2.0 spaces)              298  1.270  1.414  1.641      6  2.01%
+   no_stem / too TALL (h > 8.0 spaces)               476  0.250  0.300  0.841    459 96.43%
+   no_stem / too WIDE (w > 0.6 spaces)               358  1.260  1.400  1.533      3  0.84%

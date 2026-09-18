@@ -1,0 +1,18 @@
+== litolff
+   class                        n  decided    %dec   <1.0   w med   h med
+   noteheadBlackInSpace       916      547  59.7%     22   1.430   1.250
+   noteheadBlackOnLine        978      579  59.2%     28   1.500   1.340
+   noteheadHalfInSpace        279      199  71.3%      0   1.600   1.340
+   noteheadHalfOnLine         157      110  70.1%      0   1.650   1.410
+   noteheadWholeInSpace        12        8  66.7%      0   1.580   1.230
+   noteheadWholeOnLine          5        0   0.0%      0   1.560   0.740
+== breitkopf
+   class                        n  decided    %dec   <1.0   w med   h med
+   noteheadBlackInSpace      1656      763  46.1%    459   1.348   1.091
+   noteheadBlackOnLine       1425      898  63.0%    126   1.402   1.200
+   noteheadHalfInSpace         94       69  73.4%      2   1.470   1.150
+   noteheadHalfOnLine          58       44  75.9%      1   1.575   1.202
+   noteheadWholeInSpace        75        8  10.7%      0   1.440   1.014
+   noteheadWholeOnLine         29        9  31.0%      0   1.450   1.085
+
+wrote benchmarks/omr-notehead-width-2026-09/out/by-class.json

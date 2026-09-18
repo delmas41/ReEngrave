@@ -7,7 +7,7 @@
   },
   {
    "name": "width-box read as a CORNER box",
-   "result": "HELD OUT (equivalent/named)"
+   "result": "RED"
   },
   {
    "name": "the floor moved to 1.5 spaces",
@@ -35,7 +35,7 @@
   },
   {
    "name": "publisher pinned by PAGE NUMBER instead of the manifest",
-   "result": "BAD ANCHOR x0"
+   "result": "RED"
   },
   {
    "name": "`cannot_tell` collapsed back into IS-a-notehead",
@@ -62,6 +62,6 @@
    "result": "HELD OUT (equivalent/named)"
   }
  ],
- "red": 6,
- "live": 6
+ "red": 8,
+ "live": 8
 }
