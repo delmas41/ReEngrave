@@ -148,6 +148,18 @@ class Inference(str, Enum):
     #: which is exactly what stops a reader seeing what the new claim bought.
     COLLAPSE_DURATION_TO_BARLINE = "collapse_duration_to_barline"
 
+    #: A narrowed SLOT INDEX collapsed by the convention that a short string
+    #: block is short at its FOOT -- the condensed `Violoncello e Basso`.
+    #:
+    #: ⚠️⚠️ THE FIRST RULE HERE THAT IS NOT ABOUT A DURATION, AND THAT IS THE
+    #: POINT. `staged/brakes.py` measured that of 28 decisions exactly ONE
+    #: could hand work to this stage: 2,289 abstentions on one document said
+    #: *"I cannot"* into a pipeline whose fourth stage is defined to answer
+    #: exactly that, with no rule to receive them. This is the second target
+    #: quantity, and it came from the largest single population a human had
+    #: actually looked at -- 25 staves of music held out of the file.
+    COLLAPSE_SLOT_INDEX_TO_FAMILY_BLOCK = "collapse_slot_index_to_family_block"
+
 
 #: The only prior states an inference may speak into.
 #:
