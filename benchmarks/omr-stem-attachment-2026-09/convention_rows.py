@@ -117,12 +117,25 @@ def measure(record: str, pdf: str):
                 d = arm(mask, mid, False) / space
                 best[(side, "up")] = max(best[(side, "up")], u)
                 best[(side, "down")] = max(best[(side, "down")], d)
-        r_up, l_dn = best[("R", "up")], best[("L", "down")]
+        # ⚠️⚠️ THRESHOLDED ON THE ROUNDED VALUE, AND THAT IS DELIBERATE
+        # FAITHFULNESS RATHER THAN A CHOICE OF MINE. The sibling probe stores
+        # `round(arm, 2)` in its row and then tests `r["R_up"] >= MIN_ARM`
+        # against that stored value -- so a measurement of 1.2456 rounds to
+        # 1.25 and counts as reaching a floor it does not actually reach.
+        # Thresholding on the full-precision measurement instead moved TWO of
+        # Breitkopf's 1,774 decided heads from `both` to `speaks` and made
+        # `--expect` fail, which is the control doing its job. Reproducing the
+        # published figure is this file's job; the rounding is reported as a
+        # finding rather than silently corrected, and it is one more piece of
+        # evidence that `MIN_ARM` sits on a boundary for this plate rather
+        # than on a plateau.
+        r_up = round(best[("R", "up")], 2)
+        l_dn = round(best[("L", "down")], 2)
         says = None
         if (r_up >= MIN_ARM) != (l_dn >= MIN_ARM):
             says = "up" if r_up >= MIN_ARM else "down"
         rows.append({"subject": s, "reason": reason, "read": value.get(s),
-                     "R_up": round(r_up, 2), "L_down": round(l_dn, 2),
+                     "R_up": r_up, "L_down": l_dn,
                      "illegal": round(max(best[("R", "down")],
                                           best[("L", "up")]), 2),
                      "says": says,

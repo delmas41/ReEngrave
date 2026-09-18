@@ -1,0 +1,27 @@
+{
+ "label": "Breitkopf Brahms 1 pp.0-3",
+ "population": 1442,
+ "gross": 653,
+ "overlap": 170,
+ "marginal": 483,
+ "marginal_gated": 420,
+ "overlap_gated": 155,
+ "gate": [
+  2.0,
+  8.0
+ ],
+ "beam_mate_reach": 290,
+ "still_unread": 1152,
+ "table": {
+  "stays no_stem|speaks": 483,
+  "stays no_stem|both": 553,
+  "beam_mate|speaks": 170,
+  "beam_mate|both": 89,
+  "stays no_stem|neither": 116,
+  "beam_mate|neither": 31
+ },
+ "both_speak_agreement": {
+  "AGREES": 144,
+  "disagrees": 26
+ }
+}

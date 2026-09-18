@@ -4,8 +4,8 @@
  "groups": {
   "DECIDED": {
    "n": 1774,
-   "exactly_one": 1497,
-   "both": 195,
+   "exactly_one": 1495,
+   "both": 197,
    "neither": 82
   },
   "no_stem": {
@@ -21,7 +21,7 @@
    "neither": 3
   }
  },
- "control_agreement": 0.982,
+ "control_agreement": 0.9819,
  "rows": [
   {
    "subject": "glyph/0/0/0/0/5",
@@ -8510,8 +8510,8 @@
    "R_up": 1.25,
    "L_down": 5.17,
    "illegal": 5.17,
-   "says": "down",
-   "state": "speaks"
+   "says": null,
+   "state": "both"
   },
   {
    "subject": "glyph/1/0/9/0/6",
@@ -9890,8 +9890,8 @@
    "R_up": 1.25,
    "L_down": 5.06,
    "illegal": 4.99,
-   "says": "down",
-   "state": "speaks"
+   "says": null,
+   "state": "both"
   },
   {
    "subject": "glyph/1/0/12/0/7",
