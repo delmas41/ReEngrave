@@ -1,0 +1,71 @@
+Litolff Beethoven 5 pp.1-4: the record holds 1920 stem rows over 783 cells of pages [1, 2, 3, 4]
+re-cut 4 page(s) in 15s
+REACH: 6128 vertical-run candidates over 1183 cells
+FAITHFULNESS flag-OFF: 1920 = 1920? YES; cells disagreeing: 0
+FAITHFULNESS flag-ON:  1920 strokes, cells moved: 0
+
+== the candidate population, by fate
+  accepted                                           1920   31.3%
+  too TALL (h > 8.0 spaces)                          1866   30.5%
+  too SHORT (h < 2.0 spaces)                         1276   20.8%
+  at a CELL EDGE (0.8 spaces)                         607    9.9%
+  PAIRED with a neighbour (the accidental rule)       244    4.0%
+  too WIDE (w > 0.6 spaces)                           215    3.5%
+  -> refused by a DIMENSION bound                    3964   64.7%
+
+== Sean's barline test: 6128 of 6128 runs carry BOTH a page box and their staff's lines
+
+  -- both ends on the outer lines of the OWN staff (narrow)
+  outcome                                          n   0.15   0.25    0.4    0.6    1.0
+  accepted                                      1920   0.9%   3.6%   8.4%  16.8%  43.1%
+  too TALL (h > 8.0 spaces)                     1866   0.0%   0.0%   0.0%   0.0%   0.0%
+  too SHORT (h < 2.0 spaces)                    1276   0.0%   0.0%   0.0%   0.0%   0.0%
+  at a CELL EDGE (0.8 spaces)                    607   0.2%   2.3%   7.1%  12.4%  19.8%
+  PAIRED with a neighbour (the accidental rule)   244   0.0%   0.4%   2.0%   4.9%  23.4%
+  too WIDE (w > 0.6 spaces)                      215   0.5%   2.3%   5.6%  11.2%  30.2%
+
+  -- both ends on the outer lines of the ANY staff (Sean's wide form)
+  outcome                                          n   0.15   0.25    0.4    0.6    1.0
+  accepted                                      1920   0.9%   3.6%   8.4%  16.8%  43.1%
+  too TALL (h > 8.0 spaces)                     1866   0.0%   0.0%   0.0%   0.0%   0.0%
+  too SHORT (h < 2.0 spaces)                    1276   0.0%   0.0%   0.0%   0.0%   0.0%
+  at a CELL EDGE (0.8 spaces)                    607   0.2%   2.3%   7.1%  12.4%  19.8%
+  PAIRED with a neighbour (the accidental rule)   244   0.0%   0.4%   2.0%   4.9%  23.4%
+  too WIDE (w > 0.6 spaces)                      215   0.5%   2.3%   5.6%  11.2%  30.2%
+
+  -- WHY a rate is what it is: the signed end offsets, in staff spaces
+     (+ = the run's end is BELOW the line; 0 = exactly on it)
+  outcome                                          n  d_top p05     med     p95 |  d_bot p05     med     p95
+  accepted                                      1920      -4.00   -0.24    3.69 |      -4.94   -0.30    3.13
+  too TALL (h > 8.0 spaces)                     1866      -5.97   -4.00   -0.11 |       0.14    4.00    5.96
+  too SHORT (h < 2.0 spaces)                    1276      -4.00    1.47    8.20 |      -7.16   -0.77    5.96
+  at a CELL EDGE (0.8 spaces)                    607      -4.00    0.14    4.51 |      -5.03    0.84    4.00
+  PAIRED with a neighbour (the accidental rule)   244      -3.99    0.24    3.76 |      -5.47   -0.11    2.83
+  too WIDE (w > 0.6 spaces)                      215      -4.31   -0.24    1.98 |      -2.21    0.14    3.99
+
+  staves a run's span fully covers: 0:2546, 1:3582
+
+== the PRINT join: 7 adjudicated barlines, 27 adjudicated stems
+  -- OWN staff
+  population    joined  with a run   0.15   0.25    0.4    0.6    1.0
+  barlines           7           7      0      0      0      0      0
+  stems             22          20      0      0      0      0      2
+  -- ANY staff
+  population    joined  with a run   0.15   0.25    0.4    0.6    1.0
+  barlines           7           7      0      0      0      0      0
+  stems             22          20      0      0      0      0      2
+
+== height in STAFF SPACES, by what the detector put over the run
+  coincides with                n     p05  median     p95
+  (no detection over it)     3192    1.13    8.14   13.96
+  notehead                   1946    1.32    4.06    7.23
+  clef                        308    1.16    2.35    5.38
+  accidental                  262    0.92    2.63    4.06
+  rest                        231    1.65    3.25    8.20
+  keysig                       93    1.06    2.66    3.43
+  (several kinds)              82    1.25    3.33    6.92
+  meter                        14    1.62    4.35   12.00
+
+== COST: 6128 rows over 4 page(s) = 1532.0 rows/page at 629.5 bytes = 0.964 MB/page
+
+wrote benchmarks/omr-vertical-runs-2026-09/out/litolff.json

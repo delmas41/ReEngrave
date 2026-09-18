@@ -421,6 +421,74 @@ KNOWN_GAPS: Dict[str, str] = {
         "`ink_n_components`. A component holding 0.9 of a cell is a merge, "
         "whatever its shape says."),
 
+    # ── `Q.VERTICAL_RUN`: PRODUCER ONLY, and its first consumer is NAMED ────
+    #
+    # ⚠️⚠️ THE FIRST INTENDED CONSUMER OF ALL SEVEN IS ONE RULE: an ADJUDICATE
+    # decision that asks WHAT KIND OF VERTICAL MARK this run is -- Sean's own
+    # test, *a barline's two ends sit ON the outer staff lines; a stem's do
+    # not* -- read against `Q.STAFF_LINES` in the page frame the rows now
+    # carry. It does not exist. Nothing reads these DELIBERATELY: `Q.INK`'s
+    # discipline, where a producer and its first consumer landing in one change
+    # makes the reach measurement circular, so the reach figure would be a
+    # measurement of the consumer.
+    #
+    # ⚠️ EACH ENTRY LEAVES THIS LIST THE DAY A DECISION READS IT, and the whole
+    # block leaves when that rule lands. An entry kept past its closing is how
+    # a gap list stops describing the tree; an entry removed early is how a
+    # known gap becomes a false "someone reads it".
+    #
+    # ⚠️ THE FIVE PAGE-FRAME AND STAFF-SPACE KEYS ARE NOT LISTED HERE AND ARE
+    # NOT READ EITHER -- `run_bbox_page_px`, `run_y_top_page`,
+    # `run_y_bottom_page`, `run_x_center_page`, `run_width_spaces`,
+    # `run_height_spaces`, `run_staff_space_px`. They go through a `**splat`
+    # because they are DECLINED BY OMISSION on a cell that cannot supply the
+    # frame, and this question reads the AST for LITERAL keyword names, so a
+    # splatted key never enters the WRITTEN inventory at all. That blind spot
+    # is already recorded above for `gather_detections`' own page box; naming
+    # it here too because the page box is the POINT of this quantity and a
+    # reader of this list would otherwise conclude it is read.
+    "DETAIL Q.VERTICAL_RUN.run_outcome": (
+        "WHICH of `detect_stems`' filters first refused this run, or that it "
+        "was accepted -- the one field that did not exist anywhere before, "
+        "because only survivors reached the record. It is a fact about the "
+        "FILTER, never a name for the ink: the crop pass adjudicated the width "
+        "cap's discards 33 of 33 REAL."),
+    "DETAIL Q.VERTICAL_RUN.run_accepted": (
+        "the boolean of `run_outcome`, beside it rather than derived at each "
+        "read site. Kept because the two questions a consumer asks are "
+        "different -- *did this survive* is a filter on the population, *why "
+        "not* is the reason string -- and re-deriving the first by comparing "
+        "against a vocabulary word is how the word gets restated."),
+    "DETAIL Q.VERTICAL_RUN.run_refused_by_dimension": (
+        "was it refused by one of the SIX dimension bounds, as against the "
+        "relational pair rule. §9 of `docs/proposal-2026-09-18-boxing-is-a-"
+        "decision.md` is the argument that all six are size windows on an "
+        "object the engraver varies on purpose, so *how much of this "
+        "population is refused BY DIMENSION* is the question that proposal "
+        "asks and no instrument could answer. Derived from the vocabulary, so "
+        "it cannot drift from the chain that produced it."),
+    "DETAIL Q.VERTICAL_RUN.run_ink_area_px": (
+        "ink pixels in the run, as against the area of its box -- the pair "
+        "`run_ink_fill` completes. A barline and a stem are both thin and "
+        "vertical; a merged blob that survived the opening is not, and what "
+        "separates them is how densely the rectangle fills."),
+    "DETAIL Q.VERTICAL_RUN.run_ink_fill": (
+        "the density half of that pair. Kept apart from the area because a "
+        "ratio alone cannot tell a two-pixel speck from a barline and an area "
+        "alone cannot tell a hairline from a blob."),
+    "DETAIL Q.VERTICAL_RUN.run_n_candidates": (
+        "how many candidates this cell produced, on every row -- the "
+        "`ink_n_components` precedent. A cell yielding fifty candidates and "
+        "one yielding two are different evidence about the same accepted "
+        "stroke, and a consumer that sees only its own row cannot tell."),
+    "DETAIL Q.VERTICAL_RUN.staff_lines_erased": (
+        "which RASTER this run was read off. `line_detection` prefers the "
+        "erased variant and SILENTLY falls back to `cell.image`, and "
+        "`capture.py` records that `Observation.frame` names a coordinate "
+        "frame and never the raster -- so without this a whole-rung fallback "
+        "would be indistinguishable from a thin page. `Q.STEM` carries the "
+        "same key for the same reason and it is unread there too."),
+
     "DETAIL Q.STAFF_LINES.page_staff_index": (
         "the RASTER's own staff index — the join key back to `pws.staves`. "
         "Nothing downstream joins that way today; every consumer goes "

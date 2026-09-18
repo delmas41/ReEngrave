@@ -243,6 +243,19 @@ KNOWN_GAPS: Dict[str, str] = {
         "p.62 alignment result had to be counted in page pixels: the printed "
         "meter's page x drifts 13.9 px (0.88 staff spaces) down the plate. "
         "PRODUCER ONLY; nothing reads either yet."),
+    "vertical_run": (
+        "ROW MIXES FRAMES BY DESIGN, AND THE PAGE HALF IS THE WHOLE REASON THE "
+        "QUANTITY EXISTS -- `Q.INK`'s case one family over. The box is in the "
+        "CELL's canonical frame (matching `Q.STEM`, which it is the "
+        "pre-filter population of) and the endpoints are in PAGE PIXELS, "
+        "because Sean's barline test -- *a barline's two ends sit ON the outer "
+        "staff lines; a stem's do not* -- needs the run's ends and "
+        "`Q.STAFF_LINES` in ONE coordinate system, and `Q.STAFF_LINES` is page "
+        "px while every `Q.STEM` row is cell canonical with no page fields at "
+        "all. The test was UNCOMPUTABLE before this row. ⚠️ A cell that cannot "
+        "supply the page frame gets `frame_note` and NO page fields -- "
+        "DECLINED, never defaulted. PRODUCER ONLY; nothing reads either "
+        "frame yet."),
 
     # -- section 2b: a row's VALUE is in a frame its `frame` does not name -
     "value:cell_box": (
