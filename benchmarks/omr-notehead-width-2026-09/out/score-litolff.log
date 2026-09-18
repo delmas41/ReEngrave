@@ -1,0 +1,23 @@
+== Litolff Beethoven 5 pp.1-4
+   ok   notehead_total               2347 (want 2347)
+   ok   decided                      1443 (want 1443)
+   ok   no_stem                      793 (want 793)
+   ok   stems_disagree               111 (want 111)
+   ok   partition                    2347 (want 2347)
+   ok   census_covers_no_stem        793 (want 793)
+   ok   census_subjects_are_heads    793 (want 793)
+   ok   ruler_agreement_max          0.002 (want <0.02)
+
+wrote benchmarks/omr-notehead-width-2026-09/out/score-litolff.json
+
+-- width in staff spaces, floor = 1.0
+   population                                          n     p5    med    p95   <1.0   share
+   DECIDED                                          1443  1.310  1.490  1.780      6  0.42%
+   stems_disagree                                    111  1.330  1.500  1.810      0  0.00%
+   no_stem                                           793  0.970  1.480  1.910     44  5.55%
+   no_stem / NO component overlaps the head at all    167  0.940  1.390  2.040     12  7.19%
+   no_stem / a component WAS accepted (pair rule dropped it)     73  1.270  1.560  1.960      1  1.37%
+   no_stem / at a CELL EDGE (0.8 spaces)              70  1.340  1.460  1.700      1  1.43%
+   no_stem / too SHORT (h < 2.0 spaces)              199  1.290  1.540  1.920      5  2.51%
+   no_stem / too TALL (h > 8.0 spaces)                47  0.300  1.400  2.160     19 40.43%
+   no_stem / too WIDE (w > 0.6 spaces)               237  1.270  1.490  1.740      6  2.53%

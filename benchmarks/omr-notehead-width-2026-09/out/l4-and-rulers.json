@@ -1,0 +1,328 @@
+{
+ "floor": 1.0,
+ "litolff": {
+  "rulers": {
+   "n_compared": 2347,
+   "max_abs_diff_spaces": 0.0,
+   "median_abs_diff_spaces": 0.0,
+   "boxes_that_swap_sides_of_the_floor": 0,
+   "swap_subjects": [],
+   "stroke_lane_thin_boxes": {
+    "published": 44,
+    "this_probe_staff_spacing_ruler": 44,
+    "this_probe_line_gap_ruler": 44
+   },
+   "stroke_lane_plausible_heads": {
+    "published": 749,
+    "line_gap_ruler": 749
+   }
+  },
+  "L4_by_detector_class_decided": {
+   "Black": {
+    "w": {
+     "n": 1126,
+     "min": 0.73,
+     "p5": 1.3,
+     "median": 1.46,
+     "p95": 1.75,
+     "max": 4.12
+    },
+    "h": {
+     "n": 1126,
+     "min": 0.42,
+     "p5": 1.02,
+     "median": 1.32,
+     "p95": 1.58,
+     "max": 4.05
+    }
+   },
+   "Half": {
+    "w": {
+     "n": 309,
+     "min": 1.19,
+     "p5": 1.41,
+     "median": 1.61,
+     "p95": 1.83,
+     "max": 2.6
+    },
+    "h": {
+     "n": 309,
+     "min": 0.46,
+     "p5": 1.01,
+     "median": 1.39,
+     "p95": 1.77,
+     "max": 2.54
+    }
+   },
+   "Whole": {
+    "w": {
+     "n": 8,
+     "min": 1.38,
+     "p5": 1.38,
+     "median": 1.59,
+     "p95": 1.96,
+     "max": 1.96
+    },
+    "h": {
+     "n": 8,
+     "min": 0.94,
+     "p5": 0.94,
+     "median": 1.23,
+     "p95": 1.61,
+     "max": 1.61
+    }
+   }
+  }
+ },
+ "breitkopf": {
+  "rulers": {
+   "n_compared": 3337,
+   "max_abs_diff_spaces": 0.0,
+   "median_abs_diff_spaces": 0.0,
+   "boxes_that_swap_sides_of_the_floor": 0,
+   "swap_subjects": [],
+   "stroke_lane_thin_boxes": {
+    "published": 576,
+    "this_probe_staff_spacing_ruler": 576,
+    "this_probe_line_gap_ruler": 576
+   },
+   "stroke_lane_plausible_heads": {
+    "published": 953,
+    "line_gap_ruler": 953
+   }
+  },
+  "L4_by_detector_class_decided": {
+   "Black": {
+    "w": {
+     "n": 1661,
+     "min": 0.443,
+     "p5": 1.26,
+     "median": 1.4,
+     "p95": 1.521,
+     "max": 4.071
+    },
+    "h": {
+     "n": 1661,
+     "min": 0.385,
+     "p5": 1.03,
+     "median": 1.188,
+     "p95": 1.28,
+     "max": 2.99
+    }
+   },
+   "Half": {
+    "w": {
+     "n": 113,
+     "min": 0.81,
+     "p5": 1.23,
+     "median": 1.56,
+     "p95": 1.734,
+     "max": 1.771
+    },
+    "h": {
+     "n": 113,
+     "min": 0.68,
+     "p5": 0.81,
+     "median": 1.18,
+     "p95": 1.3,
+     "max": 2.005
+    }
+   },
+   "Whole": {
+    "w": {
+     "n": 17,
+     "min": 1.24,
+     "p5": 1.24,
+     "median": 1.44,
+     "p95": 2.679,
+     "max": 2.679
+    },
+    "h": {
+     "n": 17,
+     "min": 0.461,
+     "p5": 0.461,
+     "median": 1.0,
+     "p95": 1.25,
+     "max": 1.25
+    }
+   }
+  }
+ },
+ "L4_against_the_print": {
+  "n_adjudicated": 17,
+  "joined": 17,
+  "note": "every row here is a box the RECORD calls a WHOLE notehead; the crop pass found 16 of 17 class-FALSE, so this measures the CLASS and not the convention",
+  "rows": [
+   {
+    "id": "V006",
+    "pub": "breitkopf",
+    "subject": "glyph/0/0/5/7/2",
+    "cls": "noteheadWholeInSpace",
+    "verdict": null,
+    "w": 1.37,
+    "h": 1.21,
+    "what": "the box holds one of the two round COUNTERS of the printed digit 8 of a time signature"
+   },
+   {
+    "id": "W005",
+    "pub": "litolff",
+    "subject": "glyph/2/1/4/13/1",
+    "cls": "noteheadWholeInSpace",
+    "verdict": null,
+    "w": 1.38,
+    "h": 1.23,
+    "what": "the box holds the WHITE GAP between two heavily-inked staff lines - no notehead ink inside it at all. Read off a full-wi"
+   },
+   {
+    "id": "V002",
+    "pub": "breitkopf",
+    "subject": "glyph/0/0/5/7/1",
+    "cls": "noteheadWholeInSpace",
+    "verdict": null,
+    "w": 1.39,
+    "h": 0.78,
+    "what": "the box holds one of the two round COUNTERS of the printed digit 8 of a time signature"
+   },
+   {
+    "id": "V015",
+    "pub": "breitkopf",
+    "subject": "glyph/0/0/11/7/1",
+    "cls": "noteheadWholeInSpace",
+    "verdict": null,
+    "w": 1.4,
+    "h": 0.86,
+    "what": "the box holds one of the two round COUNTERS of the printed digit 8 of a time signature"
+   },
+   {
+    "id": "V009",
+    "pub": "breitkopf",
+    "subject": "glyph/1/0/5/1/33",
+    "cls": "noteheadWholeInSpace",
+    "verdict": null,
+    "w": 1.425,
+    "h": 1.051,
+    "what": "the box holds one of the two round COUNTERS of the printed digit 8 of a time signature"
+   },
+   {
+    "id": "V005",
+    "pub": "breitkopf",
+    "subject": "glyph/0/0/5/7/0",
+    "cls": "noteheadWholeInSpace",
+    "verdict": null,
+    "w": 1.44,
+    "h": 1.01,
+    "what": "the box holds one of the two round COUNTERS of the printed digit 8 of a time signature"
+   },
+   {
+    "id": "V001",
+    "pub": "breitkopf",
+    "subject": "glyph/2/0/4/3/11",
+    "cls": "noteheadWholeOnLine",
+    "verdict": null,
+    "w": 1.468,
+    "h": 0.461,
+    "what": "a dotted HOLLOW head with a clearly printed stem running UP at its RIGHT - a dotted HALF note, so the class is what is f"
+   },
+   {
+    "id": "V011",
+    "pub": "breitkopf",
+    "subject": "glyph/1/0/5/1/23",
+    "cls": "noteheadWholeInSpace",
+    "verdict": null,
+    "w": 1.472,
+    "h": 0.888,
+    "what": "the box holds one of the two round COUNTERS of the printed digit 8 of a time signature"
+   },
+   {
+    "id": "V017",
+    "pub": "breitkopf",
+    "subject": "glyph/1/0/5/1/24",
+    "cls": "noteheadWholeInSpace",
+    "verdict": null,
+    "w": 1.484,
+    "h": 1.016,
+    "what": "the box holds one of the two round COUNTERS of the printed digit 8 of a time signature"
+   },
+   {
+    "id": "W004",
+    "pub": "litolff",
+    "subject": "glyph/4/1/7/7/8",
+    "cls": "noteheadWholeInSpace",
+    "verdict": null,
+    "w": 1.51,
+    "h": 1.4,
+    "what": "the box holds the WHITE GAP between two heavily-inked staff lines - no notehead ink inside it at all. Read off a full-wi"
+   },
+   {
+    "id": "V022",
+    "pub": "breitkopf",
+    "subject": "glyph/0/0/11/7/0",
+    "cls": "noteheadWholeInSpace",
+    "verdict": null,
+    "w": 1.58,
+    "h": 0.97,
+    "what": "the box holds one of the two round COUNTERS of the printed digit 8 of a time signature"
+   },
+   {
+    "id": "V018",
+    "pub": "breitkopf",
+    "subject": "glyph/2/0/4/3/1",
+    "cls": "noteheadWholeOnLine",
+    "verdict": null,
+    "w": 1.621,
+    "h": 0.978,
+    "what": "a dotted HOLLOW head with a clearly printed stem running UP at its RIGHT - a dotted HALF note, so the class is what is f"
+   },
+   {
+    "id": "W003",
+    "pub": "litolff",
+    "subject": "glyph/4/1/10/2/3",
+    "cls": "noteheadWholeInSpace",
+    "verdict": null,
+    "w": 1.74,
+    "h": 0.97,
+    "what": "the box holds the WHITE GAP between two heavily-inked staff lines - no notehead ink inside it at all. Read off a full-wi"
+   },
+   {
+    "id": "V019",
+    "pub": "breitkopf",
+    "subject": "glyph/1/0/5/0/14",
+    "cls": "noteheadWholeOnLine",
+    "verdict": null,
+    "w": 1.926,
+    "h": 1.22,
+    "what": "staff/1/0/5 cell 0: a dotted HOLLOW head with ledger lines and a tie, and NO stem visible. The one candidate in this pop"
+   },
+   {
+    "id": "W002",
+    "pub": "litolff",
+    "subject": "glyph/2/0/3/1/21",
+    "cls": "noteheadWholeInSpace",
+    "verdict": null,
+    "w": 1.94,
+    "h": 1.21,
+    "what": "the box holds the WHITE GAP between two heavily-inked staff lines - no notehead ink inside it at all. Read off a full-wi"
+   },
+   {
+    "id": "W001",
+    "pub": "litolff",
+    "subject": "glyph/2/0/3/1/18",
+    "cls": "noteheadWholeInSpace",
+    "verdict": null,
+    "w": 1.96,
+    "h": 1.23,
+    "what": "the box holds the WHITE GAP between two heavily-inked staff lines - no notehead ink inside it at all. Read off a full-wi"
+   },
+   {
+    "id": "V004",
+    "pub": "breitkopf",
+    "subject": "glyph/1/0/0/4/35",
+    "cls": "noteheadWholeOnLine",
+    "verdict": null,
+    "w": 2.679,
+    "h": 1.17,
+    "what": "a thick DIAGONAL wedge 2.68 spaces wide with no oval anywhere in it"
+   }
+  ]
+ }
+}

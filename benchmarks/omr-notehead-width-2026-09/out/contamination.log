@@ -1,0 +1,37 @@
+adjudicated rows found: 255
+resolved to a width: 255   unresolved: 0
+
+-- controls on the TRUTH MAPPING (not just on the join)
+   ok   sample_not_a_notehead_litolff      14 (want 14)
+   ok   sample_not_a_notehead_breitkopf    32 (want 32)
+   ok   sample_not_a_notehead_total        46 (want 46)
+   ok   cannot_tell_litolff_sample         53 (want 53)
+   ok   cannot_tell_litolff_control        10 (want 10)
+   ok   cannot_tell_breitkopf_sample       16 (want 16)
+   ok   cannot_tell_breitkopf_control      2 (want 2)
+   ok   sample_size_litolff                90 (want 90)
+   ok   sample_size_breitkopf              90 (want 90)
+   ok   no_unknown_verdict_word            0 (want 0)
+   ok   standoff_settled                   16 (want 16)
+
+-- the floor against the PRINT (THREE-WAY: `cannot tell` is not a cost and is not a win)
+                  n |       NOT a head |        IS a head |      cannot tell
+                    |    flag     keep |    flag     keep |    flag     keep
+   litolff      111 |       9       10 |       0       29 |       1       62
+   breitkopf    144 |      32       12 |       0       74 |       4       22
+
+-- shape, in staff spaces (w median / h median)
+   litolff     IS a notehead    n=  29  w 1.38/1.58/1.89   h 0.69/1.29/1.55
+   litolff     NOT a notehead   n=  19  w 0.30/1.12/1.96   h 0.34/1.10/1.41
+   litolff     cannot tell      n=  63  w 1.32/1.48/1.88   h 0.65/1.29/1.86
+   breitkopf   IS a notehead    n=  74  w 1.24/1.41/1.62   h 0.68/1.15/1.26
+   breitkopf   NOT a notehead   n=  44  w 0.27/0.41/2.18   h 0.50/0.77/1.31
+   breitkopf   cannot tell      n=  26  w 0.78/1.39/2.34   h 0.45/1.10/1.28
+
+-- issue 1, the 26-head standoff
+   verdicts: {'stem_printed_down': 11, 'stem_printed_up': 5, 'cannot_tell': 8, 'not_a_notehead': 2}
+   under the floor: 3 of 26
+   of the 16 the print SETTLED, under the floor: 0
+   attachment 16 - 0 beam-mate (among settled)
+
+wrote benchmarks/omr-notehead-width-2026-09/out/contamination.json
