@@ -1001,6 +1001,103 @@ which this rule may not read without destroying its own self-check) and the
 
 ---
 
+## The unnamed block at the foot of a system — FORCED here, INFERRED there
+
+2026-09-17, no flag. Sean's own rule, measured the same day
+(`benchmarks/omr-unnamed-staves-2026-09`) and left unshipped, split at the line where the page stops forcing the answer.
+Findings:
+[benchmarks/omr-unnamed-block-slot-2026-09/FINDINGS.md](benchmarks/omr-unnamed-block-slot-2026-09/FINDINGS.md).
+
+Sean: *"If we had 4 or 5 staves that showed up last in the system without a
+name in the margin they are almost surely strings. If the first 2 clefs are
+treble the 3rd is alto and the 4th is bass clef it is further reinforcement."*
+
+⚠️⚠️ **`adjudicate_slot_index`'s BLANKET `unnamed_in_short_system` ABSTENTION
+WAS A BRAKE WHOSE PREMISE EXPIRED** — the 2026-09-17 governing finding's
+COROLLARY, built. It read as *"a staff with no name cannot be placed"*, and it
+was written when the only options were ANSWER or DISCARD. Two of the six
+capabilities that finding names dissolve it: a PARTIAL answer now has
+somewhere to live (`Ruling.narrow`), and a FOURTH STAGE exists for
+best-rather-than-forced. **It is not a brake to remove; it is a HANDOFF THAT
+WAS NOT WIRED.**
+
+| | claim | where | reach |
+|---|---|---|--:|
+| **FORCED** | a block that exactly FILLS the reference's trailing same-family run has ONE order-preserving map | ADJUDICATE, `family_block` | **5** |
+| **BEST** | a block one slot SHORT is short at its FOOT — the condensed `Violoncello e Basso` | INFER, labelled | **15** |
+| **neither** | the condensed member itself | left NARROWED | 5 |
+
+**MEASURED**, Litolff Beethoven 5 pp.1-4, one gather decided four ways;
+**CONTROL: 75 of 75 committed slot verdicts reproduced with the branch
+disabled**. 25 abstentions → 5 decided + 20 narrowed → 15 collapsed. Scored
+against the hand-read PRINT: **25 of 25 placements correct, ZERO grafts.**
+
+⚠️⚠️ **IN THE FILE, ONE DROP BUCKET MOVES AND NOTHING ELSE DOES.** With this
+rule running ALONE: `staff_not_identified` **783 → 141 (−642)**,
+`events_written` **1472 → 2114 (+642)**, `duration_narrowed` / `no_pitch` /
+`owned_by_another_staff` / `ink_is_a_whole_rest` **identical to the unit**,
+`balanced: True` in every arm. Pitched `<note>` **965 → 1527**; **parts stay
+12 and measures 1332** — the staves join the parts they belong to rather than
+inventing any. Per part, read back by music21: **Violin I +189, Violin II
++176, Viola +74, Contrabass +27**; **Cello +0**, which is the result agreeing
+with itself (its staves are the condensed pair this rule leaves narrowed).
+
+⚠️ **THREE CLAIMS THE PROBE MADE AND THIS RULE DOES NOT.** No word list — the
+run is *the reference's trailing run of slots whose instrument verdict names
+ONE family*, so it names no instrument and no publisher (⚠️ and a family test
+over the PRINTED names would have been wrong anyway: the lexicon reads a bare
+`Basso` as a **BASS VOICE**, so the bottom slot would drop out of the run and
+the whole block would slide). No clef in ADJUDICATE — contradicting **every**
+glyph in the block changes nothing there, which is what dissolves the
+circularity. And no "4 or 5" constant: `FAMILY_BLOCK_MAX_DEFICIT = 1` is the
+STRUCTURE that produces Sean's window on a five-slot run, and it is also what
+refuses a block of 1-2 — **the case that is still untested on a page, because
+this plate never prints one.**
+
+⚠️ **THE CLEF IS A TERM THAT CAN PULL INTO ABSTENTION, NEVER A GATE**, and the
+refusal is WHOLE-BLOCK (a shifted alignment is ONE error, so refusing only the
+contradicting member keeps the two above it). ⚠️⚠️ **It is half-blind: the
+record holds 74 `clefG`, 17 `clefF` and ZERO C clefs**, and the tree's own
+`_GLYPH_TO_CLEF` maps `clefC` to nothing by design — so the ALTO clef, the one
+clef that uniquely names a member of a string block, never speaks. What the
+BASS clef still catches is a block shifted by one.
+
+⚠️⚠️ **THE SECOND PUBLISHER HAS NO POPULATION AT ALL AND THAT IS NOT A
+FAILURE.** Breitkopf Brahms 1 p0-3, control 97 of 97: **0 abstentions** (78
+`named`, 13 `paired_by_name`, 6 `full_lineup`), because that plate labels
+nearly every staff on every system. **The domain is a property of a
+publisher's LABELLING PRACTICE**, so the second publisher can neither
+corroborate nor refute it — **n = 1 document for correctness.**
+
+⚠️ **THREE INSTRUMENT DEFECTS, each found by the instrument disagreeing with
+itself.** The arm scored a BRAHMS record against LITOLFF's print truth by
+`(page, system)` and reported **21 grafts that were its own** — the id-space
+collision `--work-id` already costs this repo; scoring is now opt-in per
+record. It read `report["provenance"]` where the key is `part_join` and
+printed `None` beside real integers, so the first table said *no staff is held
+out* on a run holding 25 out. And the first `off -> infer` delta was
+**CONFOUNDED by INFER's two DURATION rules**, which put 13 events on WIND
+staves this rule never touches — **the tell was four wind parts gaining notes
+in a change about strings**, not a failing assertion.
+
+⚠️⚠️ **AND THE FIRST VERSION OF THE RULE REACHED NOTHING, for this repo's own
+failure family in a local variable.** `_names_by_system` grows its row only
+when it has a NAME to put in one, so a system of eleven staves whose last four
+are unnamed hands back a list of **seven** — and a list that ends early is
+indistinguishable from a system that ends early. **The unnamed suffix the rule
+is entirely about is exactly the part the structure could not represent.**
+
+⚠️ Mutation battery **15 arms, 15 red, 0 survivors**; its first run's four
+survivors were two real test gaps, one unreachable-but-kept cross-module
+guard, and one equivalent mutant now named rather than run. ⚠️ **What is NOT
+established**: the 562 notes are in the right PART and whether they are the
+right NOTES is unmeasured; no OMR-NED (the metric is symmetric and would pay
+for holding this music OUT); `part_partition` is held at the committed value
+in every arm; and an ADJUDICATE/INFER arm over a fixed gather is structurally
+blind to a GATHER change.
+
+---
+
 ## The staged pipeline: an inventory, an exporter, and a health report
 
 The 2026-09-09 handoff's three ranked tasks, done — and **each one found
@@ -7279,7 +7376,7 @@ All in `backend/.env` (local) or `backend/.env.production` (prod):
 | `OMR_HOLD_OUT_UNIDENTIFIED` | **`1` on (default since 2026-09-17, Sean's call)** → staged pipeline only: a staff the join could not name is held out of the file rather than emitted as a part of its own; its notes are counted under `staff_not_identified` and the accounting control stays an equality. Parts 37 → 12 on Litolff Beethoven 5 pp.1-4. Scoped to the `slot` join, so a page where nothing is named still writes one part per staff. `0` restores the previous exporter. See the knobs table. |
 | `OMR_METER_TEMPLATE_AT_BAR` | `0` off (default) → staged pipeline only: ask the TEMPLATE reader at candidate mid-staff bar heads, of every staff of the system, and admit a reading only where 3 staves agree on one meter at one bar. Measured on 1,612 empty windows over 2 publishers: 16 / 2 / **0** spurious columns at a 1 / 2 / 3-staff quorum. UNPRICED — a GATHER change needs two full re-gathers. See the knobs table. |
 | `OMR_INK` | **`1` on (default since 2026-09-17, Sean's call; deny-list)** → staged pipeline only: `Q.INK`, one row per connected piece of a cell's ink, named or not — the base layer, with the detector's classification as an ATTRIBUTE. **Nothing is filtered** and **nothing reads it**, both deliberately. 1,244 rows / 1.8 s on one page; 17 of 17 staves get a row at a printed meter the detector fires on none of. Alignment against a null holds on one publisher (0.63 / 0.43) and is much weaker on a second (0.87 / 0.83). See the knobs table. |
-| `OMR_INFER` | `0` off (default) → the FOURTH STAGE, INFER: after EVALUATE and before EXPORT, it collapses a NARROWED verdict to one of that reader's OWN candidates using evidence EVALUATE structurally cannot look at — the other staves of the same system. **TWO rules since 2026-09-17** (`collapse_duration_by_column` 7, `collapse_duration_to_barline` 10 — the barline rule refuses any witness whose length reached it through `Q.METER`, so it never reads the meter it would otherwise need). Every inference is LABELLED (`decider="infer:…"`), names what it supersedes, and leaves the narrowing in the record. ⚠️ Off means ABSENT, not quiet: `pipeline` omits the `inference` key entirely, so a flag-off record is byte-identical to a tree without the stage. 7 inferred / 6 reach the file on Litolff Beethoven 5 p1-4; n = 1 document and NO accuracy check against the print. See the *INFER, the fourth stage* section. |
+| `OMR_INFER` | `0` off (default) → the FOURTH STAGE, INFER: after EVALUATE and before EXPORT, it collapses a NARROWED verdict to one of that reader's OWN candidates using evidence EVALUATE structurally cannot look at — the other staves of the same system. ⚠️⚠️ **THREE rules since 2026-09-17, and the third is the first that is NOT a duration** — `collapse_slot_index_to_family_block` places 15 of the 25 unnamed staves of Litolff Beethoven 5 p1-4 and is worth **+642 events in the file**; see *The unnamed block at the foot of a system* below. **TWO duration rules** (`collapse_duration_by_column` 7, `collapse_duration_to_barline` 10 — the barline rule refuses any witness whose length reached it through `Q.METER`, so it never reads the meter it would otherwise need). Every inference is LABELLED (`decider="infer:…"`), names what it supersedes, and leaves the narrowing in the record. ⚠️ Off means ABSENT, not quiet: `pipeline` omits the `inference` key entirely, so a flag-off record is byte-identical to a tree without the stage. 7 inferred / 6 reach the file on Litolff Beethoven 5 p1-4; n = 1 document and NO accuracy check against the print. See the *INFER, the fourth stage* section. |
 | `OMR_PARTIAL_DYNAMICS` | `off` (default) → a dynamic letter run that spells no known word is dropped whole; `complete` exports only what every surviving completion agrees on (`s` → `sf`); `other` adds `<other-dynamics>`. Measured over the 20-row gate: +15 / +30 edits, NOT ONE ROW BETTER. See the knobs table. |
 | `OMR_ROSTER_LABELS` | `0` off (default) → resolve margin labels against the work's catalog roster: recover a truncated name, disambiguate `Basso.`, veto a singer on a work with no singers. Measured; 1.4% of real margin labels. See the knobs table. |
 | `OMR_WORK_ID` | Name the catalogued work for a PDF the score library does not hold — the score LIBRARY's id (`tchaikovsky--symphony-6`), never the dossier's (`tchaikovsky-sym6-mvt2`). Consumed only by `OMR_ROSTER_LABELS`; nothing sets it by default. |
