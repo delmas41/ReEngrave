@@ -196,7 +196,19 @@ ENUMERABLE, and no identifier at all for the one whose length is CONTINUOUS.**
 Sean hand-labelled BOTH `accidentalNatural` and `accidentalNaturalSmall` on
 Brahms p2. The vocabulary already asserts his claim.
 
-### ⚠️⚠️ THE INDICTMENT THIS CARRIES: `detect_stems`' SIX FILTERS ARE ALL DIMENSION BOUNDS ON A VARIABLE-LENGTH OBJECT
+### ⚠⚠ THE INDICTMENT THIS CARRIES: `detect_stems`' FILTERS ARE ALL DIMENSION BOUNDS ON A VARIABLE-LENGTH OBJECT
+
+⚠⚠ **CORRECTED 2026-09-18 EVENING — THIS SECTION SAID "SIX FILTERS" AND ONLY
+FOUR CAN FIRE.** `benchmarks/omr-vertical-runs-2026-09` measured it over **12,944
+real candidates**: the **ASPECT** test (`h/w < 3.0`) can never fire, because past
+the height and width bounds `h/w ≥ 2.0/0.6 = 3.33` **always** and the ratio is
+scale-invariant; and the **AREA** floor cannot either, because a component
+surviving a 1.6-space opening carries ≥ 32 px against a floor of 10. **Both read
+ZERO.** ⚠ It does not weaken the argument — the four that DO fire are still all
+dimension bounds — but *"six filters"* is wrong wherever this repo says it,
+including the stage charter and the forward plan. ⚠ And it is **not** an argument
+for deleting them: `filter_sweep_arm.py` relaxes `max_width_lines` to 1.5, at
+which both become live.
 
 Every one of them tries to describe a stem by its size — `max_width` 0.6,
 `min_height` 2.0, `max_height` 8.0, a 3:1 aspect, an area floor, an edge margin.

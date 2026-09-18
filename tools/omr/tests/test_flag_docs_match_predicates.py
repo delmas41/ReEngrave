@@ -71,7 +71,6 @@ UNDOCUMENTED = {
     #: does not own `CLAUDE.md`; the managing session pastes the row and this
     #: entry LEAVES the list the same day -- the `KNOWN_GAPS` discipline this
     #: file's own docstring states.
-    "OMR_VERTICAL_RUNS": "default-OFF; its table row is proposed and unpasted",
 }
 
 

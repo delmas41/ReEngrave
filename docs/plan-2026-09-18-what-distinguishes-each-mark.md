@@ -33,7 +33,9 @@ work plan those three documents imply.**
   doubt it.** Of 28 adjudicators exactly one ever questions it, narrowly.
 * **"a perfect example"** — the stem case is both halves at once: **nowhere for
   the non-stem vertical lines to go** (no quantity exists; only `Q.STEM`, the
-  six filters' survivors), **and** six filters **measuring the wrong thing** —
+  six filters' survivors), **and** filters **measuring the wrong thing** — ⚠ *four* of the six, since the
+ASPECT and AREA tests were measured 2026-09-18 as unable to fire at the shipped
+defaults (zero over 12,944 candidates) —
   dimension bounds on an object the engraver varies on purpose (2.16 → 6.78
   staff spaces, median 3.93, n = 1,919).
 
