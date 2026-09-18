@@ -5759,8 +5759,12 @@ tightened by the convention itself (a looser rule reported 18-33 barlines on
 systems printing at most nine bars — mostly stem columns — and biased the result
 toward the conclusion): on **Litolff the FIRST barline crosses every gap 7 of 7,
 the interior ones 0 of 68, the LAST 4 of 7**; on **Breitkopf position does not
-separate at all — nothing crosses every gap, first included**, everything at a
-median 0.92. Sean's own statement — *full height at the beginning and end, not
+separate AND THE ORDERING INVERTS — its FIRST barline crosses every gap on 0 of
+7 while 4 of 35 INTERIOR ones do**, all three positions sitting at a median
+**0.923**. ⚠ This sentence read *"nothing crosses every gap, first included"*
+until an audit on 2026-09-18 checked it against
+`benchmarks/omr-barline-height-2026-09/out/breitkopf.json`; **that was false**,
+and the defensible claim is the MEDIAN rather than the count. Sean's own statement — *full height at the beginning and end, not
 the bars between* — holds on Litolff and is itself publisher-dependent.
 ⚠️ **The rule is UNCHANGED and still right**: it only ever needs a crossing
 column to be EVIDENCE of a system, and where nothing crosses there is no veto
