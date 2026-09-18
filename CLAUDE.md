@@ -96,6 +96,31 @@ including the **two GATHER divergences it found and deliberately did not
 change**, and the **`ff` 47 → 39 that is an unadjudicated COST and not a win**.
 
 ⚠️ **START HERE IF YOU ARE PICKING THIS UP:**
+[docs/handoff-2026-09-18-three-lanes-and-the-print.md](docs/handoff-2026-09-18-three-lanes-and-the-print.md)
+— **the newest, and THE PRINT FINALLY ARRIVED ON THE STEMS.** Three lanes ran
+overnight on `claude/integration-2026-09-18`: one SHIPPED (`OMR_STEM_STROKE`,
+default OFF — the within-blob column profile, and **§5's falsification did NOT
+fire**), two measured and REFUSED. ⚠️⚠️ **Its headline is that the crop pass
+this thread has owed since 09-17 broke a standoff 16-0 AGAINST A SHIPPED,
+DEFAULT-ON TIER** (the beam-mate's 0.984 was Litolff-only; this is its first
+second-publisher contact) — and a second lane independently found the mechanism:
+**the record's notehead box stands part-way ALONG a NEIGHBOURING note's stem**,
+so the stroke is real and the ATTRIBUTION is wrong, 6 of 6. ⚠️⚠️ **Read its §3
+before quoting anything**: `cannot_tell` is **62.5% for CONTROLS against 58.9%
+for the stemless SAMPLE**, so *"the stemless heads are the illegible ones"* is
+FALSE and ~60% of that plate cannot be adjudicated by eye either way; **46 of
+180 boxes are NOT NOTEHEADS** and Breitkopf's largest census bucket is **12 of
+12 BARLINES**; and the **8.1-space fused blob was one cell — the measured median
+is 4.18 / 3.20 spaces**, so the fusion is true of the extreme and false of the
+median. ⚠️ **Its §4 is FOUR decisions waiting for Sean and none was taken.**
+⚠️ **Two lanes corrected each other across one night** — a mixture model
+withdrawn by its own author on another lane's print evidence — which is the
+argument for running them together rather than in series. Its predecessor
+[docs/handoff-2026-09-17-the-ink-is-fused.md](docs/handoff-2026-09-17-the-ink-is-fused.md)
+is the stem diagnosis and the rejection census, and **its §4a is overtaken**:
+the convention it proposes building is refused as a TIER (not refuted as a
+convention), and a sibling had already shipped a different tier for that
+quantity before it was written. Its own predecessor
 [docs/handoff-2026-09-17-two-brakes-and-a-ruler.md](docs/handoff-2026-09-17-two-brakes-and-a-ruler.md)
 — **the newest. TWO PRs OPEN AND STACKED, NOTHING MERGED** (#53 the unnamed
 block, #54 the stem direction on top of it; suite 4,455/11/0 with the two
