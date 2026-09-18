@@ -84,6 +84,13 @@ def system_map(result):
     # `tacet_bars_padded` count. The control was RIGHT and the map was
     # incomplete; the repair is to walk what the exporter walks.
     spans = None if offsets is None else sx._spans_from_numbering(numbering)
+    # ⚠️⚠️ AND THE PARTS THE JOIN COULD NOT NAME GET NO PADDING ROWS, because
+    # since 2026-09-17 the exporter writes none for them. The map must say
+    # what the FILE says: when the exporter stopped padding fragments this
+    # control fired on 2,380 (part, measure) pairs — the map claiming bars the
+    # file no longer holds. That is the control doing its job twice in one
+    # day, and the answer both times is to walk what the exporter walks.
+    unnamed = set(sx.build(rec)[1].get("unidentified_parts") or ())
     out = collections.defaultdict(list)
     for pi, part in enumerate(parts):
         name = next((r.name for r in part if r.name), None) or sx._default_name(part)
@@ -100,7 +107,9 @@ def system_map(result):
         # so a single missing offset key cannot poison the fallback for the
         # rest of the part.
         running = 0
-        for sys_key, run, sys_bars in sx._tacet_walk(part, offsets, spans):
+        walk_spans = spans if pi not in unnamed else None
+        for sys_key, run, sys_bars in sx._tacet_walk(part, offsets,
+                                                     walk_spans):
             # ⚠️ A TACET SPAN'S LENGTH IS THE SYSTEM'S, a present run's is its
             # OWN -- which is what the exporter writes, and they can differ
             # wherever a staff read fewer bars than its system voted for.

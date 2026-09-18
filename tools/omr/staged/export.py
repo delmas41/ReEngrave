@@ -447,6 +447,18 @@ def build(rec: Record) -> Tuple[List[List[StaffRun]], Dict[str, Any],
     ordinal_ok = kind == "ordinal" and len(counts) == 1
 
     parts: List[List[StaffRun]] = []
+    # ⚠️⚠️ THE PARTS WE COULD NOT NAME. A part built from a run with no
+    # `Q.SLOT_INDEX` is a staff the join REFUSED to identify, not an
+    # instrument. The distinction is invisible in the finished `<part>` list
+    # and is load-bearing for the tacet padding: padding a fragment asserts
+    # *"this instrument is silent on that system"* when what we actually know
+    # is *"we could not identify this staff"* -- a fallback converting CANNOT
+    # TELL into a definite answer, which this file forbids at four other
+    # sites. Measured on Litolff Beethoven 5 pp.1-4: 30 of 37 parts are on
+    # exactly ONE system, and padding them wrote 2,924 empty bars and put 25
+    # blank staves under every printed system of the artefact a human then
+    # could not count.
+    unidentified: set = set()
     provenance_extra: Dict[str, Any] = {}
     used = kind
     if ordinal_ok and systems:
@@ -478,6 +490,11 @@ def build(rec: Record) -> Tuple[List[List[StaffRun]], Dict[str, Any],
                 slot = rec.value(Q.SLOT_INDEX, run.key)
                 if not isinstance(slot, int):
                     stranded += 1
+                    # ⚠️⚠️ REMEMBER WHICH PARTS THESE ARE. A run with no slot
+                    # is a staff we could NOT IDENTIFY, and the tacet padding
+                    # must not write silence for it on the systems it is
+                    # absent from -- see `_pad_tacet_span`'s caller.
+                    unidentified.add(len(parts))
                     parts.append([run])
                     continue
                 by_slot[slot].append(run)
@@ -491,9 +508,19 @@ def build(rec: Record) -> Tuple[List[List[StaffRun]], Dict[str, Any],
         used = "fragments"
         for s in systems:
             for run in by_system[s]:
+                # ⚠️ EVERY part on this path is an unidentified staff, by the
+                # definition of the fallback: the join refused, so no part
+                # here is known to be an instrument that is merely silent
+                # elsewhere.
+                unidentified.add(len(parts))
                 parts.append([run])
 
     provenance = {
+        # ⚠️ THE PART INDICES WE COULD NOT NAME, carried so the tacet padding
+        # can decline them. It is on `provenance` rather than a new return
+        # value because a reader of the FILE's coverage report should be able
+        # to see which parts are fragments without reading this code.
+        "unidentified_parts": sorted(unidentified),
         "join_decided": kind,
         "join_used": used,
         "join_reason": (rec.verdict(Q.PART_PARTITION, "document") or {}).get("reason"),
@@ -2557,8 +2584,17 @@ def to_musicxml(result: Dict[str, Any]) -> Tuple[str, Dict[str, Any]]:
     # all and *"nothing needed padding"* would read exactly like *"this was
     # never computed"* — the `empty_bars_padded_without_meter` lesson, in the
     # branch next door.
+    # ⚠️ OFF THE JOIN'S OWN PROVENANCE, not recomputed: `build` knows which
+    # runs had no `Q.SLOT_INDEX` and a second derivation here would be a
+    # fifth copy of a rule this session spent the day deleting copies of.
+    unnamed_parts = set(provenance.get("unidentified_parts") or ())
     counters["tacet_bars_padded"] += 0
     counters["tacet_bars_not_padded_without_meter"] += 0
+    # ⚠️ WRITTEN EVEN WHEN ZERO, same reason as the two above: a document
+    # whose join named every staff must report *"declined none"* rather than
+    # reporting nothing, or *"nothing was declined"* reads exactly like
+    # *"this was never computed"*.
+    counters["tacet_spans_declined_unidentified_part"] += 0
 
     part_list: List[str] = []
     parts_xml: List[str] = []
@@ -2569,8 +2605,22 @@ def to_musicxml(result: Dict[str, Any]) -> Tuple[str, Dict[str, Any]]:
             f'    <score-part id="{pid}">\n'
             f'      <part-name>{_legacy._xml_escape(name)}</part-name>\n'
             f'    </score-part>')
+        # ⚠️⚠️ A FRAGMENT IS NOT PADDED, AND THAT IS THE WHOLE OF THIS FIX.
+        # Padding a part the join could not identify asserts *"this
+        # instrument is silent on that system"*; what we know is *"we could
+        # not identify this staff"*. Converting the second into the first is
+        # the CANNOT-TELL-into-a-definite-answer failure this file forbids at
+        # four other sites -- and composed with the 2026-09-15 join it put 25
+        # blank staves under every printed system, so the first system of the
+        # cleanup artefact showed 37 staves against the print's 12 and a human
+        # could not count it. ⚠️ Each repair was measured ALONE and neither in
+        # the presence of the other: when the padding landed it reached ZERO
+        # bars on this document, because the meter was not yet carried.
+        pad = spans if i not in unnamed_parts else None
+        if i in unnamed_parts:
+            counters["tacet_spans_declined_unidentified_part"] += 1
         parts_xml.append(_part_xml(rec, part, pid, divisions, counters,
-                                   offsets, spans, meters))
+                                   offsets, pad, meters))
 
     xml = _legacy._score_partwise(result.get("source", {}) or {},
                                   part_list, parts_xml)
