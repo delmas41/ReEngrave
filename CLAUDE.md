@@ -95,6 +95,30 @@ doubles.** See the section *A CONTEST is RESOLVED, not relocated* below —
 including the **two GATHER divergences it found and deliberately did not
 change**, and the **`ff` 47 → 39 that is an unadjudicated COST and not a win**.
 
+⚠️⚠️ **READ THIS BEFORE ANY READING-QUALITY WORK — IT ANSWERS "WHO ACTUALLY
+DECIDED IT", AND THE ANSWER IS THAT THE TWO MOST BASIC CLAIMS NEVER REACH A
+STAGE:**
+[docs/diagnosis-2026-09-18-who-actually-decided-it.md](docs/diagnosis-2026-09-18-who-actually-decided-it.md)
+— Sean, 2026-09-18: *"Right now I don't know, when something is declared as
+something, if the issue was that we couldn't read it or that it got messed up in
+the stages."* **Verified answer: *this ink is a NOTEHEAD* is the DETECTOR's word,
+`log.observe`d as a FACT at `gather.py:373` before any stage runs — of 28
+adjudicators exactly ONE touches it (the whole-rest rule) and none asks "is this
+a notehead"; and *is there a STEM* is six filters INSIDE `detect_stems`, in
+GATHER, recording only the survivors.** Everything downstream is carefully
+staged, abstainable and recorded; **the foundation is not.** ⚠️⚠️ And routing is
+**BY CLASS**, so the misclassification is load-bearing — a barline called a
+notehead can never become a rest row. ⚠️⚠️ **It also verifies one instance of the
+collapse that causes the confusion: a stem candidate REJECTED BY A FILTER is
+recorded as `ABSTAIN.NO_INK` — "no ink" — on plates where the census proves the
+ink is there and merely the wrong SHAPE (86% / 74%). NOT FIXED.** ⚠️ **Why the
+mapping kept passing: all TEN derived checks are AGGREGATE and STATIC** — none
+asks what each stage did to ONE actual symbol, and a grep for a per-subject
+trace returns nothing, which is the shape of every surprise on the casualty
+list. ⚠️ Its §7 is what it does NOT claim — chiefly that much of the measured
+loss is UPSTREAM of every stage, so stage plumbing cannot be expected to
+explain it.
+
 ⚠️ **START HERE IF YOU ARE PICKING THIS UP:**
 [docs/handoff-2026-09-18-three-lanes-and-the-print.md](docs/handoff-2026-09-18-three-lanes-and-the-print.md)
 — **the newest, and THE PRINT FINALLY ARRIVED ON THE STEMS.** Three lanes ran
