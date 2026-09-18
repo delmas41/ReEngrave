@@ -465,10 +465,18 @@ class TestTheImageQuestion(unittest.TestCase):
         self.assertEqual(real["variant"], INTACT)
 
     def test_the_only_rows_that_record_their_raster_are_the_cv_line_ones(self):
+        """⚠️ WIDENED 2026-09-18 FOR `Q.VERTICAL_RUN`, WHICH IS A THIRD
+        `cv_lines` ROW AND RECORDS ITS RASTER FOR THE SAME REASON THE OTHER
+        TWO DO: `line_detection` prefers the erased variant and falls back to
+        `cell.image` SILENTLY, so without the key a whole-rung fallback is
+        indistinguishable from a thin page. The test's NAME is still true --
+        these are the cv-line rows -- and the point it pins is unchanged:
+        every OTHER reader in GATHER still fails to say which raster
+        answered, which is `capture.py`'s IMAGE finding."""
         by_q = capture.observe_sites()["by_quantity"]
         recording = {q for q, v in by_q.items()
                      if "staff_lines_erased" in v["detail"]}
-        self.assertEqual(recording, {"STEM", "BEAM_STROKE"})
+        self.assertEqual(recording, {"STEM", "BEAM_STROKE", "VERTICAL_RUN"})
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -795,12 +803,17 @@ class TestItDoesNotSILENCEItsSiblings(unittest.TestCase):
 
     def test_wiring_still_reports_the_key_this_module_names(self) -> None:
         """The repair must not close the finding — only stop this module from
-        closing it. Both `staff_lines_erased` entries must still be LIVE.
+        closing it. Every `staff_lines_erased` entry must still be LIVE.
+
+        ⚠️ 2 -> 3 ON 2026-09-18: `Q.VERTICAL_RUN` carries the same key for the
+        same reason and it is unread there too. The number is the TREE's, not
+        this line's -- what the test pins is that none of them is closed by a
+        module MENTIONING the key, which is the hazard it was written for.
         """
         from tools.omr.staged import wiring
         rep = wiring.report()
         live = [p for p in rep["problems"] if "staff_lines_erased" in p]
-        self.assertEqual(len(live), 2, rep["problems"])
+        self.assertEqual(len(live), 3, rep["problems"])
         self.assertEqual(rep["unaccounted"], [])
         self.assertEqual(rep["stale_gaps"], [])
 

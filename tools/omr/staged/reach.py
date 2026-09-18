@@ -85,6 +85,18 @@ KNOWN_GAPS: Dict[str, str] = {
     Q.KEYSIG_MARKER: (
         "inert declaration, owned by `inventory --check`: the decision reads "
         "`keysig_clef_fit`, which the markers already feed in GATHER."),
+    Q.VERTICAL_RUN: (
+        "PRODUCER ONLY and deliberately unread, the `Q.INK` discipline: a "
+        "producer and its first consumer landing in one change makes the reach "
+        "measurement circular. ⚠️ Its first intended consumer is NAMED in "
+        "`wiring.KNOWN_GAPS` -- an ADJUDICATE decision asking WHAT KIND of "
+        "vertical mark a run is, reading the page frame these rows carry "
+        "against `Q.STAFF_LINES`. It does not exist. ⚠️ AND THE REACH IS "
+        "MEASURED RATHER THAN PROMISED: 6,128 candidates on Litolff pp.1-4 "
+        "against 1,920 `Q.STEM` strokes and 6,816 against 2,305 on Breitkopf "
+        "pp.0-3, so the record was carrying about a third of the population "
+        "the pipeline looked at. This entry LEAVES the day a decision reads "
+        "it."),
     Q.SYSTEMIC_COLUMN: (
         "ABSTAIN-ONLY, and `gather_coverage` section 1b already reports it as "
         "such -- a reader declared it and never observed one."),
