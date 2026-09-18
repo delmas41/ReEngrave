@@ -3554,6 +3554,118 @@ two plates this thread has always used. No OMR-NED, deliberately — the metric 
 symmetric and would pay for emitting fewer stems. The engraved family is
 untouched by construction.
 
+### The stem CROP PASS — the print, on two publishers, and the census's buckets are not all stems
+
+2026-09-18, **no code outside `benchmarks/`**. The debt
+[docs/handoff-2026-09-17-the-ink-is-fused.md](docs/handoff-2026-09-17-the-ink-is-fused.md)
+§6 names — *"**No note has been checked against the print in any stem arm** …
+the crop pass is owed and has never been done for stems"* — **paid, on both
+publishers**. 180 heads drawn from the rejection census's own six buckets by a
+**seed pre-registered in its own commit BEFORE any crop existed** (commit order
+being the only form of that claim a later reader can check), plus 32 positive
+controls and 57 heads added mid-pass and reported apart. Findings:
+[benchmarks/omr-stem-crop-pass-2026-09/FINDINGS.md](benchmarks/omr-stem-crop-pass-2026-09/FINDINGS.md).
+
+⚠️⚠️ **THE 26-HEAD STANDOFF IS BROKEN 16-0 TO THE ATTACHMENT READER, AND THE
+SHIPPED, DEFAULT-ON BEAM-MATE TIER SCORES ZERO.** The attachment lane refused
+its tier partly because *"no instrument here can say which"* of the two
+mechanisms is wrong. The print can: of the 26 Breitkopf heads where they
+disagree, **16 are settled and the attachment reader is right on 16 of 16**; 8
+are `cannot_tell` and **2 are not noteheads at all**, so both readers gave a
+direction to a DOT. ⚠️ **That tier's 0.984 had only ever been measured on
+Litolff, leave-one-out — this is its first second-publisher contact.**
+⚠️ **The adjudication was genuinely BLIND** (tiles carried an opaque id and the
+manifest naming which reader said what was not opened until every verdict was
+written), and the 16/16/0 split was **re-derived at integration from
+`ADJUDICATION-standoff.json`** rather than relayed. ⚠️ Read it with the
+independence limit below; what makes it more than a count is that in **5 of the
+16 the stem ends in a printed FLAG or runs into a BEAM** — the beam-mate's own
+kind of evidence siding with the attachment reader — which would put the tier's
+error in its **GROUPING** rather than in its convention. **Hypothesis,
+instances named.** ⚠️⚠️ **THE DEFAULT IS SEAN'S CALL AND NOTHING WAS FLIPPED.**
+
+⚠️⚠️ **AND THE BIGGEST FINDING IS NOT ABOUT STEMS: 46 OF 180 BOXES ARE NOT
+NOTEHEADS (15.6% Litolff, 35.6% Breitkopf).** **Breitkopf's largest census
+bucket is BARLINES** — `too TALL` is 476 heads, **31.1%** of that plate's
+stemless population and the handoff's own headline inversion, and it is **12 of
+12 not noteheads** here, every one a box **0.40-0.45 spaces WIDE** on a vertical
+rule; `at a CELL EDGE` is 11 of 12. Re-derived at integration:
+`out/score-breitkopf.json` reads `n: 12`, `not_a_notehead: 12`, and **zero**
+stems printed either way. ⚠️⚠️ **THAT QUALIFIES THE FOUNDATION A WITHIN-BLOB
+READER RESTS ON** — *"the ink is there and forms components, they are simply not
+stem-shaped"* — because **a within-blob stem reader has nothing to recover in a
+barline**; a large part of the Breitkopf population is not a notehead missing
+its stem but a barline the DETECTOR called a notehead. **Qualified, not
+refuted: Litolff's WIDE 237 is unaffected.** The rest are read off the plate
+rather than inferred: two **WHOLE RESTS**, a printed capital **B**, the `e` of
+the printed word **cresc**, a **BASS CLEF**, a **trill wavy line**, eighth
+rests, an augmentation dot, a repeat-barline dot, a system's **FINAL barline**,
+and one box holding almost no ink at all. ⚠️ **A notehead is ~1.3 spaces wide**:
+a floor at width < 1.0 catches **39 of the 46 at a cost of 0 of 63 real stems**
+— measured, and **NOT proposed** (a GATHER change, measured only on heads the
+census already abstains on).
+
+⚠️⚠️ **THE WIDTH CAP'S RECOVERIES ARE REAL: 33 OF 33 THE PRINT SETTLES CARRY A
+PRINTED STEM, ZERO JUNK** (one-sided 95% lower bound **0.913**; Litolff 9/9,
+Breitkopf 24/24), against the convention-vs-convention *"roughly 73% real and
+27% junk"* the handoff explicitly declined to trust. ⚠️ **NOT a recommendation
+to move `max_width_lines`**: the print settles only **33 of 55** (60% pooled,
+**33% on Litolff**), and that subset is **by construction the legible one**. It
+removes the junk worry; it does not price the cap. ⚠️ **A NEW FACT: the width
+cap recovers 345 heads on Breitkopf** — `width_cap_check.py` had only ever run
+on Litolff, so **the published 217 is a Litolff figure.**
+
+⚠️⚠️ **SEAN'S STEM CONVENTION IS 96 OF 96 AGAINST THE PRINT — 67 down-and-LEFT,
+29 up-and-RIGHT, ZERO right-and-down** across two publishers, where the registry
+records it supported only by reading-vs-reading agreement. ⚠️⚠️ **Three tiles
+appeared to REFUTE it and all three dissolved at 1.8× zoom** — the inverted-U
+below the head is two spaces lower and attached to nothing. **A convention this
+repo has refuted before deserved the zoom, not the headline.** ⚠️ **One-sided**:
+the adjudicating eye measures ink beside the head, which is the ATTACHMENT
+reader's own evidence type, so this is **not an independent confirmation of that
+reader** — and there was one adjudicator, so there is no inter-rater figure.
+
+⚠️⚠️ **`no stem means a whole note` — the population is a CLASS failure, NOT a
+convention failure.** Of 31 heads the record calls WHOLE and still gives a
+direction, 17 are adjudicated and **not one is a whole note whose direction is
+the false claim**: **8 are the two round COUNTERS OF A PRINTED TIME-SIGNATURE
+DIGIT 8** (three on one cautionary `9/8` after a system's final double barline),
+**5 are the white GAP between two thick staff lines**, 2 a **dotted HALF note
+with a printed up-stem** (class false, direction RIGHT), 1 a hairpin wedge.
+**In 16 of 17 the CLASS is false**, so `[C15]` is neither contradicted nor
+confirmed by it. ⚠️⚠️ **AND THE METHOD WARNING IS THE PRODUCT: at tile
+magnification the adjudicator read two of these WRONG and the wide strip
+corrected both** — a numeral and a dotted half note each read as *a hollow head
+with no stem*. **A crop centred on a head cannot tell you the head is a
+NUMERAL.** 11 Breitkopf heads not reached, ranked, `V010` cheapest.
+
+⚠️⚠️ **`cannot_tell` REFUSES THE READING ITS AUTHOR WANTED, and it governs every
+Litolff figure here: 62.5% for CONTROLS against 58.9% for the stemless
+SAMPLE** — the same. So *"the stemless heads are the illegible ones"* is
+**FALSE**: on that plate ~60% of noteheads cannot have their stem adjudicated by
+eye **whether the pipeline read them or not**. Breitkopf 12.5% / 17.8%.
+⚠️ Litolff's raster is **`bpc: 1`, genuinely BITONAL**, and 600 dpi is
+**exactly** its native resolution (2897×3813 on 347.64 pt), so **a fused blob is
+fused ON THE PLATE** and *"the ink is FUSED"* arrives from the print side;
+Breitkopf's native is 531 dpi, so rendering at 600 buys nothing. **There is
+nothing better available for Litolff.**
+
+⚠️ **The frame control REFUSED one staff and that is a finding.**
+`--require-frame` passed every page of both samples (+86.7 to +234.1 grey
+levels) and refused Litolff `staff/3/1/7` at **−5.4**. Diagnosed with a
+full-width strip: **the staff is there and it TILTS while `Q.STAFF_LINES` stores
+one constant comb**, so mid-page the claimed rows sit half a space off the print
+— the 8-17 px warp `OMR_CELL_LINE_TRACE` corrects per CELL, surfacing in the
+record's own page-level rows. Three heads excluded, **and the strip was NOT
+widened until the test passed.**
+
+⚠️ **What is NOT established**: n = 2 publishers / 8 pages; **one adjudicator,
+so no inter-rater figure**; the eye is not independent of the attachment reader;
+the Litolff `cannot_tell` rate is the eye's and not the population's; no
+OMR-NED, deliberately; nothing re-gathered; and **nothing is proposed for any
+constant, flag or default** — the beam-mate default, the width cap and the
+box-width test are all put to Sean.
+
 ### `OMR_WHOLE_REST_INK` ON THE SECOND PUBLISHER — the cuts do NOT transfer
 
 2026-09-16, **no code changed and no flag flipped**. The knobs-table row for
