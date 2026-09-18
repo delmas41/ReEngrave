@@ -1,0 +1,14 @@
+Breitkopf Brahms 1 pp.0-3: 3233 heads (whole notes excluded)
+
+stem_direction says       n   speaks    both   neither
+DECIDED                1774     1497     195        82
+no_stem                1442      653     642       147
+stems_disagree           17        6       8         3
+
+control agreement with the stems we already read: 0.9820 over 1497
+wrote benchmarks/omr-stem-attachment-2026-09/out/breitkopf-rows.json
+
+FAILED to reproduce the committed aggregate:
+   control_agreement 0.9819 != 0.982
+   DECIDED.exactly_one 1495 != 1497
+   DECIDED.both 197 != 195
