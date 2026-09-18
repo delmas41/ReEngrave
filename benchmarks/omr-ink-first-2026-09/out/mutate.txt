@@ -1,0 +1,76 @@
+==============================================================================
+BASELINE (positive control)
+==============================================================================
+CONTROLS (all must pass)
+spacing agrees (<=1.0 px) : 19 of 19
+grid top agrees (<=5.0 px): 10 of 19
+E  hand NOTEHEADS landing on a detector notehead (IoU>=0.3): 97 of 99 = 0.980
+F  crop-pass print verdicts on page 1: 22 class-matched, 0 refused (index collision guard)
+ALL CONTROLS PASS
+1 REAL MARK, detector agrees            184   23.7%       19.1%
+2 DETECTOR INVENTION (a SYMBOL class, hand says no)    140   18.0%       13.2%
+2s STRUCTURAL ink (detector calls it stem/beam/staff)    100   12.9%       21.8%
+3 MISSED MARK (hand only)                48    6.2%       11.4%
+4 UNEXPLAINED (neither)                 304   39.2%       34.4%
+TOTAL                                   776
+MARK-SIZED (0.2-2.0 spaces both ways)     29       9.5%         4.4%    0.52    1.23     10046      2822
+OTHER / large blob                        43      14.1%        84.9%    0.44    1.32    229995       360
+a HORIZONTAL RUN (w>=2sp, w/h>=3)          5       1.6%         1.1%    2.13    0.36      4561      4348
+a SPECK (<0.2 x 0.2 spaces)              220      72.4%         0.3%    0.04    0.07       108        21
+a VERTICAL RUN (h>=2sp, h/w>=2)            7       2.3%         9.4%    1.00   11.96     39501     26835
+REACH: vertical runs over ALL ink in these cells : 68 of 776 ink rows
+REACH: vertical runs in the UNEXPLAINED bucket   : 7  <- the veto's domain
+VETO REACH  (no head at either end, by BOTH readings): 4 of 7 runs = 57.1%
+VETO COST   (detector says no head, HAND TRUTH SAYS THERE IS ONE): 0 of 7 = 0.0%
+REACH: `too TALL` print verdicts on page 1: 3
+exit 0
+
+------------------------------------------------------------------------------
+ARM: ink box read as [x,y,w,h] instead of corners
+  expected: control B (ink corners vs its own width_spaces) must refuse
+  exit 0 (baseline 0)  headline moved: True  -> RED
+
+------------------------------------------------------------------------------
+ARM: glyph box read as corners instead of [x,y,w,h]
+  expected: control B2 (a notehead is ~1 space tall) must refuse
+  exit 2 (baseline 0)  headline moved: True  -> RED
+
+------------------------------------------------------------------------------
+ARM: manifest staff index used RAW (no per-system offset)
+  expected: controls C and E must refuse -- the cells joined are the wrong cells
+  exit 0 (baseline 0)  headline moved: True  -> RED
+
+------------------------------------------------------------------------------
+ARM: hand boxes scaled by the RECORD's frame, not the manifest's
+  expected: control E must refuse -- a 15% frame error is exactly what the join is for
+  exit 2 (baseline 0)  headline moved: True  -> RED
+
+------------------------------------------------------------------------------
+ARM: top_y inverted with the WRONG sign
+  expected: control C's grid-top column must stop agreeing
+  exit 0 (baseline 0)  headline moved: True  -> RED
+
+------------------------------------------------------------------------------
+ARM: crop tiles taken from page 3 instead of this page
+  expected: control F must REFUSE most of them on the class match -- if it does not, the collision guard is not guarding
+  exit 0 (baseline 0)  headline moved: True  -> RED
+
+------------------------------------------------------------------------------
+ARM: a vertical run is anything taller than it is wide
+  expected: the run population must change
+  exit 0 (baseline 0)  headline moved: True  -> RED
+
+------------------------------------------------------------------------------
+ARM: the structural split is removed -- beam/stem ink counts as a SYMBOL
+  expected: the partition must move -- this is the split that makes it mean anything, and without it structural ink reads as invention and as missed music
+  exit 0 (baseline 0)  headline moved: True  -> RED
+
+------------------------------------------------------------------------------
+FLAG ARM: POSITIVE CONTROL for the cost counter: drop every detector notehead
+  expected: the VETO COST must RISE above zero -- otherwise the measured zero is the instrument and not the page
+  exit 0  headline moved: True -> RED
+    VETO COST   (detector says no head, HAND TRUTH SAYS THERE IS ONE): 1 of 7 = 14.3%
+
+==============================================================================
+RESULT: 9 red, 0 survived, 0 bad anchors, of 9 arms
+RESTORE VERIFIED: True  (md5 541e8517d50f vs snapshot 541e8517d50f)

@@ -1,0 +1,29 @@
+{
+ "record": "benchmarks/omr-ink-first-2026-09/out/brahms1-breitkopf-p2.gather.json",
+ "page": 1,
+ "reach": {
+  "ink_rows_page": 6055,
+  "hand_cells": 19,
+  "hand_boxes": 264,
+  "ink_rows_in_hand_cells": 776,
+  "print_verdicts_page": 22
+ },
+ "controls": {
+  "ink_conv_median_err_spaces": 0.0001754385964912175,
+  "notehead_box_median_height_spaces": 1.1498470948012232,
+  "cells_frame_agree": 19,
+  "cells_resolved": 19,
+  "hand_notehead_on_detector_rate": 0.9797979797979798,
+  "print_verdicts_class_matched": 22,
+  "print_verdicts_refused": 0
+ },
+ "partition": {
+  "4 UNEXPLAINED (neither)": 304,
+  "2 DETECTOR INVENTION (a SYMBOL class, hand says no)": 140,
+  "1 REAL MARK, detector agrees": 184,
+  "3 MISSED MARK (hand only)": 48,
+  "2s STRUCTURAL ink (detector calls it stem/beam/staff)": 100
+ },
+ "unexplained_n": 304,
+ "runs_n": 7
+}

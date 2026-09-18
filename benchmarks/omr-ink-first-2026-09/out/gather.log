@@ -1,0 +1,467 @@
+ROSTER: brahms--symphony-1
+GATHER
+  rungs: labels text_layer=on surya=off (not installed) tesseract=off | directions OMR_DIRECTION_TEXT=0 surya=off (not installed) tesseract=off
+  gather detections cell/1/0/0/0: 68
+  gather detections cell/1/0/0/1: 36
+  gather detections cell/1/0/0/2: 24
+  gather detections cell/1/0/0/3: 47
+  gather detections cell/1/0/0/4: 53
+  gather detections cell/1/0/0/5: 25
+  gather detections cell/1/0/0/6: 15
+  gather detections cell/1/0/1/0: 69
+  gather detections cell/1/0/1/1: 38
+  gather detections cell/1/0/1/2: 18
+  gather detections cell/1/0/1/3: 14
+  gather detections cell/1/0/1/4: 6
+  gather detections cell/1/0/1/5: 20
+  gather detections cell/1/0/1/6: 17
+  gather detections cell/1/0/2/0: 51
+  gather detections cell/1/0/2/1: 40
+  gather detections cell/1/0/2/2: 28
+  gather detections cell/1/0/2/3: 28
+  gather detections cell/1/0/2/4: 12
+  gather detections cell/1/0/2/5: 34
+  gather detections cell/1/0/2/6: 28
+  gather detections cell/1/0/3/0: 57
+  gather detections cell/1/0/3/1: 38
+  gather detections cell/1/0/3/2: 18
+  gather detections cell/1/0/3/3: 45
+  gather detections cell/1/0/3/4: 44
+  gather detections cell/1/0/3/5: 33
+  gather detections cell/1/0/3/6: 22
+  gather detections cell/1/0/4/0: 28
+  gather detections cell/1/0/4/1: 26
+  gather detections cell/1/0/4/2: 17
+  gather detections cell/1/0/4/3: 28
+  gather detections cell/1/0/4/4: 22
+  gather detections cell/1/0/4/5: 21
+  gather detections cell/1/0/4/6: 4
+  gather detections cell/1/0/5/0: 33
+  gather detections cell/1/0/5/1: 34
+  gather detections cell/1/0/5/2: 17
+  gather detections cell/1/0/5/3: 14
+  gather detections cell/1/0/5/4: 8
+  gather detections cell/1/0/5/5: 11
+  gather detections cell/1/0/5/6: 6
+  gather detections cell/1/0/6/0: 40
+  gather detections cell/1/0/6/1: 22
+  gather detections cell/1/0/6/2: 13
+  gather detections cell/1/0/6/3: 4
+  gather detections cell/1/0/6/4: 7
+  gather detections cell/1/0/6/5: 4
+  gather detections cell/1/0/6/6: 2
+  gather detections cell/1/0/7/0: 20
+  gather detections cell/1/0/7/1: 20
+  gather detections cell/1/0/7/2: 11
+  gather detections cell/1/0/7/3: 5
+  gather detections cell/1/0/7/4: 7
+  gather detections cell/1/0/7/5: 7
+  gather detections cell/1/0/7/6: 6
+  gather detections cell/1/0/8/0: 39
+  gather detections cell/1/0/8/1: 22
+  gather detections cell/1/0/8/2: 6
+  gather detections cell/1/0/8/3: 10
+  gather detections cell/1/0/8/4: 11
+  gather detections cell/1/0/8/5: 2
+  gather detections cell/1/0/8/6: 9
+  gather detections cell/1/0/9/0: 45
+  gather detections cell/1/0/9/1: 28
+  gather detections cell/1/0/9/2: 11
+  gather detections cell/1/0/9/3: 30
+  gather detections cell/1/0/9/4: 31
+  gather detections cell/1/0/9/5: 9
+  gather detections cell/1/0/9/6: 12
+  gather detections cell/1/0/10/0: 43
+  gather detections cell/1/0/10/1: 31
+  gather detections cell/1/0/10/2: 14
+  gather detections cell/1/0/10/3: 38
+  gather detections cell/1/0/10/4: 41
+  gather detections cell/1/0/10/5: 16
+  gather detections cell/1/0/10/6: 14
+  gather detections cell/1/0/11/0: 50
+  gather detections cell/1/0/11/1: 21
+  gather detections cell/1/0/11/2: 10
+  gather detections cell/1/0/11/3: 30
+  gather detections cell/1/0/11/4: 34
+  gather detections cell/1/0/11/5: 14
+  gather detections cell/1/0/11/6: 11
+  gather detections cell/1/0/12/0: 43
+  gather detections cell/1/0/12/1: 22
+  gather detections cell/1/0/12/2: 17
+  gather detections cell/1/0/12/3: 21
+  gather detections cell/1/0/12/4: 25
+  gather detections cell/1/0/12/5: 12
+  gather detections cell/1/0/12/6: 16
+  gather detections cell/1/0/13/0: 31
+  gather detections cell/1/0/13/1: 19
+  gather detections cell/1/0/13/2: 12
+  gather detections cell/1/0/13/3: 19
+  gather detections cell/1/0/13/4: 23
+  gather detections cell/1/0/13/5: 15
+  gather detections cell/1/0/13/6: 9
+  gather detections cell/1/1/0/0: 20
+  gather detections cell/1/1/0/1: 12
+  gather detections cell/1/1/0/2: 18
+  gather detections cell/1/1/0/3: 30
+  gather detections cell/1/1/0/4: 29
+  gather detections cell/1/1/0/5: 16
+  gather detections cell/1/1/0/6: 11
+  gather detections cell/1/1/0/7: 3
+  gather detections cell/1/1/1/0: 21
+  gather detections cell/1/1/1/1: 15
+  gather detections cell/1/1/1/2: 6
+  gather detections cell/1/1/1/3: 9
+  gather detections cell/1/1/1/4: 10
+  gather detections cell/1/1/1/5: 11
+  gather detections cell/1/1/1/6: 10
+  gather detections cell/1/1/1/7: 5
+  gather detections cell/1/1/2/0: 30
+  gather detections cell/1/1/2/1: 17
+  gather detections cell/1/1/2/2: 19
+  gather detections cell/1/1/2/3: 18
+  gather detections cell/1/1/2/4: 12
+  gather detections cell/1/1/2/5: 11
+  gather detections cell/1/1/2/6: 2
+  gather detections cell/1/1/2/7: 6
+  gather detections cell/1/1/3/0: 47
+  gather detections cell/1/1/3/1: 35
+  gather detections cell/1/1/3/2: 29
+  gather detections cell/1/1/3/3: 42
+  gather detections cell/1/1/3/4: 26
+  gather detections cell/1/1/3/5: 12
+  gather detections cell/1/1/3/6: 13
+  gather detections cell/1/1/3/7: 2
+  gather detections cell/1/1/4/0: 22
+  gather detections cell/1/1/4/1: 14
+  gather detections cell/1/1/4/2: 13
+  gather detections cell/1/1/4/3: 21
+  gather detections cell/1/1/4/4: 13
+  gather detections cell/1/1/4/5: 7
+  gather detections cell/1/1/4/6: 9
+  gather detections cell/1/1/4/7: 12
+  gather detections cell/1/1/5/0: 7
+  gather detections cell/1/1/5/1: 5
+  gather detections cell/1/1/5/2: 10
+  gather detections cell/1/1/5/3: 13
+  gather detections cell/1/1/5/4: 12
+  gather detections cell/1/1/5/5: 10
+  gather detections cell/1/1/5/6: 14
+  gather detections cell/1/1/5/7: 13
+  gather detections cell/1/1/6/0: 6
+  gather detections cell/1/1/6/1: 6
+  gather detections cell/1/1/6/2: 10
+  gather detections cell/1/1/6/3: 3
+  gather detections cell/1/1/6/4: 7
+  gather detections cell/1/1/6/5: 7
+  gather detections cell/1/1/6/6: 15
+  gather detections cell/1/1/6/7: 15
+  gather detections cell/1/1/7/0: 6
+  gather detections cell/1/1/7/1: 4
+  gather detections cell/1/1/7/2: 4
+  gather detections cell/1/1/7/3: 4
+  gather detections cell/1/1/7/4: 9
+  gather detections cell/1/1/7/5: 8
+  gather detections cell/1/1/7/6: 20
+  gather detections cell/1/1/7/7: 10
+  gather detections cell/1/1/8/0: 24
+  gather detections cell/1/1/8/1: 31
+  gather detections cell/1/1/8/2: 27
+  gather detections cell/1/1/8/3: 23
+  gather detections cell/1/1/8/4: 15
+  gather detections cell/1/1/8/5: 17
+  gather detections cell/1/1/8/6: 15
+  gather detections cell/1/1/8/7: 14
+  gather detections cell/1/1/9/0: 31
+  gather detections cell/1/1/9/1: 37
+  gather detections cell/1/1/9/2: 36
+  gather detections cell/1/1/9/3: 30
+  gather detections cell/1/1/9/4: 15
+  gather detections cell/1/1/9/5: 9
+  gather detections cell/1/1/9/6: 17
+  gather detections cell/1/1/9/7: 19
+  gather detections cell/1/1/10/0: 38
+  gather detections cell/1/1/10/1: 38
+  gather detections cell/1/1/10/2: 30
+  gather detections cell/1/1/10/3: 33
+  gather detections cell/1/1/10/4: 8
+  gather detections cell/1/1/10/5: 9
+  gather detections cell/1/1/10/6: 21
+  gather detections cell/1/1/10/7: 13
+  gather detections cell/1/1/11/0: 31
+  gather detections cell/1/1/11/1: 26
+  gather detections cell/1/1/11/2: 18
+  gather detections cell/1/1/11/3: 32
+  gather detections cell/1/1/11/4: 11
+  gather detections cell/1/1/11/5: 7
+  gather detections cell/1/1/11/6: 11
+  gather detections cell/1/1/11/7: 15
+  gather detections cell/1/1/12/0: 23
+  gather detections cell/1/1/12/1: 14
+  gather detections cell/1/1/12/2: 14
+  gather detections cell/1/1/12/3: 23
+  gather detections cell/1/1/12/4: 7
+  gather detections cell/1/1/12/5: 3
+  gather detections cell/1/1/12/6: 5
+  gather detections cell/1/1/12/7: 4
+  gather ink cell/1/0/0/0: 92
+  gather ink cell/1/0/0/1: 89
+  gather ink cell/1/0/0/2: 37
+  gather ink cell/1/0/0/3: 45
+  gather ink cell/1/0/0/4: 38
+  gather ink cell/1/0/0/5: 29
+  gather ink cell/1/0/0/6: 11
+  gather ink cell/1/0/1/0: 94
+  gather ink cell/1/0/1/1: 95
+  gather ink cell/1/0/1/2: 25
+  gather ink cell/1/0/1/3: 46
+  gather ink cell/1/0/1/4: 24
+  gather ink cell/1/0/1/5: 16
+  gather ink cell/1/0/1/6: 17
+  gather ink cell/1/0/2/0: 96
+  gather ink cell/1/0/2/1: 91
+  gather ink cell/1/0/2/2: 46
+  gather ink cell/1/0/2/3: 41
+  gather ink cell/1/0/2/4: 18
+  gather ink cell/1/0/2/5: 49
+  gather ink cell/1/0/2/6: 34
+  gather ink cell/1/0/3/0: 67
+  gather ink cell/1/0/3/1: 96
+  gather ink cell/1/0/3/2: 35
+  gather ink cell/1/0/3/3: 23
+  gather ink cell/1/0/3/4: 21
+  gather ink cell/1/0/3/5: 46
+  gather ink cell/1/0/3/6: 28
+  gather ink cell/1/0/4/0: 75
+  gather ink cell/1/0/4/1: 71
+  gather ink cell/1/0/4/2: 15
+  gather ink cell/1/0/4/3: 8
+  gather ink cell/1/0/4/4: 6
+  gather ink cell/1/0/4/5: 10
+  gather ink cell/1/0/4/6: 15
+  gather ink cell/1/0/5/0: 80
+  gather ink cell/1/0/5/1: 43
+  gather ink cell/1/0/5/2: 11
+  gather ink cell/1/0/5/3: 5
+  gather ink cell/1/0/5/4: 7
+  gather ink cell/1/0/5/5: 6
+  gather ink cell/1/0/5/6: 11
+  gather ink cell/1/0/6/0: 51
+  gather ink cell/1/0/6/1: 45
+  gather ink cell/1/0/6/2: 5
+  gather ink cell/1/0/6/3: 5
+  gather ink cell/1/0/6/4: 4
+  gather ink cell/1/0/6/5: 4
+  gather ink cell/1/0/6/6: 5
+  gather ink cell/1/0/7/0: 30
+  gather ink cell/1/0/7/1: 26
+  gather ink cell/1/0/7/2: 9
+  gather ink cell/1/0/7/3: 6
+  gather ink cell/1/0/7/4: 3
+  gather ink cell/1/0/7/5: 6
+  gather ink cell/1/0/7/6: 6
+  gather ink cell/1/0/8/0: 38
+  gather ink cell/1/0/8/1: 44
+  gather ink cell/1/0/8/2: 4
+  gather ink cell/1/0/8/3: 13
+  gather ink cell/1/0/8/4: 7
+  gather ink cell/1/0/8/5: 15
+  gather ink cell/1/0/8/6: 9
+  gather ink cell/1/0/9/0: 68
+  gather ink cell/1/0/9/1: 65
+  gather ink cell/1/0/9/2: 16
+  gather ink cell/1/0/9/3: 48
+  gather ink cell/1/0/9/4: 33
+  gather ink cell/1/0/9/5: 45
+  gather ink cell/1/0/9/6: 16
+  gather ink cell/1/0/10/0: 127
+  gather ink cell/1/0/10/1: 94
+  gather ink cell/1/0/10/2: 42
+  gather ink cell/1/0/10/3: 66
+  gather ink cell/1/0/10/4: 32
+  gather ink cell/1/0/10/5: 49
+  gather ink cell/1/0/10/6: 21
+  gather ink cell/1/0/11/0: 70
+  gather ink cell/1/0/11/1: 86
+  gather ink cell/1/0/11/2: 41
+  gather ink cell/1/0/11/3: 69
+  gather ink cell/1/0/11/4: 31
+  gather ink cell/1/0/11/5: 35
+  gather ink cell/1/0/11/6: 10
+  gather ink cell/1/0/12/0: 49
+  gather ink cell/1/0/12/1: 62
+  gather ink cell/1/0/12/2: 37
+  gather ink cell/1/0/12/3: 32
+  gather ink cell/1/0/12/4: 31
+  gather ink cell/1/0/12/5: 20
+  gather ink cell/1/0/12/6: 17
+  gather ink cell/1/0/13/0: 52
+  gather ink cell/1/0/13/1: 47
+  gather ink cell/1/0/13/2: 18
+  gather ink cell/1/0/13/3: 29
+  gather ink cell/1/0/13/4: 32
+  gather ink cell/1/0/13/5: 13
+  gather ink cell/1/0/13/6: 5
+  gather ink cell/1/1/0/0: 33
+  gather ink cell/1/1/0/1: 3
+  gather ink cell/1/1/0/2: 30
+  gather ink cell/1/1/0/3: 42
+  gather ink cell/1/1/0/4: 45
+  gather ink cell/1/1/0/5: 29
+  gather ink cell/1/1/0/6: 26
+  gather ink cell/1/1/0/7: 11
+  gather ink cell/1/1/1/0: 35
+  gather ink cell/1/1/1/1: 23
+  gather ink cell/1/1/1/2: 26
+  gather ink cell/1/1/1/3: 26
+  gather ink cell/1/1/1/4: 35
+  gather ink cell/1/1/1/5: 26
+  gather ink cell/1/1/1/6: 17
+  gather ink cell/1/1/1/7: 17
+  gather ink cell/1/1/2/0: 27
+  gather ink cell/1/1/2/1: 44
+  gather ink cell/1/1/2/2: 23
+  gather ink cell/1/1/2/3: 33
+  gather ink cell/1/1/2/4: 30
+  gather ink cell/1/1/2/5: 32
+  gather ink cell/1/1/2/6: 15
+  gather ink cell/1/1/2/7: 3
+  gather ink cell/1/1/3/0: 57
+  gather ink cell/1/1/3/1: 57
+  gather ink cell/1/1/3/2: 44
+  gather ink cell/1/1/3/3: 29
+  gather ink cell/1/1/3/4: 29
+  gather ink cell/1/1/3/5: 28
+  gather ink cell/1/1/3/6: 23
+  gather ink cell/1/1/3/7: 2
+  gather ink cell/1/1/4/0: 31
+  gather ink cell/1/1/4/1: 21
+  gather ink cell/1/1/4/2: 19
+  gather ink cell/1/1/4/3: 7
+  gather ink cell/1/1/4/4: 25
+  gather ink cell/1/1/4/5: 12
+  gather ink cell/1/1/4/6: 8
+  gather ink cell/1/1/4/7: 3
+  gather ink cell/1/1/5/0: 13
+  gather ink cell/1/1/5/1: 7
+  gather ink cell/1/1/5/2: 17
+  gather ink cell/1/1/5/3: 11
+  gather ink cell/1/1/5/4: 15
+  gather ink cell/1/1/5/5: 21
+  gather ink cell/1/1/5/6: 5
+  gather ink cell/1/1/5/7: 8
+  gather ink cell/1/1/6/0: 9
+  gather ink cell/1/1/6/1: 6
+  gather ink cell/1/1/6/2: 17
+  gather ink cell/1/1/6/3: 9
+  gather ink cell/1/1/6/4: 30
+  gather ink cell/1/1/6/5: 11
+  gather ink cell/1/1/6/6: 9
+  gather ink cell/1/1/6/7: 12
+  gather ink cell/1/1/7/0: 18
+  gather ink cell/1/1/7/1: 7
+  gather ink cell/1/1/7/2: 12
+  gather ink cell/1/1/7/3: 18
+  gather ink cell/1/1/7/4: 22
+  gather ink cell/1/1/7/5: 9
+  gather ink cell/1/1/7/6: 16
+  gather ink cell/1/1/7/7: 8
+  gather ink cell/1/1/8/0: 35
+  gather ink cell/1/1/8/1: 47
+  gather ink cell/1/1/8/2: 37
+  gather ink cell/1/1/8/3: 26
+  gather ink cell/1/1/8/4: 32
+  gather ink cell/1/1/8/5: 20
+  gather ink cell/1/1/8/6: 22
+  gather ink cell/1/1/8/7: 10
+  gather ink cell/1/1/9/0: 48
+  gather ink cell/1/1/9/1: 72
+  gather ink cell/1/1/9/2: 60
+  gather ink cell/1/1/9/3: 49
+  gather ink cell/1/1/9/4: 31
+  gather ink cell/1/1/9/5: 8
+  gather ink cell/1/1/9/6: 26
+  gather ink cell/1/1/9/7: 9
+  gather ink cell/1/1/10/0: 53
+  gather ink cell/1/1/10/1: 58
+  gather ink cell/1/1/10/2: 37
+  gather ink cell/1/1/10/3: 59
+  gather ink cell/1/1/10/4: 23
+  gather ink cell/1/1/10/5: 6
+  gather ink cell/1/1/10/6: 16
+  gather ink cell/1/1/10/7: 12
+  gather ink cell/1/1/11/0: 53
+  gather ink cell/1/1/11/1: 43
+  gather ink cell/1/1/11/2: 31
+  gather ink cell/1/1/11/3: 36
+  gather ink cell/1/1/11/4: 11
+  gather ink cell/1/1/11/5: 4
+  gather ink cell/1/1/11/6: 25
+  gather ink cell/1/1/11/7: 13
+  gather ink cell/1/1/12/0: 30
+  gather ink cell/1/1/12/1: 45
+  gather ink cell/1/1/12/2: 32
+  gather ink cell/1/1/12/3: 17
+  gather ink cell/1/1/12/4: 8
+  gather ink cell/1/1/12/5: 4
+  gather ink cell/1/1/12/6: 9
+  gather ink cell/1/1/12/7: 7
+ADJUDICATE
+  adjudicate system_membership: 2 verdicts so far
+  adjudicate staff_group: 29 verdicts so far
+  adjudicate measure_partition: 56 verdicts so far
+  adjudicate staff_ordinal: 83 verdicts so far
+  adjudicate system_staff_count: 85 verdicts so far
+  adjudicate instrument: 112 verdicts so far
+  adjudicate slot_index: 139 verdicts so far
+  adjudicate part_partition: 140 verdicts so far
+  adjudicate group_symbol: 142 verdicts so far
+  adjudicate clef: 169 verdicts so far
+  adjudicate key_signature: 196 verdicts so far
+  adjudicate glyph_owner: 1118 verdicts so far
+  adjudicate arc_owner: 1804 verdicts so far
+  adjudicate arc_kind: 2490 verdicts so far
+  adjudicate articulation_owner: 2512 verdicts so far
+  adjudicate fermata_owner: 2512 verdicts so far
+  adjudicate ornament_owner: 2518 verdicts so far
+  adjudicate stem_direction: 3533 verdicts so far
+  adjudicate notehead_is_a_whole_rest: 4548 verdicts so far
+  adjudicate tuplet_ratio: 4548 verdicts so far
+  adjudicate duration: 5913 verdicts so far
+  adjudicate event: 6114 verdicts so far
+  adjudicate voices: 6316 verdicts so far
+  adjudicate onset_column: 6318 verdicts so far
+  adjudicate wedge_anchor: 6358 verdicts so far
+  adjudicate meter: 6360 verdicts so far
+  adjudicate dynamic: 6562 verdicts so far
+  adjudicate direction: 6764 verdicts so far
+GROUPS
+  groups meter_across_staves: 2 facts, 0 disagree
+  groups measure_count_across_staves: 2 facts, 0 disagree
+  groups instrument_across_systems: 15 facts, 0 disagree
+  groups clef_across_systems: 15 facts, 0 disagree
+  groups staff_group_across_systems: 15 facts, 0 disagree
+  groups key_signature_across_systems: 15 facts, 0 disagree
+EVALUATE
+  evaluate name_part: 0 fired so far
+  evaluate restate_pitch: 1015 fired so far
+  evaluate respell_accidental: 1250 fired so far
+  evaluate move_glyph: 1705 fired so far
+  evaluate size_measure_rest: 1732 fired so far
+  evaluate reconcile_duration: 1739 fired so far
+wrote benchmarks/omr-ink-first-2026-09/out/brahms1-breitkopf-p2.staged.json
+
+── ADJUDICATE ─────────────────────────────────────────
+  decided:   {'arc_kind': 686, 'arc_owner': 686, 'articulation_owner': 17, 'clef': 27, 'duration': 1187, 'dynamic': 191, 'event': 201, 'glyph_owner': 922, 'key_signature': 24, 'measure_partition': 27, 'meter': 2, 'notehead_is_a_whole_rest': 1015, 'onset_column': 2, 'ornament_owner': 4, 'part_partition': 1, 'slot_index': 14, 'staff_group': 27, 'staff_ordinal': 27, 'stem_direction': 669, 'system_membership': 2, 'system_staff_count': 2, 'voices': 201, 'wedge_anchor': 39}
+  abstained: {'articulation_owner': {'no_notehead': 5}, 'direction': {'out_of_scope': 202}, 'duration': {'beams_ambiguous': 177, 'unreadable_rest': 1}, 'dynamic': {'unspellable': 11}, 'group_symbol': {'no_identity': 2}, 'instrument': {'no_evidence': 27}, 'key_signature': {'no_evidence': 3}, 'ornament_owner': {'no_notehead': 2}, 'slot_index': {'reference_names_nothing': 13}, 'stem_direction': {'no_stem': 339, 'stems_disagree': 7}, 'voices': {'nothing_to_split': 1}, 'wedge_anchor': {'no_page_frame': 1}}
+── GROUPS ─────────────────────────────────────────────
+  clef_across_systems: 15 facts, 27 witnesses, 15 uninformative, {'none': 1, 'single': 14, 'unanimous': 0, 'majority': 0, 'split': 0}
+  instrument_across_systems: 15 facts, 0 witnesses, 15 uninformative, {'none': 15, 'single': 0, 'unanimous': 0, 'majority': 0, 'split': 0}
+  key_signature_across_systems: 15 facts, 24 witnesses, 15 uninformative, {'none': 3, 'single': 12, 'unanimous': 0, 'majority': 0, 'split': 0}
+  measure_count_across_staves: 2 facts, 27 witnesses, 0 uninformative, {'none': 0, 'single': 0, 'unanimous': 2, 'majority': 0, 'split': 0}
+  meter_across_staves: 2 facts, 10 witnesses, 1 uninformative, {'none': 1, 'single': 0, 'unanimous': 1, 'majority': 0, 'split': 0}
+  staff_group_across_systems: 15 facts, 27 witnesses, 15 uninformative, {'none': 1, 'single': 14, 'unanimous': 0, 'majority': 0, 'split': 0}
+  ⚠️ witnessed_by_nobody (no witness spoke): ['instrument_across_systems']
+  ⚠️ checked_nothing (never two independent signals -- corroborated NOTHING, however busy it looks): ['clef_across_systems', 'instrument_across_systems', 'key_signature_across_systems', 'staff_group_across_systems']
+  ⚠️ DISAGREEMENTS: 0 (each implicates its WHOLE group, not its dissenter)
+── EVALUATE: 1739 fired, 9153 skipped
+── DECLARED STUBS: 0 decisions, 1 consequences
