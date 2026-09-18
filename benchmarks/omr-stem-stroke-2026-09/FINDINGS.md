@@ -54,7 +54,7 @@ until the flag is set.
 
 ---
 
-## 0. FIVE ANSWERS
+## 0. SIX ANSWERS
 
 1. ⚠️⚠️ **§5's FALSIFICATION DOES NOT FIRE.** The stem's ink inside a fused
    component *can* be separated by a column profile: of the components the
@@ -65,11 +65,20 @@ until the flag is set.
    everything below it readable.
 3. **REACH: 346 of 793 (43.6%) and 544 of 1,529 (35.6%)** `no_stem` heads
    newly covered, per publisher, never pooled.
-4. ⚠️⚠️ **QUALITY SPLITS BY PUBLISHER AND THAT IS THE RESULT. Breitkopf 96.3%
-   against a 97.9% bar — it HOLDS. Litolff 82.6% against a 95.8% bar — it
-   FAILS, at the level this thread already REFUSED the width cap (83.6%).**
-   So it ships default OFF and is **not recommended as a default**.
-5. ⚠️⚠️ **THE CROP PASS THE THREAD HAS OWED SINCE 09-17 IS DONE, AND IT NAMES
+4. ⚠️⚠️ **QUALITY SPLITS BY PUBLISHER — Breitkopf 96.2% against a 98.2% bar,
+   Litolff 82.6% against 96.1% — BUT §4b WITHDRAWS THE READING I FIRST GAVE
+   THAT SPLIT.** A sibling crop pass put the neighbouring population to the
+   print and found the width cap's recoveries **33 of 33 real**, so an ~83%
+   convention score there meant ~100% real and the mixture model is refuted.
+   **The Litolff verdict is UNDETERMINED, not a refusal on quality.** The flag is
+   still OFF, for the unpriced BEAM risk alone.
+5. ⚠️⚠️ **A THIRD OF THE BREITKOPF DENOMINATOR IS NOT A NOTEHEAD — 576 of
+   1,529 boxes (37.7%) are thinner than a notehead can be, reproducing a
+   sibling crop pass's sampled 35.6% from a different instrument. Litolff is
+   5.5%. The reader DECLINES them (12 of 576) and the scores do not move**
+   (§4b), so the barline hazard is measured and absent — but every reach
+   figure over the unrestricted population understates the job.
+6. ⚠️⚠️ **THE CROP PASS THE THREAD HAS OWED SINCE 09-17 IS DONE, AND IT NAMES
    THE RESIDUAL AS SOMEBODY ELSE'S.** All **6 of 6** sampled Breitkopf
    disagreements are one fault: the record's notehead box stands part-way
    ALONG a neighbouring note's stem. The stroke is real; the ATTRIBUTION is
@@ -257,6 +266,102 @@ what the brief's framing would predict.
 pipeline already had an answer — *"by construction, the population that was
 easy enough to read once"* — so a hard population scoring lower is partly
 expected. That is exactly what the crop pass was for.
+
+---
+
+## 4b. ⚠️⚠️ TWO CORRECTIONS FROM A SIBLING CROP PASS, AND THEY PULL IN OPPOSITE DIRECTIONS
+
+`benchmarks/omr-stem-crop-pass-2026-09` read **180 of these boxes against the
+print** and its two results land squarely on §4. Both were checked here
+against the population rather than taken on report.
+
+### (i) A THIRD OF THE BREITKOPF DENOMINATOR IS NOT A NOTEHEAD — confirmed
+
+That pass found **46 of 180 sampled boxes are not noteheads** (15.6% Litolff,
+35.6% Breitkopf) — whole rests, a printed capital **B**, the `e` of *cresc*,
+a bass clef, a trill, eighth rests, a repeat dot, barlines — and on
+Breitkopf's `too TALL` bucket, the handoff's own headline inversion, it is
+**12 of 12**, every one a box 0.40–0.45 spaces wide sitting on a vertical
+rule.
+
+**Measured over the whole population here rather than a sample**, using that
+pass's own cut (a notehead is ~1.3 spaces wide; a floor at 1.0 catches 39 of
+its 46 non-noteheads at a cost of 0 of 63 real stems):
+
+| | `no_stem` boxes | thinner than 1.0 sp | share |
+|---|--:|--:|--:|
+| Litolff | 793 | **44** | **5.5%** |
+| Breitkopf | 1,529 | **576** | **37.7%** |
+
+⚠️ **37.7% independently reproduces that pass's sampled 35.6% from a
+different instrument** — they adjudicated crops, this measures box widths over
+the population — which is the strongest corroboration either result has.
+⚠️ Litolff's 5.5% is much lower than its sampled 15.6%, and the two are
+consistent: the pass's own figure says the width floor catches 39 of 46, so
+most of what it found is Breitkopf's, and its sample is STRATIFIED and
+therefore not a population rate.
+
+**THE REACH FIGURES IN §3 ARE THEREFORE UNDERSTATED, AND BREITKOPF'S BADLY:**
+
+| | reach as §3 reports it | over PLAUSIBLE heads only |
+|---|--:|--:|
+| Litolff `side` | 346 of 793 = 43.6% | **338 of 749 = 45.1%** |
+| Breitkopf `side` | 544 of 1,529 = 35.6% | **532 of 953 = 55.8%** |
+
+⚠️⚠️ **AND THE HAZARD THE COORDINATOR NAMED IS MEASURED AND DOES NOT
+MATERIALISE.** The worry was that a box on a barline would have the reader
+find the barline while the convention probe, sweeping the same box's edges,
+finds the SAME barline and agrees about it — a correlated-witness failure with
+the correlation running through a spurious DETECTION rather than through ink
+quality. **The reader fires on 12 of 576 thin Breitkopf boxes (2.1%) against
+532 of 953 plausible ones (55.8%), and restricting the score moves it
+96.3% → 96.2% and 82.6% → 82.6%.** It declines the barline population almost
+entirely, of its own accord, and the quality figures are not inflated by it.
+Restricted bars: **96.1%** and **98.2%**.
+
+⚠️ *Why* it declines them was not designed and is worth stating as luck until
+measured: a 0.4-space box gives the `side` anchor a tolerance of 0.14 spaces,
+and a full-height rule is refused by the edge filter or the height cap. Aiming
+at that bucket deliberately would be a different matter.
+
+### (ii) ⚠️⚠️ THE MIXTURE MODEL IS REFUTED, AND MY LITOLFF REFUSAL LOSES ITS STATED BASIS
+
+§4 refused Litolff because **82.6% is indistinguishable from the 83.6% at
+which `width_cap_check.py` refused the width cap**, and read both through that
+arm's mixture model as *~71-73% real*.
+
+**That crop pass put the width cap's own recoveries to the print and they are
+33 of 33 REAL, 0 junk, 95% lower bound 0.913.** So an 83.6% convention score
+on this plate corresponded to **~100% real, not 73%**.
+
+Three consequences, and the first two are against my own write-up:
+
+1. **The mixture model is refuted on the neighbouring population.** Junk does
+   not agree at chance there, because there was no junk. The ~71% and ~97%
+   figures in §4 are **withdrawn** — they are kept in the table with this
+   paragraph beside them, because the correction is the finding.
+2. **My Litolff verdict is no longer a refusal ON QUALITY; it is
+   UNDETERMINED.** 82.6% against a 96.1% bar is not evidence that ~18% of the
+   recoveries are junk — on the one Litolff population anyone has checked
+   against the print, a similar score was ~100% real. **The convention probe
+   UNDERSTATES this plate**, which is exactly what my own crop pass suggested
+   from the other side when it could not adjudicate 5 of 12 tiles (§5).
+3. **~62% shared reach with the width cap flips from a liability to an
+   asset.** §3b read that overlap as *"inherits a refused verdict"*. With the
+   width cap's recoveries shown real, the shared population is the
+   BETTER-EVIDENCED part of this reader's reach, not the worse.
+
+⚠️⚠️ **SO THE RECOMMENDATION DOES NOT CHANGE BUT ITS REASON DOES, AND THE NEW
+REASON IS THE HONEST ONE.** Leave `OMR_STEM_STROKE` **OFF** — not because the
+Litolff recoveries look like junk (that is no longer supported) but because
+**the effect on BEAMS is completely unpriced** and 581–1,074 extra strokes
+enter `detect_beams` with the flag on. That was always the largest open risk;
+it is now the only one.
+
+⚠️ **What a third publisher is needed for has also changed.** It is no longer
+to break a 82.6 / 96.3 quality tie — that gap is now substantially an artefact
+of the ARBITER, not of the reader. It is to check the 5.5% / 37.7% denominator
+contamination, which differs 7× between two plates and is a DETECTOR property.
 
 ---
 
@@ -472,6 +577,13 @@ deleted; it is not deleted, because every figure here was taken with it in.
   open risk and it is the reason the flag is off.**
 * **The engraved family is untouched**, by construction.
 * **No OMR-NED figure**, deliberately.
+* ⚠️⚠️ **THE MIXTURE-MODEL FIGURES IN §4 ARE WITHDRAWN** (§4b): junk does not
+  agree at chance on the one Litolff population checked against the print.
+* **Why the reader declines the 576 thin Breitkopf boxes is not designed and
+  not measured** — it may be the edge filter, the height cap or the anchor
+  tolerance. Treat 12 of 576 as an observation, not a guarantee.
+* **The 5.5% / 37.7% denominator contamination is a DETECTOR property that
+  differs 7x between two plates**, and nothing here says which is typical.
 
 ---
 
@@ -483,8 +595,10 @@ deleted; it is not deleted, because every figure here was taken with it in.
    plate's whole residual lives.
 2. **Two re-gathers with the flag on**, to price the beam and duration effect
    — the only measurement that can say whether this is worth having.
-3. **A third publisher**, because the quality verdict splits 82.6 / 96.3 and
-   two plates cannot break the tie.
+3. **A third publisher — for the DENOMINATOR, not the tie.** The 82.6 / 96.3
+   gap is now substantially an artefact of the arbiter (§4b); what needs a
+   third plate is the 5.5% vs 37.7% non-notehead contamination, which is a
+   detector property differing 7x between two editions.
 4. **Thread the noteheads into `detect_stems`** so the convention anchor can
    ship — 2.4× fewer strokes for ~1% of reach, measured here.
 5. **A y-cut for the `TALL` bucket** (476 Breitkopf heads), which no column
@@ -496,7 +610,7 @@ deleted; it is not deleted, because every figure here was taken with it in.
 
 *(For Sean to paste; CLAUDE.md was not edited.)*
 
-> | `OMR_STEM_STROKE` | `0` (off) | **A stem read from a COLUMN PROFILE instead of from a connected component — and the result SPLITS BY PUBLISHER, which is why it is off.** `detect_stems` is a component reader, and `benchmarks/omr-stem-ink-2026-09`'s census says the dominant failure on both plates is *a component EXISTS and is the wrong SHAPE* (WIDE+TALL+SHORT 683 of 793 on Litolff, 1,132 of 1,529 on Breitkopf). On, `_column_stroke_bands` reads each column's LONGEST vertical ink run and bands adjacent columns only where they AGREE about that run's endpoints — never labelling a component, so a stem fused to its own notehead is no longer measured at the NOTEHEAD's width. ⚠️⚠️ **§5's falsification does NOT fire: the stroke IS separable inside a fused blob** — 92.1% / 73.6% of `too WIDE` components hold a separable band — and the profile re-finds **98.0% / 98.2%** of the strokes `detect_stems` already accepts, which is the positive control the rest rests on. **REACH: 346 of 793 (43.6%) and 544 of 1,529 (35.6%)** `no_stem` heads. ⚠️⚠️ **QUALITY IS THE REASON IT IS OFF: Breitkopf 96.3% against a 97.9% bar (it HOLDS, ~97% real) and Litolff 82.6% against 95.8% — indistinguishable from the 83.6% at which `width_cap_check.py` REFUSED the width cap.** The reader is a fusion reader and is BETTER on the plate with less fusion, which is the opposite of what the diagnosis predicts. ⚠️ **~62% of its reach is shared with that refused width cap**; 133 and 200 heads are new. ⚠️⚠️ **THE CROP PASS THE STEM THREAD HAS OWED SINCE 2026-09-17 IS DONE (600 dpi, frame control 18/18, stratified and declared): Breitkopf's AGREE stratum is 6 of 6 textbook, and its DISAGREE stratum is 6 of 6 ONE FAULT — the record's notehead box stands part-way ALONG a neighbouring note's stem, so the stroke is real and the ATTRIBUTION is wrong.** That repair belongs in `adjudicate_stem_direction` and **cannot be made here: `detect_stems` emits STROKES, not (stroke, head) pairs**, which is why an end-at-the-head constraint built from those crops moved disagreements 40 → 40 and 14 → 14 — the fifth dead hypothesis on this thread, kept with its numbers. ⚠️ **On Litolff the crops could not adjudicate 5 of 12 tiles**, so that verdict rests on the convention score alone. ⚠️ **It also corrects the handoff's §3**: the 8.1-space fused blob is ONE SPOT-CHECKED CELL, and over 2,001 cells of both plates the median component is **4.18 / 3.20 spaces** with only **6%** past the width cap — the typical component is stem-shaped, genuine merges across notes are **9.6% / 12.0%**, and 94% of the over-cap mass covers NO notehead at all, i.e. is the furniture the cap exists for. ⚠️ **The `TALL` bucket is out of reach BY CONSTRUCTION** (7.0% / 8.3%): a column profile separates across x and not along y. ⚠️ `STEM_STROKE_AGREE_SPACES = 0.25` sits on a **PLATEAU** (reach 289/281/279/274/270 and 376/375/374/374/374 across 0.10–0.60), not an empty interval. ⚠️ Additive and it runs AFTER the pair rule, so flag-off is byte-identical — **asserted directly against both shared records, 1,920 = 1,920 on 1,183 of 1,183 cells and 2,305 = 2,305 on 818 of 818** — which matters because this file is on the path every sibling arm proves faithful before reporting a delta. ⚠️ **A GATHER change**, so `readjudicate` and `reexport_arm` are structurally blind and **no effect on a FILE has been measured**; the 1,074–2,157 extra strokes reaching `detect_beams` are the largest unpriced risk and the reason this is off. ⚠️ No OMR-NED figure, deliberately. Allow-list OFF test, correct for a default-OFF flag. See [benchmarks/omr-stem-stroke-2026-09/FINDINGS.md](benchmarks/omr-stem-stroke-2026-09/FINDINGS.md). |
+> | `OMR_STEM_STROKE` | `0` (off) | **A stem read from a COLUMN PROFILE instead of from a connected component. It HOLDS on one publisher of two, and the reason it is OFF is that its effect on BEAMS is unpriced — not that its recoveries look wrong.** `detect_stems` is a component reader, and `benchmarks/omr-stem-ink-2026-09`'s census says the dominant failure on both plates is *a component EXISTS and is the wrong SHAPE*. On, `_column_stroke_bands` reads each column's LONGEST vertical ink run and bands adjacent columns only where they AGREE about that run's endpoints — never labelling a component, so a stem fused to its own notehead is no longer measured at the NOTEHEAD's width. ⚠️⚠️ **§5's falsification does NOT fire: the stroke IS separable inside a fused blob** — 92.1% / 73.6% of `too WIDE` components hold a separable band — and the profile re-finds **98.0% / 98.2%** of the strokes `detect_stems` already accepts, the positive control the rest rests on. ⚠️⚠️ **REACH MUST BE READ OVER A CLEANED DENOMINATOR, because a third of the Breitkopf population is not a notehead: 576 of 1,529 boxes (37.7%) are thinner than a notehead can be (Litolff 44 of 793, 5.5%), independently reproducing a sibling crop pass's sampled 35.6% from a different instrument.** Over boxes that can plausibly BE noteheads the reach is **338 of 749 (45.1%)** and **532 of 953 (55.8%)** — more than half the Breitkopf job, where the unrestricted figure reads 35.6%. ⚠️ **The barline hazard is measured and absent**: the reader fires on **12 of 576** thin boxes (2.1%) and restricting the score moves it 96.3% → **96.2%** and 82.6% → **82.6%**, so neither figure is inflated by two readers agreeing about the same vertical rule. ⚠️⚠️ **QUALITY: Breitkopf 96.2% against a 98.2% bar — it HOLDS. Litolff 82.6% against 96.1% — and that is UNDETERMINED rather than a refusal.** The first write-up refused it as *"indistinguishable from the 83.6% at which `width_cap_check.py` refused the width cap"* and read both through that arm's mixture model as ~73% real; **the same sibling crop pass put those very recoveries to the print and they are 33 of 33 REAL, 0 junk (95% lower bound 0.913), so an ~83% convention score on this plate meant ~100% real and the mixture model is REFUTED.** The convention probe UNDERSTATES Litolff, which is what this lane's own crops said from the other side when they could not adjudicate 5 of 12 tiles. **~62% of the reach is shared with that width cap, which therefore makes it the better-evidenced part rather than a liability.** ⚠️⚠️ **THE CROP PASS THE STEM THREAD HAS OWED SINCE 2026-09-17 IS DONE (600 dpi, frame control 18/18, stratified and declared): Breitkopf's AGREE stratum is 6 of 6 textbook, and its DISAGREE stratum is 6 of 6 ONE FAULT — the record's notehead box stands part-way ALONG a neighbouring note's stem, so the stroke is real and the ATTRIBUTION is wrong.** That repair belongs in `adjudicate_stem_direction` and **cannot be made here: `detect_stems` emits STROKES, not (stroke, head) pairs**, which is why an end-at-the-head constraint built from those crops moved disagreements 40 → 40 and 14 → 14 — the fifth dead hypothesis on this thread, kept with its numbers. ⚠️ **It also corrects the handoff's §3**: the 8.1-space fused blob is ONE SPOT-CHECKED CELL, and over 2,001 cells of both plates the median component is **4.18 / 3.20 spaces** with only **6%** past the width cap — the typical component is stem-shaped, genuine merges across notes are **9.6% / 12.0%**, and ~94% of the over-cap mass covers NO notehead at all, i.e. is the furniture the cap exists for. ⚠️ **The `TALL` bucket is out of reach BY CONSTRUCTION** (7.0% / 8.3%): a column profile separates across x and not along y — and on Breitkopf that bucket is where the crop pass found 12 of 12 barlines, so it is the wrong place to test transfer anyway. ⚠️ `STEM_STROKE_AGREE_SPACES = 0.25` sits on a **PLATEAU** (reach 289/281/279/274/270 and 376/375/374/374/374 across 0.10–0.60), not an empty interval. ⚠️ Additive and it runs AFTER the pair rule, so flag-off is byte-identical — **asserted directly against both shared records, 1,920 = 1,920 on 1,183 of 1,183 cells and 2,305 = 2,305 on 818 of 818** — which matters because this file is on the path every sibling arm proves faithful before reporting a delta. ⚠️ **A GATHER change**, so `readjudicate` and `reexport_arm` are structurally blind and **no effect on a FILE has been measured**; the 581–1,074 extra strokes reaching `detect_beams` are the only remaining reason this is off. ⚠️ No OMR-NED figure, deliberately. Allow-list OFF test, correct for a default-OFF flag. Suite 4,477 passed; battery 12 arms 12 RED. See [benchmarks/omr-stem-stroke-2026-09/FINDINGS.md](benchmarks/omr-stem-stroke-2026-09/FINDINGS.md). |
 
 > ⚠️⚠️ **AND A NEW CLAUSE ON THE MUTATION-BATTERY RULE, PAID FOR ON 2026-09-18: `__pycache__` SURVIVES A MUTATE/RESTORE CYCLE.** `restore()` copying a snapshot back with `shutil.copy2` **preserves the original mtime**, so a `.pyc` written during one arm can still satisfy Python's (mtime, size) validity check during a later one — and that arm then imports the UNMUTATED code and reports **NOT RED**, which is indistinguishable from a test gap. Two arms were affected and one was hand-debugged as a missing assertion before the cause was found; the same mutation applied by hand outside the battery went red immediately. `PYTHONDONTWRITEBYTECODE=1` in the subprocess environment took the battery from 10 RED / 2 survived to **12 RED / 0**. So the rule grows a third clause:
 >

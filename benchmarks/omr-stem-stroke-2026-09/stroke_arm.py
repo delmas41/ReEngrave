@@ -351,7 +351,91 @@ def main() -> int:
     print(f"   ⚠️ `side+legal` is graded on the rule it was BUILT to satisfy. "
           f"Read its REACH, never its rate.")
 
+    # -- WARNING: THE DENOMINATOR IS CONTAMINATED, AND SO MAY BE THE SCORE --
+    #
+    # `benchmarks/omr-stem-crop-pass-2026-09` read 180 of these boxes against
+    # the print and found **46 are not noteheads at all** -- 15.6% on Litolff
+    # and 35.6% on Breitkopf -- whole rests, a capital B, the `e` of `cresc`,
+    # a bass clef, a trill, eighth rests, a repeat dot, and barlines. On
+    # Breitkopf's `too TALL` bucket it is **12 of 12**, every one a box
+    # 0.40-0.45 spaces wide sitting on a VERTICAL RULE.
+    #
+    # WARNING: that is not merely a denominator problem. Where the "head" is a
+    # box on a barline, this reader finds the barline (a real long stroke) AND
+    # the convention probe, sweeping a hairline column at the same box's
+    # edges, finds the SAME barline and reports a direction -- so the two
+    # AGREE about a piece of ink that is neither a stem nor a head. That is
+    # the correlated-witness hazard this repo already names, with the
+    # correlation running through a spurious DETECTION rather than through
+    # shared ink quality.
+    #
+    # So reach and quality are reported again over the boxes that can
+    # PLAUSIBLY be noteheads. The cut is the crop pass's own, not mine: a
+    # notehead is ~1.3 staff spaces wide, and a floor at 1.0 catches 39 of
+    # the 46 non-noteheads at a cost of 0 of 63 real stems.
+    def head_w_spaces(sub):
+        if sub not in pboxes:
+            return None
+        q = sub.split("/")
+        L = lines_of.get(f"staff/{q[1]}/{q[2]}/{q[3]}")
+        if not L or len(L) < 5:
+            return None
+        sp = statistics.fmean([L[i + 1] - L[i] for i in range(4)])
+        x0, _y0, x1, _y1 = pboxes[sub]
+        return (x1 - x0) / sp
+
+    NOTEHEAD_MIN_W = 1.0
+    widths = {sub: head_w_spaces(sub) for sub in missing}
+    plaus = {k for k, w in widths.items() if w is not None and w >= NOTEHEAD_MIN_W}
+    thin = {k for k, w in widths.items() if w is not None and w < NOTEHEAD_MIN_W}
+    print(f"\n== PLAUSIBILITY of the `no_stem` boxes themselves "
+          f"(a notehead is ~1.3 spaces wide)")
+    print(f"   at or above {NOTEHEAD_MIN_W} spaces wide: {len(plaus)}")
+    print(f"   THINNER, i.e. probably not a notehead: {len(thin)} "
+          f"({len(thin)/max(1,len(missing)):.1%})")
+    print(f"   no page box or staff lines: "
+          f"{len(missing) - len(plaus) - len(thin)}")
+    print(f"\n== REACH and QUALITY over PLAUSIBLE heads only")
+    print(f"{'variant':<16} {'heads':>6} {'of plaus':>9} "
+          f"{'AGREES':>7} {'disagrees':>10} {'rate':>7}")
+    restricted = {}
+    for v in VARIANTS:
+        g = {k: st for k, st in got[v].items() if k in plaus}
+        t_ = collections.Counter()
+        for k, st in g.items():
+            c = convention(k)
+            t_["silent" if c is None else
+               ("AGREES" if c == stroke_dir(k, st) else "disagrees")] += 1
+        n = t_["AGREES"] + t_["disagrees"]
+        restricted[v] = {"recovered": len(g), "agreement": dict(t_),
+                         "agreement_rate": round(t_["AGREES"] / max(1, n), 4)}
+        note = "   <- CIRCULAR" if v.endswith("legal") else ""
+        print(f"{v:<16} {len(g):>6} {len(g)/max(1,len(plaus)):>8.1%} "
+              f"{t_['AGREES']:>7} {t_['disagrees']:>10} "
+              f"{t_['AGREES']/max(1,n):>6.1%}{note}")
+    # the same restriction on the REFERENCE bar, or the comparison is unfair
+    refp = collections.Counter()
+    for k, r in verdict.items():
+        if r != "DECIDED" or k not in heads:
+            continue
+        w = head_w_spaces(k)
+        if w is None or w < NOTEHEAD_MIN_W:
+            continue
+        c = convention(k)
+        refp["silent" if c is None else
+             ("AGREES" if c == value.get(k) else "disagrees")] += 1
+    nrp = refp["AGREES"] + refp["disagrees"]
+    print(f"   REFERENCE, same restriction: {refp['AGREES']}/{nrp} = "
+          f"{refp['AGREES']/max(1,nrp):.1%}   <- the bar")
+    print(f"   WARNING: the THIN boxes are reported apart and never netted "
+          f"in -- a box on a barline that BOTH readers agree about is not "
+          f"evidence about a stem.")
+
     out = {"label": a.label, "agree": a.agree, "no_stem": len(missing),
+           "plausible_heads": len(plaus), "thin_boxes": len(thin),
+           "restricted": restricted,
+           "reference_restricted": dict(refp),
+           "reference_restricted_rate": round(refp["AGREES"] / max(1, nrp), 4),
            "record_strokes": n_rec, "off_strokes": n_off,
            "reference": dict(ref),
            "reference_rate": round(ref["AGREES"] / max(1, rr), 4),
