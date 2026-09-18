@@ -293,6 +293,20 @@ NOT_A_STAGE = frozenset({
     # written and false the moment the trees met, which is exactly the
     # 'merged tree is the one thing nobody runs' hazard.
     "brakes.py",
+    # ⚠️ `trace.py` is the ninth derived check, and the only one that is
+    # PER-SUBJECT rather than aggregate: given a saved record and a subject
+    # key it replays what each stage DID to that symbol, and given a family
+    # it walks the stage funnel. Like the eight above it, it NAMES quantities
+    # and reason words in order to audit them and reads none of them at run
+    # time, so it declares `DERIVED_CHECK = True` for `wiring`'s DETAIL
+    # question as well.
+    #
+    # ⚠️ REGISTERING IT HERE IS NOT OPTIONAL, and the control was run in both
+    # directions rather than assumed: with `trace.py` on disk and this line
+    # absent, `reach --check` exits 1 naming it; move the file aside and it
+    # exits 0. That is the guard the brake audit's mutation arm asked for,
+    # doing its job on the next module to arrive.
+    "trace.py",
 })
 
 
