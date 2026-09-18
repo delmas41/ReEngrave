@@ -431,3 +431,37 @@ ADJUDICATE
   adjudicate voices: 6316 verdicts so far
   adjudicate onset_column: 6318 verdicts so far
   adjudicate wedge_anchor: 6358 verdicts so far
+  adjudicate meter: 6360 verdicts so far
+  adjudicate dynamic: 6562 verdicts so far
+  adjudicate direction: 6764 verdicts so far
+GROUPS
+  groups meter_across_staves: 2 facts, 0 disagree
+  groups measure_count_across_staves: 2 facts, 0 disagree
+  groups instrument_across_systems: 15 facts, 0 disagree
+  groups clef_across_systems: 15 facts, 0 disagree
+  groups staff_group_across_systems: 15 facts, 0 disagree
+  groups key_signature_across_systems: 15 facts, 0 disagree
+EVALUATE
+  evaluate name_part: 0 fired so far
+  evaluate restate_pitch: 1015 fired so far
+  evaluate respell_accidental: 1250 fired so far
+  evaluate move_glyph: 1705 fired so far
+  evaluate size_measure_rest: 1732 fired so far
+  evaluate reconcile_duration: 1739 fired so far
+wrote benchmarks/omr-ink-first-2026-09/out/brahms1-breitkopf-p2.staged.json
+
+── ADJUDICATE ─────────────────────────────────────────
+  decided:   {'arc_kind': 686, 'arc_owner': 686, 'articulation_owner': 17, 'clef': 27, 'duration': 1187, 'dynamic': 191, 'event': 201, 'glyph_owner': 922, 'key_signature': 24, 'measure_partition': 27, 'meter': 2, 'notehead_is_a_whole_rest': 1015, 'onset_column': 2, 'ornament_owner': 4, 'part_partition': 1, 'slot_index': 14, 'staff_group': 27, 'staff_ordinal': 27, 'stem_direction': 669, 'system_membership': 2, 'system_staff_count': 2, 'voices': 201, 'wedge_anchor': 39}
+  abstained: {'articulation_owner': {'no_notehead': 5}, 'direction': {'out_of_scope': 202}, 'duration': {'beams_ambiguous': 177, 'unreadable_rest': 1}, 'dynamic': {'unspellable': 11}, 'group_symbol': {'no_identity': 2}, 'instrument': {'no_evidence': 27}, 'key_signature': {'no_evidence': 3}, 'ornament_owner': {'no_notehead': 2}, 'slot_index': {'reference_names_nothing': 13}, 'stem_direction': {'no_stem': 339, 'stems_disagree': 7}, 'voices': {'nothing_to_split': 1}, 'wedge_anchor': {'no_page_frame': 1}}
+── GROUPS ─────────────────────────────────────────────
+  clef_across_systems: 15 facts, 27 witnesses, 15 uninformative, {'none': 1, 'single': 14, 'unanimous': 0, 'majority': 0, 'split': 0}
+  instrument_across_systems: 15 facts, 0 witnesses, 15 uninformative, {'none': 15, 'single': 0, 'unanimous': 0, 'majority': 0, 'split': 0}
+  key_signature_across_systems: 15 facts, 24 witnesses, 15 uninformative, {'none': 3, 'single': 12, 'unanimous': 0, 'majority': 0, 'split': 0}
+  measure_count_across_staves: 2 facts, 27 witnesses, 0 uninformative, {'none': 0, 'single': 0, 'unanimous': 2, 'majority': 0, 'split': 0}
+  meter_across_staves: 2 facts, 10 witnesses, 1 uninformative, {'none': 1, 'single': 0, 'unanimous': 1, 'majority': 0, 'split': 0}
+  staff_group_across_systems: 15 facts, 27 witnesses, 15 uninformative, {'none': 1, 'single': 14, 'unanimous': 0, 'majority': 0, 'split': 0}
+  ⚠️ witnessed_by_nobody (no witness spoke): ['instrument_across_systems']
+  ⚠️ checked_nothing (never two independent signals -- corroborated NOTHING, however busy it looks): ['clef_across_systems', 'instrument_across_systems', 'key_signature_across_systems', 'staff_group_across_systems']
+  ⚠️ DISAGREEMENTS: 0 (each implicates its WHOLE group, not its dissenter)
+── EVALUATE: 1739 fired, 9153 skipped
+── DECLARED STUBS: 0 decisions, 1 consequences

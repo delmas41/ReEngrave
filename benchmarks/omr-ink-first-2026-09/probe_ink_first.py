@@ -44,8 +44,9 @@ from recordstream import stream_array  # noqa: E402
 # same call's output, which is the control.
 REC = ("benchmarks/omr-ink-first-2026-09/out/"
        "brahms1-breitkopf-p2.gather.json")
-if len(sys.argv) > 1:
-    REC = sys.argv[1]
+_pos = [a for a in sys.argv[1:] if not a.startswith("--")]
+if _pos:
+    REC = _pos[0]
 HAND = "data/user-labeled/v18-2026-09-03-complete-breitkopf"
 MANIFEST = ("benchmarks/omr-labeling-survey-2026-09/phase3-merged/breitkopf/"
             "breitkopf-cells.json")
@@ -565,6 +566,21 @@ def main():
         for s, (c, b) in glyph_box.items():
             if str(c).startswith(NOTEHEAD_PREFIX):
                 det_heads[cell_of(s)].append((c, b))
+
+        # ⚠️⚠️ THE POSITIVE CONTROL FOR THE COST COUNTER, AND IT IS NOT
+        # OPTIONAL. The measured cost is ZERO, and a counter that reads zero
+        # and has never been shown able to read anything else is this repo's
+        # own "clean, believable zero" -- the failure mode of every probe in
+        # this thread. `--drop-det-heads` deletes the detector's noteheads
+        # from every cell, which is exactly the world the veto is dangerous
+        # in: the print carries heads and the reading does not. If the cost
+        # does NOT rise under it, the zero above is measuring the instrument
+        # and not the page.
+        if "--drop-det-heads" in sys.argv:
+            print()
+            print("  ⚠️ POSITIVE CONTROL ACTIVE: every detector notehead "
+                  "removed. The cost MUST rise.")
+            det_heads = collections.defaultdict(list)
         hand_heads = collections.defaultdict(list)
         for rc, hs_ in hand.items():
             for h in hs_:
