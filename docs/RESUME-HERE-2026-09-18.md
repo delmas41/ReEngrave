@@ -40,14 +40,31 @@ for the overnight batch.
 
 ---
 
-## ⚠️ ONE AGENT WAS STILL RUNNING WHEN THE SESSION ENDED
+## ✅ THAT AGENT FINISHED AND IS MERGED — and its negative is a diagnosis
 
 `claude/vertical-runs-gather-2026-09` — building `Q.VERTICAL_RUN`: **one row per
 candidate vertical run, accepted OR rejected, carrying PAGE PIXELS** so a run's
 endpoints can meet `Q.STAFF_LINES`. **Default-OFF, producer only.** Check the
 branch; it was told to commit and push incrementally.
 
-**Why**: Sean asked whether the stages hold what is needed to tell one kind of
+**RESULT**: `Q.VERTICAL_RUN` is merged, default-OFF, producer only. **The record
+was carrying about a THIRD of the vertical lines the pipeline looked at** — 6,128
+candidates against 1,920 strokes, with **64.7% refused by a dimension bound** and
+leaving no row at all. Flag-off reproduces both records exactly (**1,920 = 1,920**,
+**2,305 = 2,305**, 0 cells disagreeing). ⚠⚠ **Sean's barline test is now askable
+and the answer is NO — 0 of 19 print-settled barlines fire at any tolerance while
+6 of 58 adjudicated STEMS do.** The cause is the finding: the tall runs' end
+offsets are **−4.00 / +4.00 staff spaces on both publishers — exactly the measure
+cell's padding** — so **a barline taller than the cell has its ends clipped BY the
+cell.** His test is **structurally UNAVAILABLE, not refuted**, and the fix is a
+page-BAND reader (the `cv_hairpins` precedent), the ranked next work.
+⚠⚠ **It also found TWO OF THE SIX FILTERS CANNOT FIRE** at the shipped defaults
+(zero over 12,944 candidates) — so every document saying *"six filters"* was
+wrong, including two written the same day; corrected in place. ⚠ **COST 0.96-1.11
+MB/page, 1.6-2× the ink layer** — a real argument against flipping the default.
+Findings: [benchmarks/omr-vertical-runs-2026-09/FINDINGS.md](../benchmarks/omr-vertical-runs-2026-09/FINDINGS.md).
+
+**Why it existed**: Sean asked whether the stages hold what is needed to tell one kind of
 vertical line from another, and measured the answer is **no**, for two fixable
 reasons — there is no quantity for *a vertical run* (only `Q.STEM`, the six
 filters' survivors), and `Q.STEM` carries **no page coordinates** while
