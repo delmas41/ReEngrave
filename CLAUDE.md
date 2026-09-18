@@ -3613,6 +3613,78 @@ two plates this thread has always used. No OMR-NED, deliberately — the metric 
 symmetric and would pay for emitting fewer stems. The engraved family is
 untouched by construction.
 
+### A notehead is ~1.4 staff spaces WIDE — the floor priced, and the contamination has TWO shapes
+
+2026-09-18, **no code outside `benchmarks/`, nothing proposed for any
+constant or default.** The handoff §4 item 4 asked for the open side of the
+box-width floor: it had been measured only on heads the census already
+abstains on. Findings:
+[benchmarks/omr-notehead-width-2026-09/FINDINGS.md](benchmarks/omr-notehead-width-2026-09/FINDINGS.md).
+
+⚠️⚠️ **IT COSTS ZERO OF 103 PRINT-CONFIRMED NOTEHEADS, on both plates** —
+stronger than the crop pass's *"0 of 63 real stems"*, joined to its 255 blind
+verdicts through the crop manifests, and on a **THREE-WAY** matrix because
+collapsing `cannot_tell` into *is a notehead* is what made this probe first
+report 5 false alarms. On the population the pipeline reads correctly the
+floor takes **6 of 1,443 (0.42%)** and **12 of 1,791 (0.67%)** against a
+**pre-registered** 2% bar. The handoff's 5.5% / 37.7% contamination pair
+reproduces exactly as **44/793** and **576/1,529**, which also identifies
+what that pair was — this same test, run by the stroke lane.
+
+⚠️⚠️ **THE CONTAMINATION HAS TWO SHAPES IN TWO CLASSES AND A WIDTH FLOOR
+REACHES ONLY ONE.** NARROW, in `noteheadBlack*`: 459 of 1,656
+`noteheadBlackInSpace` on Breitkopf are under the floor — barlines, caught.
+RIGHT-WIDTH, in `noteheadWhole*`: **the under-floor count is ZERO for every
+Half and Whole class on both plates**, and the 22 confirmed non-noteheads the
+floor misses are WIDE — 8 time-signature `8` counters, 5 staff-line gaps, a
+capital **B**, a bass clef, a wedge, the `e` of **cresc**, two whole rests
+(1.12–1.27 wide, **0.34–0.64 TALL**). **13 of the 22 are `noteheadWhole*`.**
+⚠️ **`noteheadWholeInSpace` on Breitkopf decides a stem on 1 box in 10 and
+Litolff's `noteheadWholeOnLine` on 0 of 5** — the lowest of any class, and a
+PRINT-FREE corroboration of the crop pass's *16 of 17 class-FALSE*: two
+instruments, one conclusion, from different directions.
+
+⚠️ **ISSUE 1 IS UNCHANGED AND THAT IS A NEGATIVE ANSWER TO WHAT WAS
+EXPECTED.** Of the 26-head standoff, 3 are under the floor and **0 of the 16
+the print SETTLED** — the beam-mate tier's **16-0** loss is not a
+contamination artefact. ⚠️ **ISSUE 2's cleaning is large (Breitkopf 34.7% →
+55.7%, +21 pts) and the boxes it removes were NEVER in the bucket the stroke
+reader reads**: `too WIDE` is **0.8%** thin there while `too TALL` is
+**96.4%** and holds 459 of the 576. The raw rate was DILUTED by a population
+the reader never touches, which is not the same as the reader being
+contaminated. **`stroke_arm.py`'s own `thin_boxes` 44/576 and
+`plausible_heads` 749/953 reproduce exactly** — ⚠️ a reproduction of the
+COMPUTATION, not an independent ruler: `Q.STAFF_SPACING` *is* the mean of the
+four printed line gaps, to the float over 5,684 boxes.
+
+⚠️⚠️ **NOTHING WAS SHIPPED, AND THE REASON IS THAT THERE IS NO FACT LEFT TO
+GATHER.** The width in staff spaces is already on the record for **2,347 of
+2,347 and 3,337 of 3,337** heads, twice — a new quantity would restate
+`Q.GLYPH_BOX` / `Q.CELL_STAFF_SPACE`. ⚠️ And under
+`Evidence.correlated_groups`' own rule a width read off the detector's box is
+**that detector's signal however it is filed**, so it can catch the detector
+CONTRADICTING ITSELF but can never corroborate its class. The independent
+witness would measure the **INK** — which is **`Q.INK`, default-ON and read
+by nothing**. *The value existed and nothing read it*, naming the consumer
+this finding actually wants.
+
+⚠️ **AND A REFUSAL RE-ASKED AND CONFIRMED:** the misses are a HEIGHT
+question, and `_CLIPPED_NOTEHEAD_MAX_SPACES = 0.6` is restricted to
+edge-touching boxes because *"a short notehead in the middle of a cell is
+some other problem"*. **That reason has expired** — the other problem is a
+whole rest, a digit counter, a staff-line gap — **and the refusal survives
+anyway, now measured: the shortest print-CONFIRMED noteheads are 0.340 and
+0.345 spaces tall**, so an unrestricted floor would flag real heads. ⚠️ The
+battery's first run had **4 survivors and all 4 were real**: `FLOOR` restated
+in FIVE probe files, and `truth_of` — the function behind the headline —
+having **no control that could fail**. Final **8 RED / 8 live**, 11 truth
+controls anchored on the crop pass's published 46 / 14 / 32 and its 58.9% /
+62.5% / 17.8% / 12.5%, one of which caught an 0.8-point drift from a `kind`
+map keyed globally on the subject. ⚠️ n = 2 publishers, 8 pages, **255
+adjudicated boxes, one adjudicator**; no re-gather, no file effect, no
+OMR-NED, and `[L4]` **still LITERATURE ONLY** — the class is too contaminated
+to falsify it.
+
 ### The stem CROP PASS — the print, on two publishers, and the census's buckets are not all stems
 
 2026-09-18, **no code outside `benchmarks/`**. The debt
