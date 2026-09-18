@@ -1,0 +1,136 @@
+{
+ "label": "Litolff Beethoven 5 pp.1-4",
+ "control_n": 938,
+ "target_n": 472,
+ "control_over_cap": 0.04584221748400853,
+ "target_over_cap": 0.1694915254237288,
+ "control_rate": 0.9595,
+ "reweighted_estimate": 0.9289,
+ "min_component_spaces": 2.0,
+ "max_component_spaces": 8.0,
+ "gate_sweep": [
+  {
+   "floor": 1.25,
+   "ceiling": 8.0,
+   "control_n": 895,
+   "control_rate": 0.9654,
+   "target_n": 392,
+   "estimate": 0.9477
+  },
+  {
+   "floor": 1.25,
+   "ceiling": null,
+   "control_n": 938,
+   "control_rate": 0.9595,
+   "target_n": 472,
+   "estimate": 0.9289
+  },
+  {
+   "floor": 1.5,
+   "ceiling": 8.0,
+   "control_n": 873,
+   "control_rate": 0.9725,
+   "target_n": 366,
+   "estimate": 0.9633
+  },
+  {
+   "floor": 1.5,
+   "ceiling": null,
+   "control_n": 916,
+   "control_rate": 0.9662,
+   "target_n": 446,
+   "estimate": 0.9406
+  },
+  {
+   "floor": 1.75,
+   "ceiling": 8.0,
+   "control_n": 861,
+   "control_rate": 0.9756,
+   "target_n": 355,
+   "estimate": 0.9693
+  },
+  {
+   "floor": 1.75,
+   "ceiling": null,
+   "control_n": 904,
+   "control_rate": 0.969,
+   "target_n": 435,
+   "estimate": 0.945
+  },
+  {
+   "floor": 2.0,
+   "ceiling": 8.0,
+   "control_n": 850,
+   "control_rate": 0.98,
+   "target_n": 338,
+   "estimate": 0.978
+  },
+  {
+   "floor": 2.0,
+   "ceiling": null,
+   "control_n": 893,
+   "control_rate": 0.9731,
+   "target_n": 418,
+   "estimate": 0.951
+  },
+  {
+   "floor": 2.5,
+   "ceiling": 8.0,
+   "control_n": 804,
+   "control_rate": 0.9813,
+   "target_n": 311,
+   "estimate": 0.9798
+  },
+  {
+   "floor": 2.5,
+   "ceiling": null,
+   "control_n": 847,
+   "control_rate": 0.974,
+   "target_n": 391,
+   "estimate": 0.9506
+  },
+  {
+   "floor": 3.0,
+   "ceiling": 8.0,
+   "control_n": 735,
+   "control_rate": 0.9823,
+   "target_n": 299,
+   "estimate": 0.9802
+  },
+  {
+   "floor": 3.0,
+   "ceiling": null,
+   "control_n": 778,
+   "control_rate": 0.9743,
+   "target_n": 379,
+   "estimate": 0.95
+  }
+ ],
+ "by_band": {
+  "1.25-2.5": {
+   "n": 91,
+   "agrees": 75,
+   "target_share": 0.1716
+  },
+  "2.5-4": {
+   "n": 527,
+   "agrees": 518,
+   "target_share": 0.214
+  },
+  "4-6": {
+   "n": 197,
+   "agrees": 193,
+   "target_share": 0.3157
+  },
+  "6-8": {
+   "n": 80,
+   "agrees": 78,
+   "target_share": 0.1292
+  },
+  ">8": {
+   "n": 43,
+   "agrees": 36,
+   "target_share": 0.1695
+  }
+ }
+}

@@ -25,6 +25,45 @@ Over time the analytics layer learns from human decisions, building auto-accept 
 - **Frontend:** React + Vite + React Query + TypeScript
 - **Container:** Docker Compose (local) + Traefik (production, SSL via Let's Encrypt)
 
+⚠️⚠️ **ASK FIRST — BEFORE YOU BUILD ANYTHING, SAY HOW A HUMAN WOULD READ IT OFF
+THE PAGE, AND WHAT ENGRAVING CONVENTION GOVERNS IT. STANDING INSTRUCTION FROM
+SEAN, 2026-09-18, AND IT APPLIES TO EVERY JOB IN THIS REPOSITORY:**
+[docs/ask-first-conventions.md](docs/ask-first-conventions.md)
+— *"Many times I feel like the agent is building in a counter-intuitive way, or
+blind to obvious conventions."* Three questions, out loud, before the first
+line of code: **(1) how would a HUMAN get this** — which mark do they look at,
+and what do they already know that makes it unambiguous; **(2) what CONVENTION
+of engraving governs it** — an engraver does not place ink freely, and a
+convention is usually rigid enough to be a **search constraint rather than a
+statistic**; **(3) ASK SEAN**, one line, before the code — he is a musician and
+reads these plates, and this is the **cheapest evidence in the project**.
+⚠️⚠️ **THE MEASUREMENT CANNOT SAVE YOU FROM SKIPPING THIS: it will faithfully
+report how well you did the wrong thing.** `_noteheads_under` is a perfectly
+good overlap test that scores **0 of 4** on hairpins, because a slur is drawn
+OVER its notes and a hairpin BETWEEN them. ⚠️ **At least a dozen of the largest
+wins recorded in this file ARE conventions** — the whole rest that means the
+BAR (1,251 attribute errors, and OMR-NED charged nothing for one of them), the
+dot that sits a space HIGHER on a line note (52 at 0.00 / 52 at +0.50, nothing
+between), the beam that runs stem-to-stem (12 of 7 → 16 of 16), the cautionary
+meter that governs no bar (false changes 10 → 3), the key change printed at ONE
+bar on EVERY staff (7 of 7 flips stopped). ⚠️⚠️ **AND THE TIE IS WHERE IT
+STINGS: `_pair_ties_in_cell`'s own docstring says *"real tied notes are at the
+same y-position by definition"* and NEITHER PAIRING RULE EVER USED IT** — the
+convention was known, written down, correct, and read by nothing, with a
+measured empty interval (0.168 vs 0.435 spaces) sitting there the whole time.
+⚠️ **IT IS A HYPOTHESIS AND A CHEAP TEST, NEVER A LICENCE** — Sean's own S4 is
+REFUTED at full width, the label-splitting "convention" is a property of the
+ENCODING not the engraving (74/74 on Beethoven and **+2,181 edits on Dvořák**),
+and a PAGE truth is not an ENCODING truth. The tell that a convention is real
+is a **measured empty interval**; the tell that it is a story is a smooth slope
+with a threshold fitted into it. ⚠️ **NOBODY TO ASK** (a cloud session, an
+overnight run) → write **CONVENTION ASSUMED / WHAT WOULD FALSIFY IT / NOT
+CONFIRMED WITH SEAN** at the top of the brief and proceed — *cannot ask* must
+never become *did not think about it*, which is this project's own
+ABSENT/DECLINED discipline applied to the people building it. ⚠️ **Every
+handoff, brief and dispatched job carries the pointer** (§5 there); past
+handoffs are NOT retrofitted.
+
 ⚠️⚠️ **THE TARGET AND THE ORDER OF WORK CHANGED ON 2026-09-10 — SEAN, TWICE.
 READ THIS BEFORE THE HANDOFFS BELOW, WHICH ARE RANKED UNDER THE OLD ORDER:**
 [docs/plan-2026-09-10-wire-first-then-reconcile.md](docs/plan-2026-09-10-wire-first-then-reconcile.md)
@@ -763,7 +802,7 @@ ReEngrave/
 | `OMR_CONDENSED_PARTS` | `0` (off) | **Measured, dormant, and blocked on a count source.** A condensed staff (`Flauti`, `Corni`, `Violoncello e Basso`) carries several reference parts; we emit one, and every unmatched truth part is charged a whole staff. On this, a staff carrying `condensed_parts: N>1` emits N parts. The convention is MEASURED, not assumed: over every condensed staff-measure in the truths, silent 51.5% + unison 18.3% = **69.8% is exact duplication** (divisi 27.6% is approximated by duplication, so the figures are a floor). Ceiling with oracle counts: scan pool **−4,195 edits alone, −4,557 with `OMR_SLOT_STITCH`** (they compose, and the split cancels stitch's `entire staff` penalty); `entire staff` 8,453 → 2,060. ⚠️ **The page cannot supply the count.** Staves carrying the SAME printed label are encoded as 1 part in some editions and >1 in others (Litolff/Simrock/Breitkopf `Viola` = 1, Peters `Violen` = 2), so whether a reference splits is a property of the ENCODING, not the engraving; a label-derived rule is 74/74 on Beethoven/Brahms and **+2,181 edits on Dvořák**, and eleven page-side signals separate the two populations no better than chance (best ensemble 0.526 vs the `always 1` baseline's 0.538). `=all` splits fragments too (measured +904, for reproduction only). Flag-off is byte-identical (22/22 fixtures). See [benchmarks/omr-condensed-parts-2026-09/FINDINGS.md](benchmarks/omr-condensed-parts-2026-09/FINDINGS.md). |
 | `OMR_SLOT_STITCH` | **`1` ON since 2026-09-08 (Sean's call)** → join staves into parts by contextual SLOT where the ordinal join refuses. Never scored worse (−240 raw / −2,278 page-normalised); flipped once the separated `entire staff` bucket showed its 3 rows own **46.3% of the unassessable symbol mass**, and because the blast radius is confined to rows the ordinal join has ALREADY refused (10 of 11 exports byte-identical). Canary: `slot_stitch_canary.py`, 30 stitched parts with label evidence, 0 disagreements. `0` restores the fragments. See the knobs table. |
 | `OMR_CONDENSED_PARTS` | `0` off (default) → emit one part per player on a condensed staff; `all` splits fragments too. Ceiling −4,557 scan edits with slot stitch, but the COUNT cannot come from the page. See the knobs table. |
-| `OMR_ARC_RECLASS` | `0` (off) | **Measured, deliberately NOT shipped.** Export-time tie/slur grammar veto (`docs/position-grammar-confusables-2026-09-04.md` §2 ARC, R3 shape): a slur-classed arc covering exactly two adjacent same-pitch heads of one voice becomes a tie; a tie-classed arc whose flanked pair sits on different STAFF STEPS, or with a third event of its voice under its span, becomes a slur — the vetoed arc widened to the flanked centres and split at cell boundaries so the ordinary barline merge rejoins it. Compares steps, never spelled pitches: the far head of a cross-barline tie does not restate its accidental and the resolver spells it plain, so the naive spelled-pitch key broke truth-matched ties (+21 engraved edits, every loss a same-step `F#4→F4` pair). Priced on both families: engraved **0.1306 → 0.1306, +2 edits, 24 firings**; scan **0.8387 → 0.8391, +130 edits — REFUSED**, because a scan's resolved pitch at an arc's ends is downstream of exactly what scans get wrong (`wrong note` = 26% of that pool), and per-direction attribution puts ALL +130 in the tie→slur half while slur→tie alone is edit-free and moves the tie inventory toward truth (420 → 462 of 805 elements). If any half ever defaults on it is slur→tie; tie→slur is blocked on ANCHORS, not grammar (R4). ⚠️⚠️ **RE-PRICED 2026-09-11 and the tie→slur half is FOUR RULES that do not behave alike — "all +130 is in the tie→slur half" is true and is not actionable as stated.** On the engraved family `tie_to_slur_flagged_diff_pitch` (PROVABLE: the arc's own flanked pair sits a staff step or more apart, which no tie can) fires **12** times and the three works where it fires ALONE are **−4 edits, i.e. BETTER**; every edit-positive work fires a `span` or `unpaired` rule, which are INFERRED (a measure the detector left empty spends no ordinal). Scored against the tie INVENTORY rather than a symmetric metric that rewards under-prediction, the veto takes `mozart-sym41-mvt1` from **8 ties over its truth to exactly right** (that page prints ONE tie and forty-four slurs) and summed per-work error 25 → 18. ⚠️ The engraved figure in this row is **stale**: on the post-chord-tie tree it is **2530 → 2536, +6**, not +2, and the scan re-measures at **+149**, not +130 (pre-mirror the same arms read +8 and +144 — the tie-pairing repair moves what this veto sees, because `_tie_flank_pair` re-derives the pairing relation; **step-different flanked pairs on the scan fall 197 → 137**). **The refusal stands** — and `benchmarks/omr-tie-pairing-2026-09/FINDINGS.md` §4 is now the direct evidence for the reason this row already gives, a grid of box-y against resolved pitch in which **25 scan links sit at ONE staff position and disagree about pitch anyway**. See [benchmarks/omr-tie-pairing-2026-09/FINDINGS.md](benchmarks/omr-tie-pairing-2026-09/FINDINGS.md). Flag-off is byte-identical, asserted per work and per row. See [benchmarks/omr-export-gaps-2026-09/FINDINGS.md](benchmarks/omr-export-gaps-2026-09/FINDINGS.md). |
+| `OMR_ARC_RECLASS` | `0` (off) | **Measured, deliberately NOT shipped.** Export-time tie/slur grammar veto (`docs/position-grammar-confusables-2026-09-04.md` §2 ARC, R3 shape): a slur-classed arc covering exactly two adjacent same-pitch heads of one voice becomes a tie; a tie-classed arc whose flanked pair sits on different STAFF STEPS, or with a third event of its voice under its span, becomes a slur — the vetoed arc widened to the flanked centres and split at cell boundaries so the ordinary barline merge rejoins it. Compares steps, never spelled pitches: the far head of a cross-barline tie does not restate its accidental and the resolver spells it plain, so the naive spelled-pitch key broke truth-matched ties (+21 engraved edits, every loss a same-step `F#4→F4` pair). Priced on both families: engraved **2530 → 2536, +6 edits**; scan **+149 edits — REFUSED** (⚠️⚠️ this headline read *"engraved 0.1306 → 0.1306, +2 edits, 24 firings; scan 0.8387 → 0.8391, +130 edits"* until 2026-09-18 — PRE-CHORD-TIE figures, superseded by the 2026-09-11 re-pricing recorded further down this very row, so **the row contradicted itself for a week and a reader who stopped at the headline got the stale number**; corrected in place rather than deleted, and the refusal is unaffected), because a scan's resolved pitch at an arc's ends is downstream of exactly what scans get wrong (`wrong note` = 26% of that pool), and per-direction attribution puts ALL +130 in the tie→slur half while slur→tie alone is edit-free and moves the tie inventory toward truth (420 → 462 of 805 elements). If any half ever defaults on it is slur→tie; tie→slur is blocked on ANCHORS, not grammar (R4). ⚠️⚠️ **RE-PRICED 2026-09-11 and the tie→slur half is FOUR RULES that do not behave alike — "all +130 is in the tie→slur half" is true and is not actionable as stated.** On the engraved family `tie_to_slur_flagged_diff_pitch` (PROVABLE: the arc's own flanked pair sits a staff step or more apart, which no tie can) fires **12** times and the three works where it fires ALONE are **−4 edits, i.e. BETTER**; every edit-positive work fires a `span` or `unpaired` rule, which are INFERRED (a measure the detector left empty spends no ordinal). Scored against the tie INVENTORY rather than a symmetric metric that rewards under-prediction, the veto takes `mozart-sym41-mvt1` from **8 ties over its truth to exactly right** (that page prints ONE tie and forty-four slurs) and summed per-work error 25 → 18. ⚠️ The engraved figure in this row is **stale**: on the post-chord-tie tree it is **2530 → 2536, +6**, not +2, and the scan re-measures at **+149**, not +130 (pre-mirror the same arms read +8 and +144 — the tie-pairing repair moves what this veto sees, because `_tie_flank_pair` re-derives the pairing relation; **step-different flanked pairs on the scan fall 197 → 137**). **The refusal stands** — and `benchmarks/omr-tie-pairing-2026-09/FINDINGS.md` §4 is now the direct evidence for the reason this row already gives, a grid of box-y against resolved pitch in which **25 scan links sit at ONE staff position and disagree about pitch anyway**. See [benchmarks/omr-tie-pairing-2026-09/FINDINGS.md](benchmarks/omr-tie-pairing-2026-09/FINDINGS.md). Flag-off is byte-identical, asserted per work and per row. See [benchmarks/omr-export-gaps-2026-09/FINDINGS.md](benchmarks/omr-export-gaps-2026-09/FINDINGS.md). |
 | `OMR_CHOIR_GROUPING`  | `1` (on) | **On by default since 2026-09-05** (Sean's call, coupled with the Bach row's pool re-admission; the re-stamped 11-row baseline is recorded beside WIDENED_BASELINE_2026-09-04.md). Two cues for choir-grouped / differently-indented pages, both riding this one flag. The Bach Brandenburg 3 stress row shatters (6 "systems", 122 measure-cells vs 10) because the wide connectivity window and cue A's band are both anchored on the page-MEDIAN `x_start`, and on a page whose systems are indented differently (792–836 vs 178–200) the median lands between the modes and cuts the full-width system's bracket + systemic barline out of the scan — while the page is also choir-barred (interior barlines stop at choir edges), so nothing else crosses its choir gaps. **Cue B** (merge-only mirror of cue A, `system_grouping.py`): a break the wide rule made for lack of evidence is re-examined in the cue-A band anchored at the PAIR's own left edge; a crossing column there cancels the break. A cue-B merge is exempt from cue A's re-split (the cues act on disjoint gap sets — bridging > 0 vs == 0). **Cue C** (`measure_extractor.py`): a system whose staves form ≥2 bracket-groups (≥ half in multi-staff groups) AND that holds a **window-blind internal gap** — a gap nothing in-window crosses, the choir-barred signature, impossible for a true open score — is never flipped into open-score mode, so a merged rhythm-unison tutti's aligned stems stop out-voting its barlines. ⚠️ Bracket-groups ALONE was falsified on the engraved benchmark (LilyPond open scores manufacture "groups" from bridging jitter; pooled 0.1306 → 0.8560, nine works' barlines deleted) and repaired before shipping — do not loosen the second condition. Flag ON: Bach row 0.9241 → **0.8152** OMR-NED, 6735 → 6236 edits, 122 → 11 cells vs true 10; all ten pooled scan rows byte-identical (pooled 0.8387 untouched); the 11-work engraved benchmark **edit-for-edit identical** (0.1306 / 2745) and the `boulanger` structure canary byte-identical; 969-page library probe: 757 examined break-gaps read 0 ×735 / ≥4 ×22 with nothing at 1–3, and the 10 pages that change were each hand-adjudicated toward the truth (7 exact heals incl. both operas' vocal systems; zero false merges). Flag OFF: byte-identical by construction (Bach flag-off hash-matches the widened-graft baseline fixture). Re-admitting the Bach row to the scan pool is coupled to a default-ON decision and a re-stamped pool. See `benchmarks/omr-choir-grouping-2026-09/FINDINGS.md`. |
 | `OMR_BRACKET_COLUMNS` | `1` (on) | **On by default since 2026-09-07** (Sean's call). Which staves form a bracket GROUP — the instrument-family boundaries. ⚠️ **Nothing detects a bracket**: `bracket` is not in the 208-class space (only `tupletbracket`, a tuplet marker), and `gap_bridging_counts` counts *columns of ink crossing each inter-staff gap* knowing nothing about what the ink is. Family boundaries are INFERRED from where the interior barlines stop. The fault was a UNIT error: that count is `(crossing objects) × (each object's width)`, mixing systemic columns (bracket, systemic barline, interior barlines — same x in every gap) with incidental ink (stems, slurs, measure numbers — no shared x). On Beethoven 5 / Litolff p.38 the two systems print the same 12 staves; system 1's winds|brass gap keeps 3 crossing runs, system 0's keeps 9 with six at no barline column — 52 px against a median of 66 → 0.788 → no split. **No threshold could have worked**: the numerator is ~3 spanning objects and the denominator is *how many bars the system prints*, so the ratio is ≈ `3/(n_bars+3)` and crosses 0.5 near three bars a system; over 2841 gaps the largest value below the cut is **0.4962** and the smallest above is **0.5000**. This rule counts systemic COLUMNS instead and drops any cluster crossing *every* gap (a constant on both sides of a ratio is not neutral). Within-page instability **0.384 → 0.055** over 144 pages and all five publishers; the 0.5 constant moves onto an EMPTY interval (0.3333 / 0.7778). ⚠️ `BRACKET_COLUMN_MIN_EVIDENCE = 3` is load-bearing — a LilyPond render bars per staff, a 25-staff Bruckner system carries two crossing columns total, and without the floor the rule manufactured **11 groups** from it, which is `OMR_CHOIR_GROUPING` cue C's falsification arriving by the same road. **Why it is ON**: it shipped OFF at zero measured edits (exports byte-identical on 11 of 11 engraved fixtures and both exposed scan-gate pages; an exact cue-C control found zero reachable pages across 144), asking to be flipped alongside the measurement that turns *"the readings agree"* into *"the readings are RIGHT"*. That measurement arrived the same day from the independent bracket-READING investigation, against hand-read print truth: Bach / Peters printed 3|3|3 — pixel rule **16/22**, this rule **22/22**; Brahms / Breitkopf printed 9|5 — pixel rule **0/15**, this rule **15/15**. The incumbent is not merely unstable, it is wrong on 15 of 15 Brahms systems. Set `0` to restore the pixel rule. See [benchmarks/omr-bracket-stability-2026-09/FINDINGS.md](benchmarks/omr-bracket-stability-2026-09/FINDINGS.md) and [benchmarks/omr-bracket-reading-2026-09/FINDINGS.md](benchmarks/omr-bracket-reading-2026-09/FINDINGS.md) (which also measures that READING the bracket loses to inferring it — 5/22 and 1/15 — and that two of five publishers print no family bracket at all). |
 | `OMR_KEYSIG_CORROBORATION` | `1` (on) | **On by default since 2026-09-07** (Sean's call). Reverts a mid-staff key-signature change that no other staff of the same system corroborates changing AT THE SAME BAR — a key change is printed at one bar of one system, on every staff of that system, so the BAR is the shared fact even where the VALUE differs by transposition. Measured over 11 scanned + 11 engraved stored transcriptions: **7 of 7** spurious mid-staff flips on the scan corpus are stopped (5 of the 7 had already been rejected once by the cross-page header vote and the mid-staff reader overturned it anyway), flag-ON changes 5 of 11 scan fixtures and 0 of 11 engraved (the engraved family prints no later-cell key markers at all). ⚠️ **The corpus contains ZERO real mid-staff key changes, so only the BENEFIT is measured — the cost of a wrong revert is not**, and there is concrete reason to expect it non-trivial: later-cell key markers appear on only 15 cells across 193 scanned staves with no two sharing a bar, so a genuine mid-staff change would more likely fail its own witness test than pass it. Shipped ON anyway because the guard is structurally the WEAKER of two possible claims (needing only that another staff changes at the same bar, not that it reads the same key) and fails safe relative to the untaken alternative. Flag OFF is byte-identical by construction — verified with `diff` against `main`'s output on one scan and one engraved fixture, controlled by a before/before run of the unchanged tree first. See `tools/omr/key_signature_corroboration.py` and `benchmarks/omr-keysig-corroboration-2026-09/`. |
@@ -3361,6 +3400,160 @@ bars can speak, not whether they are believed. **Re-pricing
 `METER_CARRY_FLOOR` or `METER_FROM_BARS_FLOOR` still needs that second
 publisher.**
 
+### THE STEM: the ink is FUSED, the direction has a tier, and the attachment convention is REFUSED
+
+2026-09-17/18. **`CLAUDE.md` carried NOTHING about the stem thread until this
+section** — `docs/engraving-conventions.md`'s own open-items list said so in
+terms: *"a reader of `CLAUDE.md` alone would not know Sean's stem convention
+had been measured at all."* Three sessions and four documents' worth of it,
+reduced here. Findings:
+[benchmarks/omr-stem-ink-2026-09/FINDINGS.md](benchmarks/omr-stem-ink-2026-09/FINDINGS.md),
+[benchmarks/omr-stem-attachment-2026-09/FINDINGS.md](benchmarks/omr-stem-attachment-2026-09/FINDINGS.md),
+[docs/handoff-2026-09-17-the-ink-is-fused.md](docs/handoff-2026-09-17-the-ink-is-fused.md).
+
+⚠️⚠️ **WHAT IT IS: THERE IS NO STEM COMPONENT TO FIND.** `detect_stems` is a
+**connected-component** reader, and on these plates the ink is one component —
+a spot-checked Litolff cell yields 3 components at a median height of **811 px
+where the staff spacing is 100 px (8.1 staff spaces)**, one blob holding stems,
+beams and noteheads together, failing the `> 8.0` cap. It is the **third
+independent arrival at the same property**: this file already records *"Litolff
+MERGES and Breitkopf SHATTERS"*, and `Q.INK` measured *the median Litolff
+cell's largest component holds 46% of its ink*. ⚠️ The blob figure is **ONE
+CELL, not a distribution** — it explains the direction of the result and does
+not measure how often.
+
+**The rejection census is two publishers and both sum EXACTLY, with no residue
+bucket** (`rejection_census.py`, which replicates the shipped chain component
+by component and **asserts per cell that its accepted set is identical to the
+real `detect_stems`** — 0 cells drifted):
+
+| why the head has no stem | Litolff | | Breitkopf | |
+|---|--:|--:|--:|--:|
+| too TALL (h > 8.0 sp) | 47 | 5.9% | **476** | **31.1%** |
+| too WIDE (w > 0.6 sp) | **237** | **29.9%** | 358 | 23.4% |
+| too SHORT (h < 2.0 sp) | 199 | 25.1% | 298 | 19.5% |
+| no component overlaps it | 167 | 21.1% | 197 | 12.9% |
+| pair rule dropped an accepted one | 73 | 9.2% | 178 | 11.6% |
+| at a CELL EDGE | 70 | 8.8% | 22 | 1.4% |
+| **total** | **793** | | **1,529** | |
+
+⚠️⚠️ **THE LARGEST BUCKET INVERTS — Breitkopf is TALL at 31.1% where Litolff is
+5.9%, a 5× difference on the same filter — so a repair tuned to the Litolff
+table would miss the biggest Breitkopf cause entirely.** ⚠️ **What SURVIVES the
+inversion is the generalisable part**: on both plates the overwhelming majority
+is *a component EXISTS and is the wrong SHAPE* (**86%** and **74%**), while *no
+component at all* is 21% and 13%. **The ink is there and forms components; they
+are simply not stem-shaped.** ⚠️ Three of those filters are **NOT keyword
+parameters** (the edge margin, the area floor, the 3:1 aspect), which is why
+`filter_sweep_arm.py`'s "all four relaxed" ceiling of **287 of 793 (36.2%)** is
+a FLOOR on the filters' cost and not the whole of it.
+
+⚠️⚠️ **FOUR HYPOTHESES DIED, INCLUDING SEAN'S AND THE MEASURING SESSION'S OWN**,
+and the cause of two of them is worth carrying: *a raster proxy for a filter's
+predicate is not a proxy for the filter*, because the filter's input population
+is connected COMPONENTS after a morphological opening, not ink (that proxy
+over-stated the height cap 80 heads → **17**). Dead: **ledger drift explains the
+convention's reversal** (correcting to ink truth changes its agreement by
+exactly nothing, 17/32 either way); **`_drop_paired_strokes` is the main loss**
+(it is **73 of 793, 9.2%**); **Sean's — the staff-line ERASURE breaks the
+stems** (reading the ORIGINAL raster recovers **fewer**, 268 vs 287); and **the
+1-px opening kernel vs a bowed plate** (horizontal pre-dilation at 2/3/5 px
+recovers **3, 3 and 4 heads of 793**). ⚠️ The erasure and slant arms are
+**Litolff only** — *"the erasure is not the cause"* is established on the
+MERGING plate and not on the shattering one. ⚠️ The registry predicts the
+remaining morphological route fails too: stacked beams sit 0.75 sp centre to
+centre with a 0.5 sp stroke and a **0.25 sp gap**, so *an erosion tuned to open
+the gaps eats the strokes first*.
+
+⚠️ **THE WIDTH CAP IS THE LARGEST SINGLE FILTER COST (217 heads) AND IS
+EXPLICITLY NOT RECOMMENDED**: its recoveries agree with the convention **83.6%**
+against a **95.8%** bar, i.e. roughly 73% real and 27% junk — and that is
+convention-against-convention, not print.
+
+**THE DIRECTION: a beam-mate tier SHIPPED, default-on, no flag.** A head borrows
+its direction from a head sharing the same BEAM, because **a beam joins stem
+TIPS so every stem on one stroke points the same way** — a PHYSICAL claim, not
+a geometric one. Leave-one-out on 1,443 decided heads: baseline 0.506; *where
+the beam SITS relative to the head* **0.829 — REFUSED**; the middle-line
+CONVENTION 0.787; beam-mate **majority 0.938 — REFUSED**; beam-mate
+**UNANIMOUS 0.984 — shipped, reach 152**. `no_stem` **793 → 641**, and the file
+gains **TWO `<voice>2</voice>` tags** — *a record improvement, not a file
+improvement*, and the ceiling every later proposal here inherits.
+⚠️ **The 9 whole notes among the 793 carry no stem and are the decision being
+RIGHT**; the target is 784. ⚠️⚠️ **INFER CANNOT SERVE THIS QUANTITY**:
+`Q.STEM_DIRECTION` is ORDER 17 and its only consumers `Q.EVENT` (21) and
+`Q.VOICES` (22) read it INSIDE ADJUDICATE, so a fourth-stage rule would write
+the verdict after both readers had already looked — *"no rule takes it"* has a
+reason, and it is that the stage which may take it runs too late.
+
+⚠️⚠️ **SEAN'S MIDDLE-LINE CONVENTION IS STRONG AND WHERE IT LOOKS WRONG IT IS
+MEASURING THE GRID.** Accuracy by distance from the middle line, in steps:
+**0-1 → 0.537** (a coin flip: half a step of grid error flips it), 1-2 → 0.776,
+2-4 → 0.860, **4-6 → 0.939** (the convention doing exactly what Sean says), and
+**6+ → 0.765, REVERSING** — where a note three spaces clear of the middle line
+is the LEAST ambiguous case it has, so **the reversal is the POSITION and not
+the rule** (44% of ledger-country heads are off-grid against 11% inside the
+staff). So it is not shipped as a reader, and it is good for the opposite: **a
+confident stem and a confident convention that disagree name a zone to look
+in.**
+
+**THE ATTACHMENT CONVENTION — *right going UP, left going DOWN; right-and-down
+does not exist* — IS REFUSED AS A TIER, and NOT refuted as a convention.** It
+reads the raster with no connected components at all and agrees with stems we
+already read **95.9% (900/938) Litolff and 98.2% (1,468/1,495) Breitkopf**, and
+it goes **silent rather than wrong** (*both legal cells filled* is 16% of
+Litolff's abstaining heads and **44%** of Breitkopf's). Three grounds, none of
+them about the convention:
+1. ⚠️⚠️ **THE STAGE.** It is a reading of PIXELS. `Evidence` exposes `rows()`
+   and `refusals()` and nothing else, **no adjudicator in the tree imports
+   cv2/numpy/fitz/PIL** while `gather.py` carries four such imports, and
+   `Q.STEM.detail["image"]` is the *string* `'no_staff'` — the record names
+   which raster a reader used and carries no pixels. So it needs a GATHER
+   producer, which `readjudicate` is **structurally blind** to: pricing needs
+   **two full re-gathers**. `Q.INK` cannot substitute — the ink is FUSED and a
+   fused component's bounding box cannot say which SIDE a run is on, which is
+   the whole discriminator. **The handoff's §4a is right that the reading works
+   and wrong that consuming it is cheap.**
+2. ⚠️⚠️ **THE DECIDING MEASUREMENT INVERTS AGAINST THE HEADLINE.** Where the
+   convention and the shipped tier BOTH speak, on the population the convention
+   is FOR: Litolff **97.0%** (101 heads), Breitkopf **84.7%** (170) — the plate
+   with the BETTER published figure is the WORSE reader exactly where it would
+   be used, and **23 of its 26 disagreements sit INSIDE the physical gate**. It
+   does **not** say which mechanism is wrong: the beam-mate's 0.984 is
+   Litolff-only and **has never been measured on Breitkopf**, so one of the two
+   is wrong ~15% of the time and no instrument here can say which. ⚠️ It is a
+   CROSS-CHECK and not an arbiter — the two share the notehead boxes and the
+   plate, and *an arbiter correlated with one party sides with its own family*,
+   which has already happened on this quantity through the FRAME.
+3. **The bar this quantity already set**: 0.829 refused, majority 0.938 refused
+   for unanimity. 0.852 is below a standard rejected twice.
+
+⚠️ **REACH IS MARGINAL, NOT GROSS, AND THE REGISTRY OVERSTATED IT BY 24%.** Both
+shared records are PRE-tier, so the published 472/653 still contain the heads
+the tier now serves: overlap **101/170**, marginal **371/483 (pooled 854, not
+1,125)**. The two are **positively correlated in availability rather than
+complementary**. ⚠️ **The converse prediction** (*given a direction, the head is
+on a known side*) needs NO raster and is shippable in ADJUDICATE — and is
+refused on REACH at **nine heads**, because 108 of Litolff's 111
+`stems_disagree` heads have BOTH legal cells filled, i.e. a two-voice column:
+**the convention is silent exactly where the contest is.**
+
+⚠️ **A LIVE DEFECT, REPORTED AND NOT FIXED: a whole note has no stem, and 31
+carry a direction** across the two records — 8 + 17 by projection, plus **six
+the new beam-mate tier BORROWS one for** on Breitkopf. Unfixed because the
+repair rests on `notehead_class` being right on 31 heads nobody has looked at,
+and a half note misread as whole DOES have a stem — the hazard
+`OMR_WHOLE_REST_INK` exists for. **The test is 31 crops.**
+
+⚠️⚠️ **WHAT IS NOT ESTABLISHED, AND IT GOVERNS EVERY FIGURE ABOVE: NO NOTE HAS
+BEEN CHECKED AGAINST THE PRINT IN ANY STEM ARM.** Every accuracy number here is
+one of our readings against another, two of which are now known to be
+correlated through the frame; the 84.7% names a **disagreement, not a winner**.
+**The crop pass is owed.** n = 2 documents, 2 publishers, 4 pages each, the same
+two plates this thread has always used. No OMR-NED, deliberately — the metric is
+symmetric and would pay for emitting fewer stems. The engraved family is
+untouched by construction.
+
 ### `OMR_WHOLE_REST_INK` ON THE SECOND PUBLISHER — the cuts do NOT transfer
 
 2026-09-16, **no code changed and no flag flipped**. The knobs-table row for
@@ -4847,6 +5040,17 @@ and *a rule described in a docstring and never built* — and it is the hardest
 to see, because the code is not wrong, the tests pass, and the refusal looks
 like discipline.
 
+⚠️ **AND THERE IS NOW A FOURTH, WHICH RUNS BEFORE ALL THREE:
+*the convention was on the page and nobody asked what it was*** —
+[docs/ask-first-conventions.md](docs/ask-first-conventions.md), Sean's standing
+instruction of 2026-09-18, stated in full at the head of this file. The two
+families are close enough to be confused and the repair differs: this one asks
+*why does this rule still refuse?*, that one asks *why was this mechanism ever
+aimed here?* ⚠️ **The tie pairing is where all four meet** — `_pair_ties_in_cell`
+states the convention in its own docstring, no rule reads it, and the empty
+interval that would have proved it (0.168 vs 0.435 spaces) was measurable from
+day one.
+
 **THE DISCRIMINATOR, and the whole thing hangs on it:** does the rule stop
 because it CANNOT KNOW, or because it WAS NOT GIVEN what it needs? The first
 is this project working. The second is the fault.
@@ -5132,9 +5336,29 @@ detects 31 staves against 38 parts and the join correctly abstains.
 gaps run 17–237 px and within one Beethoven system 130–345 px — both wider than
 the gaps BETWEEN systems on a piano page — and x-overlap is 1.00 for every pair,
 so no distance threshold can separate them. It used to report one 21-staff
-Brahms system as *twelve*. A barline runs a system's full height and the bracket
-encloses exactly it, so a column inked through the whole gap VETOES a gap-based
-break (veto only — it can merge an over-split page, never split a correct one).
+Brahms system as *twelve*. A column inked through the whole gap VETOES a
+gap-based break (veto only — it can merge an over-split page, never split a
+correct one). ⚠️⚠️ **THE PREMISE THIS RULE WAS JUSTIFIED BY IS FALSE ON BOTH
+PUBLISHERS MEASURED, AND THE RULE SURVIVES BECAUSE IT IS ONE-SIDED.** This
+paragraph read *"a barline runs a system's full height and the bracket encloses
+exactly it"* until 2026-09-18, and both halves are refuted. **The BRACKET half**:
+standard orchestral layout has NO outer whole-system bracket — per-family
+brackets (4 for an 8-staff system) plus the systemic barline — recorded
+independently as *"FALSE and an error in our CLAUDE.md"* in
+`benchmarks/omr-system-grouping-2026-09/research/publisher-conventions.md`.
+**The BARLINE half**, measured off the raster 2026-09-17 with the candidate rule
+tightened by the convention itself (a looser rule reported 18-33 barlines on
+systems printing at most nine bars — mostly stem columns — and biased the result
+toward the conclusion): on **Litolff the FIRST barline crosses every gap 7 of 7,
+the interior ones 0 of 68, the LAST 4 of 7**; on **Breitkopf position does not
+separate at all — nothing crosses every gap, first included**, everything at a
+median 0.92. Sean's own statement — *full height at the beginning and end, not
+the bars between* — holds on Litolff and is itself publisher-dependent.
+⚠️ **The rule is UNCHANGED and still right**: it only ever needs a crossing
+column to be EVIDENCE of a system, and where nothing crosses there is no veto
+and the gap-based break stands — so the false premise overstated WHY it works,
+never what it does. Same family as *A PREMISE ENCODED IN A REFUSAL OUTLIVES ITS
+REASON* below, arriving in a JUSTIFICATION rather than in a refusal.
 Brahms 12 → 1 system, Beethoven 4 → 1, and Beethoven's measure count went 14/8 →
 **8/8 exact**. The dossier join still falls back to page level
 (`slot_facts_for_page`) for pages where grouping is still imperfect.
