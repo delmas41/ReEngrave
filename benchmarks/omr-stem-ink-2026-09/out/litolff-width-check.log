@@ -1,0 +1,11 @@
+heads the width cap recovers: 217
+
+== do the RECOVERED strokes agree with the engraving convention?
+   AGREES                   112
+   convention silent         83
+   disagrees                 22
+
+   recovered:  112/134 = 83.6%
+   REFERENCE (stems we already read): 902/942 = 95.8%   <- the bar
+
+wrote benchmarks/omr-stem-ink-2026-09/out/litolff-width-check.json

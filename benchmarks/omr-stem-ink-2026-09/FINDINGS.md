@@ -181,3 +181,118 @@ and is why the comparison, not the absolute 8.0, is the claim.
   space apart, which is what an accidental looks like) and **was not tested** —
   doing so needs the cell images, i.e. a re-gather.
 * n = 2 documents, 2 publishers, 8 pages.
+
+---
+
+# THE ARM RAN. Two thirds of the missing stems are not a filter's fault.
+
+2026-09-17, after the sections above. **Still no code outside `benchmarks/`.**
+`git diff origin/main -- tools/ backend/` is empty. Three arms:
+`pair_rule_arm.py`, `filter_sweep_arm.py`, `width_cap_check.py`.
+
+## A. THE CONTROL IS EXACT, AND IT HAD TO BE CHECKED
+
+The arms RE-CUT the cells, so a difference from the record could be the re-cut
+rather than the flag. Two controls, both passed before any delta was read:
+
+* `line_detection.py`, `measure_extractor.py`, `staff_detector.py`,
+  `staff_line_removal.py` and `preprocessing.py` are **byte-identical**
+  between the record's own commit (`9d4ccc85`, `dirty: true`) and this tree.
+* With the shipped settings the re-cut reproduces the record **783 of 783
+  cells, stem for stem, 1,920 against 1,920.** The arms exit non-zero rather
+  than report a delta if this fails.
+
+## B. THE SWEEP — Litolff Beethoven 5 pp.1-4, 793 heads abstaining `no_stem`
+
+| relaxing… | recovers | of 793 | new strokes | on an accidental |
+|---|--:|--:|--:|--:|
+| `drop_accidental_pairs=False` | 73 | 9.2% | 244 | **56** |
+| `max_height_lines` 8.0 → 24.0 | **17** | 2.1% | 81 | 0 |
+| `min_height_lines` 2.0 → 1.0 | 58 | 7.3% | 1,127 | 140 |
+| **`max_width_lines` 0.6 → 1.5** | **217** | **27.4%** | 175 | **4** |
+| **ALL FOUR (ceiling)** | **287** | **36.2%** | 2,793 | 340 |
+
+⚠️ The arms overlap (73+17+58+217 = 365 > 287): a head can be recovered by
+more than one relaxation. Only the ceiling is additive.
+
+⚠️ **`min_height_lines` interacts with the pair rule and the total goes DOWN**
+(1,920 → 1,200 strokes): a lower floor admits more short strokes, which then
+pair with each other and are dropped in pairs. A filter sweep on this function
+is not separable, and the table must not be read as four independent knobs.
+
+## C. ⚠️⚠️ THE CEILING IS THE RESULT: 506 OF 793 ARE LOST BEFORE ANY FILTER
+
+Relaxing **every** filter to absurd values recovers **287 of 793 (36.2%)**.
+The other **506 (63.8%) never reach a filter at all** — they do not survive
+step 3, the vertical morphological opening with a one-staff-space kernel on
+the staff-line-ERASED image, as a single connected component.
+
+**So stem recall is not a threshold problem.** It is the shape of the
+component, and the named, scoped, unbuilt repair is already in CLAUDE.md:
+*"a thin glyph is BROKEN by erasure where the lines crossed it and MERGED INTO
+the lines if they are kept, so find the component on the ERASED image and
+measure its ink inside that box on the ORIGINAL."*
+
+⚠️ That is a GATHER change and this arm cannot price it. What the arm
+establishes is only that **no amount of filter tuning can reach two thirds of
+this population**, which is what makes the two-pass read worth building rather
+than one more constant worth sweeping.
+
+## D. THE WIDTH CAP IS THE LARGEST SINGLE COST — AND IS NOT SHIPPABLE ON THIS
+
+217 heads for 175 strokes and only 4 on an accidental is the cheapest row in
+the table by that measure. ⚠️ But *"not an accidental"* is not *"is a stem"*,
+and Litolff is the plate this repo records as MERGING where Breitkopf
+shatters — a stem fused to its own notehead or a beam stub is exactly a
+component wider than 0.6 spaces.
+
+Put to an INDEPENDENT reader — the right-up/left-down convention off the
+raster, which agrees with the stems we already read **95.8% (902/942)**:
+
+| | agrees | n | rate |
+|---|--:|--:|--:|
+| the 217 recovered | 112 | 134 | **83.6%** |
+| **reference (stems we READ)** | 902 | 942 | **95.8%** |
+
+**Better than chance by a wide margin and clearly short of the bar.** Reading
+it as a mixture of real stems agreeing at 95.8% and junk agreeing at 50%,
+about **73% are real** — roughly 160 stems and 57 false ones.
+
+⚠️ **RECOMMENDATION: do not move `max_width_lines` on this.** A 27% recall
+gain carrying ~27% junk is a trade, not a win, and the constant was measured
+onto its value. What this establishes is that the width cap is where to look
+first if anyone does re-take that measurement — not that it should move.
+
+## E. ⚠️⚠️ CORRECTIONS TO THIS DOCUMENT'S OWN EARLIER SECTIONS
+
+**The raster proxy in §2 and §4b over-stated two filters out of three, and
+both over-statements reached a user-facing claim before the arm ran.**
+
+| | what the proxy implied | what the arm measured |
+|---|---|---|
+| `_drop_paired_strokes` | "the larger suspect", 94.6% vs 80.7% | **73 heads, 9.2%** |
+| `STEM_MAX_HEIGHT_LINES` | 80 heads (10.2%) | **17 heads, 2.1%** |
+
+The cause is one thing and it is worth carrying: **the proxy reads raw ink at
+600 dpi; `detect_stems` reads connected components AFTER a morphological
+opening.** Most of what the proxy called a neighbouring "stroke" was never a
+stroke candidate. A proxy for a filter's predicate is not a proxy for the
+filter, because the filter's INPUT POPULATION is not the ink.
+
+⚠️ §4's ranking of the height cap as a named lever stands corrected at 2.1%,
+and §4b's "larger suspect" stands corrected at 9.2%. Both are kept above
+rather than rewritten, because the correction is the finding.
+
+## F. WHAT IS NOT ESTABLISHED
+
+* **One document.** Every figure here is Litolff Beethoven 5 pp.1-4. Breitkopf
+  was NOT run — its `no_stem` population is 1,529 and its plate SHATTERS where
+  this one merges, so the width-cap row in particular should be expected to
+  behave differently, not the same.
+* **No note was checked against the print.** The convention cross-check is one
+  reading against another, from different pixels by a different method —
+  stronger than a recall count, weaker than a crop.
+* **The cost column is a floor.** "Lands on an accidental the detector found"
+  misses every false stroke that is a beam stub, a slur edge, a barline
+  fragment or a neighbour's stem, and misses accidentals the detector missed.
+* **Nothing was changed and no constant is proposed for a move.**
