@@ -1,0 +1,58 @@
+SUBJECT glyph/1/0/2/4/1  (glyph, 9 rows filed at it)
+
+── GATHER ────────────────────────────────────────────────────────────
+  READ     glyph_box                  = ['noteheadHalfInSpace', 136, 694, 147, 150]
+           by detector in frame cell:4 score=0.29871299862861633  detail=['bbox_page_px', 'category', 'x_center_page', 'y_center_page']
+  READ     glyph_conf                 = 0.29871299862861633
+           by detector in frame cell:4 score=0.29871299862861633
+  READ     notehead_class             = 'noteheadHalfInSpace'
+           by detector in frame cell:4 score=0.29871299862861633
+  READ     notehead_staff_position    = 7.38
+           by geometry in frame cell:4  detail=['residual', 'rounded']
+── ADJUDICATE ────────────────────────────────────────────────────────
+  ABSTAINED stem_direction             = None
+           by adjudicate_stem_direction  reason=stems_disagree
+           read 0 of 5 rows considered; basis 5; 2 correlated group(s)
+  DECIDED  notehead_is_a_whole_rest   = False
+           by adjudicate_notehead_is_a_whole_rest  reason=not_rest_shaped
+           read 3 of 3 rows considered; basis 3
+  DECIDED  duration                   = {'beats': 1.0, 'written': 1.0, 'dots': 0, 'beam_levels': 1}
+           by adjudicate_duration  reason=head_and_marks
+           read 6 of 8 rows considered; basis 8; 3 correlated group(s)
+           MISSING  ['aug_dot', 'flag', 'rest', 'tuplet_ratio']
+── EVALUATE ──────────────────────────────────────────────────────────
+  DECIDED  pitch                      = 'F4'
+           by restate_pitch  reason=position_and_clef
+           read 0 of 2 rows considered; basis 2
+  DECIDED  duration                   = {'beats': 2.0, 'written': 2.0, 'dots': 0, 'beam_levels': 0, 'reconciled': True}
+           by reconcile_duration  reason=meter_reconciliation
+           read 0 of 2 rows considered; basis 2
+           SUPERSEDES vrd:053285 (adjudicate_duration: decided={'beats': 1.0, 'written': 1.0, 'dots': 0, 'beam_levels': 1}) -> changed_the_value
+
+── CONTEXT (decided on an ANCESTOR, not on this subject) ──────
+  cell/1/0/2/4           5 read, 2 declined, 4 verdicts
+      event={'events': [{'glyphs': [1], 'x': 209.5, 'kind': 'chord'}]} [decided/x_clustered] by adjudicate_event
+      voices={'n_voices': 1, 'voices': [[1]], 'rests_in_every_voice': []} [decided/one_voice] by adjudicate_voices
+      dynamic=[] [decided/no_letters] by adjudicate_dynamic
+      direction=None [abstained/out_of_scope] by adjudicate_direction
+  staff/1/0/2            19 read, 5 declined, 8 verdicts
+      staff_group=0 [decided/bracket_block] by adjudicate_staff_group
+      measure_partition=16 [decided/read] by adjudicate_measure_partition
+      staff_ordinal=2 [decided/read] by adjudicate_staff_ordinal
+      instrument={'name': 'Clarinet', 'family': 'woodwind', 'expected_clef': 'treble', 'written_range': [50...(+26 chars) [decided/label] by adjudicate_instrument
+      slot_index=2 [decided/named] by adjudicate_slot_index
+      clef=treble [decided/scored] by adjudicate_clef
+      key_signature=-1 [decided/fitted] by adjudicate_key_signature
+      part_name=Clarinet [decided/from_instrument] by name_part
+  system/1/0             1 read, 0 declined, 5 verdicts
+      system_membership=12 [decided/counted] by adjudicate_system_membership
+      system_staff_count=12 [decided/counted] by adjudicate_system_staff_count
+      group_symbol=bracket [decided/bracket] by adjudicate_group_symbol
+      onset_column={'bars': [{'measure': 0, 'staves': 12, 'columns': [{'x_page': 654.12, 'witnesses': [2], 'n...(+14453 chars) [decided/columns_read] by adjudicate_onset_column
+      meter={'numerator': 2, 'denominator': 4, 'raw': '2/4', 'segments': [{'numerator': 2, 'denominato...(+38 chars) [decided/voted] by adjudicate_meter
+  page/1                 1 read, 1 declined, 0 verdicts
+  document               5 read, 4 declined, 1 verdicts
+      part_partition={'join': 'slot', 'slots': [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]} [decided/slot] by adjudicate_part_partition
+
+── EXPORT ──────────────────────────────────────────────────────
+  declined: no export report supplied (--export to run it)
