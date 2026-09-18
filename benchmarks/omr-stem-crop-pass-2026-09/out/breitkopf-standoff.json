@@ -1,0 +1,841 @@
+{
+ "label": "Breitkopf Brahms 1 pp.0-3",
+ "what": "heads the raster attachment convention and the SHIPPED beam-mate tier disagree about; the print is the only arbiter not correlated with either",
+ "added_mid_pass": true,
+ "not_part_of_the_preregistered_sample": true,
+ "n": 26,
+ "rows": [
+  {
+   "subject": "glyph/0/0/6/2/3",
+   "attachment_says": "down",
+   "beam_mate_says": "up",
+   "R_up": 0.56,
+   "L_down": 2.94,
+   "illegal": 1.47,
+   "where": {
+    "page": 0,
+    "system": 0,
+    "staff": 6,
+    "cell": 2,
+    "glyph": 3
+   },
+   "cls": "noteheadBlackOnLine",
+   "bucket": "too WIDE (w > 0.6 spaces)",
+   "bbox_page_px": [
+    2712.92,
+    4004.32,
+    2754.52,
+    4041.12
+   ],
+   "staff_key": "staff/0/0/6",
+   "staff_lines": [
+    3956.0,
+    3989.0,
+    4021.0,
+    4052.0,
+    4084.0
+   ],
+   "staff_spacing": 32.0
+  },
+  {
+   "subject": "glyph/0/0/6/2/5",
+   "attachment_says": "down",
+   "beam_mate_says": "up",
+   "R_up": 0.53,
+   "L_down": 3.97,
+   "illegal": 0.44,
+   "where": {
+    "page": 0,
+    "system": 0,
+    "staff": 6,
+    "cell": 2,
+    "glyph": 5
+   },
+   "cls": "noteheadBlackOnLine",
+   "bucket": "too WIDE (w > 0.6 spaces)",
+   "bbox_page_px": [
+    2712.28,
+    3970.72,
+    2754.52,
+    4007.84
+   ],
+   "staff_key": "staff/0/0/6",
+   "staff_lines": [
+    3956.0,
+    3989.0,
+    4021.0,
+    4052.0,
+    4084.0
+   ],
+   "staff_spacing": 32.0
+  },
+  {
+   "subject": "glyph/1/0/5/0/3",
+   "attachment_says": "down",
+   "beam_mate_says": "up",
+   "R_up": 0.22,
+   "L_down": 4.11,
+   "illegal": 2.84,
+   "where": {
+    "page": 1,
+    "system": 0,
+    "staff": 5,
+    "cell": 0,
+    "glyph": 3
+   },
+   "cls": "noteheadBlackOnLine",
+   "bucket": "NO component overlaps the head at all",
+   "bbox_page_px": [
+    1615.24169921875,
+    1871.7607421875,
+    1629.36279296875,
+    1886.47021484375
+   ],
+   "staff_key": "staff/1/0/5",
+   "staff_lines": [
+    1757.0,
+    1785.0,
+    1812.0,
+    1839.0,
+    1867.0
+   ],
+   "staff_spacing": 27.5
+  },
+  {
+   "subject": "glyph/1/0/8/0/2",
+   "attachment_says": "down",
+   "beam_mate_says": "up",
+   "R_up": 0.47,
+   "L_down": 6.15,
+   "illegal": 0.4,
+   "where": {
+    "page": 1,
+    "system": 0,
+    "staff": 8,
+    "cell": 0,
+    "glyph": 2
+   },
+   "cls": "noteheadBlackOnLine",
+   "bucket": "too SHORT (h < 2.0 spaces)",
+   "bbox_page_px": [
+    1266.92138671875,
+    2664.421875,
+    1308.10791015625,
+    2698.5478515625
+   ],
+   "staff_key": "staff/1/0/8",
+   "staff_lines": [
+    2492.0,
+    2520.0,
+    2547.0,
+    2575.0,
+    2602.0
+   ],
+   "staff_spacing": 27.5
+  },
+  {
+   "subject": "glyph/1/0/8/0/7",
+   "attachment_says": "down",
+   "beam_mate_says": "up",
+   "R_up": 0.47,
+   "L_down": 5.67,
+   "illegal": 0.76,
+   "where": {
+    "page": 1,
+    "system": 0,
+    "staff": 8,
+    "cell": 0,
+    "glyph": 7
+   },
+   "cls": "noteheadBlackInSpace",
+   "bucket": "too SHORT (h < 2.0 spaces)",
+   "bbox_page_px": [
+    988.6181640625,
+    2679.7197265625,
+    1026.2744140625,
+    2710.90380859375
+   ],
+   "staff_key": "staff/1/0/8",
+   "staff_lines": [
+    2492.0,
+    2520.0,
+    2547.0,
+    2575.0,
+    2602.0
+   ],
+   "staff_spacing": 27.5
+  },
+  {
+   "subject": "glyph/2/0/11/0/10",
+   "attachment_says": "up",
+   "beam_mate_says": "down",
+   "R_up": 6.69,
+   "L_down": 0.57,
+   "illegal": 0.67,
+   "where": {
+    "page": 2,
+    "system": 0,
+    "staff": 11,
+    "cell": 0,
+    "glyph": 10
+   },
+   "cls": "noteheadBlackInSpace",
+   "bucket": "too SHORT (h < 2.0 spaces)",
+   "bbox_page_px": [
+    1365.11181640625,
+    3029.041015625,
+    1404.91162109375,
+    3060.6767578125
+   ],
+   "staff_key": "staff/2/0/11",
+   "staff_lines": [
+    3140.0,
+    3167.0,
+    3197.0,
+    3225.0,
+    3253.0
+   ],
+   "staff_spacing": 28.25
+  },
+  {
+   "subject": "glyph/2/0/11/0/7",
+   "attachment_says": "up",
+   "beam_mate_says": "down",
+   "R_up": 5.1,
+   "L_down": 0.57,
+   "illegal": 0.74,
+   "where": {
+    "page": 2,
+    "system": 0,
+    "staff": 11,
+    "cell": 0,
+    "glyph": 7
+   },
+   "cls": "noteheadBlackInSpace",
+   "bucket": "too SHORT (h < 2.0 spaces)",
+   "bbox_page_px": [
+    946.70361328125,
+    3028.53076171875,
+    985.9931640625,
+    3062.20751953125
+   ],
+   "staff_key": "staff/2/0/11",
+   "staff_lines": [
+    3140.0,
+    3167.0,
+    3197.0,
+    3225.0,
+    3253.0
+   ],
+   "staff_spacing": 28.25
+  },
+  {
+   "subject": "glyph/2/0/11/1/0",
+   "attachment_says": "up",
+   "beam_mate_says": "down",
+   "R_up": 6.62,
+   "L_down": 0.46,
+   "illegal": 0.74,
+   "where": {
+    "page": 2,
+    "system": 0,
+    "staff": 11,
+    "cell": 1,
+    "glyph": 0
+   },
+   "cls": "noteheadBlackInSpace",
+   "bucket": "too SHORT (h < 2.0 spaces)",
+   "bbox_page_px": [
+    1723.974609375,
+    3027.48779296875,
+    1762.998046875,
+    3055.2919921875
+   ],
+   "staff_key": "staff/2/0/11",
+   "staff_lines": [
+    3140.0,
+    3167.0,
+    3197.0,
+    3225.0,
+    3253.0
+   ],
+   "staff_spacing": 28.25
+  },
+  {
+   "subject": "glyph/2/0/11/1/7",
+   "attachment_says": "up",
+   "beam_mate_says": "down",
+   "R_up": 6.69,
+   "L_down": 0.5,
+   "illegal": 0.74,
+   "where": {
+    "page": 2,
+    "system": 0,
+    "staff": 11,
+    "cell": 1,
+    "glyph": 7
+   },
+   "cls": "noteheadBlackInSpace",
+   "bucket": "too SHORT (h < 2.0 spaces)",
+   "bbox_page_px": [
+    2013.23583984375,
+    3027.9755859375,
+    2052.25927734375,
+    3058.21875
+   ],
+   "staff_key": "staff/2/0/11",
+   "staff_lines": [
+    3140.0,
+    3167.0,
+    3197.0,
+    3225.0,
+    3253.0
+   ],
+   "staff_spacing": 28.25
+  },
+  {
+   "subject": "glyph/2/0/5/2/4",
+   "attachment_says": "down",
+   "beam_mate_says": "up",
+   "R_up": 0.26,
+   "L_down": 4.29,
+   "illegal": 2.9,
+   "where": {
+    "page": 2,
+    "system": 0,
+    "staff": 5,
+    "cell": 2,
+    "glyph": 4
+   },
+   "cls": "noteheadBlackOnLine",
+   "bucket": "NO component overlaps the head at all",
+   "bbox_page_px": [
+    2782.08154296875,
+    1666.04736328125,
+    2797.595703125,
+    1680.3447265625
+   ],
+   "staff_key": "staff/2/0/5",
+   "staff_lines": [
+    1605.0,
+    1632.0,
+    1659.0,
+    1686.0,
+    1714.0
+   ],
+   "staff_spacing": 27.25
+  },
+  {
+   "subject": "glyph/2/0/6/3/1",
+   "attachment_says": "down",
+   "beam_mate_says": "up",
+   "R_up": 0.51,
+   "L_down": 6.35,
+   "illegal": 0.62,
+   "where": {
+    "page": 2,
+    "system": 0,
+    "staff": 6,
+    "cell": 3,
+    "glyph": 1
+   },
+   "cls": "noteheadBlackInSpace",
+   "bucket": "too SHORT (h < 2.0 spaces)",
+   "bbox_page_px": [
+    3396.787109375,
+    2022.55078125,
+    3436.015625,
+    2054.162109375
+   ],
+   "staff_key": "staff/2/0/6",
+   "staff_lines": [
+    1852.0,
+    1883.0,
+    1905.0,
+    1934.0,
+    1961.0
+   ],
+   "staff_spacing": 27.25
+  },
+  {
+   "subject": "glyph/2/0/7/3/2",
+   "attachment_says": "up",
+   "beam_mate_says": "down",
+   "R_up": 5.85,
+   "L_down": 0.48,
+   "illegal": 0.52,
+   "where": {
+    "page": 2,
+    "system": 0,
+    "staff": 7,
+    "cell": 3,
+    "glyph": 2
+   },
+   "cls": "noteheadBlackInSpace",
+   "bucket": "too SHORT (h < 2.0 spaces)",
+   "bbox_page_px": [
+    3397.548828125,
+    1949.0,
+    3437.919921875,
+    1977.564453125
+   ],
+   "staff_key": "staff/2/0/7",
+   "staff_lines": [
+    2057.0,
+    2084.0,
+    2111.0,
+    2139.0,
+    2165.0
+   ],
+   "staff_spacing": 27.0
+  },
+  {
+   "subject": "glyph/2/1/1/3/3",
+   "attachment_says": "down",
+   "beam_mate_says": "up",
+   "R_up": 0.55,
+   "L_down": 3.23,
+   "illegal": 0.77,
+   "where": {
+    "page": 2,
+    "system": 1,
+    "staff": 1,
+    "cell": 3,
+    "glyph": 3
+   },
+   "cls": "noteheadBlackOnLine",
+   "bucket": "a component WAS accepted (pair rule dropped it)",
+   "bbox_page_px": [
+    2621.2525,
+    4404.695,
+    2660.22,
+    4438.485
+   ],
+   "staff_key": "staff/2/1/1",
+   "staff_lines": [
+    4366.0,
+    4393.0,
+    4420.0,
+    4448.0,
+    4475.0
+   ],
+   "staff_spacing": 27.25
+  },
+  {
+   "subject": "glyph/2/1/4/0/2",
+   "attachment_says": "down",
+   "beam_mate_says": "up",
+   "R_up": 0.51,
+   "L_down": 6.35,
+   "illegal": 0.7,
+   "where": {
+    "page": 2,
+    "system": 1,
+    "staff": 4,
+    "cell": 0,
+    "glyph": 2
+   },
+   "cls": "noteheadBlackInSpace",
+   "bucket": "too SHORT (h < 2.0 spaces)",
+   "bbox_page_px": [
+    957.5341796875,
+    5188.3681640625,
+    997.4755859375,
+    5220.3212890625
+   ],
+   "staff_key": "staff/2/1/4",
+   "staff_lines": [
+    5003.0,
+    5030.0,
+    5058.0,
+    5085.0,
+    5112.0
+   ],
+   "staff_spacing": 27.25
+  },
+  {
+   "subject": "glyph/2/1/4/0/8",
+   "attachment_says": "down",
+   "beam_mate_says": "up",
+   "R_up": 0.44,
+   "L_down": 2.42,
+   "illegal": 1.69,
+   "where": {
+    "page": 2,
+    "system": 1,
+    "staff": 4,
+    "cell": 0,
+    "glyph": 8
+   },
+   "cls": "noteheadBlackOnLine",
+   "bucket": "NO component overlaps the head at all",
+   "bbox_page_px": [
+    1194.38671875,
+    5202.7470703125,
+    1234.328125,
+    5220.720703125
+   ],
+   "staff_key": "staff/2/1/4",
+   "staff_lines": [
+    5003.0,
+    5030.0,
+    5058.0,
+    5085.0,
+    5112.0
+   ],
+   "staff_spacing": 27.25
+  },
+  {
+   "subject": "glyph/3/0/11/7/15",
+   "attachment_says": "up",
+   "beam_mate_says": "down",
+   "R_up": 2.04,
+   "L_down": 0.25,
+   "illegal": 2.0,
+   "where": {
+    "page": 3,
+    "system": 0,
+    "staff": 11,
+    "cell": 7,
+    "glyph": 15
+   },
+   "cls": "noteheadBlackInSpace",
+   "bucket": "NO component overlaps the head at all",
+   "bbox_page_px": [
+    4177.475,
+    3019.0,
+    4213.5,
+    3032.2
+   ],
+   "staff_key": "staff/3/0/11",
+   "staff_lines": [
+    3129.0,
+    3156.0,
+    3184.0,
+    3211.0,
+    3239.0
+   ],
+   "staff_spacing": 27.5
+  },
+  {
+   "subject": "glyph/3/0/11/7/16",
+   "attachment_says": "up",
+   "beam_mate_says": "down",
+   "R_up": 1.96,
+   "L_down": 1.24,
+   "illegal": 2.0,
+   "where": {
+    "page": 3,
+    "system": 0,
+    "staff": 11,
+    "cell": 7,
+    "glyph": 16
+   },
+   "cls": "noteheadBlackOnLine",
+   "bucket": "NO component overlaps the head at all",
+   "bbox_page_px": [
+    4121.65,
+    3019.0,
+    4155.475,
+    3031.1
+   ],
+   "staff_key": "staff/3/0/11",
+   "staff_lines": [
+    3129.0,
+    3156.0,
+    3184.0,
+    3211.0,
+    3239.0
+   ],
+   "staff_spacing": 27.5
+  },
+  {
+   "subject": "glyph/3/0/11/7/24",
+   "attachment_says": "up",
+   "beam_mate_says": "down",
+   "R_up": 2.04,
+   "L_down": 0.25,
+   "illegal": 2.0,
+   "where": {
+    "page": 3,
+    "system": 0,
+    "staff": 11,
+    "cell": 7,
+    "glyph": 24
+   },
+   "cls": "noteheadBlackOnLine",
+   "bucket": "NO component overlaps the head at all",
+   "bbox_page_px": [
+    4177.75,
+    3019.0,
+    4213.5,
+    3032.2
+   ],
+   "staff_key": "staff/3/0/11",
+   "staff_lines": [
+    3129.0,
+    3156.0,
+    3184.0,
+    3211.0,
+    3239.0
+   ],
+   "staff_spacing": 27.5
+  },
+  {
+   "subject": "glyph/3/0/11/7/28",
+   "attachment_says": "up",
+   "beam_mate_says": "down",
+   "R_up": 1.96,
+   "L_down": 1.24,
+   "illegal": 2.0,
+   "where": {
+    "page": 3,
+    "system": 0,
+    "staff": 11,
+    "cell": 7,
+    "glyph": 28
+   },
+   "cls": "noteheadBlackInSpace",
+   "bucket": "NO component overlaps the head at all",
+   "bbox_page_px": [
+    4121.375,
+    3019.0,
+    4155.475,
+    3031.375
+   ],
+   "staff_key": "staff/3/0/11",
+   "staff_lines": [
+    3129.0,
+    3156.0,
+    3184.0,
+    3211.0,
+    3239.0
+   ],
+   "staff_spacing": 27.5
+  },
+  {
+   "subject": "glyph/3/0/12/8/13",
+   "attachment_says": "down",
+   "beam_mate_says": "up",
+   "R_up": 1.05,
+   "L_down": 2.4,
+   "illegal": 2.4,
+   "where": {
+    "page": 3,
+    "system": 0,
+    "staff": 12,
+    "cell": 8,
+    "glyph": 13
+   },
+   "cls": "noteheadBlackInSpace",
+   "bucket": "too WIDE (w > 0.6 spaces)",
+   "bbox_page_px": [
+    4771.5,
+    3410.175,
+    4795.975,
+    3431.35
+   ],
+   "staff_key": "staff/3/0/12",
+   "staff_lines": [
+    3411.0,
+    3438.0,
+    3465.0,
+    3492.0,
+    3521.0
+   ],
+   "staff_spacing": 27.5
+  },
+  {
+   "subject": "glyph/3/1/1/7/3",
+   "attachment_says": "down",
+   "beam_mate_says": "up",
+   "R_up": 0.58,
+   "L_down": 3.93,
+   "illegal": 1.64,
+   "where": {
+    "page": 3,
+    "system": 1,
+    "staff": 1,
+    "cell": 7,
+    "glyph": 3
+   },
+   "cls": "noteheadBlackInSpace",
+   "bucket": "too WIDE (w > 0.6 spaces)",
+   "bbox_page_px": [
+    4000.075,
+    4339.225,
+    4038.025,
+    4368.925
+   ],
+   "staff_key": "staff/3/1/1",
+   "staff_lines": [
+    4312.0,
+    4339.0,
+    4366.0,
+    4394.0,
+    4422.0
+   ],
+   "staff_spacing": 27.5
+  },
+  {
+   "subject": "glyph/3/1/1/8/14",
+   "attachment_says": "down",
+   "beam_mate_says": "up",
+   "R_up": 0.55,
+   "L_down": 3.31,
+   "illegal": 1.64,
+   "where": {
+    "page": 3,
+    "system": 1,
+    "staff": 1,
+    "cell": 8,
+    "glyph": 14
+   },
+   "cls": "noteheadBlackInSpace",
+   "bucket": "too WIDE (w > 0.6 spaces)",
+   "bbox_page_px": [
+    4718.775,
+    4338.675,
+    4757.825,
+    4368.65
+   ],
+   "staff_key": "staff/3/1/1",
+   "staff_lines": [
+    4312.0,
+    4339.0,
+    4366.0,
+    4394.0,
+    4422.0
+   ],
+   "staff_spacing": 27.5
+  },
+  {
+   "subject": "glyph/3/1/1/8/15",
+   "attachment_says": "down",
+   "beam_mate_says": "up",
+   "R_up": 0.51,
+   "L_down": 4.36,
+   "illegal": 1.64,
+   "where": {
+    "page": 3,
+    "system": 1,
+    "staff": 1,
+    "cell": 8,
+    "glyph": 15
+   },
+   "cls": "noteheadBlackInSpace",
+   "bucket": "too WIDE (w > 0.6 spaces)",
+   "bbox_page_px": [
+    4718.225,
+    4308.15,
+    4757.55,
+    4340.875
+   ],
+   "staff_key": "staff/3/1/1",
+   "staff_lines": [
+    4312.0,
+    4339.0,
+    4366.0,
+    4394.0,
+    4422.0
+   ],
+   "staff_spacing": 27.5
+  },
+  {
+   "subject": "glyph/3/1/1/8/2",
+   "attachment_says": "down",
+   "beam_mate_says": "up",
+   "R_up": 0.44,
+   "L_down": 3.09,
+   "illegal": 1.49,
+   "where": {
+    "page": 3,
+    "system": 1,
+    "staff": 1,
+    "cell": 8,
+    "glyph": 2
+   },
+   "cls": "noteheadBlackOnLine",
+   "bucket": "too WIDE (w > 0.6 spaces)",
+   "bbox_page_px": [
+    4624.45,
+    4351.325,
+    4665.7,
+    4383.775
+   ],
+   "staff_key": "staff/3/1/1",
+   "staff_lines": [
+    4312.0,
+    4339.0,
+    4366.0,
+    4394.0,
+    4422.0
+   ],
+   "staff_spacing": 27.5
+  },
+  {
+   "subject": "glyph/3/1/1/8/5",
+   "attachment_says": "down",
+   "beam_mate_says": "up",
+   "R_up": 0.55,
+   "L_down": 4.11,
+   "illegal": 0.47,
+   "where": {
+    "page": 3,
+    "system": 1,
+    "staff": 1,
+    "cell": 8,
+    "glyph": 5
+   },
+   "cls": "noteheadBlackOnLine",
+   "bucket": "too WIDE (w > 0.6 spaces)",
+   "bbox_page_px": [
+    4624.45,
+    4323.0,
+    4663.5,
+    4355.45
+   ],
+   "staff_key": "staff/3/1/1",
+   "staff_lines": [
+    4312.0,
+    4339.0,
+    4366.0,
+    4394.0,
+    4422.0
+   ],
+   "staff_spacing": 27.5
+  },
+  {
+   "subject": "glyph/3/1/3/0/43",
+   "attachment_says": "up",
+   "beam_mate_says": "down",
+   "R_up": 10.0,
+   "L_down": 0.84,
+   "illegal": 9.96,
+   "where": {
+    "page": 3,
+    "system": 1,
+    "staff": 3,
+    "cell": 0,
+    "glyph": 43
+   },
+   "cls": "noteheadBlackInSpace",
+   "bucket": "a component WAS accepted (pair rule dropped it)",
+   "bbox_page_px": [
+    1341.3916015625,
+    4848.3857421875,
+    1405.83935546875,
+    4881.9443359375
+   ],
+   "staff_key": "staff/3/1/3",
+   "staff_lines": [
+    4770.0,
+    4797.0,
+    4825.0,
+    4851.0,
+    4880.0
+   ],
+   "staff_spacing": 27.5
+  }
+ ]
+}

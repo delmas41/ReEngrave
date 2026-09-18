@@ -96,11 +96,18 @@ def _frame_ok(arr, line_ys, spacing, *, margin):
 
 def main() -> int:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--sample", required=True)
-    ap.add_argument("--rows", required=True)
-    ap.add_argument("--decided", required=True)
-    ap.add_argument("--which", type=int, required=True,
+    ap.add_argument("--sample")
+    ap.add_argument("--rows")
+    ap.add_argument("--decided")
+    ap.add_argument("--which", type=int,
                     help="index into SAMPLE.json['publishers']")
+    # ⚠️ AN ADDED POPULATION, NOT A DRAW FROM THE SAMPLE. Anything cropped
+    # this way is a CENSUS of a named set and carries none of `SAMPLE.json`'s
+    # guarantees; it must be reported apart and never pooled with it.
+    ap.add_argument("--rows-json",
+                    help="crop EVERY row of this file instead of the "
+                         "pre-registered sample (added populations only)")
+    ap.add_argument("--pdf-path", help="required with --rows-json")
     ap.add_argument("--label-prefix", required=True)
     ap.add_argument("--out-dir", required=True)
     ap.add_argument("--manifest", required=True)
@@ -119,11 +126,28 @@ def main() -> int:
     import numpy as np
     from PIL import Image, ImageDraw
 
-    sample = json.loads(Path(a.sample).read_text())
-    pub = sample["publishers"][a.which]
-    rows = {r["subject"]: r for r in json.loads(Path(a.rows).read_text())["rows"]}
-    dec = {r["subject"]: r
-           for r in json.loads(Path(a.decided).read_text())["rows"]}
+    if a.rows_json:
+        if not a.pdf_path:
+            print("--rows-json needs --pdf-path", file=sys.stderr)
+            return 2
+        src = json.loads(Path(a.rows_json).read_text())
+        pub = {"label": src["label"] + " (ADDED population, not the "
+                                       "pre-registered sample)",
+               "pdf": a.pdf_path}
+        added = src["rows"]
+        rows = dec = {}
+    else:
+        if not (a.sample and a.rows and a.decided and a.which is not None):
+            print("need --sample --rows --decided --which, or --rows-json",
+                  file=sys.stderr)
+            return 2
+        added = None
+        sample = json.loads(Path(a.sample).read_text())
+        pub = sample["publishers"][a.which]
+        rows = {r["subject"]: r
+                for r in json.loads(Path(a.rows).read_text())["rows"]}
+        dec = {r["subject"]: r
+               for r in json.loads(Path(a.decided).read_text())["rows"]}
     pdf = pub["pdf"]
     if not Path(pdf).is_file():
         print(f"NO PDF AT {pdf} — this probe renders the page the record was "
@@ -133,13 +157,24 @@ def main() -> int:
     print(f"{pub['label']}\npdf  {pdf}\ndpi  {a.dpi}")
 
     todo = []
-    for bucket, st in pub["strata"].items():
-        for s in st["subjects"]:
-            todo.append({"subject": s, "kind": "sample", "bucket": bucket,
-                         "row": rows[s]})
-    for s, read in pub["positive_control"]["subjects"]:
-        todo.append({"subject": s, "kind": "control", "bucket": "CONTROL",
-                     "read_direction": read, "row": dec[s]})
+    if added is not None:
+        for r in added:
+            todo.append({"subject": r["subject"], "kind": "added",
+                         "bucket": r.get("bucket", "ADDED"),
+                         # ⚠️ what each reader SAID is carried here and is
+                         # NOT on the image - the whole point is to read the
+                         # print without knowing which party to favour.
+                         "claims": {k: r[k] for k in r
+                                    if k.endswith("_says")},
+                         "row": r})
+    else:
+        for bucket, st in pub["strata"].items():
+            for s in st["subjects"]:
+                todo.append({"subject": s, "kind": "sample", "bucket": bucket,
+                             "row": rows[s]})
+        for s, read in pub["positive_control"]["subjects"]:
+            todo.append({"subject": s, "kind": "control", "bucket": "CONTROL",
+                         "read_direction": read, "row": dec[s]})
     print(f"reach: {len(todo)} crops "
           f"({sum(1 for t in todo if t['kind']=='sample')} sample, "
           f"{sum(1 for t in todo if t['kind']=='control')} control)")
@@ -273,6 +308,7 @@ def main() -> int:
             % (2 * PAD_Y_SPACES, PAD_Y_SPACES, 2 * PAD_X_SPACES),
         "tiles": [{"id": t["id"], "subject": t["subject"], "kind": t["kind"],
                    "bucket": t["bucket"],
+                   "claims": t.get("claims"),
                    "read_direction": t.get("read_direction"),
                    "cls": t["row"].get("cls"),
                    "width_cap_recovered": t["row"].get("width_cap_recovered"),
