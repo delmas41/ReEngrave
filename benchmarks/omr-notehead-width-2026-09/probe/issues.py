@@ -33,12 +33,14 @@ from __future__ import annotations
 
 import argparse
 import json
+import sys
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
+sys.path.insert(0, str(HERE))
 BENCH = HERE.parent
 STROKE = BENCH.parent / "omr-stem-stroke-2026-09" / "out"
-FLOOR = 1.0
+from floor import FLOOR  # ⚠️ ONE place; see probe/floor.py
 # the variant the stroke lane reports as the shipped one; `+legal` is marked
 # CIRCULAR in its own output and is deliberately not used here.
 VARIANT = "side+end"

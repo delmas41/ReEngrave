@@ -63,7 +63,7 @@ ARMS = [
      '"canon": [float(v[1]), float(v[2]), float(v[3]) - float(v[1]), float(v[4]) - float(v[2])],',
      None,  # needs a re-extract; handled specially
      "the canonical box is (x,y,w,h); read as corners every width collapses"),
-    ("the floor moved to 1.5 spaces", "score.py",
+    ("the floor moved to 1.5 spaces", "floor.py",
      "FLOOR = 1.0", "FLOOR = 1.5", ISSUES,
      "issues.py must stop reproducing the stroke lane's 44 / 576"),
     ("the census join keyed on the CELL not the glyph", "score.py",
@@ -85,6 +85,10 @@ ARMS = [
      'if dif and max(dif) > 0.02:', 'if dif and max(dif) > 10.0:',
      None,  # also equivalent on a clean tree (the diff is 0.0); held out
      "EQUIVALENT MUTANT on a clean tree, held out"),
+    ("the truth-mapping controls deleted", "contamination.py",
+     '    if tbad:', '    if tbad and False:', CONTAM,
+     "the five controls on the verdict vocabulary must be able to stop the "
+     "run; three battery arms survived for want of exactly this"),
     ("publisher pinned by PAGE NUMBER instead of the manifest",
      "contamination.py",
      '            pub, subj = tile2.get(r.get("id"), (None, r.get("subject")))',

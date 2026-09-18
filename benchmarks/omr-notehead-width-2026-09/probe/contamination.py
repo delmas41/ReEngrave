@@ -26,12 +26,14 @@ from __future__ import annotations
 import argparse
 import collections
 import json
+import sys
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
+sys.path.insert(0, str(HERE))
 BENCH = HERE.parent
 CROPDIR = BENCH.parent / "omr-stem-crop-pass-2026-09"
-FLOOR = 1.0
+from floor import FLOOR  # ⚠️ ONE place; see probe/floor.py
 
 
 def q(vals, p):
@@ -180,6 +182,62 @@ def main() -> int:
     out = {"floor": FLOOR, "adjudicated_rows": len(adj),
            "resolved": len(resolved), "unresolved": len(unresolved),
            "unresolved_detail": [list(map(str, u)) for u in unresolved]}
+
+    # ------------------------------------------------------------------ #
+    # ⚠️⚠️ POSITIVE CONTROLS ON THE TRUTH MAPPING ITSELF, AND THE MUTATION
+    # BATTERY IS WHY THEY EXIST. Three arms that rewrote `truth_of` -- the
+    # `cannot_tell` collapse, a silent default for an unknown word, and the
+    # whole-note vocabulary mapped to the wrong side -- ALL SURVIVED, because
+    # this probe only asserted that the JOIN resolved. So the function that
+    # produced the headline "0 of 103" had no control that could fail on a
+    # wrong mapping, which is exactly the bug this session had TWICE.
+    #
+    # The anchor is the crop pass's own published figure: *"46 of 180 boxes
+    # are not noteheads -- 15.6% Litolff, 35.6% Breitkopf"*, over the tiles
+    # its manifests mark `kind: "sample"` (90 per publisher; the other 16 are
+    # the disjoint positive control). 15.6% x 90 = 14 and 35.6% x 90 = 32,
+    # and 14 + 32 = 46.
+    # ------------------------------------------------------------------ #
+    kind = {}
+    for name, mans in MANIFESTS.items():
+        for mname, pub in mans:
+            mp = CROPDIR / "out" / mname
+            if mp.exists():
+                for t in json.loads(mp.read_text())["tiles"]:
+                    kind[(pub, t["subject"])] = t.get("kind")
+    sample_not_head = collections.Counter()
+    for src, pub, r, w in resolved:
+        if kind.get((pub, w["subject"])) == "sample":
+            if truth_of(r) == "NOT a notehead":
+                sample_not_head[pub] += 1
+    tctl = {
+        "sample_not_a_notehead_litolff": [sample_not_head["litolff"], 14],
+        "sample_not_a_notehead_breitkopf": [sample_not_head["breitkopf"], 32],
+        "sample_not_a_notehead_total": [sum(sample_not_head.values()), 46],
+        # the three-way split must PARTITION the resolved rows: an unknown
+        # vocabulary word must be impossible, not merely rare.
+        "no_unknown_verdict_word": [
+            sum(1 for _s, _p, r, _w in resolved
+                if truth_of(r).startswith("UNKNOWN")), 0],
+        # the standoff's published split, re-derived here
+        "standoff_settled": [
+            sum(1 for src, _p, r, _w in resolved
+                if src == "ADJUDICATION-standoff.json"
+                and r.get("verdict") in ("stem_printed_up",
+                                         "stem_printed_down")), 16],
+    }
+    tbad = [k for k, (g, want) in tctl.items() if g != want]
+    print("\n-- controls on the TRUTH MAPPING (not just on the join)")
+    for k, (g, want) in tctl.items():
+        print(f"   {'FAIL' if k in tbad else 'ok  '} {k:<34} {g} "
+              f"(want {want})")
+    out["truth_controls"] = {k: {"got": g, "want": w}
+                             for k, (g, w) in tctl.items()}
+    if tbad:
+        print(f"DEAD: {len(tbad)} truth-mapping control(s) failed -- the "
+              f"verdict vocabulary is mis-read and no matrix below may be "
+              f"quoted", file=sys.stderr)
+        return 2
 
     # ---- 1. THE FLOOR AGAINST THE PRINT, per publisher, THREE-WAY ----
     conf = {}

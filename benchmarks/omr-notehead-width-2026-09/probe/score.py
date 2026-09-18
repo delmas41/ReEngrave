@@ -34,6 +34,7 @@ import sys
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
+sys.path.insert(0, str(HERE))
 BENCH = HERE.parent
 BENCHMARKS = BENCH.parent
 CROP = BENCHMARKS / "omr-stem-crop-pass-2026-09" / "out"
@@ -41,7 +42,7 @@ STROKE = BENCHMARKS / "omr-stem-stroke-2026-09" / "out"
 ATTACH = BENCHMARKS / "omr-stem-attachment-2026-09" / "out"
 
 # ⚠️ INHERITED UNCHANGED from the crop pass and NOT fitted here.
-FLOOR = 1.0
+from floor import FLOOR  # ⚠️ ONE place; see probe/floor.py
 
 PUBS = {
     "litolff": {

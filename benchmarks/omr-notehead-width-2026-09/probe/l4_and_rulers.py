@@ -35,12 +35,13 @@ import sys
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
+sys.path.insert(0, str(HERE))
 BENCH = HERE.parent
 CROPDIR = BENCH.parent / "omr-stem-crop-pass-2026-09"
 sys.path.insert(0, str(BENCH.parent / "omr-ledger-extrapolation-2026-09"))
 from recordstream import stream_array  # noqa: E402
 
-FLOOR = 1.0
+from floor import FLOOR  # ⚠️ ONE place; see probe/floor.py
 RECORDS = {
     "litolff": "beethoven5-p1-p4.record.json",
     "breitkopf": "brahms1-breitkopf-p0-p3.record.json",

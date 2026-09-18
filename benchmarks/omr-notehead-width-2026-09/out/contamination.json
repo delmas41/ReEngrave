@@ -4,6 +4,28 @@
  "resolved": 255,
  "unresolved": 0,
  "unresolved_detail": [],
+ "truth_controls": {
+  "sample_not_a_notehead_litolff": {
+   "got": 14,
+   "want": 14
+  },
+  "sample_not_a_notehead_breitkopf": {
+   "got": 32,
+   "want": 32
+  },
+  "sample_not_a_notehead_total": {
+   "got": 46,
+   "want": 46
+  },
+  "no_unknown_verdict_word": {
+   "got": 0,
+   "want": 0
+  },
+  "standoff_settled": {
+   "got": 16,
+   "want": 16
+  }
+ },
  "floor_vs_print": {
   "litolff": {
    "n": 111,
