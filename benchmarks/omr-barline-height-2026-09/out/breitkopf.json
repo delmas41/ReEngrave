@@ -1,0 +1,418 @@
+{
+ "label": "Breitkopf Brahms 1 pp.0-3",
+ "barlines": 49,
+ "by_position": {
+  "FIRST": {
+   "n": 7,
+   "crosses_all": 0,
+   "crosses_none": 0,
+   "median_share": 0.923
+  },
+  "interior": {
+   "n": 35,
+   "crosses_all": 4,
+   "crosses_none": 2,
+   "median_share": 0.923
+  },
+  "LAST": {
+   "n": 7,
+   "crosses_all": 0,
+   "crosses_none": 0,
+   "median_share": 0.923
+  }
+ },
+ "rows": [
+  {
+   "page": 0,
+   "system": 0,
+   "where": "FIRST",
+   "x": 1230,
+   "gaps_crossed": 12,
+   "gaps": 13
+  },
+  {
+   "page": 0,
+   "system": 0,
+   "where": "interior",
+   "x": 1246,
+   "gaps_crossed": 13,
+   "gaps": 13
+  },
+  {
+   "page": 0,
+   "system": 0,
+   "where": "interior",
+   "x": 1514,
+   "gaps_crossed": 0,
+   "gaps": 13
+  },
+  {
+   "page": 0,
+   "system": 0,
+   "where": "interior",
+   "x": 1542,
+   "gaps_crossed": 0,
+   "gaps": 13
+  },
+  {
+   "page": 0,
+   "system": 0,
+   "where": "interior",
+   "x": 2111,
+   "gaps_crossed": 10,
+   "gaps": 13
+  },
+  {
+   "page": 0,
+   "system": 0,
+   "where": "interior",
+   "x": 2670,
+   "gaps_crossed": 12,
+   "gaps": 13
+  },
+  {
+   "page": 0,
+   "system": 0,
+   "where": "interior",
+   "x": 3100,
+   "gaps_crossed": 12,
+   "gaps": 13
+  },
+  {
+   "page": 0,
+   "system": 0,
+   "where": "interior",
+   "x": 3553,
+   "gaps_crossed": 12,
+   "gaps": 13
+  },
+  {
+   "page": 0,
+   "system": 0,
+   "where": "interior",
+   "x": 4106,
+   "gaps_crossed": 12,
+   "gaps": 13
+  },
+  {
+   "page": 0,
+   "system": 0,
+   "where": "interior",
+   "x": 5388,
+   "gaps_crossed": 12,
+   "gaps": 13
+  },
+  {
+   "page": 0,
+   "system": 0,
+   "where": "LAST",
+   "x": 5401,
+   "gaps_crossed": 12,
+   "gaps": 13
+  },
+  {
+   "page": 1,
+   "system": 0,
+   "where": "FIRST",
+   "x": 641,
+   "gaps_crossed": 11,
+   "gaps": 13
+  },
+  {
+   "page": 1,
+   "system": 0,
+   "where": "interior",
+   "x": 2488,
+   "gaps_crossed": 12,
+   "gaps": 13
+  },
+  {
+   "page": 1,
+   "system": 0,
+   "where": "LAST",
+   "x": 5497,
+   "gaps_crossed": 10,
+   "gaps": 13
+  },
+  {
+   "page": 1,
+   "system": 1,
+   "where": "FIRST",
+   "x": 654,
+   "gaps_crossed": 11,
+   "gaps": 12
+  },
+  {
+   "page": 1,
+   "system": 1,
+   "where": "LAST",
+   "x": 671,
+   "gaps_crossed": 11,
+   "gaps": 12
+  },
+  {
+   "page": 2,
+   "system": 0,
+   "where": "FIRST",
+   "x": 650,
+   "gaps_crossed": 12,
+   "gaps": 13
+  },
+  {
+   "page": 2,
+   "system": 0,
+   "where": "interior",
+   "x": 667,
+   "gaps_crossed": 13,
+   "gaps": 13
+  },
+  {
+   "page": 2,
+   "system": 0,
+   "where": "LAST",
+   "x": 1683,
+   "gaps_crossed": 11,
+   "gaps": 13
+  },
+  {
+   "page": 2,
+   "system": 1,
+   "where": "FIRST",
+   "x": 656,
+   "gaps_crossed": 12,
+   "gaps": 13
+  },
+  {
+   "page": 2,
+   "system": 1,
+   "where": "interior",
+   "x": 2487,
+   "gaps_crossed": 11,
+   "gaps": 13
+  },
+  {
+   "page": 2,
+   "system": 1,
+   "where": "interior",
+   "x": 3022,
+   "gaps_crossed": 12,
+   "gaps": 13
+  },
+  {
+   "page": 2,
+   "system": 1,
+   "where": "interior",
+   "x": 5484,
+   "gaps_crossed": 12,
+   "gaps": 13
+  },
+  {
+   "page": 2,
+   "system": 1,
+   "where": "LAST",
+   "x": 5496,
+   "gaps_crossed": 12,
+   "gaps": 13
+  },
+  {
+   "page": 3,
+   "system": 0,
+   "where": "FIRST",
+   "x": 655,
+   "gaps_crossed": 12,
+   "gaps": 13
+  },
+  {
+   "page": 3,
+   "system": 0,
+   "where": "interior",
+   "x": 671,
+   "gaps_crossed": 13,
+   "gaps": 13
+  },
+  {
+   "page": 3,
+   "system": 0,
+   "where": "interior",
+   "x": 1371,
+   "gaps_crossed": 12,
+   "gaps": 13
+  },
+  {
+   "page": 3,
+   "system": 0,
+   "where": "interior",
+   "x": 1671,
+   "gaps_crossed": 12,
+   "gaps": 13
+  },
+  {
+   "page": 3,
+   "system": 0,
+   "where": "interior",
+   "x": 1688,
+   "gaps_crossed": 12,
+   "gaps": 13
+  },
+  {
+   "page": 3,
+   "system": 0,
+   "where": "interior",
+   "x": 2203,
+   "gaps_crossed": 12,
+   "gaps": 13
+  },
+  {
+   "page": 3,
+   "system": 0,
+   "where": "interior",
+   "x": 2660,
+   "gaps_crossed": 12,
+   "gaps": 13
+  },
+  {
+   "page": 3,
+   "system": 0,
+   "where": "interior",
+   "x": 3107,
+   "gaps_crossed": 12,
+   "gaps": 13
+  },
+  {
+   "page": 3,
+   "system": 0,
+   "where": "interior",
+   "x": 3574,
+   "gaps_crossed": 12,
+   "gaps": 13
+  },
+  {
+   "page": 3,
+   "system": 0,
+   "where": "interior",
+   "x": 4076,
+   "gaps_crossed": 12,
+   "gaps": 13
+  },
+  {
+   "page": 3,
+   "system": 0,
+   "where": "interior",
+   "x": 4524,
+   "gaps_crossed": 12,
+   "gaps": 13
+  },
+  {
+   "page": 3,
+   "system": 0,
+   "where": "interior",
+   "x": 5037,
+   "gaps_crossed": 12,
+   "gaps": 13
+  },
+  {
+   "page": 3,
+   "system": 0,
+   "where": "LAST",
+   "x": 5492,
+   "gaps_crossed": 12,
+   "gaps": 13
+  },
+  {
+   "page": 3,
+   "system": 1,
+   "where": "FIRST",
+   "x": 651,
+   "gaps_crossed": 12,
+   "gaps": 13
+  },
+  {
+   "page": 3,
+   "system": 1,
+   "where": "interior",
+   "x": 667,
+   "gaps_crossed": 13,
+   "gaps": 13
+  },
+  {
+   "page": 3,
+   "system": 1,
+   "where": "interior",
+   "x": 1422,
+   "gaps_crossed": 12,
+   "gaps": 13
+  },
+  {
+   "page": 3,
+   "system": 1,
+   "where": "interior",
+   "x": 1971,
+   "gaps_crossed": 12,
+   "gaps": 13
+  },
+  {
+   "page": 3,
+   "system": 1,
+   "where": "interior",
+   "x": 2593,
+   "gaps_crossed": 12,
+   "gaps": 13
+  },
+  {
+   "page": 3,
+   "system": 1,
+   "where": "interior",
+   "x": 2959,
+   "gaps_crossed": 12,
+   "gaps": 13
+  },
+  {
+   "page": 3,
+   "system": 1,
+   "where": "interior",
+   "x": 3248,
+   "gaps_crossed": 12,
+   "gaps": 13
+  },
+  {
+   "page": 3,
+   "system": 1,
+   "where": "interior",
+   "x": 3583,
+   "gaps_crossed": 12,
+   "gaps": 13
+  },
+  {
+   "page": 3,
+   "system": 1,
+   "where": "interior",
+   "x": 3957,
+   "gaps_crossed": 12,
+   "gaps": 13
+  },
+  {
+   "page": 3,
+   "system": 1,
+   "where": "interior",
+   "x": 4360,
+   "gaps_crossed": 12,
+   "gaps": 13
+  },
+  {
+   "page": 3,
+   "system": 1,
+   "where": "interior",
+   "x": 4814,
+   "gaps_crossed": 12,
+   "gaps": 13
+  },
+  {
+   "page": 3,
+   "system": 1,
+   "where": "LAST",
+   "x": 5488,
+   "gaps_crossed": 12,
+   "gaps": 13
+  }
+ ]
+}
