@@ -170,3 +170,90 @@ diagnosis and §7's central claim (*length identifies everything except a stem*;
 *a stem is known by its attachment*) is his. The two added parts of the question
 in §2, the guard in §3, the exception in §4 and the sweep scope in §6 are the
 assistant's, and each names the instance that produced it.
+
+---
+
+## 9. ⚠️⚠️ OPEN QUESTION — ASK SEAN ABOUT THIS ON SUNDAY (his limit resets Sun 15:00)
+
+**He asked for this note explicitly.** The question is the ORDER of the sweep,
+and he reframed it better than the dependency framing above:
+
+> *"Maybe not a pure order, but can the order be INTENTIONAL? Should we start
+> with things that don't seem to have dependencies — 'dependencies' is the wrong
+> word, **helpful factors to have first** is what I mean. I understand the
+> circularity, but **we will be able to read some things better than others and
+> have more certainty about some symbols over others, and therefore could lean
+> into what we know more to help us with what we know less.**"*
+
+### Current thoughts, for him to push back on
+
+**1. He is right that the ordering principle is CERTAINTY, not dependency.**
+§2's derived graph answers *what needs what*. It does not answer *what should go
+first*. Those are different questions and the second is the useful one.
+
+**2. The repo has instantiated his principle repeatedly and never stated it.**
+Every mechanism here that works does exactly *lean on what we know more*: the
+**beam-mate tier** (a beam joins stem tips, so confident stems carry the unread
+ones — 0.984); the **dossier** (external truth seeds clefs the detector cannot
+read, Beethoven recall .642 → .691); **`key_signature_vote`** (a page's
+confident readings carry its weak ones — WTC p.17 6/10 → 10/10); the
+**cross-staff ownership contest**; and **`Q.ONSET_COLUMN`**, which measured that
+a 21-staff system is 21 independent readings of one instant. His own earlier
+words are the same idea: *"we don't need much info from a particular symbol
+because we have what we need elsewhere."*
+
+**3. The CERTAINTY GRADIENT IS ALREADY MEASURED**, so the order can be derived
+rather than argued:
+
+| family | how well we read it | |
+|---|--:|---|
+| **noteheads, engraved** | **0.999** (856 of 856) | the best-read thing in the project |
+| **noteheads, scanned** | **0.980** recall (Brahms p2 frame control) | ⚠️ but PRECISION is the fault — a third of one plate's are not noteheads |
+| measure partition | 17 of 20 scan rows segment correctly | |
+| clefs, end to end | 92% (39 of 52 from the detector at 95%) | |
+| **stems** | **793 of 2,347 heads have none** | |
+| arcs | **76% bind fewer than two notes** | |
+| **meter** | **decided on 1 system of 7** (Litolff) | |
+| **hairpins, scanned** | **1 detected against 198 in truth** | |
+
+**4. His stem insight IS the general rule**, and it is the argument for starting
+with noteheads. He said it before stating the principle: *"since all stems are
+connected to note heads it will be incredibly helpful to have a strong reading
+of note heads."* A stem's distinguishing fact **is** its attachment to a
+notehead — so notehead certainty is the leverage for the family we read worst.
+**Start where certainty is highest and spend it on what is adjacent.**
+
+**5. ⚠️ THE QUALIFIER THAT CAN MAKE IT BACKFIRE.** *Lean on what we know more*
+holds **only where the anchor's certainty is INDEPENDENT of what it is used to
+read.** This repo has been bitten four times by witnesses that looked
+independent and were not — *the bars are not an independent umpire over a bad
+reading*; the arc grammar speaks only about the arcs it already reads best; an
+arbiter sharing a FRAME with one party sided with it 79 times in 83; two
+sessions agreeing through a shared ASSUMPTION. **Each anchor needs one question
+asked of it: does this fail on the same pages as the thing I am anchoring?**
+
+⚠️ **For noteheads → stems the answer is measured and favourable**: on Brahms p2
+notehead recall is **0.980** while **half the stems are missing**, so on that
+page they demonstrably do **not** fail together. **That is evidence the anchor is
+real rather than hoped for** — and it is the first thing to re-check on a third
+publisher.
+
+**6. So: an intentional order, in its honest form.** Not topological —
+`meter <- meter` makes that impossible — but a **certainty gradient with named
+anchors**, each carrying an independence check. Provisionally:
+**noteheads → measure partition → clefs → (stems, accidentals, barlines,
+anchored on noteheads and the staff grid) → arcs → meter**, with the meter
+**last** precisely because it is the cycle and the least certain.
+
+### ⚠️ What to ask him on Sunday
+
+1. Does he accept **certainty-with-independence** as the ordering principle,
+   rather than dependency?
+2. Is the provisional order the one he wants — and **should noteheads anchor
+   everything when the notehead fault is PRECISION rather than recall?**
+   *A precision fault in an anchor is a different risk from a recall fault, and
+   it has not been thought through.*
+3. Still unanswered from 2026-09-18: **should an accidental's vertical stroke be
+   in the stem veto's domain at all?**
+4. And the separate, already-paid-for item that must not be swept in: the
+   **fourth stage's default** (§4).

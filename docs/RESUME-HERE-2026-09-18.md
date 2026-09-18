@@ -57,6 +57,28 @@ reproduce **1,920 = 1,920** strokes on Litolff and **2,305 = 2,305** on
 Breitkopf — `line_detection.py` is on the path every stem arm proves faithful
 before reporting a delta.
 
+## ⚠⚠ ASK SEAN ON SUNDAY (his limit resets Sun 15:00) — he asked for this note
+
+**The ORDER of the family sweep**, and he reframed it better than the plan's
+own dependency framing: *"maybe not a pure order, but can the order be
+INTENTIONAL? ... we will be able to read some things better than others and
+have more certainty about some symbols over others, and therefore could lean
+into what we know more to help us with what we know less."*
+
+Current thoughts and the four questions to put to him are
+[plan §9](plan-2026-09-18-what-distinguishes-each-mark.md#9--open-question--ask-sean-about-this-on-sunday-his-limit-resets-sun-1500).
+Short version: **the ordering principle is CERTAINTY, not dependency** — a
+pure order is impossible anyway (`meter <- meter` is a declared cycle), the
+gradient is **already measured** (noteheads 0.999 engraved / 0.980 recall
+scanned, against stems missing on 793 of 2,347 heads and the meter decided on
+1 system of 7), and the repo has **instantiated his principle five times
+without ever stating it**. ⚠ The qualifier that can make it backfire: lean on
+what we know more **only where the anchor fails independently** of what it is
+anchoring — measured favourable for noteheads→stems on Brahms p2, where
+notehead recall is 0.980 while half the stems are missing. ⚠ **The sharpest
+open thing: should noteheads anchor everything when the notehead fault is
+PRECISION rather than recall?**
+
 ## ⚠️ DECISIONS WAITING FOR SEAN — none was taken
 
 Four from the overnight batch, each with its counter-argument in
