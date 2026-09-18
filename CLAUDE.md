@@ -57,6 +57,29 @@ including the **two GATHER divergences it found and deliberately did not
 change**, and the **`ff` 47 → 39 that is an unadjudicated COST and not a win**.
 
 ⚠️ **START HERE IF YOU ARE PICKING THIS UP:**
+[docs/handoff-2026-09-17-two-brakes-and-a-ruler.md](docs/handoff-2026-09-17-two-brakes-and-a-ruler.md)
+— **the newest. TWO PRs OPEN AND STACKED, NOTHING MERGED** (#53 the unnamed
+block, #54 the stem direction on top of it; suite 4,455/11/0 with the two
+halves proved to partition the 4,466 collected tests exactly).
+⚠️⚠️ **ITS §1 IS THE THING TO READ: SEAN CORRECTED THIS SESSION TWICE AND BOTH
+CORRECTIONS CHANGED THE OUTCOME** — *"The convention is strong. The failure is
+elsewhere"* turned a refuted rule into a **RULER FOR THE STAFF GRID**, and his
+question about whether we *see* the ink reframed a 793-head population as
+**ink we did not read** (27% have no stem in the bar at all; median gap 2.01
+spaces; at most 6% are attachment near-misses). ⚠️ **#53 is the one with
+payoff** — 25 of 25 placements correct against the print, ZERO grafts,
+`staff_not_identified` **783 → 141** with every other drop bucket identical to
+the unit; it is also **INFER's first non-duration target**. ⚠️ **#54 is worth
+TWO `<voice>2</voice>` tags in the file and says so**; what it is worth is
+§3a, where the stem convention **reverses in ledger country** and so measures
+the POSITION rather than the stem — the same zone `omr-phantom-notes` found 14
+of 25 phantom notes in, and **position is PITCH**. ⚠️ **§3b is a new door onto
+the correlated-witness room: I chose an arbiter correlated with one of the two
+parties (79/83), and the correlation ran through the FRAME.** ⚠️ **§3c bounds
+the whole brake audit: INFER cannot serve a quantity whose consumers are in
+ADJUDICATE.** ⚠️ **§5 ranks the next work and it starts with CROPS, not code —
+not one note in either PR has been checked against the print.** Its
+predecessor
 [docs/handoff-2026-09-17-infer-rule-two.md](docs/handoff-2026-09-17-infer-rule-two.md)
 — **the newest, and a DIFFERENT THREAD from the meter chain below it**: INFER
 gained a second rule (`collapse_duration_to_barline`, no flag, **7 → 17** on
