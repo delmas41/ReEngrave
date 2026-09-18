@@ -418,3 +418,16 @@ ADJUDICATE
   adjudicate clef: 169 verdicts so far
   adjudicate key_signature: 196 verdicts so far
   adjudicate glyph_owner: 1118 verdicts so far
+  adjudicate arc_owner: 1804 verdicts so far
+  adjudicate arc_kind: 2490 verdicts so far
+  adjudicate articulation_owner: 2512 verdicts so far
+  adjudicate fermata_owner: 2512 verdicts so far
+  adjudicate ornament_owner: 2518 verdicts so far
+  adjudicate stem_direction: 3533 verdicts so far
+  adjudicate notehead_is_a_whole_rest: 4548 verdicts so far
+  adjudicate tuplet_ratio: 4548 verdicts so far
+  adjudicate duration: 5913 verdicts so far
+  adjudicate event: 6114 verdicts so far
+  adjudicate voices: 6316 verdicts so far
+  adjudicate onset_column: 6318 verdicts so far
+  adjudicate wedge_anchor: 6358 verdicts so far

@@ -71,6 +71,19 @@ RUN_MIN_ASPECT = 2.0
 END_DY_SPACES = 1.0
 END_DX_SPACES = 1.6
 
+# ⚠️⚠️ THE HAND CORPUS CARRIES NO STRUCTURAL CLASS, BY PROJECT POLICY, AND
+# WITHOUT THIS SPLIT THE PARTITION IS MEANINGLESS. CLAUDE.md's labelling
+# instructions say in terms: "SKIP classical-CV structural elements -- staff
+# lines (`staff`), stems (`stem`), beams (`beam`)", because a human cannot box
+# a thin line. Verified against this version's own vocabulary: 35 classes, not
+# one of them structural.
+#
+# So a detector BEAM box sitting on beam ink lands in "detector only" and would
+# be read as an INVENTION, and every stem and every scrap of staff residue
+# lands in "neither" and would be read as MISSED MUSIC. Both are artefacts of
+# what the hand pass was chartered not to draw. Split out and reported apart.
+STRUCTURAL = ("stem", "beam", "staff", "ledgerLine", "brace", "barline")
+
 
 def load_class_names():
     names, on = [], False
@@ -386,6 +399,35 @@ def main():
     print()
     print("ALL CONTROLS PASS")
 
+    # ── PAGE-WIDE INK COMPOSITION, against CLAUDE.md's committed figures ───
+    print()
+    print("=" * 78)
+    print("PAGE-WIDE INK COMPOSITION  (all cells, not just the 19)")
+    print("=" * 78)
+    allink = [r for v in ink.values() for r in v]
+    percell = {c: (v[0]["n_comp"] if v and v[0]["n_comp"] else len(v))
+               for c, v in ink.items()}
+    specks = [r for r in allink
+              if (r["w_sp"] or 9) < 0.2 and (r["h_sp"] or 9) < 0.2]
+    big = [r for r in allink if (r["share"] or 0) >= 0.30]
+    tot_a = sum(r["area"] or 0 for r in allink) or 1
+    print(f"  ink rows                          : {len(allink)}")
+    print(f"  cells                             : {len(ink)}")
+    print(f"  components per cell, median       : "
+          f"{statistics.median(list(percell.values())):.1f}  "
+          f"(min {min(percell.values())}, max {max(percell.values())})")
+    print(f"  SPECKS (<0.2 x 0.2 spaces)        : {len(specks)} = "
+          f"{len(specks)/len(allink):.1%} of pieces, "
+          f"{sum(r['area'] or 0 for r in specks)/tot_a:.2%} of area")
+    print(f"  pieces holding >=30% of their cell: {len(big)} = "
+          f"{len(big)/len(allink):.1%} of pieces, "
+          f"{sum(r['area'] or 0 for r in big)/tot_a:.1%} of area")
+    print(f"  largest share_of_cell             : "
+          f"{max((r['share'] or 0) for r in allink):.4f}")
+    print("  CLAUDE.md records this plate as the one that SHATTERS -- 56% of")
+    print("  Breitkopf's rows specks, 5.6 components per cell against")
+    print("  Litolff's 30. Compare the two lines above.")
+
     # ── THE INK-FIRST PARTITION ─────────────────────────────────────────────
     print()
     print("=" * 78)
@@ -409,12 +451,21 @@ def main():
             d_ov = [(c, overlap_frac_of_first(b, bb)) for c, bb in dets]
             by_hand = [c for c, f in h_ov if f >= HAND_HIT]
             by_det = [c for c, f in d_ov if f >= DET_HIT]
-            if by_hand and by_det:
+            # ⚠️ STRUCTURAL classes are separated FIRST. The hand pass was
+            # chartered not to draw them, so calling a detector `beam` box on
+            # beam ink an "invention" would be scoring the corpus's own
+            # policy.
+            struct = [c for c in by_det
+                      if any(str(c).startswith(t) for t in STRUCTURAL)]
+            symbolic = [c for c in by_det if c not in struct]
+            if by_hand and symbolic:
                 k = "1 REAL MARK, detector agrees"
-            elif by_det and not by_hand:
-                k = "2 DETECTOR INVENTION (det only)"
-            elif by_hand and not by_det:
+            elif symbolic and not by_hand:
+                k = "2 DETECTOR INVENTION (a SYMBOL class, hand says no)"
+            elif by_hand and not symbolic:
                 k = "3 MISSED MARK (hand only)"
+            elif struct:
+                k = "2s STRUCTURAL ink (detector calls it stem/beam/staff)"
             else:
                 k = "4 UNEXPLAINED (neither)"
             buckets[k] += 1
@@ -452,14 +503,17 @@ def main():
         sh = collections.Counter(shape(r) for r in un)
         un_area = sum(r["area"] or 0 for r in un) or 1
         print(f"{'shape':<38s} {'n':>5s} {'of unexpl':>10s} "
-              f"{'of its area':>12s} {'med w':>7s} {'med h':>7s}")
+              f"{'of its area':>12s} {'med w':>7s} {'med h':>7s} "
+              f"{'max area':>9s} {'med area':>9s}")
         for k in sorted(sh):
             g = [r for r in un if shape(r) == k]
             a = sum(r["area"] or 0 for r in g)
+            ar = sorted((r["area"] or 0) for r in g)
             print(f"{k:<38s} {len(g):>5d} {len(g)/len(un):>10.1%} "
                   f"{a/un_area:>12.1%} "
                   f"{statistics.median([r['w_sp'] or 0 for r in g]):>7.2f} "
-                  f"{statistics.median([r['h_sp'] or 0 for r in g]):>7.2f}")
+                  f"{statistics.median([r['h_sp'] or 0 for r in g]):>7.2f} "
+                  f"{ar[-1]:>9d} {ar[len(ar)//2]:>9d}")
         print(f"\nunexplained ink as a share of all ink in these cells: "
               f"{len(un)/tot_ink:.1%} of pieces, "
               f"{un_area/tot_area:.1%} of area")
@@ -546,6 +600,58 @@ def main():
               f"runs WITH a head at an end, by hand truth: "
               f"{tab[(True, True)] + tab[(False, True)]}")
 
+        # ⚠️ THE SAME TABLE OVER ALL 68 RUNS, because 7 is too thin to score a
+        # rule on and the veto's SAFETY is a property of the discriminator, not
+        # of one bucket. If the rule works, runs the hand pass vouches for
+        # should carry a head at an end and runs nothing vouches for should
+        # not.
+        print()
+        print("-" * 78)
+        print("  THE DISCRIMINATOR OVER ALL 68 VERTICAL RUNS, BY BUCKET")
+        print("-" * 78)
+        print(f"  {'bucket':<52s}{'n':>4s}{'head@end det':>14s}"
+              f"{'head@end hand':>15s}")
+        for k in sorted(set(r["bucket"] for r in all_runs)):
+            g = [r for r in all_runs if r["bucket"] == k]
+            nd = sum(1 for r in g
+                     if ends_have_head(r, det_heads.get(r["cell"], [])))
+            nh = sum(1 for r in g
+                     if ends_have_head(r, hand_heads.get(r["cell"], [])))
+            print(f"  {k:<52s}{len(g):>4d}{nd:>14d}{nh:>15d}")
+        # the cost over the whole run population
+        cost_all = [r for r in all_runs
+                    if not ends_have_head(r, det_heads.get(r["cell"], []))
+                    and ends_have_head(r, hand_heads.get(r["cell"], []))]
+        no_head_all = [r for r in all_runs
+                       if not ends_have_head(r, det_heads.get(r["cell"], []))
+                       and not ends_have_head(r, hand_heads.get(r["cell"], []))]
+        print()
+        print(f"  OVER ALL 68 RUNS -- veto would fire on {len(no_head_all)}; "
+              f"its COST (hand head, no detector head) is {len(cost_all)}")
+        for r in cost_all:
+            print(f"    COST: {r['subject']} {r['w_sp']}x{r['h_sp']} sp "
+                  f"bucket={r['bucket']}")
+
+        # the seven unexplained runs, named
+        print()
+        print("  THE SEVEN UNEXPLAINED VERTICAL RUNS, NAMED:")
+        for r in sorted(runs, key=lambda z: -(z["area"] or 0)):
+            d = ends_have_head(r, det_heads.get(r["cell"], []))
+            t = ends_have_head(r, hand_heads.get(r["cell"], []))
+            print(f"    {r['subject']:<26s} {r['w_sp']:>6}x{r['h_sp']:<7} sp "
+                  f"area {r['area']:>7} fill {r['fill']} "
+                  f"ncomp {r['n_comp']}  det={bool(d)} hand={bool(t)}")
+
+        # the largest unexplained pieces, because 84.9% of the area is a
+        # handful of merges and a median hides that
+        print()
+        print("  THE FIVE LARGEST UNEXPLAINED PIECES (84.9% of the area is a "
+              "few merges):")
+        for r in sorted(un, key=lambda z: -(z["area"] or 0))[:5]:
+            print(f"    {r['subject']:<26s} {r['w_sp']:>7}x{r['h_sp']:<7} sp "
+                  f"area {r['area']:>7} share_of_cell {r['share']} "
+                  f"ncomp {r['n_comp']}")
+
         # against the print-settled too TALL population
         print()
         print("-" * 78)
@@ -574,9 +680,16 @@ def main():
                 rr = {**best, "cell": cell, "sp": sp}
                 d = ends_have_head(rr, hd)
                 t = ends_have_head(rr, hh)
+                # ⚠️ "hand=False" IS VACUOUS WHERE THE CELL HAS NO HAND
+                # LABELS AT ALL -- the crop sample and the labelling batch
+                # chose different cells, so most print verdicts land outside
+                # the 19. Say which, or this column reads as hand truth
+                # DISAGREEING when it was never asked.
+                has_hand = "yes" if hh else "NO HAND TRUTH IN THIS CELL"
                 print(f"  {p['id']} {p['subject']}  print={p['verdict']:<18s}"
                       f" ink {best['w_sp']}x{best['h_sp']} sp"
-                      f"  head-at-end det={bool(d)} hand={bool(t)}")
+                      f"  head-at-end det={bool(d)}"
+                      f"  hand={bool(t) if hh else 'n/a'} ({has_hand})")
 
     # dump for the write-up
     out = {
