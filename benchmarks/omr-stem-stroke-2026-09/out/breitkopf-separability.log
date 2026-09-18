@@ -1,0 +1,27 @@
+Breitkopf Brahms 1 pp.0-3: 1529 heads abstain `no_stem`
+cells measured: 818   EXCLUDED for drift: 0
+
+== POSITIVE CONTROL: does the column profile re-find the strokes `detect_stems` ALREADY accepts?
+ agree (spaces)  reproduced    LOST     rate
+           0.10        3038      54   98.3%
+           0.15        3037      55   98.2%
+           0.25        3036      56   98.2%
+           0.40        3036      56   98.2%
+           0.60        3035      57   98.2%
+
+== SECTION 5: inside a REJECTED component, is a stroke separable?
+  agree   bands   heads a band covers   share     (no edge filter)
+   0.10    1103                   376  24.6%                  549
+   0.15     979                   375  24.5%                  548
+   0.25     915                   374  24.5%                  548
+   0.40     841                   374  24.5%                  548
+   0.60     781                   374  24.5%                  548
+
+== which REJECTION does a separable stroke live inside? (agree=0.25)
+rejected as           components  a band inside     rate
+at a CELL EDGE               254              7    2.8%
+too SHORT                   1682              2    0.1%
+too TALL                    1500            124    8.3%
+too WIDE                     288            212   73.6%
+
+wrote benchmarks/omr-stem-stroke-2026-09/out/breitkopf-separability.json

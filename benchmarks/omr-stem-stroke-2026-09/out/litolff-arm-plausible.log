@@ -1,0 +1,22 @@
+   REFERENCE (stems we already read): 902/942 = 95.8%   <- the bar
+   (`width_cap_check.py` measured the width cap's recoveries at 83.6% against this bar and REFUSED them)
+   ⚠️ `side+legal` is graded on the rule it was BUILT to satisfy. Read its REACH, never its rate.
+
+== PLAUSIBILITY of the `no_stem` boxes themselves (a notehead is ~1.3 spaces wide)
+   at or above 1.0 spaces wide: 749
+   THINNER, i.e. probably not a notehead: 44 (5.5%)
+   no page box or staff lines: 0
+
+== REACH and QUALITY over PLAUSIBLE heads only
+variant           heads  of plaus  AGREES  disagrees    rate
+raw                 343    45.8%     185         42  81.5%
+side                338    45.1%     185         39  82.6%
+side+end            337    45.0%     185         39  82.6%
+side+end+legal      325    43.4%     184         35  84.0%   <- CIRCULAR
+side+end@0.20       337    45.0%     185         39  82.6%
+side+end@0.50       337    45.0%     185         39  82.6%
+side+end@0.75       338    45.1%     186         38  83.0%
+   REFERENCE, same restriction: 901/938 = 96.1%   <- the bar
+   WARNING: the THIN boxes are reported apart and never netted in -- a box on a barline that BOTH readers agree about is not evidence about a stem.
+
+wrote benchmarks/omr-stem-stroke-2026-09/out/litolff-arm.json
