@@ -508,13 +508,25 @@ def funnel(rec: X.Record, family: str, *,
         if v["subject"] in subjects:
             per_q[v["quantity"]][stage_of_decider(v["decider"])].append(v)
 
+    # ⚠️⚠️ THE STANDING VERDICT, RESOLVED THE WAY `Record` RESOLVES IT.
+    # `Record._v` drops every row a later one SUPERSEDES, and the EXPORTER
+    # reads only that -- so a funnel counting verdict ROWS and an export step
+    # counting STANDING answers have different denominators, and the first
+    # draft's columns nearly-but-not-quite lined up because of it. Both are
+    # reported: `n_in` is rows (what each stage DID) and `n_standing` is
+    # subjects whose FINAL answer this stage owns (what each stage is
+    # RESPONSIBLE for at the file). Netting them is how a stage that is
+    # entirely overturned reads as having decided everything.
+    superseded = {v["supersedes"] for v in rec.verdicts if v.get("supersedes")}
+
     stages: List[Dict[str, Any]] = []
     for quantity in sorted(per_q):
         for stage in list(row_writing_stages()) + ["UNATTRIBUTED"]:
             rows = per_q[quantity].get(stage)
             if not rows:
                 continue
-            stages.append(_stage_row(stage, quantity, rows, by_id, reach))
+            stages.append(_stage_row(stage, quantity, rows, by_id, reach,
+                                     superseded))
 
     # ── GATHER's own refusals ON the population's subjects and their cells.
     gather_ab: Dict[str, int] = collections.Counter()
@@ -540,8 +552,10 @@ def funnel(rec: X.Record, family: str, *,
 
 
 def _stage_row(stage: str, quantity: str, rows: List[dict],
-               by_id: Dict[str, dict], n_population: int) -> Dict[str, Any]:
+               by_id: Dict[str, dict], n_population: int,
+               superseded: Optional[set] = None) -> Dict[str, Any]:
     """One (stage, quantity) step of the funnel, as a PARTITION."""
+    superseded = superseded or set()
     out_by = collections.Counter(r["outcome"] for r in rows)
     reasons = collections.Counter(
         f"{r['outcome']}/{r['reason']}" for r in rows)
@@ -554,9 +568,20 @@ def _stage_row(stage: str, quantity: str, rows: List[dict],
             directions["first_answer"] += 1
     known = {"decided", "narrowed", "abstained"}
     unaccounted = [r["id"] for r in rows if r["outcome"] not in known]
+    standing = [r for r in rows if r["id"] not in superseded]
+    standing_by = collections.Counter(r["outcome"] for r in standing)
     row = {
         "stage": stage, "quantity": quantity,
         "n_in": len(rows),
+        "n_subjects": len({r["subject"] for r in rows}),
+        # ⚠️ SUBJECTS WHOSE FINAL ANSWER THIS STAGE OWNS -- the number the
+        # EXPORT step is comparable with. A stage whose every row is later
+        # superseded has `n_in` large and this ZERO, which is the honest way
+        # to say it did work that did not survive.
+        "n_standing": len({r["subject"] for r in standing}),
+        "standing_decided": standing_by.get("decided", 0),
+        "standing_narrowed": standing_by.get("narrowed", 0),
+        "standing_abstained": standing_by.get("abstained", 0),
         "decided": out_by.get("decided", 0),
         "narrowed": out_by.get("narrowed", 0),
         "abstained": out_by.get("abstained", 0),
@@ -567,8 +592,15 @@ def _stage_row(stage: str, quantity: str, rows: List[dict],
         "directions": dict(directions.most_common()),
         "reasons": dict(reasons.most_common(10)),
     }
+    # ⚠️⚠️ THE FIRST DRAFT ADDED `len(unaccounted)` TO THE LEFT-HAND SIDE, SO
+    # IT COULD NEVER FAIL -- a row with an invented outcome balanced as
+    # 0+0+0+1 == 1. That is *a control that computes the wrong thing*, this
+    # module's own subject matter, inside the module. Found by a test written
+    # to give the escape hatch teeth. The three known outcomes must account
+    # for every row on their own; `unaccounted` is a SEPARATE, non-empty
+    # signal and never a term that makes the sum come out.
     row["balanced"] = (row["decided"] + row["narrowed"] + row["abstained"]
-                       + len(unaccounted) == row["n_in"])
+                       == row["n_in"])
     return row
 
 
@@ -939,13 +971,18 @@ def render_funnel(f: Dict[str, Any]) -> str:
     L.append(f"INK      Q.INK rows {i['rows']} over {i['cells_with_ink']} "
              f"cells; the population occupies {i['population_cells']} cells, "
              f"{i['population_cells_with_ink']} of which carry ink rows")
+    if not i["rows"]:
+        L.append("         ⚠️ this record predates OMR_INK, so the ink layer "
+                 "is ABSENT and cannot witness anything here")
     L.append("")
-    L.append(f"{'stage':12s} {'quantity':24s} {'n':>6s} {'dec':>6s} "
-             f"{'narr':>6s} {'abst':>6s}  directions")
+    L.append("         rows = every verdict row this stage wrote (what it "
+             "DID); STAND = subjects whose FINAL answer it owns.")
+    L.append(f"{'stage':12s} {'quantity':24s} {'rows':>6s} {'dec':>6s} "
+             f"{'narr':>6s} {'abst':>6s} {'STAND':>6s}  directions")
     for s in f["stages"]:
         L.append(f"{s['stage']:12s} {s['quantity']:24s} {s['n_in']:6d} "
-                 f"{s['decided']:6d} {s['narrowed']:6d} {s['abstained']:6d}  "
-                 f"{s['directions']}")
+                 f"{s['decided']:6d} {s['narrowed']:6d} {s['abstained']:6d} "
+                 f"{s['n_standing']:6d}  {s['directions']}")
         if not s["balanced"]:
             L.append(f"   ⚠️ UNBALANCED: {s['unaccounted']}")
         top = list(s["reasons"].items())[:4]
