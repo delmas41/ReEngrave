@@ -1,7 +1,15 @@
-# Handoff: the brakes, the unnamed staves, and five unmerged branches
+# Handoff: the brakes, the unnamed staves, and the merge
 
-**Nothing is merged.** Read §1 before touching anything: the session's own
-headline is a FAILURE CLASS, and it caught this session's author twice.
+**START HERE.** Five branches are MERGED onto `claude/integration-2026-09-17`
+(see §3). Read §1 before touching anything: the session's headline is a
+FAILURE CLASS, and it caught this session's author twice.
+
+⚠️⚠️ **THE BIGGEST SINGLE FINDING IS §2a, NOT ANY BRAKE: of 28 decisions,
+ONE can hand work to INFER and 27 CANNOT.** 2,289 abstentions on one document
+and 1,656 on another say *"I cannot"* into a pipeline whose fourth stage is
+defined to answer exactly that, with no rule to receive them. The repair is
+almost never *loosen the refusal* — it is *wire the outcome to the stage that
+may act on it*.
 
 ## 1. THE GOVERNING FINDING — now in CLAUDE.md
 
@@ -34,6 +42,51 @@ forced.
 reason was *"no stage may do this"*, where a stage now exists, is not a brake
 to remove — it is a **HANDOFF THAT MAY NOT BE WIRED**. INFER collapses 17 of
 357 narrowed durations.
+
+## 2a. THE MISSING HANDOFF — the brake audit's headline
+
+`benchmarks/omr-brake-audit-2026-09` + `tools/omr/staged/brakes.py`
+(`python3 -m tools.omr.staged.brakes --check`).
+
+**`infer.RULES` registers TWO rules and both target `duration`.** Verified
+independently: 2 rules, 1 of 28 decisions can hand on, 27 cannot.
+
+| | Beethoven 5 | Brahms 1 |
+|---|--:|--:|
+| unresolved (abstained + narrowed) | 2,646 | 2,202 |
+| reach a registered INFER rule | 357 (13.5%) | 546 (24.8%) |
+| **stop — no stage may take them** | **2,289** | **1,656** |
+
+⚠️ NOT an argument for writing 27 rules; it says which deserve one. And 13.5%
+is an upper bound on REACH, not on effect — INFER collapses 17 of 357.
+
+⚠️⚠️ **VERIFYING THIS RETURNED ZERO ON THE FIRST TRY**, because `infer.RULES`
+is empty on a bare import — the rules register by decorator and need
+`staged.inferences` imported, exactly as `adjudicate.REGISTRY` needs
+`adjudicators`. **Four people have now been caught by that import, including
+two auditors auditing vacuity.** `import tools.omr.staged.inferences` first.
+
+**Ranked, each naming the capability its premise was written against:**
+**R1** `adjudicate_instrument` returns before consulting evidence it DECLARES
+— on all 25 unnamed staves `considered=[] used=[] declined=['margin_label']`
+while `roster_entry`/`staff_ordinal`/`staff_group` are present 25/25, declared
+in `wants`, untouched; cascade measured to 25 unnamed parts. ⚠️ The abstention
+is CORRECT; the EARLY RETURN is the brake.
+**R2** the circularity premise (see §2). **R3** `stem_direction/no_stem` —
+904 and 1,546, the largest population on both and the only one larger on the
+second publisher; evidence exists SIDEWAYS and no rule takes it.
+**R4** `glyph_owner/tied` consults neither thing it declares (21 rows) —
+CLAUDE.md's standing observation, now with a reach number.
+**R5-R7**: a reason word that misdescribes its row; two declared reasons no
+site can return; a narrowed CLEF silencing a staff's pitches.
+
+⚠️ **THE CONTROL LIST MATTERS AS MUCH**: 12 of 18 brakes judged SOUND and
+stay, including all four the manager had wrongly tried to exempt. Two results
+there: the exporter's argmax refusal is sound AND its handoff IS wired;
+**EVALUATE's silence is sound and its handoff is NOT** — refusing leaves the
+duration DECIDED, and `INFERABLE` excludes DECIDED, so INFER may never revisit
+it. ⚠️ That one is UNMEASURABLE today: `reconcile_duration` records no skip
+reason, so its refusals appear in no record.
 
 ## 2. THE UNNAMED STAVES — cause found, rule measured, NOT shipped
 
@@ -83,7 +136,35 @@ The brake read as *"this cannot be done"*; it was *"not THAT way"*.
 listing `string` among its families (`tools/library/ingest.py`). Reach 0 of 25
 today; fixing it forces p4/s0 by counting alone.
 
-## 3. FIVE UNMERGED BRANCHES
+## 3. THE MERGE — `claude/integration-2026-09-17`
+
+Five branches merged in this order (the only order tested):
+
+| # | branch | what |
+|--:|---|---|
+| 1 | `claude/data-flow-stages-handoff-5c1e07` | identity run, settings stamp, padding + hold-out, flag-docs check, the failure family |
+| 2 | `worktree-agent-a0c804088cff5d4f9` | `record.CLAIMS` — every fact carries its claim kind, DERIVED so records stay byte-identical. **Already contains `claude/family-position-facts`** (11 commits of position facts) — one merge, not two |
+| 3 | `worktree-agent-a3b616ad6dc60a313` | the measurement-meaning audit + `staged/meaning.py` |
+| 4 | `claude/unnamed-staves-alignment` | the string-block measurement; `tools/` diff EMPTY |
+| 5 | `claude/brake-audit-2026-09-17` | §2a + `staged/brakes.py` |
+
+**ONE conflict, in `tools/omr/staged/reach.py`**, purely additive — two audits
+each registering themselves in `NOT_A_STAGE`. Both kept.
+
+⚠️⚠️ **AND THE MERGE MADE A COMMENT FALSE, WHICH IS WHAT MERGES DO HERE.** The
+brake audit found that `reach --check` does not enforce its own documented
+rule and REPORTED it; branch 1 had FIXED it the same afternoon. Neither branch
+could see the other and only the merged tree has both. Corrected in the
+resolution — *the merged tree is the one thing nobody runs*, caught on
+schedule.
+
+**ELEVEN derived checks exit 0 on the merged tree** (`capture`, `wiring`,
+`inventory`, `gather_coverage`, `health`, `reach`, `meaning`, `brakes`,
+`no_producer`, `export_coverage`, `accuracy_record`). ⚠️ The manager PREDICTED
+the audits would go red on success — several assert gaps that sibling branches
+closed. They did not. Do not read that as proof they cannot; it is one merge.
+
+## 3b. THE BRANCHES AS THEY WERE
 
 | branch | commits | what |
 |---|--:|---|
