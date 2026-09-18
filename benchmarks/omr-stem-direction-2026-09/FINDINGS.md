@@ -27,6 +27,38 @@ would be aimed partly at correct answers. The target is **784**.
 | `no_stem` | 793 |
 | `stems_disagree` | 111 |
 
+⚠️ **A WHOLE NOTE HAS NO STEM; A HALF NOTE DOES** — hollow head, stem
+attached. Read off the record rather than from memory: half notes get a stem
+**309** times against **103** that do not, so those 103 are MISSES and not
+convention. Only the 9 whole notes are correct abstentions.
+
+### 1b. ⚠️⚠️ ABSENT, MISLABELLED, OR MERELY UNATTACHED? — mostly ABSENT
+
+Sean, 2026-09-17: *"is the point that we don't see the ink or that we were
+mislabeling it or that it was being disregarded?"* **This was not measured
+before he asked, and the distinction decides the whole repair**: a stem that
+is THERE but a few pixels outside the box-overlap test is an ATTACHMENT fault,
+and fixing that would beat any downstream rule. `probe_is_the_ink_there.py`
+asks how far the nearest stem row in the same bar actually is:
+
+| distance to the nearest stem in the bar | heads | |
+|---|--:|--:|
+| touching | 1 | 0.1% |
+| within ¼ staff space | 45 | 5.7% |
+| ¼–1 space | 119 | 15.0% |
+| 1–3 spaces | 247 | 31.1% |
+| more than 3 spaces | 170 | 21.4% |
+| **no stem ink ANYWHERE in the bar** | **211** | **26.6%** |
+
+**Median gap 2.01 spaces.** So the population is **not** mislabelled and
+**not** disregarded — it is ink we did not read. At most **6% look like an
+attachment near-miss**, and widening the test past a quarter space starts
+claiming the NEIGHBOURING note's stem, which is the fault the attachment
+constant was measured to avoid in the first place.
+
+⚠️ The same table shows the attachment test has false POSITIVES too: **8 whole
+notes were given a stem**, and a whole note has none.
+
 ---
 
 ## 2. Three readings, and what each is worth
