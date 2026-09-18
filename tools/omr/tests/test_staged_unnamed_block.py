@@ -129,6 +129,26 @@ class TestTheAdjudicatorPlacesOnlyWhatIsForced(unittest.TestCase):
         self.assertEqual(v.outcome, Outcome.ABSTAINED)
         self.assertEqual(v.reason, "unnamed_in_short_system")
 
+    def test_an_interior_unnamed_staff_is_not_placed_WITH_a_block_below(self):
+        """⚠️ THE FIXTURE ABOVE DOES NOT REACH THE GUARD, AND A MUTATION ARM
+        SAID SO. With names below it there is no trailing block at all, so the
+        deficit cap refuses that staff first and deleting `here < b0` changes
+        nothing -- a test passing for a reason that is not the one it names.
+
+        Here the system HAS a block, and an interior unnamed staff sits above
+        it. Without the guard its block index is NEGATIVE and `run[i]` wraps
+        round to the far end of the reference: silently, and onto another
+        family.
+        """
+        log2 = _document([FULL,
+                          ["Flauti", None, "Corni", "Violino I"] + [None] * 3])
+        interior = _v(log2, 1, 1)
+        self.assertEqual(interior.outcome, Outcome.ABSTAINED)
+        self.assertEqual(interior.reason, "unnamed_in_short_system")
+        # and the block BELOW it is still placed -- the guard is a refusal
+        # about one staff, not about the system.
+        self.assertEqual(_v(log2, 1, 4).outcome, Outcome.DECIDED)
+
     def test_a_block_longer_than_the_run_is_refused(self):
         """Six unnamed staves cannot be five string slots."""
         log = _document([FULL, ["Flauti", "Oboi"] + [None] * 5])
@@ -207,6 +227,56 @@ class TestTheConventionLivesInInfer(unittest.TestCase):
         log = _document([FULL, self.SHORT])
         _run_infer(log)
         self.assertEqual(_v(log, 1, 3).outcome, Outcome.DECIDED)
+
+    def test_a_staff_disagreeing_with_itself_is_not_a_witness(self):
+        """⚠️ ONE ANSWER OR NONE, NEVER A VOTE. A staff carrying both a
+        `clefG` and a `clefF` cannot agree with itself, and picking its
+        majority here would be a second clef DECISION sitting outside
+        `adjudicate_clef`. It contributes NOTHING -- which is silence, and
+        silence is not contradiction, so the block is inferred as before."""
+        # Built by hand rather than through `_document`, because that helper
+        # takes ONE glyph per staff and the whole point here is two.
+        log2 = Log()
+        systems = [FULL, self.SHORT]
+        for s_i, names in enumerate(systems):
+            log2.observe(R.system(0, s_i), Q.SYSTEM_STAFF_COUNT, len(names),
+                         reader=READERS.GEOMETRY, frame="system")
+            for i, name in enumerate(names):
+                sub = R.staff(0, s_i, i)
+                log2.observe(sub, Q.STAFF_ORDINAL, i,
+                             reader=READERS.GEOMETRY, frame="system")
+                if name is not None:
+                    log2.observe(sub, Q.MARGIN_LABEL, name,
+                                 reader=READERS.SURYA, frame="page")
+                if (s_i, i) == (1, 3):
+                    for g in ("clefG", "clefF"):
+                        log2.observe(sub, Q.CLEF_GLYPH, g,
+                                     reader=READERS.DETECTOR, frame="cell",
+                                     score=0.9)
+        adjudicate.run(log2)
+        _run_infer(log2)
+        self.assertEqual(_v(log2, 1, 3).outcome, Outcome.DECIDED)
+
+    def test_a_deficit_the_adjudicator_never_emits_is_still_declined(self):
+        """⚠️ THE CROSS-MODULE CONTRACT, MADE REACHABLE.
+
+        `FAMILY_BLOCK_MAX_DEFICIT` holds the narrowing to one missing slot,
+        so INFER's own `len(run) != len(members) + 1` guard can never fire on
+        a record this tree produces -- and a mutation arm duly SURVIVED
+        deleting it. It is kept because the two live in different modules and
+        are free to drift, and it is tested by widening the cap so the
+        adjudicator emits the shape the guard exists to refuse.
+        """
+        from tools.omr.staged.adjudicators import identity as ID
+        was = ID.FAMILY_BLOCK_MAX_DEFICIT
+        ID.FAMILY_BLOCK_MAX_DEFICIT = 2
+        try:
+            log = _document([FULL, WINDS + [None] * 2])
+            self.assertEqual(_v(log, 1, 3).outcome, Outcome.NARROWED)
+            _run_infer(log)
+            self.assertEqual(_v(log, 1, 3).outcome, Outcome.NARROWED)
+        finally:
+            ID.FAMILY_BLOCK_MAX_DEFICIT = was
 
     def test_it_never_touches_a_forced_block(self):
         """Rule 3 of the stage: an inference may not overturn a reading."""

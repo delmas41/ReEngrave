@@ -85,10 +85,14 @@ ARMS = [
      "        if conflict is not None:\n            continue",
      "        if False:  # MUTANT\n            continue",
      "tests"),
-    ("the_refusal_is_per_member_not_whole_block", INFS,
-     "                break\n            witnesses.extend(ids)",
-     "                continue  # MUTANT\n            witnesses.extend(ids)",
-     "tests"),
+    # ⚠️ `the_refusal_is_per_member_not_whole_block` IS AN EQUIVALENT MUTANT
+    # AND IS HELD OUT DELIBERATELY. Turning that `break` into a `continue`
+    # changes nothing: `conflict` is already set, and the whole-block refusal
+    # reads it after the loop. The BEHAVIOUR it was meant to test is covered
+    # by `a_contradicting_clef_is_ignored`, whose test asserts all four
+    # members stay narrowed -- per-member refusal would decide two of them
+    # and go red there. An arm that can never fail trains the next reader to
+    # skim the list, so it is named here instead of run.
     ("a_silent_clef_counts_as_a_contradiction", INFS,
      "            if name is None:\n                continue",
      "            if name is None:\n                conflict = {\"block_index\": i}  # MUTANT\n                break",

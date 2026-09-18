@@ -212,6 +212,38 @@ happening between two functions of one module. The system's own
 
 ---
 
+## 6b. The mutation battery, and what its first run found
+
+**15 arms, 15 RED, 0 survivors, positive control GREEN**, tree restored and
+verified from a byte snapshot behind an in-flight sentinel.
+
+⚠️ **THE FIRST RUN REPORTED FOUR SURVIVORS AND ALL FOUR WERE WORTH HAVING** —
+two real test gaps, one untested cross-module contract, and one equivalent
+mutant of the battery's own writing:
+
+* `an_interior_unnamed_staff_is_placed_too` **SURVIVED**, and the test named
+  for that guard was passing **for a reason that is not the one it names**:
+  its fixture had names below the unnamed staff, so there was no trailing
+  block at all and the DEFICIT CAP refused first. With a real block below it,
+  deleting the guard gives the interior staff a NEGATIVE block index and
+  `run[i]` wraps round to the far end of the reference — silently, and onto
+  another family. Test added.
+* `a_staff_disagreeing_with_itself_is_a_witness` **SURVIVED**: no fixture had
+  a staff carrying two different clef glyphs. Test added — and it has to
+  build its log by hand, because the helper takes one glyph per staff and the
+  whole point is two.
+* `the_rule_reads_a_deficit_it_does_not_claim` **SURVIVED** because
+  `FAMILY_BLOCK_MAX_DEFICIT` means INFER's own restatement of it can never
+  fire on a record this tree produces. It is KEPT rather than deleted — the
+  two live in different modules and are free to drift — and made reachable by
+  a test that widens the cap so the adjudicator emits the shape the guard
+  exists to refuse.
+* `the_refusal_is_per_member_not_whole_block` is an **EQUIVALENT MUTANT** and
+  is now named in the battery rather than run: turning that `break` into a
+  `continue` changes nothing, because `conflict` is already set and the
+  whole-block refusal reads it after the loop. The behaviour is covered by
+  `a_contradicting_clef_is_ignored`.
+
 ## 7. What is NOT established
 
 * **n = 1 document, 1 publisher, 4 pages of ~16**, on the low-res bitonal
