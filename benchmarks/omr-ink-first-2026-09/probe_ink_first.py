@@ -79,6 +79,22 @@ def load_class_names():
     return names
 
 
+def cell_of(subject):
+    """The CELL subject key a glyph subject belongs to.
+
+    ⚠️ `subject.rsplit("/", 1)[0]` IS NOT IT, and reading it that way is a
+    clean believable zero waiting to happen. `record.glyph(1,0,2,4,13)` is
+    `glyph/1/0/2/4/13`, whose parent renders `glyph/1/0/2/4` -- while
+    `record.cell(1,0,2,4)` is `cell/1/0/2/4`. The KIND word differs, so a
+    dict keyed one way and looked up the other misses every time and reports
+    an empty join as an empty page. `Q.CELL_STAFF_SPACE` is filed on the cell
+    and `Q.INK` / `Q.GLYPH_BOX` on glyphs, so this probe needs both in one
+    key space. Checked against `record.py`, not assumed.
+    """
+    p = subject.split("/")
+    return "cell/" + "/".join(p[1:5])
+
+
 def iou(a, b):
     """Corner boxes."""
     ix0, iy0 = max(a[0], b[0]), max(a[1], b[1])
@@ -129,7 +145,7 @@ def main():
             bb = d.get("ink_bbox_canonical")
             if not bb or len(bb) != 4:
                 continue
-            cell = sub.rsplit("/", 1)[0]
+            cell = cell_of(sub)
             bb = [float(t) for t in bb]
             sp = d.get("cell_staff_space_px")
             ws, hs = d.get("width_spaces"), d.get("height_spaces")
@@ -161,7 +177,7 @@ def main():
     spread = []
     tmp = collections.defaultdict(list)
     for g, pos in pos_by_glyph.items():
-        cell = g.rsplit("/", 1)[0]
+        cell = cell_of(g)
         hs = halfstep_by_cell.get(cell)
         gb = glyph_box.get(g)
         if hs is None or gb is None:
@@ -218,7 +234,7 @@ def main():
     for s, (cls, bx) in glyph_box.items():
         if not str(cls).startswith(NOTEHEAD_PREFIX):
             continue
-        cell = s.rsplit("/", 1)[0]
+        cell = cell_of(s)
         sp = sp_by_cell.get(cell)
         if sp:
             nh_h.append((bx[3] - bx[1]) / sp)
@@ -301,7 +317,7 @@ def main():
     hit, miss, tot = 0, 0, 0
     for rc, hs_ in hand.items():
         dets = [(c, b) for s, (c, b) in glyph_box.items()
-                if s.rsplit("/", 1)[0] == rc]
+                if cell_of(s) == rc]
         for h in hs_:
             if not h["cls"].startswith(NOTEHEAD_PREFIX):
                 continue
@@ -378,7 +394,7 @@ def main():
         if not sp:
             continue
         dets = [(c, b) for s, (c, b) in glyph_box.items()
-                if s.rsplit("/", 1)[0] == rc]
+                if cell_of(s) == rc]
         hs_ = hand[rc]
         for r in ink.get(rc, []):
             b = r["box"]
@@ -487,7 +503,7 @@ def main():
         det_heads = collections.defaultdict(list)
         for s, (c, b) in glyph_box.items():
             if str(c).startswith(NOTEHEAD_PREFIX):
-                det_heads[s.rsplit("/", 1)[0]].append((c, b))
+                det_heads[cell_of(s)].append((c, b))
         hand_heads = collections.defaultdict(list)
         for rc, hs_ in hand.items():
             for h in hs_:
@@ -534,7 +550,7 @@ def main():
             print("  DEAD: no `too TALL` tile on this page in the crop sample")
         else:
             for p in tall:
-                cell = p["subject"].rsplit("/", 1)[0]
+                cell = cell_of(p["subject"])
                 sp = sp_by_cell.get(cell)
                 hd = det_heads.get(cell, [])
                 hh = hand_heads.get(cell, [])

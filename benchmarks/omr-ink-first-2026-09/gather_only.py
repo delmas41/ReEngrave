@@ -20,10 +20,14 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import sys
 
-from tools.omr.staged import gather
-from tools.omr.staged.pipeline import prepare_pages
+# Run as a plain script from the repo root; `tools` is a package there.
+sys.path.insert(0, os.getcwd())
+
+from tools.omr.staged import gather  # noqa: E402
+from tools.omr.staged.pipeline import prepare_pages  # noqa: E402
 
 
 def main() -> int:
