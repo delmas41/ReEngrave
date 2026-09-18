@@ -19,10 +19,17 @@ stem."*
 3. **The convention reads them.** *Right-and-up or left-and-down* agrees with
    the stems we ALREADY read **95.9%** and **98.2%** of the time, and it
    speaks for **472 + 653 = 1,125 heads that currently abstain**.
-4. **Sean's "later stages" hypothesis is supported and has a named constant.**
-   Where the convention speaks, the arms of the MISSING stems run over
-   `line_detection.STEM_MAX_HEIGHT_LINES = 8.0` at **16.9%** and **4.7%**,
-   against **4.6%** and **0.1%** for the stems we read — 3.7× and 47×.
+4. **Sean's "later stages" hypothesis is supported — by TWO filters, and the
+   bigger one is not the one this document first led with.**
+   * ⚠️⚠️ **CORRECTION.** `STEM_MAX_HEIGHT_LINES = 8.0` is crossed by the
+     missing stems at 3.7× and 47× the rate of the read ones — but in
+     ABSOLUTE reach that is **80 of 784 heads (10.2%)** and **31 of 1,442
+     (2.1%)**. A striking ratio on a small population. **It is not the bulk
+     and must not be ranked as though it were.**
+   * **`_drop_paired_strokes` is the larger suspect** (§4b): the missing
+     stems stand beside a close vertical partner at **94.6% / 79.8%**
+     against **80.7% / 15.7%** for the stems we read — an excess of **+13.8
+     and +64.1 points**. That rule DELETES BOTH MEMBERS of a pair.
 
 ## 1. THE HANDOFF'S DIAGNOSIS COMPARED A READING WITH A READING
 
@@ -104,6 +111,39 @@ The population that forced that change is the population still failing.
 **And the same split says where the missing heads are**: `no_stem` runs at
 **44.8% outside the staff against 22.3% inside** on Litolff (51.8% / 40.2% on
 Breitkopf) — the long-stem population, exactly.
+
+### 4b. ⚠️⚠️ THE PAIR RULE IS THE LARGER SUSPECT
+
+`_drop_paired_strokes` rejects two vertical strokes whose centres are within
+**0.9 staff spaces** and which overlap vertically by 0.6 of the shorter, on
+the stated ground that *"successive notes are set further apart than an
+accidental's own strokes"* — and **it drops both members**. That premise is a
+claim about how tightly this plate sets its notes, measured on 14 hand-counted
+cells.
+
+Evaluating the rule's own predicate on the raster at every head:
+
+| | reference (stems we READ) | missing | excess |
+|---|--:|--:|--:|
+| Litolff | 80.7% (n=1,011) | **94.6%** (n=496) | +13.8 |
+| Breitkopf | 15.7% (n=1,586) | **79.8%** (n=1,037) | **+64.1** |
+
+⚠️ **This is a PROXY and it over-fires.** It reads raw 600-dpi ink with no
+morphological opening, so it calls far more things a "stroke" than
+`detect_stems` does after step 3 — which is why Litolff's reference rate is
+80.7%. **The differential is the evidence, not the level**, and it runs the
+same way on both publishers with a 64-point gap on the denser one.
+
+⚠️ **The failure mode this predicts is TWO-VOICE WRITING**, not accidentals:
+an up-stemmed upper voice and a down-stemmed lower voice in one column are two
+strokes within 0.9 spaces that overlap vertically, and the rule deletes both.
+That is the densest orchestral texture, and Breitkopf is the denser plate.
+
+✅ **THE DECIDING EXPERIMENT IS ONE ARGUMENT**, already in the signature:
+`detect_stems(..., drop_accidental_pairs=False)`. ⚠️ It needs cell images, so
+it is a GATHER change and needs two full re-gathers to price — and the pair
+rule's own record says it takes summed |error| from 60 to 24 on 14 cells, so
+turning it off is not free and the arm must score both directions.
 
 ⚠️ **The arm is an over-estimate where a beam is involved**: the vertical run
 does not stop at the beam, it continues through it. That inflates BOTH groups
