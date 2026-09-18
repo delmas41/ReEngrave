@@ -435,11 +435,18 @@ class Q(_Vocab):
     #: 98.9% of the time and silently wrong on the rest.
     #:
     #: ⚠ THE BOX IS `[x, y, w, h]` CANONICAL, matching `Q.STEM.value` and NOT
-    #: `Q.INK.detail.ink_bbox_canonical`, which is `[x0, y0, x1, y1]` CORNERS.
-    #: Three conventions disagree in one record (see `STEM` above); reading one
-    #: as another gives a NEGATIVE width and a clean believable zero. The page
-    #: box is corners, like `Q.INK`'s and `Q.GLYPH_BOX`'s, and is spelled
-    #: `run_bbox_page_px` so the two cannot be confused at a read site.
+    #: `Q.INK`'s canonical box, which is corners. Three conventions disagree in
+    #: one record (see `STEM` above); reading one as another gives a NEGATIVE
+    #: width and a clean believable zero. The page box is corners, like
+    #: `Q.INK`'s and `Q.GLYPH_BOX`'s, and is spelled `run_bbox_page_px` so the
+    #: two cannot be confused at a read site.
+    #:
+    #: ⚠️ NAMED WITHOUT ITS LEAF KEY, DELIBERATELY. `wiring.py`'s DETAIL
+    #: question credits a key by its LEAF NAME matched textually anywhere under
+    #: `tools/`, so a COMMENT that spells `Q.INK`'s box key closes that key's
+    #: open gap entry -- which `--check` caught the first time this comment was
+    #: written. A doc mention is not a consumer; the family `wiring.py` already
+    #: documents three times, arriving a fourth.
     #:
     #: ⚠️ PRODUCER ONLY, default OFF (`OMR_VERTICAL_RUNS`). Nothing reads it,
     #: deliberately -- the `Q.INK` discipline: a producer and its first consumer

@@ -66,6 +66,12 @@ UNDOCUMENTED = {
     "OMR_ROSTER": "default-ON and undocumented",
     "OMR_ROSTER_CLEF": "default-OFF and undocumented",
     "OMR_SURYA_KEEP_ALIVE": "operational; documented in prose, no table row",
+    #: ⚠️ Registered by the job that ADDED it, with a proposed table row at the
+    #: foot of `benchmarks/omr-vertical-runs-2026-09/FINDINGS.md`. That lane
+    #: does not own `CLAUDE.md`; the managing session pastes the row and this
+    #: entry LEAVES the list the same day -- the `KNOWN_GAPS` discipline this
+    #: file's own docstring states.
+    "OMR_VERTICAL_RUNS": "default-OFF; its table row is proposed and unpasted",
 }
 
 

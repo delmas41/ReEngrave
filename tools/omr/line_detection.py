@@ -406,10 +406,12 @@ class VerticalRunCandidate:
     ⚠️ THE BOX IS `[x, y, w, h]` IN CANONICAL CELL COORDINATES -- the same
     spelling `Q.STEM.value` uses, and DELIBERATELY not corners. Three
     mutually-disagreeing box conventions exist in one record
-    (`Q.GLYPH_BOX.value` is `[name, x, y, w, h]`, `Q.INK.detail.
-    ink_bbox_canonical` is `[x0, y0, x1, y1]` CORNERS, `Q.STEM.value` is
-    `[x, y, w, h]`) and reading one as another gives a NEGATIVE width and a
-    clean believable zero. The fields are named `w`/`h` rather than `x1`/`y1`
+    (`Q.GLYPH_BOX.value` is `[name, x, y, w, h]`, `Q.INK`'s canonical box is
+    CORNERS, `Q.STEM.value` is `[x, y, w, h]`) and reading one as another gives
+    a NEGATIVE width and a clean believable zero. ⚠️ `Q.INK`'s key is named
+    here WITHOUT its leaf spelling on purpose: `wiring.py` credits a detail key
+    by leaf name matched anywhere under `tools/`, so a comment that spells it
+    closes that key's open gap entry. The fields are named `w`/`h` rather than `x1`/`y1`
     so the convention is unmistakable at every read site.
 
     `outcome` is one of `RUN_OUTCOMES`. It is a fact about WHICH FILTER FIRED,
