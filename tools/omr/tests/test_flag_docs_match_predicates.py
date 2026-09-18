@@ -65,9 +65,6 @@ UNDOCUMENTED = {
     "OMR_MOVEMENT_REFERENCE": "default-ON and undocumented",
     "OMR_ROSTER": "default-ON and undocumented",
     "OMR_ROSTER_CLEF": "default-OFF and undocumented",
-    "OMR_STEM_STROKE": "landed 2026-09-18; its table row is drafted at the "
-                       "foot of benchmarks/omr-stem-stroke-2026-09/FINDINGS.md "
-                       "and is Sean's to paste, since CLAUDE.md is his file",
     "OMR_SURYA_KEEP_ALIVE": "operational; documented in prose, no table row",
 }
 
