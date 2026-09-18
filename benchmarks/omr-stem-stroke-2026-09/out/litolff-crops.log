@@ -1,0 +1,48 @@
+Litolff Beethoven 5 pp.1-4: the `side` variant recovers 345 heads
+strata available: {'silent': 111, 'agree': 193, 'disagree': 41}
+sampled 36 tiles, seed 20260918, 12 per stratum
+wrote benchmarks/omr-stem-stroke-2026-09/out/print-litolff/sheet-0.png
+wrote benchmarks/omr-stem-stroke-2026-09/out/print-litolff/sheet-1.png
+wrote benchmarks/omr-stem-stroke-2026-09/out/print-litolff/sheet-2.png
+
+frame control: 0 of 36 tiles FLAGGED (head box not darker than its surround)
+
+== the index (adjudicate each # against its tile)
+  #0   agree     we say up    convention up    glyph/2/0/2/1/7
+  #1   agree     we say up    convention up    glyph/3/0/9/7/0
+  #2   agree     we say down  convention down  glyph/3/0/4/7/1
+  #3   agree     we say down  convention down  glyph/2/1/1/8/2
+  #4   agree     we say down  convention down  glyph/4/1/0/6/6
+  #5   agree     we say down  convention down  glyph/3/0/3/4/6
+  #6   agree     we say down  convention down  glyph/1/0/7/14/1
+  #7   agree     we say up    convention up    glyph/3/0/3/2/2
+  #8   agree     we say down  convention down  glyph/2/1/10/10/8
+  #9   agree     we say down  convention down  glyph/2/1/3/3/0
+  #10  agree     we say down  convention down  glyph/4/0/6/12/3
+  #11  agree     we say down  convention down  glyph/4/1/1/5/8
+  #12  disagree  we say up    convention down  glyph/2/1/2/9/7
+  #13  disagree  we say up    convention down  glyph/2/1/9/14/9
+  #14  disagree  we say down  convention up    glyph/3/0/1/7/3
+  #15  disagree  we say down  convention up    glyph/2/0/0/1/3
+  #16  disagree  we say up    convention down  glyph/4/1/2/11/2
+  #17  disagree  we say down  convention up    glyph/2/0/0/2/5
+  #18  disagree  we say up    convention down  glyph/2/1/3/9/5
+  #19  disagree  we say up    convention down  glyph/2/1/4/0/7
+  #20  disagree  we say down  convention up    glyph/2/0/1/1/7
+  #21  disagree  we say up    convention down  glyph/4/1/2/5/4
+  #22  disagree  we say up    convention down  glyph/4/1/2/12/17
+  #23  disagree  we say down  convention up    glyph/4/0/1/13/2
+  #24  silent    we say up    convention None  glyph/3/0/9/7/4
+  #25  silent    we say up    convention None  glyph/4/1/7/2/4
+  #26  silent    we say down  convention None  glyph/2/1/1/7/5
+  #27  silent    we say down  convention None  glyph/3/0/3/3/7
+  #28  silent    we say down  convention None  glyph/4/0/8/0/5
+  #29  silent    we say up    convention None  glyph/2/1/9/10/8
+  #30  silent    we say down  convention None  glyph/2/0/1/5/3
+  #31  silent    we say down  convention None  glyph/2/0/0/2/3
+  #32  silent    we say down  convention None  glyph/4/0/6/11/4
+  #33  silent    we say down  convention None  glyph/2/1/2/4/5
+  #34  silent    we say up    convention None  glyph/3/0/7/2/2
+  #35  silent    we say down  convention None  glyph/4/1/2/4/2
+
+wrote benchmarks/omr-stem-stroke-2026-09/out/litolff-crops.json

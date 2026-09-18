@@ -1,0 +1,179 @@
+{
+ "label": "Breitkopf Brahms 1 pp.0-3",
+ "seed": 20260918,
+ "recovered": 545,
+ "strata": {
+  "silent": 170,
+  "agree": 359,
+  "disagree": 16
+ },
+ "sheets": [
+  "benchmarks/omr-stem-stroke-2026-09/out/print-breitkopf/sheet-0.png",
+  "benchmarks/omr-stem-stroke-2026-09/out/print-breitkopf/sheet-1.png",
+  "benchmarks/omr-stem-stroke-2026-09/out/print-breitkopf/sheet-2.png"
+ ],
+ "index": [
+  {
+   "i": 0,
+   "stratum": "agree",
+   "subject": "glyph/0/0/2/5/1",
+   "we_say": "up",
+   "convention": "up",
+   "frame_delta_grey": 169.3,
+   "frame_ok": true
+  },
+  {
+   "i": 1,
+   "stratum": "agree",
+   "subject": "glyph/2/0/0/5/6",
+   "we_say": "down",
+   "convention": "down",
+   "frame_delta_grey": 153.8,
+   "frame_ok": true
+  },
+  {
+   "i": 2,
+   "stratum": "agree",
+   "subject": "glyph/3/0/2/3/3",
+   "we_say": "down",
+   "convention": "down",
+   "frame_delta_grey": 121.6,
+   "frame_ok": true
+  },
+  {
+   "i": 3,
+   "stratum": "agree",
+   "subject": "glyph/3/1/3/2/2",
+   "we_say": "down",
+   "convention": "down",
+   "frame_delta_grey": 139.5,
+   "frame_ok": true
+  },
+  {
+   "i": 4,
+   "stratum": "agree",
+   "subject": "glyph/0/0/1/3/12",
+   "we_say": "down",
+   "convention": "down",
+   "frame_delta_grey": 174.1,
+   "frame_ok": true
+  },
+  {
+   "i": 5,
+   "stratum": "agree",
+   "subject": "glyph/3/1/12/7/2",
+   "we_say": "down",
+   "convention": "down",
+   "frame_delta_grey": 145.3,
+   "frame_ok": true
+  },
+  {
+   "i": 6,
+   "stratum": "disagree",
+   "subject": "glyph/3/1/3/6/4",
+   "we_say": "up",
+   "convention": "down",
+   "frame_delta_grey": 159.4,
+   "frame_ok": true
+  },
+  {
+   "i": 7,
+   "stratum": "disagree",
+   "subject": "glyph/3/0/10/3/10",
+   "we_say": "up",
+   "convention": "down",
+   "frame_delta_grey": 148.7,
+   "frame_ok": true
+  },
+  {
+   "i": 8,
+   "stratum": "disagree",
+   "subject": "glyph/3/0/5/3/1",
+   "we_say": "down",
+   "convention": "up",
+   "frame_delta_grey": 151.9,
+   "frame_ok": true
+  },
+  {
+   "i": 9,
+   "stratum": "disagree",
+   "subject": "glyph/1/0/2/0/18",
+   "we_say": "down",
+   "convention": "up",
+   "frame_delta_grey": 128.7,
+   "frame_ok": true
+  },
+  {
+   "i": 10,
+   "stratum": "disagree",
+   "subject": "glyph/3/1/3/0/22",
+   "we_say": "up",
+   "convention": "down",
+   "frame_delta_grey": 154.0,
+   "frame_ok": true
+  },
+  {
+   "i": 11,
+   "stratum": "disagree",
+   "subject": "glyph/3/0/3/9/7",
+   "we_say": "up",
+   "convention": "down",
+   "frame_delta_grey": 180.0,
+   "frame_ok": true
+  },
+  {
+   "i": 12,
+   "stratum": "silent",
+   "subject": "glyph/3/0/10/5/2",
+   "we_say": "up",
+   "convention": null,
+   "frame_delta_grey": 126.9,
+   "frame_ok": true
+  },
+  {
+   "i": 13,
+   "stratum": "silent",
+   "subject": "glyph/3/1/2/2/16",
+   "we_say": "up",
+   "convention": null,
+   "frame_delta_grey": 149.6,
+   "frame_ok": true
+  },
+  {
+   "i": 14,
+   "stratum": "silent",
+   "subject": "glyph/3/0/0/8/9",
+   "we_say": "down",
+   "convention": null,
+   "frame_delta_grey": 192.2,
+   "frame_ok": true
+  },
+  {
+   "i": 15,
+   "stratum": "silent",
+   "subject": "glyph/0/0/1/5/6",
+   "we_say": "down",
+   "convention": null,
+   "frame_delta_grey": 194.1,
+   "frame_ok": true
+  },
+  {
+   "i": 16,
+   "stratum": "silent",
+   "subject": "glyph/2/1/2/5/9",
+   "we_say": "down",
+   "convention": null,
+   "frame_delta_grey": 163.3,
+   "frame_ok": true
+  },
+  {
+   "i": 17,
+   "stratum": "silent",
+   "subject": "glyph/0/0/0/3/6",
+   "we_say": "down",
+   "convention": null,
+   "frame_delta_grey": 153.9,
+   "frame_ok": true
+  }
+ ]
+}

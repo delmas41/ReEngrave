@@ -1,0 +1,40 @@
+Litolff Beethoven 5 pp.1-4
+cells measured: 1183   EXCLUDED for drift: 0
+
+== Q1 components per cell after the opening  (handoff sec.3 spot-checked ONE cell at 3)
+   n=1183  median 4  mean 5.2  p10 2  p90 10  max 24
+   staff spacing seen: median 100 px
+
+== component HEIGHT in staff spaces  (handoff spot-check: median 8.1; the cap is 8.0)
+   n=6128  median 4.18  p10 1.60  p90 12.00  max 15.96
+   over the 8.0-space cap: 1866 (30.5%)
+
+== component WIDTH in staff spaces  (the cap is 0.6)
+   median 0.26  p90 0.50  max 3.62
+   over the 0.6-space cap: 374 (6.1%)
+
+== Q2 how many NOTEHEADS does one component cover?  (2+ is a merge no filter can undo)
+   0 head(s)       4128   67.4%
+   1 head(s)       1413   23.1%
+   2 head(s)        441    7.2%
+   3 head(s)        115    1.9%
+   4+ heads          31    0.5%
+
+== what each component IS
+   covers NO notehead                              4128   67.4%
+   covers 1 notehead, >= 2 spaces tall             1125   18.4%
+   covers 2+ noteheads (a MERGE across notes)       587    9.6%
+   covers 1 notehead, shorter than 2 spaces         288    4.7%
+
+== Q3 the components the census BLAMES, by how many heads they cover
+   TALL, 0 head(s)                         1759
+   WIDE, 2+ head(s)                         108
+   WIDE, 1 head(s)                           98
+   WIDE, 0 head(s)                           88
+   WIDE+TALL, 0 head(s)                      71
+   TALL, 1 head(s)                           20
+   TALL, 2+ head(s)                           7
+   WIDE+TALL, 2+ head(s)                      5
+   WIDE+TALL, 1 head(s)                       4
+
+wrote benchmarks/omr-stem-stroke-2026-09/out/litolff-fusion.json
