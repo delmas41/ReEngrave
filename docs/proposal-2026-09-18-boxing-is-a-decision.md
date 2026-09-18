@@ -165,3 +165,88 @@ would tell us whether layer 3 is worth building.
 * The three-layer split is a PROPOSAL. Two of the three layers exist in some
   form; the argument that they should be explicitly separated, and that layer 2
   should stop being filed as a fact, is new and untested.
+
+---
+
+## 9. ⚠️⚠️ ADDENDUM — LENGTH IS A POSITIVE IDENTIFIER FOR EVERYTHING EXCEPT A STEM, AND THAT INVERTS HOW `detect_stems` WORKS
+
+Sean, 2026-09-18, after being shown that a barline (4.00 spaces) sits at the
+median of the stem distribution (3.93) and an accidental (~2.5) does not:
+
+> *"Because stems change in length that should not be a factor in determining
+> what it is. Accidentals have 2 consistent sizes (normal and small — for grace
+> notes). Bar lines are the length of a staff or they extend to other systems.
+> **Length is helpful in all of them except stems.**"*
+
+**He is right, and it is a sharper statement than the symmetric one it
+replaces.** Length is not a weak discriminator between stems and accidentals —
+it is a **strong POSITIVE identifier for every vertical mark whose length is
+ENUMERABLE, and no identifier at all for the one whose length is CONTINUOUS.**
+
+| vertical mark | its length | enumerable? |
+|---|---|---|
+| **accidental** | **two sizes** — normal, and `*Small` for grace notes | **YES** |
+| **barline** | the staff's height, or a known multi-staff span | **YES** (from the staff geometry) |
+| **clef** stroke | fixed sizes, and confined to the header window | **YES** |
+| **STEM** | **2.14 → 6.78 staff spaces, median 3.93** (measured, n = 1,920) | **NO** |
+
+⚠️ **The two accidental sizes are ALREADY IN THE CLASS SPACE, not a proposal**:
+`accidentalFlat` / `accidentalNatural` / `accidentalSharp` alongside
+`accidentalFlatSmall` / `accidentalNaturalSmall` / `accidentalSharpSmall` — and
+Sean hand-labelled BOTH `accidentalNatural` and `accidentalNaturalSmall` on
+Brahms p2. The vocabulary already asserts his claim.
+
+### ⚠️⚠️ THE INDICTMENT THIS CARRIES: `detect_stems`' SIX FILTERS ARE ALL DIMENSION BOUNDS ON A VARIABLE-LENGTH OBJECT
+
+Every one of them tries to describe a stem by its size — `max_width` 0.6,
+`min_height` 2.0, `max_height` 8.0, a 3:1 aspect, an area floor, an edge margin.
+**By this argument none of them can work, and the repo's own history is the
+evidence:**
+
+* the **width cap** discards **217 (Litolff) / 345 (Breitkopf)** heads, and the
+  crop pass adjudicated its discards **33 of 33 REAL** — it is throwing away
+  stems *because they are still attached to their own notehead*;
+* `max_height = 8.0` exists only because a cap at 6.0 *"silently un-stemmed
+  exactly the notes furthest from their beam"*;
+* `min_height = 2.0` is what puts ~12.6% of real stems into accidental
+  territory.
+
+**Three constants, three recorded failures, all of the same kind: an attempt to
+bound something the engraver varies on purpose.**
+
+### THE INVERSION IT IMPLIES
+
+**Identify the enumerable marks POSITIVELY by length. Identify the STEM by
+ATTACHMENT — a notehead at one of its ends, offset half a notehead width from
+that head's centre — and never by dimension.**
+
+That is the synthesis of Sean's two observations in this conversation: *a stem
+is connected to a notehead* (which is its positive evidence) and *length is
+helpful for everything except stems* (which is what its evidence is NOT). Each
+kind of vertical mark then gets the evidence that actually identifies it, rather
+than one size window applied to all of them.
+
+⚠️ **THE GUARD, because the obvious version of this is unsafe.** If a stem were
+merely *"what is left once the others are identified"*, then every failure to
+recognise a barline or an accidental becomes a stem. **So attachment must be
+POSITIVE evidence and not a residue** — a run is a stem because a notehead sits
+at its end, not because nothing else claimed it. A thin-shape sanity floor stays
+(it must still be line-shaped); a length WINDOW does not.
+
+⚠️ **AND IT EXPLAINS THE ACCIDENTAL SURPRISE** of
+`benchmarks/omr-ink-first-2026-09`: the veto fired on **24 accidentals, clefs and
+rests of 33** because **the pipeline has no category for "a vertical line that is
+not a stem."** They were not being mistaken for stems by a bad rule — there was
+nowhere else for them to go.
+
+⚠️ **The tight-spacing case Sean raised strengthens it rather than weakening
+it**: when an engraver squeezes accidentals into a sixteenth-note run, what
+compresses is the HORIZONTAL spacing — the gap to the note and to its
+neighbours. **The height does not compress, because an accidental's height is
+set by the staff.** So in exactly the crowded case where position and proximity
+become unreliable, **length is the property that stays put.**
+
+⚠️ **NOT MEASURED**: the accidental sizes are quoted from the glyph vocabulary
+and SMuFL, not measured on these plates; the ~12.6% stem/accidental overlap is
+Litolff only; and no arm has tested attachment-without-a-length-window, which is
+what this addendum proposes.
