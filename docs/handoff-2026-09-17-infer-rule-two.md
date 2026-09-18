@@ -10,6 +10,19 @@ stage."* Merged as [PR #50](https://github.com/delmas41/ReEngrave/pull/50),
 it record. It touches no meter flag and no meter decision. Read it beside them,
 not after them.
 
+⚠️⚠️ **ADDED 2026-09-18, AND IT CHANGES NOTHING THIS HANDOFF MEASURED — IT IS
+THE STANDING RULE FOR WHOEVER PICKS THIS UP.** CLAUDE.md names this file as
+*START HERE*, so the pointer lives here: **before building anything, say how a
+HUMAN would read it off the page and what ENGRAVING CONVENTION governs it, and
+ask Sean in one line** —
+[docs/ask-first-conventions.md](ask-first-conventions.md). Sean, 2026-09-18:
+*"Many times I feel like the agent is building in a counter-intuitive way, or
+blind to obvious conventions."* ⚠️ Nobody to ask (a cloud session, an overnight
+run) → write **CONVENTION ASSUMED / WHAT WOULD FALSIFY IT / NOT CONFIRMED WITH
+SEAN** at the top of the brief and proceed. ⚠️ It is a hypothesis and a cheap
+test, never a licence: §3 there records the conventions this repo has
+**refuted**, including one of Sean's own.
+
 ---
 
 ## 1. WHAT LANDED
