@@ -1,6 +1,34 @@
 # ReEngrave — Project Status
 
-**Last updated:** 2026-09-17 — **INFER gained a SECOND rule**
+**Last updated:** 2026-09-17 — **THE STEM GAP IS DIAGNOSED AND IT IS NOT A
+FILTER.** Measurement only: **no code under `tools/` or `backend/` changed.**
+Every notehead whose stem direction abstains — 793 of 2,347 on Litolff, 1,529
+of 3,337 on Breitkopf — now has a named cause, and the causes **sum exactly**.
+⚠️⚠️ **Four hypotheses died, including Sean's and two of mine that had already
+reached him as recommendations**: staff-line erasure is not the cause (the
+original raster recovers FEWER), the 1-pixel opening kernel is not either
+(pre-dilation recovers 3-4 of 793), the accidental-pair rule is 9.2%, and the
+height cap is 17 heads rather than the 80 a raster proxy implied — **a proxy
+for a filter's predicate is not a proxy for the filter.** ⚠️⚠️ **What it is:
+there is no stem COMPONENT to find** — one cell's opening yields 3 components
+of median height 811 px where the staff spacing is 100 px, one blob holding
+stems, beams and noteheads. `detect_stems` is a connected-component reader and
+this plate has no stem component; a third independent arrival at *"Litolff
+MERGES and Breitkopf SHATTERS"*. ⚠️ **The top cause INVERTS between
+publishers** (WIDE 29.9% vs TALL 31.1%), and what survives is what the next
+job rests on: on both plates a component EXISTS and is the wrong SHAPE (86% /
+74%). **Next work is a RASTER reader and it is two unequal jobs** — the
+right-up/left-down convention already agrees with our read stems 95.9% / 98.2%
+over 1,125 abstaining heads but gives DIRECTION (worth two `<voice>` tags);
+the within-blob STROKE reader gives beams and therefore DURATION and is
+unbuilt. ⚠️ **No stem has been checked against the print in any arm.** Start
+at [docs/handoff-2026-09-17-the-ink-is-fused.md](docs/handoff-2026-09-17-the-ink-is-fused.md).
+A conventions registry now exists at
+[docs/engraving-conventions.md](docs/engraving-conventions.md) (114 entries,
+refuted ones included on purpose). ⚠️ Two errors in CLAUDE.md were found and
+corrected in place, not deleted — see its system-grouping paragraph.
+
+**Previously:** 2026-09-17 — **INFER gained a SECOND rule**
 (`collapse_duration_to_barline`, no flag): the 191-note bucket the first rule
 declined by design, taking the stage **7 → 17** on Litolff and **25 → 41** on
 Breitkopf. Its guard is that a witness whose length reached it THROUGH
