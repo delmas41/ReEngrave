@@ -115,6 +115,16 @@ REACH: vertical runs in the UNEXPLAINED bucket   : 7  <- the veto's domain
 
   OVER ALL 68 RUNS -- veto would fire on 33; its COST (hand head, no detector head) is 0
 
+  what the veto's firings coincide with, per the HAND pass:
+      9  (nothing the hand pass drew)
+      9  keyFlat
+      7  accidentalNatural
+      2  restQuarter
+      2  accidentalFlat
+      2  clefG
+      1  accidentalSharp
+      1  clefF
+
   THE SEVEN UNEXPLAINED VERTICAL RUNS, NAMED:
     glyph/1/0/1/1/200005        4.247x11.965  sp area   39501 fill 0.1076 ncomp 95  det=False hand=False
     glyph/1/0/1/1/200000          1.0x11.965  sp area   32822 fill 0.3797 ncomp 95  det=False hand=False

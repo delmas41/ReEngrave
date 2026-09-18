@@ -644,6 +644,24 @@ def main():
         print()
         print(f"  OVER ALL 68 RUNS -- veto would fire on {len(no_head_all)}; "
               f"its COST (hand head, no detector head) is {len(cost_all)}")
+
+        # ⚠️ WHAT THE VETO FIRES ON, BY WHAT THE HAND PASS SAYS IS THERE --
+        # AND THE HAND CORPUS CANNOT ANSWER THE REAL QUESTION. It has no stem
+        # class, so it can never say "this run IS a stem". What it can say is
+        # which SYMBOL the run coincides with, and a vertical run coinciding
+        # with a SLUR or a TIE is one the veto refuses CORRECTLY. So this is
+        # not an accuracy figure: it separates the firings that are obviously
+        # right from the ones that are UNADJUDICABLE without the print.
+        print()
+        print("  what the veto's firings coincide with, per the HAND pass:")
+        fired_cls = collections.Counter()
+        for r in no_head_all:
+            hs_ = hand.get(r["cell"], [])
+            ov = sorted({h["cls"] for h in hs_
+                         if overlap_frac_of_first(r["box"], h["box"]) >= 0.25})
+            fired_cls[", ".join(ov) if ov else "(nothing the hand pass drew)"] += 1
+        for k, n in fired_cls.most_common():
+            print(f"    {n:>3d}  {k}")
         for r in cost_all:
             print(f"    COST: {r['subject']} {r['w_sp']}x{r['h_sp']} sp "
                   f"bucket={r['bucket']}")

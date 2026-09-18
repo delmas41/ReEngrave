@@ -1,5 +1,5 @@
 {
- "record": "benchmarks/omr-ink-first-2026-09/out/brahms1-breitkopf-p2.staged.json",
+ "record": "benchmarks/omr-ink-first-2026-09/out/brahms1-breitkopf-p2.gather.json",
  "page": 1,
  "reach": {
   "ink_rows_page": 6055,
