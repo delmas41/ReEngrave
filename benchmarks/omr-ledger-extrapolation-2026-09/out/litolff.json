@@ -1,0 +1,85 @@
+{
+ "label": "Litolff Beethoven 5 pp.1-4",
+ "record": "/Users/seanjohnson/Desktop/ReEngrave/library/_shared-records/beethoven5-p1-p4.record.json",
+ "heads_with_position": 2347,
+ "p1_outside": {
+  "edge -> 1st ledger": {
+   "n": 351,
+   "mean": 0.114,
+   "median": 0.12,
+   "stdev": 0.1896
+  },
+  "1st -> 2nd ledger": {
+   "n": 254,
+   "mean": 0.0686,
+   "median": 0.14,
+   "stdev": 0.3067
+  },
+  "2nd -> 3rd ledger": {
+   "n": 166,
+   "mean": -0.1,
+   "median": -0.17,
+   "stdev": 0.2901
+  },
+  "3rd ledger and beyond": {
+   "n": 428,
+   "mean": -0.0373,
+   "median": -0.06,
+   "stdev": 0.2794
+  }
+ },
+ "p2_inside": {
+  "0-1 from middle": {
+   "n": 304,
+   "mean": -0.034,
+   "median": -0.02,
+   "stdev": 0.1659
+  },
+  "1-2 from middle": {
+   "n": 314,
+   "mean": -0.0017,
+   "median": 0.0,
+   "stdev": 0.2083
+  },
+  "2-3 from middle": {
+   "n": 277,
+   "mean": 0.0107,
+   "median": 0.02,
+   "stdev": 0.181
+  },
+  "3-4 from middle": {
+   "n": 253,
+   "mean": 0.0226,
+   "median": -0.0,
+   "stdev": 0.2032
+  }
+ },
+ "by_owner": {
+  "no ownership verdict": {
+   "n": 735,
+   "mean": 0.051,
+   "median": 0.08,
+   "stdev": 0.2658
+  },
+  "owned by ANOTHER staff": {
+   "n": 464,
+   "mean": -0.0272,
+   "median": -0.04,
+   "stdev": 0.2845
+  }
+ },
+ "p4_convention": {
+  "convention RIGHT": {
+   "n": 261,
+   "mean": 0.0213,
+   "median": 0.06,
+   "stdev": 0.3041
+  },
+  "convention WRONG": {
+   "n": 79,
+   "mean": -0.0172,
+   "median": -0.04,
+   "stdev": 0.3036
+  }
+ }
+}

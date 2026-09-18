@@ -1,0 +1,17 @@
+Litolff Beethoven 5 pp.1-4: record holds 2347 noteheads, 1920 stem rows in 783 cells, 382 accidental boxes
+re-cut 4 pages in 15s
+cells re-cut and read: 1183
+
+== CONTROL: the shipped flag against the record
+   cells in both: 783   identical stem sets: 783 (100.0%)
+   stems: re-cut 1920, record 1920
+
+== ARM: drop_accidental_pairs=False
+   stems 1920 -> 2164  (+244)
+
+== heads that gain an overlapping stem box
+   no_stem                       73
+
+== COST: of 244 newly kept strokes, 56 stand on an accidental the detector found (23.0%)
+
+wrote benchmarks/omr-stem-ink-2026-09/out/litolff-pair-arm.json

@@ -1,0 +1,14 @@
+Litolff Beethoven 5 pp.1-4: 793 heads abstain `no_stem`
+re-cut in 15s
+
+== CONTROL: 783 of 783 cells reproduce the record
+   cells with NO erased variant (would make the arms identical): 0
+
+arm                               strokes  recovers   of 793     new  on accid
+ERASED, shipped (control)            1920         0    0.0%       0         0
+ERASED, all filters relaxed          2903       287   36.2%    2793       340
+ORIGINAL, shipped filters            1957         6    0.8%    1957       163
+ORIGINAL, all filters relaxed        2771       268   33.8%    2771       368
+
+⚠️  THE COMPARISON THAT MATTERS: with every filter relaxed, the erased image reaches 287 and the original reaches 268. The erasure is NOT the binding constraint -- the loss is elsewhere.
+wrote benchmarks/omr-stem-ink-2026-09/out/litolff-erasure.json
