@@ -387,13 +387,33 @@ def _verdict_line(v: dict) -> str:
 
 
 def family_quantities(family: str) -> Dict[str, Any]:
-    """Which quantities a family's journey runs through — DERIVED.
+    """Which quantities a family's journey runs through — DERIVED, two ways.
 
-    ⚠️ From `export.FAMILIES` (the deciding quantity), then that decision's
-    own `subjects_from` (its POPULATION, which is what makes the funnel's
-    first step the family's ink rather than every glyph on the page), then
-    every quantity any registered decision or consequence writes on the same
-    subject KIND. A hand list would rot the way this repo's hand lists have.
+    ⚠️⚠️ THE POPULATION NEEDS BOTH ROUTES AND THE `note` FAMILY IS WHY.
+    `export.FAMILIES["note"]` names `Q.PITCH` as its deciding quantity, and
+    **`A.REGISTRY` has no entry for `pitch` at all** — the note family's value
+    is written by EVALUATE's `restate_pitch`, a CONSEQUENCE, so there is no
+    `subjects_from` to read a population off. A `subjects_from`-only
+    derivation reports the best-read family in the pipeline as having no
+    population, which is a DEAD funnel on the one family this job exists to
+    calibrate. (`capture._family_quantities` records the same fact from the
+    other side, as `via: "rule_body"`.)
+
+    So the population is a UNION of two derived routes:
+
+    * **the DETECTOR route** — every `Q.GLYPH_BOX` subject whose class this
+      family CLAIMS, through `export._claims`, which is the exporter's own
+      longest-prefix-wins router. Reused, never restated: a plain prefix test
+      double-counts the hairpins and `gather_glyph_families` is routed by
+      class for exactly that glyph.
+    * **the DECISION route** — the deciding decision's own `subjects_from`,
+      which is what makes a CV-read family (`wedge`, `direction`) reachable at
+      all, since a direction word is not in the 208-class space.
+
+    ⚠️ A union and not a preference: the two answer different halves, and a
+    family served by only one of them would otherwise read as having a
+    population of zero for a reason that is about the ROUTE and not about the
+    page.
     """
     A._ensure_decisions()
     E._ensure_rules()
@@ -403,14 +423,45 @@ def family_quantities(family: str) -> Dict[str, Any]:
             "(derived from export.FAMILIES, never restated here)")
     quantity, prefixes, counters = X.FAMILIES[family]
     spec = A.REGISTRY.get(quantity) if quantity else None
-    population: Tuple[str, ...] = ()
+    from_decision: Tuple[str, ...] = ()
     if spec is not None and spec.subjects_from:
         sf = spec.subjects_from
-        population = (sf,) if isinstance(sf, str) else tuple(sf)
+        from_decision = (sf,) if isinstance(sf, str) else tuple(sf)
     return {"family": family, "deciding_quantity": quantity,
+            "decided_by": ("adjudicator" if spec is not None else
+                           "a consequence or gather only — no adjudicator "
+                           "owns this quantity"),
             "detector_prefixes": list(prefixes), "counters": list(counters),
-            "population_quantities": list(population),
+            "population_quantities": list(from_decision),
+            "population_by_detector_class": bool(prefixes),
             "scope": spec.scope.value if spec is not None else None}
+
+
+def population_of(rec: X.Record, family: str) -> Tuple[set, Dict[str, int]]:
+    """The family's own ink, as GATHER filed it — and where each subject came
+    from, so a zero can never be read as *the page holds none of these*."""
+    meta = family_quantities(family)
+    subjects: set = set()
+    via: Dict[str, int] = collections.Counter()
+
+    # The DETECTOR route: the exporter's own class router, reused.
+    if meta["detector_prefixes"]:
+        for o in rec.obs_of(Q.GLYPH_BOX):
+            value = o.get("value")
+            cls = value[0] if isinstance(value, (list, tuple)) and value else None
+            if isinstance(cls, str) and X._claims(family, cls):
+                if o["subject"] not in subjects:
+                    via["detector_class"] += 1
+                subjects.add(o["subject"])
+
+    # The DECISION route: the deciding decision's declared population.
+    for q in meta["population_quantities"]:
+        for o in rec.obs_of(q):
+            if o["subject"] not in subjects:
+                via[f"subjects_from:{q}"] += 1
+            subjects.add(o["subject"])
+
+    return subjects, dict(via)
 
 
 def funnel(rec: X.Record, family: str, *,
@@ -425,19 +476,22 @@ def funnel(rec: X.Record, family: str, *,
     NOWHERE while the report said `balanced: True`.
     """
     meta = family_quantities(family)
-    pops = meta["population_quantities"]
-    if not pops:
-        return {**meta, "reach": 0, "dead": True,
-                "why": "this family's decision names no `subjects_from`, so "
-                       "its population is every subject at its scope and "
-                       "this funnel has no first step to stand on"}
 
     # ── step 0: the POPULATION -- the family's own ink, as GATHER filed it.
-    subjects: set = set()
-    for q in pops:
-        for o in rec.obs_of(q):
-            subjects.add(o["subject"])
+    subjects, via = population_of(rec, family)
     reach = len(subjects)
+    if not reach:
+        # ⚠️ DEAD, and it says WHICH route was empty. A family with no
+        # detector prefix and no `subjects_from` is unreachable BY
+        # CONSTRUCTION; one with a route and no rows is a page that holds
+        # none. Those are different facts and a single zero hides it.
+        return {**meta, "reach": 0, "dead": True, "population_via": via,
+                "why": ("no route to a population: this family has neither a "
+                        "detector class prefix nor a `subjects_from`"
+                        if not (meta["detector_prefixes"]
+                                or meta["population_quantities"]) else
+                        "both routes ran and this record holds no row of "
+                        "this family's ink")}
 
     cells = {s: _cell_of(s) for s in subjects}
 
@@ -472,6 +526,7 @@ def funnel(rec: X.Record, family: str, *,
         **meta,
         "reach": reach,
         "dead": reach == 0,
+        "population_via": via,
         "ink": {"rows": ink_rows, "cells_with_ink": len(ink_cells),
                 "population_cells": len(set(cells.values()) - {None}),
                 "population_cells_with_ink": len(
@@ -525,24 +580,39 @@ def _export_step(rec: X.Record, family: str, reach: int,
                 "reason": "no export report; pass --export to run the real "
                           "exporter. This step is NEVER re-derived here -- "
                           "see the module docstring."}
+    # ⚠️ `report["written"]` is where the exporter keeps its counters, and the
+    # KEYS are `export.FAMILIES`' own third field -- so this reads the
+    # family's counter by the name the exporter itself registered, and a
+    # family whose counter is renamed goes to None rather than to a plausible
+    # wrong number.
     counters = X.FAMILIES[family][2]
-    written = {c: report.get(c) for c in counters}
+    bag = report.get("written") or {}
+    written = {c: bag.get(c) for c in counters}
     drops = report.get("notes_not_written") or {}
     note_drops = {k: v for k, v in drops.items() if _is_note_drop(k)}
     total = report.get("notes_not_written_total")
-    out = {"state": "read_from_the_exporter",
-           "written": written,
-           "refused_by_reason": note_drops,
-           "refused_total_all_families": total,
-           "balance": report.get("balance") or report.get("accounting")}
-    if family == "note":
-        w = written.get("notes")
-        refused = sum(note_drops.values())
-        out["partition"] = {
-            "population": reach, "written": w, "refused": refused,
-            "unexplained": (None if w is None else reach - w - refused),
-        }
-    return out
+    return {
+        "state": "read_from_the_exporter",
+        "written": written,
+        # ⚠️ THE EXPORTER'S OWN WORD FOR THESE, AND THE LABEL MATTERS: three
+        # of the five reasons (`owned_by_another_staff`,
+        # `staff_not_identified`, and a narrowed duration) are counted for
+        # NOTEHEADS AND RESTS TOGETHER, because `_place_notes` walks one
+        # ladder over both -- `duration` answers one question for two kinds of
+        # ink and that is deliberate. So this dict is not a notes-only figure
+        # and is not presented as one.
+        "refused_by_reason_notes_AND_rests": note_drops,
+        "refused_total_all_families": total,
+        # ⚠️⚠️ THE EXPORTER'S OWN BALANCE, NEVER A SECOND ONE. It is an
+        # EQUALITY over noteheads+rests that `to_musicxml` RAISES on
+        # (`Unbalanced`), so if it is here at all it held. Computing a
+        # notes-only partition beside it is the *two copies of one accounting
+        # rule* fault, and the first draft of this function did exactly that
+        # and reported `unexplained: -139` -- a number produced by mixing a
+        # notes-only counter with a notes-and-rests refusal dict, i.e. by the
+        # instrument's own arithmetic rather than by anything on the page.
+        "balance_EXPORTERS_OWN": report.get("balance"),
+    }
 
 
 def _cell_of(key: str) -> Optional[str]:
@@ -685,6 +755,15 @@ KNOWN_GAPS: Dict[str, str] = {
         "no direction of CORRECTNESS is reported, on either publisher, "
         "because both shared records are SCANS and `page_truth` exists only "
         "for a page we RENDER. OPEN: needs an engraved staged record."),
+    "DROPS-NOT-SPLIT-BY-KIND": (
+        "three of `_place_notes`' five refusal reasons -- "
+        "`owned_by_another_staff`, `staff_not_identified` and a narrowed "
+        "`duration` -- are counted for NOTEHEADS AND RESTS TOGETHER, because "
+        "one ladder walks both. So no notes-ONLY partition can be closed from "
+        "the report, and this module reports the exporter's own "
+        "noteheads+rests equality instead of inventing a second one. Closing "
+        "it means the exporter counting by kind as well as by reason. OPEN, "
+        "and it is a decision for whoever owns export.py."),
 }
 
 
@@ -762,9 +841,10 @@ def controls() -> Dict[str, int]:
         "adjudicate_deciders": len(by["ADJUDICATE"]),
         "evaluate_deciders": len(by["EVALUATE"]),
         "families": len(X.FAMILIES),
-        "families_with_a_population": sum(
+        "families_with_a_population_route": sum(
             1 for f in X.FAMILIES
-            if family_quantities(f)["population_quantities"]),
+            if family_quantities(f)["population_quantities"]
+            or family_quantities(f)["detector_prefixes"]),
         "ink_claiming_reasons": len(ink_claiming_reasons()),
         "ablatable_entries": len(ablatable()),
         "things_this_cannot_see": len(WHAT_THIS_CANNOT_SEE),
@@ -849,9 +929,9 @@ def render_trace(t: Dict[str, Any]) -> str:
 
 def render_funnel(f: Dict[str, Any]) -> str:
     L = [f"FAMILY {f['family']}   deciding quantity "
-         f"{f['deciding_quantity']}  scope {f['scope']}"]
-    L.append(f"POPULATION (its own ink, from `subjects_from`"
-             f" {f['population_quantities']}): {f['reach']}")
+         f"{f['deciding_quantity']}  ({f['decided_by']})"]
+    L.append(f"POPULATION (its own ink): {f['reach']}   via "
+             f"{f.get('population_via')}")
     if f.get("dead"):
         L.append("⚠️  DEAD: " + str(f.get("why", "reach is zero")))
         return "\n".join(L)
@@ -881,11 +961,20 @@ def render_funnel(f: Dict[str, Any]) -> str:
     if e.get("reason"):
         L.append("         " + e["reason"])
     if e.get("written"):
-        L.append(f"         written  {e['written']}")
-    if e.get("partition"):
-        L.append(f"         partition {e['partition']}")
-    if e.get("refused_by_reason"):
-        L.append(f"         refused  {e['refused_by_reason']}")
+        L.append(f"         written   {e['written']}")
+    if e.get("refused_by_reason_notes_AND_rests"):
+        L.append("         refused (NOTES AND RESTS together for three of "
+                 "these reasons — see the docstring):")
+        for k, n in sorted(e["refused_by_reason_notes_AND_rests"].items(),
+                           key=lambda kv: -kv[1]):
+            L.append(f"             {k:34s} {n}")
+    b = e.get("balance_EXPORTERS_OWN")
+    if b:
+        L.append(f"         balance (the EXPORTER's own equality, which it "
+                 f"raises on): balanced={b.get('balanced')}")
+        L.append(f"             events_in_log {b.get('events_in_log')} = "
+                 f"written {b.get('events_written')} + not_written "
+                 f"{b.get('events_not_written')}")
     return "\n".join(L)
 
 
@@ -978,8 +1067,10 @@ def main(argv: Optional[List[str]] = None) -> int:
         report_obj = None
         if args.export:
             data = json.loads(Path(args.run).read_text())
-            _xml, rep = X.to_musicxml(data, with_report=True)
-            report_obj = rep
+            # ⚠️ THE REAL EXPORTER, never a re-derivation. `to_musicxml`
+            # returns `(xml, report)` and the report is the only place the
+            # refusal ladder is spelled.
+            _xml, report_obj = X.to_musicxml(data)
         if args.subject:
             t = trace(rec, args.subject, export_report=report_obj)
             print(json.dumps(t, indent=2, default=str) if args.json
