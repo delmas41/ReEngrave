@@ -1,0 +1,14 @@
+CONTROL 1  subject present: 106 of 106
+CONTROL 2  class matches manifest: 106 of 106
+CONTROL 3  ink corners reproduce its own width_spaces: median err 0.0000 spaces (n=7093)
+CONTROL 4  notehead box median width 149 px (~1.3-1.5 staff spaces at ~100 px/space)
+
+=== ink extent vs box extent, BY PRINT VERDICT (Litolff, n=106) ===
+  cannot_tell          n= 63  median ink/box area= 13.31   AGREES=6  BOX_IS_A_SUBPART=2  MERGE_WIDE=2  MERGE_TALL=53
+  stem_printed_down    n= 19  median ink/box area=  5.85   AGREES=2  BOX_IS_A_SUBPART=1  MERGE_TALL=16
+  not_a_notehead       n= 14  median ink/box area= 14.93   AGREES=2  MERGE_TALL=12
+  stem_printed_up      n=  8  median ink/box area= 19.67   BOX_IS_A_SUBPART=1  MERGE_WIDE=1  MERGE_TALL=6
+  no_stem_printed      n=  2  median ink/box area=  2.55   AGREES=1  MERGE_TALL=1
+
+CONFIRMED NOTEHEADS n= 27  AGREES=0.074  median ratio=6.01
+CONFIRMED NON-HEADS n= 14  AGREES=0.143  median ratio=14.93

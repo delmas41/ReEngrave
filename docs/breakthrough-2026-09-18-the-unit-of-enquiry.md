@@ -159,7 +159,52 @@ HONEST** — and an honest wrong boundary is a thing later stages can work on,
 which is exactly the difference the whole staged architecture exists to
 preserve.
 
-## 7. THE FALSIFICATION TEST, and the cheap first step is the same thing
+## 7. THE FALSIFICATION TEST — ⚠️⚠️ RUN THE SAME DAY, AND IT DID NOT HOLD AS WRITTEN
+
+⚠️⚠️ **RESULT, 2026-09-18, a few hours after this section was written: the
+prediction below is NOT SUPPORTED on Litolff.** Joined to the crop pass's 106
+blind print verdicts, **confirmed noteheads and confirmed non-noteheads BOTH
+come back `MERGE_TALL`** — `AGREES` 0.074 against 0.143. **The table is
+undifferentiated, which is the condition this section itself named.** There is a
+ratio signal in the right direction (junk at a median ink/box area of **14.93**
+against real heads' **6.01**) but it is a continuum, n = 14 on the junk side,
+and the shape cuts were invented. Full record, with its four controls and the
+two bugs they caught:
+[benchmarks/omr-ink-extent-2026-09/FINDINGS.md](../benchmarks/omr-ink-extent-2026-09/FINDINGS.md).
+
+⚠️ **WHY it fails is already on record: Litolff MERGES.** A *real* notehead's
+component is >3× its box on **59%** of confirmed heads, because the head is
+fused to its stem and beam — **on a plate where nearly every component is a
+merge, "is this a merge?" cannot discriminate.** The test's natural home is the
+SHATTERING plate, and **the Breitkopf record predates `OMR_INK`, so it cannot
+be run there at all.** That is now the blocking artefact, and it is one gather.
+
+⚠️⚠️ **AND THE METHOD FINDING CUTS AT THIS DOCUMENT: THE TEST WAS RUN
+BOX-FIRST, WHICH IS THE ARRANGEMENT §1-§5 ARGUE IS WRONG.** Every row starts
+from a box and asks what ink is under it — so the test inherited the defect it
+was meant to examine. **Asked from the ink instead**, the same record is highly
+structured: **42.5%** of ink pieces have **zero** detections overlapping them,
+**49.2%** are explained <5% (**36% of all ink AREA**), **22.7%** are claimed by
+**more than one** detection, and coverage is **BIMODAL** (p25 0.000, median
+0.062, p75 0.804) — the detector either sees a piece of ink or it does not.
+⚠️ **Those figures QUANTIFY THE GAP; they do not validate the framing.**
+`Q.INK` filters nothing, so much of that 42.5% is specks and staff residue, and
+**the shape/size split is not done.** So this document's core claim stands
+**neither confirmed nor refuted**, and the honest next test is the ink-first
+one with a residue split and a print join.
+
+⚠️ Two bugs the controls caught, both predicted by this document's own §6:
+`glyph_box.value` is `[name, x, y, w, h]` while `ink_bbox_canonical` is
+`[x0, y0, x1, y1]` — **opposite conventions in one record**, and read alike a
+notehead's width comes out **−108 px**, producing a clean believable
+`NO_INK_UNDER_BOX` on 100 of 106; and an earlier draft joined **Breitkopf**
+verdicts to the **Litolff** record where **11 of 26 subjects "matched"** by
+coincidence, **because a subject's last coordinate is a positional index** —
+the breakthrough's point arriving as a bug in its own test.
+
+### The prediction as originally written, kept for the record
+
+
 
 **If this framing is right**, then comparing the ink extent against the
 detector's box should sort the *already-adjudicated* failures into distinct,
