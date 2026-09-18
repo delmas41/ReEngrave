@@ -296,3 +296,106 @@ rather than rewritten, because the correction is the finding.
   misses every false stroke that is a beam stub, a slur edge, a barline
   fragment or a neighbour's stem, and misses accidentals the detector missed.
 * **Nothing was changed and no constant is proposed for a move.**
+
+---
+
+# G. THE DIAGNOSIS IS COMPLETE, AND THREE HYPOTHESES DIED GETTING THERE
+
+Still no code outside `benchmarks/`. Arms: `erasure_arm.py`,
+`rejection_census.py`, `slant_arm.py`. Every one re-cuts the cells and proves
+the re-cut reproduces the record (783 of 783 cells, 1,920 = 1,920 strokes)
+before reporting anything, and `rejection_census`/`slant_arm` additionally
+assert PER CELL that their replication of the chain accepts exactly what the
+real `detect_stems` accepts — **0 cells drifted in either**.
+
+## G1. ALL 793 ARE ATTRIBUTED, AND THE REASONS SUM
+
+| why the head has no stem | n | share |
+|---|--:|--:|
+| **too WIDE** (w > 0.6 spaces) | **237** | 29.9% |
+| **too SHORT** (h < 2.0 spaces) | **199** | 25.1% |
+| **no component overlaps it at all** | **167** | 21.1% |
+| an accepted component, dropped by the pair rule | 73 | 9.2% |
+| at a CELL EDGE (0.8 spaces) | 70 | 8.8% |
+| too TALL (h > 8.0 spaces) | 47 | 5.9% |
+
+237+199+167+73+70+47 = **793**, exactly. No residue bucket.
+
+⚠️ **The sweep in §B could not have found this**: three of these filters —
+the edge margin, the area floor and the 3:1 aspect — are NOT keyword
+parameters, so "all four relaxed" left them active the whole time.
+
+## G2. ⚠️ HYPOTHESIS 1 DEAD: THE ERASURE IS NOT WHAT BREAKS THEM
+
+Sean's hunch, and this document's own §C attribution. `line_detection`
+prefers `cell.image_no_staff` and falls back to `cell.image`, so the erased
+variant can simply be withheld and the SAME detector reads the SAME cell off
+the original raster.
+
+| | strokes | recovers of 793 |
+|---|--:|--:|
+| erased, all parameters relaxed | 2,903 | **287** |
+| **original, all parameters relaxed** | 2,771 | **268** |
+
+**The original recovers FEWER.** Controls: 0 cells lacked the erased variant,
+so the two arms were genuinely different images and the comparison is not
+vacuous. ⚠️ **This says nothing about `key_signature_locator`**, which is
+documented failing in those exact words on a different population.
+
+## G3. ⚠️ HYPOTHESIS 2 DEAD: THE 1-PIXEL KERNEL IS NOT THE FRAGMENTER
+
+The opening's structuring element is `(1, kernel_h)` — one pixel wide — and a
+scanned plate bows 8-17 px across a staff, so a leaning stem should walk
+across columns and be cut. Prototyped by dilating the ink horizontally before
+the opening (and widening the width cap by the dilation, so the arm cannot
+simply re-fail what it just joined):
+
+| pre-dilation | 1px | 2px | 3px | 5px |
+|---|--:|--:|--:|--:|
+| heads recovered | 73 | 76 | 76 | **77** |
+
+**Four heads of 793.** The dilation is real (ink pixels 71,231 → 76,619 on a
+spot-checked cell), and it buys nothing.
+
+## G4. ⚠️⚠️ WHAT IT ACTUALLY IS: THE INK IS FUSED, SO THERE IS NO STEM COMPONENT TO FIND
+
+Opening one real cell and counting: the opening yields **3 connected
+components with a median height of 811 px**, in a cell whose staff spacing is
+100 px. That is **8.1 staff spaces — one blob holding stems, beams and
+noteheads together**, and the cap it fails is `> 8.0`.
+
+This is the property this repo has already recorded from two other
+directions: **"Litolff MERGES and Breitkopf SHATTERS"**, and `Q.INK`'s
+measurement that *the median Litolff cell's largest component holds 46% of its
+ink*. `detect_stems` is a CONNECTED-COMPONENT reader, and on a plate where the
+ink is one component there is no stem to isolate — which is why the largest
+bucket is `too WIDE` (the notehead still joined, exactly the failure the
+function's own comment describes and shrank the kernel to mitigate), why the
+erasure does not matter, and why smearing the page sideways does not either.
+
+## G5. THE REPAIR IS NOT A FILTER AND NOT A KERNEL — AND WE ALREADY HAVE ONE WORKING
+
+**A merged plate needs a reader that finds a stem INSIDE a blob rather than
+one that hopes the blob is a stem.** This session already built one without
+meaning to: the right-up/left-down convention reader measures a run of ink in
+a hairline column beside the head, uses **no connected components at all**,
+and agrees with the stems we already read **95.9% (Litolff) and 98.2%
+(Breitkopf)**, speaking for **1,125 heads that currently abstain**.
+
+⚠️ **It reads DIRECTION, not the stroke.** Direction feeds voices and chord
+grouping, which PR #54 measured as worth about two tags in the file. The
+stroke feeds BEAMS and therefore DURATION, which is worth far more. So the
+convention reader is the cheap, certain, small win, and a projection-based
+stroke reader inside the blob is the large uncertain one. **Both are raster
+readers, and neither is a constant.**
+
+## G6. WHAT IS NOT ESTABLISHED
+
+* **One document.** Breitkopf was NOT run on any arm in §G. Its plate
+  SHATTERS where this one merges, so the rejection census should be expected
+  to come out DIFFERENTLY, not the same — and its `no_stem` population is
+  1,529, nearly twice this one's.
+* **No note was checked against the print** in any arm here.
+* **The 8.1-space blob is one spot-checked cell**, not a distribution. It
+  explains the direction of the result; it is not a measurement of how often.
+* **Nothing was changed and no constant is proposed for a move.**

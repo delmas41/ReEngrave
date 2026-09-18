@@ -1,0 +1,20 @@
+Litolff Beethoven 5 pp.1-4: 793 heads abstain `no_stem`
+re-cut in 15s
+cells: 1183   FAITHFULNESS drift at width 1: 0
+
+pre-dilation    strokes  recovers   of 793   SHORT  NONE-ish    WIDE  on accid
+ 1px               2164        73    9.2%    1276         -     215         0
+ 2px               2263        76    9.6%    1538         -     215       216
+ 3px               2262        76    9.6%    1538         -     215       216
+ 5px               2262        77    9.7%    1538         -     215       216
+
+== the rejection census, per arm (all components, not per head)
+reason              1px       2px       3px       5px
+too SHORT          1276      1538      1538      1538
+too TALL           1866      1869      1869      1869
+too WIDE            215       215       215       215
+CELL EDGE           607       606       607       607
+AREA                  0         0         0         0
+ASPECT                0         0         0         0
+
+wrote benchmarks/omr-stem-ink-2026-09/out/litolff-slant.json
