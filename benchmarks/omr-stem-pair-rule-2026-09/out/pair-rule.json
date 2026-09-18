@@ -1,0 +1,21 @@
+{
+ "reach": {
+  "cells": 1183,
+  "stems_on": 1920,
+  "stems_off": 2164,
+  "dropped_by_the_rule": 244
+ },
+ "structural_control": {
+  "record_cells_with_stems": 783,
+  "record_stem_rows": 1920,
+  "cells_in_both": 783,
+  "exact_box_set_match": 783
+ },
+ "recovered_total": 244,
+ "recovered_landing_on_no_notehead": 164,
+ "heads_rescued_from_no_stem": 73,
+ "decided_heads_gaining_agreeing_stem": 5,
+ "decided_heads_gaining_contradicting_stem": 2,
+ "no_stem_population": 793,
+ "decided_population": 1443
+}

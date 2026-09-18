@@ -1,0 +1,113 @@
+{
+ "dropped_total": 244,
+ "by_partner": {
+  "partner is UNATTRIBUTED ink": 106,
+  "partner is an ACCIDENTAL glyph": 57,
+  "partner CARRIES A NOTEHEAD (two stems)": 81
+ },
+ "head_bearing_by_partner": {
+  "partner is an ACCIDENTAL glyph": 14,
+  "partner CARRIES A NOTEHEAD (two stems)": 62,
+  "partner is UNATTRIBUTED ink": 4
+ },
+ "rescued_by_partner": {
+  "partner CARRIES A NOTEHEAD (two stems)": 51,
+  "partner is an ACCIDENTAL glyph": 17,
+  "partner is UNATTRIBUTED ink": 5
+ },
+ "rescued_total": 73,
+ "accidental_class": {
+  "accidentalFlat": 5,
+  "accidentalNatural": 7,
+  "accidentalSharp": 2
+ },
+ "restatement_mismatch_cells": 0,
+ "pair_geometry": {
+  "STEM PAIR (both carry a notehead)": {
+   "n": 36,
+   "shorter_height_spaces": {
+    "median": 2.32,
+    "p10": 2.03,
+    "p90": 3.0
+   },
+   "taller_height_spaces": {
+    "median": 4.89,
+    "p10": 2.6,
+    "p90": 5.9
+   },
+   "top_offset_spaces": {
+    "median": 0.33,
+    "p10": 0.07,
+    "p90": 2.54
+   },
+   "bottom_offset_spaces": {
+    "median": 1.84,
+    "p10": 0.19,
+    "p90": 3.76
+   },
+   "centre_dx_spaces": {
+    "median": 0.635,
+    "p10": 0.505,
+    "p90": 0.765
+   }
+  },
+  "ACCIDENTAL PAIR (neither carries one)": {
+   "n": 94,
+   "shorter_height_spaces": {
+    "median": 2.69,
+    "p10": 2.29,
+    "p90": 3.25
+   },
+   "taller_height_spaces": {
+    "median": 3.24,
+    "p10": 2.71,
+    "p90": 4.69
+   },
+   "top_offset_spaces": {
+    "median": 1.01,
+    "p10": 0.12,
+    "p90": 2.73
+   },
+   "bottom_offset_spaces": {
+    "median": 0.7,
+    "p10": 0.11,
+    "p90": 1.33
+   },
+   "centre_dx_spaces": {
+    "median": 0.56,
+    "p10": 0.405,
+    "p90": 0.855
+   }
+  },
+  "best_single_cut": {
+   "shorter_height_spaces": {
+    "cut": 2.28,
+    "accuracy": 0.785
+   },
+   "taller_height_spaces": {
+    "cut": 4.69,
+    "accuracy": 0.808
+   },
+   "top_offset_spaces": {
+    "cut": 0.44,
+    "accuracy": 0.785
+   },
+   "bottom_offset_spaces": {
+    "cut": 1.44,
+    "accuracy": 0.823
+   },
+   "centre_dx_spaces": {
+    "cut": 0.895,
+    "accuracy": 0.723
+   }
+  }
+ },
+ "dropped_pairs_by_direction": {
+  "neither carries a head (accidental-shaped)": 94,
+  "only ONE carries a head": 19,
+  "both carry a head, OPPOSITE ways (two voices)": 10,
+  "both carry a head, SAME way (down)": 23,
+  "both carry a head, SAME way (up)": 3
+ },
+ "no_stem_population": 793
+}
