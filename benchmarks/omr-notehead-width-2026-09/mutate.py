@@ -64,7 +64,7 @@ ARMS = [
      None,  # needs a re-extract; handled specially
      "the canonical box is (x,y,w,h); read as corners every width collapses"),
     ("the floor moved to 1.5 spaces", "floor.py",
-     "FLOOR = 1.0", "FLOOR = 1.5", ISSUES,
+     "\nFLOOR = 1.0\n", "\nFLOOR = 1.5\n", ISSUES,
      "issues.py must stop reproducing the stroke lane's 44 / 576"),
     ("the census join keyed on the CELL not the glyph", "score.py",
      'bucket = {r["subject"]: r["bucket"] for r in census["rows"]}',
@@ -85,10 +85,12 @@ ARMS = [
      'if dif and max(dif) > 0.02:', 'if dif and max(dif) > 10.0:',
      None,  # also equivalent on a clean tree (the diff is 0.0); held out
      "EQUIVALENT MUTANT on a clean tree, held out"),
-    ("the truth-mapping controls deleted", "contamination.py",
-     '    if tbad:', '    if tbad and False:', CONTAM,
-     "the five controls on the verdict vocabulary must be able to stop the "
-     "run; three battery arms survived for want of exactly this"),
+    ("the truth-mapping controls' GUARD disabled", "contamination.py",
+     '    if tbad:', '    if tbad and False:',
+     None,  # EQUIVALENT on a clean tree: `tbad` is empty, so the guard is
+            # never reached. The arms BELOW are what prove it can fire.
+     "EQUIVALENT MUTANT on a clean tree, held out -- `tbad` is empty there, "
+     "so the guard is unreachable. The three mapping arms below reach it."),
     ("publisher pinned by PAGE NUMBER instead of the manifest",
      "contamination.py",
      '            pub, subj = tile2.get(r.get("id"), (None, r.get("subject")))',
@@ -104,8 +106,18 @@ ARMS = [
      "contamination.py",
      '    return "UNKNOWN VERDICT WORD: " + repr(ps)',
      '    return "IS a notehead"',
+     None,  # DEAD BRANCH on this data: every one of the 255 rows maps, so
+            # the line is unreachable and the mutant is equivalent. The arm
+            # below makes it LIVE by removing a word from the vocabulary.
+     "EQUIVALENT MUTANT on this data (the branch is unreachable) -- the "
+     "`staff_line_gap` arm below makes it live and goes red"),
+    ("a vocabulary word REMOVED, so the unknown branch goes live",
+     "contamination.py",
+     '    "time_signature_digit_8", "staff_line_gap", "hairpin_or_beam_wedge",',
+     '    "time_signature_digit_8", "hairpin_or_beam_wedge",',
      CONTAM,
-     "a silent default is how 17 settled verdicts read as `cannot tell`"),
+     "the five Litolff `staff_line_gap` rows become UNKNOWN; "
+     "`no_unknown_verdict_word` and the Litolff sample counts must fail"),
     ("the whole-note vocabulary mapped to the wrong side",
      "contamination.py",
      'PRINT_SHOWS_IS_A_HEAD = {"dotted_half_note", "possibly_a_real_whole_note"}',

@@ -17,6 +17,30 @@
    "got": 46,
    "want": 46
   },
+  "cannot_tell_litolff_sample": {
+   "got": 53,
+   "want": 53
+  },
+  "cannot_tell_litolff_control": {
+   "got": 10,
+   "want": 10
+  },
+  "cannot_tell_breitkopf_sample": {
+   "got": 16,
+   "want": 16
+  },
+  "cannot_tell_breitkopf_control": {
+   "got": 2,
+   "want": 2
+  },
+  "sample_size_litolff": {
+   "got": 90,
+   "want": 90
+  },
+  "sample_size_breitkopf": {
+   "got": 90,
+   "want": 90
+  },
   "no_unknown_verdict_word": {
    "got": 0,
    "want": 0

@@ -131,12 +131,13 @@ def adjudications():
                 continue
             m = json.loads(mp.read_text())
             for t in m["tiles"]:
-                tile2[t["id"]] = (pub, t["subject"])
+                tile2[t["id"]] = (pub, t["subject"], t.get("kind"))
         d = json.loads(p.read_text())
         rows = d["rows"] if isinstance(d, dict) else d
         for r in rows:
-            pub, subj = tile2.get(r.get("id"), (None, r.get("subject")))
-            out.append((name, pub, r, subj))
+            pub, subj, kd = tile2.get(
+                r.get("id"), (None, r.get("subject"), None))
+            out.append((name, pub, r, subj, kd))
     return out
 
 
@@ -158,7 +159,7 @@ def main() -> int:
 
     # ---- resolve each verdict to (pub, subject, width) ----
     resolved, unresolved = [], []
-    for src, pub, r, s in adj:
+    for src, pub, r, s, kd in adj:
         if not s:
             unresolved.append((src, r.get("id"), "tile id in no manifest"))
             continue
@@ -169,7 +170,7 @@ def main() -> int:
             unresolved.append((src, r.get("id"),
                                f"{s} not in the {pub} record"))
             continue
-        resolved.append((src, pub, r, W[(pub, s)]))
+        resolved.append((src, pub, r, W[(pub, s)], kd))
 
     print(f"resolved to a width: {len(resolved)}   unresolved: "
           f"{len(unresolved)}")
@@ -198,30 +199,58 @@ def main() -> int:
     # the disjoint positive control). 15.6% x 90 = 14 and 35.6% x 90 = 32,
     # and 14 + 32 = 46.
     # ------------------------------------------------------------------ #
-    kind = {}
-    for name, mans in MANIFESTS.items():
-        for mname, pub in mans:
-            mp = CROPDIR / "out" / mname
-            if mp.exists():
-                for t in json.loads(mp.read_text())["tiles"]:
-                    kind[(pub, t["subject"])] = t.get("kind")
-    sample_not_head = collections.Counter()
-    for src, pub, r, w in resolved:
-        if kind.get((pub, w["subject"])) == "sample":
-            if truth_of(r) == "NOT a notehead":
-                sample_not_head[pub] += 1
+    # ⚠️ THE `kind` COMES FROM THE MANIFEST THE ROW WAS READ FROM, never from
+    # a global map keyed on the subject. A subject appears in BOTH the
+    # breitkopf sample manifest and the standoff manifest, so a global map's
+    # last writer wins: Breitkopf's sample fell to 88 rows and its published
+    # `cannot_tell` rate came out 17.0% against the committed 17.8%. The
+    # mismatch is what found it -- an 0.8-point drift nobody would query
+    # without an anchor to check it against.
+    n = collections.Counter()
+    for src, pub, r, w, kd in resolved:
+        n[(pub, kd, truth_of(r))] += 1
+
+    def tally(pub, kd, t):
+        return n[(pub, kd, t)]
+
     tctl = {
-        "sample_not_a_notehead_litolff": [sample_not_head["litolff"], 14],
-        "sample_not_a_notehead_breitkopf": [sample_not_head["breitkopf"], 32],
-        "sample_not_a_notehead_total": [sum(sample_not_head.values()), 46],
+        # the crop pass's §2: 46 of 180 sampled boxes are not noteheads,
+        # 15.6% Litolff and 35.6% Breitkopf, over 90 sample tiles each.
+        "sample_not_a_notehead_litolff": [
+            tally("litolff", "sample", "NOT a notehead"), 14],
+        "sample_not_a_notehead_breitkopf": [
+            tally("breitkopf", "sample", "NOT a notehead"), 32],
+        "sample_not_a_notehead_total": [
+            tally("litolff", "sample", "NOT a notehead")
+            + tally("breitkopf", "sample", "NOT a notehead"), 46],
+        # its §7: `cannot_tell` 58.9% of the Litolff SAMPLE against 62.5% of
+        # its disjoint CONTROLS -- the figure that refuted *"the stemless
+        # heads are the illegible ones"* -- and Breitkopf 17.8% / 12.5%.
+        # ⚠️ THESE ARE THE ARM THAT WAS MISSING: a mutation collapsing
+        # `cannot_tell` into either neighbour moves them and nothing else did.
+        "cannot_tell_litolff_sample": [
+            tally("litolff", "sample", "cannot tell"), 53],
+        "cannot_tell_litolff_control": [
+            tally("litolff", "control", "cannot tell"), 10],
+        "cannot_tell_breitkopf_sample": [
+            tally("breitkopf", "sample", "cannot tell"), 16],
+        "cannot_tell_breitkopf_control": [
+            tally("breitkopf", "control", "cannot tell"), 2],
+        # the sample sizes the rates are over, so a drifted `kind` is loud
+        "sample_size_litolff": [
+            sum(v for (p, k, _t), v in n.items()
+                if p == "litolff" and k == "sample"), 90],
+        "sample_size_breitkopf": [
+            sum(v for (p, k, _t), v in n.items()
+                if p == "breitkopf" and k == "sample"), 90],
         # the three-way split must PARTITION the resolved rows: an unknown
         # vocabulary word must be impossible, not merely rare.
         "no_unknown_verdict_word": [
-            sum(1 for _s, _p, r, _w in resolved
-                if truth_of(r).startswith("UNKNOWN")), 0],
+            sum(v for (_p, _k, t), v in n.items()
+                if t.startswith("UNKNOWN")), 0],
         # the standoff's published split, re-derived here
         "standoff_settled": [
-            sum(1 for src, _p, r, _w in resolved
+            sum(1 for src, _p, r, _w, _k in resolved
                 if src == "ADJUDICATION-standoff.json"
                 and r.get("verdict") in ("stem_printed_up",
                                          "stem_printed_down")), 16],
@@ -242,7 +271,7 @@ def main() -> int:
     # ---- 1. THE FLOOR AGAINST THE PRINT, per publisher, THREE-WAY ----
     conf = {}
     for pub in ("litolff", "breitkopf"):
-        rr = [(r, w) for src, p, r, w in resolved if p == pub]
+        rr = [(r, w) for src, p, r, w, _k in resolved if p == pub]
         m = collections.Counter()
         for r, w in rr:
             m[(truth_of(r), "flag" if w["w_page"] < FLOOR else "keep")] += 1
@@ -277,7 +306,7 @@ def main() -> int:
     # fitted here and none is proposed from it.
     shape = {}
     for pub in ("litolff", "breitkopf"):
-        rr = [(r, w) for src, p, r, w in resolved if p == pub]
+        rr = [(r, w) for src, p, r, w, _k in resolved if p == pub]
         d = collections.defaultdict(list)
         for r, w in rr:
             d[truth_of(r)].append(w)
@@ -297,7 +326,7 @@ def main() -> int:
     out["shape_vs_print"] = shape
 
     # ---- 2. DOES THE 16-0 SURVIVE? ----
-    st = [(r, w) for src, p, r, w in resolved
+    st = [(r, w) for src, p, r, w, _k in resolved
           if src == "ADJUDICATION-standoff.json"]
     rows = []
     for r, w in st:
@@ -324,7 +353,7 @@ def main() -> int:
     }
 
     # ---- 3. the whole-note contradictions, by width ----
-    wn = [(r, w) for src, p, r, w in resolved
+    wn = [(r, w) for src, p, r, w, _k in resolved
           if src == "ADJUDICATION-wholenotes.json"]
     out["wholenotes"] = {
         "n": len(wn),

@@ -11,7 +11,7 @@
   },
   {
    "name": "the floor moved to 1.5 spaces",
-   "result": "SURVIVED"
+   "result": "BAD ANCHOR x2"
   },
   {
    "name": "the census join keyed on the CELL not the glyph",
@@ -30,6 +30,10 @@
    "result": "HELD OUT (equivalent/named)"
   },
   {
+   "name": "the truth-mapping controls deleted",
+   "result": "SURVIVED"
+  },
+  {
    "name": "publisher pinned by PAGE NUMBER instead of the manifest",
    "result": "RED"
   },
@@ -43,7 +47,7 @@
   },
   {
    "name": "the whole-note vocabulary mapped to the wrong side",
-   "result": "SURVIVED"
+   "result": "RED"
   },
   {
    "name": "the stroke lane's figures taken on trust",
@@ -54,6 +58,6 @@
    "result": "HELD OUT (equivalent/named)"
   }
  ],
- "red": 3,
+ "red": 4,
  "live": 7
 }
