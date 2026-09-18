@@ -1,0 +1,71 @@
+{
+ "label": "Litolff Beethoven 5 pp.1-4",
+ "record": "/Users/seanjohnson/Desktop/ReEngrave/library/_shared-records/beethoven5-p1-p4.record.json",
+ "population": {
+  "outside, NO rung in its x-column": 911,
+  "inside the staff": 1148,
+  "SCORED: head on a counted ladder (line)": 61,
+  "SCORED: head on a counted ladder (space)": 42,
+  "outside, ON-a-line vs IN-a-space is AMBIGUOUS": 8,
+  "outside, ladder broken or head unplaceable": 177
+ },
+ "ALL scored heads": {
+  "n": 103,
+  "mean_error": -0.2068,
+  "median_error": -0.24,
+  "wrong": 36,
+  "wrong_rate": 0.3495
+ },
+ "owned by THIS staff": {
+  "n": 52,
+  "mean_error": -0.2681,
+  "median_error": -0.28,
+  "wrong": 17,
+  "wrong_rate": 0.3269
+ },
+ "relocated copies": {
+  "n": 51,
+  "mean_error": -0.1443,
+  "median_error": -0.22,
+  "wrong": 19,
+  "wrong_rate": 0.3725
+ },
+ "by_rung": {
+  "above 1": {
+   "n": 43,
+   "mean_error": -0.4847,
+   "wrong": 17,
+   "wrong_rate": 0.3953
+  },
+  "above 2": {
+   "n": 11,
+   "mean_error": -0.2345,
+   "wrong": 3,
+   "wrong_rate": 0.2727
+  },
+  "above 3": {
+   "n": 7,
+   "mean_error": -0.7857,
+   "wrong": 7,
+   "wrong_rate": 1.0
+  },
+  "above 4": {
+   "n": 2,
+   "mean_error": -0.82,
+   "wrong": 2,
+   "wrong_rate": 1.0
+  },
+  "below 1": {
+   "n": 30,
+   "mean_error": 0.2533,
+   "wrong": 5,
+   "wrong_rate": 0.1667
+  },
+  "below 2": {
+   "n": 10,
+   "mean_error": 0.166,
+   "wrong": 2,
+   "wrong_rate": 0.2
+  }
+ }
+}
