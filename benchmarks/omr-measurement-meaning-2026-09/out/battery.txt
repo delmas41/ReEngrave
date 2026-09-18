@@ -1,0 +1,20 @@
+target tools/omr/staged/meaning.py  md5 dd897add2473d481ff4b3a3056558120
+baseline (unmutated) must be GREEN ... GREEN
+  registry_import_removed            RED
+  control_floor_registry_dropped     RED
+  update_spelling_dropped            RED
+  local_frame_resolution_dropped     RED
+  frame_extent_cell_removed          RED
+  scope_comparison_inverted          RED
+  page_frame_keys_emptied            RED
+  page_valued_locals_dropped         RED
+  value_page_tokens_emptied          RED
+  stale_detection_removed            RED
+  unaccounted_detection_removed      RED
+  unit_suffix_page_dropped           RED
+  frame_of_unit_emptied              RED
+  derived_check_marker_removed       GREEN (expected)
+
+restore verified: dd897add2473d481ff4b3a3056558120 == dd897add2473d481ff4b3a3056558120 -> True
+
+arms 14  red 13  expected-green 1  survivors 0  errors 0

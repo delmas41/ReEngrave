@@ -1,0 +1,81 @@
+═══ WHAT KIND OF MEASUREMENT IS THIS? ═══════════════════════════════════
+
+  files walked 142   quantities 80   written 46   read 66   decisions 28
+
+[1] ONE QUANTITY, SEVERAL FRAMES  (4)
+    two rows are not comparable without asking, and nothing asks
+      direction_word             ['cell:*', 'page']
+      dynamic_letter             ['cell:*', 'page']
+      meter_template_at_bar      ['bar_head:*', 'header_window']
+      wedge_box                  ['cell:*', 'page']
+
+[2] A ROW'S DETAIL DISAGREES WITH ITS OWN `frame` FIELD (29 keys, 9 quantities)
+    ⚠️ NOT that many bugs — this is the Q.ONSET_COLUMN repair, and
+    what it costs is that `frame` describes the VALUE, not the row
+      arc_box                  bbox_page_px             says page/px      frame=['cell:*']   gather.py:883
+      arc_box                  x_center_page            says page/px      frame=['cell:*']   gather.py:883
+      arc_box                  y_center_page            says page/px      frame=['cell:*']   gather.py:883
+      articulation_mark        bbox_page_px             says page/px      frame=['cell:*']   gather.py:885
+      articulation_mark        x_center_page            says page/px      frame=['cell:*']   gather.py:885
+      articulation_mark        y_center_page            says page/px      frame=['cell:*']   gather.py:885
+      direction_word           bbox_page_px             says page/px      frame=['cell:*']   gather.py:2773
+      direction_word           staff_bottom_line_page   says page/px      frame=['cell:*']   gather.py:2773
+      direction_word           x_center_page            says page/px      frame=['cell:*']   gather.py:2773
+      direction_word           y_center_page            says page/px      frame=['cell:*']   gather.py:2773
+      dynamic_letter           bbox_page_px             says page/px      frame=['cell:*']   gather.py:1047
+      dynamic_letter           staff_bottom_line_page   says page/px      frame=['cell:*']   gather.py:1047
+      dynamic_letter           x_center_page            says page/px      frame=['cell:*']   gather.py:1047
+      dynamic_letter           y_center_page            says page/px      frame=['cell:*']   gather.py:1047
+      fermata_mark             bbox_page_px             says page/px      frame=['cell:*']   gather.py:912
+      fermata_mark             x_center_page            says page/px      frame=['cell:*']   gather.py:912
+      fermata_mark             y_center_page            says page/px      frame=['cell:*']   gather.py:912
+      glyph_box                bbox_page_px             says page/px      frame=['cell:*']   gather.py:358
+      glyph_box                x_center_page            says page/px      frame=['cell:*']   gather.py:358
+      glyph_box                y_center_page            says page/px      frame=['cell:*']   gather.py:358
+      ink                      bbox_page_px             says page/px      frame=['cell:*']   gather.py:1559
+      ink                      x_center_page            says page/px      frame=['cell:*']   gather.py:1559
+      ink                      y_center_page            says page/px      frame=['cell:*']   gather.py:1559
+      ornament_mark            bbox_page_px             says page/px      frame=['cell:*']   gather.py:897
+      ornament_mark            x_center_page            says page/px      frame=['cell:*']   gather.py:897
+      ornament_mark            y_center_page            says page/px      frame=['cell:*']   gather.py:897
+      rest                     bbox_page_px             says page/px      frame=['cell:*']   gather.py:888
+      rest                     x_center_page            says page/px      frame=['cell:*']   gather.py:888
+      rest                     y_center_page            says page/px      frame=['cell:*']   gather.py:888
+
+[2b] A ROW'S VALUE IS IN A FRAME ITS `frame` FIELD DOES NOT NAME  (1)
+    section 1 and section 2 are BOTH blind to this: no
+    unit-declaring detail key, and written in only one frame
+      cell_box                 value is page/px    frame=cell:*       gather.py:298
+
+[3] DECISION SCOPE COARSER THAN ROW FRAME  (13)
+    rows whose coordinate systems coincide BY CONSTRUCTION;
+    the one arm that would have caught Q.ONSET_COLUMN unrepaired
+      clef                       scope=STAFF    clef_glyph               frame=cell:*         ** no page-frame key **
+      clef                       scope=STAFF    clef_located             frame=bar_head:*     ** no page-frame key **
+      clef                       scope=STAFF    clef_position            frame=cell:*         ** no page-frame key **
+      clef                       scope=STAFF    notehead_staff_position  frame=cell:*         ** no page-frame key **
+      key_signature              scope=STAFF    keysig_marker            frame=cell:*         ** no page-frame key **
+      meter                      scope=SYSTEM   meter_glyph              frame=cell:*         ** no page-frame key **
+      meter                      scope=SYSTEM   meter_template           frame=header_window  ** no page-frame key **
+      meter                      scope=SYSTEM   meter_template_at_bar    frame=bar_head:*     ** no page-frame key **
+      meter                      scope=SYSTEM   meter_template_at_bar    frame=header_window  ** no page-frame key **
+      meter                      scope=SYSTEM   rest                     frame=cell:*         ** no page-frame key **
+      onset_column               scope=SYSTEM   glyph_box                frame=cell:*         reads x_page
+      part_partition             scope=DOCUMENT staff_ordinal            frame=system         ** no page-frame key **
+      part_partition             scope=DOCUMENT system_staff_count       frame=system         ** no page-frame key **
+    reading NO page-frame detail key: 12 of 13
+
+frame tokens (quantities carrying each):
+      cell:*                     23
+      page                       15
+      header_window              5
+      system                     4
+      bar_head:*                 2
+      system_margin              1
+
+── POSITIVE CONTROLS (a zero means the question did not run) ──
+   files_walked     142
+   n_written        46
+   n_read           66
+   n_decisions      28
+   n_unit_keys      54
