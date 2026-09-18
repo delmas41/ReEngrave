@@ -222,8 +222,8 @@ class TestTheAccountingControl(unittest.TestCase):
         # these refusals. The stub takes it and ignores it: this test pins the
         # ACCOUNTING CONTROL, not the signature, and the control it pins still
         # fires for the reason it always did — written and counted disagree.
-        def swallow(rec, runs, by_system=None):
-            original(rec, runs, by_system=by_system)
+        def swallow(rec, runs, by_system=None, held_out=None):
+            original(rec, runs, by_system=by_system, held_out=held_out)
             for run in runs.values():
                 run.cells.clear()
             return {}                       # ... and count nothing

@@ -190,6 +190,13 @@ CLAIM_OF_MEMBERSHIP_KIND: Dict[str, str] = {
     #: cannot be wrong because the plate is bad. The `source_kind` doctrine's
     #: property, in the store's vocabulary.
     KIND_DRAWN_AS: "external",
+    #: ⚠️⚠️ `KIND_UNNAMED` IS DELIBERATELY ABSENT, and its absence is the
+    #: contract rather than an omission: it is the kind an entry gets when
+    #: NOTHING claims it, so there is no assertion here to be right or wrong
+    #: about. Mapping it to a claim word would file unclaimed ink under an
+    #: identification; mapping it to `None` puts a non-claim in a table of
+    #: claims, which `test_every_mapped_value_is_a_real_claim_word` correctly
+    #: rejects. Both were tried when the two branches met.
 }
 
 

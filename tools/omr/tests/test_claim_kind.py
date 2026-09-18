@@ -479,11 +479,23 @@ class TestReconciledWithUNSCORED(unittest.TestCase):
 class TestReconciledWithThePositionalStore(unittest.TestCase):
     """`Membership.kind` is a PROJECTION of `CLAIM`, mapped and not restated."""
 
-    def test_the_mapping_is_total_over_the_stores_own_constants(self):
+    #: ⚠️ `KIND_UNNAMED` MAKES NO CLAIM, so it is not in the mapping and must
+    #: not be. It is the kind an entry gets when nothing claims it — there is
+    #: no assertion to be right or wrong about — and it arrived on a sibling
+    #: branch, so this exclusion was written the day the two trees met.
+    #: Named here rather than filtered silently: a claim-bearing kind that
+    #: goes missing must still fail below.
+    CLAIMLESS_KINDS = frozenset({"unnamed"})
+
+    def test_the_mapping_is_total_over_the_CLAIM_BEARING_constants(self):
         declared = {v for k, v in vars(PS).items()
                     if k.startswith("KIND_") and isinstance(v, str)}
-        self.assertEqual(set(PS.CLAIM_OF_MEMBERSHIP_KIND), declared)
+        self.assertEqual(set(PS.CLAIM_OF_MEMBERSHIP_KIND),
+                         declared - self.CLAIMLESS_KINDS)
         self.assertTrue(declared)                      # positive control
+        # ⚠️ and the exclusion is not a licence: every name in it must be a
+        # kind the store actually declares, or it is a typo that hides a gap.
+        self.assertTrue(self.CLAIMLESS_KINDS <= declared)
 
     def test_every_mapped_value_is_a_real_claim_word(self):
         self.assertTrue(
