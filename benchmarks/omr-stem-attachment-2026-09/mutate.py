@@ -59,18 +59,30 @@ ARMS = [
      'r_up = round(best[("R", "up")], 2)\n        l_dn = round(best[("L", "down")], 2)',
      'r_up = round(best[("L", "up")], 2)\n        l_dn = round(best[("R", "down")], 2)',
      "conv"),
-    ("convention: glyph_box read as [x,y,w,h], name not first", CONV,
-     'return (float(value[1]), float(value[2]),',
-     'return (float(value[0]), float(value[1]),',
+    # ⚠️ RETARGETED AFTER THE FIRST RUN REPORTED `BAD ANCHOR (0 matches)`.
+    # The intended hazard was `Q.GLYPH_BOX` read as `[x,y,w,h]` when the NAME
+    # comes first -- but `convention_rows.py` never calls `_xywh_head`; it
+    # reads `detail["bbox_page_px"]`, which is a CORNER box. So the analogous
+    # real hazard for THIS file is the other recorded box confusion: *a
+    # measure bbox is CORNERS and a detection bbox is WIDTH*. Reading the
+    # corner box as a width box puts the head's right edge at x0+x1.
+    ("convention: the corner box read as a width box", CONV,
+     '        x0, y0, x1, y1 = pbox[s]',
+     '        x0, y0, w_, h_ = pbox[s]\n        x1, y1 = x0 + w_, y0 + h_',
      "conv"),
     ("convention: the staff key built with the KIND first", CONV,
      'L = lines_of.get(f"staff/{p[1]}/{p[2]}/{p[3]}")',
      'L = lines_of.get(f"staff/{p[0]}/{p[1]}/{p[2]}")',
      "conv"),
-    ("beam-mate: heads selected by NAME, not detail.category", BEAM,
-     'if (r.detail.get("category") == "notehead"',
-     'if ("otehead" in str((r.value or [""])[0])',
-     "beam"),
+    # ⚠️⚠️ ONE ARM WAS REMOVED AFTER THE FIRST RUN AND IS NAMED RATHER THAN
+    # DELETED SILENTLY: *heads selected by NAME instead of
+    # `detail["category"]`* came back GREEN, and
+    # `head_filter_equivalence.py` shows why -- on this record the two
+    # selectors pick the IDENTICAL 2,347 rows (0 only-category, 0 only-name).
+    # It is an EQUIVALENT MUTANT, not a hole, and an arm that can never go red
+    # trains the next reader to ignore the list. ⚠️ It is equivalent on THIS
+    # record; a record whose detector emitted a notehead category under some
+    # other name would separate them.
     ("beam-mate: a MAJORITY of mates, not unanimity", BEAM,
      'if mates == 0 or len(votes) != 1:',
      'if mates == 0 or not votes:',
@@ -89,13 +101,26 @@ ARMS = [
      "marg"),
 ]
 
-#: `_on_beam` lives in the shipped module, so arm 7 must patch it where this
-#: probe can reach it. It is imported by name, so the local rebind is the
-#: honest mutation site.
-ARMS[6] = (ARMS[6][0], BEAM,
-           'from tools.omr.staged.adjudicators.rhythm import (               # noqa: E402\n    _on_beam, _project, _stems_on, _xywh, _xywh_head)',
-           'from tools.omr.staged.adjudicators.rhythm import (               # noqa: E402\n    _project, _stems_on, _xywh, _xywh_head)\n\n\ndef _on_beam(head_box, beam):\n    return (head_box[0] <= beam[0] + beam[2]\n            and head_box[0] + head_box[2] >= beam[0])',
-           "beam")
+#: `_on_beam` lives in the SHIPPED module, which is out of this lane, so that
+#: arm cannot mutate it in place. It is imported by name, so the honest
+#: mutation site is the local rebind -- drop it from the import and define a
+#: box-overlap version beside it.
+#:
+#: ⚠️ ADDRESSED BY NAME, NOT BY INDEX. The first version wrote `ARMS[6]`, and
+#: when one arm was removed as an equivalent mutant every index below it
+#: shifted, so the rebind silently retargeted a different arm. That is the
+#: BAD-ANCHOR lesson one level up: *a battery that addresses an arm by its
+#: position measures its own bookkeeping.*
+_XC = "beam-mate: a head's x-centre test replaced by a box overlap"
+_i = [n for n, arm in enumerate(ARMS) if arm[0] == _XC]
+if len(_i) != 1:
+    raise SystemExit(f"mutate.py: expected exactly one arm named {_XC!r}, "
+                     f"found {len(_i)}")
+ARMS[_i[0]] = (
+    _XC, BEAM,
+    'from tools.omr.staged.adjudicators.rhythm import (               # noqa: E402\n    _on_beam, _project, _stems_on, _xywh, _xywh_head)',
+    'from tools.omr.staged.adjudicators.rhythm import (               # noqa: E402\n    _project, _stems_on, _xywh, _xywh_head)\n\n\ndef _on_beam(head_box, beam):\n    return (head_box[0] <= beam[0] + beam[2]\n            and head_box[0] + head_box[2] >= beam[0])',
+    "beam")
 
 
 def sh(cmd):
