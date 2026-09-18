@@ -463,11 +463,24 @@ def main():
                 out.append(("bottom", cls))
         return out
 
-    runs = [r for r in un
-            if (r["h_sp"] or 0) >= RUN_MIN_H_SPACES
-            and (r["w_sp"] or 0) > 0
-            and (r["h_sp"] or 0) / (r["w_sp"] or 1) >= RUN_MIN_ASPECT]
-    print(f"REACH: vertical runs in the UNEXPLAINED bucket: {len(runs)}")
+    def is_run(r):
+        return ((r["h_sp"] or 0) >= RUN_MIN_H_SPACES
+                and (r["w_sp"] or 0) > 0
+                and (r["h_sp"] or 0) / (r["w_sp"] or 1) >= RUN_MIN_ASPECT)
+
+    all_runs = [r for r in rows if is_run(r)]
+    runs = [r for r in un if is_run(r)]
+    # ⚠️ REACH, BOTH WAYS, because the unexplained bucket is NOT the whole
+    # stem population. A stem FUSED to its own notehead is one component that
+    # overlaps a hand notehead box, so it lands in bucket 1 by construction --
+    # the veto's domain is specifically the DETACHED vertical run.
+    print(f"REACH: vertical runs over ALL ink in these cells : {len(all_runs)}"
+          f" of {tot_ink} ink rows")
+    by_b = collections.Counter(r["bucket"] for r in all_runs)
+    for k in sorted(by_b):
+        print(f"        {k:<36s} {by_b[k]:>5d}")
+    print(f"REACH: vertical runs in the UNEXPLAINED bucket   : {len(runs)}"
+          f"  <- the veto's domain")
     if not runs:
         print("DEAD: no vertical runs in the unexplained bucket")
     else:
