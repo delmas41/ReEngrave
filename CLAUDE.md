@@ -3400,6 +3400,160 @@ bars can speak, not whether they are believed. **Re-pricing
 `METER_CARRY_FLOOR` or `METER_FROM_BARS_FLOOR` still needs that second
 publisher.**
 
+### THE STEM: the ink is FUSED, the direction has a tier, and the attachment convention is REFUSED
+
+2026-09-17/18. **`CLAUDE.md` carried NOTHING about the stem thread until this
+section** — `docs/engraving-conventions.md`'s own open-items list said so in
+terms: *"a reader of `CLAUDE.md` alone would not know Sean's stem convention
+had been measured at all."* Three sessions and four documents' worth of it,
+reduced here. Findings:
+[benchmarks/omr-stem-ink-2026-09/FINDINGS.md](benchmarks/omr-stem-ink-2026-09/FINDINGS.md),
+[benchmarks/omr-stem-attachment-2026-09/FINDINGS.md](benchmarks/omr-stem-attachment-2026-09/FINDINGS.md),
+[docs/handoff-2026-09-17-the-ink-is-fused.md](docs/handoff-2026-09-17-the-ink-is-fused.md).
+
+⚠️⚠️ **WHAT IT IS: THERE IS NO STEM COMPONENT TO FIND.** `detect_stems` is a
+**connected-component** reader, and on these plates the ink is one component —
+a spot-checked Litolff cell yields 3 components at a median height of **811 px
+where the staff spacing is 100 px (8.1 staff spaces)**, one blob holding stems,
+beams and noteheads together, failing the `> 8.0` cap. It is the **third
+independent arrival at the same property**: this file already records *"Litolff
+MERGES and Breitkopf SHATTERS"*, and `Q.INK` measured *the median Litolff
+cell's largest component holds 46% of its ink*. ⚠️ The blob figure is **ONE
+CELL, not a distribution** — it explains the direction of the result and does
+not measure how often.
+
+**The rejection census is two publishers and both sum EXACTLY, with no residue
+bucket** (`rejection_census.py`, which replicates the shipped chain component
+by component and **asserts per cell that its accepted set is identical to the
+real `detect_stems`** — 0 cells drifted):
+
+| why the head has no stem | Litolff | | Breitkopf | |
+|---|--:|--:|--:|--:|
+| too TALL (h > 8.0 sp) | 47 | 5.9% | **476** | **31.1%** |
+| too WIDE (w > 0.6 sp) | **237** | **29.9%** | 358 | 23.4% |
+| too SHORT (h < 2.0 sp) | 199 | 25.1% | 298 | 19.5% |
+| no component overlaps it | 167 | 21.1% | 197 | 12.9% |
+| pair rule dropped an accepted one | 73 | 9.2% | 178 | 11.6% |
+| at a CELL EDGE | 70 | 8.8% | 22 | 1.4% |
+| **total** | **793** | | **1,529** | |
+
+⚠️⚠️ **THE LARGEST BUCKET INVERTS — Breitkopf is TALL at 31.1% where Litolff is
+5.9%, a 5× difference on the same filter — so a repair tuned to the Litolff
+table would miss the biggest Breitkopf cause entirely.** ⚠️ **What SURVIVES the
+inversion is the generalisable part**: on both plates the overwhelming majority
+is *a component EXISTS and is the wrong SHAPE* (**86%** and **74%**), while *no
+component at all* is 21% and 13%. **The ink is there and forms components; they
+are simply not stem-shaped.** ⚠️ Three of those filters are **NOT keyword
+parameters** (the edge margin, the area floor, the 3:1 aspect), which is why
+`filter_sweep_arm.py`'s "all four relaxed" ceiling of **287 of 793 (36.2%)** is
+a FLOOR on the filters' cost and not the whole of it.
+
+⚠️⚠️ **FOUR HYPOTHESES DIED, INCLUDING SEAN'S AND THE MEASURING SESSION'S OWN**,
+and the cause of two of them is worth carrying: *a raster proxy for a filter's
+predicate is not a proxy for the filter*, because the filter's input population
+is connected COMPONENTS after a morphological opening, not ink (that proxy
+over-stated the height cap 80 heads → **17**). Dead: **ledger drift explains the
+convention's reversal** (correcting to ink truth changes its agreement by
+exactly nothing, 17/32 either way); **`_drop_paired_strokes` is the main loss**
+(it is **73 of 793, 9.2%**); **Sean's — the staff-line ERASURE breaks the
+stems** (reading the ORIGINAL raster recovers **fewer**, 268 vs 287); and **the
+1-px opening kernel vs a bowed plate** (horizontal pre-dilation at 2/3/5 px
+recovers **3, 3 and 4 heads of 793**). ⚠️ The erasure and slant arms are
+**Litolff only** — *"the erasure is not the cause"* is established on the
+MERGING plate and not on the shattering one. ⚠️ The registry predicts the
+remaining morphological route fails too: stacked beams sit 0.75 sp centre to
+centre with a 0.5 sp stroke and a **0.25 sp gap**, so *an erosion tuned to open
+the gaps eats the strokes first*.
+
+⚠️ **THE WIDTH CAP IS THE LARGEST SINGLE FILTER COST (217 heads) AND IS
+EXPLICITLY NOT RECOMMENDED**: its recoveries agree with the convention **83.6%**
+against a **95.8%** bar, i.e. roughly 73% real and 27% junk — and that is
+convention-against-convention, not print.
+
+**THE DIRECTION: a beam-mate tier SHIPPED, default-on, no flag.** A head borrows
+its direction from a head sharing the same BEAM, because **a beam joins stem
+TIPS so every stem on one stroke points the same way** — a PHYSICAL claim, not
+a geometric one. Leave-one-out on 1,443 decided heads: baseline 0.506; *where
+the beam SITS relative to the head* **0.829 — REFUSED**; the middle-line
+CONVENTION 0.787; beam-mate **majority 0.938 — REFUSED**; beam-mate
+**UNANIMOUS 0.984 — shipped, reach 152**. `no_stem` **793 → 641**, and the file
+gains **TWO `<voice>2</voice>` tags** — *a record improvement, not a file
+improvement*, and the ceiling every later proposal here inherits.
+⚠️ **The 9 whole notes among the 793 carry no stem and are the decision being
+RIGHT**; the target is 784. ⚠️⚠️ **INFER CANNOT SERVE THIS QUANTITY**:
+`Q.STEM_DIRECTION` is ORDER 17 and its only consumers `Q.EVENT` (21) and
+`Q.VOICES` (22) read it INSIDE ADJUDICATE, so a fourth-stage rule would write
+the verdict after both readers had already looked — *"no rule takes it"* has a
+reason, and it is that the stage which may take it runs too late.
+
+⚠️⚠️ **SEAN'S MIDDLE-LINE CONVENTION IS STRONG AND WHERE IT LOOKS WRONG IT IS
+MEASURING THE GRID.** Accuracy by distance from the middle line, in steps:
+**0-1 → 0.537** (a coin flip: half a step of grid error flips it), 1-2 → 0.776,
+2-4 → 0.860, **4-6 → 0.939** (the convention doing exactly what Sean says), and
+**6+ → 0.765, REVERSING** — where a note three spaces clear of the middle line
+is the LEAST ambiguous case it has, so **the reversal is the POSITION and not
+the rule** (44% of ledger-country heads are off-grid against 11% inside the
+staff). So it is not shipped as a reader, and it is good for the opposite: **a
+confident stem and a confident convention that disagree name a zone to look
+in.**
+
+**THE ATTACHMENT CONVENTION — *right going UP, left going DOWN; right-and-down
+does not exist* — IS REFUSED AS A TIER, and NOT refuted as a convention.** It
+reads the raster with no connected components at all and agrees with stems we
+already read **95.9% (900/938) Litolff and 98.2% (1,468/1,495) Breitkopf**, and
+it goes **silent rather than wrong** (*both legal cells filled* is 16% of
+Litolff's abstaining heads and **44%** of Breitkopf's). Three grounds, none of
+them about the convention:
+1. ⚠️⚠️ **THE STAGE.** It is a reading of PIXELS. `Evidence` exposes `rows()`
+   and `refusals()` and nothing else, **no adjudicator in the tree imports
+   cv2/numpy/fitz/PIL** while `gather.py` carries four such imports, and
+   `Q.STEM.detail["image"]` is the *string* `'no_staff'` — the record names
+   which raster a reader used and carries no pixels. So it needs a GATHER
+   producer, which `readjudicate` is **structurally blind** to: pricing needs
+   **two full re-gathers**. `Q.INK` cannot substitute — the ink is FUSED and a
+   fused component's bounding box cannot say which SIDE a run is on, which is
+   the whole discriminator. **The handoff's §4a is right that the reading works
+   and wrong that consuming it is cheap.**
+2. ⚠️⚠️ **THE DECIDING MEASUREMENT INVERTS AGAINST THE HEADLINE.** Where the
+   convention and the shipped tier BOTH speak, on the population the convention
+   is FOR: Litolff **97.0%** (101 heads), Breitkopf **84.7%** (170) — the plate
+   with the BETTER published figure is the WORSE reader exactly where it would
+   be used, and **23 of its 26 disagreements sit INSIDE the physical gate**. It
+   does **not** say which mechanism is wrong: the beam-mate's 0.984 is
+   Litolff-only and **has never been measured on Breitkopf**, so one of the two
+   is wrong ~15% of the time and no instrument here can say which. ⚠️ It is a
+   CROSS-CHECK and not an arbiter — the two share the notehead boxes and the
+   plate, and *an arbiter correlated with one party sides with its own family*,
+   which has already happened on this quantity through the FRAME.
+3. **The bar this quantity already set**: 0.829 refused, majority 0.938 refused
+   for unanimity. 0.852 is below a standard rejected twice.
+
+⚠️ **REACH IS MARGINAL, NOT GROSS, AND THE REGISTRY OVERSTATED IT BY 24%.** Both
+shared records are PRE-tier, so the published 472/653 still contain the heads
+the tier now serves: overlap **101/170**, marginal **371/483 (pooled 854, not
+1,125)**. The two are **positively correlated in availability rather than
+complementary**. ⚠️ **The converse prediction** (*given a direction, the head is
+on a known side*) needs NO raster and is shippable in ADJUDICATE — and is
+refused on REACH at **nine heads**, because 108 of Litolff's 111
+`stems_disagree` heads have BOTH legal cells filled, i.e. a two-voice column:
+**the convention is silent exactly where the contest is.**
+
+⚠️ **A LIVE DEFECT, REPORTED AND NOT FIXED: a whole note has no stem, and 31
+carry a direction** across the two records — 8 + 17 by projection, plus **six
+the new beam-mate tier BORROWS one for** on Breitkopf. Unfixed because the
+repair rests on `notehead_class` being right on 31 heads nobody has looked at,
+and a half note misread as whole DOES have a stem — the hazard
+`OMR_WHOLE_REST_INK` exists for. **The test is 31 crops.**
+
+⚠️⚠️ **WHAT IS NOT ESTABLISHED, AND IT GOVERNS EVERY FIGURE ABOVE: NO NOTE HAS
+BEEN CHECKED AGAINST THE PRINT IN ANY STEM ARM.** Every accuracy number here is
+one of our readings against another, two of which are now known to be
+correlated through the frame; the 84.7% names a **disagreement, not a winner**.
+**The crop pass is owed.** n = 2 documents, 2 publishers, 4 pages each, the same
+two plates this thread has always used. No OMR-NED, deliberately — the metric is
+symmetric and would pay for emitting fewer stems. The engraved family is
+untouched by construction.
+
 ### `OMR_WHOLE_REST_INK` ON THE SECOND PUBLISHER — the cuts do NOT transfer
 
 2026-09-16, **no code changed and no flag flipped**. The knobs-table row for
