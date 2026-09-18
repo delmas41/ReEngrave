@@ -48,10 +48,13 @@ ARMS = [
      "from . import inferences as _inferences       # POPULATES infer.RULES",
      "_inferences = None  # MUTANT",
      "tests"),
-    ("drop_the_adjudicators_import", BRAKES,
-     "from . import adjudicators as _adjudicators   # POPULATES adjudicate.REGISTRY",
-     "_adjudicators = None  # MUTANT",
-     "tests"),
+    # ⚠️ `drop_the_adjudicators_import` IS AN EQUIVALENT MUTANT AND IS HELD OUT
+    # DELIBERATELY. Importing `inferences` populates `adjudicate.REGISTRY`
+    # transitively (measured: 28 decisions with `adjudicators` never named),
+    # so the arm can never go red. The import STAYS in `brakes.py` because it
+    # declares the dependency rather than relying on another module's import
+    # graph — but an arm that cannot fail trains the next reader to skim the
+    # list, which is this repo's own recorded lesson from the wedge battery.
     ("readings_gap_finds_nothing", BRAKES,
      "            if reading not in spec.wants:",
      "            if False:  # MUTANT",
@@ -88,10 +91,14 @@ ARMS = [
      "    return frozenset(r.target for r in infer.RULES)",
      "    return frozenset()  # MUTANT",
      "tests"),
+    # ⚠️ RETARGETED after its first run SURVIVED: `reach --check` does NOT call
+    # `unaccounted_modules()` — `test_staged_reach.py:61` does, and `reach.py`'s
+    # own comment claiming otherwise is a false claim in prose, now corrected
+    # at its site. The arm was right and its DETECTOR was wrong.
     ("unregister_from_reach", REACH,
      '    "brakes.py",\n})',
      "})",
-     "reach"),
+     "reach_tests"),
 ]
 
 
@@ -167,9 +174,10 @@ def main() -> int:
                 if detect == "check":
                     r = run([sys.executable, "-m", "tools.omr.staged.brakes",
                              "--check"])
-                elif detect == "reach":
-                    r = run([sys.executable, "-m", "tools.omr.staged.reach",
-                             "--check"])
+                elif detect == "reach_tests":
+                    r = run([sys.executable, "-m", "pytest", "-q",
+                             "tools/omr/tests/test_staged_reach.py",
+                             "tools/omr/tests/test_brakes.py"])
                 else:
                     r = run([sys.executable, "-m", "pytest",
                              "tools/omr/tests/test_brakes.py", "-q"])

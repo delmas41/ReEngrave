@@ -187,8 +187,15 @@ NOT_A_STAGE = frozenset({
     # architecture has since grown, and it NAMES quantities and reasons in
     # order to audit them while reading none of them at run time. It declares
     # `DERIVED_CHECK = True` for `wiring`'s DETAIL question too. Registering it
-    # here is not optional — `unaccounted_modules()` fails `--check` on any
-    # staged `.py` in neither list, which is that guard working.
+    # here is not optional — `unaccounted_modules()` must return empty, and a
+    # staged `.py` in neither list breaks it.
+    #
+    # ⚠️ AND THAT GUARD IS A TEST, NOT `--check`. This module's own comment
+    # above says *"`--check` fails otherwise"*; `check()` never calls
+    # `unaccounted_modules()` — `test_staged_reach.py:61` does. Found by a
+    # mutation arm that removed this very line and watched `reach --check`
+    # exit 0. Reported rather than repaired: which of the two should change is
+    # `reach`'s call, not this registration's.
     "brakes.py",
 })
 

@@ -26,6 +26,19 @@ class TestTheQuestionsCanRun(unittest.TestCase):
         for name, value in brakes.controls().items():
             self.assertGreater(value, 0, f"control {name} is zero")
 
+    def test_check_itself_FAILS_on_a_zero_control(self):
+        """⚠️ A REAL GAP a mutation arm found: nothing asserted that `check()`
+        acts on a zero control — only that the controls happen to be non-zero
+        today. Deleting the guard left the suite green."""
+        original = brakes.controls
+        brakes.controls = lambda: {"planted_zero": 0}
+        try:
+            bad, lines = brakes.check()
+            self.assertEqual(bad, 1)
+            self.assertTrue(any("CONTROL AT ZERO" in l for l in lines), lines)
+        finally:
+            brakes.controls = original
+
 
 class TestTheCheckIsNotVacuous(unittest.TestCase):
 
@@ -122,6 +135,18 @@ class TestTheRecordQuestions(unittest.TestCase):
         m = brakes.measure(self._record())
         self.assertEqual(m["reaches_infer"], 0)
         self.assertEqual(m["stops_with_no_stage"], 1)
+
+    def test_a_quantity_INFER_targets_is_counted_as_REACHING(self):
+        """⚠️ A REAL GAP a mutation arm found: every fixture used a quantity
+        INFER cannot take, so `infer_targets()` returning the EMPTY SET gave
+        the same answer and the arm survived. `duration` is a live target."""
+        self.assertIn("duration", brakes.infer_targets())
+        rec = self._record()
+        rec["record"]["verdicts"][0].update(
+            quantity="duration", outcome="narrowed", reason="beams_ambiguous")
+        m = brakes.measure(rec)
+        self.assertEqual(m["reaches_infer"], 1)
+        self.assertEqual(m["stops_with_no_stage"], 0)
 
 
 class TestItIsRegisteredWithItsSiblings(unittest.TestCase):
