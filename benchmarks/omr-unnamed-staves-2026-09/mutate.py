@@ -65,6 +65,26 @@ ARMS = [
      '        elif s.key == want:\n            kok += 1',
      '        elif True:\n            kok += 1',
      "the key witness is scored as always right", "red"),
+    # ── Sean's suffix rule
+    # ⚠️ NARROWING the window, not removing it. REMOVING it is an EQUIVALENT
+    # MUTANT on this document -- every unnamed block here is size 4 or 5, so
+    # `contiguous and in_range` and `contiguous` agree on all six systems and
+    # the arm could never go red. Narrowing to 5-only stops the five 4-blocks
+    # from firing, which tests that the window is consulted at all. ⚠️ What
+    # stays UNTESTED either way is the window's real job: refusing a block of
+    # 1-2 staves, which this document never prints.
+    ("probe_suffix_rule.py",
+     'MIN_BLOCK, MAX_BLOCK = 4, 5',
+     'MIN_BLOCK, MAX_BLOCK = 5, 5',
+     "the block-size window is narrowed to 5 only", "red"),
+    ("probe_suffix_rule.py",
+     '            elif len(block) == n_slot - 1 and i < len(block) - 1:',
+     '            elif len(block) == n_slot - 1:',
+     "a SHORT block's last member is placed instead of abstained", "red"),
+    ("probe_suffix_rule.py",
+     'GLYPH_CLEF = {"clefG": "treble", "clefF": "bass", "clefC": "alto"}',
+     'GLYPH_CLEF = {"gClef": "treble", "fClef": "bass", "cClef": "alto"}',
+     "the clef map reverts to the SMuFL spellings that matched nothing", "red"),
     # ── POSITIVE CONTROL: a cosmetic change must leave every number alone
     ("probe_forced_by_clef.py",
      'MAX_ENUM = 200000  # a system this ambiguous is a "cannot tell", not a slow one',
@@ -87,7 +107,7 @@ def sha(p: Path) -> str:
 #   reach the file it mutates measures its own scope*, which this repo has
 #   recorded twice before and which happened here on the first run.
 PROBES = ("probe_forced_by_clef.py", "probe_witnesses.py",
-          "probe_sensitivity.py")
+          "probe_sensitivity.py", "probe_suffix_rule.py")
 
 
 def baseline() -> dict:

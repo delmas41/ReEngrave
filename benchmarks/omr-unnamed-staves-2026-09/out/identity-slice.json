@@ -35268,6 +35268,370 @@
    "basis": []
   },
   {
+   "id": "obs:004357",
+   "subject": "staff/1/0/0",
+   "quantity": "clef_glyph",
+   "value": "clefG",
+   "reader": "detector",
+   "frame": "cell:0",
+   "score": 0.9312790632247925,
+   "detail": {
+    "y_center": 722,
+    "x_center": 376
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:004358",
+   "subject": "staff/1/0/0",
+   "quantity": "clef_position",
+   "value": 4.100278551532034,
+   "reader": "geometry",
+   "frame": "cell:0",
+   "score": null,
+   "detail": {
+    "glyph": "clefG",
+    "y_center": 722
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:004359",
+   "subject": "staff/1/0/1",
+   "quantity": "clef_glyph",
+   "value": "clefG",
+   "reader": "detector",
+   "frame": "cell:0",
+   "score": 0.9467654824256897,
+   "detail": {
+    "y_center": 560,
+    "x_center": 355
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:004360",
+   "subject": "staff/1/0/1",
+   "quantity": "clef_position",
+   "value": 4.417582417582418,
+   "reader": "geometry",
+   "frame": "cell:0",
+   "score": null,
+   "detail": {
+    "glyph": "clefG",
+    "y_center": 560
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:004361",
+   "subject": "staff/1/0/2",
+   "quantity": "clef_glyph",
+   "value": "clefG",
+   "reader": "detector",
+   "frame": "cell:0",
+   "score": 0.9003074169158936,
+   "detail": {
+    "y_center": 554,
+    "x_center": 359
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:004362",
+   "subject": "staff/1/0/2",
+   "quantity": "clef_position",
+   "value": 4.285714285714286,
+   "reader": "geometry",
+   "frame": "cell:0",
+   "score": null,
+   "detail": {
+    "glyph": "clefG",
+    "y_center": 554
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:004363",
+   "subject": "staff/1/0/3",
+   "quantity": "clef_glyph",
+   "value": "clefF",
+   "reader": "detector",
+   "frame": "cell:0",
+   "score": 0.8819324374198914,
+   "detail": {
+    "y_center": 499,
+    "x_center": 337
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:004364",
+   "subject": "staff/1/0/3",
+   "quantity": "clef_position",
+   "value": 3.253481894150418,
+   "reader": "geometry",
+   "frame": "cell:0",
+   "score": null,
+   "detail": {
+    "glyph": "clefF",
+    "y_center": 499
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:004365",
+   "subject": "staff/1/0/4",
+   "quantity": "clef_glyph",
+   "value": "clefG",
+   "reader": "detector",
+   "frame": "cell:0",
+   "score": 0.9281182885169983,
+   "detail": {
+    "y_center": 724,
+    "x_center": 358
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:004366",
+   "subject": "staff/1/0/4",
+   "quantity": "clef_position",
+   "value": 4.278551532033426,
+   "reader": "geometry",
+   "frame": "cell:0",
+   "score": null,
+   "detail": {
+    "glyph": "clefG",
+    "y_center": 724
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:004367",
+   "subject": "staff/1/0/5",
+   "quantity": "clef_glyph",
+   "value": "clefG",
+   "reader": "detector",
+   "frame": "cell:0",
+   "score": 0.8894112706184387,
+   "detail": {
+    "y_center": 557,
+    "x_center": 355
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:004368",
+   "subject": "staff/1/0/5",
+   "quantity": "clef_position",
+   "value": 4.23013698630137,
+   "reader": "geometry",
+   "frame": "cell:0",
+   "score": null,
+   "detail": {
+    "glyph": "clefG",
+    "y_center": 557
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:004369",
+   "subject": "staff/1/0/6",
+   "quantity": "clef_glyph",
+   "value": "clefF",
+   "reader": "detector",
+   "frame": "cell:0",
+   "score": 0.8451436758041382,
+   "detail": {
+    "y_center": 510,
+    "x_center": 328
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:004370",
+   "subject": "staff/1/0/6",
+   "quantity": "clef_position",
+   "value": 3.374301675977654,
+   "reader": "geometry",
+   "frame": "cell:0",
+   "score": null,
+   "detail": {
+    "glyph": "clefF",
+    "y_center": 510
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:004371",
+   "subject": "staff/1/0/7",
+   "quantity": "clef_glyph",
+   "value": "clefG",
+   "reader": "detector",
+   "frame": "cell:0",
+   "score": 0.936180830001831,
+   "detail": {
+    "y_center": 750,
+    "x_center": 344
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:004372",
+   "subject": "staff/1/0/7",
+   "quantity": "clef_position",
+   "value": 4.273972602739726,
+   "reader": "geometry",
+   "frame": "cell:0",
+   "score": null,
+   "detail": {
+    "glyph": "clefG",
+    "y_center": 750
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:004373",
+   "subject": "staff/1/0/8",
+   "quantity": "clef_glyph",
+   "value": "clefG",
+   "reader": "detector",
+   "frame": "cell:0",
+   "score": 0.9295472502708435,
+   "detail": {
+    "y_center": 761,
+    "x_center": 356
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:004374",
+   "subject": "staff/1/0/8",
+   "quantity": "clef_glyph",
+   "value": "clefG",
+   "reader": "detector",
+   "frame": "cell:0",
+   "score": 0.3928779065608978,
+   "detail": {
+    "y_center": 31,
+    "x_center": 322
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:004375",
+   "subject": "staff/1/0/8",
+   "quantity": "clef_position",
+   "value": 4.263736263736264,
+   "reader": "geometry",
+   "frame": "cell:0",
+   "score": null,
+   "detail": {
+    "glyph": "clefG",
+    "y_center": 761
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:004376",
+   "subject": "staff/1/0/8",
+   "quantity": "clef_position",
+   "value": -11.780219780219781,
+   "reader": "geometry",
+   "frame": "cell:0",
+   "score": null,
+   "detail": {
+    "glyph": "clefG",
+    "y_center": 31
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:004377",
+   "subject": "staff/1/0/9",
+   "quantity": "clef_glyph",
+   "value": "clefG",
+   "reader": "detector",
+   "frame": "cell:0",
+   "score": 0.3452723026275635,
+   "detail": {
+    "y_center": 36,
+    "x_center": 340
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:004378",
+   "subject": "staff/1/0/9",
+   "quantity": "clef_position",
+   "value": -11.296703296703297,
+   "reader": "geometry",
+   "frame": "cell:0",
+   "score": null,
+   "detail": {
+    "glyph": "clefG",
+    "y_center": 36
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:004379",
+   "subject": "staff/1/0/10",
+   "quantity": "clef_glyph",
+   "value": "clefF",
+   "reader": "detector",
+   "frame": "cell:0",
+   "score": 0.8890539407730103,
+   "detail": {
+    "y_center": 696,
+    "x_center": 337
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:004380",
+   "subject": "staff/1/0/10",
+   "quantity": "clef_position",
+   "value": 3.208791208791209,
+   "reader": "geometry",
+   "frame": "cell:0",
+   "score": null,
+   "detail": {
+    "glyph": "clefF",
+    "y_center": 696
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:004381",
+   "subject": "staff/1/0/11",
+   "quantity": "clef_glyph",
+   "value": "clefF",
+   "reader": "detector",
+   "frame": "cell:0",
+   "score": 0.9050217866897583,
+   "detail": {
+    "y_center": 728,
+    "x_center": 309
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:004382",
+   "subject": "staff/1/0/11",
+   "quantity": "clef_position",
+   "value": 3.481081081081081,
+   "reader": "geometry",
+   "frame": "cell:0",
+   "score": null,
+   "detail": {
+    "glyph": "clefF",
+    "y_center": 728
+   },
+   "basis": []
+  },
+  {
    "id": "obs:004410",
    "subject": "staff/1/0/0",
    "quantity": "keysig_clef_fit",
@@ -36471,6 +36835,846 @@
    "frame": "system",
    "score": null,
    "detail": {},
+   "basis": []
+  },
+  {
+   "id": "obs:018247",
+   "subject": "staff/2/0/0",
+   "quantity": "clef_glyph",
+   "value": "clefG",
+   "reader": "detector",
+   "frame": "cell:0",
+   "score": 0.8729953765869141,
+   "detail": {
+    "y_center": 846,
+    "x_center": 285
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:018248",
+   "subject": "staff/2/0/0",
+   "quantity": "clef_glyph",
+   "value": "clefG",
+   "reader": "detector",
+   "frame": "cell:0",
+   "score": 0.7566481232643127,
+   "detail": {
+    "y_center": 798,
+    "x_center": 321
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:018249",
+   "subject": "staff/2/0/0",
+   "quantity": "clef_position",
+   "value": 3.92,
+   "reader": "geometry",
+   "frame": "cell:0",
+   "score": null,
+   "detail": {
+    "glyph": "clefG",
+    "y_center": 846
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:018250",
+   "subject": "staff/2/0/0",
+   "quantity": "clef_position",
+   "value": 2.96,
+   "reader": "geometry",
+   "frame": "cell:0",
+   "score": null,
+   "detail": {
+    "glyph": "clefG",
+    "y_center": 798
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:018251",
+   "subject": "staff/2/0/1",
+   "quantity": "clef_glyph",
+   "value": "clefG",
+   "reader": "detector",
+   "frame": "cell:0",
+   "score": 0.9279155731201172,
+   "detail": {
+    "y_center": 673,
+    "x_center": 301
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:018252",
+   "subject": "staff/2/0/1",
+   "quantity": "clef_position",
+   "value": 4.58,
+   "reader": "geometry",
+   "frame": "cell:0",
+   "score": null,
+   "detail": {
+    "glyph": "clefG",
+    "y_center": 673
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:018253",
+   "subject": "staff/2/0/2",
+   "quantity": "clef_glyph",
+   "value": "clefG",
+   "reader": "detector",
+   "frame": "cell:0",
+   "score": 0.8970533609390259,
+   "detail": {
+    "y_center": 140,
+    "x_center": 312
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:018254",
+   "subject": "staff/2/0/2",
+   "quantity": "clef_glyph",
+   "value": "clefG",
+   "reader": "detector",
+   "frame": "cell:0",
+   "score": 0.7731320261955261,
+   "detail": {
+    "y_center": 673,
+    "x_center": 365
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:018255",
+   "subject": "staff/2/0/2",
+   "quantity": "clef_position",
+   "value": -6.08,
+   "reader": "geometry",
+   "frame": "cell:0",
+   "score": null,
+   "detail": {
+    "glyph": "clefG",
+    "y_center": 140
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:018256",
+   "subject": "staff/2/0/2",
+   "quantity": "clef_position",
+   "value": 4.58,
+   "reader": "geometry",
+   "frame": "cell:0",
+   "score": null,
+   "detail": {
+    "glyph": "clefG",
+    "y_center": 673
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:018257",
+   "subject": "staff/2/0/3",
+   "quantity": "clef_glyph",
+   "value": "clefF",
+   "reader": "detector",
+   "frame": "cell:0",
+   "score": 0.8945819735527039,
+   "detail": {
+    "y_center": 821,
+    "x_center": 325
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:018258",
+   "subject": "staff/2/0/3",
+   "quantity": "clef_position",
+   "value": 3.46,
+   "reader": "geometry",
+   "frame": "cell:0",
+   "score": null,
+   "detail": {
+    "glyph": "clefF",
+    "y_center": 821
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:018259",
+   "subject": "staff/2/0/4",
+   "quantity": "clef_glyph",
+   "value": "clefG",
+   "reader": "detector",
+   "frame": "cell:0",
+   "score": 0.9249232411384583,
+   "detail": {
+    "y_center": 871,
+    "x_center": 322
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:018260",
+   "subject": "staff/2/0/4",
+   "quantity": "clef_position",
+   "value": 4.46,
+   "reader": "geometry",
+   "frame": "cell:0",
+   "score": null,
+   "detail": {
+    "glyph": "clefG",
+    "y_center": 871
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:018261",
+   "subject": "staff/2/0/5",
+   "quantity": "clef_glyph",
+   "value": "clefG",
+   "reader": "detector",
+   "frame": "cell:0",
+   "score": 0.7910208106040955,
+   "detail": {
+    "y_center": 652,
+    "x_center": 330
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:018262",
+   "subject": "staff/2/0/5",
+   "quantity": "clef_position",
+   "value": 4.16,
+   "reader": "geometry",
+   "frame": "cell:0",
+   "score": null,
+   "detail": {
+    "glyph": "clefG",
+    "y_center": 652
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:018263",
+   "subject": "staff/2/0/6",
+   "quantity": "clef_glyph",
+   "value": "clefF",
+   "reader": "detector",
+   "frame": "cell:0",
+   "score": 0.8464000821113586,
+   "detail": {
+    "y_center": 641,
+    "x_center": 310
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:018264",
+   "subject": "staff/2/0/6",
+   "quantity": "clef_position",
+   "value": 3.58,
+   "reader": "geometry",
+   "frame": "cell:0",
+   "score": null,
+   "detail": {
+    "glyph": "clefF",
+    "y_center": 641
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:018265",
+   "subject": "staff/2/0/7",
+   "quantity": "clef_glyph",
+   "value": "clefG",
+   "reader": "detector",
+   "frame": "cell:0",
+   "score": 0.7089889645576477,
+   "detail": {
+    "y_center": 658,
+    "x_center": 336
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:018266",
+   "subject": "staff/2/0/7",
+   "quantity": "clef_position",
+   "value": 4.4,
+   "reader": "geometry",
+   "frame": "cell:0",
+   "score": null,
+   "detail": {
+    "glyph": "clefG",
+    "y_center": 658
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:018267",
+   "subject": "staff/2/0/8",
+   "quantity": "clef_glyph",
+   "value": "clefG",
+   "reader": "detector",
+   "frame": "cell:0",
+   "score": 0.9305469393730164,
+   "detail": {
+    "y_center": 648,
+    "x_center": 336
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:018268",
+   "subject": "staff/2/0/8",
+   "quantity": "clef_position",
+   "value": 4.46,
+   "reader": "geometry",
+   "frame": "cell:0",
+   "score": null,
+   "detail": {
+    "glyph": "clefG",
+    "y_center": 648
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:018270",
+   "subject": "staff/2/0/10",
+   "quantity": "clef_glyph",
+   "value": "clefF",
+   "reader": "detector",
+   "frame": "cell:0",
+   "score": 0.6948956251144409,
+   "detail": {
+    "y_center": 585,
+    "x_center": 327
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:018271",
+   "subject": "staff/2/0/10",
+   "quantity": "clef_position",
+   "value": 3.44,
+   "reader": "geometry",
+   "frame": "cell:0",
+   "score": null,
+   "detail": {
+    "glyph": "clefF",
+    "y_center": 585
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:018272",
+   "subject": "staff/2/1/0",
+   "quantity": "clef_glyph",
+   "value": "clefG",
+   "reader": "detector",
+   "frame": "cell:0",
+   "score": 0.8191550970077515,
+   "detail": {
+    "y_center": 826,
+    "x_center": 358
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:018273",
+   "subject": "staff/2/1/0",
+   "quantity": "clef_glyph",
+   "value": "clefG",
+   "reader": "detector",
+   "frame": "cell:0",
+   "score": 0.5832952857017517,
+   "detail": {
+    "y_center": 1353,
+    "x_center": 363
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:018274",
+   "subject": "staff/2/1/0",
+   "quantity": "clef_position",
+   "value": 4.32,
+   "reader": "geometry",
+   "frame": "cell:0",
+   "score": null,
+   "detail": {
+    "glyph": "clefG",
+    "y_center": 826
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:018275",
+   "subject": "staff/2/1/0",
+   "quantity": "clef_position",
+   "value": 14.86,
+   "reader": "geometry",
+   "frame": "cell:0",
+   "score": null,
+   "detail": {
+    "glyph": "clefG",
+    "y_center": 1353
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:018276",
+   "subject": "staff/2/1/1",
+   "quantity": "clef_glyph",
+   "value": "clefG",
+   "reader": "detector",
+   "frame": "cell:0",
+   "score": 0.902446448802948,
+   "detail": {
+    "y_center": 79,
+    "x_center": 345
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:018277",
+   "subject": "staff/2/1/1",
+   "quantity": "clef_glyph",
+   "value": "clefG",
+   "reader": "detector",
+   "frame": "cell:0",
+   "score": 0.8929001092910767,
+   "detail": {
+    "y_center": 632,
+    "x_center": 345
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:018278",
+   "subject": "staff/2/1/1",
+   "quantity": "clef_glyph",
+   "value": "clefG",
+   "reader": "detector",
+   "frame": "cell:0",
+   "score": 0.8173163533210754,
+   "detail": {
+    "y_center": 1152,
+    "x_center": 357
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:018279",
+   "subject": "staff/2/1/1",
+   "quantity": "clef_position",
+   "value": -6.66,
+   "reader": "geometry",
+   "frame": "cell:0",
+   "score": null,
+   "detail": {
+    "glyph": "clefG",
+    "y_center": 79
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:018280",
+   "subject": "staff/2/1/1",
+   "quantity": "clef_position",
+   "value": 4.4,
+   "reader": "geometry",
+   "frame": "cell:0",
+   "score": null,
+   "detail": {
+    "glyph": "clefG",
+    "y_center": 632
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:018281",
+   "subject": "staff/2/1/1",
+   "quantity": "clef_position",
+   "value": 14.8,
+   "reader": "geometry",
+   "frame": "cell:0",
+   "score": null,
+   "detail": {
+    "glyph": "clefG",
+    "y_center": 1152
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:018282",
+   "subject": "staff/2/1/2",
+   "quantity": "clef_glyph",
+   "value": "clefG",
+   "reader": "detector",
+   "frame": "cell:0",
+   "score": 0.8938247561454773,
+   "detail": {
+    "y_center": 69,
+    "x_center": 342
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:018283",
+   "subject": "staff/2/1/2",
+   "quantity": "clef_glyph",
+   "value": "clefG",
+   "reader": "detector",
+   "frame": "cell:0",
+   "score": 0.8631953001022339,
+   "detail": {
+    "y_center": 603,
+    "x_center": 342
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:018284",
+   "subject": "staff/2/1/2",
+   "quantity": "clef_position",
+   "value": -6.62,
+   "reader": "geometry",
+   "frame": "cell:0",
+   "score": null,
+   "detail": {
+    "glyph": "clefG",
+    "y_center": 69
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:018285",
+   "subject": "staff/2/1/2",
+   "quantity": "clef_position",
+   "value": 4.06,
+   "reader": "geometry",
+   "frame": "cell:0",
+   "score": null,
+   "detail": {
+    "glyph": "clefG",
+    "y_center": 603
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:018287",
+   "subject": "staff/2/1/4",
+   "quantity": "clef_glyph",
+   "value": "clefG",
+   "reader": "detector",
+   "frame": "cell:0",
+   "score": 0.9159364104270935,
+   "detail": {
+    "y_center": 604,
+    "x_center": 347
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:018288",
+   "subject": "staff/2/1/4",
+   "quantity": "clef_glyph",
+   "value": "clefG",
+   "reader": "detector",
+   "frame": "cell:0",
+   "score": 0.8541101813316345,
+   "detail": {
+    "y_center": 1112,
+    "x_center": 341
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:018289",
+   "subject": "staff/2/1/4",
+   "quantity": "clef_position",
+   "value": 4.34,
+   "reader": "geometry",
+   "frame": "cell:0",
+   "score": null,
+   "detail": {
+    "glyph": "clefG",
+    "y_center": 604
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:018290",
+   "subject": "staff/2/1/4",
+   "quantity": "clef_position",
+   "value": 14.5,
+   "reader": "geometry",
+   "frame": "cell:0",
+   "score": null,
+   "detail": {
+    "glyph": "clefG",
+    "y_center": 1112
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:018291",
+   "subject": "staff/2/1/5",
+   "quantity": "clef_glyph",
+   "value": "clefG",
+   "reader": "detector",
+   "frame": "cell:0",
+   "score": 0.9004058837890625,
+   "detail": {
+    "y_center": 618,
+    "x_center": 327
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:018292",
+   "subject": "staff/2/1/5",
+   "quantity": "clef_glyph",
+   "value": "clefG",
+   "reader": "detector",
+   "frame": "cell:0",
+   "score": 0.8556588292121887,
+   "detail": {
+    "y_center": 101,
+    "x_center": 338
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:018293",
+   "subject": "staff/2/1/5",
+   "quantity": "clef_position",
+   "value": 4.48,
+   "reader": "geometry",
+   "frame": "cell:0",
+   "score": null,
+   "detail": {
+    "glyph": "clefG",
+    "y_center": 618
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:018294",
+   "subject": "staff/2/1/5",
+   "quantity": "clef_position",
+   "value": -5.86,
+   "reader": "geometry",
+   "frame": "cell:0",
+   "score": null,
+   "detail": {
+    "glyph": "clefG",
+    "y_center": 101
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:018295",
+   "subject": "staff/2/1/6",
+   "quantity": "clef_glyph",
+   "value": "clefF",
+   "reader": "detector",
+   "frame": "cell:0",
+   "score": 0.8221905827522278,
+   "detail": {
+    "y_center": 561,
+    "x_center": 325
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:018296",
+   "subject": "staff/2/1/6",
+   "quantity": "clef_glyph",
+   "value": "clefG",
+   "reader": "detector",
+   "frame": "cell:0",
+   "score": 0.6664934754371643,
+   "detail": {
+    "y_center": 99,
+    "x_center": 328
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:018297",
+   "subject": "staff/2/1/6",
+   "quantity": "clef_position",
+   "value": 3.48,
+   "reader": "geometry",
+   "frame": "cell:0",
+   "score": null,
+   "detail": {
+    "glyph": "clefF",
+    "y_center": 561
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:018298",
+   "subject": "staff/2/1/6",
+   "quantity": "clef_position",
+   "value": -5.76,
+   "reader": "geometry",
+   "frame": "cell:0",
+   "score": null,
+   "detail": {
+    "glyph": "clefG",
+    "y_center": 99
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:018299",
+   "subject": "staff/2/1/7",
+   "quantity": "clef_glyph",
+   "value": "clefG",
+   "reader": "detector",
+   "frame": "cell:0",
+   "score": 0.8469650745391846,
+   "detail": {
+    "y_center": 796,
+    "x_center": 343
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:018300",
+   "subject": "staff/2/1/7",
+   "quantity": "clef_glyph",
+   "value": "clefG",
+   "reader": "detector",
+   "frame": "cell:0",
+   "score": 0.5303235054016113,
+   "detail": {
+    "y_center": 1354,
+    "x_center": 351
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:018301",
+   "subject": "staff/2/1/7",
+   "quantity": "clef_position",
+   "value": 4.36,
+   "reader": "geometry",
+   "frame": "cell:0",
+   "score": null,
+   "detail": {
+    "glyph": "clefG",
+    "y_center": 796
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:018302",
+   "subject": "staff/2/1/7",
+   "quantity": "clef_position",
+   "value": 15.52,
+   "reader": "geometry",
+   "frame": "cell:0",
+   "score": null,
+   "detail": {
+    "glyph": "clefG",
+    "y_center": 1354
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:018303",
+   "subject": "staff/2/1/8",
+   "quantity": "clef_glyph",
+   "value": "clefG",
+   "reader": "detector",
+   "frame": "cell:0",
+   "score": 0.912408173084259,
+   "detail": {
+    "y_center": 584,
+    "x_center": 334
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:018304",
+   "subject": "staff/2/1/8",
+   "quantity": "clef_glyph",
+   "value": "clefG",
+   "reader": "detector",
+   "frame": "cell:0",
+   "score": 0.5815720558166504,
+   "detail": {
+    "y_center": 36,
+    "x_center": 325
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:018305",
+   "subject": "staff/2/1/8",
+   "quantity": "clef_position",
+   "value": 4.06,
+   "reader": "geometry",
+   "frame": "cell:0",
+   "score": null,
+   "detail": {
+    "glyph": "clefG",
+    "y_center": 584
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:018306",
+   "subject": "staff/2/1/8",
+   "quantity": "clef_position",
+   "value": -6.9,
+   "reader": "geometry",
+   "frame": "cell:0",
+   "score": null,
+   "detail": {
+    "glyph": "clefG",
+    "y_center": 36
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:018308",
+   "subject": "staff/2/1/10",
+   "quantity": "clef_glyph",
+   "value": "clefF",
+   "reader": "detector",
+   "frame": "cell:0",
+   "score": 0.7379831671714783,
+   "detail": {
+    "y_center": 528,
+    "x_center": 304
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:018309",
+   "subject": "staff/2/1/10",
+   "quantity": "clef_position",
+   "value": 3.42,
+   "reader": "geometry",
+   "frame": "cell:0",
+   "score": null,
+   "detail": {
+    "glyph": "clefF",
+    "y_center": 528
+   },
    "basis": []
   },
   {
@@ -37883,6 +39087,762 @@
    "basis": []
   },
   {
+   "id": "obs:028304",
+   "subject": "staff/3/0/0",
+   "quantity": "clef_glyph",
+   "value": "clefG",
+   "reader": "detector",
+   "frame": "cell:0",
+   "score": 0.94796222448349,
+   "detail": {
+    "y_center": 837,
+    "x_center": 285
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:028305",
+   "subject": "staff/3/0/0",
+   "quantity": "clef_position",
+   "value": 4.36,
+   "reader": "geometry",
+   "frame": "cell:0",
+   "score": null,
+   "detail": {
+    "glyph": "clefG",
+    "y_center": 837
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:028306",
+   "subject": "staff/3/0/1",
+   "quantity": "clef_glyph",
+   "value": "clefG",
+   "reader": "detector",
+   "frame": "cell:0",
+   "score": 0.9358252882957458,
+   "detail": {
+    "y_center": 625,
+    "x_center": 308
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:028307",
+   "subject": "staff/3/0/1",
+   "quantity": "clef_glyph",
+   "value": "clefG",
+   "reader": "detector",
+   "frame": "cell:0",
+   "score": 0.8325995802879333,
+   "detail": {
+    "y_center": 1142,
+    "x_center": 313
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:028308",
+   "subject": "staff/3/0/1",
+   "quantity": "clef_glyph",
+   "value": "clefG",
+   "reader": "detector",
+   "frame": "cell:0",
+   "score": 0.820372462272644,
+   "detail": {
+    "y_center": 34,
+    "x_center": 308
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:028309",
+   "subject": "staff/3/0/1",
+   "quantity": "clef_position",
+   "value": 4.5,
+   "reader": "geometry",
+   "frame": "cell:0",
+   "score": null,
+   "detail": {
+    "glyph": "clefG",
+    "y_center": 625
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:028310",
+   "subject": "staff/3/0/1",
+   "quantity": "clef_position",
+   "value": 14.84,
+   "reader": "geometry",
+   "frame": "cell:0",
+   "score": null,
+   "detail": {
+    "glyph": "clefG",
+    "y_center": 1142
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:028311",
+   "subject": "staff/3/0/1",
+   "quantity": "clef_position",
+   "value": -7.32,
+   "reader": "geometry",
+   "frame": "cell:0",
+   "score": null,
+   "detail": {
+    "glyph": "clefG",
+    "y_center": 34
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:028312",
+   "subject": "staff/3/0/2",
+   "quantity": "clef_glyph",
+   "value": "clefG",
+   "reader": "detector",
+   "frame": "cell:0",
+   "score": 0.9495785236358643,
+   "detail": {
+    "y_center": 616,
+    "x_center": 306
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:028313",
+   "subject": "staff/3/0/2",
+   "quantity": "clef_glyph",
+   "value": "clefG",
+   "reader": "detector",
+   "frame": "cell:0",
+   "score": 0.9061890244483948,
+   "detail": {
+    "y_center": 77,
+    "x_center": 297
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:028314",
+   "subject": "staff/3/0/2",
+   "quantity": "clef_position",
+   "value": 4.2,
+   "reader": "geometry",
+   "frame": "cell:0",
+   "score": null,
+   "detail": {
+    "glyph": "clefG",
+    "y_center": 616
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:028315",
+   "subject": "staff/3/0/2",
+   "quantity": "clef_position",
+   "value": -6.58,
+   "reader": "geometry",
+   "frame": "cell:0",
+   "score": null,
+   "detail": {
+    "glyph": "clefG",
+    "y_center": 77
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:028316",
+   "subject": "staff/3/0/3",
+   "quantity": "clef_glyph",
+   "value": "clefF",
+   "reader": "detector",
+   "frame": "cell:0",
+   "score": 0.9001492857933044,
+   "detail": {
+    "y_center": 581,
+    "x_center": 314
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:028317",
+   "subject": "staff/3/0/3",
+   "quantity": "clef_glyph",
+   "value": "clefG",
+   "reader": "detector",
+   "frame": "cell:0",
+   "score": 0.860181450843811,
+   "detail": {
+    "y_center": 42,
+    "x_center": 286
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:028318",
+   "subject": "staff/3/0/3",
+   "quantity": "clef_position",
+   "value": 3.5,
+   "reader": "geometry",
+   "frame": "cell:0",
+   "score": null,
+   "detail": {
+    "glyph": "clefF",
+    "y_center": 581
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:028319",
+   "subject": "staff/3/0/3",
+   "quantity": "clef_position",
+   "value": -7.28,
+   "reader": "geometry",
+   "frame": "cell:0",
+   "score": null,
+   "detail": {
+    "glyph": "clefG",
+    "y_center": 42
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:028320",
+   "subject": "staff/3/0/4",
+   "quantity": "clef_glyph",
+   "value": "clefG",
+   "reader": "detector",
+   "frame": "cell:0",
+   "score": 0.9457269906997681,
+   "detail": {
+    "y_center": 619,
+    "x_center": 317
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:028321",
+   "subject": "staff/3/0/4",
+   "quantity": "clef_glyph",
+   "value": "clefG",
+   "reader": "detector",
+   "frame": "cell:0",
+   "score": 0.8742178678512573,
+   "detail": {
+    "y_center": 1150,
+    "x_center": 337
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:028322",
+   "subject": "staff/3/0/4",
+   "quantity": "clef_position",
+   "value": 4.26,
+   "reader": "geometry",
+   "frame": "cell:0",
+   "score": null,
+   "detail": {
+    "glyph": "clefG",
+    "y_center": 619
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:028323",
+   "subject": "staff/3/0/4",
+   "quantity": "clef_position",
+   "value": 14.88,
+   "reader": "geometry",
+   "frame": "cell:0",
+   "score": null,
+   "detail": {
+    "glyph": "clefG",
+    "y_center": 1150
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:028324",
+   "subject": "staff/3/0/5",
+   "quantity": "clef_glyph",
+   "value": "clefG",
+   "reader": "detector",
+   "frame": "cell:0",
+   "score": 0.9173319339752197,
+   "detail": {
+    "y_center": 634,
+    "x_center": 321
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:028325",
+   "subject": "staff/3/0/5",
+   "quantity": "clef_glyph",
+   "value": "clefG",
+   "reader": "detector",
+   "frame": "cell:0",
+   "score": 0.909896194934845,
+   "detail": {
+    "y_center": 70,
+    "x_center": 312
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:028326",
+   "subject": "staff/3/0/5",
+   "quantity": "clef_position",
+   "value": 4.18,
+   "reader": "geometry",
+   "frame": "cell:0",
+   "score": null,
+   "detail": {
+    "glyph": "clefG",
+    "y_center": 634
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:028327",
+   "subject": "staff/3/0/5",
+   "quantity": "clef_position",
+   "value": -7.1,
+   "reader": "geometry",
+   "frame": "cell:0",
+   "score": null,
+   "detail": {
+    "glyph": "clefG",
+    "y_center": 70
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:028328",
+   "subject": "staff/3/0/6",
+   "quantity": "clef_glyph",
+   "value": "clefF",
+   "reader": "detector",
+   "frame": "cell:0",
+   "score": 0.8715139627456665,
+   "detail": {
+    "y_center": 576,
+    "x_center": 331
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:028329",
+   "subject": "staff/3/0/6",
+   "quantity": "clef_glyph",
+   "value": "clefG",
+   "reader": "detector",
+   "frame": "cell:0",
+   "score": 0.6072754859924316,
+   "detail": {
+    "y_center": 32,
+    "x_center": 302
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:028330",
+   "subject": "staff/3/0/6",
+   "quantity": "clef_position",
+   "value": 3.26,
+   "reader": "geometry",
+   "frame": "cell:0",
+   "score": null,
+   "detail": {
+    "glyph": "clefF",
+    "y_center": 576
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:028331",
+   "subject": "staff/3/0/6",
+   "quantity": "clef_position",
+   "value": -7.62,
+   "reader": "geometry",
+   "frame": "cell:0",
+   "score": null,
+   "detail": {
+    "glyph": "clefG",
+    "y_center": 32
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:028332",
+   "subject": "staff/3/0/7",
+   "quantity": "clef_glyph",
+   "value": "clefG",
+   "reader": "detector",
+   "frame": "cell:0",
+   "score": 0.9498762488365173,
+   "detail": {
+    "y_center": 853,
+    "x_center": 337
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:028333",
+   "subject": "staff/3/0/7",
+   "quantity": "clef_position",
+   "value": 4.44,
+   "reader": "geometry",
+   "frame": "cell:0",
+   "score": null,
+   "detail": {
+    "glyph": "clefG",
+    "y_center": 853
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:028334",
+   "subject": "staff/3/0/8",
+   "quantity": "clef_glyph",
+   "value": "clefG",
+   "reader": "detector",
+   "frame": "cell:0",
+   "score": 0.9277994632720947,
+   "detail": {
+    "y_center": 665,
+    "x_center": 346
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:028335",
+   "subject": "staff/3/0/8",
+   "quantity": "clef_position",
+   "value": 4.52,
+   "reader": "geometry",
+   "frame": "cell:0",
+   "score": null,
+   "detail": {
+    "glyph": "clefG",
+    "y_center": 665
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:028337",
+   "subject": "staff/3/0/10",
+   "quantity": "clef_glyph",
+   "value": "clefF",
+   "reader": "detector",
+   "frame": "cell:0",
+   "score": 0.8997448086738586,
+   "detail": {
+    "y_center": 620,
+    "x_center": 342
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:028338",
+   "subject": "staff/3/0/10",
+   "quantity": "clef_position",
+   "value": 3.52,
+   "reader": "geometry",
+   "frame": "cell:0",
+   "score": null,
+   "detail": {
+    "glyph": "clefF",
+    "y_center": 620
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:028339",
+   "subject": "staff/3/1/0",
+   "quantity": "clef_glyph",
+   "value": "clefG",
+   "reader": "detector",
+   "frame": "cell:0",
+   "score": 0.9454993009567261,
+   "detail": {
+    "y_center": 861,
+    "x_center": 330
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:028340",
+   "subject": "staff/3/1/0",
+   "quantity": "clef_position",
+   "value": 4.02,
+   "reader": "geometry",
+   "frame": "cell:0",
+   "score": null,
+   "detail": {
+    "glyph": "clefG",
+    "y_center": 861
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:028341",
+   "subject": "staff/3/1/1",
+   "quantity": "clef_glyph",
+   "value": "clefG",
+   "reader": "detector",
+   "frame": "cell:0",
+   "score": 0.9190719723701477,
+   "detail": {
+    "y_center": 893,
+    "x_center": 318
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:028342",
+   "subject": "staff/3/1/1",
+   "quantity": "clef_glyph",
+   "value": "clefG",
+   "reader": "detector",
+   "frame": "cell:0",
+   "score": 0.9072390198707581,
+   "detail": {
+    "y_center": 80,
+    "x_center": 311
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:028343",
+   "subject": "staff/3/1/1",
+   "quantity": "clef_position",
+   "value": 4.78,
+   "reader": "geometry",
+   "frame": "cell:0",
+   "score": null,
+   "detail": {
+    "glyph": "clefG",
+    "y_center": 893
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:028344",
+   "subject": "staff/3/1/1",
+   "quantity": "clef_position",
+   "value": -11.48,
+   "reader": "geometry",
+   "frame": "cell:0",
+   "score": null,
+   "detail": {
+    "glyph": "clefG",
+    "y_center": 80
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:028345",
+   "subject": "staff/3/1/2",
+   "quantity": "clef_glyph",
+   "value": "clefF",
+   "reader": "detector",
+   "frame": "cell:0",
+   "score": 0.8648715615272522,
+   "detail": {
+    "y_center": 639,
+    "x_center": 328
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:028346",
+   "subject": "staff/3/1/2",
+   "quantity": "clef_glyph",
+   "value": "clefG",
+   "reader": "detector",
+   "frame": "cell:0",
+   "score": 0.8376096487045288,
+   "detail": {
+    "y_center": 45,
+    "x_center": 290
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:028347",
+   "subject": "staff/3/1/2",
+   "quantity": "clef_position",
+   "value": 3.48,
+   "reader": "geometry",
+   "frame": "cell:0",
+   "score": null,
+   "detail": {
+    "glyph": "clefF",
+    "y_center": 639
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:028348",
+   "subject": "staff/3/1/2",
+   "quantity": "clef_position",
+   "value": -8.4,
+   "reader": "geometry",
+   "frame": "cell:0",
+   "score": null,
+   "detail": {
+    "glyph": "clefG",
+    "y_center": 45
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:028349",
+   "subject": "staff/3/1/3",
+   "quantity": "clef_glyph",
+   "value": "clefG",
+   "reader": "detector",
+   "frame": "cell:0",
+   "score": 0.9416891932487488,
+   "detail": {
+    "y_center": 880,
+    "x_center": 331
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:028350",
+   "subject": "staff/3/1/3",
+   "quantity": "clef_position",
+   "value": 4.78,
+   "reader": "geometry",
+   "frame": "cell:0",
+   "score": null,
+   "detail": {
+    "glyph": "clefG",
+    "y_center": 880
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:028351",
+   "subject": "staff/3/1/4",
+   "quantity": "clef_glyph",
+   "value": "clefG",
+   "reader": "detector",
+   "frame": "cell:0",
+   "score": 0.9429329633712769,
+   "detail": {
+    "y_center": 882,
+    "x_center": 335
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:028352",
+   "subject": "staff/3/1/4",
+   "quantity": "clef_glyph",
+   "value": "clefG",
+   "reader": "detector",
+   "frame": "cell:0",
+   "score": 0.7526077628135681,
+   "detail": {
+    "y_center": 36,
+    "x_center": 317
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:028353",
+   "subject": "staff/3/1/4",
+   "quantity": "clef_position",
+   "value": 4.48,
+   "reader": "geometry",
+   "frame": "cell:0",
+   "score": null,
+   "detail": {
+    "glyph": "clefG",
+    "y_center": 882
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:028354",
+   "subject": "staff/3/1/4",
+   "quantity": "clef_position",
+   "value": -12.44,
+   "reader": "geometry",
+   "frame": "cell:0",
+   "score": null,
+   "detail": {
+    "glyph": "clefG",
+    "y_center": 36
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:028355",
+   "subject": "staff/3/1/5",
+   "quantity": "clef_glyph",
+   "value": "clefG",
+   "reader": "detector",
+   "frame": "cell:0",
+   "score": 0.9318974614143372,
+   "detail": {
+    "y_center": 702,
+    "x_center": 349
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:028356",
+   "subject": "staff/3/1/5",
+   "quantity": "clef_position",
+   "value": 6.60253164556962,
+   "reader": "geometry",
+   "frame": "cell:0",
+   "score": null,
+   "detail": {
+    "glyph": "clefG",
+    "y_center": 702
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:028358",
+   "subject": "staff/3/1/7",
+   "quantity": "clef_glyph",
+   "value": "clefF",
+   "reader": "detector",
+   "frame": "cell:0",
+   "score": 0.8874869346618652,
+   "detail": {
+    "y_center": 790,
+    "x_center": 316
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:028359",
+   "subject": "staff/3/1/7",
+   "quantity": "clef_position",
+   "value": 3.6,
+   "reader": "geometry",
+   "frame": "cell:0",
+   "score": null,
+   "detail": {
+    "glyph": "clefF",
+    "y_center": 790
+   },
+   "basis": []
+  },
+  {
    "id": "obs:028399",
    "subject": "staff/3/0/0",
    "quantity": "keysig_clef_fit",
@@ -39237,6 +41197,594 @@
    "frame": "system",
    "score": null,
    "detail": {},
+   "basis": []
+  },
+  {
+   "id": "obs:044287",
+   "subject": "staff/4/0/0",
+   "quantity": "clef_glyph",
+   "value": "clefG",
+   "reader": "detector",
+   "frame": "cell:0",
+   "score": 0.8884084224700928,
+   "detail": {
+    "y_center": 927,
+    "x_center": 327
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:044288",
+   "subject": "staff/4/0/0",
+   "quantity": "clef_position",
+   "value": 6.42,
+   "reader": "geometry",
+   "frame": "cell:0",
+   "score": null,
+   "detail": {
+    "glyph": "clefG",
+    "y_center": 927
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:044289",
+   "subject": "staff/4/0/1",
+   "quantity": "clef_glyph",
+   "value": "clefG",
+   "reader": "detector",
+   "frame": "cell:0",
+   "score": 0.9182468056678772,
+   "detail": {
+    "y_center": 698,
+    "x_center": 335
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:044290",
+   "subject": "staff/4/0/1",
+   "quantity": "clef_glyph",
+   "value": "clefG",
+   "reader": "detector",
+   "frame": "cell:0",
+   "score": 0.25058409571647644,
+   "detail": {
+    "y_center": 49,
+    "x_center": 287
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:044291",
+   "subject": "staff/4/0/1",
+   "quantity": "clef_position",
+   "value": 6.08,
+   "reader": "geometry",
+   "frame": "cell:0",
+   "score": null,
+   "detail": {
+    "glyph": "clefG",
+    "y_center": 698
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:044292",
+   "subject": "staff/4/0/1",
+   "quantity": "clef_position",
+   "value": -6.9,
+   "reader": "geometry",
+   "frame": "cell:0",
+   "score": null,
+   "detail": {
+    "glyph": "clefG",
+    "y_center": 49
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:044293",
+   "subject": "staff/4/0/2",
+   "quantity": "clef_glyph",
+   "value": "clefG",
+   "reader": "detector",
+   "frame": "cell:0",
+   "score": 0.84500652551651,
+   "detail": {
+    "y_center": 664,
+    "x_center": 326
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:044294",
+   "subject": "staff/4/0/2",
+   "quantity": "clef_glyph",
+   "value": "clefG",
+   "reader": "detector",
+   "frame": "cell:0",
+   "score": 0.6381868124008179,
+   "detail": {
+    "y_center": 86,
+    "x_center": 348
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:044295",
+   "subject": "staff/4/0/2",
+   "quantity": "clef_position",
+   "value": 4.3,
+   "reader": "geometry",
+   "frame": "cell:0",
+   "score": null,
+   "detail": {
+    "glyph": "clefG",
+    "y_center": 664
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:044296",
+   "subject": "staff/4/0/2",
+   "quantity": "clef_position",
+   "value": -7.26,
+   "reader": "geometry",
+   "frame": "cell:0",
+   "score": null,
+   "detail": {
+    "glyph": "clefG",
+    "y_center": 86
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:044297",
+   "subject": "staff/4/0/3",
+   "quantity": "clef_glyph",
+   "value": "clefF",
+   "reader": "detector",
+   "frame": "cell:0",
+   "score": 0.7123157382011414,
+   "detail": {
+    "y_center": 665,
+    "x_center": 340
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:044298",
+   "subject": "staff/4/0/3",
+   "quantity": "clef_glyph",
+   "value": "clefG",
+   "reader": "detector",
+   "frame": "cell:0",
+   "score": 0.4057356119155884,
+   "detail": {
+    "y_center": 92,
+    "x_center": 350
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:044299",
+   "subject": "staff/4/0/3",
+   "quantity": "clef_position",
+   "value": 5.42,
+   "reader": "geometry",
+   "frame": "cell:0",
+   "score": null,
+   "detail": {
+    "glyph": "clefF",
+    "y_center": 665
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:044300",
+   "subject": "staff/4/0/3",
+   "quantity": "clef_position",
+   "value": -6.04,
+   "reader": "geometry",
+   "frame": "cell:0",
+   "score": null,
+   "detail": {
+    "glyph": "clefG",
+    "y_center": 92
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:044301",
+   "subject": "staff/4/0/4",
+   "quantity": "clef_glyph",
+   "value": "clefG",
+   "reader": "detector",
+   "frame": "cell:0",
+   "score": 0.9055447578430176,
+   "detail": {
+    "y_center": 820,
+    "x_center": 353
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:044302",
+   "subject": "staff/4/0/4",
+   "quantity": "clef_position",
+   "value": 4.34,
+   "reader": "geometry",
+   "frame": "cell:0",
+   "score": null,
+   "detail": {
+    "glyph": "clefG",
+    "y_center": 820
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:044303",
+   "subject": "staff/4/0/5",
+   "quantity": "clef_glyph",
+   "value": "clefG",
+   "reader": "detector",
+   "frame": "cell:0",
+   "score": 0.8568747043609619,
+   "detail": {
+    "y_center": 715,
+    "x_center": 348
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:044304",
+   "subject": "staff/4/0/5",
+   "quantity": "clef_position",
+   "value": 6.3,
+   "reader": "geometry",
+   "frame": "cell:0",
+   "score": null,
+   "detail": {
+    "glyph": "clefG",
+    "y_center": 715
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:044305",
+   "subject": "staff/4/0/6",
+   "quantity": "clef_glyph",
+   "value": "clefG",
+   "reader": "detector",
+   "frame": "cell:0",
+   "score": 0.8926147818565369,
+   "detail": {
+    "y_center": 898,
+    "x_center": 359
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:044306",
+   "subject": "staff/4/0/6",
+   "quantity": "clef_glyph",
+   "value": "clefG",
+   "reader": "detector",
+   "frame": "cell:0",
+   "score": 0.5497497916221619,
+   "detail": {
+    "y_center": 92,
+    "x_center": 397
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:044307",
+   "subject": "staff/4/0/6",
+   "quantity": "clef_position",
+   "value": 4.5,
+   "reader": "geometry",
+   "frame": "cell:0",
+   "score": null,
+   "detail": {
+    "glyph": "clefG",
+    "y_center": 898
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:044308",
+   "subject": "staff/4/0/6",
+   "quantity": "clef_position",
+   "value": -11.62,
+   "reader": "geometry",
+   "frame": "cell:0",
+   "score": null,
+   "detail": {
+    "glyph": "clefG",
+    "y_center": 92
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:044309",
+   "subject": "staff/4/0/7",
+   "quantity": "clef_glyph",
+   "value": "clefG",
+   "reader": "detector",
+   "frame": "cell:0",
+   "score": 0.8623866438865662,
+   "detail": {
+    "y_center": 664,
+    "x_center": 362
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:044310",
+   "subject": "staff/4/0/7",
+   "quantity": "clef_position",
+   "value": 3.88,
+   "reader": "geometry",
+   "frame": "cell:0",
+   "score": null,
+   "detail": {
+    "glyph": "clefG",
+    "y_center": 664
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:044313",
+   "subject": "staff/4/0/10",
+   "quantity": "clef_glyph",
+   "value": "clefF",
+   "reader": "detector",
+   "frame": "cell:0",
+   "score": 0.7723256945610046,
+   "detail": {
+    "y_center": 624,
+    "x_center": 366
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:044314",
+   "subject": "staff/4/0/10",
+   "quantity": "clef_position",
+   "value": 3.6,
+   "reader": "geometry",
+   "frame": "cell:0",
+   "score": null,
+   "detail": {
+    "glyph": "clefF",
+    "y_center": 624
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:044315",
+   "subject": "staff/4/1/0",
+   "quantity": "clef_glyph",
+   "value": "clefG",
+   "reader": "detector",
+   "frame": "cell:0",
+   "score": 0.7460843920707703,
+   "detail": {
+    "y_center": 854,
+    "x_center": 415
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:044316",
+   "subject": "staff/4/1/0",
+   "quantity": "clef_position",
+   "value": 4.26,
+   "reader": "geometry",
+   "frame": "cell:0",
+   "score": null,
+   "detail": {
+    "glyph": "clefG",
+    "y_center": 854
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:044317",
+   "subject": "staff/4/1/1",
+   "quantity": "clef_glyph",
+   "value": "clefG",
+   "reader": "detector",
+   "frame": "cell:0",
+   "score": 0.7148820757865906,
+   "detail": {
+    "y_center": 632,
+    "x_center": 389
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:044318",
+   "subject": "staff/4/1/1",
+   "quantity": "clef_position",
+   "value": 4.26,
+   "reader": "geometry",
+   "frame": "cell:0",
+   "score": null,
+   "detail": {
+    "glyph": "clefG",
+    "y_center": 632
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:044319",
+   "subject": "staff/4/1/2",
+   "quantity": "clef_glyph",
+   "value": "clefG",
+   "reader": "detector",
+   "frame": "cell:0",
+   "score": 0.8356075882911682,
+   "detail": {
+    "y_center": 651,
+    "x_center": 351
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:044320",
+   "subject": "staff/4/1/2",
+   "quantity": "clef_position",
+   "value": 4.52,
+   "reader": "geometry",
+   "frame": "cell:0",
+   "score": null,
+   "detail": {
+    "glyph": "clefG",
+    "y_center": 651
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:044321",
+   "subject": "staff/4/1/3",
+   "quantity": "clef_glyph",
+   "value": "clefF",
+   "reader": "detector",
+   "frame": "cell:0",
+   "score": 0.8041467666625977,
+   "detail": {
+    "y_center": 584,
+    "x_center": 335
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:044322",
+   "subject": "staff/4/1/3",
+   "quantity": "clef_position",
+   "value": 3.56,
+   "reader": "geometry",
+   "frame": "cell:0",
+   "score": null,
+   "detail": {
+    "glyph": "clefF",
+    "y_center": 584
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:044323",
+   "subject": "staff/4/1/4",
+   "quantity": "clef_glyph",
+   "value": "clefG",
+   "reader": "detector",
+   "frame": "cell:0",
+   "score": 0.8311310410499573,
+   "detail": {
+    "y_center": 634,
+    "x_center": 347
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:044324",
+   "subject": "staff/4/1/4",
+   "quantity": "clef_position",
+   "value": 4.3,
+   "reader": "geometry",
+   "frame": "cell:0",
+   "score": null,
+   "detail": {
+    "glyph": "clefG",
+    "y_center": 634
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:044325",
+   "subject": "staff/4/1/5",
+   "quantity": "clef_glyph",
+   "value": "clefG",
+   "reader": "detector",
+   "frame": "cell:0",
+   "score": 0.8441506028175354,
+   "detail": {
+    "y_center": 638,
+    "x_center": 378
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:044326",
+   "subject": "staff/4/1/5",
+   "quantity": "clef_position",
+   "value": 4.14,
+   "reader": "geometry",
+   "frame": "cell:0",
+   "score": null,
+   "detail": {
+    "glyph": "clefG",
+    "y_center": 638
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:044328",
+   "subject": "staff/4/1/7",
+   "quantity": "clef_glyph",
+   "value": "clefG",
+   "reader": "detector",
+   "frame": "cell:0",
+   "score": 0.8231041431427002,
+   "detail": {
+    "y_center": 622,
+    "x_center": 349
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:044329",
+   "subject": "staff/4/1/7",
+   "quantity": "clef_position",
+   "value": 3.94,
+   "reader": "geometry",
+   "frame": "cell:0",
+   "score": null,
+   "detail": {
+    "glyph": "clefG",
+    "y_center": 622
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:044330",
+   "subject": "staff/4/1/8",
+   "quantity": "clef_glyph",
+   "value": "clefG",
+   "reader": "detector",
+   "frame": "cell:0",
+   "score": 0.896324634552002,
+   "detail": {
+    "y_center": 657,
+    "x_center": 329
+   },
+   "basis": []
+  },
+  {
+   "id": "obs:044331",
+   "subject": "staff/4/1/8",
+   "quantity": "clef_position",
+   "value": 4.52,
+   "reader": "geometry",
+   "frame": "cell:0",
+   "score": null,
+   "detail": {
+    "glyph": "clefG",
+    "y_center": 657
+   },
    "basis": []
   },
   {

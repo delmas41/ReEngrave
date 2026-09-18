@@ -23,9 +23,18 @@ from pathlib import Path
 RECORD = Path("/Users/seanjohnson/Desktop/ReEngrave/library/_shared-records/"
               "beethoven5-p1-p4-ink-identity.record.json")
 EXPECT_MD5 = "ea80ae5908288c76baaa502054a37d43"
+#   ⚠️ `clef_glyph` / `clef_position` are GATHER OBSERVATIONS, not the clef
+#   VERDICT (`gather.py:1687` and `:1705` call `log.observe` at gather time on
+#   the staff subject). That distinction is load-bearing here: the verdict
+#   `clef` is ORDER position 9 and `instrument` is 5, so a decision at 5
+#   reading the VERDICT reads None and closes a cycle -- `adjudicate_clef`
+#   weights the instrument at 1.0 in the other direction. The RAW readings are
+#   available to every decision at every position with no cycle, which is why
+#   Sean's rule can consult them and `Q.CLEF` cannot be consulted.
 WANT = {"instrument", "slot_index", "clef", "key_signature", "staff_ordinal",
         "system_staff_count", "roster_entry", "margin_label", "part_partition",
-        "keysig_template_fit", "keysig_clef_fit"}
+        "keysig_template_fit", "keysig_clef_fit",
+        "clef_glyph", "clef_position"}
 OUT = Path(__file__).parent / "out" / "identity-slice.json"
 
 
