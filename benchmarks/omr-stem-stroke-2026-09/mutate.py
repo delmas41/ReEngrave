@@ -145,14 +145,26 @@ def dirty() -> list[str]:
     return [ln for ln in r.stdout.splitlines() if ln.strip()]
 
 
-def run_tests(node: str | None) -> bool:
-    """True when pytest passes."""
-    target = f"{TESTS}::{node}" if node is None else TESTS
+def run_tests(node: str | None) -> tuple[bool, str]:
+    """(pytest passed, its last line).
+
+    ⚠️ RETURNS THE OUTPUT, NOT JUST THE STATUS. CLAUDE.md: *Read the OUTPUT,
+    not the STATUS.* The first version returned a bare bool, and when an arm
+    reported NOT RED there was nothing to look at -- the diagnosis took a
+    hand-run of the same mutation outside the battery to find that pytest had
+    COLLECTED NOTHING, which also exits 0.
+    """
     cmd = [sys.executable, "-m", "pytest", "-q", "-x", TESTS]
     if node:
         cmd += ["-k", node]
     r = subprocess.run(cmd, cwd=ROOT, capture_output=True, text=True)
-    return r.returncode == 0
+    tail = [ln for ln in (r.stdout or "").splitlines() if ln.strip()]
+    last = tail[-1] if tail else (r.stderr or "").strip()[:120]
+    # ⚠️ NO TESTS COLLECTED EXITS 5, NOT 0 -- but a `-k` that matches nothing
+    # is still a dead arm, so it is named rather than counted as a pass.
+    if "no tests ran" in last or "deselected" in last and "passed" not in last:
+        return True, f"COLLECTED NOTHING: {last}"
+    return r.returncode == 0, last
 
 
 def main() -> int:
@@ -213,25 +225,26 @@ def main() -> int:
                 continue
             Path(f).write_text(src.replace(find, repl))
             try:
-                passed = run_tests(node)
+                passed, why = run_tests(node)
             finally:
                 if not restore():
                     return 2
-            rows.append((name, node, "not red" if passed else "RED"))
+            rows.append((name, node,
+                         ("not red: " + why) if passed else "RED"))
             print(f"  {'RED' if not passed else 'NOT RED':<12} {name}"
-                  f"   [{node}]")
+                  f"   [{node}]" + ("" if not passed else f"   {why}"))
     finally:
         ok = restore()
         SENTINEL.unlink(missing_ok=True)
         print(f"\nrestore verified: {ok}; sentinel cleared")
 
     print("\n== baseline: the suite must PASS on the restored tree")
-    base = run_tests(None)
-    print(f"   {'PASS' if base else 'FAIL'}")
+    base, base_why = run_tests(None)
+    print(f"   {'PASS' if base else 'FAIL'}   {base_why}")
 
     red = sum(1 for _n, _t, r in rows if r == "RED")
     bad = [r for r in rows if r[2].startswith("BAD ANCHOR")]
-    survived = [r for r in rows if r[2] == "not red"]
+    survived = [r for r in rows if r[2].startswith("not red")]
     print(f"\n{len(rows)} arms: {red} RED, {len(survived)} survived, "
           f"{len(bad)} BAD ANCHOR")
     for r in survived + bad:
