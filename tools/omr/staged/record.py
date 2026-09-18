@@ -378,7 +378,21 @@ class Q(_Vocab):
     #: to read it is the honest pair; dropping it at the gather site is how
     #: this quantity came to be missing in the first place.
     REST = "rest"
-    STEM = "stem"                            # CV stem: x, y0, y1
+    STEM = "stem"                            # CV stem: x, y, w, h (NOT x,y0,y1)
+    #: ⚠⚠ THE VALUE IS `[x, y, w, h]`, AND THIS COMMENT SAID `x, y0, y1`
+    #: until 2026-09-18. Verified against the record: `detail.x0 == value[0]`
+    #: and `detail.x1 - detail.x0 == value[2]` on 400 of 400 rows, and the
+    #: h/w distributions land inside the shipped filters exactly (h p05 2.14
+    #: / median 3.93 / p95 6.78 spaces against `min_height` 2.0 and
+    #: `max_height` 8.0; w median 0.32 against `max_width` 0.6).
+    #:
+    #: ⚠ THIRD BOX-CONVENTION TRAP IN ONE RECORD, and they disagree:
+    #: `Q.GLYPH_BOX.value` is `[name, x, y, w, h]`, `Q.INK.detail.
+    #: ink_bbox_canonical` is `[x0, y0, x1, y1]` CORNERS, and this is
+    #: `[x, y, w, h]`. Reading one as another gives a NEGATIVE width and a
+    #: clean believable zero -- it cost `benchmarks/omr-ink-extent-2026-09`
+    #: a run that reported `NO_INK_UNDER_BOX` on 100 of 106 rows. ASSERT
+    #: the convention against the row's own stated spans before comparing.
     BEAM_STROKE = "beam_stroke"              # CV beam stroke centre
     FLAG = "flag"                            # detected flag
     AUG_DOT = "aug_dot"                      # dot offset from its notehead
