@@ -1,0 +1,32 @@
+{
+ "1-voice bar": {
+  "right": 1021,
+  "wrong": 267,
+  "accuracy": 0.7927
+ },
+ "2-voice bar": {
+  "right": 115,
+  "wrong": 40,
+  "accuracy": 0.7419
+ },
+ "bar is uniform": {
+  "right": 1021,
+  "wrong": 267,
+  "accuracy": 0.7927
+ },
+ "bar mixes directions": {
+  "right": 115,
+  "wrong": 40,
+  "accuracy": 0.7419
+ },
+ "bar holds a stems_disagree": {
+  "right": 57,
+  "wrong": 27,
+  "accuracy": 0.6786
+ },
+ "bar holds none": {
+  "right": 1079,
+  "wrong": 280,
+  "accuracy": 0.794
+ }
+}

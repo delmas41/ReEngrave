@@ -2683,6 +2683,121 @@ class _Shim:
         self.width_canonical, self.height_canonical = w, h
 
 
+def _project(stem_row, heads, head_box) -> str:
+    """The direction of ONE stem, from the whole group of heads it carries.
+
+    ⚠️ FACTORED OUT RATHER THAN DUPLICATED. The beam-mate tier below needs the
+    direction of a NEIGHBOUR's stem, and it must be the same computation --
+    two copies of *"direction belongs to the stem and is decided from the whole
+    group on it"* would be free to disagree, and the disagreement would look
+    like a reading fault rather than a drift.
+    """
+    sx, sy, sw, sh = _xywh(stem_row)
+    group = [_Shim(*_xywh_head(h.value)) for h in heads
+             if _boxes_overlap(_xywh_head(h.value), (sx, sy, sw, sh))]
+    if not group:
+        group = [_Shim(*head_box)]
+    return _legacy_stems._stem_direction(_Shim(sx, sy, sw, sh), group)
+
+
+def _on_beam(head_box, beam) -> bool:
+    """Does this head's x-CENTRE stand inside the beam's span?
+
+    ⚠️ THE CENTRE, NOT AN OVERLAP, AND THE DIFFERENCE IS 4 POINTS OF ACCURACY.
+    Scored against the heads whose direction a STEM already decided, an
+    overlap test reads 0.798 and the centre test 0.829 -- a head whose box
+    merely grazes the end of a stroke is usually hanging from the NEXT group.
+    """
+    hx = head_box[0] + head_box[2] / 2.0
+    return beam[0] <= hx <= beam[0] + beam[2]
+
+
+def _heads_in(ev, cell):
+    """Every notehead row of this bar, with a readable box.
+
+    ⚠️ SPELLED ONCE because both tiers need it and the cost of asking is what
+    made the first draft of the beam tier slow: `ev.rows` at
+    `SELF_AND_DESCENDANTS` walks the cell, so WHERE it is called matters more
+    than how it is written.
+    """
+    return [r for r in ev.rows(Q.GLYPH_BOX, scope=Scope.SELF_AND_DESCENDANTS,
+                               subject=cell)
+            if (r.detail or {}).get("category") == "notehead"
+            and _xywh_head(r.value) is not None]
+
+
+def _direction_from_a_beam_mate(ev, cell, head_box, stems):
+    """A head with no stem of its own, answered by a head that shares its BEAM.
+
+    ⚠️⚠️ THE CLAIM IS PHYSICAL AND NOT GEOMETRIC, WHICH IS THE WHOLE RESULT.
+    A beam joins stem TIPS, so every stem hanging from one stroke points the
+    same way -- a fact about how the mark was engraved rather than a
+    measurement of where ink fell. Both readings were scored on the 1,443
+    heads a stem already decided, LEAVE-ONE-OUT:
+
+        always the commoner direction (baseline)        0.506
+        where the beam SITS relative to the head        0.829
+        what a head on the SAME BEAM says, majority     0.938
+        what a head on the SAME BEAM says, UNANIMOUS    0.984
+
+    The geometric rule is refused at 0.829: this quantity feeds
+    `adjudicate_event`'s divisi guard, whose own reasoning is that an UNKNOWN
+    is better than a confident wrong answer, and one head in six is not an
+    unknown.
+
+    ⚠️ UNANIMITY, NOT A MAJORITY, and it costs 15 of 167 reach to buy 4.6
+    points. A head standing on two strokes whose mates disagree is exactly the
+    two-voice bar this quantity exists to keep straight, and `stems_disagree`
+    one branch up already refuses that case when the stems are the head's own.
+
+    ⚠️⚠️ IT IS NOT IN `INFER`, AND THAT IS NOT A PREFERENCE. Borrowing a
+    neighbour's reading is BEST rather than FORCED, so the fourth stage is
+    where the claim belongs -- but `Q.STEM_DIRECTION` is ORDER 17 and its only
+    two consumers, `Q.EVENT` (21) and `Q.VOICES` (22), read it inside
+    ADJUDICATE. INFER runs after all of ADJUDICATE, so a rule there would
+    write a verdict **after both readers had already looked**, and reach
+    nothing at all. The stage boundary is honoured by the REASON instead:
+    `beam_mate` is a different word from `stem_projection`, so a consumer or
+    a cleanup count can separate what was read from what was borrowed.
+
+    Returns `(direction, cited row ids, detail)` or None.
+    """
+    beams = [b for b in ev.rows(Q.BEAM_STROKE, scope=Scope.SELF_AND_ANCESTORS,
+                                subject=cell) if _xywh(b) is not None]
+    on = [b for b in beams if _on_beam(head_box, _xywh(b))]
+    if not on:
+        return None
+
+    heads = _heads_in(ev, cell)
+    votes, cited, mates = set(), [], 0
+    for b in on:
+        bbox = _xywh(b)
+        for h in heads:
+            other = _xywh_head(h.value)
+            if other == head_box or not _on_beam(other, bbox):
+                continue
+            its = _stems_on(other, stems)
+            if not its:
+                continue
+            answers = {_project(s, heads, other) for s in its}
+            if len(answers) != 1:
+                # ⚠️ A MATE THAT CANNOT ANSWER FOR ITSELF IS NOT A WITNESS.
+                # It is the `stems_disagree` case, and letting it vote would
+                # launder an ambiguity into a corroboration.
+                continue
+            votes |= answers
+            cited.extend([b.id, h.id] + [s.id for s in its])
+            mates += 1
+    if mates == 0 or len(votes) != 1:
+        return None
+    return (votes.pop(), sorted(set(cited)),
+            {"beams_on": len(on), "mates": mates,
+             # ⚠️ WRITTEN EVEN WHEN THE TIER DOES NOT FIRE'S SIBLING CASE
+             # WOULD BE ZERO: a reader must be able to tell "one mate agreed"
+             # from "many did", because the first is not corroboration.
+             "unanimous": True})
+
+
 def _stems_on(head_box, stems):
     """Every stem whose box overlaps this notehead's.
 
@@ -2697,15 +2812,16 @@ def _stems_on(head_box, stems):
 
 @decision(
     quantity=Q.STEM_DIRECTION,
-    composed_from=(Q.STEM, Q.GLYPH_BOX),
+    composed_from=(Q.STEM, Q.GLYPH_BOX, Q.BEAM_STROKE),
     scope=Kind.GLYPH,
     # ⚠️ `Q.NOTEHEAD_CLASS` is the DOMAIN, not a `wants`. A declaration the
     # body never reads records nothing -- `Evidence` fills `missing`/`declined`
     # only for quantities actually queried -- so it cannot be told from one
     # that is read and always present. `inventory --check` fails on it.
-    wants=(Q.STEM, Q.GLYPH_BOX),
+    wants=(Q.STEM, Q.GLYPH_BOX, Q.BEAM_STROKE),
     subjects_from=Q.NOTEHEAD_CLASS,
-    reasons=("stem_projection", "no_stem", "stems_disagree", "no_evidence"),
+    reasons=("stem_projection", "beam_mate", "no_stem", "stems_disagree",
+             "no_evidence"),
     mode=Mode.ADDITIVE,
 )
 def adjudicate_stem_direction(ev: Evidence) -> Ruling:
@@ -2745,24 +2861,30 @@ def adjudicate_stem_direction(ev: Evidence) -> Ruling:
 
     cell = ev.subject.at(Kind.CELL)
     stems = ev.rows(Q.STEM, scope=Scope.SELF_AND_ANCESTORS, subject=cell)
+
     mine = _stems_on(head_box, stems)
     if not mine:
+        # ⚠️⚠️ THE BEAM ROWS ARE ASKED FOR BEFORE THE HEADS, AND THE ORDER IS
+        # MEASURED RATHER THAN TIDY. An earlier draft hoisted the whole-cell
+        # glyph scan above this branch so both tiers could share it, and the
+        # stem pass went from 80 s to minutes on four pages: `ev.rows` at
+        # `SELF_AND_DESCENDANTS` walks the cell, and hoisting made all 793
+        # STEMLESS heads pay for a scan they had never paid for. Asking the
+        # beams first means only the heads that actually stand on one -- 245
+        # of 793 here -- reach the scan at all.
+        borrowed = _direction_from_a_beam_mate(ev, cell, head_box, stems)
+        if borrowed is not None:
+            value, cited, detail = borrowed
+            return Ruling(value=value, reason="beam_mate",
+                          used=(box[-1].id,) + tuple(cited), detail=detail)
         return Ruling.abstain("no_stem", used=(box[-1].id,))
 
     # Every notehead in this bar, so a stem's whole group can be found.
-    heads = [r for r in ev.rows(Q.GLYPH_BOX, scope=Scope.SELF_AND_DESCENDANTS,
-                                subject=cell)
-             if (r.detail or {}).get("category") == "notehead"
-             and _xywh_head(r.value) is not None]
+    heads = _heads_in(ev, cell)
 
     answers, used = set(), [box[-1].id]
     for s in mine:
-        sx, sy, sw, sh = _xywh(s)
-        group = [_Shim(*_xywh_head(h.value)) for h in heads
-                 if _boxes_overlap(_xywh_head(h.value), (sx, sy, sw, sh))]
-        if not group:
-            group = [_Shim(*head_box)]
-        answers.add(_legacy_stems._stem_direction(_Shim(sx, sy, sw, sh), group))
+        answers.add(_project(s, heads, head_box))
         used.append(s.id)
 
     if len(answers) != 1:
