@@ -95,6 +95,23 @@ doubles.** See the section *A CONTEST is RESOLVED, not relocated* below —
 including the **two GATHER divergences it found and deliberately did not
 change**, and the **`ff` 47 → 39 that is an unadjudicated COST and not a win**.
 
+⚠️⚠️ **THE FORWARD PLAN, AGREED WITH SEAN 2026-09-18 — AND ITS FOUR-PART
+QUESTION IS THE ONE TO ASK OF ANY FAMILY BEFORE BUILDING FOR IT:**
+[docs/plan-2026-09-18-what-distinguishes-each-mark.md](docs/plan-2026-09-18-what-distinguishes-each-mark.md)
+— *for every family: what fact **DISTINGUISHES** this mark from what it could
+be mistaken for, in what **FRAME** is that fact expressed, at what **STAGE** is
+it decided, and can that decision **ABSTAIN**?* Sean's diagnosis: *"it is not
+the system or the later stages — it is the initial classification and how that
+is passed along."* ⚠ **"Essential" means essential for DISTINGUISHING**, which
+is what stops it colliding with his own *hold on to everything* instruction —
+that governs GATHER, this governs which fact a DECISION reads. ⚠⚠ **Its §4 is
+the one exception**: Breitkopf's dominant loss is `duration_narrowed` (537),
+**INFER's exact population with `OMR_INFER` default OFF** — a FLAG, not a
+rebuild, and it must not be merged into the architecture track. ⚠ **Its §6 is
+the scope**: *nowhere for them to go* is not special to stems (rests once had
+no quantity at all; accidentals still have none), so this is a **SWEEP**, and
+`capture --check` is already most of the instrument.
+
 ⚠️⚠️⚠️ **THE GOVERNING DOCUMENT — READ IT FIRST, IT IS WHY FOUR UNRELATED
 LANES KEPT ARRIVING AT THE SAME PLACE:**
 [docs/breakthrough-2026-09-18-the-unit-of-enquiry.md](docs/breakthrough-2026-09-18-the-unit-of-enquiry.md)

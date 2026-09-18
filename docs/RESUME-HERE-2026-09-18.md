@@ -27,6 +27,14 @@ secondary.**
    **ATTACHMENT**, never dimension — which indicts all six of `detect_stems`'
    filters as dimension bounds on a variable-length object.
 
+**And the FORWARD PLAN those four imply, agreed with Sean at the end of the
+session:** [docs/plan-2026-09-18-what-distinguishes-each-mark.md](plan-2026-09-18-what-distinguishes-each-mark.md)
+— *for every family: what fact DISTINGUISHES it, in what FRAME, at what
+STAGE, and can that decision ABSTAIN?* ⚠ Its §4 is the one exception to
+*"it is not the later stages"* — Breitkopf's dominant loss is INFER's own
+population with INFER default OFF, which is **a flag, not a rebuild**, and
+must not be swept into the architecture work.
+
 Then [docs/handoff-2026-09-18-three-lanes-and-the-print.md](handoff-2026-09-18-three-lanes-and-the-print.md)
 for the overnight batch.
 
