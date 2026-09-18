@@ -53,10 +53,15 @@ ARMS = [
      'in (\n        "1", "true", "yes", "on")',
      'not in ("0", "", "off", "no", "false")',
      "test_only_an_explicit_ON_word_turns_it_on"),
+    # WARNING: RE-AIMED. This arm first named `test_the_flag_is_OFF_by_
+    # default`, which only calls `stem_stroke_enabled()` and therefore cannot
+    # see `detect_stems` ignoring it. A test named for a hazard it does not
+    # reach is this repo's best-camouflaged fault: the NAME is what a reviewer
+    # trusts and the only part they cannot check by reading.
     ("the reader runs regardless of the flag", TARGET,
      "    if enable_stroke_reader:",
      "    if True:",
-     "test_the_flag_is_OFF_by_default"),
+     "test_flag_off_is_IDENTICAL_and_flag_on_DIFFERS"),
     ("the reader never runs", TARGET,
      "    if enable_stroke_reader:",
      "    if False:",
@@ -69,7 +74,7 @@ ARMS = [
     ("a band cut by the width cap is ADMITTED", TARGET,
      "        if h < min_h or h > max_h or w > max_w:",
      "        if h < min_h or h > max_h:",
-     "test_a_wide_block_yields_no_band"),
+     "test_a_TALL_wide_block_yields_no_band"),
     ("the column extent is FIRST-TO-LAST, not the longest run", TARGET,
      "    has = best > 0\n    bot = bend\n    top = bend - best + 1",
      "    has = m.any(axis=0)\n    bot = h_px - 1 - np.argmax(m[::-1], axis=0)\n"
@@ -83,25 +88,41 @@ ARMS = [
      "        if h < min_h or h > max_h or w > max_w:",
      "        if h < min_h or w > max_w:",
      "test_a_stroke_too_TALL_is_refused"),
-    ("the height FLOOR is dropped", TARGET,
-     "        if h < min_h or h > max_h or w > max_w:",
-     "        if h > max_h or w > max_w:",
-     "test_a_stroke_too_SHORT_is_refused"),
+
+    # WARNING: A LONGER ANCHOR. `if h / max(1, w) < 3.0:` occurs TWICE in
+    # line_detection.py -- once in `detect_stems`' component loop and once in
+    # the profile -- so the short anchor mutated whichever came first. The
+    # same fault CLAUDE.md records the fermata battery committing.
     ("the ASPECT filter is dropped", TARGET,
-     "        if h / max(1, w) < 3.0:",
-     "        if False:",
+     "        if h / max(1, w) < 3.0:\n            continue\n        out.append("
+     "LineDetection(\n            smufl_name=\"stem\", category=\"stem\",",
+     "        if False:\n            continue\n        out.append("
+     "LineDetection(\n            smufl_name=\"stem\", category=\"stem\",",
      "test_a_wide_block_yields_no_band"),
     ("the agree tolerance is ignored (all columns band together)", TARGET,
      "            if d > agree_px:",
      "            if False:",
-     "test_the_agree_tolerance_sits_on_a_plateau"),
-    ("the profile skips the vertical opening", TARGET,
-     "    long_mask = cv2.morphologyEx(\n        ink, cv2.MORPH_OPEN,\n"
-     "        cv2.getStructuringElement(cv2.MORPH_RECT, (1, min_h)))",
-     "    long_mask = ink",
-     "test_a_stroke_too_SHORT_is_refused"),
+     "test_two_ADJACENT_strokes_at_different_heights_are_two_bands"),
+
 ]
 
+# ⚠️⚠️ TWO ARMS ARE HELD OUT AS **EQUIVALENT MUTANTS**, NAMED HERE RATHER
+# THAN LEFT IN THE LIST, because an arm that can never go red trains the next
+# reader to ignore every other one.
+#
+#   * *the height FLOOR is dropped* (`h < min_h`). The profile's `long_mask`
+#     is an opening by `(1, min_h)`, so no run shorter than the floor is in
+#     the mask at all. The opening IS the floor, enforced upstream.
+#   * *the profile skips the vertical opening* (`long_mask = ink`). The
+#     mirror of the same identity: with raw ink every inked column enters the
+#     profile, but a column's LONGEST RUN is unchanged for runs at or above
+#     the floor and every shorter one is then refused by `h < min_h`.
+#
+# ⚠️ Those two facts together say the opening is **redundant with the height
+# floor** and could be deleted. It is NOT deleted here: every figure in this
+# benchmark was taken with it in, and removing it would mean re-taking four
+# measurements to show the outputs are identical. Scoped, not done.
+#
 # ⚠️ A POSITIVE CONTROL IN THE SAME CLASS. A battery of refusal arms can pass
 # by refusing everything, so one arm makes the reader accept NOTHING and must
 # fail the tests that assert it FINDS a stem -- not the ones that assert it

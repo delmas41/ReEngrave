@@ -65,6 +65,20 @@ def _fused_note(img, x: int, head_y: int) -> None:
     img[head_y - int(3.5 * SPACING):head_y, sx - 7:sx + 7] = 0
 
 
+def _note(img, x: int, head_y: int) -> None:
+    """An ordinary notehead with a stem — the component reader finds this one.
+
+    It exists so the ADDITIVE claim has something to be added to: with only a
+    fused note in the cell the flag-off set is empty and "every flag-off
+    stroke survived" is vacuously true.
+    """
+    import cv2
+    cv2.ellipse(img, (x, head_y), (int(SPACING * 0.62), SPACING // 2),
+                0, 0, 360, 0, -1)
+    sx = x + int(SPACING * 0.55)
+    img[head_y - int(3.5 * SPACING):head_y, sx - 5:sx + 5] = 0
+
+
 def _bands(cell, **kw):
     src = cell.image_no_staff
     return _column_stroke_bands(
@@ -99,8 +113,15 @@ class TestTheFlagIsOffAndOffIsIdentical:
         ⚠️ Asserting only that OFF equals OFF passes when the reader is dead.
         The second half is the positive control: on this same cell the ON set
         must differ, or the first half means nothing.
+
+        ⚠️⚠️ THE CELL CARRIES BOTH A PLAIN NOTE AND A FUSED ONE, AND THE FIRST
+        VERSION CARRIED ONLY THE FUSED ONE — a mutation arm caught it. With
+        only the fused note the flag-off set is EMPTY, so `out = [band]`
+        (substitute instead of add) satisfies "every flag-off stroke
+        survived" vacuously. An ADDITIVE claim needs something to be added TO.
         """
-        cell = _cell(lambda img: _fused_note(img, 400, 700))
+        cell = _cell(lambda img: (_note(img, 250, 700),
+                                  _fused_note(img, 620, 700)))
         monkeypatch.delenv("OMR_STEM_STROKE", raising=False)
         off = detect_stems(cell)
         monkeypatch.setenv("OMR_STEM_STROKE", "1")
@@ -158,6 +179,16 @@ class TestTheBandingRules:
         got = _bands(_cell(paint))
         assert got == [], f"a 2-space-wide block became {len(got)} stems"
 
+    def test_a_TALL_wide_block_yields_no_band(self):
+        """⚠️ THE 4-SPACE BLOCK ABOVE IS ALSO REFUSED BY THE 3:1 ASPECT, so it
+        cannot tell the width cap from the aspect filter — a mutation arm
+        dropping the cap survived it. This block is 2 spaces wide and 7.5
+        tall, aspect 3.75, so ONLY the width cap can refuse it."""
+        def paint(img):
+            img[100:850, 300:500] = 0        # 2 spaces wide, 7.5 tall
+        got = _bands(_cell(paint))
+        assert got == [], f"a tall 2-space-wide block became {len(got)} stems"
+
     def test_a_column_holding_TWO_runs_takes_its_LONGEST(self):
         """Two notes stacked in one column are two runs. A first-to-last
         extent spans both; the longest-run primitive takes one."""
@@ -188,6 +219,21 @@ class TestTheBandingRules:
         def paint(img):
             img[400:550, 400:412] = 0        # 1.5 spaces
         assert _bands(_cell(paint)) == []
+
+    def test_two_ADJACENT_strokes_at_different_heights_are_two_bands(self):
+        """⚠️ THE ONE THING ONLY THE AGREE TOLERANCE DOES, and nothing else in
+        this file exercised it — an arm ignoring disagreement entirely
+        survived the whole battery. Two strokes in touching columns whose runs
+        start 2 spaces apart are two strokes; banded together they are one
+        6-space mass the width cap would then refuse, so the cost of losing
+        this rule is REACH, silently."""
+        def paint(img):
+            img[200:520, 400:428] = 0        # 3.2 spaces, starts at 200
+            img[400:720, 428:456] = 0        # 3.2 spaces, starts at 400
+        got = _bands(_cell(paint))
+        assert len(got) == 2, f"expected two bands, got {len(got)}"
+        tops = sorted(b.y_canonical for b in got)
+        assert tops[1] - tops[0] > SPACING, tops
 
     def test_the_agree_tolerance_sits_on_a_plateau(self):
         """Not a tuned constant. Swept 0.10-0.60 the heads a band covers read

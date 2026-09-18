@@ -1,0 +1,78 @@
+{
+ "arms": [
+  {
+   "arm": "the reader accepts nothing at all",
+   "test": "test_the_column_profile_finds_it",
+   "result": "RED"
+  },
+  {
+   "arm": "the flag defaults ON",
+   "test": "test_the_flag_is_OFF_by_default",
+   "result": "RED"
+  },
+  {
+   "arm": "the OFF test becomes a DENY-list",
+   "test": "test_only_an_explicit_ON_word_turns_it_on",
+   "result": "RED"
+  },
+  {
+   "arm": "the reader runs regardless of the flag",
+   "test": "test_the_flag_is_OFF_by_default",
+   "result": "not red"
+  },
+  {
+   "arm": "the reader never runs",
+   "test": "test_flag_off_is_IDENTICAL_and_flag_on_DIFFERS",
+   "result": "RED"
+  },
+  {
+   "arm": "the reader SUBSTITUTES instead of adding",
+   "test": "test_flag_off_is_IDENTICAL_and_flag_on_DIFFERS",
+   "result": "not red"
+  },
+  {
+   "arm": "a band cut by the width cap is ADMITTED",
+   "test": "test_a_wide_block_yields_no_band",
+   "result": "not red"
+  },
+  {
+   "arm": "the column extent is FIRST-TO-LAST, not the longest run",
+   "test": "test_a_column_holding_TWO_runs_takes_its_LONGEST",
+   "result": "RED"
+  },
+  {
+   "arm": "the EDGE filter is dropped",
+   "test": "test_a_stroke_at_the_CELL_EDGE_is_refused",
+   "result": "RED"
+  },
+  {
+   "arm": "the height CAP is dropped",
+   "test": "test_a_stroke_too_TALL_is_refused",
+   "result": "RED"
+  },
+  {
+   "arm": "the height FLOOR is dropped",
+   "test": "test_a_stroke_too_SHORT_is_refused",
+   "result": "not red"
+  },
+  {
+   "arm": "the ASPECT filter is dropped",
+   "test": "test_a_wide_block_yields_no_band",
+   "result": "BAD ANCHOR (2 hits)"
+  },
+  {
+   "arm": "the agree tolerance is ignored (all columns band together)",
+   "test": "test_the_agree_tolerance_sits_on_a_plateau",
+   "result": "not red"
+  },
+  {
+   "arm": "the profile skips the vertical opening",
+   "test": "test_a_stroke_too_SHORT_is_refused",
+   "result": "not red"
+  }
+ ],
+ "red": 7,
+ "survived": 6,
+ "bad_anchor": 1,
+ "baseline_passes": true
+}
