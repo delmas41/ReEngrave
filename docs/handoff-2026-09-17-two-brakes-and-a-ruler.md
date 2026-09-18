@@ -176,6 +176,56 @@ note does** — half notes get one 309 times against 103 that do not, so those
 the shipped rule already excluded. ⚠️ The same table shows the attachment test
 has false POSITIVES: **8 whole notes were given a stem.**
 
+### 4b. ⚠️ NO, THE STEMS ARE NOT BEING ERASED — asked and answered
+
+Sean, after the above: *"We decided to do CV with stems so they would end up
+being erased similar to the staff lines — correct? Are they missing because we
+already got rid of them?"*
+
+**Nothing erases stems.** `staff_line_removal` erases a vertical ink run ONLY
+where it is no taller than the line's own printed thickness; anything taller —
+notehead, stem, beam, barline — is *"left entirely alone"*. That module exists
+because naive row-erasure *"severs noteheads in half and disconnects stems
+from their flags"*, which is precisely the worry.
+
+**And on this record the erasure cannot explain the misses, because it is a
+CONSTANT:**
+
+| | |
+|---|--:|
+| bars the CV stem rung saw with `staff_lines_erased: True` | **1183 of 1183** |
+| bars returning `no_ink` (the rung ran, found no candidate) | **400** |
+| stemless share in the erased condition | 0.355 |
+
+There is no unerased condition to compare against, so a thing that happened
+everywhere cannot explain why some heads have stems and others do not.
+
+⚠️ **THAT RULES OUT ONE VERSION OF THE QUESTION AND NOT THE OTHER.** It kills
+*"some bars lost their stems"*; it says nothing about *"erasure degrades every
+stem a little"*, which is invisible to a test with no control arm. **The arm
+that would answer it: run `detect_stems` on `image_no_staff` and on
+`cell.image` over the same cells and compare counts.** Not done.
+
+⚠️ **THE CV/YOLO POINT IS REAL, BY A DIFFERENT MECHANISM THAN ERASURE.** YOLO
+finds **ZERO** stems even at confidence 0.05 — thin lines are structurally bad
+for bounding boxes, which is why Phase 4f moved them to classical CV. The
+consequence is the part that matters: **a stem CV misses is missed outright.**
+Noteheads have two readers; stems have ONE, with no second opinion.
+
+**So the suspects are CV's own filters, nameable from `detect_stems`:**
+
+* a vertical morphological opening one staff-space tall — **a stem broken by
+  faint printing fails it outright**, and this plate is low-res bitonal;
+* `min_height_lines = 2.0`, while beamed stems are legitimately short (the
+  docstring records a WTC cell holding 15 stems where a 2.8-space floor finds
+  5);
+* anything within ~0.8 spaces of the cell edge is dropped, to reject barlines;
+* ⚠️ **anything appearing as a parallel PAIR is dropped** — `_drop_paired_
+  strokes`, which exists to reject sharps and naturals, both of which are two
+  parallel verticals. **Two adjacent stems could trip it**, and that is
+  testable against the record already committed here: check whether missing
+  stems cluster where another vertical sits about half a staff space away.
+
 ---
 
 ## 5. ⚠️ RANKED NEXT WORK — and it starts with CROPS, not code
@@ -195,7 +245,9 @@ available moved two tags. The 632 unbeamed heads have nothing to borrow from
 and I have no answer for them.
 
 **3. The attachment near-misses (45 heads, 6%)** are the only cheap stem win
-left, and they are worth less than (1).
+left, and they are worth less than (1). ⚠️ Before touching them, read §4b:
+the cheaper stem question is whether `_drop_paired_strokes` is eating adjacent
+stems, which needs no new gather and no crops.
 
 **4. `adjudicate_slot_index`'s docstring gap**, still open from the 09-17
 handoff: `adjudicate_part_partition` declares `Q.INSTRUMENT` and reads it at a
