@@ -55,14 +55,22 @@ RECORDS = Path("/Users/seanjohnson/Desktop/ReEngrave/library/_shared-records")
 SCORE_L = ["score.py", "--pub", "litolff", "--json", "/dev/null"]
 SCORE_B = ["score.py", "--pub", "breitkopf", "--json", "/dev/null"]
 CONTAM = ["contamination.py", "--json", "/dev/null"]
+# ⚠️ this one WRITES out/litolff-widths.json, so the battery snapshots and
+# restores that file too -- an arm that leaves a mutated extraction behind
+# would silently poison every later arm and every later table.
+WIDTHS_L = ["widths.py",
+            "--record", str(RECORDS / "beethoven5-p1-p4.record.json"),
+            "--label", "Litolff Beethoven 5 pp.1-4",
+            "--json", str(OUT / "litolff-widths.json")]
 ISSUES = ["issues.py", "--json", "/dev/null"]
 
 ARMS = [
     ("width-box read as a CORNER box", "widths.py",
      '"canon": [float(x) for x in v[1:]],',
      '"canon": [float(v[1]), float(v[2]), float(v[3]) - float(v[1]), float(v[4]) - float(v[2])],',
-     None,  # needs a re-extract; handled specially
-     "the canonical box is (x,y,w,h); read as corners every width collapses"),
+     [WIDTHS_L, SCORE_L],  # re-extract, THEN check the ruler agreement
+     "the canonical box is (x,y,w,h); read as corners every width collapses "
+     "and score.py's ruler-agreement control must fail"),
     ("the floor moved to 1.5 spaces", "floor.py",
      "\nFLOOR = 1.0\n", "\nFLOOR = 1.5\n", ISSUES,
      "issues.py must stop reproducing the stroke lane's 44 / 576"),
@@ -93,8 +101,8 @@ ARMS = [
      "so the guard is unreachable. The three mapping arms below reach it."),
     ("publisher pinned by PAGE NUMBER instead of the manifest",
      "contamination.py",
-     '            pub, subj = tile2.get(r.get("id"), (None, r.get("subject")))',
-     '            pub, subj = (None, r.get("subject"))',
+     '            pub, subj, kd = tile2.get(\n                r.get("id"), (None, r.get("subject"), None))',
+     '            pub, subj, kd = (None, r.get("subject"), None)',
      CONTAM,
      "the tile ids resolve through the manifest; without it nothing joins"),
     ("`cannot_tell` collapsed back into IS-a-notehead", "contamination.py",
@@ -152,10 +160,18 @@ def clear_pyc():
 
 
 def run(cmd, env):
+    """A single command, or a CHAIN. A chain is red if ANY step fails."""
     if cmd is None:
         return None
-    return subprocess.run([sys.executable, str(PROBE / cmd[0])] + cmd[1:],
-                          cwd=REPO, env=env, capture_output=True, text=True)
+    steps = cmd if isinstance(cmd[0], list) else [cmd]
+    last = None
+    for st in steps:
+        last = subprocess.run([sys.executable, str(PROBE / st[0])] + st[1:],
+                              cwd=REPO, env=env, capture_output=True,
+                              text=True)
+        if last.returncode != 0:
+            return last
+    return last
 
 
 def main() -> int:
@@ -186,8 +202,10 @@ def main() -> int:
         return 2
 
     env = dict(os.environ, PYTHONDONTWRITEBYTECODE="1")
-    snap = {str(p): p.read_bytes() for p in files_under_test()}
-    hashes = {str(p): digest(p) for p in files_under_test()}
+    extra = [OUT / "litolff-widths.json"]
+    snap = {str(p): p.read_bytes()
+            for p in list(files_under_test()) + extra}
+    hashes = {str(p): digest(p) for p in list(files_under_test()) + extra}
     SENTINEL.write_text(json.dumps({"hashes": hashes}, indent=1))
     clear_pyc()
 
@@ -235,13 +253,15 @@ def main() -> int:
                 print(f"        expected: {why}")
             results.append((name, "RED" if red else "SURVIVED"))
             p.write_bytes(snap[str(p)])
+            for e in extra:
+                e.write_bytes(snap[str(e)])
             clear_pyc()
     finally:
-        for p in files_under_test():
+        for p in list(files_under_test()) + extra:
             p.write_bytes(snap[str(p)])
         clear_pyc()
         # ⚠️ VERIFY the restore rather than trusting the write.
-        bad = [str(p) for p in files_under_test()
+        bad = [str(p) for p in list(files_under_test()) + extra
                if digest(p) != hashes[str(p)]]
         if bad:
             print(f"⚠️⚠️ RESTORE FAILED for {bad} -- sentinel KEPT",

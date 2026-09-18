@@ -11,7 +11,7 @@
   },
   {
    "name": "the floor moved to 1.5 spaces",
-   "result": "BAD ANCHOR x2"
+   "result": "RED"
   },
   {
    "name": "the census join keyed on the CELL not the glyph",
@@ -30,20 +30,24 @@
    "result": "HELD OUT (equivalent/named)"
   },
   {
-   "name": "the truth-mapping controls deleted",
-   "result": "SURVIVED"
+   "name": "the truth-mapping controls' GUARD disabled",
+   "result": "HELD OUT (equivalent/named)"
   },
   {
    "name": "publisher pinned by PAGE NUMBER instead of the manifest",
-   "result": "RED"
+   "result": "BAD ANCHOR x0"
   },
   {
    "name": "`cannot_tell` collapsed back into IS-a-notehead",
-   "result": "SURVIVED"
+   "result": "RED"
   },
   {
    "name": "an unknown vocabulary word defaulted to IS-a-notehead",
-   "result": "SURVIVED"
+   "result": "HELD OUT (equivalent/named)"
+  },
+  {
+   "name": "a vocabulary word REMOVED, so the unknown branch goes live",
+   "result": "RED"
   },
   {
    "name": "the whole-note vocabulary mapped to the wrong side",
@@ -58,6 +62,6 @@
    "result": "HELD OUT (equivalent/named)"
   }
  ],
- "red": 4,
- "live": 7
+ "red": 6,
+ "live": 6
 }
