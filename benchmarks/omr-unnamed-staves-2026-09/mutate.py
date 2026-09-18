@@ -55,10 +55,16 @@ ARMS = [
      '            if len(got) == 1:',
      '            if len(got) >= 1:',
      "an ambiguous staff is placed anyway (the guess)", "red"),
+    # ⚠️ SCORING THE *CLEF* WITNESS AS ALWAYS-RIGHT IS AN EQUIVALENT MUTANT ON
+    # THIS DOCUMENT and is deliberately NOT an arm: the 25 staves' clef is 20
+    # decided and 20 correct, so `s.clef in want` and `True` agree on every
+    # row. An arm that can never go red trains the next reader to skim the
+    # list. The KEY witness is mutated instead -- it disagrees with the print
+    # 5 times, so that arm CAN fire.
     ("probe_witnesses.py",
-     '        elif s.clef in want:',
-     '        elif True:',
-     "the clef witness is scored as always right", "red"),
+     '        elif s.key == want:\n            kok += 1',
+     '        elif True:\n            kok += 1',
+     "the key witness is scored as always right", "red"),
     # ── POSITIVE CONTROL: a cosmetic change must leave every number alone
     ("probe_forced_by_clef.py",
      'MAX_ENUM = 200000  # a system this ambiguous is a "cannot tell", not a slow one',
@@ -71,16 +77,29 @@ def sha(p: Path) -> str:
     return hashlib.sha256(p.read_bytes()).hexdigest()
 
 
+#   ⚠️⚠️ `probe_sensitivity.py` IS IN THIS LIST BECAUSE THE BATTERY'S FIRST RUN
+#   REPORTED THREE SURVIVORS AND TWO OF THEM WERE THE BATTERY'S OWN SCOPE.
+#   On this document the baseline forces 16 placements with ZERO grafts and
+#   ZERO condensations, so an arm breaking `classify`'s graft branch or its
+#   condensation branch changed nothing -- the branches are unreachable from
+#   those two probes. The probe that DOES reach them is the sensitivity arm,
+#   which produces 19 grafting perturbations. *A battery whose tests do not
+#   reach the file it mutates measures its own scope*, which this repo has
+#   recorded twice before and which happened here on the first run.
+PROBES = ("probe_forced_by_clef.py", "probe_witnesses.py",
+          "probe_sensitivity.py")
+
+
 def baseline() -> dict:
     """The numbers every red arm must disturb and every green arm must not."""
-    r = subprocess.run([sys.executable, "probe_forced_by_clef.py"], cwd=HERE,
-                       capture_output=True, text=True)
-    w = subprocess.run([sys.executable, "probe_witnesses.py"], cwd=HERE,
-                       capture_output=True, text=True)
-    if r.returncode != 0 or w.returncode != 0:
-        raise SystemExit("a probe failed at baseline:\n%s\n%s"
-                         % (r.stderr[-800:], w.stderr[-800:]))
-    return {"forced": r.stdout, "witness": w.stdout}
+    out = {}
+    for name in PROBES:
+        r = subprocess.run([sys.executable, name], cwd=HERE,
+                           capture_output=True, text=True)
+        if r.returncode != 0:
+            raise SystemExit("%s failed at baseline:\n%s" % (name, r.stderr[-800:]))
+        out[name] = r.stdout
+    return out
 
 
 def main() -> int:
@@ -131,8 +150,7 @@ def main() -> int:
             paths[f].write_text(paths[f].read_text().replace(anchor, repl, 1))
             try:
                 out = baseline()
-                changed = (out["forced"] != base["forced"]
-                           or out["witness"] != base["witness"])
+                changed = any(out[k] != base[k] for k in PROBES)
                 verdict = "changed" if changed else "UNCHANGED"
             except SystemExit:
                 changed, verdict = True, "crashed (counts as noticed)"
