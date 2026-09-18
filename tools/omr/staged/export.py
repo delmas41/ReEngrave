@@ -61,6 +61,39 @@ from .record import Q, meter_at
 
 
 METER_SEGMENTS_ENV = "OMR_METER_SEGMENTS"
+#: `OMR_HOLD_OUT_UNIDENTIFIED` -- a staff the join could not NAME is held out
+#: of the file rather than emitted as a part of its own.
+#:
+#: **Default ON since 2026-09-17 (Sean's call: *"hold out - I want truth"*),**
+#: written as a DENY-list because it is default-ON.
+#:
+#: ⚠️⚠️ EMITTING A PART IS A POSITIVE CLAIM, AND THAT IS THE BUG. A `<part>`
+#: says *"here is an instrument"*; what we know about an unnamed staff is
+#: *"this music belongs to a part we could not name"*. Turning the second
+#: into the first is CANNOT TELL converted into a definite answer -- the
+#: failure this file forbids at four other sites -- and it is the loudest
+#: one, because on Litolff Beethoven 5 pp.1-4 it invented **25 instruments**
+#: on top of the 12 the page prints, and a human opening the artefact could
+#: not read it.
+#:
+#: ⚠️ THE MUSIC IS COUNTED, NEVER SWALLOWED: every note on a held-out staff
+#: is dropped under `staff_not_identified` and the accounting control stays
+#: an EQUALITY, so the file is smaller and the record still says exactly what
+#: was lost and why. That is the whole of *"I want truth"*: the shortfall is
+#: visible instead of being dressed as an orchestra.
+#:
+#: ⚠️ SCOPED TO THE `slot` JOIN, deliberately. On the `fragments` fallback
+#: NOTHING is named, so holding out the unidentified would hold out the whole
+#: document and write an empty file -- a rule that turns a bad page into no
+#: page. There, one part per staff remains the honest answer.
+HOLD_OUT_UNIDENTIFIED_ENV = "OMR_HOLD_OUT_UNIDENTIFIED"
+
+
+def hold_out_unidentified_enabled() -> bool:
+    return os.environ.get(HOLD_OUT_UNIDENTIFIED_ENV, "1").strip().lower() \
+        not in ("0", "", "false", "no", "off")
+
+
 WHOLE_REST_INK_ENV = "OMR_WHOLE_REST_INK"
 
 
@@ -401,7 +434,20 @@ def build(rec: Record) -> Tuple[List[List[StaffRun]], Dict[str, Any],
     # its question one PRINTED SYSTEM at a time and used to re-derive these
     # refusals itself. See `_place_notes._drop`.
     notes_dropped_by_system: Dict[Tuple[int, int], Any] = {}
-    dropped = _place_notes(rec, runs, by_system=notes_dropped_by_system)
+    # ⚠️⚠️ COMPUTED HERE, BEFORE PLACEMENT, AND ONCE. `build` places notes
+    # before it joins parts, so the hold-out set cannot be a by-product of the
+    # join loop below -- and deriving it twice is the duplicated-rule fault
+    # this file spent 2026-09-17 removing four copies of. The join loop
+    # CONSUMES this set rather than re-asking.
+    held_out_runs: set = set()
+    if hold_out_unidentified_enabled() \
+            and (rec.value(Q.PART_PARTITION, "document") or {}).get("join") \
+            == "slot":
+        for _k in runs:
+            if not isinstance(rec.value(Q.SLOT_INDEX, _k), int):
+                held_out_runs.add(_k)
+    dropped = _place_notes(rec, runs, by_system=notes_dropped_by_system,
+                           held_out=held_out_runs)
     # ⚠️ AN EQUALITY, and it is not decoration: it is the only thing that
     # catches a refusal added later at one call site and not the other, which
     # is precisely how the arm's copy went stale in the first place.
@@ -490,10 +536,15 @@ def build(rec: Record) -> Tuple[List[List[StaffRun]], Dict[str, Any],
                 slot = rec.value(Q.SLOT_INDEX, run.key)
                 if not isinstance(slot, int):
                     stranded += 1
-                    # ⚠️⚠️ REMEMBER WHICH PARTS THESE ARE. A run with no slot
-                    # is a staff we could NOT IDENTIFY, and the tacet padding
-                    # must not write silence for it on the systems it is
-                    # absent from -- see `_pad_tacet_span`'s caller.
+                    if run.key in held_out_runs:
+                        # ⚠️ NO PART. See `HOLD_OUT_UNIDENTIFIED_ENV`: the
+                        # staff is held out and its music counted, rather
+                        # than asserted to be an instrument of its own.
+                        held_out_runs.add(run.key)
+                        continue
+                    # ⚠️⚠️ FLAG OFF -- the pre-2026-09-17 behaviour exactly.
+                    # The part is emitted, and the tacet padding must still
+                    # not write silence for it on systems it is absent from.
                     unidentified.add(len(parts))
                     parts.append([run])
                     continue
@@ -521,6 +572,7 @@ def build(rec: Record) -> Tuple[List[List[StaffRun]], Dict[str, Any],
         # value because a reader of the FILE's coverage report should be able
         # to see which parts are fragments without reading this code.
         "unidentified_parts": sorted(unidentified),
+        "held_out_staves": len(held_out_runs),
         "join_decided": kind,
         "join_used": used,
         "join_reason": (rec.verdict(Q.PART_PARTITION, "document") or {}).get("reason"),
@@ -539,7 +591,8 @@ def build(rec: Record) -> Tuple[List[List[StaffRun]], Dict[str, Any],
 
 
 def _place_notes(rec: Record, runs: Dict[str, StaffRun],
-                 by_system: Optional[Dict[Tuple[int, int], Any]] = None) -> Dict[str, int]:
+                 by_system: Optional[Dict[Tuple[int, int], Any]] = None,
+                 held_out: Optional[set] = None) -> Dict[str, int]:
     """Every decided note, ONCE PER PIECE OF INK.
 
     ⚠️ A measure cell is cut with padding above and below so ledger notes are
@@ -680,6 +733,11 @@ def _place_notes(rec: Record, runs: Dict[str, StaffRun],
             _drop("owned_by_another_staff", s)
             continue
         home = _staff_key(s["page"] or 0, s["system"] or 0, s["staff"] or 0)
+        if held_out and home in held_out:
+            # ⚠️ THE STAFF IS HELD OUT, so this note has no part to go in.
+            # COUNTED, never swallowed -- the shortfall belongs in the record.
+            _drop("staff_not_identified", s)
+            continue
         run = runs.get(home)
         if run is None:
             # The owner names a staff with no `measure_partition` verdict, so

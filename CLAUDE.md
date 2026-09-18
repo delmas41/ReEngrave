@@ -4586,6 +4586,95 @@ EXISTS, never a reason it is acceptable.
 
 ---
 
+## ⚠️⚠️ A PREMISE ENCODED IN A REFUSAL OUTLIVES ITS REASON
+
+Sean, 2026-09-17, after four separate instances surfaced in one session:
+*"We have rules that are stopping things too soon or disregarding the
+information or the process. I understand why — because we've been building
+this progressively, and when those statements were made we didn't have
+everything we have now. What we need to do is go back and look at every single
+one of those and assess whether or not it fits our current architecture."*
+
+**THE SHAPE.** A decision refuses, and the refusal is right. The reason is
+written down. The world moves — a quantity is gathered, a reader lands, a
+STAGE is built — and **nothing re-asks the premise.** The rule keeps firing,
+correctly by its own terms, on a reason that has expired. Nobody was wrong;
+the sentence outlived its cause.
+
+This is the third named family beside *the value existed and nothing read it*
+and *a rule described in a docstring and never built* — and it is the hardest
+to see, because the code is not wrong, the tests pass, and the refusal looks
+like discipline.
+
+**THE DISCRIMINATOR, and the whole thing hangs on it:** does the rule stop
+because it CANNOT KNOW, or because it WAS NOT GIVEN what it needs? The first
+is this project working. The second is the fault.
+
+⚠️⚠️ **AND NOTHING MAY BE EXEMPTED FROM BEING ASKED.** The manager's first
+brief for the audit named four refusals as *"load-bearing, leave them alone"*
+— which is the audited pattern committed inside the audit. Sean: *"It's not as
+simple as opening the flood gates, but everything that may have had a
+justifiable reason before may not apply anymore."* Two of those four had
+visibly expired reasons:
+
+* `staged/export.py` refuses to argmax a narrowed duration because
+  `adjudicate_duration` declined and **nothing may overturn it** — written
+  before `OMR_INFER`, whose entire job is collapsing a narrowing. The refusal
+  is still right FOR THE EXPORTER; its stated reason is false.
+* EVALUATE goes silent where two re-readings both fit, because acting would
+  launder a guess — written before a stage existed for *best rather than
+  forced*.
+
+⚠️ **THE COROLLARY IS PROBABLY BIGGER THAN ANY SINGLE GATE: a refusal whose
+reason was "no stage may do this", where a stage now exists, is not a refusal
+to remove — it is a HANDOFF THAT MAY NOT BE WIRED.** Ask whether the work the
+refusal declines actually REACHES the stage now permitted to do it, or whether
+it simply stops.
+
+**WHAT PROTECTS AGAINST OPENING THE FLOODGATES** is not a protected list, it
+is the standard of evidence: a refusal may be questioned only by NAMING the
+evidence now available that was not before — a quantity on the record, a stage
+that did not exist, a reader that has landed. *"This looks over-cautious"* is
+not a finding; *"this refuses X while Y is on the record"* is. A refusal that
+prevents a guess and has no new evidence behind it STAYS.
+
+**THE FOUR INSTANCES OF 2026-09-17**, which is what makes this a family:
+
+1. **One channel deep.** `adjudicate_instrument` is
+   `labels = ev.rows(Q.MARGIN_LABEL); if not labels: return
+   Ruling.abstain("no_evidence")`. A staff with no margin label goes through
+   NO further identification — 25 of 75 staff-systems on Litolff Beethoven 5
+   pp.1-4 — while `score_order` sits in its declared `reasons=(...)` with no
+   branch that can return it.
+2. **A circularity fear resting on the wrong object.** `identity.py:50-58`
+   declines the layout prior because it "consumes CLEFS" and would admit a
+   deduced identity into the clef decision. **True of `Q.CLEF`** (a VERDICT at
+   `ORDER` 9, while `instrument` is 5). **False of `Q.CLEF_GLYPH` /
+   `Q.CLEF_POSITION`, GATHER facts** (`gather.py:1687`, `:1705`) available to
+   every decision at every position. The objection was about a verdict and
+   silently generalised to the reading. ⚠️ Sean: *"We should know what these
+   are regardless of clef, and having a clef would only reinforce the
+   finding"* — evidence must CONTRIBUTE (`Mode.ADDITIVE`, `A-INK-4`), never
+   gate.
+3. **A hold-out that ended an ENQUIRY rather than an OUTPUT.**
+   `OMR_HOLD_OUT_UNIDENTIFIED` stopped unidentified staves reaching the FILE
+   (right) and left them exiting identification after one channel (wrong).
+   Those are two different decisions and were conflated in one change.
+4. **Two repairs each measured ALONE and never together.** The part join
+   stopped grafting and the tacet padding began writing absent parts; composed,
+   they put **25 blank staves under every printed system** and 2,924 invented
+   bars. When the padding landed it reached ZERO bars on this document because
+   the meter was not yet carried — so its own measurement could not see the
+   interaction it would later have.
+
+⚠️ **THE MECHANICAL FORM, which is what makes this auditable rather than a
+mood:** *for every abstention, is there evidence ON THE RECORD — for that
+subject, within its scope — that the decision never declared in `wants`?* That
+is derivable from `adjudicate.REGISTRY` plus a real record, and all four
+instances above fall out of it. It is ADJACENT TO `staged/wiring.py`, which
+asks whether a DECLARED input is read where it is FILED, and is not the same
+question: wiring is green on every one of the four.
+
 ## The central score library
 
 Every score the project uses lives in one place with its provenance attached:
