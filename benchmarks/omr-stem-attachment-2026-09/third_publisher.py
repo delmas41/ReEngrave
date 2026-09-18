@@ -71,10 +71,44 @@ def main() -> int:
               f"{str(e.get('image_type') or '?')[:16]:<16} {mark}")
 
     fresh = [e for e in rows if str(e.get("imslp_id")) not in HELD]
-    print(f"\n{len(fresh)} candidate third plates of the SAME MUSIC.")
-    print("⚠️ Each needs a GATHER (weights) to become a record before the "
-          "convention can be scored on it. `image_type` is IMSLP's own label, "
-          "not a measurement of legibility.")
+    print(f"\n{len(fresh)} candidate plates of the SAME MUSIC in the CATALOG.")
+
+    # ⚠️⚠️ AND THE CATALOG IS NOT THE LIBRARY. The brief and
+    # `docs/cloud-session-capabilities-2026-09-09.md` both treat the committed
+    # catalog as the answer to *"what editions are held"*. It is not: only the
+    # PDF BYTES are gitignored, and the catalog's own `entries`/`editions` can
+    # be missing a plate that is sitting on disk. So ask the disk too --
+    # otherwise this probe reproduces the very error it exists to test.
+    lib = Path("/Users/seanjohnson/Desktop/ReEngrave/library/editions")
+    known = {str(e.get("imslp_id")) for e in entries if e.get("imslp_id")}
+    missing = []
+    if lib.is_dir():
+        for wdir in ("beethoven/symphony-5-op67", "brahms/symphony-1-op68"):
+            for pdf in sorted((lib / wdir).glob("*.pdf")):
+                ident = pdf.name.split("--imslp")[-1].replace(".pdf", "")
+                if ident in known:
+                    continue
+                side = pdf.with_suffix(".json")
+                pub = "?"
+                if side.is_file():
+                    pub = str(json.loads(side.read_text()).get("publisher"))
+                missing.append((ident, wdir.split("/")[0], pub))
+    print(f"\n== ON DISK BUT NOT IN THE CATALOG AT ALL ==")
+    if not missing:
+        print("   none -- the catalog covers what `library/` holds for these "
+              "two works")
+    for ident, composer, pub in missing:
+        print(f"   imslp{ident:<8} {composer:<10} {pub[:56]}")
+    if missing:
+        print(f"\n   ⚠️ {len(missing)} third-publisher plates are HELD and "
+              f"INVISIBLE to the catalog. A session answering "
+              f"\"is a third plate reachable?\" from the committed catalog "
+              f"gets the wrong answer.")
+
+    print("\n⚠️ Each needs a GATHER (weights) to become a record before the "
+          "convention can be scored on it -- the convention is scored against "
+          "a record's own `stem_direction` verdicts. `image_type` is IMSLP's "
+          "own label, not a measurement of legibility.")
     return 0
 
 
