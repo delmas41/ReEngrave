@@ -1,0 +1,27 @@
+{
+ "label": "Litolff Beethoven 5 pp.1-4",
+ "population": 784,
+ "gross": 472,
+ "overlap": 101,
+ "marginal": 371,
+ "marginal_gated": 281,
+ "overlap_gated": 57,
+ "gate": [
+  2.0,
+  8.0
+ ],
+ "beam_mate_reach": 152,
+ "still_unread": 632,
+ "table": {
+  "stays no_stem|speaks": 371,
+  "stays no_stem|neither": 166,
+  "stays no_stem|both": 95,
+  "beam_mate|speaks": 101,
+  "beam_mate|both": 27,
+  "beam_mate|neither": 24
+ },
+ "both_speak_agreement": {
+  "AGREES": 98,
+  "disagrees": 3
+ }
+}
