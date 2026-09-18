@@ -274,6 +274,25 @@ NOT_A_STAGE = frozenset({
     # run time, so it declares `DERIVED_CHECK = True` for the same reason
     # `capture.py` does.
     "meaning.py",
+    # ⚠️ `brakes.py` is a DERIVED CHECK for the same reason: it asks whether a
+    # REFUSAL's premise was written against a capability the staged
+    # architecture has since grown, and it NAMES quantities and reasons in
+    # order to audit them while reading none of them at run time. It declares
+    # `DERIVED_CHECK = True` for `wiring`'s DETAIL question too. Registering it
+    # here is not optional — `unaccounted_modules()` must return empty, and a
+    # staged `.py` in neither list breaks it.
+    #
+    # ⚠️⚠️ THAT GUARD WAS A TEST AND NOT `--check`, AND IS NOW BOTH. The
+    # brake audit found it by a mutation arm that removed this very line and
+    # watched `reach --check` exit 0, and reported it rather than repairing
+    # it; the measurement-meaning audit found the same gap independently.
+    # `check()` now calls `unaccounted_modules()` and FAILS on an
+    # unregistered module (proved with a stray `_orphan_probe.py`: exit 1
+    # naming it, exit 0 once removed). ⚠️ THE TWO HALVES LANDED ON DIFFERENT
+    # BRANCHES AND ONLY THIS MERGE HAS BOTH — the comment was true when
+    # written and false the moment the trees met, which is exactly the
+    # 'merged tree is the one thing nobody runs' hazard.
+    "brakes.py",
 })
 
 
