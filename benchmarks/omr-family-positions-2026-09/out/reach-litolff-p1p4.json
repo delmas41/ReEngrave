@@ -1,0 +1,122 @@
+{
+  "cell_position_basis_abstentions": 0,
+  "control_note": "see FINDINGS 6a: run --off-vs-off TWICE before attributing this to the flag",
+  "control_ok": false,
+  "dpi": 600,
+  "families": {
+    "articulation": {
+      "abstained": 0,
+      "ink_quantity": "articulation_mark",
+      "ink_rows": 98,
+      "observed": 98,
+      "quantity": "articulation_position"
+    },
+    "clef": {
+      "abstained": 0,
+      "ink_quantity": "clef_glyph",
+      "ink_rows": 91,
+      "observed": 91,
+      "quantity": "clef_position"
+    },
+    "direction": {
+      "abstained": 0,
+      "ink_quantity": "direction_word",
+      "ink_rows": 6,
+      "observed": 6,
+      "quantity": "direction_band_position"
+    },
+    "dynamic": {
+      "abstained": 0,
+      "ink_quantity": "dynamic_letter",
+      "ink_rows": 485,
+      "observed": 485,
+      "quantity": "dynamic_band_position"
+    },
+    "fermata": {
+      "abstained": 0,
+      "ink_quantity": "fermata_mark",
+      "ink_rows": 67,
+      "observed": 67,
+      "quantity": "fermata_position"
+    },
+    "key": {
+      "abstained": 38,
+      "ink_quantity": "keysig_marker",
+      "ink_rows": 105,
+      "observed": 37,
+      "quantity": "keysig_run_position"
+    },
+    "note": {
+      "abstained": 0,
+      "ink_quantity": "glyph_box",
+      "ink_rows": 8486,
+      "observed": 2347,
+      "quantity": "notehead_staff_position"
+    },
+    "ornament": {
+      "abstained": 0,
+      "ink_quantity": "ornament_mark",
+      "ink_rows": 1,
+      "observed": 1,
+      "quantity": "ornament_position"
+    },
+    "rest": {
+      "abstained": 0,
+      "ink_quantity": "rest",
+      "ink_rows": 646,
+      "observed": 646,
+      "quantity": "rest_position"
+    },
+    "slur": {
+      "abstained": 0,
+      "ink_quantity": "arc_box",
+      "ink_rows": 779,
+      "observed": 779,
+      "quantity": "arc_position"
+    },
+    "tie": {
+      "abstained": 0,
+      "ink_quantity": "arc_box",
+      "ink_rows": 779,
+      "observed": 779,
+      "quantity": "arc_position"
+    },
+    "time": {
+      "abstained": 0,
+      "ink_quantity": "meter_glyph",
+      "ink_rows": 22,
+      "observed": 22,
+      "quantity": "meter_glyph_position"
+    },
+    "tuplet": {
+      "abstained": 0,
+      "ink_quantity": "tuplet_marker",
+      "ink_rows": 1,
+      "observed": 1,
+      "quantity": "tuplet_marker_position"
+    },
+    "wedge": {
+      "abstained": 0,
+      "ink_quantity": "wedge_box",
+      "ink_rows": 1,
+      "observed": 1,
+      "quantity": "wedge_band_position"
+    }
+  },
+  "pages": [
+    1,
+    2,
+    3,
+    4
+  ],
+  "pdf": "library/editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf",
+  "rows_off": 44879,
+  "rows_on": 46985,
+  "seconds": {
+    "gather_off": 437.1552348136902,
+    "gather_on": 498.76763582229614,
+    "prepare": 14.633963108062744
+  },
+  "surya": false,
+  "weights": "omr-weights/deepscoresv2-yolov8l-hollow-graft-shift09-2026-09-04.pt"
+}

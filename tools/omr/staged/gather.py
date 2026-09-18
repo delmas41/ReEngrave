@@ -3247,6 +3247,17 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
     gathering one: the meter vote consumes committed durations. See
     ASSUMPTIONS.md A-DUR-1.
     """
+    # ⚠️ IMPORTED HERE, NOT AT MODULE LEVEL, AND THE REASON IS A CYCLE RATHER
+    # THAN A COST. `positions` reads THIS module's routing predicates --
+    # `_ARC_CLASSES`, `_REST_PREFIX`, `_ornament_kind`, `_band_offset_spaces`
+    # -- because a second spelling of "which family is this glyph" would file
+    # a mark under the wrong family and attribute every position row for it to
+    # ink it does not measure. Importing it back at module level would close
+    # that cycle at import time. Deferred, it resolves cleanly, and the
+    # direction of the dependency stays the honest one: positions depend on
+    # gathering, not the other way round.
+    from . import positions as _positions
+
     log = log if log is not None else Log()
 
     for pws, cells in pws_and_cells:
@@ -3298,6 +3309,15 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
                              surya_fallback=surya_fallback,
                              ocr_fallback=ocr_fallback)
         gather_direction_words(log, pws, cells, local, detections)  # hard edge: last
+        # ⚠️ AFTER EVERYTHING, AND THAT IS A HARD EDGE OF ITS OWN. Two of the
+        # ten position rows are PROMOTED off rows already on the record -- the
+        # CV hairpins and the direction words, whose ink no detection carries
+        # -- so this must run after both of those readers. It is last rather
+        # than merely after them because a position is a measurement OVER the
+        # marks, and running it last means a mark gathered in future gets one
+        # by being gathered rather than by someone remembering to reorder.
+        # Off by default -- see `positions.POSITIONS_ENV`.
+        _positions.gather_family_positions(log, pws, cells, local, detections)
 
     log.freeze()
     return log

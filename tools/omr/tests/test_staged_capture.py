@@ -102,8 +102,29 @@ class TestTheToolIsAliveAtAll(unittest.TestCase):
         self.assertIn("DEAD QUESTION", err.getvalue())
 
     def test_nothing_is_unresolved(self) -> None:
-        self.assertEqual(self.rep["observe"]["unresolved"], [])
+        """⚠️ EVERY UNRESOLVED SITE IS ACCOUNTED FOR, which is a weaker claim
+        than *there are none* and became the true one on 2026-09-17.
+
+        `positions.py` emits its ten quantities through two helpers that take
+        the quantity as a PARAMETER, so the walker reads a name where it needs
+        a literal. Both sites are in `KNOWN_GAPS` with the argument for why
+        inlining six copies to satisfy this walker would be building to the
+        instrument. ⚠️ The assertion is that each unresolved site is ON that
+        list — so a NEW one still fails, which is what this test is for."""
+        for u in self.rep["observe"]["unresolved"]:
+            with self.subTest(where=u["where"]):
+                self.assertIsNotNone(
+                    capture._gap_key(f"UNRESOLVED observe site {u['where']}"),
+                    "an unresolved site with no KNOWN_GAPS entry")
         self.assertEqual(self.rep["rasters"]["undeclared_readers"], [])
+
+    def test_an_unaccounted_unresolved_site_still_FAILS(self) -> None:
+        """The positive control the test above needs: relaxing *there are
+        none* to *they are accounted for* is only safe if an unaccounted one
+        is still caught."""
+        self.assertIsNone(capture._gap_key(
+            "UNRESOLVED observe site _some_new_helper:1 — its quantity "
+            "could not be derived"))
 
     def test_render_produces_the_table(self) -> None:
         out = capture.render(self.rep)
@@ -267,22 +288,63 @@ class TestThePositionQuestion(unittest.TestCase):
                               "the read is real; it is just not its own ink")
 
     def test_exactly_the_declared_position_quantities_are_gathered(self) -> None:
+        """⚠️⚠️ THIS WENT RED ON SUCCESS, 2026-09-17, and is REWRITTEN rather
+        than relaxed. It hard-coded the three position facts that existed;
+        `positions.py` landed TEN more, so the literal set was a property of
+        the build's progress and not of the mechanism. What it was really
+        asserting — every declared position fact is actually OBSERVED, and none
+        of them carries a score — is kept and now covers all thirteen.
+
+        ⚠️ The three ORIGINALS are still named explicitly, because they are the
+        ones a regression would silently drop: the ten new ones are behind a
+        default-OFF flag and their absence from a run is expected.
+        """
         by_q = self.rep["observe"]["by_quantity"]
-        declared = {q for q, (k, _r, _f) in UNSCORED.items()
-                    if k == STAFF_GRID_POSITION}
-        self.assertEqual(declared, {"NOTEHEAD_STAFF_POSITION", "CLEF_POSITION",
-                                    "KEYSIG_RUN_POSITION"})
-        for q in declared:
+        declared = {q for q in UNSCORED if capture._is_position(q)}
+        self.assertTrue(
+            {"NOTEHEAD_STAFF_POSITION", "CLEF_POSITION",
+             "KEYSIG_RUN_POSITION"} <= declared)
+        # ⚠️⚠️ AND THE TEN NEW ONES ARE **NOT** ASSERTED TO BE OBSERVED HERE,
+        # WHICH IS A LOSS AND IS NAMED RATHER THAN HIDDEN. `positions.py`
+        # emits them through two helpers that take the quantity as a
+        # PARAMETER, so `_ObserveWalker` reads a name where it needs a literal
+        # and reports the site UNRESOLVED (both are in `KNOWN_GAPS`, with the
+        # argument for why inlining six copies to satisfy this walker would be
+        # building to the instrument). What covers them instead is a
+        # measurement on real pages: `benchmarks/omr-family-positions-2026-09/
+        # probe/position_reach.py`, which counts the rows each family actually
+        # produces and exits non-zero at zero.
+        for q in sorted(by_q.keys() & declared):
             with self.subTest(q=q):
-                self.assertIn(q, by_q)
                 self.assertFalse(by_q[q]["scored"],
                                  "a ruler reading carries no confidence")
 
+    def test_a_position_quantity_the_walker_CAN_see_is_observed(self) -> None:
+        """The positive control the test above can no longer be: the three
+        original position facts ARE emitted with a literal quantity, so their
+        absence from `by_quantity` would be a real regression."""
+        by_q = self.rep["observe"]["by_quantity"]
+        for q in ("NOTEHEAD_STAFF_POSITION", "CLEF_POSITION",
+                  "KEYSIG_RUN_POSITION"):
+            with self.subTest(q=q):
+                self.assertIn(q, by_q, "declared and never observed")
+                self.assertFalse(by_q[q]["scored"])
+
     def test_every_position_fact_names_a_real_family(self) -> None:
+        """⚠️ REWRITTEN FOR THE TUPLE FORM. `Q.ARC_POSITION` names BOTH `slur`
+        and `tie` — one quantity over one piece of ink, because two position
+        rows on one arc glyph would be the *two rows from one reader are ONE
+        signal* fault made by accident — so the third field is now
+        `str | tuple`, read through `_families_of`. This test read it raw and
+        compared a TUPLE against a set of family names."""
         known = set(self.rows)
-        for q, (kind, _reason, fam) in UNSCORED.items():
-            if kind == STAFF_GRID_POSITION:
-                with self.subTest(q=q):
+        for q in UNSCORED:
+            if not capture._is_position(q):
+                continue
+            with self.subTest(q=q):
+                fams = capture._families_of(q)
+                self.assertTrue(fams, "a position must name whose ink it is")
+                for fam in fams:
                     self.assertIn(fam, known)
 
     def test_every_scoreless_quantity_is_classified(self) -> None:
@@ -433,10 +495,29 @@ class TestThereAreNoExemptions(unittest.TestCase):
         cls.rows = {r["family"]: r for r in cls.rep["rows"]}
 
     def test_every_family_without_a_position_is_REPORTED(self) -> None:
+        """⚠️⚠️ RED ON SUCCESS, 2026-09-17, AND THE REWRITE IS THE FINDING.
+
+        *"There is none"* and *"there is one and nothing reads it"* are
+        different findings and different repairs — write the adjudicator's
+        input against wire the input it already has. Until `positions.py` they
+        could not be different, because no family had a position its decision
+        did not read, so this test could assume ONE vocabulary (`POSITION
+        <family>`). Eleven families now have a position fact that no decision
+        reads, and the accurate report for them is `UNREAD-POSITION`.
+
+        **The claim being defended is unchanged and is the one that matters:
+        a family with no position reaching its decision produces a finding,
+        whichever vocabulary names it. There are still no exemptions.**
+        """
         missing = {f for f, r in self.rows.items() if not r["position"]}
         self.assertTrue(missing, "positive control: some family must lack one")
         reported = {p.split()[1] for p in self.rep["problems"]
                     if p.startswith("POSITION ")}
+        for p in self.rep["problems"]:
+            if not p.startswith("UNREAD-POSITION Q."):
+                continue
+            q = p.split()[1][2:]
+            reported |= set(capture._families_of(q))
         self.assertEqual(missing, reported,
                          "a family with no position that produces no finding "
                          "is an exemption, and there are none")
@@ -444,12 +525,21 @@ class TestThereAreNoExemptions(unittest.TestCase):
     def test_a_class_name_SIDE_does_not_exempt_a_family(self) -> None:
         # The withdrawn framing, pinned so it cannot come back: these three
         # state a side in the class name AND are still findings.
+        #
+        # ⚠️ The VOCABULARY moved (see above) and the claim did not: each still
+        # has `position: []` — its decision reads no position — and each still
+        # produces a finding. What changed is that the finding now says the
+        # fact EXISTS and is unread, which is a truer and weaker statement.
         for family in ("articulation", "fermata", "ornament"):
             with self.subTest(family=family):
                 self.assertTrue(self.rows[family]["side_in_class_name"])
                 self.assertEqual(self.rows[family]["position"], [])
-                self.assertTrue(any(p.startswith(f"POSITION {family} ")
-                                    for p in self.rep["problems"]))
+                self.assertTrue(
+                    any(p.startswith(f"POSITION {family} ")
+                        or (p.startswith("UNREAD-POSITION Q.")
+                            and family in capture._families_of(p.split()[1][2:]))
+                        for p in self.rep["problems"]),
+                    f"{family} produces no position finding of any kind")
 
     def test_no_gap_reason_reads_as_an_exemption(self) -> None:
         """⚠️ A reason saying a gap is FINE is the category that was deleted."""
@@ -753,7 +843,14 @@ class TestTheGapInventory(unittest.TestCase):
         # unaccounted, and a key matching no problem is stale.
         self.assertEqual(capture.unaccounted(["ZZZ nothing matches this"]),
                          ["ZZZ nothing matches this"])
-        self.assertIn("POSITION time", capture.stale_gaps([]))
+        # ⚠️ RED ON SUCCESS: the sample key was `"POSITION time"`, which LEFT
+        # `KNOWN_GAPS` on 2026-09-17 when the `time` family got a position
+        # fact — a closed gap must LEAVE the list or the list stops describing
+        # the pipeline and starts describing its history. Keyed on a LIVE
+        # entry instead, and asserted derivedly so the next closure renames
+        # nothing: EVERY key is stale when nothing is reported.
+        self.assertEqual(sorted(capture.stale_gaps([])),
+                         sorted(capture.KNOWN_GAPS))
 
 
 if __name__ == "__main__":

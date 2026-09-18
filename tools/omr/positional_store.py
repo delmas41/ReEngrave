@@ -161,6 +161,38 @@ KIND_MEANING = {
 KIND_UNNAMED = "unnamed"
 
 
+#: ⚠️⚠️ THIS VOCABULARY IS THE SAME AXIS AS `record.CLAIM`, AND IT IS MAPPED
+#: RATHER THAN RESTATED. `Membership.kind` was INVENTED here because the
+#: staged record had nowhere to put "what sort of claim is this" — one of the
+#: two independent pieces of work that reached that gap in a week, and the one
+#: that paid for it: pooling `detector_class` geometry with `overlaps`
+#: geometry reported a Litolff notehead at mean height 3.646 staff spaces
+#: against 1.316 ± 0.133 once split.
+#:
+#: The record now declares the axis (`record.CLAIM`), so these three words are
+#: a PROJECTION of it and not a second answer. `test_positional_store.py`
+#: asserts the mapping is total over the three constants and lands only on
+#: real `CLAIM` words, so the day either vocabulary grows a word the other
+#: does not have, a test goes red instead of the two drifting apart.
+#:
+#: ⚠️ It is deliberately NOT a rename. These three name the claims a
+#: MEMBERSHIP can make — the ways one piece of ink can be associated with a
+#: NAME — which is a narrower question than the claim a QUANTITY's value
+#: makes, and three of `CLAIM`'s five words have no membership form at all.
+#: Collapsing them would lose `drawn_as`, whose whole content is *this came
+#: from the encoding and not from the plate*.
+CLAIM_OF_MEMBERSHIP_KIND: Dict[str, str] = {
+    #: An argmax over a box: it can be wrong about what the ink is.
+    KIND_DETECTOR_CLASS: "identification",
+    #: Coverage, and its own docstring already said so.
+    KIND_OVERLAPS: "coverage",
+    #: The renderer's own answer — not read off this raster at all, so it
+    #: cannot be wrong because the plate is bad. The `source_kind` doctrine's
+    #: property, in the store's vocabulary.
+    KIND_DRAWN_AS: "external",
+}
+
+
 # ─────────────────────────────────────────────────────────────────────────────
 # An entry — the stored form, at the grain it was observed
 # ─────────────────────────────────────────────────────────────────────────────

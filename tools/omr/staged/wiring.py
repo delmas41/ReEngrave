@@ -444,6 +444,25 @@ KNOWN_GAPS: Dict[str, str] = {
         "the staff's own bottom line in page pixels — the origin a hairpin's "
         "band offset is measured from. Gathered and, in production, unread; "
         "the page-pixel frame `Q.ONSET_COLUMN` paid to learn about."),
+    # ── positions.py, 2026-09-17. ⚠️ THESE TWO WERE INVISIBLE UNTIL THIS
+    #    QUESTION LEARNED TO WALK A SECOND WRITE SITE — see `_row_writer_files`.
+    #    Both belong to a module that is a PRODUCER with no consumer by design,
+    #    so "named nowhere else" is the intended state, not a fault.
+    "DETAIL Q.<loop-bound>.promoted_from": (
+        "the row id a PROMOTED band position was measured off — the "
+        "`CV_HAIRPINS` wedge box or the direction word. ⚠️ It is deliberately "
+        "NOT `derived_from`: that would put the two rows in one `Log.closure` "
+        "and make them ONE signal, which is the absorbed-witness state the "
+        "promotion exists to leave. Recorded so a human can follow the join. "
+        "⚠️ The quantity reads `<loop-bound>` because `_promote_from_log` "
+        "takes it as a parameter — one helper, two quantities — which is this "
+        "walker being honest rather than a defect."),
+    "DETAIL Q.CELL_POSITION_BASIS.marks_unmeasured": (
+        "how many marks a cell with NO five-line grid could not measure — a "
+        "one-line percussion staff. The row is the REFUSAL and the count is "
+        "its size, so a reader can tell *this page prints no rests* from "
+        "*this staff has one line and twenty marks nobody could put on a "
+        "grid*. Read by nothing, like the ten positions it accounts for."),
     "DETAIL Q.CELL_STAFF_SPACE.half_step": (
         "the half-step the spacing was doubled from. The duration reader "
         "consumes the SPACING; the half-step is the intermediate it came "
@@ -980,11 +999,36 @@ def _row_kwargs() -> Set[str]:
     return out - {"self"}
 
 
+def _row_writer_files() -> Set[str]:
+    """Staged modules that WRITE detail keys onto rows. ⚠️ DERIVED.
+
+    ⚠️⚠️ **THE FIFTH INSTANCE OF *THE WRITE SITE IS NOT A READ*, AND THE FIRST
+    WHERE THE WRITE SITE IS A SECOND MODULE.** The three exclusions below this
+    function — a test, a benchmark probe, this module's own gap list — were
+    each found by watching a live finding go silent. This one was found the
+    same way: `positions.py` landed ten producers, its `_band_core` writes
+    `staff_bottom_line_page` like `gather_wedge_boxes` does, and because the
+    write-site exclusion was the hard-coded string `"gather.py"` that second
+    WRITE registered as a READ and closed `DETAIL Q.WEDGE_BOX.
+    staff_bottom_line_page` — a gap that is still completely open.
+
+    A hand-list would have grown the same hole again on the next module, so
+    the set is derived from `reach.STAGE_OF_FILE`: every staged file whose
+    stage is GATHER is a row writer, is walked for WRITES, and is excluded
+    from the READ scan. ⚠️ The import is local because `reach` imports this
+    package too and both are instruments rather than stages.
+    """
+    from .reach import STAGE_OF_FILE
+    return {name for name, stage in STAGE_OF_FILE.items() if stage == "GATHER"}
+
+
 def details() -> Dict[str, Any]:
     """Detail keys written on rows, and whether anything mentions them."""
     structural = _row_kwargs()
     written: Dict[str, List[str]] = {}
-    tree = _parse(_HERE / "gather.py")
+    writers = _row_writer_files()
+    trees = [t for t in (_parse(_HERE / n) for n in sorted(writers))
+             if t is not None]
 
     # Walk for the detail keys, alongside the quantity each belongs to.
     class Keys(ast.NodeVisitor):
@@ -1011,7 +1055,7 @@ def details() -> Dict[str, Any]:
                         f":{node.lineno}")
             self.generic_visit(node)
 
-    if tree is not None:
+    for tree in trees:
         Keys().visit(tree)
 
     # Who READS a key. Deliberately generous: ANY mention of the bare name as
@@ -1023,7 +1067,7 @@ def details() -> Dict[str, Any]:
         if not base.is_dir():
             continue
         for path in _py_files(base):
-            if path.name == "gather.py" and "staged" in path.parts:
+            if path.name in writers and "staged" in path.parts:
                 continue              # the write site is not a read
             # ⚠️⚠️ A TEST NAMING A KEY IS NOT A CONSUMER OF IT, and leaving
             # tests in made this question report its own findings as closed:
