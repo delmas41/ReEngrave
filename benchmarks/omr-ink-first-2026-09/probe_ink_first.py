@@ -37,8 +37,15 @@ import collections
 sys.path.insert(0, "benchmarks/omr-ledger-extrapolation-2026-09")
 from recordstream import stream_array  # noqa: E402
 
+# ⚠️ DEFAULTS TO THE GATHER-ONLY DUMP. Every quantity below is a GATHER
+# observation, and the full CLI writes its record only after ADJUDICATE (whose
+# glyph_owner step this repo records taking >40 min on this document). Pass the
+# full record as argv[1] to re-run against it -- the observation rows are the
+# same call's output, which is the control.
 REC = ("benchmarks/omr-ink-first-2026-09/out/"
-       "brahms1-breitkopf-p2.staged.json")
+       "brahms1-breitkopf-p2.gather.json")
+if len(sys.argv) > 1:
+    REC = sys.argv[1]
 HAND = "data/user-labeled/v18-2026-09-03-complete-breitkopf"
 MANIFEST = ("benchmarks/omr-labeling-survey-2026-09/phase3-merged/breitkopf/"
             "breitkopf-cells.json")
