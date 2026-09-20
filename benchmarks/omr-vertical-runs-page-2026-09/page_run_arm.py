@@ -53,6 +53,23 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 TOLERANCES = (0.15, 0.25, 0.40, 0.60, 1.00)
 
 
+def clip_to_cell(run, lo: float, hi: float):
+    """`run` with its y-extent cut to `[lo, hi]` — the measure cell's own reach.
+
+    ⚠️ USED ONLY BY `--clip-like-a-cell`, the POSITIVE CONTROL ON §3. On every
+    page where the repair works, §3's count sits at ZERO, and a control that
+    has never been seen to fire is indistinguishable from one that cannot. So
+    the predecessor's fault is reproduced deliberately — the cell's 4 + 4
+    space reach re-imposed on runs that were read without it — and §3 must
+    then report the ±4.00 signature BACK.
+    """
+    import dataclasses
+    y0, y1 = max(run.y, lo), min(run.y + run.h, hi)
+    if y1 <= y0:
+        return run
+    return dataclasses.replace(run, y=y0, h=y1 - y0)
+
+
 def overlaps(a, b) -> bool:
     """Two `[x0, y0, x1, y1]` page boxes share any area."""
     return not (a[2] <= b[0] or b[2] <= a[0] or a[3] <= b[1] or b[3] <= a[1])
@@ -94,6 +111,11 @@ def main() -> int:
     ap.add_argument("--label", required=True)
     ap.add_argument("--json", required=True)
     ap.add_argument("--dpi", type=int, default=600)
+    ap.add_argument("--clip-like-a-cell", action="store_true",
+                    help="POSITIVE CONTROL ON THE DECISIVE CONTROL (§3): "
+                         "re-impose the measure cell's own 4 + 4 space reach "
+                         "on every page run, which must bring the ±4.00 "
+                         "signature BACK.")
     ap.add_argument("--blind-the-reader", action="store_true",
                     help="POSITIVE CONTROL ON THE CONTROLS: hand the reader a "
                          "blank page, so every table below must go to zero and "
@@ -109,7 +131,8 @@ def main() -> int:
     from tools.omr import line_detection as LD
 
     out: dict = {"label": a.label, "pages": pages, "pdf": a.pdf,
-                 "blinded": bool(a.blind_the_reader)}
+                 "blinded": bool(a.blind_the_reader),
+                 "clipped_like_a_cell": bool(a.clip_like_a_cell)}
 
     t0 = time.time()
     prepared = list(zip(prepare_pages(a.pdf, pages, dpi=a.dpi), pages))
@@ -150,6 +173,10 @@ def main() -> int:
               f"({time.time() - t1:.1f}s, spacing {sp:.1f}px, "
               f"{len(page_lines)} staves)", flush=True)
         for r in found:
+            if (a.clip_like_a_cell and r.staff_index is not None
+                    and r.staff_index < len(page_lines)):
+                ls = page_lines[r.staff_index]
+                r = clip_to_cell(r, min(ls) - 4.0 * sp, max(ls) + 4.0 * sp)
             lines = (page_lines[r.staff_index]
                      if r.staff_index is not None
                      and r.staff_index < len(page_lines) else None)
@@ -198,15 +225,14 @@ def main() -> int:
                     "pages": len(prepared)}
     print(f"\n== REACH: {len(runs)} page runs, {len(cell_stems)} cell-path "
           f"stems over {len(prepared)} page(s)")
-    if not runs:
-        print("⚠️ DEAD: the page reader produced NO run. Every table below "
-              "would be a property of that silence, not of the page.",
-              file=sys.stderr)
-        Path(a.json).parent.mkdir(parents=True, exist_ok=True)
-        json.dump(out, open(a.json, "w"), indent=1)
-        return 2
-
     # ── 2. THE CROSS-READER CONTROL ─────────────────────────────────────────
+    #
+    # ⚠️⚠️ IT IS COMPUTED BEFORE THE DEAD EXIT ON PURPOSE. On every page where
+    # the repair works this control sits at its CEILING (1,920 of 1,920), so
+    # the only state in which it can be SEEN to fail is the blinded one — and
+    # if the arm exited at zero reach first, `--blind-the-reader` would prove
+    # the reach check and leave this one untested. A control whose failure is
+    # unreachable is not a control.
     by_page: dict[int, list] = collections.defaultdict(list)
     for r in runs:
         by_page[r["page"]].append(r)
@@ -222,6 +248,14 @@ def main() -> int:
         print("  ⚠️ the page reader is missing most of what the cell path "
               "accepted -- read nothing below as a result about barlines",
               file=sys.stderr)
+
+    if not runs:
+        print("⚠️ DEAD: the page reader produced NO run. Every table below "
+              "would be a property of that silence, not of the page.",
+              file=sys.stderr)
+        Path(a.json).parent.mkdir(parents=True, exist_ok=True)
+        json.dump(out, open(a.json, "w"), indent=1)
+        return 2
 
     # ── 3. THE DECISIVE CONTROL: has the CELL's signature gone? ─────────────
     #
@@ -239,9 +273,19 @@ def main() -> int:
                    r["d_top"] for r in tall), 2),
                "d_bot_median": round(statistics.median(
                    r["d_bot"] for r in tall), 2),
+               # ⚠️⚠️ EITHER END, NOT BOTH, AND THE DIFFERENCE WAS MEASURED.
+               # The predecessor's signature is a PAIR (−4.00 and +4.00) and
+               # that pair is an artefact of per-cell DUPLICATION: one barline
+               # appears in every cell it crosses, and the middle copies are
+               # cut at both ends. A page reader emits the mark ONCE, so even
+               # with the cell's window re-imposed only the far end is cut —
+               # verified with `--clip-like-a-cell`, where d_bot returns to
+               # exactly 4.00 while d_top stays at the ink. Testing for the
+               # pair therefore reads ZERO under the fault as well as under
+               # the repair, which is a control that cannot fire.
                "at_exactly_pm4": sum(1 for r in tall
-                                     if abs(r["d_top"] + 4.0) < 0.05
-                                     and abs(r["d_bot"] - 4.0) < 0.05)}
+                                     if abs(abs(r["d_top"]) - 4.0) < 0.05
+                                     or abs(abs(r["d_bot"]) - 4.0) < 0.05)}
     out["cell_signature"] = sig
     print(f"\n== the CELL signature on runs over 8 spaces (n={len(tall)}): "
           f"d_top median {sig.get('d_top_median')}, "

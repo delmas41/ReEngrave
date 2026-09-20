@@ -118,6 +118,35 @@ class TestItDoesNotFilter(unittest.TestCase):
         self.assertTrue(any(r.x <= 2 for r in runs))
 
 
+class TestTheKernelClearsTheNotehead(unittest.TestCase):
+    """⚠️ THE ONE BEHAVIOUR THE KERNEL'S HEIGHT BUYS, and a mutation battery
+    is what found this test missing. `detect_stems`' kernel used to be ONE
+    staff space — exactly a notehead's height — so a notehead survived the
+    opening, stayed joined to its own stem, and the component came out as wide
+    as the NOTEHEAD. Mahler 5 p.11 fell from 178 stems to 145 when staff-line
+    removal stopped breaking the head up for us. Nothing here tested it, so
+    shrinking the kernel back left the suite green."""
+
+    def test_a_notehead_does_not_widen_its_stems_run(self):
+        page, staves = _two_staff_page()
+        # a filled head one space tall and 1.4 spaces wide, with a stem up
+        head_y = staves[1].line_ys[2]
+        page.rgb[head_y:head_y + SPACING,
+                 300:300 + int(1.4 * SPACING)] = 0
+        page.ink_column(300 + int(1.4 * SPACING) - 3, head_y - 3 * SPACING,
+                        head_y + 2)
+
+        runs = [r for r in read_page_vertical_runs(page, staves,
+                                                   spacing=SPACING)
+                if r.y < head_y and r.h > 2 * SPACING]
+        self.assertTrue(runs, "the fixture must produce the stem it tests")
+        # ⚠️ The assertion is the WIDTH, not the count: a kernel that keeps
+        # the head returns one run either way, and only its width says which
+        # ink it is made of.
+        self.assertLess(runs[0].width_spaces, 0.6,
+                        "the run must be the STEM, not the stem plus its head")
+
+
 class TestAttribution(unittest.TestCase):
 
     def test_a_run_outside_every_staffs_x_reach_is_attributed_to_NONE(self):

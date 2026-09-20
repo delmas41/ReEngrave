@@ -1,0 +1,111 @@
+==============================================================================
+BASELINE (the positive control -- every arm below is free if this is not green)
+==============================================================================
+  SUITE  exit 0: 12 passed, 5 warnings in 0.15s
+  ARM    exit 0
+  == REACH: 441 page runs, 190 cell-path stems over 1 page(s)
+  == cross-reader control: 190 of 190 cell-path stems have a page run over them (100.0%)
+  == the CELL signature on runs over 8 spaces (n=48): d_top median -0.12, d_bot median 30.62, 0 still at exactly ±4.00
+  == height (spaces) p05/median/p95/max: 1.688 / 3.25 / 34.625 / 126.44
+  == the PRINT join: 7 adjudicated barlines, 27 adjudicated stems
+  barlines           7           3      0      0      0      0      0
+  stems             22           1      0      0      0      0      1
+  barlines           7           3      0      0      0      1      3
+  stems             22           1      0      0      0      0      1
+
+------------------------------------------------------------------------------
+ARM [reader]: the page is windowed to one staff's band (the fault, restored)
+  judge: unit suite   expected: the no-clip tests must fail -- this IS the predecessor's cell, and if the suite survives it then nothing here is testing the window
+  exit 1  -> RED
+
+------------------------------------------------------------------------------
+ARM [reader]: the kernel is one staff space (the pre-2026 stem bug)
+  judge: unit suite   expected: a notehead survives a one-space opening and stays joined to its stem, so the width and attribution tests must move
+  exit 0  -> SURVIVED
+  ⚠️ SURVIVOR -- a real test gap, not a pass.
+
+------------------------------------------------------------------------------
+ARM [reader]: the recipe is RESTATED rather than imported
+  judge: unit suite   expected: the anti-drift test must fail -- two copies of a measured constant is how this repo's numbers drift from the chain that produced them
+  exit 1  -> RED
+
+------------------------------------------------------------------------------
+ARM [reader]: the staff-space unit is the MEAN, not the median
+  judge: unit suite   expected: one odd staff must not move the page's unit -- the median test must fail, the same statistic and the same reason as system_left_consensus
+  exit 1  -> RED
+
+------------------------------------------------------------------------------
+ARM [reader]: a page with no staves DEFAULTS its unit instead of raising
+  judge: unit suite   expected: a fallback must never convert `cannot tell` into a definite answer, and reporting page px as staff spaces is this thread's own frame error
+  exit 1  -> RED
+
+------------------------------------------------------------------------------
+ARM [reader]: an unattributable run is given the NEAREST staff anyway
+  judge: unit suite   expected: `cannot tell` must not be written down as an answer -- the attributed-to-NONE test must fail
+  exit 1  -> RED
+
+------------------------------------------------------------------------------
+ARM [reader]: `staves_spanned` counts only the OWNING staff
+  judge: unit suite   expected: a systemic barline crossing twelve staves must not read as one -- the span assertion must fail
+  exit 1  -> RED
+
+------------------------------------------------------------------------------
+ARM [reader]: the box is emitted as CORNERS instead of [x, y, w, h]
+  judge: unit suite   expected: reading one box spelling as another gives a negative width and a clean believable zero -- the width and no-filter tests must fail
+  exit 1  -> RED
+
+------------------------------------------------------------------------------
+ARM [reader]: a stem-style HEIGHT cap is reintroduced
+  judge: unit suite   expected: THIS IS THE BOUND THAT REFUSES BARLINES. If the suite survives it, the no-filter tests are decorative
+  exit 1  -> RED
+
+------------------------------------------------------------------------------
+ARM [reader]: a stem-style WIDTH cap is reintroduced
+  judge: unit suite   expected: the width-cap test must fail
+  exit 1  -> RED
+
+------------------------------------------------------------------------------
+ARM [reader]: runs at the page edge are dropped (the cell-edge filter)
+  judge: unit suite   expected: the page-edge test must fail -- the cell-edge filter drops exactly the population this reader is for
+  exit 1  -> RED
+
+------------------------------------------------------------------------------
+ARM [arm]: the barline predicate tests only the TOP end
+  judge: ARM headline   expected: the test is about BOTH ends; half of it would fire on every stem whose head sits near a staff line
+  exit 0  -> RED
+
+------------------------------------------------------------------------------
+ARM [arm]: the WIDE form collapses into the narrow one
+  judge: ARM headline   expected: *or they extend to other systems* is half of Sean's rule and is the half that fires here; the two forms must not read alike
+  exit 0  -> RED
+
+------------------------------------------------------------------------------
+ARM [arm]: the DECISIVE control cannot see the cell signature
+  judge: ARM headline   expected: the control that decides whether the window actually changed must be able to fire -- otherwise the whole result is unreadable
+  exit 0  -> SURVIVED
+  ⚠️ SURVIVOR -- a real test gap, not a pass.
+
+------------------------------------------------------------------------------
+ARM [arm]: the cross-reader control passes vacuously
+  judge: ARM headline   expected: a reader that found nothing would report 100% coverage -- a control that cannot fail is not a control
+  exit 0  -> SURVIVED
+  ⚠️ SURVIVOR -- a real test gap, not a pass.
+
+------------------------------------------------------------------------------
+ARM [arm]: DEAD at zero reach becomes a clean exit
+  judge: ARM headline   expected: a dead instrument must not read as a clean result
+  exit 0  -> SURVIVED
+  ⚠️ SURVIVOR -- a real test gap, not a pass.
+
+------------------------------------------------------------------------------
+ARM [arm]: the print join takes the SHORTEST run over a tile
+  judge: ARM headline   expected: a crop tile is small and several runs cross it; the mark the eye settled is the long one, and the headline must move
+  exit 0  -> RED
+
+==============================================================================
+RED 13   SURVIVED 4   BAD ANCHORS 0
+restore VERIFIED by md5: True
+  SURVIVOR [reader] the kernel is one staff space (the pre-2026 stem bug)
+  SURVIVOR [arm] the DECISIVE control cannot see the cell signature
+  SURVIVOR [arm] the cross-reader control passes vacuously
+  SURVIVOR [arm] DEAD at zero reach becomes a clean exit
