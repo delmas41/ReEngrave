@@ -169,7 +169,7 @@ work is a crop pass sampling from ACCEPTED and `too WIDE`, never again from
 `too TALL`** — a print pass, not code.
 
 ⚠️ **NOTHING IS NAMED AND NOTHING READS IT.** No record row, no file moved, no
-OMR-DED. The test firing says the FACT is available, not that anything uses it.
+OMR-NED figure. The test firing says the FACT is available, not that anything uses it.
 
 ⚠️ **A PROCESS FINDING WORTH MORE THAN THE NUMBERS: the battery's first run
 had 4 survivors and only ONE was a test gap.** The other three were controls
