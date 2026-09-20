@@ -1,0 +1,1340 @@
+{
+ "label": "Breitkopf Brahms 1 pp.0-3",
+ "pages": [
+  0,
+  1,
+  2,
+  3
+ ],
+ "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf",
+ "blinded": false,
+ "reach": {
+  "page_runs": 4536,
+  "cell_stems": 2305,
+  "pages": 4
+ },
+ "cross_reader": {
+  "cell_stems": 2305,
+  "found_by_page_reader": 2305,
+  "rate": 1.0
+ },
+ "cell_signature": {
+  "n": 156,
+  "d_top_median": -0.15,
+  "d_bot_median": 38.7,
+  "at_exactly_pm4": 0
+ },
+ "heights": {
+  "p05": 1.667,
+  "median": 2.844,
+  "p95": 7.107,
+  "max": 166.66
+ },
+ "staves_spanned": {
+  "0": 462,
+  "1": 3931,
+  "2": 5,
+  "3": 2,
+  "4": 3,
+  "5": 63,
+  "6": 2,
+  "8": 8,
+  "9": 53,
+  "13": 1,
+  "14": 6
+ },
+ "barline_test_population": {
+  "ends": {
+   "0.15": 39,
+   "0.25": 92,
+   "0.4": 148,
+   "0.6": 282,
+   "1.0": 879
+  },
+  "ends_any": {
+   "0.15": 76,
+   "0.25": 186,
+   "0.4": 262,
+   "0.6": 409,
+   "1.0": 1036
+  }
+ },
+ "print_join": {
+  "barlines": [
+   {
+    "id": "B006",
+    "subject": "glyph/1/0/1/2/16",
+    "n_runs": 1,
+    "h_spaces": 75.852,
+    "w_spaces": 0.667,
+    "staves_spanned": 9,
+    "d_top": -0.15,
+    "d_bot": 71.67,
+    "ends": {
+     "0.15": false,
+     "0.25": false,
+     "0.4": false,
+     "0.6": false,
+     "1.0": false
+    },
+    "ends_any": {
+     "0.15": true,
+     "0.25": true,
+     "0.4": true,
+     "0.6": true,
+     "1.0": true
+    }
+   },
+   {
+    "id": "B018",
+    "subject": "glyph/2/1/5/5/3",
+    "n_runs": 1,
+    "h_spaces": 66.37,
+    "w_spaces": 0.704,
+    "staves_spanned": 9,
+    "d_top": -0.33,
+    "d_bot": 62.0,
+    "ends": {
+     "0.15": false,
+     "0.25": false,
+     "0.4": false,
+     "0.6": false,
+     "1.0": false
+    },
+    "ends_any": {
+     "0.15": false,
+     "0.25": false,
+     "0.4": true,
+     "0.6": true,
+     "1.0": true
+    }
+   },
+   {
+    "id": "B027",
+    "subject": "glyph/3/0/4/8/12",
+    "n_runs": 1,
+    "h_spaces": 39.679,
+    "w_spaces": 0.393,
+    "staves_spanned": 5,
+    "d_top": -0.11,
+    "d_bot": 35.61,
+    "ends": {
+     "0.15": false,
+     "0.25": false,
+     "0.4": false,
+     "0.6": false,
+     "1.0": false
+    },
+    "ends_any": {
+     "0.15": false,
+     "0.25": false,
+     "0.4": false,
+     "0.6": false,
+     "1.0": false
+    }
+   },
+   {
+    "id": "B028",
+    "subject": "glyph/3/1/12/2/12",
+    "n_runs": 1,
+    "h_spaces": 38.071,
+    "w_spaces": 0.464,
+    "staves_spanned": 5,
+    "d_top": -0.07,
+    "d_bot": 34.04,
+    "ends": {
+     "0.15": false,
+     "0.25": false,
+     "0.4": false,
+     "0.6": false,
+     "1.0": false
+    },
+    "ends_any": {
+     "0.15": false,
+     "0.25": true,
+     "0.4": true,
+     "0.6": true,
+     "1.0": true
+    }
+   },
+   {
+    "id": "B033",
+    "subject": "glyph/2/1/6/2/6",
+    "n_runs": 1,
+    "h_spaces": 41.667,
+    "w_spaces": 0.519,
+    "staves_spanned": 6,
+    "d_top": -1.0,
+    "d_bot": 36.59,
+    "ends": {
+     "0.15": false,
+     "0.25": false,
+     "0.4": false,
+     "0.6": false,
+     "1.0": false
+    },
+    "ends_any": {
+     "0.15": false,
+     "0.25": false,
+     "0.4": false,
+     "0.6": false,
+     "1.0": true
+    }
+   },
+   {
+    "id": "B048",
+    "subject": "glyph/2/1/4/4/1",
+    "n_runs": 1,
+    "h_spaces": 66.37,
+    "w_spaces": 0.63,
+    "staves_spanned": 9,
+    "d_top": -0.19,
+    "d_bot": 62.15,
+    "ends": {
+     "0.15": false,
+     "0.25": false,
+     "0.4": false,
+     "0.6": false,
+     "1.0": false
+    },
+    "ends_any": {
+     "0.15": false,
+     "0.25": true,
+     "0.4": true,
+     "0.6": true,
+     "1.0": true
+    }
+   },
+   {
+    "id": "B051",
+    "subject": "glyph/3/1/1/9/10",
+    "n_runs": 1,
+    "h_spaces": 63.536,
+    "w_spaces": 0.429,
+    "staves_spanned": 9,
+    "d_top": -0.07,
+    "d_bot": 59.54,
+    "ends": {
+     "0.15": false,
+     "0.25": false,
+     "0.4": false,
+     "0.6": false,
+     "1.0": false
+    },
+    "ends_any": {
+     "0.15": false,
+     "0.25": true,
+     "0.4": true,
+     "0.6": true,
+     "1.0": true
+    }
+   },
+   {
+    "id": "B054",
+    "subject": "glyph/2/0/1/0/12",
+    "n_runs": 1,
+    "h_spaces": 69.704,
+    "w_spaces": 0.556,
+    "staves_spanned": 9,
+    "d_top": -0.11,
+    "d_bot": 65.56,
+    "ends": {
+     "0.15": false,
+     "0.25": false,
+     "0.4": false,
+     "0.6": false,
+     "1.0": false
+    },
+    "ends_any": {
+     "0.15": false,
+     "0.25": true,
+     "0.4": true,
+     "0.6": true,
+     "1.0": true
+    }
+   },
+   {
+    "id": "B057",
+    "subject": "glyph/1/0/3/1/31",
+    "n_runs": 1,
+    "h_spaces": 75.852,
+    "w_spaces": 0.519,
+    "staves_spanned": 9,
+    "d_top": -0.15,
+    "d_bot": 71.67,
+    "ends": {
+     "0.15": false,
+     "0.25": false,
+     "0.4": false,
+     "0.6": false,
+     "1.0": false
+    },
+    "ends_any": {
+     "0.15": true,
+     "0.25": true,
+     "0.4": true,
+     "0.6": true,
+     "1.0": true
+    }
+   },
+   {
+    "id": "B077",
+    "subject": "glyph/2/0/5/2/6",
+    "n_runs": 1,
+    "h_spaces": 69.704,
+    "w_spaces": 0.63,
+    "staves_spanned": 9,
+    "d_top": -0.19,
+    "d_bot": 65.48,
+    "ends": {
+     "0.15": false,
+     "0.25": false,
+     "0.4": false,
+     "0.6": false,
+     "1.0": false
+    },
+    "ends_any": {
+     "0.15": false,
+     "0.25": true,
+     "0.4": true,
+     "0.6": true,
+     "1.0": true
+    }
+   },
+   {
+    "id": "B092",
+    "subject": "glyph/3/0/7/2/5",
+    "n_runs": 1,
+    "h_spaces": 69.893,
+    "w_spaces": 0.536,
+    "staves_spanned": 9,
+    "d_top": -0.11,
+    "d_bot": 65.82,
+    "ends": {
+     "0.15": false,
+     "0.25": false,
+     "0.4": false,
+     "0.6": false,
+     "1.0": false
+    },
+    "ends_any": {
+     "0.15": false,
+     "0.25": true,
+     "0.4": true,
+     "0.6": true,
+     "1.0": true
+    }
+   },
+   {
+    "id": "B103",
+    "subject": "glyph/1/1/9/3/26",
+    "n_runs": 1,
+    "h_spaces": 40.519,
+    "w_spaces": 0.556,
+    "staves_spanned": 5,
+    "d_top": -0.19,
+    "d_bot": 36.37,
+    "ends": {
+     "0.15": false,
+     "0.25": false,
+     "0.4": false,
+     "0.6": false,
+     "1.0": false
+    },
+    "ends_any": {
+     "0.15": false,
+     "0.25": true,
+     "0.4": true,
+     "0.6": true,
+     "1.0": true
+    }
+   }
+  ],
+  "stems": [
+   {
+    "id": "B001",
+    "subject": "glyph/2/0/0/4/13",
+    "n_runs": 1,
+    "h_spaces": 4.778,
+    "w_spaces": 1.185,
+    "staves_spanned": 1,
+    "d_top": -2.41,
+    "d_bot": -1.67,
+    "ends": {
+     "0.15": false,
+     "0.25": false,
+     "0.4": false,
+     "0.6": false,
+     "1.0": false
+    },
+    "ends_any": {
+     "0.15": false,
+     "0.25": false,
+     "0.4": false,
+     "0.6": false,
+     "1.0": false
+    }
+   },
+   {
+    "id": "B002",
+    "subject": "glyph/3/1/9/1/10",
+    "n_runs": 1,
+    "h_spaces": 5.821,
+    "w_spaces": 0.214,
+    "staves_spanned": 1,
+    "d_top": -1.43,
+    "d_bot": 0.43,
+    "ends": {
+     "0.15": false,
+     "0.25": false,
+     "0.4": false,
+     "0.6": false,
+     "1.0": false
+    },
+    "ends_any": {
+     "0.15": false,
+     "0.25": false,
+     "0.4": false,
+     "0.6": false,
+     "1.0": false
+    }
+   },
+   {
+    "id": "B003",
+    "subject": "glyph/3/0/8/7/1",
+    "n_runs": 1,
+    "h_spaces": 3.714,
+    "w_spaces": 0.214,
+    "staves_spanned": 1,
+    "d_top": -1.29,
+    "d_bot": -1.54,
+    "ends": {
+     "0.15": false,
+     "0.25": false,
+     "0.4": false,
+     "0.6": false,
+     "1.0": false
+    },
+    "ends_any": {
+     "0.15": false,
+     "0.25": false,
+     "0.4": false,
+     "0.6": false,
+     "1.0": false
+    }
+   },
+   {
+    "id": "B004",
+    "subject": "glyph/1/0/10/1/7",
+    "n_runs": 1,
+    "h_spaces": 10.222,
+    "w_spaces": 0.296,
+    "staves_spanned": 1,
+    "d_top": -3.19,
+    "d_bot": 3.0,
+    "ends": {
+     "0.15": false,
+     "0.25": false,
+     "0.4": false,
+     "0.6": false,
+     "1.0": false
+    },
+    "ends_any": {
+     "0.15": false,
+     "0.25": false,
+     "0.4": false,
+     "0.6": false,
+     "1.0": false
+    }
+   },
+   {
+    "id": "B008",
+    "subject": "glyph/3/1/0/3/2",
+    "n_runs": 1,
+    "h_spaces": 6.5,
+    "w_spaces": 0.286,
+    "staves_spanned": 1,
+    "d_top": -4.21,
+    "d_bot": -1.64,
+    "ends": {
+     "0.15": false,
+     "0.25": false,
+     "0.4": false,
+     "0.6": false,
+     "1.0": false
+    },
+    "ends_any": {
+     "0.15": false,
+     "0.25": false,
+     "0.4": false,
+     "0.6": false,
+     "1.0": false
+    }
+   },
+   {
+    "id": "B009",
+    "subject": "glyph/2/1/2/3/1",
+    "n_runs": 1,
+    "h_spaces": 5.407,
+    "w_spaces": 1.333,
+    "staves_spanned": 1,
+    "d_top": -1.15,
+    "d_bot": 0.15,
+    "ends": {
+     "0.15": false,
+     "0.25": false,
+     "0.4": false,
+     "0.6": false,
+     "1.0": false
+    },
+    "ends_any": {
+     "0.15": false,
+     "0.25": false,
+     "0.4": false,
+     "0.6": false,
+     "1.0": false
+    }
+   },
+   {
+    "id": "B010",
+    "subject": "glyph/1/0/0/0/12",
+    "n_runs": 1,
+    "h_spaces": 6.741,
+    "w_spaces": 0.296,
+    "staves_spanned": 1,
+    "d_top": -2.44,
+    "d_bot": 0.26,
+    "ends": {
+     "0.15": false,
+     "0.25": false,
+     "0.4": false,
+     "0.6": false,
+     "1.0": false
+    },
+    "ends_any": {
+     "0.15": false,
+     "0.25": false,
+     "0.4": false,
+     "0.6": false,
+     "1.0": false
+    }
+   },
+   {
+    "id": "B011",
+    "subject": "glyph/0/0/2/5/7",
+    "n_runs": 1,
+    "h_spaces": 4.812,
+    "w_spaces": 1.062,
+    "staves_spanned": 1,
+    "d_top": -1.62,
+    "d_bot": -0.81,
+    "ends": {
+     "0.15": false,
+     "0.25": false,
+     "0.4": false,
+     "0.6": false,
+     "1.0": false
+    },
+    "ends_any": {
+     "0.15": false,
+     "0.25": false,
+     "0.4": false,
+     "0.6": false,
+     "1.0": false
+    }
+   },
+   {
+    "id": "B013",
+    "subject": "glyph/2/0/3/3/9",
+    "n_runs": 1,
+    "h_spaces": 5.37,
+    "w_spaces": 1.074,
+    "staves_spanned": 1,
+    "d_top": -2.81,
+    "d_bot": -1.48,
+    "ends": {
+     "0.15": false,
+     "0.25": false,
+     "0.4": false,
+     "0.6": false,
+     "1.0": false
+    },
+    "ends_any": {
+     "0.15": false,
+     "0.25": false,
+     "0.4": false,
+     "0.6": false,
+     "1.0": false
+    }
+   },
+   {
+    "id": "B015",
+    "subject": "glyph/2/1/11/5/7",
+    "n_runs": 1,
+    "h_spaces": 4.222,
+    "w_spaces": 0.259,
+    "staves_spanned": 1,
+    "d_top": -1.52,
+    "d_bot": -1.33,
+    "ends": {
+     "0.15": false,
+     "0.25": false,
+     "0.4": false,
+     "0.6": false,
+     "1.0": false
+    },
+    "ends_any": {
+     "0.15": false,
+     "0.25": false,
+     "0.4": false,
+     "0.6": false,
+     "1.0": false
+    }
+   },
+   {
+    "id": "B017",
+    "subject": "glyph/0/0/6/2/5",
+    "n_runs": 1,
+    "h_spaces": 4.562,
+    "w_spaces": 1.0,
+    "staves_spanned": 1,
+    "d_top": 0.47,
+    "d_bot": 1.03,
+    "ends": {
+     "0.15": false,
+     "0.25": false,
+     "0.4": false,
+     "0.6": false,
+     "1.0": false
+    },
+    "ends_any": {
+     "0.15": false,
+     "0.25": false,
+     "0.4": false,
+     "0.6": false,
+     "1.0": false
+    }
+   },
+   {
+    "id": "B023",
+    "subject": "glyph/1/1/11/0/30",
+    "n_runs": 1,
+    "h_spaces": 3.444,
+    "w_spaces": 0.185,
+    "staves_spanned": 1,
+    "d_top": 1.59,
+    "d_bot": 0.93,
+    "ends": {
+     "0.15": false,
+     "0.25": false,
+     "0.4": false,
+     "0.6": false,
+     "1.0": false
+    },
+    "ends_any": {
+     "0.15": false,
+     "0.25": false,
+     "0.4": false,
+     "0.6": false,
+     "1.0": false
+    }
+   },
+   {
+    "id": "B026",
+    "subject": "glyph/3/0/10/5/0",
+    "n_runs": 1,
+    "h_spaces": 4.821,
+    "w_spaces": 1.179,
+    "staves_spanned": 1,
+    "d_top": 0.68,
+    "d_bot": 1.61,
+    "ends": {
+     "0.15": false,
+     "0.25": false,
+     "0.4": false,
+     "0.6": false,
+     "1.0": false
+    },
+    "ends_any": {
+     "0.15": false,
+     "0.25": false,
+     "0.4": false,
+     "0.6": false,
+     "1.0": false
+    }
+   },
+   {
+    "id": "B034",
+    "subject": "glyph/0/0/0/4/9",
+    "n_runs": 1,
+    "h_spaces": 3.781,
+    "w_spaces": 1.156,
+    "staves_spanned": 1,
+    "d_top": -3.0,
+    "d_bot": -3.25,
+    "ends": {
+     "0.15": false,
+     "0.25": false,
+     "0.4": false,
+     "0.6": false,
+     "1.0": false
+    },
+    "ends_any": {
+     "0.15": false,
+     "0.25": false,
+     "0.4": false,
+     "0.6": false,
+     "1.0": false
+    }
+   },
+   {
+    "id": "B036",
+    "subject": "glyph/3/0/4/9/4",
+    "n_runs": 1,
+    "h_spaces": 4.893,
+    "w_spaces": 1.107,
+    "staves_spanned": 1,
+    "d_top": -0.68,
+    "d_bot": 0.25,
+    "ends": {
+     "0.15": false,
+     "0.25": false,
+     "0.4": false,
+     "0.6": false,
+     "1.0": true
+    },
+    "ends_any": {
+     "0.15": false,
+     "0.25": false,
+     "0.4": false,
+     "0.6": false,
+     "1.0": true
+    }
+   },
+   {
+    "id": "B037",
+    "subject": "glyph/3/0/0/9/9",
+    "n_runs": 1,
+    "h_spaces": 5.25,
+    "w_spaces": 1.107,
+    "staves_spanned": 1,
+    "d_top": -2.07,
+    "d_bot": -0.79,
+    "ends": {
+     "0.15": false,
+     "0.25": false,
+     "0.4": false,
+     "0.6": false,
+     "1.0": false
+    },
+    "ends_any": {
+     "0.15": false,
+     "0.25": false,
+     "0.4": false,
+     "0.6": false,
+     "1.0": false
+    }
+   },
+   {
+    "id": "B038",
+    "subject": "glyph/1/0/2/0/24",
+    "n_runs": 1,
+    "h_spaces": 5.333,
+    "w_spaces": 1.185,
+    "staves_spanned": 1,
+    "d_top": -1.78,
+    "d_bot": -0.52,
+    "ends": {
+     "0.15": false,
+     "0.25": false,
+     "0.4": false,
+     "0.6": false,
+     "1.0": false
+    },
+    "ends_any": {
+     "0.15": false,
+     "0.25": false,
+     "0.4": false,
+     "0.6": false,
+     "1.0": false
+    }
+   },
+   {
+    "id": "B040",
+    "subject": "glyph/3/0/2/1/3",
+    "n_runs": 1,
+    "h_spaces": 4.5,
+    "w_spaces": 1.107,
+    "staves_spanned": 1,
+    "d_top": 0.46,
+    "d_bot": 1.0,
+    "ends": {
+     "0.15": false,
+     "0.25": false,
+     "0.4": false,
+     "0.6": false,
+     "1.0": true
+    },
+    "ends_any": {
+     "0.15": false,
+     "0.25": false,
+     "0.4": false,
+     "0.6": false,
+     "1.0": true
+    }
+   },
+   {
+    "id": "B042",
+    "subject": "glyph/0/0/3/6/3",
+    "n_runs": 1,
+    "h_spaces": 5.312,
+    "w_spaces": 1.188,
+    "staves_spanned": 1,
+    "d_top": -2.19,
+    "d_bot": -0.91,
+    "ends": {
+     "0.15": false,
+     "0.25": false,
+     "0.4": false,
+     "0.6": false,
+     "1.0": false
+    },
+    "ends_any": {
+     "0.15": false,
+     "0.25": false,
+     "0.4": false,
+     "0.6": false,
+     "1.0": false
+    }
+   },
+   {
+    "id": "B046",
+    "subject": "glyph/0/0/11/2/4",
+    "n_runs": 1,
+    "h_spaces": 5.031,
+    "w_spaces": 1.094,
+    "staves_spanned": 1,
+    "d_top": -0.06,
+    "d_bot": 0.94,
+    "ends": {
+     "0.15": false,
+     "0.25": false,
+     "0.4": false,
+     "0.6": false,
+     "1.0": true
+    },
+    "ends_any": {
+     "0.15": false,
+     "0.25": false,
+     "0.4": false,
+     "0.6": false,
+     "1.0": true
+    }
+   },
+   {
+    "id": "B050",
+    "subject": "glyph/1/1/12/1/5",
+    "n_runs": 1,
+    "h_spaces": 3.704,
+    "w_spaces": 0.333,
+    "staves_spanned": 1,
+    "d_top": 0.74,
+    "d_bot": 0.41,
+    "ends": {
+     "0.15": false,
+     "0.25": false,
+     "0.4": false,
+     "0.6": false,
+     "1.0": true
+    },
+    "ends_any": {
+     "0.15": false,
+     "0.25": false,
+     "0.4": false,
+     "0.6": false,
+     "1.0": true
+    }
+   },
+   {
+    "id": "B055",
+    "subject": "glyph/2/0/4/2/8",
+    "n_runs": 1,
+    "h_spaces": 2.148,
+    "w_spaces": 0.259,
+    "staves_spanned": 1,
+    "d_top": 3.44,
+    "d_bot": 1.56,
+    "ends": {
+     "0.15": false,
+     "0.25": false,
+     "0.4": false,
+     "0.6": false,
+     "1.0": false
+    },
+    "ends_any": {
+     "0.15": false,
+     "0.25": false,
+     "0.4": false,
+     "0.6": false,
+     "1.0": false
+    }
+   },
+   {
+    "id": "B065",
+    "subject": "glyph/0/0/0/3/2",
+    "n_runs": 1,
+    "h_spaces": 5.375,
+    "w_spaces": 0.969,
+    "staves_spanned": 1,
+    "d_top": -3.19,
+    "d_bot": -1.84,
+    "ends": {
+     "0.15": false,
+     "0.25": false,
+     "0.4": false,
+     "0.6": false,
+     "1.0": false
+    },
+    "ends_any": {
+     "0.15": false,
+     "0.25": false,
+     "0.4": false,
+     "0.6": false,
+     "1.0": false
+    }
+   },
+   {
+    "id": "B069",
+    "subject": "glyph/2/1/5/1/1",
+    "n_runs": 1,
+    "h_spaces": 4.963,
+    "w_spaces": 1.296,
+    "staves_spanned": 1,
+    "d_top": 0.44,
+    "d_bot": 1.37,
+    "ends": {
+     "0.15": false,
+     "0.25": false,
+     "0.4": false,
+     "0.6": false,
+     "1.0": false
+    },
+    "ends_any": {
+     "0.15": false,
+     "0.25": false,
+     "0.4": false,
+     "0.6": false,
+     "1.0": false
+    }
+   },
+   {
+    "id": "B074",
+    "subject": "glyph/1/0/12/0/18",
+    "n_runs": 1,
+    "h_spaces": 2.593,
+    "w_spaces": 0.259,
+    "staves_spanned": 1,
+    "d_top": -1.19,
+    "d_bot": -2.63,
+    "ends": {
+     "0.15": false,
+     "0.25": false,
+     "0.4": false,
+     "0.6": false,
+     "1.0": false
+    },
+    "ends_any": {
+     "0.15": false,
+     "0.25": false,
+     "0.4": false,
+     "0.6": false,
+     "1.0": false
+    }
+   },
+   {
+    "id": "B076",
+    "subject": "glyph/2/0/2/5/11",
+    "n_runs": 1,
+    "h_spaces": 5.0,
+    "w_spaces": 1.222,
+    "staves_spanned": 1,
+    "d_top": -0.33,
+    "d_bot": 0.63,
+    "ends": {
+     "0.15": false,
+     "0.25": false,
+     "0.4": false,
+     "0.6": false,
+     "1.0": true
+    },
+    "ends_any": {
+     "0.15": false,
+     "0.25": false,
+     "0.4": false,
+     "0.6": false,
+     "1.0": true
+    }
+   },
+   {
+    "id": "B078",
+    "subject": "glyph/3/0/0/8/9",
+    "n_runs": 1,
+    "h_spaces": 5.214,
+    "w_spaces": 1.107,
+    "staves_spanned": 1,
+    "d_top": -2.11,
+    "d_bot": -0.86,
+    "ends": {
+     "0.15": false,
+     "0.25": false,
+     "0.4": false,
+     "0.6": false,
+     "1.0": false
+    },
+    "ends_any": {
+     "0.15": false,
+     "0.25": false,
+     "0.4": false,
+     "0.6": false,
+     "1.0": false
+    }
+   },
+   {
+    "id": "B081",
+    "subject": "glyph/0/0/0/0/11",
+    "n_runs": 1,
+    "h_spaces": 5.281,
+    "w_spaces": 1.125,
+    "staves_spanned": 1,
+    "d_top": -2.16,
+    "d_bot": -0.91,
+    "ends": {
+     "0.15": false,
+     "0.25": false,
+     "0.4": false,
+     "0.6": false,
+     "1.0": false
+    },
+    "ends_any": {
+     "0.15": false,
+     "0.25": false,
+     "0.4": false,
+     "0.6": false,
+     "1.0": false
+    }
+   },
+   {
+    "id": "B085",
+    "subject": "glyph/3/0/2/0/7",
+    "n_runs": 1,
+    "h_spaces": 5.179,
+    "w_spaces": 1.179,
+    "staves_spanned": 1,
+    "d_top": -2.04,
+    "d_bot": -0.79,
+    "ends": {
+     "0.15": false,
+     "0.25": false,
+     "0.4": false,
+     "0.6": false,
+     "1.0": false
+    },
+    "ends_any": {
+     "0.15": false,
+     "0.25": false,
+     "0.4": false,
+     "0.6": false,
+     "1.0": false
+    }
+   },
+   {
+    "id": "B088",
+    "subject": "glyph/0/0/0/3/10",
+    "n_runs": 1,
+    "h_spaces": 5.375,
+    "w_spaces": 0.969,
+    "staves_spanned": 1,
+    "d_top": -3.19,
+    "d_bot": -1.84,
+    "ends": {
+     "0.15": false,
+     "0.25": false,
+     "0.4": false,
+     "0.6": false,
+     "1.0": false
+    },
+    "ends_any": {
+     "0.15": false,
+     "0.25": false,
+     "0.4": false,
+     "0.6": false,
+     "1.0": false
+    }
+   },
+   {
+    "id": "B090",
+    "subject": "glyph/3/0/1/2/6",
+    "n_runs": 1,
+    "h_spaces": 2.929,
+    "w_spaces": 0.214,
+    "staves_spanned": 0,
+    "d_top": null,
+    "d_bot": null,
+    "ends": {
+     "0.15": null,
+     "0.25": null,
+     "0.4": null,
+     "0.6": null,
+     "1.0": null
+    },
+    "ends_any": {
+     "0.15": false,
+     "0.25": false,
+     "0.4": false,
+     "0.6": false,
+     "1.0": false
+    }
+   },
+   {
+    "id": "B093",
+    "subject": "glyph/3/0/1/1/1",
+    "n_runs": 1,
+    "h_spaces": 5.429,
+    "w_spaces": 0.25,
+    "staves_spanned": 1,
+    "d_top": -2.32,
+    "d_bot": -0.79,
+    "ends": {
+     "0.15": false,
+     "0.25": false,
+     "0.4": false,
+     "0.6": false,
+     "1.0": false
+    },
+    "ends_any": {
+     "0.15": false,
+     "0.25": false,
+     "0.4": false,
+     "0.6": false,
+     "1.0": false
+    }
+   },
+   {
+    "id": "B094",
+    "subject": "glyph/0/0/2/6/8",
+    "n_runs": 1,
+    "h_spaces": 4.719,
+    "w_spaces": 1.094,
+    "staves_spanned": 1,
+    "d_top": 0.38,
+    "d_bot": 1.09,
+    "ends": {
+     "0.15": false,
+     "0.25": false,
+     "0.4": false,
+     "0.6": false,
+     "1.0": false
+    },
+    "ends_any": {
+     "0.15": false,
+     "0.25": false,
+     "0.4": false,
+     "0.6": false,
+     "1.0": false
+    }
+   },
+   {
+    "id": "B095",
+    "subject": "glyph/2/0/2/5/21",
+    "n_runs": 1,
+    "h_spaces": 4.63,
+    "w_spaces": 1.185,
+    "staves_spanned": 1,
+    "d_top": 0.22,
+    "d_bot": 0.81,
+    "ends": {
+     "0.15": false,
+     "0.25": false,
+     "0.4": false,
+     "0.6": false,
+     "1.0": true
+    },
+    "ends_any": {
+     "0.15": false,
+     "0.25": false,
+     "0.4": false,
+     "0.6": false,
+     "1.0": true
+    }
+   },
+   {
+    "id": "B096",
+    "subject": "glyph/2/0/3/4/4",
+    "n_runs": 1,
+    "h_spaces": 4.741,
+    "w_spaces": 1.222,
+    "staves_spanned": 1,
+    "d_top": -1.41,
+    "d_bot": -0.7,
+    "ends": {
+     "0.15": false,
+     "0.25": false,
+     "0.4": false,
+     "0.6": false,
+     "1.0": false
+    },
+    "ends_any": {
+     "0.15": false,
+     "0.25": false,
+     "0.4": false,
+     "0.6": false,
+     "1.0": false
+    }
+   },
+   {
+    "id": "B097",
+    "subject": "glyph/3/1/0/3/10",
+    "n_runs": 2,
+    "h_spaces": 6.5,
+    "w_spaces": 0.286,
+    "staves_spanned": 1,
+    "d_top": -4.21,
+    "d_bot": -1.64,
+    "ends": {
+     "0.15": false,
+     "0.25": false,
+     "0.4": false,
+     "0.6": false,
+     "1.0": false
+    },
+    "ends_any": {
+     "0.15": false,
+     "0.25": false,
+     "0.4": false,
+     "0.6": false,
+     "1.0": false
+    }
+   },
+   {
+    "id": "B098",
+    "subject": "glyph/0/0/3/6/7",
+    "n_runs": 2,
+    "h_spaces": 4.719,
+    "w_spaces": 0.219,
+    "staves_spanned": 1,
+    "d_top": -2.25,
+    "d_bot": -1.56,
+    "ends": {
+     "0.15": false,
+     "0.25": false,
+     "0.4": false,
+     "0.6": false,
+     "1.0": false
+    },
+    "ends_any": {
+     "0.15": false,
+     "0.25": false,
+     "0.4": false,
+     "0.6": false,
+     "1.0": false
+    }
+   },
+   {
+    "id": "B099",
+    "subject": "glyph/3/1/5/0/8",
+    "n_runs": 2,
+    "h_spaces": 4.786,
+    "w_spaces": 1.071,
+    "staves_spanned": 1,
+    "d_top": -0.61,
+    "d_bot": 0.25,
+    "ends": {
+     "0.15": false,
+     "0.25": false,
+     "0.4": false,
+     "0.6": false,
+     "1.0": true
+    },
+    "ends_any": {
+     "0.15": false,
+     "0.25": false,
+     "0.4": false,
+     "0.6": false,
+     "1.0": true
+    }
+   },
+   {
+    "id": "B102",
+    "subject": "glyph/0/0/2/5/1",
+    "n_runs": 1,
+    "h_spaces": 4.812,
+    "w_spaces": 1.062,
+    "staves_spanned": 1,
+    "d_top": -1.62,
+    "d_bot": -0.81,
+    "ends": {
+     "0.15": false,
+     "0.25": false,
+     "0.4": false,
+     "0.6": false,
+     "1.0": false
+    },
+    "ends_any": {
+     "0.15": false,
+     "0.25": false,
+     "0.4": false,
+     "0.6": false,
+     "1.0": false
+    }
+   },
+   {
+    "id": "B105",
+    "subject": "glyph/3/0/10/7/7",
+    "n_runs": 1,
+    "h_spaces": 6.429,
+    "w_spaces": 0.25,
+    "staves_spanned": 1,
+    "d_top": -2.29,
+    "d_bot": 0.21,
+    "ends": {
+     "0.15": false,
+     "0.25": false,
+     "0.4": false,
+     "0.6": false,
+     "1.0": false
+    },
+    "ends_any": {
+     "0.15": false,
+     "0.25": false,
+     "0.4": false,
+     "0.6": false,
+     "1.0": false
+    }
+   },
+   {
+    "id": "B106",
+    "subject": "glyph/3/0/1/1/3",
+    "n_runs": 1,
+    "h_spaces": 5.036,
+    "w_spaces": 1.107,
+    "staves_spanned": 1,
+    "d_top": -2.57,
+    "d_bot": -1.43,
+    "ends": {
+     "0.15": false,
+     "0.25": false,
+     "0.4": false,
+     "0.6": false,
+     "1.0": false
+    },
+    "ends_any": {
+     "0.15": false,
+     "0.25": false,
+     "0.4": false,
+     "0.6": false,
+     "1.0": false
+    }
+   }
+  ]
+ }
+}

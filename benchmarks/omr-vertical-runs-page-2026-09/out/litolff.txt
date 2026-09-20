@@ -1,0 +1,29 @@
+Litolff Beethoven 5 pp.1-4: re-cut 4 page(s) in 14s
+  page 1: 441 page runs (0.0s, spacing 16.0px, 12 staves)
+  page 2: 1082 page runs (0.0s, spacing 16.0px, 22 staves)
+  page 3: 742 page runs (0.0s, spacing 16.0px, 19 staves)
+  page 4: 1200 page runs (0.0s, spacing 16.0px, 22 staves)
+
+== REACH: 3465 page runs, 1920 cell-path stems over 4 page(s)
+== cross-reader control: 1920 of 1920 cell-path stems have a page run over them (100.0%)
+
+== the CELL signature on runs over 8 spaces (n=327): d_top median -0.06, d_bot median 26.25, 0 still at exactly ±4.00
+== height (spaces) p05/median/p95/max: 1.688 / 3.75 / 30.25 / 126.44
+== staves spanned: 0:371, 1:2773, 2:20, 3:92, 4:162, 5:28, 8:3, 11:13
+
+== Sean's test over all 3465 runs
+  form         0.15   0.25    0.4    0.6    1.0
+  own            25    101    221    430   1047
+  any            44    246    436    691   1389
+
+== the PRINT join: 7 adjudicated barlines, 27 adjudicated stems
+  -- OWN staff
+  population    joined  with a run   0.15   0.25    0.4    0.6    1.0
+  barlines           7           7      0      0      0      0      0
+  stems             22          22      0      0      0      0      3
+  -- ANY staff
+  population    joined  with a run   0.15   0.25    0.4    0.6    1.0
+  barlines           7           7      0      2      2      3      7
+  stems             22          22      0      0      0      0      4
+
+wrote benchmarks/omr-vertical-runs-page-2026-09/out/litolff.json
