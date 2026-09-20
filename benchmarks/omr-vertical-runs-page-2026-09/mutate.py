@@ -153,8 +153,8 @@ ARMS = [
      "half that fires here; the two forms must not read alike"),
 
     ("arm", "the DECISIVE control cannot see the cell signature",
-     "                                     if abs(r[\"d_top\"] + 4.0) < 0.05\n"
-     "                                     and abs(r[\"d_bot\"] - 4.0) < 0.05)}",
+     "                                     if abs(abs(r[\"d_top\"]) - 4.0) < 0.05\n"
+     "                                     or abs(abs(r[\"d_bot\"]) - 4.0) < 0.05)}",
      "                                     if False)}",
      "the control that decides whether the window actually changed must be "
      "able to fire -- otherwise the whole result is unreadable"),

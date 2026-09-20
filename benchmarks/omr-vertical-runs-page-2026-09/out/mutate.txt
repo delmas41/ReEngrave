@@ -1,8 +1,8 @@
 ==============================================================================
 BASELINE (the positive control -- every arm below is free if this is not green)
 ==============================================================================
-  SUITE  exit 0: 12 passed, 5 warnings in 0.15s
-  ARM    exit 0
+  SUITE  exit 0: 13 passed, 5 warnings in 0.15s
+  ARM    exit 2
   == REACH: 441 page runs, 190 cell-path stems over 1 page(s)
   == cross-reader control: 190 of 190 cell-path stems have a page run over them (100.0%)
   == the CELL signature on runs over 8 spaces (n=48): d_top median -0.12, d_bot median 30.62, 0 still at exactly ±4.00
@@ -12,6 +12,22 @@ BASELINE (the positive control -- every arm below is free if this is not green)
   stems             22           1      0      0      0      0      1
   barlines           7           3      0      0      0      1      3
   stems             22           1      0      0      0      0      1
+  --
+  == REACH: 0 page runs, 190 cell-path stems over 1 page(s)
+  == cross-reader control: 0 of 190 cell-path stems have a page run over them (0.0%)
+  ⚠️ the page reader is missing most of what the cell path accepted -- read nothing below as a result about barlines
+  ⚠️ DEAD: the page reader produced NO run. Every table below would be a property of that silence, not of the page.
+  --
+  == REACH: 441 page runs, 190 cell-path stems over 1 page(s)
+  == cross-reader control: 190 of 190 cell-path stems have a page run over them (100.0%)
+  == the CELL signature on runs over 8 spaces (n=48): d_top median -0.12, d_bot median 4.0, 48 still at exactly ±4.00
+  == height (spaces) p05/median/p95/max: 1.688 / 3.25 / 34.625 / 126.44
+  == the PRINT join: 7 adjudicated barlines, 27 adjudicated stems
+  barlines           7           0      0      0      0      0      0
+  stems             22           1      0      0      0      0      1
+  barlines           7           0      0      0      0      0      0
+  stems             22           1      0      0      0      0      1
+  ⚠️ DEAD on this half: no adjudicated barline joins a run -- the join, not the test, is what failed
 
 ------------------------------------------------------------------------------
 ARM [reader]: the page is windowed to one staff's band (the fault, restored)
@@ -21,8 +37,7 @@ ARM [reader]: the page is windowed to one staff's band (the fault, restored)
 ------------------------------------------------------------------------------
 ARM [reader]: the kernel is one staff space (the pre-2026 stem bug)
   judge: unit suite   expected: a notehead survives a one-space opening and stays joined to its stem, so the width and attribution tests must move
-  exit 0  -> SURVIVED
-  ⚠️ SURVIVOR -- a real test gap, not a pass.
+  exit 1  -> RED
 
 ------------------------------------------------------------------------------
 ARM [reader]: the recipe is RESTATED rather than imported
@@ -72,40 +87,33 @@ ARM [reader]: runs at the page edge are dropped (the cell-edge filter)
 ------------------------------------------------------------------------------
 ARM [arm]: the barline predicate tests only the TOP end
   judge: ARM headline   expected: the test is about BOTH ends; half of it would fire on every stem whose head sits near a staff line
-  exit 0  -> RED
+  exit 2  -> RED
 
 ------------------------------------------------------------------------------
 ARM [arm]: the WIDE form collapses into the narrow one
   judge: ARM headline   expected: *or they extend to other systems* is half of Sean's rule and is the half that fires here; the two forms must not read alike
-  exit 0  -> RED
+  exit 2  -> RED
 
 ------------------------------------------------------------------------------
 ARM [arm]: the DECISIVE control cannot see the cell signature
-  judge: ARM headline   expected: the control that decides whether the window actually changed must be able to fire -- otherwise the whole result is unreadable
-  exit 0  -> SURVIVED
-  ⚠️ SURVIVOR -- a real test gap, not a pass.
+  ⚠️ BAD ANCHOR (0 occurrences) -- REPORTED AS AN ERROR, never as a pass
 
 ------------------------------------------------------------------------------
 ARM [arm]: the cross-reader control passes vacuously
   judge: ARM headline   expected: a reader that found nothing would report 100% coverage -- a control that cannot fail is not a control
-  exit 0  -> SURVIVED
-  ⚠️ SURVIVOR -- a real test gap, not a pass.
+  exit 2  -> RED
 
 ------------------------------------------------------------------------------
 ARM [arm]: DEAD at zero reach becomes a clean exit
   judge: ARM headline   expected: a dead instrument must not read as a clean result
-  exit 0  -> SURVIVED
-  ⚠️ SURVIVOR -- a real test gap, not a pass.
+  exit 0  -> RED
 
 ------------------------------------------------------------------------------
 ARM [arm]: the print join takes the SHORTEST run over a tile
   judge: ARM headline   expected: a crop tile is small and several runs cross it; the mark the eye settled is the long one, and the headline must move
-  exit 0  -> RED
+  exit 2  -> RED
 
 ==============================================================================
-RED 13   SURVIVED 4   BAD ANCHORS 0
+RED 16   SURVIVED 0   BAD ANCHORS 1
 restore VERIFIED by md5: True
-  SURVIVOR [reader] the kernel is one staff space (the pre-2026 stem bug)
-  SURVIVOR [arm] the DECISIVE control cannot see the cell signature
-  SURVIVOR [arm] the cross-reader control passes vacuously
-  SURVIVOR [arm] DEAD at zero reach becomes a clean exit
+  BAD ANCHOR the DECISIVE control cannot see the cell signature: 0 occurrences in arm
