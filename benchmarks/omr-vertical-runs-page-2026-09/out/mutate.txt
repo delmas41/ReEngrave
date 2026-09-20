@@ -96,7 +96,8 @@ ARM [arm]: the WIDE form collapses into the narrow one
 
 ------------------------------------------------------------------------------
 ARM [arm]: the DECISIVE control cannot see the cell signature
-  ⚠️ BAD ANCHOR (0 occurrences) -- REPORTED AS AN ERROR, never as a pass
+  judge: ARM headline   expected: the control that decides whether the window actually changed must be able to fire -- otherwise the whole result is unreadable
+  exit 2  -> RED
 
 ------------------------------------------------------------------------------
 ARM [arm]: the cross-reader control passes vacuously
@@ -114,6 +115,5 @@ ARM [arm]: the print join takes the SHORTEST run over a tile
   exit 2  -> RED
 
 ==============================================================================
-RED 16   SURVIVED 0   BAD ANCHORS 1
+RED 17   SURVIVED 0   BAD ANCHORS 0
 restore VERIFIED by md5: True
-  BAD ANCHOR the DECISIVE control cannot see the cell signature: 0 occurrences in arm
