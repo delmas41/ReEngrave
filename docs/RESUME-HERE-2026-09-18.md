@@ -143,3 +143,39 @@ RIGHT, because both records are scans.
 adjudicator** throughout, and on the Litolff plate **~60% of noteheads cannot be
 adjudicated by eye at all**, controls and sample alike. **No OMR-NED figure
 anywhere, deliberately.**
+
+---
+
+## ✅ 2026-09-20 — THE RANKED NEXT WORK IS DONE, AND IT INVERTED A CLEAN NEGATIVE
+
+**The page-BAND reader this note ranks first is built** (`tools/omr/
+vertical_runs_page.py`, `benchmarks/omr-vertical-runs-page-2026-09/`), and
+**Sean's barline test is no longer a negative.** Read off the whole page with
+nothing else moved — same print-adjudicated population, same tolerance sweep,
+same two forms of the rule — it fires on **11-13 of 19 barlines between 0.25
+and 0.60 staff spaces and on ZERO of 63 stems**, where the cell frame read 0
+and 0. **The window was the whole of it.**
+
+⚠️ **THE DECISIVE COLUMN IS THE STEM ONE.** The barline half inherits the
+predecessor's circularity (its sample was drawn FROM the `too TALL` bucket);
+the stem half was sampled across all six buckets and its false-positive side
+is EMPTY across four tolerances.
+
+⚠️ **THE NARROW FORM IS STILL 0 OF 19**, same selection effect, so nothing
+there speaks for a ONE-STAFF barline — and `omr-barline-height-2026-09` prices
+that: **7 of 82** Litolff and **4 of 49** Breitkopf barlines cross every gap,
+so the kind measured is ~8% of the barlines on the page. **The ranked next
+work is a crop pass sampling from ACCEPTED and `too WIDE`, never again from
+`too TALL`** — a print pass, not code.
+
+⚠️ **NOTHING IS NAMED AND NOTHING READS IT.** No record row, no file moved, no
+OMR-DED. The test firing says the FACT is available, not that anything uses it.
+
+⚠️ **A PROCESS FINDING WORTH MORE THAN THE NUMBERS: the battery's first run
+had 4 survivors and only ONE was a test gap.** The other three were controls
+sitting at their CEILING on a page where the repair works — a control can only
+be mutation-tested in a state where it FAILS. The arm now carries two positive
+controls (`--blind-the-reader`, `--clip-like-a-cell`) and the battery judges
+every arm on all three runs. Final: **17 arms, 17 RED, 0 survivors.**
+
+Everything is on `claude/integration-2026-09-18` (**PR #57**, still open).
