@@ -6987,6 +6987,28 @@ right), at a larger number and with the counter-argument recorded beside it.
 
 ## The cell's own edge is not a notehead
 
+⚠⚠ **LEGACY PATH ONLY — AND SO IS THE OTHER NOTEHEAD-PRECISION FILTER.**
+Verified 2026-09-21: `_drop_clipped_notehead_fragments` and
+`_drop_unladdered_noteheads` are each **defined and called only in
+`transcribe.py`** (`:544`/`:1791` and `:3739`/`:5550`); `grep -rn` across
+`tools/omr/staged/` finds **no call to either**, and the single mention in
+`staged/record.py:850` is a comment citing the second one's *structure*.
+**So the STAGED reader — which is what produced the cleanup artefact Sean
+read — runs neither of the two measured notehead-precision filters**, and
+the pooled figure below (0.2209 → 0.2137) is a LEGACY figure that does not
+describe it.
+
+⚠️ This is the symbol-dossier sweep's §2a finding, verified: *"'Shipped'
+means the legacy path — the staged reader is systematically weaker than the
+documents say, by one or two filters per family."* It names five, of which
+these are two; key-signature corroboration is a third (corrected in its own
+knobs row). **It matters most exactly here**: `docs/symbol-dossiers/INDEX.md`
+§1 puts noteheads in Tier 1 and says *"precision is the fault"* — a missing
+head is a counted gap, a wrong head recruits a stem, an arc end and a dot and
+nothing may doubt it. **Porting either is a behavioural change needing its own
+measurement, not a wire**, and neither was attempted on 2026-09-21.
+
+
 A measure cell is the staff plus four staff spaces of air
 (`measure_extractor.PAD_ABOVE_STAFF_LINES`), and on a conductor's page four
 spaces reaches into whatever the staff next door printed. The crop slices it,
