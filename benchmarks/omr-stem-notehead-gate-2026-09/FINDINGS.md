@@ -272,6 +272,27 @@ without it.
 **zero deletions at every thickness**, which is what a *stacked heads survive
 the vertical opening* mechanism predicts.
 
+### 5d. ✅ THE CROP WAS CUT, and it confirms the composition and corrects the story
+
+`out/print/reference-chordbar-t4.png` — the bar at thickness 4 with every
+OFF-arm stroke marked by a red tick in the TOP MARGIN ONLY, so no annotation
+covers the ink.
+
+**CONFIRMED, by eye:** the bar prints **four three-note chords, each with one
+stem**, and the four red ticks sit in **two clusters over chords 1 and 3**.
+Chords 2 and 4 carry a clearly printed stem and produce **no stroke at all,
+even with the rule off** — a detection shortfall that has nothing to do with
+this rule. So *"strokes on 2 of the 4 printed chords, against the shipped
+rule's 0"* is what the print says, and the per-bar count of 4 is a
+coincidence, exactly as §5c states.
+
+⚠️ **WHAT THE CROP DOES NOT CONFIRM is §5c's mechanism.** That the taller
+stroke is *a stem fused through its own stacked noteheads* and the shorter one
+*a head column beside it* remains an inference from the heights and the
+x-clusters. The crop settles the COMPOSITION (four strokes, two printed
+objects) and not the identity of each stroke; separating those would need the
+component masks, which this lane did not cut.
+
 ---
 
 ## 6. So what is the answer?

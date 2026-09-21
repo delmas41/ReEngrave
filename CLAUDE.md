@@ -5546,7 +5546,14 @@ chords contribute nothing**. The supportable statement is *strokes on 2 of the
 4 printed chords against the shipped rule's 0*, never *the gate gets the bar
 right*. Corroboration from the data rather than the story: staff 1's bar 5 is
 two-NOTE chords — one space of stacked heads instead of two — and has **zero
-deletions at every thickness**.
+deletions at every thickness**. ✅ **AND THE CROP WAS CUT**
+(`out/print/reference-chordbar-t4.png`, ticks in the top margin only): the bar
+prints four three-note chords each with ONE stem, the four ticks sit in two
+clusters over chords 1 and 3, and **chords 2 and 4 carry a printed stem and
+produce no stroke at all even with the rule OFF** — a detection shortfall
+unrelated to this rule. ⚠️ The crop settles the COMPOSITION and **not** the
+identity of each stroke; *stem fused through its stacked heads* remains an
+inference from the heights.
 
 ⚠️ **THE GATE ITSELF IS CLEAN AND UNSPECTACULAR.** Both plates re-cut, the OFF
 arm faithful to each shared record's stem set (1,920 and 2,305, exactly),
