@@ -612,6 +612,40 @@ every detection from the page's ink so "find the text" becomes "find the ink".
 Full statement: `tools/omr/staged/ASSUMPTIONS.md` **A-DUR-5**, which now
 carries the result and the two frame corrections that came with it.
 
+⚠️⚠️ **START HERE IF YOU ARE PICKING THIS UP (2026-09-21):**
+[docs/handoff-2026-09-21-connecting-the-sweep.md](docs/handoff-2026-09-21-connecting-the-sweep.md)
+— ⚠️⚠️ **THE TWO BODIES OF WORK HAD DIVERGED AND NOBODY HAD MERGED THEM.**
+`claude/part-instrument-check-2026-09` and `claude/integration-2026-09-18`
+split at `b600964e` on 2026-09-20 — 27 commits carrying the **entire
+symbol-dossier family sweep** on one side, 18 on the other — while
+`docs/RESUME-HERE-2026-09-21.md` calls the first *"the second PLUS TWO
+THINGS"*. **A reader following that handoff went straight past the sweep.**
+Merged here. ⚠️ **Three lanes shipped and one REFUSED**: the `<note>` element
+now writes what SOUNDS and what is BEAMED (`<alter>` 0 → 221 / 0 → 489,
+`<beam>` 0 → 679 / 0 → 1511, Verovio flags 574 → 82 and 1156 → 277 with
+noteheads identical); the staged gatherer stops dropping every C clef (and
+**0 clef verdicts change** — its brief's premise refuted); the coverage
+instrument stops auditing a 146-name snapshot of a 208-name space. ⚠️⚠️ **The
+stem ATTRIBUTION repair — the 09-18 handoff's ranked #1 — is REFUSED with its
+numbers**, and was **already refused on 2026-09-20 in its own benchmark
+directory**, which was in the tree at dispatch. ⚠️⚠️ **The reusable item is
+that the prescribed check could not have caught that: a WITHDRAWN
+investigation changes no code and is invisible to `git log -S`** — read the
+benchmark directory named after the thing, not just the code. ⚠️ **Eight
+documented claims the tree contradicts are repaired** (§4 of the sweep plus
+three found while checking, including that **the staged reader runs NEITHER
+notehead-precision filter**). ⚠️ **Nothing was flipped**; the eight decisions
+in `docs/symbol-dossiers/INDEX.md` §6 are still Sean's. Its **§5 is what is
+NOT established** and **§6 the manager's own failures**.
+
+⚠️⚠️ **AND READ THIS ONE BESIDE IT — the family sweep it connects:**
+[docs/symbol-dossiers/INDEX.md](docs/symbol-dossiers/INDEX.md) — eleven
+dossiers, one per family, one section per symbol, answering Sean's five
+questions; §1 derives the ORDER, §3 the repair list (now all eight verified,
+four closed) and §4 the documentation that is wrong. **Its own headline is
+that the first thing to sweep is not a family but ONE MARK — the vertical
+stroke — which four dossiers reached independently.**
+
 ⚠️⚠️ **START HERE IF YOU ARE PICKING THIS UP (2026-09-20):**
 [docs/RESUME-HERE-2026-09-20.md](docs/RESUME-HERE-2026-09-20.md) — **the
 conventions are countable at last, and the number is the finding: 94 of 114
@@ -7456,14 +7490,27 @@ tree `9d4ccc85`** — verified at integration — and one is literally *"meter: 
 uncorroborated change is not carried off its system, and both flags default
 ON"*. **Any future A/B on `library/_shared-records/` must be base-vs-arm on ONE
 tree; the record's committed verdicts are no longer a baseline.**
-⚠️ **A THIRD-ROUTE CORROBORATION WAS STILL RUNNING AT HANDOFF** — the
-canonical `readjudicate.py --control`, which buffers its output to the end.
-The lane named its own falsification condition rather than leaving it
-implied, and it is recorded here for whoever reads that run: **if it comes
-back reproducing 2,993 of 2,993, that CONTRADICTS the AST-identity argument**
-and means something in the arm differs after all. Until it lands the claim
-rests on the two pieces of evidence in hand — the AST identity (pinned by a
-test) and the seven `rhythm.py` commits (verified at integration). ⚠️ CONTROL 2
+✅ **THE THIRD-ROUTE CORROBORATION LANDED AND CONFIRMS IT, TO THE UNIT.**
+The canonical `readjudicate.py --control` returns **2,760 of 2,993 reproduced,
+233 differ, +0 extra** — *identical* to the lane's own harness, so the failure
+is the TREE and not the instrument, now established from three directions (the
+AST identity, the seven commits, and this). Artefact:
+`benchmarks/omr-stem-attribution-2026-09/out/canonical-readjudicate-control-litolff.txt`.
+⚠️ **The lane named the outcome that would have REFUTED its own claim before
+the run landed** — a clean 2,993 of 2,993 would have meant something in its arm
+differed after all — and it came back equal instead. **A prediction that could
+have gone the other way is worth more than the number it produced.**
+⚠️ The canonical run adds a shape the lane's arm did not print: the 233 split
+**228 `decided -> decided`** (a duration that changed VALUE) and **5
+`narrowed -> decided`** — which is what the meter flags predict, since they feed
+`size_measure_rest` and `reconcile_duration`, recorded elsewhere in this file as
+moving 72 note `<type>` values when flipped on.
+⚠⚠ **AND A LIMITATION OF THAT HARNESS, STATED BY ITS AUTHOR RATHER THAN LEFT
+IMPLIED: `stem_arm.py`'s ARM path is UNEXERCISED.** It ran base-vs-arm and got
+0 changes — correct with no rule present, and therefore **it has never been
+shown to DETECT a difference.** Give it a positive control before trusting a
+zero from it; *a control that has only ever reported zero is not yet a
+control.* ⚠️ CONTROL 2
 passed and independently reproduced the 09-18 handoff's own figure — **152
 verdicts move, all `no_stem → decided`**, exactly the beam-mate tier's stated
 reach.

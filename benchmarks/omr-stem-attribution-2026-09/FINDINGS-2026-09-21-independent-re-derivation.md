@@ -114,6 +114,17 @@ its system, and both flags default ON"*.
 > **Any future A/B on `library/_shared-records/` must be base-vs-arm on ONE
 > tree. The record's own committed verdicts are no longer a baseline.**
 
+✅ **CONFIRMED BY THE CANONICAL HARNESS**, which returns **2,760 of 2,993, 233
+differ, +0 extra** — identical to this lane's, splitting **228 `decided ->
+decided`** and **5 `narrowed -> decided`**
+(`out/canonical-readjudicate-control-litolff.txt`). ⚠️ The lane named the
+refuting outcome in advance (a clean 2,993 of 2,993) and it did not occur.
+
+⚠⚠ **BUT `stem_arm.py`'s ARM PATH IS UNEXERCISED** — base-vs-arm returned 0
+changes, which is correct with no rule present and means **it has never been
+shown to detect a difference.** Give it a positive control before trusting a
+zero from it.
+
 ⚠️ **CONTROL 2 passed** and independently reproduced the 09-18 handoff's own
 figure: **152 verdicts move, all `no_stem → decided`** — exactly the beam-mate
 tier's stated reach.
