@@ -342,6 +342,24 @@ check.
 a claim about the RULE, and the plate arms' own faithfulness, one-sidedness and
 positive controls are what guard those.
 
+**FULL SUITE: 4,587 passed, 19 skipped, 0 failed** (11m32s), on a settled tree
+with the battery run first and nothing editing anything.
+
+⚠️⚠️ **AND THE FIRST FULL RUN REPORTED ONE FAILURE THAT WAS NOT REAL — the
+recorded hazard, one file over.** `test_flag_docs_match_predicates.py::
+test_undocumented_is_exact_no_stale_entries` failed in a run during which
+`CLAUDE.md` was being edited, and **passed in isolation immediately after**.
+CLAUDE.md states this as *"a SOURCE-LEVEL TEST FAILS ON A MID-RUN EDIT … do
+not edit `tools/` while a suite is running, and re-run before believing a
+single source-level failure"*; this one reads **`CLAUDE.md`**, not `tools/`,
+so the rule is wider than the file it is written about: **do not edit anything
+a derived check READS while a suite is running.** The failure was re-run
+rather than explained, and the clean run above is the one that counts.
+
+`wiring --check` and `inventory --check` both exit **0**, and both exit 0 on
+the base — run before any conclusion was drawn, because *"checks fail after a
+change"* and *"checks were already failing"* look identical in a terminal.
+
 ---
 
 ## 8. WHAT IS NOT ESTABLISHED
