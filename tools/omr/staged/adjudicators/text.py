@@ -275,8 +275,12 @@ def adjudicate_direction(ev: Evidence) -> Ruling:
     ⚠️⚠️ THE LEXICON GATE IS THE READER'S AND NOTHING HERE TOUCHES IT.
     `direction_text` subtracts every detection from the page's ink, refuses
     the curves by fill ratio, OCRs the residue with Surya and Tesseract, and
-    accepts only what `direction_lexicon.lookup` names -- 181 musical terms,
-    which CLAUDE.md records as load-bearing and never to be loosened. A word
+    accepts only what `direction_lexicon.lookup` names -- **156** strings
+    (`direction_lexicon.TERMS` 140 + `CONNECTIVE` 25, counted from the
+    module), which CLAUDE.md records as load-bearing and never to be
+    loosened. ⚠️ The figure read **181** here, in CLAUDE.md and in the
+    2026-09-10 manager log until 2026-09-21; it was never 181, and the
+    symbol-dossier sweep found it by counting. A word
     that reaches this decision has already been accepted; a word that did not
     arrives as an abstention with the reader's own reason on it. Re-testing
     the text here would be a second, differently spelled lexicon.

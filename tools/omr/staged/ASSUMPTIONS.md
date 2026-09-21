@@ -928,6 +928,22 @@ for it. Also a tempo word at that
 bar ("Tempo I.", "Allegro") — the engraver's own section marker, blocked only
 on `direction` being a stub.
 
+⚠⚠ **THAT LAST BLOCKER EXPIRED ON 2026-09-11 AND THIS ENTRY KEPT IT UNTIL
+2026-09-21.** `direction` graduated the day the gatherer, adjudicator, emission
+and counter landed together, and **`adjudicate.stubs()` is now `()`** — run it,
+do not take this line's word for it. So the tempo-word half of A-DUR-6 is
+**unblocked and simply unbuilt**; it is ordinary ranked work, not a deferral
+waiting on someone else. Found by the 2026-09-20 symbol-dossier sweep
+(`docs/symbol-dossiers/INDEX.md` §4), verified 2026-09-21 by calling
+`stubs()`.
+
+⚠️ This is the third named failure family arriving in a document rather than
+in code: **a premise encoded in a refusal outlives its reason.** The refusal was
+right when written; nothing re-asked it when the world moved. The discriminator
+CLAUDE.md gives is the one to apply here — *does this stop because it CANNOT
+know, or because it WAS NOT GIVEN what it needs?* This one was the second, and
+it is no longer either.
+
 ### A-DUR-5 · ✅ BUILT 2026-09-17 as `Q.INK` — the ink is the POPULATION
 
 **PRODUCER ONLY, `OMR_INK`, **default ON since 2026-09-17 (Sean's call, deny-list)** — this line read *default OFF* until 2026-09-17 evening, one of EIGHT ledgers that did; see `test_flag_docs_match_predicates.py`. Findings:

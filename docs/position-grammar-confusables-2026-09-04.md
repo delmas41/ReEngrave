@@ -97,12 +97,41 @@ ledger-ladder arbitration reads `ledgerLine` detections to decide which staff
 owns a contested note, so a tenuto misread as a ledger feeds false rungs into
 attribution, and the reverse starves it.
 
-### VERTICAL STROKE — stem vs barline (already solved; the precedent)
+### VERTICAL STROKE — stem vs barline (⚠️ NOT solved; scoped to braced systems)
 
 Nothing but a barline runs from the top of the upper staff to the bottom of
 the lower — a fugue's stem crosses the brace gap and scores 1.00 connectivity,
 which is why the span test exists (`_spans_system`). Classical CV owns both
 marks; the model never had to.
+
+⚠️⚠️ **THIS HEADING SAID "already solved; the precedent" UNTIL 2026-09-21 AND
+IT IS WRONG IN THE PLACE IT MATTERS MOST.** Verified in the tree:
+`measure_extractor.py:757` gates the whole mechanism on **`if n_staves < 3:`**,
+and its constant's own comment (`SPAN_MIN_INK`, `measure_extractor.py:95`) says
+it was *"measured over four braced piano systems of WTC I"*. So on a
+**conductor's page — 12 to 27 staves, every page this project is actually for —
+it never runs at all.** `_spans_system` has exactly one caller and it is inside
+that branch.
+
+⚠️ Its premise is also false on both held publishers: CLAUDE.md records that
+*"a barline runs a system's full height and the bracket encloses exactly it"*
+was checked and **Litolff's interior barlines cross every gap 0 of 68**. The
+system-grouping rule survives that because it is a **one-sided veto** which only
+needs a crossing column to be *evidence* — but that is a different claim from
+*solved*.
+
+⚠️⚠️ **AND IT IS THE THING FOUR DOSSIERS FOUND INDEPENDENTLY.** The
+2026-09-20 symbol-dossier sweep has noteheads, stems, structure and
+articulations each arriving at the vertical stroke from a different direction:
+it is the notehead family's precision fault (the *too tall* bucket, 459 of 576
+wrong Breitkopf boxes, read 12 of 12 by the print as a vertical stroke), the
+stem family's largest false population (476 barlines), the structure family's
+unadjudicated 92%, and the articulation family's 377 `arpeggiato`. Its
+`docs/symbol-dossiers/INDEX.md` §1 concludes: ***"the first thing to sweep is
+not a family. It is one mark, in the page frame."*** A reader who trusted this
+heading would not have looked. See also `vertical_runs_page.py`, the page-frame
+reader that landed 2026-09-20 and **names nothing** — which is where that sweep
+would begin, and it is gated on Sean (INDEX §6.2).
 
 ### DIGIT — one glyph, five roles
 

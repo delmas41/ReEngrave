@@ -94,6 +94,27 @@ TRUTH = {
 #: false positive.
 TRUTH_CHANGES = {
     ("boundary-m204-232", 1): (3, "C"),
+    # ⚠⚠ DISPUTED SINCE 2026-09-17, AND DELIBERATELY NOT CHANGED.
+    # The `Q.INK` pre-registered test cropped this plate and put the printed
+    # `3/4` at the head of CELL 6, right after the double barline under
+    # *Tempo I.* -- and found that every `timeSig*` detection this project has
+    # at cell 8 sits at `x_canonical = 0`, 0.33-0.40 staff spaces wide and
+    # 1.17-2.17 tall: ONE BARLINE broken into two fragments, which
+    # `_meter_from_digits` then reads as a stacked digit pair. Cell 6 fires
+    # ZERO `timeSig*` on any of 17 staves. See
+    # `benchmarks/omr-ink-gather-2026-09/FINDINGS.md` and its `out/print/`.
+    #
+    # ⚠ THE VALUE IS LEFT AT 8 ON PURPOSE. Those findings say in terms that
+    # "the BAR NUMBER is NOT settled here" and needs a hand-verified
+    # `works.json` window row, and changing a truth table to a second unsettled
+    # number would silently re-score every meter arm ever run on this fixture
+    # against it. So: **any `OK` this harness prints for litolff-984073 p.62 is
+    # scored against cell 8, and cell 8 is probably a barline.** Settle it with
+    # a window row, then change this line and re-run the arms.
+    #
+    # ⚠ It also inverts an earlier correction: `omr-staged-meter-carry-2026-09`
+    # called the cell-6 bar math "two cells early". Under the crops the bar
+    # math was pointing at the right bar.
     ("litolff-984073", 62): (8, "3/4"),
     ("litolff-984073", 61): None,      # bar 140; the page prints no meter
     ("litolff-984073", 1): None,
