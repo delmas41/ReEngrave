@@ -398,3 +398,41 @@ class TestTheArmsOwnControls(unittest.TestCase):
         self.assertEqual(rc, 2)
         self.assertIn("DEAD", out)
         self.assertIn("no_instrument_was_read", out)
+
+    def test_the_control_FAILS_when_the_check_did_not_RUN(self):
+        """⚠️ SURVIVOR AGAIN, ON THE SECOND BATTERY. The first attempt at
+        these tests could see a control that stopped comparing the join, and
+        could NOT see one that stopped requiring the check's own output: a
+        faithful record passes the join comparison whether or not the detail
+        is there, so `rc == 0` and `"DID run"` were both still true with the
+        positive control deleted.
+
+        ⚠️⚠️ WHICH IS THE HAZARD ITSELF, ONE LAYER OUT. *"Nothing moved"* is
+        exactly what a check that never ran looks like — that is why the arm
+        has this control at all — and a test suite that cannot tell those two
+        apart has the same blind spot the arm was built to close.
+
+        The verdict's detail is stripped AFTER adjudication, which is what a
+        check that silently stopped writing it would produce."""
+        import tempfile
+        from pathlib import Path
+        mod = self._arm()
+        real_run = mod.adjudicate.run
+
+        def strip(log, *a, **kw):
+            out = real_run(log, *a, **kw)
+            for v in log.all_verdicts():
+                if v.quantity == Q.PART_PARTITION and v.detail:
+                    v.detail.pop("instrument_consistency", None)
+            return out
+
+        mod.adjudicate.run = strip
+        try:
+            with tempfile.TemporaryDirectory() as d:
+                path = self._record(Path(d),
+                                    {"join": "ordinal", "staves_per_system": 2})
+                rc, out = self._run_arm([path, "--control"])
+        finally:
+            mod.adjudicate.run = real_run
+        self.assertEqual(rc, 1, out)
+        self.assertIn("did not run", out)

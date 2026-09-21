@@ -326,7 +326,25 @@ resolution says the rule empties a bar of chords.
 
 ## 7. Mutation battery
 
-**21 arms, 21 RED, 0 survivors, 0 bad anchors, restore VERIFIED by md5**,
+⚠️⚠️ **THE RESULT PUBLISHED HERE ON 2026-09-20 IS VOID, AND THE REASON IS IN
+THE JUDGE.** `headline()` compared pytest's summary line **verbatim**, and
+that line ends `" in 0.57s"` — which differs between two runs of an
+UNMUTATED tree. So `out != b_out` was true for every arm and **all 21 scored
+RED for free**: the battery could not have told a real mutation from a
+no-op. Found 2026-09-21 by a sibling lane that had COPIED this `headline()`
+and whose own first run came back 13 of 13 red; stripping the duration there
+turned it into 10 red and **three survivors, every one real**. Measured on
+this repo's own suite: two identical runs gave `13 passed, 5 warnings in
+0.57s` and `... in 0.61s`. **Only two of the repo's 30 batteries carry the
+shape** — this one and the sibling that copied it — so it is a 2026-09-20
+regression rather than anything historic. The duration is stripped now.
+
+⚠️ **THE RE-RUN'S RESULT IS BELOW, and the original text is kept beside it
+rather than deleted: a superseded measurement with its correction beside it
+is worth more than a gap.**
+
+**AS PUBLISHED (VOID): 21 arms, 21 RED, 0 survivors, 0 bad anchors, restore
+VERIFIED by md5**,
 baseline green (115 tests) before any arm was read. Byte snapshot on disk, an
 in-flight sentinel written before the first arm, and a refusal to start on a
 dirty target without `--force`.
