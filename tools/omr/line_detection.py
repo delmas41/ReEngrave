@@ -33,7 +33,7 @@ doesn't confuse the vertical-projection step.
 from __future__ import annotations
 
 from dataclasses import dataclass, replace
-from typing import Any
+from typing import Any, Sequence
 
 import cv2
 import numpy as np
@@ -194,6 +194,48 @@ def stem_stroke_enabled() -> bool:
     """Is the column-profile stroke reader on? Default OFF, allow-list."""
     import os
     return os.environ.get(STEM_STROKE_ENV, "0").strip().lower() in (
+        "1", "true", "yes", "on")
+
+
+#: `OMR_STEM_NOTEHEAD_GATE` — a vertical stroke that MEETS A DETECTED NOTEHEAD
+#: is a stem, and the pair rule may not delete it. Default OFF, so the test is
+#: an ALLOW-LIST (CLAUDE.md, *A flag's OFF test must follow its DEFAULT*).
+#:
+#: ⚠️ THE RULE IT NARROWS IS RIGHT ABOUT ITS JOB AND WRONG ABOUT ITS PREMISE.
+#: `_drop_paired_strokes` deletes both members of any pair of verticals within
+#: 0.9 staff spaces because *"successive notes are set further apart than an
+#: accidental's own strokes"*. Measured on Litolff Beethoven 5 pp.1-4
+#: (`benchmarks/omr-stem-pair-rule-2026-09/`): of the 244 strokes it deletes,
+#: 80 carry a detected notehead, and **62 of those 80 (77.5%) were paired with
+#: ANOTHER stroke that also carries one** — two genuine stems eating each
+#: other, not an accidental. 73 of the 793 stemless heads (9.2%) would stop
+#: abstaining `no_stem` without the rule.
+#:
+#: ⚠️ AND REMOVING THE RULE IS REFUSED, which is why this is a GATE and not a
+#: deletion: on the rule's own hand count the summed |error| goes 15 (ON) to
+#: 53 (OFF), OFF worse on 7 of 10 cells and better on none.
+#:
+#: ⚠️ NO NEW CONSTANT, and that is the reason this shape was chosen over a
+#: threshold. The geometry `detect_stems` can see does NOT separate the two
+#: populations — best single feature 0.823 against a 0.723 majority baseline,
+#: no empty interval anywhere — so a cut read off that table would be fitted
+#: to one plate. The notehead is the only discriminator available and it needs
+#: no number.
+#:
+#: ⚠️ IT COUPLES `Q.STEM` TO THE DETECTOR, and that is the standing objection:
+#: the CV stem rung is today an INDEPENDENT reader of the ink, and this file's
+#: own `gather_cv_lines` docstring says the two readers see different images on
+#: purpose. Where the detector misses a notehead the gate cannot protect that
+#: stroke — which fails toward the SHIPPED behaviour and never toward a new
+#: one, but it also means the gate is weakest exactly on the pages where stems
+#: are most often missed.
+STEM_NOTEHEAD_GATE_ENV = "OMR_STEM_NOTEHEAD_GATE"
+
+
+def stem_notehead_gate_enabled() -> bool:
+    """Is the notehead gate on the pair rule on? Default OFF, allow-list."""
+    import os
+    return os.environ.get(STEM_NOTEHEAD_GATE_ENV, "0").strip().lower() in (
         "1", "true", "yes", "on")
 
 
@@ -440,7 +482,29 @@ class VerticalRunCandidate:
         return self.h / self.line_spacing if self.line_spacing > 0 else 0.0
 
 
-def _drop_paired_strokes(stems, line_spacing: float, gap: float, min_overlap: float):
+def _meets_a_notehead(stroke, heads) -> bool:
+    """Does this stroke's box overlap any of `heads`?
+
+    `heads` are `(x, y, w, h)` in CANONICAL CELL coordinates — the same frame
+    and the same spelling `LineDetection` uses. ⚠️ Three mutually-disagreeing
+    box conventions exist in this repo (`Q.GLYPH_BOX.value` is
+    `[name, x, y, w, h]`, `Q.INK`'s canonical box is CORNERS, `Q.STEM.value`
+    is `[x, y, w, h]`) and reading one as another gives a negative width and a
+    clean believable zero, so the caller converts and this does not guess.
+    """
+    sx0 = stroke.x_canonical
+    sx1 = sx0 + stroke.width_canonical
+    sy0 = stroke.y_canonical
+    sy1 = sy0 + stroke.height_canonical
+    for hx, hy, hw, hh in heads:
+        if min(sx1, hx + hw) - max(sx0, hx) > 0 \
+                and min(sy1, hy + hh) - max(sy0, hy) > 0:
+            return True
+    return False
+
+
+def _drop_paired_strokes(stems, line_spacing: float, gap: float,
+                         min_overlap: float, heads=None):
     """Reject vertical strokes that come in PAIRS, which stems do not.
 
     A sharp and a natural are each built from two parallel verticals about half
@@ -458,6 +522,32 @@ def _drop_paired_strokes(stems, line_spacing: float, gap: float, min_overlap: fl
     staff spaces between a sharp's strokes, narrower than the spacing between
     consecutive notes. Both members of a pair are dropped, since neither is a
     stem.
+
+    ⚠️⚠️ THAT LAST PREMISE IS FALSE ON A DENSE LOW-RES ORCHESTRAL PLATE, and
+    `heads` is the narrowing. Measured on Litolff Beethoven 5 pp.1-4, of the
+    80 deleted strokes that carry a detected notehead **62 (77.5%) were paired
+    with ANOTHER stroke that also carries one** — successive notes ARE set as
+    close as an accidental's own strokes there, and the rule eats both of them.
+    `heads` (canonical `(x, y, w, h)` notehead boxes) turns the rule into: a
+    stroke that MEETS A NOTEHEAD is a stem and is kept, and a pair is dropped
+    only where NEITHER member meets one. ⚠️ `heads=None` — the default, and
+    what every caller that does not opt in passes — leaves the relation exactly
+    as it has always been, to the stroke.
+
+    ⚠️⚠️ THE GATE IS ON THE SUBJECT ONLY, AND THE OTHER FORM IS WORSE — this
+    was found by a unit test, not by review. A stroke on a head is never
+    dropped, so it can never be condemned and the 62 are safe whichever way
+    the PARTNER is treated; what the partner rule decides is a different case.
+    Excluding on-head strokes as partners too (the form
+    `benchmarks/omr-stem-pair-rule-2026-09`'s `probe_proposed_gate.py`
+    measured) means an accidental's stroke standing beside a real stem loses
+    its only partner and SURVIVES as a false stem. Keeping them as partners
+    drops it, which is the shipped rule still doing its job. The three cases,
+    all of them tested:
+
+      * both on a head (two stems)                -> both kept  (the 62)
+      * one on a head (a stem beside a sharp)     -> stem kept, stroke dropped
+      * neither on a head (a real accidental)     -> both dropped, unchanged
     """
     if line_spacing <= 0 or len(stems) < 2:
         return list(stems)
@@ -465,10 +555,20 @@ def _drop_paired_strokes(stems, line_spacing: float, gap: float, min_overlap: fl
     centres = [s.x_canonical + s.width_canonical / 2.0 for s in stems]
     tops = [float(s.y_canonical) for s in stems]
     bottoms = [t + s.height_canonical for t, s in zip(tops, stems)]
+    # ⚠️ `None` and `[]` MUST NOT BE THE SAME THING HERE. `None` is *no gate*
+    # (the shipped relation); an empty list is *the gate is on and this cell
+    # holds no detected notehead*, which under the gate condemns nothing
+    # differently but is a different claim, and a `heads or []` would silently
+    # convert the first into the second.
+    on_head = ([False] * len(stems) if heads is None
+               else [_meets_a_notehead(s, heads) for s in stems])
 
     kept = []
     for i, stem in enumerate(stems):
         paired = False
+        if heads is not None and on_head[i]:
+            kept.append(stem)
+            continue
         for j in range(len(stems)):
             if i == j or abs(centres[i] - centres[j]) > max_dx:
                 continue
@@ -494,6 +594,8 @@ def detect_stems(
     accidental_pair_overlap: float = 0.6,
     drop_accidental_pairs: bool = True,
     enable_stroke_reader: bool | None = None,
+    enable_notehead_gate: bool | None = None,
+    noteheads: Sequence | None = None,
     candidates_out: list | None = None,
 ) -> list[LineDetection]:
     """Find stem-like vertical ink runs in `cell`.
@@ -527,6 +629,16 @@ def detect_stems(
     `None` (the default) reads the flag, which is OFF, so the returned set is
     exactly what it has always been. See step 7 at the foot of this function
     and `_column_stroke_bands`.
+
+    ⚠️ `noteheads` + `enable_notehead_gate` NARROW STEP 6, and take TWO things
+    to fire: the DATA (canonical `(x, y, w, h)` boxes, which only a caller
+    holding the detector's output can supply) and the FLAG
+    (`OMR_STEM_NOTEHEAD_GATE`, default OFF; `enable_notehead_gate` overrides
+    it for a test or an arm). Either missing and the pair rule runs exactly as
+    it always has, to the stroke — which is why the legacy `transcribe` path,
+    whose `detect_lines(cell)` passes no detections, is unchanged BY
+    CONSTRUCTION rather than by a second decision. See
+    `STEM_NOTEHEAD_GATE_ENV` for what it is worth and what it costs.
 
     ⚠️⚠️ `candidates_out`, WHEN GIVEN, IS APPENDED WITH EVERY COMPONENT THE
     OPENING PRODUCED -- accepted AND refused, each carrying the FIRST filter
@@ -640,8 +752,18 @@ def detect_stems(
         ))
     if drop_accidental_pairs:
         before = out
+        # ⚠️ TWO CONDITIONS, AND THE DATA IS ONE OF THEM. `gate_heads` stays
+        # `None` — the shipped relation, byte-identical — unless the flag is on
+        # AND a caller supplied notehead boxes. A flag on with no boxes is not
+        # an empty gate, it is NO gate: see `_drop_paired_strokes`, where
+        # `None` and `[]` are deliberately different.
+        if enable_notehead_gate is None:
+            enable_notehead_gate = stem_notehead_gate_enabled()
+        gate_heads = (list(noteheads) if enable_notehead_gate
+                      and noteheads is not None else None)
         out = _drop_paired_strokes(
-            out, line_spacing, accidental_pair_gap_lines, accidental_pair_overlap
+            out, line_spacing, accidental_pair_gap_lines,
+            accidental_pair_overlap, heads=gate_heads,
         )
         # ⚠️ RE-STAMPED, NOT RE-DERIVED. The pair rule runs over the SET, so
         # whether a candidate is paired cannot be known at the moment that
@@ -1054,7 +1176,8 @@ def detect_beams(
 # ---------------------------------------------------------------------------
 
 
-def detect_lines(cell, *, candidates_out: list | None = None
+def detect_lines(cell, *, candidates_out: list | None = None,
+                 noteheads: Sequence | None = None
                  ) -> dict[str, list[LineDetection]]:
     """Return {'stems': [...], 'beams': [...]}.
 
@@ -1065,8 +1188,15 @@ def detect_lines(cell, *, candidates_out: list | None = None
     `candidates_out` is forwarded to `detect_stems` unchanged; see there. It
     is NOT forwarded to `detect_beams`, which has its own filter chain and
     whose refused population is a separate, unmeasured question.
+
+    `noteheads` is forwarded the same way — the notehead gate on the pair
+    rule, off unless `OMR_STEM_NOTEHEAD_GATE` is on AND boxes are supplied.
+    ⚠️ It reaches `detect_beams` only THROUGH the stems, because that pass
+    takes the stem set as its input: so the gate can change which beams are
+    read, and any beam delta on a gated arm is this and not a beam change.
     """
-    stems = detect_stems(cell, candidates_out=candidates_out)
+    stems = detect_stems(cell, candidates_out=candidates_out,
+                         noteheads=noteheads)
     return {
         "stems": stems,
         "beams": detect_beams(cell, stems=stems),
