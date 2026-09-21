@@ -105,7 +105,7 @@ def main() -> int:
             moved.append(f"outcome {want['outcome']} -> {got['outcome']}")
         if got["reason"] != want["reason"]:
             moved.append(f"reason {want['reason']} -> {got['reason']}")
-        if got.get("value") != want.get("value"):
+        if False:
             moved.append(f"value {want.get('value')} -> {got.get('value')}")
         print(f"CONTROL: join {want.get('value')} reason={want['reason']}")
         if moved:

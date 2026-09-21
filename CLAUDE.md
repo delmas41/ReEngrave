@@ -5777,6 +5777,104 @@ EXISTS, never a reason it is acceptable.
 
 ---
 
+## The FIRST convention wired — and it condemns the join each document refused
+
+2026-09-20/21, no flag. `adjudicate_part_partition` has declared *"each part
+carries ONE instrument across every system it appears on"* in its `checked_by`
+since it was written, and **its body read `Q.INSTRUMENT` on no path at all**.
+The convention-coverage audit counted **16 of 32 declared checks not actually
+performed** and ranked this one first; this performs it. Findings:
+[benchmarks/omr-part-instrument-check-2026-09/FINDINGS.md](benchmarks/omr-part-instrument-check-2026-09/FINDINGS.md).
+
+⚠️ **ALL THREE of that audit's headline claims were re-verified against the
+tree before anything was built**, and all three hold: `part_partition` reads
+neither declared quantity; `key_signature_corroboration` has **exactly one
+non-test import, `transcribe.py` — the LEGACY path** (the staged path names it
+in five docstrings and imports it nowhere, while this file describes it as
+shipped); and `staff_group` declares *"staves of one bracket group are one
+instrument FAMILY"* while registry entry **`[C59]` denies it in its title** —
+*"A bracket BLOCK is an engraving unit, not an instrument family"*, status
+MEASURED HERE.
+
+⚠️⚠️ **THE RESULT IS THE COUNTERFACTUAL, NOT THE PASS.** On both shared
+records the join that SHIPPED is clean and the join each document REFUSED is
+contested:
+
+| | Litolff Beethoven 5 p1-p4 | Breitkopf Brahms 1 p0-p3 |
+|---|--:|--:|
+| staves carrying a named instrument | **50 of 75** | **91 of 97** |
+| parts named on ≥2 systems — the only ones that CAN disagree | 7 of 12 | 14 of 14 |
+| **the SLOT join, which shipped: contested parts** | **0** | **0** |
+| **the ORDINAL join, which each refused: contested parts** | **3 of 12** | **5 of 14** |
+
+⚠️⚠️ **EVERY ONE OF THE EIGHT IS ONE SHAPE: six systems agree, exactly one
+dissents, and the dissenter is always the NEXT instrument down** — Oboe×6 +
+Clarinet×1, Timpani×6 + Violin×1, Cello×6 + Contrabass×1. That is what a
+suppressed INTERIOR staff does, and it is the Phase 2 part-join finding
+arriving from a **third** direction after the measure math and the key
+signatures. ⚠️ **It is NOT the Phase 2 number and must not be quoted as one**:
+that is 12 of 75 staff-systems against hand-read PRINT truth, this is 3 and 5
+contested PARTS against our own label readings over the staves we managed to
+name — same fault, different denominators, and this one is a **LOWER BOUND**.
+
+⚠️ **IT RECORDS AND IT DOES NOT ACT, and both ways of acting are guesses
+today.** Refusing the join over a contradiction hands the document to the
+fragment fallback (12 parts → 75 fragments on Litolff) on the evidence of what
+may be one misread margin label; repairing it needs to know WHICH staff is
+misfiled, which the check cannot say — six-against-one is a majority vote,
+INFER-stage work, and exactly what EVALUATE goes silent for. *A wiring pass may
+CONNECT a decision, it may not let one GUESS.* Asserted, not promised: two
+documents identical but for the instruments — one clean, one contested —
+produce the same outcome, reason and value, with the contested count as the
+positive control.
+
+⚠️ **THE FRAME WAS THE WHOLE DIFFICULTY AND `wiring.py` HAD NAMED IT FIRST.**
+`Q.INSTRUMENT` is filed on STAVES and this decision runs at DOCUMENT, so a bare
+`ev.verdicts(Q.INSTRUMENT)` returns nothing and reports a clean zero on every
+page — **a bare read fails SILENTLY**, producing the same `checked: False` an
+honest unlabelled page produces. Pinned at source level. ⚠️ **ABSENT IS NOT
+CLEAN**, and here that is load-bearing: before `run_staged` forwarded
+`pdf_path`, `adjudicate_instrument` abstained on **75 of 75** staves on every
+staged run this repo had made, so a check reading that silence as agreement
+would have reported the part join sound on precisely the worst documents.
+
+⚠️ **TWO DERIVED TOOLS INDEPENDENTLY NOTICED THE GAP CLOSE.** Wiring it turned
+`test_staged_inventory` and `test_staged_wiring` RED, each naming exactly one
+stale entry — `part_partition declares 'instrument'` — and **not** its sibling
+`Q.STAFF_ORDINAL`, which is still genuinely inert. That is what those lists are
+for, and two of them agreeing is stronger than either alone.
+
+⚠️⚠️ **AND THE MUTATION BATTERY WAS MEASURING NOTHING — pytest's OWN ELAPSED
+TIME WAS IN THE JUDGE.** `headline()` compared the summary line verbatim, and
+that line ends `" in 0.57s"`, which differs between two runs of an UNMUTATED
+tree — so `out != b_out` was true for every arm and **all of them scored RED
+for free**. The first run reported **13 of 13 red, 0 survivors**. Stripping the
+duration: **10 red and THREE SURVIVORS, every one real** — a mutation that
+makes a contested SLOT join ABSTAIN (the no-act test built two equal-count
+systems, so it took the ORDINAL branch and never reached the mutated one: *a
+test named for a hazard it does not reach*, with the name exactly right and the
+fixture two staves short), plus both of the arm's own controls, which no suite
+imported. All three closed. ⚠️⚠️ **THE SAME JUDGE IS IN
+`benchmarks/omr-stem-notehead-gate-2026-09/mutate.py`, which it was copied
+from, so THAT lane's "21 arms, 21 RED, 0 survivors" is VOID as published** —
+both are fixed and re-run here. Only those two of the repo's 30 batteries carry
+the shape; it was introduced on 2026-09-20 and is not historic.
+
+⚠️ **WHAT IS NOT ESTABLISHED**: **no print was consulted**, so every statement
+is agreement or disagreement between two of our OWN readings and the check
+cannot say which is wrong where they differ; the shipped join's **0 is not a
+clearance** — this decision's own docstring records `beethoven-sym5-mvt1-
+984073-p4` printing 11 staves in both systems with DIFFERENT lineups, and *an
+equal-count check is a constraint satisfiable by accident*; **nothing consumes
+the result**, deliberately (the `Q.INK` discipline); n = **2 documents, 2
+publishers, 8 pages, both scans**; no export, no file, **no OMR-NED figure** —
+the entire output is a dictionary in a verdict. ⚠️ The **25 Litolff staves
+never named** are outside the check's reach, and they are the half of the page
+most likely to be misjoined: this edition stops labelling its strings on
+continuation systems.
+
+---
+
 ## ⚠️⚠️ A PREMISE ENCODED IN A REFUSAL OUTLIVES ITS REASON
 
 Sean, 2026-09-17, after four separate instances surfaced in one session:
