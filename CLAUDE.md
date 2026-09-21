@@ -5363,17 +5363,31 @@ chord — the suspect population falls to **51 and 14** (of 1,759 and 1,895
 head/stroke pairs). ⚠️ The x-offset split used to sort it is a SORT and not a
 rule: widest empty interval **0.08 notehead widths**, i.e. noise.
 
-⚠️⚠️ **AND THE RESIDUAL IS NOT A FAULT EITHER.** Three of the 26 unexplained
-cases were cropped and shown: *"they look like clean notes with basic stems on
-them."* Measured, the flagged strokes are **systematically LONGER than ordinary
-ones — median 5.72 staff spaces against 4.12 on Litolff, 4.43 against 3.46 on
-Breitkopf**, where a stem is ~3.5. **The note is not mid-stem; the STEM is
-measured too long**, most plausibly merged with a staff line, a beam or
-neighbouring ink.
+⚠️⚠️ **AND THE RESIDUAL IS NOT A FAULT EITHER — TWO STEMS ARE READ AS ONE.**
+Three of the 26 unexplained cases were cropped and shown: *"they look like
+clean notes with basic stems on them"*, and then Sean diagnosed it: *"there are
+two separate stems that are being measured as one stem."* ⚠️⚠️ **The decisive
+test is an asymmetry a single stem CANNOT produce — a stem STARTS at its head,
+so one stem can overshoot its note at ONE end only. Flagged runs overshoot at
+BOTH ends on 7 of 14 Breitkopf cases (50%) and 9 of 51 Litolff**, the worst
+reaching 2.5 noteheads above the top head and 2.8 below the bottom over 5.7
+spaces — the crop showing two voices, upper stemming UP to the beam above and
+lower stemming DOWN to the beam below, fused into one component. Three
+measurements agree: flagged runs are LONGER (5.72 vs 4.12; 4.43 vs 3.46),
+leave a SUBSTANTIAL piece on BOTH sides when cut at the flagged head (2.75 /
+3.06 and 2.50 / 2.03), and are **~18% WIDER** (two stems at slightly different
+x). ⚠️ An earlier guess in this section — *"merged with a staff line"* — is
+WITHDRAWN: it was a story with no test.
 
-> **The convention is sound, the notes are ordinary, and what is wrong is the
-> EXTENT OF THE VERTICAL RUN we measure. The repair is upstream, in how a
-> stroke's ends are found — NOT in `adjudicate_stem_direction`.**
+> **The convention is sound and the notes are ordinary. TWO STEMS ARE READ AS
+> ONE VERTICAL RUN, and the note that appears stranded is the one at the
+> junction. The repair is upstream, in SEGMENTING a vertical run — NOT in
+> `adjudicate_stem_direction`.**
+
+⚠️⚠️ **AND IT MEETS THE PAGE-FRAME LANE OF THE SAME DAY FROM THE OTHER SIDE** —
+that one found a barline's ENDS measured wrong because the cell clips them,
+this one finds two stems FUSED. **Two independent lanes, one conclusion:
+vertical runs are not segmented correctly.**
 
 ⚠️ **IT DOES NOT CLEAR THE 09-18 OBSERVATION** (*"the record's notehead box
 stands part-way ALONG a NEIGHBOURING note's stem"*, 6 of 6 on its own crops).
