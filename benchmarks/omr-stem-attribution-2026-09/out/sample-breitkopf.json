@@ -1,0 +1,939 @@
+{
+ "label": "breitkopf",
+ "seed": 20260920,
+ "per_stratum": 20,
+ "probe": "benchmarks/omr-stem-attribution-2026-09/out/breitkopf.json",
+ "available": {
+  "far_with_a_better_claimant": 231,
+  "chord_interior": 36
+ },
+ "question": "is the vertical stroke under the marked head THIS head's stem, or does it belong to another note?",
+ "verdicts_allowed": [
+  "this_heads_stem",
+  "another_notes_stem",
+  "cannot_tell",
+  "not_a_notehead"
+ ],
+ "rows": [
+  {
+   "stratum": "chord_interior",
+   "subject": "glyph/0/0/10/1/16",
+   "stem": "obs:006137",
+   "t": 0.863,
+   "stem_h": 394.0,
+   "head_h": 170.0,
+   "end_gap_heads": 0.318,
+   "interior_chord_member": true,
+   "n_mates": 2,
+   "head_box": [
+    1190.0,
+    831.0,
+    324.0,
+    170.0
+   ],
+   "stem_box": [
+    1369.0,
+    576.0,
+    25.0,
+    394.0
+   ]
+  },
+  {
+   "stratum": "chord_interior",
+   "subject": "glyph/0/0/2/0/14",
+   "stem": "obs:005882",
+   "t": 0.044,
+   "stem_h": 342.0,
+   "head_h": 86.0,
+   "end_gap_heads": 0.174,
+   "interior_chord_member": true,
+   "n_mates": 2,
+   "head_box": [
+    1454.0,
+    249.0,
+    94.0,
+    86.0
+   ],
+   "stem_box": [
+    1454.0,
+    277.0,
+    16.0,
+    342.0
+   ]
+  },
+  {
+   "stratum": "chord_interior",
+   "subject": "glyph/0/0/4/3/1",
+   "stem": "obs:005957",
+   "t": 0.211,
+   "stem_h": 437.0,
+   "head_h": 78.0,
+   "end_gap_heads": 1.179,
+   "interior_chord_member": true,
+   "n_mates": 3,
+   "head_box": [
+    174.0,
+    651.0,
+    80.0,
+    78.0
+   ],
+   "stem_box": [
+    247.0,
+    598.0,
+    18.0,
+    437.0
+   ]
+  },
+  {
+   "stratum": "chord_interior",
+   "subject": "glyph/0/0/4/3/7",
+   "stem": "obs:005957",
+   "t": 0.882,
+   "stem_h": 437.0,
+   "head_h": 77.0,
+   "end_gap_heads": 0.669,
+   "interior_chord_member": true,
+   "n_mates": 3,
+   "head_box": [
+    127.0,
+    945.0,
+    124.0,
+    77.0
+   ],
+   "stem_box": [
+    247.0,
+    598.0,
+    18.0,
+    437.0
+   ]
+  },
+  {
+   "stratum": "chord_interior",
+   "subject": "glyph/0/0/4/4/9",
+   "stem": "obs:005959",
+   "t": 0.912,
+   "stem_h": 391.0,
+   "head_h": 103.0,
+   "end_gap_heads": 0.335,
+   "interior_chord_member": true,
+   "n_mates": 3,
+   "head_box": [
+    183.0,
+    943.0,
+    131.0,
+    103.0
+   ],
+   "stem_box": [
+    302.0,
+    638.0,
+    15.0,
+    391.0
+   ]
+  },
+  {
+   "stratum": "chord_interior",
+   "subject": "glyph/0/0/5/2/16",
+   "stem": "obs:005975",
+   "t": 0.515,
+   "stem_h": 722.0,
+   "head_h": 70.0,
+   "end_gap_heads": 5.0,
+   "interior_chord_member": true,
+   "n_mates": 2,
+   "head_box": [
+    125.0,
+    1098.0,
+    149.0,
+    70.0
+   ],
+   "stem_box": [
+    250.0,
+    761.0,
+    19.0,
+    722.0
+   ]
+  },
+  {
+   "stratum": "chord_interior",
+   "subject": "glyph/0/0/5/3/15",
+   "stem": "obs:005977",
+   "t": 0.522,
+   "stem_h": 718.0,
+   "head_h": 72.0,
+   "end_gap_heads": 4.764,
+   "interior_chord_member": true,
+   "n_mates": 2,
+   "head_box": [
+    127.0,
+    1094.0,
+    154.0,
+    72.0
+   ],
+   "stem_box": [
+    247.0,
+    755.0,
+    22.0,
+    718.0
+   ]
+  },
+  {
+   "stratum": "chord_interior",
+   "subject": "glyph/0/0/5/7/2",
+   "stem": "obs:005986",
+   "t": 0.687,
+   "stem_h": 206.0,
+   "head_h": 121.0,
+   "end_gap_heads": 0.533,
+   "interior_chord_member": true,
+   "n_mates": 2,
+   "head_box": [
+    120.0,
+    792.0,
+    137.0,
+    121.0
+   ],
+   "stem_box": [
+    150.0,
+    711.0,
+    13.0,
+    206.0
+   ]
+  },
+  {
+   "stratum": "chord_interior",
+   "subject": "glyph/0/0/8/5/5",
+   "stem": "obs:006049",
+   "t": 0.125,
+   "stem_h": 372.0,
+   "head_h": 101.0,
+   "end_gap_heads": 0.46,
+   "interior_chord_member": true,
+   "n_mates": 3,
+   "head_box": [
+    233.0,
+    491.0,
+    104.0,
+    101.0
+   ],
+   "stem_box": [
+    247.0,
+    495.0,
+    16.0,
+    372.0
+   ]
+  },
+  {
+   "stratum": "chord_interior",
+   "subject": "glyph/1/0/0/4/33",
+   "stem": "obs:021146",
+   "t": 0.92,
+   "stem_h": 286.0,
+   "head_h": 104.0,
+   "end_gap_heads": 0.221,
+   "interior_chord_member": true,
+   "n_mates": 3,
+   "head_box": [
+    1089.0,
+    299.0,
+    110.0,
+    104.0
+   ],
+   "stem_box": [
+    1185.0,
+    88.0,
+    17.0,
+    286.0
+   ]
+  },
+  {
+   "stratum": "chord_interior",
+   "subject": "glyph/1/0/0/4/33",
+   "stem": "obs:021151",
+   "t": -0.047,
+   "stem_h": 364.0,
+   "head_h": 104.0,
+   "end_gap_heads": 0.163,
+   "interior_chord_member": true,
+   "n_mates": 3,
+   "head_box": [
+    1089.0,
+    299.0,
+    110.0,
+    104.0
+   ],
+   "stem_box": [
+    1188.0,
+    368.0,
+    17.0,
+    364.0
+   ]
+  },
+  {
+   "stratum": "chord_interior",
+   "subject": "glyph/1/0/0/4/42",
+   "stem": "obs:021146",
+   "t": 0.977,
+   "stem_h": 286.0,
+   "head_h": 73.0,
+   "end_gap_heads": 0.089,
+   "interior_chord_member": true,
+   "n_mates": 3,
+   "head_box": [
+    1086.0,
+    331.0,
+    110.0,
+    73.0
+   ],
+   "stem_box": [
+    1185.0,
+    88.0,
+    17.0,
+    286.0
+   ]
+  },
+  {
+   "stratum": "chord_interior",
+   "subject": "glyph/1/0/0/4/42",
+   "stem": "obs:021151",
+   "t": -0.001,
+   "stem_h": 364.0,
+   "head_h": 73.0,
+   "end_gap_heads": 0.007,
+   "interior_chord_member": true,
+   "n_mates": 3,
+   "head_box": [
+    1086.0,
+    331.0,
+    110.0,
+    73.0
+   ],
+   "stem_box": [
+    1188.0,
+    368.0,
+    17.0,
+    364.0
+   ]
+  },
+  {
+   "stratum": "chord_interior",
+   "subject": "glyph/1/0/2/0/41",
+   "stem": "obs:021239",
+   "t": 0.528,
+   "stem_h": 281.0,
+   "head_h": 61.0,
+   "end_gap_heads": 2.172,
+   "interior_chord_member": true,
+   "n_mates": 2,
+   "head_box": [
+    1876.0,
+    243.0,
+    67.0,
+    61.0
+   ],
+   "stem_box": [
+    1933.0,
+    125.0,
+    12.0,
+    281.0
+   ]
+  },
+  {
+   "stratum": "chord_interior",
+   "subject": "glyph/1/0/6/1/17",
+   "stem": "obs:021431",
+   "t": 0.414,
+   "stem_h": 566.0,
+   "head_h": 91.0,
+   "end_gap_heads": 2.577,
+   "interior_chord_member": true,
+   "n_mates": 2,
+   "head_box": [
+    473.0,
+    505.0,
+    117.0,
+    91.0
+   ],
+   "stem_box": [
+    583.0,
+    316.0,
+    21.0,
+    566.0
+   ]
+  },
+  {
+   "stratum": "chord_interior",
+   "subject": "glyph/2/0/7/2/25",
+   "stem": "obs:035007",
+   "t": 0.549,
+   "stem_h": 543.0,
+   "head_h": 178.0,
+   "end_gap_heads": 1.376,
+   "interior_chord_member": true,
+   "n_mates": 3,
+   "head_box": [
+    159.0,
+    493.0,
+    157.0,
+    178.0
+   ],
+   "stem_box": [
+    162.0,
+    284.0,
+    23.0,
+    543.0
+   ]
+  },
+  {
+   "stratum": "chord_interior",
+   "subject": "glyph/2/0/8/0/13",
+   "stem": "obs:035020",
+   "t": 0.195,
+   "stem_h": 218.0,
+   "head_h": 113.0,
+   "end_gap_heads": 0.376,
+   "interior_chord_member": true,
+   "n_mates": 3,
+   "head_box": [
+    641.0,
+    226.0,
+    86.0,
+    113.0
+   ],
+   "stem_box": [
+    677.0,
+    240.0,
+    15.0,
+    218.0
+   ]
+  },
+  {
+   "stratum": "chord_interior",
+   "subject": "glyph/2/0/8/1/4",
+   "stem": "obs:035023",
+   "t": 0.376,
+   "stem_h": 246.0,
+   "head_h": 53.0,
+   "end_gap_heads": 1.745,
+   "interior_chord_member": true,
+   "n_mates": 4,
+   "head_box": [
+    161.0,
+    291.0,
+    51.0,
+    53.0
+   ],
+   "stem_box": [
+    160.0,
+    225.0,
+    21.0,
+    246.0
+   ]
+  },
+  {
+   "stratum": "chord_interior",
+   "subject": "glyph/3/0/3/3/7",
+   "stem": "obs:053177",
+   "t": -0.046,
+   "stem_h": 509.0,
+   "head_h": 117.0,
+   "end_gap_heads": 0.201,
+   "interior_chord_member": true,
+   "n_mates": 2,
+   "head_box": [
+    245.0,
+    290.0,
+    153.0,
+    117.0
+   ],
+   "stem_box": [
+    240.0,
+    372.0,
+    22.0,
+    509.0
+   ]
+  },
+  {
+   "stratum": "chord_interior",
+   "subject": "glyph/3/1/11/1/18",
+   "stem": "obs:054016",
+   "t": 0.394,
+   "stem_h": 587.0,
+   "head_h": 192.0,
+   "end_gap_heads": 1.203,
+   "interior_chord_member": true,
+   "n_mates": 2,
+   "head_box": [
+    925.0,
+    461.0,
+    143.0,
+    192.0
+   ],
+   "stem_box": [
+    930.0,
+    326.0,
+    14.0,
+    587.0
+   ]
+  },
+  {
+   "stratum": "far_with_a_better_claimant",
+   "subject": "glyph/0/0/6/3/3",
+   "stem": "obs:006000",
+   "t": 0.704,
+   "stem_h": 416.0,
+   "head_h": 120.0,
+   "end_gap_heads": 1.025,
+   "interior_chord_member": false,
+   "n_mates": 1,
+   "head_box": [
+    123.0,
+    747.0,
+    134.0,
+    120.0
+   ],
+   "stem_box": [
+    244.0,
+    514.0,
+    16.0,
+    416.0
+   ]
+  },
+  {
+   "stratum": "far_with_a_better_claimant",
+   "subject": "glyph/1/0/1/0/16",
+   "stem": "obs:021190",
+   "t": 0.466,
+   "stem_h": 292.0,
+   "head_h": 60.0,
+   "end_gap_heads": 2.267,
+   "interior_chord_member": false,
+   "n_mates": 1,
+   "head_box": [
+    1751.0,
+    199.0,
+    69.0,
+    60.0
+   ],
+   "stem_box": [
+    1754.0,
+    93.0,
+    14.0,
+    292.0
+   ]
+  },
+  {
+   "stratum": "far_with_a_better_claimant",
+   "subject": "glyph/1/0/1/0/30",
+   "stem": "obs:021194",
+   "t": 0.491,
+   "stem_h": 270.0,
+   "head_h": 57.0,
+   "end_gap_heads": 2.325,
+   "interior_chord_member": false,
+   "n_mates": 1,
+   "head_box": [
+    1873.0,
+    224.0,
+    71.0,
+    57.0
+   ],
+   "stem_box": [
+    1877.0,
+    120.0,
+    12.0,
+    270.0
+   ]
+  },
+  {
+   "stratum": "far_with_a_better_claimant",
+   "subject": "glyph/2/0/1/2/5",
+   "stem": "obs:034898",
+   "t": 0.566,
+   "stem_h": 604.0,
+   "head_h": 112.0,
+   "end_gap_heads": 2.339,
+   "interior_chord_member": false,
+   "n_mates": 1,
+   "head_box": [
+    147.0,
+    577.0,
+    135.0,
+    112.0
+   ],
+   "stem_box": [
+    148.0,
+    291.0,
+    23.0,
+    604.0
+   ]
+  },
+  {
+   "stratum": "far_with_a_better_claimant",
+   "subject": "glyph/2/0/4/3/11",
+   "stem": "obs:034959",
+   "t": 0.802,
+   "stem_h": 275.0,
+   "head_h": 33.0,
+   "end_gap_heads": 1.652,
+   "interior_chord_member": false,
+   "n_mates": 1,
+   "head_box": [
+    248.0,
+    518.0,
+    105.0,
+    33.0
+   ],
+   "stem_box": [
+    342.0,
+    314.0,
+    16.0,
+    275.0
+   ]
+  },
+  {
+   "stratum": "far_with_a_better_claimant",
+   "subject": "glyph/2/0/5/5/9",
+   "stem": "obs:034977",
+   "t": 0.429,
+   "stem_h": 508.0,
+   "head_h": 78.0,
+   "end_gap_heads": 2.795,
+   "interior_chord_member": false,
+   "n_mates": 1,
+   "head_box": [
+    1637.0,
+    341.0,
+    104.0,
+    78.0
+   ],
+   "stem_box": [
+    1731.0,
+    162.0,
+    16.0,
+    508.0
+   ]
+  },
+  {
+   "stratum": "far_with_a_better_claimant",
+   "subject": "glyph/2/1/3/2/8",
+   "stem": "obs:035418",
+   "t": 0.587,
+   "stem_h": 669.0,
+   "head_h": 96.0,
+   "end_gap_heads": 2.875,
+   "interior_chord_member": false,
+   "n_mates": 1,
+   "head_box": [
+    215.0,
+    710.0,
+    122.0,
+    96.0
+   ],
+   "stem_box": [
+    193.0,
+    365.0,
+    29.0,
+    669.0
+   ]
+  },
+  {
+   "stratum": "far_with_a_better_claimant",
+   "subject": "glyph/3/0/10/8/9",
+   "stem": "obs:053417",
+   "t": 0.528,
+   "stem_h": 620.0,
+   "head_h": 127.0,
+   "end_gap_heads": 2.303,
+   "interior_chord_member": false,
+   "n_mates": 1,
+   "head_box": [
+    1356.0,
+    537.0,
+    147.0,
+    127.0
+   ],
+   "stem_box": [
+    1475.0,
+    273.0,
+    22.0,
+    620.0
+   ]
+  },
+  {
+   "stratum": "far_with_a_better_claimant",
+   "subject": "glyph/3/0/10/9/7",
+   "stem": "obs:053427",
+   "t": 0.446,
+   "stem_h": 631.0,
+   "head_h": 121.0,
+   "end_gap_heads": 2.326,
+   "interior_chord_member": false,
+   "n_mates": 1,
+   "head_box": [
+    1303.0,
+    439.0,
+    143.0,
+    121.0
+   ],
+   "stem_box": [
+    1307.0,
+    218.0,
+    22.0,
+    631.0
+   ]
+  },
+  {
+   "stratum": "far_with_a_better_claimant",
+   "subject": "glyph/3/0/11/7/10",
+   "stem": "obs:053463",
+   "t": 0.431,
+   "stem_h": 655.0,
+   "head_h": 112.0,
+   "end_gap_heads": 2.518,
+   "interior_chord_member": false,
+   "n_mates": 1,
+   "head_box": [
+    368.0,
+    398.0,
+    140.0,
+    112.0
+   ],
+   "stem_box": [
+    368.0,
+    172.0,
+    25.0,
+    655.0
+   ]
+  },
+  {
+   "stratum": "far_with_a_better_claimant",
+   "subject": "glyph/3/0/11/7/11",
+   "stem": "obs:053462",
+   "t": 0.441,
+   "stem_h": 658.0,
+   "head_h": 102.0,
+   "end_gap_heads": 2.843,
+   "interior_chord_member": false,
+   "n_mates": 1,
+   "head_box": [
+    162.0,
+    404.0,
+    134.0,
+    102.0
+   ],
+   "stem_box": [
+    160.0,
+    165.0,
+    26.0,
+    658.0
+   ]
+  },
+  {
+   "stratum": "far_with_a_better_claimant",
+   "subject": "glyph/3/0/11/8/25",
+   "stem": "obs:053469",
+   "t": 0.582,
+   "stem_h": 658.0,
+   "head_h": 118.0,
+   "end_gap_heads": 2.331,
+   "interior_chord_member": false,
+   "n_mates": 1,
+   "head_box": [
+    1346.0,
+    689.0,
+    142.0,
+    118.0
+   ],
+   "stem_box": [
+    1346.0,
+    365.0,
+    25.0,
+    658.0
+   ]
+  },
+  {
+   "stratum": "far_with_a_better_claimant",
+   "subject": "glyph/3/0/3/4/5",
+   "stem": "obs:053180",
+   "t": 0.285,
+   "stem_h": 473.0,
+   "head_h": 120.0,
+   "end_gap_heads": 1.125,
+   "interior_chord_member": false,
+   "n_mates": 1,
+   "head_box": [
+    120.0,
+    451.0,
+    142.0,
+    120.0
+   ],
+   "stem_box": [
+    117.0,
+    376.0,
+    25.0,
+    473.0
+   ]
+  },
+  {
+   "stratum": "far_with_a_better_claimant",
+   "subject": "glyph/3/0/3/8/5",
+   "stem": "obs:053198",
+   "t": 0.631,
+   "stem_h": 611.0,
+   "head_h": 111.0,
+   "end_gap_heads": 2.032,
+   "interior_chord_member": false,
+   "n_mates": 1,
+   "head_box": [
+    1128.0,
+    586.0,
+    136.0,
+    111.0
+   ],
+   "stem_box": [
+    1127.0,
+    256.0,
+    26.0,
+    611.0
+   ]
+  },
+  {
+   "stratum": "far_with_a_better_claimant",
+   "subject": "glyph/3/1/1/2/8",
+   "stem": "obs:053601",
+   "t": 0.37,
+   "stem_h": 467.0,
+   "head_h": 86.0,
+   "end_gap_heads": 2.012,
+   "interior_chord_member": false,
+   "n_mates": 1,
+   "head_box": [
+    889.0,
+    460.0,
+    119.0,
+    86.0
+   ],
+   "stem_box": [
+    883.0,
+    330.0,
+    23.0,
+    467.0
+   ]
+  },
+  {
+   "stratum": "far_with_a_better_claimant",
+   "subject": "glyph/3/1/10/2/20",
+   "stem": "obs:053972",
+   "t": 0.484,
+   "stem_h": 526.0,
+   "head_h": 97.0,
+   "end_gap_heads": 2.624,
+   "interior_chord_member": false,
+   "n_mates": 1,
+   "head_box": [
+    489.0,
+    448.0,
+    130.0,
+    97.0
+   ],
+   "stem_box": [
+    494.0,
+    242.0,
+    20.0,
+    526.0
+   ]
+  },
+  {
+   "stratum": "far_with_a_better_claimant",
+   "subject": "glyph/3/1/3/1/7",
+   "stem": "obs:053685",
+   "t": 0.557,
+   "stem_h": 669.0,
+   "head_h": 119.0,
+   "end_gap_heads": 2.492,
+   "interior_chord_member": false,
+   "n_mates": 1,
+   "head_box": [
+    1431.0,
+    736.0,
+    153.0,
+    119.0
+   ],
+   "stem_box": [
+    1433.0,
+    423.0,
+    22.0,
+    669.0
+   ]
+  },
+  {
+   "stratum": "far_with_a_better_claimant",
+   "subject": "glyph/3/1/3/6/5",
+   "stem": "obs:053705",
+   "t": 0.45,
+   "stem_h": 695.0,
+   "head_h": 122.0,
+   "end_gap_heads": 2.566,
+   "interior_chord_member": false,
+   "n_mates": 1,
+   "head_box": [
+    176.0,
+    544.0,
+    120.0,
+    122.0
+   ],
+   "stem_box": [
+    291.0,
+    292.0,
+    22.0,
+    695.0
+   ]
+  },
+  {
+   "stratum": "far_with_a_better_claimant",
+   "subject": "glyph/3/1/3/8/8",
+   "stem": "obs:053713",
+   "t": 0.451,
+   "stem_h": 662.0,
+   "head_h": 115.0,
+   "end_gap_heads": 2.596,
+   "interior_chord_member": false,
+   "n_mates": 1,
+   "head_box": [
+    582.0,
+    493.0,
+    150.0,
+    115.0
+   ],
+   "stem_box": [
+    706.0,
+    252.0,
+    25.0,
+    662.0
+   ]
+  },
+  {
+   "stratum": "far_with_a_better_claimant",
+   "subject": "glyph/3/1/9/8/8",
+   "stem": "obs:053939",
+   "t": 0.515,
+   "stem_h": 587.0,
+   "head_h": 125.0,
+   "end_gap_heads": 2.276,
+   "interior_chord_member": false,
+   "n_mates": 2,
+   "head_box": [
+    173.0,
+    735.0,
+    157.0,
+    125.0
+   ],
+   "stem_box": [
+    303.0,
+    495.0,
+    25.0,
+    587.0
+   ]
+  }
+ ]
+}
