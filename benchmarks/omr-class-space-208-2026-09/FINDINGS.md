@@ -245,8 +245,18 @@ arrived at independently. That agreement-minus-two is the strongest
 corroboration here and was not designed for.
 
 **The probe is left as it is** (it is another lane's artefact and its case-(b)
-repertoire work is untouched by this). Its delta section will now read zero,
-which is the repair landing.
+repertoire work is untouched by this).
+
+⚠️⚠️ **AND A CLAIM THIS FINDINGS FILE ITSELF GOT WRONG, CORRECTED BY RUNNING
+IT.** The first draft of this section said the probe's delta *"will now read
+zero, which is the repair landing."* **It does not, and predicting it instead
+of running it was the error.** Measured: the probe's delta goes **37 -> 11**,
+and the 11 that remain are **exactly the `ALIASES` keys** (asserted, not
+eyeballed). That is not residual snapshot defect — it is the probe comparing
+against the RAW 168 while the instrument now audits the canonical 157, i.e.
+the very disagreement §8 describes. The snapshot half of its delta is gone;
+the raw-vs-canonical half is what is left, and closing it means changing the
+probe, which is another lane's file.
 
 ---
 
