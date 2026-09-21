@@ -1,0 +1,10 @@
+### beethoven5-p1-p4-ink-identity
+CLASSES  probe and tree agree: ('keySharp', 'keyFlat', 'keyNatural')
+RECORD   beethoven5-p1-p4-ink-identity.record.json
+REACH    75 key verdicts in the record, 75 rebuilt
+CONTROL  decided keys: 49; MOVED 0; absent from the rebuild 0
+SPLIT    {'no_evidence -> markers_without_a_run': 7}
+DETAIL   {'carries the detail': 21, 'and ink was there': 10}
+wrote /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/handoff-work-resume-414625/benchmarks/omr-keysig-staged-reach-2026-09/out/beethoven5-p1-p4-ink-identity.json
+exit=0
+### brahms1-breitkopf-p0-p3

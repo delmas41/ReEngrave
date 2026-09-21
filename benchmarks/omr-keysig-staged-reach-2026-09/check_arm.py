@@ -141,7 +141,7 @@ def main() -> int:
 
     # ── CONTROL 3 (POSITIVE): the split must have happened ────────────────
     n_split = sum(split.values())
-    if False:
+    if n_split == 0:
         print("DEAD: no abstention split at all — 'no decided key moved' is "
               "also exactly what a change that never ran looks like")
 

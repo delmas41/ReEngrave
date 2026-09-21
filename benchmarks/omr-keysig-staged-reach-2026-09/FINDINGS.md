@@ -161,8 +161,15 @@ it never decides, never overturns a fit, and says so in its own key name
 
 ## 5. Controls
 
-**NO DECIDED KEY MOVED.** `check_arm.py` re-adjudicates each shared record
-through the SHIPPED decision. ⚠️ The control is sharper than *"nothing
+**NO DECIDED KEY MOVED — RUN, AND PASSED.** Litolff
+(`out/beethoven5-p1-p4-ink-identity.json`): **75 key verdicts rebuilt of 75,
+49 decided, MOVED 0, absent 0**, and the abstention split is
+`no_evidence -> markers_without_a_run` ×**7** — ⚠️ **the exact number
+`probe_records.py` predicted from the record's JSON with no pipeline code at
+all.** Two instruments, two routes, one number.
+
+`check_arm.py` re-adjudicates each shared record through the SHIPPED
+decision. ⚠️ The control is sharper than *"nothing
 moved"*, because something IS meant to move: every DECIDED verdict must be
 identical in value and reason, **only** `no_evidence -> markers_without_a_run`
 is a permitted abstention movement, and any other is a failure.
