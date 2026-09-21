@@ -236,7 +236,9 @@ failing in the direction that looks like success: the first run reported
 | 1 | summary verbatim | **13 RED, 0 survivors** — VOID |
 | 2 | duration stripped | **10 RED, 3 SURVIVORS** |
 | 3 | after closing those three | **12 RED, 1 SURVIVOR** |
-| 4 | after closing that one | see the committed output |
+| 4 | after closing that one, on a clean tree | **13 RED, 0 survivors, 0 bad anchors, restore VERIFIED by md5** |
+
+Run 4 is `out/mutation-battery.txt`, committed beside this file. ⚠️ It reads **identically to run 1** — 13 of 13 red — and the two mean opposite things: run 1 could not have said anything else, and run 4 survived three rounds of a judge that can. *A number is not a result until the instrument that produced it can fail.*
 
 **All four survivors were real, and three were the same shape** — a test that
 reaches everything about a mechanism except the branch the mutation lives in:

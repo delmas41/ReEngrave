@@ -1,0 +1,74 @@
+==============================================================================
+BASELINE (the positive control — every arm is free if this is not green)
+==============================================================================
+  exit 0
+  95 passed, 5 warnings
+
+------------------------------------------------------------------------------
+ARM [identity]: the instrument read loses its SCOPE (the bare read)
+  expected: a DOCUMENT-scoped read finds no staff row: every page reports `checked: False` and reads as a document that prints no labels
+  exit 1  -> RED
+
+------------------------------------------------------------------------------
+ARM [identity]: an unread page reports a clean zero instead of abstaining
+  expected: silence read as agreement — the failure that would have reported the part join sound on the 75-of-75 pages where it was worst
+  exit 1  -> RED
+
+------------------------------------------------------------------------------
+ARM [identity]: a contested join is downgraded to an abstention (it ACTS)
+  expected: the wiring plan's one condition: a wiring pass may CONNECT a decision, it may not let one GUESS
+  exit 1  -> RED
+
+------------------------------------------------------------------------------
+ARM [identity]: the slot join is checked in ORDINAL terms
+  expected: a check asked in the wrong join's terms measures a partition that does not ship, and reports the shipping one broken
+  exit 1  -> RED
+
+------------------------------------------------------------------------------
+ARM [identity]: the slots_are_ordinals branch is checked as a SLOT join
+  expected: that branch has just decided the slot table IS the ordinal; checking it as a slot join checks a partition it refused
+  exit 1  -> RED
+
+------------------------------------------------------------------------------
+ARM [identity]: contested counts every part, not the disagreeing ones
+  expected: every part reports as contested, including the ones that agree
+  exit 1  -> RED
+
+------------------------------------------------------------------------------
+ARM [identity]: a part named on ONE system is counted as agreeing
+  expected: reach the check does not have: a part named once cannot disagree with itself
+  exit 1  -> RED
+
+------------------------------------------------------------------------------
+ARM [identity]: an unkeyed staff is silently dropped rather than counted
+  expected: a hole in the check's reach reported as full coverage
+  exit 1  -> RED
+
+------------------------------------------------------------------------------
+ARM [identity]: the slot join keys by the staff's ORDINAL anyway
+  expected: the gap a slot table exists to express is thrown away, and two instruments collide on one key
+  exit 1  -> RED
+
+------------------------------------------------------------------------------
+ARM [identity]: the equal-count branch skips the check entirely
+  expected: the branch where an equal-count constraint is satisfiable BY ACCIDENT — two 11-staff systems with different lineups — goes unchecked
+  exit 1  -> RED
+
+------------------------------------------------------------------------------
+ARM [arm]: the arm stops asserting the join is UNMOVED
+  expected: a check that silently re-decided the partition would report a clean control
+  exit 1  -> RED
+
+------------------------------------------------------------------------------
+ARM [arm]: the arm drops its POSITIVE control (detail present)
+  expected: 'nothing moved' is also what a check that never ran looks like
+  exit 1  -> RED
+
+------------------------------------------------------------------------------
+ARM [arm]: the arm reports a clean result at ZERO reach
+  expected: REACH BEFORE ACCURACY: an arm that cannot speak must declare itself DEAD, not print a table
+  exit 1  -> RED
+
+==============================================================================
+RED 13   SURVIVED 0   BAD ANCHORS 0
+restore VERIFIED by md5: True
