@@ -134,7 +134,7 @@ the MusicXML the benchmarks score against).
 
 | | |
 |---|---|
-| whole `tools` suite | **4,720 passed / 19 skipped / 0 failed** |
+| whole `tools` suite | **4,722 passed / 19 skipped / 0 failed** |
 | `wiring`, `inventory`, `health`, `reach` `--check` | all **exit 0** |
 | the key-signature battery | **14 arms, 14 RED, 0 survivors**, restore verified (4th run) |
 | key-signature control arm, BOTH records | **0 decided keys moved**; splits **7** and **9**, the probe's own numbers |
