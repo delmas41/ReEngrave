@@ -591,12 +591,62 @@ def rebuild_catalog(path: Path | None = None) -> dict:
     return save_catalog(catalog, path) and load_catalog(path)
 
 
+def unindexed(catalog: dict | None = None, root: Path | None = None) -> dict:
+    """Which store files the catalog does NOT know about.
+
+    ⚠️⚠️ THE MIRROR OF `verify`, AND THE DIRECTION 54 EDITIONS WENT MISSING IN.
+    `verify` asks *is every catalogued file present* and exits non-zero on a
+    checksum mismatch; nothing asked *is every present file catalogued*, so a
+    download whose sidecar was written and whose catalog rebuild was never run
+    is INVISIBLE — and on 2026-09-20 that was **54 editions across 29
+    publishers**, including the third Beethoven 5 plate and the second Brahms 1
+    plate that a dozen results in `CLAUDE.md` report as unavailable
+    (`benchmarks/omr-catalog-gap-2026-09/FINDINGS.md`). Nothing failed, because
+    nothing was asking.
+
+    It is the same asymmetry `tools/omr/no_producer.py` needed: a target-only
+    test reports every chain WITHOUT the layer the repair lives in.
+
+    Two answers, kept apart because the repairs differ:
+
+    * ``with_sidecar`` — the file has its provenance and the catalog simply has
+      not been rebuilt. `ingest catalog` fixes it, and the rebuild is
+      additive.
+    * ``without_sidecar`` — the file arrived some other way and has NO
+      provenance. A rebuild will REPORT it (`rebuild_catalog` is
+      sidecar-driven and refuses to invent an entry from a filename), and the
+      repair is to fetch its provenance, never to index it anyway.
+
+    ⚠️ An EMPTY store is not a finding. On a fresh clone `library/` does not
+    exist and every catalogued file is missing — `verify`'s own documented
+    state — so this returns empty there rather than reporting the catalog as
+    entirely unindexed, which is the opposite of true.
+    """
+    cat = catalog or load_catalog()
+    base = root or library_root()
+    known = {e.get("path") for e in cat.get("entries", [])}
+    with_side: list[str] = []
+    without: list[str] = []
+    for path in iter_store_files(base):
+        rel = str(path.relative_to(base))
+        if rel in known:
+            continue
+        (with_side if sidecar_path(path).exists() else without).append(rel)
+    return {"with_sidecar": sorted(with_side),
+            "without_sidecar": sorted(without)}
+
+
 def verify(catalog: dict | None = None) -> dict:
     """Which catalog entries are actually present, and is the content unchanged?
 
     The store is gitignored and the catalog is not, so on a fresh clone every
     entry is missing — that is the expected state, not an error, and the report
     says so by listing them separately from checksum mismatches.
+
+    ⚠️ IT ANSWERS ONE DIRECTION ONLY. *Is every PRESENT file catalogued* is
+    `unindexed()`, and it is not folded in here because the two have different
+    empty states: on a fresh clone this reports everything missing and that is
+    fine, while `unindexed` must report nothing.
     """
     cat = catalog or load_catalog()
     root = library_root()

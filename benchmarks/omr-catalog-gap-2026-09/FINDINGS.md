@@ -107,5 +107,21 @@ gap ran in. The symmetry is the same one `no_producer.py` needed (a target-only
 test reports every chain without the layer the repair lives in), and it is one
 line of the same enumeration this findings file used.
 
-**Not built here**, because it belongs in `tools/library/` beside `verify` and
-this lane changed no code at all.
+✅ **BUILT, the same day** — `score_library.unindexed()`, reported by
+`ingest verify`, which now **exits non-zero** on it. Two answers kept apart
+because the repairs differ: `with_sidecar` (the catalog is simply behind —
+`ingest catalog` fixes it) and `without_sidecar` (no provenance at all — a
+rebuild will REPORT it, and the repair is to fetch the provenance, never to
+index it anyway).
+
+⚠️ **ITS EMPTY STATE IS THE OPPOSITE OF `verify`'S, which is why they are two
+functions.** On a fresh clone `library/` does not exist: `verify` correctly
+reports every entry missing, and `unindexed` must report NOTHING — reporting
+the whole catalog as unindexed would be exactly backwards. Pinned by a test.
+
+⚠️ **THE CONTROL IS THE HISTORICAL CASE, and the delta IS the repair** — the
+same standard `no_producer.py` was held to. Replayed against a copy of the
+pre-rebuild catalog it reports **54 with_sidecar / 0 without**; against the
+rebuilt one, **0 and 0**. 7 unit tests including a negative control (without
+it, a guard that always fires passes every other assertion), and 129
+library/catalog/ingest tests pass.

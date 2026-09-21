@@ -967,7 +967,27 @@ def main() -> int:
             print(f"  missing: {path}")
         for path in report["changed"]:
             print(f"  CHANGED: {path}")
-        return 1 if report["changed"] else 0
+        # ⚠️⚠️ THE MIRROR QUESTION, and the direction 54 editions went missing
+        # in: `verify` asks whether every CATALOGUED file is present, and
+        # nothing asked whether every PRESENT file is catalogued. See
+        # `score_library.unindexed`.
+        gap = lib.unindexed()
+        n_side = len(gap["with_sidecar"])
+        n_bare = len(gap["without_sidecar"])
+        if n_side or n_bare:
+            print(f"\nUNINDEXED: {n_side} file(s) with a sidecar the catalog "
+                  f"does not list, {n_bare} with no sidecar at all")
+            for path in gap["with_sidecar"][:10]:
+                print(f"  unindexed: {path}")
+            for path in gap["without_sidecar"][:10]:
+                print(f"  NO SIDECAR: {path}")
+            if n_side:
+                print("  -> `python3 -m tools.library.ingest catalog` "
+                      "(additive; run `verify` first, a rebuild against a "
+                      "store with MISSING files drops their entries)")
+            if n_bare:
+                print("  -> no provenance: fetch it, never index it anyway")
+        return 1 if (report["changed"] or n_side or n_bare) else 0
     if args.cmd == "relink":
         return cmd_relink(args.dry_run)
     return 1
