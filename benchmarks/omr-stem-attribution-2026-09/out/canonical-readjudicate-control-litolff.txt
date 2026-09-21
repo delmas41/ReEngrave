@@ -1,0 +1,2 @@
+CONTROL: 2760 of 2993 duration verdicts reproduced exactly, 233 differ, +0 extra
+         [('decided->decided', 228), ('narrowed->decided', 5)]
