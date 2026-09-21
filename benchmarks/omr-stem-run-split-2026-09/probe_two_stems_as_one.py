@@ -197,6 +197,7 @@ def main() -> int:
         over_bot = ((sb[1] + sb[3]) - (bot[1] + bot[3])) / hh
         rows.append({
             "stem": sid, "cell": s["cell"],
+            "stem_h": sb[3], "_space": sp,
             "flagged": sid in flagged_strokes,
             "n_claimants": len(cl),
             "len_spaces": (sb[3] / sp) if sp else None,
@@ -210,6 +211,30 @@ def main() -> int:
     un = [r for r in rows if not r["flagged"]]
     out["strokes_with_a_claimant"] = len(rows)
     out["flagged_strokes"] = len(fl)
+
+    # ⚠️⚠️ THE OFF-NOMINAL CELLS, REPORTED IN THE HEADLINE, AND THE MUTATION
+    # BATTERY IS WHY. An arm swapping `Q.CELL_STAFF_SPACE` for a flat 100 px —
+    # the exact fault this lane found in §0(d) — SURVIVED against the printed
+    # numbers, because 1,167 of Litolff's 1,180 cells sit at exactly 100 and
+    # the medians do not move. That is not a weak arm: it reproduces the
+    # historical bug's own invisibility, which is why §0(d)'s Litolff figures
+    # were right and its Breitkopf figures were 25% out. So the subpopulation
+    # where the two units DISAGREE is printed, and a flat constant moves it.
+    off = [r for r in rows if r["_space"] is not None
+           and abs(r["_space"] - 100.0) > 1e-9]
+    out["off_nominal_cells"] = {
+        "strokes": len(off),
+        "median_len_spaces": med(off, "len_spaces"),
+        "median_len_at_a_flat_100": (
+            round(statistics.median([r["stem_h"] / 100.0 for r in off]), 3)
+            if off else None),
+    }
+    print(f"\n== cells whose staff space is NOT the nominal 100 px")
+    print(f"  strokes on one                      {len(off):>8}")
+    print(f"  median length, per-cell space       "
+          f"{out['off_nominal_cells']['median_len_spaces']}")
+    print(f"  …the same strokes at a FLAT 100 px  "
+          f"{out['off_nominal_cells']['median_len_at_a_flat_100']}")
 
     def med(rs, k):
         vs = [r[k] for r in rs if r.get(k) is not None]

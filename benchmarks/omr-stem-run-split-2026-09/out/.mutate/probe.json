@@ -1,0 +1,51 @@
+{
+ "label": "M",
+ "record": "/Users/seanjohnson/Desktop/ReEngrave/library/_shared-records/beethoven5-p1-p4.record.json",
+ "heads": 2347,
+ "stems": 1920,
+ "cells_with_staff_space": 1180,
+ "pairs": 1,
+ "strokes_without_a_staff_space": 0,
+ "head_bands": {
+  "at_an_end": 1
+ },
+ "flagged_heads": 0,
+ "strokes_with_a_claimant": 1,
+ "flagged_strokes": 0,
+ "both_ends": {
+  "flagged": 0,
+  "flagged_n": 0,
+  "unflagged": 0,
+  "unflagged_n": 1
+ },
+ "medians": {
+  "len_spaces": {
+   "flagged": null,
+   "unflagged": 1.07
+  },
+  "width_spaces": {
+   "flagged": null,
+   "unflagged": -0.76
+  }
+ },
+ "reach": {
+  "strokes_total": 1920,
+  "strokes_with_a_claimant": 1,
+  "both_ends_any": 0,
+  "both_ends_and_2plus_claimants": 0
+ },
+ "rows": [
+  {
+   "stem": "obs:014653",
+   "cell": "cell/2/1/4/13",
+   "flagged": false,
+   "n_claimants": 1,
+   "len_spaces": 1.07,
+   "width_spaces": -0.76,
+   "over_top_heads": -0.057,
+   "over_bot_heads": -0.073,
+   "both_ends": false
+  }
+ ],
+ "flagged_head_list": []
+}
