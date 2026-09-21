@@ -179,3 +179,41 @@ controls (`--blind-the-reader`, `--clip-like-a-cell`) and the battery judges
 every arm on all three runs. Final: **17 arms, 17 RED, 0 survivors.**
 
 Everything is on `claude/integration-2026-09-18` (**PR #57**, still open).
+
+## ✅ 2026-09-20 (second lane) — STEM ATTRIBUTION: measured, and geometry cannot apply it
+
+**The ranked first item of the three-lanes handoff §5 is taken as far as
+geometry can take it, and it stops at the print.** `tools/` diff **EMPTY**;
+no weights, no re-gather, both figures read off the committed shared records.
+[benchmarks/omr-stem-attribution-2026-09/FINDINGS.md](../benchmarks/omr-stem-attribution-2026-09/FINDINGS.md).
+
+⚠️ **The convention is now MEASURED and bimodal** — Litolff peaks 412 at t=0.0
+and 450 at t=0.8 against 29 at the trough, Breitkopf 732 and 443 against 10;
+**71.8% / 77.3%** of pairs within half a notehead height of an end.
+
+⚠️⚠️ **The fault is real: 148 and 228 heads take a confident direction from a
+stroke that does not end at them**, and the owner is already on the record in
+**153 of 169 and 231 of 246** far pairs. Only 9 and 5 are claimed alone —
+a READING gap no attribution rule can reach.
+
+⚠️⚠️ **AND NO CONSTANT-FREE RULE SEPARATES A CHORD FROM A PASSING STROKE.**
+Three forms priced before any was written: strict-minimum takes the faults and
+**destroys chords** (113/115, 32/36), near-half does neither well,
+chord-chain sits between. The discriminating gap has **no empty interval on
+either plate.** ⚠️ And the cost column may BE the fault: `chord_interior`
+means *a mate above AND below*, which three unrelated heads crossed by one
+stroke satisfy exactly as a chord does.
+
+**So: 79 full-width strips, pre-registered and committed BEFORE any was
+rendered, two strata sampled equally, ids opaque so the pass can be blind.**
+⚠️ **What is owed is a human with the plate.** If the strata adjudicate
+DIFFERENTLY the repair is rule A plus a chord rescue; if they adjudicate ALIKE
+the box test is not seeing what we think and the repair is upstream, in the
+notehead boxes.
+
+⚠️ Two frame faults in this lane's own instrument, both caught by a control
+and both recorded: the frame control refused 38 of 40 (right to fire, wrong
+about the cause — it was asked of a one-bar strip instead of the page), and
+every mark then landed outside its bar because a `Q.GLYPH_BOX` value is
+CANONICAL-CELL while a crop is placed in PAGE pixels. Battery **17 arms, 17
+RED, 0 survivors.**
