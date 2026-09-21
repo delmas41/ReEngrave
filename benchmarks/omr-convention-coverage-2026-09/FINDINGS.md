@@ -326,3 +326,60 @@ the two are not the same mistake and the same person made both.
 * **Nothing was repaired**, deliberately. CLAUDE.md records a brief that
   exempted four refusals from scrutiny and calls it *"the audited pattern
   committed inside the audit"*; fixing while auditing is the same move.
+
+---
+
+## 9. Addendum — an independent corroboration, and a process fault
+
+**✅ THE 114 IS CORROBORATED FROM A SECOND, INDEPENDENT IMPLEMENTATION.** A
+sibling agent, working the other half of this problem and unaware of this
+count, landed `tools/omr/conventions.py` — a parser over the same registry
+written to a different design. Run here:
+
+```
+>>> conventions.parse(Path("docs/engraving-conventions.md").read_text())
+114 entries
+```
+
+Two parsers, two authors, one number, and it agrees with the document's own
+Counts table. **The brief's 125 is refuted three ways.** ⚠️ Not fully
+independent: both parsers read the same `###` headings of the same file, so
+they share a substrate — a mis-specification of *what counts as an entry*
+would fool both. What it does rule out is one parser's bug.
+
+⚠️⚠️ **THIS SESSION AND THE SIBLING SHARED ONE WORKTREE, AND THE REFLOG IS
+HOW IT WAS FOUND.** The brief fenced our FILES and said nothing about our
+DIRECTORIES, and we were both committing in
+`.claude/worktrees/handoff-work-f5c18f`. The reflog interleaves us:
+`0ca9ed7f` (theirs) → `0546040b` (mine) → `7c514ff7` (theirs) → `74840a53`
+(mine). **Consequences, all of them checked rather than assumed:**
+
+* **My branch carries two of their commits as ancestors.** Nothing was lost —
+  `git log -- docs/engraving-conventions.md` over the range is **empty**, so
+  the registry never moved under this audit, and no adjudicator changed.
+  Both my `--check`s pass on the combined tree, which is *the one thing no
+  agent runs*.
+* ⚠️ **A `git commit --amend` of mine landed on THEIR commit.** `git log -1`
+  returned their message, not mine, because their commit had become HEAD
+  between my write and my amend. The edit was a no-op on content (their
+  message came back unchanged, same file, same 153 insertions) — but it was
+  luck, not design, and one character's difference would have rewritten
+  somebody else's commit.
+* **The FINDINGS commit message (`74840a53`) is mangled in one place**: a
+  backticked word was eaten by the shell, leaving *"so , which the
+  decorator REQUIRES"*. It is **deliberately NOT repaired by a rewrite** —
+  their commits sit on top of it, and rewriting shared history to fix a
+  cosmetic word is a far worse trade. The missing word is `implicates`, and
+  this line is the correction sitting beside the record rather than over it.
+
+**The rule this pays for, and it is one clause wider than the one in
+CLAUDE.md.** That file says a mutation battery must leave the tree as it
+FOUND it, and that a battery must refuse a dirty tree. Both held here — the
+battery refused its own first invocation. Neither reaches this:
+
+> **Two agents fenced by FILE are not fenced at all if they share a
+> DIRECTORY. `git commit`, `git commit --amend` and `git push` all act on
+> the shared HEAD, not on your files.**
+
+The cheap prophylactic is the one this session did not take: `git worktree
+add` your own directory before the first commit, not just your own branch.
