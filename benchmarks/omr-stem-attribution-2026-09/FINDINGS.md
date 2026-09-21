@@ -64,6 +64,30 @@ the crop shows why: **two voices, the upper stemming UP to the beam above and
 the lower stemming DOWN to the beam below, at nearly the same x, fused into one
 component.**
 
+⚠️⚠️ **CORRECTION, 2026-09-20, FROM THE LANE THAT TESTED THIS
+(`benchmarks/omr-stem-run-split-2026-09`): THE BREITKOPF FIGURES BELOW WERE
+COMPUTED UNDER A FLAT 100 px AND ARE WRONG BY UP TO 25%.** The unit is
+`Q.CELL_STAFF_SPACE` — the CELL's own staff space — and `_upscale_to_canonical`
+scales a too-wide cell by WIDTH, so the nominal is wrong on a minority of cells
+and silently so. **Only 514 of 817 Breitkopf cells sit at 100**, against 1,167
+of 1,180 on Litolff — which is why Litolff is unaffected and Breitkopf is not.
+Corrected: unflagged stroke length **3.817** (not 3.46); widths **0.25 /
+0.214** (not 0.21 / 0.18). ⚠️ The overshoot figures reconcile once a second
+convention is named — this file measures from the head's CENTRE, that lane from
+its box EDGE. **This is the exact trap `Q.CELL_STAFF_SPACE`'s own docstring
+exists to prevent, and it was committed here.**
+
+⚠️⚠️ **AND THE CONCLUSION IS BOUNDED MUCH TIGHTER THAN THIS SECTION IMPLIES.**
+That lane measured the reach: **17 of 4,225 runs (0.40%) overshoot at both
+ends**, only **3** carry the two mid-run heads the diagnosis predicts, and at
+most **13 noteheads of 5,684 (0.23%)** could take a wrong stem direction.
+**13 crops were opened and ONE is the fused-stem fault** — the rest are
+cross-staff fusion through the measure-cell padding, stems whose pair was never
+detected, a spurious notehead, and accidental/dynamic/rest/blotch ink.
+⚠️ **The Litolff 18% INVERTS**: 6 of 6 opened are NOT fused stems, so that
+population wears the signature without the cause. Read that lane's FINDINGS
+before acting on anything here.
+
 Three further measurements agree and none contradicts:
 
 * flagged runs are **longer** — 5.72 vs 4.12 staff spaces (Litolff), 4.43 vs
