@@ -131,6 +131,25 @@ by construction not one of them can ever arrive — **a new false report in
 place of the old one**. A mutation arm pins the direction
 (`audit the RAW 208 instead of the canonical space`, red).
 
+### 3b. The same thing in the instrument's own output
+
+`ink_present_elsewhere()`, before and after, is the dossier's claim made
+concrete. Two of the four quantities move and two do not:
+
+```
+DYNAMIC_LETTER      12 -> 6   removed: dynamicForte, dynamicMezzo, dynamicNiente,
+                                       dynamicPiano, dynamicRinforzando,
+                                       dynamicSforzando        (added: none)
+ARTICULATION_MARK   10 -> 13  added:   articulationAccent, articulationStaccato,
+                                       articulationTenuto      (removed: none)
+ARC_BOX, WEDGE_BOX  unchanged
+```
+
+**`DYNAMIC_LETTER` 12 -> 6 is the whole finding in one line:** half of what
+the tool reported as this quantity's detector classes were names no detection
+could ever carry. Nothing was added, because the six that CAN fire were
+already there under their fine spelling.
+
 ---
 
 ## 5. ⚠️ THE HEADLINE IS THE CLEFS, NOT THE DYNAMICS
