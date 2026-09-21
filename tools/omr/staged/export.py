@@ -2500,10 +2500,18 @@ def _annotate_beams_for(rec: Record, run: StaffRun, cell_index: int,
     cell = run.cells.get(cell_index)
     if cell is None or not stream:
         return
-    key = f"cell/{run.page}/{run.system}/{run.staff}/{cell_index}"
+    # ⚠️ `R_cell_key`, not a third copy of the f-string. It is defined
+    # directly above this function and `_stem_probes` already restates it --
+    # the "imported rather than restated" rule this file applies to
+    # `LETTER_METERS` and the arc constants, applied to a key format.
+    key = R_cell_key(run, cell_index)
     # ⚠️ The per-record map is built ONCE and cached on the Record, not
     # rebuilt per bar: `obs_of` walks every observation, and doing that inside
     # a loop over 1,183 bars is quadratic in the record.
+    # ⚠️ `is None`, NOT falsiness: an empty map is a legitimate answer for a
+    # record with no beam strokes, and `if not cache` would rebuild it on
+    # every bar of exactly that document. The `{}` is falsy but is not None
+    # hazard this repo records for `_carry_meter`.
     cache = getattr(rec, "_beam_box_cache", None)
     if cache is None:
         cache = _beam_boxes_by_cell(rec)

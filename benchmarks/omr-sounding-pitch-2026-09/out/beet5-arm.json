@@ -3,7 +3,7 @@
   "base": "28749347",
   "export_md5": {
     "before": "ada09a9e94fa77c83d6ae282713c99bb",
-    "after": "1b1090907fbf11f3fc2198762bddd150"
+    "after": "2f3d72592073f37f39bb529766115f2c"
   },
   "before": {
     "coverage": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-ad154ed3c58a5516d/benchmarks/omr-sounding-pitch-2026-09/out/beet5-before.musicxml.coverage.json",
