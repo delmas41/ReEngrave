@@ -110,10 +110,36 @@ and `class_aliases.unaccounted(shipped)` is empty.
 
 ---
 
-## 4. ⚠️ THE DOSSIER'S CLAIM IS HALF FALSE, AND THE FALSE HALF DECIDES THE REPAIR
+## 4. ⚠️ THE BRIEF'S PARAPHRASE IS HALF FALSE — THE DOSSIER ITSELF IS RIGHT
 
-The dossier says: *"it reports six dynamic classes that cannot fire and misses
-the six that can."*
+⚠️⚠️ **AND THE DISTINCTION MATTERS, BECAUSE THE SOURCE WAS ACCUSED OF AN ERROR
+IT DID NOT MAKE.** This job was dispatched with the claim, attributed to the
+dossier, that the tool *"reports six dynamic classes that cannot fire and
+misses the six that can."* The second half is false — see below — and I first
+wrote it up as the dossier being half wrong. **Then I read the dossier**
+(`origin/claude/integration-2026-09-18:docs/symbol-dossiers/dynamics.md` §7.1,
+read-only, no branch switch) and it says the OPPOSITE of the paraphrase, in
+terms:
+
+> *"`ink_present_elsewhere()["DYNAMIC_LETTER"]` reports **12** detector
+> classes — the six real letters **plus** `dynamicforte`, `dynamicmezzo`,
+> `dynamicniente`, `dynamicpiano`, `dynamicrinforzando`, `dynamicsforzando`."*
+
+**Six real PLUS six phantoms = 12.** That is exactly what I measured
+independently (§3b: 12 -> 6, nothing added). The dossier never claimed the six
+real ones were missed; the one-line PARAPHRASE in the dispatch brief inverted
+it. Same shape as the Phase 2 obs. 3 episode CLAUDE.md records — *the manager
+paraphrased "quarter note" as "quarter rest" and a job rigorously answered the
+wrong question.* Here the paraphrase would have sent the repair at the RAW 208,
+which is the one wrong repair available.
+
+⚠️ The dossier also corroborates the canonicalization argument from a third
+direction, unprompted: it names `dynamicLetterF` as *"id 192, renamed at
+`yolo_detector.py:296`"*, and records that `data/user-labeled/catalog.yaml`
+contains no class whose name includes `Forte`, `Piano`, `Mezzo`, `Sforz`,
+`Rinf` or `Niente`.
+
+The claim as paraphrased:
 
 * **"six dynamic classes that cannot fire" — TRUE, and exactly six.** They are
   the `dynamic` row of Set A above.
