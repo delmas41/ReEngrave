@@ -250,7 +250,7 @@ class TestTheInstrumentsOwnControls(unittest.TestCase):
 
     @staticmethod
     def _record(tmp, *, key_verdict, with_clef=True, with_fit=True,
-                with_markers=False):
+                with_markers=False, keysig_glyph_cells=()):
         import json
         obs, n = [], 0
 
@@ -272,6 +272,11 @@ class TestTheInstrumentsOwnControls(unittest.TestCase):
                n_accidentals=1, fifths=-1)
         if with_markers:
             ob("staff/0/0/0", Q.KEYSIG_MARKER, "keyFlat", "cell:0")
+        for i, cell in enumerate(keysig_glyph_cells):
+            # `glyph/<page>/<system>/<staff>/<cell>/<n>` — the address the
+            # probe reads a detection's CELL INDEX out of.
+            ob(f"glyph/0/0/0/{cell}/{i}", Q.GLYPH_BOX,
+               ["keyFlat", 0.0, 0.0, 1.0, 1.0], f"cell:{cell}")
         verdicts = []
         if key_verdict is not None:
             verdicts.append(dict(
@@ -348,7 +353,13 @@ class TestTheInstrumentsOwnControls(unittest.TestCase):
                 "outcome": "decided", "value": -3, "reason": "fitted"})
             rc, out = self._run(arm, [path])
         self.assertEqual(rc, 1, out)
-        self.assertIn("MOVED", out)
+        # ⚠️⚠️ NOT `assertIn("MOVED", out)`. The arm prints `MOVED 0` on EVERY
+        # run, so that assertion is satisfied by a control that found nothing
+        # — it could never fail, and a mutation battery arm walked straight
+        # past it. What has to be asserted is the MOVE ITSELF: the arrow line
+        # naming the value that changed.
+        self.assertIn("MOVED 1", out)
+        self.assertIn("-3/fitted -> -1/fitted", out)
 
     def test_the_arm_PASSES_on_a_faithful_record(self):
         """The positive control for the test above."""
@@ -420,6 +431,26 @@ class TestTheInstrumentsOwnControls(unittest.TestCase):
         self.assertIn("REFUSED", out)
 
     # ── the probe ────────────────────────────────────────────────────────
+    def test_the_probe_counts_ONLY_later_cells_as_out_of_reach(self):
+        """⚠️ SURVIVOR. The whole Q2 finding is that the out-of-reach
+        population is SMALL — 21 and 2 — against 105 and 146 in cell 0.
+        Counting cell 0 into it inflates those to 126 and 148 and turns a
+        *"do not build this yet"* into a *"look how much is missing"*, and
+        no test could see the difference."""
+        import tempfile
+        from pathlib import Path
+        probe = self._load("probe_records.py")
+        with tempfile.TemporaryDirectory() as d:
+            path = self._record(
+                Path(d), with_markers=True,
+                keysig_glyph_cells=(0, 0, 0, 0, 3, 7),   # 4 in cell 0, 2 later
+                key_verdict={"outcome": "abstained", "value": None,
+                             "reason": "no_evidence"})
+            rc, out = self._run(probe, [path])
+        self.assertEqual(rc, 0, out)
+        self.assertIn("cells != 0: 2", out)
+        self.assertIn("cell 0 holds 4", out)
+
     def test_the_probe_declares_itself_DEAD_with_no_key_verdicts(self):
         import tempfile
         from pathlib import Path
