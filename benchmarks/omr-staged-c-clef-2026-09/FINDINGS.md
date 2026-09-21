@@ -350,6 +350,14 @@ is the sentence a later reader needs if one ever does.
 - **A/B reach**: the same probe, the same rows, both admission rules; the
   repaired rule **imported**, never restated (`clef_reach.admit_repaired`).
 - **Positive control on the probe**: exits 2 at zero admitted rows.
+- **Frame fidelity, checked rather than assumed**: the shipped call site
+  evaluates `_is_clef_class(d.smufl_name, d.category)`, and
+  `gather_detections` writes that same value into the record as
+  `glyph_box.detail["category"]` (`gather.py:400`). The probe reads exactly
+  that field, so the A/B evaluates *the shipped predicate on the shipped
+  value* — it is faithful, not approximate. A probe reading a different
+  category source would have produced a plausible number measuring something
+  else.
 - **The record, not the code**: `clef_starved_control.py` joins the prediction
   to the record's own observations and verdicts, prints served staves as its
   positive control, and **exits 1** if a staff it calls starved turns out to
