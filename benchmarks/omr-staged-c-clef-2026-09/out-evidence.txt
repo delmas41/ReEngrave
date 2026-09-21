@@ -1,0 +1,56 @@
+=== Litolff Beethoven 5 p1-p4 ===
+  staff/3/1/6
+    dropped class(es) : {'clefCAlto': 1}  -> legacy name(s) ['alto']
+    standing verdict  : alto   [AGREE]
+    obs clef_located   = 'alto'                 reader=cv_locator score=0.8135
+    obs clef_located   = 'alto'                 reader=cv_locator score=0.8234
+
+=== Breitkopf Brahms 1 p0-p3 ===
+  staff/0/0/11
+    dropped class(es) : {'clefCAlto': 2}  -> legacy name(s) ['alto']
+    standing verdict  : alto   [AGREE]
+    obs clef_located   = 'alto'                 reader=cv_locator score=0.8799
+    obs clef_located   = 'alto'                 reader=cv_locator score=0.9366
+
+  staff/0/0/12
+    dropped class(es) : {'clefCTenor': 1}  -> legacy name(s) ['tenor']
+    standing verdict  : tenor   [AGREE]
+    obs clef_located   = 'tenor'                reader=cv_locator score=0.9631
+    obs clef_located   = 'tenor'                reader=cv_locator score=0.9442
+
+  staff/1/0/11
+    dropped class(es) : {'clefCAlto': 1}  -> legacy name(s) ['alto']
+    standing verdict  : alto   [AGREE]
+    obs clef_located   = 'alto'                 reader=cv_locator score=0.9175
+    obs clef_located   = 'alto'                 reader=cv_locator score=0.9229
+
+  staff/1/1/10
+    dropped class(es) : {'clefCAlto': 2, 'clefCTenor': 1}  -> legacy name(s) ['alto', 'tenor']
+    standing verdict  : alto   [AGREE]
+    obs clef_located   = 'alto'                 reader=cv_locator score=0.7181
+
+  staff/2/1/12
+    dropped class(es) : {'clefCTenor': 1}  -> legacy name(s) ['tenor']
+    standing verdict  : tenor   [AGREE]
+    obs clef_located   = 'tenor'                reader=cv_locator score=0.9609
+    obs clef_located   = 'tenor'                reader=cv_locator score=0.9149
+
+  staff/3/0/11
+    dropped class(es) : {'clefCAlto': 1, 'clefCTenor': 1}  -> legacy name(s) ['alto', 'tenor']
+    standing verdict  : alto   [AGREE]
+    obs clef_located   = 'alto'                 reader=cv_locator score=0.875
+    obs clef_located   = 'alto'                 reader=cv_locator score=0.908
+
+  staff/3/1/11
+    dropped class(es) : {'clefCTenor': 1}  -> legacy name(s) ['tenor']
+    standing verdict  : alto   [DISAGREE]
+    obs clef_located   = 'alto'                 reader=cv_locator score=0.9122
+    obs clef_located   = 'alto'                 reader=cv_locator score=0.912
+
+  staff/3/1/12
+    dropped class(es) : {'clefCTenor': 1}  -> legacy name(s) ['tenor']
+    standing verdict  : tenor   [AGREE]
+    obs clef_located   = 'tenor'                reader=cv_locator score=0.9453
+    obs clef_located   = 'tenor'                reader=cv_locator score=0.9134
+
+SUMMARY: dropped class name AGREES with the standing verdict on 8 staves, DISAGREES on 1.

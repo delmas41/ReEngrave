@@ -1,0 +1,41 @@
+For each literal-set filter: which detector categories its members span, how much of each it covers, and what it leaves.
+A set covering ONE WHOLE category is claiming that family; a set selecting inside a broad category is not.
+
+=== _CLEF_CLASSES_INCUMBENT (the fault this lane repaired) ===
+  set (4): ['clefC', 'clefF', 'clefG', 'clefUnpitchedPercussion']
+    category 'clef': 4/8 of category 'clef'
+      ⚠️ residue (4): ['clef15', 'clef8', 'clefCAlto', 'clefCTenor']
+
+=== _TUPLET_CLASSES ===
+  set (4): ['fingering3', 'tupleBracket', 'tuplet3', 'tupletBracket']
+    category 'NOT IN VOCABULARY': WHOLE CATEGORY CLAIMED
+    category 'ornament': 1/42 of category 'ornament'
+      (selection inside a broad category — 41 others, not a claim)
+    category 'structural': 2/21 of category 'structural'
+      (selection inside a broad category — 19 others, not a claim)
+
+=== _ARC_CLASSES ===
+  set (2): ['slur', 'tie']
+    category 'structural': 2/21 of category 'structural'
+      (selection inside a broad category — 19 others, not a claim)
+
+=== _DYNAMIC_LETTER_CLASSES ===
+  set (6): ['dynamicF', 'dynamicM', 'dynamicP', 'dynamicR', 'dynamicS', 'dynamicZ']
+    category 'dynamic': 6/8 of category 'dynamic'
+      ⚠️ residue (2): ['dynamicCrescendoHairpin', 'dynamicDiminuendoHairpin']
+
+=== _KEYSIG_CLASSES ===
+  set (3): ['keyFlat', 'keyNatural', 'keySharp']
+    category 'accidental': 3/11 of category 'accidental'
+      (selection inside a broad category — 8 others, not a claim)
+
+=== _METER_CLASSES ===
+  set (2): ['timeSigCommon', 'timeSigCutCommon']
+    category 'time_sig_digit': 2/12 of category 'time_sig_digit'
+      (selection inside a broad category — 10 others, not a claim)
+
+FLAGGED — a set holding at least half of a detector category, with residue:
+  _CLEF_CLASSES_INCUMBENT (the fault this lane repaired) / 'clef': ['clef15', 'clef8', 'clefCAlto', 'clefCTenor']
+  _DYNAMIC_LETTER_CLASSES / 'dynamic': ['dynamicCrescendoHairpin', 'dynamicDiminuendoHairpin']
+
+positive control: the known clef fault IS flagged above.

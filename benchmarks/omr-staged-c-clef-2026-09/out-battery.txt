@@ -1,0 +1,18 @@
+positive control: unmutated tree GREEN on tools/omr/tests/test_staged_c_clef.py
+
+  drop_the_category_test                     RED       <- test_a_flag_is_not_a_bass_clef
+  revert_to_the_incumbent_set                RED       <- test_clefCAlto_is_GATHERED
+  admit_octave_marks_by_prefix               RED       <- test_clef8_is_NOT_gathered
+  admit_everything                           RED       <- test_a_flag_is_not_a_bass_clef
+  refuse_everything                          RED       <- test_clefCAlto_is_GATHERED
+  drop_the_percussion_clause                 RED       <- test_the_repaired_rule_admits_every_pitched_clef_of_the_vocabulary
+  call_site_passes_no_category               RED       <- test_a_flag_is_not_a_bass_clef
+  family_support_back_to_the_literal_clefC   RED       <- test_clefCAlto_supports_the_locators_C_clef
+  family_support_accepts_every_row           RED       <- test_a_G_clef_is_NOT_C_family_support
+  family_support_matches_G_instead           RED       <- test_clefCAlto_supports_the_locators_C_clef
+  let_the_class_name_name_the_C_clef         RED       <- test_naming_the_clef_would_erode_the_margin_to_the_FLOOR
+  let_the_class_name_name_the_C_clef__one_crop RED       <- test_with_ONE_crop_naming_the_clef_DOES_flip_the_staff
+
+restore verified: OK
+
+12 RED / 12 arms, 0 survivors, 0 errors

@@ -255,7 +255,58 @@ def gather_measures(log: Log, pws: Any, cells: Sequence[Any],
 # ─────────────────────────────────────────────────────────────────────────────
 
 _NOTEHEAD_PREFIX = "notehead"
-_CLEF_CLASSES = {"clefG", "clefF", "clefC", "clefUnpitchedPercussion"}
+
+#: The incumbent admitted set, kept ONLY so the repair below can be read
+#: against what it replaces -- and because the shape of it is the finding.
+#:
+#: ⚠️⚠️ IT ADMITS THE SPELLING THAT NEVER OCCURS AND DROPS THE TWO THAT DO.
+#: `clefC` is the COARSE name (id 142), and `class_aliases` records the whole
+#: coarse block firing ZERO times; measured over both shared records it fires
+#: zero here too. The FINE C clefs `clefCAlto` (id 6) and `clefCTenor` (id 7)
+#: are what the detector actually emits -- 16 detections over the two
+#: documents, every one of them discarded here with no row, no abstention and
+#: nothing anywhere to say it happened.
+_CLEF_CLASSES_INCUMBENT = {"clefG", "clefF", "clefC", "clefUnpitchedPercussion"}
+
+
+def _is_clef_class(name: Optional[str], category: Optional[str]) -> bool:
+    """Is this detection a CLEF this staff-head pass should gather?
+
+    ⚠️⚠️ THE CATEGORY TEST IS LOAD-BEARING AND IS NOT BELT-AND-BRACES.
+    `clef_geometry.clef_family` reads the leading letter of the class name's
+    core, and `class_aliases` already records the consequence in terms:
+    `graceNoteAcciaccatura` "in isolation also reads as a treble clef ...
+    harmless and unreachable: every caller filters `category != 'clef'`
+    first". This call site did NOT filter -- it matched a literal set, so the
+    trap was unreachable for a different reason. Measured over the committed
+    208-name vocabulary, dropping the category test admits **27** classes as
+    clefs, including every `flag*` (a `flag8thUp` would enter the contest as
+    a BASS clef), every `fingering*`, `fermataAbove`/`Below`, `coda` and
+    `caesura`. So the guard `class_aliases` says every caller keeps is
+    written down here, where the family test is actually made.
+
+    ⚠️ DERIVED FROM THE SHARED RULE, NOT RESTATED. `clef_family` is the one
+    measured answer to "which clef family is this", it collapses BOTH
+    spellings of the vocabulary (`clefCAlto` and DeepScoresV2's `cClefAlto`),
+    and it is the same function `clef_geometry` and the legacy path already
+    read. A second hand-written set here is exactly how this drop happened.
+
+    ⚠️ `clef8` / `clef15` ARE NOT CLEFS AND STAY OUT -- deliberately, not by
+    omission. They are octave markers that MODIFY a clef, so admitting them
+    would let one compete as a clef in its own right. `_clef_core` names them
+    explicitly and returns None, so this predicate excludes them by reading
+    that rule rather than by restating it. They fire **0 times** on both
+    shared records, so the exclusion costs nothing measured today; what it
+    buys is that the day they do fire they cannot be mistaken for a reading.
+    See `benchmarks/omr-staged-c-clef-2026-09/FINDINGS.md` §6.
+    """
+    if category != "clef":
+        return False
+    from ..clef_geometry import clef_family
+    if clef_family(name) is not None:
+        return True
+    # Names a STAFF rather than a pitch, so `clef_family` is None by design.
+    return "percussion" in (name or "").lower()
 
 
 def gather_detections(log: Log, cells: Sequence[Any],
@@ -1818,7 +1869,8 @@ def gather_clef(log: Log, cells: Sequence[Any],
         staff_sub = R.staff(sub.page, sub.system, sub.staff)
         frame = frame_cell(0)
         grid = _cell_grid(by_key.get((sub.page, sub.system, sub.staff, 0)))
-        clefs = [d for d in dets if d.smufl_name in _CLEF_CLASSES]
+        clefs = [d for d in dets
+                 if _is_clef_class(d.smufl_name, d.category)]
         if not clefs:
             log.abstain(staff_sub, Q.CLEF_GLYPH, reader=READERS.DETECTOR,
                         frame=frame, reason=ABSTAIN.NO_DETECTIONS)
