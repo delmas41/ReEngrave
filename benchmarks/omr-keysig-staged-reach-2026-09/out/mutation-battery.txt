@@ -2,7 +2,7 @@
 BASELINE (the positive control — every arm is free if this is not green)
 ==============================================================================
   exit 0
-  82 passed, 5 warnings
+  84 passed, 5 warnings
 
 ------------------------------------------------------------------------------
 ARM [header]: an unread page reports no_evidence again (the split is gone)
@@ -47,7 +47,7 @@ ARM [header]: the new reason is not declared
 ------------------------------------------------------------------------------
 ARM [arm]: the arm stops asserting no DECIDED key moved
   expected: the one thing that must not move is a decided key; an arm that cannot see it move would pass a change that started counting markers
-  exit 0  -> RED
+  exit 1  -> RED
 
 ------------------------------------------------------------------------------
 ARM [arm]: the arm permits ANY abstention movement
@@ -72,7 +72,7 @@ ARM [probe]: the probe reports a clean result with no key verdicts
 ------------------------------------------------------------------------------
 ARM [probe]: the probe counts cell-0 detections as out of reach
   expected: the whole Q2 finding is that the out-of-reach population is SMALL (21 and 2); counting cell 0 into it inflates it to 126 and 148
-  exit 0  -> RED
+  exit 1  -> RED
 
 ==============================================================================
 RED 14   SURVIVED 0   BAD ANCHORS 0

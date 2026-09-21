@@ -232,7 +232,24 @@ was named for); and an import-machinery monkeypatch, replaced by inducing the
 drift from the arm's own side. *A fixture that does not reach the branch tests
 the fixture.*
 
-**MUTATION BATTERY, RE-RUN AFTER CLOSING THEM.** 14 arms. See `out/`.
+**MUTATION BATTERY: 14 arms, and it took FOUR RUNS to get a clean one.**
+`out/mutation-battery.txt` (final), `out/mutation-battery-run1.txt` (the
+first). **8/6 → 14/0 → 12/2 → 14/0**, and the third run is the instructive
+one: closing the first six survivors CHANGED THE TESTS, so the battery had to
+be re-run against them — and it found **two more**.
+
+⚠️⚠️ **ONE OF THOSE TWO WAS A VACUOUS ASSERTION OF MY OWN.**
+`test_the_arm_FAILS_when_a_decided_key_moved` asserted `"MOVED" in out` — and
+the arm prints `MOVED 0` on **every** run, so the assertion was satisfied by a
+control that had found nothing. It could never fail. It now asserts
+`"MOVED 1"` and the arrow line naming the value that changed
+(`-3/fitted -> -1/fitted`). ⚠️ The other was the probe's out-of-reach count:
+nothing checked that it EXCLUDES cell 0, and counting cell 0 in would turn
+§3's *"21 and 2, do not build this yet"* into *"126 and 148, look how much is
+missing"* — the same numbers arguing the opposite way.
+
+> **Closing a survivor changes the suite, so the battery must be re-run
+> against the closure** — a battery is not done when it goes green once.
 
 ⚠️⚠️ **AND THE FIRST CONTROL-ARM RUN WAS DISCARDED, DELIBERATELY, 18 MINUTES
 IN.** The battery mutates `header.py`; the arm had imported it. An
