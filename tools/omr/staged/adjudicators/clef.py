@@ -27,6 +27,12 @@ from typing import Dict, List, Optional, Tuple
 from ..adjudicate import (Candidate, Checkable, READINGS, Evidence, Mode, Ruling, Term, decision,
                           tally)
 from ..record import ABSTAIN, Kind, Q, Scope, State
+# ⚠️ The ONE measured answer to "which clef family is this class name",
+# imported rather than restated: it collapses both spellings of the
+# vocabulary (`clefCAlto` and DeepScoresV2's `cClefAlto`) onto one core, and a
+# second copy here is precisely how `_c_family_support` came to be keyed on a
+# name the detector never emits.
+from ...clef_geometry import clef_family
 
 # ─────────────────────────────────────────────────────────────────────────────
 # ⚠️ ASSUMED CONSTANTS. NOT ONE OF THESE IS MEASURED.
@@ -116,11 +122,27 @@ W_KEYSIG_FIT = 1.5
 
 
 def _clef_of(glyph_name: str) -> Optional[str]:
-    """⚠️ A CLASS NAME CANNOT NAME A C CLEF. `clefC` returns None, on purpose.
+    """⚠️ A CLASS NAME CANNOT NAME A C CLEF. Every C clef returns None, on
+    purpose -- `clefC` AND the fine `clefCAlto` / `clefCTenor`.
 
     Alto, tenor, soprano, mezzo and baritone are THE SAME GLYPH on different
     lines, so `clefC` says a C clef is present and nothing about WHICH -- only
     geometry can, which is exactly why `clef_geometry.py` exists.
+
+    ⚠️⚠️ AND THE FINE SPELLINGS LOOK LIKE AN EXCEPTION AND ARE NOT, WHICH IS
+    THE ONE THING A READER IS MOST LIKELY TO GET WRONG HERE. `clefCAlto` and
+    `clefCTenor` are separate trained classes that DO appear to name the
+    line, so adding them to `_GLYPH_TO_CLEF` reads like a free repair. It is
+    not: it would hand them `W_DETECTOR_HIGH` (3.0) against the locator's
+    2.0, and on Brahms 1 p3/s1/st11 the detector fires `clefCTenor` where the
+    locator measures ALTO twice at 0.91 -- on staff 11 of a 14-staff system
+    whose staff 12 reads tenor, i.e. viola over cello. One disagreement in
+    nine measured, and it flips a staff that is right today to wrong.
+    DeepScoresV2 also annotates only alto and tenor, so a soprano, mezzo or
+    baritone clef can only ever arrive under one of those two names -- the
+    class is not merely unreliable about the line, it cannot express it.
+    They are admitted as FAMILY support instead (`_c_family_support`), which
+    is what the detector can honestly claim.
 
     ⚠️ THE FIRST CUT OF THIS MODULE MAPPED `clefC -> alto` AND CALLED IT A
     PLACEHOLDER. That was worse than it looked: the detector's weight (3.0 at
@@ -137,10 +159,34 @@ def _clef_of(glyph_name: str) -> Optional[str]:
 
 
 def _c_family_support(ev: Evidence):
-    """`clefC` detections, as support for a C clef somebody else named."""
+    """C-clef detections, as support for a C clef somebody else named.
+
+    ⚠️⚠️ THIS MATCHED THE LITERAL STRING `"clefC"`, WHICH FIRES ZERO TIMES.
+    `clefC` is the COARSE spelling (id 142) and `class_aliases` records the
+    whole coarse block firing zero times on every document measured; the
+    detector emits the FINE `clefCAlto` / `clefCTenor` instead. So the one
+    mechanism built to let a detector's C clef contribute was keyed on a name
+    that never arrives, and the names that do arrive reached neither this
+    function nor `_clef_of`. Measured over both shared records: 16 C-clef
+    detections on 9 staves, every one silent.
+
+    ⚠️ THE FAMILY, NOT THE NAME, AND THE DISTINCTION IS THE WHOLE POINT. A
+    `clefCAlto` detection is admitted here as evidence that a C clef IS
+    PRESENT -- which is all `_clef_of` will let any class name claim, and
+    this measurement is why that refusal stands rather than being relaxed for
+    the fine spellings. On Brahms 1 p3/s1/st11 the detector fires
+    `clefCTenor` and the locator measures ALTO, twice, at 0.91; the staff is
+    staff 11 of a 14-staff system with `clefCTenor`/tenor on staff 12 below
+    it, which is viola-in-alto over cello-in-tenor. Letting the fine name
+    into `_GLYPH_TO_CLEF` would give it `W_DETECTOR_HIGH` (3.0) against the
+    locator's 2.0 and FLIP that staff to tenor -- the exact hazard
+    `_clef_of`'s docstring was written about, arriving for real from a
+    spelling that docstring did not anticipate. One disagreement in nine, and
+    it is enough: the class names the family, geometry names the line.
+    """
     out = []
     for row in ev.rows(Q.CLEF_GLYPH):
-        if str(row.value) == "clefC":
+        if clef_family(str(row.value)) == "C":
             out.append(row)
     return out
 
