@@ -1,0 +1,182 @@
+{
+ "weights": "/Users/seanjohnson/Desktop/ReEngrave/omr-weights/deepscoresv2-yolov8l-hollow-graft-shift09-2026-09-04.pt",
+ "scored": [
+  {
+   "thickness": 4,
+   "summed_abs_error": {
+    "on": 7,
+    "off": 3,
+    "gated": 3
+   },
+   "rows": [
+    {
+     "staff": 0,
+     "bar": 1,
+     "content": "four quarter notes",
+     "truth": 4,
+     "on": 6,
+     "off": 6,
+     "gated": 6,
+     "x_clusters_on": 5,
+     "x_clusters_off": 5,
+     "x_clusters_gated": 5
+    },
+    {
+     "staff": 0,
+     "bar": 2,
+     "content": "one whole note",
+     "truth": 0,
+     "on": 0,
+     "off": 0,
+     "gated": 0,
+     "x_clusters_on": 0,
+     "x_clusters_off": 0,
+     "x_clusters_gated": 0
+    },
+    {
+     "staff": 0,
+     "bar": 3,
+     "content": "eight eighths, beamed in pairs",
+     "truth": 8,
+     "on": 8,
+     "off": 8,
+     "gated": 8,
+     "x_clusters_on": 8,
+     "x_clusters_off": 8,
+     "x_clusters_gated": 8
+    },
+    {
+     "staff": 0,
+     "bar": 4,
+     "content": "sixteen 16ths in four beamed groups",
+     "truth": 16,
+     "on": 16,
+     "off": 16,
+     "gated": 16,
+     "x_clusters_on": 16,
+     "x_clusters_off": 16,
+     "x_clusters_gated": 16
+    },
+    {
+     "staff": 0,
+     "bar": 5,
+     "content": "four three-note chords",
+     "truth": 4,
+     "on": 0,
+     "off": 4,
+     "gated": 4,
+     "x_clusters_on": 0,
+     "x_clusters_off": 2,
+     "x_clusters_gated": 2
+    },
+    {
+     "staff": 0,
+     "bar": 6,
+     "content": "two half notes",
+     "truth": 2,
+     "on": 2,
+     "off": 2,
+     "gated": 2,
+     "x_clusters_on": 2,
+     "x_clusters_off": 2,
+     "x_clusters_gated": 2
+    },
+    {
+     "staff": 1,
+     "bar": 1,
+     "content": "two half notes",
+     "truth": 2,
+     "on": 3,
+     "off": 3,
+     "gated": 3,
+     "x_clusters_on": 3,
+     "x_clusters_off": 3,
+     "x_clusters_gated": 3
+    },
+    {
+     "staff": 1,
+     "bar": 2,
+     "content": "one whole note",
+     "truth": 0,
+     "on": 0,
+     "off": 0,
+     "gated": 0,
+     "x_clusters_on": 0,
+     "x_clusters_off": 0,
+     "x_clusters_gated": 0
+    },
+    {
+     "staff": 1,
+     "bar": 3,
+     "content": "four quarter notes",
+     "truth": 4,
+     "on": 4,
+     "off": 4,
+     "gated": 4,
+     "x_clusters_on": 4,
+     "x_clusters_off": 4,
+     "x_clusters_gated": 4
+    },
+    {
+     "staff": 1,
+     "bar": 4,
+     "content": "two beamed pairs + two quarters",
+     "truth": 6,
+     "on": 6,
+     "off": 6,
+     "gated": 6,
+     "x_clusters_on": 6,
+     "x_clusters_off": 6,
+     "x_clusters_gated": 6
+    },
+    {
+     "staff": 1,
+     "bar": 5,
+     "content": "two two-note chords",
+     "truth": 2,
+     "on": 2,
+     "off": 2,
+     "gated": 2,
+     "x_clusters_on": 2,
+     "x_clusters_off": 2,
+     "x_clusters_gated": 2
+    },
+    {
+     "staff": 1,
+     "bar": 6,
+     "content": "one whole note",
+     "truth": 0,
+     "on": 0,
+     "off": 0,
+     "gated": 0,
+     "x_clusters_on": 0,
+     "x_clusters_off": 0,
+     "x_clusters_gated": 0
+    }
+   ]
+  }
+ ],
+ "refused": [
+  {
+   "thickness": 1,
+   "cells": {
+    "0": 5,
+    "1": 5
+   }
+  },
+  {
+   "thickness": 2,
+   "cells": {
+    "0": 5,
+    "1": 5
+   }
+  },
+  {
+   "thickness": 3,
+   "cells": {
+    "0": 5,
+    "1": 5
+   }
+  }
+ ]
+}

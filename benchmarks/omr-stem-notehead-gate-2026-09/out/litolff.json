@@ -13,11 +13,15 @@
  "cells_with_a_notehead": 814,
  "noteheads": 2347,
  "stems_off": 1920,
- "stems_on": 2009,
+ "stems_on": 2000,
  "cells_changed": 44,
- "rescued": 89,
+ "rescued": 80,
  "rescued_on_a_notehead": 80,
  "lost": 0,
+ "heads_without_a_stem_off": 793,
+ "heads_without_a_stem_on": 720,
+ "beams_off": 322,
+ "beams_on": 337,
  "expected_off": 1920,
  "faithful": true
 }

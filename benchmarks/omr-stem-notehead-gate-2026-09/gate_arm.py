@@ -42,7 +42,9 @@ ROOT = HERE.parents[1]
 sys.path.insert(0, str(ROOT))
 
 from tools.omr.line_detection import (                                # noqa: E402
-    detect_stems, stem_notehead_gate_enabled, STEM_NOTEHEAD_GATE_ENV)
+    detect_beams, detect_stems, stem_notehead_gate_enabled,
+    STEM_NOTEHEAD_GATE_ENV)
+from tools.omr.staged.adjudicators.rhythm import _boxes_overlap       # noqa: E402
 from tools.omr.staged.pipeline import prepare_pages                   # noqa: E402
 
 WEIGHTS = ("/Users/seanjohnson/Desktop/ReEngrave/omr-weights/"
@@ -113,6 +115,9 @@ def main() -> int:
     n_off = n_on = n_heads = 0
     cells_with_heads = 0
     cells_changed = 0
+    # DOWNSTREAM, and these are the numbers a consumer of `Q.STEM` sees.
+    heads_stemless_off = heads_stemless_on = 0
+    n_beams_off = n_beams_on = 0
     rescued = []          # strokes the gate KEEPS that the shipped rule drops
     lost = []             # strokes the shipped rule keeps that the gate drops
     rescued_on_head = 0
@@ -154,6 +159,33 @@ def main() -> int:
             if key(d) not in ks_on:
                 lost.append(key(d))
 
+        # ⚠️ DOWNSTREAM 1: which HEADS stop abstaining. A stroke rescued is
+        # not yet a note repaired — several strokes can meet one head, and a
+        # head is what `adjudicate_duration` and `adjudicate_stem_direction`
+        # ask about. Attachment is `_boxes_overlap`, IMPORTED from the
+        # adjudicator rather than restated, so this counts what that decision
+        # would count.
+        #
+        # ⚠️ IT TAKES PLAIN `(x, y, w, h)` TUPLES, NOT DETECTION OBJECTS, and
+        # the first version of this block passed objects and CRASHED. That is
+        # the box-convention trap this repo records — three disagreeing
+        # spellings in one tree — arriving LOUDLY for once, instead of as the
+        # clean believable zero it usually gives.
+        boxes_off = [key(d) for d in off]
+        boxes_on = [key(d) for d in on]
+        for h in heads:
+            if not any(_boxes_overlap(h, s) for s in boxes_off):
+                heads_stemless_off += 1
+            if not any(_boxes_overlap(h, s) for s in boxes_on):
+                heads_stemless_on += 1
+
+        # ⚠️ DOWNSTREAM 2: the BEAMS. `detect_beams` takes the stem set as an
+        # input (it needs stems to tell a beam from a slur, a tie or a ledger
+        # line), so the gate can move beams without touching the beam pass.
+        # Any beam delta on a gated arm is THIS and not a beam change.
+        n_beams_off += len(detect_beams(c, stems=off))
+        n_beams_on += len(detect_beams(c, stems=on))
+
     print(f"\n== REACH  ({a.tag})")
     print(f"   cells cut                               {len(cells):6d}")
     print(f"   cells holding a detected notehead       {cells_with_heads:6d}")
@@ -164,6 +196,17 @@ def main() -> int:
     print(f"   strokes the gate KEEPS that OFF drops   {len(rescued):6d}")
     print(f"   ... of those, standing on a notehead    {rescued_on_head:6d}")
     print(f"   strokes the gate DROPS that OFF keeps   {len(lost):6d}")
+    print(f"\n== DOWNSTREAM  (what a consumer of Q.STEM sees)")
+    print(f"   detected heads with NO stem, gate OFF   {heads_stemless_off:6d}"
+          f"   ({100.0 * heads_stemless_off / max(1, n_heads):.1f}%)")
+    print(f"   detected heads with NO stem, gate ON    {heads_stemless_on:6d}"
+          f"   ({100.0 * heads_stemless_on / max(1, n_heads):.1f}%)")
+    print(f"   heads that STOP abstaining              "
+          f"{heads_stemless_off - heads_stemless_on:6d}")
+    print(f"   CV beams, gate OFF                      {n_beams_off:6d}")
+    print(f"   CV beams, gate ON                       {n_beams_on:6d}")
+    print(f"   ⚠️ a beam delta here is the STEM SET moving, not a beam "
+          f"change: `detect_beams` takes the stems as its input.")
 
     if len(cells) == 0:
         print("DEAD: no cells.")
@@ -213,6 +256,9 @@ def main() -> int:
         "cells_changed": cells_changed,
         "rescued": len(rescued), "rescued_on_a_notehead": rescued_on_head,
         "lost": len(lost),
+        "heads_without_a_stem_off": heads_stemless_off,
+        "heads_without_a_stem_on": heads_stemless_on,
+        "beams_off": n_beams_off, "beams_on": n_beams_on,
         "expected_off": expect, "faithful": expect is None or n_off == expect,
     }
     if a.json:
