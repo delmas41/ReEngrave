@@ -1,0 +1,145 @@
+registry entries (DERIVED): 114
+     14  Staff & pitch geometry
+     18  Stems & beams
+      8  Rests & bar filling
+      8  Accidentals & key signatures
+      8  Time signatures & meter
+     12  Slurs, ties & phrasing
+      7  Dynamics & hairpins
+      9  Articulations & ornaments
+     18  Score layout & systems
+      8  Text & margin labels
+      4  Barlines & repeats
+
+conventions CLAIMED by at least one decision: 20   (of 114)
+    [C1+L3]  <- CB16
+    [C22+L36+L37]  <- CB17, CB19
+    [C24]  <- CB21
+    [C25+L38]  <- CB18
+    [C29]  <- CB31
+    [C33+L43]  <- CB31
+    [C39+L47]  <- CB24
+    [C42]  <- CB25
+    [C5]  <- CB16
+    [C54]  <- CB28
+    [C56+L74]  <- CB01, CB02, CB05
+    [C58+L63]  <- CB07
+    [C59]  <- CB07
+    [C62+L66]  <- CB04, CB11, CB14
+    [C64]  <- CB32
+    [C69+L70]  <- CB09, CB12
+    [C71]  <- CB09, CB12
+    [C83+L75]  <- CB02
+    [C84+L64]  <- CB07
+    [L2]  <- CB16
+
+⚠️ conventions reaching NO decision: 94
+    [C2                    ] Staff & pitch geometry       A notehead sits ON a line or IN a space, on a half-space lattice
+    [C3+L5                 ] Staff & pitch geometry       Ledger-line pitch is NOT the staff spacing, and it is publisher-dependent
+    [C4                    ] Staff & pitch geometry       A note outside the staff is joined to it by an unbroken ladder of ledger rungs
+    [C6                    ] Staff & pitch geometry       A ledger rung printed THROUGH a hollow notehead is split by the head's white counter
+    [C7+L1                 ] Staff & pitch geometry       The staff space is the unit of everything — the em box is four staff spaces
+    [C8                    ] Staff & pitch geometry       A staff's five lines are straight and evenly spaced — and on a scanned plate they are neither
+    [L4                    ] Staff & pitch geometry       A whole notehead is wider than a black one, and the same height
+    [L6                    ] Staff & pitch geometry       A ledger line is thicker than a staff line
+    [L7                    ] Staff & pitch geometry       Staff line thickness is around an eighth of a staff space, and applications disagree by 2×
+    [L8                    ] Staff & pitch geometry       A staff is 4–8.5 mm tall, and the score end is the small end
+    [L9                    ] Staff & pitch geometry       The first line of each movement is indented
+    [C9+L10                ] Stems & beams                A stem attaches on the RIGHT going UP, or on the LEFT going DOWN
+    [C10+L16               ] Stems & beams                In a single voice, a note above the middle line is stemmed DOWN
+    [C11                   ] Stems & beams                A beam joins stem TIPS, so every stem on one stroke points the same way
+    [C12                   ] Stems & beams                A beam stroke runs from the FIRST stem it joins to the LAST, and a stem stands at the SIDE of its notehead
+    [C13+L11               ] Stems & beams                A stem is one octave long by default — and as long as the music needs it to be
+    [C14                   ] Stems & beams                Two successive notes are set further apart than one accidental's own two strokes
+    [C15                   ] Stems & beams                No stem means a whole note
+    [C79+L20               ] Stems & beams                Stacked beams are set 0.75 staff spaces centre to centre
+    [C80+L23               ] Stems & beams                A FLAG glyph NAMES A VALUE, and it hangs on the STEM
+    [L12                   ] Stems & beams                A stem on ledger lines reaches the middle staff line
+    [L13                   ] Stems & beams                A stem is never shorter than 2.5 staff spaces
+    [L14                   ] Stems & beams                A stem is about a tenth of a staff space thick
+    [L15                   ] Stems & beams                Where there is no case for either direction, the stem goes DOWN
+    [L17                   ] Stems & beams                Two voices on one staff: upper voice up, lower voice down, regardless of position
+    [L18                   ] Stems & beams                Stem direction is held constant through a beat or half-bar
+    [L19                   ] Stems & beams                In a chord containing a second, the two heads straddle the stem
+    [L21                   ] Stems & beams                A beam is angled by the OUTER interval, and is horizontal in three named cases
+    [L22                   ] Stems & beams                Beaming follows the metre, and never crosses the middle of the bar
+    [C16+L27               ] Rests & bar filling          A whole rest stands for THE BAR, whatever the meter
+    [C17+L24+L25           ] Rests & bar filling          A whole rest HANGS under the 4th line; a half rest SITS on the 3rd — and they are the same shape
+    [C18                   ] Rests & bar filling          A tacet part prints a whole rest in EVERY bar
+    [C19+L26               ] Rests & bar filling          Rest shapes separate strongly by aspect ratio — except whole vs half
+    [C20                   ] Rests & bar filling          A silent bar is still PRINTED with a rest; a genuinely blank bar means we failed to read it
+    [L28                   ] Rests & bar filling          A whole-bar rest is centred in the bar
+    [L29                   ] Rests & bar filling          A rest is centred on or about the middle of the staff
+    [L30                   ] Rests & bar filling          A multi-bar rest is an H-bar one staff space thick
+    [C21+L33+L34           ] Accidentals & key signatures An accidental is a SCOPE to the end of the bar — and it carries across a barline through a TIE
+    [C23+L40               ] Accidentals & key signatures A key signature stands BETWEEN the clef and the meter
+    [C26+L35               ] Accidentals & key signatures A courtesy accidental is real ink that changes nothing — and its frequency is a property of the EDITION
+    [C81+L39               ] Accidentals & key signatures Timpani, horns and trumpets are conventionally written WITHOUT a key signature
+    [L32                   ] Accidentals & key signatures An accidental stands BEFORE its note, at the same staff position
+    [C27+L42               ] Time signatures & meter      A time signature's placement is RIGID — and its numerals fill the staff's height
+    [C28+L41               ] Time signatures & meter      A meter is printed at a movement's START and nowhere else
+    [C30+L44               ] Time signatures & meter      A cautionary meter printed after a system's FINAL barline governs no bar
+    [C31+L46               ] Time signatures & meter      A letter meter (`C`, `¢`) is a complete meter — and the stroke is what separates them
+    [C32                   ] Time signatures & meter      An OPENING meter sits 10–12 staff spaces into its bar, behind the clef and the key signature
+    [C34                   ] Time signatures & meter      "A meter stack is two digits aligned in x and adjacent in y" — REFUTED
+    [C35+L48               ] Slurs, ties & phrasing       A slur is drawn OVER its notes; a hairpin is drawn BETWEEN them
+    [C36+L51               ] Slurs, ties & phrasing       A slur's ink stops INSIDE both outer notehead centres
+    [C37                   ] Slurs, ties & phrasing       An arc over STEMMED notes is drawn stem-top to stem-top
+    [C38+L50               ] Slurs, ties & phrasing       One printed arc cut by a barline is still ONE arc
+    [C40                   ] Slurs, ties & phrasing       A TIE is drawn shallow and close to its two heads; a SLUR arcs clear of the notes under it
+    [C41                   ] Slurs, ties & phrasing       Sean's S4 — an arc connected to the stem's edge AWAY from the notehead is a SLUR — REFUTED
+    [C43                   ] Slurs, ties & phrasing       The tie/slur POSITION GRAMMAR (S2/S5), measured on both families and REFUSED
+    [C44                   ] Slurs, ties & phrasing       A bar's first note sits 2.0–2.5 staff spaces past the barline
+    [L49                   ] Slurs, ties & phrasing       Where the outer notes have opposite stems, the slur end moves toward the noteheads
+    [L52                   ] Slurs, ties & phrasing       A slur must begin and end in the same voice
+    [C45+L55               ] Dynamics & hairpins          A hairpin is printed BELOW its staff, in the dynamics band — and dynamics are not placed INSIDE the staff
+    [C46+L53               ] Dynamics & hairpins          A dynamic LETTER stands in its own staff's band, below the bottom line
+    [C47+L57               ] Dynamics & hairpins          A dynamic WORD is a run of adjacent letters (`f`+`f` = `ff`)
+    [C48                   ] Dynamics & hairpins          A hairpin runs quiet → loud (or loud → quiet) and travels with a dynamic letter
+    [C49                   ] Dynamics & hairpins          An ACCENT is note-anchored; a HAIRPIN is span-anchored
+    [C78+L56               ] Dynamics & hairpins          A beam is always connected to something; a HAIRPIN is connected to NOTHING — and it is thinner than a stem
+    [L54                   ] Dynamics & hairpins          On a grand staff, dynamics go BETWEEN the two staves
+    [C50+L31               ] Articulations & ornaments    An augmentation dot sits at the note's own space — half a space ABOVE for a note on a line — and NEVER below
+    [C51+L58+L61           ] Articulations & ornaments    A staccato or accent is printed on the notehead side, opposite the stem, and CENTRED on the head in x
+    [C52+L62               ] Articulations & ornaments    A FERMATA hangs over whatever sounds beneath it — which is often a whole-bar rest, not a note
+    [C53                   ] Articulations & ornaments    A TUPLET digit stands OUTSIDE the staff over its beam; a TIME-SIGNATURE digit stands INSIDE it; a FINGERING sits beside its notehead
+    [C55                   ] Articulations & ornaments    A TREMOLO rides the stem, so it has no side at all
+    [C87                   ] Articulations & ornaments    A TRILL, TURN or MORDENT is printed clear ABOVE its note, centred on it
+    [L59                   ] Articulations & ornaments    An articulation above SITS on its position; one below HANGS from it
+    [L60                   ] Articulations & ornaments    A small articulation near the middle line is centred in the next free SPACE
+    [C57                   ] Score layout & systems       A barline is a STRAIGHT line, not a vertical one
+    [C60                   ] Score layout & systems       Some publishers print NO section bracket at all
+    [C61                   ] Score layout & systems       No left-edge object ever bridges a system break
+    [C63                   ] Score layout & systems       The strings are the LAST block of a system, and a short string section is short at its FOOT
+    [C65                   ] Score layout & systems       A BRACE means ONE PLAYER
+    [C66                   ] Score layout & systems       An engraver spaces notes roughly in PROPORTION TO DURATION
+    [C67+L67               ] Score layout & systems       Whether one printed staff label means ONE part or TWO is a property of the ENCODING, not the engraving
+    [C68                   ] Score layout & systems       A PAGE truth is not an ENCODING truth
+    [C82+L65               ] Score layout & systems       SCORE ORDER is a convention strong enough to resolve a label by
+    [C85                   ] Score layout & systems       Staff SPACING cannot separate a system from a group — REFUTED
+    [L69                   ] Score layout & systems       Tempo marks stand above the top staff AND above the first violins
+    [C70                   ] Text & margin labels         Some publishers stop labelling CONTINUATION systems — and the family they drop is the strings
+    [C72                   ] Text & margin labels         A TROMBONE section is scored by REGISTER; a TRUMPET section by NUMBER AND KEY
+    [C73+L73               ] Text & margin labels         Direction words are printed INSIDE the system, in a conventional language
+    [C74+L72               ] Text & margin labels         The printing TRADITION is a property of the document — and the same abbreviation means different instruments across traditions
+    [C75+L68               ] Text & margin labels         Measure numbers are printed at system starts
+    [L71                   ] Text & margin labels         A running head names the instrument on every page of a part
+    [C76+L77               ] Barlines & repeats           Repeat dots are a vertical PAIR in the two middle spaces, adjacent to a barline
+    [C77+L45+L76+L79       ] Barlines & repeats           A double barline is a SECTION mark; a thin-thick barline is a movement END — and nothing here can read one
+    [C86                   ] Barlines & repeats           VOCAL staves are not joined by barlines, even when they are bracketed
+    [L78                   ] Barlines & repeats           A dashed barline has a dash twice the length of its gap
+
+⚠️ checked_by statements matching NO registry entry: 13
+    CB03 (system_staff_count): the count may not EXCEED the work roster
+    CB06 (measure_partition): a merged bar sums to a MULTIPLE of the meter; a split bar to a fractio
+    CB08 (instrument): roster membership: an instrument the work is not scored for is IMPOSSI
+    CB10 (instrument): the implied written range must contain this staff's own positions unde
+    CB13 (part_partition): the part count may not exceed the work roster
+    CB15 (clef): implied pitches must fall in the instrument's written range
+    CB20 (key_signature): across the staves of a system the DELTA is shared, never the value -- 
+    CB22 (glyph_owner): a spurious or missing notehead breaks the OWNING bar's duration sum
+    CB23 (glyph_owner): the owned glyph's implied pitch must fall in the owner's written range
+    CB26 (duration): bar sum: the durations of one voice in one bar must equal the meter
+    CB27 (tuplet_ratio): bar sum: a wrong ratio breaks it
+    CB29 (event): the bar sum: one event contributes ONE duration
+    CB30 (meter): bar sum, on every bar of every staff it governs
