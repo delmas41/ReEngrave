@@ -1,0 +1,40 @@
+{
+  "label": "Breitkopf Brahms 1 pp.0-3 — the REACHABLE population, against the print",
+  "what": "Solo-stem heads (exactly ONE notehead overlaps the stroke) sampled in two strata: MID, where the head sits part-way ALONG the stroke, and END, where it sits at one of its ends. END is the CONTROL: if it cannot be adjudicated either, the crops are measuring the plate and not the rule.",
+  "why_this_population": "All 44 heads the print has previously adjudicated on this thread have NO overlapping stem in either shared record (the record's own verdict for all 44 is `no_stem`), so no end rule on `_stems_on` can move them. This is the population an end rule CAN move, and it had never been looked at.",
+  "blind": "Each tile carried an opaque id (T00..T23) and nothing else — no stratum, no direction, no reader's answer. The sheet order was shuffled so position does not encode stratum. Verdicts below were written from the images alone, before the manifest's stratum column was read.",
+  "NOT_independent": "One adjudicator, and the SAME agent built the crop tool — so this is not an independent eye in the sense an inter-rater figure would give. It is also not independent of the record: the red box IS the record's notehead box, so a tile shows where the pipeline thinks the head is.",
+  "verdict_vocabulary": {
+    "own_stem_at_end": "a stroke begins at this head and runs away from it — the engraving convention, satisfied",
+    "mid_stroke": "ink runs past the head on BOTH sides; the head is not at an end of the stroke it stands on",
+    "not_a_notehead": "the boxed ink is not a notehead at all",
+    "cannot_tell": "the adjudicator could not decide from the strip"
+  },
+  "n": 24,
+  "rows": [
+    {"tile": "T00", "verdict": "own_stem_at_end", "direction": "down", "confidence": "high", "reason": "black head, stem descends from it into a flag; barline to the left is separate"},
+    {"tile": "T01", "verdict": "own_stem_at_end", "direction": "down", "confidence": "high", "reason": "head at the top of a stem running down into the beam group below"},
+    {"tile": "T02", "verdict": "own_stem_at_end", "direction": "down", "confidence": "high", "reason": "head on a line, stem descends into a flag"},
+    {"tile": "T03", "verdict": "own_stem_at_end", "direction": "down", "confidence": "high", "reason": "head with a descending flagged stem; slur below is separate"},
+    {"tile": "T04", "verdict": "not_a_notehead", "direction": null, "confidence": "high", "reason": "the boxed ink is a QUARTER REST"},
+    {"tile": "T05", "verdict": "own_stem_at_end", "direction": "down", "confidence": "high", "reason": "head at the top of a stem descending to the beam"},
+    {"tile": "T06", "verdict": "not_a_notehead", "direction": null, "confidence": "high", "reason": "the boxed ink is a QUARTER REST"},
+    {"tile": "T07", "verdict": "own_stem_at_end", "direction": "down", "confidence": "high", "reason": "head at the top of a descending stem"},
+    {"tile": "T08", "verdict": "own_stem_at_end", "direction": "up", "confidence": "high", "reason": "head at the foot of an up-stem into the beam above"},
+    {"tile": "T09", "verdict": "own_stem_at_end", "direction": "up", "confidence": "moderate", "reason": "head at the foot of a stem rising to the beam right of it"},
+    {"tile": "T10", "verdict": "mid_stroke", "direction": null, "confidence": "high", "reason": "small HOLLOW head on a line with a thin vertical passing it — ink continues well ABOVE and BELOW the box, so the head is not at an end of that stroke"},
+    {"tile": "T11", "verdict": "own_stem_at_end", "direction": "down", "confidence": "moderate", "reason": "head with a stem descending to the heavy beams below; dense surround"},
+    {"tile": "T12", "verdict": "own_stem_at_end", "direction": "down", "confidence": "high", "reason": "head at the top of a descending stem"},
+    {"tile": "T13", "verdict": "own_stem_at_end", "direction": "up", "confidence": "moderate", "reason": "head at the foot of a stem rising into the beamed group above-left"},
+    {"tile": "T14", "verdict": "mid_stroke", "direction": null, "confidence": "moderate", "reason": "a long vertical descends from the staff ABOVE and reaches the boxed head; the head also carries a flagged stem below, so ink runs past it both ways"},
+    {"tile": "T15", "verdict": "cannot_tell", "direction": null, "confidence": "low", "reason": "the boxed ink is small and hollow — possibly a poorly inked head, possibly an accidental; cannot decide"},
+    {"tile": "T16", "verdict": "own_stem_at_end", "direction": "down", "confidence": "high", "reason": "head at the top of a descending flagged stem"},
+    {"tile": "T17", "verdict": "mid_stroke", "direction": null, "confidence": "high", "reason": "a long vertical runs THROUGH the boxed head, extending well above and below it; flat sign to the left, ledger line under"},
+    {"tile": "T18", "verdict": "own_stem_at_end", "direction": "down", "confidence": "high", "reason": "head at the top of a descending flagged stem"},
+    {"tile": "T19", "verdict": "mid_stroke", "direction": null, "confidence": "moderate", "reason": "the vertical continues ABOVE the boxed head to a higher note as well as below it"},
+    {"tile": "T20", "verdict": "own_stem_at_end", "direction": "up", "confidence": "high", "reason": "head at the foot of an up-stem into the beam above"},
+    {"tile": "T21", "verdict": "own_stem_at_end", "direction": "down", "confidence": "low", "reason": "head at the TOP of a long descending vertical — end-anchored, but the stroke runs implausibly far, down into the staff below"},
+    {"tile": "T22", "verdict": "own_stem_at_end", "direction": "down", "confidence": "high", "reason": "head at the top of a descending flagged stem"},
+    {"tile": "T23", "verdict": "own_stem_at_end", "direction": "down", "confidence": "high", "reason": "head at the top of a stem descending to the beam"}
+  ]
+}

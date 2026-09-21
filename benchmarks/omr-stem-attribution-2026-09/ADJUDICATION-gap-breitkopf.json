@@ -1,0 +1,31 @@
+{
+  "label": "Breitkopf Brahms 1 pp.0-3 — the WHOLE far-from-an-end population, against the print",
+  "what": "Every solo (head, stroke) pair in the shipped record whose head centre sits more than 0.8 head-heights from the nearer end of the stroke — the complete population, 8 of them — plus 8 at-an-end pairs as a CONTROL, shuffled together.",
+  "question_put_to_each_tile": "Does one END of the BLUE stroke lie at the RED head, or does the stroke run past the head on both sides?",
+  "blind": "Tiles carry an opaque id (G00..G15) only. Stratum and gap were not read until every verdict below was written.",
+  "NOT_independent": "One adjudicator, who also wrote the crop tool. No inter-rater figure. The red box is the record's own notehead box, so the tile shows where the pipeline thinks the head is.",
+  "vocabulary": {
+    "head_at_an_end": "an end of the stroke lies within, or immediately at, the head",
+    "head_part_way_along": "stroke ink extends clearly beyond the head on BOTH sides",
+    "cannot_tell": "could not decide from the strip"
+  },
+  "n": 16,
+  "rows": [
+    {"tile": "G00", "verdict": "head_part_way_along", "confidence": "high", "reason": "blue runs from a notehead ABOVE the red head down to the beam BELOW it; the red head is between the two. ⚠️ this may be a legitimate CHORD inner head whose partner's box the record did not overlap with the stroke"},
+    {"tile": "G01", "verdict": "cannot_tell", "confidence": "low", "reason": "blue extends a little beyond the head both ways; ledger lines and two flagged neighbours make the ownership unreadable at this size"},
+    {"tile": "G02", "verdict": "head_part_way_along", "confidence": "high", "reason": "the blue stroke stands ABOVE and to the RIGHT of the red head and belongs to the NEXT note of the beamed run; the two boxes merely graze — the head touches no part of this stroke"},
+    {"tile": "G03", "verdict": "head_at_an_end", "confidence": "moderate", "reason": "blue begins at the head and descends; a little blue above the box is box slack"},
+    {"tile": "G04", "verdict": "head_at_an_end", "confidence": "moderate", "reason": "head at the foot of a stroke rising into the beam above"},
+    {"tile": "G05", "verdict": "head_at_an_end", "confidence": "moderate", "reason": "head at the top of a stroke descending to the beam"},
+    {"tile": "G06", "verdict": "head_part_way_along", "confidence": "high", "reason": "the stroke runs from a note BELOW (the sf note) up well past the red head; the red head sits in the middle of another note's stem"},
+    {"tile": "G07", "verdict": "head_at_an_end", "confidence": "moderate", "reason": "head at the foot of a short rising stroke, among rests"},
+    {"tile": "G08", "verdict": "cannot_tell", "confidence": "low", "reason": "blue extends above and slightly below; the head's own flagged stem and the neighbour's overlap here"},
+    {"tile": "G09", "verdict": "cannot_tell", "confidence": "low", "reason": "blue passes above and below the head; a heavy barline stands immediately left and the ink is crowded"},
+    {"tile": "G10", "verdict": "head_at_an_end", "confidence": "moderate", "reason": "head at the foot of a stroke rising to the beam"},
+    {"tile": "G11", "verdict": "head_at_an_end", "confidence": "moderate", "reason": "head at the top of a stroke descending to the beam"},
+    {"tile": "G12", "verdict": "head_at_an_end", "confidence": "high", "reason": "head on ledger lines at the top of a stroke descending to the beam"},
+    {"tile": "G13", "verdict": "cannot_tell", "confidence": "low", "reason": "thin blue extending a little each way; the head carries a flagged stem and the tile is dense"},
+    {"tile": "G14", "verdict": "head_at_an_end", "confidence": "high", "reason": "head at the foot of a stroke rising into the beam of its own group"},
+    {"tile": "G15", "verdict": "cannot_tell", "confidence": "low", "reason": "blue extends a little each way; head has its own flagged stem, crowded with ff"}
+  ]
+}
