@@ -350,7 +350,18 @@ class Q(_Vocab):
     GAP_BRIDGING = "gap_bridging"            # ink crossing an inter-staff gap
     SYSTEMIC_COLUMN = "systemic_column"      # a column crossing every gap
     BRACKET_BLOCK = "bracket_block"          # the block index _assign_groups read
-    BARLINE_COLUMN = "barline_column"        # a fitted barline, x per staff
+    #: ⚠⚠ A PER-STAFF **COUNT OF CELLS CUT**, NOT a fitted barline and NOT
+    #: an x. This line said *"a fitted barline, x per staff"* until
+    #: 2026-09-21. `gather.py:238` writes `last + 1` with the note
+    #: `"n_cells cut for this staff"` — read the producer, not this name.
+    #: ASSUMPTIONS.md A-DUR-6 recorded the correction on 2026-09-09 and it
+    #: never reached the vocabulary, which is the file a reader meets first;
+    #: that entry also records the consequence — the repo has **no
+    #: barline-type classification at all** (NOTES.md item 5, which is why
+    #: `<repeat>` is dropped on export), so a double barline is NOT the cheap
+    #: independent reader A-DUR-6 once called it. Correct the estimate before
+    #: budgeting for it.
+    BARLINE_COLUMN = "barline_column"        # per-staff COUNT of cells cut
     LEFT_EDGE_INK = "left_edge_ink"          # the narrow left-edge scan
 
     # ── detection (measurements) ────────────────────────────────────────────
