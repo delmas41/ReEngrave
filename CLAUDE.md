@@ -5280,6 +5280,66 @@ why the roster layer has never had a pooled figure and does not get one here.
 
 ---
 
+## ⚠️⚠️ "n = 2 publishers" WAS A PROPERTY OF THE CATALOG — 54 editions were held and unindexed
+
+2026-09-20, **no code changed**; one documented command re-run.
+[benchmarks/omr-catalog-gap-2026-09/FINDINGS.md](benchmarks/omr-catalog-gap-2026-09/FINDINGS.md).
+
+Opened to check one passing line of the 09-18 handoff §5.4 — *"Breitkopf 1862
+Beethoven 5, Eulenburg 1938 Beethoven 5 and Simrock 1877 Brahms 1 are on disk
+and in the catalog NOWHERE."* **True, and the gap is 18× the three plates it
+names: 54 editions were on disk, all 54 with a complete provenance sidecar,
+and none of them in `data/score-library/catalog.json`.** Entries **1,980 →
+2,034**, editions **235 → 289**.
+
+⚠️⚠️ **THEY ARE THE PUBLISHER DIVERSITY, ACROSS 29 PUBLISHERS** — Breitkopf &
+Härtel (Beethoven's Werke *and* Brahms Sämtliche Werke), Eulenburg,
+Cianchettini & Sperati, Simrock, Bärenreiter (NMA), Peters, Durand, Ricordi,
+Novello, Schott, Belaieff, Jurgenson, NBA, Haslinger, Steiner. For the two
+documents every OMR lane here measures on:
+
+| work | catalog reported | catalog reports now |
+|---|---|---|
+| **Beethoven 5** | Litolff (2 scans) | **Litolff, Breitkopf 1862, Eulenburg 1938** |
+| **Brahms 1** | Breitkopf (2 scans) | **Breitkopf, Simrock 1877** |
+
+**So the `n = 2 publishers` limit at the foot of a dozen results in this file
+is, for these works, a fact about the INDEX and not about what is held** — a
+third Beethoven 5 plate and a second Brahms 1 plate have been on this machine
+the whole time. ⚠️ It retroactively changes NO measurement: those results are
+correct about the plates they ran on and reported their `n` honestly. What
+changes is what the next lane can reach, and *the third publisher for the
+DENOMINATOR* stops being blocked on acquisition.
+
+⚠️ **THE REBUILD WAS CHECKED BEFORE IT WAS RUN, because it writes a committed
+file.** `verify` first — **1,980 present / 0 missing / 0 changed**, so the
+rebuild could only ADD (a rebuild against a store with missing files silently
+deletes their entries); and all 54 carry a sidecar, so all 54 are added rather
+than reported unregistered. After, entry by entry: **54 added, 0 removed,
+`works` 223 → 223 and `editions` 234 → 234 IDENTICAL** (both are carried
+forward by design — they are network-fetched and page-read, not derivable).
+⚠️ **Three existing entries changed and are NAMED rather than netted away**:
+one field on three Rimsky-Korsakov files, `'Nikolai'` → `'Nikolay'`, restoring
+the sidecar's own spelling; **`composer_slug` is unchanged**, so nothing joins
+differently. 327 catalog/library/roster tests pass.
+
+⚠️ **WHAT IT DOES NOT ESTABLISH: anything about LEGIBILITY.** `image_type:
+"Normal Scan"` is IMSLP's label, not a measurement, and this repo's own record
+is 4-found/0-false engraved against 1-found/9-false scanned on the SAME 22
+bars. A plate being HELD is not a plate being READABLE, nothing has been
+gathered on any of the 54, and none has a hand-verified window row — so "bar N
+→ page N" on them is still the manual step every meter and crop lane pays.
+
+⚠️⚠️ **THE PROCESS GAP HAS NO GUARD, AND THAT IS WHY IT SURVIVED 54 FILES.**
+`verify` answers *"is every catalogued file present"* and exits non-zero on a
+checksum mismatch; **nothing answers the mirror question, *"is every present
+file catalogued"*** — which is the direction this ran in. Same asymmetry
+`no_producer.py` needed (a target-only test reports every chain without the
+layer the repair lives in). **Not built here**, deliberately: it belongs in
+`tools/library/` beside `verify`, and this lane changed no code.
+
+---
+
 ## A stroke belongs to the head at ONE OF ITS ENDS — measured, and geometry cannot apply it
 
 2026-09-20, **no code under `tools/`**, no weights, no re-gather. The ranked
