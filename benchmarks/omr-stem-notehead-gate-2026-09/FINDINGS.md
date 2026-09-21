@@ -364,7 +364,7 @@ ARGUMENT rather than on its behaviour** (`out/mutation-battery-rerun.txt`):
    exists to tell a sharp's two strokes from two stems, protecting the
    sharp.** Closed directly.
 
-**All three are now red.** ⚠️ Note what the three have in common: none changed
+**All three are now red: the closing re-run is 21 arms, 21 RED, 0 survivors, restore VERIFIED** (`out/mutation-battery-after-closing.txt`). ⚠️⚠️ **It reads IDENTICALLY to the void original and means the opposite thing**: the original could not have said anything else, and this one survived a judge that CAN say two identical trees are identical. *A number is not a result until the instrument that produced it can fail.* ⚠️ Note what the three survivors have in common: none changed
 an output on any fixture in the suite, which is exactly the population a
 battery exists to reach and a green suite cannot.
 
