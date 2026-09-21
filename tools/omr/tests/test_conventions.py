@@ -173,9 +173,22 @@ class TestTheCheckGoesRed(unittest.TestCase):
         self.assertIn("SOURCE ENTRY VANISHED", kinds)
 
     def test_a_duplicated_source_tag_is_a_finding(self) -> None:
+        # ⚠️ Asserted on SOURCE CLAIMED TWICE specifically. The first draft
+        # accepted either that or a DUPLICATE ID finding, and the battery
+        # showed the id half was an equivalent mutant: an id IS the first
+        # source token, so it cannot duplicate alone. The check was deleted
+        # and this assertion tightened onto the half that is reachable.
         broken = TEXT.replace("`[C2]`", "`[C1]`", 1)
         kinds = self._problem_kinds(broken)
-        self.assertTrue({"DUPLICATE ID", "SOURCE CLAIMED TWICE"} & kinds, kinds)
+        self.assertIn("SOURCE CLAIMED TWICE", kinds)
+
+    def test_a_duplicate_slug_is_a_finding(self) -> None:
+        # Two entries with the same TITLE: distinct ids, one anchor.
+        first = "### A notehead sits ON a line or IN a space, on a half-space lattice"
+        second = "### A notehead is one staff space tall"
+        assert TEXT.count(first) == 1 and TEXT.count(second) == 1
+        broken = TEXT.replace(first, second, 1)
+        self.assertIn("DUPLICATE SLUG", self._problem_kinds(broken))
 
     def test_a_drifted_count_is_a_finding(self) -> None:
         broken = TEXT.replace("| **MEASURED HERE** | 67 |",

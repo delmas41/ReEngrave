@@ -522,14 +522,17 @@ class Registry:
                 found.append(Problem("NO SOURCE TAG", entry.id,
                                      "entry carries no [C../L..] source tag"))
 
-        # 2. Identifiers are unique, and so are slugs.
-        seen_id: Dict[str, str] = {}
+        # 2. Slugs are unique.
+        #
+        # ⚠️ There is deliberately NO separate duplicate-ID check. An entry's
+        # id IS its first source token, so two entries can only share an id
+        # by sharing a source token, and (3) below fires on exactly that. A
+        # duplicate-ID branch was written, found by the mutation battery to
+        # be an EQUIVALENT MUTANT — no mutation of it could go red — and
+        # DELETED. A branch that cannot be reached cannot be wrong, and
+        # cannot be right either.
         seen_slug: Dict[str, str] = {}
         for entry in self.entries:
-            if entry.id in seen_id:
-                found.append(Problem("DUPLICATE ID", entry.id,
-                                     f"also used by {seen_id[entry.id]!r}"))
-            seen_id[entry.id] = entry.title
             if entry.slug in seen_slug:
                 found.append(Problem("DUPLICATE SLUG", entry.slug,
                                      f"{entry.title!r} and {seen_slug[entry.slug]!r}"))
