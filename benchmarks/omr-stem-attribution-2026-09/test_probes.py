@@ -187,6 +187,34 @@ class TestChordShadow(unittest.TestCase):
         self.assertEqual(chord_shadow.solo_pairs_with_shadows(stems, heads), [])
 
 
+class TestTheArmsRebuildIsTheCanonicalOne(unittest.TestCase):
+    """`stem_arm.rebuild` must stay identical to `readjudicate.rebuild`.
+
+    ⚠️ THIS IS WHAT LICENSES THE §10 CLAIM. `stem_arm.py`'s CONTROL 1 fails on
+    today's tree (2,760 of 2,993 duration verdicts reproduced), and the whole
+    argument that this is the TREE rather than the harness rests on the rebuild
+    being the canonical instrument's, verbatim. If somebody edits either one,
+    that argument breaks SILENTLY — so it is asserted rather than remembered.
+    """
+
+    def test_identical(self):
+        import ast
+
+        def src(path, name):
+            tree = ast.parse(Path(path).read_text())
+            for n in ast.walk(tree):
+                if isinstance(n, ast.FunctionDef) and n.name == name:
+                    return ast.unparse(n)
+            return None
+
+        canon = src(ROOT / "benchmarks" / "omr-staged-duration-beams-2026-09"
+                    / "readjudicate.py", "rebuild")
+        mine = src(HERE / "stem_arm.py", "rebuild")
+        self.assertIsNotNone(canon, "the canonical rebuild() was not found")
+        self.assertIsNotNone(mine, "stem_arm's rebuild() was not found")
+        self.assertEqual(canon, mine)
+
+
 class TestTheCommittedNumbersAreReproducible(unittest.TestCase):
     """The artefacts must still say what FINDINGS.md quotes.
 
