@@ -1,0 +1,33 @@
+  exit 0  -> RED
+
+------------------------------------------------------------------------------
+ARM [crop]: the frame control cannot refuse
+  expected: a crop pass whose frame is wrong produces confident verdicts about the wrong ink -- one Litolff strip is genuinely refused and must stay so
+  exit 0  -> RED
+
+------------------------------------------------------------------------------
+ARM [crop]: the mark is drawn from the CANONICAL head box
+  expected: the canonical/page frame error, restored: every mark lands outside its own bar
+  exit 0  -> RED
+
+------------------------------------------------------------------------------
+ARM [crop]: the tick is drawn ACROSS the staff instead of in the margin
+  expected: an annotation over the ink is an annotation over the evidence, and this pass exists because a box was in the wrong place
+  exit 0  -> RED
+
+------------------------------------------------------------------------------
+ARM [crop]: the strip is not upscaled
+  expected: at the plate's native 16 px per staff space a stem cannot be traced by eye, which is what the strips are for
+  exit 22  -> RED
+
+------------------------------------------------------------------------------
+ARM [crop]: the manifest carries the stratum into the image name
+  expected: the adjudication must be BLIND -- a stratum visible in the filename puts the answer in the question
+  exit 0  -> RED
+
+==============================================================================
+RED 17   SURVIVED 0   BAD ANCHORS 0
+restore VERIFIED by md5: True
+EXIT 0
+
+[exited with code 0]

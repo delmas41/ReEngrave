@@ -5280,6 +5280,76 @@ why the roster layer has never had a pooled figure and does not get one here.
 
 ---
 
+## A stroke belongs to the head at ONE OF ITS ENDS — measured, and geometry cannot apply it
+
+2026-09-20, **no code under `tools/`**, no weights, no re-gather. The ranked
+first item of `docs/handoff-2026-09-18-three-lanes-and-the-print.md` §5, which
+two independent lanes reached the same day: the stroke lane's Breitkopf
+DISAGREE stratum is **6 of 6 ONE FAULT — the record's notehead box stands
+part-way ALONG a NEIGHBOURING note's stem.** `adjudicate_stem_direction`
+attributes by `_stems_on`, box overlap with no tolerance, so **every head a
+stroke crosses claims it.**
+[benchmarks/omr-stem-attribution-2026-09/FINDINGS.md](benchmarks/omr-stem-attribution-2026-09/FINDINGS.md).
+
+⚠️ **THE CONVENTION IS NOW MEASURED RATHER THAN ASSUMED, AND IT IS BIMODAL.**
+`t` = the head's centre as a fraction of the stroke's height. Litolff peaks
+**412** at t=0.0 and **450** at t=0.8 against **29** at the trough; Breitkopf
+**732** and **443** against **10**. Within half a notehead height of an end:
+**1,180 of 1,644 (71.8%)** and **1,437 of 1,859 (77.3%)**.
+
+⚠️⚠️ **THE FAULT IS REAL AND THE OWNER IS ALREADY ON THE RECORD: 148 and 228
+heads claim exactly ONE stroke that does not end at them** — a confident wrong
+answer, not an abstention — and in **153 of 169 and 231 of 246** far pairs
+ANOTHER head claims the same stroke from within half a notehead height of an
+end. Only **9 and 5** are claimed by the far head alone, and those are a
+READING gap (the owner's head was never detected) that no attribution rule can
+reach.
+
+⚠️⚠️ **AND NO CONSTANT-FREE RULE SEPARATES A CHORD FROM A PASSING STROKE.**
+Three forms priced off the record before any was written: **strict-minimum**
+takes 159/169 and 238/246 of the faults and **destroys chords** (113/115,
+32/36 interior members); **near-half** takes 92 and 98 at 51 and 19;
+**chord-chain over the heads' own boxes** takes 145 and 190 at 63 and 22. The
+quantity that would separate them — the gap between consecutive heads claiming
+one stroke — runs **0.0 to 4.0 and 0.0 to 5.0 notehead heights CONTINUOUSLY,
+with no empty interval on either plate.** That is the test that refused
+`_SLUR_ARC_PAD_NOTEHEADS` and admitted the augmentation-dot window; here it
+refuses. ⚠️ **AND THE COST COLUMN MAY BE THE FAULT**: `chord_interior` means
+*a claiming mate above AND below*, which **three unrelated heads crossed by one
+long stroke satisfy exactly as a three-note chord does.** No arrangement of
+these two records tells them apart.
+
+**SO IT GOES TO THE PRINT: 79 full-width strips, pre-registered.** Two strata
+sampled EQUALLY at 20 each per document (the question is whether the LABELS
+are right, not how common each is), **committed before a single strip was
+rendered** — commit order is the only form of that claim a later reader can
+check, and the predecessor lane's own circularity is the precedent. ⚠️ Strips
+not tiles, and the mark is two ticks in the MARGIN: both are instructions from
+a paid-for mistake (*"a crop centred on a head cannot tell you the head is a
+NUMERAL"*). Ids opaque, strata in a separate manifest, so the pass can be
+blind.
+
+⚠️⚠️ **TWO FAULTS IN THE LANE'S OWN INSTRUMENT, BOTH FRAME ERRORS, BOTH CAUGHT
+BY A CONTROL.** (1) The frame control refused **38 of 40** crops — right to
+fire, wrong about the cause: inside a one-bar-wide strip of dense orchestral
+music the line-minus-space contrast collapses because that bar's spaces are
+full of ink (**+12.2 in the bar against +69.7 across the page**). The question
+is page-wide; it was **not relaxed**, and one strip is still refused at +13.7.
+(2) Every mark then landed outside its own bar, because a `Q.GLYPH_BOX` row's
+value is **CANONICAL-CELL** while a crop is placed in **PAGE pixels** — and
+`detail.bbox_page_px` was sitting right beside it, discarded. **The fifth
+instance of the frame fault this file records, inside a measuring instrument.**
+⚠️ The pre-registered draw is unchanged across both repairs, asserted row by
+row, 40 of 40.
+
+⚠️ **NOT ESTABLISHED**: nothing is repaired (`tools/` diff EMPTY); no strip has
+been adjudicated; no file and no OMR-NED figure; n = 2 documents / 2 publishers
+/ 8 pages, both scans. ⚠️ On Litolff a sibling lane measured that **~60% of
+noteheads cannot have their stem adjudicated by eye at all**, so a high
+`cannot_tell` rate there is expected and is not a failure of the strips.
+
+---
+
 ## The page frame — a WINDOW was refuting a rule, and the refutation was the window
 
 2026-09-20, no flag, **no record row and no file moved**.
