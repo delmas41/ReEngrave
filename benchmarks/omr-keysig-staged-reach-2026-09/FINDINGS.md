@@ -222,6 +222,18 @@ isolated — but *almost certainly* is not a control, and this repo's own rule
 concurrent writer and it is one you started yourself**. The arm was killed and
 re-run alone rather than reasoned about.
 
+⚠️⚠️ **AND KILLING IT DID NOT KILL IT. THE ARM RUNS BOTH RECORDS IN A SHELL
+`for` LOOP, so killing the python process killed ONE ITERATION and the loop
+moved straight on to the second record** — where it ran for a further 31
+minutes, overlapping the battery it had just been removed from, and racing the
+clean re-run for the same `--tag` output file. Found by counting processes,
+not by anything in either run's output: **both would have written a plausible
+result.** The stale loop was killed by PID (never by name — this repo has paid
+for a blanket `pkill` before) and its output discarded.
+
+> **Killing a long job means killing the LOOP, not the iteration** — and a
+> `--tag` that two runs share is a race whose loser is silent.
+
 ---
 
 ## 6. WHAT IS NOT ESTABLISHED
