@@ -313,3 +313,38 @@ python3 benchmarks/omr-convention-registry-2026-09/probe/prose_claims.py --check
 python3 benchmarks/omr-convention-registry-2026-09/mutate.py
 python3 -m pytest tools/omr/tests/test_conventions.py -q
 ```
+
+---
+
+## 10. Verification, and one operational hazard paid for in this session
+
+**Full suite: `4662 passed, 19 skipped`, exit 0** (12m11s), on the tree
+carrying this work. `tools/omr/conventions.py --check` exits 0; the battery is
+**24 arms, 24 red, restore verified**; `prose_claims.py --check` exits 1 by
+design, on the three figures of §5.
+
+⚠️⚠️ **TWO AGENTS COMMITTED INTO ONE WORKTREE AND ONE BRANCH, AND THE BRANCH
+WAS REBASED MID-SESSION.** A sibling session owning the DECISION-side audit
+was committing into the same checkout as this work. Nothing was lost — the
+two touch disjoint paths — but the symptom is worth recording because it is
+invisible in a terminal: **a commit this session had just made came back under
+a different SHA**, which is the only trace a rebase leaves. The file contents
+were verified against `HEAD` by md5 before anything else was done.
+
+⚠️ **And `origin/claude/integration-2026-09-18` had already absorbed the first
+two commits of this work by the time a clean branch was cut** — a cherry-pick
+onto it conflicted `add/add` on `tools/omr/conventions.py`, which reads
+exactly like *someone else already built this*. It was this session's own
+file. **The check that settles it is one line**: `git merge-base --is-ancestor
+<sha> origin/<branch>` per commit, which is what separated the two already
+integrated from the three that were not. That is this repo's recorded §7
+hazard — *briefs overtaken by work already on main* — arriving from the
+inside, where the work overtaking you is your own.
+
+The deliverable is therefore split across two branches by accident of that
+integration, and both are pushed:
+
+| branch | holds |
+|---|---|
+| `claude/convention-registry-2026-09-20` | all five commits (with the sibling's interleaved) |
+| `claude/convention-registry-clean-2026-09-20` | the **three** not yet in `integration-2026-09-18`, cherry-picked onto it |
