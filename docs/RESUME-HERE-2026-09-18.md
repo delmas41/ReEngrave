@@ -251,3 +251,37 @@ reads *"the catalog is behind -- , additive"* where it should read *"-- run
 **Not amended, because the branch is pushed and force-pushing a shared branch
 is the larger risk** — recorded here instead. Use a heredoc for any message
 containing backticks.
+
+## ✅ 2026-09-20 (fourth lane) — THE SUITE FIGURE ABOVE IS SCOPED, AND THE DASHBOARD WAS RED
+
+⚠️⚠️ **THIS NOTE'S OWN "4521 passed / 19 skipped / 0 failed" IS TRUE OF
+`pytest tools/omr`, NOT OF `pytest tools`.** The whole tree gave **15 failed /
+20 errors**, all in `tools/dashboard/tests/test_registry_report.py`, and the
+CONTROL says they were pre-existing: an identical 15/20 at `a01f3c61`, the
+pre-session tip. **Read the OUTPUT, not the STATUS** — the task harness
+reported "exit code 0" while pytest returned 1.
+
+**The cause was a refusal working.** `metric-registry.json` went to schema
+**0.7.0** while `registry_report.py` understood only **0.5.0**, so
+`gate_schema_version` refused to render — loudly, by design — and had been red
+since v0.6.0 landed.
+
+✅ **CONFORMED, by handling the fields rather than widening the tuple.** The
+two the contract says a consumer may never drop are now rendered:
+`scored_at_detail_level` (19 of 19 rows) and `ceiling.measured_under` with its
+`stop_condition` (21 of 21 ceilings, **2 marked flag-conditional**, which
+independently reproduces the registry's own *"the two ESTIMATOR-based floors
+ARE"*). 0.6.0 is deliberately NOT admitted — it is `superseded` with a reason.
+
+⚠️⚠️ **AND THE FIRST CUT DROPPED BOTH FROM THE MARKDOWN**: the handled set was
+widened and the HTML verified row by row while `render_md` carried neither —
+the `ceiling.edition` failure one consumer surface further along. **A field is
+handled when EVERY surface shows it, not when one does.** Caught by counting
+the md output, not by review.
+
+**Whole tree now: 4,621 passed / 19 skipped / 0 failed.**
+
+⚠️ **AND A GOTCHA IN THE VERIFICATION ITSELF**: `pytest ... | tail -3 > f;
+echo $?` reports **`tail`'s** status, not pytest's. The result above rests on
+the summary line (pytest prints `N failed` whenever there are failures), not
+on that exit code. Use `${pipestatus[1]}` in zsh.
