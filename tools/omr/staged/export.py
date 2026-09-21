@@ -590,6 +590,47 @@ def build(rec: Record) -> Tuple[List[List[StaffRun]], Dict[str, Any],
             fermatas_dropped, ornaments_dropped, notes_dropped_by_system)
 
 
+#: The alterations `respell_accidental` can write, and what each does to a
+#: pitch STRING. ⚠️ Derived-checked against the legacy parser rather than
+#: restated: `_legacy._parse_pitch` accepts `#`/`b` runs and
+#: `_legacy._mxl_pitch_block` maps them to `<alter>`, so a spelling this table
+#: invents that the parser cannot read would silently produce a note with no
+#: `<pitch>` block at all. `test_sounding_pitch.py` asserts the round trip.
+_ALTERATION_SPELLING: Dict[str, str] = {"#": "#", "b": "b"}
+
+
+def _sounding_pitch(pitch: str, alteration: str) -> str:
+    """Fold a key-derived alteration into a pitch string: `E4` + `b` -> `Eb4`.
+
+    ⚠️ WHY A STRING AND NOT AN `<alter>` ARGUMENT. `_legacy._mxl_note` takes
+    ONE pitch and derives `<alter>` inside `_mxl_pitch_block` by parsing it,
+    which is also how the legacy path has always carried an alteration. Adding
+    a second, parallel channel would give the two paths different spellings of
+    one fact and leave nothing forcing them to agree.
+
+    ⚠️ IT REFUSES RATHER THAN GUESSES. `_pitch_from_position` -- the only
+    producer of `Q.PITCH` -- returns a BARE letter+octave, so a pitch that
+    already carries an accidental is not a pitch this function has ever been
+    handed, and doubling one (`Eb4` + `b` -> `Ebb4`) would quietly lower a
+    note a whole tone. An unparseable pitch, an unknown alteration, or a pitch
+    that is already altered is returned UNCHANGED: the caller then writes the
+    note it read, which is wrong in the way it was already wrong rather than
+    wrong in a new way this function invented.
+    """
+    spelled = _ALTERATION_SPELLING.get(alteration)
+    if spelled is None:
+        return pitch
+    parsed = _legacy._parse_pitch(pitch)
+    if parsed is None:
+        return pitch
+    letter, existing, octave = parsed
+    if existing:
+        # Already altered -- an inline accidental would have to come from a
+        # reader that does not exist yet. Leave it alone rather than stack.
+        return pitch
+    return f"{letter}{spelled}{octave}"
+
+
 def _place_notes(rec: Record, runs: Dict[str, StaffRun],
                  by_system: Optional[Dict[Tuple[int, int], Any]] = None,
                  held_out: Optional[set] = None) -> Dict[str, int]:
@@ -693,6 +734,36 @@ def _place_notes(rec: Record, runs: Dict[str, StaffRun],
         # quantity at all; asking for one now would keep them out for a
         # second, subtler reason.
         pitch = None if is_rest else rec.value(Q.PITCH, sub)
+        # ⚠️⚠️ THE ALTERATION IS PART OF THE PITCH, NOT A GLYPH ON IT, AND
+        # ROUTING IT TO THE GLYPH WAS THIS EXPORTER'S LARGEST SILENT FAULT.
+        # `Q.ACCIDENTAL` is declared "respelled when the key settles" and its
+        # ONLY producer is `consequences.respell_accidental`, which reads the
+        # key signature -- so the row says *this note is altered by the key*,
+        # a fact about what SOUNDS. It was handed to `_mxl_note(accidental=)`,
+        # which renders `<accidental>`, the glyph the engraver DREW. The
+        # renderer's own comment in `export.py` states the distinction and
+        # this path inverted it.
+        #
+        # Measured on Litolff Beethoven 5 pp.1-4: `<alter>` 0, `<accidental>`
+        # 334, and all 269 `Q.ACCIDENTAL` verdicts key-derived. Put through
+        # Verovio (`probe/renderer_semantics.py`) an E in three flats written
+        # that way carries NO `accid.ges` -- it sounds E natural -- AND draws
+        # a redundant flat on the note, 4 glyphs where the page prints 3.
+        # Wrong in both directions at once.
+        #
+        # ⚠️ `applied` is set only where the spelling actually MOVED the
+        # pitch, so the counter downstream means *notes the key altered* and
+        # not *notes that carried a row*. The distinction is real and already
+        # has a fixture: `test_staged_duration` injects a `"natural"`
+        # accidental to exercise the override guard, and a natural is alter 0
+        # -- the bare letter -- so it must fall through here AND must not be
+        # counted as an alteration.
+        alteration = None if is_rest else rec.value(Q.ACCIDENTAL, sub)
+        applied = None
+        if pitch is not None and alteration:
+            sounding = _sounding_pitch(pitch, alteration)
+            if sounding != pitch:
+                pitch, applied = sounding, alteration
         dur_v = rec.verdict(Q.DURATION, sub)
         dur = dur_v["value"] if dur_v and dur_v["outcome"] == "decided" else None
 
@@ -787,7 +858,20 @@ def _place_notes(rec: Record, runs: Dict[str, StaffRun],
             "duration_beats": float(dur.get("beats") or written),
             "duration_type": dtype,
             "dots": max(int(dur.get("dots") or 0), derived_dots),
-            "accidental": rec.value(Q.ACCIDENTAL, sub),
+            # ⚠️ THE BEAM LEVEL IS ALREADY ON THE RECORD and was read by
+            # nothing on this path -- `adjudicate_duration` puts it in the
+            # verdict's own VALUE, beside the beats it derived FROM it. It is
+            # carried here under the name `annotate_beams` expects, so the
+            # legacy grouping rule can be called rather than restated. A rest
+            # carries 0 and is never beamed.
+            "beam_levels": int(dur.get("beam_levels") or 0),
+            # ⚠️ THE ALTERATION IS CARRIED, AND IT IS NOT THE DRAWN GLYPH.
+            # It has already been folded into `pitch` above, so this entry
+            # exists only so the counter can report how many notes the key
+            # altered. It is deliberately NOT named `accidental` any more:
+            # the old key wrote `<accidental>`, and a name that still says
+            # "glyph" is how the next reader re-wires it back.
+            "key_alteration": applied,
             # ⚠️ THE RATIO NAMES ITS MEMBERS, AND ONLY THEY ARE SCALED. A
             # tuplet is a fact of a GROUP inside the bar, not of the bar:
             # `adjudicate_tuplet` records `members` (the glyph indices its
@@ -954,6 +1038,71 @@ def _stem_boxes_by_cell(rec: Record) -> Dict[str, List[Tuple[float, ...]]]:
         if isinstance(v, (list, tuple)) and len(v) >= 4:
             out[o["subject"]].append(tuple(float(x) for x in v[:4]))
     return dict(out)
+
+
+def _beam_boxes_by_cell(rec: Record) -> Dict[str, List[Tuple[float, ...]]]:
+    """`cell subject -> [(x, y, w, h)]`, in the CELL's own canonical frame.
+
+    ⚠️ `Q.BEAM_STROKE` is filed on the CELL by `gather_cv_lines`, which reads
+    an ERASED cell image and never converts -- exactly as `Q.STEM` is, and
+    for the same reason. The conversion is `_beam_detections_page`'s job.
+    """
+    out: Dict[str, List[Tuple[float, ...]]] = collections.defaultdict(list)
+    for o in rec.obs_of(Q.BEAM_STROKE):
+        v = o["value"]
+        if isinstance(v, (list, tuple)) and len(v) >= 4:
+            out[o["subject"]].append(tuple(float(x) for x in v[:4]))
+    return dict(out)
+
+
+def _beam_detections_page(cell: "Cell", boxes: Sequence[Tuple[float, ...]]
+                          ) -> List[Dict[str, Any]]:
+    """Beam strokes as the `structural`/`beam` detections `annotate_beams` reads.
+
+    ⚠️⚠️ THE FRAME IS THE WHOLE RISK HERE, AND IT IS THE ONE THIS REPO KEEPS
+    PAYING FOR. `annotate_beams` compares a beam box against a notehead's
+    CENTRE, and it reads both out of `bbox_page`. The strokes arrive in the
+    cell's CANONICAL frame -- measured inside one cell and rescaled so the
+    staff span is constant -- so handing them over unconverted would compare
+    two different rulers and group notes by coincidence. That is
+    `Q.ONSET_COLUMN`'s recorded fault, and a wrong grouping does not raise:
+    it writes a beam over the wrong notes.
+
+    ⚠️ THE CONVERSION USES THE HEAD AS ITS OWN RULER, the method `_stem_probes`
+    already established and measured (a per-cell affine fit gives the identical
+    answer at residual 0.00 px). A notehead carries BOTH boxes -- canonical
+    (`bbox`) and page (`bbox_page`) -- so one head fixes the scale and the
+    origin for every stroke in its cell.
+
+    ⚠️ IT REFUSES RATHER THAN GUESSES. A cell with no head carrying both boxes
+    has no ruler, so it yields NOTHING and its notes stay flagged -- which is
+    what they were before this rung existed. Inventing a scale from the cell's
+    nominal width would be a guess about geometry, and a wiring pass may
+    connect a decision and may not let one guess.
+    """
+    ruler = None
+    for det in cell.detections:
+        if det.get("category") != "notehead":
+            continue
+        page, canon = det.get("bbox_page"), det.get("bbox")
+        if (page and canon and len(page) == 4 and len(canon) == 4
+                and float(canon[2]) > 0):
+            ruler = (tuple(float(v) for v in canon),
+                     tuple(float(v) for v in page))
+            break
+    if ruler is None:
+        return []
+    canon, page = ruler
+    scale = page[2] / canon[2]
+    out: List[Dict[str, Any]] = []
+    for (bx, by, bw, bh) in boxes:
+        out.append({
+            "category": "structural", "class": "beam",
+            "bbox_page": [page[0] + (bx - canon[0]) * scale,
+                          page[1] + (by - canon[1]) * scale,
+                          bw * scale, bh * scale],
+        })
+    return out
 
 
 def _stem_probes(rec: Record, part: Sequence[StaffRun],
@@ -2329,6 +2478,54 @@ def R_cell_key(run: StaffRun, cell_index: int) -> str:
     return f"cell/{run.page}/{run.system}/{run.staff}/{cell_index}"
 
 
+def _annotate_beams_for(rec: Record, run: StaffRun, cell_index: int,
+                        stream: List[Dict[str, Any]],
+                        counters: Dict[str, int]) -> None:
+    """Give one voice's events their `beam_states`, in place.
+
+    ⚠️⚠️ WHY THIS IS A WIRE AND NOT A RULE. `_legacy.annotate_beams` is
+    IMPORTED AND CALLED, never ported: its docstring records FOUR grouping
+    rules, each paid for by a measured failure (the notehead-width pad, the
+    same-stack collapse that took Mozart 41 from 7 to 145 beam edits, the
+    box-containing-two-disjoint-boxes guard, the divisi two-row case).
+    Restating any of them here would give this project two copies of numbers
+    it paid to measure once -- the drift `LETTER_METERS` and the arc constants
+    are both imported to prevent.
+
+    ⚠️ ADDITIVE BY CONSTRUCTION. A cell with no beam stroke, or with no
+    notehead carrying both frames, produces no boxes -- so `annotate_beams`
+    sets nothing and every note stays exactly as it was. That is why this
+    needs no flag: where the CV read no beam, the file does not move.
+    """
+    cell = run.cells.get(cell_index)
+    if cell is None or not stream:
+        return
+    # ⚠️ `R_cell_key`, not a third copy of the f-string. It is defined
+    # directly above this function and `_stem_probes` already restates it --
+    # the "imported rather than restated" rule this file applies to
+    # `LETTER_METERS` and the arc constants, applied to a key format.
+    key = R_cell_key(run, cell_index)
+    # ⚠️ The per-record map is built ONCE and cached on the Record, not
+    # rebuilt per bar: `obs_of` walks every observation, and doing that inside
+    # a loop over 1,183 bars is quadratic in the record.
+    # ⚠️ `is None`, NOT falsiness: an empty map is a legitimate answer for a
+    # record with no beam strokes, and `if not cache` would rebuild it on
+    # every bar of exactly that document. The `{}` is falsy but is not None
+    # hazard this repo records for `_carry_meter`.
+    cache = getattr(rec, "_beam_box_cache", None)
+    if cache is None:
+        cache = _beam_boxes_by_cell(rec)
+        setattr(rec, "_beam_box_cache", cache)
+    boxes = cache.get(key)
+    if not boxes:
+        return
+    dets = _beam_detections_page(cell, boxes)
+    if not dets:
+        counters["beam_cells_without_a_frame_ruler"] += 1
+        return
+    _legacy.annotate_beams(stream, dets)
+
+
 def _measure_xml(rec: Record, run: StaffRun, cell_index: int,
                  events: List[Dict[str, Any]], divisions: int,
                  counters: Dict[str, int]) -> List[str]:
@@ -2347,6 +2544,13 @@ def _measure_xml(rec: Record, run: StaffRun, cell_index: int,
     # A single "refused" total would send the next reader to the wrong place.
     why: List[str] = []
     streams = _voice_split(rec, run, cell_index, events, why)
+    # ⚠️⚠️ PER VOICE, AND THAT IS NOT A DETAIL. `annotate_beams`' own docstring
+    # says it "must be called PER VOICE": two voices interleave in x, so a run
+    # computed across both is broken by the other voice's notes. The split is
+    # already done here, which is why the call belongs at this seam and not in
+    # `_place_notes`.
+    for stream in (streams if streams is not None else [events]):
+        _annotate_beams_for(rec, run, cell_index, stream, counters)
     if streams is None:
         for reason in why:
             counters["two_voice_bars_refused_" + reason] += 1
@@ -2456,6 +2660,12 @@ def _measure_events_xml(events: List[Dict[str, Any]], divisions: int,
                 # LOWEST FIRST and carried the marks up onto the EVENT, which
                 # is why they are read from `ev` here and not from `head`.
                 slur_states=(ev.get("slur_states") if n == 0 else None),
+                # ⚠️ THE BEAM IS PER EVENT AND GOES ON THE CHORD'S FIRST NOTE,
+                # exactly as the slur does and for the same reason -- the
+                # legacy renderer writes `beam_states if ni == 0 else None` at
+                # its own call site. A `<beam>` on every member of a chord
+                # draws one beam per notehead.
+                beam_states=(ev.get("beam_states") if n == 0 else None),
                 # ⚠️⚠️ ...BUT THE TIE IS PER HEAD, AND IS THE ONE SPANNER MARK
                 # THAT IS. `<slur>` carries a `number=` and hangs off the
                 # chord's representative note; `<tied>` carries none and joins
@@ -2478,7 +2688,18 @@ def _measure_events_xml(events: List[Dict[str, Any]], divisions: int,
                 # subset of its members.
                 ornaments=(head.get("ornaments") or None),
                 fermata=(ev_fermata if n == 0 else False),
-                accidental=head.get("accidental")))
+                # ⚠️⚠️ NO `accidental=`, AND THE ABSENCE IS AN ABSTENTION WE
+                # COUNT RATHER THAN A FIELD WE FORGOT. `<accidental>` is the
+                # glyph the engraver PRINTED, and the record holds no reading
+                # of one: the in-bar accidental is filed as an anonymous
+                # `Q.GLYPH_BOX` and reaches no quantity (`gather_coverage`'s
+                # `FAMILY_Q_IS_ELSEWHERE["accidental"]` says so in terms --
+                # 256 such glyphs detected on Litolff pp.1-4 and not one of
+                # them becomes a verdict). The only thing that WAS being
+                # passed here was the key-derived alteration, which is now in
+                # the pitch where it belongs. Emitting nothing is the honest
+                # answer; `printed_accidentals_not_read` is the count.
+                ))
             counters["notes"] += 1
             # ⚠️ COUNTED AT THE RENDER, where the ELEMENT is written, and not
             # where the mark was ATTACHED. The two numbers are different: a
@@ -2550,8 +2771,23 @@ def _measure_events_xml(events: List[Dict[str, Any]], divisions: int,
                                   ("tied_from_prev", "tie_stops")):
                     if head.get(key):
                         counters[name + "_on_an_upper_chord_note"] += 1
-            if head.get("accidental"):
-                counters["accidentals"] += 1
+            # ⚠️ RENAMED, NOT PINNED AT ZERO. The old `accidentals` counted
+            # `<accidental>` elements; after this repair the exporter writes
+            # none, so a counter still carrying that name would report an
+            # element the file does not contain -- the "control that computes
+            # the wrong thing" family, which this file already records the
+            # chord-tie work hitting. What replaces it is a POSITIVE figure
+            # about the file: notes whose PITCH the key signature altered.
+            if head.get("key_alteration"):
+                counters["pitches_altered_by_the_key"] += 1
+            # ⚠️ COUNTED AT THE RENDER, where the ELEMENT is written, and not
+            # where `annotate_beams` attached it -- the rule the arc export
+            # learned by reporting 55 slurs into a file holding 23. The two
+            # figures differ whenever an event is dropped between the two.
+            if n == 0:
+                counters["beams"] += len(ev.get("beam_states") or ())
+                if ev.get("beam_states"):
+                    counters["beamed_events"] += 1
             if n == 0:
                 units += max(1, int(round(beats * divisions)))
         # ⚠️ AFTER the chord's notes, for the reason above: the `stop` binds
@@ -2974,7 +3210,21 @@ NOT_NOTATION: Dict[str, str] = {
     "augmentationDot": "consumed by `duration` as a dot",
     "flag": "consumed by `duration`: a flag says what a beam says for an "
             "unbeamed note (`Q.FLAG`)",
-    "accidental": "consumed into `pitch` and `accidental`",
+    # ⚠️⚠️ THIS ENTRY READ "consumed into `pitch` and `accidental`" UNTIL
+    # 2026-09-21 AND BOTH HALVES WERE FALSE. `restate_pitch` derives the pitch
+    # from POSITION + CLEF and never looks at an accidental glyph; and
+    # `Q.ACCIDENTAL`'s only producer is `respell_accidental`, which reads the
+    # KEY SIGNATURE -- so no detected accidental reaches either. The tree said
+    # so in the other direction all along:
+    # `gather_coverage.FAMILY_Q_IS_ELSEWHERE["accidental"]` states that the
+    # in-bar accidental "is still filed only as an anonymous `Q.GLYPH_BOX`",
+    # and the two documents contradicted each other for as long as both
+    # existed. 256 such glyphs on Litolff pp.1-4 reach nothing.
+    "accidental": "NOT consumed: the key-derived alteration reaches `pitch` "
+                  "via `Q.ACCIDENTAL`, but the PRINTED glyph is read by "
+                  "nothing and is filed only as an anonymous `Q.GLYPH_BOX`. "
+                  "Counted in coverage()'s `accidental_reading` block, which "
+                  "is the abstention rather than a family row.",
     "key": "consumed by `key_signature`",
     "clef": "counted as the `clef` family",
     "timeSig": "counted as the `time` family",
@@ -3288,6 +3538,36 @@ def coverage(result: Dict[str, Any],
                  if r["status"] == "decided_uncounted"]
     return {
         "families": rows,
+        # ⚠️⚠️ THE ACCIDENTAL IS TWO FACTS AND WE HOLD ONLY ONE, SO THE OTHER
+        # IS COUNTED RATHER THAN GUESSED. `<alter>` is what the note SOUNDS
+        # and comes from `Q.ACCIDENTAL`, which `respell_accidental` derives
+        # from the key. `<accidental>` is the glyph the engraver PRINTED and
+        # nothing reads one: the in-bar accidental is filed as an anonymous
+        # `Q.GLYPH_BOX` and reaches no quantity at all. So the exporter writes
+        # no `<accidental>`, and this is the size of that abstention -- every
+        # one is a note that may carry a printed alteration we did not read.
+        #
+        # ⚠️ IT IS NOT A FAMILY ROW, deliberately: `accidental` is on
+        # `NOT_NOTATION`, and promoting it would put a family in the census
+        # whose quantity is an EVALUATE consequence rather than a reading.
+        # Reported at the top instead, where a zero cannot be mistaken for a
+        # family that came out fine.
+        "accidental_reading": {
+            "printed_glyphs_detected": sum(
+                n for cls, n in detected.items()
+                if cls.lower().startswith("accidental")),
+            # ⚠️ DERIVED, NEVER A LITERAL ZERO. `respell_accidental` is the
+            # only producer today, so this is 0 -- but a hardcoded 0 would
+            # STILL read 0 the day a reader of the printed glyph lands, which
+            # is the "control that computes the wrong thing" this repo has
+            # recorded five times. Counting the verdicts some OTHER decider
+            # wrote makes the figure move on its own.
+            "printed_glyphs_read_into_a_verdict": sum(
+                1 for v in rec.verdicts_of(Q.ACCIDENTAL)
+                if v.get("decider") != "respell_accidental"),
+            "pitches_altered_by_the_key": int(
+                (written or {}).get("pitches_altered_by_the_key", 0)),
+        },
         # ⚠️ Ink of a kind no family and no reason accounts for. Derived, so a
         # class nobody has thought about appears here the first time the
         # detector emits one.
