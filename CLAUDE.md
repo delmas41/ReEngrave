@@ -5340,73 +5340,60 @@ layer the repair lives in). **Not built here**, deliberately: it belongs in
 
 ---
 
-## A stroke belongs to the head at ONE OF ITS ENDS — measured, and geometry cannot apply it
+## ⚠️⚠️ A stroke belongs to the head at ONE OF ITS ENDS — MEASURED, THEN REFUTED BY SEAN IN THREE MESSAGES
 
-2026-09-20, **no code under `tools/`**, no weights, no re-gather. The ranked
-first item of `docs/handoff-2026-09-18-three-lanes-and-the-print.md` §5, which
-two independent lanes reached the same day: the stroke lane's Breitkopf
-DISAGREE stratum is **6 of 6 ONE FAULT — the record's notehead box stands
-part-way ALONG a NEIGHBOURING note's stem.** `adjudicate_stem_direction`
-attributes by `_stems_on`, box overlap with no tolerance, so **every head a
-stroke crosses claims it.**
+2026-09-20, **no code under `tools/`**. The ranked first item of
+`docs/handoff-2026-09-18-three-lanes-and-the-print.md` §5 was measured, a
+population was found for it, and **the print refuted the population.** Full
+reading, with the withdrawn measurement kept beneath its own banner:
 [benchmarks/omr-stem-attribution-2026-09/FINDINGS.md](benchmarks/omr-stem-attribution-2026-09/FINDINGS.md).
 
-⚠️ **THE CONVENTION IS NOW MEASURED RATHER THAN ASSUMED, AND IT IS BIMODAL.**
-`t` = the head's centre as a fraction of the stroke's height. Litolff peaks
-**412** at t=0.0 and **450** at t=0.8 against **29** at the trough; Breitkopf
-**732** and **443** against **10**. Within half a notehead height of an end:
-**1,180 of 1,644 (71.8%)** and **1,437 of 1,859 (77.3%)**.
+⚠️⚠️ **THE HEADLINE "148 AND 228 HEADS TAKE A DIRECTION FROM A STROKE THAT IS
+NOT THEIRS" IS WITHDRAWN AND MUST NOT BE QUOTED.** The chord test behind it
+could not see a TWO-NOTE CHORD: a head counted as a legitimate chord member
+only with a companion ABOVE *and* BELOW on the same stroke, so an octave pair —
+one companion — could never qualify, and whichever note was not at the stem's
+end was filed as a fault. Sean, on the first strip he was shown: *"it is an
+octave of C's and the stem belongs to both"* — and the software had put that
+strip in the **presumed-fault** group. The shape is **98 of 153 (64%)** of that
+group on Litolff and **219 of 231 (95%)** on Breitkopf.
 
-⚠️⚠️ **THE FAULT IS REAL AND THE OWNER IS ALREADY ON THE RECORD: 148 and 228
-heads claim exactly ONE stroke that does not end at them** — a confident wrong
-answer, not an abstention — and in **153 of 169 and 231 of 246** far pairs
-ANOTHER head claims the same stroke from within half a notehead height of an
-end. Only **9 and 5** are claimed by the far head alone, and those are a
-READING gap (the owner's head was never detected) that no attribution rule can
-reach.
+⚠️ **Corrected to his own rule** — a companion on the stem, either side, is a
+chord — the suspect population falls to **51 and 14** (of 1,759 and 1,895
+head/stroke pairs). ⚠️ The x-offset split used to sort it is a SORT and not a
+rule: widest empty interval **0.08 notehead widths**, i.e. noise.
 
-⚠️⚠️ **AND NO CONSTANT-FREE RULE SEPARATES A CHORD FROM A PASSING STROKE.**
-Three forms priced off the record before any was written: **strict-minimum**
-takes 159/169 and 238/246 of the faults and **destroys chords** (113/115,
-32/36 interior members); **near-half** takes 92 and 98 at 51 and 19;
-**chord-chain over the heads' own boxes** takes 145 and 190 at 63 and 22. The
-quantity that would separate them — the gap between consecutive heads claiming
-one stroke — runs **0.0 to 4.0 and 0.0 to 5.0 notehead heights CONTINUOUSLY,
-with no empty interval on either plate.** That is the test that refused
-`_SLUR_ARC_PAD_NOTEHEADS` and admitted the augmentation-dot window; here it
-refuses. ⚠️ **AND THE COST COLUMN MAY BE THE FAULT**: `chord_interior` means
-*a claiming mate above AND below*, which **three unrelated heads crossed by one
-long stroke satisfy exactly as a three-note chord does.** No arrangement of
-these two records tells them apart.
+⚠️⚠️ **AND THE RESIDUAL IS NOT A FAULT EITHER.** Three of the 26 unexplained
+cases were cropped and shown: *"they look like clean notes with basic stems on
+them."* Measured, the flagged strokes are **systematically LONGER than ordinary
+ones — median 5.72 staff spaces against 4.12 on Litolff, 4.43 against 3.46 on
+Breitkopf**, where a stem is ~3.5. **The note is not mid-stem; the STEM is
+measured too long**, most plausibly merged with a staff line, a beam or
+neighbouring ink.
 
-**SO IT GOES TO THE PRINT: 79 full-width strips, pre-registered.** Two strata
-sampled EQUALLY at 20 each per document (the question is whether the LABELS
-are right, not how common each is), **committed before a single strip was
-rendered** — commit order is the only form of that claim a later reader can
-check, and the predecessor lane's own circularity is the precedent. ⚠️ Strips
-not tiles, and the mark is two ticks in the MARGIN: both are instructions from
-a paid-for mistake (*"a crop centred on a head cannot tell you the head is a
-NUMERAL"*). Ids opaque, strata in a separate manifest, so the pass can be
-blind.
+> **The convention is sound, the notes are ordinary, and what is wrong is the
+> EXTENT OF THE VERTICAL RUN we measure. The repair is upstream, in how a
+> stroke's ends are found — NOT in `adjudicate_stem_direction`.**
 
-⚠️⚠️ **TWO FAULTS IN THE LANE'S OWN INSTRUMENT, BOTH FRAME ERRORS, BOTH CAUGHT
-BY A CONTROL.** (1) The frame control refused **38 of 40** crops — right to
-fire, wrong about the cause: inside a one-bar-wide strip of dense orchestral
-music the line-minus-space contrast collapses because that bar's spaces are
-full of ink (**+12.2 in the bar against +69.7 across the page**). The question
-is page-wide; it was **not relaxed**, and one strip is still refused at +13.7.
-(2) Every mark then landed outside its own bar, because a `Q.GLYPH_BOX` row's
-value is **CANONICAL-CELL** while a crop is placed in **PAGE pixels** — and
-`detail.bbox_page_px` was sitting right beside it, discarded. **The fifth
-instance of the frame fault this file records, inside a measuring instrument.**
-⚠️ The pre-registered draw is unchanged across both repairs, asserted row by
-row, 40 of 40.
+⚠️ **IT DOES NOT CLEAR THE 09-18 OBSERVATION** (*"the record's notehead box
+stands part-way ALONG a NEIGHBOURING note's stem"*, 6 of 6 on its own crops).
+A head box in the wrong place and a stroke measured too long both put a head
+mid-stroke. What is established is that **this lane's population is not the
+fault it was built to find**, and a repair aimed at the stem DECISION would
+have been aimed at the wrong stage.
 
-⚠️ **NOT ESTABLISHED**: nothing is repaired (`tools/` diff EMPTY); no strip has
-been adjudicated; no file and no OMR-NED figure; n = 2 documents / 2 publishers
-/ 8 pages, both scans. ⚠️ On Litolff a sibling lane measured that **~60% of
-noteheads cannot have their stem adjudicated by eye at all**, so a high
-`cannot_tell` rate there is expected and is not a failure of the strips.
+⚠️⚠️ **THE PROCESS LESSON IS THE LARGEST THING HERE, AND IT IS `ask-first`
+ARRIVING AS A BILL.** Four probes, three instruments, a pre-registered sample
+and a 17-arm battery did not catch a chord test that cannot see a chord.
+**Three messages from a musician looking at pictures did.** ⚠️ And the first
+batch of pictures *asked a question it had not identified the subject of* — the
+strips marked the note's X with margin ticks, while *which note owns this
+stroke* is a question about **Y**, since the candidates are stacked at the same
+x. Re-marked with corner brackets naming the exact notehead; every verdict came
+after that change. ⚠️ **Sean's very first reaction — *"so far they all look
+like simple notes with stems"* — was the correct read of the population, and
+was set aside at the time as an artefact of the unclear marking.**
+
 
 ---
 

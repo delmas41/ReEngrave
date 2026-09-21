@@ -1,14 +1,80 @@
-# A stroke belongs to the head at ONE OF ITS ENDS — the convention holds, and geometry alone cannot apply it
+# A stroke belongs to the head at ONE OF ITS ENDS — ⚠️⚠️ REFUTED BY THE PRINT, AND THE PREMISE WAS THE INSTRUMENT'S
 
-**2026-09-20.** The ranked first item of
-[`docs/handoff-2026-09-18-three-lanes-and-the-print.md`](../../docs/handoff-2026-09-18-three-lanes-and-the-print.md)
-§5, and `RESUME-HERE-2026-09-18`'s *"what is still owed"*. Two lanes reached
-the same conclusion from different instruments on 2026-09-18 — the stroke
-lane's Breitkopf DISAGREE stratum is **6 of 6 one fault, the record's notehead
-box standing part-way ALONG a NEIGHBOURING note's stem**, and the beam-mate
-standoff put its own error in GROUPING rather than convention. **Nothing under
-`tools/` changes here.** No weights, no re-gather, no detector: every figure is
-read off the two committed shared records.
+⚠️⚠️ **READ THIS BANNER BEFORE ANY NUMBER BELOW IT.** This lane set out to
+confirm a fault two lanes had converged on, measured a population for it, and
+**Sean refuted it in three messages by looking at the pictures.** Everything
+under §1-§6 is the measurement AS TAKEN and is kept because the correction is
+the finding; the conclusion it reaches is **withdrawn**. §0 is what replaced it.
+
+## 0. ⚠️⚠️ WHAT ACTUALLY HAPPENED — the refutation, in order
+
+**(a) The chord test could not see a two-note chord.** A head counted as a
+legitimate chord member only if it had a companion ABOVE *and* BELOW on the
+same stroke. An octave pair has ONE companion, so by construction neither note
+could ever qualify and whichever was not at the stem's end was filed as a
+suspected fault. Sean, on the first strip he was shown: *"it is an octave of
+C's and the stem belongs to both"* — and the software had put that strip in the
+**presumed-fault** group.
+
+**The shape is most of the group.** Heads on a stroke with exactly one
+companion — what a two-note chord looks like — are **98 of 153 (64%)** on
+Litolff and **219 of 231 (95%)** on Breitkopf. ⚠️ **So the headline "148 and 228
+heads take a direction from a stroke that is not theirs" was inflated by a
+broken test and must not be quoted.**
+
+**(b) Corrected to Sean's own rule** — *a companion on the stem, either side,
+is a chord* — the suspect population falls to **51 and 14**:
+
+| | Litolff | Breitkopf |
+|---|--:|--:|
+| head at an END of its stroke — fine | 1,526 | 1,635 |
+| not at an end, companion at the SAME x — a chord | 182 | 246 |
+| not at an end, companion 0.1-0.5 notehead widths away | 33 | 6 |
+| not at an end, companion >0.5 away | 9 | 3 |
+| not at an end, NO companion at all | 9 | 5 |
+
+⚠️ The x split is a SORT, not a rule: the widest empty interval in the
+offset distribution is **0.08 notehead widths**, i.e. noise. 72% / 79% sit at
+essentially zero, which is the only reason sorting on it is worth anything.
+
+**(c) The residual was put to the print, and it is not a fault either.** Three
+of the 26 unexplained cases were rendered and shown to Sean: *"they look like
+clean notes with basic stems on them."*
+
+**(d) THE MEASUREMENT, NOT THE MUSIC.** The flagged strokes are
+**systematically longer than ordinary ones** — median **5.72 staff spaces
+against 4.12** on Litolff and **4.43 against 3.46** on Breitkopf, where a stem
+is ~3.5. The note is not sitting mid-stem; **the STEM is being measured too
+long**, most plausibly because the detected run has merged with a staff line, a
+beam or neighbouring ink on these plates, which puts an ordinary note
+mid-stroke arithmetically.
+
+> **The convention is sound, the notes are ordinary, and what is wrong is the
+> extent of the vertical run we measure. The repair is upstream, in how a
+> stroke's ends are found — NOT in `adjudicate_stem_direction`.**
+
+⚠️ **THIS DOES NOT CLEAR THE ORIGINAL 09-18 OBSERVATION.** That lane adjudicated
+its own crops and reported *"the record's notehead box stands part-way ALONG a
+NEIGHBOURING note's stem"*, 6 of 6. Both can be true: a head box in the wrong
+place and a stroke measured too long both put a head mid-stroke. What is
+established here is that **this lane's population is not the fault it was built
+to find**, and that a repair aimed at the stem DECISION would have been aimed
+at the wrong stage.
+
+⚠️ **AND IT VINDICATES THE FIRST REACTION.** Sean, on the very first batch:
+*"so far they all look like simple notes with stems."* That was read at the
+time as an artefact of an unclear marking. It was the correct read of the
+population, arrived at before the instrument could say so.
+
+## 0b. WHAT THE STRIPS COST AND WHAT THEY BOUGHT
+
+⚠️ **The first batch asked a question it had not identified the subject of.**
+The strips marked the note's X with ticks in the margin — and *which note owns
+this stroke* is a question about **Y**, since the candidates are stacked at the
+same x. Marking x alone cannot express it. Re-marked with corner brackets that
+name the exact notehead and sit clear of the ink; Sean's verdicts all came
+after that change. **Three messages of a musician's time refuted a lane that
+four probes and a 17-arm battery had not.**
 
 ## CONVENTION ASSUMED / WHAT WOULD FALSIFY IT / NOT CONFIRMED WITH SEAN
 

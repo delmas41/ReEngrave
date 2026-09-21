@@ -225,6 +225,45 @@ def main() -> int:
             tw = max(2, int(PX_PER_SPACE * 0.06))
             img[0:band, max(0, hx - tw):hx + tw] = [255, 0, 0]
             img[h - band:h, max(0, hx - tw):hx + tw] = [255, 0, 0]
+            # ⚠️⚠️ AND THE NOTE ITSELF, BY CORNER MARKS. Sean, on the first
+            # batch: *"not sure the UI makes sense"*. The margin ticks give
+            # only the note's X — and the question this pass exists to ask is
+            # WHICH OF THE NOTES STACKED AT THAT X owns the stroke, which is a
+            # question about Y. Marking x alone cannot express it, so the
+            # first batch asked a question it had not identified the subject
+            # of.
+            #
+            # ⚠️ CORNER MARKS, NOT A BOX OR A RING: they sit OUTSIDE the
+            # notehead with a gap, so the head, its stem and the ink either
+            # side stay completely unobscured. An annotation over the ink is
+            # an annotation over the evidence, and this pass exists because a
+            # box was in the wrong place.
+            gap = PX_PER_SPACE * 0.22
+            arm = int(PX_PER_SPACE * 0.40)
+            th = max(2, int(PX_PER_SPACE * 0.07))
+            sc = PX_PER_SPACE / sp
+            bx0 = int((hp[0] - x0) * sc - gap)
+            bx1 = int((hp[2] - x0) * sc + gap)
+            by0 = int((hp[1] - y0) * sc - gap)
+            by1 = int((hp[3] - y0) * sc + gap)
+
+            def _paint(y_a, y_b, x_a, x_b):
+                y_a, y_b = max(0, y_a), min(h, y_b)
+                x_a, x_b = max(0, x_a), min(w, x_b)
+                if y_b > y_a and x_b > x_a:
+                    img[y_a:y_b, x_a:x_b] = [255, 0, 0]
+
+            for cx, dx in ((bx0, 1), (bx1, -1)):
+                for cy, dy in ((by0, 1), (by1, -1)):
+                    # the horizontal arm of this corner, then the vertical
+                    _paint(cy if dy > 0 else cy - th,
+                           cy + th if dy > 0 else cy,
+                           cx if dx > 0 else cx - arm,
+                           cx + arm if dx > 0 else cx)
+                    _paint(cy if dy > 0 else cy - arm,
+                           cy + arm if dy > 0 else cy,
+                           cx if dx > 0 else cx - th,
+                           cx + th if dx > 0 else cx)
         else:
             refused.append({"subject": r["subject"],
                             "why": "the marked head is outside its own bar"})

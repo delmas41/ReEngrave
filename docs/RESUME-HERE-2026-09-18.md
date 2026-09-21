@@ -285,3 +285,16 @@ the md output, not by review.
 echo $?` reports **`tail`'s** status, not pytest's. The result above rests on
 the summary line (pytest prints `N failed` whenever there are failures), not
 on that exit code. Use `${pipestatus[1]}` in zsh.
+
+## ⚠️⚠️ 2026-09-20 — THE STEM-ATTRIBUTION LANE IS WITHDRAWN (refuted by the print)
+
+The second lane above measured *"148 and 228 heads take a direction from a
+stroke that is not theirs"*. **Do not quote it.** Its chord test could not see
+a two-note chord (it required a companion above AND below), so octave pairs
+were filed as faults — **64% / 95% of the flagged group**. Corrected to Sean's
+rule the population falls to **51 and 14**, and three of the residual cases,
+cropped and shown to him, are *"clean notes with basic stems"*. The flagged
+strokes are **systematically longer** than ordinary ones (5.72 vs 4.12; 4.43 vs
+3.46 staff spaces), so **the stem is measured too long and the repair is
+upstream in stroke extent, not in `adjudicate_stem_direction`.**
+[FINDINGS](../benchmarks/omr-stem-attribution-2026-09/FINDINGS.md) §0.
