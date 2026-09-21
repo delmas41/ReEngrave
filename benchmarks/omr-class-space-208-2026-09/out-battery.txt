@@ -1,0 +1,20 @@
+  [ok ] JUDGE SELF-TEST (whitespace-only mutant): SURVIVED as required
+  [ok ] POSITIVE CONTROL (no mutation): green as required
+  [red] revert to the 146-name training snapshot
+  [red] audit the RAW 208 instead of the canonical space
+  [red] drop the dedupe, so duplicate ids leak into the space
+  [red] canonicalize nothing (identity alias)
+  [red] map the coarse articulations to no quantity
+  [red] map the coarse articulations to the WRONG quantity
+  [red] drop `articulation` from FAMILY_TO_Q entirely
+  [red] drop `numeral` from FAMILY_TO_Q
+  [red] drop `tuple` from FAMILY_TO_Q
+  [red] restore the phantom family `g` the snapshot invented
+  [red] restore all four phantom families
+
+======================================================================
+  11 of 11 arms RED; positive control GREEN
+  restore verified: f237bbeb869ac89c == f237bbeb869ac89c
+======================================================================
+  judge self-test: PASSED
+======================================================================
