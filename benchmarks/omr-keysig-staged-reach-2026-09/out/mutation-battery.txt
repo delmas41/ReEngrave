@@ -1,0 +1,79 @@
+==============================================================================
+BASELINE (the positive control — every arm is free if this is not green)
+==============================================================================
+  exit 0
+  82 passed, 5 warnings
+
+------------------------------------------------------------------------------
+ARM [header]: an unread page reports no_evidence again (the split is gone)
+  expected: the ABSENT/DECLINED collapse restored: 7 of 17 and 9 of 20 staves carrying key-accidental ink go back to reading as 'no evidence'
+  exit 1  -> RED
+
+------------------------------------------------------------------------------
+ARM [header]: EVERY abstention becomes markers_without_a_run
+  expected: a rule that renames every abstention says nothing; the positive control is that a staff with NO ink still reads no_evidence
+  exit 1  -> RED
+
+------------------------------------------------------------------------------
+ARM [header]: the markers DECIDE a key (the legacy count-the-markers rule)
+  expected: THE rule this repair exists not to be: counting markers cost seven spurious key flips on the legacy path
+  exit 1  -> RED
+
+------------------------------------------------------------------------------
+ARM [header]: the markers overturn a fitted reading
+  expected: a settled fit must outrank marker ink; the locator cannot invent a glyph and the marker count agrees with it only ~half the time
+  exit 1  -> RED
+
+------------------------------------------------------------------------------
+ARM [header]: the no-ink branch stops recording WHICH silence it is
+  expected: 'the detector produced no row' and 'it produced a row saying nothing' collapse into one, which is the fault this detail repairs
+  exit 1  -> RED
+
+------------------------------------------------------------------------------
+ARM [header]: the detail drops its own not-a-reading warning
+  expected: a consumer meeting `keysig_marker_ink: 3` and reading it as three flats is the measured seven-flip rule
+  exit 1  -> RED
+
+------------------------------------------------------------------------------
+ARM [header]: the marker classes are no longer recorded
+  expected: sharps and flats are different evidence; a bare count cannot say which
+  exit 1  -> RED
+
+------------------------------------------------------------------------------
+ARM [header]: the new reason is not declared
+  expected: a branch returning an UNDECLARED reason is the mirror of a declared reason with no branch
+  exit 1  -> RED
+
+------------------------------------------------------------------------------
+ARM [arm]: the arm stops asserting no DECIDED key moved
+  expected: the one thing that must not move is a decided key; an arm that cannot see it move would pass a change that started counting markers
+  exit 0  -> RED
+
+------------------------------------------------------------------------------
+ARM [arm]: the arm permits ANY abstention movement
+  expected: only no_evidence -> markers_without_a_run is legal; anything else is a different change wearing this one's name
+  exit 1  -> RED
+
+------------------------------------------------------------------------------
+ARM [arm]: the arm drops its POSITIVE control (the split must happen)
+  expected: 'no decided key moved' is also exactly what a change that never ran looks like
+  exit 1  -> RED
+
+------------------------------------------------------------------------------
+ARM [arm]: the arm stops checking the probe's restated constant
+  expected: the probe deliberately does not import the tree, so a drift would make the two instruments measure different populations in silence
+  exit 1  -> RED
+
+------------------------------------------------------------------------------
+ARM [probe]: the probe reports a clean result with no key verdicts
+  expected: REACH BEFORE ACCURACY: a probe that cannot speak must declare itself DEAD, not print a table of zeros
+  exit 1  -> RED
+
+------------------------------------------------------------------------------
+ARM [probe]: the probe counts cell-0 detections as out of reach
+  expected: the whole Q2 finding is that the out-of-reach population is SMALL (21 and 2); counting cell 0 into it inflates it to 126 and 148
+  exit 0  -> RED
+
+==============================================================================
+RED 14   SURVIVED 0   BAD ANCHORS 0
+restore VERIFIED by md5: True
