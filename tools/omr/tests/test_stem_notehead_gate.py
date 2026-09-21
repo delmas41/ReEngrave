@@ -234,3 +234,57 @@ class TestTheGatherWiring:
         sub = R.cell(0, 0, 0, 0)
         assert _notehead_boxes_for_cell(None, sub) is None
         assert _notehead_boxes_for_cell({}, sub) == []
+
+
+class TestTheLegacyPathCannotReachIt:
+    """`transcribe` is unchanged BY CONSTRUCTION, asserted rather than said.
+
+    ⚠️ This is the sibling lane's objection 2 — *"the legacy path would
+    diverge"* — and the answer is that it CANNOT: `transcribe` reaches the CV
+    rung through `detect_lines(cell)` with no detections, so the gate has no
+    data however the flag is set. That is a property of a call site, and a
+    call site is exactly the thing a later change moves without noticing, so
+    it is pinned at source level.
+    """
+
+    def test_transcribe_passes_no_noteheads(self):
+        """Parsed, not grepped.
+
+        ⚠️ The first version of this test grepped for the string
+        `noteheads=` and FAILED on `print(f"  noteheads={...}")` — a label in
+        an f-string, not a keyword argument. A substring test cannot tell a
+        call from a caption, so this walks the AST and looks at KEYWORDS of
+        calls to the two entry points.
+        """
+        import ast
+        import inspect
+        from tools.omr import transcribe as t
+        tree = ast.parse(inspect.getsource(t))
+        calls = []
+        for node in ast.walk(tree):
+            if not isinstance(node, ast.Call):
+                continue
+            fn = node.func
+            name = getattr(fn, "id", None) or getattr(fn, "attr", None)
+            if name in ("detect_lines", "detect_stems"):
+                calls.append((name, sorted(k.arg for k in node.keywords)))
+        assert calls, (
+            "the legacy call site moved; re-check that it still passes no "
+            "detections before trusting the byte-identity claim")
+        assert all(kw == [] for _n, kw in calls), calls
+
+    def test_only_the_staged_gather_opts_in(self):
+        """One producer of the gate's data in the whole of `tools/`."""
+        import pathlib
+        root = pathlib.Path(__file__).resolve().parents[3]
+        hits = []
+        for f in (root / "tools").rglob("*.py"):
+            if "/tests/" in str(f):
+                continue
+            for i, line in enumerate(f.read_text().splitlines(), 1):
+                if "noteheads=noteheads" in line or "noteheads=heads" in line:
+                    hits.append(f"{f.relative_to(root)}:{i}")
+        assert sorted(hits) == [
+            "tools/omr/line_detection.py:1199",   # the forward, detect_lines
+            "tools/omr/staged/gather.py:1433",    # the one opt-in
+        ], hits
