@@ -28,6 +28,11 @@
    "unflagged": -0.76
   }
  },
+ "off_nominal_cells": {
+  "strokes": 0,
+  "median_len_spaces": null,
+  "median_len_at_a_flat_100": null
+ },
  "reach": {
   "strokes_total": 1920,
   "strokes_with_a_claimant": 1,
@@ -38,6 +43,8 @@
   {
    "stem": "obs:014653",
    "cell": "cell/2/1/4/13",
+   "stem_h": 107.0,
+   "_space": 100.0,
    "flagged": false,
    "n_claimants": 1,
    "len_spaces": 1.07,
