@@ -534,12 +534,20 @@ def _drop_paired_strokes(stems, line_spacing: float, gap: float,
     what every caller that does not opt in passes — leaves the relation exactly
     as it has always been, to the stroke.
 
-    ⚠️ The gate is applied to BOTH sides of the relation on purpose: a stroke
-    on a head is not merely kept itself, it also stops being a partner that
-    can condemn its neighbour. Gating only the subject would still delete the
-    accidental-shaped member of a stem/accidental pair — which is right — but
-    would also let a stroke on a head condemn a second stroke on a head, which
-    is the 62 and is the whole fault.
+    ⚠️⚠️ THE GATE IS ON THE SUBJECT ONLY, AND THE OTHER FORM IS WORSE — this
+    was found by a unit test, not by review. A stroke on a head is never
+    dropped, so it can never be condemned and the 62 are safe whichever way
+    the PARTNER is treated; what the partner rule decides is a different case.
+    Excluding on-head strokes as partners too (the form
+    `benchmarks/omr-stem-pair-rule-2026-09`'s `probe_proposed_gate.py`
+    measured) means an accidental's stroke standing beside a real stem loses
+    its only partner and SURVIVES as a false stem. Keeping them as partners
+    drops it, which is the shipped rule still doing its job. The three cases,
+    all of them tested:
+
+      * both on a head (two stems)                -> both kept  (the 62)
+      * one on a head (a stem beside a sharp)     -> stem kept, stroke dropped
+      * neither on a head (a real accidental)     -> both dropped, unchanged
     """
     if line_spacing <= 0 or len(stems) < 2:
         return list(stems)
@@ -563,8 +571,6 @@ def _drop_paired_strokes(stems, line_spacing: float, gap: float,
             continue
         for j in range(len(stems)):
             if i == j or abs(centres[i] - centres[j]) > max_dx:
-                continue
-            if heads is not None and on_head[j]:
                 continue
             overlap = min(bottoms[i], bottoms[j]) - max(tops[i], tops[j])
             if overlap <= 0:
