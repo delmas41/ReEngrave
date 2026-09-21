@@ -92,6 +92,22 @@ dirty-target refusal caught it, not review.** CLAUDE.md says *"never `git add
 -A` anywhere another agent may be working"* — the clause to add is that **a
 mutation battery is such an agent, and it is one you started yourself.**
 
+## 3a. THE FINAL STATE, verified rather than assumed
+
+| | |
+|---|---|
+| whole `tools` suite | **4,701 passed / 19 skipped / 0 failed** |
+| `wiring --check`, `inventory --check`, `health --check` | all **exit 0** |
+| `check_arm.py --control`, both documents | **the join is UNMOVED**, and the check DID run |
+| this lane's battery | **13 arms, 13 RED, 0 survivors**, restore verified |
+| the gate lane's battery, re-run and then closed | **21 RED, 0 survivors**, restore verified |
+| working tree | clean; branch pushed and verified on origin |
+
+⚠️ **The gate battery's closing number reads IDENTICALLY to the void original
+(21 of 21) and means the opposite thing** — the original could not have said
+anything else. *A number is not a result until the instrument that produced it
+can fail.*
+
 ## 4. WHAT IS OPEN, ranked
 
 1. **`key_signature_corroboration` on the staged path** — the 09-20 handoff's
