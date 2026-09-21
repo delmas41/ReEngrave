@@ -7382,6 +7382,97 @@ has been bitten by before.
 
 ---
 
+## The `<note>` element: what SOUNDS, and what is BEAMED
+
+2026-09-21, no flag, **staged exporter only** — `tools/omr/export.py` is **0
+lines changed**, verified by `git diff`. Findings:
+[benchmarks/omr-sounding-pitch-2026-09/FINDINGS.md](benchmarks/omr-sounding-pitch-2026-09/FINDINGS.md)
+and [BEAM_FINDINGS.md](benchmarks/omr-sounding-pitch-2026-09/BEAM_FINDINGS.md).
+
+⚠️⚠️ **A SOUNDING FACT WAS BEING WRITTEN INTO A DRAWING SLOT, AND THE PRINTED
+GLYPH WAS INVISIBLE — ONE BUG, NOT TWO.** `Q.ACCIDENTAL` is declared
+*"respelled when the key settles"* and its **only** producer is
+`respell_accidental` (cause `Q.KEY_SIGNATURE`), so the row means *this note is
+altered by the key*. `staged/export.py` handed it to `_mxl_note(accidental=)`,
+which renders **the glyph the engraver DREW**. Measured: **269 of 269 verdicts
+are key-derived, 0 subjects carry two, and the detector's 256 accidental
+GLYPHS reach ZERO verdicts** — the two populations are **disjoint**. The
+symptom and the cause are one routing error.
+
+⚠️⚠️ **THE DOSSIER'S SYMPTOM IS HALF WRONG, AND IT IS WORSE THAN STATED.**
+*"Prints right, sounds wrong"* — through Verovio the before-file carries **no
+`accid.ges` at all** (an E♭ sounds E natural) **and draws a redundant flat on
+the note**, because an engraver does not print an accidental on every altered
+note in the key. **Wrong in both directions.** ⚠️ And **music21 disagrees with
+Verovio about the sound** on that same file — which is a stronger argument for
+fixing it than either reader alone, because the file's meaning was depending on
+reader leniency.
+
+⚠️⚠️ **THE STAGE QUESTION WAS SETTLED BY THE RULE ORDER, NOT BY ARCHITECTURE,
+AND THE TEXTBOOK ANSWER IS A TRAP.** Revising `Q.PITCH` inside EVALUATE is the
+architecturally correct move — key + position ⇒ altered pitch is FORCED, not
+BEST. It is also wrong here: **`move_glyph` (cause `Q.GLYPH_OWNER`) runs AFTER
+`respell_accidental` (cause `Q.KEY_SIGNATURE`) and its effect is `pitch`**, so
+it re-derives the plain letter and **8 subjects would have had their alteration
+silently wiped**. Verified independently at integration by printing the sorted
+rule table: `restate_pitch` 7 → `respell_accidental` 8 → `move_glyph` 9, with
+`move_glyph`'s effect `pitch`. **The record was already right; only the routing
+was wrong**, so nothing upstream moves.
+
+**The beam is the same shape one family over.** `beam_levels` sits inside the
+duration verdict's own value and was **read by nothing**; `Q.BEAM_STROKE` is
+canonical-framed while `annotate_beams` compares `bbox_page`. Converted with
+the head-as-its-own-ruler (`_stem_probes`' measured method), **refusing and
+COUNTING where no ruler exists** (96 / 114 cells). `_legacy.annotate_beams` is
+**IMPORTED and called per voice**, never ported.
+
+**MEASURED, one record exported twice, on BOTH publishers:**
+
+| | Litolff Beethoven 5 pp.1-4 | Breitkopf Brahms 1 pp.0-3 |
+|---|--:|--:|
+| `<accidental>` | **221 → 0** | **489 → 0** |
+| `<alter>` | **0 → 221** | **0 → 489** |
+| `<beam>` | **0 → 679** | **0 → 1511** |
+| Verovio flags drawn, p.1 | **574 → 82** | **1156 → 277** |
+
+Controls, each able to fail: **byte-identical outside those three elements** on
+both documents, with a positive control proving the strip is not vacuous;
+notes / rests / slurs / ties / dynamics unchanged; **noteheads identical in
+Verovio** (492 and 879 flags removed, **none added**); **`begin` == `end` at
+every beam level** on both; a music21 absolute check reading **221 / 489
+alterations with 0 wrong letter and 0 wrong direction**; the `Unbalanced`
+accounting equality still holds. Battery **21 arms, 21 red, 0 survived**, its
+positive control red via *different* tests.
+
+⚠️⚠️ **THREE EQUIVALENT-MUTANT TEST GAPS IN ONE SESSION, AND ONLY THE BATTERY
+FOUND THEM** — a stacking guard whose two cases both matched, a frame scale
+that still *covered* the heads at 2×, and a per-voice call that is a no-op on a
+one-voice fixture. **A test that names a hazard its inputs cannot reach is the
+commonest failure mode in this repo**, and no amount of reading finds it.
+
+⚠️⚠️ **WHAT IS NOT ESTABLISHED, AND ONE ITEM IS SHARPER THAN THE REST.** No
+print was consulted: the alterations are checked against **the key signature
+our own pipeline read** — and that reading is internally inconsistent, because
+**5 of 12 parts carry more than one key signature within the part** (part 8
+reads `-3` then `+1`). **So the alterations are faithful to a reading that is
+itself wrong somewhere**, and this change makes that audible where before it
+was merely invisible. ⚠️ **256 and 733 printed accidental glyphs still reach no
+quantity at all** (counted, not guessed) — the in-bar accidental needs a GATHER
+reader before it can become a `Q.ACCIDENTAL`, and `coverage()["accidental_
+reading"]` now reports the size of that gap. ⚠️ **210 cells carry a beam stroke
+and get no beam** for want of a frame ruler (counted). `beam_levels` is trusted
+rather than verified — 998 of 2,347 Litolff notes carry `reader_declined`. No
+OMR-NED, deliberately. n = 2 documents, 2 publishers, 7 pages, **both scans;
+the ENGRAVED family is untouched** — and it is where the legacy beam work
+measured **430 of 449 edits as `editbeam`**, so it is the obvious next place.
+
+⚠️ **A tree self-contradiction, corrected and pinned**:
+`NOT_NOTATION["accidental"]` claimed the glyph is *"consumed into `pitch` and
+`accidental`"*. **Both halves were false**, and `gather_coverage.
+FAMILY_Q_IS_ELSEWHERE` had it right all along.
+
+---
+
 ## The staged gatherer dropped every C clef the detector reads
 
 2026-09-21, no flag. `gather._CLEF_CLASSES` admitted
