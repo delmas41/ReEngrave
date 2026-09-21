@@ -485,3 +485,84 @@ directory):**
   (publisher-variation methodology, cited by analogy in §4)
 - `docs/ask-first-conventions.md` (discipline this document follows for
   distinguishing MEASURED from ASSERTED)
+
+---
+
+## 7. ADDENDUM — MPA and MOLA, read directly (2026-09-20, second pass)
+
+Two more primary sources were located and read as full text (via `pdftotext`,
+not search snippets, so these are direct quotes rather than search
+summaries):
+
+**Music Publishers Association, *Standard Music Notation Practice*
+(1966/1993)** — https://www.mpa.org/wp-content/uploads/2018/06/standard-practice-engraving.pdf
+
+> "All single notes with single stems starting on the middle line of the
+> staff and higher are stemmed down. A downstem is always attached to the
+> left side of the note head. All single notes with single stems starting in
+> the second space of the staff and lower are stemmed up. An upstem is
+> always attached to the right side of the note head."
+
+This restates `[C9]`+`[C10]` with one refinement worth adding to the
+registry's own wording: **the pivot is stated as the MIDDLE LINE itself
+being the boundary of the down-stem zone** (middle line and above → down),
+which matches `[C10]`'s "at or above the middle line" phrasing exactly — no
+new information, but a second independent primary source confirming the
+same boundary rather than a derived one.
+
+> "Single stems are exactly one octave in length. When there is more than
+> one note head on a stem, as in chord, the stem length is calculated from
+> the note closest to the end of the stem."
+
+This is the **third independent primary source** (after Gould and the
+registry's own measurement) for chord stem length being set by the OUTER
+note, and it is worded as an absolute ("exactly one octave"), sharper than
+Gould's "standard length" framing — another data point that a plate's
+in-staff stems should cluster tightly around 3.5 sp rather than merely
+tending toward it, which this project has never separately verified by
+publisher (§4, "not established").
+
+**Major Orchestra Librarians' Association, *Music Preparation Guidelines for
+Orchestral Music*** — https://www.ericrichards.com/molaguidelinesbrochure2006.pdf
+
+> "String parts should be created with one part per section. Complicated
+> string divisions should be written on separate staves. Avoid dividing the
+> music for the string section into multiple parts unless necessitated by
+> multiple and continuous division of the voices."
+
+This is the librarians'-side confirmation of the **divisi exception** named
+in §1.1/§3: a divisi split is not merely "two voices on one staff" in the
+ordinary `[L17]` sense — MOLA's own guidance is that a *sustained* divisi
+should be given its OWN STAFF rather than resolved with opposing stems on
+one staff, and opposing-stem divisi on a single staff is reserved for
+brief, incidental splits. This sharpens §1.1's divisi/`a2` row: **the
+two-stems-on-one-notehead and two-voices-opposing-stems shapes this project
+measures on Litolff/Breitkopf are, by this convention, evidence of a BRIEF
+split, not a sustained one** — a sustained divisi would more likely show up
+as an added staff in the system, which is a structural (system-grouping)
+fact rather than a stem fact, and is out of this document's scope.
+
+> "In hand-copied parts it is recommended that all stems, beams, and bar
+> lines be ruled with a straightedge, especially multiple-staff harp and
+> keyboard parts."
+
+Confirms that stem straightness is a DRAWING instruction (a straightedge
+requirement), corroborating `[C56+L74]`'s registry framing of "a barline is
+a straight line, not a vertical one" — the same discipline applies to a
+stem, which is the geometric premise every fusion measurement in §2 already
+assumes (a genuine stem is a straight run; a curved or angled run is a
+compound object).
+
+⚠️ Neither the MPA nor the MOLA document (both read in full) states a
+numeric collision distance for two adjacent stems, a cross-staff beaming
+number, or a tremolo-stroke number. This corroborates §2.0's finding that
+the printed literature is genuinely silent on the adjacency question — it
+is not a gap in this search, but a real absence in the sourced literature.
+
+Ross's *Art of Music Engraving and Processing*, Gardner Read's *Music
+Notation: A Manual of Modern Practice*, and Stone's *Music Notation in the
+Twentieth Century* are catalogued (Internet Archive, Google Books, WorldCat)
+but not full-text searchable or fetchable from this session — their content
+could not be verified directly and nothing is attributed to them beyond
+their existence and general subject matter. **This is a real source gap**,
+not a claim about their content.
