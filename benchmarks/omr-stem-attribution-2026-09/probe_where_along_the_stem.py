@@ -91,9 +91,17 @@ def main() -> int:
         if q == "glyph_box" and isinstance(v, list) and len(v) >= 5:
             if str(v[0]).startswith("notehead"):
                 cell = "/".join(o["subject"].split("/")[1:5])
+                # ⚠️⚠️ TWO FRAMES, AND THE SECOND IS NOT OPTIONAL. The value's
+                # box is CANONICAL-CELL (a cell rescaled so the staff span is
+                # constant); `detail.bbox_page_px` is PAGE pixels and is the
+                # only one a crop can be placed with. Carrying only the first
+                # is how this lane's own crop pass put every mark outside its
+                # bar -- the frame fault CLAUDE.md records four instances of.
+                bp = (o.get("detail") or {}).get("bbox_page_px")
                 heads["cell/" + cell].append(
                     (o["subject"], str(v[0]),
-                     [float(v[1]), float(v[2]), float(v[3]), float(v[4])]))
+                     [float(v[1]), float(v[2]), float(v[3]), float(v[4])],
+                     [float(x) for x in bp] if bp and len(bp) == 4 else None))
         elif q == "stem" and isinstance(v, list) and len(v) == 4:
             stems[o["subject"]].append((o["id"], [float(x) for x in v]))
         elif q == "staff_spacing":
@@ -129,7 +137,7 @@ def main() -> int:
         cell_stems = stems.get(cell, [])
         if not cell_stems:
             continue
-        for subj, name, hb in hs:
+        for subj, name, hb, hpage in hs:
             hcy = hb[1] + hb[3] / 2.0
             for sid, sb in cell_stems:
                 if not boxes_overlap(hb, sb):
@@ -158,6 +166,10 @@ def main() -> int:
                     # ⚠️ The boxes travel with the row so a rule can be priced
                     # off this file without re-reading a 443 MB record.
                     "head_box": hb, "stem_box": sb,
+                    # ⚠️ PAGE pixels, `[x0, y0, x1, y1]` CORNERS -- a different
+                    # spelling from `head_box`'s `[x, y, w, h]`, and the two
+                    # are never mixed. None where the row carried no page box.
+                    "head_page_box": hpage,
                 })
 
     out["pairs"] = len(rows)
