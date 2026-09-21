@@ -1355,8 +1355,34 @@ def _emit_vertical_runs(log: Log, cell: Any, sub, frame, sys_idx: int,
             **optional)
 
 
+def _notehead_boxes_for_cell(detections: Optional[Dict[str, List[Any]]],
+                             sub) -> Optional[list]:
+    """This cell's detected notehead boxes, in CANONICAL cell coordinates.
+
+    ⚠️ `None` when the caller supplied no detection map at all (no gate) and
+    `[]` when it did and this cell holds no notehead (the gate is on and has
+    nothing to protect). `_drop_paired_strokes` treats those differently on
+    purpose, so this must not collapse them.
+
+    ⚠️ CANONICAL, not page pixels. `detect_stems` works inside one measure
+    cell and a stroke's box is canonical; a page-pixel head box compared with
+    a canonical stroke box is the frame error `Q.ONSET_COLUMN` already paid
+    for — it would silently protect nothing and read as *the gate is inert*.
+    """
+    if detections is None:
+        return None
+    heads = []
+    for d in detections.get(sub.to_key()) or ():
+        if "notehead" not in str(getattr(d, "smufl_name", "")).lower():
+            continue
+        heads.append((float(d.x_canonical), float(d.y_canonical),
+                      float(d.width_canonical), float(d.height_canonical)))
+    return heads
+
+
 def gather_cv_lines(log: Log, cells: Sequence[Any],
-                    local: Dict[int, Tuple[int, int]]) -> None:
+                    local: Dict[int, Tuple[int, int]],
+                    detections: Optional[Dict[str, List[Any]]] = None) -> None:
     """Stems and beams from the classical-CV rung, on the ERASED image.
 
     ⚠️ THE TWO READERS SEE DIFFERENT IMAGES OF THE SAME PAGE, DELIBERATELY.
@@ -1395,8 +1421,16 @@ def gather_cv_lines(log: Log, cells: Sequence[Any],
         # gather change. `None` rather than an empty list is load-bearing:
         # `detect_stems` tests `candidates_out is not None`.
         runs: Optional[list] = [] if vertical_runs_enabled() else None
+        # ⚠️ THE NOTEHEAD GATE ON THE PAIR RULE (`OMR_STEM_NOTEHEAD_GATE`,
+        # default OFF). The boxes are handed over unconditionally when the
+        # caller supplied a detection map — the FLAG is read inside
+        # `detect_stems`, which is the single decision point, and with it off
+        # the boxes change nothing at all. ⚠️ `detections is None` (a run with
+        # no detector, which `gather_detections` supports on purpose) gives
+        # `None` and therefore no gate, never an empty one.
+        heads = _notehead_boxes_for_cell(detections, sub)
         try:
-            found = detect_lines(c, candidates_out=runs)
+            found = detect_lines(c, candidates_out=runs, noteheads=heads)
         except Exception as exc:                              # noqa: BLE001
             for quantity in (Q.BEAM_STROKE, Q.STEM):
                 log.abstain(sub, quantity, reader=READERS.CV_LINES,
@@ -3413,7 +3447,11 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
         # two read the SAME band and the ordering between them is real.
         gather_dynamic_letters(log, pws, cells, local, detections)
         gather_wedge_boxes(log, pws, cells, local, detections)
-        gather_cv_lines(log, cells, local)
+        # ⚠️ AFTER detection, and now WITH it: the notehead gate on the pair
+        # rule needs this cell's heads, and `gather_detections` above already
+        # holds them. The order was always right; what was missing is that
+        # `gather_cv_lines` was never handed the map.
+        gather_cv_lines(log, cells, local, detections)
         # ⚠️ AFTER detection, because a component's row records how much of it
         # the detections account for -- the same edge `gather_direction_words`
         # has and for the same reason. BESIDE `gather_cv_lines` because the
