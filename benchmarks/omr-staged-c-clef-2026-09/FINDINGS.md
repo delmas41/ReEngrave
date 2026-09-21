@@ -399,11 +399,14 @@ is the sentence a later reader needs if one ever does.
   fresh run. It also places every rebuilt glyph ON the staff (4.0 steps), which
   is the shape most favourable to the mutation — so "0 FLIP" is a conservative
   answer, not a flattering one.
-- ⚠️ The `_is_clef_class` predicate was checked against the **committed
-  208-name vocabulary**, not against the checkpoint's own `names` (that needs
-  `torch.load` of an 88 MB file). `class_aliases` asserts the two were verified
-  index-for-index on 2026-09-04, and this lane relied on that assertion rather
-  than re-taking it.
+- ✅ **The checkpoint itself WAS re-verified** (this was listed as a caveat
+  until it was taken). Reading the class names straight out of
+  `deepscoresv2-yolov8l-hollow-graft-shift09-2026-09-04.pt` — as a zip of
+  pickles, *without* importing torch, because the machine was at load 9 with
+  three suites running and the instrument must not compete with its subject —
+  the clef vocabulary is exactly `clefG`, `clefCAlto`, `clefCTenor`, `clefF`,
+  `clefUnpitchedPercussion`, `clef8`, `clef15`, `clefC`. The brief, the
+  committed JSON and the shipped weights agree.
 
 ---
 
