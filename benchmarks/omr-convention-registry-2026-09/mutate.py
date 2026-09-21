@@ -138,6 +138,16 @@ ARMS = [
      "            if False:",
      "test_a_conservation_row_going_missing_is_a_finding"),
 
+    ("a_misaddressed_refutation_row_is_never_reported",
+     "            if by_anchor != by_tag:",
+     "            if False:",
+     "test_a_misaddressed_refutation_row_is_a_finding"),
+
+    ("a_drifted_contents_count_is_never_reported",
+     "        for name, claimed in sorted(self.claimed_contents_counts.items()):",
+     "        for name, claimed in []:",
+     "test_a_drifted_contents_count_is_a_finding"),
+
     # ── the DEAD control: a parse that reaches nothing ─────────────────────
     ("a_dead_parse_reports_itself_healthy",
      "        dead = [name for name, value in reg.reach().items() if value == 0]",
