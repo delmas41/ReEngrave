@@ -36,33 +36,54 @@ _COV = _HERE / "coverage.py"
 _ROOT = _HERE.parents[2]
 
 #: `(file, find, replace, why this arm should go RED)`
+#:
+#: ⚠️⚠️ THE FIRST RUN OF THIS BATTERY WAS 9 OF 11 NOT RED AND EVERY SURVIVOR
+#: WAS THE BATTERY'S OWN FAULT — the arms DELETED GUARDS (`if X:` -> `if
+#: False:`). **A guard-deletion arm is an EQUIVALENT MUTANT on a healthy
+#: tree**: the guard only fires when its condition is true, and on a healthy
+#: tree every condition is false, so removing it changes nothing and the arm
+#: can never go red. It reports as a coverage gap and is not one.
+#:
+#: An arm must therefore BREAK THE SUBJECT so the guard's condition becomes
+#: TRUE, and then watch the guard fire. Every arm below does that. This is
+#: this repo's own recorded lesson (*"a battery of REFUSAL tests can pass by
+#: refusing everything, so it needs a POSITIVE control in the same class"*)
+#: arriving from the other direction: a battery of guard-deletions passes by
+#: never making anything fail.
 ARMS: List[Tuple[Path, str, str, str]] = [
     (_DVR, "tree = _body_only(ast.parse(_dedent(src)))",
      "tree = ast.parse(_dedent(src))",
      "stop stripping decorators -- `wants` lives there, so every declared "
      "input reads as used and the unreached control must fire"),
-    (_DVR, "if not adjudicate.REGISTRY:", "if False:",
-     "accept an empty registry -- the decorator-registration trap"),
-    (_DVR, 'if node.value.id == "Q"', 'if node.value.id == "QQ"',
-     "find no quantities at all -- the 'scan matches nothing' control"),
-    (_DVR, "if not any_unreached:", "if False:",
-     "delete the unreached positive control"),
-    (_DVR, "if not any_reads:", "if False:",
-     "delete the reads-something positive control"),
-    (_COV, "if by_cat != PUBLISHED:", "if False:",
-     "accept a parse that disagrees with the registry's own Counts table"),
+    (_DVR, "import tools.omr.staged.adjudicators  # noqa: F401",
+     "import tools.omr.staged as _unused_adjudicators  # noqa: F401",
+     "drop the decorator-registration import -- REGISTRY goes empty and the "
+     "tool must REFUSE rather than report a clean tree"),
+    (_DVR, 'and node.value.id == "Q"):', 'and node.value.id == "QQ"):',
+     "match no quantity at all -- the 'scan that silently finds nothing' "
+     "control must fire"),
+    (_DVR, "declared = set(spec.wants)", "declared = set()",
+     "declare nothing, so nothing can be unreached -- the discrimination "
+     "control must fire"),
+    (_COV, '"Staff & pitch geometry", "Stems & beams", "Rests & bar filling",',
+     '"Stems & beams", "Rests & bar filling",',
+     "drop a category from the parse -- 14 entries vanish and the parse must "
+     "stop agreeing with the registry's own Counts table"),
     (_COV, 'line.startswith("### ") and cat', 'line.startswith("#### ") and cat',
-     "parse no entries -- the denominator collapses to zero"),
-    (_COV, "if not claimed:", "if False:",
-     "accept a join that claims nothing (every convention reads as uncovered)"),
-    (_COV, "if unknown_ids:\n            print(f\"REFUSED: the join names ids",
-     "if False:\n            print(f\"REFUSED: the join names ids",
-     "accept a join naming conventions the registry does not hold"),
-    (_COV, "if not (derived == len(ids_join) == len(ids_verd)):",
-     "if False:",
-     "accept a reading that has drifted from the statements the tree declares"),
-    (_COV, "if ids_join != ids_verd:", "if False:",
-     "accept join.json and verdicts.json disagreeing about which statements exist"),
+     "parse no entries at all -- the denominator collapses to zero"),
+    (_COV, 'for ident in st["registry"]:', "for ident in []:",
+     "claim nothing, so all 114 conventions read as uncovered -- a broken "
+     "parse wearing the shape of a finding"),
+    (_COV, "claimed.setdefault(ident, []).append(st[\"id\"])",
+     "claimed.setdefault(ident + \"Z\", []).append(st[\"id\"])",
+     "claim conventions the registry does not hold"),
+    (_COV, "derived = sum(len(d.checked_by) for d in adjudicate.REGISTRY.values())",
+     "derived = 1 + sum(len(d.checked_by) for d in adjudicate.REGISTRY.values())",
+     "the tree declares a statement the reading does not cover"),
+    (_COV, 'ids_join = {st["id"] for st in join["statements"]}',
+     'ids_join = {st["id"] + "x" for st in join["statements"]}',
+     "join and verdicts hold the same NUMBER of statements and different "
+     "ones -- a count check alone would pass"),
 ]
 
 
