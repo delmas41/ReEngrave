@@ -217,3 +217,37 @@ about the cause — it was asked of a one-bar strip instead of the page), and
 every mark then landed outside its bar because a `Q.GLYPH_BOX` value is
 CANONICAL-CELL while a crop is placed in PAGE pixels. Battery **17 arms, 17
 RED, 0 survivors.**
+
+## ✅ 2026-09-20 (third lane) — "n = 2 publishers" WAS A PROPERTY OF THE CATALOG
+
+Opened to check one passing line of the three-lanes handoff §5.4. **True, and
+18x bigger than the three plates it names: 54 editions were on disk with a
+complete provenance sidecar each, and none of them in the tracked catalog.**
+Entries 1,980 -> 2,034; editions 235 -> 289; **29 publishers**.
+[benchmarks/omr-catalog-gap-2026-09/FINDINGS.md](../benchmarks/omr-catalog-gap-2026-09/FINDINGS.md).
+
+| work | catalog reported | reports now |
+|---|---|---|
+| **Beethoven 5** | Litolff x2 | **Litolff, Breitkopf 1862, Eulenburg 1938** |
+| **Brahms 1** | Breitkopf x2 | **Breitkopf, Simrock 1877** |
+
+⚠️⚠️ So **"a third publisher for the DENOMINATOR" (ranked 4th) stops being
+blocked on acquisition** — a third Beethoven 5 plate and a second Brahms 1
+plate have been on this machine the whole time. ⚠️ It retroactively changes NO
+measurement; those results are correct about the plates they ran on.
+⚠️ And it says **nothing about LEGIBILITY** — `image_type: "Normal Scan"` is
+IMSLP's label, not a measurement, nothing has been gathered on any of the 54,
+and none has a hand-verified window row.
+
+✅ **AND THE GUARD IS BUILT**: `score_library.unindexed()`, reported by
+`ingest verify`, which now EXITS NON-ZERO on it. The control is the historical
+case and **the delta IS the repair** — 54 against the pre-rebuild catalog, 0
+against the rebuilt one.
+
+⚠️ **A PROCESS GOTCHA, PAID FOR HERE:** backticks inside a `git commit -m
+"..."` string are COMMAND SUBSTITUTION under zsh. Commit `402c4d18`'s body
+reads *"the catalog is behind -- , additive"* where it should read *"-- run
+`ingest catalog`, additive"*; the two words were executed and swallowed.
+**Not amended, because the branch is pushed and force-pushing a shared branch
+is the larger risk** — recorded here instead. Use a heredoc for any message
+containing backticks.
