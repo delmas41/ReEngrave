@@ -284,10 +284,24 @@ class TestTheLegacyPathCannotReachIt:
             for i, line in enumerate(f.read_text().splitlines(), 1):
                 if "noteheads=noteheads" in line or "noteheads=heads" in line:
                     hits.append(f"{f.relative_to(root)}:{i}")
-        assert sorted(hits) == [
-            "tools/omr/line_detection.py:1199",   # the forward, detect_lines
-            "tools/omr/staged/gather.py:1484",    # the one opt-in
+        # ⚠️ FILES, NOT `file:LINE`. This asserted the exact line numbers until
+        # 2026-09-21, and the C-clef lane's insertion into `gather.py` shifted
+        # the opt-in from 1433 to 1484 and turned this test RED for a change
+        # that had nothing to do with the gate. That lane correctly declined to
+        # touch a file outside its fence and flagged it instead; this is the
+        # integrator's fix.
+        #
+        # The line number was never part of the CLAIM, which is *one producer
+        # of the gate's data in the whole of `tools/`* — a second call site in
+        # either file adds a hit and still fails, because this compares the
+        # whole set. What the line number bought was a red test on every edit
+        # above it, which trains the next reader to re-stamp the number without
+        # asking whether a real third caller appeared.
+        assert sorted({h.split(":")[0] for h in hits}) == [
+            "tools/omr/line_detection.py",        # the forward, detect_lines
+            "tools/omr/staged/gather.py",         # the one opt-in
         ], hits
+        assert len(hits) == 2, hits   # one per file, still exactly two
 
 
 # ─────────────────────────────────────────────────────────────────────────────
