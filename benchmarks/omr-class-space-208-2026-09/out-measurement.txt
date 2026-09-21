@@ -1,0 +1,64 @@
+==============================================================================
+THE THREE SPACES
+==============================================================================
+  snapshot (deepscores_classes.py) :  146 names
+  shipped manifest, ids            :  208
+  shipped manifest, distinct names :  168
+  CANONICAL (what a consumer sees) :  157
+  audited by gather_coverage now   :  157
+
+==============================================================================
+SET A -- CHECKED BUT CANNOT FIRE  (in the snapshot, not in the
+         canonical shipped space: no detection can ever carry it)
+==============================================================================
+
+by family  (15 names, 5 families)
+    c                 4  cClefAlto, cClefAltoChange, cClefTenor, cClefTenorChange
+    dynamic           6  dynamicForte, dynamicMezzo, dynamicNiente, dynamicPiano, dynamicRinforzando, dynamicSforzando
+    f                 2  fClef, fClefChange
+    g                 2  gClef, gClefChange
+    unpitched         1  unpitchedPercussionClef1
+
+==============================================================================
+SET B -- SHIPPED BUT NEVER CHECKED  (a consumer can see it; the
+         snapshot has no such name)
+==============================================================================
+
+by family  (26 names, 7 families)
+    articulation      3  articulationAccent, articulationStaccato, articulationTenuto
+    clef              6  clefC, clefCAlto, clefCTenor, clefF, clefG, clefUnpitchedPercussion
+    grace             1  graceNoteAcciaccatura
+    notehead          3  noteheadFullSmall, noteheadHalfSmall, noteheadWhole
+    numeral          11  numeral, numeral0, numeral1, numeral2, numeral3, numeral4, numeral5, numeral6, numeral7, numeral8, numeral9
+    tremolo           1  tremoloMark
+    tuple             1  tuple
+
+==============================================================================
+THE DYNAMICS CLAIM, TESTED  (dossier: 'six that cannot fire and
+         misses the six that can')
+==============================================================================
+  cannot fire   : 6  ['dynamicForte', 'dynamicMezzo', 'dynamicNiente', 'dynamicPiano', 'dynamicRinforzando', 'dynamicSforzando']
+  never checked : 0  []
+  never checked, if the RAW 208 were used instead: ['dynamicLetterF', 'dynamicLetterM', 'dynamicLetterP', 'dynamicLetterR', 'dynamicLetterS', 'dynamicLetterZ']
+  ⚠️ The first half is exactly right. The second is FALSE against the
+     canonical space and TRUE only against the raw one -- and the raw
+     six are `dynamicLetter*`, which `canonicalize_names` renames at
+     the detector, so not one of them can reach a consumer.
+
+==============================================================================
+FAMILIES
+==============================================================================
+  snapshot 35   raw 36   canonical 34
+  phantom (snapshot only, cannot fire) : ['c', 'f', 'g', 'unpitched']
+  real but never audited               : ['articulation', 'numeral', 'tuple']
+  raw-only, gone under canonicalization: ['arpeggio', 'leger']
+  ⚠️ The last row is why the space must be canonicalized: a probe
+     using the RAW 208 reports those families as unnamed gaps when
+     the detector renames them away before anything sees them.
+
+==============================================================================
+MANIFEST vs SHIPPED CHECKPOINT
+==============================================================================
+  checkpoint : deepscoresv2-yolov8l-hollow-graft-shift09-2026-09-04.pt
+  ids        : 208
+  identical index-for-index to the manifest : True
