@@ -7455,7 +7455,15 @@ harness fault: the lane's `rebuild()` is AST-identical to the canonical one
 tree `9d4ccc85`** — verified at integration — and one is literally *"meter: an
 uncorroborated change is not carried off its system, and both flags default
 ON"*. **Any future A/B on `library/_shared-records/` must be base-vs-arm on ONE
-tree; the record's committed verdicts are no longer a baseline.** ⚠️ CONTROL 2
+tree; the record's committed verdicts are no longer a baseline.**
+⚠️ **A THIRD-ROUTE CORROBORATION WAS STILL RUNNING AT HANDOFF** — the
+canonical `readjudicate.py --control`, which buffers its output to the end.
+The lane named its own falsification condition rather than leaving it
+implied, and it is recorded here for whoever reads that run: **if it comes
+back reproducing 2,993 of 2,993, that CONTRADICTS the AST-identity argument**
+and means something in the arm differs after all. Until it lands the claim
+rests on the two pieces of evidence in hand — the AST identity (pinned by a
+test) and the seven `rhythm.py` commits (verified at integration). ⚠️ CONTROL 2
 passed and independently reproduced the 09-18 handoff's own figure — **152
 verdicts move, all `no_stem → decided`**, exactly the beam-mate tier's stated
 reach.
