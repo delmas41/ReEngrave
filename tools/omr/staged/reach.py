@@ -82,9 +82,6 @@ KNOWN_GAPS: Dict[str, str] = {
         "OBSERVATION: `_dedupe_cross_staff_detections` has both detections' "
         "confidences in hand at the moment it decides and uses neither, and the "
         "staged `glyph_owner` reproduced that."),
-    Q.KEYSIG_MARKER: (
-        "inert declaration, owned by `inventory --check`: the decision reads "
-        "`keysig_clef_fit`, which the markers already feed in GATHER."),
     Q.VERTICAL_RUN: (
         "PRODUCER ONLY and deliberately unread, the `Q.INK` discipline: a "
         "producer and its first consumer landing in one change makes the reach "
