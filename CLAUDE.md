@@ -7382,6 +7382,93 @@ has been bitten by before.
 
 ---
 
+## The coverage instrument audited a 146-name snapshot of a 208-name class space
+
+2026-09-21, no flag. `gather_coverage._detector_classes()` read
+`training/deepscores_classes.py` under a docstring calling it *"the 208-class
+space"*. `DEEPSCORES_V2_CLASSES` is a **146-name snapshot of an older DSv2
+release**, and it is the TRAINING dataset's list — a different thing from what
+the shipped checkpoint emits. **15 names were checked that cannot fire; 26 that
+can were never checked.** Findings:
+[benchmarks/omr-class-space-208-2026-09/FINDINGS.md](benchmarks/omr-class-space-208-2026-09/FINDINGS.md).
+
+⚠️⚠️ **THE HEADLINE IS THE CLEFS, NOT THE DYNAMICS.** `_family` splits at the
+first camel hump, and the snapshot spells them `gClef` / `fClef` / `cClefAlto`
+— so every clef was filed under an invented family `g` / `f` / `c`, three of
+which `FAMILY_TO_Q` mapped to `CLEF_GLYPH`. **The table therefore LOOKED like it
+named the clefs while the real `clef` family held only the octave markers
+`clef8` / `clef15`.** ⚠️ **This corroborates the C-clef lane from a completely
+different instrument**, on the same night: that lane found `gather.py`'s
+`_CLEF_CLASSES` accepts the COARSE `clefC` and misses the fine `clefCAlto` /
+`clefCTenor`, and this one found the tool that should have reported it was
+looking at a family that did not exist. Two readers, two directions, one mark.
+
+⚠️ **REPAIRED IN THE INSTRUMENT, NOT THE TRAINING DATA.**
+`class_aliases.vocabulary()` already reads the committed 208-name manifest and
+is stdlib-only, so the repair is one import and the tool still needs **no
+weights and pulls no cv2 / torch / ultralytics** — the CI property the old AST
+dance existed for, asserted by a subprocess test. `deepscores_classes.py` and
+the four training exporters are untouched (verified by `git diff`), because
+that list is the training corpus's vocabulary and `catalog-versions.txt` is a
+committed membership decision that must not widen silently.
+
+⚠️ **CANONICALIZED — 157 names, NOT the raw 208.** `yolo_detector.py:296`
+applies `canonicalize_names` at the one place the model's `names` are read, so
+`dynamicLetterF` never reaches GATHER under that name. **Auditing the raw space
+would have reported six `dynamicLetter*` as live for `Q.DYNAMIC_LETTER` when
+none can arrive — a NEW false report replacing the old one**, and a mutation arm
+pins that direction. `DYNAMIC_LETTER` reads **12 → 6, nothing added**;
+`ARTICULATION_MARK` **10 → 13, nothing removed**. Verified independently at
+integration: `len(_detector_classes()) == 157`, and its clef names are
+`clefC, clefCAlto, clefCTenor, clefF, clefG, clefUnpitchedPercussion, clef8,
+clef15`.
+
+⚠️ **THREE REAL FAMILIES SURFACED**, each a recorded decision rather than a
+suppression: `articulation` → `ARTICULATION_MARK` (verified at the EMIT site,
+`gather.py:884`, which routes the shared `artic` prefix and files `side=None`
+for a coarse name rather than guessing a side); `numeral` → `None` (no ROLE —
+one class for time signatures, tuplet digits, fingerings and measure numbers);
+`tuple` → `None` (no NUMBER). The last two still print under *NO QUANTITY NAMES
+IT*. `gather_coverage` newly exited **1** when the repair first ran, **with the
+control taken first** — it exits 0 pre-repair — so that was the instrument
+seeing a real gap and not a regression.
+
+⚠️⚠️ **THE OLD GUARD COULD NOT SEE IT: `test_every_detector_family_is_mapped`
+asserts `classes > 100`, and 146 > 100.** A floor cannot catch a space that is
+the WRONG space; only an identity can. 5 of 11 new tests go red on the
+pre-repair tree, proved by checkout with an md5-verified restore.
+
+⚠️⚠️ **AND IT WAS DIAGNOSED ON 2026-09-16 AND ROUTED AROUND.**
+`benchmarks/omr-gather-vocabulary-2026-09/probe_vocabulary.py` states the fault
+in its own docstring and **corrected for it inside a benchmark instead of
+repairing the instrument**, shipping no `FINDINGS.md`. Its correction reads the
+RAW 208, so it reports **five** unmapped families where **three** is right
+(`arpeggio` and `leger` are aliased away) — the repaired instrument found
+exactly three, independently. *A probe that works around a broken instrument
+leaves the instrument broken for everyone else.*
+
+⚠️⚠️ **A DISPATCH PARAPHRASE INVERTED ITS OWN SOURCE, AND THE LANE CAUGHT IT.**
+The brief quoted the dossier as *"it reports six dynamic classes that cannot
+fire and misses the six that can"*. The first half is exact; **the second is
+false** — the six that "can" are `dynamicLetter*`, renamed before any consumer
+sees them. `docs/symbol-dossiers/dynamics.md` §7.1 says the opposite in terms
+(12 classes: *"the six real letters PLUS"* the phantoms), which is what the
+measurement shows. **Building to the paraphrase would have aimed the repair at
+the raw 208 — the one wrong repair available.** The dossier was right; the
+manager's summary of it was not. Recorded because *a brief is a ledger too*.
+
+⚠️ **NOT ESTABLISHED**: no page, no export, no metric — the pipeline's output is
+unchanged. Auditing `clefG` does not mean clefs are READ. **Five names are newly
+audited and uninvestigated** (`noteheadWhole`, `noteheadFullSmall`,
+`noteheadHalfSmall`, `tremoloMark`, `graceNoteAcciaccatura`) — they landed in
+already-mapped families so broke no build; `noteheadWhole` lacking an
+`InSpace`/`OnLine` suffix is the one worth a look. One checkpoint was verified
+against the manifest, not all of them. ⚠️ `gather_coverage.py` still lacks
+`DERIVED_CHECK = True` while six sibling checks carry it — reported, not
+changed.
+
+---
+
 ## The GATHER stage collects most of its quantities, and cannot NAME 7 more
 
 Sean, 2026-09-09: *"I just found that we were not tracking chords - notes
