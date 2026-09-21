@@ -564,7 +564,13 @@ coverage ratio and names the residue, rather than passing or failing.
 
 ## 13. THE FULL SUITE, AND THE ONE FAILURE — a test that pins a LINE NUMBER
 
-`python3 -m pytest tools/omr/tests -q` on the shipped tree:
+**FINAL, on the shipped tree: `4681 passed, 11 skipped, 0 failed`** (13:42),
+and it balances exactly — the recorded baseline is 4657 passed / 11 skipped and
+this lane adds 24 tests: 4657 + 24 = 4681. ⚠️ That arithmetic is the control;
+"the suite is green" on its own would not distinguish a clean run from one
+whose collection silently lost a file.
+
+The run BEFORE the fix below was
 **1 failed, 4680 passed, 11 skipped** (13:41, on a machine running three other
 agents' suites concurrently at load 9 — the run is starved, not hung, which is
 a distinction CLAUDE.md already records costing a session).
@@ -589,7 +595,8 @@ inserted above the opt-in, so it moved 1433 → 1484.
 > same two files, still `line_detection.py` (the forward) and
 > `staged/gather.py` (the one opt-in). Only the line number moved.
 
-**Repaired minimally: the number, and nothing else.** The file is outside this
+**Repaired minimally: the number, and nothing else** — after which the full
+suite is green (above). The file is outside this
 lane's fence, so its logic was not touched — but my change is what broke it and
 handing the next session a red suite is worse than a one-token forced
 correction. Re-run: `test_stem_notehead_gate.py` **12 passed**, and the
