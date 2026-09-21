@@ -48,6 +48,8 @@ import json
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Set, Tuple
 
+from ..class_aliases import canonical, vocabulary
+
 _HERE = Path(__file__).resolve().parent
 _OMR = _HERE.parent
 
@@ -466,37 +468,41 @@ INK_CLASS_EXCLUDE: Dict[str, Tuple[str, ...]] = {
 
 
 def _detector_classes() -> Tuple[str, ...]:
-    """The 208-class space, read from `deepscores_classes.py` by AST.
+    """The class space the DETECTOR EMITS: the shipped 208, canonicalized.
 
-    ⚠️ THE CLASS SPACE, NOT `_CATEGORY_MAP`. The first cut read the category
-    map's KEYS and reported `WEDGE_BOX` as having no detector class -- while
-    `dynamicCrescendoHairpin` is class 173 and fires freely. The map is a
-    coarse name -> family table resolved by SUBSTRING fallback, so a class it
-    never names by hand is still detected; its keys are not the vocabulary.
-    A coverage tool whose own inventory is an allow-list is the fault
-    `export_coverage.compare()` was just repaired for.
+    ⚠️ THE SHIPPED VOCABULARY, NOT `deepscores_classes.py`. Until 2026-09-21
+    this read `DEEPSCORES_V2_CLASSES` under a docstring calling it "the
+    208-class space". That constant is a **146-name snapshot of an older
+    DeepScoresV2 release**, and it is the TRAINING dataset's list, which is a
+    different thing from what the shipped checkpoint emits. The two disagree on
+    LENGTH (146 vs 208) and on SPELLING (`cClefAlto` against `clefCAlto`), so
+    the audit ran against 15 names that cannot fire while never checking 26
+    that can -- among them EVERY CLEF THE PIPELINE READS. The snapshot spells
+    those `gClef`/`fClef`/`cClefAlto`, which `_family` splits at the first
+    camel hump into invented families `g`, `f`, `c` and `unpitched`, leaving
+    the real `clef` family holding only the octave markers `clef8`/`clef15`.
 
-    ⚠️ AST rather than import: `yolo_detector` imports `cv2`, and this module
-    must run wherever `record.py` runs -- which its own docstring pins as
-    stdlib only. A coverage tool that needs the vision stack installed is a
-    coverage tool nobody runs in CI.
+    ⚠️ CANONICALIZED, BECAUSE A COVERAGE TOOL MUST AUDIT WHAT A CONSUMER CAN
+    SEE. `yolo_detector` applies `class_aliases.canonicalize_names` at the one
+    place the model's own `names` are read, so the coarse block's
+    `dynamicLetterF` never reaches GATHER under that name -- it arrives as
+    `dynamicF`. Auditing the RAW 208 would report six `dynamicLetter*` classes
+    as live detector classes for `Q.DYNAMIC_LETTER` when by construction not
+    one of them can ever arrive: a NEW false report in place of the old one.
+    That is why the delta here is 157 names and not 168.
+
+    ⚠️ IMPORTED, NOT RE-READ. `class_aliases` is the one place the vocabulary
+    and the alias table live, and it is stdlib-only (`json`, `pathlib`): it
+    pulls no cv2, no torch, no ultralytics, so this module still runs wherever
+    `record.py` runs and needs no weights file. The AST dance this function
+    used to perform existed to dodge the VISION STACK, and importing
+    `class_aliases` does not reach it -- `deepscoresv2_208_classes.json` is
+    committed precisely so tests need no checkpoint.
+
+    Id order is preserved and exact duplicates collapse, so the report is
+    stable and a family's classes read in the order the head declares them.
     """
-    src = (_OMR / "training" / "deepscores_classes.py").read_text()
-    for node in ast.walk(ast.parse(src)):
-        if isinstance(node, ast.AnnAssign) and isinstance(node.target, ast.Name) \
-                and node.target.id == "DEEPSCORES_V2_CLASSES":
-            try:
-                return tuple(ast.literal_eval(node.value))
-            except Exception:                                 # noqa: BLE001
-                return ()
-        if isinstance(node, ast.Assign) and any(
-                isinstance(t, ast.Name) and t.id == "DEEPSCORES_V2_CLASSES"
-                for t in node.targets):
-            try:
-                return tuple(ast.literal_eval(node.value))
-            except Exception:                                 # noqa: BLE001
-                return ()
-    return ()
+    return tuple(dict.fromkeys(canonical(n) for n in vocabulary()))
 
 
 def ink_present_elsewhere() -> Dict[str, Dict[str, Any]]:
@@ -570,28 +576,51 @@ def stub_starvation() -> Dict[str, Dict[str, Any]]:
 #: anything eventually uses it. `Q.GLYPH_BOX` carries every one of them, so a
 #: `None` is never "the ink is lost" -- it is "no consumer can ask for it and
 #: no abstention can be recorded about it", which is the chord fault exactly.
+#:
+#: ⚠️ FOUR ENTRIES LEFT THIS TABLE ON 2026-09-21 AND MUST NOT COME BACK:
+#: `c`, `f`, `g` and `unpitched`. They were families only the 146-name
+#: snapshot could produce -- it spells the clefs `cClefAlto`, `fClef`,
+#: `gClef`, `unpitchedPercussionClef1`, and `_family` splits at the first
+#: camel hump. Three of them mapped to `CLEF_GLYPH`, so the table LOOKED
+#: like it named the clefs while the real `clef` family held only the
+#: octave markers `clef8`/`clef15`. The shipped detector spells them
+#: `clefC*`/`clefF`/`clefG`/`clefUnpitchedPercussion`, all family `clef`.
 FAMILY_TO_Q: Dict[str, Optional[str]] = {
     "accidental": None,          # in-bar accidentals: only GLYPH_BOX carries them
     "arpeggiato": None,
     "artic": "ARTICULATION_MARK",
+    # ⚠️ THE COARSE SPELLING OF `artic`, AND IT IS GATHERED. `_family`
+    # splits at the first camel hump, so `articulationStaccato` lands here
+    # while `articStaccatoAbove` lands in `artic` -- but `gather.py:884`
+    # routes on the PREFIX `artic`, which both share, and files both under
+    # `Q.ARTICULATION_MARK` with `side=_artic_side(name)`. The coarse names
+    # state no side and that reader returns None rather than guessing, so
+    # the ink IS named -- it arrives carrying one fact fewer. Checked at
+    # the emit site, not inferred from the prefix table.
+    "articulation": "ARTICULATION_MARK",
     "augmentation": "AUG_DOT",
     "beam": "BEAM_STROKE",
     "brace": None,               # the GLYPH; `Q.GROUP_SYMBOL` is the verdict
-    "c": "CLEF_GLYPH",
     "caesura": None,
     "clef": "CLEF_GLYPH",
     "coda": None,
     "dynamic": "DYNAMIC_LETTER",
-    "f": "CLEF_GLYPH",
     "fermata": "FERMATA_MARK",   # ⚠️ CLOSED 2026-09-10; was None
     "fingering": "TUPLET_MARKER",  # ⚠️ `fingering3` IS a triplet digit here
     "flag": "FLAG",
-    "g": "CLEF_GLYPH",
     "grace": None,
     "key": "KEYSIG_MARKER",
     "keyboard": None,            # keyboardPedal*
     "ledger": "GLYPH_LADDER",
     "notehead": "NOTEHEAD_CLASS",
+    # ⚠️ COARSE, AND DELIBERATELY UNROUTED: states no ROLE. The coarse
+    # vocabulary has ONE numeral class for time signatures, tuplet digits,
+    # fingerings and measure numbers alike (`class_aliases.
+    # COARSER_THAN_CANONICAL["numeral"]`), and CLAUDE.md records what a
+    # spurious `timeSig4` costs: five fired on barline fragments and
+    # shipped a 2/4 page as common time. Naming it would have to invent
+    # the role. `gather.py` routes none of these.
+    "numeral": None,
     "ornament": "ORNAMENT_MARK",  # ⚠️ CLOSED 2026-09-10; was None
     "ottava": None,
     "repeat": None,
@@ -608,8 +637,15 @@ FAMILY_TO_Q: Dict[str, Optional[str]] = {
     # `ornament`, which is exactly why the gather asks that table rather than
     # matching a prefix.
     "tremolo": "ORNAMENT_MARK",
+    # ⚠️ COARSE, AND DELIBERATELY UNROUTED: states no NUMBER.
+    # `_TUPLET_CLASSES` is an explicit list (`gather.py:690`) and bare
+    # `tuple` is not in it, because renaming it to `tuplet3` would assert
+    # a triplet the page never claimed -- `class_aliases.
+    # COARSER_THAN_CANONICAL["tuple"]` states exactly that. Its sibling
+    # `tupleBracket` is not here because `class_aliases` renames it to
+    # `tupletBracket` at the detector, so it lands in `tuplet`.
+    "tuple": None,
     "tuplet": "TUPLET_MARKER",
-    "unpitched": None,
 }
 
 
