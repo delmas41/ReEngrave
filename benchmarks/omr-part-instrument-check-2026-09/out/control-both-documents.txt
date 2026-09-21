@@ -1,0 +1,12 @@
+### beethoven5-p1-p4-ink-identity
+CONTROL: join {'join': 'slot', 'slots': [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]} reason=slot
+  the join is UNMOVED: same outcome, reason and value.
+  and the check DID run (detail present).
+exit=0
+### brahms1-breitkopf-p0-p3
+CONTROL: join {'join': 'slot', 'slots': [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]} reason=slot
+  the join is UNMOVED: same outcome, reason and value.
+  and the check DID run (detail present).
+exit=0
+
+[exited with code 0]

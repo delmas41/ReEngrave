@@ -1,0 +1,28 @@
+RECORD  beethoven5-p1-p4-ink-identity.record.json
+JOIN    {'join': 'slot', 'slots': [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]} reason=slot
+REACH   50 staves named, 50 slots decided
+  [ordinal] (counterfactual — this join was refused)
+     parts 12, of them 7 named on two or more systems (the only ones that CAN disagree), 0 staves unkeyed
+     CONTESTED 3
+       part 1: {'Oboe': 6, 'Clarinet': 1}
+       part 2: {'Clarinet': 6, 'Bassoon': 1}
+       part 3: {'Bassoon': 6, 'Horn': 1}
+  [slot] <- THE JOIN THAT SHIPPED
+     parts 12, of them 7 named on two or more systems (the only ones that CAN disagree), 0 staves unkeyed
+     CONTESTED 0
+
+RECORD  brahms1-breitkopf-p0-p3.record.json
+JOIN    {'join': 'slot', 'slots': [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]} reason=slot
+REACH   91 staves named, 97 slots decided
+  [ordinal] (counterfactual — this join was refused)
+     parts 14, of them 14 named on two or more systems (the only ones that CAN disagree), 0 staves unkeyed
+     CONTESTED 5
+       part 10: {'Violin': 6, 'Viola': 1}
+       part 11: {'Viola': 6, 'Cello': 1}
+       part 12: {'Cello': 6, 'Contrabass': 1}
+       part 7: {'Trumpet': 6, 'Timpani': 1}
+       part 8: {'Timpani': 6, 'Violin': 1}
+  [slot] <- THE JOIN THAT SHIPPED
+     parts 14, of them 14 named on two or more systems (the only ones that CAN disagree), 0 staves unkeyed
+     CONTESTED 0
+

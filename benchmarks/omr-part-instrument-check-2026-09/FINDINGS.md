@@ -184,9 +184,14 @@ them. They arrive in `considered`, because `ev.verdicts` records every hand-in
 
 ## 5. Controls
 
-**THE JOIN IS UNMOVED.** `check_arm.py --control` re-adjudicates each shared
-record through the SHIPPED decision and requires the same outcome, reason and
-value the record itself carries. ⚠️ **With a POSITIVE control beside it**: the
+**THE JOIN IS UNMOVED — RUN, AND PASSED ON BOTH DOCUMENTS**
+(`out/control-both-documents.txt`). `check_arm.py --control` re-adjudicates
+each shared record through the SHIPPED decision and requires the same outcome,
+reason and value the record itself carries. Both come back *"the join is
+UNMOVED: same outcome, reason and value"* and *"the check DID run"*.
+⚠️ It is expensive and that is worth knowing before reaching for it:
+**~50 minutes on Litolff and over 90 on Breitkopf**, one full re-adjudication
+each. ⚠️ **With a POSITIVE control beside it**: the
 `instrument_consistency` detail must be PRESENT, because *"nothing moved"* is
 also exactly what a check that never ran looks like.
 
