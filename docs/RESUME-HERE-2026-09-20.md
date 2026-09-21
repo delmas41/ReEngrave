@@ -4,10 +4,8 @@ Everything is on **`claude/integration-2026-09-18`** (PR #57), pushed and
 verified with `git merge-base --is-ancestor`, not by trusting a push.
 ⚠️ **`main` is stale by three days — branch from the integration branch.**
 
-⚠️⚠️ **ONE AGENT IS STILL RUNNING AND ITS WORK IS NOT MERGED:** the pair-rule
-notehead gate, on **`claude/stem-notehead-gate`** (6 commits not on
-integration). See §4. Do not duplicate it; check that branch before starting
-anything in `line_detection`.
+✅ **NOTHING IS RUNNING. The pair-rule gate landed and is MERGED** — see §4,
+which is now a RESULT and includes the day's sharpest finding.
 
 ---
 
@@ -86,21 +84,41 @@ fused. **Tested and confirmed on the case he saw**, then bounded:
 **Recommendation: do not build the segmentation repair.** 0.23% is not worth a
 change to `Q.STEM`.
 
-## 4. ⚠️ IN FLIGHT — the pair rule, and it is the biggest live number
+## 4. ⚠️⚠️ THE PAIR RULE — THE FIXTURE THAT JUSTIFIES IT PRINTS NO ACCIDENTALS
 
-`benchmarks/omr-stem-pair-rule-2026-09/FINDINGS.md` (2026-09-17) measured that
-`_drop_paired_strokes`, running in production, is **wrong about its own
-premise**: of 80 deleted strokes carrying a notehead, **62 (77.5%) were two
-genuine stems**, not an accidental. It deletes 244 strokes; **73 of 793
-stemless heads (9.2%)** would stop abstaining without it.
+`OMR_STEM_NOTEHEAD_GATE` (**default OFF**), `benchmarks/omr-stem-notehead-gate-2026-09/`.
+`_drop_paired_strokes` deletes a pair of verticals on the premise that it is a
+sharp or a natural. Re-derived to the unit: **244 deleted, 80 on a notehead,
+62 (77.5%) two genuine stems, 73 heads (9.2% of 793)** stop abstaining without
+it.
 
-That lane also **proposed the fix and never ran it** (§3c: use the notehead —
-`gather_cv_lines` runs AFTER `gather_detections` and simply does not pass them
-on). **An agent is running that now** on `claude/stem-notehead-gate`.
-⚠️ Its brief requires re-running the fixtures that JUSTIFIED the rule (the
-LilyPond sheet, truth 48; the 14 hand-counted cells, summed error 60 → 24) —
-**both measurements can be true**, and a gate that costs those wins must not
-ship. Flag, default OFF, flag-off must reproduce **1,920 / 2,305** strokes.
+⚠️⚠️ **THE FINDING IS ABOUT THE RULE, NOT THE GATE.** `CLAUDE.md` justifies the
+rule by the LilyPond reference sheet (*"+7/+8/+5/+2 to −1/0/+1/0 on a truth of
+48"*). **`benchmarks/omr-phase4-lines/reference-lines.ly` PRINTS NO ACCIDENTAL
+AT ALL** — verified independently: **zero altered pitches, zero `\key`
+directives**, every pitch a natural. **So that win was never a measurement of
+accidental rejection.** All 28 of its deletions land in ONE cell of staff 0
+and all 28 stand on a notehead. At per-bar resolution the shipped rule
+**EMPTIES the chord bar** (truth 4, ON 0); the page total inverts only because
+two errors cancel.
+
+**The gate itself**: OFF reproduces **1,920 / 2,305** exactly; ON is **+80 /
++152 strokes, every one on a notehead, 0 lost**; stemless heads **793 → 720**
+(the 9.2%, reproduced from the opposite direction). Hand cells ON 15 / OFF 53
+/ **GATED 20**, worse on 3, better on 0. Battery **21 arms, 21 red**. The
+legacy `transcribe` path is unchanged **by construction** (`detect_lines`
+passes no detections), pinned by an AST test.
+
+⚠️ **Recommendation: leave the flag OFF.** No crop was cut for either plate, so
+**accuracy is unestablished** — including the 3 hand cells the gate worsens.
+The standing objection is not an *n* argument: **the gate couples `Q.STEM` to
+the detector.** ⚠️ And one quoted figure is a composition coincidence the agent
+named itself (GATED 4 = truth 4 over four printed chords; the supportable
+claim is *strokes on 2 of 4*).
+
+**The item for Sean is not the gate.** It is that a production rule is
+justified by a page total on a fixture with no accidentals in it, and the same
+fixture at its own per-bar resolution says the rule empties a bar of chords.
 
 ## 5. ⚠️⚠️ CORRECTIONS TO MY OWN CLAIMS TODAY — read before quoting me
 
@@ -126,7 +144,9 @@ ship. Flag, default OFF, flag-off must reproduce **1,920 / 2,305** strokes.
    says shipped; the staged path does not import it.
 3. **Give the BAR SUM a registry entry** (§1) — the most-cited constraint in
    the project, absent from the document.
-4. **The pair-rule gate** (§4), when the agent reports.
+4. **Re-justify or retire `_drop_paired_strokes`** (§4) — its
+   cited evidence does not measure what it claims. The gate is built and
+   OFF; the open question is the RULE.
 5. **Three prose figures in the registry do not reproduce** (a heading saying
    "six" over five entries; "10 of 87" where 8 hold; "6 of 27" where zero do).
    All inherited from the pre-merge harvests. Not fixed — the brief was
