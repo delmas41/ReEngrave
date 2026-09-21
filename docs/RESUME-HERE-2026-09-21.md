@@ -136,7 +136,8 @@ the MusicXML the benchmarks score against).
 |---|---|
 | whole `tools` suite | **4,720 passed / 19 skipped / 0 failed** |
 | `wiring`, `inventory`, `health`, `reach` `--check` | all **exit 0** |
-| the key-signature battery | **14 arms, 14 RED, 0 survivors**, restore verified |
+| the key-signature battery | **14 arms, 14 RED, 0 survivors**, restore verified (4th run) |
+| key-signature control arm, BOTH records | **0 decided keys moved**; splits **7** and **9**, the probe's own numbers |
 | `check_arm.py --control`, both documents | **the join is UNMOVED**, and the check DID run |
 | this lane's battery | **13 arms, 13 RED, 0 survivors**, restore verified |
 | the gate lane's battery, re-run and then closed | **21 RED, 0 survivors**, restore verified |
@@ -178,6 +179,40 @@ no OMR-NED figure** — the entire output is a dictionary in a verdict.
 ⚠️ **The 25 Litolff staves that were never named are outside the check's reach
 entirely**, and they are the half of the page most likely to be misjoined:
 this edition stops labelling its strings on continuation systems.
+
+## 5a. ⚠️⚠️ FIVE INSTRUMENT FAULTS, AND NOT ONE WAS VISIBLE AS A WRONG ANSWER
+
+Every one was found by a mutation battery or by opening a number — never by a
+failing test and never by review — and every one produced output that looked
+like a measurement:
+
+1. **pytest's elapsed time in the battery's judge** (§3): two batteries, every
+   arm red for free. The stem-gate lane's published 21/21 was VOID.
+2. **A mutation committed by `git add -A`** while my own battery was mid-arm.
+   Working tree right, HEAD wrong; the NEXT battery's dirty-target refusal
+   caught it.
+3. **Killing a long arm killed one ITERATION, not the shell `for` LOOP.** It
+   ran 31 more minutes, overlapped the battery it had just been removed from,
+   and raced its own replacement for the same `--tag` output file.
+4. ⚠️⚠️ **A unit test overwrote a COMMITTED measurement.** The tests closing
+   the instrument survivors drive each instrument's `main()`, which writes
+   under `HERE/"out"`. `out/probe-records.json` was silently replaced by the
+   one-staff fixture's numbers and **nothing failed** — it still parsed and
+   still looked like evidence. Found by a later command reading it and seeing
+   `rec.json` named inside.
+5. **A vacuous assertion of mine**: `assertIn("MOVED", out)` against an arm
+   that prints `MOVED 0` on every run — satisfied by a control that found
+   nothing. Exposed only on the battery's third pass.
+
+> **A battery is not done when it goes green once.** Closing a survivor
+> CHANGES the suite, so it must be re-run against the closure. Run 3 found two
+> more, and one of them was #5. The keysig battery went **8/6 → 14/0 → 12/2 →
+> 14/0**.
+
+> **An in-flight mutation is indistinguishable from a deliberate edit.** Mid
+> battery, this session was shown `if True:` in a control and told the file
+> had "changed on disk". Correct — and it was the battery, which restored it.
+> **Do not commit, and do not revert, while one is running.**
 
 ## 6. RUNNING IT
 
