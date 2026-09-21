@@ -439,3 +439,91 @@ about whether `Q.CLEF` is a fact about a STAFF or about a RANGE OF BARS, which
 is the same shape as `Q.METER`'s `segments`. It belongs to whoever owns
 `Q.CLEF`'s scope, not to this repair, and it is recorded here so it is not
 re-found by accident a fourth time.
+
+---
+
+## 12. ⚠️⚠️ NO DERIVED CHECK IN THIS REPO COULD SEE THIS — and that is the generalizable finding
+
+`gather_coverage` reports the clef family under **"named and gathered"**, and
+lists `Q.CLEF_GLYPH → DETECTOR → gather_clef` as wired, throughout the entire
+period in which 16 of that family's detections were being discarded with no row
+and no abstention. It is not wrong: a gatherer *does* exist, the quantity *is*
+gathered, the family *is* named.
+
+The same is true of every other derived check:
+
+| check | the question it asks | why it is blind here |
+|---|---|---|
+| `gather_coverage` | is there a gatherer for this quantity, is this detector family named? | yes and yes — `gather_clef` exists |
+| `wiring --check` | FRAME: is a declared input read where it is filed? | it is; `Q.CLEF_GLYPH` is filed and read at the right scope |
+| `wiring --check` | DETAIL: is a written key read anywhere? | every key written here is read |
+| `no_producer` | is a threaded parameter supplied by nobody? | every parameter is supplied |
+| `inventory --check` | does a decision's `wants` match `ORDER`? | it does |
+| `capture --check` | does this family capture shape / position / image / resolution? | it does — for the members that get through |
+
+> **The uncovered question is: does a gatherer's own ADMISSION RULE drop members
+> of the family it claims to gather?** Nothing asks it. A family can report
+> green on every instrument in the repo while a literal set inside its gatherer
+> silently discards a class the detector emits.
+
+This is the same shape CLAUDE.md already records for the `pdf_path` fault —
+*"neither `inventory --check` nor `gather_coverage` can catch that — the
+`wants` entry IS read and the quantity IS gathered"* — arriving one layer
+further in. There it was a parameter with no producer; here it is a producer
+with an undeclared filter.
+
+**What a check would have to do**, sketched and deliberately NOT built (a
+producer and its first consumer landing together makes the reach measurement
+circular, and this lane has already spent its measurement):
+
+1. For each detector family, derive the class names the committed vocabulary
+   assigns to it (`_class_name_to_category` already answers this).
+2. Find the gatherer's admission expression for that family and evaluate it
+   over those names.
+3. Report any class the vocabulary calls a member and the gatherer refuses —
+   **as a NAMED gap with a reason**, never as a failure, because `clef8` and
+   `clef15` are refused correctly and for a stated reason (§6).
+
+Step 3 is what makes it a question rather than a nag: the output is
+*"this family declines these members, and here is why"*, which is exactly the
+`KNOWN_GAPS` contract the other derived checks already use. Reach is unknown —
+nobody has counted how many gatherers filter by a literal set. `grep -n
+'in _[A-Z_]*CLASSES\|in _[A-Z_]*PREFIX' tools/omr/staged/gather.py` is where to
+start.
+
+### 12.1 IS IT SYSTEMIC? Measured over the five sibling filters — NO
+
+`sibling_filters.py` asks the sketched question of every other literal-set
+admission filter in `gather.py`. Output: `out-sibling-filters.txt`.
+
+| set | category | coverage | residue | verdict |
+|---|---|---|---|---|
+| `_CLEF_CLASSES_INCUMBENT` | `clef` | 4/8 | `clef8`, `clef15`, **`clefCAlto`, `clefCTenor`** | **the fault** (2 of the 4 correct, §6) |
+| `_DYNAMIC_LETTER_CLASSES` | `dynamic` | 6/8 | `dynamicCrescendoHairpin`, `dynamicDiminuendoHairpin` | **CORRECT** — hairpins are wedges, routed to `gather_wedge_boxes`; CLAUDE.md records routing by CLASS not category for exactly this |
+| `_TUPLET_CLASSES` | `ornament`, `structural` | 1/42, 2/21 | — | selection inside a broad category, not a claim |
+| `_ARC_CLASSES` | `structural` | 2/21 | — | same (that category also holds barlines and staff lines) |
+| `_KEYSIG_CLASSES` | `accidental` | 3/11 | — | same |
+| `_METER_CLASSES` | `time_sig_digit` | 2/12 | — | same |
+
+> **The clef set is the only one of the six with this fault.** The question is
+> bounded and the answer is no.
+
+⚠️ **TWO DEFECTS IN THIS PROBE'S OWN FIRST RUN, both of the kind this repo
+keeps paying for, and both caught by a result that looked wrong rather than by
+review:**
+
+1. **It reported four families as having ZERO members** — because the category
+   names were guessed (`"tie"`, `"key"`, `"time"`) and the detector's are
+   `structural`, `accidental`, `time_sig_digit`. *A filter that silently
+   empties a file looks exactly like a file with nothing in it.*
+2. **It did not apply the ALIASES**, so it reported six phantom drops for
+   `_DYNAMIC_LETTER_CLASSES` (`dynamicLetterF` and friends) that **cannot
+   occur**: `canonicalize_names` renames every coarse spelling at the one
+   place the model's `names` are read, so a coarse name never reaches a
+   gatherer at all.
+
+⚠️ And the framing itself was wrong before it was measured: "the set drops 19
+of its category" is *true* of `_ARC_CLASSES` and meaningless, because `slur`
+and `tie` sit inside `structural` alongside barlines. **The question only has
+force where a set claims a WHOLE category** — which is why the table reports a
+coverage ratio and names the residue, rather than passing or failing.
