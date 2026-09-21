@@ -188,7 +188,39 @@ against, so the scan gate is dossier-free BY PROTOCOL and a `--dossier` flag
 would put a truth file inside a measurement path"*. That reason is still true,
 so the gap stays and its entry stays with it.
 
-**MUTATION BATTERY.** 14 arms. See `out/`.
+### 5a. ⚠️ THE BATTERY'S FIRST RUN: 8 RED, **6 SURVIVORS**, and five of them were the INSTRUMENTS
+
+`out/mutation-battery-run1.txt`. One survivor was a real gap in the code's
+tests and **five were the arm's and the probe's own controls**, which no suite
+imported — a benchmark arm is a script, so every battery arm against one is
+free unless something drives it. Closed by tests that run each `main()` over a
+synthetic record.
+
+⚠️ **THE CODE SURVIVOR IS THIS REPAIR'S OWN LESSON ONE LEVEL DOWN.** Deleting
+`keysig_marker_state` from the no-ink branch left every assertion green: the
+tests checked the COUNT was zero and never that the record could still say
+WHICH zero — *the detector filed no row* against *it filed a row saying it saw
+nothing*. That is the ABSENT/DECLINED collapse this whole change repairs,
+reappearing inside the repair.
+
+⚠️ **AND THREE OF THE SIX CLOSING TESTS WERE WRONG ON THEIR FIRST RUN, ALL
+THREE FIXTURE FAULTS OF MINE**: a clef glyph row with no `score` (so the
+rebuild abstained `needs_clef` and the test silently exercised a different
+branch); a record with NO observation on the staff at all (so no verdict was
+filed and *"absent from the rebuild"* was being read as the illegal-move it
+was named for); and an import-machinery monkeypatch, replaced by inducing the
+drift from the arm's own side. *A fixture that does not reach the branch tests
+the fixture.*
+
+**MUTATION BATTERY, RE-RUN AFTER CLOSING THEM.** 14 arms. See `out/`.
+
+⚠️⚠️ **AND THE FIRST CONTROL-ARM RUN WAS DISCARDED, DELIBERATELY, 18 MINUTES
+IN.** The battery mutates `header.py`; the arm had imported it. An
+already-imported module keeps its code, so the arm was almost certainly
+isolated — but *almost certainly* is not a control, and this repo's own rule
+(written one day earlier, by this session) is that **a mutation battery is a
+concurrent writer and it is one you started yourself**. The arm was killed and
+re-run alone rather than reasoned about.
 
 ---
 
