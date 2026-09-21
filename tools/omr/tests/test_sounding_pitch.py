@@ -20,6 +20,7 @@ from __future__ import annotations
 import unittest
 
 from tools.omr.staged import export as E
+from tools.omr.staged.record import Q
 from tools.omr import export as _legacy
 
 
@@ -159,6 +160,181 @@ class TestItReachesTheFile(unittest.TestCase):
         self.assertEqual(
             report["accidental_reading"]["printed_glyphs_read_into_a_verdict"],
             1)
+
+
+#: ⚠️ A SCALE THAT IS NOT 1 AND AN ORIGIN THAT IS NOT 0, DELIBERATELY. The
+#: canonical and page frames differ by both here (heads are 40 canonical units
+#: wide and 20 page px, at page origin 1050/500), so a conversion that dropped
+#: the scale, or the offset, or confused corners with widths, produces a
+#: visibly wrong span. This repo has already paid for a fixture at the origin
+#: where "the two spellings agree in every coordinate" and a frame error
+#: passed every assertion.
+_CANON_W, _PAGE_W = 40.0, 20.0
+_SCALE = _PAGE_W / _CANON_W          # 0.5
+EIGHTH = {"beats": 0.5, "written": 0.5, "dots": 0, "beam_levels": 1}
+
+
+def _beamed_page(n_notes=4, beam_levels=1, beam_box=True, page_boxes=True):
+    """`n_notes` eighths in one cell, optionally under one beam stroke."""
+    from .test_staged_export import _log_json, _obs, _vrd
+    obs, vrd = [], []
+    i = 0
+    for gi in range(n_notes):
+        sub = f"glyph/0/0/0/0/{gi}"
+        cx = 100.0 + 100.0 * gi
+        detail = {"category": "notehead"}
+        if page_boxes:
+            px = 1050.0 + (cx - 100.0) * _SCALE
+            # ⚠️ CORNERS, which is what `detail["bbox_page_px"]` carries and
+            # what `_corners_to_wh` converts. Handing widths here would be the
+            # recorded corner/width trap.
+            detail["bbox_page_px"] = [px, 500.0, px + _PAGE_W, 500.0 + _PAGE_W]
+        obs.append(_obs(i, sub, Q.GLYPH_BOX,
+                        ["noteheadBlackOnLine", cx, 50.0, _CANON_W, _CANON_W],
+                        **detail))
+        i += 1
+        obs.append(_obs(i, sub, Q.NOTEHEAD_CLASS, "noteheadBlackOnLine"))
+        i += 1
+        vrd.append(_vrd(i, sub, Q.PITCH, "C5"))
+        i += 1
+        dur = dict(EIGHTH, beam_levels=beam_levels)
+        vrd.append(_vrd(i, sub, Q.DURATION, dur))
+        i += 1
+    if beam_box:
+        # one stroke spanning every head, in the CELL's canonical frame
+        span = 100.0 * (n_notes - 1) + _CANON_W
+        obs.append(_obs(500, "cell/0/0/0/0", Q.BEAM_STROKE,
+                        [100.0, 20.0, span, 10.0]))
+    vrd.append(_vrd(900, "staff/0/0/0", Q.MEASURE_PARTITION, 1))
+    vrd.append(_vrd(901, "staff/0/0/0", Q.CLEF, "treble"))
+    vrd.append(_vrd(902, "system/0/0", Q.SYSTEM_STAFF_COUNT, 1))
+    vrd.append(_vrd(903, "document", Q.PART_PARTITION,
+                    {"join": "ordinal", "staves_per_system": 1},
+                    reason="ordinal"))
+    return _log_json(obs, vrd)
+
+
+class TestTheBeamReachesTheFile(unittest.TestCase):
+    """⚠️ In MusicXML an absent `<beam>` IS a flag — MEASURED, not assumed.
+    `probe/renderer_semantics.py` puts four eighths through Verovio with and
+    without the element: with it, one beam and no flag glyphs; without it,
+    **four `flag8thDown` glyphs**. On the real artefact the same swap takes
+    page 1 from 574 flags / 0 beams to 82 flags / 171 beams.
+    """
+
+    def test_a_beamed_group_gets_begin_continue_end(self):
+        xml, _ = E.to_musicxml(_beamed_page(n_notes=4))
+        self.assertIn('<beam number="1">begin</beam>', xml)
+        self.assertIn('<beam number="1">continue</beam>', xml)
+        self.assertIn('<beam number="1">end</beam>', xml)
+        self.assertEqual(xml.count('<beam number="1">begin</beam>'), 1)
+        self.assertEqual(xml.count('<beam number="1">end</beam>'), 1)
+
+    def test_begin_and_end_BALANCE(self):
+        """The structural invariant a beam must satisfy, and the one a wrong
+        grouping breaks. It holds on both real documents at every level."""
+        import re
+        import collections
+        xml, _ = E.to_musicxml(_beamed_page(n_notes=4, beam_levels=2))
+        c = collections.Counter(
+            re.findall(r'<beam number="(\d+)">([a-z ]+)</beam>', xml))
+        levels = {lv for lv, _ in c}
+        self.assertTrue(levels, "no beams written at all")
+        for lv in levels:
+            self.assertEqual(c[(lv, "begin")], c[(lv, "end")],
+                             f"level {lv} is unbalanced")
+
+    def test_a_SECOND_level_is_written_for_a_sixteenth(self):
+        xml, _ = E.to_musicxml(_beamed_page(n_notes=4, beam_levels=2))
+        self.assertIn('<beam number="2">', xml)
+
+    def test_NO_beam_box_leaves_every_note_flagged(self):
+        """⚠️ THE ADDITIVE PROPERTY, and it is why this needs no flag: where
+        the CV read no stroke the file does not move. A lone eighth IS
+        flagged, so writing a beam here would be the invention."""
+        xml, _ = E.to_musicxml(_beamed_page(n_notes=4, beam_box=False))
+        self.assertNotIn("<beam", xml)
+
+    def test_a_cell_with_no_frame_RULER_refuses_and_is_counted(self):
+        """⚠️ A WIRING PASS MAY CONNECT A DECISION; IT MAY NOT LET ONE GUESS.
+        Without a head carrying both frames there is no scale, so the strokes
+        cannot be placed — and the refusal is COUNTED rather than silent."""
+        xml, report = E.to_musicxml(_beamed_page(n_notes=4, page_boxes=False))
+        self.assertNotIn("<beam", xml)
+        self.assertGreaterEqual(
+            report["written"].get("beam_cells_without_a_frame_ruler", 0), 1)
+
+    def test_the_counter_reports_what_the_file_HOLDS(self):
+        xml, report = E.to_musicxml(_beamed_page(n_notes=4))
+        self.assertEqual(report["written"].get("beams"), xml.count("<beam "))
+
+    def test_two_voices_get_their_OWN_runs(self):
+        """⚠️⚠️ `annotate_beams`' own docstring says it "must be called PER
+        VOICE": two voices interleave in x, so a run computed across both is
+        broken by the other voice's notes. On a ONE-voice fixture that call
+        is an equivalent mutant — the battery said so — and only a two-voice
+        bar can tell the two apart.
+
+        Four notes under one stroke, split 0,2 / 1,3. Per voice that is TWO
+        runs (two begins, two ends). Across both voices it is ONE.
+        """
+        from .test_staged_export import _vrd
+        doc = _beamed_page(n_notes=4)
+        doc["record"]["verdicts"].append(
+            _vrd(960, "cell/0/0/0/0", Q.VOICES,
+                 {"n_voices": 2, "voices": [[0, 2], [1, 3]],
+                  "rests_in_every_voice": []}))
+        xml, _ = E.to_musicxml(doc)
+        self.assertEqual(xml.count('<beam number="1">begin</beam>'), 2)
+        self.assertEqual(xml.count('<beam number="1">end</beam>'), 2)
+
+    def test_the_beam_level_comes_from_the_DURATION_verdict(self):
+        """It is already on the record — `adjudicate_duration` puts
+        `beam_levels` in the verdict's own value — so nothing re-reads the
+        ink. Level 3 in, level 3 out."""
+        xml, _ = E.to_musicxml(_beamed_page(n_notes=4, beam_levels=3))
+        self.assertIn('<beam number="3">', xml)
+
+
+class TestTheFrameConversion(unittest.TestCase):
+    """⚠️⚠️ THE FRAME IS THE WHOLE RISK, and a wrong one does not raise — it
+    writes a beam over the wrong notes. `Q.BEAM_STROKE` is filed in the CELL's
+    CANONICAL frame while `annotate_beams` compares against `bbox_page`."""
+
+    @staticmethod
+    def _cell(page_boxes=True):
+        doc = _beamed_page(n_notes=4, page_boxes=page_boxes)
+        parts, *_ = E.build(E.Record(doc))
+        return E.Record(doc), parts[0][0].cells[0]
+
+    def test_the_stroke_is_converted_into_the_HEADS_frame(self):
+        """⚠️⚠️ ASSERTED AS EXACT GEOMETRY, NOT AS "it covers the heads".
+        The mutation battery caught the weaker form: with the SCALE dropped
+        to 1.0 the stroke is twice as wide and still covers every head, so a
+        containment test goes green on a conversion that is wrong by a factor
+        of two. On a real page that over-wide box swallows the NEXT group —
+        which is the `box containing two disjoint boxes` failure
+        `annotate_beams` already documents paying for.
+        """
+        rec, cell = self._cell()
+        boxes = E._beam_boxes_by_cell(rec)["cell/0/0/0/0"]
+        dets = E._beam_detections_page(cell, boxes)
+        self.assertEqual(len(dets), 1)
+        x, y, w, h = dets[0]["bbox_page"]
+        # canonical stroke is (100, 20, 340, 10); head 0 is canonical
+        # (100, 50, 40, 40) and page (1050, 500, 20, 20), so scale = 0.5.
+        self.assertAlmostEqual(x, 1050.0, places=6)
+        self.assertAlmostEqual(y, 500.0 + (20.0 - 50.0) * _SCALE, places=6)
+        self.assertAlmostEqual(w, 340.0 * _SCALE, places=6)
+        self.assertAlmostEqual(h, 10.0 * _SCALE, places=6)
+        # ⚠️ and it must be in the PAGE frame, not the canonical one — the
+        # canonical stroke starts at 100, the page one at 1050.
+        self.assertGreater(x, 900.0)
+
+    def test_it_REFUSES_where_no_head_carries_both_frames(self):
+        rec, cell = self._cell(page_boxes=False)
+        boxes = E._beam_boxes_by_cell(rec)["cell/0/0/0/0"]
+        self.assertEqual(E._beam_detections_page(cell, boxes), [])
 
 
 class TestTheDocumentationClaim(unittest.TestCase):

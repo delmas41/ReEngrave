@@ -3,7 +3,7 @@
   "base": "28749347",
   "export_md5": {
     "before": "ada09a9e94fa77c83d6ae282713c99bb",
-    "after": "b2ca840834256f9d465b55c57d68c210"
+    "after": "1b1090907fbf11f3fc2198762bddd150"
   },
   "before": {
     "coverage": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-ad154ed3c58a5516d/benchmarks/omr-sounding-pitch-2026-09/out/beet5-before.musicxml.coverage.json",
@@ -63,12 +63,15 @@
     "rests": 566,
     "measure_rests_read": 92,
     "fermatas": 41,
+    "beam_cells_without_a_frame_ruler": 96,
     "notes": 1618,
     "articulations": 48,
     "ornaments": 0,
+    "beams": 679,
     "empty_bars_padded": 184,
     "empty_bars_padded_without_meter": 168,
     "dynamics": 174,
+    "beamed_events": 495,
     "ties": 91,
     "tie_stops_on_an_upper_chord_note": 24,
     "two_voice_bars": 24,

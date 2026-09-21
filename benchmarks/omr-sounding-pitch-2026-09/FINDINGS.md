@@ -216,8 +216,15 @@ documents in one tree contradicted each other for as long as both existed, and
 the false one sat in the file a reader of this path opens. Corrected and pinned.
 
 ⚠️ **`docs/symbol-dossiers/INDEX.md` — the brief's cited source — is not in
-this tree.** It lives on `claude/symbol-dossiers-2026-09-20`, not an ancestor
-of `28749347`. Read out of commit `08f860f1` without merging it.
+this tree**, and finding that out cost a detour. It is reachable read-only from
+commit `08f860f1` (`claude/symbol-dossiers-2026-09-20`), which is not an
+ancestor of `28749347`; it is also carried by
+`origin/claude/integration-2026-09-18`. The manager traced the cause
+independently: that branch and this lane's base **DIVERGED at `b600964e` on
+2026-09-20** (27 commits against 18), while the 2026-09-21 RESUME-HERE doc
+claims its branch is "integration-2026-09-18 PLUS TWO THINGS". *The tree
+outranks the ledger*, again. Both figures the index supplies were checked
+against the tree here and reproduce exactly.
 
 ---
 

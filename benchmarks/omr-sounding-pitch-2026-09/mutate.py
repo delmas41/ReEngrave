@@ -123,6 +123,55 @@ ARMS = [
      '`pitch` "',
      '    "accidental": "consumed into `pitch` and `accidental`. "',
      "test_NOT_NOTATION_no_longer_claims_the_glyph_is_consumed"),
+
+    # ── the BEAM half ───────────────────────────────────────────────────────
+    ("beam-level-never-carried", EXPORT,
+     '            "beam_levels": int(dur.get("beam_levels") or 0),',
+     '            "beam_levels": 0,',
+     "test_a_beamed_group_gets_begin_continue_end"),
+
+    ("beam-states-never-rendered", EXPORT,
+     "                beam_states=(ev.get(\"beam_states\") if n == 0 else None),",
+     "                beam_states=None,",
+     "test_a_beamed_group_gets_begin_continue_end"),
+
+    ("annotate-beams-never-called", EXPORT,
+     "    _legacy.annotate_beams(stream, dets)",
+     "    pass",
+     "test_a_beamed_group_gets_begin_continue_end"),
+
+    # ⚠️ THE FRAME ARMS ARE THE ONES THAT MATTER. A wrong frame does not
+    # raise -- it writes a beam over the wrong notes -- so a battery that
+    # only breaks the plumbing has not tested the risky part.
+    ("frame-scale-dropped", EXPORT,
+     "    scale = page[2] / canon[2]",
+     "    scale = 1.0",
+     "test_the_stroke_is_converted_into_the_HEADS_frame"),
+
+    ("frame-offset-dropped-canonical-leaks-through", EXPORT,
+     '            "bbox_page": [page[0] + (bx - canon[0]) * scale,',
+     '            "bbox_page": [bx,',
+     "test_the_stroke_is_converted_into_the_HEADS_frame"),
+
+    ("no-ruler-guessed-instead-of-refused", EXPORT,
+     "    if ruler is None:\n        return []",
+     "    if ruler is None:\n        ruler = ((0.0, 0.0, 1.0, 1.0),"
+     " (0.0, 0.0, 1.0, 1.0))",
+     "test_it_REFUSES_where_no_head_carries_both_frames"),
+
+    # ⚠️ ONLY A TWO-VOICE BAR CAN TELL THIS ONE APART. On a one-voice fixture
+    # `streams is None`, so `[events]` is what the loop already iterates and
+    # the mutation is an EQUIVALENT MUTANT -- it survived the first run for
+    # exactly that reason, and the gap was real rather than cosmetic.
+    ("beams-computed-across-BOTH-voices", EXPORT,
+     "    for stream in (streams if streams is not None else [events]):",
+     "    for stream in [events]:",
+     "test_two_voices_get_their_OWN_runs"),
+
+    ("beam-counter-detached-from-the-file", EXPORT,
+     '                counters["beams"] += len(ev.get("beam_states") or ())',
+     '                counters["beams"] += 0',
+     "test_the_counter_reports_what_the_file_HOLDS"),
 ]
 
 #: ⚠️ THE POSITIVE CONTROL, and it is in the same class as the arms rather

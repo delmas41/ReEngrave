@@ -3,7 +3,7 @@
   "base": "28749347",
   "export_md5": {
     "before": "ada09a9e94fa77c83d6ae282713c99bb",
-    "after": "b2ca840834256f9d465b55c57d68c210"
+    "after": "1b1090907fbf11f3fc2198762bddd150"
   },
   "before": {
     "coverage": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-ad154ed3c58a5516d/benchmarks/omr-sounding-pitch-2026-09/out/brahms-before.musicxml.coverage.json",
@@ -67,8 +67,10 @@
     "ornaments": 3,
     "slurs": 245,
     "ties": 353,
+    "beams": 1511,
     "tie_stops_on_an_upper_chord_note": 72,
     "pitches_altered_by_the_key": 489,
+    "beamed_events": 886,
     "tie_starts_on_an_upper_chord_note": 110,
     "empty_bars_padded": 38,
     "empty_bars_padded_without_meter": 7,
@@ -80,6 +82,7 @@
     "wedges": 18,
     "two_voice_bars_refused_a_stream_has_no_written_note": 12,
     "measure_rests_read": 104,
+    "beam_cells_without_a_frame_ruler": 114,
     "direction_words": 10,
     "two_voice_bars_in_an_unread_bar": 1,
     "parts": 14,

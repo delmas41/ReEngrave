@@ -858,6 +858,13 @@ def _place_notes(rec: Record, runs: Dict[str, StaffRun],
             "duration_beats": float(dur.get("beats") or written),
             "duration_type": dtype,
             "dots": max(int(dur.get("dots") or 0), derived_dots),
+            # ⚠️ THE BEAM LEVEL IS ALREADY ON THE RECORD and was read by
+            # nothing on this path -- `adjudicate_duration` puts it in the
+            # verdict's own VALUE, beside the beats it derived FROM it. It is
+            # carried here under the name `annotate_beams` expects, so the
+            # legacy grouping rule can be called rather than restated. A rest
+            # carries 0 and is never beamed.
+            "beam_levels": int(dur.get("beam_levels") or 0),
             # ⚠️ THE ALTERATION IS CARRIED, AND IT IS NOT THE DRAWN GLYPH.
             # It has already been folded into `pitch` above, so this entry
             # exists only so the counter can report how many notes the key
@@ -1031,6 +1038,71 @@ def _stem_boxes_by_cell(rec: Record) -> Dict[str, List[Tuple[float, ...]]]:
         if isinstance(v, (list, tuple)) and len(v) >= 4:
             out[o["subject"]].append(tuple(float(x) for x in v[:4]))
     return dict(out)
+
+
+def _beam_boxes_by_cell(rec: Record) -> Dict[str, List[Tuple[float, ...]]]:
+    """`cell subject -> [(x, y, w, h)]`, in the CELL's own canonical frame.
+
+    ⚠️ `Q.BEAM_STROKE` is filed on the CELL by `gather_cv_lines`, which reads
+    an ERASED cell image and never converts -- exactly as `Q.STEM` is, and
+    for the same reason. The conversion is `_beam_detections_page`'s job.
+    """
+    out: Dict[str, List[Tuple[float, ...]]] = collections.defaultdict(list)
+    for o in rec.obs_of(Q.BEAM_STROKE):
+        v = o["value"]
+        if isinstance(v, (list, tuple)) and len(v) >= 4:
+            out[o["subject"]].append(tuple(float(x) for x in v[:4]))
+    return dict(out)
+
+
+def _beam_detections_page(cell: "Cell", boxes: Sequence[Tuple[float, ...]]
+                          ) -> List[Dict[str, Any]]:
+    """Beam strokes as the `structural`/`beam` detections `annotate_beams` reads.
+
+    ⚠️⚠️ THE FRAME IS THE WHOLE RISK HERE, AND IT IS THE ONE THIS REPO KEEPS
+    PAYING FOR. `annotate_beams` compares a beam box against a notehead's
+    CENTRE, and it reads both out of `bbox_page`. The strokes arrive in the
+    cell's CANONICAL frame -- measured inside one cell and rescaled so the
+    staff span is constant -- so handing them over unconverted would compare
+    two different rulers and group notes by coincidence. That is
+    `Q.ONSET_COLUMN`'s recorded fault, and a wrong grouping does not raise:
+    it writes a beam over the wrong notes.
+
+    ⚠️ THE CONVERSION USES THE HEAD AS ITS OWN RULER, the method `_stem_probes`
+    already established and measured (a per-cell affine fit gives the identical
+    answer at residual 0.00 px). A notehead carries BOTH boxes -- canonical
+    (`bbox`) and page (`bbox_page`) -- so one head fixes the scale and the
+    origin for every stroke in its cell.
+
+    ⚠️ IT REFUSES RATHER THAN GUESSES. A cell with no head carrying both boxes
+    has no ruler, so it yields NOTHING and its notes stay flagged -- which is
+    what they were before this rung existed. Inventing a scale from the cell's
+    nominal width would be a guess about geometry, and a wiring pass may
+    connect a decision and may not let one guess.
+    """
+    ruler = None
+    for det in cell.detections:
+        if det.get("category") != "notehead":
+            continue
+        page, canon = det.get("bbox_page"), det.get("bbox")
+        if (page and canon and len(page) == 4 and len(canon) == 4
+                and float(canon[2]) > 0):
+            ruler = (tuple(float(v) for v in canon),
+                     tuple(float(v) for v in page))
+            break
+    if ruler is None:
+        return []
+    canon, page = ruler
+    scale = page[2] / canon[2]
+    out: List[Dict[str, Any]] = []
+    for (bx, by, bw, bh) in boxes:
+        out.append({
+            "category": "structural", "class": "beam",
+            "bbox_page": [page[0] + (bx - canon[0]) * scale,
+                          page[1] + (by - canon[1]) * scale,
+                          bw * scale, bh * scale],
+        })
+    return out
 
 
 def _stem_probes(rec: Record, part: Sequence[StaffRun],
@@ -2406,6 +2478,46 @@ def R_cell_key(run: StaffRun, cell_index: int) -> str:
     return f"cell/{run.page}/{run.system}/{run.staff}/{cell_index}"
 
 
+def _annotate_beams_for(rec: Record, run: StaffRun, cell_index: int,
+                        stream: List[Dict[str, Any]],
+                        counters: Dict[str, int]) -> None:
+    """Give one voice's events their `beam_states`, in place.
+
+    ⚠️⚠️ WHY THIS IS A WIRE AND NOT A RULE. `_legacy.annotate_beams` is
+    IMPORTED AND CALLED, never ported: its docstring records FOUR grouping
+    rules, each paid for by a measured failure (the notehead-width pad, the
+    same-stack collapse that took Mozart 41 from 7 to 145 beam edits, the
+    box-containing-two-disjoint-boxes guard, the divisi two-row case).
+    Restating any of them here would give this project two copies of numbers
+    it paid to measure once -- the drift `LETTER_METERS` and the arc constants
+    are both imported to prevent.
+
+    ⚠️ ADDITIVE BY CONSTRUCTION. A cell with no beam stroke, or with no
+    notehead carrying both frames, produces no boxes -- so `annotate_beams`
+    sets nothing and every note stays exactly as it was. That is why this
+    needs no flag: where the CV read no beam, the file does not move.
+    """
+    cell = run.cells.get(cell_index)
+    if cell is None or not stream:
+        return
+    key = f"cell/{run.page}/{run.system}/{run.staff}/{cell_index}"
+    # ⚠️ The per-record map is built ONCE and cached on the Record, not
+    # rebuilt per bar: `obs_of` walks every observation, and doing that inside
+    # a loop over 1,183 bars is quadratic in the record.
+    cache = getattr(rec, "_beam_box_cache", None)
+    if cache is None:
+        cache = _beam_boxes_by_cell(rec)
+        setattr(rec, "_beam_box_cache", cache)
+    boxes = cache.get(key)
+    if not boxes:
+        return
+    dets = _beam_detections_page(cell, boxes)
+    if not dets:
+        counters["beam_cells_without_a_frame_ruler"] += 1
+        return
+    _legacy.annotate_beams(stream, dets)
+
+
 def _measure_xml(rec: Record, run: StaffRun, cell_index: int,
                  events: List[Dict[str, Any]], divisions: int,
                  counters: Dict[str, int]) -> List[str]:
@@ -2424,6 +2536,13 @@ def _measure_xml(rec: Record, run: StaffRun, cell_index: int,
     # A single "refused" total would send the next reader to the wrong place.
     why: List[str] = []
     streams = _voice_split(rec, run, cell_index, events, why)
+    # ⚠️⚠️ PER VOICE, AND THAT IS NOT A DETAIL. `annotate_beams`' own docstring
+    # says it "must be called PER VOICE": two voices interleave in x, so a run
+    # computed across both is broken by the other voice's notes. The split is
+    # already done here, which is why the call belongs at this seam and not in
+    # `_place_notes`.
+    for stream in (streams if streams is not None else [events]):
+        _annotate_beams_for(rec, run, cell_index, stream, counters)
     if streams is None:
         for reason in why:
             counters["two_voice_bars_refused_" + reason] += 1
@@ -2533,6 +2652,12 @@ def _measure_events_xml(events: List[Dict[str, Any]], divisions: int,
                 # LOWEST FIRST and carried the marks up onto the EVENT, which
                 # is why they are read from `ev` here and not from `head`.
                 slur_states=(ev.get("slur_states") if n == 0 else None),
+                # ⚠️ THE BEAM IS PER EVENT AND GOES ON THE CHORD'S FIRST NOTE,
+                # exactly as the slur does and for the same reason -- the
+                # legacy renderer writes `beam_states if ni == 0 else None` at
+                # its own call site. A `<beam>` on every member of a chord
+                # draws one beam per notehead.
+                beam_states=(ev.get("beam_states") if n == 0 else None),
                 # ⚠️⚠️ ...BUT THE TIE IS PER HEAD, AND IS THE ONE SPANNER MARK
                 # THAT IS. `<slur>` carries a `number=` and hangs off the
                 # chord's representative note; `<tied>` carries none and joins
@@ -2647,6 +2772,14 @@ def _measure_events_xml(events: List[Dict[str, Any]], divisions: int,
             # about the file: notes whose PITCH the key signature altered.
             if head.get("key_alteration"):
                 counters["pitches_altered_by_the_key"] += 1
+            # ⚠️ COUNTED AT THE RENDER, where the ELEMENT is written, and not
+            # where `annotate_beams` attached it -- the rule the arc export
+            # learned by reporting 55 slurs into a file holding 23. The two
+            # figures differ whenever an event is dropped between the two.
+            if n == 0:
+                counters["beams"] += len(ev.get("beam_states") or ())
+                if ev.get("beam_states"):
+                    counters["beamed_events"] += 1
             if n == 0:
                 units += max(1, int(round(beats * divisions)))
         # ⚠️ AFTER the chord's notes, for the reason above: the `stop` binds
