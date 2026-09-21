@@ -349,12 +349,23 @@ UNSCORED: Dict[str, Tuple[str, str, Any]] = {
     # ── the ink of a MARK, with a box and no staff-grid slot ────────────────
     "STEM": (
         RAW_INK,
-        "a CV stem: `x`, `y0`, `y1` in the cell's frame, scoreless because "
-        "morphology returns no confidence. ⚠️ It is the classic case of the "
-        "repo's own anti-pattern — 916 rows found unread THREE separate "
-        "times — and its endpoints ARE a staff-grid measurement waiting to "
-        "be made: a stem runs from its notehead to a beam, so `y0`/`y1` "
-        "against the grid would say which. Nothing converts them.",
+        "a CV stem: `[x, y, w, h]` in the cell's frame, scoreless because "
+        "morphology returns no confidence. ⚠⚠ THIS ENTRY SAID `x`, `y0`, "
+        "`y1` UNTIL 2026-09-21, which is the spelling `record.py:381` "
+        "records as REFUTED against the record itself — `detail.x0 == "
+        "value[0]` and `detail.x1 - detail.x0 == value[2]` on 400 of 400 "
+        "rows. It is the THIRD box convention in one record and they "
+        "disagree (`Q.GLYPH_BOX.value` is `[name, x, y, w, h]`, "
+        "`Q.INK.detail.ink_bbox_canonical` is `[x0, y0, x1, y1]` CORNERS, "
+        "this is `[x, y, w, h]`), and reading one as another gives a "
+        "NEGATIVE width and a clean believable zero — it cost "
+        "`benchmarks/omr-ink-extent-2026-09` a run reporting "
+        "`NO_INK_UNDER_BOX` on 100 of 106 rows. ⚠️ It is also the classic "
+        "case of the repo's own anti-pattern — 916 rows found unread THREE "
+        "separate times — and its extent IS a staff-grid measurement "
+        "waiting to be made: a stem runs from its notehead to a beam, so "
+        "`y` and `y + h` against the grid would say which end is which. "
+        "Nothing converts them.",
         None),
 
     "VERTICAL_RUN": (
