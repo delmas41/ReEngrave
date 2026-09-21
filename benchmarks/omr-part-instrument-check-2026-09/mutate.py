@@ -18,6 +18,7 @@ from __future__ import annotations
 
 import hashlib
 import os
+import re
 import subprocess
 import sys
 from pathlib import Path
@@ -152,6 +153,15 @@ def headline() -> tuple[int, str]:
                        cwd=str(ROOT), env=env, capture_output=True, text=True)
     tail = [ln for ln in (r.stdout + r.stderr).splitlines()
             if "passed" in ln or "failed" in ln or "error" in ln.lower()]
+    # ⚠️⚠️ THE DURATION IS STRIPPED, AND THE BATTERY WAS MEASURING NOTHING
+    # WITHOUT THIS. pytest ends its summary with " in 0.57s", which differs
+    # between two runs of an UNMUTATED tree -- so `out != b_out` was true for
+    # every arm and all of them scored RED for free. Measured: two baseline
+    # runs back to back gave "13 passed, 5 warnings in 0.57s" and
+    # "... in 0.61s". A battery whose judge cannot say two identical trees are
+    # identical is the "control that computes the wrong thing" family, and it
+    # fails in the direction that looks like success.
+    tail = [re.sub(r" in \d+\.\d+s$", "", ln) for ln in tail]
     return r.returncode, "\n".join(tail[-2:]) or "(no summary)"
 
 
