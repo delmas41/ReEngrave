@@ -1,0 +1,32 @@
+{
+ "label": "Litolff Beethoven 5 pp.1-4 (harness validation, no rule yet)",
+ "record": "library/_shared-records/beethoven5-p1-p4.record.json",
+ "control_1_rebuild": {
+  "reproduced": 2760,
+  "of": 2993,
+  "extra": 0,
+  "ok": false
+ },
+ "control_2_baseline": {
+  "n_record_verdicts": 2347,
+  "moves": {
+   "no_stem -> decided:up": 89,
+   "no_stem -> decided:down": 63
+  },
+  "only_expected": true
+ },
+ "base_census": {
+  "abstained:no_stem": 641,
+  "abstained:stems_disagree": 111,
+  "decided:up": 802,
+  "decided:down": 793
+ },
+ "arm_census": {
+  "abstained:no_stem": 641,
+  "abstained:stems_disagree": 111,
+  "decided:up": 802,
+  "decided:down": 793
+ },
+ "delta": {},
+ "changed": []
+}

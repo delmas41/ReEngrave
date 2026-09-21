@@ -1,0 +1,33 @@
+{
+ "label": "Litolff SHIPPED",
+ "source": "record",
+ "gap_cut": 1.0,
+ "FAR_pairs": 9,
+ "by_y_tolerance_in_head_heights": {
+  "0.5": {
+   "with_a_shadow": 1,
+   "without": 8,
+   "share": 0.1111
+  },
+  "1.0": {
+   "with_a_shadow": 1,
+   "without": 8,
+   "share": 0.1111
+  },
+  "1.5": {
+   "with_a_shadow": 1,
+   "without": 8,
+   "share": 0.1111
+  },
+  "2.0": {
+   "with_a_shadow": 1,
+   "without": 8,
+   "share": 0.1111
+  },
+  "3.0": {
+   "with_a_shadow": 1,
+   "without": 8,
+   "share": 0.1111
+  }
+ }
+}

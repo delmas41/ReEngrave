@@ -1,0 +1,33 @@
+{
+ "label": "Breitkopf PROFILE",
+ "source": "profile",
+ "gap_cut": 1.0,
+ "FAR_pairs": 124,
+ "by_y_tolerance_in_head_heights": {
+  "0.5": {
+   "with_a_shadow": 27,
+   "without": 97,
+   "share": 0.2177
+  },
+  "1.0": {
+   "with_a_shadow": 88,
+   "without": 36,
+   "share": 0.7097
+  },
+  "1.5": {
+   "with_a_shadow": 105,
+   "without": 19,
+   "share": 0.8468
+  },
+  "2.0": {
+   "with_a_shadow": 115,
+   "without": 9,
+   "share": 0.9274
+  },
+  "3.0": {
+   "with_a_shadow": 118,
+   "without": 6,
+   "share": 0.9516
+  }
+ }
+}

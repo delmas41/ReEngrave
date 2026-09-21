@@ -1,0 +1,115 @@
+{
+ "arms": 11,
+ "red": 11,
+ "restored_green": true,
+ "results": [
+  {
+   "arm": "overlap: touching boundary becomes strict",
+   "file": "reach.py",
+   "expects": "test_the_touching_boundary_is_INCLUDED_by_both",
+   "status": "RED",
+   "failed": [
+    "test_agrees_on_a_grid_of_boxes_including_the_touching_case",
+    "test_the_touching_boundary_is_INCLUDED_by_both"
+   ]
+  },
+  {
+   "arm": "overlap: x test loses its width term",
+   "file": "reach.py",
+   "expects": "test_agrees_on_a_grid_of_boxes_including_the_touching_case",
+   "status": "RED",
+   "failed": [
+    "test_a_head_far_away_in_x_is_NOT_a_shadow",
+    "test_a_head_outside_the_strokes_y_span_is_NOT_a_shadow",
+    "test_a_partner_at_the_same_x_inside_the_span_is_found",
+    "test_agrees_on_a_grid_of_boxes_including_the_touching_case"
+   ]
+  },
+  {
+   "arm": "overlap: y test always true",
+   "file": "reach.py",
+   "expects": "test_a_pair_separated_in_Y_ONLY_is_rejected_by_both",
+   "status": "RED",
+   "failed": [
+    "test_a_pair_separated_in_Y_ONLY_is_rejected_by_both",
+    "test_agrees_on_a_grid_of_boxes_including_the_touching_case"
+   ]
+  },
+  {
+   "arm": "cell_of: takes one segment too few",
+   "file": "reach.py",
+   "expects": "test_a_glyph_subject_maps_to_its_cell",
+   "status": "RED",
+   "failed": [
+    "test_a_glyph_subject_maps_to_its_cell"
+   ]
+  },
+  {
+   "arm": "cell_of: invents a cell for a staff subject",
+   "file": "reach.py",
+   "expects": "test_a_staff_subject_has_no_cell_and_says_so",
+   "status": "RED",
+   "failed": [
+    "test_a_staff_subject_has_no_cell_and_says_so"
+   ]
+  },
+  {
+   "arm": "end_gap: measures from the FAR end",
+   "file": "reach.py",
+   "expects": "test_a_head_at_the_head_EDGE_scores_a_half",
+   "status": "RED",
+   "failed": [
+    "test_a_head_at_the_head_EDGE_scores_a_half",
+    "test_a_head_at_the_top_of_a_down_stem_scores_about_a_half",
+    "test_it_is_SCALE_FREE_in_the_stroke_length"
+   ]
+  },
+  {
+   "arm": "end_gap: normalised by the STROKE, reintroducing the frac defect",
+   "file": "reach.py",
+   "expects": "test_it_is_SCALE_FREE_in_the_stroke_length",
+   "status": "RED",
+   "failed": [
+    "test_a_head_at_the_head_EDGE_scores_a_half",
+    "test_a_head_halfway_along_a_long_stroke_scores_large",
+    "test_it_is_SCALE_FREE_in_the_stroke_length"
+   ]
+  },
+  {
+   "arm": "chord_shadow: admits strokes carrying several heads",
+   "file": "chord_shadow.py",
+   "expects": "test_a_stroke_carrying_TWO_heads_is_not_reported_at_all",
+   "status": "RED",
+   "failed": [
+    "test_a_stroke_carrying_TWO_heads_is_not_reported_at_all"
+   ]
+  },
+  {
+   "arm": "chord_shadow: the x window is unbounded",
+   "file": "chord_shadow.py",
+   "expects": "test_a_head_far_away_in_x_is_NOT_a_shadow",
+   "status": "RED",
+   "failed": [
+    "test_a_head_far_away_in_x_is_NOT_a_shadow"
+   ]
+  },
+  {
+   "arm": "chord_shadow: the y span is not checked",
+   "file": "chord_shadow.py",
+   "expects": "test_a_head_outside_the_strokes_y_span_is_NOT_a_shadow",
+   "status": "RED",
+   "failed": [
+    "test_a_head_outside_the_strokes_y_span_is_NOT_a_shadow"
+   ]
+  },
+  {
+   "arm": "chord_shadow: never records a shadow",
+   "file": "chord_shadow.py",
+   "expects": "test_a_partner_at_the_same_x_inside_the_span_is_found",
+   "status": "RED",
+   "failed": [
+    "test_a_partner_at_the_same_x_inside_the_span_is_found"
+   ]
+  }
+ ]
+}
