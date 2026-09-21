@@ -168,6 +168,19 @@ it never decides, never overturns a fit, and says so in its own key name
 `probe_records.py` predicted from the record's JSON with no pipeline code at
 all.** Two instruments, two routes, one number.
 
+Breitkopf: **97 of 97 rebuilt, 76 decided, MOVED 0, absent 0**, split
+×**9** — again the probe's own number. **Both arms exit 0**
+(`out/control-arm.txt`).
+
+⚠️ **ONE NUMBER LOOKED TOO GOOD AND WAS CHECKED: `DETAIL` reads `{carries the
+detail: 21, and ink was there: 10}` IDENTICALLY on both documents.** This
+repo's own diagnostic is *"is this number suspiciously EXACTLY some other
+number"*, so it was decomposed rather than admired — and it is a genuine
+coincidence built from **different components**: Litolff is 17 `no_evidence` +
+4 `run_fits_no_slot_table` = 21 carrying the detail (its 5 `needs_clef` return
+before it) with 7 + 3 = 10 carrying ink; Breitkopf is 20 + 1 = 21 with
+9 + 1 = 10.
+
 `check_arm.py` re-adjudicates each shared record through the SHIPPED
 decision. ⚠️ The control is sharper than *"nothing
 moved"*, because something IS meant to move: every DECIDED verdict must be
@@ -240,6 +253,26 @@ for a blanket `pkill` before) and its output discarded.
 
 > **Killing a long job means killing the LOOP, not the iteration** — and a
 > `--tag` that two runs share is a race whose loser is silent.
+
+---
+
+### 5b. ⚠️⚠️ A UNIT TEST OVERWROTE THIS BENCHMARK'S OWN COMMITTED ARTEFACT
+
+The tests added to close §5a's instrument survivors drive each instrument's
+`main()` — and both write their results under `HERE/"out"`, which is a
+COMMITTED measurement. The first version **silently replaced
+`out/probe-records.json` with the synthetic one-staff fixture's numbers**, and
+nothing failed: the file still parsed, still had the right shape, and still
+looked like a measurement. It was caught by a later command reading it and
+finding `rec.json` named inside.
+
+**An instrument that destroys its own artefact when exercised is worse than
+one with no test at all**, because the artefact goes on looking like evidence.
+`HERE` is redirected to a temp directory now — ⚠️ with the sibling `.py` files
+COPIED in, because `check_arm` loads `probe_records.py` from `HERE` for the
+constant-drift check, and redirecting alone broke that check instead of
+exercising it. A test asserts the committed `out/` is untouched after both
+instruments run.
 
 ---
 

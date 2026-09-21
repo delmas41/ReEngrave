@@ -8,3 +8,11 @@ DETAIL   {'carries the detail': 21, 'and ink was there': 10}
 wrote /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/handoff-work-resume-414625/benchmarks/omr-keysig-staged-reach-2026-09/out/beethoven5-p1-p4-ink-identity.json
 exit=0
 ### brahms1-breitkopf-p0-p3
+CLASSES  probe and tree agree: ('keySharp', 'keyFlat', 'keyNatural')
+RECORD   brahms1-breitkopf-p0-p3.record.json
+REACH    97 key verdicts in the record, 97 rebuilt
+CONTROL  decided keys: 76; MOVED 0; absent from the rebuild 0
+SPLIT    {'no_evidence -> markers_without_a_run': 9}
+DETAIL   {'carries the detail': 21, 'and ink was there': 10}
+wrote /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/handoff-work-resume-414625/benchmarks/omr-keysig-staged-reach-2026-09/out/brahms1-breitkopf-p0-p3.json
+exit=0

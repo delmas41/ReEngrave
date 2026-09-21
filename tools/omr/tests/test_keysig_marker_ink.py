@@ -285,16 +285,55 @@ class TestTheInstrumentsOwnControls(unittest.TestCase):
         return str(p)
 
     def _run(self, mod, argv):
-        import io, contextlib, sys as _sys
-        old = _sys.argv
-        _sys.argv = ["x"] + argv
+        """⚠️⚠️ `mod.HERE` IS REDIRECTED, AND THAT IS NOT TIDINESS.
+
+        Both instruments write their results under `HERE/"out"`, which is a
+        COMMITTED measurement artefact. The first version of these tests drove
+        `main()` without redirecting it and **silently overwrote
+        `out/probe-records.json` with the synthetic fixture's numbers** — the
+        committed record of a real measurement, replaced by a one-staff test
+        page, with nothing failing. It was caught by a later command reading
+        that file and finding `rec.json` in it.
+
+        An instrument that destroys its own artefact when exercised is worse
+        than one with no test, because the artefact still LOOKS like a
+        measurement."""
+        import io, contextlib, shutil, sys as _sys, tempfile
+        from pathlib import Path
+        old_argv, old_here = _sys.argv, mod.HERE
         buf = io.StringIO()
-        try:
-            with contextlib.redirect_stdout(buf):
-                rc = mod.main()
-        finally:
-            _sys.argv = old
+        with tempfile.TemporaryDirectory() as d:
+            # ⚠️ The SIBLING instruments come too: `check_arm` loads
+            # `probe_records.py` from `HERE` to compare their restated
+            # constant, so redirecting `HERE` alone breaks that check rather
+            # than exercising it.
+            for f in old_here.glob("*.py"):
+                shutil.copy(f, Path(d) / f.name)
+            mod.HERE = Path(d)
+            (mod.HERE / "out").mkdir()
+            _sys.argv = ["x"] + argv
+            try:
+                with contextlib.redirect_stdout(buf):
+                    rc = mod.main()
+            finally:
+                _sys.argv, mod.HERE = old_argv, old_here
         return rc, buf.getvalue()
+
+    def test_the_tests_do_not_write_into_the_committed_out_dir(self):
+        """The guard for the hazard `_run` documents, asserted rather than
+        trusted: after driving both instruments, the real `out/` is untouched."""
+        import tempfile
+        from pathlib import Path
+        root = Path(__file__).resolve().parents[3]
+        out = root / "benchmarks" / "omr-keysig-staged-reach-2026-09" / "out"
+        before = {f.name: f.stat().st_mtime_ns for f in out.glob("*.json")}
+        probe = self._load("probe_records.py")
+        with tempfile.TemporaryDirectory() as d:
+            self._run(probe, [self._record(Path(d), key_verdict=None)])
+        after = {f.name: f.stat().st_mtime_ns for f in out.glob("*.json")}
+        self.assertEqual(before, after,
+                         "an instrument's test must not rewrite the committed "
+                         "artefact of its own measurement")
 
     # ── the arm ──────────────────────────────────────────────────────────
     def test_the_arm_FAILS_when_a_decided_key_moved(self):

@@ -1,0 +1,14 @@
+{
+ "record": "brahms1-breitkopf-p0-p3.record.json",
+ "decided": 76,
+ "decided_moved": 0,
+ "absent": 0,
+ "abstention_split": {
+  "no_evidence -> markers_without_a_run": 9
+ },
+ "illegal_moves": [],
+ "detail": {
+  "carries the detail": 21,
+  "and ink was there": 10
+ }
+}
