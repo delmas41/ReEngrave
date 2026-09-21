@@ -7382,6 +7382,92 @@ has been bitten by before.
 
 ---
 
+## The staged gatherer dropped every C clef the detector reads
+
+2026-09-21, no flag. `gather._CLEF_CLASSES` admitted
+`{clefG, clefF, clefC, clefUnpitchedPercussion}` — and **`clefC` is the COARSE
+spelling (id 142), which fires ZERO times**, while the detector emits the FINE
+`clefCAlto` / `clefCTenor` (ids 6, 7), which were in neither that set nor
+anything downstream of it. ⚠️⚠️ **The set admitted the one spelling that never
+occurs and dropped the two that do**: **16 detections across 9 staves** over
+both shared records, discarded with no row and no abstention. Findings:
+[benchmarks/omr-staged-c-clef-2026-09/FINDINGS.md](benchmarks/omr-staged-c-clef-2026-09/FINDINGS.md).
+
+⚠️⚠️ **THE BRIEF'S PREMISE IS REFUTED AND THAT IS THE RESULT: NOBODY LOSES A
+CLEF.** The dispatch reasoned that a dropped C clef costs a whole staff of
+music, because `consequences.restate_pitch` gives a staff whose clef abstained
+**no pitches at all**. Measured: all 9 affected staves carry a **DECIDED**
+verdict already, **every one of them from the CV locator** (0.72-0.96), which
+is carrying this population single-handed. Headroom is zero as well —
+Breitkopf reads 97 decided / 0 abstaining, and Litolff's 6 non-decided staves
+hold **0** dropped C clefs and **0** locator readings. **So the repair changes
+no clef verdict on either document.** What it buys is a second independent
+witness and a gatherer that admits the family it claims to — corroboration and
+correctness, not improvement. *Measure REACH before accuracy, and report it
+even when it refutes the brief.*
+
+⚠️⚠️ **THE OBVIOUS REPAIR IS REFUSED, AND THE REFUSAL IS THE MEASURED HALF.**
+Putting the fine names into `_GLYPH_TO_CLEF` would let the detector NAME which
+C clef it is, at 3.0 against the locator's 2.0 — and on Brahms `p3/s1/st11` the
+detector says `clefCTenor` where the locator measures **ALTO twice** (staff 11
+of 14, with tenor below: viola over cello). Run over all nine staves
+(`clef_flip_arm.py`) it **flips 0 and erodes 2 margins, one to EXACTLY
+`MARGIN_FLOOR`.** And DeepScoresV2 annotates only alto and tenor, so the class
+**cannot express** soprano, mezzo or baritone. The fine names are therefore
+admitted as **FAMILY support only** — `_c_family_support` matches
+`clef_family(...) == "C"` — and **`_clef_of` still refuses to name WHICH**,
+which is the geometric-reading doctrine `class_aliases.py:103` already states.
+
+⚠️ **THE CATEGORY TEST IS LOAD-BEARING.** The shipped predicate is
+`category == "clef"` AND (`clef_family(name)` is not None OR a percussion
+clause). `clef_family` reads the leading letter of the class core, so **without
+the category test 33 of the 157 canonical names pass** — of which 8 are the
+real `clef*` classes, so **25 non-clefs would enter as clefs** (27 if you also
+count `clef8`/`clef15`, which pass but are octave marks): every `flag*` (a
+`flag8thUp` as a **BASS** clef), every `fingering*`, the grace notes,
+`fermataAbove`, `coda`, `caesura`. `class_aliases` calls that trap
+*"unreachable — every caller filters category first"*; **`gather_clef` did
+not.**
+
+⚠️ **`clef8` / `clef15` STAY OUT, as a NAMED gap**: they MODIFY a clef rather
+than being one, so admitting them would let an octave mark compete as a clef.
+⚠️ The lane's own *"0 firings"* is corrected by the lane: **`clef8` fires 3×**
+on `handel-leadsheet`, so the gap is **live, not hypothetical**, and a miss
+there is a whole-staff octave error.
+
+⚠️⚠️ **NO DERIVED CHECK IN THIS REPO COULD SEE ANY OF IT.**
+`gather_coverage` reports the clef family **green** while 16 detections are
+discarded, and `wiring`, `no_producer`, `inventory` and `capture` are blind for
+one reason: **nothing asks whether a gatherer's own ADMISSION RULE drops
+members of the family it claims.** Measured over the five sibling filters,
+**the clef set is the only one of six with the fault** — which makes it a
+bounded defect rather than a class of them. ⚠️⚠️ **AND THE SIBLING LANE FOUND
+THE OTHER HALF THE SAME NIGHT, BY A DIFFERENT INSTRUMENT**: `gather_coverage`
+could not have reported it even in principle, because it was filing every clef
+under an invented family `g`/`f`/`c` (see the next section). One lane found the
+gatherer accepts a name that never fires; the other found the tool that should
+have caught it was looking at a family that does not exist. **Neither knew
+about the other.**
+
+⚠️ **TWO OF THAT LANE'S OWN CLAIMS WERE OVERCLAIMS, caught by the battery and
+the arm rather than by review**: it wrote that naming the clef would FLIP a
+staff (the battery reported that arm a survivor; measured, it erodes a margin
+instead), then that the flip happens on one-crop staves (the arm found **0**).
+The generalisable form: **a claim about a weighted contest cannot be read off
+the weights — what decides it is how many INDEPENDENT rows a candidate has.**
+
+⚠️ **NOT ESTABLISHED**: **no print was consulted** — the viola-over-cello
+reading is off the LAYOUT, not the plate; zero verdicts change; n = 2
+documents, 2 publishers, 8 pages, **both scans**; the **engraved family is
+untouched and unmeasured**; no re-gather (a GATHER change, so `readjudicate`
+and `reexport_arm` are structurally blind); no export arm and no OMR-NED;
+**1-in-9 is not a misnaming rate**; the percussion clause is never exercised on
+a page; mid-staff clef changes are out of scope. ⚠️ One crop would settle the
+convention in a single exchange: on Brahms p3/s1, are staves 11 and 12's C
+clefs the same glyph on different lines?
+
+---
+
 ## The coverage instrument audited a 146-name snapshot of a 208-name class space
 
 2026-09-21, no flag. `gather_coverage._detector_classes()` read
