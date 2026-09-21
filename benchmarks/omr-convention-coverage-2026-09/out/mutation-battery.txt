@@ -1,0 +1,3 @@
+REFUSED: the tree is dirty and a battery restores from its own snapshot, which would take an uncommitted change with it.
+M tools/omr/conventions.py
+?? benchmarks/omr-convention-coverage-2026-09/out/mutation-battery.txt
