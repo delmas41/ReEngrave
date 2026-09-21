@@ -152,15 +152,15 @@ KNOWN_GAPS: Dict[str, str] = {
     "SCOPE-LATENT adjudicate_meter declares Q.DOSSIER_FACT": (
         "the meter's dossier tier, inert for the same reason as the key "
         "signature's and with the same frame trap waiting under it."),
-    "SCOPE-LATENT adjudicate_part_partition declares Q.INSTRUMENT": (
-        "the join is decided from staff COUNTS and slots. ⚠️ THIS ONE IS "
-        "RANKED WORK, not a permanent gap: the Phase 2 part-join finding is "
-        "that a short system must pair by INSTRUMENT NAME, and the identity "
-        "is on the STAVES while this decision runs at DOCUMENT — so the "
-        "repair needs `subject=` per staff, not a bare read."),
     "SCOPE-LATENT adjudicate_part_partition declares Q.STAFF_ORDINAL": (
-        "inert declaration; the partition reads slots. Same frame shape as "
-        "`Q.INSTRUMENT` above and the same `subject=` requirement."),
+        "inert declaration; the partition reads slots, staff counts and — "
+        "since 2026-09-20 — the instruments, for its second declared check. "
+        "⚠️ The `Q.INSTRUMENT` entry that used to stand here LEFT this list "
+        "when that check was performed, which is what closing a gap looks "
+        "like. This one has not: nothing reads the ordinal, and the frame "
+        "trap that entry named is still waiting under it — the ordinal is on "
+        "the STAVES and this decision runs at DOCUMENT, so the repair needs "
+        "`Scope.SELF_AND_DESCENDANTS` and not a bare read."),
     "SCOPE-LATENT adjudicate_system_membership declares Q.GAP_BRIDGING": (
         "inert declaration — the connectivity veto already ran in GATHER and "
         "the decision records its RESULT rather than the bridging. The "

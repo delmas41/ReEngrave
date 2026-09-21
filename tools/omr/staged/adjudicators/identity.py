@@ -697,6 +697,102 @@ def _slots_are_ordinals(slots) -> bool:
                for vals in by_system.values())
 
 
+#: The two join shapes `adjudicate_part_partition` can return. A part key is
+#: whatever the chosen join says a `<part>` IS, so the check has to be asked
+#: in the join's own terms or it measures a different partition than the one
+#: that ships.
+_JOIN_ORDINAL = "ordinal"
+_JOIN_SLOT = "slot"
+
+
+def _instrument_consistency(ev: Evidence, join: str) -> Dict:
+    """PERFORM `part_partition`'s second declared check, and RECORD it.
+
+    The decorator has declared *"each part carries ONE instrument across every
+    system it appears on"* since the decision was written, and until
+    2026-09-20 **the body read `Q.INSTRUMENT` on no path at all** -- found by
+    `benchmarks/omr-convention-coverage-2026-09/`, which counted 16 of 32
+    declared checks not performed. This is one of them, and the damage the
+    check describes is already on this project's record: the Phase 2 part-join
+    measurement (`benchmarks/omr-part-join-phase2-2026-09/`) found **12 of 75
+    staff-systems filed under a part carrying a different instrument**,
+    including a Timpani part holding the Viola's staff and its seven sharps.
+
+    ⚠️⚠️ IT RECORDS AND IT DOES NOT ACT, DELIBERATELY. The wiring plan's one
+    condition is that *a wiring pass may CONNECT a decision, it may not let one
+    GUESS* -- and every way of acting on this result is a guess today. Failing
+    the join over a contradiction would hand the document to the fragment
+    fallback on the evidence of one misread margin label; repairing the join
+    would need to know WHICH staff is misfiled, which this cannot say. What it
+    can say is that the join it just chose is contradicted, and say it in the
+    verdict, where the next reader and the next measurement can both see it.
+
+    ⚠️ THE FRAME. `Q.INSTRUMENT` is filed on STAVES and this decision runs at
+    DOCUMENT, so a bare `ev.verdicts(Q.INSTRUMENT)` returns nothing and the
+    check would report a clean zero on every page -- the `wiring.py`
+    SCOPE-LATENT entry for this exact declaration says so in terms, and it is
+    why the read is `Scope.SELF_AND_DESCENDANTS`.
+
+    ⚠️ ABSENT IS NOT CLEAN. A page where no instrument was read yields
+    `checked: False`, never `contested: 0`. The distinction is this record's
+    own reason for existing, and here it is load-bearing twice over: before
+    `run_staged` forwarded `pdf_path`, `adjudicate_instrument` abstained
+    `no_evidence` on 75 of 75 staves on every staged run this repo had ever
+    made, so a check that read that silence as agreement would have reported
+    the part join sound on precisely the documents where it was worst.
+
+    ⚠️ `used` is NOT extended with these ids and that is not an oversight: the
+    join was not decided from them. They arrive in `considered` because
+    `ev.verdicts` records every hand-in, which is the honest place for the
+    basis of a check that changed no value.
+    """
+    seen = ev.verdicts(Q.INSTRUMENT, scope=Scope.SELF_AND_DESCENDANTS)
+    named: Dict[object, List[str]] = {}
+    unkeyed = 0
+    for v in seen:
+        if v.value is None:
+            continue
+        name = v.value.get("name") if isinstance(v.value, dict) else v.value
+        if name is None:
+            continue
+        if join == _JOIN_ORDINAL:
+            key = v.subject.staff
+        else:
+            # The slot join files a staff under its SLOT, so the check must
+            # ask the same table. A staff whose slot never decided belongs to
+            # no part under this join and is counted apart rather than
+            # dropped -- an unkeyed staff is a hole in the check's reach, not
+            # a part that agrees with itself.
+            slot = ev.verdict(Q.SLOT_INDEX, subject=v.subject)
+            key = slot.value if slot is not None else None
+        if key is None:
+            unkeyed += 1
+            continue
+        named.setdefault(key, []).append(name)
+
+    if not named:
+        return {"checked": False,
+                "why_not": "no_instrument_was_read",
+                "staves_named": 0,
+                "staves_unkeyed": unkeyed}
+
+    contested = {k: sorted(set(v)) for k, v in named.items()
+                 if len(set(v)) > 1}
+    return {"checked": True,
+            "join_checked": join,
+            "staves_named": sum(len(v) for v in named.values()),
+            "staves_unkeyed": unkeyed,
+            "parts_named": len(named),
+            # A part named on ONE system cannot disagree with itself, so it is
+            # reported apart: it is the part of the population this check is
+            # structurally unable to speak about.
+            "parts_with_two_or_more_named_staves":
+                sum(1 for v in named.values() if len(v) > 1),
+            "parts_contested": len(contested),
+            "contested": {str(k): v for k, v in sorted(contested.items(),
+                                                       key=lambda kv: str(kv[0]))}}
+
+
 @decision(
     quantity=Q.PART_PARTITION,
     checkable=Checkable.MIXED,
@@ -776,8 +872,18 @@ def adjudicate_part_partition(ev: Evidence) -> Ruling:
     if len(sizes) == 1:
         # The ordinal join succeeds. Measured identical to truth and to the
         # slot join on 3 documents -- so this is a deliberate no-op.
-        return Ruling(value={"join": "ordinal", "staves_per_system": sizes.pop()},
-                      reason="ordinal", used=tuple(v.id for v in counts))
+        #
+        # ⚠️ THE DECLARED INSTRUMENT CHECK IS PERFORMED HERE TOO, and this is
+        # the branch where it can bite: "the systems all print the same NUMBER
+        # of staves" is a constraint satisfiable by accident, as this
+        # function's own docstring records for `beethoven-sym5-mvt1-984073-p4`
+        # -- two 11-staff systems with DIFFERENT lineups. Counting agrees; the
+        # instruments need not.
+        return Ruling(value={"join": _JOIN_ORDINAL,
+                             "staves_per_system": sizes.pop()},
+                      reason="ordinal", used=tuple(v.id for v in counts),
+                      detail={"instrument_consistency":
+                              _instrument_consistency(ev, _JOIN_ORDINAL)})
 
     # The ordinal join REFUSES. This is the only population the change
     # touches, and it is where the slot join was measured wrong.
@@ -820,11 +926,18 @@ def adjudicate_part_partition(ev: Evidence) -> Ruling:
         # contiguous, and this refuses a join that would have been right.
         # That is abstention, not error, and the repair is a slot table that
         # can express a gap -- see `adjudicate_slot_index`.
-        return Ruling(value={"join": "ordinal", "reason": "slots_are_ordinals"},
+        return Ruling(value={"join": _JOIN_ORDINAL,
+                             "reason": "slots_are_ordinals"},
                       reason="deduced_anchor",
                       used=tuple(v.id for v in counts),
                       detail={"slots_are_ordinals": True,
                               "staves_per_system": sorted(sizes),
+                              # Checked as an ORDINAL join, because that is
+                              # what this branch has just decided the slot
+                              # table amounts to. Asking it in slot terms
+                              # would check a partition that does not ship.
+                              "instrument_consistency":
+                                  _instrument_consistency(ev, _JOIN_ORDINAL),
                               "note": "the slot table is the staff position, "
                                       "so joining on it is the ordinal join "
                                       "this branch refused"})
@@ -833,11 +946,16 @@ def adjudicate_part_partition(ev: Evidence) -> Ruling:
         # identity the harness refused. Both land here; the verdict's
         # `excluded` list says which, and it says so without this function
         # asking.
-        return Ruling(value={"join": "ordinal", "reason": "slots_unusable"},
+        return Ruling(value={"join": _JOIN_ORDINAL,
+                             "reason": "slots_unusable"},
                       reason="deduced_anchor",
-                      used=tuple(v.id for v in counts))
+                      used=tuple(v.id for v in counts),
+                      detail={"instrument_consistency":
+                              _instrument_consistency(ev, _JOIN_ORDINAL)})
 
-    return Ruling(value={"join": "slot",
+    return Ruling(value={"join": _JOIN_SLOT,
                          "slots": sorted({v.value for v in usable
                                           if isinstance(v.value, int)})},
-                  reason="slot", used=tuple(v.id for v in usable))
+                  reason="slot", used=tuple(v.id for v in usable),
+                  detail={"instrument_consistency":
+                          _instrument_consistency(ev, _JOIN_SLOT)})

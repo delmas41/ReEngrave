@@ -81,8 +81,6 @@ KNOWN_GAPS: Dict[str, str] = {
     "instrument declares 'staff_ordinal'": "inert declaration.",
     "instrument declares 'staff_group'": "inert declaration.",
     "part_partition declares 'staff_ordinal'": "inert declaration.",
-    "part_partition declares 'instrument'":
-        "inert declaration; the join is decided from staff COUNTS and slots.",
     "group_symbol declares 'system_staff_count'":
         "inert declaration; the symbol is decided from the groups and the "
         "instruments, deliberately NOT from the staff count -- which is the "
