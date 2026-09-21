@@ -7382,6 +7382,93 @@ has been bitten by before.
 
 ---
 
+## The stem ATTRIBUTION repair — REFUSED, twice, by two routes
+
+2026-09-21, **no code changed** (`git diff -- tools/` empty). The 2026-09-18
+handoff's ranked next work #1 — *"a stroke belongs to the head at ONE OF ITS
+ENDS, not to every head it crosses"* — is measured and **not shipped, not even
+behind a default-OFF flag**.
+[benchmarks/omr-stem-attribution-2026-09/FINDINGS-2026-09-21-independent-re-derivation.md](benchmarks/omr-stem-attribution-2026-09/FINDINGS-2026-09-21-independent-re-derivation.md).
+
+⚠️⚠️ **IT WAS ALREADY REFUSED ON 2026-09-20 AND THE 09-21 LANE DID NOT KNOW.**
+`benchmarks/omr-stem-attribution-2026-09/FINDINGS.md` is dated 09-20, was
+**already in the tree** when the lane was dispatched, and had withdrawn the
+same rule after **Sean read the crops** (*"it is an octave of C's and the stem
+belongs to both"*; the residual *"look like clean notes with basic stems on
+them"*; and his own diagnosis, **two separate stems measured as one**). The
+09-21 dispatch was written from the 09-18 handoff without reading the benchmark
+directory named after the thing. **The duplication is the manager's, not the
+lane's.**
+
+⚠️⚠️ **AND THE PRESCRIBED CHECK COULD NOT HAVE CAUGHT IT.** The brief said to
+run `git log --all --oneline -S "_stems_on" -- tools/`. The 09-20 work
+**changed no `tools/` file — because it was withdrawn** — so an `-S` search
+over `tools/` returns nothing. **A withdrawn investigation is invisible to a
+code search by construction, and the most relevant prior art is exactly the
+work that concluded *do not build this*.** The check that works is `ls` on the
+benchmark directory. This is a NEW clause on this file's own
+*`git log --all -S` before building anything* rule.
+
+⚠️⚠️ **THE REFUTATION IS STRUCTURAL AND NEEDS NO RECORDS — SIX LINES OF
+SOURCE.** `adjudicate_stem_direction` reaches the beam-mate tier **only when
+`_stems_on` returns EMPTY**, and the 26-head standoff is built from heads that
+tier answered. So **every head in the print-adjudicated population has an empty
+stem set by construction**, an end constraint makes `_stems_on` strictly
+narrower, and narrowing an empty set leaves it empty. Measured: **all 44 heads
+the print has ever adjudicated on this thread** — the 26-head standoff and the
+stroke lane's 18 crops including its 6-of-6 DISAGREE stratum — **carry the
+record's own verdict `no_stem`.** The proposed rule only ever REMOVES an
+attribution; **it cannot reach one of them.** ⚠️ So the 09-18 handoff's *"two
+lanes, two instruments, one conclusion"* merges two populations, **neither of
+which the repair it proposes can touch.**
+
+⚠️ **THE NATURAL STATISTIC IS AN ARTIFACT.** Position along a stroke as a
+FRACTION of its length scores a head at the end of a *short* stroke as
+mid-stroke; on 24 crops chosen that way **all 24 were at an end**. The
+scale-free measure is distance to the nearer end in HEAD-HEIGHTS, on which the
+population is **15 of 969 and 9 of 1,256** solo pairs with **no empty interval
+and no plateau** — so any cut would be fitted, and none is proposed.
+
+⚠️⚠️ **THE SAFETY ARGUMENT IS FALSE: "solo" IS NOT A CHORD GUARANTEE.**
+**7.5% / 7.8% of solo pairs have a chord partner the overlap test missed**, so
+the documented double-stop regression is reachable. Same shape as the 09-20
+file's own §0(a), where a chord test requiring a companion above *and* below
+could not see an octave pair — reached from the opposite direction. Print
+census (8 far-from-end + 8 controls, frame control 0/16, affine residual
+**0.000 px over 3,337 heads**): controls **8/8**, far pairs **2 settled — right
+once, wrong once**.
+
+⚠️⚠️ **AND THE FAULT IN `OMR_STEM_STROKE`'s STROKES RUNS THE OTHER WAY.** The
+lane first reported it 10× commoner there and called this repair a prerequisite
+for that flag, then inverted its own finding: that population is **93% chords**
+at a 2-head-height tolerance, so **a chord's members are not all joined to
+their shared stroke and `_stems_on` is too NARROW there, not too wide.** That
+agrees with 09-20's conclusion from a third direction. **The ranked work is to
+JOIN a chord to its stroke** (reach 115 of 124 profile pairs), not to narrow
+anything.
+
+⚠️⚠️ **NEW AND REPO-WIDE: THE SHARED RECORDS CAN NO LONGER LICENSE A REBUILD.**
+A `readjudicate`-style CONTROL 1 — rebuild the record's own verdicts and require
+them to reproduce — **FAILS on today's tree, 2,760 of 2,993 durations.** Not a
+harness fault: the lane's `rebuild()` is AST-identical to the canonical one
+(pinned by a test). **Seven commits have touched `rhythm.py` since the record's
+tree `9d4ccc85`** — verified at integration — and one is literally *"meter: an
+uncorroborated change is not carried off its system, and both flags default
+ON"*. **Any future A/B on `library/_shared-records/` must be base-vs-arm on ONE
+tree; the record's committed verdicts are no longer a baseline.** ⚠️ CONTROL 2
+passed and independently reproduced the 09-18 handoff's own figure — **152
+verdicts move, all `no_stem → decided`**, exactly the beam-mate tier's stated
+reach.
+
+⚠️ **NOT ESTABLISHED**: one adjudicator, who also wrote the crop tool, and **who
+got 2 of 24 tiles wrong at sheet magnification** — a measured error rate, on the
+easier plate. The print settles only 2 of 8; **Litolff's 15 were never cropped**;
+the profile reader's 124 tiles were rendered and not adjudicated. No file effect
+(`<voice>`/`<backup>` unmeasured — with no rule there is nothing to measure), no
+OMR-NED, n = 2 documents / 2 publishers.
+
+---
+
 ## The `<note>` element: what SOUNDS, and what is BEAMED
 
 2026-09-21, no flag, **staged exporter only** — `tools/omr/export.py` is **0
