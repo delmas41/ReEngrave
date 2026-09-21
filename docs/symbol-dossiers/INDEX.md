@@ -151,6 +151,27 @@ measure number, rehearsal letter, lyric; fingerings 0/1/2/4/5.
 
 Items 1–3 are wires, not rebuilds.
 
+### Disposition, 2026-09-21 — all eight verified, four closed
+
+Every item was re-checked against the tree before anything was done with it.
+
+| item | verified? | status |
+|---|---|---|
+| 1 key-altered notes export unaltered | **yes** — `consequences.restate_pitch` builds the pitch from position + clef with the key nowhere in it, and `_mxl_pitch_block` takes `<alter>` from the pitch STRING | **dispatched**, own lane |
+| 2 no `<beam>` from the staged exporter | **yes** — `_legacy._mxl_note` already takes `beam_states`; `staged/export.py` never passes it | **dispatched**, same lane as 1 (they share the `_mxl_note` call site, so they could not be split without a guaranteed conflict) |
+| 3 every C clef dropped | **yes, and sharper than stated** — read off the shipped checkpoint's own `names`: `_CLEF_CLASSES` accepts `clefC`, which is the **COARSE** name at id 142 that CLAUDE.md records as firing zero times, while the FINE `clefCAlto` (6) and `clefCTenor` (7) are in neither the set nor anything downstream. `clef8`/`clef15` likewise | **dispatched**, own lane |
+| 4 a grace note is a full quarter | **yes, and larger than stated** — `grep -rn grace tools/omr/staged/` returns exactly ONE hit, `gather_coverage.py:590: "grace": None`, against **seven** explicit grace classes in the shipped space (`graceNoteAcciaccatura*`/`Appoggiatura*`, ids 99-102, 196) plus eight `*Small` notehead classes | open; inside a running lane's file |
+| 5 the tuplet has no positional gate | **yes** — the docstring states it in bold twice (*"its centre must fall inside the group's span"*), and the body contains **no x-test at all**; `members` is every notehead in the cell. `inventory --check` already reports the sibling symptom (`tuplet_ratio` declares `beam_stroke` and never reads it) | open; inside a running lane's file. Same family as `adjudicate_slot_index`: **a rule described in a docstring and never built** |
+| 6 `gather_coverage`'s 146-name snapshot | **yes** — `len(DEEPSCORES_V2_CLASSES) == 146`; the shipped weights carry **208**, and the two disagree on SPELLING as well as length | **dispatched**, own lane |
+| 7 `Q.BARLINE_COLUMN` is a count of cells | **yes** — `gather.py:238` writes `last + 1`, noted `"n_cells cut for this staff"` | ✅ **CLOSED** — `record.py` corrected. ASSUMPTIONS.md had recorded it on 2026-09-09 and it never reached the vocabulary file |
+| 8 `capture.py` spells a stem `x, y0, y1` | **yes** | ✅ **CLOSED** — `capture.py` corrected, with `record.py:381`'s 400-of-400 measurement cited at the site |
+
+⚠️ **Items 4 and 5 are open for a reason, not an omission**: both live in
+files a lane was editing on the night this was written, and a manager editing
+into a running lane's fence is how a clean auto-merge silently drops one side.
+They are verified and ready, and neither is a wire — item 5 in particular
+would change what a tuplet claims.
+
 ## 4. Documentation that is wrong, found by grep
 
 | claim | where | the tree says |
@@ -163,6 +184,35 @@ Items 1–3 are wires, not rebuilds.
 | stem vs barline *"already solved; the precedent"* | confusables doc | scoped to <3-staff systems; four piano systems of evidence |
 | A-DUR-6: tempo word blocked on `direction` being a stub | ASSUMPTIONS.md | `stubs()` is `()` |
 | Litolff p.62 meter change at cell 8 | `report_boundary.TRUTH_CHANGES` | the print changes at cell 6, where the detector fires nothing on 17 of 17 |
+
+### ✅ Disposition, 2026-09-21 — each row verified against the tree, then acted on
+
+This sweep was a reading pass and fixed nothing, which is why this table
+existed. Every row was re-checked (the tree outranks this file too) and
+carried to an outcome:
+
+| row | verified? | what was done |
+|---|---|---|
+| F-clef dot veto 13 → 5 | **yes** — `clef_locator.py:286` ships `dot_single_clear_is_enough: bool = False` | CLAUDE.md corrected. ⚠️ Sharper than stated: the paragraph **contradicted itself**, describing the revert two clauses before presenting the taken state as shipped |
+| key-sig corroboration default-ON | **yes** — one non-test import, `transcribe.py:267` | CLAUDE.md knobs row corrected. ⚠️ Also found: `staged/adjudicators/header.py:15` declares it *"CONSUMED, default-ON"* — a convention registry asserting a consumer that does not exist. Recorded, not edited (inside a running lane's fence) |
+| lexicon "181 musical terms" | **yes** — `TERMS` 140 + `CONNECTIVE` 25 = **156** | corrected in CLAUDE.md and in `staged/adjudicators/text.py`. `version_memory.md`'s copy left alone: that file is a log of what was said at the time, and history is not rewritten here |
+| brace-centred margin block "SHIPPED" | **not verifiable from here** | the claim lives in a FINDINGS on a branch far behind; left open |
+| "the bracket encloses exactly the system" | **already fixed** — not in CLAUDE.md | no action; the 09-18 handoff corrected it. This table was describing the pre-09-18 state |
+| stem vs barline "already solved" | **yes** — `measure_extractor.py:757` gates on `if n_staves < 3:`; `SPAN_MIN_INK`'s own comment says *"four braced piano systems of WTC I"* | confusables doc heading changed to **"⚠️ NOT solved; scoped to braced systems"**, with §1's cross-reading written in beside it. **The highest-value row of the eight** — a reader who trusted that heading would not have looked at the one mark four dossiers independently ranked first |
+| A-DUR-6 blocked on a stub | **yes** — `stubs()` is `()` | ASSUMPTIONS.md corrected, and named as a third instance of *a premise encoded in a refusal outlives its reason* |
+| Litolff p.62 at cell 8 | **yes** — the entry reads `(8, "3/4")` | ⚠️ **ANNOTATED, DELIBERATELY NOT CHANGED.** The ink findings say in terms that the bar number *is not settled*, so moving a truth table to a second unsettled number would silently re-score every meter arm ever run on that fixture. The entry now says any `OK` it prints is scored against cell 8 |
+
+⚠️ **Three more of the same shape were found while checking these**, each a
+correction that landed in one file and not the other, with the surviving copy
+being the one a reader meets first: the stem spelling `record.py:381` records
+as REFUTED still stood in `capture.py` (§3 item 8); `Q.BARLINE_COLUMN` still
+declared *"a fitted barline, x per staff"* while its producer writes a cell
+count (§3 item 7); and — the one that matters — **the staged reader runs
+NEITHER notehead-precision filter**: `_drop_clipped_notehead_fragments` and
+`_drop_unladdered_noteheads` are defined *and called* only in `transcribe.py`,
+so §2a's *"'Shipped' means the legacy path"* is confirmed on its own Tier-1
+family, and the pooled figure CLAUDE.md quotes for it does not describe the
+path that produced the cleanup artefact.
 
 ## 5. Where the dossiers disagree with the three prior documents
 
