@@ -1,0 +1,667 @@
+{
+  "n_entries": 114,
+  "per_category": {
+    "Staff & pitch geometry": 14,
+    "Stems & beams": 18,
+    "Rests & bar filling": 8,
+    "Accidentals & key signatures": 8,
+    "Time signatures & meter": 8,
+    "Slurs, ties & phrasing": 12,
+    "Dynamics & hairpins": 7,
+    "Articulations & ornaments": 9,
+    "Score layout & systems": 18,
+    "Text & margin labels": 8,
+    "Barlines & repeats": 4
+  },
+  "claimed": {
+    "C1+L3": [
+      "CB16"
+    ],
+    "C22+L36+L37": [
+      "CB17",
+      "CB19"
+    ],
+    "C24": [
+      "CB21"
+    ],
+    "C25+L38": [
+      "CB18"
+    ],
+    "C29": [
+      "CB31"
+    ],
+    "C33+L43": [
+      "CB31"
+    ],
+    "C39+L47": [
+      "CB24"
+    ],
+    "C42": [
+      "CB25"
+    ],
+    "C5": [
+      "CB16"
+    ],
+    "C54": [
+      "CB28"
+    ],
+    "C56+L74": [
+      "CB01",
+      "CB02",
+      "CB05"
+    ],
+    "C58+L63": [
+      "CB07"
+    ],
+    "C59": [
+      "CB07"
+    ],
+    "C62+L66": [
+      "CB04",
+      "CB11",
+      "CB14"
+    ],
+    "C64": [
+      "CB32"
+    ],
+    "C69+L70": [
+      "CB09",
+      "CB12"
+    ],
+    "C71": [
+      "CB09",
+      "CB12"
+    ],
+    "C83+L75": [
+      "CB02"
+    ],
+    "C84+L64": [
+      "CB07"
+    ],
+    "L2": [
+      "CB16"
+    ]
+  },
+  "uncovered": [
+    {
+      "id": "C2",
+      "category": "Staff & pitch geometry",
+      "title": "A notehead sits ON a line or IN a space, on a half-space lattice",
+      "status": "MEASURED HERE"
+    },
+    {
+      "id": "C3+L5",
+      "category": "Staff & pitch geometry",
+      "title": "Ledger-line pitch is NOT the staff spacing, and it is publisher-dependent",
+      "status": "MEASURED HERE \u2014 and it **contradicts the literature's rigidity claim.**"
+    },
+    {
+      "id": "C4",
+      "category": "Staff & pitch geometry",
+      "title": "A note outside the staff is joined to it by an unbroken ladder of ledger rungs",
+      "status": "MEASURED HERE"
+    },
+    {
+      "id": "C6",
+      "category": "Staff & pitch geometry",
+      "title": "A ledger rung printed THROUGH a hollow notehead is split by the head's white counter",
+      "status": "MEASURED HERE"
+    },
+    {
+      "id": "C7+L1",
+      "category": "Staff & pitch geometry",
+      "title": "The staff space is the unit of everything \u2014 the em box is four staff spaces",
+      "status": "MEASURED HERE (as a font fact)"
+    },
+    {
+      "id": "C8",
+      "category": "Staff & pitch geometry",
+      "title": "A staff's five lines are straight and evenly spaced \u2014 and on a scanned plate they are neither",
+      "status": "MEASURED HERE"
+    },
+    {
+      "id": "L4",
+      "category": "Staff & pitch geometry",
+      "title": "A whole notehead is wider than a black one, and the same height",
+      "status": "LITERATURE ONLY (untested here)"
+    },
+    {
+      "id": "L6",
+      "category": "Staff & pitch geometry",
+      "title": "A ledger line is thicker than a staff line",
+      "status": "LITERATURE ONLY (untested here)"
+    },
+    {
+      "id": "L7",
+      "category": "Staff & pitch geometry",
+      "title": "Staff line thickness is around an eighth of a staff space, and applications disagree by 2\u00d7",
+      "status": "LITERATURE ONLY (untested here)"
+    },
+    {
+      "id": "L8",
+      "category": "Staff & pitch geometry",
+      "title": "A staff is 4\u20138.5 mm tall, and the score end is the small end",
+      "status": "LITERATURE ONLY (untested here)"
+    },
+    {
+      "id": "L9",
+      "category": "Staff & pitch geometry",
+      "title": "The first line of each movement is indented",
+      "status": "LITERATURE ONLY (untested here)"
+    },
+    {
+      "id": "C9+L10",
+      "category": "Stems & beams",
+      "title": "A stem attaches on the RIGHT going UP, or on the LEFT going DOWN",
+      "status": "MEASURED HERE"
+    },
+    {
+      "id": "C10+L16",
+      "category": "Stems & beams",
+      "title": "In a single voice, a note above the middle line is stemmed DOWN",
+      "status": "MEASURED HERE \u2014 and refuted as a reader."
+    },
+    {
+      "id": "C11",
+      "category": "Stems & beams",
+      "title": "A beam joins stem TIPS, so every stem on one stroke points the same way",
+      "status": "MEASURED HERE \u2014 **shipped.**"
+    },
+    {
+      "id": "C12",
+      "category": "Stems & beams",
+      "title": "A beam stroke runs from the FIRST stem it joins to the LAST, and a stem stands at the SIDE of its notehead",
+      "status": "MEASURED HERE"
+    },
+    {
+      "id": "C13+L11",
+      "category": "Stems & beams",
+      "title": "A stem is one octave long by default \u2014 and as long as the music needs it to be",
+      "status": "MEASURED HERE"
+    },
+    {
+      "id": "C14",
+      "category": "Stems & beams",
+      "title": "Two successive notes are set further apart than one accidental's own two strokes",
+      "status": "MEASURED HERE \u2014 **and its premise is now under direct challenge.**"
+    },
+    {
+      "id": "C15",
+      "category": "Stems & beams",
+      "title": "No stem means a whole note",
+      "status": "ASSERTED (untested here)"
+    },
+    {
+      "id": "C79+L20",
+      "category": "Stems & beams",
+      "title": "Stacked beams are set 0.75 staff spaces centre to centre",
+      "status": "MEASURED HERE \u2014 **and it reproduces the font default on a real plate.**"
+    },
+    {
+      "id": "C80+L23",
+      "category": "Stems & beams",
+      "title": "A FLAG glyph NAMES A VALUE, and it hangs on the STEM",
+      "status": "MEASURED HERE"
+    },
+    {
+      "id": "L12",
+      "category": "Stems & beams",
+      "title": "A stem on ledger lines reaches the middle staff line",
+      "status": "LITERATURE ONLY (untested here)"
+    },
+    {
+      "id": "L13",
+      "category": "Stems & beams",
+      "title": "A stem is never shorter than 2.5 staff spaces",
+      "status": "LITERATURE ONLY (untested here)"
+    },
+    {
+      "id": "L14",
+      "category": "Stems & beams",
+      "title": "A stem is about a tenth of a staff space thick",
+      "status": "LITERATURE ONLY (untested here)"
+    },
+    {
+      "id": "L15",
+      "category": "Stems & beams",
+      "title": "Where there is no case for either direction, the stem goes DOWN",
+      "status": "LITERATURE ONLY (untested here)"
+    },
+    {
+      "id": "L17",
+      "category": "Stems & beams",
+      "title": "Two voices on one staff: upper voice up, lower voice down, regardless of position",
+      "status": "LITERATURE ONLY (untested here)"
+    },
+    {
+      "id": "L18",
+      "category": "Stems & beams",
+      "title": "Stem direction is held constant through a beat or half-bar",
+      "status": "LITERATURE ONLY (untested here)"
+    },
+    {
+      "id": "L19",
+      "category": "Stems & beams",
+      "title": "In a chord containing a second, the two heads straddle the stem",
+      "status": "LITERATURE ONLY (untested here)"
+    },
+    {
+      "id": "L21",
+      "category": "Stems & beams",
+      "title": "A beam is angled by the OUTER interval, and is horizontal in three named cases",
+      "status": "LITERATURE ONLY (untested here)"
+    },
+    {
+      "id": "L22",
+      "category": "Stems & beams",
+      "title": "Beaming follows the metre, and never crosses the middle of the bar",
+      "status": "LITERATURE ONLY (untested here)"
+    },
+    {
+      "id": "C16+L27",
+      "category": "Rests & bar filling",
+      "title": "A whole rest stands for THE BAR, whatever the meter",
+      "status": "MEASURED HERE \u2014 one of the two largest single wins in the repo."
+    },
+    {
+      "id": "C17+L24+L25",
+      "category": "Rests & bar filling",
+      "title": "A whole rest HANGS under the 4th line; a half rest SITS on the 3rd \u2014 and they are the same shape",
+      "status": "MEASURED HERE (the slot); the *discriminator between whole and half* is ASSERTED and unused."
+    },
+    {
+      "id": "C18",
+      "category": "Rests & bar filling",
+      "title": "A tacet part prints a whole rest in EVERY bar",
+      "status": "MEASURED HERE"
+    },
+    {
+      "id": "C19+L26",
+      "category": "Rests & bar filling",
+      "title": "Rest shapes separate strongly by aspect ratio \u2014 except whole vs half",
+      "status": "MEASURED HERE \u2014 **one-sided.**"
+    },
+    {
+      "id": "C20",
+      "category": "Rests & bar filling",
+      "title": "A silent bar is still PRINTED with a rest; a genuinely blank bar means we failed to read it",
+      "status": "ASSERTED (untested here)"
+    },
+    {
+      "id": "L28",
+      "category": "Rests & bar filling",
+      "title": "A whole-bar rest is centred in the bar",
+      "status": "LITERATURE ONLY (untested here)"
+    },
+    {
+      "id": "L29",
+      "category": "Rests & bar filling",
+      "title": "A rest is centred on or about the middle of the staff",
+      "status": "LITERATURE ONLY (untested here)"
+    },
+    {
+      "id": "L30",
+      "category": "Rests & bar filling",
+      "title": "A multi-bar rest is an H-bar one staff space thick",
+      "status": "LITERATURE ONLY (untested here)"
+    },
+    {
+      "id": "C21+L33+L34",
+      "category": "Accidentals & key signatures",
+      "title": "An accidental is a SCOPE to the end of the bar \u2014 and it carries across a barline through a TIE",
+      "status": "MEASURED HERE (implemented and relied on) \u2014 **no isolated figure for the convention itself.**"
+    },
+    {
+      "id": "C23+L40",
+      "category": "Accidentals & key signatures",
+      "title": "A key signature stands BETWEEN the clef and the meter",
+      "status": "MEASURED HERE"
+    },
+    {
+      "id": "C26+L35",
+      "category": "Accidentals & key signatures",
+      "title": "A courtesy accidental is real ink that changes nothing \u2014 and its frequency is a property of the EDITION",
+      "status": "ASSERTED (untested here) \u2014 \u2705 **and the literature independently asserts the same thing**, which raises confidence without making it a measurement."
+    },
+    {
+      "id": "C81+L39",
+      "category": "Accidentals & key signatures",
+      "title": "Timpani, horns and trumpets are conventionally written WITHOUT a key signature",
+      "status": "ASSERTED (untested here) \u2014 \u2705 **independently asserted by MOLA**, which is the strongest corroboration in this registry short of a measurement."
+    },
+    {
+      "id": "L32",
+      "category": "Accidentals & key signatures",
+      "title": "An accidental stands BEFORE its note, at the same staff position",
+      "status": "LITERATURE ONLY (untested here)"
+    },
+    {
+      "id": "C27+L42",
+      "category": "Time signatures & meter",
+      "title": "A time signature's placement is RIGID \u2014 and its numerals fill the staff's height",
+      "status": "MEASURED HERE"
+    },
+    {
+      "id": "C28+L41",
+      "category": "Time signatures & meter",
+      "title": "A meter is printed at a movement's START and nowhere else",
+      "status": "MEASURED HERE"
+    },
+    {
+      "id": "C30+L44",
+      "category": "Time signatures & meter",
+      "title": "A cautionary meter printed after a system's FINAL barline governs no bar",
+      "status": "MEASURED HERE"
+    },
+    {
+      "id": "C31+L46",
+      "category": "Time signatures & meter",
+      "title": "A letter meter (`C`, `\u00a2`) is a complete meter \u2014 and the stroke is what separates them",
+      "status": "MEASURED HERE \u2014 **and the literature's proposed mechanism is the one this repo measured failing.**"
+    },
+    {
+      "id": "C32",
+      "category": "Time signatures & meter",
+      "title": "An OPENING meter sits 10\u201312 staff spaces into its bar, behind the clef and the key signature",
+      "status": "MEASURED HERE"
+    },
+    {
+      "id": "C34",
+      "category": "Time signatures & meter",
+      "title": "\"A meter stack is two digits aligned in x and adjacent in y\" \u2014 REFUTED",
+      "status": "**REFUTED HERE**"
+    },
+    {
+      "id": "C35+L48",
+      "category": "Slurs, ties & phrasing",
+      "title": "A slur is drawn OVER its notes; a hairpin is drawn BETWEEN them",
+      "status": "MEASURED HERE"
+    },
+    {
+      "id": "C36+L51",
+      "category": "Slurs, ties & phrasing",
+      "title": "A slur's ink stops INSIDE both outer notehead centres",
+      "status": "MEASURED HERE \u2014 **and it closes an `UNSOURCED` literature entry with a figure.**"
+    },
+    {
+      "id": "C37",
+      "category": "Slurs, ties & phrasing",
+      "title": "An arc over STEMMED notes is drawn stem-top to stem-top",
+      "status": "MEASURED HERE"
+    },
+    {
+      "id": "C38+L50",
+      "category": "Slurs, ties & phrasing",
+      "title": "One printed arc cut by a barline is still ONE arc",
+      "status": "MEASURED HERE"
+    },
+    {
+      "id": "C40",
+      "category": "Slurs, ties & phrasing",
+      "title": "A TIE is drawn shallow and close to its two heads; a SLUR arcs clear of the notes under it",
+      "status": "ASSERTED (untested here)"
+    },
+    {
+      "id": "C41",
+      "category": "Slurs, ties & phrasing",
+      "title": "Sean's S4 \u2014 an arc connected to the stem's edge AWAY from the notehead is a SLUR \u2014 REFUTED",
+      "status": "**REFUTED HERE \u2014 at full width.**"
+    },
+    {
+      "id": "C43",
+      "category": "Slurs, ties & phrasing",
+      "title": "The tie/slur POSITION GRAMMAR (S2/S5), measured on both families and REFUSED",
+      "status": "**REFUTED HERE** as a shipped default. **The underlying convention is sound; the veto is refused for what it costs.**"
+    },
+    {
+      "id": "C44",
+      "category": "Slurs, ties & phrasing",
+      "title": "A bar's first note sits 2.0\u20132.5 staff spaces past the barline",
+      "status": "MEASURED HERE \u2014 and used to **REFUSE** a rule, not to build one."
+    },
+    {
+      "id": "L49",
+      "category": "Slurs, ties & phrasing",
+      "title": "Where the outer notes have opposite stems, the slur end moves toward the noteheads",
+      "status": "LITERATURE ONLY (untested here) \u2014 **and the source is secondary.**"
+    },
+    {
+      "id": "L52",
+      "category": "Slurs, ties & phrasing",
+      "title": "A slur must begin and end in the same voice",
+      "status": "LITERATURE ONLY (untested here)"
+    },
+    {
+      "id": "C45+L55",
+      "category": "Dynamics & hairpins",
+      "title": "A hairpin is printed BELOW its staff, in the dynamics band \u2014 and dynamics are not placed INSIDE the staff",
+      "status": "MEASURED HERE"
+    },
+    {
+      "id": "C46+L53",
+      "category": "Dynamics & hairpins",
+      "title": "A dynamic LETTER stands in its own staff's band, below the bottom line",
+      "status": "MEASURED HERE"
+    },
+    {
+      "id": "C47+L57",
+      "category": "Dynamics & hairpins",
+      "title": "A dynamic WORD is a run of adjacent letters (`f`+`f` = `ff`)",
+      "status": "MEASURED HERE \u2014 **and the assembly is where it breaks.**"
+    },
+    {
+      "id": "C48",
+      "category": "Dynamics & hairpins",
+      "title": "A hairpin runs quiet \u2192 loud (or loud \u2192 quiet) and travels with a dynamic letter",
+      "status": "MEASURED HERE \u2014 **strictly LOCAL, and it is a rate, not a rule.**"
+    },
+    {
+      "id": "C49",
+      "category": "Dynamics & hairpins",
+      "title": "An ACCENT is note-anchored; a HAIRPIN is span-anchored",
+      "status": "ASSERTED (untested here)"
+    },
+    {
+      "id": "C78+L56",
+      "category": "Dynamics & hairpins",
+      "title": "A beam is always connected to something; a HAIRPIN is connected to NOTHING \u2014 and it is thinner than a stem",
+      "status": "MEASURED HERE \u2014 and it comes out as a **binary, not a threshold.**"
+    },
+    {
+      "id": "L54",
+      "category": "Dynamics & hairpins",
+      "title": "On a grand staff, dynamics go BETWEEN the two staves",
+      "status": "LITERATURE ONLY (untested here)"
+    },
+    {
+      "id": "C50+L31",
+      "category": "Articulations & ornaments",
+      "title": "An augmentation dot sits at the note's own space \u2014 half a space ABOVE for a note on a line \u2014 and NEVER below",
+      "status": "MEASURED HERE"
+    },
+    {
+      "id": "C51+L58+L61",
+      "category": "Articulations & ornaments",
+      "title": "A staccato or accent is printed on the notehead side, opposite the stem, and CENTRED on the head in x",
+      "status": "MEASURED HERE"
+    },
+    {
+      "id": "C52+L62",
+      "category": "Articulations & ornaments",
+      "title": "A FERMATA hangs over whatever sounds beneath it \u2014 which is often a whole-bar rest, not a note",
+      "status": "MEASURED HERE"
+    },
+    {
+      "id": "C53",
+      "category": "Articulations & ornaments",
+      "title": "A TUPLET digit stands OUTSIDE the staff over its beam; a TIME-SIGNATURE digit stands INSIDE it; a FINGERING sits beside its notehead",
+      "status": "MEASURED HERE"
+    },
+    {
+      "id": "C55",
+      "category": "Articulations & ornaments",
+      "title": "A TREMOLO rides the stem, so it has no side at all",
+      "status": "ASSERTED (untested here)"
+    },
+    {
+      "id": "C87",
+      "category": "Articulations & ornaments",
+      "title": "A TRILL, TURN or MORDENT is printed clear ABOVE its note, centred on it",
+      "status": "ASSERTED (untested here) \u2014 **the side is a convention; only its REACH was measured.**"
+    },
+    {
+      "id": "L59",
+      "category": "Articulations & ornaments",
+      "title": "An articulation above SITS on its position; one below HANGS from it",
+      "status": "LITERATURE ONLY (untested here)"
+    },
+    {
+      "id": "L60",
+      "category": "Articulations & ornaments",
+      "title": "A small articulation near the middle line is centred in the next free SPACE",
+      "status": "LITERATURE ONLY (untested here)"
+    },
+    {
+      "id": "C57",
+      "category": "Score layout & systems",
+      "title": "A barline is a STRAIGHT line, not a vertical one",
+      "status": "MEASURED HERE"
+    },
+    {
+      "id": "C60",
+      "category": "Score layout & systems",
+      "title": "Some publishers print NO section bracket at all",
+      "status": "MEASURED HERE"
+    },
+    {
+      "id": "C61",
+      "category": "Score layout & systems",
+      "title": "No left-edge object ever bridges a system break",
+      "status": "MEASURED HERE"
+    },
+    {
+      "id": "C63",
+      "category": "Score layout & systems",
+      "title": "The strings are the LAST block of a system, and a short string section is short at its FOOT",
+      "status": "MEASURED HERE"
+    },
+    {
+      "id": "C65",
+      "category": "Score layout & systems",
+      "title": "A BRACE means ONE PLAYER",
+      "status": "ASSERTED (untested here)"
+    },
+    {
+      "id": "C66",
+      "category": "Score layout & systems",
+      "title": "An engraver spaces notes roughly in PROPORTION TO DURATION",
+      "status": "ASSERTED (untested here)"
+    },
+    {
+      "id": "C67+L67",
+      "category": "Score layout & systems",
+      "title": "Whether one printed staff label means ONE part or TWO is a property of the ENCODING, not the engraving",
+      "status": "**ENCODING (not engraving)**"
+    },
+    {
+      "id": "C68",
+      "category": "Score layout & systems",
+      "title": "A PAGE truth is not an ENCODING truth",
+      "status": "**ENCODING (not engraving)** \u2014 measured as a discrepancy."
+    },
+    {
+      "id": "C82+L65",
+      "category": "Score layout & systems",
+      "title": "SCORE ORDER is a convention strong enough to resolve a label by",
+      "status": "MEASURED HERE"
+    },
+    {
+      "id": "C85",
+      "category": "Score layout & systems",
+      "title": "Staff SPACING cannot separate a system from a group \u2014 REFUTED",
+      "status": "**REFUTED HERE**"
+    },
+    {
+      "id": "L69",
+      "category": "Score layout & systems",
+      "title": "Tempo marks stand above the top staff AND above the first violins",
+      "status": "LITERATURE ONLY (untested here)"
+    },
+    {
+      "id": "C70",
+      "category": "Text & margin labels",
+      "title": "Some publishers stop labelling CONTINUATION systems \u2014 and the family they drop is the strings",
+      "status": "MEASURED HERE"
+    },
+    {
+      "id": "C72",
+      "category": "Text & margin labels",
+      "title": "A TROMBONE section is scored by REGISTER; a TRUMPET section by NUMBER AND KEY",
+      "status": "MEASURED HERE"
+    },
+    {
+      "id": "C73+L73",
+      "category": "Text & margin labels",
+      "title": "Direction words are printed INSIDE the system, in a conventional language",
+      "status": "MEASURED HERE"
+    },
+    {
+      "id": "C74+L72",
+      "category": "Text & margin labels",
+      "title": "The printing TRADITION is a property of the document \u2014 and the same abbreviation means different instruments across traditions",
+      "status": "MEASURED HERE"
+    },
+    {
+      "id": "C75+L68",
+      "category": "Text & margin labels",
+      "title": "Measure numbers are printed at system starts",
+      "status": "ASSERTED (untested here)"
+    },
+    {
+      "id": "L71",
+      "category": "Text & margin labels",
+      "title": "A running head names the instrument on every page of a part",
+      "status": "LITERATURE ONLY (untested here)"
+    },
+    {
+      "id": "C76+L77",
+      "category": "Barlines & repeats",
+      "title": "Repeat dots are a vertical PAIR in the two middle spaces, adjacent to a barline",
+      "status": "ASSERTED (untested here) \u2014 \u2705 **the POSITIONS are sourced from the literature; nothing is measured on a plate.**"
+    },
+    {
+      "id": "C77+L45+L76+L79",
+      "category": "Barlines & repeats",
+      "title": "A double barline is a SECTION mark; a thin-thick barline is a movement END \u2014 and nothing here can read one",
+      "status": "**REFUTED HERE as an available signal** \u2014 the convention itself is not in doubt; **its readability is.**"
+    },
+    {
+      "id": "C86",
+      "category": "Barlines & repeats",
+      "title": "VOCAL staves are not joined by barlines, even when they are bracketed",
+      "status": "ASSERTED (untested here) as a convention; **its consequence is MEASURED.**"
+    },
+    {
+      "id": "L78",
+      "category": "Barlines & repeats",
+      "title": "A dashed barline has a dash twice the length of its gap",
+      "status": "LITERATURE ONLY (untested here)"
+    }
+  ],
+  "statements_matching_no_entry": [
+    "CB03",
+    "CB06",
+    "CB08",
+    "CB10",
+    "CB13",
+    "CB15",
+    "CB20",
+    "CB22",
+    "CB23",
+    "CB26",
+    "CB27",
+    "CB29",
+    "CB30"
+  ],
+  "claimed_ids_not_in_registry": []
+}

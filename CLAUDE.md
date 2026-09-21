@@ -612,6 +612,24 @@ every detection from the page's ink so "find the text" becomes "find the ink".
 Full statement: `tools/omr/staged/ASSUMPTIONS.md` **A-DUR-5**, which now
 carries the result and the two frame corrections that came with it.
 
+⚠️⚠️ **START HERE IF YOU ARE PICKING THIS UP (2026-09-20):**
+[docs/RESUME-HERE-2026-09-20.md](docs/RESUME-HERE-2026-09-20.md) — **the
+conventions are countable at last, and the number is the finding: 94 of 114
+reach NO decision, 16 of the 32 checks we DO declare are not performed, and 6
+of the 7 that are performed cannot fail.** `tools/omr/conventions.py` parses
+the registry (a parse, not a copy) and `--check` exits 0. ⚠️ **Nothing is
+wired, deliberately** — wiring beside the measurement makes it circular.
+⚠️ **Three declared-but-absent checks are live damage**, led by
+`part_partition` declaring *"each part carries ONE instrument across every
+system"* and `Q.INSTRUMENT` in `wants` while its body reads neither — the
+12-of-75 graft its own docstring describes. ⚠️ **`key_signature_corroboration`
+has exactly ONE import and it is `transcribe.py`, the LEGACY path** — this
+file calls it shipped. ⚠️ **ONE AGENT IS STILL RUNNING**: the pair-rule
+notehead gate on `claude/stem-notehead-gate`, unmerged. ⚠️ **It also corrects
+FOUR claims made the same day**, including that this file's convention count
+is **114, not 125**, and a Breitkopf figure computed under a flat 100 px
+instead of `Q.CELL_STAFF_SPACE`.
+
 **Backlog / research notes:** see [NOTES.md](NOTES.md) — surface these at the start of a ReEngrave session.
 
 **Where the work stands today:** see [PROJECT_STATUS.md](PROJECT_STATUS.md).
@@ -5384,6 +5402,24 @@ WITHDRAWN: it was a story with no test.
 > ONE VERTICAL RUN, and the note that appears stranded is the one at the
 > junction. The repair is upstream, in SEGMENTING a vertical run — NOT in
 > `adjudicate_stem_direction`.**
+
+⚠️⚠️ **TESTED THE SAME DAY AND THE REPAIR IS NOT WORTH MAKING — see
+[benchmarks/omr-stem-run-split-2026-09/FINDINGS.md](benchmarks/omr-stem-run-split-2026-09/FINDINGS.md).**
+**17 of 4,225 runs (0.40%) overshoot at both ends**, only **3** carry the two
+mid-run heads the diagnosis predicts, and the ceiling on the whole fault is
+**13 noteheads of 5,684 (0.23%)**. **Of 13 crops opened, ONE is the fused-stem
+fault**; the rest are cross-staff fusion through the cell padding, stems whose
+pair was never detected, a spurious notehead, and accidental/dynamic/blotch
+ink. ⚠️ **The Litolff 18% INVERTS — 6 of 6 opened are NOT fused stems**, so it
+wears the signature without the cause. ⚠️ No empty interval: `min(over_top,
+over_bot)` decays 212 / 7 / 3 / 3 / 4, so the 0.5 cut is fitted to a tail; a
+threshold-FREE form (≥2 claimants, none at an end) selects the same 3.
+⚠️⚠️ **AND IT CORRECTED FIGURES COMMITTED ABOVE: the Breitkopf staff-space
+numbers here were computed under a FLAT 100 px instead of `Q.CELL_STAFF_SPACE`
+and are wrong by up to 25%** (only 514 of 817 Breitkopf cells sit at 100,
+against 1,167 of 1,180 on Litolff — which is why Litolff escaped). The
+corrected unflagged length is **3.817**, widths **0.25 / 0.214**. **The exact
+trap that quantity's docstring exists to prevent, committed here.**
 
 ⚠️⚠️ **AND IT MEETS THE PAGE-FRAME LANE OF THE SAME DAY FROM THE OTHER SIDE** —
 that one found a barline's ENDS measured wrong because the cell clips them,

@@ -1,0 +1,96 @@
+==============================================================================
+BASELINE (the positive control -- every arm is free if this is not green)
+==============================================================================
+  exit 0
+  2347 notehead boxes, 1920 stem rows, 1180 cells carry Q.CELL_STAFF_SPACE
+  1759 (head, stroke) overlapping pairs; 0 strokes lack a staff space
+  at_an_end                1526
+  companion_same_x          180
+  companion_0.1_0.5          34
+  companion_over_0.5         10
+  no_companion                9
+  FLAGGED (sum of last 3)     53
+  flagged strokes                51   unflagged   1254
+  overshoot at BOTH ends          9 (18%)
+  …same test on UNFLAGGED         1 (0.1%)
+  median length, spaces      flagged 5.97   unflagged 4.12
+  median width, spaces       flagged 0.38   unflagged 0.32
+  strokes on one                            18
+  median length, per-cell space       3.912
+  …the same strokes at a FLAT 100 px  3.56
+  == REACH of a both-ends split over ALL strokes
+  strokes_total                      1920
+  strokes_with_a_claimant            1305
+  both_ends_any                        10
+  both_ends_and_2plus_claimants         1
+
+REACH-FIRST CONTROL: a record with no stem -> exit 2, says DEAD: True  -> OK
+
+------------------------------------------------------------------------------
+ARM [probe]: the unit becomes a flat 100 px again (the §0(d) fault)
+  expected: every staff-space median, and the count of cells carrying a space
+  exit 0  -> RED
+
+------------------------------------------------------------------------------
+ARM [probe]: the staff space is read but never applied
+  expected: the flagged/unflagged length medians on any non-100 cell
+  exit 0  -> RED
+
+------------------------------------------------------------------------------
+ARM [probe]: overshoot is measured from the head's CENTRE (§0(d)'s spelling)
+  expected: every both-ends count, by about half a notehead of free overshoot
+  exit 0  -> RED
+
+------------------------------------------------------------------------------
+ARM [probe]: the OUTERMOST claimant is no longer the outermost
+  expected: over_bot on every run carrying more than one head
+  exit 0  -> RED
+
+------------------------------------------------------------------------------
+ARM [probe]: the claimants are not sorted, so first/last are arbitrary
+  expected: which head counts as outermost on a multi-head run
+  exit 0  -> RED
+
+------------------------------------------------------------------------------
+ARM [probe]: both-ends becomes either-end (the asymmetry is the whole test)
+  expected: the both-ends counts and the reach
+  exit 0  -> RED
+
+------------------------------------------------------------------------------
+ARM [probe]: the both-ends cut goes to zero, so box jitter qualifies
+  expected: the both-ends counts (the 0..0.25 jitter band floods in)
+  exit 0  -> RED
+
+------------------------------------------------------------------------------
+ARM [probe]: the end band widens, so a mid-stroke head reads as at-an-end
+  expected: at_an_end, and therefore the whole flagged population
+  exit 0  -> RED
+
+------------------------------------------------------------------------------
+ARM [probe]: the companion offset is measured in PIXELS, not notehead widths
+  expected: the same-x/chord band, and the flagged residue under it
+  exit 0  -> RED
+
+------------------------------------------------------------------------------
+ARM [probe]: a head is compared against itself, so every head has a companion
+  expected: no_companion, which falls to zero
+  exit 0  -> RED
+
+------------------------------------------------------------------------------
+ARM [probe]: the overlap test loses its y half (a frame error)
+  expected: the pair count, by claiming every head at that x on the page
+  exit 0  -> RED
+
+------------------------------------------------------------------------------
+ARM [probe]: a corner box is read as a width box
+  expected: every stroke height, and so every overshoot
+  exit 0  -> RED
+
+------------------------------------------------------------------------------
+ARM [probe]: the reach-first refusal is removed (a dead probe reads clean)
+  HELD OUT -- equivalent mutant on a healthy record; its real test is the REACH-FIRST CONTROL above.
+
+==============================================================================
+RED 12   SURVIVED 0   BAD ANCHORS 0   HELD OUT (equivalent) 1
+reach-first control: OK
+restore VERIFIED by md5: True

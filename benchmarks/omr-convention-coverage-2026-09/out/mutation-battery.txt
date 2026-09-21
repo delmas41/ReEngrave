@@ -1,0 +1,15 @@
+POSITIVE CONTROL (unmutated, both tools must pass): green
+
+  arm  1  RED       stop stripping decorators -- `wants` lives there, so every declared input reads as used and the unreached control must fire
+  arm  2  RED       drop the decorator-registration import -- REGISTRY goes empty and the tool must REFUSE rather than report a clean tree
+  arm  3  RED       match no quantity at all -- the 'scan that silently finds nothing' control must fire
+  arm  4  RED       declare nothing, so nothing can be unreached -- the discrimination control must fire
+  arm  5  RED       drop a category from the parse -- 14 entries vanish and the parse must stop agreeing with the registry's own Counts table
+  arm  6  RED       parse no entries at all -- the denominator collapses to zero
+  arm  7  RED       claim nothing, so all 114 conventions read as uncovered -- a broken parse wearing the shape of a finding
+  arm  8  RED       claim conventions the registry does not hold
+  arm  9  RED       the tree declares a statement the reading does not cover
+  arm 10  RED       join and verdicts hold the same NUMBER of statements and different ones -- a count check alone would pass
+
+restore verified (md5) for 2 files
+arms: 10, red: 10, not red: 0
