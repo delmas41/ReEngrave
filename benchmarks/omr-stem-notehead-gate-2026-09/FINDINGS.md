@@ -356,9 +356,37 @@ so the rule is wider than the file it is written about: **do not edit anything
 a derived check READS while a suite is running.** The failure was re-run
 rather than explained, and the clean run above is the one that counts.
 
-`wiring --check` and `inventory --check` both exit **0**, and both exit 0 on
-the base — run before any conclusion was drawn, because *"checks fail after a
-change"* and *"checks were already failing"* look identical in a terminal.
+`wiring --check`, `inventory --check` and `gather_coverage` all exit **0**,
+and all three exit 0 on the base — run before any conclusion was drawn,
+because *"checks fail after a change"* and *"checks were already failing"*
+look identical in a terminal.
+
+### 7a. ⚠️ THE MERGED TREE, which is the one thing no agent ever runs
+
+`origin/claude/integration-2026-09-18` advanced **31 commits** while this lane
+worked — including a sibling stem lane
+(`benchmarks/omr-stem-run-split-2026-09`) and a new module
+(`tools/omr/conventions.py`). Merged in and re-verified rather than reported
+against a stale base:
+
+* the merge is **CLEAN**, and `git diff <new base>..HEAD -- tools/` is
+  **exactly this lane's three files** — the sibling lanes touched neither
+  `line_detection.py` nor `gather.py`, checked rather than assumed;
+* **full suite on the MERGED tree: 4,628 passed, 19 skipped, 0 failed**;
+* the merge-sensitive tests were run FIRST and alone (69 passed) because
+  **both branches edited `CLAUDE.md` and `test_flag_docs_match_predicates.py`
+  reads it** — an auto-merged prose file is exactly how a failure appears that
+  neither branch alone can produce.
+
+⚠️ **AND THE SIBLING LANE MEETS THIS ONE FROM THE OTHER SIDE.**
+`omr-stem-run-split-2026-09` confirms Sean's *"two separate stems measured as
+one stem"* and bounds it at **3 vertical runs of 4,225**. §5c here infers a
+**stem fused through its own stacked noteheads** on a CLEAN LilyPond
+engraving. Those are the same family — a vertical run that is not one stem —
+and the two lanes reach it from a scan and from an engraving independently.
+**Neither is evidence for the other's number**, and this one's is an inference
+the crop does not settle; what is worth carrying is that the family is not a
+property of bad ink.
 
 ---
 
