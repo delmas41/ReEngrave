@@ -180,3 +180,213 @@ class TestTheStatedReasonWasFalse(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# ⚠️⚠️ SIX MUTATIONS SURVIVED THE FIRST BATTERY. One was a real gap in the
+# code's tests; the other five were the INSTRUMENTS' own controls, which no
+# suite imported — the same shape the sibling lane hit, arriving again because
+# a benchmark arm is a script and nothing exercises it by default.
+# ─────────────────────────────────────────────────────────────────────────────
+
+
+class TestTheNoInkBranchStillSaysWHICHSilence(unittest.TestCase):
+    """⚠️ SURVIVOR 1, and it is this repair's own lesson one level down.
+
+    The no-ink branch records `keysig_marker_state` beside its zero, because
+    *the detector produced no row* and *it produced a row saying it saw
+    nothing* are different facts. Deleting that left every assertion green:
+    the tests checked the COUNT was 0 and never that the record could still
+    say which kind of zero it was — which is precisely the ABSENT/DECLINED
+    collapse this whole change exists to repair."""
+
+    def test_a_staff_with_no_marker_row_records_its_STATE(self):
+        log = Log()
+        _with_clef(log)
+        v = _decide(log)
+        self.assertEqual(v.detail["keysig_marker_ink"], 0)
+        self.assertIn("keysig_marker_state", v.detail)
+
+    def test_a_DECLINED_marker_row_is_not_the_same_zero(self):
+        """An abstention filed BY the detector is a row saying 'I looked and
+        saw nothing' — a different fact from no row at all, and the state is
+        what carries it."""
+        from tools.omr.staged.record import ABSTAIN
+        log = Log()
+        _with_clef(log)
+        log.abstain(SUB, Q.KEYSIG_MARKER, reader=READERS.DETECTOR,
+                    frame="cell:0", reason=ABSTAIN.NO_DETECTIONS)
+        v = _decide(log)
+        self.assertEqual(v.detail["keysig_marker_ink"], 0)
+        self.assertNotEqual(v.detail["keysig_marker_state"],
+                            _no_row_state(),
+                            "a DECLINED row and NO row must not report the "
+                            "same state — that is the collapse this change "
+                            "repairs, reappearing inside the repair")
+
+
+def _no_row_state():
+    log = Log()
+    _with_clef(log)
+    return _decide(log).detail["keysig_marker_state"]
+
+
+class TestTheInstrumentsOwnControls(unittest.TestCase):
+    """⚠️ SURVIVORS 2-6. `check_arm.py` and `probe_records.py` are scripts; no
+    suite imports them, so every battery arm against them was free. These
+    drive their `main()` over synthetic records — the point is the CONTROL's
+    behaviour, not a measurement."""
+
+    @staticmethod
+    def _load(name):
+        import importlib.util
+        from pathlib import Path
+        root = Path(__file__).resolve().parents[3]
+        path = root / "benchmarks" / "omr-keysig-staged-reach-2026-09" / name
+        spec = importlib.util.spec_from_file_location(f"_{name}", path)
+        mod = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(mod)
+        return mod
+
+    @staticmethod
+    def _record(tmp, *, key_verdict, with_clef=True, with_fit=True,
+                with_markers=False):
+        import json
+        obs, n = [], 0
+
+        def ob(subject, quantity, value, frame, score=None, **d):
+            nonlocal n
+            row = {"id": f"obs:{n:06d}", "subject": subject,
+                   "quantity": quantity, "value": value, "score": score,
+                   "reader": READERS.DETECTOR, "frame": frame, "detail": d}
+            obs.append(row)
+            n += 1
+
+        if with_clef:
+            # ⚠️ THE SCORE IS NOT DECORATION. `_with_clef` supplies 0.95 and
+            # the clef decision needs it; without one the rebuild abstains
+            # `needs_clef` and this fixture silently tests a different branch.
+            ob("staff/0/0/0", Q.CLEF_GLYPH, "clefG", "cell:0", score=0.95)
+        if with_fit:
+            ob("staff/0/0/0", Q.KEYSIG_CLEF_FIT, "treble", "header_window",
+               n_accidentals=1, fifths=-1)
+        if with_markers:
+            ob("staff/0/0/0", Q.KEYSIG_MARKER, "keyFlat", "cell:0")
+        verdicts = []
+        if key_verdict is not None:
+            verdicts.append(dict(
+                {"id": "vrd:000001", "subject": "staff/0/0/0",
+                 "quantity": Q.KEY_SIGNATURE, "decider": "t"},
+                **key_verdict))
+        p = tmp / "rec.json"
+        p.write_text(json.dumps({"record": {"observations": obs,
+                                            "abstentions": [],
+                                            "verdicts": verdicts}}))
+        return str(p)
+
+    def _run(self, mod, argv):
+        import io, contextlib, sys as _sys
+        old = _sys.argv
+        _sys.argv = ["x"] + argv
+        buf = io.StringIO()
+        try:
+            with contextlib.redirect_stdout(buf):
+                rc = mod.main()
+        finally:
+            _sys.argv = old
+        return rc, buf.getvalue()
+
+    # ── the arm ──────────────────────────────────────────────────────────
+    def test_the_arm_FAILS_when_a_decided_key_moved(self):
+        """⚠️ THE CONTROL THAT MATTERS MOST. A change that quietly started
+        counting markers would move a decided key, and an arm that cannot see
+        that would report it clean."""
+        import tempfile
+        from pathlib import Path
+        arm = self._load("check_arm.py")
+        with tempfile.TemporaryDirectory() as d:
+            path = self._record(Path(d), key_verdict={
+                "outcome": "decided", "value": -3, "reason": "fitted"})
+            rc, out = self._run(arm, [path])
+        self.assertEqual(rc, 1, out)
+        self.assertIn("MOVED", out)
+
+    def test_the_arm_PASSES_on_a_faithful_record(self):
+        """The positive control for the test above."""
+        import tempfile
+        from pathlib import Path
+        arm = self._load("check_arm.py")
+        with tempfile.TemporaryDirectory() as d:
+            path = self._record(Path(d), with_fit=False, with_markers=True,
+                                key_verdict={"outcome": "abstained",
+                                             "value": None,
+                                             "reason": "no_evidence"})
+            rc, out = self._run(arm, [path])
+        self.assertEqual(rc, 0, out)
+        self.assertIn("no_evidence -> markers_without_a_run", out)
+
+    def test_the_arm_REFUSES_an_illegal_abstention_move(self):
+        """Only `no_evidence -> markers_without_a_run` is a permitted move.
+        Here the rebuild abstains `needs_clef` — a different change wearing
+        this one's name."""
+        import tempfile
+        from pathlib import Path
+        arm = self._load("check_arm.py")
+        with tempfile.TemporaryDirectory() as d:
+            # ⚠️ `with_markers` is what makes the staff subject EXIST. With
+            # no observation on it at all the rebuild files no verdict and the
+            # arm reports "absent from the rebuild" — a different failure, and
+            # the first draft of this test was reading that as the one it
+            # names.
+            path = self._record(Path(d), with_clef=False, with_fit=False,
+                                with_markers=True,
+                                key_verdict={"outcome": "abstained",
+                                             "value": None,
+                                             "reason": "no_evidence"})
+            rc, out = self._run(arm, [path])
+        self.assertEqual(rc, 1, out)
+        self.assertIn("ILLEGAL", out)
+
+    def test_the_arm_reports_DEAD_when_no_split_happened(self):
+        """⚠️ 'No decided key moved' is also exactly what a change that never
+        ran looks like, so the split must be observed, not assumed."""
+        import tempfile
+        from pathlib import Path
+        arm = self._load("check_arm.py")
+        with tempfile.TemporaryDirectory() as d:
+            path = self._record(Path(d), key_verdict={
+                "outcome": "decided", "value": -1, "reason": "fitted"})
+            rc, out = self._run(arm, [path])
+        self.assertIn("DEAD", out)
+        self.assertEqual(rc, 1)
+
+    def test_the_arm_REFUSES_a_drifted_probe_constant(self):
+        """The probe restates `_KEYSIG_CLASSES` rather than importing it, so
+        the two instruments stay independent. A drift would make them measure
+        different populations in silence; the arm refuses instead."""
+        import tempfile
+        from pathlib import Path
+        arm = self._load("check_arm.py")
+        # Drift is symmetric, so it is induced on the side that needs no
+        # import machinery: the arm's own copy of the tree's tuple.
+        real = arm._KEYSIG_CLASSES
+        arm._KEYSIG_CLASSES = ("keySharp",)
+        try:
+            with tempfile.TemporaryDirectory() as d:
+                path = self._record(Path(d), key_verdict=None)
+                rc, out = self._run(arm, [path])
+        finally:
+            arm._KEYSIG_CLASSES = real
+        self.assertEqual(rc, 3, out)
+        self.assertIn("REFUSED", out)
+
+    # ── the probe ────────────────────────────────────────────────────────
+    def test_the_probe_declares_itself_DEAD_with_no_key_verdicts(self):
+        import tempfile
+        from pathlib import Path
+        probe = self._load("probe_records.py")
+        with tempfile.TemporaryDirectory() as d:
+            path = self._record(Path(d), key_verdict=None)
+            rc, out = self._run(probe, [path])
+        self.assertEqual(rc, 2, out)
+        self.assertIn("DEAD", out)
