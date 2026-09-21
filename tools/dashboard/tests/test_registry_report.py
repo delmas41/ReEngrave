@@ -763,3 +763,108 @@ def test_check_mode_detects_staleness(reg, tmp_path):
     assert rr.main(out + ["--check"]) == 0
     (tmp_path / "o.md").write_text("tampered")
     assert rr.main(out + ["--check"]) != 0
+
+
+# ══ R2 (cont.) — the two fields 0.6.0 and 0.7.0 added must REACH THE PAGE ════
+#
+# ⚠️⚠️ THE VERSION GATE IS NOT THE CONFORMANCE. Bumping
+# `UNDERSTOOD_SCHEMA_VERSIONS` and declaring a field HANDLED is one `git diff`
+# away from the silent drop the gate exists to prevent — `ceiling.edition` was
+# "handled" by a renderer that never read it, and `Breitkopf` appeared zero
+# times. So these assert the OUTPUT, not the declaration, and they count: every
+# row carrying the field must show it.
+
+def test_R2_scored_at_detail_level_reaches_the_page_for_every_row_that_has_one(
+        reg, built):
+    want = [r for r in reg["rows"] if r.get("scored_at_detail_level")]
+    assert want, "the fixture must carry the field it tests"
+    shown = 0
+    for row in want:
+        art = _article(built["dom"], row["id"])
+        if art is None:          # withheld for a caption fault, which is fine
+            continue
+        shown += 1
+        hits = list(art.find_all(cls="detail"))
+        assert hits, f"{row['id']} drops `scored_at_detail_level`"
+        assert str(row["scored_at_detail_level"]) in hits[0].inner_text()
+    assert shown, "every row carrying the field was withheld — nothing tested"
+
+
+def test_R2_a_ceilings_measured_under_reaches_the_page_with_its_stop_condition(
+        reg, built):
+    want = [r for r in reg["rows"]
+            if (r.get("ceiling") or {}).get("measured_under")]
+    assert want, "the fixture must carry the field it tests"
+    shown = 0
+    for row in want:
+        art = _article(built["dom"], row["id"])
+        if art is None:
+            continue
+        shown += 1
+        blocks = list(art.find_all(cls="measuredunder"))
+        assert blocks, f"{row['id']} drops `ceiling.measured_under`"
+        text = blocks[0].inner_text()
+        stop = row["ceiling"]["measured_under"].get("stop_condition")
+        if stop:
+            # the stop condition is the half that says what INVALIDATES the
+            # ceiling; a block without it is a decoration
+            assert text.strip(), f"{row['id']} renders an empty block"
+    assert shown
+
+
+def test_R2_a_flag_conditional_ceiling_is_marked_and_an_independent_one_says_so(
+        reg, built):
+    """⚠️ THE DISCRIMINATOR IS `reads_our_output`, NOT *was it the default*.
+    Rendering only the conditional half would leave a reader unable to tell
+    *this ceiling is safe* from *nobody recorded it*."""
+    seen_cond = seen_indep = 0
+    for row in reg["rows"]:
+        mu = (row.get("ceiling") or {}).get("measured_under")
+        if not isinstance(mu, dict):
+            continue
+        art = _article(built["dom"], row["id"])
+        if art is None:
+            continue
+        block = list(art.find_all(cls="measuredunder"))[0]
+        if mu.get("reads_our_output"):
+            seen_cond += 1
+            assert "conditional" in block.classes
+            assert "FLAG-CONDITIONAL" in block.inner_text()
+        else:
+            seen_indep += 1
+            assert "independent" in block.classes
+            assert "FLAG-CONDITIONAL" not in block.inner_text()
+    assert seen_cond, "no flag-conditional ceiling — the marked half is untested"
+    assert seen_indep, "no independent ceiling — the other half is untested"
+
+
+def test_R2_the_understood_version_is_exactly_what_the_contract_names(reg):
+    """⚠️ A SUPERSEDED VERSION MUST NOT BE READMITTED. The contract names
+    `understood_by_a_conforming_consumer`; anything in `superseded` is there
+    with a stated reason a consumer cannot satisfy by widening a tuple."""
+    contract = reg["consumer_contract"]
+    assert set(rr.UNDERSTOOD_SCHEMA_VERSIONS) == set(
+        contract["understood_by_a_conforming_consumer"])
+    for old in contract.get("superseded", {}):
+        assert old not in rr.UNDERSTOOD_SCHEMA_VERSIONS
+
+
+def test_R2_the_markdown_carries_the_never_drop_fields_too(reg, built):
+    """⚠️⚠️ THE FIRST CUT OF THE 0.7.0 CONFORMANCE FORGOT THIS OUTPUT ENTIRELY.
+    `HANDLED_NEVER_DROP_FIELDS` was widened and the HTML verified row by row
+    while `render_md` silently dropped both new fields — the exact shape of the
+    `ceiling.edition` failure, one consumer surface further along. **A field is
+    handled when EVERY surface shows it, not when one does.**"""
+    md = built["md"]
+    want_lvl = [r for r in reg["rows"] if r.get("scored_at_detail_level")]
+    want_mu = [r for r in reg["rows"]
+               if (r.get("ceiling") or {}).get("measured_under", {}).get(
+                   "stop_condition")]
+    assert want_lvl and want_mu, "the fixture must carry what it tests"
+    assert md.count("scored at `") >= len(want_lvl)
+    assert md.count("invalidated when:") >= len(want_mu)
+    cond = [r for r in reg["rows"]
+            if (r.get("ceiling") or {}).get("measured_under", {}).get(
+                "reads_our_output")]
+    assert cond, "no flag-conditional ceiling — the marked half is untested"
+    assert md.count("CEILING IS FLAG-CONDITIONAL") >= len(cond)

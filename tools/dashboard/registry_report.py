@@ -93,7 +93,13 @@ OUT_MD = AUDIT / "registry-report.md"
 
 #: Bump ONLY together with a read of `changes_since_*`. Silent forward
 #: compatibility is the failure family this page exists to expose.
-UNDERSTOOD_SCHEMA_VERSIONS = ("0.5.0",)
+#: ⚠️ EXACTLY WHAT THE CONTRACT'S `understood_by_a_conforming_consumer` NAMES,
+#: and 0.6.0 is deliberately NOT here: the registry files it under `superseded`
+#: with a reason (*"a 0.6.0 consumer cannot tell a flag-conditional ceiling
+#: from a flag-independent one and will quote the first after the flag
+#: flips"*). Widening this set is the LAST step of conforming, never the first
+#: — the two fields 0.6.0 and 0.7.0 added are handled below.
+UNDERSTOOD_SCHEMA_VERSIONS = ("0.7.0",)
 
 #: `consumer_contract.fields_a_consumer_may_never_drop`, as this build handles
 #: them. A registry naming a field NOT in this set is refused — that is the
@@ -102,6 +108,10 @@ HANDLED_NEVER_DROP_FIELDS = {
     "mandatory_caption",
     "ceiling.edition (via the edition clause)",
     "render_with",
+    # 0.5.0 → 0.6.0. Rendered by `detail_level_str` into the trust line.
+    "scored_at_detail_level",
+    # 0.6.0 → 0.7.0. Rendered by `measured_under_html` as its own block.
+    "ceiling.measured_under (with its stop_condition)",
 }
 
 GREEN, AMBER = 90.0, 60.0
@@ -450,6 +460,75 @@ def ceiling_str(row: dict) -> str:
     return " ".join(bits)
 
 
+def detail_level_str(row: dict) -> str:
+    """`scored_at_detail_level` — the alignment model this figure was scored
+    under, in the trust line beside `n` and the ceiling.
+
+    ⚠️⚠️ WHY A CONSUMER MAY NOT DROP IT. musicdiff's `AllObjects` IGNORES
+    CHORDS and pairs notes BY PITCH; re-scoring the *same prediction files*
+    under `AllObjects|Voicing` removes ~29% of the 20-row scan gate's pooled
+    edits. So two figures scored under different detail levels differ by a
+    third for a reason that is invisible in every other field — the registry's
+    own words: *a corpus change is visible (`len(rows)` betrays it) while this
+    re-reads the same files and returns a plausible smaller number with every
+    other field identical.*
+
+    ⚠️ THE MECHANICAL REFUSAL IS ELSEWHERE AND IS NOT THIS. The detail level
+    sits inside every OMR-NED row's `era_key` and both `comparable_as` keys, so
+    differencing across it is already refused by key inequality. What THIS does
+    is stop a reader differencing two numbers BY EYE — the same division of
+    labour as the edition clause, where the key does not protect the reader who
+    is simply looking at the page.
+    """
+    lvl = row.get("scored_at_detail_level")
+    if not lvl:
+        return ""
+    return ('<span class="detail" title="the musicdiff alignment model this '
+            'number was scored under — two figures scored under different '
+            'levels differ by ~29%% for that reason alone">scored at %s</span>'
+            % esc(str(lvl)))
+
+
+def measured_under_html(row: dict) -> str:
+    """`ceiling.measured_under` — the configuration a ceiling was measured
+    under, and the condition that invalidates it.
+
+    ⚠️⚠️ THE DISCRIMINATOR IS `reads_our_output`, NOT *was it the default*, and
+    the registry says so in terms. A ceiling derived from a truth file, a
+    render, a human's labels or another system contains no output of ours and
+    no flag can move it; a ceiling whose ESTIMATOR reads our export is
+    conditional on every flag that changes that export. Measured: flipping
+    `OMR_SLOT_STITCH` moves two estimator-based floors 87 → 1,062 and 90 →
+    1,062, RAISING the floor and so raising every *% of achievable* above it —
+    the flattering direction.
+
+    ⚠️ So the flag-conditional ones are marked and the independent ones say so
+    explicitly. Rendering only the conditional half would leave a reader unable
+    to tell *this ceiling is safe* from *nobody recorded it*.
+    """
+    mu = (row.get("ceiling") or {}).get("measured_under")
+    if not isinstance(mu, dict):
+        return ""
+    reads = bool(mu.get("reads_our_output"))
+    flags = mu.get("flags") or {}
+    flag_txt = (", ".join(f"{k}={v}" for k, v in sorted(flags.items()))
+                if flags else "no flag recorded")
+    stop = mu.get("stop_condition")
+    return (
+        '<div class="measuredunder %s">'
+        '<span class="mulabel">%s</span>'
+        '<span class="muflags">%s</span>'
+        '<span class="mustop">%s</span>'
+        '</div>'
+    ) % ("conditional" if reads else "independent",
+         "CEILING IS FLAG-CONDITIONAL — its estimator reads our output"
+         if reads else
+         "ceiling is flag-independent — its estimator reads none of our output",
+         esc(flag_txt),
+         esc(prose(stop)) if stop else
+         "⚠️ no stop_condition recorded — nothing says what invalidates this")
+
+
 def comparability_chips(row: dict) -> str:
     ca = row.get("comparable_as") or {}
     out = []
@@ -525,10 +604,11 @@ def row_html(row: dict) -> str:
 
     trust = (
         '<div class="trust">'
-        '<span>n = %s %s</span><span>%s</span><span>%s</span><span>%s</span>'
+        '<span>n = %s %s</span><span>%s</span><span>%s</span><span>%s</span>%s'
         '</div>' % (esc(row.get("n") if row.get("n") is not None else "—"),
                     esc(row.get("n_unit") or ""),
-                    ceiling_str(row), noise_str(row), esc(native_str(row))))
+                    ceiling_str(row), noise_str(row), esc(native_str(row)),
+                    detail_level_str(row)))
 
     return (
         '<article class="row" data-row-id="%s" data-scoreable="%s" data-family="%s"'
@@ -542,7 +622,7 @@ def row_html(row: dict) -> str:
     ) % (rid, "true" if scoreable else "false", esc(row.get("family")),
          "true" if cap else "false",
          number, rid, esc(row.get("stage") or ""), "".join(badges), caption_html,
-         bar, why, trust, comp_html, flags,
+         bar, why, trust, measured_under_html(row) + comp_html, flags,
          comparability_chips(row),
          _evidence_html(row))
 
@@ -936,7 +1016,26 @@ def render_md(reg: dict, warnings: list[str], skipped: list[tuple[str, str]]) ->
         # R1 in Markdown: the caption is on the SAME line as the number.
         if cap:
             head += " — ⚠️ MUST BE READ WITH THIS NUMBER: %s" % prose(cap)
+        # ⚠️⚠️ THE NEVER-DROP FIELDS REACH THIS OUTPUT TOO, AND THE FIRST CUT
+        # OF THIS CHANGE FORGOT THEM. `HANDLED_NEVER_DROP_FIELDS` was widened
+        # and the HTML verified row by row while THIS renderer silently
+        # dropped both — the exact shape of the `ceiling.edition` failure the
+        # version gate exists to prevent, one output further along. A field is
+        # handled when EVERY consumer surface shows it, not when one does.
+        lvl = r.get("scored_at_detail_level")
+        if lvl:
+            head += " — scored at `%s`" % lvl
+        mu = (r.get("ceiling") or {}).get("measured_under")
+        if isinstance(mu, dict) and mu.get("reads_our_output"):
+            head += (" — ⚠️ CEILING IS FLAG-CONDITIONAL (its estimator reads "
+                     "our output)")
         lines = ["- " + head]
+        if isinstance(mu, dict) and mu.get("stop_condition"):
+            lines.append("  - ceiling measured under %s; invalidated when: %s"
+                         % (", ".join("`%s=%s`" % kv
+                                      for kv in sorted((mu.get("flags") or {}).items()))
+                            or "no flag recorded",
+                            prose(mu["stop_condition"])))
         if not r.get("scoreable"):
             lines.append("  - %s" % prose(r.get("why_not") or ""))
         return lines

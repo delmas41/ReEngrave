@@ -1,14 +1,14 @@
 # % of achievable
 
-One unit, one direction: **higher is better, everywhere.** Registry v0.5.0. Generated — do not hand-edit.
+One unit, one direction: **higher is better, everywhere.** Registry v0.7.0. Generated — do not hand-edit.
 
 ## Head-to-head (grouped on `comparable_as.head_to_head` only)
 
-**`engraved|orchestral-e2e-fixtures|11works|musicdiff-AllObjects`**
+**`engraved|orchestral-e2e-fixtures|11works|musicdiff-AllObjects|detail=AllObjects`**
 - `engraved:omr_ned` — 88.78%
 - `competitive:engraved:audiveris` — 87.48%
 
-**`scan|scan-e2e-fixtures|10rows|musicdiff-AllObjects`**
+**`scan|scan-e2e-fixtures|10rows|musicdiff-AllObjects|detail=AllObjects`**
 - `competitive:scan:audiveris` — 20.81%
 - `scan:omr_ned:same_10_rows_as_audiveris` — 16.55%
 
@@ -20,40 +20,8 @@ One unit, one direction: **higher is better, everywhere.** Registry v0.5.0. Gene
 
 ## Digitally engraved input
 
-### sample `page-truth|verovio-render|300dpi|tol0.5spaces|11works`
-
-- **99.88% of achievable** — `reading:notehead`
-- **99.72% of achievable** — `reading:time_signature_digit`
-- **99.25% of achievable** — `reading:rest`
-- **99.16% of achievable** — `reading:flag`
-- **96.93% of achievable** — `reading:clef`
-- **96.19% of achievable** — `reading:augmentation_dot`
-- **91.92% of achievable** — `reading:POOLED`
-- **90.91% of achievable** — `engraved:structure` — ⚠️ MUST BE READ WITH THIS NUMBER: These fixtures are 1:1 BY CONSTRUCTION — every truth part gets its own printed staff. A conductor's page condenses and splits; this stage is never asked that question here.
-- **83.89% of achievable** — `reading:key_accidental`
-- **75.34% of achievable** — `reading:beam`
-- **55.15% of achievable** — `reading:dynamic_letter`
-- **51.77% of achievable** — `reading:slur`
-- **26.02% of achievable** — `reading:tie`
-- **unscoreable** — `reading:accidental`
-  - the FIXTURE is unreadable for this family — a score here measures Verovio, not the pipeline
-- **unscoreable** — `reading:barline`
-  - CV-detected in CELL-relative coordinates and never expressed in page coordinates — 45 printed against 0 comparable. A frame mismatch, not a miss.
-
 ### sample `orchestral-e2e|2026-09-02|11works|direction_text|6b230bd7`
 
-- **97.91% of achievable** — `engraved:omr_ned:mahler-sym5-mvt1`
-- **97.07% of achievable** — `engraved:omr_ned:beethoven-sym5-mvt1`
-- **95.56% of achievable** — `engraved:omr_ned:tchaikovsky-sym4-mvt2`
-- **90.69% of achievable** — `engraved:omr_ned:bruckner-sym5-mvt1`
-- **90.57% of achievable** — `engraved:omr_ned:brahms-sym1-mvt1`
-- **89.75% of achievable** — `engraved:omr_ned:mozart-sym41-mvt1`
-- **88.78% of achievable** — `engraved:omr_ned`
-- **87.06% of achievable** — `engraved:omr_ned:beethoven-sym3-mvt1`
-- **85.85% of achievable** — `engraved:omr_ned:mozart-sym40-mvt1`
-- **81.45% of achievable** — `engraved:omr_ned:tchaikovsky-sym6-mvt2`
-- **78.64% of achievable** — `engraved:omr_ned:brahms-sym4-mvt1`
-- **66.20% of achievable** — `engraved:omr_ned:dvorak-sym9-mvt4`
 - **unscoreable** — `engraved:stage2`
   - the harness cannot see this stage at all — not exercised. A ceiling of ZERO INFORMATION is not a score of 0 and not a score of 100.
 - **unscoreable** — `engraved:stage3`
@@ -65,9 +33,58 @@ One unit, one direction: **higher is better, everywhere.** Registry v0.5.0. Gene
 - **unscoreable** — `engraved:stage11`
   - the harness cannot see this stage at all — no isolated figure. A ceiling of ZERO INFORMATION is not a score of 0 and not a score of 100.
 
-### sample `orchestral-e2e|2026-09-02|11works|direction_text|audiveris-5.11`
+### sample `page-truth|verovio-render|300dpi|tol0.5spaces|11works`
 
-- **87.48% of achievable** — `competitive:engraved:audiveris`
+- **99.88% of achievable** — `reading:notehead`
+- **99.72% of achievable** — `reading:time_signature_digit`
+- **99.25% of achievable** — `reading:rest`
+- **99.16% of achievable** — `reading:flag`
+- **96.93% of achievable** — `reading:clef`
+- **96.19% of achievable** — `reading:augmentation_dot`
+- **91.92% of achievable** — `reading:POOLED`
+- **90.91% of achievable** — `engraved:structure` — ⚠️ MUST BE READ WITH THIS NUMBER: These fixtures are 1:1 BY CONSTRUCTION — every truth part gets its own printed staff. A conductor's page condenses and splits; this stage is never asked that question here.
+  - ceiling measured under no flag recorded; invalidated when: no pipeline flag can move this — it is measured from a truth file, a render, a human's labels or another system. Invalidated by a change to that source, not by our configuration.
+- **83.89% of achievable** — `reading:key_accidental`
+- **75.34% of achievable** — `reading:beam`
+- **55.15% of achievable** — `reading:dynamic_letter`
+- **51.77% of achievable** — `reading:slur`
+- **26.02% of achievable** — `reading:tie`
+- **unscoreable** — `reading:accidental`
+  - the FIXTURE is unreadable for this family — a score here measures Verovio, not the pipeline
+- **unscoreable** — `reading:barline`
+  - CV-detected in CELL-relative coordinates and never expressed in page coordinates — 45 printed against 0 comparable. A frame mismatch, not a miss.
+
+### sample `orchestral-e2e|2026-09-02|11works|direction_text|6b230bd7|detail=AllObjects`
+
+- **97.91% of achievable** — `engraved:omr_ned:mahler-sym5-mvt1` — ⚠️ MUST BE READ WITH THIS NUMBER: Scored under musicdiff `AllObjects`, which IGNORES CHORDS and pairs notes by pitch. On the scan gate, re-scoring the same files under `|Voicing` removes ~29% of the pooled edits; the share on this family is UNMEASURED. Accounting, not improvement. — scored at `AllObjects`
+  - ceiling measured under no flag recorded; invalidated when: no pipeline flag can move this — it is measured from a truth file, a render, a human's labels or another system. Invalidated by a change to that source, not by our configuration.
+- **97.07% of achievable** — `engraved:omr_ned:beethoven-sym5-mvt1` — ⚠️ MUST BE READ WITH THIS NUMBER: Scored under musicdiff `AllObjects`, which IGNORES CHORDS and pairs notes by pitch. On the scan gate, re-scoring the same files under `|Voicing` removes ~29% of the pooled edits; the share on this family is UNMEASURED. Accounting, not improvement. — scored at `AllObjects`
+  - ceiling measured under no flag recorded; invalidated when: no pipeline flag can move this — it is measured from a truth file, a render, a human's labels or another system. Invalidated by a change to that source, not by our configuration.
+- **95.56% of achievable** — `engraved:omr_ned:tchaikovsky-sym4-mvt2` — ⚠️ MUST BE READ WITH THIS NUMBER: Scored under musicdiff `AllObjects`, which IGNORES CHORDS and pairs notes by pitch. On the scan gate, re-scoring the same files under `|Voicing` removes ~29% of the pooled edits; the share on this family is UNMEASURED. Accounting, not improvement. — scored at `AllObjects`
+  - ceiling measured under no flag recorded; invalidated when: no pipeline flag can move this — it is measured from a truth file, a render, a human's labels or another system. Invalidated by a change to that source, not by our configuration.
+- **90.69% of achievable** — `engraved:omr_ned:bruckner-sym5-mvt1` — ⚠️ MUST BE READ WITH THIS NUMBER: Scored under musicdiff `AllObjects`, which IGNORES CHORDS and pairs notes by pitch. On the scan gate, re-scoring the same files under `|Voicing` removes ~29% of the pooled edits; the share on this family is UNMEASURED. Accounting, not improvement. — scored at `AllObjects`
+  - ceiling measured under no flag recorded; invalidated when: no pipeline flag can move this — it is measured from a truth file, a render, a human's labels or another system. Invalidated by a change to that source, not by our configuration.
+- **90.57% of achievable** — `engraved:omr_ned:brahms-sym1-mvt1` — ⚠️ MUST BE READ WITH THIS NUMBER: Scored under musicdiff `AllObjects`, which IGNORES CHORDS and pairs notes by pitch. On the scan gate, re-scoring the same files under `|Voicing` removes ~29% of the pooled edits; the share on this family is UNMEASURED. Accounting, not improvement. — scored at `AllObjects`
+  - ceiling measured under no flag recorded; invalidated when: no pipeline flag can move this — it is measured from a truth file, a render, a human's labels or another system. Invalidated by a change to that source, not by our configuration.
+- **89.75% of achievable** — `engraved:omr_ned:mozart-sym41-mvt1` — ⚠️ MUST BE READ WITH THIS NUMBER: Scored under musicdiff `AllObjects`, which IGNORES CHORDS and pairs notes by pitch. On the scan gate, re-scoring the same files under `|Voicing` removes ~29% of the pooled edits; the share on this family is UNMEASURED. Accounting, not improvement. — scored at `AllObjects`
+  - ceiling measured under no flag recorded; invalidated when: no pipeline flag can move this — it is measured from a truth file, a render, a human's labels or another system. Invalidated by a change to that source, not by our configuration.
+- **88.78% of achievable** — `engraved:omr_ned` — ⚠️ MUST BE READ WITH THIS NUMBER: Scored under musicdiff `AllObjects`, which IGNORES CHORDS and pairs notes by pitch. On the scan gate, re-scoring the same files under `|Voicing` removes ~29% of the pooled edits; the share on this family is UNMEASURED. Accounting, not improvement. — scored at `AllObjects`
+  - ceiling measured under no flag recorded; invalidated when: no pipeline flag can move this — it is measured from a truth file, a render, a human's labels or another system. Invalidated by a change to that source, not by our configuration.
+- **87.06% of achievable** — `engraved:omr_ned:beethoven-sym3-mvt1` — ⚠️ MUST BE READ WITH THIS NUMBER: Scored under musicdiff `AllObjects`, which IGNORES CHORDS and pairs notes by pitch. On the scan gate, re-scoring the same files under `|Voicing` removes ~29% of the pooled edits; the share on this family is UNMEASURED. Accounting, not improvement. — scored at `AllObjects`
+  - ceiling measured under no flag recorded; invalidated when: no pipeline flag can move this — it is measured from a truth file, a render, a human's labels or another system. Invalidated by a change to that source, not by our configuration.
+- **85.85% of achievable** — `engraved:omr_ned:mozart-sym40-mvt1` — ⚠️ MUST BE READ WITH THIS NUMBER: Scored under musicdiff `AllObjects`, which IGNORES CHORDS and pairs notes by pitch. On the scan gate, re-scoring the same files under `|Voicing` removes ~29% of the pooled edits; the share on this family is UNMEASURED. Accounting, not improvement. — scored at `AllObjects`
+  - ceiling measured under no flag recorded; invalidated when: no pipeline flag can move this — it is measured from a truth file, a render, a human's labels or another system. Invalidated by a change to that source, not by our configuration.
+- **81.45% of achievable** — `engraved:omr_ned:tchaikovsky-sym6-mvt2` — ⚠️ MUST BE READ WITH THIS NUMBER: Scored under musicdiff `AllObjects`, which IGNORES CHORDS and pairs notes by pitch. On the scan gate, re-scoring the same files under `|Voicing` removes ~29% of the pooled edits; the share on this family is UNMEASURED. Accounting, not improvement. — scored at `AllObjects`
+  - ceiling measured under no flag recorded; invalidated when: no pipeline flag can move this — it is measured from a truth file, a render, a human's labels or another system. Invalidated by a change to that source, not by our configuration.
+- **78.64% of achievable** — `engraved:omr_ned:brahms-sym4-mvt1` — ⚠️ MUST BE READ WITH THIS NUMBER: Scored under musicdiff `AllObjects`, which IGNORES CHORDS and pairs notes by pitch. On the scan gate, re-scoring the same files under `|Voicing` removes ~29% of the pooled edits; the share on this family is UNMEASURED. Accounting, not improvement. — scored at `AllObjects`
+  - ceiling measured under no flag recorded; invalidated when: no pipeline flag can move this — it is measured from a truth file, a render, a human's labels or another system. Invalidated by a change to that source, not by our configuration.
+- **66.20% of achievable** — `engraved:omr_ned:dvorak-sym9-mvt4` — ⚠️ MUST BE READ WITH THIS NUMBER: Scored under musicdiff `AllObjects`, which IGNORES CHORDS and pairs notes by pitch. On the scan gate, re-scoring the same files under `|Voicing` removes ~29% of the pooled edits; the share on this family is UNMEASURED. Accounting, not improvement. — scored at `AllObjects`
+  - ceiling measured under no flag recorded; invalidated when: no pipeline flag can move this — it is measured from a truth file, a render, a human's labels or another system. Invalidated by a change to that source, not by our configuration.
+
+### sample `orchestral-e2e|2026-09-02|11works|direction_text|audiveris-5.11|detail=AllObjects`
+
+- **87.48% of achievable** — `competitive:engraved:audiveris` — ⚠️ MUST BE READ WITH THIS NUMBER: Scored under musicdiff `AllObjects`, which IGNORES CHORDS and pairs notes by pitch. On the scan gate, re-scoring the same files under `|Voicing` removes ~29% of the pooled edits; the share on this family is UNMEASURED. Accounting, not improvement. — scored at `AllObjects`
+  - ceiling measured under no flag recorded; invalidated when: no pipeline flag can move this — it is measured from a truth file, a render, a human's labels or another system. Invalidated by a change to that source, not by our configuration.
 
 ## Scanned input
 
@@ -95,6 +112,7 @@ One unit, one direction: **higher is better, everywhere.** Registry v0.5.0. Gene
 ### sample `labeling|breitkopf-brahms1|completion-pass|55 cells`
 
 - **unscoreable** — `ceiling:input:hairpin:scan` — ⚠️ MUST BE READ WITH THIS NUMBER: Measured on ONE edition — Breitkopf & Härtel, Brahms 1 mvt 1 — and irreducibly so today: only one labeling batch in the corpus carries a completion pass. Not a claim about scans in general.
+  - ceiling measured under no flag recorded; invalidated when: no pipeline flag can move this — it is measured from a truth file, a render, a human's labels or another system. Invalidated by a change to that source, not by our configuration.
   - A BOUND, not a point, so it is not scored — but it is now a ceiling rather than a refutation. `scan:hairpin_detect` reads 1.01% against a ceiling measured at AT LEAST 0.80 on this edition, so the detector is at roughly one part in eighty of what a reader recovers. ⚠️ AND THE MATCHED COMPARISON IS WORSE THAN THE CORPUS RATE: on the SAME three pages the human swept, the transcription contains 10,523 detections and ZERO of either hairpin class. The 1-of-99 is not a thin-sample artefact — on this edition it is zero. n = 5 bars is the whole sample the corpus can offer; the same sweep drew 62 ties and 27 slurs, the other two families a fine-tune is documented to delete.
 
 ### sample `staff-identity-layer|2026-09-05|n197`
@@ -106,13 +124,38 @@ One unit, one direction: **higher is better, everywhere.** Registry v0.5.0. Gene
 
 - **1.01% of achievable** — `scan:hairpin_detect` — ⚠️ MUST BE READ WITH THIS NUMBER: Scores the DETECTOR only — a classical-CV reader added later carries 118 of 198 <wedge> into the file, so this is not what reaches a user. The ceiling it is measured against (≥0.80) comes from ONE edition, Breitkopf & Härtel, Brahms 1.
 
+### sample `scan-e2e|20rows|reconciliation|dpi600|no-dossier|UNSTAMPED-COMMIT|detail=AllObjects`
+
+- **15.56% of achievable** — `scan:omr_ned` — ⚠️ MUST BE READ WITH THIS NUMBER: Scored under musicdiff `AllObjects`, which IGNORES CHORDS and pairs notes by pitch. Re-scoring these same files under `|Voicing` removes ~29% of the pooled edits — a different accounting of identical output, not an improvement. — scored at `AllObjects`
+
+### sample `scan-e2e|11rows|restamp-composed|10 rows Audiveris completed|detail=AllObjects`
+
+- **16.55% of achievable** — `scan:omr_ned:same_10_rows_as_audiveris` — ⚠️ MUST BE READ WITH THIS NUMBER: A 10-row subset of the retired 11-row scan era, kept only so the Audiveris comparison has two sides. It is NOT the headline and may not be differenced against the 20-row figure. Scored under musicdiff `AllObjects`, which IGNORES CHORDS and pairs notes by pitch. Re-scoring these same files under `|Voicing` removes ~29% of the pooled edits — a different accounting of identical output, not an improvement. — scored at `AllObjects`
+
+### sample `scan-e2e|20rows|reconciliation|normalised-transform1.2.0|afea84ba|detail=AllObjects`
+
+- **20.09% of achievable** — `scan:omr_ned:page_fidelity_15rows` — ⚠️ MUST BE READ WITH THIS NUMBER: Scored under musicdiff `AllObjects`, which IGNORES CHORDS and pairs notes by pitch. Re-scoring these same files under `|Voicing` removes ~29% of the pooled edits — a different accounting of identical output, not an improvement. — scored at `AllObjects`
+  - ceiling measured under no flag recorded; invalidated when: NONE from pipeline configuration. This floor is (derived truth vs raw truth) and contains no output of ours, so no flag can move it. It is invalidated only by a change to the page-normalising TRANSFORM (currently 1.2.0) or to the hand-read staves map.
+- **18.28% of achievable** — `scan:omr_ned:ceiling_measured_15rows` — ⚠️ MUST BE READ WITH THIS NUMBER: Scored under musicdiff `AllObjects`, which IGNORES CHORDS and pairs notes by pitch. Re-scoring these same files under `|Voicing` removes ~29% of the pooled edits — a different accounting of identical output, not an improvement. — scored at `AllObjects` — ⚠️ CEILING IS FLAG-CONDITIONAL (its estimator reads our output)
+  - ceiling measured under `OMR_CONDENSED_PARTS=0`, `OMR_SLOT_STITCH=0`; invalidated when: ⚠️ RE-MEASURE BEFORE QUOTING if OMR_SLOT_STITCH or OMR_CONDENSED_PARTS changes state. The estimator is min(ours, audiveris) over raw `entire staff`, so it reads our export. Measured: flipping OMR_SLOT_STITCH moves our charge 87 -> 1,062 and 90 -> 1,062 on the two Beethoven p3 rows, raising the floor and so raising every % of achievable above it.
+
+### sample `scan-e2e|11rows|restamp-composed|audiveris-5.11|detail=AllObjects`
+
+- **20.81% of achievable** — `competitive:scan:audiveris` — ⚠️ MUST BE READ WITH THIS NUMBER: Scored under musicdiff `AllObjects`, which IGNORES CHORDS and pairs notes by pitch. Re-scoring these same files under `|Voicing` removes ~29% of the pooled edits — a different accounting of identical output, not an improvement. — scored at `AllObjects`
+
+### sample `scan-e2e|20rows|reconciliation|ceiling-corroborated-5|transform1.2.0|afea84ba|detail=AllObjects`
+
+- **29.80% of achievable** — `scan:omr_ned:ceiling_corroborated_subset` — ⚠️ MUST BE READ WITH THIS NUMBER: Scored under musicdiff `AllObjects`, which IGNORES CHORDS and pairs notes by pitch. Re-scoring these same files under `|Voicing` removes ~29% of the pooled edits — a different accounting of identical output, not an improvement. — scored at `AllObjects` — ⚠️ CEILING IS FLAG-CONDITIONAL (its estimator reads our output)
+  - ceiling measured under `OMR_CONDENSED_PARTS=0`, `OMR_SLOT_STITCH=0`; invalidated when: ⚠️ RE-MEASURE BEFORE QUOTING if OMR_SLOT_STITCH or OMR_CONDENSED_PARTS changes state — same estimator as the 15-row row. Its five rows are the engine-corroborated subset, where ours and Audiveris agree TODAY; a flag that moves our charge can break that agreement and with it the corroboration.
+
 ### sample `scan-e2e|20rows|reconciliation|dpi600|no-dossier|UNSTAMPED-COMMIT`
 
 - **100.00% of achievable** — `scan:staves`
+  - ceiling measured under no flag recorded; invalidated when: no pipeline flag can move this — it is measured from a truth file, a render, a human's labels or another system. Invalidated by a change to that source, not by our configuration.
 - **100.00% of achievable** — `scan:systems`
+  - ceiling measured under no flag recorded; invalidated when: no pipeline flag can move this — it is measured from a truth file, a render, a human's labels or another system. Invalidated by a change to that source, not by our configuration.
 - **83.43% of achievable** — `scan:pitch`
 - **74.98% of achievable** — `scan:duration`
-- **15.56% of achievable** — `scan:omr_ned`
 - **unscoreable** — `scan:stage4`
   - the harness cannot see this stage at all — no ground truth. A ceiling of ZERO INFORMATION is not a score of 0 and not a score of 100.
 - **unscoreable** — `scan:stage5`
@@ -120,26 +163,10 @@ One unit, one direction: **higher is better, everywhere.** Registry v0.5.0. Gene
 - **unscoreable** — `scan:stage11`
   - the harness cannot see this stage at all — no isolated figure. A ceiling of ZERO INFORMATION is not a score of 0 and not a score of 100.
 
-### sample `scan-e2e|11rows|restamp-composed|10 rows Audiveris completed`
-
-- **16.55% of achievable** — `scan:omr_ned:same_10_rows_as_audiveris` — ⚠️ MUST BE READ WITH THIS NUMBER: A 10-row subset of the retired 11-row scan era, kept only so the Audiveris comparison has two sides. It is NOT the headline and may not be differenced against the 20-row figure.
-
-### sample `scan-e2e|20rows|reconciliation|normalised-transform1.2.0|afea84ba`
-
-- **20.09% of achievable** — `scan:omr_ned:page_fidelity_15rows`
-- **18.28% of achievable** — `scan:omr_ned:ceiling_measured_15rows`
-
-### sample `scan-e2e|11rows|restamp-composed|audiveris-5.11`
-
-- **20.81% of achievable** — `competitive:scan:audiveris`
-
-### sample `scan-e2e|20rows|reconciliation|ceiling-corroborated-5|transform1.2.0|afea84ba`
-
-- **29.80% of achievable** — `scan:omr_ned:ceiling_corroborated_subset`
-
 ### sample `prefill|brahms1-breitkopf|phase-C|blind|2026-09-03`
 
 - **94.33% of achievable** — `prefill:precision:blind_out_of_sample`
+  - ceiling measured under no flag recorded; invalidated when: no pipeline flag can move this — it is measured from a truth file, a render, a human's labels or another system. Invalidated by a change to that source, not by our configuration.
 
 ## What nothing here measures
 
