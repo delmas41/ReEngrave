@@ -1,0 +1,76 @@
+decisions registered: 28
+decisions declaring checked_by: 16
+checked_by statements: 32
+
+arc_kind  (adjudicate_arc_kind, scope=glyph, 6 fn walked)
+    wants   : arc_box, glyph_box, notehead_staff_position, stem
+    reached : arc_box, glyph_box, notehead_staff_position, stem
+
+clef  (adjudicate_clef, scope=staff, 12 fn walked)
+    wants   : clef_glyph, clef_located, clef_position, clef_seed, instrument, keysig_clef_fit, notehead_staff_position
+    reached : clef_glyph, clef_located, clef_position, clef_seed, instrument, keysig_clef_fit
+    ⚠️ DECLARED IN wants AND NEVER REACHED: notehead_staff_position
+
+duration  (adjudicate_duration, scope=glyph, 15 fn walked)
+    wants   : aug_dot, beam_stroke, cell_staff_space, flag, glyph_box, notehead_class, rest, stem, tuplet_ratio
+    reached : aug_dot, beam_stroke, cell_staff_space, flag, glyph_box, notehead_class, rest, stem, tuplet_ratio
+
+event  (adjudicate_event, scope=cell, 3 fn walked)
+    wants   : glyph_box, notehead_class, rest, stem, stem_direction
+    reached : glyph_box, notehead_class, rest, stem, stem_direction
+
+glyph_owner  (adjudicate_glyph_owner, scope=glyph, 6 fn walked)
+    wants   : clef, glyph_band_distance, glyph_conf, glyph_ladder, instrument, notehead_staff_position
+    reached : clef, glyph_band_distance, glyph_ladder, instrument
+    ⚠️ DECLARED IN wants AND NEVER REACHED: glyph_conf, notehead_staff_position
+
+instrument  (adjudicate_instrument, scope=staff, 3 fn walked)
+    wants   : margin_label, roster_entry, staff_group, staff_ordinal
+    reached : margin_label, roster_entry
+    ⚠️ DECLARED IN wants AND NEVER REACHED: staff_group, staff_ordinal
+
+key_signature  (adjudicate_key_signature, scope=staff, 2 fn walked)
+    wants   : clef, dossier_fact, keysig_clef_fit, keysig_marker, keysig_run_position, keysig_template_fit
+    reached : clef, keysig_clef_fit, keysig_run_position, keysig_template_fit
+    ⚠️ DECLARED IN wants AND NEVER REACHED: dossier_fact, keysig_marker
+
+measure_partition  (adjudicate_measure_partition, scope=staff, 2 fn walked)
+    wants   : barline_column
+    reached : barline_column
+
+meter  (adjudicate_meter, scope=system, 26 fn walked)
+    wants   : dossier_fact, duration, event, measure_partition, meter, meter_glyph, meter_template, meter_template_at_bar, rest, system_staff_count
+    reached : duration, event, measure_partition, meter, meter_glyph, meter_template, meter_template_at_bar, rest, system_staff_count
+    ⚠️ DECLARED IN wants AND NEVER REACHED: dossier_fact
+
+onset_column  (adjudicate_onset_column, scope=system, 4 fn walked)
+    wants   : event, glyph_box, staff_spacing
+    reached : event, glyph_box, staff_spacing
+
+part_partition  (adjudicate_part_partition, scope=document, 3 fn walked)
+    wants   : instrument, slot_index, staff_ordinal, system_staff_count
+    reached : slot_index, system_staff_count
+    ⚠️ DECLARED IN wants AND NEVER REACHED: instrument, staff_ordinal
+
+slot_index  (adjudicate_slot_index, scope=staff, 9 fn walked)
+    wants   : instrument, staff_ordinal, system_staff_count
+    reached : instrument, staff_ordinal, system_staff_count
+
+staff_group  (adjudicate_staff_group, scope=staff, 2 fn walked)
+    wants   : bracket_block
+    reached : bracket_block
+
+system_membership  (adjudicate_system_membership, scope=system, 2 fn walked)
+    wants   : gap_bridging, system_staff_count
+    reached : system_staff_count
+    ⚠️ DECLARED IN wants AND NEVER REACHED: gap_bridging
+
+system_staff_count  (adjudicate_system_staff_count, scope=system, 2 fn walked)
+    wants   : system_staff_count
+    reached : system_staff_count
+
+tuplet_ratio  (adjudicate_tuplet, scope=cell, 2 fn walked)
+    wants   : beam_stroke, notehead_class, tuplet_marker
+    reached : notehead_class, tuplet_marker
+    ⚠️ DECLARED IN wants AND NEVER REACHED: beam_stroke
+

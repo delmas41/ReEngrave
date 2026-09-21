@@ -1,0 +1,593 @@
+{
+  "arc_kind": {
+    "checked_by": [
+      "a TIE joins two heads of the SAME staff step; an arc whose flanked heads sit on different steps is a SLUR",
+      "of two arcs STACKED over the same notes the lower is a tie and the upper a slur (Sean, 2026-09-11) -- recorded, never acted on"
+    ],
+    "declared_but_unreached": [],
+    "n_functions_walked": 6,
+    "name": "adjudicate_arc_kind",
+    "reached": [
+      "arc_box",
+      "glyph_box",
+      "notehead_staff_position",
+      "stem"
+    ],
+    "reached_beyond_wants": [],
+    "scope": "glyph",
+    "wants": [
+      "arc_box",
+      "glyph_box",
+      "notehead_staff_position",
+      "stem"
+    ]
+  },
+  "arc_owner": {
+    "checked_by": [],
+    "declared_but_unreached": [],
+    "n_functions_walked": 2,
+    "name": "adjudicate_arc_owner",
+    "reached": [
+      "arc_box",
+      "glyph_box",
+      "glyph_owner",
+      "staff_spacing"
+    ],
+    "reached_beyond_wants": [],
+    "scope": "glyph",
+    "wants": [
+      "arc_box",
+      "glyph_box",
+      "glyph_owner",
+      "staff_spacing"
+    ]
+  },
+  "articulation_owner": {
+    "checked_by": [],
+    "declared_but_unreached": [],
+    "n_functions_walked": 2,
+    "name": "adjudicate_articulation_owner",
+    "reached": [
+      "articulation_mark",
+      "glyph_box"
+    ],
+    "reached_beyond_wants": [],
+    "scope": "glyph",
+    "wants": [
+      "articulation_mark",
+      "glyph_box"
+    ]
+  },
+  "clef": {
+    "checked_by": [
+      "implied pitches: this staff's own measured positions under this candidate must fall in the instrument's written range (clef_correction.propose_clef) -- \u26a0\ufe0f DECLARED AND NOT IMPLEMENTED, and it cannot be here: it needs the INSTRUMENT, which abstains on 22 of 22 and 27 of 27 staves of the two scanned pages measured. `inventory --check` lists it",
+      "the glyph stands ON this staff: a measure cell is the staff plus four staff spaces of air, so a neighbour's clef lands in it -- and unlike the range test this needs NO identity",
+      "key-signature slot fit: the measured accidental RUN fits this candidate's slot table and not another's -- needs NO identity",
+      "continuity: a part's clef is stable across systems unless a change is printed"
+    ],
+    "declared_but_unreached": [
+      "notehead_staff_position"
+    ],
+    "n_functions_walked": 12,
+    "name": "adjudicate_clef",
+    "reached": [
+      "clef_glyph",
+      "clef_located",
+      "clef_position",
+      "clef_seed",
+      "instrument",
+      "keysig_clef_fit"
+    ],
+    "reached_beyond_wants": [],
+    "scope": "staff",
+    "wants": [
+      "clef_glyph",
+      "clef_located",
+      "clef_position",
+      "clef_seed",
+      "instrument",
+      "keysig_clef_fit",
+      "notehead_staff_position"
+    ]
+  },
+  "direction": {
+    "checked_by": [],
+    "declared_but_unreached": [],
+    "n_functions_walked": 2,
+    "name": "adjudicate_direction",
+    "reached": [
+      "direction_word"
+    ],
+    "reached_beyond_wants": [],
+    "scope": "cell",
+    "wants": [
+      "direction_word"
+    ]
+  },
+  "duration": {
+    "checked_by": [
+      "\"bar sum: the durations of one voice in one bar must equal the meter (rhythm_sum_warning -- 111 of 193 scan staves, UNCONSUMED)\""
+    ],
+    "declared_but_unreached": [],
+    "n_functions_walked": 15,
+    "name": "adjudicate_duration",
+    "reached": [
+      "aug_dot",
+      "beam_stroke",
+      "cell_staff_space",
+      "flag",
+      "glyph_box",
+      "notehead_class",
+      "rest",
+      "stem",
+      "tuplet_ratio"
+    ],
+    "reached_beyond_wants": [],
+    "scope": "glyph",
+    "wants": [
+      "aug_dot",
+      "beam_stroke",
+      "cell_staff_space",
+      "flag",
+      "glyph_box",
+      "notehead_class",
+      "rest",
+      "stem",
+      "tuplet_ratio"
+    ]
+  },
+  "dynamic": {
+    "checked_by": [],
+    "declared_but_unreached": [],
+    "n_functions_walked": 6,
+    "name": "adjudicate_dynamic",
+    "reached": [
+      "dynamic_letter",
+      "glyph_owner"
+    ],
+    "reached_beyond_wants": [],
+    "scope": "cell",
+    "wants": [
+      "dynamic_letter",
+      "glyph_owner"
+    ]
+  },
+  "event": {
+    "checked_by": [
+      "\"the bar sum: one event contributes ONE duration, so a bar of events must equal the meter\""
+    ],
+    "declared_but_unreached": [],
+    "n_functions_walked": 3,
+    "name": "adjudicate_event",
+    "reached": [
+      "glyph_box",
+      "notehead_class",
+      "rest",
+      "stem",
+      "stem_direction"
+    ],
+    "reached_beyond_wants": [],
+    "scope": "cell",
+    "wants": [
+      "glyph_box",
+      "notehead_class",
+      "rest",
+      "stem",
+      "stem_direction"
+    ]
+  },
+  "fermata_owner": {
+    "checked_by": [],
+    "declared_but_unreached": [],
+    "n_functions_walked": 2,
+    "name": "adjudicate_fermata_owner",
+    "reached": [
+      "fermata_mark",
+      "glyph_box"
+    ],
+    "reached_beyond_wants": [],
+    "scope": "glyph",
+    "wants": [
+      "fermata_mark",
+      "glyph_box"
+    ]
+  },
+  "glyph_owner": {
+    "checked_by": [
+      "a spurious or missing notehead breaks the OWNING bar's duration sum -- so rhythm_sum_warning's group includes OWNERSHIP, not only duration and meter",
+      "the owned glyph's implied pitch must fall in the owner's written range"
+    ],
+    "declared_but_unreached": [
+      "glyph_conf",
+      "notehead_staff_position"
+    ],
+    "n_functions_walked": 6,
+    "name": "adjudicate_glyph_owner",
+    "reached": [
+      "clef",
+      "glyph_band_distance",
+      "glyph_ladder",
+      "instrument"
+    ],
+    "reached_beyond_wants": [],
+    "scope": "glyph",
+    "wants": [
+      "clef",
+      "glyph_band_distance",
+      "glyph_conf",
+      "glyph_ladder",
+      "instrument",
+      "notehead_staff_position"
+    ]
+  },
+  "group_symbol": {
+    "checked_by": [],
+    "declared_but_unreached": [
+      "system_staff_count"
+    ],
+    "n_functions_walked": 2,
+    "name": "adjudicate_group_symbol",
+    "reached": [
+      "instrument",
+      "staff_group"
+    ],
+    "reached_beyond_wants": [],
+    "scope": "system",
+    "wants": [
+      "instrument",
+      "staff_group",
+      "system_staff_count"
+    ]
+  },
+  "instrument": {
+    "checked_by": [
+      "roster membership: an instrument the work is not scored for is IMPOSSIBLE",
+      "label contradiction: a staff whose OWN margin label was read on THIS page, named something else",
+      "the implied written range must contain this staff's own positions under its clef"
+    ],
+    "declared_but_unreached": [
+      "staff_group",
+      "staff_ordinal"
+    ],
+    "n_functions_walked": 3,
+    "name": "adjudicate_instrument",
+    "reached": [
+      "margin_label",
+      "roster_entry"
+    ],
+    "reached_beyond_wants": [],
+    "scope": "staff",
+    "wants": [
+      "margin_label",
+      "roster_entry",
+      "staff_group",
+      "staff_ordinal"
+    ]
+  },
+  "key_signature": {
+    "checked_by": [
+      "\"the accidental ORDER is fixed (F#-C#-G#... / Bb-Eb-Ab...): a run that SKIPS a slot is impossible\"",
+      "\"across the staves of a system the DELTA is shared, never the value -- transposing parts print different signatures for one key\"",
+      "\"a key CHANGE is printed on every staff at the same bar (key_signature_corroboration -- CONSUMED, default-ON)\""
+    ],
+    "declared_but_unreached": [
+      "dossier_fact",
+      "keysig_marker"
+    ],
+    "n_functions_walked": 2,
+    "name": "adjudicate_key_signature",
+    "reached": [
+      "clef",
+      "keysig_clef_fit",
+      "keysig_run_position",
+      "keysig_template_fit"
+    ],
+    "reached_beyond_wants": [],
+    "scope": "staff",
+    "wants": [
+      "clef",
+      "dossier_fact",
+      "keysig_clef_fit",
+      "keysig_marker",
+      "keysig_run_position",
+      "keysig_template_fit"
+    ]
+  },
+  "measure_partition": {
+    "checked_by": [
+      "cross-staff measure count agreement (measure_count_warning)",
+      "a merged bar sums to a MULTIPLE of the meter; a split bar to a fraction (rhythm_sum_warning)"
+    ],
+    "declared_but_unreached": [],
+    "n_functions_walked": 2,
+    "name": "adjudicate_measure_partition",
+    "reached": [
+      "barline_column"
+    ],
+    "reached_beyond_wants": [],
+    "scope": "staff",
+    "wants": [
+      "barline_column"
+    ]
+  },
+  "meter": {
+    "checked_by": [
+      "\"bar sum, on every bar of every staff it governs\"",
+      "\"a meter is a SYSTEM fact: a mid-staff change no other staff witnessed is a misread (21 fired on scans, 0 survive)\""
+    ],
+    "declared_but_unreached": [
+      "dossier_fact"
+    ],
+    "n_functions_walked": 26,
+    "name": "adjudicate_meter",
+    "reached": [
+      "duration",
+      "event",
+      "measure_partition",
+      "meter",
+      "meter_glyph",
+      "meter_template",
+      "meter_template_at_bar",
+      "rest",
+      "system_staff_count"
+    ],
+    "reached_beyond_wants": [],
+    "scope": "system",
+    "wants": [
+      "dossier_fact",
+      "duration",
+      "event",
+      "measure_partition",
+      "meter",
+      "meter_glyph",
+      "meter_template",
+      "meter_template_at_bar",
+      "rest",
+      "system_staff_count"
+    ]
+  },
+  "notehead_is_a_whole_rest": {
+    "checked_by": [],
+    "declared_but_unreached": [],
+    "n_functions_walked": 4,
+    "name": "adjudicate_notehead_is_a_whole_rest",
+    "reached": [
+      "glyph_box",
+      "rest",
+      "staff_lines",
+      "staff_spacing"
+    ],
+    "reached_beyond_wants": [],
+    "scope": "glyph",
+    "wants": [
+      "glyph_box",
+      "rest",
+      "staff_lines",
+      "staff_spacing"
+    ]
+  },
+  "onset_column": {
+    "checked_by": [
+      "\"a column is an instant: every staff of the system either sounds something in it or is silent there, and a staff whose event sits alone at an x its neighbours all skip is the one to look at\""
+    ],
+    "declared_but_unreached": [],
+    "n_functions_walked": 4,
+    "name": "adjudicate_onset_column",
+    "reached": [
+      "event",
+      "glyph_box",
+      "staff_spacing"
+    ],
+    "reached_beyond_wants": [],
+    "scope": "system",
+    "wants": [
+      "event",
+      "glyph_box",
+      "staff_spacing"
+    ]
+  },
+  "ornament_owner": {
+    "checked_by": [],
+    "declared_but_unreached": [],
+    "n_functions_walked": 2,
+    "name": "adjudicate_ornament_owner",
+    "reached": [
+      "glyph_box",
+      "ornament_mark"
+    ],
+    "reached_beyond_wants": [],
+    "scope": "glyph",
+    "wants": [
+      "glyph_box",
+      "ornament_mark"
+    ]
+  },
+  "part_partition": {
+    "checked_by": [
+      "the part count may not exceed the work roster",
+      "each part carries ONE instrument across every system it appears on"
+    ],
+    "declared_but_unreached": [
+      "instrument",
+      "staff_ordinal"
+    ],
+    "n_functions_walked": 3,
+    "name": "adjudicate_part_partition",
+    "reached": [
+      "slot_index",
+      "system_staff_count"
+    ],
+    "reached_beyond_wants": [],
+    "scope": "document",
+    "wants": [
+      "instrument",
+      "slot_index",
+      "staff_ordinal",
+      "system_staff_count"
+    ]
+  },
+  "slot_index": {
+    "checked_by": [
+      "\"a slot's instrument is the SAME on every system it appears on\"",
+      "\"label contradiction, at slot scope: a staff whose own margin label was read on THIS page, filed under a slot named otherwise\""
+    ],
+    "declared_but_unreached": [],
+    "n_functions_walked": 9,
+    "name": "adjudicate_slot_index",
+    "reached": [
+      "instrument",
+      "staff_ordinal",
+      "system_staff_count"
+    ],
+    "reached_beyond_wants": [],
+    "scope": "staff",
+    "wants": [
+      "instrument",
+      "staff_ordinal",
+      "system_staff_count"
+    ]
+  },
+  "staff_group": {
+    "checked_by": [
+      "staves of one bracket group are one instrument FAMILY -- checkable only where identity came from a READ label"
+    ],
+    "declared_but_unreached": [],
+    "n_functions_walked": 2,
+    "name": "adjudicate_staff_group",
+    "reached": [
+      "bracket_block"
+    ],
+    "reached_beyond_wants": [],
+    "scope": "staff",
+    "wants": [
+      "bracket_block"
+    ]
+  },
+  "staff_ordinal": {
+    "checked_by": [],
+    "declared_but_unreached": [],
+    "n_functions_walked": 2,
+    "name": "adjudicate_staff_ordinal",
+    "reached": [
+      "staff_ordinal"
+    ],
+    "reached_beyond_wants": [],
+    "scope": "staff",
+    "wants": [
+      "staff_ordinal"
+    ]
+  },
+  "stem_direction": {
+    "checked_by": [],
+    "declared_but_unreached": [],
+    "n_functions_walked": 11,
+    "name": "adjudicate_stem_direction",
+    "reached": [
+      "beam_stroke",
+      "glyph_box",
+      "stem"
+    ],
+    "reached_beyond_wants": [],
+    "scope": "glyph",
+    "wants": [
+      "beam_stroke",
+      "glyph_box",
+      "stem"
+    ]
+  },
+  "system_membership": {
+    "checked_by": [
+      "cross-staff measure count: every staff of a system prints the SAME number of bars",
+      "a systemic barline crosses every staff of the system at one x"
+    ],
+    "declared_but_unreached": [
+      "gap_bridging"
+    ],
+    "n_functions_walked": 2,
+    "name": "adjudicate_system_membership",
+    "reached": [
+      "system_staff_count"
+    ],
+    "reached_beyond_wants": [],
+    "scope": "system",
+    "wants": [
+      "gap_bridging",
+      "system_staff_count"
+    ]
+  },
+  "system_staff_count": {
+    "checked_by": [
+      "the count may not EXCEED the work roster -- a page cannot print an instrument the work has not got",
+      "across systems of one page the count is equal, or a subset explained by tacet staves"
+    ],
+    "declared_but_unreached": [],
+    "n_functions_walked": 2,
+    "name": "adjudicate_system_staff_count",
+    "reached": [
+      "system_staff_count"
+    ],
+    "reached_beyond_wants": [],
+    "scope": "system",
+    "wants": [
+      "system_staff_count"
+    ]
+  },
+  "tuplet_ratio": {
+    "checked_by": [
+      "\"bar sum: a wrong ratio breaks it\"",
+      "\"the group must hold exactly as many notes as the digit claims\""
+    ],
+    "declared_but_unreached": [
+      "beam_stroke"
+    ],
+    "n_functions_walked": 2,
+    "name": "adjudicate_tuplet",
+    "reached": [
+      "notehead_class",
+      "tuplet_marker"
+    ],
+    "reached_beyond_wants": [],
+    "scope": "cell",
+    "wants": [
+      "beam_stroke",
+      "notehead_class",
+      "tuplet_marker"
+    ]
+  },
+  "voices": {
+    "checked_by": [],
+    "declared_but_unreached": [],
+    "n_functions_walked": 2,
+    "name": "adjudicate_voices",
+    "reached": [
+      "event",
+      "stem_direction"
+    ],
+    "reached_beyond_wants": [],
+    "scope": "cell",
+    "wants": [
+      "event",
+      "stem_direction"
+    ]
+  },
+  "wedge_anchor": {
+    "checked_by": [],
+    "declared_but_unreached": [],
+    "n_functions_walked": 2,
+    "name": "adjudicate_wedge_anchor",
+    "reached": [
+      "glyph_box",
+      "glyph_owner",
+      "voices",
+      "wedge_box"
+    ],
+    "reached_beyond_wants": [],
+    "scope": "glyph",
+    "wants": [
+      "glyph_box",
+      "glyph_owner",
+      "voices",
+      "wedge_box"
+    ]
+  }
+}
