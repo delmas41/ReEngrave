@@ -286,7 +286,7 @@ class TestTheLegacyPathCannotReachIt:
                     hits.append(f"{f.relative_to(root)}:{i}")
         assert sorted(hits) == [
             "tools/omr/line_detection.py:1199",   # the forward, detect_lines
-            "tools/omr/staged/gather.py:1433",    # the one opt-in
+            "tools/omr/staged/gather.py:1484",    # the one opt-in
         ], hits
 
 

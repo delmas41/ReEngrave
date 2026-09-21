@@ -143,9 +143,20 @@ def _clef_of(glyph_name: str) -> Optional[str]:
     it: two crops are two signals, so alto holds 2.0 + 2.0 + 1.5 = 5.5
     against tenor's 3.0 + 1.5 = 4.5. What it does is take that staff from
     UNCONTESTED to a margin of exactly `MARGIN_FLOOR` (1.0), one crop or one
-    confidence tier from a NARROWED verdict. And where the locator has only
-    ONE crop -- the shape of p1/s1/st10 in the same record -- it DOES flip
-    outright, 4.5 against 3.5.
+    confidence tier from a NARROWED verdict -- i.e. one step from losing its
+    clef altogether.
+
+    ⚠️ AND THE CORRECTION OVERCLAIMED TOO, WHICH IS WHY THE ARM EXISTS. It
+    then said the class name flips any staff whose locator read ONE crop. Run
+    over all nine affected staves with their real evidence
+    (`benchmarks/omr-staged-c-clef-2026-09/clef_flip_arm.py`): **0 FLIP, 2
+    margins eroded**. `staff/1/1/10` does have one crop and does NOT flip,
+    because it also carries two `clefCAlto` detections that AGREE. No staff on
+    either document has the shape that flips; 4.5-against-3.5 is a synthetic
+    demonstration of the mechanism. Twice now a claim about this contest was
+    reasoned instead of run, and twice it was wrong: a weighted contest is
+    decided by how many INDEPENDENT rows a candidate has, which is a property
+    of the page and not of the weight table.
 
     ⚠️ The class could not express the answer anyway: DeepScoresV2 annotates
     only alto and tenor, so a soprano, mezzo or baritone clef can arrive only
@@ -188,12 +199,14 @@ def _c_family_support(ev: Evidence):
     it, which is viola-in-alto over cello-in-tenor. ⚠️ Letting the fine name
     into `_GLYPH_TO_CLEF` does NOT flip that particular staff -- two locator
     crops outweigh it 5.5 to 4.5 -- but it takes the staff from UNCONTESTED
-    to a margin of exactly `MARGIN_FLOOR`, and on a staff where the locator
-    read ONE crop it flips outright (4.5 against 3.5). See `_clef_of`, which
-    records that this paragraph's first draft claimed the flip without
-    measuring it and that the mutation battery is what caught it. One
-    disagreement in nine, and it is enough: the class names the family,
-    geometry names the line.
+    to a margin of exactly `MARGIN_FLOOR` -- one step from a NARROWED
+    verdict. Measured over all nine affected staves, the naming mutation
+    flips **none** of them and erodes **two** margins; see `_clef_of`, which
+    records that BOTH earlier statements of this cost were reasoned rather
+    than run, and what caught each. One disagreement in nine is still enough:
+    the class names the family, geometry names the line -- and DeepScoresV2
+    has no soprano, mezzo or baritone class at all, so the name could not
+    carry the answer even when it is right.
     """
     out = []
     for row in ev.rows(Q.CLEF_GLYPH):

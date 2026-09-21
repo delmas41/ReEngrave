@@ -290,16 +290,29 @@ compete as a clef in its own right. They are excluded because `_clef_core` names
 them explicitly and returns `None`, so the exclusion is read from the shared
 rule rather than restated.
 
-**Measured reach: 0 firings on both shared records, in every cell.** So the
-exclusion costs nothing today and buys nothing today; what it buys is that the
-day they fire they cannot be mistaken for a reading. Recorded here with its
-count so a later reader does not have to re-measure it.
+**Measured reach on THIS corpus: 0 firings on both shared records, in every
+cell.** So excluding them costs nothing measured here.
+
+⚠️⚠️ **THAT IS A FACT ABOUT THESE TWO DOCUMENTS AND NOT ABOUT THE GAP, AND THE
+CLEF DOSSIER HAS THE CASE MINE DOES NOT.** Over five committed
+production-weights records (`benchmarks/omr-real-world/*.json`, n = 99
+clef-family detections) `clef8` fires **3 times**, all on `handel-leadsheet` —
+a choral tenor part, the textbook `treble_8vb`. So the octave-mark gap is
+**LIVE, not hypothetical**: the staged path files no row, no abstention and no
+reason word for it, and a missed `clef8` is a **whole-staff octave error** —
+the same blast radius as a wrong clef, and invisible to any check reasoning
+about staff STEPS rather than sounding pitch. Excluding them from the CLEF
+CONTEST stays right; leaving them with nowhere to go does not.
 
 **What closing it would take** (should anyone want `8va`/`15ma` transposition):
 a quantity of its own — an octave mark is a *modifier on* `Q.CLEF`, not a
-candidate in its contest — plus a rule pairing it with the clef it sits above or
-below, plus a consumer in `restate_pitch`. None of that is wiring, and none of
-it is this lane.
+candidate in its contest — plus a rule pairing it with the clef it sits above
+or below, plus a consumer in `restate_pitch`. ⚠️ The dossier prices that
+pairing rule as **ASSERTED and unmeasured** (`transcribe._octave_shift_for_
+base_clef` calls itself a "pairing heuristic"), and names the confusable that
+would bite: a **stacked instrument number** printed left of the bracket is also
+a small digit beside a clef, and those are 24 of Mahler's 41 clef-locator false
+positives. None of that is wiring, and none of it is this lane.
 
 ---
 
@@ -466,6 +479,17 @@ The same is true of every other derived check:
 > green on every instrument in the repo while a literal set inside its gatherer
 > silently discards a class the detector emits.
 
+⚠️⚠️ **AND THIS WAS REACHED INDEPENDENTLY, FROM THE OTHER DIRECTION, BY THE
+CLEF DOSSIER** (`docs/symbol-dossiers/clefs.md`, on
+`origin/claude/integration-2026-09-18`): *"`gather_coverage` reports this
+family as covered and it is not ... the coverage tool reports the clef family
+green while two of its seven classes reach no row. The tool answers 'does any
+row exist for this quantity', not 'does this class reach it'."* They derived it
+by reading `gather_coverage._family` + `FAMILY_TO_Q` against `_CLEF_CLASSES`;
+this lane observed it by running the tool and reading the output. **Two
+sessions, two methods, one finding** — which is the corroboration that makes it
+worth building the check rather than noting it twice.
+
 This is the same shape CLAUDE.md already records for the `pdf_path` fault —
 *"neither `inventory --check` nor `gather_coverage` can catch that — the
 `wants` entry IS read and the quantity IS gathered"* — arriving one layer
@@ -527,3 +551,61 @@ of its category" is *true* of `_ARC_CLASSES` and meaningless, because `slur`
 and `tie` sit inside `structural` alongside barlines. **The question only has
 force where a set claims a WHOLE category** — which is why the table reports a
 coverage ratio and names the residue, rather than passing or failing.
+
+---
+
+## 13. THE FULL SUITE, AND THE ONE FAILURE — a test that pins a LINE NUMBER
+
+`python3 -m pytest tools/omr/tests -q` on the shipped tree:
+**1 failed, 4680 passed, 11 skipped** (13:41, on a machine running three other
+agents' suites concurrently at load 9 — the run is starved, not hung, which is
+a distinction CLAUDE.md already records costing a session).
+
+The failure is **mine, and it is not a regression**:
+
+```
+tools/omr/tests/test_stem_notehead_gate.py::TestTheLegacyPathCannotReachIt
+    ::test_only_the_staged_gather_opts_in
+AssertionError: ['tools/omr/line_detection.py:1199',
+                 'tools/omr/staged/gather.py:1484']
+          assert ... == ['...line_detection.py:1199',
+                         '...staged/gather.py:1433']
+```
+
+That test greps all of `tools/` for the gate's opt-in and asserts the hit list
+**as `file:LINE` strings**. `_is_clef_class` and its docstring are 51 lines
+inserted above the opt-in, so it moved 1433 → 1484.
+
+> **The invariant the test exists to protect is INTACT**: *"One producer of the
+> gate's data in the whole of `tools/`"* — still exactly two hits, still the
+> same two files, still `line_detection.py` (the forward) and
+> `staged/gather.py` (the one opt-in). Only the line number moved.
+
+**Repaired minimally: the number, and nothing else.** The file is outside this
+lane's fence, so its logic was not touched — but my change is what broke it and
+handing the next session a red suite is worse than a one-token forced
+correction. Re-run: `test_stem_notehead_gate.py` **12 passed**, and the
+clef/staged regression set **172 passed**.
+
+⚠️⚠️ **FOR THE OWNER OF THAT LANE — the assertion is brittle by construction
+and will break again on the next insertion anywhere above line 1484 in
+`gather.py`.** The line number is not part of the invariant; the FILE SET is.
+The durable form is one line:
+
+```python
+assert sorted({h.split(":")[0] for h in hits}) == [
+    "tools/omr/line_detection.py",
+    "tools/omr/staged/gather.py",
+], hits
+```
+
+which asserts *exactly* what the docstring claims ("one producer ... in the
+whole of `tools/`") and is immune to every edit that does not add or remove a
+producer. Keeping the line numbers in the failure message (`, hits`) already
+gives a human the location without pinning it. **Not applied here — it changes
+what another lane's test asserts, which is that lane's call.**
+
+⚠️ This is the same family as the hand-counted figures CLAUDE.md records
+rotting (`"153 tests"` → 226; `_CLEF_CLASSES` itself): **a derived claim
+written down as a literal.** The test derives the hit list correctly and then
+compares it to a constant that decays.

@@ -89,7 +89,7 @@ ARMS = [
     # ---- the call site: the category must actually be PASSED ----
     ("call_site_passes_no_category", GATHER,
      '        clefs = [d for d in dets\n'
-     '                 if _is_clef_class(d.smufl_name, getattr(d, "category", None))]',
+     '                 if _is_clef_class(d.smufl_name, d.category)]',
      '        clefs = [d for d in dets\n'
      '                 if _is_clef_class(d.smufl_name, "clef")]',
      "TestTheCategoryTestIsLoadBearing::test_a_flag_is_not_a_bass_clef"),

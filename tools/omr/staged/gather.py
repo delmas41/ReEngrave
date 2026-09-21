@@ -1870,7 +1870,7 @@ def gather_clef(log: Log, cells: Sequence[Any],
         frame = frame_cell(0)
         grid = _cell_grid(by_key.get((sub.page, sub.system, sub.staff, 0)))
         clefs = [d for d in dets
-                 if _is_clef_class(d.smufl_name, getattr(d, "category", None))]
+                 if _is_clef_class(d.smufl_name, d.category)]
         if not clefs:
             log.abstain(staff_sub, Q.CLEF_GLYPH, reader=READERS.DETECTOR,
                         frame=frame, reason=ABSTAIN.NO_DETECTIONS)
