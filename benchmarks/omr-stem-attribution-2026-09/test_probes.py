@@ -56,7 +56,18 @@ class TestTheOverlapPredicateIsTheShippedOne(unittest.TestCase):
 
     def test_a_clearly_separated_pair_is_rejected_by_both(self):
         a = (0.0, 0.0, 10.0, 10.0)
-        b = (30.0, 0.0, 5.0, 10.0)
+        b = (30.0, 0.0, 5.0, 10.0)          # separated in X only
+        self.assertFalse(self.shipped(a, b))
+        self.assertFalse(reach.overlap(a, b))
+
+    def test_a_pair_separated_in_Y_ONLY_is_rejected_by_both(self):
+        # ⚠️ ADDED BY THE MUTATION BATTERY. An arm that made the Y test
+        # unconditionally true SURVIVED its named test, because every
+        # separation case here was separated in X and the X test still
+        # rejected them. The battery had found a real gap: nothing exercised
+        # the Y dimension on its own.
+        a = (0.0, 0.0, 10.0, 10.0)
+        b = (0.0, 30.0, 10.0, 5.0)
         self.assertFalse(self.shipped(a, b))
         self.assertFalse(reach.overlap(a, b))
 

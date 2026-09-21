@@ -64,7 +64,7 @@ ARMS = [
      PROBE / "reach.py",
      "and ay <= by + bh and ay + ah >= by)",
      "and True)",
-     "test_a_clearly_separated_pair_is_rejected_by_both"),
+     "test_a_pair_separated_in_Y_ONLY_is_rejected_by_both"),
 
     ("cell_of: takes one segment too few",
      PROBE / "reach.py",
