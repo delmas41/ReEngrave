@@ -174,17 +174,50 @@ class TestAClassNameStillCannotNameWhichCClef(unittest.TestCase):
         self.assertNotIn("clefCAlto", clef_mod._GLYPH_TO_CLEF)
         self.assertNotIn("clefCTenor", clef_mod._GLYPH_TO_CLEF)
 
-    def test_the_detector_CANNOT_overturn_the_locator_on_which_C_clef(self):
-        """⚠️ THE MEASURED CASE, AS A TEST. Brahms 1 p3/s1/st11: detector
-        `clefCTenor`, locator `alto` twice. The staff must stay ALTO."""
+    @staticmethod
+    def _brahms_p3s1st11(n_crops):
+        """The evidence shape the record holds on Brahms 1 p3/s1/st11 AFTER
+        this repair -- the detector's `clefCTenor` glyph, its grid position,
+        and the locator's `alto`, measured on `n_crops` crops."""
         log = _log()
         log.observe(SUB, Q.CLEF_GLYPH, "clefCTenor", reader=READERS.DETECTOR,
-                    frame="cell:0", score=0.95)
-        for frame in ("header_window", "cell:0"):
+                    frame="cell:0", score=0.95, y_center=180.0, x_center=50.0)
+        log.observe(SUB, Q.CLEF_POSITION, 4.0, reader=READERS.GEOMETRY,
+                    frame="cell:0", glyph="clefCTenor", y_center=180.0)
+        for frame in ("header_window", "cell:0")[:n_crops]:
             log.observe(SUB, Q.CLEF_LOCATED, "alto", reader=READERS.CV_LOCATOR,
-                        frame=frame, score=0.91, family="C", line=3)
+                        frame=frame, score=0.912, family="C", line=3)
         adjudicate.run(log)
-        v = log.verdict(Q.CLEF, SUB)
+        return log.verdict(Q.CLEF, SUB)
+
+    def test_the_measured_disagreement_stays_with_the_locator(self):
+        """⚠️ THE MEASURED CASE, AS A TEST, AND THE FIRST DRAFT OVERCLAIMED
+        IT -- the mutation battery is what caught that, not review.
+
+        Brahms 1 p3/s1/st11: detector `clefCTenor`, locator `alto` on TWO
+        crops. I wrote that naming the clef from the class would "flip that
+        staff to tenor". It does not: two crops are two signals, so alto
+        carries 2.0 + 2.0 + 1.5 family = 5.5 against tenor's 3.0 + 1.5 = 4.5.
+        What it DOES do is the assertion below."""
+        v = self._brahms_p3s1st11(2)
+        self.assertEqual(v.value, "alto")
+
+    def test_naming_the_clef_would_erode_the_margin_to_the_FLOOR(self):
+        """⚠️ THE REAL COST, MEASURED. Under the shipped rule this staff is
+        uncontested -- one candidate, margin 5.5. Let the class name the clef
+        and a contender appears at 4.5, putting the margin at EXACTLY
+        `MARGIN_FLOOR`: one crop or one confidence tier away from a NARROWED
+        verdict, i.e. from losing its clef. That is the erosion the refusal
+        prevents, and it is a stronger statement than the flip I claimed."""
+        v = self._brahms_p3s1st11(2)
+        self.assertGreater(v.margin, clef_mod.MARGIN_FLOOR)
+
+    def test_with_ONE_crop_naming_the_clef_DOES_flip_the_staff(self):
+        """⚠️ AND THE FLIP IS REAL WHERE THE LOCATOR HAS ONE CROP -- which is
+        the shape of Brahms p1/s1/st10 in the same record. alto 3.5 against
+        a named tenor's 4.5: the staff changes clef, and with it every pitch
+        on it and the slot table its key signature is fitted against."""
+        v = self._brahms_p3s1st11(1)
         self.assertEqual(v.value, "alto")
 
 

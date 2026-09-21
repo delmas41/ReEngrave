@@ -132,17 +132,25 @@ def _clef_of(glyph_name: str) -> Optional[str]:
     ⚠️⚠️ AND THE FINE SPELLINGS LOOK LIKE AN EXCEPTION AND ARE NOT, WHICH IS
     THE ONE THING A READER IS MOST LIKELY TO GET WRONG HERE. `clefCAlto` and
     `clefCTenor` are separate trained classes that DO appear to name the
-    line, so adding them to `_GLYPH_TO_CLEF` reads like a free repair. It is
-    not: it would hand them `W_DETECTOR_HIGH` (3.0) against the locator's
-    2.0, and on Brahms 1 p3/s1/st11 the detector fires `clefCTenor` where the
-    locator measures ALTO twice at 0.91 -- on staff 11 of a 14-staff system
-    whose staff 12 reads tenor, i.e. viola over cello. One disagreement in
-    nine measured, and it flips a staff that is right today to wrong.
-    DeepScoresV2 also annotates only alto and tenor, so a soprano, mezzo or
-    baritone clef can only ever arrive under one of those two names -- the
-    class is not merely unreliable about the line, it cannot express it.
-    They are admitted as FAMILY support instead (`_c_family_support`), which
-    is what the detector can honestly claim.
+    line, so adding them to `_GLYPH_TO_CLEF` reads like a free repair.
+
+    Measured, it is not -- and THE FIRST DRAFT OF THIS PARAGRAPH OVERCLAIMED
+    HOW, which the mutation battery caught and review did not. It said the
+    class name would "flip a staff that is right today to wrong". On Brahms 1
+    p3/s1/st11 the detector fires `clefCTenor` where the locator measures
+    ALTO on TWO crops at 0.91 -- staff 11 of a 14-staff system whose staff 12
+    reads tenor, i.e. viola over cello -- and naming the clef does NOT flip
+    it: two crops are two signals, so alto holds 2.0 + 2.0 + 1.5 = 5.5
+    against tenor's 3.0 + 1.5 = 4.5. What it does is take that staff from
+    UNCONTESTED to a margin of exactly `MARGIN_FLOOR` (1.0), one crop or one
+    confidence tier from a NARROWED verdict. And where the locator has only
+    ONE crop -- the shape of p1/s1/st10 in the same record -- it DOES flip
+    outright, 4.5 against 3.5.
+
+    ⚠️ The class could not express the answer anyway: DeepScoresV2 annotates
+    only alto and tenor, so a soprano, mezzo or baritone clef can arrive only
+    under one of those two names. They are admitted as FAMILY support instead
+    (`_c_family_support`), which is what the detector can honestly claim.
 
     ⚠️ THE FIRST CUT OF THIS MODULE MAPPED `clefC -> alto` AND CALLED IT A
     PLACEHOLDER. That was worse than it looked: the detector's weight (3.0 at
@@ -177,12 +185,15 @@ def _c_family_support(ev: Evidence):
     the fine spellings. On Brahms 1 p3/s1/st11 the detector fires
     `clefCTenor` and the locator measures ALTO, twice, at 0.91; the staff is
     staff 11 of a 14-staff system with `clefCTenor`/tenor on staff 12 below
-    it, which is viola-in-alto over cello-in-tenor. Letting the fine name
-    into `_GLYPH_TO_CLEF` would give it `W_DETECTOR_HIGH` (3.0) against the
-    locator's 2.0 and FLIP that staff to tenor -- the exact hazard
-    `_clef_of`'s docstring was written about, arriving for real from a
-    spelling that docstring did not anticipate. One disagreement in nine, and
-    it is enough: the class names the family, geometry names the line.
+    it, which is viola-in-alto over cello-in-tenor. ⚠️ Letting the fine name
+    into `_GLYPH_TO_CLEF` does NOT flip that particular staff -- two locator
+    crops outweigh it 5.5 to 4.5 -- but it takes the staff from UNCONTESTED
+    to a margin of exactly `MARGIN_FLOOR`, and on a staff where the locator
+    read ONE crop it flips outright (4.5 against 3.5). See `_clef_of`, which
+    records that this paragraph's first draft claimed the flip without
+    measuring it and that the mutation battery is what caught it. One
+    disagreement in nine, and it is enough: the class names the family,
+    geometry names the line.
     """
     out = []
     for row in ev.rows(Q.CLEF_GLYPH):
