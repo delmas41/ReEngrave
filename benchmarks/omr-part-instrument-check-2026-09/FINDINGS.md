@@ -210,7 +210,70 @@ what those lists are for and is stronger corroboration than either alone. Both
 entries were removed; the `Q.STAFF_ORDINAL` entry was repointed, since it
 cited the one that left.
 
-**MUTATION BATTERY.** See §7.
+**MUTATION BATTERY: 13 arms — and its FIRST THREE RUNS ARE THE FINDING.**
+See §5a.
+
+### 5a. ⚠️⚠️ THE BATTERY WAS MEASURING NOTHING, AND FIXING IT FOUND FOUR REAL GAPS
+
+`headline()` compared pytest's summary line **verbatim**, and that line ends
+`" in 0.57s"` — pytest's own elapsed time, which **differs between two runs of
+an UNMUTATED tree**. So `out != b_out` was true for every arm and **every arm
+scored RED for free.** Measured, two baseline runs back to back:
+
+```
+run A: (0, '13 passed, 5 warnings in 0.57s')
+run B: (0, '13 passed, 5 warnings in 0.61s')
+IDENTICAL: False
+```
+
+**A battery whose judge cannot say two identical trees are identical is not a
+battery**, and it is the *control that computes the wrong thing* family
+failing in the direction that looks like success: the first run reported
+**13 of 13 RED, 0 survivors** and would have shipped as a clean result.
+
+| run | judge | result |
+|---|---|---|
+| 1 | summary verbatim | **13 RED, 0 survivors** — VOID |
+| 2 | duration stripped | **10 RED, 3 SURVIVORS** |
+| 3 | after closing those three | **12 RED, 1 SURVIVOR** |
+| 4 | after closing that one | see the committed output |
+
+**All four survivors were real, and three were the same shape** — a test that
+reaches everything about a mechanism except the branch the mutation lives in:
+
+1. **A contested SLOT join abstaining.** `test_the_check_changes_NOTHING_
+   about_the_join` builds two systems of EQUAL staff count, so it takes the
+   ORDINAL branch and never reaches the slot branch at all. *A test named for
+   a hazard it does not reach*, with the name exactly right and the fixture
+   two staves short of the branch.
+2. **and 3. Both of the ARM's own controls.** A benchmark arm is a script; no
+   suite imports it, so an arm against it is free unless something drives it.
+   Closed by tests that run `check_arm.main()` over a synthetic record.
+4. ⚠️⚠️ **The arm's POSITIVE control, which is the hazard one layer out.**
+   Deleting *"the detail must be PRESENT"* left `rc == 0` and `"DID run"` both
+   true on a faithful record — because **"nothing moved" is exactly what a
+   check that never ran looks like**, which is the reason the arm has that
+   control. A test suite that cannot tell those apart has the same blind spot
+   the arm was built to close. Closed by stripping the detail after
+   adjudication and requiring the control to FAIL.
+
+⚠️⚠️ **THE SAME JUDGE IS IN
+`benchmarks/omr-stem-notehead-gate-2026-09/mutate.py`, WHICH THIS ONE WAS
+COPIED FROM — so that lane's published "21 arms, 21 RED, 0 survivors" IS VOID
+AS PUBLISHED.** Both are fixed. **Only 2 of the repo's 30 batteries carry the
+shape**, both written on 2026-09-20, so it is a regression and not historic.
+
+### 5b. ⚠️ AND A COMMIT CAPTURED A LIVE MUTATION
+
+`git add -A` over this benchmark directory ran while this lane's OWN battery
+was mid-arm, and committed `if False:` in place of the arm's join comparison.
+The battery restored the file correctly (md5 verified) and **the working tree
+was right the whole time; HEAD was not** — caught by the NEXT battery's
+dirty-target refusal, not by review. CLAUDE.md already says *"NEVER `git add
+-A` anywhere another agent may be working"*; the clause this adds is that **a
+mutation battery is such an agent, and it is one you started yourself** — so
+the window is not *another session is running*, it is *anything at all is
+running*.
 
 ---
 
