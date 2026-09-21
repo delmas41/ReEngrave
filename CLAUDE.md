@@ -612,6 +612,24 @@ every detection from the page's ink so "find the text" becomes "find the ink".
 Full statement: `tools/omr/staged/ASSUMPTIONS.md` **A-DUR-5**, which now
 carries the result and the two frame corrections that came with it.
 
+⚠️⚠️ **START HERE IF YOU ARE PICKING THIS UP (2026-09-20):**
+[docs/RESUME-HERE-2026-09-20.md](docs/RESUME-HERE-2026-09-20.md) — **the
+conventions are countable at last, and the number is the finding: 94 of 114
+reach NO decision, 16 of the 32 checks we DO declare are not performed, and 6
+of the 7 that are performed cannot fail.** `tools/omr/conventions.py` parses
+the registry (a parse, not a copy) and `--check` exits 0. ⚠️ **Nothing is
+wired, deliberately** — wiring beside the measurement makes it circular.
+⚠️ **Three declared-but-absent checks are live damage**, led by
+`part_partition` declaring *"each part carries ONE instrument across every
+system"* and `Q.INSTRUMENT` in `wants` while its body reads neither — the
+12-of-75 graft its own docstring describes. ⚠️ **`key_signature_corroboration`
+has exactly ONE import and it is `transcribe.py`, the LEGACY path** — this
+file calls it shipped. ⚠️ **ONE AGENT IS STILL RUNNING**: the pair-rule
+notehead gate on `claude/stem-notehead-gate`, unmerged. ⚠️ **It also corrects
+FOUR claims made the same day**, including that this file's convention count
+is **114, not 125**, and a Breitkopf figure computed under a flat 100 px
+instead of `Q.CELL_STAFF_SPACE`.
+
 **Backlog / research notes:** see [NOTES.md](NOTES.md) — surface these at the start of a ReEngrave session.
 
 **Where the work stands today:** see [PROJECT_STATUS.md](PROJECT_STATUS.md).
