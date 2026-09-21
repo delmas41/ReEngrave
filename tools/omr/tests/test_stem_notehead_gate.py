@@ -288,3 +288,101 @@ class TestTheLegacyPathCannotReachIt:
             "tools/omr/line_detection.py:1199",   # the forward, detect_lines
             "tools/omr/staged/gather.py:1433",    # the one opt-in
         ], hits
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# ⚠️⚠️ THE THREE TESTS BELOW EXIST BECAUSE THREE MUTATIONS SURVIVED — and they
+# only became visible once this lane's battery stopped carrying pytest's own
+# elapsed time in its judge. As published, `mutate.py` compared the summary
+# line verbatim, and that line ends " in 0.57s": two runs of an UNMUTATED tree
+# differ, so every arm scored RED for free and the reported "21 arms, 21 RED,
+# 0 survivors" could not have said anything else. Re-run on a judge that can
+# fail: 18 RED and THREE SURVIVORS, all three on the gate's OWN SAFETY
+# ARGUMENT rather than on its behaviour.
+# ─────────────────────────────────────────────────────────────────────────────
+
+
+class TestTheSurvivorsOfTheFixedBattery:
+
+    def test_the_flag_ALONE_hands_the_relation_NONE_and_not_an_empty_list(self):
+        """⚠️ SURVIVOR 1, and it is BEHAVIOURALLY EQUIVALENT — which is why
+        every existing test walked past it and why it still had to be closed.
+
+        The mutation is `list(noteheads or [])`, arming the gate on the flag
+        alone. With no boxes that hands `_drop_paired_strokes` an EMPTY list
+        instead of `None`, and an empty list condemns exactly what `None`
+        condemns — so no output anywhere moves, and
+        `test_the_flag_alone_with_no_noteheads_changes_nothing` passes against
+        the mutant.
+
+        What it destroys is the CONTRACT, which that function's own comment
+        spells out: *"`None` and `[]` MUST NOT BE THE SAME THING HERE"* —
+        `None` is NO GATE (the shipped relation, which is the legacy
+        `transcribe` path's safety argument) and `[]` is THE GATE IS ON and
+        this cell holds no notehead. An equivalent mutant today is a live bug
+        the moment anything downstream reads that distinction, which is
+        precisely what `_notehead_boxes_for_cell` was written to preserve.
+
+        So this asserts the VALUE HANDED OVER rather than the result."""
+        import tools.omr.line_detection as LD
+        seen = []
+        real = LD._drop_paired_strokes
+
+        def spy(stems, spacing, gap, overlap, heads=None):
+            seen.append(heads)
+            return real(stems, spacing, gap, overlap, heads=heads)
+
+        cell = _cell(_two_close_strokes)
+        LD._drop_paired_strokes = spy
+        try:
+            detect_stems(cell, enable_notehead_gate=True)      # flag, no data
+            detect_stems(cell, noteheads=[], enable_notehead_gate=True)
+        finally:
+            LD._drop_paired_strokes = real
+
+        assert seen[0] is None, (
+            "the flag with no notehead boxes must hand over None — NO gate. "
+            "The legacy path calls detect_lines(cell) with no detections and "
+            "is unchanged BY CONSTRUCTION only while this holds.")
+        assert seen[1] == [], (
+            "the positive control: a caller that DID supply a map for a cell "
+            "with no notehead must hand over [], a different claim")
+
+    def test_a_stroke_merely_TOUCHING_a_head_box_is_not_on_it(self):
+        """⚠️ SURVIVOR 2. The overlap test is strict (`> 0`) and the mutation
+        loosens it to `>= 0`, so a stroke whose box ABUTS a notehead's — the
+        neighbouring note's stroke, one pixel away — is protected too.
+
+        Every existing fixture puts its head well under its stroke, so none of
+        them sits on the boundary and the loosening was free. This one is
+        built AT the boundary on purpose."""
+        from tools.omr.line_detection import _meets_a_notehead
+        head = (100.0, 100.0, 50.0, 50.0)          # x 100..150, y 100..150
+        abutting = _Box(150, 100, 8, 50)           # starts exactly at x 150
+        overlapping = _Box(148, 100, 8, 50)        # two pixels inside
+        assert not _meets_a_notehead(abutting, [head]), (
+            "touching is not standing on: a shared edge is zero overlap")
+        assert _meets_a_notehead(overlapping, [head]), (
+            "the positive control — without it the test above passes for a "
+            "predicate that always says no")
+
+    def test_only_a_NOTEHEAD_protects_a_stroke(self):
+        """⚠️ SURVIVOR 3, and it is the gate's entire premise. Dropping the
+        class filter in `_notehead_boxes_for_cell` lets an accidental, a rest
+        or a clef protect a stroke — which would make the rule that exists to
+        tell a sharp's two strokes from two stems protect the sharp."""
+        from tools.omr.staged.gather import _notehead_boxes_for_cell, R
+
+        class _D:
+            def __init__(self, name):
+                self.smufl_name = name
+                self.x_canonical = self.y_canonical = 10.0
+                self.width_canonical = self.height_canonical = 20.0
+
+        sub = R.cell(0, 0, 0, 0)
+        dets = {sub.to_key(): [_D("accidentalSharp"), _D("restQuarter"),
+                               _D("clefG"), _D("noteheadBlackInSpace")]}
+        heads = _notehead_boxes_for_cell(dets, sub)
+        assert len(heads) == 1, (
+            f"only the notehead may protect a stroke; got {len(heads)} boxes "
+            f"from 4 detections of which 1 is a notehead")

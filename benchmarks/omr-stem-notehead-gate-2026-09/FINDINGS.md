@@ -343,6 +343,31 @@ regression rather than anything historic. The duration is stripped now.
 rather than deleted: a superseded measurement with its correction beside it
 is worth more than a gap.**
 
+**RE-RUN, ON A JUDGE THAT CAN FAIL: 21 arms, 18 RED, 0 bad anchors, restore
+VERIFIED by md5 — and THREE SURVIVORS, every one on this gate's OWN SAFETY
+ARGUMENT rather than on its behaviour** (`out/mutation-battery-rerun.txt`):
+
+1. ⚠️⚠️ **The flag alone arming the gate** (`list(noteheads or [])`), which is
+   **BEHAVIOURALLY EQUIVALENT** — an empty head list condemns exactly what
+   `None` condemns, so no output moves and
+   `test_the_flag_alone_with_no_noteheads_changes_nothing` passes against the
+   mutant. What it destroys is the CONTRACT `_drop_paired_strokes`' own
+   comment spells out — *"`None` and `[]` MUST NOT BE THE SAME THING HERE"* —
+   and with it **the legacy path's whole "unchanged BY CONSTRUCTION" claim.**
+   Closed by a spy asserting the VALUE HANDED OVER, not the result.
+2. **The overlap test loosened from `> 0` to `>= 0`**, so a stroke merely
+   ABUTTING a head's box — the neighbouring note's stroke — is protected too.
+   Every existing fixture puts its head well under its stroke, so none sat on
+   the boundary and the loosening was free. Closed with a fixture built AT it.
+3. **The notehead class filter deleted** in `_notehead_boxes_for_cell`, so an
+   accidental, a rest or a clef would protect a stroke — **the rule that
+   exists to tell a sharp's two strokes from two stems, protecting the
+   sharp.** Closed directly.
+
+**All three are now red.** ⚠️ Note what the three have in common: none changed
+an output on any fixture in the suite, which is exactly the population a
+battery exists to reach and a green suite cannot.
+
 **AS PUBLISHED (VOID): 21 arms, 21 RED, 0 survivors, 0 bad anchors, restore
 VERIFIED by md5**,
 baseline green (115 tests) before any arm was read. Byte snapshot on disk, an
