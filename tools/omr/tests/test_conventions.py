@@ -221,6 +221,20 @@ class TestTheCheckGoesRed(unittest.TestCase):
             "lattice | *(same title)* | kept standalone |\n", "", 1)
         self.assertIn("CONSERVATION ROW MISSING", self._problem_kinds(broken))
 
+    def test_a_drifted_contents_count_is_a_finding(self) -> None:
+        broken = TEXT.replace("— 18\n- [Text & margin labels]",
+                              "— 17\n- [Text & margin labels]", 1)
+        self.assertIn("COUNT DISAGREES", self._problem_kinds(broken))
+
+    def test_a_misaddressed_refutation_row_is_a_finding(self) -> None:
+        # The FAILED table names each refuted entry TWICE — a link and a
+        # tag. Point the link at a different entry and a reader following it
+        # lands on a live rule believing it refuted.
+        broken = TEXT.replace(
+            "](#a-meter-stack-is-two-digits-aligned-in-x-and-adjacent-in-y--refuted)",
+            "](#a-notehead-is-one-staff-space-tall)", 1)
+        self.assertIn("REFUTATION ROW MISADDRESSED", self._problem_kinds(broken))
+
     def test_the_unmutated_document_is_the_positive_control(self) -> None:
         # ⚠️ Every arm above is worthless if the base is not clean.
         self.assertEqual(self._problem_kinds(TEXT), set())

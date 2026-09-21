@@ -393,6 +393,8 @@ class Registry:
     claimed_status_counts: Dict[str, int]
     claimed_category_counts: Dict[str, int]
     claimed_category_literature: Dict[str, int]
+    claimed_contents_counts: Dict[str, int]
+    failed_table_anchors: Dict[str, str]
     claimed_entry_total: Optional[int]
     claimed_source_total: Optional[int]
     failed_table_ids: Tuple[str, ...]
@@ -491,6 +493,8 @@ class Registry:
                 + len(self.claimed_category_counts)
             ),
             "conservation_rows": len(self.conservation_rows),
+            "contents_rows": len(self.claimed_contents_counts),
+            "failed_table_rows": len(self.failed_table_anchors),
         }
 
     def field_coverage(self) -> Dict[str, int]:
@@ -633,6 +637,32 @@ class Registry:
                                  "Status says REFUTED and it is absent from "
                                  "'Conventions that FAILED here'"))
 
+        # 6b. The FAILED table gives each refuted entry TWICE — a link and a
+        #     source tag. They must name the same entry, or a reader
+        #     following the link lands on a live rule while believing it
+        #     refuted, which is this registry's one forbidden outcome.
+        for token, anchor in sorted(self.failed_table_anchors.items()):
+            try:
+                by_anchor = self.by_slug(anchor).id
+            except KeyError:
+                continue  # already reported as BROKEN ANCHOR
+            try:
+                by_tag = self.by_source(token).id
+            except KeyError:
+                continue  # already reported as DANGLING CITATION
+            if by_anchor != by_tag:
+                found.append(Problem("REFUTATION ROW MISADDRESSED", token,
+                                     f"its link lands on {by_anchor} and its "
+                                     f"tag names {by_tag}"))
+
+        # 6c. The Contents list restates every category's size.
+        for name, claimed in sorted(self.claimed_contents_counts.items()):
+            got = len(self.in_category(name))
+            if got != claimed:
+                found.append(Problem("COUNT DISAGREES", f"contents {name}",
+                                     f"Contents says {claimed}, entries give "
+                                     f"{got}"))
+
         # 7. Every id cited in a prose section resolves to an entry.
         known = {e.id for e in self.entries} | set(owners)
         for label, idents in (
@@ -760,6 +790,21 @@ def parse(text: str, path: Optional[Path] = None) -> Registry:
         sections.get("Where the two sources DISAGREE", ""))))
     anchors = sorted(set(re.findall(r"\]\(#([a-z0-9\-_]+)\)", text)))
 
+    contents_body = sections.get("Contents", "")
+    contents_counts = {
+        m.group(1).strip(): int(m.group(2))
+        for m in re.finditer(r"^- \[([^\]]+)\]\(#[^)]+\) — (\d+)\s*$",
+                             contents_body, re.M)
+    }
+    failed_anchors: Dict[str, str] = {}
+    for line in failed_body.split("\n"):
+        if not line.startswith("| ["):
+            continue
+        anchor = re.search(r"\]\(#([a-z0-9\-_]+)\)", line)
+        tag = re.search(r"`\[([CL]\d+)", line)
+        if anchor and tag:
+            failed_anchors[tag.group(1)] = anchor.group(1)
+
     failed_set = set(failed_ids)
     caveat_set = set(caveat_ids)
     disagree_set = set(disagree_ids)
@@ -863,6 +908,8 @@ def parse(text: str, path: Optional[Path] = None) -> Registry:
         anchors_referenced=tuple(anchors),
         heading_slugs=tuple(heading_slugs),
         conservation_rows=_parse_conservation(text),
+        claimed_contents_counts=contents_counts,
+        failed_table_anchors=failed_anchors,
     )
 
 
