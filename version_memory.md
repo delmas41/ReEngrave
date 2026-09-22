@@ -16,6 +16,89 @@ pointing at headings no longer in the file.)*
 
 ---
 
+## 2026-09-22 — the three channels, measured and then wired
+
+Sean: *"I thought we had figured out the instrument to line issue. Using the
+natural order of instruments, the list of instrumentation from the score or a
+dossier and the addition of any clefs that could be read as well as family
+brackets — would all add up to clarity of the instrumentation. Did we lose that
+at some point?"* — and, on being shown where the clef stands: *"the clef is a
+small part of deciding what the instrument is and we would need to be sure of
+the clef to have it impact the instrument. margin names, instrumentation lists
+from the doc or a dossier, Order, family brackets should all come first."*
+
+**REACH FIRST, and it refuted the intuitive part.** Measured on the staves
+whose instrument ABSTAINED, **ZERO GRAFTS in every arm on both documents**
+(`benchmarks/omr-instrument-channels-2026-09/`):
+
+| channel added | Litolff /25 | Breitkopf /40 |
+|---|--:|--:|
+| order alone | **0** | **38** |
+| + family block | **5** | 38 |
+| + clef | **18** | 38 |
+
+⚠️⚠️ **ORDER ALONE FORCES NOTHING ON THE DOCUMENT THAT NEEDS IT** — Litolff's
+unnamed staves are a TRAILING block with no named neighbour below, so the whole
+block slides — **and Breitkopf INVERTS it**, its unnamed staves being
+interleaved among named ones and bounded on both sides. *Neither document could
+have shown that on its own.*
+
+⚠️⚠️ **"A SLOT'S CLEF IS WHAT THE REFERENCE SYSTEM READ" IS REFUTED.** A slot's
+clef is constant on both plates for every instrument **except the Cello and the
+Bassoon**, which alternate bass/tenor as a matter of course — Breitkopf's
+reference reads its cello slot `tenor` and three later systems read the same
+slot `bass`, **all four at margin 4.5**. That premise makes **5 of Breitkopf's
+6 systems unsatisfiable**. Taking each slot's admissible clefs from the
+INSTRUMENT's own lexicon entry reaches the same 18 and is refused on no system
+of either document.
+
+⚠️ **A CLEF READING ON A NAMED STAFF CAN ONLY SUBTRACT.** On Litolff p2/s1 the
+Fagotti's FALSE `tenor` — the CV locator firing unopposed at exactly
+`MARGIN_FLOOR` — names a clef no slot admits, and **four forced staves are lost
+to one wrong reading on a staff the clef was never needed for.**
+
+⚠️ **PLACEMENT REACH IS NOT NAMING REACH.** Ten of Breitkopf's 38 placed staves
+land on reference slots the reader itself could not name. **That is the
+instrumentation list's first measured population** — and both catalog rosters
+name **no string instrument at all** (`string` survives only in the FAMILIES
+list), so a roster can name a Flöten slot and never a Kontrabass one.
+
+**WIRED** the same day at Sean's word (*"wire it all up"*):
+`OMR_SLOT_CONSTRAINTS`, **default ON**, deny-list OFF test.
+`adjudicate_slot_index` enumerates every strictly-increasing staff→slot map
+(`[C62]`) under the three channels and takes a slot only where every surviving
+map agrees; a channel that would empty the set is DROPPED for that system and
+named. Control **75 of 75** committed verdicts reproduced with both branches
+off; placements **IDENTICAL to the shipped path**, **0 grafts, 0 staves moved**
+on both documents (+3 gained on Breitkopf). What moves is the PROVENANCE:
+`forced_by_constraints` **0 → 13** against INFER's
+`the_short_block_is_condensed_at_its_foot` **15 → 2**.
+
+⚠️⚠️ **THE FIRST CUT WAS ADDITIVE IN ITS OWN TERMS AND STILL SUBTRACTED,
+THROUGH A RULE DOWNSTREAM OF IT.** Deciding two members of a block removed them
+from `inferences._block_members`, which requires the narrowings to cover
+`0..k-1`; the block then had holes, INFER skipped it whole, and **two Violas
+the shipped path places correctly came out narrowed**. Every aggregate looked
+fine — only the per-staff assertion *no staff the base DECIDED may come out
+differently* caught it. Repaired twice: the branch now FILTERS the block's
+narrowing instead of replacing it, and `_block_members` admits a member the
+page FORCED (*a member the page already settled is not a hole in the block*).
+
+⚠️ **All 12 parts were ALREADY NAMED before any of this** (`name_arm.py`, every
+arm), so `export._default_name`'s `Staff p1-s0-3` is **not** present on this
+record and this change does not address that symptom. What the placements buy
+is the hold-out: staves with no slot go **25 → 5**.
+
+⚠️ **NOT ESTABLISHED**: no print was consulted (correctness rests on the
+2026-09-14 and 2026-09-17 crop passes); Breitkopf is unscored; no export, no
+file, **no OMR-NED** (musicdiff does not score `<part-name>`); n = 2 documents,
+2 publishers, 8 pages, both scans. ⚠️ The battery's first run had **6
+survivors, every one a real test gap** — the outcome tests were blind to half
+the guards, because a channel silently dropped and a channel that added nothing
+leave the same verdict behind.
+
+---
+
 ## 2026-09-21 (evening) — Sean's rule is ON by default; the sheet becomes a fallback
 
 Sean, in one sentence: *"Flip on the previous work and redo our work tonight to

@@ -644,9 +644,23 @@ def _block_members(log: Log, system: Subject) -> Dict[int, List[Verdict]]:
     out: Dict[int, List[Verdict]] = {}
     for v in log.verdicts(Q.SLOT_INDEX, system,
                           scope=Scope.SELF_AND_DESCENDANTS):
-        if v.outcome is not Outcome.NARROWED:
-            continue
-        if v.reason != "family_block_not_forced":
+        # ⚠️⚠️ A MEMBER THE PAGE ALREADY FORCED IS NOT A HOLE IN THE BLOCK.
+        # `adjudicate_slot_index`'s constraint filter can settle some members
+        # of a block outright (`forced_by_constraints`), and until 2026-09-22
+        # this saw only NARROWED ones -- so a partly-settled block failed the
+        # `0..k-1` cover below, the rule skipped it whole, and TWO Violas the
+        # shipped path places correctly came out narrowed instead. Measured by
+        # a per-staff base-vs-arm control; invisible in every aggregate.
+        #
+        # A decided member is admitted purely so the block RECONSTRUCTS. It is
+        # never proposed for: `infer.INFERABLE` is `{NARROWED, ABSTAINED}`, so
+        # the stage cannot overturn a decided verdict whatever this returns,
+        # and the front-alignment below already skips `members[-1]`.
+        if v.outcome is Outcome.DECIDED:
+            if v.reason != "forced_by_constraints":
+                continue
+        elif v.outcome is not Outcome.NARROWED \
+                or v.reason != "family_block_not_forced":
             continue
         d = v.detail or {}
         b0 = d.get("block_first_ordinal")
@@ -785,8 +799,15 @@ def collapse_slot_index_to_family_block(log: Log,
             # this rule reasons about. Reported by absence rather than
             # guessed around.
             continue
-        run = list((members[0].detail or {}).get("run") or ())
-        run_clefs = list((members[0].detail or {}).get("run_clefs") or ())
+        # ⚠️ THE RUN COMES FROM WHICHEVER MEMBER STILL CARRIES IT, not from
+        # `members[0]`. Every member's detail holds the same run -- they are
+        # one claim about one block -- but a member the constraint filter
+        # decided carries it only when it was narrowed first, so keying on the
+        # first member would reintroduce exactly the hole this admits.
+        detail = next((m.detail for m in members
+                       if (m.detail or {}).get("run")), None) or {}
+        run = list(detail.get("run") or ())
+        run_clefs = list(detail.get("run_clefs") or ())
         if len(run) != len(members) + 1:
             # The reader admitted a deficit this rule does not claim to
             # resolve. `FAMILY_BLOCK_MAX_DEFICIT` already holds it to one;
@@ -812,6 +833,10 @@ def collapse_slot_index_to_family_block(log: Log,
 
         for i, m in enumerate(members[:-1]):
             d = m.detail or {}
+            if d.get("front_aligned") is None:
+                # a member already settled carries no front-aligned slot to
+                # propose, and must not be proposed for in any case.
+                continue
             out.append(Proposal(
                 subject=m.subject,
                 value=int(d.get("front_aligned")),

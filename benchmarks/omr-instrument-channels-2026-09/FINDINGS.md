@@ -311,3 +311,135 @@ python3 probe_reach.py litolff           # the arms
 python3 probe_clef_stability.py litolff  # the clef premise
 python3 mutate.py                        # 8 RED, 0 survived
 ```
+
+---
+
+# ADDENDUM, same day — IT IS WIRED
+
+Sean, 2026-09-22: *"wire it all up."* `OMR_SLOT_CONSTRAINTS`, **default ON**,
+deny-list OFF test. `adjudicate_slot_index` now enumerates the order-preserving
+maps under the three channels and takes a slot only where every surviving map
+agrees.
+
+## 8. WHAT IT DOES TO THE RECORD
+
+One gather decided four ways on ONE tree (`slot_arm.py`). **CONTROL: 75 of 75
+committed `slot_index` verdicts reproduced with both branches off.**
+
+| | decided | narrowed | GRAFTS |
+|---|--:|--:|--:|
+| base (shipped ADJUDICATE) | 10 | 20 | 0 |
+| base + INFER | **25** | 5 | 0 |
+| **arm** (ADJUDICATE) | **23** | 7 | 0 |
+| **arm + INFER** | **25** | 5 | **0** |
+
+**The placements are IDENTICAL to the shipped path and 0 staves moved.** What
+changes is the provenance:
+
+| reason | base + INFER | arm + INFER |
+|---|--:|--:|
+| `forced_by_constraints` (ADJUDICATE, entailed) | 0 | **13** |
+| `family_block` (ADJUDICATE) | 5 | 5 |
+| `the_short_block_is_condensed_at_its_foot` (INFER, assumed) | **15** | **2** |
+| still narrowed (the condensed `Violoncello e Basso`) | 5 | 5 |
+
+⚠️ **THE COUNT DOES NOT MOVE AND MUST NOT BE QUOTED AS A GAIN.** Thirteen
+placements stop being a convention applied in INFER and become an entailment of
+the page, labelled as such and with the channels that forced them on the
+verdict. That is the whole result on this document.
+
+**Breitkopf** (unscored — `printed-lineups.json` is LITOLFF ONLY): **0 staves
+moved, 3 gained**, all `forced_by_constraints`; 93 decided, 4 abstaining.
+
+## 9. ⚠️⚠️ THE FIRST CUT WAS ADDITIVE AND STILL SUBTRACTED, THROUGH A RULE DOWNSTREAM OF IT
+
+It decided directly instead of filtering. Deciding two members of a block
+removed them from `inferences._block_members`, which requires the block's
+narrowings to cover `0..k-1` — the block then had holes, INFER skipped it
+whole, and **two Violas the shipped path places correctly came out narrowed**.
+
+Every aggregate looked fine. Only the **per-staff** assertion *no staff the
+base DECIDED may come out differently* caught it, and it is the one number in
+`slot_arm.py` that is not a tally.
+
+Two repairs, and the second is the general one:
+
+1. the branch **filters** `_place_in_family_block`'s narrowing instead of
+   replacing it, so the reason, the detail and the block all survive;
+2. `_block_members` admits a member the page **FORCED** — *a member the page
+   already settled is not a hole in the block.* It is admitted so the block
+   RECONSTRUCTS and is never proposed for, because `infer.INFERABLE` is
+   `{NARROWED, ABSTAINED}` and the stage cannot overturn a decided verdict
+   whatever this returns.
+
+## 10. WHAT THE FILE SAYS — and the symptom that is NOT there
+
+`name_arm.py`, every arm: **12 parts, 12 NAMED, 0 falling back to a
+coordinate.** `export.to_musicxml` takes a part's name from the first staff of
+that part carrying one, and the opening system names all twelve — so a staff
+the slot join places inherits the name whether or not its own instrument was
+read.
+
+⚠️⚠️ **So `export._default_name`'s `Staff p1-s0-3` does NOT appear on this
+record**, and the symptom `docs/NEXT-2026-09-22-instrument-identification.md`
+§5 describes is not present here. This change does not address it, and nothing
+measured here should be quoted as though it did. What the slot placements buy
+is the hold-out: `OMR_HOLD_OUT_UNIDENTIFIED` drops a staff with no slot, and
+the arm takes staves with no slot from **25 → 5**.
+
+## 11. CONTROLS ON THE WIRING
+
+- **75 of 75** committed `slot_index` verdicts reproduced with both branches
+  off, on both records the control runs on.
+- **0 staves moved** on both documents, asserted per staff.
+- **12 unit tests** (`tools/omr/tests/test_staged_slot_constraints.py`), with
+  the positive controls in the same class as the refusals.
+- **Mutation battery over `tools/`** (`mutate_rule.py`): **10 RED, 0 survived,
+  2 dormant-by-design and named, 0 bad anchors, restore hash-verified.** Byte
+  snapshot, in-flight sentinel, `PYTHONDONTWRITEBYTECODE=1`, and a judge that
+  is `(returncode, failing test ids)` with **no elapsed time in it**.
+- **All six derived checks exit 0** — `meaning`, `inventory`, `health`,
+  `wiring`, `reach`, `capture` — and two of them had to be satisfied rather
+  than waved through; see §11a. The derived flag-direction scan classifies
+  `OMR_SLOT_CONSTRAINTS` default-ON deny-list, and
+  `test_flag_docs_match_predicates` required the knobs row before the suite
+  would pass.
+
+### 11a. ⚠️ TWO DERIVED CHECKS FIRED ON THIS CHANGE AND BOTH WERE WORTH IT
+
+**`inventory --check`: *`slot_index` declares `clef_glyph` and never reads
+it.*** It follows a decision's own helpers **three deep**, and the read sat
+four down (`adjudicate_slot_index` → `_apply_constraints` → `_constrained_slots`
+→ `_clef_read_at`). That is a measure of code STYLE rather than of inertness —
+the exact confusion that check's own docstring records repairing once already —
+so the fix is the honest one: **the clef is collected in `_apply_constraints`,
+where it is visible**, and the solver stays a pure function of what it is
+handed.
+
+**`meaning --check`: *a STAFF-scoped decision reads a `cell:*` quantity with no
+page-frame key.*** Asked correctly, and the answer is that **no coordinate is
+ever compared**: both clef quantities are read for their VALUE — the class name
+`clefG`, the located `alto` — and `_clef_read_at` builds a set of NAMES. The
+two frames are never brought into one comparison. Accounted in that module's
+`KNOWN_GAPS` **with that reason**, and the entry is false the moment anything
+here reads a glyph's x or y.
+
+⚠️ **THE FULL SUITE WAS RUN TWICE AND THE FIRST RUN IS VOID.** It overlapped
+this session's own mutation battery, which mutates the two files under test —
+so its `2 failed, 4803 passed` was a reading of a MUTATED tree. Caught by the
+in-flight sentinel, and by the same reflex that had already made a `git diff`
+taken mid-battery unusable earlier the same session. *An instrument that reads
+the working tree is not isolated from a battery that writes it.*
+
+⚠️ **Three of my own test fixtures were wrong before the code was**: an alto
+clef placed where no order-preserving map can put a viola (twice), and an
+expectation that all three block members would be forced when the third reads a
+BASS clef — which admits **both** the Violoncello and the Contrabasso slot, so
+staying narrowed is the rule being right rather than short.
+
+## 12. STILL NOT ESTABLISHED
+
+Everything in §6 stands. Additionally: **no print was consulted by this
+session** — correctness rests entirely on the 2026-09-14 and 2026-09-17 crop
+passes; **Breitkopf is unscored**; **no export and no file**; and the
+condensed `Violoncello e Basso` is still narrowed, deliberately (§3).

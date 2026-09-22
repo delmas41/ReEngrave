@@ -1,5 +1,36 @@
 # NEXT SESSION — give instrument identification its other channels
 
+> ## ⚠️⚠️ ACTED ON 2026-09-22 — READ THE RESULT BEFORE RE-RUNNING ANY OF THIS
+>
+> **`benchmarks/omr-instrument-channels-2026-09/FINDINGS.md`** is the reach
+> measurement this brief asks for, and the three channels are **WIRED**
+> (`OMR_SLOT_CONSTRAINTS`, default ON). Four things in the brief below are
+> corrected by it and a session that re-derives them will waste the day:
+>
+> 1. **§2's reach is right and its implication is not.** Order alone forces
+>    **0 of 25** on Litolff — its unnamed staves are a TRAILING block with no
+>    named neighbour below — and **38 of 40** on Breitkopf. *Neither document
+>    could have shown that alone.*
+> 2. **The clef must NOT be constrained against the reference system's own
+>    reading.** A slot's clef is constant on both plates for every instrument
+>    except the **Cello and the Bassoon**, which alternate bass/tenor; that
+>    premise makes **5 of Breitkopf's 6 systems unsatisfiable**. Use the
+>    INSTRUMENT's admissible clefs (`identity.ALTERNATING_CLEFS`).
+> 3. **§5 is not true of this record.** All 12 parts are already NAMED
+>    (`name_arm.py`, every arm) — `export._default_name`'s `Staff p1-s0-3`
+>    does not appear, because a part takes its name from any staff in it that
+>    was named. The symptom §5 describes was not reproduced.
+> 4. **§8's clef warning is confirmed and quantified**: the detector fires on
+>    **zero** C clefs across the Litolff record; the CV locator names **4 of
+>    the 7** printed violas and produces **2 false positives, both on the
+>    Fagotti's bass clef**, one of which becomes that staff's clef unopposed.
+>
+> **Still open, and now with a measured population:** letting the
+> instrumentation list name a reference SLOT (§2 of the findings — 10
+> Breitkopf staves are placed and nameless), and the condensed
+> `Violoncello e Basso`, which is a representation gap rather than a rule.
+
+
 Sean, 2026-09-21: *"I thought we had figured out the instrument to line issue.
 Using the natural order of instruments, the list of instrumentation from the
 score or a dossier and the addition of any clefs that could be read as well as

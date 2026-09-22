@@ -191,6 +191,22 @@ PAGE_FRAME_KEYS = frozenset({
 #: Keyed `"<decision>/<quantity>"` for section 3 and `"<quantity>"` for
 #: sections 1 and 2.
 KNOWN_GAPS: Dict[str, str] = {
+    # ⚠️ ASKED CORRECTLY, AND THE ANSWER IS THAT NO COORDINATE IS COMPARED.
+    # `adjudicate_slot_index` reads both clef quantities for their VALUE --
+    # the class name `clefG` / the located clef `alto` -- and never for a
+    # position: `_clef_read_at` builds a SET OF NAMES and returns one or
+    # None. So the two frames (`cell:*` for the detector's glyph, the header
+    # window for the CV locator) are never brought into one comparison and a
+    # page-frame key would be read by nothing. ⚠️ The check is still right to
+    # ask: the moment anything here reads a glyph's x or y, this entry is
+    # false and must go -- which is what a stale-entry test will say.
+    "slot_index/clef_glyph":
+        "read for its CLASS NAME only; no coordinate of it is ever compared, "
+        "so the cell frame is never mixed with another.",
+    "slot_index/clef_located":
+        "read for its NAME only (`alto`/`tenor`), which is what the locator "
+        "measures the LINE to produce; no coordinate of it is compared.",
+
     # ── section 1: one quantity, several frames ──────────────────────────
     "direction_word": (
         "MULTI-FRAME BY REPAIR, and section 2 as well. The words are read by "

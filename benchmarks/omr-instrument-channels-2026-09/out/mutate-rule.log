@@ -1,0 +1,41 @@
+POSITIVE CONTROL — the unmutated tree: {'rc': 0, 'failed': [], 'errors': []}
+  green, and stable across two runs.
+
+RED       the clef is COLLECTED for named staves too (the population site)
+          -> tools/omr/tests/test_staged_slot_constraints.py::TestTheGuardsTheFirstBatteryWasBLINDTo::test_the_clef_is_read_for_unnamed_staves_only
+
+RED       a channel EMPTIES the solution set instead of being dropped
+          -> tools/omr/tests/test_staged_slot_constraints.py::TestTheGuardsTheFirstBatteryWasBLINDTo::test_a_contradictory_clef_is_DROPPED_and_named
+
+RED       the drop is silent -- it stops NAMING the channel it discarded
+          -> tools/omr/tests/test_staged_slot_constraints.py::TestTheGuardsTheFirstBatteryWasBLINDTo::test_a_contradictory_clef_is_DROPPED_and_named
+
+RED       the map need not be strictly increasing
+          -> tools/omr/tests/test_staged_unnamed_block.py::TestTheConventionLivesInInfer::test_a_contradicting_clef_withdraws_the_WHOLE_block
+
+RED       an unreadable reference slot EXCLUDES instead of widening
+          -> tools/omr/tests/test_staged_slot_constraints.py::TestTheGuardsTheFirstBatteryWasBLINDTo::test_an_unnamed_reference_slot_admits_every_named_staff
+
+RED       no instrument alternates between clefs
+          -> tools/omr/tests/test_staged_slot_constraints.py::TestTheAlternatingClefsAreWhyTheChannelSurvives::test_a_cello_slot_admits_both_its_clefs
+
+RED       the family block is mapped without the equal-count guard
+          -> tools/omr/tests/test_staged_slot_constraints.py::TestTheGuardsTheFirstBatteryWasBLINDTo::test_a_system_with_FEWER_family_blocks_silences_the_channel
+
+RED       the filter may INVENT a candidate the block never admitted
+          -> tools/omr/tests/test_staged_slot_constraints.py::TestAChannelMayNarrowAndNeverEmpty::test_a_named_staff_s_clef_is_never_a_constraint, tools/omr/tests/
+
+RED       disagreeing clef glyphs are a VOTE rather than no opinion
+          -> tools/omr/tests/test_staged_slot_constraints.py::TestAChannelMayNarrowAndNeverEmpty::test_disagreeing_glyph_rows_are_no_opinion
+
+UNEXERCISED  the narrowing is renamed, so INFER stops recognising it
+          -> dormant, and that is the CODE: the SHRINK branch is unreachable at `FAMILY_BLOCK_MAX_DEFICIT = 1`: a block one slot short narrows every member to exactly two candidates, so the filter can only FORCE (one survives) or stand aside (both do). Raising the cap wakes it, and test_the_SHRINK_branch_is_unreachable_at_the_current_deficit_cap is what will say so.
+
+RED       a FORCED member is a hole in the block again
+          -> tools/omr/tests/test_staged_slot_constraints.py::TestItFiltersTheBlockAndDoesNotReplaceIt::test_a_partly_forced_block_is_still_collapsed_by_infer
+
+UNEXERCISED  the run is read off members[0] again
+          -> dormant, and that is the CODE: every member decided by the filter was NARROWED first, so it still carries the block's `run`. A member decided on the `placed is None` path would not -- and that path cannot co-occur with a block, since it is the branch for a staff the block did not reach.
+
+======================================================================
+10 RED, 0 survived, 2 dormant-by-design, 0 bad anchors.  restore verified: True
