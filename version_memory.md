@@ -16,6 +16,62 @@ pointing at headings no longer in the file.)*
 
 ---
 
+## 2026-09-21 (evening) — Sean's rule is ON by default; the sheet becomes a fallback
+
+Sean, in one sentence: *"Flip on the previous work and redo our work tonight to
+be an option to turn on when we can't get the info we need."* Two changes,
+pulling in opposite directions.
+
+**1. Per-rule switches in INFER.** `collapse_slot_index_to_family_block` — his
+own natural-order + family-block convention, scored **25 of 25 against the
+PRINT with ZERO grafts**, `staff_not_identified` 783 → 141 — was built
+2026-09-17 and left switched off **for a reason that was never about its own
+evidence**: it shared `OMR_INFER` with two DURATION rules, neither of which has
+had a single note checked against a page. *One switch, two evidential weights,
+and the stronger one lost.* Each rule now carries its own `Switch` (flag name +
+predicate as ONE object). `OMR_SLOT_FAMILY_BLOCK` default ON (deny-list);
+`OMR_INFER` default OFF (allow-list), now governing the two duration rules
+only. ⚠️ The predicates are written out **separately** and a shared helper was
+refused — the AST flag-direction scan finds flags by name, and a helper taking
+the name as a parameter would hide both.
+
+**MEASURED** base-vs-arm on ONE tree (`flip_arm.py`, the `-ink-identity` shared
+record): `slot_index` decided **55 → 70**, narrowed **20 → 5**, **15 inferred**.
+⚠️ **The control is the ZERO: 0 verdicts outside `slot_index` moved.** It
+reproduces the rule's own published funnel from a different record, tree and
+instrument. ⚠️ *"Off means ABSENT, not quiet"* is **restated**: it now reads
+*when NO RULE is enabled the key is absent*, derived off the switches.
+
+**2. A supplied clef speaks GAPS ONLY.** `adjudicate_clef` admitted a
+fact-sheet clef at `W_DOSSIER` **4.0, ABOVE `W_DETECTOR_HIGH` 3.0** — so it did
+not corroborate a read clef, it **replaced** it, silently, including where the
+reading was right and the sheet held a typo. Now admitted only where the
+detector and locator both said nothing (`adjudicate_key_signature` precedent).
+⚠️ **A refusal to speak, not a weight change.** The CARRY tier is untouched;
+the refusal is RECORDED on the verdict.
+
+Battery **20 arms / 20 RED / 0 survived**, restore hash-verified per subject.
+⚠️ Its first run had 2 survivors: one equivalent mutant (named and replaced)
+and one real gap (the supplied clef's weight was never asserted).
+
+⚠️⚠️ **TWO INSTRUMENT FINDINGS.** (a) The field was first called `gate`, and
+`wiring --check` then reported the unrelated detail key `Q.DIRECTION_WORD.gate`
+as CLOSED — **a one-word identifier can falsely close a KNOWN_GAPS entry**,
+because that question matches detail keys by bare name. Fixed by renaming to
+`switch` and **re-measuring back to 64/0**, not by deleting the gap.
+(b) **A control probe destroyed every uncommitted file in the worktree**
+(`git checkout-index -a -f` overwrites ALL tracked files, not the two stashed).
+Recovered by replaying the session transcript — ⚠️ **which faithfully
+re-applied two deliberate red-proof MUTATIONS whose `cp`-based undos were not
+replayable.** *A recovery that replays writes will replay your mutations too.*
+
+⚠️ **NOT ESTABLISHED**: no print was consulted this evening; no export, no
+file, no OMR-NED; **Breitkopf has NO population for the flipped rule** (0
+abstentions); and **the two changes INTERACT unmeasured** — both assign
+instruments to lines, and no record carries a `clef_seed` row.
+
+[benchmarks/omr-infer-default-2026-09/FINDINGS.md](benchmarks/omr-infer-default-2026-09/FINDINGS.md)
+
 ## 2026-09-18 — ASK FIRST: the convention before the mechanism (standing rule)
 
 ⚠️ Placed at the head on the file's own CAUSAL-ORDER rule: it depends on no

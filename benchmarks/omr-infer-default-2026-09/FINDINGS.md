@@ -187,7 +187,58 @@ weight ordering that makes the rule necessary at all.
 
 ---
 
-## 4. Files
+## 4. The battery — and the two survivors it found
+
+**20 arms, 20 RED, 0 survived**, restore hash-verified for **every** subject
+(`out/battery-2026-09-21.txt`). Arms span three files and **each arm names its
+own subject**: the sibling battery in `omr-factsheet-2026-09` dispatches its
+second subject by substring-matching the arm's NAME, which is a hand list
+wearing a conditional — rename an arm and it silently mutates the wrong file.
+
+⚠️ **Its FIRST run was 18 RED / 2 survived, and the two are different animals:**
+
+1. **An EQUIVALENT MUTANT of my own writing.** Giving `Switch.env` / `.fn`
+   defaults cannot fire, because every `Switch` in the tree is constructed
+   with both arguments POSITIONALLY. It survived correctly. *An arm that can
+   never go red trains the next reader to skim the list*, so it is **named in
+   the file and replaced** by one that mutates the value actually used
+   (`INFER_SWITCH = Switch("OMR_NOT_A_FLAG", …)`).
+2. **A REAL GAP.** Swapping `W_DOSSIER` for `W_CARRY` on the supplied term
+   survived every test, because in the gap case the seed is usually the ONLY
+   candidate and any positive weight wins. Not harmless: on a staff the page
+   said nothing about, an `instrument` term (1.0) or a key-signature slot fit
+   (1.5) can still be in the contest. Closed by asserting the recorded SCORE.
+
+---
+
+## 5. ⚠️⚠️ THE INSTRUMENT FINDING: A ONE-WORD IDENTIFIER CAN FALSELY CLOSE A GAP
+
+The field was first called `gate`. `wiring --check` then went from **64
+problems / 0 stale** to **63 / 1 stale**, reporting the unrelated detail key
+`Q.DIRECTION_WORD.gate` as **CLOSED** — because the DETAIL question matches
+detail keys by BARE NAME anywhere in `tools/`, and a new identifier spelled
+the same way reads as a consumer.
+
+**A falsely-closed gap is live damage**: `KNOWN_GAPS` stops describing the
+tree, and the entry would have been deleted by the stale-entry test. Fixed by
+renaming the field to `switch` — confirmed by re-measuring back to **64 / 0**,
+not by reasoning — and **not** by deleting the gap entry.
+
+⚠️ **The weakness is the checker's and is recorded rather than repaired here**:
+any new lowercase identifier in `tools/` can close an unrelated detail-key gap.
+That is another lane's instrument.
+
+⚠️ **A control-probe in the middle of this destroyed every uncommitted file in
+the worktree** (`git checkout-index -a -f` overwrites ALL tracked files, not
+the two that were stashed). Recovered by replaying the session transcript;
+three things needed hand repair, and **two of them were deliberate red-proof
+MUTATIONS whose `cp`-based restores were not replayable** — so the replay
+faithfully re-applied the mutation and dropped the undo. *A recovery that
+replays writes will replay your mutations too.*
+
+---
+
+## 6. Files
 
 ```
 tools/omr/staged/infer.py             Gate, FAMILY_BLOCK_ENV, enabled_rules,
