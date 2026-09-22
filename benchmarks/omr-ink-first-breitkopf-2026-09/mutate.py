@@ -65,7 +65,7 @@ ARMS = [
     ("document-identity gate accepts any class",
      "        if want is None or got == want:",
      "        if True:",
-     "REFUSED", ("--wrong-join", "--expect-pdf", "imslp984073")),
+     "REFUSED", ("--wrong-join",)),
 
     ("attribution ignores the piece's fill",
      "            w = ia * max(fill, 1e-6) if attribution == \"fill\" else ia",
@@ -153,14 +153,14 @@ def main():
               f"{len(base.splitlines())} lines of output")
         # ⚠️ the two fault-reproducing arms must themselves be shown to reach
         # their failing state BEFORE any mutation, or their arms are vacuous.
-        wj = run(("--wrong-join", "--expect-pdf", "imslp984073"))
+        wj = run(("--wrong-join",))
         dj = run(("--drop-junk",))
         print(f"positive control: --wrong-join REFUSES  "
               f"{'yes' if 'REFUSED' in wj else 'NO -- arm is vacuous'}")
         print(f"positive control: --drop-junk reaches DEAD "
               f"{'yes' if 'DEAD' in dj else 'NO -- arm is vacuous'}\n")
         baselines = {(): base,
-                     ("--wrong-join", "--expect-pdf", "imslp984073"): wj,
+                     ("--wrong-join",): wj,
                      ("--drop-junk",): dj}
 
         red = 0

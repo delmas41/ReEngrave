@@ -554,8 +554,15 @@ def main():
     ap.add_argument("--record", required=True)
     ap.add_argument("--crop-root",
                     default="benchmarks/omr-stem-crop-pass-2026-09")
-    ap.add_argument("--expect-pdf", default="imslp317803",
-                    help="substring the crop manifest's pdf must contain")
+    ap.add_argument("--plate", choices=("breitkopf", "litolff"),
+                    default="breitkopf",
+                    help="which plate's print verdicts to join. `litolff` is "
+                         "the MERGING plate and is the control arm: the same "
+                         "instrument on the document where the predecessor "
+                         "ran box-first and found nothing.")
+    ap.add_argument("--expect-pdf", default=None,
+                    help="substring the crop manifest's pdf must contain; "
+                         "defaults to the plate's own IMSLP id")
     ap.add_argument("--wrong-join", action="store_true",
                     help="POSITIVE CONTROL: join the LITOLFF verdicts instead")
     ap.add_argument("--drop-junk", action="store_true",
@@ -578,6 +585,10 @@ def main():
                          "are DIFFERENTLY STRATIFIED and reported apart.")
     ap.add_argument("--speck-cut", type=float, default=SPECK_MAX_SPACES)
     ap.add_argument("--out", default=None)
+    ap.add_argument("--json-out", default=None,
+                    help="machine-readable summary, so the two-plate table is "
+                         "assembled from the probe's own numbers rather than "
+                         "re-typed out of its prose")
     a = ap.parse_args()
 
     out = []
@@ -610,7 +621,14 @@ def main():
         return 2
 
     # ── the verdicts ────────────────────────────────────────────────────────
-    which = "litolff" if a.wrong_join else "breitkopf"
+    #: ⚠️ `--wrong-join` is the DELIBERATE mismatch: it joins the OTHER
+    #: plate's verdicts, which control A must then refuse. Keeping it as "the
+    #: other plate" rather than a hardcoded name means the control stays a
+    #: control when `--plate litolff` is the subject.
+    other = {"breitkopf": "litolff", "litolff": "breitkopf"}[a.plate]
+    which = other if a.wrong_join else a.plate
+    expect = a.expect_pdf or (
+        "imslp984073" if which == "litolff" else "imslp317803")
     man = json.load(open(os.path.join(
         a.crop_root, "out", f"crop-manifest-{which}.json")))
     adj = json.load(open(os.path.join(
@@ -623,7 +641,7 @@ def main():
             tiles.append({**t, "verdict": v["verdict"], "source": "sample",
                           "flags": v.get("flags") or [],
                           "confidence": v.get("confidence")})
-    if a.population == "all" and not a.wrong_join:
+    if a.population == "all" and not a.wrong_join and which == "breitkopf":
         tiles += extra_breitkopf_tiles(a.crop_root, P)
     P(f"verdicts       : {len(tiles)} (population={a.population})")
     P(f"manifest pdf   : {man.get('pdf')}")
@@ -638,8 +656,8 @@ def main():
         P("         against a BREITKOPF record. It MUST fail class agreement;")
         P("         subjects that are merely PRESENT are the coincidence the")
         P("         2026-09-18 draft was caught by (11 of 26).")
-    if a.expect_pdf not in (man.get("pdf") or ""):
-        P(f"  A' REFUSED: manifest pdf does not contain {a.expect_pdf!r}")
+    if expect not in (man.get("pdf") or ""):
+        P(f"  A' REFUSED: manifest pdf does not contain {expect!r}")
         ok_ident = False
     if present == 0:
         P("  DEAD: not one adjudicated subject is in this record.")
@@ -860,6 +878,47 @@ def main():
     for k, v in zs.most_common():
         P(f"      {k:14} {v:>6} ({100*v/len(zero):5.1f}% of them, "
           f"{100*zarea[k]/za:5.1f}% of their area)")
+
+    if a.json_out:
+        ink_axes2 = {k for k, _ in AXES}
+        summary = {
+            "record": a.record,
+            "plate": which,
+            "population": a.population,
+            "attribution": a.attribution,
+            "provenance": meta.get("provenance"),
+            "settings": meta.get("settings"),
+            "ink_rows": len(ink_rows),
+            "glyph_rows": len(glyph_by_subject),
+            "cells_with_ink": len(ink_by_cell),
+            "pages": pages,
+            "subjects_present": present,
+            "class_agreement": rate,
+            "n_junk": len(pos),
+            "n_real": len(neg),
+            "n_cannot_tell": len([f for f in good
+                                  if f["tile"]["verdict"] == "cannot_tell"]),
+            "by_source": {s: {"junk": ps.get(s, 0), "real": ns.get(s, 0)}
+                          for s in sorted(set(ps) | set(ns))},
+            "axes": [{"axis": d, "key": k, "kind":
+                      "ink" if k in ink_axes2 else "box_alone",
+                      "auc": A, "null_lo": lo, "null_hi": hi,
+                      "separates": sep == "YES", "gap": gap,
+                      "median_junk": mp, "median_real": mn}
+                     for d, k, A, lo, hi, sep, gap, glo, ghi, mp, mn
+                     in results],
+            "residue": {k: {"n": e["n"], "area": e["area"],
+                            "zero_det": e["zero_det"],
+                            "median_coverage": median(e["cov"])}
+                        for k, e in rows.items()},
+            "residue_total_area": total,
+            "zero_coverage_pieces": len(zero),
+            "zero_coverage_by_stratum": dict(zs),
+        }
+        os.makedirs(os.path.dirname(a.json_out) or ".", exist_ok=True)
+        with open(a.json_out, "w") as f:
+            json.dump(summary, f, indent=1, default=str)
+        P(f"\nwrote {a.json_out}")
 
     emit(out, a.out)
     return 0
