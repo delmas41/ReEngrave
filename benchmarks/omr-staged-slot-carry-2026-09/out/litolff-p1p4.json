@@ -1,0 +1,11 @@
+{
+  "staves": 75,
+  "named": 50,
+  "unnamed": 25,
+  "funnel": {
+    "unnamed staff-systems": 25,
+    "  ...and NO SLOT either -- a carry has no key": 25
+  },
+  "reachable": [],
+  "contested": []
+}
