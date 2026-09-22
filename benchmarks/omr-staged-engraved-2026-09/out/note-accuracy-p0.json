@@ -9,7 +9,7 @@
  "events_truth": 174,
  "events_ours": 174,
  "disagreements": {
-  "same count, different pitch/rest": 3
+  "same count, differs ONLY by an accidental": 3
  },
  "per_part": [
   {
@@ -121,57 +121,5 @@
    "bars": 7
   }
  ],
- "examples": [
-  {
-   "part": 13,
-   "name": "Violin 1",
-   "bar": 2,
-   "ours": [
-    [
-     "E4",
-     2.0
-    ]
-   ],
-   "truth": [
-    [
-     "E-4",
-     2.0
-    ]
-   ]
-  },
-  {
-   "part": 14,
-   "name": "Violin 2",
-   "bar": 2,
-   "ours": [
-    [
-     "E4",
-     2.0
-    ]
-   ],
-   "truth": [
-    [
-     "E-4",
-     2.0
-    ]
-   ]
-  },
-  {
-   "part": 14,
-   "name": "Violin 2",
-   "bar": 7,
-   "ours": [
-    [
-     "E4",
-     2.0
-    ]
-   ],
-   "truth": [
-    [
-     "E-4",
-     2.0
-    ]
-   ]
-  }
- ]
+ "examples": []
 }

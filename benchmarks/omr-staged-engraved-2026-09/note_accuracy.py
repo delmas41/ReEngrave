@@ -81,6 +81,30 @@ def events(part, n_bars: int, first: int = 0) -> Dict[int, List[Tuple]]:
     return out
 
 
+def _bare(kind) -> Any:
+    """A pitch name stripped of its accidental; a rest and a chord unchanged.
+
+    `nameWithOctave` is `<letter><accidentals><octave>` — `E-4`, `F#5` — so the
+    letter and the octave are the first character and the trailing digits.
+    """
+    if isinstance(kind, tuple):
+        return tuple(_bare(k) for k in kind)
+    if not isinstance(kind, str) or kind == "rest":
+        return kind
+    octv = "".join(c for c in kind if c.isdigit())
+    return kind[0] + octv
+
+
+def _accidental_only(a: List[Tuple], b: List[Tuple]) -> bool:
+    """Do these two bars differ ONLY in accidentals?"""
+    if len(a) != len(b):
+        return False
+    for (ka, qa), (kb, qb) in zip(a, b):
+        if qa != qb or _bare(ka) != _bare(kb):
+            return False
+    return True
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__,
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
@@ -149,7 +173,15 @@ def main() -> int:
                 elif len(a) != len(b):
                     kinds["different number of events"] += 1
                 elif [x[0] for x in a] != [x[0] for x in b]:
-                    kinds["same count, different pitch/rest"] += 1
+                    # ⚠️ SPLIT OUT, because the repair differs completely. A
+                    # pair that agrees on the letter and octave and differs
+                    # only in the accidental is a KEY SIGNATURE or an in-bar
+                    # accidental — the staff position was read correctly. A
+                    # pair on a different letter is a position error.
+                    if _accidental_only(a, b):
+                        kinds["same count, differs ONLY by an accidental"] += 1
+                    else:
+                        kinds["same count, different pitch/rest"] += 1
                 else:
                     kinds["same pitches, different duration"] += 1
                 if len(rows) < args.show:
