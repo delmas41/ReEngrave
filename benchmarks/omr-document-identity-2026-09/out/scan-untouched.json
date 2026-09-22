@@ -1,0 +1,12 @@
+{
+ "n_verdicts": 12,
+ "off_equals_on": true,
+ "control_differs": true,
+ "off_reasons": {
+  "fitted_by_template": 8,
+  "fitted": 4
+ },
+ "control_reasons": {
+  "fitted_by_template_engraved": 12
+ }
+}

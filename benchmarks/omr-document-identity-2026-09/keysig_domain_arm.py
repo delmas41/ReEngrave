@@ -63,6 +63,10 @@ def truth_fifths(xml: Path) -> List[Optional[int]]:
     return out
 
 
+#: How many (quantity, subject) pairs each walk had to RESOLVE. See `_walk`.
+_RESOLVED: List[int] = []
+
+
 def _walk(log):
     """{quantity: {subject: (outcome, value, reason)}}, LIVE answers only.
 
@@ -73,8 +77,16 @@ def _walk(log):
     many times a value was written.
     """
     seen = defaultdict(dict)
+    rows = Counter()
     for v in log.all_verdicts():
         seen[v.quantity][v.subject.to_key()] = v.subject
+        rows[(v.quantity, v.subject.to_key())] += 1
+    # ⚠️ PRINTED, because a battery arm that swapped the resolution for an
+    # unresolved walk SURVIVED: the two give the same OFF-vs-ON diff on this
+    # record, so the headline could not see the change. Counting what was
+    # resolved makes the choice visible — and it is not zero here: 227 pairs
+    # carry more than one row (215 `duration`, 12 `pitch`).
+    _RESOLVED.append(sum(1 for n in rows.values() if n > 1))
     out = {}
     for q, subs in seen.items():
         out[q] = {}
@@ -149,6 +161,9 @@ def main() -> int:
                     if voff.get(q) != von.get(q)})
     print("\n── CONTROL " + "─" * 56)
     print(f"   quantities in the record   {len(set(voff) | set(von))}")
+    print(f"   superseded pairs RESOLVED  {_RESOLVED}  "
+          f"(EVALUATE revises in place; an unresolved walk would report "
+          f"whichever row it met first)")
     print(f"   quantities that MOVED      {len(moved)}  {moved}")
     ks = Q.KEY_SIGNATURE
     downstream = [q for q in moved if q != ks]

@@ -35,6 +35,7 @@ TARGETS = {
     "header": ROOT / "tools/omr/staged/adjudicators/header.py",
     "store": ROOT / "tools/omr/positional_store.py",
     "arm": HERE / "keysig_domain_arm.py",
+    "scanarm": HERE / "scan_is_untouched.py",
 }
 
 #: ⚠️ THE DERIVED CHECKS ARE PART OF THE SUITE. `capture`, `reach` and
@@ -51,9 +52,27 @@ SUITE = [
 CHECKS = [("reach", "--check"), ("capture", "--check"), ("brakes", "--check")]
 
 REC = OUT / "engraved-p0p2-identity.record.json"
+SCAN_REC = OUT / "litolff-p1-identity.record.json"
 TRUTH = (ROOT / "benchmarks/omr-staged-engraved-2026-09/out/fixture/"
                 "beethoven-sym5-mvt1-m1-24.musicxml")
-ARM_ARGS = ["--record", str(REC), "--truth-xml", str(TRUTH)]
+
+#: ⚠️⚠️ **THE ARM IS JUDGED ON TWO RECORDS, AND THE SECOND IS WHY.** Judged on
+#: the engraved record alone, THREE arms SURVIVED the first run — every one of
+#: them a control sitting at its CEILING on a record where the thing works:
+#: the reach is non-zero so the DEAD branch is never taken; 54 staves divide
+#: 18 parts exactly so the join never refuses. **A control can only be
+#: mutation-tested in a state where it FAILS**, which is the lesson
+#: `omr-vertical-runs-page-2026-09` paid for and this battery repeated.
+#:
+#: The SCAN record supplies that state for both: it measures `scanned`, so the
+#: arm must exit 2 DEAD; and its 12 staves do not divide 18 parts, so the
+#: ordinal join must refuse. The third survivor — an unresolved verdict walk —
+#: is answered inside the arm instead, by printing how many superseded pairs
+#: it resolved (227 on the engraved record: 215 `duration`, 12 `pitch`).
+ARM_RUNS = [
+    ["--record", str(REC), "--truth-xml", str(TRUTH)],
+    ["--record", str(SCAN_REC), "--truth-xml", str(TRUTH)],
+]
 
 #: (target, name, find, replace, what it must break)
 ARMS = [
@@ -184,6 +203,18 @@ ARMS = [
      "EVALUATE revises in place, so an unresolved walk reports quantities as "
      "having moved when only the write count moved -- the CONTROL must move"),
 
+    ("scanarm", "the VACUITY control is dropped",
+     "    return 0 if (same and moved) else 1",
+     "    return 0 if same else 1",
+     "a run where the scan is untouched AND the control is vacuous is a "
+     "PASS-shaped nothing -- BOTH conditions are the instrument"),
+
+    ("scanarm", "the forged control is not forged",
+     '            o["value"] = "engraved"',
+     '            o["value"] = o["value"]',
+     "the control must actually change the domain, or `CONTROL DIFFERS` is "
+     "reporting that a file equals itself"),
+
     ("arm", "the ordinal join is forced where it does not divide",
      "        if len(staves) % len(truth) != 0:",
      "        if False:",
@@ -218,16 +249,43 @@ def run_suite() -> tuple[int, str]:
     return rc, "  ".join(detail)
 
 
-def run_arm() -> tuple[int, str]:
-    r = subprocess.run([sys.executable, "-u", str(TARGETS["arm"]), *ARM_ARGS],
+def _one_arm(args: list[str]) -> tuple[int, str]:
+    r = subprocess.run([sys.executable, "-u", str(TARGETS["arm"]), *args],
                        cwd=str(ROOT), env=_env(), capture_output=True,
                        text=True)
     out = r.stdout + r.stderr
     keep = [s.strip() for s in out.splitlines()
             if any(t in s for t in ("Q.INPUT_DOMAIN", "MOVED", "DEAD",
-                                    "right", "reasons", "CHANGED",
+                                    "right", "reasons", "CHANGED", "RESOLVED",
                                     "SCORED NOTHING", "REFUSED"))]
     return r.returncode, "\n".join(keep)
+
+
+def _scan_arm() -> tuple[int, str]:
+    r = subprocess.run([sys.executable, "-u", str(TARGETS["scanarm"]),
+                        "--record", str(SCAN_REC)],
+                       cwd=str(ROOT), env=_env(), capture_output=True,
+                       text=True)
+    out = r.stdout + r.stderr
+    keep = [s.strip() for s in out.splitlines()
+            if any(t in s for t in ("REACH", "OFF == ON", "CONTROL",
+                                    "control changed", "DEAD"))]
+    return r.returncode, "\n".join(keep)
+
+
+def run_arm() -> tuple[int, str]:
+    """⚠️ THE HEADLINE IS THREE RUNS. See `ARM_RUNS`: the engraved record alone
+    leaves three of this arm's own controls unable to fail, and the scan
+    fall-through needs its own instrument with its own vacuity control."""
+    rcs, outs = [], []
+    for args in ARM_RUNS:
+        rc, out = _one_arm(args)
+        rcs.append(rc)
+        outs.append(out)
+    rc, out = _scan_arm()
+    rcs.append(rc)
+    outs.append(out)
+    return (sum(rcs), "\n--\n".join(outs))
 
 
 def main() -> int:
@@ -237,10 +295,11 @@ def main() -> int:
               "was interrupted and the tree may still carry a mutation.")
         print(SENTINEL.read_text())
         return 3
-    if not REC.is_file():
-        print(f"REFUSED: {REC} is missing. The arm half of this battery "
-              f"measures nothing without it; see run_all.sh.")
-        return 3
+    for r in (REC, SCAN_REC):
+        if not r.is_file():
+            print(f"REFUSED: {r} is missing. The arm half of this battery "
+                  f"measures nothing without it; see run_all.sh.")
+            return 3
     rel = [str(p.relative_to(ROOT)) for p in TARGETS.values()]
     dirty = subprocess.run(["git", "status", "--porcelain", "--", *rel],
                            cwd=str(ROOT), capture_output=True,
@@ -263,7 +322,11 @@ def main() -> int:
     a_rc, a_out = run_arm()
     print(f"  ARM          exit {a_rc}")
     print("  " + a_out.replace("\n", "\n  "))
-    if s_rc != 0 or a_rc != 0:
+    # ⚠️ THE ARM'S BASELINE IS NOT "exit 0". It is the EXPECTED PROFILE over
+    # the two runs — engraved 0, scan 2 (DEAD, because that document measures
+    # `scanned` and the one-sided tier is a no-op there BY DESIGN) — summed to
+    # 2. An arm whose scan run stops declaring itself dead moves this.
+    if s_rc != 0 or a_rc != 2:
         print("\n⚠️ BASELINE IS NOT GREEN. The battery measures nothing.")
         for k, v in snap.items():
             TARGETS[k].write_bytes(v)
