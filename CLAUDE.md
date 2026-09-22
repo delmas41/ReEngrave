@@ -529,7 +529,14 @@ Each of these has cost at least one lane and is still true.
   VOICE without the roster; 29 of 29 unresolved non-treble staves on the
   scan corpus print no label at all.
 - **The condensed count cannot come from the page** (`Viola` = 1 part in one
-  edition, 2 in another); it is an encoding property.
+  edition, 2 in another); it is an encoding property. **Identity loss on the
+  staged path is PLACEMENT, never naming**: every part on both shared
+  records is already named (the part takes its name from the first staff
+  carrying one) and `OMR_HOLD_OUT_UNIDENTIFIED` gates on the SLOT. What is
+  still held out is a condensed `Violoncello e Basso` staff narrowed to two
+  slots, which is a convention decision (Sean, 2026-09-22: *the string
+  family always includes all five; four lines means the bass doubles the
+  celli or enters later*), not a reading gap.
 
 ---
 

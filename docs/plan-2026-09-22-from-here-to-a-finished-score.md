@@ -398,6 +398,10 @@ from the top, largest loss first, and re-read the funnel after each item —
 the ranking is the trace's, not this document's.
 
 **2.1 Identity: staff → instrument → part** *(in flight, Sean's session).*
+*Corrected the same day by that session: the loss is PLACEMENT, never
+naming — every part on both shared records is already named — and the
+residual after the family-block rule is five condensed `Violoncello e
+Basso` staves, a convention decision for Sean, not a channel.*
 Gate: `staff_not_identified` on Litolff from 783 to under 100 **with zero
 grafts against the print**, and no part reading `Staff p1-s0-N`. The
 ingredients are all measured: score order, margin labels, roster, clef

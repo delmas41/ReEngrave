@@ -51,7 +51,7 @@ Gate: `current.json` for all three; a baseline count committed.
 
 | item | what | status |
 |---|---|---|
-| 2.1 | Identity: staff → instrument → part; gate `staff_not_identified` 783 → < 100, zero grafts against print | in flight (Sean's session, `docs/NEXT-2026-09-22-instrument-identification.md`) |
+| 2.1 | Identity is PLACEMENT (which slot a staff is), never naming — every part is already named on both shared records; gate `staff_not_identified` 783 → < 100, zero grafts against print | measured, gate NOT met: 783 → 141 was won by `OMR_SLOT_FAMILY_BLOCK` on 09-21; the constraint channels of `claude/instrument-identification-channels-8dcaa2` (2acb3fcf, a0a5aeac, 73d7ffbe, f934ae7c) move 13 placements from INFER to ADJUDICATE and the count by 0. **The whole residual is five `Violoncello e Basso` staves narrowed to [Cello, Contrabass]** (141 notes) — a condensed staff is two parts and a slot is one. Placing it on the first of its two slots takes 141 → 0 as a CONDENSATION, not a graft, and changes what a placed staff means: **blocked (Sean's call — see DECISIONS request 2026-09-22)** |
 | 2.2 | Key-signature precedence, engraved-only one-sided; gate 20/20 engraved, Litolff ≥ 44/75 | in flight (`claude/identity-conditions-key-signature-b510b3`) |
 | 2.3 | INFER duration rules against the print (17 + 41 crops) → default decision | todo |
 | 2.4a | Notehead precision on staged: port the two legacy filters; width floor as an ADJUDICATE refusal | todo |

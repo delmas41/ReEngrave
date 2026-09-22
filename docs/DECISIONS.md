@@ -41,3 +41,9 @@ Format: `YYYY-MM-DD · who · the decision · because · (pointer)`
   path and are not triaged**; they are listed in `docs/flags-2026-09.md` as
   FROZEN and may not be read from `tools/omr/staged/`. · because triaging a
   frozen path is work with no consumer.
+- 2026-09-22 · **REQUESTED, not decided** · a condensed `Violoncello e Basso`
+  staff narrowed to [Cello, Contrabass] may be PLACED on the first of its two
+  slots (a condensation, not a graft; `staff_not_identified` 141 → 0 on
+  Litolff) — it changes what a placed staff means (one `<part>` where the
+  music has two), so it is Sean's · (identity session,
+  `benchmarks/omr-instrument-channels-2026-09/`)
