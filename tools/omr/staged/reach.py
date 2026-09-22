@@ -323,6 +323,16 @@ NOT_A_STAGE = frozenset({
     # exits 0. That is the guard the brake audit's mutation arm asked for,
     # doing its job on the next module to arrive.
     "trace.py",
+    # ⚠️ `check.py` (2026-09-22, plan §5 Phase 0.4b) is the tenth derived
+    # check and folds the other nine plus `conventions.py`, `no_producer.py`,
+    # `export_coverage.py` and `accuracy_record.py` into one open-findings
+    # number. It calls their own `build()` / `report()` / `survey()` /
+    # `check()` functions and reads none of their `Q.` quantities itself, so
+    # it declares `DERIVED_CHECK = True` for `wiring`'s DETAIL question and
+    # is registered here for the same reason as the nine above it: the
+    # guard this comment sits beside is what a new, unregistered staged
+    # module trips, proved on itself before this line existed.
+    "check.py",
 })
 
 

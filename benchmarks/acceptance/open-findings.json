@@ -1,0 +1,93 @@
+{
+  "broken": false,
+  "checks": {
+    "accuracy_record": {
+      "broken": false,
+      "error": null,
+      "note": null,
+      "open": 0
+    },
+    "conventions": {
+      "broken": false,
+      "error": null,
+      "note": null,
+      "open": 0
+    },
+    "export_coverage": {
+      "broken": false,
+      "error": null,
+      "note": "no fixtures on disk -- run `orchestral_eval` first; this check has nothing to compare and reports a clean 0, not a broken run",
+      "open": 0
+    },
+    "mutation_batteries_live": {
+      "broken": false,
+      "error": null,
+      "note": null,
+      "open": 52
+    },
+    "no_producer": {
+      "broken": false,
+      "error": null,
+      "note": null,
+      "open": 0
+    },
+    "source_text_tests": {
+      "broken": false,
+      "error": null,
+      "note": "47 of 185 test files under tools/omr/tests/ (allowlist: ['test_flag_default_direction.py', 'test_flag_docs_match_predicates.py'])",
+      "open": 47
+    },
+    "staged.brakes": {
+      "broken": false,
+      "error": null,
+      "note": null,
+      "open": 8
+    },
+    "staged.capture": {
+      "broken": false,
+      "error": null,
+      "note": null,
+      "open": 18
+    },
+    "staged.gather_coverage": {
+      "broken": false,
+      "error": null,
+      "note": null,
+      "open": 19
+    },
+    "staged.health": {
+      "broken": false,
+      "error": null,
+      "note": null,
+      "open": 0
+    },
+    "staged.inventory": {
+      "broken": false,
+      "error": null,
+      "note": null,
+      "open": 11
+    },
+    "staged.reach": {
+      "broken": false,
+      "error": null,
+      "note": null,
+      "open": 26
+    },
+    "staged.trace": {
+      "broken": false,
+      "error": null,
+      "note": null,
+      "open": 3
+    },
+    "staged.wiring": {
+      "broken": false,
+      "error": null,
+      "note": null,
+      "open": 66
+    }
+  },
+  "date": "2026-09-22T22:01:55Z",
+  "dirty": true,
+  "total": 250,
+  "tree": "964a95981363e957b02f275e8bb194e6686cb95a"
+}

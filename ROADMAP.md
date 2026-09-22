@@ -22,15 +22,16 @@ re-enter.
 | item | what | status |
 |---|---|---|
 | 0.1 | Staged is the product path; legacy frozen | done (DECISIONS 2026-09-22) |
-| 0.2 | Flag triage table, ≤ 15 product flags | in flight (manager, `docs/flags-2026-09.md`) |
-| 0.3a | Archive CLAUDE.md → `docs/chronicle-2026-09.md` | in flight (manager) |
-| 0.3b | New CLAUDE.md spec ≤ 6,000 words | in flight (manager) |
+| 0.2 | Flag triage table, ≤ 15 product flags | done — table with a verdict on all 60 (`docs/flags-2026-09.md`) |
+| 0.2b | Enforce the triage: remove the `promote — now` flags, delete `OMR_ADJUDICATE`, add `OMR_RESEARCH`, a derived test that staged reads no frozen flag and every `OMR_*` read has a row | todo |
+| 0.3a | Archive CLAUDE.md → `docs/chronicle-2026-09.md` | done (2b441cb3) |
+| 0.3b | New CLAUDE.md spec ≤ 6,000 words | done (2b441cb3; 4,700 words) |
 | 0.3c | `docs/DECISIONS.md`, `ROADMAP.md` | done |
 | 0.4a | Shared staged test fixture module; delete the four `_log` copies | todo |
-| 0.4b | One `python3 -m tools.omr.staged.check` with `open-findings.json` | in flight (lane, this branch) |
-| 0.4c | Fast / slow test tiers derived from measured durations | in flight (lane, this branch) |
+| 0.4b | One `python3 -m tools.omr.staged.check` with `open-findings.json` | done — **baseline 250 open findings on 2026-09-22** (wiring 66, reach 26, gather_coverage 19, capture 18, inventory 11, brakes 8, trace 3, source-text tests 47 files, live mutation batteries 52) |
+| 0.4c | Fast / slow test tiers derived from measured durations | done — full suite 4,806 passed / 20 skipped in 700 s; fast tier 2,695 tests in 75 s wall (`pytest -m "not slow"`); threshold derived from `tools/omr/tests/durations.json` |
 | 0.4d | Archive the 52 mutation batteries under `benchmarks/_archive/`; no new ones | todo — `check` counts live ones meanwhile |
-| 0.4e | No new source-text tests; `check` counts them | in flight (part of 0.4b) |
+| 0.4e | No new source-text tests; `check` counts them | done — 47 files counted, allowlist of 2 |
 | 0.5 | Lane discipline: brief from the tree, phase item, gate, print check | done (plan §6, rules 1–10) |
 
 Gate: spec < 6,000 words; `check` writes `open-findings.json`; flag table
@@ -52,7 +53,7 @@ Gate: `current.json` for all three; a baseline count committed.
 | item | what | status |
 |---|---|---|
 | 2.1 | Identity is PLACEMENT (which slot a staff is), never naming — every part is already named on both shared records; gate `staff_not_identified` 783 → < 100, zero grafts against print | measured, gate NOT met: 783 → 141 was won by `OMR_SLOT_FAMILY_BLOCK` on 09-21; the constraint channels of `claude/instrument-identification-channels-8dcaa2` (2acb3fcf, a0a5aeac, 73d7ffbe, f934ae7c) move 13 placements from INFER to ADJUDICATE and the count by 0. **The whole residual is five `Violoncello e Basso` staves narrowed to [Cello, Contrabass]** (141 notes) — a condensed staff is two parts and a slot is one. Placing it on the first of its two slots takes 141 → 0 as a CONDENSATION, not a graft, and changes what a placed staff means: **blocked (Sean's call — see DECISIONS request 2026-09-22)** |
-| 2.2 | Key-signature precedence, engraved-only one-sided; gate 20/20 engraved, Litolff ≥ 44/75 | in flight (`claude/identity-conditions-key-signature-b510b3`) |
+| 2.2 | Key-signature precedence, engraved-only one-sided; gate 20/20 engraved, Litolff ≥ 44/75 | **landed** `claude/identity-conditions-key-signature-b510b3` (`beba5c64` is the default flip; `291677b5` the rule). Engraved gate **exceeded**: 47 of 50 right, 3 wrong, and the template is 67/67 wherever it speaks. ⚠️ **The Litolff half of the gate is NOT measured** — the rule is one-sided and proved a no-op on a real scan gather, so it cannot have moved 44/75, but *cannot have moved it* is not *measured at ≥ 44/75*. ⚠️ n = 1 engraved document, 1 renderer, no print consulted; a second engraved document is the ranked next step and the 10 held candidates are named in `benchmarks/omr-document-identity-2026-09/out/library-domains.json` |
 | 2.3 | INFER duration rules against the print (17 + 41 crops) → default decision | todo |
 | 2.4a | Notehead precision on staged: port the two legacy filters; width floor as an ADJUDICATE refusal | todo |
 | 2.4b | Detector recall on hollow noteheads and hairpins: one labeling round + head surgery | todo |

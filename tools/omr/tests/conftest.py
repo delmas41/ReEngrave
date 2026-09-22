@@ -86,3 +86,145 @@ def _do_not_require_an_optional_local_install(monkeypatch):
         return          # a real interpreter exists — do NOT override it
 
     monkeypatch.setenv("OMR_SURYA_PYTHON", sys.executable)
+
+
+# ---------------------------------------------------------------------------
+# Fast/slow test tiers, DERIVED from measured durations rather than hand-listed
+# ---------------------------------------------------------------------------
+#
+# `durations.json` (committed, sibling of this file) is a snapshot from a full
+# run of `pytest tools/omr/tests --durations=0`, summed per FILE across its
+# setup/call/teardown phases. Nothing here restates that measurement — this
+# hook only reads it and decides where the line falls.
+#
+# The threshold is COMPUTED, not a literal: it is the smallest per-file
+# duration such that every file at or below it sums to under
+# `_FAST_BUDGET_SECONDS` of measured test time, over the files this file's
+# own duration data actually covers. That keeps the split self-adjusting if
+# `durations.json` is ever re-measured, rather than freezing today's number
+# into the source.
+#
+# On top of the duration cut, a file is ALWAYS slow if its own name or source
+# text references machine-local, gitignored state this repo's CLAUDE.md
+# documents as a trap in a fresh checkout or worktree — the score `library/`,
+# `omr-weights/`, `.venv-surya`, `.venv-omrned`, or a PDF fixture path — because
+# those tests can differ in cost (or availability) by machine in a way a
+# duration measured on one machine cannot promise for another.
+#
+# A test FILE that carries no entry in `durations.json` at all (a new file,
+# never measured) is FAST by duration — it cannot inherit a large number it
+# was never charged — but the content check still applies to it independently,
+# so a brand-new test that touches `library/` is still slow on day one.
+import json as _json
+import re as _re
+
+_TESTS_DIR = __import__("pathlib").Path(__file__).resolve().parent
+_REPO_ROOT = _TESTS_DIR.parents[2]          # tools/omr/tests -> tools/omr -> tools -> repo root
+_DURATIONS_FILE = _TESTS_DIR / "durations.json"
+_FAST_BUDGET_SECONDS = 100.0
+
+_CONTENT_SLOW_PATTERN = _re.compile(
+    r"library/|omr-weights|\.venv-surya|\.venv-omrned|\.pdf[\"']"
+)
+
+
+def _load_measured_durations():
+    """{repo-relative posix path: measured seconds}, or {} if unreadable.
+
+    Never raises: a missing or corrupt durations.json must not break
+    collection — it should just mean nothing is slow BY DURATION (the
+    content check is unaffected), which is the same "fast by default"
+    behaviour a brand-new, unmeasured file gets.
+    """
+    try:
+        with open(_DURATIONS_FILE, encoding="utf-8") as f:
+            raw = _json.load(f)
+    except (OSError, ValueError):
+        return {}
+    return {k: v for k, v in raw.items() if isinstance(v, (int, float))}
+
+
+def _derive_slow_by_duration(durations):
+    """The set of files whose measured duration puts them over the line.
+
+    Greedy from the SMALLEST measured file up: keep adding to the fast pile
+    while it stays under budget. The first file that would tip it over, and
+    everything at or above that file's own duration, is slow. Returns
+    (slow_file_set, threshold_seconds, fast_sum_seconds).
+    """
+    ascending = sorted(durations.items(), key=lambda kv: kv[1])
+    cumulative = 0.0
+    threshold = 0.0
+    fast_files = set()
+    for path, seconds in ascending:
+        if cumulative + seconds < _FAST_BUDGET_SECONDS:
+            cumulative += seconds
+            fast_files.add(path)
+            threshold = seconds
+        else:
+            break
+    slow_by_duration = {path for path in durations if path not in fast_files}
+    return slow_by_duration, threshold, cumulative
+
+
+_MEASURED_DURATIONS = _load_measured_durations()
+_SLOW_BY_DURATION, _SLOW_THRESHOLD_SECONDS, _FAST_TIER_MEASURED_SECONDS = (
+    _derive_slow_by_duration(_MEASURED_DURATIONS)
+)
+
+_CONTENT_SCAN_CACHE = {}
+
+
+def _file_matches_slow_content(abs_path):
+    """Does this file's own NAME or SOURCE reference machine-local state?
+
+    Cached per absolute path — collection visits many items per file, and a
+    file's own text does not change mid-run.
+    """
+    cached = _CONTENT_SCAN_CACHE.get(abs_path)
+    if cached is not None:
+        return cached
+    if _CONTENT_SLOW_PATTERN.search(str(abs_path).replace("\\", "/")):
+        result = True
+    else:
+        try:
+            text = abs_path.read_text(encoding="utf-8", errors="replace")
+        except OSError:
+            text = ""
+        result = bool(_CONTENT_SLOW_PATTERN.search(text))
+    _CONTENT_SCAN_CACHE[abs_path] = result
+    return result
+
+
+def _repo_relative_posix(abs_path):
+    try:
+        rel = abs_path.relative_to(_REPO_ROOT)
+    except ValueError:
+        return str(abs_path).replace("\\", "/")
+    return str(rel).replace("\\", "/")
+
+
+def pytest_collection_modifyitems(config, items):
+    """Apply `slow` to every item whose FILE is slow by duration or content.
+
+    Marking is per-file, not per-test: a file's measured total already sums
+    every test in it, and content references (a PDF fixture, `library/`, a
+    venv) are properties of the file, not of one function inside it.
+    """
+    for item in items:
+        abs_path = __import__("pathlib").Path(str(item.fspath)).resolve()
+        rel_path = _repo_relative_posix(abs_path)
+        is_slow = (
+            rel_path in _SLOW_BY_DURATION
+            or _file_matches_slow_content(abs_path)
+        )
+        if is_slow:
+            item.add_marker(pytest.mark.slow)
+
+
+def pytest_report_header(config):
+    return (
+        f"fast/slow tiers: threshold={_SLOW_THRESHOLD_SECONDS:.2f}s/file, "
+        f"fast-tier measured sum={_FAST_TIER_MEASURED_SECONDS:.2f}s "
+        f"(from {_DURATIONS_FILE.name}, budget={_FAST_BUDGET_SECONDS:.0f}s)"
+    )

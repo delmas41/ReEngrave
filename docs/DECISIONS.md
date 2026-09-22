@@ -47,3 +47,26 @@ Format: `YYYY-MM-DD · who · the decision · because · (pointer)`
   Litolff) — it changes what a placed staff means (one `<part>` where the
   music has two), so it is Sean's · (identity session,
   `benchmarks/omr-instrument-channels-2026-09/`)
+- 2026-09-22 · Sean · **`OMR_ENGRAVED_KEYSIG` defaults ON: on a document
+  MEASURED engraved, the key signature is read from the template before the
+  locator.** · because the shipped precedence's stated reason — *"the locator
+  loses accidentals to broken ink"* — is refuted on a vector render, where the
+  locator loses them anyway 24 times in 30 and the template over-counts
+  nowhere (right 26 → 47 of 50; bars exact 313 → 322 of 360, 4 parts better
+  and 0 worse); it is safe to default because the rule is ONE-SIDED and every
+  other input keeps the shipped precedence, verified by
+  `test_keysig_second_reader.py` passing unmodified · ⚠️ n = 1 engraved
+  document, 1 renderer, **no print consulted**, and the scan side is shown
+  only to be a no-op ·
+  (`benchmarks/omr-document-identity-2026-09/FINDINGS.md`)
+- 2026-09-22 · Sean · **`OMR_DOCUMENT_IDENTITY` defaults ON, and the
+  scanned-vs-engraved verdict is a SEPARATE quantity (`Q.INPUT_DOMAIN`,
+  `source_kind: "container"`) from the catalog row.** · because the printing
+  should be gathered in the first stage (his words), and because the catalog
+  cannot supply the domain where it is most needed — the engraved fixture the
+  rule is proven on is a render in no catalog, so the catalog row ABSTAINS
+  `not_in_catalog` on it while the container reader answers · ⚠️ the catalog's
+  `image_type` is kept beside the measurement as a second witness and is NOT
+  what any decision keys on; measured over all 289 editions the two agree 279
+  of 279 wherever the label exists, so its failing is ABSENCE not error ·
+  (`benchmarks/omr-document-identity-2026-09/FINDINGS.md` §1-2)
