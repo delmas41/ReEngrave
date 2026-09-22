@@ -16,6 +16,65 @@ pointing at headings no longer in the file.)*
 
 ---
 
+## 2026-09-22 (night) — four lanes, three refutations, one measured decision
+
+⚠️ Placed above the `no_ink` block on this file's CAUSAL-ORDER rule: it is the
+integration of that block and three sibling lanes.
+Handoff: [docs/handoff-2026-09-22-four-lanes-and-three-refutations.md](docs/handoff-2026-09-22-four-lanes-and-three-refutations.md).
+
+**Nothing was flipped. No default moved. No constant was tuned.**
+
+**LANE A — the ENGRAVED staged record, and the first reading accuracy the
+staged pipeline has ever had.** `trace.py` shipped saying it needed one;
+made. Pooled reading **F1 0.933**, **notehead recall 1.000 on all three
+pages**, shift-control 0.947 → 0.058. ⚠️⚠️ **THE DECISION FOR SEAN**:
+`adjudicate_key_signature` prefers the LOCATOR (**6 right / 24 wrong**) over
+the TEMPLATE (**20 / 0**), on a docstring premise — *"the locator loses
+accidentals to broken ink"* — refuted by a VECTOR RENDER. Mechanism measured:
+`min_height_spaces = 1.10` against flats reading **0.94 after `header_ink_mask`
+strips 54-63% of their height**. **91% of all note errors on 20 bars of 18
+parts are this fault.** ⚠️ **INFER has essentially no domain on engraved
+input** (`duration_narrowed` 0/0/3 against Breitkopf's 537). The 09-21
+`<beam>` emission is **exact**: 183/183, all 18 parts' sequence, Verovio
+re-rendering our file drawing the same `{flag: 4, beam: 58}`.
+
+**LANE D — the governing document's own §7 falsifier FIRES.** On the
+SHATTERING plate, **no ink-derived axis separates print-confirmed junk from
+noteheads as well as a feature of the BOX ALONE**, in every arm and both
+publishers (0.939 vs 0.747). ⚠️ Its **DIAGNOSIS stands; its REMEDY does not** —
+and it does not show the box is GOOD, only that the ink is not BETTER. The
+correction is at that document's head. ⚠️ The *"42.5% is mostly specks"* caveat
+**INVERTS between publishers** (66.9% Breitkopf, **3.8% Litolff** — the plate
+it was measured on).
+
+**LANE B — the chord/stroke join, REFUSED BY THE PRINT.** Reach **31 of 2,322
+(1.3%)**; of 17 settled, **2 are a real chord and 13 are NOT NOTEHEADS**;
+controls **12/15 with 0 wrong**. ⚠️ **The item was sized off a population two
+thirds too large** — its `73/98` never asks whether the shadow head is
+STEMLESS, and only 24/33 are.
+
+**LANE C — the "truncated" margin label is a BRACED-PAIR label.** The rule
+fires **zero times on all 209 Brahms labels**, and CLAUDE.md already said no
+lexicon can recover them. ⚠️⚠️ **`OMR_ROSTER_LABELS` governs the LEGACY reader
+ONLY** — one non-test caller — while staged identity calls `decide()`
+**ungated** with a roster the CLI supplies by default: the **INVERSE** of
+*shipped means the LEGACY path*, and the knobs row calling it *"deliberately
+dormant"* was false. Cost side now measured and **zero** (368,173-decision
+cross product byte-identical). Adjacency **refused 0 of 4**.
+
+**MANAGER — two instruments answering with definite answers they did not
+have.** The `no_ink` lie repaired (below), and **`score_reading.py` scored
+F1 0.000 for any page but the first** — a positional page lookup against a
+one-element list, plus a `staff_space_px` of **1.0** rescaling every tolerance
+~20×. Now looks up by field and RAISES, on the truth side too. ⚠️ It never
+showed because **every fixture the reading lane uses is `--pages 0`.**
+
+⚠️ **OPERATIONAL: subagents cannot write `.md` files — eight occurrences, four
+that night.** Every lane's `FINDINGS.md` was transposed at integration, with
+`[mgr]` marking what the managing session re-derived.
+
+---
+
 ## 2026-09-22 — `no_ink` is a claim about the PAGE, and three readers made it about themselves
 
 **GATHER + the abstention vocabulary. No flag, no default moved, no decision
