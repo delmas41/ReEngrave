@@ -235,6 +235,22 @@ UNSCORED: Dict[str, Tuple[str, str, Any]] = {
         "It is the key the positional store conditions on, and it is what "
         "CLOSED this tool's own CROSS-DOCUMENT finding on 2026-09-17.",
         None),
+    "INPUT_DOMAIN": (
+        NOT_A_MARK,
+        "⚠️ SCORELESS FOR A THIRD REASON AGAIN: it is not a measurement of "
+        "INK and not a fact somebody catalogued -- it is a measurement of the "
+        "PDF's own CONTAINER, vector drawing operations against full-page "
+        "raster coverage, taken before any model loads. `input_domain`'s two "
+        "populations have an EMPTY gap over 147 probed pages (0 drawings / "
+        "0.95+ coverage against 428-2058 drawings / 0.000), so a confidence "
+        "would be a decoration on a reading that is either available or "
+        "abstains -- the same argument `Q.CLEF_POSITION` makes for a ruler. "
+        "⚠️ Its independence from print quality is the property that makes it "
+        "usable as a conditioning variable, and unlike DOCUMENT_IDENTITY it "
+        "does not need the document to be catalogued: the engraved fixture "
+        "the key-signature rule is measured on is a render in no catalog, "
+        "where the catalog row abstains and this one answers.",
+        None),
     # ── the three that answer question 2 ────────────────────────────────────
     "NOTEHEAD_STAFF_POSITION": (
         STAFF_GRID_POSITION,
@@ -510,6 +526,12 @@ READER_RASTER: Dict[str, Optional[Tuple[str, str]]] = {
     # ⚠️ NO RASTER, and that is the point of the exemplar: the position facts
     # are computed off line positions the geometry stage already measured.
     "GEOMETRY": None,
+    # ⚠️ NO RASTER, AND SAYING SO IS THE POINT. `input_domain.classify_pdf_
+    # domain` counts vector drawing operations and image-bbox coverage out of
+    # the PDF's object graph; it never renders a pixel, which is exactly why
+    # its answer does not degrade with the print. A reader that measured a
+    # raster could not condition a rule on whether the document IS a raster.
+    "CONTAINER": None,
     "TEXT_LAYER": None,
     "SURYA": ("direction_text.py", "_page_ink"),
     "TESSERACT": ("direction_text.py", "_page_ink"),

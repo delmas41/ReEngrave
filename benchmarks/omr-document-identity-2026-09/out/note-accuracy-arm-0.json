@@ -1,0 +1,419 @@
+{
+ "parts": 18,
+ "bars_printed": 20,
+ "bars_written": 25,
+ "truth_first_bar": 1,
+ "part_bars": 360,
+ "bars_exact": 313,
+ "parts_exact_as_sequence": 0,
+ "events_truth": 528,
+ "events_ours": 530,
+ "disagreements": {
+  "same count, differs ONLY by an accidental": 43,
+  "different number of events": 2,
+  "same count, different pitch/rest": 2
+ },
+ "per_part": [
+  {
+   "part": 0,
+   "name": "Flute 1",
+   "bars_exact": 19,
+   "bars": 20
+  },
+  {
+   "part": 1,
+   "name": "Flute 2",
+   "bars_exact": 20,
+   "bars": 20
+  },
+  {
+   "part": 2,
+   "name": "Oboe 1",
+   "bars_exact": 18,
+   "bars": 20
+  },
+  {
+   "part": 3,
+   "name": "Oboe 2",
+   "bars_exact": 20,
+   "bars": 20
+  },
+  {
+   "part": 4,
+   "name": "Bb Clarinet",
+   "bars_exact": 18,
+   "bars": 20
+  },
+  {
+   "part": 5,
+   "name": "Bb Clarinet 2",
+   "bars_exact": 18,
+   "bars": 20
+  },
+  {
+   "part": 6,
+   "name": "Bassoon 1",
+   "bars_exact": 12,
+   "bars": 20
+  },
+  {
+   "part": 7,
+   "name": "Bassoon 2",
+   "bars_exact": 14,
+   "bars": 20
+  },
+  {
+   "part": 8,
+   "name": "Eb Horn 1",
+   "bars_exact": 20,
+   "bars": 20
+  },
+  {
+   "part": 9,
+   "name": "Eb Horn 2",
+   "bars_exact": 20,
+   "bars": 20
+  },
+  {
+   "part": 10,
+   "name": "C Trumpet 1",
+   "bars_exact": 20,
+   "bars": 20
+  },
+  {
+   "part": 11,
+   "name": "C Trumpet 2",
+   "bars_exact": 20,
+   "bars": 20
+  },
+  {
+   "part": 12,
+   "name": "C, G Timpani",
+   "bars_exact": 20,
+   "bars": 20
+  },
+  {
+   "part": 13,
+   "name": "Violin 1",
+   "bars_exact": 14,
+   "bars": 20
+  },
+  {
+   "part": 14,
+   "name": "Violin 2",
+   "bars_exact": 11,
+   "bars": 20
+  },
+  {
+   "part": 15,
+   "name": "Viola",
+   "bars_exact": 16,
+   "bars": 20
+  },
+  {
+   "part": 16,
+   "name": "Violoncello",
+   "bars_exact": 14,
+   "bars": 20
+  },
+  {
+   "part": 17,
+   "name": "Contrabass",
+   "bars_exact": 19,
+   "bars": 20
+  }
+ ],
+ "examples": [
+  {
+   "part": 0,
+   "name": "Flute 1",
+   "bar": 19,
+   "ours": [
+    [
+     "E6",
+     1.0
+    ],
+    [
+     "rest",
+     1.0
+    ]
+   ],
+   "truth": [
+    [
+     "E-6",
+     1.0
+    ],
+    [
+     "rest",
+     1.0
+    ]
+   ]
+  },
+  {
+   "part": 2,
+   "name": "Oboe 1",
+   "bar": 19,
+   "ours": [
+    [
+     "E5",
+     1.0
+    ],
+    [
+     "rest",
+     1.0
+    ]
+   ],
+   "truth": [
+    [
+     "E-5",
+     1.0
+    ],
+    [
+     "rest",
+     1.0
+    ]
+   ]
+  },
+  {
+   "part": 2,
+   "name": "Oboe 1",
+   "bar": 20,
+   "ours": [
+    [
+     "F5",
+     1.0
+    ],
+    [
+     "rest",
+     1.0
+    ]
+   ],
+   "truth": [
+    [
+     "F#5",
+     1.0
+    ],
+    [
+     "rest",
+     1.0
+    ]
+   ]
+  },
+  {
+   "part": 4,
+   "name": "Bb Clarinet",
+   "bar": 18,
+   "ours": [
+    [
+     "rest",
+     0.5
+    ],
+    [
+     "C4",
+     0.5
+    ],
+    [
+     "E4",
+     0.5
+    ],
+    [
+     "A4",
+     0.5
+    ]
+   ],
+   "truth": [
+    [
+     "rest",
+     0.5
+    ],
+    [
+     "C#4",
+     0.5
+    ],
+    [
+     "E4",
+     0.5
+    ],
+    [
+     "A4",
+     0.5
+    ]
+   ]
+  },
+  {
+   "part": 4,
+   "name": "Bb Clarinet",
+   "bar": 20,
+   "ours": [
+    [
+     "G4",
+     1.0
+    ],
+    [
+     "rest",
+     1.0
+    ]
+   ],
+   "truth": [
+    [
+     "G#4",
+     1.0
+    ],
+    [
+     "rest",
+     1.0
+    ]
+   ]
+  },
+  {
+   "part": 5,
+   "name": "Bb Clarinet 2",
+   "bar": 8,
+   "ours": [
+    [
+     "D3",
+     4.0
+    ],
+    [
+     "rest",
+     4.0
+    ]
+   ],
+   "truth": [
+    [
+     "rest",
+     2.0
+    ]
+   ]
+  },
+  {
+   "part": 5,
+   "name": "Bb Clarinet 2",
+   "bar": 18,
+   "ours": [
+    [
+     "rest",
+     0.5
+    ],
+    [
+     "A3",
+     0.5
+    ],
+    [
+     "C4",
+     0.5
+    ],
+    [
+     "E4",
+     0.5
+    ]
+   ],
+   "truth": [
+    [
+     "rest",
+     0.5
+    ],
+    [
+     "A3",
+     0.5
+    ],
+    [
+     "C#4",
+     0.5
+    ],
+    [
+     "E4",
+     0.5
+    ]
+   ]
+  },
+  {
+   "part": 6,
+   "name": "Bassoon 1",
+   "bar": 8,
+   "ours": [
+    [
+     [
+      "C4",
+      "F1"
+     ],
+     4.0
+    ]
+   ],
+   "truth": [
+    [
+     "C4",
+     2.0
+    ]
+   ]
+  },
+  {
+   "part": 6,
+   "name": "Bassoon 1",
+   "bar": 11,
+   "ours": [
+    [
+     "B-3",
+     2.0
+    ]
+   ],
+   "truth": [
+    [
+     "B3",
+     2.0
+    ]
+   ]
+  },
+  {
+   "part": 6,
+   "name": "Bassoon 1",
+   "bar": 12,
+   "ours": [
+    [
+     "B-3",
+     2.0
+    ]
+   ],
+   "truth": [
+    [
+     "B3",
+     2.0
+    ]
+   ]
+  },
+  {
+   "part": 6,
+   "name": "Bassoon 1",
+   "bar": 13,
+   "ours": [
+    [
+     "B-3",
+     2.0
+    ]
+   ],
+   "truth": [
+    [
+     "B3",
+     2.0
+    ]
+   ]
+  },
+  {
+   "part": 6,
+   "name": "Bassoon 1",
+   "bar": 14,
+   "ours": [
+    [
+     "B-3",
+     2.0
+    ]
+   ],
+   "truth": [
+    [
+     "B3",
+     2.0
+    ]
+   ]
+  }
+ ]
+}

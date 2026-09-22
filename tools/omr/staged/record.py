@@ -775,7 +775,35 @@ class Q(_Vocab):
     # ── external facts (measurements, but not from THIS raster) ─────────────
     ROSTER_ENTRY = "roster_entry"            # the catalog's instrumentation
     DOSSIER_FACT = "dossier_fact"            # the work's own meter/clef/key
-    INPUT_DOMAIN = "input_domain"            # scan vs engraved, for weights
+    #: SCANNED or ENGRAVED, MEASURED off the PDF's own container.
+    #:
+    #: ⚠️ IT WAS A GHOST FOR MONTHS -- declared here and in the `CLAIM` table
+    #: below, produced by nothing and read by nothing, which `reach --check`
+    #: reported every run. `OMR_WEIGHT_ROUTING` has classified every document
+    #: since 2026-09-03 and the staged path never wrote the answer down;
+    #: `gather_input_domain` (2026-09-22) is the producer, and
+    #: `adjudicate_key_signature` the first consumer.
+    #:
+    #: ⚠️⚠️ IT IS A **SEPARATE QUANTITY FROM `DOCUMENT_IDENTITY`** AND THE
+    #: MEASUREMENT IS WHY, NOT THE TAXONOMY. The catalog answers by BASENAME
+    #: out of the committed score library, and the engraved fixture the
+    #: key-signature failure is measured on is a RENDER -- a build product
+    #: under `benchmarks/`, in no catalog -- so `gather_document_identity`
+    #: ABSTAINS `not_in_catalog` on it while this reader answers `engraved`
+    #: (raster coverage 0.000, 1188-1655 drawings, 3 pages of 3). Filed as a
+    #: FIELD of that row it would have a reach of ZERO on the one input where
+    #: the rule it conditions is proven.
+    #:
+    #: ⚠️ IT IS A SECOND WITNESS TO the catalog's `image_type`, NOT A
+    #: CORRECTION OF IT, and the two are kept apart for the reason `Q.INK`
+    #: keeps `ink_detector_coverage` as an attribute: a disagreement is a fact
+    #: worth having. Measured over all 289 committed editions they do not in
+    #: fact disagree ANYWHERE the label exists -- 272/272 `Normal Scan`
+    #: measure scanned, 7/7 `Typeset` measure engraved -- and what the
+    #: measurement adds is the 10 editions carrying NO label, split 7 / 3. So
+    #: the label's failing is ABSENCE, not error, and the library really is
+    #: almost all scans because it is almost all IMSLP.
+    INPUT_DOMAIN = "input_domain"            # scan vs engraved (weights, keys)
 
     # ── verdicts ────────────────────────────────────────────────────────────
     SYSTEM_MEMBERSHIP = "system_membership"  # which staves are one system
@@ -1434,6 +1462,11 @@ class READERS(_Vocab):
     VISION = "vision"                        # the paid rung
     DOSSIER = "dossier"                      # the work's MusicXML
     CATALOG = "catalog"                      # IMSLP work page
+    #: `input_domain.classify_pdf_domain` -- the PDF's own container, read
+    #: before any model loads. ⚠️ NOT a reading of the music: it counts vector
+    #: drawing operations against full-page raster coverage, so it is
+    #: independent of print quality in a way no reader of the INK can be.
+    CONTAINER = "container"                  # input_domain: the PDF container
     CARRY = "carry"                          # this fact, read on another system
 
 
@@ -1543,6 +1576,15 @@ class ABSTAIN(_Vocab):
     #: and an unknown plate as one number -- the shape `NO_READING` was added
     #: to prevent one family over.
     NOT_IN_CATALOG = "not_in_catalog"
+    #: The container classifier RAN and the page is neither raster-dominant
+    #: nor drawing-rich -- a blank page, or a text-only title page.
+    #:
+    #: ⚠️ ITS OWN WORD, NOT `AMBIGUOUS`. `input_domain` is built to abstain on
+    #: doubt (its two populations have an EMPTY gap over 147 probed pages), so
+    #: this is the reader succeeding at its design rather than failing to
+    #: choose, and a consumer that cannot tell those apart would read a blank
+    #: cover page as a close call.
+    NO_DOMAIN_SIGNAL = "no_domain_signal"
 
     # the build itself
     NOT_IMPLEMENTED = "not_implemented"           # ⚠️ a declared stub
