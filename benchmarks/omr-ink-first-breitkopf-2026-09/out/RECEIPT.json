@@ -1,0 +1,52 @@
+{
+  "what": "The artefact docs/breakthrough-2026-09-18-the-unit-of-enquiry.md §7 names as its blocking artefact, for all four pages the crop pass adjudicated.",
+  "made": "2026-09-22",
+  "artefact": "brahms1-breitkopf-p0-p3.gather.json",
+  "md5": "213bcb9235267e39a10b3a32dae8d0b6",
+  "bytes": 24270249,
+  "observations": 67546,
+  "ink_rows": 15212,
+  "cells_with_ink": 818,
+  "pages": "pdf 0-3 (0-based), page coordinate 0..3",
+  "also_at": "library/_shared-records/brahms1-breitkopf-p0-p3-ink.gather.json (same md5)",
+  "document": {
+    "work_id": "brahms--symphony-1",
+    "publisher": "Breitkopf & Härtel (Brahms Sämtliche Werke)",
+    "imslp": "317803",
+    "pdf": "library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf",
+    "image_type": "Normal Scan"
+  },
+  "how": {
+    "script": "benchmarks/omr-ink-first-2026-09/gather_only.py",
+    "note": "GATHER ONLY -- the same gather.gather call the pipeline makes, stopping at the stage every quantity this test reads lives in. IT IS NOT A RECORD: no verdicts, no abstentions.",
+    "command": "OMR_DIRECTION_TEXT=0 python3 -u benchmarks/omr-ink-first-2026-09/gather_only.py <pdf> --pages 0,1,2,3 --weights tools/omr/training/data/weights/deepscoresv2-yolov8l-hollow-graft-shift09-2026-09-04.pt --out <out>",
+    "weights": "deepscoresv2-yolov8l-hollow-graft-shift09-2026-09-04.pt (scan production)",
+    "dpi": 600,
+    "conf": 0.25,
+    "surya": "off, deliberately -- a resident llama-server (pid 92818, 5 days up) is shared with other sessions and this lane reads no margin label",
+    "tesseract": "off",
+    "OMR_DIRECTION_TEXT": "0 -- ~267 s/page on a scan for six words, none of which this lane reads",
+    "OMR_INK": "unset, i.e. the shipped DEFAULT ON (deny-list, gather.py:_ink_enabled)"
+  },
+  "controls": {
+    "cross_gather": "PASS -- page 1 of this four-page gather reproduces the committed 2026-09-18 single-page gather EXACTLY: ink 6055=6055, glyph_box 3951, glyph_conf 3951, notehead_class 1015, stem 792, cell_staff_space 202, beam_stroke 924, rest 350, and the ink SUBJECT KEY SET is identical (0 on either side only). Two independent detector runs, four days and one branch apart.",
+    "script": "benchmarks/omr-ink-first-breitkopf-2026-09/cross_gather_control.py"
+  },
+  "not_established": [
+    "It carries no verdicts, so nothing downstream of GATHER can be asked of it.",
+    "A full staged record for these pages with OMR_INK on was launched in the same session and had not finished; library/_shared-records/brahms1-breitkopf-p0-p3.record.json (2026-09-15) is the pre-ink one and carries ZERO ink rows."
+  ],
+  "tree": {
+    "branch": "claude/ink-first-breitkopf-2026-09",
+    "forked_from": "claude/suite-test-overnight-c8b89f @ c640063f",
+    "files_changed_under_tools_by_this_lane": 0,
+    "WARNING": "The BASE branch diverges from origin/main under tools/ (15 files, 168 insertions / 1006 deletions), so this gather did NOT run against origin/main. That divergence was checked rather than assumed.",
+    "ink_layer_vs_origin_main": {
+      "section": "gather.py from INK_ENV to the next gather_* function",
+      "md5_this_tree": "70ba9808029f836d8b430f8f7056e68a",
+      "md5_origin_main": "70ba9808029f836d8b430f8f7056e68a",
+      "identical": true
+    },
+    "only_gather_divergence": "gather_clef_seed, the dossier clef-seeding path. This run passed dossier=None (the staged CLI has no --dossier), so that branch abstains identically either way and cannot reach the ink."
+  }
+}

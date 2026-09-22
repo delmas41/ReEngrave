@@ -1,0 +1,19 @@
+THE RESIDUE SPLIT, TWO PLATES -- the 42.5%/36% figures, decomposed
+
+stratum          Breitkopf n   % of n   % area   |  Litolff n   % of n   % area
+SPECK                   6506    42.8%     0.1%   |        126     1.8%     0.0%
+MARK_SIZED              7239    47.6%    40.9%   |       4929    69.5%    49.2%
+VERTICAL                 290     1.9%     0.8%   |        413     5.8%     2.6%
+VERTICAL_TALL            331     2.2%     4.1%   |       1077    15.2%    16.0%
+BLOB                     846     5.6%    54.1%   |        548     7.7%    32.1%
+
+ZERO-DETECTOR-COVERAGE pieces:
+  Breitkopf   8028 of 15212  (52.8%)
+  Litolff     3019 of 7093  (42.6%)
+
+  composition of the zero-coverage population:
+    SPECK            Breitkopf  66.9%   Litolff   3.8%
+    MARK_SIZED       Breitkopf  28.4%   Litolff  58.1%
+    VERTICAL         Breitkopf   1.4%   Litolff   9.6%
+    VERTICAL_TALL    Breitkopf   3.2%   Litolff  27.4%
+    BLOB             Breitkopf   0.1%   Litolff   1.0%
