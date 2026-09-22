@@ -1118,8 +1118,14 @@ def gather_dynamic_letters(log: Log, pws: Any, cells: Sequence[Any],
                         reader=READERS.DETECTOR, frame=FRAME_PAGE,
                         score=float(d.confidence), **detail)
         if n == 0:
+            # ⚠️ NOT `NO_INK`. This loop is over `detections.items()`, so the
+            # detector fired HERE and what it returned simply holds no
+            # dynamic letter -- a bar of noteheads and a slur, not a blank
+            # bar. Measured on Litolff Beethoven 5 pp.1-4, all 997 of these
+            # stood on a cell with detections and ink: 997 of 997.
             log.abstain(sub, Q.DYNAMIC_LETTER, reader=READERS.DETECTOR,
-                        frame=frame, reason=ABSTAIN.NO_INK)
+                        frame=frame, reason=ABSTAIN.NO_GLYPH_OF_THIS_KIND,
+                        cell_n_detections=len(dets))
 
     for c in cells:
         key = local.get(c.staff_index)
@@ -1513,13 +1519,27 @@ def gather_cv_lines(log: Log, cells: Sequence[Any],
                             image="no_staff" if erased else "original",
                             staff_lines_erased=erased)
 
+        # ⚠️⚠️ THE STEM SET IS THE BEAM READER'S INPUT, so it is read ONCE
+        # here and the two families get different words. `detect_beams` takes
+        # the strokes `detect_stems` returned; where there are fewer than two
+        # of them no beam can be joined in this cell, whatever the page holds.
+        n_stems = len(found.get("stems") or [])
         for quantity, kind in ((Q.STEM, "stems"), (Q.BEAM_STROKE, "beams")):
             rows = found.get(kind) or []
             if not rows:
+                # ⚠️ NOT `NO_INK`. `detect_stems` NAMES AND FILTERS IN ONE ACT
+                # (`line_detection` says so at its own head), so this says
+                # only what the reader knows: it ran and accepted nothing of
+                # this kind. Whether candidates were FOUND AND REFUSED is on
+                # the record only under `OMR_VERTICAL_RUNS`.
+                reason = ABSTAIN.NO_LINE_ACCEPTED
+                if quantity is Q.BEAM_STROKE and n_stems < 2:
+                    reason = ABSTAIN.NO_STEMS_TO_JOIN
                 log.abstain(sub, quantity, reader=READERS.CV_LINES,
-                            frame=frame, reason=ABSTAIN.NO_INK,
+                            frame=frame, reason=reason,
                             image="no_staff" if erased else "original",
-                            staff_lines_erased=erased)
+                            staff_lines_erased=erased,
+                            cell_n_stems=n_stems)
                 continue
             for d in rows:
                 log.observe(sub, quantity,

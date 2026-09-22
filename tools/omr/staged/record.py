@@ -1472,8 +1472,48 @@ class ABSTAIN(_Vocab):
     OFF_STAFF_ONLY = "off_staff_only"
 
     # readers with nothing to read
+    #: ⚠️⚠️ A CLAIM ABOUT THE PAGE, AND ONLY THE INK READER MAY MAKE IT.
+    #: `Q.INK` measures the connected components of a cell's erased raster and
+    #: finds none; everything else that reached for this word was saying
+    #: something about ITSELF. Measured on the one record carrying an ink
+    #: witness (Litolff Beethoven 5 pp.1-4): of 2,476 `no_ink` claims, ZERO
+    #: were the ink reader's own and 2,377 stand on a cell `Q.INK` sees ink in
+    #: -- `trace --empty-claims` is the instrument. The three words below are
+    #: what those readers actually knew.
     NO_INK = "no_ink"
+    #: The DETECTOR fired nothing at all on this subject. Honest, and the
+    #: contrast that makes the three words below necessary.
     NO_DETECTIONS = "no_detections"
+    #: The detector fired HERE and none of what it returned belongs to this
+    #: family.
+    #:
+    #: ⚠️ A DIFFERENT FACT FROM BOTH `NO_INK` and `NO_DETECTIONS`, and the
+    #: measured population says so: on that record all 997 of
+    #: `dynamic_letter/no_ink` stand on a cell that HAD detections -- 997 of
+    #: 997, not most. A bar of noteheads and a slur is not a blank bar, and a
+    #: reader that filters a non-empty list by class knows exactly that.
+    NO_GLYPH_OF_THIS_KIND = "no_glyph_of_this_kind"
+    #: A classical-CV line reader RAN and accepted no stroke of this kind.
+    #:
+    #: ⚠️ IT DOES NOT CLAIM THE CELL IS EMPTY, and that restraint is the whole
+    #: point: `detect_stems` NAMES AND FILTERS IN ONE ACT, so a candidate it
+    #: found and discarded leaves no row, and whether this cell had candidates
+    #: REFUSED or none at all is on the record only when `OMR_VERTICAL_RUNS`
+    #: is on (where `Q.VERTICAL_RUN` records which filter refused each one).
+    #: Saying less than we know would be a fault; saying more was the old one.
+    NO_LINE_ACCEPTED = "no_line_accepted"
+    #: A BEAM JOINS STEM TIPS, so a cell carrying fewer than two stems cannot
+    #: carry a beam joined within it. The beam reader's INPUT IS THE STEM SET
+    #: (`detect_beams` takes the stems `detect_stems` returned), so this names
+    #: an empty input, not an empty page.
+    #:
+    #: ⚠️⚠️ IT IS A CLAIM ABOUT OUR STEM READING AND NOT ABOUT THE PRINT. Where
+    #: a beam IS printed and its stems were missed, this says so exactly --
+    #: which is the point. Measured: of 980 `beam_stroke/no_ink` claims, 400
+    #: stand on a cell with NO stem and 265 on a cell with one, so 665 (67.9%)
+    #: were never the beam reader's claim to make; and the 400 are EXACTLY the
+    #: 400 cells `stem` refused, set for set, so that silence is DERIVED.
+    NO_STEMS_TO_JOIN = "no_stems_to_join"
     NO_TEXT_LAYER = "no_text_layer"
     READER_UNAVAILABLE = "reader_unavailable"    # no .venv-surya, no tesseract
     BUDGET_EXHAUSTED = "budget_exhausted"

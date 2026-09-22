@@ -312,6 +312,32 @@ KNOWN_GAPS: Dict[str, str] = {
         "record of which side of it a row came from."),
     "DETAIL Q.BEAM_STROKE.staff_lines_erased":
         "as `Q.<loop-bound>.staff_lines_erased`.",
+    # ── DETAIL, landed 2026-09-22 with the three honest empty-claim words.
+    # Both keys exist so a LATER READER CAN CHECK THE REFUSAL'S OWN CLAIM,
+    # which is the whole reason the words were split: `no_glyph_of_this_kind`
+    # asserts the detector fired here, and `no_stems_to_join` asserts this
+    # cell's stem set is too small to carry a beam. A reason word nothing can
+    # check is a story.
+    #
+    # ⚠️⚠️ THEY WERE INVISIBLE TO THIS QUESTION UNTIL THEY WERE RENAMED. Named
+    # `n_detections` and `n_stems` they each collided with an UNRELATED key
+    # elsewhere in `tools/` (`transcribe`/`yolo_detector`/`annotate` and
+    # `adjudicators/rhythm`'s own `stems_disagree` detail), and the DETAIL
+    # test matches on the bare NAME -- so both read as consumed and `--check`
+    # passed. That is a live blind spot in this tool, recorded in
+    # `benchmarks/omr-no-ink-lie-2026-09/FINDINGS.md` §9 and NOT fixed here:
+    # making the match quantity-aware moves every entry in this list at once.
+    "DETAIL Q.<loop-bound>.cell_n_stems": (
+        "how many CV stems this cell held when the beam family refused -- the "
+        "number `no_stems_to_join` is asserting. A consumer that sees only "
+        "the reason word cannot tell 0 from 1, and those are different "
+        "readings of the same page."),
+    "DETAIL Q.DYNAMIC_LETTER.cell_n_detections": (
+        "how many detections the family filter looked past -- the number "
+        "`no_glyph_of_this_kind` is asserting. It is also the one field that "
+        "would catch the word going wrong: this reason on a cell reporting "
+        "ZERO detections would be the old `no_ink` fault returning under a "
+        "new name."),
     # ── DETAIL, surfaced 2026-09-17 when a BENCHMARK PROBE stopped counting
     # as a consumer (see the exclusion in `details()`).
     #

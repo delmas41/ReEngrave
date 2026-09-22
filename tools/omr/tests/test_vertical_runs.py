@@ -401,13 +401,23 @@ class TestTheReasonReachesTheRecord(unittest.TestCase):
         self.assertEqual(d["run_outcome"], LD.RUN_TOO_WIDE)
         self.assertFalse(d["run_accepted"])
         self.assertTrue(d["run_refused_by_dimension"])
-        # ⚠️ AND `Q.STEM` STILL SAYS `NO_INK` ABOUT THE SAME CELL, which is
-        # the collapse this quantity exists to make VISIBLE rather than to
-        # fix: the cell has ink, the stem family has none of its own.
+        # ⚠️⚠️ THIS ASSERTION USED TO PIN THE COLLAPSE RATHER THAN THE FIX.
+        # It read: *"`Q.STEM` STILL SAYS `NO_INK` ABOUT THE SAME CELL, which
+        # is the collapse this quantity exists to make VISIBLE rather than to
+        # fix"* -- and a test that pins a known-false claim keeps it alive.
+        # The claim was false 2,377 times on one record (`trace
+        # --empty-claims`), so `Q.STEM` now says what it actually knows: the
+        # reader RAN and accepted no stroke. The cell has ink, `Q.VERTICAL_RUN`
+        # says which filter refused the candidate, and neither row claims the
+        # page is blank.
         stem = [r for r in log.all_rows()
                 if getattr(r, "quantity", None) == Q.STEM]
         self.assertEqual(len(stem), 1)
-        self.assertEqual(stem[0].reason, ABSTAIN.NO_INK)
+        self.assertEqual(stem[0].reason, ABSTAIN.NO_LINE_ACCEPTED)
+        # ⚠️ The two rows must still say DIFFERENT things about one cell --
+        # that separation is what this quantity exists for, and collapsing
+        # them into one word is the fault from the other direction.
+        self.assertNotEqual(stem[0].reason, d["run_outcome"])
 
     def test_the_value_is_x_y_w_h_and_not_corners(self):
         """⚠️⚠️ THREE BOX CONVENTIONS DISAGREE IN ONE RECORD and reading one
