@@ -771,6 +771,42 @@ def main():
           f"{'-' if ghi is None else f'{ghi:.4f}'})  "
           f"AUC {A:.3f}  {'SEPARATES' if sep == 'YES' else ''}")
 
+    # ── WITHIN-STRATUM, which is the honest version of the question ─────────
+    P("")
+    P("WITHIN-STRATUM. ⚠️⚠️ THE SAMPLE IS NOT A RANDOM SAMPLE OF BOXES: it was")
+    P("drawn from the rejection census's buckets, and on Breitkopf the junk is")
+    P("concentrated in `too TALL` (12/12) and `at a CELL EDGE` (11/12), which")
+    P("are defined BY GEOMETRY. So every pooled AUC above is inflated for ink")
+    P("and box features ALIKE, and the only place the question can be asked")
+    P("cleanly is inside a bucket that holds both classes.")
+    strata = defaultdict(lambda: {"pos": [], "neg": []})
+    for f in pos:
+        strata[f["tile"].get("bucket")]["pos"].append(f)
+    for f in neg:
+        strata[f["tile"].get("bucket")]["neg"].append(f)
+    any_clean = False
+    for b, e in sorted(strata.items(), key=lambda kv: -len(kv[1]["pos"])):
+        if len(e["pos"]) < 3 or len(e["neg"]) < 3:
+            P(f"  {str(b):48} junk {len(e['pos']):>2} real {len(e['neg']):>2}"
+              f"   -- too few, DEAD")
+            continue
+        any_clean = True
+        P(f"  {str(b):48} junk {len(e['pos']):>2} real {len(e['neg']):>2}")
+        for key, desc in AXES + BOX_ONLY_AXES:
+            pv = [float(f[key]) for f in e["pos"]
+                  if f.get(key) is not None and not math.isnan(float(f[key]))]
+            nv = [float(f[key]) for f in e["neg"]
+                  if f.get(key) is not None and not math.isnan(float(f[key]))]
+            if len(pv) < 3 or len(nv) < 3:
+                continue
+            A = auc(pv, nv)
+            lo, _m, hi = auc_null(pv + nv, len(pv))
+            mark = "  <-- SEPARATES" if (A > hi or A < lo) else ""
+            P(f"       {desc:44} AUC {A:5.3f}  null [{lo:.3f},{hi:.3f}]{mark}")
+    if not any_clean:
+        P("  DEAD: no bucket holds >=3 of both classes on this record, so the")
+        P("  pooled table cannot be corrected for its own sampling here.")
+
     # ── §7's ACTUAL FALSIFIER ───────────────────────────────────────────────
     ink_axes = {k for k, _ in AXES}
     ink_best = max((r for r in results if r[1] in ink_axes),

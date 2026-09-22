@@ -109,8 +109,23 @@ ARMS = [
     ("the DEAD guard on an empty separation side is removed",
      "    if not pos or not neg:\n        P(\"  DEAD: one side of the separation is empty on this record.\")",
      "    if False:\n        P(\"  DEAD: one side of the separation is empty on this record.\")",
-     "DEAD", ("--drop-junk",)),
+     "DEAD: one side of the separation", ("--drop-junk",)),
 ]
+
+#: ⚠️ THE TERMINAL REFUSALS, SPELLED OUT. A bare `"DEAD" in output` test broke
+#: the moment the probe grew a WITHIN-STRATUM section that prints
+#: `-- too few, DEAD` per bucket on a perfectly healthy run: the battery's own
+#: positive control then reported the unmutated probe as refusing, and every
+#: arm below it as meaningless. A guard keyed on a substring of ordinary
+#: output is not a guard.
+TERMINAL = ("REFUSED: a control failed",
+            "DEAD: one side of the separation",
+            "DEAD: not one adjudicated subject",
+            "DEAD: this record carries NO ink rows")
+
+
+def refused(text):
+    return any(m in text for m in TERMINAL)
 
 
 def sha(path):
@@ -144,7 +159,7 @@ def main():
 
     try:
         base = run()
-        if "REFUSED" in base or "DEAD" in base:
+        if refused(base):
             print("POSITIVE CONTROL FAILED: the unmutated probe refuses on the "
                   "pilot record, so no arm below means anything.")
             print(base[-2000:])
@@ -156,9 +171,9 @@ def main():
         wj = run(("--wrong-join",))
         dj = run(("--drop-junk",))
         print(f"positive control: --wrong-join REFUSES  "
-              f"{'yes' if 'REFUSED' in wj else 'NO -- arm is vacuous'}")
+              f"{'yes' if refused(wj) else 'NO -- arm is vacuous'}")
         print(f"positive control: --drop-junk reaches DEAD "
-              f"{'yes' if 'DEAD' in dj else 'NO -- arm is vacuous'}\n")
+              f"{'yes' if refused(dj) else 'NO -- arm is vacuous'}\n")
         baselines = {(): base,
                      ("--wrong-join",): wj,
                      ("--drop-junk",): dj}

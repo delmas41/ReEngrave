@@ -1,0 +1,259 @@
+{
+ "record": "/private/tmp/claude-501/-Users-seanjohnson-Desktop-ReEngrave--claude-worktrees-missing-reengraved-routine-07f75a/cfb68919-dbd4-4b37-81fe-e1420408ff4c/scratchpad/brahms1-breitkopf-p0-p3.gather.json",
+ "plate": "breitkopf",
+ "population": "all",
+ "attribution": "fill",
+ "provenance": null,
+ "settings": null,
+ "ink_rows": 15212,
+ "glyph_rows": 12932,
+ "cells_with_ink": 818,
+ "pages": [
+  "0",
+  "1",
+  "2",
+  "3"
+ ],
+ "subjects_present": 144,
+ "class_agreement": 1.0,
+ "n_junk": 44,
+ "n_real": 74,
+ "n_cannot_tell": 26,
+ "by_source": {
+  "sample": {
+   "junk": 33,
+   "real": 55
+  },
+  "standoff": {
+   "junk": 2,
+   "real": 16
+  },
+  "wholenotes": {
+   "junk": 9,
+   "real": 3
+  }
+ },
+ "axes": [
+  {
+   "axis": "MERGE: piece extent / box extent",
+   "key": "ink_over_box",
+   "kind": "ink",
+   "auc": 0.6590909090909091,
+   "null_lo": 0.3915847665847666,
+   "null_hi": 0.6056511056511057,
+   "separates": true,
+   "gap": 179.57055963819198,
+   "median_junk": 47.385687638394145,
+   "median_real": 6.633839866314561
+  },
+  {
+   "axis": "CARVED: box's share of the piece",
+   "key": "box_share_of_piece",
+   "kind": "ink",
+   "auc": 0.33998771498771496,
+   "null_lo": 0.3952702702702703,
+   "null_hi": 0.60995085995086,
+   "separates": true,
+   "gap": 0.1134028517997292,
+   "median_junk": 0.02751078200859302,
+   "median_real": 0.14944550063371265
+  },
+  {
+   "axis": "SHATTERED: pieces this box straddles",
+   "key": "n_pieces",
+   "kind": "ink",
+   "auc": 0.4113943488943489,
+   "null_lo": 0.4077088452088452,
+   "null_hi": 0.5959766584766585,
+   "separates": false,
+   "gap": 1.0,
+   "median_junk": 1.0,
+   "median_real": 2.0
+  },
+  {
+   "axis": "SHATTERED: pieces carrying >=5% of its ink",
+   "key": "n_substantial",
+   "kind": "ink",
+   "auc": 0.3558046683046683,
+   "null_lo": 0.4120085995085995,
+   "null_hi": 0.5925982800982801,
+   "separates": true,
+   "gap": 1.0,
+   "median_junk": 1.0,
+   "median_real": 2.0
+  },
+  {
+   "axis": "BARLINE: piece h/w",
+   "key": "piece_aspect",
+   "kind": "ink",
+   "auc": 0.4599201474201474,
+   "null_lo": 0.3938882063882064,
+   "null_hi": 0.6035012285012284,
+   "separates": false,
+   "gap": 13.133724846341668,
+   "median_junk": 0.8615989243477171,
+   "median_real": 1.289103048626858
+  },
+  {
+   "axis": "piece height (spaces)",
+   "key": "piece_h_spaces",
+   "kind": "ink",
+   "auc": 0.6451167076167076,
+   "null_lo": 0.39342751842751844,
+   "null_hi": 0.6073402948402948,
+   "separates": true,
+   "gap": 3.270999999999999,
+   "median_junk": 7.8875,
+   "median_real": 4.953
+  },
+  {
+   "axis": "piece width (spaces)",
+   "key": "piece_w_spaces",
+   "kind": "ink",
+   "auc": 0.5373157248157249,
+   "null_lo": 0.3902027027027027,
+   "null_hi": 0.6053439803439803,
+   "separates": false,
+   "gap": 7.450999999999997,
+   "median_junk": 3.039,
+   "median_real": 2.0949999999999998
+  },
+  {
+   "axis": "cell's component count (merge warning)",
+   "key": "n_components",
+   "kind": "ink",
+   "auc": 0.4021805896805897,
+   "null_lo": 0.39511670761670764,
+   "null_hi": 0.6096437346437347,
+   "separates": false,
+   "gap": 22.0,
+   "median_junk": 14.0,
+   "median_real": 23.0
+  },
+  {
+   "axis": "piece's share of its cell's ink",
+   "key": "share_of_cell",
+   "kind": "ink",
+   "auc": 0.6280712530712531,
+   "null_lo": 0.38974201474201475,
+   "null_hi": 0.6078009828009828,
+   "separates": true,
+   "gap": 0.07599999999999996,
+   "median_junk": 0.2851,
+   "median_real": 0.1387
+  },
+  {
+   "axis": "detector coverage of the piece",
+   "key": "coverage",
+   "kind": "ink",
+   "auc": 0.38144963144963145,
+   "null_lo": 0.3948095823095823,
+   "null_hi": 0.6102579852579852,
+   "separates": true,
+   "gap": 0.042200000000000015,
+   "median_junk": 0.21465,
+   "median_real": 0.39690000000000003
+  },
+  {
+   "axis": "piece fill",
+   "key": "ink_fill",
+   "kind": "ink",
+   "auc": 0.40417690417690416,
+   "null_lo": 0.3915847665847666,
+   "null_hi": 0.6076474201474201,
+   "separates": false,
+   "gap": 0.08429999999999999,
+   "median_junk": 0.24155,
+   "median_real": 0.35395
+  },
+  {
+   "axis": "BOX ALONE: box width (spaces)",
+   "key": "box_w_spaces",
+   "kind": "box_alone",
+   "auc": 0.17905405405405406,
+   "null_lo": 0.3878992628992629,
+   "null_hi": 0.6108722358722358,
+   "separates": true,
+   "gap": 0.3151554464161612,
+   "median_junk": 0.40555555555555556,
+   "median_real": 1.4108823529411765
+  },
+  {
+   "axis": "BOX ALONE: box height (spaces)",
+   "key": "box_h_spaces",
+   "kind": "box_alone",
+   "auc": 0.19502457002457002,
+   "null_lo": 0.3874385749385749,
+   "null_hi": 0.6062653562653563,
+   "separates": true,
+   "gap": 0.1895240373116478,
+   "median_junk": 0.765,
+   "median_real": 1.15
+  },
+  {
+   "axis": "BOX ALONE: box h/w",
+   "key": "box_aspect",
+   "kind": "box_alone",
+   "auc": 0.7610565110565111,
+   "null_lo": 0.39373464373464373,
+   "null_hi": 0.6081081081081081,
+   "separates": true,
+   "gap": 0.4968553459119498,
+   "median_junk": 1.740740740740741,
+   "median_real": 0.8152688172043011
+  },
+  {
+   "axis": "BOX ALONE: detector confidence",
+   "key": "conf",
+   "kind": "box_alone",
+   "auc": 0.09582309582309582,
+   "null_lo": 0.3918918918918919,
+   "null_hi": 0.6078009828009828,
+   "separates": true,
+   "gap": 0.026255249977111816,
+   "median_junk": 0.4166901558637619,
+   "median_real": 0.7609363198280334
+  }
+ ],
+ "residue": {
+  "MARK_SIZED": {
+   "n": 7239,
+   "area": 69557844.0,
+   "zero_det": 2279,
+   "median_coverage": 0.5955
+  },
+  "SPECK": {
+   "n": 6506,
+   "area": 187795.0,
+   "zero_det": 5372,
+   "median_coverage": 0.0
+  },
+  "VERTICAL": {
+   "n": 290,
+   "area": 1324269.0,
+   "zero_det": 113,
+   "median_coverage": 0.8978
+  },
+  "VERTICAL_TALL": {
+   "n": 331,
+   "area": 7020523.0,
+   "zero_det": 257,
+   "median_coverage": 0.0
+  },
+  "BLOB": {
+   "n": 846,
+   "area": 91888408.0,
+   "zero_det": 7,
+   "median_coverage": 0.09085
+  }
+ },
+ "residue_total_area": 169978839.0,
+ "zero_coverage_pieces": 8028,
+ "zero_coverage_by_stratum": {
+  "MARK_SIZED": 2279,
+  "SPECK": 5372,
+  "VERTICAL_TALL": 257,
+  "VERTICAL": 113,
+  "BLOB": 7
+ }
+}

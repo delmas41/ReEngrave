@@ -1,0 +1,162 @@
+==============================================================================
+THE INK-FIRST TEST ON THE SHATTERING PLATE -- breakthrough doc §7
+==============================================================================
+record         : /private/tmp/claude-501/-Users-seanjohnson-Desktop-ReEngrave--claude-worktrees-missing-reengraved-routine-07f75a/cfb68919-dbd4-4b37-81fe-e1420408ff4c/scratchpad/brahms1-breitkopf-p0-p3.gather.json
+attribution    : fill
+ink rows       : 15212
+glyph_box rows : 12932
+cells with ink : 818
+pages in record: ['0', '1', '2', '3']
+verdicts       : 106 (population=main)
+manifest pdf   : /Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf
+
+CONTROLS
+  A  [breitkopf] subjects present 106/106, class agrees 106/106 (1.000)
+  A  -> PASS
+  B1 ink corners reproduce width_spaces   median err 0.0001 spaces over 15212 rows -> PASS
+  B1' the SAME numbers read as [x,y,w,h]  median err 7.6041 spaces -> control has TEETH
+  B2 glyph canonical w/h == page w/h      median err 0.0000 over 12932 rows -> PASS
+
+REACH -- the population, before any rate
+  stem_printed_down        37
+  not_a_notehead           33
+  cannot_tell              18
+  stem_printed_up          17
+  no_stem_printed          1
+  boxes with NO ink piece touching them: 0
+  joined and describable                : 106
+  ⚠️ census bucket the tile was SAMPLED from (the sample is stratified
+     on geometry, so every AUC below is conditional on this):
+       too WIDE (w > 0.6 spaces)                  30
+       CONTROL                                    16
+       too SHORT (h < 2.0 spaces)                 12
+       NO component overlaps the head at all      12
+       at a CELL EDGE (0.8 spaces)                12
+       too TALL (h > 8.0 spaces)                  12
+       a component WAS accepted (pair rule dropped it) 12
+
+SEPARATION SET: 33 print-confirmed NON-noteheads vs 55 print-confirmed noteheads
+  by SOURCE (differently stratified, never silently pooled):
+       sample       junk  33   real  55
+  (cannot_tell excluded: 18)
+
+§7's QUESTION, THRESHOLD-FREE. AUC = P[junk scores above real].
+A permutation null (2000 draws) gives the band a real axis must clear.
+
+  axis                                            junk med  real med    AUC    null 95% band  sep?
+  MERGE: piece extent / box extent                 549.511     6.800  0.744 [0.377,0.624]   YES
+  CARVED: box's share of the piece                   0.002     0.147  0.253 [0.375,0.624]   YES
+  SHATTERED: pieces this box straddles               1.000     2.000  0.376 [0.399,0.607]   YES
+  SHATTERED: pieces carrying >=5% of its ink         1.000     1.000  0.348 [0.395,0.601]   YES
+  BARLINE: piece h/w                                 0.742     1.702  0.406 [0.374,0.628]    no
+  piece height (spaces)                              8.360     5.243  0.724 [0.378,0.626]   YES
+  piece width (spaces)                              16.180     2.100  0.620 [0.375,0.624]    no
+  cell's component count (merge warning)            14.000    22.000  0.416 [0.374,0.625]    no
+  piece's share of its cell's ink                    0.379     0.151  0.657 [0.373,0.623]   YES
+  detector coverage of the piece                     0.093     0.363  0.297 [0.374,0.621]   YES
+  piece fill                                         0.099     0.354  0.352 [0.377,0.623]   YES
+  BOX ALONE: box width (spaces)                      0.321     1.400  0.061 [0.380,0.626]   YES
+  BOX ALONE: box height (spaces)                     0.740     1.150  0.174 [0.374,0.630]   YES
+  BOX ALONE: box h/w                                 2.079     0.829  0.894 [0.378,0.620]   YES
+  BOX ALONE: detector confidence                     0.405     0.756  0.088 [0.375,0.629]   YES
+
+WIDEST EMPTY INTERVAL per axis -- this repo's own tell for a real
+convention (a gap), against a smooth slope with a cut fitted into it.
+  BOX ALONE: box width (spaces)                  gap    0.4570 in (1.7200, 2.1770)  AUC 0.061  SEPARATES
+  BOX ALONE: detector confidence                 gap    0.0290 in (0.4087, 0.4377)  AUC 0.088  SEPARATES
+  BOX ALONE: box h/w                             gap    0.4969 in (1.1698, 1.6667)  AUC 0.894  SEPARATES
+  BOX ALONE: box height (spaces)                 gap    0.1895 in (1.4919, 1.6814)  AUC 0.174  SEPARATES
+  CARVED: box's share of the piece               gap    0.2259 in (0.4394, 0.6653)  AUC 0.253  SEPARATES
+  MERGE: piece extent / box extent               gap  227.1598 in (254.0485, 481.2083)  AUC 0.744  SEPARATES
+  piece height (spaces)                          gap    3.6030 in (8.3600, 11.9630)  AUC 0.724  SEPARATES
+  detector coverage of the piece                 gap    0.0638 in (0.5290, 0.5928)  AUC 0.297  SEPARATES
+  piece's share of its cell's ink                gap    0.1342 in (0.7408, 0.8750)  AUC 0.657  SEPARATES
+  SHATTERED: pieces carrying >=5% of its ink     gap    1.0000 in (1.0000, 2.0000)  AUC 0.348  SEPARATES
+  piece fill                                     gap    0.0872 in (0.1304, 0.2176)  AUC 0.352  SEPARATES
+  SHATTERED: pieces this box straddles           gap    1.0000 in (1.0000, 2.0000)  AUC 0.376  SEPARATES
+  piece width (spaces)                           gap    9.1120 in (28.3460, 37.4580)  AUC 0.620  
+  BARLINE: piece h/w                             gap   13.1337 in (3.7230, 16.8567)  AUC 0.406  
+  cell's component count (merge warning)         gap   33.0000 in (58.0000, 91.0000)  AUC 0.416  
+
+WITHIN-STRATUM. ⚠️⚠️ THE SAMPLE IS NOT A RANDOM SAMPLE OF BOXES: it was
+drawn from the rejection census's buckets, and on Breitkopf the junk is
+concentrated in `too TALL` (12/12) and `at a CELL EDGE` (11/12), which
+are defined BY GEOMETRY. So every pooled AUC above is inflated for ink
+and box features ALIKE, and the only place the question can be asked
+cleanly is inside a bucket that holds both classes.
+  too TALL (h > 8.0 spaces)                        junk 12 real  0   -- too few, DEAD
+  at a CELL EDGE (0.8 spaces)                      junk 11 real  1   -- too few, DEAD
+  NO component overlaps the head at all            junk  6 real  3
+       MERGE: piece extent / box extent             AUC 0.611  null [0.111,0.944]
+       CARVED: box's share of the piece             AUC 0.278  null [0.056,0.889]
+       SHATTERED: pieces this box straddles         AUC 0.528  null [0.056,0.917]
+       SHATTERED: pieces carrying >=5% of its ink   AUC 0.389  null [0.056,0.833]
+       BARLINE: piece h/w                           AUC 0.833  null [0.056,0.889]
+       piece height (spaces)                        AUC 0.778  null [0.111,0.889]
+       piece width (spaces)                         AUC 0.444  null [0.111,0.889]
+       cell's component count (merge warning)       AUC 0.556  null [0.111,0.889]
+       piece's share of its cell's ink              AUC 0.611  null [0.111,0.889]
+       detector coverage of the piece               AUC 0.278  null [0.056,0.889]
+       piece fill                                   AUC 0.167  null [0.056,0.889]
+       BOX ALONE: box width (spaces)                AUC 0.000  null [0.056,0.889]  <-- SEPARATES
+       BOX ALONE: box height (spaces)               AUC 0.444  null [0.111,0.889]
+       BOX ALONE: box h/w                           AUC 1.000  null [0.111,0.944]  <-- SEPARATES
+       BOX ALONE: detector confidence               AUC 0.444  null [0.056,0.889]
+  too WIDE (w > 0.6 spaces)                        junk  1 real 25   -- too few, DEAD
+  too SHORT (h < 2.0 spaces)                       junk  1 real  9   -- too few, DEAD
+  a component WAS accepted (pair rule dropped it)  junk  1 real  4   -- too few, DEAD
+  CONTROL                                          junk  1 real 13   -- too few, DEAD
+
+==============================================================================
+§7's FALSIFIER: *the detector's box is as good a subject as the ink*
+==============================================================================
+⚠️ AUC is reported as |AUC-0.5|+0.5 (direction-free): an axis on which
+   junk scores LOWER separates exactly as well as one where it scores
+   higher, and the sign is a fact about the axis, not about the case.
+  best INK-derived axis : CARVED: box's share of the piece             AUC 0.253 -> 0.747
+  best BOX-ALONE axis   : BOX ALONE: box width (spaces)                AUC 0.061 -> 0.939
+
+  ⚠️⚠️ THE BOX-ALONE AXIS SEPARATES AT LEAST AS WELL AS THE BEST
+       INK AXIS. That is §7's own falsifying condition, stated
+       in its own words, arriving on the plate it named as the
+       test's natural home.
+
+§7's FOUR-WAY SORT, reported descriptively. ⚠️ THE CUTS ARE DERIVED
+from the CONFIRMED-NOTEHEAD population's own percentiles, not measured
+from an empty interval, and are therefore fitted to this plate. They
+are here because §7 asks for this table, NOT as a proposed rule.
+  MERGE     cut: ink_over_box      > p95(real) = 144.05
+  SHATTERED cut: n_substantial     > p95(real) = 2
+  CARVED    cut: box_share_of_piece < p05(real) = 0.0069
+  BARLINE   cut: piece h >= 2.0 and w <= 0.6 spaces  (SHIPPED detect_stems bounds)
+
+  print verdict               n  shapes
+  not_a_notehead             33  CARVED 19, AGREES 8, BARLINE 5, SHATTERED 1
+  stem_printed_down          37  AGREES 35, CARVED 1, SHATTERED 1
+  stem_printed_up            17  AGREES 16, CARVED 1
+  no_stem_printed             1  AGREES 1
+  cannot_tell                18  AGREES 18
+
+THE RESIDUE SPLIT -- the whole ink population, which is the thing the
+42.5% / 36%-of-area figures were missing. `Q.INK` filters nothing, so
+a zero-detection piece is only missed music if it is MARK-SIZED.
+  stratum              n   % of n  % of AREA  zero-det  median cov
+  SPECK             6506    42.8%       0.1% 5372/6506       0.000
+  MARK_SIZED        7239    47.6%      40.9% 2279/7239       0.596
+  VERTICAL           290     1.9%       0.8%  113/290        0.898
+  VERTICAL_TALL      331     2.2%       4.1%  257/331        0.000
+  BLOB               846     5.6%      54.1%    7/846        0.091
+  TOTAL            15212   100.0%     100.0%
+  ⚠️ SPECK cut is INVENTED (0.25 spaces). Sweep of the count share:
+       cut 0.15: SPECK  38.6% of pieces,  0.08% of area
+       cut 0.25: SPECK  42.8% of pieces,  0.11% of area
+       cut  0.4: SPECK  46.1% of pieces,  0.20% of area
+
+  pieces with ZERO detector coverage: 8028 (52.8%)
+      SPECK            5372 ( 66.9% of them,   0.8% of their area)
+      MARK_SIZED       2279 ( 28.4% of them,  65.1% of their area)
+      VERTICAL_TALL     257 (  3.2% of them,  27.8% of their area)
+      VERTICAL          113 (  1.4% of them,   3.3% of their area)
+      BLOB                7 (  0.1% of them,   3.0% of their area)
+
+wrote benchmarks/omr-ink-first-breitkopf-2026-09/out/breitkopf-p0p3-main.json
