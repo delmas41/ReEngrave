@@ -1,3 +1,5 @@
+> **FROZEN 2026-09-22.** This file is historical. Current state lives in `CLAUDE.md` (the spec), `ROADMAP.md` (status) and `docs/DECISIONS.md` (decisions). See `docs/plan-2026-09-22-from-here-to-a-finished-score.md`.
+
 # ReEngrave — Project Status
 
 **Last updated:** 2026-09-17 — **INFER gained a SECOND rule**

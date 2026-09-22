@@ -35,8 +35,9 @@ ROOT = pathlib.Path(__file__).resolve().parents[3]
 #: The documents this project keeps current by hand, and therefore edits by
 #: anchored replacement. Benchmarks' own FINDINGS are included: they are the
 #: files a later session quotes.
-DOCS = ["CLAUDE.md", "NOTES.md", "PROJECT_STATUS.md", "PROJECT_BRIEF.md",
-        "version_memory.md", "tools/omr/staged/ASSUMPTIONS.md"]
+DOCS = ["CLAUDE.md", "ROADMAP.md", "docs/DECISIONS.md", "docs/flags-2026-09.md",
+        "docs/chronicle-2026-09.md", "NOTES.md", "PROJECT_STATUS.md",
+        "PROJECT_BRIEF.md", "version_memory.md", "tools/omr/staged/ASSUMPTIONS.md"]
 
 #: A line may legitimately end without sentence punctuation when it is a table
 #: row, a heading, a list item, a fence, or already ends in a terminator.
