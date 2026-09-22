@@ -5909,6 +5909,97 @@ continuation systems.
 
 ---
 
+## The key signature's declared corroboration CANNOT be wired — and what could be, was
+
+2026-09-21, no flag. Ranked item **2** of the 2026-09-20 handoff:
+*"`key_signature_corroboration` on the staged path — CLAUDE.md says shipped;
+the staged path does not import it."* Findings:
+[benchmarks/omr-keysig-staged-reach-2026-09/FINDINGS.md](benchmarks/omr-keysig-staged-reach-2026-09/FINDINGS.md).
+
+**The import claim is TRUE and the repair it implies is NOT.** The module's
+only non-test import in the tree is `transcribe.py`, the LEGACY path; the
+staged path names it in five docstrings and imports it nowhere. ⚠️⚠️ **But
+wiring the import would produce a pass over an EMPTY DOMAIN, because on the
+staged path a mid-staff key change cannot exist.** `adjudicate_key_signature`
+is `Kind.STAFF`, `_gather_keysig_markers` reads `R.cell(p, s, i, 0)` — **cell
+0 and nothing else** — the run and template readers read the HEADER WINDOW,
+and `staged/export.py` carries **one `fifths` per staff-run**. Measured with
+no pipeline code over the two shared records: **75 and 97 key verdicts, every
+one staff-scoped; 105 and 146 marker rows, every one at `cell:0`; ZERO of
+either anywhere else.**
+
+⚠️⚠️ **THE CONTRAST WITH THE METER IS THE WHOLE SIZE OF THE REPAIR.** `Q.METER`
+carries `segments`, `record.meter_at` reads a bar's meter and
+`OMR_METER_SEGMENTS` made the exporter read the meter in force at each BAR —
+that family solved exactly this and shipped it. **The key signature has no
+segments, no `key_at`, and one value per run.** So this is a missing QUANTITY
+SHAPE, not a missing import, and the two are not the same job.
+
+⚠️ **THE REACH OF WHAT IS MISSING IS MEASURED, BECAUSE SOMEONE WILL PROPOSE
+BUILDING IT: key-accidental detections standing in cells other than cell 0 are
+21 (Litolff) and 2 (Breitkopf)** — the detector fires, GATHER never looks.
+⚠️⚠️ **And the legacy path is the warning about reading them**: of the 15
+later-cell markers it DOES read across 11 scanned pages, **7 changed the key
+and all seven were wrong**, because where the slot fit abstains it falls back
+to COUNTING markers. **A mid-staff key reader must arrive WITH its
+corroboration, not before it** — which is the one thing the staged path can do
+better, since there the guard is designed in rather than bolted on.
+
+**WHAT WAS WIREABLE, AND IS NOW WIRED: `Q.KEYSIG_MARKER`.** Declared in
+`wants` AND `composed_from` since the decision was written, filed **105 and
+146** times, read by nothing — confirmed by the convention audit's own derived
+tool. ⚠️⚠️ **AND THE STATED REASON FOR LEAVING IT UNREAD WAS FALSE, WHICH IS
+WHY IT SURVIVED TWO GAP LISTS**: both excused it as *"the decision reads
+`keysig_clef_fit`, which the markers already feed in GATHER"*. They do not —
+`Q.KEYSIG_CLEF_FIT` comes from `locate_key_signature` on the header CROP, the
+only detections entering that call arrive through `_occupied_boxes` which
+filters to **NOTEHEADS**, and `_gather_keysig_markers` **returns nothing at
+all**. *A gap list holds reasons a gap EXISTS, never reasons one is
+acceptable* — and this one held a reason that was not true. Both entries
+removed.
+
+⚠️ **THE REPAIR IS A REASON, NEVER A VALUE — and it fixes a word that was
+wrong on ~43% of the staves it named.** Where the run reader could not speak
+but the detector saw key accidentals, the abstention now reads
+`markers_without_a_run`:
+
+| abstention reason | carries marker ink / total, Litolff | Breitkopf |
+|---|--:|--:|
+| **`no_evidence`** | **7 / 17** | **9 / 20** |
+| `run_fits_no_slot_table` | 3 / 4 | 1 / 1 |
+
+*Nothing was printed* wants a reader; *we could not fit what was printed*
+wants a fitter — the ABSENT/DECLINED distinction, and the `direction` family's
+`NO_INK` vs `NO_READING` split arriving in the header.
+
+⚠️⚠️ **IT MAY NEVER BECOME A VALUE, AND THE STAGED RECORD AGREES FROM ITS OWN
+SIDE**: over the staves this path DECIDES, the marker COUNT equals the settled
+`|fifths|` on **19 of 49 (39%)** and **39 of 76 (51%)**. A reading that
+disagrees with the settled answer half the time is evidence that ink was
+there, not a candidate — which is the same conclusion the legacy path reached
+by shipping the opposite and paying seven key flips for it. Four mutation arms
+and four unit tests pin that it never decides and never overturns a fit, and
+the row says so in its own key name
+(`keysig_marker_count_is_not_a_reading`).
+
+⚠️ **`Q.DOSSIER_FACT` IS THE OTHER NEVER-REACHED DECLARATION AND IS
+DELIBERATELY LEFT ALONE** — its reason was re-checked rather than inherited
+and is still true: `staged/__main__.py` refuses a dossier in terms, because
+one is generated from the same MusicXML the benchmarks score against and *"a
+`--dossier` flag would put a truth file inside a measurement path"*.
+
+⚠️ **WHAT IS NOT ESTABLISHED**: **no print was consulted** — the 7-of-17 is
+our detector disagreeing with our CV reader and **neither is truth**, so it
+does not say the ink IS a key signature, only that the detector called it one;
+**nothing about the READING is repaired** (26 and 21 staves still abstain) and
+**not one exported note moves**, so no OMR-NED figure is claimed; the
+out-of-reach population is **2 on one publisher**, so §3's number bounds these
+pages and is not a rate; n = **2 documents, 2 publishers, 8 pages, both
+scans** — and the ENGRAVED family prints **zero** later-cell key markers, so
+it cannot exercise the missing reader at all.
+
+---
+
 ## ⚠️⚠️ A PREMISE ENCODED IN A REFUSAL OUTLIVES ITS REASON
 
 Sean, 2026-09-17, after four separate instances surfaced in one session:

@@ -92,12 +92,52 @@ dirty-target refusal caught it, not review.** CLAUDE.md says *"never `git add
 -A` anywhere another agent may be working"* — the clause to add is that **a
 mutation battery is such an agent, and it is one you started yourself.**
 
+## 2b. ⚠️⚠️ RANKED ITEM 2 (the key signature) — THE PREMISE WAS HALF WRONG
+
+*"`key_signature_corroboration` on the staged path — CLAUDE.md says shipped;
+the staged path does not import it."* **The import claim is TRUE. The repair
+it implies is not.** Findings:
+`benchmarks/omr-keysig-staged-reach-2026-09/FINDINGS.md`.
+
+**Wiring the import would produce a pass over an EMPTY DOMAIN**, because on
+this path a mid-staff key change cannot exist: `adjudicate_key_signature` is
+`Kind.STAFF`, `_gather_keysig_markers` reads **cell 0 and nothing else**, the
+run/template readers read the HEADER WINDOW, and the exporter carries one
+`fifths` per staff-run. Measured with no pipeline code: **75 and 97 key
+verdicts, every one staff-scoped; 105 and 146 marker rows, every one at
+`cell:0`; ZERO of either anywhere else.**
+
+⚠️ **THE CONTRAST WITH THE METER SIZES THE REAL JOB.** `Q.METER` has
+`segments` + `record.meter_at` + `OMR_METER_SEGMENTS`; the key signature has
+**no segments, no `key_at`, one value per run**. It is a missing QUANTITY
+SHAPE, not a missing import.
+
+⚠️ **THE REACH OF THE MISSING READER IS 21 AND 2** key-accidental detections
+in later cells — and the legacy path is the warning about reading them: of the
+15 it DOES read, **7 changed the key and all 7 were wrong**. A mid-staff key
+reader must arrive WITH its corroboration.
+
+**WHAT WAS WIREABLE, AND IS WIRED: `Q.KEYSIG_MARKER`** — declared in `wants`
+AND `composed_from`, filed 105 and 146 times, read by nothing. ⚠️⚠️ **Both gap
+lists excused it with a reason that is FALSE** (*"the markers already feed
+`keysig_clef_fit`"* — they do not; that comes from a CV reader on the header
+crop and the only detections reaching it are NOTEHEADS). Reading them splits a
+reason word that was wrong on **7 of 17 and 9 of 20** staves: `no_evidence`
+reported on staves carrying key-accidental ink. It **records, never decides** —
+the marker count matches the settled `|fifths|` on only 39% and 51%.
+
+⚠️ `Q.DOSSIER_FACT` is the other never-reached declaration and is **left
+alone**: its reason was re-checked and is still true (a dossier is built from
+the MusicXML the benchmarks score against).
+
 ## 3a. THE FINAL STATE, verified rather than assumed
 
 | | |
 |---|---|
-| whole `tools` suite | **4,701 passed / 19 skipped / 0 failed** |
-| `wiring --check`, `inventory --check`, `health --check` | all **exit 0** |
+| whole `tools` suite | **4,722 passed / 19 skipped / 0 failed** |
+| `wiring`, `inventory`, `health`, `reach` `--check` | all **exit 0** |
+| the key-signature battery | **14 arms, 14 RED, 0 survivors**, restore verified (4th run) |
+| key-signature control arm, BOTH records | **0 decided keys moved**; splits **7** and **9**, the probe's own numbers |
 | `check_arm.py --control`, both documents | **the join is UNMOVED**, and the check DID run |
 | this lane's battery | **13 arms, 13 RED, 0 survivors**, restore verified |
 | the gate lane's battery, re-run and then closed | **21 RED, 0 survivors**, restore verified |
@@ -110,10 +150,13 @@ can fail.*
 
 ## 4. WHAT IS OPEN, ranked
 
-1. **`key_signature_corroboration` on the staged path** — the 09-20 handoff's
-   item 2, verified still true today. ⚠️ Note it is **not** a pure wiring job
-   like item 1 was: that rule REVERTS a key reading, so performing it is
-   acting, and the doctrine needs a decision about that before code.
+1. ⚠️ **A mid-staff KEY CHANGE as a quantity shape** — §2b. This is what item
+   2 actually turned out to be, and it is a GATHER change plus a `segments`
+   shape, following the meter's own precedent. **It must land WITH its
+   corroboration**, because the legacy path shows what reading later-cell
+   markers costs without one (7 of 15, all wrong). Reach on these pages is
+   small (21 and 2) and the ENGRAVED family has none at all, so the case for
+   building it is not yet made — **measure a third publisher first.**
 2. **Give the BAR SUM a registry entry** — the most-cited constraint in the
    project, absent from the document.
 3. **`staff_group` vs `[C59]`** — a declared check the registry DENIES. This
@@ -136,6 +179,40 @@ no OMR-NED figure** — the entire output is a dictionary in a verdict.
 ⚠️ **The 25 Litolff staves that were never named are outside the check's reach
 entirely**, and they are the half of the page most likely to be misjoined:
 this edition stops labelling its strings on continuation systems.
+
+## 5a. ⚠️⚠️ FIVE INSTRUMENT FAULTS, AND NOT ONE WAS VISIBLE AS A WRONG ANSWER
+
+Every one was found by a mutation battery or by opening a number — never by a
+failing test and never by review — and every one produced output that looked
+like a measurement:
+
+1. **pytest's elapsed time in the battery's judge** (§3): two batteries, every
+   arm red for free. The stem-gate lane's published 21/21 was VOID.
+2. **A mutation committed by `git add -A`** while my own battery was mid-arm.
+   Working tree right, HEAD wrong; the NEXT battery's dirty-target refusal
+   caught it.
+3. **Killing a long arm killed one ITERATION, not the shell `for` LOOP.** It
+   ran 31 more minutes, overlapped the battery it had just been removed from,
+   and raced its own replacement for the same `--tag` output file.
+4. ⚠️⚠️ **A unit test overwrote a COMMITTED measurement.** The tests closing
+   the instrument survivors drive each instrument's `main()`, which writes
+   under `HERE/"out"`. `out/probe-records.json` was silently replaced by the
+   one-staff fixture's numbers and **nothing failed** — it still parsed and
+   still looked like evidence. Found by a later command reading it and seeing
+   `rec.json` named inside.
+5. **A vacuous assertion of mine**: `assertIn("MOVED", out)` against an arm
+   that prints `MOVED 0` on every run — satisfied by a control that found
+   nothing. Exposed only on the battery's third pass.
+
+> **A battery is not done when it goes green once.** Closing a survivor
+> CHANGES the suite, so it must be re-run against the closure. Run 3 found two
+> more, and one of them was #5. The keysig battery went **8/6 → 14/0 → 12/2 →
+> 14/0**.
+
+> **An in-flight mutation is indistinguishable from a deliberate edit.** Mid
+> battery, this session was shown `if True:` in a control and told the file
+> had "changed on disk". Correct — and it was the battery, which restored it.
+> **Do not commit, and do not revert, while one is running.**
 
 ## 6. RUNNING IT
 

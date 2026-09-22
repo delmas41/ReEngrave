@@ -1,0 +1,17 @@
+{
+ "arm": "shipped+slotjoin",
+ "staves": 75,
+ "moved": 18,
+ "reading_before": 34,
+ "reading_after": 33,
+ "file_before": 42,
+ "file_after": 43,
+ "fixed": 6,
+ "broken": 5,
+ "actions": {
+  "kept": 35,
+  "rejected": 14,
+  "unread": 22,
+  "carried": 4
+ }
+}

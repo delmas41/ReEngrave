@@ -1,0 +1,21 @@
+RECORD  beethoven5-p1-p4-ink-identity.record.json
+  Q1 CAN A CHANGE EXIST? key verdicts 75 scopes={'staff': 75}; marker rows 105 frames={'cell:0': 105}
+     -> mid-staff key verdicts: 0;  marker rows outside cell 0: 0
+  Q2 OUT OF REACH: key-accidental detections in cells != 0: 21  (cell 0 holds 105)
+  Q3 WHAT THE MARKERS WOULD SAY: on 49 decided staves the marker COUNT equals |fifths| 19 times (39%)
+     -> so the count is NOT a reading; it is evidence ink was there
+  ABSTENTIONS, and how many carry marker ink:
+     needs_clef                 2/5
+     no_evidence                7/17  <- reported as 'no evidence' on ink
+     run_fits_no_slot_table     3/4
+
+RECORD  brahms1-breitkopf-p0-p3.record.json
+  Q1 CAN A CHANGE EXIST? key verdicts 97 scopes={'staff': 97}; marker rows 146 frames={'cell:0': 146}
+     -> mid-staff key verdicts: 0;  marker rows outside cell 0: 0
+  Q2 OUT OF REACH: key-accidental detections in cells != 0: 2  (cell 0 holds 146)
+  Q3 WHAT THE MARKERS WOULD SAY: on 76 decided staves the marker COUNT equals |fifths| 39 times (51%)
+     -> so the count is NOT a reading; it is evidence ink was there
+  ABSTENTIONS, and how many carry marker ink:
+     no_evidence                9/20  <- reported as 'no evidence' on ink
+     run_fits_no_slot_table     1/1
+

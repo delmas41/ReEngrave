@@ -1,0 +1,462 @@
+"""`Q.KEYSIG_MARKER` — declared in `wants` AND `composed_from`, read by
+nothing, and `no_evidence` was wrong on roughly half the staves it named.
+
+⚠️ THE FAULT. `adjudicate_key_signature` abstains `no_evidence` when the CV
+header reader produced no run. Measured on the two shared staged records,
+**7 of 17** (Litolff) and **9 of 20** (Breitkopf) of those staves carry
+DETECTED key accidentals. The detector saw ink; the fitter could not use it.
+Reporting that as *no evidence* is the ABSENT/DECLINED collapse this record
+exists to prevent, and it sends the next person to the wrong module — *nothing
+was printed* wants a reader, *we could not fit what was printed* wants a
+fitter.
+
+⚠️⚠️ THE STATED REASON FOR LEAVING THE QUANTITY UNREAD WAS FALSE, which is why
+it survived two gap lists. Both excused it as *"the decision reads
+`keysig_clef_fit`, which the markers already feed in GATHER"*. They do not:
+`Q.KEYSIG_CLEF_FIT` comes from `locate_key_signature` on the header CROP, and
+the only place detections enter that call is `_occupied_boxes` — which filters
+to NOTEHEADS. A gap list holds reasons a gap EXISTS; this one held a reason
+that was not true.
+
+⚠️ AND THE REPAIR IS A REASON, NEVER A VALUE. Counting key markers is a rule
+this project has already built and condemned — seven spurious key flips on the
+legacy path — and the staged record agrees from its own side: the marker count
+equals the settled `|fifths|` on only 39% and 51% of decided staves.
+"""
+
+from __future__ import annotations
+
+import unittest
+
+from tools.omr.staged import adjudicate
+from tools.omr.staged import adjudicators  # noqa: F401  -- registers them
+from tools.omr.staged import record as R
+from tools.omr.staged.record import Log, Outcome, Q, READERS
+
+SUB = R.staff(0, 0, 0)
+
+
+def _with_clef(log, clef="treble", sub=SUB):
+    log.observe(sub, Q.CLEF_GLYPH, {"treble": "clefG", "bass": "clefF"}[clef],
+                reader=READERS.DETECTOR, frame="cell:0", score=0.95)
+
+
+def _markers(log, *classes, sub=SUB):
+    for i, c in enumerate(classes):
+        log.observe(sub, Q.KEYSIG_MARKER, c, reader=READERS.DETECTOR,
+                    frame="cell:0", score=0.4, x=float(i), y_center=0.0)
+
+
+def _decide(log):
+    adjudicate.run(log)
+    return log.verdict(Q.KEY_SIGNATURE, SUB)
+
+
+class TestTheSplit(unittest.TestCase):
+
+    def test_ink_with_no_run_is_NOT_called_no_evidence(self):
+        log = Log()
+        _with_clef(log)
+        _markers(log, "keyFlat", "keyFlat", "keyFlat")
+        v = _decide(log)
+        self.assertIs(v.outcome, Outcome.ABSTAINED)
+        self.assertEqual(v.reason, "markers_without_a_run")
+        self.assertEqual(v.detail["keysig_marker_ink"], 3)
+
+    def test_no_ink_and_no_run_really_is_no_evidence(self):
+        """The positive control for the test above: without it, a rule that
+        renamed EVERY abstention would pass."""
+        log = Log()
+        _with_clef(log)
+        v = _decide(log)
+        self.assertIs(v.outcome, Outcome.ABSTAINED)
+        self.assertEqual(v.reason, "no_evidence")
+        self.assertEqual(v.detail["keysig_marker_ink"], 0)
+
+    def test_the_marker_CLASSES_are_recorded(self):
+        log = Log()
+        _with_clef(log)
+        _markers(log, "keyFlat", "keySharp")
+        v = _decide(log)
+        self.assertEqual(v.detail["keysig_marker_classes"],
+                         ["keyFlat", "keySharp"])
+
+
+class TestItIsNeverAVALUE(unittest.TestCase):
+    """⚠️⚠️ THE LOAD-BEARING TESTS. The legacy path's count-the-markers
+    fallback cost seven spurious key flips; nothing here may re-introduce it."""
+
+    def test_markers_alone_NEVER_decide_a_key(self):
+        log = Log()
+        _with_clef(log)
+        _markers(log, "keyFlat", "keyFlat", "keyFlat")   # would "spell" -3
+        v = _decide(log)
+        self.assertIs(v.outcome, Outcome.ABSTAINED)
+        self.assertIsNone(v.value)
+
+    def test_markers_do_not_overturn_a_fitted_reading(self):
+        """Three markers beside a one-flat fit must leave the fit alone."""
+        log = Log()
+        _with_clef(log)
+        log.observe(SUB, Q.KEYSIG_CLEF_FIT, "treble", reader=READERS.CV_HEADER,
+                    frame="header_window", n_accidentals=1, fifths=-1)
+        _markers(log, "keyFlat", "keyFlat", "keyFlat")
+        v = _decide(log)
+        self.assertEqual(v.value, -1)
+        self.assertEqual(v.reason, "fitted")
+
+    def test_markers_do_not_overturn_a_TEMPLATE_reading(self):
+        log = Log()
+        _with_clef(log)
+        log.observe(SUB, Q.KEYSIG_TEMPLATE_FIT, "treble",
+                    reader=READERS.TEMPLATE, frame="header_window",
+                    n_accidentals=3, accidental="b", fifths=-3)
+        _markers(log, "keyFlat")
+        v = _decide(log)
+        self.assertEqual(v.value, -3)
+        self.assertEqual(v.reason, "fitted_by_template")
+
+    def test_the_detail_says_out_loud_that_the_count_is_not_a_reading(self):
+        """⚠️ A consumer that meets `keysig_marker_ink: 3` and reaches for it
+        as three flats is the exact rule this project measured at seven
+        spurious flips. The row says so in its own key name."""
+        log = Log()
+        _with_clef(log)
+        _markers(log, "keyFlat", "keyFlat")
+        v = _decide(log)
+        self.assertTrue(v.detail["keysig_marker_count_is_not_a_reading"])
+
+
+class TestTheDeclarations(unittest.TestCase):
+
+    def test_the_reason_is_declared(self):
+        """⚠️ A reason word with no branch is one documented anti-pattern here;
+        a branch returning an UNDECLARED reason is its mirror."""
+        from tools.omr.staged.adjudicate import REGISTRY, _ensure_decisions
+        _ensure_decisions()
+        self.assertIn("markers_without_a_run",
+                      REGISTRY[Q.KEY_SIGNATURE].reasons)
+
+    def test_the_quantity_is_actually_read_now(self):
+        from tools.omr.staged.adjudicate import REGISTRY, _ensure_decisions
+        import inspect
+        from tools.omr.staged.adjudicators import header
+        _ensure_decisions()
+        self.assertIn(Q.KEYSIG_MARKER, REGISTRY[Q.KEY_SIGNATURE].wants)
+        src = (inspect.getsource(header.adjudicate_key_signature)
+               + inspect.getsource(header._marker_ink))
+        self.assertIn("Q.KEYSIG_MARKER", src)
+
+
+class TestTheStatedReasonWasFalse(unittest.TestCase):
+    """⚠️⚠️ The claim both gap lists carried, checked rather than inherited:
+    *"the markers already feed `keysig_clef_fit` in GATHER"*. They do not.
+
+    This is asserted at SOURCE level because the consequence is invisible in
+    behaviour — a decision reading a quantity that was never going to reach it
+    produces the same answers as one that does not read it at all."""
+
+    def test_the_marker_gatherer_RETURNS_NOTHING_to_feed_a_fit_with(self):
+        """`_gather_keysig_markers` only LOGS. It hands its caller no value at
+        all, so there is no route by which a marker could reach
+        `locate_key_signature` — which is the call `Q.KEYSIG_CLEF_FIT` is
+        filed from."""
+        import inspect
+        from tools.omr.staged import gather as g
+        src = inspect.getsource(g._gather_keysig_markers)
+        self.assertNotIn("return ", src.replace("return\n", ""),
+                         "it returns a value; the excuse might have been true")
+        fit_src = inspect.getsource(g.gather_key_signature)
+        self.assertIn("locate_key_signature(crop", fit_src)
+
+    def test_the_only_detections_reaching_the_fit_are_NOTEHEADS(self):
+        import inspect
+        from tools.omr.staged import gather as g
+        src = inspect.getsource(g._occupied_boxes)
+        self.assertIn("_NOTEHEAD_PREFIX", src)
+        for cls in ("keySharp", "keyFlat", "keyNatural"):
+            self.assertNotIn(cls, src)
+
+
+if __name__ == "__main__":
+    unittest.main()
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# ⚠️⚠️ SIX MUTATIONS SURVIVED THE FIRST BATTERY. One was a real gap in the
+# code's tests; the other five were the INSTRUMENTS' own controls, which no
+# suite imported — the same shape the sibling lane hit, arriving again because
+# a benchmark arm is a script and nothing exercises it by default.
+# ─────────────────────────────────────────────────────────────────────────────
+
+
+class TestTheNoInkBranchStillSaysWHICHSilence(unittest.TestCase):
+    """⚠️ SURVIVOR 1, and it is this repair's own lesson one level down.
+
+    The no-ink branch records `keysig_marker_state` beside its zero, because
+    *the detector produced no row* and *it produced a row saying it saw
+    nothing* are different facts. Deleting that left every assertion green:
+    the tests checked the COUNT was 0 and never that the record could still
+    say which kind of zero it was — which is precisely the ABSENT/DECLINED
+    collapse this whole change exists to repair."""
+
+    def test_a_staff_with_no_marker_row_records_its_STATE(self):
+        log = Log()
+        _with_clef(log)
+        v = _decide(log)
+        self.assertEqual(v.detail["keysig_marker_ink"], 0)
+        self.assertIn("keysig_marker_state", v.detail)
+
+    def test_a_DECLINED_marker_row_is_not_the_same_zero(self):
+        """An abstention filed BY the detector is a row saying 'I looked and
+        saw nothing' — a different fact from no row at all, and the state is
+        what carries it."""
+        from tools.omr.staged.record import ABSTAIN
+        log = Log()
+        _with_clef(log)
+        log.abstain(SUB, Q.KEYSIG_MARKER, reader=READERS.DETECTOR,
+                    frame="cell:0", reason=ABSTAIN.NO_DETECTIONS)
+        v = _decide(log)
+        self.assertEqual(v.detail["keysig_marker_ink"], 0)
+        self.assertNotEqual(v.detail["keysig_marker_state"],
+                            _no_row_state(),
+                            "a DECLINED row and NO row must not report the "
+                            "same state — that is the collapse this change "
+                            "repairs, reappearing inside the repair")
+
+
+def _no_row_state():
+    log = Log()
+    _with_clef(log)
+    return _decide(log).detail["keysig_marker_state"]
+
+
+class TestTheInstrumentsOwnControls(unittest.TestCase):
+    """⚠️ SURVIVORS 2-6. `check_arm.py` and `probe_records.py` are scripts; no
+    suite imports them, so every battery arm against them was free. These
+    drive their `main()` over synthetic records — the point is the CONTROL's
+    behaviour, not a measurement."""
+
+    @staticmethod
+    def _load(name):
+        import importlib.util
+        from pathlib import Path
+        root = Path(__file__).resolve().parents[3]
+        path = root / "benchmarks" / "omr-keysig-staged-reach-2026-09" / name
+        spec = importlib.util.spec_from_file_location(f"_{name}", path)
+        mod = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(mod)
+        return mod
+
+    @staticmethod
+    def _record(tmp, *, key_verdict, with_clef=True, with_fit=True,
+                with_markers=False, keysig_glyph_cells=()):
+        import json
+        obs, n = [], 0
+
+        def ob(subject, quantity, value, frame, score=None, **d):
+            nonlocal n
+            row = {"id": f"obs:{n:06d}", "subject": subject,
+                   "quantity": quantity, "value": value, "score": score,
+                   "reader": READERS.DETECTOR, "frame": frame, "detail": d}
+            obs.append(row)
+            n += 1
+
+        if with_clef:
+            # ⚠️ THE SCORE IS NOT DECORATION. `_with_clef` supplies 0.95 and
+            # the clef decision needs it; without one the rebuild abstains
+            # `needs_clef` and this fixture silently tests a different branch.
+            ob("staff/0/0/0", Q.CLEF_GLYPH, "clefG", "cell:0", score=0.95)
+        if with_fit:
+            ob("staff/0/0/0", Q.KEYSIG_CLEF_FIT, "treble", "header_window",
+               n_accidentals=1, fifths=-1)
+        if with_markers:
+            ob("staff/0/0/0", Q.KEYSIG_MARKER, "keyFlat", "cell:0")
+        for i, cell in enumerate(keysig_glyph_cells):
+            # `glyph/<page>/<system>/<staff>/<cell>/<n>` — the address the
+            # probe reads a detection's CELL INDEX out of.
+            ob(f"glyph/0/0/0/{cell}/{i}", Q.GLYPH_BOX,
+               ["keyFlat", 0.0, 0.0, 1.0, 1.0], f"cell:{cell}")
+        verdicts = []
+        if key_verdict is not None:
+            verdicts.append(dict(
+                {"id": "vrd:000001", "subject": "staff/0/0/0",
+                 "quantity": Q.KEY_SIGNATURE, "decider": "t"},
+                **key_verdict))
+        p = tmp / "rec.json"
+        p.write_text(json.dumps({"record": {"observations": obs,
+                                            "abstentions": [],
+                                            "verdicts": verdicts}}))
+        return str(p)
+
+    def _run(self, mod, argv):
+        """⚠️⚠️ `mod.HERE` IS REDIRECTED, AND THAT IS NOT TIDINESS.
+
+        Both instruments write their results under `HERE/"out"`, which is a
+        COMMITTED measurement artefact. The first version of these tests drove
+        `main()` without redirecting it and **silently overwrote
+        `out/probe-records.json` with the synthetic fixture's numbers** — the
+        committed record of a real measurement, replaced by a one-staff test
+        page, with nothing failing. It was caught by a later command reading
+        that file and finding `rec.json` in it.
+
+        An instrument that destroys its own artefact when exercised is worse
+        than one with no test, because the artefact still LOOKS like a
+        measurement."""
+        import io, contextlib, shutil, sys as _sys, tempfile
+        from pathlib import Path
+        old_argv, old_here = _sys.argv, mod.HERE
+        buf = io.StringIO()
+        with tempfile.TemporaryDirectory() as d:
+            # ⚠️ The SIBLING instruments come too: `check_arm` loads
+            # `probe_records.py` from `HERE` to compare their restated
+            # constant, so redirecting `HERE` alone breaks that check rather
+            # than exercising it.
+            for f in old_here.glob("*.py"):
+                shutil.copy(f, Path(d) / f.name)
+            mod.HERE = Path(d)
+            (mod.HERE / "out").mkdir()
+            _sys.argv = ["x"] + argv
+            try:
+                with contextlib.redirect_stdout(buf):
+                    rc = mod.main()
+            finally:
+                _sys.argv, mod.HERE = old_argv, old_here
+        return rc, buf.getvalue()
+
+    def test_the_tests_do_not_write_into_the_committed_out_dir(self):
+        """The guard for the hazard `_run` documents, asserted rather than
+        trusted: after driving both instruments, the real `out/` is untouched."""
+        import tempfile
+        from pathlib import Path
+        root = Path(__file__).resolve().parents[3]
+        out = root / "benchmarks" / "omr-keysig-staged-reach-2026-09" / "out"
+        before = {f.name: f.stat().st_mtime_ns for f in out.glob("*.json")}
+        probe = self._load("probe_records.py")
+        with tempfile.TemporaryDirectory() as d:
+            self._run(probe, [self._record(Path(d), key_verdict=None)])
+        after = {f.name: f.stat().st_mtime_ns for f in out.glob("*.json")}
+        self.assertEqual(before, after,
+                         "an instrument's test must not rewrite the committed "
+                         "artefact of its own measurement")
+
+    # ── the arm ──────────────────────────────────────────────────────────
+    def test_the_arm_FAILS_when_a_decided_key_moved(self):
+        """⚠️ THE CONTROL THAT MATTERS MOST. A change that quietly started
+        counting markers would move a decided key, and an arm that cannot see
+        that would report it clean."""
+        import tempfile
+        from pathlib import Path
+        arm = self._load("check_arm.py")
+        with tempfile.TemporaryDirectory() as d:
+            path = self._record(Path(d), key_verdict={
+                "outcome": "decided", "value": -3, "reason": "fitted"})
+            rc, out = self._run(arm, [path])
+        self.assertEqual(rc, 1, out)
+        # ⚠️⚠️ NOT `assertIn("MOVED", out)`. The arm prints `MOVED 0` on EVERY
+        # run, so that assertion is satisfied by a control that found nothing
+        # — it could never fail, and a mutation battery arm walked straight
+        # past it. What has to be asserted is the MOVE ITSELF: the arrow line
+        # naming the value that changed.
+        self.assertIn("MOVED 1", out)
+        self.assertIn("-3/fitted -> -1/fitted", out)
+
+    def test_the_arm_PASSES_on_a_faithful_record(self):
+        """The positive control for the test above."""
+        import tempfile
+        from pathlib import Path
+        arm = self._load("check_arm.py")
+        with tempfile.TemporaryDirectory() as d:
+            path = self._record(Path(d), with_fit=False, with_markers=True,
+                                key_verdict={"outcome": "abstained",
+                                             "value": None,
+                                             "reason": "no_evidence"})
+            rc, out = self._run(arm, [path])
+        self.assertEqual(rc, 0, out)
+        self.assertIn("no_evidence -> markers_without_a_run", out)
+
+    def test_the_arm_REFUSES_an_illegal_abstention_move(self):
+        """Only `no_evidence -> markers_without_a_run` is a permitted move.
+        Here the rebuild abstains `needs_clef` — a different change wearing
+        this one's name."""
+        import tempfile
+        from pathlib import Path
+        arm = self._load("check_arm.py")
+        with tempfile.TemporaryDirectory() as d:
+            # ⚠️ `with_markers` is what makes the staff subject EXIST. With
+            # no observation on it at all the rebuild files no verdict and the
+            # arm reports "absent from the rebuild" — a different failure, and
+            # the first draft of this test was reading that as the one it
+            # names.
+            path = self._record(Path(d), with_clef=False, with_fit=False,
+                                with_markers=True,
+                                key_verdict={"outcome": "abstained",
+                                             "value": None,
+                                             "reason": "no_evidence"})
+            rc, out = self._run(arm, [path])
+        self.assertEqual(rc, 1, out)
+        self.assertIn("ILLEGAL", out)
+
+    def test_the_arm_reports_DEAD_when_no_split_happened(self):
+        """⚠️ 'No decided key moved' is also exactly what a change that never
+        ran looks like, so the split must be observed, not assumed."""
+        import tempfile
+        from pathlib import Path
+        arm = self._load("check_arm.py")
+        with tempfile.TemporaryDirectory() as d:
+            path = self._record(Path(d), key_verdict={
+                "outcome": "decided", "value": -1, "reason": "fitted"})
+            rc, out = self._run(arm, [path])
+        self.assertIn("DEAD", out)
+        self.assertEqual(rc, 1)
+
+    def test_the_arm_REFUSES_a_drifted_probe_constant(self):
+        """The probe restates `_KEYSIG_CLASSES` rather than importing it, so
+        the two instruments stay independent. A drift would make them measure
+        different populations in silence; the arm refuses instead."""
+        import tempfile
+        from pathlib import Path
+        arm = self._load("check_arm.py")
+        # Drift is symmetric, so it is induced on the side that needs no
+        # import machinery: the arm's own copy of the tree's tuple.
+        real = arm._KEYSIG_CLASSES
+        arm._KEYSIG_CLASSES = ("keySharp",)
+        try:
+            with tempfile.TemporaryDirectory() as d:
+                path = self._record(Path(d), key_verdict=None)
+                rc, out = self._run(arm, [path])
+        finally:
+            arm._KEYSIG_CLASSES = real
+        self.assertEqual(rc, 3, out)
+        self.assertIn("REFUSED", out)
+
+    # ── the probe ────────────────────────────────────────────────────────
+    def test_the_probe_counts_ONLY_later_cells_as_out_of_reach(self):
+        """⚠️ SURVIVOR. The whole Q2 finding is that the out-of-reach
+        population is SMALL — 21 and 2 — against 105 and 146 in cell 0.
+        Counting cell 0 into it inflates those to 126 and 148 and turns a
+        *"do not build this yet"* into a *"look how much is missing"*, and
+        no test could see the difference."""
+        import tempfile
+        from pathlib import Path
+        probe = self._load("probe_records.py")
+        with tempfile.TemporaryDirectory() as d:
+            path = self._record(
+                Path(d), with_markers=True,
+                keysig_glyph_cells=(0, 0, 0, 0, 3, 7),   # 4 in cell 0, 2 later
+                key_verdict={"outcome": "abstained", "value": None,
+                             "reason": "no_evidence"})
+            rc, out = self._run(probe, [path])
+        self.assertEqual(rc, 0, out)
+        self.assertIn("cells != 0: 2", out)
+        self.assertIn("cell 0 holds 4", out)
+
+    def test_the_probe_declares_itself_DEAD_with_no_key_verdicts(self):
+        import tempfile
+        from pathlib import Path
+        probe = self._load("probe_records.py")
+        with tempfile.TemporaryDirectory() as d:
+            path = self._record(Path(d), key_verdict=None)
+            rc, out = self._run(probe, [path])
+        self.assertEqual(rc, 2, out)
+        self.assertIn("DEAD", out)
