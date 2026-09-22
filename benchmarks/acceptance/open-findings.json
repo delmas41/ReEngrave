@@ -23,7 +23,7 @@
       "broken": false,
       "error": null,
       "note": null,
-      "open": 52
+      "open": 53
     },
     "no_producer": {
       "broken": false,
@@ -34,7 +34,7 @@
     "source_text_tests": {
       "broken": false,
       "error": null,
-      "note": "47 of 185 test files under tools/omr/tests/ (allowlist: ['test_flag_default_direction.py', 'test_flag_docs_match_predicates.py'])",
+      "note": "47 of 186 test files under tools/omr/tests/ (allowlist: ['test_flag_default_direction.py', 'test_flag_docs_match_predicates.py'])",
       "open": 47
     },
     "staged.brakes": {
@@ -53,7 +53,7 @@
       "broken": false,
       "error": null,
       "note": null,
-      "open": 19
+      "open": 18
     },
     "staged.health": {
       "broken": false,
@@ -71,7 +71,7 @@
       "broken": false,
       "error": null,
       "note": null,
-      "open": 26
+      "open": 25
     },
     "staged.trace": {
       "broken": false,
@@ -86,8 +86,8 @@
       "open": 66
     }
   },
-  "date": "2026-09-22T22:01:55Z",
-  "dirty": true,
-  "total": 250,
-  "tree": "964a95981363e957b02f275e8bb194e6686cb95a"
+  "date": "2026-09-22T22:04:54Z",
+  "dirty": false,
+  "total": 249,
+  "tree": "657190ef8cb9e30d7b3bc8d2ac352afb0fbcb5d3"
 }
