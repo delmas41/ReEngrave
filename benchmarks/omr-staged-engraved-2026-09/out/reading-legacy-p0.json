@@ -343,5 +343,12 @@
   "tie": {
    "-": 4
   }
+ },
+ "adapter": {
+  "detections_placed": 495,
+  "pages_present": [
+   0
+  ],
+  "staff_space_px": 22.5
  }
 }

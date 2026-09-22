@@ -1,8 +1,11 @@
 {
  "parts": 18,
- "bars": 7,
+ "bars_printed": 7,
+ "bars_written": 7,
+ "truth_first_bar": 1,
  "part_bars": 126,
  "bars_exact": 123,
+ "parts_exact_as_sequence": 16,
  "events_truth": 174,
  "events_ours": 174,
  "disagreements": {

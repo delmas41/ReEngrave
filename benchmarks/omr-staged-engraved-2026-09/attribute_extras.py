@@ -90,10 +90,16 @@ def staged_dets(result: Dict[str, Any], page: int) -> List[dict]:
 
 def legacy_dets(result: Dict[str, Any], page: int) -> List[dict]:
     out = []
-    pages = result.get("pages", [])
-    if page >= len(pages):
+    # ⚠️ BY `page_index`, NEVER BY LIST POSITION. `transcribe --pages 2` writes
+    # a ONE-element `pages` list carrying `page_index: 2`, so indexing the list
+    # by the page number returns nothing and the probe reports a clean zero.
+    # `score_reading.report` has the same shape and IS affected — see
+    # `staged_reading.legacy_as_result`.
+    by_index = {int(p.get("page_index", i)): p
+                for i, p in enumerate(result.get("pages", []))}
+    if page not in by_index:
         return out
-    for si, system in enumerate(pages[page].get("systems", [])):
+    for si, system in enumerate(by_index[page].get("systems", [])):
         for ti, staff in enumerate(system.get("staves", [])):
             for meas in staff.get("measures", []):
                 bb = meas.get("bbox_page_px") or [0, 0, 0, 0]

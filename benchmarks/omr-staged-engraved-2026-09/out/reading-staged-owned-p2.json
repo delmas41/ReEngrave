@@ -1,0 +1,417 @@
+{
+ "staff_space_px": 22.5,
+ "tolerances": {
+  "0.5": {
+   "per_family": {
+    "accidental": {
+     "truth": 70,
+     "pred": 15,
+     "matched": 14
+    },
+    "augmentation_dot": {
+     "truth": 1,
+     "pred": 3,
+     "matched": 1
+    },
+    "barline": {
+     "truth": 8,
+     "pred": 0,
+     "matched": 0
+    },
+    "beam": {
+     "truth": 34,
+     "pred": 34,
+     "matched": 34
+    },
+    "clef": {
+     "truth": 18,
+     "pred": 19,
+     "matched": 18
+    },
+    "dynamic_letter": {
+     "truth": 45,
+     "pred": 78,
+     "matched": 39
+    },
+    "flag": {
+     "truth": 1,
+     "pred": 3,
+     "matched": 1
+    },
+    "key_accidental": {
+     "truth": 44,
+     "pred": 44,
+     "matched": 44
+    },
+    "notehead": {
+     "truth": 207,
+     "pred": 209,
+     "matched": 207
+    },
+    "rest": {
+     "truth": 101,
+     "pred": 102,
+     "matched": 101
+    },
+    "slur": {
+     "truth": 1,
+     "pred": 2,
+     "matched": 0
+    },
+    "tie": {
+     "truth": 17,
+     "pred": 15,
+     "matched": 0
+    }
+   },
+   "unscored_detections": {
+    "staff": 140,
+    "ledgerLine": 26,
+    "fermataAbove": 36,
+    "articStaccatoBelow": 1,
+    "ottavaBracket": 4,
+    "fermataBelow": 1
+   }
+  },
+  "0.25": {
+   "per_family": {
+    "accidental": {
+     "truth": 70,
+     "pred": 15,
+     "matched": 14
+    },
+    "augmentation_dot": {
+     "truth": 1,
+     "pred": 3,
+     "matched": 1
+    },
+    "barline": {
+     "truth": 8,
+     "pred": 0,
+     "matched": 0
+    },
+    "beam": {
+     "truth": 34,
+     "pred": 34,
+     "matched": 34
+    },
+    "clef": {
+     "truth": 18,
+     "pred": 19,
+     "matched": 18
+    },
+    "dynamic_letter": {
+     "truth": 45,
+     "pred": 78,
+     "matched": 25
+    },
+    "flag": {
+     "truth": 1,
+     "pred": 3,
+     "matched": 1
+    },
+    "key_accidental": {
+     "truth": 44,
+     "pred": 44,
+     "matched": 44
+    },
+    "notehead": {
+     "truth": 207,
+     "pred": 209,
+     "matched": 207
+    },
+    "rest": {
+     "truth": 101,
+     "pred": 102,
+     "matched": 101
+    },
+    "slur": {
+     "truth": 1,
+     "pred": 2,
+     "matched": 0
+    },
+    "tie": {
+     "truth": 17,
+     "pred": 15,
+     "matched": 0
+    }
+   },
+   "unscored_detections": {
+    "staff": 140,
+    "ledgerLine": 26,
+    "fermataAbove": 36,
+    "articStaccatoBelow": 1,
+    "ottavaBracket": 4,
+    "fermataBelow": 1
+   }
+  },
+  "0.75": {
+   "per_family": {
+    "accidental": {
+     "truth": 70,
+     "pred": 15,
+     "matched": 14
+    },
+    "augmentation_dot": {
+     "truth": 1,
+     "pred": 3,
+     "matched": 1
+    },
+    "barline": {
+     "truth": 8,
+     "pred": 0,
+     "matched": 0
+    },
+    "beam": {
+     "truth": 34,
+     "pred": 34,
+     "matched": 34
+    },
+    "clef": {
+     "truth": 18,
+     "pred": 19,
+     "matched": 18
+    },
+    "dynamic_letter": {
+     "truth": 45,
+     "pred": 78,
+     "matched": 42
+    },
+    "flag": {
+     "truth": 1,
+     "pred": 3,
+     "matched": 1
+    },
+    "key_accidental": {
+     "truth": 44,
+     "pred": 44,
+     "matched": 44
+    },
+    "notehead": {
+     "truth": 207,
+     "pred": 209,
+     "matched": 207
+    },
+    "rest": {
+     "truth": 101,
+     "pred": 102,
+     "matched": 101
+    },
+    "slur": {
+     "truth": 1,
+     "pred": 2,
+     "matched": 0
+    },
+    "tie": {
+     "truth": 17,
+     "pred": 15,
+     "matched": 15
+    }
+   },
+   "unscored_detections": {
+    "staff": 140,
+    "ledgerLine": 26,
+    "fermataAbove": 36,
+    "articStaccatoBelow": 1,
+    "ottavaBracket": 4,
+    "fermataBelow": 1
+   }
+  },
+  "1.0": {
+   "per_family": {
+    "accidental": {
+     "truth": 70,
+     "pred": 15,
+     "matched": 14
+    },
+    "augmentation_dot": {
+     "truth": 1,
+     "pred": 3,
+     "matched": 1
+    },
+    "barline": {
+     "truth": 8,
+     "pred": 0,
+     "matched": 0
+    },
+    "beam": {
+     "truth": 34,
+     "pred": 34,
+     "matched": 34
+    },
+    "clef": {
+     "truth": 18,
+     "pred": 19,
+     "matched": 18
+    },
+    "dynamic_letter": {
+     "truth": 45,
+     "pred": 78,
+     "matched": 42
+    },
+    "flag": {
+     "truth": 1,
+     "pred": 3,
+     "matched": 1
+    },
+    "key_accidental": {
+     "truth": 44,
+     "pred": 44,
+     "matched": 44
+    },
+    "notehead": {
+     "truth": 207,
+     "pred": 209,
+     "matched": 207
+    },
+    "rest": {
+     "truth": 101,
+     "pred": 102,
+     "matched": 101
+    },
+    "slur": {
+     "truth": 1,
+     "pred": 2,
+     "matched": 0
+    },
+    "tie": {
+     "truth": 17,
+     "pred": 15,
+     "matched": 15
+    }
+   },
+   "unscored_detections": {
+    "staff": 140,
+    "ledgerLine": 26,
+    "fermataAbove": 36,
+    "articStaccatoBelow": 1,
+    "ottavaBracket": 4,
+    "fermataBelow": 1
+   }
+  },
+  "1.5": {
+   "per_family": {
+    "accidental": {
+     "truth": 70,
+     "pred": 15,
+     "matched": 14
+    },
+    "augmentation_dot": {
+     "truth": 1,
+     "pred": 3,
+     "matched": 1
+    },
+    "barline": {
+     "truth": 8,
+     "pred": 0,
+     "matched": 0
+    },
+    "beam": {
+     "truth": 34,
+     "pred": 34,
+     "matched": 34
+    },
+    "clef": {
+     "truth": 18,
+     "pred": 19,
+     "matched": 18
+    },
+    "dynamic_letter": {
+     "truth": 45,
+     "pred": 78,
+     "matched": 42
+    },
+    "flag": {
+     "truth": 1,
+     "pred": 3,
+     "matched": 1
+    },
+    "key_accidental": {
+     "truth": 44,
+     "pred": 44,
+     "matched": 44
+    },
+    "notehead": {
+     "truth": 207,
+     "pred": 209,
+     "matched": 207
+    },
+    "rest": {
+     "truth": 101,
+     "pred": 102,
+     "matched": 101
+    },
+    "slur": {
+     "truth": 1,
+     "pred": 2,
+     "matched": 1
+    },
+    "tie": {
+     "truth": 17,
+     "pred": 15,
+     "matched": 15
+    }
+   },
+   "unscored_detections": {
+    "staff": 140,
+    "ledgerLine": 26,
+    "fermataAbove": 36,
+    "articStaccatoBelow": 1,
+    "ottavaBracket": 4,
+    "fermataBelow": 1
+   }
+  }
+ },
+ "unreliable_families": [
+  "accidental"
+ ],
+ "pooled": {
+  "truth": 435,
+  "pred": 475,
+  "matched": 411,
+  "precision": 0.8652631578947368,
+  "recall": 0.9448275862068966,
+  "f1": 0.9032967032967033
+ },
+ "confusions": {
+  "accidental": {
+   "-": 56
+  },
+  "barline": {
+   "-": 8
+  },
+  "dynamic_letter": {
+   "-": 3,
+   "dynamic_letter": 3
+  },
+  "slur": {
+   "-": 1
+  },
+  "tie": {
+   "-": 17
+  }
+ },
+ "adapter": {
+  "glyph_box_rows_on_page": 784,
+  "glyph_box_rows_other_pages": 0,
+  "dropped_no_page_box": 0,
+  "apply_ownership": true,
+  "ownership_verdicts": 104,
+  "dropped_owned_by_another_staff": 52,
+  "detections_placed": 732,
+  "staff_spacing_rows": 18,
+  "staff_space_px": 22.5
+ },
+ "frame_control": {
+  "shift_spaces": 2.0,
+  "pooled": {
+   "truth": 435,
+   "pred": 475,
+   "matched": 7,
+   "precision": 0.014736842105263158,
+   "recall": 0.016091954022988506,
+   "f1": 0.015384615384615384
+  },
+  "collapsed": true
+ }
+}

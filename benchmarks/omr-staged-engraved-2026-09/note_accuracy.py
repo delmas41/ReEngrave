@@ -33,6 +33,15 @@ convention and not a reading.
 ⚠️ **THE HEADLINE IS A PAIR, NEVER ONE NUMBER.** A part we wrote nothing for
 scores no errors, so `bars exact` alone rewards silence — the direction OMR-NED
 is already known to be gamed in. Written/expected counts are printed beside it.
+
+⚠️⚠️ **`--sequence` IS THE ARM THAT SEPARATES A BARLINE FAULT FROM A NOTE
+FAULT, and it is not a softer test — it is a different one.** A single spurious
+barline shifts every bar after it, so a per-bar comparison then charges every
+following bar of every part as wrong and reports a page of correct music as a
+catastrophe. `--sequence` compares each part's event list END TO END with the
+bar boundaries removed: a note fault still shows, a barline fault does not.
+Report BOTH — the per-bar arm is the one that knows the bars are wrong, and the
+sequence arm is the one that knows the notes are right.
 """
 from __future__ import annotations
 
@@ -47,14 +56,18 @@ from typing import Any, Dict, List, Tuple
 warnings.filterwarnings("ignore")
 
 
-def events(part, n_bars: int) -> Dict[int, List[Tuple]]:
-    """`measure number -> [(kind, quarterLength), ...]` for the first n bars.
+def events(part, n_bars: int, first: int = 0) -> Dict[int, List[Tuple]]:
+    """`ordinal -> [(kind, quarterLength), ...]` for `n_bars` bars from `first`.
+
+    Keyed on the bar's POSITION in the slice, not on its printed number, so the
+    two sides line up when one is an excerpt of the other.
 
     A chord is ONE event whose kind is the sorted tuple of its pitches, so a
     divisi read as two notes and a chord read as one are distinguishable.
     """
     out: Dict[int, List[Tuple]] = {}
-    for m in list(part.getElementsByClass("Measure"))[:n_bars]:
+    bars = list(part.getElementsByClass("Measure"))[first:first + n_bars]
+    for i, m in enumerate(bars):
         row = []
         for n in m.notesAndRests:
             ql = round(float(n.duration.quarterLength), 4)
@@ -64,7 +77,7 @@ def events(part, n_bars: int) -> Dict[int, List[Tuple]]:
                 row.append((tuple(sorted(p.nameWithOctave for p in n.pitches)), ql))
             else:
                 row.append((n.pitch.nameWithOctave, ql))
-        out[m.number] = row
+        out[i] = row
     return out
 
 
@@ -75,6 +88,13 @@ def main() -> int:
     ap.add_argument("--truth", type=Path, required=True)
     ap.add_argument("--bars", type=int, required=True,
                     help="how many bars of the truth this page carries")
+    ap.add_argument("--truth-first-bar", type=int, default=1,
+                    help="the truth's first bar ON THIS PAGE, 1-based. The "
+                         "render decides it; read it off the page's own SVG "
+                         "(`grep -c 'class=\"measure\"'`), never guess it.")
+    ap.add_argument("--sequence", action="store_true",
+                    help="compare each part's event list with the bar "
+                         "boundaries removed — see the module docstring")
     ap.add_argument("--show", type=int, default=12)
     ap.add_argument("--json-out", type=Path)
     args = ap.parse_args()
@@ -94,12 +114,26 @@ def main() -> int:
     for i, (a, b) in enumerate(zip(ours.parts, truth.parts)):
         print(f"   {i:2d}  ours {str(a.partName):22s} truth {b.partName}")
 
+    our_bars = len(list(ours.parts[0].getElementsByClass("Measure")))
+    warn = ("   ⚠️ DISAGREE — a per-bar comparison is shifted after the first "
+            "extra/missing barline; read the SEQUENCE arm beside it"
+            if our_bars != args.bars else "")
+    print(f"\nBAR COUNT: we wrote {our_bars}, the render prints {args.bars} "
+          f"(truth bars {args.truth_first_bar}"
+          f"..{args.truth_first_bar + args.bars - 1}){warn}")
+
     rows = []
     tot_ev_t = tot_ev_o = exact_bars = total_bars = 0
+    seq_exact = 0
     per_part = []
     kinds = Counter()
+    first = args.truth_first_bar - 1
     for i, (po, pt) in enumerate(zip(ours.parts, truth.parts)):
-        eo, et = events(po, args.bars), events(pt, args.bars)
+        eo, et = events(po, our_bars), events(pt, args.bars, first)
+        flat_o = [x for k in sorted(eo) for x in eo[k]]
+        flat_t = [x for k in sorted(et) for x in et[k]]
+        if flat_o == flat_t:
+            seq_exact += 1
         p_exact = p_total = 0
         for num in sorted(et):
             a, b = eo.get(num, []), et[num]
@@ -120,7 +154,8 @@ def main() -> int:
                     kinds["same pitches, different duration"] += 1
                 if len(rows) < args.show:
                     rows.append({"part": i, "name": str(pt.partName),
-                                 "bar": num, "ours": a, "truth": b})
+                                 "bar": args.truth_first_bar + num,
+                                 "ours": a, "truth": b})
         exact_bars += p_exact
         total_bars += p_total
         per_part.append({"part": i, "name": str(pt.partName),
@@ -130,8 +165,11 @@ def main() -> int:
           f"part-bars;  events truth {tot_ev_t}, ours {tot_ev_o}")
     print(f"\nBARS EXACT (every event's kind AND duration): "
           f"{exact_bars} of {total_bars}  ({exact_bars / total_bars:.3f})")
-    print("⚠️ read it beside the event counts above — a part we wrote nothing "
-          "for makes no error.")
+    print(f"PARTS EXACT AS A SEQUENCE (bar boundaries removed): "
+          f"{seq_exact} of {len(ours.parts)}  "
+          f"({seq_exact / len(ours.parts):.3f})")
+    print("⚠️ read them beside the event counts above — a part we wrote "
+          "nothing for makes no error.")
     if kinds:
         print("\ndisagreements by kind:")
         for k, n in kinds.most_common():
@@ -150,8 +188,10 @@ def main() -> int:
             print(f"      ours  {r['ours']}")
             print(f"      truth {r['truth']}")
 
-    out = {"parts": len(ours.parts), "bars": args.bars,
+    out = {"parts": len(ours.parts), "bars_printed": args.bars,
+           "bars_written": our_bars, "truth_first_bar": args.truth_first_bar,
            "part_bars": total_bars, "bars_exact": exact_bars,
+           "parts_exact_as_sequence": seq_exact,
            "events_truth": tot_ev_t, "events_ours": tot_ev_o,
            "disagreements": dict(kinds), "per_part": per_part,
            "examples": rows}

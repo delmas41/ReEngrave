@@ -156,20 +156,29 @@ def staged_as_result(result: Dict[str, Any], page_index: int,
         })
 
     space = statistics.median(spacing_vals) if spacing_vals else 1.0
-    result_like = {
-        "pages": [{
-            "systems": [{
-                "staves": [{
-                    "staff_geometry": {"line_spacing_px": space},
-                    "measures": [{
-                        "bbox_page_px": [0.0, 0.0, 0.0, 0.0],
-                        "upscale_factor": 1.0,
-                        "detections": dets,
-                    }],
+    page = {
+        "systems": [{
+            "staves": [{
+                "staff_geometry": {"line_spacing_px": space},
+                "measures": [{
+                    "bbox_page_px": [0.0, 0.0, 0.0, 0.0],
+                    "upscale_factor": 1.0,
+                    "detections": dets,
                 }],
             }],
         }],
     }
+    # ⚠️ PADDED SO THE LIST INDEX IS THE PAGE INDEX. `score_reading` addresses
+    # pages POSITIONALLY (`pages[page_index]`) while a staged record addresses
+    # them by the PDF's own page number, which is what the subject key carries.
+    # The first version of this adapter built a one-element list and handed
+    # `report()` a `page_index` of 2, so `page_index >= len(pages)` returned an
+    # EMPTY detection list and the scorer printed a complete, plausible table of
+    # zeros — a clean believable zero that only the REACH line beside it caught,
+    # because that line said 732 detections placed. `_assert_report_sees_them`
+    # below makes it impossible to pass again.
+    result_like = {"pages": [{"systems": []}
+                             for _ in range(page_index)] + [page]}
     stats = {
         "glyph_box_rows_on_page": n_rows,
         "glyph_box_rows_other_pages": n_wrong_page,
@@ -184,19 +193,67 @@ def staged_as_result(result: Dict[str, Any], page_index: int,
     return result_like, stats
 
 
-def _shift(result_like: dict, dx: float, dy: float) -> dict:
+def legacy_as_result(result: Dict[str, Any], page_index: int) -> tuple[dict, dict]:
+    """A legacy `transcribe` result, addressable at its own PDF page index.
+
+    ⚠️⚠️ THIS IS A LIVE DEFECT IN A SHIPPED INSTRUMENT AND IT IS REPORTED, NOT
+    REPAIRED. `score_reading.report` takes ONE `page_index` and uses it
+    positionally on BOTH sides (`page_truth["pages"][i]` and
+    `result["pages"][i]`), but `transcribe --pages 2` writes a result whose
+    `pages` list has ONE element — carrying `page_index: 2` inside it. So
+    scoring any page but the first returns an EMPTY detection list and prints a
+    complete table of zeros. Every fixture the existing reading lane uses is
+    `--pages 0`, where the list index and the page index coincide, which is why
+    it has never shown. Padding here keeps the comparison honest without
+    touching `tools/`; the defect belongs to whoever owns that file.
+    """
+    pages = result.get("pages", [])
+    by_index = {int(p.get("page_index", i)): p for i, p in enumerate(pages)}
+    if page_index not in by_index:
+        return {"pages": []}, {"error": f"no page {page_index} in the result",
+                               "pages_present": sorted(by_index)}
+    padded = [{"systems": []} for _ in range(page_index)] + [by_index[page_index]]
+    n = len(SR.detections_in_page_px({"pages": padded}, page_index))
+    return {"pages": padded}, {"detections_placed": n,
+                               "pages_present": sorted(by_index),
+                               "staff_space_px": SR.staff_space_px(
+                                   {"pages": padded}, page_index)}
+
+
+def _shift(result_like: dict, page_index: int, dx: float, dy: float) -> dict:
     out = json.loads(json.dumps(result_like))
-    for m in out["pages"][0]["systems"][0]["staves"][0]["measures"]:
+    for m in out["pages"][page_index]["systems"][0]["staves"][0]["measures"]:
         for d in m["detections"]:
             d["bbox"] = [d["bbox"][0] + dx, d["bbox"][1] + dy,
                          d["bbox"][2], d["bbox"][3]]
     return out
 
 
+def _assert_report_sees_them(result_like: dict, page_index: int,
+                             placed: int) -> None:
+    """The scorer must read exactly the rows the adapter placed.
+
+    ⚠️ THIS IS NOT BELT-AND-BRACES. `score_reading.detections_in_page_px`
+    returns `[]` for a page index past the end of the list rather than raising,
+    so a mis-shaped adapter produces a full table of zeros that reads as a
+    recognition result. This is the control that makes the zero impossible.
+    """
+    seen = len(SR.detections_in_page_px(result_like, page_index))
+    if seen != placed:
+        raise SystemExit(
+            f"ADAPTER BROKEN: placed {placed} detections, the scorer sees "
+            f"{seen} at page index {page_index}. Refusing to report a number "
+            "taken over a population the scorer cannot reach.")
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__,
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("--record", type=Path, required=True)
+    ap.add_argument("--record", type=Path,
+                    help="a staged record (the staged arm)")
+    ap.add_argument("--legacy", type=Path,
+                    help="a legacy `transcribe` result (the cross-reader arm, "
+                         "scored by the SAME scorer on the SAME page)")
     ap.add_argument("--truth", type=Path, required=True)
     ap.add_argument("--page", type=int, default=0)
     ap.add_argument("--tolerance", type=float, nargs="+",
@@ -212,29 +269,38 @@ def main() -> int:
     ap.add_argument("--json-out", type=Path)
     args = ap.parse_args()
 
-    result = json.loads(args.record.read_text())
+    if bool(args.record) == bool(args.legacy):
+        print("give exactly one of --record (staged) or --legacy.")
+        return 2
     truth = json.loads(args.truth.read_text())
-    like, stats = staged_as_result(result, args.page, args.apply_ownership)
+    if args.legacy:
+        result = json.loads(args.legacy.read_text())
+        like, stats = legacy_as_result(result, args.page)
+        arm = "LEGACY transcribe"
+    else:
+        result = json.loads(args.record.read_text())
+        like, stats = staged_as_result(result, args.page, args.apply_ownership)
+        arm = "STAGED"
 
     print("REACH (the adapter's own accounting — a hole here is a hole in the "
           "measurement):")
     for k, v in stats.items():
         print(f"   {k:28s} {v}")
-    if stats["detections_placed"] == 0:
-        print("\nDEAD: the staged record placed no detection on this page. "
-              "Nothing below would be a result.")
+    if not stats.get("detections_placed"):
+        print(f"\nDEAD: the {arm} arm placed no detection on page "
+              f"{args.page}. Nothing below would be a result.")
         return 2
+    _assert_report_sees_them(like, args.page, stats["detections_placed"])
     prov = (result.get("provenance") or {})
     print(f"   tree {prov.get('commit')} dirty={prov.get('dirty')}")
     print(f"   truth renderer {truth.get('renderer')} dpi {truth.get('dpi')}  "
           f"unreliable={truth.get('render_fidelity', {}).get('unreliable')}")
 
-    cls = Counter(d["class"] for d in
-                  like["pages"][0]["systems"][0]["staves"][0]["measures"][0]["detections"])
+    cls = Counter(d["class"] for d in SR.detections_in_page_px(like, args.page))
     print(f"\ndetector classes ({len(cls)} distinct): "
           f"{dict(cls.most_common(10))}")
 
-    print(f"\n{'=' * 72}\nSTAGED reading, page {args.page}\n{'=' * 72}")
+    print(f"\n{'=' * 72}\n{arm} reading, page {args.page}\n{'=' * 72}")
     out = SR.report(truth, like, args.page, list(args.tolerance))
     out["adapter"] = stats
 
@@ -242,7 +308,7 @@ def main() -> int:
         d = args.shift_spaces * stats["staff_space_px"]
         print(f"\n{'=' * 72}\nFRAME CONTROL — every detection moved "
               f"+{args.shift_spaces} staff spaces ({d:.1f} px) in y\n{'=' * 72}")
-        shifted = SR.report(truth, _shift(like, 0.0, d), args.page,
+        shifted = SR.report(truth, _shift(like, args.page, 0.0, d), args.page,
                             [args.tolerance[0]])
         out["frame_control"] = {"shift_spaces": args.shift_spaces,
                                 "pooled": shifted["pooled"]}
