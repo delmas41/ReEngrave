@@ -172,11 +172,22 @@ fixtures.
    (`docs/symbol-dossiers/accidentals-keys.md`) already answers the five
    questions; it is blocked on a RECORD-SHAPE decision (*the staged record has
    nowhere to put a span*), which is Sean's.
-3. **The cross-system SLOT CARRY on the staged path** — the legacy path stamps
-   one name per SLOT across every page (`contextual.py:1527`); the staged path
-   is `Kind.STAFF` + `Scope.EXACT` and has no equivalent. **A sixth instance of
-   *shipped means the LEGACY path*.** Measure per-slot reach on a staged record
-   first.
+3. ✅⚠️ **The cross-system SLOT CARRY is MEASURED AND DEMOTED.**
+   [benchmarks/omr-staged-slot-carry-2026-09/FINDINGS.md](../benchmarks/omr-staged-slot-carry-2026-09/FINDINGS.md)
+   — reach on the Litolff scan is **ZERO**, because **all 25 unnamed staves
+   also have no SLOT** (`unnamed_in_short_system`), so a carry keyed on a slot
+   has no key. On the engraved full-lineup render it is 4 of 4. ⚠️⚠️ **That is
+   the wrong way round**: reach-positive on a FULL-LINEUP page, where the
+   ordinal join already works, and reach-ZERO on a SHORT system, the only place
+   identity is hard. **The thing in front of it is the SLOT, which already has
+   a mechanism** (`family_block` / `collapse_slot_index_to_family_block`,
+   recorded placing **15 of these very 25**) — so a carry is DOWNSTREAM of that
+   rule, not an alternative, and its reach wants re-measuring on a record where
+   the slots have been placed. ⚠️ A cheaper finding fell out: the engraved
+   render prints `Bassoon 1` on page 0 and **`Bsn 1`** on continuations, and
+   **the lexicon does not know `Bsn`** — closing that gap fixes all four with no
+   carry at all. Not shipped: an alias is GLOBAL and wants the 1,651 × 223
+   cross product this repo already has a harness for.
 4. **`_project`, not the chord join.** Lane B's un-refuted half: **4 + 2
    strokes would FLIP direction** because `_project` builds its group from
    overlapping heads, so a dropped member is missing from the direction
