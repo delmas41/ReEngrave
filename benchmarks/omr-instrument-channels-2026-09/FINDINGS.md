@@ -538,3 +538,58 @@ n = 1 document for the whole of §13-§15 (Litolff has **zero** refused labels
 and **zero** staves in this population). The print truth for slots 0, 5 and 13
 is one adjudicator reading one render, committed as a crop so it can be
 checked. No code ran on a page; no export; no OMR-NED.
+
+---
+
+# ADDENDUM 3 — measured against the ROADMAP 2.1 gate
+
+The manager session's acceptance criterion for roadmap item 2.1 is
+**`staff_not_identified` 783 → under 100 on Litolff, ZERO grafts against the
+print** — explicitly not a reach count. `export_arm.py`, one gather exported
+three times:
+
+| arm | `staff_not_identified` | events written | parts | coordinate names |
+|---|--:|--:|--:|--:|
+| control — both branches off | **783** | 1472 | 12 | 0 |
+| base — the shipped family block + INFER | **141** | 2114 | 12 | 0 |
+| **arm — + the constraints** | **141** | 2114 | 12 | 0 |
+
+⚠️⚠️ **THIS SESSION'S WORK CONTRIBUTES ZERO TO THE 2.1 GATE.** The 783 → 141
+was already won by `OMR_SLOT_FAMILY_BLOCK` on 2026-09-21; the constraints move
+the PROVENANCE of those placements (13 inferences become entailments) and not
+the count. The gate is **not met** — 141 against a bar of 100.
+
+## 17. ⚠️⚠️ THE WHOLE RESIDUAL IS FIVE STAVES, AND THEY ARE ONE SHAPE
+
+Every staff still held out of the file is a **`Violoncello e Basso`**:
+
+```
+staff/2/0/10  staff/2/1/10  staff/3/0/10  staff/3/1/7  staff/4/1/10
+     ... each narrowed to candidates [10, 11] = Cello AND Contrabass
+```
+
+**141 notes, five staves, one cause.** Nothing else on these four pages is
+unplaced. So 2.1's remaining distance is not a reading problem and not an
+identity channel: it is that **a slot is one part and a condensed staff is
+two**, which the record has nowhere to say. `inferences.collapse_slot_index_
+to_family_block` leaves that member narrowed *deliberately* — its own
+docstring says *"the last one covers both remaining slots and is left exactly
+as the reader left it."*
+
+⚠️ **THE CONVENTION IS ALREADY SEAN'S AND IT IS NOT AMBIGUOUS.** 2026-09-22:
+*"string family always includes all 5 instruments - if there are only 4 lines
+then the bass is doubling the celli or it comes in later."* So the fourth
+string line IS the Cello **and** the Bass, and the question is representation,
+not evidence.
+
+⚠️ **AND THE MINIMAL MOVE WOULD CLEAR THE GATE AND IS NOT A GRAFT BY THIS
+REPO'S OWN TEST.** Placing that member on the FIRST of its two slots takes
+`staff_not_identified` **141 → 0**, and `classify` scores it a
+**condensation** rather than a graft, because the printed name
+`Violoncello e Basso` contains the slot's name — the 2026-09-15 membership
+test, which exists precisely to keep those two apart. ⚠️ It would still be one
+`<part>` where the music has two, which is what `OMR_CONDENSED_PARTS` is for
+and which that flag records as **blocked on a COUNT the page cannot supply**.
+
+**It is a DECISION and it is Sean's**, not this session's and not a peer
+session's: it changes what a placed staff means. Nothing here takes it.
