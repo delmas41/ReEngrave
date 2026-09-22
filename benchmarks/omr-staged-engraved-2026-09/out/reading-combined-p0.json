@@ -1,0 +1,383 @@
+{
+ "staff_space_px": 22.5,
+ "tolerances": {
+  "0.5": {
+   "per_family": {
+    "accidental": {
+     "truth": 9,
+     "pred": 0,
+     "matched": 0
+    },
+    "barline": {
+     "truth": 7,
+     "pred": 0,
+     "matched": 0
+    },
+    "beam": {
+     "truth": 16,
+     "pred": 18,
+     "matched": 16
+    },
+    "clef": {
+     "truth": 18,
+     "pred": 20,
+     "matched": 18
+    },
+    "dynamic_letter": {
+     "truth": 12,
+     "pred": 27,
+     "matched": 12
+    },
+    "flag": {
+     "truth": 3,
+     "pred": 3,
+     "matched": 3
+    },
+    "key_accidental": {
+     "truth": 44,
+     "pred": 45,
+     "matched": 44
+    },
+    "notehead": {
+     "truth": 73,
+     "pred": 73,
+     "matched": 73
+    },
+    "rest": {
+     "truth": 101,
+     "pred": 101,
+     "matched": 101
+    },
+    "slur": {
+     "truth": 0,
+     "pred": 1,
+     "matched": 0
+    },
+    "tie": {
+     "truth": 11,
+     "pred": 17,
+     "matched": 7
+    },
+    "time_signature_digit": {
+     "truth": 36,
+     "pred": 36,
+     "matched": 36
+    }
+   },
+   "unscored_detections": {
+    "staff": 126,
+    "ornamentTrill": 1,
+    "fermataAbove": 40
+   }
+  },
+  "0.25": {
+   "per_family": {
+    "accidental": {
+     "truth": 9,
+     "pred": 0,
+     "matched": 0
+    },
+    "barline": {
+     "truth": 7,
+     "pred": 0,
+     "matched": 0
+    },
+    "beam": {
+     "truth": 16,
+     "pred": 18,
+     "matched": 16
+    },
+    "clef": {
+     "truth": 18,
+     "pred": 20,
+     "matched": 18
+    },
+    "dynamic_letter": {
+     "truth": 12,
+     "pred": 27,
+     "matched": 5
+    },
+    "flag": {
+     "truth": 3,
+     "pred": 3,
+     "matched": 3
+    },
+    "key_accidental": {
+     "truth": 44,
+     "pred": 45,
+     "matched": 44
+    },
+    "notehead": {
+     "truth": 73,
+     "pred": 73,
+     "matched": 73
+    },
+    "rest": {
+     "truth": 101,
+     "pred": 101,
+     "matched": 101
+    },
+    "slur": {
+     "truth": 0,
+     "pred": 1,
+     "matched": 0
+    },
+    "tie": {
+     "truth": 11,
+     "pred": 17,
+     "matched": 0
+    },
+    "time_signature_digit": {
+     "truth": 36,
+     "pred": 36,
+     "matched": 36
+    }
+   },
+   "unscored_detections": {
+    "staff": 126,
+    "ornamentTrill": 1,
+    "fermataAbove": 40
+   }
+  },
+  "0.75": {
+   "per_family": {
+    "accidental": {
+     "truth": 9,
+     "pred": 0,
+     "matched": 0
+    },
+    "barline": {
+     "truth": 7,
+     "pred": 0,
+     "matched": 0
+    },
+    "beam": {
+     "truth": 16,
+     "pred": 18,
+     "matched": 16
+    },
+    "clef": {
+     "truth": 18,
+     "pred": 20,
+     "matched": 18
+    },
+    "dynamic_letter": {
+     "truth": 12,
+     "pred": 27,
+     "matched": 12
+    },
+    "flag": {
+     "truth": 3,
+     "pred": 3,
+     "matched": 3
+    },
+    "key_accidental": {
+     "truth": 44,
+     "pred": 45,
+     "matched": 44
+    },
+    "notehead": {
+     "truth": 73,
+     "pred": 73,
+     "matched": 73
+    },
+    "rest": {
+     "truth": 101,
+     "pred": 101,
+     "matched": 101
+    },
+    "slur": {
+     "truth": 0,
+     "pred": 1,
+     "matched": 0
+    },
+    "tie": {
+     "truth": 11,
+     "pred": 17,
+     "matched": 7
+    },
+    "time_signature_digit": {
+     "truth": 36,
+     "pred": 36,
+     "matched": 36
+    }
+   },
+   "unscored_detections": {
+    "staff": 126,
+    "ornamentTrill": 1,
+    "fermataAbove": 40
+   }
+  },
+  "1.0": {
+   "per_family": {
+    "accidental": {
+     "truth": 9,
+     "pred": 0,
+     "matched": 0
+    },
+    "barline": {
+     "truth": 7,
+     "pred": 0,
+     "matched": 0
+    },
+    "beam": {
+     "truth": 16,
+     "pred": 18,
+     "matched": 16
+    },
+    "clef": {
+     "truth": 18,
+     "pred": 20,
+     "matched": 18
+    },
+    "dynamic_letter": {
+     "truth": 12,
+     "pred": 27,
+     "matched": 12
+    },
+    "flag": {
+     "truth": 3,
+     "pred": 3,
+     "matched": 3
+    },
+    "key_accidental": {
+     "truth": 44,
+     "pred": 45,
+     "matched": 44
+    },
+    "notehead": {
+     "truth": 73,
+     "pred": 73,
+     "matched": 73
+    },
+    "rest": {
+     "truth": 101,
+     "pred": 101,
+     "matched": 101
+    },
+    "slur": {
+     "truth": 0,
+     "pred": 1,
+     "matched": 0
+    },
+    "tie": {
+     "truth": 11,
+     "pred": 17,
+     "matched": 7
+    },
+    "time_signature_digit": {
+     "truth": 36,
+     "pred": 36,
+     "matched": 36
+    }
+   },
+   "unscored_detections": {
+    "staff": 126,
+    "ornamentTrill": 1,
+    "fermataAbove": 40
+   }
+  },
+  "1.5": {
+   "per_family": {
+    "accidental": {
+     "truth": 9,
+     "pred": 0,
+     "matched": 0
+    },
+    "barline": {
+     "truth": 7,
+     "pred": 0,
+     "matched": 0
+    },
+    "beam": {
+     "truth": 16,
+     "pred": 18,
+     "matched": 16
+    },
+    "clef": {
+     "truth": 18,
+     "pred": 20,
+     "matched": 18
+    },
+    "dynamic_letter": {
+     "truth": 12,
+     "pred": 27,
+     "matched": 12
+    },
+    "flag": {
+     "truth": 3,
+     "pred": 3,
+     "matched": 3
+    },
+    "key_accidental": {
+     "truth": 44,
+     "pred": 45,
+     "matched": 44
+    },
+    "notehead": {
+     "truth": 73,
+     "pred": 73,
+     "matched": 73
+    },
+    "rest": {
+     "truth": 101,
+     "pred": 101,
+     "matched": 101
+    },
+    "slur": {
+     "truth": 0,
+     "pred": 1,
+     "matched": 0
+    },
+    "tie": {
+     "truth": 11,
+     "pred": 17,
+     "matched": 7
+    },
+    "time_signature_digit": {
+     "truth": 36,
+     "pred": 36,
+     "matched": 36
+    }
+   },
+   "unscored_detections": {
+    "staff": 126,
+    "ornamentTrill": 1,
+    "fermataAbove": 40
+   }
+  }
+ },
+ "unreliable_families": [
+  "accidental"
+ ],
+ "pooled": {
+  "truth": 298,
+  "pred": 323,
+  "matched": 294,
+  "precision": 0.9102167182662538,
+  "recall": 0.9865771812080537,
+  "f1": 0.9468599033816424
+ },
+ "confusions": {
+  "accidental": {
+   "-": 9
+  },
+  "barline": {
+   "-": 7
+  },
+  "tie": {
+   "-": 4
+  }
+ },
+ "adapter": {
+  "glyph_box_rows_on_page": 519,
+  "glyph_box_rows_other_pages": 1222,
+  "dropped_no_page_box": 0,
+  "apply_ownership": true,
+  "ownership_verdicts": 130,
+  "dropped_owned_by_another_staff": 11,
+  "detections_placed": 508,
+  "staff_spacing_rows": 18,
+  "staff_space_px": 22.5
+ }
+}

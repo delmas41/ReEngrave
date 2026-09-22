@@ -1,0 +1,125 @@
+{
+ "parts": 18,
+ "bars_printed": 7,
+ "bars_written": 7,
+ "truth_first_bar": 1,
+ "part_bars": 126,
+ "bars_exact": 123,
+ "parts_exact_as_sequence": 16,
+ "events_truth": 174,
+ "events_ours": 174,
+ "disagreements": {
+  "same count, differs ONLY by an accidental": 3
+ },
+ "per_part": [
+  {
+   "part": 0,
+   "name": "Flute 1",
+   "bars_exact": 7,
+   "bars": 7
+  },
+  {
+   "part": 1,
+   "name": "Flute 2",
+   "bars_exact": 7,
+   "bars": 7
+  },
+  {
+   "part": 2,
+   "name": "Oboe 1",
+   "bars_exact": 7,
+   "bars": 7
+  },
+  {
+   "part": 3,
+   "name": "Oboe 2",
+   "bars_exact": 7,
+   "bars": 7
+  },
+  {
+   "part": 4,
+   "name": "Bb Clarinet",
+   "bars_exact": 7,
+   "bars": 7
+  },
+  {
+   "part": 5,
+   "name": "Bb Clarinet 2",
+   "bars_exact": 7,
+   "bars": 7
+  },
+  {
+   "part": 6,
+   "name": "Bassoon 1",
+   "bars_exact": 7,
+   "bars": 7
+  },
+  {
+   "part": 7,
+   "name": "Bassoon 2",
+   "bars_exact": 7,
+   "bars": 7
+  },
+  {
+   "part": 8,
+   "name": "Eb Horn 1",
+   "bars_exact": 7,
+   "bars": 7
+  },
+  {
+   "part": 9,
+   "name": "Eb Horn 2",
+   "bars_exact": 7,
+   "bars": 7
+  },
+  {
+   "part": 10,
+   "name": "C Trumpet 1",
+   "bars_exact": 7,
+   "bars": 7
+  },
+  {
+   "part": 11,
+   "name": "C Trumpet 2",
+   "bars_exact": 7,
+   "bars": 7
+  },
+  {
+   "part": 12,
+   "name": "C, G Timpani",
+   "bars_exact": 7,
+   "bars": 7
+  },
+  {
+   "part": 13,
+   "name": "Violin 1",
+   "bars_exact": 6,
+   "bars": 7
+  },
+  {
+   "part": 14,
+   "name": "Violin 2",
+   "bars_exact": 5,
+   "bars": 7
+  },
+  {
+   "part": 15,
+   "name": "Viola",
+   "bars_exact": 7,
+   "bars": 7
+  },
+  {
+   "part": 16,
+   "name": "Violoncello",
+   "bars_exact": 7,
+   "bars": 7
+  },
+  {
+   "part": 17,
+   "name": "Contrabass",
+   "bars_exact": 7,
+   "bars": 7
+  }
+ ],
+ "examples": []
+}
