@@ -16,6 +16,76 @@ pointing at headings no longer in the file.)*
 
 ---
 
+## 2026-09-22 (evening) — IDENTITY IS GATHERED, AND THE KEY SIGNATURE READS IT
+
+**Sean's ruling above, built and measured.** Two flags:
+`OMR_DOCUMENT_IDENTITY` **default ON** (deny-list — his instruction that the
+printing be gathered in the first stage), `OMR_ENGRAVED_KEYSIG` **default
+OFF** (allow-list — the consumer, and the flip is his). Findings:
+[benchmarks/omr-document-identity-2026-09/FINDINGS.md](benchmarks/omr-document-identity-2026-09/FINDINGS.md).
+
+⚠️⚠️ **THE BRIEF'S OWN WARNING IS REFUTED AND SEAN'S OFF-HAND GUESS IS RIGHT.**
+It called `image_type` *"almost certainly wrong about the engraved
+population"*; he said *"or maybe they are all scans because they came from
+IMSLP"*. Measured over **all 289 committed editions in 16 s** (no weights, no
+gather): the label and the container measurement agree **279 of 279 wherever
+the label exists** — 272/272 `Normal Scan` scanned, 7/7 `Typeset` engraved,
+and those seven are modern re-engravings, which is what the word means on
+IMSLP. **The label's failing is ABSENCE, not error**: its only gap is the 10
+editions carrying no label, split 7 / 3, all three engraved ones being local
+files rather than IMSLP downloads.
+
+⚠️⚠️ **SO THE REASON TO KEY ON THE MEASUREMENT IS STRUCTURAL AND STRONGER: the
+engraved fixture the fix is proven on is a RENDER in no catalog**, so
+`gather_document_identity` ABSTAINS `not_in_catalog` on it while the container
+reader answers `engraved`. **A domain filed as a FIELD of the catalog row
+would have had a reach of ZERO on the one input that matters.** That is why
+they are two quantities.
+
+⚠️ **`Q.INPUT_DOMAIN` was ALREADY DECLARED and CLAIM-classified**, produced by
+nothing and reported a GHOST by `reach --check` every run. This session
+reached the same design independently and declared it a SECOND time; the
+derived checks caught the duplicate. *"Roughly half of it already exists"* was
+true of more than the brief's own table named.
+
+**GATHER**: `publisher_year` (195/289 — Sean asked for the year by name),
+`plate` (177), `has_text_layer` (289) now filed; `gather_input_domain` is the
+new producer at `source_kind: "container"` — a **fourth kind**, named
+deliberately, with `catalog`'s independence from print quality and none of its
+dependence on the file having been catalogued. A page that is neither
+raster-dominant nor drawing-rich abstains `ABSTAIN.NO_DOMAIN_SIGNAL`.
+`positional_store._edition_projection` unifies two lookups that had hand-listed
+one field tuple twice.
+
+**MEASURED**, one gather adjudicated twice (3 pages, 54 staff-systems, 50
+decided; canonical `readjudicate --control` **688 of 688** first): key
+signature **right 26 → 47, wrong 24 → 3**. ⚠️⚠️ **It reproduces the 09-22
+handoff's own table from a fresh gather and a different scorer** —
+`fitted_by_template` **20/0**, `fitted` **6/24** — and **the template is 67 of
+67 right wherever it speaks**. The 3 that remain wrong are template SILENCES,
+not errors. In the file: bars exact **313 → 322 of 360**, **4 parts better, 0
+worse**, `<alter>` 44 → 67, `<fifths> -3` landing on the truth's 14.
+**CONTROL: of 29 quantities exactly 2 move.**
+
+**ONE-SIDED**: a scan, an abstention, no identity row and the flag off all
+fall through unchanged. Proved on a real scan gather —
+`scan_is_untouched.py` shows OFF == ON **with a forged-engraved control that
+changes all 12 verdicts**, so the tier is a no-op there because the DOMAIN
+GATE stops it, not because the template is silent.
+
+⚠️ **THREE INSTRUMENT DEFECTS, all clean believable zeros**: the accuracy table
+read 0 right / 0 wrong on both arms because `str(Outcome.DECIDED)` is
+`'Outcome.DECIDED'`; **the derived-check control measured the SHELL** (zsh does
+not word-split an unquoted parameter, so eight checks "failed identically on
+both trees" — `${=t}` shows all eight pass); and the new test file skipped 5 of
+18 assertions on a `dirname` short by one.
+
+⚠️ **NOT ESTABLISHED**: n = 1 engraved document, 1 renderer, 24 bars; **no
+print consulted**; the scan side shown only to be a NO-OP; nothing reads
+`Q.DOCUMENT_IDENTITY` even now; no OMR-NED, deliberately.
+
+---
+
 ## 2026-09-22 — SEAN'S RULING: identity is gathered first, and the key signature reads it
 
 **A decision and a work order. No code.** Sean, on being shown that

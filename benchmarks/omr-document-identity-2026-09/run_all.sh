@@ -60,5 +60,12 @@ for f in 0 1; do
       --bars 20 --truth-first-bar 1 --json-out $B/out/note-accuracy-arm-$f.json
 done
 
-# ── 6. the battery ─────────────────────────────────────────────────────────
+# ── 6. the scan fall-through, with its own vacuity control ────────────────
+python3 $B/scan_is_untouched.py --record $B/out/litolff-p1-identity.record.json \
+    --json-out $B/out/scan-untouched.json
+
+# ── 7. every number in FINDINGS.md, re-derived (no weights, no library) ───
+python3 $B/verify_findings.py
+
+# ── 8. the battery ─────────────────────────────────────────────────────────
 python3 $B/mutate.py

@@ -9,6 +9,11 @@ Work order: [docs/NEXT-2026-09-22-identity-conditions-the-key-signature.md](../.
 Everything here is reproducible with `run_all.sh`; the committed artefacts
 under `out/` are what every figure below is read off.
 
+⚠️ **AND EVERY FIGURE IS RE-DERIVED BY A SCRIPT, because the prose is the
+thing that drifts**: `verify_findings.py` asserts each headline below against
+the JSON it came from and **needs no weights, no score library and no PDF**.
+It exits non-zero naming any figure that no longer matches.
+
 ---
 
 ## 1. ⚠️⚠️ SEAN'S OWN GUESS IS RIGHT AND THE BRIEF'S WARNING IS REFUTED
@@ -194,12 +199,113 @@ accuracy**. Each of the four fall-throughs has its own test, and each is
 paired with the engraved case as a positive control, because a battery of
 fall-through tests passes by falling through always.
 
+⚠️ **THE TWO FLAGS INTERACT, AND IN THE SAFE DIRECTION.** The domain row is
+written by `OMR_DOCUMENT_IDENTITY`, so setting that OFF while
+`OMR_ENGRAVED_KEYSIG` is ON leaves the tier with no row to read and it falls
+through to the shipped precedence — silently, and correctly. There is no
+combination in which the tier acts on a domain nobody measured, because
+`_proved_engraved` requires a positive `engraved` row and an absent row is
+not one. `test_NO_IDENTITY_ROW_is_UNCHANGED` pins it.
+
 ⚠️ **`Scope.SELF_AND_ANCESTORS` is not optional.** `Q.INPUT_DOMAIN` is filed
 on the DOCUMENT and this decision is `Kind.STAFF`; a bare `ev.rows(...)`
 returns nothing on every page forever and **fails silent**, reading exactly
 like an honest document with no identity — the fault `adjudicate_instrument`
 records against `Q.ROSTER_ENTRY` in the same words. Pinned by a test that
 asserts the default EXACT scope finds nothing.
+
+---
+
+### What was REUSED, and the one scorer that was not
+
+The brief says *"`locator_vs_template.py` already prints the per-staff table
+this job is scored on. Reuse it; do not write a second scorer."* **Reused**:
+`readjudicate.rebuild` (imported from the canonical harness, not copied, so
+this arm cannot drift from the instrument every other ADJUDICATE arm in the
+repo is measured with), `export_record.py`, and `note_accuracy.py` unchanged.
+
+⚠️ **`locator_vs_template.py` was NOT reused, because it answers a different
+question.** It re-prepares the page and re-runs both READERS on the ink —
+*what did each reader see?* This arm compares two ADJUDICATE passes over one
+fixed gather — *what did the decision do with what the readers already said?*
+Its numbers are on the record; there is nothing for a re-read to add, and a
+second raster pass would introduce exactly the detector jitter the
+gather-once-adjudicate-twice design exists to exclude. **That its OFF arm
+reproduces `locator_vs_template`'s published 20/0 and 6/24 to the unit is the
+check that the two agree.**
+
+## 5b. THE RESIDUE — it reconciles with the brief's 91%, and names the next job
+
+`note_accuracy.py` buckets every disagreement, and the OFF arm reproduces the
+09-22 handoff's *"91% of all note errors on 20 bars of 18 parts are this one
+fault"* **exactly**: `same count, differs ONLY by an accidental` is **43 of
+47** disagreements (91.5%). The tier takes it **43 → 34**, leaving the other
+two buckets (2 and 2) untouched.
+
+⚠️⚠️ **SO THE RESIDUE IS STILL ACCIDENTALS — AND IT IS MOSTLY NOT THE KEY.**
+Of the 38 bars still not exact, only **8** are on the two parts that still
+carry a wrong key; **30 are on the 16 parts whose key is now CORRECT.** The
+worst offenders are `Bassoon 1` (12 of 20) and `Bassoon 2` (14 of 20), whose
+key is `-3` and right in BOTH arms and whose bar counts **do not move at all**.
+
+**That is the IN-BAR accidental, which reaches no quantity at all** — the
+separate job the brief's §8 names, scoped in
+`docs/symbol-dossiers/accidentals-keys.md` and blocked on a record-shape
+decision (*the record has nowhere to put a span*) that is Sean's. `<alter>`
+ends at **67 of a truth 100**, and the 33 missing alterations are the same
+population.
+
+⚠️ **So this fix reaches the KEY-borne alterations and nothing else, by
+construction, and the numbers say how far that goes**: it is the whole of the
+9-bar gain and it cannot touch the remaining 30.
+
+---
+
+## 5c. THE ALTERNATIVE SHAPE — measured for REACH, and NOT taken
+
+The brief's §5 names a second shape and does not rule it out: *"leave the
+precedence alone and lower `min_height_spaces` for engraved input instead,
+since the mechanism is measured (flats at 0.94-1.22 after erasure against a
+1.10 floor)."*
+
+**Not taken, and the reason is reach against cost rather than a measurement
+of it.** That route is a **GATHER** change — it moves a constant inside
+`key_signature_locator`, so `readjudicate` is structurally blind to it and
+every arm costs a full re-gather; this one moves no constant at all and is
+priced by re-adjudicating a fixed gather. Its ceiling is also visibly higher
+(it could reach the 3 staves the template is silent on, which this cannot),
+so **it is worth measuring and this lane did not measure it.** ⚠️ Whoever
+does: the floor is shared with the SCAN path, where the erasure is what makes
+the locator work at all, so it needs the same one-sided gating and an
+engraved-only arm — which is now cheap, because the domain is on the record.
+
+---
+
+## 6b. THE SCAN IS UNTOUCHED — with a control proving the comparison has teeth
+
+`scan_is_untouched.py`, over a **real 1-page Litolff scan gather**
+(`out/litolff-p1-identity.record.json`, which carries `input_domain: scanned`
+at raster coverage 1.0 and the full catalog row — publisher, **year 1870**,
+**plate 2769**, `image_type: Normal Scan`, `has_text_layer: False`):
+
+```
+OFF == ON                      True      ✅ the scan is untouched
+CONTROL (forced `engraved`)    DIFFERS   ✅ the comparison has teeth
+control changed 12 of 12 verdicts, reasons {'fitted_by_template_engraved': 12}
+```
+
+⚠️⚠️ **THE CONTROL IS THE INTERESTING HALF, AND IT STRENGTHENS THE ONE-SIDED
+RULE RATHER THAN DECORATING IT.** Rewriting that record's own domain row to
+`engraved` moves **all 12** key-signature verdicts. So the tier is a no-op on
+that page **because the domain gate stops it**, not because the template is
+silent there — the template speaks on all 12 staves and the gate is the only
+thing standing between it and the file. **Whether it would be RIGHT on those
+12 is exactly what is not measured**, which is the whole reason the rule is
+one-sided.
+
+⚠️ The instrument returns non-zero unless **both** conditions hold: a run
+where the scan is untouched and the control is vacuous is a pass-shaped
+nothing.
 
 ---
 

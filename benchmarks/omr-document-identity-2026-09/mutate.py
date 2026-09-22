@@ -64,14 +64,26 @@ TRUTH = (ROOT / "benchmarks/omr-staged-engraved-2026-09/out/fixture/"
 #: mutation-tested in a state where it FAILS**, which is the lesson
 #: `omr-vertical-runs-page-2026-09` paid for and this battery repeated.
 #:
-#: The SCAN record supplies that state for both: it measures `scanned`, so the
-#: arm must exit 2 DEAD; and its 12 staves do not divide 18 parts, so the
-#: ordinal join must refuse. The third survivor — an unresolved verdict walk —
-#: is answered inside the arm instead, by printing how many superseded pairs
-#: it resolved (227 on the engraved record: 215 `duration`, 12 `pitch`).
+#: ⚠️ THE FIRST REPAIR WAS HALF RIGHT AND THE SECOND RUN SHOWED IT. The SCAN
+#: record makes the arm exit 2 DEAD, which exercises the dead branch -- but it
+#: returns BEFORE the scorer, so the ordinal-join refusal is still unreached,
+#: and `--truth-xml` was never the thing that refused. Hence the THIRD run, on
+#: a five-part stub that does not divide 54.
+#:
+#: The remaining survivor -- an unresolved verdict walk -- is answered inside
+#: the arm instead: it prints how many superseded pairs it RESOLVED (227 on
+#: the engraved record: 215 `duration`, 12 `pitch`) **and on how many the
+#: resolved answer DIFFERS from the first row met (227 of 227)**, which an
+#: unresolved walk takes to zero.
+FIVE_PARTS = OUT / "five-parts.truth.musicxml"
 ARM_RUNS = [
     ["--record", str(REC), "--truth-xml", str(TRUTH)],
     ["--record", str(SCAN_REC), "--truth-xml", str(TRUTH)],
+    # ⚠️ THE THIRD RUN EXISTS ONLY TO MAKE A REFUSAL FIRE. 54 staff-systems
+    # divide 18 parts exactly, so on the real truth the ordinal-join refusal
+    # can never be reached and mutating it away reported SURVIVED. Five parts
+    # do not divide 54.
+    ["--record", str(REC), "--truth-xml", str(FIVE_PARTS)],
 ]
 
 #: (target, name, find, replace, what it must break)
@@ -183,10 +195,16 @@ ARMS = [
      "test must fail"),
 
     # ── THE INSTRUMENT ──────────────────────────────────────────────────────
-    ("arm", "DEAD at zero reach becomes a clean exit",
-     '        print("\\n⚠️ DEAD ARM: this record carries no Q.INPUT_DOMAIN row',
-     '        return 0\n        print("\\n⚠️ DEAD ARM: this record carries no Q.INPUT_DOMAIN row',
-     "a dead instrument must not read as a clean result"),
+    # ⚠️ IT NAMES THE **SECOND** DEAD BRANCH, and the first version named the
+    # first. Neither judging record carries NO domain row -- both carry one --
+    # so the "no row at all" branch is unexercised by this battery and
+    # mutating it reported SURVIVED. The branch the scan run actually takes is
+    # *the domain is not `engraved`*, and that is the one worth pinning.
+    ("arm", "DEAD on a non-engraved document becomes a clean exit",
+     '        print(f"\\n⚠️ DEAD ARM: the document measures "',
+     '        return 0\n        print(f"\\n⚠️ DEAD ARM: the document measures "',
+     "a dead instrument must not read as a clean result -- the scan run's "
+     "exit 2 is part of the baseline PROFILE and must move"),
 
     ("arm", "the outcome is compared as `str(enum)` again",
      "            out[q][key] = (live.outcome.value, live.value, live.reason) \\",
@@ -295,7 +313,7 @@ def main() -> int:
               "was interrupted and the tree may still carry a mutation.")
         print(SENTINEL.read_text())
         return 3
-    for r in (REC, SCAN_REC):
+    for r in (REC, SCAN_REC, FIVE_PARTS):
         if not r.is_file():
             print(f"REFUSED: {r} is missing. The arm half of this battery "
                   f"measures nothing without it; see run_all.sh.")
@@ -343,7 +361,15 @@ def main() -> int:
                   f"REPORTED AS AN ERROR, never as a pass")
             continue
         TARGETS[target].write_text(src.replace(find, repl), encoding="utf-8")
-        if target == "arm":
+        # ⚠️⚠️ BY LOCATION, NOT BY NAME. This read `target == "arm"`, so the
+        # moment a SECOND instrument was added under this directory
+        # (`scanarm`) both of its arms fell to the `else` and were judged by
+        # the UNIT SUITE -- which cannot see a benchmark script at all, so
+        # both reported SURVIVED. **Two of that run's five survivors were the
+        # battery's own judge, not a test gap**, which is the same family as
+        # a BAD ANCHOR: a selector that silently stops matching reports its
+        # own failure as the subject's.
+        if TARGETS[target].is_relative_to(HERE):
             rc, out = run_arm()
             moved = (rc != a_rc) or (out != a_out)
             judge = "ARM headline"

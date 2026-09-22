@@ -63,8 +63,10 @@ def truth_fifths(xml: Path) -> List[Optional[int]]:
     return out
 
 
-#: How many (quantity, subject) pairs each walk had to RESOLVE. See `_walk`.
+#: How many (quantity, subject) pairs each walk had to RESOLVE, and on how
+#: many the RESOLVED answer differs from the first row met. See `_walk`.
 _RESOLVED: List[int] = []
+_DIFFERED: List[int] = []
 
 
 def _walk(log):
@@ -78,15 +80,19 @@ def _walk(log):
     """
     seen = defaultdict(dict)
     rows = Counter()
+    first = {}
     for v in log.all_verdicts():
         seen[v.quantity][v.subject.to_key()] = v.subject
         rows[(v.quantity, v.subject.to_key())] += 1
+        first.setdefault((v.quantity, v.subject.to_key()),
+                         (v.outcome.value, v.value, v.reason))
     # ⚠️ PRINTED, because a battery arm that swapped the resolution for an
     # unresolved walk SURVIVED: the two give the same OFF-vs-ON diff on this
     # record, so the headline could not see the change. Counting what was
     # resolved makes the choice visible — and it is not zero here: 227 pairs
     # carry more than one row (215 `duration`, 12 `pitch`).
     _RESOLVED.append(sum(1 for n in rows.values() if n > 1))
+    differed = 0
     out = {}
     for q, subs in seen.items():
         out[q] = {}
@@ -100,6 +106,14 @@ def _walk(log):
             # plain and unaffected; only the outcome enum bit.
             out[q][key] = (live.outcome.value, live.value, live.reason) \
                 if live is not None else None
+            # ⚠️ THE COUNT THE MUTATION MUST MOVE. An arm that swapped this
+            # resolution for an unresolved walk SURVIVED, because the OFF/ON
+            # diff is the same either way -- so the arm now reports how often
+            # the resolved answer DIFFERS from the first row met, which is
+            # exactly what the resolution buys and goes to ZERO without it.
+            if out[q][key] is not None and out[q][key] != first[(q, key)]:
+                differed += 1
+    _DIFFERED.append(differed)
     return out.items()
 
 
@@ -161,9 +175,10 @@ def main() -> int:
                     if voff.get(q) != von.get(q)})
     print("\n── CONTROL " + "─" * 56)
     print(f"   quantities in the record   {len(set(voff) | set(von))}")
-    print(f"   superseded pairs RESOLVED  {_RESOLVED}  "
-          f"(EVALUATE revises in place; an unresolved walk would report "
-          f"whichever row it met first)")
+    print(f"   superseded pairs RESOLVED  {_RESOLVED}, of which the resolved "
+          f"answer DIFFERS from the first row met on {_DIFFERED}")
+    print(f"      (EVALUATE revises in place; an unresolved walk would report "
+          f"whichever row it met first, and that second count would be 0)")
     print(f"   quantities that MOVED      {len(moved)}  {moved}")
     ks = Q.KEY_SIGNATURE
     downstream = [q for q in moved if q != ks]

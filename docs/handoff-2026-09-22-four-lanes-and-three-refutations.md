@@ -31,6 +31,23 @@ engraved-vs-scan verdict (**not** `image_type`, which is IMSLP's label and
 reads `Typeset` on 7 of 289), and that the consumer must be **ONE-SIDED**.
 **The measurement that justifies it follows.**
 
+✅⚠️⚠️ **AND IT IS NOW BUILT AND MEASURED (2026-09-22 evening) — §1a's TABLE
+REPRODUCES FROM A FRESH GATHER AND A DIFFERENT SCORER, AND ONE CLAIM ABOVE IS
+REFUTED.** `benchmarks/omr-document-identity-2026-09/FINDINGS.md`: key
+signature **right 26 → 47 of 50, wrong 24 → 3**, and split by reason the
+shipped arm reads `fitted_by_template` **20 / 0** and `fitted` **6 / 24** —
+§1a's own figures to the unit. ⚠️ **The parenthesis above — *"not
+`image_type`, which is IMSLP's label and reads `Typeset` on 7 of 289"* — is
+right about the doctrine and wrong about the label.** Measured over all 289
+committed editions, the label and the container measurement agree **279 of 279
+wherever the label exists**; its failing is **ABSENCE, not error**, and Sean's
+own *"maybe they are all scans because they came from IMSLP"* is the correct
+reading. The real reason to key on the measurement is structural: **the
+engraved fixture is a render in no catalog, so the catalog row ABSTAINS on
+exactly the input the rule is proven on.** `OMR_DOCUMENT_IDENTITY` is now
+default ON; the consumer is `OMR_ENGRAVED_KEYSIG`, default OFF, **and the flip
+is still Sean's.**
+
 ## 1a. THE MEASUREMENT
 
 **`adjudicate_key_signature` prefers the reader that is wrong, and the reason
