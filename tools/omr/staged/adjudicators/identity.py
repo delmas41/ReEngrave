@@ -51,11 +51,25 @@ def adjudicate_instrument(ev: Evidence) -> Ruling:
     ⚠️ THE SCORE-ORDER TIER IS A DECLARED GAP, NOT AN OVERSIGHT. Wiring it
     means consuming the layout prior, and the prior consumes CLEFS
     (`contextual.py:1208-1209`, `fit_layouts(..., clefs=clef_by_slot)`). It
-    must therefore read `Q.CLEF` THROUGH `Evidence` -- never by reaching
+    must therefore read the clef THROUGH `Evidence` -- never by reaching
     around it -- or the basis will not record the dependency and the
     circularity filter will admit a deduced identity into the clef decision,
     which is the precise failure `clef_correction.py:566` exists to prevent
     and which the partition-truth gate caught costing 3 of 27 staves.
+
+    ⚠️⚠️ AND THIS PARAGRAPH NAMED THE WRONG OBJECT UNTIL 2026-09-21: it said
+    `Q.CLEF`, which is a VERDICT AT `ORDER` 9 while this decision runs at
+    `ORDER` 5 -- so the instruction as written could never be carried out, and
+    a session following it would reach for a quantity that does not exist yet.
+    The reachable objects are `Q.CLEF_GLYPH` and `Q.CLEF_POSITION`, GATHER
+    facts available at every ORDER, and reading THOSE cannot close the loop:
+    the hazard is admitting a DEDUCED identity into the clef decision, and a
+    glyph is a reading of ink rather than a deduction. That is CLAUDE.md's
+    *a circularity fear resting on the wrong object*, and Sean's own words on
+    it -- "we should know what these are regardless of clef, and having a clef
+    would only reinforce the finding." The gap is still a gap; what changed is
+    that it is now stated in terms that can be acted on. See
+    `docs/NEXT-2026-09-22-instrument-identification.md`.
     """
     labels = ev.rows(Q.MARGIN_LABEL)
     if not labels:

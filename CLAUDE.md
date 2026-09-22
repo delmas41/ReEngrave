@@ -836,6 +836,38 @@ FOUR claims made the same day**, including that this file's convention count
 is **114, not 125**, and a Breitkopf figure computed under a flat 100 px
 instead of `Q.CELL_STAFF_SPACE`.
 
+⚠️⚠️ **THE RANKED NEXT WORK, AND IT IS SEAN'S OWN QUESTION:**
+[docs/NEXT-2026-09-22-instrument-identification.md](docs/NEXT-2026-09-22-instrument-identification.md)
+— *"I thought we had figured out the instrument to line issue. Using the
+natural order of instruments, the list of instrumentation from the score or a
+dossier and the addition of any clefs that could be read as well as family
+brackets — would all add up to clarity of the instrumentation. Did we lose that
+at some point?"* **He is right; most of it was never connected to the reader
+that runs.** `adjudicate_instrument` reads **exactly two quantities** —
+`Q.MARGIN_LABEL` and `Q.ROSTER_ENTRY` — while declaring `Q.STAFF_ORDINAL` and
+`Q.STAFF_GROUP` in `wants` and reading neither, and carrying `score_order` as a
+declared REASON with **no branch that can return it**. ⚠️⚠️ **The roster is
+structurally unreachable on the staves that need it**: `no_evidence` returns
+BEFORE the roster is fetched, so a staff with no margin label never reaches the
+one tier carrying `source_kind: "catalog"` — the tier chosen *because it does
+not fall silent when the raster is bad*. ⚠️ **REACH, measured on the clean
+shared record**: of the **25 staves that abstain**, **25 of 25 carry
+`Q.STAFF_ORDINAL`**, **17 of 25 carry `Q.CLEF_GLYPH` and `Q.CLEF_POSITION`**,
+and `staff_group` decides **75 of 75** — *every one has an unread channel on
+the record*. That is REACH and not accuracy. ⚠️⚠️ **AND THE DECISION'S OWN
+DOCSTRING INSTRUCTS SOMETHING IMPOSSIBLE** — it says the score-order tier must
+read `Q.CLEF` through `Evidence`, and **`Q.CLEF` is ORDER 9 while `instrument`
+is ORDER 5**; the reachable objects are the GATHER facts `Q.CLEF_GLYPH` /
+`Q.CLEF_POSITION`, which is this file's own *circularity fear resting on the
+wrong object*. ⚠️⚠️ **READ THE PRIOR ART FIRST — naming unnamed staves BY
+POSITION IS ALREADY MEASURED AND IT GRAFTS** (66 correct against 50, and **9
+staves grafted**; `benchmarks/omr-slot-index-2026-09/FINDINGS.md`), and **29 of
+29 unresolved non-treble staves print NO LABEL AT ALL**, so better label
+reading cannot reach this population. ⚠️ **The 2026-09-21 flip PLACED 15 of
+the 25 and did not NAME them** — `export._default_name` is why a part reads
+`Staff p1-s0-3`, so that symptom is this decision abstaining rather than the
+join failing.
+
 **Backlog / research notes:** see [NOTES.md](NOTES.md) — surface these at the start of a ReEngrave session.
 
 **Where the work stands today:** see [PROJECT_STATUS.md](PROJECT_STATUS.md).
