@@ -279,6 +279,23 @@ would be right is exactly what is unmeasured.
     > clause it did not have: DO NOT COMMIT EITHER. A battery owns the working
     > tree while it runs, and `git add -A` is a read of the working tree.**
 
+11. ⚠️ **I HANDED A PEER A PATCH AGAINST A BRANCH SNAPSHOT AND DID NOT NAME
+    THE SHA.** The doc entries for roadmap 2.2 were diffed against
+    `origin/claude/build-process-system-design-e8d64a` **as I had fetched it**
+    (`2b441cb3`); that branch had moved to `964a9598` by the time the patch
+    arrived, and the newer commit touched **all three** of the files the patch
+    covers (ROADMAP −1/+1, DECISIONS +6, flags +1). **Applied whole it would
+    have reverted a roadmap line, a decision and a flag row.** The peer caught
+    it and took the additive parts by hand.
+
+    ⚠️ The message did say *"diffed against
+    `origin/claude/build-process-system-design-e8d64a`"* — **which is the
+    error, not the mitigation**: that names a BRANCH, and a branch is a moving
+    reference. It is this repo's own recorded shape, in a new place —
+    *"`tree clean at <sha>` is a claim about a BRANCH and not about main"* —
+    and the fix is the same one: **name the SHA, and re-fetch immediately
+    before generating a cross-branch patch.**
+
 ## 8. OPERATIONAL
 
 - ⚠️ **`timeout` does not exist on macOS.** It exits 127 and the command never
