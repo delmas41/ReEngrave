@@ -153,6 +153,61 @@ deliberate scope decision — and a test that pins a known-false claim keeps it
 alive. It now pins the repair, and additionally asserts the two rows still say
 DIFFERENT things about one cell, which is what the quantity is for.
 
+## 7a. ✅ THE MECHANISM IS CONFIRMED ON A REAL PAGE — one page, gathered on this tree
+
+`out/empty-claims-AFTER-p1.txt`, Litolff Beethoven 5 **pdf page 1**, gathered
+on the repaired tree with the production scan weights:
+
+```
+witness ink: 192 cells carry an ink row; 190 carry a detection
+⚠️  CONTRADICTED: 183
+     direction_word/no_ink                    183      <- see below
+HONEST empty claims:
+     dynamic_letter/no_glyph_of_this_kind     175
+     beam_stroke/no_stems_to_join             149
+     stem/no_line_accepted                    112
+     beam_stroke/no_line_accepted              15
+     dynamic_letter/no_detections               2
+```
+
+**All three repaired families have LEFT the contradicted set**, and
+`dynamic_letter` **discriminates**: 175 cells get `no_glyph_of_this_kind` and
+the 2 cells that genuinely had no detection get the honest `no_detections`.
+⚠️ These are ONE page's numbers and are not comparable to the four-page
+prediction below, which stands unmeasured.
+
+⚠️⚠️ **AND THE RUN BEFORE IT IS A CONTROL NOBODY DESIGNED.** The first attempt
+was launched with no `--weights` (my error — the staged CLI takes no default),
+and the record said so in its own vocabulary: `glyph_box/reader_unavailable`
+192, `dynamic_letter/no_detections` 192, *"0 cells carry a detection"*. **An
+operator error was legible from the record alone**, and the dynamic family
+correctly said `no_detections` rather than `no_glyph_of_this_kind` — the
+discrimination working in the direction that had no test. `out/` keeps only
+the weighted run; the detectorless one is described here rather than committed.
+
+## 7b. ⚠️⚠️ A FOURTH CANDIDATE, OBSERVED AND DELIBERATELY NOT REPAIRED: `direction_word/no_ink`
+
+It is **183 of the 183** remaining contradictions on that page, and it was
+INVISIBLE on the four-page shared record, where the direction rungs did not run
+and the whole family reads `out_of_scope` (1,187). **It only appears when the
+reader actually runs.**
+
+⚠️ **It is the most defensible `no_ink` after `Q.INK`'s own, and it still
+overclaims.** `direction_text` subtracts every detection from the page's ink
+and looks for word-shaped remainder, so it *does* perform an ink measurement —
+but of ink OF ITS OWN KIND, and the word says *the page is empty*. The precise
+statement is *no word-shaped ink survived the subtraction*.
+
+**NOT REPAIRED HERE**, for a reason rather than for want of time: that family
+has a documented four-state contract (`READER_UNAVAILABLE` / `OUT_OF_SCOPE` /
+`NO_INK` / `NO_READING`) that was designed deliberately and is pinned by
+`test_staged_direction.py`, and CLAUDE.md describes its `NO_INK` as *"the CV
+proposed nothing"* — a **decision with an empty value**, not a gather
+abstention. Changing it is a change to a settled contract and wants its own
+measurement. ⚠️ It is also the case where `trace`'s own ONE-SIDED caveat bites
+hardest: *ink being present does not mean ink of the refusing reader's own kind
+is present.*
+
 ## 7. ⚠️ PRE-REGISTERED PREDICTION — written before any re-gather exists
 
 This is a GATHER change, so `readjudicate` and `reexport_arm` are structurally
