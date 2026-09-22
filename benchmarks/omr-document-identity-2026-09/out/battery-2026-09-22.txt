@@ -1,8 +1,8 @@
 ==============================================================================
 BASELINE — the positive control. Every arm below is free if this is not green.
 ==============================================================================
-  SUITE+CHECKS exit 0: 126 passed, 5 warnings in 19.89s  reach=0  capture=0  brakes=0
-  ARM          exit 2
+  SUITE+CHECKS exit 0: 126 passed, 5 warnings in 19.59s  reach=0  capture=0  brakes=0
+  ARM          exit 3
   Q.INPUT_DOMAIN       observed 1  abstained 0  value ['engraved']
   superseded pairs RESOLVED  [227, 227], of which the resolved answer DIFFERS from the first row met on [227, 227]
   quantities that MOVED      2  ['accidental', 'key_signature']
@@ -27,6 +27,10 @@ BASELINE — the positive control. Every arm below is free if this is not green.
   OFF == ON                      True   ✅ the scan is untouched
   CONTROL (forced `engraved`)    DIFFERS   ✅ the comparison has teeth
   control changed 12 of 12 verdicts, reasons {'fitted_by_template_engraved': 12}
+  ==
+  ── REACH: Q.INPUT_DOMAIN ['scanned']
+  OFF == ON                      True   ✅ the scan is untouched
+  CONTROL (forced `engraved`)    IDENTICAL   ⚠️ VACUOUS — the two arms above prove NOTHING
 
 ------------------------------------------------------------------------------
 ARM [gather]: the domain is a FIELD of the catalog row, not its own quantity
@@ -101,36 +105,33 @@ ARM [header]: the template's fit for ANOTHER clef is taken
 ------------------------------------------------------------------------------
 ARM [arm]: DEAD on a non-engraved document becomes a clean exit
   judge: ARM headline   expected: a dead instrument must not read as a clean result -- the scan run's exit 2 is part of the baseline PROFILE and must move
-  exit 0  -> RED
+  exit 1  -> RED
 
 ------------------------------------------------------------------------------
 ARM [arm]: the outcome is compared as `str(enum)` again
   judge: ARM headline   expected: THE BUG THIS ARM ALREADY HAD: `str(Outcome.DECIDED)` is 'Outcome.DECIDED', so the accuracy table read 0 right / 0 wrong on BOTH arms -- the scorer's own positive control must fire
-  exit 5  -> RED
+  exit 6  -> RED
 
 ------------------------------------------------------------------------------
 ARM [arm]: the verdict walk takes SUPERSEDED rows
   judge: ARM headline   expected: EVALUATE revises in place, so an unresolved walk reports quantities as having moved when only the write count moved -- the CONTROL must move
-  exit 2  -> RED
+  exit 3  -> RED
 
 ------------------------------------------------------------------------------
 ARM [scanarm]: the VACUITY control is dropped
   judge: ARM headline   expected: a run where the scan is untouched AND the control is vacuous is a PASS-shaped nothing -- BOTH conditions are the instrument
-  exit 2  -> SURVIVED
-  ⚠️ SURVIVOR — a real test gap, not a pass.
+  exit 2  -> RED
 
 ------------------------------------------------------------------------------
 ARM [scanarm]: the forged control is not forged
   judge: ARM headline   expected: the control must actually change the domain, or `CONTROL DIFFERS` is reporting that a file equals itself
-  exit 3  -> RED
+  exit 4  -> RED
 
 ------------------------------------------------------------------------------
 ARM [arm]: the ordinal join is forced where it does not divide
   judge: ARM headline   expected: pairing by position where the counts disagree reports the mismatch as accuracy
-  exit 2  -> RED
+  exit 3  -> RED
 
 ==============================================================================
-RED 19   SURVIVED 1   BAD ANCHORS 0
+RED 20   SURVIVED 0   BAD ANCHORS 0
 restore VERIFIED by md5: True
-  SURVIVOR [scanarm] the VACUITY control is dropped
-     expected: a run where the scan is untouched AND the control is vacuous is a PASS-shaped nothing -- BOTH conditions are the instrument

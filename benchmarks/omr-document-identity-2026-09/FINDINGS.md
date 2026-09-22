@@ -364,12 +364,45 @@ nothing.
    > **A control can only be mutation-tested in a state where it FAILS, and
    > "add a second fixture" is not automatically that state — check which
    > branch each fixture actually reaches.**
+
+   **The battery took FOUR runs to become one**, and the sequence is the
+   finding: **15 RED / 3 SURVIVED** → (judge repaired, scan record added)
+   **15 / 5**, two of the new survivors being the judge bug itself → (DEAD arm
+   retargeted, five-part stub, resolution made visible) **19 / 1** → (`--no-forge`)
+   **20 RED / 0 SURVIVED / 0 BAD ANCHORS, restore verified by md5.**
+   ⚠️ The last survivor was a **SECOND-ORDER** guard — `return 0 if (same and
+   moved)` only does anything once the FORGING breaks, and on a healthy tree
+   `moved` is always True — so it needed a flag that breaks the forge
+   deliberately. **A guard whose failing state is another guard's failure
+   cannot be reached by any fixture; it needs the composition.**
 8. ⚠️ **A `tools/` FILE WAS EDITED WHILE THE BATTERY HELD A SNAPSHOT OF IT**
    and was silently restored away at the next arm. Recovered from a copy taken
    immediately after writing it, with all 20 anchors re-checked against the
    restored file. CLAUDE.md's *do not edit `tools/` while a suite is running*,
    paid for again — and note the failure is SILENT: `git status` showed the
    file clean, because the battery had put back exactly what git had.
+
+---
+
+## 7b. THE SUITE, AND A CONTROL TREE THAT WAS NOT ONE
+
+**Full suite in this worktree: 4,833 passed, 12 skipped, 0 failed**, with the
+tree verified clean after the battery's restore. Battery **20 RED / 0 SURVIVED
+/ 0 BAD ANCHORS**. All eight derived checks (`inventory`, `health`, `wiring`,
+`gather_coverage`, `reach`, `capture`, `brakes`, `no_producer`) exit 0, and
+each was confirmed to exit 0 on `origin/main` as well before any conclusion
+was drawn from it.
+
+⚠️ **THE `origin/main` CONTROL TREE WAS BUILT WITH `git archive` AND IS
+THEREFORE NOT A CHECKOUT.** Run there, the full suite reports **6 failed /
+4,800 passed / 20 skipped** — and all six are the environment: five
+`test_label_contradiction` artefact tests and
+`test_staged_provenance::test_inside_a_checkout_it_names_the_tree`, which
+cannot pass outside a git repository. **In the real worktree they pass.** So
+that tree was a sound control for the DERIVED CHECKS (verified individually,
+both trees) and **not** for the suite, and a reader must not quote its 6 as
+*"main is failing six tests"*. Named because the same trap is one command
+away for anyone repeating this comparison.
 
 ---
 
