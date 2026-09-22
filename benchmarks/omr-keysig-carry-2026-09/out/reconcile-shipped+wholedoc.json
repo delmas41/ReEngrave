@@ -1,0 +1,16 @@
+{
+ "arm": "shipped+wholedoc",
+ "staves": 75,
+ "moved": 13,
+ "reading_before": 34,
+ "reading_after": 30,
+ "file_before": 42,
+ "file_after": 40,
+ "fixed": 2,
+ "broken": 4,
+ "actions": {
+  "kept": 36,
+  "rejected": 13,
+  "unread": 26
+ }
+}

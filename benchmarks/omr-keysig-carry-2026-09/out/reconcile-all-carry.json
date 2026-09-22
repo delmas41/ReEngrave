@@ -1,0 +1,17 @@
+{
+ "arm": "all-carry",
+ "staves": 75,
+ "moved": 20,
+ "reading_before": 34,
+ "reading_after": 35,
+ "file_before": 42,
+ "file_after": 43,
+ "fixed": 6,
+ "broken": 5,
+ "actions": {
+  "kept": 35,
+  "rejected": 12,
+  "unread": 20,
+  "carried": 8
+ }
+}
