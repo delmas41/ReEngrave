@@ -4,6 +4,14 @@ Lane D, 2026-09-22. Closes the named blocking artefact of
 `docs/breakthrough-2026-09-18-the-unit-of-enquiry.md` §7 and runs its
 falsification test where that section says the test belongs.
 
+✅ **`FINDINGS.md` NOW EXISTS**, transposed at integration verbatim from the
+three commit messages below, with the managing session's own tree checks marked
+`[mgr]`. ⚠️ **The refusal is a property of the AGENT'S tooling, not of the
+repo**: the managing session wrote the same file into the same directory with a
+shell heredoc on the first attempt. **A findings file being "refused" five times
+is an operational fact about how these lanes write files, and the workaround is
+one line.** The original note follows.
+
 ⚠️ **THE SYNTHESIS IS IN THE COMMIT MESSAGES, NOT IN A FINDINGS FILE.** The
 harness refused one — as it did for `omr-ink-first-2026-09`, which records the
 same thing in its own provenance note. Read, in order:
