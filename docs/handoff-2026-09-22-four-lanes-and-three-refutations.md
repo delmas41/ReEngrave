@@ -85,7 +85,7 @@ pushed under) and **swamped**.
 | **A** engraved staged record | **the first reading accuracy the staged pipeline has had**, and §1 | untouched by the lane |
 | **B** join a chord to its stroke | **REFUSED by the print**, and the item was mis-sized | untouched |
 | **C** re-price `OMR_ROSTER_LABELS` | **premise REFUTED**; the flag is legacy-only | docstring + 2 tests |
-| **D** ink-first on the shattering plate | **the governing document's §7 falsifier FIRES** | untouched |
+| **D** ink-first on the shattering plate | **the governing document's §7 falsifier FIRES** — and the **FULL 461 MB staged record** landed after the report and reproduces the gather-only shortcut in **every number, all 15 AUCs to six decimals** | untouched |
 | **mgr** the `no_ink` lie | repaired; a fourth candidate named | `gather`, `record`, `trace`, `wiring` |
 | **mgr** `score_reading` page lookup | repaired — a scoring instrument that answered with a ZERO | `score_reading` + tests |
 

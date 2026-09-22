@@ -4118,6 +4118,18 @@ Breitkopf SHATTERS* from a third direction.
 
 **The artefact**: `library/_shared-records/brahms1-breitkopf-p0-p3-ink.gather.json`,
 md5 `213bcb92…`, **15,212 `Q.INK` rows over 818 cells**, pages 0-3, GATHER-only.
+✅⚠️ **AND THE FULL STAGED RECORD LANDED TOO** —
+`…-ink.record.json`, **461 MB**, md5 `4df63a75…`, provenance `27311d68`
+**`dirty: false`** (md5 and stamp both verified against the file) — **and it
+reproduces the gather-only projection in EVERY number**: ink rows, glyph_box,
+cells, 106/106 subjects and class agreement, 33/55/18, 8,028 zero-coverage
+pieces, **and all 15 AUCs to six decimal places.** So no figure in that lane is
+a property of the shortcut. ⚠️ **It is stamped `OMR_DIRECTION_TEXT=0` and
+`surya: false`** — legitimate for a long unattended run and ON the record, but
+**its configuration differs from the 2026-09-15 shared Brahms record and a lane
+comparing the two must read the stamp.** ⚠️ The **committed** artefact stays the
+24 MB projection, because `library/` is gitignored and that is what lets a cloud
+session with no weights re-run or refute the test.
 ⚠️ **Its cross-gather control is the strong one**: page 1 reproduces the
 committed 2026-09-18 single-page gather **EXACTLY** — ink 6055 = 6055, and the
 ink SUBJECT KEY SET identical with 0 on either side — **two independent
