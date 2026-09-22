@@ -1,0 +1,39 @@
+bucket: 'NO component overlaps the head at all'
+n = 12
+
+  BOX ALONE: box width (spaces)
+    junk (n=6): [0.5146, 0.53, 0.6, 0.63, 0.6505, 1.1051]
+    real (n=3): [1.1278, 1.3163, 1.72]
+    perfectly ordered: True   MARGIN between the two populations: 0.0227
+    widest empty interval anywhere: 0.4546 in (0.6505, 1.1051)
+    ⚠️ PERFECT ORDER, NEGLIGIBLE MARGIN -- this is an ordering claim, not a measured gap, and n is tiny.
+
+  BOX ALONE: box h/w
+    junk (n=6): [0.6508, 0.95, 0.9574, 0.9773, 1.1413, 1.1698]
+    real (n=3): [0.3067, 0.4012, 0.5825]
+    perfectly ordered: True   MARGIN between the two populations: 0.0683
+    widest empty interval anywhere: 0.2992 in (0.6508, 0.95)
+
+  BOX ALONE: detector confidence
+    junk (n=6): [0.3485, 0.4087, 0.5442, 0.5504, 0.7017, 0.7993]
+    real (n=3): [0.2602, 0.7592, 0.7943]
+    perfectly ordered: False
+    widest empty interval anywhere: 0.1513 in (0.5504, 0.7017)
+
+  INK: piece extent / box extent
+    junk (n=6): [0.9503, 1.1159, 1.1485, 10.7225, 569.373, 763.2985]
+    real (n=3): [1.0502, 1.1594, 1.25]
+    perfectly ordered: False
+    widest empty interval anywhere: 558.6505 in (10.7225, 569.373)
+
+  INK: box's share of the piece
+    junk (n=6): [0.0013, 0.0018, 0.0933, 0.8099, 0.8769, 0.8779]
+    real (n=3): [0.8, 0.8625, 0.9364]
+    perfectly ordered: False
+    widest empty interval anywhere: 0.7067 in (0.0933, 0.8)
+
+  INK: piece height (spaces)
+    junk (n=6): [0.48, 0.5, 1.321, 2.23, 8.138, 12.0]
+    real (n=3): [0.376, 0.69, 0.754]
+    perfectly ordered: False
+    widest empty interval anywhere: 5.9080 in (2.23, 8.138)
