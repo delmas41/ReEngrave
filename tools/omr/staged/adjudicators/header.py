@@ -84,7 +84,6 @@ def _template_detail(row) -> dict:
             "decided_by": "template"}
 
 
-
 def _marker_ink(ev: Evidence) -> dict:
     """What the DETECTOR saw of this staff's key accidentals — RECORDED ONLY.
 
@@ -202,6 +201,25 @@ def adjudicate_key_signature(ev: Evidence) -> Ruling:
     readers fail in opposite directions -- the locator loses accidentals to
     broken ink, the template can match spurious ink and over-count -- so the
     one that cannot invent a glyph goes first.
+
+    ⚠️⚠️ **AND THAT REASON IS REFUTED ON ENGRAVED INPUT, WHICH IS WHY
+    `_proved_engraved` EXISTS AND WHY IT IS ONE-SIDED** (2026-09-22,
+    `OMR_ENGRAVED_KEYSIG`, default OFF). On a Verovio render of Beethoven 5
+    mvt 1 the ink is a VECTOR render, so *"broken ink"* cannot be the excuse
+    -- and over 50 decided staff-systems the template reads **20 right / 0
+    wrong** while the locator's `fitted` reads **6 / 24**. The mechanism is
+    measured: `header_ink_mask` shaves 54-63% off each flat's height, so two
+    of every three fall under `key_signature_locator.min_height_spaces =
+    1.10`, and two renderers agree to 0.03 staff spaces.
+
+    ⚠️ **THE PARAGRAPH ABOVE IS STILL THE RULE EVERYWHERE ELSE, and the
+    refusal it records is not overturned**: on a SCAN the same erasure works
+    FOR the locator (accidental-sized clusters 5 -> 11 on the Litolff plate,
+    because there the lines MERGE glyphs and erasing SEPARATES them), and the
+    template's over-counting risk is exactly what that refusal was priced on.
+    A scan, a classifier abstention, a record with no identity row and the
+    flag off all fall through to it unchanged.
+    `benchmarks/omr-document-identity-2026-09/FINDINGS.md`.
     """
     clef = ev.verdict(Q.CLEF)
     if clef is None or clef.value is None:
