@@ -101,7 +101,15 @@ def load_observations(path):
         log = doc
     elif isinstance(doc.get("record"), dict) and "observations" in doc["record"]:
         log = doc["record"]
-        meta = {k: doc.get(k) for k in ("provenance", "settings") if k in doc}
+        # ⚠️ `settings` is nested INSIDE `provenance` (`__main__.py` does
+        # `prov["settings"] = _settings(args)` before writing), not beside it.
+        # Reading it at the top level returns None and the run reports "env
+        # overrides: None" -- a believable blank rather than an error, on the
+        # one field that says which FLAGS produced the record.
+        prov = doc.get("provenance") or {}
+        meta = {"provenance": {k: v for k, v in prov.items()
+                               if k != "settings"},
+                "settings": prov.get("settings") or doc.get("settings")}
     else:
         raise SystemExit(
             f"REFUSED: {path} is neither a staged record nor a gather dump "
