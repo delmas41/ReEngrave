@@ -636,6 +636,45 @@ against a NULL of 6/6**, and the two publishers' marker ink fails in
 **opposite** ways.
 
 
+⚠️⚠️⚠️ **START HERE IF YOU ARE PICKING THIS UP (2026-09-22) — FOUR LANES, THREE
+REFUTATIONS, AND ONE MEASURED DECISION WAITING FOR SEAN:**
+[docs/handoff-2026-09-22-four-lanes-and-three-refutations.md](docs/handoff-2026-09-22-four-lanes-and-three-refutations.md)
+— ⚠️⚠️ **THE DECISION: `adjudicate_key_signature` PREFERS THE READER THAT IS
+WRONG, and the reason it gives is refuted on the one input where the print
+cannot be blamed.** On an ENGRAVED render, `Q.KEYSIG_TEMPLATE_FIT` is **20
+right / 0 wrong** and the locator's `fitted` is **6 / 24** — and the
+adjudicator takes the locator. Its docstring says *"the locator loses
+accidentals to BROKEN INK"*; **the ink is a VECTOR RENDER, the locator loses
+them anyway 24 times in 30, and the template over-counts nowhere.** The
+detector is innocent (`key_accidental` recall **1.000, 132 of 132**), the
+mechanism is measured (`min_height_spaces = 1.10` against flats reading **0.94
+after `header_ink_mask` strips 54-63% of their height**), and **91% of all note
+errors on 20 bars of 18 parts are this one fault.** ⚠️ **NOTHING WAS FLIPPED** —
+the refusal was priced on SCANS, so this is the new evidence the rule asks for
+and not a licence; **ONE LilyPond render says whether the cause is Verovio's
+spacing or THE ERASURE, and if it is the erasure it is everywhere.**
+⚠️⚠️ **THE STAGED PIPELINE HAS A READING ACCURACY AT LAST** — pooled F1
+**0.933**, **notehead recall 1.000 on all three engraved pages**, with a shift
+control that collapses it to 0.058 — and **INFER has essentially NO DOMAIN
+there** (`duration_narrowed` 0/0/3 against Breitkopf's 537, its whole
+population). ⚠️⚠️ **THE GOVERNING DOCUMENT'S OWN §7 FALSIFIER HAS FIRED**: on
+the shattering plate the BOX ALONE beats every ink axis in every arm and both
+publishers — its DIAGNOSIS stands, its REMEDY does not; the correction is at
+that document's head. ⚠️ **Two more ranked items came back NEGATIVE**: the
+chord/stroke join is refused by the print (**2 of 17 settled, 13 not noteheads
+at all**) and was sized off a population two thirds too large, and the
+"truncated" margin label is a **BRACED-PAIR** label this file already said no
+lexicon can recover. ⚠️ **`OMR_ROSTER_LABELS` governs the LEGACY reader ONLY** —
+the staged path runs it **UNGATED** with a roster the CLI supplies by default,
+the INVERSE of *shipped means the LEGACY path*. ⚠️ Two instruments were
+answering with definite answers they did not have and are **repaired**: 2,377
+false `no_ink` claims (**reproduced on a vector render**, so never a
+print-quality artefact), and `score_reading.py` scoring **F1 0.000** for any
+page but the first. ⚠️ **§7 is operational and costs every dispatching session:
+subagents cannot write `.md` files — eight occurrences, four of them that
+night.**
+
+
 ⚠️⚠️ **START HERE IF YOU ARE PICKING THIS UP (2026-09-21, evening):**
 [docs/handoff-2026-09-21-the-fact-sheet.md](docs/handoff-2026-09-21-the-fact-sheet.md)
 — **the newest, and it opens with a correction Sean made that changes how the
