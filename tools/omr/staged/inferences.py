@@ -26,7 +26,8 @@ from dataclasses import dataclass
 from typing import Any, Dict, List, Optional, Sequence, Tuple
 
 from .adjudicators.rhythm import ONSET_COLUMN_TOLERANCE_SPACES, _page_x_of
-from .infer import Inference, Proposal, independent_groups, rule
+from .infer import (FAMILY_BLOCK_SWITCH, Inference, Proposal,
+                    independent_groups, rule)
 from .record import Kind, Log, Outcome, Q, Scope, Subject, Verdict
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -688,6 +689,14 @@ def _clef_read_on(log: Log, staff: Subject) -> Tuple[Optional[str], Tuple[str, .
 
 @rule(
     inference=Inference.COLLAPSE_SLOT_INDEX_TO_FAMILY_BLOCK,
+    # ⚠️⚠️ ITS OWN FLAG, DEFAULT ON -- the one rule in this stage that has
+    # been put to the PRINT. 25 of 25 placements correct, ZERO grafts,
+    # `staff_not_identified` 783 -> 141, 562 pitched notes joining the parts
+    # they belong to rather than inventing any. The two duration rules below
+    # keep `OMR_INFER` (default OFF) because neither has had a single note
+    # checked against a page, and bundling them would make one flag two
+    # decisions of very different evidential weight.
+    switch=FAMILY_BLOCK_SWITCH,
     target=Q.SLOT_INDEX,
     # ⚠️ `Q.CLEF` IS NOT HERE AND MUST NOT BE. The raw glyph is a reading of
     # ink; the verdict is an argument that already weighs the instrument this

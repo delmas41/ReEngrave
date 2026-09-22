@@ -76,11 +76,26 @@ sits on which printed staff is a property of the ENGRAVING, absent from the
 MusicXML entirely, and it is what `dossier.slot_facts_for_system` abstains on
 whenever `len(parts) != n_staves` -- i.e. on every condensed page.
 
-⚠️ **WHAT IT DOES NOT DO: it never writes into the pipeline.** Nothing
-consumes a sheet yet, deliberately -- the `Q.INK` discipline, where a producer
-and its first consumer landing together makes the reach measurement circular.
-This draft exists to be read, corrected, and to report what the correction
-cost. Wiring it is a separate change with its own measurement.
+⚠️⚠️ **SEAN'S RULING, 2026-09-21: *"let the dossier only reach the pipeline
+through a confirmed sheet."*** So there is still no `--dossier` on the staged
+CLI and there will not be one. `--sheet` is the only rung, and it admits a
+dossier ONLY where a human has CONFIRMED `movement.dossier_id` -- which under
+the shape rule means they replaced the machine's dict with a bare value, i.e.
+looked at it. **The measurement path is then structurally unable to consume a
+dossier rather than merely trusted not to**: a benchmark run passes no sheet,
+and a sheet nobody confirmed admits nothing.
+
+⚠️ **THE JOIN IS SUPPLIED, NEVER INFERRED.** `lineup.parts` maps each printed
+staff to the dossier part slots it carries, exactly as `works.json`'s
+`staves[].parts` already does by hand. It is drafted only in the one case that
+needs no judgement -- as many printed staves as the work has parts, which is
+`slot_facts_for_system`'s own gate -- and is otherwise left for a human.
+**Nothing here matches an instrument NAME across the two spaces**: the lexicon
+reads a bare `Basso` as a BASS VOICE, and a wrong join grafts one instrument's
+clef onto another, which is the 12-of-75 graft this repo has paid for twice.
+
+⚠️ **WHAT IT DOES NOT DO: it never DECIDES.** A confirmed sheet reaches GATHER
+as observations and nothing more; every verdict is still an adjudicator's.
 """
 
 from __future__ import annotations
@@ -108,7 +123,8 @@ META = ("sheet_version", "pdf", "check", "_README")
 #: container to merge it against, and DISCARDED THE EDIT -- the one failure
 #: this module exists to prevent, committed by the module itself. Found by
 #: filling a real sheet rather than by reading the code.
-LIST_VALUED = ("work.scored_for", "lineup.systems.*.suppressed")
+LIST_VALUED = ("work.scored_for", "lineup.systems.*.suppressed",
+                "lineup.parts[*]")
 
 #: Source tiers, weakest claim first. `unread` is not a value -- it records
 #: that a reader was never run, which is a different fact from a reader that
@@ -152,9 +168,18 @@ def is_machine_fact(f: Any) -> bool:
 
 
 def _path_matches(path: str, pattern: str) -> bool:
+    """`*` matches one dotted segment; `[*]` matches any list index."""
     ps, qs = path.split("."), pattern.split(".")
-    return len(ps) == len(qs) and all(
-        q == "*" or p == q for p, q in zip(ps, qs))
+    if len(ps) != len(qs):
+        return False
+    for a, b in zip(ps, qs):
+        if b == "*" or a == b:
+            continue
+        if b.endswith("[*]") and re.fullmatch(
+                re.escape(b[:-3]) + r"\[\d+\]", a):
+            continue
+        return False
+    return True
 
 
 def is_list_valued(path: str) -> bool:
@@ -445,7 +470,8 @@ def _decided(v: dict[str, Any] | None) -> Any:
 # The payload: the printed lineup
 # --------------------------------------------------------------------------
 
-def _draft_lineup(view: dict[str, Any]) -> tuple[dict[str, Any], list[str]]:
+def _draft_lineup(view: dict[str, Any],
+                  n_parts: int | None = None) -> tuple[dict[str, Any], list[str]]:
     """The canonical top-to-bottom lineup, plus what each system suppresses.
 
     ⚠️ THE FULL LINEUP IS TAKEN FROM THE SYSTEM THAT PRINTS THE MOST STAVES,
@@ -459,7 +485,7 @@ def _draft_lineup(view: dict[str, Any]) -> tuple[dict[str, Any], list[str]]:
     checks: list[str] = []
     staves = view["staves"]
     if not staves:
-        return {"full": None, "systems": {}}, [
+        return {"full": None, "parts": None, "systems": {}}, [
             "lineup.full: no record supplied, so nothing could be drafted -- "
             "write the printed lineup top to bottom"]
 
@@ -571,11 +597,39 @@ def _draft_lineup(view: dict[str, Any]) -> tuple[dict[str, Any], list[str]]:
         "WHOLE lineup. If every system on these pages suppresses something, "
         "the real lineup is longer and nothing here can tell -- it is one of "
         "the facts worth a glance at the score's first page." % widest)
+    # ⚠️ DRAFTED ONLY WHERE IT NEEDS NO JUDGEMENT: as many printed staves as
+    # the work has parts means the join is positional, which is
+    # `slot_facts_for_system`'s own gate (`dossier.py:581`). Anything else --
+    # every condensed page -- is left for a human, because matching an
+    # instrument NAME across the two spaces is what grafts a clef onto the
+    # wrong staff.
+    if n_parts and n_parts == widest:
+        parts: list[Any] = [fact([i], "derived",
+                                 note="positional: this page prints as many "
+                                      "staves as the work has parts")
+                            for i in range(widest)]
+        checks.append(
+            "lineup.parts: drafted POSITIONALLY because this page prints %d "
+            "staves and the work has %d parts. Confirm it before it seeds "
+            "anything -- a wrong join puts one instrument's clef on another."
+            % (widest, n_parts))
+    else:
+        parts = [None] * len(names)
+        checks.append(
+            "lineup.parts: which dossier part slots each printed staff "
+            "carries, e.g. [0, 1] for a condensed Flauti. %s NOTHING is "
+            "drafted -- naming instruments across the two spaces is what "
+            "produced the 12-of-75 graft. A dossier seeds no clef until this "
+            "is filled." % (
+                "The work has %d parts on %d printed staves, so this page "
+                "condenses." % (n_parts, widest) if n_parts
+                else "No dossier is confirmed, so the part count is unknown."))
+
     checks.append(
         "lineup.systems.*.first_ref_measure: which reference bar each system opens "
         "on. NOTHING can draft this cold -- it is the one fact that needs the "
         "print, and every measure number downstream rests on it.")
-    return {"full": full, "systems": systems}, checks
+    return {"full": full, "parts": parts, "systems": systems}, checks
 
 
 def _name_of(s: dict[str, Any]) -> tuple[str | None, str]:
@@ -660,7 +714,8 @@ def draft(pdf: str | Path, *, record: dict[str, Any] | None = None,
     view = _reader_view(record) if record else {
         "systems": {}, "staves": {}, "meters": {},
         "label_reader_never_ran": 0, "n_staff_systems": 0}
-    lineup, lchecks = _draft_lineup(view)
+    n_parts = value_of(movement.get("n_reference_parts"))
+    lineup, lchecks = _draft_lineup(view, n_parts=n_parts)
     checks += lchecks
 
     if record and view["label_reader_never_ran"]:
@@ -793,6 +848,181 @@ def chain_windows(sheet: dict[str, Any]) -> list[str]:
     return notes
 
 
+def confirmed(sheet: dict[str, Any], path: str) -> Any:
+    """The value at `path`, but ONLY if a human confirmed it. Else `None`.
+
+    ⚠️⚠️ **THIS IS THE GATE SEAN'S RULING NAMES**, and it is one line because
+    the shape rule already did the work: confirming a fact IS replacing the
+    machine's dict with the bare value, so `source_of(...) == "hand"` is
+    exactly "a person looked at this". Nothing else in the sheet can reach the
+    pipeline.
+    """
+    for p, v in walk(sheet):
+        if p == path:
+            return value_of(v) if source_of(v) == "hand" else None
+    return None
+
+
+def dossier_for(sheet: dict[str, Any]) -> tuple[dict[str, Any] | None, str]:
+    """The dossier this sheet admits, and WHY it did or did not.
+
+    Returns `(resolved, reason)`. `resolved` is the dossier's own facts plus
+    the `clef_by_staff` that `gather_clef_seed` actually reads -- see
+    `clef_by_staff` for why the raw file cannot be handed over as-is.
+    """
+    did = confirmed(sheet, "movement.dossier_id")
+    if did is None:
+        raw = None
+        for p, v in walk(sheet):
+            if p == "movement.dossier_id":
+                raw = v
+        if raw is None:
+            return None, "the sheet names no dossier"
+        return None, ("the sheet PROPOSES %r and nobody confirmed it -- "
+                      "replace the dict with the bare id to admit it"
+                      % value_of(raw))
+    f = _dossier_dir() / f"{did}.json"
+    if not f.is_file():
+        return None, f"confirmed dossier {did!r} does not exist"
+    dossier = json.loads(f.read_text())
+    seeds, why = clef_by_staff(sheet, dossier)
+    out = dict(dossier)
+    out["clef_by_staff"] = seeds
+    out["admitted_by"] = {"sheet": sheet.get("pdf"), "dossier_id": did,
+                          "confirmed_by": "hand", "clef_seeds": why}
+    return out, f"confirmed dossier {did!r}; {why}"
+
+
+def clef_by_staff(sheet: dict[str, Any],
+                  dossier: dict[str, Any]) -> tuple[dict[str, dict[int, str]], str]:
+    """`{"p1/s0": {staff_index: written_clef}}` for `gather_clef_seed`.
+
+    ⚠️⚠️ **NO DOSSIER IN THIS REPO CARRIES `clef_by_staff` -- all 97 lack it --
+    so `gather_clef_seed` has always been handed `{}` and abstained on every
+    staff.** The key it reads is the OUTPUT of the part-to-staff join and the
+    raw file holds only the input (`parts[].written_clef`). That is why a
+    `--dossier` flag alone would have been a no-op wearing a useful name.
+
+    ⚠️⚠️ **IT IS KEYED PER SYSTEM, AND THAT IS NOT TIDINESS.** A printed score
+    SUPPRESSES tacet staves, so staff index 6 is the Timpani on a full system
+    and Violino I on one that drops it. A single index-keyed dict -- which is
+    what the function's original shape implied -- seeds the timpani's `bass`
+    onto a violin the moment any system is short. That is the 12-of-75 graft
+    exactly, and it is why `gather_clef_seed` now looks the system up first.
+
+    ⚠️ **A SYSTEM WHOSE SUPPRESSION LIST IS NOT CONFIRMED IS SKIPPED**, not
+    guessed at: knowing a system prints 11 of 12 staves does not say which one
+    is missing, and a wrong answer here is silent and total.
+
+    ⚠️ **A STAFF TAKES THE CLEF ITS PARTS AGREE ON, AND ABSTAINS OTHERWISE.**
+    Flute 1 and Flute 2 agree on `treble` so a condensed Flauti is seeded; a
+    staff whose parts disagreed is not -- the disagreement is real information
+    and averaging it away is the one thing a seed must not do.
+    """
+    parts = dossier.get("parts") or []
+    by_slot = {int(p["slot"]): p for p in parts if p.get("slot") is not None}
+    joins = _confirmed_parts(sheet, len(parts))
+    if not joins:
+        return {}, ("no staff-to-part join is confirmed, so NO clef is seeded "
+                    "(the honest state, not a failure)")
+
+    def _clef(staff_in_full: int) -> str | None:
+        slots = joins.get(staff_in_full)
+        if not slots:
+            return None
+        cl = {by_slot[x].get("written_clef") for x in slots
+              if x in by_slot and by_slot[x].get("written_clef")}
+        return cl.pop() if len(cl) == 1 else None
+
+    full = [value_of(f) for f in (sheet.get("lineup", {}).get("full") or [])]
+    out: dict[str, dict[int, str]] = {}
+    contradictions: list[str] = []
+    seeded = disagreed = skipped = 0
+    for key, sysm in (sheet.get("lineup", {}).get("systems") or {}).items():
+        sup = confirmed(sheet, f"lineup.systems.{key}.suppressed")
+        if sup is None:
+            skipped += 1
+            continue
+        present = _present_indices(full, sup) if sup else list(range(len(full)))
+        if present is None:
+            skipped += 1
+            contradictions.append(
+                "lineup.systems.%s.suppressed: names a staff that is in no "
+                "slot of lineup.full -- the two are not describing the same "
+                "staves" % key)
+            continue
+        # ⚠️⚠️ TWO INDEPENDENT FACTS MUST RECONCILE, AND WHERE THEY DO NOT THE
+        # SEED IS REFUSED. The human read the margin; the reader counted the
+        # staves. `len(full) - len(suppressed)` must equal that count, and if
+        # it does not then one of them is wrong about this system -- which is
+        # exactly the evidence worth surfacing, and exactly the state in which
+        # seeding a clef would put it on the wrong staff.
+        n_read = value_of(sysm.get("n_staves"))
+        if n_read is not None and len(present) != n_read:
+            skipped += 1
+            contradictions.append(
+                "lineup.systems.%s: you name %d suppressed of a %d-staff "
+                "lineup, which leaves %d -- but the reader counted %d staves "
+                "there. One of the two is wrong about this system, so nothing "
+                "is seeded on it." % (key, len(sup), len(full),
+                                      len(present), n_read))
+            continue
+        row: dict[int, str] = {}
+        for j, in_full in enumerate(present):
+            c = _clef(in_full)
+            if c:
+                row[j] = c
+                seeded += 1
+            elif joins.get(in_full):
+                disagreed += 1
+        if row:
+            out[key] = row
+    why = "%d staves seeded across %d systems" % (seeded, len(out))
+    if disagreed:
+        why += f", {disagreed} abstained because their parts disagree"
+    if skipped:
+        why += f", {skipped} systems SKIPPED"
+    for c in contradictions:
+        why += " | ⚠️ " + c
+    return out, why
+
+
+def _present_indices(full: list[Any], suppressed: list[Any]) -> list[int] | None:
+    """Indices into `full` of the staves a system prints, in order.
+
+    Multiset-aware, because a lineup can name `Violin` twice. Returns None
+    where a suppressed name is not in the lineup at all -- the two lists are
+    then not describing the same staves and nothing may be derived.
+    """
+    from collections import Counter as _C
+    want = _C(suppressed)
+    out = []
+    for i, n in enumerate(full):
+        if want.get(n):
+            want[n] -= 1
+            continue
+        out.append(i)
+    return None if any(v > 0 for v in want.values()) else out
+
+
+def _confirmed_parts(sheet: dict[str, Any],
+                     n_parts: int) -> dict[int, list[int]]:
+    """Staff index -> dossier part slots, from `lineup.parts`, HAND ONLY."""
+    out: dict[int, list[int]] = {}
+    lineup = sheet.get("lineup", {})
+    got = lineup.get("parts")
+    if not isinstance(got, list):
+        return out
+    for i, entry in enumerate(got):
+        if source_of(entry) != "hand" or not isinstance(entry, list):
+            continue
+        slots = [int(x) for x in entry
+                 if isinstance(x, int) or str(x).lstrip("-").isdigit()]
+        if slots and all(0 <= x < n_parts for x in slots):
+            out[i] = slots
+    return out
+
+
 def report(sheet: dict[str, Any]) -> dict[str, Any]:
     """The scorecard. **The point of the whole exercise.**
 
@@ -854,6 +1084,13 @@ def show(sheet: dict[str, Any]) -> str:
         lines.append("    <-- FILL: no lineup could be drafted")
     else:
         for i, f in enumerate(full):
+            lines.append("    %-3d %-24s %s" % (
+                i, json.dumps(value_of(f))[:24],
+                "<-- FILL" if f is None else f"({source_of(f)})"))
+    joins = sheet.get("lineup", {}).get("parts")
+    if joins:
+        lines.append("\n  [lineup.parts]  which dossier part slots each staff carries")
+        for i, f in enumerate(joins):
             lines.append("    %-3d %-24s %s" % (
                 i, json.dumps(value_of(f))[:24],
                 "<-- FILL" if f is None else f"({source_of(f)})"))

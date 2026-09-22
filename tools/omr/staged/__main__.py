@@ -216,6 +216,9 @@ def main(argv=None) -> int:
                     help="the score LIBRARY's work id (e.g. "
                          "`beethoven--symphony-5-op67`), for a PDF the store "
                          "does not hold. NOT the dossier's id.")
+    ap.add_argument("--sheet", default=None,
+                    help="a CONFIRMED fact sheet (tools.omr.factsheet). The "
+                         "ONLY way a dossier reaches this pipeline.")
     ap.add_argument("--no-roster", action="store_true",
                     help="do not look the work's catalog roster up at all.")
     ap.add_argument("--progress", action="store_true")
@@ -228,11 +231,26 @@ def main(argv=None) -> int:
         from ..yolo_detector import YoloDetector
         detector = YoloDetector(args.weights)
 
-    # ⚠️ THE DOSSIER STAYS WITHOUT A PRODUCER, DELIBERATELY, and
-    # `wiring.KNOWN_GAPS` says so in terms: a dossier is generated from the
-    # same MusicXML the benchmarks score against, so the scan gate is
-    # dossier-free BY PROTOCOL and a `--dossier` flag would put a truth file
-    # inside a measurement path. The roster is the tier that is admissible.
+    # ⚠️⚠️ THERE IS NO `--dossier`, AND SEAN RULED ON 2026-09-21 THAT THERE
+    # WILL NOT BE: *"let the dossier only reach the pipeline through a
+    # confirmed sheet."* The original reason stands and is why -- a dossier is
+    # generated from the same MusicXML the benchmarks score against, so the
+    # scan gate is dossier-free BY PROTOCOL and a bare flag would put a truth
+    # file inside a measurement path. What the ruling adds is the escape: a
+    # sheet whose `movement.dossier_id` a HUMAN confirmed. The benchmark path
+    # is then structurally unable to consume one rather than trusted not to,
+    # because it passes no sheet and an unconfirmed sheet admits nothing.
+    #
+    # ⚠️ The FACT that one was admitted travels on the row (`admitted_by`), so
+    # a later reader can see that a person took responsibility for it.
+    dossier = None
+    if args.sheet:
+        from .. import factsheet as _fs
+        sheet = json.loads(Path(args.sheet).read_text())
+        dossier, why = _fs.dossier_for(sheet)
+        print(f"SHEET: {args.sheet}")
+        print(f"  dossier: {'ADMITTED' if dossier else 'refused'} -- {why}")
+
     roster = None
     if not args.no_roster:
         from ..work_roster import roster_for_pdf, work_roster as _by_id
@@ -251,6 +269,7 @@ def main(argv=None) -> int:
     result = pipeline.run_staged(
         args.pdf, parse_pages(args.pages), detector=detector, dpi=args.dpi,
         conf_threshold=args.conf, imgsz=args.imgsz, roster=roster,
+        dossier=dossier,
         surya_fallback=args.surya, ocr_fallback=args.ocr,
         legacy=legacy.load(args.against) if args.against else None,
         progress=args.progress)

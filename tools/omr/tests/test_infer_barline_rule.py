@@ -14,7 +14,9 @@ onset columns, page-frame glyph boxes, and `Q.ONSET_COLUMN` in the shape
 including the one guard that separates them.
 """
 
+import os
 import unittest
+from unittest import mock
 
 from tools.omr.staged import evaluate, infer, inferences
 from tools.omr.staged.gather import FRAME_PAGE
@@ -103,7 +105,25 @@ class _Builder:
 
 
 def _run(log):
-    return infer.run(log, evaluate.Report([], [], []))
+    """⚠️ THE DURATION RULES ARE DEFAULT-OFF SINCE 2026-09-21 AND THIS FILE
+    MUST TURN THEM ON. Every rule now carries its own switch: the slot-index
+    rule ships ON (25 of 25 against the print) while BOTH duration rules stay
+    behind `OMR_INFER`, because neither has had a note checked against a page.
+    `infer.run()` honours each switch, so without this the seven tests below
+    exercised a stage that skipped the very rules they are named for --
+    *a test named for a hazard it does not reach*, arriving by a default
+    change rather than by a bad fixture.
+
+    ⚠️ The assertion is the part that matters: it fails LOUDLY if the rule
+    under test is ever skipped again, instead of the tests quietly asserting
+    against an empty report.
+    """
+    with mock.patch.dict(os.environ, {infer.INFER_ENV: "1"}, clear=False):
+        enabled = {r.inference for r in infer.enabled_rules()}
+        assert infer.Inference.COLLAPSE_DURATION_TO_BARLINE in enabled, (
+            "the barline rule is not enabled -- these tests would pass "
+            "against a stage that never ran it")
+        return infer.run(log, evaluate.Report([], [], []))
 
 
 def _fired(report, which):

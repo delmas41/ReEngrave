@@ -172,7 +172,7 @@ fixtures.
    (`docs/symbol-dossiers/accidentals-keys.md`) already answers the five
    questions; it is blocked on a RECORD-SHAPE decision (*the staged record has
    nowhere to put a span*), which is Sean's.
-3. ✅⚠️ **The cross-system SLOT CARRY is MEASURED AND DEMOTED.**
+3. ⚠️⚠️ **The cross-system SLOT CARRY was measured and the measurement WENT STALE THE SAME NIGHT** — a parallel session flipped `OMR_SLOT_FAMILY_BLOCK` **ON by default**, which is the very rule that stands in front of the carry, so the reach must be re-taken on a record gathered with current defaults (≥2 systems; a one-page gather cannot answer it). **The structure of the finding survives**: the carry is keyed on a SLOT, so the two are in SERIES, not in competition. What was measured, on a pre-flip record:
    [benchmarks/omr-staged-slot-carry-2026-09/FINDINGS.md](../benchmarks/omr-staged-slot-carry-2026-09/FINDINGS.md)
    — reach on the Litolff scan is **ZERO**, because **all 25 unnamed staves
    also have no SLOT** (`unnamed_in_short_system`), so a carry keyed on a slot

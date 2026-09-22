@@ -69,10 +69,17 @@ KNOWN_GAPS: Dict[str, str] = {
     # ── already reported by a sibling instrument; listed so this tool's own
     #    --check does not duplicate a failure another tool already owns.
     Q.DOSSIER_FACT: (
-        "reported by `no_producer` as an OPEN FINDING: the staged CLI has no "
-        "`--dossier`, so nothing ever supplies one and the row is an abstain. "
-        "Also an inert `wants` on key_signature and meter (inventory owns that "
-        "half)."),
+        "⚠️ CORRECTED 2026-09-21. There is still no `--dossier` and there will "
+        "not be one -- Sean's ruling is that a dossier reaches this pipeline "
+        "ONLY through a sheet whose `movement.dossier_id` a human confirmed "
+        "(`--sheet`, `factsheet.dossier_for`), so the measurement path is "
+        "structurally unable to consume one rather than trusted not to. The "
+        "row is therefore an abstain on every run that passes no confirmed "
+        "sheet, which is every benchmark run. ⚠️⚠️ AND IT IS STILL AN INERT "
+        "`wants` ON key_signature AND meter (inventory owns that half): "
+        "`grep DOSSIER_FACT adjudicators/` returns two `wants` tuples and no "
+        "read, so even an admitted dossier reaches NEITHER. Its one live "
+        "consumer is `Q.CLEF_SEED` -> `adjudicate_clef` (`clef.py:301`)."),
     Q.GAP_BRIDGING: (
         "inert declaration, owned by `inventory --check`: the connectivity veto "
         "already ran in GATHER and `adjudicate_system_membership` reads the "

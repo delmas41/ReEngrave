@@ -125,6 +125,60 @@ def infer_enabled() -> bool:
     return os.environ.get(INFER_ENV, "0").strip().lower() in _ON_WORDS
 
 
+#: The slot-index rule's OWN flag, and it is default-ON.
+#:
+#: ⚠️⚠️ A SECOND FLAG RATHER THAN A WIDENING OF THE FIRST, BECAUSE THE THREE
+#: RULES ARE NOT EQUALLY EVIDENCED AND ONE FLAG WOULD MAKE FLIPPING THEM ONE
+#: DECISION. `collapse_slot_index_to_family_block` is checked against the
+#: PRINT -- 25 of 25 placements correct, ZERO grafts, `staff_not_identified`
+#: 783 -> 141 -- while both duration rules are explicitly recorded as having
+#: had NO note checked against the print. Turning the measured one on by
+#: raising `OMR_INFER` would turn on two unverified ones with it, which is
+#: the bundled decision this file is not entitled to take.
+#:
+#: ⚠️ A DENY-LIST, BECAUSE THE DEFAULT IS ON. `OMR_SLOT_FAMILY_BLOCK=` or a
+#: typo must leave a measured rule RUNNING; an allow-list would let an empty
+#: value silently restore the 642 events this rule puts in the file. See
+#: *A flag's OFF test must follow its DEFAULT* in CLAUDE.md, and note the
+#: direction is the OPPOSITE of `OMR_INFER`'s three lines above -- which is
+#: the whole reason the two predicates are written out separately instead of
+#: sharing a helper that would hide both names from the AST scan.
+FAMILY_BLOCK_ENV = "OMR_SLOT_FAMILY_BLOCK"
+
+_OFF_WORDS = ("0", "", "false", "no", "off")
+
+
+def family_block_enabled() -> bool:
+    """Read the slot-index rule's flag. Anything but an off-word is ON."""
+    return (os.environ.get(FAMILY_BLOCK_ENV, "1").strip().lower()
+            not in _OFF_WORDS)
+
+
+@dataclass(frozen=True)
+class Switch:
+    """A flag NAME and the predicate that reads it, as ONE object.
+
+    ⚠️ The pair travels together so a report can NAME the flag that held a
+    rule back without a second table mapping predicates to names. A two-entry
+    hand list is still a hand list, and this file's own history is a
+    `_names_by_system` that could not represent the case it existed for.
+    """
+
+    env: str
+    fn: Callable[[], bool]
+
+    def __call__(self) -> bool:
+        return self.fn()
+
+
+#: The stage-wide flag: the two DURATION rules, neither checked against a
+#: print. Default OFF.
+INFER_SWITCH = Switch(INFER_ENV, infer_enabled)
+
+#: The slot-index rule alone. Default ON -- 25 of 25 against the print.
+FAMILY_BLOCK_SWITCH = Switch(FAMILY_BLOCK_ENV, family_block_enabled)
+
+
 # ─────────────────────────────────────────────────────────────────────────────
 # The vocabulary
 # ─────────────────────────────────────────────────────────────────────────────
@@ -245,6 +299,13 @@ class Rule:
     #: choose by it -- see hazard (a).
     forbids_argmax: bool = True
     stub: bool = False
+    #: ⚠️ THE RULE'S OWN GATE, so a default is a property of the RULE and not
+    #: of the stage. Without this the stage's one flag is the only dial, and
+    #: shipping any single rule on ships every rule on -- which is how a
+    #: print-verified rule and two rules with no crop between them come to be
+    #: one decision. Default `INFER_SWITCH`, so a rule that says nothing
+    #: keeps the stage-wide flag it has always had.
+    switch: Switch = INFER_SWITCH
 
 
 RULES: List[Rule] = []
@@ -252,7 +313,8 @@ RULES: List[Rule] = []
 
 def rule(*, inference: Inference, target: str, reads: Sequence[str],
          scope: Kind, bound: str, sideways: bool,
-         why_witnesses_are_independent: str, stub: bool = False):
+         why_witnesses_are_independent: str, stub: bool = False,
+         switch: Switch = INFER_SWITCH):
     """Register an inference rule."""
     if target not in Q.all():
         raise ValueError(f"{target!r} is not a known quantity")
@@ -262,7 +324,8 @@ def rule(*, inference: Inference, target: str, reads: Sequence[str],
 
     def wrap(fn):
         RULES.append(Rule(inference, target, tuple(reads), scope, fn, bound,
-                          sideways, why_witnesses_are_independent, True, stub))
+                          sideways, why_witnesses_are_independent, True, stub,
+                          switch))
         return fn
 
     return wrap
@@ -378,12 +441,22 @@ class Report:
     #: because it is INERT and one that moves nothing because the page holds
     #: NOTHING TO MOVE are the same number.
     reach: Dict[str, Dict[str, int]] = field(default_factory=dict)
+    #: Rules whose own switch is off, with the flag that turned them off.
+    #:
+    #: ⚠️ NAMED RATHER THAN OMITTED. Once rules have separate defaults, a
+    #: report listing only what ran cannot be told from one where a rule
+    #: silently stopped firing -- *a change that moves nothing because it is
+    #: INERT and one that moves nothing because the page holds NOTHING TO
+    #: MOVE are the same number*, arriving in the stage's own report. This is
+    #: about the REPORT; the record key stays absent when nothing runs.
+    disabled: List[Tuple[str, str]] = field(default_factory=list)
 
     def to_json(self) -> dict:
         return {
             "inferred": [list(i) for i in self.inferred],
             "skipped": [list(s) for s in self.skipped],
             "stubs": sorted(set(self.stubs)),
+            "disabled": [list(d) for d in self.disabled],
             "reach": self.reach,
             "counts": {"inferred": len(self.inferred),
                        "skipped": len(self.skipped)},
@@ -398,6 +471,33 @@ def _ensure_rules() -> None:
     if not RULES:
         raise NoRulesRegistered(
             "INFER has no rules. An empty stage is not an empty result.")
+
+
+def enabled_rules() -> List[Rule]:
+    """The rules whose own switch is on. Stubs are not rules that ran."""
+    _ensure_rules()
+    return [r for r in RULES if not r.stub and r.switch()]
+
+
+def stage_should_run() -> bool:
+    """Whether INFER has anything to do at all.
+
+    ⚠️⚠️ THIS REPLACED A BARE `infer_enabled()` AT THE PIPELINE CALL SITE AND
+    THE BYPASS CLAIM MOVED WITH IT. *Off means ABSENT, not quiet* used to
+    read "with `OMR_INFER` off the `inference` key is absent"; with a
+    default-ON rule in the registry that sentence is FALSE, and leaving it
+    written would be this repository's own `fixed-then-kept-open-in-prose`
+    with the polarity reversed. The property it becomes is the one that was
+    always meant: **when NO RULE IS ENABLED the key is absent**, which is
+    still provable -- turn every rule's flag off and compare -- and is what
+    `test_infer_bypass` now asserts.
+
+    ⚠️ So a record from a tree carrying INFER is no longer byte-identical to
+    one from a tree without it under default settings. That is not a
+    regression hidden in a helper, it is what flipping a rule on MEANS, and
+    an arm that needs the old identity sets `OMR_SLOT_FAMILY_BLOCK=0`.
+    """
+    return bool(enabled_rules())
 
 
 def _candidate_values(prior: Verdict) -> Tuple[Any, ...]:
@@ -519,6 +619,12 @@ def run(log: Log, evaluated: Any, *, progress: bool = False) -> Report:
     for r in RULES:
         if r.stub:
             report.stubs.append(f"{r.inference.value}({r.target})")
+            continue
+        if not r.switch():
+            # ⚠️ NOT `continue` silently. A rule held back by its own flag is
+            # a different fact from a rule that ran and found nothing, and
+            # the report is the only place that distinction survives.
+            report.disabled.append((r.inference.value, r.switch.env))
             continue
         produced = 0
         for subject in log.subjects(r.scope):

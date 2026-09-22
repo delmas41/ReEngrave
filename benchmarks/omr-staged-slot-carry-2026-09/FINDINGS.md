@@ -1,5 +1,20 @@
 # The staged slot carry — reach ZERO exactly where it is needed
 
+⚠️⚠️ **CORRECTION, ADDED AT LANDING THE SAME NIGHT — READ THIS FIRST. THE
+MEASUREMENT'S PREMISE CHANGED UNDER IT.** A parallel session flipped
+`OMR_SLOT_FAMILY_BLOCK` **ON by default** (`infer.py:146`, deny-list) hours
+after this was measured. That rule is exactly the one §"What this means"
+below names as standing in front of the carry, and CLAUDE.md records it placing
+**15 of these very 25** staves. **So the "reach ZERO" figure is a property of a
+record gathered with that rule OFF, and it is now stale for the default
+configuration.** What survives untouched is the *structure* of the finding —
+**the carry is keyed on a SLOT, so its reach is whatever the slot rule leaves
+it**, and the two are in series rather than in competition. ⚠️ **The number
+must be re-taken on a record gathered with the current defaults**, and that
+needs ≥2 systems, so a one-page gather cannot answer it. Nothing else in this
+file is affected; the engraved arm had slots either way.
+
+
 **2026-09-22.** `benchmarks/omr-roster-truncation-reprice-2026-09` ranked this
 second: the LEGACY path stamps one instrument name per SLOT onto every staff of
 that slot on every page (`contextual.py:1527`); the STAGED path has no

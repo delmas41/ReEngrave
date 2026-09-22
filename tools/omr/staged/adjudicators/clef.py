@@ -22,7 +22,7 @@ rewritten. This is a change to how their opinions are combined.
 
 from __future__ import annotations
 
-from typing import Dict, List, Optional, Tuple
+from typing import Any, Dict, List, Optional, Tuple
 
 from ..adjudicate import (Candidate, Checkable, READINGS, Evidence, Mode, Ruling, Term, decision,
                           tally)
@@ -288,21 +288,54 @@ def _locator_terms(ev: Evidence) -> Dict[str, List[Term]]:
     return out
 
 
-def _carry_terms(ev: Evidence) -> Dict[str, List[Term]]:
-    """This part's own clef on another system.
+def _carry_terms(ev: Evidence, *,
+                 page_spoke: bool) -> Tuple[Dict[str, List[Term]], int]:
+    """This part's own clef on another system, and the SUPPLIED one.
 
-    ⚠️ This is `clef_continuity`'s mechanism, which is the ONE carry in the
-    existing pipeline that survives -- it is keyed on the staff's ROLE within
-    its system rather than on `(page, system, staff)`, which is exactly why
-    it inherits across systems while the three key/clef/meter carry dicts
-    can never hit. Same idea, expressed as evidence rather than as a seed.
+    ⚠️ The carry is `clef_continuity`'s mechanism, which is the ONE carry in
+    the existing pipeline that survives -- it is keyed on the staff's ROLE
+    within its system rather than on `(page, system, staff)`, which is
+    exactly why it inherits across systems while the three key/clef/meter
+    carry dicts can never hit. Same idea, expressed as evidence rather than
+    as a seed. It is UNTOUCHED by the gap rule below.
+
+    ⚠️⚠️ THE `dossier` TIER IS ADMITTED **GAPS ONLY**, AND THAT IS THE WHOLE
+    OF WHAT MAKES IT AN OPTION RATHER THAN AN OVERRIDE. A supplied clef is
+    the one term here that did not come off this page at all, and
+    `W_DOSSIER = 4.0` stands ABOVE `W_DETECTOR_HIGH = 3.0` -- so on any staff
+    where the page WAS read it did not corroborate the reading, it replaced
+    it, silently, including where the reading was right and the sheet was a
+    typo. Sean, 2026-09-21: *"redo our work tonight to be an option to turn
+    on when we can't get the info we need"*; the information we could not get
+    is the only place it may speak.
+
+    ⚠️ The precedent is `adjudicate_key_signature`, whose template reader
+    answers GAPS ONLY for the identical reason and whose own measurement
+    refused letting the fuller reading win. Inherited rather than
+    re-litigated.
+
+    ⚠️ It is a REFUSAL TO SPEAK, not a weight change. Lowering `W_DOSSIER`
+    below the detector would still let a supplied clef out-vote a *pair* of
+    weak read terms, and would make the honest case -- a staff nothing was
+    read on -- weaker for no reason. The two questions are *may it speak
+    here* and *how loud*, and only the first one is in doubt.
+
+    Returns the terms, and how many supplied rows were WITHHELD, so the
+    verdict can carry the count rather than the rule being silent.
     """
     out: Dict[str, List[Term]] = {}
+    withheld = 0
     for row in ev.rows(Q.CLEF_SEED):
         name = str(row.value)
-        weight = W_DOSSIER if row.detail.get("tier") == "dossier" else W_CARRY
-        out.setdefault(name, []).append(Term("carry", weight, (row.id,)))
-    return out
+        if row.detail.get("tier") == "dossier":
+            if page_spoke:
+                withheld += 1
+                continue
+            out.setdefault(name, []).append(
+                Term("supplied", W_DOSSIER, (row.id,)))
+            continue
+        out.setdefault(name, []).append(Term("carry", W_CARRY, (row.id,)))
+    return out, withheld
 
 
 @decision(
@@ -333,7 +366,13 @@ def _carry_terms(ev: Evidence) -> Dict[str, List[Term]]:
 )
 def adjudicate_clef(ev: Evidence) -> Ruling:
     candidates: Dict[str, List[Term]] = {}
-    for source in (_detector_terms(ev), _locator_terms(ev), _carry_terms(ev)):
+    # ⚠️ THE GAP TEST IS THE READ EVIDENCE ONLY, and `page_spoke` is computed
+    # BEFORE the supplied terms are built so it can never see them. A staff
+    # the page said nothing about is the supplied clef's entire domain.
+    read = (_detector_terms(ev), _locator_terms(ev))
+    page_spoke = any(bool(source) for source in read)
+    carried, seeds_withheld = _carry_terms(ev, page_spoke=page_spoke)
+    for source in (*read, carried):
         for name, terms in source.items():
             candidates.setdefault(name, []).extend(terms)
 
@@ -401,5 +440,12 @@ def adjudicate_clef(ev: Evidence) -> Ruling:
     # "the readers disagreed between alto and tenor" and "nothing was read"
     # as the same answer.
     cands = tuple(Candidate(value=n, support=sc) for sc, n in scored)
+    detail: Dict[str, Any] = {"scores": {n: s for s, n in scored}}
+    if seeds_withheld:
+        # ⚠️ RECORDED, NOT DISCARDED. A supplied clef that was refused is a
+        # fact about this run -- it is how a human reading the record can see
+        # that the sheet disagreed with a page that spoke, which is the one
+        # signal a GAPS-ONLY rule would otherwise throw away.
+        detail["supplied_clefs_withheld_because_the_page_spoke"] = seeds_withheld
     return Ruling(value=top_name, reason="scored", margin=margin, used=used,
-                  candidates=cands, detail={"scores": {n: s for s, n in scored}})
+                  candidates=cands, detail=detail)

@@ -279,7 +279,7 @@ def run_staged_on(prepared: Sequence[Tuple[Any, Sequence[Any]]], *,
     # that, and is the kind of harmless-looking addition that reaches an arm
     # which was supposed to be blind to it.
     inference_report = None
-    if infer.infer_enabled():
+    if infer.stage_should_run():
         if progress:
             print("INFER")
         inference_report = infer.run(log, report, progress=progress)

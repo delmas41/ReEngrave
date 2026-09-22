@@ -24,6 +24,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 SUBJECT = ROOT / "tools/omr/factsheet.py"
+SUBJECT2 = ROOT / "tools/omr/staged/gather.py"
 TESTS = "tools/omr/tests/test_factsheet.py"
 SENTINEL = Path(__file__).resolve().parent / ".mutate-in-flight"
 
@@ -75,6 +76,27 @@ ARMS = [
      "        if len(cands) == 1:", "        if cands:"),
     ("an unknown PDF gets an invented work id",
      '    if e is None:', '    if e is None and False:'),
+    ("the gate admits an UNCONFIRMED dossier",
+     '            return value_of(v) if source_of(v) == "hand" else None',
+     '            return value_of(v)'),
+    ("the per-system seed collapses to one index-keyed dict (the graft)",
+     '        per_system = clefs.get(f"p{c.page_index}/s{key[0]}") or {}\n        value = per_system.get(key[1]) or per_system.get(str(key[1]))',
+     '        value = clefs.get(key[1]) or clefs.get(str(key[1]))'),
+    ("a system whose suppression list is unconfirmed is seeded anyway",
+     "        if sup is None:\n            skipped += 1\n            continue",
+     "        if sup is None:\n            sup = []"),
+    ("the two independent staff counts need not reconcile",
+     "        if n_read is not None and len(present) != n_read:",
+     "        if False:"),
+    ("a staff whose parts disagree takes one of them anyway",
+     "        return cl.pop() if len(cl) == 1 else None",
+     "        return cl.pop() if cl else None"),
+    ("the join is drafted by NAME on a condensed page",
+     "    if n_parts and n_parts == widest:",
+     "    if n_parts:"),
+    ("_present_indices ignores a name that is in no slot",
+     "    return None if any(v > 0 for v in want.values()) else out",
+     "    return out"),
     ("walk counts metadata as facts",
      '            if k.startswith("_") or k in META:',
      '            if k.startswith("_") and False:'),
@@ -110,25 +132,32 @@ def main() -> int:
             print("REFUSING: the base is not green.")
             return 2
         red = 0
+        original2 = SUBJECT2.read_bytes()
+        digest2 = hashlib.sha256(original2).hexdigest()
         for name, find, repl in ARMS:
-            text = original.decode()
+            which = SUBJECT2 if "per-system seed collapses" in name else SUBJECT
+            base_bytes = original2 if which is SUBJECT2 else original
+            text = base_bytes.decode()
             if find not in text:
                 print(f"  BAD ANCHOR  {name}")
                 continue
             mutated = text.replace(find, repl, 1)
             assert mutated != text
-            SUBJECT.write_text(mutated)
-            assert hashlib.sha256(SUBJECT.read_bytes()).hexdigest() != digest, \
+            which.write_text(mutated)
+            assert hashlib.sha256(which.read_bytes()).hexdigest() != (
+                digest2 if which is SUBJECT2 else digest), \
                 "mutation did not change the file"
             out = _run()
             ok = out != base
             red += ok
             print(f"  {'RED ' if ok else 'SURVIVED'}  {name}\n            {out}")
-            SUBJECT.write_bytes(original)
+            which.write_bytes(base_bytes)
         print(f"\n{red} RED / {len(ARMS)} arms, {len(ARMS) - red} survived")
         return 0 if red == len(ARMS) else 1
     finally:
         SUBJECT.write_bytes(original)
+        SUBJECT2.write_bytes(SUBJECT2.read_bytes() if 'original2' not in dir()
+                             else original2)
         assert hashlib.sha256(SUBJECT.read_bytes()).hexdigest() == digest, \
             "RESTORE FAILED"
         SENTINEL.unlink(missing_ok=True)

@@ -63,6 +63,11 @@ quoted from the run that motivated it — the Brahms check count moved 3 → 8
 when the widest-lineup caveat was added, and a figure that was true of an
 earlier draft is exactly the kind this repo keeps finding stale.
 
+⚠️ Re-measured against the SHIPPED code after the last change, rather than
+quoted from the run that motivated it — the Brahms check count moved 3 → 8
+when the widest-lineup caveat was added, and a figure that was true of an
+earlier draft is exactly the kind this repo keeps finding stale.
+
 **The structure it derives is right against the hand truth this repo already
 holds**: 7 systems at 12/11/11/11/**8**/11/11 staves, and `p3/s1` at 8 is the
 system CLAUDE.md records as suppressing Oboi/Trombe/Timpani.
@@ -161,3 +166,99 @@ you already gave it. Every label is now a path and a test asserts it.
 - All eight derived checks (`wiring`, `inventory`, `health`, `capture`,
   `gather_coverage`, `no_producer`, `conventions`, `trace`) exit **0**, with no
   stale gap entries introduced.
+
+
+---
+
+# Part 2 — Sean's ruling, and the three gaps in the dossier path
+
+2026-09-21, later the same day. **Sean: *"let the dossier only reach the
+pipeline through a confirmed sheet."*** Implemented; `--sheet` on the staged
+CLI is now the only rung, and **there is still no `--dossier` and will not be**.
+
+## 8. The gate is one line, because the shape rule already did the work
+
+Confirming a fact IS replacing the machine's dict with the bare value, so
+`source_of(...) == "hand"` is exactly *a person looked at this*.
+`factsheet.confirmed()` is that test and `dossier_for()` is the gate.
+**The measurement path is now structurally unable to consume a dossier rather
+than trusted not to**: a benchmark run passes no sheet, and a sheet nobody
+confirmed admits nothing. A test asserts `"--dossier"` does not appear in
+`staged/__main__.py`.
+
+✅ **`no_producer --check` goes `FINDINGS — 1` → `FINDINGS — 0`.** The tool
+that found the missing producer now reports it closed, which is the delta
+being the repair rather than a claim about it.
+
+## 9. ⚠️⚠️ THE FINDING: THE DOSSIER PATH HAD THREE GAPS, NOT ONE
+
+`no_producer` found the first. Opening it found two more, and the second is
+the one that made the first harmless:
+
+1. **No CLI rung** — known, and now closed by `--sheet`.
+2. ⚠️⚠️ **`gather_clef_seed` reads `dossier["clef_by_staff"]`, and NO DOSSIER
+   IN THIS REPO CARRIES THAT KEY — all 97 lack it.** So it has always been
+   handed `{}` and abstained on every staff. The key is the OUTPUT of the
+   part-to-staff join; the raw file holds only the input
+   (`parts[].written_clef`). **A `--dossier` flag alone would have been a
+   no-op wearing a useful name**, and nobody would have known, because the
+   abstention reads exactly like a dossier that names no clef.
+3. **The existing join returns a different shape and is never called from the
+   staged path.** `dossier.slot_facts_for_system` gives a LIST indexed by
+   staff; `gather_clef_seed` wants a DICT. `grep slot_facts_for staged/`
+   returns nothing.
+
+**The sheet closes (2) because the join is exactly what it supplies**, and it
+supplies it the way `works.json` already does by hand — `lineup.parts`, staff
+to dossier part slots, **never matched by instrument NAME**. The lexicon reads
+a bare `Basso` as a BASS VOICE, and a wrong join grafts one instrument's clef
+onto another.
+
+## 10. ⚠️⚠️ A GRAFT I NEARLY SHIPPED, CAUGHT BY CHECKING RATHER THAN BY A TEST
+
+`gather_clef_seed` looked up `clefs.get(staff_index)` with **one dict for every
+system**. A printed score SUPPRESSES tacet staves, so index 6 is the Timpani on
+a full system and Violino I on one that drops it — **an index-keyed dict seeds
+the timpani's `bass` onto a violin the moment any system is short.** That is
+the 12-of-75 graft, and the original shape of the function implied it.
+
+Both halves are now per-system (`{"p1/s0": {staff: clef}}`), with a seam test
+because the two halves live in different modules and nothing else forces them
+to agree. **Measured on the real lineup**: with the Timpani suppressed, index 6
+seeds `treble` (Violino I), not `bass`.
+
+⚠️ **AND TWO INDEPENDENT FACTS MUST RECONCILE.** The human read the margin, the
+reader counted the staves: `len(full) − len(suppressed)` must equal that count.
+Where it does not, **one of them is wrong about that system** and nothing is
+seeded there. It fired immediately on a suppression list this session had
+invented for a demo — 12 − 3 = 9 against a reader that counts 8.
+
+## 11. Measured, and the honest headline is that the seed is REDUNDANT here
+
+On Litolff p1/s0, with the dossier confirmed and `works.json`'s own hand join:
+**12 of 12 staves seeded, every clef correct** (Fagotti bass, Viola alto, Cello
+and Basso bass). ⚠️⚠️ **And all 12 AGREE with what the pipeline already
+decided** — so on the one system that can be checked, the seed changes nothing.
+The clef reading on this page is right.
+
+Where it *could* matter is unmeasured: **6 of 75 staff-systems carry no decided
+clef** (3 `no_candidates`, 3 `margin_below_floor` on the record's own
+verdicts), and whether a seed fills them needs the per-system suppression a
+human must confirm first. **No claim is made that this improves anything.**
+
+⚠️ **AND AN ADMITTED DOSSIER STILL REACHES NEITHER METER NOR KEY SIGNATURE.**
+`Q.DOSSIER_FACT` is declared in both their `wants` and read by neither —
+`grep DOSSIER_FACT adjudicators/` returns two `wants` tuples and no read. Its
+one live consumer is `Q.CLEF_SEED` → `adjudicate_clef` (`clef.py:301`).
+`reach.py`'s gap entry is corrected to say so rather than to say the CLI has
+no flag.
+
+## 12. Controls for part 2
+
+48 tests; **battery 24 arms, 24 RED, 0 survived**, now across TWO subjects
+(`factsheet.py` and `gather.py`) with both restores hash-verified. Its one
+survivor was a real gap: an unconfirmed suppression list on a system whose
+count *happens* to reconcile — the sibling test used a mismatched count, so the
+reconciliation guard caught it and the None-check was never exercised. All nine
+derived checks exit 0, including `reach --check`, whose `Q.DOSSIER_FACT` entry
+this change made stale and which was updated rather than suppressed.

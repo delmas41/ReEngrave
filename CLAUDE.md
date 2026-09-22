@@ -705,10 +705,60 @@ recorded DISAGREEMENT with a reader** — so it scores the readers rather than
 hiding them, which is what Sean asked for when he said the sheet must
 auto-populate. ⚠️ It found a live reader fault in two seconds (a horn label
 truncated to `'in C 1 2'` / `'(C)'` / `'(Es)'` on the primary Breitkopf
-document). ⚠️ **Its §5 is the one decision blocking the next step** — what TIER
-a hand fact is, and whether the staged CLI should get `--dossier` at all — and
-**§7 is the manager's own failures, including three bugs in the new module that
-only filling a real sheet found.** Its predecessor
+document). ⚠️⚠️ **AND ITS §5 IS NO LONGER A QUESTION — SEAN RULED THE SAME EVENING:
+*"let the dossier only reach the pipeline through a confirmed sheet."***
+Implemented: `--sheet` is the only rung, **there is still no `--dossier` and
+there will not be one** (asserted by a test), and the measurement path is
+therefore **structurally unable** to consume a dossier rather than trusted not
+to. ⚠️⚠️ **Opening it found the path had THREE gaps and the second made the
+first harmless: `gather_clef_seed` reads `dossier["clef_by_staff"]` and NOT ONE
+OF THE 97 COMMITTED DOSSIERS HAS THAT KEY** — it has always been handed `{}`
+and abstained on every staff, so a bare flag would have changed nothing and the
+abstention reads exactly like a dossier that names no clef. ⚠️⚠️ **A GRAFT WAS
+NEARLY SHIPPED**: the seed used ONE index-keyed dict for every system, and a
+suppressed Timpani makes index 6 a violin. Per-system now, with a seam test.
+⚠️ **The seed is REDUNDANT where it can be checked** — 12 of 12 correct on
+Litolff p1/s0 and all 12 agreeing with what the pipeline already decided — and
+**no sheet has ever driven a real run.** ⚠️ **§7 is the manager's own failures,
+including three bugs only filling a real sheet found, the near-graft, and a
+demo figure built on data this session INVENTED.**
+
+⚠️⚠️ **AND THE SAME EVENING SEAN TURNED THE WHOLE THING AROUND IN ONE
+SENTENCE — *"Flip on the previous work and redo our work tonight to be an
+option to turn on when we can't get the info we need"* — WHICH IS TWO CHANGES
+PULLING IN OPPOSITE DIRECTIONS AND BOTH ARE IN:**
+[benchmarks/omr-infer-default-2026-09/FINDINGS.md](benchmarks/omr-infer-default-2026-09/FINDINGS.md).
+⚠️⚠️ **HIS OWN RULE IS ON BY DEFAULT AT LAST** (`OMR_SLOT_FAMILY_BLOCK`) —
+`collapse_slot_index_to_family_block`, **25 of 25 against the PRINT, ZERO
+grafts, `staff_not_identified` 783 → 141, +642 events in the file**, built
+2026-09-17 and switched off ever since **for a reason that was never about its
+own evidence: it shared `OMR_INFER` with two DURATION rules neither of which
+has had a single note checked against a page.** *One switch, two evidential
+weights, and the stronger one lost.* Each rule now carries its own gate.
+⚠️ **MEASURED base-vs-arm on ONE tree**: `slot_index` decided **55 → 70**,
+narrowed **20 → 5**, **15 inferred**, **and the control is the ZERO — 0
+verdicts outside `slot_index` moved**, with the stage provably able to write
+exactly one quantity. It **reproduces the rule's own published funnel from a
+different record, tree and instrument.** ⚠️⚠️ **AND TONIGHT'S SHEET WAS
+DEMOTED TO A FALLBACK, WHICH IS WHAT IT SHOULD ALWAYS HAVE BEEN: a supplied
+clef weighed `W_DOSSIER` = 4.0 against a read clef's 3.0, so it did not
+corroborate the page, it REPLACED it** — silently, including where the
+reading was right and the sheet held a typo. **GAPS ONLY** now, the
+`adjudicate_key_signature` precedent, with the refusal RECORDED rather than
+silent. ⚠️ **A REFUSAL TO SPEAK, NOT A WEIGHT CHANGE** — lowering the weight
+would still let a sheet out-vote a PAIR of weak read terms. ⚠️ **The first
+measuring arm was DEAD and the reason is reusable**: `beethoven5-p1-p4.record.json`
+holds **0 margin labels and `instrument` abstaining on 75 of 75** — it
+predates the `pdf_path` repair, so *a shared record is a snapshot of the
+reader that made it*, and the two Litolff records differ by more than a date.
+⚠️⚠️ **`block_arm.py`'s control FAILS on today's tree (12 of 75) and was NOT
+weakened** — exactly what CLAUDE.md recorded that morning about the shared
+records no longer licensing a rebuild. ⚠️ **NOT ESTABLISHED: no print was
+consulted that evening at all**, no export, no OMR-NED, and **the two changes
+INTERACT unmeasured** — both assign instruments to lines and no record in the
+tree carries a `clef_seed` row to check them against each other.
+
+Its predecessor
 [docs/handoff-2026-09-21-connecting-the-sweep.md](docs/handoff-2026-09-21-connecting-the-sweep.md)
 — ⚠️⚠️ **THE TWO BODIES OF WORK HAD DIVERGED AND NOBODY HAD MERGED THEM.**
 `claude/part-instrument-check-2026-09` and `claude/integration-2026-09-18`
@@ -1148,11 +1198,42 @@ this file's own rule is that a stale instruction reads as a work order.
 
 ---
 
-## INFER, the fourth stage — built, default OFF, and bypassable by construction
+## INFER, the fourth stage — PER-RULE defaults since 2026-09-21
 
 2026-09-15, `OMR_INFER` (**default `0`**). `tools/omr/staged/infer.py` +
 `inferences.py`. Findings:
 [benchmarks/omr-infer-stage-2026-09/FINDINGS.md](benchmarks/omr-infer-stage-2026-09/FINDINGS.md).
+
+⚠️⚠️ **THE HEADING USED TO READ *"built, default OFF, and bypassable by
+construction"* AND TWO THIRDS OF THAT IS NOW FALSE. READ THIS BEFORE
+ANYTHING BELOW IT.** On 2026-09-21 the stage stopped having ONE dial:
+`collapse_slot_index_to_family_block` carries its own flag
+(`OMR_SLOT_FAMILY_BLOCK`, **default ON**) and the two DURATION rules keep
+`OMR_INFER` (**default OFF**). Sean: *"Flip on the previous work."*
+
+⚠️ **THE SPLIT IS THE POINT, NOT A CONVENIENCE.** The slot rule is scored
+**25 of 25 against the PRINT with ZERO grafts**; neither duration rule has
+had a single note checked against a page. With one flag, shipping the first
+shipped the other two, and holding the other two back held the first back —
+*one switch, two evidential weights, and the stronger one lost*. A
+`Gate` object carries the flag NAME with its predicate so a report can say
+which flag held a rule back without a second table; the two predicates are
+written out **separately, and a shared helper was refused**, because the
+derived flag-direction scan finds flags by AST and a helper taking the name
+as a parameter would hide both.
+
+⚠️⚠️ **SO *"off means ABSENT, not quiet"*, STATED BELOW AND STILL TRUE OF THE
+MECHANISM, IS NO LONGER TRUE OF THE DEFAULT.** A default run now writes the
+`inference` key, and should. The surviving property — asserted by
+`test_infer_bypass`, **derived off the gates rather than hand-listed** — is
+*when NO RULE IS ENABLED the key is absent*. An arm that needs the old
+byte-identity sets `OMR_SLOT_FAMILY_BLOCK=0`.
+
+⚠️ **Measured**: `slot_index` decided **55 → 70**, narrowed **20 → 5**, **15
+inferred**, and **0 verdicts outside `slot_index` moved** —
+[benchmarks/omr-infer-default-2026-09/FINDINGS.md](benchmarks/omr-infer-default-2026-09/FINDINGS.md).
+Everything below this block is the record as it stood while the stage had one
+flag; its reasoning is unchanged and its DEFAULTS are not.
 
 ⚠️ **SEAN OVERRODE THE PLAN'S PHASING** (*"our best advances will come from
 building out the 4th stage and making sure all our info gets to where it needs
@@ -6675,6 +6756,190 @@ fixture that caught it had to be built for it. ⚠️ A fourth, in the checks: a
 check label that is not a real dotted path can never be retired, so the list
 keeps asking for what you already gave it.
 
+⚠️⚠️ **SEAN'S RULING, 2026-09-21: *"let the dossier only reach the pipeline
+through a confirmed sheet."*** Implemented. `--sheet` on the staged CLI is now
+the ONLY rung by which a dossier arrives, and **there is still no `--dossier`
+and there will not be one** — a test asserts the string is absent. The gate is
+one line, because the shape rule already did the work: confirming a fact IS
+replacing the machine's dict with the bare value, so `source_of == "hand"` is
+exactly *a person looked at this*. ✅ **`no_producer --check` goes
+`FINDINGS — 1` → `0`**: the tool that found the missing producer now reports it
+closed, which is the delta being the repair.
+
+⚠️⚠️ **AND THE DOSSIER PATH HAD THREE GAPS, NOT ONE — the second is why the
+first was harmless.** (1) no CLI rung, known; (2) **`gather_clef_seed` reads
+`dossier["clef_by_staff"]` and NOT ONE OF THE 97 COMMITTED DOSSIERS HAS THAT
+KEY**, so it has always been handed `{}` and abstained on every staff — the key
+is the OUTPUT of the part-to-staff join and the file holds only the input, so a
+bare flag would have changed NOTHING and the abstention reads exactly like a
+dossier that names no clef; (3) the existing join
+(`dossier.slot_facts_for_system`) returns a LIST where `gather_clef_seed` wants
+a DICT, and `grep slot_facts_for staged/` returns nothing. **The sheet closes
+(2) because the join is precisely what it supplies** — `lineup.parts`, staff to
+dossier part slots, the shape `works.json` already uses by hand, **never
+matched by instrument NAME**.
+
+⚠️⚠️ **AND ON 2026-09-21 EVENING SEAN NARROWED IT FURTHER — *"redo our work
+tonight to be an option to turn on when we can't get the info we need"* — SO A
+SUPPLIED CLEF NOW SPEAKS *GAPS ONLY*.** `adjudicate_clef` admitted it at
+**`W_DOSSIER` = 4.0, ABOVE `W_DETECTOR_HIGH` = 3.0**, so it did not
+corroborate a read clef, it **REPLACED** it — silently, on every staff,
+including where the reading was right and the sheet held a typo. That is the
+opposite of Sean's standing rule that evidence must CONTRIBUTE and never gate.
+It is now admitted only where `_detector_terms` and `_locator_terms` are BOTH
+empty, the `adjudicate_key_signature` precedent inherited rather than
+re-litigated. ⚠️ **A REFUSAL TO SPEAK, NOT A WEIGHT CHANGE**, and the
+distinction is load-bearing: lowering `W_DOSSIER` would still let a supplied
+clef out-vote a PAIR of weak read terms and would weaken it on the honest case
+— *may it speak here* and *how loud* are two questions and only the first was
+in doubt; the ordering is pinned by a test so the rule cannot later be deleted
+as redundant. ⚠️ **The CARRY tier is untouched** — `clef_continuity`'s
+mechanism is the one carry in this pipeline that survives, it was measured,
+and taking it along would be a second unpriced change riding on the first.
+⚠️ **The refusal is RECORDED**
+(`detail["supplied_clefs_withheld_because_the_page_spoke"]`, written only when
+something was withheld — an always-present zero would put the key on every
+staff, which is *a null key is still a key* from the other side).
+⚠️ **NOT ESTABLISHED: no supplied clef has ever been scored against a print**,
+so this says the seed no longer overrides a reader and nothing about whether
+the staves it now declines were being helped or harmed. And **the two evening
+changes interact, unmeasured**: the family-block rule and the supplied clef
+both assign instruments to lines, and no record in the tree carries a
+`clef_seed` row to check them against each other.
+[benchmarks/omr-infer-default-2026-09/FINDINGS.md](benchmarks/omr-infer-default-2026-09/FINDINGS.md).
+
+⚠️⚠️ **A GRAFT WAS NEARLY SHIPPED HERE AND CHECKING CAUGHT IT, NOT A TEST.**
+`gather_clef_seed` looked up `clefs.get(staff_index)` with ONE dict for every
+system — and a printed score suppresses tacet staves, so index 6 is the Timpani
+on a full system and Violino I on one that drops it. **An index-keyed dict
+seeds the timpani's `bass` onto a violin the moment any system is short**: the
+12-of-75 graft, implied by the function's original shape. Both halves are now
+per-system with a seam test, and measured on the real lineup index 6 seeds
+`treble`, not `bass`. ⚠️ **Two independent facts must also RECONCILE** —
+`len(full) − len(suppressed)` against the reader's own staff count — and where
+they disagree nothing is seeded there, because one of them is wrong about that
+system. It fired at once on a list this session had invented for a demo.
+
+⚠️⚠️ **MEASURED, AND THE HONEST HEADLINE IS THAT THE SEED IS REDUNDANT WHERE IT
+CAN BE CHECKED.** On Litolff p1/s0 with the dossier confirmed and `works.json`'s
+own hand join: **12 of 12 staves seeded, every clef correct** — and **all 12
+AGREE with what the pipeline already decided**, so the seed changes nothing
+there. Where it could matter is unmeasured: 6 of 75 staff-systems carry no
+decided clef, and whether a seed fills them needs the per-system suppression a
+human must confirm first. ⚠️ **An admitted dossier still reaches NEITHER meter
+nor key signature** — `Q.DOSSIER_FACT` is declared in both their `wants` and
+read by neither; its one live consumer is `Q.CLEF_SEED`.
+
+⚠️ **WHAT IS NOT ESTABLISHED.** **No sheet has ever driven a real run** — the
+gate, the join and the seeds are measured over committed records and hand data,
+and no gather has been made with `--sheet`. **Nothing else consumes a sheet**,
+deliberately (the `Q.INK` discipline — a producer and its first consumer landing together makes
+the reach measurement circular). **No print was consulted by this work**: the
+Brahms lineup is checked against the reader's own output and the Litolff fill
+uses Sean's previously committed hand reading. **The six suppression asks are
+irreducible** from these inputs — knowing a system prints 11 of 12 does not say
+which one is missing. `lineup.full` **assumes the widest system prints the whole
+lineup**, flagged as a check. n = 2 documents, 2 publishers, 8 pages, both
+scans; the engraved family is untouched; no OMR-NED, because the sheet emits no
+music. **48 tests; battery 24 arms across TWO subjects, 24 RED, 0 survivors**,
+both restores hash-verified; all nine derived checks exit 0, including
+`reach --check`, whose `Q.DOSSIER_FACT` entry this change made stale and which
+was corrected rather than suppressed.
+
+---
+
+## The session-start FACT SHEET — auto-drafted, human-corrected, and it SCORES the reader
+
+2026-09-21, no flag, **nothing consumes it and no pipeline behaviour changes**.
+`tools/omr/factsheet.py`. Findings:
+[benchmarks/omr-factsheet-2026-09/FINDINGS.md](benchmarks/omr-factsheet-2026-09/FINDINGS.md).
+
+```bash
+python3 -m tools.omr.factsheet draft score.pdf --record rec.json -o sheet.json
+python3 -m tools.omr.factsheet show  sheet.json      # the compact human view
+python3 -m tools.omr.factsheet check sheet.json --record rec.json --write
+```
+
+Sean, 2026-09-21: *"I want the reader and dossier process to work as well as
+possible by itself but I can supply this info when necessary. The session start
+fact sheet should auto populate what it can by itself. then I can do the
+rest/double check."*
+
+⚠️⚠️ **THE RULE THAT MAKES IT AN INSTRUMENT RATHER THAN A CRUTCH: every field
+a human CORRECTS is a recorded disagreement with a reader.** `merge` writes the
+reader's own answer back as `reader_said` beside any value that was overridden
+— **recovered from the record on each re-draft, so the human never has to
+preserve anything** — and `report()` is the headline output. It is a scorecard
+of the readers on exactly the facts that gate the pipeline, collected for free,
+on whatever document is in front of you. A sheet that merely *accepted* hand
+facts would hide the reader failures this project exists to measure.
+⚠️ **IT IS A DISAGREEMENT COUNT, NOT AN ERROR COUNT, and the first run proved
+why**: a hand-typed publisher dropped an umlaut the catalog had right, and the
+sheet filed the CATALOG as wrong. Which side is correct is a further
+adjudication nothing here performs — which is why `reader_said` is kept.
+
+**PROVENANCE IS THE SHAPE OF THE LEAF.** `"Flute"` is a HAND fact (a human
+typed it); `{"value": "Flute", "source": "reader"}` is a machine one; `null` is
+nobody's answer. So confirming a machine fact is *replacing the dict with the
+bare value*, which is also the least typing, and **you cannot accidentally mark
+something confirmed.** ⚠️ Its one ambiguity had to be DECLARED rather than
+sniffed (`LIST_VALUED`): `suppressed: ["Timpani"]` is a fact whose value is a
+list, `lineup.full` is a list OF facts, and nothing about the two objects tells
+them apart — see the bug below.
+
+**Four tiers, none of which needs weights or a raster**: `catalog` (work id,
+publisher, plate, pages, `has_text_layer`, the IMSLP roster — costs a
+FILENAME), `dossier` (meter, bar count, part count), `reader` (a staged
+record's verdicts), `derived`. Measured: **29 of 54 facts on Litolff Beethoven
+5 p1-4 and 44 of 56 on Breitkopf Brahms 1 p0-3**, the whole draft over a 132 MB
+record in **0.67 s**. Its structure agrees with the hand truth this repo
+already holds — 7 systems at 12/11/11/11/**8**/11/11, `p3/s1` being the
+8-staff system CLAUDE.md records suppressing Oboi/Trombe/Timpani.
+
+⚠️ **IT REFUSES TO GUESS ACROSS THE TWO ID SPACES.** The catalog keys on
+genre+number, a dossier on work+movement; the catalog's own `dossier_prefix`
+is a COMMITTED bridge and is used where it exists (**19 of 289 editions**),
+otherwise a composer+number heuristic PROPOSES candidates and the check says
+which route answered. A PDF usually spans several movements, so there is no
+single right answer to pick.
+
+⚠️⚠️ **ONE BAR NUMBER PLACES EVERY SYSTEM AFTER IT** (`chain_windows`), which
+is what turns seven questions into one — and it **reproduces this repo's
+independently hand-verified figures to the bar**: p4/s0 opens at **82** and
+p4/s1 at **97**, exactly what `omr-measure-numbering-2026-09` records. ⚠️ It
+rests entirely on the reader's bar counts and **a miscounted barline shifts
+every system below it**, so each derived value says so and the chain **BREAKS**
+at the first system whose bar count the reader did not decide rather than
+carrying a number across a gap it cannot measure. A later hand value re-anchors.
+
+**MEASURED, one hand pass on the worst document in the corpus** (Litolff, no
+text layer, `margin_label` reporting `not_implemented` on 75 of 75 staves):
+12 names + 1 bar number + 6 suppression lists — **19 hand facts take `still
+unknown` 25 → 0 and open checks 10 → 1**, the survivor being the standing
+reader-health note.
+
+⚠️⚠️ **IT FOUND A LIVE READER FAULT IN TWO SECONDS THAT NOBODY HAD WRITTEN
+DOWN.** On Brahms the drafted lineup is **13 of 14 right**, and the fourteenth
+is the horn staff reading `'in C 1 2'` on one system, `'(C)'` / `'(Es)'` on the
+next and `'Hr.'` on the third — **the instrument noun truncated away on some
+systems and not others**, which is exactly `OMR_ROSTER_LABELS`' population,
+firing on the document every other lane measures on. It is also why the systems
+"disagree about the order": the disagreement is the READER's, not the edition's.
+
+⚠️⚠️ **THREE BUGS IN ITS OWN CODE, ALL FOUND BY FILLING A REAL SHEET RATHER
+THAN BY READING IT**, and the tests that existed caught none of them.
+(1) **`source_of` answered `"hand"` for CONTAINERS**, so `merge` bailed at the
+top level and merged nothing — every re-draft silently returned the old sheet
+and the scorecard read a clean **ZERO**. *A believable zero from a merge that
+never ran.* (2) **A hand-typed `suppressed: ["Timpani"]` was DISCARDED** for
+the list-vs-container ambiguity above — the exact failure the module exists to
+prevent, committed by the module itself. (3) **Suppression was derived from a
+name the lexicon had REFUSED** wherever the same raw string appeared on both
+systems, so the match was luck; found by a mutation arm surviving, and the
+fixture that caught it had to be built for it. ⚠️ A fourth, in the checks: a
+check label that is not a real dotted path can never be retired, so the list
+keeps asking for what you already gave it.
+
 ⚠️ **WHAT IS NOT ESTABLISHED.** **Nothing consumes a sheet**, deliberately (the
 `Q.INK` discipline — a producer and its first consumer landing together makes
 the reach measurement circular). **No print was consulted by this work**: the
@@ -6684,8 +6949,10 @@ irreducible** from these inputs — knowing a system prints 11 of 12 does not sa
 which one is missing. `lineup.full` **assumes the widest system prints the whole
 lineup**, flagged as a check. n = 2 documents, 2 publishers, 8 pages, both
 scans; the engraved family is untouched; no OMR-NED, because the sheet emits no
-music. **32 tests; battery 17 arms, 17 RED, 0 survivors**; all eight derived
-checks exit 0 with no stale gap entries introduced.
+music. **48 tests; battery 24 arms across TWO subjects, 24 RED, 0 survivors**,
+both restores hash-verified; all nine derived checks exit 0, including
+`reach --check`, whose `Q.DOSSIER_FACT` entry this change made stale and which
+was corrected rather than suppressed.
 
 ---
 
@@ -6890,6 +7157,34 @@ the trap instead of compensating for it.
 meter is what the meter IS, so a detected meter that disagrees is a misread and
 is replaced — every override is still reported. Measured on an engraved
 Beethoven 5 excerpt the detector read 4/4, 4/24 and 7/24 across a 2/4 movement.
+
+⚠️⚠️ **AND THE STAGED PIPELINE CANNOT BE GIVEN ONE AT ALL — `--dossier` IS A
+`transcribe` FLAG, AND EVERYTHING BELOW DESCRIBES THE LEGACY PATH.** Verified
+2026-09-21: `tools/omr/staged/__main__.py` has **no `--dossier` argument**, and
+the omission is deliberate and commented (`:231`) — *"a dossier is generated
+from the same MusicXML the benchmarks score against, so the scan gate is
+dossier-free BY PROTOCOL and a `--dossier` flag would put a truth file inside a
+measurement path."* ⚠️ **That reason is right about the GATE and silent about
+production**, which is *A PREMISE ENCODED IN A REFUSAL OUTLIVES ITS REASON*
+arriving with the scope never having been stated: the machinery is all there
+(`gather_external(dossier=...)`, `gather_clef_seed`, `Q.DOSSIER_FACT`), and
+only the CLI rung is missing. ⚠️⚠️ **AND SEAN RULED ON THE ESCAPE THE SAME
+DAY: *"let the dossier only reach the pipeline through a confirmed sheet."***
+So there is still no `--dossier` and there will not be one — `--sheet` is the
+only rung and it admits a dossier ONLY where a human CONFIRMED
+`movement.dossier_id`, which makes the measurement path **structurally unable**
+to consume one rather than trusted not to. ⚠️⚠️ **AND OPENING IT FOUND THAT THE
+FLAG WOULD HAVE BEEN A NO-OP WEARING A USEFUL NAME: `gather_clef_seed` reads
+`dossier["clef_by_staff"]` and NO DOSSIER IN THIS REPO CARRIES THAT KEY — all
+97 lack it**, so it has always been handed `{}` and abstained on every staff.
+The key is the OUTPUT of the part-to-staff join; the file holds only the input
+(`parts[].written_clef`). See the FACT SHEET section. ⚠️⚠️ **DO NOT READ THIS
+AS "SUPPLY THE DOSSIER AND IDENTITY IS SOLVED" EITHER**, on either path: `slot_facts_for_system`
+requires `len(parts) == n_staves` and ABSTAINS otherwise (`dossier.py:581`), so
+on a condensed conductor's page — Beethoven 5 encodes **18 parts** and prints
+**12 staves** — the per-staff tier is silent by design. *Which encoded part
+sits on which printed staff* is a property of the ENGRAVING and is absent from
+the MusicXML entirely. That is what the FACT SHEET below asks a human for.
 
 ⚠️⚠️ **AND THE STAGED PIPELINE CANNOT BE GIVEN ONE AT ALL — `--dossier` IS A
 `transcribe` FLAG, AND EVERYTHING BELOW DESCRIBES THE LEGACY PATH.** Verified
@@ -9727,7 +10022,8 @@ All in `backend/.env` (local) or `backend/.env.production` (prod):
 | `OMR_HOLD_OUT_UNIDENTIFIED` | **`1` on (default since 2026-09-17, Sean's call)** → staged pipeline only: a staff the join could not name is held out of the file rather than emitted as a part of its own; its notes are counted under `staff_not_identified` and the accounting control stays an equality. Parts 37 → 12 on Litolff Beethoven 5 pp.1-4. Scoped to the `slot` join, so a page where nothing is named still writes one part per staff. `0` restores the previous exporter. See the knobs table. |
 | `OMR_METER_TEMPLATE_AT_BAR` | `0` off (default) → staged pipeline only: ask the TEMPLATE reader at candidate mid-staff bar heads, of every staff of the system, and admit a reading only where 3 staves agree on one meter at one bar. Measured on 1,612 empty windows over 2 publishers: 16 / 2 / **0** spurious columns at a 1 / 2 / 3-staff quorum. UNPRICED — a GATHER change needs two full re-gathers. See the knobs table. |
 | `OMR_INK` | **`1` on (default since 2026-09-17, Sean's call; deny-list)** → staged pipeline only: `Q.INK`, one row per connected piece of a cell's ink, named or not — the base layer, with the detector's classification as an ATTRIBUTE. **Nothing is filtered** and **nothing reads it**, both deliberately. 1,244 rows / 1.8 s on one page; 17 of 17 staves get a row at a printed meter the detector fires on none of. Alignment against a null holds on one publisher (0.63 / 0.43) and is much weaker on a second (0.87 / 0.83). See the knobs table. |
-| `OMR_INFER` | `0` off (default) → the FOURTH STAGE, INFER: after EVALUATE and before EXPORT, it collapses a NARROWED verdict to one of that reader's OWN candidates using evidence EVALUATE structurally cannot look at — the other staves of the same system. ⚠️⚠️ **THREE rules since 2026-09-17, and the third is the first that is NOT a duration** — `collapse_slot_index_to_family_block` places 15 of the 25 unnamed staves of Litolff Beethoven 5 p1-4 and is worth **+642 events in the file**; see *The unnamed block at the foot of a system* below. **TWO duration rules** (`collapse_duration_by_column` 7, `collapse_duration_to_barline` 10 — the barline rule refuses any witness whose length reached it through `Q.METER`, so it never reads the meter it would otherwise need). Every inference is LABELLED (`decider="infer:…"`), names what it supersedes, and leaves the narrowing in the record. ⚠️ Off means ABSENT, not quiet: `pipeline` omits the `inference` key entirely, so a flag-off record is byte-identical to a tree without the stage. 7 inferred / 6 reach the file on Litolff Beethoven 5 p1-4; n = 1 document and NO accuracy check against the print. See the *INFER, the fourth stage* section. |
+| `OMR_INFER` | `0` off (default) → **the two DURATION rules of the FOURTH STAGE**, no longer the stage itself. After EVALUATE and before EXPORT, INFER collapses a NARROWED verdict to one of that reader's OWN candidates using evidence EVALUATE structurally cannot look at — the other staves of the same system. `collapse_duration_by_column` 7, `collapse_duration_to_barline` 10 (the barline rule refuses any witness whose length reached it through `Q.METER`, so it never reads the meter it would otherwise need). **NEITHER has had a single note checked against a print**, which is why both are still off. Every inference is LABELLED (`decider="infer:…"`), names what it supersedes, and leaves the narrowing in the record. 7 inferred / 6 reach the file on Litolff Beethoven 5 p1-4; n = 1 document. ⚠️⚠️ **THE SLOT-INDEX RULE LEFT THIS FLAG ON 2026-09-21 AND IS DEFAULT ON UNDER `OMR_SLOT_FAMILY_BLOCK`** (Sean: *"Flip on the previous work"*). It had to leave: with one dial, shipping a rule scored **25 of 25 against the PRINT** also shipped two rules with no crop between them, and keeping those off kept the verified one off — *one switch, two evidential weights, and the stronger one lost*. ⚠️⚠️ **AND *OFF MEANS ABSENT, NOT QUIET* IS NOW A DIFFERENT SENTENCE.** It read *"with `OMR_INFER` off the `inference` key is absent, so a record is byte-identical to a tree without the stage"*; with a default-ON rule in the registry **that is FALSE under default settings**, and leaving it written would be this file's own *fixed-then-kept-open-in-prose* with the polarity reversed. What survives, and is what `test_infer_bypass` now asserts — **derived off the gates rather than hand-listed, so a fourth rule cannot quietly stop being covered** — is *when NO RULE IS ENABLED the key is absent*. An arm needing the old identity sets `OMR_SLOT_FAMILY_BLOCK=0`. See the *INFER, the fourth stage* section and [benchmarks/omr-infer-default-2026-09/FINDINGS.md](benchmarks/omr-infer-default-2026-09/FINDINGS.md). |
+| `OMR_SLOT_FAMILY_BLOCK` | **`1` on (default since 2026-09-21, Sean's call; deny-list)** → the fourth stage's `collapse_slot_index_to_family_block`, **the ONE rule of that stage ever put to the PRINT**. Sean's own convention: a block of unnamed staves at the foot of a system, placed against the reference's trailing same-family run. **25 of 25 placements correct, ZERO grafts, `staff_not_identified` 783 → 141, +642 events in the file** — all measured 2026-09-17 and then left switched off for a reason that was never about its own evidence. ⚠️ **THE FLIP IS MEASURED base-vs-arm on ONE tree** (`flip_arm.py`, the `-ink-identity` shared record, clean provenance): `slot_index` decided **55 → 70**, narrowed **20 → 5**, **15 inferred**, every one carrying `decider: infer:collapse_slot_index_to_family_block`. That **reproduces the rule's own published funnel (20 narrowed → 15 collapsed) from a different record, tree and instrument**, and is a REPRODUCTION rather than a new result. ⚠️⚠️ **THE CONTROL IS THE ZERO — `0` verdicts outside `slot_index` moved**, and with only this rule enabled the stage can write exactly one quantity, asserted off the registry rather than assumed. A fourth stage that starts running by default and quietly touches a duration is the whole reason the flags were split rather than merged. ⚠️ **A DENY-LIST because the default is ON**: an empty value or a typo must leave a measured rule RUNNING. Direction confirmed present in the derived AST scan, which has been blind to two flags before. ⚠️ **The first arm was DEAD and the reason is worth carrying**: against `library/_shared-records/beethoven5-p1-p4.record.json` it reports **0 narrowed**, because that record holds **0 margin labels and `instrument` abstaining `no_evidence` on 75 of 75** — it predates the `pdf_path` repair. *A shared record is a snapshot of the reader that made it*, and the two Litolff records differ by more than a date. ⚠️⚠️ **`block_arm.py`'s control FAILS on today's tree (12 of 75) and was NOT weakened** — `adjudicate_slot_index` gained its short-system rule after that record was gathered, exactly as CLAUDE.md recorded that morning; widening it until it passed would be *a control that computes the wrong thing*, on purpose. ⚠️ **NOT ESTABLISHED**: no print was consulted on 2026-09-21 (correctness rests entirely on the 09-17 crop pass), no export and no OMR-NED were re-run, and **Breitkopf has NO population for this rule at all** — 0 abstentions, because that plate labels nearly every staff — so the second publisher can neither corroborate nor refute it. `0` restores the pre-2026-09-21 behaviour exactly. |
 | `OMR_PARTIAL_DYNAMICS` | `off` (default) → a dynamic letter run that spells no known word is dropped whole; `complete` exports only what every surviving completion agrees on (`s` → `sf`); `other` adds `<other-dynamics>`. Measured over the 20-row gate: +15 / +30 edits, NOT ONE ROW BETTER. See the knobs table. |
 | `OMR_ROSTER_LABELS` | `0` off (default) → resolve margin labels against the work's catalog roster: recover a truncated name, disambiguate `Basso.`, veto a singer on a work with no singers. Measured; 1.4% of real margin labels. See the knobs table. |
 | `OMR_WORK_ID` | Name the catalogued work for a PDF the score library does not hold — the score LIBRARY's id (`tchaikovsky--symphony-6`), never the dossier's (`tchaikovsky-sym6-mvt2`). Consumed only by `OMR_ROSTER_LABELS`; nothing sets it by default. |

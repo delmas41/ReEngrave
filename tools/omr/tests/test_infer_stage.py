@@ -43,6 +43,14 @@ def _rule(fn, **kw):
     kw.setdefault("bound", "the test's own fixture")
     kw.setdefault("sideways", True)
     kw.setdefault("why_witnesses_are_independent", "the test says so")
+    # ⚠️ A ONE-OFF RULE IS ALWAYS ON. `run()` honours each rule's own switch
+    # since 2026-09-21, and the default switch is `OMR_INFER` (default OFF) --
+    # so without this every test here would silently install a rule that
+    # never fires and then assert on its absence of output, which is the
+    # purest form of *a test named for a hazard it does not reach*. The switch
+    # mechanism itself is covered by `TestRunHonoursEachRulesOwnGate`, which
+    # is what stops this default from taking the coverage with it.
+    kw.setdefault("switch", infer.Switch("OMR_TEST_ALWAYS_ON", lambda: True))
     return infer.rule(**kw)(fn)
 
 
@@ -415,3 +423,80 @@ class TestScoringConflict(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+class TestRunHonoursEachRulesOwnGate(unittest.TestCase):
+    """⚠️ THE COVERAGE `_rule`'s ALWAYS-ON DEFAULT WOULD OTHERWISE TAKE WITH
+    IT. Every other test in this file installs a rule that always fires, so
+    nothing else here can tell a switch that is honoured from one that is
+    ignored. These four can: each was run RED against `run()` iterating
+    `RULES` unconditionally, which is exactly what it did before the rules
+    gained separate defaults."""
+
+    def _one(self, switch):
+        seen = []
+
+        def fn(log, subject):
+            seen.append(subject)
+            return ()
+
+        with _WithRule(fn, switch=switch):
+            log = _frozen_log()
+            _decided(log, _glyph())
+            rep = infer.run(log, evaluate.Report([], [], []))
+        return seen, rep
+
+    def test_a_gated_off_rule_does_not_run(self):
+        seen, _ = self._one(infer.Switch("OMR_TEST_OFF", lambda: False))
+        self.assertEqual(seen, [], "the rule's own switch said no and it ran")
+
+    def test_a_gated_off_rule_is_NAMED_rather_than_omitted(self):
+        """*Inert* and *nothing to do* must not be the same report."""
+        _, rep = self._one(infer.Switch("OMR_TEST_OFF", lambda: False))
+        self.assertEqual([d[1] for d in rep.disabled], ["OMR_TEST_OFF"])
+        self.assertIn("disabled", rep.to_json())
+
+    def test_a_gated_on_rule_runs_and_is_not_named(self):
+        """The positive control: without it the two assertions above pass for
+        a `run()` that refuses every rule."""
+        seen, rep = self._one(infer.Switch("OMR_TEST_ON", lambda: True))
+        self.assertTrue(seen)
+        self.assertEqual(rep.disabled, [])
+
+    def test_the_flag_name_travels_with_its_predicate(self):
+        """⚠️ A report naming the wrong flag is worse than one naming none --
+        it sends the next reader to a variable that changes nothing."""
+        for switch, env in ((infer.INFER_SWITCH, "OMR_INFER"),
+                          (infer.FAMILY_BLOCK_SWITCH, "OMR_SLOT_FAMILY_BLOCK")):
+            self.assertEqual(switch.env, env)
+
+
+class TestTheTwoDefaultsAreSeparate(unittest.TestCase):
+    """⚠️⚠️ THE POINT OF THE WHOLE CHANGE: the print-verified rule is on and
+    the two rules with no crop between them are off, and flipping either does
+    not flip the other."""
+
+    def _on(self, env):
+        with mock.patch.dict(os.environ, env, clear=False):
+            return sorted(r.inference.value for r in infer.enabled_rules())
+
+    def test_only_the_slot_rule_is_on_by_default(self):
+        self.assertEqual(
+            self._on({"OMR_INFER": "0", "OMR_SLOT_FAMILY_BLOCK": "1"}),
+            ["collapse_slot_index_to_family_block"])
+
+    def test_raising_OMR_INFER_does_not_silence_the_slot_rule(self):
+        self.assertIn("collapse_slot_index_to_family_block",
+                      self._on({"OMR_INFER": "1"}))
+
+    def test_silencing_the_slot_rule_does_not_raise_the_duration_rules(self):
+        self.assertEqual(self._on({"OMR_INFER": "0",
+                                   "OMR_SLOT_FAMILY_BLOCK": "0"}), [])
+
+    def test_the_stage_runs_when_any_single_rule_is_on(self):
+        with mock.patch.dict(os.environ,
+                             {"OMR_INFER": "0", "OMR_SLOT_FAMILY_BLOCK": "1"},
+                             clear=False):
+            self.assertTrue(infer.stage_should_run())
+        with mock.patch.dict(os.environ,
+                             {"OMR_INFER": "0", "OMR_SLOT_FAMILY_BLOCK": "0"},
+                             clear=False):
+            self.assertFalse(infer.stage_should_run())
