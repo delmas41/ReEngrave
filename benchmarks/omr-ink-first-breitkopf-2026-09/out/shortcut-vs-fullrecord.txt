@@ -1,0 +1,14 @@
+GATHER-ONLY SHORTCUT vs FULL STAGED RECORD -- the control gather_only.py promised
+
+  ink_rows               shortcut      15212   full      15212   IDENTICAL
+  glyph_rows             shortcut      12932   full      12932   IDENTICAL
+  cells_with_ink         shortcut        818   full        818   IDENTICAL
+  subjects_present       shortcut        106   full        106   IDENTICAL
+  class_agreement        shortcut        1.0   full        1.0   IDENTICAL
+  n_junk                 shortcut         33   full         33   IDENTICAL
+  n_real                 shortcut         55   full         55   IDENTICAL
+  n_cannot_tell          shortcut         18   full         18   IDENTICAL
+  zero_coverage_pieces   shortcut       8028   full       8028   IDENTICAL
+
+  AUC on all 15 axes identical: True
+  residue strata identical: {k:v["n"] for k,v in a["residue"].items()} == ... : True
