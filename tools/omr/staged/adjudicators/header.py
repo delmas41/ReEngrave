@@ -258,7 +258,7 @@ def adjudicate_key_signature(ev: Evidence) -> Ruling:
     # tier is gated on the DOMAIN rather than flipped globally, and
     # `_proved_engraved` answers False for everything that is not a measured
     # `engraved` row.
-    if True:
+    if _proved_engraved(ev):
         row, fifths = _template_fit(ev, clef)
         if row is not None:
             return Ruling(value=fifths, reason="fitted_by_template_engraved",
