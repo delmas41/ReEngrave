@@ -328,14 +328,21 @@ class TestTheDocumentRowIsReachableFromAStaff(_FlagCase):
 
 class TestTheFlagDirection(_FlagCase):
 
-    def test_the_consumer_flag_is_default_OFF_and_an_ALLOW_list(self):
-        for word, on in (("1", True), ("true", True), ("on", True),
-                         ("0", False), ("", False), ("yess", False),
-                         ("ON!", False)):
+    def test_the_consumer_flag_is_default_ON_and_a_DENY_list(self):
+        # ⚠️⚠️ FLIPPED 2026-09-22 (evening) ON SEAN'S CALL, and the test's
+        # DIRECTION flipped with it rather than being deleted. CLAUDE.md's
+        # "A flag's OFF test must follow its DEFAULT", under which five
+        # shipped flags had it backwards: a default-ON mechanism must be a
+        # DENY-list, so an empty value or a typo leaves it ON rather than
+        # silently restoring the precedence the measurement replaced.
+        for word, on in (("0", False), ("", False), ("off", False),
+                         ("false", False), ("no", False),
+                         ("1", True), ("true", True), ("on", True),
+                         ("yess", True), ("ON!", True)):
             os.environ[H.ENGRAVED_KEYSIG_ENV] = word
             self.assertEqual(H._engraved_keysig_enabled(), on, word)
         os.environ.pop(H.ENGRAVED_KEYSIG_ENV, None)
-        self.assertFalse(H._engraved_keysig_enabled())
+        self.assertTrue(H._engraved_keysig_enabled())
 
 
 if __name__ == "__main__":

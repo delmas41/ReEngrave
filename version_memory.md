@@ -18,10 +18,14 @@ pointing at headings no longer in the file.)*
 
 ## 2026-09-22 (evening) — IDENTITY IS GATHERED, AND THE KEY SIGNATURE READS IT
 
-**Sean's ruling above, built and measured.** Two flags:
-`OMR_DOCUMENT_IDENTITY` **default ON** (deny-list — his instruction that the
-printing be gathered in the first stage), `OMR_ENGRAVED_KEYSIG` **default
-OFF** (allow-list — the consumer, and the flip is his). Findings:
+**Sean's ruling above, built and measured — and he flipped the consumer ON
+the same evening** (*"flip OMR_ENGRAVED_KEYSIG on by default"*). Two flags,
+**BOTH DEFAULT ON**, both DENY-list: `OMR_DOCUMENT_IDENTITY` (his instruction
+that the printing be gathered in the first stage) and `OMR_ENGRAVED_KEYSIG`
+(the consumer). ⚠️⚠️ **THE FLIP RESOLVED NONE OF THE LIMITS BELOW** — n is
+still 1 document, 1 renderer, no print consulted. It rests on the rule being
+ONE-SIDED, verified at the flip by `test_keysig_second_reader.py`, whose
+fixtures file no domain row, passing **unmodified**. Findings:
 [benchmarks/omr-document-identity-2026-09/FINDINGS.md](benchmarks/omr-document-identity-2026-09/FINDINGS.md).
 
 ⚠️⚠️ **THE BRIEF'S OWN WARNING IS REFUTED AND SEAN'S OFF-HAND GUESS IS RIGHT.**

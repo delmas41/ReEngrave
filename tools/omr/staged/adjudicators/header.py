@@ -7,16 +7,27 @@ import os
 from ..adjudicate import Checkable, Evidence, Mode, Ruling, decision
 from ..record import ABSTAIN, Kind, Q, Scope, State
 
-#: ⚠️ DEFAULT **OFF**, ALLOW-LIST -- correct for a default-OFF mechanism:
-#: a typo or an empty value must leave it OFF rather than switch a document
-#: onto a precedence nobody measured for it. `test_flag_default_direction.py`
-#: derives this from the source and will check it.
+#: ⚠️⚠️ DEFAULT **ON** SINCE 2026-09-22 (evening) — **SEAN'S CALL**, on the
+#: measurement in `benchmarks/omr-document-identity-2026-09/FINDINGS.md`: key
+#: signature right **26 -> 47** of 50 and wrong **24 -> 3** on the engraved
+#: fixture, **4 parts better and 0 worse** in the file, with exactly two
+#: quantities moving of 29. It shipped OFF the same day because the evidence
+#: was n = 1 document and 1 renderer with no print consulted; **those limits
+#: are unchanged and are not what the flip rests on** — it rests on the rule
+#: being ONE-SIDED, so every input the new fact cannot speak about keeps the
+#: shipped behaviour exactly.
+#:
+#: ⚠️ THE OFF TEST IS A **DENY-LIST** BECAUSE THE DEFAULT IS ON. CLAUDE.md's
+#: *"A flag's OFF test must follow its DEFAULT"*, under which five shipped
+#: flags had it backwards: under a default-ON flag an allow-list would let an
+#: empty value or a typo silently RESTORE the old precedence.
+#: `test_flag_default_direction.py` derives this from the source and checks it.
 ENGRAVED_KEYSIG_ENV = "OMR_ENGRAVED_KEYSIG"
 
 
 def _engraved_keysig_enabled() -> bool:
-    return os.environ.get(ENGRAVED_KEYSIG_ENV, "0").strip().lower() \
-        in ("1", "true", "yes", "on")
+    return os.environ.get(ENGRAVED_KEYSIG_ENV, "1").strip().lower() \
+        not in ("0", "", "false", "no", "off")
 
 
 def _proved_engraved(ev: Evidence) -> bool:
@@ -204,7 +215,8 @@ def adjudicate_key_signature(ev: Evidence) -> Ruling:
 
     ⚠️⚠️ **AND THAT REASON IS REFUTED ON ENGRAVED INPUT, WHICH IS WHY
     `_proved_engraved` EXISTS AND WHY IT IS ONE-SIDED** (2026-09-22,
-    `OMR_ENGRAVED_KEYSIG`, default OFF). On a Verovio render of Beethoven 5
+    `OMR_ENGRAVED_KEYSIG`, **default ON since that evening, Sean's call**).
+    On a Verovio render of Beethoven 5
     mvt 1 the ink is a VECTOR render, so *"broken ink"* cannot be the excuse
     -- and over 50 decided staff-systems the template reads **20 right / 0
     wrong** while the locator's `fitted` reads **6 / 24**. The mechanism is

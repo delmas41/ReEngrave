@@ -422,10 +422,15 @@ away for anyone repeating this comparison.
   open.
 - ⚠️ **No OMR-NED figure**, deliberately: the metric is symmetric and pairs
   by pitch, and a key signature moves pitches wholesale.
-- ⚠️ **THE DEFAULT IS SEAN'S.** `OMR_ENGRAVED_KEYSIG` ships **OFF**. Flipping
-  it is a behaviour change on a population of one document, and this lane
-  recommends it only for engraved input, which is 10 of 289 held editions
-  plus rendered fixtures.
+- ✅⚠️ **SEAN FLIPPED `OMR_ENGRAVED_KEYSIG` ON THE SAME EVENING**
+  (*"flip OMR_ENGRAVED_KEYSIG on by default"*), and **every limit in this
+  section is unchanged by that.** The flip rests on the rule being ONE-SIDED,
+  not on the evidence being wider: on any input the new fact cannot speak
+  about the shipped precedence is untouched, which was verified at the flip by
+  `test_keysig_second_reader.py` — whose fixtures file no domain row — passing
+  **unmodified**. Its reach in the library is **10 of 289 held editions** plus
+  rendered fixtures. ⚠️ The OFF test became a DENY-list with it, per *A flag's
+  OFF test must follow its DEFAULT*.
 - ⚠️ **The records were gathered from a DIRTY tree** (`provenance.dirty`
   true) — the working tree carried exactly this lane's change and nothing
   else. They are benchmark arms, not shared records.

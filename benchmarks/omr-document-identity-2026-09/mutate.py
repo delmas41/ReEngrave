@@ -174,6 +174,15 @@ ARMS = [
      "a default-OFF mechanism must be off by default -- the flag-off test "
      "must fail"),
 
+    ("header", "the consumer flag becomes an ALLOW-list under a default-ON flag",
+     '    return os.environ.get(ENGRAVED_KEYSIG_ENV, "1").strip().lower() \\\n'
+     '        not in ("0", "", "false", "no", "off")',
+     '    return os.environ.get(ENGRAVED_KEYSIG_ENV, "1").strip().lower() \\\n'
+     '        in ("1", "true", "yes", "on")',
+     "flipped default-ON 2026-09-22 on Sean's call, so an allow-list would let "
+     "an empty value or a typo silently RESTORE the old precedence -- both the "
+     "flag test and the derived direction scan must fail"),
+
     ("header", "the engraved tier reuses the SHIPPED reason word",
      '            return Ruling(value=fifths, reason="fitted_by_template_engraved",',
      '            return Ruling(value=fifths, reason="fitted_by_template",',
