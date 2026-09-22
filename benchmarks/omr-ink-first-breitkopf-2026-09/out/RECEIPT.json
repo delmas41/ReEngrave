@@ -34,7 +34,7 @@
   },
   "not_established": [
     "It carries no verdicts, so nothing downstream of GATHER can be asked of it.",
-    "A full staged record for these pages with OMR_INK on was launched in the same session and had not finished; library/_shared-records/brahms1-breitkopf-p0-p3.record.json (2026-09-15) is the pre-ink one and carries ZERO ink rows."
+    "The pre-ink library/_shared-records/brahms1-breitkopf-p0-p3.record.json (2026-09-15, 443 MB) still carries ZERO ink rows and is a DIFFERENT artefact; the new one is named ...-ink.record.json and does not replace it."
   ],
   "tree": {
     "branch": "claude/ink-first-breitkopf-2026-09",
@@ -48,5 +48,35 @@
       "identical": true
     },
     "only_gather_divergence": "gather_clef_seed, the dossier clef-seeding path. This run passed dossier=None (the staged CLI has no --dossier), so that branch abstains identically either way and cannot reach the ink."
+  },
+  "full_staged_record": {
+    "STATUS": "LANDED -- the brief's literal deliverable, completed after the analysis",
+    "path": "library/_shared-records/brahms1-breitkopf-p0-p3-ink.record.json",
+    "md5": "4df63a752df9d7cca3d916a67b37ebf4",
+    "bytes": 461112107,
+    "ink_rows": 15212,
+    "provenance": {
+      "commit": "27311d6864f4f5708322d84f7f6e2fcfce736211",
+      "dirty": false
+    },
+    "settings": {
+      "env_overrides": {
+        "OMR_DIRECTION_TEXT": "0",
+        "OMR_SURYA_KEEP_ALIVE": "1"
+      },
+      "args": {
+        "pages": "0-3",
+        "surya": false,
+        "ocr": true,
+        "dpi": 600,
+        "conf": 0.25,
+        "work_id": null,
+        "weights": "deepscoresv2-yolov8l-hollow-graft-shift09-2026-09-04.pt"
+      }
+    },
+    "wall_clock": "~1h40m, dominated by adjudicate_glyph_owner (the O(n^2) step)",
+    "gitignored": "library/ is gitignored, which is why the GATHER-ONLY projection is what is committed",
+    "CONTROL_shortcut_vs_full": "EVERY NUMBER IDENTICAL. ink 15212, glyph_box 12932, cells 818, subjects 106/106, class agreement 1.0, junk 33, real 55, cannot_tell 18, zero-coverage 8028, ALL 15 AUCs to six decimals, and the residue strata. This is the control gather_only.py's own docstring promised -- \"the full run, when it lands, is the control for\" the shortcut. It passes exactly, so every number in this lane is a property of the document rather than of the shortcut.",
+    "artefact": "benchmarks/omr-ink-first-breitkopf-2026-09/out/shortcut-vs-fullrecord.txt"
   }
 }
