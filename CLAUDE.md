@@ -612,7 +612,33 @@ every detection from the page's ink so "find the text" becomes "find the ink".
 Full statement: `tools/omr/staged/ASSUMPTIONS.md` **A-DUR-5**, which now
 carries the result and the two frame corrections that came with it.
 
-⚠️⚠️ **START HERE IF YOU ARE PICKING THIS UP (2026-09-21):**
+⚠️⚠️ **START HERE IF YOU ARE PICKING THIS UP (2026-09-21, evening):**
+[docs/handoff-2026-09-21-the-fact-sheet.md](docs/handoff-2026-09-21-the-fact-sheet.md)
+— **the newest, and it opens with a correction Sean made that changes how the
+last three handoffs should be read.** Asked where the project stood, the
+manager called staff identity an unsolved READING problem and quoted *41% of
+noteheads reaching the file*. ⚠️⚠️ **BOTH HALVES WERE WRONG: 41% IS A HOLD-OUT
+COUNT, NOT A READING SCORE** — the dominant loss is `staff_not_identified`,
+which is `OMR_HOLD_OUT_UNIDENTIFIED` working exactly as Sean specified — **and
+the dossier is not blocked on the staged path, it is UNPLUMBED**, for a reason
+(`staged/__main__.py:231`) that is correct about the measurement gate and
+silent about reading a score. ⚠️ **AND IT WOULD NOT HAVE SETTLED IT ANYWAY**,
+which neither of us had in hand: `slot_facts_for_system` abstains wherever
+`len(parts) != n_staves`, i.e. on every condensed page, because *which encoded
+part sits on which printed staff* is a property of the ENGRAVING and is absent
+from the MusicXML entirely. **That is the gap the FACT SHEET is aimed at**
+(`tools/omr/factsheet.py`, no flag, **nothing consumes it**): it drafts 29 of
+54 facts on Litolff and 44 of 56 on Breitkopf from four tiers needing no
+weights and no raster, and **one hand pass of 19 facts takes `still unknown`
+25 → 0**. ⚠️⚠️ **Its governing rule is that every field a human corrects is a
+recorded DISAGREEMENT with a reader** — so it scores the readers rather than
+hiding them, which is what Sean asked for when he said the sheet must
+auto-populate. ⚠️ It found a live reader fault in two seconds (a horn label
+truncated to `'in C 1 2'` / `'(C)'` / `'(Es)'` on the primary Breitkopf
+document). ⚠️ **Its §5 is the one decision blocking the next step** — what TIER
+a hand fact is, and whether the staged CLI should get `--dossier` at all — and
+**§7 is the manager's own failures, including three bugs in the new module that
+only filling a real sheet found.** Its predecessor
 [docs/handoff-2026-09-21-connecting-the-sweep.md](docs/handoff-2026-09-21-connecting-the-sweep.md)
 — ⚠️⚠️ **THE TWO BODIES OF WORK HAD DIVERGED AND NOBODY HAD MERGED THEM.**
 `claude/part-instrument-check-2026-09` and `claude/integration-2026-09-18`
