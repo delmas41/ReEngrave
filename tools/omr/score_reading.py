@@ -84,6 +84,36 @@ def detector_family(class_name: str) -> str | None:
     return None
 
 
+def _page_of(doc: dict[str, Any], page_index: int) -> dict:
+    """The page of `doc` whose OWN `page_index` is `page_index`.
+
+    Used on BOTH sides -- the transcription result and the page truth.
+
+    ⚠️⚠️ NOT `pages[page_index]`. `transcribe --pages 2` returns a ONE-element
+    `pages` list carrying `page_index: 2` inside it, so a positional lookup
+    reads index 2 of a 1-element list -- and the two callers below used to
+    answer that with an EMPTY detection list and a staff space of 1.0. Every
+    family then printed truth N / pred 0 / F1 0.000, which reads as a
+    recognition catastrophe rather than as a lookup that missed.
+
+    ⚠️ It never showed because every fixture the reading lane uses is
+    `--pages 0`, where the list position and the page index coincide.
+
+    ⚠️ It RAISES. *A fallback must never convert "cannot tell" into a definite
+    answer* -- and a silent zero from a scoring instrument is the worst form of
+    it, because the number looks like a result.
+    """
+    pages = doc.get("pages", [])
+    for page in pages:
+        if page.get("page_index") == page_index:
+            return page
+    have = [pg.get("page_index") for pg in pages]
+    raise KeyError(
+        f"this result holds no page with page_index={page_index} "
+        f"(it holds {have!r}). Refusing to score: an empty page and a page "
+        f"that was never transcribed must not produce the same table.")
+
+
 def detections_in_page_px(result: dict[str, Any], page_index: int = 0) -> list[dict]:
     """Every detection of the page, centred in PAGE pixels.
 
@@ -92,10 +122,7 @@ def detections_in_page_px(result: dict[str, Any], page_index: int = 0) -> list[d
     they are the same ones the exporter uses.
     """
     out = []
-    pages = result.get("pages", [])
-    if page_index >= len(pages):
-        return out
-    for system in pages[page_index].get("systems", []):
+    for system in _page_of(result, page_index).get("systems", []):
         for staff in system.get("staves", []):
             for meas in staff.get("measures", []):
                 box = meas.get("bbox_page_px") or [0, 0, 0, 0]
@@ -117,14 +144,20 @@ def detections_in_page_px(result: dict[str, Any], page_index: int = 0) -> list[d
 
 def staff_space_px(result: dict[str, Any], page_index: int = 0) -> float:
     vals = []
-    pages = result.get("pages", [])
-    if page_index < len(pages):
-        for system in pages[page_index].get("systems", []):
-            for staff in system.get("staves", []):
-                s = (staff.get("staff_geometry") or {}).get("line_spacing_px")
-                if s:
-                    vals.append(float(s))
-    return sorted(vals)[len(vals) // 2] if vals else 1.0
+    for system in _page_of(result, page_index).get("systems", []):
+        for staff in system.get("staves", []):
+            s = (staff.get("staff_geometry") or {}).get("line_spacing_px")
+            if s:
+                vals.append(float(s))
+    if not vals:
+        # ⚠️ The page IS in the result and no staff carries a spacing. That is
+        # a real reading failure and is reported as one -- but 1.0 px would
+        # silently rescale every tolerance by ~20x, so it may not be the
+        # answer to "I could not measure it".
+        raise ValueError(
+            f"page_index={page_index} carries no staff line_spacing_px. "
+            f"A tolerance in staff spaces cannot be evaluated without it.")
+    return sorted(vals)[len(vals) // 2]
 
 
 def match(truth: list[dict], dets: list[dict], tol_px: float) -> dict[str, Any]:
@@ -213,7 +246,13 @@ def _prf(m: dict[str, int]) -> tuple[float, float, float]:
 
 
 def report(page_truth: dict, result: dict, page_index: int, tolerances) -> dict:
-    page = page_truth["pages"][page_index]
+    # ⚠️ BY FIELD on the TRUTH side too. A page-truth file holds every page
+    # today, so this side has never been wrong -- and it carries the same
+    # `page_index` field, so the hazard is LATENT rather than absent, and a
+    # truth built for a subset of pages would fail exactly as the result side
+    # did. Symmetry here costs nothing and removes the second instance before
+    # anyone meets it.
+    page = _page_of(page_truth, page_index)
     dets = detections_in_page_px(result, page_index)
     space = staff_space_px(result, page_index)
     out: dict[str, Any] = {"staff_space_px": space, "tolerances": {}}

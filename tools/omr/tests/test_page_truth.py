@@ -273,9 +273,16 @@ def test_zero_and_zero_agree():
 
 def test_an_unreliable_family_is_kept_out_of_the_pooled_score():
     from tools.omr.score_reading import report
+    # ⚠️ `page_index` IS PART OF THE RESULT CONTRACT (`transcribe.py`'s schema
+    # comment: *"page_index: 0, 0-based, matches pdf2image/fitz numbering"*),
+    # on the truth side too. This fixture omitted it on both, which no real run
+    # does -- *a fixture that does not match the producer tests the fixture* --
+    # and it only passed because `report` looked the page up POSITIONALLY.
+    # That lookup is now by field, so the fixture has to be honest.
     truth = {"render_fidelity": {"unreliable": ["accidental"]},
-             "pages": [{"symbols": [_t("accidental", 0, 0), _t("notehead", 100, 100)]}]}
-    result = {"pages": [{"systems": [{"staves": [{
+             "pages": [{"page_index": 0,
+                        "symbols": [_t("accidental", 0, 0), _t("notehead", 100, 100)]}]}
+    result = {"pages": [{"page_index": 0, "systems": [{"staves": [{
         "staff_geometry": {"line_spacing_px": 10.0},
         "measures": [{"bbox_page_px": [0, 0, 0, 0], "upscale_factor": 1.0,
                       "detections": [{"class": "noteheadBlackOnLine",
