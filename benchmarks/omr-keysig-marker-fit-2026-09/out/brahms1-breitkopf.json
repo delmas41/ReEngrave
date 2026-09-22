@@ -1,0 +1,195 @@
+{
+  "config": "KeySignatureFitConfig(max_residual=0.5, max_offset=1.25, max_inferred_ratio=1.0, max_outliers=1)",
+  "reach": {
+    "abstaining": 21,
+    "no markers": 11,
+    "carries markers": 10,
+    "MEASURABLE": 10,
+    "fit: ABSTAINS": 7,
+    "fit: answers": 3
+  },
+  "rows": [
+    {
+      "staff": "staff/1/0/8",
+      "reason": "no_evidence",
+      "instrument": null,
+      "clef": "bass",
+      "n_markers": 1,
+      "accidental": "b",
+      "observed": [
+        15.529
+      ],
+      "fit": null,
+      "truth": null,
+      "notes_on_staff": 39,
+      "notes_moved": 0,
+      "notes_missed": 0,
+      "notes_overmoved": 0
+    },
+    {
+      "staff": "staff/1/1/9",
+      "reason": "no_evidence",
+      "instrument": null,
+      "clef": "treble",
+      "n_markers": 3,
+      "accidental": "b",
+      "observed": [
+        2.846,
+        -0.03,
+        4.135
+      ],
+      "fit": -3,
+      "truth": null,
+      "notes_on_staff": 73,
+      "notes_moved": 34,
+      "notes_missed": 0,
+      "notes_overmoved": 34
+    },
+    {
+      "staff": "staff/2/1/0",
+      "reason": "no_evidence",
+      "instrument": null,
+      "clef": "treble",
+      "n_markers": 4,
+      "accidental": "b",
+      "observed": [
+        2.637,
+        15.179,
+        -0.381,
+        3.897
+      ],
+      "fit": null,
+      "truth": null,
+      "notes_on_staff": 30,
+      "notes_moved": 0,
+      "notes_missed": 0,
+      "notes_overmoved": 0
+    },
+    {
+      "staff": "staff/2/1/10",
+      "reason": "no_evidence",
+      "instrument": null,
+      "clef": "treble",
+      "n_markers": 2,
+      "accidental": "b",
+      "observed": [
+        3.072,
+        0.377
+      ],
+      "fit": -2,
+      "truth": null,
+      "notes_on_staff": 18,
+      "notes_moved": 7,
+      "notes_missed": 0,
+      "notes_overmoved": 7
+    },
+    {
+      "staff": "staff/2/1/2",
+      "reason": "no_evidence",
+      "instrument": null,
+      "clef": "treble",
+      "n_markers": 1,
+      "accidental": "b",
+      "observed": [
+        2.791
+      ],
+      "fit": -1,
+      "truth": null,
+      "notes_on_staff": 45,
+      "notes_moved": 14,
+      "notes_missed": 0,
+      "notes_overmoved": 14
+    },
+    {
+      "staff": "staff/3/0/13",
+      "reason": "no_evidence",
+      "instrument": null,
+      "clef": "bass",
+      "n_markers": 3,
+      "accidental": "b",
+      "observed": [
+        4.615,
+        1.59,
+        5.744
+      ],
+      "fit": null,
+      "truth": null,
+      "notes_on_staff": 29,
+      "notes_moved": 0,
+      "notes_missed": 0,
+      "notes_overmoved": 0
+    },
+    {
+      "staff": "staff/3/0/3",
+      "reason": "no_evidence",
+      "instrument": null,
+      "clef": "bass",
+      "n_markers": 2,
+      "accidental": "b",
+      "observed": [
+        4.686,
+        1.605
+      ],
+      "fit": null,
+      "truth": null,
+      "notes_on_staff": 53,
+      "notes_moved": 0,
+      "notes_missed": 0,
+      "notes_overmoved": 0
+    },
+    {
+      "staff": "staff/3/1/1",
+      "reason": "run_fits_no_slot_table",
+      "instrument": null,
+      "clef": "treble",
+      "n_markers": 2,
+      "accidental": "b",
+      "observed": [
+        2.74,
+        -0.304
+      ],
+      "fit": null,
+      "truth": null,
+      "notes_on_staff": 66,
+      "notes_moved": 0,
+      "notes_missed": 0,
+      "notes_overmoved": 0
+    },
+    {
+      "staff": "staff/3/1/2",
+      "reason": "no_evidence",
+      "instrument": null,
+      "clef": "treble",
+      "n_markers": 2,
+      "accidental": "b",
+      "observed": [
+        2.694,
+        14.928
+      ],
+      "fit": null,
+      "truth": null,
+      "notes_on_staff": 84,
+      "notes_moved": 0,
+      "notes_missed": 0,
+      "notes_overmoved": 0
+    },
+    {
+      "staff": "staff/3/1/4",
+      "reason": "no_evidence",
+      "instrument": null,
+      "clef": "bass",
+      "n_markers": 2,
+      "accidental": "b",
+      "observed": [
+        4.371,
+        1.677
+      ],
+      "fit": null,
+      "truth": null,
+      "notes_on_staff": 74,
+      "notes_moved": 0,
+      "notes_missed": 0,
+      "notes_overmoved": 0
+    }
+  ]
+}
