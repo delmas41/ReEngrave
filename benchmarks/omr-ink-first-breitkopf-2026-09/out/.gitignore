@@ -1,2 +1,2 @@
+# the full staged record is ~460 MB and lives in library/_shared-records/
 *.record.json
-*.inkjoin.json
