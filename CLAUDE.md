@@ -5609,6 +5609,22 @@ page that had given 100), not review and not version control.
 > same as leaving it as GIT has it, AN INTERRUPTED BATTERY OBEYS NEITHER, and a
 > RESTORE THAT PRESERVES mtime CAN LEAVE THE OLD BYTECODE IN CHARGE.**
 
+⚠️⚠️ **AND A FOURTH CLAUSE, PAID FOR 2026-09-22: DO NOT *COMMIT* WHILE A
+BATTERY RUNS EITHER — `git add -A` IS A READ OF THE WORKING TREE, AND THE
+BATTERY OWNS THE WORKING TREE.** A session committed and **pushed**
+`header.py` carrying the arm *"the precedence is flipped GLOBALLY"* —
+`if True:` in place of the one-sided gate — so the remote briefly held the
+key-signature tier preferring the template on SCANS, the one thing that
+lane's design refuses. ⚠️ **It is silent in BOTH directions**: the commit
+looks clean because the tree was the battery's, and after the restore
+`git status` shows **one modified file that reads as an ordinary edit**. The
+tell is the pairing — *the battery said `restore VERIFIED by md5` AND the
+tree is dirty*, which can only mean the COMMIT is wrong. ⚠️ The existing
+recorded clause is *do not EDIT `tools/` while a suite is running*, and the
+same session had already paid that one an hour earlier by losing a docstring
+to the same snapshot. **Commit BEFORE launching a battery, and touch nothing
+until it prints its restore.**
+
 ⚠️⚠️ **THE THIRD CLAUSE WAS PAID FOR ON 2026-09-18 AND ITS FAILURE IS
 INDISTINGUISHABLE FROM A TEST GAP: `__pycache__` SURVIVES A MUTATE/RESTORE
 CYCLE.** `restore()` copying a snapshot back with **`shutil.copy2` preserves the

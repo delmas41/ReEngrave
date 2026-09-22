@@ -243,6 +243,35 @@ would be right is exactly what is unmeasured.
    individually on both trees — and **not** for the suite. Do not quote its 6
    as *"main is failing six tests"*.
 
+10. ⚠️⚠️⚠️ **I COMMITTED AND PUSHED A MUTATION-BATTERY ARM.** Running
+    `git add -A && git commit && git push` while the battery was live captured
+    `header.py` mid-arm, carrying *"the precedence is flipped GLOBALLY, not
+    one-sided"* — `if True:` in place of `if _proved_engraved(ev):`. **What
+    went to the remote was the key-signature tier preferring the template on
+    EVERY document, scans included** — the exact behaviour this lane's design
+    refuses and which is unmeasured for accuracy there.
+
+    **It is silent in both directions.** The commit looks clean, because
+    committing reads the working tree and the working tree was the battery's
+    at that instant. Then the battery restores from its own snapshot, so
+    afterwards `git status` shows **one modified file that looks like an
+    ordinary edit** — I nearly read it as one.
+
+    **What caught it** was checking `git status` against the battery's
+    *"restore VERIFIED by md5"*: the battery had verified its restore, so a
+    dirty file could only mean the COMMIT was wrong, not the restore. Scope
+    then checked rather than assumed — `git log -S "    if True:"` names
+    exactly one commit, nothing else differs from HEAD, and the restored file
+    is byte-identical to the flip commit. **Reverted in `<the next commit>`,
+    and the guards were verified against the pushed blob rather than trusted:
+    6 tests fail on it**, including `test_the_LOCATOR_wins_where_both_speak`
+    and `test_a_SCAN_is_UNCHANGED`, and the battery's own arm for that
+    mutation was RED in the very run that produced it.
+
+    > **CLAUDE.md says *do not EDIT `tools/` while a suite is running*. The
+    > clause it did not have: DO NOT COMMIT EITHER. A battery owns the working
+    > tree while it runs, and `git add -A` is a read of the working tree.**
+
 ## 8. OPERATIONAL
 
 - ⚠️ **`timeout` does not exist on macOS.** It exits 127 and the command never
