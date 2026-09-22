@@ -3925,6 +3925,217 @@ pages; no OMR-NED, deliberately. Suite **4521 passed / 19 skipped / 0 failed**
 (base 4477); `inventory`, `health`, `wiring`, `capture`, `reach`, `brakes`,
 `trace --check` and `no_producer` all exit 0.
 
+### The ENGRAVED staged record — the first reading accuracy the staged pipeline has had
+
+2026-09-22, no flag, **no file under `tools/` touched by the lane**.
+`trace.py` shipped saying *"WHAT IT CANNOT SEE: ACCURACY … it needs one
+ENGRAVED staged record."* Made. Findings:
+[benchmarks/omr-staged-engraved-2026-09/FINDINGS.md](benchmarks/omr-staged-engraved-2026-09/FINDINGS.md).
+
+**Beethoven 5 mvt 1 bars 1-24 rendered by Verovio, 18 parts, 3 pages of one
+18-staff system**, scored by `tools/omr/score_reading.py` **called unchanged**
+— an adapter, not a second scorer, so staged and legacy numbers come out of one
+code path. **Pooled reading F1 0.933** (truth 1,016 / pred 1,087 / match 981),
+and ⚠️ **NOTEHEAD RECALL IS 1.000 ON ALL THREE PAGES** — 73/73, 74/74, 207/207
+on a conductor's page. ⚠️ **A fact about engraved ink and not about a scan.**
+⚠️ The control that could have made it junk: `--shift-spaces 2` takes pooled
+F1 **0.947 → 0.058**, so the score measures POSITION and not counts.
+
+⚠️⚠️ **THE HEADLINE: THE KEY SIGNATURE'S CORRECT ANSWER IS ON THE RECORD AND IS
+NOT READ.** Over 50 decided staff-systems, `fitted_by_template`
+(`Q.KEYSIG_TEMPLATE_FIT`) is **20 right / 0 wrong** and the locator's `fitted`
+is **6 right / 24 wrong** — and `adjudicate_key_signature` **PREFERS THE
+LOCATOR**. Every wrong verdict is `-1` where `-3` is printed; the 6 right ones
+are the clarinets and horns, i.e. **the locator is right exactly where the
+answer is small, because it UNDER-COUNTS**. ⚠️ **The detector is not the
+problem: `key_accidental` reading recall is 1.000, 132 of 132 glyphs.**
+⚠️⚠️ **The precedence's stated reason is REFUTED ON THIS INPUT** — its docstring
+says *"the locator loses accidentals to broken ink, the template can match
+spurious ink and over-count"*, and **the ink here is a VECTOR RENDER, the
+locator loses them anyway 24 times in 30, and the template over-counts
+nowhere.** *A PREMISE ENCODED IN A REFUSAL OUTLIVES ITS REASON* and *the value
+existed and nothing read it*, in one place. **The mechanism is measured**:
+`min_height_spaces = 1.10` against flats that the page truth measures at 2.57
+spaces and that read **0.94 and 1.19 after `header_ink_mask`** — the erasure
+removes **54-63% of each flat's height**, and a floor written for a real
+accidental rejects two of three. ⚠️ **91% of all note errors on 20 bars of 18
+parts are this one fault** (43 of 47 disagreements differ ONLY by an
+accidental). ⚠️⚠️ **NOTHING WAS FLIPPED — the refusal behind that precedence
+was priced on SCANS, so this is the named new evidence the rule asks for and
+not a licence. It is Sean's call, and §11 item 2 is the one render that would
+say whether the mechanism is Verovio's spacing or the ERASURE — and if it is
+the erasure, it is everywhere.**
+
+⚠️⚠️ **INFER HAS ESSENTIALLY NO DOMAIN ON ENGRAVED INPUT.** Breitkopf's
+dominant staged loss is `duration_narrowed` at 537 — INFER's entire population
+— and on engraved ink it is **0 / 0 / 3**. `staff_not_identified` and
+`no_pitch` are **0 on all three pages** against Litolff's 783 and 205, so both
+dominant staged losses vanish. ⚠️ The **beam-mate tier**'s 0.984 was
+Litolff-only and this is its first engraved contact: it fires **8 times**, and
+whether those 8 are right is **not measured**.
+
+⚠️ **The 09-21 `<beam>` emission is EXACT here** — 183 ours / 183 truth, **all
+18 parts' full `(number, type)` sequence**, 0 unbalanced levels, and Verovio
+re-rendering OUR file draws `{flag: 4, beam: 58}`, *identical* to the truth
+file's own. ⚠️ `<alter>` is **44 of 100 and tracks the key exactly**: 69% of
+alters on the 10 staves with a correct key, **13%** on the 8 with a wrong one.
+⚠️ `<beam>` is an ENCODING unit and the page-truth `beam` family a PAGE unit —
+**different questions; do not divide one into the other.**
+
+⚠️ **The staged/legacy precision gap is a STAGE difference, not a worse
+reading**: of page 0's 24 extra rows, **10 are cross-staff contests the record
+RESOLVED** and only **2 are the `gather.py:292` NMS divergence** — the obvious
+hypothesis, measured and nearly empty. ⚠️ **The two notehead-precision filters
+the staged path does not run cost it NOTHING on page 0 and 2 noteheads on page
+2** — a bound, and it does NOT clear them on a scan.
+
+⚠️ **The staged CLI does NO weight routing** — `input_domain` is imported
+nowhere under `staged/`, so an engraved PDF gets whatever weights are typed.
+⚠️ The lane **reproduced this file's own one-page hazard on itself**: gathered a
+page at a time, pages 1-2 abstain on the meter and every whole rest exports at
+the 4.0 fallback (page 1: 30 of 162 part-bars). In ONE three-page gather the
+meter **CARRIES at +10.0 and +6.0** and `measure_rests_read` goes **85 → 214**
+— `OMR_METER_CARRY`'s first engraved contact where the answer is checkable, and
+it is right on both carried systems.
+
+⚠️ **What is NOT established**: n = 1 work, 24 bars, 3 pages, **1 renderer**; a
+render is not a scan; the `accidental` family is excluded as a RENDER artefact
+(Verovio draws one per `<alter>`); **no crop was cut and no print consulted**;
+`dynamic_letter` precision **0.491** and a spurious page-2 barline are measured
+and undiagnosed; no OMR-NED, deliberately.
+
+### ⚠️⚠️ A scoring instrument answered "page not found" with a ZERO — `score_reading.py`
+
+2026-09-22, found by the lane above, **repaired by the managing session** (the
+lane correctly left `tools/` alone). `report()` took a `page_index` and used it
+**POSITIONALLY on both sides**, while `transcribe --pages 2` returns a
+**ONE-element `pages` list carrying `page_index: 2` INSIDE it**. So
+`detections_in_page_px` returned `[]`, `staff_space_px` returned **1.0**, and
+every family printed truth N / pred 0 / **F1 0.000** — a complete table of zeros
+that reads as a recognition catastrophe rather than as a lookup that missed.
+⚠️ **1.0 px also rescales every staff-space tolerance ~20×**, so a tolerance of
+0.5 spaces becomes half a PIXEL. ⚠️ **It never showed because every fixture the
+reading lane uses is `--pages 0`**, where list position and page index coincide
+— *a test named for a hazard it does not reach*, arriving as a whole benchmark's
+worth of fixtures. `_page_of` now looks the page up **by its own field** and
+**RAISES**, naming what the result does hold, **on the TRUTH side too** (those
+pages carry the same field, so the hazard was LATENT there rather than absent).
+⚠️ One existing fixture broke and was **UNDER-SPECIFIED, not wronged** — it
+omitted `page_index` on both sides, which no real run does and which
+`transcribe.py`'s own schema comment documents; **corrected rather than
+accommodated**, since weakening the lookup to tolerate it would have restored
+the silent path. 8 tests, **7 RED on the unrepaired tree**; the 8th is the
+page-0 control, which passes both ways BY DESIGN because every committed figure
+in `omr-reading-vs-reproduction-2026-09` was taken there. ⚠️ **Three instances
+of this one shape were found in one night, in three files** — this, the lane's
+own adapter, and a third in its `attribute_extras` — **each caught by a control
+and by nothing else.**
+
+### The ink-first test on the SHATTERING plate — §7's falsifier FIRES
+
+2026-09-22, **read-only**. The governing document's own falsification test, run
+where its §7 says it belongs. Findings:
+[benchmarks/omr-ink-first-breitkopf-2026-09/FINDINGS.md](benchmarks/omr-ink-first-breitkopf-2026-09/FINDINGS.md);
+the correction is at the head of
+[docs/breakthrough-2026-09-18-the-unit-of-enquiry.md](docs/breakthrough-2026-09-18-the-unit-of-enquiry.md).
+
+⚠️⚠️ **NO INK-DERIVED AXIS SEPARATES PRINT-CONFIRMED JUNK FROM PRINT-CONFIRMED
+NOTEHEADS AS WELL AS A FEATURE OF THE BOX ALONE — in every arm, on BOTH
+publishers, under BOTH attributions.** Breitkopf **0.939** (box width) against
+the best ink axis **0.747**; Litolff **0.937** against **0.736**
+(direction-free `|AUC−0.5|+0.5`, 2,000-draw permutation null per axis). **That
+is §7's falsifying condition in its own words.** ⚠️ It **REPRODUCES**
+`omr-notehead-width-2026-09`'s independently measured *"width < 1.0 catches 39
+of 46 junk at a cost of 0 of 63 real"* from a different instrument, which is
+what makes it credible rather than novel.
+
+⚠️⚠️ **IT DOES NOT SHOW THE BOX IS A GOOD SUBJECT — only that on these plates
+the ink is not a BETTER one**, and **the sample is stratified on GEOMETRY**
+(junk is 12/12 in `too TALL` and 11/12 `at a CELL EDGE`), which inflates box
+and ink features alike; inside the one bucket holding both classes the box
+still wins, **on nine cases at a margin of 0.0227 staff spaces — an ORDERING,
+not a measured gap.** ⚠️ **§3's diagnosis is untouched**: the addressing fault
+is real and missed ink still has no subject. **What is refuted is the REMEDY.**
+
+⚠️ **THE ARRANGEMENT MATTERS AND DOES NOT RESCUE THE FRAMING**: asked
+**ink-first** instead of box-first, four Litolff ink axes DO clear the null
+where the 2026-09-18 run got nothing — so ink-first is genuinely more
+informative, **and still loses.**
+
+⚠️⚠️ **THE RESIDUE SPLIT INVERTS THE PREDECESSOR'S OWN CAVEAT.** *"42.5% of ink
+pieces have ZERO detections … much of that will be specks"* reproduces to the
+unit (3,019 of 7,093 = 42.6%) and then splits **SPECK 66.9% Breitkopf against
+3.8% LITOLFF — the very plate the figure was measured on**, where the mass is
+mark-sized ink (58.1%) and tall verticals (27.4%). **So "42.5%" is not one fact
+and must stop being quoted as one.** It reproduces *Litolff MERGES and
+Breitkopf SHATTERS* from a third direction.
+
+**The artefact**: `library/_shared-records/brahms1-breitkopf-p0-p3-ink.gather.json`,
+md5 `213bcb92…`, **15,212 `Q.INK` rows over 818 cells**, pages 0-3, GATHER-only.
+⚠️ **Its cross-gather control is the strong one**: page 1 reproduces the
+committed 2026-09-18 single-page gather **EXACTLY** — ink 6055 = 6055, and the
+ink SUBJECT KEY SET identical with 0 on either side — **two independent
+detector runs, four days and one branch apart.**
+
+⚠️⚠️ **THE WRONG-JOIN CONTROL IS A FINDING IN ITSELF: 38 of 106 Litolff
+subjects are PRESENT in the Breitkopf record by coincidence (36%)**, 4 of 38
+even agreeing on class. The 09-18 draft was caught by 11 of 26; **on four pages
+the hazard is far larger** — the breakthrough document's own point (a subject's
+last coordinate is a positional index) arriving as a number.
+
+⚠️ **§7's "the Breitkopf record … cannot be run there at all … it is one
+gather" WAS ALREADY STALE**: `b4eed4a4`, on main since 2026-09-18, had gathered
+one page of it. **Found by `ls benchmarks/`, which is the check that works when
+`git log -S` does not** — a partially-landed investigation changes no code.
+
+⚠️ **What is NOT established**: n = 2 documents, 2 publishers, 8 pages, **both
+scans**; the engraved family untouched. **No print was consulted by that
+session** — every verdict is the 09-18 crop pass's, whose own `cannot_tell` rate
+is 58.9%/62.5% on Litolff. Nothing under `tools/` changed; no re-adjudication,
+no export, no OMR-NED. **The residue strata are DESCRIPTIVE** — nothing shows a
+zero-coverage mark-sized piece IS a missed mark, and that needs crops.
+
+### Join a chord to its stroke — REFUSED BY THE PRINT, and the item was mis-sized
+
+2026-09-22, **nothing shipped**. The 2026-09-21 re-derivation's ranked #1.
+Findings:
+[benchmarks/omr-chord-stroke-join-2026-09/FINDINGS.md](benchmarks/omr-chord-stroke-join-2026-09/FINDINGS.md).
+
+⚠️⚠️ **THE ITEM WAS RANKED OFF A POPULATION TWO THIRDS TOO LARGE.** Its
+`98 / 73` figure reproduces exactly and **is not a reach**: `chord_shadow.py`
+asks whether a solo-claimed stroke has another head at its x inside its y-span
+and **never asks whether that head is STEMLESS**. Only **24 / 33** are. ⚠️ *A
+shadow says a partner EXISTS; it does not say a join is MISSING* — which the
+predecessor's own §7 said and the ranking used anyway.
+
+**REACH: 31 heads of 2,322 (1.3%)** — 20 Litolff (2.5% of `no_stem`), 11
+Breitkopf (0.7%) — and **none is already answered by the beam-mate tier**.
+
+⚠️⚠️ **THE PRINT REFUSES IT: of the 17 candidates the print settles, 2 are a
+real chord (11.8%) and 15 are not — and 13 ARE NOT NOTEHEADS**: a BASS CLEF ×2,
+a C CLEF, a printed `ff` ×4, a BARLINE, a BEAM ×3, a QUARTER REST, an
+AUGMENTATION DOT. ⚠️ **CONTROLS 12 of 15 with ZERO wrong**, so the question is
+answerable by eye and **the convention is not what failed.** ⚠️ **Litolff
+yielded ZERO real chords in 22 candidates.** This reproduces the crop pass's
+*"46 of 180 boxes are NOT NOTEHEADS"* from a different direction — **the third
+independent lane to land on that contamination.** ⚠️ A 1.0-space width floor
+removes 5 of 34 pairs and **leaves 9 non-noteheads standing.**
+
+⚠️ **The un-refuted half is NOT the join**: **4 + 2 strokes would FLIP
+direction**, because `_project` builds its group from heads that OVERLAP, so a
+dropped member is missing from the direction computation too. **That is a
+`_project` question, needs no new rule, and was not touched.**
+
+⚠️ One clean separation is recorded and **deliberately not proposed**: hollow
+notehead classes score 2 right / 1 wrong and **filled ones 0 / 14** — solid
+furniture ink gets called a BLACK notehead. **n = 2 positives, and a class name
+is the detector's own word about the SAME box: one signal, not a second
+witness.** ⚠️ **What is NOT established**: one adjudicator (measured 2 of 24
+wrong at tile magnification on a sibling lane), **not blind to the geometry**,
+and **15 of the 16 `cannot_tell` are Litolff — the Breitkopf half carries the
+conclusion.**
+
+
 ### `no_ink` is a claim about the PAGE, and three readers made it about THEMSELVES
 
 2026-09-22, no flag, GATHER + the vocabulary. The `2,377 no_ink claims are
