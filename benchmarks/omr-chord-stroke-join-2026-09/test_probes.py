@@ -117,6 +117,22 @@ class TestUnjoinedMembers(unittest.TestCase):
         stranded = H(7.0, 20.0, subject="glyph/0/0/0/0/stranded")
         self.assertEqual(reach.unjoined_members([stroke], [stranded]), [])
 
+    def test_a_mate_AT_THE_RIGHT_X_BUT_NOT_JOINED_is_not_a_mate(self):
+        """⚠️ THE CASE THE FIRST DRAFT OF THIS TEST COULD NOT REACH, and a
+        mutation arm said so: the arm that deletes the `_boxes_overlap(mate,
+        stroke)` clause SURVIVED, because every fixture that had no joined
+        head also had no head at the right x. Here two stemless heads stand
+        at one x inside the stroke's y-span and NEITHER touches it -- there is
+        no chord to infer, and the rule must stay silent."""
+        stroke = S(200.0, 0.0)
+        a = H(7.0, 0.0, subject="glyph/0/0/0/0/a")
+        b = H(7.0, 20.0, subject="glyph/0/0/0/0/b")
+        self.assertFalse(_stems_on(a.value, [stroke]))
+        self.assertFalse(_stems_on(b.value, [stroke]))
+        self.assertTrue(x_overlap(a.value, b.value))
+        self.assertTrue(y_overlap(a.value, stroke.value))
+        self.assertEqual(reach.unjoined_members([stroke], [a, b]), [])
+
 
 class TestTheDecompositionReproducesTheSiblingsWindows(unittest.TestCase):
     """`decompose.shadows` restates two windows on purpose; these pin them."""
@@ -149,6 +165,26 @@ class TestTheDecompositionReproducesTheSiblingsWindows(unittest.TestCase):
         b = H(10.0, 20.0, subject="glyph/0/0/0/0/b")
         self.assertEqual(shadows([stroke], [a, b]), [])
 
+    def test_the_x_window_is_ONE_head_width_and_no_wider(self):
+        """⚠️ The sibling's window is a CENTRE distance within one head width.
+        A head two widths away is not a chord partner, and an arm that widened
+        the window 4x survived the first battery because no fixture stood in
+        the gap."""
+        stroke = S(20.0, 0.0)
+        joined = H(10.0, 0.0, subject="glyph/0/0/0/0/a")
+        far_x = H(32.0, 20.0, subject="glyph/0/0/0/0/faraway")
+        rows = shadows([stroke], [joined, far_x])
+        self.assertEqual(rows[0]["n_chord_shadows"], 0)
+
+    def test_the_y_window_is_the_strokes_span_plus_one_head_height(self):
+        """⚠️ Same shape: the arm that deleted the y window survived, because
+        every fixture's shadow sat inside the span anyway."""
+        stroke = S(20.0, 0.0)
+        joined = H(10.0, 0.0, subject="glyph/0/0/0/0/a")
+        far_y = H(7.0, 300.0, subject="glyph/0/0/0/0/below")
+        rows = shadows([stroke], [joined, far_y])
+        self.assertEqual(rows[0]["n_chord_shadows"], 0)
+
 
 class TestTheDirectionFlip(unittest.TestCase):
     """Adding the missing member changes what `_stem_direction` sees."""
@@ -172,8 +208,26 @@ class TestTheDirectionFlip(unittest.TestCase):
         joined = H(10.0, 0.0, subject="glyph/0/0/0/0/a")
         stranded = H(7.0, 20.0, subject="glyph/0/0/0/0/b")
         heads = [joined, stranded]
-        extra = flip.extra_members(stroke.value, heads, [stroke], heads)
+        extra = flip.extra_members(stroke.value, [stroke], heads)
         self.assertEqual([h.subject for h in extra], [stranded.subject])
+
+    def test_extra_members_skips_a_head_with_a_stroke_of_its_own(self):
+        """⚠️ The one-sidedness, in the flip probe too. The arm that deleted
+        this guard survived the first battery for want of a fixture."""
+        stroke = S(20.0, 0.0)
+        joined = H(10.0, 0.0, subject="glyph/0/0/0/0/a")
+        stranded = H(7.0, 20.0, subject="glyph/0/0/0/0/b")
+        own = S(6.0, 18.0, rid="obs:own")
+        heads = [joined, stranded]
+        extra = flip.extra_members(stroke.value, [stroke, own], heads)
+        self.assertEqual(extra, [])
+
+    def test_extra_members_needs_a_head_already_on_the_stroke(self):
+        stroke = S(200.0, 0.0)
+        a = H(7.0, 0.0, subject="glyph/0/0/0/0/a")
+        b = H(7.0, 20.0, subject="glyph/0/0/0/0/b")
+        self.assertEqual(
+            flip.extra_members(stroke.value, [stroke], [a, b]), [])
 
 
 class TestTheScorer(unittest.TestCase):
@@ -217,12 +271,44 @@ class TestTheScorer(unittest.TestCase):
             self.assertEqual((missing, extra), ([], ["z"]))
 
     def _run_check(self, tmp):
-        return subprocess.run(
+        return self._run(tmp)[0]
+
+    def _run(self, tmp):
+        out = tmp / "report.json"
+        rc = subprocess.run(
             [sys.executable, str(_BENCH / "probe" / "score.py"),
-             "--bench", str(tmp), "--labels", "x", "--check"],
+             "--bench", str(tmp), "--labels", "x", "--check",
+             "--out", str(out)],
             capture_output=True, text=True,
             env={"PYTHONDONTWRITEBYTECODE": "1", "PATH": "/usr/bin:/bin"},
         ).returncode
+        rep = json.loads(out.read_text()) if out.exists() else None
+        return rc, rep
+
+    def test_the_POOLED_report_separates_settled_from_cannot_tell(self):
+        """⚠️ `settled` and `not_head` live only in the report, so a unit test
+        on `tally` cannot see them -- two mutation arms survived the first
+        battery for exactly that reason. The headline of this whole lane is
+        `2 of 17 settled`, and a denominator that quietly included
+        `cannot_tell` would make it `2 of 33`."""
+        with tempfile.TemporaryDirectory() as d:
+            tmp = Path(d)
+            self._write(tmp,
+                        [{"id": "a", "stratum": "CANDIDATE"},
+                         {"id": "b", "stratum": "CANDIDATE"},
+                         {"id": "c", "stratum": "CANDIDATE"},
+                         {"id": "k", "stratum": "CONTROL"}],
+                        {"a": "one_shared_stem", "b": "cannot_tell",
+                         "c": "red_is_not_a_notehead",
+                         "k": "one_shared_stem"})
+            rc, rep = self._run(tmp)
+            self.assertEqual(rc, 0)
+            p = rep["POOLED"]
+            self.assertEqual(p["candidates"], 3)
+            self.assertEqual(p["candidates_the_print_SETTLES"], 2)
+            self.assertEqual(p["candidates_that_are_a_REAL_CHORD"], 1)
+            self.assertEqual(p["candidates_that_are_NOT_TWO_NOTEHEADS"], 1)
+            self.assertEqual(p["share_of_settled_that_is_a_real_chord"], 0.5)
 
     def test_check_REFUSES_when_no_control_was_adjudicated_correct(self):
         """⚠️ A pass whose controls all read `cannot_tell` has not shown the

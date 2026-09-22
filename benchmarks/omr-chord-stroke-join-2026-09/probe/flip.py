@@ -44,8 +44,15 @@ def _dir(stroke, boxes):
     return _legacy._stem_direction(_Shim(*stroke), [_Shim(*b) for b in boxes])
 
 
-def extra_members(sb, hb_list, stems_c, heads_c):
-    """The stemless heads the widened join would add to THIS stroke."""
+def extra_members(sb, stems_c, heads_c):
+    """The stemless heads the widened join would add to THIS stroke.
+
+    ⚠️ IT TAKES THE CELL'S HEADS AND RE-DERIVES THE JOINED SET. An earlier
+    signature also took the caller's `joined` list AND recomputed it, so the
+    parameter was declared and never read -- the inert-declaration shape this
+    repo records a dozen times, in a probe this time. Deleted rather than
+    wired, because the two could disagree.
+    """
     joined = [h for h in heads_c if _boxes_overlap(sb, h.value)]
     if not joined:
         return []
@@ -84,7 +91,7 @@ def main() -> int:
             joined = [h for h in hs if _boxes_overlap(sb, h.value)]
             if not joined:
                 continue
-            extra = extra_members(sb, joined, ss, hs)
+            extra = extra_members(sb, ss, hs)
             if not extra:
                 continue
             strokes_with_extras += 1
