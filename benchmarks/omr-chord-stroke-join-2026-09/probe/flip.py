@@ -54,8 +54,12 @@ def extra_members(sb, stems_c, heads_c):
     wired, because the two could disagree.
     """
     joined = [h for h in heads_c if _boxes_overlap(sb, h.value)]
-    if not joined:
-        return []
+    # ⚠️ NO `if not joined: return []` GUARD, AND IT WAS DELETED RATHER THAN
+    # TESTED AROUND. A mutation arm removing it SURVIVED, and the reason is
+    # that it cannot change an answer: with `joined` empty the `any(...)`
+    # below is False for every head, so the function already returns `[]`.
+    # A guard in front of an assignment that cannot change the outcome is an
+    # equivalent mutant, and this repo's rule is to delete the code.
     out = []
     for h in heads_c:
         if any(h is j for j in joined):

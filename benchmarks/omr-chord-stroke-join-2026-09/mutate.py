@@ -103,9 +103,10 @@ ARMS = [
     ("flip_extra_members_ignores_its_own_stroke", "flip.py",
      '        if _stems_on(h.value, stems_c):\n            continue',
      '        if False:\n            continue'),
-    ("flip_extra_members_needs_no_joined_head", "flip.py",
-     '    if not joined:\n        return []',
-     '    if False:\n        return []'),
+    # ⚠️ `flip_extra_members_needs_no_joined_head` was an arm and is GONE: the
+    # guard it removed could not change an answer, so the code was deleted
+    # instead (see `extra_members`). The arm that found it is worth recording
+    # even though it no longer exists.
     # ── score.py: the instrument that reports the result ─────────────────────
     ("score_takes_the_stratum_from_the_adjudication", "score.py",
      '        if tid in stratum:\n            out[stratum[tid]][rec["verdict"]] += 1',
