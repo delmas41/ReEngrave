@@ -1,0 +1,242 @@
+{
+ "control (both branches off)": {
+  "parts": 12,
+  "named": 12,
+  "unnamed": 0,
+  "staves_with_no_slot": 25,
+  "rows": [
+   {
+    "slot": 0,
+    "staves": 7,
+    "name": "Flute",
+    "conflict": null
+   },
+   {
+    "slot": 1,
+    "staves": 6,
+    "name": "Oboe",
+    "conflict": null
+   },
+   {
+    "slot": 2,
+    "staves": 7,
+    "name": "Clarinet",
+    "conflict": null
+   },
+   {
+    "slot": 3,
+    "staves": 7,
+    "name": "Bassoon",
+    "conflict": null
+   },
+   {
+    "slot": 4,
+    "staves": 7,
+    "name": "Horn",
+    "conflict": null
+   },
+   {
+    "slot": 5,
+    "staves": 6,
+    "name": "Trumpet",
+    "conflict": null
+   },
+   {
+    "slot": 6,
+    "staves": 5,
+    "name": "Timpani",
+    "conflict": null
+   },
+   {
+    "slot": 7,
+    "staves": 1,
+    "name": "Violin",
+    "conflict": null
+   },
+   {
+    "slot": 8,
+    "staves": 1,
+    "name": "Violin",
+    "conflict": null
+   },
+   {
+    "slot": 9,
+    "staves": 1,
+    "name": "Viola",
+    "conflict": null
+   },
+   {
+    "slot": 10,
+    "staves": 1,
+    "name": "Cello",
+    "conflict": null
+   },
+   {
+    "slot": 11,
+    "staves": 1,
+    "name": "Contrabass",
+    "conflict": null
+   }
+  ]
+ },
+ "base  (family block + INFER)": {
+  "parts": 12,
+  "named": 12,
+  "unnamed": 0,
+  "staves_with_no_slot": 20,
+  "rows": [
+   {
+    "slot": 0,
+    "staves": 7,
+    "name": "Flute",
+    "conflict": null
+   },
+   {
+    "slot": 1,
+    "staves": 6,
+    "name": "Oboe",
+    "conflict": null
+   },
+   {
+    "slot": 2,
+    "staves": 7,
+    "name": "Clarinet",
+    "conflict": null
+   },
+   {
+    "slot": 3,
+    "staves": 7,
+    "name": "Bassoon",
+    "conflict": null
+   },
+   {
+    "slot": 4,
+    "staves": 7,
+    "name": "Horn",
+    "conflict": null
+   },
+   {
+    "slot": 5,
+    "staves": 6,
+    "name": "Trumpet",
+    "conflict": null
+   },
+   {
+    "slot": 6,
+    "staves": 5,
+    "name": "Timpani",
+    "conflict": null
+   },
+   {
+    "slot": 7,
+    "staves": 7,
+    "name": "Violin",
+    "conflict": null
+   },
+   {
+    "slot": 8,
+    "staves": 7,
+    "name": "Violin",
+    "conflict": null
+   },
+   {
+    "slot": 9,
+    "staves": 7,
+    "name": "Viola",
+    "conflict": null
+   },
+   {
+    "slot": 10,
+    "staves": 2,
+    "name": "Cello",
+    "conflict": null
+   },
+   {
+    "slot": 11,
+    "staves": 2,
+    "name": "Contrabass",
+    "conflict": null
+   }
+  ]
+ },
+ "arm   (+ constraints)": {
+  "parts": 12,
+  "named": 12,
+  "unnamed": 0,
+  "staves_with_no_slot": 7,
+  "rows": [
+   {
+    "slot": 0,
+    "staves": 7,
+    "name": "Flute",
+    "conflict": null
+   },
+   {
+    "slot": 1,
+    "staves": 6,
+    "name": "Oboe",
+    "conflict": null
+   },
+   {
+    "slot": 2,
+    "staves": 7,
+    "name": "Clarinet",
+    "conflict": null
+   },
+   {
+    "slot": 3,
+    "staves": 7,
+    "name": "Bassoon",
+    "conflict": null
+   },
+   {
+    "slot": 4,
+    "staves": 7,
+    "name": "Horn",
+    "conflict": null
+   },
+   {
+    "slot": 5,
+    "staves": 6,
+    "name": "Trumpet",
+    "conflict": null
+   },
+   {
+    "slot": 6,
+    "staves": 5,
+    "name": "Timpani",
+    "conflict": null
+   },
+   {
+    "slot": 7,
+    "staves": 7,
+    "name": "Violin",
+    "conflict": null
+   },
+   {
+    "slot": 8,
+    "staves": 7,
+    "name": "Violin",
+    "conflict": null
+   },
+   {
+    "slot": 9,
+    "staves": 5,
+    "name": "Viola",
+    "conflict": null
+   },
+   {
+    "slot": 10,
+    "staves": 2,
+    "name": "Cello",
+    "conflict": null
+   },
+   {
+    "slot": 11,
+    "staves": 2,
+    "name": "Contrabass",
+    "conflict": null
+   }
+  ]
+ }
+}

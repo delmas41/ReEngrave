@@ -1,0 +1,58 @@
+{
+ "record_md5": "ea80ae5908288c76baaa502054a37d43",
+ "reference_system": [
+  1,
+  0
+ ],
+ "reference_clefs": {
+  "0": "treble",
+  "1": "treble",
+  "2": "treble",
+  "3": "bass",
+  "4": "treble",
+  "5": "treble",
+  "6": "bass",
+  "7": "treble",
+  "8": "treble",
+  "9": "alto",
+  "10": "bass",
+  "11": "bass"
+ },
+ "agree": 37,
+ "disagree": 1,
+ "silent": 0,
+ "per_slot": {
+  "0": {
+   "treble": 6
+  },
+  "1": {
+   "treble": 5
+  },
+  "2": {
+   "treble": 6
+  },
+  "3": {
+   "bass": 5,
+   "tenor": 1
+  },
+  "4": {
+   "treble": 6
+  },
+  "5": {
+   "treble": 5
+  },
+  "6": {
+   "bass": 4
+  }
+ },
+ "disagreements": [
+  {
+   "subject": "staff/2/1/3",
+   "slot": 3,
+   "slot_name": "Bassoon",
+   "read": "tenor",
+   "reference_read": "bass",
+   "margin": 1.0
+  }
+ ]
+}

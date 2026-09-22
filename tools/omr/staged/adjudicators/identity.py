@@ -7,7 +7,7 @@ mechanical rather than remembered.
 
 from __future__ import annotations
 
-from typing import Dict, List, Optional, Tuple
+from typing import Dict, List, Optional, Sequence, Set, Tuple
 
 from ..adjudicate import Checkable, Evidence, Mode, Ruling, Term, decision, tally
 from ..record import ABSTAIN, Candidate, Kind, Q, Scope, State
@@ -280,13 +280,16 @@ def _forced_pairing(system: List[Optional[str]],
         '"label contradiction, at slot scope: a staff whose own margin label was read on THIS page, filed under a slot named otherwise"',
     ),
     implicates=(Q.SLOT_INDEX, Q.INSTRUMENT, Q.SYSTEM_STAFF_COUNT),
-    composed_from=(Q.INSTRUMENT, Q.STAFF_ORDINAL, Q.SYSTEM_STAFF_COUNT),
+    composed_from=(Q.INSTRUMENT, Q.STAFF_ORDINAL, Q.SYSTEM_STAFF_COUNT,
+                   Q.STAFF_GROUP, Q.CLEF_GLYPH, Q.CLEF_LOCATED),
     scope=Kind.STAFF,
-    wants=(Q.INSTRUMENT, Q.STAFF_ORDINAL, Q.SYSTEM_STAFF_COUNT),
+    wants=(Q.INSTRUMENT, Q.STAFF_ORDINAL, Q.SYSTEM_STAFF_COUNT,
+           Q.STAFF_GROUP, Q.CLEF_GLYPH, Q.CLEF_LOCATED),
     reasons=("full_lineup", "named", "paired_by_name", "no_reference",
              "no_ordinal", "reference_names_nothing", "unnamed_in_short_system",
              "not_in_reference", "ambiguous_pairing",
-             "family_block", "family_block_not_forced"),
+             "family_block", "family_block_not_forced",
+             "forced_by_constraints"),
     mode=Mode.ADDITIVE,
 )
 def adjudicate_slot_index(ev: Evidence) -> Ruling:
@@ -399,6 +402,12 @@ def adjudicate_slot_index(ev: Evidence) -> Ruling:
         placed = _place_in_family_block(
             ev, here, mine, pairing, ref_system, ref_names,
             n_staves=int(count.value), used=(ordinal.id, count.id))
+        if slot_constraints_enabled():
+            narrowed = _apply_constraints(
+                ev, placed, here, mine, ref_system, ref_names,
+                n_staves=int(count.value), used=(ordinal.id, count.id))
+            if narrowed is not None:
+                return narrowed
         if placed is not None:
             return placed
         return Ruling.abstain("unnamed_in_short_system",
@@ -676,6 +685,407 @@ def _place_in_family_block(ev: Evidence, here: int,
              for j in range(deficit + 1)]
     return Ruling.narrow(cands, "family_block_not_forced",
                          used=used, **shared)
+
+# ─────────────────────────────────────────────────────────────────────────────
+# The three channels, as CONSTRAINTS on the order-preserving map
+#
+# Sean, 2026-09-22: *"margin names, instrumentation lists from the doc or a
+# dossier, Order, family brackets should all come first in determining what the
+# instrument is"* -- and the clef only where we are sure of it, because *"the
+# clef is a small part of deciding what the instrument is and we would need to
+# be sure of the clef to have it impact the instrument."*
+#
+# REACH, measured before this was written
+# (`benchmarks/omr-instrument-channels-2026-09/FINDINGS.md`), on the staves
+# whose instrument ABSTAINED, with ZERO GRAFTS in every arm on both documents:
+#
+#   channel added            Litolff /25      Breitkopf /40
+#   order alone                   0                38
+#   + family block                5                38
+#   + clef                       18                38
+#
+# ⚠️⚠️ ORDER ALONE FORCES NOTHING ON THE DOCUMENT THAT NEEDS IT, and the
+# reason is structural: Litolff's unnamed staves are a TRAILING block, so no
+# named neighbour stands below them and the whole block slides. Breitkopf
+# INVERTS it -- 38 of 40 from order alone, because its unnamed staves are
+# interleaved among named ones and bounded on both sides. Neither document
+# could have shown that on its own.
+# ─────────────────────────────────────────────────────────────────────────────
+
+#: Which clefs a slot's part may be PRINTED in, where that is not the one the
+#: lexicon calls default.
+#:
+#: ⚠️⚠️ THIS IS MEASURED, NOT ASSUMED, AND IT IS WHAT MAKES THE CLEF CHANNEL
+#: SURVIVE A SECOND PUBLISHER. `probe_clef_stability.py` asks both shared
+#: records whether a slot's clef is a constant of that slot, over staves the
+#: shipped reader had already placed: Litolff 37 agree / 1 disagree, Breitkopf
+#: 70 / 4 -- and EVERY disagreement is a Cello or a Bassoon. Breitkopf's
+#: reference system reads its cello slot `tenor` while three later systems read
+#: the same slot `bass`, ALL FOUR AT MARGIN 4.5, i.e. four confident readings
+#: of a part that genuinely changes clef.
+#:
+#: ⚠️ So the obvious rule -- *a staff may take a slot whose own staff on the
+#: REFERENCE system read the same clef* -- is REFUTED: it makes 5 of
+#: Breitkopf's 6 systems unsatisfiable and the clef channel is discarded on
+#: every one of them. Taking each slot's admissible clefs from the INSTRUMENT
+#: instead reaches the same 18 on Litolff and is refused on no system of
+#: either document.
+ALTERNATING_CLEFS: Dict[str, Tuple[str, ...]] = {
+    "Cello": ("bass", "tenor"),
+    "Bassoon": ("bass", "tenor"),
+    "Contrabassoon": ("bass", "tenor"),
+    "Trombone": ("bass", "tenor"),
+}
+
+#: A system this ambiguous is a "cannot tell", not a slow one.
+_MAX_ASSIGNMENTS = 200000
+
+
+def slot_constraints_enabled() -> bool:
+    """⚠️ A DENY-LIST, because the default is ON. An allow-list would let an
+    empty value or a typo silently restore the previous behaviour, which is
+    the hazard `test_flag_default_direction.py` exists for."""
+    import os
+    return os.environ.get("OMR_SLOT_CONSTRAINTS", "1").strip().lower() \
+        not in ("0", "", "false", "no", "off")
+
+
+def _admissible_clefs(instrument: Optional[dict]) -> Optional[Tuple[str, ...]]:
+    """Every clef this slot's part may be printed in, or None for no opinion."""
+    if not isinstance(instrument, dict):
+        return None
+    name = instrument.get("name")
+    alt = ALTERNATING_CLEFS.get(str(name)) if name else None
+    if alt is not None:
+        return alt
+    expected = instrument.get("expected_clef")
+    return (str(expected),) if expected else None
+
+
+def _clef_read_at(ev: Evidence, subject) -> Optional[str]:
+    """This staff's clef as GATHER saw it, or None -- CONSERVATIVELY.
+
+    ⚠️⚠️ IT MAY NOT READ `Q.CLEF`, AND THE DOCSTRING OF THIS FILE USED TO SAY
+    IT SHOULD. `Q.CLEF` is a VERDICT at `ORDER` 9 while this decision runs at
+    6, so reading it returns None and would close a cycle besides
+    (`adjudicate_clef` weighs `Q.INSTRUMENT`, which this decision's own input
+    is). The reachable objects are the GATHER facts, available at every ORDER
+    and carrying no deduced identity: a glyph is a reading of ink.
+
+    ⚠️ THE LOCATOR IS ASKED FIRST because it is the only reader that names
+    WHICH C clef -- `_GLYPH_TO_CLEF` maps no C clef at all, on purpose, since
+    a C clef is one glyph on five different lines and the CLASS can never say
+    which. Measured on Litolff: the detector fires on ZERO C clefs across the
+    whole record (74 `clefG`, 17 `clefF`, 0 `clefC`) and the CV locator names
+    4 of the 7 printed violas.
+
+    ⚠️ DISAGREEMENT IS NO OPINION, NEVER A VOTE. A measure cell is the staff
+    plus four staff spaces of air, so a neighbour's clef lands in it and
+    `gather_clef` emits EVERY candidate -- 101 glyph rows over 75 staves on
+    one record. Picking between them is `adjudicate_clef`'s job, with its own
+    weights and its own right to abstain; a second, cheaper copy of that
+    contest here is exactly the drift this file imports `work_roster.decide`
+    to avoid. So: all the rows agree, or this says nothing.
+    """
+    from .clef import _GLYPH_TO_CLEF
+
+    located = {str(r.value) for r in ev.rows(Q.CLEF_LOCATED, subject=subject)
+               if r.value}
+    if len(located) == 1:
+        return located.pop()
+    if located:
+        return None
+
+    named = set()
+    for row in ev.rows(Q.CLEF_GLYPH, subject=subject):
+        clef = _GLYPH_TO_CLEF.get(str(row.value))
+        if clef is None:
+            # a C-clef class names a FAMILY and not a clef; it cannot speak
+            # here and must not be counted as a disagreement either.
+            continue
+        named.add(clef)
+    return named.pop() if len(named) == 1 else None
+
+
+def _block_map(system_blocks: List[Optional[int]],
+               reference_blocks: List[Optional[int]]) -> Optional[Dict[int, int]]:
+    """`{this system's family block -> the reference's}`, or None.
+
+    ⚠️ ORDER-PRESERVING AND EQUAL-COUNT ONLY. A system printing FEWER family
+    blocks than the reference has had a whole section go tacet, and WHICH
+    section is precisely what this would then be guessing. It returns None and
+    the caller drops the channel rather than aligning anyway.
+    """
+    a, b = _block_runs(system_blocks), _block_runs(reference_blocks)
+    if not a or not b or len(a) != len(b):
+        return None
+    return dict(zip(a, b))
+
+
+def _block_runs(seq: Sequence[Optional[int]]) -> List[int]:
+    out: List[int] = []
+    for x in seq:
+        if x is None:
+            return []
+        if not out or out[-1] != x:
+            out.append(x)
+    return out
+
+
+def _admissible(staff_index: int, names: List[Optional[str]],
+                blocks: List[Optional[int]], clefs: List[Optional[str]],
+                ref_names: List[Optional[str]],
+                ref_blocks: List[Optional[int]],
+                ref_clefs: List[Optional[Tuple[str, ...]]],
+                block_map: Optional[Dict[int, int]],
+                use_clef: bool, use_block: bool) -> Optional[Set[int]]:
+    """The slots this staff may take, or None where no channel has an opinion.
+
+    ⚠️⚠️ A REFERENCE SLOT THE DOCUMENT COULD NOT READ MUST WIDEN THE CANDIDATE
+    SET, NEVER EMPTY IT, and the probe that measured this got it wrong first
+    and was caught by its own no-solution counter. Breitkopf's reference lineup
+    has THREE slots whose margin the reader could not resolve -- one of them
+    the horn staff whose label truncates to `'(C)'` -- and requiring a named
+    staff to match a slot NAME made every system holding them unsatisfiable.
+    `None` on the reference side means *we do not know what this slot is*, and
+    it excludes nobody.
+    """
+    sets: List[Set[int]] = []
+    mine = names[staff_index] if staff_index < len(names) else None
+    if mine is not None:
+        sets.append({i for i, nm in enumerate(ref_names)
+                     if nm is None or nm == mine})
+    if use_block and block_map is not None:
+        block = blocks[staff_index] if staff_index < len(blocks) else None
+        if block is not None and block in block_map:
+            want = block_map[block]
+            sets.append({i for i, b in enumerate(ref_blocks)
+                         if b is None or b == want})
+    # ⚠️⚠️ THE CLEF SPEAKS ABOUT UNNAMED STAVES ONLY, AND THAT IS MEASURED
+    # RATHER THAN TIDY. A named staff is already pinned by its name, so a clef
+    # constraint on it can add nothing -- and it can subtract everything: on
+    # Litolff p2/s1 the Fagotti's FALSE `tenor` (the CV locator firing
+    # unopposed on one crop, which `adjudicate_clef` then decides at a margin
+    # of exactly its floor) names a clef NO reference slot admits, the system
+    # goes unsatisfiable and the whole channel is dropped for it. FOUR forced
+    # staves, lost to one wrong reading on a staff the clef was never needed
+    # for.
+    if use_clef and mine is None:
+        clef = clefs[staff_index] if staff_index < len(clefs) else None
+        if clef is not None:
+            sets.append({i for i, adm in enumerate(ref_clefs)
+                         if adm is None or clef in adm})
+    if not sets:
+        return None
+    out: Set[int] = set(range(len(ref_names)))
+    for one in sets:
+        out &= one
+    return out
+
+
+def _assignments(n_staves: int, allowed: Dict[int, Optional[Set[int]]],
+                 n_slots: int) -> List[Tuple[int, ...]]:
+    """Every STRICTLY INCREASING staff->slot map the channels still permit.
+
+    ⚠️ The strictness is `[C62]` and nothing else: *a printed score may OMIT a
+    tacet part; it may never REORDER one.*
+    """
+    out: List[Tuple[int, ...]] = []
+
+    def walk(ordinal: int, lo: int, acc: List[int]) -> None:
+        if len(out) > _MAX_ASSIGNMENTS:
+            return
+        if ordinal == n_staves:
+            out.append(tuple(acc))
+            return
+        hi = n_slots - (n_staves - ordinal)
+        for slot in range(lo, hi + 1):
+            ok = allowed.get(ordinal)
+            if ok is not None and slot not in ok:
+                continue
+            acc.append(slot)
+            walk(ordinal + 1, slot + 1, acc)
+            acc.pop()
+
+    walk(0, 0, [])
+    return out
+
+
+def _solve(n_staves: int, names, blocks, clefs, ref_names, ref_blocks,
+           ref_clefs, block_map) -> Tuple[List[Tuple[int, ...]], List[str]]:
+    """`(assignments, channels dropped)`.
+
+    ⚠️⚠️ A CHANNEL MAY NARROW OR ABSTAIN; IT MAY NEVER EMPTY THE SOLUTION SET.
+    Where one makes a system unsatisfiable it is DROPPED for that system and
+    the fact is recorded, because a constraint that deletes the right answer is
+    worse than one that never spoke. That is Sean's *evidence contributes, it
+    never gates* made mechanical, and the WEAKEST channel goes first -- his
+    ordering, with the clef last.
+    """
+    dropped: List[str] = []
+    use_clef, use_block = True, True
+    while True:
+        allowed = {i: _admissible(i, names, blocks, clefs, ref_names,
+                                  ref_blocks, ref_clefs, block_map,
+                                  use_clef, use_block)
+                   for i in range(n_staves)}
+        sols = _assignments(n_staves, allowed, len(ref_names))
+        if sols:
+            return sols, dropped
+        if use_clef:
+            use_clef = False
+            dropped.append("clef")
+            continue
+        if use_block:
+            use_block = False
+            dropped.append("family_block")
+            continue
+        return [], dropped
+
+
+def _constrained_slots(ev: Evidence, here: int,
+                       mine: List[Optional[str]], ref_system,
+                       ref_names: List[Optional[str]],
+                       ref_instruments: List[Optional[dict]],
+                       n_staves: int,
+                       clefs: List[Optional[str]]) -> Tuple[Optional[Set[int]],
+                                                            List[str]]:
+    """`(the slots every surviving assignment allows this staff, dropped)`.
+
+    A SET, not a Ruling, and the difference is what keeps the shipped path
+    intact: the caller FILTERS `_place_in_family_block`'s narrowing with this
+    rather than replacing it, so the block keeps its shape, its reason and its
+    detail and `inferences.collapse_slot_index_to_family_block` still sees the
+    members it reasons about.
+
+    ⚠️⚠️ THE FIRST CUT RETURNED A RULING AND DECIDED DIRECTLY, AND THE ARM
+    CAUGHT WHAT THAT COST. Deciding two members of a block REMOVED them from
+    `_block_members`, which requires the narrowings to cover `0..k-1`; the
+    block then had holes, INFER skipped it whole, and TWO Violas that the
+    shipped path places correctly came out narrowed instead. A branch that is
+    additive in its own terms can still subtract through a rule downstream of
+    it, and only a per-staff base-vs-arm control shows it.
+
+    ⚠️ IT NAMES NOTHING. The value is a SLOT; whether that slot has a name is
+    the reference system's business, and on Breitkopf 10 of 38 placed staves
+    land on slots the reader itself could not name. Placement reach and naming
+    reach are different numbers and this is the first.
+    """
+    system = ev.subject.at(Kind.SYSTEM)
+
+    # ⚠️ `mine` STOPS AT THE LAST NAMED STAFF -- `_names_by_system` grows its
+    # row only when it has a name to put in one, so a system whose last four
+    # staves are unnamed hands back a short list and the unnamed SUFFIX this
+    # rule is about is exactly the part the structure cannot represent. The
+    # system's own staff count is the only thing that says how long it is.
+    names = list(mine[:n_staves]) + [None] * max(0, n_staves - len(mine))
+
+    blocks: List[Optional[int]] = [None] * n_staves
+    for v in ev.verdicts(Q.STAFF_GROUP, scope=Scope.SELF_AND_DESCENDANTS,
+                         subject=system):
+        if v.subject.kind is Kind.STAFF and v.value is not None \
+                and v.subject.staff < n_staves:
+            blocks[v.subject.staff] = int(v.value)
+
+    ref_blocks: List[Optional[int]] = [None] * len(ref_names)
+    for v in ev.verdicts(Q.STAFF_GROUP, scope=Scope.SELF_AND_DESCENDANTS,
+                         subject=ref_system):
+        if v.subject.kind is Kind.STAFF and v.value is not None \
+                and v.subject.staff < len(ref_names):
+            ref_blocks[v.subject.staff] = int(v.value)
+
+    ref_clefs = [_admissible_clefs(d) for d in ref_instruments]
+    while len(ref_clefs) < len(ref_names):
+        ref_clefs.append(None)
+
+    block_map = _block_map(blocks, ref_blocks)
+    sols, dropped = _solve(n_staves, names, blocks, clefs, ref_names,
+                           ref_blocks, ref_clefs, block_map)
+    if not sols or here >= n_staves:
+        return None, dropped
+    return {sol[here] for sol in sols}, dropped
+
+
+def _apply_constraints(ev: Evidence, placed: Optional[Ruling], here: int,
+                       mine: List[Optional[str]], ref_system,
+                       ref_names: List[Optional[str]], n_staves: int,
+                       used: Tuple[str, ...]) -> Optional[Ruling]:
+    """`placed`, narrowed by the three channels -- or None to keep `placed`.
+
+    Three outcomes, and each is strictly stronger than what it replaces:
+
+    * a DECISION, where exactly one slot survives. It carries `placed`'s own
+      block detail unchanged, so the block is still reconstructible by
+      `inferences._block_members`, plus which channels spoke;
+    * a SMALLER NARROWING, with `placed`'s reason and detail kept verbatim so
+      the INFER rule that reads them behaves exactly as before;
+    * None -- nothing survived that was not already there.
+
+    ⚠️ IT MAY ONLY REMOVE CANDIDATES `placed` ALREADY ADMITTED. Where the
+    constraints and the family block disagree outright -- every surviving slot
+    excluded by the other -- this returns None and the shipped answer stands,
+    because a branch that can overturn the rule it filters is not a filter.
+    """
+    # ⚠️ THE CLEF IS COLLECTED HERE, ONE LEVEL UP FROM THE SOLVER, AND THE
+    # REASON IS A DERIVED CHECK RATHER THAN TASTE. `inventory --check` follows
+    # a decision's own helpers THREE deep to decide whether a `wants` entry is
+    # actually read; with the read a fourth helper down it reported
+    # `slot_index declares 'clef_glyph' ... and never reads it`, which is a
+    # measure of code STYLE and not of inertness -- the exact confusion that
+    # check's own docstring records repairing once already. Collected where it
+    # is visible, and the solver stays a pure function of what it is handed.
+    clefs: List[Optional[str]] = [None] * n_staves
+    system = ev.subject.at(Kind.SYSTEM)
+    names = list(mine[:n_staves]) + [None] * max(0, n_staves - len(mine))
+    for v in ev.verdicts(Q.INSTRUMENT, scope=Scope.SELF_AND_DESCENDANTS,
+                         subject=system):
+        sub = v.subject
+        if sub.kind is not Kind.STAFF or sub.staff >= n_staves:
+            continue
+        # ⚠️ UNNAMED STAVES ONLY, and this is the site the mutation battery
+        # reaches. A named staff is already pinned by its name, so its clef
+        # can add nothing and can subtract everything.
+        if names[sub.staff] is None:
+            clefs[sub.staff] = _clef_read_at(ev, sub)
+
+    surviving, dropped = _constrained_slots(
+        ev, here, mine, ref_system, ref_names,
+        _reference_instruments(ev, ref_system), n_staves, clefs)
+    if surviving is None:
+        return None
+    spoke = [c for c in ("order", "family_block", "clef") if c not in dropped]
+    shared = {"channels": spoke, "channels_dropped": dropped}
+
+    if placed is None:
+        if len(surviving) != 1:
+            return None
+        slot = int(next(iter(surviving)))
+        return Ruling(value=slot, reason="forced_by_constraints", used=used,
+                      detail=dict(shared, reference=ref_system.to_key(),
+                                  instrument=(ref_names[slot]
+                                              if slot < len(ref_names) else None),
+                                  note="no family block; the slot every "
+                                       "order-preserving assignment agrees on"))
+    if placed.value is not None or not placed.candidates:
+        # already decided, or an abstention with nothing to filter
+        return None
+
+    kept = [c for c in placed.candidates if int(c.value) in surviving]
+    if not kept or len(kept) == len(placed.candidates):
+        return None
+    if len(kept) == 1:
+        slot = int(kept[0].value)
+        return Ruling(value=slot, reason="forced_by_constraints", used=used,
+                      detail=dict(placed.detail, **shared,
+                                  narrowed_from=[int(c.value)
+                                                 for c in placed.candidates],
+                                  instrument=(ref_names[slot]
+                                              if slot < len(ref_names) else None)))
+    return Ruling.narrow(kept, placed.reason, used=placed.used,
+                         **dict(placed.detail, **shared,
+                                narrowed_from=[int(c.value)
+                                               for c in placed.candidates]))
+
 
 def _slots_are_ordinals(slots) -> bool:
     """Is this slot table just the staff's position within its own system?

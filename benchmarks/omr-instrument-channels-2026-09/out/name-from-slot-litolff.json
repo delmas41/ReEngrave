@@ -1,0 +1,17 @@
+{
+ "record_md5": "ea80ae5908288c76baaa502054a37d43",
+ "population": 0,
+ "tier_a": 0,
+ "tier_a_conflicted": 0,
+ "tier_b_slots": {},
+ "tier_b_staves": 0,
+ "tier_b_right": 0,
+ "tier_b_wrong": 0,
+ "voters": [
+  "classical-condensed",
+  "romantic",
+  "late-romantic-large",
+  "french-large"
+ ],
+ "ballots": {}
+}

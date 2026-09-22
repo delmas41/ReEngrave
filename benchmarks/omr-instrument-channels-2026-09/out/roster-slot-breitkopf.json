@@ -1,0 +1,51 @@
+{
+ "record_md5": "4df63a752df9d7cca3d916a67b37ebf4",
+ "reference": [
+  null,
+  "Oboe",
+  "Clarinet",
+  "Bassoon",
+  "Contrabassoon",
+  null,
+  "Horn",
+  "Trumpet",
+  "Timpani",
+  "Violin",
+  "Violin",
+  "Viola",
+  "Cello",
+  null
+ ],
+ "voters": [
+  "late-romantic-large"
+ ],
+ "ballots": {
+  "0": {
+   "Flute": 1,
+   "Piccolo": 1
+  },
+  "5": {},
+  "13": {
+   "Contrabass": 1
+  }
+ },
+ "forced": {
+  "13": "Contrabass"
+ },
+ "refused": {
+  "0": [
+   null,
+   "candidates ['Flute', 'Piccolo']"
+  ],
+  "5": [
+   null,
+   "candidates []"
+  ]
+ },
+ "staves_on_slot": {
+  "0": 3,
+  "5": 4,
+  "13": 2
+ },
+ "staves_named": 2
+}

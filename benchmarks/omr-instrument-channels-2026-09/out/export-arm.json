@@ -1,0 +1,47 @@
+{
+ "control (both branches off)": {
+  "staff_not_identified": 783,
+  "events_written": 1472,
+  "notes_not_written_total": 1521,
+  "parts": 12,
+  "part_names_that_are_a_coordinate": 0,
+  "balanced": true,
+  "drops": {
+   "duration_narrowed": 335,
+   "ink_is_a_whole_rest": 25,
+   "no_pitch": 205,
+   "owned_by_another_staff": 173,
+   "staff_not_identified": 783
+  }
+ },
+ "base  (family block, shipped)": {
+  "staff_not_identified": 141,
+  "events_written": 2114,
+  "notes_not_written_total": 879,
+  "parts": 12,
+  "part_names_that_are_a_coordinate": 0,
+  "balanced": true,
+  "drops": {
+   "duration_narrowed": 335,
+   "ink_is_a_whole_rest": 25,
+   "no_pitch": 205,
+   "owned_by_another_staff": 173,
+   "staff_not_identified": 141
+  }
+ },
+ "arm   (+ constraints)": {
+  "staff_not_identified": 141,
+  "events_written": 2114,
+  "notes_not_written_total": 879,
+  "parts": 12,
+  "part_names_that_are_a_coordinate": 0,
+  "balanced": true,
+  "drops": {
+   "duration_narrowed": 335,
+   "ink_is_a_whole_rest": 25,
+   "no_pitch": 205,
+   "owned_by_another_staff": 173,
+   "staff_not_identified": 141
+  }
+ }
+}

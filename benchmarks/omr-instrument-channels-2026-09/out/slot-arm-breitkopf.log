@@ -1,0 +1,45 @@
+⚠️ NO --truth: REACH only, and not one placement is classified.
+record provenance: {'commit': '27311d6864f4f5708322d84f7f6e2fcfce736211', 'dirty': False, 'settings': {'env_overrides': {'OMR_DIRECTION_TEXT': '0', 'OMR_SURYA_KEEP_ALIVE': '1'}, 'args': {'against': None, 'conf': 0.25, 'dpi': 600, 'imgsz': None, 'no_roster': False, 'ocr': True, 'pages': '0-3', 'pdf': 'library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf', 'surya': False, 'weights': 'tools/omr/training/data/weights/deepscoresv2-yolov8l-hollow-graft-shift09-2026-09-04.pt', 'work_id': None}}}
+committed slot_index verdicts: 97 {'decided': 90, 'abstained': 7}
+⚠️ 32 verdicts replayed with single_pass_revision restored — the record does not carry that field (FINDINGS §5g)
+CONTROL (both branches off): 97 of 97 reproduced exactly
+reference lineup: [None, 'Oboe', 'Clarinet', 'Bassoon', 'Contrabassoon', None, 'Horn', 'Trumpet', 'Timpani', 'Violin', 'Violin', 'Viola', 'Cello']
+⚠️ 32 verdicts replayed with single_pass_revision restored — the record does not carry that field (FINDINGS §5g)
+
+── base
+   decided/None                                   90
+   abstained/unnamed_in_short_system              5
+   abstained/ambiguous_pairing                    1
+   abstained/not_in_reference                     1
+   ** GRAFTS 0 **
+⚠️ 32 verdicts replayed with single_pass_revision restored — the record does not carry that field (FINDINGS §5g)
+
+── base+infer
+   decided/None                                   90
+   abstained/unnamed_in_short_system              5
+   abstained/ambiguous_pairing                    1
+   abstained/not_in_reference                     1
+   ** GRAFTS 0 **
+⚠️ 32 verdicts replayed with single_pass_revision restored — the record does not carry that field (FINDINGS §5g)
+
+── arm
+   decided/None                                   93
+   abstained/unnamed_in_short_system              2
+   abstained/ambiguous_pairing                    1
+   abstained/not_in_reference                     1
+   ** GRAFTS 0 **
+⚠️ 32 verdicts replayed with single_pass_revision restored — the record does not carry that field (FINDINGS §5g)
+
+── arm+infer
+   decided/None                                   93
+   abstained/unnamed_in_short_system              2
+   abstained/ambiguous_pairing                    1
+   abstained/not_in_reference                     1
+   ** GRAFTS 0 **
+
+A DECIDED STAFF THAT MOVED: 0   (must be 0)
+STAVES THE ARM DECIDES THAT THE BASE DID NOT: 3
+   by reason: {'forced_by_constraints': 3}
+   by class : {'None': 3}
+
+wrote out/slot-arm-breitkopf.json
