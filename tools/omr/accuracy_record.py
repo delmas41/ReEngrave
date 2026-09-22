@@ -334,7 +334,7 @@ def _headline(record: dict[str, Any]) -> str:
 
 #: name -> (file, renderer).
 BLOCKS: dict[str, tuple[str, Callable[[dict[str, Any]], str]]] = {
-    "headline": ("CLAUDE.md", _headline),
+    "headline": ("benchmarks/omr-ned-2026-08/CURRENT.md", _headline),
 }
 
 
@@ -408,7 +408,8 @@ def record_from_results(results: list[dict[str, Any]],
     record = dict(previous or {})
     record["_comment"] = (
         "The single source for the CURRENT accuracy figures. Written by "
-        "`orchestral_eval --omr-ned --record`; propagated into CLAUDE.md by "
+        "`orchestral_eval --omr-ned --record`; propagated into "
+        "benchmarks/omr-ned-2026-08/CURRENT.md by "
         "`python3 -m tools.omr.accuracy_record --update`. Do not hand-edit, and "
         "do not restate a current figure in another document — see "
         "tools/omr/accuracy_record.py, and 68be549 for why there is only one."
@@ -602,7 +603,7 @@ def main(argv: list[str] | None = None) -> int:
         record = load_record()
         run = _run(record, PRIMARY_RUN) or {}
         n = len((record.get("benchmark") or {}).get("works") or [])
-        print(f"CLAUDE.md agrees with the record: pooled "
+        print(f"CURRENT.md agrees with the record: pooled "
               f"{_fmt(run.get('pooled', 0.0))}, {run.get('edits')} edits over "
               f"{n} works, measured on {run.get('commit')}")
     return 1 if problems else 0

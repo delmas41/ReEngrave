@@ -9,6 +9,40 @@ were circling.
 measured is every number it cites; what is unproven is the conclusion drawn
 across them.
 
+⚠️⚠️⚠️ **2026-09-22 — §7's FALSIFIER HAS NOW FIRED, ON THE PLATE §7 ITSELF
+NAMED AS THE TEST'S NATURAL HOME. READ THIS BEFORE ACTING ON ANYTHING BELOW.**
+The blocking artefact §7 names (*"the Breitkopf record predates `OMR_INK`, so it
+cannot be run there at all … it is one gather"*) was made for all four pages,
+and the test run ink-first with a residue split and a print join:
+**no ink-derived axis separates print-confirmed non-noteheads from
+print-confirmed noteheads as well as a feature of the BOX ALONE — in every arm,
+on BOTH publishers, under BOTH attributions** (Breitkopf box width 0.939
+direction-free against the best ink axis at 0.747; Litolff 0.937 against 0.736).
+That is this section's own falsifying condition, in its own words: *"the
+detector's box is as good a subject as the ink."*
+[benchmarks/omr-ink-first-breitkopf-2026-09/FINDINGS.md](../benchmarks/omr-ink-first-breitkopf-2026-09/FINDINGS.md).
+
+⚠️ **WHAT THAT DOES AND DOES NOT OVERTURN.** It does **not** show the box is a
+GOOD subject — only that on these two plates the ink is not a BETTER one. The
+sample is stratified on GEOMETRY (the crop pass drew from the rejection
+census's buckets, and on Breitkopf junk is 12/12 in `too TALL` and 11/12 at a
+CELL EDGE), which **inflates box features and ink features alike**; within the
+one bucket holding both classes the box still wins, on nine cases with a margin
+of 0.0227 staff spaces — *an ordering, not a measured gap*. And §3's diagnosis
+is untouched: **the addressing fault is real**, missed ink still has no subject,
+and 2,377 `no_ink` claims were still false (repaired 2026-09-22, and
+**reproduced on a VECTOR RENDER**, 421 of 439 on engraved page 0 — so that half
+was never a print-quality artefact). ⚠️ **What is refuted is the REMEDY**, not
+the diagnosis: replacing the detector's box with a piece of ink as the subject
+is not supported by the evidence this document asked for.
+
+⚠️ **AND §7's OWN "it cannot be run there at all" WAS ALREADY STALE WHEN
+WRITTEN INTO A BRIEF.** `b4eed4a4` — *"THE BLOCKING ARTEFACT EXISTS"*, on main
+since 2026-09-18, the same day — had already gathered one page of it. It was
+found by `ls benchmarks/`, **which is the check that works when `git log -S`
+does not**, because a partially-landed or withdrawn investigation changes no
+code.
+
 Read with [the stage charter](stage-charter-2026-09-18-what-each-stage-does.md),
 [the diagnosis](diagnosis-2026-09-18-who-actually-decided-it.md) and
 [the boxing proposal](proposal-2026-09-18-boxing-is-a-decision.md), which are

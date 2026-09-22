@@ -1,3 +1,5 @@
+> **FROZEN 2026-09-22.** This file is historical. Current state lives in `CLAUDE.md` (the spec), `ROADMAP.md` (status) and `docs/DECISIONS.md` (decisions). See `docs/plan-2026-09-22-from-here-to-a-finished-score.md`.
+
 # ReEngrave — backlog / research notes
 
 Forward-looking ideas. Not yet scoped, not yet scheduled. Surface these to Sean at the start of a ReEngrave session.

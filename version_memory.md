@@ -1,3 +1,5 @@
+> **FROZEN 2026-09-22.** This file is historical. Current state lives in `CLAUDE.md` (the spec), `ROADMAP.md` (status) and `docs/DECISIONS.md` (decisions). See `docs/plan-2026-09-22-from-here-to-a-finished-score.md`.
+
 # ReEngrave — Version Memory
 
 A running log of changes made to this project, newest first. Updated after
@@ -16,6 +18,220 @@ pointing at headings no longer in the file.)*
 
 ---
 
+## 2026-09-22 (evening) — IDENTITY IS GATHERED, AND THE KEY SIGNATURE READS IT
+
+**Sean's ruling above, built and measured — and he flipped the consumer ON
+the same evening** (*"flip OMR_ENGRAVED_KEYSIG on by default"*). Two flags,
+**BOTH DEFAULT ON**, both DENY-list: `OMR_DOCUMENT_IDENTITY` (his instruction
+that the printing be gathered in the first stage) and `OMR_ENGRAVED_KEYSIG`
+(the consumer). ⚠️⚠️ **THE FLIP RESOLVED NONE OF THE LIMITS BELOW** — n is
+still 1 document, 1 renderer, no print consulted. It rests on the rule being
+ONE-SIDED, verified at the flip by `test_keysig_second_reader.py`, whose
+fixtures file no domain row, passing **unmodified**. Findings:
+[benchmarks/omr-document-identity-2026-09/FINDINGS.md](benchmarks/omr-document-identity-2026-09/FINDINGS.md).
+
+⚠️⚠️ **THE BRIEF'S OWN WARNING IS REFUTED AND SEAN'S OFF-HAND GUESS IS RIGHT.**
+It called `image_type` *"almost certainly wrong about the engraved
+population"*; he said *"or maybe they are all scans because they came from
+IMSLP"*. Measured over **all 289 committed editions in 16 s** (no weights, no
+gather): the label and the container measurement agree **279 of 279 wherever
+the label exists** — 272/272 `Normal Scan` scanned, 7/7 `Typeset` engraved,
+and those seven are modern re-engravings, which is what the word means on
+IMSLP. **The label's failing is ABSENCE, not error**: its only gap is the 10
+editions carrying no label, split 7 / 3, all three engraved ones being local
+files rather than IMSLP downloads.
+
+⚠️⚠️ **SO THE REASON TO KEY ON THE MEASUREMENT IS STRUCTURAL AND STRONGER: the
+engraved fixture the fix is proven on is a RENDER in no catalog**, so
+`gather_document_identity` ABSTAINS `not_in_catalog` on it while the container
+reader answers `engraved`. **A domain filed as a FIELD of the catalog row
+would have had a reach of ZERO on the one input that matters.** That is why
+they are two quantities.
+
+⚠️ **`Q.INPUT_DOMAIN` was ALREADY DECLARED and CLAIM-classified**, produced by
+nothing and reported a GHOST by `reach --check` every run. This session
+reached the same design independently and declared it a SECOND time; the
+derived checks caught the duplicate. *"Roughly half of it already exists"* was
+true of more than the brief's own table named.
+
+**GATHER**: `publisher_year` (195/289 — Sean asked for the year by name),
+`plate` (177), `has_text_layer` (289) now filed; `gather_input_domain` is the
+new producer at `source_kind: "container"` — a **fourth kind**, named
+deliberately, with `catalog`'s independence from print quality and none of its
+dependence on the file having been catalogued. A page that is neither
+raster-dominant nor drawing-rich abstains `ABSTAIN.NO_DOMAIN_SIGNAL`.
+`positional_store._edition_projection` unifies two lookups that had hand-listed
+one field tuple twice.
+
+**MEASURED**, one gather adjudicated twice (3 pages, 54 staff-systems, 50
+decided; canonical `readjudicate --control` **688 of 688** first): key
+signature **right 26 → 47, wrong 24 → 3**. ⚠️⚠️ **It reproduces the 09-22
+handoff's own table from a fresh gather and a different scorer** —
+`fitted_by_template` **20/0**, `fitted` **6/24** — and **the template is 67 of
+67 right wherever it speaks**. The 3 that remain wrong are template SILENCES,
+not errors. In the file: bars exact **313 → 322 of 360**, **4 parts better, 0
+worse**, `<alter>` 44 → 67, `<fifths> -3` landing on the truth's 14.
+**CONTROL: of 29 quantities exactly 2 move.**
+
+**ONE-SIDED**: a scan, an abstention, no identity row and the flag off all
+fall through unchanged. Proved on a real scan gather —
+`scan_is_untouched.py` shows OFF == ON **with a forged-engraved control that
+changes all 12 verdicts**, so the tier is a no-op there because the DOMAIN
+GATE stops it, not because the template is silent.
+
+⚠️ **THREE INSTRUMENT DEFECTS, all clean believable zeros**: the accuracy table
+read 0 right / 0 wrong on both arms because `str(Outcome.DECIDED)` is
+`'Outcome.DECIDED'`; **the derived-check control measured the SHELL** (zsh does
+not word-split an unquoted parameter, so eight checks "failed identically on
+both trees" — `${=t}` shows all eight pass); and the new test file skipped 5 of
+18 assertions on a `dirname` short by one.
+
+⚠️ **NOT ESTABLISHED**: n = 1 engraved document, 1 renderer, 24 bars; **no
+print consulted**; the scan side shown only to be a NO-OP; nothing reads
+`Q.DOCUMENT_IDENTITY` even now; no OMR-NED, deliberately.
+
+---
+
+## 2026-09-22 — SEAN'S RULING: identity is gathered first, and the key signature reads it
+
+**A decision and a work order. No code.** Sean, on being shown that
+`adjudicate_key_signature` prefers a reader right **6 of 30** over one right
+**20 of 20**, and that the cause is `erase_staff_lines` shaving 54-63% off each
+flat on ENGRAVED input while the same erasure HELPS on a scan:
+
+> *"if a page is engraved or a scan along with the publisher info and year —
+> whatever we have — should be gathered in the first stage — then we need to
+> make sure that the key signature is determined based on that info."*
+
+**Briefed for a new session:**
+[docs/NEXT-2026-09-22-identity-conditions-the-key-signature.md](docs/NEXT-2026-09-22-identity-conditions-the-key-signature.md).
+
+⚠️⚠️ **THE BRIEF EXISTS BECAUSE HALF THE JOB IS ALREADY BUILT AND SWITCHED
+OFF.** `gather_document_identity` shipped 2026-09-17 behind
+`OMR_DOCUMENT_IDENTITY` — **default OFF, producer-only, read by nothing** — and
+already files publisher / `work_id` / `image_type` / `imslp_id` /
+`edition_path`. **A session starting from the instruction alone would rebuild a
+shipped rung.**
+
+⚠️ **What is missing, measured against the committed catalog's 289 editions**:
+`publisher_year` (**195 of 289** — asked for by name), `plate` (177),
+`has_text_layer` (289), and a **MEASURED** engraved-vs-scan verdict.
+⚠️⚠️ **NOT `image_type`** — IMSLP's crowd-sourced label, which reads `Typeset`
+on **SEVEN of 289**. The measured test is `input_domain._classify_page`, gap
+**EMPTY over 147 probed pages**, abstaining on doubt, and **imported nowhere
+under `staged/`**. The two are kept APART on the record so a disagreement stays
+a fact.
+
+⚠️⚠️ **THE CONSUMER MUST BE ONE-SIDED**: prefer the template **only where the
+document is PROVED engraved**, leaving the precedence exactly as it ships
+everywhere else — the 20/20 is engraved-only, and on a scan the erasure works
+FOR the locator on a side **not measured for accuracy**. A GATHER change, so
+pricing needs two full re-gathers.
+
+---
+
+## 2026-09-22 (night) — four lanes, three refutations, one measured decision
+
+⚠️ Placed above the `no_ink` block on this file's CAUSAL-ORDER rule: it is the
+integration of that block and three sibling lanes.
+Handoff: [docs/handoff-2026-09-22-four-lanes-and-three-refutations.md](docs/handoff-2026-09-22-four-lanes-and-three-refutations.md).
+
+**Nothing was flipped. No default moved. No constant was tuned.**
+
+**LANE A — the ENGRAVED staged record, and the first reading accuracy the
+staged pipeline has ever had.** `trace.py` shipped saying it needed one;
+made. Pooled reading **F1 0.933**, **notehead recall 1.000 on all three
+pages**, shift-control 0.947 → 0.058. ⚠️⚠️ **THE DECISION FOR SEAN**:
+`adjudicate_key_signature` prefers the LOCATOR (**6 right / 24 wrong**) over
+the TEMPLATE (**20 / 0**), on a docstring premise — *"the locator loses
+accidentals to broken ink"* — refuted by a VECTOR RENDER. Mechanism measured:
+`min_height_spaces = 1.10` against flats reading **0.94 after `header_ink_mask`
+strips 54-63% of their height**. **91% of all note errors on 20 bars of 18
+parts are this fault.** ⚠️ **INFER has essentially no domain on engraved
+input** (`duration_narrowed` 0/0/3 against Breitkopf's 537). The 09-21
+`<beam>` emission is **exact**: 183/183, all 18 parts' sequence, Verovio
+re-rendering our file drawing the same `{flag: 4, beam: 58}`.
+
+**LANE D — the governing document's own §7 falsifier FIRES.** On the
+SHATTERING plate, **no ink-derived axis separates print-confirmed junk from
+noteheads as well as a feature of the BOX ALONE**, in every arm and both
+publishers (0.939 vs 0.747). ⚠️ Its **DIAGNOSIS stands; its REMEDY does not** —
+and it does not show the box is GOOD, only that the ink is not BETTER. The
+correction is at that document's head. ⚠️ The *"42.5% is mostly specks"* caveat
+**INVERTS between publishers** (66.9% Breitkopf, **3.8% Litolff** — the plate
+it was measured on).
+
+**LANE B — the chord/stroke join, REFUSED BY THE PRINT.** Reach **31 of 2,322
+(1.3%)**; of 17 settled, **2 are a real chord and 13 are NOT NOTEHEADS**;
+controls **12/15 with 0 wrong**. ⚠️ **The item was sized off a population two
+thirds too large** — its `73/98` never asks whether the shadow head is
+STEMLESS, and only 24/33 are.
+
+**LANE C — the "truncated" margin label is a BRACED-PAIR label.** The rule
+fires **zero times on all 209 Brahms labels**, and CLAUDE.md already said no
+lexicon can recover them. ⚠️⚠️ **`OMR_ROSTER_LABELS` governs the LEGACY reader
+ONLY** — one non-test caller — while staged identity calls `decide()`
+**ungated** with a roster the CLI supplies by default: the **INVERSE** of
+*shipped means the LEGACY path*, and the knobs row calling it *"deliberately
+dormant"* was false. Cost side now measured and **zero** (368,173-decision
+cross product byte-identical). Adjacency **refused 0 of 4**.
+
+**MANAGER — two instruments answering with definite answers they did not
+have.** The `no_ink` lie repaired (below), and **`score_reading.py` scored
+F1 0.000 for any page but the first** — a positional page lookup against a
+one-element list, plus a `staff_space_px` of **1.0** rescaling every tolerance
+~20×. Now looks up by field and RAISES, on the truth side too. ⚠️ It never
+showed because **every fixture the reading lane uses is `--pages 0`.**
+
+⚠️ **OPERATIONAL: subagents cannot write `.md` files — eight occurrences, four
+that night.** Every lane's `FINDINGS.md` was transposed at integration, with
+`[mgr]` marking what the managing session re-derived.
+
+---
+
+## 2026-09-22 — `no_ink` is a claim about the PAGE, and three readers made it about themselves
+
+**GATHER + the abstention vocabulary. No flag, no default moved, no decision
+touched** — verified: nothing in `tools/` reads `reason == no_ink` to decide
+anything (the grep returns the declaration, `gather_coverage`'s name-printer,
+`trace`'s own report, and four comments).
+
+**Reproduced before it was touched.** `trace --empty-claims` on the one record
+carrying an ink witness: **2,476 `no_ink` claims, ZERO of them the ink
+reader's own, 2,377 standing on a cell `Q.INK` sees ink in.**
+`dynamic_letter` 997 + `beam_stroke` 980 + `stem` 400 **sums to the
+contradicted total exactly.** `wedge_box` (74) and `margin_label` (25) are not
+contradicted and were left alone.
+
+**THE FINDING is the beam half.** A beam joins stem TIPS and `detect_beams`
+takes the strokes `detect_stems` returned, so split by the reader's own INPUT
+the 980 are **400 with no stem at all, 265 with exactly one, 315 with two or
+more** — **665 (67.9%) were never the beam reader's claim to make**, and the
+400 are **EXACTLY** the 400 cells `stem` itself refused, set for set. That
+silence is DERIVED. ⚠️ A second witness was already in the record and nobody
+had looked: `Q.BEAM_STROKE` has TWO producers (322 `cv_lines`, **536
+DETECTOR**), so on **274** cells it holds a detector beam beside a `cv_lines`
+refusal saying there is no ink, and on **195** of those the CV reader also
+found fewer than two stems — a beam cannot print without stems.
+
+Three words: `NO_GLYPH_OF_THIS_KIND`, `NO_LINE_ACCEPTED` (deliberately saying
+less than `Q.VERTICAL_RUN` could), `NO_STEMS_TO_JOIN` (a claim about our stem
+reading, not about the print).
+
+⚠️ **One existing test PINNED THE FAULT** and now pins the repair. ⚠️ **And a
+live blind spot in `wiring --check`**: named `n_detections`/`n_stems` the two
+new detail keys collided with unrelated keys elsewhere in `tools/` and the
+check passed listing neither; renamed `cell_n_*` it reports both, and both are
+now on `KNOWN_GAPS`. The tool is NOT changed — making the match
+quantity-aware moves 64 entries at once.
+
+⚠️ **Nothing was re-gathered**, so the findings' §7 is a **pre-registered
+prediction** (`2377 -> 0`, split 997 / 400 / 665 / 315) and not a measurement.
+12 new tests, **8 red on the unrepaired tree** with an md5-verified restore;
+1,848 passed / 0 failed on the affected surface; all nine derived checks exit
+0. **The repair improves no reading** — it stops three readers overclaiming.
+
+---
 ## 2026-09-22 — the three channels, measured and then wired
 
 Sean: *"I thought we had figured out the instrument to line issue. Using the

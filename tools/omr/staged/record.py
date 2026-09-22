@@ -775,7 +775,35 @@ class Q(_Vocab):
     # ── external facts (measurements, but not from THIS raster) ─────────────
     ROSTER_ENTRY = "roster_entry"            # the catalog's instrumentation
     DOSSIER_FACT = "dossier_fact"            # the work's own meter/clef/key
-    INPUT_DOMAIN = "input_domain"            # scan vs engraved, for weights
+    #: SCANNED or ENGRAVED, MEASURED off the PDF's own container.
+    #:
+    #: ⚠️ IT WAS A GHOST FOR MONTHS -- declared here and in the `CLAIM` table
+    #: below, produced by nothing and read by nothing, which `reach --check`
+    #: reported every run. `OMR_WEIGHT_ROUTING` has classified every document
+    #: since 2026-09-03 and the staged path never wrote the answer down;
+    #: `gather_input_domain` (2026-09-22) is the producer, and
+    #: `adjudicate_key_signature` the first consumer.
+    #:
+    #: ⚠️⚠️ IT IS A **SEPARATE QUANTITY FROM `DOCUMENT_IDENTITY`** AND THE
+    #: MEASUREMENT IS WHY, NOT THE TAXONOMY. The catalog answers by BASENAME
+    #: out of the committed score library, and the engraved fixture the
+    #: key-signature failure is measured on is a RENDER -- a build product
+    #: under `benchmarks/`, in no catalog -- so `gather_document_identity`
+    #: ABSTAINS `not_in_catalog` on it while this reader answers `engraved`
+    #: (raster coverage 0.000, 1188-1655 drawings, 3 pages of 3). Filed as a
+    #: FIELD of that row it would have a reach of ZERO on the one input where
+    #: the rule it conditions is proven.
+    #:
+    #: ⚠️ IT IS A SECOND WITNESS TO the catalog's `image_type`, NOT A
+    #: CORRECTION OF IT, and the two are kept apart for the reason `Q.INK`
+    #: keeps `ink_detector_coverage` as an attribute: a disagreement is a fact
+    #: worth having. Measured over all 289 committed editions they do not in
+    #: fact disagree ANYWHERE the label exists -- 272/272 `Normal Scan`
+    #: measure scanned, 7/7 `Typeset` measure engraved -- and what the
+    #: measurement adds is the 10 editions carrying NO label, split 7 / 3. So
+    #: the label's failing is ABSENCE, not error, and the library really is
+    #: almost all scans because it is almost all IMSLP.
+    INPUT_DOMAIN = "input_domain"            # scan vs engraved (weights, keys)
 
     # ── verdicts ────────────────────────────────────────────────────────────
     SYSTEM_MEMBERSHIP = "system_membership"  # which staves are one system
@@ -1434,6 +1462,11 @@ class READERS(_Vocab):
     VISION = "vision"                        # the paid rung
     DOSSIER = "dossier"                      # the work's MusicXML
     CATALOG = "catalog"                      # IMSLP work page
+    #: `input_domain.classify_pdf_domain` -- the PDF's own container, read
+    #: before any model loads. ⚠️ NOT a reading of the music: it counts vector
+    #: drawing operations against full-page raster coverage, so it is
+    #: independent of print quality in a way no reader of the INK can be.
+    CONTAINER = "container"                  # input_domain: the PDF container
     CARRY = "carry"                          # this fact, read on another system
 
 
@@ -1472,8 +1505,48 @@ class ABSTAIN(_Vocab):
     OFF_STAFF_ONLY = "off_staff_only"
 
     # readers with nothing to read
+    #: ⚠️⚠️ A CLAIM ABOUT THE PAGE, AND ONLY THE INK READER MAY MAKE IT.
+    #: `Q.INK` measures the connected components of a cell's erased raster and
+    #: finds none; everything else that reached for this word was saying
+    #: something about ITSELF. Measured on the one record carrying an ink
+    #: witness (Litolff Beethoven 5 pp.1-4): of 2,476 `no_ink` claims, ZERO
+    #: were the ink reader's own and 2,377 stand on a cell `Q.INK` sees ink in
+    #: -- `trace --empty-claims` is the instrument. The three words below are
+    #: what those readers actually knew.
     NO_INK = "no_ink"
+    #: The DETECTOR fired nothing at all on this subject. Honest, and the
+    #: contrast that makes the three words below necessary.
     NO_DETECTIONS = "no_detections"
+    #: The detector fired HERE and none of what it returned belongs to this
+    #: family.
+    #:
+    #: ⚠️ A DIFFERENT FACT FROM BOTH `NO_INK` and `NO_DETECTIONS`, and the
+    #: measured population says so: on that record all 997 of
+    #: `dynamic_letter/no_ink` stand on a cell that HAD detections -- 997 of
+    #: 997, not most. A bar of noteheads and a slur is not a blank bar, and a
+    #: reader that filters a non-empty list by class knows exactly that.
+    NO_GLYPH_OF_THIS_KIND = "no_glyph_of_this_kind"
+    #: A classical-CV line reader RAN and accepted no stroke of this kind.
+    #:
+    #: ⚠️ IT DOES NOT CLAIM THE CELL IS EMPTY, and that restraint is the whole
+    #: point: `detect_stems` NAMES AND FILTERS IN ONE ACT, so a candidate it
+    #: found and discarded leaves no row, and whether this cell had candidates
+    #: REFUSED or none at all is on the record only when `OMR_VERTICAL_RUNS`
+    #: is on (where `Q.VERTICAL_RUN` records which filter refused each one).
+    #: Saying less than we know would be a fault; saying more was the old one.
+    NO_LINE_ACCEPTED = "no_line_accepted"
+    #: A BEAM JOINS STEM TIPS, so a cell carrying fewer than two stems cannot
+    #: carry a beam joined within it. The beam reader's INPUT IS THE STEM SET
+    #: (`detect_beams` takes the stems `detect_stems` returned), so this names
+    #: an empty input, not an empty page.
+    #:
+    #: ⚠️⚠️ IT IS A CLAIM ABOUT OUR STEM READING AND NOT ABOUT THE PRINT. Where
+    #: a beam IS printed and its stems were missed, this says so exactly --
+    #: which is the point. Measured: of 980 `beam_stroke/no_ink` claims, 400
+    #: stand on a cell with NO stem and 265 on a cell with one, so 665 (67.9%)
+    #: were never the beam reader's claim to make; and the 400 are EXACTLY the
+    #: 400 cells `stem` refused, set for set, so that silence is DERIVED.
+    NO_STEMS_TO_JOIN = "no_stems_to_join"
     NO_TEXT_LAYER = "no_text_layer"
     READER_UNAVAILABLE = "reader_unavailable"    # no .venv-surya, no tesseract
     BUDGET_EXHAUSTED = "budget_exhausted"
@@ -1503,6 +1576,15 @@ class ABSTAIN(_Vocab):
     #: and an unknown plate as one number -- the shape `NO_READING` was added
     #: to prevent one family over.
     NOT_IN_CATALOG = "not_in_catalog"
+    #: The container classifier RAN and the page is neither raster-dominant
+    #: nor drawing-rich -- a blank page, or a text-only title page.
+    #:
+    #: ⚠️ ITS OWN WORD, NOT `AMBIGUOUS`. `input_domain` is built to abstain on
+    #: doubt (its two populations have an EMPTY gap over 147 probed pages), so
+    #: this is the reader succeeding at its design rather than failing to
+    #: choose, and a consumer that cannot tell those apart would read a blank
+    #: cover page as a close call.
+    NO_DOMAIN_SIGNAL = "no_domain_signal"
 
     # the build itself
     NOT_IMPLEMENTED = "not_implemented"           # ⚠️ a declared stub

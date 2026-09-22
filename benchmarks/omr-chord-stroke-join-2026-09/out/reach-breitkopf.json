@@ -1,0 +1,160 @@
+{
+ "label": "Breitkopf Brahms 1 pp.0-3",
+ "record": "library/_shared-records/brahms1-breitkopf-p0-p3.record.json",
+ "observations_streamed": 52413,
+ "noteheads": 3337,
+ "stem_rows": 2305,
+ "counts_today": {
+  "no_stem": 1529,
+  "has_stem": 1808,
+  "multi_stem": 93
+ },
+ "REACH": {
+  "candidate_pairs": 11,
+  "heads_reached": 11,
+  "heads_reached_share_of_no_stem": 0.0072,
+  "strokes_touched": 10,
+  "heads_with_MORE_THAN_ONE_candidate_stroke": 0
+ },
+ "x_gap_head_widths": {
+  "p01": 0.016,
+  "p05": 0.016,
+  "p25": 0.017,
+  "p50": 0.124,
+  "p75": 0.326,
+  "p95": 2.081,
+  "p99": 2.081
+ },
+ "x_gap_max": 2.081,
+ "dy_head_heights": {
+  "p01": 0.189,
+  "p05": 0.189,
+  "p25": 1.85,
+  "p50": 3.258,
+  "p75": 6.737,
+  "p95": 8.078,
+  "p99": 8.078
+ },
+ "rows": [
+  {
+   "head": "glyph/0/0/4/1/3",
+   "stem": "obs:005953",
+   "n_mates": 1,
+   "mates": [
+    "glyph/0/0/4/1/6"
+   ],
+   "x_gap_head_widths": 0.017,
+   "dy_head_heights": 6.737
+  },
+  {
+   "head": "glyph/0/0/5/6/12",
+   "stem": "obs:005983",
+   "n_mates": 2,
+   "mates": [
+    "glyph/0/0/5/6/2",
+    "glyph/0/0/5/6/13"
+   ],
+   "x_gap_head_widths": 0.017,
+   "dy_head_heights": -4.198
+  },
+  {
+   "head": "glyph/1/0/1/0/44",
+   "stem": "obs:021186",
+   "n_mates": 1,
+   "mates": [
+    "glyph/1/0/1/0/17"
+   ],
+   "x_gap_head_widths": 0.1,
+   "dy_head_heights": 2.189
+  },
+  {
+   "head": "glyph/1/1/3/4/11",
+   "stem": "obs:021916",
+   "n_mates": 1,
+   "mates": [
+    "glyph/1/1/3/4/23"
+   ],
+   "x_gap_head_widths": 2.081,
+   "dy_head_heights": 1.85
+  },
+  {
+   "head": "glyph/2/0/3/2/19",
+   "stem": "obs:034935",
+   "n_mates": 3,
+   "mates": [
+    "glyph/2/0/3/2/1",
+    "glyph/2/0/3/2/8",
+    "glyph/2/0/3/2/23"
+   ],
+   "x_gap_head_widths": 0.326,
+   "dy_head_heights": 8.078
+  },
+  {
+   "head": "glyph/2/0/3/2/20",
+   "stem": "obs:034935",
+   "n_mates": 3,
+   "mates": [
+    "glyph/2/0/3/2/1",
+    "glyph/2/0/3/2/8",
+    "glyph/2/0/3/2/23"
+   ],
+   "x_gap_head_widths": 0.287,
+   "dy_head_heights": 7.994
+  },
+  {
+   "head": "glyph/2/0/5/4/10",
+   "stem": "obs:034975",
+   "n_mates": 1,
+   "mates": [
+    "glyph/2/0/5/4/3"
+   ],
+   "x_gap_head_widths": 0.016,
+   "dy_head_heights": -3.258
+  },
+  {
+   "head": "glyph/2/0/8/1/5",
+   "stem": "obs:035023",
+   "n_mates": 2,
+   "mates": [
+    "glyph/2/0/8/1/4",
+    "glyph/2/0/8/1/13"
+   ],
+   "x_gap_head_widths": 0.281,
+   "dy_head_heights": 3.69
+  },
+  {
+   "head": "glyph/3/0/6/0/9",
+   "stem": "obs:053266",
+   "n_mates": 4,
+   "mates": [
+    "glyph/3/0/6/0/13",
+    "glyph/3/0/6/0/18",
+    "glyph/3/0/6/0/19",
+    "glyph/3/0/6/0/21"
+   ],
+   "x_gap_head_widths": 0.022,
+   "dy_head_heights": -0.189
+  },
+  {
+   "head": "glyph/3/0/12/8/13",
+   "stem": "obs:053507",
+   "n_mates": 2,
+   "mates": [
+    "glyph/3/0/12/8/14",
+    "glyph/3/0/12/8/17"
+   ],
+   "x_gap_head_widths": 0.124,
+   "dy_head_heights": -2.513
+  },
+  {
+   "head": "glyph/3/1/12/2/7",
+   "stem": "obs:054073",
+   "n_mates": 1,
+   "mates": [
+    "glyph/3/1/12/2/16"
+   ],
+   "x_gap_head_widths": 0.754,
+   "dy_head_heights": 0.925
+  }
+ ]
+}

@@ -1,0 +1,30 @@
+{
+ "label": "breitkopf",
+ "record": "library/_shared-records/brahms1-breitkopf-p0-p3.record.json",
+ "pdf": "brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf",
+ "adjudicator": "the session that built the crop tool -- ONE adjudicator, no inter-rater figure",
+ "question": "The RED brackets mark one notehead and the BLUE brackets mark another. Do these two noteheads share ONE printed stem -- are they two members of the same chord?",
+ "how": "wide staff strip first (100 px per staff space, NEAREST, ticks in the margin, corner brackets clear of the ink); a zoom at 3.0 spaces of context taken as a SECOND view where the wide one was ambiguous. Both views kept.",
+ "verdicts": {
+  "0139b37d8a": {"verdict": "one_shared_stem", "note": "red above the staff on a ledger, blue inside; one stem down to a beam"},
+  "b1cf8bd191": {"verdict": "one_shared_stem", "note": "stacked, one stem through both"},
+  "db16f2c2be": {"verdict": "one_shared_stem", "note": "two dotted heads, one stem"},
+  "9ee7f85745": {"verdict": "one_shared_stem", "note": "stacked pair on one stem to a beam"},
+  "c859a3bb7f": {"verdict": "one_shared_stem", "note": "red on a ledger above, blue inside, one stem"},
+  "f339b51c1a": {"verdict": "one_shared_stem", "note": "stacked, one stem"},
+  "ad10ce448e": {"verdict": "one_shared_stem", "note": "a displaced SECOND -- the two heads sit either side of one stem"},
+  "19f8d263c3": {"verdict": "one_shared_stem", "note": "red on two ledger lines above, blue inside, one stem"},
+
+  "3fd6248f33": {"verdict": "one_shared_stem", "note": "two DOTTED HALF notes below the staff on ledger lines, one stem up into the staff -- a real chord the overlap test dropped"},
+  "b806892e75": {"verdict": "one_shared_stem", "note": "dotted half on the staff + dotted half below on a ledger, one stem"},
+  "3184e0209b": {"verdict": "blue_is_not_a_notehead", "note": "BLUE is a QUARTER REST. The stroke is RED's own stem, so the outcome would be right for the wrong reason"},
+  "0087107081": {"verdict": "red_is_not_a_notehead", "note": "RED is an AUGMENTATION DOT"},
+  "1f36ab9487": {"verdict": "red_is_not_a_notehead", "note": "both marks are on a BASS CLEF"},
+  "2ecba3bc9f": {"verdict": "red_is_not_a_notehead", "note": "both marks are on a C CLEF -- its two round lobes"},
+  "8c8e740290": {"verdict": "red_is_not_a_notehead", "note": "both marks are on a BASS CLEF"},
+  "38f4c26a88": {"verdict": "red_is_not_a_notehead", "note": "RED is part of a printed ff"},
+  "74746138ed": {"verdict": "red_is_not_a_notehead", "note": "RED is the other lobe of the same printed ff"},
+  "75e1313e9c": {"verdict": "red_is_not_a_notehead", "note": "both marks are on a printed ff"},
+  "d9afdbace4": {"verdict": "cannot_tell", "note": "two heads a third apart at one x, but the ink round them is merged and no stem is legible either way"}
+ }
+}

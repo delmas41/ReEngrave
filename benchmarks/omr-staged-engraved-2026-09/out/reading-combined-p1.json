@@ -1,0 +1,337 @@
+{
+ "staff_space_px": 22.5,
+ "tolerances": {
+  "0.5": {
+   "per_family": {
+    "accidental": {
+     "truth": 21,
+     "pred": 6,
+     "matched": 6
+    },
+    "barline": {
+     "truth": 9,
+     "pred": 0,
+     "matched": 0
+    },
+    "beam": {
+     "truth": 8,
+     "pred": 8,
+     "matched": 8
+    },
+    "clef": {
+     "truth": 18,
+     "pred": 18,
+     "matched": 18
+    },
+    "dynamic_letter": {
+     "truth": 1,
+     "pred": 1,
+     "matched": 1
+    },
+    "key_accidental": {
+     "truth": 44,
+     "pred": 44,
+     "matched": 44
+    },
+    "notehead": {
+     "truth": 74,
+     "pred": 77,
+     "matched": 74
+    },
+    "rest": {
+     "truth": 114,
+     "pred": 114,
+     "matched": 114
+    },
+    "slur": {
+     "truth": 1,
+     "pred": 2,
+     "matched": 0
+    },
+    "tie": {
+     "truth": 31,
+     "pred": 33,
+     "matched": 25
+    }
+   },
+   "unscored_detections": {
+    "staff": 131,
+    "fermataAbove": 3,
+    "fermataBelow": 1
+   }
+  },
+  "0.25": {
+   "per_family": {
+    "accidental": {
+     "truth": 21,
+     "pred": 6,
+     "matched": 6
+    },
+    "barline": {
+     "truth": 9,
+     "pred": 0,
+     "matched": 0
+    },
+    "beam": {
+     "truth": 8,
+     "pred": 8,
+     "matched": 8
+    },
+    "clef": {
+     "truth": 18,
+     "pred": 18,
+     "matched": 18
+    },
+    "dynamic_letter": {
+     "truth": 1,
+     "pred": 1,
+     "matched": 1
+    },
+    "key_accidental": {
+     "truth": 44,
+     "pred": 44,
+     "matched": 44
+    },
+    "notehead": {
+     "truth": 74,
+     "pred": 77,
+     "matched": 74
+    },
+    "rest": {
+     "truth": 114,
+     "pred": 114,
+     "matched": 114
+    },
+    "slur": {
+     "truth": 1,
+     "pred": 2,
+     "matched": 0
+    },
+    "tie": {
+     "truth": 31,
+     "pred": 33,
+     "matched": 0
+    }
+   },
+   "unscored_detections": {
+    "staff": 131,
+    "fermataAbove": 3,
+    "fermataBelow": 1
+   }
+  },
+  "0.75": {
+   "per_family": {
+    "accidental": {
+     "truth": 21,
+     "pred": 6,
+     "matched": 6
+    },
+    "barline": {
+     "truth": 9,
+     "pred": 0,
+     "matched": 0
+    },
+    "beam": {
+     "truth": 8,
+     "pred": 8,
+     "matched": 8
+    },
+    "clef": {
+     "truth": 18,
+     "pred": 18,
+     "matched": 18
+    },
+    "dynamic_letter": {
+     "truth": 1,
+     "pred": 1,
+     "matched": 1
+    },
+    "key_accidental": {
+     "truth": 44,
+     "pred": 44,
+     "matched": 44
+    },
+    "notehead": {
+     "truth": 74,
+     "pred": 77,
+     "matched": 74
+    },
+    "rest": {
+     "truth": 114,
+     "pred": 114,
+     "matched": 114
+    },
+    "slur": {
+     "truth": 1,
+     "pred": 2,
+     "matched": 0
+    },
+    "tie": {
+     "truth": 31,
+     "pred": 33,
+     "matched": 25
+    }
+   },
+   "unscored_detections": {
+    "staff": 131,
+    "fermataAbove": 3,
+    "fermataBelow": 1
+   }
+  },
+  "1.0": {
+   "per_family": {
+    "accidental": {
+     "truth": 21,
+     "pred": 6,
+     "matched": 6
+    },
+    "barline": {
+     "truth": 9,
+     "pred": 0,
+     "matched": 0
+    },
+    "beam": {
+     "truth": 8,
+     "pred": 8,
+     "matched": 8
+    },
+    "clef": {
+     "truth": 18,
+     "pred": 18,
+     "matched": 18
+    },
+    "dynamic_letter": {
+     "truth": 1,
+     "pred": 1,
+     "matched": 1
+    },
+    "key_accidental": {
+     "truth": 44,
+     "pred": 44,
+     "matched": 44
+    },
+    "notehead": {
+     "truth": 74,
+     "pred": 77,
+     "matched": 74
+    },
+    "rest": {
+     "truth": 114,
+     "pred": 114,
+     "matched": 114
+    },
+    "slur": {
+     "truth": 1,
+     "pred": 2,
+     "matched": 0
+    },
+    "tie": {
+     "truth": 31,
+     "pred": 33,
+     "matched": 25
+    }
+   },
+   "unscored_detections": {
+    "staff": 131,
+    "fermataAbove": 3,
+    "fermataBelow": 1
+   }
+  },
+  "1.5": {
+   "per_family": {
+    "accidental": {
+     "truth": 21,
+     "pred": 6,
+     "matched": 6
+    },
+    "barline": {
+     "truth": 9,
+     "pred": 0,
+     "matched": 0
+    },
+    "beam": {
+     "truth": 8,
+     "pred": 8,
+     "matched": 8
+    },
+    "clef": {
+     "truth": 18,
+     "pred": 18,
+     "matched": 18
+    },
+    "dynamic_letter": {
+     "truth": 1,
+     "pred": 1,
+     "matched": 1
+    },
+    "key_accidental": {
+     "truth": 44,
+     "pred": 44,
+     "matched": 44
+    },
+    "notehead": {
+     "truth": 74,
+     "pred": 77,
+     "matched": 74
+    },
+    "rest": {
+     "truth": 114,
+     "pred": 114,
+     "matched": 114
+    },
+    "slur": {
+     "truth": 1,
+     "pred": 2,
+     "matched": 1
+    },
+    "tie": {
+     "truth": 31,
+     "pred": 33,
+     "matched": 25
+    }
+   },
+   "unscored_detections": {
+    "staff": 131,
+    "fermataAbove": 3,
+    "fermataBelow": 1
+   }
+  }
+ },
+ "unreliable_families": [
+  "accidental"
+ ],
+ "pooled": {
+  "truth": 283,
+  "pred": 289,
+  "matched": 276,
+  "precision": 0.9550173010380623,
+  "recall": 0.9752650176678446,
+  "f1": 0.965034965034965
+ },
+ "confusions": {
+  "accidental": {
+   "-": 15
+  },
+  "barline": {
+   "-": 9
+  },
+  "slur": {
+   "-": 1
+  },
+  "tie": {
+   "-": 3,
+   "notehead": 3
+  }
+ },
+ "adapter": {
+  "glyph_box_rows_on_page": 438,
+  "glyph_box_rows_other_pages": 1303,
+  "dropped_no_page_box": 0,
+  "apply_ownership": true,
+  "ownership_verdicts": 130,
+  "dropped_owned_by_another_staff": 0,
+  "detections_placed": 438,
+  "staff_spacing_rows": 18,
+  "staff_space_px": 22.5
+ }
+}

@@ -1,0 +1,28 @@
+{
+  "staves": 54,
+  "named": 50,
+  "unnamed": 4,
+  "funnel": {
+    "unnamed staff-systems": 4,
+    "  ...REACHABLE: one unambiguous name at that slot": 4
+  },
+  "reachable": [
+    {
+      "subject": "staff/1/0/6",
+      "would_be_named": "Bassoon"
+    },
+    {
+      "subject": "staff/1/0/7",
+      "would_be_named": "Bassoon"
+    },
+    {
+      "subject": "staff/2/0/6",
+      "would_be_named": "Bassoon"
+    },
+    {
+      "subject": "staff/2/0/7",
+      "would_be_named": "Bassoon"
+    }
+  ],
+  "contested": []
+}

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- A BATTERY FIXTURE AND NOTHING ELSE.
+
+     `keysig_domain_arm.py` REFUSES to score when the staff count is not a
+     multiple of the part count, because pairing by position where the counts
+     disagree reports the mismatch as accuracy. That refusal is a safety
+     property, and on the real fixture it can never fire: 54 staff-systems
+     divide 18 parts exactly, so a mutation removing the refusal changed
+     nothing and reported SURVIVED.
+
+     FIVE parts does not divide 54. That is the whole purpose of this file:
+     it puts the arm's own refusal branch into a state where it FAILS, which
+     is the only state a control can be mutation-tested in.
+
+     It is NOT a truth about any music and must never be used to score one. -->
+<score-partwise version="3.1">
+  <part-list>
+    <score-part id="P1"><part-name>A</part-name></score-part>
+    <score-part id="P2"><part-name>B</part-name></score-part>
+    <score-part id="P3"><part-name>C</part-name></score-part>
+    <score-part id="P4"><part-name>D</part-name></score-part>
+    <score-part id="P5"><part-name>E</part-name></score-part>
+  </part-list>
+  <part id="P1"><measure number="1"><attributes><key><fifths>-3</fifths></key></attributes></measure></part>
+  <part id="P2"><measure number="1"><attributes><key><fifths>-3</fifths></key></attributes></measure></part>
+  <part id="P3"><measure number="1"><attributes><key><fifths>-3</fifths></key></attributes></measure></part>
+  <part id="P4"><measure number="1"><attributes><key><fifths>-3</fifths></key></attributes></measure></part>
+  <part id="P5"><measure number="1"><attributes><key><fifths>-3</fifths></key></attributes></measure></part>
+</score-partwise>

@@ -1,0 +1,18 @@
+positive control: unmutated probe runs, 146 lines of output
+positive control: --wrong-join REFUSES  yes
+positive control: --drop-junk reaches DEAD yes
+
+  [RED ] ink box read as [x,y,w,h]
+  [RED ] box-convention control loses its teeth
+  [RED ] document-identity gate accepts any class
+  [RED ] attribution ignores the piece's fill
+  [RED ] the primary piece is the SMALLEST overlap, not the largest
+  [RED ] the join is made in the CANONICAL frame, mixing conventions
+  [RED ] AUC always reports the null
+  [RED ] the SPECK stratum swallows everything
+  [RED ] the vertical stratum uses invented bounds, not the shipped ones
+  [RED ] cannot_tell is counted as a confirmed notehead
+  [RED ] the DEAD guard on an empty separation side is removed
+
+11/11 RED, 0 survived
+restore VERIFIED (d7558c9a67d0 -> d7558c9a67d0)

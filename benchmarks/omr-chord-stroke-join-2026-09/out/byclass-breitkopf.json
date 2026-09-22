@@ -1,0 +1,110 @@
+{
+ "label": "Breitkopf",
+ "candidates_adjudicated": 11,
+ "RED_class_by_verdict": {
+  "blue_is_not_a_notehead": {
+   "noteheadHalfInSpace": 1
+  },
+  "one_shared_stem": {
+   "noteheadHalfOnLine": 2
+  },
+  "red_is_not_a_notehead": {
+   "noteheadBlackOnLine": 4,
+   "noteheadBlackInSpace": 3
+  },
+  "cannot_tell": {
+   "noteheadBlackInSpace": 1
+  }
+ },
+ "RED_detector_score_by_verdict": {},
+ "rows": [
+  {
+   "tile": "3184e0209b",
+   "verdict": "blue_is_not_a_notehead",
+   "red_class": "noteheadHalfInSpace",
+   "red_score": null,
+   "blue_class": "noteheadBlackInSpace",
+   "blue_score": null
+  },
+  {
+   "tile": "3fd6248f33",
+   "verdict": "one_shared_stem",
+   "red_class": "noteheadHalfOnLine",
+   "red_score": null,
+   "blue_class": "noteheadHalfInSpace",
+   "blue_score": null
+  },
+  {
+   "tile": "0087107081",
+   "verdict": "red_is_not_a_notehead",
+   "red_class": "noteheadBlackOnLine",
+   "red_score": null,
+   "blue_class": "noteheadBlackInSpace",
+   "blue_score": null
+  },
+  {
+   "tile": "b806892e75",
+   "verdict": "one_shared_stem",
+   "red_class": "noteheadHalfOnLine",
+   "red_score": null,
+   "blue_class": "noteheadHalfInSpace",
+   "blue_score": null
+  },
+  {
+   "tile": "1f36ab9487",
+   "verdict": "red_is_not_a_notehead",
+   "red_class": "noteheadBlackInSpace",
+   "red_score": null,
+   "blue_class": "noteheadBlackOnLine",
+   "blue_score": null
+  },
+  {
+   "tile": "d9afdbace4",
+   "verdict": "cannot_tell",
+   "red_class": "noteheadBlackInSpace",
+   "red_score": null,
+   "blue_class": "noteheadBlackOnLine",
+   "blue_score": null
+  },
+  {
+   "tile": "38f4c26a88",
+   "verdict": "red_is_not_a_notehead",
+   "red_class": "noteheadBlackOnLine",
+   "red_score": null,
+   "blue_class": "noteheadBlackOnLine",
+   "blue_score": null
+  },
+  {
+   "tile": "2ecba3bc9f",
+   "verdict": "red_is_not_a_notehead",
+   "red_class": "noteheadBlackInSpace",
+   "red_score": null,
+   "blue_class": "noteheadBlackInSpace",
+   "blue_score": null
+  },
+  {
+   "tile": "8c8e740290",
+   "verdict": "red_is_not_a_notehead",
+   "red_class": "noteheadBlackOnLine",
+   "red_score": null,
+   "blue_class": "noteheadBlackInSpace",
+   "blue_score": null
+  },
+  {
+   "tile": "74746138ed",
+   "verdict": "red_is_not_a_notehead",
+   "red_class": "noteheadBlackInSpace",
+   "red_score": null,
+   "blue_class": "noteheadBlackOnLine",
+   "blue_score": null
+  },
+  {
+   "tile": "75e1313e9c",
+   "verdict": "red_is_not_a_notehead",
+   "red_class": "noteheadBlackOnLine",
+   "red_score": null,
+   "blue_class": "noteheadBlackOnLine",
+   "blue_score": null
+  }
+ ]
+}

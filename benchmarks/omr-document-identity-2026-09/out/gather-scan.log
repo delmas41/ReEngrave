@@ -1,0 +1,17 @@
+wrote benchmarks/omr-document-identity-2026-09/out/litolff-p1-identity.record.json
+
+── ADJUDICATE ─────────────────────────────────────────
+  decided:   {'arc_kind': 64, 'arc_owner': 64, 'clef': 12, 'direction': 192, 'duration': 280, 'dynamic': 191, 'event': 180, 'fermata_owner': 25, 'glyph_owner': 56, 'group_symbol': 1, 'instrument': 12, 'key_signature': 12, 'measure_partition': 12, 'meter': 1, 'notehead_is_a_whole_rest': 154, 'onset_column': 1, 'part_partition': 1, 'slot_index': 12, 'staff_group': 12, 'staff_ordinal': 12, 'stem_direction': 113, 'system_membership': 1, 'system_staff_count': 1, 'voices': 180}
+  abstained: {'duration': {'beams_ambiguous': 16}, 'dynamic': {'unspellable': 1}, 'fermata_owner': {'no_carrier': 3}, 'glyph_owner': {'tied': 4}, 'stem_direction': {'no_stem': 26, 'stems_disagree': 15}, 'voices': {'nothing_to_split': 12}}
+── GROUPS ─────────────────────────────────────────────
+  clef_across_systems: 12 facts, 12 witnesses, 12 uninformative, {'none': 0, 'single': 12, 'unanimous': 0, 'majority': 0, 'split': 0}
+  instrument_across_systems: 12 facts, 12 witnesses, 12 uninformative, {'none': 0, 'single': 12, 'unanimous': 0, 'majority': 0, 'split': 0}
+  key_signature_across_systems: 12 facts, 12 witnesses, 12 uninformative, {'none': 0, 'single': 12, 'unanimous': 0, 'majority': 0, 'split': 0}
+  measure_count_across_staves: 1 facts, 12 witnesses, 0 uninformative, {'none': 0, 'single': 0, 'unanimous': 1, 'majority': 0, 'split': 0}
+  meter_across_staves: 1 facts, 12 witnesses, 0 uninformative, {'none': 0, 'single': 0, 'unanimous': 1, 'majority': 0, 'split': 0}
+  staff_group_across_systems: 12 facts, 12 witnesses, 12 uninformative, {'none': 0, 'single': 12, 'unanimous': 0, 'majority': 0, 'split': 0}
+  ⚠️ checked_nothing (never two independent signals -- corroborated NOTHING, however busy it looks): ['clef_across_systems', 'instrument_across_systems', 'key_signature_across_systems', 'staff_group_across_systems']
+  ⚠️ DISAGREEMENTS: 0 (each implicates its WHOLE group, not its dissenter)
+── EVALUATE: 321 fired, 1623 skipped
+── INFER: 0 inferred, 0 skipped  ⚠️ every one is LABELLED and supersedes a recorded narrowing
+── DECLARED STUBS: 0 decisions, 1 consequences

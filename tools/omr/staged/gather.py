@@ -1118,8 +1118,14 @@ def gather_dynamic_letters(log: Log, pws: Any, cells: Sequence[Any],
                         reader=READERS.DETECTOR, frame=FRAME_PAGE,
                         score=float(d.confidence), **detail)
         if n == 0:
+            # ⚠️ NOT `NO_INK`. This loop is over `detections.items()`, so the
+            # detector fired HERE and what it returned simply holds no
+            # dynamic letter -- a bar of noteheads and a slur, not a blank
+            # bar. Measured on Litolff Beethoven 5 pp.1-4, all 997 of these
+            # stood on a cell with detections and ink: 997 of 997.
             log.abstain(sub, Q.DYNAMIC_LETTER, reader=READERS.DETECTOR,
-                        frame=frame, reason=ABSTAIN.NO_INK)
+                        frame=frame, reason=ABSTAIN.NO_GLYPH_OF_THIS_KIND,
+                        cell_n_detections=len(dets))
 
     for c in cells:
         key = local.get(c.staff_index)
@@ -1513,13 +1519,27 @@ def gather_cv_lines(log: Log, cells: Sequence[Any],
                             image="no_staff" if erased else "original",
                             staff_lines_erased=erased)
 
+        # ⚠️⚠️ THE STEM SET IS THE BEAM READER'S INPUT, so it is read ONCE
+        # here and the two families get different words. `detect_beams` takes
+        # the strokes `detect_stems` returned; where there are fewer than two
+        # of them no beam can be joined in this cell, whatever the page holds.
+        n_stems = len(found.get("stems") or [])
         for quantity, kind in ((Q.STEM, "stems"), (Q.BEAM_STROKE, "beams")):
             rows = found.get(kind) or []
             if not rows:
+                # ⚠️ NOT `NO_INK`. `detect_stems` NAMES AND FILTERS IN ONE ACT
+                # (`line_detection` says so at its own head), so this says
+                # only what the reader knows: it ran and accepted nothing of
+                # this kind. Whether candidates were FOUND AND REFUSED is on
+                # the record only under `OMR_VERTICAL_RUNS`.
+                reason = ABSTAIN.NO_LINE_ACCEPTED
+                if quantity is Q.BEAM_STROKE and n_stems < 2:
+                    reason = ABSTAIN.NO_STEMS_TO_JOIN
                 log.abstain(sub, quantity, reader=READERS.CV_LINES,
-                            frame=frame, reason=ABSTAIN.NO_INK,
+                            frame=frame, reason=reason,
                             image="no_staff" if erased else "original",
-                            staff_lines_erased=erased)
+                            staff_lines_erased=erased,
+                            cell_n_stems=n_stems)
                 continue
             for d in rows:
                 log.observe(sub, quantity,
@@ -3299,16 +3319,26 @@ def gather_direction_words(log: Log, pws: Any, cells: Sequence[Any],
                     readers=[n for n, _f in readers])
 
 
-#: ⚠️ DEFAULT OFF, ALLOW-LIST -- CLAUDE.md's *"A flag's OFF test must follow
-#: its DEFAULT"*, under which five shipped flags had it backwards. A
-#: default-OFF mechanism must be an allow-list, so that a typo or an empty
-#: value leaves it OFF rather than silently switching a document onto it.
+#: ⚠️⚠️ DEFAULT **ON** SINCE 2026-09-22, AND IT IS SEAN'S OWN INSTRUCTION:
+#: *"if a page is engraved or a scan along with the publisher info and year --
+#: whatever we have -- should be gathered in the first stage."* It shipped OFF
+#: on 2026-09-17 under the `Q.INK` discipline (a producer and its first
+#: consumer landing together makes the reach measurement circular); the
+#: consumer now exists behind its OWN flag, so the two evidential weights are
+#: separate -- the INFER lane's lesson, where one switch over two rules of
+#: unequal evidence held the verified one back for four days.
+#:
+#: ⚠️ THE OFF TEST IS A **DENY-LIST** BECAUSE THE DEFAULT IS ON. CLAUDE.md's
+#: *"A flag's OFF test must follow its DEFAULT"*, under which five shipped
+#: flags had it backwards: under a default-ON flag an allow-list would let an
+#: empty value or a typo silently RESTORE the old silence.
+#: `test_flag_default_direction.py` derives this and will check it.
 DOCUMENT_IDENTITY_ENV = "OMR_DOCUMENT_IDENTITY"
 
 
 def _document_identity_enabled() -> bool:
-    return os.environ.get(DOCUMENT_IDENTITY_ENV, "0").strip().lower() \
-        in ("1", "true", "yes", "on")
+    return os.environ.get(DOCUMENT_IDENTITY_ENV, "1").strip().lower() \
+        not in ("0", "", "false", "no", "off")
 
 
 def gather_document_identity(log: Log, pdf_path: Any) -> None:
@@ -3375,16 +3405,122 @@ def gather_document_identity(log: Log, pdf_path: Any) -> None:
                     note="no catalog edition matches %s"
                          % os.path.basename(str(pdf_path)))
         return
+    # ⚠️⚠️ `image_type` IS IMSLP'S CROWD-SOURCED LABEL AND IT IS FILED AS ONE.
+    # The MEASURED engraved/scan verdict is a SEPARATE quantity from a
+    # SEPARATE reader (`gather_input_domain` below) and neither overwrites the
+    # other, which is the `Q.INK` discipline for `ink_detector_coverage`: a
+    # disagreement between two witnesses is a fact worth having.
+    #
+    # ⚠️ MEASURED 2026-09-22 OVER ALL 289 COMMITTED EDITIONS, AND THE LABEL IS
+    # NOT WRONG -- IT IS ABSENT. Where it exists the two agree 279 of 279
+    # (272/272 `Normal Scan` measure scanned, 7/7 `Typeset` measure engraved);
+    # the 10 editions carrying NO label split 7 scanned / 3 engraved, and all
+    # three engraved ones are locally-made typesets rather than IMSLP scans.
+    # So *"the catalog claims only 7 engraved, which cannot be right"* is
+    # REFUTED: the library really is almost all scans, because it is almost
+    # all IMSLP. `benchmarks/omr-document-identity-2026-09/FINDINGS.md`.
     log.observe(R.DOCUMENT, Q.DOCUMENT_IDENTITY,
                 facts.get("publisher"), reader=READERS.CATALOG,
                 frame=FRAME_PAGE, tier="catalog",
                 edition_path=facts.get("path"),
                 publisher=facts.get("publisher"),
+                # ⚠️ SEAN ASKED FOR THE YEAR BY NAME. Present on 195 of 289.
+                publisher_year=facts.get("publisher_year"),
+                # A plate number identifies a PRINTING more sharply than a
+                # house: Litolff 2765-2773 is one series across the whole
+                # Beethoven cycle. Present on 177 of 289.
+                plate=facts.get("plate"),
                 work_id=facts.get("work_id"),
                 composer=facts.get("composer"),
                 image_type=facts.get("image_type"),
+                # The only field present on all 289, and the one that says
+                # whether the free margin-label rung can read anything here.
+                has_text_layer=facts.get("has_text_layer"),
                 imslp_id=facts.get("imslp_id"),
                 source_kind="catalog")
+
+
+def gather_input_domain(log: Log, pdf_path: Any,
+                        page_indices: Any = None) -> None:
+    """SCANNED or ENGRAVED, MEASURED off the PDF's own container.
+
+    ⚠️⚠️ **IT IS A SEPARATE QUANTITY FROM `Q.DOCUMENT_IDENTITY` AND THE
+    MEASUREMENT IS WHY, NOT THE TAXONOMY.** The catalog answers by BASENAME
+    out of the committed score library, and the engraved fixture the
+    key-signature failure is measured on is a RENDER -- a build product under
+    `benchmarks/`, in no catalog -- so `gather_document_identity` abstains
+    `not_in_catalog` on it. A domain filed as a FIELD of that row would have a
+    reach of ZERO on the one input where the rule it conditions is proven.
+    Measured 2026-09-22: that fixture classifies `engraved` on all 3 pages
+    (raster coverage 0.000, 1188-1655 drawings) while the catalog holds
+    nothing about it at all.
+
+    ⚠️ `source_kind: "container"` IS A FOURTH KIND, NAMED RATHER THAN
+    BORROWED. It is not `catalog` (no external authority speaks here), not
+    `encoding`, and emphatically not `page` -- which means *an OMR output of
+    the same raster* and is refused as a second witness because it falls
+    silent exactly when the reading it would arbitrate does. This counts
+    vector drawing operations against full-page raster coverage, so a bad scan
+    is still unambiguously a raster: it has `catalog`'s independence from
+    print quality without `catalog`'s dependence on somebody having catalogued
+    the file.
+
+    ⚠️ IT ABSTAINS ON DOUBT AND THE ABSTENTION HAS ITS OWN WORD.
+    `input_domain`'s two populations have an EMPTY gap over 147 probed pages
+    (0 drawings / 0.95+ coverage against 428-2058 drawings / 0.000), and a
+    page with neither -- a blank leaf, a text-only title page -- returns
+    `unknown`. That is `ABSTAIN.NO_DOMAIN_SIGNAL`, not `AMBIGUOUS`: the reader
+    is doing what it was built to do, and a consumer that could not tell those
+    apart would read a cover sheet as a close call.
+
+    ⚠️ IT CLASSIFIES THE PAGES THIS RUN IS READING, not a fixed prefix, and
+    records how many it probed. `classify_pdf_domain`'s own document rule is
+    ANY-SCAN-WINS, so probing more pages can only ever move the verdict toward
+    `scanned` -- the asymmetry matching the measured cost of misrouting.
+    """
+    if not _document_identity_enabled():
+        return
+    if log.rows(Q.INPUT_DOMAIN, R.DOCUMENT) \
+            or log.refusals(Q.INPUT_DOMAIN, R.DOCUMENT):
+        return
+    if not pdf_path:
+        log.abstain(R.DOCUMENT, Q.INPUT_DOMAIN, reader=READERS.CONTAINER,
+                    frame=FRAME_PAGE, reason=ABSTAIN.OUT_OF_SCOPE,
+                    note="no pdf_path supplied to gather()")
+        return
+    try:
+        from tools.omr.input_domain import (SCANNED, ENGRAVED,
+                                            classify_pdf_domain)
+        cls = classify_pdf_domain(pdf_path, page_indices)
+    except Exception as exc:   # pragma: no cover - PyMuPDF absent/unreadable
+        log.abstain(R.DOCUMENT, Q.INPUT_DOMAIN, reader=READERS.CONTAINER,
+                    frame=FRAME_PAGE, reason=ABSTAIN.READER_UNAVAILABLE,
+                    note="could not classify: %s" % exc)
+        return
+
+    detail = {
+        "pages_probed": [p.page_index for p in cls.pages],
+        "page_verdicts": [p.verdict for p in cls.pages],
+        "max_raster_coverage": round(
+            max((p.total_raster_coverage for p in cls.pages), default=0.0), 4),
+        "max_drawings": max((p.n_drawings for p in cls.pages), default=-1),
+        "ms": round(cls.ms, 1),
+        "source_kind": "container",
+    }
+    if cls.verdict not in (SCANNED, ENGRAVED):
+        # ⚠️ NOT DEFAULTED TO `scanned`. A fallback that converts *cannot
+        # tell* into a definite answer is the failure this file records at
+        # four sites, and here it would hand the key-signature consumer a
+        # domain nobody measured.
+        log.abstain(R.DOCUMENT, Q.INPUT_DOMAIN, reader=READERS.CONTAINER,
+                    frame=FRAME_PAGE, reason=ABSTAIN.NO_DOMAIN_SIGNAL,
+                    note=cls.reason or "neither raster-dominant nor "
+                                       "drawing-rich on any page probed",
+                    **detail)
+        return
+    log.observe(R.DOCUMENT, Q.INPUT_DOMAIN, cls.verdict,
+                reader=READERS.CONTAINER, frame=FRAME_PAGE,
+                tier="container", **detail)
 
 
 def gather_external(log: Log, pws, *, dossier: Any = None,
@@ -3444,6 +3580,23 @@ def gather_external(log: Log, pws, *, dossier: Any = None,
 # ─────────────────────────────────────────────────────────────────────────────
 
 
+def _run_page_indices(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]]):
+    """Which PDF pages this gather is reading, or None if they cannot be told.
+
+    ⚠️ `None` FALLS BACK TO THE CLASSIFIER'S OWN DEFAULT PREFIX rather than to
+    an empty list, because an empty `page_indices` classifies NOTHING and
+    returns `unknown` -- a clean, believable abstention that would mean *this
+    document has no domain* when it means *we could not name its pages*.
+    """
+    idx = []
+    for pws, _cells in pws_and_cells:
+        page = getattr(pws, "page", None)
+        i = getattr(page, "page_index", None)
+        if isinstance(i, int):
+            idx.append(i)
+    return sorted(set(idx)) or None
+
+
 def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
            detector: Any = None, conf_threshold: float = 0.25,
            imgsz: Optional[int] = None, dossier: Any = None,
@@ -3490,6 +3643,12 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
         # exists to prevent.
         sources = gather_external(log, pws, dossier=dossier, roster=roster)
         gather_document_identity(log, pdf_path)
+        # ⚠️ THE PAGES THIS RUN IS READING, derived from the batch rather than
+        # from the first 12 of the file: a gather of pages 60-63 of an 88-page
+        # scan must not be classified on its cover sheet. Both calls are
+        # once-per-DOCUMENT and guard themselves, so passing the whole list on
+        # every page is correct and costs nothing after the first.
+        gather_input_domain(log, pdf_path, _run_page_indices(pws_and_cells))
         local = gather_geometry(log, pws)
         gather_systems(log, pws, getattr(pws, "used_bridging", True))
         gather_measures(log, pws, cells, local)

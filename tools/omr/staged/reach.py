@@ -105,7 +105,6 @@ KNOWN_GAPS: Dict[str, str] = {
         "ABSTAIN-ONLY, and `gather_coverage` section 1b already reports it as "
         "such -- a reader declared it and never observed one."),
     Q.CLEF_REFUSAL_BRANCH: "DECLARED, UNGATHERED — reported by `gather_coverage` section 2.",
-    Q.INPUT_DOMAIN: "DECLARED, UNGATHERED — reported by `gather_coverage` section 2.",
     Q.LEFT_EDGE_INK: "DECLARED, UNGATHERED — reported by `gather_coverage` section 2.",
     Q.TEXT_LAYER: (
         "DECLARED, UNGATHERED — reported by `gather_coverage` section 2. ⚠️ Not "
@@ -120,9 +119,15 @@ KNOWN_GAPS: Dict[str, str] = {
         "because where a mark falls is a property of the PLATE and the "
         "conditioning variable had no producer at all: `grep publisher "
         "tools/omr/staged/gather.py` returned ONE COMMENT while the catalog "
-        "that knows has been committed all along. ⚠️ IT IS ALSO DEFAULT-OFF "
-        "(`OMR_DOCUMENT_IDENTITY`, allow-list), so on a default run nothing "
-        "observes it either. The consumer it is aimed at is "
+        "that knows has been committed all along. ⚠️ IT IS DEFAULT-**ON** "
+        "SINCE 2026-09-22 (`OMR_DOCUMENT_IDENTITY`, now a DENY-list, "
+        "Sean's instruction that the printing be gathered in the first "
+        "stage), so a default run DOES observe it -- what is still open "
+        "is the READ. ⚠️ Its sibling `Q.INPUT_DOMAIN` left this list the "
+        "same day: that one now has both a producer "
+        "(`gather_input_domain`) and a decision reading it "
+        "(`adjudicate_key_signature`). The consumer this one is aimed at "
+        "is "
         "`tools/omr/positional_store.py`, which reads it through "
         "`identity_of_record` on a SAVED record rather than through a staged "
         "accessor — which is why this tool cannot see the read. REMOVE THIS "
@@ -323,6 +328,16 @@ NOT_A_STAGE = frozenset({
     # exits 0. That is the guard the brake audit's mutation arm asked for,
     # doing its job on the next module to arrive.
     "trace.py",
+    # ⚠️ `check.py` (2026-09-22, plan §5 Phase 0.4b) is the tenth derived
+    # check and folds the other nine plus `conventions.py`, `no_producer.py`,
+    # `export_coverage.py` and `accuracy_record.py` into one open-findings
+    # number. It calls their own `build()` / `report()` / `survey()` /
+    # `check()` functions and reads none of their `Q.` quantities itself, so
+    # it declares `DERIVED_CHECK = True` for `wiring`'s DETAIL question and
+    # is registered here for the same reason as the nine above it: the
+    # guard this comment sits beside is what a new, unregistered staged
+    # module trips, proved on itself before this line existed.
+    "check.py",
 })
 
 

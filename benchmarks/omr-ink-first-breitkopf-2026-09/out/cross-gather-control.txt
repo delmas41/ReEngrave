@@ -1,0 +1,16 @@
+four-page  : benchmarks/omr-ink-first-breitkopf-2026-09/out/brahms1-breitkopf-p0-p3.gather.json (67546 observations)
+single-page: benchmarks/omr-ink-first-2026-09/out/brahms1-breitkopf-p2.gather.json (22098 observations)
+comparing page coordinate '1'
+
+  ink                single   6055   four   6055   IDENTICAL
+  glyph_box          single   3951   four   3951   IDENTICAL
+  glyph_conf         single   3951   four   3951   IDENTICAL
+  notehead_class     single   1015   four   1015   IDENTICAL
+  stem               single    792   four    792   IDENTICAL
+  cell_staff_space   single    202   four    202   IDENTICAL
+  beam_stroke        single    924   four    924   IDENTICAL
+  rest               single    350   four    350   IDENTICAL
+
+  ink subject key SET identical: True   (single-only 0, four-only 0)
+
+PASS: the two independent gathers agree about this page's population.

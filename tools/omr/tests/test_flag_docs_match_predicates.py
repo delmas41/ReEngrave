@@ -1,4 +1,4 @@
-"""CLAUDE.md's flag tables must agree with the PREDICATES they describe.
+"""The flag table (docs/flags-2026-09.md since 2026-09-22; CLAUDE.md before) must agree with the PREDICATES they describe.
 
 ⚠️⚠️ **WHY THIS EXISTS: A FLAG FLIPPED TO DEFAULT-ON AND SIX LEDGERS KEPT
 SAYING OFF, AND THE TABLE IS THE FIRST THING AN AGENT READS.** `OMR_INK` went
@@ -40,7 +40,7 @@ import re
 import unittest
 
 ROOT = pathlib.Path(__file__).resolve().parents[3]
-CLAUDE_MD = ROOT / "CLAUDE.md"
+CLAUDE_MD = ROOT / "docs" / "flags-2026-09.md"   # the flag table since 2026-09-22
 
 
 def _default_on_flags():
@@ -57,20 +57,9 @@ def _default_on_flags():
 #: reasons a gap EXISTS, never reasons one is acceptable -- the rule
 #: `staged/capture.py` states for its own `KNOWN_GAPS`.
 UNDOCUMENTED = {
-    "OMR_CONTEST_DUMP": "a debug dump, not a behaviour knob",
-    "OMR_CV_HAIRPINS": "discussed at length in prose; never given a table row",
-    "OMR_INSTRUMENT_CLEF_DEFAULT": "held pending the condensation decision",
-    "OMR_LABEL_MERGE_QUALITY": "default-ON and undocumented",
-    "OMR_LINEUP_SWAP_SPLIT": "default-OFF and undocumented",
-    "OMR_MOVEMENT_REFERENCE": "default-ON and undocumented",
-    "OMR_ROSTER": "default-ON and undocumented",
-    "OMR_ROSTER_CLEF": "default-OFF and undocumented",
-    "OMR_SURYA_KEEP_ALIVE": "operational; documented in prose, no table row",
-    #: ⚠️ Registered by the job that ADDED it, with a proposed table row at the
-    #: foot of `benchmarks/omr-vertical-runs-2026-09/FINDINGS.md`. That lane
-    #: does not own `CLAUDE.md`; the managing session pastes the row and this
-    #: entry LEAVES the list the same day -- the `KNOWN_GAPS` discipline this
-    #: file's own docstring states.
+    # Empty since 2026-09-22: docs/flags-2026-09.md gives EVERY flag a row
+    # (roadmap 0.2). A flag added without a row fails
+    # `test_undocumented_is_exact_no_stale_entries` below, which is the point.
 }
 
 

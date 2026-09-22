@@ -1,0 +1,354 @@
+{
+ "staff_space_px": 22.5,
+ "tolerances": {
+  "0.5": {
+   "per_family": {
+    "accidental": {
+     "truth": 9,
+     "pred": 0,
+     "matched": 0
+    },
+    "barline": {
+     "truth": 7,
+     "pred": 0,
+     "matched": 0
+    },
+    "beam": {
+     "truth": 16,
+     "pred": 16,
+     "matched": 16
+    },
+    "clef": {
+     "truth": 18,
+     "pred": 20,
+     "matched": 18
+    },
+    "dynamic_letter": {
+     "truth": 12,
+     "pred": 21,
+     "matched": 12
+    },
+    "flag": {
+     "truth": 3,
+     "pred": 3,
+     "matched": 3
+    },
+    "key_accidental": {
+     "truth": 44,
+     "pred": 45,
+     "matched": 44
+    },
+    "notehead": {
+     "truth": 73,
+     "pred": 73,
+     "matched": 73
+    },
+    "rest": {
+     "truth": 101,
+     "pred": 101,
+     "matched": 101
+    },
+    "tie": {
+     "truth": 11,
+     "pred": 17,
+     "matched": 7
+    },
+    "time_signature_digit": {
+     "truth": 36,
+     "pred": 36,
+     "matched": 36
+    }
+   },
+   "unscored_detections": {
+    "staff": 126,
+    "ornamentTrill": 1,
+    "fermataAbove": 36
+   }
+  },
+  "0.25": {
+   "per_family": {
+    "accidental": {
+     "truth": 9,
+     "pred": 0,
+     "matched": 0
+    },
+    "barline": {
+     "truth": 7,
+     "pred": 0,
+     "matched": 0
+    },
+    "beam": {
+     "truth": 16,
+     "pred": 16,
+     "matched": 16
+    },
+    "clef": {
+     "truth": 18,
+     "pred": 20,
+     "matched": 18
+    },
+    "dynamic_letter": {
+     "truth": 12,
+     "pred": 21,
+     "matched": 5
+    },
+    "flag": {
+     "truth": 3,
+     "pred": 3,
+     "matched": 3
+    },
+    "key_accidental": {
+     "truth": 44,
+     "pred": 45,
+     "matched": 44
+    },
+    "notehead": {
+     "truth": 73,
+     "pred": 73,
+     "matched": 73
+    },
+    "rest": {
+     "truth": 101,
+     "pred": 101,
+     "matched": 101
+    },
+    "tie": {
+     "truth": 11,
+     "pred": 17,
+     "matched": 0
+    },
+    "time_signature_digit": {
+     "truth": 36,
+     "pred": 36,
+     "matched": 36
+    }
+   },
+   "unscored_detections": {
+    "staff": 126,
+    "ornamentTrill": 1,
+    "fermataAbove": 36
+   }
+  },
+  "0.75": {
+   "per_family": {
+    "accidental": {
+     "truth": 9,
+     "pred": 0,
+     "matched": 0
+    },
+    "barline": {
+     "truth": 7,
+     "pred": 0,
+     "matched": 0
+    },
+    "beam": {
+     "truth": 16,
+     "pred": 16,
+     "matched": 16
+    },
+    "clef": {
+     "truth": 18,
+     "pred": 20,
+     "matched": 18
+    },
+    "dynamic_letter": {
+     "truth": 12,
+     "pred": 21,
+     "matched": 12
+    },
+    "flag": {
+     "truth": 3,
+     "pred": 3,
+     "matched": 3
+    },
+    "key_accidental": {
+     "truth": 44,
+     "pred": 45,
+     "matched": 44
+    },
+    "notehead": {
+     "truth": 73,
+     "pred": 73,
+     "matched": 73
+    },
+    "rest": {
+     "truth": 101,
+     "pred": 101,
+     "matched": 101
+    },
+    "tie": {
+     "truth": 11,
+     "pred": 17,
+     "matched": 7
+    },
+    "time_signature_digit": {
+     "truth": 36,
+     "pred": 36,
+     "matched": 36
+    }
+   },
+   "unscored_detections": {
+    "staff": 126,
+    "ornamentTrill": 1,
+    "fermataAbove": 36
+   }
+  },
+  "1.0": {
+   "per_family": {
+    "accidental": {
+     "truth": 9,
+     "pred": 0,
+     "matched": 0
+    },
+    "barline": {
+     "truth": 7,
+     "pred": 0,
+     "matched": 0
+    },
+    "beam": {
+     "truth": 16,
+     "pred": 16,
+     "matched": 16
+    },
+    "clef": {
+     "truth": 18,
+     "pred": 20,
+     "matched": 18
+    },
+    "dynamic_letter": {
+     "truth": 12,
+     "pred": 21,
+     "matched": 12
+    },
+    "flag": {
+     "truth": 3,
+     "pred": 3,
+     "matched": 3
+    },
+    "key_accidental": {
+     "truth": 44,
+     "pred": 45,
+     "matched": 44
+    },
+    "notehead": {
+     "truth": 73,
+     "pred": 73,
+     "matched": 73
+    },
+    "rest": {
+     "truth": 101,
+     "pred": 101,
+     "matched": 101
+    },
+    "tie": {
+     "truth": 11,
+     "pred": 17,
+     "matched": 7
+    },
+    "time_signature_digit": {
+     "truth": 36,
+     "pred": 36,
+     "matched": 36
+    }
+   },
+   "unscored_detections": {
+    "staff": 126,
+    "ornamentTrill": 1,
+    "fermataAbove": 36
+   }
+  },
+  "1.5": {
+   "per_family": {
+    "accidental": {
+     "truth": 9,
+     "pred": 0,
+     "matched": 0
+    },
+    "barline": {
+     "truth": 7,
+     "pred": 0,
+     "matched": 0
+    },
+    "beam": {
+     "truth": 16,
+     "pred": 16,
+     "matched": 16
+    },
+    "clef": {
+     "truth": 18,
+     "pred": 20,
+     "matched": 18
+    },
+    "dynamic_letter": {
+     "truth": 12,
+     "pred": 21,
+     "matched": 12
+    },
+    "flag": {
+     "truth": 3,
+     "pred": 3,
+     "matched": 3
+    },
+    "key_accidental": {
+     "truth": 44,
+     "pred": 45,
+     "matched": 44
+    },
+    "notehead": {
+     "truth": 73,
+     "pred": 73,
+     "matched": 73
+    },
+    "rest": {
+     "truth": 101,
+     "pred": 101,
+     "matched": 101
+    },
+    "tie": {
+     "truth": 11,
+     "pred": 17,
+     "matched": 7
+    },
+    "time_signature_digit": {
+     "truth": 36,
+     "pred": 36,
+     "matched": 36
+    }
+   },
+   "unscored_detections": {
+    "staff": 126,
+    "ornamentTrill": 1,
+    "fermataAbove": 36
+   }
+  }
+ },
+ "unreliable_families": [
+  "accidental"
+ ],
+ "pooled": {
+  "truth": 298,
+  "pred": 316,
+  "matched": 294,
+  "precision": 0.930379746835443,
+  "recall": 0.9865771812080537,
+  "f1": 0.9576547231270359
+ },
+ "confusions": {
+  "accidental": {
+   "-": 9
+  },
+  "barline": {
+   "-": 7
+  },
+  "tie": {
+   "-": 4
+  }
+ },
+ "adapter": {
+  "detections_placed": 495,
+  "pages_present": [
+   0
+  ],
+  "staff_space_px": 22.5
+ }
+}

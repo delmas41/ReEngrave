@@ -678,9 +678,18 @@ def ink_claiming_reasons() -> frozenset:
 #: -- the detector fired nothing -- and folding it in would report a working
 #: reader as a fault. Keeping them apart is the same move `NO_READING` was
 #: added for.
+#:
+#: ⚠️⚠️ THE THREE WORDS THAT REPLACED 2,377 FALSE `no_ink` CLAIMS ARE LISTED
+#: HERE ON PURPOSE, SO THE POPULATION STAYS VISIBLE UNDER ITS HONEST NAMES.
+#: `ink_claiming_reasons()` is derived on the token "ink", so they drop out of
+#: the contradicted set automatically -- and if they were not also named here
+#: they would drop out of the REPORT entirely, which is this repo's own
+#: *"the inventory written to account for the findings closed the check that
+#: produced them"*. A repair must not be able to hide its own population.
 _HONEST_EMPTY = (ABSTAIN.NO_DETECTIONS, ABSTAIN.NO_TEXT_LAYER,
                  ABSTAIN.READER_UNAVAILABLE, ABSTAIN.BUDGET_EXHAUSTED,
-                 ABSTAIN.NO_MASK)
+                 ABSTAIN.NO_MASK, ABSTAIN.NO_GLYPH_OF_THIS_KIND,
+                 ABSTAIN.NO_LINE_ACCEPTED, ABSTAIN.NO_STEMS_TO_JOIN)
 
 
 def empty_claims(rec: X.Record) -> Dict[str, Any]:

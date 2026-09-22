@@ -1,0 +1,201 @@
+{
+ "label": "Litolff",
+ "candidates_adjudicated": 22,
+ "RED_class_by_verdict": {
+  "cannot_tell": {
+   "noteheadBlackOnLine": 8,
+   "noteheadBlackInSpace": 6,
+   "noteheadWholeOnLine": 1
+  },
+  "blue_is_not_a_notehead": {
+   "noteheadBlackOnLine": 2,
+   "noteheadBlackInSpace": 1
+  },
+  "separate_stems": {
+   "noteheadBlackOnLine": 2
+  },
+  "red_is_not_a_notehead": {
+   "noteheadBlackInSpace": 1,
+   "noteheadBlackOnLine": 1
+  }
+ },
+ "RED_detector_score_by_verdict": {},
+ "rows": [
+  {
+   "tile": "f5d6836068",
+   "verdict": "cannot_tell",
+   "red_class": "noteheadBlackOnLine",
+   "red_score": null,
+   "blue_class": "noteheadBlackInSpace",
+   "blue_score": null
+  },
+  {
+   "tile": "03ac1dfa96",
+   "verdict": "cannot_tell",
+   "red_class": "noteheadBlackOnLine",
+   "red_score": null,
+   "blue_class": "noteheadBlackInSpace",
+   "blue_score": null
+  },
+  {
+   "tile": "af09503add",
+   "verdict": "cannot_tell",
+   "red_class": "noteheadBlackOnLine",
+   "red_score": null,
+   "blue_class": "noteheadBlackOnLine",
+   "blue_score": null
+  },
+  {
+   "tile": "152e88cc32",
+   "verdict": "cannot_tell",
+   "red_class": "noteheadBlackInSpace",
+   "red_score": null,
+   "blue_class": "noteheadBlackOnLine",
+   "blue_score": null
+  },
+  {
+   "tile": "f44b640282",
+   "verdict": "blue_is_not_a_notehead",
+   "red_class": "noteheadBlackOnLine",
+   "red_score": null,
+   "blue_class": "noteheadBlackInSpace",
+   "blue_score": null
+  },
+  {
+   "tile": "7da91824ad",
+   "verdict": "cannot_tell",
+   "red_class": "noteheadBlackInSpace",
+   "red_score": null,
+   "blue_class": "noteheadBlackOnLine",
+   "blue_score": null
+  },
+  {
+   "tile": "1f5de05bf1",
+   "verdict": "blue_is_not_a_notehead",
+   "red_class": "noteheadBlackOnLine",
+   "red_score": null,
+   "blue_class": "noteheadBlackInSpace",
+   "blue_score": null
+  },
+  {
+   "tile": "f2ba2059a9",
+   "verdict": "cannot_tell",
+   "red_class": "noteheadBlackInSpace",
+   "red_score": null,
+   "blue_class": "noteheadBlackInSpace",
+   "blue_score": null
+  },
+  {
+   "tile": "c935960d1d",
+   "verdict": "cannot_tell",
+   "red_class": "noteheadBlackOnLine",
+   "red_score": null,
+   "blue_class": "noteheadBlackInSpace",
+   "blue_score": null
+  },
+  {
+   "tile": "f077575a67",
+   "verdict": "blue_is_not_a_notehead",
+   "red_class": "noteheadBlackInSpace",
+   "red_score": null,
+   "blue_class": "noteheadBlackInSpace",
+   "blue_score": null
+  },
+  {
+   "tile": "a1d22c9ac4",
+   "verdict": "separate_stems",
+   "red_class": "noteheadBlackOnLine",
+   "red_score": null,
+   "blue_class": "noteheadBlackOnLine",
+   "blue_score": null
+  },
+  {
+   "tile": "ad884d6c24",
+   "verdict": "cannot_tell",
+   "red_class": "noteheadBlackOnLine",
+   "red_score": null,
+   "blue_class": "noteheadBlackInSpace",
+   "blue_score": null
+  },
+  {
+   "tile": "aa668c0331",
+   "verdict": "cannot_tell",
+   "red_class": "noteheadBlackOnLine",
+   "red_score": null,
+   "blue_class": "noteheadBlackInSpace",
+   "blue_score": null
+  },
+  {
+   "tile": "0326d6d5f2",
+   "verdict": "cannot_tell",
+   "red_class": "noteheadBlackInSpace",
+   "red_score": null,
+   "blue_class": "noteheadBlackOnLine",
+   "blue_score": null
+  },
+  {
+   "tile": "ae88f2ffc6",
+   "verdict": "separate_stems",
+   "red_class": "noteheadBlackOnLine",
+   "red_score": null,
+   "blue_class": "noteheadBlackOnLine",
+   "blue_score": null
+  },
+  {
+   "tile": "d280144c72",
+   "verdict": "cannot_tell",
+   "red_class": "noteheadBlackOnLine",
+   "red_score": null,
+   "blue_class": "noteheadBlackOnLine",
+   "blue_score": null
+  },
+  {
+   "tile": "b0b926f1da",
+   "verdict": "cannot_tell",
+   "red_class": "noteheadBlackOnLine",
+   "red_score": null,
+   "blue_class": "noteheadBlackInSpace",
+   "blue_score": null
+  },
+  {
+   "tile": "278123d69c",
+   "verdict": "red_is_not_a_notehead",
+   "red_class": "noteheadBlackInSpace",
+   "red_score": null,
+   "blue_class": "noteheadHalfInSpace",
+   "blue_score": null
+  },
+  {
+   "tile": "da90f0716b",
+   "verdict": "cannot_tell",
+   "red_class": "noteheadBlackInSpace",
+   "red_score": null,
+   "blue_class": "noteheadBlackInSpace",
+   "blue_score": null
+  },
+  {
+   "tile": "baf05484b3",
+   "verdict": "red_is_not_a_notehead",
+   "red_class": "noteheadBlackOnLine",
+   "red_score": null,
+   "blue_class": "noteheadWholeInSpace",
+   "blue_score": null
+  },
+  {
+   "tile": "c495eba9fc",
+   "verdict": "cannot_tell",
+   "red_class": "noteheadBlackInSpace",
+   "red_score": null,
+   "blue_class": "noteheadBlackOnLine",
+   "blue_score": null
+  },
+  {
+   "tile": "dc4adbd2c9",
+   "verdict": "cannot_tell",
+   "red_class": "noteheadWholeOnLine",
+   "red_score": null,
+   "blue_class": "noteheadHalfInSpace",
+   "blue_score": null
+  }
+ ]
+}

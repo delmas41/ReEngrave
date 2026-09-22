@@ -1,0 +1,47 @@
+{
+  "cells_seen": 1183,
+  "control_no_ink_by_quantity": {
+    "dynamic_letter": 997,
+    "beam_stroke": 980,
+    "stem": 400
+  },
+  "families": [
+    {
+      "quantity": "dynamic_letter",
+      "no_ink": 997,
+      "with_any_detection": 997,
+      "with_ink_row": 997,
+      "with_a_stem": 628,
+      "with_a_beam": 393,
+      "also_stem_no_ink": 369
+    },
+    {
+      "quantity": "stem",
+      "no_ink": 400,
+      "with_any_detection": 398,
+      "with_ink_row": 400,
+      "with_a_stem": 0,
+      "with_a_beam": 118,
+      "also_stem_no_ink": 400
+    },
+    {
+      "quantity": "beam_stroke",
+      "no_ink": 980,
+      "with_any_detection": 977,
+      "with_ink_row": 980,
+      "with_a_stem": 580,
+      "with_a_beam": 274,
+      "also_stem_no_ink": 400
+    },
+    {
+      "quantity": "wedge_box",
+      "no_ink": 0,
+      "dead": true
+    }
+  ],
+  "beam_stroke_no_ink_by_stem_count": {
+    "no stem at all -- the reader had NO INPUT": 400,
+    "2+ stems -- the reader COULD have spoken": 315,
+    "exactly ONE stem -- a beam needs two": 265
+  }
+}

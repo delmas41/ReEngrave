@@ -947,6 +947,32 @@ def catalog_path() -> Path:
         / "catalog.json"
 
 
+#: WHICH CATALOG FIELDS AN EDITION HANDS ON -- written ONCE, because it was
+#: written twice.
+#:
+#: ⚠️ `edition_facts` (by path) and `edition_for_pdf` (by basename) are sister
+#: lookups over one catalog and each hand-listed this tuple, so a field added
+#: for one reached the other only if somebody remembered. That is the drift
+#: shape this repo has already paid for in `rhythm._with_segments` /
+#: `_change_only`, where a flag reached one of two builders of the same
+#: projection and every unit test stayed green. Adding `publisher_year`,
+#: `plate` and `has_text_layer` here reaches both by construction.
+_EDITION_FIELDS = ("path", "work_id", "publisher", "publisher_year", "plate",
+                   "image_type", "has_text_layer", "pages", "imslp_id",
+                   "variant", "composer")
+
+
+def _edition_projection(entry: Dict[str, Any]) -> Dict[str, Any]:
+    """The catalog fields a consumer may read, ABSENT where the catalog is.
+
+    ⚠️ A MISSING FIELD ARRIVES AS `None`, never as a default. Measured over
+    the 289 committed editions: `publisher` 285, `publisher_year` 195,
+    `plate` 177, `image_type` 279, `has_text_layer` 289 -- so four of the six
+    are genuinely absent somewhere, and a consumer must be able to see that.
+    """
+    return {k: entry.get(k) for k in _EDITION_FIELDS}
+
+
 def edition_facts(edition_path: str) -> Dict[str, Any]:
     """Publisher, work and scan type for an edition, from the COMMITTED catalog.
 
@@ -962,9 +988,7 @@ def edition_facts(edition_path: str) -> Dict[str, Any]:
         return {}
     for e in cat.get("entries", ()):
         if e.get("kind") == "edition" and e.get("path") == edition_path:
-            return {k: e.get(k) for k in
-                    ("path", "work_id", "publisher", "image_type", "pages",
-                     "imslp_id", "variant", "composer")}
+            return _edition_projection(e)
     return {}
 
 
@@ -992,9 +1016,7 @@ def edition_for_pdf(pdf_path: Any) -> Dict[str, Any]:
     for e in cat.get("entries", ()):
         if e.get("kind") == "edition" \
                 and Path(e.get("path", "")).name == name:
-            return {k: e.get(k) for k in
-                    ("path", "work_id", "publisher", "image_type", "pages",
-                     "imslp_id", "variant", "composer")}
+            return _edition_projection(e)
     return {}
 
 
