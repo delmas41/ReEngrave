@@ -16,6 +16,44 @@ pointing at headings no longer in the file.)*
 
 ---
 
+## 2026-09-22 — SEAN'S RULING: identity is gathered first, and the key signature reads it
+
+**A decision and a work order. No code.** Sean, on being shown that
+`adjudicate_key_signature` prefers a reader right **6 of 30** over one right
+**20 of 20**, and that the cause is `erase_staff_lines` shaving 54-63% off each
+flat on ENGRAVED input while the same erasure HELPS on a scan:
+
+> *"if a page is engraved or a scan along with the publisher info and year —
+> whatever we have — should be gathered in the first stage — then we need to
+> make sure that the key signature is determined based on that info."*
+
+**Briefed for a new session:**
+[docs/NEXT-2026-09-22-identity-conditions-the-key-signature.md](docs/NEXT-2026-09-22-identity-conditions-the-key-signature.md).
+
+⚠️⚠️ **THE BRIEF EXISTS BECAUSE HALF THE JOB IS ALREADY BUILT AND SWITCHED
+OFF.** `gather_document_identity` shipped 2026-09-17 behind
+`OMR_DOCUMENT_IDENTITY` — **default OFF, producer-only, read by nothing** — and
+already files publisher / `work_id` / `image_type` / `imslp_id` /
+`edition_path`. **A session starting from the instruction alone would rebuild a
+shipped rung.**
+
+⚠️ **What is missing, measured against the committed catalog's 289 editions**:
+`publisher_year` (**195 of 289** — asked for by name), `plate` (177),
+`has_text_layer` (289), and a **MEASURED** engraved-vs-scan verdict.
+⚠️⚠️ **NOT `image_type`** — IMSLP's crowd-sourced label, which reads `Typeset`
+on **SEVEN of 289**. The measured test is `input_domain._classify_page`, gap
+**EMPTY over 147 probed pages**, abstaining on doubt, and **imported nowhere
+under `staged/`**. The two are kept APART on the record so a disagreement stays
+a fact.
+
+⚠️⚠️ **THE CONSUMER MUST BE ONE-SIDED**: prefer the template **only where the
+document is PROVED engraved**, leaving the precedence exactly as it ships
+everywhere else — the 20/20 is engraved-only, and on a scan the erasure works
+FOR the locator on a side **not measured for accuracy**. A GATHER change, so
+pricing needs two full re-gathers.
+
+---
+
 ## 2026-09-22 (night) — four lanes, three refutations, one measured decision
 
 ⚠️ Placed above the `no_ink` block on this file's CAUSAL-ORDER rule: it is the
