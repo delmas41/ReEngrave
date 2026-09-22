@@ -3066,6 +3066,66 @@ tuned: `max_inferred_ratio` (the `7`) and every locator/template threshold were
 left alone, and clamping `x0` itself was measured and REFUSED (it costs the
 locator 3 correct and 6 new wrong).
 
+### The marker slot-fit: the lever was ALREADY SHIPPED on the legacy path
+
+2026-09-21, **no code under `tools/`**.
+[docs/NEXT-2026-09-21-keysig-reading-lever.md](docs/NEXT-2026-09-21-keysig-reading-lever.md)
+asked for the slot-table fit to be run on the DETECTOR's key markers. Findings:
+[benchmarks/omr-keysig-marker-fit-2026-09/FINDINGS.md](benchmarks/omr-keysig-marker-fit-2026-09/FINDINGS.md).
+
+⚠️⚠️ **ITS PREMISE IS FALSE.** It says `fit_key_signature` *"has never been
+given the detector's markers as its ink source"*. `transcribe.py:856` has given
+it exactly that since **`7c6b6481`, 2026-08-28** — *"fit the DETECTOR's
+key-signature markers too, not just the locator's"* — through
+`_staff_positions_for` (box centres as steps below the top line, off the cell's
+own geometry, abstaining where there is none) and a **`_DETECTOR_FIT_CONFIG`
+written for that ink**. ⚠️ **The brief contradicts itself**: its own
+`staged/adjudicators/header.py:17`, same branch, says the legacy path *"falls
+back to counting them where **the slot fit abstains**"* — presupposing the fit.
+**So it is a PORT, and the SIXTH instance of the sweep's §2a family** (*"shipped
+means the LEGACY path"*), found in the family that sweep's ranked #4 points at.
+
+⚠️⚠️ **HALF THE UNIT IS NOT ON THE RECORD.** `_cell_grid` returns
+`(top_y, half_step)`; two consumers use it and **`Q.CELL_STAFF_SPACE` files
+`half_step` and DROPS `top_y`** — **0 of 40,878 rows** carry the cell's top line
+in the cell frame, and `Q.CELL_POSITION_BASIS` is only ever *abstained*. That is
+verbatim the consumer `_cell_grid`'s own docstring says had *"nothing to ask
+with"*: **the pattern was named and half-fixed.** Recovered without a re-gather
+by `top_y = (y + h//2) − pos_float·half_step`; control **598/598 exact**, and the
+float spelling scores **154/598**, so it distinguishes. ⚠️ Legacy uses
+`h/2.0`, staged `h//2` — 0.011 steps apart, immaterial against `max_residual`
+0.5 but recorded.
+
+**REACH: 26/21 abstaining → 12/10 carry markers → MEASURABLE 6 and 10**; the fit
+answers **2 and 3**. ⚠️ Four Litolff staves have no notehead in cell 0, so no
+unit, so they ABSTAIN rather than take a nominal spacing. ⚠️ Several carry ONE
+marker, where a "fit" degenerates toward the count.
+
+**ACCURACY, Litolff only** (Breitkopf's truth is an ENCODING): **right 1, wrong
+1, abstained 4 — against a NULL of 6/6.** ⚠️⚠️ **The reachable population is
+BIASED toward where the constant wins: all 6 are truth −3**, where the full 26
+are `{-3: 17, 0: 8, -1: 1}` — **the same shape the carry arm hit**. The one wrong
+answer is a SINGLE marker landing inside `max_offset`, the brief's own trap.
+
+⚠️⚠️ **THE TWO PUBLISHERS FAIL DIFFERENTLY AND NEITHER FIX SERVES THE OTHER.**
+Litolff's markers are **CENTRED and NOISY** (median −0.100, spread 5.66) — no
+tolerance helps. Breitkopf's are **TIGHT and DISPLACED** (median **−1.256**,
+spread 1.02) against **`max_offset = 1.25`** — the cap sits ON its bias, and five
+staves abstain with internally consistent offsets (spreads 0.04-0.31). ⚠️ **The
+obvious cause is REFUTED**: a flat's box centre reading high would be identical
+on both plates, and the two want different reference points (f=0.50 vs f=0.75),
+so it is not glyph geometry. Unidentified, and **a SHARP-key document would
+settle it** — both documents here are C minor, so the discriminator is
+unavailable.
+
+⚠️ **RECOMMENDATION: do NOT port it, and the reason is not the score.** The
+reader is correct on both plates — it answers where there is a run and refuses
+where there is not. **The ink is not ready for it.** ⚠️ Since lane A, a key
+verdict drives `<alter>` (`consequences.py:415` → `export.py:761`), so a wrong
+reading now moves a staff's SOUNDING pitch — the brief's Control 2 is stronger
+than it reads. **n = 6 staves, 1 publisher, no print consulted, no battery.**
+
+
 ### A CONTEST is RESOLVED, not relocated — one piece of ink, one element
 
 2026-09-11, no flag. **Phase 2's first repair, and it came from Sean's own
