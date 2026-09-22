@@ -632,6 +632,53 @@ def _propose(log: Log, system: Subject, span: _Span, *, reason: str,
 #: failure a second time.
 from .adjudicators.clef import _clef_of as _clef_named_by  # noqa: E402
 
+#: The two canonical instrument NAMES a condensed low-string staff can be.
+#: ⚠️ NAMES, NOT A WORD LIST OVER MARGIN TEXT. `Q.INSTRUMENT.value["name"]`
+#: is already `instruments.Instrument.name` -- the canonical spelling
+#: `_reference_instruments` (identity.py) reads off the reference's OWN
+#: `Q.INSTRUMENT` verdicts -- so this is a comparison of two already-resolved
+#: facts, never a second lexicon.
+_CELLO_NAME = "Cello"
+_CONTRABASS_NAME = "Contrabass"
+
+
+def _reference_instrument_names(log: Log, ref_system: Subject) -> Dict[int, str]:
+    """`{staff ordinal on ref_system: instrument name}`.
+
+    ⚠️ THE SAME READ `identity._reference_instruments` MAKES, over a `Log`
+    rather than an `Evidence`, because `_place_in_family_block` already ran
+    in ADJUDICATE and this rule never gets an `Evidence` for that system's
+    subject. Re-deriving the name from a label string here would be a second
+    resolution of a question `adjudicate_instrument` already answered --
+    exactly the drift `_reference_instruments`'s own docstring is written to
+    avoid.
+    """
+    out: Dict[int, str] = {}
+    for v in log.verdicts(Q.INSTRUMENT, ref_system,
+                          scope=Scope.SELF_AND_DESCENDANTS):
+        sub = v.subject
+        if sub.kind is not Kind.STAFF or not isinstance(v.value, dict):
+            continue
+        name = v.value.get("name")
+        if isinstance(name, str):
+            out[sub.staff] = name
+    return out
+
+
+def _cello_and_contrabass_slots(names: Dict[int, str], a: int,
+                                b: int) -> Optional[Tuple[int, int]]:
+    """`(cello slot, contrabass slot)` if `{a, b}` is exactly that pair.
+
+    Order-independent: the reference's own listing order names which is
+    which, never the position of `a` and `b` in the narrowing.
+    """
+    na, nb = names.get(a), names.get(b)
+    if na == _CELLO_NAME and nb == _CONTRABASS_NAME:
+        return a, b
+    if nb == _CELLO_NAME and na == _CONTRABASS_NAME:
+        return b, a
+    return None
+
 
 def _block_members(log: Log, system: Subject) -> Dict[int, List[Verdict]]:
     """`{block_first_ordinal: [narrowed slot verdicts, by block index]}`.
@@ -711,7 +758,13 @@ def _clef_read_on(log: Log, staff: Subject) -> Tuple[Optional[str], Tuple[str, .
         "bottom-contiguous unnamed block that `adjudicate_slot_index` has "
         "already matched to the reference's trailing family run and found "
         "SHORT by exactly one slot, and only on the members ABOVE the last, "
-        "since the last is where the missing slot is claimed to be; and it "
+        "since the last is where the missing slot is claimed to be. The "
+        "last member is collapsed too, ONLY where its own two candidates "
+        "are exactly the reference's Cello and Contrabass slots (Sean, "
+        "2026-09-22: a condensed `Violoncello e Basso` staff), and never "
+        "onto any other pair -- it is placed on the Cello slot and its "
+        "detail names the Contrabass slot it also belongs to "
+        "(`condensed_with_slot`), for EXPORT to double, never this rule. It "
         "proposes nothing at all for the whole block if any member's own "
         "clef glyph contradicts the alignment. It can move a staff onto "
         "another slot of the same family and can never move one out of the "
@@ -836,4 +889,57 @@ def collapse_slot_index_to_family_block(log: Log,
                     # rather than missed.
                     "member_left_narrowed": members[-1].subject.to_key(),
                 }))
+
+        # ⚠️⚠️ THE LAST MEMBER -- SEAN, 2026-09-22, AFTER THE PRINT
+        # (`benchmarks/omr-cello-bass-convention-2026-09/FINDINGS.md`): "the
+        # string family always includes all five; if there are only four
+        # lines the bass is doubling the celli or it comes in later." A block
+        # short by one is short at its FOOT (the front-aligning claim just
+        # above), and the two slots the deficit leaves the FOOT staff
+        # standing on are therefore adjacent in the reference -- when that
+        # pair is exactly [Cello, Contrabass] the staff is not merely one OF
+        # them, it is the condensed line BOTH sections play. That is still a
+        # claim about engraving practice and not about this page, so it is
+        # collapsed here, labelled, exactly like every other member -- and
+        # placed on the CELLO slot, never invented as a third option, because
+        # `Ruling.narrow` never admitted one. `condensed_with_slot` names the
+        # Contrabass slot it also belongs to; EXPORT reads that detail to
+        # double the line, not this rule -- see `staged/export.py`'s
+        # `_condensed_doubling`.
+        #
+        # ⚠️ NO NEW EVIDENCE IS CONSULTED. The pair comes from `run`, already
+        # read off the SAME reference this block's clef witnesses were
+        # checked against, so a document whose reference prints no Contrabass
+        # at all -- or condenses a different pair -- proposes nothing here,
+        # exactly as `_cello_and_contrabass_slots` refuses any other pair.
+        last = members[-1]
+        if len(run) >= 2:
+            names = _reference_instrument_names(
+                log, Subject.from_key(str((last.detail or {}).get("reference"))))
+            slots = _cello_and_contrabass_slots(names, run[-2], run[-1])
+            if slots is not None:
+                cello_slot, contrabass_slot = slots
+                d = last.detail or {}
+                out.append(Proposal(
+                    subject=last.subject,
+                    value=int(cello_slot),
+                    reason="a_condensed_violoncello_e_basso_staff_takes_the_cello_slot",
+                    basis=tuple(witnesses),
+                    witnesses=tuple(witnesses),
+                    detail={
+                        "block_size": d.get("block_size"),
+                        "block_index": d.get("block_index"),
+                        "family": d.get("family"),
+                        "instrument": names.get(cello_slot),
+                        "run": run,
+                        "clefs_read_in_block": sum(1 for n, _ in reads
+                                                   if n is not None),
+                        "clefs_agreeing": len(witnesses),
+                        "refuses_on_a_contradicting_clef": True,
+                        # ⚠️ THE ONE DETAIL EXPORT READS. A staff placed here
+                        # is doubled onto this slot too, an octave down,
+                        # with `condensed_from` naming the source staff in
+                        # the doubled part's own report entry.
+                        "condensed_with_slot": int(contrabass_slot),
+                    }))
     return out

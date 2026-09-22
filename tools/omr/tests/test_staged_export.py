@@ -939,6 +939,91 @@ class TestThePartJoinIsTheVERDICTS(unittest.TestCase):
         self.assertEqual(rep["written"]["parts"], 3)
 
 
+def _condensed_cello_bass_page(*, extra_notes_on_cello=1):
+    """One staff, decided onto the Cello slot with `condensed_with_slot`
+    naming the Contrabass slot -- the shape `inferences.
+    collapse_slot_index_to_family_block` writes for a condensed
+    `Violoncello e Basso` staff (ROADMAP 2.1b)."""
+    obs, vrd = [], []
+    for gi in range(extra_notes_on_cello):
+        sub = f"glyph/0/0/0/0/{gi}"
+        obs.append(_obs(gi, sub, Q.GLYPH_BOX,
+                        ["noteheadBlackOnLine", 100 * gi, 50, 40, 40],
+                        category="notehead"))
+        obs.append(_obs(gi + 50, sub, Q.NOTEHEAD_CLASS, "noteheadBlackOnLine"))
+        vrd.append(_vrd(gi + 100, sub, Q.PITCH, "C4"))
+        vrd.append(_vrd(gi + 200, sub, Q.DURATION,
+                        {"beats": 1.0, "written": 1.0, "dots": 0}))
+    vrd.append(_vrd(900, "staff/0/0/0", Q.MEASURE_PARTITION, 1))
+    vrd.append(_vrd(901, "staff/0/0/0", Q.CLEF, "bass"))
+    vrd.append(_vrd(902, "system/0/0", Q.SYSTEM_STAFF_COUNT, 1))
+    slot_v = _vrd(905, "staff/0/0/0", Q.SLOT_INDEX, 3)
+    slot_v["detail"] = {"condensed_with_slot": 4}
+    vrd.append(slot_v)
+    vrd.append(_vrd(903, "document", Q.PART_PARTITION,
+                    {"join": "slot", "slots": [3, 4]}, reason="slot"))
+    return _log_json(obs, vrd)
+
+
+class TestACondensedStaffIsPlacedOnBothSlots(unittest.TestCase):
+    """ROADMAP 2.1b: a staff `inferences.collapse_slot_index_to_family_block`
+    narrowed to [Cello, Contrabass] and then collapsed onto the Cello slot
+    carries `condensed_with_slot` in its `Q.SLOT_INDEX` detail. Nothing
+    upstream of the join changed; this is `build()`'s own read of that
+    detail. Every test here was run RED against the unrepaired exporter
+    first (it built one part, `parts == 1`, and raised no `Unbalanced` only
+    because there was nothing yet to double)."""
+
+    def test_two_parts_are_written_not_one(self):
+        _, rep = SX.to_musicxml(_condensed_cello_bass_page())
+        self.assertEqual(rep["written"]["parts"], 2)
+        self.assertFalse(rep["part_join"]["fragmented"])
+
+    def test_the_report_names_the_source_staff_and_both_slots(self):
+        _, rep = SX.to_musicxml(_condensed_cello_bass_page())
+        doubling = rep["part_join"]["condensed_doubling"]
+        self.assertEqual(doubling, [{"condensed_from": "staff/0/0/0",
+                                     "cello_slot": 3, "contrabass_slot": 4}])
+
+    def test_the_contrabass_copy_carries_the_note_and_the_transpose(self):
+        xml, _ = SX.to_musicxml(_condensed_cello_bass_page())
+        root = ET.fromstring(xml)
+        p1, p2 = root.findall("part")
+        self.assertIsNone(p1.find(".//transpose"))
+        transpose = p2.find(".//transpose/octave-change")
+        self.assertIsNotNone(transpose)
+        self.assertEqual(transpose.text, "-1")
+        # ⚠️ WRITTEN PITCH IS IDENTICAL -- the transpose is a SOUNDING fact,
+        # never a respelling, so both parts read the same <pitch>.
+        self.assertEqual(p1.find(".//note/pitch/step").text,
+                         p2.find(".//note/pitch/step").text)
+        self.assertEqual(p1.find(".//note/pitch/octave").text,
+                         p2.find(".//note/pitch/octave").text)
+
+    def test_the_accounting_equality_still_holds(self):
+        """⚠️ THE POSITIVE CONTROL FOR THE NAMED BUCKET. Deleting the
+        `- doubled_to_condensed` term from `to_musicxml`'s `written` formula
+        makes this raise `Unbalanced` -- a note the log counted once is now
+        written twice, and the equality must still hold rather than widen to
+        `<=` (CLAUDE.md's own rule)."""
+        _, rep = SX.to_musicxml(_condensed_cello_bass_page(
+            extra_notes_on_cello=3))
+        self.assertTrue(rep["balance"]["balanced"])
+        self.assertEqual(rep["balance"]["notes_doubled_to_condensed_slot"], 3)
+        self.assertEqual(rep["balance"]["events_in_log"], 3)
+
+    def test_a_staff_with_no_condensed_detail_is_not_doubled(self):
+        """POSITIVE CONTROL for the gate itself: the ordinary slot join,
+        unchanged."""
+        doc = _condensed_cello_bass_page()
+        for v in doc["record"]["verdicts"]:
+            if v["quantity"] == Q.SLOT_INDEX:
+                v["detail"] = {}
+        _, rep = SX.to_musicxml(doc)
+        self.assertEqual(rep["written"]["parts"], 1)
+        self.assertEqual(rep["part_join"]["condensed_doubling"], [])
+
+
 class TestTuplets(unittest.TestCase):
     def test_only_the_ratios_OWN_MEMBERS_are_scaled(self):
         """⚠️ A tuplet is a fact of a GROUP inside the bar, not of the bar.
