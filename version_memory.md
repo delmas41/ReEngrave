@@ -16,6 +16,50 @@ pointing at headings no longer in the file.)*
 
 ---
 
+## 2026-09-22 — `no_ink` is a claim about the PAGE, and three readers made it about themselves
+
+**GATHER + the abstention vocabulary. No flag, no default moved, no decision
+touched** — verified: nothing in `tools/` reads `reason == no_ink` to decide
+anything (the grep returns the declaration, `gather_coverage`'s name-printer,
+`trace`'s own report, and four comments).
+
+**Reproduced before it was touched.** `trace --empty-claims` on the one record
+carrying an ink witness: **2,476 `no_ink` claims, ZERO of them the ink
+reader's own, 2,377 standing on a cell `Q.INK` sees ink in.**
+`dynamic_letter` 997 + `beam_stroke` 980 + `stem` 400 **sums to the
+contradicted total exactly.** `wedge_box` (74) and `margin_label` (25) are not
+contradicted and were left alone.
+
+**THE FINDING is the beam half.** A beam joins stem TIPS and `detect_beams`
+takes the strokes `detect_stems` returned, so split by the reader's own INPUT
+the 980 are **400 with no stem at all, 265 with exactly one, 315 with two or
+more** — **665 (67.9%) were never the beam reader's claim to make**, and the
+400 are **EXACTLY** the 400 cells `stem` itself refused, set for set. That
+silence is DERIVED. ⚠️ A second witness was already in the record and nobody
+had looked: `Q.BEAM_STROKE` has TWO producers (322 `cv_lines`, **536
+DETECTOR**), so on **274** cells it holds a detector beam beside a `cv_lines`
+refusal saying there is no ink, and on **195** of those the CV reader also
+found fewer than two stems — a beam cannot print without stems.
+
+Three words: `NO_GLYPH_OF_THIS_KIND`, `NO_LINE_ACCEPTED` (deliberately saying
+less than `Q.VERTICAL_RUN` could), `NO_STEMS_TO_JOIN` (a claim about our stem
+reading, not about the print).
+
+⚠️ **One existing test PINNED THE FAULT** and now pins the repair. ⚠️ **And a
+live blind spot in `wiring --check`**: named `n_detections`/`n_stems` the two
+new detail keys collided with unrelated keys elsewhere in `tools/` and the
+check passed listing neither; renamed `cell_n_*` it reports both, and both are
+now on `KNOWN_GAPS`. The tool is NOT changed — making the match
+quantity-aware moves 64 entries at once.
+
+⚠️ **Nothing was re-gathered**, so the findings' §7 is a **pre-registered
+prediction** (`2377 -> 0`, split 997 / 400 / 665 / 315) and not a measurement.
+12 new tests, **8 red on the unrepaired tree** with an md5-verified restore;
+1,848 passed / 0 failed on the affected surface; all nine derived checks exit
+0. **The repair improves no reading** — it stops three readers overclaiming.
+
+---
+
 ## 2026-09-18 — ASK FIRST: the convention before the mechanism (standing rule)
 
 ⚠️ Placed at the head on the file's own CAUSAL-ORDER rule: it depends on no
