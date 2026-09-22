@@ -612,30 +612,57 @@ every detection from the page's ink so "find the text" becomes "find the ink".
 Full statement: `tools/omr/staged/ASSUMPTIONS.md` **A-DUR-5**, which now
 carries the result and the two frame corrections that came with it.
 
-⚠️⚠️⚠️ **AND THE SAME DIVERGENCE RECURRED THE SAME DAY, ON THE SAME BRANCH
-PAIR — THE HANDOFF BELOW WAS WRITTEN ABOUT IT AND THEN BECAME ITS NEXT
-VICTIM. CLOSED 2026-09-21, and the keysig lane is on main.** That handoff
-merged `claude/part-instrument-check-2026-09` at `28749347` (09-20 23:09); the
-branch then ran **17 more commits** on 09-21 (00:47 → 21:18) that landed
-nowhere — `_marker_ink`, the `markers_without_a_run` abstention, **two
+⚠️⚠️⚠️ **STATE OF MAIN, 2026-09-21 (late): THE KEYSIG LANE IS MERGED, AND THE
+DIVERGENCE THE HANDOFFS BELOW DESCRIBE RECURRED ON THE SAME BRANCH PAIR THE
+SAME DAY.** `claude/part-instrument-check-2026-09` was merged at `28749347`
+(09-20 23:09) and then ran **17 more commits** on 09-21 (00:47 → 21:18) that
+landed nowhere — `_marker_ink`, the `markers_without_a_run` abstention, **two
 `KNOWN_GAPS` entries whose stated reason was FALSE**, a 462-line test file and
-two benchmark directories, **2,622 lines including real `header.py` code**. Its
-own tree-clean claim (*"everything below is committed"*) was true of the
-BRANCH and not of main. ⚠️ **The reusable form: `git merge-base --is-ancestor`
-against `origin/main` is the only thing that settles where work IS — a handoff
-saying "tree clean at `<sha>`" is a claim about a branch, and a session that
-ends at 21:18 leaves commits after the merge that read it.** ⚠️ **Its ranked
-#4 was ALSO already answered on that branch** (the key signature disagreeing
-within a part: **6 of 7 and 11 of 14**, measured by the carry arm) — struck in
-§8 there rather than deleted.
-⚠️ **The lever it handed on is MEASURED AND REFUSED — see *The marker
-slot-fit: the lever was ALREADY SHIPPED on the legacy path* below**, and
-`docs/NEXT-2026-09-21-keysig-reading-lever.md` now opens with a **DO NOT
-RE-RUN** stamp: its premise was false (the legacy path has fitted the
-detector's markers since 2026-08-28), it scores **1 of 6 against a NULL of
-6/6**, and the two publishers' marker ink fails in **opposite** ways.
+two benchmark directories, **2,622 lines including real `header.py` code**. The
+handoff that found the FIRST divergence became the second one's victim, and the
+source it read (*"tree clean at `9b4d0551`, everything below is committed"*)
+was true of the BRANCH and not of main. ⚠️ **The reusable form: `git merge-base
+--is-ancestor` against `origin/main` is the only thing that settles where work
+IS — "tree clean at `<sha>`" is a claim about a BRANCH, and a session that ends
+at 21:18 leaves commits after the merge that read it.** ⚠️ **That handoff's
+ranked #4 was ALSO already answered on the unmerged branch** (the key signature
+disagreeing within a part: **6 of 7 and 11 of 14**, measured by the carry arm)
+— struck in its §8 rather than deleted. ⚠️⚠️ **AND THE LEVER IT HANDED ON IS
+MEASURED AND REFUSED — see *The marker slot-fit: the lever was ALREADY SHIPPED
+on the legacy path* below**; `docs/NEXT-2026-09-21-keysig-reading-lever.md` now
+opens with a **DO NOT RE-RUN** stamp, because its premise was false (the legacy
+path has fitted the detector's markers since 2026-08-28), it scores **1 of 6
+against a NULL of 6/6**, and the two publishers' marker ink fails in
+**opposite** ways.
 
-⚠️⚠️ **START HERE IF YOU ARE PICKING THIS UP (2026-09-21):**
+
+⚠️⚠️ **START HERE IF YOU ARE PICKING THIS UP (2026-09-21, evening):**
+[docs/handoff-2026-09-21-the-fact-sheet.md](docs/handoff-2026-09-21-the-fact-sheet.md)
+— **the newest, and it opens with a correction Sean made that changes how the
+last three handoffs should be read.** Asked where the project stood, the
+manager called staff identity an unsolved READING problem and quoted *41% of
+noteheads reaching the file*. ⚠️⚠️ **BOTH HALVES WERE WRONG: 41% IS A HOLD-OUT
+COUNT, NOT A READING SCORE** — the dominant loss is `staff_not_identified`,
+which is `OMR_HOLD_OUT_UNIDENTIFIED` working exactly as Sean specified — **and
+the dossier is not blocked on the staged path, it is UNPLUMBED**, for a reason
+(`staged/__main__.py:231`) that is correct about the measurement gate and
+silent about reading a score. ⚠️ **AND IT WOULD NOT HAVE SETTLED IT ANYWAY**,
+which neither of us had in hand: `slot_facts_for_system` abstains wherever
+`len(parts) != n_staves`, i.e. on every condensed page, because *which encoded
+part sits on which printed staff* is a property of the ENGRAVING and is absent
+from the MusicXML entirely. **That is the gap the FACT SHEET is aimed at**
+(`tools/omr/factsheet.py`, no flag, **nothing consumes it**): it drafts 29 of
+54 facts on Litolff and 44 of 56 on Breitkopf from four tiers needing no
+weights and no raster, and **one hand pass of 19 facts takes `still unknown`
+25 → 0**. ⚠️⚠️ **Its governing rule is that every field a human corrects is a
+recorded DISAGREEMENT with a reader** — so it scores the readers rather than
+hiding them, which is what Sean asked for when he said the sheet must
+auto-populate. ⚠️ It found a live reader fault in two seconds (a horn label
+truncated to `'in C 1 2'` / `'(C)'` / `'(Es)'` on the primary Breitkopf
+document). ⚠️ **Its §5 is the one decision blocking the next step** — what TIER
+a hand fact is, and whether the staged CLI should get `--dossier` at all — and
+**§7 is the manager's own failures, including three bugs in the new module that
+only filling a real sheet found.** Its predecessor
 [docs/handoff-2026-09-21-connecting-the-sweep.md](docs/handoff-2026-09-21-connecting-the-sweep.md)
 — ⚠️⚠️ **THE TWO BODIES OF WORK HAD DIVERGED AND NOBODY HAD MERGED THEM.**
 `claude/part-instrument-check-2026-09` and `claude/integration-2026-09-18`
