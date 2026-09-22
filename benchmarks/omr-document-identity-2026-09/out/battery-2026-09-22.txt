@@ -1,7 +1,7 @@
 ==============================================================================
 BASELINE — the positive control. Every arm below is free if this is not green.
 ==============================================================================
-  SUITE+CHECKS exit 0: 126 passed, 5 warnings in 19.59s  reach=0  capture=0  brakes=0
+  SUITE+CHECKS exit 0: 126 passed, 5 warnings in 19.89s  reach=0  capture=0  brakes=0
   ARM          exit 3
   Q.INPUT_DOMAIN       observed 1  abstained 0  value ['engraved']
   superseded pairs RESOLVED  [227, 227], of which the resolved answer DIFFERS from the first row met on [227, 227]
@@ -71,67 +71,3 @@ ARM [store]: the year and the plate are dropped again
 ARM [store]: the projection is RESTATED rather than shared
   judge: suite+checks   expected: the two lookups must not drift apart -- the anti-drift test must fail
   exit 1  -> RED
-
-------------------------------------------------------------------------------
-ARM [header]: the precedence is flipped GLOBALLY, not one-sided
-  judge: suite+checks   expected: THE REFUSAL WAS PRICED ON SCANS and that side is not measured -- the scan, no-row and flag-off fall-through tests must all fail
-  exit 1  -> RED
-
-------------------------------------------------------------------------------
-ARM [header]: a SCAN is treated as engraved too
-  judge: suite+checks   expected: one-sided means one side -- the scan test must fail
-  exit 1  -> RED
-
-------------------------------------------------------------------------------
-ARM [header]: the DOCUMENT row is read at the default EXACT scope
-  judge: suite+checks   expected: `Q.INPUT_DOMAIN` is filed on the DOCUMENT and this decision is Kind.STAFF, so a bare read returns nothing on every page FOREVER and fails silent -- the engraved test and the scope test must fail
-  exit 1  -> RED
-
-------------------------------------------------------------------------------
-ARM [header]: the consumer flag is ignored
-  judge: suite+checks   expected: a default-OFF mechanism must be off by default -- the flag-off test must fail
-  exit 1  -> RED
-
-------------------------------------------------------------------------------
-ARM [header]: the engraved tier reuses the SHIPPED reason word
-  judge: suite+checks   expected: a separate word is what makes the new tier's reach countable in the record; folding them hides every firing
-  exit 17  -> RED
-
-------------------------------------------------------------------------------
-ARM [header]: the template's fit for ANOTHER clef is taken
-  judge: suite+checks   expected: a bass-clef fit must not name a treble staff's key -- the wrong-clef test must fail
-  exit 1  -> RED
-
-------------------------------------------------------------------------------
-ARM [arm]: DEAD on a non-engraved document becomes a clean exit
-  judge: ARM headline   expected: a dead instrument must not read as a clean result -- the scan run's exit 2 is part of the baseline PROFILE and must move
-  exit 1  -> RED
-
-------------------------------------------------------------------------------
-ARM [arm]: the outcome is compared as `str(enum)` again
-  judge: ARM headline   expected: THE BUG THIS ARM ALREADY HAD: `str(Outcome.DECIDED)` is 'Outcome.DECIDED', so the accuracy table read 0 right / 0 wrong on BOTH arms -- the scorer's own positive control must fire
-  exit 6  -> RED
-
-------------------------------------------------------------------------------
-ARM [arm]: the verdict walk takes SUPERSEDED rows
-  judge: ARM headline   expected: EVALUATE revises in place, so an unresolved walk reports quantities as having moved when only the write count moved -- the CONTROL must move
-  exit 3  -> RED
-
-------------------------------------------------------------------------------
-ARM [scanarm]: the VACUITY control is dropped
-  judge: ARM headline   expected: a run where the scan is untouched AND the control is vacuous is a PASS-shaped nothing -- BOTH conditions are the instrument
-  exit 2  -> RED
-
-------------------------------------------------------------------------------
-ARM [scanarm]: the forged control is not forged
-  judge: ARM headline   expected: the control must actually change the domain, or `CONTROL DIFFERS` is reporting that a file equals itself
-  exit 4  -> RED
-
-------------------------------------------------------------------------------
-ARM [arm]: the ordinal join is forced where it does not divide
-  judge: ARM headline   expected: pairing by position where the counts disagree reports the mismatch as accuracy
-  exit 3  -> RED
-
-==============================================================================
-RED 20   SURVIVED 0   BAD ANCHORS 0
-restore VERIFIED by md5: True

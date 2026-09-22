@@ -2,7 +2,11 @@
 
 > ## ✅ DONE 2026-09-22 (evening) — AND TWO OF THIS BRIEF'S CLAIMS ARE REFUTED
 >
-> Built, measured and committed. Read
+> Built, measured, committed and **SWITCHED ON** (Sean flipped
+> `OMR_ENGRAVED_KEYSIG` the same evening; §5's *"the flip is Sean's"* is
+> discharged). The session handoff is
+> [docs/handoff-2026-09-22-identity-and-the-key-signature.md](handoff-2026-09-22-identity-and-the-key-signature.md).
+> Read
 > [benchmarks/omr-document-identity-2026-09/FINDINGS.md](../benchmarks/omr-document-identity-2026-09/FINDINGS.md)
 > and CLAUDE.md's *WHICH PRINTING THIS IS* section; **this file is now
 > history** and two of its statements are wrong.

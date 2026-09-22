@@ -636,10 +636,24 @@ against a NULL of 6/6**, and the two publishers' marker ink fails in
 **opposite** ways.
 
 
-✅⚠️⚠️ **SEAN'S KEY-SIGNATURE RULING IS BUILT AND MEASURED (2026-09-22
-evening) — THE BRIEF BELOW IS DONE, AND TWO OF ITS OWN CLAIMS ARE REFUTED BY
-DOING IT. Read the section *WHICH PRINTING THIS IS* below, and the brief only
-as history.** ⚠️⚠️ **ITS WARNING THAT `image_type` IS "ALMOST CERTAINLY WRONG
+✅⚠️⚠️⚠️ **START HERE IF YOU ARE PICKING THIS UP (2026-09-22, evening) —
+SEAN'S KEY-SIGNATURE RULING IS BUILT, MEASURED AND SWITCHED ON:**
+[docs/handoff-2026-09-22-identity-and-the-key-signature.md](docs/handoff-2026-09-22-identity-and-the-key-signature.md)
+— **both flags default ON** (`OMR_DOCUMENT_IDENTITY`, and
+`OMR_ENGRAVED_KEYSIG` flipped by Sean at the end of the session), key
+signature **right 26 → 47 of 50**, bars exact **313 → 322 of 360 with 4 parts
+better and 0 worse**. ⚠️⚠️ **THE FLIP RESOLVED NONE OF THE LIMITS** — n = 1
+engraved document, 1 renderer, **no print consulted** — it rests on the rule
+being ONE-SIDED, verified by `test_keysig_second_reader.py` passing
+UNMODIFIED. ⚠️ **Its §6 ranks the next work and the first item is now a
+one-line query**: `out/library-domains.json` names the **10 held editions the
+container reader measures engraved**. ⚠️ **Its §7 is nine of this session's
+own failures**, led by an accuracy table that read 0/0 on both arms from an
+enum comparison that could never fire, and a control loop that **measured the
+SHELL** (zsh does not word-split an unquoted parameter, so eight derived
+checks "failed identically on both trees"). **THE BRIEF BELOW IS DONE, AND TWO
+OF ITS OWN CLAIMS ARE REFUTED BY DOING IT. Read the section *WHICH PRINTING
+THIS IS* below, and the brief only as history.** ⚠️⚠️ **ITS WARNING THAT `image_type` IS "ALMOST CERTAINLY WRONG
 ABOUT THE ENGRAVED POPULATION" IS FALSE, AND SEAN'S OWN GUESS — *"maybe they
 are all scans because they came from IMSLP"* — IS RIGHT.** Measured over all
 289 committed editions in 16 s: the label and the measurement agree **279 of
