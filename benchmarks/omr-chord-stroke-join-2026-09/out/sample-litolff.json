@@ -10,149 +10,9 @@
   "cannot_tell"
  ],
  "n_candidates": 23,
- "n_controls_available": 256,
+ "n_controls_available": 168,
  "n_controls_drawn": 8,
  "rows": [
-  {
-   "subject": "glyph/3/0/4/3/10",
-   "mate": "glyph/3/0/4/3/12",
-   "stem": "obs:022630",
-   "stratum": "CANDIDATE",
-   "red_page_box": [
-    1036.0,
-    1039.44,
-    1052.48,
-    1056.56
-   ],
-   "blue_page_box": [
-    1028.64,
-    1039.6,
-    1052.32,
-    1056.24
-   ],
-   "x_gap_head_widths": 0.417,
-   "dy_head_heights": 0.005
-  },
-  {
-   "subject": "glyph/4/1/2/5/8",
-   "mate": "glyph/4/1/2/5/22",
-   "stem": "obs:036396",
-   "stratum": "CANDIDATE",
-   "red_page_box": [
-    1234.785,
-    2396.19,
-    1256.6775,
-    2417.7675
-   ],
-   "blue_page_box": [
-    1249.1175,
-    2513.37,
-    1302.195,
-    2530.38
-   ],
-   "x_gap_head_widths": 0.108,
-   "dy_head_heights": -5.325
-  },
-  {
-   "subject": "glyph/2/0/5/1/10",
-   "mate": "glyph/2/0/5/1/6",
-   "stem": "obs:014157",
-   "stratum": "CANDIDATE",
-   "red_page_box": [
-    639.885,
-    1150.2,
-    663.195,
-    1165.1625
-   ],
-   "blue_page_box": [
-    663.0375,
-    1167.3675,
-    687.765,
-    1190.9925
-   ],
-   "x_gap_head_widths": 0.682,
-   "dy_head_heights": -1.437
-  },
-  {
-   "subject": "glyph/4/0/7/7/8",
-   "mate": "glyph/4/0/7/7/7",
-   "stem": "obs:036042",
-   "stratum": "CONTROL",
-   "red_page_box": [
-    1463.7125,
-    1506.8475,
-    1485.92,
-    1527.165
-   ],
-   "blue_page_box": [
-    1464.0275,
-    1507.005,
-    1487.3375,
-    1527.48
-   ],
-   "x_gap_head_widths": 0.0,
-   "dy_head_heights": -0.012
-  },
-  {
-   "subject": "glyph/3/0/5/5/7",
-   "mate": "glyph/3/0/5/5/6",
-   "stem": "obs:022674",
-   "stratum": "CONTROL",
-   "red_page_box": [
-    1366.925,
-    1223.4575,
-    1391.81,
-    1246.6100000000001
-   ],
-   "blue_page_box": [
-    1366.4525,
-    1223.615,
-    1391.495,
-    1246.7675
-   ],
-   "x_gap_head_widths": 0.0,
-   "dy_head_heights": -0.007
-  },
-  {
-   "subject": "glyph/4/1/3/3/6",
-   "mate": "glyph/4/1/3/3/8",
-   "stem": "obs:036463",
-   "stratum": "CANDIDATE",
-   "red_page_box": [
-    991.605,
-    2580.11,
-    1024.365,
-    2602.9475
-   ],
-   "blue_page_box": [
-    976.0125,
-    2601.845,
-    1030.1925,
-    2620.9025
-   ],
-   "x_gap_head_widths": 0.231,
-   "dy_head_heights": -0.869
-  },
-  {
-   "subject": "glyph/2/0/5/3/4",
-   "mate": "glyph/2/0/5/3/2",
-   "stem": "obs:014166",
-   "stratum": "CONTROL",
-   "red_page_box": [
-    998.79,
-    1167.0525,
-    1022.73,
-    1187.5275
-   ],
-   "blue_page_box": [
-    1001.1525,
-    1224.6975,
-    1024.305,
-    1246.59
-   ],
-   "x_gap_head_widths": 0.0,
-   "dy_head_heights": -2.85
-  },
   {
    "subject": "glyph/4/1/8/6/5",
    "mate": "glyph/4/1/8/6/9",
@@ -172,26 +32,6 @@
    ],
    "x_gap_head_widths": 0.085,
    "dy_head_heights": -0.516
-  },
-  {
-   "subject": "glyph/4/1/7/10/2",
-   "mate": "glyph/4/1/7/10/5",
-   "stem": "obs:036717",
-   "stratum": "CANDIDATE",
-   "red_page_box": [
-    1951.68,
-    3177.08,
-    1973.12,
-    3199.64
-   ],
-   "blue_page_box": [
-    1928.8,
-    3162.68,
-    1952.0,
-    3183.48
-   ],
-   "x_gap_head_widths": 0.075,
-   "dy_head_heights": 0.677
   },
   {
    "subject": "glyph/2/0/3/1/8",
@@ -214,84 +54,184 @@
    "dy_head_heights": 0.33
   },
   {
-   "subject": "glyph/4/1/10/2/2",
-   "mate": "glyph/4/1/10/2/3",
-   "stem": "obs:036878",
-   "stratum": "CANDIDATE",
-   "red_page_box": [
-    748.0,
-    3523.08,
-    752.64,
-    3534.76
-   ],
-   "blue_page_box": [
-    748.16,
-    3562.44,
-    776.0,
-    3577.96
-   ],
-   "x_gap_head_widths": 3.759,
-   "dy_head_heights": -3.534
-  },
-  {
-   "subject": "glyph/3/1/3/2/3",
-   "mate": "glyph/3/1/3/2/4",
-   "stem": "obs:023078",
+   "subject": "glyph/2/1/9/12/2",
+   "mate": "glyph/2/1/9/12/0",
+   "stem": "obs:014924",
    "stratum": "CONTROL",
    "red_page_box": [
-    778.7425,
-    2855.1975,
-    804.73,
-    2876.46
+    2220.72,
+    3422.76,
+    2248.72,
+    3451.72
    ],
    "blue_page_box": [
-    779.215,
-    2865.5925,
-    803.785,
-    2881.3425
+    2212.4,
+    3492.84,
+    2240.08,
+    3515.72
    ],
    "x_gap_head_widths": 0.0,
-   "dy_head_heights": -0.359
+   "dy_head_heights": -2.315
   },
   {
-   "subject": "glyph/3/1/7/17/4",
-   "mate": "glyph/3/1/7/17/3",
-   "stem": "obs:023292",
+   "subject": "glyph/4/1/2/4/8",
+   "mate": "glyph/4/1/2/4/1",
+   "stem": "obs:036389",
    "stratum": "CANDIDATE",
    "red_page_box": [
-    2564.5225,
-    3492.71,
-    2579.17,
-    3514.2875
+    1101.4725,
+    2472.735,
+    1124.7825,
+    2494.785
    ],
    "blue_page_box": [
-    2578.225,
-    3489.0875,
-    2603.2675,
-    3508.145
+    1123.8375,
+    2404.2225,
+    1149.51,
+    2426.115
    ],
-   "x_gap_head_widths": 0.129,
-   "dy_head_heights": 0.226
+   "x_gap_head_widths": 0.054,
+   "dy_head_heights": 3.111
   },
   {
-   "subject": "glyph/3/1/5/15/0",
-   "mate": "glyph/3/1/5/15/2",
-   "stem": "obs:023198",
+   "subject": "glyph/3/0/8/6/7",
+   "mate": "glyph/3/0/8/6/2",
+   "stem": "obs:022830",
    "stratum": "CONTROL",
    "red_page_box": [
-    2267.215,
-    3173.81,
-    2293.14,
-    3200.65
+    1617.57,
+    1673.69,
+    1638.03,
+    1692.445
    ],
    "blue_page_box": [
-    2267.215,
-    3174.115,
-    2293.14,
-    3200.65
+    1618.19,
+    1728.095,
+    1641.75,
+    1749.33
    ],
    "x_gap_head_widths": 0.0,
-   "dy_head_heights": -0.006
+   "dy_head_heights": -2.967
+  },
+  {
+   "subject": "glyph/4/1/3/3/5",
+   "mate": "glyph/4/1/3/3/8",
+   "stem": "obs:036463",
+   "stratum": "CANDIDATE",
+   "red_page_box": [
+    992.0775,
+    2576.645,
+    1026.7275,
+    2594.1275
+   ],
+   "blue_page_box": [
+    976.0125,
+    2601.845,
+    1030.1925,
+    2620.9025
+   ],
+   "x_gap_head_widths": 0.232,
+   "dy_head_heights": -1.486
+  },
+  {
+   "subject": "glyph/4/1/2/5/9",
+   "mate": "glyph/4/1/2/5/22",
+   "stem": "obs:036396",
+   "stratum": "CANDIDATE",
+   "red_page_box": [
+    1233.9975,
+    2456.355,
+    1256.6775,
+    2477.9325
+   ],
+   "blue_page_box": [
+    1249.1175,
+    2513.37,
+    1302.195,
+    2530.38
+   ],
+   "x_gap_head_widths": 0.104,
+   "dy_head_heights": -2.536
+  },
+  {
+   "subject": "glyph/4/1/2/8/0",
+   "mate": "glyph/4/1/2/8/1",
+   "stem": "obs:036405",
+   "stratum": "CONTROL",
+   "red_page_box": [
+    1660.9925,
+    2439.1875,
+    1685.8775,
+    2460.6075
+   ],
+   "blue_page_box": [
+    1660.3625,
+    2480.7675,
+    1686.1925,
+    2499.3525
+   ],
+   "x_gap_head_widths": 0.0,
+   "dy_head_heights": -1.875
+  },
+  {
+   "subject": "glyph/2/0/5/1/10",
+   "mate": "glyph/2/0/5/1/6",
+   "stem": "obs:014157",
+   "stratum": "CANDIDATE",
+   "red_page_box": [
+    639.885,
+    1150.2,
+    663.195,
+    1165.1625
+   ],
+   "blue_page_box": [
+    663.0375,
+    1167.3675,
+    687.765,
+    1190.9925
+   ],
+   "x_gap_head_widths": 0.682,
+   "dy_head_heights": -1.437
+  },
+  {
+   "subject": "glyph/4/1/2/5/9",
+   "mate": "glyph/4/1/2/5/22",
+   "stem": "obs:036397",
+   "stratum": "CANDIDATE",
+   "red_page_box": [
+    1233.9975,
+    2456.355,
+    1256.6775,
+    2477.9325
+   ],
+   "blue_page_box": [
+    1249.1175,
+    2513.37,
+    1302.195,
+    2530.38
+   ],
+   "x_gap_head_widths": 1.778,
+   "dy_head_heights": -2.536
+  },
+  {
+   "subject": "glyph/3/0/4/3/10",
+   "mate": "glyph/3/0/4/3/12",
+   "stem": "obs:022630",
+   "stratum": "CANDIDATE",
+   "red_page_box": [
+    1036.0,
+    1039.44,
+    1052.48,
+    1056.56
+   ],
+   "blue_page_box": [
+    1028.64,
+    1039.6,
+    1052.32,
+    1056.24
+   ],
+   "x_gap_head_widths": 0.417,
+   "dy_head_heights": 0.005
   },
   {
    "subject": "glyph/4/1/9/11/5",
@@ -315,8 +255,8 @@
   },
   {
    "subject": "glyph/4/1/2/5/8",
-   "mate": "glyph/4/1/2/5/15",
-   "stem": "obs:036395",
+   "mate": "glyph/4/1/2/5/22",
+   "stem": "obs:036396",
    "stratum": "CANDIDATE",
    "red_page_box": [
     1234.785,
@@ -325,233 +265,113 @@
     2417.7675
    ],
    "blue_page_box": [
-    1209.1125,
-    2464.3875,
-    1243.4475,
-    2485.65
-   ],
-   "x_gap_head_widths": 0.856,
-   "dy_head_heights": -3.153
-  },
-  {
-   "subject": "glyph/4/1/3/3/11",
-   "mate": "glyph/4/1/3/3/8",
-   "stem": "obs:036463",
-   "stratum": "CANDIDATE",
-   "red_page_box": [
-    992.0775,
-    2577.59,
-    1013.97,
-    2595.545
-   ],
-   "blue_page_box": [
-    976.0125,
-    2601.845,
-    1030.1925,
-    2620.9025
-   ],
-   "x_gap_head_widths": 0.367,
-   "dy_head_heights": -1.382
-  },
-  {
-   "subject": "glyph/4/1/9/5/10",
-   "mate": "glyph/4/1/9/5/4",
-   "stem": "obs:036830",
-   "stratum": "CONTROL",
-   "red_page_box": [
-    1300.935,
-    3378.935,
-    1321.5675,
-    3392.9525
-   ],
-   "blue_page_box": [
-    1298.415,
-    3424.925,
-    1322.5125,
-    3445.4
-   ],
-   "x_gap_head_widths": 0.0,
-   "dy_head_heights": -3.511
-  },
-  {
-   "subject": "glyph/4/0/5/11/7",
-   "mate": "glyph/4/0/5/11/11",
-   "stem": "obs:035948",
-   "stratum": "CANDIDATE",
-   "red_page_box": [
-    2104.0325,
-    1212.8425,
-    2135.69,
-    1225.6
-   ],
-   "blue_page_box": [
-    2087.9675,
-    1140.3925,
-    2114.1125,
-    1164.6475
-   ],
-   "x_gap_head_widths": 0.378,
-   "dy_head_heights": 5.228
-  },
-  {
-   "subject": "glyph/4/1/7/0/1",
-   "mate": "glyph/4/1/7/0/4",
-   "stem": "obs:036654",
-   "stratum": "CANDIDATE",
-   "red_page_box": [
-    565.16,
-    3151.96,
-    589.64,
-    3175.32
-   ],
-   "blue_page_box": [
-    589.3199999999999,
-    3167.32,
-    614.28,
-    3189.88
-   ],
-   "x_gap_head_widths": 0.098,
-   "dy_head_heights": -0.64
-  },
-  {
-   "subject": "glyph/4/1/2/5/9",
-   "mate": "glyph/4/1/2/5/15",
-   "stem": "obs:036395",
-   "stratum": "CANDIDATE",
-   "red_page_box": [
-    1233.9975,
-    2456.355,
-    1256.6775,
-    2477.9325
-   ],
-   "blue_page_box": [
-    1209.1125,
-    2464.3875,
-    1243.4475,
-    2485.65
-   ],
-   "x_gap_head_widths": 0.792,
-   "dy_head_heights": -0.365
-  },
-  {
-   "subject": "glyph/4/1/2/5/9",
-   "mate": "glyph/4/1/2/5/22",
-   "stem": "obs:036397",
-   "stratum": "CANDIDATE",
-   "red_page_box": [
-    1233.9975,
-    2456.355,
-    1256.6775,
-    2477.9325
-   ],
-   "blue_page_box": [
     1249.1175,
     2513.37,
     1302.195,
     2530.38
    ],
-   "x_gap_head_widths": 1.778,
-   "dy_head_heights": -2.536
+   "x_gap_head_widths": 0.108,
+   "dy_head_heights": -5.325
   },
   {
-   "subject": "glyph/2/0/3/1/7",
-   "mate": "glyph/2/0/3/1/12",
-   "stem": "obs:014034",
+   "subject": "glyph/4/1/7/10/2",
+   "mate": "glyph/4/1/7/10/5",
+   "stem": "obs:036717",
    "stratum": "CANDIDATE",
    "red_page_box": [
-    652.0125,
-    757.75,
-    679.26,
-    777.91
+    1951.68,
+    3177.08,
+    1973.12,
+    3199.64
    ],
    "blue_page_box": [
-    635.16,
-    742.0,
-    657.9975,
-    750.3475
+    1928.8,
+    3162.68,
+    1952.0,
+    3183.48
    ],
-   "x_gap_head_widths": 0.289,
-   "dy_head_heights": 1.074
+   "x_gap_head_widths": 0.075,
+   "dy_head_heights": 0.677
   },
   {
-   "subject": "glyph/4/1/2/5/9",
-   "mate": "glyph/4/1/2/5/22",
-   "stem": "obs:036396",
-   "stratum": "CANDIDATE",
-   "red_page_box": [
-    1233.9975,
-    2456.355,
-    1256.6775,
-    2477.9325
-   ],
-   "blue_page_box": [
-    1249.1175,
-    2513.37,
-    1302.195,
-    2530.38
-   ],
-   "x_gap_head_widths": 0.104,
-   "dy_head_heights": -2.536
-  },
-  {
-   "subject": "glyph/3/1/2/4/2",
-   "mate": "glyph/3/1/2/4/3",
-   "stem": "obs:023036",
+   "subject": "glyph/3/0/5/2/7",
+   "mate": "glyph/3/0/5/2/2",
+   "stem": "obs:022666",
    "stratum": "CONTROL",
    "red_page_box": [
-    994.81,
-    2646.075,
-    1020.695,
-    2668.86
+    921.715,
+    1159.67,
+    943.765,
+    1190.225
    ],
    "blue_page_box": [
-    994.965,
-    2675.525,
-    1020.23,
-    2700.015
+    919.9825,
+    1224.56,
+    943.135,
+    1245.665
    ],
    "x_gap_head_widths": 0.0,
-   "dy_head_heights": -1.33
+   "dy_head_heights": -1.969
   },
   {
-   "subject": "glyph/3/0/3/0/14",
-   "mate": "glyph/3/0/3/0/9",
-   "stem": "obs:022586",
-   "stratum": "CANDIDATE",
+   "subject": "glyph/4/0/3/2/8",
+   "mate": "glyph/4/0/3/2/3",
+   "stem": "obs:035858",
+   "stratum": "CONTROL",
    "red_page_box": [
-    480.97,
-    871.5125,
-    524.5975,
-    885.3725
+    792.055,
+    838.59,
+    817.94,
+    857.81
    ],
    "blue_page_box": [
-    514.2025,
-    901.1225,
-    538.9300000000001,
-    926.165
+    797.48,
+    893.77,
+    819.335,
+    917.7950000000001
    ],
-   "x_gap_head_widths": 0.217,
-   "dy_head_heights": -2.54
+   "x_gap_head_widths": 0.0,
+   "dy_head_heights": -2.996
   },
   {
-   "subject": "glyph/4/1/3/3/5",
-   "mate": "glyph/4/1/3/3/8",
-   "stem": "obs:036463",
-   "stratum": "CANDIDATE",
+   "subject": "glyph/3/0/0/1/3",
+   "mate": "glyph/3/0/0/1/10",
+   "stem": "obs:022474",
+   "stratum": "CONTROL",
    "red_page_box": [
-    992.0775,
-    2576.645,
-    1026.7275,
-    2594.1275
+    662.59,
+    378.7,
+    684.135,
+    400.09000000000003
    ],
    "blue_page_box": [
-    976.0125,
-    2601.845,
-    1030.1925,
-    2620.9025
+    663.675,
+    407.685,
+    686.77,
+    425.045
    ],
-   "x_gap_head_widths": 0.232,
-   "dy_head_heights": -1.486
+   "x_gap_head_widths": 0.0,
+   "dy_head_heights": -1.261
+  },
+  {
+   "subject": "glyph/3/0/5/4/4",
+   "mate": "glyph/3/0/5/4/5",
+   "stem": "obs:022672",
+   "stratum": "CONTROL",
+   "red_page_box": [
+    1191.57,
+    1167.545,
+    1217.4,
+    1188.02
+   ],
+   "blue_page_box": [
+    1190.31,
+    1222.8275,
+    1215.0375,
+    1242.6725000000001
+   ],
+   "x_gap_head_widths": 0.0,
+   "dy_head_heights": -2.685
   },
   {
    "subject": "glyph/4/0/5/12/4",
@@ -574,6 +394,86 @@
    "dy_head_heights": -0.438
   },
   {
+   "subject": "glyph/4/1/4/14/18",
+   "mate": "glyph/4/1/4/14/0",
+   "stem": "obs:036566",
+   "stratum": "CONTROL",
+   "red_page_box": [
+    2491.735,
+    2702.44,
+    2516.7775,
+    2729.53
+   ],
+   "blue_page_box": [
+    2491.735,
+    2765.125,
+    2515.5175,
+    2786.23
+   ],
+   "x_gap_head_widths": 0.0,
+   "dy_head_heights": -2.203
+  },
+  {
+   "subject": "glyph/2/0/3/1/7",
+   "mate": "glyph/2/0/3/1/12",
+   "stem": "obs:014034",
+   "stratum": "CANDIDATE",
+   "red_page_box": [
+    652.0125,
+    757.75,
+    679.26,
+    777.91
+   ],
+   "blue_page_box": [
+    635.16,
+    742.0,
+    657.9975,
+    750.3475
+   ],
+   "x_gap_head_widths": 0.289,
+   "dy_head_heights": 1.074
+  },
+  {
+   "subject": "glyph/4/1/3/3/6",
+   "mate": "glyph/4/1/3/3/8",
+   "stem": "obs:036463",
+   "stratum": "CANDIDATE",
+   "red_page_box": [
+    991.605,
+    2580.11,
+    1024.365,
+    2602.9475
+   ],
+   "blue_page_box": [
+    976.0125,
+    2601.845,
+    1030.1925,
+    2620.9025
+   ],
+   "x_gap_head_widths": 0.231,
+   "dy_head_heights": -0.869
+  },
+  {
+   "subject": "glyph/4/1/7/0/1",
+   "mate": "glyph/4/1/7/0/4",
+   "stem": "obs:036654",
+   "stratum": "CANDIDATE",
+   "red_page_box": [
+    565.16,
+    3151.96,
+    589.64,
+    3175.32
+   ],
+   "blue_page_box": [
+    589.3199999999999,
+    3167.32,
+    614.28,
+    3189.88
+   ],
+   "x_gap_head_widths": 0.098,
+   "dy_head_heights": -0.64
+  },
+  {
    "subject": "glyph/4/0/0/11/7",
    "mate": "glyph/4/0/0/11/13",
    "stem": "obs:035765",
@@ -594,44 +494,144 @@
    "dy_head_heights": -0.626
   },
   {
-   "subject": "glyph/4/1/2/4/8",
-   "mate": "glyph/4/1/2/4/1",
-   "stem": "obs:036389",
+   "subject": "glyph/4/1/2/5/9",
+   "mate": "glyph/4/1/2/5/15",
+   "stem": "obs:036395",
    "stratum": "CANDIDATE",
    "red_page_box": [
-    1101.4725,
-    2472.735,
-    1124.7825,
-    2494.785
+    1233.9975,
+    2456.355,
+    1256.6775,
+    2477.9325
    ],
    "blue_page_box": [
-    1123.8375,
-    2404.2225,
-    1149.51,
-    2426.115
+    1209.1125,
+    2464.3875,
+    1243.4475,
+    2485.65
    ],
-   "x_gap_head_widths": 0.054,
-   "dy_head_heights": 3.111
+   "x_gap_head_widths": 0.792,
+   "dy_head_heights": -0.365
   },
   {
-   "subject": "glyph/2/0/5/1/16",
-   "mate": "glyph/2/0/5/1/1",
-   "stem": "obs:014157",
-   "stratum": "CONTROL",
+   "subject": "glyph/4/0/5/11/7",
+   "mate": "glyph/4/0/5/11/11",
+   "stem": "obs:035948",
+   "stratum": "CANDIDATE",
    "red_page_box": [
-    677.8425,
-    1123.11,
-    691.0725,
-    1135.08
+    2104.0325,
+    1212.8425,
+    2135.69,
+    1225.6
    ],
    "blue_page_box": [
-    664.6125,
-    1223.595,
-    687.135,
-    1245.645
+    2087.9675,
+    1140.3925,
+    2114.1125,
+    1164.6475
    ],
-   "x_gap_head_widths": 0.0,
-   "dy_head_heights": -8.816
+   "x_gap_head_widths": 0.378,
+   "dy_head_heights": 5.228
+  },
+  {
+   "subject": "glyph/4/1/2/5/8",
+   "mate": "glyph/4/1/2/5/15",
+   "stem": "obs:036395",
+   "stratum": "CANDIDATE",
+   "red_page_box": [
+    1234.785,
+    2396.19,
+    1256.6775,
+    2417.7675
+   ],
+   "blue_page_box": [
+    1209.1125,
+    2464.3875,
+    1243.4475,
+    2485.65
+   ],
+   "x_gap_head_widths": 0.856,
+   "dy_head_heights": -3.153
+  },
+  {
+   "subject": "glyph/4/1/10/2/2",
+   "mate": "glyph/4/1/10/2/3",
+   "stem": "obs:036878",
+   "stratum": "CANDIDATE",
+   "red_page_box": [
+    748.0,
+    3523.08,
+    752.64,
+    3534.76
+   ],
+   "blue_page_box": [
+    748.16,
+    3562.44,
+    776.0,
+    3577.96
+   ],
+   "x_gap_head_widths": 3.759,
+   "dy_head_heights": -3.534
+  },
+  {
+   "subject": "glyph/4/1/3/3/11",
+   "mate": "glyph/4/1/3/3/8",
+   "stem": "obs:036463",
+   "stratum": "CANDIDATE",
+   "red_page_box": [
+    992.0775,
+    2577.59,
+    1013.97,
+    2595.545
+   ],
+   "blue_page_box": [
+    976.0125,
+    2601.845,
+    1030.1925,
+    2620.9025
+   ],
+   "x_gap_head_widths": 0.367,
+   "dy_head_heights": -1.382
+  },
+  {
+   "subject": "glyph/3/0/3/0/14",
+   "mate": "glyph/3/0/3/0/9",
+   "stem": "obs:022586",
+   "stratum": "CANDIDATE",
+   "red_page_box": [
+    480.97,
+    871.5125,
+    524.5975,
+    885.3725
+   ],
+   "blue_page_box": [
+    514.2025,
+    901.1225,
+    538.9300000000001,
+    926.165
+   ],
+   "x_gap_head_widths": 0.217,
+   "dy_head_heights": -2.54
+  },
+  {
+   "subject": "glyph/3/1/7/17/4",
+   "mate": "glyph/3/1/7/17/3",
+   "stem": "obs:023292",
+   "stratum": "CANDIDATE",
+   "red_page_box": [
+    2564.5225,
+    3492.71,
+    2579.17,
+    3514.2875
+   ],
+   "blue_page_box": [
+    2578.225,
+    3489.0875,
+    2603.2675,
+    3508.145
+   ],
+   "x_gap_head_widths": 0.129,
+   "dy_head_heights": 0.226
   }
  ]
 }

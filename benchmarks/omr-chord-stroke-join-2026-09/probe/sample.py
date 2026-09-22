@@ -76,6 +76,19 @@ def main() -> int:
             # test joins to exactly this stroke and no other
             if len(_stems_on(red.value, ss)) != 1:
                 continue
+            # ⚠️⚠️ THE TWO HEADS MUST BE FAR ENOUGH APART TO BE TWO HEADS, AND
+            # THIS WAS ADDED AFTER LOOKING AT A CONTROL RATHER THAN BEFORE.
+            # The first draw included pairs at dy 0.007-0.012 head heights --
+            # two boxes on ONE printed notehead, a duplicate detection -- and
+            # their red and blue brackets landed on the same ink, so the strip
+            # could not pose the question at all. That is an instrument
+            # defect, not a result: a control exists to show the question is
+            # answerable, and one that cannot be answered shows nothing. The
+            # floor is a THIRD (1.0 head height), because a chord's SECOND is
+            # engraved displaced sideways and is a different picture.
+            if abs((red.value[1] + red.value[3] / 2.0)
+                   - (blue.value[1] + blue.value[3] / 2.0)) < red.value[3]:
+                continue
             ctrl.append({"subject": red.subject, "mate": blue.subject,
                          "stem": s.id, "stratum": "CONTROL",
                          "red_page_box": red.page, "blue_page_box": blue.page,

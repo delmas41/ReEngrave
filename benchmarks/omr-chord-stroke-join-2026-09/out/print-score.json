@@ -1,0 +1,56 @@
+{
+ "litolff": {
+  "written": 29,
+  "refused": 2,
+  "refusal_reasons": [
+   "frame control failed (delta 13.7)",
+   "frame control failed (delta -5.4)"
+  ],
+  "CANDIDATE": {
+   "separate_stems": 2,
+   "red_is_not_a_notehead": 2,
+   "blue_is_not_a_notehead": 3,
+   "cannot_tell": 15
+  },
+  "CONTROL": {
+   "one_shared_stem": 4,
+   "cannot_tell": 3
+  }
+ },
+ "breitkopf": {
+  "written": 19,
+  "refused": 0,
+  "refusal_reasons": [],
+  "CANDIDATE": {
+   "one_shared_stem": 2,
+   "blue_is_not_a_notehead": 1,
+   "red_is_not_a_notehead": 7,
+   "cannot_tell": 1
+  },
+  "CONTROL": {
+   "one_shared_stem": 8
+  }
+ },
+ "POOLED": {
+  "CANDIDATE": {
+   "separate_stems": 2,
+   "red_is_not_a_notehead": 9,
+   "blue_is_not_a_notehead": 4,
+   "cannot_tell": 16,
+   "one_shared_stem": 2
+  },
+  "CONTROL": {
+   "one_shared_stem": 12,
+   "cannot_tell": 3
+  },
+  "candidates": 33,
+  "candidates_the_print_SETTLES": 17,
+  "candidates_that_are_a_REAL_CHORD": 2,
+  "candidates_that_are_NOT_TWO_NOTEHEADS": 13,
+  "candidates_that_are_TWO_SEPARATE_NOTES": 2,
+  "share_of_settled_that_is_a_real_chord": 0.1176,
+  "controls": 15,
+  "controls_correct": 12,
+  "controls_WRONG": 0
+ }
+}

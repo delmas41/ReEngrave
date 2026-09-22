@@ -106,6 +106,15 @@ def main() -> int:
     ap.add_argument("--out-dir", required=True)
     ap.add_argument("--manifest", required=True)
     ap.add_argument("--dpi", type=int, default=600)
+    # ⚠️ A ZOOM IS A SECOND VIEW, NEVER A REPLACEMENT. The wide strip is an
+    # instruction from a paid-for mistake (a numeral and a dotted half note
+    # each read as a hollow head with no stem at tile magnification), so the
+    # wide render is always taken; this narrows the SAME window for a pair the
+    # wide view leaves ambiguous, and both are kept.
+    ap.add_argument("--context-x", type=float, default=CONTEXT_X_SPACES)
+    ap.add_argument("--pad-y", type=float, default=PAD_Y_SPACES)
+    ap.add_argument("--only", nargs="*", default=None,
+                    help="restrict to these subject keys")
     a = ap.parse_args()
 
     import numpy as np
@@ -113,6 +122,10 @@ def main() -> int:
 
     sample = json.loads(Path(a.sample).read_text())
     rows = sample["rows"]
+    if a.only:
+        keep = set(a.only)
+        rows = [r for r in rows
+                if r["subject"] in keep or r["mate"] in keep]
     print(f"{sample['label']}: {len(rows)} pairs "
           f"({sample['n_candidates']} candidates, "
           f"{sample['n_controls_drawn']} controls)", flush=True)
@@ -147,10 +160,15 @@ def main() -> int:
         bx1 = max(max(b[2] for b in boxes), red[2], blue[2])
         hcx = (red[0] + red[2]) / 2.0
         pad_x = 4.0 * sp
-        x0 = max(0, int(min(bx0 - pad_x, hcx - CONTEXT_X_SPACES * sp)))
-        x1 = int(max(bx1 + pad_x, hcx + CONTEXT_X_SPACES * sp))
-        y0 = max(0, int(min(min(lines) - PAD_Y_SPACES * sp, red[1], blue[1])))
-        y1 = int(max(max(lines) + PAD_Y_SPACES * sp, red[3], blue[3]))
+        if a.context_x >= CONTEXT_X_SPACES:
+            x0 = max(0, int(min(bx0 - pad_x, hcx - a.context_x * sp)))
+            x1 = int(max(bx1 + pad_x, hcx + a.context_x * sp))
+        else:
+            # ZOOM: the window is the two heads plus the named reach.
+            x0 = max(0, int(min(red[0], blue[0]) - a.context_x * sp))
+            x1 = int(max(red[2], blue[2]) + a.context_x * sp)
+        y0 = max(0, int(min(min(lines) - a.pad_y * sp, red[1], blue[1])))
+        y1 = int(max(max(lines) + a.pad_y * sp, red[3], blue[3]))
 
         arr = imgs[page]
         crop = arr[y0:y1, x0:x1]
