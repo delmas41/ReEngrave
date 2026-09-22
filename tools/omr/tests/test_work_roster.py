@@ -13,6 +13,7 @@ faults they guard are properties of that file's parse — Tchaikovsky 6's droppe
 from __future__ import annotations
 
 from dataclasses import replace
+from pathlib import Path
 
 import pytest
 
@@ -347,3 +348,53 @@ def test_a_token_the_lexicon_already_knows_is_not_a_fragment(tch6):
                      instruments=frozenset({"Alto"}),
                      families=frozenset({"voice"}), complete=True)
     assert W.decide("Soprano Saxophone", r).match is None
+
+
+# ---------------------------------------------------------------------------
+# The flag's SCOPE — measured 2026-09-22 and pinned, because it runs BACKWARDS
+# from the pattern this repo records everywhere else.
+# ---------------------------------------------------------------------------
+
+def _non_test_callers(needle: str) -> set[str]:
+    """Every file under `tools/omr/` naming `needle`, excluding the tests.
+
+    DERIVED from the tree rather than hand-listed: a hand list and the tree
+    drift, and drifting is the exact fault this pins.
+    """
+    root = Path(W.__file__).resolve().parent              # tools/omr
+    out = set()
+    for path in root.rglob("*.py"):
+        rel = path.relative_to(root.parent)
+        if "tests" in rel.parts or path.name == "work_roster.py":
+            continue
+        if needle in path.read_text(encoding="utf8"):
+            out.add(str(rel))
+    return out
+
+
+def test_the_flag_governs_the_legacy_path_only():
+    """`OMR_ROSTER_LABELS` gates `contextual` and NOTHING else.
+
+    ⚠️ The staged path calls `work_roster.decide` from
+    `staged/adjudicators/identity.adjudicate_instrument` with no reference to
+    this predicate at all, so *"the flag is off"* is a statement about the
+    LEGACY reader and not about the pipeline. Measured in
+    `benchmarks/omr-roster-truncation-reprice-2026-09/`; pinned here so the
+    scope cannot move in either direction without a test going red.
+    """
+    callers = _non_test_callers("work_roster.enabled")
+    assert callers == {"omr/contextual.py"}, callers
+
+
+def test_the_staged_identity_decision_is_ungated():
+    """It calls the RULE and never the FLAG — asserted on the source.
+
+    Both halves matter. If the `decide` call ever goes away this layer has
+    silently left the staged path; if a flag check ever appears beside it the
+    staged DEFAULT has silently changed. Either is a behaviour change no other
+    check in this repo reports.
+    """
+    root = Path(W.__file__).resolve().parent
+    src = (root / "staged" / "adjudicators" / "identity.py").read_text("utf8")
+    assert "WR.decide(" in src, "the staged path no longer consumes the rule"
+    assert "enabled()" not in src, "a flag gate appeared on the staged path"

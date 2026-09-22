@@ -130,8 +130,23 @@ MIN_KEPT_FRACTION = 0.5
 def enabled() -> bool:
     """`OMR_ROSTER_LABELS` — resolve margin labels against the work's roster.
 
-    **Default OFF.** See `benchmarks/omr-roster-constrained-labels-2026-09/`
-    for the reach, which is what a default turns on.
+    **Default OFF, AND IT GOVERNS THE LEGACY PATH ONLY.** Measured 2026-09-22
+    (`benchmarks/omr-roster-truncation-reprice-2026-09/`): this predicate has
+    exactly ONE non-test caller in the tree, `contextual._labels_for_page`.
+    The STAGED path calls `decide()` **ungated** from
+    `staged/adjudicators/identity.adjudicate_instrument`, where the gate is
+    instead whether a `Q.ROSTER_ENTRY` row exists — and the staged CLI
+    supplies one BY DEFAULT (`--no-roster` turns it off). So on the staged
+    path this layer is live today, and *"the flag is off"* says nothing about
+    it.
+
+    ⚠️ That is the INVERSE of the pattern the symbol-dossier sweep records
+    (*"shipped means the LEGACY path"*), so a reader who assumes the usual
+    direction gets it backwards in both halves. `test_the_flag_governs_the_
+    legacy_path_only` pins the scope so it cannot drift silently.
+
+    See `benchmarks/omr-roster-constrained-labels-2026-09/` for the reach the
+    flag turns on, and the 2026-09-22 re-pricing for what it does NOT reach.
     """
     return os.environ.get("OMR_ROSTER_LABELS", "0").strip().lower() in (
         "1", "true", "yes", "on")
