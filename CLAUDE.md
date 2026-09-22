@@ -612,6 +612,29 @@ every detection from the page's ink so "find the text" becomes "find the ink".
 Full statement: `tools/omr/staged/ASSUMPTIONS.md` **A-DUR-5**, which now
 carries the result and the two frame corrections that came with it.
 
+⚠️⚠️⚠️ **AND THE SAME DIVERGENCE RECURRED THE SAME DAY, ON THE SAME BRANCH
+PAIR — THE HANDOFF BELOW WAS WRITTEN ABOUT IT AND THEN BECAME ITS NEXT
+VICTIM. CLOSED 2026-09-21, and the keysig lane is on main.** That handoff
+merged `claude/part-instrument-check-2026-09` at `28749347` (09-20 23:09); the
+branch then ran **17 more commits** on 09-21 (00:47 → 21:18) that landed
+nowhere — `_marker_ink`, the `markers_without_a_run` abstention, **two
+`KNOWN_GAPS` entries whose stated reason was FALSE**, a 462-line test file and
+two benchmark directories, **2,622 lines including real `header.py` code**. Its
+own tree-clean claim (*"everything below is committed"*) was true of the
+BRANCH and not of main. ⚠️ **The reusable form: `git merge-base --is-ancestor`
+against `origin/main` is the only thing that settles where work IS — a handoff
+saying "tree clean at `<sha>`" is a claim about a branch, and a session that
+ends at 21:18 leaves commits after the merge that read it.** ⚠️ **Its ranked
+#4 was ALSO already answered on that branch** (the key signature disagreeing
+within a part: **6 of 7 and 11 of 14**, measured by the carry arm) — struck in
+§8 there rather than deleted.
+⚠️ **The lever it handed on is MEASURED AND REFUSED — see *The marker
+slot-fit: the lever was ALREADY SHIPPED on the legacy path* below**, and
+`docs/NEXT-2026-09-21-keysig-reading-lever.md` now opens with a **DO NOT
+RE-RUN** stamp: its premise was false (the legacy path has fitted the
+detector's markers since 2026-08-28), it scores **1 of 6 against a NULL of
+6/6**, and the two publishers' marker ink fails in **opposite** ways.
+
 ⚠️⚠️ **START HERE IF YOU ARE PICKING THIS UP (2026-09-21):**
 [docs/handoff-2026-09-21-connecting-the-sweep.md](docs/handoff-2026-09-21-connecting-the-sweep.md)
 — ⚠️⚠️ **THE TWO BODIES OF WORK HAD DIVERGED AND NOBODY HAD MERGED THEM.**

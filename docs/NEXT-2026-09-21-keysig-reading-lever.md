@@ -1,5 +1,56 @@
 # NEXT SESSION — measure the key-signature READING lever
 
+> # ⚠️⚠️ DONE, 2026-09-21 — AND **DO NOT RE-RUN IT**
+>
+> **This brief was executed. Its answer is NO, and its central premise was
+> FALSE.** Findings, with every number:
+> [benchmarks/omr-keysig-marker-fit-2026-09/FINDINGS.md](../benchmarks/omr-keysig-marker-fit-2026-09/FINDINGS.md).
+> CLAUDE.md carries the summary under *"The marker slot-fit: the lever was
+> ALREADY SHIPPED on the legacy path"*.
+>
+> **THE PREMISE.** §"The proposition is different" below says
+> `fit_key_signature` *"has never been given the detector's markers as its ink
+> source"*. **It has, since `7c6b6481`, 2026-08-28** — `transcribe.py:856`,
+> through `_staff_positions_for` and a `_DETECTOR_FIT_CONFIG` written for that
+> ink. ⚠️ And **this document contradicts itself**: its own TRAP section says
+> the legacy path *"falls back to counting them where **the slot fit
+> abstains**"*, which presupposes the fit. So the job was never "same reader,
+> different ink" — it is a **PORT of a shipped LEGACY reader**, the sixth
+> instance of the symbol sweep's §2a family.
+>
+> **WHAT IT MEASURED.** Reach 6 and 10 of the 10-and-10 below (four Litolff
+> staves have no notehead in cell 0, hence no unit, hence abstain). The fit
+> ANSWERS 2 and 3. Scored on Litolff — the only document with print truth —
+> **right 1, wrong 1, abstained 4, against a NULL of 6/6**. ⚠️ And the
+> reachable population is **biased toward where the constant wins**: all 6 are
+> truth −3, where the full 26 are `{-3: 17, 0: 8, -1: 1}`.
+>
+> **WHY IT IS REFUSED, AND IT IS NOT THE SCORE.** The reader is correct on both
+> plates. **The INK is not ready**, and the two publishers fail differently:
+> Litolff's markers are CENTRED and NOISY (median −0.100, spread 5.66);
+> Breitkopf's are TIGHT and DISPLACED (median **−1.256** against
+> `max_offset = 1.25` — the cap sits ON its bias). **The obvious cause is
+> REFUTED**: a glyph-shape bias would be identical on both plates and the two
+> want different reference points.
+>
+> **THE ONE THING STILL WORTH DOING** is §4 of the findings: a **SHARP-KEY
+> document**, which would say whether the Breitkopf displacement is the flat
+> glyph or the detector's box. Both documents here are C minor, so the
+> discriminator is unavailable. `data/dossiers/*.json` say which works qualify,
+> and answering it needs no weights.
+>
+> ⚠️ **A LIVE GAP THIS FOUND AND DID NOT FIX**: `_cell_grid` returns
+> `(top_y, half_step)` and `Q.CELL_STAFF_SPACE` files `half_step` and **DROPS
+> `top_y`** — 0 of 40,878 rows carry the cell's top line in the cell frame,
+> which is verbatim the consumer that function's own docstring says had
+> *"nothing to ask with"*. Named and half-fixed.
+>
+> **Everything below is the brief AS WRITTEN and is kept unedited**, because a
+> superseded work order with its correction beside it is worth more than a gap.
+> Read it as history, not as a task.
+
+---
+
 **Written 2026-09-21, low on context, handing off one measurement.** Branch
 `claude/part-instrument-check-2026-09`, tree clean at `9b4d0551`, everything
 below is committed.

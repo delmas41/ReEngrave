@@ -8,6 +8,19 @@ Picked up from `docs/RESUME-HERE-2026-09-20.md`. Everything below is on
 merged `claude/stem-notehead-gate` (yesterday's in-flight agent, §2) and
 today's work. **`main` is stale by four days.**
 
+> ⚠️⚠️ **CORRECTED 2026-09-21 (evening): BOTH CLAIMS IN THAT PARAGRAPH ARE NOW
+> STALE, AND THE FIRST WAS WRONG WHEN WRITTEN.** The branch is **NOT**
+> `claude/integration-2026-09-18` plus two things — the two had **DIVERGED at
+> `b600964e`**, 27 commits against 18, and
+> `docs/handoff-2026-09-21-connecting-the-sweep.md` is the session that found
+> it. **`main` is no longer stale: everything described here is merged**, plus
+> the 17 later commits of this branch that the integration did not take
+> (§2b's key-signature work among them). **Work from `main`, not from this
+> branch name.** ⚠️ The lever §2b hands on was then measured and **REFUSED** —
+> `benchmarks/omr-keysig-marker-fit-2026-09/FINDINGS.md`, and
+> `docs/NEXT-2026-09-21-keysig-reading-lever.md` opens with a DO-NOT-RE-RUN
+> stamp.
+
 ---
 
 ## 1. ⚠️ THE FIRST CONVENTION IS WIRED — and it condemns the join each document REFUSED

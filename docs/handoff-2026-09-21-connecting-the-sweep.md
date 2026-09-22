@@ -202,8 +202,17 @@ re-score every meter arm ever run on that fixture.
 3. **The in-bar accidental needs a GATHER reader** before it can become a
    `Q.ACCIDENTAL`; until then `coverage()["accidental_reading"]` reports the gap
    (256 and 733 glyphs).
-4. **The key signature disagreeing WITHIN a part** (5 of 12) — lane A's
-   alterations are downstream of it.
+4. ⚠️⚠️ **STRUCK 2026-09-21: ALREADY MEASURED, on a branch this handoff did
+   not have.** *"The key signature disagreeing WITHIN a part (5 of 12) — lane
+   A's alterations are downstream of it."* `benchmarks/omr-keysig-carry-2026-09/FINDINGS.md`
+   measured the same phenomenon with a **larger denominator** — **6 of 7 parts
+   on Litolff and 11 of 14 on Breitkopf** disagree with themselves — and used
+   it to kill the cross-system carry: *"the carry rests on a part prints one
+   signature down the page, and the READINGS do not."* **Do not re-measure it.**
+   ⚠️ It was invisible here for the same reason the sweep itself was: those 17
+   commits were on `claude/part-instrument-check-2026-09` and had never been
+   merged. They are on main now. **The residual question is not the
+   disagreement — it is WHICH reading is wrong**, and that needs the print.
 5. Repair-list items **4 and 5** (grace notes; the tuplet whose positional gate
    is in its docstring and not its body) — both verified, both left because they
    sat inside a running lane's fence.
