@@ -636,6 +636,32 @@ against a NULL of 6/6**, and the two publishers' marker ink fails in
 **opposite** ways.
 
 
+⚠️⚠️⚠️ **SEAN HAS RULED ON THE KEY SIGNATURE, 2026-09-22, AND THE NEXT SESSION
+IS BRIEFED — START THERE:**
+[docs/NEXT-2026-09-22-identity-conditions-the-key-signature.md](docs/NEXT-2026-09-22-identity-conditions-the-key-signature.md)
+— *"if a page is engraved or a scan along with the publisher info and year —
+whatever we have — should be gathered in the first stage — then we need to make
+sure that the key signature is determined based on that info."*
+⚠️⚠️ **ROUGHLY HALF OF IT IS ALREADY BUILT AND SWITCHED OFF**, which is why the
+brief exists: `gather_document_identity` shipped 2026-09-17 behind
+`OMR_DOCUMENT_IDENTITY` (**default OFF, producer-only, read by nothing**) and
+already files publisher / `work_id` / `image_type` / `imslp_id` /
+`edition_path` at `source_kind: "catalog"`. **A session that starts by building
+it rebuilds a shipped rung.** ⚠️ **What is missing**, measured against the
+committed catalog's 289 editions: **`publisher_year` (195 of 289 — Sean asked
+for it BY NAME)**, `plate` (177), `has_text_layer` (289), and above all a
+**MEASURED** engraved-vs-scan verdict. ⚠️⚠️ **DO NOT KEY IT ON `image_type`**:
+that is IMSLP's crowd-sourced LABEL and reads **`Typeset` on SEVEN of 289**.
+The measured test is `input_domain._classify_page` — `OMR_WEIGHT_ROUTING`'s own
+classifier, **gap EMPTY over 147 probed pages**, abstains on doubt — and it is
+**imported nowhere under `staged/`**. Keep the two APART on the record; a
+disagreement between them is a fact worth having. ⚠️⚠️ **THE CONSUMER MUST BE
+ONE-SIDED: prefer the template ONLY where the document is PROVED engraved, and
+leave the precedence exactly as it ships everywhere else** — the template's
+20/20 is engraved-only, and on a scan the erasure works FOR the locator on a
+side that is **not measured for accuracy**. ⚠️ It is a GATHER change, so
+`readjudicate` is structurally blind and pricing needs **two full re-gathers**.
+
 ⚠️⚠️⚠️ **START HERE IF YOU ARE PICKING THIS UP (2026-09-22) — FOUR LANES, THREE
 REFUTATIONS, AND ONE MEASURED DECISION WAITING FOR SEAN:**
 [docs/handoff-2026-09-22-four-lanes-and-three-refutations.md](docs/handoff-2026-09-22-four-lanes-and-three-refutations.md)

@@ -17,7 +17,21 @@ harness blocks subagents from writing `.md` files (see §7).
 
 ---
 
-## 1. ⚠️⚠️ THE ONE DECISION WAITING ON SEAN, AND IT IS MEASURED
+## 1. ⚠️⚠️ THE DECISION — **SEAN RULED ON IT THE SAME DAY; THE JOB IS BRIEFED**
+
+✅ **ANSWERED.** *"if a page is engraved or a scan along with the publisher info
+and year — whatever we have — should be gathered in the first stage — then we
+need to make sure that the key signature is determined based on that info."*
+**The work order for a new session is
+[docs/NEXT-2026-09-22-identity-conditions-the-key-signature.md](NEXT-2026-09-22-identity-conditions-the-key-signature.md)**,
+which records that ~half of it is **already built and switched off**
+(`gather_document_identity`, `OMR_DOCUMENT_IDENTITY`, producer-only), that the
+missing half is `publisher_year` / `plate` / `has_text_layer` and a **MEASURED**
+engraved-vs-scan verdict (**not** `image_type`, which is IMSLP's label and
+reads `Typeset` on 7 of 289), and that the consumer must be **ONE-SIDED**.
+**The measurement that justifies it follows.**
+
+## 1a. THE MEASUREMENT
 
 **`adjudicate_key_signature` prefers the reader that is wrong, and the reason
 it gives for doing so is refuted on the one input where the print cannot be
