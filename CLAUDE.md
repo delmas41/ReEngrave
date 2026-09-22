@@ -652,7 +652,14 @@ after `header_ink_mask` strips 54-63% of their height**), and **91% of all note
 errors on 20 bars of 18 parts are this one fault.** ⚠️ **NOTHING WAS FLIPPED** —
 the refusal was priced on SCANS, so this is the new evidence the rule asks for
 and not a licence; **ONE LilyPond render says whether the cause is Verovio's
-spacing or THE ERASURE, and if it is the erasure it is everywhere.**
+spacing or THE ERASURE** — ✅ **RUN THE SAME NIGHT: it is the ERASURE (with the
+lines INTACT all three flats clear the floor on BOTH renderers), it is NOT
+Verovio (LilyPond agrees to **0.03 staff spaces**), and ⚠️⚠️ *"it is
+everywhere"* **IS FALSE** — on the Litolff scan the same erasure takes
+accidental-sized clusters **5 → 11**, because there the lines MERGE glyphs and
+erasing SEPARATES them. **The cost is a property of ENGRAVED input**, so the
+engraved 20/20 does **not** license flipping the precedence globally;
+[benchmarks/omr-keysig-erasure-2026-09/FINDINGS.md](benchmarks/omr-keysig-erasure-2026-09/FINDINGS.md).**
 ⚠️⚠️ **THE STAGED PIPELINE HAS A READING ACCURACY AT LAST** — pooled F1
 **0.933**, **notehead recall 1.000 on all three engraved pages**, with a shift
 control that collapses it to 0.058 — and **INFER has essentially NO DOMAIN

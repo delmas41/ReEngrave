@@ -50,11 +50,33 @@ page truth measures at **2.57 spaces** and that read **0.94 and 1.19 after
 
 ⚠️⚠️ **NOTHING WAS FLIPPED.** The refusal behind that precedence was priced on
 **SCANS**, so this is the named new evidence *A PREMISE ENCODED IN A REFUSAL
-OUTLIVES ITS REASON* asks for — **and not a licence.** ⚠️ **The cheapest thing
-that would settle it is ONE LilyPond render of the same bars**: it would say
-whether the mechanism is *Verovio's key-signature spacing* or **the ERASURE —
-and if it is the erasure, it is everywhere.** That is one command and was not
-run.
+OUTLIVES ITS REASON* asks for — **and not a licence.**
+
+✅⚠️ **THE RENDER WAS RUN THE SAME NIGHT AND THE ANSWER IS TWO-SIDED — read
+this before acting on the table above.**
+[benchmarks/omr-keysig-erasure-2026-09/FINDINGS.md](../benchmarks/omr-keysig-erasure-2026-09/FINDINGS.md).
+**It is not Verovio**: LilyPond gives the same three flats, the same two
+dropped, **to within 0.03 staff spaces** (1.22 / 0.95 / 0.96 against 1.19 /
+0.94 / 0.94), and Lane A's *"observation, not a mechanism"* reproduces too —
+the dropped clusters begin ON a staff line and the kept one mid-space, the same
+three positions to within 5 px. **And it IS the erasure**: asked directly, with
+the staff lines INTACT all three flats clear the floor on BOTH renderers, and
+`erase_staff_lines` is what puts two of three under it.
+
+⚠️⚠️ **BUT *"if it is the erasure, it is everywhere"* IS FALSE, AND THAT IS THE
+FINDING.** On the real Litolff plate the same erasure takes accidental-sized
+clusters from **5 to 11** — it roughly DOUBLES them — because there the staff
+lines MERGE glyphs and erasing SEPARATES them, **which is why
+`erase_staff_lines` exists and why the refusal that prefers the locator was
+defensible when priced on scans.** The mechanism is present there (two clusters
+pushed under) and **swamped**.
+
+> **So the cost is a property of ENGRAVED input**, where the ink is thin and
+> clean and the lines lie across the glyph with nothing to separate. ⚠️ **That
+> does NOT license flipping the precedence globally** — the template's 20/20 is
+> engraved-only. Two shapes are conceivable, a **domain-aware precedence** (the
+> classifier exists and is measured: `input_domain._classify_page`) or a lower
+> floor; **neither is measured and neither is proposed.**
 
 ## 2. WHAT LANDED
 
@@ -140,9 +162,10 @@ fixtures.
 
 ## 6. RANKED NEXT WORK
 
-1. ⚠️ **§1's one render.** A LilyPond render of the same 24 bars says whether
-   the key-signature mechanism is Verovio's spacing or **the erasure**. One
-   command. Everything in §1 is downstream of the answer.
+1. ✅ **§1's render is DONE** — it is the erasure, it is engraved-specific, and
+   the scan inverts it. **What is left is the DECISION**, and it is Sean's:
+   a domain-aware precedence, a lower floor, or neither. ⚠️ **Do not flip the
+   precedence globally on the strength of the engraved 20/20.**
 2. **The in-bar accidental**, now sized: on correct-key staves we still write
    only 69% of alters, and the residual **is** the in-bar accidental, which
    reaches no quantity at all. ⚠️ Its dossier
