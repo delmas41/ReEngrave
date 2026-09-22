@@ -13,6 +13,7 @@ faults they guard are properties of that file's parse — Tchaikovsky 6's droppe
 from __future__ import annotations
 
 from dataclasses import replace
+import re
 from pathlib import Path
 
 import pytest
@@ -397,4 +398,38 @@ def test_the_staged_identity_decision_is_ungated():
     root = Path(W.__file__).resolve().parent
     src = (root / "staged" / "adjudicators" / "identity.py").read_text("utf8")
     assert "WR.decide(" in src, "the staged path no longer consumes the rule"
-    assert "enabled()" not in src, "a flag gate appeared on the staged path"
+
+    # ⚠️⚠️ THE SECOND HALF WAS A BLANKET BAN ON `enabled()` ANYWHERE IN THE
+    # MODULE, AND THAT IS BROADER THAN ITS OWN SUBJECT. What it exists to
+    # catch is a ROSTER gate appearing beside `WR.decide` -- the staged path
+    # consuming the measured rule only when `OMR_ROSTER_LABELS` says so --
+    # and that is still asserted exactly, below and in
+    # `test_the_flag_governs_the_legacy_path_only`, which pins that
+    # predicate to a single legacy caller.
+    #
+    # As written it also failed on a flag that has nothing to do with the
+    # roster and does not gate `adjudicate_instrument` at all:
+    # `OMR_SLOT_CONSTRAINTS` gates `adjudicate_slot_index`, a different
+    # decision in the same file. Renaming that predicate to slip past a
+    # substring would be the test training the code, so the assertion is
+    # narrowed to its meaning instead.
+    #
+    # ⚠️ AND THE ALARM IS KEPT RATHER THAN DROPPED. The docstring's real
+    # claim -- *"if a flag check ever appears beside it the staged DEFAULT
+    # has silently changed"* -- is worth having, so the check becomes an
+    # ACCOUNTED SET: every flag predicate this module names must be one a
+    # reader can find in the flag table. A NEW, undocumented one still goes
+    # red; a documented one does not.
+    assert "WR.enabled" not in src and "work_roster.enabled" not in src, (
+        "a ROSTER flag gate appeared on the staged path")
+
+    named = set(re.findall(r"\b(\w*enabled)\(\)", src))
+    accounted = {"slot_constraints_enabled"}   # docs/flags-2026-09.md
+    assert named <= accounted, (
+        f"undocumented flag predicate(s) in the staged identity module: "
+        f"{sorted(named - accounted)} — give each a row in "
+        f"docs/flags-2026-09.md and add it here, or remove the gate")
+    flags = (root.parent.parent / "docs" / "flags-2026-09.md")
+    if flags.is_file():
+        assert "OMR_SLOT_CONSTRAINTS" in flags.read_text("utf8"), (
+            "the accounted predicate has no row in the flag table")
