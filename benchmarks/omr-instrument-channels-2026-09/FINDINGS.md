@@ -443,3 +443,98 @@ Everything in §6 stands. Additionally: **no print was consulted by this
 session** — correctness rests entirely on the 2026-09-14 and 2026-09-17 crop
 passes; **Breitkopf is unscored**; **no export and no file**; and the
 condensed `Violoncello e Basso` is still narrowed, deliberately (§3).
+
+---
+
+# ADDENDUM 2 — the roster naming, asked for and REFUTED by the plate
+
+Sean, 2026-09-22: *"do the roster naming for those 10 staves."* **No code under
+`tools/` changed** (`git diff -- tools/` is empty). The measurement says the
+job as scoped has no effect, and the plate says why.
+
+## 13. ⚠️⚠️ THE FIRST THING TO DO WAS OPEN THE PAGE, AND IT ANSWERED THE QUESTION
+
+`out/print/brahms-system-head.png` — the Breitkopf system head at 600 dpi, all
+14 staves. **All three "unnamed" reference slots are labelled on the plate, in
+full:**
+
+| slot | the plate prints | the reader got | the lexicon makes of it |
+|---|---|---|---|
+| 0 | **`Flöten`** | `Flo6ten 2` | **Tenor — a SINGER**, via the alias `ten` inside it |
+| 5 | **`Hörner in C 1. 2.`** | `C in \|` | nothing |
+| 13 | **`Kontrabaß`** | `KontrabaB` | nothing |
+
+`Flöten` resolves to **Flute at coverage 1.00** and `Kontrabaß` to
+**Contrabass at 1.00** when spelled correctly. So this was never a missing
+instrumentation channel: it is **OCR damage on three characters** — `ö` read as
+`o6`, `ß` read as `B`, and (on five further staves) `c` read as `e`, turning
+`Vcl.` into `Vel.`.
+
+⚠️⚠️ **AND THE SINGER IS THE SHARP END.** `Flo6ten 2` resolved to a **Tenor**
+at a printed flute staff, and the only thing that stopped it reaching the file
+was `vetoed_by_the_work_roster` — the family veto. On a work whose roster we do
+not hold, that singer ships. It is `Tr. Alt.` → *Alto* again, from a different
+cause.
+
+⚠️ **THE OPENING SYSTEM IS THE ONE THE READER DOES WORST ON**, which is
+counterintuitive and worth carrying: it prints the FULLEST names
+(`Flöten`, `Kontrabaß`, `Hörner in C 1. 2.`) and the continuation systems print
+the short forms (`Fl.`, `Hr.`, `K.-B.`) that the lexicon is keyed on and the
+OCR gets right. A long German word gives the OCR more to spoil.
+
+## 14. THE RULE WAS MEASURED ANYWAY, AND ITS REACH IN THE FILE IS ZERO
+
+Two tiers, measured apart (`probe_name_from_slot.py`):
+
+| tier | claim | Breitkopf |
+|---|---|--:|
+| **A** SIBLING | the slot is decided and another staff on it IS named — pure entailment, since the slot IS the part | **35 of 35**, 0 conflicts |
+| **B** LINEUP | no staff anywhere names the slot; the canonical layouts + the roster force one | **0** |
+
+**Tier B reaches nothing because Tier A reaches everything**: every one of the
+three slots is named on a LATER system (`staff/1/0/0` reads `F1.` → Flute,
+`staff/2/1/5` reads `(C) Hr.` → Horn, `staff/1/0/13` reads `K -B.` →
+Contrabass). ⚠️ **That refutes §2 of this document**, which reported those 10
+staves as *placed and nameless*: they are nameless **on the reference system**,
+which `_pick_reference` chooses for being WIDEST — and the widest system here
+is exactly the one whose labels the OCR spoiled. The slots are named; the
+reference is not where they are named.
+
+⚠️⚠️ **AND EVERY PART ON BOTH DOCUMENTS ALREADY CARRIES A NAME** — Breitkopf
+14 of 14 slots, Litolff 12 of 12. `export.to_musicxml` takes a part's name from
+the first staff of that part carrying one, so **naming these staves changes no
+`<part-name>`, and `OMR_HOLD_OUT_UNIDENTIFIED` gates on the SLOT rather than on
+the name, so it changes no held-out staff either.** The rule would be a
+producer with no consumer and no file effect, on a fact the record already
+holds by another route. It is therefore **NOT BUILT**, and this section is
+what was delivered instead.
+
+## 15. WHAT WOULD ACTUALLY HELP, PRICED
+
+Two OCR repairs that are safe by this repo's own rule that a fold is admitted
+**on rarity**, both tested against every refused label on both records:
+
+| repair | why it is safe | recovers |
+|---|---|--:|
+| **a digit BETWEEN two letters is noise** (`Flo6ten` → `Floten`) | no instrument name has a digit inside a word; part numbers are separate tokens and the lexicon already handles them | **1** — and it is the SINGER |
+| **`ß` read as `B` at a word end** (`KontrabaB` → `Kontrabaß`) | a DERIVED variant of aliases that already carry `ß`, the `_CONTRA_ALIASES` pattern; it adds no new word | **1** |
+
+⚠️ **`c → e` (`Vel.` → `Vcl.`, FIVE staves) is NOT proposed**: CLAUDE.md
+records it refused by name as a common-letter pair, priced at `Fug.`→`Fag.`,
+`Oh.`→`Ob.` and Mahler's `Veelle.`. Re-litigating it would need the 1,422-label
+corpus, not this page.
+
+⚠️ **Neither changes the file either**, for the same reason as §14 — both slots
+are already named elsewhere. Their value is that a wrong reading stops being
+produced, and one of them is a singer on a symphony.
+
+**The remaining 18 refused labels are noise** (`|`, `2`, `of`, `(Es)`,
+`| | ©`) or the genuinely truncated horn labels. Nothing in the
+instrumentation list reaches them.
+
+## 16. WHAT IS NOT ESTABLISHED HERE
+
+n = 1 document for the whole of §13-§15 (Litolff has **zero** refused labels
+and **zero** staves in this population). The print truth for slots 0, 5 and 13
+is one adjudicator reading one render, committed as a crop so it can be
+checked. No code ran on a page; no export; no OMR-NED.
