@@ -1,0 +1,115 @@
+{
+ "label": "Breitkopf",
+ "floor_staff_spaces": 1.0,
+ "candidate_pairs": 11,
+ "cells_with_a_measured_staff_space": 817,
+ "pairs_the_floor_REMOVES": 3,
+ "pairs_the_floor_KEEPS": 8,
+ "pairs_with_NO_measured_unit_and_so_UNJUDGED": 0,
+ "removed": [
+  "glyph/1/1/3/4/11",
+  "glyph/2/0/8/1/5",
+  "glyph/3/0/12/8/13"
+ ],
+ "kept": [
+  "glyph/0/0/4/1/3",
+  "glyph/0/0/5/6/12",
+  "glyph/1/0/1/0/44",
+  "glyph/2/0/3/2/19",
+  "glyph/2/0/3/2/20",
+  "glyph/2/0/5/4/10",
+  "glyph/3/0/6/0/9",
+  "glyph/3/1/12/2/7"
+ ],
+ "rows": [
+  {
+   "head": "glyph/0/0/4/1/3",
+   "mate": "glyph/0/0/4/1/6",
+   "head_width_spaces": 1.19,
+   "mate_width_spaces": 1.51,
+   "thin": false
+  },
+  {
+   "head": "glyph/0/0/5/6/12",
+   "mate": "glyph/0/0/5/6/2",
+   "head_width_spaces": 1.237,
+   "mate_width_spaces": 1.333,
+   "thin": false
+  },
+  {
+   "head": "glyph/1/0/1/0/44",
+   "mate": "glyph/1/0/1/0/17",
+   "head_width_spaces": 1.081,
+   "mate_width_spaces": 1.535,
+   "thin": false
+  },
+  {
+   "head": "glyph/1/1/3/4/11",
+   "mate": "glyph/1/1/3/4/23",
+   "head_width_spaces": 0.387,
+   "mate_width_spaces": 2.492,
+   "thin": true
+  },
+  {
+   "head": "glyph/2/0/3/2/19",
+   "mate": "glyph/2/0/3/2/1",
+   "head_width_spaces": 1.471,
+   "mate_width_spaces": 1.46,
+   "thin": false
+  },
+  {
+   "head": "glyph/2/0/3/2/20",
+   "mate": "glyph/2/0/3/2/1",
+   "head_width_spaces": 1.515,
+   "mate_width_spaces": 1.46,
+   "thin": false
+  },
+  {
+   "head": "glyph/2/0/5/4/10",
+   "mate": "glyph/2/0/5/4/3",
+   "head_width_spaces": 1.472,
+   "mate_width_spaces": 1.579,
+   "thin": false
+  },
+  {
+   "head": "glyph/2/0/8/1/5",
+   "mate": "glyph/2/0/8/1/4",
+   "head_width_spaces": 0.569,
+   "mate_width_spaces": 0.907,
+   "thin": true
+  },
+  {
+   "head": "glyph/3/0/6/0/9",
+   "mate": "glyph/3/0/6/0/13",
+   "head_width_spaces": 1.188,
+   "mate_width_spaces": 1.482,
+   "thin": false
+  },
+  {
+   "head": "glyph/3/0/12/8/13",
+   "mate": "glyph/3/0/12/8/14",
+   "head_width_spaces": 0.89,
+   "mate_width_spaces": 1.4,
+   "thin": true
+  },
+  {
+   "head": "glyph/3/1/12/2/7",
+   "mate": "glyph/3/1/12/2/16",
+   "head_width_spaces": 1.436,
+   "mate_width_spaces": 2.287,
+   "thin": false
+  }
+ ],
+ "against_the_print": {
+  "removed": {
+   "red_is_not_a_notehead": 3
+  },
+  "kept": {
+   "blue_is_not_a_notehead": 1,
+   "one_shared_stem": 2,
+   "cannot_tell": 1,
+   "red_is_not_a_notehead": 4
+  },
+  "unjudged": {}
+ }
+}

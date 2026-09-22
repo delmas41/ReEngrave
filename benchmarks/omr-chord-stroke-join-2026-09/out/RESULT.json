@@ -1,0 +1,115 @@
+{
+ "lane": "omr-chord-stroke-join-2026-09",
+ "verdict": "REFUSED -- nothing shipped; tools/ diff is EMPTY",
+ "convention_assumed": "A chord is several noteheads sharing ONE stem; only the outermost head sits at the stroke's END.",
+ "what_would_falsify_it": "a CONTROL adjudicating against the record -- none did",
+ "not_confirmed_with_sean": true,
+ "step0_premise_check": {
+  "solo_pairs": [
+   969,
+   1256
+  ],
+  "solo_pairs_with_a_chord_shadow_PUBLISHED_73_98": [
+   73,
+   98
+  ],
+  "of_which_the_shadow_IS_STEMLESS": [
+   24,
+   33
+  ],
+  "CORRECTION": "73/98 is NOT a reach -- two thirds of those shadows already carry a stroke of their own and are not a missing join."
+ },
+ "reach": {
+  "litolff": {
+   "candidate_pairs": 23,
+   "heads_reached": 20,
+   "heads_reached_share_of_no_stem": 0.0252,
+   "strokes_touched": 18,
+   "heads_with_MORE_THAN_ONE_candidate_stroke": 2
+  },
+  "breitkopf": {
+   "candidate_pairs": 11,
+   "heads_reached": 11,
+   "heads_reached_share_of_no_stem": 0.0072,
+   "strokes_touched": 10,
+   "heads_with_MORE_THAN_ONE_candidate_stroke": 0
+  },
+  "no_stem_today": [
+   793,
+   1529
+  ],
+  "pooled_heads_reached": 31,
+  "pooled_share_of_no_stem": 0.0134,
+  "strokes_whose_direction_would_FLIP": [
+   4,
+   2
+  ]
+ },
+ "print_pass": {
+  "CANDIDATE": {
+   "separate_stems": 2,
+   "red_is_not_a_notehead": 9,
+   "blue_is_not_a_notehead": 4,
+   "cannot_tell": 16,
+   "one_shared_stem": 2
+  },
+  "CONTROL": {
+   "one_shared_stem": 12,
+   "cannot_tell": 3
+  },
+  "candidates": 33,
+  "candidates_the_print_SETTLES": 17,
+  "candidates_that_are_a_REAL_CHORD": 2,
+  "candidates_that_are_NOT_TWO_NOTEHEADS": 13,
+  "candidates_that_are_TWO_SEPARATE_NOTES": 2,
+  "share_of_settled_that_is_a_real_chord": 0.1176,
+  "controls": 15,
+  "controls_correct": 12,
+  "controls_WRONG": 0
+ },
+ "width_floor_1_0_staff_spaces": {
+  "litolff": {
+   "removes": 2,
+   "keeps": 21,
+   "against_the_print": {
+    "removed": {
+     "red_is_not_a_notehead": 1
+    },
+    "kept": {
+     "cannot_tell": 15,
+     "red_is_not_a_notehead": 1,
+     "blue_is_not_a_notehead": 5,
+     "separate_stems": 2
+    },
+    "unjudged": {}
+   }
+  },
+  "breitkopf": {
+   "removes": 3,
+   "keeps": 8,
+   "against_the_print": {
+    "removed": {
+     "red_is_not_a_notehead": 3
+    },
+    "kept": {
+     "blue_is_not_a_notehead": 1,
+     "one_shared_stem": 2,
+     "cannot_tell": 1,
+     "red_is_not_a_notehead": 4
+    },
+    "unjudged": {}
+   }
+  }
+ },
+ "hollow_vs_black_red_head": {
+  "hollow": {
+   "one_shared_stem": 2,
+   "wrong": 1
+  },
+  "black": {
+   "one_shared_stem": 0,
+   "wrong": 14
+  },
+  "NOT_PROPOSED_AS_A_GATE": "n = 2 positives, and a class name is the detector's own word about the SAME box -- one signal, not a second witness."
+ }
+}
