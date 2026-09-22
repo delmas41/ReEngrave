@@ -443,10 +443,28 @@ def _condensed_double(source: StaffRun) -> StaffRun:
         condensed_from=source.key)
 
 
-#: `<transpose><octave-change>-1</octave-change></transpose>` -- the double
-#: bass's own convention, never written (`benchmarks/omr-cello-bass-
-#: convention-2026-09/FINDINGS.md` §1): the WRITTEN pitch is the Cello's, and
-#: this is the one MusicXML element that says so sounds an octave lower.
+#: `<transpose><diatonic>0</diatonic><chromatic>0</chromatic>
+#: <octave-change>-1</octave-change></transpose>` -- the double bass's own
+#: convention, never written (`benchmarks/omr-cello-bass-convention-2026-09/
+#: FINDINGS.md` §1): the WRITTEN pitch is the Cello's, and this is the one
+#: MusicXML element that says so sounds an octave lower.
+#:
+#: ⚠️⚠️ TWO DRAFTS OF THIS BLOCK EACH RAISED IN music21'S OWN READER, AND
+#: THE SECOND FAILURE IS THE MORE INSTRUCTIVE ONE. Draft 1 wrote
+#: `<octave-change>` alone; the MusicXML 3.1 schema makes `<chromatic>` a
+#: REQUIRED child of `<transpose>`, so that was invalid on its own terms.
+#: Draft 2 added `<chromatic>0</chromatic>` and STILL raised the identical
+#: `TypeError` -- `music21.musicxml.xmlToM21.MeasureParser.
+#: xmlTransposeToInterval` seeds `diatonicStep = None` and only ever sets it
+#: from a `<diatonic>` element, never from `<chromatic>`, then does
+#: `diatonicStep += 7 * octave_change` unconditionally whenever
+#: `<octave-change>` is present -- so an octave-only transpose needs
+#: `<diatonic>0</diatonic>` too, or that reader cannot compute it, however
+#: schema-valid the file is without it. Its own doctest literally names this
+#: shape ("doubled one octave down ... mixed cello / bass parts in
+#: orchestral literature") and still requires the field. Found by parsing
+#: the export back with music21 both times, not by validating the XML
+#: against nothing.
 #:
 #: ⚠️ TEXT SURGERY ON PURPOSE, NEVER A NEW PARAMETER ON THE REUSED RENDERER.
 #: `_legacy._mxl_attributes_block` (`tools/omr/export.py`) is LEGACY and
@@ -464,6 +482,8 @@ def _condensed_double(source: StaffRun) -> StaffRun:
 def _insert_transpose(attrs_xml: str, indent: str) -> str:
     closing = f"{indent}</attributes>"
     block = (f"{indent}  <transpose>\n"
+             f"{indent}    <diatonic>0</diatonic>\n"
+             f"{indent}    <chromatic>0</chromatic>\n"
              f"{indent}    <octave-change>-1</octave-change>\n"
              f"{indent}  </transpose>\n")
     if attrs_xml.endswith(closing):

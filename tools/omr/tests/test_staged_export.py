@@ -990,9 +990,17 @@ class TestACondensedStaffIsPlacedOnBothSlots(unittest.TestCase):
         root = ET.fromstring(xml)
         p1, p2 = root.findall("part")
         self.assertIsNone(p1.find(".//transpose"))
-        transpose = p2.find(".//transpose/octave-change")
+        transpose = p2.find(".//transpose")
         self.assertIsNotNone(transpose)
-        self.assertEqual(transpose.text, "-1")
+        # ⚠️⚠️ `<chromatic>` IS REQUIRED BY THE MUSICXML 3.1 SCHEMA, AND
+        # `<diatonic>` -- SCHEMA-OPTIONAL -- IS WHAT music21's OWN READER
+        # ACTUALLY NEEDS TO COMPUTE AN OCTAVE-ONLY TRANSPOSE (`xmlToM21.
+        # MeasureParser.xmlTransposeToInterval` seeds `diatonicStep = None`
+        # and never sets it from `<chromatic>`). Two drafts of the exporter
+        # each raised parsing this file back before both were present.
+        self.assertEqual(transpose.find("diatonic").text, "0")
+        self.assertEqual(transpose.find("chromatic").text, "0")
+        self.assertEqual(transpose.find("octave-change").text, "-1")
         # ⚠️ WRITTEN PITCH IS IDENTICAL -- the transpose is a SOUNDING fact,
         # never a respelling, so both parts read the same <pitch>.
         self.assertEqual(p1.find(".//note/pitch/step").text,
