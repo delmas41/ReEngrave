@@ -1,5 +1,20 @@
-"""BYPASS — with INFER off, a tree carrying the stage is indistinguishable
-from a tree without it.
+"""BYPASS — with EVERY RULE off, a tree carrying the stage is
+indistinguishable from a tree without it.
+
+⚠️⚠️ THE PROPERTY WAS RESTATED ON 2026-09-21 AND NOT WEAKENED. It used to
+read *"with `OMR_INFER` off"*, which was the same sentence while one flag
+governed every rule. `collapse_slot_index_to_family_block` now carries its
+own flag and is DEFAULT ON, so under default settings the `inference` key is
+present and SHOULD be -- that is what flipping a rule on means. Leaving the
+old sentence in place would have been this repository's own
+*fixed-then-kept-open-in-prose* with the polarity reversed: a test still
+passing, by asserting a property the tree no longer has.
+
+What is still provable, and is what every test below now asserts, is the
+property that was always the point: **turn every rule off and the stage
+leaves no trace.** `_all_off()` is that state, and it is spelled out of the
+GATES rather than hand-listed, so a fourth rule with a fourth flag cannot
+quietly stop being covered here.
 
 ⚠️⚠️ THE HAZARD IS THE STAGE PERTURBING UPSTREAM *BY EXISTING* RATHER THAN BY
 RUNNING — a field added to `Verdict`, a serialisation change, a reordering, an
@@ -28,6 +43,27 @@ from tools.omr.staged.record import Verdict
 from .test_staged_pipeline import FakeDetector, build_page
 
 
+def _all_off():
+    """Every rule's flag, set to that flag's own OFF word.
+
+    ⚠️ DERIVED FROM THE REGISTRY, never a hand list. `OMR_INFER` is an
+    allow-list (default OFF) and `OMR_SLOT_FAMILY_BLOCK` a deny-list
+    (default ON), so "off" is a different STRING for each -- and the one
+    thing a hand list here would do is silently stop covering the next rule.
+    `"0"` is an off-word under both directions, which is what makes one
+    literal correct for every switch; asserted rather than assumed.
+    """
+    infer._ensure_rules()
+    env = {}
+    for r in infer.RULES:
+        env[r.switch.env] = "0"
+    with mock.patch.dict(os.environ, env, clear=False):
+        assert not infer.stage_should_run(), (
+            "a rule stayed enabled with every flag at '0' -- this file's "
+            "whole premise is that the OFF state is reachable")
+    return env
+
+
 def _run(env):
     with mock.patch.dict(os.environ, env, clear=False):
         return pipeline.run_staged_on(build_page(), detector=FakeDetector())
@@ -36,7 +72,7 @@ def _run(env):
 class TestOffMeansAbsentNotQuiet(unittest.TestCase):
 
     def setUp(self):
-        self.off = _run({infer.INFER_ENV: "0"})
+        self.off = _run(_all_off())
 
     def test_there_is_no_inference_key_at_all(self):
         """⚠️ NOT `inference: None`. A null key is still a key: it changes the
@@ -67,8 +103,8 @@ class TestOffMeansAbsentNotQuiet(unittest.TestCase):
         "identical" result is equally consistent with the comparison being
         unable to see anything at all — the unprovenanced-A/B trap, in
         miniature."""
-        a = json.dumps(_run({infer.INFER_ENV: "0"}), sort_keys=True, default=str)
-        b = json.dumps(_run({infer.INFER_ENV: "0"}), sort_keys=True, default=str)
+        a = json.dumps(_run(_all_off()), sort_keys=True, default=str)
+        b = json.dumps(_run(_all_off()), sort_keys=True, default=str)
         self.assertEqual(a, b)
 
     def test_the_comparison_has_teeth(self):
@@ -76,7 +112,7 @@ class TestOffMeansAbsentNotQuiet(unittest.TestCase):
         comparison that reports "identical" report a difference — otherwise
         the byte-identity above would be a property of the instrument rather
         than of the bypass."""
-        off = json.dumps(_run({infer.INFER_ENV: "0"}), sort_keys=True,
+        off = json.dumps(_run(_all_off()), sort_keys=True,
                          default=str)
         on = json.dumps(_run({infer.INFER_ENV: "1"}), sort_keys=True,
                         default=str)
@@ -150,7 +186,7 @@ class TestItDoesNotPerturbUpstreamByExisting(unittest.TestCase):
 
     def test_evaluate_is_unchanged_by_infer_being_importable(self):
         """The earlier stage still does exactly what it did."""
-        rep = _run({infer.INFER_ENV: "0"})["evaluation"]
+        rep = _run(_all_off())["evaluation"]
         self.assertIn("fired", rep)
         self.assertIn("skipped", rep)
 
@@ -178,7 +214,7 @@ class TestRunIsNotCalledWhenOff(unittest.TestCase):
             return real(*a, **k)
 
         with mock.patch.object(infer, "run", spy):
-            _run({infer.INFER_ENV: "0"})
+            _run(_all_off())
         self.assertEqual(called, [])
 
     def test_and_IS_entered_when_on(self):

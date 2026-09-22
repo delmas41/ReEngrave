@@ -256,3 +256,118 @@ class TestAGlyphStandingOnANeighbouringStaff(unittest.TestCase):
         for measured in (-6.9, -5.8, -4.8, 13.3, 13.6, 14.8):
             self.assertFalse(C.ON_STAFF_MIN_STEPS <= measured
                              <= C.ON_STAFF_MAX_STEPS)
+
+
+
+class TestASuppliedClefSpeaksOnlyWhereThePageDidNot(unittest.TestCase):
+    """⚠️⚠️ GAPS ONLY, and the weight is why it had to be structural.
+
+    A clef supplied by a confirmed session fact sheet is the one term in this
+    decision that did not come off the page at all, and `W_DOSSIER` (4.0)
+    stands ABOVE `W_DETECTOR_HIGH` (3.0). So before this rule a supplied clef
+    did not corroborate a read one, it REPLACED it -- silently, and including
+    where the reading was right and the sheet held a typo.
+
+    Sean, 2026-09-21: *"redo our work tonight to be an option to turn on when
+    we can't get the info we need."* The information we could not get is the
+    only place it may speak, which is the `adjudicate_key_signature`
+    precedent inherited rather than re-litigated.
+
+    ⚠️ RED PROOF, STATED EXACTLY. Against the previous `_carry_terms` (the
+    seed admitted everywhere) **three of these seven go red**: the two
+    overturn tests and the recorded-refusal one. The first draft of this
+    docstring claimed all seven did, which was false and is the precise shape
+    this file warns about elsewhere -- *a test named for a hazard it does not
+    reach*, written into the summary rather than the body. The other four are
+    deliberately NOT red, and each is load-bearing for a different reason:
+    `test_it_decides_a_staff_the_page_said_NOTHING_about` is the POSITIVE
+    CONTROL (without it the three red ones would pass for a rule that threw
+    every seed away); the absent-key test and the carry test guard what must
+    NOT change; and the weight-ordering test pins the premise that makes the
+    whole rule necessary.
+    """
+
+    def _seed(self, log, name="alto"):
+        log.observe(SUB, Q.CLEF_SEED, name, reader=READERS.DOSSIER,
+                    frame="page", tier="dossier")
+
+    def test_it_decides_a_staff_the_page_said_NOTHING_about(self):
+        """The whole point of supplying it. Without this the change would be
+        a refusal with no upside, and the other tests would pass for a rule
+        that simply threw every seed away."""
+        log = _log()
+        self._seed(log, "tenor")
+        adjudicate.run(log)
+        v = log.verdict(Q.CLEF, SUB)
+        self.assertIs(v.outcome, Outcome.DECIDED)
+        self.assertEqual(v.value, "tenor")
+
+    def test_it_does_NOT_overturn_a_clef_the_detector_read(self):
+        log = _log()
+        log.observe(SUB, Q.CLEF_GLYPH, "clefG", reader=READERS.DETECTOR,
+                    frame="cell:0", score=0.95)
+        self._seed(log, "alto")
+        adjudicate.run(log)
+        v = log.verdict(Q.CLEF, SUB)
+        self.assertEqual(v.value, "treble",
+                         "the supplied clef outvoted a read one")
+
+    def test_it_does_NOT_overturn_a_clef_the_LOCATOR_read(self):
+        """⚠️ The locator weighs 2.0, BELOW the seed's 4.0 -- so a weight
+        tweak alone would not have covered this staff. The gap test is on
+        whether the page spoke, not on how loudly."""
+        log = _log()
+        log.observe(SUB, Q.CLEF_LOCATED, "tenor", reader=READERS.CV_LOCATOR,
+                    frame="header_window", score=0.88, family="C", line=4)
+        self._seed(log, "alto")
+        adjudicate.run(log)
+        self.assertEqual(log.verdict(Q.CLEF, SUB).value, "tenor")
+
+    def test_the_refusal_is_RECORDED_rather_than_silent(self):
+        """A supplied clef that disagreed with a page that spoke is the one
+        signal a gaps-only rule would otherwise throw away."""
+        log = _log()
+        log.observe(SUB, Q.CLEF_GLYPH, "clefG", reader=READERS.DETECTOR,
+                    frame="cell:0", score=0.95)
+        self._seed(log, "alto")
+        adjudicate.run(log)
+        v = log.verdict(Q.CLEF, SUB)
+        self.assertEqual(
+            v.detail.get("supplied_clefs_withheld_because_the_page_spoke"), 1)
+
+    def test_nothing_is_recorded_when_nothing_was_withheld(self):
+        """The key is absent rather than zero -- *a null key is still a key*,
+        and a reader scanning for withheld seeds must not find one on every
+        staff in the document."""
+        log = _log()
+        self._seed(log, "tenor")
+        adjudicate.run(log)
+        self.assertNotIn(
+            "supplied_clefs_withheld_because_the_page_spoke",
+            log.verdict(Q.CLEF, SUB).detail)
+
+    def test_the_CARRY_tier_is_untouched_by_the_gap_rule(self):
+        """⚠️ `clef_continuity`'s mechanism is the ONE carry in this pipeline
+        that survives, it was measured, and it is not what Sean asked to
+        change. A rule that quietly took it with the seed would be a second,
+        unpriced change riding on the first."""
+        log = _log()
+        log.observe(SUB, Q.CLEF_GLYPH, "clefF", reader=READERS.DETECTOR,
+                    frame="cell:0", score=0.30)
+        log.observe(SUB, Q.CLEF_SEED, "treble", reader=READERS.DOSSIER,
+                    frame="page", tier="carry")
+        adjudicate.run(log)
+        v = log.verdict(Q.CLEF, SUB)
+        # The carry still contributes: with a weak detector reading, its 1.5
+        # reaches the contest at all, which a withheld term could not.
+        self.assertIn("treble", v.detail.get("scores", {}))
+        self.assertNotIn(
+            "supplied_clefs_withheld_because_the_page_spoke", v.detail,
+            "the gap rule swallowed the CARRY tier as well as the seed")
+
+    def test_the_weight_ordering_that_MAKES_this_necessary_still_holds(self):
+        """⚠️ If `W_DOSSIER` ever falls below `W_DETECTOR_HIGH`, this rule
+        stops being load-bearing and somebody will delete it as redundant.
+        It would not be: a supplied clef could still out-vote a PAIR of weak
+        read terms. Pinning the ordering keeps the reason legible."""
+        self.assertGreater(clef_mod.W_DOSSIER, clef_mod.W_DETECTOR_HIGH)

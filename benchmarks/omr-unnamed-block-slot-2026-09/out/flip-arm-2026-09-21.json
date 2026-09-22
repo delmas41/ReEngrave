@@ -1,0 +1,51 @@
+{
+  "record": "library/_shared-records/beethoven5-p1-p4-ink-identity.record.json",
+  "provenance": {
+    "commit": "e38dbc2556b3ee7a9b517cb14f1a351160f4c212",
+    "dirty": false
+  },
+  "reach_narrowed": 20,
+  "base": {
+    "inferred": 0,
+    "disabled": [
+      [
+        "collapse_duration_by_column",
+        "OMR_INFER"
+      ],
+      [
+        "collapse_duration_to_barline",
+        "OMR_INFER"
+      ],
+      [
+        "collapse_slot_index_to_family_block",
+        "OMR_SLOT_FAMILY_BLOCK"
+      ]
+    ],
+    "outcomes": {
+      "decided": 55,
+      "narrowed": 20
+    }
+  },
+  "arm": {
+    "inferred": 15,
+    "disabled": [
+      [
+        "collapse_duration_by_column",
+        "OMR_INFER"
+      ],
+      [
+        "collapse_duration_to_barline",
+        "OMR_INFER"
+      ]
+    ],
+    "outcomes": {
+      "decided": 70,
+      "narrowed": 5
+    }
+  },
+  "moved": 15,
+  "deciders_of_moved": {
+    "infer:collapse_slot_index_to_family_block": 15
+  },
+  "off_target_moves": 0
+}

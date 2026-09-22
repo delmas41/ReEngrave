@@ -593,13 +593,21 @@ RECORDED: Dict[str, str] = {
     # see). Measured: the label `Basso.` on Litolff Beethoven 5 goes
     # `Bass voice` -> `Contrabass`. See `benchmarks/omr-producer-consumer-
     # 2026-09/FINDINGS.md`. The stale-entry test is what made it leave.
-    "run_staged.dossier": (
-        "OPEN FINDING, NOT EXCUSED — recorded 2026-09-15, same chain, same "
-        "shape, found by this check rather than by accident. `--dossier` "
-        "exists on `tools.omr.transcribe` and NOT on `staged/__main__.py`, so "
-        "Q.DOSSIER_FACT abstains on every staged run. REMOVE THIS ENTRY the "
-        "day a producer lands."
-    ),
+    # ⚠️⚠️ `run_staged.dossier` LEFT THIS LIST 2026-09-21, AS ITS OWN ENTRY
+    # SAID TO ("REMOVE THIS ENTRY the day a producer lands"). A producer
+    # landed: `staged/__main__.py` gained `--sheet`, and Sean's ruling is that
+    # a dossier reaches the pipeline ONLY through a sheet whose
+    # `movement.dossier_id` a human confirmed -- so the measurement path stays
+    # structurally unable to consume one. `benchmarks/omr-factsheet-2026-09/`.
+    #
+    # ⚠️⚠️ **RECORDED IS NOW EMPTY, AND THAT IS THE STATE TO BE SUSPICIOUS OF.**
+    # All three instances this check ever found are repaired, so `--check`
+    # goes green because the tree is clean rather than because the inventory
+    # excused anything -- and an empty result is also what a broken derivation
+    # returns. The red proof therefore lives entirely on the SYNTHETIC trees in
+    # `tools/omr/tests/test_no_producer.py`, which reconstruct each topology
+    # and assert the question still fires. If those ever go quiet, this check
+    # is reporting zero because it stopped asking.
 }
 
 

@@ -2113,6 +2113,14 @@ def gather_clef_seed(log: Log, cells, local, *, dossier: Any,
     clefs = {}
     if isinstance(dossier, dict):
         clefs = dossier.get("clef_by_staff") or {}
+    # ⚠️⚠️ KEYED PER SYSTEM (`{"p1/s0": {staff_index: clef}}`), because a
+    # printed score SUPPRESSES tacet staves: index 6 is the Timpani on a full
+    # system and Violino I on one that drops it, so a single index-keyed dict
+    # seeds the timpani's `bass` onto a violin. That is the 12-of-75 graft.
+    # ⚠️ No dossier file carries this key at all -- it is the OUTPUT of the
+    # part-to-staff join, supplied by a CONFIRMED fact sheet
+    # (`factsheet.clef_by_staff`). A raw dossier still seeds nothing, which is
+    # what it has always silently done.
     seen = set()
     for c in cells:
         key = local.get(c.staff_index)
@@ -2122,7 +2130,8 @@ def gather_clef_seed(log: Log, cells, local, *, dossier: Any,
         if sub.to_key() in seen:
             continue
         seen.add(sub.to_key())
-        value = clefs.get(key[1]) or clefs.get(str(key[1]))
+        per_system = clefs.get(f"p{c.page_index}/s{key[0]}") or {}
+        value = per_system.get(key[1]) or per_system.get(str(key[1]))
         if value is None:
             log.abstain(sub, Q.CLEF_SEED, reader=READERS.DOSSIER,
                         frame=FRAME_PAGE, reason=ABSTAIN.OUT_OF_SCOPE,

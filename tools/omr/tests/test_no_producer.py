@@ -55,27 +55,54 @@ class TestTheKnownInstances(unittest.TestCase):
         the BUILD'S PROGRESS, not of the mechanism* — so it is now the mirror
         of `test_pdf_path_is_no_longer_a_finding`.
 
-        ⚠️ The MECHANISM is still exercised by a live instance
-        (`test_dossier_is_found_with_no_hint`) and by the synthetic trees
-        below, which is what keeps this conversion honest: an empty result is
-        also what a broken derivation returns."""
+        ⚠️⚠️ THE LIVE-INSTANCE CLAUSE RETIRED 2026-09-21 AND THAT IS THE
+        THING TO BE SUSPICIOUS OF. It read `assertIn("dossier", ...)` — "the
+        question must still fire on a LIVE instance, or this file is asserting
+        a zero it cannot interpret" — and `dossier` was repaired the day
+        `--sheet` landed. **All three instances this check ever found are now
+        repaired, so there is no live one left to anchor on.** The anchor moves
+        to the SYNTHETIC trees below, which reconstruct each topology; that is
+        the whole of the red proof now and the reason those tests may never be
+        allowed to go quiet."""
         self.assertNotIn("roster", _names(self.report))
-        self.assertIn("dossier", _names(self.report),
-                      "the question must still fire on a LIVE instance, or "
-                      "this file is asserting a zero it cannot interpret")
 
-    def test_dossier_is_found_with_no_hint(self) -> None:
-        # Found BY this check, not by accident — the same chain, same shape.
-        self.assertIn("dossier", _names(self.report))
+    def test_dossier_is_no_longer_a_finding(self) -> None:
+        """⚠️ RED ON SUCCESS, CONVERTED NOT DELETED — the third and last.
+
+        `staged/__main__.py` gained `--sheet` on 2026-09-21 and the chain is
+        supplied, under Sean's ruling that a dossier reaches the pipeline only
+        through a sheet a human confirmed. Its `RECORDED` entry left the
+        inventory the same day, as that entry itself instructed.
+        """
+        self.assertNotIn("dossier", _names(self.report))
 
     def test_a_chain_names_every_layer(self) -> None:
-        """⚠️ RE-POINTED AT `dossier` WHEN `roster` WAS REPAIRED. The two
-        travel the identical chain, so the property this test exists for —
-        that a finding names every layer rather than only its ends — is
-        unchanged; what moved is which live instance carries it."""
-        chain = [f for f in self.report.findings if f.param == "dossier"][0]
+        """⚠️ RE-POINTED AT A SYNTHETIC TREE WHEN `dossier` WAS REPAIRED —
+        it had already been re-pointed once, off `roster` onto `dossier`, and
+        there is no third live instance to move to. The property is unchanged:
+        a finding must name EVERY layer, not only its ends. What moved is that
+        the tree carrying it is now built by the test rather than found in the
+        repo, which is exactly what `test_THE_PDF_PATH_TOPOLOGY` already does.
+        """
+        r = TestTheMechanism()._scan({"m.py": '''
+def run_staged(pdf, pages, *, dossier=None):
+    return run_staged_on(prepare(pdf), dossier=dossier)
+
+def run_staged_on(prepared, *, dossier=None):
+    return gather(prepared, dossier=dossier)
+
+def gather(prepared, *, dossier=None):
+    return gather_external(prepared, dossier=dossier)
+
+def gather_external(prepared, *, dossier=None):
+    if dossier is None:
+        abstain("no dossier supplied")
+        return None
+    return read(dossier)
+'''})
+        self.assertEqual(_names(r), {"dossier"})
         self.assertEqual(
-            [k[0] for k in chain.keys],
+            [k[0] for k in r.findings[0].keys],
             ["run_staged", "run_staged_on", "gather", "gather_external"],
         )
 
@@ -120,11 +147,22 @@ class TestTheInventoryDescribesTheTreeNotItsHistory(unittest.TestCase):
             "them from RECORDED; an inventory that outlives its findings "
             "stops describing the code."))
 
-    def test_check_is_green_only_because_the_findings_are_recorded(self) -> None:
+    def test_check_is_green_because_the_tree_is_CLEAN_not_because_it_is_excused(self) -> None:
+        """⚠️⚠️ THIS TEST CHANGED MEANING ON 2026-09-21 AND SAYS SO.
+
+        It asserted `report.findings` is non-empty — "the findings did not
+        disappear silently" — which was the right question while any instance
+        was open. All three are now repaired and `RECORDED` is empty, so green
+        means CLEAN. The two are indistinguishable from the outside, which is
+        why the red proof moved wholesale onto the synthetic trees: see
+        `TestTheMechanism` and the CLI red proof below.
+        """
         report = NP.scan([REPO / "tools"])
-        self.assertTrue(report.findings, "the findings did not disappear silently")
         unrecorded = [f.ident for f in report.findings if f.ident not in NP.RECORDED]
         self.assertEqual(unrecorded, [])
+        self.assertEqual(dict(NP.RECORDED), {}, (
+            "RECORDED is expected empty now; if an entry returns, this test "
+            "must go back to asserting the findings are non-empty"))
 
 
 # --------------------------------------------------------------------------
@@ -353,16 +391,34 @@ class TestTheCli(unittest.TestCase):
         self.assertEqual(out.returncode, 0, out.stderr)
 
     def test_check_exits_non_zero_on_an_unrecorded_finding(self) -> None:
-        """RED PROOF at the CLI level, with RECORDED emptied."""
-        code = "\n".join([
-            "import sys",
-            "sys.path.insert(0, %r)" % str(REPO),
-            "from tools.omr import no_producer as NP",
-            "NP.RECORDED.clear()",          # the mutation: the inventory is gone
-            "sys.exit(NP.main(['--check']))",
-        ])
-        out = subprocess.run([sys.executable, "-c", code], cwd=REPO,
-                             capture_output=True, text=True)
+        """RED PROOF at the CLI level.
+
+        ⚠️ IT USED TO EMPTY `RECORDED` AND SCAN THE REAL TREE, which worked
+        only while a live finding existed to un-excuse. All three are repaired
+        now, so that mutation makes no difference and the proof would pass
+        vacuously — it is pointed at a SYNTHETIC tree instead, which is the
+        only thing that can still turn this check red.
+        """
+        tmp = tempfile.mkdtemp()
+        root = Path(tmp) / "pkg"
+        root.mkdir(parents=True)
+        (root / "__init__.py").write_text("")
+        (root / "m.py").write_text(
+            "def outer(a, *, thing=None):\n"
+            "    return middle(a, thing=thing)\n"
+            "\n"
+            "def middle(a, *, thing=None):\n"
+            "    return inner(a, thing=thing)\n"
+            "\n"
+            "def inner(a, *, thing=None):\n"
+            "    if thing is None:\n"
+            "        abstain('no thing supplied')\n"
+            "        return None\n"
+            "    return thing\n")
+        out = subprocess.run(
+            [sys.executable, "-m", "tools.omr.no_producer",
+             "--scan", str(root), "--check"],
+            cwd=REPO, capture_output=True, text=True)
         self.assertEqual(out.returncode, 1, out.stdout + out.stderr)
         self.assertIn("threaded with no producer", out.stderr)
 

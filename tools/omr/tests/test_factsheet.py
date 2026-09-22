@@ -6,8 +6,10 @@ would pass on one machine and be skipped everywhere else, which is how a
 guard stops guarding.
 """
 
+import contextlib
 import json
 import unittest
+from pathlib import Path
 
 from tools.omr import factsheet as F
 
@@ -221,6 +223,7 @@ if __name__ == "__main__":
     unittest.main()
 
 
+
 class TestOneBarNumberPlacesEverySystemAfterIt(unittest.TestCase):
     def _sheet(self, bars=(4, 5, 6)):
         rec = _record({(0, i): FULL for i in range(len(bars))})
@@ -270,88 +273,170 @@ class TestOneBarNumberPlacesEverySystemAfterIt(unittest.TestCase):
         self.assertTrue(any("chain STOPS" in n for n in notes))
 
 
-class TestAListValuedFactIsNotAContainer(unittest.TestCase):
-    """⚠️ THE BUG A REAL SHEET FOUND AND THE TESTS DID NOT. A hand-typed
-    `suppressed: ["Timpani"]` is a fact whose value is a list; `lineup.full`
-    is a list OF facts. Nothing about the two objects tells them apart, so
-    `merge` treated the edit as a container, found nothing to merge it
-    against, and threw it away."""
 
-    def test_the_paths_are_declared_not_sniffed(self):
-        self.assertTrue(F.is_list_valued("lineup.systems.p0/s1.suppressed"))
-        self.assertTrue(F.is_list_valued("work.scored_for"))
-        self.assertFalse(F.is_list_valued("lineup.full"))
-        self.assertFalse(F.is_list_valued("lineup.systems.p0/s1.bars"))
-
-    def test_a_hand_suppression_list_survives_a_redraft(self):
-        rec = _record({(0, 0): FULL, (0, 1): FULL[:3]})
-        sheet = F.draft("x--imslp999999.pdf", record=rec)
-        sheet["lineup"]["systems"]["p0/s1"]["suppressed"] = ["Timpani"]
-        merged = F.merge(sheet, F.draft("x--imslp999999.pdf", record=rec))
-        leaf = merged["lineup"]["systems"]["p0/s1"]["suppressed"]
-        self.assertEqual(F.value_of(leaf), ["Timpani"])
-        self.assertEqual(F.source_of(leaf), "hand")
-
-    def test_a_hand_suppression_list_that_disagrees_keeps_the_reader(self):
-        rec = _record({(0, 0): FULL, (0, 1): [FULL[0], FULL[1], FULL[4]]})
-        sheet = F.draft("x--imslp999999.pdf", record=rec)
-        sheet["lineup"]["systems"]["p0/s1"]["suppressed"] = ["Trumpet"]
-        merged = F.merge(sheet, F.draft("x--imslp999999.pdf", record=rec))
-        leaf = merged["lineup"]["systems"]["p0/s1"]["suppressed"]
-        self.assertEqual(leaf["reader_said"], ["Horn", "Trumpet"])
-        self.assertEqual(F.report(merged)["disagreements"], 1)
-
-    def test_a_hand_lineup_of_a_different_length_wins_whole(self):
-        """He counted the staves off the page; the reader is the one that is
-        wrong about how many there are."""
-        rec = _record({(0, 0): FULL})
-        sheet = F.draft("x--imslp999999.pdf", record=rec)
-        sheet["lineup"]["full"] = ["Fl", "Ob", "Hr", "Trp", "Vl", "Vc"]
-        merged = F.merge(sheet, F.draft("x--imslp999999.pdf", record=rec))
-        self.assertEqual(merged["lineup"]["full"],
-                         ["Fl", "Ob", "Hr", "Trp", "Vl", "Vc"])
+DOSSIER = {
+    "work_id": "x", "n_parts": 6,
+    "parts": [
+        {"slot": 0, "name": "Flute 1", "written_clef": "treble"},
+        {"slot": 1, "name": "Flute 2", "written_clef": "treble"},
+        {"slot": 2, "name": "Horn 1", "written_clef": "treble"},
+        {"slot": 3, "name": "Trumpet", "written_clef": "treble"},
+        {"slot": 4, "name": "Timpani", "written_clef": "bass"},
+        {"slot": 5, "name": "Cello", "written_clef": "bass"},
+    ],
+}
+LINEUP = ["Fl.", "Hr.", "Trp.", "Pk.", "Vc."]
+JOIN = [[0, 1], [2], [3], [4], [5]]
 
 
-class TestAnAnsweredCheckRetires(unittest.TestCase):
-    """⚠️ A check label that is not a real dotted path silently never matches,
-    so the to-do list keeps asking for what you already gave it -- and a list
-    that lies about what is outstanding stops being read."""
+def _sheet_with_join(suppressed_by_system, n_staves_by_system=None):
+    systems = {k: {"n_staves": F.fact(n, "reader"), "bars": F.fact(8, "reader"),
+                   "suppressed": v, "first_ref_measure": None}
+               for k, (v, n) in suppressed_by_system.items()}
+    return {"pdf": "x.pdf", "sheet_version": 1, "_README": "", "check": [],
+            "work": {}, "movement": {"dossier_id": "d"},
+            "lineup": {"full": list(LINEUP), "parts": [list(j) for j in JOIN],
+                       "systems": systems}}
 
-    def _filled(self):
-        # ⚠️ one REFUSED name, so suppression genuinely cannot be derived and
-        # there is a real check to retire. With a fully-named lineup the tool
-        # derives it and the check never exists -- which is what the first
-        # version of this test asserted against, and it failed honestly.
-        weak = [("Fl.", "Flute"), ("in C 1 2", None), ("Trp.", "Trumpet")]
-        rec = _record({(0, 0): weak, (0, 1): weak[:2]})
-        sheet = F.draft("x--imslp999999.pdf", record=rec)
-        return sheet, rec
 
-    def test_every_check_label_is_a_path_into_the_sheet(self):
-        sheet, _ = self._filled()
-        paths = {p for p, _ in F.walk(sheet)}
-        for c in sheet["check"]:
-            head = c.split(":", 1)[0].strip()
-            if " " in head:          # prose checks (READER HEALTH) name no path
-                continue
-            self.assertTrue(
-                any(p == head or p.startswith(head + ".")
-                    or p.startswith(head + "[") or F._path_matches(p, head)
-                    for p in paths),
-                f"check names {head!r}, which is no path in the sheet")
+class TestTheDossierReachesThePipelineOnlyThroughAConfirmedSheet(unittest.TestCase):
+    """Sean, 2026-09-21: 'let the dossier only reach the pipeline through a
+    confirmed sheet.' The benchmark path must be structurally unable to
+    consume one, not merely trusted not to."""
 
-    def test_answering_a_suppression_check_retires_it(self):
-        sheet, rec = self._filled()
-        key = "lineup.systems.p0/s1.suppressed"
-        self.assertTrue(any(c.startswith(key) for c in sheet["check"]))
-        sheet["lineup"]["systems"]["p0/s1"]["suppressed"] = ["Horn"]
-        merged = F.merge(sheet, F.draft("x--imslp999999.pdf", record=rec))
-        self.assertFalse(any(c.startswith(key) for c in merged["check"]))
+    def test_an_unconfirmed_dossier_id_is_refused(self):
+        sheet = F.draft("b--imslp984073.pdf")
+        sheet["movement"]["dossier_id"] = F.fact("beethoven-sym5-mvt1", "dossier")
+        d, why = F.dossier_for(sheet)
+        self.assertIsNone(d)
+        self.assertIn("nobody confirmed", why)
 
-    def test_the_window_check_retires_only_when_every_system_has_one(self):
-        sheet, rec = self._filled()
-        key = "lineup.systems.*.first_ref_measure"
-        sheet["lineup"]["systems"]["p0/s0"]["first_ref_measure"] = 1
-        merged = F.merge(sheet, F.draft("x--imslp999999.pdf", record=rec))
-        self.assertFalse(any(c.startswith(key) for c in merged["check"]),
-                         "the chain filled them all, so the ask is answered")
+    def test_a_sheet_naming_no_dossier_is_refused(self):
+        d, why = F.dossier_for({"movement": {"dossier_id": None}})
+        self.assertIsNone(d)
+
+    def test_the_staged_cli_has_no_dossier_flag(self):
+        """⚠️ The structural half of the ruling. If this ever fails, a truth
+        file can reach a measurement path again."""
+        src = (Path(__file__).resolve().parents[1]
+               / "staged" / "__main__.py").read_text()
+        self.assertNotIn('"--dossier"', src)
+        self.assertIn('"--sheet"', src)
+
+    def test_a_confirmed_id_is_admitted_and_says_who_admitted_it(self):
+        sheet = _sheet_with_join({"p0/s0": ([], 5)})
+        with _dossier_on_disk("d", DOSSIER):
+            d, why = F.dossier_for(sheet)
+        self.assertIsNotNone(d)
+        self.assertEqual(d["admitted_by"]["confirmed_by"], "hand")
+        self.assertEqual(d["admitted_by"]["dossier_id"], "d")
+
+
+class TestTheJoinIsSuppliedAndPerSystem(unittest.TestCase):
+    def test_no_join_means_no_seed(self):
+        sheet = _sheet_with_join({"p0/s0": ([], 5)})
+        sheet["lineup"]["parts"] = [None] * 5
+        seeds, why = F.clef_by_staff(sheet, DOSSIER)
+        self.assertEqual(seeds, {})
+        self.assertIn("no staff-to-part join is confirmed", why)
+
+    def test_a_full_system_seeds_every_staff(self):
+        sheet = _sheet_with_join({"p0/s0": ([], 5)})
+        seeds, _ = F.clef_by_staff(sheet, DOSSIER)
+        self.assertEqual(seeds["p0/s0"],
+                         {0: "treble", 1: "treble", 2: "treble",
+                          3: "bass", 4: "bass"})
+
+    def test_a_short_system_SHIFTS_and_does_not_graft(self):
+        """⚠️⚠️ THE ONE THAT MATTERS. Index 3 is the Timpani (bass) on a full
+        system and the Cello on one that drops the Timpani -- a single
+        index-keyed dict would seed `bass` onto whatever sits at 3. Here the
+        shift is real: dropping Pk. leaves Vc. at index 3."""
+        sheet = _sheet_with_join({"p0/s0": ([], 5), "p0/s1": (["Pk."], 4)})
+        seeds, _ = F.clef_by_staff(sheet, DOSSIER)
+        self.assertEqual(seeds["p0/s1"],
+                         {0: "treble", 1: "treble", 2: "treble", 3: "bass"})
+        self.assertEqual(len(seeds["p0/s1"]), 4)
+
+    def test_an_unconfirmed_suppression_list_skips_that_system(self):
+        sheet = _sheet_with_join({"p0/s0": ([], 5), "p0/s1": (None, 4)})
+        seeds, why = F.clef_by_staff(sheet, DOSSIER)
+        self.assertNotIn("p0/s1", seeds)
+        self.assertIn("SKIPPED", why)
+
+    def test_unconfirmed_skips_EVEN_WHEN_the_count_would_reconcile(self):
+        """⚠️ THE MUTATION-FOUND GAP. The sibling test used a mismatched count,
+        so the reconciliation guard caught it and the None-check was never
+        exercised. Here the counts agree, and the rule that must hold is the
+        doctrine's and not arithmetic's: ONLY A CONFIRMED FACT SEEDS. A
+        machine-derived `suppressed: []` is the READER's claim that this system
+        prints the full lineup, and trusting it is trusting the thing the sheet
+        exists to check."""
+        sheet = _sheet_with_join({"p0/s1": (None, 5)})   # 5 == len(LINEUP)
+        seeds, why = F.clef_by_staff(sheet, DOSSIER)
+        self.assertNotIn("p0/s1", seeds)
+        self.assertIn("SKIPPED", why)
+
+    def test_a_machine_derived_empty_suppression_does_not_seed(self):
+        sheet = _sheet_with_join({"p0/s0": (F.fact([], "derived"), 5)})
+        seeds, _ = F.clef_by_staff(sheet, DOSSIER)
+        self.assertEqual(seeds, {})
+
+    def test_the_two_independent_facts_must_reconcile(self):
+        """The human read the margin; the reader counted the staves. Where
+        they disagree, one of them is wrong about that system."""
+        sheet = _sheet_with_join({"p0/s1": (["Pk."], 3)})   # 5-1=4, reader says 3
+        seeds, why = F.clef_by_staff(sheet, DOSSIER)
+        self.assertNotIn("p0/s1", seeds)
+        self.assertIn("reader counted 3", why)
+
+    def test_a_suppressed_name_not_in_the_lineup_is_refused(self):
+        sheet = _sheet_with_join({"p0/s1": (["Tuba"], 4)})
+        seeds, why = F.clef_by_staff(sheet, DOSSIER)
+        self.assertNotIn("p0/s1", seeds)
+        self.assertIn("no slot of lineup.full", why)
+
+    def test_a_staff_whose_parts_disagree_abstains(self):
+        d = json.loads(json.dumps(DOSSIER))
+        d["parts"][1]["written_clef"] = "bass"      # Flute 2 now disagrees
+        sheet = _sheet_with_join({"p0/s0": ([], 5)})
+        seeds, why = F.clef_by_staff(sheet, d)
+        self.assertNotIn(0, seeds["p0/s0"])
+        self.assertIn("disagree", why)
+
+    def test_present_indices_is_multiset_aware(self):
+        self.assertEqual(F._present_indices(["V", "V", "Vc"], ["V"]), [1, 2])
+        self.assertIsNone(F._present_indices(["V"], ["Tuba"]))
+
+    def test_the_join_is_drafted_only_when_it_needs_no_judgement(self):
+        rec = _record({(0, 0): FULL})               # 5 staves
+        same = F.draft("x--imslp999999.pdf", record=rec)
+        same["movement"]["n_reference_parts"] = F.fact(5, "dossier")
+        drafted = F._draft_lineup(F._reader_view(rec), n_parts=5)[0]["parts"]
+        self.assertEqual([F.value_of(x) for x in drafted],
+                         [[0], [1], [2], [3], [4]])
+        condensed = F._draft_lineup(F._reader_view(rec), n_parts=9)[0]["parts"]
+        self.assertTrue(all(x is None for x in condensed),
+                        "a condensed page must not be joined by name")
+
+
+class TestGatherReadsThePerSystemShape(unittest.TestCase):
+    def test_the_seam(self):
+        """⚠️ A SEAM TEST, because the two halves are in different modules and
+        nothing else forces them to agree about the shape."""
+        src = (Path(__file__).resolve().parents[1]
+               / "staged" / "gather.py").read_text()
+        self.assertIn('clefs.get(f"p{c.page_index}/s{key[0]}")', src)
+
+
+@contextlib.contextmanager
+def _dossier_on_disk(name, payload):
+    d = F._dossier_dir()
+    f = d / f"{name}.json"
+    existed = f.exists()
+    f.write_text(json.dumps(payload))
+    try:
+        yield f
+    finally:
+        if not existed:
+            f.unlink(missing_ok=True)

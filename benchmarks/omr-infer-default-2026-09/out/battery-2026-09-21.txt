@@ -1,0 +1,44 @@
+BASE (unmutated): 82 passed, 5 warnings
+  RED      [infer.py] run() ignores every rule's gate
+              2 failed, 80 passed, 5 warnings
+  RED      [infer.py] run() refuses every rule
+              10 failed, 72 passed, 5 warnings
+  RED      [infer.py] a gated-off rule is skipped SILENTLY
+              1 failed, 81 passed, 5 warnings
+  RED      [infer.py] the report names the wrong flag
+              1 failed, 81 passed, 5 warnings
+  RED      [infer.py] enabled_rules() ignores the gate
+              12 failed, 70 passed, 5 warnings
+  RED      [infer.py] enabled_rules() returns nothing
+              6 failed, 76 passed, 5 warnings
+  RED      [infer.py] stage_should_run() is always True
+              10 failed, 72 passed, 5 warnings
+  RED      [infer.py] stage_should_run() is always False
+              4 failed, 78 passed, 5 warnings
+  RED      [infer.py] the family-block flag becomes default-OFF
+              1 failed, 81 passed, 5 warnings
+  RED      [infer.py] the family-block flag becomes an ALLOW-list (typo silences it)
+              1 failed, 81 passed, 5 warnings
+  RED      [infer.py] OMR_INFER becomes default-ON
+              2 failed, 80 passed, 5 warnings
+  RED      [infer.py] INFER_GATE carries the wrong flag name
+              1 failed, 81 passed, 5 warnings
+  RED      [inferences.py] the slot rule falls back to the stage-wide flag
+              2 failed, 80 passed, 5 warnings
+  RED      [clef.py] the supplied clef is admitted everywhere again
+              3 failed, 79 passed, 5 warnings
+  RED      [clef.py] the supplied clef is NEVER admitted
+              2 failed, 80 passed, 5 warnings
+  RED      [clef.py] the gap test counts the supplied terms too
+              3 failed, 79 passed, 5 warnings
+  RED      [clef.py] a withheld seed is not counted
+              1 failed, 81 passed, 5 warnings
+  RED      [clef.py] the withheld count never reaches the verdict
+              1 failed, 81 passed, 5 warnings
+  RED      [clef.py] the CARRY tier is swallowed by the gap rule
+              1 failed, 81 passed, 5 warnings
+  RED      [clef.py] the supplied clef keeps the carry's weight
+              1 failed, 81 passed, 5 warnings
+
+20 RED / 20 arms, 0 survived
+restore verified by hash for every subject
