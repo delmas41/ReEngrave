@@ -31,6 +31,35 @@ which "it does not reach this" is actionable:
 
 `--focus SUBSTR` prints every distinct label of one source, with its gate.
 
+## WHAT IT MEASURED, 2026-09-22 (CONVENTION ASSUMED / NOT CONFIRMED WITH SEAN)
+
+⚠️⚠️ **THE HANDOFF'S PREMISE IS REFUTED: the rule fires ZERO times on all 209
+Brahms margin labels**, and every Brahms label that carries the noun (`'Hr.'`,
+`'(C) Hr.'`, `'Hr. 1. (C) 2.'`, … ten distinct spellings) **already resolves to
+Horn**. The bare survivors `'(C)'`, `'(Es)'`, `'(E)'`, `'in C \\frac{1}{2}'`
+stop at `no_usable_token`: every token is under `MIN_KEPT_LETTERS = 3`, so none
+reaches the suffix test. **No threshold makes it reachable** — admitting
+two-letter tails admits `es`, `in`, `ni`, `hr` and every other syllable.
+
+⚠️ CLAUDE.md's lexicon section already said so: *"the page prints `Hörner` once
+braced across them … no lexicon can recover them."* Brahms 1 sets FOUR horns on
+TWO staves (1&2 in C, 3&4 in E♭) — which is what `in C 1/2` and `in Es 3/4`
+are. It is a braced PAIR label, not a truncation.
+
+Corpus-wide gates (1,422 labels): `resolved_already` 968 (68.1%), `no_roster`
+167, `no_tail_match` 122, `no_usable_token` 83, `under_fraction` 57,
+RECOVERED 17, `ambiguous` 5, DISAMBIGUATED 3. **DIVERGED 0**, so this funnel is
+a faithful mirror of `wr.decide`.
+
+⚠️⚠️ **ON REAL PAGES NOT ONE RECOVERY IS A TRUNCATION.** All 17 are Ravel
+Boléro `Violoncelles` superscripts (`V elles`, `V^{\\text{elles}}`, …) → Cello,
+via the abbreviation alias `vcelles` (`elles` keeps 0.714 of it; the full
+`violoncelles` is 0.417, under the floor). The `larinetti`/`orni`/`mpani`
+recoveries exist only on the ENGRAVED FIXTURES, which
+`benchmarks/omr-margin-window-truncation-2026-09/FINDINGS.md` §4 proved is a
+LilyPond `indent` artefact with zero real-world exposure (289 editions, 0 spans
+at the sheet edge).
+
     python3 benchmarks/omr-roster-truncation-reprice-2026-09/probe_domain.py
     python3 .../probe_domain.py --focus brahms
 """

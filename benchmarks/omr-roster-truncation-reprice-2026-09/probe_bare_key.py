@@ -31,6 +31,37 @@ different risk and are reported apart:
                    exists to price its hazard, because a bare key standing
                    next to a DIFFERENT transposing instrument captures it.
 
+## WHAT IT MEASURED, 2026-09-22 (CONVENTION ASSUMED / NOT CONFIRMED WITH SEAN)
+
+**15 bare-key labels of 1,422 (1.1%), 6 distinct, on TWO documents** —
+Brahms 1 / Breitkopf 14, Mahler 5 one (`in F 1 2`). A small, decidable, real
+class, and the one the 2026-09-21 fact sheet actually found.
+
+⚠️⚠️ **(B) ADJACENCY IS REFUSED, AND IT IS WRONG EXACTLY WHERE IT LOOKS
+SAFEST: SPLIT 11, "unanimous" 4 — AND ALL 4 ARE WRONG.**
+
+    p0 s5  'in C  \\frac{1}{2}'  -> Contrabassoon   truth Horn 1-2 in C
+    p0 s6  'in Es  \\frac{3}{4}' -> Trumpet         truth Horn 3-4 in Es
+    p1 s5  '(C)'                 -> Contrabassoon   truth Horn 1-2 in C
+    p1 s6  '(Es)'                -> Trumpet         truth Horn 3-4 in Es
+
+The mechanism is general: adjacency fails precisely when BOTH members of the
+braced pair are bare, because then neither neighbour is a horn — they are the
+instruments above and below the PAIR (`K-Fag.` and `2 Trompeten`). A rule that
+abstains on 11 and is confidently wrong on 4 is worse than one that abstains on
+15: *an UNKNOWN beats a confident wrong answer.*
+
+**(A) SLOT CARRY is the candidate that survives**, and it is already shipped on
+the LEGACY path (`contextual.py:1527` stamps one name per SLOT onto every staff
+of that slot on every page) and ABSENT on the staged one —
+`adjudicate_instrument` is `Kind.STAFF` and reads `Q.MARGIN_LABEL` at the
+default `Scope.EXACT`, so a bare-key staff abstains `not_in_lexicon` and
+nothing carries a name to it. Both documents name the borrowing instrument
+elsewhere (Brahms: Horn 16, Clarinet 18, Trumpet 9; Mahler 5: Horn 9,
+Trumpet 8). ⚠️ **NOT BUILT, and per-slot correctness is NOT established here**:
+`staff_index` is numbered across the PAGE, not per system, so proving the slot
+mapping needs a staged run this lane did not make.
+
     python3 benchmarks/omr-roster-truncation-reprice-2026-09/probe_bare_key.py
 """
 from __future__ import annotations
