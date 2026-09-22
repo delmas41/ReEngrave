@@ -1,0 +1,397 @@
+{
+ "label": "breitkopf",
+ "seed": 20260922,
+ "question": "The RED brackets mark one notehead and the BLUE brackets mark another. Do these two noteheads share ONE printed stem -- are they two members of the same chord?",
+ "verdicts_allowed": [
+  "one_shared_stem",
+  "separate_stems",
+  "red_is_not_a_notehead",
+  "blue_is_not_a_notehead",
+  "cannot_tell"
+ ],
+ "n_candidates": 11,
+ "n_controls_available": 211,
+ "n_controls_drawn": 8,
+ "rows": [
+  {
+   "subject": "glyph/0/0/4/1/3",
+   "mate": "glyph/0/0/4/1/6",
+   "stem": "obs:005953",
+   "stratum": "CANDIDATE",
+   "red_page_box": [
+    2229.0,
+    3265.0,
+    2267.675,
+    3283.525
+   ],
+   "blue_page_box": [
+    2244.6,
+    3135.975,
+    2293.675,
+    3162.95
+   ],
+   "x_gap_head_widths": 0.017,
+   "dy_head_heights": 6.737
+  },
+  {
+   "subject": "glyph/0/0/5/6/12",
+   "mate": "glyph/0/0/5/6/2",
+   "stem": "obs:005983",
+   "stratum": "CANDIDATE",
+   "red_page_box": [
+    4720.09375,
+    3623.96875,
+    4759.625,
+    3651.8125
+   ],
+   "blue_page_box": [
+    4720.09375,
+    3735.34375,
+    4762.71875,
+    3774.1875
+   ],
+   "x_gap_head_widths": 0.017,
+   "dy_head_heights": -4.198
+  },
+  {
+   "subject": "glyph/2/0/8/1/5",
+   "mate": "glyph/2/0/8/1/4",
+   "stem": "obs:035023",
+   "stratum": "CANDIDATE",
+   "red_page_box": [
+    1775.6806640625,
+    2382.9951171875,
+    1791.2900390625,
+    2397.14111328125
+   ],
+   "blue_page_box": [
+    1761.53466796875,
+    2324.94775390625,
+    1786.412109375,
+    2350.80078125
+   ],
+   "x_gap_head_widths": 0.281,
+   "dy_head_heights": 3.69
+  },
+  {
+   "subject": "glyph/2/0/5/4/10",
+   "mate": "glyph/2/0/5/4/3",
+   "stem": "obs:034975",
+   "stratum": "CANDIDATE",
+   "red_page_box": [
+    4155.466796875,
+    1665.7021484375,
+    4195.548828125,
+    1696.41015625
+   ],
+   "blue_page_box": [
+    4158.052734375,
+    1764.9375,
+    4201.0439453125,
+    1797.26171875
+   ],
+   "x_gap_head_widths": 0.016,
+   "dy_head_heights": -3.258
+  },
+  {
+   "subject": "glyph/1/1/3/4/11",
+   "mate": "glyph/1/1/3/4/23",
+   "stem": "obs:021916",
+   "stratum": "CANDIDATE",
+   "red_page_box": [
+    3982.6298828125,
+    4977.5234375,
+    3993.0,
+    5002.748046875
+   ],
+   "blue_page_box": [
+    3916.765625,
+    4925.953125,
+    3983.470703125,
+    4960.9873046875
+   ],
+   "x_gap_head_widths": 2.081,
+   "dy_head_heights": 1.85
+  },
+  {
+   "subject": "glyph/3/1/10/1/7",
+   "mate": "glyph/3/1/10/1/15",
+   "stem": "obs:053963",
+   "stratum": "CONTROL",
+   "red_page_box": [
+    1738.5175,
+    6258.1025,
+    1776.5349999999999,
+    6290.8475
+   ],
+   "blue_page_box": [
+    1738.24,
+    6329.6975,
+    1778.755,
+    6359.1125
+   ],
+   "x_gap_head_widths": 0.0,
+   "dy_head_heights": -2.136
+  },
+  {
+   "subject": "glyph/1/0/1/0/44",
+   "mate": "glyph/1/0/1/0/17",
+   "stem": "obs:021186",
+   "stratum": "CANDIDATE",
+   "red_page_box": [
+    1222.20458984375,
+    814.3779296875,
+    1251.62353515625,
+    845.56201171875
+   ],
+   "blue_page_box": [
+    1212.2021484375,
+    744.36083984375,
+    1253.97705078125,
+    779.0751953125
+   ],
+   "x_gap_head_widths": 0.1,
+   "dy_head_heights": 2.189
+  },
+  {
+   "subject": "glyph/3/0/10/8/12",
+   "mate": "glyph/3/0/10/8/5",
+   "stem": "obs:053419",
+   "stratum": "CONTROL",
+   "red_page_box": [
+    4727.83,
+    2899.515,
+    4764.345,
+    2934.395
+   ],
+   "blue_page_box": [
+    4727.285,
+    2971.1825,
+    4765.435,
+    3002.52
+   ],
+   "x_gap_head_widths": 0.0,
+   "dy_head_heights": -2.004
+  },
+  {
+   "subject": "glyph/2/0/3/2/19",
+   "mate": "glyph/2/0/3/2/1",
+   "stem": "obs:034935",
+   "stratum": "CANDIDATE",
+   "red_page_box": [
+    2750.140625,
+    1334.29248046875,
+    2790.294921875,
+    1357.7158203125
+   ],
+   "blue_page_box": [
+    2728.8466796875,
+    1139.9091796875,
+    2768.69677734375,
+    1173.67529296875
+   ],
+   "x_gap_head_widths": 0.326,
+   "dy_head_heights": 8.078
+  },
+  {
+   "subject": "glyph/3/1/3/2/10",
+   "mate": "glyph/3/1/3/2/13",
+   "stem": "obs:053691",
+   "stratum": "CONTROL",
+   "red_page_box": [
+    2006.623046875,
+    4705.2529296875,
+    2043.67578125,
+    4737.75
+   ],
+   "blue_page_box": [
+    2008.1416015625,
+    4806.99609375,
+    2045.1943359375,
+    4840.7080078125
+   ],
+   "x_gap_head_widths": 0.0,
+   "dy_head_heights": -3.15
+  },
+  {
+   "subject": "glyph/3/0/10/9/1",
+   "mate": "glyph/3/0/10/9/9",
+   "stem": "obs:053425",
+   "stratum": "CONTROL",
+   "red_page_box": [
+    5074.605,
+    2803.595,
+    5112.755,
+    2837.1125
+   ],
+   "blue_page_box": [
+    5072.6975,
+    2873.0825,
+    5112.755,
+    2908.5075
+   ],
+   "x_gap_head_widths": 0.0,
+   "dy_head_heights": -2.102
+  },
+  {
+   "subject": "glyph/0/0/0/0/5",
+   "mate": "glyph/0/0/0/0/20",
+   "stem": "obs:005824",
+   "stratum": "CONTROL",
+   "red_page_box": [
+    1649.44921875,
+    1499.451171875,
+    1691.26171875,
+    1538.650390625
+   ],
+   "blue_page_box": [
+    1647.271484375,
+    1616.177734375,
+    1690.826171875,
+    1649.279296875
+   ],
+   "x_gap_head_widths": 0.0,
+   "dy_head_heights": -2.9
+  },
+  {
+   "subject": "glyph/3/0/12/8/13",
+   "mate": "glyph/3/0/12/8/14",
+   "stem": "obs:053507",
+   "stratum": "CANDIDATE",
+   "red_page_box": [
+    4771.5,
+    3410.175,
+    4795.975,
+    3431.35
+   ],
+   "blue_page_box": [
+    4770.4,
+    3463.25,
+    4808.9,
+    3484.7
+   ],
+   "x_gap_head_widths": 0.124,
+   "dy_head_heights": -2.513
+  },
+  {
+   "subject": "glyph/3/1/12/2/7",
+   "mate": "glyph/3/1/12/2/16",
+   "stem": "obs:054073",
+   "stratum": "CANDIDATE",
+   "red_page_box": [
+    2486.7900390625,
+    6830.6923828125,
+    2526.2724609375,
+    6865.3154296875
+   ],
+   "blue_page_box": [
+    2522.6279296875,
+    6790.6025390625,
+    2585.49609375,
+    6841.322265625
+   ],
+   "x_gap_head_widths": 0.754,
+   "dy_head_heights": 0.925
+  },
+  {
+   "subject": "glyph/2/0/3/2/20",
+   "mate": "glyph/2/0/3/2/1",
+   "stem": "obs:034935",
+   "stratum": "CANDIDATE",
+   "red_page_box": [
+    2748.923828125,
+    1334.5966796875,
+    2790.294921875,
+    1358.32421875
+   ],
+   "blue_page_box": [
+    2728.8466796875,
+    1139.9091796875,
+    2768.69677734375,
+    1173.67529296875
+   ],
+   "x_gap_head_widths": 0.287,
+   "dy_head_heights": 7.994
+  },
+  {
+   "subject": "glyph/3/1/9/8/8",
+   "mate": "glyph/3/1/9/8/2",
+   "stem": "obs:053939",
+   "stratum": "CONTROL",
+   "red_page_box": [
+    4409.0075,
+    6100.9625,
+    4452.575,
+    6135.65
+   ],
+   "blue_page_box": [
+    4413.17,
+    6173.6675,
+    4450.91,
+    6204.7475
+   ],
+   "x_gap_head_widths": 0.0,
+   "dy_head_heights": -2.044
+  },
+  {
+   "subject": "glyph/3/1/1/8/9",
+   "mate": "glyph/3/1/1/8/0",
+   "stem": "obs:053617",
+   "stratum": "CONTROL",
+   "red_page_box": [
+    4519.675,
+    4335.65,
+    4560.1,
+    4370.3
+   ],
+   "blue_page_box": [
+    4520.225,
+    4377.45,
+    4560.375,
+    4411.55
+   ],
+   "x_gap_head_widths": 0.0,
+   "dy_head_heights": -1.198
+  },
+  {
+   "subject": "glyph/3/0/6/0/9",
+   "mate": "glyph/3/0/6/0/13",
+   "stem": "obs:053266",
+   "stratum": "CANDIDATE",
+   "red_page_box": [
+    1229.7177734375,
+    2053.728515625,
+    1262.73095703125,
+    2075.38232421875
+   ],
+   "blue_page_box": [
+    1192.7998046875,
+    2053.728515625,
+    1233.9775390625,
+    2083.546875
+   ],
+   "x_gap_head_widths": 0.022,
+   "dy_head_heights": -0.189
+  },
+  {
+   "subject": "glyph/1/0/3/1/4",
+   "mate": "glyph/1/0/3/1/10",
+   "stem": "obs:021307",
+   "stratum": "CONTROL",
+   "red_page_box": [
+    2084.4609375,
+    1242.2294921875,
+    2122.0517578125,
+    1273.39453125
+   ],
+   "blue_page_box": [
+    2083.4970703125,
+    1341.1865234375,
+    2123.015625,
+    1374.279296875
+   ],
+   "x_gap_head_widths": 0.0,
+   "dy_head_heights": -3.206
+  }
+ ]
+}

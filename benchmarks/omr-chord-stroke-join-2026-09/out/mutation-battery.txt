@@ -1,0 +1,28 @@
+BASE  33 passed, 5 warnings in <T>
+RED   x_overlap_becomes_strict  (2 failed, 31 passed, 5 warnings in <T>)
+RED   x_overlap_ignores_width  (4 failed, 29 passed, 5 warnings in <T>)
+RED   y_overlap_becomes_strict  (2 failed, 31 passed, 5 warnings in <T>)
+RED   y_overlap_always_true  (2 failed, 31 passed, 5 warnings in <T>)
+RED   cell_of_keeps_the_glyph_ordinal  (1 failed, 32 passed, 5 warnings in <T>)
+RED   cell_of_never_abstains  (1 failed, 32 passed, 5 warnings in <T>)
+RED   reach_drops_the_own_stroke_guard  (1 failed, 32 passed, 5 warnings in <T>)
+RED   reach_drops_the_y_span_condition  (1 failed, 32 passed, 5 warnings in <T>)
+RED   reach_drops_the_x_alignment_condition  (1 failed, 32 passed, 5 warnings in <T>)
+RED   reach_drops_the_joined_mate_requirement  (1 failed, 32 passed, 5 warnings in <T>)
+RED   decompose_forgets_the_stemless_column  (1 failed, 32 passed, 5 warnings in <T>)
+RED   decompose_admits_a_multi_head_stroke  (1 failed, 32 passed, 5 warnings in <T>)
+RED   decompose_widens_the_x_window  (1 failed, 32 passed, 5 warnings in <T>)
+RED   decompose_drops_the_y_window  (1 failed, 32 passed, 5 warnings in <T>)
+RED   flip_direction_ignores_the_group  (1 failed, 32 passed, 5 warnings in <T>)
+RED   flip_extra_members_ignores_its_own_stroke  (1 failed, 32 passed, 5 warnings in <T>)
+RED   score_takes_the_stratum_from_the_adjudication  (5 failed, 28 passed, 5 warnings in <T>)
+RED   score_stops_reporting_unadjudicated_tiles  (1 failed, 32 passed, 5 warnings in <T>)
+RED   score_stops_reporting_unknown_tiles  (1 failed, 32 passed, 5 warnings in <T>)
+RED   score_counts_cannot_tell_as_settled  (1 failed, 32 passed, 5 warnings in <T>)
+RED   score_counts_a_non_notehead_as_a_chord  (1 failed, 32 passed, 5 warnings in <T>)
+RED   score_check_ignores_a_wrong_control  (1 failed, 32 passed, 5 warnings in <T>)
+RED   score_check_ignores_a_dead_control_set  (1 failed, 32 passed, 5 warnings in <T>)
+RED   POSITIVE_CONTROL_everything_refuses  (2 failed, 31 passed, 5 warnings in <T>)
+
+24 RED / 24 arms, 0 survived, 0 could not be applied
+restore verified by hash

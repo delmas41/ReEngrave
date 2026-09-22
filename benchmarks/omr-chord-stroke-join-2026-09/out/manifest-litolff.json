@@ -1,0 +1,320 @@
+{
+ "label": "litolff",
+ "seed": 20260922,
+ "question": "The RED brackets mark one notehead and the BLUE brackets mark another. Do these two noteheads share ONE printed stem -- are they two members of the same chord?",
+ "verdicts_allowed": [
+  "one_shared_stem",
+  "separate_stems",
+  "red_is_not_a_notehead",
+  "blue_is_not_a_notehead",
+  "cannot_tell"
+ ],
+ "dpi": 600,
+ "px_per_space": 100.0,
+ "resample": "NEAREST",
+ "red_is": "the head the record leaves STEMLESS",
+ "blue_is": "the head the record already joins to the stroke",
+ "written": 29,
+ "refused": [
+  {
+   "subject": "glyph/2/1/9/12/2",
+   "why": "frame control failed (delta 13.7)"
+  },
+  {
+   "subject": "glyph/3/1/7/17/4",
+   "why": "frame control failed (delta -5.4)"
+  }
+ ],
+ "tiles": [
+  {
+   "id": "f5d6836068",
+   "subject": "glyph/4/1/8/6/5",
+   "mate": "glyph/4/1/8/6/9",
+   "stem": "obs:036773",
+   "stratum": "CANDIDATE",
+   "x_gap_head_widths": 0.085,
+   "dy_head_heights": -0.516,
+   "frame_delta": 106.2
+  },
+  {
+   "id": "03ac1dfa96",
+   "subject": "glyph/2/0/3/1/8",
+   "mate": "glyph/2/0/3/1/12",
+   "stem": "obs:014034",
+   "stratum": "CANDIDATE",
+   "x_gap_head_widths": 0.286,
+   "dy_head_heights": 0.33,
+   "frame_delta": 46.7
+  },
+  {
+   "id": "af09503add",
+   "subject": "glyph/4/1/2/4/8",
+   "mate": "glyph/4/1/2/4/1",
+   "stem": "obs:036389",
+   "stratum": "CANDIDATE",
+   "x_gap_head_widths": 0.054,
+   "dy_head_heights": 3.111,
+   "frame_delta": 144.2
+  },
+  {
+   "id": "82b988afe9",
+   "subject": "glyph/3/0/8/6/7",
+   "mate": "glyph/3/0/8/6/2",
+   "stem": "obs:022830",
+   "stratum": "CONTROL",
+   "x_gap_head_widths": 0.0,
+   "dy_head_heights": -2.967,
+   "frame_delta": 108.6
+  },
+  {
+   "id": "152e88cc32",
+   "subject": "glyph/4/1/3/3/5",
+   "mate": "glyph/4/1/3/3/8",
+   "stem": "obs:036463",
+   "stratum": "CANDIDATE",
+   "x_gap_head_widths": 0.232,
+   "dy_head_heights": -1.486,
+   "frame_delta": 192.7
+  },
+  {
+   "id": "f44b640282",
+   "subject": "glyph/4/1/2/5/9",
+   "mate": "glyph/4/1/2/5/22",
+   "stem": "obs:036396",
+   "stratum": "CANDIDATE",
+   "x_gap_head_widths": 0.104,
+   "dy_head_heights": -2.536,
+   "frame_delta": 144.2
+  },
+  {
+   "id": "601747215d",
+   "subject": "glyph/4/1/2/8/0",
+   "mate": "glyph/4/1/2/8/1",
+   "stem": "obs:036405",
+   "stratum": "CONTROL",
+   "x_gap_head_widths": 0.0,
+   "dy_head_heights": -1.875,
+   "frame_delta": 144.2
+  },
+  {
+   "id": "7da91824ad",
+   "subject": "glyph/2/0/5/1/10",
+   "mate": "glyph/2/0/5/1/6",
+   "stem": "obs:014157",
+   "stratum": "CANDIDATE",
+   "x_gap_head_widths": 0.682,
+   "dy_head_heights": -1.437,
+   "frame_delta": 81.5
+  },
+  {
+   "id": "1f5de05bf1",
+   "subject": "glyph/4/1/2/5/9",
+   "mate": "glyph/4/1/2/5/22",
+   "stem": "obs:036397",
+   "stratum": "CANDIDATE",
+   "x_gap_head_widths": 1.778,
+   "dy_head_heights": -2.536,
+   "frame_delta": 144.2
+  },
+  {
+   "id": "f2ba2059a9",
+   "subject": "glyph/3/0/4/3/10",
+   "mate": "glyph/3/0/4/3/12",
+   "stem": "obs:022630",
+   "stratum": "CANDIDATE",
+   "x_gap_head_widths": 0.417,
+   "dy_head_heights": 0.005,
+   "frame_delta": 205.3
+  },
+  {
+   "id": "c935960d1d",
+   "subject": "glyph/4/1/9/11/5",
+   "mate": "glyph/4/1/9/11/8",
+   "stem": "obs:036859",
+   "stratum": "CANDIDATE",
+   "x_gap_head_widths": 0.071,
+   "dy_head_heights": 1.844,
+   "frame_delta": 179.5
+  },
+  {
+   "id": "f077575a67",
+   "subject": "glyph/4/1/2/5/8",
+   "mate": "glyph/4/1/2/5/22",
+   "stem": "obs:036396",
+   "stratum": "CANDIDATE",
+   "x_gap_head_widths": 0.108,
+   "dy_head_heights": -5.325,
+   "frame_delta": 144.2
+  },
+  {
+   "id": "a1d22c9ac4",
+   "subject": "glyph/4/1/7/10/2",
+   "mate": "glyph/4/1/7/10/5",
+   "stem": "obs:036717",
+   "stratum": "CANDIDATE",
+   "x_gap_head_widths": 0.075,
+   "dy_head_heights": 0.677,
+   "frame_delta": 160.8
+  },
+  {
+   "id": "c3d193ba7a",
+   "subject": "glyph/3/0/5/2/7",
+   "mate": "glyph/3/0/5/2/2",
+   "stem": "obs:022666",
+   "stratum": "CONTROL",
+   "x_gap_head_widths": 0.0,
+   "dy_head_heights": -1.969,
+   "frame_delta": 171.0
+  },
+  {
+   "id": "d4ed3f62e8",
+   "subject": "glyph/4/0/3/2/8",
+   "mate": "glyph/4/0/3/2/3",
+   "stem": "obs:035858",
+   "stratum": "CONTROL",
+   "x_gap_head_widths": 0.0,
+   "dy_head_heights": -2.996,
+   "frame_delta": 56.5
+  },
+  {
+   "id": "afae7364d1",
+   "subject": "glyph/3/0/0/1/3",
+   "mate": "glyph/3/0/0/1/10",
+   "stem": "obs:022474",
+   "stratum": "CONTROL",
+   "x_gap_head_widths": 0.0,
+   "dy_head_heights": -1.261,
+   "frame_delta": 165.1
+  },
+  {
+   "id": "ec978c58d5",
+   "subject": "glyph/3/0/5/4/4",
+   "mate": "glyph/3/0/5/4/5",
+   "stem": "obs:022672",
+   "stratum": "CONTROL",
+   "x_gap_head_widths": 0.0,
+   "dy_head_heights": -2.685,
+   "frame_delta": 171.0
+  },
+  {
+   "id": "ad884d6c24",
+   "subject": "glyph/4/0/5/12/4",
+   "mate": "glyph/4/0/5/12/10",
+   "stem": "obs:035954",
+   "stratum": "CANDIDATE",
+   "x_gap_head_widths": 0.744,
+   "dy_head_heights": -0.438,
+   "frame_delta": 54.7
+  },
+  {
+   "id": "614ffb1293",
+   "subject": "glyph/4/1/4/14/18",
+   "mate": "glyph/4/1/4/14/0",
+   "stem": "obs:036566",
+   "stratum": "CONTROL",
+   "x_gap_head_widths": 0.0,
+   "dy_head_heights": -2.203,
+   "frame_delta": 154.6
+  },
+  {
+   "id": "aa668c0331",
+   "subject": "glyph/2/0/3/1/7",
+   "mate": "glyph/2/0/3/1/12",
+   "stem": "obs:014034",
+   "stratum": "CANDIDATE",
+   "x_gap_head_widths": 0.289,
+   "dy_head_heights": 1.074,
+   "frame_delta": 46.7
+  },
+  {
+   "id": "0326d6d5f2",
+   "subject": "glyph/4/1/3/3/6",
+   "mate": "glyph/4/1/3/3/8",
+   "stem": "obs:036463",
+   "stratum": "CANDIDATE",
+   "x_gap_head_widths": 0.231,
+   "dy_head_heights": -0.869,
+   "frame_delta": 192.7
+  },
+  {
+   "id": "ae88f2ffc6",
+   "subject": "glyph/4/1/7/0/1",
+   "mate": "glyph/4/1/7/0/4",
+   "stem": "obs:036654",
+   "stratum": "CANDIDATE",
+   "x_gap_head_widths": 0.098,
+   "dy_head_heights": -0.64,
+   "frame_delta": 160.8
+  },
+  {
+   "id": "d280144c72",
+   "subject": "glyph/4/0/0/11/7",
+   "mate": "glyph/4/0/0/11/13",
+   "stem": "obs:035765",
+   "stratum": "CANDIDATE",
+   "x_gap_head_widths": 0.082,
+   "dy_head_heights": -0.626,
+   "frame_delta": 98.2
+  },
+  {
+   "id": "b0b926f1da",
+   "subject": "glyph/4/1/2/5/9",
+   "mate": "glyph/4/1/2/5/15",
+   "stem": "obs:036395",
+   "stratum": "CANDIDATE",
+   "x_gap_head_widths": 0.792,
+   "dy_head_heights": -0.365,
+   "frame_delta": 144.2
+  },
+  {
+   "id": "278123d69c",
+   "subject": "glyph/4/0/5/11/7",
+   "mate": "glyph/4/0/5/11/11",
+   "stem": "obs:035948",
+   "stratum": "CANDIDATE",
+   "x_gap_head_widths": 0.378,
+   "dy_head_heights": 5.228,
+   "frame_delta": 54.7
+  },
+  {
+   "id": "da90f0716b",
+   "subject": "glyph/4/1/2/5/8",
+   "mate": "glyph/4/1/2/5/15",
+   "stem": "obs:036395",
+   "stratum": "CANDIDATE",
+   "x_gap_head_widths": 0.856,
+   "dy_head_heights": -3.153,
+   "frame_delta": 144.2
+  },
+  {
+   "id": "baf05484b3",
+   "subject": "glyph/4/1/10/2/2",
+   "mate": "glyph/4/1/10/2/3",
+   "stem": "obs:036878",
+   "stratum": "CANDIDATE",
+   "x_gap_head_widths": 3.759,
+   "dy_head_heights": -3.534,
+   "frame_delta": 220.9
+  },
+  {
+   "id": "c495eba9fc",
+   "subject": "glyph/4/1/3/3/11",
+   "mate": "glyph/4/1/3/3/8",
+   "stem": "obs:036463",
+   "stratum": "CANDIDATE",
+   "x_gap_head_widths": 0.367,
+   "dy_head_heights": -1.382,
+   "frame_delta": 192.7
+  },
+  {
+   "id": "dc4adbd2c9",
+   "subject": "glyph/3/0/3/0/14",
+   "mate": "glyph/3/0/3/0/9",
+   "stem": "obs:022586",
+   "stratum": "CANDIDATE",
+   "x_gap_head_widths": 0.217,
+   "dy_head_heights": -2.54,
+   "frame_delta": 199.8
+  }
+ ]
+}
