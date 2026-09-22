@@ -366,16 +366,27 @@ class TestPublisherReachesGather(unittest.TestCase):
         else:
             os.environ[G.DOCUMENT_IDENTITY_ENV] = self._old
 
-    def test_the_flag_is_default_OFF_and_an_ALLOW_list(self) -> None:
-        # ⚠️ CLAUDE.md's "A flag's OFF test must follow its DEFAULT": a
-        # default-OFF mechanism must be an allow-list, so a typo leaves it OFF.
-        for word, on in (("1", True), ("true", True), ("on", True),
-                         ("0", False), ("", False), ("yess", False),
-                         ("ON!", False)):
+    def test_the_flag_is_default_ON_and_a_DENY_list(self) -> None:
+        # ⚠️⚠️ FLIPPED 2026-09-22 ON SEAN'S OWN INSTRUCTION -- *"if a page is
+        # engraved or a scan along with the publisher info and year ... should
+        # be gathered in the first stage"* -- and the test's DIRECTION flipped
+        # with it rather than being deleted. It shipped default-OFF on
+        # 2026-09-17 under the producer-only `Q.INK` discipline; the consumer
+        # now exists behind its own flag (`OMR_ENGRAVED_KEYSIG`), so the two
+        # evidential weights are separate.
+        #
+        # ⚠️ CLAUDE.md's "A flag's OFF test must follow its DEFAULT", under
+        # which five shipped flags had it backwards: a default-ON mechanism
+        # must be a DENY-list, so that an empty value or a typo leaves it ON
+        # rather than silently restoring the old silence.
+        for word, on in (("0", False), ("", False), ("off", False),
+                         ("false", False), ("no", False),
+                         ("1", True), ("true", True), ("on", True),
+                         ("yess", True), ("ON!", True)):
             os.environ[G.DOCUMENT_IDENTITY_ENV] = word
             self.assertEqual(G._document_identity_enabled(), on, word)
         os.environ.pop(G.DOCUMENT_IDENTITY_ENV, None)
-        self.assertFalse(G._document_identity_enabled())
+        self.assertTrue(G._document_identity_enabled())
 
     def test_flag_OFF_writes_NOTHING_AT_ALL(self) -> None:
         # ⚠️ Not an abstention: a record from a tree carrying this rung must be

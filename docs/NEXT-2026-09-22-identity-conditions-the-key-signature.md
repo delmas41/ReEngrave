@@ -1,5 +1,44 @@
 # NEXT — gather WHICH PRINTING this is, and let the key signature read it
 
+> ## ✅ DONE 2026-09-22 (evening) — AND TWO OF THIS BRIEF'S CLAIMS ARE REFUTED
+>
+> Built, measured, committed and **SWITCHED ON** (Sean flipped
+> `OMR_ENGRAVED_KEYSIG` the same evening; §5's *"the flip is Sean's"* is
+> discharged). The session handoff is
+> [docs/handoff-2026-09-22-identity-and-the-key-signature.md](handoff-2026-09-22-identity-and-the-key-signature.md).
+> Read
+> [benchmarks/omr-document-identity-2026-09/FINDINGS.md](../benchmarks/omr-document-identity-2026-09/FINDINGS.md)
+> and CLAUDE.md's *WHICH PRINTING THIS IS* section; **this file is now
+> history** and two of its statements are wrong.
+>
+> 1. ⚠️⚠️ **§3's warning that `image_type` is "ALMOST CERTAINLY WRONG ABOUT
+>    THE ENGRAVED POPULATION" IS FALSE, and Sean's own guess — *"maybe they
+>    are all scans because they came from IMSLP"* — is RIGHT.** Measured over
+>    all 289 committed editions: the label and the measurement agree **279 of
+>    279 wherever the label exists** (272/272 `Normal Scan` scanned, 7/7
+>    `Typeset` engraved). **Its failing is ABSENCE, not error.** The reason to
+>    key on the measurement is §2's structural one instead, and it is
+>    stronger: the engraved fixture is a RENDER in no catalog, so the catalog
+>    row ABSTAINS on exactly the input the rule is proven on.
+> 2. ⚠️ **§2's table of "what already exists" missed one: `Q.INPUT_DOMAIN`
+>    was ALREADY DECLARED and CLAIM-classified**, produced by nothing and
+>    reported a GHOST by `reach --check` every run. This session declared it a
+>    second time before the derived checks caught the duplicate. *"Roughly
+>    half of it already exists"* was true of more than the table named — `grep
+>    Q\.` the vocabulary, not just `ls benchmarks/`.
+>
+> **Result**: key signature right **26 → 47** of 50, wrong **24 → 3**; bars
+> exact **313 → 322 of 360**, 4 parts better and 0 worse. It reproduces §1's
+> own table from a fresh gather and a different scorer.
+> `OMR_DOCUMENT_IDENTITY` is now **default ON**; the consumer is
+> `OMR_ENGRAVED_KEYSIG`, **default OFF**, and **the flip is Sean's**.
+>
+> ⚠️ §6's *"pricing needs two full re-gathers"* was right about the blindness
+> and wrong about the cost: an engraved 3-page gather took **4 minutes** and a
+> 1-page scan gather about **2**, so both arms were re-gathered rather than
+> injected.
+
+
 **Sean, 2026-09-22:** *"if a page is engraved or a scan along with the publisher
 info and year — whatever we have — should be gathered in the first stage — then
 we need to make sure that the key signature is determined based on that info."*

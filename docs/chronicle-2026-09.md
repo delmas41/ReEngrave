@@ -636,15 +636,49 @@ against a NULL of 6/6**, and the two publishers' marker ink fails in
 **opposite** ways.
 
 
-⚠️⚠️⚠️ **SEAN HAS RULED ON THE KEY SIGNATURE, 2026-09-22, AND THE NEXT SESSION
-IS BRIEFED — START THERE:**
+✅⚠️⚠️⚠️ **START HERE IF YOU ARE PICKING THIS UP (2026-09-22, evening) —
+SEAN'S KEY-SIGNATURE RULING IS BUILT, MEASURED AND SWITCHED ON:**
+[docs/handoff-2026-09-22-identity-and-the-key-signature.md](docs/handoff-2026-09-22-identity-and-the-key-signature.md)
+— **both flags default ON** (`OMR_DOCUMENT_IDENTITY`, and
+`OMR_ENGRAVED_KEYSIG` flipped by Sean at the end of the session), key
+signature **right 26 → 47 of 50**, bars exact **313 → 322 of 360 with 4 parts
+better and 0 worse**. ⚠️⚠️ **THE FLIP RESOLVED NONE OF THE LIMITS** — n = 1
+engraved document, 1 renderer, **no print consulted** — it rests on the rule
+being ONE-SIDED, verified by `test_keysig_second_reader.py` passing
+UNMODIFIED. ⚠️ **Its §6 ranks the next work and the first item is now a
+one-line query**: `out/library-domains.json` names the **10 held editions the
+container reader measures engraved**. ⚠️ **Its §7 is nine of this session's
+own failures**, led by an accuracy table that read 0/0 on both arms from an
+enum comparison that could never fire, and a control loop that **measured the
+SHELL** (zsh does not word-split an unquoted parameter, so eight derived
+checks "failed identically on both trees"). **THE BRIEF BELOW IS DONE, AND TWO
+OF ITS OWN CLAIMS ARE REFUTED BY DOING IT. Read the section *WHICH PRINTING
+THIS IS* below, and the brief only as history.** ⚠️⚠️ **ITS WARNING THAT `image_type` IS "ALMOST CERTAINLY WRONG
+ABOUT THE ENGRAVED POPULATION" IS FALSE, AND SEAN'S OWN GUESS — *"maybe they
+are all scans because they came from IMSLP"* — IS RIGHT.** Measured over all
+289 committed editions in 16 s: the label and the measurement agree **279 of
+279 wherever the label exists** (272/272 `Normal Scan` scanned, 7/7 `Typeset`
+engraved, and the 7 typesets are modern re-engravings, which is what the word
+means on IMSLP). **The label's failing is ABSENCE, not error** — its only gap
+is the 10 editions carrying no label, split 7 / 3. ⚠️⚠️ **SO THE REASON TO KEY
+ON THE MEASUREMENT IS A STRUCTURAL ONE AND IT IS STRONGER: the engraved fixture
+the fix is proven on is a RENDER, in no catalog, so `gather_document_identity`
+ABSTAINS `not_in_catalog` on it while the container reader answers `engraved`.
+A domain filed as a FIELD of the catalog row would have a reach of ZERO on the
+one input that matters** — which is why they are two quantities. ⚠️ And
+`Q.INPUT_DOMAIN` was **already declared and CLAIM-classified before this
+session**, produced by nothing and reported a GHOST by `reach --check` every
+run; the brief's *"roughly half of it already exists"* was true of more than it
+named. **`OMR_DOCUMENT_IDENTITY` is now DEFAULT ON; the consumer is
+`OMR_ENGRAVED_KEYSIG`, default OFF, and the flip is Sean's.** The brief:
 [docs/NEXT-2026-09-22-identity-conditions-the-key-signature.md](docs/NEXT-2026-09-22-identity-conditions-the-key-signature.md)
 — *"if a page is engraved or a scan along with the publisher info and year —
 whatever we have — should be gathered in the first stage — then we need to make
 sure that the key signature is determined based on that info."*
 ⚠️⚠️ **ROUGHLY HALF OF IT IS ALREADY BUILT AND SWITCHED OFF**, which is why the
 brief exists: `gather_document_identity` shipped 2026-09-17 behind
-`OMR_DOCUMENT_IDENTITY` (**default OFF, producer-only, read by nothing**) and
+`OMR_DOCUMENT_IDENTITY` (**default OFF at the time of writing — it is DEFAULT
+ON since 2026-09-22; producer-only, read by nothing**) and
 already files publisher / `work_id` / `image_type` / `imslp_id` /
 `edition_path` at `source_kind: "catalog"`. **A session that starts by building
 it rebuilds a shipped rung.** ⚠️ **What is missing**, measured against the
@@ -1176,8 +1210,10 @@ ReEngrave/
 | `OMR_STEM_STROKE` | `0` (off) | **A stem read from a COLUMN PROFILE instead of from a connected component. It HOLDS on one publisher of two, and the reason it is OFF is that its effect on BEAMS is unpriced — not that its recoveries look wrong.** `detect_stems` is a component reader, and `benchmarks/omr-stem-ink-2026-09`'s census says the dominant failure on both plates is *a component EXISTS and is the wrong SHAPE* (86% Litolff, 74% Breitkopf). On, `_column_stroke_bands` reads each column's LONGEST vertical ink run and bands adjacent columns only where they AGREE about that run's endpoints — never labelling a component, so a stem fused to its own notehead is no longer measured at the NOTEHEAD's width. ⚠️⚠️ **THE FALSIFICATION DOES NOT FIRE: the stroke IS separable inside a fused blob** — 92.1% / 73.6% of `too WIDE` components hold a separable band — and the profile re-finds **98.0% / 98.2%** of the strokes `detect_stems` already accepts, which is the positive control everything else rests on. ⚠️⚠️ **REACH MUST BE READ OVER A CLEANED DENOMINATOR, BECAUSE A THIRD OF THE BREITKOPF POPULATION IS NOT A NOTEHEAD: 576 of 1,529 boxes (37.7%) are thinner than a notehead can be** (Litolff 44 of 793, 5.5%) — **independently reproducing the crop pass's sampled 35.6% from a different instrument**. Over boxes that can plausibly BE noteheads the reach is **338 of 749 (45.1%)** and **532 of 953 (55.8%)**, where the unrestricted Breitkopf figure reads 35.6%. ⚠️ **The barline hazard is measured and ABSENT**: the reader fires on **12 of 576** thin boxes (2.1%), and restricting the score moves it 96.3% → 96.2% and 82.6% → 82.6%, so neither figure is inflated by two readers agreeing about one vertical rule. ⚠️⚠️ **QUALITY: Breitkopf 96.2% against a 98.2% bar — it HOLDS. Litolff 82.6% against 96.1% — and that is UNDETERMINED, not a refusal.** The first write-up refused it as *"indistinguishable from the 83.6% at which `width_cap_check.py` refused the width cap"* and read both through that arm's mixture model as ~73% real; **the crop pass put those very recoveries to the print and they are 33 of 33 REAL, 0 junk (95% lower bound 0.913), so an ~83% convention score on this plate meant ~100% real and THE MIXTURE MODEL IS REFUTED** — withdrawn by its own author. The convention probe UNDERSTATES Litolff, which is what this lane's crops said from the other side when they could not adjudicate 5 of 12 tiles. **~62% of the reach is shared with that width cap, which makes it the better-evidenced part rather than a liability.** ⚠️⚠️ **ITS OWN CROPS FOUND AN ATTRIBUTION FAULT IT CANNOT FIX: Breitkopf's AGREE stratum is 6 of 6 textbook and its DISAGREE stratum is 6 of 6 ONE FAULT — the record's notehead box stands part-way ALONG a NEIGHBOURING note's stem, so the stroke is real and the ATTRIBUTION is wrong.** That repair belongs in `adjudicate_stem_direction`, because **`detect_stems` emits STROKES, not (stroke, head) pairs** — which is why an end-at-the-head constraint built from those crops moved disagreements **40 → 40 and 14 → 14**, the FIFTH dead hypothesis on this thread, kept with its numbers. ⚠️ **The `TALL` bucket is out of reach BY CONSTRUCTION** (7.0% / 8.3%): a column profile separates across x, not along y, and a narrow band inside a 12-space component is still 12 spaces — and on Breitkopf that bucket is where the crop pass found **12 of 12 barlines**, so it is the wrong place to test transfer anyway. ⚠️ `STEM_STROKE_AGREE_SPACES = 0.25` sits on a **PLATEAU** (reach 289/281/279/274/270 and 376/375/374/374/374 across 0.10-0.60), **not an empty interval**. ⚠️ Additive, running AFTER the pair rule, so flag-off is byte-identical — **asserted directly against both shared records, 1,920 = 1,920 on 1,183 of 1,183 cells and 2,305 = 2,305 on 818 of 818** — which is load-bearing rather than tidy, because this file is on the path every sibling arm proves faithful before reporting a delta. ⚠️ **A GATHER change**, so `readjudicate` and `reexport_arm` are structurally blind and **no effect on a FILE has been measured**; the **581-1,074 extra strokes reaching `detect_beams`** are the only remaining reason this is off, and that is the prize `A-DUR-8` names (12 assessable / 7 correct → 16 / 16). ⚠️ No OMR-NED figure, deliberately. Allow-list OFF test, correct for a default-OFF flag. Suite 4,477 passed; battery 12 arms, 12 RED. See [benchmarks/omr-stem-stroke-2026-09/FINDINGS.md](benchmarks/omr-stem-stroke-2026-09/FINDINGS.md). |
 | `OMR_STEM_NOTEHEAD_GATE` | `0` (off) | **A vertical stroke that MEETS A DETECTED NOTEHEAD is a stem, and the pair rule may not delete it. Staged pipeline only, and it takes TWO things to fire — the FLAG and the DATA.** `line_detection._drop_paired_strokes` deletes BOTH members of any pair of verticals within 0.9 staff spaces, on the premise that *"successive notes are set further apart than an accidental's own strokes"*. ⚠️⚠️ **THE RULE IS RIGHT ABOUT ITS JOB AND WRONG ABOUT ITS PREMISE**: on Litolff Beethoven 5 pp.1-4 it deletes 244 strokes, 80 carry a notehead, and **62 of those 80 (77.5%) were paired with ANOTHER stroke that also carries one** — two genuine stems eating each other. **73 of the 793 stemless heads (9.2%)** stop abstaining without it. ⚠️ **REMOVING THE RULE IS REFUSED** — on its own hand count summed \|error\| goes 15 → 53, worse on 7 of 10 cells and better on 0 — which is why this is a GATE. ⚠️ **NO NEW CONSTANT**, and that is why this shape and not a threshold: the geometry `detect_stems` can see does not separate the two populations (best single feature **0.823** against a **0.723** majority baseline, **no empty interval anywhere**), so a cut read off that table would be fitted to one plate. ⚠️ **THE GATE IS ON THE SUBJECT ONLY, and a unit test caught the other form.** `benchmarks/omr-stem-pair-rule-2026-09`'s `probe_proposed_gate.py` also excludes an on-head stroke from being a PARTNER; that leaves an accidental's stroke standing beside a real stem with no partner, so it **SURVIVES as a false stem**. Both forms keep the 62; only subject-only also drops the sharp. Measured: the both-sides form rescues 89 / 178 strokes of which 9 / 26 carry no head, the shipped form 80 / 152, **all on a head**. **MEASURED END TO END ON BOTH PLATES** (a GATHER change, so `readjudicate`/`reexport_arm` are structurally blind and the arm re-cuts the page): the OFF arm reproduces each shared record's stem set **EXACTLY** — 1,920 on Litolff and 2,305 on Breitkopf, the control every stem arm here passes first — and ON reads **2,000 (+80)** and **2,457 (+152)**, every rescued stroke on a head, **0 lost** (the gate is one-sided by construction and the arm CHECKS it). Downstream, heads with NO stem go **793 → 720 (−73)** and **1,529 → 1,351 (−178)**; ⚠️ **the −73 reproduces the sibling lane's own 9.2% from the OTHER DIRECTION** (they joined the record, this re-cuts the page and counts heads with no overlapping stroke through the adjudicator's own imported `_boxes_overlap`) and the Breitkopf 1,529 matches `rejection_census`'s published figure. CV beams 322 → 337 and 412 → 444 — ⚠️ **the stem SET moving, not a beam change**, since `detect_beams` takes the stems as its input. ⚠️⚠️ **AND RE-RUNNING THE FIXTURES THAT JUSTIFIED THE RULE IS THE REAL FINDING — see the section *The reference sheet has no accidentals in it* below and do NOT quote this row's numbers without it.** On the hand cells the gate costs **+5** (15 → 20, worse on 3, better on 0, reproducing that lane exactly). On the LilyPond reference sheet the PAGE total says it gives back the whole win (3 → 27) — and that sheet **prints no accidental at all**, all 28 of its deletions stand on a notehead in ONE bar, and read at the **per-bar** truth the same fixture already carries the shipped rule **EMPTIES a bar of four chords** (truth 4, ON 0) and scores **7** against the gate's **3**. ⚠️ **THE STANDING OBJECTION IS UNTOUCHED AND IS NOT AN n ARGUMENT**: the gate **couples `Q.STEM` to the detector**, and `gather_cv_lines`' own docstring says the two readers see different images ON PURPOSE. It fails toward the shipped behaviour and never toward a new one, but it is weakest exactly where stems are most often missed. ⚠️ **The legacy `transcribe` path is unchanged BY CONSTRUCTION** — `detect_lines(cell)` passes no detections, so it can never reach the gate however the flag is set. ⚠️ **NO ACCURACY**: no crop was cut and not one of the 80 or 152 has been checked against the print. ⚠️ No OMR-NED figure, deliberately — the metric is symmetric and would pay for emitting fewer strokes either way. Allow-list ON test, correct for a default-OFF flag; battery 21 arms, 21 RED, 0 survivors, restore md5-verified. See [benchmarks/omr-stem-notehead-gate-2026-09/FINDINGS.md](benchmarks/omr-stem-notehead-gate-2026-09/FINDINGS.md). |
 | `OMR_VERTICAL_RUNS` | `0` (off) | **Staged pipeline only, PRODUCER ONLY. `detect_stems` NAMES AND FILTERS IN ONE ACT, and this is the population it discards.** One row per vertical candidate the stem opening produced — **accepted OR refused** — with its box in the cell frame AND **in page pixels**, its height/width in **that cell's own** staff space, and **which filter first refused it**. ⚠⚠ **IT EXISTS BECAUSE SEAN ASKED A QUESTION THE RECORD COULD NOT ANSWER**: a discarded candidate left **no row at all** (so a cell whose every candidate was refused reports `ABSTAIN.NO_INK` — an EMPTY PAGE), and `Q.STEM` is CELL-canonical **with no page coordinates** while `Q.STAFF_LINES` is PAGE px, so his barline test could not be computed. ⚠ **`Q.STEM` DOES NOT MOVE**: append-only out-parameter, and the re-cut reproduces both shared records exactly — **1,920 = 1,920** and **2,305 = 2,305, 0 cells disagreeing**, flag-ON moving not one stroke. ⚠ **REACH 6,128 / 6,816 candidates against 1,920 / 2,305 strokes — the record carried ~a THIRD of the population the pipeline looked at**, and **64.7% / 54.6% is refused by a DIMENSION bound**. ⚠⚠ **SEAN'S BARLINE TEST IS NOW COMPUTABLE AND IS A CLEAN NEGATIVE: 19 of 19 print-adjudicated barlines fire at NO tolerance in either form of the rule, while 6 of 58 adjudicated STEMS do** — faintly backwards. ⚠⚠ **AND THE DIAGNOSIS IS THE RESULT: the `too TALL` bucket's median end offsets are −4.00 / +4.00 staff spaces on BOTH publishers — exactly `PAD_ABOVE/BELOW_STAFF_LINES = 4`** (`measure_extractor.py:44-45`), and ten of the nineteen barlines read `h = 12.00` exactly, i.e. 4+4+4 = the cell. **A barline taller than the cell has its ends clipped BY the cell, so its endpoints are the CROP's and not the staff's: the test is structurally UNAVAILABLE, NOT REFUTED.** The fix is the `cv_hairpins` precedent — a **page-BAND reader**, whose hairpins *"are never cut by a barline"*. ⚠️⚠️ **THAT READER IS BUILT (2026-09-20) AND THE TEST IS NOW POSITIVE: 11-13 of 19 barlines fire between 0.25 and 0.60 spaces against ZERO of 63 stems, where the cell frame had 0 and 0. Read the section *The page frame* below before quoting the negative above** — it is a fact about the WINDOW, and this row states it as a fact about the test. ⚠⚠ **AND TWO OF THE SIX FILTERS CANNOT FIRE AT THE SHIPPED DEFAULTS**: ASPECT because `h/w ≥ 2.0/0.6 = 3.33` always (scale-invariant), AREA because a component surviving a 1.6-space opening carries ≥ 32 px against a floor of 10 — **zero over 12,944 real candidates**, so **every document in this repo that says "six filters" is wrong and four can fire.** Not an argument for deleting them: `filter_sweep_arm.py` relaxes `max_width_lines` to 1.5, at which both become live. ⚠ **The length asymmetry is supported in SHAPE and NOT in separability** — the ordering is as predicted (accidental median 2.46-2.63 against notehead-attached 3.78-4.06, spread 5×) but **the distributions overlap with NO empty interval**, so length alone is not a positive identifier on these plates either. ⚠ **COST 0.96-1.11 MB/page, 1.6-2× the ink layer** — a real argument against the default ever flipping. ⚠ **Nothing reads it, deliberately**; first consumer named in `wiring.KNOWN_GAPS`. Allow-list ON test. Flag-off writes nothing and is byte-identical; flag-ON renumbers later row ids, so identity is claimed **only for OFF**. **A GATHER change**, so `readjudicate`/`reexport_arm` are structurally blind. ⚠ A limit of the quantity itself: the population is what the **OPENING** produced, and the opening is a filter — ink under 1.6 spaces never becomes a candidate, so this widens `Q.STEM` to the opening's output and **not to the ink** (`Q.INK` is that layer, complementary rather than nested). See [benchmarks/omr-vertical-runs-2026-09/FINDINGS.md](benchmarks/omr-vertical-runs-2026-09/FINDINGS.md). |
-| `OMR_DOCUMENT_IDENTITY` | `0` (off) | **Staged pipeline only, PRODUCER ONLY. WHICH PRINTING THIS IS — the conditioning variable, which had no producer.** `gather_document_identity` files one `Q.DOCUMENT_IDENTITY` row on the DOCUMENT carrying the publisher, `work_id`, `image_type`, `imslp_id` and `edition_path`, read from the **committed** `data/score-library/catalog.json` by the library filename's IMSLP id. ⚠️ `source_kind: "catalog"` IS why it is admissible: these come from IMSLP's work page, NOT from reading the plate, so they **do not fall silent when the raster is bad** — this file's own *a second witness must not come off the same raster*, which is also why the catalog's `editions` tier (an OMR output of the same raster) may not be used here. ⚠️ **A PDF the catalog does not hold ABSTAINS** `not_in_catalog` and is never defaulted to *unknown publisher* — a fallback converting *cannot tell* into a definite answer. ⚠️ Once per DOCUMENT, guarded in the function rather than at the call site because `gather()` runs per PAGE (a four-page run filed FOUR identical rows before the guard, and the guard checks **both** observations and refusals, since a first call on an unheld PDF writes an abstention that `rows()` does not return). ⚠️ **EXERCISED END TO END 2026-09-17**: Litolff Beethoven 5 p1-4 files the row, `positional_store` reads `identity from record` and buckets `per publisher {'litolff': 15579}` where the same run without the flag reads `unknown`; accumulated beside the Breitkopf shared record the store distinguishes `from record` from `from legacy-table` out loud. ⚠️ **NOTHING READS IT** — producer-only on purpose, the discipline `Q.INK` shipped under: a fact and its first consumer landing together makes the reach measurement circular. Flag-off is silent (no abstention), so a flag-off record is byte-identical to a tree without the rung. See [benchmarks/omr-positional-store-2026-09/out/IDENTITY_RUN_2026-09-17.md](benchmarks/omr-positional-store-2026-09/out/IDENTITY_RUN_2026-09-17.md). |
-| `OMR_DOCUMENT_IDENTITY` | `0` off (default) → staged pipeline only, PRODUCER ONLY: file one `Q.DOCUMENT_IDENTITY` row naming the publisher/plate this record was gathered from, out of the committed catalog (`source_kind: "catalog"`, so it does not fall silent when the raster is bad). A PDF the catalog does not hold ABSTAINS rather than defaulting to *unknown*. Nothing reads it yet, deliberately. Exercised end to end 2026-09-17: the positional store goes from `publisher unknown` to `litolff` on 15,579 entries. See the knobs table. |
+| `OMR_DOCUMENT_IDENTITY` | **`1` (on)** | **Staged pipeline only, PRODUCER ONLY. WHICH PRINTING THIS IS — the conditioning variable, which had no producer.** ⚠️⚠️ **DEFAULT ON SINCE 2026-09-22 (deny-list), SEAN'S OWN INSTRUCTION**: *"if a page is engraved or a scan along with the publisher info and year — whatever we have — should be gathered in the first stage."* It shipped OFF on 2026-09-17 under the producer-only `Q.INK` discipline; the consumer now exists behind its OWN flag (`OMR_ENGRAVED_KEYSIG`), so the two evidential weights are separate — the INFER lesson, where one switch over two rules of unequal evidence held the verified one back for four days. ⚠️ **THE DOMAIN IS A SEPARATE QUANTITY** (`Q.INPUT_DOMAIN`, below) **and this flag governs both rungs.** `gather_document_identity` files one `Q.DOCUMENT_IDENTITY` row on the DOCUMENT carrying the publisher, **`publisher_year` (Sean asked for the year by name, present on 195 of 289 editions)**, **`plate` (177 of 289 — a plate number identifies a PRINTING more sharply than a house: Litolff 2765-2773 is one series across the whole Beethoven cycle)**, **`has_text_layer` (289 of 289, the only field present on every edition)**, `work_id`, `image_type`, `imslp_id` and `edition_path`, read from the **committed** `data/score-library/catalog.json` by the library filename's IMSLP id. ⚠️ `source_kind: "catalog"` IS why it is admissible: these come from IMSLP's work page, NOT from reading the plate, so they **do not fall silent when the raster is bad** — this file's own *a second witness must not come off the same raster*, which is also why the catalog's `editions` tier (an OMR output of the same raster) may not be used here. ⚠️ **A PDF the catalog does not hold ABSTAINS** `not_in_catalog` and is never defaulted to *unknown publisher* — a fallback converting *cannot tell* into a definite answer. ⚠️ Once per DOCUMENT, guarded in the function rather than at the call site because `gather()` runs per PAGE (a four-page run filed FOUR identical rows before the guard, and the guard checks **both** observations and refusals, since a first call on an unheld PDF writes an abstention that `rows()` does not return). ⚠️ **EXERCISED END TO END 2026-09-17**: Litolff Beethoven 5 p1-4 files the row, `positional_store` reads `identity from record` and buckets `per publisher {'litolff': 15579}` where the same run without the flag reads `unknown`; accumulated beside the Breitkopf shared record the store distinguishes `from record` from `from legacy-table` out loud. ⚠️ **NOTHING READS `Q.DOCUMENT_IDENTITY` EVEN NOW** — the publisher, year and plate are gathered and no decision consumes them; its `reach.KNOWN_GAPS` entry stays, corrected to say the flag is ON and the READ is what is open. Its sibling `Q.INPUT_DOMAIN` LEFT that list the same day. Flag-off is silent (no abstention), so a flag-off record is byte-identical to a tree without the rung. See [benchmarks/omr-positional-store-2026-09/out/IDENTITY_RUN_2026-09-17.md](benchmarks/omr-positional-store-2026-09/out/IDENTITY_RUN_2026-09-17.md) and [benchmarks/omr-document-identity-2026-09/FINDINGS.md](benchmarks/omr-document-identity-2026-09/FINDINGS.md). |
+| `OMR_ENGRAVED_KEYSIG` | **`1` (on)** | **Staged pipeline only. ON A DOCUMENT MEASURED ENGRAVED, `adjudicate_key_signature` READS THE TEMPLATE FIRST.** ⚠️⚠️ **DEFAULT ON SINCE 2026-09-22 (evening), SEAN'S CALL** — it shipped OFF that afternoon on n, and the n is UNCHANGED; what the flip rests on is that the rule is ONE-SIDED, so every input the new fact cannot speak about keeps the shipped behaviour exactly. **DENY-list OFF test**, per *A flag's OFF test must follow its DEFAULT*. ⚠️ Verified at the flip: with no `Q.INPUT_DOMAIN` row nothing changes, so every record gathered before the rung existed and every run with `OMR_DOCUMENT_IDENTITY=0` is untouched — `test_keysig_second_reader.py` passes unmodified. Sean, 2026-09-22: *"then we need to make sure that the key signature is determined based on that info."* The shipped precedence takes the locator and reads the template into GAPS, because *"the locator loses accidentals to broken ink, the template can match spurious ink and over-count"* — ⚠️⚠️ **and that reason is REFUTED on engraved input and nowhere else**: on a Verovio render of Beethoven 5 mvt 1 the ink is a VECTOR render, the locator loses them anyway, and the template over-counts nowhere. **MEASURED, one gather adjudicated twice** (3 pages, 18 parts, **54 staff-systems, 50 decided**; the canonical `readjudicate --control` reproduces **688 of 688** duration verdicts on that record first): key signature **right 26 → 47, wrong 24 → 3**. ⚠️⚠️ **IT REPRODUCES THE 09-22 HANDOFF'S OWN TABLE FROM A FRESH GATHER AND A DIFFERENT SCORER** — split by reason the OFF arm reads `fitted_by_template` **20 right / 0 wrong** and `fitted` **6 / 24**, that handoff's §1 figures to the unit — and **the template is 67 of 67 right wherever it speaks across both arms**. ⚠️ **The 3 that remain wrong are template SILENCES, not template errors** (all read `fitted`: the template produced no fit for that staff's settled clef and the tier fell through). ⚠️ **It is not "always answer −3"**: the B♭ clarinets (−1) and E♭ horns (0) are right in BOTH arms. **In the file**: bars exact **313 → 322 of 360**, **4 parts better and 0 worse**, `<alter>` **44 → 67** of a truth 100, and `<fifths> -3` lands on the truth's **14**. **CONTROL: of 29 quantities exactly 2 move** — `key_signature` and its downstream `accidental`. ⚠️⚠️ **ONE-SIDED, AND THE PRECEDENCE IS NOT FLIPPED GLOBALLY**: a scan, a classifier abstention, a record with no identity row and the flag off ALL fall through to the shipped behaviour. The template's 20/0 is an ENGRAVED figure, **the same erasure HELPS on a scan** (accidental-sized clusters 5 → 11 on the Litolff plate, because there the lines merge glyphs and erasing separates them), and that side is **not measured for accuracy**. ⚠️ It reads `Q.INPUT_DOMAIN` at `Scope.SELF_AND_ANCESTORS` — the row is on the DOCUMENT and the decision is `Kind.STAFF`, so a bare read returns nothing on every page forever and **fails silent**, the fault `adjudicate_instrument` records against `Q.ROSTER_ENTRY`. ⚠️ It reads the **MEASURED** row and never `image_type`. ⚠️⚠️ **NOT ESTABLISHED, AND THE FLIP DID NOT RESOLVE ANY OF IT**: n = 1 engraved document, 1 renderer, 24 bars; **no print was consulted**; the scan side is shown only to be a NO-OP and is NOT measured for accuracy; no OMR-NED, deliberately. **The next thing that would move this is a second engraved document — ideally one of the 10 held editions the container reader measures engraved, which is now a one-line query.** See [benchmarks/omr-document-identity-2026-09/FINDINGS.md](benchmarks/omr-document-identity-2026-09/FINDINGS.md). |
+| `OMR_DOCUMENT_IDENTITY` | **`1` on (default since 2026-09-22, Sean's instruction; deny-list)** → staged pipeline only: file `Q.DOCUMENT_IDENTITY` (publisher, **year**, **plate**, **text layer**, work, `image_type`) out of the committed catalog, AND `Q.INPUT_DOMAIN`, the MEASURED scanned-vs-engraved verdict off the PDF's own container (`source_kind: "container"`). A PDF the catalog does not hold ABSTAINS `not_in_catalog`; a page that is neither raster-dominant nor drawing-rich ABSTAINS `no_domain_signal`. **Nothing reads the catalog row yet**; the domain row is read by `OMR_ENGRAVED_KEYSIG`. See the knobs table. |
+| `OMR_ENGRAVED_KEYSIG` | **`1` on (default since 2026-09-22 evening, Sean's call; deny-list)** → staged pipeline only: on a document MEASURED engraved, read the key-signature TEMPLATE before the locator. Right **26 → 47** of 50, wrong **24 → 3**; bars exact **313 → 322**, 4 parts better and 0 worse; of 29 quantities exactly 2 move. One-sided — a scan, an abstention, no identity row and the flag off all fall through unchanged. ⚠️ n = 1 engraved document, 1 renderer, **no print consulted** — the limits the flip did NOT resolve. See the knobs table. |
 | `OMR_PARTIAL_DYNAMICS` | `off` | **Measured over the 20-row scan gate 2026-09-08 and REFUSED.** `export.measure_dynamics` assembles adjacent `dynamic*` letters into a word and DISCARDS the run whole where it spells none of the 17 in `_DYNAMIC_WORDS` — a mark the detector READ, thrown away on the way out. ⚠️ **The obvious fix — export the run's own text — is refused, because most of what is dropped is not one mark**: on the committed Brahms 1 / Breitkopf transcription 15 of 20 dropped runs are a prefix of NOTHING and the shape is `ppmsf` / `ppzmf`, five letters run together, which no dynamic is. ⚠️ Re-assembling on the MEDIAN letter width instead of the max was tried and is NOT the lever (kept runs 159 → 162, dropped still 20, `ppmsf` intact). So the modes are graded by how much they assert: `complete` exports only what **every surviving completion agrees on** — a lone `s` can only become `sf`/`sfp`/`sfz`, all of which begin `sf`, so nothing is guessed; a lone `m` could be `mf` or `mp`, which agree on nothing further, and stays dropped. `other` adds `<other-dynamics>` carrying the run's own text for a prefix whose completions disagree. A prefix of NOTHING is dropped under every mode. **Priced with `probe/reexport_arm.py`, which re-exports the scan arm's own `.omr.json` files so the transcribe half is held byte-identical: `complete` +15 edits, `other` +30, and NOT ONE ROW BETTER under either.** `complete` adds 19 dynamics for +15 edits, so roughly 4 of 19 paired. ⚠️ The buckets are reported and not used for attribution (`entire measure insert/delete` FALLS while `wrong note` RISES on the two big Beethoven rows — the block diff re-planning around an added symbol). It stays off because the recovery is real ink the metric will not pay for **in an exporter that has no ownership**, and placement is exactly what stops a correctly recovered `sf` from pairing; re-price on the staged path. Flag-off is byte-identical to `main`, verified by md5. See [benchmarks/omr-dynamics-staged-2026-09/FINDINGS.md](benchmarks/omr-dynamics-staged-2026-09/FINDINGS.md). |
 | `OMR_ROSTER_LABELS`   | `0` (off) | ⚠️⚠️ **THIS ROW SAID "Measured, deliberately dormant" UNTIL 2026-09-22 AND THAT IS FALSE ON THE STAGED PATH — THE FLAG GOVERNS THE LEGACY READER ONLY.** `work_roster.enabled()` has exactly **one** non-test caller, `contextual.py:629`; `staged/adjudicators/identity.adjudicate_instrument` calls `WR.decide(...)` **with no reference to the flag**, gated instead by a `Q.ROSTER_ENTRY` row **which the staged CLI supplies BY DEFAULT** (`--no-roster` turns it off). ⚠️ That is the **INVERSE** of the symbol-dossier sweep's *"shipped means the LEGACY path"*, so a reader assuming the usual direction gets it backwards in BOTH halves. It is **structurally live and practically dormant** — the shared Brahms record carries `roster_entry … no work id / roster supplied` once per page — which is the state in which nobody notices a default. Pinned now by two derived tests. ⚠️⚠️ **AND THE 2026-09-21 HANDOFF'S RANKED #2 IS REFUTED: the Brahms horn case is OUTSIDE this rule's domain by construction and it fires ZERO times on all 209 Brahms labels** — `'(C)'`, `'(Es)'`, `'in C 1/2'` carry no instrument tail, every token is under three letters, and **no threshold makes it reachable** (two-letter tails admit `es`, `in`, `hr`). It is a **BRACED-PAIR** label — four horns on two staves, 1-2 in C and 3-4 in E♭ — which this very file already said no lexicon can recover. ⚠️ **On real pages not one recovery is a truncation**: 17 Boléro `Violoncelles` (a SUPERSCRIPT) and 3 `Basso.`; the `larinetti`/`orni`/`mpani` cases are a LilyPond `indent` artefact with **zero real-world exposure** (289 editions, 0 spans at the sheet edge). ⚠️ **Adjacency is REFUSED 0 of 4** — it fails precisely when BOTH members of a braced pair are bare, because then neither neighbour is a horn. ⚠️ **The cost side is now measured and is zero**: 968 of 1,422 labels are `resolved_already` and none is touched, 0 vetoes fire, and the 368,173-decision cross product is **byte-identical** (1,141 distinct claims, 0 new, 0 gone). **Recommendation: do NOT flip it, and stop treating the flag as the question** — the ranked work is the cross-system SLOT CARRY, which the legacy path has (`contextual.py:1527`) and the staged path lacks, a **sixth** instance of *shipped means the LEGACY path*. See [benchmarks/omr-roster-truncation-reprice-2026-09/FINDINGS.md](benchmarks/omr-roster-truncation-reprice-2026-09/FINDINGS.md). **The historical record follows.** **Measured, deliberately dormant — the reach is small and the number says so.** A margin label whose leading characters are gone (`'larinetti in A'`, `'orni in F I II'`) either abstains or, worse, is CAPTURED by a shorter alias inside what survives: `Tromboni Alto e Tenore` cut to `Alto e Tenore` reads as **Tenor**, `Trombone Basso` cut to `mbone Basso` as **Bass voice** — two singers on a Tchaikovsky symphony, at `medium` confidence, invisible to the unmatched-label report, feeding `clef_correction`, the written-range veto and the part→staff join. Widening the lexicon stays refused (an alias is GLOBAL: `orni` admitted for Tchaikovsky is admitted for every score ever read); this narrows the QUESTION instead, matching the surviving tail against the ~10 instruments the **catalog's `works` tier** says the work is scored for (`source_kind: "catalog"`, independent of the truth MusicXML — the `editions` tier is `page`, an OMR output of the same raster, and is refused). Four outcomes, reported apart because the risk differs: **recovered** and **disambiguated** (`Basso.` → Contrabass, the ambiguity the edition-tier work prices at 35 rows) NAME a staff; **vetoed** only removes a name that was already wrong. ⚠️ A truncation is the tail of a WORD — matching across a space would read a truncated `Fl. Alt.` (an ALTO FLUTE) as a trombone via `tr alt` — and ambiguity ABSTAINS (91 distinct tails are owned by two instruments of the Brahms 1 roster alone). ⚠️ **A roster is a POSITIVE list and the parse loses families two ways**: Tchaikovsky 6's `strings` went to `segments_ignored` so its roster names no string at `parse_rate 1.0`, and the parse reads ONE field, so *Egmont*'s `soprano` is nowhere in it — **4 works with real singers admitted no voice family** until families were also read off both RAW fields through `instruments.lookup` per segment. Measured: **20 of 1422 real margin labels change (1.4%)** across 4 of 13 editions, 8 of 223 engraved-fixture labels, and all 28 firings were hand-adjudicated correct. ⚠️ The reference corpus fires 0 BY CONSTRUCTION (those strings carry no work), so the false-positive test is a 1651 × 223 cross-product instead — which is what found `Vier Flöten` → **Piano** (`vier` is a tail of `klavier`) and `Soprano Saxophone` → **Alto** (`soprano` is a tail of `mezzosoprano`); both guards came out of that table and cost none of the 28. ⚠️ Reach limits: 205 of the 1422 labels are on works the `works` tier does not hold (Mahler 5, Messiah), and the engraved fixtures are build products OUTSIDE the store, so the layer is a **no-op on the eleven-work benchmark** unless a harness names the work with `OMR_WORK_ID`. No pooled figure is claimed — musicdiff does not score `<part-name>`. See [benchmarks/omr-roster-constrained-labels-2026-09/FINDINGS.md](benchmarks/omr-roster-constrained-labels-2026-09/FINDINGS.md). |
 
@@ -4189,6 +4225,163 @@ render is not a scan; the `accidental` family is excluded as a RENDER artefact
 `dynamic_letter` precision **0.491** and a spurious page-2 barline are measured
 and undiagnosed; no OMR-NED, deliberately.
 
+### WHICH PRINTING THIS IS — gathered, and the key signature reads it
+
+2026-09-22, Sean's ruling: *"if a page is engraved or a scan along with the
+publisher info and year — whatever we have — should be gathered in the first
+stage — then we need to make sure that the key signature is determined based
+on that info."* Two flags, **BOTH DEFAULT ON** — `OMR_DOCUMENT_IDENTITY` and
+`OMR_ENGRAVED_KEYSIG`, the second flipped the same evening on Sean's call
+(*"flip OMR_ENGRAVED_KEYSIG on by default"*) after the measurement below.
+⚠️ **THE FLIP RESOLVED NONE OF THE LIMITS IN THE LAST PARAGRAPH OF THIS
+SECTION** — n is still 1 document and 1 renderer and no print has been
+consulted. What it rests on is that the rule is ONE-SIDED: every input the
+new fact cannot speak about keeps the shipped behaviour exactly, verified at
+the flip by `test_keysig_second_reader.py` passing unmodified. Findings:
+[benchmarks/omr-document-identity-2026-09/FINDINGS.md](benchmarks/omr-document-identity-2026-09/FINDINGS.md).
+
+⚠️⚠️ **SEAN'S OWN GUESS WAS RIGHT AND THE BRIEF'S WARNING IS REFUTED.** The
+brief called `image_type` *"almost certainly wrong about the engraved
+population"* on the strength of its 7 `Typeset` in 289; Sean's reaction was
+*"or maybe they are all scans because they came from IMSLP"*. Measured over
+**all 289 committed editions, every PDF on disk, 16 s, no weights**: the label
+and the container measurement agree **279 of 279 wherever the label exists** —
+**272/272** `Normal Scan` measure scanned, **7/7** `Typeset` measure engraved,
+and those seven are modern re-engravings (Snortum 2024, Renioult 2025, Shaw
+2024, NielsenComplete 1998, Wolfson, Chang 2019, a 2016 *Boléro*), which is
+what the word means on IMSLP. **The label's failing is ABSENCE, not error**:
+its only gap is the 10 editions carrying no label, which the measurement
+splits 7 scanned / 3 engraved — and all three of those are `--local.pdf`, not
+IMSLP downloads at all. **Every historical plate this project reads is a scan,
+because it came from IMSLP.**
+
+⚠️⚠️ **SO THE REASON TO KEY ON THE MEASUREMENT IS STRUCTURAL, NOT THAT THE
+LABEL LIES — AND IT IS STRONGER.** The engraved fixture the whole
+key-signature failure is proven on is a **Verovio render**, a build product in
+no catalog, so `edition_for_pdf` returns `{}` and `gather_document_identity`
+**ABSTAINS `not_in_catalog`** on it while the container reader answers
+`engraved` (raster coverage **0.000**, **1188-1655** drawings, 3 pages of 3).
+**A domain filed as a FIELD of the catalog row would have had a reach of ZERO
+on the one input where the rule it conditions is proven.** That is why they
+are two quantities, and it is a measurement rather than a taxonomy preference.
+⚠️ They are still kept apart as two WITNESSES — `image_type` is filed beside
+the measurement and neither overwrites the other, the `Q.INK` discipline for
+`ink_detector_coverage`.
+
+⚠️⚠️ **`Q.INPUT_DOMAIN` WAS ALREADY DECLARED, ALREADY CLAIM-CLASSIFIED, AND
+PRODUCED BY NOTHING** — `record.py`, *"scan vs engraved, for weights"*,
+`CLAIM.EXTERNAL`, with a docstring reasoning that it *"reads the PDF's own
+object graph … a fact about the FILE, and like the other externals it does not
+degrade with the print"*. `OMR_WEIGHT_ROUTING` has classified every document
+since 2026-09-03 and the staged path never wrote the answer down; `reach
+--check` reported it a GHOST every run. **This session reached the same design
+independently and then declared the quantity a SECOND time**; `reach` and
+`capture` caught the duplicate. The brief's *"roughly half of it already
+exists"* was true of more than its own table named — **`grep Q\.` the
+vocabulary, not just `ls benchmarks/`.**
+
+**`source_kind: "container"` is a FOURTH kind, named deliberately.** Not
+`catalog` (no external authority speaks), not `encoding`, and emphatically not
+`page` — *an OMR output of the same raster*, refused as a second witness
+because it falls silent exactly when the reading it would arbitrate does. This
+counts vector drawing operations against full-page raster coverage: **a bad
+scan is still unambiguously a raster**, so it has `catalog`'s independence from
+print quality without `catalog`'s dependence on somebody having catalogued the
+file. ⚠️ A page that is neither abstains **`ABSTAIN.NO_DOMAIN_SIGNAL`** — its
+own word, not `AMBIGUOUS`, because `input_domain`'s two populations have an
+EMPTY gap over 147 probed pages and a blank cover leaf is the reader
+succeeding, not a close call.
+
+⚠️ **What the catalog row now carries, with its coverage so nobody sizes work
+off a mostly-absent field**: `publisher` 285/289, **`publisher_year` 195**
+(Sean asked for the year by name), **`plate` 177** (a plate number identifies a
+PRINTING more sharply than a house — Litolff 2765-2773 is one series across the
+whole Beethoven cycle), `image_type` 279, **`has_text_layer` 289**, the only
+field present on every edition — and 54 of the 279 scans do carry a text layer.
+
+**MEASURED, one gather adjudicated twice** (engraved fixture, 3 pages, 18
+parts, **54 staff-systems, 50 decided**; the canonical `readjudicate --control`
+reproduces **688 of 688** duration verdicts on that record first — unlike the
+shared scan records, which no longer reproduce because seven commits have
+touched `rhythm.py` since):
+
+| | right | wrong |
+|---|--:|--:|
+| **OFF** — the shipped precedence | **26** | **24** |
+| **ON** — the engraved tier | **47** | **3** |
+
+⚠️⚠️ **IT REPRODUCES THE 09-22 HANDOFF'S OWN TABLE FROM A FRESH GATHER, A
+DIFFERENT TREE AND A DIFFERENT SCORER.** Split by reason the OFF arm reads
+`fitted_by_template` **20 right / 0 wrong** and `fitted` **6 right / 24
+wrong** — that handoff's §1 figures to the unit, arrived at independently —
+and **the template is 67 of 67 right wherever it speaks across both arms**,
+over-counting nowhere.
+
+⚠️ **The 3 that remain wrong are template SILENCES, not template errors**: all
+three read reason `fitted`, i.e. the template produced no fit for that staff's
+settled clef and the tier fell through to the locator (Violin 1 on systems 1
+and 2, Violin 2 on system 2). ⚠️ **And it is not "always answer −3"** — the
+transposing parts are right in BOTH arms, B♭ clarinets at −1 and E♭ horns at 0.
+
+**In the file**: bars exact **313 → 322 of 360**, **4 parts better and 0
+worse** (Violin 2 +6, Violin 1 +1, Flute 1 +1, Oboe 1 +1), `<alter>` **44 →
+67** of a truth 100, and `<fifths> -3` lands on the truth's **14**.
+**CONTROL: of 29 quantities in the record exactly 2 move** — `key_signature`
+and its downstream `accidental`.
+
+⚠️⚠️ **THE CONSUMER IS ONE-SIDED AND THE PRECEDENCE IS NOT FLIPPED GLOBALLY.**
+A scan, a classifier abstention, a record with no identity row, and the flag
+off ALL fall through to the shipped behaviour, each with its own test paired
+against the engraved case as a positive control — because a battery of
+fall-through tests passes by falling through always. The template's 20/0 is an
+**engraved** figure; **the same erasure HELPS on a scan** (accidental-sized
+clusters 5 → 11 on the Litolff plate, because there the lines merge glyphs and
+erasing separates them), and that side is **not measured for accuracy**.
+
+⚠️ **`Scope.SELF_AND_ANCESTORS` is not optional**: the row is on the DOCUMENT
+and the decision is `Kind.STAFF`, so a bare `ev.rows(...)` returns nothing on
+every page forever and **fails silent**, reading exactly like an honest
+document with no identity — the fault `adjudicate_instrument` records against
+`Q.ROSTER_ENTRY` in the same words. Pinned by a test asserting the default
+EXACT scope finds nothing.
+
+⚠️⚠️ **TWO INSTRUMENT DEFECTS, BOTH CLEAN BELIEVABLE ZEROS.** (1) The accuracy
+table reported **0 right / 0 wrong on BOTH arms** because `str(Outcome.DECIDED)`
+is `'Outcome.DECIDED'` on this Python, so `== "decided"` could never be true;
+the scorer now REFUSES a run in which it scored nothing. (2) ⚠️⚠️ **THE
+DERIVED-CHECK CONTROL MEASURED THE SHELL**: `for t in "staged.capture --check";
+do python3 -m tools.omr.$t` — **zsh does not word-split an unquoted
+parameter**, so every check ran as a module name containing a space and
+returned 1 on BOTH trees, reading exactly like eight legitimate pre-existing
+failures. `${=t}` gives the truth: **all eight pass on both trees.** CLAUDE.md
+already records this trap for `env $3`. ⚠️ A third: the new test file computed
+`REPO` with three `dirname`s where it sits four levels down, so **5 of 18
+assertions `skipTest`ped silently** — a skip is the one outcome that looks like
+a pass.
+
+⚠️ **Two repairs the derived checks demanded and are worth carrying.** A
+shared helper taking the reason word as a PARAMETER made `brakes --check`
+report both template reasons UNRESOLVED — the trade INFER refused when it wrote
+two flag predicates out separately — so the lookup is shared and the two
+literal reasons stay at their call sites. And `positional_store`'s catalog
+projection appeared **TWICE** (`edition_facts` by path, `edition_for_pdf` by
+basename), each hand-listing the same tuple; written once as
+`_edition_projection`, which is also what makes the new fields reach both.
+
+⚠️ **What is NOT established**: **n = 1 engraved document, 1 renderer, 24
+bars, 3 pages**, and a render is not a scan; **no print was consulted** (the
+truth is the encoding's `<key><fifths>` on a render where the ordinal join is
+true by construction, and no crop was cut); **the scan side is shown only to be
+a NO-OP**, which is the fall-through working and not evidence the shipped
+precedence is right; **nothing reads `Q.DOCUMENT_IDENTITY` even now** — the
+publisher, year and plate are gathered and no decision consumes them, and its
+`reach.KNOWN_GAPS` entry stays, corrected; no OMR-NED, deliberately.
+⚠️⚠️ **THE DEFAULT WAS FLIPPED ON BY SEAN THE SAME EVENING AND NONE OF
+THIS CHANGED.** The next thing that would move it is a SECOND engraved
+document — and the cheapest are the **10 held editions the container
+reader measures engraved**, which is now a one-line query against
+`out/library-domains.json` rather than a hunt.
+
 ### ⚠️⚠️ A scoring instrument answered "page not found" with a ZERO — `score_reading.py`
 
 2026-09-22, found by the lane above, **repaired by the managing session** (the
@@ -5415,6 +5608,22 @@ page that had given 100), not review and not version control.
 > **A mutation battery must leave the tree as it FOUND it — which is not the
 > same as leaving it as GIT has it, AN INTERRUPTED BATTERY OBEYS NEITHER, and a
 > RESTORE THAT PRESERVES mtime CAN LEAVE THE OLD BYTECODE IN CHARGE.**
+
+⚠️⚠️ **AND A FOURTH CLAUSE, PAID FOR 2026-09-22: DO NOT *COMMIT* WHILE A
+BATTERY RUNS EITHER — `git add -A` IS A READ OF THE WORKING TREE, AND THE
+BATTERY OWNS THE WORKING TREE.** A session committed and **pushed**
+`header.py` carrying the arm *"the precedence is flipped GLOBALLY"* —
+`if True:` in place of the one-sided gate — so the remote briefly held the
+key-signature tier preferring the template on SCANS, the one thing that
+lane's design refuses. ⚠️ **It is silent in BOTH directions**: the commit
+looks clean because the tree was the battery's, and after the restore
+`git status` shows **one modified file that reads as an ordinary edit**. The
+tell is the pairing — *the battery said `restore VERIFIED by md5` AND the
+tree is dirty*, which can only mean the COMMIT is wrong. ⚠️ The existing
+recorded clause is *do not EDIT `tools/` while a suite is running*, and the
+same session had already paid that one an hour earlier by losing a docstring
+to the same snapshot. **Commit BEFORE launching a battery, and touch nothing
+until it prints its restore.**
 
 ⚠️⚠️ **THE THIRD CLAUSE WAS PAID FOR ON 2026-09-18 AND ITS FAILURE IS
 INDISTINGUISHABLE FROM A TEST GAP: `__pycache__` SURVIVES A MUTATE/RESTORE

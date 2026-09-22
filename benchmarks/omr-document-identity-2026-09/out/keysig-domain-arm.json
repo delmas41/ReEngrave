@@ -1,0 +1,101 @@
+{
+ "reach": {
+  "input_domain": [
+   "engraved"
+  ],
+  "document_identity_abstained": [
+   "not_in_catalog"
+  ]
+ },
+ "quantities_moved": [
+  "accidental",
+  "key_signature"
+ ],
+ "key_signature": {
+  "off": {
+   "reasons": {
+    "fitted": 30,
+    "fitted_by_template": 20,
+    "markers_without_a_run": 4
+   },
+   "values": {
+    "-1": 30,
+    "-3": 14,
+    "0": 6,
+    "None": 4
+   }
+  },
+  "on": {
+   "reasons": {
+    "fitted_by_template_engraved": 47,
+    "fitted": 3,
+    "markers_without_a_run": 4
+   },
+   "values": {
+    "-3": 35,
+    "-1": 9,
+    "0": 6,
+    "None": 4
+   }
+  },
+  "staves_changed": [
+   "staff/0/0/0",
+   "staff/0/0/1",
+   "staff/0/0/10",
+   "staff/0/0/11",
+   "staff/0/0/12",
+   "staff/0/0/13",
+   "staff/0/0/14",
+   "staff/0/0/15",
+   "staff/0/0/16",
+   "staff/0/0/17",
+   "staff/0/0/2",
+   "staff/0/0/3",
+   "staff/0/0/4",
+   "staff/0/0/5",
+   "staff/0/0/6",
+   "staff/0/0/7",
+   "staff/0/0/8",
+   "staff/0/0/9",
+   "staff/1/0/0",
+   "staff/1/0/1",
+   "staff/1/0/10",
+   "staff/1/0/11",
+   "staff/1/0/12",
+   "staff/1/0/14",
+   "staff/1/0/15",
+   "staff/1/0/16",
+   "staff/1/0/17",
+   "staff/1/0/2",
+   "staff/1/0/3",
+   "staff/1/0/4",
+   "staff/1/0/5",
+   "staff/1/0/6",
+   "staff/1/0/7",
+   "staff/1/0/8",
+   "staff/1/0/9",
+   "staff/2/0/0",
+   "staff/2/0/1",
+   "staff/2/0/10",
+   "staff/2/0/11",
+   "staff/2/0/12",
+   "staff/2/0/17",
+   "staff/2/0/2",
+   "staff/2/0/3",
+   "staff/2/0/4",
+   "staff/2/0/5",
+   "staff/2/0/8",
+   "staff/2/0/9"
+  ]
+ },
+ "accuracy": {
+  "off": {
+   "right": 26,
+   "wrong": 24
+  },
+  "on": {
+   "right": 47,
+   "wrong": 3
+  }
+ }
+}

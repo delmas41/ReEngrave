@@ -1,0 +1,18 @@
+wrote benchmarks/omr-document-identity-2026-09/out/engraved-p0p2-identity.record.json
+
+── ADJUDICATE ─────────────────────────────────────────
+  decided:   {'arc_kind': 75, 'arc_owner': 75, 'clef': 54, 'direction': 450, 'duration': 685, 'dynamic': 450, 'event': 449, 'fermata_owner': 83, 'glyph_owner': 130, 'group_symbol': 3, 'instrument': 50, 'key_signature': 50, 'measure_partition': 54, 'meter': 3, 'notehead_is_a_whole_rest': 371, 'onset_column': 3, 'part_partition': 1, 'slot_index': 54, 'staff_ordinal': 54, 'stem_direction': 337, 'system_membership': 3, 'system_staff_count': 3, 'voices': 449}
+  abstained: {'articulation_owner': {'no_notehead': 1}, 'duration': {'beams_ambiguous': 3}, 'instrument': {'not_in_lexicon': 4}, 'key_signature': {'markers_without_a_run': 4}, 'ornament_owner': {'no_notehead': 1}, 'staff_group': {'block_unavailable': 54}, 'stem_direction': {'no_stem': 34}, 'voices': {'nothing_to_split': 1}}
+── GROUPS ─────────────────────────────────────────────
+  clef_across_systems: 18 facts, 54 witnesses, 0 uninformative, {'none': 0, 'single': 0, 'unanimous': 18, 'majority': 0, 'split': 0}
+  instrument_across_systems: 18 facts, 50 witnesses, 2 uninformative, {'none': 0, 'single': 2, 'unanimous': 16, 'majority': 0, 'split': 0}
+  key_signature_across_systems: 18 facts, 50 witnesses, 0 uninformative, {'none': 0, 'single': 0, 'unanimous': 18, 'majority': 0, 'split': 0}
+  measure_count_across_staves: 3 facts, 54 witnesses, 0 uninformative, {'none': 0, 'single': 0, 'unanimous': 3, 'majority': 0, 'split': 0}
+  meter_across_staves: 3 facts, 18 witnesses, 2 uninformative, {'none': 2, 'single': 0, 'unanimous': 1, 'majority': 0, 'split': 0}
+  staff_group_across_systems: 18 facts, 0 witnesses, 18 uninformative, {'none': 18, 'single': 0, 'unanimous': 0, 'majority': 0, 'split': 0}
+  ⚠️ witnessed_by_nobody (no witness spoke): ['staff_group_across_systems']
+  ⚠️ checked_nothing (never two independent signals -- corroborated NOTHING, however busy it looks): ['staff_group_across_systems']
+  ⚠️ DISAGREEMENTS: 0 (each implicates its WHOLE group, not its dissenter)
+── EVALUATE: 746 fired, 4083 skipped
+── INFER: 0 inferred, 0 skipped  ⚠️ every one is LABELLED and supersedes a recorded narrowing
+── DECLARED STUBS: 0 decisions, 1 consequences

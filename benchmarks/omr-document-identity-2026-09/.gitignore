@@ -1,0 +1,5 @@
+# ⚠️ The staged records are 13-17 MB each and are REPRODUCIBLE from the
+# committed fixture with `run_all.sh`. The small artefacts every figure in
+# FINDINGS.md is read off ARE committed, so a reader with no weights and no
+# score library can still check the numbers.
+*.record.json

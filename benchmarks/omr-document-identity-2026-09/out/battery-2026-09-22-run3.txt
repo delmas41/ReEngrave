@@ -1,0 +1,136 @@
+==============================================================================
+BASELINE — the positive control. Every arm below is free if this is not green.
+==============================================================================
+  SUITE+CHECKS exit 0: 126 passed, 5 warnings in 19.89s  reach=0  capture=0  brakes=0
+  ARM          exit 2
+  Q.INPUT_DOMAIN       observed 1  abstained 0  value ['engraved']
+  superseded pairs RESOLVED  [227, 227], of which the resolved answer DIFFERS from the first row met on [227, 227]
+  quantities that MOVED      2  ['accidental', 'key_signature']
+  OFF (shipped)          reasons {'fitted': 30, 'fitted_by_template': 20, 'markers_without_a_run': 4}
+  ON  (engraved tier)    reasons {'fitted_by_template_engraved': 47, 'fitted': 3, 'markers_without_a_run': 4}
+  staves whose verdict CHANGED: 47 of 54
+  OFF  right  26   wrong  24
+  ON   right  47   wrong   3
+  --
+  Q.INPUT_DOMAIN       observed 1  abstained 0  value ['scanned']
+  ⚠️ DEAD ARM: the document measures ['scanned'], not `engraved`, so the one-sided tier is a no-op here BY DESIGN. That is the fall-through working; it is not a measurement of the rule.
+  --
+  Q.INPUT_DOMAIN       observed 1  abstained 0  value ['engraved']
+  superseded pairs RESOLVED  [227, 227], of which the resolved answer DIFFERS from the first row met on [227, 227]
+  quantities that MOVED      2  ['accidental', 'key_signature']
+  OFF (shipped)          reasons {'fitted': 30, 'fitted_by_template': 20, 'markers_without_a_run': 4}
+  ON  (engraved tier)    reasons {'fitted_by_template_engraved': 47, 'fitted': 3, 'markers_without_a_run': 4}
+  staves whose verdict CHANGED: 47 of 54
+  ⚠️ REFUSED to score: 54 staff-systems against 5 parts — the ordinal join is not exact, and pairing by position would report the mismatch as accuracy.
+  --
+  ── REACH: Q.INPUT_DOMAIN ['scanned']
+  OFF == ON                      True   ✅ the scan is untouched
+  CONTROL (forced `engraved`)    DIFFERS   ✅ the comparison has teeth
+  control changed 12 of 12 verdicts, reasons {'fitted_by_template_engraved': 12}
+
+------------------------------------------------------------------------------
+ARM [gather]: the domain is a FIELD of the catalog row, not its own quantity
+  judge: suite+checks   expected: THIS IS THE WHOLE STRUCTURAL CLAIM: a render is in no catalog, so gating the domain on the catalog row gives it ZERO reach on the one input the rule is proven on. `test_the_catalog_is_SILENT_where_the_container_ANSWERS` must fail
+  exit 1  -> RED
+
+------------------------------------------------------------------------------
+ARM [gather]: an unclassifiable page DEFAULTS to `scanned`
+  judge: suite+checks   expected: a fallback must never convert `cannot tell` into a definite answer -- the blank-page abstention test must fail
+  exit 1  -> RED
+
+------------------------------------------------------------------------------
+ARM [gather]: the idempotence guard asks only for OBSERVATIONS
+  judge: suite+checks   expected: `rows()` does not return abstentions, so a four-page run on an unheld PDF files FOUR of them -- the once-per-document test must fail
+  exit 1  -> RED
+
+------------------------------------------------------------------------------
+ARM [gather]: flag-off ABSTAINS instead of writing nothing
+  judge: suite+checks   expected: flag-off must be byte-identical to a tree with no rung, or it perturbs every A/B in the repo by existing -- the writes-NOTHING test must fail
+  exit 1  -> RED
+
+------------------------------------------------------------------------------
+ARM [gather]: the flag becomes an ALLOW-list under a default-ON flag
+  judge: suite+checks   expected: a default-ON flag written as an allow-list is silently switched OFF by a typo -- both the flag test and the derived direction scan must fail
+  exit 1  -> RED
+
+------------------------------------------------------------------------------
+ARM [gather]: unnameable pages become an EMPTY list, not None
+  judge: suite+checks   expected: an empty `page_indices` classifies NOTHING and returns `unknown` -- a clean believable abstention meaning the wrong thing
+  exit 1  -> RED
+
+------------------------------------------------------------------------------
+ARM [store]: the year and the plate are dropped again
+  judge: suite+checks   expected: Sean asked for the year BY NAME -- the catalog-row test must fail
+  exit 1  -> RED
+
+------------------------------------------------------------------------------
+ARM [store]: the projection is RESTATED rather than shared
+  judge: suite+checks   expected: the two lookups must not drift apart -- the anti-drift test must fail
+  exit 1  -> RED
+
+------------------------------------------------------------------------------
+ARM [header]: the precedence is flipped GLOBALLY, not one-sided
+  judge: suite+checks   expected: THE REFUSAL WAS PRICED ON SCANS and that side is not measured -- the scan, no-row and flag-off fall-through tests must all fail
+  exit 1  -> RED
+
+------------------------------------------------------------------------------
+ARM [header]: a SCAN is treated as engraved too
+  judge: suite+checks   expected: one-sided means one side -- the scan test must fail
+  exit 1  -> RED
+
+------------------------------------------------------------------------------
+ARM [header]: the DOCUMENT row is read at the default EXACT scope
+  judge: suite+checks   expected: `Q.INPUT_DOMAIN` is filed on the DOCUMENT and this decision is Kind.STAFF, so a bare read returns nothing on every page FOREVER and fails silent -- the engraved test and the scope test must fail
+  exit 1  -> RED
+
+------------------------------------------------------------------------------
+ARM [header]: the consumer flag is ignored
+  judge: suite+checks   expected: a default-OFF mechanism must be off by default -- the flag-off test must fail
+  exit 1  -> RED
+
+------------------------------------------------------------------------------
+ARM [header]: the engraved tier reuses the SHIPPED reason word
+  judge: suite+checks   expected: a separate word is what makes the new tier's reach countable in the record; folding them hides every firing
+  exit 17  -> RED
+
+------------------------------------------------------------------------------
+ARM [header]: the template's fit for ANOTHER clef is taken
+  judge: suite+checks   expected: a bass-clef fit must not name a treble staff's key -- the wrong-clef test must fail
+  exit 1  -> RED
+
+------------------------------------------------------------------------------
+ARM [arm]: DEAD on a non-engraved document becomes a clean exit
+  judge: ARM headline   expected: a dead instrument must not read as a clean result -- the scan run's exit 2 is part of the baseline PROFILE and must move
+  exit 0  -> RED
+
+------------------------------------------------------------------------------
+ARM [arm]: the outcome is compared as `str(enum)` again
+  judge: ARM headline   expected: THE BUG THIS ARM ALREADY HAD: `str(Outcome.DECIDED)` is 'Outcome.DECIDED', so the accuracy table read 0 right / 0 wrong on BOTH arms -- the scorer's own positive control must fire
+  exit 5  -> RED
+
+------------------------------------------------------------------------------
+ARM [arm]: the verdict walk takes SUPERSEDED rows
+  judge: ARM headline   expected: EVALUATE revises in place, so an unresolved walk reports quantities as having moved when only the write count moved -- the CONTROL must move
+  exit 2  -> RED
+
+------------------------------------------------------------------------------
+ARM [scanarm]: the VACUITY control is dropped
+  judge: ARM headline   expected: a run where the scan is untouched AND the control is vacuous is a PASS-shaped nothing -- BOTH conditions are the instrument
+  exit 2  -> SURVIVED
+  ⚠️ SURVIVOR — a real test gap, not a pass.
+
+------------------------------------------------------------------------------
+ARM [scanarm]: the forged control is not forged
+  judge: ARM headline   expected: the control must actually change the domain, or `CONTROL DIFFERS` is reporting that a file equals itself
+  exit 3  -> RED
+
+------------------------------------------------------------------------------
+ARM [arm]: the ordinal join is forced where it does not divide
+  judge: ARM headline   expected: pairing by position where the counts disagree reports the mismatch as accuracy
+  exit 2  -> RED
+
+==============================================================================
+RED 19   SURVIVED 1   BAD ANCHORS 0
+restore VERIFIED by md5: True
+  SURVIVOR [scanarm] the VACUITY control is dropped
+     expected: a run where the scan is untouched AND the control is vacuous is a PASS-shaped nothing -- BOTH conditions are the instrument

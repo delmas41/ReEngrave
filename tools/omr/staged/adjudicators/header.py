@@ -2,9 +2,97 @@
 
 from __future__ import annotations
 
+import os
+
 from ..adjudicate import Checkable, Evidence, Mode, Ruling, decision
 from ..record import ABSTAIN, Kind, Q, Scope, State
 
+#: ⚠️⚠️ DEFAULT **ON** SINCE 2026-09-22 (evening) — **SEAN'S CALL**, on the
+#: measurement in `benchmarks/omr-document-identity-2026-09/FINDINGS.md`: key
+#: signature right **26 -> 47** of 50 and wrong **24 -> 3** on the engraved
+#: fixture, **4 parts better and 0 worse** in the file, with exactly two
+#: quantities moving of 29. It shipped OFF the same day because the evidence
+#: was n = 1 document and 1 renderer with no print consulted; **those limits
+#: are unchanged and are not what the flip rests on** — it rests on the rule
+#: being ONE-SIDED, so every input the new fact cannot speak about keeps the
+#: shipped behaviour exactly.
+#:
+#: ⚠️ THE OFF TEST IS A **DENY-LIST** BECAUSE THE DEFAULT IS ON. CLAUDE.md's
+#: *"A flag's OFF test must follow its DEFAULT"*, under which five shipped
+#: flags had it backwards: under a default-ON flag an allow-list would let an
+#: empty value or a typo silently RESTORE the old precedence.
+#: `test_flag_default_direction.py` derives this from the source and checks it.
+ENGRAVED_KEYSIG_ENV = "OMR_ENGRAVED_KEYSIG"
+
+
+def _engraved_keysig_enabled() -> bool:
+    return os.environ.get(ENGRAVED_KEYSIG_ENV, "1").strip().lower() \
+        not in ("0", "", "false", "no", "off")
+
+
+def _proved_engraved(ev: Evidence) -> bool:
+    """Is THIS DOCUMENT measured engraved? Anything else answers False.
+
+    ⚠️⚠️ **ONE-SIDED, AND EVERY OTHER INPUT FALLS THROUGH TO THE SHIPPED
+    PRECEDENCE.** A scan, a classifier abstention, a document with no identity
+    row, a record gathered before this rung existed -- all four answer False
+    and change nothing. That is this repo's standing rule for a new gate, and
+    here it is load-bearing rather than tidy: the template's 20-right/0-wrong
+    is an ENGRAVED figure, and on a scan the staff-line erasure works FOR the
+    locator (it takes accidental-sized clusters 5 -> 11 on the Litolff plate,
+    because there the lines MERGE glyphs and erasing SEPARATES them). The
+    template's over-counting risk is exactly what the shipped refusal was
+    written about and that side is NOT measured for accuracy.
+
+    ⚠️ IT READS THE **MEASURED** ROW, NEVER `image_type`. The catalog's label
+    is IMSLP's crowd-sourced string; it is filed beside this as a second
+    witness and it is not what any decision keys on. It is also structurally
+    unable to serve here: the engraved fixture is a render in no catalog, so
+    the catalog row ABSTAINS on it while the container reader answers.
+
+    ⚠️ `SELF_AND_ANCESTORS` IS NOT OPTIONAL. `Q.INPUT_DOMAIN` is filed on the
+    DOCUMENT and this decision is `Kind.STAFF`; a bare `ev.rows(...)` returns
+    nothing on every page forever, which is the fault `adjudicate_instrument`
+    records against `Q.ROSTER_ENTRY` in the same words -- and it fails SILENT,
+    reading exactly like an honest document with no identity.
+    """
+    if not _engraved_keysig_enabled():
+        return False
+    for row in ev.rows(Q.INPUT_DOMAIN, scope=Scope.SELF_AND_ANCESTORS):
+        if str(row.value) == "engraved":
+            return True
+    return False
+
+
+def _template_fit(ev: Evidence, clef):
+    """The template reader's row for the SETTLED clef, and its fifths.
+
+    ⚠️ IT RETURNS THE **ROW**, NOT A `Ruling`, AND THAT IS DELIBERATE. An
+    earlier draft took the reason word as a PARAMETER and built the Ruling
+    here, which is tidier and defeats `brakes --check`: that tool judges
+    statically whether every declared reason is reachable, and a reason
+    arriving as an argument made `fitted_by_template` and
+    `fitted_by_template_engraved` UNRESOLVED -- exactly the trade INFER
+    refused when it wrote two flag predicates out separately rather than share
+    a helper taking the flag name, *"because the derived flag-direction scan
+    finds flags by AST and a helper taking the name as a parameter would hide
+    both."* The lookup is shared; the two literal reasons stay at their call
+    sites where a derived check can see them.
+    """
+    for row in ev.rows(Q.KEYSIG_TEMPLATE_FIT):
+        if str(row.value) != str(clef.value):
+            continue
+        fifths = row.detail.get("fifths")
+        if fifths is None:
+            continue
+        return row, int(fifths)
+    return None, None
+
+
+def _template_detail(row) -> dict:
+    return {"n_accidentals": row.detail.get("n_accidentals"),
+            "accidental": row.detail.get("accidental"),
+            "decided_by": "template"}
 
 
 def _marker_ink(ev: Evidence) -> dict:
@@ -58,10 +146,17 @@ def _marker_ink(ev: Evidence) -> dict:
     composed_from=(Q.KEYSIG_RUN_POSITION, Q.KEYSIG_MARKER, Q.CLEF),
     scope=Kind.STAFF,
     wants=(Q.KEYSIG_RUN_POSITION, Q.KEYSIG_MARKER, Q.KEYSIG_CLEF_FIT,
-           Q.KEYSIG_TEMPLATE_FIT, Q.CLEF, Q.DOSSIER_FACT),
-    reasons=("fitted", "fitted_by_template", "needs_clef",
-             "run_fits_no_slot_table", "no_run", "markers_without_a_run",
-             "no_evidence"),
+           Q.KEYSIG_TEMPLATE_FIT, Q.CLEF, Q.DOSSIER_FACT, Q.INPUT_DOMAIN),
+    #: ⚠️ `fitted_by_template_engraved` IS A SEPARATE WORD FROM
+    #: `fitted_by_template` SO THE REACH IS COUNTABLE IN THE RECORD. The two
+    #: are the same reader reached by different routes -- one because the
+    #: document is PROVED engraved, one because the locator left a gap -- and
+    #: folding them would make the new tier's firing invisible to every
+    #: instrument that reads reasons, which is how a rule stops being
+    #: measurable the day after it ships.
+    reasons=("fitted", "fitted_by_template", "fitted_by_template_engraved",
+             "needs_clef", "run_fits_no_slot_table", "no_run",
+             "markers_without_a_run", "no_evidence"),
     mode=Mode.ADDITIVE,
 )
 def adjudicate_key_signature(ev: Evidence) -> Ruling:
@@ -117,12 +212,59 @@ def adjudicate_key_signature(ev: Evidence) -> Ruling:
     readers fail in opposite directions -- the locator loses accidentals to
     broken ink, the template can match spurious ink and over-count -- so the
     one that cannot invent a glyph goes first.
+
+    ⚠️⚠️ **AND THAT REASON IS REFUTED ON ENGRAVED INPUT, WHICH IS WHY
+    `_proved_engraved` EXISTS AND WHY IT IS ONE-SIDED** (2026-09-22,
+    `OMR_ENGRAVED_KEYSIG`, **default ON since that evening, Sean's call**).
+    On a Verovio render of Beethoven 5
+    mvt 1 the ink is a VECTOR render, so *"broken ink"* cannot be the excuse
+    -- and over 50 decided staff-systems the template reads **20 right / 0
+    wrong** while the locator's `fitted` reads **6 / 24**. The mechanism is
+    measured: `header_ink_mask` shaves 54-63% off each flat's height, so two
+    of every three fall under `key_signature_locator.min_height_spaces =
+    1.10`, and two renderers agree to 0.03 staff spaces.
+
+    ⚠️ **THE PARAGRAPH ABOVE IS STILL THE RULE EVERYWHERE ELSE, and the
+    refusal it records is not overturned**: on a SCAN the same erasure works
+    FOR the locator (accidental-sized clusters 5 -> 11 on the Litolff plate,
+    because there the lines MERGE glyphs and erasing SEPARATES them), and the
+    template's over-counting risk is exactly what that refusal was priced on.
+    A scan, a classifier abstention, a record with no identity row and the
+    flag off all fall through to it unchanged.
+    `benchmarks/omr-document-identity-2026-09/FINDINGS.md`.
     """
     clef = ev.verdict(Q.CLEF)
     if clef is None or clef.value is None:
         return Ruling.abstain("needs_clef")
 
     fits = ev.rows(Q.KEYSIG_CLEF_FIT)
+
+    # ⚠️⚠️ ON A DOCUMENT MEASURED **ENGRAVED**, THE TEMPLATE GOES FIRST, AND
+    # THE PRECEDENCE BELOW IS OTHERWISE UNTOUCHED. The docstring's reason for
+    # that precedence is REFUTED on engraved input and nowhere else: on a
+    # Verovio render of Beethoven 5 mvt 1, over 50 decided staff-systems, the
+    # template is **20 right / 0 wrong** and the locator's `fitted` is **6 /
+    # 24** -- the ink is a vector render, so *"the locator loses accidentals
+    # to broken ink"* cannot be the excuse, and *"the template can match
+    # spurious ink and over-count"* happens nowhere. The mechanism is measured
+    # too: `header_ink_mask` shaves 54-63% off each flat's height, so two of
+    # every three fall under `key_signature_locator.min_height_spaces = 1.10`,
+    # and two renderers agree to 0.03 staff spaces.
+    #
+    # ⚠️ AND THE SAME ERASURE **HELPS** ON A SCAN -- accidental-sized clusters
+    # 5 -> 11 on the Litolff plate, because there the staff lines merge glyphs
+    # and erasing separates them. That is why the erasure exists and why the
+    # shipped precedence was defensible when it was priced on scans. So this
+    # tier is gated on the DOMAIN rather than flipped globally, and
+    # `_proved_engraved` answers False for everything that is not a measured
+    # `engraved` row.
+    if _proved_engraved(ev):
+        row, fifths = _template_fit(ev, clef)
+        if row is not None:
+            return Ruling(value=fifths, reason="fitted_by_template_engraved",
+                          used=(row.id, clef.id),
+                          detail=_template_detail(row))
+
     for row in fits:
         if str(row.value) != str(clef.value):
             continue
@@ -135,17 +277,10 @@ def adjudicate_key_signature(ev: Evidence) -> Ruling:
                               "accidental": row.detail.get("accidental"),
                               "decided_by": row.detail.get("decided_by")})
 
-    for row in ev.rows(Q.KEYSIG_TEMPLATE_FIT):
-        if str(row.value) != str(clef.value):
-            continue
-        fifths = row.detail.get("fifths")
-        if fifths is None:
-            continue
-        return Ruling(value=int(fifths), reason="fitted_by_template",
-                      used=(row.id, clef.id),
-                      detail={"n_accidentals": row.detail.get("n_accidentals"),
-                              "accidental": row.detail.get("accidental"),
-                              "decided_by": "template"})
+    row, fifths = _template_fit(ev, clef)
+    if row is not None:
+        return Ruling(value=fifths, reason="fitted_by_template",
+                      used=(row.id, clef.id), detail=_template_detail(row))
 
     if not fits:
         state = ev.state(Q.KEYSIG_RUN_POSITION)
