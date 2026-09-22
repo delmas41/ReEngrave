@@ -1,0 +1,121 @@
+{
+  "config": "KeySignatureFitConfig(max_residual=0.5, max_offset=1.25, max_inferred_ratio=1.0, max_outliers=1)",
+  "reach": {
+    "abstaining": 26,
+    "no markers": 14,
+    "carries markers": 12,
+    "OUT: no unit (cell 0 has no notehead)": 4,
+    "MEASURABLE": 6,
+    "fit: ABSTAINS": 4,
+    "OUT: no clef": 2,
+    "fit: answers": 2
+  },
+  "rows": [
+    {
+      "staff": "staff/2/1/10",
+      "reason": "no_evidence",
+      "instrument": "Violoncello e Basso",
+      "clef": "bass",
+      "n_markers": 2,
+      "accidental": "b",
+      "observed": [
+        5.98,
+        5.5
+      ],
+      "fit": null,
+      "truth": -3,
+      "notes_on_staff": 32,
+      "notes_moved": 0,
+      "notes_missed": 6,
+      "notes_overmoved": 0
+    },
+    {
+      "staff": "staff/3/0/1",
+      "reason": "no_evidence",
+      "instrument": "Oboi",
+      "clef": "treble",
+      "n_markers": 1,
+      "accidental": "b",
+      "observed": [
+        2.86
+      ],
+      "fit": -1,
+      "truth": -3,
+      "notes_on_staff": 28,
+      "notes_moved": 3,
+      "notes_missed": 10,
+      "notes_overmoved": 0
+    },
+    {
+      "staff": "staff/3/1/5",
+      "reason": "no_evidence",
+      "instrument": "Violino II",
+      "clef": "treble",
+      "n_markers": 3,
+      "accidental": "b",
+      "observed": [
+        4.841,
+        1.884,
+        5.914
+      ],
+      "fit": -3,
+      "truth": -3,
+      "notes_on_staff": 27,
+      "notes_moved": 13,
+      "notes_missed": 0,
+      "notes_overmoved": 0
+    },
+    {
+      "staff": "staff/4/0/7",
+      "reason": "no_evidence",
+      "instrument": "Violino II",
+      "clef": "treble",
+      "n_markers": 1,
+      "accidental": "b",
+      "observed": [
+        0.84
+      ],
+      "fit": null,
+      "truth": -3,
+      "notes_on_staff": 45,
+      "notes_moved": 0,
+      "notes_missed": 18,
+      "notes_overmoved": 0
+    },
+    {
+      "staff": "staff/4/1/7",
+      "reason": "run_fits_no_slot_table",
+      "instrument": "Violino I",
+      "clef": "treble",
+      "n_markers": 2,
+      "accidental": "b",
+      "observed": [
+        1.36,
+        0.82
+      ],
+      "fit": null,
+      "truth": -3,
+      "notes_on_staff": 78,
+      "notes_moved": 0,
+      "notes_missed": 42,
+      "notes_overmoved": 0
+    },
+    {
+      "staff": "staff/4/1/8",
+      "reason": "run_fits_no_slot_table",
+      "instrument": "Violino II",
+      "clef": "treble",
+      "n_markers": 1,
+      "accidental": "b",
+      "observed": [
+        2.7
+      ],
+      "fit": null,
+      "truth": -3,
+      "notes_on_staff": 67,
+      "notes_moved": 0,
+      "notes_missed": 37,
+      "notes_overmoved": 0
+    }
+  ]
+}

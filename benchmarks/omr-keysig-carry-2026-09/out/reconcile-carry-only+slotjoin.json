@@ -1,0 +1,17 @@
+{
+ "arm": "carry-only+slotjoin",
+ "staves": 75,
+ "moved": 4,
+ "reading_before": 34,
+ "reading_after": 38,
+ "file_before": 42,
+ "file_after": 46,
+ "fixed": 4,
+ "broken": 0,
+ "actions": {
+  "kept": 35,
+  "rejected": 14,
+  "unread": 22,
+  "carried": 4
+ }
+}

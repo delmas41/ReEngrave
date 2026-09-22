@@ -1,0 +1,34 @@
+RECORD beethoven5-p1-p4-ink-identity.record.json
+  fit config (from transcribe.py source): KeySignatureFitConfig(max_residual=0.5, max_offset=1.25, max_inferred_ratio=1.0, max_outliers=1)
+  top_y back-solve: 814 cells; control 598 with >=2 noteheads, 0 DISAGREEING
+
+REACH
+   abstaining                                 26
+   no markers                                 14
+   carries markers                            12
+   OUT: no clef                               2
+   OUT: no unit (cell 0 has no notehead)      4
+   MEASURABLE                                 6
+   fit: answers                               2
+   fit: ABSTAINS                              4
+
+PER STAFF
+   staff          instrument             clef     n observed                    fit truth  notes  moved  missed  over
+   ------------------------------------------------------------------------------------------------------------------
+   staff/2/1/10   Violoncello e Basso    bass     2 [5.98, 5.5]                None    -3     32      0       6     0
+   staff/3/0/1    Oboi                   treble   1 [2.86]                       -1    -3     28      3      10     0
+   staff/3/1/5    Violino II             treble   3 [4.841, 1.884, 5.914]        -3    -3     27     13       0     0
+   staff/4/0/7    Violino II             treble   1 [0.84]                     None    -3     45      0      18     0
+   staff/4/1/7    Violino I              treble   2 [1.36, 0.82]               None    -3     78      0      42     0
+   staff/4/1/8    Violino II             treble   1 [2.7]                      None    -3     67      0      37     0
+
+SCORED on 6 staves
+   READING   right 1   wrong 1   abstained 4
+   FILE      now 0/6   with the fit 1/6
+   NULL      '3 flats on every one' would score 6/6
+   BLAST     a key now drives <alter> via respell_accidental, so a
+             reading changes what the staff SOUNDS like:
+               the fit  :    0 notes altered the print does NOT,  113 left natural that the print alters
+               the NULL :    0 notes altered the print does NOT,    0 left natural that the print alters
+
+wrote benchmarks/omr-keysig-marker-fit-2026-09/out/litolff.json

@@ -612,6 +612,30 @@ every detection from the page's ink so "find the text" becomes "find the ink".
 Full statement: `tools/omr/staged/ASSUMPTIONS.md` **A-DUR-5**, which now
 carries the result and the two frame corrections that came with it.
 
+⚠️⚠️⚠️ **STATE OF MAIN, 2026-09-21 (late): THE KEYSIG LANE IS MERGED, AND THE
+DIVERGENCE THE HANDOFFS BELOW DESCRIBE RECURRED ON THE SAME BRANCH PAIR THE
+SAME DAY.** `claude/part-instrument-check-2026-09` was merged at `28749347`
+(09-20 23:09) and then ran **17 more commits** on 09-21 (00:47 → 21:18) that
+landed nowhere — `_marker_ink`, the `markers_without_a_run` abstention, **two
+`KNOWN_GAPS` entries whose stated reason was FALSE**, a 462-line test file and
+two benchmark directories, **2,622 lines including real `header.py` code**. The
+handoff that found the FIRST divergence became the second one's victim, and the
+source it read (*"tree clean at `9b4d0551`, everything below is committed"*)
+was true of the BRANCH and not of main. ⚠️ **The reusable form: `git merge-base
+--is-ancestor` against `origin/main` is the only thing that settles where work
+IS — "tree clean at `<sha>`" is a claim about a BRANCH, and a session that ends
+at 21:18 leaves commits after the merge that read it.** ⚠️ **That handoff's
+ranked #4 was ALSO already answered on the unmerged branch** (the key signature
+disagreeing within a part: **6 of 7 and 11 of 14**, measured by the carry arm)
+— struck in its §8 rather than deleted. ⚠️⚠️ **AND THE LEVER IT HANDED ON IS
+MEASURED AND REFUSED — see *The marker slot-fit: the lever was ALREADY SHIPPED
+on the legacy path* below**; `docs/NEXT-2026-09-21-keysig-reading-lever.md` now
+opens with a **DO NOT RE-RUN** stamp, because its premise was false (the legacy
+path has fitted the detector's markers since 2026-08-28), it scores **1 of 6
+against a NULL of 6/6**, and the two publishers' marker ink fails in
+**opposite** ways.
+
+
 ⚠️⚠️ **START HERE IF YOU ARE PICKING THIS UP (2026-09-21, evening):**
 [docs/handoff-2026-09-21-the-fact-sheet.md](docs/handoff-2026-09-21-the-fact-sheet.md)
 — **the newest, and it opens with a correction Sean made that changes how the
@@ -3172,6 +3196,66 @@ timpani — `StaffCandidate.can_carry`'s own recorded hazard. ⚠️ Nothing was
 tuned: `max_inferred_ratio` (the `7`) and every locator/template threshold were
 left alone, and clamping `x0` itself was measured and REFUSED (it costs the
 locator 3 correct and 6 new wrong).
+
+### The marker slot-fit: the lever was ALREADY SHIPPED on the legacy path
+
+2026-09-21, **no code under `tools/`**.
+[docs/NEXT-2026-09-21-keysig-reading-lever.md](docs/NEXT-2026-09-21-keysig-reading-lever.md)
+asked for the slot-table fit to be run on the DETECTOR's key markers. Findings:
+[benchmarks/omr-keysig-marker-fit-2026-09/FINDINGS.md](benchmarks/omr-keysig-marker-fit-2026-09/FINDINGS.md).
+
+⚠️⚠️ **ITS PREMISE IS FALSE.** It says `fit_key_signature` *"has never been
+given the detector's markers as its ink source"*. `transcribe.py:856` has given
+it exactly that since **`7c6b6481`, 2026-08-28** — *"fit the DETECTOR's
+key-signature markers too, not just the locator's"* — through
+`_staff_positions_for` (box centres as steps below the top line, off the cell's
+own geometry, abstaining where there is none) and a **`_DETECTOR_FIT_CONFIG`
+written for that ink**. ⚠️ **The brief contradicts itself**: its own
+`staged/adjudicators/header.py:17`, same branch, says the legacy path *"falls
+back to counting them where **the slot fit abstains**"* — presupposing the fit.
+**So it is a PORT, and the SIXTH instance of the sweep's §2a family** (*"shipped
+means the LEGACY path"*), found in the family that sweep's ranked #4 points at.
+
+⚠️⚠️ **HALF THE UNIT IS NOT ON THE RECORD.** `_cell_grid` returns
+`(top_y, half_step)`; two consumers use it and **`Q.CELL_STAFF_SPACE` files
+`half_step` and DROPS `top_y`** — **0 of 40,878 rows** carry the cell's top line
+in the cell frame, and `Q.CELL_POSITION_BASIS` is only ever *abstained*. That is
+verbatim the consumer `_cell_grid`'s own docstring says had *"nothing to ask
+with"*: **the pattern was named and half-fixed.** Recovered without a re-gather
+by `top_y = (y + h//2) − pos_float·half_step`; control **598/598 exact**, and the
+float spelling scores **154/598**, so it distinguishes. ⚠️ Legacy uses
+`h/2.0`, staged `h//2` — 0.011 steps apart, immaterial against `max_residual`
+0.5 but recorded.
+
+**REACH: 26/21 abstaining → 12/10 carry markers → MEASURABLE 6 and 10**; the fit
+answers **2 and 3**. ⚠️ Four Litolff staves have no notehead in cell 0, so no
+unit, so they ABSTAIN rather than take a nominal spacing. ⚠️ Several carry ONE
+marker, where a "fit" degenerates toward the count.
+
+**ACCURACY, Litolff only** (Breitkopf's truth is an ENCODING): **right 1, wrong
+1, abstained 4 — against a NULL of 6/6.** ⚠️⚠️ **The reachable population is
+BIASED toward where the constant wins: all 6 are truth −3**, where the full 26
+are `{-3: 17, 0: 8, -1: 1}` — **the same shape the carry arm hit**. The one wrong
+answer is a SINGLE marker landing inside `max_offset`, the brief's own trap.
+
+⚠️⚠️ **THE TWO PUBLISHERS FAIL DIFFERENTLY AND NEITHER FIX SERVES THE OTHER.**
+Litolff's markers are **CENTRED and NOISY** (median −0.100, spread 5.66) — no
+tolerance helps. Breitkopf's are **TIGHT and DISPLACED** (median **−1.256**,
+spread 1.02) against **`max_offset = 1.25`** — the cap sits ON its bias, and five
+staves abstain with internally consistent offsets (spreads 0.04-0.31). ⚠️ **The
+obvious cause is REFUTED**: a flat's box centre reading high would be identical
+on both plates, and the two want different reference points (f=0.50 vs f=0.75),
+so it is not glyph geometry. Unidentified, and **a SHARP-key document would
+settle it** — both documents here are C minor, so the discriminator is
+unavailable.
+
+⚠️ **RECOMMENDATION: do NOT port it, and the reason is not the score.** The
+reader is correct on both plates — it answers where there is a run and refuses
+where there is not. **The ink is not ready for it.** ⚠️ Since lane A, a key
+verdict drives `<alter>` (`consequences.py:415` → `export.py:761`), so a wrong
+reading now moves a staff's SOUNDING pitch — the brief's Control 2 is stronger
+than it reads. **n = 6 staves, 1 publisher, no print consulted, no battery.**
+
 
 ### A CONTEST is RESOLVED, not relocated — one piece of ink, one element
 
@@ -6013,6 +6097,97 @@ the entire output is a dictionary in a verdict. ⚠️ The **25 Litolff staves
 never named** are outside the check's reach, and they are the half of the page
 most likely to be misjoined: this edition stops labelling its strings on
 continuation systems.
+
+---
+
+## The key signature's declared corroboration CANNOT be wired — and what could be, was
+
+2026-09-21, no flag. Ranked item **2** of the 2026-09-20 handoff:
+*"`key_signature_corroboration` on the staged path — CLAUDE.md says shipped;
+the staged path does not import it."* Findings:
+[benchmarks/omr-keysig-staged-reach-2026-09/FINDINGS.md](benchmarks/omr-keysig-staged-reach-2026-09/FINDINGS.md).
+
+**The import claim is TRUE and the repair it implies is NOT.** The module's
+only non-test import in the tree is `transcribe.py`, the LEGACY path; the
+staged path names it in five docstrings and imports it nowhere. ⚠️⚠️ **But
+wiring the import would produce a pass over an EMPTY DOMAIN, because on the
+staged path a mid-staff key change cannot exist.** `adjudicate_key_signature`
+is `Kind.STAFF`, `_gather_keysig_markers` reads `R.cell(p, s, i, 0)` — **cell
+0 and nothing else** — the run and template readers read the HEADER WINDOW,
+and `staged/export.py` carries **one `fifths` per staff-run**. Measured with
+no pipeline code over the two shared records: **75 and 97 key verdicts, every
+one staff-scoped; 105 and 146 marker rows, every one at `cell:0`; ZERO of
+either anywhere else.**
+
+⚠️⚠️ **THE CONTRAST WITH THE METER IS THE WHOLE SIZE OF THE REPAIR.** `Q.METER`
+carries `segments`, `record.meter_at` reads a bar's meter and
+`OMR_METER_SEGMENTS` made the exporter read the meter in force at each BAR —
+that family solved exactly this and shipped it. **The key signature has no
+segments, no `key_at`, and one value per run.** So this is a missing QUANTITY
+SHAPE, not a missing import, and the two are not the same job.
+
+⚠️ **THE REACH OF WHAT IS MISSING IS MEASURED, BECAUSE SOMEONE WILL PROPOSE
+BUILDING IT: key-accidental detections standing in cells other than cell 0 are
+21 (Litolff) and 2 (Breitkopf)** — the detector fires, GATHER never looks.
+⚠️⚠️ **And the legacy path is the warning about reading them**: of the 15
+later-cell markers it DOES read across 11 scanned pages, **7 changed the key
+and all seven were wrong**, because where the slot fit abstains it falls back
+to COUNTING markers. **A mid-staff key reader must arrive WITH its
+corroboration, not before it** — which is the one thing the staged path can do
+better, since there the guard is designed in rather than bolted on.
+
+**WHAT WAS WIREABLE, AND IS NOW WIRED: `Q.KEYSIG_MARKER`.** Declared in
+`wants` AND `composed_from` since the decision was written, filed **105 and
+146** times, read by nothing — confirmed by the convention audit's own derived
+tool. ⚠️⚠️ **AND THE STATED REASON FOR LEAVING IT UNREAD WAS FALSE, WHICH IS
+WHY IT SURVIVED TWO GAP LISTS**: both excused it as *"the decision reads
+`keysig_clef_fit`, which the markers already feed in GATHER"*. They do not —
+`Q.KEYSIG_CLEF_FIT` comes from `locate_key_signature` on the header CROP, the
+only detections entering that call arrive through `_occupied_boxes` which
+filters to **NOTEHEADS**, and `_gather_keysig_markers` **returns nothing at
+all**. *A gap list holds reasons a gap EXISTS, never reasons one is
+acceptable* — and this one held a reason that was not true. Both entries
+removed.
+
+⚠️ **THE REPAIR IS A REASON, NEVER A VALUE — and it fixes a word that was
+wrong on ~43% of the staves it named.** Where the run reader could not speak
+but the detector saw key accidentals, the abstention now reads
+`markers_without_a_run`:
+
+| abstention reason | carries marker ink / total, Litolff | Breitkopf |
+|---|--:|--:|
+| **`no_evidence`** | **7 / 17** | **9 / 20** |
+| `run_fits_no_slot_table` | 3 / 4 | 1 / 1 |
+
+*Nothing was printed* wants a reader; *we could not fit what was printed*
+wants a fitter — the ABSENT/DECLINED distinction, and the `direction` family's
+`NO_INK` vs `NO_READING` split arriving in the header.
+
+⚠️⚠️ **IT MAY NEVER BECOME A VALUE, AND THE STAGED RECORD AGREES FROM ITS OWN
+SIDE**: over the staves this path DECIDES, the marker COUNT equals the settled
+`|fifths|` on **19 of 49 (39%)** and **39 of 76 (51%)**. A reading that
+disagrees with the settled answer half the time is evidence that ink was
+there, not a candidate — which is the same conclusion the legacy path reached
+by shipping the opposite and paying seven key flips for it. Four mutation arms
+and four unit tests pin that it never decides and never overturns a fit, and
+the row says so in its own key name
+(`keysig_marker_count_is_not_a_reading`).
+
+⚠️ **`Q.DOSSIER_FACT` IS THE OTHER NEVER-REACHED DECLARATION AND IS
+DELIBERATELY LEFT ALONE** — its reason was re-checked rather than inherited
+and is still true: `staged/__main__.py` refuses a dossier in terms, because
+one is generated from the same MusicXML the benchmarks score against and *"a
+`--dossier` flag would put a truth file inside a measurement path"*.
+
+⚠️ **WHAT IS NOT ESTABLISHED**: **no print was consulted** — the 7-of-17 is
+our detector disagreeing with our CV reader and **neither is truth**, so it
+does not say the ink IS a key signature, only that the detector called it one;
+**nothing about the READING is repaired** (26 and 21 staves still abstain) and
+**not one exported note moves**, so no OMR-NED figure is claimed; the
+out-of-reach population is **2 on one publisher**, so §3's number bounds these
+pages and is not a rate; n = **2 documents, 2 publishers, 8 pages, both
+scans** — and the ENGRAVED family prints **zero** later-cell key markers, so
+it cannot exercise the missing reader at all.
 
 ---
 

@@ -1,0 +1,2 @@
+float  y + h/2.0:  cells  598   EXACT(spread<1e-9)  154   max spread 0.500000
+floor  y + h//2 :  cells  598   EXACT(spread<1e-9)  598   max spread 0.000000

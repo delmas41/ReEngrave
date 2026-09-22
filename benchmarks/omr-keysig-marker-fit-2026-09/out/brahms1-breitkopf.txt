@@ -1,0 +1,27 @@
+RECORD brahms1-breitkopf-p0-p3.record.json
+  fit config (from transcribe.py source): KeySignatureFitConfig(max_residual=0.5, max_offset=1.25, max_inferred_ratio=1.0, max_outliers=1)
+  top_y back-solve: 643 cells; control 559 with >=2 noteheads, 0 DISAGREEING
+
+REACH
+   abstaining                                 21
+   no markers                                 11
+   carries markers                            10
+   MEASURABLE                                 10
+   fit: answers                               3
+   fit: ABSTAINS                              7
+
+PER STAFF
+   staff          instrument             clef     n observed                    fit truth  notes  moved  missed  over
+   ------------------------------------------------------------------------------------------------------------------
+   staff/1/0/8    None                   bass     1 [15.529]                   None  None     39      0      --    --
+   staff/1/1/9    None                   treble   3 [2.846, -0.03, 4.135]        -3  None     73     34      --    --
+   staff/2/1/0    None                   treble   4 [2.637, 15.179, -0.381, 3.897] None  None     30      0      --    --
+   staff/2/1/10   None                   treble   2 [3.072, 0.377]               -2  None     18      7      --    --
+   staff/2/1/2    None                   treble   1 [2.791]                      -1  None     45     14      --    --
+   staff/3/0/13   None                   bass     3 [4.615, 1.59, 5.744]       None  None     29      0      --    --
+   staff/3/0/3    None                   bass     2 [4.686, 1.605]             None  None     53      0      --    --
+   staff/3/1/1    None                   treble   2 [2.74, -0.304]             None  None     66      0      --    --
+   staff/3/1/2    None                   treble   2 [2.694, 14.928]            None  None     84      0      --    --
+   staff/3/1/4    None                   bass     2 [4.371, 1.677]             None  None     74      0      --    --
+
+wrote benchmarks/omr-keysig-marker-fit-2026-09/out/brahms1-breitkopf.json

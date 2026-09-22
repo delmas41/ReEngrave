@@ -1,0 +1,14 @@
+{
+ "record": "beethoven5-p1-p4-ink-identity.record.json",
+ "decided": 49,
+ "decided_moved": 0,
+ "absent": 0,
+ "abstention_split": {
+  "no_evidence -> markers_without_a_run": 7
+ },
+ "illegal_moves": [],
+ "detail": {
+  "carries the detail": 21,
+  "and ink was there": 10
+ }
+}
