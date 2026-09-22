@@ -41,12 +41,17 @@ Format: `YYYY-MM-DD · who · the decision · because · (pointer)`
   path and are not triaged**; they are listed in `docs/flags-2026-09.md` as
   FROZEN and may not be read from `tools/omr/staged/`. · because triaging a
   frozen path is work with no consumer.
-- 2026-09-22 · **REQUESTED, not decided** · a condensed `Violoncello e Basso`
-  staff narrowed to [Cello, Contrabass] may be PLACED on the first of its two
-  slots (a condensation, not a graft; `staff_not_identified` 141 → 0 on
-  Litolff) — it changes what a placed staff means (one `<part>` where the
-  music has two), so it is Sean's · (identity session,
-  `benchmarks/omr-instrument-channels-2026-09/`)
+- 2026-09-22 · Sean (rule) / manager (form), after the crops · **A staff the
+  family-block rule narrows to exactly [Cello, Contrabass] is PLACED on BOTH
+  slots: the printed line goes to the Cello part and, doubled with
+  `<transpose>` −8ve and a `condensed_from` mark, to the Contrabass part.** ·
+  because the page says both sections play that line (Litolff condenses where
+  the reference is 94–100% identical and splits where it is not), the count
+  is the narrowing's own candidate set and not a name or an encoding, and a
+  single shared part would leave the Contrabass with holes on a document
+  that also prints it apart · `OMR_CONDENSED_PARTS` stays off — this is
+  narrower and does not need the count it lacked ·
+  (`benchmarks/omr-cello-bass-convention-2026-09/FINDINGS.md`)
 - 2026-09-22 · Sean · **`OMR_ENGRAVED_KEYSIG` defaults ON: on a document
   MEASURED engraved, the key signature is read from the template before the
   locator.** · because the shipped precedence's stated reason — *"the locator

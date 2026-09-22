@@ -1,0 +1,42 @@
+{
+  "beethoven5_mvt1": {
+    "reference": "library/reference/beethoven/symphony-5/beethoven--symphony-5--mvt1--gradus.mxl",
+    "parts": {"cello_index": 16, "contrabass_index": 17, "contrabass_transpose": "octave-change -1 (sounds an octave below written)"},
+    "comparison": "pitch-class + duration match, octave-agnostic (catches unison AND octave doubling); dup_pct = (identical_pc + both_rest) / total",
+    "ranges": {
+      "p1_mm1-16_print_SEPARATE": {"total":16,"identical_pc":5,"one_rests":10,"both_rest":1,"different_pc":0,"dup_pct":37.5},
+      "p2_mm17-48_print_CONDENSED": {"total":32,"identical_pc":25,"one_rests":1,"both_rest":5,"different_pc":1,"dup_pct":93.8},
+      "p3_mm49-82_print_CONDENSED": {"total":34,"identical_pc":19,"one_rests":0,"both_rest":15,"different_pc":0,"dup_pct":100.0},
+      "p4_sys1_mm83-97_print_SEPARATE": {"total":15,"identical_pc":4,"one_rests":1,"both_rest":0,"different_pc":10,"dup_pct":26.7},
+      "p4_sys2_mm98-112_print_CONDENSED": {"total":15,"identical_pc":15,"one_rests":0,"both_rest":0,"different_pc":0,"dup_pct":100.0},
+      "all_mm1-112": {"total":112,"identical_pc":68,"one_rests":12,"both_rest":21,"different_pc":11,"dup_pct":79.5},
+      "condensed_pages_only_p2p3p4sys2": {"total":81,"dup_pct":97.5}
+    }
+  },
+  "brahms1_mvt1_breitkopf": {
+    "reference": "library/reference/brahms/symphony-1/brahms--symphony-1--mvt1--gradus.mxl",
+    "parts": {"cello_index": 19, "contrabass_index": 20},
+    "note": "Breitkopf 317803 print NEVER condenses Vc/Cb on pages 1-4 (works.json: 14-staff systems throughout) -- consistent with the low duplication rate below.",
+    "ranges": {
+      "mm1-58_pages1-4_window": {"total":58,"identical_pc":14,"one_rests":18,"both_rest":5,"different_pc":21,"dup_pct":32.8}
+    }
+  },
+  "lexicon_probe": {
+    "tool": "tools/omr/instruments.py lookup()",
+    "findings": [
+      {"label":"Violoncello e Basso.","resolves_to":"Cello","note":"stops at first recognized word; Basso is discarded"},
+      {"label":"Violoncello e Contrabasso","resolves_to":"Cello"},
+      {"label":"Violoncell u. Contrabass.","resolves_to":"Cello"},
+      {"label":"Violoncell und Bass.","resolves_to":"Cello"},
+      {"label":"Bassi.","resolves_to":"Contrabass","coverage":1.0},
+      {"label":"Basso.","resolves_to":"Bass voice","coverage":1.0,"note":"CLAUDE.md-documented trap: bare Basso reads as a singer"}
+    ]
+  },
+  "catalog_editions_survey": {
+    "total_editions": 234,
+    "editions_with_roster": 189,
+    "explicit_dual_label_rows": 26,
+    "bare_bassi_label_rows": 14,
+    "method": "grep roster texts in data/score-library/catalog.json['editions'] for '(Violoncell[oi]?) (e|u\\.|und) (Contra)?Bass' and bare 'Bassi'/'Bassa'"
+  }
+}
