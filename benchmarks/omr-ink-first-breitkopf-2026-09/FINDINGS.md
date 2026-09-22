@@ -31,6 +31,46 @@ partially-landed investigation changes no code.
 
 ---
 
+## ✅ ADDENDUM — the FULL staged record landed, and it validates the shortcut
+
+The lane reported on a **gather-only projection** while the full staged run was
+still inside `adjudicate_glyph_owner`. **That run completed**:
+`library/_shared-records/brahms1-breitkopf-p0-p3-ink.record.json`, **461 MB**,
+md5 **`4df63a752df9d7cca3d916a67b37ebf4`**, provenance `27311d68` with
+**`dirty: false`** — the tree was kept clean across the whole ~1h40m run for
+exactly this.
+
+**[mgr] Verified against the file itself**: the md5 matches to the character,
+and the stamp reads `commit 27311d68`, `dirty: false`.
+
+**It reproduces the shortcut in EVERY number** (`out/shortcut-vs-fullrecord.txt`):
+
+| | shortcut | full record |
+|---|--:|--:|
+| ink rows / glyph_box / cells with ink | 15212 / 12932 / 818 | **identical** |
+| subjects present, class agreement | 106/106, 1.000 | **identical** |
+| junk / real / cannot_tell | 33 / 55 / 18 | **identical** |
+| zero-coverage pieces | 8028 | **identical** |
+| **all 15 AUCs, to six decimal places** | — | **identical** |
+| residue strata | — | **identical** |
+
+**So no figure in this lane is a property of the shortcut, and §7's falsifier
+fires on the full pipeline's own record.**
+
+⚠️ **THE RECORD IS STAMPED `OMR_DIRECTION_TEXT=0` AND `surya: false`.** That is
+a legitimate choice for a long unattended run — CLAUDE.md prices the direction
+reader at **~267 s/page on a scan for six accepted words** — and it is ON the
+record. **But it means the configuration differs from the 2026-09-15 shared
+Brahms record, and a lane comparing the two must read the stamp.**
+
+⚠️ The **committed** artefact remains the 24 MB gather-only projection
+(`out/…gather.json`, md5 `213bcb92…`), because `library/` is gitignored — which
+is the property that lets a cloud session **with no weights and no `library/`**
+re-run, extend or refute this test, and is why the 2026-09-18 lane committed
+its single-page version the same way.
+
+---
+
 ## The measuring session's own record, verbatim
 
 §7 ON THE SHATTERING PLATE: the falsifier FIRES, and the blocking artefact was already half-made
