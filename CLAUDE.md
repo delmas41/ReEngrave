@@ -3925,6 +3925,110 @@ pages; no OMR-NED, deliberately. Suite **4521 passed / 19 skipped / 0 failed**
 (base 4477); `inventory`, `health`, `wiring`, `capture`, `reach`, `brakes`,
 `trace --check` and `no_producer` all exit 0.
 
+### `no_ink` is a claim about the PAGE, and three readers made it about THEMSELVES
+
+2026-09-22, no flag, GATHER + the vocabulary. The `2,377 no_ink claims are
+false` the governing document records, repaired — and the beam half is a
+finding rather than a wording fix. Findings:
+[benchmarks/omr-no-ink-lie-2026-09/FINDINGS.md](benchmarks/omr-no-ink-lie-2026-09/FINDINGS.md).
+
+⚠️ **REPRODUCED BEFORE IT WAS TOUCHED.** `trace --empty-claims` on the one
+record carrying an ink witness: **2,476 `no_ink` claims, ZERO of them the ink
+reader's own, 2,377 standing on a cell `Q.INK` sees ink in** —
+`dynamic_letter` 997 + `beam_stroke` 980 + `stem` 400 **sums to the
+contradicted total exactly**, so those three families ARE the population.
+⚠️ `wedge_box` (74) and `margin_label` (25) are **not** contradicted and are
+deliberately left alone.
+
+⚠️⚠️ **THE THREE DO NOT SHARE A CAUSE, WHICH IS WHY THEY NO LONGER SHARE A
+WORD.** `dynamic_letter` is a FAMILY FILTER over a non-empty detection list —
+and it is **997 of 997, not most**: that loop iterates `detections.items()`, so
+the detector fired on every one of those cells. `stem` is `detect_stems`
+NAMING AND FILTERING IN ONE ACT. `beam_stroke` is a reader **whose INPUT IS
+THE STEM SET**.
+
+⚠️⚠️ **THE FINDING: TWO THIRDS OF THE BEAM CLAIMS WERE NEVER THE BEAM READER'S
+TO MAKE.** A beam joins stem TIPS and `detect_beams` takes the strokes
+`detect_stems` returned, so split by that input the 980 are **400 with no stem
+at all + 265 with exactly one + 315 with two or more** — **665 (67.9%) on a
+cell that cannot carry a beam joined within it whatever the page holds.**
+⚠️ **And the 400 are EXACTLY the 400 cells `stem` itself refused, set for set,
+with zero stem refusals outside the beam population** — that silence is
+DERIVED, inherited and then reported as a fact about the page.
+
+⚠️⚠️ **A SECOND WITNESS WAS ALREADY IN THE RECORD AND NOBODY HAD LOOKED:
+`Q.BEAM_STROKE` HAS TWO PRODUCERS.** 322 observations from `cv_lines` and
+**536 from the DETECTOR**, while all 980 abstentions are `cv_lines`' — so on
+**274 cells the record simultaneously holds a beam the detector observed and a
+`cv_lines` refusal saying there is no ink there**, and on **195** of those the
+CV reader also found fewer than two stems. A beam cannot print without stems,
+so in those 195 the stems are printed and the CV reader missed them. ⚠️ The
+detector's beam is its own claim and not truth — but it is not `Q.INK`, so
+this is a THIRD reading agreeing the page is not blank; the share is flat
+across the three strata (29.5 / 29.1 / 25.1%), so it is not an artefact of the
+stratification.
+
+**Three words, each naming what the reader actually knows:**
+`NO_GLYPH_OF_THIS_KIND` (the detector fired here and none of it is this
+family), `NO_LINE_ACCEPTED` (a CV line reader ran and accepted no stroke of
+this kind), `NO_STEMS_TO_JOIN` (fewer than two stems, so no beam can be joined
+here). ⚠️ `NO_LINE_ACCEPTED` **deliberately says less than `Q.VERTICAL_RUN`
+could** — whether a candidate was FOUND AND REFUSED is on the record only under
+`OMR_VERTICAL_RUNS`, and nothing was made unconditional, because that changes
+`detect_stems`' argument on every run and its faithfulness controls (1,920 =
+1,920; 2,305 = 2,305) are what every stem arm here rests on. ⚠️
+`NO_STEMS_TO_JOIN` **is a claim about our stem reading, not about the print**,
+and where a beam IS printed and its stems were missed it says so exactly.
+
+⚠️ **THE POPULATION STAYS VISIBLE.** `trace.ink_claiming_reasons()` is derived
+on the token `"ink"` so all three leave *contradicted* automatically; they are
+also named in `_HONEST_EMPTY` so they keep appearing in the report. Without
+that they would vanish — this repo's own *the inventory written to account for
+the findings closed the check that produced them*.
+
+⚠️⚠️ **ONE EXISTING TEST PINNED THE FAULT.**
+`test_vertical_runs::test_a_refused_run_gets_a_row_where_before_it_got_nothing`
+asserted `Q.STEM` still says `NO_INK`, under a comment calling it *"the
+collapse this quantity exists to make VISIBLE rather than to fix"* — an honest
+note about a deliberate scope decision, and **a test that pins a known-false
+claim keeps it alive.** It now pins the repair.
+
+⚠️⚠️ **AND A LIVE BLIND SPOT IN `wiring --check`, RECORDED AND NOT FIXED.**
+Both refusals carry the number the word asserts, so a later reader can check
+the claim — and named `n_detections` / `n_stems` **`wiring --check` exited 0
+and listed neither.** Its DETAIL question matches on the **bare key name**, and
+both already occur in `tools/` for unrelated reasons (`transcribe`,
+`yolo_detector`, `annotate/server`; and `adjudicators/rhythm`'s own
+`stems_disagree` detail), so each read as consumed by a module that has never
+heard of it. Renamed `cell_n_detections` / `cell_n_stems` the same tool reports
+**2 unaccounted**, and both are now on `KNOWN_GAPS` with reasons. **That tool
+already excludes tests and `benchmarks/` as consumers; an UNRELATED MODULE
+naming the same string is not excluded** — the documented family at a new door.
+Not fixed here: making the match quantity-aware moves 64 entries at once and
+should be measured, not slipped in beside a vocabulary repair.
+
+⚠️ **NOTHING WAS RE-GATHERED, so §7 of the findings is a PRE-REGISTERED
+PREDICTION and not a measurement** — a fresh gather of Litolff Beethoven 5
+pp.1-4 must report `contradicted 2377 -> 0` with the split **997 / 400 / 665 /
+315**, exact rather than approximate because the code reads
+`len(found.get("stems") or [])` at the refusal site. **If a re-gather does not
+reproduce those four numbers, something else moved.**
+
+⚠️ **Controls**: no decision reads the reason word (`grep` returns the
+declaration, `gather_coverage`'s name-printer, `trace`'s report and four
+comments); 12 new tests with **8 red on the unrepaired tree** and an
+md5-verified restore; every refusal test paired with an acceptance, because a
+battery of refusal tests passes by refusing everything. ⚠️ **Two fixture
+faults the tests caught in themselves**: `Log.rows` returns OBSERVATIONS while
+`Log.refusals` returns ABSTENTIONS and asking the wrong one returns an empty
+tuple that reads exactly like a reader that never ran; and `gather_cv_lines`
+imports `detect_lines` INSIDE the function, so patching `gather.detect_lines`
+leaves the real reader running. ⚠️ **What is NOT established**: nothing
+exported or scored, no OMR-NED (the metric cannot see a reason word), **no
+crop and no print**, n = 1 document / 1 publisher / 4 pages, and **the repair
+improves no reading** — it stops three readers overclaiming.
+
+
 ### A notehead is ~1.4 staff spaces WIDE — the floor priced, and the contamination has TWO shapes
 
 2026-09-18, **no code outside `benchmarks/`, nothing proposed for any
