@@ -6009,6 +6009,112 @@ instances above fall out of it. It is ADJACENT TO `staged/wiring.py`, which
 asks whether a DECLARED input is read where it is FILED, and is not the same
 question: wiring is green on every one of the four.
 
+## The session-start FACT SHEET — auto-drafted, human-corrected, and it SCORES the reader
+
+2026-09-21, no flag, **nothing consumes it and no pipeline behaviour changes**.
+`tools/omr/factsheet.py`. Findings:
+[benchmarks/omr-factsheet-2026-09/FINDINGS.md](benchmarks/omr-factsheet-2026-09/FINDINGS.md).
+
+```bash
+python3 -m tools.omr.factsheet draft score.pdf --record rec.json -o sheet.json
+python3 -m tools.omr.factsheet show  sheet.json      # the compact human view
+python3 -m tools.omr.factsheet check sheet.json --record rec.json --write
+```
+
+Sean, 2026-09-21: *"I want the reader and dossier process to work as well as
+possible by itself but I can supply this info when necessary. The session start
+fact sheet should auto populate what it can by itself. then I can do the
+rest/double check."*
+
+⚠️⚠️ **THE RULE THAT MAKES IT AN INSTRUMENT RATHER THAN A CRUTCH: every field
+a human CORRECTS is a recorded disagreement with a reader.** `merge` writes the
+reader's own answer back as `reader_said` beside any value that was overridden
+— **recovered from the record on each re-draft, so the human never has to
+preserve anything** — and `report()` is the headline output. It is a scorecard
+of the readers on exactly the facts that gate the pipeline, collected for free,
+on whatever document is in front of you. A sheet that merely *accepted* hand
+facts would hide the reader failures this project exists to measure.
+⚠️ **IT IS A DISAGREEMENT COUNT, NOT AN ERROR COUNT, and the first run proved
+why**: a hand-typed publisher dropped an umlaut the catalog had right, and the
+sheet filed the CATALOG as wrong. Which side is correct is a further
+adjudication nothing here performs — which is why `reader_said` is kept.
+
+**PROVENANCE IS THE SHAPE OF THE LEAF.** `"Flute"` is a HAND fact (a human
+typed it); `{"value": "Flute", "source": "reader"}` is a machine one; `null` is
+nobody's answer. So confirming a machine fact is *replacing the dict with the
+bare value*, which is also the least typing, and **you cannot accidentally mark
+something confirmed.** ⚠️ Its one ambiguity had to be DECLARED rather than
+sniffed (`LIST_VALUED`): `suppressed: ["Timpani"]` is a fact whose value is a
+list, `lineup.full` is a list OF facts, and nothing about the two objects tells
+them apart — see the bug below.
+
+**Four tiers, none of which needs weights or a raster**: `catalog` (work id,
+publisher, plate, pages, `has_text_layer`, the IMSLP roster — costs a
+FILENAME), `dossier` (meter, bar count, part count), `reader` (a staged
+record's verdicts), `derived`. Measured: **29 of 54 facts on Litolff Beethoven
+5 p1-4 and 44 of 56 on Breitkopf Brahms 1 p0-3**, the whole draft over a 132 MB
+record in **0.67 s**. Its structure agrees with the hand truth this repo
+already holds — 7 systems at 12/11/11/11/**8**/11/11, `p3/s1` being the
+8-staff system CLAUDE.md records suppressing Oboi/Trombe/Timpani.
+
+⚠️ **IT REFUSES TO GUESS ACROSS THE TWO ID SPACES.** The catalog keys on
+genre+number, a dossier on work+movement; the catalog's own `dossier_prefix`
+is a COMMITTED bridge and is used where it exists (**19 of 289 editions**),
+otherwise a composer+number heuristic PROPOSES candidates and the check says
+which route answered. A PDF usually spans several movements, so there is no
+single right answer to pick.
+
+⚠️⚠️ **ONE BAR NUMBER PLACES EVERY SYSTEM AFTER IT** (`chain_windows`), which
+is what turns seven questions into one — and it **reproduces this repo's
+independently hand-verified figures to the bar**: p4/s0 opens at **82** and
+p4/s1 at **97**, exactly what `omr-measure-numbering-2026-09` records. ⚠️ It
+rests entirely on the reader's bar counts and **a miscounted barline shifts
+every system below it**, so each derived value says so and the chain **BREAKS**
+at the first system whose bar count the reader did not decide rather than
+carrying a number across a gap it cannot measure. A later hand value re-anchors.
+
+**MEASURED, one hand pass on the worst document in the corpus** (Litolff, no
+text layer, `margin_label` reporting `not_implemented` on 75 of 75 staves):
+12 names + 1 bar number + 6 suppression lists — **19 hand facts take `still
+unknown` 25 → 0 and open checks 10 → 1**, the survivor being the standing
+reader-health note.
+
+⚠️⚠️ **IT FOUND A LIVE READER FAULT IN TWO SECONDS THAT NOBODY HAD WRITTEN
+DOWN.** On Brahms the drafted lineup is **13 of 14 right**, and the fourteenth
+is the horn staff reading `'in C 1 2'` on one system, `'(C)'` / `'(Es)'` on the
+next and `'Hr.'` on the third — **the instrument noun truncated away on some
+systems and not others**, which is exactly `OMR_ROSTER_LABELS`' population,
+firing on the document every other lane measures on. It is also why the systems
+"disagree about the order": the disagreement is the READER's, not the edition's.
+
+⚠️⚠️ **THREE BUGS IN ITS OWN CODE, ALL FOUND BY FILLING A REAL SHEET RATHER
+THAN BY READING IT**, and the tests that existed caught none of them.
+(1) **`source_of` answered `"hand"` for CONTAINERS**, so `merge` bailed at the
+top level and merged nothing — every re-draft silently returned the old sheet
+and the scorecard read a clean **ZERO**. *A believable zero from a merge that
+never ran.* (2) **A hand-typed `suppressed: ["Timpani"]` was DISCARDED** for
+the list-vs-container ambiguity above — the exact failure the module exists to
+prevent, committed by the module itself. (3) **Suppression was derived from a
+name the lexicon had REFUSED** wherever the same raw string appeared on both
+systems, so the match was luck; found by a mutation arm surviving, and the
+fixture that caught it had to be built for it. ⚠️ A fourth, in the checks: a
+check label that is not a real dotted path can never be retired, so the list
+keeps asking for what you already gave it.
+
+⚠️ **WHAT IS NOT ESTABLISHED.** **Nothing consumes a sheet**, deliberately (the
+`Q.INK` discipline — a producer and its first consumer landing together makes
+the reach measurement circular). **No print was consulted by this work**: the
+Brahms lineup is checked against the reader's own output and the Litolff fill
+uses Sean's previously committed hand reading. **The six suppression asks are
+irreducible** from these inputs — knowing a system prints 11 of 12 does not say
+which one is missing. `lineup.full` **assumes the widest system prints the whole
+lineup**, flagged as a check. n = 2 documents, 2 publishers, 8 pages, both
+scans; the engraved family is untouched; no OMR-NED, because the sheet emits no
+music. **32 tests; battery 17 arms, 17 RED, 0 survivors**; all eight derived
+checks exit 0 with no stale gap entries introduced.
+
+---
+
 ## The central score library
 
 Every score the project uses lives in one place with its provenance attached:
@@ -6210,6 +6316,24 @@ the trap instead of compensating for it.
 meter is what the meter IS, so a detected meter that disagrees is a misread and
 is replaced — every override is still reported. Measured on an engraved
 Beethoven 5 excerpt the detector read 4/4, 4/24 and 7/24 across a 2/4 movement.
+
+⚠️⚠️ **AND THE STAGED PIPELINE CANNOT BE GIVEN ONE AT ALL — `--dossier` IS A
+`transcribe` FLAG, AND EVERYTHING BELOW DESCRIBES THE LEGACY PATH.** Verified
+2026-09-21: `tools/omr/staged/__main__.py` has **no `--dossier` argument**, and
+the omission is deliberate and commented (`:231`) — *"a dossier is generated
+from the same MusicXML the benchmarks score against, so the scan gate is
+dossier-free BY PROTOCOL and a `--dossier` flag would put a truth file inside a
+measurement path."* ⚠️ **That reason is right about the GATE and silent about
+production**, which is *A PREMISE ENCODED IN A REFUSAL OUTLIVES ITS REASON*
+arriving with the scope never having been stated: the machinery is all there
+(`gather_external(dossier=...)`, `gather_clef_seed`, `Q.DOSSIER_FACT`), and
+only the CLI rung is missing. ⚠️⚠️ **DO NOT READ THIS AS "SUPPLY THE DOSSIER
+AND IDENTITY IS SOLVED" EITHER**, on either path: `slot_facts_for_system`
+requires `len(parts) == n_staves` and ABSTAINS otherwise (`dossier.py:581`), so
+on a condensed conductor's page — Beethoven 5 encodes **18 parts** and prints
+**12 staves** — the per-staff tier is silent by design. *Which encoded part
+sits on which printed staff* is a property of the ENGRAVING and is absent from
+the MusicXML entirely. That is what the FACT SHEET below asks a human for.
 
 **The dossier also SEEDS, not just checks.** With `--dossier` the pipeline takes
 each staff's written clef and key signature from the work, where the parts join
