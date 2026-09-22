@@ -68,6 +68,14 @@ def main() -> int:
         formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--record", type=Path, required=True)
     ap.add_argument("--json-out", type=Path)
+    #: ⚠️ A POSITIVE CONTROL ON THE VACUITY GUARD, not a mode anyone runs for
+    #: a result. `return 0 if (same and moved) else 1` only DOES anything when
+    #: `moved` is False, which on a healthy tree never happens -- so a battery
+    #: arm dropping `and moved` changed neither the exit code nor a printed
+    #: line and reported SURVIVED. This forces the state the guard exists for.
+    ap.add_argument("--no-forge", action="store_true",
+                    help="skip the forging, so the control CANNOT differ; the "
+                         "instrument must then REFUSE (exit 1)")
     args = ap.parse_args()
 
     rec = json.loads(args.record.read_text())["record"]
@@ -84,9 +92,10 @@ def main() -> int:
     off, on = run(rec, "0"), run(rec, "1")
 
     forged = copy.deepcopy(rec)
-    for o in forged["observations"]:
-        if o.get("quantity") == Q.INPUT_DOMAIN:
-            o["value"] = "engraved"
+    if not args.no_forge:
+        for o in forged["observations"]:
+            if o.get("quantity") == Q.INPUT_DOMAIN:
+                o["value"] = "engraved"
     ctrl = run(forged, "1")
 
     same = off == on

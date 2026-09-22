@@ -280,15 +280,23 @@ def _one_arm(args: list[str]) -> tuple[int, str]:
 
 
 def _scan_arm() -> tuple[int, str]:
-    r = subprocess.run([sys.executable, "-u", str(TARGETS["scanarm"]),
-                        "--record", str(SCAN_REC)],
-                       cwd=str(ROOT), env=_env(), capture_output=True,
-                       text=True)
-    out = r.stdout + r.stderr
-    keep = [s.strip() for s in out.splitlines()
+    """⚠️ TWO RUNS, AND THE SECOND IS THE VACUITY GUARD'S ONLY FAILING STATE.
+    `--no-forge` makes the control unable to differ, so a healthy instrument
+    must REFUSE (exit 1); without it, dropping `and moved` from the guard is
+    invisible and the arm reports SURVIVED."""
+    rcs, outs = [], []
+    for extra in ([], ["--no-forge"]):
+        r = subprocess.run([sys.executable, "-u", str(TARGETS["scanarm"]),
+                            "--record", str(SCAN_REC), *extra],
+                           cwd=str(ROOT), env=_env(), capture_output=True,
+                           text=True)
+        out = r.stdout + r.stderr
+        rcs.append(r.returncode)
+        outs.append("\n".join(
+            s.strip() for s in out.splitlines()
             if any(t in s for t in ("REACH", "OFF == ON", "CONTROL",
-                                    "control changed", "DEAD"))]
-    return r.returncode, "\n".join(keep)
+                                    "control changed", "DEAD"))))
+    return sum(rcs), "\n==\n".join(outs)
 
 
 def run_arm() -> tuple[int, str]:
@@ -341,10 +349,9 @@ def main() -> int:
     print(f"  ARM          exit {a_rc}")
     print("  " + a_out.replace("\n", "\n  "))
     # ⚠️ THE ARM'S BASELINE IS NOT "exit 0". It is the EXPECTED PROFILE over
-    # the two runs — engraved 0, scan 2 (DEAD, because that document measures
-    # `scanned` and the one-sided tier is a no-op there BY DESIGN) — summed to
-    # 2. An arm whose scan run stops declaring itself dead moves this.
-    if s_rc != 0 or a_rc != 2:
+    # the runs — engraved 0, scan-DEAD 2, five-parts 0, scanarm 0, and
+    # scanarm --no-forge 1 (it must REFUSE) — summed to 3.
+    if s_rc != 0 or a_rc != 3:
         print("\n⚠️ BASELINE IS NOT GREEN. The battery measures nothing.")
         for k, v in snap.items():
             TARGETS[k].write_bytes(v)

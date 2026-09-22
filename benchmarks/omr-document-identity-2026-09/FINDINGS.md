@@ -340,6 +340,39 @@ nothing.
 
 ---
 
+6. ⚠️⚠️ **THE BATTERY'S OWN JUDGE STOPPED MATCHING, AND REPORTED ITS FAILURE
+   AS THE SUBJECT'S.** `if target == "arm"` selected the judge by NAME, so the
+   moment a SECOND instrument was added under this directory (`scanarm`) both
+   of its arms fell through to the unit suite — which cannot see a benchmark
+   script at all — and reported **SURVIVED**. Two of that run's five survivors
+   were the battery, not a test gap. Selected by LOCATION now
+   (`is_relative_to(HERE)`). **It is the BAD ANCHOR family one level up: a
+   selector that silently stops matching blames the thing it was pointed at.**
+7. ⚠️⚠️ **THREE CONTROLS COULD NOT FAIL, AND THE FIRST REPAIR WAS HALF
+   RIGHT** — the lesson `omr-vertical-runs-page-2026-09` paid for, repeated
+   here twice before it took. On the engraved record the reach is non-zero so
+   the DEAD branch is never taken, and 54 staff-systems divide 18 parts
+   exactly so the ordinal-join refusal is never reached; mutating either
+   changed nothing. Adding the SCAN record fixed the first and **not** the
+   second, because the scan run exits DEAD *before* the scorer — so the
+   refusal needed a five-part stub that does not divide 54, committed as a
+   battery fixture and labelled as one. The third, an unresolved verdict
+   walk, is answered by making the resolution VISIBLE: the arm now reports
+   that the resolved answer differs from the first row met on **227 of 227**
+   superseded pairs, which an unresolved walk takes to zero.
+
+   > **A control can only be mutation-tested in a state where it FAILS, and
+   > "add a second fixture" is not automatically that state — check which
+   > branch each fixture actually reaches.**
+8. ⚠️ **A `tools/` FILE WAS EDITED WHILE THE BATTERY HELD A SNAPSHOT OF IT**
+   and was silently restored away at the next arm. Recovered from a copy taken
+   immediately after writing it, with all 20 anchors re-checked against the
+   restored file. CLAUDE.md's *do not edit `tools/` while a suite is running*,
+   paid for again — and note the failure is SILENT: `git status` showed the
+   file clean, because the battery had put back exactly what git had.
+
+---
+
 ## 8. WHAT IS **NOT** ESTABLISHED
 
 - ⚠️ **n = 1 engraved document, 1 renderer, 24 bars, 3 pages.** A render is
