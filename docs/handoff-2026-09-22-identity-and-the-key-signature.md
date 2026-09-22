@@ -1,8 +1,15 @@
 # Handoff, 2026-09-22 (evening) — the printing is gathered, and the key signature reads it
 
-**Branch:** `claude/identity-conditions-key-signature-b510b3`, pushed. Nine
-commits. **Both flags default ON**, the second by Sean's own call at the end of
-the session.
+**Branch:** `claude/identity-conditions-key-signature-b510b3`, pushed. **Both
+flags default ON**, the second by Sean's own call at the end of the session.
+
+**Verified on the final tree:** full suite **4,833 passed / 12 skipped / 0
+failed**; mutation battery **21 RED / 0 SURVIVED / 0 BAD ANCHORS**, restore
+verified by md5; all eight derived checks exit 0 (`inventory`, `health`,
+`wiring`, `gather_coverage`, `reach`, `capture`, `brakes`, `no_producer`);
+`verify_findings.py` exit 0. ⚠️ **One commit on this branch shipped a
+mutation-battery arm to the remote and was reverted — §7 item 10, and it is
+the thing to read first if you are about to run a battery.**
 
 **Read first:**
 [benchmarks/omr-document-identity-2026-09/FINDINGS.md](../benchmarks/omr-document-identity-2026-09/FINDINGS.md).
@@ -262,7 +269,7 @@ would be right is exactly what is unmeasured.
     dirty file could only mean the COMMIT was wrong, not the restore. Scope
     then checked rather than assumed — `git log -S "    if True:"` names
     exactly one commit, nothing else differs from HEAD, and the restored file
-    is byte-identical to the flip commit. **Reverted in `<the next commit>`,
+    is byte-identical to the flip commit. **Reverted in `c97b6f5f`,
     and the guards were verified against the pushed blob rather than trusted:
     6 tests fail on it**, including `test_the_LOCATOR_wins_where_both_speak`
     and `test_a_SCAN_is_UNCHANGED`, and the battery's own arm for that
