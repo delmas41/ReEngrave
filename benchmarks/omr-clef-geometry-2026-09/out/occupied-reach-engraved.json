@@ -1,0 +1,224 @@
+{
+ "documents": {
+  "beethoven5-engraved": {
+   "record": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-ad1850a84d84ba933/benchmarks/omr-staged-engraved-2026-09/out/engraved-p0p2.record.json",
+   "provenance": {
+    "commit": "7754d277c0f5a8f7633174359240d092a139ee09",
+    "dirty": true,
+    "settings": {
+     "env_overrides": {
+      "OMR_SURYA_KEEP_ALIVE": "1"
+     },
+     "args": {
+      "against": null,
+      "conf": 0.25,
+      "dpi": 300,
+      "imgsz": null,
+      "no_roster": false,
+      "ocr": true,
+      "pages": "0-2",
+      "pdf": "benchmarks/omr-staged-engraved-2026-09/out/fixture/beethoven-sym5-mvt1-m1-24.pdf",
+      "surya": true,
+      "weights": "tools/omr/training/data/weights/deepscoresv2-yolov8l-imgsz2048-ft-30ep.pt",
+      "work_id": null
+     }
+    }
+   },
+   "clef_located_observations": 6,
+   "measured_bands": {
+    "alto": {
+     "height": {
+      "n": 3,
+      "min": 4.09,
+      "max": 4.09,
+      "median": 4.09,
+      "p05": 4.09,
+      "p95": 4.09
+     },
+     "width": {
+      "n": 3,
+      "min": 1.49,
+      "max": 2.5,
+      "median": 1.5,
+      "p05": 1.49,
+      "p95": 1.5
+     }
+    },
+    "alto (header*)": {
+     "height": {
+      "n": 3,
+      "min": 4.09,
+      "max": 4.81,
+      "median": 4.14,
+      "p05": 4.09,
+      "p95": 4.14
+     },
+     "width": {
+      "n": 3,
+      "min": 1.82,
+      "max": 2.53,
+      "median": 2.5,
+      "p05": 1.82,
+      "p95": 2.5
+     }
+    },
+    "ALL_LOCATED_cell0_only": {
+     "height": {
+      "n": 3,
+      "min": 4.09,
+      "max": 4.09,
+      "median": 4.09,
+      "p05": 4.09,
+      "p95": 4.09
+     },
+     "width": {
+      "n": 3,
+      "min": 1.49,
+      "max": 2.5,
+      "median": 1.5,
+      "p05": 1.49,
+      "p95": 1.5
+     }
+    }
+   },
+   "detector_clef_box_bands": {
+    "clefCAlto": {
+     "height": {
+      "n": 3,
+      "min": 3.98,
+      "max": 4.0,
+      "median": 3.98,
+      "p05": 3.98,
+      "p95": 3.98
+     },
+     "width": {
+      "n": 3,
+      "min": 2.39,
+      "max": 2.41,
+      "median": 2.4,
+      "p05": 2.39,
+      "p95": 2.4
+     }
+    },
+    "clefF": {
+     "height": {
+      "n": 15,
+      "min": 3.32,
+      "max": 3.36,
+      "median": 3.33,
+      "p05": 3.32,
+      "p95": 3.35
+     },
+     "width": {
+      "n": 15,
+      "min": 2.74,
+      "max": 2.79,
+      "median": 2.76,
+      "p05": 2.74,
+      "p95": 2.78
+     }
+    },
+    "clefG": {
+     "height": {
+      "n": 39,
+      "min": 0.72,
+      "max": 7.02,
+      "median": 6.96,
+      "p05": 0.73,
+      "p95": 6.98
+     },
+     "width": {
+      "n": 39,
+      "min": 2.33,
+      "max": 2.6,
+      "median": 2.57,
+      "p05": 2.33,
+      "p95": 2.59
+     }
+    }
+   },
+   "locator_config_band": {
+    "min_height_spaces": 2.2,
+    "max_height_spaces": 5.0,
+    "min_width_spaces": 0.55,
+    "max_width_spaces": 4.5,
+    "max_start_spaces": 6.0
+   },
+   "located_rows": [
+    {
+     "staff": "staff/0/0/15",
+     "frame": "header_window",
+     "read": "alto",
+     "family": "C",
+     "x_center": 282,
+     "h_spaces": 4.812,
+     "w_spaces": 1.824,
+     "symmetry": 0.9693
+    },
+    {
+     "staff": "staff/0/0/15",
+     "frame": "cell:0",
+     "read": "alto",
+     "family": "C",
+     "x_center": 198,
+     "h_spaces": 4.094,
+     "w_spaces": 1.494,
+     "symmetry": 0.9595
+    },
+    {
+     "staff": "staff/1/0/15",
+     "frame": "header_window",
+     "read": "alto",
+     "family": "C",
+     "x_center": 239,
+     "h_spaces": 4.09,
+     "w_spaces": 2.5,
+     "symmetry": 0.991
+    },
+    {
+     "staff": "staff/1/0/15",
+     "frame": "cell:0",
+     "read": "alto",
+     "family": "C",
+     "x_center": 239,
+     "h_spaces": 4.09,
+     "w_spaces": 1.5,
+     "symmetry": 0.9828
+    },
+    {
+     "staff": "staff/2/0/15",
+     "frame": "header_window",
+     "read": "alto",
+     "family": "C",
+     "x_center": 239,
+     "h_spaces": 4.142,
+     "w_spaces": 2.532,
+     "symmetry": 0.9831
+    },
+    {
+     "staff": "staff/2/0/15",
+     "frame": "cell:0",
+     "read": "alto",
+     "family": "C",
+     "x_center": 186,
+     "h_spaces": 4.091,
+     "w_spaces": 2.501,
+     "symmetry": 0.9797
+    }
+   ],
+   "reach": {
+    "occupied_abstentions": 0,
+    "staves_with_an_occupied_abstention": 0,
+    "staves_with_a_cluster_in_the_measured_band": 0,
+    "staves_in_band_with_a_notehead_occupier_found": 0,
+    "staves_in_config_band": 0,
+    "staves_in_band_clef_ABSTAINED": 0,
+    "staves_in_band_clef_DECIDED": 0,
+    "staves_in_band_no_clef_verdict": 0
+   },
+   "occupied_rows": [],
+   "label": "Beethoven 5 mvt 1 bars 1-24, Verovio render, 18 parts (engraved, exact page truth)",
+   "kind": "engraved"
+  }
+ }
+}

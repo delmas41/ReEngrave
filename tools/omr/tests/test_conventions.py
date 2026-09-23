@@ -24,6 +24,17 @@ DOC = C.default_doc_path()
 TEXT = DOC.read_text(encoding="utf-8")
 
 
+def _measured_here_count() -> int:
+    """⚠️ DERIVED FROM THE ENTRIES, NEVER TYPED. Two mutation tests below
+    corrupt the document's own MEASURED HERE row, which means they have to
+    know what it currently says — and a literal there goes VACUOUS the moment
+    a convention is added (it did, at `C88`). Reading the count off the
+    parsed entries keeps the mutation aimed at a row that exists."""
+    reg = C.load()
+    return sum(1 for e in reg.entries
+               if e.status is C.Status.MEASURED_HERE)
+
+
 def _reg_from(text: str) -> C.Registry:
     with TemporaryDirectory() as tmp:
         path = Path(tmp) / "engraving-conventions.md"
@@ -191,8 +202,15 @@ class TestTheCheckGoesRed(unittest.TestCase):
         self.assertIn("DUPLICATE SLUG", self._problem_kinds(broken))
 
     def test_a_drifted_count_is_a_finding(self) -> None:
-        broken = TEXT.replace("| **MEASURED HERE** | 67 |",
-                              "| **MEASURED HERE** | 68 |", 1)
+        # ⚠️ THE MUTATION'S OWN TARGET IS ASSERTED TO EXIST. It was not, and
+        # when `C88` took MEASURED HERE from 67 to 68 (ROADMAP 2.11) the
+        # `str.replace` silently matched nothing, the "broken" document was
+        # the real one, and this test failed with an empty problem set — the
+        # loud version of a mutation test that had quietly become vacuous.
+        # Same guard the DUPLICATE SLUG test above already carries.
+        row = "| **MEASURED HERE** | %d |" % _measured_here_count()
+        assert TEXT.count(row) == 1, row
+        broken = TEXT.replace(row, "| **MEASURED HERE** | 1 |", 1)
         self.assertIn("COUNT DISAGREES", self._problem_kinds(broken))
 
     def test_a_drifted_category_count_is_a_finding(self) -> None:
@@ -257,8 +275,9 @@ class TestTheCliRefusesADeadParse(unittest.TestCase):
         self.assertEqual(self._run(TEXT.replace("`[C", "(C")), 2)
 
     def test_a_mutated_document_exits_one(self) -> None:
-        broken = TEXT.replace("| **MEASURED HERE** | 67 |",
-                              "| **MEASURED HERE** | 99 |", 1)
+        row = "| **MEASURED HERE** | %d |" % _measured_here_count()
+        assert TEXT.count(row) == 1, row            # see the note above
+        broken = TEXT.replace(row, "| **MEASURED HERE** | 99 |", 1)
         self.assertEqual(self._run(broken), 1)
 
     def test_the_real_document_exits_zero(self) -> None:

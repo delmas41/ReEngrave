@@ -40,11 +40,16 @@ a system from a group* (floors at 8 sp under compression, by construction).
 
 ## Counts
 
-**114 registry entries**, from 166 source entries.
+**115 registry entries**, from 167 source entries.
+
+⚠️ **The 167th source entry is `C88`** (*A clef's SIZE is consistent with its
+staff…*), added 2026-09-23 under ROADMAP 2.11. It is the first entry added
+after the merge, which is why the arithmetic below reads `C1 – C88` against
+the merge's own `C1 – C87`.
 
 | status | n |
 |---|--:|
-| **MEASURED HERE** | 67 |
+| **MEASURED HERE** | 68 |
 | **LITERATURE ONLY (untested here)** | 27 |
 | **ASSERTED (untested here)** | 13 |
 | **REFUTED HERE** | 5 |
@@ -55,7 +60,7 @@ a system from a group* (floors at 8 sp under compression, by construction).
 | Staff & pitch geometry | 14 | 6 |
 | Stems & beams | 18 | 9 |
 | Rests & bar filling | 8 | 3 |
-| Accidentals & key signatures | 8 | 1 |
+| Accidentals & key signatures | 9 | 1 |
 | Time signatures & meter | 8 | 0 |
 | Slurs, ties & phrasing | 12 | 2 |
 | Dynamics & hairpins | 7 | 1 |
@@ -63,7 +68,7 @@ a system from a group* (floors at 8 sp under compression, by construction).
 | Score layout & systems | 18 | 1 |
 | Text & margin labels | 8 | 1 |
 | Barlines & repeats | 4 | 1 |
-| **total** | **114** | **27** |
+| **total** | **115** | **27** |
 
 **Publisher- or edition-dependent, by the entry's leading word:** **10** of the
 87 repo-side entries (the repo file's own count) and **6** of the 27
@@ -90,7 +95,7 @@ directly on this repertoire.
 - [Staff & pitch geometry](#staff--pitch-geometry) — 14
 - [Stems & beams](#stems--beams) — 18
 - [Rests & bar filling](#rests--bar-filling) — 8
-- [Accidentals & key signatures](#accidentals--key-signatures) — 8
+- [Accidentals & key signatures](#accidentals--key-signatures) — 9
 - [Time signatures & meter](#time-signatures--meter) — 8
 - [Slurs, ties & phrasing](#slurs-ties--phrasing) — 12
 - [Dynamics & hairpins](#dynamics--hairpins) — 7
@@ -933,6 +938,20 @@ the repo file's rule is that **the tree outranks the ledger**:
 - **Would be falsified by:** an edition that states the clef once per page, or omits the key signature on continuation systems.
 - **Known exceptions:** instruments conventionally written **without** a key signature at all (next entry). ⚠️ The staged path **consumes none of** `key_signature_vote.reconcile`, deliberately — keyed on a wrong staff→part join it "would carry the viola's 7 onto the timpani".
 - **Code:** `tools/omr/key_signature_vote.py` `reconcile` (legacy path only); `tools/omr/staff_header.py`. **No staged consumer.**
+
+### A clef's SIZE is consistent with its staff, and it stands at the system's first-measure edge
+`[C88]`
+
+- **Says:** Sean, 2026-09-23 (`docs/DECISIONS.md`, ROADMAP 2.11): *"it also looks like the clef box is too small. the size of clefs are consistent to the staff and the edge of the first measure on the system — that should be helpful geometrically."* A clef is scaled to the staff it stands on, not to the ink around it, and it is printed at the head of that staff's first measure.
+- **Predicts (mechanically):** this is a **CONSTRAINT, not a prior — it can REFUSE a reading.** Clef-sized ink standing at the header IS the clef, so a symbol *much smaller than a clef* boxed on that ink is a misreading of the clef and not a second object standing on it. ⚠️ It runs in the direction the detector cannot: a box the detector drew does not get to veto a measurement of the ink it sits on, when the box is too small to be what the ink is. ⚠️⚠️ It says nothing about ink **outside** the header window or outside the size band, and it does not license inventing a clef — the symmetry gate, the F-clef dot veto and the line snap all still have to agree.
+- **Numbers:** the height, in staff spaces, of every C clef the CV locator SUCCESSFULLY read on the three acceptance documents' whole-movement records, `cell:0` arm — **Litolff n=22, 3.36–4.63 (median 4.43); Breitkopf n=60, 3.91–4.50 (4.30); engraved n=3, 4.09; pooled n=85, 3.36–4.63.** Shipped band, rounded outward: **3.3–4.7**. ✅ Independently corroborated by the font half of *A key signature stands BETWEEN the clef and the meter*: Bravura's `cClef` is **4.048** staff spaces tall, inside the measured band. Position: over all **74** `occupied` abstentions on the two scan records the cluster's page-frame x sits **−60 to +3 px** of the median x of the same system's other staves' detector clef boxes, whose own spread is **3–17 px** (Litolff) and **8–38 px** (Breitkopf) on all but three systems.
+- **Literature:** none. `docs/conventions/from-the-literature.md` states clef POSITION (L38, the reprint-per-system rule) and clef APPEARANCE nowhere; no literature entry states clef size as a constraint, so this entry is repo-side only and is not corroborated by a second source.
+- **Measured here:** `benchmarks/omr-clef-geometry-2026-09/FINDINGS.md` (the band above, and the reach: **47 `occupied` abstentions on 27 Litolff staves, 27 on 17 Breitkopf staves, 0 engraved**). The cost of NOT holding it is measured to a whole staff: on Litolff p.3 the Viola's alto clef is merged into the staff lines, the detector draws two `noteheadBlackOnLine` boxes of 1.4 and 2.1 spaces on a 4.5-space cluster, the clef abstains `occupied`, and **48 noteheads are boxed and 0 written — 40 refused `no_pitch`** (`benchmarks/omr-notehead-funnel-2026-09/FINDINGS.md`).
+- **Status:** MEASURED HERE (the size band, n=85 on three documents) / ⚠️ **the rule it licenses is NOT print-adjudicated** — no human has yet confirmed a single newly-read clef against the plate. See the crops under `benchmarks/omr-clef-geometry-2026-09/out/print/`.
+- **Rigid or publisher-dependent:** the SIZE is **RIGID within a plate** (it is the staff's own scale) and mildly **publisher-dependent across plates** — the pooled band is 1.3 spaces wide and Breitkopf's own is 0.6. ⚠️ The ink it is measured on is not: **Litolff MERGES and Breitkopf SHATTERS** (CLAUDE.md §10), which is why the same band is read off two plates and not one.
+- **Would be falsified by:** a plate whose C clef measures outside 3.3–4.7 staff spaces (it would show as a clef this band then refuses to defend), or a header cluster inside the band at the system's clef x that a human confirms is NOT a clef.
+- **Known exceptions:** ⚠️ a **treble** clef never reaches this test at all — it is ~7 spaces and `ClefLocatorConfig.max_height_spaces` stops the search first, so this entry is about the **C-clef family only** and the roadmap's prose guess of a treble band is unmeasurable from this reader. ⚠️ A **mid-staff clef change** stands past the header and is out of scope — `Q.CLEF` is staff-scoped and no arm reads past cell 0. ⚠️ A box that is ITSELF inside the size band does not count as "too small" and keeps its veto.
+- **Code:** `tools/omr/clef_locator.py` — `ClefLocatorConfig.clef_family_min_height_spaces` / `_max_height_spaces`, `_overridable_occupancy`, `locate_clef`'s `occupied_classes`; `tools/omr/staged/gather.py` `_occupied_notehead_rows` and `gather_clef_locator`; consumed by `tools/omr/staged/adjudicators/notehead_precision.py` `_is_a_clef` (refusal `is_a_clef`).
 
 ### A courtesy accidental is real ink that changes nothing — and its frequency is a property of the EDITION
 `[C26 + L35]`
@@ -1941,7 +1960,7 @@ the repo file's rule is that **the tree outranks the ledger**:
 
 ## Conservation
 
-⚠️⚠️ **EVERY ONE OF THE 166 SOURCE ENTRIES IS ACCOUNTED FOR BELOW, BY NAME.**
+⚠️⚠️ **EVERY ONE OF THE 167 SOURCE ENTRIES IS ACCOUNTED FOR BELOW, BY NAME.**
 A merge that silently drops entries is a failure this repository has paid for
 repeatedly, so the ledger is the deliverable, not a courtesy. **Nothing could
 not be placed; the unplaced list is empty.**
@@ -1949,26 +1968,26 @@ not be placed; the unplaced list is empty.**
 ### The arithmetic
 
 ```
-  87  entries from  docs/conventions/from-this-repo.md      (C1 – C87)
+  88  entries from  docs/conventions/from-this-repo.md      (C1 – C88)
 + 79  entries from  docs/conventions/from-the-literature.md (L1 – L79)
 ─────
- 166  source entries
+ 167  source entries
 
     46  repo entries that ABSORBED a literature entry
   + 52  literature entries absorbed into them   (6 repo entries took two or more)
-  + 41  repo entries kept standalone (literature: not covered)
+  + 42  repo entries kept standalone (literature: not covered)
   + 27  literature entries kept standalone (untested here)
 ─────
- 166  source entries accounted for            ✅ BALANCES
+ 167  source entries accounted for            ✅ BALANCES
 
     46  merged entries
-  + 41  repo-only entries
+  + 42  repo-only entries
   + 27  literature-only entries
 ─────
- 114  registry entries
+ 115  registry entries
 ```
 
-**Check both ways:** repo side `46 + 41 = 87` ✅ · literature side `52 + 27 = 79` ✅ ·
+**Check both ways:** repo side `46 + 42 = 88` ✅ · literature side `52 + 27 = 79` ✅ ·
 output `46 + 41 + 27 = 114` ✅.
 
 **The six repo entries that absorbed more than one literature entry:**
@@ -1977,7 +1996,7 @@ output `46 + 41 + 27 = 114` ✅.
 
 **Unplaced: NONE.** Every source entry has a destination row below.
 
-### `from-this-repo.md` — all 87
+### `from-this-repo.md` — all 88
 
 | src | source entry name | landed in | with |
 |---|---|---|---|
@@ -2068,6 +2087,7 @@ output `46 + 41 + 27 = 114` ✅.
 | C85 | Staff SPACING cannot separate a system from a group — REFUTED as a discriminator | *Staff SPACING cannot separate a system from a group — REFUTED* | kept standalone |
 | C86 | VOCAL staves are not joined by barlines, even when they are bracketed | *(same title)* | kept standalone |
 | C87 | A TRILL, TURN or MORDENT is printed clear ABOVE its note, centred on it | *(same title)* | kept standalone |
+| C88 | A clef's SIZE is consistent with its staff, and it stands at the system's first-measure edge | *(same title)* | kept standalone — ⚠️ added 2026-09-23 (ROADMAP 2.11), after the merge |
 
 **Repo tally: 46 merged + 41 standalone = 87** ✅
 

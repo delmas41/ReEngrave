@@ -198,6 +198,36 @@ def _clipped_fragment(ev: Evidence, box_row, spacing_canonical: float,
     return touching
 
 
+def _is_a_clef(ev: Evidence):
+    """ROADMAP 2.11 — this box is part of a clef the locator READ over it.
+
+    ⚠️ A CONNECT, NOT A GUESS, AND THE DISTINCTION IS THE WHOLE POINT. This
+    rule measures nothing and decides nothing on its own. It asks whether a
+    `Q.CLEF_LOCATED` row on this glyph's own STAFF NAMES this glyph as a box
+    it overrode — `gather._occupied_notehead_rows` put the subject key there,
+    from the detector ordinal the glyph subject is built from. If the clef was
+    not read, or was read without overriding anything, this returns None and
+    the glyph is judged on shape as before.
+
+    ⚠️ SCOPE IS `SELF_AND_ANCESTORS` BECAUSE THE ROW IS FILED ON THE STAFF.
+    At `EXACT` — the default — a GLYPH subject's query returns nothing and the
+    rule would fail SILENTLY, which is the failure mode CLAUDE.md §4b names
+    and `wiring --check` exists to catch.
+
+    ⚠️ IT DOES NOT ASK WHETHER THE STAFF'S `clef` VERDICT AGREES. That verdict
+    is an ADJUDICATE product of this same stage; reading it here would make
+    the refusal depend on decision order, and a located clef that loses the
+    clef contest still tells us what this ink is. The evidence is the READ,
+    not the winner.
+    """
+    me = ev.subject.to_key()
+    for r in ev.rows(Q.CLEF_LOCATED, scope=Scope.SELF_AND_ANCESTORS):
+        d = r.detail or {}
+        if me in (d.get("overrode_glyph_subjects") or ()):
+            return r
+    return None
+
+
 def _too_narrow(box_row, spacing_canonical: float,
                 detail: Dict[str, Any]) -> bool:
     """A `noteheadBlack*` box under the measured width floor."""
@@ -298,21 +328,29 @@ def _unladdered(ev: Evidence, box_row, spacing_canonical: float,
 @decision(
     quantity=Q.NOTEHEAD_IS_NOT_A_NOTEHEAD,
     composed_from=(Q.GLYPH_BOX, Q.CELL_BOX, Q.CELL_STAFF_SPACE,
-                  Q.NOTEHEAD_STAFF_POSITION, Q.GLYPH_CONF),
+                  Q.NOTEHEAD_STAFF_POSITION, Q.GLYPH_CONF, Q.CLEF_LOCATED),
     scope=Kind.GLYPH,
     wants=(Q.GLYPH_BOX, Q.CELL_BOX, Q.CELL_STAFF_SPACE,
-          Q.NOTEHEAD_STAFF_POSITION, Q.GLYPH_CONF),
+          Q.NOTEHEAD_STAFF_POSITION, Q.GLYPH_CONF, Q.CLEF_LOCATED),
     subjects_from=Q.NOTEHEAD_CLASS,
-    reasons=("clipped_fragment", "too_narrow", "notehead",
+    reasons=("is_a_clef", "clipped_fragment", "too_narrow", "notehead",
              ABSTAIN.NO_STAFF_GEOMETRY),
     mode=Mode.ADDITIVE,
 )
 def adjudicate_notehead_is_not_a_notehead(ev: Evidence) -> Ruling:
     """Is this glyph the detector called a notehead actually something else?
 
-    ⚠️ TWO RULES SHIP, A THIRD IS MEASURED AND HELD BACK — none of them a
+    ⚠️ THREE RULES SHIP, A FOURTH IS MEASURED AND HELD BACK — none of them a
     GATHER filter. See the module docstring for where each threshold comes
-    from and why the third does not set the value.
+    from and why the last does not set the value.
+
+    0. `is_a_clef` (ROADMAP 2.11) — the CV clef locator READ a clef on this
+       very box's ink, having found the box too small to be what the ink is
+       (Sean, 2026-09-23). This rule MEASURES NOTHING: it reads the
+       `overrode_glyph_subjects` the read itself named, so the refusal and the
+       read can never disagree. It runs FIRST because it is the only one of
+       the four backed by a positive identification rather than by a shape
+       that looks wrong.
 
     1. `clipped_fragment` — a sliver of ink flush against the cell's own crop
        boundary: a neighbouring staff's ink bleeding into this cell's
@@ -350,6 +388,20 @@ def adjudicate_notehead_is_not_a_notehead(ev: Evidence) -> Ruling:
     if box_row is None or not isinstance(box_row.value, (list, tuple)) \
             or len(box_row.value) != 5:
         return Ruling.abstain(ABSTAIN.NO_STAFF_GEOMETRY)
+
+    # ⚠️ BEFORE THE STAFF-SPACE GUARD, because this rule needs no unit at all:
+    # it cites a row that already did the geometry. Putting it after would
+    # make a clef-box refusal depend on a measurement it does not use.
+    clef_row = _is_a_clef(ev)
+    if clef_row is not None:
+        return Ruling(
+            value=True, reason="is_a_clef",
+            used=(clef_row.id, box_row.id),
+            detail={"class": box_row.value[0],
+                    "clef_read": clef_row.value,
+                    "clef_frame": clef_row.frame,
+                    "clef_symmetry": clef_row.score})
+
     spacing = _cell_staff_space(ev)
     if spacing is None:
         return Ruling.abstain(ABSTAIN.NO_STAFF_GEOMETRY)
