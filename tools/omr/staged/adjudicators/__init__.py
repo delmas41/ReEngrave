@@ -13,3 +13,4 @@ from . import header      # noqa: F401
 from . import ownership   # noqa: F401
 from . import rhythm      # noqa: F401
 from . import text        # noqa: F401
+from . import notehead_precision  # noqa: F401

@@ -851,6 +851,30 @@ def _place_notes(rec: Record, runs: Dict[str, StaffRun],
         is_rest = bool(rec.obs(Q.REST, sub))
         if not is_rest and not rec.obs(Q.NOTEHEAD_CLASS, sub):
             continue                 # neither a notehead nor a rest
+        if not is_rest:
+            # ⚠️⚠️ ROADMAP 2.4a. FIRST, before the whole-rest question and
+            # everything after it, for the same reason `ink_is_a_whole_rest`
+            # is checked before pitch and duration: the count should say the
+            # load-bearing thing about the row -- *this is not a notehead at
+            # all* -- rather than a downstream reason that happens to also be
+            # true. `adjudicate_notehead_is_not_a_notehead` ports the legacy
+            # path's two notehead-precision filters
+            # (`transcribe._drop_clipped_notehead_fragments`,
+            # `transcribe._drop_unladdered_noteheads`, neither called from
+            # `staged/`) plus the measured-and-never-shipped width floor
+            # (`benchmarks/omr-notehead-width-2026-09/FINDINGS.md`).
+            #
+            # ⚠️ REFUSED, NOT DELETED. The legacy filters call `dets.remove`;
+            # this leaves the `Q.GLYPH_BOX` row on the record and refuses to
+            # WRITE it, counted under `not_a_notehead:<reason>` so the reason
+            # a human would want -- "this box is a barline sliver, not a
+            # note" -- survives to the report rather than reading as a
+            # generic `no_pitch` or `duration_narrowed` shortfall.
+            npv = rec.verdict(Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, sub)
+            if (npv is not None and npv["outcome"] == "decided"
+                    and npv["value"] is True):
+                _drop(f"not_a_notehead:{npv.get('reason', '?')}", s)
+                continue
         if (not is_rest and refuse_whole_rest_ink
                 and rec.value(Q.NOTEHEAD_IS_A_WHOLE_REST, sub) is True):
             # ⚠️⚠️ SEAN'S OWN OBSERVATION, AND THE ASYMMETRY IS THE REASON.
