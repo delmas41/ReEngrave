@@ -160,6 +160,29 @@ def family_block_enabled() -> bool:
             not in _OFF_WORDS)
 
 
+#: The clef-gap rule's OWN flag, default ON (roadmap 2.10, Sean 2026-09-23).
+#:
+#: ⚠️⚠️ A THIRD FLAG FOR THE SAME REASON THE SECOND EXISTS: this rule's
+#: evidence is not the duration rules' evidence and is not the family block's
+#: either. Its first tier is a CORROBORATION the record already holds -- the
+#: same part's clef READ on other systems of the same document, which is a
+#: reading of other ink and not a convention at all -- and its second tier is
+#: a bare engraving convention with no witness on the page. One flag over the
+#: three would make turning any of them off one decision about all of them.
+#:
+#: ⚠️ A DENY-LIST, BECAUSE THE DEFAULT IS ON -- as with both flags above.
+#: `OMR_CLEF_GAP=` or a typo must leave the rule RUNNING. The predicate is
+#: written out on its own line, never behind a helper, so the AST scan in
+#: `test_flag_default_direction.py` sees this flag's own `os.environ.get`.
+CLEF_GAP_ENV = "OMR_CLEF_GAP"
+
+
+def clef_gap_enabled() -> bool:
+    """Read the clef-gap rule's flag. Anything but an off-word is ON."""
+    return (os.environ.get(CLEF_GAP_ENV, "1").strip().lower()
+            not in _OFF_WORDS)
+
+
 @dataclass(frozen=True)
 class Switch:
     """A flag NAME and the predicate that reads it, as ONE object.
@@ -187,6 +210,9 @@ INFER_SWITCH = Switch(INFER_ENV, infer_enabled)
 
 #: The slot-index rule alone. Default ON -- 25 of 25 against the print.
 FAMILY_BLOCK_SWITCH = Switch(FAMILY_BLOCK_ENV, family_block_enabled)
+
+#: The clef-gap rule alone. Default ON (roadmap 2.10).
+CLEF_GAP_SWITCH = Switch(CLEF_GAP_ENV, clef_gap_enabled)
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -223,6 +249,22 @@ class Inference(str, Enum):
     #: quantity, and it came from the largest single population a human had
     #: actually looked at -- 25 staves of music held out of the file.
     COLLAPSE_SLOT_INDEX_TO_FAMILY_BLOCK = "collapse_slot_index_to_family_block"
+
+    #: A clef nobody could read, on a staff whose PART is settled, filled from
+    #: the same part's clef on other systems -- and failing that from the
+    #: instrument's conventional header clef.
+    #:
+    #: ⚠️⚠️ THE FIRST RULE HERE WHOSE PRIOR IS AN ABSTENTION RATHER THAN A
+    #: NARROWING, AND THAT IS A DIFFERENT SHAPE. `INFERABLE` has always held
+    #: both, but until now every rule spoke into a narrowing, where rule 4
+    #: bounds the answer to the reader's own candidates. `adjudicate_clef`
+    #: abstaining `no_candidates` kept NO candidates -- so on this path rule 4
+    #: has nothing to bound with, and the bound has to come from the rule's
+    #: own evidence instead: the value is a clef DECIDED elsewhere in the same
+    #: document on the same part, or the `default_clef` of an instrument the
+    #: record already named. Neither is invented by the rule, and that is what
+    #: makes an abstention a legitimate target rather than a licence.
+    FILL_CLEF_GAP = "fill_clef_gap"
 
 
 #: The only prior states an inference may speak into.
@@ -645,6 +687,34 @@ def run(log: Log, evaluated: Any, *, progress: bool = False) -> Report:
         if progress:
             print(f"  infer {r.inference.value}: {produced} inferred")
     return report
+
+
+def inferred_in_basis(log: Log, verdict: Any) -> Tuple[str, ...]:
+    """The INFERRED verdicts `verdict` rests on, transitively. Sorted ids.
+
+    ⚠️⚠️ THIS IS HOW THE LABEL PROPAGATES, AND IT IS A QUERY RATHER THAN A
+    SECOND FLAG ON EVERY DOWNSTREAM ROW. A pitch restated from an inferred
+    clef is not itself an inference -- `restate_pitch` is a CONSEQUENCE and
+    the pitch FOLLOWS from the clef -- but a reader of that pitch is entitled
+    to know that one link in its chain was a guess. Stamping a second
+    `inferred` flag onto the consequence would make two things that must
+    agree, which is the `clef_final` failure (9 of 20 stale) in miniature;
+    walking the basis cannot go stale because the basis is the chain.
+
+    Empty for a verdict no inference reaches, which is the honest answer for
+    everything the pipeline read or entailed.
+    """
+    vid = getattr(verdict, "id", None)
+    if vid is None and isinstance(verdict, Mapping):
+        vid = verdict.get("id")
+    if vid is None:
+        return ()
+    out = []
+    for rid in log.closure(str(vid)):
+        row = log.row(rid)
+        if row is not None and isinstance(row, Verdict) and is_inferred(row):
+            out.append(rid)
+    return tuple(sorted(out))
 
 
 def inferred_verdicts(log: Log) -> Tuple[Verdict, ...]:

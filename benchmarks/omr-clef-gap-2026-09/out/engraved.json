@@ -1,0 +1,97 @@
+{
+ "id": "beethoven5-engraved",
+ "provenance": {
+  "commit": "7754d277c0f5a8f7633174359240d092a139ee09",
+  "dirty": true,
+  "settings": {
+   "env_overrides": {
+    "OMR_SURYA_KEEP_ALIVE": "1"
+   },
+   "args": {
+    "against": null,
+    "conf": 0.25,
+    "dpi": 300,
+    "imgsz": null,
+    "no_roster": false,
+    "ocr": true,
+    "pages": "0-2",
+    "pdf": "benchmarks/omr-staged-engraved-2026-09/out/fixture/beethoven-sym5-mvt1-m1-24.pdf",
+    "surya": true,
+    "weights": "tools/omr/training/data/weights/deepscoresv2-yolov8l-imgsz2048-ft-30ep.pt",
+    "work_id": null
+   }
+  }
+ },
+ "base": {
+  "n_new_verdicts": 0,
+  "reoffered_and_declined": {},
+  "notes_not_written_total": 13,
+  "notes_not_written": {
+   "owned_by_another_staff": 10,
+   "duration_narrowed": 2,
+   "ink_is_a_whole_rest": 1
+  },
+  "n_note_elements": 676,
+  "balance": {
+   "events_in_log": 688,
+   "noteheads_in_log": 371,
+   "rests_in_log": 317,
+   "events_written": 675,
+   "rests_duplicated_across_voices": 0,
+   "notes_doubled_to_condensed_slot": 0,
+   "events_not_written": 13,
+   "balanced": true
+  },
+  "status_census_unaccounted": [],
+  "inferred_clefs": []
+ },
+ "arm": {
+  "n_new_verdicts": 0,
+  "new_by_quantity": {},
+  "all_new_verdicts_are_labelled_or_derived": true,
+  "reevaluation": {
+   "fired": 0,
+   "by_rule": {}
+  },
+  "reoffered_and_declined": {},
+  "notes_not_written_total": 13,
+  "notes_not_written": {
+   "owned_by_another_staff": 10,
+   "duration_narrowed": 2,
+   "ink_is_a_whole_rest": 1
+  },
+  "n_note_elements": 676,
+  "balance": {
+   "events_in_log": 688,
+   "noteheads_in_log": 371,
+   "rests_in_log": 317,
+   "events_written": 675,
+   "rests_duplicated_across_voices": 0,
+   "notes_doubled_to_condensed_slot": 0,
+   "events_not_written": 13,
+   "balanced": true
+  },
+  "status_census_unaccounted": [],
+  "inferred_clefs": []
+ },
+ "base_export_identical_to_record_export": true,
+ "clef": {
+  "abstained_before": 0,
+  "inferred_by_other_systems": 0,
+  "inferred_by_instrument_convention": 0,
+  "still_abstained": [],
+  "decided_clefs_changed": []
+ },
+ "no_pitch": {
+  "before": 0,
+  "after": 0,
+  "by_system_before": {},
+  "by_system_after": {}
+ },
+ "notes": {
+  "before": 676,
+  "after": 676,
+  "delta": 0
+ },
+ "refusal_deltas": {}
+}

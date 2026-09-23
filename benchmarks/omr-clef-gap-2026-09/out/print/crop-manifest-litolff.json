@@ -1,0 +1,185 @@
+{
+  "crops": [
+    {
+      "file": "litolff-p14-s0-st11-bass-clef_from_other_systems.png",
+      "staff": "staff/14/0/11",
+      "inferred_clef": "bass",
+      "reason": "clef_from_other_systems",
+      "slot": 11,
+      "instrument": null,
+      "tally": {
+        "bass": 8
+      },
+      "n_systems_read": 8,
+      "n_independent_witnesses": 8,
+      "part_from_an_inference": false,
+      "page": 14,
+      "system": 0,
+      "staff_ordinal": 11,
+      "frame_contrast": 234.19,
+      "dpi": 600,
+      "VERDICT_none_yet": null
+    },
+    {
+      "file": "litolff-p16-s1-st9-alto-clef_from_other_systems.png",
+      "staff": "staff/16/1/9",
+      "inferred_clef": "alto",
+      "reason": "clef_from_other_systems",
+      "slot": 9,
+      "instrument": "Viola",
+      "tally": {
+        "alto": 14,
+        "treble": 1,
+        "bass": 1
+      },
+      "n_systems_read": 16,
+      "n_independent_witnesses": 14,
+      "part_from_an_inference": true,
+      "page": 16,
+      "system": 1,
+      "staff_ordinal": 9,
+      "frame_contrast": 148.72,
+      "dpi": 600,
+      "VERDICT_none_yet": null
+    },
+    {
+      "file": "litolff-p2-s1-st9-alto-clef_from_other_systems.png",
+      "staff": "staff/2/1/9",
+      "inferred_clef": "alto",
+      "reason": "clef_from_other_systems",
+      "slot": 9,
+      "instrument": "Viola",
+      "tally": {
+        "alto": 14,
+        "treble": 1,
+        "bass": 1
+      },
+      "n_systems_read": 16,
+      "n_independent_witnesses": 14,
+      "part_from_an_inference": true,
+      "page": 2,
+      "system": 1,
+      "staff_ordinal": 9,
+      "frame_contrast": 13.77,
+      "dpi": 600,
+      "VERDICT_none_yet": null
+    },
+    {
+      "file": "litolff-p3-s0-st9-alto-clef_from_other_systems.png",
+      "staff": "staff/3/0/9",
+      "inferred_clef": "alto",
+      "reason": "clef_from_other_systems",
+      "slot": 9,
+      "instrument": "Viola",
+      "tally": {
+        "alto": 14,
+        "treble": 1,
+        "bass": 1
+      },
+      "n_systems_read": 16,
+      "n_independent_witnesses": 14,
+      "part_from_an_inference": true,
+      "page": 3,
+      "system": 0,
+      "staff_ordinal": 9,
+      "frame_contrast": 152.51,
+      "dpi": 600,
+      "VERDICT_none_yet": null
+    },
+    {
+      "file": "litolff-p5-s0-st7-alto-clef_from_other_systems.png",
+      "staff": "staff/5/0/7",
+      "inferred_clef": "alto",
+      "reason": "clef_from_other_systems",
+      "slot": 9,
+      "instrument": "Viola",
+      "tally": {
+        "alto": 14,
+        "treble": 1,
+        "bass": 1
+      },
+      "n_systems_read": 16,
+      "n_independent_witnesses": 14,
+      "part_from_an_inference": true,
+      "page": 5,
+      "system": 0,
+      "staff_ordinal": 7,
+      "frame_contrast": 208.43,
+      "dpi": 600,
+      "VERDICT_none_yet": null
+    },
+    {
+      "file": "litolff-p5-s1-st5-alto-clef_from_other_systems.png",
+      "staff": "staff/5/1/5",
+      "inferred_clef": "alto",
+      "reason": "clef_from_other_systems",
+      "slot": 9,
+      "instrument": "Viola",
+      "tally": {
+        "alto": 14,
+        "treble": 1,
+        "bass": 1
+      },
+      "n_systems_read": 16,
+      "n_independent_witnesses": 14,
+      "part_from_an_inference": false,
+      "page": 5,
+      "system": 1,
+      "staff_ordinal": 5,
+      "frame_contrast": 212.31,
+      "dpi": 600,
+      "VERDICT_none_yet": null
+    },
+    {
+      "file": "litolff-p7-s0-st9-alto-clef_from_other_systems.png",
+      "staff": "staff/7/0/9",
+      "inferred_clef": "alto",
+      "reason": "clef_from_other_systems",
+      "slot": 9,
+      "instrument": "Viola",
+      "tally": {
+        "alto": 14,
+        "treble": 1,
+        "bass": 1
+      },
+      "n_systems_read": 16,
+      "n_independent_witnesses": 14,
+      "part_from_an_inference": true,
+      "page": 7,
+      "system": 0,
+      "staff_ordinal": 9,
+      "frame_contrast": 204.11,
+      "dpi": 600,
+      "VERDICT_none_yet": null
+    },
+    {
+      "file": "litolff-p7-s1-st9-alto-clef_from_other_systems.png",
+      "staff": "staff/7/1/9",
+      "inferred_clef": "alto",
+      "reason": "clef_from_other_systems",
+      "slot": 9,
+      "instrument": "Viola",
+      "tally": {
+        "alto": 14,
+        "treble": 1,
+        "bass": 1
+      },
+      "n_systems_read": 16,
+      "n_independent_witnesses": 14,
+      "part_from_an_inference": true,
+      "page": 7,
+      "system": 1,
+      "staff_ordinal": 9,
+      "frame_contrast": 161.91,
+      "dpi": 600,
+      "VERDICT_none_yet": null
+    }
+  ],
+  "refused": [
+    {
+      "staff": "staff/15/0/9",
+      "why": "FRAME CONTROL FAILED",
+      "contrast": 7.14
+    }
+  ]
+}

@@ -405,11 +405,15 @@ def instrument_named(name: str):
 
     Returns rather than raises, because an optional enrichment must never lose
     a page's labels to a table that drifted.
+
+    ⚠️ DELEGATED SINCE 2026-09-23 (roadmap 2.10). This was a linear scan over
+    `_instruments.INSTRUMENTS` written here, and the clef-gap rule needed the
+    same lookup — a SECOND scan, in a third module, over the same table. Two
+    spellings of *"the instrument with this canonical name"* is the drift this
+    tree keeps paying for, so the one that lives beside the table wins and
+    this name stays for its existing callers.
     """
-    for inst in _instruments.INSTRUMENTS:
-        if inst.name == name:
-            return inst
-    return None
+    return _instruments.instrument_named(name)
 
 
 def candidates(alias: str) -> tuple[str, ...]:

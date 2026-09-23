@@ -289,10 +289,35 @@ def run_staged_on(prepared: Sequence[Tuple[Any, Sequence[Any]]], *,
     # that, and is the kind of harmless-looking addition that reaches an arm
     # which was supposed to be blind to it.
     inference_report = None
+    reevaluation_report = None
     if infer.stage_should_run():
         if progress:
             print("INFER")
         inference_report = infer.run(log, report, progress=progress)
+
+        # ⚠️⚠️ THE SECOND EVALUATE PASS, BOUNDED TO WHAT INFER JUST WROTE
+        # (roadmap 2.10). INFER runs AFTER EVALUATE, and a notehead's PITCH is
+        # an EVALUATE consequence of the clef -- so an inference that fills a
+        # clef the reader abstained on changes NOTHING unless something
+        # restates the pitches beneath it. `evaluate.run_over` fires a rule
+        # only where its own cause, or a verdict it DECLARES it also reads, is
+        # one of the verdicts INFER wrote this run; since INFER writes only
+        # where the record had no answer, every rule that fires here is one
+        # the first pass skipped. The rejected alternatives -- the guess in
+        # ADJUDICATE, the pitch in EXPORT, a second FULL `run` -- are recorded
+        # on `run_over` itself.
+        #
+        # ⚠️ ITS KEY IS ABSENT UNLESS INFER RAN, exactly like `inference`'s,
+        # so `OMR_INFER=0 OMR_SLOT_FAMILY_BLOCK=0 OMR_CLEF_GAP=0` still yields
+        # a record byte-identical to one from a tree without this stage.
+        # ⚠️ DERIVED FROM THE LOG, not walked out of the report's tuples:
+        # `infer.inferred_verdicts` is the query the stage already provides
+        # for exactly *"which verdicts did INFER write"*, and a second way of
+        # answering it is a second thing to keep in step.
+        if progress:
+            print("EVALUATE (bounded, over the inferred values)")
+        reevaluation_report = evaluate.run_over(
+            log, infer.inferred_verdicts(log), progress=progress)
 
     return {
         "record": log.to_json(),
@@ -311,8 +336,21 @@ def run_staged_on(prepared: Sequence[Tuple[Any, Sequence[Any]]], *,
         },
         **({} if divergence_report is None
            else {"divergence": divergence_report}),
+        # ⚠️ The bounded second EVALUATE pass rides INSIDE `inference` and is
+        # NOT a second top-level key. Two reasons, and the first is a property
+        # a test already pins: `test_infer_bypass` asserts that turning the
+        # stage on adds exactly ONE top-level key, which is how *off means
+        # ABSENT* stays checkable rather than becoming a growing list of
+        # exceptions. The second is that this pass EXISTS only because INFER
+        # ran -- it is the price of the guess, not a stage of its own -- and
+        # it is kept out of `evaluation` for the mirror reason: that key is
+        # *what FOLLOWED from what was read*, and a reader who cannot tell the
+        # two apart cannot price the guess.
         **({} if inference_report is None
-           else {"inference": inference_report.to_json()}),
+           else {"inference": {
+               **inference_report.to_json(),
+               **({} if reevaluation_report is None
+                  else {"reevaluation": reevaluation_report.to_json()})}}),
     }
 
 

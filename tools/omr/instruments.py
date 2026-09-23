@@ -564,6 +564,30 @@ AMBIGUOUS_ALIASES: dict[str, tuple[str, ...]] = {
 }
 
 
+#: Canonical name -> instrument. DERIVED from the table, never a second list.
+_BY_NAME: dict[str, "Instrument"] = {inst.name: inst for inst in INSTRUMENTS}
+
+
+def instrument_named(name: str) -> "Instrument | None":
+    """The instrument whose CANONICAL name is `name`, or None.
+
+    ⚠️ CANONICAL NAMES ONLY, AND THIS IS NOT A SECOND `lookup`. `lookup`
+    resolves a printed margin STRING through the alias lexicon; this resolves
+    a name the tree has already resolved — `Instrument.name`, which is what
+    `Q.INSTRUMENT.value["name"]` and `Q.SLOT_INDEX`'s `detail["instrument"]`
+    both carry. A caller holding a printed label must go through `lookup`; a
+    caller holding an already-decided identity must not re-enter the lexicon,
+    because a second resolution of a settled question is how two answers to
+    it come to exist.
+
+    Its first consumer is `staged/inferences.fill_clef_gap`, which needs the
+    *"what clef to expect"* this module's own docstring promises: a Viola's
+    header clef is alto, and that is `default_clef`, read from the table
+    rather than typed into a rule.
+    """
+    return _BY_NAME.get(name)
+
+
 def candidates_for_alias(alias: str) -> tuple["Instrument", ...]:
     """Every instrument an ambiguous alias could mean, most-likely first.
 
@@ -571,8 +595,7 @@ def candidates_for_alias(alias: str) -> tuple["Instrument", ...]:
     resolve and keeps the lexicon's answer.
     """
     names = AMBIGUOUS_ALIASES.get(alias, ())
-    by_name = {inst.name: inst for inst in INSTRUMENTS}
-    return tuple(by_name[n] for n in names if n in by_name)
+    return tuple(i for n in names if (i := instrument_named(n)) is not None)
 
 
 _STRIP_TOKENS = re.compile(

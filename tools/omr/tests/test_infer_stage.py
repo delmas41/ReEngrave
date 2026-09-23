@@ -62,6 +62,17 @@ class _WithRule:
         self.fn, self.kw = fn, kw
 
     def __enter__(self):
+        # ⚠️⚠️ LOAD BEFORE SAVING, or this helper PERMANENTLY EMPTIES THE
+        # STAGE for the rest of the process. `infer._ensure_rules` imports
+        # `inferences` only `if not RULES`; once that module is in
+        # `sys.modules` the import is a no-op and nothing re-registers. So a
+        # `_WithRule` that entered while `RULES` was still empty saved `[]`,
+        # restored `[]` on exit, and every later test reading `infer.RULES`
+        # saw a stage with no rules -- which raises `NoRulesRegistered` or, in
+        # a `next(...)` over the registry, a bare `StopIteration` in an
+        # unrelated file. Found 2026-09-23 when `test_infer_clef_gap` passed
+        # alone and failed in the suite.
+        infer._ensure_rules()
         self.saved = list(infer.RULES)
         infer.RULES.clear()
         _rule(self.fn, **self.kw)
@@ -278,10 +289,33 @@ class TestTheStageBoundary(unittest.TestCase):
     """
 
     def test_evaluate_skips_a_narrowed_cause_rather_than_choosing(self):
-        import inspect
-        src = inspect.getsource(evaluate.run)
-        self.assertIn("cause_narrowed", src)
-        self.assertIn("Outcome.NARROWED", src)
+        """⚠️ REWRITTEN 2026-09-23 FROM A SOURCE-TEXT ASSERTION TO A
+        BEHAVIOURAL ONE. It used to `inspect.getsource(evaluate.run)` and look
+        for the strings `cause_narrowed` and `Outcome.NARROWED`; roadmap
+        2.10 moved that loop body into `evaluate._pass` so both passes share
+        one copy of the rule ORDER, and the test went red on code that was
+        still correct -- the failure mode CLAUDE.md §6c names when it forbids
+        new source-text assertions. What it always meant to say is asserted
+        directly now: a NARROWED cause is REPORTED, apart from an abstention,
+        and no consequence is written from it."""
+        log = Log()
+        staff = Subject(Kind.STAFF, page=0, system=0, staff=0)
+        head = Subject(Kind.GLYPH, page=0, system=0, staff=0, cell=0, glyph=0)
+        log.record(Verdict(
+            id=log._next_id("vrd"), subject=staff, quantity=Q.CLEF,
+            outcome=Outcome.NARROWED, value=None, decider="adjudicate_clef",
+            reason="margin_below_floor",
+            candidates=(Candidate("alto", 1.0), Candidate("tenor", 1.0))))
+        log.observe(head, Q.NOTEHEAD_STAFF_POSITION, 4.0,
+                    reader="cv_lines", frame="cell:0")
+        log.freeze()
+
+        rep = evaluate.run(log)
+        self.assertIn(("restate_pitch", staff.to_key(), "cause_narrowed"),
+                      rep.skipped)
+        self.assertNotIn(("restate_pitch", staff.to_key(), "cause_abstained"),
+                         rep.skipped)
+        self.assertIsNone(log.verdict(Q.PITCH, head))
 
     def test_only_infer_may_supersede_a_narrowing(self):
         """Run over a log where both stages have acted."""
@@ -479,35 +513,51 @@ class TestRunHonoursEachRulesOwnGate(unittest.TestCase):
 
 
 class TestTheTwoDefaultsAreSeparate(unittest.TestCase):
-    """⚠️⚠️ THE POINT OF THE WHOLE CHANGE: the two flags are independent
-    dials, and flipping either does not flip the other -- true whether both
-    default ON (as of 2026-09-23) or, as originally shipped 2026-09-21, only
-    the slot rule did. The tests below still force each flag explicitly, so
-    they assert the independence rather than either flag's own default."""
+    """⚠️⚠️ THE POINT OF THE WHOLE CHANGE: the flags are independent dials,
+    and flipping any one does not flip the others -- true whether all default
+    ON (as of 2026-09-23) or, as originally shipped 2026-09-21, only the slot
+    rule did. The tests below force every flag explicitly, so they assert the
+    independence rather than any flag's own default.
+
+    ⚠️ THREE FLAGS SINCE 2026-09-23 (roadmap 2.10 added `OMR_CLEF_GAP`), and
+    the name of this class is left alone: it is about the SEPARATION, and
+    renaming it per rule added would make the class a list. Each `_on` call
+    names every flag, so a FOURTH rule fails these tests loudly rather than
+    sliding into an assertion that only enumerated two."""
+
+    #: ⚠️ EVERY per-rule flag, DERIVED from the registry rather than typed, so
+    #: a rule added without a line here cannot pass silently.
+    def _all_off(self):
+        infer._ensure_rules()
+        return {r.switch.env: "0" for r in infer.RULES}
 
     def _on(self, env):
-        with mock.patch.dict(os.environ, env, clear=False):
+        forced = self._all_off()
+        forced.update(env)
+        with mock.patch.dict(os.environ, forced, clear=False):
             return sorted(r.inference.value for r in infer.enabled_rules())
 
     def test_only_the_slot_rule_is_on_by_default(self):
-        self.assertEqual(
-            self._on({"OMR_INFER": "0", "OMR_SLOT_FAMILY_BLOCK": "1"}),
-            ["collapse_slot_index_to_family_block"])
+        self.assertEqual(self._on({"OMR_SLOT_FAMILY_BLOCK": "1"}),
+                         ["collapse_slot_index_to_family_block"])
+
+    def test_only_the_clef_gap_rule_is_on_when_only_its_flag_is(self):
+        self.assertEqual(self._on({"OMR_CLEF_GAP": "1"}), ["fill_clef_gap"])
 
     def test_raising_OMR_INFER_does_not_silence_the_slot_rule(self):
         self.assertIn("collapse_slot_index_to_family_block",
-                      self._on({"OMR_INFER": "1"}))
+                      self._on({"OMR_INFER": "1",
+                                "OMR_SLOT_FAMILY_BLOCK": "1"}))
 
     def test_silencing_the_slot_rule_does_not_raise_the_duration_rules(self):
-        self.assertEqual(self._on({"OMR_INFER": "0",
-                                   "OMR_SLOT_FAMILY_BLOCK": "0"}), [])
+        self.assertEqual(self._on({}), [])
 
     def test_the_stage_runs_when_any_single_rule_is_on(self):
-        with mock.patch.dict(os.environ,
-                             {"OMR_INFER": "0", "OMR_SLOT_FAMILY_BLOCK": "1"},
-                             clear=False):
-            self.assertTrue(infer.stage_should_run())
-        with mock.patch.dict(os.environ,
-                             {"OMR_INFER": "0", "OMR_SLOT_FAMILY_BLOCK": "0"},
-                             clear=False):
+        for flag in self._all_off():
+            with self.subTest(flag):
+                env = self._all_off()
+                env[flag] = "1"
+                with mock.patch.dict(os.environ, env, clear=False):
+                    self.assertTrue(infer.stage_should_run())
+        with mock.patch.dict(os.environ, self._all_off(), clear=False):
             self.assertFalse(infer.stage_should_run())
