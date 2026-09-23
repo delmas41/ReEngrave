@@ -75,3 +75,13 @@ Format: `YYYY-MM-DD · who · the decision · because · (pointer)`
   what any decision keys on; measured over all 289 editions the two agree 279
   of 279 wherever the label exists, so its failing is ABSENCE not error ·
   (`benchmarks/omr-document-identity-2026-09/FINDINGS.md` §1-2)
+- 2026-09-22 · manager, on print evidence · **Two notehead-precision refusals ship
+  on the staged path: `too_narrow` (a `noteheadBlack*` box under 1.0 staff space
+  in the cell's own unit) and `clipped_fragment` (the ported edge-sliver rule).
+  `unladdered` is HELD BACK (computed, recorded, never acts).** · because against
+  the 255 print-adjudicated boxes the two cost 1 of 29 and 1 of 74 confirmed
+  noteheads and catch 10 of 19 and 32 of 44 confirmed non-noteheads, while
+  `unladdered` cost 4 and 4 for 0 and 2 caught — the cell carries no ledger
+  detection at all, a recall gap the rule cannot see past · reversible here;
+  12 fresh crops await Sean in `benchmarks/omr-notehead-precision-2026-09/out/print/`
+  · (`claude/notehead-precision-2.4a` 5dbd0758)
