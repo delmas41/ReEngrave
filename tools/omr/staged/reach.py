@@ -268,6 +268,15 @@ STAGE_OF_FILE = {
     "evaluate.py": "EVALUATE", "consequences.py": "EVALUATE",
     "infer.py": "INFER", "inferences.py": "INFER",
     "export.py": "EXPORT",
+    # ⚠️ ROADMAP 3.1. `lilypond.py` is a SECOND RENDERER over `export.py`'s
+    # own `build()`/`_pair_arcs`/`_place_wedges` -- it calls those rather
+    # than reading any `Q.*` quantity itself (`_accessors()`'s scan of it
+    # finds no `rec.value`/`ev.observe`-shaped call at all), so registering
+    # it "EXPORT" contributes zero new sites to the wiring graph and is safe
+    # by construction. It still has to be in ONE of the two lists or
+    # `unaccounted_modules()` reports it, the same guard that caught
+    # `positions.py` on the day it landed.
+    "lilypond.py": "EXPORT",
     "pipeline.py": "HARNESS", "record.py": "HARNESS",
 }
 ORDER = ["GATHER", "ADJUDICATE", "EVALUATE", "INFER", "EXPORT", "HARNESS"]

@@ -3853,6 +3853,14 @@ def main(argv: Optional[List[str]] = None) -> int:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("staged_json", help="a `python3 -m tools.omr.staged --out` file")
     ap.add_argument("--out", default=None, help="write the MusicXML here")
+    # ⚠️ ROADMAP 3.1. `--lilypond` is a SIBLING output, not a `--format`
+    # switch: both can be requested from one `staged_json` in one call, the
+    # same way `staged/__main__.py --musicxml` already sits beside `--out`.
+    # Wired here (and NOT into `to_musicxml`/`coverage` above) because
+    # `tools.omr.staged.lilypond.to_lilypond` is a separate module reusing
+    # `build()`/`_pair_arcs`/`_place_wedges` from THIS one — importing it at
+    # module load would make `export.py` depend on its own consumer.
+    ap.add_argument("--lilypond", default=None, help="also write a .ly here")
     ap.add_argument("--coverage", default=None, help="write the report here")
     ap.add_argument("--coverage-only", action="store_true")
     args = ap.parse_args(argv)
@@ -3867,6 +3875,13 @@ def main(argv: Optional[List[str]] = None) -> int:
             print(f"wrote {args.out}", file=sys.stderr)
         else:
             print(xml)
+
+    if args.lilypond:
+        from . import lilypond as _lily
+        ly_text, ly_report = _lily.to_lilypond(result)
+        pathlib.Path(args.lilypond).write_text(ly_text)
+        print(f"wrote {args.lilypond}", file=sys.stderr)
+        _lily._report(ly_report)
 
     if args.coverage:
         pathlib.Path(args.coverage).write_text(json.dumps(report, indent=2))

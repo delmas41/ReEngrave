@@ -157,6 +157,18 @@ def staged_as_result(result: Dict[str, Any], page_index: int,
 
     space = statistics.median(spacing_vals) if spacing_vals else 1.0
     page = {
+        # ⚠️⚠️ ADDED 2026-09-22 (tools.omr.acceptance, roadmap 1.3), AND THE
+        # REASON IS THE SAME-DAY REPAIR NEXT DOOR. `score_reading._page_of`
+        # was rewritten (commit `dcdff9f2`, ~13 minutes AFTER this file was
+        # last touched at `7754d277`) to look a page up BY ITS OWN
+        # `page_index` FIELD and RAISE if none matches, replacing the old
+        # `pages[page_index]` POSITIONAL lookup this adapter's own padding
+        # comment below describes working around. A synthetic page with no
+        # `page_index` field now fails every lookup regardless of its list
+        # position — "it holds [None]" — so the field is set explicitly,
+        # which is what `legacy_as_result` below already gets for free
+        # because a real `transcribe` page dict already carries one.
+        "page_index": page_index,
         "systems": [{
             "staves": [{
                 "staff_geometry": {"line_spacing_px": space},
