@@ -13,9 +13,15 @@ what makes this a check on the FILE rather than on a copy of the number written
 here twice.
 
 ⚠️ A SECOND ASSERTION IS THE ONE WITH TEETH: the probe's claim about the domain
-is `same smufl_name` AND `different staff` AND `iou >= CONTEST_IOU`.  A test
+is `same category` AND `different staff` AND `iou > CONTEST_IOU`.  A test
 that only compared the float would pass while the gate itself moved, so the
 three conditions are asserted against the source of the gather site too.
+
+⚠️ ROADMAP 2.6 MOVED TWO OF THE THREE (2026-09-23): the class test was
+`di.smufl_name != dj.smufl_name` and the floor was 0.5.  Both now restore the
+frozen legacy reader's own predicate.  The BEHAVIOUR of the new gate is
+asserted by running the gatherer in `test_staged_contest_domain.py`; this file
+stays an AST pin on the probe's restatement and nothing more.
 """
 from __future__ import annotations
 
@@ -54,16 +60,18 @@ class TestTheProbeAgreesWithTheGatherSite(unittest.TestCase):
         self.assertEqual(_module_constant(PROBE, "CONTEST_IOU"),
                          _module_constant(GATHER, "CONTEST_IOU"))
 
-    def test_the_gate_is_still_same_class_other_staff_and_iou(self):
+    def test_the_gate_is_still_same_category_other_staff_and_iou(self):
         body = _function_source(GATHER, "gather_ownership_evidence")
         # The probe's UNREACHABLE verdict is sound only while ALL THREE hold.
         self.assertIn("gi.staff == gj.staff", body,
                       "the contest is no longer restricted to DIFFERENT staves")
-        self.assertIn("di.smufl_name != dj.smufl_name", body,
-                      "the contest no longer requires the SAME class -- the "
-                      "probe's suffix column is now part of the domain")
-        self.assertIn("_iou(bi, bj) < CONTEST_IOU", body,
-                      "the contest no longer gates on CONTEST_IOU")
+        self.assertIn("di.category != dj.category", body,
+                      "the contest no longer keys identity on the detector's "
+                      "CATEGORY -- ROADMAP 2.6 moved it there off `smufl_name`,"
+                      " which encoded the disputed quantity")
+        self.assertIn("_iou(bi, bj) <= CONTEST_IOU", body,
+                      "the contest no longer gates STRICTLY on CONTEST_IOU, "
+                      "which is how the frozen legacy reader compares it")
 
     def test_the_positive_control_can_fail(self):
         # Reading a constant that is not there must raise, or the first test
@@ -115,11 +123,15 @@ class TestTheSplitTheJoinDependsOn(unittest.TestCase):
     def setUp(self):
         self.m = _load_probe()
 
-    def test_a_suffix_only_pair_is_not_a_contest(self):
+    def test_a_suffix_only_pair_IS_a_contest_and_is_still_counted_apart(self):
+        """⚠️ THE ANSWER REVERSED ON 2026-09-23 (ROADMAP 2.6). The pair is now
+        in the domain -- `cross` -- and `suffix` is the reporting split saying
+        how it got there, not the reason it was excluded."""
         pairs = [_pair("glyph/1/0/4/7/2", "glyph/1/0/5/7/9",
                        "noteheadBlackOnLine", "noteheadBlackInSpace")]
         cross, suffix, incell = self.m.index_pairs(pairs)
-        self.assertEqual(cross, {})
+        self.assertEqual(len(cross[(1, 0, 4, 7)]), 1)
+        self.assertEqual(len(cross[(1, 0, 5, 7)]), 1)
         self.assertEqual(len(suffix[(1, 0, 4, 7)]), 1)
         self.assertEqual(len(suffix[(1, 0, 5, 7)]), 1)
         self.assertEqual(incell, {})

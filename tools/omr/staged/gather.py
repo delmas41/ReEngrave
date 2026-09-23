@@ -514,28 +514,32 @@ def gather_notehead_positions(log: Log, cells: Sequence[Any],
 
 _LEDGER_CLASS = "ledgerLine"
 
-#: Two boxes are the same ink if they overlap this much.
+#: Two boxes are the same ink if they overlap MORE than this.
 #:
-#: ⚠️⚠️ THIS RESTATES A MEASURED CONSTANT AT A DIFFERENT VALUE, AND ITS
-#: JUSTIFICATION DOES NOT EXIST. It cited `(A-OWN-3)`; `grep -rn A-OWN-3
-#: tools/ benchmarks/ docs/` returns this line and nothing else — the
-#: assumption record was never written. The same question is answered on the
-#: legacy path by `transcribe._CROSS_STAFF_DUPLICATE_IOU = 0.3`, which was
-#: SWEPT over three orchestral works at 0.25/0.3/0.4/0.5
-#: (`benchmarks/omr-orchestral-e2e/DEDUPE_THRESHOLD.md`) and is the LOWEST
-#: value costing no correctly-matched note on any of them.
+#: ⚠️⚠️ IT RESTATED A MEASURED CONSTANT AT 0.5 WITH NO ASSUMPTION RECORD, AND
+#: ROADMAP 2.6 PUT IT BACK. It cited `(A-OWN-3)`; `grep -rn A-OWN-3 tools/
+#: benchmarks/ docs/` returned that line and nothing else. The same question is
+#: answered on the legacy path — FROZEN, and the reference reader — by
+#: `transcribe._CROSS_STAFF_DUPLICATE_IOU = 0.3`, SWEPT over three orchestral
+#: works at 0.25/0.3/0.4/0.5 (`benchmarks/omr-orchestral-e2e/
+#: DEDUPE_THRESHOLD.md`) and the LOWEST value costing no correctly-matched note
+#: on any of them. The comparison is STRICT (`> CONTEST_IOU`) for the same
+#: reason the value is 0.3: it is the legacy predicate, restored, not a new one.
 #:
-#: ⚠️ 0.5 therefore leaves a band of real cross-staff duplicates UNCONTESTED:
-#: measured on the committed Litolff Beethoven 5 p1-4 record, 134 of 636
-#: overlapping cross-staff groups carry no `Q.GLYPH_OWNER` verdict at all, so
-#: both copies are written with the ownership question never asked.
+#: ⚠️ WHAT 0.5 COST, measured to the glyph before the change
+#: (`benchmarks/omr-infer-duration-print-2026-09/FINDINGS.md` §10): of the 161
+#: near-neighbour noteheads on Litolff pp.1-4 that reached no contest at all,
+#: 69 had a same-name twin overlapping on the near staff and 50 of those sat
+#: ABOVE 0.3. Also measured earlier: 134 of 636 overlapping cross-staff groups
+#: on the same record carried no `Q.GLYPH_OWNER` verdict at all, so both copies
+#: were written with the ownership question never asked.
 #:
-#: ⚠️ IT IS DELIBERATELY LEFT AT 0.5 HERE. Importing the measured 0.3 is a
-#: GATHER change — `readjudicate` and `reexport_arm` are both structurally
-#: blind to it — so it needs two full re-gathers to price, and shipping it
-#: unpriced is the thing this project does not do. Ranked, with the recipe, in
-#: `benchmarks/omr-staged-dedupe-2026-09/FINDINGS.md` §6.
-CONTEST_IOU = 0.5
+#: ⚠️ IT MUST NOT GO BELOW 0.3. The sweep measured 0.25 merging genuinely
+#: distinct neighbours, and it drops three correctly-matched notes on Brahms.
+#: A clipped copy at IoU 0.1 is not a contest anyone can win, and a
+#: clipping-tolerant overlap measure would be a new rule with no measurement
+#: behind it.
+CONTEST_IOU = 0.3
 
 #: Expected ledger rungs between a notehead and its staff.
 #: ⚠️ `+ 0.25` before truncation is NOT a fudge: a note sitting ON the first
@@ -632,7 +636,32 @@ def gather_ownership_evidence(log: Log, pws: Any, cells: Sequence[Any],
     if not placed:
         return
 
-    # contests: same class, different STAFF, same system, overlapping ink
+    # contests: same CATEGORY, different STAFF, same system, overlapping ink
+    #
+    # ⚠️⚠️ THE CLASS TEST READS `category`, NOT `smufl_name`, AND THAT IS
+    # ROADMAP 2.6. `…OnLine` / `…InSpace` is the head's position RELATIVE TO A
+    # STAFF -- the exact quantity a cross-staff contest exists to arbitrate --
+    # so keying the identity test on the smufl NAME let one piece of ink be
+    # ruled "not the same thing as itself" because the two cells disagreed
+    # about the very fact in dispute. Measured on Litolff pp.1-4
+    # (`benchmarks/omr-infer-duration-print-2026-09/FINDINGS.md` §10): the name
+    # test rejected 83 of the 161 never-contested near-neighbour noteheads, 38
+    # of them the SAME head spelled two ways.
+    #
+    # ⚠️ IT CONNECTS, IT DOES NOT GUESS. `category` is already on every
+    # `Q.GLYPH_BOX` row (`box_detail["category"] = d.category`, above) and this
+    # is exactly the frozen reference reader's own predicate
+    # (`transcribe._dedupe_cross_staff_detections`: `di["category"] !=
+    # dj["category"]` and `IoU > 0.3`). The WINNER is still decided by
+    # ladder -> range -> distance in `adjudicate_glyph_owner`, untouched.
+    #
+    # ⚠️ IT DOES NOT SETTLE THE HEAD TYPE. Two twins may be `noteheadBlack…`
+    # and `noteheadHalf…`; both are `category="notehead"`, so the pair now
+    # contests where it did not. The loser's row STAYS on the record -- export
+    # refuses it, it is never deleted -- and `adjudicate_duration` reads
+    # `Q.NOTEHEAD_CLASS` on the WINNER'S OWN subject (`rhythm._head_class`), so
+    # the surviving duration is the reader's own reading of the surviving
+    # detection and never the loser's type inherited in silence.
     by_system: Dict[Tuple[int, int], List[int]] = {}
     for i, (g, _b, _d) in enumerate(placed):
         by_system.setdefault((g.page, g.system), []).append(i)
@@ -646,9 +675,9 @@ def gather_ownership_evidence(log: Log, pws: Any, cells: Sequence[Any],
                 gj, bj, dj = placed[j]
                 if gi.staff == gj.staff:
                     continue
-                if di.smufl_name != dj.smufl_name:
+                if di.category != dj.category:
                     continue
-                if _iou(bi, bj) < CONTEST_IOU:
+                if _iou(bi, bj) <= CONTEST_IOU:
                     continue
                 contests.setdefault(i, set()).add(gj.at(R.Kind.STAFF).to_key())
                 contests.setdefault(j, set()).add(gi.at(R.Kind.STAFF).to_key())

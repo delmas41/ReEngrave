@@ -1,0 +1,398 @@
+{
+  "crops": [
+    {
+      "n": 1,
+      "file": "litolff-p1-p4-01.png",
+      "subject": "glyph/2/0/4/5/0",
+      "class": "noteheadHalfInSpace",
+      "detector_conf": 0.614,
+      "record_says_it_belongs_to": "staff/2/0/3",
+      "detected_in_the_cell_of": "staff/2/0/4",
+      "reason": "distance",
+      "frame_contrast": 71.42,
+      "page_box": [
+        1239.6,
+        912.0,
+        1263.7,
+        924.3
+      ],
+      "VERDICT_none_yet": null
+    },
+    {
+      "n": 2,
+      "file": "litolff-p1-p4-02.png",
+      "subject": "glyph/3/0/1/7/6",
+      "class": "noteheadBlackOnLine",
+      "detector_conf": 0.261,
+      "record_says_it_belongs_to": "staff/3/0/2",
+      "detected_in_the_cell_of": "staff/3/0/1",
+      "reason": "distance",
+      "frame_contrast": 132.58,
+      "page_box": [
+        1716.0,
+        714.9,
+        1735.9,
+        722.0
+      ],
+      "VERDICT_none_yet": null
+    },
+    {
+      "n": 5,
+      "file": "litolff-p1-p4-05.png",
+      "subject": "glyph/4/1/0/13/7",
+      "class": "noteheadBlackInSpace",
+      "detector_conf": 0.641,
+      "record_says_it_belongs_to": "staff/4/1/1",
+      "detected_in_the_cell_of": "staff/4/1/0",
+      "reason": "distance",
+      "frame_contrast": 175.47,
+      "page_box": [
+        2402.0,
+        2275.2,
+        2423.7,
+        2299.5
+      ],
+      "VERDICT_none_yet": null
+    },
+    {
+      "n": 6,
+      "file": "litolff-p1-p4-06.png",
+      "subject": "glyph/3/0/7/2/2",
+      "class": "noteheadBlackInSpace",
+      "detector_conf": 0.848,
+      "record_says_it_belongs_to": "staff/3/0/7",
+      "detected_in_the_cell_of": "staff/3/0/7",
+      "reason": "distance",
+      "frame_contrast": 184.67,
+      "page_box": [
+        895.5,
+        1569.0,
+        916.5,
+        1591.9
+      ],
+      "VERDICT_none_yet": null
+    },
+    {
+      "n": 7,
+      "file": "litolff-p1-p4-07.png",
+      "subject": "glyph/1/0/9/9/6",
+      "class": "noteheadWholeOnLine",
+      "detector_conf": 0.458,
+      "record_says_it_belongs_to": "staff/1/0/10",
+      "detected_in_the_cell_of": "staff/1/0/9",
+      "reason": "distance",
+      "frame_contrast": 201.98,
+      "page_box": [
+        1800.9,
+        2885.8,
+        1822.6,
+        2894.9
+      ],
+      "VERDICT_none_yet": null
+    },
+    {
+      "n": 8,
+      "file": "litolff-p1-p4-08.png",
+      "subject": "glyph/4/1/2/7/0",
+      "class": "noteheadBlackInSpace",
+      "detector_conf": 0.863,
+      "record_says_it_belongs_to": "staff/4/1/3",
+      "detected_in_the_cell_of": "staff/4/1/2",
+      "reason": "distance",
+      "frame_contrast": 121.16,
+      "page_box": [
+        1536.7,
+        2561.9,
+        1558.2,
+        2577.0
+      ],
+      "VERDICT_none_yet": null
+    },
+    {
+      "n": 9,
+      "file": "litolff-p1-p4-09.png",
+      "subject": "glyph/4/1/2/9/1",
+      "class": "noteheadBlackOnLine",
+      "detector_conf": 0.798,
+      "record_says_it_belongs_to": "staff/4/1/3",
+      "detected_in_the_cell_of": "staff/4/1/2",
+      "reason": "distance",
+      "frame_contrast": 121.16,
+      "page_box": [
+        1793.6,
+        2548.2,
+        1818.8,
+        2568.3
+      ],
+      "VERDICT_none_yet": null
+    },
+    {
+      "n": 11,
+      "file": "litolff-p1-p4-11.png",
+      "subject": "glyph/3/0/9/2/5",
+      "class": "noteheadBlackInSpace",
+      "detector_conf": 0.792,
+      "record_says_it_belongs_to": "staff/3/0/9",
+      "detected_in_the_cell_of": "staff/3/0/9",
+      "reason": "distance",
+      "frame_contrast": 152.51,
+      "page_box": [
+        955.7,
+        1882.8,
+        977.0,
+        1904.7
+      ],
+      "VERDICT_none_yet": null
+    },
+    {
+      "n": 15,
+      "file": "litolff-p1-p4-15.png",
+      "subject": "glyph/4/1/0/5/9",
+      "class": "noteheadBlackInSpace",
+      "detector_conf": 0.284,
+      "record_says_it_belongs_to": "staff/4/1/1",
+      "detected_in_the_cell_of": "staff/4/1/0",
+      "reason": "distance",
+      "frame_contrast": 175.47,
+      "page_box": [
+        1208.5,
+        2281.5,
+        1237.8,
+        2302.9
+      ],
+      "VERDICT_none_yet": null
+    },
+    {
+      "n": 16,
+      "file": "litolff-p1-p4-16.png",
+      "subject": "glyph/4/1/2/5/16",
+      "class": "noteheadBlackInSpace",
+      "detector_conf": 0.345,
+      "record_says_it_belongs_to": "staff/4/1/3",
+      "detected_in_the_cell_of": "staff/4/1/2",
+      "reason": "distance",
+      "frame_contrast": 121.16,
+      "page_box": [
+        1210.4,
+        2560.3,
+        1235.4,
+        2577.0
+      ],
+      "VERDICT_none_yet": null
+    },
+    {
+      "n": 18,
+      "file": "litolff-p1-p4-18.png",
+      "subject": "glyph/2/0/3/5/1",
+      "class": "noteheadHalfInSpace",
+      "detector_conf": 0.592,
+      "record_says_it_belongs_to": "staff/2/0/3",
+      "detected_in_the_cell_of": "staff/2/0/3",
+      "reason": "distance",
+      "frame_contrast": 71.42,
+      "page_box": [
+        1239.1,
+        901.4,
+        1264.8,
+        923.9
+      ],
+      "VERDICT_none_yet": null
+    },
+    {
+      "n": 19,
+      "file": "litolff-p1-p4-19.png",
+      "subject": "glyph/2/0/3/1/4",
+      "class": "noteheadBlackOnLine",
+      "detector_conf": 0.713,
+      "record_says_it_belongs_to": "staff/2/0/2",
+      "detected_in_the_cell_of": "staff/2/0/3",
+      "reason": "distance",
+      "frame_contrast": 117.47,
+      "page_box": [
+        705.7,
+        742.0,
+        730.6,
+        762.9
+      ],
+      "VERDICT_none_yet": null
+    },
+    {
+      "n": 20,
+      "file": "litolff-p1-p4-20.png",
+      "subject": "glyph/4/1/2/12/15",
+      "class": "noteheadBlackInSpace",
+      "detector_conf": 0.393,
+      "record_says_it_belongs_to": "staff/4/1/3",
+      "detected_in_the_cell_of": "staff/4/1/2",
+      "reason": "distance",
+      "frame_contrast": 121.16,
+      "page_box": [
+        2260.5,
+        2552.0,
+        2285.7,
+        2576.4
+      ],
+      "VERDICT_none_yet": null
+    },
+    {
+      "n": 21,
+      "file": "litolff-p1-p4-21.png",
+      "subject": "glyph/4/0/9/3/1",
+      "class": "noteheadBlackOnLine",
+      "detector_conf": 0.857,
+      "record_says_it_belongs_to": "staff/4/0/9",
+      "detected_in_the_cell_of": "staff/4/0/9",
+      "reason": "distance",
+      "frame_contrast": 122.86,
+      "page_box": [
+        910.1,
+        1730.0,
+        934.0,
+        1751.1
+      ],
+      "VERDICT_none_yet": null
+    },
+    {
+      "n": 24,
+      "file": "litolff-p1-p4-24.png",
+      "subject": "glyph/3/0/9/2/6",
+      "class": "noteheadBlackInSpace",
+      "detector_conf": 0.789,
+      "record_says_it_belongs_to": "staff/3/0/8",
+      "detected_in_the_cell_of": "staff/3/0/9",
+      "reason": "distance",
+      "frame_contrast": 175.55,
+      "page_box": [
+        897.1,
+        1737.0,
+        919.4,
+        1747.4
+      ],
+      "VERDICT_none_yet": null
+    },
+    {
+      "n": 25,
+      "file": "litolff-p1-p4-25.png",
+      "subject": "glyph/4/1/0/5/3",
+      "class": "noteheadBlackOnLine",
+      "detector_conf": 0.562,
+      "record_says_it_belongs_to": "staff/4/1/1",
+      "detected_in_the_cell_of": "staff/4/1/0",
+      "reason": "distance",
+      "frame_contrast": 175.47,
+      "page_box": [
+        1207.2,
+        2281.8,
+        1237.0,
+        2301.7
+      ],
+      "VERDICT_none_yet": null
+    },
+    {
+      "n": 26,
+      "file": "litolff-p1-p4-26.png",
+      "subject": "glyph/2/1/1/3/0",
+      "class": "noteheadBlackInSpace",
+      "detector_conf": 0.846,
+      "record_says_it_belongs_to": "staff/2/1/1",
+      "detected_in_the_cell_of": "staff/2/1/1",
+      "reason": "distance",
+      "frame_contrast": 196.58,
+      "page_box": [
+        903.9,
+        2258.9,
+        927.4,
+        2281.0
+      ],
+      "VERDICT_none_yet": null
+    },
+    {
+      "n": 28,
+      "file": "litolff-p1-p4-28.png",
+      "subject": "glyph/2/0/8/15/2",
+      "class": "noteheadBlackOnLine",
+      "detector_conf": 0.844,
+      "record_says_it_belongs_to": "staff/2/0/8",
+      "detected_in_the_cell_of": "staff/2/0/8",
+      "reason": "ladder",
+      "frame_contrast": 186.02,
+      "page_box": [
+        2497.6,
+        1655.6,
+        2522.3,
+        1677.5
+      ],
+      "VERDICT_none_yet": null
+    },
+    {
+      "n": 29,
+      "file": "litolff-p1-p4-29.png",
+      "subject": "glyph/4/1/3/4/3",
+      "class": "noteheadBlackOnLine",
+      "detector_conf": 0.609,
+      "record_says_it_belongs_to": "staff/4/1/3",
+      "detected_in_the_cell_of": "staff/4/1/3",
+      "reason": "distance",
+      "frame_contrast": 121.16,
+      "page_box": [
+        1043.4,
+        2637.1,
+        1059.7,
+        2652.2
+      ],
+      "VERDICT_none_yet": null
+    }
+  ],
+  "refused": [
+    {
+      "subject": "glyph/4/0/5/10/2",
+      "why": "FRAME CONTROL FAILED",
+      "contrast": -78.91
+    },
+    {
+      "subject": "glyph/2/1/6/10/4",
+      "why": "FRAME CONTROL FAILED",
+      "contrast": 5.0
+    },
+    {
+      "subject": "glyph/4/0/5/1/4",
+      "why": "FRAME CONTROL FAILED",
+      "contrast": -78.91
+    },
+    {
+      "subject": "glyph/4/0/5/8/6",
+      "why": "FRAME CONTROL FAILED",
+      "contrast": -78.91
+    },
+    {
+      "subject": "glyph/4/0/2/3/3",
+      "why": "FRAME CONTROL FAILED",
+      "contrast": -32.48
+    },
+    {
+      "subject": "glyph/2/1/7/7/3",
+      "why": "FRAME CONTROL FAILED",
+      "contrast": 5.0
+    },
+    {
+      "subject": "glyph/4/0/3/4/0",
+      "why": "FRAME CONTROL FAILED",
+      "contrast": -32.48
+    },
+    {
+      "subject": "glyph/4/0/4/1/5",
+      "why": "FRAME CONTROL FAILED",
+      "contrast": -78.91
+    },
+    {
+      "subject": "glyph/4/0/5/6/2",
+      "why": "FRAME CONTROL FAILED",
+      "contrast": -78.91
+    },
+    {
+      "subject": "glyph/2/1/7/11/6",
+      "why": "FRAME CONTROL FAILED",
+      "contrast": 5.0
+    }
+  ]
+}

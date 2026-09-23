@@ -716,8 +716,11 @@ def is_relocated_copy(subject: Union[Subject, str],
 
     ⚠️⚠️ WHY THAT MEANS "DROP IT" AND NOT "MOVE IT", WHICH IS THE WHOLE POINT.
     `adjudicate_glyph_owner` declares `subjects_from=Q.GLYPH_BAND_DISTANCE`,
-    and `gather_contested_glyphs` files a band-distance row ONLY for a glyph
-    that overlaps a SAME-CLASS glyph on ANOTHER staff. So a glyph with an
+    and `gather_ownership_evidence` files a band-distance row ONLY for a glyph
+    that overlaps a SAME-CATEGORY glyph on ANOTHER staff (ROADMAP 2.6 moved
+    that test from `smufl_name` to `category`, which is the frozen legacy
+    predicate; it WIDENS the contested population and does not change this
+    argument, because a twin is still there by construction). So a glyph with an
     ownership verdict naming a different staff has a TWIN on that staff BY
     CONSTRUCTION -- the contest is built from the pair. Relocating the copy
     therefore puts a second element on a staff that already holds one; it can
