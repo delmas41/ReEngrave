@@ -44,10 +44,11 @@ def _rule(fn, **kw):
     kw.setdefault("sideways", True)
     kw.setdefault("why_witnesses_are_independent", "the test says so")
     # ⚠️ A ONE-OFF RULE IS ALWAYS ON. `run()` honours each rule's own switch
-    # since 2026-09-21, and the default switch is `OMR_INFER` (default OFF) --
-    # so without this every test here would silently install a rule that
-    # never fires and then assert on its absence of output, which is the
-    # purest form of *a test named for a hazard it does not reach*. The switch
+    # since 2026-09-21, and while the default switch is `OMR_INFER` (default
+    # ON since 2026-09-23, roadmap 2.3) a test process's environment is not
+    # controlled -- so without this every test here would depend on whatever
+    # `OMR_INFER` happens to be set to outside the test, which is the purest
+    # form of *a test named for a hazard it does not reach*. The switch
     # mechanism itself is covered by `TestRunHonoursEachRulesOwnGate`, which
     # is what stops this default from taking the coverage with it.
     kw.setdefault("switch", infer.Switch("OMR_TEST_ALWAYS_ON", lambda: True))
@@ -78,23 +79,31 @@ def _frozen_log():
 
 
 class TestTheFlag(unittest.TestCase):
-    """⚠️ Default OFF, so the test is an ALLOW-list. A default-OFF flag
-    written as a deny-list is switched ON by a typo -- and this stage's whole
-    job is putting values in the file that nobody read."""
+    """⚠️ Default ON since 2026-09-23 (roadmap 2.3, Sean's decision -- three
+    subjects checked against the print, all three corrected by wiring
+    `Q.GLYPH_OWNER` in; see
+    `benchmarks/omr-infer-duration-print-2026-09/FINDINGS.md` §7-§9 and
+    `benchmarks/omr-infer-default-2026-09/FINDINGS.md`), so the test is a
+    DENY-list. A default-ON flag written as an allow-list is switched OFF by
+    a typo -- `OMR_INFER=` or `OMR_INFER=yess` would silently turn a shipped
+    stage back into the bypass it used to be."""
 
-    def test_off_by_default(self):
+    def test_on_by_default(self):
         with mock.patch.dict(os.environ, {}, clear=True):
-            self.assertFalse(infer.infer_enabled())
+            self.assertTrue(infer.infer_enabled())
 
-    def test_a_typo_does_not_switch_it_on(self):
-        for bad in ("", "yess", "ON!", "0", "no", "maybe"):
+    def test_a_typo_does_not_switch_it_off(self):
+        for bad in ("1", "yess", "ON!", "true", "maybe", "TRUE"):
             with mock.patch.dict(os.environ, {infer.INFER_ENV: bad}):
-                self.assertFalse(infer.infer_enabled(), bad)
+                self.assertTrue(infer.infer_enabled(), bad)
 
-    def test_the_on_words_work(self):
-        for good in ("1", "true", "YES", "on"):
+    def test_the_off_words_work(self):
+        """⚠️ THE POSITIVE CONTROL. Without this, the deny-list above could
+        be `lambda: True` unconditionally and every test in this class would
+        still pass -- a flag that can never fail is not a flag."""
+        for good in ("0", "", "false", "NO", "off"):
             with mock.patch.dict(os.environ, {infer.INFER_ENV: good}):
-                self.assertTrue(infer.infer_enabled(), good)
+                self.assertFalse(infer.infer_enabled(), good)
 
 
 class TestRule1ItMayNotRunBeforeEvaluate(unittest.TestCase):
@@ -470,9 +479,11 @@ class TestRunHonoursEachRulesOwnGate(unittest.TestCase):
 
 
 class TestTheTwoDefaultsAreSeparate(unittest.TestCase):
-    """⚠️⚠️ THE POINT OF THE WHOLE CHANGE: the print-verified rule is on and
-    the two rules with no crop between them are off, and flipping either does
-    not flip the other."""
+    """⚠️⚠️ THE POINT OF THE WHOLE CHANGE: the two flags are independent
+    dials, and flipping either does not flip the other -- true whether both
+    default ON (as of 2026-09-23) or, as originally shipped 2026-09-21, only
+    the slot rule did. The tests below still force each flag explicitly, so
+    they assert the independence rather than either flag's own default."""
 
     def _on(self, env):
         with mock.patch.dict(os.environ, env, clear=False):

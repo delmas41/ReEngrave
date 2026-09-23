@@ -46,12 +46,15 @@ from .test_staged_pipeline import FakeDetector, build_page
 def _all_off():
     """Every rule's flag, set to that flag's own OFF word.
 
-    ⚠️ DERIVED FROM THE REGISTRY, never a hand list. `OMR_INFER` is an
-    allow-list (default OFF) and `OMR_SLOT_FAMILY_BLOCK` a deny-list
-    (default ON), so "off" is a different STRING for each -- and the one
-    thing a hand list here would do is silently stop covering the next rule.
-    `"0"` is an off-word under both directions, which is what makes one
-    literal correct for every switch; asserted rather than assumed.
+    ⚠️ DERIVED FROM THE REGISTRY, never a hand list. Both `OMR_INFER` and
+    `OMR_SLOT_FAMILY_BLOCK` are deny-lists (both default ON, as of
+    2026-09-23 -- `OMR_INFER` used to be an allow-list for a default-OFF
+    flag, before roadmap 2.3's flip), so "off" happens to be the same word
+    for both today -- but this stays derived rather than hand-listed because
+    a hand list here would silently stop covering the next rule, whatever
+    its own direction turns out to be. `"0"` is an off-word under either
+    direction, which is what makes one literal correct for every switch;
+    asserted rather than assumed.
     """
     infer._ensure_rules()
     env = {}

@@ -249,3 +249,147 @@ tools/omr/staged/adjudicators/clef.py the supplied clef, GAPS ONLY
 benchmarks/omr-unnamed-block-slot-2026-09/flip_arm.py
 benchmarks/omr-infer-default-2026-09/mutate.py
 ```
+
+---
+
+## 7. 2026-09-23 — `OMR_INFER` itself flipped to default ON (roadmap 2.3)
+
+**The decision, stated exactly.** Sean, 2026-09-23, roadmap item 2.3: the two
+duration rules (`collapse_duration_by_column`, `collapse_duration_to_barline`)
+move from `OMR_INFER` default OFF to default ON.
+
+⚠️⚠️ **THIS CLOSES A QUESTION `benchmarks/omr-infer-duration-print-2026-09/
+FINDINGS.md` LEFT EXPLICITLY OPEN, AND THAT IS RECORDED HERE RATHER THAN
+SMOOTHED OVER.** That file's own closing line (§9, "What this still does not
+settle") reads: *"Both rules remain default OFF and this does not change
+that... 2.3's default decision is still open."* This section is the decision
+that closes it, taken by Sean on the evidence that file accumulated same-day:
+three subjects checked against the print (§7, §8), all three found WRONG
+under the reads that omitted `Q.GLYPH_OWNER`, the omission fixed and
+re-measured (§9: 16 inferences → 13, three dropped, zero surviving values
+changed), and confirmed that EXPORT never shared the same blind spot (§9b).
+No fourth subject has been checked since. The remaining thirteen inferences
+that fix measured are still unverified against a print one at a time — the
+decision to ship is Sean's, not a claim that this pass discharged that
+burden.
+
+### The flip
+
+`infer_enabled()` (`tools/omr/staged/infer.py`) changes from an allow-list on
+a default of `"0"` to a deny-list on a default of `"1"` — the same direction
+flip `OMR_SLOT_FAMILY_BLOCK` took on 2026-09-21, now true of both flags in
+this file. `test_flag_default_direction.py`'s AST scan confirms the new
+predicate is a deny-list for a default-ON flag (source, not asserted here).
+`test_infer_stage.py::TestTheFlag` is rewritten the same way `_all_off`'s
+docstring in `test_infer_bypass.py` already anticipated for a future flip:
+`test_on_by_default`, `test_a_typo_does_not_switch_it_off`, and — the
+positive control, without which the deny-list predicate could be replaced by
+`lambda: True` and every test in the class would still pass —
+`test_the_off_words_work`, asserting `OMR_INFER=0` (among other off-words)
+actually reads OFF.
+
+### Gate, same tree as the flip
+
+`pytest -m "not slow"`: **2,823 passed, 3 skipped, 0 failed** — identical to
+the print-check pass in `omr-infer-duration-print-2026-09/FINDINGS.md` §9,
+confirming the flip touched no other behaviour.
+`python3 -m tools.omr.staged.check`: **255 open, status ok** — unchanged
+from the baseline recorded throughout this month's sessions (exit 1, not 2:
+findings open but nothing broken).
+
+### Measured, base (`OMR_INFER=0`) vs arm (`OMR_INFER=1`), each on ONE tree
+
+Both documents replayed from their committed whole-movement shared records
+via `benchmarks/omr-infer-stage-2026-09/reinfer.py`'s `rebuild()` (id-exact
+replay of every observation, abstention and verdict), INFER re-run over two
+INDEPENDENT rebuilds per document so the two arms cannot contaminate each
+other, each arm exported with `tools.omr.staged.export.to_musicxml`. The
+control (replay reproduces the saved record before any arm runs) is reported
+first and is not a courtesy — a rebuild that does not reproduce the record
+would make every number below a measurement of the harness, not the flag.
+
+**Litolff** (`beethoven5-litolff-mvt1-whole-20260923.record.json`, 16 pages,
+commit `dbc9962b`, dirty tree):
+
+- control: **101,361 of 101,361 verdicts reproduced, 0 differ**
+
+| | OFF | ON |
+|---|--:|--:|
+| `collapse_duration_by_column` | 0 | **20** |
+| `collapse_duration_to_barline` | 0 | **49** |
+| total inferences | 0 | **69** |
+| `<note>` elements written | 12,375 | **12,424** (+49) |
+| `duration_narrowed` refusals | 1,376 | **1,321** (−55) |
+| `notes_not_written_total` | 4,170 | **4,115** (−55) |
+| `status_census` balanced / unaccounted | true / [] | true / [] |
+| wall time — rebuild / INFER / export | 10.6s / **1.4s** / 1.3s | 11.3s / **10.6s** / 1.4s |
+
+**Brahms/Breitkopf** (`brahms1-breitkopf-mvt1-whole-20260923.record.json`, 27
+pages, commit `47fbff1e`, dirty tree):
+
+- control: **238,473 of 238,473 verdicts reproduced, 0 differ**
+
+| | OFF | ON |
+|---|--:|--:|
+| `collapse_duration_by_column` | 0 | **174** |
+| `collapse_duration_to_barline` | 0 | **113** |
+| total inferences | 0 | **287** |
+| `<note>` elements written | 22,922 | **23,145** (+223) |
+| `duration_narrowed` refusals | 3,583 | **3,339** (−244) |
+| `notes_not_written_total` | 11,207 | **10,976** (−231) |
+| `status_census` balanced / unaccounted | true / [] | true / [] |
+| wall time — rebuild / INFER / export | 28.4s / **3.4s** / 3.4s | 28.5s / **20.8s** / 3.6s |
+
+⚠️ **The OFF arm made zero inferences on both documents and the ON arm's own
+INFER wall time is 6–7× the OFF arm's** (Litolff 1.4s → 10.6s; Brahms 3.4s →
+20.8s), scaling with document size in both arms — the tell this project's own
+convention asks for (§6b, CLAUDE.md): a cached no-op reports as identical
+numbers AND identical wall time, and neither happened here.
+
+⚠️⚠️ **THE FUNNEL INVERTS BETWEEN THE TWO PLATES, REPRODUCING THE STANDING
+CAVEAT ABOUT THIS PAIR OF DOCUMENTS RATHER THAN A NEW RESULT.** On Litolff
+`collapse_duration_to_barline` supplies 71% of the inferences (49 of 69); on
+Breitkopf `collapse_duration_by_column` supplies 61% (174 of 287). CLAUDE.md
+already records *"Litolff MERGES and Breitkopf SHATTERS"* as a property of
+the two plates' ink, not of either rule — this is that property showing up
+again, one level up the pipeline, in which of two structurally identical
+rules a document's own bar layout hands more work to. Neither rule dominates
+universally; a document with columns that corroborate cleanly favours
+`by_column`, a document whose narrowed notes more often run uncontested to
+the barline favours `to_barline`. **Not evidence either rule is wrong on
+either document** — both populations remain print-checked at n = 3, all on
+Litolff, none on Breitkopf.
+
+### What this pass does NOT establish (unchanged from §9's own list, widened)
+
+- **No new print check.** Zero additional subjects were read against a page
+  in this pass; the print evidence behind the flip is entirely the three
+  subjects `omr-infer-duration-print-2026-09/FINDINGS.md` already recorded.
+  **Breitkopf has zero subjects checked against its own print** — the 287
+  inferences above are unverified in the direction that matters, on the
+  document whose funnel differs most from the one that was checked.
+- **musicdiff / OMR-NED was not run.** This measures the record and the file
+  the record produces, not agreement with an outside encoding. CLAUDE.md's
+  standing warning about OMR-NED (§6b) — it is symmetric and rewards fewer
+  symbols, and pitch errors are structurally invisible to it under
+  `AllObjects` — applies with full force to any future attempt to quote it
+  as evidence for or against this flip.
+- **A GATHER or ADJUDICATE change is invisible to this instrument.**
+  `reinfer.rebuild()` replays a FIXED gather and a FIXED adjudication;
+  answering "did GATHER change what INFER sees" needs two full re-gathers,
+  which this session did not run (CLAUDE.md: do not run a gather).
+- **n = 2 documents, 2 publishers, both already in the acceptance set.** No
+  third plate, no third publisher, corroborates or refutes the funnel
+  inversion above.
+
+### Files
+
+```
+tools/omr/staged/infer.py                              INFER_ENV predicate flipped
+tools/omr/staged/inferences.py                          comment at the slot rule's own gate
+tools/omr/tests/test_infer_stage.py                     TestTheFlag rewritten deny-list
+tools/omr/tests/test_infer_bypass.py                    _all_off docstring
+tools/omr/tests/test_infer_barline_rule.py              _run docstring
+docs/flags-2026-09.md                                   both OMR_INFER rows
+benchmarks/omr-infer-stage-2026-09/reinfer.py            reused unmodified
+```

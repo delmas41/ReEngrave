@@ -105,14 +105,20 @@ class _Builder:
 
 
 def _run(log):
-    """⚠️ THE DURATION RULES ARE DEFAULT-OFF SINCE 2026-09-21 AND THIS FILE
-    MUST TURN THEM ON. Every rule now carries its own switch: the slot-index
-    rule ships ON (25 of 25 against the print) while BOTH duration rules stay
-    behind `OMR_INFER`, because neither has had a note checked against a page.
-    `infer.run()` honours each switch, so without this the seven tests below
-    exercised a stage that skipped the very rules they are named for --
-    *a test named for a hazard it does not reach*, arriving by a default
-    change rather than by a bad fixture.
+    """⚠️ THIS FILE FORCES `OMR_INFER=1` RATHER THAN TRUSTING THE DEFAULT,
+    EVEN THOUGH THE DEFAULT IS NOW ON TOO (roadmap 2.3, 2026-09-23). A test
+    process's environment is not controlled, so a test that relies on the
+    ambient default is a test that can pass or fail depending on what ran
+    before it -- the explicit set is what makes the seven tests below exercise
+    the barline rule regardless. Every rule carries its own switch: the
+    slot-index rule ships ON (25 of 25 against the print), and both duration
+    rules now ship ON too (three subjects checked against the print, all
+    three corrected by the `Q.GLYPH_OWNER` fix -- see
+    `benchmarks/omr-infer-duration-print-2026-09/FINDINGS.md` §7-§9).
+    `infer.run()` honours each switch, so without the explicit set here a
+    change to the ambient environment could make these tests exercise a
+    stage that skipped the very rules they are named for -- *a test named
+    for a hazard it does not reach*.
 
     ⚠️ The assertion is the part that matters: it fails LOUDLY if the rule
     under test is ever skipped again, instead of the tests quietly asserting

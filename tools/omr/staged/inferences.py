@@ -793,12 +793,16 @@ def _clef_read_on(log: Log, staff: Subject) -> Tuple[Optional[str], Tuple[str, .
 @rule(
     inference=Inference.COLLAPSE_SLOT_INDEX_TO_FAMILY_BLOCK,
     # ⚠️⚠️ ITS OWN FLAG, DEFAULT ON -- the one rule in this stage that has
-    # been put to the PRINT. 25 of 25 placements correct, ZERO grafts,
-    # `staff_not_identified` 783 -> 141, 562 pitched notes joining the parts
-    # they belong to rather than inventing any. The two duration rules below
-    # keep `OMR_INFER` (default OFF) because neither has had a single note
-    # checked against a page, and bundling them would make one flag two
-    # decisions of very different evidential weight.
+    # been put to the PRINT most thoroughly. 25 of 25 placements correct,
+    # ZERO grafts, `staff_not_identified` 783 -> 141, 562 pitched notes
+    # joining the parts they belong to rather than inventing any. The two
+    # duration rules below now default ON too (`OMR_INFER`, Sean 2026-09-23,
+    # roadmap 2.3 -- three subjects checked against the print, all three
+    # corrected by the `Q.GLYPH_OWNER` fix; see
+    # `benchmarks/omr-infer-duration-print-2026-09/FINDINGS.md` §7-§9). They
+    # keep their OWN flag rather than sharing this one, because bundling
+    # would make one flag two decisions of unequal evidential weight, and
+    # the same reasoning that separated them in the first place stands.
     switch=FAMILY_BLOCK_SWITCH,
     target=Q.SLOT_INDEX,
     # ⚠️ `Q.CLEF` IS NOT HERE AND MUST NOT BE. The raw glyph is a reading of

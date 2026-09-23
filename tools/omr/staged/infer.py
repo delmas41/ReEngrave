@@ -87,12 +87,13 @@ readings).
     nothing.
 
 ─────────────────────────────────────────────────────────────────────────────
-⚠️ BYPASS. Default OFF, and off means ABSENT rather than quiet: `pipeline`
-adds no `inference` key when the stage did not run, so a record from a tree
-carrying this module is byte-identical to one from a tree without it. That is
-asserted by `test_infer_bypass.py` rather than asserted here -- an earlier
-stage's arm (`readjudicate`, `reexport_arm`) must never have to know this
-stage exists.
+⚠️ BYPASS. Default ON since 2026-09-23 (roadmap 2.3, Sean's decision -- see
+`docs/flags-2026-09.md`), and an explicit OFF still means ABSENT rather than
+quiet: `pipeline` adds no `inference` key when the stage did not run, so a
+record made with `OMR_INFER=0` is byte-identical to one from a tree without
+this module. That is asserted by `test_infer_bypass.py` rather than asserted
+here -- an earlier stage's arm (`readjudicate`, `reexport_arm`) must never
+have to know this stage exists.
 """
 
 from __future__ import annotations
@@ -111,41 +112,46 @@ from .record import Kind, Log, Outcome, Q, Subject, Verdict
 
 INFER_ENV = "OMR_INFER"
 
-#: ⚠️ AN ALLOW-LIST, BECAUSE THE DEFAULT IS OFF, and the direction has to
-#: follow the default. A default-OFF flag written as a deny-list is switched
-#: ON by a typo -- `OMR_INFER=` or `OMR_INFER=nope` would enable a stage whose
-#: whole job is to put values in the file that nobody read. Five shipped flags
-#: had this backwards; `tools/omr/tests/test_flag_default_direction.py`
-#: derives the rule from the source and will fail on a mistake here.
-_ON_WORDS = ("1", "true", "yes", "on")
+#: ⚠️ A DENY-LIST, BECAUSE THE DEFAULT IS ON (Sean, 2026-09-23 -- roadmap
+#: 2.3). Until then this was an allow-list for a default-OFF flag; that
+#: direction has to follow the default, so flipping the default without
+#: flipping the predicate would have been the exact mistake
+#: `test_flag_default_direction.py` exists to catch -- a typo (`OMR_INFER=`,
+#: `OMR_INFER=nope`) silently reading as OFF and turning a shipped stage back
+#: into a bypass. `_OFF_WORDS` (below) is shared with `family_block_enabled`;
+#: this predicate is still written out on its own line, never behind a
+#: helper, so the AST scan sees each flag's own `os.environ.get` call.
+_OFF_WORDS = ("0", "", "false", "no", "off")
 
 
 def infer_enabled() -> bool:
-    """Read the flag. Anything but an explicit on-word is OFF."""
-    return os.environ.get(INFER_ENV, "0").strip().lower() in _ON_WORDS
+    """Read the flag. Anything but an explicit off-word is ON."""
+    return os.environ.get(INFER_ENV, "1").strip().lower() not in _OFF_WORDS
 
 
-#: The slot-index rule's OWN flag, and it is default-ON.
+#: The slot-index rule's OWN flag, and it is default-ON -- and has been since
+#: before `OMR_INFER` was.
 #:
 #: ⚠️⚠️ A SECOND FLAG RATHER THAN A WIDENING OF THE FIRST, BECAUSE THE THREE
 #: RULES ARE NOT EQUALLY EVIDENCED AND ONE FLAG WOULD MAKE FLIPPING THEM ONE
 #: DECISION. `collapse_slot_index_to_family_block` is checked against the
 #: PRINT -- 25 of 25 placements correct, ZERO grafts, `staff_not_identified`
-#: 783 -> 141 -- while both duration rules are explicitly recorded as having
-#: had NO note checked against the print. Turning the measured one on by
-#: raising `OMR_INFER` would turn on two unverified ones with it, which is
-#: the bundled decision this file is not entitled to take.
+#: 783 -> 141. The two duration rules were unverified against a print when
+#: `OMR_INFER` was default OFF; as of 2026-09-23 three subjects have been
+#: checked (all three wrong under the pre-fix reads, all three corrected by
+#: wiring `Q.GLYPH_OWNER` in -- `benchmarks/omr-infer-duration-print-2026-09/
+#: FINDINGS.md` §7-§9) and Sean took the default decision on that evidence.
+#: The two flags stay separate regardless, because a rule's own evidential
+#: weight belongs on the rule, not folded into a shared one.
 #:
-#: ⚠️ A DENY-LIST, BECAUSE THE DEFAULT IS ON. `OMR_SLOT_FAMILY_BLOCK=` or a
-#: typo must leave a measured rule RUNNING; an allow-list would let an empty
-#: value silently restore the 642 events this rule puts in the file. See
-#: *A flag's OFF test must follow its DEFAULT* in CLAUDE.md, and note the
-#: direction is the OPPOSITE of `OMR_INFER`'s three lines above -- which is
-#: the whole reason the two predicates are written out separately instead of
-#: sharing a helper that would hide both names from the AST scan.
+#: ⚠️ A DENY-LIST, BECAUSE THE DEFAULT IS ON -- now true of both flags in
+#: this file. `OMR_SLOT_FAMILY_BLOCK=` or a typo must leave a measured rule
+#: RUNNING; an allow-list would let an empty value silently restore the 642
+#: events this rule puts in the file. See *A flag's OFF test must follow its
+#: DEFAULT* in CLAUDE.md. The predicate is still written on its own line
+#: below, sharing only the `_OFF_WORDS` tuple with `infer_enabled` above, so
+#: the AST scan still sees each flag's own `os.environ.get` call.
 FAMILY_BLOCK_ENV = "OMR_SLOT_FAMILY_BLOCK"
-
-_OFF_WORDS = ("0", "", "false", "no", "off")
 
 
 def family_block_enabled() -> bool:
@@ -171,8 +177,12 @@ class Switch:
         return self.fn()
 
 
-#: The stage-wide flag: the two DURATION rules, neither checked against a
-#: print. Default OFF.
+#: The stage-wide flag: the two DURATION rules. Default ON since 2026-09-23
+#: (roadmap 2.3, Sean's decision) -- three subjects checked against the
+#: print, all three corrected by the `Q.GLYPH_OWNER` fix; see
+#: `benchmarks/omr-infer-duration-print-2026-09/FINDINGS.md` §7-§9 and
+#: `benchmarks/omr-infer-default-2026-09/FINDINGS.md` for the default-flip
+#: measurement.
 INFER_SWITCH = Switch(INFER_ENV, infer_enabled)
 
 #: The slot-index rule alone. Default ON -- 25 of 25 against the print.
