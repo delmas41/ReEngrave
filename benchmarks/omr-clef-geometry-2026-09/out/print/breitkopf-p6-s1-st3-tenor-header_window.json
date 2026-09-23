@@ -1,0 +1,77 @@
+{
+ "png": "breitkopf-p6-s1-st3-tenor-header_window.png",
+ "caption": "breitkopf-p6 system 1 staff 3 \u2014 READ tenor by geometry over 4 notehead box(es). GREEN = the staff's five Q.STAFF_LINES; BLUE = the ink cluster read as the clef; RED = the detector notehead boxes the read overrode and the exporter now refuses `is_a_clef`.",
+ "staff": "staff/6/1/3",
+ "page": 6,
+ "dpi": 600,
+ "zoom": 4,
+ "frame_control": {
+  "passed": true,
+  "contrast": 179.09
+ },
+ "read": {
+  "clef": "tenor",
+  "frame": "header_window",
+  "symmetry": 0.9274,
+  "h_spaces": 4.36,
+  "w_spaces": 2.77
+ },
+ "cluster_page_px": null,
+ "cluster_note": "bbox is in the header crop's own canonical frame and the record carries no spacing for it \u2014 DECLINED, not approximated",
+ "overrode": [
+  {
+   "glyph": "glyph/6/1/3/0/9",
+   "class": "noteheadBlackInSpace",
+   "page_px": [
+    782.2568093385214,
+    4927.568093385214,
+    815.3385214007782,
+    4947.077821011672
+   ]
+  },
+  {
+   "glyph": "glyph/6/1/3/0/31",
+   "class": "noteheadBlackInSpace",
+   "page_px": [
+    672.4085603112841,
+    4925.447470817121,
+    710.579766536965,
+    4946.653696498055
+   ]
+  },
+  {
+   "glyph": "glyph/6/1/3/0/34",
+   "class": "noteheadBlackInSpace",
+   "page_px": [
+    731.3618677042801,
+    4927.568093385214,
+    754.2645914396887,
+    4978.463035019455
+   ]
+  },
+  {
+   "glyph": "glyph/6/1/3/0/40",
+   "class": "noteheadBlackInSpace",
+   "page_px": [
+    673.2568093385214,
+    4950.894941634241,
+    722.4552529182879,
+    4979.735408560311
+   ]
+  }
+ ],
+ "staff_lines_page_px": [
+  4900,
+  4927,
+  4954,
+  4981,
+  5009
+ ],
+ "crop_page_px": [
+  588.75,
+  4627.5,
+  1087.838521400778,
+  5281.5
+ ],
+ "VERDICT_none_yet": null
+}

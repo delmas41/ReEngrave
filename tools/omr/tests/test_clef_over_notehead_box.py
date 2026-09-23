@@ -215,6 +215,46 @@ class TestTheVetoSurvives(unittest.TestCase):
         self.assertEqual(trace.get("override_refused"),
                          "an_occupying_box_is_itself_clef_sized")
 
+    def test_a_DETECTED_CLEF_on_the_same_ink_still_vetoes(self):
+        """⚠️ THE MEASUREMENT PUT THIS TEST HERE, and it went red against the
+        first build of 2.11, not against the base tree. On Brahms 1 p.6
+        `staff/6/1/3` the detector reads `clefG` at 0.688 on the very ink the
+        override then took to `tenor` — a READ clef changed, which the
+        roadmap's gate forbids. Ink already claimed by a CLEF box is not the
+        "a notehead box is too small to be what this ink is" case at all."""
+        cell = _cell(tall=True)
+        box = _box_on_the_clef(cell)
+        found0, _ = _read(cell)
+        found, trace = _read(cell, occupied_boxes=[box],
+                             occupied_classes=["noteheadBlackOnLine"],
+                             clef_boxes=[found0.bbox])
+        self.assertIsNone(found)
+        self.assertEqual(trace.get("reason"), "occupied")
+        self.assertEqual(trace.get("override_refused"),
+                         "the_detector_already_boxed_a_clef_here")
+
+    def test_a_detected_clef_ELSEWHERE_does_not_refuse_the_override(self):
+        """The positive control for the rule above: a clef box on some OTHER
+        staff's ink in the same cell must not silence this staff's read."""
+        cell = _cell(tall=True)
+        box = _box_on_the_clef(cell)
+        found, _ = _read(cell, occupied_boxes=[box],
+                         occupied_classes=["noteheadBlackOnLine"],
+                         clef_boxes=[(300, 100, 30, 20)])
+        self.assertIsNotNone(found)
+        self.assertEqual(found.overrode_occupied, (0,))
+
+    def test_a_clef_box_is_never_a_veto_of_its_own(self):
+        """⚠️ `clef_boxes` must not widen what can VETO, or a staff that reads
+        today stops reading. With no notehead box on the cluster there is no
+        occupancy at all, and a clef box on it changes nothing."""
+        cell = _cell(tall=True)
+        found0, _ = _read(cell)
+        found, _ = _read(cell, occupied_boxes=[], occupied_classes=[],
+                         clef_boxes=[found0.bbox])
+        self.assertIsNotNone(found)
+        self.assertEqual(found.read.name, "alto")
+
     def test_a_caller_that_supplies_no_classes_is_unchanged(self):
         """⚠️ THE FROZEN PATHS' CONTROL. `transcribe.py` and
         `key_signature_locator.py` pass boxes and no classes; neither may

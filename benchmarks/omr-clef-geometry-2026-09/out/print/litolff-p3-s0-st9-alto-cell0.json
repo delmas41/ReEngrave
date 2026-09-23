@@ -1,0 +1,62 @@
+{
+ "png": "litolff-p3-s0-st9-alto-cell0.png",
+ "caption": "litolff-p3 system 0 staff 9 \u2014 READ alto by geometry over 2 notehead box(es). GREEN = the staff's five Q.STAFF_LINES; BLUE = the ink cluster read as the clef; RED = the detector notehead boxes the read overrode and the exporter now refuses `is_a_clef`.",
+ "staff": "staff/3/0/9",
+ "page": 3,
+ "dpi": 600,
+ "zoom": 4,
+ "frame_control": {
+  "passed": true,
+  "contrast": 152.51
+ },
+ "read": {
+  "clef": "alto",
+  "frame": "cell:0",
+  "symmetry": 0.8469,
+  "h_spaces": 4.5,
+  "w_spaces": 3.36
+ },
+ "cluster_page_px": [
+  375.2875,
+  1805.67,
+  428.20750000000004,
+  1876.545
+ ],
+ "cluster_note": "exact: cell:0 canonical -> page via CELL_BOX",
+ "overrode": [
+  {
+   "glyph": "glyph/3/0/9/0/1",
+   "class": "noteheadBlackOnLine",
+   "page_px": [
+    388.5175,
+    1828.1925,
+    415.135,
+    1850.085
+   ]
+  },
+  {
+   "glyph": "glyph/3/0/9/0/6",
+   "class": "noteheadBlackOnLine",
+   "page_px": [
+    388.2025,
+    1828.665,
+    415.765,
+    1861.5825
+   ]
+  }
+ ],
+ "staff_lines_page_px": [
+  1800,
+  1816,
+  1831,
+  1847,
+  1863
+ ],
+ "crop_page_px": [
+  327.25,
+  1642.5,
+  585.7075,
+  2020.5
+ ],
+ "VERDICT_none_yet": null
+}
