@@ -11,6 +11,10 @@
     python3 -m tools.omr.staged score.pdf --pages 0 --weights <...> \
         --musicxml out.musicxml
 
+    # MusicXML AND LilyPond from one gather, ROADMAP 3.1
+    python3 -m tools.omr.staged score.pdf --pages 0 --weights <...> \
+        --musicxml out.musicxml --lilypond out.ly
+
     # the A/B: compare against a legacy transcribe result
     python3 -m tools.omr.staged score.pdf --pages 0-2 --weights <...> \
         --against legacy.omr.json
@@ -52,7 +56,7 @@ def parse_pages(spec: str) -> list:
 #: every pair look like a different configuration and
 #: `regather_control.check_provenance` would accept a record compared with
 #: itself -- the exact trap that guard exists to catch.
-_OUTPUT_ONLY_ARGS = ("out", "musicxml", "progress")
+_OUTPUT_ONLY_ARGS = ("out", "musicxml", "lilypond", "progress")
 
 
 def _settings(args: Any = None) -> dict:
@@ -176,6 +180,15 @@ def main(argv=None) -> int:
                     help="also EXPORT the run to MusicXML here. The coverage "
                          "report -- what the record could NOT carry -- goes "
                          "beside it as <path>.coverage.json.")
+    # ⚠️ ROADMAP 3.1. `tools.omr.staged.lilypond` reuses `export.build()` and
+    # its cross-bar `_pair_arcs`/`_place_wedges` passes over a FRESH `Record`
+    # of its own -- it does not read the MusicXML `report` above -- so this
+    # is independent of `--musicxml` and either may be given alone.
+    ap.add_argument("--lilypond", default=None,
+                    help="also EXPORT the run to a LilyPond .ly here. Its own "
+                         "coverage report -- including marks LilyPond has no "
+                         "syntax for (tremolo, dynamic-word directives) -- "
+                         "goes beside it as <path>.coverage.json.")
     # ⚠️⚠️ BOTH OCR RUNGS DEFAULT **ON** SINCE 2026-09-16 (Sean's call), and
     # the flags are `--no-surya` / `--no-ocr` so ABSENCE IS ON. The text
     # layer is free and reads NOTHING on a 19th-century scan (0 labels over
@@ -367,9 +380,26 @@ def main(argv=None) -> int:
         cov.write_text(json.dumps(report, indent=2, default=str))
         print(f"wrote {args.musicxml} and {cov}")
 
+    # ⚠️⚠️ IMPORTED HERE, AFTER THE GATHER -- the same rule `--musicxml`
+    # follows and for the same reason: `staged/export.py` says so in its own
+    # comment (`export._pad_tacet_span`'s neighbourhood) because an editor
+    # importing the exporter BEFORE a long unattended gather finishes means
+    # an edit made mid-run reaches an already-imported module's OLD code
+    # while its line numbers report the NEW file. `tools.omr.staged.lilypond`
+    # imports `export` itself, so this import is transitively the same one.
+    if args.lilypond:
+        from . import lilypond as staged_lily
+        ly_text, ly_report = staged_lily.to_lilypond(result)
+        Path(args.lilypond).write_text(ly_text)
+        ly_cov = Path(args.lilypond + ".coverage.json")
+        ly_cov.write_text(json.dumps(ly_report, indent=2, default=str))
+        print(f"wrote {args.lilypond} and {ly_cov}")
+
     _report(result)
     if args.musicxml:
         staged_export._report(report)
+    if args.lilypond:
+        staged_lily._report(ly_report)
     return 0
 
 
