@@ -236,6 +236,27 @@ def aliases_of(inst: "Instrument") -> tuple[str, ...]:
         plural = _pluralize(alias)
         if plural is not None:
             out.append(plural)
+    # ⚠️⚠️ `ß` READ AS `B` — A DERIVED SPELLING OF AN ALIAS THAT ALREADY EXISTS,
+    # AND DELIBERATELY NOT A FOLD. Breitkopf Brahms 1 prints `Kontrabaß` and
+    # Tesseract returned `KontrabaB`, which resolves to nothing; `Kontrabaß`
+    # itself resolves to Contrabass at coverage 1.00, so the name was lost to
+    # one character.
+    #
+    # ⚠️ A CHARACTER FOLD `B -> ß` WOULD BE UNSAFE AND IS REFUSED: a bare `B`
+    # is a KEY in this vocabulary — German `B` is B-flat, and `Cl. B.` is a
+    # clarinet in B-flat, which this file already records as a trap. Folding it
+    # would touch every label carrying a key. Generating the `b`-spelled form of
+    # an alias that ALREADY carries `ß` can only ever add a spelling of a word
+    # the lexicon holds, and cannot make any other string resolve.
+    #
+    # ⚠️ THE RARITY IS MEASURED, not assumed: exactly TWO of the 842 aliases
+    # contain `ß` (`kontrabaß`, `kontrabaßs`), both Contrabass, so the derived
+    # set is two strings and collides with nothing. It is the `_CONTRA_ALIASES`
+    # cross-product pattern this file already uses rather than a hand list, so
+    # a future alias carrying `ß` gets its variant without anyone remembering.
+    for alias in tuple(out):
+        if "ß" in alias:
+            out.append(alias.replace("ß", "b"))
     return tuple(dict.fromkeys(out))
 
 
@@ -590,6 +611,31 @@ def normalize_label(text: str) -> str:
     # nothing at all. Measured on Mahler 5 p.4, where it costs the clarinets
     # and the trumpets.
     t = re.sub(r"[.,;:_/\|()\[\]{}*°º-]+", " ", t)
+    # ⚠️⚠️ A DIGIT BETWEEN TWO LETTERS IS OCR NOISE, AND LEAVING IT IN DOES NOT
+    # MERELY LOSE A LABEL — IT INVENTS A WORD BOUNDARY AND RESOLVES THE WRONG
+    # INSTRUMENT. `_search` bounds an alias with LETTER lookarounds, so a digit
+    # inside a word reads as a boundary on both sides: Breitkopf Brahms 1
+    # prints `Flöten`, Tesseract returned `Flo6ten 2`, and `ten` inside
+    # `flo6ten` therefore matched word-bounded and a printed FLUTE staff
+    # resolved to a **Tenor** — a singer, at coverage 0.50, on the EXACT pass
+    # before any fold runs. Only `work_roster`'s family veto stopped it
+    # reaching the file, and on a work whose roster we do not hold it ships.
+    # That is `Tr. Alt.` -> *Alto* again, from a different cause.
+    #
+    # ⚠️ IT IS ADMITTED ON THE RARITY ARGUMENT `_OCR_FOLD` STATES, AND HERE THE
+    # RARITY IS TOTAL: **not one of the 842 aliases contains a digit**, so this
+    # can never merge two names and is provably a no-op on the alias side. A
+    # part number IS a digit a label carries and it is a SEPARATE TOKEN
+    # (`Flöten 1. 2.`, `Cor. 3 4`), which `_STRIP_TOKENS` already removes; a
+    # digit with a letter on each side is not one.
+    #
+    # ⚠️⚠️ `0` AND `1` ARE EXEMPT, AND THE EXEMPTION IS DERIVED FROM
+    # `_OCR_FOLD` RATHER THAN WRITTEN OUT, so the two cannot drift. Those two
+    # digits are exactly the ones the fold already claims as LETTER
+    # confusions (`0 -> o`, `1 -> i`), and removing them here would destroy
+    # the recovery that claim buys: `Vio1ino` folds to `vioiino` and matches
+    # `violino` folded, but stripped first it is `vioino` and matches nothing.
+    t = _INNER_NOISE_DIGIT.sub("", t)
     t = re.sub(r"\s+", " ", t).strip()
     return t
 
@@ -678,9 +724,20 @@ _OCR_FOLD = str.maketrans({
     "y": "v",
 })
 
-
 def _fold_ocr(text: str) -> str:
     return text.translate(_OCR_FOLD)
+#: Digits `_OCR_FOLD` does NOT claim as a letter confusion.
+#:
+#: ⚠️ DERIVED FROM THE FOLD, never written out, so the two rules cannot
+#: disagree about a character: adding a digit to `_OCR_FOLD` removes it from
+#: here in the same edit. `normalize_label` resolves this at CALL time, which
+#: is why it may be declared below the function that uses it.
+_FOLDED_DIGITS = frozenset(c for c in "0123456789" if ord(c) in _OCR_FOLD)
+_INNER_NOISE_DIGIT = re.compile(
+    r"(?<=[^\W\d_])[" +
+    "".join(c for c in "0123456789" if c not in _FOLDED_DIGITS) +
+    r"](?=[^\W\d_])")
+
 
 
 def _letters(text: str) -> int:

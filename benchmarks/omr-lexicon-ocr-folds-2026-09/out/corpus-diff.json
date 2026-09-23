@@ -1,0 +1,21 @@
+{
+ "base": "origin/main",
+ "corpora": {
+  "labels": {
+   "strings": 448,
+   "resolved_before": 297,
+   "resolved_after": 297,
+   "gained": {},
+   "lost": {},
+   "changed": {}
+  },
+  "part-names": {
+   "strings": 1271,
+   "resolved_before": 878,
+   "resolved_after": 878,
+   "gained": {},
+   "lost": {},
+   "changed": {}
+  }
+ }
+}

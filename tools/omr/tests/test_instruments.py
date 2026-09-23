@@ -1,9 +1,15 @@
 """Instrument lexicon (tools/omr/instruments.py)."""
 from __future__ import annotations
 
+import re
+
 import pytest
 
 from tools.omr.instruments import (
+    _FOLDED_DIGITS,
+    _INNER_NOISE_DIGIT,
+    _OCR_FOLD,
+    aliases_of,
     candidates_for_alias,
     INSTRUMENTS,
     lookup,
@@ -797,3 +803,116 @@ def test_the_absent_instruments_that_were_CAPTURED_rather_than_abstaining():
                           ("English horns", "woodwind"),
                           ("cors anglais", "woodwind")):
         assert lookup(label).instrument.family == family, label
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# OCR noise: a digit inside a word, and `ß` read as `B`
+#
+# ⚠️ BOTH ARE ADMITTED ON THE RARITY ARGUMENT `_OCR_FOLD` ALREADY STATES, and
+# for both the rarity is measured rather than asserted: no alias contains a
+# digit at all, and exactly two contain `ß`. The false-positive surface is
+# priced over both committed corpora in
+# `benchmarks/omr-lexicon-ocr-folds-2026-09/` — 1,719 distinct strings, 0 lost,
+# 0 changed — with a POSITIVE CONTROL that injects the `c/e` fold this file
+# refuses by name and requires the comparison to move.
+# ─────────────────────────────────────────────────────────────────────────────
+
+
+def test_a_digit_inside_a_word_does_not_INVENT_an_instrument():
+    """⚠️⚠️ THE REGRESSION THIS EXISTS FOR, AND IT IS NOT A MISS BUT A MISREAD.
+
+    `_search` bounds an alias with LETTER lookarounds, so a digit inside a word
+    reads as a word boundary on BOTH sides. Breitkopf Brahms 1 prints `Flöten`;
+    Tesseract returned `Flo6ten 2`; `ten` inside `flo6ten` therefore matched
+    word-bounded and a printed FLUTE staff resolved to a **Tenor** — a singer,
+    on the EXACT pass, before any fold ran. Only `work_roster`'s family veto
+    kept it out of the file, and a work whose roster we do not hold has no veto.
+    """
+    hit = lookup("Flo6ten 2")
+    assert hit is not None
+    assert hit.instrument.name == "Flute", hit.instrument.name
+    assert hit.instrument.family == "woodwind"
+
+
+def test_the_digits_the_FOLD_claims_are_left_for_it():
+    """⚠️ `0` and `1` are exempt, and stripping them would DESTROY a recovery.
+
+    `_OCR_FOLD` claims both as letter confusions (`0 -> o`, `1 -> i`), so
+    `Vio1ino` folds to `vioiino` and matches `violino` folded. Stripped first it
+    is `vioino`, which matches nothing.
+    """
+    assert lookup("Vio1ino II.").instrument.name == "Violin"
+    assert lookup("V1a.").instrument.name == "Viola"
+    assert lookup("Yiolino").instrument.name == "Violin"
+
+
+def test_the_exempt_digits_are_DERIVED_from_the_fold_and_cannot_drift():
+    """A hand-written `{0, 1}` beside `_OCR_FOLD` is two copies of one claim."""
+    folded = {c for c in "0123456789" if ord(c) in _OCR_FOLD}
+    assert _FOLDED_DIGITS == folded
+    for c in folded:
+        assert c not in _INNER_NOISE_DIGIT.pattern
+    for c in set("0123456789") - folded:
+        assert c in _INNER_NOISE_DIGIT.pattern
+
+
+def test_no_alias_carries_a_digit_so_the_rule_is_a_no_op_on_the_lexicon():
+    """The rarity argument, asserted rather than remembered."""
+    carriers = [a for i in INSTRUMENTS
+                for a in aliases_of(i) if re.search(r"[0-9]", a)]
+    assert carriers == [], carriers
+
+
+def test_a_part_number_is_still_a_part_number():
+    """A digit a label legitimately carries is a SEPARATE TOKEN, and this rule
+    must not reach it — only a digit with a letter on each side."""
+    assert normalize_label("Flöten 1. 2.") == "floten 1 2"
+    assert lookup("2 Flauti").instrument.name == "Flute"
+    assert lookup("Cor. 3 4").instrument.name == "Horn"
+    # ⚠️ BOTH SIDES ARE REQUIRED, AND A MUTATION ARM FOUND THIS GAP. The three
+    # assertions above cannot see the LOOKBEHIND removed: `1` and `2` are
+    # exempt digits and `3`/`4` stand before a space, so a rule that stripped
+    # any digit merely FOLLOWED by a letter would pass them all. `3Flauti` is
+    # a count written hard against its noun -- the digit is a part count, not
+    # noise, and it must survive.
+    assert normalize_label("3Flauti") == "3flauti"
+    assert normalize_label("Fag2") == "fag2"
+
+
+def test_esszett_read_as_B_resolves():
+    """Breitkopf prints `Kontrabaß`; Tesseract returned `KontrabaB`."""
+    assert lookup("Kontrabaß").instrument.name == "Contrabass"
+    assert lookup("KontrabaB").instrument.name == "Contrabass"
+    assert lookup("| KontrabaB").instrument.name == "Contrabass"
+
+
+def test_the_esszett_variant_is_DERIVED_from_the_aliases_that_carry_one():
+    """Not a hand list: an alias added later with `ß` gets its variant free."""
+    for inst in INSTRUMENTS:
+        aliases = set(aliases_of(inst))
+        for a in list(aliases):
+            if "ß" in a:
+                assert a.replace("ß", "b") in aliases, a
+
+
+def test_B_IS_STILL_A_KEY_and_no_fold_touches_it():
+    """⚠️ THE TRAP THIS SHAPE AVOIDS. A character fold `B -> ß` would reach
+    every label carrying a key: German `B` is B-flat and `Cl. B.` is a
+    clarinet in B-flat, which this file records as a trap in its own right.
+    Deriving a spelling of an alias that ALREADY carries `ß` cannot."""
+    cl = lookup("Cl. B.")
+    assert cl.instrument.name == "Clarinet" and cl.fifths_offset == 2
+    hr = lookup("Hr. in B")
+    assert hr.instrument.name == "Horn" and hr.fifths_offset == 2
+    assert lookup("B.") is None
+
+
+def test_the_esszett_variants_collide_with_nothing():
+    """Each derived spelling must name exactly the instrument it came from."""
+    for inst in INSTRUMENTS:
+        for a in aliases_of(inst):
+            if "ß" not in a:
+                continue
+            hit = lookup(a.replace("ß", "b"))
+            assert hit is not None and hit.instrument.name == inst.name, (
+                a, hit.instrument.name if hit else None)

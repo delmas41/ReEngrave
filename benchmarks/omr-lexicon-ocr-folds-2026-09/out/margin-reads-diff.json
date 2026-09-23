@@ -1,0 +1,22 @@
+{
+ "strings": 64,
+ "gained": {
+  "| KontrabaB": [
+   "Contrabass",
+   "string"
+  ]
+ },
+ "lost": {},
+ "changed": {
+  "Flo6ten 2": [
+   [
+    "Tenor",
+    "voice"
+   ],
+   [
+    "Flute",
+    "woodwind"
+   ]
+  ]
+ }
+}

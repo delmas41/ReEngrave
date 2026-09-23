@@ -1,0 +1,1023 @@
+{
+ "_README": "Every margin label the two SHARED STAGED RECORDS actually hold, verbatim, with what the lexicon made of each at capture time. The committed lexicon corpora (benchmarks/omr-lexicon-2026-09/) predate these gathers and contain NONE of these strings, which is why probe_corpus.py can price this change's false-positive surface and cannot price its gain.",
+ "_provenance": "beethoven5-p1-p4-ink-identity.record.json (md5 ea80ae59...) and brahms1-breitkopf-p0-p3-ink.record.json (md5 4df63a75...), read through benchmarks/omr-instrument-channels-2026-09/channels.py",
+ "_not_a_truth_file": "`resolved_at_capture` is what the LEXICON said, not what the plate prints. The print truth for the three labels this change repairs is hand-read and lives in FINDINGS.md with its crop.",
+ "labels": [
+  {
+   "record": "breitkopf",
+   "subject": "staff/0/0/0",
+   "text": "Flo6ten 2",
+   "reader": "tesseract",
+   "resolved_at_capture": null,
+   "reason_at_capture": "vetoed_by_the_work_roster"
+  },
+  {
+   "record": "breitkopf",
+   "subject": "staff/0/0/1",
+   "text": "Oboen 2 \u00a9",
+   "reader": "tesseract",
+   "resolved_at_capture": "Oboe",
+   "reason_at_capture": "label"
+  },
+  {
+   "record": "breitkopf",
+   "subject": "staff/0/0/2",
+   "text": "B ? Klarinetten in",
+   "reader": "tesseract",
+   "resolved_at_capture": "Clarinet",
+   "reason_at_capture": "label"
+  },
+  {
+   "record": "breitkopf",
+   "subject": "staff/0/0/3",
+   "text": "2 Fagotte",
+   "reader": "tesseract",
+   "resolved_at_capture": "Bassoon",
+   "reason_at_capture": "label"
+  },
+  {
+   "record": "breitkopf",
+   "subject": "staff/0/0/4",
+   "text": "Kontrafagott",
+   "reader": "tesseract",
+   "resolved_at_capture": "Contrabassoon",
+   "reason_at_capture": "label"
+  },
+  {
+   "record": "breitkopf",
+   "subject": "staff/0/0/5",
+   "text": "C in |",
+   "reader": "tesseract",
+   "resolved_at_capture": null,
+   "reason_at_capture": "not_in_lexicon"
+  },
+  {
+   "record": "breitkopf",
+   "subject": "staff/0/0/6",
+   "text": "Horner 4 | : |",
+   "reader": "tesseract",
+   "resolved_at_capture": "Horn",
+   "reason_at_capture": "label"
+  },
+  {
+   "record": "breitkopf",
+   "subject": "staff/0/0/7",
+   "text": "inC 2 Trompeten |",
+   "reader": "tesseract",
+   "resolved_at_capture": "Trumpet",
+   "reason_at_capture": "label"
+  },
+  {
+   "record": "breitkopf",
+   "subject": "staff/0/0/8",
+   "text": "inCu.G Pauken |]",
+   "reader": "tesseract",
+   "resolved_at_capture": "Timpani",
+   "reason_at_capture": "label"
+  },
+  {
+   "record": "breitkopf",
+   "subject": "staff/0/0/9",
+   "text": "Violine 1.",
+   "reader": "tesseract",
+   "resolved_at_capture": "Violin",
+   "reason_at_capture": "label"
+  },
+  {
+   "record": "breitkopf",
+   "subject": "staff/0/0/10",
+   "text": "2.Violine",
+   "reader": "tesseract",
+   "resolved_at_capture": "Violin",
+   "reason_at_capture": "label"
+  },
+  {
+   "record": "breitkopf",
+   "subject": "staff/0/0/11",
+   "text": "Bratsche",
+   "reader": "tesseract",
+   "resolved_at_capture": "Viola",
+   "reason_at_capture": "label"
+  },
+  {
+   "record": "breitkopf",
+   "subject": "staff/0/0/12",
+   "text": "Violoncell |",
+   "reader": "tesseract",
+   "resolved_at_capture": "Cello",
+   "reason_at_capture": "label"
+  },
+  {
+   "record": "breitkopf",
+   "subject": "staff/0/0/13",
+   "text": "| KontrabaB",
+   "reader": "tesseract",
+   "resolved_at_capture": null,
+   "reason_at_capture": "not_in_lexicon"
+  },
+  {
+   "record": "breitkopf",
+   "subject": "staff/1/0/0",
+   "text": "F1.",
+   "reader": "tesseract",
+   "resolved_at_capture": "Flute",
+   "reason_at_capture": "label"
+  },
+  {
+   "record": "breitkopf",
+   "subject": "staff/1/0/2",
+   "text": "Klar. (B)",
+   "reader": "tesseract",
+   "resolved_at_capture": "Clarinet",
+   "reason_at_capture": "label"
+  },
+  {
+   "record": "breitkopf",
+   "subject": "staff/1/0/3",
+   "text": "(| Fag.",
+   "reader": "tesseract",
+   "resolved_at_capture": "Bassoon",
+   "reason_at_capture": "label"
+  },
+  {
+   "record": "breitkopf",
+   "subject": "staff/1/0/4",
+   "text": "|",
+   "reader": "tesseract",
+   "resolved_at_capture": null,
+   "reason_at_capture": "not_in_lexicon"
+  },
+  {
+   "record": "breitkopf",
+   "subject": "staff/1/0/7",
+   "text": "Trpt. Cc) |",
+   "reader": "tesseract",
+   "resolved_at_capture": "Trumpet",
+   "reason_at_capture": "label"
+  },
+  {
+   "record": "breitkopf",
+   "subject": "staff/1/0/8",
+   "text": "Pk. f[",
+   "reader": "tesseract",
+   "resolved_at_capture": "Timpani",
+   "reason_at_capture": "label"
+  },
+  {
+   "record": "breitkopf",
+   "subject": "staff/1/0/10",
+   "text": "2.Viol!",
+   "reader": "tesseract",
+   "resolved_at_capture": "Violin",
+   "reason_at_capture": "label"
+  },
+  {
+   "record": "breitkopf",
+   "subject": "staff/1/0/11",
+   "text": "Br.",
+   "reader": "tesseract",
+   "resolved_at_capture": "Viola",
+   "reason_at_capture": "label"
+  },
+  {
+   "record": "breitkopf",
+   "subject": "staff/1/0/12",
+   "text": "Vel.",
+   "reader": "tesseract",
+   "resolved_at_capture": null,
+   "reason_at_capture": "not_in_lexicon"
+  },
+  {
+   "record": "breitkopf",
+   "subject": "staff/1/0/13",
+   "text": "K -B.",
+   "reader": "tesseract",
+   "resolved_at_capture": "Contrabass",
+   "reason_at_capture": "label"
+  },
+  {
+   "record": "breitkopf",
+   "subject": "staff/1/1/1",
+   "text": "Ob.",
+   "reader": "tesseract",
+   "resolved_at_capture": "Oboe",
+   "reason_at_capture": "label"
+  },
+  {
+   "record": "breitkopf",
+   "subject": "staff/1/1/2",
+   "text": "Klar. (B)",
+   "reader": "tesseract",
+   "resolved_at_capture": "Clarinet",
+   "reason_at_capture": "label"
+  },
+  {
+   "record": "breitkopf",
+   "subject": "staff/1/1/3",
+   "text": "Fag.",
+   "reader": "tesseract",
+   "resolved_at_capture": "Bassoon",
+   "reason_at_capture": "label"
+  },
+  {
+   "record": "breitkopf",
+   "subject": "staff/1/1/5",
+   "text": "Hr.",
+   "reader": "tesseract",
+   "resolved_at_capture": "Horn",
+   "reason_at_capture": "label"
+  },
+  {
+   "record": "breitkopf",
+   "subject": "staff/1/1/6",
+   "text": "\u00ab (Es)",
+   "reader": "tesseract",
+   "resolved_at_capture": null,
+   "reason_at_capture": "not_in_lexicon"
+  },
+  {
+   "record": "breitkopf",
+   "subject": "staff/1/1/7",
+   "text": "Pk. |",
+   "reader": "tesseract",
+   "resolved_at_capture": "Timpani",
+   "reason_at_capture": "label"
+  },
+  {
+   "record": "breitkopf",
+   "subject": "staff/1/1/8",
+   "text": "1.Viol.",
+   "reader": "tesseract",
+   "resolved_at_capture": "Violin",
+   "reason_at_capture": "label"
+  },
+  {
+   "record": "breitkopf",
+   "subject": "staff/1/1/10",
+   "text": "| Br.",
+   "reader": "tesseract",
+   "resolved_at_capture": "Viola",
+   "reason_at_capture": "label"
+  },
+  {
+   "record": "breitkopf",
+   "subject": "staff/1/1/11",
+   "text": "Vel.",
+   "reader": "tesseract",
+   "resolved_at_capture": null,
+   "reason_at_capture": "not_in_lexicon"
+  },
+  {
+   "record": "breitkopf",
+   "subject": "staff/1/1/12",
+   "text": "K-B.",
+   "reader": "tesseract",
+   "resolved_at_capture": "Contrabass",
+   "reason_at_capture": "label"
+  },
+  {
+   "record": "breitkopf",
+   "subject": "staff/2/0/0",
+   "text": "F1.",
+   "reader": "tesseract",
+   "resolved_at_capture": "Flute",
+   "reason_at_capture": "label"
+  },
+  {
+   "record": "breitkopf",
+   "subject": "staff/2/0/1",
+   "text": "Ob.",
+   "reader": "tesseract",
+   "resolved_at_capture": "Oboe",
+   "reason_at_capture": "label"
+  },
+  {
+   "record": "breitkopf",
+   "subject": "staff/2/0/2",
+   "text": "Klar. (B)",
+   "reader": "tesseract",
+   "resolved_at_capture": "Clarinet",
+   "reason_at_capture": "label"
+  },
+  {
+   "record": "breitkopf",
+   "subject": "staff/2/0/3",
+   "text": "| Fag.",
+   "reader": "tesseract",
+   "resolved_at_capture": "Bassoon",
+   "reason_at_capture": "label"
+  },
+  {
+   "record": "breitkopf",
+   "subject": "staff/2/0/4",
+   "text": "|",
+   "reader": "tesseract",
+   "resolved_at_capture": null,
+   "reason_at_capture": "not_in_lexicon"
+  },
+  {
+   "record": "breitkopf",
+   "subject": "staff/2/0/6",
+   "text": "|",
+   "reader": "tesseract",
+   "resolved_at_capture": null,
+   "reason_at_capture": "not_in_lexicon"
+  },
+  {
+   "record": "breitkopf",
+   "subject": "staff/2/0/7",
+   "text": "| | \u00a9",
+   "reader": "tesseract",
+   "resolved_at_capture": null,
+   "reason_at_capture": "not_in_lexicon"
+  },
+  {
+   "record": "breitkopf",
+   "subject": "staff/2/0/12",
+   "text": "Vel. |",
+   "reader": "tesseract",
+   "resolved_at_capture": null,
+   "reason_at_capture": "not_in_lexicon"
+  },
+  {
+   "record": "breitkopf",
+   "subject": "staff/2/0/13",
+   "text": "| | K-B.",
+   "reader": "tesseract",
+   "resolved_at_capture": "Contrabass",
+   "reason_at_capture": "label"
+  },
+  {
+   "record": "breitkopf",
+   "subject": "staff/2/1/0",
+   "text": "FI.",
+   "reader": "tesseract",
+   "resolved_at_capture": "Flute",
+   "reason_at_capture": "label"
+  },
+  {
+   "record": "breitkopf",
+   "subject": "staff/2/1/1",
+   "text": "Ob.",
+   "reader": "tesseract",
+   "resolved_at_capture": "Oboe",
+   "reason_at_capture": "label"
+  },
+  {
+   "record": "breitkopf",
+   "subject": "staff/2/1/2",
+   "text": "Klar.",
+   "reader": "tesseract",
+   "resolved_at_capture": "Clarinet",
+   "reason_at_capture": "label"
+  },
+  {
+   "record": "breitkopf",
+   "subject": "staff/2/1/3",
+   "text": "Fag.",
+   "reader": "tesseract",
+   "resolved_at_capture": "Bassoon",
+   "reason_at_capture": "label"
+  },
+  {
+   "record": "breitkopf",
+   "subject": "staff/2/1/5",
+   "text": "(C) Hr.",
+   "reader": "tesseract",
+   "resolved_at_capture": "Horn",
+   "reason_at_capture": "label"
+  },
+  {
+   "record": "breitkopf",
+   "subject": "staff/2/1/6",
+   "text": "(Es",
+   "reader": "tesseract",
+   "resolved_at_capture": null,
+   "reason_at_capture": "not_in_lexicon"
+  },
+  {
+   "record": "breitkopf",
+   "subject": "staff/2/1/7",
+   "text": "Trpt. (C)",
+   "reader": "tesseract",
+   "resolved_at_capture": "Trumpet",
+   "reason_at_capture": "label"
+  },
+  {
+   "record": "breitkopf",
+   "subject": "staff/2/1/9",
+   "text": "1.Viol.",
+   "reader": "tesseract",
+   "resolved_at_capture": "Violin",
+   "reason_at_capture": "label"
+  },
+  {
+   "record": "breitkopf",
+   "subject": "staff/2/1/10",
+   "text": "2.Viol!",
+   "reader": "tesseract",
+   "resolved_at_capture": "Violin",
+   "reason_at_capture": "label"
+  },
+  {
+   "record": "breitkopf",
+   "subject": "staff/2/1/11",
+   "text": "Br.",
+   "reader": "tesseract",
+   "resolved_at_capture": "Viola",
+   "reason_at_capture": "label"
+  },
+  {
+   "record": "breitkopf",
+   "subject": "staff/2/1/12",
+   "text": "Vel.",
+   "reader": "tesseract",
+   "resolved_at_capture": null,
+   "reason_at_capture": "not_in_lexicon"
+  },
+  {
+   "record": "breitkopf",
+   "subject": "staff/2/1/13",
+   "text": "K-B.",
+   "reader": "tesseract",
+   "resolved_at_capture": "Contrabass",
+   "reason_at_capture": "label"
+  },
+  {
+   "record": "breitkopf",
+   "subject": "staff/3/0/1",
+   "text": "Ob.",
+   "reader": "tesseract",
+   "resolved_at_capture": "Oboe",
+   "reason_at_capture": "label"
+  },
+  {
+   "record": "breitkopf",
+   "subject": "staff/3/0/2",
+   "text": "Klar. (B)",
+   "reader": "tesseract",
+   "resolved_at_capture": "Clarinet",
+   "reason_at_capture": "label"
+  },
+  {
+   "record": "breitkopf",
+   "subject": "staff/3/0/3",
+   "text": "Fag.",
+   "reader": "tesseract",
+   "resolved_at_capture": "Bassoon",
+   "reason_at_capture": "label"
+  },
+  {
+   "record": "breitkopf",
+   "subject": "staff/3/0/4",
+   "text": "|",
+   "reader": "tesseract",
+   "resolved_at_capture": null,
+   "reason_at_capture": "not_in_lexicon"
+  },
+  {
+   "record": "breitkopf",
+   "subject": "staff/3/0/5",
+   "text": "| | Hr.",
+   "reader": "tesseract",
+   "resolved_at_capture": "Horn",
+   "reason_at_capture": "label"
+  },
+  {
+   "record": "breitkopf",
+   "subject": "staff/3/0/6",
+   "text": "(Es)",
+   "reader": "tesseract",
+   "resolved_at_capture": null,
+   "reason_at_capture": "not_in_lexicon"
+  },
+  {
+   "record": "breitkopf",
+   "subject": "staff/3/0/7",
+   "text": "Trpt. (C)",
+   "reader": "tesseract",
+   "resolved_at_capture": "Trumpet",
+   "reason_at_capture": "label"
+  },
+  {
+   "record": "breitkopf",
+   "subject": "staff/3/0/8",
+   "text": "Pk.",
+   "reader": "tesseract",
+   "resolved_at_capture": "Timpani",
+   "reason_at_capture": "label"
+  },
+  {
+   "record": "breitkopf",
+   "subject": "staff/3/0/9",
+   "text": "1.Viol.",
+   "reader": "tesseract",
+   "resolved_at_capture": "Violin",
+   "reason_at_capture": "label"
+  },
+  {
+   "record": "breitkopf",
+   "subject": "staff/3/0/11",
+   "text": "Br.",
+   "reader": "tesseract",
+   "resolved_at_capture": "Viola",
+   "reason_at_capture": "label"
+  },
+  {
+   "record": "breitkopf",
+   "subject": "staff/3/0/12",
+   "text": "Vel. |",
+   "reader": "tesseract",
+   "resolved_at_capture": null,
+   "reason_at_capture": "not_in_lexicon"
+  },
+  {
+   "record": "breitkopf",
+   "subject": "staff/3/0/13",
+   "text": "K -B.",
+   "reader": "tesseract",
+   "resolved_at_capture": "Contrabass",
+   "reason_at_capture": "label"
+  },
+  {
+   "record": "breitkopf",
+   "subject": "staff/3/1/1",
+   "text": "Ob.",
+   "reader": "tesseract",
+   "resolved_at_capture": "Oboe",
+   "reason_at_capture": "label"
+  },
+  {
+   "record": "breitkopf",
+   "subject": "staff/3/1/2",
+   "text": "K lar. (B)",
+   "reader": "tesseract",
+   "resolved_at_capture": "Clarinet",
+   "reason_at_capture": "roster"
+  },
+  {
+   "record": "breitkopf",
+   "subject": "staff/3/1/5",
+   "text": "of",
+   "reader": "tesseract",
+   "resolved_at_capture": null,
+   "reason_at_capture": "not_in_lexicon"
+  },
+  {
+   "record": "breitkopf",
+   "subject": "staff/3/1/6",
+   "text": "(Es)",
+   "reader": "tesseract",
+   "resolved_at_capture": null,
+   "reason_at_capture": "not_in_lexicon"
+  },
+  {
+   "record": "breitkopf",
+   "subject": "staff/3/1/7",
+   "text": "Trpt. (C)",
+   "reader": "tesseract",
+   "resolved_at_capture": "Trumpet",
+   "reason_at_capture": "label"
+  },
+  {
+   "record": "breitkopf",
+   "subject": "staff/3/1/8",
+   "text": "Pk. |",
+   "reader": "tesseract",
+   "resolved_at_capture": "Timpani",
+   "reason_at_capture": "label"
+  },
+  {
+   "record": "breitkopf",
+   "subject": "staff/3/1/9",
+   "text": "1.Viol.",
+   "reader": "tesseract",
+   "resolved_at_capture": "Violin",
+   "reason_at_capture": "label"
+  },
+  {
+   "record": "breitkopf",
+   "subject": "staff/3/1/10",
+   "text": "2",
+   "reader": "tesseract",
+   "resolved_at_capture": null,
+   "reason_at_capture": "not_in_lexicon"
+  },
+  {
+   "record": "breitkopf",
+   "subject": "staff/3/1/11",
+   "text": "Br.",
+   "reader": "tesseract",
+   "resolved_at_capture": "Viola",
+   "reason_at_capture": "label"
+  },
+  {
+   "record": "breitkopf",
+   "subject": "staff/3/1/12",
+   "text": "Vel.",
+   "reader": "tesseract",
+   "resolved_at_capture": null,
+   "reason_at_capture": "not_in_lexicon"
+  },
+  {
+   "record": "litolff",
+   "subject": "staff/1/0/0",
+   "text": "Flauti.",
+   "reader": "tesseract",
+   "resolved_at_capture": "Flute",
+   "reason_at_capture": "label"
+  },
+  {
+   "record": "litolff",
+   "subject": "staff/1/0/1",
+   "text": "Obol.",
+   "reader": "tesseract",
+   "resolved_at_capture": "Oboe",
+   "reason_at_capture": "label"
+  },
+  {
+   "record": "litolff",
+   "subject": "staff/1/0/2",
+   "text": "Clarinetti in B.",
+   "reader": "tesseract",
+   "resolved_at_capture": "Clarinet",
+   "reason_at_capture": "label"
+  },
+  {
+   "record": "litolff",
+   "subject": "staff/1/0/3",
+   "text": "Fagotti.",
+   "reader": "tesseract",
+   "resolved_at_capture": "Bassoon",
+   "reason_at_capture": "label"
+  },
+  {
+   "record": "litolff",
+   "subject": "staff/1/0/4",
+   "text": "Corni in Es.",
+   "reader": "tesseract",
+   "resolved_at_capture": "Horn",
+   "reason_at_capture": "label"
+  },
+  {
+   "record": "litolff",
+   "subject": "staff/1/0/5",
+   "text": "Trombe in C.",
+   "reader": "tesseract",
+   "resolved_at_capture": "Trumpet",
+   "reason_at_capture": "label"
+  },
+  {
+   "record": "litolff",
+   "subject": "staff/1/0/6",
+   "text": "Timpani in C.G.",
+   "reader": "tesseract",
+   "resolved_at_capture": "Timpani",
+   "reason_at_capture": "label"
+  },
+  {
+   "record": "litolff",
+   "subject": "staff/1/0/7",
+   "text": "Violino I.",
+   "reader": "tesseract",
+   "resolved_at_capture": "Violin",
+   "reason_at_capture": "label"
+  },
+  {
+   "record": "litolff",
+   "subject": "staff/1/0/8",
+   "text": "Violino II.",
+   "reader": "tesseract",
+   "resolved_at_capture": "Violin",
+   "reason_at_capture": "label"
+  },
+  {
+   "record": "litolff",
+   "subject": "staff/1/0/9",
+   "text": "Viola.",
+   "reader": "tesseract",
+   "resolved_at_capture": "Viola",
+   "reason_at_capture": "label"
+  },
+  {
+   "record": "litolff",
+   "subject": "staff/1/0/10",
+   "text": "Violoncello.",
+   "reader": "tesseract",
+   "resolved_at_capture": "Cello",
+   "reason_at_capture": "label"
+  },
+  {
+   "record": "litolff",
+   "subject": "staff/1/0/11",
+   "text": "Basso.",
+   "reader": "tesseract",
+   "resolved_at_capture": "Contrabass",
+   "reason_at_capture": "roster"
+  },
+  {
+   "record": "litolff",
+   "subject": "staff/2/0/0",
+   "text": "Fl.",
+   "reader": "tesseract",
+   "resolved_at_capture": "Flute",
+   "reason_at_capture": "label"
+  },
+  {
+   "record": "litolff",
+   "subject": "staff/2/0/1",
+   "text": "Ob.",
+   "reader": "tesseract",
+   "resolved_at_capture": "Oboe",
+   "reason_at_capture": "label"
+  },
+  {
+   "record": "litolff",
+   "subject": "staff/2/0/2",
+   "text": "Cl.",
+   "reader": "tesseract",
+   "resolved_at_capture": "Clarinet",
+   "reason_at_capture": "label"
+  },
+  {
+   "record": "litolff",
+   "subject": "staff/2/0/3",
+   "text": "Fag.",
+   "reader": "tesseract",
+   "resolved_at_capture": "Bassoon",
+   "reason_at_capture": "label"
+  },
+  {
+   "record": "litolff",
+   "subject": "staff/2/0/4",
+   "text": "Cor.",
+   "reader": "tesseract",
+   "resolved_at_capture": "Horn",
+   "reason_at_capture": "label"
+  },
+  {
+   "record": "litolff",
+   "subject": "staff/2/0/5",
+   "text": "Tr.",
+   "reader": "tesseract",
+   "resolved_at_capture": "Trumpet",
+   "reason_at_capture": "label"
+  },
+  {
+   "record": "litolff",
+   "subject": "staff/2/0/6",
+   "text": "Tp.",
+   "reader": "tesseract",
+   "resolved_at_capture": "Timpani",
+   "reason_at_capture": "label"
+  },
+  {
+   "record": "litolff",
+   "subject": "staff/2/1/0",
+   "text": "Fl.",
+   "reader": "tesseract",
+   "resolved_at_capture": "Flute",
+   "reason_at_capture": "label"
+  },
+  {
+   "record": "litolff",
+   "subject": "staff/2/1/1",
+   "text": "Ob.",
+   "reader": "tesseract",
+   "resolved_at_capture": "Oboe",
+   "reason_at_capture": "label"
+  },
+  {
+   "record": "litolff",
+   "subject": "staff/2/1/2",
+   "text": "Cl.",
+   "reader": "tesseract",
+   "resolved_at_capture": "Clarinet",
+   "reason_at_capture": "label"
+  },
+  {
+   "record": "litolff",
+   "subject": "staff/2/1/3",
+   "text": "Fag.",
+   "reader": "tesseract",
+   "resolved_at_capture": "Bassoon",
+   "reason_at_capture": "label"
+  },
+  {
+   "record": "litolff",
+   "subject": "staff/2/1/4",
+   "text": "Cor.",
+   "reader": "tesseract",
+   "resolved_at_capture": "Horn",
+   "reason_at_capture": "label"
+  },
+  {
+   "record": "litolff",
+   "subject": "staff/2/1/5",
+   "text": "Tr.",
+   "reader": "tesseract",
+   "resolved_at_capture": "Trumpet",
+   "reason_at_capture": "label"
+  },
+  {
+   "record": "litolff",
+   "subject": "staff/2/1/6",
+   "text": "Tp.",
+   "reader": "tesseract",
+   "resolved_at_capture": "Timpani",
+   "reason_at_capture": "label"
+  },
+  {
+   "record": "litolff",
+   "subject": "staff/3/0/0",
+   "text": "Fl.",
+   "reader": "tesseract",
+   "resolved_at_capture": "Flute",
+   "reason_at_capture": "label"
+  },
+  {
+   "record": "litolff",
+   "subject": "staff/3/0/1",
+   "text": "Ob.",
+   "reader": "tesseract",
+   "resolved_at_capture": "Oboe",
+   "reason_at_capture": "label"
+  },
+  {
+   "record": "litolff",
+   "subject": "staff/3/0/2",
+   "text": "Cl.",
+   "reader": "tesseract",
+   "resolved_at_capture": "Clarinet",
+   "reason_at_capture": "label"
+  },
+  {
+   "record": "litolff",
+   "subject": "staff/3/0/3",
+   "text": "Fag.",
+   "reader": "tesseract",
+   "resolved_at_capture": "Bassoon",
+   "reason_at_capture": "label"
+  },
+  {
+   "record": "litolff",
+   "subject": "staff/3/0/4",
+   "text": "Cor.",
+   "reader": "tesseract",
+   "resolved_at_capture": "Horn",
+   "reason_at_capture": "label"
+  },
+  {
+   "record": "litolff",
+   "subject": "staff/3/0/5",
+   "text": "Tr.",
+   "reader": "tesseract",
+   "resolved_at_capture": "Trumpet",
+   "reason_at_capture": "label"
+  },
+  {
+   "record": "litolff",
+   "subject": "staff/3/0/6",
+   "text": "Tp.",
+   "reader": "tesseract",
+   "resolved_at_capture": "Timpani",
+   "reason_at_capture": "label"
+  },
+  {
+   "record": "litolff",
+   "subject": "staff/3/1/0",
+   "text": "Fl.",
+   "reader": "tesseract",
+   "resolved_at_capture": "Flute",
+   "reason_at_capture": "label"
+  },
+  {
+   "record": "litolff",
+   "subject": "staff/3/1/1",
+   "text": "Cl.",
+   "reader": "tesseract",
+   "resolved_at_capture": "Clarinet",
+   "reason_at_capture": "label"
+  },
+  {
+   "record": "litolff",
+   "subject": "staff/3/1/2",
+   "text": "Fag.",
+   "reader": "tesseract",
+   "resolved_at_capture": "Bassoon",
+   "reason_at_capture": "label"
+  },
+  {
+   "record": "litolff",
+   "subject": "staff/3/1/3",
+   "text": "Cor.",
+   "reader": "tesseract",
+   "resolved_at_capture": "Horn",
+   "reason_at_capture": "label"
+  },
+  {
+   "record": "litolff",
+   "subject": "staff/4/0/0",
+   "text": "Fl.",
+   "reader": "tesseract",
+   "resolved_at_capture": "Flute",
+   "reason_at_capture": "label"
+  },
+  {
+   "record": "litolff",
+   "subject": "staff/4/0/1",
+   "text": "Ob.",
+   "reader": "tesseract",
+   "resolved_at_capture": "Oboe",
+   "reason_at_capture": "label"
+  },
+  {
+   "record": "litolff",
+   "subject": "staff/4/0/2",
+   "text": "Cl.",
+   "reader": "tesseract",
+   "resolved_at_capture": "Clarinet",
+   "reason_at_capture": "label"
+  },
+  {
+   "record": "litolff",
+   "subject": "staff/4/0/3",
+   "text": "Fag.",
+   "reader": "tesseract",
+   "resolved_at_capture": "Bassoon",
+   "reason_at_capture": "label"
+  },
+  {
+   "record": "litolff",
+   "subject": "staff/4/0/4",
+   "text": "Cor.",
+   "reader": "tesseract",
+   "resolved_at_capture": "Horn",
+   "reason_at_capture": "label"
+  },
+  {
+   "record": "litolff",
+   "subject": "staff/4/0/5",
+   "text": "Tr.",
+   "reader": "tesseract",
+   "resolved_at_capture": "Trumpet",
+   "reason_at_capture": "label"
+  },
+  {
+   "record": "litolff",
+   "subject": "staff/4/1/0",
+   "text": "Fl.",
+   "reader": "tesseract",
+   "resolved_at_capture": "Flute",
+   "reason_at_capture": "label"
+  },
+  {
+   "record": "litolff",
+   "subject": "staff/4/1/1",
+   "text": "Ob.",
+   "reader": "tesseract",
+   "resolved_at_capture": "Oboe",
+   "reason_at_capture": "label"
+  },
+  {
+   "record": "litolff",
+   "subject": "staff/4/1/2",
+   "text": "Cl.",
+   "reader": "tesseract",
+   "resolved_at_capture": "Clarinet",
+   "reason_at_capture": "label"
+  },
+  {
+   "record": "litolff",
+   "subject": "staff/4/1/3",
+   "text": "Fag.",
+   "reader": "tesseract",
+   "resolved_at_capture": "Bassoon",
+   "reason_at_capture": "label"
+  },
+  {
+   "record": "litolff",
+   "subject": "staff/4/1/4",
+   "text": "Cor.",
+   "reader": "tesseract",
+   "resolved_at_capture": "Horn",
+   "reason_at_capture": "label"
+  },
+  {
+   "record": "litolff",
+   "subject": "staff/4/1/5",
+   "text": "Tr.",
+   "reader": "tesseract",
+   "resolved_at_capture": "Trumpet",
+   "reason_at_capture": "label"
+  },
+  {
+   "record": "litolff",
+   "subject": "staff/4/1/6",
+   "text": "Tp.",
+   "reader": "tesseract",
+   "resolved_at_capture": "Timpani",
+   "reason_at_capture": "label"
+  }
+ ]
+}
