@@ -342,3 +342,97 @@ against the plate and, if the rate holds, asks why `glyph_owner`'s contest
 gap on the wrong side — and why 161 of them reached no contest at all, which is
 a question about the DOMAIN (`subjects_from`), not about the scoring.
 **What it does not justify**: any claim about how many are wrong.
+
+---
+
+# §8. ⚠️ TWO CORRECTIONS TO §7 AND §7b — `glyph_owner` IS NOT THE CULPRIT
+
+Sean, 2026-09-23, on being shown the two crops:
+
+> *"how can you have a cell that doesnt know what staff it is dealing with...
+> Also notes should never be that far away from a staff unless there are ledger
+> lines close to the staff connecting the note conceptually to the staff"*
+
+Both halves were right, and chasing them overturned this lane's own diagnosis.
+
+**On the first half, the write-up was sloppy and the tree is not.** A cell knows
+its staff exactly — `cell/2/0/9/15` IS staff 9's cell 15, and cells run one
+measure at a time keyed `(page, system, staff, cell)`. What a cell is, is a
+CROP, padded 4 staff spaces (6 where the neighbour is far), and on a
+conductor's page that pad reaches the next staff's ink. `glyph/2/0/9/15/5`
+therefore means *the 5th detection in staff 9's cell-15 crop*, never *a note
+belonging to staff 9*. §7's phrase "filed on the wrong staff" invited exactly
+the confusion Sean reports.
+
+**On the second half, his convention is confirmed by the geometry:**
+
+| | distance from the FILED staff | distance from the staff Sean names |
+|---|--:|--:|
+| `glyph/4/0/9/5/7` | 3.60 spaces below staff 9 | **1.41 spaces above staff 10** |
+| `glyph/2/0/9/15/5` | 3.77 spaces above staff 9 | **1.55 spaces below staff 8** |
+
+1.4–1.55 spaces is the FIRST LEDGER LINE position. 3.6–3.8 spaces would need a
+three-rung ladder. The conventional reading is unambiguous in both, and it is
+his. The rungs that should prove it were not detected: the one x-overlapping
+`ledgerLine` near `glyph/4/0/9/5/7` is **7.34 spaces away**, and
+`glyph/2/0/9/15/5`'s cell holds **zero** ledgerLine detections — the recall gap
+that made 2.4a's `unladdered` rule net negative and kept it held back.
+
+## Correction 1 — `glyph_owner` DECIDED `glyph/4/0/9/5/7` CORRECTLY
+
+```
+subject glyph/4/0/9/5/7   quantity glyph_owner
+outcome decided   value "staff/4/0/10"   reason "distance"
+```
+
+**`staff/4/0/10` is Basso. That is exactly where Sean says the note belongs.**
+§7's claim that both subjects are `glyph_owner` failures is WRONG for this one:
+ownership got it right, by distance, without needing the ladder.
+
+The other subject, `glyph/2/0/9/15/5`, has **no `glyph_owner` verdict at all** —
+it never entered the contest. Two different causes, not one.
+
+## Correction 2 — §7b's "197 resolved to the FARTHER staff" was UNFOUNDED
+
+§7b reported that 197 of the 358 were "contested, and resolved to the FARTHER
+staff". **That sweep only checked whether a verdict EXISTED; it never read the
+verdict's VALUE.** Presence is not direction, and stating it as direction was
+the error CLAUDE.md names — a convincing number offered as evidence about its
+cause. Reading the values:
+
+| of the 358 geometrically suspicious noteheads | |
+|---|--:|
+| contested → **resolved to the NEAR staff (correct)** | **189** |
+| never contested at all | 161 |
+| contested → resolved elsewhere | 8 |
+
+**`glyph_owner` is largely getting this right.** The 8 are worth a look; the 189
+are it working.
+
+## What the defect actually is
+
+Both duration rules declare:
+
+```python
+reads=(Q.ONSET_COLUMN, Q.EVENT, Q.DURATION, Q.GLYPH_BOX)
+```
+
+**`Q.GLYPH_OWNER` is absent** (`inferences.py:298` and `:389`). So the rules walk
+glyphs by their DETECTION CELL and use that staff's onset columns and that
+staff's neighbours as witnesses — for a glyph ownership has already awarded
+somewhere else. On `glyph/4/0/9/5/7` the record says Basso; the rule inferred
+0.25 from **Violoncello's** column structure; the note is a Basso eighth
+(reference `[0.5, 0.5, 0.5]`, and Sean reads an eighth off the print).
+
+That is CLAUDE.md's standing bug class in its sharpest form: **the value existed
+and nothing read it.** And the declaration is the enforcement — a rule that
+tried to read `Q.GLYPH_OWNER` without declaring it would raise
+`UndeclaredEvidence`, so this is a one-line omission with a measurable
+consequence, not a hidden coupling.
+
+⚠️ **Still not a default decision, and the target has moved again**: the
+question for 2.3 is no longer "are these rules right" but "are they reading the
+right glyphs at all". The 161 never-contested glyphs remain a separate
+question, about `glyph_owner`'s DOMAIN (`subjects_from`), and
+`glyph/2/0/9/15/5` is one of them — though 2.4a refuses that one as not a
+notehead in any case.
