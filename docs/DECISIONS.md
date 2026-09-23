@@ -213,3 +213,13 @@ Format: `YYYY-MM-DD · who · the decision · because · (pointer)`
   part one system down, clef read, writes 24 of 27 · the fact sheet already
   speaks a supplied clef gaps-only (§8); identity-upstream is the 09-05
   inversion · a READ clef is never overruled · (ROADMAP 2.10)
+- 2026-09-23 · Sean (convention) · **A clef's size is consistent with the
+  staff and its position with the edge of the first measure of the system;
+  clef-sized ink at the header IS the clef, and a notehead box on it is the
+  error.** · *"it also looks like the clef box is too small. the size of clefs
+  are consistent to the staff and the edge of the first measure on the system
+  — that should be helpful geometrically"* · because on Litolff p3 the CV
+  locator found a 4.5-space cluster on the Viola staff at the header and
+  abstained `occupied` for two noteheads of conf 0.64/0.36 sitting on it — a
+  1-space symbol vetoing a 4.5-space read · a READ by geometry outranks 2.10's
+  inference · (ROADMAP 2.11)
