@@ -79,13 +79,14 @@ COMMIT="$(git rev-parse --short HEAD)"
 INFO="$(python3 - "$DOC_ID" "$MANIFEST" <<'PYEOF'
 import json
 import sys
+from pathlib import Path
 
 doc_id, manifest_path = sys.argv[1], sys.argv[2]
 sys.path.insert(0, ".")
 from tools.omr.acceptance import load_manifest, resolve_path  # noqa: E402
 
 try:
-    manifest = load_manifest(manifest_path)
+    manifest = load_manifest(Path(manifest_path))
 except Exception as exc:  # noqa: BLE001
     print(f"ERROR: could not load {manifest_path}: {exc}", file=sys.stderr)
     sys.exit(1)
