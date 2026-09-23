@@ -1,0 +1,24 @@
+{
+ "adjudicator": "Sean",
+ "date": "2026-09-23",
+ "method": "crops shown in chat by the coordinating session; Sean's words: 'the 2 crops are Alto and tenor clef'",
+ "verdicts": [
+  {
+   "crop": "litolff-p3-s0-st9-alto-header_window.png",
+   "subject": "staff/3/0/9",
+   "record": "beethoven5-litolff-mvt1-whole-20260923",
+   "claimed": "alto (by geometry, 2.11)",
+   "sean": "alto",
+   "correct": true
+  },
+  {
+   "crop": "breitkopf-p6-s1-st3-tenor-header_window.png",
+   "subject": "staff/6/1/3",
+   "record": "brahms1-breitkopf p6 one-page gather",
+   "claimed": "tenor (2.11; base tree read treble from a clefG box 5.7 spaces below the staff)",
+   "sean": "tenor",
+   "correct": true,
+   "note": "the 'one READ clef changed' gate failure was a CORRECTION of a wrong base reading; 2.11b (adjudicate_clef must read Q.CLEF_POSITION) stands"
+  }
+ ]
+}
