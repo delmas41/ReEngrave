@@ -223,3 +223,14 @@ Format: `YYYY-MM-DD · who · the decision · because · (pointer)`
   abstained `occupied` for two noteheads of conf 0.64/0.36 sitting on it — a
   1-space symbol vetoing a 4.5-space read · a READ by geometry outranks 2.10's
   inference · (ROADMAP 2.11)
+- 2026-09-23 · Sean · **Build the stage review (roadmap 3.4): a staff on a
+  system, every stage's evidence and decisions shown in turn, his corrections
+  filed as WITNESSES the stages re-decide with, never as edits; first on the
+  Litolff p3 Viola staff.** · *"yes — build it on the viola staff, corrections
+  as witnesses — I mainly want this information so that we can then use it to
+  determine how to refine the build, rules and decisions — structurally. All
+  of the info would be given to you to turn into fixes."* · because the three
+  faults found today (key, clef, bar sums) were each found by following one
+  staff through the stages by hand, and the record already files every
+  decision against a subject with the rows it used · the output of a review
+  pass is a feedback FILE for a session, not a corrected score · (ROADMAP 3.4)
