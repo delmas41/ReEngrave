@@ -260,8 +260,11 @@ committed — a smoke test is not Sean's reading.
 
 ## Gate
 
-* `pytest tools/omr/tests -m "not slow" -q` → **2,844 passed, 3 skipped, 0
-  failed** (main's 2,823 plus this lane's fast tests).
+* `pytest tools/omr/tests -m "not slow" -q` → **2,851 passed, 3 skipped, 0
+  failed** (main's 2,823 plus this lane's 28 fast tests). ⚠️ The first
+  write-up of this line said 2,844 — the figure measured BEFORE the seven
+  app-level tests were added in response to the two start-up faults below.
+  Corrected by re-running, not by arithmetic.
 * `pytest tools/omr/tests/test_stage_review.py -m "not slow" -q` → **28
   passed** in 1.4 s.
 * `pytest tools/omr/tests/test_stage_review_real_record.py -q` → **4 passed**
