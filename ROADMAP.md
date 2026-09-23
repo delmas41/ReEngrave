@@ -17,58 +17,78 @@ re-enter.
 
 ---
 
-## START HERE — state at the end of the manager session of 2026-09-22/23
+## START HERE — state at the end of the session of 2026-09-23
 
-Main is `49271c25` and carries everything below. The tree is the record; this
+Main is `16ed0f50` and carries everything below. The tree is the record; this
 block is the pointer. Read CLAUDE.md first (short), then this file, then
 `docs/DECISIONS.md`.
 
-**Landed today, in order:** Phase 0 (spec, chronicle, decisions log, flag
-table, `staged.check`, test tiers) · 2.1 closed (identity channels; the
-cello/bass convention measured on the plates, DECIDED, built as 2.1b) · 2.1c
-(dual-label lexicon) · 2.2 (key-signature precedence, engraved-only) · 1.3
-(`python3 -m tools.omr.acceptance`) · 3.1 (staged LilyPond exporter) · 2.4a
-(notehead precision, print-checked 12/12 by Sean) · 1.1 prep (ink summary,
-`--route-weights`, `gather_movement.sh`) · 1.1b (compact JSON; pooled verdict
-id lists — Breitkopf 13 MB/page) · **1.1 Beethoven whole movement DONE**
-(16 pages, 12.8 h; notes reaching the file 41% → 68%; held out 783 → 314).
+**Landed today, in order:** **1.2** (the decide-stage cost lane, verified and
+landed — see its two gate corrections below) · **1.2b opened** (the budget
+line, the second of 1.2's two defects, still untouched) · **1.4** (a first
+cleanup count on the Beethoven page — **not Sean's**) · **1.1 Brahms whole
+movement** · **2.3** (evidence cut, the defect found and fixed).
 
-**In flight when the session ended:** roadmap **1.2** on branch
-`claude/decide-stage-cost-1.2` (a lane profiling ADJUDICATE/EVALUATE, bounding
-system-scoped reads with an identical-verdict control, fixing
-`gather_movement.sh`'s budget line and its clean-tree guard, which refused
-Brahms on the first run's own untracked outputs). If that branch exists on
-origin, verify it as every branch today was verified (`git merge-base
---is-ancestor origin/main <branch>`; detach at it; `pytest -m "not slow"`;
-`python3 -m tools.omr.staged.check`; its own tests) and fast-forward main.
+**The measurement of the day: 1.2 works at scale.** Brahms 1 mvt 1, 27 denser
+Breitkopf pages, **1 h 11 m** — GATHER ~28 min, ADJUDICATE ~33 min (28
+decisions, 196,757 verdicts), GROUPS+EVALUATE ~5 min. Against Beethoven's 16
+pages at **12.8 h**. EVALUATE took 4 m 55 s, so **1.2's named-but-unfixed
+residual did not bite**. ⚠️ Not a controlled base-vs-arm — different document
+and page count — but consistent with 1.2's own superlinear claim.
+
+**Acceptance now covers all three** (`current.json` previously held only
+Beethoven): Litolff notes 7,878/11,632 (0.677); Breitkopf 13,952/24,533
+(0.569); engraved 358/371 (0.965), F1 0.947, OMR-NED 0.1519. ⚠️ **Breitkopf's
+0.569 against the old 4-page 0.678 is NOT a regression** — that record predates
+2.4a, whose two refusals hold back 4,043 glyphs (16.5% of gathered); excluding
+them gives 0.681. Do not quote the pair without the decomposition.
+
+**Two gate corrections 1.2 needed before it could land**, both worth knowing
+because the lane's own report asserted otherwise:
+- its identical-verdict control **could not finish on base** because the
+  control adjudicated all 7 systems and only filtered to one when dumping.
+  Restricted to one system's WORK it runs: **0 of 429 differing** on
+  subject/quantity/outcome/value/reason/basis/considered. The 52 `correlated`
+  differences are all the documented singleton removal, classified one by one.
+- one of the rewrite's **stated proofs was false** — the bucket-representative
+  shortcut assumed `_one_signal` ignores which observation it compares against;
+  it does not, through `closure(b)`. Repaired with a strictly faster rule.
 
 **Next actions, in order:**
-1. **1.4 — Sean's first cleanup count** on the Beethoven count page (print and
-   ours are under `benchmarks/acceptance/out/beethoven5-litolff/side-by-side/`,
-   bars 49–82), on `benchmarks/omr-cleanup-count-2026-09/CATEGORIES.md`;
-   commit under `benchmarks/omr-cleanup-count-2026-09/counts/`.
-2. **1.1 Brahms** once 1.2 lands: `bash benchmarks/acceptance/gather_movement.sh
-   brahms1-breitkopf --pages 0-26` from a clean main checkout with the asset
-   symlinks (CLAUDE.md §5a); unattended; then point the manifest at the record
-   (as done for Beethoven in `benchmarks/acceptance/manifest.json`) and run
-   `python3 -m tools.omr.acceptance`.
-3. **2.3** — the 1,376 `duration_narrowed` notes are now the largest loss on
-   Beethoven; the INFER duration rules (`OMR_INFER`) have never been checked
-   against a print. Score them against the reference encoding through the
-   measure alignment (`tools/omr/training/mxl_verdicts.py`), then decide.
-4. **no_pitch 807** — staves whose clef abstained on the whole movement; see
-   which systems and why (`trace --family note`), since 2.2's engraved-only
-   rule cannot reach a scan.
-5. 3.1b (swap the acceptance stopgap for the native LilyPond exporter), 0.2b
-   (enforce the flag triage), 0.4a/0.4d (test fixture, battery archive).
+1. **2.3's default is still open** and both duration rules stay OFF. The
+   blocking question is no longer "are they right" — the rules now read
+   `Q.GLYPH_OWNER` and reach fell 16 → 13 with 0 surviving values changed. What
+   is missing is print adjudication of the remaining crops and a Breitkopf run
+   (the funnel's shape INVERTS between the plates).
+2. **`glyph_owner`'s DOMAIN.** Of 358 noteheads sitting nearer a neighbouring
+   staff than their own, **161 never entered the contest at all** — a
+   `subjects_from` question, not a scoring one. The 189 that were contested
+   resolved CORRECTLY; only 8 went elsewhere.
+3. **The in-bar accidental has no roadmap item and is the largest thing the
+   count found.** 1,531 glyphs detected, **0 read into a verdict**, 0
+   `<accidental>` elements across 7,878 notes — every alteration in the file
+   comes from the key signature alone. Known to `export.py`'s own comment since
+   2026-09-21; nobody can work on it without an item. **Sean's call.**
+4. **Sean's own cleanup count** on all three pages. Today's is a proxy taken by
+   the system that produced the output, which is its weakest form.
+5. **1.2b** — the run script's budget still covers GATHER only; it printed
+   "~41.9 min" for a run that took 1 h 11 m. Two data points now exist.
+6. 3.1b, 0.2b, 0.4a/0.4d as before.
 
-**Operational facts from the night:** GATHER on 16 scan pages fits its 25-min
-estimate; the DECIDING stages took ~12.3 h single-core at 17 GB — the cost, not
-the reading, is the budget. Records written by a process that started before
-`dbc9962b` are unpooled; `record_io.load_record` reads both forms. Lanes run in
-`isolation: worktree`; a lane in the manager's worktree switches its branch. A
-peer branch that appended to the old CLAUDE.md merges as chronicle := theirs,
-CLAUDE.md := the spec.
+**Operational facts from the day:**
+- **`infer.py` imports `inferences` LAZILY** (`_ensure_rules`), so editing that
+  file mid-gather reaches a running process and makes its provenance stamp a
+  lie. Work in a separate worktree until the run is past INFER.
+- **`benchmarks/acceptance/out/` is deliberately NOT gitignored** (the
+  clean-tree guard exempts it by path), so `git add -A` there sweeps in the
+  gather's own 300-500 MB record and the push is rejected. Records live in
+  `library/_shared-records/`; only derived artefacts are committed. Now
+  gitignored by pattern.
+- **A crop that does not name its staff is not evidence.** Sean, on a crop
+  centred in the gap between two staves: *"i dont know which staff the cell is
+  focussing on."* Crops now draw the filed staff's own lines.
+- The gather script refuses to guess a movement's last page, and it is right
+  to: `0-26` for Brahms was a ledger claim until the plate was checked.
 
 ---
 
