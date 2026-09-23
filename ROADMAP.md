@@ -17,6 +17,61 @@ re-enter.
 
 ---
 
+## START HERE — state at the end of the manager session of 2026-09-22/23
+
+Main is `49271c25` and carries everything below. The tree is the record; this
+block is the pointer. Read CLAUDE.md first (short), then this file, then
+`docs/DECISIONS.md`.
+
+**Landed today, in order:** Phase 0 (spec, chronicle, decisions log, flag
+table, `staged.check`, test tiers) · 2.1 closed (identity channels; the
+cello/bass convention measured on the plates, DECIDED, built as 2.1b) · 2.1c
+(dual-label lexicon) · 2.2 (key-signature precedence, engraved-only) · 1.3
+(`python3 -m tools.omr.acceptance`) · 3.1 (staged LilyPond exporter) · 2.4a
+(notehead precision, print-checked 12/12 by Sean) · 1.1 prep (ink summary,
+`--route-weights`, `gather_movement.sh`) · 1.1b (compact JSON; pooled verdict
+id lists — Breitkopf 13 MB/page) · **1.1 Beethoven whole movement DONE**
+(16 pages, 12.8 h; notes reaching the file 41% → 68%; held out 783 → 314).
+
+**In flight when the session ended:** roadmap **1.2** on branch
+`claude/decide-stage-cost-1.2` (a lane profiling ADJUDICATE/EVALUATE, bounding
+system-scoped reads with an identical-verdict control, fixing
+`gather_movement.sh`'s budget line and its clean-tree guard, which refused
+Brahms on the first run's own untracked outputs). If that branch exists on
+origin, verify it as every branch today was verified (`git merge-base
+--is-ancestor origin/main <branch>`; detach at it; `pytest -m "not slow"`;
+`python3 -m tools.omr.staged.check`; its own tests) and fast-forward main.
+
+**Next actions, in order:**
+1. **1.4 — Sean's first cleanup count** on the Beethoven count page (print and
+   ours are under `benchmarks/acceptance/out/beethoven5-litolff/side-by-side/`,
+   bars 49–82), on `benchmarks/omr-cleanup-count-2026-09/CATEGORIES.md`;
+   commit under `benchmarks/omr-cleanup-count-2026-09/counts/`.
+2. **1.1 Brahms** once 1.2 lands: `bash benchmarks/acceptance/gather_movement.sh
+   brahms1-breitkopf --pages 0-26` from a clean main checkout with the asset
+   symlinks (CLAUDE.md §5a); unattended; then point the manifest at the record
+   (as done for Beethoven in `benchmarks/acceptance/manifest.json`) and run
+   `python3 -m tools.omr.acceptance`.
+3. **2.3** — the 1,376 `duration_narrowed` notes are now the largest loss on
+   Beethoven; the INFER duration rules (`OMR_INFER`) have never been checked
+   against a print. Score them against the reference encoding through the
+   measure alignment (`tools/omr/training/mxl_verdicts.py`), then decide.
+4. **no_pitch 807** — staves whose clef abstained on the whole movement; see
+   which systems and why (`trace --family note`), since 2.2's engraved-only
+   rule cannot reach a scan.
+5. 3.1b (swap the acceptance stopgap for the native LilyPond exporter), 0.2b
+   (enforce the flag triage), 0.4a/0.4d (test fixture, battery archive).
+
+**Operational facts from the night:** GATHER on 16 scan pages fits its 25-min
+estimate; the DECIDING stages took ~12.3 h single-core at 17 GB — the cost, not
+the reading, is the budget. Records written by a process that started before
+`dbc9962b` are unpooled; `record_io.load_record` reads both forms. Lanes run in
+`isolation: worktree`; a lane in the manager's worktree switches its branch. A
+peer branch that appended to the old CLAUDE.md merges as chronicle := theirs,
+CLAUDE.md := the spec.
+
+---
+
 ## Phase 0 — Stop and consolidate
 
 | item | what | status |
