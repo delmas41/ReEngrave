@@ -220,13 +220,20 @@ class TestOnRealSyntheticPDFsNoClassifierInjected:
 
 
 class TestTheImportIsSharedNeverCopied:
-    def test_route_weights_is_the_legacy_function(self):
-        import tools.omr.staged.weight_routing as wr
-        import tools.omr.transcribe as legacy
-        import inspect
-        src = inspect.getsource(wr)
-        assert "from ..transcribe import" in src
-        assert "_route_weights" in src
-        # the picking logic itself is never restated here
-        assert "ENGRAVED_WEIGHTS" not in src or "engraved_weights" not in [
-            n.lower() for n in dir(wr)]
+    """⚠️ Behavioural, not source-text (CLAUDE.md 6c bars a new
+    `inspect.getsource`/AST test): if `weight_routing.py` ever restated the
+    picking logic instead of importing `_route_weights`, an env override the
+    LEGACY function honours would stop being honoured here. That is exactly
+    `TestRoutingFires.test_engraved_routes_to_engraved_weights` above, which
+    already sets `OMR_ENGRAVED_WEIGHTS` and checks the routed path follows
+    it -- restated here as its own named claim rather than a new test."""
+
+    def test_an_env_override_only_the_legacy_function_knows_about_still_works(
+            self, monkeypatch, tmp_path):
+        engraved = tmp_path / "custom.pt"
+        engraved.write_bytes(b"x")
+        monkeypatch.setenv("OMR_ENGRAVED_WEIGHTS", str(engraved))
+        weights, prov, cls = resolve_staged_weights(
+            Path("x.pdf"), [0], weights="auto", route_weights=True,
+            classify=_classifier(ENGRAVED))
+        assert weights == str(engraved)

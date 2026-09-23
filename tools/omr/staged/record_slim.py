@@ -67,6 +67,20 @@ import json
 import os
 from typing import Any, Dict, Iterator, Tuple
 
+#: ⚠️ NOT A DERIVED CHECK IN THE AUDIT SENSE -- but `wiring.py`'s DETAIL
+#: question treats this marker as meaning exactly what applies here too:
+#: "this module in the PRODUCTION tree names a detail key without
+#: CONSUMING it." `_finalize_ink_row` WRITES `ink_total_area_px`,
+#: `ink_largest_share`, `ink_detector_coverage_max` and
+#: `ink_explained_by_union` as a SECOND producer of the same keys
+#: `gather_ink` emits (this tool exists to migrate a record gathered
+#: before that default existed), never reads them as evidence. Without
+#: this, committing this file marks those four `wiring.KNOWN_GAPS`
+#: entries STALE for the wrong reason -- the same failure mode
+#: `wiring.py`'s own comments record for `capture.py` and `trace.py`
+#: (a module MENTIONING a write-side key is not the same as READING it).
+DERIVED_CHECK = True
+
 #: Mirrors `trace._cell_of` / `record.Subject.at(Kind.CELL)`: a glyph or cell
 #: subject's cell identity is its first FOUR positional components, never the
 #: fifth (glyph ordinal). Reimplemented here, not imported, so this module

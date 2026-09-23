@@ -274,6 +274,15 @@ STAGE_OF_FILE = {
     # `positions.py` on the day it landed.
     "lilypond.py": "EXPORT",
     "pipeline.py": "HARNESS", "record.py": "HARNESS",
+    # ⚠️ ROADMAP 3.2 (first half). `weight_routing.py` runs BEFORE `gather()`
+    # -- it classifies the PDF and picks a checkpoint, then hands its
+    # classification into `gather_input_domain` so `Q.INPUT_DOMAIN` is filed
+    # from the SAME evidence rather than a second, independently re-run
+    # classification. Like `pipeline.py` it orchestrates rather than reading
+    # a `Q.*` quantity through `Evidence` (`_accessors()`'s scan finds no
+    # `ev.rows`/`ev.value`-shaped call in it), so it is HARNESS for the same
+    # reason `pipeline.py` is, not a stage with its own row of the table.
+    "weight_routing.py": "HARNESS",
 }
 ORDER = ["GATHER", "ADJUDICATE", "EVALUATE", "INFER", "EXPORT", "HARNESS"]
 
@@ -347,6 +356,17 @@ NOT_A_STAGE = frozenset({
     # guard this comment sits beside is what a new, unregistered staged
     # module trips, proved on itself before this line existed.
     "check.py",
+    # ⚠️ ROADMAP 1.1. `record_slim.py` is an OFFLINE MIGRATION TOOL, not a
+    # pipeline stage or a derived check: it rewrites an already-written
+    # record's `Q.INK` rows into the roadmap-1.1 summary form for a record
+    # gathered before that default existed. It never imports `record.py`
+    # (it re-derives the tiny bit of subject-string parsing it needs rather
+    # than pull in the `Q`/`Evidence`/`Log` machinery) and reads no
+    # quantity through `Evidence` -- it streams raw JSON with `ijson`. It is
+    # registered here rather than left unaccounted for the same reason
+    # `check.py` names: an unregistered staged module trips
+    # `unaccounted_modules()`.
+    "record_slim.py",
 })
 
 
