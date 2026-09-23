@@ -436,3 +436,30 @@ right glyphs at all". The 161 never-contested glyphs remain a separate
 question, about `glyph_owner`'s DOMAIN (`subjects_from`), and
 `glyph/2/0/9/15/5` is one of them — though 2.4a refuses that one as not a
 notehead in any case.
+
+## §8b. The size of the defect on this document: 2 of 16
+
+Every inference checked against its glyph's own `Q.GLYPH_OWNER` verdict:
+
+| | inferences |
+|---|--:|
+| **ownership points at a DIFFERENT staff than the detection cell** | **2** |
+| ownership agrees with the detection cell | 1 |
+| no ownership verdict — the glyph never entered the contest | 13 |
+
+The two are both `collapse_duration_to_barline`:
+
+* `glyph/4/0/9/5/7` — cell staff 9 (Violoncello), owned by **`staff/4/0/10`**
+  (Basso). Sean adjudicated this one; the rule inferred 0.25 from Violoncello's
+  columns where the note is a Basso eighth.
+* `glyph/2/1/0/13/0` — cell staff 0, owned by **`staff/2/1/1`**. **Not yet seen
+  by anyone**; it is the same shape and is the natural third crop.
+
+So wiring `Q.GLYPH_OWNER` into the two rules' `reads` would change the answer on
+**2 of 16 (12.5 %)** here. The other 13 are a different matter: with no
+ownership verdict the detection cell is the only claim there is, so reading the
+quantity would return nothing and the rule would behave exactly as it does now.
+**Fixing the omission does not touch them** — they need `glyph_owner`'s DOMAIN
+widened, which is the `subjects_from` question and a separate lane.
+
+⚠️ 12.5 % is n = 1 document and 16 inferences. It is a size, not a rate.
