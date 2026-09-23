@@ -371,6 +371,16 @@ NOT_A_STAGE = frozenset({
     # `check.py` names: an unregistered staged module trips
     # `unaccounted_modules()`.
     "record_slim.py",
+    # ⚠️ ROADMAP 1.1b. `record_io.py` is the record FILE's spelling and
+    # nothing else: it pools the verdict id lists (`considered`/`basis`/
+    # `correlated`) that a system-scoped read repeats per verdict and
+    # expands them again on load. It reads no quantity, names no quantity
+    # and no detail key, and touches no `Log` -- `pool_id_lists` takes the
+    # dict `Log.to_json` already produced. Registered here for the reason
+    # the four entries above give: the guard tripped on it on arrival (the
+    # fast tier's `test_brakes.py::test_reach_accounts_for_this_module` and
+    # `check` both went red), which is that guard doing its job.
+    "record_io.py",
 })
 
 

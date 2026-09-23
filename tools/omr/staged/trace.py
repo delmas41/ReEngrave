@@ -1115,7 +1115,8 @@ def render(rep: Dict[str, Any]) -> str:
 
 
 def _load(path: str) -> X.Record:
-    data = json.loads(Path(path).read_text())
+    from .record_io import load_record
+    data = load_record(path)
     if "record" not in data:
         # ⚠️ RAISES. A record whose envelope we do not recognise must not be
         # read as an empty one -- `wiring.with_run` learned the same lesson,
@@ -1145,7 +1146,8 @@ def main(argv: Optional[List[str]] = None) -> int:
         rec = _load(args.run)
         report_obj = None
         if args.export:
-            data = json.loads(Path(args.run).read_text())
+            from .record_io import load_record
+            data = load_record(args.run)
             # ⚠️ THE REAL EXPORTER, never a re-derivation. `to_musicxml`
             # returns `(xml, report)` and the report is the only place the
             # refusal ladder is spelled.

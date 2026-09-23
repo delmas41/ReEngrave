@@ -468,7 +468,8 @@ def reading_scores(record_path: Path, truth_path: Path, page_index: int) -> Dict
     positionally" trap this adapter exists to close.
     """
     SR_adapter = _import_from_path("acceptance_staged_reading", _STAGED_READING_MODULE)
-    result = json.loads(record_path.read_text())
+    from tools.omr.staged.record_io import load_record
+    result = load_record(record_path)
     truth = json.loads(truth_path.read_text())
     like, stats = SR_adapter.staged_as_result(result, page_index, apply_ownership=True)
     if not stats.get("detections_placed"):
@@ -710,7 +711,8 @@ def process_document(doc: Dict[str, Any], *, step_timeout_s: float
 
     # ── load + export ──────────────────────────────────────────────────
     def _load_and_export():
-        result = json.loads(record_path.read_text())
+        from tools.omr.staged.record_io import load_record
+        result = load_record(record_path)
         provenance = result.get("provenance") or {}
         xml, report = X.to_musicxml(result)
         return {"xml": xml, "report": report, "provenance": provenance}

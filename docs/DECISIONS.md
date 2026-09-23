@@ -85,3 +85,16 @@ Format: `YYYY-MM-DD · who · the decision · because · (pointer)`
   detection at all, a recall gap the rule cannot see past · reversible here;
   12 fresh crops await Sean in `benchmarks/omr-notehead-precision-2026-09/out/print/`
   · (`claude/notehead-precision-2.4a` 5dbd0758)
+- 2026-09-22 · session, on measurement (roadmap 1.1b) · **A staged record FILE
+  pools its repeated verdict id lists (`tools/omr/staged/record_io.py`), and a
+  record file is read through `record_io.load_record`, never bare `json.loads`.**
+  · because an `arc_owner` verdict is 99.2 % three copies of its system's
+  ~1,800 glyph ids (`considered`/`basis`/`correlated`), identical for every arc
+  in the system, and the content is load-bearing (`basis` → `Log.closure` →
+  the circularity filter) so only the SPELLING may change; pooled, Breitkopf
+  goes 59.3 → 13.2 MB/page and Litolff 18.8 → 8.0, both under 1.1's 20 MB/page
+  · ⚠️ a naive `json.loads` reader sees a dict where a list was and a
+  `quantity_of.get(rid)` walk silently drops it — which is why the loader is a
+  rule and not a convenience; nothing in memory is pooled, `Log`/`Verdict`/every
+  stage are untouched, and the writer proves its own round trip on every call ·
+  (`benchmarks/omr-ink-gather-2026-09/FINDINGS.md` §12)

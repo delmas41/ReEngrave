@@ -106,7 +106,8 @@ def main(argv=None):
     args = ap.parse_args(argv)
     out = Path(args.out_dir)
     out.mkdir(parents=True, exist_ok=True)
-    rec = json.load(open(args.record))["record"]
+    from tools.omr.staged.record_io import load_record
+    rec = load_record(args.record)["record"]
 
     base = run(rec, relocate=True)
     base_words, base_cells = words_of(base)

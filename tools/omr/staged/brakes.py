@@ -537,7 +537,8 @@ def _render(record_path: Optional[str]) -> List[str]:
     out.append("")
 
     if record_path:
-        record = json.loads(pathlib.Path(record_path).read_text())
+        from .record_io import load_record
+        record = load_record(record_path)
         m = measure(record)
         out.append(f"── measured on {pathlib.Path(record_path).name}")
         out.append(f"   unresolved verdicts        {m['unresolved_verdicts']:>6}")
@@ -575,8 +576,8 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
             "vocabulary_unresolved": vocabulary_gap()[1],
         }
         if args.run:
-            payload["measured"] = measure(
-                json.loads(pathlib.Path(args.run).read_text()))
+            from .record_io import load_record
+            payload["measured"] = measure(load_record(args.run))
         print(json.dumps(payload, indent=2, sort_keys=True))
         return 0
 

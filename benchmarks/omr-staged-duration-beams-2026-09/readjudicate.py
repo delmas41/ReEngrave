@@ -98,7 +98,8 @@ def main() -> int:
     ap.add_argument("--out")
     a = ap.parse_args()
 
-    rec = json.load(open(a.record))["record"]
+    from tools.omr.staged.record_io import load_record
+    rec = load_record(a.record)["record"]
     if a.off:
         _disable(a.off)
     log = rebuild(rec)

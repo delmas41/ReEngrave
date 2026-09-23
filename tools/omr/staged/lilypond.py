@@ -537,7 +537,8 @@ def main(argv: Optional[List[str]] = None) -> int:
     ap.add_argument("--coverage", default=None, help="write the report here")
     args = ap.parse_args(argv)
 
-    result = json.loads(pathlib.Path(args.staged_json).read_text())
+    from .record_io import load_record
+    result = load_record(args.staged_json)
     text, report = to_lilypond(result)
     if args.out:
         pathlib.Path(args.out).write_text(text)

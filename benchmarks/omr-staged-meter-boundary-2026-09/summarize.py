@@ -15,6 +15,7 @@ from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[1]
+sys.path.insert(0, str(ROOT))  # for `tools.omr.staged.record_io.load_record`
 
 #: (report tag -> the fixture the TRUTH table is keyed on)
 FIXTURE_OF = {
@@ -77,7 +78,8 @@ def main():
         fixture = FIXTURE_OF.get(tag)
         if fixture is None:
             continue
-        data = json.loads(rec.read_text())["record"]
+        from tools.omr.staged.record_io import load_record
+        data = load_record(rec)["record"]
         # ⚠️ THE ID LISTS ARE DROPPED AND REPLACED BY THEIR LENGTHS.
         # `considered`, `basis` and `correlated` are lists of observation and
         # verdict ids -- thousands per verdict, meaningless without the record

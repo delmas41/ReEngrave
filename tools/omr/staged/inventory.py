@@ -505,7 +505,8 @@ def with_run(inv: Dict[str, Any], run_path: str) -> Dict[str, Any]:
     domain writes nothing, and nothing in the run record says it was supposed
     to. Reading the registry against the record is the only way to see it.
     """
-    result = json.loads(pathlib.Path(run_path).read_text())
+    from .record_io import load_record
+    result = load_record(run_path)
     summary = result.get("summary", {})
     silent: List[str] = []
     for row in inv["decisions"]:

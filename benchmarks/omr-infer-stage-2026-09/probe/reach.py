@@ -32,7 +32,8 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[3]))
 
 
 def load(path: str) -> dict:
-    doc = json.load(open(path))
+    from tools.omr.staged.record_io import load_record
+    doc = load_record(path)
     return doc["record"] if "record" in doc else doc
 
 

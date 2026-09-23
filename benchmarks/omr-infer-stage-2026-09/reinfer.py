@@ -209,7 +209,8 @@ def main() -> int:
     ap.add_argument("--json", help="write the summary figures here")
     a = ap.parse_args()
 
-    doc = json.load(open(a.record))
+    from tools.omr.staged.record_io import load_record
+    doc = load_record(a.record)
     rec = doc["record"] if "record" in doc else doc
 
     # ⚠️ PROVENANCE, REPORTED NOT ENFORCED. A record that cannot name its tree

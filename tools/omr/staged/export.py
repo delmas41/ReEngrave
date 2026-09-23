@@ -3865,7 +3865,8 @@ def main(argv: Optional[List[str]] = None) -> int:
     ap.add_argument("--coverage-only", action="store_true")
     args = ap.parse_args(argv)
 
-    result = json.loads(pathlib.Path(args.staged_json).read_text())
+    from .record_io import load_record
+    result = load_record(args.staged_json)
     if args.coverage_only:
         report = coverage(result)
     else:

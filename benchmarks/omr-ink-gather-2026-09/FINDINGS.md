@@ -556,3 +556,124 @@ python3 benchmarks/omr-ink-gather-2026-09/mutate.py
 symlink `omr-weights/`, `library/` and `tools/omr/training/data/weights` from
 the main checkout first — three of the four symlinks CLAUDE.md names fail on
 the scan side only.
+
+## 12. Roadmap 1.1b, second half — `arc_owner`'s `considered` is three copies of one set, and the fix is spelling (2026-09-22)
+
+The first half of 1.1b (compact JSON, `6b7dd3a3`) left Breitkopf at 59.3
+MB/page against a 20 MB/page budget and named `arc_owner`'s `considered`
+lists as the remaining 75 %. This section measured WHAT in those verdicts is
+large, whether the content can change, and what a spelling change buys.
+
+### 12.1 Per FIELD, not per quantity
+
+`byte_share.py` sizes a verdict whole. Splitting an `arc_owner` verdict by
+field on the two compact shared records (probe: `pool_control.py`'s
+predecessor, streamed with `ijson`; numbers are compact-JSON bytes):
+
+| field | Breitkopf (2,207 verdicts) | Litolff (779 verdicts) |
+|---|---|---|
+| `basis` | 68.0 MB · 37.1 % | 16.9 MB · 37.7 % |
+| `correlated` | 56.9 MB · 31.0 % | 13.7 MB · 30.7 % |
+| `considered` | 56.8 MB · 31.0 % | 13.7 MB · 30.6 % |
+| `detail` | 0.75 MB · 0.4 % | 0.19 MB · 0.4 % |
+| everything else | < 0.2 MB | < 0.1 MB |
+
+So the verdict is **99.2 % three id lists**, and they are the SAME ids three
+times: `considered` (median 1,828 ids on Breitkopf, 1,600 on Litolff),
+`basis` = `considered` ∪ closures (median 2,381 / 2,063), and `correlated`
+= the same rows regrouped by `(reader, frame, quantity)` (median 1,827 /
+1,599 ids in ~10 / ~18 groups). Per verdict the ids are ~1,777 `glyph_box`
+rows, ~14 `staff_spacing`, ~8 `glyph_owner` verdicts and the 1 `arc_box`
+(Breitkopf; Litolff 755 / 12 / 2 / 1).
+
+**`considered − used` is IDENTICAL for every arc in a system**: exactly one
+distinct set per system on both documents (7 systems each). That is
+`adjudicate_arc_owner` reading `ev.rows(Q.GLYPH_BOX, scope=SELF_AND_DESCENDANTS,
+subject=system)` once per arc, as its rival-staff rule requires, and the
+harness recording that read faithfully. `wedge_anchor` has the same shape at
+smaller scale (47 verdicts, 80 KB each, 35 / 32 / 32 %).
+
+### 12.2 The content cannot shrink; the spelling can
+
+The three fields are harness-computed (`adjudicate_one`), and `basis` is
+load-bearing: `Log.closure` walks it, and `Evidence._admit`'s circularity
+filter reads that closure, so a later decision that reads an `arc_owner`
+verdict would see a different closure if `basis` were cut. Narrowing the
+read itself (form 1 in the roadmap row) is an algorithm change to the rival
+search and was not attempted. Recording the population as a "count plus a
+query" would change `Verdict` and every consumer.
+
+What was done instead: `tools/omr/staged/record_io.py` pools the lists **in
+the file only**. Verdicts of one quantity, one decider and one system share
+a core; each verdict's list is written as a reference to the core plus its
+private ids at their positions (`{"$pool": id, "ins": [[0, "obs:005283"]]}`),
+`correlated`'s inner groups are interned by content, and `record.pools`
+holds each core once. `Log`, `Verdict`, `Evidence`, every stage, and the
+in-memory `result` dict the CLI hands `--musicxml` are untouched.
+`load_record` expands a file back to exactly the dict `Log.to_json`
+produced; a list under 64 ids or a group of one is written inline exactly
+as before, so every test fixture's record is byte-for-byte what it was.
+
+### 12.3 Result
+
+`pool_control.py` on the two compact shared records:
+
+| document | compact (1.1b first half) | pooled | per page |
+|---|---|---|---|
+| Litolff `beethoven5-p1-p4-ink-identity-slim` | 75.0 MB | **32.2 MB** (42.9 %) | 18.8 → **8.0 MB/page** |
+| Breitkopf `brahms1-breitkopf-p0-p3-ink-slim` | 237.3 MB | **52.7 MB** (22.2 %) | 59.3 → **13.2 MB/page** |
+
+Against the original `indent=2` files (146.4 / 461.1 MB) that is 22 % and
+11 %. Both acceptance scans are under the 20 MB/page budget. Pooling costs
+0.9 s / 2.7 s at write time including the self-check, against a 93 s/page
+gather. On the pooled Breitkopf the largest quantity is now `duration` at
+9.7 MB (18.8 %), then `arc_kind` 5.1 MB, `glyph_box` 4.6 MB,
+`stem_direction` 4.4 MB, `arc_owner` 3.3 MB (6.5 %): no single lever above a
+fifth of the file.
+
+### 12.4 Controls, each able to fail
+
+1. **The writer checks itself**: `pool_id_lists` expands its own output and
+   raises `PoolMismatch` unless every pooled field deep-equals the input.
+   `test_record_pools.py` breaks `_decode` and watches it raise.
+2. **`expand(pool(record)) == record`, every key**, on both real records —
+   and, in the same run, bare `json.loads` of the pooled text is REQUIRED to
+   differ from the original (89 / 100 pools written), so the equality was
+   won by expansion and not by a writer that pooled nothing.
+3. **`trace --run <pooled> --empty-claims` is byte-identical** to the
+   original on both documents (the first half's own control), through the
+   routed loader; a per-subject trace of an `arc_owner` verdict on the
+   pooled file reads its full considered count.
+4. **A dangling reference raises** rather than reading as an empty list.
+5. `record_slim.convert` on a pooled file copies `pools` and the references
+   through verbatim (tested); `positional_store.stream_observations` never
+   sees them (observations are not pooled).
+6. `check`: open findings unchanged at 255; fast tier green (see the
+   roadmap row for the counts).
+
+### 12.5 Blast radius, enumerated rather than feared
+
+The roadmap row worried that "every `benchmarks/*/*.py` script that parses a
+raw verdict dict" was in scope. Separating readers of a verdict's VALUE from
+readers of its three id-list fields bounds it: a pooled file differs from an
+unpooled one in `considered`, `basis`, `correlated` and the added
+`record.pools` key, nothing else. Readers of those fields, all routed through
+`record_io.load_record`: `trace.py`, `brakes.py`; `reinfer.py`,
+`probe/reach.py` (infer-stage), `probe/edges.py` (plumbing),
+`dynamics_arm.py` (dedupe), `summarize.py` (meter-boundary),
+`readjudicate.py` (duration-beams); plus the loaders that hand a record to
+a consumer (`export`/`lilypond` CLIs, `inventory`, `wiring.with_run`,
+`acceptance`, `factsheet`). `byte_share.py` now counts `record.pools` as its
+own row. The ~90 other benchmark scripts read verdict values only and are
+unaffected by construction.
+
+### 12.6 Not established, and one thing noticed
+
+- Whole-movement pages were not measured (the 1.1 gathers are the first
+  data); a page denser in arcs than Breitkopf p0–p3 is bounded by the pooled
+  form's per-system core, not per-arc, so density in ARCS no longer scales
+  the file — density in NOTES does, through `duration` and `glyph_box`.
+- `Evidence.correlated_groups` is O(n²) over `_seen`: ~1,800² pair tests per
+  `arc_owner` verdict, 2,207 verdicts on Breitkopf. That is an ADJUDICATE
+  wall-time cost, not a size one, and was NOT measured here. It is the
+  natural next question if a whole-movement adjudicate is slow.

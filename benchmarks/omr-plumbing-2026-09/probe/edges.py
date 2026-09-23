@@ -107,7 +107,8 @@ def measure(paths: list) -> dict:
     for p in paths:
         arm = pathlib.Path(p).stem
         arms.append(arm)
-        d = json.loads(pathlib.Path(p).read_text())
+        from tools.omr.staged.record_io import load_record
+        d = load_record(p)
         rec = d.get("record", d)
         q_of = {}
         for o in rec.get("observations", ()):

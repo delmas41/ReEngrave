@@ -47,6 +47,19 @@ def measure(path: str, top: int = 10) -> dict:
                 total_proxy += size
                 total_rows += 1
 
+    # ⚠️ Roadmap 1.1b: a record written after 2026-09-22 carries its repeated
+    # verdict id lists ONCE, under `record.pools` (`record_io.py`), and each
+    # verdict holds a reference. Streaming `record.verdicts` alone would then
+    # size a pooled `arc_owner` verdict at its reference and silently drop
+    # the pools from the total, so they are counted here as their own row.
+    with open(path, "rb") as f:
+        for pid, ids in ijson.kvitems(f, "record.pools"):
+            size = len(json.dumps(ids, separators=(",", ":"), default=str))
+            proxy_bytes[("pools", pid.split(":")[0])] += size
+            proxy_count[("pools", pid.split(":")[0])] += 1
+            total_proxy += size
+            total_rows += 1
+
     rows = sorted(proxy_bytes.items(), key=lambda kv: -kv[1])
     result = {
         "path": path,

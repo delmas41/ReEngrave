@@ -267,7 +267,8 @@ def main(argv=None) -> int:
                          "benchmarks/omr-ink-gather-2026-09/probe/"
                          "byte_share.py); the ~115 MB/page a full-component "
                          "Breitkopf gather runs is dominated by `arc_owner`'s "
-                         "`considered` lists, unaffected by this flag. Only "
+                         "`considered` lists, unaffected by this flag (and "
+                         "pooled in the FILE by `record_io` since 1.1b). Only "
                          "`tools/omr/positional_store.py` needs the "
                          "per-component form; pass this when feeding it.")
     ap.add_argument("--progress", action="store_true")
@@ -377,12 +378,21 @@ def main(argv=None) -> int:
     # since every real gather passes `--out` -- and un-indented JSON on one
     # line is unreadable there, so that path alone still pretty-prints;
     # only the file actually WRITTEN to disk goes compact.
-    file_text = json.dumps(result, separators=(",", ":"), default=str)
+    #
+    # ⚠️ AND POOLED (roadmap 1.1b, same day, `record_io`): the FILE spells a
+    # verdict id list that repeats another list in its system as one pooled
+    # copy plus the private ids, because an `arc_owner` verdict is 99 %
+    # three copies of its system's ~1,800 glyph ids and there are 2,207 of
+    # them on Breitkopf. `result` itself is NOT pooled -- `--musicxml` below
+    # and every in-memory consumer see the plain dict -- and a reader of the
+    # file goes through `record_io.load_record`, never bare `json.loads`.
+    from .record_io import dumps_for_file
+    file_text = dumps_for_file(result, separators=(",", ":"), default=str)
     if args.out:
         Path(args.out).write_text(file_text)
         print(f"wrote {args.out}")
     else:
-        print(json.dumps(result, indent=2, default=str))
+        print(dumps_for_file(result, indent=2, default=str))
 
     if args.musicxml:
         from . import export as staged_export

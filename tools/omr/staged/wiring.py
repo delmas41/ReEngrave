@@ -1447,7 +1447,8 @@ def with_run(rep: Dict[str, Any], run_path: str) -> Dict[str, Any]:
     files. The static derivation answers for the tree; this answers for one
     run, and where they disagree the disagreement is the finding.
     """
-    data = json.loads(pathlib.Path(run_path).read_text())
+    from .record_io import load_record
+    data = load_record(run_path)
     from .record import Q
     by_value = {getattr(Q, n): n for n in vars(Q)
                 if n.isupper() and not n.startswith("_")}

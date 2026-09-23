@@ -47,6 +47,10 @@ compact content (unrelated to ink, reported here so nobody re-measures it
 by surprise) and this tool does NOT touch them** -- out of scope for
 roadmap 1.1's ink-summary item, and `record_slim`'s own compact-format
 side effect is what happens to shrink them anyway on the way through.
+(Closed the same day by roadmap 1.1b's second half: `record_io.py` pools
+those lists in the FILE and this tool copies `pools` and the references
+through verbatim -- `test_record_pools.py` checks that. Measured in
+`FINDINGS.md` §12.)
 
 ⚠️ **VERIFIED, NOT ASSUMED, THAT SLIMMING INK IS SAFE ON THE TWO COMMITTED
 RECORDS**: neither file has a single verdict whose `basis` / `considered` /

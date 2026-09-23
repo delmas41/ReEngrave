@@ -399,7 +399,8 @@ def _from_dossier(dossier_id: str | None) -> tuple[dict[str, Any], list[str]]:
 # --------------------------------------------------------------------------
 
 def _load_record(path: str | Path) -> dict[str, Any]:
-    d = json.loads(Path(path).read_text())
+    from tools.omr.staged.record_io import load_record
+    d = load_record(path)
     return d.get("record", d)
 
 
