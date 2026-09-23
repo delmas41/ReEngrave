@@ -563,3 +563,287 @@ stem."* EVALUATE also consumes the quantity (`consequences.py:368`,
 
 So the omission was confined to the two INFER duration rules, and the fix
 applies the discipline the exporter already had rather than inventing one.
+
+---
+
+# §10. The domain of `glyph_owner`: why 161 were never contested, and the process to hand them in
+
+2026-09-23. §8 closed with two open halves: the 8 that resolved elsewhere, and
+the 161 that reached no contest at all — *"a question about `glyph_owner`'s
+DOMAIN (`subjects_from`), not about the scoring."* This section answers it.
+Sean's brief: *"determine the process to get the right notes handed to the
+right staff."*
+
+`probe/owner_contest_domain.py`. It decides nothing and crops nothing; it
+reports which glyphs were handed to `adjudicate_glyph_owner` at all.
+
+## §10a. ⚠️ TWO CORRECTIONS TO THE BRIEF BEFORE ANY NUMBER
+
+**The 358 / 161 / 189 / 8 partition is NOT on the whole-movement record.** §7b
+says "the same record", and the record this whole benchmark uses is
+`beethoven5-p1-p4-ink-identity.record.json` (pdf pp.1–4). The session brief for
+this pass called it "the Litolff whole-movement record"; it is not.
+`beethoven5-litolff-mvt1-whole-20260923.record.json` gives **11,632 / 1,725 /
+960 / 704 / 61** — the same shape at 4.8× the scale (41 % never contested
+against 45 %), which is corroboration, not the same measurement. **Every figure
+below is p1–p4 unless the whole-movement column says otherwise.**
+
+**§7b's probe was never committed** — `git show --stat b19f4258` touches
+`FINDINGS.md` and nothing else. The population definition here is reconstructed
+from §7b/§8's prose, and reproducing 2,347 / 358 / 189 / 161 / 8 EXACTLY is the
+control that the reconstruction is the same population. It reproduces.
+
+**The arithmetic control can fail and was run failing first.** Everything here
+recomputes `gather._band_distance_spaces` off the record's own
+`Q.GLYPH_BOX.detail.bbox_page_px` and `Q.STAFF_LINES`. Against the rows GATHER
+actually wrote: **2,772 of 2,772 agree, worst |Δ| 0.00e+00** (whole movement:
+12,026 of 12,026). With the staff spacing perturbed 1 %
+(`OWNER_DOMAIN_BREAK_CONTROL=1`) it reports **3 of 2,772** and says so. The
+partition itself survives that perturbation unchanged at 358 / 161 — worth
+knowing: the signature is not sitting on a knife edge.
+
+## §10b. The cause, and it is ONE cause with three sub-causes
+
+| cause | count |
+|---|--:|
+| **`NO_BAND_ROW`** — no `Q.GLYPH_BAND_DISTANCE` row of ANY state exists for the glyph, so `adjudicate.subjects_for` never made it a subject and `adjudicate_one` never ran | **161** |
+| `ABSTAINED_BANDS` — band rows exist but all are Abstentions (the glyph IS a subject; the adjudicator would return `no_contest`) | 0 |
+| a band row present and still no verdict | 0 |
+| **sum** | **161** |
+
+**Not one of the 161 is a scoring failure, an abstention, or a scope fault.**
+There is nothing at the subject to look at: `wants` and `Scope` are never
+reached. The defect is entirely in `gather_ownership_evidence`'s construction
+of the contest, upstream of the decision.
+
+That construction (`gather.py:640-653`) admits a pair on three conditions: same
+`(page, system)`, `di.smufl_name == dj.smufl_name`, and
+`_iou(bi, bj) >= CONTEST_IOU` (0.5). Which condition rejected each of the 161,
+measured against the glyph's own NEAR staff:
+
+| sub-cause of `NO_BAND_ROW` | p1–p4 | whole mvt |
+|---|--:|--:|
+| **the same ink, detected twice, but the two copies' smufl NAMES differ** | **83** | 361 |
+| &nbsp;&nbsp;— the SAME head spelled `…OnLine` on one staff and `…InSpace` on the other | 38 | 178 |
+| &nbsp;&nbsp;— both noteheads, different head TYPE (`Black` vs `Half`) | 16 | 91 |
+| &nbsp;&nbsp;— the near staff holds no notehead there at all (`fermataAbove`, `dynamicF`, `slur`, `arpeggiato`, `staff`) | 29 | 92 |
+| **same smufl name, overlapping, but IoU below `CONTEST_IOU` 0.5** | **69** | 278 |
+| &nbsp;&nbsp;— of those, IoU above the legacy 0.3 | 50 | 187 |
+| **no glyph of any class on the near staff overlaps it** | **9** | 65 |
+| **sum** | **161** | **704** |
+
+⚠️ **THE PAD IS NOT THE PROBLEM, AND THE MEASUREMENT SAYS SO.** All **9 of 9**
+(whole movement: 65 of 65) of the no-overlap glyphs sit INSIDE a `Q.CELL_BOX`
+of the near staff. The near staff's crop already reaches the ink; the detector
+did not fire on it there. Nothing here argues for growing the 4-space pad, and
+CLAUDE.md §10 forbids it anyway.
+
+### The single sharpest fact
+
+`…OnLine` / `…InSpace` is **the head's position relative to A STAFF** — the
+exact quantity the contest exists to arbitrate. One notehead in the gap is
+`noteheadBlackOnLine` in the staff above's cell and `noteheadBlackInSpace` in
+the staff below's, and `di.smufl_name != dj.smufl_name` then rules that they
+are not the same thing. **The contest's identity test is keyed on the disputed
+quantity.** 38 of 161 die on that alone.
+
+Sean's own subject is the textbook case. `glyph/2/0/9/15/5`
+(`noteheadBlackInSpace`, staff 9) overlaps a `noteheadBlackOnLine` on staff 8 —
+the staff Sean read it onto — at **IoU 0.314**. It fails BOTH conditions: the
+names differ AND 0.314 < 0.5. Its trace shows four GATHER rows and no
+`glyph_band_distance` among them. `glyph/4/0/9/5/7`, which §8 confirmed
+`glyph_owner` DECIDED correctly, differs in exactly one way: its twin on staff
+10 carries the same name and clears the IoU bar, so it has two band rows and a
+verdict.
+
+### ⚠️ THE STAGED CONTEST IS THE LEGACY CONTEST, RESTATED AT TWO DIFFERENT VALUES
+
+`transcribe._dedupe_cross_staff_detections` — FROZEN, and the reference reader —
+admits a pair on `di["category"] == dj["category"]` and
+`IoU > _CROSS_STAFF_DUPLICATE_IOU`, **0.3**, swept at 0.25/0.3/0.4/0.5 over
+three orchestral works and documented as the lowest value costing no
+correctly-matched note on any of them
+(`benchmarks/omr-orchestral-e2e/DEDUPE_THRESHOLD.md`). The staged gather
+restates the same predicate as smufl NAME equality and **0.5**, citing
+`(A-OWN-3)`, whose assumption record was never written
+(`omr-staged-dedupe-2026-09` §6.2 already recorded that and its own cost: 134
+of 636 overlapping cross-staff groups with no verdict at all).
+
+**And `category` is already on the record.** `gather.py:401` writes
+`box_detail["category"] = d.category` into every `Q.GLYPH_BOX` row; the contest
+loop reads `smufl_name` instead. CLAUDE.md's standing bug class, unchanged:
+*the value existed and nothing read it.*
+
+How many of the 161 the LEGACY predicate would hand in, counted (it changes
+nothing):
+
+| arm | p1–p4 | whole mvt |
+|---|--:|--:|
+| category equality **and** IoU > 0.3 — the legacy predicate | **87 of 161** | **374 of 704** |
+| category equality alone, IoU left at 0.5 | 21 | 117 |
+| smufl name alone, IoU > 0.3 | 50 | 187 |
+| residual: no same-CATEGORY ink on another staff at all | 38 | 157 |
+| residual: same category, IoU ≤ 0.3 (below the swept floor) | 36 | 173 |
+
+Neither axis alone reaches half. **Together they hand in 54 % of the
+never-contested, and neither value is new to this repository.**
+
+## §10c. The 8 that resolved elsewhere — the scoring, read
+
+Five DECIDED, three ABSTAINED; **in all five decided cases the winner is the
+glyph's own filed staff**, and in none of the eight is it a third staff.
+
+| subject | filed (spaces) | nearest (spaces) | outcome | reason | what the scoring did |
+|---|--:|--:|---|---|---|
+| `glyph/2/0/5/3/2` | 3.02 | 2.40 | decided → own | `range_veto` | near staff scores exactly −6.0; distance would have won it |
+| `glyph/4/1/2/5/8` | 2.79 | 1.84 | decided → own | `range_veto` | same, margin 4.60 |
+| `glyph/4/1/5/0/3` | 2.75 | 1.40 | decided → own | `range_veto` | same, margin 4.63 |
+| `glyph/4/1/4/7/0` | 2.67 | 1.93 | decided → own | `ladder` | a COMPLETE ledger ladder to the filed staff, +4.0, beats distance |
+| `glyph/4/1/5/8/0` | 2.39 | 1.76 | decided → own | `ladder` | ladder +4.0 AND the near staff vetoed |
+| `glyph/4/1/3/13/0` | 3.48 | 0.65 | **abstained** | `tied` | see below |
+| `glyph/4/1/3/13/2` | 3.49 | 0.64 | **abstained** | `tied` | " |
+| `glyph/4/1/3/13/4` | 3.48 | 0.65 | **abstained** | `tied` | " |
+
+Whole movement: 39 `range_veto`, 18 `ladder`, 4 `tied`; 57 of 61 to the filed
+staff, **0 of 61 to a third staff**.
+
+This is Sean's own convention doing the work — *"notes should never be that far
+away from a staff unless there are ledger lines close to the staff connecting
+the note conceptually to the staff"* — read in the two tiers that outrank
+distance. **It is not evidence that the five are right**; none has been read
+against a print. It is evidence that the scoring is behaving as declared and is
+not where the 161 went.
+
+**The three `tied` abstentions have an exact and slightly uncomfortable
+mechanism**, read off the record:
+
+| candidate | instrument | written range | clef | implied pitch | veto |
+|---|---|---|---|---|---|
+| `staff/4/1/3` (filed, 3.48 sp) | Bassoon | 34–72 | bass | G1 = 31 | **fires** |
+| `staff/4/1/4` (near, 0.65 sp) | Horn | 41–77 | treble | G5 = 79 | **fires**, by 2 semitones |
+
+Both vetoed. Because a veto Term and that candidate's distance Term share the
+band row, `tally`'s correlated-group collapse counts the group ONCE at the
+strongest weight, so **every vetoed candidate scores exactly −6.0 regardless of
+distance** — which is why two candidates 2.8 spaces apart tie. Abstaining is
+the right output for a tie, but a veto built for the IMPOSSIBLE firing 2
+semitones out, and then being indistinguishable from a wild one, is a finding
+of its own. **Recorded, not chased; it is not the 161.**
+
+## §10d. The process — what would hand the right notes to the right staff
+
+**ASK FIRST (CLAUDE.md rule 3).** How would a human read this off the page? A
+reader does not consult the class name at all: the ink is ONE head, and which
+staff owns it is settled by the ledger rungs that join it to a staff. Nothing
+below lets a decision be made on less evidence than today — it lets the
+decision be MADE AT ALL on ink where it currently is not.
+
+**The stage is GATHER, and there is no ADJUDICATE version of this change.**
+`adjudicate_glyph_owner`'s `subjects_from=Q.GLYPH_BAND_DISTANCE` is CORRECT and
+must not move: the domain being the contested population is what makes
+`adjudicate.is_relocated_copy` and `export._drop("owned_by_another_staff")`
+safe — a glyph awarded elsewhere has a twin there BY CONSTRUCTION, so dropping
+the loser cannot lose ink. Widening the DECLARATION rather than the contest
+would break exactly that, and `test_staged_dedupe.py` asserts the declaration
+off the registry so it would go red. The rows are measurements and ADJUDICATE
+may not gather, so the change is in **`tools/omr/staged/gather.py ::
+gather_ownership_evidence`** (the class test at `:647`, `CONTEST_IOU` at
+`:538`) and nowhere else.
+
+### The four changes, by cause, ranked
+
+**1 — the class test reads `category`, not `smufl_name`** (83 of 161; 38 of
+them pure spelling). One line: compare the `d.category` the row already
+carries. **CONNECTS, does not guess**: it stops a string comparison from
+overruling the detector's own statement that both copies are noteheads, and the
+winner is still decided by ladder → range → distance on evidence that already
+exists. ⚠️ It must NOT be allowed to settle the head TYPE as a side effect: for
+the 16 `Black`-vs-`Half` pairs the drop of the loser silently picks a duration.
+Those must be admitted with the disagreement VISIBLE (the losing row stays on
+the record; `Q.NOTEHEAD_CLASS` disagreement is a fact for `duration`, not for
+`glyph_owner`) or held out of this change and priced separately.
+
+**2 — `CONTEST_IOU` returns to the measured 0.3** (50 of the 69). **CONNECTS**:
+0.3 is not a new number, it is the swept legacy constant this file restated
+without an assumption record. ⚠️ It must NOT go to 0.25 — measured to start
+merging genuinely distinct neighbours and to drop three correctly-matched notes
+on Brahms. The 36 that sit at or below 0.3 stay out; a clipped copy at IoU 0.1
+is not a contest anyone can win, and inventing a clipping-tolerant overlap
+measure to reach them would be a new rule with no measurement behind it.
+
+**3 — the 38 with no notehead twin at all: DO NOT hand these to the contest.**
+This is the one place a plausible fix is the wrong one. A glyph with no twin
+that `glyph_owner` awarded to the neighbour would be DROPPED at export as
+`owned_by_another_staff` and the note would vanish — turning a
+wrong-staff error into a missing note, which is worse in every category on
+`omr-cleanup-count-2026-09/CATEGORIES.md`. The admissible routes are (a) the
+detector recall gap (the crop already reaches the ink: 9 of 9 inside the near
+staff's `Q.CELL_BOX`), which is a DETECTOR question and one of `check`'s three
+blind spots; or (b) recording the contest as a GROUP with the twin's SUBJECT, so
+a resolution can relocate rather than drop — already specified in
+`omr-staged-dedupe-2026-09` §6.6 and explicitly a GATHER change there. **Neither
+belongs in this item.**
+
+**4 — nothing changes in `adjudicate_glyph_owner`, `is_relocated_copy`,
+`move_glyph` or `export`.** The scoring got 189 of 197 right and the 8 are
+explained above. A change that also touched the scoring would make the delta
+unattributable.
+
+### What it must not do
+
+* **Never relocate.** A resolved contest DROPS the loser. The domain may grow
+  only where a twin exists.
+* **Never widen the cell pad.** Measured here: the pad already reaches.
+* **Never turn "cannot tell" into an answer.** `tied` stays an abstention;
+  `no_contest` stays a decision for the glyph's own staff.
+* **Never lower the IoU floor below the swept 0.3.**
+* **No new flag.** CLAUDE.md rule 9 and §7: the product path reads at most 15.
+  This is a correction of two values to the reference reader's measured ones,
+  which is a behaviour change to be measured and landed or refused, not a knob.
+
+### How it is measured
+
+1. **REACH BEFORE ACCURACY.** Run `probe/owner_contest_domain.py` on both
+   acceptance scans FIRST and print the population: how many NEW contests each
+   axis creates, on Litolff AND on Breitkopf (which SHATTERS where Litolff
+   MERGES, so the IoU axis need not transfer). An arm that moves nothing
+   because it is inert and one that moves nothing because the page holds
+   nothing to move are the same number.
+2. **THE CONTROL THAT MUST HOLD: the 189 stay 189.** Loosening can add a THIRD
+   candidate to a contest that already had two and flip it, so the arm must
+   report every pre-existing `glyph_owner` verdict that changed, by subject,
+   and not merely the count of new ones.
+3. **THE ACCOUNTING CONTROL:** `export.status_census`'s `unaccounted` bucket
+   stays empty and `owned_by_another_staff` is reported before and after. A
+   rise there that is not matched by a fall in written noteheads is ink loss.
+4. **THE PRINT CHECK, and it is the only thing that can say the notes went to
+   the RIGHT staff.** `probe/crop_inferred.py` at the gather's own DPI, frame
+   control that can fail, corner brackets on the exact head, and the filed
+   staff's own five `Q.STAFF_LINES` drawn in green — the version Sean's
+   adjudication forced. A sample of the newly-contested, and **a positive
+   control in the same class**: some of the 189 in the same batch, unlabelled,
+   so the sample can fail.
+5. **IT IS A GATHER CHANGE, so `readjudicate.py` and `reexport_arm.py` are
+   structurally blind to it and a zero from either is not evidence.** Price it
+   with two full re-gathers (`benchmarks/omr-cleanup-count-2026-09/run_gather.sh`,
+   then `benchmarks/omr-staged-notations-2026-09/regather_control.py` to prove
+   the pair provenanced, clean and distinct). It shares that cost with
+   `omr-staged-dedupe-2026-09` §6.1 (the staged gather's NMS arguments) and
+   §6.6 (the contest as a group), all three of which are the same detection set
+   and the same contest construction, so they should be one gather pair and not
+   three.
+
+## §10e. What this section does NOT establish
+
+* **Not one of the 161 has been read against a print.** §7b's warning stands
+  verbatim: 358 is the population carrying a geometric signature, not a
+  misattribution count, and exactly 2 of it have ever been checked against a
+  page. This section says why 161 were never ASKED; it does not say what the
+  answer would have been.
+* **It does not show the 87 would resolve to the near staff.** They would enter
+  a contest and be scored on ladder → range → distance like the rest. The 189
+  suggest that scoring is good; the 8 show it can also hold a note where it was
+  cut, correctly.
+* **n = 1 document, 2 records.** Breitkopf SHATTERS and is not measured here at
+  all; the IoU axis in particular may behave differently on a plate where ink
+  components are not marks.

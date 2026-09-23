@@ -1,0 +1,3511 @@
+{
+ "record": "/Users/seanjohnson/Desktop/ReEngrave/library/_shared-records/beethoven5-p1-p4-ink-identity.record.json",
+ "counts": {
+  "noteheads": 2347,
+  "suspicious": 358,
+  "near": 189,
+  "never": 161,
+  "else": 8
+ },
+ "expected": {
+  "noteheads": 2347,
+  "suspicious": 358,
+  "near": 189,
+  "never": 161,
+  "else": 8
+ },
+ "causes": {
+  "NO_BAND_ROW": 161
+ },
+ "subcauses": {
+  "TWIN_IOU_BELOW_0.5": 69,
+  "TWIN_CLASS_DIFFERS": 83,
+  "NO_TWIN_AT_ALL": 9
+ },
+ "abstain_reasons": {},
+ "class_pairs": {
+  "noteheadBlackInSpace vs dynamicF": 2,
+  "noteheadBlackOnLine vs noteheadHalfInSpace": 2,
+  "noteheadBlackOnLine vs fermataAbove": 3,
+  "noteheadBlackOnLine vs noteheadHalfInSpace,noteheadHalfOnLine": 1,
+  "noteheadWholeOnLine vs noteheadHalfInSpace,noteheadHalfOnLine": 1,
+  "noteheadBlackOnLine vs ledgerLine,noteheadHalfOnLine": 2,
+  "noteheadBlackOnLine vs noteheadBlackInSpace": 11,
+  "noteheadBlackOnLine vs dynamicF,staff": 2,
+  "noteheadBlackOnLine vs ledgerLine,restQuarter": 1,
+  "noteheadBlackInSpace vs noteheadBlackOnLine": 8,
+  "noteheadBlackOnLine vs noteheadBlackInSpace,staff": 2,
+  "noteheadBlackOnLine vs dynamicF": 1,
+  "noteheadBlackInSpace vs arpeggiato,noteheadHalfInSpace": 1,
+  "noteheadHalfOnLine vs noteheadHalfInSpace,slur": 1,
+  "noteheadHalfInSpace vs slur,tie": 2,
+  "noteheadBlackOnLine vs staff": 1,
+  "noteheadBlackOnLine vs staff,timeSig4": 1,
+  "noteheadBlackOnLine vs arpeggiato,staff": 2,
+  "noteheadBlackInSpace vs ledgerLine,noteheadBlackOnLine": 1,
+  "noteheadBlackInSpace vs arpeggiato": 2,
+  "noteheadBlackInSpace vs dynamicF,noteheadBlackOnLine": 1,
+  "noteheadBlackInSpace vs beam": 1,
+  "noteheadBlackInSpace vs beam,staff": 1,
+  "noteheadHalfInSpace vs noteheadBlackInSpace": 1,
+  "noteheadHalfOnLine vs noteheadBlackOnLine": 2,
+  "noteheadHalfInSpace vs beam,noteheadHalfOnLine,slur": 1,
+  "noteheadHalfInSpace vs noteheadBlackOnLine,noteheadHalfOnLine": 2,
+  "noteheadHalfInSpace vs slur": 1,
+  "noteheadHalfInSpace vs dynamicF": 1,
+  "noteheadHalfOnLine vs noteheadHalfInSpace": 3,
+  "noteheadHalfInSpace vs noteheadBlackOnLine": 1,
+  "noteheadWholeInSpace vs noteheadBlackInSpace,noteheadBlackOnLine": 1,
+  "noteheadBlackOnLine vs noteheadHalfOnLine,staff": 1,
+  "noteheadBlackOnLine vs noteheadHalfOnLine": 1,
+  "noteheadHalfOnLine vs beam,noteheadBlackInSpace,noteheadBlackOnLine": 1,
+  "noteheadBlackOnLine vs arpeggiato,noteheadBlackInSpace": 1,
+  "noteheadBlackInSpace vs arpeggiato,fermataAbove": 1,
+  "noteheadBlackInSpace vs arpeggiato,noteheadBlackOnLine": 1,
+  "noteheadBlackInSpace vs noteheadBlackOnLine,slur": 1,
+  "noteheadHalfOnLine vs dynamicF,staff": 1,
+  "noteheadBlackInSpace vs noteheadBlackOnLine,staff": 2,
+  "noteheadBlackOnLine vs noteheadBlackInSpace,staff,stem": 1,
+  "noteheadBlackInSpace vs beam,tie": 1,
+  "noteheadBlackInSpace vs fermataBelow": 1,
+  "noteheadBlackInSpace vs arpeggiato,staff": 1,
+  "noteheadBlackInSpace vs ledgerLine,staff": 1,
+  "noteheadBlackInSpace vs ledgerLine,noteheadBlackOnLine,stem": 1,
+  "noteheadHalfOnLine vs beam,noteheadBlackInSpace": 1,
+  "noteheadBlackInSpace vs clefG,staff": 1,
+  "noteheadBlackInSpace vs fermataAbove,restQuarter": 1,
+  "noteheadBlackInSpace vs dynamicF,noteheadBlackOnLine,staff": 1
+ },
+ "iou_bins": {
+  "0.3": 13,
+  "0.4": 23,
+  "0.2": 9,
+  "0.1": 5,
+  "0.5": 17,
+  "0.0": 2
+ },
+ "class_split": {
+  "no notehead on the near staff there": 29,
+  "both noteheads, different head type": 16,
+  "SAME HEAD, OnLine/InSpace differ": 38
+ },
+ "no_twin_reach": {
+  "True": 9
+ },
+ "never_contested": [
+  {
+   "subject": "glyph/1/0/3/3/2",
+   "filed_on": "staff/1/0/3",
+   "own_spaces": 5.71,
+   "near": "staff/1/0/4",
+   "near_spaces": 3.26,
+   "cause": "NO_BAND_ROW",
+   "subcause": "TWIN_IOU_BELOW_0.5",
+   "near_best_iou_same_class": 0.34,
+   "overlapping_on_near_staff": [
+    [
+     "noteheadHalfInSpace",
+     0.34
+    ]
+   ],
+   "class": "noteheadHalfInSpace",
+   "legacy_best_same_category_iou": 0.34
+  },
+  {
+   "subject": "glyph/1/0/9/0/12",
+   "filed_on": "staff/1/0/9",
+   "own_spaces": 5.68,
+   "near": "staff/1/0/8",
+   "near_spaces": 1.43,
+   "cause": "NO_BAND_ROW",
+   "subcause": "TWIN_CLASS_DIFFERS",
+   "near_best_iou_same_class": 0.0,
+   "overlapping_on_near_staff": [
+    [
+     "dynamicF",
+     0.053
+    ],
+    [
+     "dynamicF",
+     0.014
+    ]
+   ],
+   "class": "noteheadBlackInSpace",
+   "legacy_best_same_category_iou": 0.0
+  },
+  {
+   "subject": "glyph/1/0/9/3/2",
+   "filed_on": "staff/1/0/9",
+   "own_spaces": 5.79,
+   "near": "staff/1/0/8",
+   "near_spaces": 1.32,
+   "cause": "NO_BAND_ROW",
+   "subcause": "TWIN_CLASS_DIFFERS",
+   "near_best_iou_same_class": 0.0,
+   "overlapping_on_near_staff": [
+    [
+     "noteheadHalfInSpace",
+     0.239
+    ]
+   ],
+   "class": "noteheadBlackOnLine",
+   "legacy_best_same_category_iou": 0.239
+  },
+  {
+   "subject": "glyph/1/0/9/4/3",
+   "filed_on": "staff/1/0/9",
+   "own_spaces": 5.7,
+   "near": "staff/1/0/10",
+   "near_spaces": 1.54,
+   "cause": "NO_BAND_ROW",
+   "subcause": "TWIN_CLASS_DIFFERS",
+   "near_best_iou_same_class": 0.0,
+   "overlapping_on_near_staff": [
+    [
+     "fermataAbove",
+     0.226
+    ]
+   ],
+   "class": "noteheadBlackOnLine",
+   "legacy_best_same_category_iou": 0.0
+  },
+  {
+   "subject": "glyph/1/0/9/9/5",
+   "filed_on": "staff/1/0/9",
+   "own_spaces": 5.67,
+   "near": "staff/1/0/10",
+   "near_spaces": 1.57,
+   "cause": "NO_BAND_ROW",
+   "subcause": "TWIN_CLASS_DIFFERS",
+   "near_best_iou_same_class": 0.0,
+   "overlapping_on_near_staff": [
+    [
+     "noteheadHalfOnLine",
+     0.361
+    ],
+    [
+     "noteheadHalfInSpace",
+     0.329
+    ]
+   ],
+   "class": "noteheadBlackOnLine",
+   "legacy_best_same_category_iou": 0.361
+  },
+  {
+   "subject": "glyph/1/0/9/9/6",
+   "filed_on": "staff/1/0/9",
+   "own_spaces": 5.67,
+   "near": "staff/1/0/10",
+   "near_spaces": 1.57,
+   "cause": "NO_BAND_ROW",
+   "subcause": "TWIN_CLASS_DIFFERS",
+   "near_best_iou_same_class": 0.0,
+   "overlapping_on_near_staff": [
+    [
+     "noteheadHalfOnLine",
+     0.365
+    ],
+    [
+     "noteheadHalfInSpace",
+     0.33
+    ]
+   ],
+   "class": "noteheadWholeOnLine",
+   "legacy_best_same_category_iou": 0.365
+  },
+  {
+   "subject": "glyph/1/0/9/14/8",
+   "filed_on": "staff/1/0/9",
+   "own_spaces": 5.61,
+   "near": "staff/1/0/10",
+   "near_spaces": 1.63,
+   "cause": "NO_BAND_ROW",
+   "subcause": "TWIN_CLASS_DIFFERS",
+   "near_best_iou_same_class": 0.0,
+   "overlapping_on_near_staff": [
+    [
+     "noteheadHalfOnLine",
+     0.434
+    ],
+    [
+     "ledgerLine",
+     0.143
+    ],
+    [
+     "ledgerLine",
+     0.179
+    ]
+   ],
+   "class": "noteheadBlackOnLine",
+   "legacy_best_same_category_iou": 0.434
+  },
+  {
+   "subject": "glyph/1/0/9/14/9",
+   "filed_on": "staff/1/0/9",
+   "own_spaces": 5.61,
+   "near": "staff/1/0/10",
+   "near_spaces": 1.63,
+   "cause": "NO_BAND_ROW",
+   "subcause": "TWIN_IOU_BELOW_0.5",
+   "near_best_iou_same_class": 0.435,
+   "overlapping_on_near_staff": [
+    [
+     "noteheadHalfOnLine",
+     0.435
+    ],
+    [
+     "ledgerLine",
+     0.143
+    ],
+    [
+     "ledgerLine",
+     0.178
+    ]
+   ],
+   "class": "noteheadHalfOnLine",
+   "legacy_best_same_category_iou": 0.435
+  },
+  {
+   "subject": "glyph/1/0/11/2/3",
+   "filed_on": "staff/1/0/11",
+   "own_spaces": 5.83,
+   "near": "staff/1/0/10",
+   "near_spaces": 1.13,
+   "cause": "NO_BAND_ROW",
+   "subcause": "TWIN_CLASS_DIFFERS",
+   "near_best_iou_same_class": 0.0,
+   "overlapping_on_near_staff": [
+    [
+     "noteheadBlackInSpace",
+     0.216
+    ]
+   ],
+   "class": "noteheadBlackOnLine",
+   "legacy_best_same_category_iou": 0.216
+  },
+  {
+   "subject": "glyph/1/0/11/2/4",
+   "filed_on": "staff/1/0/11",
+   "own_spaces": 5.86,
+   "near": "staff/1/0/10",
+   "near_spaces": 1.09,
+   "cause": "NO_BAND_ROW",
+   "subcause": "TWIN_CLASS_DIFFERS",
+   "near_best_iou_same_class": 0.0,
+   "overlapping_on_near_staff": [
+    [
+     "noteheadBlackInSpace",
+     0.203
+    ]
+   ],
+   "class": "noteheadBlackOnLine",
+   "legacy_best_same_category_iou": 0.203
+  },
+  {
+   "subject": "glyph/1/0/11/2/5",
+   "filed_on": "staff/1/0/11",
+   "own_spaces": 5.83,
+   "near": "staff/1/0/10",
+   "near_spaces": 1.13,
+   "cause": "NO_BAND_ROW",
+   "subcause": "TWIN_CLASS_DIFFERS",
+   "near_best_iou_same_class": 0.0,
+   "overlapping_on_near_staff": [
+    [
+     "noteheadBlackInSpace",
+     0.219
+    ]
+   ],
+   "class": "noteheadBlackOnLine",
+   "legacy_best_same_category_iou": 0.219
+  },
+  {
+   "subject": "glyph/1/0/11/2/6",
+   "filed_on": "staff/1/0/11",
+   "own_spaces": 5.83,
+   "near": "staff/1/0/10",
+   "near_spaces": 1.13,
+   "cause": "NO_BAND_ROW",
+   "subcause": "TWIN_IOU_BELOW_0.5",
+   "near_best_iou_same_class": 0.217,
+   "overlapping_on_near_staff": [
+    [
+     "noteheadBlackInSpace",
+     0.217
+    ]
+   ],
+   "class": "noteheadBlackInSpace",
+   "legacy_best_same_category_iou": 0.217
+  },
+  {
+   "subject": "glyph/2/0/0/1/12",
+   "filed_on": "staff/2/0/0",
+   "own_spaces": 3.88,
+   "near": "staff/2/0/1",
+   "near_spaces": 0.7,
+   "cause": "NO_BAND_ROW",
+   "subcause": "TWIN_CLASS_DIFFERS",
+   "near_best_iou_same_class": 0.0,
+   "overlapping_on_near_staff": [
+    [
+     "noteheadBlackInSpace",
+     0.159
+    ]
+   ],
+   "class": "noteheadBlackOnLine",
+   "legacy_best_same_category_iou": 0.159
+  },
+  {
+   "subject": "glyph/2/0/2/0/6",
+   "filed_on": "staff/2/0/2",
+   "own_spaces": 5.62,
+   "near": "staff/2/0/3",
+   "near_spaces": 1.05,
+   "cause": "NO_BAND_ROW",
+   "subcause": "TWIN_IOU_BELOW_0.5",
+   "near_best_iou_same_class": 0.442,
+   "overlapping_on_near_staff": [
+    [
+     "noteheadBlackOnLine",
+     0.35
+    ],
+    [
+     "noteheadBlackOnLine",
+     0.488
+    ],
+    [
+     "noteheadHalfOnLine",
+     0.442
+    ]
+   ],
+   "class": "noteheadHalfOnLine",
+   "legacy_best_same_category_iou": 0.488
+  },
+  {
+   "subject": "glyph/2/0/2/2/7",
+   "filed_on": "staff/2/0/2",
+   "own_spaces": 3.11,
+   "near": "staff/2/0/1",
+   "near_spaces": 0.45,
+   "cause": "NO_BAND_ROW",
+   "subcause": "TWIN_CLASS_DIFFERS",
+   "near_best_iou_same_class": 0.0,
+   "overlapping_on_near_staff": [
+    [
+     "staff",
+     0.009
+    ],
+    [
+     "dynamicF",
+     0.022
+    ]
+   ],
+   "class": "noteheadBlackOnLine",
+   "legacy_best_same_category_iou": 0.0
+  },
+  {
+   "subject": "glyph/2/0/2/14/2",
+   "filed_on": "staff/2/0/2",
+   "own_spaces": 3.64,
+   "near": "staff/2/0/1",
+   "near_spaces": 0.0,
+   "cause": "NO_BAND_ROW",
+   "subcause": "TWIN_CLASS_DIFFERS",
+   "near_best_iou_same_class": 0.0,
+   "overlapping_on_near_staff": [
+    [
+     "ledgerLine",
+     0.058
+    ],
+    [
+     "restQuarter",
+     0.171
+    ]
+   ],
+   "class": "noteheadBlackOnLine",
+   "legacy_best_same_category_iou": 0.0
+  },
+  {
+   "subject": "glyph/2/0/3/1/8",
+   "filed_on": "staff/2/0/3",
+   "own_spaces": 5.27,
+   "near": "staff/2/0/2",
+   "near_spaces": 1.4,
+   "cause": "NO_BAND_ROW",
+   "subcause": "TWIN_IOU_BELOW_0.5",
+   "near_best_iou_same_class": 0.225,
+   "overlapping_on_near_staff": [
+    [
+     "noteheadBlackInSpace",
+     0.912
+    ],
+    [
+     "noteheadBlackInSpace",
+     0.217
+    ],
+    [
+     "noteheadBlackOnLine",
+     0.225
+    ],
+    [
+     "noteheadBlackInSpace",
+     0.235
+    ]
+   ],
+   "class": "noteheadBlackOnLine",
+   "legacy_best_same_category_iou": 0.912
+  },
+  {
+   "subject": "glyph/2/0/3/1/12",
+   "filed_on": "staff/2/0/3",
+   "own_spaces": 5.7,
+   "near": "staff/2/0/2",
+   "near_spaces": 0.96,
+   "cause": "NO_BAND_ROW",
+   "subcause": "TWIN_IOU_BELOW_0.5",
+   "near_best_iou_same_class": 0.052,
+   "overlapping_on_near_staff": [
+    [
+     "noteheadBlackInSpace",
+     0.052
+    ]
+   ],
+   "class": "noteheadBlackInSpace",
+   "legacy_best_same_category_iou": 0.052
+  },
+  {
+   "subject": "glyph/2/0/3/1/13",
+   "filed_on": "staff/2/0/3",
+   "own_spaces": 5.77,
+   "near": "staff/2/0/2",
+   "near_spaces": 0.9,
+   "cause": "NO_BAND_ROW",
+   "subcause": "TWIN_CLASS_DIFFERS",
+   "near_best_iou_same_class": 0.0,
+   "overlapping_on_near_staff": [
+    [
+     "noteheadBlackOnLine",
+     0.256
+    ]
+   ],
+   "class": "noteheadBlackInSpace",
+   "legacy_best_same_category_iou": 0.256
+  },
+  {
+   "subject": "glyph/2/0/3/1/17",
+   "filed_on": "staff/2/0/3",
+   "own_spaces": 5.77,
+   "near": "staff/2/0/2",
+   "near_spaces": 0.89,
+   "cause": "NO_BAND_ROW",
+   "subcause": "TWIN_IOU_BELOW_0.5",
+   "near_best_iou_same_class": 0.256,
+   "overlapping_on_near_staff": [
+    [
+     "noteheadBlackOnLine",
+     0.256
+    ]
+   ],
+   "class": "noteheadBlackOnLine",
+   "legacy_best_same_category_iou": 0.256
+  },
+  {
+   "subject": "glyph/2/0/3/3/8",
+   "filed_on": "staff/2/0/3",
+   "own_spaces": 5.69,
+   "near": "staff/2/0/2",
+   "near_spaces": 0.98,
+   "cause": "NO_BAND_ROW",
+   "subcause": "TWIN_IOU_BELOW_0.5",
+   "near_best_iou_same_class": 0.24,
+   "overlapping_on_near_staff": [
+    [
+     "noteheadBlackOnLine",
+     0.24
+    ],
+    [
+     "noteheadBlackOnLine",
+     0.104
+    ],
+    [
+     "ledgerLine",
+     0.039
+    ]
+   ],
+   "class": "noteheadBlackOnLine",
+   "legacy_best_same_category_iou": 0.24
+  },
+  {
+   "subject": "glyph/2/0/3/3/9",
+   "filed_on": "staff/2/0/3",
+   "own_spaces": 5.8,
+   "near": "staff/2/0/2",
+   "near_spaces": 0.87,
+   "cause": "NO_BAND_ROW",
+   "subcause": "TWIN_IOU_BELOW_0.5",
+   "near_best_iou_same_class": 0.12,
+   "overlapping_on_near_staff": [
+    [
+     "noteheadBlackOnLine",
+     0.101
+    ],
+    [
+     "noteheadBlackOnLine",
+     0.12
+    ]
+   ],
+   "class": "noteheadBlackOnLine",
+   "legacy_best_same_category_iou": 0.12
+  },
+  {
+   "subject": "glyph/2/0/4/1/5",
+   "filed_on": "staff/2/0/4",
+   "own_spaces": 3.7,
+   "near": "staff/2/0/5",
+   "near_spaces": 0.0,
+   "cause": "NO_BAND_ROW",
+   "subcause": "TWIN_CLASS_DIFFERS",
+   "near_best_iou_same_class": 0.0,
+   "overlapping_on_near_staff": [
+    [
+     "noteheadBlackInSpace",
+     0.289
+    ],
+    [
+     "staff",
+     0.015
+    ]
+   ],
+   "class": "noteheadBlackOnLine",
+   "legacy_best_same_category_iou": 0.289
+  },
+  {
+   "subject": "glyph/2/0/4/5/0",
+   "filed_on": "staff/2/0/4",
+   "own_spaces": 5.58,
+   "near": "staff/2/0/3",
+   "near_spaces": 1.22,
+   "cause": "NO_BAND_ROW",
+   "subcause": "TWIN_IOU_BELOW_0.5",
+   "near_best_iou_same_class": 0.489,
+   "overlapping_on_near_staff": [
+    [
+     "noteheadHalfInSpace",
+     0.489
+    ]
+   ],
+   "class": "noteheadHalfInSpace",
+   "legacy_best_same_category_iou": 0.489
+  },
+  {
+   "subject": "glyph/2/0/5/1/22",
+   "filed_on": "staff/2/0/5",
+   "own_spaces": 3.81,
+   "near": "staff/2/0/6",
+   "near_spaces": 1.63,
+   "cause": "NO_BAND_ROW",
+   "subcause": "NO_TWIN_AT_ALL",
+   "near_best_iou_same_class": 0.0,
+   "overlapping_on_near_staff": [],
+   "class": "noteheadBlackOnLine",
+   "legacy_best_same_category_iou": 0.0
+  },
+  {
+   "subject": "glyph/2/0/5/2/10",
+   "filed_on": "staff/2/0/5",
+   "own_spaces": 3.49,
+   "near": "staff/2/0/6",
+   "near_spaces": 1.93,
+   "cause": "NO_BAND_ROW",
+   "subcause": "TWIN_CLASS_DIFFERS",
+   "near_best_iou_same_class": 0.0,
+   "overlapping_on_near_staff": [
+    [
+     "dynamicF",
+     0.117
+    ]
+   ],
+   "class": "noteheadBlackOnLine",
+   "legacy_best_same_category_iou": 0.0
+  },
+  {
+   "subject": "glyph/2/0/5/14/5",
+   "filed_on": "staff/2/0/5",
+   "own_spaces": 3.45,
+   "near": "staff/2/0/4",
+   "near_spaces": 0.11,
+   "cause": "NO_BAND_ROW",
+   "subcause": "NO_TWIN_AT_ALL",
+   "near_best_iou_same_class": 0.0,
+   "overlapping_on_near_staff": [],
+   "class": "noteheadBlackOnLine",
+   "legacy_best_same_category_iou": 0.0
+  },
+  {
+   "subject": "glyph/2/0/7/3/6",
+   "filed_on": "staff/2/0/7",
+   "own_spaces": 3.73,
+   "near": "staff/2/0/8",
+   "near_spaces": 1.39,
+   "cause": "NO_BAND_ROW",
+   "subcause": "TWIN_CLASS_DIFFERS",
+   "near_best_iou_same_class": 0.0,
+   "overlapping_on_near_staff": [
+    [
+     "fermataAbove",
+     0.263
+    ]
+   ],
+   "class": "noteheadBlackOnLine",
+   "legacy_best_same_category_iou": 0.0
+  },
+  {
+   "subject": "glyph/2/0/8/3/12",
+   "filed_on": "staff/2/0/8",
+   "own_spaces": 3.69,
+   "near": "staff/2/0/9",
+   "near_spaces": 1.62,
+   "cause": "NO_BAND_ROW",
+   "subcause": "TWIN_CLASS_DIFFERS",
+   "near_best_iou_same_class": 0.0,
+   "overlapping_on_near_staff": [
+    [
+     "fermataAbove",
+     0.305
+    ]
+   ],
+   "class": "noteheadBlackOnLine",
+   "legacy_best_same_category_iou": 0.0
+  },
+  {
+   "subject": "glyph/2/0/9/2/9",
+   "filed_on": "staff/2/0/9",
+   "own_spaces": 3.66,
+   "near": "staff/2/0/8",
+   "near_spaces": 1.65,
+   "cause": "NO_BAND_ROW",
+   "subcause": "TWIN_IOU_BELOW_0.5",
+   "near_best_iou_same_class": 0.315,
+   "overlapping_on_near_staff": [
+    [
+     "noteheadBlackOnLine",
+     0.315
+    ],
+    [
+     "dynamicF",
+     0.036
+    ]
+   ],
+   "class": "noteheadBlackOnLine",
+   "legacy_best_same_category_iou": 0.315
+  },
+  {
+   "subject": "glyph/2/0/9/10/1",
+   "filed_on": "staff/2/0/9",
+   "own_spaces": 3.62,
+   "near": "staff/2/0/8",
+   "near_spaces": 1.69,
+   "cause": "NO_BAND_ROW",
+   "subcause": "TWIN_CLASS_DIFFERS",
+   "near_best_iou_same_class": 0.0,
+   "overlapping_on_near_staff": [
+    [
+     "arpeggiato",
+     0.032
+    ],
+    [
+     "noteheadHalfInSpace",
+     0.471
+    ]
+   ],
+   "class": "noteheadBlackInSpace",
+   "legacy_best_same_category_iou": 0.471
+  },
+  {
+   "subject": "glyph/2/0/9/10/3",
+   "filed_on": "staff/2/0/9",
+   "own_spaces": 3.62,
+   "near": "staff/2/0/8",
+   "near_spaces": 1.69,
+   "cause": "NO_BAND_ROW",
+   "subcause": "TWIN_IOU_BELOW_0.5",
+   "near_best_iou_same_class": 0.471,
+   "overlapping_on_near_staff": [
+    [
+     "arpeggiato",
+     0.032
+    ],
+    [
+     "noteheadHalfInSpace",
+     0.471
+    ]
+   ],
+   "class": "noteheadHalfInSpace",
+   "legacy_best_same_category_iou": 0.471
+  },
+  {
+   "subject": "glyph/2/0/9/14/4",
+   "filed_on": "staff/2/0/9",
+   "own_spaces": 3.34,
+   "near": "staff/2/0/8",
+   "near_spaces": 1.97,
+   "cause": "NO_BAND_ROW",
+   "subcause": "TWIN_IOU_BELOW_0.5",
+   "near_best_iou_same_class": 0.151,
+   "overlapping_on_near_staff": [
+    [
+     "noteheadBlackInSpace",
+     0.151
+    ]
+   ],
+   "class": "noteheadBlackInSpace",
+   "legacy_best_same_category_iou": 0.151
+  },
+  {
+   "subject": "glyph/2/0/9/15/5",
+   "filed_on": "staff/2/0/9",
+   "own_spaces": 3.77,
+   "near": "staff/2/0/8",
+   "near_spaces": 1.55,
+   "cause": "NO_BAND_ROW",
+   "subcause": "TWIN_CLASS_DIFFERS",
+   "near_best_iou_same_class": 0.0,
+   "overlapping_on_near_staff": [
+    [
+     "noteheadBlackOnLine",
+     0.314
+    ]
+   ],
+   "class": "noteheadBlackInSpace",
+   "legacy_best_same_category_iou": 0.314
+  },
+  {
+   "subject": "glyph/2/1/0/3/1",
+   "filed_on": "staff/2/1/0",
+   "own_spaces": 3.64,
+   "near": "staff/2/1/1",
+   "near_spaces": 0.73,
+   "cause": "NO_BAND_ROW",
+   "subcause": "TWIN_CLASS_DIFFERS",
+   "near_best_iou_same_class": 0.0,
+   "overlapping_on_near_staff": [
+    [
+     "noteheadBlackInSpace",
+     0.469
+    ]
+   ],
+   "class": "noteheadBlackOnLine",
+   "legacy_best_same_category_iou": 0.469
+  },
+  {
+   "subject": "glyph/2/1/0/5/3",
+   "filed_on": "staff/2/1/0",
+   "own_spaces": 3.6,
+   "near": "staff/2/1/1",
+   "near_spaces": 0.77,
+   "cause": "NO_BAND_ROW",
+   "subcause": "TWIN_CLASS_DIFFERS",
+   "near_best_iou_same_class": 0.0,
+   "overlapping_on_near_staff": [
+    [
+     "noteheadBlackInSpace",
+     0.55
+    ]
+   ],
+   "class": "noteheadBlackOnLine",
+   "legacy_best_same_category_iou": 0.55
+  },
+  {
+   "subject": "glyph/2/1/0/10/8",
+   "filed_on": "staff/2/1/0",
+   "own_spaces": 3.46,
+   "near": "staff/2/1/1",
+   "near_spaces": 0.91,
+   "cause": "NO_BAND_ROW",
+   "subcause": "TWIN_CLASS_DIFFERS",
+   "near_best_iou_same_class": 0.0,
+   "overlapping_on_near_staff": [
+    [
+     "slur",
+     0.018
+    ],
+    [
+     "noteheadHalfInSpace",
+     0.784
+    ]
+   ],
+   "class": "noteheadHalfOnLine",
+   "legacy_best_same_category_iou": 0.784
+  },
+  {
+   "subject": "glyph/2/1/0/11/3",
+   "filed_on": "staff/2/1/0",
+   "own_spaces": 3.72,
+   "near": "staff/2/1/1",
+   "near_spaces": 0.65,
+   "cause": "NO_BAND_ROW",
+   "subcause": "TWIN_CLASS_DIFFERS",
+   "near_best_iou_same_class": 0.0,
+   "overlapping_on_near_staff": [
+    [
+     "slur",
+     0.061
+    ],
+    [
+     "tie",
+     0.018
+    ]
+   ],
+   "class": "noteheadHalfInSpace",
+   "legacy_best_same_category_iou": 0.0
+  },
+  {
+   "subject": "glyph/2/1/0/11/4",
+   "filed_on": "staff/2/1/0",
+   "own_spaces": 3.46,
+   "near": "staff/2/1/1",
+   "near_spaces": 0.91,
+   "cause": "NO_BAND_ROW",
+   "subcause": "TWIN_CLASS_DIFFERS",
+   "near_best_iou_same_class": 0.0,
+   "overlapping_on_near_staff": [
+    [
+     "slur",
+     0.105
+    ],
+    [
+     "tie",
+     0.002
+    ]
+   ],
+   "class": "noteheadHalfInSpace",
+   "legacy_best_same_category_iou": 0.0
+  },
+  {
+   "subject": "glyph/2/1/2/3/2",
+   "filed_on": "staff/2/1/2",
+   "own_spaces": 3.72,
+   "near": "staff/2/1/3",
+   "near_spaces": 1.49,
+   "cause": "NO_BAND_ROW",
+   "subcause": "TWIN_IOU_BELOW_0.5",
+   "near_best_iou_same_class": 0.423,
+   "overlapping_on_near_staff": [
+    [
+     "noteheadBlackOnLine",
+     0.423
+    ],
+    [
+     "ledgerLine",
+     0.224
+    ]
+   ],
+   "class": "noteheadBlackOnLine",
+   "legacy_best_same_category_iou": 0.423
+  },
+  {
+   "subject": "glyph/2/1/4/4/3",
+   "filed_on": "staff/2/1/4",
+   "own_spaces": 3.67,
+   "near": "staff/2/1/5",
+   "near_spaces": 0.0,
+   "cause": "NO_BAND_ROW",
+   "subcause": "TWIN_CLASS_DIFFERS",
+   "near_best_iou_same_class": 0.0,
+   "overlapping_on_near_staff": [
+    [
+     "staff",
+     0.005
+    ]
+   ],
+   "class": "noteheadBlackOnLine",
+   "legacy_best_same_category_iou": 0.0
+  },
+  {
+   "subject": "glyph/2/1/5/4/1",
+   "filed_on": "staff/2/1/5",
+   "own_spaces": 3.57,
+   "near": "staff/2/1/4",
+   "near_spaces": 0.05,
+   "cause": "NO_BAND_ROW",
+   "subcause": "TWIN_CLASS_DIFFERS",
+   "near_best_iou_same_class": 0.0,
+   "overlapping_on_near_staff": [
+    [
+     "timeSig4",
+     0.071
+    ],
+    [
+     "staff",
+     0.002
+    ]
+   ],
+   "class": "noteheadBlackOnLine",
+   "legacy_best_same_category_iou": 0.0
+  },
+  {
+   "subject": "glyph/2/1/5/12/3",
+   "filed_on": "staff/2/1/5",
+   "own_spaces": 3.7,
+   "near": "staff/2/1/4",
+   "near_spaces": 0.0,
+   "cause": "NO_BAND_ROW",
+   "subcause": "NO_TWIN_AT_ALL",
+   "near_best_iou_same_class": 0.0,
+   "overlapping_on_near_staff": [],
+   "class": "noteheadBlackOnLine",
+   "legacy_best_same_category_iou": 0.0
+  },
+  {
+   "subject": "glyph/2/1/6/0/4",
+   "filed_on": "staff/2/1/6",
+   "own_spaces": 3.65,
+   "near": "staff/2/1/5",
+   "near_spaces": 0.16,
+   "cause": "NO_BAND_ROW",
+   "subcause": "TWIN_CLASS_DIFFERS",
+   "near_best_iou_same_class": 0.0,
+   "overlapping_on_near_staff": [
+    [
+     "staff",
+     0.001
+    ],
+    [
+     "arpeggiato",
+     0.136
+    ]
+   ],
+   "class": "noteheadBlackOnLine",
+   "legacy_best_same_category_iou": 0.0
+  },
+  {
+   "subject": "glyph/2/1/6/5/2",
+   "filed_on": "staff/2/1/6",
+   "own_spaces": 5.69,
+   "near": "staff/2/1/7",
+   "near_spaces": 0.91,
+   "cause": "NO_BAND_ROW",
+   "subcause": "TWIN_IOU_BELOW_0.5",
+   "near_best_iou_same_class": 0.415,
+   "overlapping_on_near_staff": [
+    [
+     "noteheadBlackInSpace",
+     0.415
+    ]
+   ],
+   "class": "noteheadBlackInSpace",
+   "legacy_best_same_category_iou": 0.415
+  },
+  {
+   "subject": "glyph/2/1/6/5/6",
+   "filed_on": "staff/2/1/6",
+   "own_spaces": 5.69,
+   "near": "staff/2/1/7",
+   "near_spaces": 0.91,
+   "cause": "NO_BAND_ROW",
+   "subcause": "TWIN_CLASS_DIFFERS",
+   "near_best_iou_same_class": 0.0,
+   "overlapping_on_near_staff": [
+    [
+     "noteheadBlackInSpace",
+     0.412
+    ]
+   ],
+   "class": "noteheadBlackOnLine",
+   "legacy_best_same_category_iou": 0.412
+  },
+  {
+   "subject": "glyph/2/1/6/6/8",
+   "filed_on": "staff/2/1/6",
+   "own_spaces": 5.28,
+   "near": "staff/2/1/7",
+   "near_spaces": 1.33,
+   "cause": "NO_BAND_ROW",
+   "subcause": "TWIN_CLASS_DIFFERS",
+   "near_best_iou_same_class": 0.0,
+   "overlapping_on_near_staff": [
+    [
+     "noteheadBlackOnLine",
+     0.931
+    ],
+    [
+     "ledgerLine",
+     0.258
+    ]
+   ],
+   "class": "noteheadBlackInSpace",
+   "legacy_best_same_category_iou": 0.931
+  },
+  {
+   "subject": "glyph/2/1/6/7/6",
+   "filed_on": "staff/2/1/6",
+   "own_spaces": 5.71,
+   "near": "staff/2/1/7",
+   "near_spaces": 0.89,
+   "cause": "NO_BAND_ROW",
+   "subcause": "TWIN_IOU_BELOW_0.5",
+   "near_best_iou_same_class": 0.381,
+   "overlapping_on_near_staff": [
+    [
+     "noteheadBlackInSpace",
+     0.381
+    ]
+   ],
+   "class": "noteheadBlackInSpace",
+   "legacy_best_same_category_iou": 0.381
+  },
+  {
+   "subject": "glyph/2/1/6/7/8",
+   "filed_on": "staff/2/1/6",
+   "own_spaces": 5.73,
+   "near": "staff/2/1/7",
+   "near_spaces": 0.87,
+   "cause": "NO_BAND_ROW",
+   "subcause": "TWIN_IOU_BELOW_0.5",
+   "near_best_iou_same_class": 0.352,
+   "overlapping_on_near_staff": [
+    [
+     "noteheadBlackInSpace",
+     0.352
+    ]
+   ],
+   "class": "noteheadBlackInSpace",
+   "legacy_best_same_category_iou": 0.352
+  },
+  {
+   "subject": "glyph/2/1/6/11/5",
+   "filed_on": "staff/2/1/6",
+   "own_spaces": 5.82,
+   "near": "staff/2/1/7",
+   "near_spaces": 0.78,
+   "cause": "NO_BAND_ROW",
+   "subcause": "TWIN_IOU_BELOW_0.5",
+   "near_best_iou_same_class": 0.212,
+   "overlapping_on_near_staff": [
+    [
+     "noteheadBlackInSpace",
+     0.212
+    ]
+   ],
+   "class": "noteheadBlackInSpace",
+   "legacy_best_same_category_iou": 0.212
+  },
+  {
+   "subject": "glyph/2/1/7/14/1",
+   "filed_on": "staff/2/1/7",
+   "own_spaces": 5.67,
+   "near": "staff/2/1/6",
+   "near_spaces": 0.93,
+   "cause": "NO_BAND_ROW",
+   "subcause": "TWIN_IOU_BELOW_0.5",
+   "near_best_iou_same_class": 0.38,
+   "overlapping_on_near_staff": [
+    [
+     "staff",
+     0.001
+    ],
+    [
+     "noteheadBlackOnLine",
+     0.38
+    ]
+   ],
+   "class": "noteheadBlackOnLine",
+   "legacy_best_same_category_iou": 0.38
+  },
+  {
+   "subject": "glyph/2/1/8/1/4",
+   "filed_on": "staff/2/1/8",
+   "own_spaces": 3.8,
+   "near": "staff/2/1/7",
+   "near_spaces": 1.09,
+   "cause": "NO_BAND_ROW",
+   "subcause": "TWIN_CLASS_DIFFERS",
+   "near_best_iou_same_class": 0.0,
+   "overlapping_on_near_staff": [
+    [
+     "arpeggiato",
+     0.03
+    ]
+   ],
+   "class": "noteheadBlackInSpace",
+   "legacy_best_same_category_iou": 0.0
+  },
+  {
+   "subject": "glyph/2/1/9/6/10",
+   "filed_on": "staff/2/1/9",
+   "own_spaces": 3.67,
+   "near": "staff/2/1/8",
+   "near_spaces": 1.48,
+   "cause": "NO_BAND_ROW",
+   "subcause": "TWIN_IOU_BELOW_0.5",
+   "near_best_iou_same_class": 0.494,
+   "overlapping_on_near_staff": [
+    [
+     "dynamicF",
+     0.059
+    ],
+    [
+     "noteheadBlackOnLine",
+     0.494
+    ]
+   ],
+   "class": "noteheadBlackOnLine",
+   "legacy_best_same_category_iou": 0.494
+  },
+  {
+   "subject": "glyph/2/1/9/6/11",
+   "filed_on": "staff/2/1/9",
+   "own_spaces": 3.67,
+   "near": "staff/2/1/8",
+   "near_spaces": 1.48,
+   "cause": "NO_BAND_ROW",
+   "subcause": "TWIN_CLASS_DIFFERS",
+   "near_best_iou_same_class": 0.0,
+   "overlapping_on_near_staff": [
+    [
+     "dynamicF",
+     0.059
+    ],
+    [
+     "noteheadBlackOnLine",
+     0.489
+    ]
+   ],
+   "class": "noteheadBlackInSpace",
+   "legacy_best_same_category_iou": 0.489
+  },
+  {
+   "subject": "glyph/2/1/10/1/5",
+   "filed_on": "staff/2/1/10",
+   "own_spaces": 3.73,
+   "near": "staff/2/1/9",
+   "near_spaces": 0.59,
+   "cause": "NO_BAND_ROW",
+   "subcause": "TWIN_CLASS_DIFFERS",
+   "near_best_iou_same_class": 0.0,
+   "overlapping_on_near_staff": [
+    [
+     "beam",
+     0.827
+    ]
+   ],
+   "class": "noteheadBlackInSpace",
+   "legacy_best_same_category_iou": 0.0
+  },
+  {
+   "subject": "glyph/2/1/10/6/2",
+   "filed_on": "staff/2/1/10",
+   "own_spaces": 3.67,
+   "near": "staff/2/1/9",
+   "near_spaces": 0.64,
+   "cause": "NO_BAND_ROW",
+   "subcause": "TWIN_IOU_BELOW_0.5",
+   "near_best_iou_same_class": 0.477,
+   "overlapping_on_near_staff": [
+    [
+     "noteheadBlackOnLine",
+     0.477
+    ],
+    [
+     "ledgerLine",
+     0.074
+    ],
+    [
+     "staff",
+     0.013
+    ]
+   ],
+   "class": "noteheadBlackOnLine",
+   "legacy_best_same_category_iou": 0.477
+  },
+  {
+   "subject": "glyph/2/1/10/8/4",
+   "filed_on": "staff/2/1/10",
+   "own_spaces": 3.77,
+   "near": "staff/2/1/9",
+   "near_spaces": 0.55,
+   "cause": "NO_BAND_ROW",
+   "subcause": "TWIN_CLASS_DIFFERS",
+   "near_best_iou_same_class": 0.0,
+   "overlapping_on_near_staff": [
+    [
+     "dynamicF",
+     0.025
+    ],
+    [
+     "staff",
+     0.003
+    ]
+   ],
+   "class": "noteheadBlackOnLine",
+   "legacy_best_same_category_iou": 0.0
+  },
+  {
+   "subject": "glyph/2/1/10/9/8",
+   "filed_on": "staff/2/1/10",
+   "own_spaces": 3.63,
+   "near": "staff/2/1/9",
+   "near_spaces": 0.69,
+   "cause": "NO_BAND_ROW",
+   "subcause": "TWIN_CLASS_DIFFERS",
+   "near_best_iou_same_class": 0.0,
+   "overlapping_on_near_staff": [
+    [
+     "staff",
+     0.011
+    ],
+    [
+     "beam",
+     0.059
+    ]
+   ],
+   "class": "noteheadBlackInSpace",
+   "legacy_best_same_category_iou": 0.0
+  },
+  {
+   "subject": "glyph/3/0/1/4/6",
+   "filed_on": "staff/3/0/1",
+   "own_spaces": 3.71,
+   "near": "staff/3/0/2",
+   "near_spaces": 0.54,
+   "cause": "NO_BAND_ROW",
+   "subcause": "TWIN_CLASS_DIFFERS",
+   "near_best_iou_same_class": 0.0,
+   "overlapping_on_near_staff": [
+    [
+     "noteheadBlackInSpace",
+     0.724
+    ]
+   ],
+   "class": "noteheadHalfInSpace",
+   "legacy_best_same_category_iou": 0.724
+  },
+  {
+   "subject": "glyph/3/0/1/5/5",
+   "filed_on": "staff/3/0/1",
+   "own_spaces": 3.73,
+   "near": "staff/3/0/2",
+   "near_spaces": 0.52,
+   "cause": "NO_BAND_ROW",
+   "subcause": "TWIN_CLASS_DIFFERS",
+   "near_best_iou_same_class": 0.0,
+   "overlapping_on_near_staff": [
+    [
+     "arpeggiato",
+     0.044
+    ]
+   ],
+   "class": "noteheadBlackInSpace",
+   "legacy_best_same_category_iou": 0.0
+  },
+  {
+   "subject": "glyph/3/0/1/6/4",
+   "filed_on": "staff/3/0/1",
+   "own_spaces": 3.73,
+   "near": "staff/3/0/2",
+   "near_spaces": 0.52,
+   "cause": "NO_BAND_ROW",
+   "subcause": "TWIN_IOU_BELOW_0.5",
+   "near_best_iou_same_class": 0.485,
+   "overlapping_on_near_staff": [
+    [
+     "noteheadHalfInSpace",
+     0.485
+    ]
+   ],
+   "class": "noteheadHalfInSpace",
+   "legacy_best_same_category_iou": 0.485
+  },
+  {
+   "subject": "glyph/3/0/1/7/4",
+   "filed_on": "staff/3/0/1",
+   "own_spaces": 3.77,
+   "near": "staff/3/0/2",
+   "near_spaces": 0.48,
+   "cause": "NO_BAND_ROW",
+   "subcause": "TWIN_CLASS_DIFFERS",
+   "near_best_iou_same_class": 0.0,
+   "overlapping_on_near_staff": [
+    [
+     "noteheadBlackOnLine",
+     0.294
+    ]
+   ],
+   "class": "noteheadHalfOnLine",
+   "legacy_best_same_category_iou": 0.294
+  },
+  {
+   "subject": "glyph/3/0/1/7/6",
+   "filed_on": "staff/3/0/1",
+   "own_spaces": 3.77,
+   "near": "staff/3/0/2",
+   "near_spaces": 0.48,
+   "cause": "NO_BAND_ROW",
+   "subcause": "TWIN_IOU_BELOW_0.5",
+   "near_best_iou_same_class": 0.304,
+   "overlapping_on_near_staff": [
+    [
+     "noteheadBlackOnLine",
+     0.304
+    ]
+   ],
+   "class": "noteheadBlackOnLine",
+   "legacy_best_same_category_iou": 0.304
+  },
+  {
+   "subject": "glyph/3/0/3/2/4",
+   "filed_on": "staff/3/0/3",
+   "own_spaces": 3.82,
+   "near": "staff/3/0/2",
+   "near_spaces": 1.06,
+   "cause": "NO_BAND_ROW",
+   "subcause": "TWIN_IOU_BELOW_0.5",
+   "near_best_iou_same_class": 0.184,
+   "overlapping_on_near_staff": [
+    [
+     "noteheadBlackInSpace",
+     0.184
+    ]
+   ],
+   "class": "noteheadBlackInSpace",
+   "legacy_best_same_category_iou": 0.184
+  },
+  {
+   "subject": "glyph/3/0/6/2/2",
+   "filed_on": "staff/3/0/6",
+   "own_spaces": 3.74,
+   "near": "staff/3/0/5",
+   "near_spaces": 1.53,
+   "cause": "NO_BAND_ROW",
+   "subcause": "TWIN_CLASS_DIFFERS",
+   "near_best_iou_same_class": 0.0,
+   "overlapping_on_near_staff": [
+    [
+     "noteheadBlackOnLine",
+     0.354
+    ]
+   ],
+   "class": "noteheadBlackInSpace",
+   "legacy_best_same_category_iou": 0.354
+  },
+  {
+   "subject": "glyph/3/0/6/2/4",
+   "filed_on": "staff/3/0/6",
+   "own_spaces": 3.8,
+   "near": "staff/3/0/5",
+   "near_spaces": 1.47,
+   "cause": "NO_BAND_ROW",
+   "subcause": "TWIN_CLASS_DIFFERS",
+   "near_best_iou_same_class": 0.0,
+   "overlapping_on_near_staff": [
+    [
+     "noteheadBlackOnLine",
+     0.24
+    ]
+   ],
+   "class": "noteheadBlackInSpace",
+   "legacy_best_same_category_iou": 0.24
+  },
+  {
+   "subject": "glyph/3/0/6/3/10",
+   "filed_on": "staff/3/0/6",
+   "own_spaces": 3.67,
+   "near": "staff/3/0/5",
+   "near_spaces": 1.6,
+   "cause": "NO_BAND_ROW",
+   "subcause": "TWIN_IOU_BELOW_0.5",
+   "near_best_iou_same_class": 0.429,
+   "overlapping_on_near_staff": [
+    [
+     "noteheadHalfOnLine",
+     0.429
+    ],
+    [
+     "ledgerLine",
+     0.045
+    ]
+   ],
+   "class": "noteheadHalfOnLine",
+   "legacy_best_same_category_iou": 0.429
+  },
+  {
+   "subject": "glyph/3/0/6/4/3",
+   "filed_on": "staff/3/0/6",
+   "own_spaces": 5.52,
+   "near": "staff/3/0/7",
+   "near_spaces": 2.25,
+   "cause": "NO_BAND_ROW",
+   "subcause": "TWIN_IOU_BELOW_0.5",
+   "near_best_iou_same_class": 0.45,
+   "overlapping_on_near_staff": [
+    [
+     "noteheadBlackOnLine",
+     0.45
+    ],
+    [
+     "accidentalNatural",
+     0.042
+    ]
+   ],
+   "class": "noteheadBlackOnLine",
+   "legacy_best_same_category_iou": 0.45
+  },
+  {
+   "subject": "glyph/3/0/6/4/4",
+   "filed_on": "staff/3/0/6",
+   "own_spaces": 3.71,
+   "near": "staff/3/0/5",
+   "near_spaces": 1.56,
+   "cause": "NO_BAND_ROW",
+   "subcause": "TWIN_CLASS_DIFFERS",
+   "near_best_iou_same_class": 0.0,
+   "overlapping_on_near_staff": [
+    [
+     "slur",
+     0.001
+    ],
+    [
+     "beam",
+     0.001
+    ],
+    [
+     "noteheadHalfOnLine",
+     0.235
+    ]
+   ],
+   "class": "noteheadHalfInSpace",
+   "legacy_best_same_category_iou": 0.235
+  },
+  {
+   "subject": "glyph/3/0/6/5/2",
+   "filed_on": "staff/3/0/6",
+   "own_spaces": 3.7,
+   "near": "staff/3/0/5",
+   "near_spaces": 1.57,
+   "cause": "NO_BAND_ROW",
+   "subcause": "TWIN_IOU_BELOW_0.5",
+   "near_best_iou_same_class": 0.401,
+   "overlapping_on_near_staff": [
+    [
+     "beam",
+     0.0
+    ],
+    [
+     "slur",
+     0.0
+    ],
+    [
+     "noteheadHalfOnLine",
+     0.401
+    ],
+    [
+     "noteheadHalfInSpace",
+     0.407
+    ]
+   ],
+   "class": "noteheadHalfOnLine",
+   "legacy_best_same_category_iou": 0.407
+  },
+  {
+   "subject": "glyph/3/0/6/5/5",
+   "filed_on": "staff/3/0/6",
+   "own_spaces": 3.7,
+   "near": "staff/3/0/5",
+   "near_spaces": 1.57,
+   "cause": "NO_BAND_ROW",
+   "subcause": "TWIN_IOU_BELOW_0.5",
+   "near_best_iou_same_class": 0.406,
+   "overlapping_on_near_staff": [
+    [
+     "beam",
+     0.0
+    ],
+    [
+     "slur",
+     0.0
+    ],
+    [
+     "noteheadHalfOnLine",
+     0.399
+    ],
+    [
+     "noteheadHalfInSpace",
+     0.406
+    ]
+   ],
+   "class": "noteheadHalfInSpace",
+   "legacy_best_same_category_iou": 0.406
+  },
+  {
+   "subject": "glyph/3/0/6/6/3",
+   "filed_on": "staff/3/0/6",
+   "own_spaces": 3.73,
+   "near": "staff/3/0/5",
+   "near_spaces": 1.54,
+   "cause": "NO_BAND_ROW",
+   "subcause": "TWIN_CLASS_DIFFERS",
+   "near_best_iou_same_class": 0.0,
+   "overlapping_on_near_staff": [
+    [
+     "noteheadHalfOnLine",
+     0.344
+    ],
+    [
+     "noteheadBlackOnLine",
+     0.346
+    ]
+   ],
+   "class": "noteheadHalfInSpace",
+   "legacy_best_same_category_iou": 0.346
+  },
+  {
+   "subject": "glyph/3/0/6/7/3",
+   "filed_on": "staff/3/0/6",
+   "own_spaces": 3.76,
+   "near": "staff/3/0/5",
+   "near_spaces": 1.5,
+   "cause": "NO_BAND_ROW",
+   "subcause": "TWIN_IOU_BELOW_0.5",
+   "near_best_iou_same_class": 0.326,
+   "overlapping_on_near_staff": [
+    [
+     "noteheadBlackOnLine",
+     0.326
+    ]
+   ],
+   "class": "noteheadBlackOnLine",
+   "legacy_best_same_category_iou": 0.326
+  },
+  {
+   "subject": "glyph/3/0/8/2/3",
+   "filed_on": "staff/3/0/8",
+   "own_spaces": 3.63,
+   "near": "staff/3/0/7",
+   "near_spaces": 2.29,
+   "cause": "NO_BAND_ROW",
+   "subcause": "TWIN_IOU_BELOW_0.5",
+   "near_best_iou_same_class": 0.458,
+   "overlapping_on_near_staff": [
+    [
+     "noteheadBlackInSpace",
+     0.458
+    ],
+    [
+     "arpeggiato",
+     0.072
+    ]
+   ],
+   "class": "noteheadBlackInSpace",
+   "legacy_best_same_category_iou": 0.458
+  },
+  {
+   "subject": "glyph/3/0/8/6/12",
+   "filed_on": "staff/3/0/8",
+   "own_spaces": 3.55,
+   "near": "staff/3/0/7",
+   "near_spaces": 2.37,
+   "cause": "NO_BAND_ROW",
+   "subcause": "TWIN_CLASS_DIFFERS",
+   "near_best_iou_same_class": 0.0,
+   "overlapping_on_near_staff": [
+    [
+     "noteheadBlackOnLine",
+     0.598
+    ]
+   ],
+   "class": "noteheadBlackInSpace",
+   "legacy_best_same_category_iou": 0.598
+  },
+  {
+   "subject": "glyph/3/0/9/1/2",
+   "filed_on": "staff/3/0/9",
+   "own_spaces": 3.69,
+   "near": "staff/3/0/8",
+   "near_spaces": 2.37,
+   "cause": "NO_BAND_ROW",
+   "subcause": "TWIN_IOU_BELOW_0.5",
+   "near_best_iou_same_class": 0.343,
+   "overlapping_on_near_staff": [
+    [
+     "noteheadBlackInSpace",
+     0.343
+    ],
+    [
+     "staff",
+     0.009
+    ]
+   ],
+   "class": "noteheadBlackInSpace",
+   "legacy_best_same_category_iou": 0.343
+  },
+  {
+   "subject": "glyph/3/0/9/1/7",
+   "filed_on": "staff/3/0/9",
+   "own_spaces": 3.7,
+   "near": "staff/3/0/8",
+   "near_spaces": 2.36,
+   "cause": "NO_BAND_ROW",
+   "subcause": "TWIN_CLASS_DIFFERS",
+   "near_best_iou_same_class": 0.0,
+   "overlapping_on_near_staff": [
+    [
+     "noteheadBlackInSpace",
+     0.343
+    ],
+    [
+     "staff",
+     0.009
+    ]
+   ],
+   "class": "noteheadBlackOnLine",
+   "legacy_best_same_category_iou": 0.343
+  },
+  {
+   "subject": "glyph/3/0/9/2/6",
+   "filed_on": "staff/3/0/9",
+   "own_spaces": 3.67,
+   "near": "staff/3/0/8",
+   "near_spaces": 2.4,
+   "cause": "NO_BAND_ROW",
+   "subcause": "TWIN_IOU_BELOW_0.5",
+   "near_best_iou_same_class": 0.424,
+   "overlapping_on_near_staff": [
+    [
+     "noteheadBlackInSpace",
+     0.424
+    ]
+   ],
+   "class": "noteheadBlackInSpace",
+   "legacy_best_same_category_iou": 0.424
+  },
+  {
+   "subject": "glyph/3/0/9/6/1",
+   "filed_on": "staff/3/0/9",
+   "own_spaces": 3.65,
+   "near": "staff/3/0/8",
+   "near_spaces": 2.42,
+   "cause": "NO_BAND_ROW",
+   "subcause": "TWIN_IOU_BELOW_0.5",
+   "near_best_iou_same_class": 0.487,
+   "overlapping_on_near_staff": [
+    [
+     "noteheadBlackOnLine",
+     0.487
+    ]
+   ],
+   "class": "noteheadBlackOnLine",
+   "legacy_best_same_category_iou": 0.487
+  },
+  {
+   "subject": "glyph/3/0/9/6/8",
+   "filed_on": "staff/3/0/9",
+   "own_spaces": 3.49,
+   "near": "staff/3/0/8",
+   "near_spaces": 2.59,
+   "cause": "NO_BAND_ROW",
+   "subcause": "TWIN_CLASS_DIFFERS",
+   "near_best_iou_same_class": 0.0,
+   "overlapping_on_near_staff": [
+    [
+     "noteheadBlackOnLine",
+     0.747
+    ]
+   ],
+   "class": "noteheadBlackInSpace",
+   "legacy_best_same_category_iou": 0.747
+  },
+  {
+   "subject": "glyph/3/0/9/7/5",
+   "filed_on": "staff/3/0/9",
+   "own_spaces": 3.6,
+   "near": "staff/3/0/8",
+   "near_spaces": 2.47,
+   "cause": "NO_BAND_ROW",
+   "subcause": "TWIN_CLASS_DIFFERS",
+   "near_best_iou_same_class": 0.0,
+   "overlapping_on_near_staff": [
+    [
+     "noteheadBlackOnLine",
+     0.552
+    ]
+   ],
+   "class": "noteheadBlackInSpace",
+   "legacy_best_same_category_iou": 0.552
+  },
+  {
+   "subject": "glyph/3/0/9/9/4",
+   "filed_on": "staff/3/0/9",
+   "own_spaces": 3.77,
+   "near": "staff/3/0/8",
+   "near_spaces": 2.29,
+   "cause": "NO_BAND_ROW",
+   "subcause": "TWIN_CLASS_DIFFERS",
+   "near_best_iou_same_class": 0.0,
+   "overlapping_on_near_staff": [
+    [
+     "noteheadBlackInSpace",
+     0.274
+    ]
+   ],
+   "class": "noteheadBlackOnLine",
+   "legacy_best_same_category_iou": 0.274
+  },
+  {
+   "subject": "glyph/3/0/10/2/7",
+   "filed_on": "staff/3/0/10",
+   "own_spaces": 3.67,
+   "near": "staff/3/0/9",
+   "near_spaces": 2.3,
+   "cause": "NO_BAND_ROW",
+   "subcause": "TWIN_IOU_BELOW_0.5",
+   "near_best_iou_same_class": 0.45,
+   "overlapping_on_near_staff": [
+    [
+     "noteheadBlackInSpace",
+     0.45
+    ]
+   ],
+   "class": "noteheadBlackInSpace",
+   "legacy_best_same_category_iou": 0.45
+  },
+  {
+   "subject": "glyph/3/0/10/2/10",
+   "filed_on": "staff/3/0/10",
+   "own_spaces": 3.88,
+   "near": "staff/3/0/9",
+   "near_spaces": 2.09,
+   "cause": "NO_BAND_ROW",
+   "subcause": "TWIN_CLASS_DIFFERS",
+   "near_best_iou_same_class": 0.0,
+   "overlapping_on_near_staff": [
+    [
+     "noteheadBlackOnLine",
+     0.072
+    ]
+   ],
+   "class": "noteheadBlackInSpace",
+   "legacy_best_same_category_iou": 0.072
+  },
+  {
+   "subject": "glyph/3/1/1/14/5",
+   "filed_on": "staff/3/1/1",
+   "own_spaces": 3.36,
+   "near": "staff/3/1/2",
+   "near_spaces": 2.2,
+   "cause": "NO_BAND_ROW",
+   "subcause": "TWIN_CLASS_DIFFERS",
+   "near_best_iou_same_class": 0.0,
+   "overlapping_on_near_staff": [
+    [
+     "slur",
+     0.121
+    ]
+   ],
+   "class": "noteheadHalfInSpace",
+   "legacy_best_same_category_iou": 0.0
+  },
+  {
+   "subject": "glyph/3/1/1/17/0",
+   "filed_on": "staff/3/1/1",
+   "own_spaces": 3.74,
+   "near": "staff/3/1/2",
+   "near_spaces": 1.82,
+   "cause": "NO_BAND_ROW",
+   "subcause": "NO_TWIN_AT_ALL",
+   "near_best_iou_same_class": 0.0,
+   "overlapping_on_near_staff": [],
+   "class": "noteheadHalfOnLine",
+   "legacy_best_same_category_iou": 0.0
+  },
+  {
+   "subject": "glyph/3/1/1/17/2",
+   "filed_on": "staff/3/1/1",
+   "own_spaces": 3.74,
+   "near": "staff/3/1/2",
+   "near_spaces": 1.81,
+   "cause": "NO_BAND_ROW",
+   "subcause": "NO_TWIN_AT_ALL",
+   "near_best_iou_same_class": 0.0,
+   "overlapping_on_near_staff": [],
+   "class": "noteheadBlackOnLine",
+   "legacy_best_same_category_iou": 0.0
+  },
+  {
+   "subject": "glyph/4/0/1/11/7",
+   "filed_on": "staff/4/0/1",
+   "own_spaces": 3.78,
+   "near": "staff/4/0/0",
+   "near_spaces": 2.1,
+   "cause": "NO_BAND_ROW",
+   "subcause": "TWIN_CLASS_DIFFERS",
+   "near_best_iou_same_class": 0.0,
+   "overlapping_on_near_staff": [
+    [
+     "dynamicF",
+     0.036
+    ],
+    [
+     "dynamicF",
+     0.041
+    ],
+    [
+     "dynamicF",
+     0.065
+    ]
+   ],
+   "class": "noteheadHalfInSpace",
+   "legacy_best_same_category_iou": 0.0
+  },
+  {
+   "subject": "glyph/4/0/2/3/3",
+   "filed_on": "staff/4/0/2",
+   "own_spaces": 3.7,
+   "near": "staff/4/0/3",
+   "near_spaces": 0.5,
+   "cause": "NO_BAND_ROW",
+   "subcause": "TWIN_IOU_BELOW_0.5",
+   "near_best_iou_same_class": 0.343,
+   "overlapping_on_near_staff": [
+    [
+     "slur",
+     0.038
+    ],
+    [
+     "noteheadHalfInSpace",
+     0.343
+    ],
+    [
+     "noteheadBlackInSpace",
+     0.383
+    ],
+    [
+     "slur",
+     0.035
+    ]
+   ],
+   "class": "noteheadHalfInSpace",
+   "legacy_best_same_category_iou": 0.383
+  },
+  {
+   "subject": "glyph/4/0/2/4/1",
+   "filed_on": "staff/4/0/2",
+   "own_spaces": 3.69,
+   "near": "staff/4/0/3",
+   "near_spaces": 0.52,
+   "cause": "NO_BAND_ROW",
+   "subcause": "TWIN_IOU_BELOW_0.5",
+   "near_best_iou_same_class": 0.393,
+   "overlapping_on_near_staff": [
+    [
+     "noteheadHalfInSpace",
+     0.393
+    ]
+   ],
+   "class": "noteheadHalfInSpace",
+   "legacy_best_same_category_iou": 0.393
+  },
+  {
+   "subject": "glyph/4/0/2/5/8",
+   "filed_on": "staff/4/0/2",
+   "own_spaces": 3.31,
+   "near": "staff/4/0/3",
+   "near_spaces": 0.91,
+   "cause": "NO_BAND_ROW",
+   "subcause": "TWIN_CLASS_DIFFERS",
+   "near_best_iou_same_class": 0.0,
+   "overlapping_on_near_staff": [
+    [
+     "noteheadHalfInSpace",
+     0.809
+    ]
+   ],
+   "class": "noteheadHalfOnLine",
+   "legacy_best_same_category_iou": 0.809
+  },
+  {
+   "subject": "glyph/4/0/2/6/5",
+   "filed_on": "staff/4/0/2",
+   "own_spaces": 3.16,
+   "near": "staff/4/0/3",
+   "near_spaces": 1.07,
+   "cause": "NO_BAND_ROW",
+   "subcause": "TWIN_CLASS_DIFFERS",
+   "near_best_iou_same_class": 0.0,
+   "overlapping_on_near_staff": [
+    [
+     "noteheadHalfOnLine",
+     0.915
+    ],
+    [
+     "noteheadBlackOnLine",
+     0.898
+    ]
+   ],
+   "class": "noteheadHalfInSpace",
+   "legacy_best_same_category_iou": 0.915
+  },
+  {
+   "subject": "glyph/4/0/2/8/3",
+   "filed_on": "staff/4/0/2",
+   "own_spaces": 3.15,
+   "near": "staff/4/0/3",
+   "near_spaces": 1.08,
+   "cause": "NO_BAND_ROW",
+   "subcause": "TWIN_CLASS_DIFFERS",
+   "near_best_iou_same_class": 0.0,
+   "overlapping_on_near_staff": [
+    [
+     "noteheadHalfInSpace",
+     0.895
+    ]
+   ],
+   "class": "noteheadHalfOnLine",
+   "legacy_best_same_category_iou": 0.895
+  },
+  {
+   "subject": "glyph/4/0/4/12/7",
+   "filed_on": "staff/4/0/4",
+   "own_spaces": 3.76,
+   "near": "staff/4/0/5",
+   "near_spaces": 0.49,
+   "cause": "NO_BAND_ROW",
+   "subcause": "TWIN_CLASS_DIFFERS",
+   "near_best_iou_same_class": 0.0,
+   "overlapping_on_near_staff": [
+    [
+     "noteheadBlackOnLine",
+     0.303
+    ]
+   ],
+   "class": "noteheadHalfInSpace",
+   "legacy_best_same_category_iou": 0.303
+  },
+  {
+   "subject": "glyph/4/0/5/0/8",
+   "filed_on": "staff/4/0/5",
+   "own_spaces": 3.22,
+   "near": "staff/4/0/4",
+   "near_spaces": 1.03,
+   "cause": "NO_BAND_ROW",
+   "subcause": "TWIN_CLASS_DIFFERS",
+   "near_best_iou_same_class": 0.0,
+   "overlapping_on_near_staff": [
+    [
+     "noteheadBlackInSpace",
+     0.952
+    ],
+    [
+     "noteheadBlackOnLine",
+     0.81
+    ]
+   ],
+   "class": "noteheadWholeInSpace",
+   "legacy_best_same_category_iou": 0.952
+  },
+  {
+   "subject": "glyph/4/0/5/1/4",
+   "filed_on": "staff/4/0/5",
+   "own_spaces": 3.35,
+   "near": "staff/4/0/4",
+   "near_spaces": 0.91,
+   "cause": "NO_BAND_ROW",
+   "subcause": "TWIN_CLASS_DIFFERS",
+   "near_best_iou_same_class": 0.0,
+   "overlapping_on_near_staff": [
+    [
+     "staff",
+     0.004
+    ],
+    [
+     "noteheadHalfOnLine",
+     0.406
+    ]
+   ],
+   "class": "noteheadBlackOnLine",
+   "legacy_best_same_category_iou": 0.406
+  },
+  {
+   "subject": "glyph/4/0/5/4/6",
+   "filed_on": "staff/4/0/5",
+   "own_spaces": 3.38,
+   "near": "staff/4/0/4",
+   "near_spaces": 0.88,
+   "cause": "NO_BAND_ROW",
+   "subcause": "TWIN_CLASS_DIFFERS",
+   "near_best_iou_same_class": 0.0,
+   "overlapping_on_near_staff": [
+    [
+     "noteheadHalfOnLine",
+     0.729
+    ],
+    [
+     "ledgerLine",
+     0.384
+    ]
+   ],
+   "class": "noteheadBlackOnLine",
+   "legacy_best_same_category_iou": 0.729
+  },
+  {
+   "subject": "glyph/4/0/5/6/2",
+   "filed_on": "staff/4/0/5",
+   "own_spaces": 3.47,
+   "near": "staff/4/0/4",
+   "near_spaces": 0.79,
+   "cause": "NO_BAND_ROW",
+   "subcause": "TWIN_CLASS_DIFFERS",
+   "near_best_iou_same_class": 0.0,
+   "overlapping_on_near_staff": [
+    [
+     "noteheadHalfOnLine",
+     0.675
+    ]
+   ],
+   "class": "noteheadBlackOnLine",
+   "legacy_best_same_category_iou": 0.675
+  },
+  {
+   "subject": "glyph/4/0/5/7/5",
+   "filed_on": "staff/4/0/5",
+   "own_spaces": 3.74,
+   "near": "staff/4/0/4",
+   "near_spaces": 0.52,
+   "cause": "NO_BAND_ROW",
+   "subcause": "TWIN_CLASS_DIFFERS",
+   "near_best_iou_same_class": 0.0,
+   "overlapping_on_near_staff": [
+    [
+     "noteheadBlackInSpace",
+     0.308
+    ],
+    [
+     "noteheadBlackOnLine",
+     0.336
+    ],
+    [
+     "beam",
+     0.078
+    ]
+   ],
+   "class": "noteheadHalfOnLine",
+   "legacy_best_same_category_iou": 0.336
+  },
+  {
+   "subject": "glyph/4/0/5/7/6",
+   "filed_on": "staff/4/0/5",
+   "own_spaces": 3.6,
+   "near": "staff/4/0/4",
+   "near_spaces": 0.65,
+   "cause": "NO_BAND_ROW",
+   "subcause": "TWIN_IOU_BELOW_0.5",
+   "near_best_iou_same_class": 0.22,
+   "overlapping_on_near_staff": [
+    [
+     "noteheadBlackInSpace",
+     0.239
+    ],
+    [
+     "noteheadBlackOnLine",
+     0.22
+    ],
+    [
+     "beam",
+     0.118
+    ]
+   ],
+   "class": "noteheadBlackOnLine",
+   "legacy_best_same_category_iou": 0.239
+  },
+  {
+   "subject": "glyph/4/0/5/8/0",
+   "filed_on": "staff/4/0/5",
+   "own_spaces": 3.55,
+   "near": "staff/4/0/4",
+   "near_spaces": 0.71,
+   "cause": "NO_BAND_ROW",
+   "subcause": "TWIN_CLASS_DIFFERS",
+   "near_best_iou_same_class": 0.0,
+   "overlapping_on_near_staff": [
+    [
+     "noteheadHalfInSpace",
+     0.684
+    ]
+   ],
+   "class": "noteheadBlackOnLine",
+   "legacy_best_same_category_iou": 0.684
+  },
+  {
+   "subject": "glyph/4/0/5/8/6",
+   "filed_on": "staff/4/0/5",
+   "own_spaces": 3.55,
+   "near": "staff/4/0/4",
+   "near_spaces": 0.71,
+   "cause": "NO_BAND_ROW",
+   "subcause": "TWIN_CLASS_DIFFERS",
+   "near_best_iou_same_class": 0.0,
+   "overlapping_on_near_staff": [
+    [
+     "noteheadHalfInSpace",
+     0.702
+    ]
+   ],
+   "class": "noteheadHalfOnLine",
+   "legacy_best_same_category_iou": 0.702
+  },
+  {
+   "subject": "glyph/4/0/5/9/0",
+   "filed_on": "staff/4/0/5",
+   "own_spaces": 3.67,
+   "near": "staff/4/0/4",
+   "near_spaces": 0.59,
+   "cause": "NO_BAND_ROW",
+   "subcause": "TWIN_IOU_BELOW_0.5",
+   "near_best_iou_same_class": 0.488,
+   "overlapping_on_near_staff": [
+    [
+     "noteheadBlackOnLine",
+     0.488
+    ],
+    [
+     "ledgerLine",
+     0.066
+    ]
+   ],
+   "class": "noteheadBlackOnLine",
+   "legacy_best_same_category_iou": 0.488
+  },
+  {
+   "subject": "glyph/4/0/5/10/1",
+   "filed_on": "staff/4/0/5",
+   "own_spaces": 3.67,
+   "near": "staff/4/0/4",
+   "near_spaces": 0.58,
+   "cause": "NO_BAND_ROW",
+   "subcause": "TWIN_IOU_BELOW_0.5",
+   "near_best_iou_same_class": 0.435,
+   "overlapping_on_near_staff": [
+    [
+     "noteheadBlackOnLine",
+     0.435
+    ],
+    [
+     "ledgerLine",
+     0.207
+    ]
+   ],
+   "class": "noteheadBlackOnLine",
+   "legacy_best_same_category_iou": 0.435
+  },
+  {
+   "subject": "glyph/4/0/5/10/2",
+   "filed_on": "staff/4/0/5",
+   "own_spaces": 3.7,
+   "near": "staff/4/0/4",
+   "near_spaces": 0.55,
+   "cause": "NO_BAND_ROW",
+   "subcause": "TWIN_IOU_BELOW_0.5",
+   "near_best_iou_same_class": 0.436,
+   "overlapping_on_near_staff": [
+    [
+     "noteheadBlackOnLine",
+     0.436
+    ],
+    [
+     "ledgerLine",
+     0.029
+    ]
+   ],
+   "class": "noteheadBlackOnLine",
+   "legacy_best_same_category_iou": 0.436
+  },
+  {
+   "subject": "glyph/4/0/5/13/5",
+   "filed_on": "staff/4/0/5",
+   "own_spaces": 5.28,
+   "near": "staff/4/0/6",
+   "near_spaces": 1.7,
+   "cause": "NO_BAND_ROW",
+   "subcause": "TWIN_IOU_BELOW_0.5",
+   "near_best_iou_same_class": 0.331,
+   "overlapping_on_near_staff": [
+    [
+     "noteheadBlackInSpace",
+     0.038
+    ],
+    [
+     "noteheadBlackOnLine",
+     0.331
+    ],
+    [
+     "slur",
+     0.432
+    ],
+    [
+     "slur",
+     0.643
+    ]
+   ],
+   "class": "noteheadBlackOnLine",
+   "legacy_best_same_category_iou": 0.331
+  },
+  {
+   "subject": "glyph/4/0/6/13/8",
+   "filed_on": "staff/4/0/6",
+   "own_spaces": 3.64,
+   "near": "staff/4/0/7",
+   "near_spaces": 1.51,
+   "cause": "NO_BAND_ROW",
+   "subcause": "TWIN_IOU_BELOW_0.5",
+   "near_best_iou_same_class": 0.477,
+   "overlapping_on_near_staff": [
+    [
+     "noteheadBlackOnLine",
+     0.477
+    ],
+    [
+     "slur",
+     0.132
+    ]
+   ],
+   "class": "noteheadBlackOnLine",
+   "legacy_best_same_category_iou": 0.477
+  },
+  {
+   "subject": "glyph/4/0/8/1/8",
+   "filed_on": "staff/4/0/8",
+   "own_spaces": 3.83,
+   "near": "staff/4/0/9",
+   "near_spaces": 1.06,
+   "cause": "NO_BAND_ROW",
+   "subcause": "TWIN_CLASS_DIFFERS",
+   "near_best_iou_same_class": 0.0,
+   "overlapping_on_near_staff": [
+    [
+     "noteheadBlackOnLine",
+     0.198
+    ]
+   ],
+   "class": "noteheadHalfOnLine",
+   "legacy_best_same_category_iou": 0.198
+  },
+  {
+   "subject": "glyph/4/0/8/2/4",
+   "filed_on": "staff/4/0/8",
+   "own_spaces": 3.88,
+   "near": "staff/4/0/7",
+   "near_spaces": 1.14,
+   "cause": "NO_BAND_ROW",
+   "subcause": "TWIN_IOU_BELOW_0.5",
+   "near_best_iou_same_class": 0.092,
+   "overlapping_on_near_staff": [
+    [
+     "noteheadBlackOnLine",
+     0.092
+    ],
+    [
+     "beam",
+     0.027
+    ],
+    [
+     "tie",
+     0.025
+    ]
+   ],
+   "class": "noteheadBlackOnLine",
+   "legacy_best_same_category_iou": 0.092
+  },
+  {
+   "subject": "glyph/4/0/8/3/1",
+   "filed_on": "staff/4/0/8",
+   "own_spaces": 3.73,
+   "near": "staff/4/0/9",
+   "near_spaces": 1.16,
+   "cause": "NO_BAND_ROW",
+   "subcause": "TWIN_IOU_BELOW_0.5",
+   "near_best_iou_same_class": 0.357,
+   "overlapping_on_near_staff": [
+    [
+     "noteheadBlackOnLine",
+     0.357
+    ]
+   ],
+   "class": "noteheadBlackOnLine",
+   "legacy_best_same_category_iou": 0.357
+  },
+  {
+   "subject": "glyph/4/0/8/5/2",
+   "filed_on": "staff/4/0/8",
+   "own_spaces": 3.61,
+   "near": "staff/4/0/9",
+   "near_spaces": 1.29,
+   "cause": "NO_BAND_ROW",
+   "subcause": "TWIN_IOU_BELOW_0.5",
+   "near_best_iou_same_class": 0.477,
+   "overlapping_on_near_staff": [
+    [
+     "noteheadBlackOnLine",
+     0.477
+    ]
+   ],
+   "class": "noteheadBlackOnLine",
+   "legacy_best_same_category_iou": 0.477
+  },
+  {
+   "subject": "glyph/4/0/8/8/4",
+   "filed_on": "staff/4/0/8",
+   "own_spaces": 3.88,
+   "near": "staff/4/0/9",
+   "near_spaces": 1.02,
+   "cause": "NO_BAND_ROW",
+   "subcause": "TWIN_CLASS_DIFFERS",
+   "near_best_iou_same_class": 0.0,
+   "overlapping_on_near_staff": [
+    [
+     "noteheadBlackInSpace",
+     0.167
+    ]
+   ],
+   "class": "noteheadBlackOnLine",
+   "legacy_best_same_category_iou": 0.167
+  },
+  {
+   "subject": "glyph/4/0/8/9/12",
+   "filed_on": "staff/4/0/8",
+   "own_spaces": 3.88,
+   "near": "staff/4/0/9",
+   "near_spaces": 1.02,
+   "cause": "NO_BAND_ROW",
+   "subcause": "TWIN_CLASS_DIFFERS",
+   "near_best_iou_same_class": 0.0,
+   "overlapping_on_near_staff": [
+    [
+     "noteheadBlackInSpace",
+     0.128
+    ],
+    [
+     "arpeggiato",
+     0.0
+    ]
+   ],
+   "class": "noteheadBlackOnLine",
+   "legacy_best_same_category_iou": 0.128
+  },
+  {
+   "subject": "glyph/4/0/8/12/6",
+   "filed_on": "staff/4/0/8",
+   "own_spaces": 3.78,
+   "near": "staff/4/0/9",
+   "near_spaces": 1.11,
+   "cause": "NO_BAND_ROW",
+   "subcause": "NO_TWIN_AT_ALL",
+   "near_best_iou_same_class": 0.0,
+   "overlapping_on_near_staff": [],
+   "class": "noteheadBlackInSpace",
+   "legacy_best_same_category_iou": 0.0
+  },
+  {
+   "subject": "glyph/4/0/9/5/4",
+   "filed_on": "staff/4/0/9",
+   "own_spaces": 3.65,
+   "near": "staff/4/0/10",
+   "near_spaces": 1.37,
+   "cause": "NO_BAND_ROW",
+   "subcause": "TWIN_IOU_BELOW_0.5",
+   "near_best_iou_same_class": 0.483,
+   "overlapping_on_near_staff": [
+    [
+     "noteheadBlackOnLine",
+     0.483
+    ]
+   ],
+   "class": "noteheadBlackOnLine",
+   "legacy_best_same_category_iou": 0.483
+  },
+  {
+   "subject": "glyph/4/0/9/6/2",
+   "filed_on": "staff/4/0/9",
+   "own_spaces": 3.65,
+   "near": "staff/4/0/10",
+   "near_spaces": 1.36,
+   "cause": "NO_BAND_ROW",
+   "subcause": "TWIN_IOU_BELOW_0.5",
+   "near_best_iou_same_class": 0.484,
+   "overlapping_on_near_staff": [
+    [
+     "noteheadBlackOnLine",
+     0.484
+    ]
+   ],
+   "class": "noteheadBlackOnLine",
+   "legacy_best_same_category_iou": 0.484
+  },
+  {
+   "subject": "glyph/4/0/9/12/9",
+   "filed_on": "staff/4/0/9",
+   "own_spaces": 3.65,
+   "near": "staff/4/0/10",
+   "near_spaces": 1.37,
+   "cause": "NO_BAND_ROW",
+   "subcause": "TWIN_IOU_BELOW_0.5",
+   "near_best_iou_same_class": 0.045,
+   "overlapping_on_near_staff": [
+    [
+     "noteheadBlackInSpace",
+     0.045
+    ],
+    [
+     "arpeggiato",
+     0.072
+    ]
+   ],
+   "class": "noteheadBlackInSpace",
+   "legacy_best_same_category_iou": 0.045
+  },
+  {
+   "subject": "glyph/4/0/10/11/2",
+   "filed_on": "staff/4/0/10",
+   "own_spaces": 3.83,
+   "near": "staff/4/0/9",
+   "near_spaces": 1.19,
+   "cause": "NO_BAND_ROW",
+   "subcause": "TWIN_CLASS_DIFFERS",
+   "near_best_iou_same_class": 0.0,
+   "overlapping_on_near_staff": [
+    [
+     "dynamicF",
+     0.032
+    ]
+   ],
+   "class": "noteheadBlackInSpace",
+   "legacy_best_same_category_iou": 0.0
+  },
+  {
+   "subject": "glyph/4/1/0/0/9",
+   "filed_on": "staff/4/1/0",
+   "own_spaces": 3.27,
+   "near": "staff/4/1/1",
+   "near_spaces": 1.43,
+   "cause": "NO_BAND_ROW",
+   "subcause": "TWIN_CLASS_DIFFERS",
+   "near_best_iou_same_class": 0.0,
+   "overlapping_on_near_staff": [
+    [
+     "fermataAbove",
+     0.863
+    ],
+    [
+     "arpeggiato",
+     0.142
+    ]
+   ],
+   "class": "noteheadBlackInSpace",
+   "legacy_best_same_category_iou": 0.0
+  },
+  {
+   "subject": "glyph/4/1/0/1/6",
+   "filed_on": "staff/4/1/0",
+   "own_spaces": 3.81,
+   "near": "staff/4/1/1",
+   "near_spaces": 0.89,
+   "cause": "NO_BAND_ROW",
+   "subcause": "TWIN_IOU_BELOW_0.5",
+   "near_best_iou_same_class": 0.017,
+   "overlapping_on_near_staff": [
+    [
+     "noteheadBlackInSpace",
+     0.017
+    ]
+   ],
+   "class": "noteheadBlackInSpace",
+   "legacy_best_same_category_iou": 0.017
+  },
+  {
+   "subject": "glyph/4/1/0/2/6",
+   "filed_on": "staff/4/1/0",
+   "own_spaces": 3.79,
+   "near": "staff/4/1/1",
+   "near_spaces": 0.91,
+   "cause": "NO_BAND_ROW",
+   "subcause": "TWIN_CLASS_DIFFERS",
+   "near_best_iou_same_class": 0.0,
+   "overlapping_on_near_staff": [
+    [
+     "noteheadBlackInSpace",
+     0.215
+    ]
+   ],
+   "class": "noteheadBlackOnLine",
+   "legacy_best_same_category_iou": 0.215
+  },
+  {
+   "subject": "glyph/4/1/0/5/9",
+   "filed_on": "staff/4/1/0",
+   "own_spaces": 3.25,
+   "near": "staff/4/1/1",
+   "near_spaces": 1.45,
+   "cause": "NO_BAND_ROW",
+   "subcause": "TWIN_CLASS_DIFFERS",
+   "near_best_iou_same_class": 0.0,
+   "overlapping_on_near_staff": [
+    [
+     "arpeggiato",
+     0.066
+    ],
+    [
+     "noteheadBlackOnLine",
+     0.828
+    ]
+   ],
+   "class": "noteheadBlackInSpace",
+   "legacy_best_same_category_iou": 0.828
+  },
+  {
+   "subject": "glyph/4/1/0/6/2",
+   "filed_on": "staff/4/1/0",
+   "own_spaces": 3.66,
+   "near": "staff/4/1/1",
+   "near_spaces": 1.04,
+   "cause": "NO_BAND_ROW",
+   "subcause": "TWIN_IOU_BELOW_0.5",
+   "near_best_iou_same_class": 0.48,
+   "overlapping_on_near_staff": [
+    [
+     "noteheadBlackInSpace",
+     0.48
+    ],
+    [
+     "arpeggiato",
+     0.013
+    ]
+   ],
+   "class": "noteheadBlackInSpace",
+   "legacy_best_same_category_iou": 0.48
+  },
+  {
+   "subject": "glyph/4/1/0/6/9",
+   "filed_on": "staff/4/1/0",
+   "own_spaces": 3.67,
+   "near": "staff/4/1/1",
+   "near_spaces": 1.03,
+   "cause": "NO_BAND_ROW",
+   "subcause": "TWIN_IOU_BELOW_0.5",
+   "near_best_iou_same_class": 0.416,
+   "overlapping_on_near_staff": [
+    [
+     "noteheadBlackInSpace",
+     0.416
+    ],
+    [
+     "arpeggiato",
+     0.024
+    ]
+   ],
+   "class": "noteheadBlackInSpace",
+   "legacy_best_same_category_iou": 0.416
+  },
+  {
+   "subject": "glyph/4/1/0/8/0",
+   "filed_on": "staff/4/1/0",
+   "own_spaces": 3.67,
+   "near": "staff/4/1/1",
+   "near_spaces": 1.03,
+   "cause": "NO_BAND_ROW",
+   "subcause": "TWIN_IOU_BELOW_0.5",
+   "near_best_iou_same_class": 0.409,
+   "overlapping_on_near_staff": [
+    [
+     "noteheadBlackInSpace",
+     0.409
+    ]
+   ],
+   "class": "noteheadBlackInSpace",
+   "legacy_best_same_category_iou": 0.409
+  },
+  {
+   "subject": "glyph/4/1/0/10/3",
+   "filed_on": "staff/4/1/0",
+   "own_spaces": 3.67,
+   "near": "staff/4/1/1",
+   "near_spaces": 1.03,
+   "cause": "NO_BAND_ROW",
+   "subcause": "TWIN_CLASS_DIFFERS",
+   "near_best_iou_same_class": 0.0,
+   "overlapping_on_near_staff": [
+    [
+     "noteheadBlackInSpace",
+     0.438
+    ]
+   ],
+   "class": "noteheadBlackOnLine",
+   "legacy_best_same_category_iou": 0.438
+  },
+  {
+   "subject": "glyph/4/1/0/12/4",
+   "filed_on": "staff/4/1/0",
+   "own_spaces": 3.69,
+   "near": "staff/4/1/1",
+   "near_spaces": 1.01,
+   "cause": "NO_BAND_ROW",
+   "subcause": "TWIN_IOU_BELOW_0.5",
+   "near_best_iou_same_class": 0.442,
+   "overlapping_on_near_staff": [
+    [
+     "noteheadBlackInSpace",
+     0.442
+    ]
+   ],
+   "class": "noteheadBlackInSpace",
+   "legacy_best_same_category_iou": 0.442
+  },
+  {
+   "subject": "glyph/4/1/0/12/5",
+   "filed_on": "staff/4/1/0",
+   "own_spaces": 3.71,
+   "near": "staff/4/1/1",
+   "near_spaces": 0.99,
+   "cause": "NO_BAND_ROW",
+   "subcause": "TWIN_IOU_BELOW_0.5",
+   "near_best_iou_same_class": 0.426,
+   "overlapping_on_near_staff": [
+    [
+     "noteheadBlackInSpace",
+     0.426
+    ]
+   ],
+   "class": "noteheadBlackInSpace",
+   "legacy_best_same_category_iou": 0.426
+  },
+  {
+   "subject": "glyph/4/1/0/12/8",
+   "filed_on": "staff/4/1/0",
+   "own_spaces": 3.7,
+   "near": "staff/4/1/1",
+   "near_spaces": 1.0,
+   "cause": "NO_BAND_ROW",
+   "subcause": "TWIN_IOU_BELOW_0.5",
+   "near_best_iou_same_class": 0.436,
+   "overlapping_on_near_staff": [
+    [
+     "noteheadBlackInSpace",
+     0.436
+    ],
+    [
+     "arpeggiato",
+     0.003
+    ]
+   ],
+   "class": "noteheadBlackInSpace",
+   "legacy_best_same_category_iou": 0.436
+  },
+  {
+   "subject": "glyph/4/1/1/0/12",
+   "filed_on": "staff/4/1/1",
+   "own_spaces": 3.31,
+   "near": "staff/4/1/2",
+   "near_spaces": 1.32,
+   "cause": "NO_BAND_ROW",
+   "subcause": "NO_TWIN_AT_ALL",
+   "near_best_iou_same_class": 0.0,
+   "overlapping_on_near_staff": [],
+   "class": "noteheadBlackInSpace",
+   "legacy_best_same_category_iou": 0.0
+  },
+  {
+   "subject": "glyph/4/1/1/4/7",
+   "filed_on": "staff/4/1/1",
+   "own_spaces": 3.56,
+   "near": "staff/4/1/2",
+   "near_spaces": 1.07,
+   "cause": "NO_BAND_ROW",
+   "subcause": "NO_TWIN_AT_ALL",
+   "near_best_iou_same_class": 0.0,
+   "overlapping_on_near_staff": [],
+   "class": "noteheadBlackInSpace",
+   "legacy_best_same_category_iou": 0.0
+  },
+  {
+   "subject": "glyph/4/1/1/4/11",
+   "filed_on": "staff/4/1/1",
+   "own_spaces": 2.72,
+   "near": "staff/4/1/2",
+   "near_spaces": 1.91,
+   "cause": "NO_BAND_ROW",
+   "subcause": "TWIN_CLASS_DIFFERS",
+   "near_best_iou_same_class": 0.0,
+   "overlapping_on_near_staff": [
+    [
+     "noteheadBlackOnLine",
+     0.662
+    ],
+    [
+     "slur",
+     0.047
+    ]
+   ],
+   "class": "noteheadBlackInSpace",
+   "legacy_best_same_category_iou": 0.662
+  },
+  {
+   "subject": "glyph/4/1/1/4/15",
+   "filed_on": "staff/4/1/1",
+   "own_spaces": 3.64,
+   "near": "staff/4/1/0",
+   "near_spaces": 1.06,
+   "cause": "NO_BAND_ROW",
+   "subcause": "TWIN_CLASS_DIFFERS",
+   "near_best_iou_same_class": 0.0,
+   "overlapping_on_near_staff": [
+    [
+     "dynamicF",
+     0.042
+    ],
+    [
+     "staff",
+     0.016
+    ],
+    [
+     "dynamicF",
+     0.073
+    ],
+    [
+     "dynamicF",
+     0.016
+    ]
+   ],
+   "class": "noteheadHalfOnLine",
+   "legacy_best_same_category_iou": 0.0
+  },
+  {
+   "subject": "glyph/4/1/1/5/13",
+   "filed_on": "staff/4/1/1",
+   "own_spaces": 3.62,
+   "near": "staff/4/1/2",
+   "near_spaces": 1.01,
+   "cause": "NO_BAND_ROW",
+   "subcause": "TWIN_IOU_BELOW_0.5",
+   "near_best_iou_same_class": 0.071,
+   "overlapping_on_near_staff": [
+    [
+     "noteheadBlackInSpace",
+     0.071
+    ]
+   ],
+   "class": "noteheadBlackInSpace",
+   "legacy_best_same_category_iou": 0.071
+  },
+  {
+   "subject": "glyph/4/1/2/0/1",
+   "filed_on": "staff/4/1/2",
+   "own_spaces": 3.54,
+   "near": "staff/4/1/3",
+   "near_spaces": 0.77,
+   "cause": "NO_BAND_ROW",
+   "subcause": "TWIN_IOU_BELOW_0.5",
+   "near_best_iou_same_class": 0.47,
+   "overlapping_on_near_staff": [
+    [
+     "noteheadBlackInSpace",
+     0.47
+    ],
+    [
+     "arpeggiato",
+     0.058
+    ]
+   ],
+   "class": "noteheadBlackInSpace",
+   "legacy_best_same_category_iou": 0.47
+  },
+  {
+   "subject": "glyph/4/1/2/6/8",
+   "filed_on": "staff/4/1/2",
+   "own_spaces": 3.77,
+   "near": "staff/4/1/3",
+   "near_spaces": 0.55,
+   "cause": "NO_BAND_ROW",
+   "subcause": "TWIN_IOU_BELOW_0.5",
+   "near_best_iou_same_class": 0.232,
+   "overlapping_on_near_staff": [
+    [
+     "noteheadBlackOnLine",
+     0.232
+    ]
+   ],
+   "class": "noteheadBlackOnLine",
+   "legacy_best_same_category_iou": 0.232
+  },
+  {
+   "subject": "glyph/4/1/2/8/3",
+   "filed_on": "staff/4/1/2",
+   "own_spaces": 3.77,
+   "near": "staff/4/1/3",
+   "near_spaces": 0.55,
+   "cause": "NO_BAND_ROW",
+   "subcause": "TWIN_IOU_BELOW_0.5",
+   "near_best_iou_same_class": 0.337,
+   "overlapping_on_near_staff": [
+    [
+     "noteheadBlackOnLine",
+     0.337
+    ]
+   ],
+   "class": "noteheadBlackOnLine",
+   "legacy_best_same_category_iou": 0.337
+  },
+  {
+   "subject": "glyph/4/1/2/9/4",
+   "filed_on": "staff/4/1/2",
+   "own_spaces": 3.82,
+   "near": "staff/4/1/3",
+   "near_spaces": 0.5,
+   "cause": "NO_BAND_ROW",
+   "subcause": "TWIN_IOU_BELOW_0.5",
+   "near_best_iou_same_class": 0.267,
+   "overlapping_on_near_staff": [
+    [
+     "noteheadBlackOnLine",
+     0.267
+    ]
+   ],
+   "class": "noteheadBlackOnLine",
+   "legacy_best_same_category_iou": 0.267
+  },
+  {
+   "subject": "glyph/4/1/2/12/15",
+   "filed_on": "staff/4/1/2",
+   "own_spaces": 3.18,
+   "near": "staff/4/1/3",
+   "near_spaces": 1.13,
+   "cause": "NO_BAND_ROW",
+   "subcause": "TWIN_CLASS_DIFFERS",
+   "near_best_iou_same_class": 0.0,
+   "overlapping_on_near_staff": [
+    [
+     "noteheadBlackOnLine",
+     0.83
+    ],
+    [
+     "staff",
+     0.015
+    ]
+   ],
+   "class": "noteheadBlackInSpace",
+   "legacy_best_same_category_iou": 0.83
+  },
+  {
+   "subject": "glyph/4/1/3/13/7",
+   "filed_on": "staff/4/1/3",
+   "own_spaces": 3.49,
+   "near": "staff/4/1/4",
+   "near_spaces": 0.64,
+   "cause": "NO_BAND_ROW",
+   "subcause": "TWIN_CLASS_DIFFERS",
+   "near_best_iou_same_class": 0.0,
+   "overlapping_on_near_staff": [
+    [
+     "staff",
+     0.0
+    ],
+    [
+     "noteheadBlackInSpace",
+     0.796
+    ],
+    [
+     "stem",
+     0.005
+    ]
+   ],
+   "class": "noteheadBlackOnLine",
+   "legacy_best_same_category_iou": 0.796
+  },
+  {
+   "subject": "glyph/4/1/4/3/4",
+   "filed_on": "staff/4/1/4",
+   "own_spaces": 2.85,
+   "near": "staff/4/1/5",
+   "near_spaces": 1.76,
+   "cause": "NO_BAND_ROW",
+   "subcause": "TWIN_CLASS_DIFFERS",
+   "near_best_iou_same_class": 0.0,
+   "overlapping_on_near_staff": [
+    [
+     "tie",
+     0.01
+    ],
+    [
+     "beam",
+     0.012
+    ]
+   ],
+   "class": "noteheadBlackInSpace",
+   "legacy_best_same_category_iou": 0.0
+  },
+  {
+   "subject": "glyph/4/1/4/4/1",
+   "filed_on": "staff/4/1/4",
+   "own_spaces": 3.83,
+   "near": "staff/4/1/3",
+   "near_spaces": 0.3,
+   "cause": "NO_BAND_ROW",
+   "subcause": "TWIN_IOU_BELOW_0.5",
+   "near_best_iou_same_class": 0.317,
+   "overlapping_on_near_staff": [
+    [
+     "noteheadBlackOnLine",
+     0.317
+    ],
+    [
+     "staff",
+     0.003
+    ]
+   ],
+   "class": "noteheadBlackOnLine",
+   "legacy_best_same_category_iou": 0.317
+  },
+  {
+   "subject": "glyph/4/1/4/11/5",
+   "filed_on": "staff/4/1/4",
+   "own_spaces": 2.58,
+   "near": "staff/4/1/5",
+   "near_spaces": 2.02,
+   "cause": "NO_BAND_ROW",
+   "subcause": "TWIN_CLASS_DIFFERS",
+   "near_best_iou_same_class": 0.0,
+   "overlapping_on_near_staff": [
+    [
+     "fermataBelow",
+     0.631
+    ]
+   ],
+   "class": "noteheadBlackInSpace",
+   "legacy_best_same_category_iou": 0.0
+  },
+  {
+   "subject": "glyph/4/1/4/14/12",
+   "filed_on": "staff/4/1/4",
+   "own_spaces": 3.5,
+   "near": "staff/4/1/3",
+   "near_spaces": 0.63,
+   "cause": "NO_BAND_ROW",
+   "subcause": "TWIN_CLASS_DIFFERS",
+   "near_best_iou_same_class": 0.0,
+   "overlapping_on_near_staff": [
+    [
+     "staff",
+     0.033
+    ],
+    [
+     "arpeggiato",
+     0.107
+    ]
+   ],
+   "class": "noteheadBlackInSpace",
+   "legacy_best_same_category_iou": 0.0
+  },
+  {
+   "subject": "glyph/4/1/4/14/15",
+   "filed_on": "staff/4/1/4",
+   "own_spaces": 3.47,
+   "near": "staff/4/1/3",
+   "near_spaces": 0.65,
+   "cause": "NO_BAND_ROW",
+   "subcause": "TWIN_CLASS_DIFFERS",
+   "near_best_iou_same_class": 0.0,
+   "overlapping_on_near_staff": [
+    [
+     "staff",
+     0.034
+    ],
+    [
+     "arpeggiato",
+     0.109
+    ]
+   ],
+   "class": "noteheadBlackOnLine",
+   "legacy_best_same_category_iou": 0.0
+  },
+  {
+   "subject": "glyph/4/1/5/6/9",
+   "filed_on": "staff/4/1/5",
+   "own_spaces": 3.79,
+   "near": "staff/4/1/4",
+   "near_spaces": 0.78,
+   "cause": "NO_BAND_ROW",
+   "subcause": "TWIN_CLASS_DIFFERS",
+   "near_best_iou_same_class": 0.0,
+   "overlapping_on_near_staff": [
+    [
+     "staff",
+     0.016
+    ],
+    [
+     "ledgerLine",
+     0.849
+    ]
+   ],
+   "class": "noteheadBlackInSpace",
+   "legacy_best_same_category_iou": 0.0
+  },
+  {
+   "subject": "glyph/4/1/5/14/3",
+   "filed_on": "staff/4/1/5",
+   "own_spaces": 3.34,
+   "near": "staff/4/1/4",
+   "near_spaces": 1.25,
+   "cause": "NO_BAND_ROW",
+   "subcause": "TWIN_CLASS_DIFFERS",
+   "near_best_iou_same_class": 0.0,
+   "overlapping_on_near_staff": [
+    [
+     "noteheadBlackOnLine",
+     0.854
+    ],
+    [
+     "ledgerLine",
+     0.248
+    ],
+    [
+     "stem",
+     0.036
+    ]
+   ],
+   "class": "noteheadBlackInSpace",
+   "legacy_best_same_category_iou": 0.854
+  },
+  {
+   "subject": "glyph/4/1/5/14/5",
+   "filed_on": "staff/4/1/5",
+   "own_spaces": 3.88,
+   "near": "staff/4/1/4",
+   "near_spaces": 0.7,
+   "cause": "NO_BAND_ROW",
+   "subcause": "TWIN_IOU_BELOW_0.5",
+   "near_best_iou_same_class": 0.18,
+   "overlapping_on_near_staff": [
+    [
+     "noteheadBlackOnLine",
+     0.18
+    ]
+   ],
+   "class": "noteheadBlackOnLine",
+   "legacy_best_same_category_iou": 0.18
+  },
+  {
+   "subject": "glyph/4/1/6/3/3",
+   "filed_on": "staff/4/1/6",
+   "own_spaces": 3.71,
+   "near": "staff/4/1/7",
+   "near_spaces": 1.85,
+   "cause": "NO_BAND_ROW",
+   "subcause": "TWIN_CLASS_DIFFERS",
+   "near_best_iou_same_class": 0.0,
+   "overlapping_on_near_staff": [
+    [
+     "beam",
+     0.044
+    ],
+    [
+     "noteheadBlackInSpace",
+     0.436
+    ]
+   ],
+   "class": "noteheadHalfOnLine",
+   "legacy_best_same_category_iou": 0.436
+  },
+  {
+   "subject": "glyph/4/1/6/3/4",
+   "filed_on": "staff/4/1/6",
+   "own_spaces": 3.71,
+   "near": "staff/4/1/7",
+   "near_spaces": 1.85,
+   "cause": "NO_BAND_ROW",
+   "subcause": "TWIN_IOU_BELOW_0.5",
+   "near_best_iou_same_class": 0.423,
+   "overlapping_on_near_staff": [
+    [
+     "beam",
+     0.042
+    ],
+    [
+     "noteheadBlackInSpace",
+     0.423
+    ]
+   ],
+   "class": "noteheadBlackInSpace",
+   "legacy_best_same_category_iou": 0.423
+  },
+  {
+   "subject": "glyph/4/1/6/4/1",
+   "filed_on": "staff/4/1/6",
+   "own_spaces": 3.61,
+   "near": "staff/4/1/7",
+   "near_spaces": 1.95,
+   "cause": "NO_BAND_ROW",
+   "subcause": "TWIN_IOU_BELOW_0.5",
+   "near_best_iou_same_class": 0.409,
+   "overlapping_on_near_staff": [
+    [
+     "noteheadBlackInSpace",
+     0.409
+    ],
+    [
+     "beam",
+     0.003
+    ],
+    [
+     "slur",
+     0.003
+    ]
+   ],
+   "class": "noteheadBlackInSpace",
+   "legacy_best_same_category_iou": 0.409
+  },
+  {
+   "subject": "glyph/4/1/8/0/10",
+   "filed_on": "staff/4/1/8",
+   "own_spaces": 3.25,
+   "near": "staff/4/1/7",
+   "near_spaces": 1.07,
+   "cause": "NO_BAND_ROW",
+   "subcause": "TWIN_CLASS_DIFFERS",
+   "near_best_iou_same_class": 0.0,
+   "overlapping_on_near_staff": [
+    [
+     "clefG",
+     0.086
+    ],
+    [
+     "staff",
+     0.0
+    ]
+   ],
+   "class": "noteheadBlackInSpace",
+   "legacy_best_same_category_iou": 0.0
+  },
+  {
+   "subject": "glyph/4/1/8/2/5",
+   "filed_on": "staff/4/1/8",
+   "own_spaces": 3.74,
+   "near": "staff/4/1/7",
+   "near_spaces": 0.57,
+   "cause": "NO_BAND_ROW",
+   "subcause": "TWIN_IOU_BELOW_0.5",
+   "near_best_iou_same_class": 0.368,
+   "overlapping_on_near_staff": [
+    [
+     "noteheadBlackOnLine",
+     0.368
+    ]
+   ],
+   "class": "noteheadBlackOnLine",
+   "legacy_best_same_category_iou": 0.368
+  },
+  {
+   "subject": "glyph/4/1/9/2/3",
+   "filed_on": "staff/4/1/9",
+   "own_spaces": 3.77,
+   "near": "staff/4/1/8",
+   "near_spaces": 0.73,
+   "cause": "NO_BAND_ROW",
+   "subcause": "TWIN_IOU_BELOW_0.5",
+   "near_best_iou_same_class": 0.317,
+   "overlapping_on_near_staff": [
+    [
+     "noteheadBlackOnLine",
+     0.317
+    ]
+   ],
+   "class": "noteheadBlackOnLine",
+   "legacy_best_same_category_iou": 0.317
+  },
+  {
+   "subject": "glyph/4/1/9/2/4",
+   "filed_on": "staff/4/1/9",
+   "own_spaces": 3.67,
+   "near": "staff/4/1/10",
+   "near_spaces": 0.82,
+   "cause": "NO_BAND_ROW",
+   "subcause": "TWIN_IOU_BELOW_0.5",
+   "near_best_iou_same_class": 0.498,
+   "overlapping_on_near_staff": [
+    [
+     "noteheadBlackInSpace",
+     0.498
+    ]
+   ],
+   "class": "noteheadBlackInSpace",
+   "legacy_best_same_category_iou": 0.498
+  },
+  {
+   "subject": "glyph/4/1/9/8/1",
+   "filed_on": "staff/4/1/9",
+   "own_spaces": 3.64,
+   "near": "staff/4/1/10",
+   "near_spaces": 0.85,
+   "cause": "NO_BAND_ROW",
+   "subcause": "TWIN_CLASS_DIFFERS",
+   "near_best_iou_same_class": 0.0,
+   "overlapping_on_near_staff": [
+    [
+     "restQuarter",
+     0.043
+    ],
+    [
+     "fermataAbove",
+     0.463
+    ]
+   ],
+   "class": "noteheadBlackInSpace",
+   "legacy_best_same_category_iou": 0.0
+  },
+  {
+   "subject": "glyph/4/1/9/10/2",
+   "filed_on": "staff/4/1/9",
+   "own_spaces": 3.62,
+   "near": "staff/4/1/10",
+   "near_spaces": 0.87,
+   "cause": "NO_BAND_ROW",
+   "subcause": "NO_TWIN_AT_ALL",
+   "near_best_iou_same_class": 0.0,
+   "overlapping_on_near_staff": [],
+   "class": "noteheadBlackInSpace",
+   "legacy_best_same_category_iou": 0.0
+  },
+  {
+   "subject": "glyph/4/1/9/12/3",
+   "filed_on": "staff/4/1/9",
+   "own_spaces": 3.86,
+   "near": "staff/4/1/8",
+   "near_spaces": 0.64,
+   "cause": "NO_BAND_ROW",
+   "subcause": "TWIN_IOU_BELOW_0.5",
+   "near_best_iou_same_class": 0.139,
+   "overlapping_on_near_staff": [
+    [
+     "noteheadBlackOnLine",
+     0.139
+    ],
+    [
+     "noteheadHalfOnLine",
+     0.124
+    ]
+   ],
+   "class": "noteheadBlackOnLine",
+   "legacy_best_same_category_iou": 0.139
+  },
+  {
+   "subject": "glyph/4/1/10/4/8",
+   "filed_on": "staff/4/1/10",
+   "own_spaces": 3.8,
+   "near": "staff/4/1/9",
+   "near_spaces": 0.65,
+   "cause": "NO_BAND_ROW",
+   "subcause": "TWIN_CLASS_DIFFERS",
+   "near_best_iou_same_class": 0.0,
+   "overlapping_on_near_staff": [
+    [
+     "noteheadBlackOnLine",
+     0.273
+    ],
+    [
+     "dynamicF",
+     0.006
+    ],
+    [
+     "staff",
+     0.012
+    ]
+   ],
+   "class": "noteheadBlackInSpace",
+   "legacy_best_same_category_iou": 0.273
+  },
+  {
+   "subject": "glyph/4/1/10/4/9",
+   "filed_on": "staff/4/1/10",
+   "own_spaces": 3.81,
+   "near": "staff/4/1/9",
+   "near_spaces": 0.64,
+   "cause": "NO_BAND_ROW",
+   "subcause": "TWIN_IOU_BELOW_0.5",
+   "near_best_iou_same_class": 0.251,
+   "overlapping_on_near_staff": [
+    [
+     "dynamicF",
+     0.004
+    ],
+    [
+     "dynamicF",
+     0.01
+    ],
+    [
+     "noteheadBlackOnLine",
+     0.251
+    ],
+    [
+     "staff",
+     0.01
+    ]
+   ],
+   "class": "noteheadBlackOnLine",
+   "legacy_best_same_category_iou": 0.251
+  },
+  {
+   "subject": "glyph/4/1/10/5/2",
+   "filed_on": "staff/4/1/10",
+   "own_spaces": 3.8,
+   "near": "staff/4/1/9",
+   "near_spaces": 0.65,
+   "cause": "NO_BAND_ROW",
+   "subcause": "TWIN_CLASS_DIFFERS",
+   "near_best_iou_same_class": 0.0,
+   "overlapping_on_near_staff": [
+    [
+     "noteheadBlackOnLine",
+     0.222
+    ],
+    [
+     "staff",
+     0.002
+    ]
+   ],
+   "class": "noteheadBlackInSpace",
+   "legacy_best_same_category_iou": 0.222
+  }
+ ],
+ "resolved_elsewhere": [
+  {
+   "subject": "glyph/2/0/5/3/2",
+   "filed_on": "staff/2/0/5",
+   "own_spaces": 3.02,
+   "nearest": "staff/2/0/6",
+   "near_spaces": 2.4,
+   "outcome": "decided",
+   "value": "staff/2/0/5",
+   "reason": "range_veto",
+   "margin": 4.487500000000002,
+   "would_win_on_distance": "staff/2/0/6",
+   "scores": {
+    "staff/2/0/5": -1.5124999999999986,
+    "staff/2/0/6": -6.0
+   },
+   "n_basis": 18,
+   "candidates": []
+  },
+  {
+   "subject": "glyph/4/1/2/5/8",
+   "filed_on": "staff/4/1/2",
+   "own_spaces": 2.79,
+   "nearest": "staff/4/1/1",
+   "near_spaces": 1.84,
+   "outcome": "decided",
+   "value": "staff/4/1/2",
+   "reason": "range_veto",
+   "margin": 4.602500000000007,
+   "would_win_on_distance": "staff/4/1/1",
+   "scores": {
+    "staff/4/1/2": -1.397499999999993,
+    "staff/4/1/1": -6.0
+   },
+   "n_basis": 21,
+   "candidates": []
+  },
+  {
+   "subject": "glyph/4/1/3/13/0",
+   "filed_on": "staff/4/1/3",
+   "own_spaces": 3.48,
+   "nearest": "staff/4/1/4",
+   "near_spaces": 0.65,
+   "outcome": "abstained",
+   "value": null,
+   "reason": "tied",
+   "margin": null,
+   "would_win_on_distance": null,
+   "scores": null,
+   "n_basis": 21,
+   "candidates": []
+  },
+  {
+   "subject": "glyph/4/1/3/13/2",
+   "filed_on": "staff/4/1/3",
+   "own_spaces": 3.49,
+   "nearest": "staff/4/1/4",
+   "near_spaces": 0.64,
+   "outcome": "abstained",
+   "value": null,
+   "reason": "tied",
+   "margin": null,
+   "would_win_on_distance": null,
+   "scores": null,
+   "n_basis": 21,
+   "candidates": []
+  },
+  {
+   "subject": "glyph/4/1/3/13/4",
+   "filed_on": "staff/4/1/3",
+   "own_spaces": 3.48,
+   "nearest": "staff/4/1/4",
+   "near_spaces": 0.65,
+   "outcome": "abstained",
+   "value": null,
+   "reason": "tied",
+   "margin": null,
+   "would_win_on_distance": null,
+   "scores": null,
+   "n_basis": 21,
+   "candidates": []
+  },
+  {
+   "subject": "glyph/4/1/4/7/0",
+   "filed_on": "staff/4/1/4",
+   "own_spaces": 2.67,
+   "nearest": "staff/4/1/5",
+   "near_spaces": 1.93,
+   "outcome": "decided",
+   "value": "staff/4/1/4",
+   "reason": "ladder",
+   "margin": 3.632109375000014,
+   "would_win_on_distance": "staff/4/1/5",
+   "scores": {
+    "staff/4/1/4": 2.665000000000007,
+    "staff/4/1/5": -0.9671093750000068
+   },
+   "n_basis": 18,
+   "candidates": []
+  },
+  {
+   "subject": "glyph/4/1/5/0/3",
+   "filed_on": "staff/4/1/5",
+   "own_spaces": 2.75,
+   "nearest": "staff/4/1/6",
+   "near_spaces": 1.4,
+   "outcome": "decided",
+   "value": "staff/4/1/5",
+   "reason": "range_veto",
+   "margin": 4.625,
+   "would_win_on_distance": "staff/4/1/6",
+   "scores": {
+    "staff/4/1/5": -1.375,
+    "staff/4/1/6": -6.0
+   },
+   "n_basis": 16,
+   "candidates": []
+  },
+  {
+   "subject": "glyph/4/1/5/8/0",
+   "filed_on": "staff/4/1/5",
+   "own_spaces": 2.39,
+   "nearest": "staff/4/1/6",
+   "near_spaces": 1.76,
+   "outcome": "decided",
+   "value": "staff/4/1/5",
+   "reason": "ladder",
+   "margin": 8.802500000000009,
+   "would_win_on_distance": "staff/4/1/6",
+   "scores": {
+    "staff/4/1/5": 2.802500000000009,
+    "staff/4/1/6": -6.0
+   },
+   "n_basis": 16,
+   "candidates": []
+  }
+ ]
+}
