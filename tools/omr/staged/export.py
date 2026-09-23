@@ -2335,8 +2335,20 @@ def _pad_tacet_span(lines: List[str], sys_key: Tuple[int, int], sys_bars: int,
                     offsets: Dict[Tuple[int, int], int],
                     meters: Dict[Tuple[int, int], Any],
                     divisions: int, counters: Dict[str, int],
-                    segments_on: bool, first: bool) -> bool:
-    """The bars of one system this part does not print. Returns the new `first`.
+                    segments_on: bool, first: bool
+                    ) -> Tuple[bool, Optional[Dict[str, Any]]]:
+    """The bars of one system this part does not print.
+
+    Returns `(the new first, the meter this span DECLARED into the file)`.
+
+    ⚠️⚠️ THE SECOND RETURN IS ROADMAP 2.8 AND IT IS NOT BOOKKEEPING. A LEADING
+    pad emits the only `<attributes>` block this part may ever carry, so the
+    meter IN FORCE for every later bar of the part can have been declared
+    HERE — and 2.8 judges a bar against the meter a reader of the FILE sees,
+    not against the one the record happened to file on that bar's own system.
+    Without this, a part tacet on the document's first system would have its
+    later bars judged unassessable while the file was quietly asserting a
+    length for every one of them.
 
     ⚠️ ONE BAR AT A TIME, AND THE METER IS ASKED PER BAR, because a system can
     print a meter CHANGE part-way through (`Q.METER`'s `segments`). A span that
@@ -2360,11 +2372,12 @@ def _pad_tacet_span(lines: List[str], sys_key: Tuple[int, int], sys_bars: int,
     """
     base = offsets.get(sys_key)
     sys_meter = meters.get(sys_key)
+    declared: Optional[Dict[str, Any]] = None
     if base is None:
         # Unreachable while `offsets` and `spans` come from one tally, and a
         # refusal rather than a fabricated number if that ever stops being so.
         counters["tacet_bars_not_padded_without_a_number"] += sys_bars
-        return first
+        return first, None
     for i in range(sys_bars):
         meter = _meter_dict(meter_at(sys_meter, i) if segments_on
                             else sys_meter)
@@ -2385,6 +2398,7 @@ def _pad_tacet_span(lines: List[str], sys_key: Tuple[int, int], sys_bars: int,
                 None, None, meter, divisions, "      ",
                 include_divisions=True))
             first = False
+            declared = meter
         # ⚠️ NO DIRECTIONS AND NO WEDGES, unlike the eventless branch. Those
         # come off THIS STAFF's cells and a tacet part has no staff here; a
         # mark printed in the gap belongs to whichever staff `glyph_owner`
@@ -2393,15 +2407,28 @@ def _pad_tacet_span(lines: List[str], sys_key: Tuple[int, int], sys_bars: int,
             meter, divisions, None, "      "))
         lines.append("    </measure>")
         counters["tacet_bars_padded"] += 1
-    return first
+    return first, declared
 
 
 def _part_xml(rec: Record, part: Sequence[StaffRun], pid: str,
               divisions: int, counters: Dict[str, int],
               offsets: Optional[Dict[Tuple[int, int], int]] = None,
               spans: Optional[Sequence[Tuple[Tuple[int, int], int]]] = None,
-              meters: Optional[Dict[Tuple[int, int], Any]] = None) -> str:
+              meters: Optional[Dict[Tuple[int, int], Any]] = None,
+              drops: Optional[Any] = None,
+              held_bars: Optional[List[Dict[str, Any]]] = None,
+              marks: Optional[Dict[str, int]] = None) -> str:
     """One `<part>`: every measure of every system this part appears on.
+
+    ⚠️⚠️ `drops` AND `held_bars` ARE ROADMAP 2.8, AND `drops` IS NOT OPTIONAL
+    IN PRACTICE. It is `_place_notes._drop`'s discipline reaching the render:
+    one callable that counts a refused note BY REASON and BY SYSTEM at once,
+    so a refusal cannot reach one counter and miss the other — the equality
+    `build` asserts, and `to_musicxml` re-asserts after this function has run.
+    A caller passing None gets the hold-out WITHOUT the accounting, which is
+    only ever right for a test that is not reading the balance; the default is
+    None so the three test modules that call `_part_xml` positionally keep
+    working, not because counting is discretionary.
 
     ⚠️ `offsets` is `_document_bar_offsets`'s answer: with it, a measure is
     named by its place in the DOCUMENT's bar sequence, so one number means one
@@ -2442,11 +2469,30 @@ def _part_xml(rec: Record, part: Sequence[StaffRun], pid: str,
     prev = {"clef": object(), "key": object(), "time": object()}
     first = True
     segments_on = meter_segments_enabled()
+    # ⚠️⚠️ ROADMAP 2.8: THE METER A READER OF THIS FILE SEES, which is NOT
+    # always the one `Q.METER` filed on this bar's own system. `<time>` is
+    # written only where it CHANGES, so once a part has declared one it stays
+    # in force for every later bar until another is written — a bar whose own
+    # system never settled a meter is, to music21 or to Verovio, in the last
+    # meter this part declared. Judging such a bar as UNASSESSABLE would let
+    # the file assert a length for it that nothing ever checked: on Breitkopf
+    # Brahms 1 that is 3,826 of 5,803 bars with events, and the independent
+    # control found 3,132 of them not adding up while the exporter believed
+    # it had assessed nothing. So the hold-out reads what the FILE claims.
+    #
+    # ⚠️ None until the part declares its first `<time>`, and then a bar
+    # really is unassessable — there is no claim to hold it to.
+    in_force: Optional[Dict[str, Any]] = None
     for sys_key, maybe_run, sys_bars in _tacet_walk(part, offsets, spans):
         if maybe_run is None:
-            first = _pad_tacet_span(
+            first, _declared = _pad_tacet_span(
                 lines, sys_key, sys_bars, offsets or {}, meters or {},
                 divisions, counters, segments_on, first)
+            # ⚠️ ROADMAP 2.8: a LEADING pad can be the only place this part
+            # ever declares a `<time>`, and every later bar is read against
+            # it. See `_pad_tacet_span`'s second return value.
+            if _declared is not None:
+                in_force = _declared
             continue
         run = maybe_run
         key = _key_dict(run.fifths)
@@ -2499,10 +2545,113 @@ def _part_xml(rec: Record, part: Sequence[StaffRun], pid: str,
                 prev = {"clef": run.clef, "key": key, "time": meter,
                        "condensed": condensed}
                 first = False
+                # ⚠️ ROADMAP 2.8, and it is INSIDE the branch that actually
+                # emits: `_mxl_attributes_block` writes `<time>` only for a
+                # non-None meter, so this is the one line where the file's
+                # claim about bar length changes. Updating it outside would
+                # track what we KNEW rather than what we WROTE.
+                if meter is not None:
+                    in_force = meter
             cell_here = run.cells.get(i)
             directions = list(cell_here.directions) if cell_here else []
             events = _events(cell_here)
-            if not events:
+            # ⚠️⚠️ ROADMAP 2.8, AND IT IS DECIDED BEFORE ANYTHING IS WRITTEN.
+            # A held-out bar takes `_mxl_empty_measure`, which writes the
+            # bar's directions itself — so the test cannot sit after the
+            # `<direction>` lines have already been appended.
+            # ⚠️⚠️ ONE `why` LIST, HANDED ON WITH THE STREAMS. The first draft
+            # of this passed a throwaway `[]` to `_voice_split` and a SECOND
+            # `[]` to `_measure_xml`, which silently pinned every
+            # `two_voice_bars_refused_*` counter at zero — a split refusal
+            # that reached nobody. Caught by `test_the_refusals_are_counted_
+            # APART`, which is in the SLOW tier and therefore not by the fast
+            # one: the reasons are the diagnosis, not decoration.
+            _why: List[str] = []
+            split = ((_voice_split(rec, run, i, events, _why), _why)
+                     if events else None)
+            # ⚠️ THE METER THE FILE CLAIMS, not the one this bar's own system
+            # filed — see `in_force` above. `meter` is still what gets WRITTEN
+            # and what sizes a held-out bar's rest; this is only what the bar
+            # is JUDGED against.
+            judged = meter if meter is not None else in_force
+            held = (_bar_holds_out(events, split[0], divisions, judged)
+                    if events else None)
+            if events:
+                counters["bars_with_events"] += 1
+                counters["bars_with_events_without_a_meter"] += (
+                    1 if _bar_quarters(judged) is None else 0)
+                counters["bars_judged_by_a_carried_meter"] += (
+                    1 if meter is None and judged is not None else 0)
+            if held is not None:
+                # ⚠️⚠️ THE HOLD-OUT, AND IT IS NOT A MARK ON A KEPT BAR.
+                # Sean, 2026-09-23: *"hold out — I don't care about print
+                # right now — I want to know what we are getting correct."*
+                # The bar takes EXACTLY the branch a bar we read nothing in
+                # takes, because that is what it is: a bar we could not read
+                # to its meter is a bar we could not read (rule 8). Nothing
+                # pads it, trims it, or re-times it to fit.
+                #
+                # ⚠️ ITS OWN COUNTER, NEVER `empty_bars_padded`. That figure
+                # means *the detector found no event here*; this one means
+                # *we found events and they do not add up*. The repairs are
+                # opposite — recall against rhythm — and the tacet/eventless
+                # split one branch down was made for the same reason.
+                counters["bars_held_out_sum"] += 1
+                if split[0] is not None:
+                    # ⚠️ THE FIFTH PLACE A TWO-VOICE VERDICT CAN GO, and it is
+                    # named for the same reason `two_voice_bars_in_an_unread_
+                    # bar` is: without it the split's own accounting is a
+                    # FILTER rather than a PARTITION, because this bar reaches
+                    # `_measure_xml` not at all and neither of its counters
+                    # sees it.
+                    counters["two_voice_bars_held_out_by_sum"] += 1
+                if run.condensed_from is None:
+                    n_rows = _bar_event_rows(events)
+                    counters["notes_held_out_sum"] += n_rows
+                    if drops is not None:
+                        for _ in range(n_rows):
+                            drops(_BAR_SUM_REFUSAL, run.page, run.system)
+                    if marks is not None:
+                        for _fam, _n in _held_bar_marks(events).items():
+                            marks[_fam] += _n
+                    if held_bars is not None:
+                        held_bars.append({
+                            "page": run.page, "system": run.system,
+                            "staff": run.staff, "cell": i,
+                            "measure": number if base is None else base + i + 1,
+                            "part": pid, "events": len(events),
+                            "noteheads_and_rests": n_rows,
+                            # ⚠️ Whether the length this bar was judged
+                            # against was DECLARED at it or CARRIED to it by
+                            # the file. A reader chasing a held bar needs to
+                            # know which, because the repair differs: one is
+                            # rhythm, the other is `Q.METER`'s reach.
+                            "meter_carried_in_file": meter is None,
+                            **held})
+                else:
+                    # ⚠️⚠️ ROADMAP 2.1b MEETS 2.8, AND THE EQUALITY DEPENDS
+                    # ON THIS. A condensed staff's doubled Contrabass copy
+                    # holds a SECOND copy of ink the log recorded ONCE
+                    # (`_condensed_double`), and the written side subtracts
+                    # it under `notes_doubled_to_condensed_slot`. Counting a
+                    # refusal for it too would charge the balance for a row
+                    # that does not exist, so the copy is held out and NOT
+                    # counted. ⚠️ The two copies can genuinely disagree: the
+                    # copy is stripped of `glyph` (see
+                    # `_CONDENSED_STRIP_KEYS`), so `_voice_split` cannot
+                    # place its notes into streams and judges it as one
+                    # voice. That is recorded here rather than papered over.
+                    counters["bars_held_out_sum_on_a_doubled_staff"] += 1
+                # ⚠️ SIZED BY `judged`, THE METER IN FORCE IN THE FILE, and
+                # NOT by this bar's own — the one that is None here is the one
+                # that would make `_measure_rest_beats` fall back to 4.0 and
+                # write a whole rest into a 6/8 bar the file has already
+                # declared as three quarters. A bar can only be HELD OUT where
+                # a length is known, so this is never the fallback.
+                lines.extend(_legacy._mxl_empty_measure(
+                    judged, divisions, directions or None, "      "))
+                _count_directions(counters, directions)
+            elif not events:
                 # ⚠️ COUNTED AS `empty_bars_padded`, NOT AS A MEASURE REST.
                 # We read NOTHING in this bar; a bar where we actually read a
                 # whole rest is `measure_rests_read`, and conflating the two
@@ -2537,8 +2686,24 @@ def _part_xml(rec: Record, part: Sequence[StaffRun], pid: str,
                 # report. Same lesson as `decided_uncounted` — "the report
                 # cannot tell" is a different fact from "wrote zero" — arriving
                 # in the rest path.
+                # ⚠️⚠️ `judged`, NOT `meter`, AND THE CHANGE IS ROADMAP 2.8's
+                # DOING RATHER THAN ITS SUBJECT. `_measure_rest_beats(None)`
+                # is 4.0, so an eventless bar whose own system never settled a
+                # meter was written as a FOUR-QUARTER whole rest — into a part
+                # whose `<time>` the file had already declared as 6/8. The
+                # bar then contradicts the file's own claim about its length:
+                # 232 such bars on Breitkopf Brahms 1, every one of them
+                # `rest:whole` 4.0 against a 3.0 bar, and they were the entire
+                # residue left after the hold-out. Sizing the rest by the
+                # meter IN FORCE IN THE FILE is not inventing one — it is
+                # refusing to write a length that contradicts the one already
+                # written. Where the part has declared no `<time>` at all,
+                # `judged` is None, the 4.0 fallback stands and `measure="yes"`
+                # is still withheld, exactly as before.
                 counters["empty_bars_padded_without_meter"] += (
-                    1 if meter is None else 0)
+                    1 if judged is None else 0)
+                counters["empty_bars_sized_by_a_carried_meter"] += (
+                    1 if meter is None and judged is not None else 0)
                 # ⚠️ THE FOURTH PLACE A TWO-VOICE VERDICT CAN GO, and without
                 # it the split's accounting is a FILTER rather than a
                 # PARTITION. The record read two streams among notes the
@@ -2557,7 +2722,7 @@ def _part_xml(rec: Record, part: Sequence[StaffRun], pid: str,
                 # staged path is fed the marks from the start rather than
                 # rediscovering that.
                 lines.extend(_legacy._mxl_empty_measure(
-                    meter, divisions, directions or None, "      "))
+                    judged, divisions, directions or None, "      "))
                 _count_directions(counters, directions)
             else:
                 # ⚠️ AT THE HEAD OF THE BAR, AND THAT IS A DECLARED
@@ -2576,7 +2741,7 @@ def _part_xml(rec: Record, part: Sequence[StaffRun], pid: str,
                              for _x, kind, text in directions)
                 _count_directions(counters, directions)
                 lines.extend(_measure_xml(rec, run, i, events, divisions,
-                                          counters))
+                                          counters, split=split))
             lines.append("    </measure>")
     lines.append("  </part>")
     return "\n".join(lines)
@@ -2718,8 +2883,17 @@ def _annotate_beams_for(rec: Record, run: StaffRun, cell_index: int,
 
 def _measure_xml(rec: Record, run: StaffRun, cell_index: int,
                  events: List[Dict[str, Any]], divisions: int,
-                 counters: Dict[str, int]) -> List[str]:
+                 counters: Dict[str, int],
+                 split: Optional[Tuple[Optional[List[List[Dict[str, Any]]]],
+                                       List[str]]] = None) -> List[str]:
     """One bar's notes — one voice, or two separated by a `<backup>`.
+
+    ⚠️ `split` IS `_voice_split`'s ANSWER, COMPUTED ONCE BY THE CALLER, and it
+    exists because ROADMAP 2.8 has to know the voices BEFORE it knows whether
+    to render the bar at all — a bar is held out per VOICE. Re-running the
+    split here would be a second call of a function whose `why` list feeds
+    counters, i.e. two chances to disagree about one bar. Passing None keeps
+    the old self-contained behaviour for a caller that has not split yet.
 
     ⚠️⚠️ THE STAGED PATH WROTE `<voice>1</voice>` ON EVERYTHING UNTIL
     2026-09-10, and that was not merely a simplification: `_paired_spans` takes
@@ -2732,8 +2906,11 @@ def _measure_xml(rec: Record, run: StaffRun, cell_index: int,
     # event straddling two streams is two GROUPINGS disagreeing, while a
     # stream with no written note is a bar whose notes the exporter dropped.
     # A single "refused" total would send the next reader to the wrong place.
-    why: List[str] = []
-    streams = _voice_split(rec, run, cell_index, events, why)
+    if split is None:
+        why: List[str] = []
+        streams = _voice_split(rec, run, cell_index, events, why)
+    else:
+        streams, why = split
     # ⚠️⚠️ PER VOICE, AND THAT IS NOT A DETAIL. `annotate_beams`' own docstring
     # says it "must be called PER VOICE": two voices interleave in x, so a run
     # computed across both is broken by the other voice's notes. The split is
@@ -2782,6 +2959,198 @@ def _measure_xml(rec: Record, run: StaffRun, cell_index: int,
     return out
 
 
+#: ROADMAP 2.8's refusal. A notehead or rest in a bar whose durations do not
+#: sum to the meter in force: the bar is HELD OUT (Sean, 2026-09-23 --
+#: *"hold out -- I want to know what we are getting correct"*) and every event
+#: in it is counted here, so the accounting EQUALITY still balances.
+_BAR_SUM_REFUSAL = "bar_does_not_add_up"
+
+
+def _event_units(ev: Dict[str, Any], divisions: int) -> int:
+    """How far ONE event advances this voice's cursor, in `<duration>` units.
+
+    ⚠️⚠️ THE ONE COPY, AND THAT IS THE WHOLE REASON IT IS A FUNCTION.
+    `_measure_events_xml` accumulates the figure `<backup>` is written from by
+    calling this, and ROADMAP 2.8's bar-sum test (`_bar_holds_out`) compares
+    the SAME number against the meter -- so the arithmetic the file holds and
+    the arithmetic the check reasons about cannot come apart. Two spellings
+    would be two rules nothing forces to agree, which is the duplicated-rule
+    fault `build_sheet.py`'s stale copy of `_place_notes`' refusals already
+    cost this project once.
+
+    ⚠️⚠️ A CHORD IS ONE EVENT -- CLAUDE.md §10's double-counting trap. Its
+    members share one x and one stem and only the first `<note>` advances
+    MusicXML's cursor; summing per NOTEHEAD is exactly the fault that made the
+    old bar-sum check silently double-count every chord. That is why this
+    takes an EVENT and never a head.
+
+    ⚠️ A TUPLET SCALES THE TIME AND LEAVES THE WRITTEN VALUE ALONE, so the
+    ratio is applied here exactly as it is applied to the `<duration>` written
+    below: three triplet eighths occupy one quarter, not three. `_divisions`
+    is an LCM for this reason, so the scaled value is a whole number of units.
+
+    ⚠️ `max(1, ...)`, copied from the render rather than improved on: a
+    `<duration>` of 0 is not legal, and the check must reason about the number
+    the file WILL hold, not the one the arithmetic would prefer.
+    """
+    if ev.get("kind") == "rest":
+        return max(1, int(round(float(ev["duration_beats"]) * divisions)))
+    heads = ev.get("noteheads") or []
+    if not heads:
+        return 0
+    beats = float(heads[0]["duration_beats"])
+    tup = next((h["tuplet"] for h in heads
+                if isinstance(h.get("tuplet"), dict)), None)
+    if tup:
+        beats = beats * int(tup.get("normal", 2)) / int(tup.get("actual", 3))
+    return max(1, int(round(beats * divisions)))
+
+
+def _bar_quarters(meter: Optional[Dict[str, Any]]) -> Optional[float]:
+    """The bar's length in quarter notes, or None where the meter is UNKNOWN.
+
+    ⚠️ `_legacy._measure_rest_beats` is IMPORTED rather than restated -- it is
+    the function that sizes the measure rest `_mxl_empty_measure` writes, so a
+    held-out bar and the length it is judged against come from one arithmetic.
+
+    ⚠️⚠️ AND ITS 4.0 FALLBACK IS REFUSED HERE. That fallback exists so a rest
+    can still be written where the meter never settled; reading it as *"this
+    bar is four quarters long"* and then holding out every 2/4 bar that is not
+    would be CANNOT TELL converted into a definite answer -- rule 8, and the
+    one conversion this file forbids at five other sites. No meter, no
+    verdict: the bar is UNASSESSABLE and is written exactly as before.
+    """
+    if not meter or not meter.get("numerator") or not meter.get("denominator"):
+        return None
+    return float(_legacy._measure_rest_beats(meter))
+
+
+def _bar_holds_out(events: List[Dict[str, Any]],
+                   streams: Optional[List[List[Dict[str, Any]]]],
+                   divisions: int, meter: Optional[Dict[str, Any]]
+                   ) -> Optional[Dict[str, Any]]:
+    """ROADMAP 2.8: the detail of a bar that does not add up, else None.
+
+    Sean, 2026-09-23 (`docs/DECISIONS.md`): *"hold out -- I don't care about
+    print right now -- I want to know what we are getting correct"*. A bar we
+    could not read to its meter is a bar we could not read. Nothing here pads,
+    trims or re-times it: the only outcomes are WRITE IT AS READ and HOLD IT
+    OUT.
+
+    The rule, stated once:
+
+    * **PER VOICE, and every voice must fill.** `<backup>` returns the cursor
+      to the head of the bar, so a MusicXML reader sees each voice's own
+      timeline; a bar whose second voice runs out early is a bar we did not
+      read. This is STRICTER than the acceptance proxy's `bar_fill.bar_total`,
+      which takes the MAX over voices -- deliberately, because the strict side
+      is the one that cannot let a wrong bar through the control.
+    * **a chord is one event** (`_event_units`, CLAUDE.md §10).
+    * **a LONE measure rest IS the bar, whatever the meter** (CLAUDE.md §10:
+      a whole rest means the BAR). It is the one event that is not measured
+      against the meter at all -- `<rest measure="yes"/>` carries no note
+      value to compare. ⚠️ LONE: a measure rest sharing its voice with
+      anything else is NOT the bar, and that voice is summed and judged like
+      any other, because two events cannot both occupy the whole bar.
+    * **no meter, no verdict** (`_bar_quarters`).
+
+    ⚠️ IT NEVER LOOKS AT WHERE THE BAR IS. A pickup bar and a final bar are
+    legitimately short, and NOTHING in the record marks either one -- not the
+    dossier (`data/dossiers/*.json` carries `total_measures`,
+    `starting_meter`, `meter_changes`, and no anacrusis field), not the works
+    row, not any `Q.*`. Special-casing the first or last bar BY POSITION would
+    be the exporter deciding, from arithmetic alone, that a short bar it
+    cannot read is a short bar the engraver printed. So a genuine pickup is
+    held out with the rest, it is named in the report like the rest, and the
+    repair is a quantity that says *this bar is a pickup* -- not a rule here.
+    """
+    want_q = _bar_quarters(meter)
+    if want_q is None:
+        return None
+    want = int(round(want_q * divisions))
+    voices: List[Dict[str, Any]] = []
+    bad = False
+    for stream in (streams if streams is not None else [events]):
+        lone_measure_rest = (
+            len(stream) == 1
+            and bool((stream[0].get("rest") or {}).get("measure_rest")))
+        if lone_measure_rest:
+            voices.append({"units": want, "is_the_bar": True})
+            continue
+        units = sum(_event_units(ev, divisions) for ev in stream)
+        voices.append({"units": units, "is_the_bar": False})
+        if units != want:
+            bad = True
+    if not bad:
+        return None
+    return {"want_units": want, "want_quarters": want_q,
+            "divisions": divisions,
+            "voices": voices,
+            "quarters": [round(v["units"] / divisions, 6) for v in voices]}
+
+
+def _held_bar_marks(events: Sequence[Dict[str, Any]]) -> Dict[str, int]:
+    """What a held-out bar's MARKS would have written, family by family.
+
+    ⚠️⚠️ WITHOUT THIS, ROADMAP 2.8 SILENTLY FALSIFIES FIVE OTHER CONTROLS.
+    `articulation_balance`, `ornament_balance` and `wedge_balance` are
+    EQUALITIES over `written + not_written`; `fermata_balance` and the arc
+    residue are partitions of the same shape. A held-out bar writes none of
+    its marks, so every one of them has to arrive in a NAMED bucket or the
+    control goes False for correct behaviour — the *"widen it and teach it
+    about a legitimate exception"* failure `wedge_balance`'s own docstring
+    records this file committing once already.
+
+    ⚠️ EACH LINE MIRRORS ITS RENDER SITE AND NOTHING ELSE. `fermatas` is per
+    EVENT because `_measure_events_xml` hoists a chord's fermata onto the
+    first `<note>`; `articulations` and `ornaments` are per HEAD because they
+    are not spans; `ornaments` goes through `_mxl_ornament_elements` because
+    the written counter counts ELEMENTS THE RENDERER CAN SPELL, not marks;
+    `slurs` and `wedges` count the non-`stop` end only, exactly as the render
+    does. Counting any of them by a rule of its own would be a second opinion
+    about what the file would have held.
+    """
+    out: Dict[str, int] = collections.Counter()
+    for ev in events:
+        heads = ev.get("noteheads") or []
+        for head in heads:
+            out["articulations"] += len(head.get("articulations") or ())
+            out["ornaments"] += len(
+                _legacy._mxl_ornament_elements(head.get("ornaments") or []))
+            if head.get("tied_to_next"):
+                out["ties"] += 1
+        if any(h.get("fermata") for h in heads):
+            out["fermatas"] += 1
+        rest = ev.get("rest") or {}
+        if rest.get("fermata"):
+            out["fermatas"] += 1
+        for _n, kind in (ev.get("slur_states") or ()):
+            if kind != "stop":
+                out["slurs"] += 1
+        for _n, kind in (ev.get("wedge_states") or ()):
+            if kind != "stop":
+                out["wedges"] += 1
+    return dict(out)
+
+
+def _bar_event_rows(events: Sequence[Dict[str, Any]]) -> int:
+    """Log rows this bar would have written: noteheads + rests, chords flat.
+
+    ⚠️ COUNTED OFF THE EVENTS AND NOT OFF `cell.detections`, because the
+    accounting equality's other side (`counters["notes"]`, `["rests"]`,
+    `["measure_rests_read"]`) is also counted off the events -- one per
+    notehead and one per rest. A detection `group_chords_in_measure` does not
+    turn into an event is written by nobody today, and counting it here would
+    make `to_musicxml` raise for a shortfall that predates this refusal.
+    """
+    n = 0
+    for ev in events:
+        n += len(ev.get("noteheads") or ())
+        if ev.get("rest"):
+            n += 1
+    return n
+
+
 def _measure_events_xml(events: List[Dict[str, Any]], divisions: int,
                         counters: Dict[str, int], voice: int = 1,
                         doubled: bool = False
@@ -2804,7 +3173,11 @@ def _measure_events_xml(events: List[Dict[str, Any]], divisions: int,
         if ev.get("kind") == "rest":
             out.extend(_rest_xml(ev, divisions, counters, voice=voice,
                                  doubled=doubled))
-            units += max(1, int(round(float(ev["duration_beats"]) * divisions)))
+            # ⚠️ ROADMAP 2.8. `_event_units` rather than the arithmetic
+            # inline: the bar-sum hold-out reasons about this same number, and
+            # a second spelling of it would be a rule nothing forces to agree
+            # with the file it is judging.
+            units += _event_units(ev, divisions)
             continue
         heads = ev.get("noteheads") or []
         tup = next((h["tuplet"] for h in heads
@@ -3003,7 +3376,9 @@ def _measure_events_xml(events: List[Dict[str, Any]], divisions: int,
                 if ev.get("beam_states"):
                     counters["beamed_events"] += 1
             if n == 0:
-                units += max(1, int(round(beats * divisions)))
+                # ⚠️ ROADMAP 2.8, and the same reason as the rest branch: ONE
+                # copy of the arithmetic, shared with the bar-sum hold-out.
+                units += _event_units(ev, divisions)
         # ⚠️ AFTER the chord's notes, for the reason above: the `stop` binds
         # to the last note music21 parsed, which is this event.
         for _number, _kind in (ev.get("wedge_states") or ()):
@@ -3058,6 +3433,30 @@ def to_musicxml(result: Dict[str, Any]) -> Tuple[str, Dict[str, Any]]:
      notes_dropped_by_system) = build(rec)
     divisions = _divisions(parts)
     counters: Dict[str, int] = collections.Counter()
+    # ⚠️⚠️ ROADMAP 2.8. `build` refuses a note it cannot PLACE; this refuses a
+    # note whose BAR does not add up, and a bar is only known to be a bar once
+    # the meter in force at it is known — which is `_part_xml`'s own per-bar
+    # read of `Q.METER`'s segments. So the refusal is filed from the render,
+    # through the same two counters `_place_notes._drop` writes, and the
+    # equality between them is asserted again below after every part is
+    # rendered. `dropped` arrives from `build` as a plain dict; a Counter is
+    # what lets `+=` on a new key work at all.
+    dropped = collections.Counter(dropped)
+
+    def _drop_at_render(reason: str, page: int, system: int) -> None:
+        dropped[reason] += 1
+        notes_dropped_by_system.setdefault(
+            (page, system), collections.Counter())[reason] += 1
+
+    #: Every bar 2.8 held out, named by (page, system, staff, cell) — the
+    #: roadmap's own requirement, and the only place a human can find out
+    #: WHICH bars the file is missing without re-deriving the rule.
+    held_bars: List[Dict[str, Any]] = []
+    #: The MARKS a held-out bar would have written, by family. See
+    #: `_held_bar_marks`: every one of them has to reach its family's own
+    #: not-written bucket or that family's balance control goes False for
+    #: correct behaviour.
+    held_marks: Dict[str, int] = collections.Counter()
     # ⚠️ AFTER the parts are joined and BEFORE any measure is rendered. A part
     # is what an arc is merged along -- the junction between two systems is a
     # junction of one PART, not of two staves -- so this cannot run inside
@@ -3134,7 +3533,19 @@ def to_musicxml(result: Dict[str, Any]) -> Tuple[str, Dict[str, Any]]:
         if i in unnamed_parts:
             counters["tacet_spans_declined_unidentified_part"] += 1
         parts_xml.append(_part_xml(rec, part, pid, divisions, counters,
-                                   offsets, pad, meters))
+                                   offsets, pad, meters,
+                                   drops=_drop_at_render,
+                                   held_bars=held_bars, marks=held_marks))
+
+    # ⚠️ WRITTEN EVEN WHEN ZERO, the `empty_bars_padded_without_meter` lesson
+    # again: on a document where every bar adds up, *"we held out none"* must
+    # not read like *"this figure was never computed"*.
+    for _k in ("bars_with_events", "bars_with_events_without_a_meter",
+               "bars_held_out_sum", "notes_held_out_sum",
+               "bars_judged_by_a_carried_meter",
+               "empty_bars_sized_by_a_carried_meter",
+               "bars_held_out_sum_on_a_doubled_staff"):
+        counters[_k] += 0
 
     xml = _legacy._score_partwise(result.get("source", {}) or {},
                                   part_list, parts_xml)
@@ -3159,8 +3570,46 @@ def to_musicxml(result: Dict[str, Any]) -> Tuple[str, Dict[str, Any]]:
     # ⚠️ A NOTE THE RECORD HOLDS AND THE FILE DOES NOT. Reported beside the
     # families for the same reason: a shortfall that is not counted is
     # indistinguishable from ink that was never read.
-    report["notes_not_written"] = dropped
+    report["notes_not_written"] = dict(dropped)
     report["notes_not_written_total"] = sum(dropped.values())
+    # ⚠️⚠️ ROADMAP 2.8, AND THE EQUALITY `build` ASSERTS IS ASSERTED AGAIN
+    # HERE BECAUSE A SECOND CALL SITE NOW EXISTS. `build`'s own check ran
+    # before any bar was rendered, so it cannot see `_drop_at_render`; without
+    # this line a refusal that reached the flat total and missed the
+    # per-system one would be invisible until the cleanup artefact
+    # disagreed with the report — which is exactly how `build_sheet.py`'s copy
+    # went stale for six days.
+    _by_sys_total = sum(sum(c.values())
+                        for c in notes_dropped_by_system.values())
+    if _by_sys_total != sum(dropped.values()):
+        raise Unbalanced(
+            "notes refused per system (%d) do not sum to the per-reason total "
+            "(%d) after rendering -- a refusal reaches one counter and not "
+            "the other" % (_by_sys_total, sum(dropped.values())))
+    # ⚠️⚠️ ROADMAP 2.8: EVERY HELD BAR BY NAME. The roadmap asks for (page,
+    # system, cell, staff) and this carries the measure number and part id
+    # too, because the file a human opens is numbered by the DOCUMENT's bar
+    # sequence and a coordinate alone cannot be found in it.
+    #
+    # ⚠️ A LIST AND NOT A COUNT, deliberately: a count says how much was lost
+    # and can only be argued about, while the list says WHERE and can be
+    # opened against the plate. On the Litolff whole movement it is a few
+    # thousand rows, which is the honest size of the fact.
+    report["bars_held_out_sum"] = {
+        "bars": int(counters.get("bars_held_out_sum", 0)),
+        "bars_on_a_doubled_staff": int(
+            counters.get("bars_held_out_sum_on_a_doubled_staff", 0)),
+        "of_bars_with_events": int(counters.get("bars_with_events", 0)),
+        "bars_with_events_without_a_meter": int(
+            counters.get("bars_with_events_without_a_meter", 0)),
+        "bars_judged_by_a_carried_meter": int(
+            counters.get("bars_judged_by_a_carried_meter", 0)),
+        "fraction": ((counters.get("bars_held_out_sum", 0)
+                      / counters["bars_with_events"])
+                     if counters.get("bars_with_events") else None),
+        "noteheads_and_rests": int(counters.get("notes_held_out_sum", 0)),
+        "held": held_bars,
+    }
     # ⚠️ THE SAME REFUSALS, KEYED BY PRINTED SYSTEM. Written so the cleanup
     # artefact can ask its question one system at a time without holding a
     # second copy of the rule -- which is how `build_sheet.py`'s own
@@ -3179,9 +3628,20 @@ def to_musicxml(result: Dict[str, Any]) -> Tuple[str, Dict[str, Any]]:
     # span both of whose ends land in one chord is discarded by
     # `voicing._chord_span_states`, correctly and silently, two modules away
     # from anything that knows an arc was involved.
+    # ⚠️⚠️ ROADMAP 2.8 IS SUBTRACTED OUT OF `lost` BEFORE IT IS NAMED, and
+    # that is the whole reason this loop changed. `lost` is a DIFFERENCE, so a
+    # slur the bar-sum hold-out refused would otherwise be filed under
+    # `arc_ends_in_one_chord` — a real bucket, a real number, and the wrong
+    # cause — and the next reader would go looking at `voicing.
+    # _chord_span_states` for an arc that was never near a chord. Naming it
+    # here keeps `arcs_not_written` a partition AND keeps each bucket's name
+    # true.
     for fam, mark in (("slurs", "slur_spans_marked"),
                       ("ties", "tie_spans_marked")):
-        lost = int(counters.get(mark, 0)) - int(counters.get(fam, 0))
+        held = int(held_marks.get(fam, 0))
+        if held:
+            arcs_dropped[_BAR_SUM_REFUSAL] += held
+        lost = int(counters.get(mark, 0)) - int(counters.get(fam, 0)) - held
         if lost > 0:
             arcs_dropped["arc_ends_in_one_chord"] += lost
     report["arcs_not_written"] = dict(arcs_dropped)
@@ -3190,6 +3650,12 @@ def to_musicxml(result: Dict[str, Any]) -> Tuple[str, Dict[str, Any]]:
     # gathered articulation mark is either written onto a note or counted here
     # -- the same control the notes get, on a family whose whole population is
     # small enough that one silent loss would be a large share of it.
+    # ⚠️ ROADMAP 2.8: the marks a held-out bar would have written reach
+    # this family's own bucket, or its balance control goes False for
+    # correct behaviour. See `_held_bar_marks`.
+    if held_marks.get("articulations"):
+        artics_dropped = collections.Counter(artics_dropped)
+        artics_dropped[_BAR_SUM_REFUSAL] += held_marks["articulations"]
     report["articulations_not_written"] = dict(artics_dropped)
     report["articulations_not_written_total"] = sum(artics_dropped.values())
     marks_in_log = len(rec.obs_of(Q.ARTICULATION_MARK))
@@ -3211,6 +3677,12 @@ def to_musicxml(result: Dict[str, Any]) -> Tuple[str, Dict[str, Any]]:
     # on the same event already wrote.
     # ⚠️ PER HEAD, so this IS an equality -- unlike the fermata control one
     # paragraph down, where the hoist collapses several marks into one element.
+    # ⚠️ ROADMAP 2.8: the marks a held-out bar would have written reach
+    # this family's own bucket, or its balance control goes False for
+    # correct behaviour. See `_held_bar_marks`.
+    if held_marks.get("ornaments"):
+        ornaments_dropped = collections.Counter(ornaments_dropped)
+        ornaments_dropped[_BAR_SUM_REFUSAL] += held_marks["ornaments"]
     report["ornaments_not_written"] = dict(ornaments_dropped)
     report["ornaments_not_written_total"] = sum(ornaments_dropped.values())
     orn_marks = len(rec.obs_of(Q.ORNAMENT_MARK))
@@ -3232,6 +3704,12 @@ def to_musicxml(result: Dict[str, Any]) -> Tuple[str, Dict[str, Any]]:
     wedge_rows = len(rec.obs_of(Q.WEDGE_BOX))
     w_decided = len([v for v in rec.verdicts_of(Q.WEDGE_ANCHOR)
                      if v["outcome"] == "decided"])
+    # ⚠️ ROADMAP 2.8: the marks a held-out bar would have written reach
+    # this family's own bucket, or its balance control goes False for
+    # correct behaviour. See `_held_bar_marks`.
+    if held_marks.get("wedges"):
+        wedges_dropped = collections.Counter(wedges_dropped)
+        wedges_dropped[_BAR_SUM_REFUSAL] += held_marks["wedges"]
     report["wedges_not_written"] = dict(wedges_dropped)
     report["wedges_not_written_total"] = sum(wedges_dropped.values())
     report["wedge_balance"] = {
@@ -3304,6 +3782,12 @@ def to_musicxml(result: Dict[str, Any]) -> Tuple[str, Dict[str, Any]]:
                      == d_decided),
     }
     fermata_marks = len(rec.obs_of(Q.FERMATA_MARK))
+    # ⚠️ ROADMAP 2.8: the marks a held-out bar would have written reach
+    # this family's own bucket, or its balance control goes False for
+    # correct behaviour. See `_held_bar_marks`.
+    if held_marks.get("fermatas"):
+        fermatas_dropped = collections.Counter(fermatas_dropped)
+        fermatas_dropped[_BAR_SUM_REFUSAL] += held_marks["fermatas"]
     report["fermatas_not_written"] = dict(fermatas_dropped)
     report["fermatas_not_written_total"] = sum(fermatas_dropped.values())
     f_written = int(counters.get("fermatas", 0))

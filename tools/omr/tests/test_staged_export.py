@@ -2238,9 +2238,17 @@ class TestArticulationsReachTheFile(unittest.TestCase):
     """
 
     def _page(self, marks, notes=(("C4", QUARTER), ("D4", QUARTER))):
-        """`marks` = [(notehead_index, articulation_kind)]."""
+        """`marks` = [(notehead_index, articulation_kind)].
+
+        ⚠️ 2/4 AND NOT 4/4 SINCE ROADMAP 2.8. Two quarters are a 2/4 bar and
+        were never a 4/4 one; the meter here was arbitrary until the exporter
+        started HOLDING OUT a bar that does not add up, at which point this
+        fixture's bar stopped being written at all and three tests about
+        ARTICULATIONS began failing for a reason that had nothing to do with
+        articulations. The fixture is corrected, not exempted.
+        """
         page = _one_staff_page(notes=list(notes), meter={
-            "numerator": 4, "denominator": 4, "raw": "4/4"})
+            "numerator": 2, "denominator": 4, "raw": "2/4"})
         for k, (gi, kind) in enumerate(marks):
             sub = f"glyph/0/0/0/0/{900 + k}"
             page["record"]["observations"].append(
@@ -2318,7 +2326,14 @@ class TestArticulationsReachTheFile(unittest.TestCase):
         MusicXML takes it as the chord's representative; an articulation is not
         a span, and hoisting three staccati onto the first note would write one
         dot where the page prints three."""
-        page = _one_staff_page(notes=[("C4", QUARTER), ("E4", QUARTER)], meter={
+        # ⚠️ WHOLE NOTES IN 4/4 SINCE ROADMAP 2.8, not quarters. A chord is
+        # ONE event, so a chord of two quarters is a 1.0-quarter bar and the
+        # exporter now holds a 4/4 bar of that length out — which would fail
+        # this test for a reason that has nothing to do with articulations.
+        # A whole-note chord fills the bar, and the rule under test is
+        # untouched.
+        whole = {"beats": 4.0, "written": 4.0, "dots": 0}
+        page = _one_staff_page(notes=[("C4", whole), ("E4", whole)], meter={
             "numerator": 4, "denominator": 4, "raw": "4/4"})
         # put both heads at the same x so they group as one chord
         for o in page["record"]["observations"]:
