@@ -282,7 +282,57 @@ as one flat on pages 1 and 2**, written as spurious key changes at bars 8 and
     sh benchmarks/omr-key-majority-2026-09/run_scan.sh <record> <tag>
     python3 benchmarks/omr-key-majority-2026-09/report.py <tag> --truth <kind>
 
-<!-- SCAN_TABLE -->
+### 6a. Beethoven 5, Litolff, whole movement (331 staff-systems, 12 parts)
+
+| | base (fitters) | arm (markers + check) |
+|---|---|---|
+| key verdicts | 212 decided / 119 abstained | 221 decided / 110 abstained |
+| reasons | `fitted_no_markers` 212, `no_evidence` 76, `needs_clef` 24, `run_fits_no_slot_table` 19 | `markers` 144, `fitted_no_markers` 77, `disagrees_with_system` 28, `no_evidence` 40, `needs_clef` 24, `mixed_marker_kinds` 10, `run_fits_no_slot_table` 8 |
+| `system_key` | 31 × `no_staff_read_a_key` (the readers are off) | 27 × `read`, 4 × `one_staff_only` |
+| against the movement's key | 91 / 37 / 72 | **92 / 33 / 75** |
+| `<note>` | 12,424 | **12,424** |
+| `<key>` elements | 153 | 153 |
+| **key CHANGES written** | **105** | **113** |
+| `status_census` | balanced, `unaccounted: []` | balanced, `unaccounted: []` |
+
+⚠️⚠️ **THE GATE IS NOT MET AND THE ARM IS EIGHT WORSE ON IT.** Roadmap 2.9 asks
+for *"0 key changes not printed on the plate"*, and Beethoven 5 mvt 1 prints
+none at all: the base writes **105** spurious changes across 12 parts and the
+arm writes **113**. The four the roadmap named from the 4-page record are a
+small corner of it; over the whole movement this is the dominant key defect
+and NEITHER arm touches it. One of the named four IS closed — Viola's `+7` at
+m64 is gone — and Violin II's `+1` at m48 and Trumpet's `+1` at m82 both
+survive.
+
+**Why the system check does not reach it, measured rather than guessed.** Of
+331 staff-systems, only **76 (23%)** can be stated in concert pitch at all —
+the rest carry no resolvable margin label, or an instrument whose key the
+label never named, or print no signature by convention. Of the 31 systems, 18
+hold exactly one corroborated concert key, **12 hold none at all** (every
+reading on them stands alone) and one holds three.
+
+**And on the count page the check is not merely thin, it is INERT — because
+the readers fail TOGETHER.** `out/print/litolff-p3-system0-header.png`: Flute,
+Oboe and Clarinet all read one flat, which normalises to concert −1 for the
+first two and −1 for the clarinet's own −1 written… so `system_key` reports
+`{"corroborated": [-1], "tally": {"-1": 3}}` and every one of them is
+CORROBORATED. That is CLAUDE.md §10 exactly — *two witnesses off the same
+raster fall silent together* — and it is the reason a majority would not have
+helped either: the majority would have been −1 too, and it would have written
+−1 onto the staves that read −3.
+
+**So the ranked next step is not a vote.** It is either the identity gap
+(roadmap 2.6 — 131 of 331 staves cannot be normalised because nothing names
+them) or a per-PART cross-system rule, which the convention registry already
+states: `[C25 + L38]`, *"a part has many independent readings of one fact,
+which a cross-system vote can reconcile"*, implemented on the LEGACY path as
+`key_signature_vote.reconcile` and **deliberately unconsumed** by the staged
+path. 105 changes over ~500 bars in a movement with none is a per-system
+reading that nothing holds to its own part's history.
+
+### 6b. Brahms 1, Breitkopf, whole movement
+
+<!-- BRAHMS -->
 
 ---
 
