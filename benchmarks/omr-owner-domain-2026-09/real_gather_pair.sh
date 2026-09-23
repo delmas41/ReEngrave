@@ -15,12 +15,16 @@
 # ⚠️ `--no-surya --no-ocr`: identity is NOT what is being measured, and this
 # keeps the run off the shared Surya/llama server. NEVER pkill anything.
 #
+# WARNING: THE DEFAULT REF IS A SHA. The remote-tracking main ref moved nine
+# times during the session that built this and twice took `gather.py` with it,
+# so a base arm named by a branch cannot be reproduced.
+#
 #   bash benchmarks/omr-owner-domain-2026-09/real_gather_pair.sh [page] [ref]
 set -euo pipefail
 cd "$(dirname "$0")/../.."
 
 PAGE="${1:-3}"
-BASE_REF="${2:-origin/main}"
+BASE_REF="${2:-848dda47}"
 OUT="benchmarks/omr-owner-domain-2026-09/out"
 mkdir -p "$OUT"
 

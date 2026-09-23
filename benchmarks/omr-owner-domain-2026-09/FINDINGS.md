@@ -44,11 +44,23 @@ change** and were not used; a zero from either would not have been evidence
 ### 1a. The base arm runs the base CODE, it does not restate it
 
 `regather_ownership.load_base_gather` reads
-`origin/main:tools/omr/staged/gather.py` with `git show` and loads it as a
+`848dda47:tools/omr/staged/gather.py` with `git show` and loads it as a
 module under the package `tools.omr.staged`. The base arm is therefore that
 file's own `gather_ownership_evidence`, byte for byte, in the same process as
 the arm — **base and arm on ONE tree** (§6b), with the detections, the staff
 geometry, the cells, the flags and every later stage identical.
+
+WARNING — **THE BASE IS A SHA AND NOT A BRANCH, AND IT WAS LEARNED THE HARD
+WAY.** Every arm here ran with `--base-ref origin/main`, and that ref moved
+**nine times** during the session (other lanes pushing; it is shared by every
+worktree of this repository). Checked afterwards against the reflog: the two
+commits that changed `gather.py` on main — `febd383a` 15:40 and `24d26b8d`
+16:02, both ROADMAP 2.11 — entered the ref at **16:05:54**, after the last of
+these runs finished (p1–p4 14:03, the real pair 14:00, Litolff whole 14:27,
+Breitkopf whole 16:03). Every base arm therefore read the `gather.py` of
+`848dda47`, the merged main this item was built on. The default is now that
+sha, in this tool and in `real_gather_pair.sh`, so the next run cannot
+silently price against a different base.
 
 ### 1b. ⚠️ THE CONTROL, AND IT WAS RUN RED FIRST
 
@@ -348,7 +360,7 @@ fact it would carry is already on the record, twice, as the loser's own rows.
 
 ## 8. THE REAL GATHER, page 3 — the control on the instrument
 
-`real_gather_pair.sh 3 origin/main`: the Litolff count page, `--pages 3`,
+`real_gather_pair.sh 3 848dda47`: the Litolff count page, `--pages 3`,
 `--no-surya --no-ocr`, weights
 `deepscoresv2-yolov8l-hollow-graft-shift09-2026-09-04.pt`, each arm its own
 `--out`. Arm 54 s, base 54 s — the wall time says neither is a cache.
@@ -437,6 +449,13 @@ more staves. Recorded, not chased.
 * **`staged.check`'s three blind spots are untouched**: it cannot see a GATHER
   change, it cannot see the DETECTOR, and `wiring` matches a detail key by bare
   name.
+* **The branch is based on `848dda47` and main has since advanced**
+  (`0c683639` at the time of writing). `git merge-tree` reports exactly ONE
+  conflicting file, `.gitignore`, where both lanes appended a block;
+  `gather.py` merges cleanly, which is what confining the diff to
+  `gather_ownership_evidence` and `CONTEST_IOU` was for. Rebasing would
+  invalidate the base every figure here was measured against, so it was not
+  done.
 * **Two dated documents still quote the old value** and were deliberately not
   edited: `docs/map-flags-gates-and-guards-2026-09-16.md:126` (`CONTEST_IOU`
   `0.5`, ASSERTED) and `docs/symbol-dossiers/articulations-ornaments.md:188`
@@ -464,7 +483,7 @@ python3 benchmarks/omr-owner-domain-2026-09/twin_classes.py \
     benchmarks/omr-owner-domain-2026-09/out/<name>.json
 
 # section 8, the real pair (about two minutes)
-bash benchmarks/omr-owner-domain-2026-09/real_gather_pair.sh 3 origin/main
+bash benchmarks/omr-owner-domain-2026-09/real_gather_pair.sh 3 848dda47
 python3 benchmarks/omr-owner-domain-2026-09/real_gather_agreement.py \
     --base benchmarks/omr-owner-domain-2026-09/out/real-p3-base.json \
     --arm  benchmarks/omr-owner-domain-2026-09/out/real-p3-arm.json \

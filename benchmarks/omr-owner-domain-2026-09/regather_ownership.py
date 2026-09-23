@@ -16,11 +16,21 @@ exactly one thing — what the contest admits — and `real_gather_agreement.py`
 is the control that its answer matches a real base-vs-arm CLI gather on one
 page.
 
-⚠️ THE BASE ARM RUNS THE BASE CODE, IT DOES NOT RESTATE IT. `--base-ref`
-(default `origin/main`) is read with `git show <ref>:tools/omr/staged/gather.py`
-into a module loaded under the package `tools.omr.staged`, so the base arm is
-that file's own `gather_ownership_evidence`, byte for byte. A probe that
-restated the old predicate would be measuring its own restatement.
+⚠️ THE BASE ARM RUNS THE BASE CODE, IT DOES NOT RESTATE IT. `--base-ref` is
+read with `git show <ref>:tools/omr/staged/gather.py` into a module loaded
+under the package `tools.omr.staged`, so the base arm is that file's own
+`gather_ownership_evidence`, byte for byte. A probe that restated the old
+predicate would be measuring its own restatement.
+
+⚠️⚠️ THE DEFAULT IS A SHA, NOT A BRANCH, AND THAT IS NOT PEDANTRY. The
+remote-tracking ref for main moved NINE times during the session that built
+this -- other lanes pushing, and the ref is shared by every worktree of this
+repository -- and two of those commits changed `gather.py`. A base arm named
+by a branch is a base arm that cannot be reproduced, and worse, two runs of
+this tool hours apart could silently price against two different bases.
+`848dda47` is the merged main ROADMAP 2.6 was built on (it contains
+`64c83c5f` and `61ea81ef`), and its `gather.py` is the one every figure in
+`FINDINGS.md` was measured against.
 
 ⚠️ THE RECORD IS APPEND-ONLY AND NOTHING HERE MUTATES A COMMITTED ROW. The
 saved record is read (through `record_io.load_record`, never bare
@@ -406,7 +416,7 @@ def split(pop, verdicts: Dict[str, Any]) -> Dict[str, List[str]]:
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("record")
-    ap.add_argument("--base-ref", default="origin/main")
+    ap.add_argument("--base-ref", default="848dda47")
     ap.add_argument("--control", action="store_true",
                     help="run the BASE arm only and diff it against the record")
     ap.add_argument("--json", dest="out_json")
