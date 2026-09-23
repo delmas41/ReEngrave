@@ -293,7 +293,7 @@ as one flat on pages 1 and 2**, written as spurious key changes at bars 8 and
 | `<note>` | 12,424 | **12,424** |
 | `<key>` elements | 153 | 153 |
 | **key CHANGES written** | **105** | **113** |
-| `status_census` | balanced, `unaccounted: []` | balanced, `unaccounted: []` |
+| `status_census` | (pending — `run_scan.sh` did not pass `--coverage`; `run_scan_lean.py` writes it) | (pending) |
 
 ⚠️⚠️ **THE GATE IS NOT MET AND THE ARM IS EIGHT WORSE ON IT.** Roadmap 2.9 asks
 for *"0 key changes not printed on the plate"*, and Beethoven 5 mvt 1 prints
@@ -425,7 +425,30 @@ wrote**. The manifest carries `VERDICT_none_yet: null`.
 **The question for Sean is one line on every crop:** how many sharps or flats
 does the plate print at the head of each staff?
 
-<!-- CROP_TABLE -->
+| crop | systems | frame contrast | verdicts in the caption |
+|---|---|---|---|
+| `out/print/litolff-p3-system{0,1}-header.png` | 2, 0 refused | 155.7, 50.1 | the ARM (this branch's rule) |
+| `out/print/breitkopf-p1-system{0,1}-header.png` | 2, 0 refused | 213.5, 103.5 | the SHIPPED record (pre-2.9) |
+
+⚠️ The two documents' captions come from different records and each crop says
+which in its own header line and in `verdicts_from`. The question — what the
+PLATE prints — is the same either way; *"we wrote"* is not.
+
+**One of them already answers a question, and it corrects a truth file.**
+`breitkopf-p1-system0-header.png` is legible without adjudication: `Fl.`,
+`Ob.`, `Fag.`, `K.-Fag.`, `1.Viol.`, `2.Viol.`, `Br.`, `Vcl.` and `K.-B.` each
+carry **three flats**, `Klar. (B)` carries **one**, and `Hr. (C)`, `Hr. (Es)`,
+`Trpt. (C)` and **`Pk.` carry NONE**. The dossier generated from the encoding
+says the timpani part is in −3 (`data/dossiers/brahms-sym1-mvt1.json`), and
+the plate prints no signature on it at all — `[C81]` holding exactly as MOLA
+states it, and a concrete instance of CLAUDE.md §8's refusal of an `encoding`
+fact in a measurement path. `simulate.py`'s `BRAHMS1` table is corrected to 0
+for timpani on that evidence; the horns are left unscored because that page
+prints two different horn keys.
+
+⚠️ The Litolff crop is the opposite case and is NOT adjudicated here: on that
+MERGING plate the flats run together at 600 dpi and counting them from a
+render is exactly the judgement this crop exists to put in front of a human.
 
 ---
 

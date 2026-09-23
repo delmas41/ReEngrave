@@ -200,7 +200,8 @@ def main() -> int:
         out_im.paste(crop, (0, band_h))
         cd = ImageDraw.Draw(out_im)
         cd.text((8, 4), f"{a.label}  pdf page {a.page}  system {s}  "
-                        f"dpi {a.dpi}  frame contrast {contrast:.1f}",
+                        f"dpi {a.dpi}  frame contrast {contrast:.1f}  "
+                        f"verdicts from {pathlib.Path(a.record).name}",
                 fill=(0, 0, 0), font=font)
         cd.text((8, 4 + line_h),
                 "QUESTION: how many sharps/flats does the PLATE print at the "
@@ -224,6 +225,11 @@ def main() -> int:
                         "reason": key.get((s, st), ("-", None, "-"))[2]}
                        for st in staves],
             "system_key_concert_ours": sysverdict.get(s),
+            # ⚠️ WHICH RECORD THE CAPTION'S FIFTHS CAME FROM. The plate's own
+            # answer is the question and does not depend on this — but "we
+            # wrote" does, and a crop cut from the shipped record and one cut
+            # from an arm say different things under the same heading.
+            "verdicts_from": a.record,
             # ⚠️ NOT A VERDICT. Nothing here has been adjudicated against the
             # print; this key exists so that the file cannot be read as if it
             # had been.

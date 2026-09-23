@@ -1,0 +1,220 @@
+{
+ "crops": [
+  {
+   "file": "breitkopf-p1-system0-header.png",
+   "label": "breitkopf",
+   "pdf_page": 1,
+   "system": 0,
+   "dpi": 600,
+   "frame_contrast": 213.46,
+   "staves": [
+    {
+     "staff": 0,
+     "name_our_file_gives_it": "Flute",
+     "we_wrote_fifths": -2,
+     "outcome": "decided",
+     "reason": "fitted"
+    },
+    {
+     "staff": 1,
+     "name_our_file_gives_it": "Oboe",
+     "we_wrote_fifths": -1,
+     "outcome": "decided",
+     "reason": "fitted"
+    },
+    {
+     "staff": 2,
+     "name_our_file_gives_it": "Clarinet",
+     "we_wrote_fifths": -1,
+     "outcome": "decided",
+     "reason": "fitted_by_template"
+    },
+    {
+     "staff": 3,
+     "name_our_file_gives_it": "Bassoon",
+     "we_wrote_fifths": -3,
+     "outcome": "decided",
+     "reason": "fitted_by_template"
+    },
+    {
+     "staff": 4,
+     "name_our_file_gives_it": "Contrabassoon",
+     "we_wrote_fifths": -3,
+     "outcome": "decided",
+     "reason": "fitted_by_template"
+    },
+    {
+     "staff": 5,
+     "name_our_file_gives_it": "(C)",
+     "we_wrote_fifths": 0,
+     "outcome": "decided",
+     "reason": "fitted_by_template"
+    },
+    {
+     "staff": 6,
+     "name_our_file_gives_it": "(Es)",
+     "we_wrote_fifths": 0,
+     "outcome": "decided",
+     "reason": "fitted_by_template"
+    },
+    {
+     "staff": 7,
+     "name_our_file_gives_it": "Trumpet",
+     "we_wrote_fifths": 0,
+     "outcome": "decided",
+     "reason": "fitted_by_template"
+    },
+    {
+     "staff": 8,
+     "name_our_file_gives_it": "Timpani",
+     "we_wrote_fifths": null,
+     "outcome": "abstained",
+     "reason": "markers_without_a_run"
+    },
+    {
+     "staff": 9,
+     "name_our_file_gives_it": "Violin",
+     "we_wrote_fifths": -3,
+     "outcome": "decided",
+     "reason": "fitted"
+    },
+    {
+     "staff": 10,
+     "name_our_file_gives_it": "Violin",
+     "we_wrote_fifths": -1,
+     "outcome": "decided",
+     "reason": "fitted"
+    },
+    {
+     "staff": 11,
+     "name_our_file_gives_it": "Viola",
+     "we_wrote_fifths": -2,
+     "outcome": "decided",
+     "reason": "fitted"
+    },
+    {
+     "staff": 12,
+     "name_our_file_gives_it": "Cello",
+     "we_wrote_fifths": null,
+     "outcome": "abstained",
+     "reason": "no_evidence"
+    },
+    {
+     "staff": 13,
+     "name_our_file_gives_it": "Contrabass",
+     "we_wrote_fifths": -1,
+     "outcome": "decided",
+     "reason": "fitted"
+    }
+   ],
+   "system_key_concert_ours": null,
+   "verdicts_from": "/Users/seanjohnson/Desktop/ReEngrave/library/_shared-records/brahms1-breitkopf-mvt1-whole-20260923.record.json",
+   "VERDICT_none_yet": null
+  },
+  {
+   "file": "breitkopf-p1-system1-header.png",
+   "label": "breitkopf",
+   "pdf_page": 1,
+   "system": 1,
+   "dpi": 600,
+   "frame_contrast": 103.45,
+   "staves": [
+    {
+     "staff": 0,
+     "name_our_file_gives_it": "Flute",
+     "we_wrote_fifths": -1,
+     "outcome": "decided",
+     "reason": "fitted"
+    },
+    {
+     "staff": 1,
+     "name_our_file_gives_it": "Oboe",
+     "we_wrote_fifths": -3,
+     "outcome": "decided",
+     "reason": "fitted"
+    },
+    {
+     "staff": 2,
+     "name_our_file_gives_it": "Clarinet",
+     "we_wrote_fifths": 2,
+     "outcome": "decided",
+     "reason": "fitted"
+    },
+    {
+     "staff": 3,
+     "name_our_file_gives_it": "Bassoon",
+     "we_wrote_fifths": -2,
+     "outcome": "decided",
+     "reason": "fitted"
+    },
+    {
+     "staff": 4,
+     "name_our_file_gives_it": "Contrabassoon",
+     "we_wrote_fifths": -3,
+     "outcome": "decided",
+     "reason": "fitted_by_template"
+    },
+    {
+     "staff": 5,
+     "name_our_file_gives_it": "Horn",
+     "we_wrote_fifths": 0,
+     "outcome": "decided",
+     "reason": "fitted_by_template"
+    },
+    {
+     "staff": 6,
+     "name_our_file_gives_it": "Horn",
+     "we_wrote_fifths": 0,
+     "outcome": "decided",
+     "reason": "fitted_by_template"
+    },
+    {
+     "staff": 7,
+     "name_our_file_gives_it": "Timpani",
+     "we_wrote_fifths": 0,
+     "outcome": "decided",
+     "reason": "fitted_by_template"
+    },
+    {
+     "staff": 8,
+     "name_our_file_gives_it": "Violin",
+     "we_wrote_fifths": -1,
+     "outcome": "decided",
+     "reason": "fitted"
+    },
+    {
+     "staff": 9,
+     "name_our_file_gives_it": "Violin",
+     "we_wrote_fifths": null,
+     "outcome": "abstained",
+     "reason": "markers_without_a_run"
+    },
+    {
+     "staff": 10,
+     "name_our_file_gives_it": "Viola",
+     "we_wrote_fifths": -2,
+     "outcome": "decided",
+     "reason": "fitted"
+    },
+    {
+     "staff": 11,
+     "name_our_file_gives_it": "Cello",
+     "we_wrote_fifths": -4,
+     "outcome": "decided",
+     "reason": "fitted_by_template"
+    },
+    {
+     "staff": 12,
+     "name_our_file_gives_it": "Contrabass",
+     "we_wrote_fifths": 2,
+     "outcome": "decided",
+     "reason": "fitted"
+    }
+   ],
+   "system_key_concert_ours": null,
+   "verdicts_from": "/Users/seanjohnson/Desktop/ReEngrave/library/_shared-records/brahms1-breitkopf-mvt1-whole-20260923.record.json",
+   "VERDICT_none_yet": null
+  }
+ ],
+ "refused": []
+}

@@ -33,10 +33,20 @@ from tools.omr import key_consensus as KC            # noqa: E402
 #: Beethoven 5 mvt 1 and Brahms 1 mvt 1 are both in C minor; the difference is
 #: which staves print the signature. Keyed on the lexicon's instrument NAME.
 BEETHOVEN5 = {"Horn": 0, "Trumpet": 0, "Timpani": 0, "Clarinet": -1}
-#: Brahms 1 mvt 1 opening, from `data/dossiers/brahms-sym1-mvt1.json`.
-#: ⚠️ Horn is TWO keys on that page (C horns 0, E-flat horns -1), so a horn
-#: staff cannot be scored from its instrument alone and is left unscored.
-BRAHMS1 = {"Horn": None, "Trumpet": 0, "Timpani": -3, "Clarinet": -1}
+#: Brahms 1 mvt 1 opening. ⚠️ Horn is TWO keys on that page (C horns, E-flat
+#: horns), so a horn staff cannot be scored from its instrument alone and is
+#: left unscored.
+#:
+#: ⚠️⚠️ TIMPANI IS **0**, AND THE DOSSIER SAYS -3. `data/dossiers/
+#: brahms-sym1-mvt1.json` is generated from a MusicXML encoding, and
+#: CLAUDE.md §8 refuses an `encoding` fact in any measurement path -- this is
+#: the concrete instance of why. The Breitkopf plate is in
+#: `out/print/breitkopf-p1-system0-header.png`: `Pk.` carries an F clef and
+#: NO accidentals, exactly as [C81] says a 19th-century timpani staff does,
+#: while the modern encoding writes the three flats. Scoring the plate
+#: against the encoding would have charged every timpani staff of the
+#: movement as wrong.
+BRAHMS1 = {"Horn": None, "Trumpet": 0, "Timpani": 0, "Clarinet": -1}
 #: The Verovio fixture is a MODERN encoding: its C trumpets and its timpani
 #: DO print the three flats, which is the 19th-century plate's difference from
 #: it and the reason the two scans get their own table.
