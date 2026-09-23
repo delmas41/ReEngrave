@@ -105,12 +105,19 @@ if pdf is None or not pdf.is_file():
           f"this worktree?", file=sys.stderr)
     sys.exit(1)
 
-print(f"PDF={pdf}")
-print(f"DPI={d['dpi']}")
-print(f"KIND={d['kind']}")
-print(f"LABEL={d['label']}")
+import shlex
+
+
+def sh(k, v):
+    print(f"{k}={shlex.quote(str(v))}")
+
+
+sh("PDF", pdf)
+sh("DPI", d["dpi"])
+sh("KIND", d["kind"])
+sh("LABEL", d["label"])
 cp = d.get("count_page") or {}
-print(f"COUNT_PAGE_INDEX={cp.get('pdf_page_index')}")
+sh("COUNT_PAGE_INDEX", cp.get("pdf_page_index"))
 PYEOF
 )"
 if [ $? -ne 0 ] || [ -z "$INFO" ]; then
