@@ -1,0 +1,127 @@
+{
+  "file": "benchmarks/omr-bar-sum-holdout-2026-09/out/base-litolff.musicxml",
+  "strict_measure_rest": false,
+  "assessed": 5940,
+  "exact": 4061,
+  "short": 1078,
+  "overfull": 801,
+  "wrong": 1879,
+  "unassessable": 0,
+  "fraction_exact": 0.6836700336700336,
+  "by_part": {
+    "Violin": 360,
+    "Flute": 198,
+    "Oboe": 180,
+    "Bassoon": 174,
+    "Clarinet": 157,
+    "Cello": 145,
+    "Viola": 142,
+    "Timpani": 140,
+    "Horn": 136,
+    "Contrabass": 125,
+    "Trumpet": 122
+  },
+  "bars": [
+    {
+      "part": "Flute",
+      "part_id": "P1",
+      "measure": "1",
+      "voice": "1",
+      "quarters": 4.5,
+      "want": 2.0,
+      "kind": "overfull",
+      "holds": {
+        "rest:eighth": 1,
+        "rest:whole": 1
+      }
+    },
+    {
+      "part": "Flute",
+      "part_id": "P1",
+      "measure": "4",
+      "voice": "1",
+      "quarters": 6.0,
+      "want": 2.0,
+      "kind": "overfull",
+      "holds": {
+        "rest:whole": 1,
+        "note": 1
+      }
+    },
+    {
+      "part": "Flute",
+      "part_id": "P1",
+      "measure": "10",
+      "voice": "1",
+      "quarters": 5.0,
+      "want": 2.0,
+      "kind": "overfull",
+      "holds": {
+        "rest:quarter": 1,
+        "rest:whole": 1
+      }
+    },
+    {
+      "part": "Flute",
+      "part_id": "P1",
+      "measure": "16",
+      "voice": "1",
+      "quarters": 4.0,
+      "want": 2.0,
+      "kind": "overfull",
+      "holds": {
+        "rest:whole": 1
+      }
+    },
+    {
+      "part": "Flute",
+      "part_id": "P1",
+      "measure": "18",
+      "voice": "1",
+      "quarters": 3.0,
+      "want": 2.0,
+      "kind": "overfull",
+      "holds": {
+        "note": 3
+      }
+    },
+    {
+      "part": "Flute",
+      "part_id": "P1",
+      "measure": "19",
+      "voice": "1",
+      "quarters": 3.0,
+      "want": 2.0,
+      "kind": "overfull",
+      "holds": {
+        "note": 2,
+        "rest:quarter": 1
+      }
+    },
+    {
+      "part": "Flute",
+      "part_id": "P1",
+      "measure": "21",
+      "voice": "1",
+      "quarters": 0.125,
+      "want": 2.0,
+      "kind": "short",
+      "holds": {
+        "note": 2
+      }
+    },
+    {
+      "part": "Flute",
+      "part_id": "P1",
+      "measure": "27",
+      "voice": "1",
+      "quarters": 4.0,
+      "want": 2.0,
+      "kind": "overfull",
+      "holds": {
+        "rest:whole": 1
+      }
+    }
+  ],
+  "bars_total": 1879
+}

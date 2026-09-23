@@ -359,8 +359,16 @@ class TestSummaryAndTable(unittest.TestCase):
             "ok-doc": {"status": "ok", "kind": "scan",
                       "machine_proxies": {
                           "notes_reaching_file": {"n": 1, "of": 2, "fraction": 0.5},
-                          "bars_add_up_to_the_meter_in_force":
-                              {"n": 1, "of": 2, "unassessable": 0},
+                          # ⚠️ ROADMAP 2.8 renamed the old proxy to
+                          # `bars_add_up_control` (100% by construction once
+                          # the exporter holds a bad bar out) and put
+                          # `bars_held_out_sum` in the proxy slot.
+                          "bars_held_out_sum": {
+                              "n": 1, "of": 2, "fraction": 0.5,
+                              "noteheads_and_rests": 3},
+                          "bars_add_up_control": {
+                              "n": 1, "of": 2, "unassessable": 0,
+                              "short": 0, "overfull": 0},
                           "parts_named": {"n": 1, "of": 1},
                           "held_out": {"staff_not_identified": 0},
                           "unread_bars": {"empty_bars_padded": 0},

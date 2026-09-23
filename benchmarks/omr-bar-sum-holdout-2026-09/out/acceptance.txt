@@ -1,0 +1,42 @@
+[Warning] MusicXML import: There are 10 ties left open
+[Warning] MusicXML import: slur ending for element 'r3nt53m' could not be matched to a start element
+[Warning] tie 'l14c4s35' is ignored, since start 'jmlash2' does not occur temporally before end 'm1iqili0'.
+[Warning] tie 'p16g1t47' is ignored, since start 'n2hjyzw' does not occur temporally before end 'q1d05lxj'.
+[Warning] tie 'ym4qt90' is ignored, since start 'wy24wx3' does not occur temporally before end 'z1t7orkt'.
+[Warning] tie 'f1m8cxk5' is ignored, since start 'd45kqv0' does not occur temporally before end 'g1ov0z9h'.
+[Warning] tie 'z10lcod1' is ignored, since start 'wib7afp' does not occur temporally before end 'a1i2y636'.
+[Warning] MusicXML import: There are 2 ties left open
+beethoven5-litolff: receipt verified (7dbee148868c39634a20d5881143d3ee)
+brahms1-breitkopf: receipt verified (e5561c8b7bc80a03311294afae8eccf4)
+beethoven5-engraved: receipt verified (d349e3631f3a1737aa6fc2f15c13b374)
+tree 259773e504fb6398423fbfcd32583a6863ca4fd6  dirty=True  2026-09-23T22:25:06Z  wall_time_s=28.374
+
+[beethoven5-litolff]  status=ok
+  notes reaching file     3627 / 11632  (0.312)
+  bars HELD OUT (2.8)     1879 / 4463   (5389 noteheads+rests)
+  bars add up [control]   5940 / 5940   (short=0 overfull=0 unassessable=0)
+  parts named               12 / 12    
+  held_out (staff_not_identified)  314
+  unread bars (empty_bars_padded)  883
+  side-by-side print:   True  ours: True
+
+[brahms1-breitkopf]  status=ok
+  notes reaching file     1136 / 24533  (0.046)
+  bars HELD OUT (2.8)     4560 / 5803   (18802 noteheads+rests)
+  bars add up [control]   6363 / 6405   (short=1 overfull=41 unassessable=0)
+  parts named               14 / 14    
+  held_out (staff_not_identified)  933
+  unread bars (empty_bars_padded)  455
+  side-by-side print:   True  ours: True
+
+[beethoven5-engraved]  status=ok
+  notes reaching file      329 / 371    (0.887)
+  bars HELD OUT (2.8)       38 / 449    (48 noteheads+rests)
+  bars add up [control]    450 / 450    (short=0 overfull=0 unassessable=0)
+  parts named               18 / 18    
+  held_out (staff_not_identified)  0
+  unread bars (empty_bars_padded)  1
+  reading pooled F1     0.947
+  OMR-NED               0.1629
+  LilyPond              compiled=True pdf=True barcheck_failures=0
+  side-by-side print:   True  ours: True

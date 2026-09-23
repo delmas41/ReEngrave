@@ -1,0 +1,3 @@
+base-litolff.musicxml  bars 49-82: 408 staff-bars, 68 do not add up {'short': 40, 'overfull': 28}
+   by part: {'Violin': 20, 'Contrabass': 9, 'Cello': 8, 'Flute': 7, 'Viola': 6, 'Clarinet': 5, 'Horn': 4, 'Bassoon': 3, 'Trumpet': 3, 'Oboe': 2, 'Timpani': 1}
+arm-litolff.musicxml  bars 49-82: 408 staff-bars, 0 do not add up {}

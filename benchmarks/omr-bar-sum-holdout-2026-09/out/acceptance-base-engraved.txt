@@ -1,0 +1,14 @@
+beethoven5-engraved: receipt verified (d349e3631f3a1737aa6fc2f15c13b374)
+tree 259773e504fb6398423fbfcd32583a6863ca4fd6  dirty=True  2026-09-23T22:21:22Z  wall_time_s=3.731
+
+[beethoven5-engraved]  status=ok
+  notes reaching file      358 / 371    (0.965)
+  bars HELD OUT (2.8)        0 / 0      (0 noteheads+rests)
+  bars add up [control]    412 / 450    (short=34 overfull=4 unassessable=0)
+  parts named               18 / 18    
+  held_out (staff_not_identified)  0
+  unread bars (empty_bars_padded)  1
+  reading pooled F1     0.947
+  OMR-NED               0.1519
+  LilyPond              compiled=True pdf=True barcheck_failures=3
+  side-by-side print:   True  ours: True

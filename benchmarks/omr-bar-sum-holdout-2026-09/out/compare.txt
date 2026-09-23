@@ -1,0 +1,69 @@
+
+=== engraved ===
+  staff-bars with events        449
+  ... without a meter (unassessable) 0
+  bars HELD OUT by 2.8          38  (8.5%)  [0 on a doubled staff]
+  noteheads+rests moved         48
+  bar_does_not_add_up           48
+  <note> base -> arm            676 -> 666
+  written.notes  base -> arm    358 -> 329
+  written.rests  base -> arm    103 -> 84
+  measure_rests_read base->arm  214 -> 214
+  empty_bars_padded base->arm   1 -> 1
+  balance balanced base/arm     True / True
+  events in log / written / not 688 / 627 / 61
+  census unaccounted            []
+  articulation_balance   base=True arm=True
+  ornament_balance       base=True arm=True
+  wedge_balance          base=True arm=True
+  fermata_balance        base=True arm=True
+  direction_balance      base=True arm=True
+  notes_not_written base: {'owned_by_another_staff': 10, 'duration_narrowed': 2, 'ink_is_a_whole_rest': 1}
+  notes_not_written arm : {'owned_by_another_staff': 10, 'duration_narrowed': 2, 'ink_is_a_whole_rest': 1, 'bar_does_not_add_up': 48}
+  arcs_not_written arm  : {'arc_binds_fewer_than_two_notes': 57}
+
+=== litolff ===
+  staff-bars with events        4463
+  ... without a meter (unassessable) 0
+  bars HELD OUT by 2.8          1879  (42.1%)  [91 on a doubled staff]
+  noteheads+rests moved         5389
+  bar_does_not_add_up           5389
+  <note> base -> arm            12375 -> 8588
+  written.notes  base -> arm    7878 -> 3627
+  written.rests  base -> arm    1980 -> 565
+  measure_rests_read base->arm  1040 -> 1040
+  empty_bars_padded base->arm   883 -> 883
+  balance balanced base/arm     True / True
+  events in log / written / not 14530 / 4971 / 9559
+  census unaccounted            []
+  articulation_balance   base=True arm=True
+  ornament_balance       base=True arm=True
+  wedge_balance          base=True arm=True
+  fermata_balance        base=True arm=True
+  direction_balance      base=True arm=True
+  notes_not_written base: {'ink_is_a_whole_rest': 105, 'not_a_notehead:too_narrow': 291, 'not_a_notehead:clipped_fragment': 344, 'duration_narrowed': 1376, 'owned_by_another_staff': 933, 'no_pitch': 807, 'staff_not_identified': 314}
+  notes_not_written arm : {'ink_is_a_whole_rest': 105, 'not_a_notehead:too_narrow': 291, 'not_a_notehead:clipped_fragment': 344, 'duration_narrowed': 1376, 'owned_by_another_staff': 933, 'no_pitch': 807, 'staff_not_identified': 314, 'bar_does_not_add_up': 5389}
+  arcs_not_written arm  : {'arc_binds_fewer_than_two_notes': 1753, 'bar_does_not_add_up': 197, 'arc_ends_in_one_chord': 217}
+
+=== brahms ===
+  staff-bars with events        5803
+  ... without a meter (unassessable) 0
+  bars HELD OUT by 2.8          4560  (78.6%)  [0 on a doubled staff]
+  noteheads+rests moved         18802
+  bar_does_not_add_up           18802
+  <note> base -> arm            22922 -> 7814
+  written.notes  base -> arm    13952 -> 1136
+  written.rests  base -> arm    8013 -> 1161
+  measure_rests_read base->arm  355 -> 355
+  empty_bars_padded base->arm   455 -> 455
+  balance balanced base/arm     True / True
+  events in log / written / not 32656 / 2647 / 30009
+  census unaccounted            []
+  articulation_balance   base=True arm=True
+  ornament_balance       base=True arm=True
+  wedge_balance          base=True arm=True
+  fermata_balance        base=True arm=True
+  direction_balance      base=True arm=True
+  notes_not_written base: {'duration_narrowed': 3583, 'not_a_notehead:too_narrow': 3426, 'owned_by_another_staff': 2354, 'not_a_notehead:clipped_fragment': 617, 'rest_duration_abstained': 26, 'written_value_fits_no_note': 135, 'ink_is_a_whole_rest': 72, 'staff_not_identified': 933, 'no_pitch': 61}
+  notes_not_written arm : {'duration_narrowed': 3583, 'not_a_notehead:too_narrow': 3426, 'owned_by_another_staff': 2354, 'not_a_notehead:clipped_fragment': 617, 'rest_duration_abstained': 26, 'written_value_fits_no_note': 135, 'ink_is_a_whole_rest': 72, 'staff_not_identified': 933, 'no_pitch': 61, 'bar_does_not_add_up': 18802}
+  arcs_not_written arm  : {'arc_binds_fewer_than_two_notes': 6086, 'bar_does_not_add_up': 2502, 'arc_ends_in_one_chord': 1996}

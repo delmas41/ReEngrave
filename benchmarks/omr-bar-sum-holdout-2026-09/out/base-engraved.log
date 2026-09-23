@@ -1,0 +1,16 @@
+wrote benchmarks/omr-bar-sum-holdout-2026-09/out/base-engraved.musicxml
+wrote benchmarks/omr-bar-sum-holdout-2026-09/out/base-engraved.report.json
+
+── EXPORT ─────────────────────────────────────────────
+  written: {'arc_notes_reachable_at_a_stem': 314, 'slur_spans_marked': 3, 'tie_links_marked': 1, 'tie_chains_marked': 1, 'tie_spans_marked': 1, 'tacet_bars_padded': 0, 'tacet_bars_not_padded_without_meter': 0, 'tacet_spans_declined_unidentified_part': 0, 'measure_rests_read': 214, 'fermatas': 77, 'rests': 103, 'notes': 358, 'articulations': 0, 'ornaments': 0, 'beams': 183, 'beamed_events': 183, 'dynamics': 84, 'pitches_altered_by_the_key': 44, 'slurs': 3, 'empty_bars_padded': 1, 'empty_bars_padded_without_meter': 0, 'ties': 1, 'parts': 18, 'divisions': 4}
+  part join: {'unidentified_parts': [], 'held_out_staves': 0, 'join_decided': 'ordinal', 'join_used': 'ordinal', 'join_reason': 'ordinal', 'systems': ['0/0', '1/0', '2/0'], 'staves_per_system': [18], 'parts': 18, 'fragmented': False}
+  ⚠️ notes the record holds and the file does not: 13 {'owned_by_another_staff': 10, 'duration_narrowed': 2, 'ink_is_a_whole_rest': 1}
+── WHAT DID NOT REACH THE FILE ────────────────────────
+  articulation   abstained    detector found 1
+  direction      decided_but_unwritten detector found 0
+  ornament       abstained    detector found 1
+  rest           abstained    detector found 317
+  tuplet         abstained    detector found 0
+  wedge          abstained    detector found 0
+  ⚠️ 0 detected glyphs the record cannot carry: {}
+  ⚠️ 4 detected glyphs of a kind NO family and no reason accounts for: {'ottavaBracket': 4}

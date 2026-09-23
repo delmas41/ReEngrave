@@ -1,0 +1,15 @@
+staged.inventory         open=11    status=ok
+staged.health            open=0     status=ok
+staged.wiring            open=70    status=ok
+staged.gather_coverage   open=18    status=ok
+staged.capture           open=18    status=ok
+staged.reach             open=24    status=ok
+staged.brakes            open=8     status=ok
+staged.trace             open=3     status=ok
+conventions              open=0     status=ok
+no_producer              open=0     status=ok
+export_coverage          open=0     status=ok  (no fixtures on disk -- run `orchestral_eval` first; this check has nothing to compare and reports a clean 0, not a broken run)
+accuracy_record          open=0     status=ok
+source_text_tests        open=48    status=ok  (48 of 194 test files under tools/omr/tests/ (allowlist: ['test_flag_default_direction.py', 'test_flag_docs_match_predicates.py']))
+mutation_batteries_live  open=55    status=ok
+TOTAL                    open=255   status=ok

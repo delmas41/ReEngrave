@@ -1,0 +1,93 @@
+{
+  "file": "benchmarks/omr-bar-sum-holdout-2026-09/out/arm-brahms.musicxml",
+  "strict_measure_rest": false,
+  "assessed": 6405,
+  "exact": 3273,
+  "short": 2628,
+  "overfull": 504,
+  "wrong": 3132,
+  "unassessable": 0,
+  "fraction_exact": 0.5110070257611241,
+  "by_part": {
+    "Violin": 584,
+    "Viola": 306,
+    "Cello": 295,
+    "Bassoon": 279,
+    "Clarinet": 275,
+    "Oboe": 261,
+    "Contrabass": 261,
+    "Horn": 248,
+    "Flute": 232,
+    "Contrabassoon": 169,
+    "Timpani": 117,
+    "Trumpet": 105
+  },
+  "bars": [
+    {
+      "part": "Flute",
+      "part_id": "P1",
+      "measure": "16",
+      "voice": "1",
+      "quarters": 7.5,
+      "want": 4.0,
+      "kind": "overfull",
+      "holds": {
+        "note": 1,
+        "rest:eighth": 4,
+        "rest:whole": 1,
+        "rest:quarter": 1
+      }
+    },
+    {
+      "part": "Flute",
+      "part_id": "P1",
+      "measure": "18",
+      "voice": "1",
+      "quarters": 3.0,
+      "want": 4.0,
+      "kind": "short",
+      "holds": {
+        "rest:quarter": 2,
+        "rest:eighth": 1,
+        "note": 1
+      }
+    },
+    {
+      "part": "Flute",
+      "part_id": "P1",
+      "measure": "19",
+      "voice": "1",
+      "quarters": 3.0,
+      "want": 4.0,
+      "kind": "short",
+      "holds": {
+        "note": 6
+      }
+    },
+    {
+      "part": "Flute",
+      "part_id": "P1",
+      "measure": "25",
+      "voice": "1",
+      "quarters": 3.0,
+      "want": 4.0,
+      "kind": "short",
+      "holds": {
+        "note": 1
+      }
+    },
+    {
+      "part": "Flute",
+      "part_id": "P1",
+      "measure": "26",
+      "voice": "1",
+      "quarters": 0.625,
+      "want": 4.0,
+      "kind": "short",
+      "holds": {
+        "note": 2
+      }
+    }
+  ],
+  "bars_total": 3132
+}
