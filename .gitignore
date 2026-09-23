@@ -124,6 +124,20 @@ benchmarks/omr-clef-geometry/*.ps
 # tracked; the PDF is a second's rebuild away (`lilypond -o <dir> <ly>`).
 benchmarks/acceptance/out/**/*.pdf
 
+# ⚠️ A GATHER'S OWN RECORD IS NOT COMMITTABLE AND `out/` IS NOT IGNORED.
+# `gather_movement.sh` writes its record beside the derived artefacts, and
+# `benchmarks/acceptance/out/` is deliberately NOT gitignored -- the clean-tree
+# guard exempts it by path precisely because it is tracked territory holding
+# untracked build products. A whole-movement record is 300-500 MB, over
+# GitHub's 100 MB file limit, and the established pattern (6fbd46ed) keeps the
+# record in `library/_shared-records/` (gitignored, machine-local, with an md5
+# receipt in the manifest) and commits only what is DERIVED from it: the
+# MusicXML, the LilyPond, the coverage report and the log.
+# Learned the hard way on 2026-09-23: `git add -A benchmarks/acceptance` swept
+# a 456 MB record in and the push was rejected by the remote.
+benchmarks/acceptance/out/**/*.record.json
+benchmarks/acceptance/out/**/*.record.json.md5
+
 # Transcribe output kept beside a benchmark run. Regenerable from the PDF and
 # the weights, and enormous: eleven of these reached main in the 2026-08-28
 # clef/key-signature merge and cost 30 MB between them — a single Mahler page

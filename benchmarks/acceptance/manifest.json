@@ -37,8 +37,8 @@
       "publisher": "Breitkopf",
       "record": {
         "root": "library",
-        "path": "_shared-records/brahms1-breitkopf-p0-p3-ink.record.json",
-        "md5": "4df63a752df9d7cca3d916a67b37ebf4"
+        "path": "_shared-records/brahms1-breitkopf-mvt1-whole-20260923.record.json",
+        "md5": "e5561c8b7bc80a03311294afae8eccf4"
       },
       "pdf": {
         "root": "library",
@@ -50,7 +50,12 @@
         "works_row_id": "brahms-sym1-mvt1-317803-p2"
       },
       "works_json": "benchmarks/omr-scan-e2e-2026-09/works.json",
-      "truth": null
+      "truth": null,
+      "caveats": [
+        "Whole movement, pdf pages 0-26 (27 pages). The movement boundary was VERIFIED against the plate, not assumed: pdf page 27 opens 'Andante sostenuto', which is movement 2, so movement 1 ends at page 26.",
+        "Gathered 2026-09-23 on commit 275641c0 with a clean tree, 1 h 11 m wall (GATHER ~28 min, ADJUDICATE ~33 min, GROUPS+EVALUATE ~5 min, INFER+EXPORT the rest) -- the first whole-movement run after roadmap 1.2 bounded the deciding stages.",
+        "SUPERSEDES the 4-page p0-p3 record this entry pointed at (_shared-records/brahms1-breitkopf-p0-p3-ink.record.json), which stays on disk."
+      ]
     },
     {
       "id": "beethoven5-engraved",
