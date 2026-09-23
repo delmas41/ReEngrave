@@ -139,8 +139,32 @@ def main(argv=None) -> int:
     ap.add_argument("pdf")
     ap.add_argument("--pages", default="0")
     ap.add_argument("--weights", default=None,
-                    help="YOLO weights. Omit to run with no detector at all -- "
-                         "every cell abstains and the pipeline still completes.")
+                    help="A real path PINS the model, exactly as before. "
+                         "Omit entirely to run with no detector at all -- "
+                         "every cell abstains and the pipeline still "
+                         "completes -- UNCHANGED by --route-weights below: "
+                         "routing is an explicit request, never triggered "
+                         "by mere absence, because the legacy CLI's own "
+                         "'omit means route' convention would ask a "
+                         "no-weights run (a cheap test, a cloud session "
+                         "with no omr-weights/) to load a file that is not "
+                         "there. Pass the literal string 'auto' to route.")
+    ap.add_argument("--route-weights", action="store_true",
+                    help="roadmap 3.2 (staged), mirroring the legacy CLI's "
+                         "long-shipped default: with --weights omitted or "
+                         "set to 'auto', classify the PDF's own domain "
+                         "(input_domain.classify_pdf_domain, imported "
+                         "rather than restated) and pick the scan- or "
+                         "engraved-tuned checkpoint accordingly, recording "
+                         "the verdict as `weight_routing` on the record. "
+                         "Has no effect when --weights names a real file: "
+                         "an explicit path always pins and never routes.")
+    ap.add_argument("--no-weight-routing", action="store_true",
+                    help="force OFF even where --route-weights (or "
+                         "'--weights auto') was given -- the same escape "
+                         "OMR_WEIGHT_ROUTING=0 is on the legacy path. Falls "
+                         "back to the default (scan-tuned) weights with no "
+                         "classification, never to no-detector.")
     ap.add_argument("--dpi", type=int, default=600)
     ap.add_argument("--conf", type=float, default=0.25)
     ap.add_argument("--imgsz", type=int, default=None)
@@ -221,15 +245,47 @@ def main(argv=None) -> int:
                          "ONLY way a dossier reaches this pipeline.")
     ap.add_argument("--no-roster", action="store_true",
                     help="do not look the work's catalog roster up at all.")
+    ap.add_argument("--ink-rows", action="store_true",
+                    help="file one Q.INK row per INK COMPONENT (the pre-"
+                         "roadmap-1.1 form) instead of one aggregated row "
+                         "per cell (the default since 1.1). The schema "
+                         "change alone saves ~3-4%% of a record's compact "
+                         "content (measured on the two shared records: "
+                         "benchmarks/omr-ink-gather-2026-09/probe/"
+                         "byte_share.py); the ~115 MB/page a full-component "
+                         "Breitkopf gather runs is dominated by `arc_owner`'s "
+                         "`considered` lists, unaffected by this flag. Only "
+                         "`tools/omr/positional_store.py` needs the "
+                         "per-component form; pass this when feeding it.")
     ap.add_argument("--progress", action="store_true")
     args = ap.parse_args(argv)
 
     from . import legacy, pipeline
+    from . import weight_routing as weight_routing_mod
+
+    pages = parse_pages(args.pages)
+
+    # ⚠️ `weight_routing.resolve_staged_weights` never triggers on bare
+    # omission (see --weights' own help text): `args.weights` is either a
+    # real path (pins, no classification -- unchanged), the literal string
+    # "auto", or None with --route-weights set (roadmap 3.2's own request
+    # shape). Both of the last two route; anything else is a no-op, so a
+    # plain `--pages 0` run with neither flag is BYTE-IDENTICAL to before
+    # this landed -- checked by the CLI tests rather than assumed.
+    weights_path, weight_routing, input_domain_classification = (
+        weight_routing_mod.resolve_staged_weights(
+            args.pdf, pages, weights=args.weights,
+            route_weights=args.route_weights,
+            no_weight_routing=args.no_weight_routing))
 
     detector = None
-    if args.weights:
+    if weights_path:
         from ..yolo_detector import YoloDetector
-        detector = YoloDetector(args.weights)
+        detector = YoloDetector(weights_path)
+        if args.progress and weight_routing:
+            print(f"  weights routed: "
+                  f"{weight_routing.get('verdict', weight_routing.get('mode'))}"
+                  f" -> {Path(weights_path).name}", flush=True)
 
     # ⚠️⚠️ THERE IS NO `--dossier`, AND SEAN RULED ON 2026-09-21 THAT THERE
     # WILL NOT BE: *"let the dossier only reach the pipeline through a
@@ -267,12 +323,15 @@ def main(argv=None) -> int:
     # and compared against a different pass of a detector with documented
     # run-to-run jitter.
     result = pipeline.run_staged(
-        args.pdf, parse_pages(args.pages), detector=detector, dpi=args.dpi,
+        args.pdf, pages, detector=detector, dpi=args.dpi,
         conf_threshold=args.conf, imgsz=args.imgsz, roster=roster,
         dossier=dossier,
         surya_fallback=args.surya, ocr_fallback=args.ocr,
+        ink_component_rows=args.ink_rows,
+        input_domain_classification=input_domain_classification,
         legacy=legacy.load(args.against) if args.against else None,
         progress=args.progress)
+    result["weight_routing"] = weight_routing
 
     # ⚠️⚠️ WHICH TREE BUILT THIS RECORD. Without it, comparing two records is
     # an unprovenanced A/B: `regather_control.py` reporting "MOVED: nothing"

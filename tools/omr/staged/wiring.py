@@ -447,6 +447,36 @@ KNOWN_GAPS: Dict[str, str] = {
         "`ink_n_components`. A component holding 0.9 of a cell is a merge, "
         "whatever its shape says."),
 
+    # ── DETAIL, Q.INK's SUMMARY FORM (roadmap 1.1, default since) ──────────
+    #
+    # ⚠️ FOUR NEW KEYS, OPEN FOR THE SAME REASON THE ORIGINAL SEVEN WERE:
+    # `gather_ink`'s default row is now one aggregate per CELL rather than
+    # one row per component (measured: `Q.INK` observations were 3.5-4.9% of
+    # the two committed shared records' bytes, not the dominant cost --
+    # `benchmarks/omr-ink-gather-2026-09/probe/byte_share.py` --
+    # `arc_owner`'s `considered` lists are). `ink_n_components` is UNCHANGED
+    # in name and meaning (a cell's total, whether stated once or on every
+    # component row) and stays a live read, both in `positional_store.py`
+    # (`--ink-rows` form) and now in `trace._ink_cells_and_components`
+    # (either form). These four are new and unread by anything.
+    "DETAIL Q.INK.ink_total_area_px": (
+        "the cell's total ink area in px, summed across every component -- "
+        "the aggregate half of what `ink_area_px` gave per component."),
+    "DETAIL Q.INK.ink_largest_share": (
+        "this cell's LARGEST single component's share of the cell's ink -- "
+        "the cell-level form of `ink_share_of_cell`'s own maximum, which is "
+        "the number CLAUDE.md already quotes (\"the largest component holds "
+        "a median 46%\") without anything computing it directly."),
+    "DETAIL Q.INK.ink_detector_coverage_max": (
+        "the highest `ink_detector_coverage` any one component in this cell "
+        "reached -- whether ANY of this cell's ink overlaps a detection, "
+        "never which piece."),
+    "DETAIL Q.INK.ink_explained_by_union": (
+        "the UNION of `ink_explained_by` across every component in the "
+        "cell -- which detector classes overlap SOME ink here, with the "
+        "per-component attribution (which class explains which blob) only "
+        "in the `--ink-rows` form."),
+
     # ── `Q.VERTICAL_RUN`: PRODUCER ONLY, and its first consumer is NAMED ────
     #
     # ⚠️⚠️ THE FIRST INTENDED CONSUMER OF ALL SEVEN IS ONE RULE: an ADJUDICATE

@@ -152,6 +152,8 @@ def run_staged(pdf_path: str, pages: Sequence[int], *,
                conf_threshold: float = 0.25, imgsz: Optional[int] = None,
                dossier: Any = None, roster: Any = None,
                surya_fallback: bool = True, ocr_fallback: bool = True,
+               ink_component_rows: bool = False,
+               input_domain_classification: Any = None,
                legacy: Optional[Dict[str, Dict[str, Any]]] = None,
                progress: bool = False) -> Dict[str, Any]:
     """GATHER -> ADJUDICATE -> EVALUATE, once, in that order.
@@ -181,6 +183,8 @@ def run_staged(pdf_path: str, pages: Sequence[int], *,
                          dossier=dossier, roster=roster, pdf_path=pdf_path,
                          surya_fallback=surya_fallback,
                          ocr_fallback=ocr_fallback,
+                         ink_component_rows=ink_component_rows,
+                         input_domain_classification=input_domain_classification,
                          legacy=legacy, progress=progress)
 
 
@@ -189,6 +193,8 @@ def run_staged_on(prepared: Sequence[Tuple[Any, Sequence[Any]]], *,
                   imgsz: Optional[int] = None, dossier: Any = None,
                   roster: Any = None, pdf_path: Any = None,
                   surya_fallback: bool = True, ocr_fallback: bool = True,
+                  ink_component_rows: bool = False,
+                  input_domain_classification: Any = None,
                   legacy: Optional[Dict[str, Dict[str, Any]]] = None,
                   progress: bool = False) -> Dict[str, Any]:
     """The stages, over pages someone else prepared.
@@ -240,7 +246,11 @@ def run_staged_on(prepared: Sequence[Tuple[Any, Sequence[Any]]], *,
                             conf_threshold=conf_threshold, imgsz=imgsz,
                             dossier=dossier, roster=roster, pdf_path=pdf_path,
                             surya_fallback=surya_fallback,
-                            ocr_fallback=ocr_fallback, progress=progress)
+                            ocr_fallback=ocr_fallback,
+                            ink_component_rows=ink_component_rows,
+                            input_domain_classification=
+                                input_domain_classification,
+                            progress=progress)
 
     if progress:
         print("ADJUDICATE")

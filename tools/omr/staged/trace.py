@@ -496,9 +496,10 @@ def funnel(rec: X.Record, family: str, *,
     cells = {s: _cell_of(s) for s in subjects}
 
     # ── step -1: the INK under those cells, where the ink layer ran.
-    ink_cells = {_cell_of(o["subject"]) for o in rec.obs_of(Q.INK)}
-    ink_cells.discard(None)
-    ink_rows = len(rec.obs_of(Q.INK))
+    # `ink_rows` counts COMPONENTS, form-agnostic over roadmap 1.1's summary
+    # schema (see `_ink_cells_and_components`) -- it is not `len(...)` of the
+    # observation list, which means components pre-1.1 and cells since.
+    ink_cells, ink_rows = _ink_cells_and_components(rec.obs_of(Q.INK))
 
     # ── the stage steps.
     by_id = {v["id"]: v for v in rec.verdicts}
@@ -660,6 +661,33 @@ def _cell_of(key: str) -> Optional[str]:
     return None
 
 
+def _ink_cells_and_components(ink_rows: List[dict]) -> Tuple[set, int]:
+    """Which cells carry ink, and how many components in total -- FORM-
+    AGNOSTIC over the roadmap-1.1 schema change.
+
+    ⚠️⚠️ Before 1.1 `gather_ink` filed one `Q.INK` row PER COMPONENT, each
+    carrying the CELL's total in `detail.ink_n_components` (so five
+    components in one cell meant five rows, all reading 5). Since 1.1 the
+    default is one row PER CELL with that same total, once. `len(ink_rows)`
+    answers "how many components" in the old form and "how many cells" in
+    the new one -- silently wrong either way if read naively.
+
+    The value is correct under BOTH forms without branching on which one a
+    record uses: `ink_n_components` already means "this cell's total" in
+    both, so reading it ONCE PER DISTINCT CELL and summing gives the right
+    answer whether that cell wrote it once or five times. A `--ink-rows`
+    record with `--ink-rows` off is not something this needs to detect.
+    """
+    per_cell: Dict[str, int] = {}
+    for o in ink_rows:
+        c = _cell_of(o["subject"])
+        if c is None:
+            continue
+        n = (o.get("detail") or {}).get("ink_n_components")
+        per_cell.setdefault(c, n if isinstance(n, int) else 1)
+    return set(per_cell), sum(per_cell.values())
+
+
 # ─────────────────────────────────────────────────────────────────────────────
 # Q3 — a stage claims the page is EMPTY while a witness shows ink
 # ─────────────────────────────────────────────────────────────────────────────
@@ -696,12 +724,17 @@ def empty_claims(rec: X.Record) -> Dict[str, Any]:
     """Where does a stage say *no ink* while an independent reader shows ink?
 
     ⚠️⚠️ **`Q.INK` IS THE WITNESS, AND IT IS INDEPENDENT BECAUSE NOTHING READS
-    IT.** It is default-ON since 2026-09-17, one row per connected piece of a
-    cell's staff-line-erased ink, with no size, shape or confidence filter --
-    and no adjudicator, consequence, inference or exporter consumes it
-    (checked). So it cannot have been tuned to agree with anything, and using
+    IT.** It is default-ON since 2026-09-17, filing one row per CELL that
+    carries any staff-line-erased ink (roadmap 1.1: one row per connected
+    COMPONENT before, `--ink-rows` reproduces that), with no size, shape or
+    confidence filter -- and no adjudicator, consequence, inference or
+    exporter consumes it (checked; `positional_store.py` is a second real
+    consumer but only of the `--ink-rows` component form, never of this
+    default). So it cannot have been tuned to agree with anything, and using
     it here is a legitimate first consumer of a producer-only quantity rather
-    than a second opinion from the same machinery.
+    than a second opinion from the same machinery. This function only ever
+    asks *is this cell's ink SET non-empty*, which the aggregate form answers
+    exactly as the per-component one did.
 
     ⚠️ `Q.INK`'s OWN `no_ink` is the one honest use of the word and is
     EXCLUDED from the contradicted set -- it measured the components and found

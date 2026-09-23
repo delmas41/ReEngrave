@@ -78,7 +78,18 @@ def _local():
     return {0: (0, 0), 1: (0, 1)}
 
 
-def _run(cells, detections=None, *, on=True):
+def _run(cells, detections=None, *, on=True, component_rows=True):
+    """⚠️ `component_rows=True` is this HELPER's default, not `gather_ink`'s.
+
+    Every test below this helper was written to test the PER-COMPONENT
+    shape (one row per piece of ink, its own frame, its own coverage) --
+    which since roadmap 1.1 is what `component_rows=True` (`--ink-rows` on
+    the CLI) reproduces, byte for byte, rather than what a bare call does.
+    Keeping the test helper's own default at the old shape means the tests
+    below assert exactly what they always asserted; the summary form (the
+    pipeline's own new default) has its own tests further down, which pass
+    `component_rows=False` explicitly.
+    """
     log = Log()
     old = os.environ.get(G.INK_ENV)
     # ⚠️⚠️ OFF MUST BE AN EXPLICIT OFF WORD, NEVER A POP. Under a default-ON
@@ -89,7 +100,8 @@ def _run(cells, detections=None, *, on=True):
     # and the flip is what exposed it.
     os.environ[G.INK_ENV] = "1" if on else "0"
     try:
-        G.gather_ink(log, cells, _local(), detections or {})
+        G.gather_ink(log, cells, _local(), detections or {},
+                     component_rows=component_rows)
     finally:
         if old is None:
             os.environ.pop(G.INK_ENV, None)
@@ -413,6 +425,124 @@ class TestItRunsInsideTheRealGather(unittest.TestCase):
         self.assertIn("gather_ink(", src)
         self.assertLess(src.index("detections = gather_detections"),
                         src.index("gather_ink("))
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Roadmap 1.1 -- the SUMMARY form is the PIPELINE'S default, one row per CELL
+# ─────────────────────────────────────────────────────────────────────────────
+
+class TestTheSummaryFormIsTheDefault(unittest.TestCase):
+    """`gather_ink`'s own default (no `component_rows` kwarg at all) is the
+    aggregate. This is the ONE class in this file calling `G.gather_ink`
+    directly rather than through `_run`, precisely to exercise the real
+    default rather than the test helper's."""
+
+    def test_a_bare_call_produces_one_row_per_cell(self):
+        c = _Cell().ink(100, 130, 20, 20).ink(300, 130, 40, 30)
+        log = Log()
+        G.gather_ink(log, [c], _local(), {})  # no component_rows kwarg
+        rows = _rows(log)
+        self.assertEqual(len(rows), 1)
+        self.assertEqual(rows[0].detail["ink_n_components"], 2)
+
+    def test_it_is_the_same_row_component_rows_false_gives(self):
+        c = _Cell().ink(100, 130, 20, 20).ink(300, 130, 40, 30)
+        bare = Log()
+        G.gather_ink(bare, [c], _local(), {})
+        explicit = _run([c], component_rows=False)
+        self.assertEqual(_rows(bare)[0].detail, _rows(explicit)[0].detail)
+
+
+class TestSummaryAggregatesMatchTheComponentsExactly(unittest.TestCase):
+    """The cross-check the design rests on: every number in the one summary
+    row is derivable from the many component rows `--ink-rows` still gives,
+    computed independently here rather than by re-running `gather_ink`'s own
+    aggregation code against itself."""
+
+    def _both(self, cell, detections=None):
+        summary = _rows(_run([cell], detections, component_rows=False))
+        components = _rows(_run([cell], detections, component_rows=True))
+        return summary, components
+
+    def test_n_components_and_total_area(self):
+        c = _Cell().ink(100, 130, 20, 20).ink(300, 130, 40, 30) \
+                    .ink(450, 150, 10, 10)
+        summary, components = self._both(c)
+        self.assertEqual(len(summary), 1)
+        self.assertEqual(len(components), 3)
+        self.assertEqual(summary[0].detail["ink_n_components"], 3)
+        self.assertEqual(summary[0].detail["ink_total_area_px"],
+                         sum(r.detail["ink_area_px"] for r in components))
+
+    def test_largest_share_is_the_max_of_the_per_component_shares(self):
+        c = _Cell().ink(100, 130, 20, 20).ink(300, 130, 40, 30)
+        summary, components = self._both(c)
+        self.assertAlmostEqual(
+            summary[0].detail["ink_largest_share"],
+            max(r.detail["ink_share_of_cell"] for r in components))
+
+    def test_explained_by_union_and_coverage_max(self):
+        c = _Cell().ink(100, 130, 20, 20).ink(300, 130, 24, 16)
+        dets = {R.cell(0, 0, 0, 0).to_key(): [
+            _Det("noteheadBlackInSpace", 300, 130, 24, 16)]}
+        summary, components = self._both(c, dets)
+        union = set()
+        for r in components:
+            union.update(r.detail["ink_explained_by"])
+        self.assertEqual(set(summary[0].detail["ink_explained_by_union"]),
+                         union)
+        self.assertAlmostEqual(
+            summary[0].detail["ink_detector_coverage_max"],
+            max(r.detail["ink_detector_coverage"] for r in components))
+
+    def test_abstentions_are_identical_either_way(self):
+        """⚠️ NO_MASK / NO_INK are already per-cell -- nothing to aggregate,
+        and the schema change must not touch them."""
+        no_mask = _Cell(erased=False)
+        blank = _Cell()
+        for on_flag in (True, False):
+            with self.subTest(component_rows=on_flag):
+                for cell, reason in ((no_mask, ABSTAIN.NO_MASK),
+                                     (blank, ABSTAIN.NO_INK)):
+                    log = _run([cell], component_rows=on_flag)
+                    abstentions = [r for r in log.all_rows()
+                                  if r.quantity == Q.INK
+                                  and hasattr(r, "reason")]
+                    self.assertEqual(len(abstentions), 1)
+                    self.assertEqual(abstentions[0].reason, reason)
+
+
+class TestTraceReadsBothFormsAlike(unittest.TestCase):
+    """`trace._ink_cells_and_components` must report the identical answer
+    whether it is handed the summary form or the pre-1.1 component form --
+    the whole reason `trace.py`'s two record consumers needed a form-agnostic
+    read rather than a shape check. A synthetic observation list is used
+    directly (not a full staged record) so this stays a unit test of the
+    helper rather than a rebuild of the pipeline."""
+
+    def test_one_row_per_cell_and_many_rows_per_cell_agree(self):
+        from tools.omr.staged.trace import _ink_cells_and_components
+
+        summary_form = [
+            {"subject": "cell/0/0/0/0", "detail": {"ink_n_components": 3}},
+            {"subject": "cell/0/0/1/0", "detail": {"ink_n_components": 1}},
+        ]
+        component_form = [
+            {"subject": "glyph/0/0/0/0/200000",
+             "detail": {"ink_n_components": 3}},
+            {"subject": "glyph/0/0/0/0/200001",
+             "detail": {"ink_n_components": 3}},
+            {"subject": "glyph/0/0/0/0/200002",
+             "detail": {"ink_n_components": 3}},
+            {"subject": "glyph/0/0/1/0/200000",
+             "detail": {"ink_n_components": 1}},
+        ]
+        for label, rows in (("summary", summary_form),
+                            ("component", component_form)):
+            with self.subTest(form=label):
+                cells, total = _ink_cells_and_components(rows)
+                self.assertEqual(cells, {"cell/0/0/0/0", "cell/0/0/1/0"})
+                self.assertEqual(total, 4)
 
 
 if __name__ == "__main__":

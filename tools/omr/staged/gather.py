@@ -1672,8 +1672,55 @@ def _coverage(box: Tuple[int, int, int, int],
 def gather_ink(log: Log, cells: Sequence[Any],
                local: Dict[int, Tuple[int, int]],
                detections: Dict[str, List[Any]], *,
+               component_rows: bool = False,
                progress: bool = False) -> None:
     """Every connected piece of ink in every cell, whether or not it is named.
+
+    ⚠️⚠️ **`component_rows=False` (the DEFAULT since roadmap 1.1) FILES ONE
+    SUMMARY ROW PER CELL, NOT ONE ROW PER COMPONENT.** Measured
+    (`benchmarks/omr-ink-gather-2026-09/probe/byte_share.py` for content
+    share, `record_slim.py` run on the two committed shared records for the
+    realised effect): as COMPACT-JSON CONTENT, `Q.INK` observations are only
+    3.5-4.9% of a record (8.5 MB of 244.2 MB compact on Breitkopf, 3.8 MB of
+    77.7 MB compact on Beethoven -- `arc_owner`'s `considered` lists are
+    57-75% of the same compact total, an unrelated finding, reported
+    separately). ⚠️⚠️ **BUT THAT UNDERSTATES THE REALISED SAVING, AND THE GAP
+    IS WORTH RECORDING: one pretty-printed (`indent=2`) `Q.INK` row measured
+    924 bytes against its own ~540-byte compact form** -- a SHORT, FLAT
+    record like one ink component costs proportionally more under
+    `indent=2` than a deeply-nested one, because every leaf sits on its own
+    line. Slimming 7,093 Litolff rows to 1,183 cells and 15,212 Breitkopf
+    rows to 818 cells, WITH THE FORMAT HELD CONSTANT (compact-proxy before
+    vs after), saves 3.4 MB / 4.4% and 8.1 MB / 3.3% respectively --
+    consistent with the content-share figures, as it should be. Running
+    `record_slim.py` on the same two files -- which also happens to
+    re-serialise everything compactly, a SEPARATE and much larger effect --
+    measures 146.4->75.0 MB and 461.1->237.3 MB (~48-51%, dominated by the
+    format switch, NOT attributable to this schema change). See
+    `record_slim.py`'s own docstring for the full breakdown. So slimming ink
+    is real (Litolff 7,093 rows -> 1,183 cells; Breitkopf 15,212 -> 818) and
+    is what the flag table names for roadmap 1.1 (`docs/flags-2026-09.md`:
+    *"stays ON until roadmap 1.1 persists the summary instead of rows"*),
+    but on its own, format held constant, it is NOT the lever that gets a
+    whole-movement record under the 20 MB/page budget -- `arc_owner` is.
+
+    Only TWO real record consumers exist, both checked by grep rather than
+    assumed: `trace.empty_claims` (and its sibling family/subject report)
+    reads `Q.INK` only to ask *which cells have ink at all* and *how many
+    components did we see* -- both survive a per-cell summary exactly, and
+    `trace.py` is patched to sum `ink_n_components` ONCE PER CELL rather than
+    once per row so it reads either shape correctly. `positional_store.py`
+    is the SECOND consumer -- one `Entry` per COMPONENT, each with its own
+    position, shape and `ink_explained_by` membership -- and it is
+    genuinely full-grain: Sean's own rule for that store is *"we may need
+    shape... we may need location... don't limit... every dot of black"*,
+    which a per-cell aggregate cannot honour. `component_rows=True`
+    (`--ink-rows` on the CLI) reproduces the PRE-1.1 behaviour exactly, byte
+    for byte, for exactly that consumer -- it is not a compatibility shim,
+    it is the only correct input `positional_store.py` can be given.
+
+    ⚠️ ABSTENTIONS ARE UNCHANGED EITHER WAY: `no_mask` / `no_ink` are already
+    filed per CELL, so there was nothing to collapse there.
 
     ⚠️⚠️ THIS IS THE BASE LAYER, NOT A SUPPLEMENT, AND THE DISTINCTION IS
     SEAN'S. `A-DUR-5`, 2026-09-09: *"I really don't want to lose the 'here is
@@ -1754,56 +1801,98 @@ def gather_ink(log: Log, cells: Sequence[Any],
         cell_box = getattr(c, "bbox_page_px", None)
         page_ok = bool(up) and bool(cell_box) and len(cell_box or ()) == 4
 
-        for i, (x, y, w, h, area) in enumerate(comps):
-            cov, who = _coverage((x, y, w, h), boxes)
-            g = R.glyph(c.page_index, sys_idx, st_idx, c.measure_index,
-                        _INK_GLYPH_BASE + i)
-            # ⚠️ THE OPTIONAL HALF GOES THROUGH A SPLAT AND THE REST DOES NOT,
-            # AND THAT IS DELIBERATE. `wiring.py`'s DETAIL question reads the
-            # AST for LITERAL keyword names, so a key passed as `**detail` is
-            # invisible to it -- which is why `gather_detections`' own
-            # `bbox_page_px` has never been reported. Every key this reader
-            # ALWAYS writes is spelled out below so the tool can say that
-            # nothing reads it, because nothing does: `Q.INK` ships with no
-            # consumer on purpose (see `benchmarks/omr-ink-gather-2026-09`).
-            # The conditional keys stay in the splat because they are DECLINED
-            # by omission, which is this module's rule and cannot be expressed
-            # as a literal kwarg.
-            optional: Dict[str, Any] = {}
+        if component_rows:
+            for i, (x, y, w, h, area) in enumerate(comps):
+                cov, who = _coverage((x, y, w, h), boxes)
+                g = R.glyph(c.page_index, sys_idx, st_idx, c.measure_index,
+                            _INK_GLYPH_BASE + i)
+                # ⚠️ THE OPTIONAL HALF GOES THROUGH A SPLAT AND THE REST DOES
+                # NOT, AND THAT IS DELIBERATE. `wiring.py`'s DETAIL question
+                # reads the AST for LITERAL keyword names, so a key passed as
+                # `**detail` is invisible to it -- which is why
+                # `gather_detections`' own `bbox_page_px` has never been
+                # reported. Every key this reader ALWAYS writes is spelled out
+                # below so the tool can say that nothing reads it, because
+                # nothing does at the PER-COMPONENT grain (see
+                # `benchmarks/omr-ink-gather-2026-09`; `positional_store.py`
+                # is the one real consumer, and only of this `--ink-rows`
+                # form). The conditional keys stay in the splat because they
+                # are DECLINED by omission, which is this module's rule and
+                # cannot be expressed as a literal kwarg.
+                optional: Dict[str, Any] = {}
+                if spacing:
+                    optional.update(width_spaces=round(w / spacing, 3),
+                                    height_spaces=round(h / spacing, 3),
+                                    cell_staff_space_px=round(spacing, 2))
+                else:
+                    optional["frame_note"] = "cell has no staff-space unit"
+                if page_ok:
+                    px0 = cell_box[0] + x / up
+                    py0 = cell_box[1] + y / up
+                    px1 = cell_box[0] + (x + w) / up
+                    py1 = cell_box[1] + (y + h) / up
+                    optional.update(bbox_page_px=[px0, py0, px1, py1],
+                                    x_center_page=(px0 + px1) / 2.0,
+                                    y_center_page=(py0 + py1) / 2.0)
+                else:
+                    optional["frame_note"] = (
+                        "no page box: cell has no bbox_page_px/upscale_factor")
+                log.observe(
+                    g, Q.INK, "ink", reader=READERS.CV_INK, frame=frame,
+                    ink_bbox_canonical=[x, y, x + w, y + h],
+                    ink_area_px=int(area),
+                    ink_fill=round(area / float(w * h), 4),
+                    ink_n_components=len(comps),
+                    ink_share_of_cell=round(area / total_ink, 4),
+                    # ⚠️ The COVERAGE, never a verdict about it. `explained_by`
+                    # names the classes whose boxes overlap; it does NOT claim
+                    # the component IS one of them, and on this corpus it
+                    # frequently is not -- `arpeggiato` fires 98 and 86 times
+                    # on two pages as "a stem or a barline".
+                    ink_detector_coverage=round(cov, 4),
+                    ink_explained_by=list(who),
+                    **optional)
+        else:
+            # ⚠️⚠️ THE SUMMARY FORM (default since roadmap 1.1). One row per
+            # CELL, aggregating exactly the same per-component computation
+            # above rather than skipping it -- the cost is unchanged, only the
+            # representation is. `ink_n_components` and `ink_largest_share`
+            # answer the two things the record's real consumer (`trace.py`)
+            # asks: is there ink here at all, and how merged is it. Geometry
+            # (`ink_bbox_canonical`, `bbox_page_px`, `width_spaces`, …) does
+            # not survive aggregation and is dropped here on purpose -- it is
+            # a per-COMPONENT fact, and `--ink-rows` is how a caller that
+            # needs it (`positional_store.py`) gets it back.
+            explained: set = set()
+            cov_max = 0.0
+            largest_area = 0.0
+            for (x, y, w, h, area) in comps:
+                cov, who = _coverage((x, y, w, h), boxes)
+                explained.update(who)
+                cov_max = max(cov_max, cov)
+                largest_area = max(largest_area, area)
+            # ⚠️ THE FIVE MANDATORY KEYS ARE LITERAL KWARGS, NOT A SPLAT --
+            # matching this module's own rule two sections up
+            # (`wiring.py`'s DETAIL question reads the AST for literal
+            # keyword names, so a key passed as `**detail` is invisible to
+            # it). Only `cell_staff_space_px`, which is genuinely
+            # CONDITIONAL on the cell having a measured grid, stays in the
+            # optional splat -- the same convention the component branch
+            # above uses for its own conditional keys.
+            optional_summary: Dict[str, Any] = {}
             if spacing:
-                optional.update(width_spaces=round(w / spacing, 3),
-                                height_spaces=round(h / spacing, 3),
-                                cell_staff_space_px=round(spacing, 2))
-            else:
-                optional["frame_note"] = "cell has no staff-space unit"
-            if page_ok:
-                px0 = cell_box[0] + x / up
-                py0 = cell_box[1] + y / up
-                px1 = cell_box[0] + (x + w) / up
-                py1 = cell_box[1] + (y + h) / up
-                optional.update(bbox_page_px=[px0, py0, px1, py1],
-                                x_center_page=(px0 + px1) / 2.0,
-                                y_center_page=(py0 + py1) / 2.0)
-            else:
-                optional["frame_note"] = (
-                    "no page box: cell has no bbox_page_px/upscale_factor")
+                optional_summary["cell_staff_space_px"] = round(spacing, 2)
             log.observe(
-                g, Q.INK, "ink", reader=READERS.CV_INK, frame=frame,
-                ink_bbox_canonical=[x, y, x + w, y + h],
-                ink_area_px=int(area),
-                ink_fill=round(area / float(w * h), 4),
+                sub, Q.INK, "ink", reader=READERS.CV_INK, frame=frame,
                 ink_n_components=len(comps),
-                ink_share_of_cell=round(area / total_ink, 4),
-                # ⚠️ The COVERAGE, never a verdict about it. `explained_by`
-                # names the classes whose boxes overlap; it does NOT claim the
-                # component IS one of them, and on this corpus it frequently
-                # is not -- `arpeggiato` fires 98 and 86 times on two pages as
-                # "a stem or a barline".
-                ink_detector_coverage=round(cov, 4),
-                ink_explained_by=list(who),
-                **optional)
+                ink_total_area_px=int(total_ink),
+                ink_largest_share=round(largest_area / total_ink, 4),
+                ink_detector_coverage_max=round(cov_max, 4),
+                ink_explained_by_union=sorted(explained),
+                **optional_summary)
         if progress:
-            print(f"  gather ink {sub.to_key()}: {len(comps)}")
+            print(f"  gather ink {sub.to_key()}: {len(comps)}"
+                  f"{'' if component_rows else ' (summary row)'}")
 
 
 def gather_detector_beams(log: Log, detections: Dict[str, List[Any]]) -> None:
@@ -3441,8 +3530,20 @@ def gather_document_identity(log: Log, pdf_path: Any) -> None:
 
 
 def gather_input_domain(log: Log, pdf_path: Any,
-                        page_indices: Any = None) -> None:
+                        page_indices: Any = None, *,
+                        classification: Any = None) -> None:
     """SCANNED or ENGRAVED, MEASURED off the PDF's own container.
+
+    `classification` (roadmap 3.2): a caller who already classified this
+    document -- weight routing must, since it picks a checkpoint BEFORE
+    `gather()` runs at all -- passes the `DomainClassification` it already
+    computed so this files the SAME verdict rather than a second,
+    independently re-run one. `prefer one classification, filed once` is the
+    explicit brief; without this, a `--route-weights` run would classify the
+    document twice, and a bug that made the two calls disagree would be
+    invisible (the routed weights and the recorded `Q.INPUT_DOMAIN` could
+    silently name different domains). Passing `None` (every call site before
+    3.2) is unchanged: classify here, as before.
 
     ⚠️⚠️ **IT IS A SEPARATE QUANTITY FROM `Q.DOCUMENT_IDENTITY` AND THE
     MEASUREMENT IS WHY, NOT THE TAXONOMY.** The catalog answers by BASENAME
@@ -3489,9 +3590,12 @@ def gather_input_domain(log: Log, pdf_path: Any,
                     note="no pdf_path supplied to gather()")
         return
     try:
-        from tools.omr.input_domain import (SCANNED, ENGRAVED,
-                                            classify_pdf_domain)
-        cls = classify_pdf_domain(pdf_path, page_indices)
+        from tools.omr.input_domain import SCANNED, ENGRAVED
+        if classification is not None:
+            cls = classification
+        else:
+            from tools.omr.input_domain import classify_pdf_domain
+            cls = classify_pdf_domain(pdf_path, page_indices)
     except Exception as exc:   # pragma: no cover - PyMuPDF absent/unreadable
         log.abstain(R.DOCUMENT, Q.INPUT_DOMAIN, reader=READERS.CONTAINER,
                     frame=FRAME_PAGE, reason=ABSTAIN.READER_UNAVAILABLE,
@@ -3602,6 +3706,8 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
            imgsz: Optional[int] = None, dossier: Any = None,
            roster: Any = None, pdf_path: Any = None,
            surya_fallback: bool = False, ocr_fallback: bool = False,
+           ink_component_rows: bool = False,
+           input_domain_classification: Any = None,
            log: Optional[Log] = None,
            progress: bool = False) -> Log:
     """Run every reader over already-prepared pages and return a frozen Log.
@@ -3620,6 +3726,15 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
     build and does NOT appear here because it is an ADJUDICATION edge, not a
     gathering one: the meter vote consumes committed durations. See
     ASSUMPTIONS.md A-DUR-1.
+
+    `ink_component_rows` forwards to `gather_ink` (roadmap 1.1): False (the
+    default) files one aggregated `Q.INK` row per cell; True reproduces the
+    pre-1.1 one-row-per-component form, which `positional_store.py` needs.
+
+    `input_domain_classification` (roadmap 3.2): a caller that already
+    classified this document for weight routing passes its
+    `DomainClassification` through here so `gather_input_domain` files that
+    SAME verdict instead of reclassifying -- see that function's docstring.
     """
     # ⚠️ IMPORTED HERE, NOT AT MODULE LEVEL, AND THE REASON IS A CYCLE RATHER
     # THAN A COST. `positions` reads THIS module's routing predicates --
@@ -3648,7 +3763,8 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
         # scan must not be classified on its cover sheet. Both calls are
         # once-per-DOCUMENT and guard themselves, so passing the whole list on
         # every page is correct and costs nothing after the first.
-        gather_input_domain(log, pdf_path, _run_page_indices(pws_and_cells))
+        gather_input_domain(log, pdf_path, _run_page_indices(pws_and_cells),
+                           classification=input_domain_classification)
         local = gather_geometry(log, pws)
         gather_systems(log, pws, getattr(pws, "used_bridging", True))
         gather_measures(log, pws, cells, local)
@@ -3678,7 +3794,8 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
         # two read the SAME erased image, which `READERS.CV_INK` states so a
         # consumer cannot mistake them for independent witnesses. Off by
         # default -- see `INK_ENV`.
-        gather_ink(log, cells, local, detections, progress=progress)
+        gather_ink(log, cells, local, detections,
+                  component_rows=ink_component_rows, progress=progress)
         gather_detector_beams(log, detections)
         gather_clef(log, cells, local, detections)
         gather_clef_locator(log, pws, cells, local, detections)
