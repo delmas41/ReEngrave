@@ -117,6 +117,12 @@ benchmarks/*/page-thumbnails/
 # `lilypond` rebuilds these in a second (see check_clef_precision.py).
 benchmarks/omr-clef-geometry/*.pdf
 benchmarks/omr-clef-geometry/*.ps
+# LilyPond embeds a creation/modify timestamp in every PDF's XMP metadata,
+# so tools.omr.acceptance's compiled PDF differs byte-for-byte on every run
+# even when the music is identical — the .ly source (deterministic) and
+# current.json's compiled/pdf_produced/barcheck_failures fields are what's
+# tracked; the PDF is a second's rebuild away (`lilypond -o <dir> <ly>`).
+benchmarks/acceptance/out/**/*.pdf
 
 # Transcribe output kept beside a benchmark run. Regenerable from the PDF and
 # the weights, and enormous: eleven of these reached main in the 2026-08-28

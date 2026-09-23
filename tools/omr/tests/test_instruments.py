@@ -805,6 +805,98 @@ def test_the_absent_instruments_that_were_CAPTURED_rather_than_abstaining():
         assert lookup(label).instrument.family == family, label
 
 
+# ── Roadmap 2.1c: a condensed staff names TWO instruments, not one ─────────
+#
+# `lookup` has always returned exactly one instrument, the winner of a
+# longest-alias search over the WHOLE label — so "Violoncello e Basso." (a
+# condensed cello-and-bass staff) resolved to Cello alone, silently
+# discarding the Contrabass the plate also names
+# (`benchmarks/omr-cello-bass-convention-2026-09/FINDINGS.md` §4). These pin
+# the additive `Match.condensed_with` field that names the second instrument
+# without changing which one `lookup` returns as the primary match.
+
+
+def test_a_condensed_cello_and_bass_staff_names_both():
+    m = lookup("Violoncello e Basso.")
+    assert m.instrument.name == "Cello"           # UNCHANGED primary match
+    assert m.condensed_with == "Contrabass"
+
+
+@pytest.mark.parametrize("label", [
+    "Violoncello e Basso.",
+    "Violoncello e Contrabasso",
+    "Violoncell u. Contrabass.",
+    "Violoncell und Kontrabaß",     # the real German spelling on held plates
+    "Vc. e Cb.",
+    "Celli e Bassi",
+    "Vcl. e Basso",
+    "Contrabassi e Violoncelli",    # reversed order
+    "Violoncell u. Contrabass",     # no trailing period
+])
+def test_the_german_and_abbreviated_dual_forms_all_name_the_pair(label):
+    m = lookup(label)
+    assert m is not None, label
+    assert m.instrument.family == "string", label
+    assert {m.instrument.name, m.condensed_with} == {"Cello", "Contrabass"}, label
+
+
+def test_a_conjunction_with_no_lexicon_match_on_the_other_side_abstains():
+    """"Contrabaß" (as opposed to the real "Kontrabaß") is not a listed alias
+    of anything — the rule is "no new aliases", so this must not guess."""
+    m = lookup("Violoncell und Contrabaß")
+    assert m is not None
+    assert m.instrument.name == "Cello"
+    assert m.condensed_with is None
+
+
+def test_a_single_instrument_label_never_carries_condensed_with():
+    for label in ("Violoncello", "Vc.", "Contrabass", "Flauto",
+                  "2 Clarinetti in B", "Corni"):
+        m = lookup(label)
+        assert m is not None, label
+        assert m.condensed_with is None, label
+
+
+def test_bare_basso_and_bassi_are_untouched_by_the_conjunction_rule():
+    """A bare label carries no conjunction to split on, so the ambiguity
+    this rule reads through `AMBIGUOUS_ALIASES` for the OTHER half of a
+    conjunction must never leak into the single-word case — `Basso`'s own
+    default answer (a bass VOICE) is `score_layouts`' business, not this
+    one's."""
+    assert lookup("Basso").instrument.name == "Bass voice"
+    assert lookup("Basso").condensed_with is None
+    assert lookup("Bassi").instrument.name == "Contrabass"
+    assert lookup("Bassi").condensed_with is None
+
+
+def test_no_conjunction_means_no_condensed_with_even_when_two_names_are_adjacent():
+    """"Vc. Cb." has no linking word at all — two abbreviations sitting next
+    to each other is not the same claim as two nouns joined by "e"/"u.", and
+    guessing from bare adjacency is exactly the kind of thing this field must
+    not do (no new aliases, no guess)."""
+    m = lookup("Vc. Cb.")
+    assert m is not None
+    assert m.condensed_with is None
+
+
+def test_condensed_with_is_named_for_a_pair_outside_the_cello_bass_case_too():
+    """The rule is generic, not hardcoded to strings: a real condensed brass
+    label found in the corpus ("Posaune u. Tuba") also names both halves."""
+    m = lookup("Posaune u. Tuba")
+    assert m is not None
+    assert {m.instrument.name, m.condensed_with} == {"Trombone", "Tuba"}
+
+
+def test_a_conjunction_naming_a_family_the_primary_never_matched_abstains():
+    """If neither side of the split agrees with what `lookup` actually
+    returned as the primary match, the split says nothing about THAT match
+    and must not manufacture a partner for it."""
+    from tools.omr.instruments import _condensed_partner, normalize_label, Match, INSTRUMENTS
+    flute = next(i for i in INSTRUMENTS if i.name == "Flute")
+    fake_primary = Match(flute, 0, "flauto", 1.0, False)
+    # "cello e basso" names Cello/Contrabass, neither of which is Flute.
+    assert _condensed_partner(normalize_label("cello e basso"), fake_primary) is None
+
 # ─────────────────────────────────────────────────────────────────────────────
 # OCR noise: a digit inside a word, and `ß` read as `B`
 #

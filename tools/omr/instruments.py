@@ -32,7 +32,7 @@ from __future__ import annotations
 
 import re
 import unicodedata
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, replace
 
 # ── circle-of-fifths for "in X" parsing ─────────────────────────────────────
 
@@ -64,6 +64,13 @@ class Match:
     alias: str                  # the alias that fired
     coverage: float             # fraction of the label's letters the alias covers
     ocr_folded: bool            # matched only after folding OCR confusions
+    #: The SECOND instrument, where the label joins two instrument nouns with
+    #: a conjunction ("Violoncello e Basso", "Violoncell u. Contrabass") --
+    #: none of `lookup`'s existing behaviour changes to produce this: the
+    #: field is additive, `None` on every label it does not apply to, and
+    #: `None` where the label's other half does not resolve through the
+    #: EXISTING lexicon rather than a guess. See `_condensed_partner`.
+    condensed_with: "str | None" = None
 
     @property
     def confidence(self) -> str:
@@ -906,6 +913,101 @@ def _prefer_instrument_over_qualifier(text: str, winner: "Match") -> "Match":
 _prefer_instrument_over_voice = _prefer_instrument_over_qualifier
 
 
+# A condensed staff is printed as two instrument NOUNS joined by a
+# conjunction -- "Violoncello e Basso", "Violoncell u. Contrabass", "Vc. e
+# Cb." -- word-bounded exactly like every other alias test here, so a
+# conjunction fused into a longer word never fires. Deliberately NOT
+# `_STRIP_TOKENS`: that set exists to DELETE filler words (including "e" and
+# "und") before an alias search, and deleting the conjunction is what makes
+# "Violoncello e Basso" and "Violoncelli Bassi" collapse to the same stripped
+# string -- `_adjacent`'s docstring records the same trap for the same
+# reason. This runs on `norm`, before any stripping, because the conjunction
+# IS the evidence.
+_CONDENSED_CONJUNCTION_RE = re.compile(
+    r"(?<![a-z])(?:ed|und|and|et|e|u)(?![a-z])|&"
+)
+
+
+def _resolve_half(text: str) -> Match | None:
+    """Resolve one side of a conjunction split through the plain lexicon.
+
+    Deliberately narrower than `lookup`: no roster, no qualifier preference,
+    no recursive `condensed_with` of its own. This is what "the label's other
+    half resolves on its own through the existing lexicon" means -- a second,
+    independent read of a substring, not a second top-level `lookup`.
+    """
+    for folded in (False, True):
+        probe = _fold_ocr(text) if folded else text
+        hit = _search(probe, folded)
+        if hit is None:
+            continue
+        alias, inst = hit
+        coverage = _letters(alias) / max(1, _letters(text))
+        return Match(inst, inst.default_fifths_offset, alias,
+                     min(1.0, coverage), folded)
+    return None
+
+
+def _condensed_partner(norm: str, primary: Match) -> str | None:
+    """The second instrument a dual label names, if the label has one.
+
+    `lookup` itself only ever returns ONE instrument -- the winner of a
+    longest-alias search over the WHOLE string, with no regard for which half
+    of the label it stood in (`Match.alternatives`' own docstring records the
+    cost of exactly that fusion for `Basso`). A condensed staff prints two
+    instrument nouns side by side, joined by a conjunction, and this asks
+    -- additively, after `lookup` has already decided its answer -- whether
+    the OTHER side of that conjunction also names something.
+
+    Both halves must resolve through the EXISTING lexicon: no alias is added,
+    and no candidate outside `AMBIGUOUS_ALIASES`'s own declared list is ever
+    proposed. One of the two halves must already agree with `primary`'s
+    instrument, or the split says nothing about the match `lookup` actually
+    made -- a conjunction elsewhere in an unrelated label must not manufacture
+    a partner for it.
+
+    ⚠️ Where the OTHER half's alias is one the lexicon itself declares
+    ambiguous ("basso" is a bass VOICE or a Contrabass, `AMBIGUOUS_ALIASES`),
+    the ambiguity is resolved toward whichever declared alternative shares
+    `primary`'s FAMILY. A condensed staff pairs two sections of ONE family --
+    Sean's rule is that the missing member of a short string block is the
+    OTHER string section, never a voice standing in for one -- and the
+    lexicon already commits to exactly that pair for "Basso"
+    (`AMBIGUOUS_ALIASES["basso"] == ("Bass voice", "Contrabass")`); this reads
+    the same declared table `score_layouts.resolve_ambiguous_label` reads by
+    POSITION, using the conjunction as the positional fact instead. Where
+    zero or more than one declared alternative shares the family, this
+    abstains -- `None` -- rather than guess among them.
+    """
+    for m in _CONDENSED_CONJUNCTION_RE.finditer(norm):
+        left = norm[:m.start()].strip()
+        right = norm[m.end():].strip()
+        if not left or not right:
+            continue
+        left_hit = _resolve_half(left)
+        right_hit = _resolve_half(right)
+        if left_hit is None or right_hit is None:
+            continue
+        if left_hit.instrument.name == right_hit.instrument.name:
+            continue
+        if left_hit.instrument.name == primary.instrument.name:
+            other = right_hit
+        elif right_hit.instrument.name == primary.instrument.name:
+            other = left_hit
+        else:
+            # Neither half named the instrument `lookup` actually returned --
+            # this conjunction is not evidence about THAT match.
+            continue
+        if other.is_ambiguous:
+            same_family = tuple(c for c in other.alternatives
+                                if c.family == primary.instrument.family)
+            if len(same_family) != 1:
+                return None
+            return same_family[0].name
+        return other.instrument.name
+    return None
+
+
 def lookup(text: str) -> Match | None:
     """Match a printed label to an instrument.
 
@@ -913,6 +1015,11 @@ def lookup(text: str) -> Match | None:
     explicit "in X" when the label carries one, then from a bare trailing key
     token for instruments that take one ("Cor. D."), and from the instrument's
     own default otherwise. Returns None if nothing matches.
+
+    `Match.condensed_with` names a SECOND instrument, additively, where the
+    label joins two instrument nouns with a conjunction and both resolve --
+    see `_condensed_partner`. It never changes which instrument this function
+    returns as the primary match.
     """
     norm = normalize_label(text)
     if not norm:
@@ -942,7 +1049,11 @@ def lookup(text: str) -> Match | None:
             if offset is None:
                 offset = inst.default_fifths_offset
             coverage = _letters(alias) / max(1, _letters(candidate))
-            return _prefer_instrument_over_qualifier(
+            match = _prefer_instrument_over_qualifier(
                 text, Match(inst, offset, alias, min(1.0, coverage), folded)
             )
+            partner = _condensed_partner(norm, match)
+            if partner is not None:
+                match = replace(match, condensed_with=partner)
+            return match
     return None
