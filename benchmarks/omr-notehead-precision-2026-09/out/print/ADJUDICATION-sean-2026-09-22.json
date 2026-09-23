@@ -1,0 +1,26 @@
+{
+  "adjudicator": "Sean",
+  "date": "2026-09-22",
+  "instrument": "contact-sheet-12-crops.png, tiles read left to right, top to bottom",
+  "verdicts": {
+    "glyph/1/0/11/2/4": "part of a real note (thin box at the bottom of an eighth note)",
+    "glyph/1/0/11/2/5": "part of a real note; exact copy of /6",
+    "glyph/1/0/11/2/6": "part of a real note; exact copy of /5",
+    "glyph/2/0/0/2/11": "part of a barline",
+    "glyph/2/0/10/14/9": "an eighth rest",
+    "glyph/2/0/2/14/2": "part of a barline",
+    "glyph/0/0/1/0/18": "looks like a legitimate note",
+    "glyph/0/0/0/4/16": "part of a barline",
+    "glyph/0/0/11/3/19": "very small box touching the tip of a real note",
+    "glyph/0/0/1/1/20": "part of a barline",
+    "glyph/0/0/11/3/21": "very small box touching the tip of a real note",
+    "glyph/0/0/10/1/15": "part of a barline"
+  },
+  "note": "Sean: boxes connected to actual notes may be costing notes, or may be a misfired double on a portion of a note already boxed \u2014 to be checked in the record.",
+  "resolution": {
+    "too_narrow (6)": "6 of 6 correct: 5 barline pieces, 1 eighth rest",
+    "clipped_fragment (6)": "6 of 6 correct: each is the tip of a note on the NEIGHBOURING staff poking into this cell's padding; the neighbour's own cell holds the full notehead box at the same page x (Litolff glyph/1/0/10/2/{0,1} conf 0.80/0.75; Breitkopf glyph/0/0/2/0/{14,21} conf 0.66/0.35, glyph/0/0/12/3/{2,6} conf 0.82/0.76), so no note is lost; Litolff /5 and /6 are also a duplicate pair on one sliver",
+    "verdict": "12 of 12 refusals correct against Sean's read; the 'part of a real note' cases are the neighbour's note, already boxed where it belongs",
+    "checked_by": "manager, from the two shared records, 2026-09-22 (probe inline in the session; page-x overlap with the neighbour staff's notehead boxes)"
+  }
+}
