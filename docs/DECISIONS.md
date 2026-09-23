@@ -85,6 +85,12 @@ Format: `YYYY-MM-DD · who · the decision · because · (pointer)`
   detection at all, a recall gap the rule cannot see past · reversible here;
   12 fresh crops await Sean in `benchmarks/omr-notehead-precision-2026-09/out/print/`
   · (`claude/notehead-precision-2.4a` 5dbd0758)
+- 2026-09-22 · Sean (crops) / manager (record check) · **The 2.4a refusals stand,
+  print-checked: 12 of 12 fresh crops correct.** · because the six `too_narrow`
+  boxes are five barline pieces and an eighth rest, and the six
+  `clipped_fragment` boxes are the tips of notes belonging to the NEIGHBOURING
+  staff, each of which is fully boxed in its own staff's cell at 0.66–0.85 ·
+  (`benchmarks/omr-notehead-precision-2026-09/out/print/ADJUDICATION-sean-2026-09-22.json`)
 - 2026-09-22 · session, on measurement (roadmap 1.1b) · **A staged record FILE
   pools its repeated verdict id lists (`tools/omr/staged/record_io.py`), and a
   record file is read through `record_io.load_record`, never bare `json.loads`.**
