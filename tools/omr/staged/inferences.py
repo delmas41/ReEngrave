@@ -28,6 +28,7 @@ from typing import Any, Dict, List, Optional, Sequence, Tuple
 from .adjudicators.rhythm import ONSET_COLUMN_TOLERANCE_SPACES, _page_x_of
 from .infer import (FAMILY_BLOCK_SWITCH, Inference, Proposal,
                     independent_groups, rule)
+from . import record as R
 from .record import Kind, Log, Outcome, Q, Scope, Subject, Verdict
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -68,6 +69,46 @@ def _events_with_x(log: Log, system: Subject) -> Dict[Tuple[int, int], List[dict
     """
     boxes = _page_x_of(log.rows(Q.GLYPH_BOX, system,
                                 scope=Scope.SELF_AND_DESCENDANTS))
+
+    # ⚠️⚠️ A CELL IS A CROP, AND ITS INK IS NOT ALL ITS OWN. The measure cell
+    # is padded 4 staff spaces (6 where the neighbour is far), and on a
+    # conductor's page that pad reaches the next staff's ink, so the detector
+    # fires on the neighbour's notes inside this staff's crop. `glyph/p/s/9/c/5`
+    # means "the 5th detection in staff 9's cell-c crop", never "a note
+    # belonging to staff 9" -- and `adjudicate_glyph_owner` is the decision
+    # that settles which. Until 2026-09-23 these rules did not ask: they took
+    # every glyph in the crop as the staff's own and borrowed a length from
+    # that staff's neighbours for ink another staff owns.
+    #
+    # Measured on the Litolff shared record: of 16 inferences, 2 stood on a
+    # glyph ownership had already awarded elsewhere. On `glyph/4/0/9/5/7` the
+    # record says `staff/4/0/10` (Basso) and the rule inferred 0.25 from
+    # VIOLONCELLO's column structure; Sean read the print as a Basso eighth and
+    # the reference encoding agrees (`[0.5, 0.5, 0.5]`).
+    #
+    # ⚠️ THE LOSER IS DROPPED, NOT RELOCATED (CLAUDE.md §10: "a resolved
+    # contest DROPS the loser -- it never relocates it"). Moving the glyph into
+    # the winner's bar would be a second ownership decision taken by a
+    # duration rule, which is not its to take.
+    #
+    # ⚠️ SILENCE IS NOT A VERDICT. A glyph with NO `Q.GLYPH_OWNER` verdict was
+    # never contested -- `adjudicate_glyph_owner`'s domain is the CONTESTED
+    # population -- so the detection cell is the only claim there is and the
+    # glyph is kept. 13 of the same 16 are in that state; widening the domain
+    # is `subjects_from`'s question and not this rule's.
+    owner_of: Dict[str, str] = {}
+    for ov in log.verdicts(Q.GLYPH_OWNER, system,
+                           scope=Scope.SELF_AND_DESCENDANTS):
+        if isinstance(ov.value, str):
+            owner_of[ov.subject.to_key()] = ov.value
+
+    def _owned_here(staff: int, cell: int, g: int) -> bool:
+        sub = R.glyph(system.page, system.system, staff, cell, g)
+        owner = owner_of.get(sub.to_key())
+        if owner is None:
+            return True                       # never contested: keep
+        return owner == R.staff(system.page, system.system, staff).to_key()
+
     out: Dict[Tuple[int, int], List[dict]] = {}
     for v in log.verdicts(Q.EVENT, system, scope=Scope.SELF_AND_DESCENDANTS):
         sub = v.subject
@@ -75,7 +116,8 @@ def _events_with_x(log: Log, system: Subject) -> Dict[Tuple[int, int], List[dict
             continue
         for e in v.value.get("events", ()):
             glyphs = [g for g in e.get("glyphs", ())
-                      if (sub.staff, sub.cell, g) in boxes]
+                      if (sub.staff, sub.cell, g) in boxes
+                      and _owned_here(sub.staff, sub.cell, g)]
             if not glyphs:
                 continue
             xs = [boxes[(sub.staff, sub.cell, g)] for g in glyphs]
@@ -295,7 +337,7 @@ def _walk(log: Log, system: Subject) -> List[_Span]:
     # CLAUDE.md records against the tie-pairing repair. `infer.scoring_conflict`
     # computes the overlap and `probe/self_check.py` REFUSES to print a score
     # when it is non-empty.
-    reads=(Q.ONSET_COLUMN, Q.EVENT, Q.DURATION, Q.GLYPH_BOX),
+    reads=(Q.ONSET_COLUMN, Q.EVENT, Q.DURATION, Q.GLYPH_BOX, Q.GLYPH_OWNER),
     scope=Kind.SYSTEM,
     sideways=True,
     bound=(
@@ -386,7 +428,7 @@ def collapse_duration_by_column(log: Log, system: Subject) -> List[Proposal]:
     # neighbour whose own reading came from the meter -- see
     # `_witness_is_meter_derived`. `infer.scoring_conflict` stays empty and
     # the self-check stays legitimate.
-    reads=(Q.ONSET_COLUMN, Q.EVENT, Q.DURATION, Q.GLYPH_BOX),
+    reads=(Q.ONSET_COLUMN, Q.EVENT, Q.DURATION, Q.GLYPH_BOX, Q.GLYPH_OWNER),
     scope=Kind.SYSTEM,
     sideways=True,
     bound=(

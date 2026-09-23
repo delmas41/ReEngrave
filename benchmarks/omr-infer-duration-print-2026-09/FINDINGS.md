@@ -463,3 +463,77 @@ quantity would return nothing and the rule would behave exactly as it does now.
 widened, which is the `subjects_from` question and a separate lane.
 
 ⚠️ 12.5 % is n = 1 document and 16 inferences. It is a size, not a rate.
+
+---
+
+# §9. The fix, measured — `Q.GLYPH_OWNER` wired in (Sean, 2026-09-23)
+
+He adjudicated the third crop the same way — *"it belongs to a staff on the
+bottom that is not the staff that has the green lines going through it"* —
+making it **3 of 3** subjects where his reading, the recorded ownership verdict
+and the geometry all agree, and then directed the change:
+
+> *"add Q.GLYPH_OWNER to the rules' reads and re-measure"*
+
+## The change
+
+Both rules now declare `Q.GLYPH_OWNER` in `reads`, and `_events_with_x` drops a
+glyph whose ownership verdict names a staff other than the cell it sits in.
+
+* **The loser is DROPPED, not relocated** — CLAUDE.md §10, *"a resolved contest
+  DROPS the loser; it never relocates it."* Moving the glyph into the winner's
+  bar would be a second ownership decision taken by a duration rule.
+* **Silence is not a verdict.** A glyph with NO ownership verdict was never
+  contested — `adjudicate_glyph_owner`'s domain is the contested population —
+  so the detection cell is the only claim there is and the glyph is KEPT.
+  Reading absence as "not mine" would silently delete 13 of the 16.
+
+## Measured, same record, same instrument
+
+Control first, unchanged: **19,563 of 19,563 verdicts reproduced, 0 differ.**
+
+| | base | arm |
+|---|--:|--:|
+| `collapse_duration_by_column` | 6 | 6 |
+| `collapse_duration_to_barline` | 10 | **7** |
+| **total inferences** | **16** | **13** |
+| surviving inferences whose VALUE changed | — | **0** |
+
+**Three dropped, and I predicted two.** The third is the interesting one:
+
+| dropped | why |
+|---|---|
+| `glyph/4/0/9/5/7` | owned by `staff/4/0/10` — Sean's first crop |
+| `glyph/2/1/0/13/0` | owned by `staff/2/1/1` — Sean's third crop |
+| `glyph/2/1/0/13/5` | **no ownership verdict — kept by the guard, and still lost its inference** |
+
+The third sits in the **same bar** as the second. Removing a foreign note
+changes that bar's event structure, so the surviving glyph's endpoint — *is
+there a further onset in this bar* — is no longer the same question. That is
+the fix working through, not a second defect: the rule's premise was being
+evaluated over a bar contaminated by another staff's ink, and with the
+contamination gone it declines rather than infers. **A knock-on that produces a
+REFUSAL is the safe direction**, and it is the reason the prediction of two was
+low.
+
+**Nothing changed value.** The fix is purely subtractive on this document: it
+removes three inferences and corrects none, because the rules had no mechanism
+to arrive at the right answer for ink they should not have been reading.
+
+## Gate
+
+`pytest -m "not slow"` **2,823 passed**, 3 skipped, 0 failed.
+`python3 -m tools.omr.staged.check` **255 open, status ok — identical to main**.
+`TestItReadsGlyphOwner` **run RED first** against the pre-fix tree (reports 1
+inference where it expects 0), with two positive controls in the same class so
+it cannot pass by refusing everything: a glyph owned by its OWN staff still
+fires, and an uncontested glyph still fires.
+
+## ⚠️ What this still does not settle
+
+Both rules remain **default OFF** and this does not change that. The fix
+removes three wrong inferences from a population of sixteen; it does not show
+that the remaining thirteen are right. The reference encoding could not
+discriminate them (§5b) and only three subjects have been read against a print.
+**2.3's default decision is still open**, and it is now a cleaner question:
+the rules no longer infer from ink they do not own.

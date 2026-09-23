@@ -433,3 +433,70 @@ class TestNeitherRuleReadsTheMeter(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class TestItReadsGlyphOwner(unittest.TestCase):
+    """⚠️ A CELL IS A CROP AND ITS INK IS NOT ALL ITS OWN (2026-09-23).
+
+    The measure cell is padded 4 staff spaces, so on a conductor's page the
+    detector fires on the NEIGHBOUR's notes inside this staff's crop.
+    `glyph/p/s/9/c/5` means "the 5th detection in staff 9's cell-c crop", never
+    "a note belonging to staff 9" -- `adjudicate_glyph_owner` settles which.
+
+    Until this was wired, both duration rules took every glyph in the crop as
+    the staff's own and borrowed a length from that staff's neighbours for ink
+    another staff owns. Measured on the Litolff shared record: 2 of 16
+    inferences stood on a glyph ownership had already awarded elsewhere, and
+    Sean adjudicated one of them against the print -- `glyph/4/0/9/5/7`, owned
+    by `staff/4/0/10` (Basso), where the rule had inferred 0.25 from
+    VIOLONCELLO's column structure and the note is a Basso eighth.
+
+    RUN RED against the pre-fix tree: the first test reports 1 inference where
+    it expects 0.
+    """
+
+    def _owned(self, log, staff, glyph, owner_staff, cell=0):
+        log.record(Verdict(
+            id=log._next_id("vrd"), subject=_sub(staff, glyph, cell),
+            quantity=Q.GLYPH_OWNER, outcome=Outcome.DECIDED,
+            value=Subject(Kind.STAFF, page=0, system=0,
+                          staff=owner_staff).to_key(),
+            decider="adjudicate_glyph_owner", reason="distance"))
+
+    def _bar(self):
+        b = _Builder()
+        b.note(0, 0, COL_X[0]).narrowed(0, 0, beats=(2.0, 4.0))
+        b.note(1, 0, COL_X[0]).decided(1, 0, 2.0)
+        b.note(2, 0, COL_X[0]).decided(2, 0, 2.0)
+        return b
+
+    def test_a_glyph_owned_by_another_staff_is_not_inferred_on(self):
+        b = self._bar()
+        log = b.finish()
+        self._owned(log, 0, 0, owner_staff=1)     # staff 0's crop, staff 1's note
+        r = _run(log)
+        self.assertEqual(
+            _fired(r, infer.Inference.COLLAPSE_DURATION_TO_BARLINE), [],
+            "the rule borrowed a length for ink another staff owns")
+
+    def test_a_glyph_owned_by_its_own_staff_is_still_inferred_on(self):
+        """The guard must not refuse everything -- a positive control in the
+        same class, without which the test above passes by refusing all."""
+        b = self._bar()
+        log = b.finish()
+        self._owned(log, 0, 0, owner_staff=0)     # the contest was WON here
+        r = _run(log)
+        self.assertEqual(
+            len(_fired(r, infer.Inference.COLLAPSE_DURATION_TO_BARLINE)), 1)
+
+    def test_silence_is_not_a_verdict_an_uncontested_glyph_is_kept(self):
+        """⚠️ `adjudicate_glyph_owner`'s domain is the CONTESTED population, so
+        most glyphs carry no verdict at all -- 13 of the 16 measured. With no
+        verdict the detection cell is the only claim there is, and reading the
+        absence as "not mine" would silently delete them. That is the fallback
+        hazard CLAUDE.md names: a fallback never converts "cannot tell" into an
+        answer."""
+        log = self._bar().finish()                # no glyph_owner verdict at all
+        r = _run(log)
+        self.assertEqual(
+            len(_fired(r, infer.Inference.COLLAPSE_DURATION_TO_BARLINE)), 1)
