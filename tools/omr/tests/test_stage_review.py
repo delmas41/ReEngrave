@@ -442,6 +442,74 @@ class TestAnAddedBoxBecomesASubject(_Case):
 
 
 # ─────────────────────────────────────────────────────────────────────────────
+# 4b. A REDRAWN BOX — both halves, and the half that reaches nothing
+# ─────────────────────────────────────────────────────────────────────────────
+
+class TestARedrawnBoxFilesBothHalves(_Case):
+    def setUp(self) -> None:
+        super().setUp()
+        action = dict(ADD, id="act-redraw", kind="redraw_box",
+                      glyph="glyph/0/0/0/0/2",
+                      note="this head is drawn a space too low")
+        self.d, self.arm, self.ing = self.run_review(_sidecar(action),
+                                                     tag="redraw")
+        self.sub = f"glyph/0/0/0/0/{HE.HUMAN_GLYPH_BASE}"
+
+    def test_the_new_box_is_filed_at_the_human_ordinal(self):
+        got = {o["quantity"] for o in self.arm["record"]["observations"]
+               if o["subject"] == self.sub}
+        self.assertIn(Q.GLYPH_BOX, got)
+        self.assertIn(Q.NOTEHEAD_STAFF_POSITION, got)
+
+    def test_the_original_is_marked_REDRAWN_and_not_not_a_symbol(self):
+        rows = [o for o in self.arm["record"]["observations"]
+                if o["subject"] == "glyph/0/0/0/0/2"
+                and o["quantity"] == Q.HUMAN_BOX_VERDICT]
+        self.assertEqual([r["value"] for r in rows], ["redrawn"])
+        self.assertEqual(rows[0]["detail"]["replaced_by"], self.sub)
+
+    def test_REDRAWN_IS_HANDED_TO_A_DECISION_AND_NEVER_WEIGHED(self):
+        """⚠️ A redraw says the box is in the wrong PLACE — a different claim
+        from *not a symbol*, and what to do with the machine's own box is a
+        decision nobody has taken. It must NOT be quietly read as a refusal.
+
+        ⚠️⚠️ AND THE HONEST ANSWER IS NOT "nothing read it". Because
+        `notehead_is_not_a_notehead` DECLARES `Q.HUMAN_BOX_VERDICT`, the
+        harness hands it every such row on that glyph, so a `redrawn` row
+        lands in `considered` and `basis` — and `_human_not_a_symbol` then
+        declines it. `used` is the only field that separates *offered* from
+        *weighed*, which is exactly why the diff reports the three apart. A
+        test asserting `human_rows_unread` would have been WRONG and would
+        have looked right.
+        """
+        v = self.standing(self.arm["record"], Q.NOTEHEAD_IS_NOT_A_NOTEHEAD,
+                          "glyph/0/0/0/0/2")
+        self.assertIs(v["value"], False)
+        self.assertEqual(v["reason"], "notehead")
+        redrawn = {o["id"] for o in self.arm["record"]["observations"]
+                   if o["quantity"] == Q.HUMAN_BOX_VERDICT
+                   and o["value"] == "redrawn"}
+        self.assertEqual(len(redrawn), 1)
+        hits = [h for h in self.d.basis_names_human
+                if set(h["in_used"]) & redrawn]
+        self.assertEqual(hits, [], "a `redrawn` row was WEIGHED by a decision "
+                                   "— that is a wiring change, not a test fix")
+        offered = [h for h in self.d.basis_names_human
+                   if any(r.split("->")[-1] in redrawn
+                          for r in h["human_rows"])]
+        self.assertTrue(offered, "the row reached no decision at all, so this "
+                                 "test proves nothing about `used`")
+        self.assertTrue(all(h["how"] != "used" for h in offered))
+
+    def test_the_machines_box_still_stands_and_is_still_written(self):
+        rows = [o for o in self.arm["record"]["observations"]
+                if o["subject"] == "glyph/0/0/0/0/2"
+                and o["quantity"] == Q.GLYPH_BOX]
+        self.assertEqual(len(rows), 1)
+        self.assertEqual(self.d.notes_after, self.d.notes_before + 1)
+
+
+# ─────────────────────────────────────────────────────────────────────────────
 # 5. THE FRAME RECOVERY, AND ITS OWN CONTROL
 # ─────────────────────────────────────────────────────────────────────────────
 
