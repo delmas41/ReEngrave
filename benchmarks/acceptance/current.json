@@ -1,9 +1,9 @@
 {
-  "tree": "07b68d489b824e46051f12d8844794510a9d056c",
-  "dirty": true,
-  "date": "2026-09-23T00:54:32Z",
+  "tree": "35f14ae34a1c2013c3b5950dbf1e75729ed7d025",
+  "dirty": false,
+  "date": "2026-09-23T01:01:37Z",
   "manifest_md5": "ad1b9ebffff045b2e52afe54168aaf1b",
-  "wall_time_s": 8.675,
+  "wall_time_s": 8.635,
   "documents": {
     "beethoven5-litolff": {
       "id": "beethoven5-litolff",
@@ -21,7 +21,7 @@
       "export": {
         "ok": true,
         "bytes": 449657,
-        "wall_time_s": 1.741,
+        "wall_time_s": 1.724,
         "report": {
           "families": [
             {
@@ -773,7 +773,7 @@
       "export": {
         "ok": true,
         "bytes": 874145,
-        "wall_time_s": 2.822,
+        "wall_time_s": 2.929,
         "report": {
           "families": [
             {
@@ -1499,7 +1499,7 @@
       "export": {
         "ok": true,
         "bytes": 162534,
-        "wall_time_s": 0.233,
+        "wall_time_s": 0.247,
         "report": {
           "families": [
             {
@@ -2360,8 +2360,8 @@
       },
       "omr_ned": {
         "name": "acceptance",
-        "pred": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a78f82d3075cb50b9/benchmarks/acceptance/out/beethoven5-engraved/beethoven5-engraved.musicxml",
-        "truth": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a78f82d3075cb50b9/benchmarks/omr-staged-engraved-2026-09/out/fixture/beethoven-sym5-mvt1-m1-24.musicxml",
+        "pred": "benchmarks/acceptance/out/beethoven5-engraved/beethoven5-engraved.musicxml",
+        "truth": "benchmarks/omr-staged-engraved-2026-09/out/fixture/beethoven-sym5-mvt1-m1-24.musicxml",
         "omr_ned": 0.1519280205655527,
         "omr_ed": 591,
         "pred_symbols": 1847,
@@ -2391,7 +2391,7 @@
         "pdf_produced": true,
         "barcheck_failures": 3,
         "lilypond_exit": 0,
-        "log_tail": "ute-dynamic-event'\n    r8 _\\ff _\\f \n                _\\f _\\f a8 [ a8 a8 ] | % 24\n/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a78f82d3075cb50b9/benchmarks/acceptance/out/beethoven5-engraved/lilypond/beethoven5-engraved.ly:278:8: warning: conflict with event: `absolute-dynamic-event'\n    r8 \n       _\\ff _\\f _\\f _\\f a8 [ a8 a8 ] | % 24\n/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a78f82d3075cb50b9/benchmarks/acceptance/out/beethoven5-engraved/lilypond/beethoven5-engraved.ly:278:21: warning: discarding event: `absolute-dynamic-event'\n    r8 _\\ff _\\f _\\f \n                    _\\f a8 [ a8 a8 ] | % 24\n/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a78f82d3075cb50b9/benchmarks/acceptance/out/beethoven5-engraved/lilypond/beethoven5-engraved.ly:306:8: warning: conflict with event: `absolute-dynamic-event'\n    r8 \n       _\\ff _\\f a8 [ a8 a8 ] | % 24\n/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a78f82d3075cb50b9/benchmarks/acceptance/out/beethoven5-engraved/lilypond/beethoven5-engraved.ly:306:13: warning: discarding event: `absolute-dynamic-event'\n    r8 _\\ff \n            _\\f a8 [ a8 a8 ] | % 24\n/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a78f82d3075cb50b9/benchmarks/acceptance/out/beethoven5-engraved/lilypond/beethoven5-engraved.ly:93:8: warning: barcheck failed at: 1/4\n    c4 \n       | % 22\n/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a78f82d3075cb50b9/benchmarks/acceptance/out/beethoven5-engraved/lilypond/beethoven5-engraved.ly:116:8: warning: barcheck failed at: 1/4\n    g4 \n       | % 22\n[24]\nPreprocessing graphical objects...\nFinding the ideal number of pages...\nFitting music on 2 or 3 pages...\nDrawing systems...\nwarning: compressing over-full page by 7.4 staff-spaces\nwarning: page 1 has been compressed\nwarning: compressing over-full page by 14.7 staff-spaces\nwarning: page 3 has been compressed\nConverting to `beethoven5-engraved.pdf'...\nSuccess: compilation successfully completed\n"
+        "log_tail": "8 a8 ] | % 24\n/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/build-process-system-design-e8d64a/benchmarks/acceptance/out/beethoven5-engraved/lilypond/beethoven5-engraved.ly:278:8: warning: conflict with event: `absolute-dynamic-event'\n    r8 \n       _\\ff _\\f _\\f _\\f a8 [ a8 a8 ] | % 24\n/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/build-process-system-design-e8d64a/benchmarks/acceptance/out/beethoven5-engraved/lilypond/beethoven5-engraved.ly:278:21: warning: discarding event: `absolute-dynamic-event'\n    r8 _\\ff _\\f _\\f \n                    _\\f a8 [ a8 a8 ] | % 24\n/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/build-process-system-design-e8d64a/benchmarks/acceptance/out/beethoven5-engraved/lilypond/beethoven5-engraved.ly:306:8: warning: conflict with event: `absolute-dynamic-event'\n    r8 \n       _\\ff _\\f a8 [ a8 a8 ] | % 24\n/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/build-process-system-design-e8d64a/benchmarks/acceptance/out/beethoven5-engraved/lilypond/beethoven5-engraved.ly:306:13: warning: discarding event: `absolute-dynamic-event'\n    r8 _\\ff \n            _\\f a8 [ a8 a8 ] | % 24\n/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/build-process-system-design-e8d64a/benchmarks/acceptance/out/beethoven5-engraved/lilypond/beethoven5-engraved.ly:93:8: warning: barcheck failed at: 1/4\n    c4 \n       | % 22\n/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/build-process-system-design-e8d64a/benchmarks/acceptance/out/beethoven5-engraved/lilypond/beethoven5-engraved.ly:116:8: warning: barcheck failed at: 1/4\n    g4 \n       | % 22\n[24]\nPreprocessing graphical objects...\nFinding the ideal number of pages...\nFitting music on 2 or 3 pages...\nDrawing systems...\nwarning: compressing over-full page by 7.4 staff-spaces\nwarning: page 1 has been compressed\nwarning: compressing over-full page by 14.7 staff-spaces\nwarning: page 3 has been compressed\nConverting to `beethoven5-engraved.pdf'...\nSuccess: compilation successfully completed\n"
       },
       "side_by_side": {
         "print": {
