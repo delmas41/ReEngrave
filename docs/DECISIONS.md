@@ -202,3 +202,14 @@ Format: `YYYY-MM-DD · who · the decision · because · (pointer)`
   with every other decided staff of its system is superseded to ABSTAINED and
   carried · ⚠️ the acceptance record predates `Q.INPUT_DOMAIN`, so 2.2's
   engraved rule never fired on it — re-gather before scoring · (ROADMAP 2.9)
+- 2026-09-23 · Sean · **A staff whose clef cannot be read, on a part whose
+  instrument is decided, takes the clef the same part shows on OTHER SYSTEMS
+  of the document, else the instrument's conventional header clef; gaps only,
+  in INFER, labelled.** · *"yes — viola staff with unreadable clef reads as
+  alto and it should check other systems if the alto clef can be found"* ·
+  because on Litolff p3 the detector boxed 48 Viola heads and the file holds
+  0: the alto clef is merged into the lines, boxed as two noteheads, the clef
+  abstained, and every head died at export as `no_pitch` — while the same
+  part one system down, clef read, writes 24 of 27 · the fact sheet already
+  speaks a supplied clef gaps-only (§8); identity-upstream is the 09-05
+  inversion · a READ clef is never overruled · (ROADMAP 2.10)
