@@ -66,6 +66,17 @@ from .record import Q
 #: gap must LEAVE the list or the list stops describing the pipeline and starts
 #: describing its history.
 KNOWN_GAPS: Dict[str, str] = {
+    Q.HUMAN_VERDICT_STANCE: (
+        "⚠️ PRODUCER ONLY BY DESIGN, NOT AN UNCLOSED GAP — roadmap 3.4. A "
+        "human's `agree`/`disagree` is filed AGAINST a verdict and must never "
+        "be read BY one: if a stage consumed it, his agreement would become a "
+        "term in the very decision he is judging, and the review would stop "
+        "measuring the pipeline and start steering it. Sean's own framing is "
+        "that a review pass produces a FEEDBACK FILE FOR A SESSION, not a "
+        "corrected score. Its consumer is `review/feedback.py`, a reporting "
+        "instrument registered in NOT_A_STAGE. ⚠️ THIS ENTRY DOES NOT LEAVE "
+        "THE LIST WHEN SOMETHING READS IT — something reading it is the "
+        "finding, and the right response is to ask Sean, not to close a gap."),
     # ── already reported by a sibling instrument; listed so this tool's own
     #    --check does not duplicate a failure another tool already owns.
     Q.DOSSIER_FACT: (
@@ -317,6 +328,25 @@ NOT_A_STAGE = frozenset({
     # too (run `python3 -m tools.omr.staged.reach --check` with this line
     # removed: exit 1, naming `review/server.py`).
     "server.py",
+    # ⚠️ ROADMAP 3.4, the STAGE REVIEW (`review/`). These three run OUTSIDE
+    # the pipeline: `human_evidence.py` turns a review sidecar into rows,
+    # `rerun.py` replays ADJUDICATE→EXPORT over a saved record, `feedback.py`
+    # writes the session-readable report. They NAME quantities — a human's
+    # box, his stance on a verdict — in order to file and to report them, and
+    # no stage is standing here, so registering them as stages would put a
+    # reader on the wiring graph that the pipeline does not have.
+    #
+    # ⚠️ The one place a human row is actually CONSUMED is inside ADJUDICATE:
+    # `adjudicators/notehead_precision.py` reads `Q.HUMAN_BOX_VERDICT`, and
+    # the adjudicators package is a stage by directory. That is the CONNECT;
+    # everything else a review pass produces is reported and applied by
+    # nobody, on purpose.
+    #
+    # ⚠️ Registering them is not optional — `unaccounted_modules()` must
+    # return empty and `--check` fails on a staged `.py` in neither list.
+    # `__init__.py` is already named above and covers this package's marker
+    # (the scan keys on the file NAME, not the path).
+    "human_evidence.py", "rerun.py", "feedback.py",
     # ⚠️ `capture.py` is a DERIVED CHECK, like the six above it: it asks, per
     # notation family, whether the ink's SHAPE, its staff-grid POSITION and
     # the RASTER it was measured on are recorded. It names quantities in

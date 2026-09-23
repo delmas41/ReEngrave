@@ -955,6 +955,48 @@ class Q(_Vocab):
     #: condemns decides `False`, reason `notehead` -- not an abstention,
     #: because geometry was available and was tested.
     NOTEHEAD_IS_NOT_A_NOTEHEAD = "notehead_is_not_a_notehead"
+
+    # ── THE HUMAN AS A READER (roadmap 3.4, the stage review) ──────────────
+    #
+    # ⚠️⚠️ A CORRECTION IS A WITNESS, NEVER AN EDIT. Sean, 2026-09-23:
+    # *"corrections as witnesses -- I mainly want this information so that we
+    # can then use it to determine how to refine the build, rules and
+    # decisions -- structurally."* So a human who looks at the page and says
+    # *that box is not a notehead* files a ROW, the stages re-decide over it,
+    # and what they do with it is measured. Nothing here mutates a machine
+    # row and nothing here overwrites a verdict.
+
+    #: A human looked at a box the detector drew and said what it is NOT.
+    #:
+    #: Value: one word. `not_a_symbol` -- this ink is not a symbol of the kind
+    #: the box claims -- or `redrawn`, the box is in the wrong PLACE (a
+    #: different claim, and today it reaches no consumer; `review/feedback.py`
+    #: reports that rather than hiding it).
+    #:
+    #: ⚠️ FILED ON THE GLYPH SUBJECT THE DETECTOR ALREADY OWNS, so the
+    #: machine's own `Q.GLYPH_BOX` row stays exactly where it was and the two
+    #: readings sit side by side. A human deleting a box is EVIDENCE ABOUT
+    #: that box, not the absence of it -- the same distinction
+    #: `Q.NOTEHEAD_IS_NOT_A_NOTEHEAD` draws between refusing to write a glyph
+    #: and deleting it in GATHER.
+    HUMAN_BOX_VERDICT = "human_box_verdict"
+
+    #: A human read a VERDICT -- its value, its reason, the rows it used --
+    #: and said `agree` or `disagree`. `detail.verdict_id` names which.
+    #:
+    #: ⚠️⚠️ PRODUCER ONLY, AND THAT IS THE DESIGN RATHER THAN AN OMISSION. A
+    #: stance is filed AGAINST a verdict and never applied to it: if a stage
+    #: read this, a human's agreement would become a term in the decision it
+    #: is supposed to be judging, which is the one thing roadmap 3.4 forbids
+    #: (*"a disagreement with a verdict is filed against the verdict id, never
+    #: applied"*). Its consumer is `review/feedback.py`, a reporting
+    #: instrument, and `reach.KNOWN_GAPS` carries the reason.
+    #:
+    #: ⚠️ FILED ON THE VERDICT'S OWN SUBJECT, not on a subject of its own,
+    #: because that is where a later reader will look for it -- and the
+    #: verdict id in `detail` is what makes it unambiguous when one subject
+    #: carries several verdicts.
+    HUMAN_VERDICT_STANCE = "human_verdict_stance"
     #: A bar's 1-2 VOICE STREAMS, as a partition of its glyphs.
     #:
     #: ⚠️ MUSICXML PAIRS `<slur>` WITHIN A `<voice>`, so this is not a
@@ -1312,6 +1354,17 @@ CLAIMS: "dict[str, str]" = {
     "GLYPH_OWNER": CLAIM.INTERPRETATION,
     "NOTEHEAD_IS_A_WHOLE_REST": CLAIM.INTERPRETATION,
     "NOTEHEAD_IS_NOT_A_NOTEHEAD": CLAIM.INTERPRETATION,
+    #: A human naming (or refusing a name for) THIS raster's ink. Wrong in
+    #: exactly the way an OCR decode is wrong -- about what the ink is -- and
+    #: not in the way a ruler is. That the reader is a person changes who to
+    #: ask, never what kind of claim the value makes.
+    "HUMAN_BOX_VERDICT": CLAIM.IDENTIFICATION,
+    #: ⚠️ A JUDGEMENT CALL, NAMED. A stance's value is the outcome of a human
+    #: weighing a verdict against the print, so its ancestry is other rows and
+    #: it is wrong if the weighing was wrong OR if what was shown to the human
+    #: was. That is INTERPRETATION's own definition; it is NOT an
+    #: IDENTIFICATION, because `agree` names no ink.
+    "HUMAN_VERDICT_STANCE": CLAIM.INTERPRETATION,
     "ARC_KIND": CLAIM.INTERPRETATION,
     "ARC_OWNER": CLAIM.INTERPRETATION,
     "ARTICULATION_OWNER": CLAIM.INTERPRETATION,
@@ -1499,6 +1552,32 @@ class READERS(_Vocab):
     #: independent of print quality in a way no reader of the INK can be.
     CONTAINER = "container"                  # input_domain: the PDF container
     CARRY = "carry"                          # this fact, read on another system
+
+    # ── THE HUMAN (roadmap 3.4) ────────────────────────────────────────────
+    #
+    # ⚠️ NAMED PER PERSON, not one `human`, for the reason this vocabulary
+    # exists at all: two rows from ONE reader on ONE crop are ONE signal. Two
+    # people reading the same crop are two witnesses; a session standing in
+    # for a person is neither, and must not be able to pass as one.
+    #
+    # ⚠️ THE VOCABULARY STAYS CLOSED. `review/human_evidence.py` refuses a
+    # sidecar naming a reader that is not a member here rather than widening
+    # itself at run time -- so a new reviewer is a one-line, reviewed change
+    # and never an accident of a JSON file.
+
+    #: The musician who reads these plates (CLAUDE.md §1). The only reader in
+    #: this section whose rows are evidence about the PRINT.
+    SEAN = "sean"
+    #: A SESSION standing in for the human -- a dry run of the review
+    #: machinery, a test fixture, a hand-written sidecar justified from a
+    #: benchmark rather than from the page.
+    #:
+    #: ⚠️⚠️ NOT A HUMAN WITNESS AND MUST NEVER BE READ AS ONE. It reads the
+    #: same record the machine read, so it is CORRELATED WITH EVERY MACHINE
+    #: ROW IT CITES in exactly the way CLAUDE.md §10 warns about -- "two
+    #: witnesses off the same raster fall silent together". Sean's rows come
+    #: off the PRINT; these do not.
+    SESSION_TEST = "session-test"
 
 
 class ABSTAIN(_Vocab):

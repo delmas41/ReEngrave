@@ -536,6 +536,19 @@ READER_RASTER: Dict[str, Optional[Tuple[str, str]]] = {
     "SURYA": ("direction_text.py", "_page_ink"),
     "TESSERACT": ("direction_text.py", "_page_ink"),
     "VISION": None,
+    # ⚠️ NO RASTER IN THIS TREE, AND THAT IS THE STRONGEST FORM OF THE ANSWER
+    # (roadmap 3.4). A human reads the PRINT — the plate, or a crop of it on a
+    # screen — and no function under `tools/omr` touches the pixels he looked
+    # at. That is precisely why his row is the second witness CLAUDE.md §10
+    # asks for: a reader that measured our raster would fall silent exactly
+    # when the plate is bad, which is when he is worth most. Filed `None` for
+    # the same reason `VISION` and `TEXT_LAYER` are, never "unknown".
+    "SEAN": None,
+    # ⚠️ A SESSION STANDING IN FOR HIM, and its `None` means something WEAKER:
+    # it read the RECORD, so it is correlated with every machine row it cites
+    # and is not a second witness at all. The raster table cannot express that
+    # difference; `record.READERS.SESSION_TEST` carries it.
+    "SESSION_TEST": None,
     "DOSSIER": None,
     "CATALOG": None,
     "CARRY": None,
