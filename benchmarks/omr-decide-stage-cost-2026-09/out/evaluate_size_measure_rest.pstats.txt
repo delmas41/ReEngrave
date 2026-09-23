@@ -1,0 +1,48 @@
+Wed Sep 23 09:01:33 2026    benchmarks/omr-decide-stage-cost-2026-09/out/evaluate_size_measure_rest.prof
+
+         35445343 function calls in 9.369 seconds
+
+   Ordered by: cumulative time
+   List reduced from 52 to 20 due to restriction <20>
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+     1183    0.021    0.000    9.920    0.008 /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a061ed05bd378c34f/tools/omr/staged/consequences.py:116(size_measure_rest)
+     5012    0.002    0.000    9.849    0.002 /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a061ed05bd378c34f/tools/omr/staged/record.py:2160(verdicts)
+     9468    0.003    0.000    9.847    0.001 /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a061ed05bd378c34f/tools/omr/staged/record.py:2162(<genexpr>)
+     9468    0.003    0.000    9.843    0.001 /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a061ed05bd378c34f/tools/omr/staged/record.py:2083(_ids)
+     1183    0.001    0.000    9.837    0.008 /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a061ed05bd378c34f/tools/omr/staged/consequences.py:96(_standing)
+     1183    0.487    0.000    9.831    0.008 /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a061ed05bd378c34f/tools/omr/staged/record.py:2126(_descendants_ids)
+     1183    1.815    0.002    6.631    0.006 /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a061ed05bd378c34f/tools/omr/staged/record.py:2101(_descendants_index)
+   841033    2.791    0.000    4.816    0.000 /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a061ed05bd378c34f/tools/omr/staged/record.py:145(from_key)
+  3540719    1.373    0.000    2.710    0.000 /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a061ed05bd378c34f/tools/omr/staged/record.py:120(contains)
+  3540719    0.291    0.000    1.178    0.000 {built-in method builtins.all}
+  8585009    0.735    0.000    1.047    0.000 /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a061ed05bd378c34f/tools/omr/staged/record.py:125(<genexpr>)
+   845765    0.487    0.000    0.630    0.000 /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a061ed05bd378c34f/tools/omr/staged/record.py:91(__post_init__)
+ 14343802    0.456    0.000    0.456    0.000 {built-in method builtins.getattr}
+   841033    0.422    0.000    0.422    0.000 /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a061ed05bd378c34f/tools/omr/staged/record.py:149(<dictcomp>)
+   841033    0.165    0.000    0.322    0.000 /Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/enum.py:358(__call__)
+   841033    0.157    0.000    0.157    0.000 /Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/enum.py:670(__new__)
+   841033    0.073    0.000    0.073    0.000 {method 'split' of 'str' objects}
+      280    0.021    0.000    0.058    0.000 /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a061ed05bd378c34f/tools/omr/staged/record.py:2027(record)
+      280    0.022    0.000    0.034    0.000 /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a061ed05bd378c34f/tools/omr/staged/record.py:2215(closure)
+     1183    0.002    0.000    0.034    0.000 /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a061ed05bd378c34f/tools/omr/staged/evaluate.py:186(_cause_for)
+
+
+   Ordered by: cumulative time
+   List reduced from 52 to 10 due to restriction <10>
+
+Function                                                                                                                                was called by...
+                                                                                                                                            ncalls  tottime  cumtime
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a061ed05bd378c34f/tools/omr/staged/consequences.py:116(size_measure_rest)  <- 
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a061ed05bd378c34f/tools/omr/staged/record.py:2160(verdicts)                <-    1183    0.001    9.835  /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a061ed05bd378c34f/tools/omr/staged/consequences.py:96(_standing)
+                                                                                                                                              3829    0.002    0.014  /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a061ed05bd378c34f/tools/omr/staged/record.py:2165(verdict)
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a061ed05bd378c34f/tools/omr/staged/record.py:2162(<genexpr>)               <-    9468    0.003    9.847  /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a061ed05bd378c34f/tools/omr/staged/record.py:2160(verdicts)
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a061ed05bd378c34f/tools/omr/staged/record.py:2083(_ids)                    <-    9468    0.003    9.843  /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a061ed05bd378c34f/tools/omr/staged/record.py:2162(<genexpr>)
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a061ed05bd378c34f/tools/omr/staged/consequences.py:96(_standing)           <-    1183    0.001    9.837  /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a061ed05bd378c34f/tools/omr/staged/consequences.py:116(size_measure_rest)
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a061ed05bd378c34f/tools/omr/staged/record.py:2126(_descendants_ids)        <-    1183    0.487    9.831  /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a061ed05bd378c34f/tools/omr/staged/record.py:2083(_ids)
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a061ed05bd378c34f/tools/omr/staged/record.py:2101(_descendants_index)      <-    1183    1.815    6.631  /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a061ed05bd378c34f/tools/omr/staged/record.py:2126(_descendants_ids)
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a061ed05bd378c34f/tools/omr/staged/record.py:145(from_key)                 <-  841033    2.791    4.816  /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a061ed05bd378c34f/tools/omr/staged/record.py:2101(_descendants_index)
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a061ed05bd378c34f/tools/omr/staged/record.py:120(contains)                 <- 3540719    1.373    2.710  /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a061ed05bd378c34f/tools/omr/staged/record.py:2126(_descendants_ids)
+{built-in method builtins.all}                                                                                                          <- 3540719    0.291    1.178  /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a061ed05bd378c34f/tools/omr/staged/record.py:120(contains)
+
+

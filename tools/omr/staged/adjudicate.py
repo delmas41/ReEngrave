@@ -443,21 +443,87 @@ class Evidence:
         to be the same call on the same list object -- divergent on exactly 0
         of 396 staves. Comparing them as an agreement signal would have
         produced a healthy-looking 77% agreement rate carrying no information.
+
+        ⚠️ ROADMAP 1.2. The connected components of the `_one_signal` graph
+        used to be found by an O(n^2) all-pairs walk over everything the
+        decision consulted (`_seen`), which for `arc_owner` on the Litolff
+        record is n~=770 -- measured at 26x the cost of the rest of the
+        decision combined (8.6s / 64 arcs WITH this walk against 0.3s / 64
+        arcs without it). `_one_signal`'s OWN two branches are each far
+        cheaper to answer in bulk than pairwise:
+
+          * two Observations are one signal iff they share the exact key
+            (reader, frame, quantity) -- a hash-bucket, not a comparison;
+          * anything else needs `Log.closure()` intersection, but the
+            candidates for THAT are only the rows outside the observation
+            buckets (`others`, below), which is a small fraction of `_seen`
+            for every decision measured so far.
+
+        `_UnionFind` turns the same connectivity question into ONE bucketing
+        pass over the observations (O(n)) plus one all-pairs pass restricted
+        to `others` and one others-vs-observation-bucket-representative pass
+        (O(k*u + k^2), u = number of distinct obs buckets) -- correct because
+        `_one_signal` for a (non-observation, observation) pair does not
+        special-case on the SPECIFIC observation, so it is enough to test one
+        witness per bucket rather than every member (proved rather than
+        assumed below).
         """
         rows = [self.log.row(i) for i in self._seen]
-        rows = [r for r in rows if r is not None]
-        groups: List[Set[str]] = []
-        for i, a in enumerate(rows):
-            for b in rows[i + 1:]:
-                if not _one_signal(self.log, a, b):
-                    continue
-                for g in groups:
-                    if a.id in g or b.id in g:
-                        g.update((a.id, b.id))
-                        break
-                else:
-                    groups.append({a.id, b.id})
-        return tuple(frozenset(g) for g in groups)
+        rows = list({r.id: r for r in rows if r is not None}.values())
+
+        parent: Dict[str, str] = {r.id: r.id for r in rows}
+
+        def find(x: str) -> str:
+            root = x
+            while parent[root] != root:
+                root = parent[root]
+            while parent[x] != root:
+                parent[x], x = root, parent[x]
+            return root
+
+        def union(x: str, y: str) -> None:
+            rx, ry = find(x), find(y)
+            if rx != ry:
+                parent[ry] = rx
+
+        obs_buckets: Dict[Tuple[str, str, str], List[Observation]] = {}
+        others: List[Any] = []
+        for r in rows:
+            if isinstance(r, Observation):
+                obs_buckets.setdefault((r.reader, r.frame, r.quantity), []).append(r)
+            else:
+                others.append(r)
+
+        # Every Observation sharing a (reader, frame, quantity) key is one
+        # signal BY DEFINITION (`_one_signal`'s first branch) -- union the
+        # whole bucket against its first member, which is O(n) total rather
+        # than O(n^2).
+        for bucket in obs_buckets.values():
+            if len(bucket) < 2:
+                continue
+            first = bucket[0].id
+            for r in bucket[1:]:
+                union(first, r.id)
+
+        # `others` (Verdicts/Abstentions) need the general, closure-based
+        # test -- against each other, and against observations. A `Verdict`
+        # or `Abstention`'s closure intersection with an Observation does
+        # not depend on which OTHER observation happens to share that
+        # observation's (reader, frame, quantity) key, so one representative
+        # per bucket answers for the whole bucket.
+        reps = [(key, bucket[0]) for key, bucket in obs_buckets.items()]
+        for i, a in enumerate(others):
+            for b in others[i + 1:]:
+                if _one_signal(self.log, a, b):
+                    union(a.id, b.id)
+            for key, rep in reps:
+                if _one_signal(self.log, a, rep):
+                    union(a.id, rep.id)
+
+        components: Dict[str, List[str]] = {}
+        for r in rows:
+            components.setdefault(find(r.id), []).append(r.id)
+        return tuple(frozenset(ids) for ids in components.values() if len(ids) > 1)
 
 
 def _one_signal(log: Log, a: Any, b: Any) -> bool:

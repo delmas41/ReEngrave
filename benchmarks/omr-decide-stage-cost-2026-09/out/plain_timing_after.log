@@ -1,0 +1,38 @@
+  adjudicate system_membership: 7 verdicts so far
+  adjudicate staff_group: 82 verdicts so far
+  adjudicate measure_partition: 157 verdicts so far
+  adjudicate staff_ordinal: 232 verdicts so far
+  adjudicate system_staff_count: 239 verdicts so far
+  adjudicate instrument: 314 verdicts so far
+  adjudicate slot_index: 389 verdicts so far
+  adjudicate part_partition: 390 verdicts so far
+  adjudicate group_symbol: 397 verdicts so far
+  adjudicate clef: 472 verdicts so far
+  adjudicate key_signature: 547 verdicts so far
+  adjudicate notehead_is_not_a_notehead: 2894 verdicts so far
+  adjudicate glyph_owner: 4280 verdicts so far
+  adjudicate arc_owner: 5059 verdicts so far
+  adjudicate arc_kind: 5838 verdicts so far
+  adjudicate articulation_owner: 5936 verdicts so far
+  adjudicate fermata_owner: 6003 verdicts so far
+  adjudicate ornament_owner: 6004 verdicts so far
+  adjudicate stem_direction: 8351 verdicts so far
+  adjudicate notehead_is_a_whole_rest: 10698 verdicts so far
+  adjudicate tuplet_ratio: 10699 verdicts so far
+  adjudicate duration: 13692 verdicts so far
+  adjudicate event: 14809 verdicts so far
+  adjudicate voices: 15992 verdicts so far
+  adjudicate onset_column: 15999 verdicts so far
+  adjudicate wedge_anchor: 16000 verdicts so far
+  adjudicate meter: 16007 verdicts so far
+  adjudicate dynamic: 17190 verdicts so far
+  adjudicate direction: 18373 verdicts so far
+  evaluate name_part: 50 fired so far
+  evaluate restate_pitch: 2163 fired so far
+  evaluate respell_accidental: 2582 fired so far
+  evaluate move_glyph: 3202 fired so far
+  evaluate size_measure_rest: 3482 fired so far
+  evaluate reconcile_duration: 3537 fired so far
+  infer collapse_slot_index_to_family_block: 7 inferred
+
+rebuild=1.301s adjudicate=29.854s groups=1.945s evaluate=13.386s infer=0.343s TOTAL(post-load)=46.828s

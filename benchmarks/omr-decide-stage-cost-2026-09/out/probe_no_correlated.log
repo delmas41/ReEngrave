@@ -1,0 +1,30 @@
+prerequisite decisions (13): 7.962s
+system system/1/0: 64 arcs of 779 total
+(correlated_groups() DISABLED for this run)
+arc_owner over 64 arcs of one system: 0.336s (0.0052s/arc)
+considered-set size per arc: min=770 median=770 max=770
+Wed Sep 23 08:54:36 2026    benchmarks/omr-adjudicate-cost-2026-09/out/arc_owner_system0_no_correlated.prof
+
+         1971921 function calls in 0.327 seconds
+
+   Ordered by: cumulative time
+   List reduced from 154 to 15 due to restriction <15>
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+       64    0.009    0.000    0.335    0.005 /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a061ed05bd378c34f/tools/omr/staged/adjudicate.py:662(adjudicate_one)
+       64    0.021    0.000    0.281    0.004 /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a061ed05bd378c34f/tools/omr/staged/adjudicators/ownership.py:190(adjudicate_arc_owner)
+      192    0.003    0.000    0.169    0.001 /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a061ed05bd378c34f/tools/omr/staged/adjudicate.py:286(rows)
+    49344    0.007    0.000    0.138    0.000 /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a061ed05bd378c34f/tools/omr/staged/adjudicate.py:291(<genexpr>)
+    49280    0.027    0.000    0.136    0.000 /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a061ed05bd378c34f/tools/omr/staged/adjudicate.py:382(_admit)
+    49280    0.024    0.000    0.098    0.000 /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a061ed05bd378c34f/tools/omr/staged/record.py:2224(quantities_in_closure)
+    98560    0.050    0.000    0.078    0.000 /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a061ed05bd378c34f/tools/omr/staged/record.py:2206(closure)
+     9856    0.005    0.000    0.042    0.000 /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a061ed05bd378c34f/tools/omr/staged/adjudicate.py:301(verdict)
+    59520    0.006    0.000    0.038    0.000 /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a061ed05bd378c34f/tools/omr/staged/record.py:2074(_ids)
+    20736    0.011    0.000    0.034    0.000 /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a061ed05bd378c34f/tools/omr/staged/record.py:139(to_key)
+   101632    0.013    0.000    0.033    0.000 /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a061ed05bd378c34f/tools/omr/staged/record.py:2225(<genexpr>)
+     9920    0.002    0.000    0.031    0.000 /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a061ed05bd378c34f/tools/omr/staged/record.py:2156(verdict)
+     9920    0.004    0.000    0.029    0.000 /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a061ed05bd378c34f/tools/omr/staged/record.py:2151(verdicts)
+    10624    0.006    0.000    0.026    0.000 /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a061ed05bd378c34f/tools/omr/staged/record.py:128(at)
+    10048    0.001    0.000    0.025    0.000 /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a061ed05bd378c34f/tools/omr/staged/record.py:2153(<genexpr>)
+
+

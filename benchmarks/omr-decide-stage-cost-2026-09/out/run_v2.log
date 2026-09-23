@@ -1,0 +1,61 @@
+load_record: 0.709s (40878 obs, 4003 abs, 19563 verdicts already in the file)
+rebuild: 1.283s
+=== ADJUDICATE ===
+  [adjudicate] system_membership: n=7 t=0.000s
+  [adjudicate] staff_group: n=75 t=0.003s
+  [adjudicate] measure_partition: n=75 t=0.002s
+  [adjudicate] staff_ordinal: n=75 t=0.002s
+  [adjudicate] system_staff_count: n=7 t=0.000s
+  [adjudicate] instrument: n=75 t=2.846s
+  [adjudicate] slot_index: n=75 t=0.451s
+  [adjudicate] part_partition: n=1 t=0.077s
+  [adjudicate] group_symbol: n=7 t=0.003s
+  [adjudicate] clef: n=75 t=0.013s
+  [adjudicate] key_signature: n=75 t=0.011s
+  [adjudicate] notehead_is_not_a_notehead: n=2347 t=2.100s
+  [adjudicate] glyph_owner: n=1386 t=0.297s
+  [adjudicate] arc_owner: n=779 t=16.499s
+  [adjudicate] arc_kind: n=779 t=3.875s
+  [adjudicate] articulation_owner: n=98 t=0.119s
+  [adjudicate] fermata_owner: n=67 t=0.251s
+  [adjudicate] ornament_owner: n=1 t=0.000s
+  [adjudicate] stem_direction: n=2347 t=2.473s
+  [adjudicate] notehead_is_a_whole_rest: n=2347 t=0.450s
+  [adjudicate] tuplet_ratio: n=1 t=0.019s
+  [adjudicate] duration: n=2993 t=6.724s
+  [adjudicate] event: n=1117 t=1.441s
+  [adjudicate] voices: n=1183 t=0.153s
+  [adjudicate] onset_column: n=7 t=0.214s
+  [adjudicate] wedge_anchor: n=1 t=0.010s
+  [adjudicate] meter: n=7 t=4.368s
+  [adjudicate] dynamic: n=1183 t=0.685s
+  [adjudicate] direction: n=1183 t=1.288s
+ADJUDICATE total: 47.961s
+=== GROUPS ===
+  [groups] whole stage: t=2.854s
+GROUPS total: 2.854s
+=== EVALUATE ===
+  [evaluate] name_part: n=75 t=0.001s
+  [evaluate] restate_pitch: n=75 t=0.176s
+  [evaluate] respell_accidental: n=75 t=0.099s
+  [evaluate] move_glyph: n=15580 t=0.541s
+  [evaluate] size_measure_rest: n=1183 t=9.957s
+  [evaluate] reconcile_duration: n=1183 t=4.625s
+EVALUATE total: 17.515s
+=== INFER ===
+  [infer] collapse_duration_by_column: disabled by OMR_INFER
+  [infer] collapse_duration_to_barline: disabled by OMR_INFER
+  [infer] collapse_slot_index_to_family_block: n=7 produced=7 t=0.022s
+INFER total: 0.357s
+
+=== SLOWEST DECISIONS/RULES ===
+adjudicate arc_owner                      n=779      16.499s
+  evaluate size_measure_rest              n=1183     9.957s
+adjudicate duration                       n=2993     6.724s
+  evaluate reconcile_duration             n=1183     4.625s
+adjudicate meter                          n=7        4.368s
+adjudicate arc_kind                       n=779      3.875s
+adjudicate instrument                     n=75       2.846s
+adjudicate stem_direction                 n=2347     2.473s
+
+Wrote benchmarks/omr-decide-stage-cost-2026-09/out/timings.json and benchmarks/omr-decide-stage-cost-2026-09/out/SLOWEST.md

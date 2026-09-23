@@ -1900,7 +1900,10 @@ class Log:
     describes a moment and cannot be wrong later.
     """
 
-    __slots__ = ("_obs", "_abs", "_vrd", "_by_subject", "_n", "_frozen")
+    __slots__ = ("_obs", "_abs", "_vrd", "_by_subject", "_n", "_frozen",
+                 "_quantity_version", "_desc_index_cache", "_desc_result_cache",
+                 "_desc_index_builds", "_desc_result_builds", "_desc_result_hits",
+                 "_closure_cache")
 
     def __init__(self) -> None:
         self._obs: dict[str, Observation] = {}
@@ -1910,6 +1913,45 @@ class Log:
         self._by_subject: dict[tuple[str, str], list[str]] = {}
         self._n = 0
         self._frozen = False
+        # ── SELF_AND_DESCENDANTS memoisation (roadmap 1.2) ───────────────────
+        #
+        # `_ids`'s descendants branch used to re-scan EVERY entry of
+        # `_by_subject` -- across every quantity, not just the one asked for
+        # -- on every single call, because "descendants are not enumerable"
+        # was read as "so don't bother indexing". Measured on the Litolff
+        # shared record: `adjudicate_arc_owner` alone issues one such call
+        # per arc (779 of them) asking for `Q.GLYPH_BOX` at its own system,
+        # and every one of those 779 calls re-scanned the full ~45,000-row
+        # table and re-parsed every matching subject key with
+        # `Subject.from_key`, even though the SAME ~100-170 arcs of one
+        # system ask the SAME question with the SAME answer every time.
+        #
+        # `_quantity_version` counts writes PER QUANTITY (bumped in
+        # `_index`), so a cache keyed on it is invalidated exactly when it
+        # must be and not a moment sooner or later -- correct whether or not
+        # a decision happens to read its own quantity's descendants mid-run,
+        # which is a case nobody enumerated and this does not need to trust.
+        # `_desc_index_cache[quantity]` is the (quantity-filtered index,
+        # version-at-build) pair; `_desc_result_cache[(quantity, subject_key)]`
+        # is the fully-resolved, ALREADY-FLATTENED answer for one exact
+        # descendants query, so the Nth arc of a system is an O(1) dict hit
+        # against the N-1th's answer rather than a fresh scan.
+        self._quantity_version: dict[str, int] = {}
+        self._desc_index_cache: dict[str, tuple[int, dict[str, tuple["Subject", list[str]]]]] = {}
+        self._desc_result_cache: dict[tuple[str, str], tuple[int, tuple[str, ...]]] = {}
+        # exposed for tests / the roadmap-1.2 profile, never read by a
+        # decision: how many times the expensive paths actually ran.
+        self._desc_index_builds: dict[str, int] = {}
+        self._desc_result_builds = 0
+        self._desc_result_hits = 0
+        # `closure(row_id)` is a pure function of `row.basis`, which is set
+        # once at row creation and never mutated (append-only log, no
+        # `update`), so memoising it by id needs no invalidation at all --
+        # unlike the descendants cache above, there is no version to track.
+        # It is read from BOTH `Evidence._admit`'s circularity filter and
+        # `Evidence.correlated_groups()`'s pairwise walk, and was being
+        # recomputed by a fresh BFS on every single call to either.
+        self._closure_cache: dict[str, "frozenset[str]"] = {}
 
     # ── writing ─────────────────────────────────────────────────────────────
 
@@ -1919,6 +1961,12 @@ class Log:
 
     def _index(self, quantity: str, subject: Subject, row_id: str) -> None:
         self._by_subject.setdefault((quantity, subject.to_key()), []).append(row_id)
+        # ⚠️ Bumped on EVERY write to this quantity -- an Observation in
+        # GATHER, an Abstention, or a Verdict recorded later in ADJUDICATE --
+        # so a SELF_AND_DESCENDANTS cache keyed on this counter is correct
+        # whether the quantity is GATHER-frozen (the common case) or is being
+        # written progressively by the decision that owns it.
+        self._quantity_version[quantity] = self._quantity_version.get(quantity, 0) + 1
 
     def observe(self, subject: Subject, quantity: str, value: Any, *,
                 reader: str, frame: str, score: float | None = None,
@@ -2042,12 +2090,62 @@ class Log:
             for sub in wanted:
                 yield from self._by_subject.get((quantity, sub.to_key()), ())
             return
-        # SELF_AND_DESCENDANTS -- scan, because descendants are not enumerable
+        # SELF_AND_DESCENDANTS -- descendants are not enumerable from the
+        # subject alone, so this still has to look at every SUBJECT the
+        # quantity was ever filed on. What it no longer does is look at
+        # every subject of every OTHER quantity too, or re-parse the same
+        # subject keys and re-run the same containment test for a query this
+        # log has already answered.
+        yield from self._descendants_ids(quantity, subject)
+
+    def _descendants_index(
+        self, quantity: str,
+    ) -> dict[str, tuple["Subject", list[str]]]:
+        """Every (subject, ids) pair ever filed under `quantity`, keyed by
+        the subject's own `to_key()`, memoised on this quantity's write
+        count so a write to any OTHER quantity can never stale it and a
+        write to THIS one always does.
+
+        Building this once per quantity (rather than once per query) is what
+        turns 779 arcs' worth of `Q.GLYPH_BOX` descendant queries on one
+        Litolff record from ~779 scans of the whole ~45,000-row table into
+        one scan of its ~8,486 `glyph_box` rows.
+        """
+        version = self._quantity_version.get(quantity, 0)
+        cached = self._desc_index_cache.get(quantity)
+        if cached is not None and cached[0] == version:
+            return cached[1]
+        index: dict[str, tuple[Subject, list[str]]] = {}
         for (q, key), ids in self._by_subject.items():
-            if q != quantity:
-                continue
-            if subject.contains(Subject.from_key(key)):
-                yield from ids
+            if q == quantity:
+                index[key] = (Subject.from_key(key), ids)
+        self._desc_index_cache[quantity] = (version, index)
+        self._desc_index_builds[quantity] = self._desc_index_builds.get(quantity, 0) + 1
+        return index
+
+    def _descendants_ids(self, quantity: str, subject: Subject) -> tuple[str, ...]:
+        """The flattened, ORDER-PRESERVING answer for one exact descendants
+        query, memoised so the Nth subject asking the SAME (quantity,
+        ancestor) question -- the common case, since a decision iterates
+        many fine subjects under a handful of coarse ones -- reuses the
+        (N-1)th's answer outright instead of re-testing containment against
+        every candidate again.
+        """
+        version = self._quantity_version.get(quantity, 0)
+        key = (quantity, subject.to_key())
+        cached = self._desc_result_cache.get(key)
+        if cached is not None and cached[0] == version:
+            self._desc_result_hits += 1
+            return cached[1]
+        index = self._descendants_index(quantity)
+        out: list[str] = []
+        for sub_obj, ids in index.values():
+            if subject.contains(sub_obj):
+                out.extend(ids)
+        result = tuple(out)
+        self._desc_result_cache[key] = (version, result)
+        self._desc_result_builds += 1
+        return result
 
     def rows(self, quantity: str, subject: Subject, *,
              scope: Scope = Scope.EXACT) -> tuple[Observation, ...]:
@@ -2118,8 +2216,17 @@ class Log:
         """Every row id `row_id` transitively rests on, including itself.
 
         Cheap because an Observation's basis is empty by definition, so the
-        walk always terminates at the raster.
+        walk always terminates at the raster. Memoised (roadmap 1.2): a
+        row's `basis` never changes once the row exists, so the result for a
+        given `row_id` is fixed for the log's whole lifetime -- there is
+        nothing to invalidate. `Evidence.correlated_groups()` and
+        `Evidence._admit`'s circularity filter both call this once per
+        (row, row) pair they examine, so the SAME id's closure was being
+        walked from scratch dozens of times over on a single decision.
         """
+        cached = self._closure_cache.get(row_id)
+        if cached is not None:
+            return cached
         out: set[str] = set()
         stack = [row_id]
         while stack:
@@ -2130,7 +2237,9 @@ class Log:
             row = self.row(rid)
             if row is not None:
                 stack.extend(row.basis)
-        return frozenset(out)
+        result = frozenset(out)
+        self._closure_cache[row_id] = result
+        return result
 
     def quantities_in_closure(self, row_id: str) -> frozenset[str]:
         return frozenset(

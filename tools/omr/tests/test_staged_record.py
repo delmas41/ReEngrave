@@ -182,5 +182,118 @@ class TestScopeQueries(unittest.TestCase):
         self.assertEqual(len(rows), 3)
 
 
+def _naive_descendants_ids(log, quantity, subject):
+    """The ORIGINAL implementation, kept only as an oracle: a full scan of
+    every (quantity, subject) key the log holds, re-parsing every key with
+    `Subject.from_key` on every call. Used to prove the memoised path in
+    `Log._ids` returns the identical sequence it replaced, order included."""
+    out = []
+    for (q, key), ids in log._by_subject.items():
+        if q != quantity:
+            continue
+        if subject.contains(Subject.from_key(key)):
+            out.extend(ids)
+    return tuple(out)
+
+
+class TestDescendantsCache(unittest.TestCase):
+    """Roadmap 1.2: `SELF_AND_DESCENDANTS` used to re-scan the WHOLE log --
+    every quantity, not just the one asked about -- on every single call.
+    These tests are about the CACHE, not about any decision's answer: every
+    one of them would also pass against the pre-1.2 `_ids`, except for the
+    ones that assert the expensive path only runs once.
+    """
+
+    def setUp(self):
+        self.log = Log()
+        # Two systems of a page, each with several staves, so a
+        # SELF_AND_DESCENDANTS query at one system must not see the other's
+        # rows -- the containment test still has work to do, it just must
+        # not redo it once cached.
+        for s in (0, 1):
+            for i in range(4):
+                self.log.observe(R.staff(0, s, i), Q.STAFF_ORDINAL, i,
+                                 reader=READERS.GEOMETRY, frame="system")
+        # A second quantity, present so a build for one quantity cannot be
+        # satisfied by (or confused with) the other's cache.
+        for i in range(3):
+            self.log.observe(R.staff(0, 0, i), Q.CLEF_GLYPH, "clefG",
+                             reader=READERS.DETECTOR, frame="cell")
+
+    def test_repeated_identical_queries_hit_the_cache(self):
+        sys0 = R.system(0, 0)
+        first = self.log.rows(Q.STAFF_ORDINAL, sys0,
+                              scope=Scope.SELF_AND_DESCENDANTS)
+        builds_after_first = self.log._desc_result_builds
+        for _ in range(10):
+            again = self.log.rows(Q.STAFF_ORDINAL, sys0,
+                                  scope=Scope.SELF_AND_DESCENDANTS)
+            self.assertEqual([r.id for r in again], [r.id for r in first])
+        # ⚠️ THE ASSERTION THE BRIEF ASKS FOR: the expensive per-query
+        # resolution ran ONCE for these ten repeats, not eleven times --
+        # this is "the Nth subject reuses the (N-1)th's rows" made
+        # mechanically checkable rather than merely claimed.
+        self.assertEqual(self.log._desc_result_builds, builds_after_first)
+        self.assertGreaterEqual(self.log._desc_result_hits, 10)
+        # And the per-quantity INDEX itself was built once, not per query.
+        self.assertEqual(self.log._desc_index_builds[Q.STAFF_ORDINAL], 1)
+
+    def test_a_different_system_is_a_cache_miss_with_the_right_answer(self):
+        sys0, sys1 = R.system(0, 0), R.system(0, 1)
+        rows0 = self.log.rows(Q.STAFF_ORDINAL, sys0,
+                              scope=Scope.SELF_AND_DESCENDANTS)
+        rows1 = self.log.rows(Q.STAFF_ORDINAL, sys1,
+                              scope=Scope.SELF_AND_DESCENDANTS)
+        self.assertEqual(len(rows0), 4)
+        self.assertEqual(len(rows1), 4)
+        self.assertEqual({r.subject.system for r in rows0}, {0})
+        self.assertEqual({r.subject.system for r in rows1}, {1})
+        # Both queries share the SAME per-quantity index -- one build, two
+        # distinct resolved answers.
+        self.assertEqual(self.log._desc_index_builds[Q.STAFF_ORDINAL], 1)
+
+    def test_a_write_after_a_cached_query_is_still_visible(self):
+        """The literal requirement: a row filed by a LATER decision must be
+        visible to a query issued after it, even though an earlier query at
+        the same (quantity, subject) had already been cached."""
+        sys0 = R.system(0, 0)
+        before = self.log.rows(Q.STAFF_ORDINAL, sys0,
+                               scope=Scope.SELF_AND_DESCENDANTS)
+        self.assertEqual(len(before), 4)
+        # A later "decision" writes one more STAFF_ORDINAL row into the same
+        # system -- the exact shape of a verdict recorded after a prior
+        # decision has already run and been cached.
+        self.log.observe(R.staff(0, 0, 9), Q.STAFF_ORDINAL, 9,
+                         reader=READERS.GEOMETRY, frame="system")
+        after = self.log.rows(Q.STAFF_ORDINAL, sys0,
+                              scope=Scope.SELF_AND_DESCENDANTS)
+        self.assertEqual(len(after), 5)
+        self.assertIn(9, {r.value for r in after})
+
+    def test_writing_an_unrelated_quantity_does_not_rebuild_this_ones_index(self):
+        sys0 = R.system(0, 0)
+        self.log.rows(Q.STAFF_ORDINAL, sys0, scope=Scope.SELF_AND_DESCENDANTS)
+        builds = self.log._desc_index_builds[Q.STAFF_ORDINAL]
+        self.log.observe(R.staff(0, 0, 0), Q.CLEF_GLYPH, "clefF",
+                         reader=READERS.DETECTOR, frame="cell")
+        self.log.rows(Q.STAFF_ORDINAL, sys0, scope=Scope.SELF_AND_DESCENDANTS)
+        self.assertEqual(self.log._desc_index_builds[Q.STAFF_ORDINAL], builds)
+
+    def test_matches_the_naive_full_scan_on_a_populated_log(self):
+        """Order-sensitive equivalence against the pre-1.2 implementation,
+        exercised through every quantity/subject pair the log actually
+        holds -- the same standard `readjudicate.py --control` applies one
+        level up, applied here to the primitive the whole stack is built on.
+        """
+        seen_quantities = {q for (q, _key) in self.log._by_subject}
+        for quantity in seen_quantities:
+            for kind_subject in (R.DOCUMENT, R.page(0), R.system(0, 0),
+                                 R.system(0, 1)):
+                got = self.log.rows(quantity, kind_subject,
+                                    scope=Scope.SELF_AND_DESCENDANTS)
+                want = _naive_descendants_ids(self.log, quantity, kind_subject)
+                self.assertEqual(tuple(r.id for r in got), want)
+
+
 if __name__ == "__main__":
     unittest.main()

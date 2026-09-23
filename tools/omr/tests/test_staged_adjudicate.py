@@ -451,5 +451,169 @@ class TestStubsAreDeclared(unittest.TestCase):
                              "`stubs()` cannot see a declared stub")
 
 
+def _naive_correlated_groups(log, seen):
+    """The pre-1.2 O(n^2) algorithm, DEDUPLICATED first -- the reference this
+    test holds `Evidence.correlated_groups`'s O(n) union-find rewrite to.
+
+    ⚠️ Deduplicating `seen` before comparing is a deliberate, documented
+    behaviour change from the literal original (which could, given a
+    duplicate id in `_seen`, append a spurious ONE-element "group" for a row
+    paired with itself). This oracle reproduces the CORRECT reading of the
+    docstring -- "rows that are one signal wearing two hats" -- which a row
+    compared with itself can never be.
+    """
+    rows = list({i: log.row(i) for i in seen}.values())
+    rows = [r for r in rows if r is not None]
+    groups = []
+    for i, a in enumerate(rows):
+        for b in rows[i + 1:]:
+            if not A._one_signal(log, a, b):
+                continue
+            for g in groups:
+                if a.id in g or b.id in g:
+                    g.update((a.id, b.id))
+                    break
+            else:
+                groups.append({a.id, b.id})
+    return frozenset(frozenset(g) for g in groups)
+
+
+class TestCorrelatedGroupsRewrite(unittest.TestCase):
+    """Roadmap 1.2. `correlated_groups()` was rewritten from an O(n^2)
+    all-pairs walk (measured at 26x the cost of the rest of `arc_owner` put
+    together, on the Litolff shared record) to a bucket + union-find pass.
+    These tests hold the NEW code to the OLD code's own connectivity
+    definition -- as SETS of ids, since group ORDER was never part of any
+    verdict's identity (the control in step 3 of roadmap 1.2 checks `basis`
+    and `considered` sorted, never `correlated`)."""
+
+    def _run(self, log, sub, wants, reads):
+        ev = Evidence(log, sub, _spec(quantity=Q.CLEF, wants=wants))
+        for kind, quantity, extra in reads:
+            if kind == "rows":
+                ev.rows(quantity)
+            elif kind == "verdict":
+                ev.verdict(quantity)
+        got = frozenset(ev.correlated_groups())
+        want = _naive_correlated_groups(log, ev._seen)
+        self.assertEqual(got, want)
+        return got
+
+    def test_a_shared_observation_key_groups_without_pairwise_comparison(self):
+        """The bucketing fast path: many Observations, one (reader, frame,
+        quantity) key -- exactly `arc_owner`'s dominant population."""
+        log = Log()
+        sub = R.staff(0, 0, 0)
+        for i in range(40):
+            log.observe(R.glyph(0, 0, 0, 0, i), Q.CLEF_GLYPH, f"g{i}",
+                       reader=READERS.DETECTOR, frame="cell:0", score=0.5)
+        self._run(log, sub, wants=(Q.CLEF_GLYPH,),
+                  reads=[("rows", Q.CLEF_GLYPH, None)])
+
+    def test_mixed_observations_and_a_verdict_that_shares_an_ancestor(self):
+        log = Log()
+        sub = R.staff(0, 0, 0)
+        dossier = log.observe(R.DOCUMENT, Q.DOSSIER_FACT,
+                              {"clef": "alto", "instrument": "Viola"},
+                              reader=READERS.DOSSIER, frame="page",
+                              tier="dossier")
+        # A bucket of unrelated observations sharing a key (no correlation
+        # with the dossier at all) plus the dossier-derived pair the
+        # existing suite already exercises singly.
+        for i in range(15):
+            log.observe(R.glyph(0, 0, 0, 0, i), Q.CLEF_GLYPH, f"g{i}",
+                       reader=READERS.DETECTOR, frame="cell:0")
+        seed = log.observe(sub, Q.CLEF_SEED, "alto", reader=READERS.DOSSIER,
+                           frame="page", tier="dossier",
+                           derived_from=(dossier.id,))
+        instrument = log.record(Verdict(
+            id=log._next_id("vrd"), subject=sub, quantity=Q.INSTRUMENT,
+            outcome=Outcome.DECIDED, value={"name": "Viola"},
+            decider="identity", reason="r",
+            considered=(dossier.id,), basis=(dossier.id,)))
+        got = self._run(log, sub, wants=(Q.CLEF_GLYPH, Q.CLEF_SEED, Q.INSTRUMENT),
+                        reads=[("rows", Q.CLEF_GLYPH, None),
+                               ("rows", Q.CLEF_SEED, None),
+                               ("verdict", Q.INSTRUMENT, None)])
+        self.assertTrue(any({seed.id, instrument.id} <= g for g in got))
+
+    def test_two_verdicts_sharing_no_ancestor_do_not_group(self):
+        log = Log()
+        sub = R.staff(0, 0, 0)
+        obs_a = log.observe(sub, Q.CLEF_GLYPH, "clefG", reader=READERS.DETECTOR,
+                            frame="cell:0")
+        obs_b = log.observe(sub, Q.CLEF_SEED, "alto", reader=READERS.DOSSIER,
+                            frame="page", tier="dossier")
+        v_a = log.record(Verdict(id=log._next_id("vrd"), subject=sub,
+                                 quantity=Q.CLEF, outcome=Outcome.DECIDED,
+                                 value="treble", decider="clef", reason="r",
+                                 considered=(obs_a.id,), basis=(obs_a.id,)))
+        v_b = log.record(Verdict(id=log._next_id("vrd"), subject=sub,
+                                 quantity=Q.INSTRUMENT, outcome=Outcome.DECIDED,
+                                 value={"name": "Viola"}, decider="identity",
+                                 reason="r", considered=(obs_b.id,),
+                                 basis=(obs_b.id,)))
+        ev = Evidence(log, sub, _spec(quantity=Q.KEY_SIGNATURE,
+                                      wants=(Q.CLEF, Q.INSTRUMENT)))
+        ev.verdict(Q.CLEF)
+        ev.verdict(Q.INSTRUMENT)
+        got = frozenset(ev.correlated_groups())
+        self.assertFalse(any(v_a.id in g and v_b.id in g for g in got))
+        self.assertEqual(got, _naive_correlated_groups(log, ev._seen))
+
+    def test_a_random_mix_matches_the_naive_reference(self):
+        """Property test: many random logs, several buckets, several
+        cross-linked 'other' rows -- the shape `arc_owner` actually has
+        (one huge observation population plus a handful of verdicts)."""
+        import random
+        rnd = random.Random(20260923)
+        for trial in range(25):
+            log = Log()
+            sub = R.staff(0, 0, 0)
+            seen = []
+            n_buckets = rnd.randint(1, 4)
+            for bi in range(n_buckets):
+                for i in range(rnd.randint(1, 12)):
+                    o = log.observe(R.glyph(0, 0, 0, 0, bi * 100 + i),
+                                    Q.CLEF_GLYPH, f"v{bi}-{i}",
+                                    reader=READERS.DETECTOR,
+                                    frame=f"cell:{bi}")
+                    seen.append(o.id)
+            # A handful of verdicts, some sharing ancestry with each other
+            # or with one of the observation buckets, some standing alone.
+            shared_dossier = log.observe(R.DOCUMENT, Q.DOSSIER_FACT,
+                                         {"clef": "alto"},
+                                         reader=READERS.DOSSIER, frame="page",
+                                         tier="dossier")
+            for j in range(rnd.randint(0, 4)):
+                if rnd.random() < 0.5:
+                    v = log.observe(sub, Q.CLEF_SEED, f"s{j}",
+                                    reader=READERS.DOSSIER, frame="page",
+                                    tier="dossier",
+                                    derived_from=(shared_dossier.id,))
+                else:
+                    basis_choice = (rnd.choice(seen),) if seen and rnd.random() < 0.3 else ()
+                    # ⚠️ A distinct subject per j: `Log.record` refuses a
+                    # SECOND verdict of the same (quantity, subject) with no
+                    # `supersedes=`, and this loop only cares about the
+                    # correlation graph, never about which staff a verdict
+                    # nominally belongs to.
+                    v = log.record(Verdict(
+                        id=log._next_id("vrd"), subject=R.staff(0, 0, j + 1),
+                        quantity=Q.INSTRUMENT, outcome=Outcome.DECIDED,
+                        value=j, decider="identity", reason="r",
+                        considered=basis_choice, basis=basis_choice))
+                seen.append(v.id)
+            # Duplicate a handful of ids -- `_seen` is not deduplicated in
+            # production either.
+            if seen:
+                seen = seen + [rnd.choice(seen) for _ in range(3)]
+            ev = Evidence(log, sub, _spec(quantity=Q.KEY_SIGNATURE, wants=()))
+            ev._seen = list(seen)
+            got = frozenset(ev.correlated_groups())
+            want = _naive_correlated_groups(log, seen)
+            self.assertEqual(got, want, f"trial {trial}")
+
+
 if __name__ == "__main__":
     unittest.main()

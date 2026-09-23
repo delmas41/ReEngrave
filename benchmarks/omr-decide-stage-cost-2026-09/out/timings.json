@@ -1,0 +1,296 @@
+[
+  {
+    "stage": "load",
+    "name": "load_record",
+    "n": null,
+    "seconds": 0.70871775,
+    "seconds_per": null
+  },
+  {
+    "stage": "load",
+    "name": "rebuild_log",
+    "n": null,
+    "seconds": 1.2833292090000001,
+    "seconds_per": null
+  },
+  {
+    "stage": "adjudicate",
+    "name": "system_membership",
+    "n": 7,
+    "seconds": 0.00032375000000017806,
+    "seconds_per": 4.625000000002544e-05
+  },
+  {
+    "stage": "adjudicate",
+    "name": "staff_group",
+    "n": 75,
+    "seconds": 0.0027123329999998447,
+    "seconds_per": 3.616443999999793e-05
+  },
+  {
+    "stage": "adjudicate",
+    "name": "measure_partition",
+    "n": 75,
+    "seconds": 0.002384208999999693,
+    "seconds_per": 3.178945333332924e-05
+  },
+  {
+    "stage": "adjudicate",
+    "name": "staff_ordinal",
+    "n": 75,
+    "seconds": 0.002358416999999946,
+    "seconds_per": 3.144555999999928e-05
+  },
+  {
+    "stage": "adjudicate",
+    "name": "system_staff_count",
+    "n": 7,
+    "seconds": 0.0002719589999999883,
+    "seconds_per": 3.8851285714284044e-05
+  },
+  {
+    "stage": "adjudicate",
+    "name": "instrument",
+    "n": 75,
+    "seconds": 2.846287875,
+    "seconds_per": 0.037950504999999995
+  },
+  {
+    "stage": "adjudicate",
+    "name": "slot_index",
+    "n": 75,
+    "seconds": 0.45054279100000016,
+    "seconds_per": 0.006007237213333336
+  },
+  {
+    "stage": "adjudicate",
+    "name": "part_partition",
+    "n": 1,
+    "seconds": 0.07716937500000043,
+    "seconds_per": 0.07716937500000043
+  },
+  {
+    "stage": "adjudicate",
+    "name": "group_symbol",
+    "n": 7,
+    "seconds": 0.003192042000000228,
+    "seconds_per": 0.0004560060000000326
+  },
+  {
+    "stage": "adjudicate",
+    "name": "clef",
+    "n": 75,
+    "seconds": 0.012977666999999471,
+    "seconds_per": 0.00017303555999999295
+  },
+  {
+    "stage": "adjudicate",
+    "name": "key_signature",
+    "n": 75,
+    "seconds": 0.01088945899999949,
+    "seconds_per": 0.0001451927866666599
+  },
+  {
+    "stage": "adjudicate",
+    "name": "notehead_is_not_a_notehead",
+    "n": 2347,
+    "seconds": 2.099713458,
+    "seconds_per": 0.0008946371785257776
+  },
+  {
+    "stage": "adjudicate",
+    "name": "glyph_owner",
+    "n": 1386,
+    "seconds": 0.296699834,
+    "seconds_per": 0.0002140691443001443
+  },
+  {
+    "stage": "adjudicate",
+    "name": "arc_owner",
+    "n": 779,
+    "seconds": 16.498932625000002,
+    "seconds_per": 0.021179631097560978
+  },
+  {
+    "stage": "adjudicate",
+    "name": "arc_kind",
+    "n": 779,
+    "seconds": 3.8749004160000027,
+    "seconds_per": 0.00497419822336329
+  },
+  {
+    "stage": "adjudicate",
+    "name": "articulation_owner",
+    "n": 98,
+    "seconds": 0.11868320899999674,
+    "seconds_per": 0.0012110531530611912
+  },
+  {
+    "stage": "adjudicate",
+    "name": "fermata_owner",
+    "n": 67,
+    "seconds": 0.25089870899999767,
+    "seconds_per": 0.003744756850746234
+  },
+  {
+    "stage": "adjudicate",
+    "name": "ornament_owner",
+    "n": 1,
+    "seconds": 0.00018995799999999008,
+    "seconds_per": 0.00018995799999999008
+  },
+  {
+    "stage": "adjudicate",
+    "name": "stem_direction",
+    "n": 2347,
+    "seconds": 2.473342458000001,
+    "seconds_per": 0.001053831469109502
+  },
+  {
+    "stage": "adjudicate",
+    "name": "notehead_is_a_whole_rest",
+    "n": 2347,
+    "seconds": 0.4497488749999974,
+    "seconds_per": 0.0001916271303792064
+  },
+  {
+    "stage": "adjudicate",
+    "name": "tuplet_ratio",
+    "n": 1,
+    "seconds": 0.018759208000005856,
+    "seconds_per": 0.018759208000005856
+  },
+  {
+    "stage": "adjudicate",
+    "name": "duration",
+    "n": 2993,
+    "seconds": 6.723646667000004,
+    "seconds_per": 0.002246457289341799
+  },
+  {
+    "stage": "adjudicate",
+    "name": "event",
+    "n": 1117,
+    "seconds": 1.4413705409999977,
+    "seconds_per": 0.0012903943965980283
+  },
+  {
+    "stage": "adjudicate",
+    "name": "voices",
+    "n": 1183,
+    "seconds": 0.15267570799999675,
+    "seconds_per": 0.00012905807945899977
+  },
+  {
+    "stage": "adjudicate",
+    "name": "onset_column",
+    "n": 7,
+    "seconds": 0.21435441700000268,
+    "seconds_per": 0.030622059571428956
+  },
+  {
+    "stage": "adjudicate",
+    "name": "wedge_anchor",
+    "n": 1,
+    "seconds": 0.010166791999999703,
+    "seconds_per": 0.010166791999999703
+  },
+  {
+    "stage": "adjudicate",
+    "name": "meter",
+    "n": 7,
+    "seconds": 4.368023875000006,
+    "seconds_per": 0.6240034107142866
+  },
+  {
+    "stage": "adjudicate",
+    "name": "dynamic",
+    "n": 1183,
+    "seconds": 0.6853249170000026,
+    "seconds_per": 0.0005793110033812364
+  },
+  {
+    "stage": "adjudicate",
+    "name": "direction",
+    "n": 1183,
+    "seconds": 1.2881986249999997,
+    "seconds_per": 0.001088925295857988
+  },
+  {
+    "stage": "adjudicate",
+    "name": "(TOTAL)",
+    "n": null,
+    "seconds": 47.960846375,
+    "seconds_per": null
+  },
+  {
+    "stage": "groups",
+    "name": "(whole stage)",
+    "n": 0,
+    "seconds": 2.8537159589999987,
+    "seconds_per": null
+  },
+  {
+    "stage": "evaluate",
+    "name": "name_part",
+    "n": 75,
+    "seconds": 0.0012721670000033214,
+    "seconds_per": 1.6962226666710952e-05
+  },
+  {
+    "stage": "evaluate",
+    "name": "restate_pitch",
+    "n": 75,
+    "seconds": 0.17626512499999336,
+    "seconds_per": 0.002350201666666578
+  },
+  {
+    "stage": "evaluate",
+    "name": "respell_accidental",
+    "n": 75,
+    "seconds": 0.09943491700000351,
+    "seconds_per": 0.0013257988933333801
+  },
+  {
+    "stage": "evaluate",
+    "name": "move_glyph",
+    "n": 15580,
+    "seconds": 0.5409579579999999,
+    "seconds_per": 3.472130667522464e-05
+  },
+  {
+    "stage": "evaluate",
+    "name": "size_measure_rest",
+    "n": 1183,
+    "seconds": 9.956587458999998,
+    "seconds_per": 0.008416388384615383
+  },
+  {
+    "stage": "evaluate",
+    "name": "reconcile_duration",
+    "n": 1183,
+    "seconds": 4.624860583,
+    "seconds_per": 0.003909434136094674
+  },
+  {
+    "stage": "evaluate",
+    "name": "(TOTAL)",
+    "n": null,
+    "seconds": 17.514516375,
+    "seconds_per": null
+  },
+  {
+    "stage": "infer",
+    "name": "collapse_slot_index_to_family_block",
+    "n": 7,
+    "seconds": 0.021827500000000555,
+    "seconds_per": 0.003118214285714365
+  },
+  {
+    "stage": "infer",
+    "name": "(TOTAL)",
+    "n": null,
+    "seconds": 0.3574792910000042,
+    "seconds_per": null
+  }
+]

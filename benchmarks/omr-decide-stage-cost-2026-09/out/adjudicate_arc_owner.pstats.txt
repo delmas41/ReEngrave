@@ -1,0 +1,50 @@
+Wed Sep 23 09:00:55 2026    benchmarks/omr-decide-stage-cost-2026-09/out/adjudicate_arc_owner.prof
+
+         84935117 function calls in 16.315 seconds
+
+   Ordered by: cumulative time
+   List reduced from 162 to 20 due to restriction <20>
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+      779    0.171    0.000   16.484    0.021 /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a061ed05bd378c34f/tools/omr/staged/adjudicate.py:728(adjudicate_one)
+      779    1.606    0.002    9.741    0.013 /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a061ed05bd378c34f/tools/omr/staged/adjudicate.py:434(correlated_groups)
+      779    0.532    0.001    6.185    0.008 /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a061ed05bd378c34f/tools/omr/staged/adjudicators/ownership.py:190(adjudicate_arc_owner)
+  4294066    2.847    0.000    5.931    0.000 /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a061ed05bd378c34f/tools/omr/staged/adjudicate.py:529(_one_signal)
+  1052079    0.558    0.000    2.851    0.000 /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a061ed05bd378c34f/tools/omr/staged/adjudicate.py:382(_admit)
+     2337    0.048    0.000    2.789    0.001 /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a061ed05bd378c34f/tools/omr/staged/adjudicate.py:286(rows)
+   998389    0.143    0.000    2.353    0.000 /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a061ed05bd378c34f/tools/omr/staged/adjudicate.py:291(<genexpr>)
+  1052079    0.532    0.000    2.029    0.000 /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a061ed05bd378c34f/tools/omr/staged/record.py:2244(quantities_in_closure)
+   273666    0.143    0.000    1.756    0.000 /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a061ed05bd378c34f/tools/omr/staged/adjudicate.py:301(verdict)
+ 10692290    1.174    0.000    1.670    0.000 /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a061ed05bd378c34f/tools/omr/staged/record.py:2215(closure)
+  4294066    1.606    0.000    1.606    0.000 /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a061ed05bd378c34f/tools/omr/staged/adjudicate.py:533(<setcomp>)
+  3072269    0.606    0.000    1.377    0.000 /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a061ed05bd378c34f/tools/omr/staged/adjudicate.py:484(union)
+  2965547    0.382    0.000    1.276    0.000 /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a061ed05bd378c34f/tools/omr/staged/record.py:2245(<genexpr>)
+   274445    0.076    0.000    0.938    0.000 /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a061ed05bd378c34f/tools/omr/staged/record.py:2165(verdict)
+  7196617    0.914    0.000    0.914    0.000 /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a061ed05bd378c34f/tools/omr/staged/adjudicate.py:476(find)
+  2965547    0.328    0.000    0.894    0.000 /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a061ed05bd378c34f/tools/omr/staged/record.py:2246(<genexpr>)
+ 16861529    0.893    0.000    0.893    0.000 {method 'get' of 'dict' objects}
+   504870    0.277    0.000    0.844    0.000 /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a061ed05bd378c34f/tools/omr/staged/record.py:139(to_key)
+   274445    0.101    0.000    0.844    0.000 /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a061ed05bd378c34f/tools/omr/staged/record.py:2160(verdicts)
+  1329132    0.154    0.000    0.787    0.000 /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a061ed05bd378c34f/tools/omr/staged/record.py:2083(_ids)
+
+
+   Ordered by: cumulative time
+   List reduced from 162 to 10 due to restriction <10>
+
+Function                                                                                                                                             was called by...
+                                                                                                                                                         ncalls  tottime  cumtime
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a061ed05bd378c34f/tools/omr/staged/adjudicate.py:728(adjudicate_one)                    <- 
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a061ed05bd378c34f/tools/omr/staged/adjudicate.py:434(correlated_groups)                 <-     779    1.606    9.741  /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a061ed05bd378c34f/tools/omr/staged/adjudicate.py:728(adjudicate_one)
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a061ed05bd378c34f/tools/omr/staged/adjudicators/ownership.py:190(adjudicate_arc_owner)  <-     779    0.532    6.185  /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a061ed05bd378c34f/tools/omr/staged/adjudicate.py:728(adjudicate_one)
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a061ed05bd378c34f/tools/omr/staged/adjudicate.py:529(_one_signal)                       <- 4294066    2.847    5.931  /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a061ed05bd378c34f/tools/omr/staged/adjudicate.py:434(correlated_groups)
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a061ed05bd378c34f/tools/omr/staged/adjudicate.py:382(_admit)                            <-  996052    0.521    2.210  /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a061ed05bd378c34f/tools/omr/staged/adjudicate.py:291(<genexpr>)
+                                                                                                                                                          56027    0.037    0.641  /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a061ed05bd378c34f/tools/omr/staged/adjudicate.py:301(verdict)
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a061ed05bd378c34f/tools/omr/staged/adjudicate.py:286(rows)                              <-    2337    0.048    2.789  /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a061ed05bd378c34f/tools/omr/staged/adjudicators/ownership.py:190(adjudicate_arc_owner)
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a061ed05bd378c34f/tools/omr/staged/adjudicate.py:291(<genexpr>)                         <-  998389    0.143    2.353  /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a061ed05bd378c34f/tools/omr/staged/adjudicate.py:286(rows)
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a061ed05bd378c34f/tools/omr/staged/record.py:2244(quantities_in_closure)                <- 1052079    0.532    2.029  /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a061ed05bd378c34f/tools/omr/staged/adjudicate.py:382(_admit)
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a061ed05bd378c34f/tools/omr/staged/adjudicate.py:301(verdict)                           <-  273666    0.143    1.756  /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a061ed05bd378c34f/tools/omr/staged/adjudicators/ownership.py:190(adjudicate_arc_owner)
+/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a061ed05bd378c34f/tools/omr/staged/record.py:2215(closure)                              <- 8588132    0.937    1.297  /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a061ed05bd378c34f/tools/omr/staged/adjudicate.py:529(_one_signal)
+                                                                                                                                                        1052079    0.097    0.151  /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a061ed05bd378c34f/tools/omr/staged/adjudicate.py:728(adjudicate_one)
+                                                                                                                                                        1052079    0.140    0.222  /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a061ed05bd378c34f/tools/omr/staged/record.py:2244(quantities_in_closure)
+
+

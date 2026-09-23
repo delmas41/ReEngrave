@@ -62,15 +62,33 @@ while [ $# -gt 0 ]; do
   esac
 done
 
-# ── 1. provenance: refuse a dirty tree ──────────────────────────────────────
+# ── 1. provenance: refuse a dirty CODE tree ─────────────────────────────────
 # ⚠️ A gather's own provenance stamp names the tree that FINISHED, not the
 # code that ran (CLAUDE.md 5b) -- refusing up front is cheaper than
 # discovering the discrepancy after an hour-long run.
-if [ -n "$(git status --porcelain)" ]; then
+#
+# ⚠️ THE GUARD ONLY OWES THE PROVENANCE STAMP A CLEAN *CODE* TREE, AND IT WAS
+# ASKING FOR MORE THAN THAT. `git status --porcelain` also lists every
+# untracked ARTEFACT this very script writes -- `benchmarks/acceptance/out/`
+# is not gitignored (only its `*.pdf` outputs are) and `library/` holds the
+# score library this script reads from -- so after the FIRST document's
+# `.record.json` / `.log` / `.ly` / `.musicxml` / `.md5` land on disk, a
+# SECOND document's run refuses to start, quoting its own predecessor's
+# output as the reason the tree is "dirty". Untracked, non-ignored paths
+# under those two directories carry no code and cannot make the commit hash
+# below lie about what ran; only a MODIFIED OR STAGED tracked file, or an
+# untracked file OUTSIDE those two directories, may still refuse.
+DIRTY="$(git status --porcelain \
+  | grep -v '^?? benchmarks/acceptance/out/' \
+  | grep -v '^?? library/' || true)"
+if [ -n "$DIRTY" ]; then
   echo "ERROR: working tree is not clean." >&2
   echo "  A whole-movement gather's provenance stamp should name a real" >&2
-  echo "  commit. Commit or stash first, then re-run." >&2
-  git status --short >&2
+  echo "  commit. Commit or stash first, then re-run. (Untracked files" >&2
+  echo "  under benchmarks/acceptance/out/ or library/ are exempt -- they" >&2
+  echo "  are this script's own artefacts and the score library, not" >&2
+  echo "  code.)" >&2
+  echo "$DIRTY" >&2
   exit 1
 fi
 COMMIT="$(git rev-parse --short HEAD)"

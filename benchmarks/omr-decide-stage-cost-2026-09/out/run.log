@@ -1,0 +1,16 @@
+load_record: 0.741s (40878 obs, 4003 abs, 19563 verdicts already in the file)
+rebuild: 1.281s
+=== ADJUDICATE ===
+  [adjudicate] system_membership: n=7 t=0.000s
+  [adjudicate] staff_group: n=75 t=0.002s
+  [adjudicate] measure_partition: n=75 t=0.002s
+  [adjudicate] staff_ordinal: n=75 t=0.002s
+  [adjudicate] system_staff_count: n=7 t=0.000s
+  [adjudicate] instrument: n=75 t=2.829s
+  [adjudicate] slot_index: n=75 t=2.880s
+  [adjudicate] part_partition: n=1 t=3.279s
+  [adjudicate] group_symbol: n=7 t=0.011s
+  [adjudicate] clef: n=75 t=0.018s
+  [adjudicate] key_signature: n=75 t=0.013s
+  [adjudicate] notehead_is_not_a_notehead: n=2347 t=2.023s
+  [adjudicate] glyph_owner: n=1386 t=0.636s
