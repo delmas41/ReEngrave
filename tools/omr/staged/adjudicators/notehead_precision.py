@@ -295,24 +295,72 @@ def _unladdered(ev: Evidence, box_row, spacing_canonical: float,
     return found == 0
 
 
+def _human_not_a_symbol(ev: Evidence, detail: Dict[str, Any]) -> Optional[Any]:
+    """A human looked at this box and said the ink is not that kind of symbol.
+
+    ⚠️⚠️ ROADMAP 3.4 — THE ONE READ THAT MAKES A CORRECTION A WITNESS RATHER
+    THAN A NOTE. `review/human_evidence.py` files `Q.HUMAN_BOX_VERDICT` on the
+    glyph subject the detector already owns; this is the only place in the
+    pipeline that acts on it. Everything else a review pass produces is
+    reported and applied by nobody, which is the design: a stance on a VERDICT
+    is never read by a stage at all.
+
+    ⚠️ DELIBERATELY ITS OWN FUNCTION AND NOT A BRANCH IN THE BODY, so that
+    roadmap 2.11's `is_a_clef` refusal — the other new reason this decision is
+    about to grow, from a different lane on a different branch — lands beside
+    it rather than through it.
+
+    ⚠️ `not_a_symbol` ONLY. `redrawn` says the box is in the wrong PLACE,
+    which is a different claim, and answering it needs a rule about what to do
+    with the machine's own box. It is reported by `review/feedback.py` as a
+    human row that reached no verdict rather than quietly read as a refusal.
+
+    ⚠️ IT DOES NOT WEIGH ANYTHING. A human reading the print is not a term
+    beside the width floor; he is the ground the width floor was measured
+    against (`benchmarks/omr-notehead-width-2026-09`, 255 print-adjudicated
+    boxes). So this is tested FIRST and returns the row that said so.
+    """
+    rows = [r for r in ev.rows(Q.HUMAN_BOX_VERDICT)
+            if getattr(r, "value", None) == "not_a_symbol"]
+    if not rows:
+        return None
+    row = rows[-1]
+    detail["human_reader"] = row.reader
+    detail["human_row"] = row.id
+    # ⚠️ The sidecar and the action id travel WITH the row, so the feedback
+    # file can name the click that produced a refusal without re-reading the
+    # sidecar and hoping the ids still line up.
+    for k in ("sidecar", "action", "note"):
+        if k in (row.detail or {}):
+            detail[f"human_{k}"] = row.detail[k]
+    return row
+
+
 @decision(
     quantity=Q.NOTEHEAD_IS_NOT_A_NOTEHEAD,
     composed_from=(Q.GLYPH_BOX, Q.CELL_BOX, Q.CELL_STAFF_SPACE,
-                  Q.NOTEHEAD_STAFF_POSITION, Q.GLYPH_CONF),
+                  Q.NOTEHEAD_STAFF_POSITION, Q.GLYPH_CONF,
+                  Q.HUMAN_BOX_VERDICT),
     scope=Kind.GLYPH,
     wants=(Q.GLYPH_BOX, Q.CELL_BOX, Q.CELL_STAFF_SPACE,
-          Q.NOTEHEAD_STAFF_POSITION, Q.GLYPH_CONF),
+          Q.NOTEHEAD_STAFF_POSITION, Q.GLYPH_CONF, Q.HUMAN_BOX_VERDICT),
     subjects_from=Q.NOTEHEAD_CLASS,
     reasons=("clipped_fragment", "too_narrow", "notehead",
-             ABSTAIN.NO_STAFF_GEOMETRY),
+             "human_not_a_symbol", ABSTAIN.NO_STAFF_GEOMETRY),
     mode=Mode.ADDITIVE,
 )
 def adjudicate_notehead_is_not_a_notehead(ev: Evidence) -> Ruling:
     """Is this glyph the detector called a notehead actually something else?
 
-    ⚠️ TWO RULES SHIP, A THIRD IS MEASURED AND HELD BACK — none of them a
-    GATHER filter. See the module docstring for where each threshold comes
-    from and why the third does not set the value.
+    ⚠️ TWO MEASURED RULES SHIP, A THIRD IS MEASURED AND HELD BACK, AND A
+    HUMAN'S OWN READING OUTRANKS ALL THREE — none of them a GATHER filter. See
+    the module docstring for where each threshold comes from and why the third
+    does not set the value.
+
+    0. `human_not_a_symbol` (roadmap 3.4) — a `Q.HUMAN_BOX_VERDICT` row
+       reading `not_a_symbol`, filed by `review/human_evidence.py` from a
+       review pass. Tested FIRST and OUTSIDE the geometry gate; see
+       `_human_not_a_symbol`.
 
     1. `clipped_fragment` — a sliver of ink flush against the cell's own crop
        boundary: a neighbouring staff's ink bleeding into this cell's
@@ -347,6 +395,22 @@ def adjudicate_notehead_is_not_a_notehead(ev: Evidence) -> Ruling:
     rule, and `too_narrow` still runs.
     """
     box_row = _glyph_box_row(ev)
+
+    # ⚠️⚠️ ROADMAP 3.4, AND IT IS FIRST — BEFORE THE GEOMETRY GATE. Every
+    # other rule here abstains `no_staff_geometry` when the cell cannot supply
+    # a unit, and that is right for a rule that measures. A human did not
+    # measure: he looked at the print. Putting this test after the gate would
+    # have thrown his reading away on exactly the cells where the machine can
+    # say least, which is where he is worth most.
+    human_detail: Dict[str, Any] = {}
+    human_row = _human_not_a_symbol(ev, human_detail)
+    if human_row is not None:
+        if box_row is not None and isinstance(box_row.value, (list, tuple)) \
+                and len(box_row.value) == 5:
+            human_detail["class"] = box_row.value[0]
+        return Ruling(value=True, reason="human_not_a_symbol",
+                      used=(human_row.id,), detail=human_detail)
+
     if box_row is None or not isinstance(box_row.value, (list, tuple)) \
             or len(box_row.value) != 5:
         return Ruling.abstain(ABSTAIN.NO_STAFF_GEOMETRY)

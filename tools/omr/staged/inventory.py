@@ -57,6 +57,20 @@ from .record import Q
 # ─────────────────────────────────────────────────────────────────────────────
 
 KNOWN_GAPS: Dict[str, str] = {
+    "notehead_is_not_a_notehead wants 'human_box_verdict'":
+        "⚠️ NOT INERT AND NOT A GAP — the declaration IS read "
+        "(`notehead_precision._human_not_a_symbol`), and what this tool is "
+        "reporting is that the quantity's PRODUCER is outside the pipeline. "
+        "Roadmap 3.4: `review/human_evidence.py` files it from a review "
+        "sidecar, and that module is in `reach.NOT_A_STAGE` because it is not "
+        "a stage. So no gather site observes it and none ever will: a human "
+        "is not a gather rung, and manufacturing a `gather_human_boxes()` "
+        "that reads a JSON file would put a review artefact inside the "
+        "measurement path — the same structural refusal that keeps a dossier "
+        "out of it (CLAUDE.md §5b: there is no `--dossier` and there will not "
+        "be one). ⚠️ THE ENTRY IS ABOUT THE PRODUCER, so it does not leave the "
+        "list when the read lands; it leaves if a STAGE ever observes the "
+        "quantity, which would itself be the finding.",
     # ⚠️ TEN ENTRIES LEFT THIS LIST ON 2026-09-09 and the stale check is what
     # made them leave: `arc_box`, `articulation_mark`, `wedge_box` and
     # `dynamic_letter` are gathered now (`gather_glyph_families`), so the five
