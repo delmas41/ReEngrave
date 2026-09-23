@@ -862,6 +862,17 @@ ORDER: Tuple[str, ...] = (
     Q.ARC_OWNER,
     Q.ARC_KIND,
     Q.ARTICULATION_OWNER,
+    # ⚠️ BESIDE THE ARTICULATION AND BEFORE THE RHYTHM, and the placement is
+    # the same argument the fermata makes just below: its evidence is GATHER
+    # rows only (`Q.ACCIDENTAL_STAFF_POSITION`, `Q.NOTEHEAD_STAFF_POSITION`,
+    # `Q.GLYPH_BOX`, `Q.CELL_STAFF_SPACE`), so it needs no verdict of any kind
+    # and putting it after `Q.DURATION` or `Q.EVENT` would imply a dependency
+    # it does not have. ⚠️ It is BEFORE them rather than beside them for one
+    # reason that is not cosmetic: its EVALUATE consequence rewrites the
+    # sounding pitch of every later note of that pitch in the bar, and a
+    # reader of this record should find the owner already settled when it asks
+    # what a bar contains.
+    Q.ACCIDENTAL_OWNER,
     # ⚠️ BESIDE THE ARTICULATION AND NOT AFTER THE RHYTHM. A fermata's
     # carriers are noteheads and RESTS, both of which are GATHER rows
     # (`Q.GLYPH_BOX`), so this needs no verdict of any kind -- putting it

@@ -503,6 +503,162 @@ def gather_notehead_positions(log: Log, cells: Sequence[Any],
 
 
 # ─────────────────────────────────────────────────────────────────────────────
+# The PRINTED in-bar accidental — ROADMAP 2.7
+# ─────────────────────────────────────────────────────────────────────────────
+
+#: The alteration each accidental CLASS states, in the vocabulary
+#: `export._MXL_ACCIDENTAL` and `transcribe._parse_inline_accidental` already
+#: share. ⚠️ KEYED ON THE CANONICAL NAME AND DERIVED FROM IT, never a
+#: hand-copied class list: `class_aliases.canonicalize_names` is applied at
+#: `gather_detections` (the one place the model's names are read), so what
+#: arrives here is already canonical and `_alteration_of` tests the canonical
+#: spelling. The double forms are FIRST because `doublesharp` contains
+#: `sharp` and a prefix test in the other order reads every double sharp as a
+#: single one -- which is the ordering `_parse_inline_accidental` has always
+#: used and the reason it is copied rather than improved.
+_ALTERATION_BY_NAME: Tuple[Tuple[str, str], ...] = (
+    ("doublesharp", "##"),
+    ("doubleflat", "bb"),
+    ("sharp", "#"),
+    ("flat", "b"),
+    ("natural", "natural"),
+)
+
+#: ⚠️⚠️ `keyFlat` / `keySharp` / `keyNatural` ARE THE SIGNATURE'S OWN GLYPHS
+#: AND ARE NOT IN-BAR ACCIDENTALS. The detector draws the distinction itself
+#: and this honours it: 2,058 accidental-category boxes on the Litolff whole
+#: movement, 527 of them `key*`, leaving exactly the **1,531** the roadmap
+#: names. The legacy pair rule does NOT make this cut -- `keySharp`.lower()
+#: contains `sharp`, so `_parse_inline_accidental` returns `#` for it and the
+#: signature's own glyphs are offered a notehead -- and copying that here
+#: would hand every staff's first note the last sharp of its key signature.
+#: `Q.KEY_SIGNATURE` owns those glyphs; this owns the rest.
+_KEY_SIGNATURE_PREFIX = "key"
+
+#: Where in a glyph's box the pitch it names sits, as a fraction of the box
+#: height from the TOP, by canonical class.
+#:
+#: ⚠️⚠️ FROM BRAVURA, WHICH IS AN EXTERNAL SOURCE AND NOT OUR OWN PAIRING.
+#: `tools/omr/symbol_library/data/Bravura.otf` is the SMuFL reference font and
+#: its glyph origin IS the staff position the accidental names, so the anchor
+#: fraction is read off the outline's bounding box rather than fitted:
+#: accidentalFlat 0.715, accidentalDoubleFlat 0.714 (both carry an ASCENDER
+#: above the bowl), accidentalSharp 0.501, accidentalNatural 0.504,
+#: accidentalDoubleSharp 0.504. Fitting it to our own accidental-to-notehead
+#: pairs would be a default flipped on agreement with our own reading, which
+#: rule 5 forbids -- so the font supplies the number and the measurement only
+#: CORROBORATES it.
+#:
+#: ⚠️ AND THE CORROBORATION IS PARTIAL, WHICH IS WHY IT IS WRITTEN DOWN.
+#: Estimated on accidentals with exactly ONE head in the x window (an
+#: estimator that cannot select on the answer), the flat anchor measures
+#: **0.692 on Breitkopf** -- within 0.023 of the font -- and **0.580 on
+#: Litolff**, whose merging plate pulls the thin ascender out of the box.
+#: Sharp and natural measure 0.495-0.505 on both, i.e. the font exactly. The
+#: control: applying it collapses the second mode of the vertical-offset
+#: histogram on both documents (Breitkopf 1,888 -> 724 glyphs in the 0.7-1.4
+#: position band, Litolff 364 -> 234) and can therefore fail.
+#:
+#: ⚠️ A CLASS NOT NAMED HERE FALLS BACK TO THE BOX CENTRE, and that is the
+#: honest default rather than a gap: a symmetric glyph's anchor IS its centre,
+#: which is what the font says for three of the five.
+_ANCHOR_FRACTION: Dict[str, float] = {
+    "accidentalflat": 0.715,
+    "accidentaldoubleflat": 0.714,
+    "accidentalsharp": 0.501,
+    "accidentalnatural": 0.504,
+    "accidentaldoublesharp": 0.504,
+}
+
+
+def _alteration_of(name: str) -> Optional[str]:
+    """The alteration a canonical accidental class states, or None."""
+    s = (name or "").lower()
+    if s.startswith(_KEY_SIGNATURE_PREFIX):
+        return None
+    for token, alteration in _ALTERATION_BY_NAME:
+        if token in s:
+            return alteration
+    return None
+
+
+def gather_accidental_positions(log: Log, cells: Sequence[Any],
+                                local: Dict[int, Tuple[int, int]],
+                                detections: Dict[str, List[Any]]) -> None:
+    """The PRINTED accidental's own staff position, on the notehead's grid.
+
+    ⚠️⚠️ THE LARGEST `FAMILY_Q_IS_ELSEWHERE` GAP IN THE TREE UNTIL 2026-09-23.
+    1,531 accidental glyphs on the Litolff whole movement and 6,533 on the
+    Breitkopf one reached `Q.GLYPH_BOX` and no typed row, so no adjudicator
+    could be written about them, no abstention could be recorded, and every
+    `<alter>` in every exported file came from the key signature alone --
+    7,878 notes, 0 `<accidental>`.
+
+    ⚠️ IT DECIDES NOTHING, and the split is the same one `gather_glyph_families`
+    makes. WHICH notehead the glyph alters is a contest between heads with its
+    own evidence and its own right to abstain (`adjudicate_accidental_owner`);
+    what belongs here is only *this ink is an accidental of this kind, and here
+    is the staff position it stands at*.
+
+    ⚠️ THE CELL'S OWN CANONICAL FRAME IS CORRECT HERE, and the reason is the
+    one `adjudicate_articulation_owner` states for itself: an accidental and
+    the head it alters are cut from ONE cell, so they share a frame by
+    construction. It is the CROSS-staff questions that need page pixels, and
+    this is not one.
+
+    ⚠️ NO ROW WHERE THE CELL HAS NO GRID. `gather_notehead_positions` abstains
+    `no_staff_geometry` for the cell once, which speaks for every glyph in it;
+    a second abstention per accidental would be the same reader filing the same
+    silence twice, which `Evidence.correlated_groups` exists to stop counting.
+    """
+    by_key = {}
+    for c in cells:
+        key = local.get(c.staff_index)
+        if key is None:
+            continue
+        by_key[(c.page_index, key[0], key[1], c.measure_index)] = c
+
+    for cell_key, dets in detections.items():
+        sub = Subject.from_key(cell_key)
+        c = by_key.get((sub.page, sub.system, sub.staff, sub.cell))
+        if c is None:
+            continue
+        grid = _cell_grid(c)
+        if grid is None:
+            continue
+        top_y, half_step = grid
+        for gi, d in enumerate(dets):
+            alteration = _alteration_of(d.smufl_name)
+            if alteration is None:
+                continue
+            frac = _ANCHOR_FRACTION.get(str(d.smufl_name).lower(), 0.5)
+            anchor_y = d.y_canonical + d.height_canonical * frac
+            pos_float = (anchor_y - top_y) / half_step
+            centre_pos = (d.y_center - top_y) / half_step
+            g = R.glyph(sub.page, sub.system, sub.staff, sub.cell, gi)
+            log.observe(
+                g, Q.ACCIDENTAL_STAFF_POSITION, pos_float,
+                reader=READERS.GEOMETRY, frame=frame_cell(sub.cell),
+                alteration=alteration,
+                detector_class=str(d.smufl_name),
+                anchor_fraction=frac,
+                # ⚠️ THE UNCORRECTED READING, KEPT. The anchor is a claim about
+                # the GLYPH SHAPE and the two documents disagree with the font
+                # about it by 0.023 (Breitkopf) and 0.135 (Litolff) of a box
+                # height; a consumer that wants to re-price that must not need
+                # a re-gather to do it. Throwing the second reading away is
+                # this project's own named anti-pattern.
+                box_centre_position=centre_pos,
+                residual=abs(pos_float - round(pos_float)),
+                rounded=int(round(pos_float)),
+                x0=float(d.x_canonical),
+                x1=float(d.x_canonical + d.width_canonical),
+                y0=float(d.y_canonical),
+                y1=float(d.y_canonical + d.height_canonical),
+                confidence=float(d.confidence))
+
+
+# ─────────────────────────────────────────────────────────────────────────────
 # Cross-staff ownership evidence
 #
 # ⚠️ THIS IS THE EVIDENCE THE EXISTING PIPELINE DECIDES ON AND DOES NOT WRITE
@@ -3774,6 +3930,14 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
             conf_threshold=conf_threshold, imgsz=imgsz, progress=progress)
 
         gather_notehead_positions(log, cells, local, detections)
+        # ⚠️ BESIDE THE NOTEHEAD'S POSITION AND NOT WITH THE OTHER GLYPH
+        # FAMILIES, because it is the SAME measurement off the SAME cell grid
+        # and its consumer's whole rule is a comparison between the two. Filed
+        # apart from `gather_glyph_families` for the reason that function
+        # states about the wedges: a second row from one reader on one crop is
+        # one signal, and the position is a measurement OVER the mark rather
+        # than a naming of it.
+        gather_accidental_positions(log, cells, local, detections)
         gather_ownership_evidence(log, pws, cells, local, detections)
         gather_rhythm_marks(log, cells, local, detections)
         gather_glyph_families(log, detections, cells, local)

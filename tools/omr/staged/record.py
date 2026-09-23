@@ -370,6 +370,35 @@ class Q(_Vocab):
     GLYPH_BAND_DISTANCE = "glyph_band_distance"   # to each candidate staff
     GLYPH_LADDER = "glyph_ladder"            # ledger rung completeness
     NOTEHEAD_STAFF_POSITION = "notehead_staff_position"   # pos_float, CLEF-FREE
+    #: The PRINTED in-bar accidental's own staff position, CLEF-FREE, on the
+    #: same grid and in the same units as `NOTEHEAD_STAFF_POSITION` -- which is
+    #: the whole point: the rule that owns it ("the head immediately RIGHT of
+    #: the glyph at the SAME staff position", C21/L32) is a comparison between
+    #: the two, and a comparison needs one frame.
+    #:
+    #: ⚠️⚠️ IT DID NOT EXIST UNTIL 2026-09-23, AND THE ABSENCE WAS THE LARGEST
+    #: `FAMILY_Q_IS_ELSEWHERE` GAP IN THE TREE: 1,531 accidental glyphs on the
+    #: Litolff whole movement, every one filed as an anonymous `Q.GLYPH_BOX`,
+    #: reaching no verdict, so every `<alter>` in the file came from the key
+    #: signature alone. `Q.ACCIDENTAL` existed and named a DIFFERENT fact --
+    #: the pitch respelled once the key settles, an EVALUATE consequence -- and
+    #: the two were confused often enough that `NOT_NOTATION["accidental"]`
+    #: asserted the glyph was consumed for as long as it was not.
+    #:
+    #: ⚠️ THE VALUE IS THE POSITION THE GLYPH NAMES, NOT ITS BOX CENTRE, and
+    #: the difference is one class deep. A flat carries an ASCENDER above its
+    #: bowl, so its bounding box extends UPWARD from the pitch it names; a
+    #: sharp, a natural and a double sharp are symmetric about theirs. Bravura
+    #: -- the SMuFL reference font, and an external source rather than our own
+    #: pairing -- puts a flat's box centre 0.528 staff spaces ABOVE its origin
+    #: and its anchor at 0.715 of the box height, against 0.501 / 0.504 / 0.504
+    #: for the others. Measured on the two whole-movement records with an
+    #: estimator that cannot select on the answer (accidentals with exactly ONE
+    #: head in the x window): flat 0.580 on Litolff and 0.692 on Breitkopf,
+    #: sharp 0.495 / 0.505, natural 0.501 / 0.502. `detail.box_centre_position`
+    #: keeps the uncorrected reading beside it, so a consumer that disagrees
+    #: with the anchor can re-derive without a re-gather.
+    ACCIDENTAL_STAFF_POSITION = "accidental_staff_position"
     NOTEHEAD_CLASS = "notehead_class"        # black/half/whole, before duration
     #: ⚠️ The REST GLYPH's class -- whole/half/quarter/8th -- before duration,
     #: the exact parallel of `NOTEHEAD_CLASS`.
@@ -973,6 +1002,23 @@ class Q(_Vocab):
     VOICES = "voices"
     TUPLET_RATIO = "tuplet_ratio"
     ARTICULATION_OWNER = "articulation_owner"
+    #: Which NOTEHEAD a PRINTED accidental glyph alters (C21, L32).
+    #:
+    #: ⚠️ THE VALUE IS THE NOTEHEAD'S SUBJECT KEY AND THE ALTERATION TRAVELS
+    #: IN THE DETAIL, exactly as `Q.ARTICULATION_OWNER` carries its kind: a
+    #: consumer holding only the owner would have to re-read the glyph's class
+    #: to know whether to write a sharp or a flat, which is the re-derivation
+    #: this stage exists to remove.
+    #:
+    #: ⚠️⚠️ IT IS NOT `Q.ACCIDENTAL`, AND THE TWO ARE THE SAME CONFUSION THAT
+    #: COST `e8cf5b26`. This names the GLYPH THE ENGRAVER DREW and its target.
+    #: `Q.ACCIDENTAL` is what the note SOUNDS, which the key can supply with no
+    #: glyph on the page at all. `<accidental>` is written only where this
+    #: quantity DECIDED; `<alter>` is written from `Q.ACCIDENTAL` whatever its
+    #: source. Emitting the second as the first drew a redundant flat on every
+    #: note of a three-flat staff and left it sounding natural -- wrong in both
+    #: directions at once.
+    ACCIDENTAL_OWNER = "accidental_owner"
     #: Which EVENT -- notehead or rest -- a fermata hangs over.
     #:
     #: ⚠️ THE VALUE IS A GLYPH SUBJECT AND THE CONSUMER MUST HOIST IT. A
@@ -1267,6 +1313,13 @@ CLAIMS: "dict[str, str]" = {
 
     # ── the family POSITION facts: rulers on their own ink ─────────────────
     "NOTEHEAD_STAFF_POSITION": CLAIM.MEASUREMENT,
+    #: ⚠️ A MEASUREMENT AND NOT AN IDENTIFICATION, though a class name is what
+    #: chooses its anchor. What would make the row WRONG is the RULER -- a
+    #: mis-measured line grid, or a box whose centre is not where the glyph
+    #: sits -- which is the same failure `NOTEHEAD_STAFF_POSITION` has. That
+    #: the glyph is a flat rather than a sharp is a separate claim and rides
+    #: on `Q.GLYPH_BOX`, where the detector's own argmax already carries it.
+    "ACCIDENTAL_STAFF_POSITION": CLAIM.MEASUREMENT,
     "REST_POSITION": CLAIM.MEASUREMENT,
     "ARC_POSITION": CLAIM.MEASUREMENT,
     "ARTICULATION_POSITION": CLAIM.MEASUREMENT,
@@ -1315,6 +1368,7 @@ CLAIMS: "dict[str, str]" = {
     "ARC_KIND": CLAIM.INTERPRETATION,
     "ARC_OWNER": CLAIM.INTERPRETATION,
     "ARTICULATION_OWNER": CLAIM.INTERPRETATION,
+    "ACCIDENTAL_OWNER": CLAIM.INTERPRETATION,
     "FERMATA_OWNER": CLAIM.INTERPRETATION,
     "ORNAMENT_OWNER": CLAIM.INTERPRETATION,
     "WEDGE_ANCHOR": CLAIM.INTERPRETATION,

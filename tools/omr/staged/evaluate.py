@@ -47,6 +47,10 @@ class Consequence(str, Enum):
 
     RESTATE_PITCH = "restate_pitch"          # clef settled
     RESPELL_ACCIDENTAL = "respell_accidental"  # key settled
+    #: ROADMAP 2.7. A PRINTED accidental's owner settled, so that note and
+    #: every later note of the same letter and octave in the same bar carries
+    #: what the engraver drew, in place of what the key would have given them.
+    APPLY_PRINTED_ACCIDENTAL = "apply_printed_accidental"
     RECONCILE_DURATION = "reconcile_duration"  # meter settled
     MOVE_GLYPH = "move_glyph"                # ownership settled
     JOIN_PARTS = "join_parts"                # part boundaries settled
@@ -92,6 +96,16 @@ DOWNHILL: Tuple[str, ...] = (
     Q.KEY_SIGNATURE,
     Q.GLYPH_OWNER,
     Q.PITCH,
+    # ⚠️ AFTER `Q.PITCH` AND BEFORE `Q.ACCIDENTAL`, and both halves are
+    # load-bearing. The rule that reads it needs the LETTER AND OCTAVE of the
+    # head it owns to know which later notes in the bar it also governs (C21
+    # is keyed on `(letter, octave)`, exactly as `transcribe.py:2211` keys
+    # `explicit_in_measure`), so the pitch must already be restated; and what
+    # it WRITES is the alteration, so it must sit above it. A reader tempted
+    # to move it above `Q.PITCH` should note that the resulting rule would
+    # have to re-derive the letter from position and clef, which is
+    # `restate_pitch`'s job and would be a second spelling of it.
+    Q.ACCIDENTAL_OWNER,
     Q.ACCIDENTAL,
     Q.METER,
     Q.DURATION,

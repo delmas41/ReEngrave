@@ -269,6 +269,19 @@ UNSCORED: Dict[str, Tuple[str, str, Any]] = {
         "the accidental run's positions, CLEF-FREE — so a run that fits "
         "treble's slots and not bass's is evidence about the CLEF.",
         "key"),
+    "ACCIDENTAL_STAFF_POSITION": (
+        STAFF_GRID_POSITION,
+        "the PRINTED in-bar accidental's own position, on the SAME grid and "
+        "in the SAME units as `NOTEHEAD_STAFF_POSITION` — because the rule "
+        "that owns it (the head immediately RIGHT of the glyph at the SAME "
+        "position, C21/L32) is a subtraction between the two, and a "
+        "subtraction needs one frame. ⚠️ SCORELESS for the ruler's reason: "
+        "the detector's confidence in the CLASS is already on that glyph's "
+        "`Q.GLYPH_BOX` row, and a second copy of it here would be one "
+        "reader's one crop counted twice. ⚠️ Distinct from "
+        "`KEYSIG_RUN_POSITION`, which measures the SIGNATURE's `key*` glyphs "
+        "in the header; this one excludes them by class.",
+        "accidental"),
 
     # ── the eleven that answered it, 2026-09-17 ─────────────────────────────
     # ⚠️ SYMBOL-SPECIFIC BY INSTRUCTION, not one schema eleven times. Produced

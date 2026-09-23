@@ -15,7 +15,7 @@ a startup failure rather than a run that does not terminate.
 from __future__ import annotations
 
 from collections import Counter
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, Tuple
 
 from . import record as R
 from .evaluate import Consequence, rule
@@ -452,8 +452,22 @@ def respell_accidental(log: Log, subject: Subject, key: Verdict) -> List[Verdict
         letter = pitch.value[0]
         if letter not in altered:
             continue
-        # ⚠️ An inline accidental OVERRIDES the signature, so a note that
-        # already carries one is not touched.
+        # ⚠️⚠️ AN INLINE ACCIDENTAL OVERRIDES THE SIGNATURE, AND THIS GUARD
+        # IS NOT THE PLACE THAT ENFORCES IT -- roadmap 2.7 measured the
+        # ordering and found this branch UNREACHABLE for the printed glyph.
+        # `evaluate.run` orders rules by the DOWNHILL index of their CAUSE,
+        # this rule's cause is `Q.KEY_SIGNATURE` (index 8) and
+        # `apply_printed_accidental`'s is `Q.ACCIDENTAL_OWNER` (index 11), so
+        # the key-derived row is always written FIRST and there is never an
+        # inline verdict here to find. The override is done by SUPERSESSION
+        # instead, exactly as `move_glyph` supersedes `Q.PITCH` for the same
+        # ordering reason.
+        #
+        # ⚠️ THE GUARD STAYS, and it is not dead code in the harmful sense: it
+        # is what makes this rule idempotent under any re-run and what keeps
+        # it honest if the DOWNHILL order is ever changed. It is documented as
+        # unreachable rather than deleted so the next reader does not
+        # rediscover the ordering by removing the supersession.
         if log.verdict(Q.ACCIDENTAL, pitch.subject) is not None:
             continue
         out.append(_verdict(
@@ -461,6 +475,188 @@ def respell_accidental(log: Log, subject: Subject, key: Verdict) -> List[Verdict
             decider="respell_accidental", reason="from_key_signature",
             basis=(pitch.id, key.id)))
     return out
+
+
+def _letter_octave(pitch_value: Any) -> Optional[Tuple[str, int]]:
+    """`'F4'` -> `('F', 4)`, through the LEGACY parser and not a slice.
+
+    ⚠️ NOT `value[0]` AND `int(value[1:])`. `_legacy._parse_pitch` is what
+    `_mxl_pitch_block` uses on the way out, so a spelling it cannot read is a
+    note that reaches the file with no `<pitch>` block at all; asking it here
+    means the two cannot come to disagree about what a pitch string is.
+    """
+    if not isinstance(pitch_value, str):
+        return None
+    from .. import export as _legacy
+    parsed = _legacy._parse_pitch(pitch_value)
+    if parsed is None:
+        return None
+    letter, _existing, octave = parsed
+    return letter, int(octave)
+
+
+@rule(consequence=Consequence.APPLY_PRINTED_ACCIDENTAL,
+      cause=Q.ACCIDENTAL_OWNER, effect=Q.ACCIDENTAL, scope=Kind.GLYPH,
+      bound="Writes an alteration onto the owned notehead and onto later "
+            "noteheads IN THE SAME CELL at the SAME letter and octave that "
+            "carry no printed glyph of their own. Never leaves the cell, "
+            "never adds, deletes, moves or re-pitches a note, never touches a "
+            "note that stands to the LEFT of the glyph, and never overrules "
+            "another printed accidental.")
+def apply_printed_accidental(log: Log, subject: Subject,
+                             owner: Verdict) -> List[Verdict]:
+    """The engraver drew it, so it governs -- to the end of the bar (C21).
+
+    ⚠️⚠️ THIS FOLLOWS, IT IS NOT A GUESS, and that is why it is EVALUATE and
+    not INFER. Given that this glyph alters that head, nothing about which
+    notes in the bar carry the alteration is open: C21 is a closed rule of
+    the notation -- *"an accidental is not a property of one notehead: once
+    printed it governs later notes at the same letter and octave until the
+    barline"* -- and the ABSENCE of a glyph on a later note is a positive
+    statement about its pitch rather than a gap. A reader attaching the
+    alteration only to its immediate note reads every later note of that
+    pitch in the bar a semitone wrong.
+
+    ⚠️⚠️ IT SUPERSEDES RATHER THAN DEFERS, AND THE ORDER IS THE REASON.
+    `evaluate.run` sorts the rules by the DOWNHILL index of their CAUSE.
+    `respell_accidental` is caused by `Q.KEY_SIGNATURE` (index 8) and this by
+    `Q.ACCIDENTAL_OWNER` (index 11), so the key-derived row is ALWAYS already
+    on the record when this runs and `respell_accidental`'s own "leave a note
+    that carries one alone" guard can never see this rule's output. Deferring
+    would therefore be silent no-op. `move_glyph` supersedes `Q.PITCH` for
+    exactly this reason and this mirrors it, `supersedes=` and all, so the
+    record shows the key's answer AND the page's answer with the page's
+    winning visibly.
+
+    ⚠️ A NATURAL CANCELS, AND THE CANCELLATION IS BAR-SCOPED LIKE ANY OTHER
+    ACCIDENTAL. A `natural` verdict is written exactly as a sharp is, and it
+    carries to the end of the bar in exactly the same way; the exporter turns
+    it into `<alter>0</alter>` plus a drawn `<accidental>natural</accidental>`
+    because the two facts are independent. Writing nothing instead -- letting
+    the note fall back to the key -- would put the key's flat back on a note
+    the engraver explicitly cancelled, which is the whole of what a natural is
+    for.
+
+    ⚠️ THE CARRY IS ORDER-FREE, and it has to be: this rule fires once per
+    accidental glyph and the firing order within a cell is the subject
+    iteration order, not the page's left-to-right. So a later note is written
+    only where THIS glyph is the LAST printed accidental at that (letter,
+    octave) standing at or before it -- a question asked of the record rather
+    than of the sequence, which gives the same answer whichever glyph fired
+    first. `explicit_in_measure` gets this from its left-to-right walk; a
+    rule that cannot walk must ask instead.
+
+    ⚠️ THE CELL IS THE BAR. `Q.MEASURE_PARTITION` cut it, and CLAUDE.md §10's
+    *"a cell index restarts per system"* is why the carry is keyed on the CELL
+    subject and never on a bar NUMBER.
+    """
+    if not isinstance(owner.value, str):
+        return []
+    head = Subject.from_key(owner.value)
+    alteration = (owner.detail or {}).get("alteration")
+    if not isinstance(alteration, str) or not alteration:
+        return []
+
+    pitch = log.verdict(Q.PITCH, head)
+    if pitch is None or pitch.outcome is not Outcome.DECIDED:
+        # ⚠️ NO PITCH, NO ALTERATION. A staff whose clef abstained produces no
+        # pitches (`restate_pitch`), and an alteration written onto a note
+        # whose letter nobody read would be an alteration of nothing. The
+        # glyph stays DECIDED on the record and the exporter counts it.
+        return []
+    target = _letter_octave(pitch.value)
+    if target is None:
+        return []
+
+    cell = head.at(Kind.CELL)
+    if cell is None:
+        return []
+
+    x_of = {}
+    for row in log.rows(Q.GLYPH_BOX, cell, scope=Scope.SELF_AND_DESCENDANTS):
+        v = row.value
+        if isinstance(v, (list, tuple)) and len(v) >= 5:
+            x_of[row.subject.to_key()] = float(v[1])
+    own_x = x_of.get(head.to_key())
+    if own_x is None:
+        return []
+
+    # Every OTHER printed accidental in this bar, so the carry can ask which
+    # of them governs a later note rather than depending on firing order.
+    # ⚠️ `_standing`, NOT `log.verdicts`, and the module's own note says why:
+    # the plural returns every ROW including ones a later consequence
+    # superseded, and `move_glyph` restates `Q.PITCH` on exactly the glyphs
+    # this rule then reads. Walking the raw rows would let a re-pitched note
+    # be governed by the letter it used to have.
+    rivals = []
+    for other in _standing(log, cell, Q.ACCIDENTAL_OWNER):
+        if other.id == owner.id or other.outcome is not Outcome.DECIDED:
+            continue
+        if not isinstance(other.value, str):
+            continue
+        rival_head = Subject.from_key(other.value)
+        rx = x_of.get(rival_head.to_key())
+        rp = log.verdict(Q.PITCH, rival_head)
+        if rx is None or rp is None or rp.outcome is not Outcome.DECIDED:
+            continue
+        if _letter_octave(rp.value) != target:
+            continue
+        rivals.append(rx)
+
+    out: List[Verdict] = []
+    owned_keys = {head.to_key()}
+    out.append(_supersede(log, head, alteration,
+                          reason="printed_glyph", owner=owner,
+                          basis=(owner.id, pitch.id), printed=True))
+
+    for later in _standing(log, cell, Q.PITCH):
+        if later.outcome is not Outcome.DECIDED:
+            continue
+        key = later.subject.to_key()
+        if key in owned_keys:
+            continue
+        lx = x_of.get(key)
+        if lx is None or lx <= own_x:
+            continue                    # standing to the LEFT: not governed
+        if _letter_octave(later.value) != target:
+            continue
+        # ⚠️ A NOTE THAT CARRIES ITS OWN PRINTED GLYPH IS LEFT ALONE. That
+        # glyph's own firing writes it, with `printed=True`; overwriting it
+        # here would turn a drawn natural back into the sharp it cancelled.
+        if log.verdict(Q.ACCIDENTAL_OWNER, later.subject) is not None:
+            continue
+        if any(own_x < rx <= lx for rx in rivals):
+            continue                    # a nearer printed accidental governs
+        out.append(_supersede(log, later.subject, alteration,
+                              reason="carried_in_bar", owner=owner,
+                              basis=(owner.id, later.id), printed=False))
+    return out
+
+
+def _supersede(log: Log, subject: Subject, alteration: str, *, reason: str,
+               owner: Verdict, basis: Tuple[str, ...],
+               printed: bool) -> Verdict:
+    """One `Q.ACCIDENTAL` write that displaces the key-derived one visibly.
+
+    ⚠️ `printed` IS THE WHOLE OF THE `<accidental>` DECISION AND IT IS A FACT
+    ABOUT THIS NOTE, not about the alteration. The owned head carries a glyph
+    the engraver drew; the notes it carries to in the bar carry the same
+    SOUND and no glyph at all, because the engraver did not draw one on them.
+    `e8cf5b26` fixed the inverse of this -- the key-derived alteration emitted
+    as a printed glyph, 334 `<accidental>` elements against 0 `<alter>` on
+    Litolff pp.1-4 -- and the two must never be re-joined.
+    """
+    prior = log.verdict(Q.ACCIDENTAL, subject)
+    out = Verdict(
+        id=log._next_id("vrd"), subject=subject, quantity=Q.ACCIDENTAL,
+        outcome=Outcome.DECIDED, value=alteration,
+        decider="apply_printed_accidental", reason=reason,
+        considered=tuple(basis), basis=tuple(basis),
+        detail={"printed": printed, "accidental_glyph": owner.subject.to_key(),
+                "from": (prior.value if prior is not None else None),
+                "from_decider": (prior.decider if prior is not None else None)},
+        supersedes=prior.id if prior is not None else None)
+    return log.record(out)
 
 
 @rule(consequence=Consequence.NAME_PART,

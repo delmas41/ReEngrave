@@ -828,6 +828,238 @@ def adjudicate_articulation_owner(ev: Evidence) -> Ruling:
                 "confidence": mark.score})
 
 
+#: ── ROADMAP 2.7, the printed in-bar accidental ──────────────────────────────
+#:
+#: How far to the RIGHT of an accidental its notehead may stand, in STAFF
+#: SPACES, measured from the glyph's right edge to the head's left edge.
+#:
+#: ⚠️⚠️ MEASURED, NOT INHERITED. The legacy pair rule
+#: (`transcribe._pair_accidentals_to_noteheads`) puts NO bound on x at all --
+#: it scores `x_dist + 3 * y_dist` over every head in the cell and takes the
+#: argmax -- so a glyph whose own head the detector missed claims a note four
+#: beats away and calls it a reading. The geometry is copied; the missing
+#: bound is not.
+#:
+#: The window is the histogram's own MINIMUM, on both documents
+#: (`benchmarks/omr-accidental-2026-09/probe/gap_histogram.py`, run over the
+#: two whole-movement records). Litolff, per 0.25-space bin from 0:
+#: 500 · 519 · 116 · 30 · 15 · 14 · 14 · **4** · 8 · 6 · 9 · 4 · 15 …
+#: Breitkopf: 2269 · 2949 · 212 · 74 · 77 · 117 · 76 · **51** · 54 · 69 · 41 …
+#: Both fall to their lowest bin at **[1.75, 2.0)** and then flatten onto a
+#: roughly uniform background -- the population with no accidental of its own,
+#: which has no window because it is not a pairing. 1.75 keeps 89 % of the
+#: Litolff pairs and cuts at the gap rather than at a round number.
+_ACC_MAX_DX_SPACES = 1.75
+
+#: How far in STAFF POSITIONS (half-spaces) the head's centre may sit from the
+#: accidental's own anchored position.
+#:
+#: ⚠️ THE UNIT IS THE POSITION AND NOT THE GLYPH'S OWN BOX, which is the
+#: correction `adjudicate_articulation_owner` states one function up: a mark's
+#: bounding box is small and mostly detector noise, so a threshold derived
+#: from it moves with the noise. The legacy rule's `0.6 * the accidental's own
+#: height` is exactly that mistake, and one diatonic step is 1.0 of THIS unit
+#: -- so this is the number that says whether the next step could also fit.
+#:
+#: Measured inside the x window above, per 0.1-position bin, the offset falls
+#: off a cliff at the same place on both plates: Litolff … 1.2:58 · 1.3:32 ·
+#: **1.4:10** · 1.5:12; Breitkopf … 1.2:277 · 1.3:189 · **1.4:67** · 1.5:25.
+#: A 3.2x and a 2.8x drop at the same bin, on two publishers whose failure
+#: modes are opposite (Litolff MERGES, Breitkopf SHATTERS).
+_ACC_MAX_DY_POSITIONS = 1.4
+
+#: Two heads are INDISTINGUISHABLE in height when their offsets differ by less
+#: than this, in staff positions.
+#:
+#: ⚠️ HALF A DIATONIC STEP, AND IT IS DERIVED RATHER THAN SWEPT: two heads one
+#: step apart differ by 1.0 position, so a glyph standing exactly between them
+#: is 0.5 from each and the difference is 0 -- the case this abstention exists
+#: for. A glyph sitting ON one of them is 0.0 and 1.0, a difference of 1.0.
+#: Anything under half a step means the geometry does not separate them, and
+#: an argmax there would be a coin flip recorded as a reading.
+_ACC_AMBIGUOUS_MARGIN_POSITIONS = 0.5
+
+
+@decision(
+    quantity=Q.ACCIDENTAL_OWNER,
+    composed_from=(Q.ACCIDENTAL_STAFF_POSITION, Q.NOTEHEAD_STAFF_POSITION,
+                   Q.GLYPH_BOX, Q.CELL_STAFF_SPACE),
+    scope=Kind.GLYPH,
+    wants=(Q.ACCIDENTAL_STAFF_POSITION, Q.NOTEHEAD_STAFF_POSITION,
+           Q.GLYPH_BOX, Q.CELL_STAFF_SPACE),
+    subjects_from=Q.ACCIDENTAL_STAFF_POSITION,
+    reasons=("immediately_right_same_position", "ambiguous_height",
+             "no_candidate", "no_unit", "no_evidence"),
+    checked_by=(
+        "L32: an accidental stands BEFORE its note, at the same staff "
+        "position -- SIDE and HEIGHT, two constraints and not one",
+        "C21: the alteration it states holds for that letter and octave to "
+        "the end of the bar, so a glyph owned by the wrong head is wrong for "
+        "every later note of that pitch in the bar and not only for one",
+    ),
+    # ⚠️ THE GROUP CONTAINS THIS DECISION ITSELF. A check that implicates only
+    # its inputs has quietly decided the reading is innocent and the ruler is
+    # to blame -- which is exactly the move `implicates` exists to forbid.
+    implicates=(Q.ACCIDENTAL_OWNER, Q.ACCIDENTAL_STAFF_POSITION,
+                Q.NOTEHEAD_STAFF_POSITION, Q.GLYPH_BOX, Q.CELL_STAFF_SPACE,
+                Q.MEASURE_PARTITION),
+    checkable=Checkable.MIXED,
+    mode=Mode.ADDITIVE,
+)
+def adjudicate_accidental_owner(ev: Evidence) -> Ruling:
+    """Which notehead a PRINTED sharp, flat, natural or double alters.
+
+    The rule is the engraving's, and it is TWO constraints rather than one
+    (L32): the head stands to the accidental's RIGHT, and it stands at the
+    accidental's own HEIGHT. `docs/engraving-conventions.md` puts the reason
+    in one sentence -- *"the height constraint alone rules out most
+    mis-attachments in a dense chord"* -- and a chord is exactly where the
+    side constraint alone has nothing to say, because every member of it is to
+    the right of the glyph.
+
+    ⚠️⚠️ THE GEOMETRY IS THE LEGACY PAIR RULE'S AND THE BOUNDS ARE NOT.
+    `transcribe._pair_accidentals_to_noteheads` is copied rather than imported
+    (the legacy path is FROZEN and its flags may not be read from here), and
+    what is copied is the shape: candidates reach to or past the glyph's right
+    edge, and the nearer in height wins. What is NOT copied is its unbounded x
+    and its `0.6 * the accidental's own height` -- an argmax over the whole
+    cell against a threshold taken from the mark's own box. Both bounds here
+    are measured off the two whole-movement records and both are stated with
+    the histogram they came from.
+
+    ⚠️ IT ABSTAINS WHERE TWO HEADS FIT, and that is the difference between
+    this and the rule it replaces. The legacy pass always answers: its score
+    orders every head in the cell and something always wins. Here, two heads
+    whose offsets differ by less than half a diatonic step are not separated
+    by the geometry, and `ambiguous_height` says so. An accidental with no
+    head in the window at all is `no_candidate` -- which on these plates is
+    not rare and is not a defect: 195 of the 1,531 Litolff glyphs have no
+    notehead to their right in their own cell at all.
+
+    ⚠️ A CHORD'S UNISON IS NOT AN AMBIGUITY. Two heads at ONE x and one
+    position are one note detected twice, or two voices sounding it; the
+    accidental governs the pitch either way, so the test for ambiguity also
+    requires the two heads to stand in DIFFERENT COLUMNS -- more than a
+    notehead's width apart in x. Without that clause every doubled detection
+    on a scan would abstain, which is a refusal manufactured by the detector
+    rather than by the page.
+
+    ⚠️ THE CELL IS THE BAR AND THE SCOPE STOPS THERE. This decision names one
+    head; C21's carry to the end of the bar is an EVALUATE consequence
+    (`apply_printed_accidental`) and not this rule's business, because what
+    FOLLOWS from an owned glyph is forced and what a glyph OWNS is weighed.
+    """
+    rows = ev.rows(Q.ACCIDENTAL_STAFF_POSITION)
+    if not rows:
+        return Ruling.abstain("no_evidence")
+    acc = rows[0]
+    detail = acc.detail or {}
+    alteration = detail.get("alteration")
+    if alteration is None:
+        return Ruling.abstain("no_evidence")
+
+    cell = ev.subject.at(Kind.CELL)
+    unit_rows = ev.rows(Q.CELL_STAFF_SPACE, scope=Scope.SELF_AND_ANCESTORS,
+                        subject=cell)
+    if not unit_rows or not unit_rows[0].value:
+        # ⚠️ THE UNIT IS NOT DEFAULTED. `_ACC_MAX_DX_SPACES` is expressed in
+        # staff spaces precisely so it survives a rescaled cell; substituting
+        # a constant would make the bound mean a different distance on every
+        # staff, which is the frame fault `Q.ONSET_COLUMN` paid for.
+        return Ruling.abstain("no_unit")
+    space = float(unit_rows[0].value)
+
+    heads = {}
+    for r in ev.rows(Q.GLYPH_BOX, scope=Scope.SELF_AND_DESCENDANTS,
+                     subject=cell):
+        if (r.detail or {}).get("category") != "notehead":
+            continue
+        if not isinstance(r.value, (list, tuple)) or len(r.value) < 5:
+            continue
+        heads[r.subject.to_key()] = r
+    if not heads:
+        return Ruling.abstain("no_candidate", alteration=alteration,
+                              why="no notehead in this cell")
+
+    # ⚠️ THE HEAD'S POSITION IS READ, NOT RE-DERIVED. `Q.NOTEHEAD_STAFF_POSITION`
+    # is the same measurement off the same grid that this glyph's own row was
+    # taken from, so comparing them is a subtraction. Re-deriving it here from
+    # the box and a line list would be a second spelling of one arithmetic --
+    # the fault `positions.py` imports `gather.py`'s predicates to avoid.
+    pos_of = {}
+    for r in ev.rows(Q.NOTEHEAD_STAFF_POSITION, scope=Scope.SELF_AND_DESCENDANTS,
+                     subject=cell):
+        if isinstance(r.value, (int, float)):
+            pos_of[r.subject.to_key()] = (float(r.value), r)
+
+    ax1 = float(detail.get("x1", 0.0))
+    apos = float(acc.value)
+
+    cands = []
+    for key, row in heads.items():
+        _cls, hx, hy, hw, hh = row.value[:5]
+        if float(hx) + float(hw) < ax1:
+            continue                    # the head does not reach past the glyph
+        dx = max(0.0, float(hx) - ax1) / space
+        if dx > _ACC_MAX_DX_SPACES:
+            continue
+        got = pos_of.get(key)
+        if got is None:
+            continue                    # no clef-free position: nothing to compare
+        hpos, hrow = got
+        dpos = abs(hpos - apos)
+        if dpos > _ACC_MAX_DY_POSITIONS:
+            continue
+        cands.append((dpos, dx, key, row, hrow, float(hx), float(hw), hpos))
+
+    if not cands:
+        return Ruling.abstain(
+            "no_candidate", alteration=alteration,
+            detector_class=detail.get("detector_class"),
+            heads_in_cell=len(heads),
+            max_dx_spaces=_ACC_MAX_DX_SPACES,
+            max_dy_positions=_ACC_MAX_DY_POSITIONS)
+
+    cands.sort(key=lambda t: (t[0], t[1]))
+    best = cands[0]
+    widths = sorted(float(r.value[3]) for r in heads.values())
+    nh_width = widths[len(widths) // 2] or 1.0
+    for other in cands[1:]:
+        if other[0] - best[0] >= _ACC_AMBIGUOUS_MARGIN_POSITIONS:
+            break
+        # ⚠️ THE ONE EXEMPTION, AND IT IS NARROW ON PURPOSE: the two boxes are
+        # THE SAME NOTE -- one column AND one staff position -- so they are a
+        # unison in two voices, or one head the detector drew twice. The
+        # accidental governs that pitch either way. A CHORD whose two heads
+        # share an x and stand a STEP apart is NOT exempt and must abstain,
+        # which is the case the first draft of this clause swallowed.
+        same_column = abs((other[5] + other[6] / 2.0)
+                          - (best[5] + best[6] / 2.0)) <= nh_width
+        same_position = abs(other[7] - best[7]) < 0.5
+        if same_column and same_position:
+            continue
+        return Ruling.abstain(
+            "ambiguous_height", alteration=alteration,
+            candidates=[best[2], other[2]],
+            offsets_positions=[round(best[0], 3), round(other[0], 3)],
+            margin_positions=_ACC_AMBIGUOUS_MARGIN_POSITIONS)
+
+    dpos, dx, key, _row, hrow, _hx, _hw, _hp = best
+    return Ruling(
+        value=key, reason="immediately_right_same_position",
+        used=(acc.id, hrow.id),
+        # ⚠️ THE ALTERATION TRAVELS WITH THE OWNER, the rule
+        # `Q.ARTICULATION_OWNER` states: a consumer holding only the notehead
+        # would have to re-read the glyph's class to know what to write.
+        detail={"alteration": alteration,
+                "detector_class": detail.get("detector_class"),
+                "dx_spaces": round(dx, 3),
+                "dy_positions": round(dpos, 3),
+                "accidental_position": round(apos, 3),
+                "anchor_fraction": detail.get("anchor_fraction"),
+                "confidence": detail.get("confidence")})
+
+
 #: How far either side of a hairpin's own cell a notehead may stand and still
 #: anchor it. ⚠️ NOT A NEW CONSTANT: it is `_wedge_anchors`' own `+1` measure
 #: window, which that function's docstring justifies ("the truth's own

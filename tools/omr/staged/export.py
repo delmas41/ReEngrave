@@ -750,7 +750,19 @@ def build(rec: Record) -> Tuple[List[List[StaffRun]], Dict[str, Any],
 #: `_legacy._mxl_pitch_block` maps them to `<alter>`, so a spelling this table
 #: invents that the parser cannot read would silently produce a note with no
 #: `<pitch>` block at all. `test_sounding_pitch.py` asserts the round trip.
-_ALTERATION_SPELLING: Dict[str, str] = {"#": "#", "b": "b"}
+#:
+#: ⚠️ THE DOUBLES ARRIVED WITH ROADMAP 2.7 AND ARE NOT DECORATION.
+#: `respell_accidental` can never write one -- a key signature alters by a
+#: single semitone -- but `apply_printed_accidental` can, because the detector
+#: spells `accidentalDoubleSharp` and `accidentalDoubleFlat` and the page
+#: prints them (85 and 3 on the Litolff movement, 378 and 28 on the
+#: Breitkopf one). `_legacy._parse_pitch` accepts a RUN of `#`/`b` and
+#: `_mxl_pitch_block` maps `##`/`bb` to `<alter>2`/`-2`, so the spelling below
+#: is the one the parser already reads. ⚠️ `natural` is deliberately ABSENT:
+#: a natural is `<alter>0</alter>`, i.e. the BARE letter, so it must fall
+#: through this table unchanged and must not be counted as an alteration.
+_ALTERATION_SPELLING: Dict[str, str] = {"#": "#", "b": "b",
+                                        "##": "##", "bb": "bb"}
 
 
 def _sounding_pitch(pitch: str, alteration: str) -> str:
@@ -942,6 +954,24 @@ def _place_notes(rec: Record, runs: Dict[str, StaffRun],
             sounding = _sounding_pitch(pitch, alteration)
             if sounding != pitch:
                 pitch, applied = sounding, alteration
+        # ⚠️⚠️ THE GLYPH THE ENGRAVER DREW, AND IT IS A SECOND FACT OFF THE
+        # SAME ROW -- ROADMAP 2.7. `<alter>` above says what the note SOUNDS
+        # and takes it from `Q.ACCIDENTAL` whatever wrote it; `<accidental>`
+        # says what is PRINTED and may be written ONLY where a printed glyph
+        # was adjudicated onto this very note. `apply_printed_accidental`
+        # marks that with `detail.printed`, which is True on the head the
+        # glyph stands before and False on the later notes of the bar it
+        # carries to -- because the engraver drew nothing on those.
+        #
+        # ⚠️ IT IS THE ROW'S OWN FLAG AND NOT THE DECIDER'S NAME. Asking
+        # `decider == "apply_printed_accidental"` would put a glyph on every
+        # carried note too, which is `e8cf5b26`'s bug in a new costume: 334
+        # `<accidental>` elements against a page printing far fewer.
+        printed = None
+        if not is_rest and alteration:
+            acc_v = rec.verdict(Q.ACCIDENTAL, sub) or {}
+            if (acc_v.get("detail") or {}).get("printed"):
+                printed = alteration
         dur_v = rec.verdict(Q.DURATION, sub)
         dur = dur_v["value"] if dur_v and dur_v["outcome"] == "decided" else None
 
@@ -1050,6 +1080,11 @@ def _place_notes(rec: Record, runs: Dict[str, StaffRun],
             # the old key wrote `<accidental>`, and a name that still says
             # "glyph" is how the next reader re-wires it back.
             "key_alteration": applied,
+            # ⚠️ THE DRAWN GLYPH, CARRIED SEPARATELY FROM THE SOUND, and the
+            # two names say which is which. `None` here with `key_alteration`
+            # set is a note the key altered and the page did not mark -- the
+            # commonest case and a correct one.
+            "printed_accidental": printed,
             # ⚠️ THE RATIO NAMES ITS MEMBERS, AND ONLY THEY ARE SCALED. A
             # tuplet is a fact of a GROUP inside the bar, not of the bar:
             # `adjudicate_tuplet` records `members` (the glyph indices its
@@ -2894,17 +2929,20 @@ def _measure_events_xml(events: List[Dict[str, Any]], divisions: int,
                 # subset of its members.
                 ornaments=(head.get("ornaments") or None),
                 fermata=(ev_fermata if n == 0 else False),
-                # ⚠️⚠️ NO `accidental=`, AND THE ABSENCE IS AN ABSTENTION WE
-                # COUNT RATHER THAN A FIELD WE FORGOT. `<accidental>` is the
-                # glyph the engraver PRINTED, and the record holds no reading
-                # of one: the in-bar accidental is filed as an anonymous
-                # `Q.GLYPH_BOX` and reaches no quantity (`gather_coverage`'s
-                # `FAMILY_Q_IS_ELSEWHERE["accidental"]` says so in terms --
-                # 256 such glyphs detected on Litolff pp.1-4 and not one of
-                # them becomes a verdict). The only thing that WAS being
-                # passed here was the key-derived alteration, which is now in
-                # the pitch where it belongs. Emitting nothing is the honest
-                # answer; `printed_accidentals_not_read` is the count.
+                # ⚠️⚠️ THE PRINTED GLYPH, AND ONLY WHERE ONE WAS ADJUDICATED
+                # ONTO THIS NOTE -- ROADMAP 2.7. This argument was deliberately
+                # absent from 2026-09-21 to 2026-09-23, because the record
+                # held no reading of a printed accidental at all and the only
+                # thing available to pass was the key-derived alteration --
+                # which is what `e8cf5b26` had to remove, `<alter>` 0 and
+                # `<accidental>` 334 on Litolff pp.1-4, a redundant flat drawn
+                # on every note of a three-flat staff that then sounded
+                # natural. What is passed now is `Q.ACCIDENTAL`'s row ONLY
+                # where its own `detail.printed` is true, i.e. only on the
+                # head an `accidental_owner` verdict named. A note the key
+                # altered still passes NOTHING here, and a note this glyph
+                # carried to in the bar passes nothing either.
+                accidental=head.get("printed_accidental"),
                 ))
             counters["notes"] += 1
             if doubled:
@@ -2994,6 +3032,14 @@ def _measure_events_xml(events: List[Dict[str, Any]], divisions: int,
             # about the file: notes whose PITCH the key signature altered.
             if head.get("key_alteration"):
                 counters["pitches_altered_by_the_key"] += 1
+            # ⚠️ COUNTED AT THE RENDER, where the ELEMENT is written, and not
+            # where `apply_printed_accidental` decided -- the rule the arc
+            # export learned by reporting 55 slurs into a file holding 23. A
+            # note whose glyph was owned and whose head `_place_notes` then
+            # dropped is decided and not written, and the census reports the
+            # two apart.
+            if head.get("printed_accidental"):
+                counters["accidentals_printed"] += 1
             # ⚠️ COUNTED AT THE RENDER, where the ELEMENT is written, and not
             # where `annotate_beams` attached it -- the rule the arc export
             # learned by reporting 55 slurs into a file holding 23. The two
@@ -3403,6 +3449,21 @@ FAMILIES: Dict[str, Tuple[Optional[str], Tuple[str, ...], Tuple[str, ...]]] = {
     "slur": (Q.ARC_KIND, ("slur",), ("slurs",)),
     "tie": (Q.ARC_KIND, ("tie",), ("ties",)),
     "articulation": (Q.ARTICULATION_OWNER, ("artic",), ("articulations",)),
+    # ⚠️⚠️ PROMOTED TO A FAMILY ON 2026-09-23 (ROADMAP 2.7), AND THE OLD
+    # OBJECTION TO PROMOTING IT IS WHAT CHANGED. `coverage()` used to say the
+    # accidental could not be a family row because "its quantity is an
+    # EVALUATE consequence rather than a reading" -- true of `Q.ACCIDENTAL`
+    # and no longer true of this family, whose quantity is
+    # `Q.ACCIDENTAL_OWNER`: an ADJUDICATE decision over a gathered position,
+    # with its own abstentions, exactly like `Q.ARTICULATION_OWNER` above it.
+    # ⚠️ The prefix is `accidental` and NOT `key`: `keyFlat`/`keySharp`/
+    # `keyNatural` are the signature's own glyphs and the `key` family claims
+    # them, which `_claims`' longest-prefix rule resolves without an
+    # exclusion. ⚠️ Its counter is the RENDER's, so a glyph decided onto a
+    # head the exporter then dropped shows as decided-and-unwritten rather
+    # than as a success.
+    "accidental": (Q.ACCIDENTAL_OWNER, ("accidental",),
+                   ("accidentals_printed",)),
     "dynamic": (Q.DYNAMIC, ("dynamic",), ("dynamics",)),
     "wedge": (Q.WEDGE_ANCHOR, ("dynamicCrescendoHairpin",
                                "dynamicDiminuendoHairpin"), ("wedges",)),
@@ -3421,6 +3482,82 @@ FAMILIES: Dict[str, Tuple[Optional[str], Tuple[str, ...], Tuple[str, ...]]] = {
     "time": (Q.METER, ("timeSig",), ()),
     "tuplet": (Q.TUPLET_RATIO, ("tuplet", "fingering3"), ()),
 }
+
+
+def _accidental_census(rec: "Record", detected: Dict[str, int],
+                       written: Optional[Dict[str, Any]]) -> Dict[str, Any]:
+    """What became of every PRINTED accidental glyph — ROADMAP 2.7.
+
+    ⚠️⚠️ A PARTITION, AND ITS OWN ARITHMETIC IS THE CONTROL. `gathered` is
+    split with no remainder into `applied`, `abstained_ambiguous`,
+    `no_candidate`, `no_unit`, `no_evidence` and `unowned`; `unaccounted` is
+    what is left and a reader that finds it non-zero has found a branch
+    nobody declared. It is the `status_census` discipline applied to one
+    family, and for the same reason: a headline coverage number cannot be
+    unpicked afterwards.
+
+    ⚠️ `unowned` IS NOT AN ABSTENTION. It is a glyph the adjudicator DECIDED
+    and the file never received -- the head was dropped by `_place_notes`
+    (held out, no pitch, owned by another staff), or its note carried no
+    pitch for the consequence to alter. Reported apart because the repair
+    differs: an abstention needs a better reading, an `unowned` needs the
+    note it was hung on to survive.
+
+    ⚠️ `printed_glyphs_detected` COUNTS `accidental*` AND NOT `key*`. The
+    key signature's own glyphs are `keyFlat` / `keySharp` / `keyNatural` and
+    belong to `Q.KEY_SIGNATURE`; folding them in here would inflate the
+    denominator by a third (527 of 2,058 on the Litolff movement) with ink
+    this family is right not to own.
+    """
+    owners = rec.verdicts_of(Q.ACCIDENTAL_OWNER)
+    by_reason: Dict[str, int] = {}
+    decided_heads = set()
+    for v in owners:
+        if v.get("outcome") == "decided":
+            by_reason["decided"] = by_reason.get("decided", 0) + 1
+            if isinstance(v.get("value"), str):
+                decided_heads.add(v["value"])
+        else:
+            r = str(v.get("reason") or "unstated")
+            by_reason[r] = by_reason.get(r, 0) + 1
+
+    # ⚠️ THE FILE'S OWN FIGURE, taken from the render counter and not from the
+    # verdicts: a glyph decided onto a head the exporter then dropped is
+    # decided and not written, and this project has already reported 55 slurs
+    # into a file holding 23 by counting at the wrong end.
+    applied = int((written or {}).get("accidentals_printed", 0))
+    gathered = len(rec.obs_of(Q.ACCIDENTAL_STAFF_POSITION))
+    decided = by_reason.get("decided", 0)
+    census = {
+        "printed_glyphs_detected": sum(
+            n for cls, n in detected.items()
+            if cls.lower().startswith("accidental")),
+        "key_signature_glyphs_detected_and_owned_elsewhere": sum(
+            n for cls, n in detected.items() if cls.lower().startswith("key")),
+        "gathered": gathered,
+        "owner_decided": decided,
+        "applied": applied,
+        "abstained_ambiguous": by_reason.get("ambiguous_height", 0),
+        "no_candidate": by_reason.get("no_candidate", 0),
+        "no_unit": by_reason.get("no_unit", 0),
+        "no_evidence": by_reason.get("no_evidence", 0),
+        "unowned": max(0, decided - applied),
+        "carried_in_bar": sum(
+            1 for v in rec.verdicts_of(Q.ACCIDENTAL)
+            if v.get("reason") == "carried_in_bar"),
+        "pitches_altered_by_the_key": int(
+            (written or {}).get("pitches_altered_by_the_key", 0)),
+        # ⚠️ KEPT UNDER ITS OLD NAME AND STILL DERIVED. It was the abstention's
+        # size; it is now the reading's, and the expression did not have to
+        # change -- which is the whole argument for having derived it.
+        "printed_glyphs_read_into_a_verdict": sum(
+            1 for v in rec.verdicts_of(Q.ACCIDENTAL)
+            if v.get("decider") != "respell_accidental"),
+    }
+    census["unaccounted"] = gathered - sum(
+        census[k] for k in ("owner_decided", "abstained_ambiguous",
+                            "no_candidate", "no_unit", "no_evidence"))
+    return census
 
 
 #: Detected classes that are NOT a notation family of their own, with the
@@ -3451,11 +3588,24 @@ NOT_NOTATION: Dict[str, str] = {
     # in-bar accidental "is still filed only as an anonymous `Q.GLYPH_BOX`",
     # and the two documents contradicted each other for as long as both
     # existed. 256 such glyphs on Litolff pp.1-4 reach nothing.
-    "accidental": "NOT consumed: the key-derived alteration reaches `pitch` "
-                  "via `Q.ACCIDENTAL`, but the PRINTED glyph is read by "
-                  "nothing and is filed only as an anonymous `Q.GLYPH_BOX`. "
-                  "Counted in coverage()'s `accidental_reading` block, which "
-                  "is the abstention rather than a family row.",
+    # ⚠️ AND THIS ENTRY CHANGED AGAIN ON 2026-09-23 (ROADMAP 2.7), in the
+    # other direction: the printed glyph now HAS a gather quantity
+    # (`Q.ACCIDENTAL_STAFF_POSITION`), an adjudicator (`accidental_owner`), an
+    # EVALUATE consequence (`apply_printed_accidental`) and an element in the
+    # file. It stays on `NOT_NOTATION` rather than becoming a family row
+    # because its value still reaches the file as an attribute OF A NOTE --
+    # `<accidental>` inside `<note>` -- and not as an element of its own, so
+    # no per-family counter can see it. `accidental_reading` in `coverage()`
+    # remains the place it is counted, and is now a census rather than an
+    # abstention.
+    "accidental": "counted as the `accidental` family: the PRINTED glyph is "
+                  "read as `Q.ACCIDENTAL_STAFF_POSITION`, owned by "
+                  "`accidental_owner` and applied by "
+                  "`apply_printed_accidental`, reaching the file as "
+                  "`<accidental>` on its note; the SOUNDING alteration "
+                  "reaches `<alter>` via `Q.ACCIDENTAL` from either that "
+                  "glyph or the key. `key*` classes belong to the key "
+                  "signature and are claimed by the `key` family.",
     "key": "consumed by `key_signature`",
     "clef": "counted as the `clef` family",
     "timeSig": "counted as the `time` family",
@@ -3769,36 +3919,27 @@ def coverage(result: Dict[str, Any],
                  if r["status"] == "decided_uncounted"]
     return {
         "families": rows,
-        # ⚠️⚠️ THE ACCIDENTAL IS TWO FACTS AND WE HOLD ONLY ONE, SO THE OTHER
-        # IS COUNTED RATHER THAN GUESSED. `<alter>` is what the note SOUNDS
-        # and comes from `Q.ACCIDENTAL`, which `respell_accidental` derives
-        # from the key. `<accidental>` is the glyph the engraver PRINTED and
-        # nothing reads one: the in-bar accidental is filed as an anonymous
-        # `Q.GLYPH_BOX` and reaches no quantity at all. So the exporter writes
-        # no `<accidental>`, and this is the size of that abstention -- every
-        # one is a note that may carry a printed alteration we did not read.
+        # ⚠️⚠️ THE ACCIDENTAL IS TWO FACTS AND WE NOW HOLD BOTH, SO THIS IS A
+        # CENSUS AND NO LONGER THE SIZE OF AN ABSTENTION. `<alter>` is what
+        # the note SOUNDS and comes from `Q.ACCIDENTAL`, which the key or a
+        # printed glyph can supply. `<accidental>` is the glyph the engraver
+        # PRINTED, and since roadmap 2.7 it is read:
+        # `Q.ACCIDENTAL_STAFF_POSITION` gathers it, `accidental_owner` names
+        # the head it alters or abstains, `apply_printed_accidental` carries
+        # it to the bar's end, and the exporter writes it on the owned head
+        # only.
         #
-        # ⚠️ IT IS NOT A FAMILY ROW, deliberately: `accidental` is on
-        # `NOT_NOTATION`, and promoting it would put a family in the census
-        # whose quantity is an EVALUATE consequence rather than a reading.
-        # Reported at the top instead, where a zero cannot be mistaken for a
-        # family that came out fine.
-        "accidental_reading": {
-            "printed_glyphs_detected": sum(
-                n for cls, n in detected.items()
-                if cls.lower().startswith("accidental")),
-            # ⚠️ DERIVED, NEVER A LITERAL ZERO. `respell_accidental` is the
-            # only producer today, so this is 0 -- but a hardcoded 0 would
-            # STILL read 0 the day a reader of the printed glyph lands, which
-            # is the "control that computes the wrong thing" this repo has
-            # recorded five times. Counting the verdicts some OTHER decider
-            # wrote makes the figure move on its own.
-            "printed_glyphs_read_into_a_verdict": sum(
-                1 for v in rec.verdicts_of(Q.ACCIDENTAL)
-                if v.get("decider") != "respell_accidental"),
-            "pitches_altered_by_the_key": int(
-                (written or {}).get("pitches_altered_by_the_key", 0)),
-        },
+        # ⚠️ IT IS NOW A FAMILY ROW AS WELL, and this block is the detail that
+        # row cannot carry: a family row says decided-and-written, and what a
+        # reader of this family needs is the SHAPE of what did not -- how many
+        # glyphs the geometry could not separate, how many stood before no
+        # head at all, how many were owned onto a note the exporter dropped.
+        # Kept at the top for that, not as a substitute for the row.
+        #
+        # ⚠️ EVERY FIGURE IS DERIVED, NEVER A LITERAL. The rule this block has
+        # already been burnt by twice: a hardcoded 0 still reads 0 the day the
+        # thing it counts starts happening.
+        "accidental_reading": _accidental_census(rec, detected, written),
         # ⚠️ Ink of a kind no family and no reason accounts for. Derived, so a
         # class nobody has thought about appears here the first time the
         # detector emits one.

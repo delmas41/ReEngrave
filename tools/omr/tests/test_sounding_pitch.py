@@ -338,31 +338,49 @@ class TestTheFrameConversion(unittest.TestCase):
 
 
 class TestTheDocumentationClaim(unittest.TestCase):
-    def test_NOT_NOTATION_no_longer_claims_the_glyph_is_consumed(self):
-        """⚠️ THE TREE CONTRADICTED ITSELF AND ONE SIDE WAS FALSE.
-        `NOT_NOTATION["accidental"]` read "consumed into `pitch` and
-        `accidental`"; `restate_pitch` reads position + clef and never an
-        accidental glyph, and `Q.ACCIDENTAL`'s only producer is the key. The
-        other document -- `gather_coverage.FAMILY_Q_IS_ELSEWHERE` -- had it
-        right all along."""
+    def test_the_two_documents_about_the_accidental_AGREE(self):
+        """⚠️ THE TREE CONTRADICTED ITSELF FOR AS LONG AS BOTH EXISTED, and
+        that is what this pins -- not either side's current answer.
+        `NOT_NOTATION["accidental"]` said the glyph was "consumed into `pitch`
+        and `accidental`" while `gather_coverage.FAMILY_Q_IS_ELSEWHERE` said
+        it reached no quantity at all; the second was right and the first was
+        repaired on 2026-09-21.
+
+        ⚠️⚠️ ROADMAP 2.7 MOVED BOTH, ON 2026-09-23, AND THIS TEST MOVED WITH
+        THEM. The glyph now IS read -- `Q.ACCIDENTAL_STAFF_POSITION` gathers
+        it and `accidental_owner` decides it -- so the assertion is no longer
+        "neither claims it is consumed" but "both name the SAME quantity".
+        The pairing is the point: a future change that repairs one document
+        and forgets the other fails here whichever direction it moves.
+        """
+        from tools.omr.staged import gather_coverage as GC
         entry = E.NOT_NOTATION["accidental"]
         self.assertNotIn("consumed into", entry)
-        self.assertIn("GLYPH_BOX", entry)
+        self.assertIn("ACCIDENTAL_STAFF_POSITION", entry)
+        self.assertEqual(GC.FAMILY_TO_Q["accidental"],
+                         "ACCIDENTAL_STAFF_POSITION")
+        self.assertNotIn("accidental", GC.FAMILY_Q_IS_ELSEWHERE)
 
-    def test_respell_accidental_is_still_the_only_producer(self):
-        """⚠️ THE PREMISE THE ROUTING RESTS ON, asserted rather than
-        remembered. The alteration may be folded into the pitch only while
-        `Q.ACCIDENTAL` means *the key altered this note*. The day a reader of
-        the PRINTED glyph files one, that is no longer true and this test is
-        where the next author finds out."""
-        import inspect
-        from tools.omr.staged import consequences
-        src = inspect.getsource(consequences)
-        writers = [ln for ln in src.splitlines()
-                   if "Q.ACCIDENTAL" in ln and "_verdict(" not in ln]
-        self.assertTrue(
-            any("effect=Q.ACCIDENTAL" in ln for ln in writers),
-            "respell_accidental no longer declares Q.ACCIDENTAL as its effect")
+    def test_respell_accidental_is_still_a_producer_and_is_no_longer_alone(self):
+        """⚠️⚠️ THAT DAY CAME: ROADMAP 2.7, 2026-09-23. This test used to be
+        named `..._is_still_the_ONLY_producer` and its docstring said *"the
+        day a reader of the PRINTED glyph files one, that is no longer true
+        and this test is where the next author finds out"*. It did, and this
+        is the finding out.
+
+        ⚠️ WHAT THE ROUTING NOW RESTS ON IS NARROWER AND IS ASSERTED HERE.
+        `Q.ACCIDENTAL` still means ONLY *what this note sounds*, whichever
+        rule wrote it, so folding it into the pitch stays correct. What says
+        whether a GLYPH was drawn is `detail.printed` on the row, not the
+        decider's name -- and `apply_printed_accidental` sets it on the owned
+        head only, never on the notes it carries to."""
+        from tools.omr.staged import consequences  # noqa: F401  registers
+        from tools.omr.staged import evaluate
+        from tools.omr.staged.record import Q
+        writers = sorted(r.consequence.value for r in evaluate.RULES
+                         if r.effect == Q.ACCIDENTAL)
+        self.assertEqual(writers,
+                         ["apply_printed_accidental", "respell_accidental"])
 
 
 if __name__ == "__main__":
