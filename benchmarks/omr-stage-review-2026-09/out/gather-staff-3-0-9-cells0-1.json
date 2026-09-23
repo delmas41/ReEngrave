@@ -1,0 +1,75 @@
+{
+ "staff": "staff/3/0/9",
+ "crop": {
+  "page_px": [
+   295,
+   1689,
+   2663,
+   1973
+  ],
+  "zoom": 2,
+  "dpi": 600,
+  "width": 4736,
+  "height": 568
+ },
+ "frame_control": {
+  "ran": true,
+  "ok": true,
+  "contrast": 152.51,
+  "note": "the staff's own five lines are materially darker than a half-space off them, so this render IS the record's raster"
+ },
+ "counts": {
+  "staff": "staff/3/0/9",
+  "page": 3,
+  "system": 0,
+  "staff_ordinal": 9,
+  "part_name": "Viola",
+  "part_id": "P10",
+  "clef": {
+   "state": "read",
+   "id": "vrd:176187",
+   "outcome": "abstained",
+   "value": null,
+   "reason": "no_candidates",
+   "decided_by": "adjudicate_clef"
+  },
+  "key_signature": {
+   "state": "read",
+   "id": "vrd:176518",
+   "outcome": "abstained",
+   "value": null,
+   "reason": "needs_clef",
+   "decided_by": "adjudicate_key_signature"
+  },
+  "instrument": {
+   "state": "read",
+   "id": "vrd:175493",
+   "outcome": "abstained",
+   "value": null,
+   "reason": "no_evidence",
+   "decided_by": "adjudicate_instrument"
+  },
+  "slot_index": {
+   "state": "read",
+   "id": "vrd:275731",
+   "outcome": "decided",
+   "value": 9,
+   "reason": "the_short_block_is_condensed_at_its_foot",
+   "decided_by": "infer:collapse_slot_index_to_family_block"
+  },
+  "n_measures": 16,
+  "boxes_all": 121,
+  "heads_boxed": 48,
+  "heads_written": 0,
+  "heads_lost": 48,
+  "refused": {
+   "ink_is_a_whole_rest": 1,
+   "no_pitch": 40,
+   "not_a_notehead:clipped_fragment": 3,
+   "not_a_notehead:too_narrow": 1,
+   "owned_by_another_staff": 3
+  }
+ },
+ "boxes_drawn": 121,
+ "source": "the running review server's own /api/gather payload"
+}

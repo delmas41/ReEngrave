@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>ReEngrave — stage review</title>
+<link rel="stylesheet" href="/static/app.css">
+</head>
+<body>
+
+<header>
+  <div class="hrow">
+    <h1>Stage review</h1>
+    <span id="staffTitle" class="staffTitle">—</span>
+    <span class="grow"></span>
+    <span id="provenance" class="prov"></span>
+  </div>
+  <nav id="tabs">
+    <button data-view="pick"       class="on">Pick</button>
+    <button data-view="gather">GATHER</button>
+    <button data-view="adjudicate">ADJUDICATE</button>
+    <button data-view="evaluate">EVALUATE</button>
+    <button data-view="infer">INFER</button>
+    <button data-view="export">EXPORT</button>
+  </nav>
+</header>
+
+<main>
+  <section id="view"></section>
+
+  <aside id="side">
+    <div class="sideHead">
+      <b>Review actions</b>
+      <span id="sidecarCount" class="pill">0</span>
+    </div>
+    <div id="sidecarPath" class="mono tiny"></div>
+    <div id="sidecarList" class="actions"></div>
+    <div class="sideFoot">
+      <button id="rerunBtn" class="primary">Re-run the stages</button>
+      <div id="rerunOut" class="tiny"></div>
+    </div>
+  </aside>
+</main>
+
+<div id="modal" class="modal hidden">
+  <div class="modalBox">
+    <h3 id="modalTitle">Add a box</h3>
+    <div id="modalBody"></div>
+    <div class="modalFoot">
+      <button id="modalCancel">Cancel</button>
+      <button id="modalOk" class="primary">Save to the sidecar</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast" class="toast hidden"></div>
+
+<script src="/static/app.js"></script>
+</body>
+</html>
