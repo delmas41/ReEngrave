@@ -370,14 +370,23 @@ def diff_records(before: dict, after: dict, *, human_rows: Dict[str, List[str]],
         for old in ids:
             wanted[id_map.get(old, old)] = (action_id, old)
     seen: set = set()
+    # ⚠️ A SINGLE PASS WITH A SMALL-SET MEMBERSHIP TEST, not three sets per
+    # verdict. `wanted` holds a handful of ids; a whole-movement record holds
+    # ~100,000 verdicts and `adjudicate_arc_owner` alone cites ~1,800 rows in
+    # each of `basis`, `considered` and `correlated` (roadmap 1.1b measured
+    # that as 99 % of an arc verdict's bytes). Building three sets per verdict
+    # allocates that volume all over again for an answer that never needs the
+    # set. Same result, and it is the difference between a diff that finishes
+    # and one that looks like a hang.
     for key, av in a.items():
-        cited = set(av.get("basis") or ()) | set(av.get("used") or ()) \
-            | set(av.get("considered") or ())
-        hit = cited & set(wanted)
+        hit = set()
+        for fld in ("used", "basis", "considered"):
+            for rid in av.get(fld) or ():
+                if rid in wanted:
+                    hit.add(rid)
         if not hit:
             continue
-        for h in hit:
-            seen.add(h)
+        seen |= hit
         in_used = sorted(h for h in hit if h in (av.get("used") or ()))
         in_basis = sorted(h for h in hit if h in (av.get("basis") or ()))
         # ⚠️⚠️ `used` IS NOT `basis` IS NOT `considered`, AND REPORTING THEM
