@@ -51,10 +51,19 @@ and MUST NOT be given the other two:
                                    contest, which is reported, not hidden.
 
   Nothing gives a human box a BEAM, a FLAG or an AUG DOT either, all of which
-  `adjudicate_duration` reads off the cell's own raster — so a human notehead
-  arrives at EXPORT with no duration evidence at all. That is the honest
-  answer to "which stages see a human box", and `rerun.py` prints it per run
-  rather than trusting this comment.
+  `adjudicate_duration` reads off the cell's own raster.
+
+⚠️⚠️ AND THE CONSEQUENCE OF THAT LAST LINE IS NOT "no duration" — IT IS A
+DURATION READ FROM THE HEAD ALONE, WHICH IS WORSE, because it is an answer.
+Measured on the fixture: a human `noteheadBlackOnLine` comes back DECIDED
+`written 1.0`, reason `head_and_marks`, with the marks half of that reason
+contributing nothing. That is correct for a quarter note and wrong for every
+beamed or flagged one, and NOTHING ON THE ROW SAYS WHICH — the human drew a
+box, not a stem. A session reading a review pass must treat a human box's
+duration as unmeasured rather than as read. `rerun.py` prints the honest
+table per run rather than trusting this comment; closing the gap needs a
+GATHER function that re-reads the cell raster around a human box, which is a
+2.6-shaped change and is not this lane's.
 
 ⚠️ A HUMAN-AMENDED RECORD IS A NEW RECORD FILE. Its provenance names the
 PARENT record's md5 and the sidecar's sha256, and `rerun.py` refuses to write

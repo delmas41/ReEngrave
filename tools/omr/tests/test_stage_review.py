@@ -421,6 +421,27 @@ class TestAnAddedBoxBecomesASubject(_Case):
         for q, why in HE.HUMAN_BOX_ABSENT.items():
             self.assertEqual(absent[q], why)
 
+    def test_a_human_boxs_DURATION_is_read_from_the_HEAD_ALONE(self):
+        """⚠️⚠️ NOT "no duration" — an ANSWER, which is worse.
+
+        Nothing gives a human box a beam, a flag or an aug dot (they are read
+        off the cell RASTER), so `adjudicate_duration` decides from the
+        notehead class alone and still reports reason `head_and_marks` with
+        the marks half contributing nothing. Right for a quarter note, wrong
+        for every beamed or flagged one, and nothing on the row says which.
+        Asserted so the day a GATHER function re-reads the raster around a
+        human box, this goes red and somebody re-reads this note.
+        """
+        v = self.standing(self.arm["record"], Q.DURATION, self.sub)
+        self.assertEqual(v["outcome"], "decided")
+        self.assertEqual(v["value"]["written"], 1.0)
+        self.assertEqual(v["value"]["beam_levels"], 0)
+        self.assertEqual(v["reason"], "head_and_marks")
+        for q in (Q.BEAM_STROKE, Q.FLAG, Q.AUG_DOT):
+            self.assertEqual(
+                [o for o in self.arm["record"]["observations"]
+                 if o["subject"] == self.sub and o["quantity"] == q], [])
+
     def test_one_more_note_reaches_the_file(self):
         self.assertEqual(self.d.notes_after, self.d.notes_before + 1)
         pitches = [p.text for p in
