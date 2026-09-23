@@ -635,6 +635,23 @@ class TestTheDerivationsAreNotVacuous(unittest.TestCase):
         self.assertIn(Q.GLYPH_CONF, vis["absent"])
         self.assertTrue(vis["adjudicate_wants"])
 
+    def test_the_convention_join_is_real_and_says_it_is_COARSE(self):
+        """⚠️ `conventions.py`'s `code_paths` names FILES, so this join is
+        per-MODULE and every decision in `rhythm.py` gets that file's entries.
+        Reported as `granularity: "file"` rather than presented as a
+        per-decision claim — and a decision with no entry comes back EMPTY,
+        which is the gap `staged.check`'s `conventions` part already owns."""
+        got = FB._decider_declaration("adjudicate_duration")["conventions"]
+        self.assertTrue(got, "the join returned nothing — it would look like "
+                             "'this decision claims no convention' for every "
+                             "decision in the tree")
+        self.assertTrue(all(c["granularity"] == "file" for c in got))
+        self.assertTrue(all(c["id"] and c["says"] for c in got))
+        self.assertEqual(
+            FB._decider_declaration("adjudicate_clef")["conventions"], [],
+            "a decision the registry does not name must come back EMPTY, not "
+            "with somebody else's convention")
+
     def test_the_human_quantities_declare_a_claim_kind(self):
         from tools.omr.staged.record import claim_of
         self.assertEqual(claim_of(Q.HUMAN_BOX_VERDICT), "identification")

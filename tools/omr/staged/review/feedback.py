@@ -59,7 +59,7 @@ def _decider_declaration(decider: str) -> dict:
                "composed_from": list(spec.composed_from),
                "subjects_from": list(adjudicate.domain_of(spec)),
                "mode": spec.mode.value, "stub": spec.stub}
-        out["conventions"] = _conventions_for(quantity)
+        out["conventions"] = _conventions_for(spec)
         return out
     for rule in getattr(evaluate, "RULES", ()):
         if getattr(rule, "name", None) == decider:
@@ -75,34 +75,48 @@ def _decider_declaration(decider: str) -> dict:
     return {"stage": "UNKNOWN", "decider": decider}
 
 
-def _conventions_for(quantity: str) -> List[dict]:
-    """The engraving conventions the registry says this decision claims."""
+def _conventions_for(spec) -> List[dict]:
+    """Which engraving conventions the registry attaches to this decision.
+
+    ⚠️⚠️ THE JOIN IS BY MODULE FILE AND THE ENTRY SAYS SO. `conventions.py`'s
+    `code_paths` names FILES, not functions, so every decision in
+    `adjudicators/rhythm.py` gets that file's entries — `adjudicate_duration`,
+    `adjudicate_tuplet`, `adjudicate_event`, `adjudicate_meter`,
+    `adjudicate_onset_column` and `adjudicate_stem_direction` all come back
+    C11/L30. That is coarser than a reader would like and it is REPORTED as
+    coarse (`granularity: "file"`) rather than silently presented as a
+    per-decision claim. Eight of the 28 decisions join at all; the rest come
+    back empty, which is the same 44-entries-read-by-nothing gap
+    `staged.check`'s `conventions` part already reports.
+    """
+    import inspect
+    import os
     try:
         from ... import conventions as CONV
+        registry = CONV.load()
     except Exception:                                   # pragma: no cover
         return []
+    src = inspect.getsourcefile(spec.fn)
+    if not src:
+        return []
+    rel = "tools/omr/staged/adjudicators/" + os.path.basename(src)
     out = []
-    for name in dir(CONV):
-        if name.startswith("_"):
+    for entry in registry:
+        if rel not in entry.code_paths:
             continue
-        obj = getattr(CONV, name)
-        entries = obj.values() if isinstance(obj, dict) else None
-        if entries is None:
-            continue
-        for e in entries:
-            fields = e if isinstance(e, dict) else getattr(e, "__dict__", {})
-            claimed = str(fields.get("quantity") or fields.get("decision")
-                          or "")
-            if claimed and claimed == quantity:
-                out.append({k: v for k, v in fields.items()
-                            if isinstance(v, (str, int, float, bool,
-                                              type(None)))})
-    return out[:8]
+        out.append({"id": entry.id, "title": entry.title,
+                    "category": entry.category,
+                    "status": entry.status.value,
+                    "says": entry.says[:400],
+                    "would_be_falsified_by": entry.falsified_by[:400],
+                    "granularity": "file",
+                    "joined_on": rel})
+    return out
 
 
 def _standing(record: dict) -> Dict[tuple, dict]:
     """(quantity, subject) -> the standing verdict, superseded rows dropped —
-    `export.Record`'s own resolution, reached through `rerun` so there is one
+    `export.Record`'s own resolution, reached through `rerun` so there is ONE
     spelling of it in this package rather than two."""
     from .rerun import _verdict_index
     return _verdict_index(record.get("verdicts") or ())
