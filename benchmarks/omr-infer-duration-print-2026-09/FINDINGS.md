@@ -116,18 +116,83 @@ times a notehead. A merged blob on a plate CLAUDE.md records as MERGING.
    funnel's shape INVERTING between the two plates (disagreement 15 → 96), so a
    Litolff-only answer is a one-publisher answer.
 
+## 5b. The reference encoding, on the two pages whose join is clean — AND THE
+##     FIRST DRAFT OF THIS CHECK WAS A CONTROL THAT COULD NOT FAIL
+
+`probe/score_against_reference.py`. Pages 3 and 4 only; the join's own control
+is the record's cell counts being UNANIMOUS across every staff and matching the
+verified window exactly (p3 16+18 = mm 49–82; p4 15+15 = mm 83–112), re-checked
+at run time, refusing rather than scoring on disagreement. **11 of the 16
+inferences are on a clean join.**
+
+⚠️⚠️ **THE FIRST DRAFT REPORTED "6 OF 6 INFERRED CORRECT" AND THAT NUMBER WAS
+WORTHLESS.** Two independent faults, both caught before it was believed:
+
+1. **It compared left-to-right noteheads against a PART-MAJOR note list.**
+   Flauti is reference parts `[0, 1]`; concatenating them gives
+   part0-n0, part0-n1, part1-n0, part1-n1, which is not page order. Every one
+   of the six "correct" rows was a two-part staff.
+2. **It counted HEADS where the reference counts NOTES.** Measured:
+   `cell/4/0/0/12` holds 4 heads at **2 distinct x** — two events of two
+   stacked heads, not four notes. The 4-against-4 match was an accident.
+
+The repair groups heads into events by x and aligns against whichever part's
+own note count matches. And then the real result appears:
+
+> **0 of 11 rows are INFORMATIVE.** Every positionally comparable bar has a
+> rhythmically UNIFORM reference — all `1.0`, or all `2.0` — so every
+> alignment agrees and no index could have been wrong. **A check that cannot
+> fail is not a check**, so these rows are reported and excluded from the
+> tally rather than counted as passes.
+
+**That is a result about the instrument, not about the rules.** On this
+document the encoding cannot discriminate a right duration inference from a
+wrong one positionally, because the rules fire overwhelmingly in bars of even
+rhythm — which is, on reflection, exactly where neighbouring staves agree and
+therefore exactly where these rules CAN fire. The instrument and the rules
+select the same bars.
+
+### The membership check, which CAN fail — and does, once
+
+Weaker than positional and needing no alignment: is the inferred duration
+present among the reference bar's durations at all?
+
+| | rows |
+|---|--:|
+| inferred present, reader's top also present | 10 |
+| **inferred ABSENT, reader's top also absent** | **1** |
+
+The single failure is **`glyph/4/0/9/5/7`, m88 Violoncello** — and it is one of
+§2's two ordering-overrides, the one with the highest detector confidence on
+the page (0.77). The rule writes **0.25** where the reference bar holds only
+**1.0**, overriding the reader's own **0.5**. Both are wrong; the rule moved
+**further from** the reference, not nearer.
+
+⚠️ **Do not read that as the rule being refuted.** That bar is badly misread
+BEFORE any inference: our cell holds **4 events / 5 heads where the reference
+has 2 notes**. The rule borrowed a length from neighbours in a bar whose ink we
+had already over-read, which is the failure mode its own docstring names
+("the column grouping may have merged two instants"). What it shows is that the
+rule does not repair a bad bar and can deepen it — and that the 10 agreeing
+rows carry little weight, because on those the rule and the reader picked the
+SAME value, so they test the reader and not the rule.
+
+**Net: the encoding returns one failable observation, and it is negative.**
+Nine of the other ten are uninformative by construction. The crops remain the
+instrument that can actually settle this.
+
 ## 6. What this pass does NOT establish
 
 - **No default is decided and none should be read from it.** No crop has been
   adjudicated by anyone.
-- **The reference encoding was not used.** The obvious second instrument is the
-  measure alignment through `works.json`, and it is deliberately not used here:
-  the verified `984073-p2` row records that this raster **drops one barline**
-  (the m19|m20 boundary, pipeline 16 bars against the print's 17), so the
-  cell→measure map on page 2 is off by one after that point and five of the
-  sixteen inferences are on page 2. A join that is silently off by a bar would
-  score a right answer wrong and a wrong answer right. Pages 3 and 4 have clean
-  windows and are scorable; that is the next step, not a claim made here.
+- **The reference encoding settles nothing positionally** (§5b): 0 of 11 rows
+  discriminate. Page 2's five inferences are not scored at all — the verified
+  `984073-p2` row records this raster **dropping one barline** (m19|m20,
+  pipeline 16 bars against the print's 17), so its cell→measure map is off by
+  one after that point and a silently shifted join would score a right answer
+  wrong.
+- **The one negative membership result is not a refutation.** Its bar is
+  over-read before the rule runs (4 events against the reference's 2 notes).
 - **The witnesses were not cropped.** A crop shows whether THIS note's printed
   duration matches; it does not show whether the neighbours the rule borrowed
   from were read correctly. Both rules are only as good as those witnesses.
