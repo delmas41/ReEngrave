@@ -104,3 +104,32 @@ Format: `YYYY-MM-DD · who · the decision · because · (pointer)`
   rule and not a convenience; nothing in memory is pooled, `Log`/`Verdict`/every
   stage are untouched, and the writer proves its own round trip on every call ·
   (`benchmarks/omr-ink-gather-2026-09/FINDINGS.md` §12)
+- 2026-09-23 · Sean · **`OMR_INFER` flips OFF→ON: both INFER duration rules
+  (`collapse_duration_by_column`, `collapse_duration_to_barline`) ship on
+  (roadmap 2.3).** · because the three subjects he adjudicated against the
+  Litolff print were each wrong for the same reason — the rules read a glyph
+  ownership had awarded elsewhere — and are right once `Q.GLYPH_OWNER` is in
+  their `reads`; measured OFF→ON on both whole-movement records, balanced,
+  Litolff 0→69 and Brahms 0→287 inferences · ⚠️ Breitkopf's funnel inverts
+  (by-column dominates) and 0 of its subjects are print-checked; a session
+  that finds one wrong files a crop and asks, it does not flip the default
+  back · (`6f269360`, `benchmarks/omr-infer-default-2026-09/FINDINGS.md` §7)
+- 2026-09-23 · Sean · **The in-bar accidental goes on the roadmap as item
+  2.7** — GATHER a staff-position reading of the printed glyph, ADJUDICATE
+  which notehead it modifies (immediately right, same height, may abstain),
+  EVALUATE a bar-scoped override of the key-derived spelling, EXPORT
+  `<accidental>` through the legacy renderer already reused · because 1,531
+  glyphs are detected on the Litolff movement and 0 reach any verdict, so
+  every alteration in the file comes from the key alone — the largest thing
+  the first cleanup count found · ask first how Litolff prints courtesy
+  accidentals before writing `parentheses="yes"` · (ROADMAP 2.7)
+- 2026-09-23 · Sean (instruction) / session (measurement) · **`glyph_owner`'s
+  domain is roadmap item 2.6, and the fix is in GATHER, not in the
+  adjudicator**: `gather_ownership_evidence` compares smufl names and IoU 0.5
+  where the frozen legacy contest compares `category` and IoU 0.3, and the
+  name encodes on-line-vs-in-space — the quantity in dispute · because all
+  161 never-contested glyphs lack a band-distance row of any state (0
+  abstentions, 0 scope faults), and the 8 'elsewhere' all resolved to their
+  own staff or tied · `subjects_from=Q.GLYPH_BAND_DISTANCE` stays; the 38 with
+  no twin are not handed in · (`64c83c5f`,
+  `benchmarks/omr-infer-duration-print-2026-09/FINDINGS.md` §10)
