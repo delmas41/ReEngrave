@@ -1,0 +1,91 @@
+{
+  "label": "litolff",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf",
+  "dpi": 600,
+  "tiles": [
+    {
+      "id": "glyph-1-0-11-2-4",
+      "subject": "glyph/1/0/11/2/4",
+      "reason": "clipped_fragment",
+      "file": "litolff-glyph-1-0-11-2-4.png",
+      "frame_ok": true,
+      "frame_margin": 195.21079881656803,
+      "box_page_px": [
+        1138.64,
+        2993.0,
+        1156.24,
+        2997.48
+      ]
+    },
+    {
+      "id": "glyph-1-0-11-2-5",
+      "subject": "glyph/1/0/11/2/5",
+      "reason": "clipped_fragment",
+      "file": "litolff-glyph-1-0-11-2-5.png",
+      "frame_ok": true,
+      "frame_margin": 195.21079881656803,
+      "box_page_px": [
+        1164.72,
+        2993.0,
+        1183.12,
+        2998.44
+      ]
+    },
+    {
+      "id": "glyph-1-0-11-2-6",
+      "subject": "glyph/1/0/11/2/6",
+      "reason": "clipped_fragment",
+      "file": "litolff-glyph-1-0-11-2-6.png",
+      "frame_ok": true,
+      "frame_margin": 195.21079881656803,
+      "box_page_px": [
+        1164.72,
+        2993.0,
+        1182.96,
+        2998.44
+      ]
+    },
+    {
+      "id": "glyph-2-0-0-2-11",
+      "subject": "glyph/2/0/0/2/11",
+      "reason": "too_narrow",
+      "file": "litolff-glyph-2-0-0-2-11.png",
+      "frame_ok": true,
+      "frame_margin": 69.72642998027612,
+      "box_page_px": [
+        860.76,
+        417.12,
+        872.44,
+        437.44
+      ]
+    },
+    {
+      "id": "glyph-2-0-10-14-9",
+      "subject": "glyph/2/0/10/14/9",
+      "reason": "too_narrow",
+      "file": "litolff-glyph-2-0-10-14-9.png",
+      "frame_ok": true,
+      "frame_margin": 161.8164694280079,
+      "box_page_px": [
+        2375.885,
+        1897.64,
+        2388.3275,
+        1928.9825
+      ]
+    },
+    {
+      "id": "glyph-2-0-2-14-2",
+      "subject": "glyph/2/0/2/14/2",
+      "reason": "too_narrow",
+      "file": "litolff-glyph-2-0-2-14-2.png",
+      "frame_ok": true,
+      "frame_margin": 64.51425049309664,
+      "box_page_px": [
+        2351.0,
+        605.0,
+        2358.245,
+        616.34
+      ]
+    }
+  ]
+}

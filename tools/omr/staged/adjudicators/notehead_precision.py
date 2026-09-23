@@ -112,6 +112,37 @@ LEDGER_RUNG_Y_TOL_SPACES = float(_legacy._LEDGER_RUNG_Y_TOL_SPACES)
 #: `transcribe._LEDGER_RUNG_MIN_X_OVERLAP`.
 LEDGER_RUNG_MIN_X_OVERLAP = float(_legacy._LEDGER_RUNG_MIN_X_OVERLAP)
 
+#: ⚠️⚠️ MEASURED AND HELD BACK, 2026-09-22, ON THE ACCEPTANCE DOCUMENTS
+#: THEMSELVES — `benchmarks/omr-notehead-precision-2026-09/`. Joined against
+#: the stem-crop-pass's blind print verdicts (the only place "is this a
+#: notehead" has a truth value): `unladdered` catches 0 of 34 (Litolff) / 2 of
+#: 44 (Breitkopf) print-confirmed non-noteheads and COSTS 4 of 29 / 4 of 74
+#: print-confirmed REAL noteheads — net NEGATIVE, worse than a coin flip,
+#: where `too_narrow` on the identical join reproduces the prior 0-cost / ~40-
+#: caught result almost exactly. Every traced cost is the SAME mechanism: the
+#: note's own ledger rung was never DETECTED anywhere in its cell (verified by
+#: hand for two cases — zero `ledgerLine` glyphs at all in that cell) — a
+#: detection-recall gap the legacy rule's own comment already names
+#: ("ledger recall is imperfect, so real notes with ZERO found rungs exist"),
+#: sharper here because these are LOW-CONFIDENCE SCAN glyphs, not the
+#: confidence>=0.82 engraved population that comment was written against.
+#: ⚠️ THIS TASK CARRIES NO FLAG (`docs/DECISIONS.md` convention: a default is
+#: a decision, not a code path to leave switchable), so there is no way to
+#: ship this LIVE and revert it later without a code change — and "print
+#: before default" (the ten rules, §5) means a rule that costs more real notes
+#: than it catches on the two ACCEPTANCE documents may not go live on the
+#: strength of its legacy ancestry alone. So the rule is fully BUILT, TESTED
+#: and MEASURED, and its finding is recorded in `detail` on every notehead
+#: (`unladdered_signal`) — but it does NOT set `value=True`. See
+#: `adjudicate_notehead_is_not_a_notehead`'s docstring and the 2.4a report for
+#: what would need to change before this could ship: the ledger search is
+#: SAME-CELL ONLY (a simplification stated in `_ledger_rungs_in_cell`'s own
+#: docstring); a PAGE-FRAME, cross-cell search — using `bbox_page_px`, which
+#: every glyph already carries, exactly as `Q.ONSET_COLUMN` had to for the
+#: identical cross-cell frame reason — is the next thing to try, unbuilt and
+#: unmeasured here.
+UNLADDERED_SHIPS = False
+
 #: Above this staff position (half-step units, top line = 0), a note is
 #: standing on the bottom line of a normal 5-line staff.
 _STAFF_BOTTOM_POSITION = 8.0
@@ -272,16 +303,16 @@ def _unladdered(ev: Evidence, box_row, spacing_canonical: float,
     wants=(Q.GLYPH_BOX, Q.CELL_BOX, Q.CELL_STAFF_SPACE,
           Q.NOTEHEAD_STAFF_POSITION, Q.GLYPH_CONF),
     subjects_from=Q.NOTEHEAD_CLASS,
-    reasons=("clipped_fragment", "too_narrow", "unladdered", "notehead",
+    reasons=("clipped_fragment", "too_narrow", "notehead",
              ABSTAIN.NO_STAFF_GEOMETRY),
     mode=Mode.ADDITIVE,
 )
 def adjudicate_notehead_is_not_a_notehead(ev: Evidence) -> Ruling:
     """Is this glyph the detector called a notehead actually something else?
 
-    ⚠️ THREE INDEPENDENT RULES, EACH A PORT OR A MEASURED-AND-NEVER-SHIPPED
-    FINDING, none of them a GATHER filter — see the module docstring for why
-    each is stated the way it is and where its threshold comes from.
+    ⚠️ TWO RULES SHIP, A THIRD IS MEASURED AND HELD BACK — none of them a
+    GATHER filter. See the module docstring for where each threshold comes
+    from and why the third does not set the value.
 
     1. `clipped_fragment` — a sliver of ink flush against the cell's own crop
        boundary: a neighbouring staff's ink bleeding into this cell's
@@ -289,13 +320,21 @@ def adjudicate_notehead_is_not_a_notehead(ev: Evidence) -> Ruling:
        shape (`transcribe._drop_clipped_notehead_fragments`).
     2. `too_narrow` — a `noteheadBlack*` box under 1.0 staff spaces wide,
        measured against the print on two publishers and costing 0 of 103
-       confirmed real noteheads (`omr-notehead-width-2026-09`).
-    3. `unladdered` — a low-confidence notehead standing outside the staff
-       with not one ledger rung joining it to that staff: a letter bowl, a
-       key-signature flat's loop, a bare ledger line read as a note
-       (`transcribe._drop_unladdered_noteheads`).
+       confirmed real noteheads (`omr-notehead-width-2026-09`), REPRODUCED
+       here on the same crop-pass join (0 of 103 confirmed heads cost,
+       ~40 confirmed non-noteheads caught).
+    3. `unladdered` (`UNLADDERED_SHIPS = False`, see its own constant for the
+       measurement) — a low-confidence notehead standing outside the staff
+       with not one ledger rung joining it to that staff
+       (`transcribe._drop_unladdered_noteheads`). MEASURED NET NEGATIVE on
+       the two acceptance documents: costs 4 of 29 / 4 of 74 confirmed real
+       noteheads against 0 of 34 / 2 of 44 confirmed non-noteheads caught.
+       Its signal is still COMPUTED and recorded in `detail["unladdered_
+       signal"]` on every notehead so the finding stays on the record and a
+       future session can re-enable it once a page-frame, cross-cell ledger
+       search is built and re-measured — it does not set `value=True`.
 
-    ⚠️ A GLYPH NONE OF THE THREE CONDEMNS DECIDES `False`, REASON
+    ⚠️ A GLYPH NONE OF THE SHIPPED RULES CONDEMNS DECIDES `False`, REASON
     `notehead` — not an abstention. Geometry was available and was tested;
     silence would read as "we could not tell" when the honest claim is "we
     looked and found nothing wrong with it", the same distinction
@@ -305,7 +344,7 @@ def adjudicate_notehead_is_not_a_notehead(ev: Evidence) -> Ruling:
     which every rule above needs to convert a canonical pixel distance into
     staff spaces. A missing PAGE frame (needed only by `clipped_fragment`)
     does not abstain the whole decision — it just cannot condemn on that one
-    rule, and the other two still run.
+    rule, and `too_narrow` still runs.
     """
     box_row = _glyph_box_row(ev)
     if box_row is None or not isinstance(box_row.value, (list, tuple)) \
@@ -318,13 +357,24 @@ def adjudicate_notehead_is_not_a_notehead(ev: Evidence) -> Ruling:
     detail: Dict[str, Any] = {"class": box_row.value[0]}
     used = [box_row.id]
 
+    # ⚠️ COMPUTED UNCONDITIONALLY, BEFORE THE SHIPPED RULES RETURN, so the
+    # measurement stays on the record even where a shipped rule already
+    # condemns the glyph for a different reason (the two populations
+    # overlap: 5 of 205 / 2 of 134 `unladdered`-flagged glyphs on the two
+    # documents are ALSO `too_narrow`).
+    ladder_detail: Dict[str, Any] = {}
+    would_unladder = _unladdered(ev, box_row, spacing, ladder_detail)
+    if ladder_detail:
+        detail["unladdered_signal"] = {"would_fire": would_unladder,
+                                       **ladder_detail}
+
     if _clipped_fragment(ev, box_row, spacing, detail):
         return Ruling(value=True, reason="clipped_fragment",
                       used=tuple(used), detail=detail)
     if _too_narrow(box_row, spacing, detail):
         return Ruling(value=True, reason="too_narrow",
                       used=tuple(used), detail=detail)
-    if _unladdered(ev, box_row, spacing, detail):
+    if UNLADDERED_SHIPS and would_unladder:
         return Ruling(value=True, reason="unladdered",
                       used=tuple(used), detail=detail)
     return Ruling(value=False, reason="notehead", used=tuple(used),

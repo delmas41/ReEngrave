@@ -1,0 +1,890 @@
+{
+  "label": "breitkopf",
+  "print_confusion": {
+    "NOT a notehead": {
+      "refused": 32,
+      "kept": 12
+    },
+    "IS a notehead": {
+      "refused": 1,
+      "kept": 73
+    },
+    "cannot tell": {
+      "refused": 8,
+      "kept": 18
+    }
+  },
+  "matched_rows": [
+    {
+      "subject": "glyph/2/0/0/4/13",
+      "truth": "IS a notehead",
+      "refused": false,
+      "reason": "notehead"
+    },
+    {
+      "subject": "glyph/3/1/9/1/10",
+      "truth": "IS a notehead",
+      "refused": false,
+      "reason": "notehead"
+    },
+    {
+      "subject": "glyph/3/0/8/7/1",
+      "truth": "IS a notehead",
+      "refused": false,
+      "reason": "notehead"
+    },
+    {
+      "subject": "glyph/1/0/10/1/7",
+      "truth": "IS a notehead",
+      "refused": false,
+      "reason": "notehead"
+    },
+    {
+      "subject": "glyph/2/0/2/1/12",
+      "truth": "NOT a notehead",
+      "refused": true,
+      "reason": "too_narrow"
+    },
+    {
+      "subject": "glyph/1/0/1/2/16",
+      "truth": "NOT a notehead",
+      "refused": true,
+      "reason": "too_narrow"
+    },
+    {
+      "subject": "glyph/0/0/3/4/4",
+      "truth": "IS a notehead",
+      "refused": false,
+      "reason": "notehead"
+    },
+    {
+      "subject": "glyph/3/1/0/3/2",
+      "truth": "IS a notehead",
+      "refused": false,
+      "reason": "notehead"
+    },
+    {
+      "subject": "glyph/2/1/2/3/1",
+      "truth": "IS a notehead",
+      "refused": false,
+      "reason": "notehead"
+    },
+    {
+      "subject": "glyph/1/0/0/0/12",
+      "truth": "IS a notehead",
+      "refused": false,
+      "reason": "notehead"
+    },
+    {
+      "subject": "glyph/0/0/2/5/7",
+      "truth": "IS a notehead",
+      "refused": false,
+      "reason": "notehead"
+    },
+    {
+      "subject": "glyph/2/0/12/1/8",
+      "truth": "IS a notehead",
+      "refused": false,
+      "reason": "notehead"
+    },
+    {
+      "subject": "glyph/2/0/3/3/9",
+      "truth": "IS a notehead",
+      "refused": false,
+      "reason": "notehead"
+    },
+    {
+      "subject": "glyph/2/0/6/3/8",
+      "truth": "cannot tell",
+      "refused": false,
+      "reason": "notehead"
+    },
+    {
+      "subject": "glyph/2/1/11/5/7",
+      "truth": "IS a notehead",
+      "refused": false,
+      "reason": "notehead"
+    },
+    {
+      "subject": "glyph/3/0/9/2/1",
+      "truth": "NOT a notehead",
+      "refused": true,
+      "reason": "too_narrow"
+    },
+    {
+      "subject": "glyph/0/0/6/2/5",
+      "truth": "IS a notehead",
+      "refused": false,
+      "reason": "notehead"
+    },
+    {
+      "subject": "glyph/2/1/5/5/3",
+      "truth": "NOT a notehead",
+      "refused": true,
+      "reason": "too_narrow"
+    },
+    {
+      "subject": "glyph/3/1/11/1/11",
+      "truth": "cannot tell",
+      "refused": false,
+      "reason": "notehead"
+    },
+    {
+      "subject": "glyph/2/1/9/2/0",
+      "truth": "NOT a notehead",
+      "refused": true,
+      "reason": "too_narrow"
+    },
+    {
+      "subject": "glyph/1/1/3/2/18",
+      "truth": "cannot tell",
+      "refused": false,
+      "reason": "notehead"
+    },
+    {
+      "subject": "glyph/2/1/9/6/5",
+      "truth": "NOT a notehead",
+      "refused": true,
+      "reason": "too_narrow"
+    },
+    {
+      "subject": "glyph/1/1/11/0/30",
+      "truth": "IS a notehead",
+      "refused": true,
+      "reason": "clipped_fragment"
+    },
+    {
+      "subject": "glyph/2/0/12/1/29",
+      "truth": "NOT a notehead",
+      "refused": false,
+      "reason": "notehead"
+    },
+    {
+      "subject": "glyph/2/0/9/2/16",
+      "truth": "NOT a notehead",
+      "refused": true,
+      "reason": "too_narrow"
+    },
+    {
+      "subject": "glyph/3/0/10/5/0",
+      "truth": "IS a notehead",
+      "refused": false,
+      "reason": "notehead"
+    },
+    {
+      "subject": "glyph/3/0/4/8/12",
+      "truth": "NOT a notehead",
+      "refused": true,
+      "reason": "too_narrow"
+    },
+    {
+      "subject": "glyph/3/1/12/2/12",
+      "truth": "NOT a notehead",
+      "refused": true,
+      "reason": "too_narrow"
+    },
+    {
+      "subject": "glyph/3/0/9/2/7",
+      "truth": "NOT a notehead",
+      "refused": true,
+      "reason": "too_narrow"
+    },
+    {
+      "subject": "glyph/3/1/2/5/5",
+      "truth": "IS a notehead",
+      "refused": false,
+      "reason": "notehead"
+    },
+    {
+      "subject": "glyph/3/0/1/3/2",
+      "truth": "cannot tell",
+      "refused": false,
+      "reason": "notehead"
+    },
+    {
+      "subject": "glyph/3/0/11/7/8",
+      "truth": "cannot tell",
+      "refused": false,
+      "reason": "notehead"
+    },
+    {
+      "subject": "glyph/2/1/6/2/6",
+      "truth": "NOT a notehead",
+      "refused": true,
+      "reason": "too_narrow"
+    },
+    {
+      "subject": "glyph/0/0/0/4/9",
+      "truth": "IS a notehead",
+      "refused": false,
+      "reason": "notehead"
+    },
+    {
+      "subject": "glyph/1/0/0/5/7",
+      "truth": "IS a notehead",
+      "refused": false,
+      "reason": "notehead"
+    },
+    {
+      "subject": "glyph/3/0/4/9/4",
+      "truth": "IS a notehead",
+      "refused": false,
+      "reason": "notehead"
+    },
+    {
+      "subject": "glyph/3/0/0/9/9",
+      "truth": "IS a notehead",
+      "refused": false,
+      "reason": "notehead"
+    },
+    {
+      "subject": "glyph/1/0/2/0/24",
+      "truth": "IS a notehead",
+      "refused": false,
+      "reason": "notehead"
+    },
+    {
+      "subject": "glyph/2/0/9/2/28",
+      "truth": "cannot tell",
+      "refused": true,
+      "reason": "too_narrow"
+    },
+    {
+      "subject": "glyph/3/0/2/1/3",
+      "truth": "IS a notehead",
+      "refused": false,
+      "reason": "notehead"
+    },
+    {
+      "subject": "glyph/3/0/11/9/3",
+      "truth": "cannot tell",
+      "refused": false,
+      "reason": "notehead"
+    },
+    {
+      "subject": "glyph/0/0/3/6/3",
+      "truth": "IS a notehead",
+      "refused": false,
+      "reason": "notehead"
+    },
+    {
+      "subject": "glyph/3/0/10/2/1",
+      "truth": "IS a notehead",
+      "refused": false,
+      "reason": "notehead"
+    },
+    {
+      "subject": "glyph/1/1/9/7/6",
+      "truth": "IS a notehead",
+      "refused": false,
+      "reason": "notehead"
+    },
+    {
+      "subject": "glyph/2/1/9/6/10",
+      "truth": "NOT a notehead",
+      "refused": true,
+      "reason": "too_narrow"
+    },
+    {
+      "subject": "glyph/0/0/11/2/4",
+      "truth": "IS a notehead",
+      "refused": false,
+      "reason": "notehead"
+    },
+    {
+      "subject": "glyph/3/0/4/8/19",
+      "truth": "cannot tell",
+      "refused": true,
+      "reason": "too_narrow"
+    },
+    {
+      "subject": "glyph/2/1/4/4/1",
+      "truth": "NOT a notehead",
+      "refused": true,
+      "reason": "too_narrow"
+    },
+    {
+      "subject": "glyph/3/0/9/2/4",
+      "truth": "NOT a notehead",
+      "refused": true,
+      "reason": "too_narrow"
+    },
+    {
+      "subject": "glyph/1/1/12/1/5",
+      "truth": "IS a notehead",
+      "refused": false,
+      "reason": "notehead"
+    },
+    {
+      "subject": "glyph/3/1/1/9/10",
+      "truth": "NOT a notehead",
+      "refused": true,
+      "reason": "too_narrow"
+    },
+    {
+      "subject": "glyph/3/1/13/0/9",
+      "truth": "cannot tell",
+      "refused": false,
+      "reason": "notehead"
+    },
+    {
+      "subject": "glyph/1/0/2/1/7",
+      "truth": "NOT a notehead",
+      "refused": true,
+      "reason": "too_narrow"
+    },
+    {
+      "subject": "glyph/2/0/1/0/12",
+      "truth": "NOT a notehead",
+      "refused": true,
+      "reason": "too_narrow"
+    },
+    {
+      "subject": "glyph/2/0/4/2/8",
+      "truth": "IS a notehead",
+      "refused": false,
+      "reason": "notehead"
+    },
+    {
+      "subject": "glyph/3/1/3/0/43",
+      "truth": "cannot tell",
+      "refused": false,
+      "reason": "notehead"
+    },
+    {
+      "subject": "glyph/1/0/3/1/31",
+      "truth": "NOT a notehead",
+      "refused": true,
+      "reason": "too_narrow"
+    },
+    {
+      "subject": "glyph/1/0/3/1/18",
+      "truth": "NOT a notehead",
+      "refused": true,
+      "reason": "too_narrow"
+    },
+    {
+      "subject": "glyph/1/0/13/6/3",
+      "truth": "NOT a notehead",
+      "refused": true,
+      "reason": "too_narrow"
+    },
+    {
+      "subject": "glyph/3/0/4/9/9",
+      "truth": "cannot tell",
+      "refused": false,
+      "reason": "notehead"
+    },
+    {
+      "subject": "glyph/3/0/10/3/10",
+      "truth": "cannot tell",
+      "refused": false,
+      "reason": "notehead"
+    },
+    {
+      "subject": "glyph/1/1/5/6/9",
+      "truth": "NOT a notehead",
+      "refused": true,
+      "reason": "too_narrow"
+    },
+    {
+      "subject": "glyph/1/0/9/5/7",
+      "truth": "cannot tell",
+      "refused": false,
+      "reason": "notehead"
+    },
+    {
+      "subject": "glyph/1/1/11/1/22",
+      "truth": "NOT a notehead",
+      "refused": false,
+      "reason": "notehead"
+    },
+    {
+      "subject": "glyph/0/0/0/3/2",
+      "truth": "IS a notehead",
+      "refused": false,
+      "reason": "notehead"
+    },
+    {
+      "subject": "glyph/3/1/11/1/6",
+      "truth": "cannot tell",
+      "refused": false,
+      "reason": "notehead"
+    },
+    {
+      "subject": "glyph/3/1/10/0/7",
+      "truth": "cannot tell",
+      "refused": true,
+      "reason": "too_narrow"
+    },
+    {
+      "subject": "glyph/2/0/4/5/0",
+      "truth": "IS a notehead",
+      "refused": false,
+      "reason": "notehead"
+    },
+    {
+      "subject": "glyph/2/1/5/1/1",
+      "truth": "IS a notehead",
+      "refused": false,
+      "reason": "notehead"
+    },
+    {
+      "subject": "glyph/0/0/10/0/17",
+      "truth": "IS a notehead",
+      "refused": false,
+      "reason": "notehead"
+    },
+    {
+      "subject": "glyph/1/1/3/4/23",
+      "truth": "NOT a notehead",
+      "refused": false,
+      "reason": "notehead"
+    },
+    {
+      "subject": "glyph/2/0/12/1/13",
+      "truth": "cannot tell",
+      "refused": false,
+      "reason": "notehead"
+    },
+    {
+      "subject": "glyph/2/0/8/3/17",
+      "truth": "NOT a notehead",
+      "refused": true,
+      "reason": "too_narrow"
+    },
+    {
+      "subject": "glyph/1/0/12/0/18",
+      "truth": "IS a notehead",
+      "refused": false,
+      "reason": "notehead"
+    },
+    {
+      "subject": "glyph/0/0/10/0/7",
+      "truth": "IS a notehead",
+      "refused": false,
+      "reason": "notehead"
+    },
+    {
+      "subject": "glyph/2/0/2/5/11",
+      "truth": "IS a notehead",
+      "refused": false,
+      "reason": "notehead"
+    },
+    {
+      "subject": "glyph/2/0/5/2/6",
+      "truth": "NOT a notehead",
+      "refused": true,
+      "reason": "too_narrow"
+    },
+    {
+      "subject": "glyph/3/0/0/8/9",
+      "truth": "IS a notehead",
+      "refused": false,
+      "reason": "notehead"
+    },
+    {
+      "subject": "glyph/2/0/2/1/9",
+      "truth": "NOT a notehead",
+      "refused": true,
+      "reason": "too_narrow"
+    },
+    {
+      "subject": "glyph/2/1/9/6/6",
+      "truth": "NOT a notehead",
+      "refused": true,
+      "reason": "too_narrow"
+    },
+    {
+      "subject": "glyph/0/0/0/0/11",
+      "truth": "IS a notehead",
+      "refused": false,
+      "reason": "notehead"
+    },
+    {
+      "subject": "glyph/2/0/2/1/19",
+      "truth": "NOT a notehead",
+      "refused": true,
+      "reason": "too_narrow"
+    },
+    {
+      "subject": "glyph/3/1/4/2/8",
+      "truth": "cannot tell",
+      "refused": false,
+      "reason": "notehead"
+    },
+    {
+      "subject": "glyph/0/0/4/2/5",
+      "truth": "IS a notehead",
+      "refused": false,
+      "reason": "notehead"
+    },
+    {
+      "subject": "glyph/3/0/2/0/7",
+      "truth": "IS a notehead",
+      "refused": false,
+      "reason": "notehead"
+    },
+    {
+      "subject": "glyph/3/0/2/2/5",
+      "truth": "NOT a notehead",
+      "refused": true,
+      "reason": "too_narrow"
+    },
+    {
+      "subject": "glyph/3/1/12/2/7",
+      "truth": "cannot tell",
+      "refused": false,
+      "reason": "notehead"
+    },
+    {
+      "subject": "glyph/0/0/0/3/10",
+      "truth": "IS a notehead",
+      "refused": false,
+      "reason": "notehead"
+    },
+    {
+      "subject": "glyph/1/1/0/4/5",
+      "truth": "IS a notehead",
+      "refused": false,
+      "reason": "notehead"
+    },
+    {
+      "subject": "glyph/3/0/1/2/6",
+      "truth": "IS a notehead",
+      "refused": false,
+      "reason": "notehead"
+    },
+    {
+      "subject": "glyph/3/0/6/3/6",
+      "truth": "NOT a notehead",
+      "refused": true,
+      "reason": "clipped_fragment"
+    },
+    {
+      "subject": "glyph/3/0/7/2/5",
+      "truth": "NOT a notehead",
+      "refused": true,
+      "reason": "too_narrow"
+    },
+    {
+      "subject": "glyph/3/0/1/1/1",
+      "truth": "IS a notehead",
+      "refused": false,
+      "reason": "notehead"
+    },
+    {
+      "subject": "glyph/0/0/2/6/8",
+      "truth": "IS a notehead",
+      "refused": false,
+      "reason": "notehead"
+    },
+    {
+      "subject": "glyph/2/0/2/5/21",
+      "truth": "IS a notehead",
+      "refused": false,
+      "reason": "notehead"
+    },
+    {
+      "subject": "glyph/2/0/3/4/4",
+      "truth": "IS a notehead",
+      "refused": false,
+      "reason": "notehead"
+    },
+    {
+      "subject": "glyph/3/1/0/3/10",
+      "truth": "IS a notehead",
+      "refused": false,
+      "reason": "notehead"
+    },
+    {
+      "subject": "glyph/0/0/3/6/7",
+      "truth": "IS a notehead",
+      "refused": false,
+      "reason": "notehead"
+    },
+    {
+      "subject": "glyph/3/1/5/0/8",
+      "truth": "IS a notehead",
+      "refused": false,
+      "reason": "notehead"
+    },
+    {
+      "subject": "glyph/0/0/3/6/6",
+      "truth": "IS a notehead",
+      "refused": false,
+      "reason": "notehead"
+    },
+    {
+      "subject": "glyph/1/0/10/5/4",
+      "truth": "IS a notehead",
+      "refused": false,
+      "reason": "notehead"
+    },
+    {
+      "subject": "glyph/0/0/2/5/1",
+      "truth": "IS a notehead",
+      "refused": false,
+      "reason": "notehead"
+    },
+    {
+      "subject": "glyph/1/1/9/3/26",
+      "truth": "NOT a notehead",
+      "refused": true,
+      "reason": "too_narrow"
+    },
+    {
+      "subject": "glyph/1/0/6/0/23",
+      "truth": "IS a notehead",
+      "refused": false,
+      "reason": "notehead"
+    },
+    {
+      "subject": "glyph/3/0/10/7/7",
+      "truth": "IS a notehead",
+      "refused": false,
+      "reason": "notehead"
+    },
+    {
+      "subject": "glyph/3/0/1/1/3",
+      "truth": "IS a notehead",
+      "refused": false,
+      "reason": "notehead"
+    },
+    {
+      "subject": "glyph/2/0/6/3/1",
+      "truth": "IS a notehead",
+      "refused": false,
+      "reason": "notehead"
+    },
+    {
+      "subject": "glyph/2/0/11/1/7",
+      "truth": "IS a notehead",
+      "refused": false,
+      "reason": "notehead"
+    },
+    {
+      "subject": "glyph/3/1/1/8/15",
+      "truth": "IS a notehead",
+      "refused": false,
+      "reason": "notehead"
+    },
+    {
+      "subject": "glyph/1/0/8/0/2",
+      "truth": "IS a notehead",
+      "refused": false,
+      "reason": "notehead"
+    },
+    {
+      "subject": "glyph/1/0/8/0/7",
+      "truth": "IS a notehead",
+      "refused": false,
+      "reason": "notehead"
+    },
+    {
+      "subject": "glyph/0/0/6/2/5",
+      "truth": "cannot tell",
+      "refused": false,
+      "reason": "notehead"
+    },
+    {
+      "subject": "glyph/2/0/11/0/10",
+      "truth": "IS a notehead",
+      "refused": false,
+      "reason": "notehead"
+    },
+    {
+      "subject": "glyph/3/0/12/8/13",
+      "truth": "cannot tell",
+      "refused": true,
+      "reason": "too_narrow"
+    },
+    {
+      "subject": "glyph/2/1/1/3/3",
+      "truth": "IS a notehead",
+      "refused": false,
+      "reason": "notehead"
+    },
+    {
+      "subject": "glyph/3/1/1/8/5",
+      "truth": "IS a notehead",
+      "refused": false,
+      "reason": "notehead"
+    },
+    {
+      "subject": "glyph/2/1/4/0/8",
+      "truth": "IS a notehead",
+      "refused": false,
+      "reason": "notehead"
+    },
+    {
+      "subject": "glyph/3/1/1/8/2",
+      "truth": "IS a notehead",
+      "refused": false,
+      "reason": "notehead"
+    },
+    {
+      "subject": "glyph/3/1/3/0/43",
+      "truth": "cannot tell",
+      "refused": false,
+      "reason": "notehead"
+    },
+    {
+      "subject": "glyph/1/0/5/0/3",
+      "truth": "NOT a notehead",
+      "refused": true,
+      "reason": "too_narrow"
+    },
+    {
+      "subject": "glyph/2/0/11/1/0",
+      "truth": "IS a notehead",
+      "refused": false,
+      "reason": "notehead"
+    },
+    {
+      "subject": "glyph/3/0/11/7/24",
+      "truth": "cannot tell",
+      "refused": true,
+      "reason": "clipped_fragment"
+    },
+    {
+      "subject": "glyph/0/0/6/2/3",
+      "truth": "IS a notehead",
+      "refused": false,
+      "reason": "notehead"
+    },
+    {
+      "subject": "glyph/3/0/11/7/28",
+      "truth": "cannot tell",
+      "refused": true,
+      "reason": "clipped_fragment"
+    },
+    {
+      "subject": "glyph/3/0/11/7/15",
+      "truth": "cannot tell",
+      "refused": true,
+      "reason": "clipped_fragment"
+    },
+    {
+      "subject": "glyph/3/1/1/8/14",
+      "truth": "IS a notehead",
+      "refused": false,
+      "reason": "notehead"
+    },
+    {
+      "subject": "glyph/2/0/7/3/2",
+      "truth": "IS a notehead",
+      "refused": false,
+      "reason": "notehead"
+    },
+    {
+      "subject": "glyph/2/0/5/2/4",
+      "truth": "NOT a notehead",
+      "refused": true,
+      "reason": "too_narrow"
+    },
+    {
+      "subject": "glyph/2/1/4/0/2",
+      "truth": "IS a notehead",
+      "refused": false,
+      "reason": "notehead"
+    },
+    {
+      "subject": "glyph/3/0/11/7/16",
+      "truth": "cannot tell",
+      "refused": true,
+      "reason": "clipped_fragment"
+    },
+    {
+      "subject": "glyph/2/0/11/0/7",
+      "truth": "IS a notehead",
+      "refused": false,
+      "reason": "notehead"
+    },
+    {
+      "subject": "glyph/3/1/1/7/3",
+      "truth": "cannot tell",
+      "refused": false,
+      "reason": "notehead"
+    },
+    {
+      "subject": "glyph/2/0/4/3/11",
+      "truth": "IS a notehead",
+      "refused": false,
+      "reason": "notehead"
+    },
+    {
+      "subject": "glyph/0/0/5/7/1",
+      "truth": "NOT a notehead",
+      "refused": false,
+      "reason": "notehead"
+    },
+    {
+      "subject": "glyph/1/0/0/4/35",
+      "truth": "NOT a notehead",
+      "refused": false,
+      "reason": "notehead"
+    },
+    {
+      "subject": "glyph/0/0/5/7/0",
+      "truth": "NOT a notehead",
+      "refused": false,
+      "reason": "notehead"
+    },
+    {
+      "subject": "glyph/0/0/5/7/2",
+      "truth": "NOT a notehead",
+      "refused": false,
+      "reason": "notehead"
+    },
+    {
+      "subject": "glyph/1/0/5/1/33",
+      "truth": "NOT a notehead",
+      "refused": false,
+      "reason": "notehead"
+    },
+    {
+      "subject": "glyph/1/0/5/1/23",
+      "truth": "NOT a notehead",
+      "refused": false,
+      "reason": "notehead"
+    },
+    {
+      "subject": "glyph/0/0/11/7/1",
+      "truth": "NOT a notehead",
+      "refused": false,
+      "reason": "notehead"
+    },
+    {
+      "subject": "glyph/1/0/5/1/24",
+      "truth": "NOT a notehead",
+      "refused": false,
+      "reason": "notehead"
+    },
+    {
+      "subject": "glyph/2/0/4/3/1",
+      "truth": "IS a notehead",
+      "refused": false,
+      "reason": "notehead"
+    },
+    {
+      "subject": "glyph/1/0/5/0/14",
+      "truth": "IS a notehead",
+      "refused": false,
+      "reason": "notehead"
+    },
+    {
+      "subject": "glyph/0/0/11/7/0",
+      "truth": "NOT a notehead",
+      "refused": false,
+      "reason": "notehead"
+    }
+  ],
+  "cost_on_confirmed_heads": 1,
+  "caught_of_not_a_notehead": 32,
+  "missed_of_not_a_notehead": 12,
+  "no_stem_population": 1233,
+  "refused_population": 629,
+  "no_stem_AND_refused": 539,
+  "no_stem_share_refused": 0.43714517437145173
+}

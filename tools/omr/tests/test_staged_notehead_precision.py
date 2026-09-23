@@ -220,9 +220,18 @@ class TestTooNarrow(unittest.TestCase):
 
 class TestUnladdered(unittest.TestCase):
     """A low-confidence notehead standing outside the staff, with not one
-    ledger rung joining it to that staff."""
+    ledger rung joining it to that staff.
 
-    def test_LOW_CONFIDENCE_outside_the_staff_with_NO_rung_is_refused(self):
+    ⚠️⚠️ MEASURED NET NEGATIVE ON THE TWO ACCEPTANCE DOCUMENTS and HELD BACK
+    (`UNLADDERED_SHIPS = False`, `benchmarks/omr-notehead-precision-2026-09/`):
+    joined against the crop pass's print verdicts it costs 4 of 29 / 4 of 74
+    confirmed real noteheads against 0 of 34 / 2 of 44 confirmed non-
+    noteheads caught -- worse than a coin flip, where `too_narrow` on the
+    identical join reproduces its prior 0-cost result. The SIGNAL is still
+    computed and recorded (`detail["unladdered_signal"]`); it never sets
+    `value=True`. These tests assert the SIGNAL, not a refusal."""
+
+    def test_LOW_CONFIDENCE_outside_the_staff_with_NO_rung_is_SIGNALLED_but_not_refused(self):
         log = Log()
         _cell_geometry(log)
         # pos_float = -3.0: 1.5 staff spaces above the top line.
@@ -231,15 +240,16 @@ class TestUnladdered(unittest.TestCase):
                      pos_float=-3.0)
         v = _verdict(_run(log), g)
         self.assertEqual(v.outcome, Outcome.DECIDED)
-        self.assertIs(v.value, True)
-        self.assertEqual(v.reason, "unladdered")
-        self.assertEqual(v.detail["ledger_found"], 0)
+        self.assertIs(v.value, False)
+        self.assertEqual(v.reason, "notehead")
+        self.assertTrue(v.detail["unladdered_signal"]["would_fire"])
+        self.assertEqual(v.detail["unladdered_signal"]["ledger_found"], 0)
 
-    def test_THE_SAME_INK_WITH_ITS_OWN_RUNG_is_NOT_refused(self):
-        """⚠️ POSITIVE CONTROL -- the whole point of the rule. Same box, same
-        low confidence, same distance outside the staff; a `ledgerLine`
-        glyph now sits at the one expected rung position and overlaps the
-        notehead in x."""
+    def test_THE_SAME_INK_WITH_ITS_OWN_RUNG_signals_would_NOT_have_fired(self):
+        """⚠️ POSITIVE CONTROL for the SIGNAL, not for a refusal (there is
+        none to have). Same box, same low confidence, same distance outside
+        the staff; a `ledgerLine` glyph now sits at the one expected rung
+        position and overlaps the notehead in x."""
         log = Log()
         _cell_geometry(log)
         g = _notehead(log, 0, x_c=200.0, y_c=200.0, w_c=140.0, h_c=100.0,
@@ -251,25 +261,36 @@ class TestUnladdered(unittest.TestCase):
         self.assertEqual(v.outcome, Outcome.DECIDED)
         self.assertIs(v.value, False)
         self.assertEqual(v.reason, "notehead")
+        self.assertFalse(v.detail["unladdered_signal"]["would_fire"])
+        self.assertEqual(v.detail["unladdered_signal"]["ledger_found"], 1)
 
-    def test_HIGH_CONFIDENCE_outside_the_staff_with_no_rung_is_NOT_refused(self):
+    def test_HIGH_CONFIDENCE_outside_the_staff_with_no_rung_is_NOT_signalled(self):
         """The gate needs LOW confidence too -- a confidently-read outside-
-        staff note is not this population."""
+        staff note is not this population, and nothing is even computed."""
         log = Log()
         _cell_geometry(log)
         g = _notehead(log, 0, w_c=140.0, h_c=100.0, conf=0.9,
                      pos_float=-3.0)
         v = _verdict(_run(log), g)
         self.assertIs(v.value, False)
+        self.assertNotIn("unladdered_signal", v.detail)
 
-    def test_LOW_CONFIDENCE_INSIDE_THE_STAFF_is_NOT_refused(self):
-        """A note inside the five-line band needs no ladder at all."""
+    def test_LOW_CONFIDENCE_INSIDE_THE_STAFF_is_NOT_signalled(self):
+        """A note inside the five-line band needs no ladder at all, and
+        nothing is even computed."""
         log = Log()
         _cell_geometry(log)
         g = _notehead(log, 0, w_c=140.0, h_c=100.0, conf=0.4,
                      pos_float=4.0)
         v = _verdict(_run(log), g)
         self.assertIs(v.value, False)
+        self.assertNotIn("unladdered_signal", v.detail)
+
+    def test_it_can_never_actually_refuse_anything(self):
+        """⚠️ ASSERTED OFF THE CONSTANT, so a future flip is a one-line,
+        reviewable change rather than a silent behavioural drift."""
+        from tools.omr.staged.adjudicators import notehead_precision as NP
+        self.assertFalse(NP.UNLADDERED_SHIPS)
 
 
 class TestItAbstainsOnlyWhenTheUnitItselfIsMissing(unittest.TestCase):
