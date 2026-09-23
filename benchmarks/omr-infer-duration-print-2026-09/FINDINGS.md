@@ -537,3 +537,29 @@ that the remaining thirteen are right. The reference encoding could not
 discriminate them (§5b) and only three subjects have been read against a print.
 **2.3's default decision is still open**, and it is now a cleaner question:
 the rules no longer infer from ink they do not own.
+
+## §9b. Does the same blind spot exist elsewhere? Checked — no.
+
+The obvious next worry: if the INFER duration rules read glyphs by their
+detection cell without asking who owns them, does the EXPORT path do the same?
+That would matter far more, because export runs by default while both duration
+rules are off.
+
+**It does not.** `staged/export.py:971`:
+
+```python
+owner = rec.value(Q.GLYPH_OWNER, sub)
+if A.is_relocated_copy(sub, owner):
+    _drop("owned_by_another_staff", s)
+    continue
+```
+
+`owned_by_another_staff` is one of the named refusal buckets the balance
+equality already accounts for, and the comment there states the same rule this
+fix follows — the contest is resolved by REFUSING the copy, not by moving it,
+citing Sean's *"2 of the same note next to each other connected to the same
+stem."* EVALUATE also consumes the quantity (`consequences.py:368`,
+`cause=Q.GLYPH_OWNER, effect=Q.PITCH`).
+
+So the omission was confined to the two INFER duration rules, and the fix
+applies the discipline the exporter already had rather than inventing one.
