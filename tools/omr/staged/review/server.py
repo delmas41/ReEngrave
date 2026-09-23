@@ -391,9 +391,9 @@ def run_export(data: Dict[str, Any], *, break_control: bool = False
         last["sub"] = key
         return s
 
-    def place(rec, runs, by_system=None, held_out=None):
+    def place(rec, runs, by_system=None, **kwargs):
         probe = _ProbeBySystem()
-        dropped = orig_place(rec, runs, by_system=probe, held_out=held_out)
+        dropped = orig_place(rec, runs, by_system=probe, **kwargs)
         runs_seen.update(runs)
         for run in runs.values():
             for cell in run.cells.values():
@@ -406,7 +406,12 @@ def run_export(data: Dict[str, Any], *, break_control: bool = False
         return dropped
 
     def part_xml(rec, part, pid, divisions, counters, offsets=None,
-                 spans=None, meters=None):
+                 *args, **kwargs):
+        # Pass-through on purpose: `_part_xml` grew `drops`, `held_bars` and
+        # `marks` under ROADMAP 2.8 after this wrapper was written, and a
+        # wrapper that restates the signature breaks on every such growth
+        # while reading nothing from the new arguments. It observes the
+        # (staff -> part) join and the offsets, and hands everything else on.
         for run in part:
             part_of_staff.setdefault(run.key, pid)
             if getattr(run, "condensed_from", None):
@@ -414,7 +419,7 @@ def run_export(data: Dict[str, Any], *, break_control: bool = False
         if offsets is not None:
             offsets_seen["v"] = offsets
         return orig_part(rec, part, pid, divisions, counters, offsets,
-                         spans, meters)
+                         *args, **kwargs)
 
     EXPORT._parse_subject = parse
     EXPORT._place_notes = place
