@@ -304,6 +304,19 @@ ORDER = ["GATHER", "ADJUDICATE", "EVALUATE", "INFER", "EXPORT", "HARNESS"]
 NOT_A_STAGE = frozenset({
     "inventory.py", "health.py", "wiring.py", "gather_coverage.py",
     "record_coverage.py", "reach.py", "__init__.py", "__main__.py",
+    # ⚠️ ROADMAP 3.4. `review/server.py` is the STAGE REVIEW viewer: it
+    # SHOWS a saved record to a human and writes his corrections to a
+    # sidecar. It runs no stage and decides nothing — its export figures are
+    # `export.to_musicxml`'s own, instrumented at run time — so registering
+    # it here contributes zero sites to the wiring graph. ⚠️⚠️ AND THAT IS
+    # THE POINT rather than a convenience: a viewer that READ a quantity
+    # would make an UNREAD quantity read as LIVE, which is this tool's
+    # question answered by its own instrument. It still has to be in ONE of
+    # the two lists or `unaccounted_modules()` reports it — the guard that
+    # caught `positions.py` on the day it landed, and it caught this file
+    # too (run `python3 -m tools.omr.staged.reach --check` with this line
+    # removed: exit 1, naming `review/server.py`).
+    "server.py",
     # ⚠️ `capture.py` is a DERIVED CHECK, like the six above it: it asks, per
     # notation family, whether the ink's SHAPE, its staff-grid POSITION and
     # the RASTER it was measured on are recorded. It names quantities in

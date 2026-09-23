@@ -1,0 +1,122 @@
+/* ReEngrave stage review — plain CSS, no build step, light theme, 1440px. */
+:root{
+  color-scheme:light;
+  --bg:#f6f5f2; --panel:#fff; --line:#ddd7c9; --ink:#1a1a1a; --dim:#6a6254;
+  --head:#f3efe4; --accent:#3b3226;
+  --read:#0b6b3a; --declined:#9a6a00; --absent:#8a8272;
+  --decided:#0b6b3a; --narrowed:#9a6a00; --abstained:#b03a2e;
+  --human:#c0208a; --machine:#c62828; --written:#1b7f3b;
+  --f-notehead:#c62828; --f-rest:#1565c0; --f-clef:#6a1b9a;
+  --f-key:#00838f; --f-accidental:#ef6c00; --f-other:#757575;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);
+  font:13.5px/1.45 -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif}
+h1{font-size:16px;margin:0}
+h3{margin:0 0 10px;font-size:14px}
+.mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+.tiny{font-size:11.5px}
+.grow{flex:1}
+.dim{color:var(--dim)}
+
+header{position:sticky;top:0;z-index:20;background:#fffdf8;
+  border-bottom:2px solid var(--line);padding:8px 16px 0}
+.hrow{display:flex;align-items:baseline;gap:14px}
+.staffTitle{font-family:ui-monospace,Menlo,monospace;font-size:13px;color:var(--dim)}
+.prov{font-size:11.5px;color:var(--dim)}
+.prov b{color:#b03a2e}
+nav{display:flex;gap:2px;margin-top:8px}
+nav button{border:1px solid var(--line);border-bottom:none;background:var(--head);
+  padding:6px 14px;border-radius:5px 5px 0 0;cursor:pointer;font-size:12.5px}
+nav button.on{background:#fff;font-weight:600}
+nav button:disabled{opacity:.45;cursor:not-allowed}
+
+main{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:14px;
+  padding:14px 16px 60px;align-items:start}
+section#view{min-width:0}
+aside#side{position:sticky;top:96px;background:var(--panel);
+  border:1px solid var(--line);border-radius:6px;max-height:calc(100vh - 120px);
+  display:flex;flex-direction:column}
+.sideHead{display:flex;align-items:center;gap:8px;padding:9px 11px;
+  background:var(--head);border-bottom:1px solid var(--line);border-radius:6px 6px 0 0}
+.sideFoot{padding:10px 11px;border-top:1px solid var(--line)}
+.actions{overflow:auto;flex:1;padding:6px 8px}
+.act{border:1px solid var(--line);border-left:3px solid var(--human);
+  border-radius:4px;padding:5px 7px;margin:0 0 6px;font-size:11.5px}
+.act b{font-family:ui-monospace,Menlo,monospace}
+.act .x{float:right;cursor:pointer;color:var(--dim);border:none;background:none;
+  font-size:13px;line-height:1}
+
+.pill{background:var(--accent);color:#fff;border-radius:10px;padding:1px 8px;font-size:11px}
+.badge{border-radius:3px;padding:1px 6px;font-size:11px;font-weight:600;
+  border:1px solid currentColor;display:inline-block}
+.b-decided{color:var(--decided)} .b-narrowed{color:var(--narrowed)}
+.b-abstained{color:var(--abstained)}
+.b-read{color:var(--read)} .b-declined{color:var(--declined)}
+.b-absent{color:var(--absent)} .b-written{color:var(--written)}
+.b-refused{color:var(--machine)} .b-inferred{color:#5b2d8e}
+
+.card{background:var(--panel);border:1px solid var(--line);border-radius:6px;
+  margin:0 0 14px;overflow:hidden}
+.card>.h{display:flex;gap:12px;align-items:baseline;flex-wrap:wrap;
+  padding:8px 12px;background:var(--head);border-bottom:1px solid var(--line)}
+.card>.b{padding:10px 12px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:0}
+.two>div{padding:10px 12px;min-width:0}
+.two>div:first-child{border-right:1px solid var(--line);background:#fcfbf7}
+.lbl{font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;
+  color:#8a8272;margin:0 0 6px}
+
+table{border-collapse:collapse;width:100%;font-size:12px}
+th,td{border:1px solid #e6e0d2;padding:3px 7px;text-align:left;vertical-align:top}
+th{background:#faf7ef;font-weight:600;position:sticky;top:0}
+tr.sel td{background:#fff5d6}
+tr.click{cursor:pointer}
+tr.click:hover td{background:#f3f7ff}
+td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
+
+.scroll{max-height:460px;overflow:auto;border:1px solid var(--line);border-radius:4px}
+
+/* ── the crop ─────────────────────────────────────────────────────────── */
+.cropWrap{position:relative;overflow:auto;border:1px solid var(--line);
+  background:#fff;max-height:70vh}
+#cropCanvas{display:block;cursor:crosshair;image-rendering:auto}
+.tools{display:flex;gap:14px;flex-wrap:wrap;align-items:center;
+  padding:8px 12px;background:#fcfbf7;border-bottom:1px solid var(--line)}
+.tools label{display:inline-flex;gap:5px;align-items:center;font-size:12px}
+.swatch{width:11px;height:11px;border:2px solid;display:inline-block;border-radius:2px}
+.frameBanner{padding:7px 12px;font-size:12px;border-left:4px solid}
+.frameBanner.ok{background:#eef8f0;border-color:var(--read)}
+.frameBanner.bad{background:#fdecec;border-color:var(--abstained);font-weight:600}
+.frameBanner.unknown{background:#fff8e6;border-color:var(--declined)}
+
+.hint{background:#fff8e6;border-left:3px solid #d9a441;padding:7px 11px;
+  font-size:12px;margin:0 0 10px}
+.hint.bad{background:#fdecec;border-left-color:#c0504d}
+
+button{font:inherit;border:1px solid var(--line);background:#fff;border-radius:4px;
+  padding:4px 10px;cursor:pointer}
+button:hover{background:#f3efe4}
+button.primary{background:var(--accent);color:#fff;border-color:var(--accent)}
+button.primary:hover{filter:brightness(1.15)}
+button.agree{color:var(--read)} button.disagree{color:var(--abstained)}
+input[type=text],textarea,select{font:inherit;border:1px solid var(--line);
+  border-radius:4px;padding:4px 7px;width:100%;background:#fff}
+textarea{min-height:52px;resize:vertical}
+
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.35);z-index:50;
+  display:flex;align-items:center;justify-content:center}
+.modalBox{background:#fff;border-radius:8px;padding:16px 18px;width:520px;
+  max-height:80vh;overflow:auto;box-shadow:0 8px 40px rgba(0,0,0,.3)}
+.modalFoot{display:flex;gap:8px;justify-content:flex-end;margin-top:14px}
+.hidden{display:none !important}
+.toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);
+  background:var(--accent);color:#fff;padding:8px 16px;border-radius:5px;z-index:60}
+.toast.bad{background:#b03a2e}
+
+.kv{display:grid;grid-template-columns:auto 1fr;gap:2px 10px;font-size:12px}
+.kv dt{color:var(--dim)}
+.kv dd{margin:0;font-family:ui-monospace,Menlo,monospace;word-break:break-all}
+.filters{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:0 0 10px}
+.agreeRow{display:flex;gap:6px;align-items:center;margin-top:8px}
+.agreeRow input{flex:1}
