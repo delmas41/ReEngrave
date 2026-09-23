@@ -46,7 +46,14 @@
         2520.5,
         1677.5
       ],
-      "VERDICT_none_yet": null
+      "VERDICT_none_yet": "ADJUDICATED 2026-09-23 by Sean",
+      "sean_reads": "an 8th note on a ledger line BELOW the staff at the top of the crop",
+      "belongs_to_staff": 8,
+      "belongs_to_name": "Violino II",
+      "filed_on_staff": 9,
+      "filed_on_name": "Viola",
+      "misattributed": true,
+      "verdict": "MISATTRIBUTED, and 2.4a's clipped_fragment refuses this glyph as not a notehead"
     },
     {
       "file": "litolff-p2-s1-st0-c13-g0-barline.png",
@@ -487,7 +494,19 @@
         1308.8,
         1878.0
       ],
-      "VERDICT_none_yet": null
+      "VERDICT_none_yet": "ADJUDICATED 2026-09-23 by Sean",
+      "sean_reads": "an 8th note on a ledger line ABOVE the staff at the bottom of the crop",
+      "belongs_to_staff": 10,
+      "belongs_to_name": "Basso",
+      "filed_on_staff": 9,
+      "filed_on_name": "Violoncello",
+      "misattributed": true,
+      "reference_for_correct_part": [
+        0.5,
+        0.5,
+        0.5
+      ],
+      "verdict": "READER'S TOP (0.5) CORRECT; RULE'S 0.25 WRONG -- print and encoding agree"
     }
   ],
   "refused": [

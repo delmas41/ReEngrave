@@ -238,3 +238,69 @@ instrument that can actually settle this.
   duration matches; it does not show whether the neighbours the rule borrowed
   from were read correctly. Both rules are only as good as those witnesses.
 - **n = 1 document, 16 inferences, 10 crops.**
+
+---
+
+# §7. Sean's adjudication, 2026-09-23 — and it moves the finding off durations
+
+**He read the crops and found the crop defective first**, which is the more
+useful half:
+
+> *"in the 2 cells you sent me there is a staff at the top and a staff at the
+> bottom - i dont know which staff the cell is focussing on. the first cell has
+> an 8th note on a ledger line above the staff on the bottom of the cell. the
+> 2nd cell has an 8th note on a ledger line below the staff in the top of the
+> cell"*
+
+A window centred on a note in the GAP between two staves shows both and commits
+to neither. The crop could not distinguish a correct attribution from a
+cross-staff error — which is exactly what both subjects turned out to be.
+`probe/crop_inferred.py` now names the staff the record filed the subject on and
+traces that staff's own five `Q.STAFF_LINES` across the crop in green.
+
+## The geometry agrees with him on both, and both are MISATTRIBUTED
+
+| subject | filed on | glyph page-y | the staff it actually sits on |
+|---|---|---|---|
+| `glyph/4/0/9/5/7` | staff 9 = **Violoncello** | 1865.6–1878.0 | **staff 10 = Basso**, lines 1894–1957 — the note is 1 space above its top line, i.e. its first ledger line |
+| `glyph/2/0/9/15/5` | staff 9 = **Viola** | 1670.0–1677.5 | **staff 8 = Violino II**, lines 1585–1649 — 1.3 spaces below its bottom line, its first ledger line |
+
+## ⚠️ THIS REVERSES §5b's VERDICT ON `glyph/4/0/9/5/7`
+
+§5b scored it against **Violoncello** m88 — `[1.0, 1.0]` — and called inferred
+and reader's-top both absent, "both wrong". That comparison was against the
+wrong part. Against **Basso** m88, the part the note actually belongs to:
+
+| | |
+|---|---|
+| reference (Basso, m88) | `[0.5, 0.5, 0.5]` — **eighths** |
+| Sean, off the print | **an eighth** = 0.5 |
+| reader's top candidate | **0.5 — CORRECT** |
+| the rule's inference | **0.25 — WRONG** |
+
+Two independent sources — the print and the encoding of the correct part —
+agree, and they agree against the rule. **The reader had it right and
+`collapse_duration_to_barline` overrode it with a worse answer.**
+
+## What this pass now says
+
+The two ordering-overrides were chosen as the cases that decide whether the
+stage buys anything, because they are the only ones where the rule contradicts
+the reader. On this document:
+
+* one (`glyph/2/0/9/15/5`) is ink **2.4a refuses as not a notehead**, and is
+  **filed on the wrong staff**;
+* the other (`glyph/4/0/9/5/7`) is **filed on the wrong staff** and the rule's
+  override is **wrong against both the print and the encoding**.
+
+⚠️ **THE FINDING HAS MOVED OFF DURATIONS.** Both discriminating subjects are
+`glyph_owner` failures across a staff boundary — a ledger-line note in the gap,
+given to the neighbour. The duration inference is DOWNSTREAM of that, and a
+duration rule cannot be fairly judged on ink the owner decision has already
+misplaced. Roadmap 2.3's default decision should not be taken on these two; the
+prior question is why a first-ledger-line note in the gap goes to the wrong
+staff, which is `glyph_owner`'s contest (CLAUDE.md §10: ladder completeness,
+then range, then distance) and is not this lane's.
+
+⚠️ Still n = 2 subjects. What it establishes is that the two cases that were
+supposed to settle 2.3 cannot settle it, and why.

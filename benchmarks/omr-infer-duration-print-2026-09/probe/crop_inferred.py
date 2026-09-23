@@ -16,6 +16,15 @@ REFUSED, not cropped with a caveat.
 margin tick at its x (CLAUDE.md 6b). A ruler of staff spaces is drawn beside
 it so the reader can measure rather than judge.
 
+⚠️⚠️ THE CROP NAMES THE STAFF THE RECORD FILED THE SUBJECT ON, AND DRAWS THAT
+STAFF'S OWN FIVE LINES. Sean, 2026-09-23, on the first version of these crops:
+*"there is a staff at the top and a staff at the bottom - i dont know which
+staff the cell is focussing on."* He was right and the crop was the defect: a
+window centred on a note in the gap between two staves shows both and commits
+to neither, so the reader cannot tell a correct attribution from a cross-staff
+error -- which is precisely what both of the marked subjects turned out to be.
+A crop that does not say what it is about is not evidence.
+
 ⚠️ WHAT THE CROP CAN AND CANNOT SETTLE. It shows the printed note and its
 flag/beam, which is what a duration IS. It does NOT show whether the rule's
 WITNESSES were right -- that is a different question and needs their crops
@@ -80,11 +89,25 @@ def main() -> int:
     ap.add_argument("--out-dir", default="out/print")
     ap.add_argument("--pad-spaces", type=float, default=9.0,
                     help="crop half-width in STAFF SPACES around the subject")
+    ap.add_argument("--works", default="benchmarks/omr-scan-e2e-2026-09/works.json",
+                    help="hand-verified rows, for the staff's printed NAME")
     a = ap.parse_args()
 
     import fitz
     import numpy as np
     from PIL import Image, ImageDraw
+
+    def staff_name(page, system, staff):
+        """The printed staff name from the hand-verified row, or None."""
+        try:
+            rows = json.loads(Path(a.works).read_text())["rows"]
+            row = next(r for r in rows
+                       if r["row_id"] == f"beethoven-sym5-mvt1-984073-p{page}")
+        except Exception:
+            return None
+        sap = row.get("systems_as_printed") or {}
+        block = sap.get(f"system_{system + 1}") or row.get("staves") or []
+        return block[staff]["name"] if staff < len(block) else None
 
     d = load_record(a.arm)
     rec, inf = d["record"], d["inference"]
@@ -154,6 +177,15 @@ def main() -> int:
             dr.line([(ax, ay), (ax + dx * arm_len, ay)], fill=R, width=W)
             dr.line([(ax, ay), (ax, ay + dy * arm_len)], fill=R, width=W)
 
+        # ⚠️ THE OWNING STAFF, DRAWN. Its five recorded `Q.STAFF_LINES` are
+        # traced across the crop in green, so "the record says the subject
+        # belongs to THIS staff" is visible rather than inferred from which
+        # half of the picture the note sits in.
+        for ly in lines:
+            y = (ly - cy0) * Z
+            if 0 <= y < crop.height:
+                dr.line([(0, y), (crop.width, y)], fill=(0, 160, 60), width=1)
+
         # a ruler: one tick per staff space down the left edge
         step = float(spacing) * Z
         y = (lines[0] - cy0) * Z
@@ -166,6 +198,28 @@ def main() -> int:
 
         v = vby[vid]
         prior = vby.get(v.get("supersedes"))
+        top = None
+        if prior and prior.get("candidates"):
+            best = max(prior["candidates"], key=lambda c: c.get("support", 0))
+            top = (best.get("value") or {}).get("beats")
+        sname = staff_name(p, sy, st)
+
+        # a caption band, so the crop travels with what it is about
+        band_h = 54
+        out_im = Image.new("RGB", (crop.width, crop.height + band_h), "white")
+        out_im.paste(crop, (0, band_h))
+        cd = ImageDraw.Draw(out_im)
+        cd.text((6, 4), f"{subj}   rule: {rule}", fill=(0, 0, 0))
+        cd.text((6, 20), f"FILED ON staff {st}"
+                         + (f" = {sname}" if sname else "")
+                         + "   (its 5 lines are drawn GREEN below)",
+                fill=(0, 120, 45))
+        cd.text((6, 36), f"inferred {(v.get('value') or {}).get('beats')} beats"
+                         f"   |   reader's top candidate {top} beats"
+                         f"   |   detector conf "
+                         f"{idx.get(('glyph_conf', subj)):.2f}", fill=(140, 0, 0))
+        crop = out_im
+
         name = f"{a.label}-p{p}-s{sy}-st{st}-c{ce}-g{gi}-{rule.split('_')[-1]}.png"
         crop.save(out_dir / name)
         manifest.append({
