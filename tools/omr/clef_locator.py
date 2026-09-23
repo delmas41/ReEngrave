@@ -99,6 +99,42 @@ class ClefLocatorConfig:
     # narrow engravings; the ceiling is what keeps a G clef (≈7) out.
     min_height_spaces: float = 2.2
     max_height_spaces: float = 5.0
+    # ── ROADMAP 2.11: the band a C clef's ink ACTUALLY occupies ─────────────
+    # Sean, 2026-09-23 (docs/DECISIONS.md): *"the size of clefs are consistent
+    # to the staff and the edge of the first measure on the system"*. The pair
+    # above is a GENEROUS accept/stop bound — it has to be, because it decides
+    # whether to keep looking. This pair is the MEASURED band, and it is used
+    # for one thing only: deciding whether a cluster is clef-sized enough to
+    # survive a notehead box standing on it (`_overridable_occupancy`).
+    #
+    # ⚠️ MEASURED, NOT GUESSED, AND NARROWER THAN THE PAIR ABOVE ON PURPOSE.
+    # `benchmarks/omr-clef-geometry-2026-09/probe/price_occupied.py` takes the
+    # height of every clef this locator SUCCESSFULLY read, in staff spaces, on
+    # the three acceptance documents' records, from the `cell:0` arm (the one
+    # arm whose divisor the record carries exactly):
+    #
+    #     document      n    min    max    median
+    #     Litolff      22   3.36   4.63     4.43
+    #     Breitkopf    60   3.91   4.50     4.30
+    #     engraved      3   4.09   4.09     4.09
+    #     pooled       85   3.36   4.63     4.32
+    #
+    # Rounded OUTWARD to one decimal: 3.3 .. 4.7. It is narrower than
+    # 2.2 .. 5.0 deliberately — if the two were equal, every cluster that can
+    # reach the occupancy test would be in band and the veto would become dead
+    # code for the only class that can ever raise it (rule 7: a control must
+    # be able to fail). On the two scan records 4 of 47 / 2 of 27 `occupied`
+    # clusters fall OUTSIDE this band and keep their veto.
+    #
+    # ⚠️ WOULD BE FALSIFIED BY: a plate whose C clef measures outside 3.3-4.7
+    # staff spaces, which would show up as a clef the locator reads and this
+    # band then refuses to defend. The roadmap's own prose guesses
+    # (`alto ~= 4-4.5`) are close but not the measurement; the measurement is.
+    # ⚠️ THE LOCATOR IS A C-CLEF LOCATOR, so this band is the C-clef family's
+    # and no other. A treble-sized cluster never reaches the occupancy test at
+    # all — `max_height_spaces` stops the search first.
+    clef_family_min_height_spaces: float = 3.3
+    clef_family_max_height_spaces: float = 4.7
     min_symmetry: float = 0.70      # the C-clef signature — see _refine_symmetry_axis
     # A rarer answer has to be better evidenced, and mezzosoprano is the rarest
     # of the five C clefs by a long way — essentially absent from the orchestral
@@ -390,6 +426,12 @@ class LocatedClef:
     read: ClefRead
     bbox: tuple[int, int, int, int]
     symmetry: float
+    #: Indices into the caller's `occupied_boxes` that this read OVERRODE —
+    #: notehead boxes standing on clef-sized ink at the header (ROADMAP 2.11).
+    #: Empty on every ordinary read, so a caller that ignores it sees no
+    #: change. It is the CONNECTION the notehead refusal reads: the boxes
+    #: named here are the ones the clef says are not noteheads.
+    overrode_occupied: tuple[int, ...] = ()
 
 
 def _analysis_scale(spacing: float, config: ClefLocatorConfig) -> float:
@@ -634,19 +676,132 @@ def _overlaps_any(
     boxes: list[tuple[int, int, int, int]] | None,
 ) -> bool:
     """Whether `bbox` shares any area with a box the detector already claimed."""
+    return bool(_overlapping(bbox, boxes))
+
+
+def _overlapping(
+    bbox: tuple[int, int, int, int],
+    boxes: list[tuple[int, int, int, int]] | None,
+) -> list[int]:
+    """WHICH of `boxes` share area with `bbox`, by index.
+
+    ⚠️ The predicate is unchanged; `_overlaps_any` now asks this one whether
+    the list is empty, so there is exactly one intersection test in the module
+    and the refusal downstream cites the same boxes the veto would have.
+    """
     if not boxes:
-        return False
+        return []
     x, y, w, h = bbox
-    for bx, by, bw, bh in boxes:
+    out: list[int] = []
+    for i, (bx, by, bw, bh) in enumerate(boxes):
         if x < bx + bw and bx < x + w and y < by + bh and by < y + h:
-            return True
-    return False
+            out.append(i)
+    return out
+
+
+def _overridable_occupancy(
+    bbox: tuple[int, int, int, int],
+    spacing: float,
+    hits: list[int],
+    occupied_boxes: list[tuple[float, float, float, float]],
+    occupied_classes: list[str] | None,
+    claimed_boxes: list[tuple[float, float, float, float]] | None,
+    config: ClefLocatorConfig,
+) -> tuple[bool, dict]:
+    """ROADMAP 2.11 — may this clef-sized cluster survive the boxes on it?
+
+    Sean, 2026-09-23 (`docs/DECISIONS.md`): *"it also looks like the clef box
+    is too small. the size of clefs are consistent to the staff and the edge
+    of the first measure on the system"*. On Litolff Beethoven 5 p.3 the alto
+    C clef of the Viola staff is merged into the staff lines by the plate; the
+    detector draws TWO `noteheadBlackOnLine` boxes on it at confidence 0.64
+    and 0.36, and a 1-space symbol then vetoes a 4.5-space read. The whole
+    staff dies: 48 noteheads boxed, 0 written, every one refused `no_pitch`
+    (`benchmarks/omr-notehead-funnel-2026-09/FINDINGS.md`).
+
+    FOUR conditions, and each can fail:
+
+    1. **The caller opted in.** `occupied_classes is None` -> never override.
+       The legacy path and `key_signature_locator` pass boxes without classes
+       and are bit-identical after this change, which is what keeps a FROZEN
+       path frozen (CLAUDE.md §3).
+    2. **Every overlapping box is notehead-class.** A rest, a dynamic, an
+       accidental or a detected clef standing on this ink is a different
+       claim and the veto stands for it.
+    3. **Every overlapping box is NOTEHEAD-SIZED, i.e. shorter than a clef.**
+       This is Sean's sentence made a test: a box that is ITSELF inside the
+       clef height band is not "too small", so it is not obviously the error
+       and the veto stands. A notehead is about one staff space tall and 1.3
+       wide (CLAUDE.md §10).
+    4. **The detector drew NO CLEF BOX on this ink.** ⚠️⚠️ THIS CONDITION WAS
+       NOT IN THE FIRST BUILD AND THE MEASUREMENT PUT IT THERE. On Brahms 1
+       p.6 `staff/6/1/3` the rule as first written took a staff the detector
+       had already read `clefG` at 0.688 and flipped it to `tenor` — a READ
+       clef changed, which is the one thing ROADMAP 2.11's gate forbids. The
+       detector's clef box sat at x_center 227 and the cluster at 213: the
+       SAME INK, claimed by a clef box, not by a notehead box. Sean's
+       complaint is that *a notehead box on clef ink is too small to be what
+       the ink is*; where the box on that ink IS a clef, the complaint does
+       not apply and which clef it is belongs to the clef contest, not to a
+       geometric override. `staff/6/0/9` on the same page and `staff/3/0/9`
+       on Litolff p.3 — the two staves 2.11 exists for — both have
+       `Q.CLEF_GLYPH` ABSTAINED `no_detections`, so the two populations
+       separate exactly rather than by a threshold.
+       ⚠️ A clef box REFUSES THE OVERRIDE and does NOT become a veto of its
+       own: `occupied_boxes` stays notehead-only, so a caller that does not
+       opt in to 2.11 is still bit-identical.
+
+    The cluster's own height being in the measured clef band is checked by the
+    caller, which is also where `w_spaces`/`h_spaces` are already computed.
+
+    ⚠️ WHAT THIS DOES NOT DO. It does not weaken the symmetry gate, the
+    F-clef dot veto or the snap: an overridden cluster still has to pass all
+    three to be READ. The occupancy test was a cheap short-circuit in front of
+    them, and this removes the short-circuit for one named population only.
+
+    Returns `(allowed, detail)`; `detail` is trace material either way.
+    """
+    _x, _y, _w, h = bbox
+    h_sp = h / spacing if spacing else 0.0
+    detail: dict = {
+        "n_occupied": len(hits),
+        "occupied_classes": ([str(occupied_classes[i]) for i in hits]
+                             if occupied_classes else None),
+        "occupied_h_spaces": [round(occupied_boxes[i][3] / spacing, 2)
+                              for i in hits] if spacing else [],
+    }
+    if occupied_classes is None:
+        detail["override_refused"] = "caller_supplied_no_classes"
+        return False, detail
+    if not (config.clef_family_min_height_spaces <= h_sp
+            <= config.clef_family_max_height_spaces):
+        detail["override_refused"] = "cluster_height_outside_clef_band"
+        return False, detail
+    claimed = _overlapping(bbox, claimed_boxes)
+    if claimed:
+        detail["override_refused"] = "the_detector_already_boxed_a_clef_here"
+        detail["clef_boxes_on_the_cluster"] = len(claimed)
+        return False, detail
+    for i in hits:
+        if i >= len(occupied_classes):
+            detail["override_refused"] = "classes_shorter_than_boxes"
+            return False, detail
+        if not str(occupied_classes[i]).lower().startswith("notehead"):
+            detail["override_refused"] = "an_occupying_box_is_not_a_notehead"
+            return False, detail
+        if spacing and (occupied_boxes[i][3] / spacing
+                        >= config.clef_family_min_height_spaces):
+            detail["override_refused"] = "an_occupying_box_is_itself_clef_sized"
+            return False, detail
+    return True, detail
 
 
 def locate_clef(
     cell: MeasureCell,
     *,
     occupied_boxes: list[tuple[int, int, int, int]] | None = None,
+    occupied_classes: list[str] | None = None,
+    clef_boxes: list[tuple[int, int, int, int]] | None = None,
     config: ClefLocatorConfig = DEFAULT_LOCATOR_CONFIG,
     geometry: ClefGeometryConfig = DEFAULT_CONFIG,
     trace: dict | None = None,
@@ -663,6 +818,20 @@ def locate_clef(
     first cluster is then real notation, and a stacked chord in particular is
     tall, glyph-sized and vertically symmetric enough to pass for a C clef.
     Reusing the detector's own output costs nothing and settles it.
+
+    `occupied_classes`, when given, must be the SMuFL class name of each box
+    in `occupied_boxes`, same order. It is what lets ROADMAP 2.11 override the
+    rejection above for one named case — notehead-sized boxes standing on
+    clef-sized ink at the header, where the box is the error and not the ink
+    (`_overridable_occupancy`). Omit it and this call behaves exactly as it
+    did before 2.11; the frozen legacy path and `key_signature_locator` omit
+    it, so neither changes.
+
+    `clef_boxes` are canonical boxes the detector already called a CLEF. One
+    overlapping the cluster REFUSES the 2.11 override — the ink is already
+    claimed by a clef, so "the box is too small" is not the complaint and
+    which clef it is belongs to the clef contest. It is never a veto in its
+    own right, so omitting it also changes nothing.
 
     `trace`, when given, is filled with why this call came out the way it did —
     the branch that ended it and the geometry of the cluster that ended it, in
@@ -696,6 +865,10 @@ def locate_clef(
     occupied_boxes = [
         (x * scale, y * scale, w * scale, h * scale)
         for (x, y, w, h) in (occupied_boxes or [])
+    ]
+    clef_boxes = [
+        (x * scale, y * scale, w * scale, h * scale)
+        for (x, y, w, h) in (clef_boxes or [])
     ]
     cell_width = mask.shape[1]
 
@@ -821,11 +994,22 @@ def locate_clef(
         if h_sp < config.min_height_spaces:
             continue  # debris: a fragment, a speck, a rule that survived
 
-        if _overlaps_any(bbox, occupied_boxes):
-            # The head of this staff is a notehead or a rest, so the clef is
-            # not in this cell at all. Stop, exactly as for a G clef.
-            _note("occupied", w_spaces=round(w_sp, 2), h_spaces=round(h_sp, 2))
-            return None
+        overrode: tuple[int, ...] = ()
+        hits = _overlapping(bbox, occupied_boxes)
+        if hits:
+            allowed, occ_detail = _overridable_occupancy(
+                bbox, spacing, hits, occupied_boxes, occupied_classes,
+                clef_boxes, config)
+            if not allowed:
+                # The head of this staff is a notehead or a rest, so the clef
+                # is not in this cell at all. Stop, exactly as for a G clef.
+                _note("occupied", w_spaces=round(w_sp, 2),
+                      h_spaces=round(h_sp, 2), **occ_detail)
+                return None
+            # ROADMAP 2.11 — the boxes are too small to be what this ink is.
+            # Keep going: symmetry, the F-clef dots and the snap still have to
+            # agree before anything is read.
+            overrode = tuple(hits)
 
         # Measure symmetry about the axis the ink actually balances on, searched
         # within a bounded window around the box centre. Bounded matters both
@@ -872,6 +1056,13 @@ def locate_clef(
                   h_spaces=round(h_sp, 2), symmetry=round(symmetry, 3))
             return None  # see `min_symmetry_mezzosoprano`
         # Report the box in the cell's own coordinates, not analysis space.
+        # ⚠️ `w_spaces`/`h_spaces` ARE RECORDED ON THE READ, not only on the
+        # refusals. Until 2.11 a successful read carried a canonical bbox and
+        # nothing else, so the only way to ask how tall a located clef was in
+        # STAFF SPACES was to divide by a spacing the record does not carry
+        # for the header crop — which reads back heights ABOVE this locator's
+        # own ceiling. The measurement that produced `clef_family_*` had to
+        # throw the header arm away for exactly that reason.
         _note("located", w_spaces=round(w_sp, 2), h_spaces=round(h_sp, 2),
               symmetry=round(symmetry, 3), clef=read.name)
         inv = 1.0 / scale if scale else 1.0
@@ -879,6 +1070,7 @@ def locate_clef(
             read=read,
             bbox=tuple(int(round(v * inv)) for v in bbox),
             symmetry=round(symmetry, 4),
+            overrode_occupied=overrode,
         )
 
     if skipped_off_staff:

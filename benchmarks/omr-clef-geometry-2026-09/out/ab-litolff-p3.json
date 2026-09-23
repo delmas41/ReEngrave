@@ -1,0 +1,403 @@
+{
+ "base": {
+  "path": "benchmarks/omr-clef-geometry-2026-09/out/base-litolff-p3.record.json",
+  "provenance": {
+   "commit": "febd383a60186bde077e4181b69ed2264c24caf4",
+   "dirty": true,
+   "settings": {
+    "env_overrides": {
+     "OMR_SURYA_KEEP_ALIVE": "1"
+    },
+    "args": {
+     "against": null,
+     "conf": 0.25,
+     "dpi": 600,
+     "imgsz": null,
+     "ink_rows": false,
+     "no_roster": false,
+     "no_weight_routing": false,
+     "ocr": false,
+     "pages": "3",
+     "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf",
+     "route_weights": false,
+     "sheet": null,
+     "surya": false,
+     "weights": "omr-weights/deepscoresv2-yolov8l-hollow-graft-shift09-2026-09-04.pt",
+     "work_id": null
+    }
+   }
+  },
+  "notes_not_written": {
+   "duration_narrowed": 70,
+   "not_a_notehead:too_narrow": 6,
+   "ink_is_a_whole_rest": 5,
+   "not_a_notehead:clipped_fragment": 17,
+   "owned_by_another_staff": 10,
+   "no_pitch": 40
+  },
+  "notes_not_written_total": 148,
+  "notes_not_written_by_system": {
+   "3/0": {
+    "duration_narrowed": 50,
+    "not_a_notehead:too_narrow": 5,
+    "ink_is_a_whole_rest": 4,
+    "not_a_notehead:clipped_fragment": 15,
+    "owned_by_another_staff": 10,
+    "no_pitch": 40
+   },
+   "3/1": {
+    "duration_narrowed": 20,
+    "ink_is_a_whole_rest": 1,
+    "not_a_notehead:clipped_fragment": 2,
+    "not_a_notehead:too_narrow": 1
+   }
+  },
+  "status_census_unaccounted": [],
+  "overrides": [],
+  "is_a_clef_refusals": []
+ },
+ "arm": {
+  "path": "benchmarks/omr-clef-geometry-2026-09/out/arm-litolff-p3.record.json",
+  "provenance": {
+   "commit": "febd383a60186bde077e4181b69ed2264c24caf4",
+   "dirty": true,
+   "settings": {
+    "env_overrides": {
+     "OMR_SURYA_KEEP_ALIVE": "1"
+    },
+    "args": {
+     "against": null,
+     "conf": 0.25,
+     "dpi": 600,
+     "imgsz": null,
+     "ink_rows": false,
+     "no_roster": false,
+     "no_weight_routing": false,
+     "ocr": false,
+     "pages": "3",
+     "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf",
+     "route_weights": false,
+     "sheet": null,
+     "surya": false,
+     "weights": "omr-weights/deepscoresv2-yolov8l-hollow-graft-shift09-2026-09-04.pt",
+     "work_id": null
+    }
+   }
+  },
+  "notes_not_written": {
+   "duration_narrowed": 73,
+   "not_a_notehead:too_narrow": 6,
+   "ink_is_a_whole_rest": 5,
+   "not_a_notehead:clipped_fragment": 17,
+   "owned_by_another_staff": 10,
+   "not_a_notehead:is_a_clef": 2
+  },
+  "notes_not_written_total": 113,
+  "notes_not_written_by_system": {
+   "3/0": {
+    "duration_narrowed": 53,
+    "not_a_notehead:too_narrow": 5,
+    "ink_is_a_whole_rest": 4,
+    "not_a_notehead:clipped_fragment": 15,
+    "owned_by_another_staff": 10,
+    "not_a_notehead:is_a_clef": 2
+   },
+   "3/1": {
+    "duration_narrowed": 20,
+    "ink_is_a_whole_rest": 1,
+    "not_a_notehead:clipped_fragment": 2,
+    "not_a_notehead:too_narrow": 1
+   }
+  },
+  "status_census_unaccounted": [],
+  "overrides": [
+   {
+    "staff": "staff/3/0/9",
+    "frame": "header_window",
+    "read": "alto",
+    "symmetry": 0.8233,
+    "h_spaces": 4.5,
+    "w_spaces": 2.09,
+    "overrode": [
+     "glyph/3/0/9/0/1",
+     "glyph/3/0/9/0/6"
+    ]
+   },
+   {
+    "staff": "staff/3/0/9",
+    "frame": "cell:0",
+    "read": "alto",
+    "symmetry": 0.8469,
+    "h_spaces": 4.5,
+    "w_spaces": 3.36,
+    "overrode": [
+     "glyph/3/0/9/0/1",
+     "glyph/3/0/9/0/6"
+    ]
+   }
+  ],
+  "is_a_clef_refusals": [
+   {
+    "glyph": "glyph/3/0/9/0/1",
+    "class": "noteheadBlackOnLine",
+    "conf": 0.641894519329071,
+    "basis": [
+     "obs:002582",
+     "obs:008048",
+     "obs:008049"
+    ]
+   },
+   {
+    "glyph": "glyph/3/0/9/0/6",
+    "class": "noteheadBlackOnLine",
+    "conf": 0.36410290002822876,
+    "basis": [
+     "obs:002595",
+     "obs:008048",
+     "obs:008049"
+    ]
+   }
+  ]
+ },
+ "clef_verdicts_base": {
+  "staff/3/0/0": {
+   "outcome": "decided",
+   "value": "treble",
+   "reason": "scored"
+  },
+  "staff/3/0/1": {
+   "outcome": "decided",
+   "value": "treble",
+   "reason": "scored"
+  },
+  "staff/3/0/2": {
+   "outcome": "decided",
+   "value": "treble",
+   "reason": "scored"
+  },
+  "staff/3/0/3": {
+   "outcome": "decided",
+   "value": "bass",
+   "reason": "scored"
+  },
+  "staff/3/0/4": {
+   "outcome": "decided",
+   "value": "treble",
+   "reason": "scored"
+  },
+  "staff/3/0/5": {
+   "outcome": "decided",
+   "value": "treble",
+   "reason": "scored"
+  },
+  "staff/3/0/6": {
+   "outcome": "decided",
+   "value": "bass",
+   "reason": "scored"
+  },
+  "staff/3/0/7": {
+   "outcome": "decided",
+   "value": "treble",
+   "reason": "scored"
+  },
+  "staff/3/0/8": {
+   "outcome": "decided",
+   "value": "treble",
+   "reason": "scored"
+  },
+  "staff/3/0/9": {
+   "outcome": "abstained",
+   "value": null,
+   "reason": "no_candidates"
+  },
+  "staff/3/0/10": {
+   "outcome": "decided",
+   "value": "bass",
+   "reason": "scored"
+  },
+  "staff/3/1/0": {
+   "outcome": "decided",
+   "value": "treble",
+   "reason": "scored"
+  },
+  "staff/3/1/1": {
+   "outcome": "decided",
+   "value": "treble",
+   "reason": "scored"
+  },
+  "staff/3/1/2": {
+   "outcome": "decided",
+   "value": "bass",
+   "reason": "scored"
+  },
+  "staff/3/1/3": {
+   "outcome": "decided",
+   "value": "treble",
+   "reason": "scored"
+  },
+  "staff/3/1/4": {
+   "outcome": "decided",
+   "value": "treble",
+   "reason": "scored"
+  },
+  "staff/3/1/5": {
+   "outcome": "decided",
+   "value": "treble",
+   "reason": "scored"
+  },
+  "staff/3/1/6": {
+   "outcome": "decided",
+   "value": "alto",
+   "reason": "scored"
+  },
+  "staff/3/1/7": {
+   "outcome": "decided",
+   "value": "bass",
+   "reason": "scored"
+  }
+ },
+ "clef_verdicts_arm": {
+  "staff/3/0/0": {
+   "outcome": "decided",
+   "value": "treble",
+   "reason": "scored"
+  },
+  "staff/3/0/1": {
+   "outcome": "decided",
+   "value": "treble",
+   "reason": "scored"
+  },
+  "staff/3/0/2": {
+   "outcome": "decided",
+   "value": "treble",
+   "reason": "scored"
+  },
+  "staff/3/0/3": {
+   "outcome": "decided",
+   "value": "bass",
+   "reason": "scored"
+  },
+  "staff/3/0/4": {
+   "outcome": "decided",
+   "value": "treble",
+   "reason": "scored"
+  },
+  "staff/3/0/5": {
+   "outcome": "decided",
+   "value": "treble",
+   "reason": "scored"
+  },
+  "staff/3/0/6": {
+   "outcome": "decided",
+   "value": "bass",
+   "reason": "scored"
+  },
+  "staff/3/0/7": {
+   "outcome": "decided",
+   "value": "treble",
+   "reason": "scored"
+  },
+  "staff/3/0/8": {
+   "outcome": "decided",
+   "value": "treble",
+   "reason": "scored"
+  },
+  "staff/3/0/9": {
+   "outcome": "decided",
+   "value": "alto",
+   "reason": "scored"
+  },
+  "staff/3/0/10": {
+   "outcome": "decided",
+   "value": "bass",
+   "reason": "scored"
+  },
+  "staff/3/1/0": {
+   "outcome": "decided",
+   "value": "treble",
+   "reason": "scored"
+  },
+  "staff/3/1/1": {
+   "outcome": "decided",
+   "value": "treble",
+   "reason": "scored"
+  },
+  "staff/3/1/2": {
+   "outcome": "decided",
+   "value": "bass",
+   "reason": "scored"
+  },
+  "staff/3/1/3": {
+   "outcome": "decided",
+   "value": "treble",
+   "reason": "scored"
+  },
+  "staff/3/1/4": {
+   "outcome": "decided",
+   "value": "treble",
+   "reason": "scored"
+  },
+  "staff/3/1/5": {
+   "outcome": "decided",
+   "value": "treble",
+   "reason": "scored"
+  },
+  "staff/3/1/6": {
+   "outcome": "decided",
+   "value": "alto",
+   "reason": "scored"
+  },
+  "staff/3/1/7": {
+   "outcome": "decided",
+   "value": "bass",
+   "reason": "scored"
+  }
+ },
+ "clef_verdicts_changed": [
+  {
+   "staff": "staff/3/0/9",
+   "base": {
+    "outcome": "abstained",
+    "value": null,
+    "reason": "no_candidates"
+   },
+   "arm": {
+    "outcome": "decided",
+    "value": "alto",
+    "reason": "scored"
+   }
+  }
+ ],
+ "READ_clefs_changed": [],
+ "n_staves_with_a_clef_verdict": 19,
+ "subject": {
+  "id": "staff/3/0/9",
+  "clef_base": {
+   "outcome": "abstained",
+   "value": null,
+   "reason": "no_candidates"
+  },
+  "clef_arm": {
+   "outcome": "decided",
+   "value": "alto",
+   "reason": "scored"
+  },
+  "clef_located_base": null,
+  "clef_located_arm": [
+   {
+    "frame": "header_window",
+    "read": "alto",
+    "symmetry": 0.8233,
+    "h_spaces": 4.5,
+    "w_spaces": 2.09
+   },
+   {
+    "frame": "cell:0",
+    "read": "alto",
+    "symmetry": 0.8469,
+    "h_spaces": 4.5,
+    "w_spaces": 3.36
+   }
+  ]
+ }
+}

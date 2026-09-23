@@ -2101,10 +2101,22 @@ def gather_clef_locator(log: Log, pws: Any, cells: Sequence[Any],
                             frame=frame, reason=ABSTAIN.NO_STAFF_GEOMETRY,
                             note="no crop of this kind for this staff")
                 continue
-            occupied = _occupied_boxes(detections, p, key, frame)
+            occupied, occ_classes, occ_subjects = _occupied_notehead_rows(
+                detections, p, key)
+            # ⚠️ ROADMAP 2.11, THE FOURTH CONDITION, AND THE MEASUREMENT PUT
+            # IT HERE. Brahms 1 p.6 `staff/6/1/3`: the detector reads `clefG`
+            # at 0.688 on this very ink, and the first build of the override
+            # took the staff to `tenor` -- a READ clef changed, which the
+            # roadmap's gate forbids. A clef box on the cluster means the ink
+            # is already CLAIMED by a clef, so "the notehead box is too small"
+            # is not the complaint and which clef it is belongs to the clef
+            # contest. It refuses the override and is never a veto of its own.
+            clef_claimed = _clef_boxes(detections, p, key)
             trace: Dict[str, Any] = {}
             try:
-                found = locate_clef(crop, occupied_boxes=occupied, trace=trace)
+                found = locate_clef(crop, occupied_boxes=occupied,
+                                    occupied_classes=occ_classes,
+                                    clef_boxes=clef_claimed, trace=trace)
             except Exception as exc:                          # noqa: BLE001
                 log.abstain(sub, Q.CLEF_LOCATED, reader=READERS.CV_LOCATOR,
                             frame=frame, reason=ABSTAIN.READER_UNAVAILABLE,
@@ -2158,12 +2170,29 @@ def gather_clef_locator(log: Log, pws: Any, cells: Sequence[Any],
             # where a reading came from is the half that is free and unblocks
             # it.
             x0, _y0, w, _h = found.bbox
+            # ⚠️ ROADMAP 2.11 -- THE OVERRIDDEN BOXES ARE NAMED ON THE ROW,
+            # and that is the whole of the connection. `notehead_precision`
+            # refuses exactly these glyphs `is_a_clef`; it reads them off this
+            # detail rather than re-deriving which box the clef sat on, so the
+            # refusal cannot disagree with the read that caused it. A read
+            # that overrode nothing carries neither key, so every ordinary
+            # row is byte-identical to a pre-2.11 one.
+            extra: Dict[str, Any] = {}
+            if found.overrode_occupied:
+                extra["overrides_notehead_box"] = True
+                extra["overrode_glyph_subjects"] = [
+                    occ_subjects[i] for i in found.overrode_occupied
+                    if i < len(occ_subjects)]
+            for k in ("w_spaces", "h_spaces"):
+                if trace.get(k) is not None:
+                    extra[k] = trace[k]
             log.observe(sub, Q.CLEF_LOCATED, found.read.name,
                         reader=READERS.CV_LOCATOR, frame=frame,
                         score=float(found.symmetry),
                         family=found.read.family, line=found.read.line,
                         line_source=found.read.source,
-                        x_center=int(x0 + w / 2), bbox=list(found.bbox))
+                        x_center=int(x0 + w / 2), bbox=list(found.bbox),
+                        **extra)
 
 
 def _occupied_boxes(detections, page: int, key, frame: str):
@@ -2181,6 +2210,52 @@ def _occupied_boxes(detections, page: int, key, frame: str):
             out.append((d.x_canonical, d.y_canonical,
                         d.width_canonical, d.height_canonical))
     return out
+
+
+def _occupied_notehead_rows(detections, page: int, key):
+    """The same boxes, WITH the class and the glyph subject of each.
+
+    ⚠️ ROADMAP 2.11. `_occupied_boxes` hands the locator four numbers and
+    nothing to name them by, so a read that survives a box cannot say WHICH
+    box it survived and the downstream refusal would have to re-derive the
+    overlap -- a second, drifting copy of the intersection test. The subject
+    key is exact rather than reconstructed: `gather_detections` files
+    `R.glyph(p, s, st, cell, gi)` with `gi` the index into this same
+    `detections[cell_key]` list, so the ordinal IS the identity.
+
+    Returns `(boxes, classes, subjects)`, aligned by index. The class list is
+    what opts this call site in to 2.11; callers that pass `_occupied_boxes`
+    alone keep the pre-2.11 behaviour exactly.
+    """
+    cell_key = R.cell(page, key[0], key[1], 0).to_key()
+    boxes, classes, subjects = [], [], []
+    for gi, d in enumerate(detections.get(cell_key, ())):
+        if d.smufl_name.startswith(_NOTEHEAD_PREFIX):
+            boxes.append((d.x_canonical, d.y_canonical,
+                          d.width_canonical, d.height_canonical))
+            classes.append(d.smufl_name)
+            subjects.append(R.glyph(page, key[0], key[1], 0, gi).to_key())
+    return boxes, classes, subjects
+
+
+def _clef_boxes(detections, page: int, key):
+    """The boxes the detector already called a CLEF, in this staff's cell 0.
+
+    ⚠️ ROADMAP 2.11's fourth condition, and it is NOT a widening of the veto:
+    these boxes never enter `occupied_boxes`, so nothing that used to be read
+    stops being read. They only REFUSE the override, which is strictly more
+    conservative than the first build.
+
+    ⚠️ `_is_clef_class` is the SAME predicate `gather_clef` uses to decide
+    what a clef detection is. A second spelling of "is this a clef" would let
+    the two disagree about the same box -- which is the exact shape of fault
+    this file's own `_occupied_boxes` comment warns about one function up.
+    """
+    cell_key = R.cell(page, key[0], key[1], 0).to_key()
+    return [(d.x_canonical, d.y_canonical,
+             d.width_canonical, d.height_canonical)
+            for d in detections.get(cell_key, ())
+            if _is_clef_class(d.smufl_name, d.category)]
 
 
 # ─────────────────────────────────────────────────────────────────────────────

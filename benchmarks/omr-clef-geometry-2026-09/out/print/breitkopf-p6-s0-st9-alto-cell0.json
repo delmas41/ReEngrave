@@ -1,0 +1,72 @@
+{
+ "png": "breitkopf-p6-s0-st9-alto-cell0.png",
+ "caption": "breitkopf-p6 system 0 staff 9 \u2014 READ alto by geometry over 3 notehead box(es). GREEN = the staff's five Q.STAFF_LINES; BLUE = the ink cluster read as the clef; RED = the detector notehead boxes the read overrode and the exporter now refuses `is_a_clef`.",
+ "staff": "staff/6/0/9",
+ "page": 6,
+ "dpi": 600,
+ "zoom": 4,
+ "frame_control": {
+  "passed": true,
+  "contrast": 76.22
+ },
+ "read": {
+  "clef": "alto",
+  "frame": "cell:0",
+  "symmetry": 0.9763,
+  "h_spaces": 4.27,
+  "w_spaces": 3.0
+ },
+ "cluster_page_px": [
+  686.081081081081,
+  2996.135135135135,
+  768.581081081081,
+  3113.5675675675675
+ ],
+ "cluster_note": "exact: cell:0 canonical -> page via CELL_BOX",
+ "overrode": [
+  {
+   "glyph": "glyph/6/0/9/0/12",
+   "class": "noteheadBlackInSpace",
+   "page_px": [
+    685.3378378378378,
+    3055.5945945945946,
+    705.777027027027,
+    3071.2027027027025
+   ]
+  },
+  {
+   "glyph": "glyph/6/0/9/0/23",
+   "class": "noteheadBlackInSpace",
+   "page_px": [
+    723.6148648648649,
+    3007.2837837837837,
+    767.0945945945946,
+    3047.7905405405404
+   ]
+  },
+  {
+   "glyph": "glyph/6/0/9/0/43",
+   "class": "noteheadBlackInSpace",
+   "page_px": [
+    685.3378378378378,
+    3083.0945945945946,
+    708.3783783783783,
+    3109.108108108108
+   ]
+  }
+ ],
+ "staff_lines_page_px": [
+  3011,
+  3039,
+  3066,
+  3093,
+  3121
+ ],
+ "crop_page_px": [
+  612.5,
+  2736.0,
+  1043.581081081081,
+  3396.0
+ ],
+ "VERDICT_none_yet": null
+}

@@ -1,0 +1,7976 @@
+{
+ "documents": {
+  "beethoven5-litolff": {
+   "record": "/Users/seanjohnson/Desktop/ReEngrave/library/_shared-records/beethoven5-litolff-mvt1-whole-20260923.record.json",
+   "provenance": {
+    "commit": "dbc9962b641e0259763efb45acc204e4e78ffd55",
+    "dirty": true,
+    "settings": {
+     "env_overrides": {
+      "OMR_DIRECTION_TEXT_SCAN_GATE": "1",
+      "OMR_SURYA_KEEP_ALIVE": "0"
+     },
+     "args": {
+      "against": null,
+      "conf": 0.25,
+      "dpi": 600,
+      "imgsz": null,
+      "ink_rows": false,
+      "no_roster": false,
+      "no_weight_routing": false,
+      "ocr": true,
+      "pages": "1-16",
+      "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf",
+      "route_weights": true,
+      "sheet": null,
+      "surya": true,
+      "weights": "auto",
+      "work_id": null
+     }
+    }
+   },
+   "clef_located_observations": 47,
+   "measured_bands": {
+    "alto": {
+     "height": {
+      "n": 13,
+      "min": 3.73,
+      "max": 4.63,
+      "median": 4.45,
+      "p05": 3.73,
+      "p95": 4.55
+     },
+     "width": {
+      "n": 13,
+      "min": 2.64,
+      "max": 4.32,
+      "median": 2.82,
+      "p05": 2.64,
+      "p95": 3.95
+     }
+    },
+    "alto (header*)": {
+     "height": {
+      "n": 16,
+      "min": 2.27,
+      "max": 6.74,
+      "median": 4.47,
+      "p05": 2.27,
+      "p95": 4.95
+     },
+     "width": {
+      "n": 16,
+      "min": 0.68,
+      "max": 2.89,
+      "median": 2.26,
+      "p05": 0.68,
+      "p95": 2.68
+     }
+    },
+    "tenor": {
+     "height": {
+      "n": 9,
+      "min": 3.36,
+      "max": 4.55,
+      "median": 4.41,
+      "p05": 3.36,
+      "p95": 4.55
+     },
+     "width": {
+      "n": 9,
+      "min": 2.64,
+      "max": 3.91,
+      "median": 3.5,
+      "p05": 2.64,
+      "p95": 3.73
+     }
+    },
+    "tenor (header*)": {
+     "height": {
+      "n": 9,
+      "min": 3.5,
+      "max": 4.7,
+      "median": 4.45,
+      "p05": 3.5,
+      "p95": 4.56
+     },
+     "width": {
+      "n": 9,
+      "min": 0.77,
+      "max": 3.36,
+      "median": 1.77,
+      "p05": 0.77,
+      "p95": 2.36
+     }
+    },
+    "ALL_LOCATED_cell0_only": {
+     "height": {
+      "n": 22,
+      "min": 3.36,
+      "max": 4.63,
+      "median": 4.43,
+      "p05": 3.55,
+      "p95": 4.55
+     },
+     "width": {
+      "n": 22,
+      "min": 2.64,
+      "max": 4.32,
+      "median": 2.96,
+      "p05": 2.64,
+      "p95": 3.91
+     }
+    }
+   },
+   "detector_clef_box_bands": {
+    "clef8": {
+     "height": {
+      "n": 1,
+      "min": 0.35,
+      "max": 0.35,
+      "median": 0.35
+     },
+     "width": {
+      "n": 1,
+      "min": 0.37,
+      "max": 0.37,
+      "median": 0.37
+     }
+    },
+    "clefCAlto": {
+     "height": {
+      "n": 8,
+      "min": 2.5,
+      "max": 4.53,
+      "median": 4.39,
+      "p05": 2.5,
+      "p95": 4.51
+     },
+     "width": {
+      "n": 8,
+      "min": 2.64,
+      "max": 3.65,
+      "median": 2.92,
+      "p05": 2.64,
+      "p95": 3.07
+     }
+    },
+    "clefCTenor": {
+     "height": {
+      "n": 3,
+      "min": 4.23,
+      "max": 4.52,
+      "median": 4.51,
+      "p05": 4.23,
+      "p95": 4.51
+     },
+     "width": {
+      "n": 3,
+      "min": 2.71,
+      "max": 3.73,
+      "median": 3.36,
+      "p05": 2.71,
+      "p95": 3.36
+     }
+    },
+    "clefF": {
+     "height": {
+      "n": 77,
+      "min": 3.11,
+      "max": 3.8,
+      "median": 3.54,
+      "p05": 3.26,
+      "p95": 3.71
+     },
+     "width": {
+      "n": 77,
+      "min": 2.49,
+      "max": 4.06,
+      "median": 3.08,
+      "p05": 2.63,
+      "p95": 3.4
+     }
+    },
+    "clefG": {
+     "height": {
+      "n": 296,
+      "min": 0.53,
+      "max": 8.64,
+      "median": 7.19,
+      "p05": 0.78,
+      "p95": 7.4
+     },
+     "width": {
+      "n": 296,
+      "min": 1.8,
+      "max": 3.97,
+      "median": 2.91,
+      "p05": 2.22,
+      "p95": 3.2
+     }
+    }
+   },
+   "locator_config_band": {
+    "min_height_spaces": 2.2,
+    "max_height_spaces": 5.0,
+    "min_width_spaces": 0.55,
+    "max_width_spaces": 4.5,
+    "max_start_spaces": 6.0
+   },
+   "located_rows": [
+    {
+     "staff": "staff/1/0/3",
+     "frame": "header_window",
+     "read": "alto",
+     "family": "C",
+     "x_center": 382,
+     "h_spaces": 4.0,
+     "w_spaces": 2.228,
+     "symmetry": 0.7143
+    },
+    {
+     "staff": "staff/1/0/9",
+     "frame": "header_window",
+     "read": "alto",
+     "family": "C",
+     "x_center": 393,
+     "h_spaces": 4.945,
+     "w_spaces": 1.945,
+     "symmetry": 0.8767
+    },
+    {
+     "staff": "staff/2/0/9",
+     "frame": "header_window",
+     "read": "alto",
+     "family": "C",
+     "x_center": 366,
+     "h_spaces": 4.0,
+     "w_spaces": 2.05,
+     "symmetry": 0.8429
+    },
+    {
+     "staff": "staff/2/1/3",
+     "frame": "cell:0",
+     "read": "tenor",
+     "family": "C",
+     "x_center": 307,
+     "h_spaces": 3.55,
+     "w_spaces": 3.5,
+     "symmetry": 0.7602
+    },
+    {
+     "staff": "staff/3/1/6",
+     "frame": "header_window",
+     "read": "alto",
+     "family": "C",
+     "x_center": 357,
+     "h_spaces": 4.55,
+     "w_spaces": 2.5,
+     "symmetry": 0.8135
+    },
+    {
+     "staff": "staff/3/1/6",
+     "frame": "cell:0",
+     "read": "alto",
+     "family": "C",
+     "x_center": 320,
+     "h_spaces": 4.55,
+     "w_spaces": 2.77,
+     "symmetry": 0.8234
+    },
+    {
+     "staff": "staff/4/1/9",
+     "frame": "header_window",
+     "read": "alto",
+     "family": "C",
+     "x_center": 377,
+     "h_spaces": 4.5,
+     "w_spaces": 2.09,
+     "symmetry": 0.8888
+    },
+    {
+     "staff": "staff/4/1/9",
+     "frame": "cell:0",
+     "read": "alto",
+     "family": "C",
+     "x_center": 368,
+     "h_spaces": 4.5,
+     "w_spaces": 3.09,
+     "symmetry": 0.8748
+    },
+    {
+     "staff": "staff/5/0/3",
+     "frame": "cell:0",
+     "read": "tenor",
+     "family": "C",
+     "x_center": 309,
+     "h_spaces": 4.32,
+     "w_spaces": 3.64,
+     "symmetry": 0.7569
+    },
+    {
+     "staff": "staff/5/1/6",
+     "frame": "header_window",
+     "read": "tenor",
+     "family": "C",
+     "x_center": 363,
+     "h_spaces": 4.55,
+     "w_spaces": 2.36,
+     "symmetry": 0.8609
+    },
+    {
+     "staff": "staff/5/1/6",
+     "frame": "cell:0",
+     "read": "tenor",
+     "family": "C",
+     "x_center": 313,
+     "h_spaces": 4.55,
+     "w_spaces": 2.73,
+     "symmetry": 0.8398
+    },
+    {
+     "staff": "staff/6/0/8",
+     "frame": "header_window",
+     "read": "tenor",
+     "family": "C",
+     "x_center": 395,
+     "h_spaces": 4.557,
+     "w_spaces": 1.752,
+     "symmetry": 0.9209
+    },
+    {
+     "staff": "staff/6/0/8",
+     "frame": "cell:0",
+     "read": "tenor",
+     "family": "C",
+     "x_center": 422,
+     "h_spaces": 4.496,
+     "w_spaces": 3.909,
+     "symmetry": 0.8746
+    },
+    {
+     "staff": "staff/6/1/3",
+     "frame": "header_window",
+     "read": "tenor",
+     "family": "C",
+     "x_center": 393,
+     "h_spaces": 4.55,
+     "w_spaces": 1.77,
+     "symmetry": 0.906
+    },
+    {
+     "staff": "staff/6/1/3",
+     "frame": "cell:0",
+     "read": "tenor",
+     "family": "C",
+     "x_center": 422,
+     "h_spaces": 4.55,
+     "w_spaces": 3.73,
+     "symmetry": 0.9408
+    },
+    {
+     "staff": "staff/6/1/11",
+     "frame": "cell:0",
+     "read": "alto",
+     "family": "C",
+     "x_center": 402,
+     "h_spaces": 3.73,
+     "w_spaces": 3.95,
+     "symmetry": 0.7089
+    },
+    {
+     "staff": "staff/7/0/6",
+     "frame": "header_window",
+     "read": "alto",
+     "family": "C",
+     "x_center": 180,
+     "h_spaces": 2.27,
+     "w_spaces": 2.32,
+     "symmetry": 0.7089
+    },
+    {
+     "staff": "staff/8/0/7",
+     "frame": "header_window",
+     "read": "alto",
+     "family": "C",
+     "x_center": 329,
+     "h_spaces": 4.5,
+     "w_spaces": 2.68,
+     "symmetry": 0.8536
+    },
+    {
+     "staff": "staff/8/0/7",
+     "frame": "cell:0",
+     "read": "alto",
+     "family": "C",
+     "x_center": 284,
+     "h_spaces": 4.55,
+     "w_spaces": 3.05,
+     "symmetry": 0.8788
+    },
+    {
+     "staff": "staff/8/1/3",
+     "frame": "cell:0",
+     "read": "tenor",
+     "family": "C",
+     "x_center": 353,
+     "h_spaces": 4.412,
+     "w_spaces": 2.639,
+     "symmetry": 0.8858
+    },
+    {
+     "staff": "staff/8/1/8",
+     "frame": "header_window",
+     "read": "alto",
+     "family": "C",
+     "x_center": 358,
+     "h_spaces": 4.588,
+     "w_spaces": 2.526,
+     "symmetry": 0.8319
+    },
+    {
+     "staff": "staff/8/1/8",
+     "frame": "cell:0",
+     "read": "alto",
+     "family": "C",
+     "x_center": 317,
+     "h_spaces": 4.454,
+     "w_spaces": 2.732,
+     "symmetry": 0.8349
+    },
+    {
+     "staff": "staff/9/0/9",
+     "frame": "header_window",
+     "read": "alto",
+     "family": "C",
+     "x_center": 375,
+     "h_spaces": 4.735,
+     "w_spaces": 2.184,
+     "symmetry": 0.815
+    },
+    {
+     "staff": "staff/9/0/9",
+     "frame": "cell:0",
+     "read": "alto",
+     "family": "C",
+     "x_center": 336,
+     "h_spaces": 4.633,
+     "w_spaces": 2.867,
+     "symmetry": 0.8588
+    },
+    {
+     "staff": "staff/9/1/3",
+     "frame": "header_window",
+     "read": "tenor",
+     "family": "C",
+     "x_center": 323,
+     "h_spaces": 3.504,
+     "w_spaces": 3.356,
+     "symmetry": 0.7463
+    },
+    {
+     "staff": "staff/9/1/8",
+     "frame": "header_window",
+     "read": "alto",
+     "family": "C",
+     "x_center": 368,
+     "h_spaces": 4.749,
+     "w_spaces": 2.301,
+     "symmetry": 0.862
+    },
+    {
+     "staff": "staff/9/1/8",
+     "frame": "cell:0",
+     "read": "alto",
+     "family": "C",
+     "x_center": 314,
+     "h_spaces": 4.496,
+     "w_spaces": 2.818,
+     "symmetry": 0.825
+    },
+    {
+     "staff": "staff/10/0/3",
+     "frame": "header_window",
+     "read": "tenor",
+     "family": "C",
+     "x_center": 395,
+     "h_spaces": 4.41,
+     "w_spaces": 1.73,
+     "symmetry": 0.8516
+    },
+    {
+     "staff": "staff/10/0/3",
+     "frame": "cell:0",
+     "read": "tenor",
+     "family": "C",
+     "x_center": 411,
+     "h_spaces": 4.41,
+     "w_spaces": 3.59,
+     "symmetry": 0.8536
+    },
+    {
+     "staff": "staff/11/1/5",
+     "frame": "cell:0",
+     "read": "tenor",
+     "family": "C",
+     "x_center": 381,
+     "h_spaces": 3.36,
+     "w_spaces": 3.09,
+     "symmetry": 0.7341
+    },
+    {
+     "staff": "staff/12/0/10",
+     "frame": "header_window",
+     "read": "tenor",
+     "family": "C",
+     "x_center": 408,
+     "h_spaces": 4.45,
+     "w_spaces": 1.45,
+     "symmetry": 0.9143
+    },
+    {
+     "staff": "staff/12/1/9",
+     "frame": "header_window",
+     "read": "alto",
+     "family": "C",
+     "x_center": 386,
+     "h_spaces": 6.742,
+     "w_spaces": 2.894,
+     "symmetry": 0.8446
+    },
+    {
+     "staff": "staff/12/1/9",
+     "frame": "cell:0",
+     "read": "alto",
+     "family": "C",
+     "x_center": 243,
+     "h_spaces": 4.455,
+     "w_spaces": 2.727,
+     "symmetry": 0.895
+    },
+    {
+     "staff": "staff/13/0/9",
+     "frame": "header_window",
+     "read": "alto",
+     "family": "C",
+     "x_center": 402,
+     "h_spaces": 4.219,
+     "w_spaces": 1.656,
+     "symmetry": 0.9032
+    },
+    {
+     "staff": "staff/13/0/9",
+     "frame": "cell:0",
+     "read": "alto",
+     "family": "C",
+     "x_center": 340,
+     "h_spaces": 4.094,
+     "w_spaces": 2.823,
+     "symmetry": 0.8929
+    },
+    {
+     "staff": "staff/13/1/9",
+     "frame": "header_window",
+     "read": "alto",
+     "family": "C",
+     "x_center": 363,
+     "h_spaces": 3.95,
+     "w_spaces": 2.36,
+     "symmetry": 0.8312
+    },
+    {
+     "staff": "staff/13/1/9",
+     "frame": "cell:0",
+     "read": "alto",
+     "family": "C",
+     "x_center": 393,
+     "h_spaces": 3.95,
+     "w_spaces": 4.32,
+     "symmetry": 0.8833
+    },
+    {
+     "staff": "staff/14/0/9",
+     "frame": "header_window",
+     "read": "alto",
+     "family": "C",
+     "x_center": 416,
+     "h_spaces": 3.86,
+     "w_spaces": 0.68,
+     "symmetry": 0.9141
+    },
+    {
+     "staff": "staff/14/0/9",
+     "frame": "cell:0",
+     "read": "alto",
+     "family": "C",
+     "x_center": 396,
+     "h_spaces": 3.91,
+     "w_spaces": 2.64,
+     "symmetry": 0.8896
+    },
+    {
+     "staff": "staff/14/0/10",
+     "frame": "header_window",
+     "read": "tenor",
+     "family": "C",
+     "x_center": 429,
+     "h_spaces": 4.36,
+     "w_spaces": 0.77,
+     "symmetry": 0.9256
+    },
+    {
+     "staff": "staff/15/1/9",
+     "frame": "header_window",
+     "read": "alto",
+     "family": "C",
+     "x_center": 383,
+     "h_spaces": 4.45,
+     "w_spaces": 1.95,
+     "symmetry": 0.8508
+    },
+    {
+     "staff": "staff/15/1/9",
+     "frame": "cell:0",
+     "read": "alto",
+     "family": "C",
+     "x_center": 352,
+     "h_spaces": 4.45,
+     "w_spaces": 2.77,
+     "symmetry": 0.8378
+    },
+    {
+     "staff": "staff/16/0/3",
+     "frame": "header_window",
+     "read": "tenor",
+     "family": "C",
+     "x_center": 361,
+     "h_spaces": 4.41,
+     "w_spaces": 2.05,
+     "symmetry": 0.8733
+    },
+    {
+     "staff": "staff/16/0/3",
+     "frame": "cell:0",
+     "read": "tenor",
+     "family": "C",
+     "x_center": 307,
+     "h_spaces": 4.41,
+     "w_spaces": 2.68,
+     "symmetry": 0.8905
+    },
+    {
+     "staff": "staff/16/0/9",
+     "frame": "header_window",
+     "read": "alto",
+     "family": "C",
+     "x_center": 352,
+     "h_spaces": 4.41,
+     "w_spaces": 2.59,
+     "symmetry": 0.8328
+    },
+    {
+     "staff": "staff/16/0/9",
+     "frame": "cell:0",
+     "read": "alto",
+     "family": "C",
+     "x_center": 304,
+     "h_spaces": 4.41,
+     "w_spaces": 3.45,
+     "symmetry": 0.8269
+    },
+    {
+     "staff": "staff/16/1/3",
+     "frame": "header_window",
+     "read": "tenor",
+     "family": "C",
+     "x_center": 364,
+     "h_spaces": 4.697,
+     "w_spaces": 2.301,
+     "symmetry": 0.863
+    }
+   ],
+   "reach": {
+    "occupied_abstentions": 47,
+    "staves_with_an_occupied_abstention": 27,
+    "staves_with_a_cluster_in_the_measured_band": 25,
+    "staves_in_band_with_a_notehead_occupier_found": 25,
+    "staves_in_config_band": 27,
+    "staves_in_band_clef_ABSTAINED": 8,
+    "staves_in_band_clef_DECIDED": 8,
+    "staves_in_band_no_clef_verdict": 0
+   },
+   "occupied_rows": [
+    {
+     "staff": "staff/2/1/9",
+     "frame": "cell:0",
+     "cluster": {
+      "x_spaces": 1.36,
+      "y_spaces": 3.73,
+      "w_spaces": 4.05,
+      "h_spaces": 4.32,
+      "found_in_cluster_list": true,
+      "n_clusters": 1
+     },
+     "spacing_px_analysis": 22.0,
+     "cell_staff_space_canonical": 100.0,
+     "staff_lines": [
+      3401.0,
+      3417.0,
+      3433.0,
+      3449.0,
+      3465.0
+     ],
+     "in_measured_band": true,
+     "in_config_band": true,
+     "occupiers": [
+      {
+       "subject": "glyph/2/1/9/0/14",
+       "class": "noteheadBlackOnLine",
+       "conf": 0.2985101044178009,
+       "x_spaces": 2.23,
+       "y_spaces": 5.15,
+       "w_spaces": 2.24,
+       "h_spaces": 2.65
+      }
+     ],
+     "n_occupiers": 1,
+     "bystanders": [
+      {
+       "subject": "glyph/2/1/9/0/2",
+       "class": "staff",
+       "conf": 0.6372858881950378,
+       "x_spaces": 0.02,
+       "y_spaces": 3.58,
+       "w_spaces": 18.29,
+       "h_spaces": 4.57
+      },
+      {
+       "subject": "glyph/2/1/9/0/5",
+       "class": "tie",
+       "conf": 0.4412623941898346,
+       "x_spaces": 2.43,
+       "y_spaces": 3.78,
+       "w_spaces": 15.88,
+       "h_spaces": 1.29
+      },
+      {
+       "subject": "glyph/2/1/9/0/6",
+       "class": "keyFlat",
+       "conf": 0.39449575543403625,
+       "x_spaces": 5.01,
+       "y_spaces": 4.3,
+       "w_spaces": 0.97,
+       "h_spaces": 2.57
+      },
+      {
+       "subject": "glyph/2/1/9/0/18",
+       "class": "tie",
+       "conf": 0.25544074177742004,
+       "x_spaces": 2.21,
+       "y_spaces": 2.88,
+       "w_spaces": 16.1,
+       "h_spaces": 1.22
+      }
+     ],
+     "notehead_y_coverage_of_cluster": 0.613,
+     "cluster_x_page_px": 356.8,
+     "siblings_located": [
+      {
+       "staff": "staff/2/1/3",
+       "frame": "cell:0",
+       "read": "tenor",
+       "family": "C",
+       "x_center": 307,
+       "x_center_spaces": 3.07,
+       "h_spaces": 3.55
+      }
+     ],
+     "sibling_x_centre_spaces": [
+      3.07
+     ],
+     "sibling_x_spread_spaces": null,
+     "cluster_x_vs_sibling_median_spaces": -1.71,
+     "siblings_detector_clef": [
+      {
+       "staff": "staff/2/1/0",
+       "class": "clefG",
+       "conf": 0.8191550970077515,
+       "x_center_page": 391.4
+      },
+      {
+       "staff": "staff/2/1/0",
+       "class": "clefG",
+       "conf": 0.5832952857017517,
+       "x_center_page": 392.3
+      },
+      {
+       "staff": "staff/2/1/1",
+       "class": "clefG",
+       "conf": 0.902446448802948,
+       "x_center_page": 390.2
+      },
+      {
+       "staff": "staff/2/1/1",
+       "class": "clefG",
+       "conf": 0.8929001092910767,
+       "x_center_page": 390.2
+      },
+      {
+       "staff": "staff/2/1/1",
+       "class": "clefG",
+       "conf": 0.8173163533210754,
+       "x_center_page": 392.1
+      },
+      {
+       "staff": "staff/2/1/2",
+       "class": "clefG",
+       "conf": 0.8938247561454773,
+       "x_center_page": 389.7
+      },
+      {
+       "staff": "staff/2/1/2",
+       "class": "clefG",
+       "conf": 0.8631953001022339,
+       "x_center_page": 389.7
+      },
+      {
+       "staff": "staff/2/1/4",
+       "class": "clefG",
+       "conf": 0.9159364104270935,
+       "x_center_page": 389.7
+      },
+      {
+       "staff": "staff/2/1/4",
+       "class": "clefG",
+       "conf": 0.8541101813316345,
+       "x_center_page": 388.8
+      },
+      {
+       "staff": "staff/2/1/5",
+       "class": "clefG",
+       "conf": 0.9004058837890625,
+       "x_center_page": 386.6
+      },
+      {
+       "staff": "staff/2/1/5",
+       "class": "clefG",
+       "conf": 0.8556588292121887,
+       "x_center_page": 388.3
+      },
+      {
+       "staff": "staff/2/1/6",
+       "class": "clefF",
+       "conf": 0.8221905827522278,
+       "x_center_page": 386.3
+      },
+      {
+       "staff": "staff/2/1/6",
+       "class": "clefG",
+       "conf": 0.6664934754371643,
+       "x_center_page": 386.7
+      },
+      {
+       "staff": "staff/2/1/7",
+       "class": "clefG",
+       "conf": 0.8469650745391846,
+       "x_center_page": 389.1
+      },
+      {
+       "staff": "staff/2/1/7",
+       "class": "clefG",
+       "conf": 0.5303235054016113,
+       "x_center_page": 390.4
+      },
+      {
+       "staff": "staff/2/1/8",
+       "class": "clefG",
+       "conf": 0.912408173084259,
+       "x_center_page": 387.7
+      },
+      {
+       "staff": "staff/2/1/8",
+       "class": "clefG",
+       "conf": 0.5815720558166504,
+       "x_center_page": 386.2
+      },
+      {
+       "staff": "staff/2/1/10",
+       "class": "clefF",
+       "conf": 0.7379831671714783,
+       "x_center_page": 384.4
+      }
+     ],
+     "sibling_detector_x_page_spread": 7.9,
+     "cluster_x_vs_sibling_detector_median_page_px": -32.6,
+     "clef_verdict": {
+      "outcome": "abstained",
+      "value": null,
+      "reason": "no_candidates"
+     }
+    },
+    {
+     "staff": "staff/3/0/9",
+     "frame": "header_window",
+     "cluster": {
+      "x_spaces": 2.68,
+      "y_spaces": 4.36,
+      "w_spaces": 2.09,
+      "h_spaces": 4.5,
+      "found_in_cluster_list": true,
+      "n_clusters": 1
+     },
+     "spacing_px_analysis": 22.0,
+     "cell_staff_space_canonical": 100.0,
+     "staff_lines": [
+      1800.0,
+      1816.0,
+      1831.0,
+      1847.0,
+      1863.0
+     ],
+     "in_measured_band": true,
+     "in_config_band": true,
+     "occupiers": [
+      {
+       "subject": "glyph/3/0/9/0/1",
+       "class": "noteheadBlackOnLine",
+       "conf": 0.641894519329071,
+       "x_spaces": 2.89,
+       "y_spaces": 5.79,
+       "w_spaces": 1.69,
+       "h_spaces": 1.39
+      },
+      {
+       "subject": "glyph/3/0/9/0/6",
+       "class": "noteheadBlackOnLine",
+       "conf": 0.36410290002822876,
+       "x_spaces": 2.87,
+       "y_spaces": 5.82,
+       "w_spaces": 1.75,
+       "h_spaces": 2.09
+      }
+     ],
+     "n_occupiers": 2,
+     "bystanders": [
+      {
+       "subject": "glyph/3/0/9/0/3",
+       "class": "staff",
+       "conf": 0.5916474461555481,
+       "x_spaces": 0.01,
+       "y_spaces": 4.17,
+       "w_spaces": 18.52,
+       "h_spaces": 4.73
+      },
+      {
+       "subject": "glyph/3/0/9/0/8",
+       "class": "tie",
+       "conf": 0.3176831901073456,
+       "x_spaces": 2.03,
+       "y_spaces": 3.81,
+       "w_spaces": 16.5,
+       "h_spaces": 0.87
+      }
+     ],
+     "notehead_y_coverage_of_cluster": 0.471,
+     "cluster_x_page_px": 385.2,
+     "siblings_located": [],
+     "sibling_x_centre_spaces": [],
+     "sibling_x_spread_spaces": null,
+     "cluster_x_vs_sibling_median_spaces": null,
+     "siblings_detector_clef": [
+      {
+       "staff": "staff/3/0/0",
+       "class": "clefG",
+       "conf": 0.94796222448349,
+       "x_center_page": 387.3
+      },
+      {
+       "staff": "staff/3/0/1",
+       "class": "clefG",
+       "conf": 0.9358252882957458,
+       "x_center_page": 391.5
+      },
+      {
+       "staff": "staff/3/0/1",
+       "class": "clefG",
+       "conf": 0.8325995802879333,
+       "x_center_page": 392.3
+      },
+      {
+       "staff": "staff/3/0/1",
+       "class": "clefG",
+       "conf": 0.820372462272644,
+       "x_center_page": 391.5
+      },
+      {
+       "staff": "staff/3/0/2",
+       "class": "clefG",
+       "conf": 0.9495785236358643,
+       "x_center_page": 391.3
+      },
+      {
+       "staff": "staff/3/0/2",
+       "class": "clefG",
+       "conf": 0.9061890244483948,
+       "x_center_page": 389.8
+      },
+      {
+       "staff": "staff/3/0/3",
+       "class": "clefF",
+       "conf": 0.9001492857933044,
+       "x_center_page": 392.5
+      },
+      {
+       "staff": "staff/3/0/3",
+       "class": "clefG",
+       "conf": 0.860181450843811,
+       "x_center_page": 388.1
+      },
+      {
+       "staff": "staff/3/0/4",
+       "class": "clefG",
+       "conf": 0.9457269906997681,
+       "x_center_page": 393.8
+      },
+      {
+       "staff": "staff/3/0/4",
+       "class": "clefG",
+       "conf": 0.8742178678512573,
+       "x_center_page": 396.9
+      },
+      {
+       "staff": "staff/3/0/5",
+       "class": "clefG",
+       "conf": 0.9173319339752197,
+       "x_center_page": 393.6
+      },
+      {
+       "staff": "staff/3/0/5",
+       "class": "clefG",
+       "conf": 0.909896194934845,
+       "x_center_page": 392.1
+      },
+      {
+       "staff": "staff/3/0/6",
+       "class": "clefF",
+       "conf": 0.8715139627456665,
+       "x_center_page": 395.1
+      },
+      {
+       "staff": "staff/3/0/6",
+       "class": "clefG",
+       "conf": 0.6072754859924316,
+       "x_center_page": 390.6
+      },
+      {
+       "staff": "staff/3/0/7",
+       "class": "clefG",
+       "conf": 0.9498762488365173,
+       "x_center_page": 397.0
+      },
+      {
+       "staff": "staff/3/0/8",
+       "class": "clefG",
+       "conf": 0.9277994632720947,
+       "x_center_page": 396.6
+      },
+      {
+       "staff": "staff/3/0/10",
+       "class": "clefF",
+       "conf": 0.8997448086738586,
+       "x_center_page": 396.9
+      }
+     ],
+     "sibling_detector_x_page_spread": 9.7,
+     "cluster_x_vs_sibling_detector_median_page_px": -7.1,
+     "clef_verdict": {
+      "outcome": "abstained",
+      "value": null,
+      "reason": "no_candidates"
+     }
+    },
+    {
+     "staff": "staff/3/0/9",
+     "frame": "cell:0",
+     "cluster": {
+      "x_spaces": 2.05,
+      "y_spaces": 4.36,
+      "w_spaces": 3.36,
+      "h_spaces": 4.5,
+      "found_in_cluster_list": true,
+      "n_clusters": 1
+     },
+     "spacing_px_analysis": 22.0,
+     "cell_staff_space_canonical": 100.0,
+     "staff_lines": [
+      1800.0,
+      1816.0,
+      1831.0,
+      1847.0,
+      1863.0
+     ],
+     "in_measured_band": true,
+     "in_config_band": true,
+     "occupiers": [
+      {
+       "subject": "glyph/3/0/9/0/1",
+       "class": "noteheadBlackOnLine",
+       "conf": 0.641894519329071,
+       "x_spaces": 2.89,
+       "y_spaces": 5.79,
+       "w_spaces": 1.69,
+       "h_spaces": 1.39
+      },
+      {
+       "subject": "glyph/3/0/9/0/6",
+       "class": "noteheadBlackOnLine",
+       "conf": 0.36410290002822876,
+       "x_spaces": 2.87,
+       "y_spaces": 5.82,
+       "w_spaces": 1.75,
+       "h_spaces": 2.09
+      }
+     ],
+     "n_occupiers": 2,
+     "bystanders": [
+      {
+       "subject": "glyph/3/0/9/0/3",
+       "class": "staff",
+       "conf": 0.5916474461555481,
+       "x_spaces": 0.01,
+       "y_spaces": 4.17,
+       "w_spaces": 18.52,
+       "h_spaces": 4.73
+      },
+      {
+       "subject": "glyph/3/0/9/0/8",
+       "class": "tie",
+       "conf": 0.3176831901073456,
+       "x_spaces": 2.03,
+       "y_spaces": 3.81,
+       "w_spaces": 16.5,
+       "h_spaces": 0.87
+      },
+      {
+       "subject": "glyph/3/0/9/0/11",
+       "class": "accidentalFlat",
+       "conf": 0.2992408871650696,
+       "x_spaces": 5.26,
+       "y_spaces": 5.12,
+       "w_spaces": 1.21,
+       "h_spaces": 2.58
+      }
+     ],
+     "notehead_y_coverage_of_cluster": 0.471,
+     "cluster_x_page_px": 375.3,
+     "siblings_located": [],
+     "sibling_x_centre_spaces": [],
+     "sibling_x_spread_spaces": null,
+     "cluster_x_vs_sibling_median_spaces": null,
+     "siblings_detector_clef": [
+      {
+       "staff": "staff/3/0/0",
+       "class": "clefG",
+       "conf": 0.94796222448349,
+       "x_center_page": 387.3
+      },
+      {
+       "staff": "staff/3/0/1",
+       "class": "clefG",
+       "conf": 0.9358252882957458,
+       "x_center_page": 391.5
+      },
+      {
+       "staff": "staff/3/0/1",
+       "class": "clefG",
+       "conf": 0.8325995802879333,
+       "x_center_page": 392.3
+      },
+      {
+       "staff": "staff/3/0/1",
+       "class": "clefG",
+       "conf": 0.820372462272644,
+       "x_center_page": 391.5
+      },
+      {
+       "staff": "staff/3/0/2",
+       "class": "clefG",
+       "conf": 0.9495785236358643,
+       "x_center_page": 391.3
+      },
+      {
+       "staff": "staff/3/0/2",
+       "class": "clefG",
+       "conf": 0.9061890244483948,
+       "x_center_page": 389.8
+      },
+      {
+       "staff": "staff/3/0/3",
+       "class": "clefF",
+       "conf": 0.9001492857933044,
+       "x_center_page": 392.5
+      },
+      {
+       "staff": "staff/3/0/3",
+       "class": "clefG",
+       "conf": 0.860181450843811,
+       "x_center_page": 388.1
+      },
+      {
+       "staff": "staff/3/0/4",
+       "class": "clefG",
+       "conf": 0.9457269906997681,
+       "x_center_page": 393.8
+      },
+      {
+       "staff": "staff/3/0/4",
+       "class": "clefG",
+       "conf": 0.8742178678512573,
+       "x_center_page": 396.9
+      },
+      {
+       "staff": "staff/3/0/5",
+       "class": "clefG",
+       "conf": 0.9173319339752197,
+       "x_center_page": 393.6
+      },
+      {
+       "staff": "staff/3/0/5",
+       "class": "clefG",
+       "conf": 0.909896194934845,
+       "x_center_page": 392.1
+      },
+      {
+       "staff": "staff/3/0/6",
+       "class": "clefF",
+       "conf": 0.8715139627456665,
+       "x_center_page": 395.1
+      },
+      {
+       "staff": "staff/3/0/6",
+       "class": "clefG",
+       "conf": 0.6072754859924316,
+       "x_center_page": 390.6
+      },
+      {
+       "staff": "staff/3/0/7",
+       "class": "clefG",
+       "conf": 0.9498762488365173,
+       "x_center_page": 397.0
+      },
+      {
+       "staff": "staff/3/0/8",
+       "class": "clefG",
+       "conf": 0.9277994632720947,
+       "x_center_page": 396.6
+      },
+      {
+       "staff": "staff/3/0/10",
+       "class": "clefF",
+       "conf": 0.8997448086738586,
+       "x_center_page": 396.9
+      }
+     ],
+     "sibling_detector_x_page_spread": 9.7,
+     "cluster_x_vs_sibling_detector_median_page_px": -17.0,
+     "clef_verdict": {
+      "outcome": "abstained",
+      "value": null,
+      "reason": "no_candidates"
+     }
+    },
+    {
+     "staff": "staff/4/0/8",
+     "frame": "header_window",
+     "cluster": {
+      "x_spaces": 3.18,
+      "y_spaces": 4.91,
+      "w_spaces": 1.64,
+      "h_spaces": 4.05,
+      "found_in_cluster_list": true,
+      "n_clusters": 2
+     },
+     "spacing_px_analysis": 22.0,
+     "cell_staff_space_canonical": 100.0,
+     "staff_lines": [
+      1610.0,
+      1626.0,
+      1642.0,
+      1658.0,
+      1674.0
+     ],
+     "in_measured_band": true,
+     "in_config_band": true,
+     "occupiers": [
+      {
+       "subject": "glyph/4/0/8/0/5",
+       "class": "noteheadBlackOnLine",
+       "conf": 0.4362744390964508,
+       "x_spaces": 2.36,
+       "y_spaces": 5.87,
+       "w_spaces": 2.0,
+       "h_spaces": 1.43
+      }
+     ],
+     "n_occupiers": 1,
+     "bystanders": [
+      {
+       "subject": "glyph/4/0/8/0/6",
+       "class": "staff",
+       "conf": 0.3991149961948395,
+       "x_spaces": 0.0,
+       "y_spaces": 4.57,
+       "w_spaces": 15.25,
+       "h_spaces": 4.13
+      }
+     ],
+     "notehead_y_coverage_of_cluster": 0.353,
+     "cluster_x_page_px": 398.9,
+     "siblings_located": [],
+     "sibling_x_centre_spaces": [],
+     "sibling_x_spread_spaces": null,
+     "cluster_x_vs_sibling_median_spaces": null,
+     "siblings_detector_clef": [
+      {
+       "staff": "staff/4/0/0",
+       "class": "clefG",
+       "conf": 0.8884084224700928,
+       "x_center_page": 398.8
+      },
+      {
+       "staff": "staff/4/0/1",
+       "class": "clefG",
+       "conf": 0.9182468056678772,
+       "x_center_page": 400.8
+      },
+      {
+       "staff": "staff/4/0/1",
+       "class": "clefG",
+       "conf": 0.25058409571647644,
+       "x_center_page": 393.2
+      },
+      {
+       "staff": "staff/4/0/2",
+       "class": "clefG",
+       "conf": 0.84500652551651,
+       "x_center_page": 401.1
+      },
+      {
+       "staff": "staff/4/0/2",
+       "class": "clefG",
+       "conf": 0.6381868124008179,
+       "x_center_page": 404.6
+      },
+      {
+       "staff": "staff/4/0/3",
+       "class": "clefF",
+       "conf": 0.7123157382011414,
+       "x_center_page": 400.7
+      },
+      {
+       "staff": "staff/4/0/3",
+       "class": "clefG",
+       "conf": 0.4057356119155884,
+       "x_center_page": 402.3
+      },
+      {
+       "staff": "staff/4/0/4",
+       "class": "clefG",
+       "conf": 0.9055447578430176,
+       "x_center_page": 403.7
+      },
+      {
+       "staff": "staff/4/0/5",
+       "class": "clefG",
+       "conf": 0.8568747043609619,
+       "x_center_page": 402.9
+      },
+      {
+       "staff": "staff/4/0/6",
+       "class": "clefG",
+       "conf": 0.8926147818565369,
+       "x_center_page": 404.6
+      },
+      {
+       "staff": "staff/4/0/6",
+       "class": "clefG",
+       "conf": 0.5497497916221619,
+       "x_center_page": 410.5
+      },
+      {
+       "staff": "staff/4/0/7",
+       "class": "clefG",
+       "conf": 0.8623866438865662,
+       "x_center_page": 405.1
+      },
+      {
+       "staff": "staff/4/0/10",
+       "class": "clefF",
+       "conf": 0.7723256945610046,
+       "x_center_page": 405.6
+      }
+     ],
+     "sibling_detector_x_page_spread": 17.3,
+     "cluster_x_vs_sibling_detector_median_page_px": -4.0,
+     "clef_verdict": {
+      "outcome": "narrowed",
+      "value": null,
+      "reason": "margin_below_floor"
+     }
+    },
+    {
+     "staff": "staff/4/0/8",
+     "frame": "cell:0",
+     "cluster": {
+      "x_spaces": 2.23,
+      "y_spaces": 4.41,
+      "w_spaces": 2.18,
+      "h_spaces": 4.55,
+      "found_in_cluster_list": true,
+      "n_clusters": 2
+     },
+     "spacing_px_analysis": 22.0,
+     "cell_staff_space_canonical": 100.0,
+     "staff_lines": [
+      1610.0,
+      1626.0,
+      1642.0,
+      1658.0,
+      1674.0
+     ],
+     "in_measured_band": true,
+     "in_config_band": true,
+     "occupiers": [
+      {
+       "subject": "glyph/4/0/8/0/5",
+       "class": "noteheadBlackOnLine",
+       "conf": 0.4362744390964508,
+       "x_spaces": 2.36,
+       "y_spaces": 5.87,
+       "w_spaces": 2.0,
+       "h_spaces": 1.43
+      }
+     ],
+     "n_occupiers": 1,
+     "bystanders": [
+      {
+       "subject": "glyph/4/0/8/0/4",
+       "class": "tie",
+       "conf": 0.46856558322906494,
+       "x_spaces": 0.0,
+       "y_spaces": 3.96,
+       "w_spaces": 15.25,
+       "h_spaces": 0.75
+      },
+      {
+       "subject": "glyph/4/0/8/0/6",
+       "class": "staff",
+       "conf": 0.3991149961948395,
+       "x_spaces": 0.0,
+       "y_spaces": 4.57,
+       "w_spaces": 15.25,
+       "h_spaces": 4.13
+      }
+     ],
+     "notehead_y_coverage_of_cluster": 0.314,
+     "cluster_x_page_px": 383.7,
+     "siblings_located": [],
+     "sibling_x_centre_spaces": [],
+     "sibling_x_spread_spaces": null,
+     "cluster_x_vs_sibling_median_spaces": null,
+     "siblings_detector_clef": [
+      {
+       "staff": "staff/4/0/0",
+       "class": "clefG",
+       "conf": 0.8884084224700928,
+       "x_center_page": 398.8
+      },
+      {
+       "staff": "staff/4/0/1",
+       "class": "clefG",
+       "conf": 0.9182468056678772,
+       "x_center_page": 400.8
+      },
+      {
+       "staff": "staff/4/0/1",
+       "class": "clefG",
+       "conf": 0.25058409571647644,
+       "x_center_page": 393.2
+      },
+      {
+       "staff": "staff/4/0/2",
+       "class": "clefG",
+       "conf": 0.84500652551651,
+       "x_center_page": 401.1
+      },
+      {
+       "staff": "staff/4/0/2",
+       "class": "clefG",
+       "conf": 0.6381868124008179,
+       "x_center_page": 404.6
+      },
+      {
+       "staff": "staff/4/0/3",
+       "class": "clefF",
+       "conf": 0.7123157382011414,
+       "x_center_page": 400.7
+      },
+      {
+       "staff": "staff/4/0/3",
+       "class": "clefG",
+       "conf": 0.4057356119155884,
+       "x_center_page": 402.3
+      },
+      {
+       "staff": "staff/4/0/4",
+       "class": "clefG",
+       "conf": 0.9055447578430176,
+       "x_center_page": 403.7
+      },
+      {
+       "staff": "staff/4/0/5",
+       "class": "clefG",
+       "conf": 0.8568747043609619,
+       "x_center_page": 402.9
+      },
+      {
+       "staff": "staff/4/0/6",
+       "class": "clefG",
+       "conf": 0.8926147818565369,
+       "x_center_page": 404.6
+      },
+      {
+       "staff": "staff/4/0/6",
+       "class": "clefG",
+       "conf": 0.5497497916221619,
+       "x_center_page": 410.5
+      },
+      {
+       "staff": "staff/4/0/7",
+       "class": "clefG",
+       "conf": 0.8623866438865662,
+       "x_center_page": 405.1
+      },
+      {
+       "staff": "staff/4/0/10",
+       "class": "clefF",
+       "conf": 0.7723256945610046,
+       "x_center_page": 405.6
+      }
+     ],
+     "sibling_detector_x_page_spread": 17.3,
+     "cluster_x_vs_sibling_detector_median_page_px": -19.2,
+     "clef_verdict": {
+      "outcome": "narrowed",
+      "value": null,
+      "reason": "margin_below_floor"
+     }
+    },
+    {
+     "staff": "staff/4/0/9",
+     "frame": "header_window",
+     "cluster": {
+      "x_spaces": 3.36,
+      "y_spaces": 3.55,
+      "w_spaces": 1.45,
+      "h_spaces": 4.41,
+      "found_in_cluster_list": true,
+      "n_clusters": 1
+     },
+     "spacing_px_analysis": 22.0,
+     "cell_staff_space_canonical": 100.0,
+     "staff_lines": [
+      1752.0,
+      1768.0,
+      1784.0,
+      1800.0,
+      1815.0
+     ],
+     "in_measured_band": true,
+     "in_config_band": true,
+     "occupiers": [
+      {
+       "subject": "glyph/4/0/9/0/7",
+       "class": "noteheadBlackOnLine",
+       "conf": 0.33717265725135803,
+       "x_spaces": 2.4,
+       "y_spaces": 3.46,
+       "w_spaces": 2.92,
+       "h_spaces": 4.31
+      }
+     ],
+     "n_occupiers": 1,
+     "bystanders": [
+      {
+       "subject": "glyph/4/0/9/0/6",
+       "class": "staff",
+       "conf": 0.4753170311450958,
+       "x_spaces": 0.0,
+       "y_spaces": 4.18,
+       "w_spaces": 15.49,
+       "h_spaces": 4.53
+      }
+     ],
+     "notehead_y_coverage_of_cluster": 0.957,
+     "cluster_x_page_px": 400.9,
+     "siblings_located": [],
+     "sibling_x_centre_spaces": [],
+     "sibling_x_spread_spaces": null,
+     "cluster_x_vs_sibling_median_spaces": null,
+     "siblings_detector_clef": [
+      {
+       "staff": "staff/4/0/0",
+       "class": "clefG",
+       "conf": 0.8884084224700928,
+       "x_center_page": 398.8
+      },
+      {
+       "staff": "staff/4/0/1",
+       "class": "clefG",
+       "conf": 0.9182468056678772,
+       "x_center_page": 400.8
+      },
+      {
+       "staff": "staff/4/0/1",
+       "class": "clefG",
+       "conf": 0.25058409571647644,
+       "x_center_page": 393.2
+      },
+      {
+       "staff": "staff/4/0/2",
+       "class": "clefG",
+       "conf": 0.84500652551651,
+       "x_center_page": 401.1
+      },
+      {
+       "staff": "staff/4/0/2",
+       "class": "clefG",
+       "conf": 0.6381868124008179,
+       "x_center_page": 404.6
+      },
+      {
+       "staff": "staff/4/0/3",
+       "class": "clefF",
+       "conf": 0.7123157382011414,
+       "x_center_page": 400.7
+      },
+      {
+       "staff": "staff/4/0/3",
+       "class": "clefG",
+       "conf": 0.4057356119155884,
+       "x_center_page": 402.3
+      },
+      {
+       "staff": "staff/4/0/4",
+       "class": "clefG",
+       "conf": 0.9055447578430176,
+       "x_center_page": 403.7
+      },
+      {
+       "staff": "staff/4/0/5",
+       "class": "clefG",
+       "conf": 0.8568747043609619,
+       "x_center_page": 402.9
+      },
+      {
+       "staff": "staff/4/0/6",
+       "class": "clefG",
+       "conf": 0.8926147818565369,
+       "x_center_page": 404.6
+      },
+      {
+       "staff": "staff/4/0/6",
+       "class": "clefG",
+       "conf": 0.5497497916221619,
+       "x_center_page": 410.5
+      },
+      {
+       "staff": "staff/4/0/7",
+       "class": "clefG",
+       "conf": 0.8623866438865662,
+       "x_center_page": 405.1
+      },
+      {
+       "staff": "staff/4/0/10",
+       "class": "clefF",
+       "conf": 0.7723256945610046,
+       "x_center_page": 405.6
+      }
+     ],
+     "sibling_detector_x_page_spread": 17.3,
+     "cluster_x_vs_sibling_detector_median_page_px": -2.0,
+     "clef_verdict": {
+      "outcome": "narrowed",
+      "value": null,
+      "reason": "margin_below_floor"
+     }
+    },
+    {
+     "staff": "staff/4/0/9",
+     "frame": "cell:0",
+     "cluster": {
+      "x_spaces": 2.41,
+      "y_spaces": 3.45,
+      "w_spaces": 2.14,
+      "h_spaces": 4.5,
+      "found_in_cluster_list": true,
+      "n_clusters": 1
+     },
+     "spacing_px_analysis": 22.0,
+     "cell_staff_space_canonical": 100.0,
+     "staff_lines": [
+      1752.0,
+      1768.0,
+      1784.0,
+      1800.0,
+      1815.0
+     ],
+     "in_measured_band": true,
+     "in_config_band": true,
+     "occupiers": [
+      {
+       "subject": "glyph/4/0/9/0/7",
+       "class": "noteheadBlackOnLine",
+       "conf": 0.33717265725135803,
+       "x_spaces": 2.4,
+       "y_spaces": 3.46,
+       "w_spaces": 2.92,
+       "h_spaces": 4.31
+      }
+     ],
+     "n_occupiers": 1,
+     "bystanders": [
+      {
+       "subject": "glyph/4/0/9/0/6",
+       "class": "staff",
+       "conf": 0.4753170311450958,
+       "x_spaces": 0.0,
+       "y_spaces": 4.18,
+       "w_spaces": 15.49,
+       "h_spaces": 4.53
+      }
+     ],
+     "notehead_y_coverage_of_cluster": 0.958,
+     "cluster_x_page_px": 386.0,
+     "siblings_located": [],
+     "sibling_x_centre_spaces": [],
+     "sibling_x_spread_spaces": null,
+     "cluster_x_vs_sibling_median_spaces": null,
+     "siblings_detector_clef": [
+      {
+       "staff": "staff/4/0/0",
+       "class": "clefG",
+       "conf": 0.8884084224700928,
+       "x_center_page": 398.8
+      },
+      {
+       "staff": "staff/4/0/1",
+       "class": "clefG",
+       "conf": 0.9182468056678772,
+       "x_center_page": 400.8
+      },
+      {
+       "staff": "staff/4/0/1",
+       "class": "clefG",
+       "conf": 0.25058409571647644,
+       "x_center_page": 393.2
+      },
+      {
+       "staff": "staff/4/0/2",
+       "class": "clefG",
+       "conf": 0.84500652551651,
+       "x_center_page": 401.1
+      },
+      {
+       "staff": "staff/4/0/2",
+       "class": "clefG",
+       "conf": 0.6381868124008179,
+       "x_center_page": 404.6
+      },
+      {
+       "staff": "staff/4/0/3",
+       "class": "clefF",
+       "conf": 0.7123157382011414,
+       "x_center_page": 400.7
+      },
+      {
+       "staff": "staff/4/0/3",
+       "class": "clefG",
+       "conf": 0.4057356119155884,
+       "x_center_page": 402.3
+      },
+      {
+       "staff": "staff/4/0/4",
+       "class": "clefG",
+       "conf": 0.9055447578430176,
+       "x_center_page": 403.7
+      },
+      {
+       "staff": "staff/4/0/5",
+       "class": "clefG",
+       "conf": 0.8568747043609619,
+       "x_center_page": 402.9
+      },
+      {
+       "staff": "staff/4/0/6",
+       "class": "clefG",
+       "conf": 0.8926147818565369,
+       "x_center_page": 404.6
+      },
+      {
+       "staff": "staff/4/0/6",
+       "class": "clefG",
+       "conf": 0.5497497916221619,
+       "x_center_page": 410.5
+      },
+      {
+       "staff": "staff/4/0/7",
+       "class": "clefG",
+       "conf": 0.8623866438865662,
+       "x_center_page": 405.1
+      },
+      {
+       "staff": "staff/4/0/10",
+       "class": "clefF",
+       "conf": 0.7723256945610046,
+       "x_center_page": 405.6
+      }
+     ],
+     "sibling_detector_x_page_spread": 17.3,
+     "cluster_x_vs_sibling_detector_median_page_px": -16.9,
+     "clef_verdict": {
+      "outcome": "narrowed",
+      "value": null,
+      "reason": "margin_below_floor"
+     }
+    },
+    {
+     "staff": "staff/4/1/10",
+     "frame": "header_window",
+     "cluster": {
+      "x_spaces": 1.86,
+      "y_spaces": 3.55,
+      "w_spaces": 2.95,
+      "h_spaces": 3.86,
+      "found_in_cluster_list": true,
+      "n_clusters": 3
+     },
+     "spacing_px_analysis": 22.0,
+     "cell_staff_space_canonical": 100.0,
+     "staff_lines": [
+      3529.0,
+      3545.0,
+      3561.0,
+      3577.0,
+      3593.0
+     ],
+     "in_measured_band": true,
+     "in_config_band": true,
+     "occupiers": [
+      {
+       "subject": "glyph/4/1/10/0/8",
+       "class": "noteheadBlackOnLine",
+       "conf": 0.3208712935447693,
+       "x_spaces": 1.44,
+       "y_spaces": 3.96,
+       "w_spaces": 1.71,
+       "h_spaces": 1.66
+      },
+      {
+       "subject": "glyph/4/1/10/0/10",
+       "class": "noteheadBlackOnLine",
+       "conf": 0.3107449412345886,
+       "x_spaces": 2.26,
+       "y_spaces": 4.28,
+       "w_spaces": 1.72,
+       "h_spaces": 2.74
+      },
+      {
+       "subject": "glyph/4/1/10/0/11",
+       "class": "noteheadBlackOnLine",
+       "conf": 0.2798614203929901,
+       "x_spaces": 1.4,
+       "y_spaces": 4.34,
+       "w_spaces": 2.59,
+       "h_spaces": 2.72
+      },
+      {
+       "subject": "glyph/4/1/10/0/12",
+       "class": "noteheadBlackOnLine",
+       "conf": 0.2676401138305664,
+       "x_spaces": 2.79,
+       "y_spaces": 5.08,
+       "w_spaces": 1.22,
+       "h_spaces": 1.86
+      }
+     ],
+     "n_occupiers": 4,
+     "bystanders": [
+      {
+       "subject": "glyph/4/1/10/0/2",
+       "class": "staff",
+       "conf": 0.49531638622283936,
+       "x_spaces": 0.02,
+       "y_spaces": 3.81,
+       "w_spaces": 17.29,
+       "h_spaces": 4.36
+      }
+     ],
+     "notehead_y_coverage_of_cluster": 0.803,
+     "cluster_x_page_px": 378.8,
+     "siblings_located": [
+      {
+       "staff": "staff/4/1/9",
+       "frame": "header_window",
+       "read": "alto",
+       "family": "C",
+       "x_center": 377,
+       "x_center_spaces": 3.77,
+       "h_spaces": 4.5
+      },
+      {
+       "staff": "staff/4/1/9",
+       "frame": "cell:0",
+       "read": "alto",
+       "family": "C",
+       "x_center": 368,
+       "x_center_spaces": 3.68,
+       "h_spaces": 4.5
+      }
+     ],
+     "sibling_x_centre_spaces": [
+      3.77,
+      3.68
+     ],
+     "sibling_x_spread_spaces": 0.09,
+     "cluster_x_vs_sibling_median_spaces": -1.865,
+     "siblings_detector_clef": [
+      {
+       "staff": "staff/4/1/0",
+       "class": "clefG",
+       "conf": 0.7460843920707703,
+       "x_center_page": 414.4
+      },
+      {
+       "staff": "staff/4/1/1",
+       "class": "clefG",
+       "conf": 0.7148820757865906,
+       "x_center_page": 410.3
+      },
+      {
+       "staff": "staff/4/1/2",
+       "class": "clefG",
+       "conf": 0.8356075882911682,
+       "x_center_page": 404.3
+      },
+      {
+       "staff": "staff/4/1/3",
+       "class": "clefF",
+       "conf": 0.8041467666625977,
+       "x_center_page": 401.8
+      },
+      {
+       "staff": "staff/4/1/4",
+       "class": "clefG",
+       "conf": 0.8311310410499573,
+       "x_center_page": 403.7
+      },
+      {
+       "staff": "staff/4/1/5",
+       "class": "clefG",
+       "conf": 0.8441506028175354,
+       "x_center_page": 409.5
+      },
+      {
+       "staff": "staff/4/1/7",
+       "class": "clefG",
+       "conf": 0.8231041431427002,
+       "x_center_page": 404.8
+      },
+      {
+       "staff": "staff/4/1/8",
+       "class": "clefG",
+       "conf": 0.896324634552002,
+       "x_center_page": 401.7
+      }
+     ],
+     "sibling_detector_x_page_spread": 12.7,
+     "cluster_x_vs_sibling_detector_median_page_px": -25.8,
+     "clef_verdict": {
+      "outcome": "narrowed",
+      "value": null,
+      "reason": "margin_below_floor"
+     }
+    },
+    {
+     "staff": "staff/4/1/10",
+     "frame": "cell:0",
+     "cluster": {
+      "x_spaces": 1.68,
+      "y_spaces": 3.91,
+      "w_spaces": 3.09,
+      "h_spaces": 3.41,
+      "found_in_cluster_list": true,
+      "n_clusters": 2
+     },
+     "spacing_px_analysis": 22.0,
+     "cell_staff_space_canonical": 100.0,
+     "staff_lines": [
+      3529.0,
+      3545.0,
+      3561.0,
+      3577.0,
+      3593.0
+     ],
+     "in_measured_band": true,
+     "in_config_band": true,
+     "occupiers": [
+      {
+       "subject": "glyph/4/1/10/0/8",
+       "class": "noteheadBlackOnLine",
+       "conf": 0.3208712935447693,
+       "x_spaces": 1.44,
+       "y_spaces": 3.96,
+       "w_spaces": 1.71,
+       "h_spaces": 1.66
+      },
+      {
+       "subject": "glyph/4/1/10/0/10",
+       "class": "noteheadBlackOnLine",
+       "conf": 0.3107449412345886,
+       "x_spaces": 2.26,
+       "y_spaces": 4.28,
+       "w_spaces": 1.72,
+       "h_spaces": 2.74
+      },
+      {
+       "subject": "glyph/4/1/10/0/11",
+       "class": "noteheadBlackOnLine",
+       "conf": 0.2798614203929901,
+       "x_spaces": 1.4,
+       "y_spaces": 4.34,
+       "w_spaces": 2.59,
+       "h_spaces": 2.72
+      },
+      {
+       "subject": "glyph/4/1/10/0/12",
+       "class": "noteheadBlackOnLine",
+       "conf": 0.2676401138305664,
+       "x_spaces": 2.79,
+       "y_spaces": 5.08,
+       "w_spaces": 1.22,
+       "h_spaces": 1.86
+      }
+     ],
+     "n_occupiers": 4,
+     "bystanders": [
+      {
+       "subject": "glyph/4/1/10/0/2",
+       "class": "staff",
+       "conf": 0.49531638622283936,
+       "x_spaces": 0.02,
+       "y_spaces": 3.81,
+       "w_spaces": 17.29,
+       "h_spaces": 4.36
+      }
+     ],
+     "notehead_y_coverage_of_cluster": 0.909,
+     "cluster_x_page_px": 375.9,
+     "siblings_located": [
+      {
+       "staff": "staff/4/1/9",
+       "frame": "header_window",
+       "read": "alto",
+       "family": "C",
+       "x_center": 377,
+       "x_center_spaces": 3.77,
+       "h_spaces": 4.5
+      },
+      {
+       "staff": "staff/4/1/9",
+       "frame": "cell:0",
+       "read": "alto",
+       "family": "C",
+       "x_center": 368,
+       "x_center_spaces": 3.68,
+       "h_spaces": 4.5
+      }
+     ],
+     "sibling_x_centre_spaces": [
+      3.77,
+      3.68
+     ],
+     "sibling_x_spread_spaces": 0.09,
+     "cluster_x_vs_sibling_median_spaces": -2.045,
+     "siblings_detector_clef": [
+      {
+       "staff": "staff/4/1/0",
+       "class": "clefG",
+       "conf": 0.7460843920707703,
+       "x_center_page": 414.4
+      },
+      {
+       "staff": "staff/4/1/1",
+       "class": "clefG",
+       "conf": 0.7148820757865906,
+       "x_center_page": 410.3
+      },
+      {
+       "staff": "staff/4/1/2",
+       "class": "clefG",
+       "conf": 0.8356075882911682,
+       "x_center_page": 404.3
+      },
+      {
+       "staff": "staff/4/1/3",
+       "class": "clefF",
+       "conf": 0.8041467666625977,
+       "x_center_page": 401.8
+      },
+      {
+       "staff": "staff/4/1/4",
+       "class": "clefG",
+       "conf": 0.8311310410499573,
+       "x_center_page": 403.7
+      },
+      {
+       "staff": "staff/4/1/5",
+       "class": "clefG",
+       "conf": 0.8441506028175354,
+       "x_center_page": 409.5
+      },
+      {
+       "staff": "staff/4/1/7",
+       "class": "clefG",
+       "conf": 0.8231041431427002,
+       "x_center_page": 404.8
+      },
+      {
+       "staff": "staff/4/1/8",
+       "class": "clefG",
+       "conf": 0.896324634552002,
+       "x_center_page": 401.7
+      }
+     ],
+     "sibling_detector_x_page_spread": 12.7,
+     "cluster_x_vs_sibling_detector_median_page_px": -28.7,
+     "clef_verdict": {
+      "outcome": "narrowed",
+      "value": null,
+      "reason": "margin_below_floor"
+     }
+    },
+    {
+     "staff": "staff/5/0/7",
+     "frame": "header_window",
+     "cluster": {
+      "x_spaces": 3.32,
+      "y_spaces": 4.36,
+      "w_spaces": 1.5,
+      "h_spaces": 4.14,
+      "found_in_cluster_list": true,
+      "n_clusters": 2
+     },
+     "spacing_px_analysis": 22.0,
+     "cell_staff_space_canonical": 100.0,
+     "staff_lines": [
+      1735.0,
+      1751.0,
+      1767.0,
+      1782.0,
+      1798.0
+     ],
+     "in_measured_band": true,
+     "in_config_band": true,
+     "occupiers": [
+      {
+       "subject": "glyph/5/0/7/0/6",
+       "class": "noteheadBlackInSpace",
+       "conf": 0.4559062719345093,
+       "x_spaces": 2.57,
+       "y_spaces": 5.03,
+       "w_spaces": 0.88,
+       "h_spaces": 1.06
+      },
+      {
+       "subject": "glyph/5/0/7/0/7",
+       "class": "noteheadBlackOnLine",
+       "conf": 0.45097967982292175,
+       "x_spaces": 3.46,
+       "y_spaces": 5.53,
+       "w_spaces": 1.52,
+       "h_spaces": 1.18
+      },
+      {
+       "subject": "glyph/5/0/7/0/9",
+       "class": "noteheadBlackInSpace",
+       "conf": 0.3313143253326416,
+       "x_spaces": 2.56,
+       "y_spaces": 6.35,
+       "w_spaces": 0.84,
+       "h_spaces": 1.01
+      }
+     ],
+     "n_occupiers": 3,
+     "bystanders": [
+      {
+       "subject": "glyph/5/0/7/0/4",
+       "class": "staff",
+       "conf": 0.5122625827789307,
+       "x_spaces": 0.01,
+       "y_spaces": 3.88,
+       "w_spaces": 19.03,
+       "h_spaces": 4.31
+      }
+     ],
+     "notehead_y_coverage_of_cluster": 0.563,
+     "cluster_x_page_px": 404.3,
+     "siblings_located": [
+      {
+       "staff": "staff/5/0/3",
+       "frame": "cell:0",
+       "read": "tenor",
+       "family": "C",
+       "x_center": 309,
+       "x_center_spaces": 3.09,
+       "h_spaces": 4.32
+      }
+     ],
+     "sibling_x_centre_spaces": [
+      3.09
+     ],
+     "sibling_x_spread_spaces": null,
+     "cluster_x_vs_sibling_median_spaces": 0.23,
+     "siblings_detector_clef": [
+      {
+       "staff": "staff/5/0/1",
+       "class": "clefG",
+       "conf": 0.8408830165863037,
+       "x_center_page": 397.3
+      },
+      {
+       "staff": "staff/5/0/2",
+       "class": "clefG",
+       "conf": 0.8787806630134583,
+       "x_center_page": 400.9
+      },
+      {
+       "staff": "staff/5/0/3",
+       "class": "clefF",
+       "conf": 0.770218014717102,
+       "x_center_page": 401.4
+      },
+      {
+       "staff": "staff/5/0/4",
+       "class": "clefG",
+       "conf": 0.4826263189315796,
+       "x_center_page": 401.7
+      },
+      {
+       "staff": "staff/5/0/5",
+       "class": "clefG",
+       "conf": 0.7078628540039062,
+       "x_center_page": 405.3
+      },
+      {
+       "staff": "staff/5/0/8",
+       "class": "clefF",
+       "conf": 0.6382800936698914,
+       "x_center_page": 408.0
+      }
+     ],
+     "sibling_detector_x_page_spread": 10.7,
+     "cluster_x_vs_sibling_detector_median_page_px": 2.8,
+     "clef_verdict": {
+      "outcome": "abstained",
+      "value": null,
+      "reason": "no_candidates"
+     }
+    },
+    {
+     "staff": "staff/5/0/7",
+     "frame": "cell:0",
+     "cluster": {
+      "x_spaces": 2.59,
+      "y_spaces": 4.36,
+      "w_spaces": 2.68,
+      "h_spaces": 4.14,
+      "found_in_cluster_list": true,
+      "n_clusters": 2
+     },
+     "spacing_px_analysis": 22.0,
+     "cell_staff_space_canonical": 100.0,
+     "staff_lines": [
+      1735.0,
+      1751.0,
+      1767.0,
+      1782.0,
+      1798.0
+     ],
+     "in_measured_band": true,
+     "in_config_band": true,
+     "occupiers": [
+      {
+       "subject": "glyph/5/0/7/0/6",
+       "class": "noteheadBlackInSpace",
+       "conf": 0.4559062719345093,
+       "x_spaces": 2.57,
+       "y_spaces": 5.03,
+       "w_spaces": 0.88,
+       "h_spaces": 1.06
+      },
+      {
+       "subject": "glyph/5/0/7/0/7",
+       "class": "noteheadBlackOnLine",
+       "conf": 0.45097967982292175,
+       "x_spaces": 3.46,
+       "y_spaces": 5.53,
+       "w_spaces": 1.52,
+       "h_spaces": 1.18
+      },
+      {
+       "subject": "glyph/5/0/7/0/9",
+       "class": "noteheadBlackInSpace",
+       "conf": 0.3313143253326416,
+       "x_spaces": 2.56,
+       "y_spaces": 6.35,
+       "w_spaces": 0.84,
+       "h_spaces": 1.01
+      }
+     ],
+     "n_occupiers": 3,
+     "bystanders": [
+      {
+       "subject": "glyph/5/0/7/0/4",
+       "class": "staff",
+       "conf": 0.5122625827789307,
+       "x_spaces": 0.01,
+       "y_spaces": 3.88,
+       "w_spaces": 19.03,
+       "h_spaces": 4.31
+      }
+     ],
+     "notehead_y_coverage_of_cluster": 0.563,
+     "cluster_x_page_px": 392.8,
+     "siblings_located": [
+      {
+       "staff": "staff/5/0/3",
+       "frame": "cell:0",
+       "read": "tenor",
+       "family": "C",
+       "x_center": 309,
+       "x_center_spaces": 3.09,
+       "h_spaces": 4.32
+      }
+     ],
+     "sibling_x_centre_spaces": [
+      3.09
+     ],
+     "sibling_x_spread_spaces": null,
+     "cluster_x_vs_sibling_median_spaces": -0.5,
+     "siblings_detector_clef": [
+      {
+       "staff": "staff/5/0/1",
+       "class": "clefG",
+       "conf": 0.8408830165863037,
+       "x_center_page": 397.3
+      },
+      {
+       "staff": "staff/5/0/2",
+       "class": "clefG",
+       "conf": 0.8787806630134583,
+       "x_center_page": 400.9
+      },
+      {
+       "staff": "staff/5/0/3",
+       "class": "clefF",
+       "conf": 0.770218014717102,
+       "x_center_page": 401.4
+      },
+      {
+       "staff": "staff/5/0/4",
+       "class": "clefG",
+       "conf": 0.4826263189315796,
+       "x_center_page": 401.7
+      },
+      {
+       "staff": "staff/5/0/5",
+       "class": "clefG",
+       "conf": 0.7078628540039062,
+       "x_center_page": 405.3
+      },
+      {
+       "staff": "staff/5/0/8",
+       "class": "clefF",
+       "conf": 0.6382800936698914,
+       "x_center_page": 408.0
+      }
+     ],
+     "sibling_detector_x_page_spread": 10.7,
+     "cluster_x_vs_sibling_detector_median_page_px": -8.7,
+     "clef_verdict": {
+      "outcome": "abstained",
+      "value": null,
+      "reason": "no_candidates"
+     }
+    },
+    {
+     "staff": "staff/5/1/1",
+     "frame": "header_window",
+     "cluster": {
+      "x_spaces": 2.91,
+      "y_spaces": 5.95,
+      "w_spaces": 1.91,
+      "h_spaces": 3.5,
+      "found_in_cluster_list": true,
+      "n_clusters": 1
+     },
+     "spacing_px_analysis": 22.0,
+     "cell_staff_space_canonical": 100.0,
+     "staff_lines": [
+      2516.0,
+      2531.0,
+      2548.0,
+      2563.0,
+      2579.0
+     ],
+     "in_measured_band": true,
+     "in_config_band": true,
+     "occupiers": [
+      {
+       "subject": "glyph/5/1/1/0/3",
+       "class": "noteheadBlackOnLine",
+       "conf": 0.6321398019790649,
+       "x_spaces": 2.18,
+       "y_spaces": 6.28,
+       "w_spaces": 1.53,
+       "h_spaces": 1.3
+      }
+     ],
+     "n_occupiers": 1,
+     "bystanders": [
+      {
+       "subject": "glyph/5/1/1/0/2",
+       "class": "staff",
+       "conf": 0.7316704988479614,
+       "x_spaces": 0.02,
+       "y_spaces": 5.73,
+       "w_spaces": 19.98,
+       "h_spaces": 4.45
+      }
+     ],
+     "notehead_y_coverage_of_cluster": 0.371,
+     "cluster_x_page_px": 395.8,
+     "siblings_located": [
+      {
+       "staff": "staff/5/1/6",
+       "frame": "header_window",
+       "read": "tenor",
+       "family": "C",
+       "x_center": 363,
+       "x_center_spaces": 3.63,
+       "h_spaces": 4.55
+      },
+      {
+       "staff": "staff/5/1/6",
+       "frame": "cell:0",
+       "read": "tenor",
+       "family": "C",
+       "x_center": 313,
+       "x_center_spaces": 3.13,
+       "h_spaces": 4.55
+      }
+     ],
+     "sibling_x_centre_spaces": [
+      3.63,
+      3.13
+     ],
+     "sibling_x_spread_spaces": 0.5,
+     "cluster_x_vs_sibling_median_spaces": -0.47,
+     "siblings_detector_clef": [
+      {
+       "staff": "staff/5/1/0",
+       "class": "clefG",
+       "conf": 0.47561100125312805,
+       "x_center_page": 408.7
+      },
+      {
+       "staff": "staff/5/1/2",
+       "class": "clefG",
+       "conf": 0.6211612224578857,
+       "x_center_page": 403.8
+      },
+      {
+       "staff": "staff/5/1/3",
+       "class": "clefG",
+       "conf": 0.7024493217468262,
+       "x_center_page": 405.3
+      },
+      {
+       "staff": "staff/5/1/4",
+       "class": "clefG",
+       "conf": 0.7016773223876953,
+       "x_center_page": 400.4
+      }
+     ],
+     "sibling_detector_x_page_spread": 8.3,
+     "cluster_x_vs_sibling_detector_median_page_px": -8.8,
+     "clef_verdict": {
+      "outcome": "decided",
+      "value": "bass",
+      "reason": "scored"
+     }
+    },
+    {
+     "staff": "staff/5/1/1",
+     "frame": "cell:0",
+     "cluster": {
+      "x_spaces": 2.23,
+      "y_spaces": 5.95,
+      "w_spaces": 3.05,
+      "h_spaces": 3.5,
+      "found_in_cluster_list": true,
+      "n_clusters": 2
+     },
+     "spacing_px_analysis": 22.0,
+     "cell_staff_space_canonical": 100.0,
+     "staff_lines": [
+      2516.0,
+      2531.0,
+      2548.0,
+      2563.0,
+      2579.0
+     ],
+     "in_measured_band": true,
+     "in_config_band": true,
+     "occupiers": [
+      {
+       "subject": "glyph/5/1/1/0/3",
+       "class": "noteheadBlackOnLine",
+       "conf": 0.6321398019790649,
+       "x_spaces": 2.18,
+       "y_spaces": 6.28,
+       "w_spaces": 1.53,
+       "h_spaces": 1.3
+      }
+     ],
+     "n_occupiers": 1,
+     "bystanders": [
+      {
+       "subject": "glyph/5/1/1/0/2",
+       "class": "staff",
+       "conf": 0.7316704988479614,
+       "x_spaces": 0.02,
+       "y_spaces": 5.73,
+       "w_spaces": 19.98,
+       "h_spaces": 4.45
+      }
+     ],
+     "notehead_y_coverage_of_cluster": 0.371,
+     "cluster_x_page_px": 385.1,
+     "siblings_located": [
+      {
+       "staff": "staff/5/1/6",
+       "frame": "header_window",
+       "read": "tenor",
+       "family": "C",
+       "x_center": 363,
+       "x_center_spaces": 3.63,
+       "h_spaces": 4.55
+      },
+      {
+       "staff": "staff/5/1/6",
+       "frame": "cell:0",
+       "read": "tenor",
+       "family": "C",
+       "x_center": 313,
+       "x_center_spaces": 3.13,
+       "h_spaces": 4.55
+      }
+     ],
+     "sibling_x_centre_spaces": [
+      3.63,
+      3.13
+     ],
+     "sibling_x_spread_spaces": 0.5,
+     "cluster_x_vs_sibling_median_spaces": -1.15,
+     "siblings_detector_clef": [
+      {
+       "staff": "staff/5/1/0",
+       "class": "clefG",
+       "conf": 0.47561100125312805,
+       "x_center_page": 408.7
+      },
+      {
+       "staff": "staff/5/1/2",
+       "class": "clefG",
+       "conf": 0.6211612224578857,
+       "x_center_page": 403.8
+      },
+      {
+       "staff": "staff/5/1/3",
+       "class": "clefG",
+       "conf": 0.7024493217468262,
+       "x_center_page": 405.3
+      },
+      {
+       "staff": "staff/5/1/4",
+       "class": "clefG",
+       "conf": 0.7016773223876953,
+       "x_center_page": 400.4
+      }
+     ],
+     "sibling_detector_x_page_spread": 8.3,
+     "cluster_x_vs_sibling_detector_median_page_px": -19.4,
+     "clef_verdict": {
+      "outcome": "decided",
+      "value": "bass",
+      "reason": "scored"
+     }
+    },
+    {
+     "staff": "staff/5/1/5",
+     "frame": "header_window",
+     "cluster": {
+      "x_spaces": 2.55,
+      "y_spaces": 5.86,
+      "w_spaces": 2.27,
+      "h_spaces": 4.45,
+      "found_in_cluster_list": true,
+      "n_clusters": 2
+     },
+     "spacing_px_analysis": 22.0,
+     "cell_staff_space_canonical": 100.0,
+     "staff_lines": [
+      3319.0,
+      3335.0,
+      3350.0,
+      3366.0,
+      3382.0
+     ],
+     "in_measured_band": true,
+     "in_config_band": true,
+     "occupiers": [
+      {
+       "subject": "glyph/5/1/5/0/7",
+       "class": "noteheadBlackInSpace",
+       "conf": 0.3304806053638458,
+       "x_spaces": 1.79,
+       "y_spaces": 8.48,
+       "w_spaces": 0.83,
+       "h_spaces": 1.22
+      },
+      {
+       "subject": "glyph/5/1/5/0/8",
+       "class": "noteheadBlackInSpace",
+       "conf": 0.32053160667419434,
+       "x_spaces": 1.8,
+       "y_spaces": 9.0,
+       "w_spaces": 0.86,
+       "h_spaces": 0.98
+      },
+      {
+       "subject": "glyph/5/1/5/0/9",
+       "class": "noteheadBlackOnLine",
+       "conf": 0.29945993423461914,
+       "x_spaces": 1.79,
+       "y_spaces": 6.31,
+       "w_spaces": 0.8,
+       "h_spaces": 1.02
+      }
+     ],
+     "n_occupiers": 3,
+     "bystanders": [
+      {
+       "subject": "glyph/5/1/5/0/2",
+       "class": "staff",
+       "conf": 0.6728022694587708,
+       "x_spaces": 1.04,
+       "y_spaces": 5.89,
+       "w_spaces": 18.96,
+       "h_spaces": 4.28
+      },
+      {
+       "subject": "glyph/5/1/5/0/6",
+       "class": "flag8thUp",
+       "conf": 0.46659886837005615,
+       "x_spaces": 3.91,
+       "y_spaces": 6.09,
+       "w_spaces": 0.61,
+       "h_spaces": 1.93
+      }
+     ],
+     "notehead_y_coverage_of_cluster": 0.566,
+     "cluster_x_page_px": 390.2,
+     "siblings_located": [
+      {
+       "staff": "staff/5/1/6",
+       "frame": "header_window",
+       "read": "tenor",
+       "family": "C",
+       "x_center": 363,
+       "x_center_spaces": 3.63,
+       "h_spaces": 4.55
+      },
+      {
+       "staff": "staff/5/1/6",
+       "frame": "cell:0",
+       "read": "tenor",
+       "family": "C",
+       "x_center": 313,
+       "x_center_spaces": 3.13,
+       "h_spaces": 4.55
+      }
+     ],
+     "sibling_x_centre_spaces": [
+      3.63,
+      3.13
+     ],
+     "sibling_x_spread_spaces": 0.5,
+     "cluster_x_vs_sibling_median_spaces": -0.83,
+     "siblings_detector_clef": [
+      {
+       "staff": "staff/5/1/0",
+       "class": "clefG",
+       "conf": 0.47561100125312805,
+       "x_center_page": 408.7
+      },
+      {
+       "staff": "staff/5/1/2",
+       "class": "clefG",
+       "conf": 0.6211612224578857,
+       "x_center_page": 403.8
+      },
+      {
+       "staff": "staff/5/1/3",
+       "class": "clefG",
+       "conf": 0.7024493217468262,
+       "x_center_page": 405.3
+      },
+      {
+       "staff": "staff/5/1/4",
+       "class": "clefG",
+       "conf": 0.7016773223876953,
+       "x_center_page": 400.4
+      }
+     ],
+     "sibling_detector_x_page_spread": 8.3,
+     "cluster_x_vs_sibling_detector_median_page_px": -14.4,
+     "clef_verdict": {
+      "outcome": "abstained",
+      "value": null,
+      "reason": "no_candidates"
+     }
+    },
+    {
+     "staff": "staff/5/1/5",
+     "frame": "cell:0",
+     "cluster": {
+      "x_spaces": 1.32,
+      "y_spaces": 5.5,
+      "w_spaces": 3.41,
+      "h_spaces": 4.82,
+      "found_in_cluster_list": true,
+      "n_clusters": 2
+     },
+     "spacing_px_analysis": 22.0,
+     "cell_staff_space_canonical": 100.0,
+     "staff_lines": [
+      3319.0,
+      3335.0,
+      3350.0,
+      3366.0,
+      3382.0
+     ],
+     "in_measured_band": false,
+     "in_config_band": true,
+     "occupiers": [
+      {
+       "subject": "glyph/5/1/5/0/7",
+       "class": "noteheadBlackInSpace",
+       "conf": 0.3304806053638458,
+       "x_spaces": 1.79,
+       "y_spaces": 8.48,
+       "w_spaces": 0.83,
+       "h_spaces": 1.22
+      },
+      {
+       "subject": "glyph/5/1/5/0/8",
+       "class": "noteheadBlackInSpace",
+       "conf": 0.32053160667419434,
+       "x_spaces": 1.8,
+       "y_spaces": 9.0,
+       "w_spaces": 0.86,
+       "h_spaces": 0.98
+      },
+      {
+       "subject": "glyph/5/1/5/0/9",
+       "class": "noteheadBlackOnLine",
+       "conf": 0.29945993423461914,
+       "x_spaces": 1.79,
+       "y_spaces": 6.31,
+       "w_spaces": 0.8,
+       "h_spaces": 1.02
+      }
+     ],
+     "n_occupiers": 3,
+     "bystanders": [
+      {
+       "subject": "glyph/5/1/5/0/2",
+       "class": "staff",
+       "conf": 0.6728022694587708,
+       "x_spaces": 1.04,
+       "y_spaces": 5.89,
+       "w_spaces": 18.96,
+       "h_spaces": 4.28
+      },
+      {
+       "subject": "glyph/5/1/5/0/6",
+       "class": "flag8thUp",
+       "conf": 0.46659886837005615,
+       "x_spaces": 3.91,
+       "y_spaces": 6.09,
+       "w_spaces": 0.61,
+       "h_spaces": 1.93
+      }
+     ],
+     "notehead_y_coverage_of_cluster": 0.523,
+     "cluster_x_page_px": 370.8,
+     "siblings_located": [
+      {
+       "staff": "staff/5/1/6",
+       "frame": "header_window",
+       "read": "tenor",
+       "family": "C",
+       "x_center": 363,
+       "x_center_spaces": 3.63,
+       "h_spaces": 4.55
+      },
+      {
+       "staff": "staff/5/1/6",
+       "frame": "cell:0",
+       "read": "tenor",
+       "family": "C",
+       "x_center": 313,
+       "x_center_spaces": 3.13,
+       "h_spaces": 4.55
+      }
+     ],
+     "sibling_x_centre_spaces": [
+      3.63,
+      3.13
+     ],
+     "sibling_x_spread_spaces": 0.5,
+     "cluster_x_vs_sibling_median_spaces": -2.06,
+     "siblings_detector_clef": [
+      {
+       "staff": "staff/5/1/0",
+       "class": "clefG",
+       "conf": 0.47561100125312805,
+       "x_center_page": 408.7
+      },
+      {
+       "staff": "staff/5/1/2",
+       "class": "clefG",
+       "conf": 0.6211612224578857,
+       "x_center_page": 403.8
+      },
+      {
+       "staff": "staff/5/1/3",
+       "class": "clefG",
+       "conf": 0.7024493217468262,
+       "x_center_page": 405.3
+      },
+      {
+       "staff": "staff/5/1/4",
+       "class": "clefG",
+       "conf": 0.7016773223876953,
+       "x_center_page": 400.4
+      }
+     ],
+     "sibling_detector_x_page_spread": 8.3,
+     "cluster_x_vs_sibling_detector_median_page_px": -33.8,
+     "clef_verdict": {
+      "outcome": "abstained",
+      "value": null,
+      "reason": "no_candidates"
+     }
+    },
+    {
+     "staff": "staff/6/0/7",
+     "frame": "header_window",
+     "cluster": {
+      "x_spaces": 3.18,
+      "y_spaces": 3.95,
+      "w_spaces": 1.64,
+      "h_spaces": 4.55,
+      "found_in_cluster_list": true,
+      "n_clusters": 2
+     },
+     "spacing_px_analysis": 22.0,
+     "cell_staff_space_canonical": 98.75,
+     "staff_lines": [
+      1446.0,
+      1461.0,
+      1477.0,
+      1493.0,
+      1509.0
+     ],
+     "in_measured_band": true,
+     "in_config_band": true,
+     "occupiers": [
+      {
+       "subject": "glyph/6/0/7/0/9",
+       "class": "noteheadBlackOnLine",
+       "conf": 0.5681201219558716,
+       "x_spaces": 3.18,
+       "y_spaces": 5.418,
+       "w_spaces": 1.772,
+       "h_spaces": 1.377
+      },
+      {
+       "subject": "glyph/6/0/7/0/16",
+       "class": "noteheadBlackOnLine",
+       "conf": 0.3256029784679413,
+       "x_spaces": 3.058,
+       "y_spaces": 4.982,
+       "w_spaces": 1.934,
+       "h_spaces": 1.792
+      }
+     ],
+     "n_occupiers": 2,
+     "bystanders": [
+      {
+       "subject": "glyph/6/0/7/0/13",
+       "class": "staff",
+       "conf": 0.4390336871147156,
+       "x_spaces": 0.03,
+       "y_spaces": 3.828,
+       "w_spaces": 20.709,
+       "h_spaces": 4.476
+      }
+     ],
+     "notehead_y_coverage_of_cluster": 0.398,
+     "cluster_x_page_px": 384.1,
+     "siblings_located": [
+      {
+       "staff": "staff/6/0/8",
+       "frame": "header_window",
+       "read": "tenor",
+       "family": "C",
+       "x_center": 395,
+       "x_center_spaces": 4.0,
+       "h_spaces": 4.557
+      },
+      {
+       "staff": "staff/6/0/8",
+       "frame": "cell:0",
+       "read": "tenor",
+       "family": "C",
+       "x_center": 422,
+       "x_center_spaces": 4.273,
+       "h_spaces": 4.496
+      }
+     ],
+     "sibling_x_centre_spaces": [
+      4.0,
+      4.273
+     ],
+     "sibling_x_spread_spaces": 0.273,
+     "cluster_x_vs_sibling_median_spaces": -0.956,
+     "siblings_detector_clef": [
+      {
+       "staff": "staff/6/0/0",
+       "class": "clefG",
+       "conf": 0.9040416479110718,
+       "x_center_page": 386.5
+      },
+      {
+       "staff": "staff/6/0/1",
+       "class": "clefG",
+       "conf": 0.8017949461936951,
+       "x_center_page": 388.2
+      },
+      {
+       "staff": "staff/6/0/2",
+       "class": "clefG",
+       "conf": 0.914006769657135,
+       "x_center_page": 390.0
+      },
+      {
+       "staff": "staff/6/0/2",
+       "class": "clefG",
+       "conf": 0.8797712922096252,
+       "x_center_page": 385.8
+      },
+      {
+       "staff": "staff/6/0/3",
+       "class": "clefG",
+       "conf": 0.8902315497398376,
+       "x_center_page": 389.5
+      },
+      {
+       "staff": "staff/6/0/3",
+       "class": "clefF",
+       "conf": 0.8288285732269287,
+       "x_center_page": 389.6
+      },
+      {
+       "staff": "staff/6/0/4",
+       "class": "clefG",
+       "conf": 0.8911980986595154,
+       "x_center_page": 392.8
+      },
+      {
+       "staff": "staff/6/0/5",
+       "class": "clefG",
+       "conf": 0.8650555610656738,
+       "x_center_page": 391.8
+      },
+      {
+       "staff": "staff/6/0/5",
+       "class": "clefG",
+       "conf": 0.8338801860809326,
+       "x_center_page": 394.0
+      },
+      {
+       "staff": "staff/6/0/6",
+       "class": "clefG",
+       "conf": 0.9036246538162231,
+       "x_center_page": 391.6
+      },
+      {
+       "staff": "staff/6/0/6",
+       "class": "clefG",
+       "conf": 0.8471593260765076,
+       "x_center_page": 396.9
+      },
+      {
+       "staff": "staff/6/0/8",
+       "class": "clefCTenor",
+       "conf": 0.8865010738372803,
+       "x_center_page": 395.0
+      },
+      {
+       "staff": "staff/6/0/9",
+       "class": "clefF",
+       "conf": 0.8553341031074524,
+       "x_center_page": 397.3
+      }
+     ],
+     "sibling_detector_x_page_spread": 11.5,
+     "cluster_x_vs_sibling_detector_median_page_px": -7.5,
+     "clef_verdict": {
+      "outcome": "narrowed",
+      "value": null,
+      "reason": "margin_below_floor"
+     }
+    },
+    {
+     "staff": "staff/6/0/7",
+     "frame": "cell:0",
+     "cluster": {
+      "x_spaces": 2.41,
+      "y_spaces": 4.0,
+      "w_spaces": 2.68,
+      "h_spaces": 4.5,
+      "found_in_cluster_list": true,
+      "n_clusters": 2
+     },
+     "spacing_px_analysis": 22.0,
+     "cell_staff_space_canonical": 98.75,
+     "staff_lines": [
+      1446.0,
+      1461.0,
+      1477.0,
+      1493.0,
+      1509.0
+     ],
+     "in_measured_band": true,
+     "in_config_band": true,
+     "occupiers": [
+      {
+       "subject": "glyph/6/0/7/0/9",
+       "class": "noteheadBlackOnLine",
+       "conf": 0.5681201219558716,
+       "x_spaces": 3.18,
+       "y_spaces": 5.418,
+       "w_spaces": 1.772,
+       "h_spaces": 1.377
+      },
+      {
+       "subject": "glyph/6/0/7/0/16",
+       "class": "noteheadBlackOnLine",
+       "conf": 0.3256029784679413,
+       "x_spaces": 3.058,
+       "y_spaces": 4.982,
+       "w_spaces": 1.934,
+       "h_spaces": 1.792
+      }
+     ],
+     "n_occupiers": 2,
+     "bystanders": [
+      {
+       "subject": "glyph/6/0/7/0/13",
+       "class": "staff",
+       "conf": 0.4390336871147156,
+       "x_spaces": 0.03,
+       "y_spaces": 3.828,
+       "w_spaces": 20.709,
+       "h_spaces": 4.476
+      }
+     ],
+     "notehead_y_coverage_of_cluster": 0.403,
+     "cluster_x_page_px": 372.0,
+     "siblings_located": [
+      {
+       "staff": "staff/6/0/8",
+       "frame": "header_window",
+       "read": "tenor",
+       "family": "C",
+       "x_center": 395,
+       "x_center_spaces": 4.0,
+       "h_spaces": 4.557
+      },
+      {
+       "staff": "staff/6/0/8",
+       "frame": "cell:0",
+       "read": "tenor",
+       "family": "C",
+       "x_center": 422,
+       "x_center_spaces": 4.273,
+       "h_spaces": 4.496
+      }
+     ],
+     "sibling_x_centre_spaces": [
+      4.0,
+      4.273
+     ],
+     "sibling_x_spread_spaces": 0.273,
+     "cluster_x_vs_sibling_median_spaces": -1.726,
+     "siblings_detector_clef": [
+      {
+       "staff": "staff/6/0/0",
+       "class": "clefG",
+       "conf": 0.9040416479110718,
+       "x_center_page": 386.5
+      },
+      {
+       "staff": "staff/6/0/1",
+       "class": "clefG",
+       "conf": 0.8017949461936951,
+       "x_center_page": 388.2
+      },
+      {
+       "staff": "staff/6/0/2",
+       "class": "clefG",
+       "conf": 0.914006769657135,
+       "x_center_page": 390.0
+      },
+      {
+       "staff": "staff/6/0/2",
+       "class": "clefG",
+       "conf": 0.8797712922096252,
+       "x_center_page": 385.8
+      },
+      {
+       "staff": "staff/6/0/3",
+       "class": "clefG",
+       "conf": 0.8902315497398376,
+       "x_center_page": 389.5
+      },
+      {
+       "staff": "staff/6/0/3",
+       "class": "clefF",
+       "conf": 0.8288285732269287,
+       "x_center_page": 389.6
+      },
+      {
+       "staff": "staff/6/0/4",
+       "class": "clefG",
+       "conf": 0.8911980986595154,
+       "x_center_page": 392.8
+      },
+      {
+       "staff": "staff/6/0/5",
+       "class": "clefG",
+       "conf": 0.8650555610656738,
+       "x_center_page": 391.8
+      },
+      {
+       "staff": "staff/6/0/5",
+       "class": "clefG",
+       "conf": 0.8338801860809326,
+       "x_center_page": 394.0
+      },
+      {
+       "staff": "staff/6/0/6",
+       "class": "clefG",
+       "conf": 0.9036246538162231,
+       "x_center_page": 391.6
+      },
+      {
+       "staff": "staff/6/0/6",
+       "class": "clefG",
+       "conf": 0.8471593260765076,
+       "x_center_page": 396.9
+      },
+      {
+       "staff": "staff/6/0/8",
+       "class": "clefCTenor",
+       "conf": 0.8865010738372803,
+       "x_center_page": 395.0
+      },
+      {
+       "staff": "staff/6/0/9",
+       "class": "clefF",
+       "conf": 0.8553341031074524,
+       "x_center_page": 397.3
+      }
+     ],
+     "sibling_detector_x_page_spread": 11.5,
+     "cluster_x_vs_sibling_detector_median_page_px": -19.6,
+     "clef_verdict": {
+      "outcome": "narrowed",
+      "value": null,
+      "reason": "margin_below_floor"
+     }
+    },
+    {
+     "staff": "staff/6/1/9",
+     "frame": "header_window",
+     "cluster": {
+      "x_spaces": 2.68,
+      "y_spaces": 3.77,
+      "w_spaces": 2.14,
+      "h_spaces": 4.55,
+      "found_in_cluster_list": true,
+      "n_clusters": 3
+     },
+     "spacing_px_analysis": 22.0,
+     "cell_staff_space_canonical": 100.0,
+     "staff_lines": [
+      3299.0,
+      3314.0,
+      3330.0,
+      3346.0,
+      3362.0
+     ],
+     "in_measured_band": true,
+     "in_config_band": true,
+     "occupiers": [
+      {
+       "subject": "glyph/6/1/9/0/17",
+       "class": "noteheadBlackOnLine",
+       "conf": 0.47725287079811096,
+       "x_spaces": 2.52,
+       "y_spaces": 4.87,
+       "w_spaces": 2.42,
+       "h_spaces": 3.31
+      },
+      {
+       "subject": "glyph/6/1/9/0/18",
+       "class": "noteheadBlackOnLine",
+       "conf": 0.44462546706199646,
+       "x_spaces": 2.9,
+       "y_spaces": 3.84,
+       "w_spaces": 2.05,
+       "h_spaces": 4.33
+      }
+     ],
+     "n_occupiers": 2,
+     "bystanders": [
+      {
+       "subject": "glyph/6/1/9/0/15",
+       "class": "staff",
+       "conf": 0.4990115165710449,
+       "x_spaces": 0.95,
+       "y_spaces": 3.41,
+       "w_spaces": 19.05,
+       "h_spaces": 4.7
+      }
+     ],
+     "notehead_y_coverage_of_cluster": 0.954,
+     "cluster_x_page_px": 379.2,
+     "siblings_located": [
+      {
+       "staff": "staff/6/1/3",
+       "frame": "header_window",
+       "read": "tenor",
+       "family": "C",
+       "x_center": 393,
+       "x_center_spaces": 3.93,
+       "h_spaces": 4.55
+      },
+      {
+       "staff": "staff/6/1/3",
+       "frame": "cell:0",
+       "read": "tenor",
+       "family": "C",
+       "x_center": 422,
+       "x_center_spaces": 4.22,
+       "h_spaces": 4.55
+      },
+      {
+       "staff": "staff/6/1/11",
+       "frame": "cell:0",
+       "read": "alto",
+       "family": "C",
+       "x_center": 402,
+       "x_center_spaces": 4.02,
+       "h_spaces": 3.73
+      }
+     ],
+     "sibling_x_centre_spaces": [
+      3.93,
+      4.22,
+      4.02
+     ],
+     "sibling_x_spread_spaces": 0.29,
+     "cluster_x_vs_sibling_median_spaces": -1.34,
+     "siblings_detector_clef": [
+      {
+       "staff": "staff/6/1/1",
+       "class": "clefG",
+       "conf": 0.8318184018135071,
+       "x_center_page": 400.6
+      },
+      {
+       "staff": "staff/6/1/1",
+       "class": "clefG",
+       "conf": 0.7044719457626343,
+       "x_center_page": 395.0
+      },
+      {
+       "staff": "staff/6/1/2",
+       "class": "clefG",
+       "conf": 0.9348201751708984,
+       "x_center_page": 400.5
+      },
+      {
+       "staff": "staff/6/1/3",
+       "class": "clefF",
+       "conf": 0.8689683079719543,
+       "x_center_page": 623.5
+      },
+      {
+       "staff": "staff/6/1/3",
+       "class": "clefCTenor",
+       "conf": 0.7136783599853516,
+       "x_center_page": 401.9
+      },
+      {
+       "staff": "staff/6/1/3",
+       "class": "clefF",
+       "conf": 0.6627471446990967,
+       "x_center_page": 612.9
+      },
+      {
+       "staff": "staff/6/1/4",
+       "class": "clefG",
+       "conf": 0.8819175958633423,
+       "x_center_page": 397.4
+      },
+      {
+       "staff": "staff/6/1/4",
+       "class": "clefG",
+       "conf": 0.856239914894104,
+       "x_center_page": 397.5
+      },
+      {
+       "staff": "staff/6/1/5",
+       "class": "clefG",
+       "conf": 0.922751247882843,
+       "x_center_page": 394.0
+      },
+      {
+       "staff": "staff/6/1/5",
+       "class": "clefG",
+       "conf": 0.8332407474517822,
+       "x_center_page": 394.6
+      },
+      {
+       "staff": "staff/6/1/6",
+       "class": "clefF",
+       "conf": 0.862217128276825,
+       "x_center_page": 393.7
+      },
+      {
+       "staff": "staff/6/1/6",
+       "class": "clefG",
+       "conf": 0.8036535978317261,
+       "x_center_page": 392.4
+      },
+      {
+       "staff": "staff/6/1/7",
+       "class": "clefG",
+       "conf": 0.8976011872291565,
+       "x_center_page": 395.8
+      },
+      {
+       "staff": "staff/6/1/7",
+       "class": "clefG",
+       "conf": 0.8538928031921387,
+       "x_center_page": 394.9
+      },
+      {
+       "staff": "staff/6/1/8",
+       "class": "clefG",
+       "conf": 0.8916822671890259,
+       "x_center_page": 392.1
+      },
+      {
+       "staff": "staff/6/1/8",
+       "class": "clefG",
+       "conf": 0.869858980178833,
+       "x_center_page": 392.7
+      },
+      {
+       "staff": "staff/6/1/10",
+       "class": "clefF",
+       "conf": 0.7983123064041138,
+       "x_center_page": 394.8
+      },
+      {
+       "staff": "staff/6/1/11",
+       "class": "clefF",
+       "conf": 0.8702055215835571,
+       "x_center_page": 391.7
+      }
+     ],
+     "sibling_detector_x_page_spread": 231.8,
+     "cluster_x_vs_sibling_detector_median_page_px": -15.8,
+     "clef_verdict": {
+      "outcome": "decided",
+      "value": "treble",
+      "reason": "scored"
+     }
+    },
+    {
+     "staff": "staff/6/1/9",
+     "frame": "cell:0",
+     "cluster": {
+      "x_spaces": 2.05,
+      "y_spaces": 3.77,
+      "w_spaces": 3.95,
+      "h_spaces": 4.55,
+      "found_in_cluster_list": true,
+      "n_clusters": 2
+     },
+     "spacing_px_analysis": 22.0,
+     "cell_staff_space_canonical": 100.0,
+     "staff_lines": [
+      3299.0,
+      3314.0,
+      3330.0,
+      3346.0,
+      3362.0
+     ],
+     "in_measured_band": true,
+     "in_config_band": true,
+     "occupiers": [
+      {
+       "subject": "glyph/6/1/9/0/17",
+       "class": "noteheadBlackOnLine",
+       "conf": 0.47725287079811096,
+       "x_spaces": 2.52,
+       "y_spaces": 4.87,
+       "w_spaces": 2.42,
+       "h_spaces": 3.31
+      },
+      {
+       "subject": "glyph/6/1/9/0/18",
+       "class": "noteheadBlackOnLine",
+       "conf": 0.44462546706199646,
+       "x_spaces": 2.9,
+       "y_spaces": 3.84,
+       "w_spaces": 2.05,
+       "h_spaces": 4.33
+      }
+     ],
+     "n_occupiers": 2,
+     "bystanders": [
+      {
+       "subject": "glyph/6/1/9/0/10",
+       "class": "keyFlat",
+       "conf": 0.6401265859603882,
+       "x_spaces": 5.21,
+       "y_spaces": 4.35,
+       "w_spaces": 1.09,
+       "h_spaces": 2.7
+      },
+      {
+       "subject": "glyph/6/1/9/0/15",
+       "class": "staff",
+       "conf": 0.4990115165710449,
+       "x_spaces": 0.95,
+       "y_spaces": 3.41,
+       "w_spaces": 19.05,
+       "h_spaces": 4.7
+      }
+     ],
+     "notehead_y_coverage_of_cluster": 0.954,
+     "cluster_x_page_px": 369.3,
+     "siblings_located": [
+      {
+       "staff": "staff/6/1/3",
+       "frame": "header_window",
+       "read": "tenor",
+       "family": "C",
+       "x_center": 393,
+       "x_center_spaces": 3.93,
+       "h_spaces": 4.55
+      },
+      {
+       "staff": "staff/6/1/3",
+       "frame": "cell:0",
+       "read": "tenor",
+       "family": "C",
+       "x_center": 422,
+       "x_center_spaces": 4.22,
+       "h_spaces": 4.55
+      },
+      {
+       "staff": "staff/6/1/11",
+       "frame": "cell:0",
+       "read": "alto",
+       "family": "C",
+       "x_center": 402,
+       "x_center_spaces": 4.02,
+       "h_spaces": 3.73
+      }
+     ],
+     "sibling_x_centre_spaces": [
+      3.93,
+      4.22,
+      4.02
+     ],
+     "sibling_x_spread_spaces": 0.29,
+     "cluster_x_vs_sibling_median_spaces": -1.97,
+     "siblings_detector_clef": [
+      {
+       "staff": "staff/6/1/1",
+       "class": "clefG",
+       "conf": 0.8318184018135071,
+       "x_center_page": 400.6
+      },
+      {
+       "staff": "staff/6/1/1",
+       "class": "clefG",
+       "conf": 0.7044719457626343,
+       "x_center_page": 395.0
+      },
+      {
+       "staff": "staff/6/1/2",
+       "class": "clefG",
+       "conf": 0.9348201751708984,
+       "x_center_page": 400.5
+      },
+      {
+       "staff": "staff/6/1/3",
+       "class": "clefF",
+       "conf": 0.8689683079719543,
+       "x_center_page": 623.5
+      },
+      {
+       "staff": "staff/6/1/3",
+       "class": "clefCTenor",
+       "conf": 0.7136783599853516,
+       "x_center_page": 401.9
+      },
+      {
+       "staff": "staff/6/1/3",
+       "class": "clefF",
+       "conf": 0.6627471446990967,
+       "x_center_page": 612.9
+      },
+      {
+       "staff": "staff/6/1/4",
+       "class": "clefG",
+       "conf": 0.8819175958633423,
+       "x_center_page": 397.4
+      },
+      {
+       "staff": "staff/6/1/4",
+       "class": "clefG",
+       "conf": 0.856239914894104,
+       "x_center_page": 397.5
+      },
+      {
+       "staff": "staff/6/1/5",
+       "class": "clefG",
+       "conf": 0.922751247882843,
+       "x_center_page": 394.0
+      },
+      {
+       "staff": "staff/6/1/5",
+       "class": "clefG",
+       "conf": 0.8332407474517822,
+       "x_center_page": 394.6
+      },
+      {
+       "staff": "staff/6/1/6",
+       "class": "clefF",
+       "conf": 0.862217128276825,
+       "x_center_page": 393.7
+      },
+      {
+       "staff": "staff/6/1/6",
+       "class": "clefG",
+       "conf": 0.8036535978317261,
+       "x_center_page": 392.4
+      },
+      {
+       "staff": "staff/6/1/7",
+       "class": "clefG",
+       "conf": 0.8976011872291565,
+       "x_center_page": 395.8
+      },
+      {
+       "staff": "staff/6/1/7",
+       "class": "clefG",
+       "conf": 0.8538928031921387,
+       "x_center_page": 394.9
+      },
+      {
+       "staff": "staff/6/1/8",
+       "class": "clefG",
+       "conf": 0.8916822671890259,
+       "x_center_page": 392.1
+      },
+      {
+       "staff": "staff/6/1/8",
+       "class": "clefG",
+       "conf": 0.869858980178833,
+       "x_center_page": 392.7
+      },
+      {
+       "staff": "staff/6/1/10",
+       "class": "clefF",
+       "conf": 0.7983123064041138,
+       "x_center_page": 394.8
+      },
+      {
+       "staff": "staff/6/1/11",
+       "class": "clefF",
+       "conf": 0.8702055215835571,
+       "x_center_page": 391.7
+      }
+     ],
+     "sibling_detector_x_page_spread": 231.8,
+     "cluster_x_vs_sibling_detector_median_page_px": -25.6,
+     "clef_verdict": {
+      "outcome": "decided",
+      "value": "treble",
+      "reason": "scored"
+     }
+    },
+    {
+     "staff": "staff/6/1/10",
+     "frame": "cell:0",
+     "cluster": {
+      "x_spaces": 2.14,
+      "y_spaces": 3.45,
+      "w_spaces": 3.86,
+      "h_spaces": 3.95,
+      "found_in_cluster_list": true,
+      "n_clusters": 3
+     },
+     "spacing_px_analysis": 22.0,
+     "cell_staff_space_canonical": 100.0,
+     "staff_lines": [
+      3436.0,
+      3453.0,
+      3470.0,
+      3485.0,
+      3499.0
+     ],
+     "in_measured_band": true,
+     "in_config_band": true,
+     "occupiers": [
+      {
+       "subject": "glyph/6/1/10/0/10",
+       "class": "noteheadBlackOnLine",
+       "conf": 0.41910189390182495,
+       "x_spaces": 4.85,
+       "y_spaces": 3.98,
+       "w_spaces": 1.33,
+       "h_spaces": 3.38
+      }
+     ],
+     "n_occupiers": 1,
+     "bystanders": [
+      {
+       "subject": "glyph/6/1/10/0/4",
+       "class": "clefF",
+       "conf": 0.7983123064041138,
+       "x_spaces": 2.06,
+       "y_spaces": 3.03,
+       "w_spaces": 3.22,
+       "h_spaces": 3.49
+      },
+      {
+       "subject": "glyph/6/1/10/0/5",
+       "class": "staff",
+       "conf": 0.713597297668457,
+       "x_spaces": 0.93,
+       "y_spaces": 2.46,
+       "w_spaces": 19.07,
+       "h_spaces": 4.92
+      }
+     ],
+     "notehead_y_coverage_of_cluster": 0.856,
+     "cluster_x_page_px": 370.7,
+     "siblings_located": [
+      {
+       "staff": "staff/6/1/3",
+       "frame": "header_window",
+       "read": "tenor",
+       "family": "C",
+       "x_center": 393,
+       "x_center_spaces": 3.93,
+       "h_spaces": 4.55
+      },
+      {
+       "staff": "staff/6/1/3",
+       "frame": "cell:0",
+       "read": "tenor",
+       "family": "C",
+       "x_center": 422,
+       "x_center_spaces": 4.22,
+       "h_spaces": 4.55
+      },
+      {
+       "staff": "staff/6/1/11",
+       "frame": "cell:0",
+       "read": "alto",
+       "family": "C",
+       "x_center": 402,
+       "x_center_spaces": 4.02,
+       "h_spaces": 3.73
+      }
+     ],
+     "sibling_x_centre_spaces": [
+      3.93,
+      4.22,
+      4.02
+     ],
+     "sibling_x_spread_spaces": 0.29,
+     "cluster_x_vs_sibling_median_spaces": -1.88,
+     "siblings_detector_clef": [
+      {
+       "staff": "staff/6/1/1",
+       "class": "clefG",
+       "conf": 0.8318184018135071,
+       "x_center_page": 400.6
+      },
+      {
+       "staff": "staff/6/1/1",
+       "class": "clefG",
+       "conf": 0.7044719457626343,
+       "x_center_page": 395.0
+      },
+      {
+       "staff": "staff/6/1/2",
+       "class": "clefG",
+       "conf": 0.9348201751708984,
+       "x_center_page": 400.5
+      },
+      {
+       "staff": "staff/6/1/3",
+       "class": "clefF",
+       "conf": 0.8689683079719543,
+       "x_center_page": 623.5
+      },
+      {
+       "staff": "staff/6/1/3",
+       "class": "clefCTenor",
+       "conf": 0.7136783599853516,
+       "x_center_page": 401.9
+      },
+      {
+       "staff": "staff/6/1/3",
+       "class": "clefF",
+       "conf": 0.6627471446990967,
+       "x_center_page": 612.9
+      },
+      {
+       "staff": "staff/6/1/4",
+       "class": "clefG",
+       "conf": 0.8819175958633423,
+       "x_center_page": 397.4
+      },
+      {
+       "staff": "staff/6/1/4",
+       "class": "clefG",
+       "conf": 0.856239914894104,
+       "x_center_page": 397.5
+      },
+      {
+       "staff": "staff/6/1/5",
+       "class": "clefG",
+       "conf": 0.922751247882843,
+       "x_center_page": 394.0
+      },
+      {
+       "staff": "staff/6/1/5",
+       "class": "clefG",
+       "conf": 0.8332407474517822,
+       "x_center_page": 394.6
+      },
+      {
+       "staff": "staff/6/1/6",
+       "class": "clefF",
+       "conf": 0.862217128276825,
+       "x_center_page": 393.7
+      },
+      {
+       "staff": "staff/6/1/6",
+       "class": "clefG",
+       "conf": 0.8036535978317261,
+       "x_center_page": 392.4
+      },
+      {
+       "staff": "staff/6/1/7",
+       "class": "clefG",
+       "conf": 0.8976011872291565,
+       "x_center_page": 395.8
+      },
+      {
+       "staff": "staff/6/1/7",
+       "class": "clefG",
+       "conf": 0.8538928031921387,
+       "x_center_page": 394.9
+      },
+      {
+       "staff": "staff/6/1/8",
+       "class": "clefG",
+       "conf": 0.8916822671890259,
+       "x_center_page": 392.1
+      },
+      {
+       "staff": "staff/6/1/8",
+       "class": "clefG",
+       "conf": 0.869858980178833,
+       "x_center_page": 392.7
+      },
+      {
+       "staff": "staff/6/1/9",
+       "class": "clefG",
+       "conf": 0.8622939586639404,
+       "x_center_page": 393.9
+      },
+      {
+       "staff": "staff/6/1/11",
+       "class": "clefF",
+       "conf": 0.8702055215835571,
+       "x_center_page": 391.7
+      }
+     ],
+     "sibling_detector_x_page_spread": 231.8,
+     "cluster_x_vs_sibling_detector_median_page_px": -24.2,
+     "clef_verdict": {
+      "outcome": "decided",
+      "value": "bass",
+      "reason": "scored"
+     }
+    },
+    {
+     "staff": "staff/7/0/9",
+     "frame": "cell:0",
+     "cluster": {
+      "x_spaces": 2.14,
+      "y_spaces": 3.77,
+      "w_spaces": 3.45,
+      "h_spaces": 4.55,
+      "found_in_cluster_list": true,
+      "n_clusters": 1
+     },
+     "spacing_px_analysis": 22.0,
+     "cell_staff_space_canonical": 100.0,
+     "staff_lines": [
+      1695.0,
+      1711.0,
+      1727.0,
+      1742.0,
+      1758.0
+     ],
+     "in_measured_band": true,
+     "in_config_band": true,
+     "occupiers": [
+      {
+       "subject": "glyph/7/0/9/0/4",
+       "class": "noteheadBlackInSpace",
+       "conf": 0.6273356676101685,
+       "x_spaces": 2.24,
+       "y_spaces": 7.14,
+       "w_spaces": 0.69,
+       "h_spaces": 0.71
+      },
+      {
+       "subject": "glyph/7/0/9/0/9",
+       "class": "noteheadBlackOnLine",
+       "conf": 0.3657693862915039,
+       "x_spaces": 3.07,
+       "y_spaces": 5.27,
+       "w_spaces": 1.34,
+       "h_spaces": 1.3
+      },
+      {
+       "subject": "glyph/7/0/9/0/12",
+       "class": "noteheadBlackInSpace",
+       "conf": 0.31280988454818726,
+       "x_spaces": 2.14,
+       "y_spaces": 4.95,
+       "w_spaces": 0.84,
+       "h_spaces": 0.9
+      },
+      {
+       "subject": "glyph/7/0/9/0/19",
+       "class": "noteheadBlackInSpace",
+       "conf": 0.25916779041290283,
+       "x_spaces": 2.17,
+       "y_spaces": 5.92,
+       "w_spaces": 0.82,
+       "h_spaces": 0.89
+      }
+     ],
+     "n_occupiers": 4,
+     "bystanders": [
+      {
+       "subject": "glyph/7/0/9/0/5",
+       "class": "flag8thUp",
+       "conf": 0.48257628083229065,
+       "x_spaces": 4.24,
+       "y_spaces": 4.06,
+       "w_spaces": 0.57,
+       "h_spaces": 1.92
+      },
+      {
+       "subject": "glyph/7/0/9/0/6",
+       "class": "tie",
+       "conf": 0.4777549207210541,
+       "x_spaces": 1.66,
+       "y_spaces": 4.29,
+       "w_spaces": 18.05,
+       "h_spaces": 0.88
+      },
+      {
+       "subject": "glyph/7/0/9/0/8",
+       "class": "tie",
+       "conf": 0.4248703420162201,
+       "x_spaces": 1.63,
+       "y_spaces": 3.36,
+       "w_spaces": 18.08,
+       "h_spaces": 0.76
+      },
+      {
+       "subject": "glyph/7/0/9/0/14",
+       "class": "tie",
+       "conf": 0.2757802903652191,
+       "x_spaces": 1.77,
+       "y_spaces": 3.6,
+       "w_spaces": 17.97,
+       "h_spaces": 0.54
+      },
+      {
+       "subject": "glyph/7/0/9/0/16",
+       "class": "arpeggiato",
+       "conf": 0.2676817774772644,
+       "x_spaces": 5.4,
+       "y_spaces": 4.48,
+       "w_spaces": 0.73,
+       "h_spaces": 2.75
+      }
+     ],
+     "notehead_y_coverage_of_cluster": 0.565,
+     "cluster_x_page_px": 372.7,
+     "siblings_located": [
+      {
+       "staff": "staff/7/0/6",
+       "frame": "header_window",
+       "read": "alto",
+       "family": "C",
+       "x_center": 180,
+       "x_center_spaces": 1.8,
+       "h_spaces": 2.27
+      }
+     ],
+     "sibling_x_centre_spaces": [
+      1.8
+     ],
+     "sibling_x_spread_spaces": null,
+     "cluster_x_vs_sibling_median_spaces": 0.34,
+     "siblings_detector_clef": [
+      {
+       "staff": "staff/7/0/0",
+       "class": "clefG",
+       "conf": 0.7758745551109314,
+       "x_center_page": 385.7
+      },
+      {
+       "staff": "staff/7/0/1",
+       "class": "clefG",
+       "conf": 0.8846502304077148,
+       "x_center_page": 386.5
+      },
+      {
+       "staff": "staff/7/0/1",
+       "class": "clefG",
+       "conf": 0.36618509888648987,
+       "x_center_page": 392.0
+      },
+      {
+       "staff": "staff/7/0/2",
+       "class": "clefG",
+       "conf": 0.9024167656898499,
+       "x_center_page": 387.0
+      },
+      {
+       "staff": "staff/7/0/3",
+       "class": "clefF",
+       "conf": 0.7948766946792603,
+       "x_center_page": 389.2
+      },
+      {
+       "staff": "staff/7/0/4",
+       "class": "clefG",
+       "conf": 0.9220020771026611,
+       "x_center_page": 390.5
+      },
+      {
+       "staff": "staff/7/0/4",
+       "class": "clefG",
+       "conf": 0.6771512627601624,
+       "x_center_page": 392.6
+      },
+      {
+       "staff": "staff/7/0/5",
+       "class": "clefG",
+       "conf": 0.8950444459915161,
+       "x_center_page": 390.3
+      },
+      {
+       "staff": "staff/7/0/5",
+       "class": "clefG",
+       "conf": 0.8631281852722168,
+       "x_center_page": 389.3
+      },
+      {
+       "staff": "staff/7/0/6",
+       "class": "clefF",
+       "conf": 0.29792287945747375,
+       "x_center_page": 387.7
+      },
+      {
+       "staff": "staff/7/0/7",
+       "class": "clefG",
+       "conf": 0.7923672199249268,
+       "x_center_page": 393.4
+      },
+      {
+       "staff": "staff/7/0/7",
+       "class": "clefG",
+       "conf": 0.29562342166900635,
+       "x_center_page": 392.8
+      },
+      {
+       "staff": "staff/7/0/8",
+       "class": "clefG",
+       "conf": 0.8583767414093018,
+       "x_center_page": 394.4
+      },
+      {
+       "staff": "staff/7/0/10",
+       "class": "clefF",
+       "conf": 0.29802048206329346,
+       "x_center_page": 390.3
+      }
+     ],
+     "sibling_detector_x_page_spread": 8.7,
+     "cluster_x_vs_sibling_detector_median_page_px": -17.6,
+     "clef_verdict": {
+      "outcome": "abstained",
+      "value": null,
+      "reason": "no_candidates"
+     }
+    },
+    {
+     "staff": "staff/7/1/9",
+     "frame": "header_window",
+     "cluster": {
+      "x_spaces": 2.68,
+      "y_spaces": 6.68,
+      "w_spaces": 2.09,
+      "h_spaces": 4.0,
+      "found_in_cluster_list": true,
+      "n_clusters": 1
+     },
+     "spacing_px_analysis": 22.0,
+     "cell_staff_space_canonical": 100.0,
+     "staff_lines": [
+      3401.0,
+      3417.0,
+      3433.0,
+      3449.0,
+      3465.0
+     ],
+     "in_measured_band": true,
+     "in_config_band": true,
+     "occupiers": [
+      {
+       "subject": "glyph/7/1/9/0/4",
+       "class": "noteheadBlackInSpace",
+       "conf": 0.4138104319572449,
+       "x_spaces": 2.02,
+       "y_spaces": 7.46,
+       "w_spaces": 0.83,
+       "h_spaces": 0.85
+      },
+      {
+       "subject": "glyph/7/1/9/0/7",
+       "class": "noteheadBlackOnLine",
+       "conf": 0.29107168316841125,
+       "x_spaces": 2.94,
+       "y_spaces": 7.59,
+       "w_spaces": 1.79,
+       "h_spaces": 2.36
+      },
+      {
+       "subject": "glyph/7/1/9/0/8",
+       "class": "noteheadBlackOnLine",
+       "conf": 0.2897706627845764,
+       "x_spaces": 2.91,
+       "y_spaces": 7.68,
+       "w_spaces": 1.61,
+       "h_spaces": 1.11
+      }
+     ],
+     "n_occupiers": 3,
+     "bystanders": [
+      {
+       "subject": "glyph/7/1/9/0/3",
+       "class": "staff",
+       "conf": 0.48821741342544556,
+       "x_spaces": 0.12,
+       "y_spaces": 6.29,
+       "w_spaces": 15.3,
+       "h_spaces": 4.1
+      }
+     ],
+     "notehead_y_coverage_of_cluster": 0.622,
+     "cluster_x_page_px": 390.9,
+     "siblings_located": [],
+     "sibling_x_centre_spaces": [],
+     "sibling_x_spread_spaces": null,
+     "cluster_x_vs_sibling_median_spaces": null,
+     "siblings_detector_clef": [
+      {
+       "staff": "staff/7/1/0",
+       "class": "clefG",
+       "conf": 0.8313885927200317,
+       "x_center_page": 399.2
+      },
+      {
+       "staff": "staff/7/1/1",
+       "class": "clefG",
+       "conf": 0.8243703246116638,
+       "x_center_page": 396.2
+      },
+      {
+       "staff": "staff/7/1/2",
+       "class": "clefG",
+       "conf": 0.34415268898010254,
+       "x_center_page": 395.6
+      },
+      {
+       "staff": "staff/7/1/3",
+       "class": "clefF",
+       "conf": 0.7328057885169983,
+       "x_center_page": 398.1
+      },
+      {
+       "staff": "staff/7/1/4",
+       "class": "clefG",
+       "conf": 0.7630118727684021,
+       "x_center_page": 399.7
+      },
+      {
+       "staff": "staff/7/1/5",
+       "class": "clefG",
+       "conf": 0.8544044494628906,
+       "x_center_page": 402.2
+      },
+      {
+       "staff": "staff/7/1/5",
+       "class": "clefG",
+       "conf": 0.8505531549453735,
+       "x_center_page": 400.1
+      },
+      {
+       "staff": "staff/7/1/6",
+       "class": "clefF",
+       "conf": 0.8114535212516785,
+       "x_center_page": 398.9
+      },
+      {
+       "staff": "staff/7/1/6",
+       "class": "clefG",
+       "conf": 0.434294193983078,
+       "x_center_page": 398.3
+      },
+      {
+       "staff": "staff/7/1/7",
+       "class": "clefG",
+       "conf": 0.8717756271362305,
+       "x_center_page": 401.6
+      },
+      {
+       "staff": "staff/7/1/8",
+       "class": "clefG",
+       "conf": 0.8302392363548279,
+       "x_center_page": 402.1
+      },
+      {
+       "staff": "staff/7/1/8",
+       "class": "clefG",
+       "conf": 0.46355554461479187,
+       "x_center_page": 399.7
+      },
+      {
+       "staff": "staff/7/1/10",
+       "class": "clefF",
+       "conf": 0.6050938963890076,
+       "x_center_page": 397.4
+      }
+     ],
+     "sibling_detector_x_page_spread": 6.6,
+     "cluster_x_vs_sibling_detector_median_page_px": -8.3,
+     "clef_verdict": {
+      "outcome": "abstained",
+      "value": null,
+      "reason": "no_candidates"
+     }
+    },
+    {
+     "staff": "staff/7/1/9",
+     "frame": "cell:0",
+     "cluster": {
+      "x_spaces": 1.55,
+      "y_spaces": 6.68,
+      "w_spaces": 3.09,
+      "h_spaces": 4.0,
+      "found_in_cluster_list": true,
+      "n_clusters": 2
+     },
+     "spacing_px_analysis": 22.0,
+     "cell_staff_space_canonical": 100.0,
+     "staff_lines": [
+      3401.0,
+      3417.0,
+      3433.0,
+      3449.0,
+      3465.0
+     ],
+     "in_measured_band": true,
+     "in_config_band": true,
+     "occupiers": [
+      {
+       "subject": "glyph/7/1/9/0/4",
+       "class": "noteheadBlackInSpace",
+       "conf": 0.4138104319572449,
+       "x_spaces": 2.02,
+       "y_spaces": 7.46,
+       "w_spaces": 0.83,
+       "h_spaces": 0.85
+      },
+      {
+       "subject": "glyph/7/1/9/0/7",
+       "class": "noteheadBlackOnLine",
+       "conf": 0.29107168316841125,
+       "x_spaces": 2.94,
+       "y_spaces": 7.59,
+       "w_spaces": 1.79,
+       "h_spaces": 2.36
+      },
+      {
+       "subject": "glyph/7/1/9/0/8",
+       "class": "noteheadBlackOnLine",
+       "conf": 0.2897706627845764,
+       "x_spaces": 2.91,
+       "y_spaces": 7.68,
+       "w_spaces": 1.61,
+       "h_spaces": 1.11
+      }
+     ],
+     "n_occupiers": 3,
+     "bystanders": [
+      {
+       "subject": "glyph/7/1/9/0/3",
+       "class": "staff",
+       "conf": 0.48821741342544556,
+       "x_spaces": 0.12,
+       "y_spaces": 6.29,
+       "w_spaces": 15.3,
+       "h_spaces": 4.1
+      }
+     ],
+     "notehead_y_coverage_of_cluster": 0.622,
+     "cluster_x_page_px": 372.8,
+     "siblings_located": [],
+     "sibling_x_centre_spaces": [],
+     "sibling_x_spread_spaces": null,
+     "cluster_x_vs_sibling_median_spaces": null,
+     "siblings_detector_clef": [
+      {
+       "staff": "staff/7/1/0",
+       "class": "clefG",
+       "conf": 0.8313885927200317,
+       "x_center_page": 399.2
+      },
+      {
+       "staff": "staff/7/1/1",
+       "class": "clefG",
+       "conf": 0.8243703246116638,
+       "x_center_page": 396.2
+      },
+      {
+       "staff": "staff/7/1/2",
+       "class": "clefG",
+       "conf": 0.34415268898010254,
+       "x_center_page": 395.6
+      },
+      {
+       "staff": "staff/7/1/3",
+       "class": "clefF",
+       "conf": 0.7328057885169983,
+       "x_center_page": 398.1
+      },
+      {
+       "staff": "staff/7/1/4",
+       "class": "clefG",
+       "conf": 0.7630118727684021,
+       "x_center_page": 399.7
+      },
+      {
+       "staff": "staff/7/1/5",
+       "class": "clefG",
+       "conf": 0.8544044494628906,
+       "x_center_page": 402.2
+      },
+      {
+       "staff": "staff/7/1/5",
+       "class": "clefG",
+       "conf": 0.8505531549453735,
+       "x_center_page": 400.1
+      },
+      {
+       "staff": "staff/7/1/6",
+       "class": "clefF",
+       "conf": 0.8114535212516785,
+       "x_center_page": 398.9
+      },
+      {
+       "staff": "staff/7/1/6",
+       "class": "clefG",
+       "conf": 0.434294193983078,
+       "x_center_page": 398.3
+      },
+      {
+       "staff": "staff/7/1/7",
+       "class": "clefG",
+       "conf": 0.8717756271362305,
+       "x_center_page": 401.6
+      },
+      {
+       "staff": "staff/7/1/8",
+       "class": "clefG",
+       "conf": 0.8302392363548279,
+       "x_center_page": 402.1
+      },
+      {
+       "staff": "staff/7/1/8",
+       "class": "clefG",
+       "conf": 0.46355554461479187,
+       "x_center_page": 399.7
+      },
+      {
+       "staff": "staff/7/1/10",
+       "class": "clefF",
+       "conf": 0.6050938963890076,
+       "x_center_page": 397.4
+      }
+     ],
+     "sibling_detector_x_page_spread": 6.6,
+     "cluster_x_vs_sibling_detector_median_page_px": -26.4,
+     "clef_verdict": {
+      "outcome": "abstained",
+      "value": null,
+      "reason": "no_candidates"
+     }
+    },
+    {
+     "staff": "staff/8/1/9",
+     "frame": "cell:0",
+     "cluster": {
+      "x_spaces": 1.82,
+      "y_spaces": 4.36,
+      "w_spaces": 4.5,
+      "h_spaces": 3.27,
+      "found_in_cluster_list": true,
+      "n_clusters": 2
+     },
+     "spacing_px_analysis": 22.0,
+     "cell_staff_space_canonical": 97.0,
+     "staff_lines": [
+      3362.0,
+      3379.0,
+      3395.0,
+      3411.0,
+      3426.0
+     ],
+     "in_measured_band": false,
+     "in_config_band": true,
+     "occupiers": [
+      {
+       "subject": "glyph/8/1/9/0/13",
+       "class": "noteheadBlackOnLine",
+       "conf": 0.4182702898979187,
+       "x_spaces": 5.268,
+       "y_spaces": 5.938,
+       "w_spaces": 1.134,
+       "h_spaces": 1.608
+      }
+     ],
+     "n_occupiers": 1,
+     "bystanders": [
+      {
+       "subject": "glyph/8/1/9/0/0",
+       "class": "clefF",
+       "conf": 0.9143648147583008,
+       "x_spaces": 1.732,
+       "y_spaces": 3.918,
+       "w_spaces": 3.062,
+       "h_spaces": 3.598
+      },
+      {
+       "subject": "glyph/8/1/9/0/14",
+       "class": "staff",
+       "conf": 0.4091692268848419,
+       "x_spaces": 0.928,
+       "y_spaces": 3.649,
+       "w_spaces": 20.186,
+       "h_spaces": 4.381
+      }
+     ],
+     "notehead_y_coverage_of_cluster": 0.492,
+     "cluster_x_page_px": 367.1,
+     "siblings_located": [
+      {
+       "staff": "staff/8/1/3",
+       "frame": "cell:0",
+       "read": "tenor",
+       "family": "C",
+       "x_center": 353,
+       "x_center_spaces": 3.639,
+       "h_spaces": 4.412
+      },
+      {
+       "staff": "staff/8/1/8",
+       "frame": "header_window",
+       "read": "alto",
+       "family": "C",
+       "x_center": 358,
+       "x_center_spaces": 3.691,
+       "h_spaces": 4.588
+      },
+      {
+       "staff": "staff/8/1/8",
+       "frame": "cell:0",
+       "read": "alto",
+       "family": "C",
+       "x_center": 317,
+       "x_center_spaces": 3.268,
+       "h_spaces": 4.454
+      }
+     ],
+     "sibling_x_centre_spaces": [
+      3.639,
+      3.691,
+      3.268
+     ],
+     "sibling_x_spread_spaces": 0.423,
+     "cluster_x_vs_sibling_median_spaces": -1.819,
+     "siblings_detector_clef": [
+      {
+       "staff": "staff/8/1/0",
+       "class": "clefG",
+       "conf": 0.932596743106842,
+       "x_center_page": 397.3
+      },
+      {
+       "staff": "staff/8/1/1",
+       "class": "clefG",
+       "conf": 0.9440321326255798,
+       "x_center_page": 395.6
+      },
+      {
+       "staff": "staff/8/1/2",
+       "class": "clefG",
+       "conf": 0.929776668548584,
+       "x_center_page": 397.5
+      },
+      {
+       "staff": "staff/8/1/3",
+       "class": "clefF",
+       "conf": 0.6433338522911072,
+       "x_center_page": 569.5
+      },
+      {
+       "staff": "staff/8/1/3",
+       "class": "clefCTenor",
+       "conf": 0.6016626358032227,
+       "x_center_page": 395.0
+      },
+      {
+       "staff": "staff/8/1/4",
+       "class": "clefG",
+       "conf": 0.894358217716217,
+       "x_center_page": 393.5
+      },
+      {
+       "staff": "staff/8/1/5",
+       "class": "clefG",
+       "conf": 0.9319372773170471,
+       "x_center_page": 395.2
+      },
+      {
+       "staff": "staff/8/1/6",
+       "class": "clefG",
+       "conf": 0.9352919459342957,
+       "x_center_page": 392.1
+      },
+      {
+       "staff": "staff/8/1/7",
+       "class": "clefG",
+       "conf": 0.9362435936927795,
+       "x_center_page": 394.3
+      },
+      {
+       "staff": "staff/8/1/10",
+       "class": "clefF",
+       "conf": 0.8812323808670044,
+       "x_center_page": 389.8
+      }
+     ],
+     "sibling_detector_x_page_spread": 179.7,
+     "cluster_x_vs_sibling_detector_median_page_px": -28.0,
+     "clef_verdict": {
+      "outcome": "decided",
+      "value": "bass",
+      "reason": "scored"
+     }
+    },
+    {
+     "staff": "staff/10/0/9",
+     "frame": "header_window",
+     "cluster": {
+      "x_spaces": 3.0,
+      "y_spaces": 4.5,
+      "w_spaces": 1.82,
+      "h_spaces": 4.0,
+      "found_in_cluster_list": true,
+      "n_clusters": 3
+     },
+     "spacing_px_analysis": 22.0,
+     "cell_staff_space_canonical": 100.0,
+     "staff_lines": [
+      1701.0,
+      1717.0,
+      1733.0,
+      1749.0,
+      1764.0
+     ],
+     "in_measured_band": true,
+     "in_config_band": true,
+     "occupiers": [
+      {
+       "subject": "glyph/10/0/9/0/7",
+       "class": "noteheadBlackOnLine",
+       "conf": 0.29504403471946716,
+       "x_spaces": 2.11,
+       "y_spaces": 4.17,
+       "w_spaces": 2.89,
+       "h_spaces": 4.14
+      }
+     ],
+     "n_occupiers": 1,
+     "bystanders": [
+      {
+       "subject": "glyph/10/0/9/0/8",
+       "class": "staff",
+       "conf": 0.25353214144706726,
+       "x_spaces": 0.33,
+       "y_spaces": 3.96,
+       "w_spaces": 19.35,
+       "h_spaces": 4.33
+      }
+     ],
+     "notehead_y_coverage_of_cluster": 0.952,
+     "cluster_x_page_px": 387.2,
+     "siblings_located": [
+      {
+       "staff": "staff/10/0/3",
+       "frame": "header_window",
+       "read": "tenor",
+       "family": "C",
+       "x_center": 395,
+       "x_center_spaces": 3.95,
+       "h_spaces": 4.41
+      },
+      {
+       "staff": "staff/10/0/3",
+       "frame": "cell:0",
+       "read": "tenor",
+       "family": "C",
+       "x_center": 411,
+       "x_center_spaces": 4.11,
+       "h_spaces": 4.41
+      }
+     ],
+     "sibling_x_centre_spaces": [
+      3.95,
+      4.11
+     ],
+     "sibling_x_spread_spaces": 0.16,
+     "cluster_x_vs_sibling_median_spaces": -1.03,
+     "siblings_detector_clef": [
+      {
+       "staff": "staff/10/0/0",
+       "class": "clefG",
+       "conf": 0.8869678974151611,
+       "x_center_page": 396.6
+      },
+      {
+       "staff": "staff/10/0/1",
+       "class": "clefG",
+       "conf": 0.9080979228019714,
+       "x_center_page": 397.1
+      },
+      {
+       "staff": "staff/10/0/2",
+       "class": "clefG",
+       "conf": 0.7664236426353455,
+       "x_center_page": 396.6
+      },
+      {
+       "staff": "staff/10/0/4",
+       "class": "clefG",
+       "conf": 0.7584293484687805,
+       "x_center_page": 396.2
+      },
+      {
+       "staff": "staff/10/0/5",
+       "class": "clefG",
+       "conf": 0.8299023509025574,
+       "x_center_page": 396.9
+      },
+      {
+       "staff": "staff/10/0/6",
+       "class": "clefF",
+       "conf": 0.8890664577484131,
+       "x_center_page": 397.4
+      },
+      {
+       "staff": "staff/10/0/6",
+       "class": "clefG",
+       "conf": 0.5496432781219482,
+       "x_center_page": 395.5
+      },
+      {
+       "staff": "staff/10/0/7",
+       "class": "clefG",
+       "conf": 0.8793449401855469,
+       "x_center_page": 396.4
+      },
+      {
+       "staff": "staff/10/0/8",
+       "class": "clefG",
+       "conf": 0.8529767394065857,
+       "x_center_page": 397.5
+      },
+      {
+       "staff": "staff/10/0/10",
+       "class": "clefF",
+       "conf": 0.869994044303894,
+       "x_center_page": 398.9
+      }
+     ],
+     "sibling_detector_x_page_spread": 3.4,
+     "cluster_x_vs_sibling_detector_median_page_px": -9.6,
+     "clef_verdict": {
+      "outcome": "narrowed",
+      "value": null,
+      "reason": "margin_below_floor"
+     }
+    },
+    {
+     "staff": "staff/10/0/9",
+     "frame": "cell:0",
+     "cluster": {
+      "x_spaces": 2.23,
+      "y_spaces": 4.5,
+      "w_spaces": 3.64,
+      "h_spaces": 4.0,
+      "found_in_cluster_list": true,
+      "n_clusters": 1
+     },
+     "spacing_px_analysis": 22.0,
+     "cell_staff_space_canonical": 100.0,
+     "staff_lines": [
+      1701.0,
+      1717.0,
+      1733.0,
+      1749.0,
+      1764.0
+     ],
+     "in_measured_band": true,
+     "in_config_band": true,
+     "occupiers": [
+      {
+       "subject": "glyph/10/0/9/0/7",
+       "class": "noteheadBlackOnLine",
+       "conf": 0.29504403471946716,
+       "x_spaces": 2.11,
+       "y_spaces": 4.17,
+       "w_spaces": 2.89,
+       "h_spaces": 4.14
+      }
+     ],
+     "n_occupiers": 1,
+     "bystanders": [
+      {
+       "subject": "glyph/10/0/9/0/8",
+       "class": "staff",
+       "conf": 0.25353214144706726,
+       "x_spaces": 0.33,
+       "y_spaces": 3.96,
+       "w_spaces": 19.35,
+       "h_spaces": 4.33
+      }
+     ],
+     "notehead_y_coverage_of_cluster": 0.952,
+     "cluster_x_page_px": 375.1,
+     "siblings_located": [
+      {
+       "staff": "staff/10/0/3",
+       "frame": "header_window",
+       "read": "tenor",
+       "family": "C",
+       "x_center": 395,
+       "x_center_spaces": 3.95,
+       "h_spaces": 4.41
+      },
+      {
+       "staff": "staff/10/0/3",
+       "frame": "cell:0",
+       "read": "tenor",
+       "family": "C",
+       "x_center": 411,
+       "x_center_spaces": 4.11,
+       "h_spaces": 4.41
+      }
+     ],
+     "sibling_x_centre_spaces": [
+      3.95,
+      4.11
+     ],
+     "sibling_x_spread_spaces": 0.16,
+     "cluster_x_vs_sibling_median_spaces": -1.8,
+     "siblings_detector_clef": [
+      {
+       "staff": "staff/10/0/0",
+       "class": "clefG",
+       "conf": 0.8869678974151611,
+       "x_center_page": 396.6
+      },
+      {
+       "staff": "staff/10/0/1",
+       "class": "clefG",
+       "conf": 0.9080979228019714,
+       "x_center_page": 397.1
+      },
+      {
+       "staff": "staff/10/0/2",
+       "class": "clefG",
+       "conf": 0.7664236426353455,
+       "x_center_page": 396.6
+      },
+      {
+       "staff": "staff/10/0/4",
+       "class": "clefG",
+       "conf": 0.7584293484687805,
+       "x_center_page": 396.2
+      },
+      {
+       "staff": "staff/10/0/5",
+       "class": "clefG",
+       "conf": 0.8299023509025574,
+       "x_center_page": 396.9
+      },
+      {
+       "staff": "staff/10/0/6",
+       "class": "clefF",
+       "conf": 0.8890664577484131,
+       "x_center_page": 397.4
+      },
+      {
+       "staff": "staff/10/0/6",
+       "class": "clefG",
+       "conf": 0.5496432781219482,
+       "x_center_page": 395.5
+      },
+      {
+       "staff": "staff/10/0/7",
+       "class": "clefG",
+       "conf": 0.8793449401855469,
+       "x_center_page": 396.4
+      },
+      {
+       "staff": "staff/10/0/8",
+       "class": "clefG",
+       "conf": 0.8529767394065857,
+       "x_center_page": 397.5
+      },
+      {
+       "staff": "staff/10/0/10",
+       "class": "clefF",
+       "conf": 0.869994044303894,
+       "x_center_page": 398.9
+      }
+     ],
+     "sibling_detector_x_page_spread": 3.4,
+     "cluster_x_vs_sibling_detector_median_page_px": -21.6,
+     "clef_verdict": {
+      "outcome": "narrowed",
+      "value": null,
+      "reason": "margin_below_floor"
+     }
+    },
+    {
+     "staff": "staff/10/1/9",
+     "frame": "header_window",
+     "cluster": {
+      "x_spaces": 3.09,
+      "y_spaces": 3.77,
+      "w_spaces": 1.73,
+      "h_spaces": 4.5,
+      "found_in_cluster_list": true,
+      "n_clusters": 1
+     },
+     "spacing_px_analysis": 22.0,
+     "cell_staff_space_canonical": 100.0,
+     "staff_lines": [
+      3408.0,
+      3424.0,
+      3440.0,
+      3455.0,
+      3471.0
+     ],
+     "in_measured_band": true,
+     "in_config_band": true,
+     "occupiers": [
+      {
+       "subject": "glyph/10/1/9/0/15",
+       "class": "noteheadBlackOnLine",
+       "conf": 0.35437920689582825,
+       "x_spaces": 3.34,
+       "y_spaces": 5.21,
+       "w_spaces": 1.36,
+       "h_spaces": 1.38
+      }
+     ],
+     "n_occupiers": 1,
+     "bystanders": [
+      {
+       "subject": "glyph/10/1/9/0/18",
+       "class": "staff",
+       "conf": 0.28178876638412476,
+       "x_spaces": 1.16,
+       "y_spaces": 3.79,
+       "w_spaces": 18.64,
+       "h_spaces": 4.3
+      }
+     ],
+     "notehead_y_coverage_of_cluster": 0.307,
+     "cluster_x_page_px": 382.7,
+     "siblings_located": [],
+     "sibling_x_centre_spaces": [],
+     "sibling_x_spread_spaces": null,
+     "cluster_x_vs_sibling_median_spaces": null,
+     "siblings_detector_clef": [
+      {
+       "staff": "staff/10/1/0",
+       "class": "clefG",
+       "conf": 0.8822476267814636,
+       "x_center_page": 396.0
+      },
+      {
+       "staff": "staff/10/1/1",
+       "class": "clefG",
+       "conf": 0.8276273608207703,
+       "x_center_page": 396.5
+      },
+      {
+       "staff": "staff/10/1/2",
+       "class": "clefG",
+       "conf": 0.7852749228477478,
+       "x_center_page": 396.6
+      },
+      {
+       "staff": "staff/10/1/3",
+       "class": "clefF",
+       "conf": 0.6766746640205383,
+       "x_center_page": 393.5
+      },
+      {
+       "staff": "staff/10/1/4",
+       "class": "clefG",
+       "conf": 0.896937906742096,
+       "x_center_page": 390.5
+      },
+      {
+       "staff": "staff/10/1/5",
+       "class": "clefG",
+       "conf": 0.8942586779594421,
+       "x_center_page": 391.6
+      },
+      {
+       "staff": "staff/10/1/6",
+       "class": "clefF",
+       "conf": 0.83918297290802,
+       "x_center_page": 388.7
+      },
+      {
+       "staff": "staff/10/1/7",
+       "class": "clefG",
+       "conf": 0.8843820691108704,
+       "x_center_page": 393.4
+      },
+      {
+       "staff": "staff/10/1/8",
+       "class": "clefG",
+       "conf": 0.9115134477615356,
+       "x_center_page": 392.8
+      },
+      {
+       "staff": "staff/10/1/10",
+       "class": "clefF",
+       "conf": 0.7693175673484802,
+       "x_center_page": 391.6
+      }
+     ],
+     "sibling_detector_x_page_spread": 7.9,
+     "cluster_x_vs_sibling_detector_median_page_px": -10.4,
+     "clef_verdict": {
+      "outcome": "narrowed",
+      "value": null,
+      "reason": "margin_below_floor"
+     }
+    },
+    {
+     "staff": "staff/10/1/9",
+     "frame": "cell:0",
+     "cluster": {
+      "x_spaces": 2.55,
+      "y_spaces": 3.77,
+      "w_spaces": 3.41,
+      "h_spaces": 4.5,
+      "found_in_cluster_list": true,
+      "n_clusters": 2
+     },
+     "spacing_px_analysis": 22.0,
+     "cell_staff_space_canonical": 100.0,
+     "staff_lines": [
+      3408.0,
+      3424.0,
+      3440.0,
+      3455.0,
+      3471.0
+     ],
+     "in_measured_band": true,
+     "in_config_band": true,
+     "occupiers": [
+      {
+       "subject": "glyph/10/1/9/0/15",
+       "class": "noteheadBlackOnLine",
+       "conf": 0.35437920689582825,
+       "x_spaces": 3.34,
+       "y_spaces": 5.21,
+       "w_spaces": 1.36,
+       "h_spaces": 1.38
+      }
+     ],
+     "n_occupiers": 1,
+     "bystanders": [
+      {
+       "subject": "glyph/10/1/9/0/6",
+       "class": "keyFlat",
+       "conf": 0.5757949352264404,
+       "x_spaces": 5.56,
+       "y_spaces": 4.35,
+       "w_spaces": 1.13,
+       "h_spaces": 2.72
+      },
+      {
+       "subject": "glyph/10/1/9/0/11",
+       "class": "accidentalFlat",
+       "conf": 0.4451283812522888,
+       "x_spaces": 5.52,
+       "y_spaces": 4.46,
+       "w_spaces": 1.17,
+       "h_spaces": 2.64
+      },
+      {
+       "subject": "glyph/10/1/9/0/18",
+       "class": "staff",
+       "conf": 0.28178876638412476,
+       "x_spaces": 1.16,
+       "y_spaces": 3.79,
+       "w_spaces": 18.64,
+       "h_spaces": 4.3
+      }
+     ],
+     "notehead_y_coverage_of_cluster": 0.307,
+     "cluster_x_page_px": 374.2,
+     "siblings_located": [],
+     "sibling_x_centre_spaces": [],
+     "sibling_x_spread_spaces": null,
+     "cluster_x_vs_sibling_median_spaces": null,
+     "siblings_detector_clef": [
+      {
+       "staff": "staff/10/1/0",
+       "class": "clefG",
+       "conf": 0.8822476267814636,
+       "x_center_page": 396.0
+      },
+      {
+       "staff": "staff/10/1/1",
+       "class": "clefG",
+       "conf": 0.8276273608207703,
+       "x_center_page": 396.5
+      },
+      {
+       "staff": "staff/10/1/2",
+       "class": "clefG",
+       "conf": 0.7852749228477478,
+       "x_center_page": 396.6
+      },
+      {
+       "staff": "staff/10/1/3",
+       "class": "clefF",
+       "conf": 0.6766746640205383,
+       "x_center_page": 393.5
+      },
+      {
+       "staff": "staff/10/1/4",
+       "class": "clefG",
+       "conf": 0.896937906742096,
+       "x_center_page": 390.5
+      },
+      {
+       "staff": "staff/10/1/5",
+       "class": "clefG",
+       "conf": 0.8942586779594421,
+       "x_center_page": 391.6
+      },
+      {
+       "staff": "staff/10/1/6",
+       "class": "clefF",
+       "conf": 0.83918297290802,
+       "x_center_page": 388.7
+      },
+      {
+       "staff": "staff/10/1/7",
+       "class": "clefG",
+       "conf": 0.8843820691108704,
+       "x_center_page": 393.4
+      },
+      {
+       "staff": "staff/10/1/8",
+       "class": "clefG",
+       "conf": 0.9115134477615356,
+       "x_center_page": 392.8
+      },
+      {
+       "staff": "staff/10/1/10",
+       "class": "clefF",
+       "conf": 0.7693175673484802,
+       "x_center_page": 391.6
+      }
+     ],
+     "sibling_detector_x_page_spread": 7.9,
+     "cluster_x_vs_sibling_detector_median_page_px": -18.9,
+     "clef_verdict": {
+      "outcome": "narrowed",
+      "value": null,
+      "reason": "margin_below_floor"
+     }
+    },
+    {
+     "staff": "staff/11/0/7",
+     "frame": "header_window",
+     "cluster": {
+      "x_spaces": 2.82,
+      "y_spaces": 3.77,
+      "w_spaces": 2.0,
+      "h_spaces": 4.55,
+      "found_in_cluster_list": true,
+      "n_clusters": 2
+     },
+     "spacing_px_analysis": 22.0,
+     "cell_staff_space_canonical": 93.0,
+     "staff_lines": [
+      1441.0,
+      1456.0,
+      1472.0,
+      1488.0,
+      1503.0
+     ],
+     "in_measured_band": true,
+     "in_config_band": true,
+     "occupiers": [
+      {
+       "subject": "glyph/11/0/7/0/2",
+       "class": "noteheadBlackOnLine",
+       "conf": 0.5555247664451599,
+       "x_spaces": 3.065,
+       "y_spaces": 5.28,
+       "w_spaces": 1.258,
+       "h_spaces": 1.312
+      },
+      {
+       "subject": "glyph/11/0/7/0/5",
+       "class": "noteheadBlackInSpace",
+       "conf": 0.3505260646343231,
+       "x_spaces": 2.226,
+       "y_spaces": 6.989,
+       "w_spaces": 0.688,
+       "h_spaces": 0.839
+      }
+     ],
+     "n_occupiers": 2,
+     "bystanders": [
+      {
+       "subject": "glyph/11/0/7/0/4",
+       "class": "staff",
+       "conf": 0.3764824867248535,
+       "x_spaces": 0.054,
+       "y_spaces": 4.505,
+       "w_spaces": 21.849,
+       "h_spaces": 3.602
+      },
+      {
+       "subject": "glyph/11/0/7/0/7",
+       "class": "flag8thUp",
+       "conf": 0.270693302154541,
+       "x_spaces": 4.323,
+       "y_spaces": 3.849,
+       "w_spaces": 0.602,
+       "h_spaces": 3.376
+      }
+     ],
+     "notehead_y_coverage_of_cluster": 0.473,
+     "cluster_x_page_px": 390.7,
+     "siblings_located": [],
+     "sibling_x_centre_spaces": [],
+     "sibling_x_spread_spaces": null,
+     "cluster_x_vs_sibling_median_spaces": null,
+     "siblings_detector_clef": [
+      {
+       "staff": "staff/11/0/0",
+       "class": "clefG",
+       "conf": 0.8591929078102112,
+       "x_center_page": 400.4
+      },
+      {
+       "staff": "staff/11/0/1",
+       "class": "clefG",
+       "conf": 0.9156753420829773,
+       "x_center_page": 401.5
+      },
+      {
+       "staff": "staff/11/0/2",
+       "class": "clefF",
+       "conf": 0.8331275582313538,
+       "x_center_page": 400.7
+      },
+      {
+       "staff": "staff/11/0/3",
+       "class": "clefG",
+       "conf": 0.8888015747070312,
+       "x_center_page": 401.5
+      },
+      {
+       "staff": "staff/11/0/4",
+       "class": "clefF",
+       "conf": 0.8554741740226746,
+       "x_center_page": 396.7
+      },
+      {
+       "staff": "staff/11/0/5",
+       "class": "clefG",
+       "conf": 0.9277659058570862,
+       "x_center_page": 403.8
+      },
+      {
+       "staff": "staff/11/0/6",
+       "class": "clefG",
+       "conf": 0.818635880947113,
+       "x_center_page": 402.2
+      }
+     ],
+     "sibling_detector_x_page_spread": 7.1,
+     "cluster_x_vs_sibling_detector_median_page_px": -10.8,
+     "clef_verdict": {
+      "outcome": "decided",
+      "value": "treble",
+      "reason": "scored"
+     }
+    },
+    {
+     "staff": "staff/11/0/7",
+     "frame": "cell:0",
+     "cluster": {
+      "x_spaces": 1.27,
+      "y_spaces": 3.41,
+      "w_spaces": 3.77,
+      "h_spaces": 4.86,
+      "found_in_cluster_list": true,
+      "n_clusters": 2
+     },
+     "spacing_px_analysis": 22.0,
+     "cell_staff_space_canonical": 93.0,
+     "staff_lines": [
+      1441.0,
+      1456.0,
+      1472.0,
+      1488.0,
+      1503.0
+     ],
+     "in_measured_band": false,
+     "in_config_band": true,
+     "occupiers": [
+      {
+       "subject": "glyph/11/0/7/0/2",
+       "class": "noteheadBlackOnLine",
+       "conf": 0.5555247664451599,
+       "x_spaces": 3.065,
+       "y_spaces": 5.28,
+       "w_spaces": 1.258,
+       "h_spaces": 1.312
+      },
+      {
+       "subject": "glyph/11/0/7/0/5",
+       "class": "noteheadBlackInSpace",
+       "conf": 0.3505260646343231,
+       "x_spaces": 2.226,
+       "y_spaces": 6.989,
+       "w_spaces": 0.688,
+       "h_spaces": 0.839
+      }
+     ],
+     "n_occupiers": 2,
+     "bystanders": [
+      {
+       "subject": "glyph/11/0/7/0/4",
+       "class": "staff",
+       "conf": 0.3764824867248535,
+       "x_spaces": 0.054,
+       "y_spaces": 4.505,
+       "w_spaces": 21.849,
+       "h_spaces": 3.602
+      },
+      {
+       "subject": "glyph/11/0/7/0/7",
+       "class": "flag8thUp",
+       "conf": 0.270693302154541,
+       "x_spaces": 4.323,
+       "y_spaces": 3.849,
+       "w_spaces": 0.602,
+       "h_spaces": 3.376
+      }
+     ],
+     "notehead_y_coverage_of_cluster": 0.443,
+     "cluster_x_page_px": 366.7,
+     "siblings_located": [],
+     "sibling_x_centre_spaces": [],
+     "sibling_x_spread_spaces": null,
+     "cluster_x_vs_sibling_median_spaces": null,
+     "siblings_detector_clef": [
+      {
+       "staff": "staff/11/0/0",
+       "class": "clefG",
+       "conf": 0.8591929078102112,
+       "x_center_page": 400.4
+      },
+      {
+       "staff": "staff/11/0/1",
+       "class": "clefG",
+       "conf": 0.9156753420829773,
+       "x_center_page": 401.5
+      },
+      {
+       "staff": "staff/11/0/2",
+       "class": "clefF",
+       "conf": 0.8331275582313538,
+       "x_center_page": 400.7
+      },
+      {
+       "staff": "staff/11/0/3",
+       "class": "clefG",
+       "conf": 0.8888015747070312,
+       "x_center_page": 401.5
+      },
+      {
+       "staff": "staff/11/0/4",
+       "class": "clefF",
+       "conf": 0.8554741740226746,
+       "x_center_page": 396.7
+      },
+      {
+       "staff": "staff/11/0/5",
+       "class": "clefG",
+       "conf": 0.9277659058570862,
+       "x_center_page": 403.8
+      },
+      {
+       "staff": "staff/11/0/6",
+       "class": "clefG",
+       "conf": 0.818635880947113,
+       "x_center_page": 402.2
+      }
+     ],
+     "sibling_detector_x_page_spread": 7.1,
+     "cluster_x_vs_sibling_detector_median_page_px": -34.8,
+     "clef_verdict": {
+      "outcome": "decided",
+      "value": "treble",
+      "reason": "scored"
+     }
+    },
+    {
+     "staff": "staff/11/1/3",
+     "frame": "header_window",
+     "cluster": {
+      "x_spaces": 3.05,
+      "y_spaces": 2.91,
+      "w_spaces": 1.77,
+      "h_spaces": 4.45,
+      "found_in_cluster_list": true,
+      "n_clusters": 4
+     },
+     "spacing_px_analysis": 22.0,
+     "cell_staff_space_canonical": 100.0,
+     "staff_lines": [
+      2365.0,
+      2381.0,
+      2396.0,
+      2412.0,
+      2428.0
+     ],
+     "in_measured_band": true,
+     "in_config_band": true,
+     "occupiers": [
+      {
+       "subject": "glyph/11/1/3/0/8",
+       "class": "noteheadBlackInSpace",
+       "conf": 0.34869682788848877,
+       "x_spaces": 2.44,
+       "y_spaces": 5.41,
+       "w_spaces": 0.91,
+       "h_spaces": 0.84
+      },
+      {
+       "subject": "glyph/11/1/3/0/9",
+       "class": "noteheadBlackOnLine",
+       "conf": 0.33383145928382874,
+       "x_spaces": 3.5,
+       "y_spaces": 4.36,
+       "w_spaces": 1.28,
+       "h_spaces": 1.24
+      },
+      {
+       "subject": "glyph/11/1/3/0/10",
+       "class": "noteheadBlackInSpace",
+       "conf": 0.32407012581825256,
+       "x_spaces": 2.45,
+       "y_spaces": 5.32,
+       "w_spaces": 0.9,
+       "h_spaces": 1.23
+      }
+     ],
+     "n_occupiers": 3,
+     "bystanders": [
+      {
+       "subject": "glyph/11/1/3/0/3",
+       "class": "staff",
+       "conf": 0.6148486137390137,
+       "x_spaces": 0.0,
+       "y_spaces": 4.02,
+       "w_spaces": 19.67,
+       "h_spaces": 4.27
+      },
+      {
+       "subject": "glyph/11/1/3/0/12",
+       "class": "ledgerLine",
+       "conf": 0.3064088821411133,
+       "x_spaces": 1.32,
+       "y_spaces": 6.97,
+       "w_spaces": 2.26,
+       "h_spaces": 0.29
+      }
+     ],
+     "notehead_y_coverage_of_cluster": 0.492,
+     "cluster_x_page_px": 389.0,
+     "siblings_located": [
+      {
+       "staff": "staff/11/1/5",
+       "frame": "cell:0",
+       "read": "tenor",
+       "family": "C",
+       "x_center": 381,
+       "x_center_spaces": 3.81,
+       "h_spaces": 3.36
+      }
+     ],
+     "sibling_x_centre_spaces": [
+      3.81
+     ],
+     "sibling_x_spread_spaces": null,
+     "cluster_x_vs_sibling_median_spaces": -0.76,
+     "siblings_detector_clef": [
+      {
+       "staff": "staff/11/1/0",
+       "class": "clefG",
+       "conf": 0.9042917490005493,
+       "x_center_page": 404.0
+      },
+      {
+       "staff": "staff/11/1/1",
+       "class": "clefG",
+       "conf": 0.6440768837928772,
+       "x_center_page": 402.2
+      },
+      {
+       "staff": "staff/11/1/2",
+       "class": "clefG",
+       "conf": 0.9260457754135132,
+       "x_center_page": 401.8
+      },
+      {
+       "staff": "staff/11/1/4",
+       "class": "clefG",
+       "conf": 0.90473473072052,
+       "x_center_page": 401.6
+      },
+      {
+       "staff": "staff/11/1/6",
+       "class": "clefG",
+       "conf": 0.8711326122283936,
+       "x_center_page": 401.4
+      },
+      {
+       "staff": "staff/11/1/7",
+       "class": "clefG",
+       "conf": 0.9065709710121155,
+       "x_center_page": 398.7
+      },
+      {
+       "staff": "staff/11/1/9",
+       "class": "clefF",
+       "conf": 0.8137631416320801,
+       "x_center_page": 394.9
+      },
+      {
+       "staff": "staff/11/1/10",
+       "class": "clefF",
+       "conf": 0.8442361950874329,
+       "x_center_page": 392.3
+      }
+     ],
+     "sibling_detector_x_page_spread": 11.7,
+     "cluster_x_vs_sibling_detector_median_page_px": -12.5,
+     "clef_verdict": {
+      "outcome": "narrowed",
+      "value": null,
+      "reason": "margin_below_floor"
+     }
+    },
+    {
+     "staff": "staff/11/1/3",
+     "frame": "cell:0",
+     "cluster": {
+      "x_spaces": 2.55,
+      "y_spaces": 2.91,
+      "w_spaces": 2.82,
+      "h_spaces": 4.45,
+      "found_in_cluster_list": true,
+      "n_clusters": 3
+     },
+     "spacing_px_analysis": 22.0,
+     "cell_staff_space_canonical": 100.0,
+     "staff_lines": [
+      2365.0,
+      2381.0,
+      2396.0,
+      2412.0,
+      2428.0
+     ],
+     "in_measured_band": true,
+     "in_config_band": true,
+     "occupiers": [
+      {
+       "subject": "glyph/11/1/3/0/8",
+       "class": "noteheadBlackInSpace",
+       "conf": 0.34869682788848877,
+       "x_spaces": 2.44,
+       "y_spaces": 5.41,
+       "w_spaces": 0.91,
+       "h_spaces": 0.84
+      },
+      {
+       "subject": "glyph/11/1/3/0/9",
+       "class": "noteheadBlackOnLine",
+       "conf": 0.33383145928382874,
+       "x_spaces": 3.5,
+       "y_spaces": 4.36,
+       "w_spaces": 1.28,
+       "h_spaces": 1.24
+      },
+      {
+       "subject": "glyph/11/1/3/0/10",
+       "class": "noteheadBlackInSpace",
+       "conf": 0.32407012581825256,
+       "x_spaces": 2.45,
+       "y_spaces": 5.32,
+       "w_spaces": 0.9,
+       "h_spaces": 1.23
+      }
+     ],
+     "n_occupiers": 3,
+     "bystanders": [
+      {
+       "subject": "glyph/11/1/3/0/3",
+       "class": "staff",
+       "conf": 0.6148486137390137,
+       "x_spaces": 0.0,
+       "y_spaces": 4.02,
+       "w_spaces": 19.67,
+       "h_spaces": 4.27
+      },
+      {
+       "subject": "glyph/11/1/3/0/12",
+       "class": "ledgerLine",
+       "conf": 0.3064088821411133,
+       "x_spaces": 1.32,
+       "y_spaces": 6.97,
+       "w_spaces": 2.26,
+       "h_spaces": 0.29
+      }
+     ],
+     "notehead_y_coverage_of_cluster": 0.492,
+     "cluster_x_page_px": 381.2,
+     "siblings_located": [
+      {
+       "staff": "staff/11/1/5",
+       "frame": "cell:0",
+       "read": "tenor",
+       "family": "C",
+       "x_center": 381,
+       "x_center_spaces": 3.81,
+       "h_spaces": 3.36
+      }
+     ],
+     "sibling_x_centre_spaces": [
+      3.81
+     ],
+     "sibling_x_spread_spaces": null,
+     "cluster_x_vs_sibling_median_spaces": -1.26,
+     "siblings_detector_clef": [
+      {
+       "staff": "staff/11/1/0",
+       "class": "clefG",
+       "conf": 0.9042917490005493,
+       "x_center_page": 404.0
+      },
+      {
+       "staff": "staff/11/1/1",
+       "class": "clefG",
+       "conf": 0.6440768837928772,
+       "x_center_page": 402.2
+      },
+      {
+       "staff": "staff/11/1/2",
+       "class": "clefG",
+       "conf": 0.9260457754135132,
+       "x_center_page": 401.8
+      },
+      {
+       "staff": "staff/11/1/4",
+       "class": "clefG",
+       "conf": 0.90473473072052,
+       "x_center_page": 401.6
+      },
+      {
+       "staff": "staff/11/1/6",
+       "class": "clefG",
+       "conf": 0.8711326122283936,
+       "x_center_page": 401.4
+      },
+      {
+       "staff": "staff/11/1/7",
+       "class": "clefG",
+       "conf": 0.9065709710121155,
+       "x_center_page": 398.7
+      },
+      {
+       "staff": "staff/11/1/9",
+       "class": "clefF",
+       "conf": 0.8137631416320801,
+       "x_center_page": 394.9
+      },
+      {
+       "staff": "staff/11/1/10",
+       "class": "clefF",
+       "conf": 0.8442361950874329,
+       "x_center_page": 392.3
+      }
+     ],
+     "sibling_detector_x_page_spread": 11.7,
+     "cluster_x_vs_sibling_detector_median_page_px": -20.3,
+     "clef_verdict": {
+      "outcome": "narrowed",
+      "value": null,
+      "reason": "margin_below_floor"
+     }
+    },
+    {
+     "staff": "staff/11/1/8",
+     "frame": "header_window",
+     "cluster": {
+      "x_spaces": 2.73,
+      "y_spaces": 3.91,
+      "w_spaces": 2.09,
+      "h_spaces": 4.41,
+      "found_in_cluster_list": true,
+      "n_clusters": 2
+     },
+     "spacing_px_analysis": 22.0,
+     "cell_staff_space_canonical": 100.0,
+     "staff_lines": [
+      3184.0,
+      3200.0,
+      3216.0,
+      3231.0,
+      3247.0
+     ],
+     "in_measured_band": true,
+     "in_config_band": true,
+     "occupiers": [
+      {
+       "subject": "glyph/11/1/8/0/4",
+       "class": "noteheadBlackOnLine",
+       "conf": 0.6078489422798157,
+       "x_spaces": 3.01,
+       "y_spaces": 5.33,
+       "w_spaces": 1.32,
+       "h_spaces": 1.28
+      },
+      {
+       "subject": "glyph/11/1/8/0/7",
+       "class": "noteheadBlackInSpace",
+       "conf": 0.33766573667526245,
+       "x_spaces": 2.24,
+       "y_spaces": 4.64,
+       "w_spaces": 0.83,
+       "h_spaces": 1.29
+      },
+      {
+       "subject": "glyph/11/1/8/0/9",
+       "class": "noteheadBlackInSpace",
+       "conf": 0.2564387619495392,
+       "x_spaces": 2.18,
+       "y_spaces": 7.08,
+       "w_spaces": 0.71,
+       "h_spaces": 0.81
+      }
+     ],
+     "n_occupiers": 3,
+     "bystanders": [
+      {
+       "subject": "glyph/11/1/8/0/5",
+       "class": "tie",
+       "conf": 0.43698468804359436,
+       "x_spaces": 0.54,
+       "y_spaces": 3.78,
+       "w_spaces": 19.03,
+       "h_spaces": 0.37
+      },
+      {
+       "subject": "glyph/11/1/8/0/6",
+       "class": "staff",
+       "conf": 0.3514630198478699,
+       "x_spaces": 0.05,
+       "y_spaces": 3.99,
+       "w_spaces": 19.54,
+       "h_spaces": 4.14
+      },
+      {
+       "subject": "glyph/11/1/8/0/8",
+       "class": "tie",
+       "conf": 0.30255043506622314,
+       "x_spaces": 0.33,
+       "y_spaces": 7.78,
+       "w_spaces": 19.25,
+       "h_spaces": 0.39
+      }
+     ],
+     "notehead_y_coverage_of_cluster": 0.63,
+     "cluster_x_page_px": 384.0,
+     "siblings_located": [
+      {
+       "staff": "staff/11/1/5",
+       "frame": "cell:0",
+       "read": "tenor",
+       "family": "C",
+       "x_center": 381,
+       "x_center_spaces": 3.81,
+       "h_spaces": 3.36
+      }
+     ],
+     "sibling_x_centre_spaces": [
+      3.81
+     ],
+     "sibling_x_spread_spaces": null,
+     "cluster_x_vs_sibling_median_spaces": -1.08,
+     "siblings_detector_clef": [
+      {
+       "staff": "staff/11/1/0",
+       "class": "clefG",
+       "conf": 0.9042917490005493,
+       "x_center_page": 404.0
+      },
+      {
+       "staff": "staff/11/1/1",
+       "class": "clefG",
+       "conf": 0.6440768837928772,
+       "x_center_page": 402.2
+      },
+      {
+       "staff": "staff/11/1/2",
+       "class": "clefG",
+       "conf": 0.9260457754135132,
+       "x_center_page": 401.8
+      },
+      {
+       "staff": "staff/11/1/4",
+       "class": "clefG",
+       "conf": 0.90473473072052,
+       "x_center_page": 401.6
+      },
+      {
+       "staff": "staff/11/1/6",
+       "class": "clefG",
+       "conf": 0.8711326122283936,
+       "x_center_page": 401.4
+      },
+      {
+       "staff": "staff/11/1/7",
+       "class": "clefG",
+       "conf": 0.9065709710121155,
+       "x_center_page": 398.7
+      },
+      {
+       "staff": "staff/11/1/9",
+       "class": "clefF",
+       "conf": 0.8137631416320801,
+       "x_center_page": 394.9
+      },
+      {
+       "staff": "staff/11/1/10",
+       "class": "clefF",
+       "conf": 0.8442361950874329,
+       "x_center_page": 392.3
+      }
+     ],
+     "sibling_detector_x_page_spread": 11.7,
+     "cluster_x_vs_sibling_detector_median_page_px": -17.5,
+     "clef_verdict": {
+      "outcome": "narrowed",
+      "value": null,
+      "reason": "margin_below_floor"
+     }
+    },
+    {
+     "staff": "staff/11/1/8",
+     "frame": "cell:0",
+     "cluster": {
+      "x_spaces": 2.23,
+      "y_spaces": 3.91,
+      "w_spaces": 3.68,
+      "h_spaces": 4.41,
+      "found_in_cluster_list": true,
+      "n_clusters": 2
+     },
+     "spacing_px_analysis": 22.0,
+     "cell_staff_space_canonical": 100.0,
+     "staff_lines": [
+      3184.0,
+      3200.0,
+      3216.0,
+      3231.0,
+      3247.0
+     ],
+     "in_measured_band": true,
+     "in_config_band": true,
+     "occupiers": [
+      {
+       "subject": "glyph/11/1/8/0/4",
+       "class": "noteheadBlackOnLine",
+       "conf": 0.6078489422798157,
+       "x_spaces": 3.01,
+       "y_spaces": 5.33,
+       "w_spaces": 1.32,
+       "h_spaces": 1.28
+      },
+      {
+       "subject": "glyph/11/1/8/0/7",
+       "class": "noteheadBlackInSpace",
+       "conf": 0.33766573667526245,
+       "x_spaces": 2.24,
+       "y_spaces": 4.64,
+       "w_spaces": 0.83,
+       "h_spaces": 1.29
+      },
+      {
+       "subject": "glyph/11/1/8/0/9",
+       "class": "noteheadBlackInSpace",
+       "conf": 0.2564387619495392,
+       "x_spaces": 2.18,
+       "y_spaces": 7.08,
+       "w_spaces": 0.71,
+       "h_spaces": 0.81
+      }
+     ],
+     "n_occupiers": 3,
+     "bystanders": [
+      {
+       "subject": "glyph/11/1/8/0/1",
+       "class": "accidentalFlat",
+       "conf": 0.6641821265220642,
+       "x_spaces": 5.37,
+       "y_spaces": 4.81,
+       "w_spaces": 0.98,
+       "h_spaces": 2.29
+      },
+      {
+       "subject": "glyph/11/1/8/0/5",
+       "class": "tie",
+       "conf": 0.43698468804359436,
+       "x_spaces": 0.54,
+       "y_spaces": 3.78,
+       "w_spaces": 19.03,
+       "h_spaces": 0.37
+      },
+      {
+       "subject": "glyph/11/1/8/0/6",
+       "class": "staff",
+       "conf": 0.3514630198478699,
+       "x_spaces": 0.05,
+       "y_spaces": 3.99,
+       "w_spaces": 19.54,
+       "h_spaces": 4.14
+      },
+      {
+       "subject": "glyph/11/1/8/0/8",
+       "class": "tie",
+       "conf": 0.30255043506622314,
+       "x_spaces": 0.33,
+       "y_spaces": 7.78,
+       "w_spaces": 19.25,
+       "h_spaces": 0.39
+      }
+     ],
+     "notehead_y_coverage_of_cluster": 0.63,
+     "cluster_x_page_px": 376.1,
+     "siblings_located": [
+      {
+       "staff": "staff/11/1/5",
+       "frame": "cell:0",
+       "read": "tenor",
+       "family": "C",
+       "x_center": 381,
+       "x_center_spaces": 3.81,
+       "h_spaces": 3.36
+      }
+     ],
+     "sibling_x_centre_spaces": [
+      3.81
+     ],
+     "sibling_x_spread_spaces": null,
+     "cluster_x_vs_sibling_median_spaces": -1.58,
+     "siblings_detector_clef": [
+      {
+       "staff": "staff/11/1/0",
+       "class": "clefG",
+       "conf": 0.9042917490005493,
+       "x_center_page": 404.0
+      },
+      {
+       "staff": "staff/11/1/1",
+       "class": "clefG",
+       "conf": 0.6440768837928772,
+       "x_center_page": 402.2
+      },
+      {
+       "staff": "staff/11/1/2",
+       "class": "clefG",
+       "conf": 0.9260457754135132,
+       "x_center_page": 401.8
+      },
+      {
+       "staff": "staff/11/1/4",
+       "class": "clefG",
+       "conf": 0.90473473072052,
+       "x_center_page": 401.6
+      },
+      {
+       "staff": "staff/11/1/6",
+       "class": "clefG",
+       "conf": 0.8711326122283936,
+       "x_center_page": 401.4
+      },
+      {
+       "staff": "staff/11/1/7",
+       "class": "clefG",
+       "conf": 0.9065709710121155,
+       "x_center_page": 398.7
+      },
+      {
+       "staff": "staff/11/1/9",
+       "class": "clefF",
+       "conf": 0.8137631416320801,
+       "x_center_page": 394.9
+      },
+      {
+       "staff": "staff/11/1/10",
+       "class": "clefF",
+       "conf": 0.8442361950874329,
+       "x_center_page": 392.3
+      }
+     ],
+     "sibling_detector_x_page_spread": 11.7,
+     "cluster_x_vs_sibling_detector_median_page_px": -25.4,
+     "clef_verdict": {
+      "outcome": "narrowed",
+      "value": null,
+      "reason": "margin_below_floor"
+     }
+    },
+    {
+     "staff": "staff/13/0/6",
+     "frame": "header_window",
+     "cluster": {
+      "x_spaces": 2.86,
+      "y_spaces": 4.36,
+      "w_spaces": 1.55,
+      "h_spaces": 3.77,
+      "found_in_cluster_list": true,
+      "n_clusters": 2
+     },
+     "spacing_px_analysis": 22.0,
+     "cell_staff_space_canonical": 96.0,
+     "staff_lines": [
+      1324.0,
+      1340.0,
+      1356.0,
+      1371.0,
+      1387.0
+     ],
+     "in_measured_band": true,
+     "in_config_band": true,
+     "occupiers": [
+      {
+       "subject": "glyph/13/0/6/0/4",
+       "class": "noteheadBlackInSpace",
+       "conf": 0.2879040837287903,
+       "x_spaces": 1.823,
+       "y_spaces": 4.49,
+       "w_spaces": 2.156,
+       "h_spaces": 1.49
+      }
+     ],
+     "n_occupiers": 1,
+     "bystanders": [
+      {
+       "subject": "glyph/13/0/6/0/3",
+       "class": "staff",
+       "conf": 0.5000498294830322,
+       "x_spaces": 0.531,
+       "y_spaces": 4.229,
+       "w_spaces": 20.802,
+       "h_spaces": 4.354
+      }
+     ],
+     "notehead_y_coverage_of_cluster": 0.395,
+     "cluster_x_page_px": 388.0,
+     "siblings_located": [
+      {
+       "staff": "staff/13/0/9",
+       "frame": "header_window",
+       "read": "alto",
+       "family": "C",
+       "x_center": 402,
+       "x_center_spaces": 4.188,
+       "h_spaces": 4.219
+      },
+      {
+       "staff": "staff/13/0/9",
+       "frame": "cell:0",
+       "read": "alto",
+       "family": "C",
+       "x_center": 340,
+       "x_center_spaces": 3.542,
+       "h_spaces": 4.094
+      }
+     ],
+     "sibling_x_centre_spaces": [
+      4.188,
+      3.542
+     ],
+     "sibling_x_spread_spaces": 0.646,
+     "cluster_x_vs_sibling_median_spaces": -1.005,
+     "siblings_detector_clef": [
+      {
+       "staff": "staff/13/0/0",
+       "class": "clefG",
+       "conf": 0.9088431000709534,
+       "x_center_page": 387.1
+      },
+      {
+       "staff": "staff/13/0/1",
+       "class": "clefG",
+       "conf": 0.8792224526405334,
+       "x_center_page": 389.0
+      },
+      {
+       "staff": "staff/13/0/2",
+       "class": "clefG",
+       "conf": 0.9193331599235535,
+       "x_center_page": 391.6
+      },
+      {
+       "staff": "staff/13/0/3",
+       "class": "clefF",
+       "conf": 0.5696908831596375,
+       "x_center_page": 389.4
+      },
+      {
+       "staff": "staff/13/0/4",
+       "class": "clefG",
+       "conf": 0.815210223197937,
+       "x_center_page": 395.6
+      },
+      {
+       "staff": "staff/13/0/5",
+       "class": "clefG",
+       "conf": 0.9317476749420166,
+       "x_center_page": 396.4
+      },
+      {
+       "staff": "staff/13/0/7",
+       "class": "clefG",
+       "conf": 0.3178689181804657,
+       "x_center_page": 397.7
+      },
+      {
+       "staff": "staff/13/0/8",
+       "class": "clefG",
+       "conf": 0.8498979806900024,
+       "x_center_page": 401.5
+      },
+      {
+       "staff": "staff/13/0/8",
+       "class": "clefG",
+       "conf": 0.7409315705299377,
+       "x_center_page": 397.2
+      },
+      {
+       "staff": "staff/13/0/10",
+       "class": "clefF",
+       "conf": 0.43486514687538147,
+       "x_center_page": 394.4
+      }
+     ],
+     "sibling_detector_x_page_spread": 14.4,
+     "cluster_x_vs_sibling_detector_median_page_px": -7.0,
+     "clef_verdict": {
+      "outcome": "decided",
+      "value": "bass",
+      "reason": "scored"
+     }
+    },
+    {
+     "staff": "staff/13/0/6",
+     "frame": "cell:0",
+     "cluster": {
+      "x_spaces": 1.77,
+      "y_spaces": 4.36,
+      "w_spaces": 3.27,
+      "h_spaces": 3.77,
+      "found_in_cluster_list": true,
+      "n_clusters": 3
+     },
+     "spacing_px_analysis": 22.0,
+     "cell_staff_space_canonical": 96.0,
+     "staff_lines": [
+      1324.0,
+      1340.0,
+      1356.0,
+      1371.0,
+      1387.0
+     ],
+     "in_measured_band": true,
+     "in_config_band": true,
+     "occupiers": [
+      {
+       "subject": "glyph/13/0/6/0/4",
+       "class": "noteheadBlackInSpace",
+       "conf": 0.2879040837287903,
+       "x_spaces": 1.823,
+       "y_spaces": 4.49,
+       "w_spaces": 2.156,
+       "h_spaces": 1.49
+      }
+     ],
+     "n_occupiers": 1,
+     "bystanders": [
+      {
+       "subject": "glyph/13/0/6/0/3",
+       "class": "staff",
+       "conf": 0.5000498294830322,
+       "x_spaces": 0.531,
+       "y_spaces": 4.229,
+       "w_spaces": 20.802,
+       "h_spaces": 4.354
+      }
+     ],
+     "notehead_y_coverage_of_cluster": 0.395,
+     "cluster_x_page_px": 370.9,
+     "siblings_located": [
+      {
+       "staff": "staff/13/0/9",
+       "frame": "header_window",
+       "read": "alto",
+       "family": "C",
+       "x_center": 402,
+       "x_center_spaces": 4.188,
+       "h_spaces": 4.219
+      },
+      {
+       "staff": "staff/13/0/9",
+       "frame": "cell:0",
+       "read": "alto",
+       "family": "C",
+       "x_center": 340,
+       "x_center_spaces": 3.542,
+       "h_spaces": 4.094
+      }
+     ],
+     "sibling_x_centre_spaces": [
+      4.188,
+      3.542
+     ],
+     "sibling_x_spread_spaces": 0.646,
+     "cluster_x_vs_sibling_median_spaces": -2.095,
+     "siblings_detector_clef": [
+      {
+       "staff": "staff/13/0/0",
+       "class": "clefG",
+       "conf": 0.9088431000709534,
+       "x_center_page": 387.1
+      },
+      {
+       "staff": "staff/13/0/1",
+       "class": "clefG",
+       "conf": 0.8792224526405334,
+       "x_center_page": 389.0
+      },
+      {
+       "staff": "staff/13/0/2",
+       "class": "clefG",
+       "conf": 0.9193331599235535,
+       "x_center_page": 391.6
+      },
+      {
+       "staff": "staff/13/0/3",
+       "class": "clefF",
+       "conf": 0.5696908831596375,
+       "x_center_page": 389.4
+      },
+      {
+       "staff": "staff/13/0/4",
+       "class": "clefG",
+       "conf": 0.815210223197937,
+       "x_center_page": 395.6
+      },
+      {
+       "staff": "staff/13/0/5",
+       "class": "clefG",
+       "conf": 0.9317476749420166,
+       "x_center_page": 396.4
+      },
+      {
+       "staff": "staff/13/0/7",
+       "class": "clefG",
+       "conf": 0.3178689181804657,
+       "x_center_page": 397.7
+      },
+      {
+       "staff": "staff/13/0/8",
+       "class": "clefG",
+       "conf": 0.8498979806900024,
+       "x_center_page": 401.5
+      },
+      {
+       "staff": "staff/13/0/8",
+       "class": "clefG",
+       "conf": 0.7409315705299377,
+       "x_center_page": 397.2
+      },
+      {
+       "staff": "staff/13/0/10",
+       "class": "clefF",
+       "conf": 0.43486514687538147,
+       "x_center_page": 394.4
+      }
+     ],
+     "sibling_detector_x_page_spread": 14.4,
+     "cluster_x_vs_sibling_detector_median_page_px": -24.1,
+     "clef_verdict": {
+      "outcome": "decided",
+      "value": "bass",
+      "reason": "scored"
+     }
+    },
+    {
+     "staff": "staff/14/0/0",
+     "frame": "cell:0",
+     "cluster": {
+      "x_spaces": 0.14,
+      "y_spaces": 3.73,
+      "w_spaces": 2.36,
+      "h_spaces": 4.45,
+      "found_in_cluster_list": true,
+      "n_clusters": 3
+     },
+     "spacing_px_analysis": 22.0,
+     "cell_staff_space_canonical": 100.0,
+     "staff_lines": [
+      410.0,
+      424.0,
+      439.0,
+      455.0,
+      471.0
+     ],
+     "in_measured_band": true,
+     "in_config_band": true,
+     "occupiers": [
+      {
+       "subject": "glyph/14/0/0/0/2",
+       "class": "noteheadBlackOnLine",
+       "conf": 0.5644323229789734,
+       "x_spaces": 0.01,
+       "y_spaces": 4.75,
+       "w_spaces": 1.0,
+       "h_spaces": 3.3
+      }
+     ],
+     "n_occupiers": 1,
+     "bystanders": [
+      {
+       "subject": "glyph/14/0/0/0/1",
+       "class": "clefG",
+       "conf": 0.6884198784828186,
+       "x_spaces": 2.1,
+       "y_spaces": 5.05,
+       "w_spaces": 3.01,
+       "h_spaces": 7.58
+      },
+      {
+       "subject": "glyph/14/0/0/0/4",
+       "class": "flag8thDown",
+       "conf": 0.4074060618877411,
+       "x_spaces": 0.01,
+       "y_spaces": 4.74,
+       "w_spaces": 1.01,
+       "h_spaces": 3.39
+      },
+      {
+       "subject": "glyph/14/0/0/0/5",
+       "class": "staff",
+       "conf": 0.40472787618637085,
+       "x_spaces": 0.04,
+       "y_spaces": 6.74,
+       "w_spaces": 20.09,
+       "h_spaces": 4.34
+      }
+     ],
+     "notehead_y_coverage_of_cluster": 0.742,
+     "cluster_x_page_px": 344.1,
+     "siblings_located": [
+      {
+       "staff": "staff/14/0/9",
+       "frame": "header_window",
+       "read": "alto",
+       "family": "C",
+       "x_center": 416,
+       "x_center_spaces": 4.16,
+       "h_spaces": 3.86
+      },
+      {
+       "staff": "staff/14/0/9",
+       "frame": "cell:0",
+       "read": "alto",
+       "family": "C",
+       "x_center": 396,
+       "x_center_spaces": 3.96,
+       "h_spaces": 3.91
+      },
+      {
+       "staff": "staff/14/0/10",
+       "frame": "header_window",
+       "read": "tenor",
+       "family": "C",
+       "x_center": 429,
+       "x_center_spaces": 4.29,
+       "h_spaces": 4.36
+      }
+     ],
+     "sibling_x_centre_spaces": [
+      4.16,
+      3.96,
+      4.29
+     ],
+     "sibling_x_spread_spaces": 0.33,
+     "cluster_x_vs_sibling_median_spaces": -4.02,
+     "siblings_detector_clef": [
+      {
+       "staff": "staff/14/0/1",
+       "class": "clefG",
+       "conf": 0.894141435623169,
+       "x_center_page": 397.6
+      },
+      {
+       "staff": "staff/14/0/2",
+       "class": "clefG",
+       "conf": 0.9340223670005798,
+       "x_center_page": 395.9
+      },
+      {
+       "staff": "staff/14/0/4",
+       "class": "clefG",
+       "conf": 0.9327546954154968,
+       "x_center_page": 401.4
+      },
+      {
+       "staff": "staff/14/0/5",
+       "class": "clefG",
+       "conf": 0.929253339767456,
+       "x_center_page": 402.6
+      },
+      {
+       "staff": "staff/14/0/5",
+       "class": "clefG",
+       "conf": 0.5672633051872253,
+       "x_center_page": 402.2
+      },
+      {
+       "staff": "staff/14/0/6",
+       "class": "clefF",
+       "conf": 0.8347683548927307,
+       "x_center_page": 400.0
+      },
+      {
+       "staff": "staff/14/0/6",
+       "class": "clefG",
+       "conf": 0.4604598581790924,
+       "x_center_page": 399.8
+      },
+      {
+       "staff": "staff/14/0/7",
+       "class": "clefG",
+       "conf": 0.620890736579895,
+       "x_center_page": 400.6
+      },
+      {
+       "staff": "staff/14/0/8",
+       "class": "clefG",
+       "conf": 0.9198752045631409,
+       "x_center_page": 404.9
+      }
+     ],
+     "sibling_detector_x_page_spread": 9.0,
+     "cluster_x_vs_sibling_detector_median_page_px": -56.5,
+     "clef_verdict": {
+      "outcome": "decided",
+      "value": "treble",
+      "reason": "scored"
+     }
+    },
+    {
+     "staff": "staff/14/0/3",
+     "frame": "header_window",
+     "cluster": {
+      "x_spaces": 3.36,
+      "y_spaces": 3.41,
+      "w_spaces": 1.45,
+      "h_spaces": 4.41,
+      "found_in_cluster_list": true,
+      "n_clusters": 2
+     },
+     "spacing_px_analysis": 22.0,
+     "cell_staff_space_canonical": 100.0,
+     "staff_lines": [
+      835.0,
+      852.0,
+      867.0,
+      883.0,
+      899.0
+     ],
+     "in_measured_band": true,
+     "in_config_band": true,
+     "occupiers": [
+      {
+       "subject": "glyph/14/0/3/0/8",
+       "class": "noteheadBlackOnLine",
+       "conf": 0.33334335684776306,
+       "x_spaces": 2.08,
+       "y_spaces": 3.35,
+       "w_spaces": 2.44,
+       "h_spaces": 3.92
+      },
+      {
+       "subject": "glyph/14/0/3/0/9",
+       "class": "noteheadBlackOnLine",
+       "conf": 0.3111138939857483,
+       "x_spaces": 2.56,
+       "y_spaces": 3.57,
+       "w_spaces": 1.85,
+       "h_spaces": 4.02
+      }
+     ],
+     "n_occupiers": 2,
+     "bystanders": [
+      {
+       "subject": "glyph/14/0/3/0/5",
+       "class": "staff",
+       "conf": 0.6836045980453491,
+       "x_spaces": 0.1,
+       "y_spaces": 4.31,
+       "w_spaces": 19.08,
+       "h_spaces": 4.22
+      }
+     ],
+     "notehead_y_coverage_of_cluster": 0.948,
+     "cluster_x_page_px": 395.8,
+     "siblings_located": [
+      {
+       "staff": "staff/14/0/9",
+       "frame": "header_window",
+       "read": "alto",
+       "family": "C",
+       "x_center": 416,
+       "x_center_spaces": 4.16,
+       "h_spaces": 3.86
+      },
+      {
+       "staff": "staff/14/0/9",
+       "frame": "cell:0",
+       "read": "alto",
+       "family": "C",
+       "x_center": 396,
+       "x_center_spaces": 3.96,
+       "h_spaces": 3.91
+      },
+      {
+       "staff": "staff/14/0/10",
+       "frame": "header_window",
+       "read": "tenor",
+       "family": "C",
+       "x_center": 429,
+       "x_center_spaces": 4.29,
+       "h_spaces": 4.36
+      }
+     ],
+     "sibling_x_centre_spaces": [
+      4.16,
+      3.96,
+      4.29
+     ],
+     "sibling_x_spread_spaces": 0.33,
+     "cluster_x_vs_sibling_median_spaces": -0.8,
+     "siblings_detector_clef": [
+      {
+       "staff": "staff/14/0/0",
+       "class": "clefG",
+       "conf": 0.6884198784828186,
+       "x_center_page": 397.0
+      },
+      {
+       "staff": "staff/14/0/1",
+       "class": "clefG",
+       "conf": 0.894141435623169,
+       "x_center_page": 397.6
+      },
+      {
+       "staff": "staff/14/0/2",
+       "class": "clefG",
+       "conf": 0.9340223670005798,
+       "x_center_page": 395.9
+      },
+      {
+       "staff": "staff/14/0/4",
+       "class": "clefG",
+       "conf": 0.9327546954154968,
+       "x_center_page": 401.4
+      },
+      {
+       "staff": "staff/14/0/5",
+       "class": "clefG",
+       "conf": 0.929253339767456,
+       "x_center_page": 402.6
+      },
+      {
+       "staff": "staff/14/0/5",
+       "class": "clefG",
+       "conf": 0.5672633051872253,
+       "x_center_page": 402.2
+      },
+      {
+       "staff": "staff/14/0/6",
+       "class": "clefF",
+       "conf": 0.8347683548927307,
+       "x_center_page": 400.0
+      },
+      {
+       "staff": "staff/14/0/6",
+       "class": "clefG",
+       "conf": 0.4604598581790924,
+       "x_center_page": 399.8
+      },
+      {
+       "staff": "staff/14/0/7",
+       "class": "clefG",
+       "conf": 0.620890736579895,
+       "x_center_page": 400.6
+      },
+      {
+       "staff": "staff/14/0/8",
+       "class": "clefG",
+       "conf": 0.9198752045631409,
+       "x_center_page": 404.9
+      }
+     ],
+     "sibling_detector_x_page_spread": 9.0,
+     "cluster_x_vs_sibling_detector_median_page_px": -4.5,
+     "clef_verdict": {
+      "outcome": "narrowed",
+      "value": null,
+      "reason": "margin_below_floor"
+     }
+    },
+    {
+     "staff": "staff/14/0/3",
+     "frame": "cell:0",
+     "cluster": {
+      "x_spaces": 2.18,
+      "y_spaces": 3.41,
+      "w_spaces": 2.64,
+      "h_spaces": 4.45,
+      "found_in_cluster_list": true,
+      "n_clusters": 2
+     },
+     "spacing_px_analysis": 22.0,
+     "cell_staff_space_canonical": 100.0,
+     "staff_lines": [
+      835.0,
+      852.0,
+      867.0,
+      883.0,
+      899.0
+     ],
+     "in_measured_band": true,
+     "in_config_band": true,
+     "occupiers": [
+      {
+       "subject": "glyph/14/0/3/0/8",
+       "class": "noteheadBlackOnLine",
+       "conf": 0.33334335684776306,
+       "x_spaces": 2.08,
+       "y_spaces": 3.35,
+       "w_spaces": 2.44,
+       "h_spaces": 3.92
+      },
+      {
+       "subject": "glyph/14/0/3/0/9",
+       "class": "noteheadBlackOnLine",
+       "conf": 0.3111138939857483,
+       "x_spaces": 2.56,
+       "y_spaces": 3.57,
+       "w_spaces": 1.85,
+       "h_spaces": 4.02
+      }
+     ],
+     "n_occupiers": 2,
+     "bystanders": [
+      {
+       "subject": "glyph/14/0/3/0/5",
+       "class": "staff",
+       "conf": 0.6836045980453491,
+       "x_spaces": 0.1,
+       "y_spaces": 4.31,
+       "w_spaces": 19.08,
+       "h_spaces": 4.22
+      }
+     ],
+     "notehead_y_coverage_of_cluster": 0.939,
+     "cluster_x_page_px": 376.9,
+     "siblings_located": [
+      {
+       "staff": "staff/14/0/9",
+       "frame": "header_window",
+       "read": "alto",
+       "family": "C",
+       "x_center": 416,
+       "x_center_spaces": 4.16,
+       "h_spaces": 3.86
+      },
+      {
+       "staff": "staff/14/0/9",
+       "frame": "cell:0",
+       "read": "alto",
+       "family": "C",
+       "x_center": 396,
+       "x_center_spaces": 3.96,
+       "h_spaces": 3.91
+      },
+      {
+       "staff": "staff/14/0/10",
+       "frame": "header_window",
+       "read": "tenor",
+       "family": "C",
+       "x_center": 429,
+       "x_center_spaces": 4.29,
+       "h_spaces": 4.36
+      }
+     ],
+     "sibling_x_centre_spaces": [
+      4.16,
+      3.96,
+      4.29
+     ],
+     "sibling_x_spread_spaces": 0.33,
+     "cluster_x_vs_sibling_median_spaces": -1.98,
+     "siblings_detector_clef": [
+      {
+       "staff": "staff/14/0/0",
+       "class": "clefG",
+       "conf": 0.6884198784828186,
+       "x_center_page": 397.0
+      },
+      {
+       "staff": "staff/14/0/1",
+       "class": "clefG",
+       "conf": 0.894141435623169,
+       "x_center_page": 397.6
+      },
+      {
+       "staff": "staff/14/0/2",
+       "class": "clefG",
+       "conf": 0.9340223670005798,
+       "x_center_page": 395.9
+      },
+      {
+       "staff": "staff/14/0/4",
+       "class": "clefG",
+       "conf": 0.9327546954154968,
+       "x_center_page": 401.4
+      },
+      {
+       "staff": "staff/14/0/5",
+       "class": "clefG",
+       "conf": 0.929253339767456,
+       "x_center_page": 402.6
+      },
+      {
+       "staff": "staff/14/0/5",
+       "class": "clefG",
+       "conf": 0.5672633051872253,
+       "x_center_page": 402.2
+      },
+      {
+       "staff": "staff/14/0/6",
+       "class": "clefF",
+       "conf": 0.8347683548927307,
+       "x_center_page": 400.0
+      },
+      {
+       "staff": "staff/14/0/6",
+       "class": "clefG",
+       "conf": 0.4604598581790924,
+       "x_center_page": 399.8
+      },
+      {
+       "staff": "staff/14/0/7",
+       "class": "clefG",
+       "conf": 0.620890736579895,
+       "x_center_page": 400.6
+      },
+      {
+       "staff": "staff/14/0/8",
+       "class": "clefG",
+       "conf": 0.9198752045631409,
+       "x_center_page": 404.9
+      }
+     ],
+     "sibling_detector_x_page_spread": 9.0,
+     "cluster_x_vs_sibling_detector_median_page_px": -23.4,
+     "clef_verdict": {
+      "outcome": "narrowed",
+      "value": null,
+      "reason": "margin_below_floor"
+     }
+    },
+    {
+     "staff": "staff/14/0/10",
+     "frame": "cell:0",
+     "cluster": {
+      "x_spaces": 2.73,
+      "y_spaces": 3.05,
+      "w_spaces": 2.68,
+      "h_spaces": 4.41,
+      "found_in_cluster_list": true,
+      "n_clusters": 3
+     },
+     "spacing_px_analysis": 22.0,
+     "cell_staff_space_canonical": 100.0,
+     "staff_lines": [
+      1801.0,
+      1817.0,
+      1833.0,
+      1849.0,
+      1865.0
+     ],
+     "in_measured_band": true,
+     "in_config_band": true,
+     "occupiers": [
+      {
+       "subject": "glyph/14/0/10/0/6",
+       "class": "noteheadBlackInSpace",
+       "conf": 0.5914809107780457,
+       "x_spaces": 2.7,
+       "y_spaces": 6.36,
+       "w_spaces": 0.72,
+       "h_spaces": 0.76
+      }
+     ],
+     "n_occupiers": 1,
+     "bystanders": [
+      {
+       "subject": "glyph/14/0/10/0/7",
+       "class": "augmentationDot",
+       "conf": 0.5169297456741333,
+       "x_spaces": 3.77,
+       "y_spaces": 6.55,
+       "w_spaces": 0.49,
+       "h_spaces": 0.71
+      },
+      {
+       "subject": "glyph/14/0/10/0/9",
+       "class": "staff",
+       "conf": 0.3701636791229248,
+       "x_spaces": 0.62,
+       "y_spaces": 3.97,
+       "w_spaces": 18.56,
+       "h_spaces": 4.24
+      },
+      {
+       "subject": "glyph/14/0/10/0/11",
+       "class": "ledgerLine",
+       "conf": 0.29261302947998047,
+       "x_spaces": 1.35,
+       "y_spaces": 7.04,
+       "w_spaces": 5.72,
+       "h_spaces": 0.25
+      }
+     ],
+     "notehead_y_coverage_of_cluster": 0.172,
+     "cluster_x_page_px": 385.7,
+     "siblings_located": [
+      {
+       "staff": "staff/14/0/9",
+       "frame": "header_window",
+       "read": "alto",
+       "family": "C",
+       "x_center": 416,
+       "x_center_spaces": 4.16,
+       "h_spaces": 3.86
+      },
+      {
+       "staff": "staff/14/0/9",
+       "frame": "cell:0",
+       "read": "alto",
+       "family": "C",
+       "x_center": 396,
+       "x_center_spaces": 3.96,
+       "h_spaces": 3.91
+      }
+     ],
+     "sibling_x_centre_spaces": [
+      4.16,
+      3.96
+     ],
+     "sibling_x_spread_spaces": 0.2,
+     "cluster_x_vs_sibling_median_spaces": -1.33,
+     "siblings_detector_clef": [
+      {
+       "staff": "staff/14/0/0",
+       "class": "clefG",
+       "conf": 0.6884198784828186,
+       "x_center_page": 397.0
+      },
+      {
+       "staff": "staff/14/0/1",
+       "class": "clefG",
+       "conf": 0.894141435623169,
+       "x_center_page": 397.6
+      },
+      {
+       "staff": "staff/14/0/2",
+       "class": "clefG",
+       "conf": 0.9340223670005798,
+       "x_center_page": 395.9
+      },
+      {
+       "staff": "staff/14/0/4",
+       "class": "clefG",
+       "conf": 0.9327546954154968,
+       "x_center_page": 401.4
+      },
+      {
+       "staff": "staff/14/0/5",
+       "class": "clefG",
+       "conf": 0.929253339767456,
+       "x_center_page": 402.6
+      },
+      {
+       "staff": "staff/14/0/5",
+       "class": "clefG",
+       "conf": 0.5672633051872253,
+       "x_center_page": 402.2
+      },
+      {
+       "staff": "staff/14/0/6",
+       "class": "clefF",
+       "conf": 0.8347683548927307,
+       "x_center_page": 400.0
+      },
+      {
+       "staff": "staff/14/0/6",
+       "class": "clefG",
+       "conf": 0.4604598581790924,
+       "x_center_page": 399.8
+      },
+      {
+       "staff": "staff/14/0/7",
+       "class": "clefG",
+       "conf": 0.620890736579895,
+       "x_center_page": 400.6
+      },
+      {
+       "staff": "staff/14/0/8",
+       "class": "clefG",
+       "conf": 0.9198752045631409,
+       "x_center_page": 404.9
+      }
+     ],
+     "sibling_detector_x_page_spread": 9.0,
+     "cluster_x_vs_sibling_detector_median_page_px": -14.6,
+     "clef_verdict": {
+      "outcome": "decided",
+      "value": "tenor",
+      "reason": "scored"
+     }
+    },
+    {
+     "staff": "staff/14/1/9",
+     "frame": "header_window",
+     "cluster": {
+      "x_spaces": 3.05,
+      "y_spaces": 3.73,
+      "w_spaces": 1.77,
+      "h_spaces": 4.45,
+      "found_in_cluster_list": true,
+      "n_clusters": 2
+     },
+     "spacing_px_analysis": 22.0,
+     "cell_staff_space_canonical": 100.0,
+     "staff_lines": [
+      3427.0,
+      3443.0,
+      3459.0,
+      3475.0,
+      3490.0
+     ],
+     "in_measured_band": true,
+     "in_config_band": true,
+     "occupiers": [
+      {
+       "subject": "glyph/14/1/9/0/11",
+       "class": "noteheadBlackInSpace",
+       "conf": 0.41942599415779114,
+       "x_spaces": 2.34,
+       "y_spaces": 4.93,
+       "w_spaces": 0.77,
+       "h_spaces": 2.99
+      },
+      {
+       "subject": "glyph/14/1/9/0/12",
+       "class": "noteheadBlackOnLine",
+       "conf": 0.3969751000404358,
+       "x_spaces": 3.23,
+       "y_spaces": 5.08,
+       "w_spaces": 1.56,
+       "h_spaces": 3.09
+      },
+      {
+       "subject": "glyph/14/1/9/0/14",
+       "class": "noteheadBlackInSpace",
+       "conf": 0.36041560769081116,
+       "x_spaces": 2.34,
+       "y_spaces": 4.96,
+       "w_spaces": 0.77,
+       "h_spaces": 0.96
+      },
+      {
+       "subject": "glyph/14/1/9/0/21",
+       "class": "noteheadBlackOnLine",
+       "conf": 0.2558731436729431,
+       "x_spaces": 3.18,
+       "y_spaces": 4.31,
+       "w_spaces": 1.81,
+       "h_spaces": 3.87
+      }
+     ],
+     "n_occupiers": 4,
+     "bystanders": [
+      {
+       "subject": "glyph/14/1/9/0/10",
+       "class": "staff",
+       "conf": 0.4733724296092987,
+       "x_spaces": 0.01,
+       "y_spaces": 3.63,
+       "w_spaces": 20.18,
+       "h_spaces": 4.5
+      },
+      {
+       "subject": "glyph/14/1/9/0/19",
+       "class": "tie",
+       "conf": 0.321584552526474,
+       "x_spaces": 0.67,
+       "y_spaces": 3.42,
+       "w_spaces": 19.52,
+       "h_spaces": 0.65
+      }
+     ],
+     "notehead_y_coverage_of_cluster": 0.87,
+     "cluster_x_page_px": 396.0,
+     "siblings_located": [],
+     "sibling_x_centre_spaces": [],
+     "sibling_x_spread_spaces": null,
+     "cluster_x_vs_sibling_median_spaces": null,
+     "siblings_detector_clef": [
+      {
+       "staff": "staff/14/1/0",
+       "class": "clefG",
+       "conf": 0.8958796858787537,
+       "x_center_page": 406.0
+      },
+      {
+       "staff": "staff/14/1/0",
+       "class": "clefG",
+       "conf": 0.6964199542999268,
+       "x_center_page": 407.6
+      },
+      {
+       "staff": "staff/14/1/1",
+       "class": "clefG",
+       "conf": 0.8525510430335999,
+       "x_center_page": 405.3
+      },
+      {
+       "staff": "staff/14/1/1",
+       "class": "clefG",
+       "conf": 0.7900531888008118,
+       "x_center_page": 405.6
+      },
+      {
+       "staff": "staff/14/1/2",
+       "class": "clefG",
+       "conf": 0.9379035234451294,
+       "x_center_page": 405.4
+      },
+      {
+       "staff": "staff/14/1/3",
+       "class": "clefF",
+       "conf": 0.8071380853652954,
+       "x_center_page": 405.5
+      },
+      {
+       "staff": "staff/14/1/4",
+       "class": "clefG",
+       "conf": 0.8930613994598389,
+       "x_center_page": 404.9
+      },
+      {
+       "staff": "staff/14/1/4",
+       "class": "clefG",
+       "conf": 0.8819855451583862,
+       "x_center_page": 407.6
+      },
+      {
+       "staff": "staff/14/1/5",
+       "class": "clefG",
+       "conf": 0.9290092587471008,
+       "x_center_page": 405.3
+      },
+      {
+       "staff": "staff/14/1/5",
+       "class": "clefG",
+       "conf": 0.9020518660545349,
+       "x_center_page": 404.9
+      },
+      {
+       "staff": "staff/14/1/6",
+       "class": "clefG",
+       "conf": 0.8930608630180359,
+       "x_center_page": 405.1
+      },
+      {
+       "staff": "staff/14/1/6",
+       "class": "clefF",
+       "conf": 0.8928588628768921,
+       "x_center_page": 407.5
+      },
+      {
+       "staff": "staff/14/1/7",
+       "class": "clefG",
+       "conf": 0.9444981813430786,
+       "x_center_page": 409.3
+      },
+      {
+       "staff": "staff/14/1/7",
+       "class": "clefG",
+       "conf": 0.7205384969711304,
+       "x_center_page": 413.8
+      },
+      {
+       "staff": "staff/14/1/8",
+       "class": "clefG",
+       "conf": 0.9304909706115723,
+       "x_center_page": 409.1
+      },
+      {
+       "staff": "staff/14/1/8",
+       "class": "clefG",
+       "conf": 0.5709670782089233,
+       "x_center_page": 405.3
+      },
+      {
+       "staff": "staff/14/1/10",
+       "class": "clefF",
+       "conf": 0.8866486549377441,
+       "x_center_page": 409.4
+      }
+     ],
+     "sibling_detector_x_page_spread": 8.9,
+     "cluster_x_vs_sibling_detector_median_page_px": -9.6,
+     "clef_verdict": {
+      "outcome": "decided",
+      "value": "treble",
+      "reason": "scored"
+     }
+    },
+    {
+     "staff": "staff/14/1/9",
+     "frame": "cell:0",
+     "cluster": {
+      "x_spaces": 2.32,
+      "y_spaces": 3.73,
+      "w_spaces": 2.82,
+      "h_spaces": 4.45,
+      "found_in_cluster_list": true,
+      "n_clusters": 3
+     },
+     "spacing_px_analysis": 22.0,
+     "cell_staff_space_canonical": 100.0,
+     "staff_lines": [
+      3427.0,
+      3443.0,
+      3459.0,
+      3475.0,
+      3490.0
+     ],
+     "in_measured_band": true,
+     "in_config_band": true,
+     "occupiers": [
+      {
+       "subject": "glyph/14/1/9/0/11",
+       "class": "noteheadBlackInSpace",
+       "conf": 0.41942599415779114,
+       "x_spaces": 2.34,
+       "y_spaces": 4.93,
+       "w_spaces": 0.77,
+       "h_spaces": 2.99
+      },
+      {
+       "subject": "glyph/14/1/9/0/12",
+       "class": "noteheadBlackOnLine",
+       "conf": 0.3969751000404358,
+       "x_spaces": 3.23,
+       "y_spaces": 5.08,
+       "w_spaces": 1.56,
+       "h_spaces": 3.09
+      },
+      {
+       "subject": "glyph/14/1/9/0/14",
+       "class": "noteheadBlackInSpace",
+       "conf": 0.36041560769081116,
+       "x_spaces": 2.34,
+       "y_spaces": 4.96,
+       "w_spaces": 0.77,
+       "h_spaces": 0.96
+      },
+      {
+       "subject": "glyph/14/1/9/0/21",
+       "class": "noteheadBlackOnLine",
+       "conf": 0.2558731436729431,
+       "x_spaces": 3.18,
+       "y_spaces": 4.31,
+       "w_spaces": 1.81,
+       "h_spaces": 3.87
+      }
+     ],
+     "n_occupiers": 4,
+     "bystanders": [
+      {
+       "subject": "glyph/14/1/9/0/10",
+       "class": "staff",
+       "conf": 0.4733724296092987,
+       "x_spaces": 0.01,
+       "y_spaces": 3.63,
+       "w_spaces": 20.18,
+       "h_spaces": 4.5
+      },
+      {
+       "subject": "glyph/14/1/9/0/19",
+       "class": "tie",
+       "conf": 0.321584552526474,
+       "x_spaces": 0.67,
+       "y_spaces": 3.42,
+       "w_spaces": 19.52,
+       "h_spaces": 0.65
+      }
+     ],
+     "notehead_y_coverage_of_cluster": 0.87,
+     "cluster_x_page_px": 384.5,
+     "siblings_located": [],
+     "sibling_x_centre_spaces": [],
+     "sibling_x_spread_spaces": null,
+     "cluster_x_vs_sibling_median_spaces": null,
+     "siblings_detector_clef": [
+      {
+       "staff": "staff/14/1/0",
+       "class": "clefG",
+       "conf": 0.8958796858787537,
+       "x_center_page": 406.0
+      },
+      {
+       "staff": "staff/14/1/0",
+       "class": "clefG",
+       "conf": 0.6964199542999268,
+       "x_center_page": 407.6
+      },
+      {
+       "staff": "staff/14/1/1",
+       "class": "clefG",
+       "conf": 0.8525510430335999,
+       "x_center_page": 405.3
+      },
+      {
+       "staff": "staff/14/1/1",
+       "class": "clefG",
+       "conf": 0.7900531888008118,
+       "x_center_page": 405.6
+      },
+      {
+       "staff": "staff/14/1/2",
+       "class": "clefG",
+       "conf": 0.9379035234451294,
+       "x_center_page": 405.4
+      },
+      {
+       "staff": "staff/14/1/3",
+       "class": "clefF",
+       "conf": 0.8071380853652954,
+       "x_center_page": 405.5
+      },
+      {
+       "staff": "staff/14/1/4",
+       "class": "clefG",
+       "conf": 0.8930613994598389,
+       "x_center_page": 404.9
+      },
+      {
+       "staff": "staff/14/1/4",
+       "class": "clefG",
+       "conf": 0.8819855451583862,
+       "x_center_page": 407.6
+      },
+      {
+       "staff": "staff/14/1/5",
+       "class": "clefG",
+       "conf": 0.9290092587471008,
+       "x_center_page": 405.3
+      },
+      {
+       "staff": "staff/14/1/5",
+       "class": "clefG",
+       "conf": 0.9020518660545349,
+       "x_center_page": 404.9
+      },
+      {
+       "staff": "staff/14/1/6",
+       "class": "clefG",
+       "conf": 0.8930608630180359,
+       "x_center_page": 405.1
+      },
+      {
+       "staff": "staff/14/1/6",
+       "class": "clefF",
+       "conf": 0.8928588628768921,
+       "x_center_page": 407.5
+      },
+      {
+       "staff": "staff/14/1/7",
+       "class": "clefG",
+       "conf": 0.9444981813430786,
+       "x_center_page": 409.3
+      },
+      {
+       "staff": "staff/14/1/7",
+       "class": "clefG",
+       "conf": 0.7205384969711304,
+       "x_center_page": 413.8
+      },
+      {
+       "staff": "staff/14/1/8",
+       "class": "clefG",
+       "conf": 0.9304909706115723,
+       "x_center_page": 409.1
+      },
+      {
+       "staff": "staff/14/1/8",
+       "class": "clefG",
+       "conf": 0.5709670782089233,
+       "x_center_page": 405.3
+      },
+      {
+       "staff": "staff/14/1/10",
+       "class": "clefF",
+       "conf": 0.8866486549377441,
+       "x_center_page": 409.4
+      }
+     ],
+     "sibling_detector_x_page_spread": 8.9,
+     "cluster_x_vs_sibling_detector_median_page_px": -21.1,
+     "clef_verdict": {
+      "outcome": "decided",
+      "value": "treble",
+      "reason": "scored"
+     }
+    },
+    {
+     "staff": "staff/15/0/3",
+     "frame": "cell:0",
+     "cluster": {
+      "x_spaces": 1.32,
+      "y_spaces": 4.55,
+      "w_spaces": 3.41,
+      "h_spaces": 3.32,
+      "found_in_cluster_list": true,
+      "n_clusters": 1
+     },
+     "spacing_px_analysis": 22.0,
+     "cell_staff_space_canonical": 100.0,
+     "staff_lines": [
+      869.0,
+      885.0,
+      901.0,
+      917.0,
+      932.0
+     ],
+     "in_measured_band": false,
+     "in_config_band": true,
+     "occupiers": [
+      {
+       "subject": "glyph/15/0/3/0/6",
+       "class": "noteheadBlackOnLine",
+       "conf": 0.3818089962005615,
+       "x_spaces": 1.72,
+       "y_spaces": 4.17,
+       "w_spaces": 2.72,
+       "h_spaces": 2.85
+      },
+      {
+       "subject": "glyph/15/0/3/0/9",
+       "class": "noteheadBlackOnLine",
+       "conf": 0.31401491165161133,
+       "x_spaces": 1.64,
+       "y_spaces": 4.13,
+       "w_spaces": 3.43,
+       "h_spaces": 3.58
+      }
+     ],
+     "n_occupiers": 2,
+     "bystanders": [
+      {
+       "subject": "glyph/15/0/3/0/0",
+       "class": "staff",
+       "conf": 0.8257750868797302,
+       "x_spaces": 0.96,
+       "y_spaces": 4.05,
+       "w_spaces": 14.78,
+       "h_spaces": 4.25
+      }
+     ],
+     "notehead_y_coverage_of_cluster": 0.952,
+     "cluster_x_page_px": 372.8,
+     "siblings_located": [],
+     "sibling_x_centre_spaces": [],
+     "sibling_x_spread_spaces": null,
+     "cluster_x_vs_sibling_median_spaces": null,
+     "siblings_detector_clef": [
+      {
+       "staff": "staff/15/0/0",
+       "class": "clefG",
+       "conf": 0.9303479790687561,
+       "x_center_page": 401.8
+      },
+      {
+       "staff": "staff/15/0/1",
+       "class": "clefG",
+       "conf": 0.9084691405296326,
+       "x_center_page": 400.7
+      },
+      {
+       "staff": "staff/15/0/2",
+       "class": "clefG",
+       "conf": 0.8941587209701538,
+       "x_center_page": 404.5
+      },
+      {
+       "staff": "staff/15/0/4",
+       "class": "clefG",
+       "conf": 0.9149986505508423,
+       "x_center_page": 408.5
+      },
+      {
+       "staff": "staff/15/0/5",
+       "class": "clefG",
+       "conf": 0.9218477606773376,
+       "x_center_page": 409.6
+      },
+      {
+       "staff": "staff/15/0/6",
+       "class": "clefF",
+       "conf": 0.7871348857879639,
+       "x_center_page": 407.4
+      },
+      {
+       "staff": "staff/15/0/7",
+       "class": "clefG",
+       "conf": 0.7835825681686401,
+       "x_center_page": 410.3
+      },
+      {
+       "staff": "staff/15/0/8",
+       "class": "clefG",
+       "conf": 0.8791049718856812,
+       "x_center_page": 412.2
+      },
+      {
+       "staff": "staff/15/0/10",
+       "class": "clefF",
+       "conf": 0.841796875,
+       "x_center_page": 409.9
+      }
+     ],
+     "sibling_detector_x_page_spread": 11.5,
+     "cluster_x_vs_sibling_detector_median_page_px": -35.7,
+     "clef_verdict": {
+      "outcome": "decided",
+      "value": "bass",
+      "reason": "scored"
+     }
+    },
+    {
+     "staff": "staff/15/0/9",
+     "frame": "header_window",
+     "cluster": {
+      "x_spaces": 3.0,
+      "y_spaces": 4.55,
+      "w_spaces": 1.82,
+      "h_spaces": 4.45,
+      "found_in_cluster_list": true,
+      "n_clusters": 2
+     },
+     "spacing_px_analysis": 22.0,
+     "cell_staff_space_canonical": 100.0,
+     "staff_lines": [
+      1792.0,
+      1808.0,
+      1823.0,
+      1839.0,
+      1855.0
+     ],
+     "in_measured_band": true,
+     "in_config_band": true,
+     "occupiers": [
+      {
+       "subject": "glyph/15/0/9/0/9",
+       "class": "noteheadBlackOnLine",
+       "conf": 0.4193533957004547,
+       "x_spaces": 2.22,
+       "y_spaces": 4.48,
+       "w_spaces": 2.82,
+       "h_spaces": 4.47
+      }
+     ],
+     "n_occupiers": 1,
+     "bystanders": [
+      {
+       "subject": "glyph/15/0/9/0/11",
+       "class": "staff",
+       "conf": 0.36357101798057556,
+       "x_spaces": 0.0,
+       "y_spaces": 4.45,
+       "w_spaces": 15.73,
+       "h_spaces": 4.59
+      }
+     ],
+     "notehead_y_coverage_of_cluster": 0.989,
+     "cluster_x_page_px": 399.2,
+     "siblings_located": [],
+     "sibling_x_centre_spaces": [],
+     "sibling_x_spread_spaces": null,
+     "cluster_x_vs_sibling_median_spaces": null,
+     "siblings_detector_clef": [
+      {
+       "staff": "staff/15/0/0",
+       "class": "clefG",
+       "conf": 0.9303479790687561,
+       "x_center_page": 401.8
+      },
+      {
+       "staff": "staff/15/0/1",
+       "class": "clefG",
+       "conf": 0.9084691405296326,
+       "x_center_page": 400.7
+      },
+      {
+       "staff": "staff/15/0/2",
+       "class": "clefG",
+       "conf": 0.8941587209701538,
+       "x_center_page": 404.5
+      },
+      {
+       "staff": "staff/15/0/4",
+       "class": "clefG",
+       "conf": 0.9149986505508423,
+       "x_center_page": 408.5
+      },
+      {
+       "staff": "staff/15/0/5",
+       "class": "clefG",
+       "conf": 0.9218477606773376,
+       "x_center_page": 409.6
+      },
+      {
+       "staff": "staff/15/0/6",
+       "class": "clefF",
+       "conf": 0.7871348857879639,
+       "x_center_page": 407.4
+      },
+      {
+       "staff": "staff/15/0/7",
+       "class": "clefG",
+       "conf": 0.7835825681686401,
+       "x_center_page": 410.3
+      },
+      {
+       "staff": "staff/15/0/8",
+       "class": "clefG",
+       "conf": 0.8791049718856812,
+       "x_center_page": 412.2
+      },
+      {
+       "staff": "staff/15/0/10",
+       "class": "clefF",
+       "conf": 0.841796875,
+       "x_center_page": 409.9
+      }
+     ],
+     "sibling_detector_x_page_spread": 11.5,
+     "cluster_x_vs_sibling_detector_median_page_px": -9.3,
+     "clef_verdict": {
+      "outcome": "abstained",
+      "value": null,
+      "reason": "no_candidates"
+     }
+    },
+    {
+     "staff": "staff/15/0/9",
+     "frame": "cell:0",
+     "cluster": {
+      "x_spaces": 2.32,
+      "y_spaces": 4.55,
+      "w_spaces": 2.41,
+      "h_spaces": 4.45,
+      "found_in_cluster_list": true,
+      "n_clusters": 3
+     },
+     "spacing_px_analysis": 22.0,
+     "cell_staff_space_canonical": 100.0,
+     "staff_lines": [
+      1792.0,
+      1808.0,
+      1823.0,
+      1839.0,
+      1855.0
+     ],
+     "in_measured_band": true,
+     "in_config_band": true,
+     "occupiers": [
+      {
+       "subject": "glyph/15/0/9/0/9",
+       "class": "noteheadBlackOnLine",
+       "conf": 0.4193533957004547,
+       "x_spaces": 2.22,
+       "y_spaces": 4.48,
+       "w_spaces": 2.82,
+       "h_spaces": 4.47
+      }
+     ],
+     "n_occupiers": 1,
+     "bystanders": [
+      {
+       "subject": "glyph/15/0/9/0/11",
+       "class": "staff",
+       "conf": 0.36357101798057556,
+       "x_spaces": 0.0,
+       "y_spaces": 4.45,
+       "w_spaces": 15.73,
+       "h_spaces": 4.59
+      }
+     ],
+     "notehead_y_coverage_of_cluster": 0.989,
+     "cluster_x_page_px": 388.5,
+     "siblings_located": [],
+     "sibling_x_centre_spaces": [],
+     "sibling_x_spread_spaces": null,
+     "cluster_x_vs_sibling_median_spaces": null,
+     "siblings_detector_clef": [
+      {
+       "staff": "staff/15/0/0",
+       "class": "clefG",
+       "conf": 0.9303479790687561,
+       "x_center_page": 401.8
+      },
+      {
+       "staff": "staff/15/0/1",
+       "class": "clefG",
+       "conf": 0.9084691405296326,
+       "x_center_page": 400.7
+      },
+      {
+       "staff": "staff/15/0/2",
+       "class": "clefG",
+       "conf": 0.8941587209701538,
+       "x_center_page": 404.5
+      },
+      {
+       "staff": "staff/15/0/4",
+       "class": "clefG",
+       "conf": 0.9149986505508423,
+       "x_center_page": 408.5
+      },
+      {
+       "staff": "staff/15/0/5",
+       "class": "clefG",
+       "conf": 0.9218477606773376,
+       "x_center_page": 409.6
+      },
+      {
+       "staff": "staff/15/0/6",
+       "class": "clefF",
+       "conf": 0.7871348857879639,
+       "x_center_page": 407.4
+      },
+      {
+       "staff": "staff/15/0/7",
+       "class": "clefG",
+       "conf": 0.7835825681686401,
+       "x_center_page": 410.3
+      },
+      {
+       "staff": "staff/15/0/8",
+       "class": "clefG",
+       "conf": 0.8791049718856812,
+       "x_center_page": 412.2
+      },
+      {
+       "staff": "staff/15/0/10",
+       "class": "clefF",
+       "conf": 0.841796875,
+       "x_center_page": 409.9
+      }
+     ],
+     "sibling_detector_x_page_spread": 11.5,
+     "cluster_x_vs_sibling_detector_median_page_px": -20.0,
+     "clef_verdict": {
+      "outcome": "abstained",
+      "value": null,
+      "reason": "no_candidates"
+     }
+    },
+    {
+     "staff": "staff/16/1/9",
+     "frame": "header_window",
+     "cluster": {
+      "x_spaces": 2.73,
+      "y_spaces": 3.59,
+      "w_spaces": 2.09,
+      "h_spaces": 4.45,
+      "found_in_cluster_list": true,
+      "n_clusters": 1
+     },
+     "spacing_px_analysis": 22.0,
+     "cell_staff_space_canonical": 94.75,
+     "staff_lines": [
+      3390.0,
+      3406.0,
+      3422.0,
+      3437.0,
+      3453.0
+     ],
+     "in_measured_band": true,
+     "in_config_band": true,
+     "occupiers": [
+      {
+       "subject": "glyph/16/1/9/0/6",
+       "class": "noteheadBlackOnLine",
+       "conf": 0.6432621479034424,
+       "x_spaces": 3.04,
+       "y_spaces": 5.129,
+       "w_spaces": 1.013,
+       "h_spaces": 1.14
+      },
+      {
+       "subject": "glyph/16/1/9/0/8",
+       "class": "noteheadBlackInSpace",
+       "conf": 0.4478406012058258,
+       "x_spaces": 2.174,
+       "y_spaces": 4.929,
+       "w_spaces": 0.76,
+       "h_spaces": 0.654
+      },
+      {
+       "subject": "glyph/16/1/9/0/9",
+       "class": "noteheadBlackInSpace",
+       "conf": 0.2621437907218933,
+       "x_spaces": 2.174,
+       "y_spaces": 6.987,
+       "w_spaces": 0.707,
+       "h_spaces": 0.644
+      }
+     ],
+     "n_occupiers": 3,
+     "bystanders": [
+      {
+       "subject": "glyph/16/1/9/0/11",
+       "class": "staff",
+       "conf": 0.25339868664741516,
+       "x_spaces": 0.032,
+       "y_spaces": 4.032,
+       "w_spaces": 21.583,
+       "h_spaces": 4.011
+      }
+     ],
+     "notehead_y_coverage_of_cluster": 0.446,
+     "cluster_x_page_px": 391.0,
+     "siblings_located": [
+      {
+       "staff": "staff/16/1/3",
+       "frame": "header_window",
+       "read": "tenor",
+       "family": "C",
+       "x_center": 364,
+       "x_center_spaces": 3.842,
+       "h_spaces": 4.697
+      }
+     ],
+     "sibling_x_centre_spaces": [
+      3.842
+     ],
+     "sibling_x_spread_spaces": null,
+     "cluster_x_vs_sibling_median_spaces": -1.112,
+     "siblings_detector_clef": [
+      {
+       "staff": "staff/16/1/0",
+       "class": "clefG",
+       "conf": 0.9287083148956299,
+       "x_center_page": 404.3
+      },
+      {
+       "staff": "staff/16/1/1",
+       "class": "clefG",
+       "conf": 0.9339211583137512,
+       "x_center_page": 403.9
+      },
+      {
+       "staff": "staff/16/1/2",
+       "class": "clefG",
+       "conf": 0.9316449165344238,
+       "x_center_page": 403.3
+      },
+      {
+       "staff": "staff/16/1/4",
+       "class": "clefG",
+       "conf": 0.8993857502937317,
+       "x_center_page": 405.4
+      },
+      {
+       "staff": "staff/16/1/4",
+       "class": "clefG",
+       "conf": 0.7809357643127441,
+       "x_center_page": 405.1
+      },
+      {
+       "staff": "staff/16/1/5",
+       "class": "clefG",
+       "conf": 0.5660744905471802,
+       "x_center_page": 402.7
+      },
+      {
+       "staff": "staff/16/1/6",
+       "class": "clefF",
+       "conf": 0.8751921057701111,
+       "x_center_page": 401.9
+      },
+      {
+       "staff": "staff/16/1/7",
+       "class": "clefG",
+       "conf": 0.9291476607322693,
+       "x_center_page": 404.9
+      },
+      {
+       "staff": "staff/16/1/8",
+       "class": "clefG",
+       "conf": 0.8325600028038025,
+       "x_center_page": 403.4
+      },
+      {
+       "staff": "staff/16/1/10",
+       "class": "clefF",
+       "conf": 0.8957473039627075,
+       "x_center_page": 402.9
+      }
+     ],
+     "sibling_detector_x_page_spread": 3.5,
+     "cluster_x_vs_sibling_detector_median_page_px": -12.6,
+     "clef_verdict": {
+      "outcome": "abstained",
+      "value": null,
+      "reason": "no_candidates"
+     }
+    },
+    {
+     "staff": "staff/16/1/9",
+     "frame": "cell:0",
+     "cluster": {
+      "x_spaces": 2.14,
+      "y_spaces": 3.59,
+      "w_spaces": 2.77,
+      "h_spaces": 4.45,
+      "found_in_cluster_list": true,
+      "n_clusters": 2
+     },
+     "spacing_px_analysis": 22.0,
+     "cell_staff_space_canonical": 94.75,
+     "staff_lines": [
+      3390.0,
+      3406.0,
+      3422.0,
+      3437.0,
+      3453.0
+     ],
+     "in_measured_band": true,
+     "in_config_band": true,
+     "occupiers": [
+      {
+       "subject": "glyph/16/1/9/0/6",
+       "class": "noteheadBlackOnLine",
+       "conf": 0.6432621479034424,
+       "x_spaces": 3.04,
+       "y_spaces": 5.129,
+       "w_spaces": 1.013,
+       "h_spaces": 1.14
+      },
+      {
+       "subject": "glyph/16/1/9/0/8",
+       "class": "noteheadBlackInSpace",
+       "conf": 0.4478406012058258,
+       "x_spaces": 2.174,
+       "y_spaces": 4.929,
+       "w_spaces": 0.76,
+       "h_spaces": 0.654
+      },
+      {
+       "subject": "glyph/16/1/9/0/9",
+       "class": "noteheadBlackInSpace",
+       "conf": 0.2621437907218933,
+       "x_spaces": 2.174,
+       "y_spaces": 6.987,
+       "w_spaces": 0.707,
+       "h_spaces": 0.644
+      }
+     ],
+     "n_occupiers": 3,
+     "bystanders": [
+      {
+       "subject": "glyph/16/1/9/0/11",
+       "class": "staff",
+       "conf": 0.25339868664741516,
+       "x_spaces": 0.032,
+       "y_spaces": 4.032,
+       "w_spaces": 21.583,
+       "h_spaces": 4.011
+      }
+     ],
+     "notehead_y_coverage_of_cluster": 0.446,
+     "cluster_x_page_px": 381.7,
+     "siblings_located": [
+      {
+       "staff": "staff/16/1/3",
+       "frame": "header_window",
+       "read": "tenor",
+       "family": "C",
+       "x_center": 364,
+       "x_center_spaces": 3.842,
+       "h_spaces": 4.697
+      }
+     ],
+     "sibling_x_centre_spaces": [
+      3.842
+     ],
+     "sibling_x_spread_spaces": null,
+     "cluster_x_vs_sibling_median_spaces": -1.702,
+     "siblings_detector_clef": [
+      {
+       "staff": "staff/16/1/0",
+       "class": "clefG",
+       "conf": 0.9287083148956299,
+       "x_center_page": 404.3
+      },
+      {
+       "staff": "staff/16/1/1",
+       "class": "clefG",
+       "conf": 0.9339211583137512,
+       "x_center_page": 403.9
+      },
+      {
+       "staff": "staff/16/1/2",
+       "class": "clefG",
+       "conf": 0.9316449165344238,
+       "x_center_page": 403.3
+      },
+      {
+       "staff": "staff/16/1/4",
+       "class": "clefG",
+       "conf": 0.8993857502937317,
+       "x_center_page": 405.4
+      },
+      {
+       "staff": "staff/16/1/4",
+       "class": "clefG",
+       "conf": 0.7809357643127441,
+       "x_center_page": 405.1
+      },
+      {
+       "staff": "staff/16/1/5",
+       "class": "clefG",
+       "conf": 0.5660744905471802,
+       "x_center_page": 402.7
+      },
+      {
+       "staff": "staff/16/1/6",
+       "class": "clefF",
+       "conf": 0.8751921057701111,
+       "x_center_page": 401.9
+      },
+      {
+       "staff": "staff/16/1/7",
+       "class": "clefG",
+       "conf": 0.9291476607322693,
+       "x_center_page": 404.9
+      },
+      {
+       "staff": "staff/16/1/8",
+       "class": "clefG",
+       "conf": 0.8325600028038025,
+       "x_center_page": 403.4
+      },
+      {
+       "staff": "staff/16/1/10",
+       "class": "clefF",
+       "conf": 0.8957473039627075,
+       "x_center_page": 402.9
+      }
+     ],
+     "sibling_detector_x_page_spread": 3.5,
+     "cluster_x_vs_sibling_detector_median_page_px": -21.9,
+     "clef_verdict": {
+      "outcome": "abstained",
+      "value": null,
+      "reason": "no_candidates"
+     }
+    }
+   ],
+   "label": "Beethoven 5 mvt 1, Litolff 984073 (scan, bitonal, MERGING plate)",
+   "kind": "scan"
+  }
+ }
+}

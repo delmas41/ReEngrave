@@ -1,0 +1,112 @@
+{
+ "png": "breitkopf-p6-s1-st3-tenor-cell0.png",
+ "caption": "breitkopf-p6 system 1 staff 3 \u2014 READ tenor by geometry over 7 notehead box(es). GREEN = the staff's five Q.STAFF_LINES; BLUE = the ink cluster read as the clef; RED = the detector notehead boxes the read overrode and the exporter now refuses `is_a_clef`.",
+ "staff": "staff/6/1/3",
+ "page": 6,
+ "dpi": 600,
+ "zoom": 4,
+ "frame_control": {
+  "passed": true,
+  "contrast": 179.09
+ },
+ "read": {
+  "clef": "tenor",
+  "frame": "cell:0",
+  "symmetry": 0.9259,
+  "h_spaces": 4.41,
+  "w_spaces": 3.55
+ },
+ "cluster_page_px": [
+  657.988326848249,
+  4863.949416342412,
+  754.6887159533073,
+  4983.976653696498
+ ],
+ "cluster_note": "exact: cell:0 canonical -> page via CELL_BOX",
+ "overrode": [
+  {
+   "glyph": "glyph/6/1/3/0/10",
+   "class": "noteheadBlackInSpace",
+   "page_px": [
+    643.1439688715953,
+    4858.43579766537,
+    658.8365758754863,
+    4870.311284046693
+   ]
+  },
+  {
+   "glyph": "glyph/6/1/3/0/15",
+   "class": "noteheadBlackInSpace",
+   "page_px": [
+    641.8715953307393,
+    4872.431906614786,
+    659.2607003891051,
+    4889.8210116731525
+   ]
+  },
+  {
+   "glyph": "glyph/6/1/3/0/18",
+   "class": "noteheadBlackInSpace",
+   "page_px": [
+    672.8326848249027,
+    4925.023346303502,
+    696.1595330739299,
+    4946.229571984436
+   ]
+  },
+  {
+   "glyph": "glyph/6/1/3/0/21",
+   "class": "noteheadBlackInSpace",
+   "page_px": [
+    672.4085603112841,
+    4897.455252918288,
+    694.4630350194553,
+    4919.50972762646
+   ]
+  },
+  {
+   "glyph": "glyph/6/1/3/0/31",
+   "class": "noteheadBlackInSpace",
+   "page_px": [
+    672.4085603112841,
+    4925.447470817121,
+    710.579766536965,
+    4946.653696498055
+   ]
+  },
+  {
+   "glyph": "glyph/6/1/3/0/34",
+   "class": "noteheadBlackInSpace",
+   "page_px": [
+    731.3618677042801,
+    4927.568093385214,
+    754.2645914396887,
+    4978.463035019455
+   ]
+  },
+  {
+   "glyph": "glyph/6/1/3/0/40",
+   "class": "noteheadBlackInSpace",
+   "page_px": [
+    673.2568093385214,
+    4950.894941634241,
+    722.4552529182879,
+    4979.735408560311
+   ]
+  }
+ ],
+ "staff_lines_page_px": [
+  4900,
+  4927,
+  4954,
+  4981,
+  5009
+ ],
+ "crop_page_px": [
+  588.75,
+  4627.5,
+  1027.1887159533073,
+  5281.5
+ ],
+ "VERDICT_none_yet": null
+}

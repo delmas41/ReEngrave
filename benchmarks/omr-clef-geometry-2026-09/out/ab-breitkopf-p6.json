@@ -1,0 +1,588 @@
+{
+ "base": {
+  "path": "benchmarks/omr-clef-geometry-2026-09/out/base-breitkopf-p6.record.json",
+  "provenance": {
+   "commit": "febd383a60186bde077e4181b69ed2264c24caf4",
+   "dirty": true,
+   "settings": {
+    "env_overrides": {
+     "OMR_SURYA_KEEP_ALIVE": "1"
+    },
+    "args": {
+     "against": null,
+     "conf": 0.25,
+     "dpi": 600,
+     "imgsz": null,
+     "ink_rows": false,
+     "no_roster": false,
+     "no_weight_routing": false,
+     "ocr": false,
+     "pages": "6",
+     "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf",
+     "route_weights": false,
+     "sheet": null,
+     "surya": false,
+     "weights": "omr-weights/deepscoresv2-yolov8l-hollow-graft-shift09-2026-09-04.pt",
+     "work_id": null
+    }
+   }
+  },
+  "notes_not_written": {
+   "duration_narrowed": 55,
+   "owned_by_another_staff": 34,
+   "not_a_notehead:too_narrow": 385,
+   "not_a_notehead:clipped_fragment": 19,
+   "written_value_fits_no_note": 8,
+   "no_pitch": 122,
+   "ink_is_a_whole_rest": 5
+  },
+  "notes_not_written_total": 628,
+  "notes_not_written_by_system": {
+   "6/0": {
+    "duration_narrowed": 18,
+    "owned_by_another_staff": 25,
+    "not_a_notehead:too_narrow": 221,
+    "not_a_notehead:clipped_fragment": 14,
+    "written_value_fits_no_note": 1,
+    "no_pitch": 79
+   },
+   "6/1": {
+    "not_a_notehead:too_narrow": 164,
+    "owned_by_another_staff": 9,
+    "ink_is_a_whole_rest": 5,
+    "duration_narrowed": 37,
+    "not_a_notehead:clipped_fragment": 5,
+    "written_value_fits_no_note": 7,
+    "no_pitch": 43
+   }
+  },
+  "status_census_unaccounted": [],
+  "overrides": [],
+  "is_a_clef_refusals": []
+ },
+ "arm": {
+  "path": "benchmarks/omr-clef-geometry-2026-09/out/arm-breitkopf-p6.record.json",
+  "provenance": {
+   "commit": "febd383a60186bde077e4181b69ed2264c24caf4",
+   "dirty": true,
+   "settings": {
+    "env_overrides": {
+     "OMR_SURYA_KEEP_ALIVE": "1"
+    },
+    "args": {
+     "against": null,
+     "conf": 0.25,
+     "dpi": 600,
+     "imgsz": null,
+     "ink_rows": false,
+     "no_roster": false,
+     "no_weight_routing": false,
+     "ocr": false,
+     "pages": "6",
+     "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf",
+     "route_weights": false,
+     "sheet": null,
+     "surya": false,
+     "weights": "omr-weights/deepscoresv2-yolov8l-hollow-graft-shift09-2026-09-04.pt",
+     "work_id": null
+    }
+   }
+  },
+  "notes_not_written": {
+   "duration_narrowed": 57,
+   "owned_by_another_staff": 39,
+   "not_a_notehead:too_narrow": 378,
+   "not_a_notehead:clipped_fragment": 19,
+   "written_value_fits_no_note": 8,
+   "not_a_notehead:is_a_clef": 11,
+   "no_pitch": 77,
+   "ink_is_a_whole_rest": 3
+  },
+  "notes_not_written_total": 592,
+  "notes_not_written_by_system": {
+   "6/0": {
+    "duration_narrowed": 20,
+    "owned_by_another_staff": 30,
+    "not_a_notehead:too_narrow": 219,
+    "not_a_notehead:clipped_fragment": 14,
+    "written_value_fits_no_note": 1,
+    "not_a_notehead:is_a_clef": 3,
+    "no_pitch": 34
+   },
+   "6/1": {
+    "not_a_notehead:too_narrow": 159,
+    "owned_by_another_staff": 9,
+    "ink_is_a_whole_rest": 3,
+    "duration_narrowed": 37,
+    "not_a_notehead:clipped_fragment": 5,
+    "written_value_fits_no_note": 7,
+    "no_pitch": 43,
+    "not_a_notehead:is_a_clef": 8
+   }
+  },
+  "status_census_unaccounted": [],
+  "overrides": [
+   {
+    "staff": "staff/6/0/9",
+    "frame": "cell:0",
+    "read": "alto",
+    "symmetry": 0.9763,
+    "h_spaces": 4.27,
+    "w_spaces": 3.0,
+    "overrode": [
+     "glyph/6/0/9/0/12",
+     "glyph/6/0/9/0/23",
+     "glyph/6/0/9/0/43"
+    ]
+   },
+   {
+    "staff": "staff/6/1/3",
+    "frame": "header_window",
+    "read": "tenor",
+    "symmetry": 0.9274,
+    "h_spaces": 4.36,
+    "w_spaces": 2.77,
+    "overrode": [
+     "glyph/6/1/3/0/9",
+     "glyph/6/1/3/0/31",
+     "glyph/6/1/3/0/34",
+     "glyph/6/1/3/0/40"
+    ]
+   },
+   {
+    "staff": "staff/6/1/3",
+    "frame": "cell:0",
+    "read": "tenor",
+    "symmetry": 0.9259,
+    "h_spaces": 4.41,
+    "w_spaces": 3.55,
+    "overrode": [
+     "glyph/6/1/3/0/10",
+     "glyph/6/1/3/0/15",
+     "glyph/6/1/3/0/18",
+     "glyph/6/1/3/0/21",
+     "glyph/6/1/3/0/31",
+     "glyph/6/1/3/0/34",
+     "glyph/6/1/3/0/40"
+    ]
+   }
+  ],
+  "is_a_clef_refusals": [
+   {
+    "glyph": "glyph/6/0/9/0/12",
+    "class": "noteheadBlackInSpace",
+    "conf": 0.5970834493637085,
+    "basis": [
+     "obs:003172",
+     "obs:013441"
+    ]
+   },
+   {
+    "glyph": "glyph/6/0/9/0/23",
+    "class": "noteheadBlackInSpace",
+    "conf": 0.46908456087112427,
+    "basis": [
+     "obs:003201",
+     "obs:013441"
+    ]
+   },
+   {
+    "glyph": "glyph/6/0/9/0/43",
+    "class": "noteheadBlackInSpace",
+    "conf": 0.2508614957332611,
+    "basis": [
+     "obs:003255",
+     "obs:013441"
+    ]
+   },
+   {
+    "glyph": "glyph/6/1/3/0/9",
+    "class": "noteheadBlackInSpace",
+    "conf": 0.5129758715629578,
+    "basis": [
+     "obs:005567",
+     "obs:013452",
+     "obs:013453"
+    ]
+   },
+   {
+    "glyph": "glyph/6/1/3/0/10",
+    "class": "noteheadBlackInSpace",
+    "conf": 0.5097150206565857,
+    "basis": [
+     "obs:005570",
+     "obs:013452",
+     "obs:013453"
+    ]
+   },
+   {
+    "glyph": "glyph/6/1/3/0/15",
+    "class": "noteheadBlackInSpace",
+    "conf": 0.480670303106308,
+    "basis": [
+     "obs:005582",
+     "obs:013452",
+     "obs:013453"
+    ]
+   },
+   {
+    "glyph": "glyph/6/1/3/0/18",
+    "class": "noteheadBlackInSpace",
+    "conf": 0.4393860995769501,
+    "basis": [
+     "obs:005590",
+     "obs:013452",
+     "obs:013453"
+    ]
+   },
+   {
+    "glyph": "glyph/6/1/3/0/21",
+    "class": "noteheadBlackInSpace",
+    "conf": 0.3877883851528168,
+    "basis": [
+     "obs:005599",
+     "obs:013452",
+     "obs:013453"
+    ]
+   },
+   {
+    "glyph": "glyph/6/1/3/0/31",
+    "class": "noteheadBlackInSpace",
+    "conf": 0.3358900845050812,
+    "basis": [
+     "obs:005626",
+     "obs:013452",
+     "obs:013453"
+    ]
+   },
+   {
+    "glyph": "glyph/6/1/3/0/34",
+    "class": "noteheadBlackInSpace",
+    "conf": 0.3286305069923401,
+    "basis": [
+     "obs:005634",
+     "obs:013452",
+     "obs:013453"
+    ]
+   },
+   {
+    "glyph": "glyph/6/1/3/0/40",
+    "class": "noteheadBlackInSpace",
+    "conf": 0.2865563929080963,
+    "basis": [
+     "obs:005651",
+     "obs:013452",
+     "obs:013453"
+    ]
+   }
+  ]
+ },
+ "clef_verdicts_base": {
+  "staff/6/0/0": {
+   "outcome": "decided",
+   "value": "treble",
+   "reason": "scored"
+  },
+  "staff/6/0/1": {
+   "outcome": "decided",
+   "value": "treble",
+   "reason": "scored"
+  },
+  "staff/6/0/2": {
+   "outcome": "decided",
+   "value": "treble",
+   "reason": "scored"
+  },
+  "staff/6/0/3": {
+   "outcome": "decided",
+   "value": "bass",
+   "reason": "scored"
+  },
+  "staff/6/0/4": {
+   "outcome": "decided",
+   "value": "treble",
+   "reason": "scored"
+  },
+  "staff/6/0/5": {
+   "outcome": "decided",
+   "value": "treble",
+   "reason": "scored"
+  },
+  "staff/6/0/6": {
+   "outcome": "decided",
+   "value": "treble",
+   "reason": "scored"
+  },
+  "staff/6/0/7": {
+   "outcome": "decided",
+   "value": "treble",
+   "reason": "scored"
+  },
+  "staff/6/0/8": {
+   "outcome": "decided",
+   "value": "treble",
+   "reason": "scored"
+  },
+  "staff/6/0/9": {
+   "outcome": "abstained",
+   "value": null,
+   "reason": "no_candidates"
+  },
+  "staff/6/0/10": {
+   "outcome": "abstained",
+   "value": null,
+   "reason": "no_candidates"
+  },
+  "staff/6/0/11": {
+   "outcome": "decided",
+   "value": "bass",
+   "reason": "scored"
+  },
+  "staff/6/1/0": {
+   "outcome": "decided",
+   "value": "treble",
+   "reason": "scored"
+  },
+  "staff/6/1/1": {
+   "outcome": "decided",
+   "value": "treble",
+   "reason": "scored"
+  },
+  "staff/6/1/2": {
+   "outcome": "narrowed",
+   "value": null,
+   "reason": "margin_below_floor"
+  },
+  "staff/6/1/3": {
+   "outcome": "decided",
+   "value": "treble",
+   "reason": "scored"
+  },
+  "staff/6/1/4": {
+   "outcome": "decided",
+   "value": "treble",
+   "reason": "scored"
+  },
+  "staff/6/1/5": {
+   "outcome": "decided",
+   "value": "treble",
+   "reason": "scored"
+  },
+  "staff/6/1/6": {
+   "outcome": "decided",
+   "value": "treble",
+   "reason": "scored"
+  },
+  "staff/6/1/7": {
+   "outcome": "decided",
+   "value": "treble",
+   "reason": "scored"
+  },
+  "staff/6/1/8": {
+   "outcome": "decided",
+   "value": "alto",
+   "reason": "scored"
+  },
+  "staff/6/1/9": {
+   "outcome": "decided",
+   "value": "bass",
+   "reason": "scored"
+  },
+  "staff/6/1/10": {
+   "outcome": "decided",
+   "value": "bass",
+   "reason": "scored"
+  }
+ },
+ "clef_verdicts_arm": {
+  "staff/6/0/0": {
+   "outcome": "decided",
+   "value": "treble",
+   "reason": "scored"
+  },
+  "staff/6/0/1": {
+   "outcome": "decided",
+   "value": "treble",
+   "reason": "scored"
+  },
+  "staff/6/0/2": {
+   "outcome": "decided",
+   "value": "treble",
+   "reason": "scored"
+  },
+  "staff/6/0/3": {
+   "outcome": "decided",
+   "value": "bass",
+   "reason": "scored"
+  },
+  "staff/6/0/4": {
+   "outcome": "decided",
+   "value": "treble",
+   "reason": "scored"
+  },
+  "staff/6/0/5": {
+   "outcome": "decided",
+   "value": "treble",
+   "reason": "scored"
+  },
+  "staff/6/0/6": {
+   "outcome": "decided",
+   "value": "treble",
+   "reason": "scored"
+  },
+  "staff/6/0/7": {
+   "outcome": "decided",
+   "value": "treble",
+   "reason": "scored"
+  },
+  "staff/6/0/8": {
+   "outcome": "decided",
+   "value": "treble",
+   "reason": "scored"
+  },
+  "staff/6/0/9": {
+   "outcome": "decided",
+   "value": "alto",
+   "reason": "scored"
+  },
+  "staff/6/0/10": {
+   "outcome": "abstained",
+   "value": null,
+   "reason": "no_candidates"
+  },
+  "staff/6/0/11": {
+   "outcome": "decided",
+   "value": "bass",
+   "reason": "scored"
+  },
+  "staff/6/1/0": {
+   "outcome": "decided",
+   "value": "treble",
+   "reason": "scored"
+  },
+  "staff/6/1/1": {
+   "outcome": "decided",
+   "value": "treble",
+   "reason": "scored"
+  },
+  "staff/6/1/2": {
+   "outcome": "narrowed",
+   "value": null,
+   "reason": "margin_below_floor"
+  },
+  "staff/6/1/3": {
+   "outcome": "decided",
+   "value": "tenor",
+   "reason": "scored"
+  },
+  "staff/6/1/4": {
+   "outcome": "decided",
+   "value": "treble",
+   "reason": "scored"
+  },
+  "staff/6/1/5": {
+   "outcome": "decided",
+   "value": "treble",
+   "reason": "scored"
+  },
+  "staff/6/1/6": {
+   "outcome": "decided",
+   "value": "treble",
+   "reason": "scored"
+  },
+  "staff/6/1/7": {
+   "outcome": "decided",
+   "value": "treble",
+   "reason": "scored"
+  },
+  "staff/6/1/8": {
+   "outcome": "decided",
+   "value": "alto",
+   "reason": "scored"
+  },
+  "staff/6/1/9": {
+   "outcome": "decided",
+   "value": "bass",
+   "reason": "scored"
+  },
+  "staff/6/1/10": {
+   "outcome": "decided",
+   "value": "bass",
+   "reason": "scored"
+  }
+ },
+ "clef_verdicts_changed": [
+  {
+   "staff": "staff/6/0/9",
+   "base": {
+    "outcome": "abstained",
+    "value": null,
+    "reason": "no_candidates"
+   },
+   "arm": {
+    "outcome": "decided",
+    "value": "alto",
+    "reason": "scored"
+   }
+  },
+  {
+   "staff": "staff/6/1/3",
+   "base": {
+    "outcome": "decided",
+    "value": "treble",
+    "reason": "scored"
+   },
+   "arm": {
+    "outcome": "decided",
+    "value": "tenor",
+    "reason": "scored"
+   }
+  }
+ ],
+ "READ_clefs_changed": [
+  {
+   "staff": "staff/6/1/3",
+   "base": {
+    "outcome": "decided",
+    "value": "treble",
+    "reason": "scored"
+   },
+   "arm": {
+    "outcome": "decided",
+    "value": "tenor",
+    "reason": "scored"
+   }
+  }
+ ],
+ "n_staves_with_a_clef_verdict": 23,
+ "subject": {
+  "id": "staff/6/1/3",
+  "clef_base": {
+   "outcome": "decided",
+   "value": "treble",
+   "reason": "scored"
+  },
+  "clef_arm": {
+   "outcome": "decided",
+   "value": "tenor",
+   "reason": "scored"
+  },
+  "clef_located_base": null,
+  "clef_located_arm": [
+   {
+    "frame": "header_window",
+    "read": "tenor",
+    "symmetry": 0.9274,
+    "h_spaces": 4.36,
+    "w_spaces": 2.77
+   },
+   {
+    "frame": "cell:0",
+    "read": "tenor",
+    "symmetry": 0.9259,
+    "h_spaces": 4.41,
+    "w_spaces": 3.55
+   }
+  ]
+ }
+}
