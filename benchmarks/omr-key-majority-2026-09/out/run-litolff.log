@@ -5,3 +5,4 @@ key_signature: [('decided', 212), ('abstained', 119)]
 reasons: [('fitted_no_markers', 212), ('no_evidence', 76), ('needs_clef', 24), ('run_fits_no_slot_table', 19)]
 system_key: [('no_staff_read_a_key', 31)]
 wrote benchmarks/omr-key-majority-2026-09/out/litolff-base.json
+benchmarks/omr-key-majority-2026-09/run_scan.sh: line 9: 14295 Terminated: 15          python3 "$R" "$REC" --out "$OUT/$TAG-arm.json"

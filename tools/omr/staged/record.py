@@ -1922,7 +1922,7 @@ class Log:
     __slots__ = ("_obs", "_abs", "_vrd", "_by_subject", "_n", "_frozen",
                  "_quantity_version", "_desc_index_cache", "_desc_result_cache",
                  "_desc_index_builds", "_desc_result_builds", "_desc_result_hits",
-                 "_closure_cache")
+                 "_closure_cache", "_subjects_cache")
 
     def __init__(self) -> None:
         self._obs: dict[str, Observation] = {}
@@ -1971,6 +1971,13 @@ class Log:
         # `Evidence.correlated_groups()`'s pairwise walk, and was being
         # recomputed by a fresh BFS on every single call to either.
         self._closure_cache: dict[str, "frozenset[str]"] = {}
+        #: ⚠️ `subjects()` WALKS EVERY INDEX KEY AND PARSES EACH ONE, so a
+        #: decision calling it once per subject is quadratic in the record.
+        #: Measured: `adjudicate_system_key` calls it once per SYSTEM, and on
+        #: the Breitkopf whole-movement record that took ADJUDICATE from
+        #: minutes to over an hour. The answer is a pure function of
+        #: `_by_subject`, so it is cached and cleared on every write.
+        self._subjects_cache: dict[str, tuple] = {}
 
     # ── writing ─────────────────────────────────────────────────────────────
 
@@ -1986,6 +1993,11 @@ class Log:
         # whether the quantity is GATHER-frozen (the common case) or is being
         # written progressively by the decision that owns it.
         self._quantity_version[quantity] = self._quantity_version.get(quantity, 0) + 1
+        # ⚠️ A new row may introduce a subject nothing had filed under, so the
+        # subject cache is cleared here rather than being versioned: it is
+        # rebuilt at most once per kind per stage.
+        if self._subjects_cache:
+            self._subjects_cache.clear()
 
     def observe(self, subject: Subject, quantity: str, value: Any, *,
                 reader: str, frame: str, score: float | None = None,
@@ -2221,13 +2233,29 @@ class Log:
             tuple(self._vrd.values())
 
     def subjects(self, kind: Kind) -> tuple[Subject, ...]:
+        """Every subject of `kind` the log holds, in reading order.
+
+        ⚠️ CACHED, AND THE CACHE IS NOT AN OPTIMISATION DETAIL. This walks
+        EVERY index key and parses each one, so a decision that asks once per
+        subject is quadratic in the size of the record: `adjudicate_system_key`
+        asks once per SYSTEM, and on the Breitkopf whole-movement record that
+        alone took ADJUDICATE from minutes to over an hour. The result is a
+        pure function of `_by_subject`, which `_index` clears on every write,
+        so the cache cannot go stale -- and ADJUDICATE reads a FROZEN log, so
+        in the stage where it matters it is computed exactly once per kind.
+        """
+        hit = self._subjects_cache.get(kind.value)
+        if hit is not None:
+            return hit
         seen: dict[str, Subject] = {}
         for _q, key in self._by_subject:
             sub = Subject.from_key(key)
             anc = sub.at(kind)
             if anc is not None:
                 seen[anc.to_key()] = anc
-        return tuple(sorted(seen.values()))
+        out = tuple(sorted(seen.values()))
+        self._subjects_cache[kind.value] = out
+        return out
 
     # ── provenance ──────────────────────────────────────────────────────────
 
