@@ -117,10 +117,30 @@ away from the encoded duration (§5b). The cases that were supposed to show the
 stage buying something a consequence could not are, on this document, one
 non-notehead and one wrong answer.
 
-⚠️ This still does not decide the default: it is n = 1 document, the other 14
-inferences are unexamined by either instrument, and a re-adjudication of the
-whole population on today's tree (§5.1) remains the honest way to restate
-reach. But the direction of the evidence is now negative rather than absent.
+### How much of the reach is affected — measured, and it is SMALL
+
+Running the same two conditions over all sixteen: **2.4a would refuse 1 of 16
+(6%)**. The "reach is an upper bound" caveat above is therefore CORRECT BUT
+SMALL, and saying only the first half would leave a false impression — the
+pre-2.4a record does not inflate reach materially. It inflates it by one, and
+that one happens to be an ordering-override.
+
+Two further shapes the sweep surfaced, neither caught by either refusal:
+
+* **`glyph/4/0/9/5/7` sits flush against the cell edge too (0.00 px) but is
+  0.79 spaces tall, just over `clipped_fragment`'s 0.6 ceiling.** It is the
+  second-shortest head in the set, on the boundary, and it is the one that
+  fails the reference membership check. Suggestive that the net is slightly
+  too tight here; NOT evidence for moving a measured threshold, which was set
+  against 255 print-adjudicated boxes and must not be retuned to suit sixteen.
+* **`glyph/4/0/8/2/3` is 3.12 spaces tall** — three times a notehead, a merged
+  blob on a MERGING plate. Neither shipped refusal targets over-height ink, so
+  nothing refuses it. Recorded; not this lane's to fix.
+
+⚠️ This still does not decide the default: n = 1 document, the other 14
+inferences unexamined by either instrument, and a re-adjudication of the whole
+population on today's tree (§5.1) remains the honest way to restate reach. But
+the direction of the evidence is now negative rather than absent.
 
 One more shape worth naming: `glyph/4/0/8/2/3` has height **312**, two to three
 times a notehead. A merged blob on a plate CLAUDE.md records as MERGING.
