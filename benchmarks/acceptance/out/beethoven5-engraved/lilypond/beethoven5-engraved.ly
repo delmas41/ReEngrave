@@ -1,5 +1,5 @@
 \version "2.24.4"
-% automatically converted by musicxml2ly from /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a78f82d3075cb50b9/benchmarks/acceptance/out/beethoven5-engraved/beethoven5-engraved.musicxml
+% automatically converted by musicxml2ly from benchmarks/acceptance/out/beethoven5-engraved/beethoven5-engraved.musicxml
 \pointAndClickOff
 
 \header {
