@@ -568,6 +568,14 @@ def _ours_render_png(xml_text: str, first_bar: int, last_bar: int,
 
     import verovio
     tk = verovio.toolkit()
+    # A FIXED SEED, not verovio's default random one. Its own xml:id strings
+    # are otherwise regenerated on every render, so a rebuild of an
+    # unchanged excerpt produces a byte-different SVG and dirties the tree
+    # for a reason that has nothing to do with the music — found running
+    # this tool twice in a row on a clean tree. `setOptions` MERGES (each
+    # call adds/overrides only the keys given), so this survives the
+    # `render_svg` call right after it, which sets its own options.
+    tk.setOptions({"xmlIdSeed": 1})
     svg = SBS.render_svg(tk, sliced, page_width=30000)
     if not svg:
         raise RuntimeError("verovio could not render the sliced excerpt")
