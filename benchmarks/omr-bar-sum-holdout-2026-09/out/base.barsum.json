@@ -1,0 +1,81 @@
+[
+  {
+    "file": "benchmarks/omr-bar-sum-holdout-2026-09/out/base-engraved.musicxml",
+    "strict_measure_rest": false,
+    "assessed": 450,
+    "exact": 412,
+    "short": 34,
+    "overfull": 4,
+    "wrong": 38,
+    "unassessable": 0,
+    "fraction_exact": 0.9155555555555556,
+    "by_part": {
+      "Bassoon": 6,
+      "Clarinet": 5,
+      "Flute": 4,
+      "Oboe": 4,
+      "Horn": 4,
+      "Trumpet": 4,
+      "Viola": 3,
+      "Timpani": 2,
+      "Violin": 2,
+      "Cello": 2,
+      "Contrabass": 2
+    },
+    "bars": [],
+    "bars_total": 38
+  },
+  {
+    "file": "benchmarks/omr-bar-sum-holdout-2026-09/out/base-litolff.musicxml",
+    "strict_measure_rest": false,
+    "assessed": 5940,
+    "exact": 4061,
+    "short": 1078,
+    "overfull": 801,
+    "wrong": 1879,
+    "unassessable": 0,
+    "fraction_exact": 0.6836700336700336,
+    "by_part": {
+      "Violin": 360,
+      "Flute": 198,
+      "Oboe": 180,
+      "Bassoon": 174,
+      "Clarinet": 157,
+      "Cello": 145,
+      "Viola": 142,
+      "Timpani": 140,
+      "Horn": 136,
+      "Contrabass": 125,
+      "Trumpet": 122
+    },
+    "bars": [],
+    "bars_total": 1879
+  },
+  {
+    "file": "benchmarks/omr-bar-sum-holdout-2026-09/out/base-brahms.musicxml",
+    "strict_measure_rest": false,
+    "assessed": 6405,
+    "exact": 1818,
+    "short": 3717,
+    "overfull": 870,
+    "wrong": 4587,
+    "unassessable": 0,
+    "fraction_exact": 0.2838407494145199,
+    "by_part": {
+      "Violin": 845,
+      "Viola": 441,
+      "Cello": 428,
+      "Bassoon": 402,
+      "Horn": 397,
+      "Clarinet": 392,
+      "Contrabass": 363,
+      "Oboe": 362,
+      "Flute": 332,
+      "Contrabassoon": 264,
+      "Timpani": 186,
+      "Trumpet": 175
+    },
+    "bars": [],
+    "bars_total": 4587
+  }
+]

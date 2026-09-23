@@ -1,0 +1,1378 @@
+{
+ "_readme": "Every bar ROADMAP 2.8 held out inside the Litolff count page (manifest pdf index 3 = bars 49-82). Coordinates are (page, system, staff, cell); `measure` is the document bar number the exported file carries.",
+ "n": 59,
+ "bars": [
+  {
+   "page": 3,
+   "system": 0,
+   "staff": 0,
+   "cell": 2,
+   "measure": 50,
+   "part": "P1",
+   "events": 2,
+   "noteheads_and_rests": 4,
+   "meter_carried_in_file": false,
+   "want_units": 192,
+   "want_quarters": 2.0,
+   "divisions": 96,
+   "voices": [
+    {
+     "units": 144,
+     "is_the_bar": false
+    }
+   ],
+   "quarters": [
+    1.5
+   ]
+  },
+  {
+   "page": 3,
+   "system": 0,
+   "staff": 0,
+   "cell": 4,
+   "measure": 52,
+   "part": "P1",
+   "events": 1,
+   "noteheads_and_rests": 3,
+   "meter_carried_in_file": false,
+   "want_units": 192,
+   "want_quarters": 2.0,
+   "divisions": 96,
+   "voices": [
+    {
+     "units": 48,
+     "is_the_bar": false
+    }
+   ],
+   "quarters": [
+    0.5
+   ]
+  },
+  {
+   "page": 3,
+   "system": 0,
+   "staff": 0,
+   "cell": 10,
+   "measure": 58,
+   "part": "P1",
+   "events": 1,
+   "noteheads_and_rests": 1,
+   "meter_carried_in_file": false,
+   "want_units": 192,
+   "want_quarters": 2.0,
+   "divisions": 96,
+   "voices": [
+    {
+     "units": 384,
+     "is_the_bar": false
+    }
+   ],
+   "quarters": [
+    4.0
+   ]
+  },
+  {
+   "page": 3,
+   "system": 1,
+   "staff": 0,
+   "cell": 6,
+   "measure": 70,
+   "part": "P1",
+   "events": 3,
+   "noteheads_and_rests": 3,
+   "meter_carried_in_file": false,
+   "want_units": 192,
+   "want_quarters": 2.0,
+   "divisions": 96,
+   "voices": [
+    {
+     "units": 480,
+     "is_the_bar": false
+    }
+   ],
+   "quarters": [
+    5.0
+   ]
+  },
+  {
+   "page": 3,
+   "system": 1,
+   "staff": 0,
+   "cell": 7,
+   "measure": 71,
+   "part": "P1",
+   "events": 3,
+   "noteheads_and_rests": 4,
+   "meter_carried_in_file": false,
+   "want_units": 192,
+   "want_quarters": 2.0,
+   "divisions": 96,
+   "voices": [
+    {
+     "units": 576,
+     "is_the_bar": false
+    }
+   ],
+   "quarters": [
+    6.0
+   ]
+  },
+  {
+   "page": 3,
+   "system": 1,
+   "staff": 0,
+   "cell": 8,
+   "measure": 72,
+   "part": "P1",
+   "events": 2,
+   "noteheads_and_rests": 2,
+   "meter_carried_in_file": false,
+   "want_units": 192,
+   "want_quarters": 2.0,
+   "divisions": 96,
+   "voices": [
+    {
+     "units": 432,
+     "is_the_bar": false
+    }
+   ],
+   "quarters": [
+    4.5
+   ]
+  },
+  {
+   "page": 3,
+   "system": 1,
+   "staff": 0,
+   "cell": 9,
+   "measure": 73,
+   "part": "P1",
+   "events": 3,
+   "noteheads_and_rests": 3,
+   "meter_carried_in_file": false,
+   "want_units": 192,
+   "want_quarters": 2.0,
+   "divisions": 96,
+   "voices": [
+    {
+     "units": 576,
+     "is_the_bar": false
+    }
+   ],
+   "quarters": [
+    6.0
+   ]
+  },
+  {
+   "page": 3,
+   "system": 0,
+   "staff": 1,
+   "cell": 2,
+   "measure": 50,
+   "part": "P2",
+   "events": 2,
+   "noteheads_and_rests": 3,
+   "meter_carried_in_file": false,
+   "want_units": 192,
+   "want_quarters": 2.0,
+   "divisions": 96,
+   "voices": [
+    {
+     "units": 144,
+     "is_the_bar": false
+    }
+   ],
+   "quarters": [
+    1.5
+   ]
+  },
+  {
+   "page": 3,
+   "system": 0,
+   "staff": 1,
+   "cell": 3,
+   "measure": 51,
+   "part": "P2",
+   "events": 1,
+   "noteheads_and_rests": 3,
+   "meter_carried_in_file": false,
+   "want_units": 192,
+   "want_quarters": 2.0,
+   "divisions": 96,
+   "voices": [
+    {
+     "units": 96,
+     "is_the_bar": false
+    }
+   ],
+   "quarters": [
+    1.0
+   ]
+  },
+  {
+   "page": 3,
+   "system": 0,
+   "staff": 2,
+   "cell": 2,
+   "measure": 50,
+   "part": "P3",
+   "events": 1,
+   "noteheads_and_rests": 2,
+   "meter_carried_in_file": false,
+   "want_units": 192,
+   "want_quarters": 2.0,
+   "divisions": 96,
+   "voices": [
+    {
+     "units": 96,
+     "is_the_bar": false
+    }
+   ],
+   "quarters": [
+    1.0
+   ]
+  },
+  {
+   "page": 3,
+   "system": 1,
+   "staff": 1,
+   "cell": 4,
+   "measure": 68,
+   "part": "P3",
+   "events": 3,
+   "noteheads_and_rests": 3,
+   "meter_carried_in_file": false,
+   "want_units": 192,
+   "want_quarters": 2.0,
+   "divisions": 96,
+   "voices": [
+    {
+     "units": 480,
+     "is_the_bar": false
+    }
+   ],
+   "quarters": [
+    5.0
+   ]
+  },
+  {
+   "page": 3,
+   "system": 1,
+   "staff": 1,
+   "cell": 5,
+   "measure": 69,
+   "part": "P3",
+   "events": 3,
+   "noteheads_and_rests": 3,
+   "meter_carried_in_file": false,
+   "want_units": 192,
+   "want_quarters": 2.0,
+   "divisions": 96,
+   "voices": [
+    {
+     "units": 576,
+     "is_the_bar": false
+    }
+   ],
+   "quarters": [
+    6.0
+   ]
+  },
+  {
+   "page": 3,
+   "system": 1,
+   "staff": 1,
+   "cell": 14,
+   "measure": 78,
+   "part": "P3",
+   "events": 2,
+   "noteheads_and_rests": 2,
+   "meter_carried_in_file": false,
+   "want_units": 192,
+   "want_quarters": 2.0,
+   "divisions": 96,
+   "voices": [
+    {
+     "units": 576,
+     "is_the_bar": false
+    }
+   ],
+   "quarters": [
+    6.0
+   ]
+  },
+  {
+   "page": 4,
+   "system": 0,
+   "staff": 2,
+   "cell": 0,
+   "measure": 82,
+   "part": "P3",
+   "events": 1,
+   "noteheads_and_rests": 1,
+   "meter_carried_in_file": false,
+   "want_units": 192,
+   "want_quarters": 2.0,
+   "divisions": 96,
+   "voices": [
+    {
+     "units": 96,
+     "is_the_bar": false
+    }
+   ],
+   "quarters": [
+    1.0
+   ]
+  },
+  {
+   "page": 3,
+   "system": 0,
+   "staff": 3,
+   "cell": 2,
+   "measure": 50,
+   "part": "P4",
+   "events": 1,
+   "noteheads_and_rests": 2,
+   "meter_carried_in_file": false,
+   "want_units": 192,
+   "want_quarters": 2.0,
+   "divisions": 96,
+   "voices": [
+    {
+     "units": 96,
+     "is_the_bar": false
+    }
+   ],
+   "quarters": [
+    1.0
+   ]
+  },
+  {
+   "page": 3,
+   "system": 1,
+   "staff": 2,
+   "cell": 11,
+   "measure": 75,
+   "part": "P4",
+   "events": 1,
+   "noteheads_and_rests": 3,
+   "meter_carried_in_file": false,
+   "want_units": 192,
+   "want_quarters": 2.0,
+   "divisions": 96,
+   "voices": [
+    {
+     "units": 96,
+     "is_the_bar": false
+    }
+   ],
+   "quarters": [
+    1.0
+   ]
+  },
+  {
+   "page": 4,
+   "system": 0,
+   "staff": 3,
+   "cell": 0,
+   "measure": 82,
+   "part": "P4",
+   "events": 2,
+   "noteheads_and_rests": 3,
+   "meter_carried_in_file": false,
+   "want_units": 192,
+   "want_quarters": 2.0,
+   "divisions": 96,
+   "voices": [
+    {
+     "units": 48,
+     "is_the_bar": false
+    },
+    {
+     "units": 48,
+     "is_the_bar": false
+    }
+   ],
+   "quarters": [
+    0.5,
+    0.5
+   ]
+  },
+  {
+   "page": 3,
+   "system": 0,
+   "staff": 4,
+   "cell": 2,
+   "measure": 50,
+   "part": "P5",
+   "events": 1,
+   "noteheads_and_rests": 1,
+   "meter_carried_in_file": false,
+   "want_units": 192,
+   "want_quarters": 2.0,
+   "divisions": 96,
+   "voices": [
+    {
+     "units": 48,
+     "is_the_bar": false
+    }
+   ],
+   "quarters": [
+    0.5
+   ]
+  },
+  {
+   "page": 3,
+   "system": 0,
+   "staff": 4,
+   "cell": 3,
+   "measure": 51,
+   "part": "P5",
+   "events": 1,
+   "noteheads_and_rests": 4,
+   "meter_carried_in_file": false,
+   "want_units": 192,
+   "want_quarters": 2.0,
+   "divisions": 96,
+   "voices": [
+    {
+     "units": 96,
+     "is_the_bar": false
+    }
+   ],
+   "quarters": [
+    1.0
+   ]
+  },
+  {
+   "page": 3,
+   "system": 0,
+   "staff": 4,
+   "cell": 10,
+   "measure": 58,
+   "part": "P5",
+   "events": 3,
+   "noteheads_and_rests": 3,
+   "meter_carried_in_file": false,
+   "want_units": 192,
+   "want_quarters": 2.0,
+   "divisions": 96,
+   "voices": [
+    {
+     "units": 144,
+     "is_the_bar": false
+    }
+   ],
+   "quarters": [
+    1.5
+   ]
+  },
+  {
+   "page": 4,
+   "system": 0,
+   "staff": 4,
+   "cell": 0,
+   "measure": 82,
+   "part": "P5",
+   "events": 1,
+   "noteheads_and_rests": 2,
+   "meter_carried_in_file": false,
+   "want_units": 192,
+   "want_quarters": 2.0,
+   "divisions": 96,
+   "voices": [
+    {
+     "units": 96,
+     "is_the_bar": false
+    }
+   ],
+   "quarters": [
+    1.0
+   ]
+  },
+  {
+   "page": 3,
+   "system": 0,
+   "staff": 5,
+   "cell": 2,
+   "measure": 50,
+   "part": "P6",
+   "events": 3,
+   "noteheads_and_rests": 6,
+   "meter_carried_in_file": false,
+   "want_units": 192,
+   "want_quarters": 2.0,
+   "divisions": 96,
+   "voices": [
+    {
+     "units": 144,
+     "is_the_bar": false
+    }
+   ],
+   "quarters": [
+    1.5
+   ]
+  },
+  {
+   "page": 3,
+   "system": 0,
+   "staff": 5,
+   "cell": 11,
+   "measure": 59,
+   "part": "P6",
+   "events": 3,
+   "noteheads_and_rests": 3,
+   "meter_carried_in_file": false,
+   "want_units": 192,
+   "want_quarters": 2.0,
+   "divisions": 96,
+   "voices": [
+    {
+     "units": 576,
+     "is_the_bar": false
+    }
+   ],
+   "quarters": [
+    6.0
+   ]
+  },
+  {
+   "page": 4,
+   "system": 0,
+   "staff": 5,
+   "cell": 0,
+   "measure": 82,
+   "part": "P6",
+   "events": 1,
+   "noteheads_and_rests": 1,
+   "meter_carried_in_file": false,
+   "want_units": 192,
+   "want_quarters": 2.0,
+   "divisions": 96,
+   "voices": [
+    {
+     "units": 384,
+     "is_the_bar": false
+    }
+   ],
+   "quarters": [
+    4.0
+   ]
+  },
+  {
+   "page": 3,
+   "system": 0,
+   "staff": 6,
+   "cell": 13,
+   "measure": 61,
+   "part": "P7",
+   "events": 1,
+   "noteheads_and_rests": 1,
+   "meter_carried_in_file": false,
+   "want_units": 192,
+   "want_quarters": 2.0,
+   "divisions": 96,
+   "voices": [
+    {
+     "units": 384,
+     "is_the_bar": false
+    }
+   ],
+   "quarters": [
+    4.0
+   ]
+  },
+  {
+   "page": 3,
+   "system": 0,
+   "staff": 7,
+   "cell": 2,
+   "measure": 50,
+   "part": "P8",
+   "events": 4,
+   "noteheads_and_rests": 4,
+   "meter_carried_in_file": false,
+   "want_units": 192,
+   "want_quarters": 2.0,
+   "divisions": 96,
+   "voices": [
+    {
+     "units": 120,
+     "is_the_bar": false
+    }
+   ],
+   "quarters": [
+    1.25
+   ]
+  },
+  {
+   "page": 3,
+   "system": 0,
+   "staff": 7,
+   "cell": 3,
+   "measure": 51,
+   "part": "P8",
+   "events": 2,
+   "noteheads_and_rests": 2,
+   "meter_carried_in_file": false,
+   "want_units": 192,
+   "want_quarters": 2.0,
+   "divisions": 96,
+   "voices": [
+    {
+     "units": 48,
+     "is_the_bar": false
+    },
+    {
+     "units": 12,
+     "is_the_bar": false
+    }
+   ],
+   "quarters": [
+    0.5,
+    0.125
+   ]
+  },
+  {
+   "page": 3,
+   "system": 0,
+   "staff": 7,
+   "cell": 4,
+   "measure": 52,
+   "part": "P8",
+   "events": 4,
+   "noteheads_and_rests": 5,
+   "meter_carried_in_file": false,
+   "want_units": 192,
+   "want_quarters": 2.0,
+   "divisions": 96,
+   "voices": [
+    {
+     "units": 168,
+     "is_the_bar": false
+    }
+   ],
+   "quarters": [
+    1.75
+   ]
+  },
+  {
+   "page": 3,
+   "system": 0,
+   "staff": 7,
+   "cell": 5,
+   "measure": 53,
+   "part": "P8",
+   "events": 5,
+   "noteheads_and_rests": 5,
+   "meter_carried_in_file": false,
+   "want_units": 192,
+   "want_quarters": 2.0,
+   "divisions": 96,
+   "voices": [
+    {
+     "units": 576,
+     "is_the_bar": false
+    }
+   ],
+   "quarters": [
+    6.0
+   ]
+  },
+  {
+   "page": 3,
+   "system": 0,
+   "staff": 7,
+   "cell": 6,
+   "measure": 54,
+   "part": "P8",
+   "events": 3,
+   "noteheads_and_rests": 5,
+   "meter_carried_in_file": false,
+   "want_units": 192,
+   "want_quarters": 2.0,
+   "divisions": 96,
+   "voices": [
+    {
+     "units": 24,
+     "is_the_bar": false
+    },
+    {
+     "units": 48,
+     "is_the_bar": false
+    }
+   ],
+   "quarters": [
+    0.25,
+    0.5
+   ]
+  },
+  {
+   "page": 3,
+   "system": 0,
+   "staff": 7,
+   "cell": 14,
+   "measure": 62,
+   "part": "P8",
+   "events": 1,
+   "noteheads_and_rests": 1,
+   "meter_carried_in_file": false,
+   "want_units": 192,
+   "want_quarters": 2.0,
+   "divisions": 96,
+   "voices": [
+    {
+     "units": 96,
+     "is_the_bar": false
+    }
+   ],
+   "quarters": [
+    1.0
+   ]
+  },
+  {
+   "page": 3,
+   "system": 1,
+   "staff": 4,
+   "cell": 0,
+   "measure": 64,
+   "part": "P8",
+   "events": 3,
+   "noteheads_and_rests": 3,
+   "meter_carried_in_file": false,
+   "want_units": 192,
+   "want_quarters": 2.0,
+   "divisions": 96,
+   "voices": [
+    {
+     "units": 576,
+     "is_the_bar": false
+    }
+   ],
+   "quarters": [
+    6.0
+   ]
+  },
+  {
+   "page": 3,
+   "system": 1,
+   "staff": 4,
+   "cell": 8,
+   "measure": 72,
+   "part": "P8",
+   "events": 2,
+   "noteheads_and_rests": 2,
+   "meter_carried_in_file": false,
+   "want_units": 192,
+   "want_quarters": 2.0,
+   "divisions": 96,
+   "voices": [
+    {
+     "units": 432,
+     "is_the_bar": false
+    }
+   ],
+   "quarters": [
+    4.5
+   ]
+  },
+  {
+   "page": 3,
+   "system": 1,
+   "staff": 4,
+   "cell": 11,
+   "measure": 75,
+   "part": "P8",
+   "events": 1,
+   "noteheads_and_rests": 1,
+   "meter_carried_in_file": false,
+   "want_units": 192,
+   "want_quarters": 2.0,
+   "divisions": 96,
+   "voices": [
+    {
+     "units": 96,
+     "is_the_bar": false
+    }
+   ],
+   "quarters": [
+    1.0
+   ]
+  },
+  {
+   "page": 3,
+   "system": 1,
+   "staff": 4,
+   "cell": 13,
+   "measure": 77,
+   "part": "P8",
+   "events": 2,
+   "noteheads_and_rests": 2,
+   "meter_carried_in_file": false,
+   "want_units": 192,
+   "want_quarters": 2.0,
+   "divisions": 96,
+   "voices": [
+    {
+     "units": 96,
+     "is_the_bar": false
+    }
+   ],
+   "quarters": [
+    1.0
+   ]
+  },
+  {
+   "page": 3,
+   "system": 1,
+   "staff": 4,
+   "cell": 14,
+   "measure": 78,
+   "part": "P8",
+   "events": 2,
+   "noteheads_and_rests": 2,
+   "meter_carried_in_file": false,
+   "want_units": 192,
+   "want_quarters": 2.0,
+   "divisions": 96,
+   "voices": [
+    {
+     "units": 480,
+     "is_the_bar": false
+    }
+   ],
+   "quarters": [
+    5.0
+   ]
+  },
+  {
+   "page": 3,
+   "system": 1,
+   "staff": 4,
+   "cell": 16,
+   "measure": 80,
+   "part": "P8",
+   "events": 2,
+   "noteheads_and_rests": 2,
+   "meter_carried_in_file": false,
+   "want_units": 192,
+   "want_quarters": 2.0,
+   "divisions": 96,
+   "voices": [
+    {
+     "units": 480,
+     "is_the_bar": false
+    }
+   ],
+   "quarters": [
+    5.0
+   ]
+  },
+  {
+   "page": 4,
+   "system": 0,
+   "staff": 6,
+   "cell": 0,
+   "measure": 82,
+   "part": "P8",
+   "events": 1,
+   "noteheads_and_rests": 2,
+   "meter_carried_in_file": false,
+   "want_units": 192,
+   "want_quarters": 2.0,
+   "divisions": 96,
+   "voices": [
+    {
+     "units": 96,
+     "is_the_bar": false
+    }
+   ],
+   "quarters": [
+    1.0
+   ]
+  },
+  {
+   "page": 3,
+   "system": 0,
+   "staff": 8,
+   "cell": 2,
+   "measure": 50,
+   "part": "P9",
+   "events": 4,
+   "noteheads_and_rests": 5,
+   "meter_carried_in_file": false,
+   "want_units": 192,
+   "want_quarters": 2.0,
+   "divisions": 96,
+   "voices": [
+    {
+     "units": 120,
+     "is_the_bar": false
+    }
+   ],
+   "quarters": [
+    1.25
+   ]
+  },
+  {
+   "page": 3,
+   "system": 0,
+   "staff": 8,
+   "cell": 4,
+   "measure": 52,
+   "part": "P9",
+   "events": 3,
+   "noteheads_and_rests": 3,
+   "meter_carried_in_file": false,
+   "want_units": 192,
+   "want_quarters": 2.0,
+   "divisions": 96,
+   "voices": [
+    {
+     "units": 144,
+     "is_the_bar": false
+    }
+   ],
+   "quarters": [
+    1.5
+   ]
+  },
+  {
+   "page": 3,
+   "system": 0,
+   "staff": 8,
+   "cell": 6,
+   "measure": 54,
+   "part": "P9",
+   "events": 3,
+   "noteheads_and_rests": 5,
+   "meter_carried_in_file": false,
+   "want_units": 192,
+   "want_quarters": 2.0,
+   "divisions": 96,
+   "voices": [
+    {
+     "units": 120,
+     "is_the_bar": false
+    }
+   ],
+   "quarters": [
+    1.25
+   ]
+  },
+  {
+   "page": 3,
+   "system": 1,
+   "staff": 5,
+   "cell": 0,
+   "measure": 64,
+   "part": "P9",
+   "events": 2,
+   "noteheads_and_rests": 2,
+   "meter_carried_in_file": false,
+   "want_units": 192,
+   "want_quarters": 2.0,
+   "divisions": 96,
+   "voices": [
+    {
+     "units": 144,
+     "is_the_bar": false
+    }
+   ],
+   "quarters": [
+    1.5
+   ]
+  },
+  {
+   "page": 3,
+   "system": 1,
+   "staff": 5,
+   "cell": 1,
+   "measure": 65,
+   "part": "P9",
+   "events": 1,
+   "noteheads_and_rests": 1,
+   "meter_carried_in_file": false,
+   "want_units": 192,
+   "want_quarters": 2.0,
+   "divisions": 96,
+   "voices": [
+    {
+     "units": 96,
+     "is_the_bar": false
+    }
+   ],
+   "quarters": [
+    1.0
+   ]
+  },
+  {
+   "page": 3,
+   "system": 1,
+   "staff": 5,
+   "cell": 3,
+   "measure": 67,
+   "part": "P9",
+   "events": 2,
+   "noteheads_and_rests": 3,
+   "meter_carried_in_file": false,
+   "want_units": 192,
+   "want_quarters": 2.0,
+   "divisions": 96,
+   "voices": [
+    {
+     "units": 384,
+     "is_the_bar": false
+    }
+   ],
+   "quarters": [
+    4.0
+   ]
+  },
+  {
+   "page": 4,
+   "system": 0,
+   "staff": 7,
+   "cell": 0,
+   "measure": 82,
+   "part": "P9",
+   "events": 1,
+   "noteheads_and_rests": 1,
+   "meter_carried_in_file": false,
+   "want_units": 192,
+   "want_quarters": 2.0,
+   "divisions": 96,
+   "voices": [
+    {
+     "units": 96,
+     "is_the_bar": false
+    }
+   ],
+   "quarters": [
+    1.0
+   ]
+  },
+  {
+   "page": 3,
+   "system": 0,
+   "staff": 9,
+   "cell": 7,
+   "measure": 55,
+   "part": "P10",
+   "events": 1,
+   "noteheads_and_rests": 1,
+   "meter_carried_in_file": false,
+   "want_units": 192,
+   "want_quarters": 2.0,
+   "divisions": 96,
+   "voices": [
+    {
+     "units": 96,
+     "is_the_bar": false
+    }
+   ],
+   "quarters": [
+    1.0
+   ]
+  },
+  {
+   "page": 3,
+   "system": 0,
+   "staff": 9,
+   "cell": 9,
+   "measure": 57,
+   "part": "P10",
+   "events": 1,
+   "noteheads_and_rests": 1,
+   "meter_carried_in_file": false,
+   "want_units": 192,
+   "want_quarters": 2.0,
+   "divisions": 96,
+   "voices": [
+    {
+     "units": 96,
+     "is_the_bar": false
+    }
+   ],
+   "quarters": [
+    1.0
+   ]
+  },
+  {
+   "page": 3,
+   "system": 0,
+   "staff": 9,
+   "cell": 11,
+   "measure": 59,
+   "part": "P10",
+   "events": 2,
+   "noteheads_and_rests": 2,
+   "meter_carried_in_file": false,
+   "want_units": 192,
+   "want_quarters": 2.0,
+   "divisions": 96,
+   "voices": [
+    {
+     "units": 480,
+     "is_the_bar": false
+    }
+   ],
+   "quarters": [
+    5.0
+   ]
+  },
+  {
+   "page": 3,
+   "system": 1,
+   "staff": 6,
+   "cell": 0,
+   "measure": 64,
+   "part": "P10",
+   "events": 1,
+   "noteheads_and_rests": 1,
+   "meter_carried_in_file": false,
+   "want_units": 192,
+   "want_quarters": 2.0,
+   "divisions": 96,
+   "voices": [
+    {
+     "units": 24,
+     "is_the_bar": false
+    }
+   ],
+   "quarters": [
+    0.25
+   ]
+  },
+  {
+   "page": 3,
+   "system": 1,
+   "staff": 6,
+   "cell": 11,
+   "measure": 75,
+   "part": "P10",
+   "events": 1,
+   "noteheads_and_rests": 1,
+   "meter_carried_in_file": false,
+   "want_units": 192,
+   "want_quarters": 2.0,
+   "divisions": 96,
+   "voices": [
+    {
+     "units": 96,
+     "is_the_bar": false
+    }
+   ],
+   "quarters": [
+    1.0
+   ]
+  },
+  {
+   "page": 4,
+   "system": 0,
+   "staff": 8,
+   "cell": 0,
+   "measure": 82,
+   "part": "P10",
+   "events": 1,
+   "noteheads_and_rests": 1,
+   "meter_carried_in_file": false,
+   "want_units": 192,
+   "want_quarters": 2.0,
+   "divisions": 96,
+   "voices": [
+    {
+     "units": 384,
+     "is_the_bar": false
+    }
+   ],
+   "quarters": [
+    4.0
+   ]
+  },
+  {
+   "page": 3,
+   "system": 0,
+   "staff": 10,
+   "cell": 2,
+   "measure": 50,
+   "part": "P11",
+   "events": 3,
+   "noteheads_and_rests": 4,
+   "meter_carried_in_file": false,
+   "want_units": 192,
+   "want_quarters": 2.0,
+   "divisions": 96,
+   "voices": [
+    {
+     "units": 144,
+     "is_the_bar": false
+    }
+   ],
+   "quarters": [
+    1.5
+   ]
+  },
+  {
+   "page": 3,
+   "system": 0,
+   "staff": 10,
+   "cell": 4,
+   "measure": 52,
+   "part": "P11",
+   "events": 1,
+   "noteheads_and_rests": 1,
+   "meter_carried_in_file": false,
+   "want_units": 192,
+   "want_quarters": 2.0,
+   "divisions": 96,
+   "voices": [
+    {
+     "units": 96,
+     "is_the_bar": false
+    }
+   ],
+   "quarters": [
+    1.0
+   ]
+  },
+  {
+   "page": 3,
+   "system": 0,
+   "staff": 10,
+   "cell": 9,
+   "measure": 57,
+   "part": "P11",
+   "events": 3,
+   "noteheads_and_rests": 3,
+   "meter_carried_in_file": false,
+   "want_units": 192,
+   "want_quarters": 2.0,
+   "divisions": 96,
+   "voices": [
+    {
+     "units": 240,
+     "is_the_bar": false
+    }
+   ],
+   "quarters": [
+    2.5
+   ]
+  },
+  {
+   "page": 3,
+   "system": 0,
+   "staff": 10,
+   "cell": 11,
+   "measure": 59,
+   "part": "P11",
+   "events": 2,
+   "noteheads_and_rests": 2,
+   "meter_carried_in_file": false,
+   "want_units": 192,
+   "want_quarters": 2.0,
+   "divisions": 96,
+   "voices": [
+    {
+     "units": 480,
+     "is_the_bar": false
+    }
+   ],
+   "quarters": [
+    5.0
+   ]
+  },
+  {
+   "page": 3,
+   "system": 1,
+   "staff": 7,
+   "cell": 5,
+   "measure": 69,
+   "part": "P11",
+   "events": 1,
+   "noteheads_and_rests": 1,
+   "meter_carried_in_file": false,
+   "want_units": 192,
+   "want_quarters": 2.0,
+   "divisions": 96,
+   "voices": [
+    {
+     "units": 96,
+     "is_the_bar": false
+    }
+   ],
+   "quarters": [
+    1.0
+   ]
+  },
+  {
+   "page": 3,
+   "system": 1,
+   "staff": 7,
+   "cell": 12,
+   "measure": 76,
+   "part": "P11",
+   "events": 2,
+   "noteheads_and_rests": 2,
+   "meter_carried_in_file": false,
+   "want_units": 192,
+   "want_quarters": 2.0,
+   "divisions": 96,
+   "voices": [
+    {
+     "units": 96,
+     "is_the_bar": false
+    }
+   ],
+   "quarters": [
+    1.0
+   ]
+  },
+  {
+   "page": 3,
+   "system": 1,
+   "staff": 7,
+   "cell": 16,
+   "measure": 80,
+   "part": "P11",
+   "events": 2,
+   "noteheads_and_rests": 2,
+   "meter_carried_in_file": false,
+   "want_units": 192,
+   "want_quarters": 2.0,
+   "divisions": 96,
+   "voices": [
+    {
+     "units": 432,
+     "is_the_bar": false
+    }
+   ],
+   "quarters": [
+    4.5
+   ]
+  },
+  {
+   "page": 3,
+   "system": 1,
+   "staff": 7,
+   "cell": 17,
+   "measure": 81,
+   "part": "P11",
+   "events": 2,
+   "noteheads_and_rests": 4,
+   "meter_carried_in_file": false,
+   "want_units": 192,
+   "want_quarters": 2.0,
+   "divisions": 96,
+   "voices": [
+    {
+     "units": 480,
+     "is_the_bar": false
+    }
+   ],
+   "quarters": [
+    5.0
+   ]
+  }
+ ]
+}

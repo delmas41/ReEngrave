@@ -1,0 +1,1018 @@
+{
+ "document": "engraved",
+ "bars_held_out_sum": {
+  "bars": 38,
+  "bars_on_a_doubled_staff": 0,
+  "of_bars_with_events": 449,
+  "bars_with_events_without_a_meter": 0,
+  "bars_judged_by_a_carried_meter": 0,
+  "fraction": 0.08463251670378619,
+  "noteheads_and_rests": 48,
+  "by_part_id": {
+   "P7": 4,
+   "P6": 3,
+   "P16": 3,
+   "P1": 2,
+   "P2": 2,
+   "P3": 2,
+   "P4": 2,
+   "P5": 2,
+   "P8": 2,
+   "P9": 2,
+   "P10": 2,
+   "P11": 2,
+   "P12": 2,
+   "P13": 2,
+   "P15": 2,
+   "P17": 2,
+   "P18": 2
+  },
+  "by_kind": {
+   "short": 34,
+   "overfull": 4
+  },
+  "carried_meter": 0,
+  "two_voice": 0,
+  "sample_first_40": [
+   {
+    "page": 2,
+    "system": 0,
+    "staff": 0,
+    "cell": 4,
+    "measure": 21,
+    "part": "P1",
+    "events": 1,
+    "noteheads_and_rests": 2,
+    "meter_carried_in_file": false,
+    "want_units": 8,
+    "want_quarters": 2.0,
+    "divisions": 4,
+    "voices": [
+     {
+      "units": 4,
+      "is_the_bar": false
+     }
+    ],
+    "quarters": [
+     1.0
+    ]
+   },
+   {
+    "page": 2,
+    "system": 0,
+    "staff": 0,
+    "cell": 5,
+    "measure": 22,
+    "part": "P1",
+    "events": 1,
+    "noteheads_and_rests": 1,
+    "meter_carried_in_file": false,
+    "want_units": 8,
+    "want_quarters": 2.0,
+    "divisions": 4,
+    "voices": [
+     {
+      "units": 4,
+      "is_the_bar": false
+     }
+    ],
+    "quarters": [
+     1.0
+    ]
+   },
+   {
+    "page": 2,
+    "system": 0,
+    "staff": 1,
+    "cell": 4,
+    "measure": 21,
+    "part": "P2",
+    "events": 1,
+    "noteheads_and_rests": 1,
+    "meter_carried_in_file": false,
+    "want_units": 8,
+    "want_quarters": 2.0,
+    "divisions": 4,
+    "voices": [
+     {
+      "units": 4,
+      "is_the_bar": false
+     }
+    ],
+    "quarters": [
+     1.0
+    ]
+   },
+   {
+    "page": 2,
+    "system": 0,
+    "staff": 1,
+    "cell": 5,
+    "measure": 22,
+    "part": "P2",
+    "events": 1,
+    "noteheads_and_rests": 1,
+    "meter_carried_in_file": false,
+    "want_units": 8,
+    "want_quarters": 2.0,
+    "divisions": 4,
+    "voices": [
+     {
+      "units": 4,
+      "is_the_bar": false
+     }
+    ],
+    "quarters": [
+     1.0
+    ]
+   },
+   {
+    "page": 2,
+    "system": 0,
+    "staff": 2,
+    "cell": 4,
+    "measure": 21,
+    "part": "P3",
+    "events": 1,
+    "noteheads_and_rests": 1,
+    "meter_carried_in_file": false,
+    "want_units": 8,
+    "want_quarters": 2.0,
+    "divisions": 4,
+    "voices": [
+     {
+      "units": 4,
+      "is_the_bar": false
+     }
+    ],
+    "quarters": [
+     1.0
+    ]
+   },
+   {
+    "page": 2,
+    "system": 0,
+    "staff": 2,
+    "cell": 5,
+    "measure": 22,
+    "part": "P3",
+    "events": 1,
+    "noteheads_and_rests": 1,
+    "meter_carried_in_file": false,
+    "want_units": 8,
+    "want_quarters": 2.0,
+    "divisions": 4,
+    "voices": [
+     {
+      "units": 4,
+      "is_the_bar": false
+     }
+    ],
+    "quarters": [
+     1.0
+    ]
+   },
+   {
+    "page": 2,
+    "system": 0,
+    "staff": 3,
+    "cell": 4,
+    "measure": 21,
+    "part": "P4",
+    "events": 1,
+    "noteheads_and_rests": 1,
+    "meter_carried_in_file": false,
+    "want_units": 8,
+    "want_quarters": 2.0,
+    "divisions": 4,
+    "voices": [
+     {
+      "units": 4,
+      "is_the_bar": false
+     }
+    ],
+    "quarters": [
+     1.0
+    ]
+   },
+   {
+    "page": 2,
+    "system": 0,
+    "staff": 3,
+    "cell": 5,
+    "measure": 22,
+    "part": "P4",
+    "events": 1,
+    "noteheads_and_rests": 1,
+    "meter_carried_in_file": false,
+    "want_units": 8,
+    "want_quarters": 2.0,
+    "divisions": 4,
+    "voices": [
+     {
+      "units": 4,
+      "is_the_bar": false
+     }
+    ],
+    "quarters": [
+     1.0
+    ]
+   },
+   {
+    "page": 2,
+    "system": 0,
+    "staff": 4,
+    "cell": 4,
+    "measure": 21,
+    "part": "P5",
+    "events": 1,
+    "noteheads_and_rests": 1,
+    "meter_carried_in_file": false,
+    "want_units": 8,
+    "want_quarters": 2.0,
+    "divisions": 4,
+    "voices": [
+     {
+      "units": 4,
+      "is_the_bar": false
+     }
+    ],
+    "quarters": [
+     1.0
+    ]
+   },
+   {
+    "page": 2,
+    "system": 0,
+    "staff": 4,
+    "cell": 5,
+    "measure": 22,
+    "part": "P5",
+    "events": 1,
+    "noteheads_and_rests": 1,
+    "meter_carried_in_file": false,
+    "want_units": 8,
+    "want_quarters": 2.0,
+    "divisions": 4,
+    "voices": [
+     {
+      "units": 4,
+      "is_the_bar": false
+     }
+    ],
+    "quarters": [
+     1.0
+    ]
+   },
+   {
+    "page": 1,
+    "system": 0,
+    "staff": 5,
+    "cell": 0,
+    "measure": 8,
+    "part": "P6",
+    "events": 2,
+    "noteheads_and_rests": 2,
+    "meter_carried_in_file": false,
+    "want_units": 8,
+    "want_quarters": 2.0,
+    "divisions": 4,
+    "voices": [
+     {
+      "units": 32,
+      "is_the_bar": false
+     }
+    ],
+    "quarters": [
+     8.0
+    ]
+   },
+   {
+    "page": 2,
+    "system": 0,
+    "staff": 5,
+    "cell": 4,
+    "measure": 21,
+    "part": "P6",
+    "events": 1,
+    "noteheads_and_rests": 1,
+    "meter_carried_in_file": false,
+    "want_units": 8,
+    "want_quarters": 2.0,
+    "divisions": 4,
+    "voices": [
+     {
+      "units": 4,
+      "is_the_bar": false
+     }
+    ],
+    "quarters": [
+     1.0
+    ]
+   },
+   {
+    "page": 2,
+    "system": 0,
+    "staff": 5,
+    "cell": 5,
+    "measure": 22,
+    "part": "P6",
+    "events": 1,
+    "noteheads_and_rests": 1,
+    "meter_carried_in_file": false,
+    "want_units": 8,
+    "want_quarters": 2.0,
+    "divisions": 4,
+    "voices": [
+     {
+      "units": 4,
+      "is_the_bar": false
+     }
+    ],
+    "quarters": [
+     1.0
+    ]
+   },
+   {
+    "page": 1,
+    "system": 0,
+    "staff": 6,
+    "cell": 0,
+    "measure": 8,
+    "part": "P7",
+    "events": 1,
+    "noteheads_and_rests": 2,
+    "meter_carried_in_file": false,
+    "want_units": 8,
+    "want_quarters": 2.0,
+    "divisions": 4,
+    "voices": [
+     {
+      "units": 16,
+      "is_the_bar": false
+     }
+    ],
+    "quarters": [
+     4.0
+    ]
+   },
+   {
+    "page": 2,
+    "system": 0,
+    "staff": 6,
+    "cell": 1,
+    "measure": 18,
+    "part": "P7",
+    "events": 5,
+    "noteheads_and_rests": 5,
+    "meter_carried_in_file": false,
+    "want_units": 8,
+    "want_quarters": 2.0,
+    "divisions": 4,
+    "voices": [
+     {
+      "units": 24,
+      "is_the_bar": false
+     }
+    ],
+    "quarters": [
+     6.0
+    ]
+   },
+   {
+    "page": 2,
+    "system": 0,
+    "staff": 6,
+    "cell": 4,
+    "measure": 21,
+    "part": "P7",
+    "events": 1,
+    "noteheads_and_rests": 1,
+    "meter_carried_in_file": false,
+    "want_units": 8,
+    "want_quarters": 2.0,
+    "divisions": 4,
+    "voices": [
+     {
+      "units": 4,
+      "is_the_bar": false
+     }
+    ],
+    "quarters": [
+     1.0
+    ]
+   },
+   {
+    "page": 2,
+    "system": 0,
+    "staff": 6,
+    "cell": 5,
+    "measure": 22,
+    "part": "P7",
+    "events": 1,
+    "noteheads_and_rests": 1,
+    "meter_carried_in_file": false,
+    "want_units": 8,
+    "want_quarters": 2.0,
+    "divisions": 4,
+    "voices": [
+     {
+      "units": 4,
+      "is_the_bar": false
+     }
+    ],
+    "quarters": [
+     1.0
+    ]
+   },
+   {
+    "page": 2,
+    "system": 0,
+    "staff": 7,
+    "cell": 4,
+    "measure": 21,
+    "part": "P8",
+    "events": 1,
+    "noteheads_and_rests": 1,
+    "meter_carried_in_file": false,
+    "want_units": 8,
+    "want_quarters": 2.0,
+    "divisions": 4,
+    "voices": [
+     {
+      "units": 4,
+      "is_the_bar": false
+     }
+    ],
+    "quarters": [
+     1.0
+    ]
+   },
+   {
+    "page": 2,
+    "system": 0,
+    "staff": 7,
+    "cell": 5,
+    "measure": 22,
+    "part": "P8",
+    "events": 1,
+    "noteheads_and_rests": 1,
+    "meter_carried_in_file": false,
+    "want_units": 8,
+    "want_quarters": 2.0,
+    "divisions": 4,
+    "voices": [
+     {
+      "units": 4,
+      "is_the_bar": false
+     }
+    ],
+    "quarters": [
+     1.0
+    ]
+   },
+   {
+    "page": 2,
+    "system": 0,
+    "staff": 8,
+    "cell": 4,
+    "measure": 21,
+    "part": "P9",
+    "events": 1,
+    "noteheads_and_rests": 1,
+    "meter_carried_in_file": false,
+    "want_units": 8,
+    "want_quarters": 2.0,
+    "divisions": 4,
+    "voices": [
+     {
+      "units": 4,
+      "is_the_bar": false
+     }
+    ],
+    "quarters": [
+     1.0
+    ]
+   },
+   {
+    "page": 2,
+    "system": 0,
+    "staff": 8,
+    "cell": 5,
+    "measure": 22,
+    "part": "P9",
+    "events": 1,
+    "noteheads_and_rests": 1,
+    "meter_carried_in_file": false,
+    "want_units": 8,
+    "want_quarters": 2.0,
+    "divisions": 4,
+    "voices": [
+     {
+      "units": 4,
+      "is_the_bar": false
+     }
+    ],
+    "quarters": [
+     1.0
+    ]
+   },
+   {
+    "page": 2,
+    "system": 0,
+    "staff": 9,
+    "cell": 4,
+    "measure": 21,
+    "part": "P10",
+    "events": 1,
+    "noteheads_and_rests": 1,
+    "meter_carried_in_file": false,
+    "want_units": 8,
+    "want_quarters": 2.0,
+    "divisions": 4,
+    "voices": [
+     {
+      "units": 4,
+      "is_the_bar": false
+     }
+    ],
+    "quarters": [
+     1.0
+    ]
+   },
+   {
+    "page": 2,
+    "system": 0,
+    "staff": 9,
+    "cell": 5,
+    "measure": 22,
+    "part": "P10",
+    "events": 1,
+    "noteheads_and_rests": 1,
+    "meter_carried_in_file": false,
+    "want_units": 8,
+    "want_quarters": 2.0,
+    "divisions": 4,
+    "voices": [
+     {
+      "units": 4,
+      "is_the_bar": false
+     }
+    ],
+    "quarters": [
+     1.0
+    ]
+   },
+   {
+    "page": 2,
+    "system": 0,
+    "staff": 10,
+    "cell": 4,
+    "measure": 21,
+    "part": "P11",
+    "events": 1,
+    "noteheads_and_rests": 1,
+    "meter_carried_in_file": false,
+    "want_units": 8,
+    "want_quarters": 2.0,
+    "divisions": 4,
+    "voices": [
+     {
+      "units": 4,
+      "is_the_bar": false
+     }
+    ],
+    "quarters": [
+     1.0
+    ]
+   },
+   {
+    "page": 2,
+    "system": 0,
+    "staff": 10,
+    "cell": 5,
+    "measure": 22,
+    "part": "P11",
+    "events": 1,
+    "noteheads_and_rests": 1,
+    "meter_carried_in_file": false,
+    "want_units": 8,
+    "want_quarters": 2.0,
+    "divisions": 4,
+    "voices": [
+     {
+      "units": 4,
+      "is_the_bar": false
+     }
+    ],
+    "quarters": [
+     1.0
+    ]
+   },
+   {
+    "page": 2,
+    "system": 0,
+    "staff": 11,
+    "cell": 4,
+    "measure": 21,
+    "part": "P12",
+    "events": 1,
+    "noteheads_and_rests": 1,
+    "meter_carried_in_file": false,
+    "want_units": 8,
+    "want_quarters": 2.0,
+    "divisions": 4,
+    "voices": [
+     {
+      "units": 4,
+      "is_the_bar": false
+     }
+    ],
+    "quarters": [
+     1.0
+    ]
+   },
+   {
+    "page": 2,
+    "system": 0,
+    "staff": 11,
+    "cell": 5,
+    "measure": 22,
+    "part": "P12",
+    "events": 1,
+    "noteheads_and_rests": 1,
+    "meter_carried_in_file": false,
+    "want_units": 8,
+    "want_quarters": 2.0,
+    "divisions": 4,
+    "voices": [
+     {
+      "units": 4,
+      "is_the_bar": false
+     }
+    ],
+    "quarters": [
+     1.0
+    ]
+   },
+   {
+    "page": 2,
+    "system": 0,
+    "staff": 12,
+    "cell": 4,
+    "measure": 21,
+    "part": "P13",
+    "events": 1,
+    "noteheads_and_rests": 1,
+    "meter_carried_in_file": false,
+    "want_units": 8,
+    "want_quarters": 2.0,
+    "divisions": 4,
+    "voices": [
+     {
+      "units": 4,
+      "is_the_bar": false
+     }
+    ],
+    "quarters": [
+     1.0
+    ]
+   },
+   {
+    "page": 2,
+    "system": 0,
+    "staff": 12,
+    "cell": 5,
+    "measure": 22,
+    "part": "P13",
+    "events": 1,
+    "noteheads_and_rests": 1,
+    "meter_carried_in_file": false,
+    "want_units": 8,
+    "want_quarters": 2.0,
+    "divisions": 4,
+    "voices": [
+     {
+      "units": 4,
+      "is_the_bar": false
+     }
+    ],
+    "quarters": [
+     1.0
+    ]
+   },
+   {
+    "page": 2,
+    "system": 0,
+    "staff": 14,
+    "cell": 4,
+    "measure": 21,
+    "part": "P15",
+    "events": 1,
+    "noteheads_and_rests": 3,
+    "meter_carried_in_file": false,
+    "want_units": 8,
+    "want_quarters": 2.0,
+    "divisions": 4,
+    "voices": [
+     {
+      "units": 4,
+      "is_the_bar": false
+     }
+    ],
+    "quarters": [
+     1.0
+    ]
+   },
+   {
+    "page": 2,
+    "system": 0,
+    "staff": 14,
+    "cell": 5,
+    "measure": 22,
+    "part": "P15",
+    "events": 1,
+    "noteheads_and_rests": 1,
+    "meter_carried_in_file": false,
+    "want_units": 8,
+    "want_quarters": 2.0,
+    "divisions": 4,
+    "voices": [
+     {
+      "units": 4,
+      "is_the_bar": false
+     }
+    ],
+    "quarters": [
+     1.0
+    ]
+   },
+   {
+    "page": 1,
+    "system": 0,
+    "staff": 15,
+    "cell": 0,
+    "measure": 8,
+    "part": "P16",
+    "events": 1,
+    "noteheads_and_rests": 2,
+    "meter_carried_in_file": false,
+    "want_units": 8,
+    "want_quarters": 2.0,
+    "divisions": 4,
+    "voices": [
+     {
+      "units": 16,
+      "is_the_bar": false
+     }
+    ],
+    "quarters": [
+     4.0
+    ]
+   },
+   {
+    "page": 2,
+    "system": 0,
+    "staff": 15,
+    "cell": 4,
+    "measure": 21,
+    "part": "P16",
+    "events": 1,
+    "noteheads_and_rests": 1,
+    "meter_carried_in_file": false,
+    "want_units": 8,
+    "want_quarters": 2.0,
+    "divisions": 4,
+    "voices": [
+     {
+      "units": 4,
+      "is_the_bar": false
+     }
+    ],
+    "quarters": [
+     1.0
+    ]
+   },
+   {
+    "page": 2,
+    "system": 0,
+    "staff": 15,
+    "cell": 5,
+    "measure": 22,
+    "part": "P16",
+    "events": 1,
+    "noteheads_and_rests": 1,
+    "meter_carried_in_file": false,
+    "want_units": 8,
+    "want_quarters": 2.0,
+    "divisions": 4,
+    "voices": [
+     {
+      "units": 4,
+      "is_the_bar": false
+     }
+    ],
+    "quarters": [
+     1.0
+    ]
+   },
+   {
+    "page": 2,
+    "system": 0,
+    "staff": 16,
+    "cell": 4,
+    "measure": 21,
+    "part": "P17",
+    "events": 1,
+    "noteheads_and_rests": 1,
+    "meter_carried_in_file": false,
+    "want_units": 8,
+    "want_quarters": 2.0,
+    "divisions": 4,
+    "voices": [
+     {
+      "units": 4,
+      "is_the_bar": false
+     }
+    ],
+    "quarters": [
+     1.0
+    ]
+   },
+   {
+    "page": 2,
+    "system": 0,
+    "staff": 16,
+    "cell": 5,
+    "measure": 22,
+    "part": "P17",
+    "events": 1,
+    "noteheads_and_rests": 1,
+    "meter_carried_in_file": false,
+    "want_units": 8,
+    "want_quarters": 2.0,
+    "divisions": 4,
+    "voices": [
+     {
+      "units": 4,
+      "is_the_bar": false
+     }
+    ],
+    "quarters": [
+     1.0
+    ]
+   },
+   {
+    "page": 2,
+    "system": 0,
+    "staff": 17,
+    "cell": 4,
+    "measure": 21,
+    "part": "P18",
+    "events": 1,
+    "noteheads_and_rests": 1,
+    "meter_carried_in_file": false,
+    "want_units": 8,
+    "want_quarters": 2.0,
+    "divisions": 4,
+    "voices": [
+     {
+      "units": 4,
+      "is_the_bar": false
+     }
+    ],
+    "quarters": [
+     1.0
+    ]
+   },
+   {
+    "page": 2,
+    "system": 0,
+    "staff": 17,
+    "cell": 5,
+    "measure": 22,
+    "part": "P18",
+    "events": 1,
+    "noteheads_and_rests": 1,
+    "meter_carried_in_file": false,
+    "want_units": 8,
+    "want_quarters": 2.0,
+    "divisions": 4,
+    "voices": [
+     {
+      "units": 4,
+      "is_the_bar": false
+     }
+    ],
+    "quarters": [
+     1.0
+    ]
+   }
+  ]
+ },
+ "written": {
+  "arc_notes_reachable_at_a_stem": 314,
+  "slur_spans_marked": 3,
+  "tie_links_marked": 1,
+  "tie_chains_marked": 1,
+  "tie_spans_marked": 1,
+  "tacet_bars_padded": 0,
+  "tacet_bars_not_padded_without_meter": 0,
+  "tacet_spans_declined_unidentified_part": 0,
+  "bars_with_events": 449,
+  "bars_with_events_without_a_meter": 0,
+  "bars_judged_by_a_carried_meter": 0,
+  "measure_rests_read": 214,
+  "fermatas": 60,
+  "rests": 84,
+  "notes": 329,
+  "articulations": 0,
+  "ornaments": 0,
+  "beams": 179,
+  "beamed_events": 179,
+  "bars_held_out_sum": 38,
+  "notes_held_out_sum": 48,
+  "dynamics": 84,
+  "pitches_altered_by_the_key": 40,
+  "slurs": 3,
+  "empty_bars_padded": 1,
+  "empty_bars_padded_without_meter": 0,
+  "empty_bars_sized_by_a_carried_meter": 0,
+  "ties": 1,
+  "bars_held_out_sum_on_a_doubled_staff": 0,
+  "parts": 18,
+  "divisions": 4
+ },
+ "balance": {
+  "events_in_log": 688,
+  "noteheads_in_log": 371,
+  "rests_in_log": 317,
+  "events_written": 627,
+  "rests_duplicated_across_voices": 0,
+  "notes_doubled_to_condensed_slot": 0,
+  "events_not_written": 61,
+  "balanced": true
+ },
+ "notes_not_written": {
+  "owned_by_another_staff": 10,
+  "duration_narrowed": 2,
+  "ink_is_a_whole_rest": 1,
+  "bar_does_not_add_up": 48
+ },
+ "arcs_not_written": {
+  "arc_binds_fewer_than_two_notes": 57
+ },
+ "articulation_balance": {
+  "marks_in_log": 1,
+  "written": 0,
+  "not_written": 1,
+  "balanced": true
+ },
+ "ornament_balance": {
+  "marks_in_log": 1,
+  "written": 0,
+  "not_written": 1,
+  "balanced": true
+ },
+ "wedge_balance": {
+  "rows_in_log": 0,
+  "decided": 0,
+  "abstained": 0,
+  "written": 0,
+  "not_written": 0,
+  "balanced": true
+ },
+ "fermata_balance": {
+  "marks_in_log": 83,
+  "written": 60,
+  "duplicated_across_voices": 0,
+  "not_written": 17,
+  "absorbed_by_a_shared_event": 6,
+  "balanced": true
+ },
+ "direction_balance": {
+  "words_decided": 0,
+  "placed": 0,
+  "written": 0,
+  "not_written": 0,
+  "balanced": true
+ },
+ "status_census_unaccounted": [],
+ "part_join": {
+  "unidentified_parts": [],
+  "held_out_staves": 0,
+  "join_decided": "ordinal",
+  "join_used": "ordinal",
+  "join_reason": "ordinal",
+  "systems": [
+   "0/0",
+   "1/0",
+   "2/0"
+  ],
+  "staves_per_system": [
+   18
+  ],
+  "parts": 18,
+  "fragmented": false
+ }
+}

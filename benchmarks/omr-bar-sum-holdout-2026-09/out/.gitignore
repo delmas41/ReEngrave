@@ -1,0 +1,13 @@
+# ROADMAP 2.8. The exported files and the FULL export reports are NOT committed.
+#
+# The MusicXML is a whole-movement export (1.7-5.8 MB each) and the reports name
+# every held bar (2.3 MB on Brahms, 4,560 rows). Both regenerate exactly from the
+# committed records with one command, and the numbers that matter are in
+# FINDINGS.md, `*.summary.json`, `*.barsum.json` and `compare.txt`:
+#
+#   python3 -m tools.omr.staged.export <record> --out out/<tag>.musicxml \
+#       --coverage out/<tag>.report.json
+#   python3 benchmarks/omr-bar-sum-holdout-2026-09/probe/summarise.py
+#
+*.musicxml
+*.report.json

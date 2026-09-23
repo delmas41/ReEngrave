@@ -1,0 +1,14 @@
+{
+  "file": "benchmarks/omr-bar-sum-holdout-2026-09/out/arm-engraved.musicxml",
+  "strict_measure_rest": false,
+  "assessed": 450,
+  "exact": 450,
+  "short": 0,
+  "overfull": 0,
+  "wrong": 0,
+  "unassessable": 0,
+  "fraction_exact": 1.0,
+  "by_part": {},
+  "bars": [],
+  "bars_total": 0
+}
