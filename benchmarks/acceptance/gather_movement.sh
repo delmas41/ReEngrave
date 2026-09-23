@@ -150,12 +150,17 @@ if [ -z "$PAGES" ]; then
   cat >&2 <<EOF
 ERROR: --pages is required for ${DOC_ID}.
 
-The hand-verified works.json window for this document does not reach the
-end of the movement (see this script's own header for the exact figures:
-${DOC_ID} is verified only to page index ${COUNT_PAGE_INDEX}). Open the PDF
+The hand-verified works.json windows for this document do not reach the
+end of the movement -- see this script's own header for the exact figures
+(22% of the movement for Beethoven, 11% for Brahms). Open the PDF
 at ${PDF}
 and find the page where movement 1 ends (a double barline followed by a new
 tempo heading / movement title), then re-run with e.g. --pages 0-17.
+
+Whatever range you choose, it MUST include this document's own
+cleanup-count page (manifest.json count_page.pdf_page_index = ${COUNT_PAGE_INDEX},
+DECISIONS.md 2026-09-22) -- that is the page Sean adjudicates the whole
+pipeline against.
 EOF
   exit 1
 fi
