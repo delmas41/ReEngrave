@@ -1,0 +1,525 @@
+{
+  "crops": [
+    {
+      "file": "litolff-p2-s0-st9-c15-g5-column.png",
+      "subject": "glyph/2/0/9/15/5",
+      "rule": "collapse_duration_by_column",
+      "inferred_beats": 0.5,
+      "inferred": {
+        "beats": 0.5,
+        "written": 0.5,
+        "dots": 0,
+        "beam_levels": 1
+      },
+      "reason": "the_neighbours_name_this_gap",
+      "candidates": [
+        {
+          "value": {
+            "beats": 1.0,
+            "written": 1.0,
+            "dots": 0,
+            "beam_levels": 0
+          },
+          "support": 2.0
+        },
+        {
+          "value": {
+            "beats": 0.5,
+            "written": 0.5,
+            "dots": 0,
+            "beam_levels": 1
+          },
+          "support": 1.0
+        }
+      ],
+      "picked_lower_support": true,
+      "notehead_class": "noteheadBlackInSpace",
+      "detector_conf": 0.3041335642337799,
+      "page": 2,
+      "system": 0,
+      "staff": 9,
+      "cell": 15,
+      "frame_contrast": 188.97,
+      "page_box": [
+        2497.2,
+        1670.0,
+        2520.5,
+        1677.5
+      ],
+      "VERDICT_none_yet": null
+    },
+    {
+      "file": "litolff-p2-s1-st0-c13-g0-barline.png",
+      "subject": "glyph/2/1/0/13/0",
+      "rule": "collapse_duration_to_barline",
+      "inferred_beats": 2.0,
+      "inferred": {
+        "beats": 2.0,
+        "written": 2.0,
+        "dots": 0,
+        "beam_levels": 0
+      },
+      "reason": "the_neighbours_run_to_the_same_barline",
+      "candidates": [
+        {
+          "value": {
+            "beats": 2.0,
+            "written": 2.0,
+            "dots": 0,
+            "beam_levels": 0
+          },
+          "support": 2.0
+        },
+        {
+          "value": {
+            "beats": 1.0,
+            "written": 1.0,
+            "dots": 0,
+            "beam_levels": 1
+          },
+          "support": 1.0
+        }
+      ],
+      "picked_lower_support": false,
+      "notehead_class": "noteheadHalfInSpace",
+      "detector_conf": 0.5571833252906799,
+      "page": 2,
+      "system": 1,
+      "staff": 0,
+      "cell": 13,
+      "frame_contrast": 198.42,
+      "page_box": [
+        2345.0,
+        2253.3,
+        2370.9,
+        2269.9
+      ],
+      "VERDICT_none_yet": null
+    },
+    {
+      "file": "litolff-p2-s1-st0-c13-g5-barline.png",
+      "subject": "glyph/2/1/0/13/5",
+      "rule": "collapse_duration_to_barline",
+      "inferred_beats": 2.0,
+      "inferred": {
+        "beats": 2.0,
+        "written": 2.0,
+        "dots": 0,
+        "beam_levels": 0
+      },
+      "reason": "the_neighbours_run_to_the_same_barline",
+      "candidates": [
+        {
+          "value": {
+            "beats": 2.0,
+            "written": 2.0,
+            "dots": 0,
+            "beam_levels": 0
+          },
+          "support": 2.0
+        },
+        {
+          "value": {
+            "beats": 1.0,
+            "written": 1.0,
+            "dots": 0,
+            "beam_levels": 1
+          },
+          "support": 1.0
+        }
+      ],
+      "picked_lower_support": false,
+      "notehead_class": "noteheadHalfOnLine",
+      "detector_conf": 0.28129133582115173,
+      "page": 2,
+      "system": 1,
+      "staff": 0,
+      "cell": 13,
+      "frame_contrast": 198.42,
+      "page_box": [
+        2342.4,
+        2076.3,
+        2371.9,
+        2095.7
+      ],
+      "VERDICT_none_yet": null
+    },
+    {
+      "file": "litolff-p3-s0-st4-c2-g6-barline.png",
+      "subject": "glyph/3/0/4/2/6",
+      "rule": "collapse_duration_to_barline",
+      "inferred_beats": 1.0,
+      "inferred": {
+        "beats": 1.0,
+        "written": 1.0,
+        "dots": 0,
+        "beam_levels": 0
+      },
+      "reason": "the_neighbours_run_to_the_same_barline",
+      "candidates": [
+        {
+          "value": {
+            "beats": 1.0,
+            "written": 1.0,
+            "dots": 0,
+            "beam_levels": 0
+          },
+          "support": 2.0
+        },
+        {
+          "value": {
+            "beats": 0.5,
+            "written": 0.5,
+            "dots": 0,
+            "beam_levels": 1
+          },
+          "support": 1.0
+        }
+      ],
+      "picked_lower_support": false,
+      "notehead_class": "noteheadBlackInSpace",
+      "detector_conf": 0.41755029559135437,
+      "page": 3,
+      "system": 0,
+      "staff": 4,
+      "cell": 2,
+      "frame_contrast": 139.24,
+      "page_box": [
+        920.2,
+        1022.6,
+        942.6,
+        1041.4
+      ],
+      "VERDICT_none_yet": null
+    },
+    {
+      "file": "litolff-p3-s0-st4-c2-g7-barline.png",
+      "subject": "glyph/3/0/4/2/7",
+      "rule": "collapse_duration_to_barline",
+      "inferred_beats": 1.0,
+      "inferred": {
+        "beats": 1.0,
+        "written": 1.0,
+        "dots": 0,
+        "beam_levels": 0
+      },
+      "reason": "the_neighbours_run_to_the_same_barline",
+      "candidates": [
+        {
+          "value": {
+            "beats": 1.0,
+            "written": 1.0,
+            "dots": 0,
+            "beam_levels": 0
+          },
+          "support": 2.0
+        },
+        {
+          "value": {
+            "beats": 0.5,
+            "written": 0.5,
+            "dots": 0,
+            "beam_levels": 1
+          },
+          "support": 1.0
+        }
+      ],
+      "picked_lower_support": false,
+      "notehead_class": "noteheadBlackInSpace",
+      "detector_conf": 0.38337063789367676,
+      "page": 3,
+      "system": 0,
+      "staff": 4,
+      "cell": 2,
+      "frame_contrast": 139.24,
+      "page_box": [
+        920.0,
+        1037.2,
+        942.6,
+        1057.4
+      ],
+      "VERDICT_none_yet": null
+    },
+    {
+      "file": "litolff-p3-s0-st4-c6-g5-barline.png",
+      "subject": "glyph/3/0/4/6/5",
+      "rule": "collapse_duration_to_barline",
+      "inferred_beats": 2.0,
+      "inferred": {
+        "beats": 2.0,
+        "written": 2.0,
+        "dots": 0,
+        "beam_levels": 0
+      },
+      "reason": "the_neighbours_run_to_the_same_barline",
+      "candidates": [
+        {
+          "value": {
+            "beats": 2.0,
+            "written": 2.0,
+            "dots": 0,
+            "beam_levels": 0
+          },
+          "support": 2.0
+        },
+        {
+          "value": {
+            "beats": 1.0,
+            "written": 1.0,
+            "dots": 0,
+            "beam_levels": 1
+          },
+          "support": 1.0
+        }
+      ],
+      "picked_lower_support": false,
+      "notehead_class": "noteheadHalfInSpace",
+      "detector_conf": 0.3505529463291168,
+      "page": 3,
+      "system": 0,
+      "staff": 4,
+      "cell": 6,
+      "frame_contrast": 139.24,
+      "page_box": [
+        1539.9,
+        1032.4,
+        1564.7,
+        1056.4
+      ],
+      "VERDICT_none_yet": null
+    },
+    {
+      "file": "litolff-p3-s0-st4-c6-g6-barline.png",
+      "subject": "glyph/3/0/4/6/6",
+      "rule": "collapse_duration_to_barline",
+      "inferred_beats": 2.0,
+      "inferred": {
+        "beats": 2.0,
+        "written": 2.0,
+        "dots": 0,
+        "beam_levels": 0
+      },
+      "reason": "the_neighbours_run_to_the_same_barline",
+      "candidates": [
+        {
+          "value": {
+            "beats": 2.0,
+            "written": 2.0,
+            "dots": 0,
+            "beam_levels": 0
+          },
+          "support": 2.0
+        },
+        {
+          "value": {
+            "beats": 1.0,
+            "written": 1.0,
+            "dots": 0,
+            "beam_levels": 1
+          },
+          "support": 1.0
+        }
+      ],
+      "picked_lower_support": false,
+      "notehead_class": "noteheadHalfInSpace",
+      "detector_conf": 0.3084464967250824,
+      "page": 3,
+      "system": 0,
+      "staff": 4,
+      "cell": 6,
+      "frame_contrast": 139.24,
+      "page_box": [
+        1538.8,
+        1017.4,
+        1563.8,
+        1035.9
+      ],
+      "VERDICT_none_yet": null
+    },
+    {
+      "file": "litolff-p4-s0-st2-c1-g9-barline.png",
+      "subject": "glyph/4/0/2/1/9",
+      "rule": "collapse_duration_to_barline",
+      "inferred_beats": 2.0,
+      "inferred": {
+        "beats": 2.0,
+        "written": 2.0,
+        "dots": 0,
+        "beam_levels": 0
+      },
+      "reason": "the_neighbours_run_to_the_same_barline",
+      "candidates": [
+        {
+          "value": {
+            "beats": 2.0,
+            "written": 2.0,
+            "dots": 0,
+            "beam_levels": 0
+          },
+          "support": 2.0
+        },
+        {
+          "value": {
+            "beats": 1.0,
+            "written": 1.0,
+            "dots": 0,
+            "beam_levels": 1
+          },
+          "support": 1.0
+        }
+      ],
+      "picked_lower_support": false,
+      "notehead_class": "noteheadHalfInSpace",
+      "detector_conf": 0.3501182496547699,
+      "page": 4,
+      "system": 0,
+      "staff": 2,
+      "cell": 1,
+      "frame_contrast": 57.66,
+      "page_box": [
+        620.3,
+        704.5,
+        645.9,
+        723.8
+      ],
+      "VERDICT_none_yet": null
+    },
+    {
+      "file": "litolff-p4-s0-st8-c2-g3-barline.png",
+      "subject": "glyph/4/0/8/2/3",
+      "rule": "collapse_duration_to_barline",
+      "inferred_beats": 1.0,
+      "inferred": {
+        "beats": 1.0,
+        "written": 1.0,
+        "dots": 0,
+        "beam_levels": 0
+      },
+      "reason": "the_neighbours_run_to_the_same_barline",
+      "candidates": [
+        {
+          "value": {
+            "beats": 1.0,
+            "written": 1.0,
+            "dots": 0,
+            "beam_levels": 0
+          },
+          "support": 2.0
+        },
+        {
+          "value": {
+            "beats": 0.5,
+            "written": 0.5,
+            "dots": 0,
+            "beam_levels": 1
+          },
+          "support": 1.0
+        },
+        {
+          "value": {
+            "beats": 0.25,
+            "written": 0.25,
+            "dots": 0,
+            "beam_levels": 2
+          },
+          "support": 1.0
+        }
+      ],
+      "picked_lower_support": false,
+      "notehead_class": "noteheadBlackInSpace",
+      "detector_conf": 0.4130820035934448,
+      "page": 4,
+      "system": 0,
+      "staff": 8,
+      "cell": 2,
+      "frame_contrast": 146.83,
+      "page_box": [
+        835.5,
+        1615.4,
+        857.4,
+        1665.4
+      ],
+      "VERDICT_none_yet": null
+    },
+    {
+      "file": "litolff-p4-s0-st9-c5-g7-barline.png",
+      "subject": "glyph/4/0/9/5/7",
+      "rule": "collapse_duration_to_barline",
+      "inferred_beats": 0.25,
+      "inferred": {
+        "beats": 0.25,
+        "written": 0.25,
+        "dots": 0,
+        "beam_levels": 2
+      },
+      "reason": "the_neighbours_run_to_the_same_barline",
+      "candidates": [
+        {
+          "value": {
+            "beats": 0.5,
+            "written": 0.5,
+            "dots": 0,
+            "beam_levels": 1
+          },
+          "support": 2.0
+        },
+        {
+          "value": {
+            "beats": 0.25,
+            "written": 0.25,
+            "dots": 0,
+            "beam_levels": 2
+          },
+          "support": 1.0
+        }
+      ],
+      "picked_lower_support": true,
+      "notehead_class": "noteheadBlackOnLine",
+      "detector_conf": 0.7740268707275391,
+      "page": 4,
+      "system": 0,
+      "staff": 9,
+      "cell": 5,
+      "frame_contrast": 122.86,
+      "page_box": [
+        1281.4,
+        1865.6,
+        1308.8,
+        1878.0
+      ],
+      "VERDICT_none_yet": null
+    }
+  ],
+  "refused": [
+    {
+      "subject": "glyph/2/1/7/7/3",
+      "why": "FRAME CONTROL FAILED",
+      "contrast": 5.0
+    },
+    {
+      "subject": "glyph/4/0/0/12/2",
+      "why": "FRAME CONTROL FAILED",
+      "contrast": 7.77
+    },
+    {
+      "subject": "glyph/4/0/0/12/4",
+      "why": "FRAME CONTROL FAILED",
+      "contrast": 7.77
+    },
+    {
+      "subject": "glyph/4/0/1/12/0",
+      "why": "FRAME CONTROL FAILED",
+      "contrast": -12.25
+    },
+    {
+      "subject": "glyph/4/0/1/12/4",
+      "why": "FRAME CONTROL FAILED",
+      "contrast": -12.25
+    },
+    {
+      "subject": "glyph/2/1/7/7/1",
+      "why": "FRAME CONTROL FAILED",
+      "contrast": 5.0
+    }
+  ]
+}
