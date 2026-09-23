@@ -1,0 +1,23 @@
+{
+  "staff": "staff/3/0/9",
+  "staff_name": "Viola",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf",
+  "dpi": 600,
+  "frame_contrast": 152.51,
+  "crop_page_px": [
+    295,
+    1689,
+    1849,
+    1973
+  ],
+  "zoom": 4,
+  "detector_notehead_boxes": 43,
+  "written": 0,
+  "refused": {
+    "no_pitch": 36,
+    "not_a_notehead:clipped_fragment": 2,
+    "ink_is_a_whole_rest": 1,
+    "not_a_notehead:too_narrow": 1,
+    "owned_by_another_staff": 3
+  }
+}
