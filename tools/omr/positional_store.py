@@ -694,30 +694,36 @@ class PositionIndex:
 def stream_observations(path: Path) -> Iterator[Dict[str, Any]]:
     """Yield each observation of a staged record without loading the file.
 
-    ⚠️ The Brahms record is 443 MB.  `json.load` on it wants several GB, so
-    this walks the pretty-printed structure instead: the record is written by
-    ``json.dump(..., indent=2)``, so an observation inside
-    ``record.observations`` opens at exactly six spaces and closes at exactly
-    six, and anything deeper is nested within it.
+    ⚠️⚠️ **FORMAT-AGNOSTIC, NOT `indent=2`-DEPENDENT — ROADMAP 1.1b, 2026-09-22.**
+    Until this change the walk was a line-based hack keyed on
+    ``json.dump(..., indent=2)``'s exact whitespace: an observation inside
+    ``record.observations`` opened at exactly six spaces and closed at exactly
+    six, and anything deeper was nested within it. That broke the moment a
+    record was written compact (no indent) — which `staged/__main__.py` now
+    does by default (see its own note on why) — because a compact file has no
+    six-space anchor to find at all, and the reader would silently yield
+    nothing rather than raise, the exact "cannot tell" collapse this project's
+    own CLAUDE.md keeps naming. `ijson.items` streams the same
+    ``record.observations`` array item by item regardless of whitespace, so
+    this reads an `indent=2` record (every one gathered before 2026-09-22) and
+    a compact one identically, with the same peak-memory property the old
+    reader had: one observation in flight at a time, never the whole 443 MB
+    file. `use_float=True` matches `record_slim.py`'s own note — ijson parses
+    numbers as `decimal.Decimal` by default, which is not what every caller
+    downstream of this generator expects.
     """
-    started = False
-    buf: List[str] = []
-    with open(path) as fh:
-        for line in fh:
-            if not started:
-                if '"observations": [' in line:
-                    started = True
-                continue
-            if buf:
-                buf.append(line)
-                if line.startswith("      }"):
-                    yield json.loads("".join(buf).rstrip().rstrip(","))
-                    buf = []
-                continue
-            if line.startswith("      {"):
-                buf = [line]
-            elif line.startswith("    ]"):
-                return
+    try:
+        import ijson
+    except ImportError as exc:  # pragma: no cover - environment-dependent
+        raise ImportError(
+            "positional_store.stream_observations needs `ijson` to stream a "
+            "large record without loading it whole "
+            "(`python3 -m pip install --user ijson`). "
+            f"underlying error: {exc}") from exc
+    with open(path, "rb") as fh:
+        for item in ijson.items(fh, "record.observations.item",
+                                 use_float=True):
+            yield item
 
 
 _SUBJ = re.compile(r"^(\w+)/(.*)$")

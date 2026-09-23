@@ -365,12 +365,24 @@ def main(argv=None) -> int:
     # flag arm. See `_settings`.
     prov["settings"] = _settings(args)
     result["provenance"] = prov
-    text = json.dumps(result, indent=2, default=str)
+    # ⚠️⚠️ ROADMAP 1.1b, 2026-09-22: COMPACT, NOT `indent=2`. A staged
+    # record's own `record_slim.py` measured this format change ALONE
+    # (isolated from its ink-summary change) as roughly half of that
+    # tool's 48-51% size reduction on the two committed shared records --
+    # a bigger, lower-risk lever than any per-quantity schema change,
+    # because a short flat row (one `Q.INK` component, one entry of an
+    # `arc_owner` `considered` array) pays `indent=2`'s per-leaf-line tax
+    # far more than a deeply-nested one. When `args.out` is not given the
+    # text still goes to stdout for a human to read -- rare in practice,
+    # since every real gather passes `--out` -- and un-indented JSON on one
+    # line is unreadable there, so that path alone still pretty-prints;
+    # only the file actually WRITTEN to disk goes compact.
+    file_text = json.dumps(result, separators=(",", ":"), default=str)
     if args.out:
-        Path(args.out).write_text(text)
+        Path(args.out).write_text(file_text)
         print(f"wrote {args.out}")
     else:
-        print(text)
+        print(json.dumps(result, indent=2, default=str))
 
     if args.musicxml:
         from . import export as staged_export

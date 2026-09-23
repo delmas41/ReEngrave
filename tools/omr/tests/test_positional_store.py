@@ -90,6 +90,37 @@ class TestMembershipIsASetNeverAField(unittest.TestCase):
                          {"noteheadBlackOnLine", "slur"})
         self.assertTrue(all(m.kind == KIND_OVERLAPS for m in got[0].memberships))
 
+    def test_stream_observations_is_FORMAT_AGNOSTIC(self) -> None:
+        """Roadmap 1.1b: `staged/__main__.py` now writes every record
+        compact (no `indent=2`), because that format alone accounts for
+        roughly half a record's on-disk size (`record_slim.py`'s own
+        measurement). The reader must not care which spelling it is handed
+        -- the SAME fixture, byte-identical in content, written both ways,
+        must yield the SAME entries."""
+        rec = {"observations": [
+            {"subject": "staff/0/0/0", "quantity": "staff_lines",
+             "value": [100, 110, 120, 130, 140], "detail": {}},
+            {"subject": "glyph/0/0/0/0/900", "quantity": "ink", "value": "ink",
+             "detail": {"y_center_page": 110.0, "x_center_page": 50.0,
+                        "ink_explained_by": ["noteheadBlackOnLine", "slur"],
+                        "ink_detector_coverage": 0.4,
+                        "width_spaces": 1.0, "height_spaces": 1.0}},
+        ]}
+        with tempfile.TemporaryDirectory() as d:
+            pretty = Path(d) / "pretty.json"
+            compact = Path(d) / "compact.json"
+            pretty.write_text(json.dumps({"record": rec}, indent=2))
+            compact.write_text(json.dumps({"record": rec},
+                                          separators=(",", ":")))
+            got_pretty = list(entries_from_record(pretty, publisher="x"))
+            got_compact = list(entries_from_record(compact, publisher="x"))
+        self.assertEqual(len(got_pretty), 1)
+        self.assertEqual(len(got_compact), 1)
+        self.assertEqual({m.name for m in got_pretty[0].memberships},
+                         {m.name for m in got_compact[0].memberships})
+        self.assertEqual(got_pretty[0].staff_position,
+                         got_compact[0].staff_position)
+
 
 class TestProvenanceTiersAreNeverPooledByDefault(unittest.TestCase):
     """A store populated from our own readings and then used to identify new
