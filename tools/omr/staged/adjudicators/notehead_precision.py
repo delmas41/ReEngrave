@@ -26,7 +26,8 @@ acts on the refusal, and it counts what it drops.
 AND THAT IS WORTH RECORDING RATHER THAN SILENTLY WORKING AROUND.
 `gather_ownership_evidence` files `Q.GLYPH_LADDER` ONLY for a glyph inside a
 CROSS-STAFF CONTEST (`subjects_from=Q.GLYPH_BAND_DISTANCE` on
-`adjudicate_glyph_owner`) — same class, different staff, overlapping ink. The
+`adjudicate_glyph_owner`) — same CATEGORY (ROADMAP 2.6; it was the smufl NAME
+until 2026-09-23), different staff, overlapping ink. The
 legacy `_drop_unladdered_noteheads` population is a letter bowl, a key-
 signature flat's loop, a bare ledger line: ink detected ONCE, on no other
 staff, so it never forms a contest and `Q.GLYPH_LADDER` is never gathered for

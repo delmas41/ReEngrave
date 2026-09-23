@@ -20,8 +20,13 @@ assumed:
     ownership verdict**, and
   * `adjudicate_glyph_owner` declares `subjects_from=Q.GLYPH_BAND_DISTANCE`,
     and `gather_ownership_evidence` files a band row ONLY for a detection that
-    shares its `smufl_name` with a detection on ANOTHER STAFF of the SAME
-    SYSTEM at `CONTEST_IOU = 0.5` or more.
+    shares its detector CATEGORY with a detection on ANOTHER STAFF of the SAME
+    SYSTEM at more than `CONTEST_IOU = 0.3`.
+
+    ⚠️ ROADMAP 2.6 MOVED BOTH VALUES (2026-09-23), and this probe's headline
+    was computed under the OLD ones -- smufl NAME equality at 0.5.  The domain
+    is now WIDER on both axes, so a bar this file once called UNREACHABLE may
+    hold a contest today.  Re-run it before quoting its zero again.
 
   **=> A bar holding no member of such a contest cannot change.**  That is a
   one-sided claim and it is the only one available here: a bar that DOES hold
@@ -36,9 +41,10 @@ cell index is the bar index within the system (`Subject.cell` restarts per
 system; corroborated below against the exporter's own system map).
 
 ⚠️ IT IS A SUPERSET TEST, DELIBERATELY.  The committed pairs table is built at
-IoU 0.3 while the contest gate is 0.5, so filtering at 0.3 gives a population
-that CONTAINS `glyph_owner`'s.  "Zero pairs here" is therefore sound; the 0.5
-count is reported beside it as the domain's own size.
+IoU 0.3, which is now exactly the contest gate, so filtering at 0.3 gives a
+population that CONTAINS `glyph_owner`'s.  "Zero pairs here" is therefore
+sound; the count at the OLD 0.5 gate is reported beside it, and the difference
+between the two is what ROADMAP 2.6 handed in.
 
 ⚠️ TWO CONTROLS, BOTH ABLE TO FAIL, because the headline here is a ZERO and a
 zero from a dead instrument reads identically to a zero from a clean page.
@@ -71,7 +77,9 @@ MAP = ROOT / "benchmarks/omr-cleanup-count-2026-09/out/system-map-p1-p4.json"
 #: `gather.CONTEST_IOU`.  Restated here ONLY because importing
 #: `tools.omr.staged.gather` drags in the detector, which this container has no
 #: weights for; `tests/test_contest_join.py` asserts the two are equal.
-CONTEST_IOU = 0.5
+#: ⚠️ 0.5 until ROADMAP 2.6 put it back to the frozen legacy reader's swept
+#: 0.3 (`transcribe._CROSS_STAFF_DUPLICATE_IOU`).
+CONTEST_IOU = 0.3
 
 
 def addr(key: str):
@@ -137,14 +145,18 @@ def where_it_stands(step):
 def head_base(c):
     """`noteheadHalfInSpace` -> `noteheadHalf`.
 
-    ⚠️ THE SUFFIX IS THE ONE THING TWO STAVES MUST DISAGREE ABOUT.  A contest
-    needs `di.smufl_name == dj.smufl_name` (`gather.gather_ownership_evidence`),
-    and the suffix names whether the head sits ON A LINE or IN A SPACE -- which
-    is a fact about the staff the head was read against.  One piece of ink in
-    the gap between two staves lands at different positions in their two grids,
-    so the detector can legitimately call it `...OnLine` in one cell and
-    `...InSpace` in the other, and the same-class gate then says THERE IS NO
-    CONTEST.  Counted separately here rather than folded in.
+    ⚠️ THE SUFFIX IS THE ONE THING TWO STAVES MUST DISAGREE ABOUT.  It names
+    whether the head sits ON A LINE or IN A SPACE -- a fact about the staff the
+    head was read against.  One piece of ink in the gap between two staves
+    lands at different positions in their two grids, so the detector can
+    legitimately call it `...OnLine` in one cell and `...InSpace` in the other.
+
+    ⚠️ UNTIL ROADMAP 2.6 THAT ENDED THE CONTEST: the gate was
+    `di.smufl_name == dj.smufl_name`, so the identity test was keyed on the
+    disputed quantity and said THERE IS NO CONTEST.  It is now
+    `di.category == dj.category`, so a suffix-only pair IS a contest and is
+    filed in `cross` below -- still counted separately, because how many of the
+    domain arrived that way is the thing 2.6 measured.
     """
     for suf in ("InSpace", "OnLine"):
         if c.endswith(suf):
@@ -154,18 +166,22 @@ def head_base(c):
 
 def index_pairs(pairs, family="notehead_class"):
     """address -> the pairs touching it, split by scope and by the class gate."""
-    cross = collections.defaultdict(list)     # cross-staff, SAME class
-    suffix = collections.defaultdict(list)    # cross-staff, suffix differs only
+    cross = collections.defaultdict(list)     # cross-staff, one CATEGORY
+    suffix = collections.defaultdict(list)    # of those, suffix differs only
     incell = collections.defaultdict(list)    # same cell (the NMS residue)
     for p in pairs:
         if p["family"] != family:
             continue
         a, b = addr(p["a"]), addr(p["b"])
         if p["scope"] == "same_system_other_staff":
-            if p["same_class"]:
-                cross[a].append(p)
-                cross[b].append(p)
-            elif head_base(p["class_a"]) == head_base(p["class_b"]):
+            # ⚠️ EVERY cross-staff pair of this family is one category (the
+            # family IS the category), so since ROADMAP 2.6 every one of them
+            # is in the domain.  `suffix` is now a REPORTING split over
+            # `cross`, not an exclusion from it.
+            cross[a].append(p)
+            cross[b].append(p)
+            if (not p["same_class"]
+                    and head_base(p["class_a"]) == head_base(p["class_b"])):
                 suffix[a].append(p)
                 suffix[b].append(p)
         elif p["scope"] == "same_cell":

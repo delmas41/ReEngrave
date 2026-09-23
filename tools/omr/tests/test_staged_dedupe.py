@@ -2,14 +2,15 @@
 
 ⚠️ THE PREMISE THE WHOLE REPAIR RESTS ON, and it is a property of a DOMAIN
 rather than of a rule: `adjudicate_glyph_owner` declares
-`subjects_from=Q.GLYPH_BAND_DISTANCE`, and `gather_contested_glyphs` files a
-band-distance row only where TWO same-class detections on DIFFERENT staves
-overlap. So a glyph whose ownership verdict names another staff has a twin on
+`subjects_from=Q.GLYPH_BAND_DISTANCE`, and `gather_ownership_evidence` files a
+band-distance row only where TWO same-CATEGORY detections on DIFFERENT staves
+overlap (ROADMAP 2.6 moved that test off `smufl_name`, which encoded the
+disputed quantity; the population is wider and the twin is still there). So a glyph whose ownership verdict names another staff has a twin on
 that staff BY CONSTRUCTION, and relocating it doubles rather than rescues.
 
 Widen that domain and the repair becomes unsafe, so the domain is asserted off
 the REGISTRY rather than remembered, and the two-detections premise is asserted
-against `gather_contested_glyphs` by running it — not by restating what it is
+against `gather_ownership_evidence` by running it — not by restating what it is
 believed to do.
 
 ⚠️ `arc_owner` is the deliberate counter-example and is asserted too: its
@@ -126,8 +127,13 @@ class TestOneLetterIsNeverContested(unittest.TestCase):
 
 
 class _Det:
-    def __init__(self, name, x, y, w, h):
+    def __init__(self, name, x, y, w, h, category="notehead"):
         self.smufl_name = name
+        # ⚠️ NOT A FIXTURE CONVENIENCE. `gather_glyph_boxes` writes
+        # `d.category` onto every `Q.GLYPH_BOX` row, so a detection without a
+        # category is not one this pipeline has ever seen -- and since ROADMAP
+        # 2.6 it is the field the contest's identity test reads.
+        self.category = category
         self.x_canonical = x
         self.y_canonical = y
         self.width_canonical = w
