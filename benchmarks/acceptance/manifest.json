@@ -64,8 +64,9 @@
       "publisher": null,
       "record": {
         "root": "repo",
-        "path": "benchmarks/omr-staged-engraved-2026-09/out/engraved-p0p2.record.json",
-        "md5": "d349e3631f3a1737aa6fc2f15c13b374"
+        "path": "benchmarks/omr-staged-engraved-2026-09/out/engraved-p0p2-20260923.record.json",
+        "md5": "23c01008ee8087dcbed2fcbc921f91b4",
+        "note": "RE-GATHERED 2026-09-23 on f48a59ce with a CLEAN tree (roadmap 2.9). The record this replaced, benchmarks/omr-staged-engraved-2026-09/out/engraved-p0p2.record.json (md5 d349e3631f3a1737aa6fc2f15c13b374), was gathered on 7754d277 with dirty=True and BEFORE the document-identity work, so it carries no Q.INPUT_DOMAIN row at all -- roadmap 2.2's engraved-template tier could not fire on the acceptance page and 0 of 54 key verdicts read `fitted_by_template_engraved`. A record from a dirty tree is not a baseline (CLAUDE.md Sec.4b); this one is. The superseded file stays on disk. benchmarks/omr-key-majority-2026-09/FINDINGS.md Sec.1a."
       },
       "pdf": {
         "root": "repo",
