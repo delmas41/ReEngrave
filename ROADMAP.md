@@ -87,8 +87,22 @@ count result and are in DECISIONS.
 **Next actions, in order:**
 1. 2.8 (hold out bars that do not add up) and 2.9 (key by system majority) —
    both cheap, both decision-level, both with a control that can fail.
-2. Viola, Litolff p3 system 1: where do the 25 missing heads go — never
-   detected, refused (which bucket), or owned elsewhere. Trace first.
+2. Viola, Litolff p3 system 1 — **TRACED** (`d8c1b801`,
+   `benchmarks/omr-notehead-funnel-2026-09/`): the detector boxed **48**
+   heads on that staff and the file holds **0**; 40 refused `no_pitch`
+   because the staff's CLEF abstained (`no_candidates`: no clef-class box —
+   the alto clef is merged into the lines and was boxed as two noteheads),
+   so `restate_pitch` had nothing and every head died at export. At most 2
+   heads were never boxed; 0 went to a neighbour. The same part one system
+   down (alto clef read) writes 24 of 27. **All 40 `no_pitch` refusals on the
+   page are this one staff.** `slot_index` DID decide the staff is Viola. Next
+   item (2.10, needs Sean's one line): a staff whose clef is unread and whose
+   INSTRUMENT is decided takes the instrument's conventional header clef,
+   GAPS ONLY, in INFER, labelled — the fact sheet already speaks a supplied
+   clef gaps-only (§8), and identity-upstream is Sean's 09-05 inversion.
+   Also found: the file's bar numbers run one behind the print from bar 48
+   (the p2 dropped barline `works.json` records), and system 1's Viola
+   writes 24 against the reference's 18.
 3. 2.6 build (in flight, `claude/owner-domain-2.6`).
 4. 2.7 (accidental) — PARKED — largest thing the count found; GATHER change, so plan
    its two re-gathers together with 2.6's.
