@@ -225,6 +225,35 @@ inherit an `other` row.
 
 ---
 
+## 4c. ADDITION — 2026-09-23: `part-range` joins the scope vocabulary
+
+**This is an ADDITION, not a rewrite.** §0's closed list — `element`, `chord`,
+`bar`, `staff-bar`, `staff-system`, `system`, `page` — and everything else in
+this file stands exactly as written; nothing above is retracted or corrected.
+
+§4b already found the gap and left it as `other` twice: once for a
+document-wide alignment fix, and once (`beethoven5-litolff-p3-2026-09-23.csv`,
+rows for Flute/Bassoon/Violin II/Viola) for **a key signature wrong across a
+part's whole page-range** — repaired by ONE gesture (select the part, fix the
+key at its one entry point) that is neither `staff-system` (it is not one
+system, it is every system the part appears in on the page) nor `page` (it is
+one part, not the page). The counts/README.md note on that count named the
+candidate directly: *"the next counter should decide whether to add a
+`part-range` scope."*
+
+**Decided: add it.** `part-range` — one gesture that repairs a single named
+part across every system of the count page (or the document, where the count
+covers more than one page). It sits between `staff-system` (one system) and
+`page`/`other` (the whole file, all parts): the scope of a `part-range` fix is
+*one part, however many systems it spans on the material being counted*.
+
+The closed list, as of today, reads: `element`, `chord`, `bar`, `staff-bar`,
+`staff-system`, `part-range`, `system`, `page`, plus the `other` escape hatch
+for anything none of these still fits — recorded WITH A DESCRIPTION per §0,
+same as before.
+
+---
+
 ## 5. What this scheme does NOT establish
 
 * **It is not a metric and must not be driven down.** The plan: *the moment it
