@@ -1,0 +1,64 @@
+{
+ "adjudicator": "Sean",
+ "date": "2026-09-23",
+ "method": "8 header crops shown in chat by the coordinating session; Sean: 'pg 14 sys 0 staff 11 is the bass clef - all the others are alto clefs'",
+ "verdicts": [
+  {
+   "crop": "litolff-p2-s1-st9-alto-clef_from_other_systems.png",
+   "staff": "staff/2/1/9",
+   "inferred": "alto",
+   "sean": "alto",
+   "correct": true
+  },
+  {
+   "crop": "litolff-p3-s0-st9-alto-clef_from_other_systems.png",
+   "staff": "staff/3/0/9",
+   "inferred": "alto",
+   "sean": "alto",
+   "correct": true
+  },
+  {
+   "crop": "litolff-p5-s0-st7-alto-clef_from_other_systems.png",
+   "staff": "staff/5/0/7",
+   "inferred": "alto",
+   "sean": "alto",
+   "correct": true
+  },
+  {
+   "crop": "litolff-p5-s1-st5-alto-clef_from_other_systems.png",
+   "staff": "staff/5/1/5",
+   "inferred": "alto",
+   "sean": "alto",
+   "correct": true
+  },
+  {
+   "crop": "litolff-p7-s0-st9-alto-clef_from_other_systems.png",
+   "staff": "staff/7/0/9",
+   "inferred": "alto",
+   "sean": "alto",
+   "correct": true
+  },
+  {
+   "crop": "litolff-p7-s1-st9-alto-clef_from_other_systems.png",
+   "staff": "staff/7/1/9",
+   "inferred": "alto",
+   "sean": "alto",
+   "correct": true
+  },
+  {
+   "crop": "litolff-p14-s0-st11-bass-clef_from_other_systems.png",
+   "staff": "staff/14/0/11",
+   "inferred": "bass",
+   "sean": "bass",
+   "correct": true
+  },
+  {
+   "crop": "litolff-p16-s1-st9-alto-clef_from_other_systems.png",
+   "staff": "staff/16/1/9",
+   "inferred": "alto",
+   "sean": "alto",
+   "correct": true
+  }
+ ],
+ "summary": "8 of 8 correct; tier (2) clef_from_other_systems print-verified on every crop the frame control admitted (staff/15/0/9 has no crop \u2014 refused by the frame control)"
+}

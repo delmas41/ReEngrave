@@ -19,6 +19,15 @@
    "sean": "tenor",
    "correct": true,
    "note": "the 'one READ clef changed' gate failure was a CORRECTION of a wrong base reading; 2.11b (adjudicate_clef must read Q.CLEF_POSITION) stands"
+  },
+  {
+   "crop": "breitkopf-p6-s0-st9-alto-cell0.png",
+   "subject": "staff/6/0/9",
+   "record": "brahms1-breitkopf p6 one-page gather",
+   "claimed": "alto (by geometry, 2.11; base tree ABSTAINED)",
+   "sean": "alto",
+   "correct": true
   }
- ]
+ ],
+ "summary": "3 of 3 correct"
 }
