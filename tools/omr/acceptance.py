@@ -348,8 +348,55 @@ def transpose_parts(xml_text: str) -> Dict[str, Any]:
     return {"n": n, "of": len(root.findall("part"))}
 
 
+def bars_held_out_sum(report: Dict[str, Any]) -> Dict[str, Any]:
+    """ROADMAP 2.8: bars the exporter REFUSED because they did not add up.
+
+    ⚠️⚠️ THIS REPLACES `bars_add_up_to_the_meter_in_force` AS THE MACHINE
+    PROXY, AND THE OLD FIGURE IS NOT DELETED — it is renamed
+    `bars_add_up_control` and kept (see `machine_proxies`). The reason is
+    structural rather than editorial: since 2.8, a bar that does not add up is
+    never written, so *"bars that add up"* is 100% BY CONSTRUCTION and a proxy
+    that cannot move is not a proxy. What it became is a CONTROL on the
+    exporter — it reads the FILE, with no knowledge of the record, so a
+    non-zero `short`/`overfull` there now means the hold-out has a hole in it.
+
+    What this one reports instead is the COST: how many bars we could not read
+    to their meter, and how many noteheads and rests went with them. It is
+    read the way the cleanup count is (CLAUDE.md §6a) — *what to fix next* —
+    and not as *are we winning*: driving it to zero by emitting fewer symbols
+    would improve it and make the file worse.
+    """
+    held = report.get("bars_held_out_sum") or {}
+    return {
+        "n": held.get("bars", 0),
+        "of": held.get("of_bars_with_events", 0),
+        "fraction": held.get("fraction"),
+        "noteheads_and_rests": held.get("noteheads_and_rests", 0),
+        "bars_on_a_doubled_staff": held.get("bars_on_a_doubled_staff", 0),
+        "bars_with_events_without_a_meter":
+            held.get("bars_with_events_without_a_meter", 0),
+        # ⚠️ THE LIST IS NOT COPIED IN. `current.json` is a summary a human
+        # reads; the per-bar coordinates live in the export report, which is
+        # where a reader who wants to open one against the plate goes. A few
+        # thousand rows in the acceptance file would bury every other number.
+        "named_in_the_export_report": len(held.get("held") or ()),
+    }
+
+
 def bars_add_up(xml_text: str) -> Dict[str, Any]:
     """Bars whose voice-1 timeline sums to the METER IN FORCE at that bar.
+
+    ⚠️⚠️ SINCE ROADMAP 2.8 THIS IS A CONTROL, NOT A PROXY, and it is reported
+    under `bars_add_up_control`. The exporter now holds out a bar that does
+    not add up, so this figure is 100% by construction — it can no longer say
+    anything about how well we READ, and anything it does say is about the
+    EXPORTER: a `short` or `overfull` bar here is a bar the hold-out missed.
+    ⚠️ It is deliberately NOT the same arithmetic as the exporter's: it takes
+    the MAX over voices (`bar_fill.bar_total`) where `export._bar_holds_out`
+    requires EVERY voice to fill, and it judges a `measure="yes"` rest by its
+    `<duration>` where the exporter treats a lone one as the bar. Both
+    differences run the same way — this control is the LOOSER test — so it
+    cannot go red for a bar the exporter was right to write.
 
     Reuses `bar_fill.bar_total` (imported, not re-derived) for the
     per-measure sum, but drives it from EACH MEASURE'S OWN `<time>` in
@@ -436,7 +483,15 @@ def machine_proxies(xml_text: str, report: Dict[str, Any]) -> Dict[str, Any]:
             "n": written_notes, "of": noteheads_in_log,
             "fraction": _fraction(written_notes, noteheads_in_log),
         },
-        "bars_add_up_to_the_meter_in_force": bars_add_up(xml_text),
+        # ⚠️⚠️ ROADMAP 2.8. `bars_add_up_to_the_meter_in_force` IS RENAMED,
+        # NOT DELETED: the number it computes is unchanged and still worth
+        # reading, but it is now a CONTROL on the exporter rather than a proxy
+        # for the reading (its docstring says why), so a name that reads like
+        # a score would be a figure nobody could interpret. The proxy slot it
+        # vacated is filled by `bars_held_out_sum`, which reports the COST of
+        # the hold-out — the bars we could not read to their meter.
+        "bars_held_out_sum": bars_held_out_sum(report),
+        "bars_add_up_control": bars_add_up(xml_text),
         "parts_named": parts_named(xml_text),
         "held_out": {
             "staff_not_identified": dropped.get("staff_not_identified", 0),
@@ -826,7 +881,11 @@ def build_summary(documents: Dict[str, Any]) -> Dict[str, Any]:
         row = {"status": "ok"}
         if isinstance(mp, dict) and "notes_reaching_file" in mp:
             row["notes_reaching_file"] = mp["notes_reaching_file"]
-            row["bars_add_up"] = mp["bars_add_up_to_the_meter_in_force"]
+            # ⚠️ ROADMAP 2.8: `bars_held_out_sum` is the proxy now and
+            # `bars_add_up` is the control it made 100% by construction. Both
+            # are carried — the second is how a hole in the first would show.
+            row["bars_held_out_sum"] = mp["bars_held_out_sum"]
+            row["bars_add_up_control"] = mp["bars_add_up_control"]
             row["parts_named"] = mp["parts_named"]
             row["held_out"] = mp["held_out"]
             row["unread_bars"] = mp["unread_bars"]
@@ -857,15 +916,19 @@ def render_table(current: Dict[str, Any]) -> str:
         mp = block.get("machine_proxies", {})
         if "notes_reaching_file" in mp:
             nrf = mp["notes_reaching_file"]
-            baf = mp["bars_add_up_to_the_meter_in_force"]
+            baf = mp["bars_add_up_control"]
+            bho = mp["bars_held_out_sum"]
             pn = mp["parts_named"]
             ho = mp["held_out"]
             ub = mp["unread_bars"]
             lines.append(f"  notes reaching file   {nrf['n']:>6} / {nrf['of']:<6} "
                         f"({nrf['fraction']:.3f})" if nrf["fraction"] is not None
                         else f"  notes reaching file   {nrf}")
-            lines.append(f"  bars add up           {baf['n']:>6} / {baf['of']:<6} "
-                        f"(unassessable={baf['unassessable']})")
+            lines.append(f"  bars HELD OUT (2.8)   {bho['n']:>6} / {bho['of']:<6} "
+                        f"({bho['noteheads_and_rests']} noteheads+rests)")
+            lines.append(f"  bars add up [control] {baf['n']:>6} / {baf['of']:<6} "
+                        f"(short={baf['short']} overfull={baf['overfull']} "
+                        f"unassessable={baf['unassessable']})")
             lines.append(f"  parts named           {pn['n']:>6} / {pn['of']:<6}")
             lines.append(f"  held_out (staff_not_identified)  {ho['staff_not_identified']}")
             lines.append(f"  unread bars (empty_bars_padded)  "
