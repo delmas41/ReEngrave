@@ -46,6 +46,7 @@ from __future__ import annotations
 
 import argparse
 import collections
+import copy
 import os
 import json
 import pathlib
@@ -358,10 +359,140 @@ class StaffRun:
     #: CORNERS. Absent where `Q.CELL_BOX` abstained, and that absence BREAKS
     #: the merge chain rather than being skipped over (see `_flatten_part`).
     cell_boxes: Dict[int, List[float]] = field(default_factory=dict)
+    #: The staff key this run DOUBLES, or `None` for a run built the usual
+    #: way from `Q.MEASURE_PARTITION`.
+    #:
+    #: ⚠️⚠️ ROADMAP 2.1b. Sean, 2026-09-22, on a condensed `Violoncello e
+    #: Basso` staff narrowed to exactly [Cello, Contrabass]: "the string
+    #: family always includes all five; if there are only four lines the
+    #: bass is doubling the celli or it comes in later." `_condensed_double`
+    #: builds this run from the CELLO copy's own cells, once, at the join --
+    #: the record holds the staff's music ONCE, this field is what says the
+    #: file writes it twice. See `docs/DECISIONS.md` 2026-09-22 and
+    #: `benchmarks/omr-cello-bass-convention-2026-09/FINDINGS.md`.
+    condensed_from: Optional[str] = None
 
 
 def _staff_key(page: int, system: int, staff: int) -> str:
     return f"staff/{page}/{system}/{staff}"
+
+
+#: Detail keys stripped off a doubled copy's noteheads and rests, because
+#: each names a mark this staff carries ONCE and the print does not repeat
+#: it for the second section reading the line -- `Q.ARTICULATION_MARK`,
+#: `Q.FERMATA_MARK` and `Q.ORNAMENT_MARK` are all filed against the
+#: notehead's OWN glyph, so a copy that kept them would be a second decided
+#: mark the log never recorded. `glyph` is stripped too, and for a sharper
+#: reason: `_place_wedges` and `_pair_arcs` (in `to_musicxml`, after the
+#: join) find a note by scanning EVERY part for `det["glyph"]` -- keeping it
+#: would let a wedge or slur anchored to the Cello copy be found a second
+#: time through the doubled one, in whichever part the scan visits last.
+#: Stripping it makes the doubled copy invisible to that scan by
+#: construction, which is what keeps `wedge_balance` and `arcs_not_written`
+#: an EQUALITY over the Cello copy alone.
+_CONDENSED_STRIP_KEYS = ("glyph", "articulations", "fermata", "ornaments")
+
+
+def _condensed_double(source: StaffRun) -> StaffRun:
+    """The staff's own music, a second time, for the Contrabass slot.
+
+    ⚠️⚠️ ROADMAP 2.1b -- ONE STAFF'S INK, WRITTEN TWICE, NEVER READ TWICE.
+    Sean's rule (`docs/DECISIONS.md` 2026-09-22) is that a condensed
+    `Violoncello e Basso` staff is not a guess between two instruments, it is
+    the line BOTH play -- so this is not a placement, it is a COPY, taken
+    once the Cello slot's own cells hold every note `_place_notes` decided
+    for this staff. It runs LAST in the join, after `_place_notes`,
+    `_place_articulations`, `_place_fermatas` and `_place_ornaments` have all
+    already mutated `source`'s own detections in place, and BEFORE the
+    post-join arc and wedge passes in `to_musicxml` -- so what it copies is
+    exactly the note/rest content those four functions decided, and none of
+    what the two after it have not yet written.
+    #
+    ⚠️ `directions` AND `arcs` ARE LEFT EMPTY, DELIBERATELY. A direction word
+    or a hairpin printed once over a condensed staff is one mark on one line,
+    not two; doubling it would need a second, independent accounting for
+    every family that already has one over the Cello copy, for a case this
+    plate does not exercise (`benchmarks/omr-cello-bass-convention-2026-09/
+    FINDINGS.md` §2: neither held plate prints one on a condensed system).
+    ⚠️ `_CONDENSED_STRIP_KEYS` says why the notes themselves are stripped of
+    marks and a glyph reference.
+    """
+    cells: Dict[int, Cell] = {}
+    for idx, cell in source.cells.items():
+        dets = []
+        for det in cell.detections:
+            copied = copy.deepcopy(det)
+            for k in _CONDENSED_STRIP_KEYS:
+                copied.pop(k, None)
+            dets.append(copied)
+        cells[idx] = Cell(source.page, source.system, source.staff, idx,
+                          detections=dets)
+    return StaffRun(
+        key=source.key, page=source.page, system=source.system,
+        staff=source.staff, clef=source.clef, fifths=source.fifths,
+        meter=source.meter, n_measures=source.n_measures,
+        n_measures_decided=source.n_measures_decided,
+        # ⚠️ NO NAME OF ITS OWN. The Contrabass part is named from whichever
+        # of its runs DOES carry one (`next((r.name for r in part if
+        # r.name), None)`, `to_musicxml`'s own rule) -- a system where the
+        # plate prints the two apart, or the catalog roster, if either
+        # exists anywhere in the document. Stamping a name here would be
+        # this rule inventing evidence the page did not give it.
+        name=None, cells=cells, spacing=source.spacing,
+        top_line=source.top_line, cell_boxes=dict(source.cell_boxes),
+        condensed_from=source.key)
+
+
+#: `<transpose><diatonic>0</diatonic><chromatic>0</chromatic>
+#: <octave-change>-1</octave-change></transpose>` -- the double bass's own
+#: convention, never written (`benchmarks/omr-cello-bass-convention-2026-09/
+#: FINDINGS.md` §1): the WRITTEN pitch is the Cello's, and this is the one
+#: MusicXML element that says so sounds an octave lower.
+#:
+#: ⚠️⚠️ TWO DRAFTS OF THIS BLOCK EACH RAISED IN music21'S OWN READER, AND
+#: THE SECOND FAILURE IS THE MORE INSTRUCTIVE ONE. Draft 1 wrote
+#: `<octave-change>` alone; the MusicXML 3.1 schema makes `<chromatic>` a
+#: REQUIRED child of `<transpose>`, so that was invalid on its own terms.
+#: Draft 2 added `<chromatic>0</chromatic>` and STILL raised the identical
+#: `TypeError` -- `music21.musicxml.xmlToM21.MeasureParser.
+#: xmlTransposeToInterval` seeds `diatonicStep = None` and only ever sets it
+#: from a `<diatonic>` element, never from `<chromatic>`, then does
+#: `diatonicStep += 7 * octave_change` unconditionally whenever
+#: `<octave-change>` is present -- so an octave-only transpose needs
+#: `<diatonic>0</diatonic>` too, or that reader cannot compute it, however
+#: schema-valid the file is without it. Its own doctest literally names this
+#: shape ("doubled one octave down ... mixed cello / bass parts in
+#: orchestral literature") and still requires the field. Found by parsing
+#: the export back with music21 both times, not by validating the XML
+#: against nothing.
+#:
+#: ⚠️ TEXT SURGERY ON PURPOSE, NEVER A NEW PARAMETER ON THE REUSED RENDERER.
+#: `_legacy._mxl_attributes_block` (`tools/omr/export.py`) is LEGACY and
+#: FROZEN -- bug fixes only, no new mechanisms (CLAUDE.md §3) -- and this is
+#: the one call site in the whole staged path that ever needs `<transpose>`.
+#: Widening the shared renderer would make every OTHER caller pass a `None`
+#: it will never use.
+#:
+#: ⚠️ THE INSERTION POINT IS SCHEMA-CORRECT, NOT INCIDENTAL: MusicXML orders
+#: `<attributes>` children divisions, key, time, staves, part-symbol,
+#: instruments, clef, staff-details, THEN transpose -- and the renderer's own
+#: last line before `</attributes>` is always the clef block (or nothing, for
+#: a staff whose clef abstained), so appending immediately before the closing
+#: tag lands transpose exactly where clef leaves off.
+def _insert_transpose(attrs_xml: str, indent: str) -> str:
+    closing = f"{indent}</attributes>"
+    block = (f"{indent}  <transpose>\n"
+             f"{indent}    <diatonic>0</diatonic>\n"
+             f"{indent}    <chromatic>0</chromatic>\n"
+             f"{indent}    <octave-change>-1</octave-change>\n"
+             f"{indent}  </transpose>\n")
+    if attrs_xml.endswith(closing):
+        return attrs_xml[:-len(closing)] + block + closing
+    # ⚠️ Never reached by `_mxl_attributes_block`'s own two return paths, but
+    # a fallback that raises on a future third path would fail loud where a
+    # silent no-op would fail quiet -- and quiet is what let ten hairpins go
+    # uncounted for a day (CLAUDE.md's own `wedge_balance` history).
+    return attrs_xml + "\n" + block.rstrip("\n")
 
 
 def build(rec: Record) -> Tuple[List[List[StaffRun]], Dict[str, Any],
@@ -531,9 +662,16 @@ def build(rec: Record) -> Tuple[List[List[StaffRun]], Dict[str, Any],
         # can find out without reading this code.
         by_slot: Dict[int, List[StaffRun]] = collections.defaultdict(list)
         stranded = 0
+        # ⚠️⚠️ ROADMAP 2.1b. One entry per condensed staff DOUBLED, never per
+        # note -- `to_musicxml`'s `Unbalanced` control counts the individual
+        # notes under `notes_doubled_to_condensed_slot`; this is the human
+        # -readable side of the same fact, kept in `provenance` so a reader
+        # of the FILE's report finds it without reading this code.
+        condensed_doubling: List[Dict[str, Any]] = []
         for s in systems:
             for run in by_system[s]:
-                slot = rec.value(Q.SLOT_INDEX, run.key)
+                slot_v = rec.verdict(Q.SLOT_INDEX, run.key)
+                slot = slot_v["value"] if slot_v and slot_v["outcome"] == "decided" else None
                 if not isinstance(slot, int):
                     stranded += 1
                     if run.key in held_out_runs:
@@ -549,9 +687,25 @@ def build(rec: Record) -> Tuple[List[List[StaffRun]], Dict[str, Any],
                     parts.append([run])
                     continue
                 by_slot[slot].append(run)
+                # ⚠️ `condensed_with_slot` IS `collapse_slot_index_to_
+                # family_block`'s OWN DETAIL (`inferences.py`), read here and
+                # nowhere earlier -- this is the ONE place a Cello-slot
+                # placement is turned into a SECOND part, and it is EXPORT's
+                # act, not INFER's: the record still holds this staff's music
+                # once. A staff placed WITHOUT the detail (named normally, or
+                # printed apart from its neighbour) is untouched.
+                cwslot = (slot_v.get("detail") or {}).get("condensed_with_slot")
+                if isinstance(cwslot, int):
+                    by_slot[cwslot].append(_condensed_double(run))
+                    condensed_doubling.append({
+                        "condensed_from": run.key,
+                        "cello_slot": slot,
+                        "contrabass_slot": cwslot,
+                    })
         for slot in sorted(by_slot):
             parts.append(by_slot[slot])
-        provenance_extra = {"slots": sorted(by_slot), "stranded": stranded}
+        provenance_extra = {"slots": sorted(by_slot), "stranded": stranded,
+                            "condensed_doubling": condensed_doubling}
     else:
         # ⚠️ THE FRAGMENT FALLBACK IS THE LEGACY BEHAVIOUR AND IS KEPT.
         # One part per system-staff. It pairs with nothing in a reference and
@@ -2301,13 +2455,25 @@ def _part_xml(rec: Record, part: Sequence[StaffRun], pid: str,
             number += 1
             lines.append(
                 f'    <measure number="{number if base is None else base + i + 1}">')
+            # ⚠️ ROADMAP 2.1b. `condensed` joins the attributes-change test
+            # so a run entering or leaving a doubled span always forces a
+            # fresh `<attributes>` block -- `<transpose>` has nowhere else to
+            # be written, and a part that starts on a doubled run needs it
+            # from its very first measure regardless of whether clef/key/
+            # time happen to match whatever `prev` already held.
+            condensed = bool(run.condensed_from)
             changed = (run.clef != prev["clef"] or key != prev["key"]
-                       or meter != prev["time"])
+                       or meter != prev["time"]
+                       or condensed != prev.get("condensed", False))
             if first or changed:
-                lines.append(_legacy._mxl_attributes_block(
+                attrs = _legacy._mxl_attributes_block(
                     run.clef, key, meter, divisions, "      ",
-                    include_divisions=first))
-                prev = {"clef": run.clef, "key": key, "time": meter}
+                    include_divisions=first)
+                if condensed:
+                    attrs = _insert_transpose(attrs, "      ")
+                lines.append(attrs)
+                prev = {"clef": run.clef, "key": key, "time": meter,
+                       "condensed": condensed}
                 first = False
             cell_here = run.cells.get(i)
             directions = list(cell_here.directions) if cell_here else []
@@ -2551,18 +2717,28 @@ def _measure_xml(rec: Record, run: StaffRun, cell_index: int,
     # `_place_notes`.
     for stream in (streams if streams is not None else [events]):
         _annotate_beams_for(rec, run, cell_index, stream, counters)
+    # ⚠️ ROADMAP 2.1b. Whether this bar's notes are the doubled Contrabass
+    # copy of a condensed staff, so the render sites below can count each
+    # written note under `notes_doubled_to_condensed_slot` as well as under
+    # its own family -- the note is written TWICE and the accounting
+    # EQUALITY (`to_musicxml`'s `Unbalanced` control) needs the extra copy
+    # named, not merely absorbed.
+    doubled = bool(run.condensed_from)
     if streams is None:
         for reason in why:
             counters["two_voice_bars_refused_" + reason] += 1
-        lines, _units = _measure_events_xml(events, divisions, counters)
+        lines, _units = _measure_events_xml(events, divisions, counters,
+                                            doubled=doubled)
         return lines
     counters["two_voice_bars"] += 1
-    out, units = _measure_events_xml(streams[0], divisions, counters, voice=1)
+    out, units = _measure_events_xml(streams[0], divisions, counters,
+                                     voice=1, doubled=doubled)
     if units > 0:
         out.append("      <backup>\n"
                    f"        <duration>{units}</duration>\n"
                    "      </backup>")
-    second, _ = _measure_events_xml(streams[1], divisions, counters, voice=2)
+    second, _ = _measure_events_xml(streams[1], divisions, counters, voice=2,
+                                    doubled=doubled)
     out.extend(second)
     # ⚠️ THE DUPLICATED RESTS ARE COUNTED, because the note-accounting control
     # is an EQUALITY and a rest written once per voice would break it for
@@ -2583,7 +2759,8 @@ def _measure_xml(rec: Record, run: StaffRun, cell_index: int,
 
 
 def _measure_events_xml(events: List[Dict[str, Any]], divisions: int,
-                        counters: Dict[str, int], voice: int = 1
+                        counters: Dict[str, int], voice: int = 1,
+                        doubled: bool = False
                         ) -> Tuple[List[str], int]:
     """`(lines, duration units this voice consumed)`.
 
@@ -2592,12 +2769,17 @@ def _measure_events_xml(events: List[Dict[str, Any]], divisions: int,
     not advance the cursor. `_mxl_voice_events` computes the identical number
     for the legacy path; getting it wrong does not produce a wrong-looking
     file, it produces a second voice offset from the first by a beat.
+
+    ⚠️ `doubled`: ROADMAP 2.1b. True while rendering a condensed staff's
+    SECOND copy (`StaffRun.condensed_from`), so every note and rest this
+    call writes is one the log counted once and this file now writes twice.
     """
     out: List[str] = []
     units = 0
     for ev in events:
         if ev.get("kind") == "rest":
-            out.extend(_rest_xml(ev, divisions, counters, voice=voice))
+            out.extend(_rest_xml(ev, divisions, counters, voice=voice,
+                                 doubled=doubled))
             units += max(1, int(round(float(ev["duration_beats"]) * divisions)))
             continue
         heads = ev.get("noteheads") or []
@@ -2701,6 +2883,14 @@ def _measure_events_xml(events: List[Dict[str, Any]], divisions: int,
                 # answer; `printed_accidentals_not_read` is the count.
                 ))
             counters["notes"] += 1
+            if doubled:
+                # ⚠️ ROADMAP 2.1b. Subtracted back out of `written` in
+                # `to_musicxml`'s balance, the same shape as `rests_
+                # duplicated_across_voices` two paragraphs down in that
+                # function -- a note the log counted ONCE that this file
+                # legitimately writes twice must not read as ink from
+                # nowhere.
+                counters["notes_doubled_to_condensed_slot"] += 1
             # ⚠️ COUNTED AT THE RENDER, where the ELEMENT is written, and not
             # where the mark was ATTACHED. The two numbers are different: a
             # mark attached to a notehead that `_place_notes` then dropped is
@@ -2799,13 +2989,17 @@ def _measure_events_xml(events: List[Dict[str, Any]], divisions: int,
 
 
 def _rest_xml(ev: Dict[str, Any], divisions: int,
-              counters: Dict[str, int], voice: int = 1) -> List[str]:
+              counters: Dict[str, int], voice: int = 1,
+              doubled: bool = False) -> List[str]:
     """One `<rest>`, and the one place the BAR convention is written out.
 
     ⚠️ `measure="yes"` CARRIES NO `<type>`, and the two go together. The glyph
     stands for the bar, so there is no note value to name -- `_mxl_note`
     already refuses to write `<type>` when `measure_rest` is set, which is why
     this passes the flag rather than choosing a type of its own.
+
+    ⚠️ `doubled`: ROADMAP 2.1b, the same fact `_measure_events_xml` passes in
+    for a note -- this rest is the condensed staff's SECOND copy.
     """
     det = ev.get("rest") or {}
     measure_rest = bool(det.get("measure_rest"))
@@ -2817,6 +3011,8 @@ def _rest_xml(ev: Dict[str, Any], divisions: int,
         counters["rests"] += 1
         _lily, xml_type, dots = _legacy._duration_to_lily_xml(
             ev.get("duration_type") or "quarter", int(ev.get("dots") or 0))
+    if doubled:
+        counters["notes_doubled_to_condensed_slot"] += 1
     # ⚠️ A REST CARRIES A FERMATA AND AN ARTICULATION DOES NOT, which is why
     # `_mxl_note` keeps `<fermata>` outside the `<articulations>` block. On a
     # conductor's page the whole-bar rest is the COMMONEST carrier of a pause.
@@ -3116,8 +3312,18 @@ def to_musicxml(result: Dict[str, Any]) -> Tuple[str, Dict[str, Any]]:
     # needs its own bar to sum — and `Q.VOICES` names it in
     # `rests_in_every_voice` rather than leaving the exporter to discover it.
     duplicated = int(counters.get("rests_duplicated_across_voices", 0))
+    # ⚠️⚠️ ROADMAP 2.1b. A note or rest the log counted ONCE is written
+    # TWICE onto a condensed staff's doubled Contrabass copy
+    # (`_condensed_double`) — subtracted here for exactly the reason
+    # `duplicated` is: the equality must stay an equality, never widen to
+    # `<=`, and the residue must be NAMED rather than absorbed. See
+    # `docs/DECISIONS.md` 2026-09-22 and CLAUDE.md's own rule that a note
+    # written twice needs a named bucket, not a weaker control.
+    doubled_to_condensed = int(
+        counters.get("notes_doubled_to_condensed_slot", 0))
     written = (int(counters["notes"]) + int(counters["rests"])
-               + int(counters["measure_rests_read"]) - duplicated)
+               + int(counters["measure_rests_read"]) - duplicated
+               - doubled_to_condensed)
     report["balance"] = {
         # ⚠️ RESTS ARE IN THE CONTROL NOW. They were outside it while they had
         # no quantity, which is exactly how 838 glyphs stayed invisible: a
@@ -3128,6 +3334,7 @@ def to_musicxml(result: Dict[str, Any]) -> Tuple[str, Dict[str, Any]]:
         "rests_in_log": len(rec.obs_of(Q.REST)),
         "events_written": written,
         "rests_duplicated_across_voices": duplicated,
+        "notes_doubled_to_condensed_slot": doubled_to_condensed,
         "events_not_written": report["notes_not_written_total"],
         "balanced": events_in_log == written + report["notes_not_written_total"],
     }

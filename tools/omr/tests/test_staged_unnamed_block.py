@@ -182,13 +182,22 @@ class TestTheConventionLivesInInfer(unittest.TestCase):
     SHORT = WINDS + [None] * 3
 
     def test_the_convention_collapses_every_member_but_the_last(self):
-        """POSITIVE CONTROL for the rule, and the shape of the claim."""
+        """POSITIVE CONTROL for the rule, and the shape of the claim.
+
+        ⚠️ ROADMAP 2.1b CHANGED WHAT "the last" MEANS HERE, and this fixture
+        happens to land exactly on the case it changed: `FULL`'s trailing
+        string run is `[Violin, Viola, Cello, Contrabass]`, so on a block
+        short by one the LAST member's own two candidates are `[Cello,
+        Contrabass]` -- the condensed `Violoncello e Basso` pair -- and it
+        is now collapsed too, onto the Cello slot, exactly like the members
+        above it. See `TestTheCondensedPairIsPlacedOnTheCelloSlot` below for
+        the case that still stays NARROWED: a pair that is NOT [Cello,
+        Contrabass]."""
         log = _document([FULL, self.SHORT])
         _run_infer(log)
         got = [_v(log, 1, i) for i in range(3, 6)]
-        self.assertEqual([v.outcome for v in got],
-                         [Outcome.DECIDED] * 2 + [Outcome.NARROWED])
-        self.assertEqual([v.value for v in got[:2]], [4, 5])
+        self.assertEqual([v.outcome for v in got], [Outcome.DECIDED] * 3)
+        self.assertEqual([v.value for v in got], [4, 5, 6])
 
     def test_every_inference_is_labelled_and_supersedes_the_narrowing(self):
         log = _document([FULL, self.SHORT])
@@ -294,6 +303,71 @@ class TestTheConventionLivesInInfer(unittest.TestCase):
         targets = {r.inference.value: r.target for r in infer.RULES}
         self.assertEqual(targets.get("collapse_slot_index_to_family_block"),
                          Q.SLOT_INDEX)
+
+
+class TestTheCondensedPairIsPlacedOnTheCelloSlot(unittest.TestCase):
+    """ROADMAP 2.1b. Sean, 2026-09-22, after the print
+    (`benchmarks/omr-cello-bass-convention-2026-09/FINDINGS.md`): "the string
+    family always includes all five; if there are only four lines the bass
+    is doubling the celli or it comes in later." When the LAST member of a
+    short block narrows to exactly the reference's [Cello, Contrabass] pair,
+    it is a condensed `Violoncello e Basso` staff and is collapsed onto the
+    Cello slot too -- never onto any OTHER pair, which is what the second and
+    third tests below pin.
+    """
+
+    def test_cello_and_contrabass_collapses_with_the_detail_EXPORT_reads(self):
+        """POSITIVE CONTROL, run RED against the unrepaired
+        `collapse_slot_index_to_family_block` (it left the last member
+        narrowed unconditionally, so this failed before the rule read the
+        reference's own instrument names)."""
+        log = _document([FULL, WINDS + [None] * 3])
+        _run_infer(log)
+        last = _v(log, 1, 5)
+        self.assertEqual(last.outcome, Outcome.DECIDED)
+        self.assertEqual(last.value, 6)                 # the Cello slot
+        self.assertEqual(last.detail.get("rule"),
+                         "collapse_slot_index_to_family_block")
+        self.assertTrue(last.detail.get("inferred"))
+        # ⚠️ THE ONE DETAIL `staged/export.py`'s join reads.
+        self.assertEqual(last.detail.get("condensed_with_slot"), 7)
+        self.assertIsNotNone(last.supersedes)
+
+    def test_a_viola_and_cello_pair_does_not_collapse(self):
+        """A block short by one from a THREE-slot string run (no Contrabass
+        printed at all) leaves its last member's candidates at [Viola,
+        Cello] -- not the condensed pair, and it stays exactly as narrow as
+        `adjudicate_slot_index` left it."""
+        no_bass = WINDS + ["Violino I", "Viola", "Violoncello"]
+        log = _document([no_bass, WINDS + [None] * 2])
+        _run_infer(log)
+        last = _v(log, 1, 4)
+        self.assertEqual(last.outcome, Outcome.NARROWED)
+        self.assertEqual([c.value for c in last.candidates], [4, 5])
+        self.assertFalse(last.detail.get("inferred"))
+
+    def test_a_reference_with_no_contrabass_slot_does_not_collapse(self):
+        """The trailing run the block is short from need not be strings at
+        all -- here it is winds, with the reference's OWN Contrabass slot
+        sitting elsewhere, already forced onto a NAMED staff and outside
+        this block's run entirely (this system's four named strings pair to
+        it directly, by name). ⚠️ THE SYSTEM MUST PRINT FEWER STAVES THAN
+        THE REFERENCE, not merely leave some unnamed, or `adjudicate_slot_
+        index` takes the full-lineup (position-is-the-answer) branch and this
+        rule is never reached -- the fixture file's own standing warning
+        about the first draft of this file. The pair the two-staff wind
+        block narrows to is [Oboi, Clarinetti], and neither is a Cello or a
+        Contrabass."""
+        winds_last = ["Violino I", "Viola", "Violoncello", "Contrabasso",
+                      "Flauti", "Oboi", "Clarinetti"]
+        short = ["Violino I", "Viola", "Violoncello", "Contrabasso",
+                None, None]
+        log = _document([winds_last, short])
+        _run_infer(log)
+        last = _v(log, 1, 5)
+        self.assertEqual(last.outcome, Outcome.NARROWED)
+        self.assertEqual([c.value for c in last.candidates], [5, 6])
+        self.assertFalse(last.detail.get("inferred"))
 
 
 if __name__ == "__main__":
