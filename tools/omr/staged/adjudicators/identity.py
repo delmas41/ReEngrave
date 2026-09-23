@@ -152,7 +152,25 @@ def adjudicate_instrument(ev: Evidence) -> Ruling:
         detail={"alias": match.alias, "coverage": match.coverage,
                 "reader_text": text, "roster_decision": decided.kind,
                 "roster_reason": decided.reason or None,
-                "lexicon_said": decided.before or None})
+                "lexicon_said": decided.before or None,
+                # ⚠️ CARRIED, NOT CONSUMED (roadmap 2.1c). `match.condensed_
+                # with` names a SECOND instrument where THIS label itself
+                # joins two instrument nouns with a conjunction --
+                # "Violoncello e Basso" -- and both resolve through the
+                # lexicon on their own (`instruments._condensed_partner`).
+                # It changes no VALUE above: `inst` is still the primary
+                # instrument `lookup`/the roster already decided. Measured
+                # 2026-09-22 (`benchmarks/omr-cello-bass-convention-2026-09/
+                # FINDINGS.md`): on both shared records — the only staged
+                # gathers this repo holds — zero `Q.MARGIN_LABEL` rows carry
+                # a dual label at all, so this key is written and read by
+                # NOTHING yet, on purpose (the `Q.INK` discipline: a producer
+                # and its first consumer landing together makes the reach
+                # measurement circular). The condensed [Cello, Contrabass]
+                # placement itself is `inferences.
+                # collapse_slot_index_to_family_block`'s, off the
+                # REFERENCE's own instrument run, not off this field.
+                "condensed_with": match.condensed_with})
 
 
 def _work_roster(value):
