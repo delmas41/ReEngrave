@@ -1,0 +1,6 @@
+# The re-adjudicated arms of roadmap 2.9 are whole-movement Logs (hundreds of
+# MB each) and are REPRODUCIBLE from the shared record by run_scan.sh. The
+# small artefacts beside them -- the MusicXML, the coverage census, the
+# simulate rows and the run logs -- are what the FINDINGS cite, and they stay.
+*-base.json
+*-arm.json

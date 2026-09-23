@@ -1,0 +1,396 @@
+# The key signature, read off the detector's boxes — ROADMAP 2.9
+
+2026-09-23 · `claude/key-majority-2.9` · branched from `259773e5`
+
+**One sentence.** `Q.KEYSIG_MARKER` — the detector's own key accidentals, on
+the record since the staged pipeline was written and read by nothing — is now
+the primary reader of the key signature; the header fitters corroborate it and
+their disagreements are recorded; and a staff whose concert key stands alone
+on its own system abstains rather than being written.
+
+---
+
+## 0. What this item was asked to be, and what it became
+
+Sean decided on 2026-09-23 that *"a key signature is decided per SYSTEM by
+MAJORITY of its staves, transposition-normalised; a tie abstains and carries"*
+(`docs/DECISIONS.md`). Building it began there. The trace stopped it, and
+Sean's second instruction — *"it seems like we don't even need the majority
+rule … we just need to know what to do with the 3 boxes around the 3 flats on
+every staff"* — is what shipped.
+
+**The majority is not built, and the reason is a measurement.** On the
+engraved acceptance page, normalised to concert pitch, the two readings split
+**EIGHT to EIGHT** (eight treble staves reading one flat against six bass/alto
+staves and two clarinets reading three): a majority would have been a coin
+toss on the acceptance document's own count page. What the page actually held
+was one reader counting **one** flat where the detector had already drawn
+**three boxes** at score 0.91–0.94.
+
+So the system rule shipped as a **CHECK THAT CAN FAIL**, not a vote
+(`adjudicate_system_key` + `disagrees_with_system`). It never writes another
+staff's value onto this one. §6 reports whether that leaves anything a
+majority would have fixed.
+
+---
+
+## 1. Two defects, and only one of them was the rule
+
+### 1a. The acceptance record could not exercise 2.2's rule at all
+
+`benchmarks/acceptance/manifest.json` pointed at
+`benchmarks/omr-staged-engraved-2026-09/out/engraved-p0p2.record.json`,
+gathered on `7754d277` **with `dirty: True`** and before the document-identity
+work. It carries **no `Q.INPUT_DOMAIN` row of any kind**, so
+`_proved_engraved` answered False on every staff and roadmap 2.2's
+engraved-template tier — the one measured at 47 of 50 — **never fired on the
+very page the acceptance set scores**. Reasons over that record:
+
+    fitted 30 · fitted_by_template 20 · markers_without_a_run 4
+    fitted_by_template_engraved: 0
+
+That is why the acceptance page failed a gate 2.2 had passed: 2.2's 47/50 was
+measured on a record that carried the identity row, and the acceptance record
+does not. It is not a regression in 2.2's rule; it is a rule that could not
+reach the input.
+
+Verify (one command):
+
+    python3 benchmarks/omr-key-majority-2026-09/keyprobe.py \
+        benchmarks/omr-staged-engraved-2026-09/out/engraved-p0p2.record.json
+
+**Repaired by re-gathering** the fixture on today's tree
+(`engraved-p0p2-20260923.record.json`, 6.6 MB against the old 17.7 MB — record
+pooling, roadmap 1.1b). `Q.INPUT_DOMAIN` is now filed (`document → engraved`)
+and 47 of 54 verdicts read `fitted_by_template_engraved`. The manifest's
+engraved record path and md5 receipt are updated in this branch.
+
+### 1b. The detector's boxes were read by nothing
+
+`adjudicate_key_signature` declared `Q.KEYSIG_MARKER` in **both** `wants` and
+`composed_from` from the day it was written. Every use was a DETAIL field
+(`_marker_ink`), with a key literally called
+`keysig_marker_count_is_not_a_reading`. On the re-gathered engraved page, p0
+system 0:
+
+| staff | label | markers (canonical x) | locator fit | template | verdict before |
+|---|---|---|---|---|---|
+| 0 | Flute 1 | 3 keyFlat @ 375/461/544 | `n=1 → −1` | `n=3 → −3` | −3 |
+| 13 | Violin 1 | 4 keyFlat @ 375/461/**463**/545 | `n=1 → −1` | `n=3 → −3` | −3 |
+| 4 | Bb Clarinet | 1 keyFlat @ 376 | `n=1 → −1` | `n=1 → −1` | −1 |
+| 8 | Eb Horn 1 | none | — | `n=0 → 0` | 0 |
+
+The locator reads **one** accidental on every treble staff of the page and
+`n=3` on every bass/alto staff, which is the whole of the defect Sean saw. Its
+own run positions say the same thing: `Q.KEYSIG_RUN_POSITION` is `[503]` — one
+position — where the detector filed three boxes at 375, 461 and 544.
+
+Verify:
+
+    python3 benchmarks/omr-key-majority-2026-09/staff_table.py \
+        benchmarks/omr-staged-engraved-2026-09/out/engraved-p0p2-20260923.record.json 0/0
+
+---
+
+## 2. The rule, in the order it runs
+
+1. **Clef guard** — unchanged. No settled clef, no key (`needs_clef`).
+2. **PRIMARY: the marker run** (`_marker_run`). The cell-0 `Q.KEYSIG_MARKER`
+   rows, x-ordered, read as a ladder of **SLOTS** (convention `[C21]`: the
+   accidentals stand at fixed slots in a fixed order, so the Nth is determined
+   by N). *n* flats → −*n*, *n* sharps → +*n*.
+   * two boxes within **0.5 cell staff spaces** are ONE slot. Violin 1's pair
+     at x 461 and 463 is neighbour ink bled in through the cell's 4-space pad
+     (CLAUDE.md §10); counting BOXES reads four flats.
+   * the chain stops at a gap wider than **2.0 spaces**:
+     `_gather_keysig_markers` reads `R.cell(p, s, i, 0)` — the whole first
+     MEASURE — so an accidental printed inside bar 1 is in this population.
+   * ABSTAINS with its own reason on `mixed_marker_kinds` (a standard
+     signature carries one kind), `natural_markers` (a cancellation, which the
+     record has nowhere to put), `too_many_markers` (> 7), and
+     `no_cell_scale` (no `Q.CELL_STAFF_SPACE`, so the slot test has no unit —
+     guessing the scale is how three flats become five).
+   * ⚠️ the unit is `Q.CELL_STAFF_SPACE`, **never** `Q.STAFF_SPACING`: the
+     marker x is `x_canonical`, and on one engraved staff those read 85 and
+     22.5 px.
+3. **The fitters corroborate.** An agreeing fit joins the basis; a disagreeing
+   one is written into `detail["disagreeing_readers"]` with its reader and its
+   fifths and is never dropped.
+4. **Where the detector filed NO marker row**, the 2.2 precedence runs exactly
+   as before — template first on a document measured engraved
+   (`OMR_ENGRAVED_KEYSIG`), locator first otherwise — under one countable
+   reason, `fitted_no_markers`, with the reader in `detail["decided_by"]`.
+   ⚠️ This branch is why the marker rule is survivable on a scan: 80 of 331
+   staves on Litolff and 145 of 691 on Breitkopf arrive here.
+5. **SYSTEM CHECK.** `adjudicate_system_key` (`Kind.SYSTEM`, new
+   `Q.SYSTEM_KEY`, ordered before `key_signature`) publishes the CONCERT keys
+   its staves read and how many read each. A staff whose concert key has no
+   peer abstains `disagrees_with_system`, and EXPORT writes no `<key>` — which
+   in MusicXML CARRIES the part's last stated key.
+
+### Transposition, and who may speak
+
+Imported from `key_consensus`, never restated — `resolve_label` is made public
+for it. A staff enters the check (as witness and as judged) only when
+
+* its margin label resolves in the lexicon, **and**
+* its transposition was **READ** from the label, not defaulted. ⚠️ The obvious
+  test for that is wrong and `key_consensus` records why: comparing the
+  matched offset against the instrument's default cannot tell *named B-flat*
+  from *defaulted to B-flat*, because the default clarinet IS the B-flat one.
+  Measured cost of getting it wrong on this very corpus: the engraved
+  fixture's labels are `Eb Horn 1` and `C Trumpet 1`, and the lexicon defaults
+  those to **+1** (horn in F) and **+2** (trumpet in B-flat) — both wrong for
+  this page. A staff resting on a default may neither corroborate nor be
+  contradicted.
+* it is not an instrument that prints no signature by convention
+  (`[C81]`, `NO_SIGNATURE_CONVENTION` = Timpani, Horn, Trumpet, Cornet,
+  Flugelhorn) or one that may legitimately differ (`Harp`). A trumpet reads 0
+  whatever the key; on Litolff three such staves per system would otherwise
+  stand as a bloc disagreeing with the whole page.
+
+**Why an absence is handled by the label and not by the ink.** A staff with an
+empty header files no marker rows and the template answers `n=0 → 0`, which is
+indistinguishable at the record from a staff nobody could read. The convention
+registry's own answer is used instead (`[C81]`: *"which staves these are is
+knowable from the margin label or the score order before any ink is read"*).
+
+---
+
+## 3. Where it lives, and why not in EVALUATE or INFER
+
+`adjudicate_system_key` reads its staves' **marker and fit ROWS** through the
+same `_staff_reading` the staff decision uses — never their key VERDICTS — so
+`Q.KEY_SIGNATURE` is nowhere in `Q.SYSTEM_KEY`'s ancestry and the staff
+decision may read it back as an ancestor fact. **There is no cycle and nothing
+is superseded.** The reverse order (tally the verdicts, then revise them) is
+the fixpoint `Log.record` refuses, and it is also the majority this item
+deliberately did not build.
+
+INFER was not available: it *"never overturns a DECIDED one"* (CLAUDE.md §4a),
+and repairing Violin 1's one flat means exactly that. EVALUATE was not
+available either: `check_downhill` requires the effect strictly after the
+cause in `DOWNHILL`, and this cause and effect are one quantity.
+
+`Ruling.narrow` was tried for `Q.SYSTEM_KEY` first **and is wrong here**: the
+harness clears a candidate set of one (*"a single survivor is not a
+narrowing"*), so a system whose staves AGREE — the common case and the
+strongest possible evidence — came back ABSTAINED with nothing attached. The
+value is a set instead: the concert keys more than one staff read.
+
+---
+
+## 4. Accuracy, on three real records
+
+**The truth used for the two scans is a document-level fact, not a page
+truth.** Beethoven 5 mvt 1 and Brahms 1 mvt 1 are both in C minor, so each
+staff's printed signature follows from its instrument: −3 concert, −1 for a
+B-flat clarinet, 0 for natural horn / natural trumpet / timpani on the
+19th-century plates. A staff whose instrument the margin label does not name
+is **not scored**.
+
+    python3 benchmarks/omr-key-majority-2026-09/simulate.py <record> <truth>
+
+| document | scored staves | fitters (before) | markers (after) |
+|---|---|---|---|
+| engraved acceptance, 3 pages | 50 | **45 / 3 / 2** | **50 / 0 / 0** |
+| Brahms 1, Breitkopf, whole mvt | 583 | **171 / 241 / 171** | **330 / 198 / 55** |
+| Beethoven 5, Litolff, whole mvt | 200 | **91 / 37 / 72** | **101 / 52 / 47** |
+
+(right / wrong / abstained.)
+
+⚠️ **Litolff is the cost and it is not hidden.** That plate MERGES its ink, so
+where the detector fires at all it under-counts a run it can see: the marker
+rule trades 25 abstentions there for 10 more right **and 15 more wrong**. On
+page 1 system 0 the Oboi, Fagotti, Violino II, Violoncello and Basso staves
+each carry 2 marker boxes against three printed flats. This is the document on
+which the old `_marker_ink` docstring's warning holds, and §6 reports what the
+system check gives back.
+
+⚠️ **Breitkopf is the opposite and it is the larger population.** That plate
+SHATTERS, which separates the flats and suits the detector: +159 right and
+−43 wrong over 583 scored staves.
+
+⚠️ **Brahms' real key changes are NOT modelled in that truth.**
+`data/dossiers/brahms-sym1-mvt1.json` records a change at m191 (concert −3 →
++2) and back at m217, so systems covering bars 191–216 are scored against the
+wrong value in BOTH arms. It inflates the `wrong` column on both sides over
+the same population and does not affect the direction of the comparison.
+
+### 4b. Which branch fired, per document
+
+| branch | engraved (54) | Litolff (331) | Breitkopf (691) |
+|---|---|---|---|
+| `markers` | 48 | 169 | 457 |
+| `fitted_no_markers` (locator) | 0 | 22 | 35 |
+| `fitted_no_markers` (template) | 6 | 58 | 110 |
+| `mixed_marker_kinds` | 0 | 10 | 17 |
+| `no_evidence` | 0 | 48 | 70 |
+| `needs_clef` | 0 | 24 | 2 |
+
+Fit versus markers, where both spoke: **24 disagree / 6 agree** (engraved),
+**45 / 31** (Litolff), **147 / 69** (Breitkopf). Every one of those
+disagreements is on the record in `detail["disagreeing_readers"]`.
+
+---
+
+## 5. The engraved acceptance gate — 18 of 18
+
+    python3 benchmarks/omr-key-majority-2026-09/report.py engraved --truth engraved
+
+| | base (fitters) | arm (markers + check) | truth |
+|---|---|---|---|
+| key verdicts | 50 decided / 4 abstained | **54 decided / 0 abstained** | — |
+| against truth | 45 / 3 / 2 | **50 / 0 / 0** | — |
+| `<note>` | 672 | **672** | — |
+| `<key>` elements | 20 | 18 | 18 |
+| key CHANGES written | **2** (Violin 1 at m8, Violin 2 at m17) | **0** | 0 |
+| `status_census` | balanced, `unaccounted: []` | balanced, `unaccounted: []` | — |
+
+**The carry path exists and needed no export change.** `staged/export.py`
+builds `<attributes>` from `_key_dict(run.fifths)`, and a `None` there makes
+`_mxl_attributes_block` omit `<key>` entirely — under MusicXML's own rules the
+part's last stated key then stands. Checked rather than asserted: in the base
+arm the four abstaining staff-runs at page 2 emit an attributes block with a
+clef and no `<key>`, and their parts keep −3.
+
+    python3 benchmarks/omr-key-majority-2026-09/carry_check.py \
+        benchmarks/omr-key-majority-2026-09/out/engraved-base.musicxml
+    # P7/P8 Bassoon, P16 Viola, P17 Cello at measure 17: <key> OMITTED
+
+
+Per part, the arm now writes: Flute ×2 −3, Oboe ×2 −3, Clarinet ×2 −1,
+Bassoon ×2 −3, Horn ×2 0, Trumpet ×2 −3, Timpani −3, Violin ×2 −3, Viola −3,
+Cello −3, Contrabass −3 — **18 of 18 against
+`out/fixture/beethoven-sym5-mvt1-m1-24.musicxml`**, the encoding the page was
+rendered from.
+
+    python3 benchmarks/omr-key-majority-2026-09/fifths_table.py \
+        benchmarks/omr-key-majority-2026-09/out/engraved-arm.musicxml
+
+Before this branch the acceptance file wrote −1 on Flute ×2, Oboe ×2, Trumpet
+×2 and Violin ×2 — eight parts wrong — because of §1a. With the record
+re-gathered but the rule unchanged, six of those eight are repaired by 2.2
+alone and the residue is **the two Violin parts, which the locator still reads
+as one flat on pages 1 and 2**, written as spurious key changes at bars 8 and
+17. The marker rule closes them.
+
+---
+
+## 6. Litolff and Breitkopf, base versus arm
+
+    sh benchmarks/omr-key-majority-2026-09/run_scan.sh <record> <tag>
+    python3 benchmarks/omr-key-majority-2026-09/report.py <tag> --truth <kind>
+
+<!-- SCAN_TABLE -->
+
+---
+
+## 7. The controls, and that they can fail
+
+`benchmarks/omr-key-majority-2026-09/readjudicate.py --control` is in two
+halves because one of them cannot fail alone:
+
+* **`clef` must reproduce exactly.** It is not under test, so a mismatch means
+  the log was rebuilt wrongly and every number here measures this harness.
+  Result: **54 of 54** (engraved), **331 of 331** (Litolff).
+* **`key_signature` with `--off all` must reproduce every VALUE.** `--off`
+  returns the two new readers to the nothing they produced before. Result:
+  **54 of 54** and **331 of 331**, with the reason movement printed separately
+  and not counted as a failure — `fitted_by_template_engraved -> fitted_no_markers`
+  47, `markers_without_a_run -> no_evidence` 4 (engraved);
+  `fitted_by_template -> fitted_no_markers` 108, `fitted -> fitted_no_markers`
+  104, `markers_without_a_run -> no_evidence` 36 (Litolff).
+
+The comparator is demonstrably live: run the same harness WITHOUT `--off` and
+it reports the arm's movement instead of zero.
+
+⚠️ **Blind to GATHER**, like every tool of its shape. The marker rows this
+item reads were already being gathered, which is why this instrument is the
+right one — but the re-gather in §1a is a GATHER change and `readjudicate`
+cannot see it. That half was measured by gathering the fixture twice.
+
+---
+
+## 8. What the derived checks say
+
+    python3 -m tools.omr.staged.check      # 254 open, every part `ok`
+
+`256 → 254`: two `KNOWN_GAPS` entries closed by removing `Q.DOSSIER_FACT` from
+`key_signature`'s `wants`, which nothing read; both stale entries removed from
+`inventory.KNOWN_GAPS` and `wiring`'s list so they stop describing history.
+`inventory --check`, `wiring --check`, `reach`, `brakes --check` and
+`conventions --check` all exit 0. `health` reports no empty cells for
+`system_key`.
+
+`pytest tools/omr/tests -m "not slow" -q`: **2841 passed, 3 skipped**
+(2216 deselected), 136 s.
+
+---
+
+## 9. Tests, run RED first
+
+`tools/omr/tests/test_staged_key_from_markers.py` (20 tests) was run against
+`259773e5` before the rule existed: the marker tests failed with the verdict
+reading the header fitter's value, and the system-check tests failed because
+`Q.SYSTEM_KEY` did not exist. The transposition test **passed for the wrong
+reason** on the unrepaired tree (nothing was normalising anything, so nothing
+could flatten it), which is why it is paired with a case that MUST supersede.
+
+Two existing test files record a rule this item overturned, and both are
+rewritten rather than deleted:
+
+* `test_keysig_marker_ink.py`'s `TestItIsNeverAVALUE` asserted that markers
+  may never decide a key, on two measurements — seven spurious legacy key
+  flips, and the marker count matching the settled `|fifths|` on only 39% /
+  51% of decided staves. **Both numbers stand; what changed is which side they
+  condemn** (§4). The class is now `TestTheCountBECAMETheReading` and it keeps
+  the half that still protects the old warning: the overruled fit must be
+  recorded.
+* `benchmarks/omr-keysig-staged-reach-2026-09/check_arm.py` armed the
+  2026-09-21 rule that reading the markers may only SPLIT AN ABSTENTION
+  REASON. It now asks the REGISTRY whether `markers_without_a_run` is still a
+  declared reason and prints **SUPERSEDED** (exit 2) when it is not — a live
+  check, not a comment: restore the reason and the arm runs again. Its four
+  controls collapse into one, because an arm for a rule the tree no longer
+  holds cannot have live controls, and leaving them red would report a
+  replacement as a regression.
+
+---
+
+## 10. Crops for Sean
+
+    python3 benchmarks/omr-key-majority-2026-09/crop_system_headers.py \
+        --record <record> --pdf <edition> --page <n> --dpi 600 --label <tag>
+
+One crop per system header of each count page, under `out/print/` (not
+`crops/`, which `.gitignore` excludes), at the gather's own DPI, behind a
+frame control that can FAIL: every staff's recorded `Q.STAFF_LINES` must be
+materially darker than a half-space off them, and a system that fails is
+refused rather than cropped with a caveat. Each crop draws every staff's five
+recorded lines in green, a ruler of staff spaces down the left edge, and a
+caption naming, per staff, **the name our file gives it and the fifths we
+wrote**. The manifest carries `VERDICT_none_yet: null`.
+
+**The question for Sean is one line on every crop:** how many sharps or flats
+does the plate print at the head of each staff?
+
+<!-- CROP_TABLE -->
+
+---
+
+## 11. Open, and what it is not
+
+* **Litolff still loses staves to detector under-counting** that the template
+  used to read (§4). The lever is the DETECTOR on a merging plate, not this
+  decision — and no derived check can see it (CLAUDE.md §4d).
+* **A staff with no resolvable margin label cannot enter the system check** at
+  either end: 131 of 331 Litolff staves and 108 of 691 Breitkopf staves. That
+  is the same identity gap roadmap 2.6 is about; it bounds this check's reach
+  and is not a defect in it.
+* **`natural_markers` is a declared refusal with nowhere to go.** A run of
+  naturals is a cancellation and the record has no quantity for one.
+* **No print check of the keys themselves yet.** §4's truth is the movement's
+  key, which is a strong document-level fact and not a reading of the plate.
+  §10's crops are the instrument for turning that into one, and until Sean
+  fills in `VERDICT_none_yet` nothing here has been adjudicated against print.
