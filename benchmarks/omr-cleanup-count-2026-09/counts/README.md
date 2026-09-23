@@ -13,7 +13,7 @@ baseline for "is the count going down".
 
 | count | document / page | counter | total | note |
 |---|---|---|---|---|
-| `beethoven5-litolff-p3-2026-09-23.csv` | Beethoven 5 mvt 1, Litolff `984073`, pdf page index 3 (bars 49–82) | **Claude (landing session), NOT Sean** | 31 | first count on the whole-movement record; see below |
+| `beethoven5-litolff-p3-2026-09-23.csv` | Beethoven 5 mvt 1, Litolff `984073`, pdf page index 3 (bars 49–82) | **Claude (landing session), NOT Sean** | 34 | first count on the whole-movement record; see below |
 
 ## beethoven5-litolff-p3-2026-09-23 — what it found
 
@@ -23,11 +23,41 @@ crop and our Verovio render of the same bars) and the whole-movement MusicXML
 
 | category | units | where they are |
 |---|--:|---|
-| `missing` | 5 | four wind/string staves in system 1 short of the print's sounding bars, plus the Horn's lost tied chain in system 2 |
+| `missing` | 8 | staff-systems short of the reference's sounding bars by 3 or more |
 | `wrong` | 22 | **4** key signatures + **18** counted printed accidentals (sampled — see below) |
 | `spurious` | 2 | stray key changes written at m82 in two otherwise-correct parts |
 | `would-not-notice` | 2 | both violin parts named only `Violin` |
-| **total** | **31** | |
+| **total** | **34** | |
+
+### ⚠️ The `missing` column was MEASURED on a second pass, and it moved 5 → 8
+
+The first pass read "how many bars does the print sound here" off the 725-px
+side-by-side crop and, where our count was within one or two, declined to
+count — which was the right instinct and the wrong instrument. The second pass
+replaced the eyeball with the **reference encoding**, joined through the
+hand-verified `beethoven-sym5-mvt1-984073-p3` window row (mm 49–82, and its
+per-system staff→part map). Three calls changed, all in the same direction:
+
+| staff-system | first pass (eyeballed) | reference | our bars | corrected |
+|---|---|--:|--:|---|
+| Corni, system 1 | "11 of ~13, within reading error" | **15** | 11 | short 4 → counted |
+| Fagotti, system 2 | "13 of ~17, borderline" | **16** | 13 | short 3 → counted |
+| Viola, system 2 | "14 of ~18" | **18** | 14 | short 4 → counted |
+
+One call changed the other way and is recorded because it acquits us: the first
+pass suspected the Flute of *spurious extra* content in system 2 and declined
+to count it; the reference says 4 against our 4 — **exact**.
+
+⚠️ **The join has a control that can fail, and it passes.** The three staves
+the print SUPPRESSES in system 2 — Oboi, Trombe, Timpani — sound in **0**
+reference bars of mm 65–82, and our file writes measure rests for exactly those
+bars. If the window or the staff→part map were off by a system, that would not
+hold.
+
+⚠️ **A page truth is not an encoding truth** (CLAUDE.md §10). "Does this staff
+sound in this bar" is a question the two agree on and the window row was
+verified against the print, which is why it is used here; nothing finer (which
+note, what duration) is taken from the encoding in this count.
 
 **The two findings that dominate it:**
 
