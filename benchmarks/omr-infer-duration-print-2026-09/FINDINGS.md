@@ -304,3 +304,41 @@ then range, then distance) and is not this lane's.
 
 ⚠️ Still n = 2 subjects. What it establishes is that the two cases that were
 supposed to settle 2.3 cannot settle it, and why.
+
+## §7b. Sizing the owner question — 358 of 2,347, and what that number is NOT
+
+Sean's two subjects are n = 2. Swept the same record, every notehead carrying a
+page box (2,347): for each, the distance from its FILED staff's nearest line
+against the distance to the nearest OTHER staff's.
+
+| | |
+|---|--:|
+| noteheads examined | 2,347 |
+| **a neighbouring staff is clearly nearer than the filed one** (by over half a space) | **358 (15.3 %)** |
+| of those, carrying a `glyph_owner` verdict — contested, and resolved to the FARTHER staff | **197** |
+| of those, with no `glyph_owner` verdict — never contested at all | **161** |
+
+⚠️⚠️ **358 IS NOT A MISATTRIBUTION COUNT AND MUST NOT BE QUOTED AS ONE.** It is
+the population carrying the geometric signature of Sean's two. A notehead may
+sit legitimately far from its own staff on ledger lines; what makes the two
+adjudicated cases wrong is the PRINT, not the arithmetic. **Exactly 2 of the
+358 have been checked against a page, and both were wrong.** The other 356 are
+unverified in both directions.
+
+**One competing explanation was tested and REFUTED.** If the recorded staff
+geometry were simply wrong for some staves, every note on them would read as
+distant and the signal would be an artefact. Every staff line span in the
+concentration table is **63–65 px** — uniform across pages, systems and staves.
+The staves are consistently detected; this is not a staff-detection artefact,
+which also distinguishes it from the `staff/4/0/1` contrast −12.25 fault in §3.
+
+**It is not one bad staff either.** The most affected is `staff/4/0/5` at 28 of
+36, but the population spreads across at least ten (page, system, staff) blocks
+on all four pages.
+
+**What this justifies**: a lane that adjudicates a print sample of the 358
+against the plate and, if the rate holds, asks why `glyph_owner`'s contest
+(ladder completeness → range → distance) puts a first-ledger-line note in the
+gap on the wrong side — and why 161 of them reached no contest at all, which is
+a question about the DOMAIN (`subjects_from`), not about the scoring.
+**What it does not justify**: any claim about how many are wrong.
