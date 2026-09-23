@@ -204,3 +204,11 @@ benchmarks/omr-plumbing-2026-09/out/
 
 # staged records are 100+ MB build products, not source
 benchmarks/omr-positional-store-2026-09/out/*.record.json
+
+# ROADMAP 2.6 (`benchmarks/omr-owner-domain-2026-09/`): the two real
+# base-vs-arm gather RECORDS are 7-8 MB each and are reproducible from
+# `real_gather_pair.sh` in under two minutes; the derived JSON beside them is
+# what the FINDINGS quote and is committed. Crops go in `out/print/` because
+# `benchmarks/**/crops/` above is excluded and these must travel to Sean.
+benchmarks/omr-owner-domain-2026-09/out/real-p*-*.json
+benchmarks/omr-owner-domain-2026-09/out/real-p*-*.log

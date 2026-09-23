@@ -1,0 +1,23 @@
+{
+ "page": 3,
+ "detector": {
+  "base_boxes": 1928,
+  "arm_boxes": 1928,
+  "matched": 1928,
+  "unmatched_base": 0,
+  "unmatched_arm": 0
+ },
+ "real": {
+  "contested_base": 140,
+  "contested_arm": 247,
+  "owner_base": 140,
+  "owner_arm": 247
+ },
+ "recompute": {
+  "contested_base": 140,
+  "newly_contested": 107
+ },
+ "same_ink_matched": 107,
+ "recompute_added": 107,
+ "recompute_added_not_in_real": []
+}
