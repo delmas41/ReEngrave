@@ -18,9 +18,8 @@ PartPOneVoiceOne =  \relative g''' {
     r8 g8 [ g8 f8 ] | % 19
     e4 r4 | \barNumberCheck #20
     c4 r4 | % 21
-    <a,,, g''''>4 s4 | % 22
-    r4 ^\fermata s4 | % 23
-    r8 a'''8 [ a8 a8 ] | % 24
+    R2*2 | % 23
+    r8 a8 [ a8 a8 ] | % 24
     f2 | % 25
     f2 ^\fermata }
 
@@ -30,8 +29,7 @@ PartPTwoVoiceOne =  \relative d''' {
     r8 _\p d8 [ d8 d8 ] | % 19
     c4 _\f r4 | \barNumberCheck #20
     c4 r4 | % 21
-    bes4 s4 | % 22
-    r4 ^\fermata s4 | % 23
+    R2*2 | % 23
     r8 _\ff a8 [ a8 a8 ] | % 24
     f2 | % 25
     f2 ^\fermata }
@@ -42,8 +40,7 @@ PartPThreeVoiceOne =  \relative g'' {
     r8 _\p g8 [ g8 f8 ] | % 19
     e4 _\f r4 | \barNumberCheck #20
     f4 r4 | % 21
-    g4 s4 | % 22
-    r4 ^\fermata s4 | % 23
+    R2*2 | % 23
     r8 _\ff a8 [ a8 a8 ] | % 24
     f2 | % 25
     f2 ^\fermata }
@@ -54,8 +51,7 @@ PartPFourVoiceOne =  \relative d'' {
     r8 _\p d8 [ d8 d8 ] | % 19
     c4 r4 | \barNumberCheck #20
     c4 r4 | % 21
-    bes4 s4 | % 22
-    r4 ^\fermata s4 | % 23
+    R2*2 | % 23
     r8 _\ff a'8 [ a8 a8 ] | % 24
     f2 | % 25
     f2 ^\fermata }
@@ -71,9 +67,8 @@ PartPFiveVoiceOne =  \relative a' {
     r8 _\p c8 [ e8 a8 ] | % 19
     a4 _\f r4 | \barNumberCheck #20
     g4 r4 | % 21
-    e4 s4 | % 22
-    r4 ^\fermata s4 | % 23
-    r8 _\ff _\f _\f bes'8 [ bes8 bes8 ] | % 24
+    R2*2 | % 23
+    r8 _\ff _\f _\f bes8 [ bes8 bes8 ] | % 24
     g2 | % 25
     g2 ^\fermata }
 
@@ -84,14 +79,11 @@ PartPSixVoiceOne =  \relative a' {
     r8 g8 [ g8 g8 ] | % 4
     e2 | % 5
     e2 ^\fermata | % 6
-    R2*2 | % 8
-    d,1 r1 | % 9
-    R2*9 | % 18
-    r8 _\p a'8 [ c8 e8 ] | % 19
+    R2*12 | % 18
+    r8 _\p a,8 [ c8 e8 ] | % 19
     f4 _\f r4 | \barNumberCheck #20
     d4 r4 | % 21
-    c4 | % 22
-    r4 ^\fermata | % 23
+    R2*2 | % 23
     r8 _\ff bes'8 [ bes8 bes8 ] | % 24
     g2 | % 25
     g2 ^\fermata }
@@ -100,8 +92,8 @@ PartPSevenVoiceOne =  \relative c' {
     \clef "bass" \time 2/4 \key es \major | % 1
     R2*6 | % 7
     c2 _\ff _\p | % 8
-    <f,,, c'''>1 ^\fermata | % 9
-    c'''2 | \barNumberCheck #10
+    R2 | % 9
+    c2 | \barNumberCheck #10
     c2 | % 11
     bes2 | % 12
     bes2 | % 13
@@ -110,11 +102,10 @@ PartPSevenVoiceOne =  \relative c' {
     c2 | % 16
     bes2 | % 17
     \clef "bass" \time 2/4 c2 | % 18
-    b8 [ _\p r1 b8 b8 b8 ] | % 19
-    c4 _\f _\f r4 | \barNumberCheck #20
+    R2 | % 19
+    c4 _\p _\f _\f r4 | \barNumberCheck #20
     a,4 r4 | % 21
-    g4 | % 22
-    r4 ^\fermata | % 23
+    R2*2 | % 23
     r8 _\ff a8 [ a8 a8 ] | % 24
     f2 | % 25
     f2 ^\fermata }
@@ -136,8 +127,7 @@ PartPEightVoiceOne =  \relative c' {
     b8 [ b8 b8 b8 ] | % 19
     c4 _\f _\f r4 | \barNumberCheck #20
     a,4 r4 | % 21
-    g4 s4 | % 22
-    r4 s4 | % 23
+    R2*2 | % 23
     r8 _\ff _\f a8 [ a8 a8 ] | % 24
     f2 | % 25
     f2 ^\fermata }
@@ -148,8 +138,7 @@ PartPNineVoiceOne =  \relative e'' {
     r8 _\p e8 [ e8 e8 ] | % 19
     e4 _\f _\f r4 | \barNumberCheck #20
     c4 r4 | % 21
-    e4 s4 | % 22
-    r4 ^\fermata s4 | % 23
+    R2*2 | % 23
     r8 _\f _\f _\f f8 [ f8 f8 ] | % 24
     d2 | % 25
     d2 ^\fermata }
@@ -160,8 +149,7 @@ PartPOneZeroVoiceOne =  \relative e'' {
     r8 _\p e8 [ e8 e8 ] | % 19
     e4 _\f r4 | \barNumberCheck #20
     c,4 r4 | % 21
-    e4 s4 | % 22
-    r4 ^\fermata s4 | % 23
+    R2*2 | % 23
     r8 _\ff f'8 [ f8 f8 ] | % 24
     d2 | % 25
     d2 ^\fermata }
@@ -172,9 +160,7 @@ PartPOneOneVoiceOne =  \relative g' {
     r8 _\p g8 [ g8 g8 ] | % 19
     c4 _\f r4 | \barNumberCheck #20
     c4 r4 | % 21
-    g4 s4 | % 22
-    r4 ^\fermata s4 | % 23
-    R2*3 }
+    R2*5 }
 
 PartPOneTwoVoiceOne =  \relative g {
     \clef "treble" \time 2/4 \key f \major | % 1
@@ -182,9 +168,7 @@ PartPOneTwoVoiceOne =  \relative g {
     r8 g8 [ g8 g8 ] | % 19
     c4 _\ff _\f r4 | \barNumberCheck #20
     c4 r4 | % 21
-    g4 s4 | % 22
-    r4 ^\fermata s4 | % 23
-    R2*3 }
+    R2*5 }
 
 PartPOneThreeVoiceOne =  \relative g, {
     \clef "bass" \time 2/4 \key es \major | % 1
@@ -192,9 +176,7 @@ PartPOneThreeVoiceOne =  \relative g, {
     r8 _\p _\p g8 [ g8 g8 ] | % 19
     c4 r4 | \barNumberCheck #20
     c4 r4 | % 21
-    g4 s4 | % 22
-    r4 ^\fermata s4 | % 23
-    R2*3 }
+    R2*5 }
 
 PartPOneFourVoiceOne =  \relative g' {
     \clef "treble" \time 2/4 \key f \major | % 1
@@ -245,8 +227,7 @@ PartPOneFiveVoiceOne =  \relative g' {
     g8 [ d'8 d8 g,8 ] | % 19
     <c, g' e'>4 _\f r4 | \barNumberCheck #20
     <a f' c'>4 r4 | % 21
-    <g d' bes'>4 s4 | % 22
-    r4 ^\fermata s4 | % 23
+    R2*2 | % 23
     r8 _\f _\f _\f _\f a'8 [ a8 a8 ] | % 24
     f2 | % 25
     f2 ^\fermata }
@@ -260,8 +241,8 @@ PartPOneSixVoiceOne =  \relative g {
     d2 ^\fermata | % 6
     R2 | % 7
     r8 as''8 ( ~ [ as8 as8 ) ] | % 8
-    <es,, g''>1 | % 9
-    g''2 | \barNumberCheck #10
+    R2 | % 9
+    g2 | \barNumberCheck #10
     g4 r4 | % 11
     r8 as8 [ as8 as8 ] | % 12
     g2 | % 13
@@ -273,8 +254,7 @@ PartPOneSixVoiceOne =  \relative g {
     g4. d8 | % 19
     e4 _\fff r4 | \barNumberCheck #20
     a,4 r4 | % 21
-    g4 | % 22
-    r4 ^\fermata | % 23
+    R2*2 | % 23
     r8 _\ff _\f _\f _\f a8 [ a8 a8 ] | % 24
     f2 | % 25
     f2 ^\fermata }
@@ -301,8 +281,7 @@ PartPOneSevenVoiceOne =  \relative g, {
     b8 [ b8 b8 b8 ] | % 19
     c4 _\f r4 | \barNumberCheck #20
     a,4 r4 | % 21
-    g4 s4 | % 22
-    r4 ^\fermata s4 | % 23
+    R2*2 | % 23
     r8 _\ff _\f a8 [ a8 a8 ] | % 24
     f2 | % 25
     f2 ^\fermata }
@@ -318,8 +297,7 @@ PartPOneEightVoiceOne =  \relative g {
     r8 _\p bes8 [ bes8 bes8 ] | % 19
     c4 _\f r4 | \barNumberCheck #20
     as4 r4 | % 21
-    g4 s4 | % 22
-    r4 ^\fermata s4 | % 23
+    R2*2 | % 23
     r8 _\f _\f _\f _\f as8 [ as8 as8 ] | % 24
     f2 | % 25
     f2 ^\fermata }
