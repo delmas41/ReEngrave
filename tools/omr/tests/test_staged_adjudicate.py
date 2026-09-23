@@ -537,6 +537,56 @@ class TestCorrelatedGroupsRewrite(unittest.TestCase):
                                ("verdict", Q.INSTRUMENT, None)])
         self.assertTrue(any({seed.id, instrument.id} <= g for g in got))
 
+    def test_two_derived_seeds_in_one_bucket_resting_on_different_sources(self):
+        """⚠️ THE CASE A BUCKET REPRESENTATIVE GETS WRONG, and the reason the
+        rewrite tests derived observations member by member.
+
+        A (reader, frame, quantity) key does NOT fix `derived_from`.
+        `Observation`'s own docstring records that the empty-basis invariant
+        was found TOO STRONG on 2026-09-07, so two rows can share a bucket
+        and still have disjoint closures. Here `seed_b` rests on a SECOND
+        external document and is filed FIRST, so it is `bucket[0]`: a
+        shortcut that asks only the representative whether the verdict is one
+        signal with the bucket gets `False` and leaves the verdict ungrouped,
+        even though the verdict and `seed_a` demonstrably share an ancestor.
+
+        Run RED against the pre-fix tree (the bucket-representative draft of
+        this rewrite): it reports the verdict missing from `seed_a`'s group.
+        """
+        log = Log()
+        sub = R.staff(0, 0, 0)
+        dossier = log.observe(R.DOCUMENT, Q.DOSSIER_FACT, {"clef": "alto"},
+                              reader=READERS.DOSSIER, frame="page",
+                              tier="dossier")
+        roster = log.observe(R.DOCUMENT, Q.ROSTER_ENTRY, {"n": 1},
+                             reader=READERS.CATALOG, frame="page",
+                             tier="catalog")
+        # ⚠️ ORDER IS THE POINT. `seed_b` goes in first, so any
+        # representative-of-the-bucket shortcut interrogates the row that
+        # shares NOTHING with the verdict below.
+        seed_b = log.observe(sub, Q.CLEF_SEED, "bass", reader=READERS.DOSSIER,
+                             frame="page", tier="dossier",
+                             derived_from=(roster.id,))
+        seed_a = log.observe(sub, Q.CLEF_SEED, "alto", reader=READERS.DOSSIER,
+                             frame="page", tier="dossier",
+                             derived_from=(dossier.id,))
+        self.assertEqual(
+            (seed_b.reader, seed_b.frame, seed_b.quantity),
+            (seed_a.reader, seed_a.frame, seed_a.quantity),
+            "the two seeds must share a bucket or this test proves nothing")
+        instrument = log.record(Verdict(
+            id=log._next_id("vrd"), subject=sub, quantity=Q.INSTRUMENT,
+            outcome=Outcome.DECIDED, value={"name": "Viola"},
+            decider="identity", reason="r",
+            considered=(dossier.id,), basis=(dossier.id,)))
+        got = self._run(log, sub, wants=(Q.CLEF_SEED, Q.INSTRUMENT),
+                        reads=[("rows", Q.CLEF_SEED, None),
+                               ("verdict", Q.INSTRUMENT, None)])
+        self.assertTrue(
+            any({seed_a.id, instrument.id} <= g for g in got),
+            "the verdict shares the dossier row with seed_a and must be one "
+            "signal with it, whichever seed happens to be first in the bucket")
+
     def test_two_verdicts_sharing_no_ancestor_do_not_group(self):
         log = Log()
         sub = R.staff(0, 0, 0)

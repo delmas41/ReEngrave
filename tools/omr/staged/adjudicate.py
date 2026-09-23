@@ -459,14 +459,22 @@ class Evidence:
             buckets (`others`, below), which is a small fraction of `_seen`
             for every decision measured so far.
 
-        `_UnionFind` turns the same connectivity question into ONE bucketing
-        pass over the observations (O(n)) plus one all-pairs pass restricted
-        to `others` and one others-vs-observation-bucket-representative pass
-        (O(k*u + k^2), u = number of distinct obs buckets) -- correct because
-        `_one_signal` for a (non-observation, observation) pair does not
-        special-case on the SPECIFIC observation, so it is enough to test one
-        witness per bucket rather than every member (proved rather than
-        assumed below).
+        Union-find turns the same connectivity question into ONE bucketing
+        pass over the observations (O(n)), one all-pairs pass restricted to
+        `others`, and one pass of `others` against only those observations
+        that CARRY A BASIS (O(k^2 + k*d), d = derived observations, which is
+        0 on every document without a confirmed fact sheet). The last of
+        those three is where the correctness lives, and the argument is
+        below at its site: an empty-basis Observation provably cannot be one
+        signal with a non-observation, so it is skipped rather than tested,
+        while a derived one is tested MEMBER BY MEMBER because a bucket key
+        does not fix `derived_from`.
+
+        ⚠️ An earlier draft of this rewrite tested ONE REPRESENTATIVE per
+        bucket instead, reasoning that `_one_signal` does not special-case on
+        the specific observation. It does, through `closure(b)`. That draft
+        was caught before landing and the counter-example is recorded in
+        `benchmarks/omr-decide-stage-cost-2026-09/FINDINGS.md` §4.
         """
         rows = [self.log.row(i) for i in self._seen]
         rows = list({r.id: r for r in rows if r is not None}.values())
@@ -506,19 +514,40 @@ class Evidence:
                 union(first, r.id)
 
         # `others` (Verdicts/Abstentions) need the general, closure-based
-        # test -- against each other, and against observations. A `Verdict`
-        # or `Abstention`'s closure intersection with an Observation does
-        # not depend on which OTHER observation happens to share that
-        # observation's (reader, frame, quantity) key, so one representative
-        # per bucket answers for the whole bucket.
-        reps = [(key, bucket[0]) for key, bucket in obs_buckets.items()]
+        # test -- against each other, and against observations.
+        #
+        # ⚠️ AN OBSERVATION WITH AN EMPTY BASIS CAN NEVER BE ONE SIGNAL WITH
+        # A NON-OBSERVATION, and that is a PROOF rather than a measurement:
+        # `closure(obs)` is then exactly `{obs.id}`, so `_one_signal`'s
+        # intersection is at most `{obs.id}` -- which `_one_signal`'s very
+        # next line discards along with `a.id`. The whole empty-basis
+        # population, which is nearly every row on every document measured so
+        # far, is therefore skipped OUTRIGHT here, not merely tested once per
+        # bucket.
+        #
+        # ⚠️ THE REMAINDER IS TESTED MEMBER BY MEMBER, NOT BY A BUCKET
+        # REPRESENTATIVE, and the difference is not pedantry. A (reader,
+        # frame, quantity) key does NOT force one `derived_from`:
+        # `Observation`'s own docstring records that the empty-basis
+        # invariant was found TOO STRONG on 2026-09-07 -- "a modelling error
+        # with a live consequence" -- and that an external fact's descendants
+        # carry it. Two dossier-seeded rows sharing a bucket but resting on
+        # DIFFERENT source rows get opposite answers from `_one_signal`
+        # (measured: `benchmarks/omr-decide-stage-cost-2026-09/FINDINGS.md`
+        # §4), so a representative would settle the group by INSERTION ORDER.
+        # Today's one derived producer, `gather_clef_seed`, happens to hang
+        # every row off a single `sources["dossier"]` row, which makes a
+        # representative accidentally right on today's tree and is not a
+        # property the bucket key guarantees.
+        derived_obs = [r for bucket in obs_buckets.values()
+                       for r in bucket if r.basis]
         for i, a in enumerate(others):
             for b in others[i + 1:]:
                 if _one_signal(self.log, a, b):
                     union(a.id, b.id)
-            for key, rep in reps:
-                if _one_signal(self.log, a, rep):
-                    union(a.id, rep.id)
+            for obs in derived_obs:
+                if _one_signal(self.log, a, obs):
+                    union(a.id, obs.id)
 
         components: Dict[str, List[str]] = {}
         for r in rows:

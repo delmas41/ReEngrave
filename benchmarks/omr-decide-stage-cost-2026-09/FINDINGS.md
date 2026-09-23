@@ -328,3 +328,137 @@ clean-tree guard (coordinator addendum) was touched in that file.
   boundary" test is reframed here as "a write to the quantity, whenever it
   happens, is visible to the next read of it" -- a strictly stronger and
   simpler invariant to state and to check.
+
+---
+
+# Landing session, 2026-09-23 — the control run, and a refuted proof
+
+Written by the session that landed this branch, not by the lane. Everything
+above is the lane's own report and is left unedited; this section records what
+the landing gate found. Two things changed: the identical-verdict control was
+run to completion on both sides, and one of the rewrite's stated proofs turned
+out to be false and was repaired before landing.
+
+## §3b. The control, run to completion — the brief's bar is MET
+
+The lane's control could not finish on base and said so honestly. The reason
+was in the control, not in the code: `dump_verdicts_one_system.py` adjudicated
+**all seven systems** and only *filtered* to system 0 when dumping, so the base
+side was paying the full-record O(n²) cost to answer a one-system question.
+Restricting the WORK to one system (`in_scope()`, subjects above SYSTEM kept
+because system 0's decisions rest on them) makes base tractable, and both sides
+then compute exactly the same thing.
+
+Record: `beethoven5-p1-p4-ink-identity.record.json`. Subset: `ORDER` through
+`arc_kind`, system `system/1/0`. Base = `853ad0b5`'s `record.py` +
+`adjudicate.py` (confirmed by an empty `git diff --stat` against that sha
+immediately before the run); arm = this branch's, plus §4's repair.
+
+| | base (853ad0b5) | arm | |
+|---|--:|--:|--:|
+| wall, decisions through `arc_kind`, one system | **16.184 s** | **3.480 s** | **4.65x** |
+| verdicts dumped | 429 | 429 | — |
+| verdicts carrying a non-empty `correlated` | 270 | 251 | −19 |
+
+**Field-by-field over all 429 verdicts, base against arm:**
+
+| field | rows differing |
+|---|--:|
+| `outcome` | **0** |
+| `value` | **0** |
+| `reason` | **0** |
+| `basis` | **0** |
+| `considered` | **0** |
+| `correlated` | 52 |
+
+**The brief's bar — subject, quantity, outcome, value, reason, basis,
+considered — is 0 differing of 429. PASS.**
+
+The 52 `correlated` differences are not a residue to be waved through: every
+one of them was classified, and **all 52 are exactly the removal of one
+self-paired SINGLETON group, with nothing else changed** in that verdict's
+grouping (`min 1, max 1` singleton removed per differing row; 0 unexplained).
+That is the deliberate, documented behaviour change the lane named — a row
+"correlated" with itself is never a real correlation and contradicts
+`correlated_groups`' own docstring ("one signal wearing two hats"). The lane
+asserted it; this control confirms it is the ONLY difference, on real data.
+
+⚠️ **Scope.** One record, one system, `ORDER` through `arc_kind`. It does not
+cover EVALUATE, INFER, or the decisions after `arc_kind`, and it is not a
+16-page result. What it does establish is that on the population it covers, the
+speed-up costs no answer.
+
+Artefacts: `out/base_system0.json`, `out/arm_system0.json` (regenerate with
+`dump_verdicts_one_system.py <record> <out>`; the script prints how many dumped
+verdicts carry a non-empty `correlated` and declares itself VACUOUS if that is
+0, because a clean diff over an empty field is not evidence).
+
+## §4. The bucket-representative proof is FALSE — caught before landing
+
+§2's fix tested **one representative per observation bucket** against each
+Verdict/Abstention, "sound because `_one_signal` does not special-case which
+specific bucket member it is comparing against."
+
+It does special-case, through `closure(b)`:
+
+```python
+shared = log.closure(a.id) & log.closure(b.id)
+```
+
+`record.Observation`'s own docstring records that the empty-basis invariant was
+found **TOO STRONG** on 2026-09-07 — "a modelling error with a live
+consequence" — and that `derived_from` is how an external fact's descendants
+carry it. A `(reader, frame, quantity)` key therefore does **not** fix
+`derived_from`, and two rows can share a bucket with disjoint closures.
+
+`rep_bucket_probe.py` builds exactly that log: two `Q.CLEF_SEED` rows, same
+reader/frame/quantity, one derived from the dossier row and one from the roster
+row, with the non-matching one filed FIRST so it is `bucket[0]`. A verdict
+resting on the dossier row is one signal with `seed_a` and not with `seed_b` —
+so a representative-only test leaves the verdict out of a group it demonstrably
+belongs in, and **which answer you get depends on insertion order**.
+
+**Repair** (`Evidence.correlated_groups`), which is also strictly *faster* than
+the representative version:
+
+* An Observation with an **empty basis can never be one signal with a
+  non-observation**, and that is a proof rather than a measurement:
+  `closure(obs)` is then exactly `{obs.id}`, so the intersection is at most
+  `{obs.id}`, which `_one_signal`'s next line discards. That population — very
+  nearly every row on every document measured — is now **skipped outright**
+  rather than tested once per bucket.
+* The remainder (observations that actually carry a basis; **0** on any
+  document without a confirmed fact sheet) is tested **member by member**.
+
+Net: `O(k² + k·d)` with `d` = derived observations, against the representative
+version's `O(k² + k·u)` with `u` = distinct buckets, and `d ≤ u` always, `d = 0`
+today.
+
+**Is it live today?** No — latent. The only producer of derived observations at
+scale, `gather_clef_seed`, hangs every row off a single `sources["dossier"]`
+row, which makes a representative *accidentally* right on today's tree. That is
+a property of one producer, not of the bucket key, and it is not something the
+next reader should have to rediscover. The control above is consistent with
+this: it is measured on records with no fact sheet, so `d = 0` and the two
+versions cannot differ there.
+
+`test_staged_adjudicate.py::TestCorrelatedGroupsRewrite::
+test_two_derived_seeds_in_one_bucket_resting_on_different_sources` — **run RED
+against the pre-repair tree first** (it reports the verdict missing from
+`seed_a`'s group), green after.
+
+## §5. What is still not established
+
+- **The equivalence oracle is the OLD GREEDY algorithm, which is not connected
+  components.** `_naive_correlated_groups` reproduces the pre-1.2 walk, whose
+  `for g in groups: if a.id in g or b.id in g: ...; break` stops at the FIRST
+  matching group and can leave two groups unmerged that a transitive reading
+  would join. Union-find computes true connected components. The 25 randomised
+  trials agree, so no trial hit a shape where the two diverge — but "the new
+  code matches the old code" is being asserted against an oracle that was
+  itself subtly wrong, and a divergence would show up as a test FAILURE
+  rather than as a correction. Not chased here; named so it is not rediscovered.
+- **EVALUATE, INFER, and decisions after `arc_kind`** are outside the control's
+  subset.
+- **The 16-page whole-movement number**, unchanged from the lane's own list.
+- **The budget line** — opened as roadmap **1.2b**, see below.

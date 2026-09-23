@@ -1,8 +1,22 @@
-"""Dump (subject, quantity, outcome, value, reason, sorted basis, sorted
-considered) for every decision ORDER puts at or before arc_owner, restricted
-to system 0 -- the control payload for roadmap 1.2's base-vs-arm comparison.
-Run once against origin/main's record.py+adjudicate.py and once against this
-branch's, over the SAME saved record, and diff the two JSON files.
+"""The identical-verdict control for roadmap 1.2.
+
+Dump (subject, quantity, outcome, value, reason, sorted basis, sorted
+considered, sorted CORRELATED) for every decision `ORDER` puts at or before
+`arc_kind`, restricted to one system. Run once against the BASE tree's
+`record.py` + `adjudicate.py` and once against the ARM's, over the SAME saved
+record, and diff.
+
+⚠️ `correlated` IS IN THE PAYLOAD AND THE LANE'S OWN DRAFT LEFT IT OUT.
+Roadmap 1.2 rewrote `Evidence.correlated_groups()` -- the function that
+COMPUTES `Verdict.correlated` -- so a control that dumps only `basis` and
+`considered` is blind to the one field the change can move. That draft's
+docstring even said so ("the control ... checks `basis` and `considered`
+sorted, never `correlated`"), which makes it a control that cannot fail on
+its own subject.
+
+⚠️ The control also PRINTS how many dumped verdicts carry a non-empty
+`correlated`. If that count is 0 the comparison is vacuous no matter how
+clean the diff looks, and the run says so rather than reporting a pass.
 """
 from __future__ import annotations
 
@@ -16,7 +30,9 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 from tools.omr.staged import adjudicate                          # noqa: E402
 from tools.omr.staged import adjudicators, consequences          # noqa: E402,F401
 from tools.omr.staged.record import Log, Subject, Kind           # noqa: E402
-from tools.omr.staged.record_io import load_record                # noqa: E402
+from tools.omr.staged.record_io import load_record               # noqa: E402
+
+LAST = "arc_kind"
 
 
 def rebuild(rec: dict) -> Log:
@@ -45,23 +61,40 @@ def main() -> int:
     adjudicate._ensure_decisions()
     log.freeze()
 
-    upto = adjudicate.ORDER[: adjudicate.ORDER.index("arc_owner") + 1]
+    system0 = log.subjects(Kind.SYSTEM)[0]
+
+    # ⚠️ THE WORK IS RESTRICTED TO ONE SYSTEM, NOT JUST THE DUMP. An earlier
+    # draft adjudicated all 7 systems and filtered afterwards, which is why
+    # the BASE side could not finish: the point of the control is a subset
+    # the OLD code can complete, so both sides compute the same thing and
+    # the diff means something. A subject above SYSTEM (document/page scope)
+    # is kept -- those decisions are cheap and their verdicts are part of
+    # what system 0's decisions rest on.
+    def in_scope(subject) -> bool:
+        sys_of = subject.at(Kind.SYSTEM)
+        return sys_of is None or sys_of == system0
+
+    upto = adjudicate.ORDER[: adjudicate.ORDER.index(LAST) + 1]
     t0 = time.perf_counter()
     for quantity in upto:
         spec = adjudicate.REGISTRY.get(quantity)
         if spec is None:
             continue
         for subject in adjudicate.subjects_for(log, spec):
+            if not in_scope(subject):
+                continue
             adjudicate.adjudicate_one(log, spec, subject)
     dt = time.perf_counter() - t0
-    print(f"decisions through arc_owner: {dt:.3f}s", flush=True)
-
-    system0 = log.subjects(Kind.SYSTEM)[0]
+    print(f"decisions through {LAST}, system {system0.to_key()} only: {dt:.3f}s",
+          flush=True)
     out = []
+    with_correlated = 0
     for v in log.all_verdicts():
-        sub_sys = v.subject.at(Kind.SYSTEM)
-        if sub_sys != system0:
+        if v.subject.at(Kind.SYSTEM) != system0:
             continue
+        correlated = sorted(sorted(g) for g in (v.correlated or ()))
+        if correlated:
+            with_correlated += 1
         out.append({
             "subject": v.subject.to_key(),
             "quantity": v.quantity,
@@ -70,11 +103,17 @@ def main() -> int:
             "reason": v.reason,
             "basis": sorted(v.basis),
             "considered": sorted(v.considered),
+            "correlated": correlated,
         })
     out.sort(key=lambda d: (d["subject"], d["quantity"]))
     Path(out_path).write_text(json.dumps(out, indent=2, default=str))
     print(f"wrote {len(out)} verdicts (system {system0.to_key()}) to {out_path}",
           flush=True)
+    print(f"verdicts carrying a NON-EMPTY correlated: {with_correlated}", flush=True)
+    if with_correlated == 0:
+        print("⚠️ CONTROL IS VACUOUS ON ITS OWN SUBJECT: no dumped verdict "
+              "carries a correlated group, so an identical diff says nothing "
+              "about the rewrite.", flush=True)
     return 0
 
 
