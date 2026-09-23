@@ -752,6 +752,16 @@ ORDER: Tuple[str, ...] = (
     # now the header facts, with identity in hand
     Q.CLEF,
     Q.KEY_SIGNATURE,
+    # ⚠️ ROADMAP 2.4a. BEFORE OWNERSHIP, so a box `glyph_owner` is about to
+    # arbitrate has already been asked whether it is a notehead at all --
+    # the same "a question about what a thing IS cannot honestly be settled
+    # after the questions that assume the answer" this file states for
+    # `Q.NOTEHEAD_IS_A_WHOLE_REST`. ⚠️ NOT A FULL FIX: `glyph_owner`'s own
+    # scoring does not read this verdict (see the adjudicator's own
+    # docstring), so the ordering guarantees a refused glyph is never WRITTEN
+    # but does not yet guarantee it cannot WIN a contest against a genuine
+    # partner. Measured, not assumed -- see the 2.4a report.
+    Q.NOTEHEAD_IS_NOT_A_NOTEHEAD,
     # ownership, with identity and clef available
     Q.GLYPH_OWNER,
     Q.ARC_OWNER,

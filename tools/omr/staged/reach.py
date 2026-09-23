@@ -84,11 +84,15 @@ KNOWN_GAPS: Dict[str, str] = {
         "inert declaration, owned by `inventory --check`: the connectivity veto "
         "already ran in GATHER and `adjudicate_system_membership` reads the "
         "COUNT, not the bridging."),
-    Q.GLYPH_CONF: (
-        "inert declaration, owned by `inventory --check`. ⚠️ THE STANDING "
-        "OBSERVATION: `_dedupe_cross_staff_detections` has both detections' "
-        "confidences in hand at the moment it decides and uses neither, and the "
-        "staged `glyph_owner` reproduced that."),
+    # ⚠️ ROADMAP 2.4a CLOSED THIS: `adjudicate_notehead_is_not_a_notehead`'s
+    # `unladdered` rule reads `Q.GLYPH_CONF` to gate a low-confidence
+    # outside-staff notehead, so the quantity is no longer read by nobody.
+    # `glyph_owner`'s OWN standing observation that IT declares but does not
+    # weight confidence is untouched and stays documented at its own site
+    # (`ownership.py`'s `adjudicate_glyph_owner`) -- a decision declaring a
+    # quantity in `wants` and not weighting it is a different fact from the
+    # quantity being read by nothing at all, and only the second is this
+    # tool's question.
     Q.VERTICAL_RUN: (
         "PRODUCER ONLY and deliberately unread, the `Q.INK` discipline: a "
         "producer and its first consumer landing in one change makes the reach "

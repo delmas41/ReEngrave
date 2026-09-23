@@ -925,6 +925,36 @@ class Q(_Vocab):
     #: only the middle of that population, so a phantom note whose rest is
     #: shaped unlike the median is not caught here.
     NOTEHEAD_IS_A_WHOLE_REST = "notehead_is_a_whole_rest"
+    #: Is this ink the detector CALLED a notehead actually something else --
+    #: a crop-boundary sliver, a barline, a whole rest, a printed letter, a
+    #: staff-line gap?
+    #:
+    #: ⚠️ ROADMAP 2.4a. Ports the legacy path's two notehead-precision
+    #: filters (`transcribe._drop_clipped_notehead_fragments`,
+    #: `transcribe._drop_unladdered_noteheads`, neither ever called from
+    #: `tools/omr/staged/` -- verified 2026-09-22, `git log --all -S` on both
+    #: names under `staged/` returns nothing) as an ADJUDICATE refusal
+    #: instead of a GATHER drop, plus a third rule measured but never shipped
+    #: anywhere: a `noteheadBlack*` box under 1.0 staff spaces wide, which
+    #: costs 0 of 103 print-confirmed noteheads on two publishers and catches
+    #: 39 of 46 print-confirmed non-noteheads
+    #: (`benchmarks/omr-notehead-width-2026-09/FINDINGS.md`).
+    #:
+    #: ⚠️ THE RECORD KEEPS THE ROW. This is ADJUDICATE saying what the ink
+    #: MEANS, not GATHER deciding what existed -- the same boundary
+    #: `Q.NOTEHEAD_IS_A_WHOLE_REST` draws. `export._place_notes` refuses to
+    #: write a `<note>` for a `True` verdict and counts the refusal under
+    #: `not_a_notehead:<reason>`; nothing reclassifies the glyph.
+    #:
+    #: ⚠️ THREE REASONS, EACH A SEPARATE MEASURED RULE, cf. `NOT_ESTABLISHED`
+    #: on the reach of each in the adjudicator's own docstring:
+    #: `clipped_fragment` (an edge-touching sliver under 0.6 staff spaces
+    #: tall), `too_narrow` (a `noteheadBlack*` box under 1.0 staff spaces
+    #: wide), `unladdered` (a low-confidence notehead outside the staff band
+    #: with not one ledger rung joining it). A glyph none of the three
+    #: condemns decides `False`, reason `notehead` -- not an abstention,
+    #: because geometry was available and was tested.
+    NOTEHEAD_IS_NOT_A_NOTEHEAD = "notehead_is_not_a_notehead"
     #: A bar's 1-2 VOICE STREAMS, as a partition of its glyphs.
     #:
     #: ⚠️ MUSICXML PAIRS `<slur>` WITHIN A `<voice>`, so this is not a
@@ -1281,6 +1311,7 @@ CLAIMS: "dict[str, str]" = {
     "TUPLET_RATIO": CLAIM.INTERPRETATION,
     "GLYPH_OWNER": CLAIM.INTERPRETATION,
     "NOTEHEAD_IS_A_WHOLE_REST": CLAIM.INTERPRETATION,
+    "NOTEHEAD_IS_NOT_A_NOTEHEAD": CLAIM.INTERPRETATION,
     "ARC_KIND": CLAIM.INTERPRETATION,
     "ARC_OWNER": CLAIM.INTERPRETATION,
     "ARTICULATION_OWNER": CLAIM.INTERPRETATION,

@@ -1,0 +1,91 @@
+{
+  "label": "breitkopf",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf",
+  "dpi": 600,
+  "tiles": [
+    {
+      "id": "glyph-0-0-1-0-18",
+      "subject": "glyph/0/0/1/0/18",
+      "reason": "clipped_fragment",
+      "file": "breitkopf-glyph-0-0-1-0-18.png",
+      "frame_ok": true,
+      "frame_margin": 198.81946518911104,
+      "box_page_px": [
+        1855.8984375,
+        2271.78125,
+        1893.791015625,
+        2288.33203125
+      ]
+    },
+    {
+      "id": "glyph-0-0-0-4-16",
+      "subject": "glyph/0/0/0/4/16",
+      "reason": "too_narrow",
+      "file": "breitkopf-glyph-0-0-0-4-16.png",
+      "frame_ok": true,
+      "frame_margin": 210.4438448566611,
+      "box_page_px": [
+        4098.38,
+        1677.0575,
+        4106.765,
+        1703.825
+      ]
+    },
+    {
+      "id": "glyph-0-0-11-3-19",
+      "subject": "glyph/0/0/11/3/19",
+      "reason": "clipped_fragment",
+      "file": "breitkopf-glyph-0-0-11-3-19.png",
+      "frame_ok": true,
+      "frame_margin": 191.2665140929896,
+      "box_page_px": [
+        3325.1375,
+        6310.68,
+        3363.1925,
+        6319.71
+      ]
+    },
+    {
+      "id": "glyph-0-0-1-1-20",
+      "subject": "glyph/0/0/1/1/20",
+      "reason": "too_narrow",
+      "file": "breitkopf-glyph-0-0-1-1-20.png",
+      "frame_ok": true,
+      "frame_margin": 198.81946518911104,
+      "box_page_px": [
+        2663.04,
+        2061.16,
+        2670.7200000000003,
+        2089.32
+      ]
+    },
+    {
+      "id": "glyph-0-0-11-3-21",
+      "subject": "glyph/0/0/11/3/21",
+      "reason": "clipped_fragment",
+      "file": "breitkopf-glyph-0-0-11-3-21.png",
+      "frame_ok": true,
+      "frame_margin": 191.2665140929896,
+      "box_page_px": [
+        3255.155,
+        6310.68,
+        3292.8875,
+        6319.71
+      ]
+    },
+    {
+      "id": "glyph-0-0-10-1-15",
+      "subject": "glyph/0/0/10/1/15",
+      "reason": "too_narrow",
+      "file": "breitkopf-glyph-0-0-10-1-15.png",
+      "frame_ok": true,
+      "frame_margin": 187.63346181642976,
+      "box_page_px": [
+        2663.04,
+        5548.4,
+        2670.7200000000003,
+        5577.84
+      ]
+    }
+  ]
+}
