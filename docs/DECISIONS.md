@@ -104,6 +104,32 @@ Format: `YYYY-MM-DD · who · the decision · because · (pointer)`
   rule and not a convenience; nothing in memory is pooled, `Log`/`Verdict`/every
   stage are untouched, and the writer proves its own round trip on every call ·
   (`benchmarks/omr-ink-gather-2026-09/FINDINGS.md` §12)
+- 2026-09-23 · Sean · **The two INFER duration rules read `Q.GLYPH_OWNER`, and
+  a glyph whose ownership names another staff is DROPPED from the walk — never
+  relocated, and never dropped on silence (a glyph with no ownership verdict was
+  never contested and is kept).** · because 3 of 3 crops he adjudicated against
+  the print sat on a NEIGHBOURING staff's first ledger line while the rules
+  borrowed a length from the detection cell's own neighbours — on
+  `glyph/4/0/9/5/7` ownership already said Basso, the rule inferred 0.25 from
+  Violoncello's columns, and the note is a Basso eighth (print and encoding
+  agree) · measured: reach 16 → 13, **0 surviving values changed**, control
+  19,563/19,563 unchanged; `export.py` already refused the same copies under
+  `owned_by_another_staff`, so the omission was confined to these two rules ·
+  both rules stay default OFF; the default decision is still open ·
+  (`benchmarks/omr-infer-duration-print-2026-09/FINDINGS.md` §7–§9b)
+- 2026-09-23 · Sean (convention) · **A note stands far from a staff only through
+  a ladder of ledger lines connecting it back; a note one space beyond a
+  neighbouring staff's outer line is that staff's, on its first ledger line.**
+  · in his words: *"notes should never be that far away from a staff unless
+  there are ledger lines close to the staff connecting the note conceptually to
+  the staff"* · measured on 3 of 3: 1.41 / 1.55 spaces from the staff he named
+  against 3.60 / 3.77 from the filed staff, which would need a three-rung
+  ladder; it confirms `glyph_owner`'s ladder-first ordering, and the rungs that
+  would prove it were NOT detected (nearest `ledgerLine` 7.34 spaces off in one
+  cell, zero in another — the recall gap that made 2.4a's `unladdered` net
+  negative) · ⚠️ **not yet in `tools/omr/conventions.py`**: an entry nothing
+  reads becomes an open finding in `staged.check`, so it goes in with its
+  consumer, not before · (same FINDINGS, §8)
 - 2026-09-23 · Sean · **`OMR_INFER` flips OFF→ON: both INFER duration rules
   (`collapse_duration_by_column`, `collapse_duration_to_barline`) ship on
   (roadmap 2.3).** · because the three subjects he adjudicated against the
