@@ -40,13 +40,19 @@ a system from a group* (floors at 8 sp under compression, by construction).
 
 ## Counts
 
-**114 registry entries**, from 166 source entries.
+**115 registry entries**, from 167 source entries.
+
+⚠️ The 167th is `C88`, written straight into this registry on 2026-09-23 (roadmap
+2.10) rather than compiled out of `docs/conventions/from-this-repo.md`, which is
+frozen at its 87 and is NOT re-counted here. The Conservation ledger's arithmetic
+names it separately for that reason — a registry that silently grew its source
+file's count would be claiming a measurement that file does not hold.
 
 | status | n |
 |---|--:|
 | **MEASURED HERE** | 67 |
 | **LITERATURE ONLY (untested here)** | 27 |
-| **ASSERTED (untested here)** | 13 |
+| **ASSERTED (untested here)** | 14 |
 | **REFUTED HERE** | 5 |
 | **ENCODING (not engraving)** | 2 |
 
@@ -55,7 +61,7 @@ a system from a group* (floors at 8 sp under compression, by construction).
 | Staff & pitch geometry | 14 | 6 |
 | Stems & beams | 18 | 9 |
 | Rests & bar filling | 8 | 3 |
-| Accidentals & key signatures | 8 | 1 |
+| Accidentals & key signatures | 9 | 1 |
 | Time signatures & meter | 8 | 0 |
 | Slurs, ties & phrasing | 12 | 2 |
 | Dynamics & hairpins | 7 | 1 |
@@ -63,7 +69,7 @@ a system from a group* (floors at 8 sp under compression, by construction).
 | Score layout & systems | 18 | 1 |
 | Text & margin labels | 8 | 1 |
 | Barlines & repeats | 4 | 1 |
-| **total** | **114** | **27** |
+| **total** | **115** | **27** |
 
 **Publisher- or edition-dependent, by the entry's leading word:** **10** of the
 87 repo-side entries (the repo file's own count) and **6** of the 27
@@ -90,7 +96,7 @@ directly on this repertoire.
 - [Staff & pitch geometry](#staff--pitch-geometry) — 14
 - [Stems & beams](#stems--beams) — 18
 - [Rests & bar filling](#rests--bar-filling) — 8
-- [Accidentals & key signatures](#accidentals--key-signatures) — 8
+- [Accidentals & key signatures](#accidentals--key-signatures) — 9
 - [Time signatures & meter](#time-signatures--meter) — 8
 - [Slurs, ties & phrasing](#slurs-ties--phrasing) — 12
 - [Dynamics & hairpins](#dynamics--hairpins) — 7
@@ -932,7 +938,21 @@ the repo file's rule is that **the tree outranks the ledger**:
 - **Rigid or publisher-dependent:** RIGID.
 - **Would be falsified by:** an edition that states the clef once per page, or omits the key signature on continuation systems.
 - **Known exceptions:** instruments conventionally written **without** a key signature at all (next entry). ⚠️ The staged path **consumes none of** `key_signature_vote.reconcile`, deliberately — keyed on a wrong staff→part join it "would carry the viola's 7 onto the timpani".
-- **Code:** `tools/omr/key_signature_vote.py` `reconcile` (legacy path only); `tools/omr/staff_header.py`. **No staged consumer.**
+- **Code:** `tools/omr/key_signature_vote.py` `reconcile` (legacy path only); `tools/omr/staff_header.py`. For the CLEF half the staged consumer is `tools/omr/staged/inferences.py` `fill_clef_gap` (roadmap 2.10, `OMR_CLEF_GAP`, default ON): a part whose clef one system could not read takes the MAJORITY of the clefs its other systems DID read, a split abstaining. **Key signatures still have no staged consumer.**
+
+### An instrument's HEADER CLEF is a property of the instrument, not of the page
+`[C88]`
+
+- **Says:** an orchestral instrument is written in one conventional clef at the head of its staff — Viola alto, Violoncello bass, Flute treble — and a reader who knows the instrument knows what clef to expect before looking at the ink.
+- **Predicts (mechanically):** **identity is UPSTREAM of the clef** (Sean's 2026-09-05 inversion), so a staff whose PART is settled and whose clef ink is unreadable still has an expected answer. ⚠️ It is a PRIOR, never a constraint: it may fill a gap and may never refuse or overturn a reading, because the exceptions below are ordinary rather than rare. ⚠️⚠️ **And it is strictly weaker than the same part's clef read on ANOTHER SYSTEM** (`[C25 + L38]`), which is a reading of real ink on this very document — so a rule with both available must take the reading first and reach for this only where no other system decided one.
+- **Numbers:** `tools/omr/instruments.py` gives every entry a `default_clef` over `treble|bass|alto|tenor`; the table is the figure and is not restated here.
+- **Literature:** standard orchestration practice; no consulted source states it as a rule because none needs to. Gould's clef chapter treats the alto clef as the viola's, and `[L65]`'s score-order entry already leans on "if the first 2 clefs are treble the 3rd is alto and the 4th is bass" as reinforcement (Sean, 2026-09-17).
+- **Measured here:** ⚠️⚠️ **NOT MEASURED, AND THE REACH IS ZERO ON ALL THREE ACCEPTANCE DOCUMENTS.** Litolff holds 9 unread clefs and every one of them is answered by `[C25 + L38]` (the same part read on other systems) before this convention is consulted; Brahms and the engraved fixture hold none at all. So the tier this entry justifies has **0 of 0** on the measured corpus and is exercised only by `tools/omr/tests/test_infer_clef_gap.py`. `benchmarks/omr-clef-gap-2026-09/FINDINGS.md`.
+- **Status:** ASSERTED (untested here)
+- **Rigid or publisher-dependent:** RIGID as a default, **and routinely departed from within a movement** — see below.
+- **Would be falsified by:** a part whose printed header clef is not its conventional one, which is common enough that only the PROPORTION would be a finding.
+- **Known exceptions:** ⚠️⚠️ **a clef CHANGE is printed, and the instruments that change are exactly the ones whose default is least safe** — bassoon and cello to tenor or treble, viola to treble in a high passage, trombone across alto/tenor/bass. A part that changed clef is the case where both this convention AND the other-systems majority say the wrong thing with confidence, which is why the answer is labelled `inferred` and the abstention stays in the log beneath it. ⚠️ A CONDENSED staff (`Violoncello e Basso`) has two instruments and one clef.
+- **Code:** `tools/omr/instruments.py` `instrument_named(...).default_clef` (the table; `Instrument.default_clef` predates this entry); read by `tools/omr/staged/inferences.py` `fill_clef_gap` tier (3), behind `OMR_CLEF_GAP`.
 
 ### A courtesy accidental is real ink that changes nothing — and its frequency is a property of the EDITION
 `[C26 + L35]`
@@ -1964,12 +1984,20 @@ not be placed; the unplaced list is empty.**
     46  merged entries
   + 41  repo-only entries
   + 27  literature-only entries
+  +  1  written straight into this registry (C88, 2026-09-23, roadmap 2.10)
 ─────
- 114  registry entries
+ 115  registry entries
 ```
 
 **Check both ways:** repo side `46 + 41 = 87` ✅ · literature side `52 + 27 = 79` ✅ ·
-output `46 + 41 + 27 = 114` ✅.
+output `46 + 41 + 27 + 1 = 115` ✅.
+
+⚠️ **C88 IS NOT IN `from-this-repo.md` AND ITS 87 IS NOT BUMPED.** That file is a
+compilation dated 2026-09-17 whose stated scope is *"only conventions this tree
+has evidence for"*, and C88 is ASSERTED with a measured reach of ZERO. Adding a
+row to it would put an unmeasured claim inside the half of the corpus whose whole
+value is that every entry carries a number. It is listed below under its own
+heading instead, so the ledger still accounts for every id an entry carries.
 
 **The six repo entries that absorbed more than one literature entry:**
 `C17` (+L24, L25) · `C21` (+L33, L34) · `C22` (+L36, L37) · `C51` (+L58, L61) ·
@@ -2068,6 +2096,14 @@ output `46 + 41 + 27 = 114` ✅.
 | C85 | Staff SPACING cannot separate a system from a group — REFUTED as a discriminator | *Staff SPACING cannot separate a system from a group — REFUTED* | kept standalone |
 | C86 | VOCAL staves are not joined by barlines, even when they are bracketed | *(same title)* | kept standalone |
 | C87 | A TRILL, TURN or MORDENT is printed clear ABOVE its note, centred on it | *(same title)* | kept standalone |
+
+### Written straight into this registry — 1
+
+⚠️ Not from either source file. See the arithmetic above.
+
+| src | source entry name | landed in | with |
+|---|---|---|---|
+| C88 | An instrument's HEADER CLEF is a property of the instrument, not of the page | *(same title)* | kept standalone |
 
 **Repo tally: 46 merged + 41 standalone = 87** ✅
 

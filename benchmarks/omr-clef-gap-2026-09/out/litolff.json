@@ -1,0 +1,283 @@
+{
+ "id": "beethoven5-litolff",
+ "provenance": {
+  "commit": "dbc9962b641e0259763efb45acc204e4e78ffd55",
+  "dirty": true,
+  "settings": {
+   "env_overrides": {
+    "OMR_DIRECTION_TEXT_SCAN_GATE": "1",
+    "OMR_SURYA_KEEP_ALIVE": "0"
+   },
+   "args": {
+    "against": null,
+    "conf": 0.25,
+    "dpi": 600,
+    "imgsz": null,
+    "ink_rows": false,
+    "no_roster": false,
+    "no_weight_routing": false,
+    "ocr": true,
+    "pages": "1-16",
+    "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf",
+    "route_weights": true,
+    "sheet": null,
+    "surya": true,
+    "weights": "auto",
+    "work_id": null
+   }
+  }
+ },
+ "base": {
+  "n_new_verdicts": 69,
+  "reoffered_and_declined": {
+   "prior_is_decided": 72
+  },
+  "notes_not_written_total": 4115,
+  "notes_not_written": {
+   "ink_is_a_whole_rest": 105,
+   "not_a_notehead:too_narrow": 291,
+   "not_a_notehead:clipped_fragment": 344,
+   "duration_narrowed": 1321,
+   "owned_by_another_staff": 933,
+   "no_pitch": 807,
+   "staff_not_identified": 314
+  },
+  "n_note_elements": 12424,
+  "balance": {
+   "events_in_log": 14530,
+   "noteheads_in_log": 11632,
+   "rests_in_log": 2898,
+   "events_written": 10415,
+   "rests_duplicated_across_voices": 59,
+   "notes_doubled_to_condensed_slot": 479,
+   "events_not_written": 4115,
+   "balanced": true
+  },
+  "status_census_unaccounted": [],
+  "inferred_clefs": []
+ },
+ "arm": {
+  "n_new_verdicts": 454,
+  "new_by_quantity": {
+   "duration": 69,
+   "clef": 9,
+   "pitch": 376
+  },
+  "all_new_verdicts_are_labelled_or_derived": true,
+  "reevaluation": {
+   "fired": 376,
+   "by_rule": {
+    "restate_pitch": 287,
+    "move_glyph": 89
+   }
+  },
+  "reoffered_and_declined": {
+   "prior_is_decided": 72
+  },
+  "notes_not_written_total": 3884,
+  "notes_not_written": {
+   "ink_is_a_whole_rest": 105,
+   "not_a_notehead:too_narrow": 291,
+   "not_a_notehead:clipped_fragment": 344,
+   "duration_narrowed": 1345,
+   "owned_by_another_staff": 933,
+   "no_pitch": 552,
+   "staff_not_identified": 314
+  },
+  "n_note_elements": 12585,
+  "balance": {
+   "events_in_log": 14530,
+   "noteheads_in_log": 11632,
+   "rests_in_log": 2898,
+   "events_written": 10646,
+   "rests_duplicated_across_voices": 59,
+   "notes_doubled_to_condensed_slot": 479,
+   "events_not_written": 3884,
+   "balanced": true
+  },
+  "status_census_unaccounted": [],
+  "inferred_clefs": [
+   {
+    "staff": "staff/14/0/11",
+    "clef": "bass",
+    "reason": "clef_from_other_systems",
+    "instrument": null,
+    "slot": 11,
+    "tally": {
+     "bass": 8
+    },
+    "n_independent_witnesses": 8,
+    "pitches_derived": 9
+   },
+   {
+    "staff": "staff/15/0/9",
+    "clef": "alto",
+    "reason": "clef_from_other_systems",
+    "instrument": "Viola",
+    "slot": 9,
+    "tally": {
+     "alto": 14,
+     "treble": 1,
+     "bass": 1
+    },
+    "n_independent_witnesses": 14,
+    "pitches_derived": 50
+   },
+   {
+    "staff": "staff/16/1/9",
+    "clef": "alto",
+    "reason": "clef_from_other_systems",
+    "instrument": "Viola",
+    "slot": 9,
+    "tally": {
+     "alto": 14,
+     "treble": 1,
+     "bass": 1
+    },
+    "n_independent_witnesses": 14,
+    "pitches_derived": 36
+   },
+   {
+    "staff": "staff/2/1/9",
+    "clef": "alto",
+    "reason": "clef_from_other_systems",
+    "instrument": "Viola",
+    "slot": 9,
+    "tally": {
+     "alto": 14,
+     "treble": 1,
+     "bass": 1
+    },
+    "n_independent_witnesses": 14,
+    "pitches_derived": 76
+   },
+   {
+    "staff": "staff/3/0/9",
+    "clef": "alto",
+    "reason": "clef_from_other_systems",
+    "instrument": "Viola",
+    "slot": 9,
+    "tally": {
+     "alto": 14,
+     "treble": 1,
+     "bass": 1
+    },
+    "n_independent_witnesses": 14,
+    "pitches_derived": 47
+   },
+   {
+    "staff": "staff/5/0/7",
+    "clef": "alto",
+    "reason": "clef_from_other_systems",
+    "instrument": "Viola",
+    "slot": 9,
+    "tally": {
+     "alto": 14,
+     "treble": 1,
+     "bass": 1
+    },
+    "n_independent_witnesses": 14,
+    "pitches_derived": 26
+   },
+   {
+    "staff": "staff/5/1/5",
+    "clef": "alto",
+    "reason": "clef_from_other_systems",
+    "instrument": "Viola",
+    "slot": 9,
+    "tally": {
+     "alto": 14,
+     "treble": 1,
+     "bass": 1
+    },
+    "n_independent_witnesses": 14,
+    "pitches_derived": 26
+   },
+   {
+    "staff": "staff/7/0/9",
+    "clef": "alto",
+    "reason": "clef_from_other_systems",
+    "instrument": "Viola",
+    "slot": 9,
+    "tally": {
+     "alto": 14,
+     "treble": 1,
+     "bass": 1
+    },
+    "n_independent_witnesses": 14,
+    "pitches_derived": 73
+   },
+   {
+    "staff": "staff/7/1/9",
+    "clef": "alto",
+    "reason": "clef_from_other_systems",
+    "instrument": "Viola",
+    "slot": 9,
+    "tally": {
+     "alto": 14,
+     "treble": 1,
+     "bass": 1
+    },
+    "n_independent_witnesses": 14,
+    "pitches_derived": 33
+   }
+  ]
+ },
+ "base_arm_is_deterministic": true,
+ "base_arm_export_equals_the_records_own_export": false,
+ "clef": {
+  "abstained_before": 9,
+  "inferred_by_other_systems": 9,
+  "inferred_by_instrument_convention": 0,
+  "still_abstained": [],
+  "decided_clefs_changed": []
+ },
+ "no_pitch": {
+  "before": 807,
+  "after": 552,
+  "by_system_before": {
+   "2/1": 53,
+   "3/0": 40,
+   "4/0": 71,
+   "4/1": 24,
+   "5/0": 65,
+   "5/1": 22,
+   "6/0": 49,
+   "6/1": 43,
+   "7/0": 59,
+   "7/1": 16,
+   "10/0": 46,
+   "10/1": 49,
+   "11/1": 48,
+   "12/0": 28,
+   "12/1": 53,
+   "14/0": 33,
+   "15/0": 34,
+   "16/1": 74
+  },
+  "by_system_after": {
+   "4/0": 71,
+   "4/1": 24,
+   "5/0": 45,
+   "6/0": 49,
+   "6/1": 43,
+   "7/0": 23,
+   "10/0": 46,
+   "10/1": 49,
+   "11/1": 48,
+   "12/0": 28,
+   "12/1": 53,
+   "14/0": 26,
+   "16/1": 47
+  }
+ },
+ "notes": {
+  "before": 12424,
+  "after": 12585,
+  "delta": 161
+ },
+ "refusal_deltas": {
+  "duration_narrowed": 24,
+  "no_pitch": -255
+ }
+}

@@ -3479,6 +3479,45 @@ _STATUSES = ("emitted", "decided_but_unwritten", "decided_uncounted",
              "abstained", "stub", "starved", "NO_QUANTITY")
 
 
+def _inferred_clefs(rec: Record) -> List[Dict[str, Any]]:
+    """Every staff whose CLEF this file wrote from an INFERENCE, named.
+
+    ⚠️⚠️ NAMED PER STAFF, NEVER COUNTED. Roadmap 2.10's gate is *"every
+    inferred clef named by staff in the census"*, and a count is precisely
+    what would not serve it: Sean adjudicates these against the print one
+    header at a time, and *which staff* is the whole question. `status_census`
+    cannot see this at all -- it partitions FAMILIES, and a `note` family
+    emitting 7,878 notes document-wide is unmoved by one staff's clef
+    (`benchmarks/omr-notehead-funnel-2026-09/FINDINGS.md` §caveat 5).
+
+    ⚠️ DERIVED FROM THE DECIDER, not from a flag some writer sets. A verdict
+    INFER wrote carries `decider="infer:..."` -- `infer.is_inferred` is the
+    one definition, and this reads it rather than keeping a second one.
+    """
+    from .infer import is_inferred
+    out: List[Dict[str, Any]] = []
+    for v in rec.verdicts_of(Q.CLEF):
+        if v["outcome"] != "decided" or not is_inferred(v):
+            continue
+        d = v.get("detail") or {}
+        out.append({
+            "staff": v["subject"], "clef": v.get("value"),
+            "reason": v.get("reason"),
+            "instrument": d.get("instrument"),
+            "slot": d.get("slot"),
+            "tally": d.get("tally"),
+            "n_independent_witnesses": d.get("n_independent_witnesses"),
+            # ⚠️ The pitches this clef produced, so the line prices itself.
+            # A staff whose clef was inferred and whose heads still have no
+            # pitch is an inference that bought nothing, and that must not
+            # look the same as one that bought 40 notes.
+            "pitches_derived": sum(
+                1 for p in rec.verdicts_of(Q.PITCH)
+                if v["id"] in (p.get("basis") or ())),
+        })
+    return sorted(out, key=lambda r: r["staff"])
+
+
 def _census(rows: List[Dict[str, Any]]) -> Dict[str, Any]:
     """Every family row, filed under its status — a PARTITION, not a filter.
 
@@ -3841,6 +3880,12 @@ def coverage(result: Dict[str, Any],
         # the same inversion `NOT_NOTATION` uses, where the default for
         # something nobody has thought about is *reported*.
         "status_census": _census(rows),
+        # ⚠️ ROADMAP 2.10. One line per staff whose clef came from INFER,
+        # with the tier it came from and what it bought. See
+        # `_inferred_clefs`: it is NAMED rather than counted because Sean
+        # adjudicates these one header at a time, and the family census
+        # structurally cannot see a single staff.
+        "inferred_clefs": _inferred_clefs(rec),
     }
 
 

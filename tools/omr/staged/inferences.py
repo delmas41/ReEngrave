@@ -26,7 +26,7 @@ from dataclasses import dataclass
 from typing import Any, Dict, List, Optional, Sequence, Tuple
 
 from .adjudicators.rhythm import ONSET_COLUMN_TOLERANCE_SPACES, _page_x_of
-from .infer import (FAMILY_BLOCK_SWITCH, Inference, Proposal,
+from .infer import (CLEF_GAP_SWITCH, FAMILY_BLOCK_SWITCH, Inference, Proposal,
                     independent_groups, rule)
 from . import record as R
 from .record import Kind, Log, Outcome, Q, Scope, Subject, Verdict
@@ -1014,3 +1014,270 @@ def collapse_slot_index_to_family_block(log: Log,
                         "condensed_with_slot": int(contrabass_slot),
                     }))
     return out
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Rule 4 — the clef nobody could read, on a part the record has already placed
+# ─────────────────────────────────────────────────────────────────────────────
+
+#: The prior outcomes this rule will speak into. ⚠️ ABSTAINED ONLY, AND
+#: `NARROWED` IS DELIBERATELY ABSENT even though `infer.INFERABLE` admits it.
+#: A NARROWED clef means `adjudicate_clef` READ the staff, scored two or more
+#: candidates and could not separate them under `MARGIN_FLOOR` -- that is the
+#: clef reader's own contest and its own floor, and collapsing it from another
+#: system would be this rule quietly overruling a margin decision it has no
+#: evidence about. Sean's rule is about a clef that could not be read AT ALL.
+#: The Litolff whole-movement record holds 15 narrowed clefs beside the 9
+#: abstained ones, so this is a live exclusion and not a hypothetical.
+_CLEF_GAP_PRIOR = Outcome.ABSTAINED
+
+
+@dataclass(frozen=True)
+class _ClefGap:
+    """What this rule concluded about ONE staff, proposed or not.
+
+    ⚠️ A RECORD OF THE DECLINES AS WELL AS THE FILLS, because the roadmap
+    gate is *"inferred by (2) / by (3) / still abstained, with reasons"* and a
+    rule that returns only its proposals cannot answer the third column. The
+    probe reads THIS rather than re-deriving the population beside the rule,
+    which is how a benchmark's own copy of a refusal table came to report 542
+    where the exporter refused 738.
+    """
+
+    staff: Subject
+    #: `clef_from_other_systems` | `clef_from_instrument_convention` |
+    #: a decline word
+    outcome: str
+    value: Optional[str] = None
+    detail: Optional[Dict[str, Any]] = None
+    basis: Tuple[str, ...] = ()
+    witnesses: Tuple[str, ...] = ()
+
+
+def _part_of(log: Log, staff: Subject) -> Tuple[Optional[int], Optional[str],
+                                                Tuple[str, ...]]:
+    """`(slot, instrument name, the verdict ids that said so)` for one staff.
+
+    ⚠️⚠️ THE SLOT IS THE PART AND THE NAME IS ONLY A LABEL ON IT. Sean's rule
+    says *"a part whose instrument is decided"*, and on the document this was
+    built for `Q.INSTRUMENT` ABSTAINS on all 9 staves whose clef abstained --
+    the Viola prints no margin label on those systems, which is the same fault
+    twice over. What IS decided there is `Q.SLOT_INDEX`, which is the
+    document-wide part the staff sits on, and its detail carries the
+    reference's own name for that slot. So the identity this rule requires is
+    the SLOT, and the name is read off whichever verdict carries one.
+
+    A staff with no decided slot has no part, and this returns `(None, ...)`.
+    """
+    slot = log.verdict(Q.SLOT_INDEX, staff)
+    if slot is None or slot.outcome is not Outcome.DECIDED \
+            or not isinstance(slot.value, int):
+        return None, None, ()
+    used = [slot.id]
+    name = None
+    inst = log.verdict(Q.INSTRUMENT, staff)
+    if inst is not None and inst.outcome is Outcome.DECIDED \
+            and isinstance(inst.value, dict):
+        name = inst.value.get("name")
+        used.append(inst.id)
+    if not name:
+        name = (slot.detail or {}).get("instrument")
+    return int(slot.value), (str(name) if name else None), tuple(used)
+
+
+def _clef_reads_by_slot(log: Log) -> Dict[int, List[Verdict]]:
+    """`{slot: [the DECIDED clef verdicts of every staff on that slot]}`.
+
+    ⚠️ DECIDED ONLY. A narrowed or abstained clef is not a read, and a rule
+    that tallied them would be counting the very silence it exists to fill.
+    """
+    out: Dict[int, List[Verdict]] = {}
+    for staff in log.subjects(Kind.STAFF):
+        clef = log.verdict(Q.CLEF, staff)
+        if clef is None or clef.outcome is not Outcome.DECIDED \
+                or not isinstance(clef.value, str):
+            continue
+        slot = log.verdict(Q.SLOT_INDEX, staff)
+        if slot is None or slot.outcome is not Outcome.DECIDED \
+                or not isinstance(slot.value, int):
+            continue
+        out.setdefault(int(slot.value), []).append(clef)
+    return out
+
+
+def clef_gap_census(log: Log) -> List[_ClefGap]:
+    """Every staff whose clef ABSTAINED, and what this rule makes of it.
+
+    ⚠️ THE RULE'S WHOLE BODY LIVES HERE and the rule below is only the part
+    that turns fills into `Proposal`s. One function, so the probe and the rule
+    cannot disagree about the population, the tally or the tier -- the fault
+    `omr-cleanup-count-2026-09/build_sheet.py` paid for by keeping its own
+    copy of "the three refusals" and reporting 542 where the exporter refused
+    738.
+    """
+    from ..instruments import instrument_named
+
+    reads = _clef_reads_by_slot(log)
+    out: List[_ClefGap] = []
+    for staff in log.subjects(Kind.STAFF):
+        clef = log.verdict(Q.CLEF, staff)
+        if clef is None:
+            continue
+        if clef.outcome is not _CLEF_GAP_PRIOR:
+            # ⚠️ A DECIDED clef is a READING and is never overruled (rule 3 of
+            # the stage, enforced again by `_admit`); a NARROWED one is the
+            # clef reader's own contest. Both are DECLINED here rather than
+            # left to the harness, so the census can name them.
+            out.append(_ClefGap(
+                staff, f"declined_prior_is_{clef.outcome.value}"))
+            continue
+
+        slot, name, part_rows = _part_of(log, staff)
+        if slot is None:
+            out.append(_ClefGap(staff, "declined_part_not_decided"))
+            continue
+
+        # ── (2) the same part, read on OTHER systems of this document ───────
+        others = [v for v in reads.get(slot, ())
+                  if v.subject.to_key() != staff.to_key()]
+        tally: Dict[str, int] = {}
+        for v in others:
+            tally[str(v.value)] = tally.get(str(v.value), 0) + 1
+        if tally:
+            ranked = sorted(tally.items(), key=lambda kv: (-kv[1], kv[0]))
+            if len(ranked) > 1 and ranked[0][1] == ranked[1][1]:
+                # ⚠️ SEAN: *"a split abstains"*. Not the alphabetical winner,
+                # not the closest system, and NOT the instrument's convention
+                # either -- a part the document disagrees with itself about is
+                # not a part this rule knows the clef of, and falling through
+                # to tier (3) would answer a contested question with a weaker
+                # kind of evidence than the one that failed to settle it.
+                out.append(_ClefGap(staff, "split", None,
+                                    {"slot": slot, "instrument": name,
+                                     "tally": tally}))
+                continue
+            won = ranked[0][0]
+            witnesses = tuple(v.id for v in others if str(v.value) == won)
+            out.append(_ClefGap(
+                staff, "clef_from_other_systems", won,
+                {"slot": slot, "instrument": name, "tally": tally,
+                 "n_systems_read": len(others),
+                 "n_agreeing": ranked[0][1],
+                 # ⚠️ WRITTEN EVEN WHEN THE SLOT ITSELF WAS INFERRED. On
+                 # Litolff p3 the Viola's `Q.SLOT_INDEX` is
+                 # `infer:collapse_slot_index_to_family_block`, so this clef
+                 # rests on another inference -- legible from the basis, and
+                 # named here so it does not have to be walked for.
+                 "part_from_an_inference": any(
+                     str(getattr(log.row(r), "decider", "") or "").startswith(
+                         "infer:") for r in part_rows)},
+                basis=part_rows + witnesses, witnesses=witnesses))
+            continue
+
+        # ── (3) the instrument's conventional header clef ───────────────────
+        inst = instrument_named(name) if name else None
+        if inst is None:
+            out.append(_ClefGap(staff, "declined_no_instrument_name",
+                                None, {"slot": slot, "name": name}))
+            continue
+        out.append(_ClefGap(
+            staff, "clef_from_instrument_convention", str(inst.default_clef),
+            {"slot": slot, "instrument": inst.name,
+             # ⚠️ NAMED AS A CONVENTION AND NOT AS A WITNESS. Nothing on this
+             # page was read to reach this answer; the `instrument_header_clef`
+             # entry in `tools/omr/conventions.py` is the claim being made.
+             "convention": "instrument_header_clef",
+             "n_systems_read": 0},
+            basis=part_rows, witnesses=()))
+    return out
+
+
+@rule(
+    inference=Inference.FILL_CLEF_GAP,
+    # ⚠️ ITS OWN FLAG, DEFAULT ON. See `infer.CLEF_GAP_ENV`: this rule's
+    # evidence is neither the duration rules' nor the family block's, and one
+    # flag over three rules makes turning any of them off one decision about
+    # all of them.
+    switch=CLEF_GAP_SWITCH,
+    target=Q.CLEF,
+    # ⚠️ `Q.CLEF` IS IN `reads` AND THAT IS THE POINT: tier (2) is other
+    # staves' CLEF VERDICTS, which is the sideways read EVALUATE structurally
+    # cannot make. It is not a loop -- `Log.record`'s `UphillConsequence`
+    # guard refuses a verdict that reaches its own prior, and no staff is ever
+    # its own witness (`v.subject != staff` above).
+    reads=(Q.CLEF, Q.SLOT_INDEX, Q.INSTRUMENT),
+    scope=Kind.DOCUMENT,
+    sideways=True,
+    bound=(
+        "It speaks ONLY where `adjudicate_clef` ABSTAINED and the staff's "
+        "`Q.SLOT_INDEX` is DECIDED. A DECIDED clef is never touched and a "
+        "NARROWED one is declined outright -- a narrowing is the clef "
+        "reader's own contest under its own margin floor, not a gap. The "
+        "value is either (2) the MAJORITY of the clefs DECIDED on the same "
+        "slot on OTHER systems of this document -- a tie for top abstains, "
+        "and no other-system read means no tier-(2) answer -- or, where no "
+        "other system decided one, (3) the `default_clef` of the instrument "
+        "the record already named for that slot, read from "
+        "`tools/omr/instruments.py` and never typed here. It proposes one "
+        "clef per staff, invents no value, moves no glyph and writes no "
+        "pitch: the pitches are `restate_pitch`'s, reached by "
+        "`evaluate.run_over` over this verdict alone."),
+    why_witnesses_are_independent=(
+        "Tier (2)'s witnesses are OTHER STAVES' `Q.CLEF` verdicts, one per "
+        "system, each resting on that system's own header ink -- so "
+        "`independent_groups` normally returns one group per system and the "
+        "count is recorded on the verdict as `n_independent_witnesses`. "
+        "⚠️⚠️ AND THIS IS EXACTLY WHERE HAZARD (b) BITES, SO THE NUMBER IS "
+        "COMPUTED RATHER THAN CLAIMED: `adjudicate_clef` has a CARRY term, so "
+        "a clef read once and carried down a document is one signal wearing "
+        "N hats, and the closure partition is what says which. This rule does "
+        "NOT gate on that count, because Sean's rule is stated over the "
+        "READS ('the majority of those decided reads; a split abstains') and "
+        "adding an independence floor he did not ask for would silently "
+        "refuse the Viola this item exists to repair. The partition and the "
+        "full tally both ride on the verdict, so a reader can see whether 14 "
+        "witnesses were 14 or 1. ⚠️ Tier (3) has NO witness at all and says "
+        "so: `witnesses=()`, `n_systems_read: 0`, and a `convention` key "
+        "naming the registry entry. It is a claim about engraving practice, "
+        "which is what this stage is for and what the label is for."),
+)
+def fill_clef_gap(log: Log, document: Subject) -> List[Proposal]:
+    """An unread clef on a placed part: other systems first, then convention.
+
+    Sean, 2026-09-23: *"yes — viola staff with unreadable clef reads as alto
+    and it should check other systems if the alto clef can be found"*.
+
+    **Why it is an inference and not a reading.** On Litolff page 3 the alto
+    C-clef is MERGED into the staff lines by the plate and the detector boxed
+    it as two noteheads, so `adjudicate_clef` ends with no candidate at all
+    and abstains `no_candidates`. `restate_pitch` then produces nothing for
+    the staff -- correctly, because a positional default is right about half
+    the time -- and all 48 detected heads die at EXPORT, 40 of them under
+    `no_pitch`. That is the whole of the page's `no_pitch` refusals on ONE
+    staff (`benchmarks/omr-notehead-funnel-2026-09/FINDINGS.md`).
+
+    **What makes the answer available.** §10: *a clef is printed at the start
+    of every system*, and a part's clef is stable across systems unless a
+    change is printed. The same part one system down reads its alto clef and
+    writes 24 of 27 boxes. So the document already holds a reading of this
+    part's clef; nothing read it.
+
+    ⚠️⚠️ IT IS A CLAIM AND NOT A DEDUCTION, WHICH IS WHY IT IS HERE. A clef
+    CHANGE is printed, and a part that changes clef mid-movement -- a bassoon
+    going to tenor, a cello to treble -- is exactly the case where the other
+    systems say the wrong thing with a large majority. Nothing the record
+    holds refutes that here, so the answer is BEST rather than FORCED; it is
+    labelled, and the abstention stays in the log underneath it.
+
+    ⚠️ IT MUST RUN AFTER `collapse_slot_index_to_family_block`, and it does
+    because `infer.run` walks `RULES` in REGISTRATION order and this file is
+    read top to bottom. On Litolff all 9 of the staves it repairs are placed
+    by that rule; registered first, this one would find no decided slot and
+    report a clean, false zero. `test_infer_clef_gap` pins the order.
+    """
+    return [Proposal(subject=g.staff, value=g.value, reason=g.outcome,
+                     basis=g.basis, witnesses=g.witnesses,
+                     detail=dict(g.detail or {}))
+            for g in clef_gap_census(log)
+            if g.outcome in ("clef_from_other_systems",
+                             "clef_from_instrument_convention")]

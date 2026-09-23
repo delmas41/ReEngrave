@@ -48,10 +48,10 @@ def _verdict(log: Log, subject: Subject, quantity: str, value: Any,
 
 @rule(consequence=Consequence.RESTATE_PITCH,
       cause=Q.CLEF, effect=Q.PITCH, scope=Kind.STAFF,
-      bound="One pitch per notehead that already has a POSITION row. Adds no "
-            "notehead, deletes none, and re-reads no geometry. A staff whose "
-            "clef ABSTAINED produces no pitches at all -- it does not fall "
-            "back to treble.")
+      bound="One pitch per notehead that already has a POSITION row and does "
+            "NOT already carry a pitch. Adds no notehead, deletes none, and "
+            "re-reads no geometry. A staff whose clef ABSTAINED produces no "
+            "pitches at all -- it does not fall back to treble.")
 def restate_pitch(log: Log, subject: Subject, clef: Verdict) -> List[Verdict]:
     """position + clef -> pitch. The interpretation, made explicit.
 
@@ -75,6 +75,25 @@ def restate_pitch(log: Log, subject: Subject, clef: Verdict) -> List[Verdict]:
     rows = log.rows(Q.NOTEHEAD_STAFF_POSITION, subject,
                     scope=Scope.SELF_AND_DESCENDANTS)
     for row in rows:
+        if log.verdict(Q.PITCH, row.subject) is not None:
+            # ⚠️⚠️ IT NEVER OVERTURNS A PITCH THAT ALREADY STANDS, and the
+            # guard is a PROVABLE NO-OP ON THE FIRST PASS: this rule is the
+            # first writer of `Q.PITCH` in DOWNHILL order, and on the Litolff
+            # whole-movement record the only two deciders of the quantity are
+            # this one (10,618) and `move_glyph` (2,686), which runs after.
+            #
+            # It exists for the BOUNDED SECOND PASS (roadmap 2.10). A glyph
+            # cut in this staff's cells but awarded to a NEIGHBOUR was
+            # re-pitched by `move_glyph` in the first pass, on the winner's
+            # clef. When INFER later fills THIS staff's clef, `run_over`
+            # brings this rule back over the staff's position rows -- which
+            # still include that glyph, because a contest DROPS the loser
+            # rather than removing the row. Without this guard the rule
+            # re-pitches a note that left, on the clef of the staff it left,
+            # and `Log.record` refuses it outright (`AlreadyAdjudicated`),
+            # which is how this was found: the whole arm died on
+            # `glyph/2/1/9/6/2`.
+            continue
         pos = int(round(float(row.value)))
         name = _pitch_from_position(pos, str(clef.value))
         if name is None:
@@ -364,8 +383,29 @@ def _admitted(note: Verdict) -> List[dict]:
     return out
 
 
+def _move_glyph_also_reads(log: Log, subject: Subject,
+                           owner: Verdict) -> List[str]:
+    """The WINNING STAFF'S CLEF -- the verdict this rule reads that is not its
+    cause.
+
+    ⚠️ DECLARED BECAUSE `evaluate.run_over` CANNOT GUESS IT. A glyph awarded
+    to a staff whose clef abstained gets no pitch (`move_glyph` returns []
+    rather than inventing one). When INFER later fills that clef, the glyph
+    has a NEW consequence and its OWNERSHIP has not changed -- so a bounded
+    second pass keyed on the cause alone would skip it, silently, and the
+    heads a contest moved onto the repaired staff would stay unwritten while
+    the heads cut on it were restated. That is a half-repair that reads as a
+    whole one.
+    """
+    if not isinstance(owner.value, str):
+        return []
+    clef = log.verdict(Q.CLEF, Subject.from_key(owner.value))
+    return [clef.id] if clef is not None else []
+
+
 @rule(consequence=Consequence.MOVE_GLYPH,
       cause=Q.GLYPH_OWNER, effect=Q.PITCH, scope=Kind.GLYPH,
+      reads_beyond_cause=_move_glyph_also_reads,
       bound="Restates one glyph's pitch against the staff that won it. Emits "
             "no detection and destroys none -- a losing copy is SUPERSEDED, "
             "not deleted, so the contest stays on the record.")

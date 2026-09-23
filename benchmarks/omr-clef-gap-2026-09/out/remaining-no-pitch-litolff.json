@@ -1,0 +1,19 @@
+{
+ "record": "/private/tmp/claude-501/-Users-seanjohnson-Desktop-ReEngrave--claude-worktrees-start-here-questions-7d5637/3707ff6b-4757-4644-b4c5-de906d20a7bb/scratchpad/arm/beethoven5-litolff-arm.record.json",
+ "exporter_no_pitch_refusals": 552,
+ "noteheads_without_a_standing_pitch": 601,
+ "by_cause": {
+  "clef_narrowed": 596,
+  "owned_by_another_staff (a different refusal)": 5
+ },
+ "examples": {
+  "clef_narrowed": [
+   "glyph/4/0/8/0/5",
+   "glyph/4/0/8/1/2",
+   "glyph/4/0/8/1/4",
+   "glyph/4/0/8/1/5",
+   "glyph/4/0/8/1/8"
+  ]
+ },
+ "n_duration_narrowed_among_them": 61
+}
