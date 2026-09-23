@@ -96,10 +96,31 @@ head, at the very top edge of the cell's 4-space pad, which is the shape
 `clipped_fragment` exists to refuse, and its crop shows it sitting in the
 inter-staff gap at detector confidence **0.30**.
 
-⚠️ **Whether 2.4a actually refuses it is NOT established here** — that needs a
-re-adjudication on today's tree, not an argument from its dimensions. What IS
-established is that the question is open and that the reach figure above is
-therefore an upper bound.
+### ⚠️ CLOSED: 2.4a DOES refuse it
+
+`probe/would_2_4a_refuse.py` evaluates the rule's two conditions against the
+record's own geometry — admissible only because both are pure arithmetic over
+values this record already carries, and because `_cell_box_page(ev)` was read
+and returns the raw `Q.CELL_BOX` value, the same number used here.
+
+| | |
+|---|---|
+| height | 47 / 100 = **0.470 spaces**, under `CLIPPED_NOTEHEAD_MAX_SPACES` **0.6** |
+| top edge | `bbox_page_px[1]` **1670.0** against `cell_box[1]` **1670.0** — distance **0.00 px**, tolerance 1.0 |
+| `clipped_fragment` | short ∧ touching → **FIRES. 2.4a refuses this glyph as not a notehead.** |
+| `too_narrow` | 1.460 spaces against the 1.0 floor → does not fire |
+
+**So neither of the two ordering-overrides survives scrutiny.** One
+(`glyph/2/0/9/15/5`) is on ink today's tree refuses as not a notehead at all;
+the other (`glyph/4/0/9/5/7`) fails the reference membership check by moving
+away from the encoded duration (§5b). The cases that were supposed to show the
+stage buying something a consequence could not are, on this document, one
+non-notehead and one wrong answer.
+
+⚠️ This still does not decide the default: it is n = 1 document, the other 14
+inferences are unexamined by either instrument, and a re-adjudication of the
+whole population on today's tree (§5.1) remains the honest way to restate
+reach. But the direction of the evidence is now negative rather than absent.
 
 One more shape worth naming: `glyph/4/0/8/2/3` has height **312**, two to three
 times a notehead. A merged blob on a plate CLAUDE.md records as MERGING.
