@@ -1,0 +1,18 @@
+==========================================================================
+labels — 448 distinct strings
+==========================================================================
+  resolved before 297   after 297
+  GAINED (nothing -> an instrument)   0
+  LOST (an instrument -> nothing)     0
+  CHANGED (one instrument -> another) 0
+
+==========================================================================
+part-names — 1271 distinct strings
+==========================================================================
+  resolved before 878   after 878
+  GAINED (nothing -> an instrument)   0
+  LOST (an instrument -> nothing)     0
+  CHANGED (one instrument -> another) 0
+
+TOTAL over both corpora: gained 0, LOST 0, CHANGED 0
+wrote /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/data-flow-stages-handoff-5c1e07/benchmarks/omr-lexicon-ocr-folds-2026-09/out/corpus-diff.json
