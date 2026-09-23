@@ -40,7 +40,7 @@ a system from a group* (floors at 8 sp under compression, by construction).
 
 ## Counts
 
-**116 registry entries**, from 167 source entries plus one written straight into this registry (`C89`).
+**116 registry entries**, from 168 source entries (167 compiled, plus `C89` written straight into this registry).
 
 ⚠️ **The 167th source entry is `C88`** (*A clef's SIZE is consistent with its
 staff…*), added 2026-09-23 under ROADMAP 2.11. It is the first entry added
@@ -104,7 +104,7 @@ directly on this repertoire.
 - [Staff & pitch geometry](#staff--pitch-geometry) — 14
 - [Stems & beams](#stems--beams) — 18
 - [Rests & bar filling](#rests--bar-filling) — 8
-- [Accidentals & key signatures](#accidentals--key-signatures) — 9
+- [Accidentals & key signatures](#accidentals--key-signatures) — 10
 - [Time signatures & meter](#time-signatures--meter) — 8
 - [Slurs, ties & phrasing](#slurs-ties--phrasing) — 12
 - [Dynamics & hairpins](#dynamics--hairpins) — 7
