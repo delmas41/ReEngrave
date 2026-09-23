@@ -456,7 +456,7 @@ def _to_result(log: Log, parent_result: dict, review_prov: Optional[dict]
 
 
 def rerun(record_path: str, sidecar_path: Optional[str],
-          out_record_path: str, *, staff: Optional[str] = None,
+          out_record_path: Optional[str], *, staff: Optional[str] = None,
           musicxml_path: Optional[str] = None,
           progress: bool = False,
           break_control: bool = False) -> Tuple[Diff, dict, dict]:
@@ -466,7 +466,8 @@ def rerun(record_path: str, sidecar_path: Optional[str],
     overwriting the parent would destroy the only thing the amended record's
     provenance can be checked against.
     """
-    if Path(out_record_path).resolve() == Path(record_path).resolve():
+    if out_record_path is not None and \
+            Path(out_record_path).resolve() == Path(record_path).resolve():
         raise ValueError(
             "the amended record may not overwrite its parent — its provenance "
             "names the parent's md5, and a file that has eaten its own parent "
@@ -523,9 +524,18 @@ def rerun(record_path: str, sidecar_path: Optional[str],
         "status_census_before": rep_before.get("status_census"),
         "status_census_after": rep_after.get("status_census")}
 
-    Path(out_record_path).parent.mkdir(parents=True, exist_ok=True)
-    from ..record_io import dumps_for_file
-    Path(out_record_path).write_text(dumps_for_file(arm, indent=1, default=str))
+    # ⚠️ `out_record_path=None` WRITES NO RECORD, and that is for the CONTROL
+    # rather than for speed in general. A control's amended record is BY
+    # DEFINITION the parent's gather rows re-decided — there is nothing in it
+    # to keep, and on a whole-movement record `record_io.pool_id_lists` has to
+    # intersect ~1,800-id lists across every arc verdict of every system and
+    # then expand its own output to prove the spelling lossless. That is the
+    # right price for an arm and pure waste for a comparison.
+    if out_record_path is not None:
+        Path(out_record_path).parent.mkdir(parents=True, exist_ok=True)
+        from ..record_io import dumps_for_file
+        Path(out_record_path).write_text(
+            dumps_for_file(arm, indent=1, default=str))
     if musicxml_path:
         Path(musicxml_path).write_text(xml_after)
     return d, arm, ing
@@ -611,6 +621,8 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
                          "the record; exit 1 if it does not")
     ap.add_argument("--break-control", action="store_true",
                     help="perturb one gather row so the control MUST fail")
+    ap.add_argument("--record", dest="record_out", action="store_true",
+                    help="write the amended record even under --control")
     a = ap.parse_args(argv)
 
     out = Path(a.out)
@@ -620,7 +632,11 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     if staff is None and sidecar:
         staff = (json.loads(Path(sidecar).read_text()) or {}).get("staff")
 
-    d, arm, ing = rerun(a.record, sidecar, str(out / "amended.record.json"),
+    # ⚠️ A CONTROL WRITES NO AMENDED RECORD (see `rerun`). `--record` forces
+    # one anyway, for a session that wants the replayed record in hand.
+    out_record = (None if (a.control and not a.record_out)
+                  else str(out / "amended.record.json"))
+    d, arm, ing = rerun(a.record, sidecar, out_record,
                         staff=staff, musicxml_path=str(out / "arm.musicxml"),
                         progress=a.progress, break_control=a.break_control)
     print_diff(d, ing)
