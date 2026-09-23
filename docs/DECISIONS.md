@@ -159,3 +159,31 @@ Format: `YYYY-MM-DD · who · the decision · because · (pointer)`
   own staff or tied · `subjects_from=Q.GLYPH_BAND_DISTANCE` stays; the 38 with
   no twin are not handed in · (`64c83c5f`,
   `benchmarks/omr-infer-duration-print-2026-09/FINDINGS.md` §10)
+- 2026-09-23 · Sean, on the count pages · **The first cleanup count is NOT
+  taken; its result is three sentences.** *"the amount of fixes is still too
+  many to count — we are not even close to getting the noteheads correct"*;
+  *"it is allowing for math that doesn't add up at all"*; *"the key signatures
+  don't make sense either — they don't match each other on the same page, even
+  the engraved Beethoven."* · because each was measured true within the hour:
+  68 of 408 staff-bars on the Litolff count page do not sum to 2/4 and export
+  never checks; the engraved page writes one flat on 9 of 18 parts against a
+  truth of three; Viola on that page has 24 heads written against 49 printed ·
+  the count is read as *what to fix next* (CLAUDE.md §6a) and it has said so
+  · (ROADMAP 2.8, 2.9; START HERE)
+- 2026-09-23 · Sean · **A bar whose durations do not sum to the meter is HELD
+  OUT — exported as the marked empty bar a bar we read nothing in gets, its
+  heads counted under a named refusal — not kept with a mark.** · *"hold out —
+  I don't care about print right now — I want to know what we are getting
+  correct"* · rule 8: a bar we could not read to its meter is a bar we could
+  not read; nothing pads, trims or re-times it · (ROADMAP 2.8)
+- 2026-09-23 · Sean · **A key signature is decided per SYSTEM by MAJORITY of
+  its staves, transposition-normalised; a tie abstains and carries.** · *"majority"*,
+  asked against the alternative (abstain and carry on any dissent) · because a
+  key change is printed on every staff of a system (CLAUDE.md §10), so a lone
+  staff's different key is a misreading of that staff, and the other staves are
+  independent witnesses of the same plate fact · the dissent stays recorded ·
+  (ROADMAP 2.9)
+- 2026-09-23 · Sean · **The accidental build (2.7) is stopped and parked**
+  (`claude/accidental-2.7` `69d64d95`, code committed, unmeasured) · because
+  accidentals on wrong heads under wrong keys are wasted work; resume after
+  2.8, 2.9 and notehead recall · (ROADMAP 2.7)
