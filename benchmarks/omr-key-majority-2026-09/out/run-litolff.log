@@ -1,0 +1,3 @@
+CONTROL clef: 331 of 331 reproduced (outcome+value), 0 differ, +0 extra
+CONTROL key_signature: 331 of 331 reproduced (outcome+value), 0 differ, +0 extra
+   reason moved (value unchanged): [('fitted_by_template -> fitted_no_markers', 108), ('fitted -> fitted_no_markers', 104), ('markers_without_a_run -> no_evidence', 36)]

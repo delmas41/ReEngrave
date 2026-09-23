@@ -91,6 +91,29 @@ def main() -> int:
         return 3
     print(f"CLASSES  probe and tree agree: {_KEYSIG_CLASSES}")
 
+    # ⚠️⚠️ SUPERSEDED BY ROADMAP 2.9 (2026-09-23), AND IT SAYS SO RATHER THAN
+    # FAILING. This arm exists to prove one thing: that reading
+    # `Q.KEYSIG_MARKER` split an abstention REASON and moved no decided key.
+    # That rule is gone — the markers are now the PRIMARY reader and they are
+    # meant to move decided keys — so every assertion below would be asking
+    # the tree to still hold a rule it deliberately no longer holds, and a
+    # red arm would read as a regression instead of a replacement. The
+    # measurement it produced stands in this directory's `FINDINGS.md`; the
+    # new one is `benchmarks/omr-key-majority-2026-09/`.
+    #
+    # ⚠️ IT IS A LIVE CHECK, NOT A COMMENT: it asks the REGISTRY, so if
+    # `markers_without_a_run` is ever restored this arm runs again unchanged.
+    from tools.omr.staged.adjudicate import REGISTRY, _ensure_decisions
+    from tools.omr.staged.record import Q
+    _ensure_decisions()
+    if "markers_without_a_run" not in REGISTRY[Q.KEY_SIGNATURE].reasons:
+        print("SUPERSEDED: `markers_without_a_run` is no longer a declared "
+              "reason of `key_signature` — roadmap 2.9 made the detector's "
+              "markers the primary reader, so the reason-split this arm was "
+              "written to prove does not exist to be measured. See "
+              "benchmarks/omr-key-majority-2026-09/FINDINGS.md.")
+        return 2
+
     rec = json.load(open(a.record))["record"]
     was = _keys(rec["verdicts"])
     if not was:

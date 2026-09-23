@@ -131,7 +131,13 @@ class TestTheTemplateAnswersGapsOnly(unittest.TestCase):
         adjudicate.run(log)
         v = log.verdict(Q.KEY_SIGNATURE, SUB)
         self.assertEqual(v.value, -3)
-        self.assertEqual(v.reason, "fitted_by_template")
+        # ⚠️ ONE REASON WORD SINCE 2026-09-23 (roadmap 2.9): the detector's
+        # markers are the primary reader, so every fitter answer now arrives
+        # through `fitted_no_markers` and WHICH fitter answered moved to
+        # `detail["decided_by"]`. The PRECEDENCE this test is about is
+        # unchanged, which is what the value still proves.
+        self.assertEqual(v.reason, "fitted_no_markers")
+        self.assertEqual(v.detail.get("decided_by"), "template")
 
     def test_the_LOCATOR_wins_where_both_speak(self):
         """The locator cannot invent a glyph; the template can match spurious
@@ -146,7 +152,9 @@ class TestTheTemplateAnswersGapsOnly(unittest.TestCase):
         adjudicate.run(log)
         v = log.verdict(Q.KEY_SIGNATURE, SUB)
         self.assertEqual(v.value, -1)
-        self.assertEqual(v.reason, "fitted")
+        self.assertEqual(v.reason, "fitted_no_markers")
+        self.assertEqual(v.detail.get("n_accidentals"), 1,
+                         "the LOCATOR's row, not the template's 3")
 
     def test_a_template_fit_for_ANOTHER_clef_is_not_taken(self):
         log = Log()

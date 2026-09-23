@@ -812,6 +812,24 @@ class Q(_Vocab):
     MEASURE_PARTITION = "measure_partition"  # where the bars are
     CLEF = "clef"
     KEY_SIGNATURE = "key_signature"
+    #: The CONCERT keys the staves of ONE system read, with their support.
+    #:
+    #: ⚠️ IT IS NOT A VOTE AND IT IS NOT THE SYSTEM'S ANSWER. A key change is
+    #: printed at one bar on EVERY staff of a system (conventions `[C24]`), so
+    #: a staff whose concert key stands alone on its own system is a MISREADING
+    #: of that staff -- and that is a check which can FAIL, not a majority
+    #: entitled to overwrite the minority. The verdict is therefore NARROWED by
+    #: construction: it carries every concert value its staves read and how
+    #: many read it, and `adjudicate_key_signature` abstains a staff whose
+    #: value has no peer. Nothing here writes a key onto any staff.
+    #:
+    #: ⚠️ ITS SUPPORT COUNTS ONLY THE STAVES THAT CAN SPEAK IN CONCERT PITCH:
+    #: an instrument whose transposition the LABEL did not state is excluded
+    #: (the lexicon's default is a convention, not a reading -- see
+    #: `key_consensus.resolve_label`), and so is one that prints no key
+    #: signature at all (`key_consensus.NO_SIGNATURE_CONVENTION`), whose zero
+    #: would otherwise stand as a disagreement with the whole page.
+    SYSTEM_KEY = "system_key"
     METER = "meter"
     DURATION = "duration"                    # ⚠️ a VERDICT, not a measurement
     #: Which glyphs of a bar sound TOGETHER — one event, N noteheads.
@@ -1302,6 +1320,7 @@ CLAIMS: "dict[str, str]" = {
     "GROUP_SYMBOL": CLAIM.INTERPRETATION,
     "CLEF": CLAIM.INTERPRETATION,
     "KEY_SIGNATURE": CLAIM.INTERPRETATION,
+    "SYSTEM_KEY": CLAIM.INTERPRETATION,
     "METER": CLAIM.INTERPRETATION,
     "DURATION": CLAIM.INTERPRETATION,
     "EVENT": CLAIM.INTERPRETATION,

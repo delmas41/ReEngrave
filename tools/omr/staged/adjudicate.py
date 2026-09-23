@@ -64,7 +64,10 @@ class UndeclaredReason(RuntimeError):
 READINGS: Dict[str, Tuple[str, ...]] = {
     Q.INSTRUMENT: (Q.MARGIN_LABEL, Q.TEXT_LAYER, Q.ROSTER_ENTRY),
     Q.CLEF: (Q.CLEF_GLYPH, Q.CLEF_POSITION, Q.CLEF_LOCATED, Q.CLEF_SEED),
-    Q.KEY_SIGNATURE: (Q.KEYSIG_RUN_POSITION, Q.KEYSIG_MARKER, Q.DOSSIER_FACT),
+    Q.KEY_SIGNATURE: (Q.KEYSIG_RUN_POSITION, Q.KEYSIG_MARKER,
+                      Q.KEYSIG_TEMPLATE_FIT),
+    Q.SYSTEM_KEY: (Q.KEYSIG_MARKER, Q.KEYSIG_RUN_POSITION,
+                   Q.KEYSIG_TEMPLATE_FIT),
     Q.METER: (Q.METER_GLYPH, Q.METER_TEMPLATE, Q.DOSSIER_FACT),
     Q.STAFF_GROUP: (Q.BRACKET_BLOCK, Q.SYSTEMIC_COLUMN),
     Q.GROUP_SYMBOL: (Q.BRACKET_BLOCK,),
@@ -846,6 +849,14 @@ ORDER: Tuple[str, ...] = (
     Q.GROUP_SYMBOL,
     # now the header facts, with identity in hand
     Q.CLEF,
+    # ⚠️ BEFORE `Q.KEY_SIGNATURE`, AND THE ORDER IS THE WHOLE REASON THERE IS
+    # NO CYCLE. `adjudicate_system_key` reads its staves' MARKER AND FIT ROWS
+    # through `_staff_reading`, never their key VERDICTS, so `Q.KEY_SIGNATURE`
+    # is nowhere in its ancestry and the staff decision may read it back as an
+    # ancestor fact. The reverse order -- tally the verdicts, then revise them
+    # -- is the fixpoint `Log.record` refuses, and it is also the majority
+    # this item deliberately did not build.
+    Q.SYSTEM_KEY,
     Q.KEY_SIGNATURE,
     # ⚠️ ROADMAP 2.4a. BEFORE OWNERSHIP, so a box `glyph_owner` is about to
     # arbitrate has already been asked whether it is a notehead at all --

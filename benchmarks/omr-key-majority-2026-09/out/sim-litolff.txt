@@ -1,0 +1,8 @@
+== /Users/seanjohnson/Desktop/ReEngrave/library/_shared-records/beethoven5-litolff-mvt1-whole-20260923.record.json  truth=beethoven5
+staves with a key verdict: 331; scored: 200; unscored (no resolvable label): 131
+TODAY   right 91  wrong 37  abstained 72
+MARKERS right 101  wrong 52  abstained 47
+MARKERS+SYSTEM right 92  wrong 33  abstained 75   (superseded 28)
+proposed branches: {'markers': 169, 'fitted_no_markers': 22, 'fitted_no_markers_template': 58, 'no_evidence': 48, 'mixed_marker_kinds': 10, 'needs_clef': 24}
+fit vs markers: {'fit_disagrees': 45, 'fit_agrees': 31}
+rows -> /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a60bedf9ecd164860/benchmarks/omr-key-majority-2026-09/out/simulate-beethoven5-litolff-mvt1-whole-20260923.json
