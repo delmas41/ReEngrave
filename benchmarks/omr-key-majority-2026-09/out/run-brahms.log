@@ -1,1 +1,0 @@
-benchmarks/omr-key-majority-2026-09/run_scan.sh: line 7:  9426 Terminated: 15          python3 "$R" "$REC" --control

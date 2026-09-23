@@ -47,6 +47,23 @@ def _fields(key: str):
     return head, nums[0], nums[1], nums[2], nums[3]
 
 
+def _font(size: int):
+    """A legible caption font, or PIL's bitmap default.
+
+    ⚠️ The default is ~11 px on a 1400-px-wide crop, which makes the caption
+    unreadable at the size the image is actually looked at — and a crop whose
+    caption cannot be read does not say what it is about."""
+    from PIL import ImageFont
+    for path in ("/System/Library/Fonts/Supplemental/Arial.ttf",
+                 "/System/Library/Fonts/Helvetica.ttc",
+                 "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf"):
+        try:
+            return ImageFont.truetype(path, size)
+        except Exception:                                      # noqa: BLE001
+            continue
+    return ImageFont.load_default()
+
+
 def _frame_ok(arr, line_ys, spacing, *, margin=8.0):
     """The staff lines must be darker than a half-space off them."""
     a = arr if arr.ndim == 2 else arr.mean(axis=2)
@@ -140,7 +157,11 @@ def main() -> int:
             continue
         boxes = [cellbox[(s, st)] for st in staves if (s, st) in cellbox]
         x_left = min(b[0] for b in boxes) if boxes else 0
-        x0 = int(max(0, x_left - 6 * sp))
+        # ⚠️ ENOUGH LEFT MARGIN TO SHOW THE PRINTED STAFF NAME. The first
+        # version cut at 6 spaces and clipped "Flute 1" to "lute 1" — the
+        # crop then cannot be read against the plate without the record's own
+        # answer, which is the one thing it must not depend on.
+        x0 = int(max(0, x_left - 16 * sp))
         x1 = int(min(im.width, x_left + a.header_spaces * sp))
         y0 = int(max(0, min(ys) - 3 * sp))
         y1 = int(min(im.height, max(ys) + 3 * sp))
@@ -171,20 +192,25 @@ def main() -> int:
             rows.append(f"staff {st:>2}  {str(who)[:22]:<24} "
                         f"we wrote {('' if value is None else value)!s:>3}"
                         f"   ({outcome}/{reason})")
-        band_h = 18 * (len(rows) + 3)
-        out_im = Image.new("RGB", (max(crop.width, 760),
+        font = _font(22)
+        line_h = 26
+        band_h = line_h * (len(rows) + 4)
+        out_im = Image.new("RGB", (max(crop.width, 1100),
                                    crop.height + band_h), "white")
         out_im.paste(crop, (0, band_h))
         cd = ImageDraw.Draw(out_im)
-        cd.text((6, 4), f"{a.label}  pdf page {a.page}  system {s}  "
+        cd.text((8, 4), f"{a.label}  pdf page {a.page}  system {s}  "
                         f"dpi {a.dpi}  frame contrast {contrast:.1f}",
-                fill=(0, 0, 0))
-        cd.text((6, 22), "QUESTION: how many sharps/flats does the PLATE "
-                         "print at the head of each staff?", fill=(140, 0, 0))
-        cd.text((6, 40), f"system_key (concert, ours): "
-                         f"{json.dumps(sysverdict.get(s))}", fill=(0, 90, 200))
+                fill=(0, 0, 0), font=font)
+        cd.text((8, 4 + line_h),
+                "QUESTION: how many sharps/flats does the PLATE print at the "
+                "head of each staff?", fill=(140, 0, 0), font=font)
+        cd.text((8, 4 + 2 * line_h),
+                f"system_key (concert, ours): {json.dumps(sysverdict.get(s))}",
+                fill=(0, 90, 200), font=font)
         for i, line in enumerate(rows):
-            cd.text((6, 58 + 18 * i), line, fill=(0, 120, 45))
+            cd.text((8, 4 + (3 + i) * line_h), line, fill=(0, 120, 45),
+                    font=font)
         dest = out_dir / f"{a.label}-p{a.page}-system{s}-header.png"
         out_im.save(dest)
         manifest.append({
