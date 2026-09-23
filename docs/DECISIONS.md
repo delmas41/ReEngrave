@@ -187,3 +187,18 @@ Format: `YYYY-MM-DD · who · the decision · because · (pointer)`
   (`claude/accidental-2.7` `69d64d95`, code committed, unmeasured) · because
   accidentals on wrong heads under wrong keys are wasted work; resume after
   2.8, 2.9 and notehead recall · (ROADMAP 2.7)
+- 2026-09-23 · Sean, after the trace · **The key signature is READ OFF THE
+  DETECTOR'S HEADER BOXES; the fitters corroborate; the system agreement is a
+  CHECK, not a vote — this AMENDS the majority line above.** · *"it seems like
+  we don't even need the majority rule — we have gathered all the info we need
+  to make the correct assessment — we just need to know what to do with the 3
+  boxes around the 3 flats on every staff"* · because the engraved acceptance
+  record shows three `keysig_marker` rows on every staff of the system and a
+  `fitted` verdict of −1 on every treble staff, from a locator fit that says
+  one accidental — the decision declared the markers in `wants` and read none
+  of them; and a concert-normalised majority on that page is 8 vs 8 · a fit
+  that disagrees with the markers is recorded, never silently dropped; markers
+  absent → the fit speaks alone, named `fitted_no_markers`; a staff disagreeing
+  with every other decided staff of its system is superseded to ABSTAINED and
+  carried · ⚠️ the acceptance record predates `Q.INPUT_DOMAIN`, so 2.2's
+  engraved rule never fired on it — re-gather before scoring · (ROADMAP 2.9)
