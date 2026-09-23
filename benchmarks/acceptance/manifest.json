@@ -8,8 +8,8 @@
       "publisher": "Litolff",
       "record": {
         "root": "library",
-        "path": "_shared-records/beethoven5-p1-p4-ink-identity.record.json",
-        "md5": "ea80ae5908288c76baaa502054a37d43"
+        "path": "_shared-records/beethoven5-litolff-mvt1-whole-20260923.record.json",
+        "md5": "7dbee148868c39634a20d5881143d3ee"
       },
       "pdf": {
         "root": "library",
@@ -21,7 +21,14 @@
         "works_row_id": "beethoven-sym5-mvt1-984073-p3"
       },
       "works_json": "benchmarks/omr-scan-e2e-2026-09/works.json",
-      "truth": null
+      "truth": null,
+      "whole_movement": {
+        "pages": "1-16",
+        "gathered_on": "6b7dd3a3",
+        "gather_started": "2026-09-22T19:54 MST",
+        "wall_hours": 12.8,
+        "note": "unpooled record form (predates dbc9962b). Replaces the 4-page _shared-records/beethoven5-p1-p4-ink-identity.record.json (md5 ea80ae5908288c76baaa502054a37d43)."
+      }
     },
     {
       "id": "brahms1-breitkopf",
