@@ -190,6 +190,12 @@ def _time_budget(seconds: float, label: str):
         signal.signal(signal.SIGALRM, old)
 
 
+class StepSkipped(Exception):
+    """Raised by a step whose TOOL is absent on this machine (no musicdiff
+    venv, no lilypond). Recorded as `skipped` with the reason, never `error`:
+    an error is the step failing, a skip is the step declining."""
+
+
 def _run_step(label: str, budget_s: float, fn, *args, **kwargs) -> Dict[str, Any]:
     """Run one step, catching a timeout OR any exception as a named finding.
 
@@ -204,6 +210,9 @@ def _run_step(label: str, budget_s: float, fn, *args, **kwargs) -> Dict[str, Any
         return {"ok": True, "value": value, "wall_time_s": round(time.time() - t0, 3)}
     except TimeBudgetExceeded as exc:
         return {"ok": False, "skipped": f"too slow: {exc}",
+                "wall_time_s": round(time.time() - t0, 3)}
+    except StepSkipped as exc:
+        return {"ok": False, "skipped": str(exc),
                 "wall_time_s": round(time.time() - t0, 3)}
     except Exception as exc:  # noqa: BLE001 — a step must never crash the run
         return {"ok": False, "error": f"{type(exc).__name__}: {exc}",
@@ -491,10 +500,19 @@ def reading_scores(record_path: Path, truth_path: Path, page_index: int) -> Dict
 
 def omr_ned_score(pred_xml_path: Path, truth_xml_path: Path) -> Dict[str, Any]:
     if not ON.available():
-        raise RuntimeError("no musicdiff interpreter (OMRNED_PYTHON / "
+        raise StepSkipped("no musicdiff interpreter (OMRNED_PYTHON / "
                           ".venv-omrned) — see CLAUDE.md Sec.5a")
-    return ON.score_pair(pred=pred_xml_path, truth=truth_xml_path,
+    out = ON.score_pair(pred=pred_xml_path, truth=truth_xml_path,
                         name="acceptance", timeout_s=300.0)
+    # Paths are recorded REPO-RELATIVE so two worktrees write the same JSON.
+    for key in ("pred", "truth"):
+        val = out.get(key)
+        if isinstance(val, str) and Path(val).is_absolute():
+            try:
+                out[key] = str(Path(val).relative_to(REPO))
+            except ValueError:
+                pass
+    return out
 
 
 # ─────────────────────────────────────────────────────────────────────────
@@ -515,6 +533,11 @@ def lilypond_check(xml_path: Path, out_dir: Path) -> Dict[str, Any]:
     if proc.returncode != 0 or not ly_path.is_file():
         return {"available": True, "converted": False,
                 "stderr": proc.stderr[-2000:], "stdout": proc.stdout[-2000:]}
+    # musicxml2ly stamps the ABSOLUTE input path into a comment, which differs
+    # per worktree and made two runs of an unchanged tree disagree. Relativise it.
+    ly_text = ly_path.read_text()
+    ly_text = ly_text.replace(str(xml_path.resolve()), str(xml_path.resolve().relative_to(REPO)))
+    ly_path.write_text(ly_text)
     proc2 = subprocess.run([lilypond, "-o", str(out_dir), str(ly_path)],
                           capture_output=True, text=True, timeout=300)
     log = (proc2.stdout or "") + "\n" + (proc2.stderr or "")
