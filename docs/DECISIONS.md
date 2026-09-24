@@ -257,3 +257,13 @@ Format: `YYYY-MM-DD · who · the decision · because · (pointer)`
   candidate labels (detector top-k, CV locators), and the stages decide —
   `Q.INK` already exists as that population, read by nothing; the audit
   (ROADMAP 2.12) sizes the rest · (ROADMAP 2.12)
+- 2026-09-23 · Sean, from his first stage-review pass · **What the detector
+  boxed as `ledgerLine` on the Viola staff and he marked as nothing was
+  "often a staff line, a bar line or extra ink."** · so the convention the
+  refusal claims: a LEDGER LINE stands OUTSIDE the staff, at a whole number of
+  spaces beyond the top or bottom line, short and horizontal; a `ledgerLine`
+  box lying on a staff line's y is a staff-line fragment, a tall one is a
+  barline or a stem, and neither is a ledger line · because 11 of the 18
+  'nothing' labels that reached no stage were `ledgerLine` boxes, and ledger
+  lines feed `glyph_owner`'s ladder term, so a false rung is a false witness
+  in the cross-staff contest · (ROADMAP 3.4g, first family)
