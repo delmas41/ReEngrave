@@ -71,6 +71,57 @@ KNOWN_GAPS: Dict[str, str] = {
         "be one). ⚠️ THE ENTRY IS ABOUT THE PRODUCER, so it does not leave the "
         "list when the read lands; it leaves if a STAGE ever observes the "
         "quantity, which would itself be the finding.",
+    # ── ROADMAP 3.4g — SEVEN MORE OF THE SAME ENTRY, ONE PER GATHERED FAMILY
+    #
+    # ⚠️⚠️ THE GAP IS THE PRODUCER AND IT IS STRUCTURAL, WHICH IS WHY THE
+    # COUNT GOES UP RATHER THAN A CHECK BEING SILENCED. `Q.HUMAN_BOX_VERDICT`
+    # has NO gather site and never will: a human is not a gather rung, and a
+    # `gather_human_boxes()` reading a review sidecar would put a review
+    # artefact inside the measurement path — the structural refusal that
+    # keeps a dossier out of it (CLAUDE.md §5b). `review/human_evidence.py`
+    # files the rows and is in `reach.NOT_A_STAGE`. So every decision that
+    # reads a human witness opens exactly one of these, and 3.4A and 3.4C
+    # each opened one before this lane opened seven. ⚠️ THE REAL REPAIR IS
+    # **3.4b-check** — give the derived checks a DECLARED out-of-pipeline
+    # producer, so a human reader is WIRED rather than explained — and these
+    # nine entries are its measured size. ⚠️ Each leaves the list only if a
+    # STAGE ever observes the quantity, never because the read landed.
+    "ledger_is_not_a_ledger wants 'human_box_verdict'":
+        "⚠️ NOT INERT AND NOT A GAP IN THE READ — `family_precision."
+        "_human_refusal` reads it, and `adjudicate_ledger_is_not_a_ledger` "
+        "refuses on it FIRST, before its own geometry. The gap is the "
+        "PRODUCER; see the block comment above. ROADMAP 3.4g, the first "
+        "family: 11 of the 18 `nothing` marks that reached no stage on "
+        "Sean's first pass were `ledgerLine` boxes.",
+    "accidental_is_not_an_accidental wants 'human_box_verdict'":
+        "⚠️ The same PRODUCER gap, one family along (ROADMAP 3.4g). The read "
+        "IS live — `family_precision._human_refusal` — and this decision has "
+        "no other rule at all, so the declaration is the whole of it. Three "
+        "of Sean's eighteen were `accidental*` boxes and two more were the "
+        "accidentals he marked as another staff's.",
+    "rest_is_not_a_rest wants 'human_box_verdict'":
+        "⚠️ The same PRODUCER gap (ROADMAP 3.4g). The read is live and its "
+        "consumer is `export._place_notes`, which refuses to write a "
+        "`<rest>` for a refused box and counts it under `not_a_rest:"
+        "<reason>`. One of Sean's eighteen was a `restQuarter`.",
+    "arpeggiato_is_not_an_arpeggiato wants 'human_box_verdict'":
+        "⚠️ The same PRODUCER gap (ROADMAP 3.4g). The read is live; its only "
+        "consumer is `export._family_refusals`, because the `arpeggiato` "
+        "family reaches no MusicXML element on any path "
+        "(`gather_coverage.FAMILY_TO_Q` maps it to `None`). Three of Sean's "
+        "eighteen were these.",
+    "arc_is_not_an_arc wants 'human_box_verdict'":
+        "⚠️ The same PRODUCER gap (ROADMAP 3.4g). The read is live and its "
+        "consumer is `export._place_arcs`, before the `Q.ARC_KIND` test.",
+    "dynamic_is_not_a_dynamic wants 'human_box_verdict'":
+        "⚠️ The same PRODUCER gap (ROADMAP 3.4g). The read is live and its "
+        "consumer is `adjudicate_dynamic`, which must not spell a refused "
+        "letter into a word — one spurious `f` beside a real one is the "
+        "difference between `f` and `ff`.",
+    "articulation_is_not_an_articulation wants 'human_box_verdict'":
+        "⚠️ The same PRODUCER gap (ROADMAP 3.4g). The read is live and its "
+        "consumer is `export._place_articulations`, before the "
+        "`Q.ARTICULATION_OWNER` test.",
     "glyph_owner wants 'human_box_verdict'":
         "⚠️ THE SAME ENTRY ONE DECISION ALONG, roadmap 3.4c (Sean, "
         "2026-09-23: *\"and to label boxes as nothing or belongs to another "

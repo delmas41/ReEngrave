@@ -248,6 +248,16 @@ def _ledger_rungs_in_cell(ev: Evidence) -> List[Tuple[float, float, float]]:
     padding that makes the crop wide enough to hold the note also holds its
     rungs — so this is a faithful narrowing, not a different question, and it
     avoids re-deriving a page-wide affine map this decision has no need of.
+
+    ⚠️⚠️ ROADMAP 3.4g — A REFUSED RUNG IS NOT COUNTED, AND THIS IS THE ONLY
+    LADDER IN THE PIPELINE WHERE THAT IS POSSIBLE. GATHER's own ladder
+    (`Q.GLYPH_LADDER`, `gather._observe_ladder`) records `expected` and
+    `found` as COUNTS and names none of the rung glyphs it matched, so no
+    later stage can tell which glyph a `found` rung was — the rung -> glyph
+    join does not exist on the record and a refusal cannot reach it without a
+    GATHER change. Here the join is trivial because the rungs ARE glyph
+    subjects: `adjudicate_ledger_is_not_a_ledger` runs before this decision
+    (`adjudicate.ORDER`) and a rung it condemned is skipped.
     """
     cell = ev.subject.at(Kind.CELL)
     out: List[Tuple[float, float, float]] = []
@@ -257,6 +267,9 @@ def _ledger_rungs_in_cell(ev: Evidence) -> List[Tuple[float, float, float]]:
         if not isinstance(v, (list, tuple)) or len(v) != 5:
             continue
         if str(v[0]) != "ledgerLine":
+            continue
+        refused = ev.verdict(Q.LEDGER_IS_NOT_A_LEDGER, subject=r.subject)
+        if refused is not None and refused.value is True:
             continue
         x_c, y_c, w_c, h_c = v[1], v[2], v[3], v[4]
         out.append((x_c, x_c + w_c, y_c + h_c / 2.0))
@@ -326,8 +339,20 @@ def _unladdered(ev: Evidence, box_row, spacing_canonical: float,
     return found == 0
 
 
-def _human_not_a_symbol(ev: Evidence, detail: Dict[str, Any]) -> Optional[Any]:
+#: The two reasons a HUMAN row can refuse a box, and they are kept apart
+#: because they are different claims about the page. ⚠️ ROADMAP 3.4g: every
+#: per-family refusal declares BOTH, so a reader of a census can tell *there
+#: is nothing here* from *there is something here and it is not this staff's*.
+HUMAN_NOT_A_SYMBOL = "human_not_a_symbol"
+HUMAN_OTHER_STAFF = "human_other_staff"
+HUMAN_REFUSAL_REASONS = (HUMAN_NOT_A_SYMBOL, HUMAN_OTHER_STAFF)
+
+
+def _human_not_a_symbol(ev: Evidence, detail: Dict[str, Any]
+                        ) -> Optional[Tuple[Any, str]]:
     """A human looked at this box and said the ink is not that kind of symbol.
+
+    Returns `(row, reason)` — one of `HUMAN_REFUSAL_REASONS` — or None.
 
     ⚠️⚠️ ROADMAP 3.4 — THE ONE READ THAT MAKES A CORRECTION A WITNESS RATHER
     THAN A NOTE. `review/human_evidence.py` files `Q.HUMAN_BOX_VERDICT` on the
@@ -370,7 +395,22 @@ def _human_not_a_symbol(ev: Evidence, detail: Dict[str, Any]) -> Optional[Any]:
                                      subject; the machine's head stands beside
                                      it and `rerun.py` reports both.
       `owner:<staff>`             ❌ a different question entirely — that is
-                                     `ownership._human_owner`'s.
+                                     `ownership._human_owner`'s: he named a
+                                     staff, and the contest awards it there.
+      `owner:other`               ✅ refuse, reason `human_other_staff`.
+                                     ⚠️ ROADMAP 3.4g, SEAN 2026-09-23 ON HIS
+                                     OWN MARKS: *"'belongs to violin' were
+                                     about the fact that they belonged to a
+                                     different staff"* — the point was NOT
+                                     THIS STAFF and naming the neighbour was
+                                     incidental. So the answer that names no
+                                     staff is the honest spelling of what he
+                                     meant, and it says exactly one thing:
+                                     not here. ⚠️ DROPPED, NEVER RELOCATED
+                                     (CLAUDE.md §10) — and it cannot go to
+                                     `glyph_owner`, which must return a STAFF
+                                     KEY, so `ownership._human_owner` skips
+                                     it by name and this is where it lands.
       `redrawn`                   ❌ the box is in the wrong PLACE, and what to
                                      do with the machine's own box is a
                                      decision nobody has taken. Reported by
@@ -384,17 +424,20 @@ def _human_not_a_symbol(ev: Evidence, detail: Dict[str, Any]) -> Optional[Any]:
     boxes). So this is tested FIRST and returns the row that said so.
     """
     from ..review.human_evidence import (NOTEHEAD_PREFIX as _HEAD,
+                                         OWNER_OTHER as _OTHER,
                                          human_says as _says)
     rows = []
     for r in ev.rows(Q.HUMAN_BOX_VERDICT):
         verb, arg = _says(getattr(r, "value", None))
         if verb == "not_a_symbol" or verb == "duplicate_of":
-            rows.append((r, verb, arg))
+            rows.append((r, verb, arg, HUMAN_NOT_A_SYMBOL))
+        elif verb == "owner" and arg == _OTHER:
+            rows.append((r, verb, arg, HUMAN_OTHER_STAFF))
         elif verb == "is_a" and not str(arg or "").startswith(_HEAD):
-            rows.append((r, verb, arg))
+            rows.append((r, verb, arg, HUMAN_NOT_A_SYMBOL))
     if not rows:
         return None
-    row, verb, arg = rows[-1]
+    row, verb, arg, reason = rows[-1]
     detail["human_reader"] = row.reader
     detail["human_row"] = row.id
     # ⚠️ WHAT HE SAID, IN HIS OWN SPELLING, ON THE VERDICT'S OWN DETAIL. A
@@ -407,21 +450,22 @@ def _human_not_a_symbol(ev: Evidence, detail: Dict[str, Any]) -> Optional[Any]:
     for k in ("sidecar", "action", "note"):
         if k in (row.detail or {}):
             detail[f"human_{k}"] = row.detail[k]
-    return row
+    return row, reason
 
 
 @decision(
     quantity=Q.NOTEHEAD_IS_NOT_A_NOTEHEAD,
     composed_from=(Q.GLYPH_BOX, Q.CELL_BOX, Q.CELL_STAFF_SPACE,
                   Q.NOTEHEAD_STAFF_POSITION, Q.GLYPH_CONF, Q.CLEF_LOCATED,
-                  Q.HUMAN_BOX_VERDICT),
+                  Q.HUMAN_BOX_VERDICT, Q.LEDGER_IS_NOT_A_LEDGER),
     scope=Kind.GLYPH,
     wants=(Q.GLYPH_BOX, Q.CELL_BOX, Q.CELL_STAFF_SPACE,
           Q.NOTEHEAD_STAFF_POSITION, Q.GLYPH_CONF, Q.CLEF_LOCATED,
-          Q.HUMAN_BOX_VERDICT),
+          Q.HUMAN_BOX_VERDICT, Q.LEDGER_IS_NOT_A_LEDGER),
     subjects_from=Q.NOTEHEAD_CLASS,
-    reasons=("human_not_a_symbol", "is_a_clef", "clipped_fragment",
-             "too_narrow", "notehead", ABSTAIN.NO_STAFF_GEOMETRY),
+    reasons=HUMAN_REFUSAL_REASONS + ("is_a_clef", "clipped_fragment",
+                                     "too_narrow", "notehead",
+                                     ABSTAIN.NO_STAFF_GEOMETRY),
     mode=Mode.ADDITIVE,
 )
 def adjudicate_notehead_is_not_a_notehead(ev: Evidence) -> Ruling:
@@ -485,11 +529,21 @@ def adjudicate_notehead_is_not_a_notehead(ev: Evidence) -> Ruling:
     # have thrown his reading away on exactly the cells where the machine can
     # say least, which is where he is worth most.
     human_detail: Dict[str, Any] = {}
-    human_row = _human_not_a_symbol(ev, human_detail)
-    if human_row is not None:
+    human = _human_not_a_symbol(ev, human_detail)
+    if human is not None:
+        human_row, human_reason = human
         if box_row is not None and isinstance(box_row.value, (list, tuple)) \
                 and len(box_row.value) == 5:
             human_detail["class"] = box_row.value[0]
+        # ⚠️ THE TWO REASONS ARE RETURNED AS LITERALS, not as the variable the
+        # parser handed back. `brakes.vocabulary_gap` reads the `reason=`
+        # slot's AST to ask whether every DECLARED reason is one a `Ruling`
+        # here can actually carry, and a computed reason makes the whole
+        # MODULE unresolved — every decision in it. The branch is the price
+        # of keeping that check able to fail.
+        if human_reason == HUMAN_OTHER_STAFF:
+            return Ruling(value=True, reason="human_other_staff",
+                          used=(human_row.id,), detail=human_detail)
         return Ruling(value=True, reason="human_not_a_symbol",
                       used=(human_row.id,), detail=human_detail)
 

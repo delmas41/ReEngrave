@@ -43,9 +43,10 @@ def _geometry(row: Any) -> Optional[Tuple[float, float, float]]:
 @decision(
     quantity=Q.DYNAMIC,
     checkable=Checkable.UNCHECKABLE,
-    composed_from=(Q.DYNAMIC_LETTER, Q.GLYPH_OWNER),
+    composed_from=(Q.DYNAMIC_LETTER, Q.GLYPH_OWNER,
+                   Q.DYNAMIC_IS_NOT_A_DYNAMIC),
     scope=Kind.CELL,
-    wants=(Q.DYNAMIC_LETTER, Q.GLYPH_OWNER),
+    wants=(Q.DYNAMIC_LETTER, Q.GLYPH_OWNER, Q.DYNAMIC_IS_NOT_A_DYNAMIC),
     # ⚠️ The subjects are the cells `Q.DYNAMIC_LETTER` speaks about --
     # OBSERVATIONS AND ABSTENTIONS ALIKE, because `subjects_for` reads
     # `log.all_rows()` and an abstention is a row. That is what makes this
@@ -143,9 +144,20 @@ def adjudicate_dynamic(ev: Evidence) -> Ruling:
                       detail={"letters": 0, "scope": "system"})
 
     kept: List[Tuple[float, float, float, str, Any]] = []
-    dup_dropped = moved_out = no_frame = 0
+    dup_dropped = moved_out = no_frame = not_a_letter = 0
     for row in rows:
         if row.subject.cell != ev.subject.cell:
+            continue
+        # ⚠️⚠️ ROADMAP 3.4g — A REFUSED LETTER IS NOT SPELLED. One spurious
+        # `f` beside a real one is the difference between `f` and `ff`, which
+        # is the exact fault the `dup_dropped` branch below was written for,
+        # arriving by the other door: there the second `f` is a TWIN of real
+        # ink, here it is ink that is not a letter at all. Counted in
+        # `detail` rather than dropped silently, so a word that lost a letter
+        # can be traced to the refusal that took it.
+        refused = ev.verdict(Q.DYNAMIC_IS_NOT_A_DYNAMIC, subject=row.subject)
+        if refused is not None and refused.value is True:
+            not_a_letter += 1
             continue
         home = row.subject.at(Kind.STAFF).to_key()
         owner = ev.verdict(Q.GLYPH_OWNER, subject=row.subject)
@@ -189,7 +201,12 @@ def adjudicate_dynamic(ev: Evidence) -> Ruling:
         if moved_out:
             return Ruling(value=[], reason="owned_elsewhere",
                           detail={"letters_moved_out": moved_out})
-        return Ruling(value=[], reason="no_letters")
+        # ⚠️ ROADMAP 3.4g. A cell whose every letter was REFUSED reports the
+        # count rather than reading as a cell nobody found a letter in — the
+        # READ / DECLINED distinction, one stage along.
+        return Ruling(value=[], reason="no_letters",
+                      detail={"letters_refused_as_not_a_dynamic": not_a_letter}
+                      if not_a_letter else {})
 
     kept.sort()
     width = max(x1 - x0 for x0, x1, _y, _l, _r in kept) or 1.0
@@ -216,6 +233,9 @@ def adjudicate_dynamic(ev: Evidence) -> Ruling:
         "letters_dropped_as_duplicate": dup_dropped,
         "letters_moved_out": moved_out,
         "letters_without_page_box": no_frame,
+        # ⚠️ ROADMAP 3.4g. Letters a `Q.DYNAMIC_IS_NOT_A_DYNAMIC`
+        # verdict refused, counted so a short word names its cause.
+        "letters_refused_as_not_a_dynamic": not_a_letter,
         "assembly": "x_adjacency_max_letter_width_page_px",
     }
     if unspellable and not any(w["spelled"] for w in words):
