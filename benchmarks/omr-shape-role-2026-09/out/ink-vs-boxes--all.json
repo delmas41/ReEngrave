@@ -1,0 +1,220 @@
+[
+ {
+  "label": "beethoven5-litolff-p1-p4  (MERGING plate)",
+  "record": "/Users/seanjohnson/Desktop/ReEngrave/library/_shared-records/beethoven5-p1-p4-ink-identity.record.json",
+  "provenance": {
+   "commit": "e38dbc2556b3ee7a9b517cb14f1a351160f4c212",
+   "dirty": false
+  },
+  "cover_threshold": 0.5,
+  "counts": {
+   "ink_components": 7093,
+   "detector_boxes": 8486,
+   "ink_rows_without_geometry": 0,
+   "cells_with_ink": 1183
+  },
+  "boxes_per_ink_component": {
+   "0": 3651,
+   "1": 2340,
+   "2": 961,
+   "3": 124,
+   "4": 13,
+   "5+": 4,
+   "pct_unexplained": 51.5,
+   "pct_exactly_one": 33.0
+  },
+  "distinct_classes_per_ink_component": {
+   "0": 3651,
+   "1": 2429,
+   "2": 939,
+   "3+": 74,
+   "pct_more_than_one_class": 14.3
+  },
+  "ink_components_per_box": {
+   "0": 5441,
+   "1": 2256,
+   "2": 424,
+   "3": 167,
+   "4": 81,
+   "5+": 117,
+   "pct_covering_no_whole_component": 64.1,
+   "pct_exactly_one": 26.6
+  },
+  "notation_classes_per_ink_component": {
+   "0": 4676,
+   "1": 2136,
+   "2": 272,
+   "3+": 9,
+   "pct_more_than_one_class": 4.0,
+   "excluded": [
+    "staff",
+    "stem"
+   ]
+  },
+  "top_contested_components": {
+   "restWhole|staff": 183,
+   "restQuarter|staff": 97,
+   "dynamicF|dynamicS": 90,
+   "keyFlat|staff": 84,
+   "clefF|staff": 79,
+   "clefG|staff": 46,
+   "arpeggiato|staff": 33,
+   "staff|tie": 33,
+   "slur|staff": 32,
+   "accidentalFlat|staff": 31,
+   "rest8th|staff": 18,
+   "slur|tie": 15,
+   "noteheadHalfInSpace|staff": 12,
+   "beam|slur": 12,
+   "noteheadBlackInSpace|noteheadBlackOnLine": 11
+  },
+  "top_contested_components_excluding_structural": {
+   "dynamicF|dynamicS": 90,
+   "slur|tie": 24,
+   "accidentalFlat|accidentalNatural": 15,
+   "arpeggiato|restQuarter": 13,
+   "beam|slur": 12,
+   "noteheadBlackInSpace|noteheadBlackOnLine": 11,
+   "noteheadBlackOnLine|noteheadHalfOnLine": 9,
+   "noteheadBlackInSpace|restWhole": 8,
+   "accidentalFlat|keyFlat": 7,
+   "keyFlat|rest8th": 6,
+   "noteheadHalfInSpace|noteheadHalfOnLine": 5,
+   "restWhole|tie": 4,
+   "dynamicF|dynamicP": 4,
+   "beam|noteheadBlackInSpace": 4,
+   "beam|tie": 4,
+   "fermataAbove|slur": 3,
+   "augmentationDot|tie": 3,
+   "accidentalNatural|accidentalSharp": 2,
+   "clefG|fermataAbove": 2,
+   "dynamicF|flag8thDown": 2
+  },
+  "top_classes_covering_no_whole_component": {
+   "ledgerLine": 1847,
+   "noteheadBlackOnLine": 854,
+   "noteheadBlackInSpace": 802,
+   "beam": 399,
+   "arpeggiato": 302,
+   "tie": 296,
+   "noteheadHalfInSpace": 230,
+   "slur": 210,
+   "noteheadHalfOnLine": 132,
+   "dynamicF": 74,
+   "accidentalFlat": 41,
+   "restQuarter": 29,
+   "restWhole": 26,
+   "stem": 25,
+   "flag8thUp": 22
+  }
+ },
+ {
+  "label": "brahms1-breitkopf-p0-p3   (SHATTERING plate)",
+  "record": "/Users/seanjohnson/Desktop/ReEngrave/library/_shared-records/brahms1-breitkopf-p0-p3-ink.record.json",
+  "provenance": {
+   "commit": "27311d6864f4f5708322d84f7f6e2fcfce736211",
+   "dirty": false
+  },
+  "cover_threshold": 0.5,
+  "counts": {
+   "ink_components": 15212,
+   "detector_boxes": 12932,
+   "ink_rows_without_geometry": 0,
+   "cells_with_ink": 818
+  },
+  "boxes_per_ink_component": {
+   "0": 7335,
+   "1": 4789,
+   "2": 2428,
+   "3": 556,
+   "4": 84,
+   "5+": 20,
+   "pct_unexplained": 48.2,
+   "pct_exactly_one": 31.5
+  },
+  "distinct_classes_per_ink_component": {
+   "0": 7335,
+   "1": 5125,
+   "2": 2341,
+   "3+": 411,
+   "pct_more_than_one_class": 18.1
+  },
+  "ink_components_per_box": {
+   "0": 7190,
+   "1": 3941,
+   "2": 906,
+   "3": 358,
+   "4": 135,
+   "5+": 402,
+   "pct_covering_no_whole_component": 55.6,
+   "pct_exactly_one": 30.5
+  },
+  "notation_classes_per_ink_component": {
+   "0": 8900,
+   "1": 5166,
+   "2": 1014,
+   "3+": 132,
+   "pct_more_than_one_class": 7.5,
+   "excluded": [
+    "staff",
+    "stem"
+   ]
+  },
+  "top_contested_components": {
+   "rest8th|staff": 261,
+   "keyFlat|staff": 156,
+   "clefF|staff": 134,
+   "accidentalFlat|staff": 130,
+   "augmentationDot|staff": 112,
+   "flag8thDown|staff": 100,
+   "beam|slur": 99,
+   "restQuarter|staff": 93,
+   "staff|tie": 92,
+   "beam|staff": 79,
+   "slur|tie": 69,
+   "beam|tie": 66,
+   "augmentationDot|tie": 65,
+   "slur|staff": 63,
+   "arpeggiato|staff": 54
+  },
+  "top_contested_components_excluding_structural": {
+   "beam|slur": 107,
+   "slur|tie": 94,
+   "augmentationDot|tie": 76,
+   "beam|tie": 71,
+   "accidentalNatural|accidentalSharp": 67,
+   "restWhole|tie": 47,
+   "dynamicF|dynamicP": 41,
+   "accidentalFlat|arpeggiato": 35,
+   "accidentalFlat|keyFlat": 29,
+   "accidentalFlat|accidentalNatural": 29,
+   "beam|slur|tie": 27,
+   "accidentalFlat|accidentalSharp": 25,
+   "accidentalFlat|accidentalNatural|accidentalSharp": 18,
+   "noteheadHalfInSpace|tie": 16,
+   "accidentalSharp|arpeggiato": 15,
+   "clefF|tie": 13,
+   "accidentalDoubleSharp|rest8th": 12,
+   "augmentationDot|beam": 11,
+   "augmentationDot|beam|tie": 11,
+   "rest8th|tie": 11
+  },
+  "top_classes_covering_no_whole_component": {
+   "noteheadBlackInSpace": 1541,
+   "noteheadBlackOnLine": 1250,
+   "ledgerLine": 1028,
+   "beam": 1007,
+   "tie": 955,
+   "slur": 182,
+   "restWhole": 164,
+   "timeSig4": 103,
+   "arpeggiato": 100,
+   "flag8thUp": 91,
+   "restQuarter": 90,
+   "dynamicF": 85,
+   "flag8thDown": 58,
+   "accidentalFlat": 57,
+   "noteheadHalfInSpace": 51
+  }
+ }
+]
