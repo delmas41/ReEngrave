@@ -191,31 +191,48 @@ is **not scored**.
 
     python3 benchmarks/omr-key-majority-2026-09/simulate.py <record> <truth>
 
-| document | scored staves | fitters (before) | markers (after) |
-|---|---|---|---|
-| engraved acceptance, 3 pages | 50 | **45 / 3 / 2** | **50 / 0 / 0** |
-| Brahms 1, Breitkopf, whole mvt | 583 | **171 / 241 / 171** | **330 / 198 / 55** |
-| Beethoven 5, Litolff, whole mvt | 200 | **91 / 37 / 72** | **101 / 52 / 47** |
+| document | scored staves | fitters (before) | markers | markers + system check |
+|---|---|---|---|---|
+| engraved acceptance, 3 pages | 50 | **45 / 3 / 2** | **50 / 0 / 0** | **50 / 0 / 0** |
+| Brahms 1, Breitkopf, whole mvt | 583 | **188 / 224 / 171** | **347 / 181 / 55** | **344 / 127 / 112** |
+| Beethoven 5, Litolff, whole mvt | 200 | **91 / 37 / 72** | **101 / 52 / 47** | **92 / 33 / 75** |
 
 (right / wrong / abstained.)
 
+⚠️ **THE SYSTEM CHECK IS WHAT MAKES THE MARKER RULE SAFE, and the two scans
+say so in the same direction.** On Breitkopf it converts **54 wrong readings
+into abstentions for the price of 3 right** (181 → 127 wrong, 347 → 344
+right); on Litolff, where the markers alone are a net loss, it takes the rule
+from **52 wrong back to 33** — *better than the fitters it replaced* — again
+by abstaining rather than by writing another staff's value.
+
+⚠️ **The engraved column's `before` is the BASE ARM, not that record's own
+verdicts.** The acceptance record was re-gathered on this branch and therefore
+already carries the new rule, so `simulate.py` reads 50/0/0 in every column on
+it. The 45/3/2 is `readjudicate.py --off all` over the same gather, which is
+what "before" means here.
+
 ⚠️ **Litolff is the cost and it is not hidden.** That plate MERGES its ink, so
-where the detector fires at all it under-counts a run it can see: the marker
-rule trades 25 abstentions there for 10 more right **and 15 more wrong**. On
+where the detector fires at all it under-counts a run it can see: markers
+alone trade 25 abstentions for 10 more right **and 15 more wrong**, and it
+takes the system check to bring that back under the fitters' wrong count. On
 page 1 system 0 the Oboi, Fagotti, Violino II, Violoncello and Basso staves
-each carry 2 marker boxes against three printed flats. This is the document on
-which the old `_marker_ink` docstring's warning holds, and §6 reports what the
-system check gives back.
+each carry 2 marker boxes against three printed flats.
 
 ⚠️ **Breitkopf is the opposite and it is the larger population.** That plate
-SHATTERS, which separates the flats and suits the detector: +159 right and
-−43 wrong over 583 scored staves.
+SHATTERS, which separates the flats and suits the detector.
 
-⚠️ **Brahms' real key changes are NOT modelled in that truth.**
-`data/dossiers/brahms-sym1-mvt1.json` records a change at m191 (concert −3 →
-+2) and back at m217, so systems covering bars 191–216 are scored against the
-wrong value in BOTH arms. It inflates the `wrong` column on both sides over
-the same population and does not affect the direction of the comparison.
+⚠️ **The Brahms truth was CORRECTED by a crop, against its own dossier.**
+`data/dossiers/brahms-sym1-mvt1.json` is generated from a MusicXML encoding
+and says the timpani part is in −3; the plate prints no signature on that
+staff at all (`out/print/breitkopf-p1-system0-header.png`, `Pk.`), which is
+`[C81]` holding exactly as MOLA states it. CLAUDE.md §8 refuses an `encoding`
+fact in any measurement path and this is the concrete instance: scoring
+against the dossier charged every timpani staff of the movement as wrong.
+Horn is left unscored because that page prints TWO horn keys. ⚠️ Brahms'
+genuine key change at m191 and back at m217 is still not modelled, so systems
+covering those bars are scored against the wrong value in EVERY column — the
+same population on every side of the comparison.
 
 ### 4b. Which branch fired, per document
 
@@ -289,7 +306,7 @@ as one flat on pages 1 and 2**, written as spurious key changes at bars 8 and
 | key verdicts | 212 decided / 119 abstained | 221 decided / 110 abstained |
 | reasons | `fitted_no_markers` 212, `no_evidence` 76, `needs_clef` 24, `run_fits_no_slot_table` 19 | `markers` 144, `fitted_no_markers` 77, `disagrees_with_system` 28, `no_evidence` 40, `needs_clef` 24, `mixed_marker_kinds` 10, `run_fits_no_slot_table` 8 |
 | `system_key` | 31 × `no_staff_read_a_key` (the readers are off) | 27 × `read`, 4 × `one_staff_only` |
-| against the movement's key | 91 / 37 / 72 | **92 / 33 / 75** |
+| against the plate's key | 91 / 37 / 72 | **92 / 33 / 75** — the check takes the marker rule's 52 wrong back to 33 |
 | `<note>` | 12,424 | **12,424** |
 | `<key>` elements | 153 | 153 |
 | **key CHANGES written** | **105** | **113** |
@@ -330,9 +347,40 @@ which a cross-system vote can reconcile"*, implemented on the LEGACY path as
 path. 105 changes over ~500 bars in a movement with none is a per-system
 reading that nothing holds to its own part's history.
 
-### 6b. Brahms 1, Breitkopf, whole movement
+### 6b. Brahms 1, Breitkopf, whole movement (691 staff-systems, 14 parts)
 
-<!-- BRAHMS -->
+Run with `run_scan_lean.py` (§ below); 5,447 s end to end.
+
+| | base (fitters) | arm (markers + check) |
+|---|---|---|
+| key verdicts | 484 decided / 207 abstained | **545 decided / 146 abstained** |
+| reasons | `fitted_no_markers` 484, `no_evidence` 185, `run_fits_no_slot_table` 20, `needs_clef` 2 | `markers` 405, `fitted_no_markers` 140, `disagrees_with_system` 57, `no_evidence` 64, `mixed_marker_kinds` 17, `run_fits_no_slot_table` 6, `needs_clef` 2 |
+| `system_key` | 53 × `no_staff_read_a_key` (the readers are off) | **53 × `read`** |
+| against the plate's key | 188 / 224 / 171 | **344 / 127 / 112** |
+| **parts opening on the right key** | **11 of 14** | **14 of 14** |
+| `<note>` | 23,145 | **23,145** |
+| `<key>` elements | 635 | 689 |
+| **key CHANGES written** | **265** | **212** |
+| `status_census` | balanced, `unaccounted: []` | balanced, `unaccounted: []` |
+
+**CONTROL: 691 of 691 clef verdicts and 691 of 691 key verdicts reproduced**
+(outcome + value) with the readers off; the reasons moved
+`fitted → fitted_no_markers` 261, `fitted_by_template → fitted_no_markers`
+223, `markers_without_a_run → no_evidence` 121.
+
+Every part now opens on what the plate prints — Flute −3, Oboe −3, Clarinet
+−1, Bassoon −3, Contrabassoon −3, Horn 0 ×2, Trumpet 0, Timpani 0, Violin −3
+×2, Viola −3, Cello −3, Contrabass −3 — against the base's Flute −2, Violin II
+−1 and Cello −1. **The clarinet part writes ONE `<key>` and no change at all
+over 511 bars**, which is the transposition surviving the check intact.
+
+⚠️ **212 spurious changes remain and the movement prints two.** The direction
+is right (−53) and the level is not: this is the same per-system instability
+§6a diagnoses on Litolff, and the same lever — `[C25 + L38]`, a part's own
+cross-system history, which the staged path does not consume. What the arm
+DOES show is the real one surfacing: seven parts write `+2` at m197, which is
+the genuine −3 → +2 change the dossier puts at m191, read off the plate rather
+than off the file.
 
 ---
 
@@ -346,14 +394,24 @@ halves because one of them cannot fail alone:
   Result: **54 of 54** (engraved), **331 of 331** (Litolff).
 * **`key_signature` with `--off all` must reproduce every VALUE.** `--off`
   returns the two new readers to the nothing they produced before. Result:
-  **54 of 54** and **331 of 331**, with the reason movement printed separately
+  **331 of 331** (Litolff) and **691 of 691** (Breitkopf), with the reason
+  movement printed separately
   and not counted as a failure — `fitted_by_template_engraved -> fitted_no_markers`
-  47, `markers_without_a_run -> no_evidence` 4 (engraved);
   `fitted_by_template -> fitted_no_markers` 108, `fitted -> fitted_no_markers`
-  104, `markers_without_a_run -> no_evidence` 36 (Litolff).
+  104, `markers_without_a_run -> no_evidence` 36 (Litolff);
+  `fitted -> fitted_no_markers` 261, `fitted_by_template -> fitted_no_markers`
+  223, `markers_without_a_run -> no_evidence` 121 (Breitkopf).
 
-The comparator is demonstrably live: run the same harness WITHOUT `--off` and
-it reports the arm's movement instead of zero.
+⚠️ **AND IT DEMONSTRABLY FAILS WHEN IT SHOULD.** The engraved acceptance
+record was RE-GATHERED on this branch, so its own verdicts already carry the
+new rule — and `--off all` against it reports **47 of 54 reproduced, 7
+differ** (`-3(decided) -> None(abstained)` 4, `-3(decided) -> -1(decided)` 3),
+which is the comparator catching exactly the change under test. Rule 7: a
+control that has been seen to fail where it should is worth more than one
+that has only ever passed.
+
+    python3 benchmarks/omr-key-majority-2026-09/run_scan_lean.py \
+        benchmarks/omr-staged-engraved-2026-09/out/engraved-p0p2-20260923.record.json tmp
 
 ⚠️ **Blind to GATHER**, like every tool of its shape. The marker rows this
 item reads were already being gathered, which is why this instrument is the

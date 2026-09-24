@@ -1,8 +1,8 @@
 == /Users/seanjohnson/Desktop/ReEngrave/library/_shared-records/brahms1-breitkopf-mvt1-whole-20260923.record.json  truth=brahms1
 staves with a key verdict: 691; scored: 583; unscored (no resolvable label): 108
-TODAY   right 171  wrong 241  abstained 171
-MARKERS right 330  wrong 198  abstained 55
-MARKERS+SYSTEM right 327  wrong 144  abstained 112   (superseded 57)
+TODAY   right 188  wrong 224  abstained 171
+MARKERS right 347  wrong 181  abstained 55
+MARKERS+SYSTEM right 344  wrong 127  abstained 112   (superseded 57)
 proposed branches: {'markers': 457, 'fitted_no_markers_template': 110, 'fitted_no_markers': 35, 'no_evidence': 70, 'mixed_marker_kinds': 17, 'needs_clef': 2}
 fit vs markers: {'fit_disagrees': 147, 'fit_agrees': 69}
 rows -> /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a60bedf9ecd164860/benchmarks/omr-key-majority-2026-09/out/simulate-brahms1-breitkopf-mvt1-whole-20260923.json
