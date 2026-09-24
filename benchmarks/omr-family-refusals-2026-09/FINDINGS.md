@@ -78,9 +78,11 @@ all three) — and they came out very differently.
 | `brahms1-breitkopf-mvt1-whole` | 7,818 | 1,222 (16%) | 1,125 | 6,596 |
 
 ⚠️ `ledgerLine` is the **largest single class** on the Litolff four-page
-record — 1,878 of 8,486 detections, more than every `noteheadBlack*`
-spelling put together. Two thirds of them are inside the staff band, where
-the convention says a ledger line cannot be.
+record — 1,878 of 8,486 detections, against 978 `noteheadBlackOnLine` and
+916 `noteheadBlackInSpace` (1,894 for the two spellings together, so the
+black noteheads edge it as a FAMILY and no single class comes near it). Two
+thirds of the ledger boxes are inside the staff band, where the convention
+says a ledger line cannot be.
 
 ### 1b. The tolerance, DERIVED
 
