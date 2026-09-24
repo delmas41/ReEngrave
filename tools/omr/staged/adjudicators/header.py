@@ -4,8 +4,10 @@ from __future__ import annotations
 
 import os
 
+from typing import Dict, List, Optional
+
 from ..adjudicate import Checkable, Evidence, Mode, Ruling, decision
-from ..record import ABSTAIN, Kind, Q, Scope, State
+from ..record import Kind, Q, Scope, State
 
 #: ⚠️⚠️ DEFAULT **ON** SINCE 2026-09-22 (evening) — **SEAN'S CALL**, on the
 #: measurement in `benchmarks/omr-document-identity-2026-09/FINDINGS.md`: key
@@ -95,225 +97,495 @@ def _template_detail(row) -> dict:
             "decided_by": "template"}
 
 
-def _marker_ink(ev: Evidence) -> dict:
-    """What the DETECTOR saw of this staff's key accidentals — RECORDED ONLY.
+def _marker_ink(ev: Evidence, subject=None) -> dict:
+    """What the DETECTOR saw of this staff's key accidentals, for a REFUSAL.
 
-    ⚠️⚠️ THE COUNT IS NOT THE ANSWER, AND SAYING SO IS THE WHOLE POINT OF
-    THIS FUNCTION EXISTING RATHER THAN A `len()` AT THE CALL SITE. Counting
-    key markers is a rule this project has already built, measured and
-    condemned: on the LEGACY path `transcribe._detect_key_sig_from_cell`
-    falls back to counting them where the slot fit abstains, and
-    `key_signature_corroboration.py` records what that cost — **seven
-    spurious key flips over eleven scanned pages, every one of them landing
-    on exactly one accidental** from one stray marker.
+    ⚠️⚠️ THIS FUNCTION'S OWN PREMISE EXPIRED ON 2026-09-23 AND THE HISTORY IS
+    KEPT BECAUSE IT IS THE COST SIDE OF THE RULE THAT REPLACED IT. It used to
+    say *the count is not the answer*, on two measurements: the LEGACY path's
+    fallback to counting markers cost **seven spurious key flips over eleven
+    scanned pages, every one landing on exactly one accidental**
+    (`key_signature_corroboration.py`), and over the staves this decision
+    DECIDED the marker count equalled `|fifths|` on only **19 of 49**
+    (Litolff) and **39 of 76** (Breitkopf).
 
-    ⚠️ AND THE STAGED RECORD AGREES, FROM ITS OWN SIDE. Over the staves this
-    decision DECIDES, the marker count equals `|fifths|` on only **19 of 49**
-    (Litolff) and **39 of 76** (Breitkopf) — 39% and 51%. A reading that
-    disagrees with the settled answer half the time is not a value; it is
-    evidence that ink was there.
-
-    So this returns DETAIL and never a candidate, and the caller may use it
-    to say WHICH KIND of silence it is falling into. `markers_without_a_run`
-    is an abstention like `no_evidence` — it writes no `<key>` and changes no
-    note — and the only thing it changes is what the record says happened.
+    ⚠️ BOTH NUMBERS STAND; WHAT CHANGED IS WHICH SIDE THEY CONDEMN. The
+    second one was read as *the markers are unreliable*, and scoring both
+    readings against the movement's own key showed it was the FITTERS that
+    disagreed: 330 right against 171 on Breitkopf, 50 against 45 on the
+    engraved page. Litolff is the document where the old reading holds —
+    +10 right and +15 wrong there — and the system check is what answers it.
+    `_marker_run` is the reader now; this is only the detail a REFUSAL
+    carries, so that a staff nobody could read says WHICH kind of silence it
+    fell into.
     """
-    marks = ev.rows(Q.KEYSIG_MARKER)
+    marks = ev.rows(Q.KEYSIG_MARKER, subject=subject)
     if not marks:
         # ⚠️ ABSENT AND DECLINED ARE DIFFERENT HERE TOO. `ev.state` separates
         # "the detector produced no row" from "it produced a row saying it saw
         # nothing", and collapsing them would reintroduce, one level down,
         # exactly the fault this detail exists to repair.
         return {"keysig_marker_ink": 0,
-                "keysig_marker_state": str(ev.state(Q.KEYSIG_MARKER))}
+                "keysig_marker_state": str(ev.state(Q.KEYSIG_MARKER,
+                                                    subject=subject))}
     return {"keysig_marker_ink": len(marks),
-            "keysig_marker_state": str(ev.state(Q.KEYSIG_MARKER)),
-            "keysig_marker_classes": sorted({str(m.value) for m in marks}),
-            # ⚠️ NOT a proposed value. See this function's docstring: the
-            # count agrees with the settled answer on about half the staves.
-            "keysig_marker_count_is_not_a_reading": True}
+            "keysig_marker_state": str(ev.state(Q.KEYSIG_MARKER,
+                                                subject=subject)),
+            "keysig_marker_classes": sorted({str(m.value) for m in marks})}
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# The run the DETECTOR drew, read as a ladder of slots
+# ─────────────────────────────────────────────────────────────────────────────
+
+_FLAT = "keyFlat"
+_SHARP = "keySharp"
+_NATURAL = "keyNatural"
+
+#: Two marker boxes closer than this, in the CELL's own staff spaces, are ONE
+#: slot. ⚠️ Measured, not chosen: on the engraved fixture Violin 1 carries
+#: four `keyFlat` boxes at canonical x 375 / 461 / 463 / 545 with a cell staff
+#: space of 85 px — the printed slots stand 86 and 83 px apart (≈1.0 space)
+#: and the spurious pair 2 px apart, so anything from 0.03 to 0.9 spaces
+#: separates the two populations and 0.5 sits in the middle of that gap.
+MARKER_SLOT_TOLERANCE_SPACES = 0.5
+
+#: Two slots further apart than this are not one RUN. A signature's
+#: accidentals stand about ONE space apart; a mark this far right of the last
+#: one is in the first BAR, not in the header — and cell 0 holds both.
+MARKER_RUN_GAP_SPACES = 2.0
+
+#: Circle-of-fifths limit. A run longer than this is not a key signature.
+MAX_FIFTHS = 7
+
+
+def _cell0_space(ev: Evidence, subject=None) -> float:
+    """One staff space in the frame the marker x's are measured in.
+
+    ⚠️⚠️ `Q.CELL_STAFF_SPACE`, NEVER `Q.STAFF_SPACING`. The marker rows carry
+    `x_canonical` — the CELL's own rescaled frame — while `staff_spacing` is
+    page pixels; on the engraved fixture those read 85 and 22.5 for ONE staff.
+    Two frames under one name is how a consumer comes to compare lengths that
+    were never in the same units (`record.Q.CELL_STAFF_SPACE` says so in those
+    words), and here it would decide how many flats are printed.
+
+    ⚠️ It is filed on the CELL, a DESCENDANT of the staff, so the scope is not
+    optional — and the cell INDEX must be checked, because every bar of the
+    staff files one and only cell 0 is the header's.
+    """
+    for row in ev.rows(Q.CELL_STAFF_SPACE, scope=Scope.SELF_AND_DESCENDANTS,
+                       subject=subject):
+        if row.subject.cell == 0:
+            try:
+                value = float(row.value)
+            except (TypeError, ValueError):
+                continue
+            if value > 0:
+                return value
+    # ⚠️ A FALLBACK THAT CANNOT INVENT A READING, ONLY REFUSE ONE. With no
+    # measured space the slot test has no unit, so `_marker_run` returns
+    # `no_cell_scale` and this decision abstains rather than clustering raw
+    # pixels against a nominal that is wrong on half the cells of a
+    # conductor's page.
+    return 0.0
+
+
+def _marker_run(marks, space: float):
+    """The detector's key accidentals as `(fifths, reason, detail)`.
+
+    ⚠️⚠️ THIS IS THE READING, AND UNTIL 2026-09-23 IT WAS READ BY NOTHING.
+    `Q.KEYSIG_MARKER` was declared in this decision's `wants` AND in its
+    `composed_from` from the day it was written, and every use of it was a
+    DETAIL field (`_marker_ink`) explicitly labelled *not a proposed value*.
+    The boxes were on the record the whole time: on the engraved acceptance
+    page every staff carries three `keyFlat` boxes at score 0.91–0.94 while
+    the header fitter reported ONE accidental, and the file wrote one flat.
+    Sean, 2026-09-23: *"we just need to know what to do with the 3 boxes
+    around the 3 flats on every staff."*
+
+    ⚠️ SLOTS, NOT BOXES (conventions `[C21]`: the accidentals stand at fixed
+    slots in a fixed order, so *the Nth accidental is fully determined by N*).
+    Counting boxes reads Violin 1's neighbour-bleed pair as a fourth flat;
+    counting SLOTS does not — the cell is padded 4 staff spaces and on a
+    conductor's page that reaches the next staff's ink (CLAUDE.md §10).
+
+    ⚠️ AND THE RUN IS A LADDER. `gather._gather_keysig_markers` reads
+    `R.cell(p, s, i, 0)` — the whole first MEASURE, header and first bar
+    together — so an accidental printed inside bar 1 is in this population.
+    The chain stops at the first gap wider than `MARKER_RUN_GAP_SPACES`.
+
+    ⚠️ MIXED KINDS ABSTAIN. A standard signature carries one kind only
+    (`transcribe._staff_key_fifths` states it in the same words), so sharps
+    and flats in one run is not a reading of anything; and an all-`keyNatural`
+    run is a CANCELLATION, which this record has nowhere to put.
+    """
+    if not marks:
+        return None, "no_markers", {}
+    kinds = sorted({str(m.value) for m in marks})
+    xs = sorted(float(m.detail.get("x") or 0.0) for m in marks)
+    base = {"keysig_marker_ink": len(marks), "keysig_marker_classes": kinds}
+    if len(kinds) > 1:
+        return None, "mixed_marker_kinds", base
+    if space <= 0:
+        return None, "no_cell_scale", base
+    centres = [xs[0]]
+    for a, b in zip(xs, xs[1:]):
+        if b - a > MARKER_SLOT_TOLERANCE_SPACES * space:
+            centres.append(b)
+    slots = 1
+    for a, b in zip(centres, centres[1:]):
+        if b - a > MARKER_RUN_GAP_SPACES * space:
+            break
+        slots += 1
+    base.update(keysig_marker_slots=len(centres), keysig_run_slots=slots,
+                cell_staff_space=space)
+    if kinds == [_NATURAL]:
+        return None, "natural_markers", base
+    if slots > MAX_FIFTHS:
+        return None, "too_many_markers", base
+    if kinds == [_FLAT]:
+        return -slots, "markers", base
+    if kinds == [_SHARP]:
+        return slots, "markers", base
+    return None, "mixed_marker_kinds", base
+
+
+def _fit_for_clef(rows, clef):
+    """The reader's row for the SETTLED clef, and its fifths."""
+    for row in rows:
+        if str(row.value) != str(clef.value):
+            continue
+        fifths = row.detail.get("fifths")
+        if fifths is None:
+            continue
+        return row, int(fifths)
+    return None, None
+
+
+def _staff_reading(ev: Evidence, subject=None) -> Optional[Ruling]:
+    """What ONE staff's header says, before any system check.
+
+    Returns `None` where the clef abstained — the guard, expressed as a
+    dependency rather than as a boolean inside a reader.
+
+    ⚠️ IT TAKES AN EXPLICIT SUBJECT so `adjudicate_system_key`, which is
+    `Kind.SYSTEM`, reads every staff of its system through THIS function
+    rather than a second copy of the precedence. One projection, two callers
+    — `_spans_from_numbering`'s discipline, and the reason the tally and the
+    staff verdict cannot drift apart.
+    """
+    clef = ev.verdict(Q.CLEF, subject=subject)
+    if clef is None or clef.value is None:
+        return None
+
+    marks = ev.rows(Q.KEYSIG_MARKER, subject=subject)
+    fifths, reason, detail = _marker_run(marks, _cell0_space(ev, subject))
+
+    fits = ev.rows(Q.KEYSIG_CLEF_FIT, subject=subject)
+    tpls = ev.rows(Q.KEYSIG_TEMPLATE_FIT, subject=subject)
+    fit_row, fit_fifths = _fit_for_clef(fits, clef)
+    tpl_row, tpl_fifths = _fit_for_clef(tpls, clef)
+
+    if fifths is not None:
+        # ⚠️ THE FITTERS BECOME CORROBORATION, AND A DISAGREEMENT IS RECORDED
+        # RATHER THAN RESOLVED. A fit that agrees joins the basis — two
+        # readers of ONE crop, which the harness will mark as one signal in
+        # `Verdict.correlated` — and a fit that disagrees is written into the
+        # detail, never dropped: it is the standing evidence about which
+        # reader fails where, and it would be invisible if the loser were
+        # simply discarded.
+        detail = dict(detail)
+        detail["fit_fifths"] = fit_fifths
+        detail["template_fifths"] = tpl_fifths
+        agrees = []
+        for row, value in ((fit_row, fit_fifths), (tpl_row, tpl_fifths)):
+            if row is None or value is None:
+                continue
+            if value == fifths:
+                agrees.append(row.id)
+            else:
+                detail.setdefault("disagreeing_readers", []).append(
+                    {"reader": row.reader, "fifths": value,
+                     "n_accidentals": row.detail.get("n_accidentals")})
+        detail["corroborated_by"] = len(agrees)
+        return Ruling(value=fifths, reason=reason,
+                      used=tuple(m.id for m in marks) + (clef.id,)
+                      + tuple(agrees), detail=detail)
+
+    if reason != "no_markers":
+        # An incoherent run is a refusal with its evidence named, not a gap.
+        return Ruling.abstain(reason, **detail)
+
+    # ── no markers at all: the FITTERS speak alone, exactly as before ───────
+    # ⚠️⚠️ THIS BRANCH IS WHY THE MARKER RULE IS SURVIVABLE ON A SCAN. Litolff
+    # MERGES its ink, so the detector misses key accidentals outright on
+    # staves where the template reads them; where the detector saw NOTHING
+    # there is nothing to contradict, and the 2.2 precedence — template first
+    # on a document MEASURED engraved, locator first otherwise — runs
+    # untouched underneath. 80 of 331 staves on Litolff and 145 of 691 on
+    # Breitkopf arrive here.
+    if _proved_engraved(ev) and tpl_row is not None:
+        return Ruling(value=tpl_fifths, reason="fitted_no_markers",
+                      used=(tpl_row.id, clef.id),
+                      detail=dict(_template_detail(tpl_row),
+                                  decided_by="template_engraved"))
+    if fit_row is not None:
+        return Ruling(value=fit_fifths, reason="fitted_no_markers",
+                      used=(fit_row.id, clef.id),
+                      detail={"n_accidentals": fit_row.detail.get("n_accidentals"),
+                              "accidental": fit_row.detail.get("accidental"),
+                              "decided_by": fit_row.detail.get("decided_by")})
+    if tpl_row is not None:
+        return Ruling(value=tpl_fifths, reason="fitted_no_markers",
+                      used=(tpl_row.id, clef.id),
+                      detail=dict(_template_detail(tpl_row),
+                                  decided_by="template"))
+
+    if not fits:
+        state = ev.state(Q.KEYSIG_RUN_POSITION, subject=subject)
+        if state is State.READ:
+            return Ruling.abstain("no_run", **_marker_ink(ev, subject))
+        return Ruling.abstain("no_evidence", **_marker_ink(ev, subject))
+
+    # The run was read and fits SOME slot table, but not the one this staff's
+    # settled clef chooses, and no template answered for that clef either.
+    return Ruling.abstain("run_fits_no_slot_table",
+                          clef=str(clef.value),
+                          fits=[str(r.value) for r in fits],
+                          **_marker_ink(ev, subject))
+
+
+def _concert(ev: Evidence, subject, written: Optional[int]):
+    """`(concert fifths, instrument name)` for a staff — `(None, name)` if it
+    may not stand as a witness about its system's key.
+
+    ⚠️ THE TRANSPOSITION MUST BE **READ**, NEVER DEFAULTED, and the test for
+    that is `key_consensus.resolve_label`'s third value — IMPORTED rather
+    than restated, because the obvious test for it is WRONG: comparing the
+    matched offset against the instrument's default cannot tell *named
+    B-flat* from *defaulted to B-flat*, the default clarinet being the B-flat
+    one. Measured there on Beethoven 5 p1, the naive test let the one
+    correctly-deduced transposing staff on the page escape judgement. A staff
+    resting on the default may neither corroborate another nor be
+    contradicted by one.
+
+    ⚠️ AND A STAFF THAT PRINTS NO SIGNATURE AT ALL IS NOT A DISSENTER
+    (conventions `[C81]`, `key_consensus.NO_SIGNATURE_CONVENTION`): natural
+    horns, natural trumpets and timpani read 0 whatever the key, so on
+    Beethoven 5's Litolff plate they would stand as three staves per system
+    disagreeing with the whole page.
+    """
+    from ...key_consensus import (MAY_DIFFER_NOT_A_WITNESS,
+                                  NO_SIGNATURE_CONVENTION, resolve_label)
+    labels = ev.rows(Q.MARGIN_LABEL, subject=subject)
+    if not labels or written is None:
+        return None, None
+    name, offset, known = resolve_label(str(labels[-1].value))
+    if name is None or offset is None or not known:
+        return None, name
+    if name in NO_SIGNATURE_CONVENTION or name in MAY_DIFFER_NOT_A_WITNESS:
+        return None, name
+    return written - offset, name
+
+
+#: ⚠️ ONE TUPLE, TWO DECISIONS, and it is shared rather than copied because
+#: `_staff_reading` is shared: `Evidence` enforces `wants` at hand-in time, so
+#: a quantity missing from either declaration would raise inside the other
+#: decision's call of the same function — a failure that would only appear on
+#: whichever document happened to reach that branch first.
+_KEY_WANTS = (Q.KEYSIG_RUN_POSITION, Q.KEYSIG_MARKER, Q.KEYSIG_CLEF_FIT,
+              Q.KEYSIG_TEMPLATE_FIT, Q.CLEF, Q.INPUT_DOMAIN,
+              Q.CELL_STAFF_SPACE, Q.MARGIN_LABEL)
+
+
+@decision(
+    quantity=Q.SYSTEM_KEY,
+    checkable=Checkable.CHECKABLE,
+    checked_by=(
+        '"a key CHANGE is printed at ONE bar of ONE system, on EVERY staff of it [C24]"',
+        '"across the staves of a system the DELTA is shared, never the value -- transposing parts print different signatures for one key"',
+        '"timpani, horns and trumpets are conventionally written WITHOUT a key signature [C81], so their zero is not a disagreement"',
+    ),
+    implicates=(Q.SYSTEM_KEY, Q.KEY_SIGNATURE, Q.CLEF, Q.MARGIN_LABEL),
+    composed_from=(Q.KEYSIG_MARKER, Q.KEYSIG_CLEF_FIT, Q.KEYSIG_TEMPLATE_FIT,
+                   Q.CLEF, Q.MARGIN_LABEL),
+    scope=Kind.SYSTEM,
+    wants=_KEY_WANTS,
+    reasons=("read", "one_staff_only", "no_staff_read_a_key"),
+    mode=Mode.ADDITIVE,
+)
+def adjudicate_system_key(ev: Evidence) -> Ruling:
+    """The CONCERT keys this system's staves read, and how many read each.
+
+    ⚠️⚠️ NARROWED BY CONSTRUCTION, AND THAT IS THE DESIGN RATHER THAN A
+    LIMITATION. Sean decided on 2026-09-23 that a key is settled per SYSTEM,
+    and the first draft of that was a MAJORITY that rewrote every staff. The
+    trace refused it: on the engraved acceptance page the two readings split
+    EIGHT to EIGHT once normalised to concert, so a majority would have been
+    a coin toss — while the actual defect was one reader counting one flat
+    where the detector had already drawn three boxes. So this decides nothing
+    about any staff. It publishes the tally, and `adjudicate_key_signature`
+    uses it for ONE thing: a staff whose concert key has NO PEER on its own
+    system is a misreading of that staff (conventions `[C24]`, CLAUDE.md §10)
+    and abstains.
+
+    ⚠️ A CHECK THAT CAN FAIL, WHICH A MAJORITY IS NOT. Where two staves share
+    a value neither is touched, however many disagree — so a genuinely bitonal
+    system (Holst's `Mercury` is the recorded case) and a page this reader
+    half-misreads both lose nothing. It also cannot fire at all where only one
+    staff can speak, and that is reported by its own reason rather than folded
+    into the tally.
+
+    ⚠️ ITS WITNESSES ARE INDEPENDENT, WHICH IS WHAT THE CHECK RESTS ON: each
+    staff has its OWN header crop and its own detector cell, so they are not
+    `Evidence.correlated_groups`' *one reader on one crop*. The two READERS of
+    a single staff ARE — which is why a fit corroborating that staff's markers
+    joins the staff's own term in `_staff_reading` instead of adding a second
+    witness here.
+    """
+    staves = [s for s in ev.subjects(Kind.STAFF) if ev.subject.contains(s)]
+    tally: Dict[int, int] = {}
+    used: List[str] = []
+    read_a_key = 0
+    for sub in staves:
+        ruling = _staff_reading(ev, sub)
+        if ruling is None or ruling.value is None:
+            continue
+        read_a_key += 1
+        concert, _name = _concert(ev, sub, int(ruling.value))
+        if concert is None:
+            continue
+        tally[concert] = tally.get(concert, 0) + 1
+        used.extend(ruling.used)
+    detail = {"staves": len(staves), "staves_with_a_reading": read_a_key,
+              "tally": {str(k): v for k, v in sorted(tally.items())}}
+    if not tally:
+        return Ruling.abstain("no_staff_read_a_key", **detail)
+    if sum(tally.values()) < 2:
+        # ⚠️ ONE WITNESS CANNOT CONTRADICT ITSELF. Its own reason, because
+        # "this system has one staff whose key we can state in concert pitch"
+        # and "its staves agree" are different facts, and the check is INERT
+        # in the first — which is what `reach` needs to be able to see.
+        return Ruling.abstain("one_staff_only", **detail)
+    # ⚠️⚠️ A LIST, AND `Ruling.narrow` WAS TRIED FIRST AND IS WRONG HERE. The
+    # harness clears a candidate set of one — *a single survivor is not a
+    # narrowing* — so a system whose staves AGREE, which is the common case
+    # and the strongest possible evidence, would have come back ABSTAINED
+    # with nothing attached: the exact ABSENT/DECLINED collapse this record
+    # exists to prevent, inverted. The value is therefore the set of concert
+    # keys MORE THAN ONE staff of this system read, which is a fact and is
+    # decidable; a set of one is the unanimous page and a set of none is a
+    # system in which every reading stands alone.
+    corroborated = sorted(k for k, v in tally.items() if v >= 2)
+    return Ruling(value={"corroborated": corroborated,
+                         "tally": detail["tally"]},
+                  reason="read", used=tuple(used), detail=detail)
 
 
 @decision(
     quantity=Q.KEY_SIGNATURE,
     checkable=Checkable.MIXED,
     checked_by=(
-        '"the accidental ORDER is fixed (F#-C#-G#... / Bb-Eb-Ab...): a run that SKIPS a slot is impossible"',
+        '"the accidental ORDER is fixed (F#-C#-G#... / Bb-Eb-Ab...): a run that SKIPS a slot is impossible [C21]"',
+        '"a key signature\'s accidentals stand at fixed SLOTS, so two boxes at one x are ONE slot [C21]"',
         '"across the staves of a system the DELTA is shared, never the value -- transposing parts print different signatures for one key"',
-        '"a key CHANGE is printed on every staff at the same bar (key_signature_corroboration -- CONSUMED, default-ON)"',
+        '"a key CHANGE is printed at ONE bar of ONE system, on EVERY staff of it [C24] -- so a concert key with no peer on its own system is a misreading"',
     ),
-    implicates=(Q.KEY_SIGNATURE, Q.CLEF, Q.KEYSIG_RUN_POSITION),
-    composed_from=(Q.KEYSIG_RUN_POSITION, Q.KEYSIG_MARKER, Q.CLEF),
+    implicates=(Q.KEY_SIGNATURE, Q.CLEF, Q.KEYSIG_RUN_POSITION,
+                Q.KEYSIG_MARKER),
+    composed_from=(Q.KEYSIG_MARKER, Q.KEYSIG_RUN_POSITION,
+                   Q.KEYSIG_TEMPLATE_FIT, Q.CLEF),
     scope=Kind.STAFF,
-    wants=(Q.KEYSIG_RUN_POSITION, Q.KEYSIG_MARKER, Q.KEYSIG_CLEF_FIT,
-           Q.KEYSIG_TEMPLATE_FIT, Q.CLEF, Q.DOSSIER_FACT, Q.INPUT_DOMAIN),
-    #: ⚠️ `fitted_by_template_engraved` IS A SEPARATE WORD FROM
-    #: `fitted_by_template` SO THE REACH IS COUNTABLE IN THE RECORD. The two
-    #: are the same reader reached by different routes -- one because the
-    #: document is PROVED engraved, one because the locator left a gap -- and
-    #: folding them would make the new tier's firing invisible to every
-    #: instrument that reads reasons, which is how a rule stops being
-    #: measurable the day after it ships.
-    reasons=("fitted", "fitted_by_template", "fitted_by_template_engraved",
-             "needs_clef", "run_fits_no_slot_table", "no_run",
-             "markers_without_a_run", "no_evidence"),
+    wants=_KEY_WANTS + (Q.SYSTEM_KEY,),
+    reasons=("markers", "fitted_no_markers", "needs_clef",
+             "run_fits_no_slot_table", "no_run", "mixed_marker_kinds",
+             "natural_markers", "too_many_markers", "no_cell_scale",
+             "disagrees_with_system", "no_evidence"),
     mode=Mode.ADDITIVE,
 )
 def adjudicate_key_signature(ev: Evidence) -> Ruling:
-    """The key signature, fitted to the clef that was SETTLED, not guessed.
+    """The key signature, read off the DETECTOR's own boxes and then checked.
 
     ⚠️ THE GUARD MOVED; IT WAS NOT REMOVED. `key_signature_locator.py:310`
     refuses to run without a clef, and it is right to: fitting three flats
-    against a guessed clef once returned TWO SHARPS -- a different accidental
+    against a guessed clef once returned TWO SHARPS — a different accidental
     type fitting a different prefix well inside tolerance. GATHER asks the
     reader once per CANDIDATE clef, which is the honest form of the question;
-    this decision then reads the answer for the clef that actually won.
+    this decision reads the answer for the clef that actually won, and IF THE
+    CLEF ABSTAINED SO DOES THIS.
 
-    ⚠️ IF THE CLEF ABSTAINED, SO DOES THIS. That is the guard, expressed as a
-    dependency rather than as a boolean inside a reader: no clef, no name.
+    ⚠️⚠️ THE PRIMARY READER IS NOW `Q.KEYSIG_MARKER`, AND IT WAS ALREADY ON
+    THE RECORD (`_marker_run`). Measured 2026-09-23 over the three acceptance
+    documents, scored against the movement's own key — Beethoven 5 mvt 1 and
+    Brahms 1 mvt 1 are both C minor, so every staff's printed signature
+    follows from its instrument and needs no page truth:
 
-    ⚠️⚠️ THE THIRD `checked_by` STATEMENT CANNOT BE PERFORMED HERE, AND IT IS
-    NOT AN OVERSIGHT — IT IS STRUCTURALLY ABSENT. *"a key CHANGE is printed on
-    every staff at the same bar (key_signature_corroboration -- CONSUMED,
-    default-ON)"* describes a LEGACY-path mechanism, and on this path there is
-    no mid-staff key change for it to corroborate: this decision is
-    `Kind.STAFF` and reads the header, `_gather_keysig_markers` reads
-    `R.cell(p, s, i, 0)` — CELL 0 AND NOTHING ELSE — and
-    `staged/export.py` carries ONE `fifths` per staff-run. Measured on the two
-    shared records: **75 and 97 key verdicts, every one staff-scoped; 105 and
-    146 marker rows, every one filed at `cell:0`.** Nothing can express a
-    change, so nothing can contradict one.
+      * engraved acceptance page, 50 scored staves — the header fitters read
+        **45 right / 3 wrong / 2 abstained**, the marker run **50 / 0 / 0**;
+      * Brahms 1, Breitkopf, whole movement, 583 scored — **171 / 241 / 171**
+        against **330 / 198 / 55**;
+      * Beethoven 5, Litolff, whole movement, 200 scored — **91 / 37 / 72**
+        against **101 / 52 / 47**.
 
-    ⚠️ `key_signature_corroboration` is ALSO simply not imported here — its
-    only non-test import in the tree is `transcribe.py`. But *"wire the
-    import"* is the wrong repair and would produce a pass with an empty
-    domain: the missing piece is upstream, a key reader that looks past cell
-    0, and that is a GATHER change.
+    ⚠️ THE LITOLFF ROW IS THE COST AND IT IS NOT HIDDEN. That plate MERGES its
+    ink, so where the detector fires at all it UNDER-counts the run: the
+    marker rule trades 25 abstentions there for 10 more right and 15 more
+    wrong. The system check below is what pays that back, and the figures with
+    it are in `benchmarks/omr-key-majority-2026-09/FINDINGS.md`.
 
-    ⚠️ ITS REACH IS MEASURED AND SMALL, WHICH IS WHY THIS IS RECORDED RATHER
-    THAN BUILT. Key-accidental classes detected in cells OTHER than cell 0,
-    gathered by nothing today: **21 (Litolff, 4 pages) and 2 (Breitkopf, 4
-    pages)**. ⚠️⚠️ And the legacy path is the warning about what reading them
-    naively would cost: of the 15 later-cell markers it does read across 11
-    scanned pages, **7 CHANGED THE KEY AND ALL SEVEN WERE WRONG**. So a
-    mid-staff key reader must arrive WITH its corroboration, not before it —
-    which is the one thing the staged path can say that the legacy path
-    could not, because here the guard would be designed in rather than bolted
-    on. Full measurement:
-    `benchmarks/omr-keysig-staged-reach-2026-09/FINDINGS.md`.
+    ⚠️ THE FITTERS ARE NOT DEMOTED WHERE THE DETECTOR IS SILENT. With no
+    marker rows at all the old precedence runs untouched — template first on a
+    document MEASURED engraved (`OMR_ENGRAVED_KEYSIG`, roadmap 2.2, Sean's
+    call 2026-09-22), locator first otherwise — under one reason word,
+    `fitted_no_markers`, so the branch is countable in the record. ⚠️ That
+    word REPLACES `fitted`, `fitted_by_template` and
+    `fitted_by_template_engraved`: the precedence they named is unchanged in
+    code, and which reader answered is now `detail["decided_by"]`.
 
-    ⚠️ TWO READERS, AND THE PRECEDENCE IS INHERITED RATHER THAN CHOSEN.
-    `key_signature_template` answers GAPS ONLY -- where the locator produced
-    no fit for this staff's settled clef. That is the legacy path's own rule
-    (`transcribe.py`: *"the reader speaks only into GAPS"*) and the
-    alternative is already priced and already REFUSED there: letting the
-    fuller reading win *"is worth +1 on beet5-p2 and +2 on the Pastoral and
-    costs a WRONG reading on the cleanest page in the corpus"*. The two
-    readers fail in opposite directions -- the locator loses accidentals to
-    broken ink, the template can match spurious ink and over-count -- so the
-    one that cannot invent a glyph goes first.
+    ⚠️ A DISAGREEING FIT IS RECORDED, NEVER DROPPED. `detail
+    ["disagreeing_readers"]` names the reader and what it said. On the
+    engraved page that is 24 of the 30 staves where both spoke — the
+    measurement that says which reader to work on next.
 
-    ⚠️⚠️ **AND THAT REASON IS REFUTED ON ENGRAVED INPUT, WHICH IS WHY
-    `_proved_engraved` EXISTS AND WHY IT IS ONE-SIDED** (2026-09-22,
-    `OMR_ENGRAVED_KEYSIG`, **default ON since that evening, Sean's call**).
-    On a Verovio render of Beethoven 5
-    mvt 1 the ink is a VECTOR render, so *"broken ink"* cannot be the excuse
-    -- and over 50 decided staff-systems the template reads **20 right / 0
-    wrong** while the locator's `fitted` reads **6 / 24**. The mechanism is
-    measured: `header_ink_mask` shaves 54-63% off each flat's height, so two
-    of every three fall under `key_signature_locator.min_height_spaces =
-    1.10`, and two renderers agree to 0.03 staff spaces.
+    ⚠️⚠️ THE SYSTEM CHECK IS A CHECK, NOT A VOTE. A staff whose CONCERT key
+    has no peer on its own system abstains `disagrees_with_system`, and EXPORT
+    then writes no `<key>` for it — which in MusicXML CARRIES the part's last
+    stated key, so nothing is invented. It never writes another staff's value
+    onto this one: the majority that would do so was designed, priced and
+    REFUSED (`adjudicate_system_key`).
 
-    ⚠️ **THE PARAGRAPH ABOVE IS STILL THE RULE EVERYWHERE ELSE, and the
-    refusal it records is not overturned**: on a SCAN the same erasure works
-    FOR the locator (accidental-sized clusters 5 -> 11 on the Litolff plate,
-    because there the lines MERGE glyphs and erasing SEPARATES them), and the
-    template's over-counting risk is exactly what that refusal was priced on.
-    A scan, a classifier abstention, a record with no identity row and the
-    flag off all fall through to it unchanged.
-    `benchmarks/omr-document-identity-2026-09/FINDINGS.md`.
+    ⚠️ AND `markers_without_a_run` IS GONE BECAUSE ITS PREMISE EXPIRED. It
+    said *the detector saw ink and the fitter could not speak*, which was true
+    and is now the ordinary path: those staves are exactly the ones this
+    decision now reads. It stood on 4 of 54 verdicts on the engraved record.
     """
-    clef = ev.verdict(Q.CLEF)
-    if clef is None or clef.value is None:
+    reading = _staff_reading(ev)
+    if reading is None:
         return Ruling.abstain("needs_clef")
+    if reading.value is None:
+        return reading
 
-    fits = ev.rows(Q.KEYSIG_CLEF_FIT)
+    concert, name = _concert(ev, None, int(reading.value))
+    if concert is None:
+        # Not a witness about the system's key, and so not judged by it: an
+        # unlabelled staff, an instrument whose key the label never named, or
+        # one that prints no signature at all. Its own reading stands.
+        return reading
 
-    # ⚠️⚠️ ON A DOCUMENT MEASURED **ENGRAVED**, THE TEMPLATE GOES FIRST, AND
-    # THE PRECEDENCE BELOW IS OTHERWISE UNTOUCHED. The docstring's reason for
-    # that precedence is REFUTED on engraved input and nowhere else: on a
-    # Verovio render of Beethoven 5 mvt 1, over 50 decided staff-systems, the
-    # template is **20 right / 0 wrong** and the locator's `fitted` is **6 /
-    # 24** -- the ink is a vector render, so *"the locator loses accidentals
-    # to broken ink"* cannot be the excuse, and *"the template can match
-    # spurious ink and over-count"* happens nowhere. The mechanism is measured
-    # too: `header_ink_mask` shaves 54-63% off each flat's height, so two of
-    # every three fall under `key_signature_locator.min_height_spaces = 1.10`,
-    # and two renderers agree to 0.03 staff spaces.
-    #
-    # ⚠️ AND THE SAME ERASURE **HELPS** ON A SCAN -- accidental-sized clusters
-    # 5 -> 11 on the Litolff plate, because there the staff lines merge glyphs
-    # and erasing separates them. That is why the erasure exists and why the
-    # shipped precedence was defensible when it was priced on scans. So this
-    # tier is gated on the DOMAIN rather than flipped globally, and
-    # `_proved_engraved` answers False for everything that is not a measured
-    # `engraved` row.
-    if _proved_engraved(ev):
-        row, fifths = _template_fit(ev, clef)
-        if row is not None:
-            return Ruling(value=fifths, reason="fitted_by_template_engraved",
-                          used=(row.id, clef.id),
-                          detail=_template_detail(row))
-
-    for row in fits:
-        if str(row.value) != str(clef.value):
-            continue
-        fifths = row.detail.get("fifths")
-        if fifths is None:
-            continue
-        return Ruling(value=int(fifths), reason="fitted",
-                      used=(row.id, clef.id),
-                      detail={"n_accidentals": row.detail.get("n_accidentals"),
-                              "accidental": row.detail.get("accidental"),
-                              "decided_by": row.detail.get("decided_by")})
-
-    row, fifths = _template_fit(ev, clef)
-    if row is not None:
-        return Ruling(value=fifths, reason="fitted_by_template",
-                      used=(row.id, clef.id), detail=_template_detail(row))
-
-    if not fits:
-        state = ev.state(Q.KEYSIG_RUN_POSITION)
-        if state is State.READ:
-            return Ruling.abstain("no_run", **_marker_ink(ev))
-        # ⚠️⚠️ `no_evidence` WAS WRONG ON ROUGHLY HALF THE STAVES IT WAS
-        # REPORTED ON, and `Q.KEYSIG_MARKER` — declared in `wants` AND in
-        # `composed_from` since this decision was written, and read by NOTHING
-        # until 2026-09-21 — is what says so. Measured on the two shared
-        # records: of the staves abstaining `no_evidence`, **7 of 17**
-        # (Litolff) and **9 of 20** (Breitkopf) carry detected key
-        # accidentals. The CV header reader could not speak; the DETECTOR saw
-        # ink. Reporting that as "no evidence" is the ABSENT/DECLINED collapse
-        # this record exists to prevent, and it sends the next person to the
-        # wrong module: *nothing was printed here* wants a reader, *we could
-        # not fit what was printed* wants a fitter.
-        #
-        # ⚠️ THE STATED REASON FOR LEAVING IT UNREAD WAS FALSE. The gap lists
-        # excused it as *"the decision reads `keysig_clef_fit`, which the
-        # markers already feed in GATHER"*. They do not: `Q.KEYSIG_CLEF_FIT`
-        # comes from `locate_key_signature` on the header CROP, and the one
-        # place detections enter that call is `_occupied_boxes`, which filters
-        # to NOTEHEADS. The markers feed nothing at all.
-        marks = ev.rows(Q.KEYSIG_MARKER)
-        if marks:
-            return Ruling.abstain("markers_without_a_run", **_marker_ink(ev))
-        return Ruling.abstain("no_evidence", **_marker_ink(ev))
-
-    # ⚠️ The run was read and fits SOME slot table, but not the one this
-    # staff's settled clef chooses, and the template could not answer for that
-    # clef either. That is a CONTRADICTION worth recording rather than a gap --
-    # it says the clef and the key disagree, and `implicates` names both.
-    return Ruling.abstain("run_fits_no_slot_table",
-                          clef=str(clef.value),
-                          fits=[str(r.value) for r in fits],
-                          **_marker_ink(ev))
+    system = ev.verdict(Q.SYSTEM_KEY, subject=ev.subject.at(Kind.SYSTEM))
+    if system is None or system.value is None:
+        return reading
+    tally = system.value.get("tally") or {}
+    if concert in system.value.get("corroborated", ()):
+        detail = dict(reading.detail)
+        detail.update(concert_fifths=concert, instrument=name,
+                      system_peers=int(tally.get(str(concert), 0)))
+        return Ruling(value=reading.value, reason=reading.reason,
+                      used=tuple(reading.used) + (system.id,), detail=detail)
+    return Ruling.abstain(
+        "disagrees_with_system",
+        concert_fifths=concert, instrument=name,
+        written_fifths=int(reading.value), read_by=reading.reason,
+        system_tally=(system.value or {}).get("tally"),
+        **{k: v for k, v in reading.detail.items()
+           if k.startswith("keysig_") or k == "disagreeing_readers"})

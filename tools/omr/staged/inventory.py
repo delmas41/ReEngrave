@@ -111,9 +111,6 @@ KNOWN_GAPS: Dict[str, str] = {
         "identity. The declaration stays because the check is real where a "
         "dossier or a margin label exists; what changed is that nobody should "
         "reach for it as the fix for an abstaining clef on a scan.",
-    "key_signature declares 'dossier_fact'":
-        "inert declaration; no dossier is supplied on the scan path by "
-        "protocol.",
     "glyph_owner declares 'glyph_conf'":
         "⚠️ THE STANDING OBSERVATION, reproduced: "
         "`_dedupe_cross_staff_detections` has both detections' confidences in "

@@ -1,0 +1,13 @@
+== benchmarks/omr-key-majority-2026-09/out/litolff-arm.musicxml
+    P1 Flute                         -3   changes: m48=-1 m64=-3 m97=-2 m112=-3 m142=-1 m243=-3 m333=-1 m360=-2 m375=-3 m465=-2 m481=-3
+    P2 Oboe                          -2   changes: m48=-1 m97=-2 m257=-3 m333=-1 m360=-2 m406=-3 m445=-2 m481=-3
+    P3 Clarinet                      -1   changes: m128=-2 m142=-1 m155=-3 m167=-1
+    P4 Bassoon                       -1   changes: m17=-3 m48=-1 m64=-3 m142=-1 m257=-3 m423=-1 m445=-2 m465=1
+    P5 Horn                           0   changes: m97=-1 m155=0 m316=-1 m333=0
+    P6 Trumpet                        0   changes: m82=1 m167=0
+    P7 Timpani                        0   changes: m97=-1 m184=0
+    P8 Violin                        -3   changes: m33=-1 m48=-3 m82=-2 m112=-3 m128=-2 m142=-1 m167=-2 m184=-3 m224=-2 m243=-1 m257=-3 m283=-2 m316=-3 m333=-1 m360=-3 m391=-2 m423=-1 m445=-3 m465=-2 m481=-3
+    P9 Violin                        -2   changes: m17=-1 m48=1 m64=-3 m82=-1 m142=-3 m155=-2 m184=-3 m202=-2 m224=-3 m243=-2 m257=-3 m283=-2 m316=-1 m333=-2 m348=-3 m360=-1 m375=-2 m423=-1 m465=-2 m481=-3
+   P10 Viola                         -2   changes: m64=-3 m155=-2 m202=-4 m224=1 m243=-3 m445=-1 m465=-3
+   P11 Cello                         -2   changes: m48=-3 m128=-2 m142=-3 m184=-1 m224=1 m243=-3 m269=-1 m283=-3 m316=-2 m348=-1 m391=-2 m445=-1
+   P12 Contrabass                    -1   changes: m17=-2 m48=-3 m82=-2 m112=-3 m142=-1 m155=-3 m184=-1 m224=-3 m243=-1 m257=-3 m269=-1 m283=-3 m316=-2 m333=-4 m348=-1

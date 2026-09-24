@@ -1,0 +1,333 @@
+== /Users/seanjohnson/Desktop/ReEngrave/library/_shared-records/beethoven5-litolff-mvt1-whole-20260923.record.json
+     subject label                clef      key                        mark   run  fits / template
+1/0/  0   Flauti.              treble    deci/  -3/fitted_by_templ     3 [580]  bass:n1:f-1:pattern;alto:n1:f-1:pattern;tenor:n1:f1:pattern | treble:n3:f-3;tenor:n3:f-3
+1/0/  1   Obol.                treble    deci/  -3/fitted_by_templ     2     -   | treble:n3:f-3;tenor:n3:f-3
+1/0/  2   Clarinetti in B.     treble    deci/  -1/fitted              0 [700]  treble:n1:f-1:pattern;bass:n1:f-1:pattern;alto:n1:f-1:patter | treble:n1:f-1;alto:n1:f-1;tenor:n1:f-1
+1/0/  3   Fagotti.             bass      deci/  -3/fitted_by_templ     1     -   | bass:n3:f-3;alto:n3:f-3
+1/0/  4   Corni in Es.         treble    deci/   0/fitted_by_templ     0     -   | treble:n0:f0;alto:n0:f0;tenor:n0:f0
+1/0/  5   Trombe in C.         treble    deci/   0/fitted_by_templ     0     -   | treble:n0:f0;alto:n1:f-1
+1/0/  6   Timpani in C.G.      bass      deci/   0/fitted_by_templ     0     -   | bass:n0:f0;alto:n0:f0;tenor:n0:f0
+1/0/  7   Violino I.           treble    deci/  -3/fitted_by_templ     3     -   | treble:n3:f-3;tenor:n3:f-3
+1/0/  8   Violino II.          treble    deci/  -3/fitted              2 [700,  treble:n3:f-3:tail;alto:n3:f-3:tail | treble:n3:f-3;alto:n3:f-3;tenor:n3:f-3
+1/0/  9   Viola.               alto      deci/  -1/fitted              2 [1161  bass:n1:f-1:pattern;alto:n1:f-1:pattern;tenor:n1:f1:pattern | alto:n3:f-3
+1/0/ 10   Violoncello.         bass      deci/  -3/fitted              2 [664,  bass:n3:f-3:pattern;alto:n3:f-3:pattern | bass:n3:f-3;alto:n3:f-3
+1/0/ 11   Basso.               bass      deci/  -3/fitted_by_templ     2     -   | bass:n3:f-3;alto:n3:f-3
+2/0/  0   Fl.                  treble    deci/  -3/fitted_by_templ     4     -   | treble:n3:f-3
+2/0/  1   Ob.                  treble    deci/  -3/fitted              2 [582,  treble:n3:f-3:tail;alto:n3:f-3:tail;tenor:n3:f-3:tail | treble:n3:f-3;bass:n0:f0
+2/0/  2   Cl.                  treble    deci/  -1/fitted              1 [598]  treble:n1:f-1:pattern;alto:n1:f-1:pattern;tenor:n1:f-1:patte | 
+2/0/  3   Fag.                 bass      deci/  -3/fitted              3 [497,  treble:n4:f-7:pattern;bass:n3:f-3:tail;alto:n4:f-7:pattern;t | 
+2/0/  4   Cor.                 treble    deci/   0/fitted_by_templ     0 [499]  bass:n1:f-1:pattern;alto:n1:f-1:pattern;tenor:n1:f1:pattern | treble:n0:f0;alto:n1:f-1
+2/0/  5   Tr.                  treble    deci/   0/fitted_by_templ     0     -   | treble:n0:f0;alto:n0:f0;tenor:n0:f0
+2/0/  6   Tp.                  bass      deci/   0/fitted_by_templ     0     -   | bass:n0:f0;alto:n0:f0;tenor:n0:f0
+2/0/  7   -                    treble    deci/  -3/fitted              0 [602,  treble:n3:f-3:tail;alto:n3:f-3:tail;tenor:n3:f-3:tail | bass:n1:f-1
+2/0/  8   -                    treble    deci/   1/fitted              1 [1301  treble:n1:f1:pattern;bass:n1:f1:pattern;alto:n1:f1:pattern;t | 
+2/0/  9   -                    alto      abst/None/no_evidence         0     -   | 
+2/0/ 10   -                    bass      deci/  -1/fitted              2 [726]  treble:n1:f-1:pattern;bass:n1:f-1:pattern;alto:n1:f-1:patter | 
+2/1/  0   Fl.                  treble    deci/  -2/fitted_by_templ     1     -   | treble:n2:f-2
+2/1/  1   Ob.                  treble    abst/None/markers_without     3     -   | 
+2/1/  2   Cl.                  treble    abst/None/markers_without     1     -   | 
+2/1/  3   Fag.                 tenor     abst/None/no_evidence         0     -   | bass:n3:f-3;alto:n3:f-3
+2/1/  4   Cor.                 treble    abst/None/no_evidence         0     -   | bass:n0:f0;alto:n0:f0;tenor:n0:f0
+2/1/  5   Tr.                  treble    abst/None/no_evidence         0     -   | bass:n0:f0
+2/1/  6   Tp.                  bass      deci/   0/fitted_by_templ     0     -   | bass:n0:f0;alto:n0:f0;tenor:n0:f0
+2/1/  7   -                    treble    deci/  -3/fitted_by_templ     1     -   | treble:n3:f-3
+2/1/  8   -                    treble    deci/  -3/fitted_by_templ     4     -   | treble:n3:f-3;bass:n0:f0;tenor:n3:f-3
+2/1/  9   -                    None      abst/None/needs_clef          2     -   | bass:n0:f0;alto:n3:f-3;tenor:n3:f-3
+2/1/ 10   -                    bass      abst/None/markers_without     2     -   | 
+3/0/  0   Fl.                  treble    deci/  -2/fitted              1 [615,  treble:n2:f-2:tail;alto:n2:f-2:tail;tenor:n2:f-2:tail | treble:n3:f-3;bass:n0:f0
+3/0/  1   Ob.                  treble    abst/None/markers_without     1     -   | 
+3/0/  2   Cl.                  treble    deci/  -1/fitted              1 [611]  treble:n1:f-1:pattern;alto:n1:f-1:pattern;tenor:n1:f-1:patte | 
+3/0/  3   Fag.                 bass      deci/  -1/fitted              0 [1349  treble:n1:f-1:pattern;bass:n1:f-1:pattern;alto:n1:f-1:patter | 
+3/0/  4   Cor.                 treble    abst/None/no_evidence         0     -   | 
+3/0/  5   Tr.                  treble    abst/None/no_evidence         0     -   | bass:n0:f0
+3/0/  6   Tp.                  bass      abst/None/no_evidence         0     -   | treble:n0:f0
+3/0/  7   -                    treble    deci/  -3/fitted              7 [597,  treble:n3:f-3:tail;alto:n3:f-3:tail;tenor:n3:f-3:tail | 
+3/0/  8   -                    treble    deci/   1/fitted              0 [755]  treble:n1:f1:pattern;bass:n1:f-1:pattern;alto:n1:f1:pattern; | 
+3/0/  9   -                    None      abst/None/needs_clef          2 [629]  treble:n1:f-1:pattern;bass:n1:f-1:pattern;alto:n1:f-1:patter | alto:n4:f-4
+3/0/ 10   -                    bass      deci/  -3/fitted              4 [627,  bass:n3:f-3:pattern;alto:n3:f-3:pattern | 
+3/1/  0   Fl.                  treble    deci/  -3/fitted_by_templ     4     -   | treble:n3:f-3;tenor:n3:f-3
+3/1/  1   Cl.                  treble    deci/  -1/fitted_by_templ     1 [483,  bass:n2:f-2:tail | treble:n1:f-1
+3/1/  2   Fag.                 bass      deci/  -1/fitted              3 [609]  bass:n1:f-1:pattern;alto:n1:f-1:pattern;tenor:n1:f1:pattern | bass:n3:f-3;alto:n3:f-3
+3/1/  3   Cor.                 treble    abst/None/run_fits_no_slo     0 [492]  bass:n1:f-1:pattern;alto:n1:f-1:pattern;tenor:n1:f1:pattern | bass:n2:f-2
+3/1/  4   -                    treble    deci/  -3/fitted              3 [605,  treble:n3:f-3:tail;alto:n3:f-3:tail;tenor:n3:f-3:tail | 
+3/1/  5   -                    treble    abst/None/markers_without     3     -   | 
+3/1/  6   -                    alto      deci/   7/fitted              3 [1494  treble:n1:f1:pattern;bass:n4:f7:pattern;alto:n4:f7:pattern | 
+3/1/  7   -                    bass      deci/  -3/fitted              5 [593,  bass:n3:f-3:pattern;alto:n3:f-3:pattern | bass:n3:f-3;alto:n3:f-3
+4/0/  0   Fl.                  treble    abst/None/markers_without     3     -   | 
+4/0/  1   Ob.                  treble    abst/None/run_fits_no_slo     2 [603,  bass:n3:f-3:tail;alto:n3:f-3:tail | 
+4/0/  2   Cl.                  treble    deci/  -1/fitted              1 [623]  treble:n1:f-1:pattern;alto:n1:f-1:pattern;tenor:n1:f-1:patte | 
+4/0/  3   Fag.                 bass      abst/None/no_evidence         0     -   | 
+4/0/  4   Cor.                 treble    abst/None/no_evidence         0     -   | 
+4/0/  5   Tr.                  treble    deci/   1/fitted              0 [1152  treble:n1:f1:pattern;alto:n1:f1:pattern | treble:n0:f0;alto:n0:f0;tenor:n0:f0
+4/0/  6   -                    treble    deci/  -2/fitted_by_templ     0     -   | treble:n2:f-2;tenor:n2:f-2
+4/0/  7   -                    treble    abst/None/markers_without     1     -   | 
+4/0/  8   -                    None      abst/None/needs_clef          0 [664,  treble:n3:f-3:pattern;bass:n3:f-3:pattern;alto:n3:f-3:patter | 
+4/0/  9   -                    None      abst/None/needs_clef          0 [665,  treble:n3:f-3:pattern;tenor:n3:f-3:pattern | 
+4/0/ 10   -                    bass      deci/  -3/fitted_by_templ     2     -   | bass:n3:f-3;alto:n3:f-3
+4/1/  0   Fl.                  treble    deci/  -3/fitted              3 [632,  treble:n3:f-3:pattern;bass:n1:f1:pattern;alto:n3:f-3:pattern | treble:n2:f-2
+4/1/  1   Ob.                  treble    deci/  -2/fitted_by_templ     2     -   | treble:n2:f-2;tenor:n2:f-2
+4/1/  2   Cl.                  treble    deci/  -1/fitted              0 [1443  treble:n1:f-1:pattern;bass:n1:f1:pattern;tenor:n1:f-1:patter | treble:n1:f-1
+4/1/  3   Fag.                 bass      deci/  -1/fitted              1 [1434  treble:n1:f-1:pattern;bass:n1:f-1:pattern;alto:n1:f-1:patter | 
+4/1/  4   Cor.                 treble    deci/  -1/fitted_by_templ     0     -   | treble:n1:f-1;alto:n1:f-1;tenor:n1:f-1
+4/1/  5   Tr.                  treble    abst/None/no_evidence         0     -   | alto:n0:f0;tenor:n0:f0
+4/1/  6   Tp.                  bass      deci/  -1/fitted_by_templ     0     -   | bass:n1:f-1;alto:n1:f-1
+4/1/  7   -                    treble    abst/None/run_fits_no_slo     2 [495,  bass:n3:f-6:pattern;alto:n3:f-6:pattern | 
+4/1/  8   -                    treble    abst/None/run_fits_no_slo     1 [699,  bass:n2:f2:tail;alto:n2:f2:tail | 
+4/1/  9   -                    alto      deci/  -3/fitted              5 [616,  treble:n3:f-3:tail;bass:n3:f-3:tail;alto:n3:f-3:tail | 
+4/1/ 10   -                    None      abst/None/needs_clef          0 [1412  treble:n1:f-1:pattern;bass:n1:f1:pattern;tenor:n1:f-1:patter | 
+5/0/  0   Fl.                  treble    deci/  -3/fitted              0 [633,  treble:n3:f-3:tail;alto:n3:f-3:tail | 
+5/0/  1   Ob.                  treble    abst/None/markers_without     1     -   | 
+5/0/  2   Cl.                  treble    abst/None/no_evidence         0     -   | 
+5/0/  3   Fag.                 bass      deci/  -3/fitted              3 [692,  bass:n3:f-3:pattern;alto:n3:f-3:pattern;tenor:n1:f1:pattern | bass:n4:f-4
+5/0/  4   Cor.                 treble    abst/None/run_fits_no_slo     0 [503]  bass:n1:f-1:pattern;alto:n1:f-1:pattern;tenor:n1:f1:pattern | tenor:n1:f-1
+5/0/  5   -                    treble    deci/  -3/fitted_by_templ     0 [529]  bass:n1:f-1:pattern;alto:n1:f-1:pattern;tenor:n1:f1:pattern | treble:n3:f-3;bass:n0:f0;tenor:n3:f-3
+5/0/  6   -                    None      abst/None/needs_clef          0 [544,  bass:n2:f-4:pattern;alto:n2:f-4:pattern;tenor:n2:f3:pattern | treble:n2:f-2;tenor:n2:f-2
+5/0/  7   -                    None      abst/None/needs_clef          3 [694]  treble:n1:f-1:pattern;bass:n1:f-1:pattern;alto:n1:f-1:patter | alto:n4:f-4
+5/0/  8   -                    bass      deci/  -3/fitted_by_templ     0     -   | bass:n3:f-3
+5/1/  0   Cl.                  treble    deci/  -2/fitted_by_templ     0     -   | treble:n2:f-2;bass:n0:f0;tenor:n2:f-2
+5/1/  1   Fag.                 bass      deci/  -3/fitted_by_templ     0     -   | bass:n3:f-3;alto:n3:f-3
+5/1/  2   Cor.                 treble    abst/None/markers_without     2     -   | bass:n0:f0
+5/1/  3   -                    treble    deci/  -3/fitted              2 [713,  treble:n3:f-3:tail;alto:n3:f-3:tail;tenor:n3:f-3:tail | treble:n3:f-3;tenor:n3:f-3
+5/1/  4   -                    treble    abst/None/no_evidence         0     -   | 
+5/1/  5   -                    None      abst/None/needs_clef          0     -   | bass:n0:f0;alto:n3:f-3
+5/1/  6   -                    tenor     deci/  -3/fitted_by_templ     2 [459,  treble:n2:f2:tail;alto:n2:f2:tail | bass:n0:f0;tenor:n3:f-3
+6/0/  0   Fl.                  treble    deci/  -2/fitted_by_templ     8     -   | treble:n2:f-2
+6/0/  1   Ob.                  treble    deci/  -3/fitted_by_templ     3 [565,  bass:n3:f-6:pattern;alto:n3:f-6:pattern | treble:n3:f-3;tenor:n3:f-3
+6/0/  2   Cl.                  treble    deci/  -1/fitted_by_templ     1     -   | treble:n1:f-1;tenor:n1:f-1
+6/0/  3   Fag.                 bass      deci/  -1/fitted              0 [735]  treble:n1:f-1:pattern;bass:n1:f-1:pattern;alto:n1:f-1:patter | bass:n3:f-3;alto:n3:f-3
+6/0/  4   Cor.                 treble    deci/  -1/fitted_by_templ     0     -   | treble:n1:f-1;bass:n0:f0
+6/0/  5   -                    treble    deci/  -2/fitted_by_templ     1     -   | treble:n2:f-2;tenor:n2:f-2
+6/0/  6   -                    treble    deci/  -3/fitted              3 [653,  treble:n3:f-3:tail;alto:n3:f-3:tail;tenor:n3:f-3:tail | treble:n2:f-2
+6/0/  7   -                    None      abst/None/needs_clef          0 [548,  bass:n3:f3:pattern;alto:n3:f3:pattern | 
+6/0/  8   -                    tenor     abst/None/markers_without     3     -   | 
+6/0/  9   -                    bass      deci/  -3/fitted_by_templ     2     -   | bass:n3:f-3;alto:n3:f-3
+6/1/  0   Fl.                  treble    deci/  -2/fitted_by_templ     2     -   | treble:n2:f-2;tenor:n2:f-2
+6/1/  1   Ob.                  treble    deci/  -2/fitted_by_templ     3     -   | treble:n2:f-2
+6/1/  2   Cl.                  treble    deci/  -3/fitted              0 [1189  treble:n2:f-3:pattern;bass:n2:f-4:pattern;alto:n2:f-4:patter | 
+6/1/  3   Fag.                 None      abst/None/needs_clef          2     -   | bass:n0:f0;tenor:n3:f-3
+6/1/  4   Cor.                 treble    deci/   0/fitted_by_templ     0     -   | treble:n0:f0;alto:n0:f0;tenor:n0:f0
+6/1/  5   Tr.                  treble    abst/None/run_fits_no_slo     0 [541]  bass:n1:f-1:pattern;alto:n1:f-1:pattern;tenor:n1:f1:pattern | bass:n0:f0;tenor:n1:f-1
+6/1/  6   Tp.                  bass      deci/  -1/fitted_by_templ     0     -   | bass:n1:f-1
+6/1/  7   |                    treble    abst/None/markers_without     1     -   | 
+6/1/  8   -                    treble    deci/  -3/fitted_by_templ     3     -   | treble:n3:f-3;bass:n0:f0;tenor:n3:f-3
+6/1/  9   -                    treble    deci/  -2/fitted              2 [619,  treble:n2:f-2:tail;bass:n2:f-2:tail;alto:n2:f-2:tail | 
+6/1/ 10   -                    bass      abst/None/no_evidence         0     -   | 
+6/1/ 11   -                    bass      deci/  -1/fitted              3 [721]  treble:n1:f-1:pattern;bass:n1:f-1:pattern;alto:n1:f-1:patter | 
+7/0/  0   Fl.                  treble    deci/  -2/fitted_by_templ     1     -   | treble:n2:f-2;tenor:n2:f-2
+7/0/  1   Ob.                  treble    abst/None/markers_without     2     -   | bass:n0:f0
+7/0/  2   Cl.                  treble    abst/None/markers_without     1     -   | 
+7/0/  3   Fag.                 bass      abst/None/markers_without     1     -   | treble:n0:f0
+7/0/  4   Cor.                 treble    abst/None/no_evidence         0     -   | bass:n0:f0
+7/0/  5   Tr.                  treble    deci/   0/fitted_by_templ     0     -   | treble:n0:f0;bass:n0:f0;alto:n0:f0;tenor
+7/0/  6   Tp.                  None      abst/None/needs_clef          0     -   | bass:n0:f0;alto:n0:f0;tenor:n0:f0
+7/0/  7   -                    treble    abst/None/markers_without     3     -   | 
+7/0/  8   -                    treble    abst/None/markers_without     3     -   | bass:n0:f0
+7/0/  9   -                    None      abst/None/needs_clef          0     -   | treble:n0:f0
+7/0/ 10   -                    bass      abst/None/no_evidence         0     -   | treble:n0:f0
+7/1/  0   Fl.                  treble    deci/  -3/fitted_by_templ     4     -   | treble:n3:f-3;tenor:n3:f-3
+7/1/  1   Ob.                  treble    deci/  -1/fitted              4 [595]  treble:n1:f-1:pattern;bass:n2:f2:pattern;alto:n1:f-1:pattern | treble:n2:f-2;tenor:n2:f-2
+7/1/  2   Cl.                  treble    deci/  -1/fitted              1 [605]  treble:n1:f-1:pattern;alto:n1:f-1:pattern;tenor:n1:f-1:patte | treble:n1:f-1;tenor:n1:f-1
+7/1/  3   Fag.                 bass      deci/  -3/fitted              2 [605,  bass:n3:f-3:pattern;alto:n3:f-3:pattern | bass:n3:f-3;alto:n3:f-3
+7/1/  4   Cor.                 treble    deci/   0/fitted_by_templ     0     -   | treble:n0:f0;alto:n0:f0;tenor:n0:f0
+7/1/  5   Tr.                  treble    deci/   0/fitted_by_templ     0     -   | treble:n0:f0;alto:n0:f0;tenor:n0:f0
+7/1/  6   Tp.                  bass      deci/   0/fitted_by_templ     0     -   | bass:n0:f0;alto:n0:f0;tenor:n0:f0
+7/1/  7   -                    treble    deci/  -1/fitted              3 [827]  treble:n1:f-1:pattern;bass:n2:f-4:pattern;alto:n2:f-4:patter | treble:n3:f-3;tenor:n3:f-3
+7/1/  8   -                    treble    abst/None/run_fits_no_slo     5 [707,  bass:n2:f2:tail;alto:n2:f2:tail | 
+7/1/  9   -                    None      abst/None/needs_clef          1     -   | alto:n3:f-3
+7/1/ 10   -                    bass      deci/  -1/fitted              1 [732]  treble:n1:f-1:pattern;bass:n1:f-1:pattern;alto:n1:f-1:patter | bass:n3:f-3;alto:n3:f-3
+8/0/  0   Fl.                  treble    deci/  -3/fitted              1 [616,  treble:n3:f-3:tail;alto:n3:f-3:tail;tenor:n3:f-3:tail | treble:n2:f-2
+8/0/  1   Ob.                  treble    deci/  -3/fitted_by_templ     3     -   | treble:n3:f-3;tenor:n3:f-3
+8/0/  2   Cl.                  treble    deci/  -1/fitted_by_templ     1     -   | treble:n1:f-1
+8/0/  3   Fag.                 bass      deci/  -3/fitted_by_templ     2     -   | bass:n3:f-3;alto:n3:f-3
+8/0/  4   Cor.                 treble    deci/   0/fitted_by_templ     0     -   | treble:n0:f0;alto:n0:f0;tenor:n0:f0
+8/0/  5   -                    treble    abst/None/no_evidence         0     -   | 
+8/0/  6   -                    treble    deci/  -1/fitted              2 [592]  treble:n1:f-1:pattern;bass:n1:f-1:pattern;alto:n1:f-1:patter | 
+8/0/  7   -                    alto      deci/  -4/fitted_by_templ     0 [737,  bass:n2:f2:tail | alto:n4:f-4
+8/0/  8   -                    bass      deci/  -4/fitted_by_templ     1     -   | bass:n4:f-4;alto:n4:f-4
+8/1/  0   Fl.                  treble    abst/None/markers_without     4     -   | 
+8/1/  1   Ob.                  treble    deci/  -1/fitted              3 [668]  treble:n1:f-1:pattern;bass:n1:f1:pattern;alto:n1:f-1:pattern | treble:n3:f-3;tenor:n3:f-3
+8/1/  2   Cl.                  treble    deci/  -1/fitted_by_templ     1     -   | treble:n1:f-1;tenor:n1:f-1
+8/1/  3   Fag.                 bass      deci/   1/fitted              2 [1362  treble:n1:f-1:pattern;bass:n1:f1:pattern;tenor:n1:f-1:patter | bass:n0:f0;alto:n3:f-3
+8/1/  4   Cor.                 treble    deci/   0/fitted_by_templ     0     -   | treble:n0:f0;alto:n0:f0;tenor:n0:f0
+8/1/  5   Tr.                  treble    deci/   0/fitted_by_templ     0     -   | treble:n0:f0;alto:n0:f0;tenor:n0:f0
+8/1/  6   -                    treble    abst/None/markers_without     2     -   | bass:n1:f-1
+8/1/  7   -                    treble    deci/  -1/fitted              3 [834]  treble:n1:f-1:pattern;bass:n2:f3:pattern;alto:n1:f-1:pattern | bass:n0:f0
+8/1/  8   -                    alto      deci/   1/fitted              0 [720]  bass:n1:f1:pattern;alto:n1:f1:pattern;tenor:n1:f-1:pattern | bass:n1:f-1
+8/1/  9   -                    bass      deci/   1/fitted              0 [718]  treble:n1:f-1:pattern;bass:n1:f1:pattern;alto:n1:f-1:pattern | 
+8/1/ 10   -                    bass      deci/  -3/fitted_by_templ     0 [721]  treble:n1:f-1:pattern;alto:n1:f-1:pattern;tenor:n1:f-1:patte | bass:n3:f-3;alto:n3:f-3
+9/0/  0   Fl.                  treble    deci/  -3/fitted_by_templ     0     -   | treble:n3:f-3
+9/0/  1   Ob.                  treble    abst/None/no_evidence         0     -   | bass:n0:f0
+9/0/  2   Cl.                  treble    abst/None/markers_without     1     -   | bass:n0:f0
+9/0/  3   Fig.                 bass      abst/None/markers_without     1     -   | 
+9/0/  4   Cor.                 treble    abst/None/no_evidence         0     -   | 
+9/0/  5   Tr.                  treble    deci/   0/fitted_by_templ     0     -   | treble:n0:f0;alto:n0:f0;tenor:n0:f0
+9/0/  6   Tp.                  bass      deci/   0/fitted_by_templ     0     -   | bass:n0:f0;alto:n0:f0;tenor:n0:f0
+9/0/  7   -                    treble    deci/  -3/fitted              1 [674,  treble:n3:f-3:tail;alto:n3:f-3:tail;tenor:n3:f-3:tail | 
+9/0/  8   -                    treble    deci/  -1/fitted_by_templ     2     -   | treble:n1:f-1;tenor:n1:f-1
+9/0/  9   -                    alto      abst/None/run_fits_no_slo     3 [900]  bass:n1:f-1:pattern;tenor:n1:f1:pattern | 
+9/0/ 10   -                    bass      deci/  -1/fitted              3 [671]  bass:n1:f-1:pattern;alto:n1:f-1:pattern;tenor:n1:f1:pattern | bass:n4:f-4;alto:n4:f-4
+9/0/ 11   -                    bass      deci/  -1/fitted              1 [788]  treble:n1:f-1:pattern;bass:n1:f-1:pattern;alto:n1:f-1:patter | 
+9/1/  0   Fl.                  treble    abst/None/markers_without     3     -   | 
+9/1/  1   Ob.                  treble    abst/None/run_fits_no_slo     3 [500,  bass:n2:f-2:tail | 
+9/1/  2   Cl.                  treble    deci/  -1/fitted              1 [676]  treble:n1:f-1:pattern;bass:n1:f1:pattern;alto:n1:f-1:pattern | 
+9/1/  3   Fag.                 bass      deci/  -4/fitted_by_templ     4     -   | bass:n4:f-4;alto:n4:f-4
+9/1/  4   Tr.                  treble    deci/   0/fitted_by_templ     0     -   | treble:n0:f0;alto:n0:f0;tenor:n0:f0
+9/1/  5   Tp.                  bass      deci/   0/fitted_by_templ     0     -   | bass:n0:f0;alto:n0:f0;tenor:n0:f0
+9/1/  6   -                    treble    deci/  -3/fitted              3 [642,  treble:n3:f-3:tail;alto:n3:f-3:tail;tenor:n3:f-3:tail | 
+9/1/  7   -                    treble    deci/  -3/fitted_by_templ     4     -   | treble:n3:f-3;bass:n0:f0;alto:n3:f-3;ten
+9/1/  8   -                    alto      deci/  -1/fitted              3 [1352  treble:n1:f-1:pattern;alto:n1:f-1:pattern;tenor:n1:f-1:patte | 
+9/1/  9   -                    bass      deci/  -4/fitted              3 [632,  bass:n2:f-4:pattern;alto:n2:f-4:pattern;tenor:n2:f3:pattern | 
+10/0/  0   Fl.                  treble    deci/  -3/fitted              3 [631,  treble:n3:f-3:tail;alto:n3:f-3:tail;tenor:n3:f-3:tail | treble:n2:f-2;tenor:n2:f-2
+10/0/  1   Ob.                  treble    abst/None/markers_without     3     -   | alto:n3:f-3
+10/0/  2   Cl.                  treble    deci/  -1/fitted_by_templ     1 [554,  bass:n2:f-4:pattern;alto:n2:f-4:pattern | treble:n1:f-1;tenor:n1:f-1
+10/0/  3   Fag.                 tenor     deci/  -3/fitted              3 [656,  treble:n3:f-3:pattern;alto:n2:f2:tail;tenor:n3:f-3:pattern | tenor:n2:f-2
+10/0/  4   Cor.                 treble    abst/None/no_evidence         0     -   | 
+10/0/  5   Tr.                  treble    deci/   0/fitted_by_templ     0     -   | treble:n0:f0;bass:n0:f0;alto:n0:f0;tenor
+10/0/  6   Tp.                  bass      deci/   0/fitted_by_templ     0     -   | bass:n0:f0;alto:n0:f0;tenor:n0:f0
+10/0/  7   -                    treble    deci/  -3/fitted              4 [621,  treble:n3:f-3:tail;bass:n2:f2:tail;alto:n3:f-3:tail;tenor:n3 | treble:n3:f-3
+10/0/  8   -                    treble    deci/  -1/fitted              3 [656]  treble:n1:f-1:pattern;bass:n1:f1:pattern;alto:n1:f-1:pattern | treble:n3:f-3;tenor:n3:f-3
+10/0/  9   -                    None      abst/None/needs_clef          2 [1411  treble:n1:f-1:pattern;bass:n3:f-3:tail;alto:n1:f-1:pattern | 
+10/0/ 10   -                    bass      deci/  -1/fitted              1 [764]  treble:n1:f-1:pattern;bass:n1:f-1:pattern;alto:n1:f-1:patter | 
+10/1/  0   Fl.                  treble    deci/  -3/fitted              3 [663,  treble:n3:f-3:tail;alto:n3:f-3:tail;tenor:n3:f-3:tail | 
+10/1/  1   Ob.                  treble    deci/   1/fitted              3 [729]  treble:n1:f1:pattern;bass:n1:f1:pattern;alto:n1:f1:pattern;t | treble:n1:f-1;tenor:n1:f-1
+10/1/  2   Cl.                  treble    abst/None/markers_without     1     -   | 
+10/1/  3   Fag.                 bass      deci/  -3/fitted              4 [656,  bass:n3:f-3:pattern;alto:n3:f-3:pattern | 
+10/1/  4   Cor.                 treble    abst/None/run_fits_no_slo     0 [529]  bass:n1:f-1:pattern;alto:n1:f-1:pattern;tenor:n1:f1:pattern | 
+10/1/  5   Tr.                  treble    abst/None/no_evidence         0     -   | 
+10/1/  6   Tp.                  bass      abst/None/no_evidence         0     -   | tenor:n1:f-1
+10/1/  7   -                    treble    deci/  -2/fitted_by_templ     2     -   | treble:n2:f-2;tenor:n2:f-2
+10/1/  8   -                    treble    deci/  -1/fitted              3 [845]  treble:n1:f-1:pattern;bass:n2:f-4:pattern;alto:n2:f-4:patter | bass:n0:f0
+10/1/  9   -                    None      abst/None/needs_clef          2 [639,  treble:n2:f-4:pattern;alto:n2:f-4:pattern;tenor:n2:f-4:patte | bass:n1:f-1
+10/1/ 10   -                    bass      deci/  -1/fitted              3 [752]  treble:n1:f-1:pattern;bass:n1:f-1:pattern;alto:n1:f-1:patter | 
+11/0/  0   Fl.                  treble    deci/  -3/fitted              5 [637,  treble:n3:f-3:tail;alto:n3:f-3:tail;tenor:n3:f-3:tail | 
+11/0/  1   Oh.                  treble    deci/  -3/fitted_by_templ     1     -   | treble:n3:f-3;tenor:n3:f-3
+11/0/  2   Fag.                 bass      deci/  -3/fitted              0 [1469  treble:n1:f-1:pattern;bass:n2:f-3:pattern;alto:n2:f-3:patter | bass:n3:f-3;alto:n3:f-3
+11/0/  3   Cor.                 treble    deci/   0/fitted_by_templ     0     -   | treble:n0:f0;alto:n1:f-1
+11/0/  4   Tp.                  bass      deci/   0/fitted_by_templ     0     -   | bass:n0:f0;alto:n0:f0;tenor:n0:f0
+11/0/  5   -                    treble    deci/  -3/fitted_by_templ     3     -   | treble:n3:f-3;tenor:n3:f-3
+11/0/  6   -                    treble    deci/  -2/fitted_by_templ     2     -   | treble:n2:f-2;tenor:n2:f-2
+11/0/  7   -                    treble    abst/None/no_evidence         0     -   | alto:n3:f-3
+11/0/  8   -                    bass      deci/  -3/fitted              0 [643,  bass:n2:f-3:pattern | bass:n3:f-3;alto:n3:f-3
+11/1/  0   Fl.                  treble    abst/None/run_fits_no_slo     4 [573]  bass:n1:f-1:pattern;alto:n1:f-1:pattern;tenor:n1:f1:pattern | 
+11/1/  1   Ob.                  treble    abst/None/no_evidence         0     -   | 
+11/1/  2   Cl.                  treble    deci/  -1/fitted              1 [688]  treble:n1:f-1:pattern;tenor:n1:f-1:pattern | treble:n1:f-1;tenor:n1:f-1
+11/1/  3   Fag.                 None      abst/None/needs_clef          1 [529,  treble:n4:f7:pattern | tenor:n3:f-3
+11/1/  4   Cor.                 treble    deci/  -1/fitted_by_templ     0     -   | treble:n1:f-1;alto:n1:f-1;tenor:n1:f-1
+11/1/  5   Tp.                  tenor     deci/   0/fitted_by_templ     0     -   | bass:n0:f0;alto:n0:f0;tenor:n0:f0
+11/1/  6   -                    treble    deci/  -1/fitted              3 [870]  treble:n1:f-1:pattern;bass:n1:f-1:pattern;alto:n1:f-1:patter | 
+11/1/  7   -                    treble    deci/  -1/fitted              1 [609]  treble:n1:f-1:pattern;bass:n1:f-1:pattern;alto:n1:f-1:patter | treble:n3:f-3;tenor:n3:f-3
+11/1/  8   -                    None      abst/None/needs_clef          0 [497,  bass:n2:f4:pattern;alto:n2:f4:pattern | alto:n3:f-3
+11/1/  9   -                    bass      deci/  -1/fitted              2 [617]  bass:n1:f-1:pattern;alto:n1:f-1:pattern;tenor:n1:f1:pattern | 
+11/1/ 10   -                    bass      deci/  -1/fitted              2 [631]  bass:n1:f-1:pattern;alto:n1:f-1:pattern;tenor:n1:f1:pattern | bass:n3:f-3;alto:n3:f-3
+12/0/  0   Fl.                  treble    deci/  -3/fitted              2 [699,  treble:n3:f-3:tail;alto:n3:f-3:tail;tenor:n3:f-3:tail | treble:n3:f-3
+12/0/  1   Ob.                  treble    abst/None/markers_without     1     -   | alto:n3:f-3
+12/0/  2   Cl.                  treble    abst/None/run_fits_no_slo     1 [549,  bass:n2:f-4:pattern;alto:n2:f-4:pattern;tenor:n2:f3:pattern | 
+12/0/  3   Fag.                 bass      deci/  -3/fitted              0 [717,  bass:n3:f-3:pattern;alto:n3:f-3:pattern | bass:n3:f-3;alto:n3:f-3
+12/0/  4   Cor.                 treble    deci/   0/fitted_by_templ     0     -   | treble:n0:f0;bass:n1:f-1;alto:n0:f0;teno
+12/0/  5   Tr.                  treble    deci/   0/fitted_by_templ     0     -   | treble:n0:f0;bass:n1:f-1;alto:n0:f0;teno
+12/0/  6   Tp.                  bass      deci/   0/fitted_by_templ     0     -   | bass:n0:f0;alto:n0:f0;tenor:n0:f0
+12/0/  7   -                    treble    abst/None/markers_without     1     -   | 
+12/0/  8   -                    treble    deci/  -2/fitted_by_templ     0     -   | treble:n2:f-2;tenor:n2:f-2
+12/0/  9   -                    bass      deci/   2/fitted              5 [859,  bass:n2:f2:tail | 
+12/0/ 10   -                    None      abst/None/needs_clef          1 [578]  treble:n1:f1:pattern;alto:n1:f1:pattern | bass:n0:f0
+12/0/ 11   -                    bass      deci/  -4/fitted              0 [1545  treble:n1:f-1:pattern;bass:n2:f-4:pattern;alto:n2:f-4:patter | bass:n3:f-3
+12/1/  0   Fl.                  treble    abst/None/no_evidence         0     -   | 
+12/1/  1   Ob.                  treble    deci/  -4/fitted_by_templ     3     -   | treble:n4:f-4;tenor:n4:f-4
+12/1/  2   Cl.                  None      abst/None/needs_clef          0 [515,  bass:n2:f-4:pattern;alto:n2:f-4:pattern;tenor:n2:f3:pattern | 
+12/1/  3   Fag.                 bass      deci/  -3/fitted              0 [659,  bass:n2:f-3:pattern;alto:n2:f-3:pattern | 
+12/1/  4   Cor.                 treble    abst/None/no_evidence         0     -   | alto:n1:f-1
+12/1/  5   Tr.                  treble    abst/None/run_fits_no_slo     0 [316,  bass:n2:f2:tail | 
+12/1/  6   Tp.                  bass      abst/None/no_evidence         0     -   | alto:n1:f-1;tenor:n1:f-1
+12/1/  7   -                    treble    deci/  -1/fitted              0 [671]  treble:n1:f-1:pattern;bass:n1:f-1:pattern;alto:n1:f-1:patter | treble:n2:f-2;tenor:n2:f-2
+12/1/  8   -                    treble    deci/  -3/fitted              0 [681,  treble:n3:f-3:pattern;bass:n1:f-1:pattern;alto:n3:f-3:patter | treble:n3:f-3;tenor:n3:f-3
+12/1/  9   -                    alto      abst/None/no_evidence         0     -   | bass:n1:f-1
+12/1/ 10   -                    bass      deci/  -1/fitted              1 [778]  treble:n1:f-1:pattern;bass:n1:f-1:pattern;alto:n1:f-1:patter | 
+13/0/  0   Fl.                  treble    deci/   2/fitted              2 [1384  treble:n2:f2:tail;bass:n2:f-4:pattern;alto:n2:f-4:pattern;te | 
+13/0/  1   Ob.                  treble    deci/  -2/fitted              0 [670,  treble:n2:f-2:tail;alto:n2:f-2:tail;tenor:n2:f-2:tail | bass:n0:f0
+13/0/  2   Cl.                  treble    abst/None/markers_without     1     -   | 
+13/0/  3   Fag.                 bass      deci/  -1/fitted              1 [782]  treble:n1:f-1:pattern;bass:n1:f-1:pattern;alto:n1:f-1:patter | 
+13/0/  4   Cor.                 treble    abst/None/no_evidence         0     -   | 
+13/0/  5   Tr.                  treble    abst/None/no_evidence         0     -   | alto:n1:f-1
+13/0/  6   Tp.                  bass      abst/None/no_evidence         0     -   | treble:n0:f0
+13/0/  7   -                    treble    deci/  -5/fitted              3 [706,  treble:n3:f-5:pattern;bass:n2:f3:pattern;alto:n3:f-3:pattern | 
+13/0/  8   -                    treble    abst/None/markers_without     1     -   | bass:n0:f0;alto:n0:f0;tenor:n0:f0
+13/0/  9   -                    alto      abst/None/run_fits_no_slo     0 [841,  bass:n2:f2:tail | treble:n0:f0;bass:n0:f0
+13/0/ 10   -                    bass      deci/  -3/fitted              1 [1353  treble:n1:f-1:pattern;bass:n3:f-3:pattern;alto:n3:f-3:patter | 
+13/1/  0   Fl.                  treble    abst/None/markers_without     4     -   | 
+13/1/  1   Ob.                  treble    abst/None/markers_without     3     -   | bass:n0:f0
+13/1/  2   Cl.                  treble    deci/  -2/fitted_by_templ     1     -   | treble:n2:f-2;tenor:n2:f-2
+13/1/  3   Fag.                 bass      deci/  -3/fitted              3 [641,  bass:n3:f-3:tail;alto:n3:f-3:tail | 
+13/1/  4   Cor.                 treble    deci/   0/fitted_by_templ     0     -   | treble:n0:f0;alto:n0:f0;tenor:n0:f0
+13/1/  5   Tr.                  treble    deci/   0/fitted_by_templ     0 [513]  bass:n1:f-1:pattern;alto:n1:f-1:pattern;tenor:n1:f1:pattern | treble:n0:f0;alto:n0:f0;tenor:n0:f0
+13/1/  6   Tp.                  bass      abst/None/no_evidence         0     -   | 
+13/1/  7   -                    treble    deci/  -4/fitted_by_templ     3     -   | treble:n4:f-4
+13/1/  8   -                    treble    deci/  -4/fitted_by_templ     3 [512,  bass:n2:f-4:pattern;alto:n2:f-4:pattern;tenor:n2:f3:pattern | treble:n4:f-4;tenor:n4:f-4
+13/1/  9   -                    alto      deci/  -3/fitted_by_templ     4     -   | bass:n0:f0;alto:n3:f-3
+13/1/ 10   -                    bass      deci/  -4/fitted              7 [638,  bass:n2:f-4:pattern;alto:n2:f-4:pattern;tenor:n1:f1:pattern | 
+14/0/  0   Fl.                  treble    abst/None/markers_without     2     -   | alto:n3:f-3
+14/0/  1   Ob.                  treble    deci/  -3/fitted              0 [707,  treble:n3:f-3:pattern;alto:n3:f-3:pattern;tenor:n3:f-3:patte | treble:n2:f-2;tenor:n2:f-2
+14/0/  2   Cl.                  treble    deci/  -1/fitted_by_templ     1     -   | treble:n1:f-1;tenor:n1:f-1
+14/0/  3   Fag.                 None      abst/None/needs_clef          2 [708,  treble:n3:f-3:tail;tenor:n3:f-3:tail | 
+14/0/  4   Cor.                 treble    deci/   0/fitted_by_templ     0     -   | treble:n0:f0;alto:n0:f0;tenor:n0:f0
+14/0/  5   Tr.                  treble    deci/   0/fitted_by_templ     0     -   | treble:n0:f0;alto:n0:f0;tenor:n0:f0
+14/0/  6   Tp.                  bass      deci/   0/fitted_by_templ     0     -   | bass:n0:f0;alto:n0:f0;tenor:n0:f0
+14/0/  7   -                    treble    deci/  -2/fitted_by_templ     0     -   | treble:n2:f-2;tenor:n2:f-2
+14/0/  8   -                    treble    deci/  -3/fitted_by_templ     2     -   | treble:n3:f-3;tenor:n3:f-3
+14/0/  9   -                    alto      abst/None/markers_without     3     -   | 
+14/0/ 10   -                    tenor     abst/None/markers_without     2     -   | treble:n0:f0
+14/0/ 11   -                    None      abst/None/needs_clef          1     -   | 
+14/1/  0   Fl.                  treble    abst/None/markers_without     5     -   | 
+14/1/  1   Ob.                  treble    deci/  -3/fitted_by_templ     0 [808,  bass:n2:f2:pattern;alto:n2:f2:pattern | treble:n3:f-3;tenor:n3:f-3
+14/1/  2   Cl.                  treble    abst/None/no_evidence         0     -   | 
+14/1/  3   Fag.                 bass      deci/  -5/fitted              1 [670,  treble:n3:f-5:pattern;bass:n3:f-5:pattern;alto:n3:f-5:patter | 
+14/1/  4   Cor.                 treble    abst/None/no_evidence         0     -   | 
+14/1/  5   Tr.                  treble    deci/   0/fitted_by_templ     0     -   | treble:n0:f0;alto:n0:f0;tenor:n0:f0
+14/1/  6   Tp.                  bass      deci/   0/fitted_by_templ     0     -   | bass:n0:f0;alto:n0:f0;tenor:n0:f0
+14/1/  7   -                    treble    deci/  -3/fitted              2 [674,  treble:n3:f-3:tail;alto:n3:f-3:tail;tenor:n3:f-3:tail | 
+14/1/  8   -                    treble    deci/   2/fitted              2 [659,  treble:n2:f2:tail;bass:n2:f2:tail;alto:n2:f2:tail | treble:n2:f-2;tenor:n2:f-2
+14/1/  9   -                    treble    abst/None/markers_without     2     -   | 
+14/1/ 10   -                    bass      deci/  -1/fitted              3 [811]  treble:n1:f1:pattern;bass:n1:f-1:pattern;alto:n1:f-1:pattern | 
+15/0/  0   Fl.                  treble    abst/None/no_evidence         0     -   | 
+15/0/  1   Ob.                  treble    abst/None/no_evidence         0     -   | 
+15/0/  2   Cl.                  treble    abst/None/markers_without     1     -   | 
+15/0/  3   Fag.                 bass      deci/  -1/fitted              0 [742]  treble:n1:f-1:pattern;bass:n1:f-1:pattern;alto:n1:f-1:patter | 
+15/0/  4   Cor.                 treble    abst/None/run_fits_no_slo     0 [539]  bass:n1:f-1:pattern;alto:n1:f-1:pattern;tenor:n1:f1:pattern | 
+15/0/  5   Tr.                  treble    abst/None/no_evidence         0     -   | 
+15/0/  6   Tp.                  bass      abst/None/no_evidence         0     -   | 
+15/0/  7   -                    treble    deci/  -2/fitted_by_templ     1     -   | treble:n2:f-2;tenor:n2:f-2
+15/0/  8   -                    treble    deci/  -1/fitted_by_templ     0     -   | treble:n1:f-1;bass:n2:f-2;tenor:n1:f-1
+15/0/  9   -                    None      abst/None/needs_clef          4     -   | 
+15/0/ 10   -                    bass      abst/None/no_evidence         0     -   | 
+15/1/  0   Fl.                  treble    abst/None/run_fits_no_slo     3 [804,  bass:n2:f2:tail;alto:n2:f2:tail | bass:n0:f0
+15/1/  1   Ob.                  treble    deci/  -1/fitted              2 [675]  treble:n1:f-1:pattern;bass:n1:f1:pattern;alto:n1:f-1:pattern | treble:n3:f-3;tenor:n3:f-3
+15/1/  2   Cl.                  treble    deci/  -1/fitted              1 [660]  treble:n1:f-1:pattern;alto:n1:f-1:pattern;tenor:n1:f-1:patte | treble:n1:f-1;tenor:n1:f-1
+15/1/  3   Fag.                 bass      deci/  -3/fitted              2 [665,  bass:n2:f-3:pattern;alto:n2:f-3:pattern | 
+15/1/  4   Cor.                 treble    abst/None/no_evidence         0     -   | 
+15/1/  5   Tr.                  treble    abst/None/run_fits_no_slo     0 [533]  bass:n1:f-1:pattern;alto:n1:f-1:pattern;tenor:n1:f1:pattern | 
+15/1/  6   Tp.                  bass      deci/   0/fitted_by_templ     0     -   | bass:n0:f0;alto:n0:f0;tenor:n0:f0
+15/1/  7   -                    treble    deci/  -3/fitted_by_templ     0     -   | treble:n3:f-3;alto:n3:f-3;tenor:n3:f-3
+15/1/  8   -                    treble    deci/  -3/fitted_by_templ     1     -   | treble:n3:f-3;tenor:n3:f-3
+15/1/  9   -                    alto      deci/  -3/fitted_by_templ     1     -   | alto:n3:f-3
+15/1/ 10   -                    bass      deci/  -1/fitted              2 [637]  bass:n1:f-1:pattern;alto:n1:f-1:pattern;tenor:n1:f1:pattern | 
+16/0/  0   Fl.                  treble    deci/  -1/fitted              2 [624]  treble:n1:f-1:pattern;bass:n1:f1:pattern;alto:n1:f-1:pattern | 
+16/0/  1   Ob.                  treble    deci/  -2/fitted_by_templ     2 [609,  bass:n2:f2:pattern;alto:n2:f2:pattern | treble:n2:f-2;tenor:n2:f-2
+16/0/  2   Cl.                  treble    deci/  -3/fitted              1 [308,  treble:n3:f-3:tail;tenor:n3:f-3:tail | 
+16/0/  3   Fug.                 tenor     deci/   1/fitted              0 [491]  treble:n1:f1:pattern;bass:n1:f-1:pattern;alto:n1:f1:pattern; | bass:n0:f0
+16/0/  4   Cor.                 treble    deci/   0/fitted_by_templ     0 [332,  bass:n2:f2:tail | treble:n0:f0;bass:n1:f-1;alto:n0:f0;teno
+16/0/  5   Tr.                  treble    deci/   0/fitted_by_templ     0     -   | treble:n0:f0;alto:n0:f0;tenor:n0:f0
+16/0/  6   Tp.                  bass      abst/None/no_evidence         0     -   | treble:n0:f0
+16/0/  7   -                    treble    abst/None/markers_without     2     -   | 
+16/0/  8   -                    treble    deci/  -1/fitted              2 [669]  treble:n1:f-1:pattern;bass:n1:f-1:pattern;alto:n1:f-1:patter | 
+16/0/  9   -                    alto      abst/None/run_fits_no_slo     3 [516]  treble:n1:f-1:pattern;bass:n1:f1:pattern;tenor:n1:f-1:patter | treble:n0:f0;bass:n0:f0
+16/0/ 10   -                    bass      deci/  -3/fitted              1 [675,  bass:n3:f-3:pattern;alto:n3:f-3:pattern | treble:n0:f0
+16/1/  0   Fl.                  treble    deci/  -3/fitted_by_templ     3 [757,  bass:n2:f2:tail;alto:n2:f2:tail | treble:n3:f-3;tenor:n3:f-3
+16/1/  1   Ob.                  treble    deci/  -2/fitted_by_templ     3     -   | treble:n2:f-2;tenor:n2:f-2
+16/1/  2   Cl.                  treble    abst/None/run_fits_no_slo     2 [517,  bass:n2:f-2:tail | 
+16/1/  3   Fag.                 None      abst/None/needs_clef          3 [1187  treble:n1:f1:pattern;alto:n1:f1:pattern | 
+16/1/  4   Cor.                 treble    deci/   0/fitted_by_templ     0     -   | treble:n0:f0;alto:n0:f0;tenor:n0:f0
+16/1/  5   Tr.                  treble    deci/   0/fitted_by_templ     0     -   | treble:n0:f0;alto:n0:f0;tenor:n0:f0
+16/1/  6   Tp.                  bass      deci/   0/fitted_by_templ     0     -   | bass:n0:f0;alto:n0:f0;tenor:n0:f0
+16/1/  7   -                    treble    deci/  -3/fitted              3 [643,  treble:n3:f-3:tail;alto:n3:f-3:tail;tenor:n3:f-3:tail | treble:n3:f-3;tenor:n3:f-3
+16/1/  8   -                    treble    deci/  -3/fitted              4 [616,  treble:n3:f-3:tail;alto:n3:f-3:tail;tenor:n3:f-3:tail | bass:n1:f-1
+16/1/  9   -                    None      abst/None/needs_clef          4     -   | bass:n0:f0;alto:n3:f-3
+16/1/ 10   -                    bass      deci/  -2/fitted              1 [627,  treble:n2:f-4:pattern;bass:n2:f-2:pattern;alto:n2:f-2:patter | 

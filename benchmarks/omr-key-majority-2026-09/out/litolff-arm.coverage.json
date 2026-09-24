@@ -1,0 +1,256 @@
+{
+ "families": [
+  {
+   "family": "articulation",
+   "quantity": "articulation_owner",
+   "detector_glyphs": 464,
+   "cv_glyphs": 0,
+   "ink_rows": 464,
+   "written": 0,
+   "decided": 371,
+   "abstained": {
+    "no_notehead": 93
+   },
+   "produced_by": "adjudicate",
+   "status": "decided_but_unwritten",
+   "why": "`articulation_owner` decided 371 times and the exporter wrote none of this family \u2014 the record carries it and the FILE does not, which is an exporter gap, not a reading one"
+  },
+  {
+   "family": "clef",
+   "quantity": "clef",
+   "detector_glyphs": 500,
+   "cv_glyphs": 0,
+   "ink_rows": 500,
+   "written": 0,
+   "decided": 307,
+   "abstained": {
+    "no_candidates": 9,
+    "margin_below_floor": 15
+   },
+   "produced_by": "adjudicate",
+   "status": "emitted"
+  },
+  {
+   "family": "direction",
+   "quantity": "direction",
+   "detector_glyphs": 0,
+   "cv_glyphs": 0,
+   "ink_rows": 0,
+   "written": 0,
+   "decided": 0,
+   "abstained": {
+    "out_of_scope": 5270
+   },
+   "produced_by": "adjudicate",
+   "status": "abstained"
+  },
+  {
+   "family": "dynamic",
+   "quantity": "dynamic",
+   "detector_glyphs": 1576,
+   "cv_glyphs": 0,
+   "ink_rows": 1576,
+   "written": 0,
+   "decided": 5239,
+   "abstained": {
+    "unspellable": 31
+   },
+   "produced_by": "adjudicate",
+   "status": "decided_but_unwritten",
+   "why": "`dynamic` decided 5239 times and the exporter wrote none of this family \u2014 the record carries it and the FILE does not, which is an exporter gap, not a reading one"
+  },
+  {
+   "family": "fermata",
+   "quantity": "fermata_owner",
+   "detector_glyphs": 180,
+   "cv_glyphs": 0,
+   "ink_rows": 180,
+   "written": 0,
+   "decided": 145,
+   "abstained": {
+    "no_carrier": 35
+   },
+   "produced_by": "adjudicate",
+   "status": "decided_but_unwritten",
+   "why": "`fermata_owner` decided 145 times and the exporter wrote none of this family \u2014 the record carries it and the FILE does not, which is an exporter gap, not a reading one"
+  },
+  {
+   "family": "key",
+   "quantity": "key_signature",
+   "detector_glyphs": 540,
+   "cv_glyphs": 0,
+   "ink_rows": 540,
+   "written": 0,
+   "decided": 221,
+   "abstained": {
+    "disagrees_with_system": 28,
+    "no_evidence": 40,
+    "mixed_marker_kinds": 10,
+    "needs_clef": 24,
+    "run_fits_no_slot_table": 8
+   },
+   "produced_by": "adjudicate",
+   "status": "emitted"
+  },
+  {
+   "family": "note",
+   "quantity": "pitch",
+   "detector_glyphs": 11632,
+   "cv_glyphs": 0,
+   "ink_rows": 11632,
+   "written": 0,
+   "decided": 13304,
+   "abstained": {},
+   "produced_by": "evaluate",
+   "status": "emitted"
+  },
+  {
+   "family": "ornament",
+   "quantity": "ornament_owner",
+   "detector_glyphs": 3,
+   "cv_glyphs": 0,
+   "ink_rows": 3,
+   "written": 0,
+   "decided": 2,
+   "abstained": {
+    "no_notehead": 1
+   },
+   "produced_by": "adjudicate",
+   "status": "decided_but_unwritten",
+   "why": "`ornament_owner` decided 2 times and the exporter wrote none of this family \u2014 the record carries it and the FILE does not, which is an exporter gap, not a reading one"
+  },
+  {
+   "family": "rest",
+   "quantity": "rest",
+   "detector_glyphs": 2898,
+   "cv_glyphs": 0,
+   "ink_rows": 2898,
+   "written": 0,
+   "decided": 0,
+   "abstained": {},
+   "produced_by": "evaluate",
+   "status": "abstained"
+  },
+  {
+   "family": "slur",
+   "quantity": "arc_kind",
+   "detector_glyphs": 1221,
+   "cv_glyphs": 0,
+   "ink_rows": 1221,
+   "written": 0,
+   "abstentions_name_no_family": true,
+   "decided": 1221,
+   "abstained": {},
+   "produced_by": "adjudicate",
+   "status": "decided_but_unwritten",
+   "why": "`arc_kind` decided 1221 times and the exporter wrote none of this family \u2014 the record carries it and the FILE does not, which is an exporter gap, not a reading one"
+  },
+  {
+   "family": "tie",
+   "quantity": "arc_kind",
+   "detector_glyphs": 1435,
+   "cv_glyphs": 0,
+   "ink_rows": 1435,
+   "written": 0,
+   "abstentions_name_no_family": true,
+   "decided": 1435,
+   "abstained": {},
+   "produced_by": "adjudicate",
+   "status": "decided_but_unwritten",
+   "why": "`arc_kind` decided 1435 times and the exporter wrote none of this family \u2014 the record carries it and the FILE does not, which is an exporter gap, not a reading one"
+  },
+  {
+   "family": "time",
+   "quantity": "meter",
+   "detector_glyphs": 85,
+   "cv_glyphs": 0,
+   "ink_rows": 85,
+   "written": 0,
+   "decided": 31,
+   "abstained": {},
+   "produced_by": "adjudicate",
+   "status": "emitted"
+  },
+  {
+   "family": "tuplet",
+   "quantity": "tuplet_ratio",
+   "detector_glyphs": 15,
+   "cv_glyphs": 0,
+   "ink_rows": 15,
+   "written": 0,
+   "decided": 5,
+   "abstained": {
+    "wrong_member_count": 9
+   },
+   "produced_by": "adjudicate",
+   "status": "emitted"
+  },
+  {
+   "family": "wedge",
+   "quantity": "wedge_anchor",
+   "detector_glyphs": 0,
+   "cv_glyphs": 6,
+   "ink_rows": 6,
+   "written": 0,
+   "decided": 6,
+   "abstained": {},
+   "produced_by": "adjudicate",
+   "status": "decided_but_unwritten",
+   "why": "`wedge_anchor` decided 6 times and the exporter wrote none of this family \u2014 the record carries it and the FILE does not, which is an exporter gap, not a reading one"
+  }
+ ],
+ "accidental_reading": {
+  "printed_glyphs_detected": 1531,
+  "printed_glyphs_read_into_a_verdict": 0,
+  "pitches_altered_by_the_key": 0
+ },
+ "unclaimed_classes": {
+  "arpeggiato": 1971,
+  "stringsDownBow": 5,
+  "caesura": 3
+ },
+ "detected_and_unrepresented": {},
+ "detected_and_unrepresented_total": 0,
+ "decided_and_unwritten": {
+  "articulation": 464,
+  "dynamic": 1576,
+  "fermata": 180,
+  "ornament": 3,
+  "slur": 1221,
+  "tie": 1435,
+  "wedge": 6
+ },
+ "decided_and_unwritten_total": 4885,
+ "decided_uncounted": [],
+ "abstained_without_a_family": {},
+ "status_census": {
+  "emitted": [
+   "clef",
+   "key",
+   "note",
+   "time",
+   "tuplet"
+  ],
+  "decided_but_unwritten": [
+   "articulation",
+   "dynamic",
+   "fermata",
+   "ornament",
+   "slur",
+   "tie",
+   "wedge"
+  ],
+  "decided_uncounted": [],
+  "abstained": [
+   "direction",
+   "rest"
+  ],
+  "stub": [],
+  "starved": [],
+  "NO_QUANTITY": [],
+  "unaccounted": [],
+  "n_families": 14,
+  "n_filed": 14,
+  "balanced": true
+ }
+}

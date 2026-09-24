@@ -144,11 +144,6 @@ KNOWN_GAPS: Dict[str, str] = {
         "range test needs `Q.INSTRUMENT`, which abstains on 22 of 22 and 27 "
         "of 27 staves of the two scanned pages. What this row adds is that "
         "wiring it also needs `subject=` — the positions are on the GLYPHS."),
-    "SCOPE-LATENT adjudicate_key_signature declares Q.DOSSIER_FACT": (
-        "no dossier is supplied on the scan path BY PROTOCOL, and the "
-        "`dossier` parameter has no producer at all — which is "
-        "`tools/omr/no_producer.py`'s finding, not this module's. Closing "
-        "this needs `Scope.SELF_AND_ANCESTORS`, not just a read."),
     "SCOPE-LATENT adjudicate_meter declares Q.DOSSIER_FACT": (
         "the meter's dossier tier, inert for the same reason as the key "
         "signature's and with the same frame trap waiting under it."),

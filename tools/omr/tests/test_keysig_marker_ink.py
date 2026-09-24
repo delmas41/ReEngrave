@@ -41,10 +41,24 @@ def _with_clef(log, clef="treble", sub=SUB):
                 reader=READERS.DETECTOR, frame="cell:0", score=0.95)
 
 
+#: ⚠️ ONE STAFF SPACE, AND WITHOUT IT THE DECISION ABSTAINS `no_cell_scale`.
+#: The marker x's are in the CELL's canonical frame, so the slot test has no
+#: unit until `Q.CELL_STAFF_SPACE` is filed — which is a refusal, not a
+#: fixture wart: guessing the scale is how three flats become five.
+SPACE = 85.0
+
+
+def _space(log, sub=SUB):
+    log.observe(R.cell(sub.page, sub.system, sub.staff, 0),
+                Q.CELL_STAFF_SPACE, SPACE, reader=READERS.GEOMETRY,
+                frame="cell:0")
+
+
 def _markers(log, *classes, sub=SUB):
     for i, c in enumerate(classes):
         log.observe(sub, Q.KEYSIG_MARKER, c, reader=READERS.DETECTOR,
-                    frame="cell:0", score=0.4, x=float(i), y_center=0.0)
+                    frame="cell:0", score=0.4, x=float(i) * SPACE,
+                    y_center=0.0)
 
 
 def _decide(log):
@@ -55,12 +69,19 @@ def _decide(log):
 class TestTheSplit(unittest.TestCase):
 
     def test_ink_with_no_run_is_NOT_called_no_evidence(self):
+        """⚠️ THE SPLIT SURVIVED ITS OWN REASON WORD. Until roadmap 2.9 this
+        was an ABSTENTION named `markers_without_a_run`; the markers are the
+        reading now, so the same staff DECIDES — but the thing this test was
+        written to prevent is unchanged and still asserted: a staff the
+        detector saw ink on may never come back as `no_evidence`."""
         log = Log()
         _with_clef(log)
+        _space(log)
         _markers(log, "keyFlat", "keyFlat", "keyFlat")
         v = _decide(log)
-        self.assertIs(v.outcome, Outcome.ABSTAINED)
-        self.assertEqual(v.reason, "markers_without_a_run")
+        self.assertNotEqual(v.reason, "no_evidence")
+        self.assertIs(v.outcome, Outcome.DECIDED)
+        self.assertEqual(v.value, -3)
         self.assertEqual(v.detail["keysig_marker_ink"], 3)
 
     def test_no_ink_and_no_run_really_is_no_evidence(self):
@@ -82,60 +103,112 @@ class TestTheSplit(unittest.TestCase):
                          ["keyFlat", "keySharp"])
 
 
-class TestItIsNeverAVALUE(unittest.TestCase):
-    """⚠️⚠️ THE LOAD-BEARING TESTS. The legacy path's count-the-markers
-    fallback cost seven spurious key flips; nothing here may re-introduce it."""
+class TestTheCountBECAMETheReading(unittest.TestCase):
+    """⚠️⚠️ THIS CLASS WAS CALLED `TestItIsNeverAVALUE` AND ITS PREMISE WAS
+    OVERTURNED ON 2026-09-23. It asserted that markers may never decide a key,
+    on two measurements: the legacy count-the-markers fallback cost SEVEN
+    spurious key flips over eleven scanned pages, and the marker count equals
+    the settled `|fifths|` on only 39% (Litolff) and 51% (Breitkopf) of
+    decided staves.
 
-    def test_markers_alone_NEVER_decide_a_key(self):
+    ⚠️ BOTH NUMBERS STAND; WHAT CHANGED IS WHICH SIDE THEY CONDEMN. The
+    second was read as *the markers are unreliable*. Scoring both readings
+    against the movement's own key — Beethoven 5 mvt 1 and Brahms 1 mvt 1 are
+    C minor, so each staff's printed signature follows from its instrument —
+    showed it was the FITTERS that disagreed: 330 right against 171 on
+    Breitkopf, 50 against 45 on the engraved acceptance page. The first
+    number is answered by what the legacy fallback did NOT have: a slot
+    ladder rather than a count, and a system check behind it.
+
+    ⚠️ AND THE LITOLFF COST IS REAL AND STAYS ASSERTED ELSEWHERE: on that
+    MERGING plate the markers trade 25 abstentions for 10 more right and 15
+    more wrong. `benchmarks/omr-key-majority-2026-09/FINDINGS.md`.
+    """
+
+    def test_markers_alone_DO_decide_a_key(self):
         log = Log()
         _with_clef(log)
-        _markers(log, "keyFlat", "keyFlat", "keyFlat")   # would "spell" -3
+        _space(log)
+        _markers(log, "keyFlat", "keyFlat", "keyFlat")
         v = _decide(log)
-        self.assertIs(v.outcome, Outcome.ABSTAINED)
-        self.assertIsNone(v.value)
+        self.assertIs(v.outcome, Outcome.DECIDED)
+        self.assertEqual(v.value, -3)
+        self.assertEqual(v.reason, "markers")
 
-    def test_markers_do_not_overturn_a_fitted_reading(self):
-        """Three markers beside a one-flat fit must leave the fit alone."""
+    def test_markers_DO_overturn_a_fitted_reading(self):
+        """Three markers beside a one-flat fit: the fit was reading one flat
+        where the detector had drawn three boxes, which is the defect on the
+        engraved acceptance page, 24 staves of 30."""
         log = Log()
         _with_clef(log)
+        _space(log)
         log.observe(SUB, Q.KEYSIG_CLEF_FIT, "treble", reader=READERS.CV_HEADER,
                     frame="header_window", n_accidentals=1, fifths=-1)
         _markers(log, "keyFlat", "keyFlat", "keyFlat")
         v = _decide(log)
-        self.assertEqual(v.value, -1)
-        self.assertEqual(v.reason, "fitted")
+        self.assertEqual(v.value, -3)
+        self.assertEqual(v.reason, "markers")
 
-    def test_markers_do_not_overturn_a_TEMPLATE_reading(self):
+    def test_the_overruled_fit_is_RECORDED(self):
+        """⚠️ THE HALF THAT KEEPS THE OLD WARNING ALIVE. A reader that was
+        overruled is the measurement of which reader to work on next; if the
+        markers were ever the wrong side of this, the record is where that
+        shows. Dropping the loser is how the evidence disappears."""
         log = Log()
         _with_clef(log)
+        _space(log)
+        log.observe(SUB, Q.KEYSIG_CLEF_FIT, "treble", reader=READERS.CV_HEADER,
+                    frame="header_window", n_accidentals=1, fifths=-1)
+        _markers(log, "keyFlat", "keyFlat", "keyFlat")
+        v = _decide(log)
+        said = v.detail["disagreeing_readers"]
+        self.assertEqual(said[0]["fifths"], -1)
+        self.assertEqual(said[0]["n_accidentals"], 1)
+
+    def test_a_TEMPLATE_reading_is_overturned_the_same_way(self):
+        log = Log()
+        _with_clef(log)
+        _space(log)
         log.observe(SUB, Q.KEYSIG_TEMPLATE_FIT, "treble",
                     reader=READERS.TEMPLATE, frame="header_window",
                     n_accidentals=3, accidental="b", fifths=-3)
         _markers(log, "keyFlat")
         v = _decide(log)
-        self.assertEqual(v.value, -3)
-        self.assertEqual(v.reason, "fitted_by_template")
+        self.assertEqual(v.value, -1)
+        self.assertEqual(v.reason, "markers")
+        self.assertEqual(v.detail["disagreeing_readers"][0]["fifths"], -3)
 
-    def test_the_detail_says_out_loud_that_the_count_is_not_a_reading(self):
-        """⚠️ A consumer that meets `keysig_marker_ink: 3` and reaches for it
-        as three flats is the exact rule this project measured at seven
-        spurious flips. The row says so in its own key name."""
+    def test_an_AGREEING_fit_is_not_filed_as_a_disagreement(self):
+        """The positive control for the test above: without it a rule that
+        recorded EVERY fit as disagreeing would pass."""
         log = Log()
         _with_clef(log)
-        _markers(log, "keyFlat", "keyFlat")
+        _space(log)
+        log.observe(SUB, Q.KEYSIG_TEMPLATE_FIT, "treble",
+                    reader=READERS.TEMPLATE, frame="header_window",
+                    n_accidentals=3, accidental="b", fifths=-3)
+        _markers(log, "keyFlat", "keyFlat", "keyFlat")
         v = _decide(log)
-        self.assertTrue(v.detail["keysig_marker_count_is_not_a_reading"])
+        self.assertNotIn("disagreeing_readers", v.detail)
+        self.assertEqual(v.detail["corroborated_by"], 1)
 
 
 class TestTheDeclarations(unittest.TestCase):
 
     def test_the_reason_is_declared(self):
         """⚠️ A reason word with no branch is one documented anti-pattern here;
-        a branch returning an UNDECLARED reason is its mirror."""
+        a branch returning an UNDECLARED reason is its mirror.
+
+        ⚠️ `markers_without_a_run` is GONE and its absence is asserted, not
+        merely unmentioned: the branch it named is now the ordinary reading
+        path, and a reason word left declared with nothing returning it is the
+        first anti-pattern above."""
         from tools.omr.staged.adjudicate import REGISTRY, _ensure_decisions
         _ensure_decisions()
-        self.assertIn("markers_without_a_run",
-                      REGISTRY[Q.KEY_SIGNATURE].reasons)
+        reasons = REGISTRY[Q.KEY_SIGNATURE].reasons
+        self.assertIn("markers", reasons)
+        self.assertIn("mixed_marker_kinds", reasons)
+        self.assertNotIn("markers_without_a_run", reasons)
 
     def test_the_quantity_is_actually_read_now(self):
         from tools.omr.staged.adjudicate import REGISTRY, _ensure_decisions
@@ -341,28 +414,25 @@ class TestTheInstrumentsOwnControls(unittest.TestCase):
                          "artefact of its own measurement")
 
     # ── the arm ──────────────────────────────────────────────────────────
-    def test_the_arm_FAILS_when_a_decided_key_moved(self):
-        """⚠️ THE CONTROL THAT MATTERS MOST. A change that quietly started
-        counting markers would move a decided key, and an arm that cannot see
-        that would report it clean."""
-        import tempfile
-        from pathlib import Path
-        arm = self._load("check_arm.py")
-        with tempfile.TemporaryDirectory() as d:
-            path = self._record(Path(d), key_verdict={
-                "outcome": "decided", "value": -3, "reason": "fitted"})
-            rc, out = self._run(arm, [path])
-        self.assertEqual(rc, 1, out)
-        # ⚠️⚠️ NOT `assertIn("MOVED", out)`. The arm prints `MOVED 0` on EVERY
-        # run, so that assertion is satisfied by a control that found nothing
-        # — it could never fail, and a mutation battery arm walked straight
-        # past it. What has to be asserted is the MOVE ITSELF: the arrow line
-        # naming the value that changed.
-        self.assertIn("MOVED 1", out)
-        self.assertIn("-3/fitted -> -1/fitted", out)
+    def test_the_arm_DECLARES_ITSELF_SUPERSEDED(self):
+        """⚠️⚠️ FOUR CONTROLS STOOD HERE AND THE RULE THEY ARMED IS GONE.
 
-    def test_the_arm_PASSES_on_a_faithful_record(self):
-        """The positive control for the test above."""
+        They asserted that `check_arm.py` FAILS when a decided key moved,
+        PASSES on a faithful record, REFUSES an abstention move outside
+        `no_evidence -> markers_without_a_run`, and reports DEAD when no split
+        happened. All four rest on the 2026-09-21 rule that reading
+        `Q.KEYSIG_MARKER` may only SPLIT AN ABSTENTION REASON — and roadmap
+        2.9 (Sean, 2026-09-23) made those markers the PRIMARY reader, so
+        moving a decided key is now the point rather than the regression.
+
+        Rewriting them to arm the new rule would be a different instrument
+        wearing this one's name; leaving them red would report a replacement
+        as a regression. So the arm asks the REGISTRY whether its rule still
+        exists and says SUPERSEDED when it does not — which is a live check,
+        not a comment: restore `markers_without_a_run` and it runs again. Its
+        measurement stands in its own directory's `FINDINGS.md`, and the new
+        one is `benchmarks/omr-key-majority-2026-09/`.
+        """
         import tempfile
         from pathlib import Path
         arm = self._load("check_arm.py")
@@ -372,43 +442,11 @@ class TestTheInstrumentsOwnControls(unittest.TestCase):
                                              "value": None,
                                              "reason": "no_evidence"})
             rc, out = self._run(arm, [path])
-        self.assertEqual(rc, 0, out)
-        self.assertIn("no_evidence -> markers_without_a_run", out)
-
-    def test_the_arm_REFUSES_an_illegal_abstention_move(self):
-        """Only `no_evidence -> markers_without_a_run` is a permitted move.
-        Here the rebuild abstains `needs_clef` — a different change wearing
-        this one's name."""
-        import tempfile
-        from pathlib import Path
-        arm = self._load("check_arm.py")
-        with tempfile.TemporaryDirectory() as d:
-            # ⚠️ `with_markers` is what makes the staff subject EXIST. With
-            # no observation on it at all the rebuild files no verdict and the
-            # arm reports "absent from the rebuild" — a different failure, and
-            # the first draft of this test was reading that as the one it
-            # names.
-            path = self._record(Path(d), with_clef=False, with_fit=False,
-                                with_markers=True,
-                                key_verdict={"outcome": "abstained",
-                                             "value": None,
-                                             "reason": "no_evidence"})
-            rc, out = self._run(arm, [path])
-        self.assertEqual(rc, 1, out)
-        self.assertIn("ILLEGAL", out)
-
-    def test_the_arm_reports_DEAD_when_no_split_happened(self):
-        """⚠️ 'No decided key moved' is also exactly what a change that never
-        ran looks like, so the split must be observed, not assumed."""
-        import tempfile
-        from pathlib import Path
-        arm = self._load("check_arm.py")
-        with tempfile.TemporaryDirectory() as d:
-            path = self._record(Path(d), key_verdict={
-                "outcome": "decided", "value": -1, "reason": "fitted"})
-            rc, out = self._run(arm, [path])
-        self.assertIn("DEAD", out)
-        self.assertEqual(rc, 1)
+        self.assertEqual(rc, 2, out)
+        self.assertIn("SUPERSEDED", out)
+        # ⚠️ The positive control on the banner itself: it must NOT be printed
+        # unconditionally. The probe-constant check still runs before it.
+        self.assertIn("CLASSES", out)
 
     def test_the_arm_REFUSES_a_drifted_probe_constant(self):
         """The probe restates `_KEYSIG_CLASSES` rather than importing it, so

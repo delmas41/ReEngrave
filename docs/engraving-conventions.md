@@ -904,7 +904,7 @@ the repo file's rule is that **the tree outranks the ledger**:
 - **Rigid or publisher-dependent:** RIGID.
 - **Would be falsified by:** a plate whose signature accidentals do not sit on the conventional slots for the read clef, or print them in another order.
 - **Known exceptions:** ⚠️ **it inherits the clef** — "a wrong clef produces wrong signatures rather than abstentions (measured: bass staves defaulted to treble read 3 flats as 2 sharps)", so a staff whose clef is only the positional default is **skipped**. ⚠️⚠️ **It may not INFER** — recovering slots nothing was detected at compounded five matches into **seven sharps on a four-sharp page**.
-- **Code:** `tools/omr/key_signature_geometry.py` (slot-table fit); `key_signature_locator.py`; `key_signature_template.py`; `key_signature_vote.py`.
+- **Code:** `tools/omr/key_signature_geometry.py` (slot-table fit); `key_signature_locator.py`; `key_signature_template.py`; `key_signature_vote.py`. **STAGED (2026-09-23, roadmap 2.9):** `tools/omr/staged/adjudicators/header.py` `_marker_run` reads the detector's key accidentals as a ladder of SLOTS rather than a count of boxes — `MARKER_SLOT_TOLERANCE_SPACES = 0.5`, `MARKER_RUN_GAP_SPACES = 2.0`, `MAX_FIFTHS = 7` — which is this convention used as a reader and not only as a fit.
 
 ### A key signature stands BETWEEN the clef and the meter
 `[C23 + L40]`
@@ -932,7 +932,7 @@ the repo file's rule is that **the tree outranks the ledger**:
 - **Rigid or publisher-dependent:** RIGID.
 - **Would be falsified by:** a real mid-staff key change that fails its own witness test.
 - **Known exceptions:** ⚠️⚠️ **the corpus contains ZERO real mid-staff key changes, so only the BENEFIT is measured** — and there is "concrete reason to expect [the cost] non-trivial: later-cell key markers appear on only **15 cells across 193 scanned staves with no two sharing a bar**, so a genuine mid-staff change would more likely fail its own witness test than pass it".
-- **Code:** `tools/omr/key_signature_corroboration.py:202` `MIN_WITNESSES = 2` (default ON since 2026-09-07). The staged meter mirror **asserts equality** with it: `tools/omr/staged/adjudicators/rhythm.py:1423` `METER_CHANGE_MIN_STAVES = 2`.
+- **Code:** `tools/omr/key_signature_corroboration.py:202` `MIN_WITNESSES = 2` (default ON since 2026-09-07). The staged meter mirror **asserts equality** with it: `tools/omr/staged/adjudicators/rhythm.py:1423` `METER_CHANGE_MIN_STAVES = 2`. **STAGED (2026-09-23, roadmap 2.9):** `tools/omr/staged/adjudicators/header.py` `adjudicate_system_key` publishes the CONCERT keys one system's staves read and how many read each, and `adjudicate_key_signature` abstains `disagrees_with_system` where a staff's concert key has no peer — a check that can FAIL, and deliberately not a majority (the alternative was designed, priced and refused: `benchmarks/omr-key-majority-2026-09/FINDINGS.md`).
 
 ### The clef and key signature are reprinted at the head of EVERY system
 `[C25 + L38]`
@@ -1002,7 +1002,7 @@ the repo file's rule is that **the tree outranks the ledger**:
 - **Rigid or publisher-dependent:** RIGID for the repertoire named; **era-dependent** by both sources' own statements.
 - **Would be falsified by:** a held 19th-century edition printing key signatures on its horn and timpani staves.
 - **Known exceptions:** a sibling set is declared and explicitly unmeasured — `MAY_DIFFER_NOT_A_WITNESS = frozenset({"Harp"})` at `tools/omr/key_consensus.py:101`, for pedal/enharmonic reasons, "⚠️ **DECLARED, NOT MEASURED**". Literature adds: transposing instruments **other** than these carry their own transposed signature normally.
-- **Code:** `tools/omr/key_consensus.py:86`, consumed `:257` (witness exclusion) and `:402` (outcome `CONVENTION_NO_SIGNATURE`). ⚠️ `MIN_WITNESSES = 3` there is **concert-pitch staves** — a different constant and unit from `key_signature_corroboration.py:202`'s 2.
+- **Code:** `tools/omr/key_consensus.py:86`, consumed `:257` (witness exclusion) and `:402` (outcome `CONVENTION_NO_SIGNATURE`). ⚠️ `MIN_WITNESSES = 3` there is **concert-pitch staves** — a different constant and unit from `key_signature_corroboration.py:202`'s 2. **STAGED (2026-09-23, roadmap 2.9):** `tools/omr/staged/adjudicators/header.py` `_concert` imports `NO_SIGNATURE_CONVENTION` and `key_consensus.resolve_label` rather than restating either, so such a staff neither corroborates nor is contradicted by its system.
 
 ### An accidental stands BEFORE its note, at the same staff position
 `[L32]`

@@ -250,6 +250,23 @@ def _resolve(s: StaffKey) -> tuple[str | None, int | None, bool]:
     return inst.name, m.fifths_offset, known
 
 
+def resolve_label(label: str | None) -> tuple[str | None, int | None, bool]:
+    """A printed label → (instrument name, `fifths_offset`, transposition KNOWN).
+
+    ⚠️ PUBLIC BECAUSE THE STAGED PATH NEEDS EXACTLY THIS AND MUST NOT RESTATE
+    IT. `_resolve`'s third value is the whole point and it is subtle enough to
+    have been got wrong once already here: comparing `m.fifths_offset` against
+    `default_fifths_offset` cannot tell "named B-flat" from "defaulted to
+    B-flat", because the default clarinet IS the B-flat one. A staff resting
+    on the DEFAULT may neither vote nor be judged, and a second copy of that
+    rule in `staged/adjudicators/header.py` would be the drift this module's
+    own docstring warns about.
+
+    ⚠️ It decides nothing and reads no ink: it is a lexicon query.
+    """
+    return _resolve(StaffKey(staff_index=-1, label=label))
+
+
 def _is_witness(name: str | None, offset: int | None, known: bool) -> bool:
     """A staff may establish the concert key only if it prints it verbatim."""
     if name is None or offset is None or not known:

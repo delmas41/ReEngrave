@@ -1,0 +1,41 @@
+{
+ "control_clean": true,
+ "arms": [
+  {
+   "arm": "base",
+   "outcomes": {
+    "decided": 212,
+    "abstained": 119
+   },
+   "reasons": {
+    "fitted_no_markers": 212,
+    "no_evidence": 76,
+    "needs_clef": 24,
+    "run_fits_no_slot_table": 19
+   },
+   "system_key": {
+    "no_staff_read_a_key": 31
+   }
+  },
+  {
+   "arm": "arm",
+   "outcomes": {
+    "decided": 221,
+    "abstained": 110
+   },
+   "reasons": {
+    "markers": 144,
+    "fitted_no_markers": 77,
+    "disagrees_with_system": 28,
+    "no_evidence": 40,
+    "mixed_marker_kinds": 10,
+    "needs_clef": 24,
+    "run_fits_no_slot_table": 8
+   },
+   "system_key": {
+    "read": 27,
+    "one_staff_only": 4
+   }
+  }
+ ]
+}

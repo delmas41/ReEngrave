@@ -1,0 +1,176 @@
+{
+ "crops": [
+  {
+   "file": "litolff-p3-system0-header.png",
+   "label": "litolff",
+   "pdf_page": 3,
+   "system": 0,
+   "dpi": 600,
+   "frame_contrast": 155.67,
+   "staves": [
+    {
+     "staff": 0,
+     "name_our_file_gives_it": "Flute",
+     "we_wrote_fifths": -1,
+     "outcome": "decided",
+     "reason": "markers"
+    },
+    {
+     "staff": 1,
+     "name_our_file_gives_it": "Oboe",
+     "we_wrote_fifths": -1,
+     "outcome": "decided",
+     "reason": "markers"
+    },
+    {
+     "staff": 2,
+     "name_our_file_gives_it": "Clarinet",
+     "we_wrote_fifths": -1,
+     "outcome": "decided",
+     "reason": "markers"
+    },
+    {
+     "staff": 3,
+     "name_our_file_gives_it": "Bassoon",
+     "we_wrote_fifths": -1,
+     "outcome": "decided",
+     "reason": "fitted_no_markers"
+    },
+    {
+     "staff": 4,
+     "name_our_file_gives_it": "Horn",
+     "we_wrote_fifths": null,
+     "outcome": "abstained",
+     "reason": "no_evidence"
+    },
+    {
+     "staff": 5,
+     "name_our_file_gives_it": "Trumpet",
+     "we_wrote_fifths": null,
+     "outcome": "abstained",
+     "reason": "no_evidence"
+    },
+    {
+     "staff": 6,
+     "name_our_file_gives_it": "Timpani",
+     "we_wrote_fifths": null,
+     "outcome": "abstained",
+     "reason": "no_evidence"
+    },
+    {
+     "staff": 7,
+     "name_our_file_gives_it": null,
+     "we_wrote_fifths": -3,
+     "outcome": "decided",
+     "reason": "markers"
+    },
+    {
+     "staff": 8,
+     "name_our_file_gives_it": null,
+     "we_wrote_fifths": 1,
+     "outcome": "decided",
+     "reason": "fitted_no_markers"
+    },
+    {
+     "staff": 9,
+     "name_our_file_gives_it": null,
+     "we_wrote_fifths": null,
+     "outcome": "abstained",
+     "reason": "needs_clef"
+    },
+    {
+     "staff": 10,
+     "name_our_file_gives_it": null,
+     "we_wrote_fifths": -3,
+     "outcome": "decided",
+     "reason": "markers"
+    }
+   ],
+   "system_key_concert_ours": {
+    "corroborated": [
+     -1
+    ],
+    "tally": {
+     "-1": 3
+    }
+   },
+   "VERDICT_none_yet": null
+  },
+  {
+   "file": "litolff-p3-system1-header.png",
+   "label": "litolff",
+   "pdf_page": 3,
+   "system": 1,
+   "dpi": 600,
+   "frame_contrast": 50.1,
+   "staves": [
+    {
+     "staff": 0,
+     "name_our_file_gives_it": "Flute",
+     "we_wrote_fifths": -3,
+     "outcome": "decided",
+     "reason": "markers"
+    },
+    {
+     "staff": 1,
+     "name_our_file_gives_it": "Clarinet",
+     "we_wrote_fifths": -1,
+     "outcome": "decided",
+     "reason": "markers"
+    },
+    {
+     "staff": 2,
+     "name_our_file_gives_it": "Bassoon",
+     "we_wrote_fifths": -3,
+     "outcome": "decided",
+     "reason": "markers"
+    },
+    {
+     "staff": 3,
+     "name_our_file_gives_it": "Horn",
+     "we_wrote_fifths": null,
+     "outcome": "abstained",
+     "reason": "run_fits_no_slot_table"
+    },
+    {
+     "staff": 4,
+     "name_our_file_gives_it": null,
+     "we_wrote_fifths": -3,
+     "outcome": "decided",
+     "reason": "markers"
+    },
+    {
+     "staff": 5,
+     "name_our_file_gives_it": null,
+     "we_wrote_fifths": -3,
+     "outcome": "decided",
+     "reason": "markers"
+    },
+    {
+     "staff": 6,
+     "name_our_file_gives_it": null,
+     "we_wrote_fifths": -3,
+     "outcome": "decided",
+     "reason": "markers"
+    },
+    {
+     "staff": 7,
+     "name_our_file_gives_it": null,
+     "we_wrote_fifths": null,
+     "outcome": "abstained",
+     "reason": "mixed_marker_kinds"
+    }
+   ],
+   "system_key_concert_ours": {
+    "corroborated": [
+     -3
+    ],
+    "tally": {
+     "-3": 2
+    }
+   },
+   "VERDICT_none_yet": null
+  }
+ ],
+ "refused": []
+}
