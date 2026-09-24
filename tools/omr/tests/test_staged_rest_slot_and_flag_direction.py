@@ -22,7 +22,7 @@ rule that narrowed every rest and one that narrows the 134 rows the geometry
 contradicts are the same green tick without the control.
 
 ⚠️ **RUN RED FIRST, AND THE EXACT SPLIT IS RECORDED BECAUSE IT IS THE PROOF.**
-Restore `rhythm.py` from `de6213e7` and run this file: **17 fail, 4 pass.**
+Restore `rhythm.py` from `de6213e7` and run this file: **19 fail, 4 pass.**
 
 The **4 that pass on the unrepaired tree are the positive controls**, and
 they are what says this battery does not pass by refusing everything:
@@ -36,7 +36,7 @@ they are what says this battery does not pass by refusing everything:
   2.12e's whole gate** (*zero durations move*) and it passes on both trees;
 * `test_a_note_with_NO_flag_carries_no_flag_direction_key_at_all`.
 
-Of the 17 reds, three fail because `HALF_REST_STEP`, `REST_SLOT_SLACK` and
+Of the 19 reds, three fail because `HALF_REST_STEP`, `REST_SLOT_SLACK` and
 `_REST_SLOT_BY_CLASS` do not exist there at all, and the rest because the
 verdict is DECIDED where it must narrow or abstain, or because the detail the
 record must now carry is absent. Both are the repair's absence, and the list
