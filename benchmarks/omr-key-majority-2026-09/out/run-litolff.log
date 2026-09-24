@@ -1,0 +1,13 @@
+loaded /Users/seanjohnson/Desktop/ReEngrave/library/_shared-records/beethoven5-litolff-mvt1-whole-20260923.record.json in 3s
+CONTROL clef: 331 of 331 reproduced (outcome+value), 0 differ, +0 extra
+CONTROL key_signature: 331 of 331 reproduced (outcome+value), 0 differ, +0 extra
+   reason moved (value unchanged): [('fitted_by_template -> fitted_no_markers', 108), ('fitted -> fitted_no_markers', 104), ('markers_without_a_run -> no_evidence', 36)]
+-- base: {'decided': 212, 'abstained': 119}
+   reasons {'fitted_no_markers': 212, 'no_evidence': 76, 'needs_clef': 24, 'run_fits_no_slot_table': 19}
+   system_key {'no_staff_read_a_key': 31}
+   wrote litolff-base.musicxml
+-- arm: {'decided': 221, 'abstained': 110}
+   reasons {'markers': 144, 'fitted_no_markers': 77, 'disagrees_with_system': 28, 'no_evidence': 40, 'mixed_marker_kinds': 10, 'needs_clef': 24, 'run_fits_no_slot_table': 8}
+   system_key {'read': 27, 'one_staff_only': 4}
+   wrote litolff-arm.musicxml
+total 1295s

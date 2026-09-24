@@ -4,3 +4,12 @@
 # simulate rows and the run logs -- are what the FINDINGS cite, and they stay.
 *-base.json
 *-arm.json
+
+# The whole-movement MusicXML is 3-6 MB per arm and is REPRODUCIBLE by
+# run_scan_lean.py from the shared record. What the FINDINGS cite is beside
+# it and IS committed: the coverage census, the lean report, and the
+# per-part fifths table (*.fifths.txt) that every key figure is read off.
+litolff-base.musicxml
+litolff-arm.musicxml
+brahms-base.musicxml
+brahms-arm.musicxml

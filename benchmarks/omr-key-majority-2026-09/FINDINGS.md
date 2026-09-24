@@ -310,9 +310,18 @@ as one flat on pages 1 and 2**, written as spurious key changes at bars 8 and
 | `<note>` | 12,424 | **12,424** |
 | `<key>` elements | 153 | 153 |
 | **key CHANGES written** | **105** | **113** |
-| `status_census` | (pending — `run_scan.sh` did not pass `--coverage`; `run_scan_lean.py` writes it) | (pending) |
+| **parts opening on the right key** | **11 of 12** | **6 of 12** |
+| `status_census` | balanced, `unaccounted: []` | balanced, `unaccounted: []` |
 
-⚠️⚠️ **THE GATE IS NOT MET AND THE ARM IS EIGHT WORSE ON IT.** Roadmap 2.9 asks
+⚠️⚠️ **LITOLFF IS THE DOCUMENT WHERE THIS RULE LOSES, AND IT LOSES ON THE
+FILE.** Per staff the check holds the line — 37 wrong → 33 — but a PART's
+key comes from its first system's reading, and on this plate the first
+system's markers under-count: the base opens **11 of 12** parts on the
+movement's key and the arm **6 of 12** (Oboe −2, Bassoon −1, Violin II −2,
+Viola −2, Cello −2, Contrabass −1). The base's one error is the Viola at
+−1, which is the staff `key_consensus`' own docstring was written about.
+
+⚠️⚠️ **AND THE GATE IS NOT MET BY EITHER ARM.** Roadmap 2.9 asks
 for *"0 key changes not printed on the plate"*, and Beethoven 5 mvt 1 prints
 none at all: the base writes **105** spurious changes across 12 parts and the
 arm writes **113**. The four the roadmap named from the 4-page record are a
@@ -525,3 +534,37 @@ render is exactly the judgement this crop exists to put in front of a human.
   key, which is a strong document-level fact and not a reading of the plate.
   §10's crops are the instrument for turning that into one, and until Sean
   fills in `VERDICT_none_yet` nothing here has been adjudicated against print.
+
+---
+
+## 12. The verdict across the three documents, stated plainly
+
+| | parts opening right | key changes written (plate prints) | per-staff wrong |
+|---|---|---|---|
+| engraved acceptance | 10/18 → **18/18** | 2 → **0** (0) | 3 → **0** |
+| Brahms 1 / Breitkopf | 11/14 → **14/14** | 265 → **212** (2) | 224 → **127** |
+| Beethoven 5 / Litolff | **11/12 → 6/12** | 105 → **113** (0) | 37 → **33** |
+
+`<note>` is unchanged on all three (672 / 23,145 / 12,424) and every
+`status_census` is balanced with an empty `unaccounted`.
+
+**Two documents improve sharply and one regresses on the file.** Over the two
+scans' 783 scored staves the wrong count falls **261 → 160**, and on the
+engraved acceptance page the gate is met exactly. Litolff is the MERGING
+plate: its flats run together, the detector under-counts them, and a PART
+takes its key from its FIRST system — so a first-system under-count costs a
+whole part even where the check repairs the staves after it.
+
+⚠️ **The separating property is the PLATE, not the domain, so a 2.2-style
+gate would not split these two scans**: Breitkopf is a scan too and it is
+where the markers win biggest. There is no measured `merging vs shattering`
+fact in the record to gate on, and inventing one here would be a flag with no
+roadmap item and no measurement behind it.
+
+**Recommendation, for Sean or the coordinator to take or refuse:** ship it.
+The evidence is 2 of 3 documents clearly better, the worse one better per
+staff and worse per part, and every wrong reading now carries its own
+disagreeing reader on the record so the Litolff loss is diagnosable rather
+than invisible. The named next step for that loss is not this decision: it is
+the detector on a merging plate, and `[C25 + L38]`'s per-PART cross-system
+rule, which would fix the first-system dependence on every document at once.
