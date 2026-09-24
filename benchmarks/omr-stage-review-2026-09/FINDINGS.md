@@ -31,7 +31,7 @@ record, the feedback file a session reads. §B is lane (B)'s: the viewer.
 # §B — the viewer
 
 `tools/omr/staged/review/server.py` + `static/`. FastAPI + uvicorn on
-127.0.0.1:5060, plain HTML/JS/CSS, no build step, light theme, laid out for a
+127.0.0.1:5075, plain HTML/JS/CSS, no build step, light theme, laid out for a
 1440-px window.
 
 ## The one command
@@ -43,7 +43,7 @@ python3 -m tools.omr.staged.review.server \
   --staff  staff/3/0/9
 ```
 
-Then open `http://127.0.0.1:5060/?staff=staff/3/0/9`.
+Then open `http://127.0.0.1:5075/?staff=staff/3/0/9`.
 
 Start-up is **8 s** on the 314 MB record (3.6 s to load, 2.6 s to export, the
 rest to index); it holds about 2.5 GB resident and answers every view from
@@ -297,7 +297,7 @@ covered.
 ## What it cannot do yet
 
 1. **No browser screenshot was taken.** This session's environment refused to
-   navigate to `127.0.0.1:5060` (and the Chrome extension did not answer), so
+   navigate to `127.0.0.1:5075` (and the Chrome extension did not answer), so
    the page was verified through its API — every endpoint by `curl`, with the
    payloads quoted above — and the GATHER overlay was rendered from the
    server's OWN `/api/gather` payload by `probe/render_gather_overlay.py`

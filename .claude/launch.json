@@ -1,0 +1,10 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "stage-review",
+      "url": "http://localhost:5075",
+      "port": 5075
+    }
+  ]
+}

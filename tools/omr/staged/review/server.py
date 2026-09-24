@@ -9,7 +9,7 @@ which lane (A) ingests into the record as human WITNESSES and re-decides with.
         --pdf    library/editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf \\
         --staff  staff/3/0/9
 
-Then open `http://127.0.0.1:5060/?staff=staff/3/0/9`.
+Then open `http://127.0.0.1:5075/?staff=staff/3/0/9`.
 
 ⚠️⚠️ **NOTHING HERE RE-DECIDES ANYTHING, AND THREE RULES ENFORCE IT.**
 
@@ -1507,7 +1507,13 @@ def main(argv: Optional[List[str]] = None) -> int:
     ap.add_argument("--host", default="localhost",
                     help="`localhost` (default) listens dual-stack on ::1 AND "
                          "127.0.0.1; any other value binds literally")
-    ap.add_argument("--port", type=int, default=5060)
+    # ⚠️ NOT 5060. That was the first choice (the labelling UI is 5050) and
+    # Chrome refused it with ERR_UNSAFE_PORT -- 5060 is SIP, on Chrome's
+    # restricted-ports list, and a Chrome user sees "This site can't be
+    # reached" while curl and Safari-by-script get 200 (Sean, 2026-09-23,
+    # after three rounds of loopback diagnosis that were all beside the
+    # point). 5075 is on no browser's list.
+    ap.add_argument("--port", type=int, default=5075)
     ap.add_argument("--zoom", type=int, default=2)
     ap.add_argument("--break-control", action="store_true",
                     help="RULE 7: drop one logged refusal on purpose so the "
