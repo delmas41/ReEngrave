@@ -998,6 +998,10 @@ class Q(_Vocab):
     #:   `is_a:<canonical class>`  it is a symbol of THIS class instead
     #:   `owner:<staff subject>`   it belongs to that staff, not this one
     #:   `duplicate_of:<glyph>`    one piece of ink, already boxed there
+    #:   `confirmed:<class>`       the human agrees with the detector's class
+    #:                             (reaches no decision by design; it lands in
+    #:                             the notehead refusal's `basis` with `used`
+    #:                             empty and in the feedback file — 3.4d)
     #:   `redrawn`                 the box is in the wrong PLACE (a different
     #:                             claim, and today it reaches no consumer;
     #:                             `review/feedback.py` reports that rather
