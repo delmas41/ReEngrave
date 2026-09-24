@@ -818,6 +818,17 @@ class TestARelabelOutsideTheNoteheadFamily(_Case):
                      and o["quantity"] == Q.CLEF_GLYPH
                      and o["reader"] == READERS.SESSION_TEST][0]
         self.assertIn("W_DETECTOR_LOW", glyph_row["detail"]["score_is_None"])
+        # ⚠️ AND HERE IS THE CONSEQUENCE, MEASURED ON THIS FIXTURE RATHER THAN
+        # ASSERTED. The staff carries a detector `gClef` at 0.9; the human
+        # says C-alto. The verdict comes back `treble`, scores {treble: 1.0},
+        # and the human's row is in `basis` and NOT in `used` — offered and
+        # declined. This is not a bug in this lane: it is `clef.py`'s
+        # weighting reading "no softmax" as "lowest confidence", and it is the
+        # one change 3.4c deliberately did NOT make.
+        v = self.standing(self.arm["record"], Q.CLEF, "staff/0/0/0")
+        self.assertEqual(v["value"], "treble")
+        hit = [h for h in self.d.basis_names_human if h["quantity"] == Q.CLEF]
+        self.assertEqual([h["how"] for h in hit], ["basis"])
 
     def test_a_clef_class_box_OUTSIDE_cell_0_files_no_clef_row(self):
         """⚠️ `gather_clefs` reads cell 0 only — *a clef is read at the head
