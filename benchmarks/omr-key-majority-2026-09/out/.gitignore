@@ -13,3 +13,13 @@ litolff-base.musicxml
 litolff-arm.musicxml
 brahms-base.musicxml
 brahms-arm.musicxml
+
+# Roadmap 2.9b's arms, same rule and same reason: the whole-movement MusicXML
+# is 1.8-3 MB per arm and reproducible from the shared record by
+# `readjudicate.py` + `staged.export`. What the FINDINGS cite is committed
+# beside it -- `*.part-report.txt`, the per-staff table every 2.9b figure is
+# read off.
+2.9b-litolff-base.musicxml
+2.9b-litolff-arm.musicxml
+2.9b-breitkopf-base.musicxml
+2.9b-breitkopf-arm.musicxml

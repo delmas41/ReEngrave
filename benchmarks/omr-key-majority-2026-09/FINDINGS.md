@@ -568,3 +568,584 @@ disagreeing reader on the record so the Litolff loss is diagnosable rather
 than invisible. The named next step for that loss is not this decision: it is
 the detector on a merging plate, and `[C25 + L38]`'s per-PART cross-system
 rule, which would fix the first-system dependence on every document at once.
+
+---
+---
+
+# §2.9b — The key the DOCUMENT reads, and the key each PART reads
+
+2026-09-23 · `claude/part-key-majority-2.9b` · branched from `7dead94b`
+
+**One sentence.** A staff's key no longer stands on its own header alone: a
+staff whose DECIDED key disagrees with its document's own majority of decided
+concert keys — or, where nothing on the page named its transposition, with its
+own part's majority of written keys — is ABSTAINED by a check that can fail,
+and INFER fills the abstention with that majority, labelled; and the
+detector's class name has stopped being the filter that decided which ink was
+allowed to be a key accidental at all.
+
+---
+
+## 2.9b.0 What Sean adjudicated, and why the answer is the DOCUMENT
+
+§10 put four system-header crops in front of him. His answer, 2026-09-23,
+covers all four:
+
+> *"all 4 of those crops are pieces with 3 flats and the staffs that have
+> fewer flats are transposing clefs."*
+
+Both works are in C minor. So on both count pages **every non-transposing
+staff prints three flats**, a B-flat clarinet prints **one**, and horn,
+trumpet and timpani print **none** (`[C81]`). Scored against that, the 2.9
+reader is wrong on **20 of 46 staves** — and the SHAPE of the wrongness is
+what decided the design: the wrong values are scattered (`+2`, `−4`, `+1`,
+`−2`) while the RIGHT answer is the same on 26 of 46. One answer repeated and
+noise everywhere else is what a majority is for.
+
+The population that holds it is not the SYSTEM (8 against 8 on the engraved
+page — §0) and not only the PART (on a merging plate a part can be
+under-counted on its own first systems, which is exactly §6a's regression).
+It is the DOCUMENT.
+
+---
+
+## 2.9b.1 The rule, in the order it runs
+
+`Q.PART_KEY` (`Kind.DOCUMENT`, in `ORDER` after `Q.SYSTEM_KEY` and before
+`Q.KEY_SIGNATURE`) publishes, per stretch of systems:
+
+* **the DOCUMENT tier** — the majority of the decided CONCERT keys of every
+  staff of every system in the stretch;
+* **the PART tier** — for each part, the majority of the decided WRITTEN keys
+  its own systems read.
+
+It decides no staff, exactly as `adjudicate_system_key` decides none. Then:
+
+1. `adjudicate_key_signature` reads the staff's own header as before, applies
+   2.9's SYSTEM check unchanged, and then asks `header.expected_fifths` what
+   the document (or, failing that, the part) says this staff should print. A
+   disagreement ABSTAINS — `disagrees_with_document` or `disagrees_with_part`
+   — with the reading it set aside on the verdict (`written_fifths`,
+   `read_by`, and the marker/fit detail).
+2. `inferences.fill_part_key` fills that abstention, and every other key gap
+   on a placed part, with **the same value from the same function**, stamped
+   `infer:fill_part_key` and `inferred: True`, with the other staves' own key
+   verdicts as witnesses.
+3. `evaluate.run_over` carries the filled key into `respell_accidental`
+   (2.10 built that second pass; this is its second consumer).
+
+### Why the repair is an ABSTENTION and not an overwrite
+
+`infer.INFERABLE` is `{NARROWED, ABSTAINED}` and CLAUDE.md §4a is explicit:
+INFER *"never overturns a DECIDED one"*. A staff that read its key wrongly HAS
+decided one. So the repair cannot live in INFER while the reading stands — it
+has to be a CHECK in ADJUDICATE, reading rows rather than verdicts, able to
+FAIL, and recording the dissent. That is the shape 2.9 gave
+`disagrees_with_system`, and it is why rule 3 survives intact: the record
+still separates *nobody could read this* from *this was read and the document
+contradicts it*.
+
+**Which staves went DECIDED → ABSTAINED → INFERRED, and why that is not a
+guess.** On Litolff the check abstains **148 `disagrees_with_document`** and
+**38 `disagrees_with_part`**, and INFER fills all 186 (§2.9b.4). The witnesses
+are **the same document's own header ink on other systems** — each a separate
+crop, a separate detector cell, a separate raster of a separate plate
+impression. The count rides on each verdict as `n_witnesses` and
+`n_independent_witnesses`, computed by `infer.independent_groups` from the
+provenance closures rather than claimed.
+
+⚠️ **And the honest limit is on the verdict too.** Because `Q.PART_KEY` rests
+on every staff's rows, its id is in every filled verdict's basis, so the
+closure partition collapses the witnesses to ONE group. That is a true
+statement about the provenance graph — once a staff's key comes from the
+document tally, the filled staves DO share that one signal — and it is hazard
+(b) made visible rather than argued away. What the partition cannot see is
+CLAUDE.md §10's other correlation: a plate that merges its flats merges them
+on every system. What makes the DOCUMENT tier survivable where the SYSTEM tier
+was not is population — it tallies every readable staff of every system of the
+movement (152 on Litolff), so a correlated misreading has to hold across
+sixteen pages and not merely across one header.
+
+### Why no transposition INSIDE a part, and why the DELTA at a change
+
+A part is one instrument with one transposition, so normalising its own
+systems to concert pitch is the identity map — and paying for it would mean
+requiring a margin label on every continuation system, which the Litolff plate
+prints on none. Transposition returns at the two places it bites:
+
+* **the document tier**, which speaks in concert pitch and re-transposes for
+  the staff it judges — and which needs the part's transposition carried along
+  the part, read once off a label (only where every resolvable label on that
+  slot agrees) and valid on every staff of it. **Measured: that carry takes
+  Litolff from 74 staff-systems normalisable to 152**, and the count page is
+  in the second number and not the first.
+* **a key CHANGE**, where `[C24]` says the BAR is shared and the VALUE is not.
+  So `admitted_changes` corroborates on the SHIFT, which needs no label at
+  all.
+
+---
+
+## 2.9b.2 When a key change is admitted, and the number behind it
+
+`[C24]`'s own **Numbers** field is `MIN_WITNESSES = 2`, and the LEGACY path
+enforces it (`key_signature_corroboration.MIN_WITNESSES`, default ON since
+2026-09-07, 7 of 7 spurious flips stopped); the staged METER mirror asserts
+equality with it (`rhythm.METER_CHANGE_MIN_STAVES`).
+`header.CHANGE_MIN_WITNESSES` is the **third site** and asserts the same
+equality on every run of the decision, so the three cannot drift.
+
+Two guards `[C24]` does not supply:
+
+* **a SHARE** (`CHANGE_MIN_SHARE = 0.5`). `[C24]` says a change is printed *on
+  EVERY staff of it*; two parts out of twenty-four is not that sentence.
+* **PERSISTENCE on both sides** (`CHANGE_MIN_RUN = 2`), and this one is
+  measured.
+
+### The sweep, and it is what chose the number
+
+    python3 benchmarks/omr-key-majority-2026-09/part_sim.py \
+        benchmarks/omr-key-majority-2026-09/out/2.9b-litolff-base.json --sweep
+
+Beethoven 5 mvt 1 prints **no key change at all**. On the Litolff whole
+movement (12 parts, 9 of which may witness a change, 213 decided readings):
+
+| witnesses ≥ | share ≥ | run ≥ | changes admitted |
+|---|---|---|---|
+| 2 | 0.0 | 1 | **14** |
+| 2 | 0.0 | 2 | **0** |
+| 2 | 0.5 | 1 | **5** |
+| 2 | 0.5 | **2** | **0** ← shipped |
+| 3 | 0.0 | 1 | **4** |
+| 3 | 0.5 | 1 | **1** |
+| 3 | 0.5 | 2 | **0** |
+
+**It is the persistence guard, not the witness count, that a merging plate
+needs.** At `run ≥ 1` every witness/share setting admits changes the plate
+does not print; at `run ≥ 2` every one of them admits zero.
+
+⚠️ **And one fixture found the persistence rule's first version wrong before
+any document did.** `test_a_value_that_does_not_HOLD_is_not_a_change` runs the
+sequence `-3 -3 -2 -3 -3` — the Litolff Flute part's actual opening. Counting
+persistence FORWARD only, the rule refused the change INTO the misreading (the
+`-2` stands alone) and then ADMITTED the change out of it, because `-3` holds
+for two systems afterwards: a transient under-count became a key change at the
+system where the reader RECOVERED. Persistence is now required on both sides.
+
+---
+
+## 2.9b.3 GATHER — the detector's class was the filter, and it is two claims
+
+Sean, 2026-09-23, on a crop: one header's three flats were boxed as one
+`accidentalFlat` and two `keyFlat`. `gather._KEYSIG_CLASSES` admitted only the
+key-class boxes into `Q.KEYSIG_MARKER`, so a printed flat was dropped at
+GATHER, before any reader saw it — and no derived check can see a GATHER
+change (CLAUDE.md §4d). His principle, now the rule:
+
+> the detector's class is TWO claims — the SHAPE (flat/sharp/natural), which
+> it is good at, and the ROLE (key member vs in-bar accidental), which is
+> geometry. GATHER files the shape and the position; the role-half is recorded
+> as its opinion, one witness, never the filter.
+
+What ships:
+
+* an accidental-SHAPED box joins `Q.KEYSIG_MARKER`, **filed under the KEY
+  class of the same shape**, so `_marker_run` — which abstains
+  `mixed_marker_kinds` on two KINDS — sees one kind and a pre-change record
+  reads identically;
+* bounded by `_keysig_header_limit()` = **14.5 cell staff spaces**, DERIVED
+  rather than typed: `clef_anchor_max_start_spaces` (5.50, swept over 42
+  ground-truth staves), `max_start_after_clef_spaces` (2.00), seven slots a
+  space apart (`[C21]`). It bounds ONLY the new class, so no row any shipped
+  record holds can be removed;
+* no measured `Q.CELL_STAFF_SPACE` → no window → the shipped behaviour
+  exactly. Guessing the scale is how three flats become five;
+* double sharps and flats stay out (`[C21]`: one accidental per slot);
+* `detector_class` and `detector_role` ride on every row, and `_marker_run`
+  CONSUMES the role into `keysig_marker_roles` on the verdict — so how much of
+  a run rests on un-filtered boxes is readable from the answer. `wiring
+  --check` is what forced that from decoration into a consumed witness.
+
+### ⚠️ The first draft admitted any shape and cost 84 runs on Breitkopf
+
+`_gather_keysig_markers` reads `R.cell(p, s, i, 0)` — the whole first MEASURE
+— so a natural or a sharp printed inside bar 1 is in this population.
+Admitting it turned clean flat runs into `mixed_marker_kinds`:
+
+| | runs read | lost to `mixed_marker_kinds` |
+|---|---|---|
+| Breitkopf, admit any shape | 457 → **407** | **84**, 35 of them already reading −3 |
+| Breitkopf, shipped (shape must match the key-class boxes') | 457 → **491** | **0** |
+
+`[C21]` is the fix: a standard signature carries ONE kind, and the detector's
+own key-class boxes say which kind this header is. Where there is no key-class
+box at all — **53 header cells on Litolff, 81 on Breitkopf** — nothing says
+which kind, so all are admitted and `_marker_run` abstains if they disagree.
+
+### Priced two ways, because `readjudicate` is blind to GATHER
+
+**(a) Recomputed from the records' own boxes.** `marker_regather.py` reads
+`Q.GLYPH_BOX` — which carries `(smufl_name, x_canonical, …)` for every
+detection — and runs the SHIPPED `_gather_keysig_markers` and `_marker_run`
+over them.
+
+    python3 benchmarks/omr-key-majority-2026-09/marker_regather.py <record>
+
+| | header cells with an accidental-shaped box | classes | runs read | value moved |
+|---|---|---|---|---|
+| Litolff | 246 | `keyFlat` 437, `accidentalFlat` 174, `accidentalNatural` 35, `accidentalSharp` 21, `keySharp` 11 | **183 → 220** | `−1→−2` 11, `−2→−3` 8, `−1→−3` 6 — **every move toward more flats**, 0 lost |
+| Breitkopf | 556 | `keyFlat` 1150, `accidentalFlat` 660, `accidentalNatural` 213, `accidentalSharp` 204, `keySharp` 62 | **457 → 491** | `−2→−3` 30, `−1→−3` 25, `−1→−2` 14, against `−3→−4` 1 and `−3→−5` 1 |
+
+37 and 34 runs are newly read; their values are `−1` 17/18, `−2` 12/4, `−3`
+6/11, `+1` 2/1.
+
+**(b) Two REAL gathers of one page.** CLAUDE.md §6b: *a GATHER change needs
+two full re-gathers*. Litolff pdf page 3 (the count page), base and arm, same
+command, `--pages 3 --no-surya --no-ocr` — so neither record carries a margin
+label or a slot and **this pair measures the MARKER READING ALONE**, with the
+document and part tiers structurally unable to fire.
+
+    OMR_DIRECTION_TEXT_SCAN_GATE=1 python3 -m tools.omr.staged <pdf> --pages 3 \
+        --no-surya --no-ocr --weights omr-weights/…hollow-graft-shift09….pt
+
+| system 0 staff | base | arm | truth (score order) |
+|---|---|---|---|
+| 0 | `−1` | **`−2`** | −3 — closer, still wrong |
+| 1 | `−1` | **`−3`** ✓ | −3 |
+| 2 | `−1` ✓ | `−1` ✓ | −1 (clarinet) |
+| 3 | `−1` | **abstained `mixed_marker_kinds`** | −3 — wrong → honest |
+| 4, 5, 6 | abstained | abstained | 0 (print none) |
+| 7 | `−3` ✓ | `−3` ✓ | −3 |
+| 8 | `+1` | **`−2`** | −3 — closer, still wrong |
+| 9 | `−2` | **`−3`** ✓ | −3 |
+| 10 | `−3` ✓ | `−3` ✓ | −3 |
+
+**3 right / 5 wrong → 5 right / 2 wrong / 1 abstained**, 0 broken. System 1 is
+IDENTICAL between the two arms — a control that this is not a blanket rewrite.
+⚠️ The staff names here are score order, not read identity: this pair has no
+OCR, so nothing on it names a staff, which is exactly why it measures only the
+marker half.
+
+⚠️⚠️ **THE WHOLE-DOCUMENT TABLES BELOW DO NOT INCLUDE THE GATHER CHANGE.**
+They are `readjudicate` arms over the SHIPPED records, which hold the
+pre-change marker rows; pricing both halves together needs a 12.8-hour
+re-gather of Litolff and a 1.2-hour one of Brahms. The two are measured apart
+and the numbers do not add.
+
+---
+
+## 2.9b.4 The controls, and one of them FAILED and found a real fault
+
+**Base and arm are on ONE TREE** (CLAUDE.md §6b). `readjudicate.py --off part`
+turns off BOTH halves of this item — the ADJUDICATE check reads
+`infer.part_key_enabled` too, because a check that abstains a staff so an
+inference may fill it is one rule in two stages, and gating only the INFER
+half would leave `disagrees_with_document` abstentions standing with nothing
+to fill them, a state no shipped tree has ever been in.
+
+* **The engraved acceptance arm is BYTE-IDENTICAL**, `--off part` against the
+  default, the flag the only difference: `diff` exits 0 on the two exported
+  MusicXML files. 54 of 54 key verdicts DECIDED in both, 18 of 18 parts, 0
+  key changes.
+* **`--off part` reproduces 2.9 exactly on Litolff**: 6 of 12 parts opening
+  right, 125 right / 88 wrong / 107 abstained, 113 key changes in the file —
+  the same figures the two-tree base produced before the flag existed.
+* **`--control` (`--off all`) on Litolff: `key_signature` 331 of 331
+  reproduced** (outcome + value), with the reason movement printed separately
+  (`fitted_by_template → fitted_no_markers` 108, `fitted → fitted_no_markers`
+  104, `markers_without_a_run → no_evidence` 36). ⚠️ Its `clef` half now
+  reports 322 of 331 with 9 `abstained → decided` — those are roadmap 2.10's
+  `fill_clef_gap`, which the shipped record predates, so that half is no
+  longer a pure rebuild proof and says so.
+
+### ⚠️⚠️ AND THE HARNESS ITSELF WAS WRONG, WHICH THE MEASUREMENT FOUND
+
+`readjudicate.py` ran ADJUDICATE → EVALUATE → INFER and **stopped**.
+`staged/pipeline.py` has run `evaluate.run_over` after INFER since roadmap
+2.10 — the bounded second pass that carries an inferred value into its
+consequences — and this harness did not. Measured on the Litolff arm before
+the fix:
+
+| | staves | key-derived `Q.ACCIDENTAL` beneath them |
+|---|---|---|
+| key INFERRED | 186 | **0** |
+| key READ | 142 | 1,099 |
+
+The file's `pitches_altered_by_the_key` came out **628 → 426**: FEWER
+alterations from a rule that decides MORE keys. A number that looks like a
+result and is an artefact of the instrument — CLAUDE.md's *the value existed
+and nothing read it*, this time inside the measuring instrument. With the one
+line added: **1,708 → 3,677 key-derived alterations**, 2,578 of them on the
+186 inferred staves. Every figure below is from the repaired harness.
+
+---
+
+## 2.9b.5 The three documents
+
+    sh -c 'python3 .../readjudicate.py <rec> --off part --out out/<tag>-base.json'
+    sh -c 'python3 .../readjudicate.py <rec>            --out out/<tag>-arm.json'
+    python3 -m tools.omr.staged.export out/<tag>-{base,arm}.json --out …
+    python3 .../part_report.py <tag> --truth beethoven5|brahms1|engraved
+
+⚠️ **The truth is Sean's** (§2.9b.0), applied per PART: `−3` concert, `−1` for
+a B-flat clarinet, `0` for natural horn / natural trumpet / timpani. A part
+whose transposition no label anywhere named is NOT scored.
+
+### 2.9b.5a Beethoven 5, Litolff, whole movement — 331 staff-systems
+
+| | base (`--off part`) | arm |
+|---|---|---|
+| key verdicts | 212 decided / 119 abstained | **328 decided / 3 abstained** |
+| reasons | `markers` 144, `fitted_no_markers` 77, `disagrees_with_system` 28, `no_evidence` 40, `needs_clef` 24, `mixed_marker_kinds` 10, `run_fits_no_slot_table` 8 | `key_from_document_majority` **148**, `markers` 88, `fitted_no_markers` 54, `key_from_other_systems` **38**, `mixed_marker_kinds` 2, `no_evidence` 1 |
+| per staff, against Sean's truth | 125 right / **88 wrong** / 107 abstained (67 carrying right, **40 carrying wrong**) | 125 right + **186 inferred right** / **9 wrong** / 0 abstained |
+| **parts opening right** | **6 of 12** | **12 of 12** |
+| `<key>` elements | 153 | **72** |
+| **key CHANGES written** | **113** | **18** — and all 18 are ONE part |
+| `<note>` | 8,674 | **8,674** |
+| key-derived alterations | 1,708 | **3,677** |
+| accounting | balanced (the exporter RAISES `Unbalanced`; 9,531 refused, identically in both arms) | balanced, 9,531 |
+
+**The whole of the 2.9 regression is closed and then some**: 6 of 12 parts
+opening right → **12 of 12**, and per staff the wrong count falls **88 → 9**
+with nothing left abstained.
+
+⚠️ **Both of §6a's named survivors are GONE.** Violin II's `+1` at m48 and
+Trumpet's `+1` at m82 are not in the arm's file: both parts now write ONE
+`<key>` and no change at all
+(`out/2.9b-litolff-arm.fifths.txt`).
+
+⚠️ **AND ALL 18 REMAINING CHANGES ARE THE CELLO PART AND ITS CONDENSED
+DOUBLE.** Ten of the twelve parts write exactly one `<key>`; P11 Cello writes
+9 changes and P12 Contrabass writes the same 9, because
+`collapse_slot_index_to_family_block` doubles the Cello slot onto the
+Contrabass part (`condensed_with_slot`). So it is ONE part's wobble, written
+twice.
+
+**And the cause is a STAGE ORDER, not this rule.** Of the 15 Cello staves
+whose key a reader decided, **13 have a `Q.SLOT_INDEX` that came from INFER**
+— `collapse_slot_index_to_family_block` places them, and INFER runs AFTER
+ADJUDICATE, so when `_part_checked` asked *which part is this staff on?* the
+answer did not exist yet and the check could not judge them. INFER cannot
+repair it afterwards either: those verdicts are DECIDED, and rule 3 forbids
+overturning a reading. Across the document 28 of 331 staff-systems are in that
+position and 11 more have no part at all. **That is the named next item**, and
+it is one of two shapes: place the staff before the header decisions, or let
+the check speak to a NARROWED slot. Neither is 2.9b.
+
+### 2.9b.5b Brahms 1, Breitkopf, whole movement — 691 staff-systems
+
+| | base (`--off part`) | arm |
+|---|---|---|
+| key verdicts | 545 decided / 146 abstained | **678 decided / 13 abstained** |
+| reasons | `markers` 405, `fitted_no_markers` 140, `no_evidence` 64, `disagrees_with_system` 57, `mixed_marker_kinds` 17, `run_fits_no_slot_table` 6, `needs_clef` 2 | `markers` 318, `key_from_document_majority` **190**, `fitted_no_markers` 109, `key_from_other_systems` **61**, `no_evidence` 10, `run_fits_no_slot_table` 3 |
+| per staff, against Sean's truth | 379 right / **135 wrong** / 135 abstained (99 carrying right, **36 carrying wrong**) | 379 right + **248 inferred right** / **17 wrong + 3 inferred wrong** / 2 abstained, both carrying right |
+| **parts opening right** | **14 of 14** | **14 of 14** — no loss |
+| `<key>` elements | 689 | 756 |
+| **key CHANGES written** | **212** | **20** |
+| `<note>` | 7,822 | **7,822** |
+| key-derived alterations | 227 | **310** |
+| accounting | balanced, 29,998 refused | balanced, 29,998 |
+
+⚠️⚠️ **AND THE TWENTY ARE THE PLATE'S OWN TWO CHANGES.**
+`Q.PART_KEY.detail["changes"]` is **2**, and the file writes each of them once
+per part that prints a signature:
+
+    python3 .../fifths_table.py out/2.9b-breitkopf-arm.musicxml
+
+    P1  Flute          −3   changes: m197=2  m219=−3
+    P2  Oboe           −3   changes: m197=2  m219=−3
+    P3  Clarinet       −1   changes: m197=4  m219=−1     ← +2 transposed, correctly
+    P4  Bassoon        −3   changes: m197=2  m219=−3
+    P5  Contrabassoon  −3   changes: m197=2  m219=−3
+    P6–P9 Horn ×2, Trumpet, Timpani  — NO change, and they print no signature
+    P10–P14 Violin ×2, Viola, Cello, Contrabass  −3 : m197=2  m219=−3
+
+That is Brahms 1 mvt 1's genuine `−3 → +2` and back, which the dossier puts at
+m191 and m217 and which the PLATE puts at m197 and m219 (§6b saw seven parts
+reading `+2` at m197 and could not tell it from the noise). **The two changes
+are read off the plate, corroborated across ten parts on the shared DELTA of
++5 fifths, and the clarinet's `+4` is the same delta through its own
+transposition** — which is `[C24]` doing exactly what its **Predicts** field
+says: *the BAR is the shared fact even where the VALUE differs by
+transposition.*
+
+So Breitkopf goes from **212 spurious changes to ZERO**, while keeping both of
+the two the movement prints, and its wrong count falls **135 → 20**.
+
+### 2.9b.5c The engraved acceptance page — 54 staff-systems
+
+**Byte-identical, base and arm, on one tree** (§2.9b.4). 54 of 54 key verdicts
+DECIDED (`markers` 48, `fitted_no_markers` 6), **18 of 18 parts against
+`out/fixture/beethoven-sym5-mvt1-m1-24.musicxml`**, 0 key changes, 666
+`<note>`, 18 `<key>`.
+
+⚠️ **And the reason it is inert is worth reading**, because it is the rule
+declining rather than the page having nothing: `parts_with_a_read_transposition`
+is 11 of 18 there — the fixture's labels are `Eb Horn 1` and `C Trumpet 1`,
+which the lexicon DEFAULTS to +1 and +2 (§2 records this), and a defaulted
+transposition may not speak. Its clarinets are therefore judged by the PART
+tier, agree with it, and stand.
+
+---
+
+## 2.9b.6 The two COUNT PAGES, staff by staff, against Sean's truth
+
+This is the gate. Litolff pdf page 3 and Breitkopf pdf page 1, two systems
+each, **46 staves**, against *every non-transposing staff prints three flats;
+a B-flat clarinet prints one; horn, trumpet and timpani print none*. A staff
+counts as right if the file states the true key there OR abstains and the part
+CARRIES the true key into that system.
+
+    python3 .../part_report.py 2.9b-litolff   --truth beethoven5 --page 3
+    python3 .../part_report.py 2.9b-breitkopf --truth brahms1    --page 1
+
+| | base (`--off part`) | arm |
+|---|---|---|
+| Litolff p3 (19 staves) | **14 right / 5 wrong** | **19 right / 0 wrong** |
+| Breitkopf p1 (27 staves) | **14 right / 13 wrong** | **27 right / 0 wrong** |
+| **both count pages** | **28 of 46** | **46 of 46** |
+
+### Litolff p3 — every staff that MOVED, and the direction
+
+| system·staff | part | base | arm | |
+|---|---|---|---|---|
+| 0·0 | Flute | `−1` ✗ | **`−3`** ✓ | `key_from_document_majority` |
+| 0·1 | Oboe | `−1` ✗ | **`−3`** ✓ | `key_from_document_majority` |
+| 0·3 | Bassoon | `−1` ✗ | **`−3`** ✓ | `key_from_document_majority` |
+| 0·4, 0·5, 0·6 | Horn, Trumpet, Timpani | abstained, carried `0` ✓ | **`0`** ✓ | `key_from_other_systems` — the gap is now WRITTEN, not carried |
+| 0·8 | Violin II | `+1` ✗ | **`−3`** ✓ | `key_from_document_majority` |
+| 0·9 | Viola | abstained `needs_clef`, carried `−2` ✗ | **`−3`** ✓ | `key_from_document_majority` |
+| 1·3 | Horn | abstained `run_fits_no_slot_table`, carried `0` ✓ | **`0`** ✓ | `key_from_other_systems` |
+| 1·7 | Cello | abstained `mixed_marker_kinds`, carried `−3` ✓ | **`−3`** ✓ | `key_from_document_majority` |
+
+The other 11 staves are unchanged and were already right (`markers`).
+**Nothing moved in the wrong direction, and no staff that was right became
+wrong.**
+
+### Breitkopf p1 — every staff that MOVED
+
+| system·staff | part | base | arm |
+|---|---|---|---|
+| 0·0 | Flute | `−2` ✗ | **`−3`** ✓ |
+| 0·1 | Oboe | `−1` ✗ | **`−3`** ✓ |
+| 0·8 | Timpani | `−1` ✗ | **`0`** ✓ |
+| 0·9 | Violin I | `−2` ✗ | **`−3`** ✓ |
+| 0·10 | Violin II | `−1` ✗ | **`−3`** ✓ |
+| 0·11 | Viola | `−2` ✗ | **`−3`** ✓ |
+| 0·12 | Cello | abstained `no_evidence`, carried `−3` ✓ | **`−3`** ✓ |
+| 0·13 | Contrabass | `−2` ✗ | **`−3`** ✓ |
+| 1·0 | Flute | `−2` ✗ | **`−3`** ✓ |
+| 1·3 | Bassoon | `−2` ✗ | **`−3`** ✓ |
+| 1·4 | Contrabassoon | `−2` ✗ | **`−3`** ✓ |
+| 1·11 | Cello | abstained `disagrees_with_system`, carried `−3` ✓ | **`−3`** ✓ |
+
+Every one of the 12 is `key_from_document_majority` except Timpani 0·8, which
+is `key_from_other_systems` — a timpani prints no signature (`[C81]`), so it
+is excluded from the concert tally at both ends and its own part is what
+corrects it. The remaining 15 staves are unchanged and were already right.
+**Again nothing moved the wrong way.**
+
+⚠️ **THIS IS NOT A PRINT CHECK OF THE ARM.** Sean adjudicated the PLATE off
+2.9's crops; what is scored here is our file against that adjudication. The
+two Breitkopf crops have been re-cut from the 2.9 arm so the record of what we
+read matches this branch (`out/print/breitkopf-2.9-arm-p1-system{0,1}-header
+.png`). **No new crop was needed**: the arm writes NO key change the plate
+does not print on Beethoven 5 (§2.9b.5a's 18 are one part's, and they are
+values not changes the plate contradicts), and on Brahms the two changes it
+writes are the two the movement prints.
+
+---
+
+## 2.9b.7 Open, and what this does not repair
+
+* ⚠️⚠️ **THE PART ARRIVES ONE STAGE TOO LATE FOR 28 LITOLFF STAVES.**
+  `collapse_slot_index_to_family_block` is an INFER rule and the check is an
+  ADJUDICATE decision, so a staff placed by INFER has no part when
+  `_part_checked` asks — and INFER cannot repair it afterwards because those
+  keys are DECIDED (rule 3). That is the whole of the residual 18 key changes
+  (§2.9b.5a). Two shapes of fix, neither of them 2.9b: place the staff before
+  the header decisions, or let the check speak to a NARROWED slot.
+* **11 Litolff staves and 42 Breitkopf staves have no part at all** and are
+  neither judged nor scored. Roadmap 2.6's identity gap, and this item
+  measures it from a third direction:
+  `staves_with_a_part` / `staves_normalised` /
+  `staves_with_their_own_label` ride on every `Q.PART_KEY` verdict.
+* **The witness partition collapses to one group** (§2.9b.1) because
+  `Q.PART_KEY` is in every filled verdict's basis. True, reported, and it
+  means `n_independent_witnesses` is not a useful discriminator for this rule.
+* **The GATHER widening and the document rule are measured APART** (§2.9b.3).
+  Pricing them together needs a 12.8-hour Litolff re-gather.
+* **No print check of the ARM's own keys.** §2.9b.6 scores our file against
+  Sean's reading of 2.9's crops; the staves 2.9b MOVED have not themselves
+  been put in front of him. That is the next thing to ask for, and the crops
+  to cut are the systems where `key_from_document_majority` overrode a
+  `markers` reading.
+* ⚠️ **A genuinely bitonal document would lose**, and the test that used to
+  assert it does not now runs with `OMR_PART_KEY=0` and says so
+  (`test_staged_key_from_markers.TestTheSystemCheck`). What bounds the loss is
+  the segmentation: the majority is taken inside a stretch, and a corroborated
+  change cuts the stretch, so a movement that really changes key keeps both
+  sides — which is exactly what Brahms demonstrates in §2.9b.5b.
+
+---
+
+## 2.9b.8 Tests, and the two that found faults
+
+`tools/omr/tests/test_staged_key_by_part.py` (32 tests), RED first against
+`7dead94b` — `git grep -e PART_KEY_SWITCH -e part_key_enabled -e
+expected_fifths -e admitted_changes -e part_key_census -e 'def fill_part_key'
+-e disagrees_with_document 7dead94b -- tools/` returns nothing, so the file
+could not import there.
+
+Two of them found real faults before any document did:
+
+* `test_a_value_that_does_not_HOLD_is_not_a_change` — the one-sided
+  persistence rule turned a transient under-count into a key change at the
+  system where the reader RECOVERED (§2.9b.2).
+* `test_a_natural_inside_bar_1_does_not_JOIN_a_flat_signature` — written
+  AFTER the Breitkopf regather showed 84 runs lost, and it pins the repair
+  (§2.9b.3).
+
+`tools/omr/tests/test_staged_key_from_markers.py` keeps all 20 of its tests;
+one of them (`test_two_staves_reading_alike_are_never_touched`) now runs under
+`OMR_PART_KEY=0` and states in its own docstring which half of its claim 2.9b
+took back and on whose evidence.
+
+Fast tier **3,037 passed / 3 skipped**. `python3 -m tools.omr.staged.check`
+**257**, the baseline, every part `ok`; `inventory --check`, `wiring --check`
+and `reach` clean. ⚠️ Both of the last two moved something first:
+`inventory` reported this decision declaring `input_domain` and
+`cell_staff_space` and reading neither — it follows the call chain three
+levels and a tidy `_checked_reading` wrapper pushed `_cell0_space` out of
+reach — and `wiring` reported `detector_role` written and named nowhere else,
+which is what turned it from a decoration into `keysig_marker_roles` on the
+verdict.
+
+---
+
+## 2.9b.9 The verdict across the three documents, stated plainly
+
+| | parts opening right | key changes written (plate prints) | per-staff wrong | `<note>` |
+|---|---|---|---|---|
+| engraved acceptance | 18/18 → **18/18** | 0 → **0** (0) | 0 → **0** | 666 → 666 |
+| Brahms 1 / Breitkopf | 14/14 → **14/14** | 212 → **20** (2, and the 20 ARE those 2) | 135 → **20** | 7,822 → 7,822 |
+| Beethoven 5 / Litolff | **6/12 → 12/12** | 113 → **18** (0, and all 18 are one part) | 88 → **9** | 8,674 → 8,674 |
+
+Over the two scans' 1,022 scored staves the wrong count falls **223 → 29**;
+spurious key changes fall **325 → 18**, every remaining one on the Litolff
+Cello part and its condensed double, for a cause that is a stage order and not
+this rule (§2.9b.7). Every `status_census` is balanced — the exporter RAISES
+`Unbalanced` rather than returning a flag, so a completed export is the proof,
+and the refusal totals are identical in both arms of both documents.
+
+**On the two count pages, against Sean's own reading of the plate: 28 of 46
+staves right → 46 of 46.**
+
+**Recommendation, for Sean or the coordinator to take or refuse:** ship it.
+The evidence is three documents better or unchanged, a gate met exactly on
+both count pages, a genuine key change kept where one is printed and none
+invented where none is, and every staff the rule moved carrying its own
+superseded reading on the record. What it has NOT had is a print check of its
+own output: §2.9b.6 scores our file against Sean's reading of 2.9's crops, and
+the staves 2.9b MOVED have not themselves been put in front of him. Those
+crops — the systems where `key_from_document_majority` overrode a `markers`
+reading — are the next thing to ask for.

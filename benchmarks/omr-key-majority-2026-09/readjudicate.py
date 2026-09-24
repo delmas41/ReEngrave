@@ -32,6 +32,7 @@ from __future__ import annotations
 import argparse
 import collections
 import json
+import os
 import pathlib
 import sys
 
@@ -72,6 +73,12 @@ def _disable(which: str) -> None:
         H._marker_run = lambda marks, space: (None, "no_markers", {})
     if which in ("system", "all"):
         H._concert = lambda ev, subject, written: (None, None)
+    if which in ("part", "all"):
+        # ⚠️ ROADMAP 2.9b. ONE flag over both halves — `_part_checked` reads
+        # the same predicate the INFER rule's switch does, so this returns the
+        # decision to exactly 2.9's behaviour rather than to a half-state no
+        # shipped tree has been in.
+        os.environ["OMR_PART_KEY"] = "0"
 
 
 def verdicts_of(log: Log, quantity: str) -> dict:
@@ -83,7 +90,8 @@ def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("record")
     ap.add_argument("--control", action="store_true")
-    ap.add_argument("--off", choices=["markers", "system", "all"], default=None)
+    ap.add_argument("--off", choices=["markers", "system", "part", "all"],
+                    default=None)
     ap.add_argument("--out")
     a = ap.parse_args()
 
@@ -96,6 +104,19 @@ def main() -> int:
     adjudicate.run(log)
     evaluated = evaluate.run(log)
     infer.run(log, evaluated)
+    # ⚠️⚠️ THE SECOND EVALUATE PASS, AND THIS HARNESS WAS MISSING IT — WHICH
+    # `staged/pipeline.py` HAS RUN SINCE ROADMAP 2.10. Measured 2026-09-23 on
+    # the Litolff arm before this line existed: **186 staves with an inferred
+    # key and ZERO key-derived `Q.ACCIDENTAL` verdicts beneath any of them**,
+    # while the 142 read keys carried 1,099. An inference that changes nothing
+    # downstream is inert in exactly the way that looks like a clean result,
+    # and the arm was reporting the file it would produce WRONG — fewer
+    # `<alter>`s than the base, from a rule that decides more keys.
+    #
+    # ⚠️ It is the one line that makes this harness's exported MusicXML the
+    # same file the pipeline would write. `run_over` is bounded to the
+    # consequences of what INFER wrote, so it is not a second full pass.
+    evaluate.run_over(log, infer.inferred_verdicts(log))
 
     if a.control:
         bad = 0

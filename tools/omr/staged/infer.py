@@ -183,6 +183,30 @@ def clef_gap_enabled() -> bool:
             not in _OFF_WORDS)
 
 
+#: The key-gap rule's OWN flag, default ON (roadmap 2.9b, Sean 2026-09-23).
+#:
+#: ⚠️⚠️ A FOURTH FLAG FOR THE REASON THE SECOND AND THIRD EXIST: this rule's
+#: evidence is its own. Its first tier is the DOCUMENT-WIDE majority of the
+#: concert keys the record already decided -- a reading of other ink on other
+#: systems, weighed against a truth Sean adjudicated off four crops (every
+#: non-transposing staff of both count pages prints three flats) -- and its
+#: second is the same part's own written key on its other systems. One flag
+#: over four rules would make turning any of them off one decision about all
+#: of them.
+#:
+#: ⚠️ A DENY-LIST, BECAUSE THE DEFAULT IS ON -- as with the three above.
+#: `OMR_PART_KEY=` or a typo must leave the rule RUNNING. The predicate is
+#: written out on its own line, never behind a helper, so the AST scan in
+#: `test_flag_default_direction.py` sees this flag's own `os.environ.get`.
+PART_KEY_ENV = "OMR_PART_KEY"
+
+
+def part_key_enabled() -> bool:
+    """Read the key-gap rule's flag. Anything but an off-word is ON."""
+    return (os.environ.get(PART_KEY_ENV, "1").strip().lower()
+            not in _OFF_WORDS)
+
+
 @dataclass(frozen=True)
 class Switch:
     """A flag NAME and the predicate that reads it, as ONE object.
@@ -213,6 +237,9 @@ FAMILY_BLOCK_SWITCH = Switch(FAMILY_BLOCK_ENV, family_block_enabled)
 
 #: The clef-gap rule alone. Default ON (roadmap 2.10).
 CLEF_GAP_SWITCH = Switch(CLEF_GAP_ENV, clef_gap_enabled)
+
+#: The key-gap rule alone. Default ON (roadmap 2.9b).
+PART_KEY_SWITCH = Switch(PART_KEY_ENV, part_key_enabled)
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -265,6 +292,23 @@ class Inference(str, Enum):
     #: record already named. Neither is invented by the rule, and that is what
     #: makes an abstention a legitimate target rather than a licence.
     FILL_CLEF_GAP = "fill_clef_gap"
+
+    #: A key signature nobody could read, or one abstained because it
+    #: disagreed with its own document, filled from the DOCUMENT-WIDE
+    #: majority of decided concert keys -- re-transposed for this staff --
+    #: and failing that from the same PART's written key on other systems.
+    #:
+    #: ⚠️⚠️ THE FIRST RULE HERE WHOSE PRIOR THE PIPELINE CREATED ON PURPOSE
+    #: FOR IT. `adjudicate_key_signature` abstains `disagrees_with_document`
+    #: exactly so this rule may speak, because rule 3 forbids overturning a
+    #: DECIDED verdict and a staff that read its key wrongly HAS decided one.
+    #: That is not a way around rule 3 and it must not become one: the
+    #: abstention is a CHECK that reads rows, can FAIL, and records the
+    #: reading it set aside -- so the record still separates *nobody could
+    #: read this* from *this was read and the document contradicts it*, which
+    #: is the distinction rule 3 protects. A rule whose ADJUDICATE side
+    #: abstained on the inference's say-so would be the fixpoint instead.
+    FILL_PART_KEY = "fill_part_key"
 
 
 #: The only prior states an inference may speak into.

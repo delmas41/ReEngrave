@@ -860,6 +860,13 @@ ORDER: Tuple[str, ...] = (
     # -- is the fixpoint `Log.record` refuses, and it is also the majority
     # this item deliberately did not build.
     Q.SYSTEM_KEY,
+    # ⚠️ ROADMAP 2.9b, AND AFTER `Q.SYSTEM_KEY` FOR ONE REASON: it tallies the
+    # readings that SURVIVED the system check, so the per-part majority is
+    # never built out of readings the per-system check has already condemned.
+    # Like `Q.SYSTEM_KEY` it reads its staves' marker and fit ROWS through
+    # `_staff_reading`, never their key VERDICTS, so `Q.KEY_SIGNATURE` is
+    # nowhere in its ancestry and there is no cycle.
+    Q.PART_KEY,
     Q.KEY_SIGNATURE,
     # ⚠️ ROADMAP 2.4a. BEFORE OWNERSHIP, so a box `glyph_owner` is about to
     # arbitrate has already been asked whether it is a notehead at all --

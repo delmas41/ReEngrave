@@ -1,0 +1,15 @@
+== benchmarks/omr-key-majority-2026-09/out/2.9b-breitkopf-arm.musicxml
+    P1 Flute                         -3   changes: m197=2 m219=-3
+    P2 Oboe                          -3   changes: m197=2 m219=-3
+    P3 Clarinet                      -1   changes: m197=4 m219=-1
+    P4 Bassoon                       -3   changes: m197=2 m219=-3
+    P5 Contrabassoon                 -3   changes: m197=2 m219=-3
+    P6 Horn                           0
+    P7 Horn                           0
+    P8 Trumpet                        0
+    P9 Timpani                        0
+   P10 Violin                        -3   changes: m197=2 m219=-3
+   P11 Violin                        -3   changes: m197=2 m219=-3
+   P12 Viola                         -3   changes: m197=2 m219=-3
+   P13 Cello                         -3   changes: m197=2 m219=-3
+   P14 Contrabass                    -3   changes: m197=2 m219=-3
