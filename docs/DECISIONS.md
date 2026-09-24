@@ -234,3 +234,26 @@ Format: `YYYY-MM-DD · who · the decision · because · (pointer)`
   staff through the stages by hand, and the record already files every
   decision against a subject with the rows it used · the output of a review
   pass is a feedback FILE for a session, not a corrected score · (ROADMAP 3.4)
+- 2026-09-23 · Sean · **SHAPE FROM THE CLASS, ROLE FROM THE GEOMETRY — the
+  methodology for every symbol.** A detector class is TWO claims: the SHAPE
+  (a flat; a black notehead; a C-clef), which the detector is good at, and
+  the ROLE (key-signature flat vs in-bar accidental; on-line vs in-space;
+  clef vs notehead on clef-sized ink), which is a guess about context made
+  from a crop. GATHER files the shape and the position and records the
+  detector's role-guess as ONE witness; ADJUDICATE decides the role from
+  geometry on the record. **No gather filter may key on the role-half of a
+  class.** · *"YES — record that because it needs a methodology for all
+  symbols. it seems that our staged model would require it to look at all
+  the blobs and come up with a list of potential ways it could be labeled
+  with boxes, yolo/CV choices all connected to the ink, and then allow the
+  other stages to decide. There is probably a lot of code and architecture
+  hiding in that."* · because the same collision was found three times in
+  one day and fixed three times by hand: `_KEYSIG_CLASSES` drops a header
+  flat the detector labelled `accidentalFlat` (53 Litolff and 84 Breitkopf
+  header cells hold only such flats), the ownership contest refused twins
+  spelled OnLine/InSpace (2.6), and a notehead label on clef-sized ink vetoed
+  the clef read (2.11) · the direction this implies: the INK COMPONENT is the
+  subject, every box is a reading attached to ink, a box may carry several
+  candidate labels (detector top-k, CV locators), and the stages decide —
+  `Q.INK` already exists as that population, read by nothing; the audit
+  (ROADMAP 2.12) sizes the rest · (ROADMAP 2.12)
