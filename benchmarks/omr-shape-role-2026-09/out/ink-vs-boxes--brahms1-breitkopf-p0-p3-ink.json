@@ -1,0 +1,109 @@
+{
+ "label": "brahms1-breitkopf-p0-p3   (SHATTERING plate)",
+ "record": "/Users/seanjohnson/Desktop/ReEngrave/library/_shared-records/brahms1-breitkopf-p0-p3-ink.record.json",
+ "provenance": {
+  "commit": "27311d6864f4f5708322d84f7f6e2fcfce736211",
+  "dirty": false
+ },
+ "cover_threshold": 0.5,
+ "counts": {
+  "ink_components": 15212,
+  "detector_boxes": 12932,
+  "ink_rows_without_geometry": 0,
+  "cells_with_ink": 818
+ },
+ "boxes_per_ink_component": {
+  "0": 7335,
+  "1": 4789,
+  "2": 2428,
+  "3": 556,
+  "4": 84,
+  "5+": 20,
+  "pct_unexplained": 48.2,
+  "pct_exactly_one": 31.5
+ },
+ "distinct_classes_per_ink_component": {
+  "0": 7335,
+  "1": 5125,
+  "2": 2341,
+  "3+": 411,
+  "pct_more_than_one_class": 18.1
+ },
+ "ink_components_per_box": {
+  "0": 7190,
+  "1": 3941,
+  "2": 906,
+  "3": 358,
+  "4": 135,
+  "5+": 402,
+  "pct_covering_no_whole_component": 55.6,
+  "pct_exactly_one": 30.5
+ },
+ "notation_classes_per_ink_component": {
+  "0": 8900,
+  "1": 5166,
+  "2": 1014,
+  "3+": 132,
+  "pct_more_than_one_class": 7.5,
+  "excluded": [
+   "staff",
+   "stem"
+  ]
+ },
+ "top_contested_components": {
+  "rest8th|staff": 261,
+  "keyFlat|staff": 156,
+  "clefF|staff": 134,
+  "accidentalFlat|staff": 130,
+  "augmentationDot|staff": 112,
+  "flag8thDown|staff": 100,
+  "beam|slur": 99,
+  "restQuarter|staff": 93,
+  "staff|tie": 92,
+  "beam|staff": 79,
+  "slur|tie": 69,
+  "beam|tie": 66,
+  "augmentationDot|tie": 65,
+  "slur|staff": 63,
+  "arpeggiato|staff": 54
+ },
+ "top_contested_components_excluding_structural": {
+  "beam|slur": 107,
+  "slur|tie": 94,
+  "augmentationDot|tie": 76,
+  "beam|tie": 71,
+  "accidentalNatural|accidentalSharp": 67,
+  "restWhole|tie": 47,
+  "dynamicF|dynamicP": 41,
+  "accidentalFlat|arpeggiato": 35,
+  "accidentalFlat|keyFlat": 29,
+  "accidentalFlat|accidentalNatural": 29,
+  "beam|slur|tie": 27,
+  "accidentalFlat|accidentalSharp": 25,
+  "accidentalFlat|accidentalNatural|accidentalSharp": 18,
+  "noteheadHalfInSpace|tie": 16,
+  "accidentalSharp|arpeggiato": 15,
+  "clefF|tie": 13,
+  "accidentalDoubleSharp|rest8th": 12,
+  "augmentationDot|beam": 11,
+  "augmentationDot|beam|tie": 11,
+  "rest8th|tie": 11
+ },
+ "top_classes_covering_no_whole_component": {
+  "noteheadBlackInSpace": 1541,
+  "noteheadBlackOnLine": 1250,
+  "ledgerLine": 1028,
+  "beam": 1007,
+  "tie": 955,
+  "slur": 182,
+  "restWhole": 164,
+  "timeSig4": 103,
+  "arpeggiato": 100,
+  "flag8thUp": 91,
+  "restQuarter": 90,
+  "dynamicF": 85,
+  "flag8thDown": 58,
+  "accidentalFlat": 57,
+  "noteheadHalfInSpace": 51
+ }
+}
