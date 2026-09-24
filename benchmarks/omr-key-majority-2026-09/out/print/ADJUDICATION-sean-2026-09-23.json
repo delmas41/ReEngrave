@@ -1,0 +1,22 @@
+{
+ "adjudicator": "Sean",
+ "date": "2026-09-23",
+ "crops": [
+  "litolff-p3-system0-header.png",
+  "litolff-p3-system1-header.png",
+  "breitkopf-p1-system0-header.png",
+  "breitkopf-p1-system1-header.png"
+ ],
+ "sean": "all 4 of those crops are pieces with 3 flats and the staffs that have fewer flats are transposing clefs (typed 'sharps' once; both works are C minor and the sentence is about flats)",
+ "print_truth": {
+  "concert_fifths": -3,
+  "clarinet_in_Bb_written": -1,
+  "natural_horn_trumpet_timpani": 0
+ },
+ "scored_by": "coordinating session, against we_wrote_fifths in the two manifests (Breitkopf manifest carries the SHIPPED record's verdicts, pre-2.9)",
+ "result": {
+  "staves": 46,
+  "wrong": 20,
+  "note": "the wrong values scatter (+2, -4, +1, -2, -1); the right value is the same on 26 of 46 \u2014 the document is one key"
+ }
+}
