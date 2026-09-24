@@ -27,6 +27,22 @@
  *
  * ⚠️ ONE CANVAS, NO PER-BOX DOM. The Litolff Viola staff carries 121 boxes
  * and a drag redraws the whole layer inside one `requestAnimationFrame`.
+ *
+ * ⚠️⚠️ ROADMAP 3.4e, AND IT IS ALSO ONE SENTENCE FROM SEAN:
+ *   *"i need it to be 1 measure at a time."*
+ * So the screen is a WINDOW ON ONE CELL. `S.bar` is the cell index that
+ * window is on; it is the only thing that decides what is bright, what is
+ * clickable, what `Tab` walks, and what the top bar says. The whole staff is
+ * still one crop and one canvas — the bar is a VIEW of it, never a second
+ * fetch — and `F` still shows the lot.
+ *
+ * ⚠️ THE BAR NUMBER IS THE PAYLOAD'S, NEVER OURS. `/api/gather`'s cells carry
+ * `bar`, which `server.ReviewData.bar_number` reads off the offsets the
+ * EXPORT pass produced — the number this staff WROTE, which is not always
+ * the number on the plate (Litolff p3 Viola: 48–63 written, 49–64 printed).
+ * This file adds nothing to a cell index and subtracts nothing from a bar;
+ * `labels.js`'s `barLabel` is the one place that spelling is decided and its
+ * note says why an offset would be a fabrication.
  */
 'use strict';
 
@@ -36,7 +52,9 @@ const S = {
   session: null, staves: null, staff: null, gather: null, crop: null,
   cropImg: null, cropMeta: null, boxes: [], byGlyph: {},
   sel: null,                          // the selected glyph id
+  bar: null,                          // ⚠️ the CELL INDEX the screen is on
   view: {scale: 1, tx: 0, ty: 0},     // crop px -> screen px
+  glide: null,                        // the pan/zoom between two bars
   drag: null, pending: null, dupFor: null,
   pop: null,                          // {items, shown, idx, anchor, mode}
   sidecar: {actions: []}, sidecarPath: '',
@@ -44,6 +62,11 @@ const S = {
   drawerView: 'actions', stageCache: {}, saving: 0, space: false,
   actionsOnGlyph: {},
 };
+
+//: how far down a box in another bar is turned — DIMMED, never hidden. A
+//: head straddling the barline is the case ownership fights over
+//: (CLAUDE.md §10) and a viewer that hid it would hide the contest.
+const OTHER_BAR_ALPHA = 0.25;
 
 const FAMILY_COLOUR = {
   notehead: '#c62828', rest: '#1565c0', clef: '#6a1b9a',
@@ -150,7 +173,7 @@ async function boot() {
   const onResize = () => {
     sizeCanvas();
     // a pane that was 0 wide never got a fit; one that changed keeps his zoom
-    if (!S.view.scale) fit(); else { draw(); positionPop(); }
+    if (!S.view.scale) showBar(false); else { draw(); positionPop(); }
   };
   window.addEventListener('resize', onResize);
   if (window.ResizeObserver) new ResizeObserver(onResize).observe($('stage'));
@@ -160,7 +183,10 @@ async function boot() {
     || (S.staves.staves[0] || {}).staff;
   paintStaffPicker();
   if (!staff) return openDrawer('pick');
-  try { await loadStaff(staff); }
+  // ⚠️ ONLY THE FIRST LOAD READS THE HASH. `#bar=52` names a bar of the staff
+  // the link named; carrying it onto a staff he picked afterwards would land
+  // him on someone else's bar 52 and call it where he left off.
+  try { await loadStaff(staff, true); }
   catch (e) { toast(String(e.message || e), true); openDrawer('pick'); }
 }
 
@@ -169,7 +195,7 @@ async function boot() {
  *  `--sidecar` is REFUSED by the server — and the refusal belongs in a
  *  toast, not in a dead page. */
 async function pickStaff(staff) {
-  try { await loadStaff(staff); }
+  try { await loadStaff(staff, false); }
   catch (e) {
     toast(String(e.message || e), true);
     $('staffPick').value = S.staff || '';
@@ -185,11 +211,12 @@ function paintStaffPicker() {
   sel.onchange = () => pickStaff(sel.value);
 }
 
-async function loadStaff(staff) {
+async function loadStaff(staff, useHash) {
+  const wanted = useHash ? barFromHash() : null;
   S.staff = staff;
   S.sel = null; S.pending = null; S.dupFor = null; S.stageCache = {};
+  S.bar = null;
   closePop();
-  history.replaceState(null, '', `?staff=${encodeURIComponent(staff)}`);
   S.gather = await api('/api/gather', {staff});
   S.crop = S.gather.crop;
   S.boxes = S.gather.boxes;
@@ -197,27 +224,29 @@ async function loadStaff(staff) {
   for (const b of S.boxes) S.byGlyph[b.glyph] = b;
   S.cropMeta = await api('/api/crop_meta', {staff});
   await loadSidecar();
+  startAtBar(wanted !== null ? wanted : rememberedBar());
   paintBar();
   paintStaffPicker();
   S.cropImg = null;
   const img = new Image();
-  img.onload = () => { S.cropImg = img; sizeCanvas(); fit(); };
+  img.onload = () => { S.cropImg = img; sizeCanvas(); showBar(false); };
   img.onerror = () => { sizeCanvas(); draw();
     toast('the crop image would not load — the boxes are drawn over nothing',
           true); };
   img.src = S.gather.crop_url;
   sizeCanvas();
-  draw();
+  showBar(false);
   if (S.drawerOpen) paintDrawer();
 }
 
 function paintBar() {
   const g = S.gather;
   $('staffName').textContent = g.part_name || g.staff;
-  const bars = g.cells.map(c => c.bar).filter(b => b !== null);
-  $('staffBars').textContent =
-    (bars.length ? `bars ${bars[0]}–${bars[bars.length - 1]}` : g.staff)
-    + ` · ${g.counts.boxes_all} boxes`;
+  // ⚠️ THE RANGE MOVED INTO `#barNow` ("bar 49 of 49–64") and is not printed
+  // twice — a one-line header that says the same thing in two places is how
+  // the second one goes stale.
+  $('staffBars').textContent = `${g.counts.boxes_all} boxes`;
+  paintBarNav();
   const ctl = (S.cropMeta || {}).control || {};
   const chip = $('frameChip');
   if (ctl.ran && ctl.ok) { chip.classList.add('hidden'); }
@@ -247,7 +276,176 @@ function paintSaveState() {
   chip.title = S.sidecarPath;
 }
 
+// ═══════════════════════════════════════════════════════════════════════
+// ONE BAR AT A TIME — which cell the window is on, and how it moves
+// ═══════════════════════════════════════════════════════════════════════
+
+function barCells() { return (S.gather && S.gather.cells) || []; }
+function barPos() {
+  const cs = barCells();
+  for (let i = 0; i < cs.length; i++) if (cs[i].index === S.bar) return i;
+  return -1;
+}
+function curCell() { const i = barPos(); return i < 0 ? null : barCells()[i]; }
+
+/** Every box the CURRENT bar owns, left to right — the population `Tab`
+ *  walks, the popover can reach, and the pointer can hit. */
+function barBoxes() {
+  return S.boxes
+    .filter(b => b.bbox_page_px && b.cell === S.bar)
+    .sort((a, b) => a.bbox_page_px[0] - b.bbox_page_px[0]);
+}
+
+/** Where a fresh load lands: the hash, then the remembered bar, then the
+ *  first cell. ⚠️ A remembered bar this staff does not have is NOT an error
+ *  and NOT a blank screen — it falls to the first cell and says nothing. */
+function startAtBar(want) {
+  const cs = barCells();
+  if (!cs.length) { S.bar = null; return; }
+  const i = want === null || want === undefined ? -1 : L.barIndex(cs, want);
+  S.bar = cs[i >= 0 ? i : 0].index;
+  rememberBar();
+}
+
+function barFromHash() {
+  const m = /(?:^#|&)bar=([^&]+)/.exec(location.hash || '');
+  return m ? decodeURIComponent(m[1]) : null;
+}
+function barStoreKey() { return 'reengrave.review.bar.' + S.staff; }
+function rememberedBar() {
+  // ⚠️ A CONVENIENCE ONLY, AND IT MAY THROW. Private-mode and blocked site
+  // data make every one of these accessors raise; the screen must open on
+  // the first bar, not on an exception.
+  try { return localStorage.getItem(barStoreKey()); } catch (e) { return null; }
+}
+function rememberBar() {
+  const c = curCell();
+  if (!c || !S.staff) return;
+  const lab = L.barLabel(c);
+  history.replaceState(null, '', `?staff=${encodeURIComponent(S.staff)}`
+    + `#bar=${encodeURIComponent(lab)}`);
+  try { localStorage.setItem(barStoreKey(), lab); } catch (e) { /* see above */ }
+}
+
+function paintBarNav() {
+  const cs = barCells(), c = curCell(), i = barPos();
+  const lo = cs.length ? L.barLabel(cs[0]) : '—';
+  const hi = cs.length ? L.barLabel(cs[cs.length - 1]) : '—';
+  $('barNow').textContent = c ? `bar ${L.barLabel(c)} of ${lo}–${hi}`
+                              : 'no bars on this staff';
+  // ⚠️ THE TOOLTIP SAYS WHICH NUMBERING THIS IS, because they are not always
+  // the same one and the screen must not let him assume.
+  $('barNow').title = c
+    ? `cell ${c.index} of ${cs.length} — the number this staff WROTE `
+      + `(<measure number=>, from EXPORT's own offsets). Nothing in the `
+      + `record reads the number ENGRAVED on the plate, and this viewer does `
+      + `not compute one.`
+    : '';
+  $('barPrev').disabled = i <= 0;
+  $('barNext').disabled = i < 0 || i >= cs.length - 1;
+}
+
+/** Move the window to a cell. ⚠️ THE SELECTION DOES NOT TRAVEL: a box in the
+ *  bar he left is not clickable from the bar he is on, so leaving it selected
+ *  would leave handles on the screen that nothing can grab. */
+function setBar(cellIndex, animate) {
+  const cs = barCells();
+  if (!cs.length) return;
+  const c = cs.find(x => x.index === cellIndex);
+  if (!c) return;
+  const moved = S.bar !== c.index;
+  S.bar = c.index;
+  if (moved) { closePop(); S.sel = null; S.dupFor = null; }
+  rememberBar();
+  paintBarNav();
+  showBar(moved && animate !== false);
+}
+
+function stepBar(d) {
+  const cs = barCells();
+  if (!cs.length) return;
+  const i = barPos();
+  const j = (i < 0 ? 0 : i) + d;
+  if (j < 0) return toast('this is the first bar on the staff');
+  if (j >= cs.length) return toast('this is the last bar on the staff');
+  setBar(cs[j].index);
+}
+function edgeBar(last) {
+  const cs = barCells();
+  if (cs.length) setBar(cs[last ? cs.length - 1 : 0].index);
+}
+
+/** ⚠️ THE ONE PLACE THE BAR BECOMES A VIEW. Both halves are pure functions in
+ *  `labels.js` and are tested by `node`; this only measures the pane, which
+ *  is the part a test cannot see. */
+function showBar(animate) {
+  const c = curCell();
+  const st = $('stage');
+  if (!S.crop) return;
+  if (!c) return fit();                     // no cells: the whole crop or none
+  if (!st.clientWidth || !st.clientHeight) {
+    // the pane is not laid out yet — see `fit`'s note, measured
+    requestAnimationFrame(() => { sizeCanvas(); showBar(false); });
+    return;
+  }
+  const rect = L.barWindow(c.box, S.gather.staff_lines, S.gather.spacing);
+  const v = rect && L.viewForRect(S.crop, rect, st.clientWidth, st.clientHeight);
+  // ⚠️ NO FALLBACK THAT PRETENDS. A staff with no spacing reading cannot have
+  // a bar window computed, and the honest answer is the whole crop.
+  if (!v) return fit();
+  if (animate) glideTo(v); else setView(v);
+}
+
+/** ⚠️ HIS HAND OUTRANKS THE ANIMATION. A wheel or a drag landing mid-glide
+ *  would otherwise fight it for `S.view` and the zoom would snap back. */
+function stopGlide() {
+  if (S.glide) { cancelAnimationFrame(S.glide); S.glide = null; }
+}
+
+function setView(v) {
+  stopGlide();
+  S.view.scale = v.scale; S.view.tx = v.tx; S.view.ty = v.ty;
+  draw();
+  positionPop();
+}
+
+/** The short pan/zoom between two bars — 180 ms, so the eye carries the
+ *  place across instead of being teleported. */
+function glideTo(to) {
+  const from = {scale: S.view.scale, tx: S.view.tx, ty: S.view.ty};
+  if (!from.scale) return setView(to);
+  if (S.glide) cancelAnimationFrame(S.glide);
+  const t0 = (window.performance || Date).now();
+  const step = now => {
+    const k = Math.min(1, ((now || t0) - t0) / 180);
+    const e = k < 0.5 ? 2 * k * k : 1 - Math.pow(-2 * k + 2, 2) / 2;
+    S.view.scale = from.scale + (to.scale - from.scale) * e;
+    S.view.tx = from.tx + (to.tx - from.tx) * e;
+    S.view.ty = from.ty + (to.ty - from.ty) * e;
+    paintCanvas(); positionPop();
+    S.glide = k < 1 ? requestAnimationFrame(step) : null;
+  };
+  S.glide = requestAnimationFrame(step);
+}
+
 function wireBar() {
+  $('barPrev').onclick = () => stepBar(-1);
+  $('barNext').onclick = () => stepBar(1);
+  const go = $('barGo');
+  go.addEventListener('keydown', e => {
+    if (e.key !== 'Enter') return;
+    e.preventDefault();
+    const cs = barCells();
+    const i = L.barIndex(cs, go.value);
+    if (i < 0) {
+      const lo = cs.length ? L.barLabel(cs[0]) : '—';
+      const hi = cs.length ? L.barLabel(cs[cs.length - 1]) : '—';
+      return toast(`this staff has no bar ${go.value.trim()} — it carries `
+                   + `${lo}–${hi}`, true);
+    }
+    go.value = ''; go.blur();
+    setBar(cs[i].index);
+  });
   $('undoBtn').onclick = undoLast;
   $('rerunBtn').onclick = () => { openDrawer('actions'); rerun(); };
   $('drawerBtn').onclick = () => S.drawerOpen ? closeDrawer()
@@ -271,9 +469,10 @@ function sizeCanvas() {
   c.style.width = w + 'px'; c.style.height = h + 'px';
 }
 
-/** ⚠️ FIT TO WIDTH, VERTICALLY CENTRED — the state the page opens in and the
- *  one `f` returns to. A staff-system crop is ~8:1, so width is the fit that
- *  shows the bar he is looking for. */
+/** ⚠️ THE WHOLE STAFF-SYSTEM, fit to width and vertically centred. This is no
+ *  longer what the page opens in — roadmap 3.4e opens on ONE BAR — it is what
+ *  `F` (shift) shows when he wants the shape of the system again, and what
+ *  `showBar` falls back to where a bar window cannot be computed. */
 function fit() {
   if (!S.crop) return;
   const st = $('stage');
@@ -293,6 +492,7 @@ function fit() {
 }
 
 function zoomAt(sx, sy, factor) {
+  stopGlide();
   const before = screenToCrop(sx, sy);
   S.view.scale = Math.max(0.05, Math.min(24, S.view.scale * factor));
   const after = screenToCrop(sx, sy);
@@ -333,11 +533,12 @@ function paintCanvas() {
   x.font = '11px ui-monospace,Menlo,monospace';
   for (const cell of S.gather.cells) {
     const p = pageBoxToScreen(cell.box);
-    x.strokeStyle = 'rgba(120,120,120,.35)'; x.lineWidth = 1;
+    const here = cell.index === S.bar;
+    x.strokeStyle = here ? 'rgba(60,60,60,.7)' : 'rgba(120,120,120,.35)';
+    x.lineWidth = here ? 2 : 1;
     x.beginPath(); x.moveTo(p[0], p[1]); x.lineTo(p[0], p[3]); x.stroke();
-    x.fillStyle = '#6a6254';
-    x.fillText(cell.bar === null ? 'c' + cell.index : String(cell.bar),
-               p[0] + 3, p[1] - 3);
+    x.fillStyle = here ? '#1a1a1a' : '#6a6254';
+    x.fillText(L.barLabel(cell), p[0] + 3, p[1] - 3);
   }
 
   const mine = S.actionsOnGlyph;
@@ -349,7 +550,10 @@ function paintCanvas() {
     const said = acts.length ? acts[acts.length - 1] : null;
     x.lineWidth = sel ? 3 : 1.5;
     x.strokeStyle = said ? HUMAN : (FAMILY_COLOUR[b.family] || '#777');
-    x.globalAlpha = (S.sel && !sel) ? 0.55 : 1;
+    // ⚠️ ANOTHER BAR'S BOX IS DIMMED, NOT HIDDEN — and a box he has already
+    // answered stays bright wherever it is, so an answer never disappears.
+    x.globalAlpha = !inCurrentBar(b.cell) && !said ? OTHER_BAR_ALPHA
+      : (S.sel && !sel) ? 0.55 : 1;
     x.strokeRect(p[0], p[1], p[2] - p[0], p[3] - p[1]);
     if (said) drawSaidTag(x, p, said, b);
     x.globalAlpha = 1;
@@ -425,11 +629,22 @@ function handlePoints(p) {
 const HANDLE_CURSOR = ['nwse', 'ns', 'nesw', 'ew', 'nwse', 'ns', 'nesw', 'ew'];
 
 // ── hit testing ─────────────────────────────────────────────────────────
+function inCurrentBar(cell) {
+  return S.bar === null || S.bar === undefined || cell === S.bar;
+}
+
+/** ⚠️ ONLY THE CURRENT BAR IS CLICKABLE (roadmap 3.4e). A box in another bar
+ *  is on the screen so he can see the ink either side of the barline; it is
+ *  not answerable until the window is on its bar, because an answer filed
+ *  from a bar he is not reading is an answer he did not look at. Empty plate
+ *  under the pointer still DRAWS — a rectangle crossing a barline is allowed
+ *  and lands in the cell its centre is in (`cellUnder`). */
 function boxAt(sx, sy) {
   const [px, py] = screenToPage(sx, sy);
   let best = null;
   for (const b of S.boxes) {
     if (!b.bbox_page_px) continue;
+    if (!inCurrentBar(b.cell)) continue;
     const [x0, y0, x1, y1] = b.bbox_page_px;
     if (px < x0 || px > x1 || py < y0 || py > y1) continue;
     const area = (x1 - x0) * (y1 - y0);
@@ -487,6 +702,7 @@ function wireCanvas() {
 
   c.addEventListener('mousedown', e => {
     const [sx, sy] = at(e);
+    stopGlide();
     if (e.button === 1 || e.button === 2 || S.space) {
       S.drag = {mode: 'pan', sx, sy, tx: S.view.tx, ty: S.view.ty};
       c.className = 'panning';
@@ -535,6 +751,7 @@ function wireCanvas() {
   // A pinch arrives as a wheel event with `ctrlKey`, and is the same gesture.
   c.addEventListener('wheel', e => {
     e.preventDefault();
+    stopGlide();
     if (e.shiftKey) {                          // a deliberate sideways pan
       S.view.tx -= e.deltaX || e.deltaY;
       draw(); positionPop(); return;
@@ -809,20 +1026,26 @@ function wireKeys() {
     }
     if (isTyping(e)) return;
     if (e.key === 'Tab') {
-      // ⚠️ LEFT TO RIGHT, the order he reads the bar in.
+      // ⚠️ LEFT TO RIGHT WITHIN THE BAR, the order he reads it in — and off
+      // the end of the bar it goes to the NEXT BAR'S FIRST BOX rather than
+      // wrapping, so Tab alone walks the staff without ever showing him a box
+      // from a bar he is not on.
       e.preventDefault();
-      const drawn = S.boxes.filter(b => b.bbox_page_px)
-        .sort((a, b) => a.bbox_page_px[0] - b.bbox_page_px[0]);
-      if (!drawn.length) return;
-      const i = drawn.findIndex(b => b.glyph === S.sel);
-      const nxt = drawn[(i + (e.shiftKey ? drawn.length - 1 : 1) + drawn.length)
-                        % drawn.length] || drawn[0];
-      select(nxt.glyph);
-      scrollTo(nxt);
-      return;
+      return tabBox(e.shiftKey);
     }
+    if (e.key === 'ArrowRight' || e.key === ']') {
+      e.preventDefault(); return stepBar(1);
+    }
+    if (e.key === 'ArrowLeft' || e.key === '[') {
+      e.preventDefault(); return stepBar(-1);
+    }
+    if (e.key === 'Home') { e.preventDefault(); return edgeBar(false); }
+    if (e.key === 'End') { e.preventDefault(); return edgeBar(true); }
     if (e.key === 'Enter' && S.sel) { e.preventDefault(); return openPop(S.sel); }
-    if (e.key === 'f') { e.preventDefault(); return fit(); }
+    // ⚠️ `f` IS THE BAR AND `F` IS THE SYSTEM. The small key is the one he
+    // presses a hundred times a page, so it belongs to the thing he is on.
+    if (e.key === 'f') { e.preventDefault(); return showBar(true); }
+    if (e.key === 'F') { e.preventDefault(); return fit(); }
     if (e.key === 'z') { e.preventDefault(); return undoLast(); }
     if (e.key === '+' || e.key === '=') {
       return zoomAt($('stage').clientWidth / 2, $('stage').clientHeight / 2, 1.25);
@@ -843,6 +1066,38 @@ function wireKeys() {
 function isTyping(e) {
   const t = (e.target.tagName || '').toLowerCase();
   return t === 'input' || t === 'textarea' || t === 'select';
+}
+
+/** `Tab` and `shift-Tab`, over the CURRENT BAR's boxes, spilling into the
+ *  neighbouring bar at either end. */
+function tabBox(back) {
+  const drawn = barBoxes();
+  if (S.sel) {
+    const i = drawn.findIndex(b => b.glyph === S.sel);
+    const j = i + (back ? -1 : 1);
+    if (i >= 0 && j >= 0 && j < drawn.length) {
+      select(drawn[j].glyph); scrollTo(drawn[j]); return;
+    }
+    if (i >= 0) return hopBar(back);       // off the end of this bar
+  }
+  if (!drawn.length) return hopBar(back);  // an empty bar is not a dead end
+  const b = back ? drawn[drawn.length - 1] : drawn[0];
+  select(b.glyph); scrollTo(b);
+}
+
+/** The next (or previous) bar, landing on its first (or last) box. */
+function hopBar(back) {
+  const cs = barCells();
+  const i = barPos();
+  const j = (i < 0 ? 0 : i) + (back ? -1 : 1);
+  if (j < 0 || j >= cs.length) {
+    return toast(back ? 'this is the first bar on the staff'
+                      : 'this is the last bar on the staff');
+  }
+  setBar(cs[j].index);
+  const drawn = barBoxes();
+  if (!drawn.length) return;
+  select((back ? drawn[drawn.length - 1] : drawn[0]).glyph);
 }
 
 /** Bring a box into view without moving the zoom — Tab must not teleport. */

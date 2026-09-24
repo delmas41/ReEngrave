@@ -727,6 +727,203 @@ def _canonical_names():
     return sorted({canonical(n) for n in vocabulary()})
 
 
+# ─────────────────────────────────────────────────────────────────────────
+# ⚠️⚠️ ONE BAR AT A TIME — roadmap 3.4e, and Sean's whole spec for it:
+# *"i need it to be 1 measure at a time."*
+#
+# The geometry that decides WHICH PIXELS he is looking at is two pure
+# functions in `labels.js`, and these check them against numbers computed by
+# hand — the same discipline as `CropFrame`. Run RED by taking the cell box's
+# own y in `barWindow`: `test_the_window_is_the_STAFF_BAND_not_the_cell_box`
+# then fails with a window 200 px tall instead of 100, which on a
+# conductor's page is the next staff's ink on the screen.
+# ─────────────────────────────────────────────────────────────────────────
+
+class TestTheBarWindow(unittest.TestCase):
+
+    #: one bar of a staff whose lines are 10 px apart. ⚠️ THE CELL BOX IS
+    #: TALLER THAN THE STAFF — `Q.CELL_BOX` is padded 4 staff spaces (6 where
+    #: the neighbour is far), which is exactly the case that must not leak.
+    CELL = [100.0, 500.0, 340.0, 700.0]
+    LINES = [600.0, 610.0, 620.0, 630.0, 640.0]
+    SPACING = 10.0
+
+    def _window(self, **kw):
+        payload = {"cell": self.CELL, "lines": self.LINES,
+                   "spacing": self.SPACING, **kw}
+        return _run_js("return L.barWindow(IN.cell, IN.lines, IN.spacing, "
+                       "IN.opts || null);", payload)
+
+    def test_the_window_is_the_STAFF_BAND_not_the_cell_box(self):
+        """⚠️ THE ONE THAT MATTERS. x from the cell (that IS the bar), y from
+        the staff's own five lines — never from the cell's padded y, which
+        reaches the neighbouring staff."""
+        self.assertEqual(self._window(), [90.0, 570.0, 350.0, 670.0])
+
+    def test_the_pad_is_one_space_beside_and_three_above_and_below(self):
+        got = self._window()
+        self.assertAlmostEqual(self.CELL[0] - got[0], self.SPACING)
+        self.assertAlmostEqual(got[2] - self.CELL[2], self.SPACING)
+        self.assertAlmostEqual(self.LINES[0] - got[1], 3 * self.SPACING)
+        self.assertAlmostEqual(got[3] - self.LINES[-1], 3 * self.SPACING)
+
+    def test_the_pad_can_be_asked_for_in_spaces(self):
+        got = self._window(opts={"padXSpaces": 0, "padYSpaces": 0})
+        self.assertEqual(got, [100.0, 600.0, 340.0, 640.0])
+
+    def test_a_staff_with_no_spacing_reading_gets_NO_WINDOW(self):
+        """⚠️ RULE 8. A spacing nobody read cannot become a window with a
+        made-up pad — the caller shows the whole crop and says so."""
+        self.assertIsNone(self._window(spacing=0))
+        self.assertIsNone(self._window(lines=[]))
+        self.assertIsNone(self._window(cell=[1.0, 2.0]))
+
+    def test_the_lines_need_not_be_in_order(self):
+        a = self._window()
+        b = self._window(lines=list(reversed(self.LINES)))
+        self.assertEqual(a, b)
+
+
+class TestTheViewForARectangle(unittest.TestCase):
+    """page rectangle + pane → the screen transform, by hand.
+
+    ⚠️ `crop.zoom` IS NOT 1 HERE. A transform tested only at zoom 1 is a
+    transform that has never been asked the question the viewer asks it —
+    `TestTheCropFrame`'s own lesson, kept.
+    """
+
+    CROP = {"page_px": [50.0, 550.0, 1000.0, 700.0], "zoom": 2}
+    RECT = [90.0, 570.0, 350.0, 670.0]        # `barWindow`'s answer, above
+
+    def _view(self, w, h, rect=None, crop=None):
+        return _run_js("return L.viewForRect(IN.crop, IN.rect, IN.w, IN.h);",
+                       {"crop": crop or self.CROP, "rect": rect or self.RECT,
+                        "w": w, "h": h})
+
+    def test_a_wide_bar_fills_the_WIDTH(self):
+        # crop px: (80, 40) .. (600, 240) -> 520 x 200. A 1040 x 800 pane
+        # fits the width at 2.0 and the height at 4.0; the width binds.
+        v = self._view(1040, 800)
+        self.assertAlmostEqual(v["scale"], 2.0)
+        self.assertAlmostEqual(v["tx"], -160.0)
+        self.assertAlmostEqual(v["ty"], 120.0)
+
+    def test_the_bar_lands_exactly_on_the_two_edges(self):
+        v = self._view(1040, 800)
+        left = 80.0 * v["scale"] + v["tx"]
+        right = 600.0 * v["scale"] + v["tx"]
+        self.assertAlmostEqual(left, 0.0)
+        self.assertAlmostEqual(right, 1040.0)
+
+    def test_a_SHORT_pane_fits_the_height_instead_of_cropping_the_staff(self):
+        """⚠️ The smaller fit wins. Fitting the width on a pane this short
+        would push the staff's own lines off the top and bottom — a bar he
+        cannot see the ledger lines of is not one bar on the screen."""
+        v = self._view(1040, 300)
+        self.assertAlmostEqual(v["scale"], 1.5)
+        top = 40.0 * v["scale"] + v["ty"]
+        bottom = 240.0 * v["scale"] + v["ty"]
+        self.assertAlmostEqual(top, 0.0)
+        self.assertAlmostEqual(bottom, 300.0)
+
+    def test_an_UNLAID_OUT_PANE_gets_no_transform(self):
+        """⚠️ Measured on 3.4d: a pane of width 0 fits at `scale = 0` and
+        paints an empty screen that reads as a broken page."""
+        self.assertIsNone(self._view(0, 800))
+        self.assertIsNone(self._view(1040, 0))
+        self.assertIsNone(self._view(1040, 800, rect=[90.0, 570.0, 90.0, 670.0]))
+
+    def test_it_agrees_with_the_frame_it_is_built_on(self):
+        """The transform is `crop px -> screen px` and reaches the page only
+        through `pageToCrop` — so a box at the bar's own left edge lands where
+        the window's left edge does."""
+        out = _run_js(
+            "const v = L.viewForRect(IN.crop, IN.rect, IN.w, IN.h);\n"
+            "const c = L.pageToCrop(IN.crop, IN.rect[0], IN.rect[1]);\n"
+            "return [c[0] * v.scale + v.tx, c[1] * v.scale + v.ty];",
+            {"crop": self.CROP, "rect": self.RECT, "w": 1040, "h": 800})
+        self.assertAlmostEqual(out[0], 0.0)
+        self.assertAlmostEqual(out[1], 200.0)
+
+
+class TestTheBarIsTheNUMBERTHEPAYLOADCARRIES(unittest.TestCase):
+    """⚠️ The viewer PRINTS the bar number; it never computes one.
+
+    `server.ReviewData.bar_number` reads `_part_xml`'s own offsets, and on the
+    Litolff record the file's numbers run one behind the print from bar 48 —
+    a viewer doing its own `index + 1` would disagree with the exported score
+    by one from there on and nothing would say so.
+    """
+
+    CELLS = [{"index": 0, "bar": 49}, {"index": 1, "bar": 50},
+             {"index": 2, "bar": None}, {"index": 3, "bar": 52}]
+
+    def _js(self, body):
+        return _run_js(body, {"cells": self.CELLS})
+
+    def test_a_numbered_cell_is_called_by_its_printed_bar(self):
+        self.assertEqual(self._js("return IN.cells.map(L.barLabel);"),
+                         ["49", "50", "c2", "52"])
+
+    def test_a_cell_the_numbering_REFUSED_is_not_given_one(self):
+        """⚠️ `bar: null` is a real answer (the document numbering was
+        refused). It is shown as its CELL, never as an invented bar."""
+        self.assertEqual(self._js("return L.barLabel(IN.cells[2]);"), "c2")
+
+    def test_typing_a_bar_number_finds_its_cell(self):
+        self.assertEqual(self._js("return L.barIndex(IN.cells, '52');"), 3)
+        self.assertEqual(self._js("return L.barIndex(IN.cells, 50);"), 1)
+        self.assertEqual(self._js("return L.barIndex(IN.cells, ' 49 ');"), 0)
+        self.assertEqual(self._js("return L.barIndex(IN.cells, 'c2');"), 2)
+
+    def test_a_bar_this_staff_does_not_carry_is_MINUS_ONE(self):
+        """Not 0, which would silently land him on the first bar and let him
+        answer boxes he never asked to see."""
+        self.assertEqual(self._js("return L.barIndex(IN.cells, '999');"), -1)
+        self.assertEqual(self._js("return L.barIndex(IN.cells, '');"), -1)
+        self.assertEqual(self._js("return L.barIndex(IN.cells, null);"), -1)
+        self.assertEqual(self._js("return L.barIndex(IN.cells, '3');"), -1)
+
+
+class TestTheGatherPayloadFeedsTheBarWindow(unittest.TestCase):
+    """⚠️ A pure function is only as good as what reaches it. `barWindow`
+    reads three things off `/api/gather`; this is the wiring check that they
+    are all there and are all numbers, on a real (fixture) staff."""
+
+    @classmethod
+    def setUpClass(cls):
+        cls.tmp = Path(tempfile.mkdtemp())
+        cls.D = _data(cls.tmp)
+
+    def test_the_payload_carries_the_cells_the_lines_and_the_spacing(self):
+        g = R.gather_view(self.D, "staff/0/0/1", 2)
+        self.assertEqual(len(g["staff_lines"]), 5)
+        self.assertGreater(g["spacing"], 0)
+        for c in g["cells"]:
+            self.assertEqual(len(c["box"]), 4)
+            self.assertIn("index", c)
+            self.assertIn("bar", c)          # None is an answer; absent is not
+
+    def test_the_window_of_every_cell_is_inside_the_crop_it_is_cut_from(self):
+        """⚠️ A window outside the crop is a screen of grey. The crop is cut
+        with 3 spaces of x pad and 7 of y (`crop_frame_for`), so a 1-and-3
+        window is inside it by construction — and this is where that stops
+        being an assumption."""
+        for staff in self.D.staff_keys:
+            g = R.gather_view(self.D, staff, 2)
+            crop = g["crop"]["page_px"]
+            for c in g["cells"]:
+                w = _run_js("return L.barWindow(IN.cell, IN.lines, "
+                            "IN.spacing);",
+                            {"cell": c["box"], "lines": g["staff_lines"],
+                             "spacing": g["spacing"]})
+                self.assertIsNotNone(w, f"{staff} cell {c['index']}")
+                self.assertGreaterEqual(w[0], crop[0] - 0.5)
+                self.assertGreaterEqual(w[1], crop[1] - 0.5)
+                self.assertLessEqual(w[2], crop[2] + 0.5)
+                self.assertLessEqual(w[3], crop[3] + 0.5)
+
+
 class TestTheFriendlyNamesRoundTripEveryClass(unittest.TestCase):
 
     @classmethod

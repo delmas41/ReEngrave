@@ -297,11 +297,118 @@ function boxToCrop(crop, b) {
   return [a[0], a[1], c[0], c[1]];
 }
 
+// ── 5. ONE BAR AT A TIME ────────────────────────────────────────────────
+// Sean, 2026-09-23, the whole of roadmap 3.4e: *"i need it to be 1 measure
+// at a time."*  So the screen is a WINDOW on one cell, and these are the two
+// pure functions that compute it — here, beside the frame, because the test
+// that can fail is the one `node` can run.
+
+//: how wide of the neighbouring bars is shown at each side, in staff spaces
+const BAR_PAD_X_SPACES = 1;
+//: how far above and below the staff's own five lines the window reaches
+const BAR_PAD_Y_SPACES = 3;
+
+/**
+ * The PAGE rectangle one bar fills the screen with.
+ *
+ * ⚠️⚠️ THE VERTICAL EXTENT COMES FROM THE STAFF'S OWN FIVE LINES, NEVER FROM
+ * THE CELL BOX. `Q.CELL_BOX` is padded 4 staff spaces (6 where the neighbour
+ * is far) and on a conductor's page that pad reaches the NEXT staff's ink
+ * (CLAUDE.md §10) — a window cut to the cell's own y would show two staves
+ * and Sean would again be asking *"i dont know which staff the cell is
+ * focussing on."*  The x extent is the cell's, because that IS the bar.
+ *
+ * @param cellBox     `Q.CELL_BOX`, page px, [x0, y0, x1, y1] — y IGNORED
+ * @param staffLines  the five `Q.STAFF_LINES` y's, page px
+ * @param spacing     `Q.STAFF_SPACING`, page px per staff space
+ * @returns [x0, y0, x1, y1] in page px, or null where a reading is missing —
+ *          ⚠️ null rather than a guessed rectangle: a window computed from a
+ *          spacing nobody read is a picture that lies about which bar it is.
+ */
+function barWindow(cellBox, staffLines, spacing, opts) {
+  const o = opts || {};
+  const sp = Number(spacing);
+  if (!cellBox || cellBox.length < 4 || !staffLines || !staffLines.length
+      || !(sp > 0)) return null;
+  const padX = (o.padXSpaces === undefined ? BAR_PAD_X_SPACES
+                                           : o.padXSpaces) * sp;
+  const padY = (o.padYSpaces === undefined ? BAR_PAD_Y_SPACES
+                                           : o.padYSpaces) * sp;
+  const ys = staffLines.map(Number);
+  const x0 = Math.min(Number(cellBox[0]), Number(cellBox[2]));
+  const x1 = Math.max(Number(cellBox[0]), Number(cellBox[2]));
+  return [x0 - padX, Math.min.apply(null, ys) - padY,
+          x1 + padX, Math.max.apply(null, ys) + padY];
+}
+
+/**
+ * The screen transform (`crop px -> screen px`) that puts `pageRect` in the
+ * middle of a `width x height` pane.
+ *
+ * ⚠️ THE SMALLER OF THE TWO FITS WINS. Sean asked for the bar to fill the
+ * WIDTH, and on a bar wider than it is tall that is what `width / w` gives;
+ * on a narrow bar — a 2/4 pick-up, a bar of one chord — fitting the width
+ * would push the staff off the top and bottom of the pane, so the height fit
+ * binds instead and the bar is still whole on the screen.
+ *
+ * @returns {scale, tx, ty}, or null where the pane or the rectangle has no
+ *          area (a pane that is not laid out yet measures 0 and `scale = 0`
+ *          paints an empty screen — measured, `fit()`'s own note).
+ */
+function viewForRect(crop, pageRect, width, height) {
+  if (!crop || !pageRect) return null;
+  const a = pageToCrop(crop, pageRect[0], pageRect[1]);
+  const b = pageToCrop(crop, pageRect[2], pageRect[3]);
+  const x0 = Math.min(a[0], b[0]), y0 = Math.min(a[1], b[1]);
+  const w = Math.abs(b[0] - a[0]), h = Math.abs(b[1] - a[1]);
+  if (!(width > 0) || !(height > 0) || !(w > 0) || !(h > 0)) return null;
+  const scale = Math.min(width / w, height / h);
+  return {scale: scale,
+          tx: (width - w * scale) / 2 - x0 * scale,
+          ty: (height - h * scale) / 2 - y0 * scale};
+}
+
+/**
+ * What the top bar calls this cell.
+ *
+ * ⚠️⚠️ IT IS THE PAYLOAD'S OWN `bar` AND NOTHING HERE RECOMPUTES IT.
+ * `server.ReviewData.bar_number` is `_part_xml`'s own arithmetic over the
+ * offsets the EXPORT pass produced — the `<measure number=>` this staff
+ * WROTE. On the Litolff p3 Viola that is 48–63 while the plate prints 49–64
+ * (`omr-stage-review-2026-09/FINDINGS.md`), and the viewer prints 48 anyway:
+ * **no reader in the record reads the number engraved on the plate**, there
+ * is no `Q` for it, and a viewer adding one would be manufacturing a reading
+ * nobody took — on this record it would be right and on the next it would be
+ * wrong, with nothing able to tell which. The `#barNow` tooltip names which
+ * numbering this is; closing the gap means a reader, not an offset.
+ *
+ * A cell the document numbering REFUSED carries `bar: null`, which is a real
+ * answer — it is shown as its cell (`c7`), never as an invented bar.
+ */
+function barLabel(cell) {
+  if (!cell) return '—';
+  return (cell.bar === null || cell.bar === undefined)
+    ? 'c' + cell.index : String(cell.bar);
+}
+
+/** Where in `cells` the bar spelled `want` sits, or -1. Matches what the top
+ *  bar SHOWS, so `49` and `c7` are both typeable. */
+function barIndex(cells, want) {
+  const q = String(want === null || want === undefined ? '' : want).trim();
+  if (!q) return -1;
+  for (let i = 0; i < cells.length; i++) {
+    if (barLabel(cells[i]) === q) return i;
+  }
+  return -1;
+}
+
 // ⚠️ NODE READS THIS FILE TOO — the friendly-name table and the filter are
 // tested by `test_stage_review.py` through `node`, because a table only the
 // browser can see is a table nothing checks.
 if (typeof module !== 'undefined' && module.exports) {
   module.exports = {friendlyName, friendlyTable, buildAnswers, filterAnswers,
                     cropToPage, pageToCrop, boxToPage, boxToCrop,
+                    barWindow, viewForRect, barLabel, barIndex,
+                    BAR_PAD_X_SPACES, BAR_PAD_Y_SPACES,
                     ANSWER_WORDS, FRIENDLY_EXACT};
 }

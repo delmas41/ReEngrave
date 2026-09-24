@@ -17,6 +17,17 @@
 
 <header id="bar">
   <b id="staffName">—</b>
+  <!-- ⚠️ ONE BAR AT A TIME (roadmap 3.4e). Sean: *"i need it to be 1 measure
+       at a time."*  The screen is a window on ONE cell; this is where it says
+       which one, and the two ways to move it that do not need the keyboard. -->
+  <span id="barNav" class="barNav">
+    <button id="barPrev" title="the bar before (← or [)">←</button>
+    <b id="barNow">bar —</b>
+    <button id="barNext" title="the next bar (→ or ])">→</button>
+    <input id="barGo" type="text" inputmode="numeric" maxlength="6"
+           placeholder="go to" autocomplete="off" spellcheck="false"
+           title="type a bar number and press Enter">
+  </span>
   <span id="staffBars" class="dim"></span>
   <select id="staffPick" title="another staff"></select>
   <span id="frameChip" class="chip hidden"></span>
@@ -26,7 +37,8 @@
   <button id="rerunBtn" title="re-run the stages with these corrections">Re-run</button>
   <button id="drawerBtn" title="the stage views, over the crop">Stages</button>
   <span id="help" class="dim tiny">click a box · type what it is · Enter ·
-    drag empty space to draw · f fits</span>
+    drag empty space to draw · →/← the next bar · Tab the next box ·
+    f fits the bar, F the staff</span>
 </header>
 
 <main id="stage">
