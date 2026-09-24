@@ -4,6 +4,14 @@
 `claude/shape-role-audit-2.12`, base `404ccc5a` · **no product code changed;
 nothing under `tools/` was touched.**
 
+⚠️ **EVERY `file:line` BELOW IS AS OF `404ccc5a`.** `origin/main` moved to
+`48496e30` (3.4C) while this lane ran, and that landing shifts
+`adjudicators/ownership.py` — the `arc_kind` class test cited at `:626` is
+at `:688` there. `gather.py`'s line numbers are unchanged on both
+(`_KEYSIG_CLASSES` `:2364`, `_DOT_CLASS` test `:801`, the 2.6 category test
+`:678`). CLAUDE.md rule 10: the tree outranks this ledger — check a line
+before quoting it.
+
 Sean, 2026-09-23 (`docs/DECISIONS.md`): *"a detector class is TWO claims: the
 SHAPE … which the detector is good at, and the ROLE … which is a guess about
 context made from a crop. GATHER files the shape and the position and records
