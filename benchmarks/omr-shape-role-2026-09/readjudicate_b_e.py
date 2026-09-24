@@ -126,9 +126,14 @@ def _export(log: Log) -> dict:
     counted. ⚠️ `to_musicxml` RAISES `Unbalanced` rather than returning a
     flag, so a refusal that reaches one counter and not the other fails here
     loudly instead of being reported as a clean number."""
-    xml, report = SX.to_musicxml({"record": log.to_json()})
-    cov = SX.coverage({"record": log.to_json()},
-                      written=report.get("written_by_family"))
+    # ⚠️⚠️ ONE `to_json`, NOT TWO. Each call materialises the WHOLE record a
+    # second time, and on the 478 MB Breitkopf record two of them plus the Log
+    # itself is what the OS killed this script for at three minutes in
+    # (SIGTERM, rc 143) -- which reads exactly like a hang, or like a bug in
+    # the rule under test. The result dict is built once and handed to both.
+    result = {"record": log.to_json()}
+    xml, report = SX.to_musicxml(result)
+    cov = SX.coverage(result, written=report.get("written_by_family"))
     census = cov.get("status_census") or {}
     return {
         "notes": xml.count("<note"),

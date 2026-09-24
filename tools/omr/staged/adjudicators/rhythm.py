@@ -716,6 +716,23 @@ def _rest_slot(ev: Evidence, box_rows) -> Tuple[Optional[float], Dict[str, Any],
     used = [lines[-1].id, space[-1].id]
 
     detail: Dict[str, Any] = {"slot": "measured", "staff_step": round(step, 3)}
+    # ⚠️⚠️ RECORDED HERE, DECIDED NOWHERE -- AND THE RESTRAINT IS THE POINT.
+    # A staff is 8 half-steps tall in this frame (bottom line 0, top line 8),
+    # so a rest measuring outside that stands on ink the cell reached but the
+    # staff does not own: the measure cell is padded 4 staff spaces (6 where
+    # the neighbour is far) and on a conductor's page that reaches the NEXT
+    # STAFF'S ink (CLAUDE.md §10). Measured: 276 of the 433 rests that land on
+    # neither convention are outside their own staff -- 186 of Breitkopf's 235
+    # clustered at step -7.3, which is the next staff down, not a slot error.
+    #
+    # ⚠️ IT MUST NOT BECOME A SECOND ABSTAIN REASON. *Which staff owns this
+    # ink* is `glyph_owner`'s contest, resolved by ladder, then range, then
+    # distance, and a resolved contest DROPS the loser. A duration decision
+    # inventing an ownership verdict would be a second, weaker copy of that
+    # contest wearing a rhythm decision's name. So the fact goes on the record
+    # beside the step and the reason word stays one.
+    detail["outside_its_own_staff"] = (
+        "below" if step < 0.0 else "above" if step > 8.0 else None)
     # ⚠️⚠️ `Q.REST_POSITION` IS **NOT** READ HERE, AND THE REASON IS A
     # MEASUREMENT AND A TOOL BLIND SPOT, NOT AN OVERSIGHT.
     #
@@ -744,8 +761,23 @@ def _rest_slot(ev: Evidence, box_rows) -> Tuple[Optional[float], Dict[str, Any],
     return step, detail, used
 
 
+#: The three answers the slot can give, spelled as
+#: `benchmarks/omr-shape-role-2026-09/probe/role_disagreement.py` spells them,
+#: so the rule's census and the audit's table use ONE vocabulary.
+#:
+#: ⚠️⚠️ `class_not_contradicted` IS NOT `the slot confirms the class`, and the
+#: weaker word is the true one. The predicate is asymmetric on purpose (see
+#: `_rest_slot_verdict`), so ink displaced AWAY from both slots -- 97 Breitkopf
+#: and 13 Litolff rests standing wholly ABOVE the staff they are filed on --
+#: falls in here rather than in a disagreement bucket. Calling that `agrees`
+#: would be this rule claiming corroboration it has not got.
+SLOT_NOT_CONTRADICTED = "class_not_contradicted"
+SLOT_OTHER = "lands_on_the_other_convention"
+SLOT_NEITHER = "lands_on_neither_convention"
+
+
 def _rest_slot_verdict(name: str, step: Optional[float]) -> Optional[str]:
-    """`agrees` / `other` / `neither` -- or `None` where nothing was measured.
+    """Which of the three the slot says -- or `None` where nothing was measured.
 
     ⚠️ THE AUDIT'S PREDICATE, CHARACTER FOR CHARACTER
     (`benchmarks/omr-shape-role-2026-09/probe/role_disagreement.py`
@@ -766,8 +798,9 @@ def _rest_slot_verdict(name: str, step: Optional[float]) -> Optional[str]:
         return None
     other = HALF_REST_STEP if slot == WHOLE_REST_STEP else WHOLE_REST_STEP
     if abs(step - other) + REST_SLOT_SLACK < abs(step - slot):
-        return "other" if abs(step - other) <= REST_SLOT_SLACK else "neither"
-    return "agrees"
+        return (SLOT_OTHER if abs(step - other) <= REST_SLOT_SLACK
+                else SLOT_NEITHER)
+    return SLOT_NOT_CONTRADICTED
 
 
 def _rest_ruling(ev: Evidence, rest_rows) -> Ruling:
@@ -785,8 +818,10 @@ def _rest_ruling(ev: Evidence, rest_rows) -> Ruling:
     It no longer does. The slot is MEASURED (`_rest_slot`) and the class
     becomes the corroborating witness, recorded beside it:
 
-      * the measurement agrees with the class, or does not contradict it ->
-        DECIDED exactly as before, with `slot_says: "agrees"` on the record;
+      * the measurement does not contradict the class -> DECIDED exactly as
+        before, with `slot_says: "class_not_contradicted"` on the record --
+        the weaker word, deliberately, because the predicate is asymmetric
+        and ink displaced away from BOTH slots also lands here;
       * the rectangle lands on the OTHER convention -> NARROWED over both
         values, the measured one first. Not flipped: see the branch's own
         note -- a bowed plate and multi-voice displacement both move a rest
@@ -870,7 +905,7 @@ def _rest_ruling(ev: Evidence, rest_rows) -> Ruling:
             "slack_half_steps": REST_SLOT_SLACK,
             "frame": "bottom line 0, one step per half space, up positive"}
 
-    if slot == "neither":
+    if slot == SLOT_NEITHER:
         # ⚠️ ABSTAIN, AND THE REST IS HELD OUT RATHER THAN VALUED. This is a
         # rectangle standing where NEITHER convention puts a rest, so the one
         # measurement that can separate a whole rest from a half rest has
@@ -885,7 +920,7 @@ def _rest_ruling(ev: Evidence, rest_rows) -> Ruling:
         # (`out/print/`); nothing here reads the population as repaired.
         return Ruling.abstain("rest_stands_where_no_rest_hangs", **detail)
 
-    if slot == "other":
+    if slot == SLOT_OTHER:
         # ⚠️ NARROWED, NOT FLIPPED, AND THE REFUSAL TO FLIP IS THE POINT.
         # The geometry is the measurement that can separate these two glyphs
         # and the class is a guess from a crop -- but the convention's own

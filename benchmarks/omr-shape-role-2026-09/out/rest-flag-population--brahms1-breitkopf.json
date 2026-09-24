@@ -15,6 +15,41 @@
    "class_not_contradicted": 1837,
    "lands_on_the_other_convention": 32
   },
+  "where_the_ink_stands_by_bucket": {
+   "neither": {
+    "inside_its_own_staff": 45,
+    "below_its_own_staff": 186,
+    "above_its_own_staff": 4
+   },
+   "agrees": {
+    "inside_its_own_staff": 1709,
+    "below_its_own_staff": 31,
+    "above_its_own_staff": 97
+   },
+   "other": {
+    "inside_its_own_staff": 32
+   }
+  },
+  "step_distribution_by_bucket": {
+   "neither": {
+    "n": 235,
+    "median_step": -7.31,
+    "p10": -7.6,
+    "p90": 2.96
+   },
+   "agrees": {
+    "n": 1837,
+    "median_step": 5.33,
+    "p10": 5.082,
+    "p90": 5.93
+   },
+   "other": {
+    "n": 32,
+    "median_step": 4.65,
+    "p10": 4.489,
+    "p90": 4.729
+   }
+  },
   "rest_position_rows_on_the_record": 0,
   "measured_steps_adjudicator_frame": {
    "restWhole": {

@@ -13,6 +13,20 @@
    "cross_checked": 216,
    "other_rest_class": 101
   },
+  "where_the_ink_stands_by_bucket": {
+   "agrees": {
+    "inside_its_own_staff": 215,
+    "above_its_own_staff": 1
+   }
+  },
+  "step_distribution_by_bucket": {
+   "agrees": {
+    "n": 216,
+    "median_step": 5.45,
+    "p10": 5.44,
+    "p90": 5.461
+   }
+  },
   "rest_position_rows_on_the_record": 0,
   "measured_steps_adjudicator_frame": {
    "restWhole": {

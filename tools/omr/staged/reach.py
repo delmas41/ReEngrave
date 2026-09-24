@@ -174,13 +174,27 @@ KNOWN_GAPS: Dict[str, str] = {
     # is how `Q.STEM` stayed unread through three separate discoveries.
     # **REMOVE AN ENTRY THE DAY ITS CONSUMER LANDS.**
     Q.REST_POSITION: (
-        "⚠️ OPEN BY DESIGN — producer only, `OMR_FAMILY_POSITIONS`. FIRST "
-        "CONSUMER: `adjudicate_duration`, which reads a rest's CLASS NAME and "
-        "nothing else, while a whole rest and a half rest are the same shape "
-        "differing only in which line they touch and on which side. Second: "
+        "⚠️ OPEN BY DESIGN — producer only, `OMR_FAMILY_POSITIONS`. ⚠️⚠️ "
+        "UPDATED 2026-09-23, ROADMAP 2.12b: the named first consumer LANDED "
+        "AND STILL DOES NOT READ THIS ROW, and the two reasons are worth more "
+        "than the entry. `_rest_ruling` no longer takes a rest's value off its "
+        "class — it measures the slot with `_staff_step` over `Q.GLYPH_BOX`'s "
+        "page box, narrows where the ink lands on the other convention and "
+        "abstains where it lands on neither. It does not read `Q.REST_POSITION` "
+        "because (i) that quantity files ZERO rows on all three acceptance "
+        "records, `OMR_FAMILY_POSITIONS` being default OFF, so a rule resting "
+        "on it would be inert exactly where it is needed, and (ii) declaring "
+        "it in `wants` opens a NEW `inventory --check` finding — *no gather "
+        "site observes it* — because `inventory._producers` walks the AST of "
+        "`gather.py` AND NOTHING ELSE, so every quantity `positions.py` "
+        "observes is invisible to that tool. **The blind spot in `inventory` "
+        "is what this entry is now about.** What `Q.REST_POSITION` would still "
+        "ADD is real and unmeasured: it reads which EDGE of the rectangle is "
+        "nearer a line and how decisively (`attach_margin`), which is strictly "
+        "more of the convention than a centre. Second consumer: "
         "`OMR_WHOLE_REST_INK`, whose position witness is reconstructed "
         "per-document from the detector's boxes and INVERTS between two "
-        "publishers."),
+        "publishers. `benchmarks/omr-shape-role-2026-09/FINDINGS.md` §2.12b."),
     Q.ARC_POSITION: (
         "⚠️ OPEN BY DESIGN — producer only. FIRST CONSUMER: "
         "`adjudicate_arc_kind`, which declares `notehead_staff_position` (the "

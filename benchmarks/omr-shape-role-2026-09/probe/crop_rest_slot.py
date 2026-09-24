@@ -95,7 +95,10 @@ def _classify(rec: dict) -> Dict[str, List[dict]]:
         elif q == "staff_spacing":
             spacing[o["subject"]] = o["value"]
 
-    out: Dict[str, List[dict]] = {"neither": [], "other": [], "agrees": [],
+    # ⚠️ THE RULE'S OWN WORDS, imported from the module under evidence, so a
+    # crop's filename and the record's `slot_says` cannot drift apart.
+    out: Dict[str, List[dict]] = {RH.SLOT_NEITHER: [], RH.SLOT_OTHER: [],
+                                  RH.SLOT_NOT_CONTRADICTED: [],
                                   "unmeasurable": []}
     for o in rec["observations"]:
         if o["quantity"] != "rest":
@@ -134,15 +137,16 @@ def _cut(a, rec_path: str, pdf: str, label: str, out_dir: Path) -> dict:
     dpi = int(((prov.get("settings") or {}).get("args") or {}).get("dpi") or 600)
 
     groups = _classify(rec)
-    print("%s: neither %d, other %d, agrees %d, unmeasurable %d (dpi %d)"
-          % (label, len(groups["neither"]), len(groups["other"]),
-             len(groups["agrees"]), len(groups["unmeasurable"]), dpi),
-          flush=True)
+    print("%s: neither %d, other %d, not-contradicted %d, unmeasurable %d "
+          "(dpi %d)"
+          % (label, len(groups[RH.SLOT_NEITHER]), len(groups[RH.SLOT_OTHER]),
+             len(groups[RH.SLOT_NOT_CONTRADICTED]),
+             len(groups["unmeasurable"]), dpi), flush=True)
 
-    jobs = ([("lands_on_neither", r) for r in _spread(groups["neither"],
-                                                      a.neither)]
-            + [("lands_on_the_other_convention", r)
-               for r in _spread(groups["other"], a.other)])
+    jobs = ([(RH.SLOT_NEITHER, r)
+             for r in _spread(groups[RH.SLOT_NEITHER], a.neither)]
+            + [(RH.SLOT_OTHER, r)
+               for r in _spread(groups[RH.SLOT_OTHER], a.other)])
 
     out_dir.mkdir(parents=True, exist_ok=True)
     doc = fitz.open(pdf)
@@ -245,7 +249,7 @@ def _cut(a, rec_path: str, pdf: str, label: str, out_dir: Path) -> dict:
             "what_the_rule_does": (
                 "ABSTAIN `rest_stands_where_no_rest_hangs` — the rest is held "
                 "out of the file and counted"
-                if bucket == "lands_on_neither" else
+                if bucket == RH.SLOT_NEITHER else
                 "NARROW over both values, the measured one first — EXPORT "
                 "refuses to argmax it, so the rest is held out and counted"),
             "rest_page_px": [bx0, by0, bx1, by1],

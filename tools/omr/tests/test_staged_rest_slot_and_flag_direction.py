@@ -209,7 +209,7 @@ class TestARestsValueComesFromTheLineItHangsOn(unittest.TestCase):
         self.assertIs(v.outcome, Outcome.ABSTAINED)
         self.assertEqual(v.reason, "rest_stands_where_no_rest_hangs")
         self.assertIsNone(v.value)
-        self.assertEqual(v.detail["slot_says"], "neither")
+        self.assertEqual(v.detail["slot_says"], rhythm.SLOT_NEITHER)
 
     def test_a_rest_DISPLACED_but_still_nearest_its_own_slot_is_DECIDED(self):
         """POSITIVE CONTROL FOR THE SLACK, and the reason the predicate is
@@ -232,9 +232,41 @@ class TestARestsValueComesFromTheLineItHangsOn(unittest.TestCase):
         _staff(log)
         g = _rest_at(log, 0, "restWhole", step=rhythm.WHOLE_REST_STEP)
         v = _duration(log, g)
-        self.assertEqual(v.detail["slot_says"], "agrees")
+        self.assertEqual(v.detail["slot_says"],
+                         rhythm.SLOT_NOT_CONTRADICTED)
         self.assertEqual(v.detail["slot"], "measured")
         self.assertAlmostEqual(v.detail["staff_step"], rhythm.WHOLE_REST_STEP)
+
+    def test_ink_below_the_staff_is_RECORDED_as_such_and_decides_nothing(self):
+        """⚠️⚠️ THE BIGGEST HALF OF THE `neither` BUCKET IS AN OWNERSHIP
+        QUESTION, NOT A REST-READING ONE — 276 of the 433, and 186 of
+        Breitkopf's 235 clustered at step −7.3, which is the next staff down.
+        The measure cell is padded 4 staff spaces and on a conductor's page
+        that reaches the next staff's ink (CLAUDE.md §10).
+
+        ⚠️ SO IT IS RECORDED AND NOT DECIDED. *Which staff owns this ink* is
+        `glyph_owner`'s contest — ladder, then range, then distance — and a
+        duration decision inventing an ownership verdict would be a second,
+        weaker copy of it wearing a rhythm decision's name. One reason word,
+        the fact beside it."""
+        log = Log()
+        _staff(log)
+        g = _rest_at(log, 0, "restWhole", step=-7.3)   # the next staff down
+        v = _duration(log, g)
+        self.assertIs(v.outcome, Outcome.ABSTAINED)
+        self.assertEqual(v.reason, "rest_stands_where_no_rest_hangs")
+        self.assertEqual(v.detail["outside_its_own_staff"], "below")
+
+    def test_ink_INSIDE_the_staff_is_not_called_outside_it(self):
+        """The positive control for the field: without it every abstention
+        would read as an ownership problem, which is the claim it exists to
+        keep apart from a slot problem (157 of the 433 are inside)."""
+        log = Log()
+        _staff(log)
+        g = _rest_at(log, 0, "restWhole", step=0.0)
+        v = _duration(log, g)
+        self.assertIs(v.outcome, Outcome.ABSTAINED)
+        self.assertIsNone(v.detail["outside_its_own_staff"])
 
     def test_a_restQuarter_is_UNTOUCHED_wherever_it_stands(self):
         """⚠️ THE CONTROL THAT KEEPS THE RULE INSIDE ITS DOMAIN. A quarter

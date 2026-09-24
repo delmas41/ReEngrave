@@ -20,7 +20,7 @@
    "beams_ambiguous": 2
   },
   "rest_slot_says": {
-   "agrees": 216,
+   "class_not_contradicted": 216,
    "None": 101
   },
   "flag_direction_source": {

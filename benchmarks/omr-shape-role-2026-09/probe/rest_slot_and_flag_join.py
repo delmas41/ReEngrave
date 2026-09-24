@@ -95,6 +95,15 @@ def rest_population(r: "RD.Rec") -> dict:
     out = collections.Counter()
     frames_disagree = []
     steps = collections.defaultdict(list)
+    #: ⚠️ THE QUESTION THE CROPS RAISED. A rest whose centre stands OUTSIDE
+    #: the staff it is filed on has not told us anything about WHICH REST IT
+    #: IS -- it has told us it may be on the wrong STAFF. The measure cell is
+    #: padded 4 staff spaces (6 where the neighbour is far) and on a
+    #: conductor's page that reaches the next staff's ink (CLAUDE.md §10), so
+    #: this is `glyph_owner`'s contest showing through a rest-reading probe.
+    #: Split so the two findings cannot be quoted as one.
+    by_bucket = collections.defaultdict(collections.Counter)
+    bucket_steps = collections.defaultdict(list)
     for o in r.by_q.get("rest", ()):
         name = str(o["value"])
         if name not in ("restWhole", "restHalf"):
@@ -134,6 +143,17 @@ def rest_population(r: "RD.Rec") -> dict:
             out["class_not_contradicted"] += 1
             verdict = "agrees"
 
+        # ⚠️ THE STAFF IS 8 HALF-STEPS TALL IN THIS FRAME: bottom line 0, top
+        # line 8. Anything under 0 stands BELOW the staff it is filed on and
+        # anything over 8 stands ABOVE it.
+        if step < 0.0:
+            by_bucket[verdict]["below_its_own_staff"] += 1
+        elif step > 8.0:
+            by_bucket[verdict]["above_its_own_staff"] += 1
+        else:
+            by_bucket[verdict]["inside_its_own_staff"] += 1
+        bucket_steps[verdict].append(step)
+
         # the audit's own frame, on the audit's own input, for the same row
         y = (o.get("detail") or {}).get("y_center_page")
         alt = r.staff_step(subj, y)
@@ -158,8 +178,17 @@ def rest_population(r: "RD.Rec") -> dict:
         med[k] = {"n": len(v), "median_step": round(v[len(v) // 2], 3),
                   "p10": round(v[len(v) // 10], 3),
                   "p90": round(v[(len(v) * 9) // 10], 3)}
+    bstat = {}
+    for k, v in bucket_steps.items():
+        v = sorted(v)
+        bstat[k] = {"n": len(v), "median_step": round(v[len(v) // 2], 3),
+                    "p10": round(v[len(v) // 10], 3),
+                    "p90": round(v[(len(v) * 9) // 10], 3)}
     return {
         "counts": dict(out),
+        "where_the_ink_stands_by_bucket": {k: dict(v)
+                                           for k, v in by_bucket.items()},
+        "step_distribution_by_bucket": bstat,
         "rest_position_rows_on_the_record": have_rest_position,
         "measured_steps_adjudicator_frame": med,
         "convention": {"restWhole": WHOLE_STEP, "restHalf": HALF_STEP,
@@ -309,6 +338,11 @@ def _summary(results) -> int:
         ("2.12b   lands on NEITHER (-> ABSTAIN)",
          lambda r: r["rest_2_12b"]["counts"]
          .get("lands_on_neither_convention", 0)),
+        ("2.12b   ...of those, OUTSIDE their own staff",
+         lambda r: (r["rest_2_12b"]["where_the_ink_stands_by_bucket"]
+                    .get("neither", {}).get("below_its_own_staff", 0)
+                    + r["rest_2_12b"]["where_the_ink_stands_by_bucket"]
+                    .get("neither", {}).get("above_its_own_staff", 0))),
         ("2.12b   frames disagree (must be 0)",
          lambda r: r["rest_2_12b"]["counts"].get("frames_disagree", 0)),
         ("2.12b   Q.REST_POSITION rows on the record",
