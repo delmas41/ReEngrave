@@ -175,7 +175,7 @@ KNOWN_GAPS: Dict[str, str] = {
     # **REMOVE AN ENTRY THE DAY ITS CONSUMER LANDS.**
     Q.REST_POSITION: (
         "⚠️ OPEN BY DESIGN — producer only, `OMR_FAMILY_POSITIONS`. ⚠️⚠️ "
-        "UPDATED 2026-09-23, ROADMAP 2.12b: the named first consumer LANDED "
+        "UPDATED 2026-09-23, ROADMAP 2.12b: the named FIRST CONSUMER LANDED "
         "AND STILL DOES NOT READ THIS ROW, and the two reasons are worth more "
         "than the entry. `_rest_ruling` no longer takes a rest's value off its "
         "class — it measures the slot with `_staff_step` over `Q.GLYPH_BOX`'s "
@@ -191,7 +191,7 @@ KNOWN_GAPS: Dict[str, str] = {
         "is what this entry is now about.** What `Q.REST_POSITION` would still "
         "ADD is real and unmeasured: it reads which EDGE of the rectangle is "
         "nearer a line and how decisively (`attach_margin`), which is strictly "
-        "more of the convention than a centre. Second consumer: "
+        "more of the convention than a centre. Second CONSUMER: "
         "`OMR_WHOLE_REST_INK`, whose position witness is reconstructed "
         "per-document from the detector's boxes and INVERTS between two "
         "publishers. `benchmarks/omr-shape-role-2026-09/FINDINGS.md` §2.12b."),
