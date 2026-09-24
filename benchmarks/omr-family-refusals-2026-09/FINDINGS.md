@@ -276,7 +276,7 @@ the rows themselves rather than restated) and it balances on every family.
 | `delete_box` | 18 | 0 |
 | `own_box` | 2 | 0 |
 
-Actions 68, human rows 127, verdicts naming a human row 7,953 (was 7,899), verdicts changed 729 (was 729), notes 8,588 -> 8,777.
+Actions 68, human rows 127, verdicts naming a human row 7,949 (was 7,899), verdicts changed 730 (was 729), notes 8,588 -> 8,777.
 
 Staff census on `staff/3/0/9` after:
 
@@ -289,14 +289,15 @@ Staff census on `staff/3/0/9` after:
   "ink_is_a_whole_rest": 1,
   "duration_narrowed": 4,
   "owned_by_another_staff": 3,
+  "not_a_notehead:human_other_staff": 1,
   "not_a_rest:human_not_a_symbol": 1
  },
  "written": {
-  "notehead": 45,
+  "notehead": 44,
   "rest": 6
  },
- "refused_total": 20,
- "written_total": 51
+ "refused_total": 21,
+ "written_total": 50
 }
 ```
 
@@ -304,9 +305,44 @@ Staff census on `staff/3/0/9` after:
 
 * `act-0008` `delete_box` on `glyph/3/0/9/1/0` — weighed by [['accidental_is_not_an_accidental', 1]], `reached_nothing` = False
 * `act-0010` `own_box` on `glyph/3/0/9/1/0` — weighed by [['accidental_is_not_an_accidental', 1]], `reached_nothing` = False
-* `act-0045` `own_box` on `glyph/3/0/9/7/2` — weighed by nothing, `reached_nothing` = False
+* `act-0045` `own_box` on `glyph/3/0/9/7/2` — weighed by [['accidental_is_not_an_accidental', 1]], `reached_nothing` = False
 
-⚠️ **READ FROM `out/sean-viola-p3-after-owner-other-only/`** — the FIRST re-run, before the named-owner rule the first re-run's own result forced. The second re-run was still going when this file was assembled; re-run the command in §7 and then `write_findings.py` to replace this section.
+
+### 3a. The two re-runs, and what the named-owner rule moved
+
+The lane re-ran Sean's sidecar TWICE, and both are kept because the
+difference between them is the finding that forced the second commit:
+
+| | `owner:other` only | + the named-owner rule |
+|---|---|---|
+| `reached_nothing` | **0** | **0** |
+| verdicts naming a human row | 7,953 | 7,949 |
+| verdicts changed | 729 | **730** |
+| `staff/3/0/9` written | `notehead` 45, `rest` 6 | `notehead` **44**, `rest` 6 |
+| `staff/3/0/9` refused | 20 | **21** — the new one is `not_a_notehead:human_other_staff` 1 |
+| `act-0045` on `glyph/3/0/9/7/2` | named, **weighed by nothing** | **WEIGHED** by `accidental_is_not_an_accidental` |
+
+So the rule does exactly what Sean's clarification asked for: the accidental
+he marked *belongs to Violin II* is now REFUSED on the Viola instead of
+reaching a decision that declined it. The other of the two
+(`glyph/3/0/9/1/0`) was already refused, but only because he ALSO deleted
+that box — which is why one case was not enough to see the gap.
+
+⚠️⚠️ **AND THE MUSICXML IS BYTE-IDENTICAL BETWEEN THE TWO RUNS** — both files
+are 83,899 lines and 8,777 `<note>` elements, and `diff` over them is empty.
+One NOTEHEAD moved from `written` to `refused` on this staff and no element
+moved in the file. That is not a contradiction to wave through: the staff
+census's `written` counts the DETECTIONS `_place_notes` placed into cells,
+and the file's `<note>` count is taken after later gates that can still
+withhold a whole bar (`bar_does_not_add_up` refuses 906 notes on
+`beethoven5-p1-p4` alone). **The two are different populations and this lane
+did not establish which gate swallowed the difference** — the one command
+that would is a `coverage()` run on each amended record with
+`notes_not_written` compared bucket by bucket, and it is not run here. What
+IS established: the accounting moved by exactly one, in the direction and on
+the subject Sean named, and the music did not move at all — the same shape
+3.4 recorded for its own first pass.
+
 
 Deciders that NAMED a human row for the first time (`per_stage.ADJUDICATE.by_decider`, which sits under `verdicts_naming_a_human_row` -- NAMED, not weighed):
 

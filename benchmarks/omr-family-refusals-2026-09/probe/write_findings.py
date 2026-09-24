@@ -100,6 +100,48 @@ def notes_table() -> str:
     return "\n".join(rows)
 
 
+#: ⚠️ THE TWO RE-RUNS, AND WHAT THE SECOND ONE MOVED. Written out rather than
+#: derived because the comparison is between two output DIRECTORIES and the
+#: numbers below are quoted from both summaries and from a byte comparison of
+#: the two MusicXML files.
+_TWO_RUNS = """
+### 3a. The two re-runs, and what the named-owner rule moved
+
+The lane re-ran Sean's sidecar TWICE, and both are kept because the
+difference between them is the finding that forced the second commit:
+
+| | `owner:other` only | + the named-owner rule |
+|---|---|---|
+| `reached_nothing` | **0** | **0** |
+| verdicts naming a human row | 7,953 | 7,949 |
+| verdicts changed | 729 | **730** |
+| `staff/3/0/9` written | `notehead` 45, `rest` 6 | `notehead` **44**, `rest` 6 |
+| `staff/3/0/9` refused | 20 | **21** — the new one is `not_a_notehead:human_other_staff` 1 |
+| `act-0045` on `glyph/3/0/9/7/2` | named, **weighed by nothing** | **WEIGHED** by `accidental_is_not_an_accidental` |
+
+So the rule does exactly what Sean's clarification asked for: the accidental
+he marked *belongs to Violin II* is now REFUSED on the Viola instead of
+reaching a decision that declined it. The other of the two
+(`glyph/3/0/9/1/0`) was already refused, but only because he ALSO deleted
+that box — which is why one case was not enough to see the gap.
+
+⚠️⚠️ **AND THE MUSICXML IS BYTE-IDENTICAL BETWEEN THE TWO RUNS** — both files
+are 83,899 lines and 8,777 `<note>` elements, and `diff` over them is empty.
+One NOTEHEAD moved from `written` to `refused` on this staff and no element
+moved in the file. That is not a contradiction to wave through: the staff
+census's `written` counts the DETECTIONS `_place_notes` placed into cells,
+and the file's `<note>` count is taken after later gates that can still
+withhold a whole bar (`bar_does_not_add_up` refuses 906 notes on
+`beethoven5-p1-p4` alone). **The two are different populations and this lane
+did not establish which gate swallowed the difference** — the one command
+that would is a `coverage()` run on each amended record with
+`notes_not_written` compared bucket by bucket, and it is not run here. What
+IS established: the accounting moved by exactly one, in the direction and on
+the subject Sean named, and the music did not move at all — the same shape
+3.4 recorded for its own first pass.
+"""
+
+
 def sean_section() -> str:
     before = json.loads((HERE.parent / "omr-stage-review-2026-09" / "out"
                          / "sean-viola-p3" / "feedback-summary.json")
@@ -165,6 +207,7 @@ def sean_section() -> str:
                 f"weighed by {row['weighed_by'] or 'nothing'}, "
                 f"`reached_nothing` = {row['reached_nothing']}")
     lines.append(note)
+    lines += [_TWO_RUNS, ""]
     by_dec_b = before["per_stage"]["ADJUDICATE"]["by_decider"]
     by_dec_a = after["per_stage"]["ADJUDICATE"]["by_decider"]
     new = {k: v for k, v in by_dec_a.items() if k not in by_dec_b}

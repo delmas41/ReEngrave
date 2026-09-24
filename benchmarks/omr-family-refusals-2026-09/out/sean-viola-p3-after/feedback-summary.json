@@ -1,0 +1,3009 @@
+{
+ "counts": {
+  "actions": 68,
+  "human_rows": 127,
+  "actions_refused": 0,
+  "actions_that_reached_nothing": 0,
+  "verdicts_naming_a_human_row": 7949,
+  "verdicts_changed": 730,
+  "notes_before": 8588,
+  "notes_after": 8777
+ },
+ "per_stage": {
+  "ADJUDICATE": {
+   "verdicts_naming_a_human_row": 7933,
+   "verdicts_that_WEIGHED_one": 322,
+   "by_decider": {
+    "adjudicate_arc_kind": 5,
+    "adjudicate_duration": 375,
+    "adjudicate_event": 51,
+    "adjudicate_stem_direction": 200,
+    "adjudicate_arc_owner": 5434,
+    "adjudicate_key_signature": 12,
+    "adjudicate_meter": 1428,
+    "adjudicate_notehead_is_a_whole_rest": 196,
+    "adjudicate_notehead_is_not_a_notehead": 52,
+    "adjudicate_onset_column": 52,
+    "adjudicate_part_partition": 2,
+    "adjudicate_slot_index": 4,
+    "adjudicate_system_key": 3,
+    "adjudicate_voices": 51,
+    "adjudicate_accidental_is_not_an_accidental": 18,
+    "adjudicate_glyph_owner": 4,
+    "adjudicate_ledger_is_not_a_ledger": 15,
+    "adjudicate_arpeggiato_is_not_an_arpeggiato": 3,
+    "adjudicate_rest_is_not_a_rest": 3,
+    "adjudicate_arc_is_not_an_arc": 1,
+    "adjudicate_dynamic": 22,
+    "adjudicate_dynamic_is_not_a_dynamic": 2
+   }
+  },
+  "EVALUATE": {
+   "verdicts_naming_a_human_row": 16,
+   "verdicts_that_WEIGHED_one": 0,
+   "by_decider": {
+    "restate_pitch": 16
+   }
+  },
+  "INFER": {
+   "verdicts_naming_a_human_row": 0,
+   "verdicts_that_WEIGHED_one": 0,
+   "by_decider": {}
+  }
+ },
+ "export": {
+  "notes_before": 8588,
+  "notes_after": 8777,
+  "staff_census_before": {
+   "staff": "staff/3/0/9",
+   "refused": {
+    "no_pitch": 40,
+    "not_a_notehead:clipped_fragment": 3,
+    "ink_is_a_whole_rest": 1,
+    "not_a_notehead:too_narrow": 1,
+    "owned_by_another_staff": 3
+   },
+   "written": {
+    "rest": 7
+   },
+   "refused_total": 48,
+   "written_total": 7
+  },
+  "staff_census_after": {
+   "staff": "staff/3/0/9",
+   "refused": {
+    "not_a_notehead:human_not_a_symbol": 8,
+    "not_a_notehead:clipped_fragment": 3,
+    "ink_is_a_whole_rest": 1,
+    "duration_narrowed": 4,
+    "owned_by_another_staff": 3,
+    "not_a_notehead:human_other_staff": 1,
+    "not_a_rest:human_not_a_symbol": 1
+   },
+   "written": {
+    "notehead": 44,
+    "rest": 6
+   },
+   "refused_total": 21,
+   "written_total": 50
+  }
+ },
+ "reached_nothing": [],
+ "per_action": {
+  "act-0001": {
+   "kind": "add_box",
+   "subject": "glyph/3/0/9/0/400000",
+   "category": null,
+   "staff": null,
+   "weighed_by": [
+    [
+     "arc_kind",
+     1
+    ],
+    [
+     "duration",
+     1
+    ],
+    [
+     "event",
+     1
+    ],
+    [
+     "stem_direction",
+     1
+    ]
+   ],
+   "named_by": [
+    [
+     "arc_kind",
+     1
+    ],
+    [
+     "arc_owner",
+     143
+    ],
+    [
+     "duration",
+     8
+    ],
+    [
+     "event",
+     1
+    ],
+    [
+     "key_signature",
+     12
+    ],
+    [
+     "meter",
+     28
+    ],
+    [
+     "notehead_is_a_whole_rest",
+     5
+    ],
+    [
+     "notehead_is_not_a_notehead",
+     2
+    ],
+    [
+     "onset_column",
+     1
+    ],
+    [
+     "part_partition",
+     2
+    ],
+    [
+     "slot_index",
+     4
+    ],
+    [
+     "stem_direction",
+     8
+    ],
+    [
+     "system_key",
+     3
+    ],
+    [
+     "voices",
+     1
+    ]
+   ],
+   "reached_nothing": false
+  },
+  "act-0002": {
+   "kind": "delete_box",
+   "subject": "glyph/3/0/9/0/1",
+   "category": null,
+   "staff": null,
+   "weighed_by": [
+    [
+     "notehead_is_not_a_notehead",
+     1
+    ]
+   ],
+   "named_by": [
+    [
+     "notehead_is_not_a_notehead",
+     1
+    ]
+   ],
+   "reached_nothing": false
+  },
+  "act-0003": {
+   "kind": "confirm_box",
+   "subject": "glyph/3/0/9/0/11",
+   "category": null,
+   "staff": null,
+   "weighed_by": [
+    [
+     "accidental_is_not_an_accidental",
+     1
+    ]
+   ],
+   "named_by": [
+    [
+     "accidental_is_not_an_accidental",
+     1
+    ]
+   ],
+   "reached_nothing": false
+  },
+  "act-0004": {
+   "kind": "relabel_box",
+   "subject": "glyph/3/0/9/0/400001",
+   "category": null,
+   "staff": null,
+   "weighed_by": [
+    [
+     "accidental_is_not_an_accidental",
+     1
+    ],
+    [
+     "arc_kind",
+     1
+    ],
+    [
+     "duration",
+     1
+    ],
+    [
+     "event",
+     1
+    ],
+    [
+     "stem_direction",
+     1
+    ]
+   ],
+   "named_by": [
+    [
+     "accidental_is_not_an_accidental",
+     1
+    ],
+    [
+     "arc_kind",
+     1
+    ],
+    [
+     "arc_owner",
+     143
+    ],
+    [
+     "duration",
+     8
+    ],
+    [
+     "event",
+     1
+    ],
+    [
+     "meter",
+     28
+    ],
+    [
+     "notehead_is_a_whole_rest",
+     5
+    ],
+    [
+     "notehead_is_not_a_notehead",
+     2
+    ],
+    [
+     "onset_column",
+     1
+    ],
+    [
+     "stem_direction",
+     8
+    ],
+    [
+     "voices",
+     1
+    ]
+   ],
+   "reached_nothing": false
+  },
+  "act-0005": {
+   "kind": "relabel_box",
+   "subject": "glyph/3/0/9/0/400002",
+   "category": null,
+   "staff": null,
+   "weighed_by": [
+    [
+     "arc_kind",
+     1
+    ],
+    [
+     "duration",
+     1
+    ],
+    [
+     "event",
+     1
+    ],
+    [
+     "notehead_is_not_a_notehead",
+     1
+    ],
+    [
+     "stem_direction",
+     1
+    ]
+   ],
+   "named_by": [
+    [
+     "arc_kind",
+     1
+    ],
+    [
+     "arc_owner",
+     143
+    ],
+    [
+     "duration",
+     8
+    ],
+    [
+     "event",
+     1
+    ],
+    [
+     "meter",
+     28
+    ],
+    [
+     "notehead_is_a_whole_rest",
+     5
+    ],
+    [
+     "notehead_is_not_a_notehead",
+     3
+    ],
+    [
+     "onset_column",
+     1
+    ],
+    [
+     "stem_direction",
+     8
+    ],
+    [
+     "voices",
+     1
+    ]
+   ],
+   "reached_nothing": false
+  },
+  "act-0006": {
+   "kind": "delete_box",
+   "subject": "glyph/3/0/9/0/9",
+   "category": null,
+   "staff": null,
+   "weighed_by": [
+    [
+     "notehead_is_not_a_notehead",
+     1
+    ]
+   ],
+   "named_by": [
+    [
+     "notehead_is_not_a_notehead",
+     1
+    ]
+   ],
+   "reached_nothing": false
+  },
+  "act-0007": {
+   "kind": "relabel_box",
+   "subject": "glyph/3/0/9/0/400003",
+   "category": null,
+   "staff": null,
+   "weighed_by": [
+    [
+     "arc_kind",
+     2
+    ],
+    [
+     "duration",
+     2
+    ],
+    [
+     "event",
+     2
+    ],
+    [
+     "notehead_is_a_whole_rest",
+     1
+    ],
+    [
+     "notehead_is_not_a_notehead",
+     1
+    ],
+    [
+     "stem_direction",
+     1
+    ]
+   ],
+   "named_by": [
+    [
+     "arc_kind",
+     2
+    ],
+    [
+     "arc_owner",
+     143
+    ],
+    [
+     "duration",
+     16
+    ],
+    [
+     "event",
+     2
+    ],
+    [
+     "meter",
+     56
+    ],
+    [
+     "notehead_is_a_whole_rest",
+     6
+    ],
+    [
+     "notehead_is_not_a_notehead",
+     4
+    ],
+    [
+     "onset_column",
+     2
+    ],
+    [
+     "restate_pitch",
+     1
+    ],
+    [
+     "stem_direction",
+     8
+    ],
+    [
+     "voices",
+     2
+    ]
+   ],
+   "reached_nothing": false
+  },
+  "act-0008": {
+   "kind": "delete_box",
+   "subject": "glyph/3/0/9/1/0",
+   "category": null,
+   "staff": null,
+   "weighed_by": [
+    [
+     "accidental_is_not_an_accidental",
+     1
+    ]
+   ],
+   "named_by": [
+    [
+     "accidental_is_not_an_accidental",
+     1
+    ]
+   ],
+   "reached_nothing": false
+  },
+  "act-0009": {
+   "kind": "delete_box",
+   "subject": "glyph/3/0/9/1/1",
+   "category": null,
+   "staff": null,
+   "weighed_by": [
+    [
+     "glyph_owner",
+     1
+    ],
+    [
+     "notehead_is_not_a_notehead",
+     1
+    ]
+   ],
+   "named_by": [
+    [
+     "arc_owner",
+     143
+    ],
+    [
+     "glyph_owner",
+     1
+    ],
+    [
+     "notehead_is_not_a_notehead",
+     1
+    ]
+   ],
+   "reached_nothing": false
+  },
+  "act-0010": {
+   "kind": "own_box",
+   "subject": "glyph/3/0/9/1/0",
+   "category": null,
+   "staff": null,
+   "weighed_by": [
+    [
+     "accidental_is_not_an_accidental",
+     1
+    ]
+   ],
+   "named_by": [
+    [
+     "accidental_is_not_an_accidental",
+     1
+    ]
+   ],
+   "reached_nothing": false
+  },
+  "act-0011": {
+   "kind": "own_box",
+   "subject": "glyph/3/0/9/1/1",
+   "category": null,
+   "staff": null,
+   "weighed_by": [
+    [
+     "glyph_owner",
+     1
+    ],
+    [
+     "notehead_is_not_a_notehead",
+     1
+    ]
+   ],
+   "named_by": [
+    [
+     "arc_owner",
+     143
+    ],
+    [
+     "glyph_owner",
+     1
+    ],
+    [
+     "notehead_is_not_a_notehead",
+     1
+    ]
+   ],
+   "reached_nothing": false
+  },
+  "act-0012": {
+   "kind": "add_box",
+   "subject": "glyph/3/0/9/1/400000",
+   "category": null,
+   "staff": null,
+   "weighed_by": [
+    [
+     "duration",
+     4
+    ],
+    [
+     "event",
+     2
+    ],
+    [
+     "notehead_is_a_whole_rest",
+     1
+    ],
+    [
+     "notehead_is_not_a_notehead",
+     1
+    ],
+    [
+     "stem_direction",
+     2
+    ]
+   ],
+   "named_by": [
+    [
+     "arc_owner",
+     143
+    ],
+    [
+     "duration",
+     12
+    ],
+    [
+     "event",
+     2
+    ],
+    [
+     "meter",
+     56
+    ],
+    [
+     "notehead_is_a_whole_rest",
+     6
+    ],
+    [
+     "notehead_is_not_a_notehead",
+     3
+    ],
+    [
+     "onset_column",
+     2
+    ],
+    [
+     "restate_pitch",
+     1
+    ],
+    [
+     "stem_direction",
+     3
+    ],
+    [
+     "voices",
+     2
+    ]
+   ],
+   "reached_nothing": false
+  },
+  "act-0013": {
+   "kind": "add_box",
+   "subject": "glyph/3/0/9/1/400001",
+   "category": null,
+   "staff": null,
+   "weighed_by": [
+    [
+     "duration",
+     4
+    ],
+    [
+     "event",
+     2
+    ],
+    [
+     "notehead_is_a_whole_rest",
+     1
+    ],
+    [
+     "notehead_is_not_a_notehead",
+     1
+    ],
+    [
+     "stem_direction",
+     2
+    ]
+   ],
+   "named_by": [
+    [
+     "arc_owner",
+     143
+    ],
+    [
+     "duration",
+     12
+    ],
+    [
+     "event",
+     2
+    ],
+    [
+     "meter",
+     56
+    ],
+    [
+     "notehead_is_a_whole_rest",
+     6
+    ],
+    [
+     "notehead_is_not_a_notehead",
+     3
+    ],
+    [
+     "onset_column",
+     2
+    ],
+    [
+     "restate_pitch",
+     1
+    ],
+    [
+     "stem_direction",
+     3
+    ],
+    [
+     "voices",
+     2
+    ]
+   ],
+   "reached_nothing": false
+  },
+  "act-0014": {
+   "kind": "redraw_box",
+   "subject": "glyph/3/0/9/2/400000",
+   "category": null,
+   "staff": null,
+   "weighed_by": [
+    [
+     "duration",
+     2
+    ],
+    [
+     "event",
+     1
+    ],
+    [
+     "ledger_is_not_a_ledger",
+     1
+    ]
+   ],
+   "named_by": [
+    [
+     "arc_owner",
+     143
+    ],
+    [
+     "duration",
+     12
+    ],
+    [
+     "event",
+     1
+    ],
+    [
+     "ledger_is_not_a_ledger",
+     2
+    ],
+    [
+     "meter",
+     28
+    ],
+    [
+     "notehead_is_a_whole_rest",
+     5
+    ],
+    [
+     "onset_column",
+     1
+    ],
+    [
+     "stem_direction",
+     7
+    ],
+    [
+     "voices",
+     1
+    ]
+   ],
+   "reached_nothing": false
+  },
+  "act-0015": {
+   "kind": "redraw_box",
+   "subject": "glyph/3/0/9/2/400001",
+   "category": null,
+   "staff": null,
+   "weighed_by": [
+    [
+     "duration",
+     2
+    ],
+    [
+     "event",
+     1
+    ],
+    [
+     "ledger_is_not_a_ledger",
+     1
+    ]
+   ],
+   "named_by": [
+    [
+     "arc_owner",
+     143
+    ],
+    [
+     "duration",
+     12
+    ],
+    [
+     "event",
+     1
+    ],
+    [
+     "ledger_is_not_a_ledger",
+     2
+    ],
+    [
+     "meter",
+     28
+    ],
+    [
+     "notehead_is_a_whole_rest",
+     5
+    ],
+    [
+     "onset_column",
+     1
+    ],
+    [
+     "stem_direction",
+     7
+    ],
+    [
+     "voices",
+     1
+    ]
+   ],
+   "reached_nothing": false
+  },
+  "act-0016": {
+   "kind": "delete_box",
+   "subject": "glyph/3/0/9/2/11",
+   "category": null,
+   "staff": null,
+   "weighed_by": [
+    [
+     "ledger_is_not_a_ledger",
+     1
+    ]
+   ],
+   "named_by": [
+    [
+     "ledger_is_not_a_ledger",
+     1
+    ]
+   ],
+   "reached_nothing": false
+  },
+  "act-0017": {
+   "kind": "delete_box",
+   "subject": "glyph/3/0/9/2/17",
+   "category": null,
+   "staff": null,
+   "weighed_by": [
+    [
+     "ledger_is_not_a_ledger",
+     1
+    ]
+   ],
+   "named_by": [
+    [
+     "ledger_is_not_a_ledger",
+     1
+    ]
+   ],
+   "reached_nothing": false
+  },
+  "act-0018": {
+   "kind": "redraw_box",
+   "subject": "glyph/3/0/9/2/400002",
+   "category": null,
+   "staff": null,
+   "weighed_by": [
+    [
+     "duration",
+     4
+    ],
+    [
+     "event",
+     2
+    ],
+    [
+     "notehead_is_a_whole_rest",
+     1
+    ],
+    [
+     "notehead_is_not_a_notehead",
+     1
+    ]
+   ],
+   "named_by": [
+    [
+     "arc_owner",
+     143
+    ],
+    [
+     "duration",
+     24
+    ],
+    [
+     "event",
+     2
+    ],
+    [
+     "meter",
+     56
+    ],
+    [
+     "notehead_is_a_whole_rest",
+     6
+    ],
+    [
+     "notehead_is_not_a_notehead",
+     2
+    ],
+    [
+     "onset_column",
+     2
+    ],
+    [
+     "restate_pitch",
+     1
+    ],
+    [
+     "stem_direction",
+     8
+    ],
+    [
+     "voices",
+     2
+    ]
+   ],
+   "reached_nothing": false
+  },
+  "act-0019": {
+   "kind": "delete_box",
+   "subject": "glyph/3/0/9/2/19",
+   "category": null,
+   "staff": null,
+   "weighed_by": [
+    [
+     "notehead_is_not_a_notehead",
+     1
+    ]
+   ],
+   "named_by": [
+    [
+     "notehead_is_not_a_notehead",
+     1
+    ]
+   ],
+   "reached_nothing": false
+  },
+  "act-0020": {
+   "kind": "redraw_box",
+   "subject": "glyph/3/0/9/2/400003",
+   "category": null,
+   "staff": null,
+   "weighed_by": [
+    [
+     "duration",
+     4
+    ],
+    [
+     "event",
+     2
+    ],
+    [
+     "notehead_is_a_whole_rest",
+     1
+    ],
+    [
+     "notehead_is_not_a_notehead",
+     1
+    ]
+   ],
+   "named_by": [
+    [
+     "arc_owner",
+     143
+    ],
+    [
+     "duration",
+     24
+    ],
+    [
+     "event",
+     2
+    ],
+    [
+     "meter",
+     56
+    ],
+    [
+     "notehead_is_a_whole_rest",
+     6
+    ],
+    [
+     "notehead_is_not_a_notehead",
+     2
+    ],
+    [
+     "onset_column",
+     2
+    ],
+    [
+     "restate_pitch",
+     1
+    ],
+    [
+     "stem_direction",
+     8
+    ],
+    [
+     "voices",
+     2
+    ]
+   ],
+   "reached_nothing": false
+  },
+  "act-0021": {
+   "kind": "redraw_box",
+   "subject": "glyph/3/0/9/3/400000",
+   "category": null,
+   "staff": null,
+   "weighed_by": [
+    [
+     "duration",
+     1
+    ],
+    [
+     "event",
+     1
+    ]
+   ],
+   "named_by": [
+    [
+     "arc_owner",
+     143
+    ],
+    [
+     "duration",
+     8
+    ],
+    [
+     "event",
+     1
+    ],
+    [
+     "meter",
+     28
+    ],
+    [
+     "notehead_is_a_whole_rest",
+     5
+    ],
+    [
+     "onset_column",
+     1
+    ],
+    [
+     "stem_direction",
+     8
+    ],
+    [
+     "voices",
+     1
+    ]
+   ],
+   "reached_nothing": false
+  },
+  "act-0022": {
+   "kind": "redraw_box",
+   "subject": "glyph/3/0/9/3/400001",
+   "category": null,
+   "staff": null,
+   "weighed_by": [
+    [
+     "duration",
+     1
+    ],
+    [
+     "event",
+     1
+    ]
+   ],
+   "named_by": [
+    [
+     "arc_owner",
+     143
+    ],
+    [
+     "duration",
+     8
+    ],
+    [
+     "event",
+     1
+    ],
+    [
+     "meter",
+     28
+    ],
+    [
+     "notehead_is_a_whole_rest",
+     5
+    ],
+    [
+     "onset_column",
+     1
+    ],
+    [
+     "stem_direction",
+     8
+    ],
+    [
+     "voices",
+     1
+    ]
+   ],
+   "reached_nothing": false
+  },
+  "act-0023": {
+   "kind": "add_box",
+   "subject": "glyph/3/0/9/3/400002",
+   "category": null,
+   "staff": null,
+   "weighed_by": [
+    [
+     "duration",
+     2
+    ],
+    [
+     "event",
+     2
+    ],
+    [
+     "notehead_is_a_whole_rest",
+     1
+    ],
+    [
+     "notehead_is_not_a_notehead",
+     1
+    ]
+   ],
+   "named_by": [
+    [
+     "arc_owner",
+     143
+    ],
+    [
+     "duration",
+     16
+    ],
+    [
+     "event",
+     2
+    ],
+    [
+     "meter",
+     56
+    ],
+    [
+     "notehead_is_a_whole_rest",
+     6
+    ],
+    [
+     "notehead_is_not_a_notehead",
+     1
+    ],
+    [
+     "onset_column",
+     2
+    ],
+    [
+     "restate_pitch",
+     1
+    ],
+    [
+     "stem_direction",
+     8
+    ],
+    [
+     "voices",
+     2
+    ]
+   ],
+   "reached_nothing": false
+  },
+  "act-0024": {
+   "kind": "add_box",
+   "subject": "glyph/3/0/9/3/400003",
+   "category": null,
+   "staff": null,
+   "weighed_by": [
+    [
+     "accidental_is_not_an_accidental",
+     1
+    ],
+    [
+     "duration",
+     1
+    ],
+    [
+     "event",
+     1
+    ]
+   ],
+   "named_by": [
+    [
+     "accidental_is_not_an_accidental",
+     1
+    ],
+    [
+     "arc_owner",
+     143
+    ],
+    [
+     "duration",
+     8
+    ],
+    [
+     "event",
+     1
+    ],
+    [
+     "meter",
+     28
+    ],
+    [
+     "notehead_is_a_whole_rest",
+     5
+    ],
+    [
+     "onset_column",
+     1
+    ],
+    [
+     "stem_direction",
+     8
+    ],
+    [
+     "voices",
+     1
+    ]
+   ],
+   "reached_nothing": false
+  },
+  "act-0025": {
+   "kind": "add_box",
+   "subject": "glyph/3/0/9/4/400000",
+   "category": null,
+   "staff": null,
+   "weighed_by": [
+    [
+     "accidental_is_not_an_accidental",
+     1
+    ],
+    [
+     "duration",
+     1
+    ],
+    [
+     "event",
+     1
+    ]
+   ],
+   "named_by": [
+    [
+     "accidental_is_not_an_accidental",
+     1
+    ],
+    [
+     "arc_owner",
+     143
+    ],
+    [
+     "duration",
+     2
+    ],
+    [
+     "event",
+     1
+    ],
+    [
+     "meter",
+     28
+    ],
+    [
+     "notehead_is_a_whole_rest",
+     5
+    ],
+    [
+     "onset_column",
+     1
+    ],
+    [
+     "stem_direction",
+     2
+    ],
+    [
+     "voices",
+     1
+    ]
+   ],
+   "reached_nothing": false
+  },
+  "act-0026": {
+   "kind": "add_box",
+   "subject": "glyph/3/0/9/4/400001",
+   "category": null,
+   "staff": null,
+   "weighed_by": [
+    [
+     "duration",
+     2
+    ],
+    [
+     "event",
+     2
+    ],
+    [
+     "notehead_is_a_whole_rest",
+     1
+    ],
+    [
+     "notehead_is_not_a_notehead",
+     1
+    ]
+   ],
+   "named_by": [
+    [
+     "arc_owner",
+     143
+    ],
+    [
+     "duration",
+     4
+    ],
+    [
+     "event",
+     2
+    ],
+    [
+     "meter",
+     56
+    ],
+    [
+     "notehead_is_a_whole_rest",
+     6
+    ],
+    [
+     "notehead_is_not_a_notehead",
+     1
+    ],
+    [
+     "onset_column",
+     2
+    ],
+    [
+     "restate_pitch",
+     1
+    ],
+    [
+     "stem_direction",
+     2
+    ],
+    [
+     "voices",
+     2
+    ]
+   ],
+   "reached_nothing": false
+  },
+  "act-0027": {
+   "kind": "add_box",
+   "subject": "glyph/3/0/9/4/400002",
+   "category": null,
+   "staff": null,
+   "weighed_by": [
+    [
+     "duration",
+     1
+    ],
+    [
+     "event",
+     1
+    ]
+   ],
+   "named_by": [
+    [
+     "arc_owner",
+     143
+    ],
+    [
+     "duration",
+     2
+    ],
+    [
+     "event",
+     1
+    ],
+    [
+     "meter",
+     28
+    ],
+    [
+     "notehead_is_a_whole_rest",
+     5
+    ],
+    [
+     "onset_column",
+     1
+    ],
+    [
+     "stem_direction",
+     2
+    ],
+    [
+     "voices",
+     1
+    ]
+   ],
+   "reached_nothing": false
+  },
+  "act-0028": {
+   "kind": "redraw_box",
+   "subject": "glyph/3/0/9/5/400000",
+   "category": null,
+   "staff": null,
+   "weighed_by": [
+    [
+     "accidental_is_not_an_accidental",
+     1
+    ],
+    [
+     "duration",
+     5
+    ],
+    [
+     "event",
+     1
+    ],
+    [
+     "stem_direction",
+     5
+    ]
+   ],
+   "named_by": [
+    [
+     "accidental_is_not_an_accidental",
+     2
+    ],
+    [
+     "arc_owner",
+     143
+    ],
+    [
+     "duration",
+     8
+    ],
+    [
+     "event",
+     1
+    ],
+    [
+     "meter",
+     28
+    ],
+    [
+     "notehead_is_a_whole_rest",
+     5
+    ],
+    [
+     "onset_column",
+     1
+    ],
+    [
+     "stem_direction",
+     8
+    ],
+    [
+     "voices",
+     1
+    ]
+   ],
+   "reached_nothing": false
+  },
+  "act-0029": {
+   "kind": "redraw_box",
+   "subject": "glyph/3/0/9/5/400001",
+   "category": null,
+   "staff": null,
+   "weighed_by": [
+    [
+     "accidental_is_not_an_accidental",
+     1
+    ],
+    [
+     "duration",
+     5
+    ],
+    [
+     "event",
+     1
+    ],
+    [
+     "stem_direction",
+     5
+    ]
+   ],
+   "named_by": [
+    [
+     "accidental_is_not_an_accidental",
+     2
+    ],
+    [
+     "arc_owner",
+     143
+    ],
+    [
+     "duration",
+     8
+    ],
+    [
+     "event",
+     1
+    ],
+    [
+     "meter",
+     28
+    ],
+    [
+     "notehead_is_a_whole_rest",
+     5
+    ],
+    [
+     "onset_column",
+     1
+    ],
+    [
+     "stem_direction",
+     8
+    ],
+    [
+     "voices",
+     1
+    ]
+   ],
+   "reached_nothing": false
+  },
+  "act-0030": {
+   "kind": "redraw_box",
+   "subject": "glyph/3/0/9/5/400002",
+   "category": null,
+   "staff": null,
+   "weighed_by": [
+    [
+     "accidental_is_not_an_accidental",
+     1
+    ],
+    [
+     "duration",
+     5
+    ],
+    [
+     "event",
+     1
+    ],
+    [
+     "stem_direction",
+     5
+    ]
+   ],
+   "named_by": [
+    [
+     "accidental_is_not_an_accidental",
+     2
+    ],
+    [
+     "arc_owner",
+     143
+    ],
+    [
+     "duration",
+     8
+    ],
+    [
+     "event",
+     1
+    ],
+    [
+     "meter",
+     28
+    ],
+    [
+     "notehead_is_a_whole_rest",
+     5
+    ],
+    [
+     "onset_column",
+     1
+    ],
+    [
+     "stem_direction",
+     8
+    ],
+    [
+     "voices",
+     1
+    ]
+   ],
+   "reached_nothing": false
+  },
+  "act-0031": {
+   "kind": "delete_box",
+   "subject": "glyph/3/0/9/5/4",
+   "category": null,
+   "staff": null,
+   "weighed_by": [
+    [
+     "accidental_is_not_an_accidental",
+     1
+    ]
+   ],
+   "named_by": [
+    [
+     "accidental_is_not_an_accidental",
+     1
+    ]
+   ],
+   "reached_nothing": false
+  },
+  "act-0032": {
+   "kind": "delete_box",
+   "subject": "glyph/3/0/9/5/3",
+   "category": null,
+   "staff": null,
+   "weighed_by": [
+    [
+     "accidental_is_not_an_accidental",
+     1
+    ]
+   ],
+   "named_by": [
+    [
+     "accidental_is_not_an_accidental",
+     1
+    ]
+   ],
+   "reached_nothing": false
+  },
+  "act-0033": {
+   "kind": "redraw_box",
+   "subject": "glyph/3/0/9/5/400003",
+   "category": null,
+   "staff": null,
+   "weighed_by": [
+    [
+     "duration",
+     10
+    ],
+    [
+     "event",
+     2
+    ],
+    [
+     "notehead_is_a_whole_rest",
+     1
+    ],
+    [
+     "notehead_is_not_a_notehead",
+     2
+    ],
+    [
+     "stem_direction",
+     5
+    ]
+   ],
+   "named_by": [
+    [
+     "arc_owner",
+     143
+    ],
+    [
+     "duration",
+     16
+    ],
+    [
+     "event",
+     2
+    ],
+    [
+     "meter",
+     56
+    ],
+    [
+     "notehead_is_a_whole_rest",
+     6
+    ],
+    [
+     "notehead_is_not_a_notehead",
+     2
+    ],
+    [
+     "onset_column",
+     2
+    ],
+    [
+     "restate_pitch",
+     1
+    ],
+    [
+     "stem_direction",
+     8
+    ],
+    [
+     "voices",
+     2
+    ]
+   ],
+   "reached_nothing": false
+  },
+  "act-0034": {
+   "kind": "redraw_box",
+   "subject": "glyph/3/0/9/5/400004",
+   "category": null,
+   "staff": null,
+   "weighed_by": [
+    [
+     "duration",
+     10
+    ],
+    [
+     "event",
+     2
+    ],
+    [
+     "notehead_is_a_whole_rest",
+     1
+    ],
+    [
+     "notehead_is_not_a_notehead",
+     2
+    ],
+    [
+     "stem_direction",
+     5
+    ]
+   ],
+   "named_by": [
+    [
+     "arc_owner",
+     143
+    ],
+    [
+     "duration",
+     16
+    ],
+    [
+     "event",
+     2
+    ],
+    [
+     "meter",
+     56
+    ],
+    [
+     "notehead_is_a_whole_rest",
+     6
+    ],
+    [
+     "notehead_is_not_a_notehead",
+     2
+    ],
+    [
+     "onset_column",
+     2
+    ],
+    [
+     "restate_pitch",
+     1
+    ],
+    [
+     "stem_direction",
+     8
+    ],
+    [
+     "voices",
+     2
+    ]
+   ],
+   "reached_nothing": false
+  },
+  "act-0035": {
+   "kind": "redraw_box",
+   "subject": "glyph/3/0/9/5/400005",
+   "category": null,
+   "staff": null,
+   "weighed_by": [
+    [
+     "duration",
+     10
+    ],
+    [
+     "event",
+     2
+    ],
+    [
+     "notehead_is_a_whole_rest",
+     1
+    ],
+    [
+     "notehead_is_not_a_notehead",
+     2
+    ],
+    [
+     "stem_direction",
+     5
+    ]
+   ],
+   "named_by": [
+    [
+     "arc_owner",
+     143
+    ],
+    [
+     "duration",
+     16
+    ],
+    [
+     "event",
+     2
+    ],
+    [
+     "meter",
+     56
+    ],
+    [
+     "notehead_is_a_whole_rest",
+     6
+    ],
+    [
+     "notehead_is_not_a_notehead",
+     2
+    ],
+    [
+     "onset_column",
+     2
+    ],
+    [
+     "restate_pitch",
+     1
+    ],
+    [
+     "stem_direction",
+     8
+    ],
+    [
+     "voices",
+     2
+    ]
+   ],
+   "reached_nothing": false
+  },
+  "act-0036": {
+   "kind": "redraw_box",
+   "subject": "glyph/3/0/9/5/400006",
+   "category": null,
+   "staff": null,
+   "weighed_by": [
+    [
+     "duration",
+     10
+    ],
+    [
+     "event",
+     2
+    ],
+    [
+     "notehead_is_a_whole_rest",
+     1
+    ],
+    [
+     "notehead_is_not_a_notehead",
+     2
+    ],
+    [
+     "stem_direction",
+     5
+    ]
+   ],
+   "named_by": [
+    [
+     "arc_owner",
+     143
+    ],
+    [
+     "duration",
+     16
+    ],
+    [
+     "event",
+     2
+    ],
+    [
+     "meter",
+     56
+    ],
+    [
+     "notehead_is_a_whole_rest",
+     6
+    ],
+    [
+     "notehead_is_not_a_notehead",
+     2
+    ],
+    [
+     "onset_column",
+     2
+    ],
+    [
+     "restate_pitch",
+     1
+    ],
+    [
+     "stem_direction",
+     8
+    ],
+    [
+     "voices",
+     2
+    ]
+   ],
+   "reached_nothing": false
+  },
+  "act-0037": {
+   "kind": "redraw_box",
+   "subject": "glyph/3/0/9/5/400007",
+   "category": null,
+   "staff": null,
+   "weighed_by": [
+    [
+     "duration",
+     10
+    ],
+    [
+     "event",
+     2
+    ],
+    [
+     "notehead_is_a_whole_rest",
+     1
+    ],
+    [
+     "notehead_is_not_a_notehead",
+     2
+    ],
+    [
+     "stem_direction",
+     5
+    ]
+   ],
+   "named_by": [
+    [
+     "arc_owner",
+     143
+    ],
+    [
+     "duration",
+     16
+    ],
+    [
+     "event",
+     2
+    ],
+    [
+     "meter",
+     56
+    ],
+    [
+     "notehead_is_a_whole_rest",
+     6
+    ],
+    [
+     "notehead_is_not_a_notehead",
+     2
+    ],
+    [
+     "onset_column",
+     2
+    ],
+    [
+     "restate_pitch",
+     1
+    ],
+    [
+     "stem_direction",
+     8
+    ],
+    [
+     "voices",
+     2
+    ]
+   ],
+   "reached_nothing": false
+  },
+  "act-0038": {
+   "kind": "relabel_box",
+   "subject": "glyph/3/0/9/5/400008",
+   "category": null,
+   "staff": null,
+   "weighed_by": [
+    [
+     "duration",
+     5
+    ],
+    [
+     "event",
+     1
+    ],
+    [
+     "notehead_is_not_a_notehead",
+     1
+    ],
+    [
+     "stem_direction",
+     5
+    ]
+   ],
+   "named_by": [
+    [
+     "arc_owner",
+     143
+    ],
+    [
+     "duration",
+     8
+    ],
+    [
+     "event",
+     1
+    ],
+    [
+     "meter",
+     28
+    ],
+    [
+     "notehead_is_a_whole_rest",
+     5
+    ],
+    [
+     "notehead_is_not_a_notehead",
+     1
+    ],
+    [
+     "onset_column",
+     1
+    ],
+    [
+     "stem_direction",
+     8
+    ],
+    [
+     "voices",
+     1
+    ]
+   ],
+   "reached_nothing": false
+  },
+  "act-0039": {
+   "kind": "add_box",
+   "subject": "glyph/3/0/9/6/400000",
+   "category": null,
+   "staff": null,
+   "weighed_by": [
+    [
+     "accidental_is_not_an_accidental",
+     1
+    ],
+    [
+     "duration",
+     2
+    ],
+    [
+     "event",
+     1
+    ],
+    [
+     "stem_direction",
+     2
+    ]
+   ],
+   "named_by": [
+    [
+     "accidental_is_not_an_accidental",
+     1
+    ],
+    [
+     "arc_owner",
+     143
+    ],
+    [
+     "duration",
+     9
+    ],
+    [
+     "event",
+     1
+    ],
+    [
+     "meter",
+     28
+    ],
+    [
+     "notehead_is_a_whole_rest",
+     5
+    ],
+    [
+     "onset_column",
+     1
+    ],
+    [
+     "stem_direction",
+     5
+    ],
+    [
+     "voices",
+     1
+    ]
+   ],
+   "reached_nothing": false
+  },
+  "act-0040": {
+   "kind": "redraw_box",
+   "subject": "glyph/3/0/9/6/400001",
+   "category": null,
+   "staff": null,
+   "weighed_by": [
+    [
+     "duration",
+     4
+    ],
+    [
+     "event",
+     2
+    ],
+    [
+     "notehead_is_a_whole_rest",
+     1
+    ],
+    [
+     "notehead_is_not_a_notehead",
+     2
+    ],
+    [
+     "stem_direction",
+     2
+    ]
+   ],
+   "named_by": [
+    [
+     "arc_owner",
+     143
+    ],
+    [
+     "duration",
+     18
+    ],
+    [
+     "event",
+     2
+    ],
+    [
+     "meter",
+     56
+    ],
+    [
+     "notehead_is_a_whole_rest",
+     6
+    ],
+    [
+     "notehead_is_not_a_notehead",
+     2
+    ],
+    [
+     "onset_column",
+     2
+    ],
+    [
+     "restate_pitch",
+     1
+    ],
+    [
+     "stem_direction",
+     5
+    ],
+    [
+     "voices",
+     2
+    ]
+   ],
+   "reached_nothing": false
+  },
+  "act-0041": {
+   "kind": "redraw_box",
+   "subject": "glyph/3/0/9/6/400002",
+   "category": null,
+   "staff": null,
+   "weighed_by": [
+    [
+     "duration",
+     4
+    ],
+    [
+     "event",
+     2
+    ],
+    [
+     "notehead_is_a_whole_rest",
+     1
+    ],
+    [
+     "notehead_is_not_a_notehead",
+     2
+    ],
+    [
+     "stem_direction",
+     2
+    ]
+   ],
+   "named_by": [
+    [
+     "arc_owner",
+     143
+    ],
+    [
+     "duration",
+     18
+    ],
+    [
+     "event",
+     2
+    ],
+    [
+     "meter",
+     56
+    ],
+    [
+     "notehead_is_a_whole_rest",
+     6
+    ],
+    [
+     "notehead_is_not_a_notehead",
+     2
+    ],
+    [
+     "onset_column",
+     2
+    ],
+    [
+     "restate_pitch",
+     1
+    ],
+    [
+     "stem_direction",
+     5
+    ],
+    [
+     "voices",
+     2
+    ]
+   ],
+   "reached_nothing": false
+  },
+  "act-0042": {
+   "kind": "relabel_box",
+   "subject": "glyph/3/0/9/6/400003",
+   "category": null,
+   "staff": null,
+   "weighed_by": [
+    [
+     "duration",
+     2
+    ],
+    [
+     "event",
+     1
+    ],
+    [
+     "notehead_is_not_a_notehead",
+     1
+    ],
+    [
+     "stem_direction",
+     2
+    ]
+   ],
+   "named_by": [
+    [
+     "arc_owner",
+     143
+    ],
+    [
+     "duration",
+     9
+    ],
+    [
+     "event",
+     1
+    ],
+    [
+     "meter",
+     28
+    ],
+    [
+     "notehead_is_a_whole_rest",
+     5
+    ],
+    [
+     "notehead_is_not_a_notehead",
+     1
+    ],
+    [
+     "onset_column",
+     1
+    ],
+    [
+     "stem_direction",
+     5
+    ],
+    [
+     "voices",
+     1
+    ]
+   ],
+   "reached_nothing": false
+  },
+  "act-0043": {
+   "kind": "own_box",
+   "subject": "glyph/3/0/9/6/2",
+   "category": null,
+   "staff": null,
+   "weighed_by": [
+    [
+     "glyph_owner",
+     1
+    ]
+   ],
+   "named_by": [
+    [
+     "accidental_is_not_an_accidental",
+     1
+    ],
+    [
+     "glyph_owner",
+     1
+    ]
+   ],
+   "reached_nothing": false
+  },
+  "act-0044": {
+   "kind": "own_box",
+   "subject": "glyph/3/0/9/6/8",
+   "category": null,
+   "staff": null,
+   "weighed_by": [
+    [
+     "notehead_is_not_a_notehead",
+     1
+    ]
+   ],
+   "named_by": [
+    [
+     "notehead_is_not_a_notehead",
+     1
+    ]
+   ],
+   "reached_nothing": false
+  },
+  "act-0045": {
+   "kind": "own_box",
+   "subject": "glyph/3/0/9/7/2",
+   "category": null,
+   "staff": null,
+   "weighed_by": [
+    [
+     "accidental_is_not_an_accidental",
+     1
+    ]
+   ],
+   "named_by": [
+    [
+     "accidental_is_not_an_accidental",
+     1
+    ]
+   ],
+   "reached_nothing": false
+  },
+  "act-0046": {
+   "kind": "add_box",
+   "subject": "glyph/3/0/9/7/400000",
+   "category": null,
+   "staff": null,
+   "weighed_by": [
+    [
+     "accidental_is_not_an_accidental",
+     1
+    ]
+   ],
+   "named_by": [
+    [
+     "accidental_is_not_an_accidental",
+     1
+    ],
+    [
+     "arc_owner",
+     143
+    ],
+    [
+     "duration",
+     5
+    ],
+    [
+     "event",
+     1
+    ],
+    [
+     "meter",
+     28
+    ],
+    [
+     "notehead_is_a_whole_rest",
+     5
+    ],
+    [
+     "notehead_is_not_a_notehead",
+     1
+    ],
+    [
+     "onset_column",
+     1
+    ],
+    [
+     "voices",
+     1
+    ]
+   ],
+   "reached_nothing": false
+  },
+  "act-0047": {
+   "kind": "delete_box",
+   "subject": "glyph/3/0/9/8/4",
+   "category": null,
+   "staff": null,
+   "weighed_by": [
+    [
+     "ledger_is_not_a_ledger",
+     1
+    ]
+   ],
+   "named_by": [
+    [
+     "ledger_is_not_a_ledger",
+     1
+    ]
+   ],
+   "reached_nothing": false
+  },
+  "act-0048": {
+   "kind": "delete_box",
+   "subject": "glyph/3/0/9/8/2",
+   "category": null,
+   "staff": null,
+   "weighed_by": [
+    [
+     "ledger_is_not_a_ledger",
+     1
+    ]
+   ],
+   "named_by": [
+    [
+     "ledger_is_not_a_ledger",
+     1
+    ]
+   ],
+   "reached_nothing": false
+  },
+  "act-0049": {
+   "kind": "delete_box",
+   "subject": "glyph/3/0/9/8/1",
+   "category": null,
+   "staff": null,
+   "weighed_by": [
+    [
+     "ledger_is_not_a_ledger",
+     1
+    ]
+   ],
+   "named_by": [
+    [
+     "ledger_is_not_a_ledger",
+     1
+    ]
+   ],
+   "reached_nothing": false
+  },
+  "act-0050": {
+   "kind": "delete_box",
+   "subject": "glyph/3/0/9/8/3",
+   "category": null,
+   "staff": null,
+   "weighed_by": [
+    [
+     "ledger_is_not_a_ledger",
+     1
+    ]
+   ],
+   "named_by": [
+    [
+     "ledger_is_not_a_ledger",
+     1
+    ]
+   ],
+   "reached_nothing": false
+  },
+  "act-0051": {
+   "kind": "delete_box",
+   "subject": "glyph/3/0/9/9/3",
+   "category": null,
+   "staff": null,
+   "weighed_by": [
+    [
+     "ledger_is_not_a_ledger",
+     1
+    ]
+   ],
+   "named_by": [
+    [
+     "ledger_is_not_a_ledger",
+     1
+    ],
+    [
+     "notehead_is_not_a_notehead",
+     1
+    ]
+   ],
+   "reached_nothing": false
+  },
+  "act-0052": {
+   "kind": "delete_box",
+   "subject": "glyph/3/0/9/9/2",
+   "category": null,
+   "staff": null,
+   "weighed_by": [
+    [
+     "arpeggiato_is_not_an_arpeggiato",
+     1
+    ]
+   ],
+   "named_by": [
+    [
+     "arpeggiato_is_not_an_arpeggiato",
+     1
+    ]
+   ],
+   "reached_nothing": false
+  },
+  "act-0053": {
+   "kind": "delete_box",
+   "subject": "glyph/3/0/9/11/2",
+   "category": null,
+   "staff": null,
+   "weighed_by": [
+    [
+     "rest_is_not_a_rest",
+     1
+    ]
+   ],
+   "named_by": [
+    [
+     "rest_is_not_a_rest",
+     1
+    ]
+   ],
+   "reached_nothing": false
+  },
+  "act-0054": {
+   "kind": "delete_box",
+   "subject": "glyph/3/0/9/11/1",
+   "category": null,
+   "staff": null,
+   "weighed_by": [
+    [
+     "arpeggiato_is_not_an_arpeggiato",
+     1
+    ]
+   ],
+   "named_by": [
+    [
+     "arpeggiato_is_not_an_arpeggiato",
+     1
+    ]
+   ],
+   "reached_nothing": false
+  },
+  "act-0055": {
+   "kind": "redraw_box",
+   "subject": "glyph/3/0/9/11/400000",
+   "category": null,
+   "staff": null,
+   "weighed_by": [],
+   "named_by": [
+    [
+     "arc_owner",
+     143
+    ],
+    [
+     "duration",
+     2
+    ],
+    [
+     "event",
+     1
+    ],
+    [
+     "meter",
+     28
+    ],
+    [
+     "notehead_is_a_whole_rest",
+     5
+    ],
+    [
+     "onset_column",
+     1
+    ],
+    [
+     "rest_is_not_a_rest",
+     1
+    ],
+    [
+     "voices",
+     1
+    ]
+   ],
+   "reached_nothing": false
+  },
+  "act-0056": {
+   "kind": "redraw_box",
+   "subject": "glyph/3/0/9/11/400001",
+   "category": null,
+   "staff": null,
+   "weighed_by": [],
+   "named_by": [
+    [
+     "arc_owner",
+     143
+    ],
+    [
+     "duration",
+     2
+    ],
+    [
+     "event",
+     1
+    ],
+    [
+     "meter",
+     28
+    ],
+    [
+     "notehead_is_a_whole_rest",
+     5
+    ],
+    [
+     "onset_column",
+     1
+    ],
+    [
+     "rest_is_not_a_rest",
+     1
+    ],
+    [
+     "voices",
+     1
+    ]
+   ],
+   "reached_nothing": false
+  },
+  "act-0057": {
+   "kind": "delete_box",
+   "subject": "glyph/3/0/9/13/2",
+   "category": null,
+   "staff": null,
+   "weighed_by": [
+    [
+     "ledger_is_not_a_ledger",
+     1
+    ]
+   ],
+   "named_by": [
+    [
+     "ledger_is_not_a_ledger",
+     1
+    ]
+   ],
+   "reached_nothing": false
+  },
+  "act-0058": {
+   "kind": "delete_box",
+   "subject": "glyph/3/0/9/13/1",
+   "category": null,
+   "staff": null,
+   "weighed_by": [
+    [
+     "ledger_is_not_a_ledger",
+     1
+    ]
+   ],
+   "named_by": [
+    [
+     "ledger_is_not_a_ledger",
+     1
+    ]
+   ],
+   "reached_nothing": false
+  },
+  "act-0059": {
+   "kind": "delete_box",
+   "subject": "glyph/3/0/9/13/0",
+   "category": null,
+   "staff": null,
+   "weighed_by": [
+    [
+     "ledger_is_not_a_ledger",
+     1
+    ]
+   ],
+   "named_by": [
+    [
+     "ledger_is_not_a_ledger",
+     1
+    ]
+   ],
+   "reached_nothing": false
+  },
+  "act-0060": {
+   "kind": "add_box",
+   "subject": "glyph/3/0/9/13/400000",
+   "category": null,
+   "staff": null,
+   "weighed_by": [],
+   "named_by": [
+    [
+     "arc_owner",
+     143
+    ],
+    [
+     "notehead_is_a_whole_rest",
+     5
+    ],
+    [
+     "onset_column",
+     1
+    ]
+   ],
+   "reached_nothing": false
+  },
+  "act-0061": {
+   "kind": "confirm_box",
+   "subject": "glyph/3/0/9/14/1",
+   "category": null,
+   "staff": null,
+   "weighed_by": [],
+   "named_by": [
+    [
+     "arc_is_not_an_arc",
+     1
+    ]
+   ],
+   "reached_nothing": false
+  },
+  "act-0062": {
+   "kind": "confirm_box",
+   "subject": "glyph/3/0/9/14/0",
+   "category": null,
+   "staff": null,
+   "weighed_by": [],
+   "named_by": [
+    [
+     "dynamic",
+     11
+    ],
+    [
+     "dynamic_is_not_a_dynamic",
+     1
+    ]
+   ],
+   "reached_nothing": false
+  },
+  "act-0063": {
+   "kind": "own_box",
+   "subject": "glyph/3/0/9/14/2",
+   "category": null,
+   "staff": null,
+   "weighed_by": [
+    [
+     "glyph_owner",
+     1
+    ]
+   ],
+   "named_by": [
+    [
+     "dynamic",
+     11
+    ],
+    [
+     "dynamic_is_not_a_dynamic",
+     1
+    ],
+    [
+     "glyph_owner",
+     1
+    ]
+   ],
+   "reached_nothing": false
+  },
+  "act-0064": {
+   "kind": "delete_box",
+   "subject": "glyph/3/0/9/14/5",
+   "category": null,
+   "staff": null,
+   "weighed_by": [
+    [
+     "ledger_is_not_a_ledger",
+     1
+    ]
+   ],
+   "named_by": [
+    [
+     "ledger_is_not_a_ledger",
+     1
+    ]
+   ],
+   "reached_nothing": false
+  },
+  "act-0065": {
+   "kind": "delete_box",
+   "subject": "glyph/3/0/9/14/4",
+   "category": null,
+   "staff": null,
+   "weighed_by": [
+    [
+     "arpeggiato_is_not_an_arpeggiato",
+     1
+    ]
+   ],
+   "named_by": [
+    [
+     "arpeggiato_is_not_an_arpeggiato",
+     1
+    ]
+   ],
+   "reached_nothing": false
+  },
+  "act-0066": {
+   "kind": "delete_box",
+   "subject": "glyph/3/0/9/15/1",
+   "category": null,
+   "staff": null,
+   "weighed_by": [
+    [
+     "notehead_is_not_a_notehead",
+     1
+    ]
+   ],
+   "named_by": [
+    [
+     "notehead_is_not_a_notehead",
+     1
+    ]
+   ],
+   "reached_nothing": false
+  },
+  "act-0067": {
+   "kind": "redraw_box",
+   "subject": "glyph/3/0/9/15/400000",
+   "category": null,
+   "staff": null,
+   "weighed_by": [
+    [
+     "duration",
+     4
+    ],
+    [
+     "event",
+     2
+    ],
+    [
+     "notehead_is_a_whole_rest",
+     1
+    ],
+    [
+     "notehead_is_not_a_notehead",
+     1
+    ]
+   ],
+   "named_by": [
+    [
+     "arc_owner",
+     143
+    ],
+    [
+     "duration",
+     8
+    ],
+    [
+     "event",
+     2
+    ],
+    [
+     "meter",
+     56
+    ],
+    [
+     "notehead_is_a_whole_rest",
+     6
+    ],
+    [
+     "notehead_is_not_a_notehead",
+     2
+    ],
+    [
+     "onset_column",
+     2
+    ],
+    [
+     "restate_pitch",
+     1
+    ],
+    [
+     "stem_direction",
+     1
+    ],
+    [
+     "voices",
+     2
+    ]
+   ],
+   "reached_nothing": false
+  },
+  "act-0068": {
+   "kind": "redraw_box",
+   "subject": "glyph/3/0/9/15/400001",
+   "category": null,
+   "staff": null,
+   "weighed_by": [
+    [
+     "duration",
+     4
+    ],
+    [
+     "event",
+     2
+    ],
+    [
+     "notehead_is_a_whole_rest",
+     1
+    ],
+    [
+     "notehead_is_not_a_notehead",
+     1
+    ]
+   ],
+   "named_by": [
+    [
+     "arc_owner",
+     143
+    ],
+    [
+     "duration",
+     8
+    ],
+    [
+     "event",
+     2
+    ],
+    [
+     "meter",
+     56
+    ],
+    [
+     "notehead_is_a_whole_rest",
+     6
+    ],
+    [
+     "notehead_is_not_a_notehead",
+     2
+    ],
+    [
+     "onset_column",
+     2
+    ],
+    [
+     "restate_pitch",
+     1
+    ],
+    [
+     "stem_direction",
+     1
+    ],
+    [
+     "voices",
+     2
+    ]
+   ],
+   "reached_nothing": false
+  }
+ }
+}
