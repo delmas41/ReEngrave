@@ -1,0 +1,13 @@
+== benchmarks/omr-key-majority-2026-09/out/2.9b-litolff-arm.musicxml
+    P1 Flute                         -3
+    P2 Oboe                          -3
+    P3 Clarinet                      -1
+    P4 Bassoon                       -3
+    P5 Horn                           0
+    P6 Trumpet                        0
+    P7 Timpani                        0
+    P8 Violin                        -3
+    P9 Violin                        -3
+   P10 Viola                         -3
+   P11 Cello                         -3   changes: m17=-2 m48=-3 m184=-1 m224=-3 m269=-1 m283=-3 m348=-1 m391=-3 m445=-1
+   P12 Contrabass                    -3   changes: m17=-2 m48=-3 m184=-1 m224=-3 m269=-1 m283=-3 m348=-1 m391=-3 m445=-1

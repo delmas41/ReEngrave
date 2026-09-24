@@ -830,3 +830,121 @@ They are `readjudicate` arms over the SHIPPED records, which hold the
 pre-change marker rows; pricing both halves together needs a 12.8-hour
 re-gather of Litolff and a 1.2-hour one of Brahms. The two are measured apart
 and the numbers do not add.
+
+---
+
+## 2.9b.4 The controls, and one of them FAILED and found a real fault
+
+**Base and arm are on ONE TREE** (CLAUDE.md §6b). `readjudicate.py --off part`
+turns off BOTH halves of this item — the ADJUDICATE check reads
+`infer.part_key_enabled` too, because a check that abstains a staff so an
+inference may fill it is one rule in two stages, and gating only the INFER
+half would leave `disagrees_with_document` abstentions standing with nothing
+to fill them, a state no shipped tree has ever been in.
+
+* **The engraved acceptance arm is BYTE-IDENTICAL**, `--off part` against the
+  default, the flag the only difference: `diff` exits 0 on the two exported
+  MusicXML files. 54 of 54 key verdicts DECIDED in both, 18 of 18 parts, 0
+  key changes.
+* **`--off part` reproduces 2.9 exactly on Litolff**: 6 of 12 parts opening
+  right, 125 right / 88 wrong / 107 abstained, 113 key changes in the file —
+  the same figures the two-tree base produced before the flag existed.
+* **`--control` (`--off all`) on Litolff: `key_signature` 331 of 331
+  reproduced** (outcome + value), with the reason movement printed separately
+  (`fitted_by_template → fitted_no_markers` 108, `fitted → fitted_no_markers`
+  104, `markers_without_a_run → no_evidence` 36). ⚠️ Its `clef` half now
+  reports 322 of 331 with 9 `abstained → decided` — those are roadmap 2.10's
+  `fill_clef_gap`, which the shipped record predates, so that half is no
+  longer a pure rebuild proof and says so.
+
+### ⚠️⚠️ AND THE HARNESS ITSELF WAS WRONG, WHICH THE MEASUREMENT FOUND
+
+`readjudicate.py` ran ADJUDICATE → EVALUATE → INFER and **stopped**.
+`staged/pipeline.py` has run `evaluate.run_over` after INFER since roadmap
+2.10 — the bounded second pass that carries an inferred value into its
+consequences — and this harness did not. Measured on the Litolff arm before
+the fix:
+
+| | staves | key-derived `Q.ACCIDENTAL` beneath them |
+|---|---|---|
+| key INFERRED | 186 | **0** |
+| key READ | 142 | 1,099 |
+
+The file's `pitches_altered_by_the_key` came out **628 → 426**: FEWER
+alterations from a rule that decides MORE keys. A number that looks like a
+result and is an artefact of the instrument — CLAUDE.md's *the value existed
+and nothing read it*, this time inside the measuring instrument. With the one
+line added: **1,708 → 3,677 key-derived alterations**, 2,578 of them on the
+186 inferred staves. Every figure below is from the repaired harness.
+
+---
+
+## 2.9b.5 The three documents
+
+    sh -c 'python3 .../readjudicate.py <rec> --off part --out out/<tag>-base.json'
+    sh -c 'python3 .../readjudicate.py <rec>            --out out/<tag>-arm.json'
+    python3 -m tools.omr.staged.export out/<tag>-{base,arm}.json --out …
+    python3 .../part_report.py <tag> --truth beethoven5|brahms1|engraved
+
+⚠️ **The truth is Sean's** (§2.9b.0), applied per PART: `−3` concert, `−1` for
+a B-flat clarinet, `0` for natural horn / natural trumpet / timpani. A part
+whose transposition no label anywhere named is NOT scored.
+
+### 2.9b.5a Beethoven 5, Litolff, whole movement — 331 staff-systems
+
+| | base (`--off part`) | arm |
+|---|---|---|
+| key verdicts | 212 decided / 119 abstained | **328 decided / 3 abstained** |
+| reasons | `markers` 144, `fitted_no_markers` 77, `disagrees_with_system` 28, `no_evidence` 40, `needs_clef` 24, `mixed_marker_kinds` 10, `run_fits_no_slot_table` 8 | `key_from_document_majority` **148**, `markers` 88, `fitted_no_markers` 54, `key_from_other_systems` **38**, `mixed_marker_kinds` 2, `no_evidence` 1 |
+| per staff, against Sean's truth | 125 right / **88 wrong** / 107 abstained (67 carrying right, **40 carrying wrong**) | 125 right + **186 inferred right** / **9 wrong** / 0 abstained |
+| **parts opening right** | **6 of 12** | **12 of 12** |
+| `<key>` elements | 153 | **72** |
+| **key CHANGES written** | **113** | **18** — and all 18 are ONE part |
+| `<note>` | 8,674 | **8,674** |
+| key-derived alterations | 1,708 | **3,677** |
+| accounting | balanced (the exporter RAISES `Unbalanced`; 9,531 refused, identically in both arms) | balanced, 9,531 |
+
+**The whole of the 2.9 regression is closed and then some**: 6 of 12 parts
+opening right → **12 of 12**, and per staff the wrong count falls **88 → 9**
+with nothing left abstained.
+
+⚠️ **Both of §6a's named survivors are GONE.** Violin II's `+1` at m48 and
+Trumpet's `+1` at m82 are not in the arm's file: both parts now write ONE
+`<key>` and no change at all
+(`out/2.9b-litolff-arm.fifths.txt`).
+
+⚠️ **AND ALL 18 REMAINING CHANGES ARE THE CELLO PART AND ITS CONDENSED
+DOUBLE.** Ten of the twelve parts write exactly one `<key>`; P11 Cello writes
+9 changes and P12 Contrabass writes the same 9, because
+`collapse_slot_index_to_family_block` doubles the Cello slot onto the
+Contrabass part (`condensed_with_slot`). So it is ONE part's wobble, written
+twice.
+
+**And the cause is a STAGE ORDER, not this rule.** Of the 15 Cello staves
+whose key a reader decided, **13 have a `Q.SLOT_INDEX` that came from INFER**
+— `collapse_slot_index_to_family_block` places them, and INFER runs AFTER
+ADJUDICATE, so when `_part_checked` asked *which part is this staff on?* the
+answer did not exist yet and the check could not judge them. INFER cannot
+repair it afterwards either: those verdicts are DECIDED, and rule 3 forbids
+overturning a reading. Across the document 28 of 331 staff-systems are in that
+position and 11 more have no part at all. **That is the named next item**, and
+it is one of two shapes: place the staff before the header decisions, or let
+the check speak to a NARROWED slot. Neither is 2.9b.
+
+### 2.9b.5b Brahms 1, Breitkopf, whole movement — 691 staff-systems
+
+BREITKOPF_TABLE_PLACEHOLDER
+
+### 2.9b.5c The engraved acceptance page — 54 staff-systems
+
+**Byte-identical, base and arm, on one tree** (§2.9b.4). 54 of 54 key verdicts
+DECIDED (`markers` 48, `fitted_no_markers` 6), **18 of 18 parts against
+`out/fixture/beethoven-sym5-mvt1-m1-24.musicxml`**, 0 key changes, 666
+`<note>`, 18 `<key>`.
+
+⚠️ **And the reason it is inert is worth reading**, because it is the rule
+declining rather than the page having nothing: `parts_with_a_read_transposition`
+is 11 of 18 there — the fixture's labels are `Eb Horn 1` and `C Trumpet 1`,
+which the lexicon DEFAULTS to +1 and +2 (§2 records this), and a defaulted
+transposition may not speak. Its clarinets are therefore judged by the PART
+tier, agree with it, and stand.

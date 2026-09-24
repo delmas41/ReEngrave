@@ -1,0 +1,138 @@
+== 2.9b-litolff [base]  331 staff-systems
+   reasons {'markers': 144, 'fitted_no_markers': 77, 'disagrees_with_system': 28, 'no_evidence': 40, 'mixed_marker_kinds': 10, 'needs_clef': 24, 'run_fits_no_slot_table': 8}
+   inferred 0
+   score {'right': 125, 'wrong': 88, 'abstained': 107, 'abstained_carries_wrong': 40, 'abstained_carries_right': 67, 'unscored': 11}
+   parts opening right: 6 of 12 scored (12 parts)
+      slot   0 Flute                opens  -3 truth -3
+      slot   1 Oboe                 opens  -2 truth -3  <-- WRONG
+      slot   2 Clarinet             opens  -1 truth -1
+      slot   3 Bassoon              opens  -1 truth -3  <-- WRONG
+      slot   4 Horn                 opens   0 truth 0
+      slot   5 Trumpet              opens   0 truth 0
+      slot   6 Timpani              opens   0 truth 0
+      slot   7 Violin               opens  -3 truth -3
+      slot   8 Violin               opens  -2 truth -3  <-- WRONG
+      slot   9 Viola                opens  -2 truth -3  <-- WRONG
+      slot  10 Cello                opens  -2 truth -3  <-- WRONG
+      slot  11 Bass voice           opens  -1 truth -3  <-- WRONG
+   key CHANGES written: 110
+      slot   3 Bassoon          at (2, 0) -1 -> -3
+      slot   8 Violin           at (2, 0) -2 -> -1
+      slot   7 Violin           at (2, 1) -3 -> -1
+      slot   0 Flute            at (3, 0) -3 -> -1
+      slot   1 Oboe             at (3, 0) -2 -> -1
+      slot   3 Bassoon          at (3, 0) -3 -> -1
+      slot   7 Violin           at (3, 0) -1 -> -3
+      slot   8 Violin           at (3, 0) -1 -> 1
+      slot  10 Cello            at (3, 0) -2 -> -3
+      slot   0 Flute            at (3, 1) -1 -> -3
+      slot   3 Bassoon          at (3, 1) -1 -> -3
+      slot   8 Violin           at (3, 1) 1 -> -3
+      slot   9 Viola            at (3, 1) -2 -> -3
+      slot   5 Trumpet          at (4, 0) 0 -> 1
+      slot   7 Violin           at (4, 0) -3 -> -2
+      slot   8 Violin           at (4, 0) -3 -> -1
+      slot  11 Bass voice       at (4, 0) -1 -> -2
+      slot   0 Flute            at (4, 1) -3 -> -2
+      slot   1 Oboe             at (4, 1) -1 -> -2
+      slot   4 Horn             at (4, 1) 0 -> -1
+      slot   6 Timpani          at (4, 1) 0 -> -1
+      slot   0 Flute            at (5, 0) -2 -> -3
+      slot   7 Violin           at (5, 0) -2 -> -3
+      slot   2 Clarinet         at (5, 1) -1 -> -2
+      slot   7 Violin           at (5, 1) -3 -> -2
+      slot  10 Cello            at (5, 1) -3 -> -2
+      slot   0 Flute            at (6, 0) -3 -> -1
+      slot   2 Clarinet         at (6, 0) -2 -> -1
+      slot   3 Bassoon          at (6, 0) -3 -> -1
+      slot   7 Violin           at (6, 0) -2 -> -1
+      slot   8 Violin           at (6, 0) -1 -> -3
+      slot  10 Cello            at (6, 0) -2 -> -3
+      slot  11 Bass voice       at (6, 0) -2 -> -1
+      slot   2 Clarinet         at (6, 1) -1 -> -3
+      slot   4 Horn             at (6, 1) -1 -> 0
+      slot   8 Violin           at (6, 1) -3 -> -2
+      slot   9 Viola            at (6, 1) -3 -> -2
+      slot  11 Bass voice       at (6, 1) -1 -> -3
+      slot   2 Clarinet         at (7, 0) -3 -> -1
+      slot   5 Trumpet          at (7, 0) 1 -> 0
+      slot   7 Violin           at (7, 0) -1 -> -2
+      slot   6 Timpani          at (7, 1) -1 -> 0
+      slot   7 Violin           at (7, 1) -2 -> -3
+      slot   8 Violin           at (7, 1) -2 -> -3
+      slot  10 Cello            at (7, 1) -3 -> -1
+      slot   8 Violin           at (8, 0) -3 -> -2
+      slot   9 Viola            at (8, 0) -2 -> -4
+      slot   7 Violin           at (8, 1) -3 -> -2
+      slot   8 Violin           at (8, 1) -2 -> -3
+      slot   9 Viola            at (8, 1) -4 -> 1
+      slot  10 Cello            at (8, 1) -1 -> 1
+      slot   0 Flute            at (9, 0) -1 -> -3
+      slot   7 Violin           at (9, 0) -2 -> -1
+      slot   8 Violin           at (9, 0) -3 -> -2
+      slot   9 Viola            at (9, 0) 1 -> -3
+      slot  10 Cello            at (9, 0) 1 -> -3
+      slot  11 Bass voice       at (9, 0) -3 -> -1
+      slot   1 Oboe             at (9, 1) -2 -> -3
+      slot   3 Bassoon          at (9, 1) -1 -> -3
+      slot   7 Violin           at (9, 1) -1 -> -3
+   file: 8674 <note>, 153 <key>, 113 key CHANGES
+   CARRY CONTROL: 11 of 12 parts reproduce the file's own `<key>` sequence exactly
+      part 11 DIFFERS: record 7 states, file 16 — condensed doubling?
+== 2.9b-litolff [arm]  331 staff-systems
+   reasons {'markers': 88, 'key_from_document_majority': 148, 'fitted_no_markers': 54, 'key_from_other_systems': 38, 'no_evidence': 1, 'mixed_marker_kinds': 2}
+   inferred 186
+   score {'right': 125, 'inferred_right': 186, 'wrong': 9, 'unscored': 11}
+   parts opening right: 12 of 12 scored (12 parts)
+      slot   0 Flute                opens  -3 truth -3
+      slot   1 Oboe                 opens  -3 truth -3
+      slot   2 Clarinet             opens  -1 truth -1
+      slot   3 Bassoon              opens  -3 truth -3
+      slot   4 Horn                 opens   0 truth 0
+      slot   5 Trumpet              opens   0 truth 0
+      slot   6 Timpani              opens   0 truth 0
+      slot   7 Violin               opens  -3 truth -3
+      slot   8 Violin               opens  -3 truth -3
+      slot   9 Viola                opens  -3 truth -3
+      slot  10 Cello                opens  -3 truth -3
+      slot  11 Bass voice           opens  -3 truth -3
+   key CHANGES written: 15
+      slot  10 Cello            at (2, 0) -3 -> -2
+      slot  10 Cello            at (3, 0) -2 -> -3
+      slot  10 Cello            at (7, 1) -3 -> -1
+      slot  10 Cello            at (8, 1) -1 -> -3
+      slot  10 Cello            at (10, 0) -3 -> -1
+      slot  10 Cello            at (10, 1) -1 -> -3
+      slot None None             at (11, 0) -1 -> -3
+      slot None None             at (11, 0) -3 -> -2
+      slot None None             at (11, 0) -2 -> -3
+      slot  10 Cello            at (12, 1) -3 -> -1
+      slot  10 Cello            at (14, 0) -1 -> -3
+      slot None None             at (14, 1) -3 -> -2
+      slot None None             at (14, 1) -2 -> -1
+      slot None None             at (14, 1) -1 -> -2
+      slot  10 Cello            at (15, 1) -3 -> -1
+   file: 8674 <note>, 72 <key>, 18 key CHANGES
+   CARRY CONTROL: 11 of 12 parts reproduce the file's own `<key>` sequence exactly
+      part 11 DIFFERS: record 1 states, file 10 — condensed doubling?
+
+== per-staff table, pdf page 3
+  sys0 staff 0 Flute          truth=-3 | base   -1 markers                  carry -1 | arm   -3 key_from_document_majority carry -3  INFERRED
+  sys0 staff 1 Oboe           truth=-3 | base   -1 markers                  carry -1 | arm   -3 key_from_document_majority carry -3  INFERRED
+  sys0 staff 2 Clarinet       truth=-1 | base   -1 markers                  carry -1 | arm   -1 markers                    carry -1
+  sys0 staff 3 Bassoon        truth=-3 | base   -1 fitted_no_markers        carry -1 | arm   -3 key_from_document_majority carry -3  INFERRED
+  sys0 staff 4 Horn           truth=0 | base None no_evidence              carry 0 | arm    0 key_from_other_systems     carry 0  INFERRED
+  sys0 staff 5 Trumpet        truth=0 | base None no_evidence              carry 0 | arm    0 key_from_other_systems     carry 0  INFERRED
+  sys0 staff 6 Timpani        truth=0 | base None no_evidence              carry 0 | arm    0 key_from_other_systems     carry 0  INFERRED
+  sys0 staff 7 Violin         truth=-3 | base   -3 markers                  carry -3 | arm   -3 markers                    carry -3
+  sys0 staff 8 Violin         truth=-3 | base    1 fitted_no_markers        carry 1 | arm   -3 key_from_document_majority carry -3  INFERRED
+  sys0 staff 9 Viola          truth=-3 | base None needs_clef               carry -2 | arm   -3 key_from_document_majority carry -3  INFERRED
+  sys0 staff10 Cello          truth=-3 | base   -3 markers                  carry -3 | arm   -3 markers                    carry -3
+  sys1 staff 0 Flute          truth=-3 | base   -3 markers                  carry -3 | arm   -3 markers                    carry -3
+  sys1 staff 1 Clarinet       truth=-1 | base   -1 markers                  carry -1 | arm   -1 markers                    carry -1
+  sys1 staff 2 Bassoon        truth=-3 | base   -3 markers                  carry -3 | arm   -3 markers                    carry -3
+  sys1 staff 3 Horn           truth=0 | base None run_fits_no_slot_table   carry 0 | arm    0 key_from_other_systems     carry 0  INFERRED
+  sys1 staff 4 Violin         truth=-3 | base   -3 markers                  carry -3 | arm   -3 markers                    carry -3
+  sys1 staff 5 Violin         truth=-3 | base   -3 markers                  carry -3 | arm   -3 markers                    carry -3
+  sys1 staff 6 Viola          truth=-3 | base   -3 markers                  carry -3 | arm   -3 markers                    carry -3
+  sys1 staff 7 Cello          truth=-3 | base None mixed_marker_kinds       carry -3 | arm   -3 key_from_document_majority carry -3  INFERRED
