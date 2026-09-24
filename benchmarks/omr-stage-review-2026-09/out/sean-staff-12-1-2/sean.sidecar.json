@@ -1,0 +1,1098 @@
+{
+ "record": "/Users/seanjohnson/Desktop/ReEngrave/library/_shared-records/beethoven5-litolff-mvt1-whole-20260923.record.json",
+ "staff": "staff/12/1/2",
+ "actions": [
+  {
+   "stage": "gather",
+   "note": "",
+   "kind": "add_box",
+   "bbox_page_px": [
+    364.6521739130435,
+    2430.5964673913045,
+    425.5726902173913,
+    2544.912024456522
+   ],
+   "crop_px": [
+    133.30434782608697,
+    173.19293478260872,
+    255.14538043478262,
+    401.8240489130435
+   ],
+   "cell": "cell/12/1/2/0",
+   "category": "clefG",
+   "id": "act-0001",
+   "t": "2026-09-24T06:11:30+00:00"
+  },
+  {
+   "stage": "gather",
+   "note": "",
+   "kind": "redraw_box",
+   "glyph": "glyph/12/1/2/0/7",
+   "bbox_page_px": [
+    431.81,
+    2450.62,
+    451.43,
+    2471.93
+   ],
+   "prior_bbox_page_px": [
+    437.546875,
+    2477.4921875,
+    457.1640625,
+    2498.8046875
+   ],
+   "crop_px": [
+    267.62635869565213,
+    213.23097826086996,
+    306.86073369565213,
+    255.85597826086996
+   ],
+   "id": "act-0002",
+   "t": "2026-09-24T06:11:38+00:00"
+  },
+  {
+   "stage": "gather",
+   "note": "",
+   "kind": "redraw_box",
+   "glyph": "glyph/12/1/2/0/7",
+   "bbox_page_px": [
+    431.81,
+    2450.62,
+    457.16,
+    2496.65
+   ],
+   "prior_bbox_page_px": [
+    431.81317934782606,
+    2450.615489130435,
+    451.43036684782606,
+    2471.927989130435
+   ],
+   "crop_px": [
+    267.62635869565213,
+    213.23097826086996,
+    318.328125,
+    305.30910326086996
+   ],
+   "id": "act-0003",
+   "t": "2026-09-24T06:11:43+00:00"
+  },
+  {
+   "stage": "gather",
+   "note": "",
+   "kind": "relabel_box",
+   "glyph": "glyph/12/1/2/0/7",
+   "category": "keyFlat",
+   "id": "act-0004",
+   "t": "2026-09-24T06:11:55+00:00"
+  },
+  {
+   "stage": "gather",
+   "note": "",
+   "kind": "redraw_box",
+   "glyph": "glyph/12/1/2/0/3",
+   "bbox_page_px": [
+    564.91,
+    2427.55,
+    587.92,
+    2448.38
+   ],
+   "prior_bbox_page_px": [
+    536.6015625,
+    2468.046875,
+    559.609375,
+    2488.875
+   ],
+   "crop_px": [
+    533.8233695652175,
+    167.10529891304304,
+    579.8389945652175,
+    208.76154891304304
+   ],
+   "id": "act-0005",
+   "t": "2026-09-24T06:12:17+00:00"
+  },
+  {
+   "stage": "gather",
+   "note": "",
+   "kind": "delete_box",
+   "glyph": "glyph/12/1/2/0/10",
+   "id": "act-0006",
+   "t": "2026-09-24T06:12:22+00:00"
+  },
+  {
+   "stage": "gather",
+   "note": "",
+   "kind": "redraw_box",
+   "glyph": "glyph/12/1/2/0/3",
+   "bbox_page_px": [
+    536.6,
+    2466.61,
+    559.61,
+    2487.44
+   ],
+   "prior_bbox_page_px": [
+    564.9116847826087,
+    2427.5526494565215,
+    587.9194972826087,
+    2448.3807744565215
+   ],
+   "crop_px": [
+    477.203125,
+    245.226902173913,
+    523.21875,
+    286.883152173913
+   ],
+   "id": "act-0007",
+   "t": "2026-09-24T06:12:47+00:00"
+  },
+  {
+   "stage": "gather",
+   "note": "",
+   "kind": "add_box",
+   "bbox_page_px": [
+    721.2163722826087,
+    2451.022758152174,
+    749.8848505434784,
+    2470.732336956522
+   ],
+   "crop_px": [
+    846.4327445652176,
+    214.04551630434784,
+    903.7697010869567,
+    253.4646739130435
+   ],
+   "cell": "cell/12/1/2/0",
+   "category": "noteheadHalfInSpace",
+   "id": "act-0008",
+   "t": "2026-09-24T06:13:32+00:00"
+  },
+  {
+   "stage": "gather",
+   "note": "",
+   "kind": "confirm_box",
+   "glyph": "glyph/12/1/2/0/2",
+   "category": "slur",
+   "id": "act-0009",
+   "t": "2026-09-24T06:13:37+00:00"
+  },
+  {
+   "stage": "gather",
+   "note": "",
+   "kind": "relabel_box",
+   "glyph": "glyph/12/1/2/0/2",
+   "category": "tie",
+   "id": "act-0010",
+   "t": "2026-09-24T06:13:53+00:00"
+  },
+  {
+   "stage": "gather",
+   "note": "",
+   "kind": "relabel_box",
+   "glyph": "glyph/12/1/2/0/13",
+   "category": "tie",
+   "id": "act-0011",
+   "t": "2026-09-24T06:14:02+00:00"
+  },
+  {
+   "stage": "gather",
+   "note": "",
+   "kind": "add_box",
+   "bbox_page_px": [
+    1023.1136363636364,
+    2431.4147727272725,
+    1046.778409090909,
+    2479.340909090909
+   ],
+   "crop_px": [
+    1450.2272727272727,
+    174.82954545454544,
+    1497.5568181818182,
+    270.6818181818182
+   ],
+   "cell": "cell/12/1/2/2",
+   "category": "accidentalSharp",
+   "id": "act-0012",
+   "t": "2026-09-24T06:14:28+00:00"
+  },
+  {
+   "stage": "gather",
+   "note": "",
+   "kind": "add_box",
+   "bbox_page_px": [
+    1242.5454545454545,
+    2445.1363636363635,
+    1264.6193181818185,
+    2506.784090909091
+   ],
+   "crop_px": [
+    1889.0909090909092,
+    202.27272727272728,
+    1933.2386363636367,
+    325.5681818181818
+   ],
+   "cell": "cell/12/1/2/3",
+   "category": "accidentalSharp",
+   "id": "act-0013",
+   "t": "2026-09-24T06:14:58+00:00"
+  },
+  {
+   "stage": "gather",
+   "note": "",
+   "kind": "relabel_box",
+   "glyph": "glyph/12/1/2/4/4",
+   "category": "restQuarter",
+   "id": "act-0014",
+   "t": "2026-09-24T06:15:15+00:00"
+  },
+  {
+   "stage": "gather",
+   "note": "",
+   "kind": "confirm_box",
+   "glyph": "glyph/12/1/2/4/6",
+   "category": "accidentalSharp",
+   "id": "act-0015",
+   "t": "2026-09-24T06:15:24+00:00"
+  },
+  {
+   "stage": "gather",
+   "note": "",
+   "kind": "confirm_box",
+   "glyph": "glyph/12/1/2/4/0",
+   "category": "noteheadBlackOnLine",
+   "id": "act-0016",
+   "t": "2026-09-24T06:15:28+00:00"
+  },
+  {
+   "stage": "gather",
+   "note": "",
+   "kind": "confirm_box",
+   "glyph": "glyph/12/1/2/4/1",
+   "category": "noteheadBlackOnLine",
+   "id": "act-0017",
+   "t": "2026-09-24T06:15:32+00:00"
+  },
+  {
+   "stage": "gather",
+   "note": "",
+   "kind": "confirm_box",
+   "glyph": "glyph/12/1/2/3/2",
+   "category": "noteheadBlackInSpace",
+   "id": "act-0018",
+   "t": "2026-09-24T06:15:48+00:00"
+  },
+  {
+   "stage": "gather",
+   "note": "",
+   "kind": "confirm_box",
+   "glyph": "glyph/12/1/2/3/1",
+   "category": "noteheadBlackInSpace",
+   "id": "act-0019",
+   "t": "2026-09-24T06:15:51+00:00"
+  },
+  {
+   "stage": "gather",
+   "note": "",
+   "kind": "confirm_box",
+   "glyph": "glyph/12/1/2/3/3",
+   "category": "restQuarter",
+   "id": "act-0020",
+   "t": "2026-09-24T06:15:56+00:00"
+  },
+  {
+   "stage": "gather",
+   "note": "",
+   "kind": "confirm_box",
+   "glyph": "glyph/12/1/2/2/0",
+   "category": "noteheadBlackOnLine",
+   "id": "act-0021",
+   "t": "2026-09-24T06:16:02+00:00"
+  },
+  {
+   "stage": "gather",
+   "note": "",
+   "kind": "confirm_box",
+   "glyph": "glyph/12/1/2/2/2",
+   "category": "noteheadBlackOnLine",
+   "id": "act-0022",
+   "t": "2026-09-24T06:16:06+00:00"
+  },
+  {
+   "stage": "gather",
+   "note": "",
+   "kind": "confirm_box",
+   "glyph": "glyph/12/1/2/2/1",
+   "category": "noteheadBlackOnLine",
+   "id": "act-0023",
+   "t": "2026-09-24T06:16:12+00:00"
+  },
+  {
+   "stage": "gather",
+   "note": "",
+   "kind": "confirm_box",
+   "glyph": "glyph/12/1/2/2/3",
+   "category": "noteheadBlackOnLine",
+   "id": "act-0024",
+   "t": "2026-09-24T06:16:14+00:00"
+  },
+  {
+   "stage": "gather",
+   "note": "",
+   "kind": "confirm_box",
+   "glyph": "glyph/12/1/2/1/2",
+   "category": "noteheadHalfInSpace",
+   "id": "act-0025",
+   "t": "2026-09-24T06:16:18+00:00"
+  },
+  {
+   "stage": "gather",
+   "note": "",
+   "kind": "confirm_box",
+   "glyph": "glyph/12/1/2/1/1",
+   "category": "noteheadHalfInSpace",
+   "id": "act-0026",
+   "t": "2026-09-24T06:16:22+00:00"
+  },
+  {
+   "stage": "gather",
+   "note": "",
+   "kind": "confirm_box",
+   "glyph": "glyph/12/1/2/0/0",
+   "category": "restQuarter",
+   "id": "act-0027",
+   "t": "2026-09-24T06:16:29+00:00"
+  },
+  {
+   "stage": "gather",
+   "note": "",
+   "kind": "confirm_box",
+   "glyph": "glyph/12/1/2/0/5",
+   "category": "accidentalSharp",
+   "id": "act-0028",
+   "t": "2026-09-24T06:16:34+00:00"
+  },
+  {
+   "stage": "gather",
+   "note": "",
+   "kind": "confirm_box",
+   "glyph": "glyph/12/1/2/0/3",
+   "category": "noteheadBlackInSpace",
+   "id": "act-0029",
+   "t": "2026-09-24T06:16:40+00:00"
+  },
+  {
+   "stage": "gather",
+   "note": "",
+   "kind": "confirm_box",
+   "glyph": "glyph/12/1/2/0/10",
+   "category": "noteheadBlackInSpace",
+   "id": "act-0030",
+   "t": "2026-09-24T06:16:45+00:00"
+  },
+  {
+   "stage": "gather",
+   "note": "",
+   "kind": "confirm_box",
+   "glyph": "glyph/12/1/2/5/0",
+   "category": "restQuarter",
+   "id": "act-0031",
+   "t": "2026-09-24T06:16:54+00:00"
+  },
+  {
+   "stage": "gather",
+   "note": "",
+   "kind": "confirm_box",
+   "glyph": "glyph/12/1/2/5/1",
+   "category": "noteheadBlackOnLine",
+   "id": "act-0032",
+   "t": "2026-09-24T06:16:59+00:00"
+  },
+  {
+   "stage": "gather",
+   "note": "",
+   "kind": "confirm_box",
+   "glyph": "glyph/12/1/2/5/8",
+   "category": "noteheadBlackInSpace",
+   "id": "act-0033",
+   "t": "2026-09-24T06:17:06+00:00"
+  },
+  {
+   "stage": "gather",
+   "note": "",
+   "kind": "relabel_box",
+   "glyph": "glyph/12/1/2/6/4",
+   "category": "restQuarter",
+   "id": "act-0034",
+   "t": "2026-09-24T06:17:21+00:00"
+  },
+  {
+   "stage": "gather",
+   "note": "",
+   "kind": "confirm_box",
+   "glyph": "glyph/12/1/2/6/3",
+   "category": "accidentalSharp",
+   "id": "act-0035",
+   "t": "2026-09-24T06:17:24+00:00"
+  },
+  {
+   "stage": "gather",
+   "note": "",
+   "kind": "confirm_box",
+   "glyph": "glyph/12/1/2/6/1",
+   "category": "noteheadBlackOnLine",
+   "id": "act-0036",
+   "t": "2026-09-24T06:17:28+00:00"
+  },
+  {
+   "stage": "gather",
+   "note": "",
+   "kind": "confirm_box",
+   "glyph": "glyph/12/1/2/6/2",
+   "category": "noteheadBlackOnLine",
+   "id": "act-0037",
+   "t": "2026-09-24T06:17:31+00:00"
+  },
+  {
+   "stage": "gather",
+   "note": "",
+   "kind": "add_box",
+   "bbox_page_px": [
+    1796.2613636363637,
+    2449.3125,
+    1820.9204545454545,
+    2509.965909090909
+   ],
+   "crop_px": [
+    2996.5227272727275,
+    210.625,
+    3045.840909090909,
+    331.9318181818182
+   ],
+   "cell": "cell/12/1/2/7",
+   "category": "restQuarter",
+   "id": "act-0038",
+   "t": "2026-09-24T06:17:42+00:00"
+  },
+  {
+   "stage": "gather",
+   "note": "",
+   "kind": "confirm_box",
+   "glyph": "glyph/12/1/2/7/4",
+   "category": "accidentalSharp",
+   "id": "act-0039",
+   "t": "2026-09-24T06:17:45+00:00"
+  },
+  {
+   "stage": "gather",
+   "note": "",
+   "kind": "confirm_box",
+   "glyph": "glyph/12/1/2/7/2",
+   "category": "noteheadBlackInSpace",
+   "id": "act-0040",
+   "t": "2026-09-24T06:17:48+00:00"
+  },
+  {
+   "stage": "gather",
+   "note": "",
+   "kind": "confirm_box",
+   "glyph": "glyph/12/1/2/7/1",
+   "category": "noteheadBlackInSpace",
+   "id": "act-0041",
+   "t": "2026-09-24T06:17:51+00:00"
+  },
+  {
+   "stage": "gather",
+   "note": "",
+   "kind": "add_box",
+   "bbox_page_px": [
+    1919.7897727272727,
+    2489.284090909091,
+    1939.0795454545455,
+    2543.375
+   ],
+   "crop_px": [
+    3243.5795454545455,
+    290.5681818181818,
+    3282.159090909091,
+    398.75
+   ],
+   "cell": "cell/12/1/2/8",
+   "category": "accidentalSharp",
+   "id": "act-0042",
+   "t": "2026-09-24T06:18:08+00:00"
+  },
+  {
+   "stage": "gather",
+   "note": "",
+   "kind": "confirm_box",
+   "glyph": "glyph/12/1/2/8/9",
+   "category": "noteheadBlackInSpace",
+   "id": "act-0043",
+   "t": "2026-09-24T06:18:29+00:00"
+  },
+  {
+   "stage": "gather",
+   "note": "",
+   "kind": "confirm_box",
+   "glyph": "glyph/12/1/2/8/8",
+   "category": "noteheadBlackOnLine",
+   "id": "act-0044",
+   "t": "2026-09-24T06:18:35+00:00"
+  },
+  {
+   "stage": "gather",
+   "note": "",
+   "kind": "add_box",
+   "bbox_page_px": [
+    1985.6136363636363,
+    2435.3920454545455,
+    2004.306818181818,
+    2478.943181818182
+   ],
+   "crop_px": [
+    3375.2272727272725,
+    182.7840909090909,
+    3412.613636363636,
+    269.8863636363636
+   ],
+   "cell": "cell/12/1/2/8",
+   "category": "accidentalSharp",
+   "id": "act-0045",
+   "t": "2026-09-24T06:18:46+00:00"
+  },
+  {
+   "stage": "gather",
+   "note": "",
+   "kind": "confirm_box",
+   "glyph": "glyph/12/1/2/8/6",
+   "category": "noteheadBlackOnLine",
+   "id": "act-0046",
+   "t": "2026-09-24T06:18:49+00:00"
+  },
+  {
+   "stage": "gather",
+   "note": "",
+   "kind": "confirm_box",
+   "glyph": "glyph/12/1/2/8/3",
+   "category": "noteheadBlackOnLine",
+   "id": "act-0047",
+   "t": "2026-09-24T06:18:52+00:00"
+  },
+  {
+   "stage": "gather",
+   "note": "",
+   "kind": "confirm_box",
+   "glyph": "glyph/12/1/2/8/2",
+   "category": "noteheadBlackOnLine",
+   "id": "act-0048",
+   "t": "2026-09-24T06:18:55+00:00"
+  },
+  {
+   "stage": "gather",
+   "note": "",
+   "kind": "confirm_box",
+   "glyph": "glyph/12/1/2/8/11",
+   "category": "noteheadBlackInSpace",
+   "id": "act-0049",
+   "t": "2026-09-24T06:18:58+00:00"
+  },
+  {
+   "stage": "gather",
+   "note": "",
+   "kind": "own_box",
+   "glyph": "glyph/12/1/2/8/1",
+   "staff": "staff/12/1/3",
+   "id": "act-0050",
+   "t": "2026-09-24T06:21:29+00:00"
+  },
+  {
+   "stage": "gather",
+   "note": "",
+   "kind": "own_box",
+   "glyph": "glyph/12/1/2/8/0",
+   "staff": "staff/12/1/3",
+   "id": "act-0051",
+   "t": "2026-09-24T06:21:33+00:00"
+  },
+  {
+   "stage": "gather",
+   "note": "",
+   "kind": "own_box",
+   "glyph": "glyph/12/1/2/8/5",
+   "staff": "staff/12/1/3",
+   "id": "act-0052",
+   "t": "2026-09-24T06:21:35+00:00"
+  },
+  {
+   "stage": "gather",
+   "note": "",
+   "kind": "own_box",
+   "glyph": "glyph/12/1/2/8/7",
+   "staff": "staff/12/1/3",
+   "id": "act-0053",
+   "t": "2026-09-24T06:21:38+00:00"
+  },
+  {
+   "stage": "gather",
+   "note": "",
+   "kind": "own_box",
+   "glyph": "glyph/12/1/2/8/4",
+   "staff": "staff/12/1/3",
+   "id": "act-0054",
+   "t": "2026-09-24T06:21:41+00:00"
+  },
+  {
+   "stage": "gather",
+   "note": "",
+   "kind": "redraw_box",
+   "glyph": "glyph/12/1/2/8/10",
+   "bbox_page_px": [
+    1911.63,
+    2440.33,
+    2090.55,
+    2530.26
+   ],
+   "prior_bbox_page_px": [
+    1916,
+    2450.275,
+    2094.92,
+    2540.2075
+   ],
+   "crop_px": [
+    3227.25,
+    192.66363636363621,
+    3585.09,
+    372.528636363636
+   ],
+   "id": "act-0055",
+   "t": "2026-09-24T06:21:52+00:00"
+  },
+  {
+   "stage": "gather",
+   "note": "",
+   "kind": "add_box",
+   "bbox_page_px": [
+    2057.801136363636,
+    2500.4204545454545,
+    2075.5,
+    2532.0397727272725
+   ],
+   "crop_px": [
+    3519.6022727272725,
+    312.84090909090907,
+    3555,
+    376.07954545454544
+   ],
+   "cell": "cell/12/1/2/8",
+   "category": "noteheadBlackInSpace",
+   "id": "act-0056",
+   "t": "2026-09-24T06:22:11+00:00"
+  },
+  {
+   "stage": "gather",
+   "note": "",
+   "kind": "confirm_box",
+   "glyph": "glyph/12/1/2/9/1",
+   "category": "noteheadBlackInSpace",
+   "id": "act-0057",
+   "t": "2026-09-24T06:22:31+00:00"
+  },
+  {
+   "stage": "gather",
+   "note": "",
+   "kind": "confirm_box",
+   "glyph": "glyph/12/1/2/8/12",
+   "category": "noteheadBlackInSpace",
+   "id": "act-0058",
+   "t": "2026-09-24T06:22:40+00:00"
+  },
+  {
+   "stage": "gather",
+   "note": "",
+   "kind": "confirm_box",
+   "glyph": "glyph/12/1/2/9/8",
+   "category": "noteheadBlackOnLine",
+   "id": "act-0059",
+   "t": "2026-09-24T06:22:46+00:00"
+  },
+  {
+   "stage": "gather",
+   "note": "",
+   "kind": "confirm_box",
+   "glyph": "glyph/12/1/2/9/3",
+   "category": "noteheadBlackOnLine",
+   "id": "act-0060",
+   "t": "2026-09-24T06:22:50+00:00"
+  },
+  {
+   "stage": "gather",
+   "note": "",
+   "kind": "confirm_box",
+   "glyph": "glyph/12/1/2/9/4",
+   "category": "noteheadBlackOnLine",
+   "id": "act-0061",
+   "t": "2026-09-24T06:22:52+00:00"
+  },
+  {
+   "stage": "gather",
+   "note": "",
+   "kind": "confirm_box",
+   "glyph": "glyph/12/1/2/9/5",
+   "category": "noteheadBlackOnLine",
+   "id": "act-0062",
+   "t": "2026-09-24T06:22:54+00:00"
+  },
+  {
+   "stage": "gather",
+   "note": "",
+   "kind": "confirm_box",
+   "glyph": "glyph/12/1/2/9/21",
+   "category": "noteheadBlackInSpace",
+   "id": "act-0063",
+   "t": "2026-09-24T06:22:57+00:00"
+  },
+  {
+   "stage": "gather",
+   "note": "",
+   "kind": "confirm_box",
+   "glyph": "glyph/12/1/2/9/15",
+   "category": "noteheadBlackInSpace",
+   "id": "act-0064",
+   "t": "2026-09-24T06:23:00+00:00"
+  },
+  {
+   "stage": "gather",
+   "note": "",
+   "kind": "confirm_box",
+   "glyph": "glyph/12/1/2/9/11",
+   "category": "noteheadBlackInSpace",
+   "id": "act-0065",
+   "t": "2026-09-24T06:23:03+00:00"
+  },
+  {
+   "stage": "gather",
+   "note": "",
+   "kind": "dup_box",
+   "glyph": "glyph/12/1/2/9/12",
+   "of": "glyph/12/1/2/9/0",
+   "id": "act-0066",
+   "t": "2026-09-24T06:23:10+00:00"
+  },
+  {
+   "stage": "gather",
+   "note": "",
+   "kind": "own_box",
+   "glyph": "glyph/12/1/2/9/0",
+   "staff": "staff/12/1/3",
+   "id": "act-0067",
+   "t": "2026-09-24T06:23:13+00:00"
+  },
+  {
+   "stage": "gather",
+   "note": "",
+   "kind": "own_box",
+   "glyph": "glyph/12/1/2/9/7",
+   "staff": "staff/12/1/3",
+   "id": "act-0068",
+   "t": "2026-09-24T06:23:16+00:00"
+  },
+  {
+   "stage": "gather",
+   "note": "",
+   "kind": "own_box",
+   "glyph": "glyph/12/1/2/9/6",
+   "staff": "staff/12/1/3",
+   "id": "act-0069",
+   "t": "2026-09-24T06:23:18+00:00"
+  },
+  {
+   "stage": "gather",
+   "note": "",
+   "kind": "own_box",
+   "glyph": "glyph/12/1/2/9/13",
+   "staff": "staff/12/1/3",
+   "id": "act-0070",
+   "t": "2026-09-24T06:23:27+00:00"
+  },
+  {
+   "stage": "gather",
+   "note": "",
+   "kind": "relabel_box",
+   "glyph": "glyph/12/1/2/10/14",
+   "category": "accidentalSharp",
+   "id": "act-0071",
+   "t": "2026-09-24T06:23:38+00:00"
+  },
+  {
+   "stage": "gather",
+   "note": "",
+   "kind": "confirm_box",
+   "glyph": "glyph/12/1/2/10/2",
+   "category": "noteheadBlackOnLine",
+   "id": "act-0072",
+   "t": "2026-09-24T06:23:42+00:00"
+  },
+  {
+   "stage": "gather",
+   "note": "",
+   "kind": "add_box",
+   "bbox_page_px": [
+    2255.25,
+    2487.693181818182,
+    2276.528409090909,
+    2533.034090909091
+   ],
+   "crop_px": [
+    3914.5,
+    287.3863636363636,
+    3957.056818181818,
+    378.0681818181818
+   ],
+   "cell": "cell/12/1/2/10",
+   "category": "accidentalSharp",
+   "id": "act-0073",
+   "t": "2026-09-24T06:23:52+00:00"
+  },
+  {
+   "stage": "gather",
+   "note": "",
+   "kind": "own_box",
+   "glyph": "glyph/12/1/2/10/12",
+   "staff": "staff/12/1/3",
+   "id": "act-0074",
+   "t": "2026-09-24T06:23:54+00:00"
+  },
+  {
+   "stage": "gather",
+   "note": "",
+   "kind": "own_box",
+   "glyph": "glyph/12/1/2/10/5",
+   "staff": "staff/12/1/3",
+   "id": "act-0075",
+   "t": "2026-09-24T06:24:00+00:00"
+  },
+  {
+   "stage": "gather",
+   "note": "",
+   "kind": "own_box",
+   "glyph": "glyph/12/1/2/10/0",
+   "staff": "staff/12/1/3",
+   "id": "act-0076",
+   "t": "2026-09-24T06:24:02+00:00"
+  },
+  {
+   "stage": "gather",
+   "note": "",
+   "kind": "add_box",
+   "bbox_page_px": [
+    2282.2954545454545,
+    2497.0397727272725,
+    2299.397727272727,
+    2524.681818181818
+   ],
+   "crop_px": [
+    3968.590909090909,
+    306.07954545454544,
+    4002.7954545454545,
+    361.3636363636364
+   ],
+   "cell": "cell/12/1/2/10",
+   "category": "noteheadBlackInSpace",
+   "id": "act-0077",
+   "t": "2026-09-24T06:24:42+00:00"
+  },
+  {
+   "stage": "gather",
+   "note": "",
+   "kind": "own_box",
+   "glyph": "glyph/12/1/2/10/8",
+   "staff": "staff/12/1/3",
+   "id": "act-0078",
+   "t": "2026-09-24T06:24:47+00:00"
+  },
+  {
+   "stage": "gather",
+   "note": "",
+   "kind": "confirm_box",
+   "glyph": "glyph/12/1/2/10/8",
+   "category": "noteheadBlackOnLine",
+   "id": "act-0079",
+   "t": "2026-09-24T06:24:54+00:00"
+  },
+  {
+   "stage": "gather",
+   "note": "",
+   "kind": "confirm_box",
+   "glyph": "glyph/12/1/2/10/7",
+   "category": "noteheadBlackOnLine",
+   "id": "act-0080",
+   "t": "2026-09-24T06:24:58+00:00"
+  },
+  {
+   "stage": "gather",
+   "note": "",
+   "kind": "confirm_box",
+   "glyph": "glyph/12/1/2/10/10",
+   "category": "noteheadBlackOnLine",
+   "id": "act-0081",
+   "t": "2026-09-24T06:25:01+00:00"
+  },
+  {
+   "stage": "gather",
+   "note": "",
+   "kind": "confirm_box",
+   "glyph": "glyph/12/1/2/10/3",
+   "category": "noteheadBlackInSpace",
+   "id": "act-0082",
+   "t": "2026-09-24T06:25:03+00:00"
+  },
+  {
+   "stage": "gather",
+   "note": "",
+   "kind": "confirm_box",
+   "glyph": "glyph/12/1/2/10/6",
+   "category": "noteheadBlackInSpace",
+   "id": "act-0083",
+   "t": "2026-09-24T06:25:06+00:00"
+  },
+  {
+   "stage": "gather",
+   "note": "",
+   "kind": "confirm_box",
+   "glyph": "glyph/12/1/2/10/4",
+   "category": "noteheadBlackInSpace",
+   "id": "act-0084",
+   "t": "2026-09-24T06:25:09+00:00"
+  },
+  {
+   "stage": "gather",
+   "note": "",
+   "kind": "confirm_box",
+   "glyph": "glyph/12/1/2/11/11",
+   "category": "noteheadHalfOnLine",
+   "id": "act-0085",
+   "t": "2026-09-24T06:25:17+00:00"
+  },
+  {
+   "stage": "gather",
+   "note": "",
+   "kind": "redraw_box",
+   "glyph": "glyph/12/1/2/11/5",
+   "bbox_page_px": [
+    2451.53,
+    2531.86,
+    2485.87,
+    2536.43
+   ],
+   "prior_bbox_page_px": [
+    2452.13,
+    2528.08,
+    2486.465,
+    2532.6475
+   ],
+   "crop_px": [
+    4307.066818181818,
+    375.71681818181787,
+    4375.736818181818,
+    384.8518181818181
+   ],
+   "id": "act-0086",
+   "t": "2026-09-24T06:25:36+00:00"
+  },
+  {
+   "stage": "gather",
+   "note": "",
+   "kind": "confirm_box",
+   "glyph": "glyph/12/1/2/11/5",
+   "category": "ledgerLine",
+   "id": "act-0087",
+   "t": "2026-09-24T06:25:38+00:00"
+  },
+  {
+   "stage": "gather",
+   "note": "",
+   "kind": "redraw_box",
+   "glyph": "glyph/12/1/2/11/11",
+   "bbox_page_px": [
+    2501.49,
+    2527.59,
+    2531.73,
+    2552
+   ],
+   "prior_bbox_page_px": [
+    2451.9725,
+    2533.75,
+    2482.2125,
+    2558.1625
+   ],
+   "crop_px": [
+    4406.979090909091,
+    367.17045454545496,
+    4467.459090909091,
+    415.9954545454548
+   ],
+   "id": "act-0088",
+   "t": "2026-09-24T06:25:50+00:00"
+  },
+  {
+   "stage": "gather",
+   "note": "",
+   "kind": "redraw_box",
+   "glyph": "glyph/12/1/2/11/11",
+   "bbox_page_px": [
+    2449.19,
+    2487.81,
+    2479.43,
+    2512.22
+   ],
+   "prior_bbox_page_px": [
+    2501.4895454545454,
+    2527.5852272727275,
+    2531.7295454545456,
+    2551.9977272727274
+   ],
+   "crop_px": [
+    4302.376818181818,
+    287.625,
+    4362.856818181818,
+    336.4499999999998
+   ],
+   "id": "act-0089",
+   "t": "2026-09-24T06:25:55+00:00"
+  },
+  {
+   "stage": "gather",
+   "note": "",
+   "kind": "relabel_box",
+   "glyph": "glyph/12/1/2/11/10",
+   "category": "noteheadHalfOnLine",
+   "id": "act-0090",
+   "t": "2026-09-24T06:26:13+00:00"
+  },
+  {
+   "stage": "gather",
+   "note": "",
+   "kind": "relabel_box",
+   "glyph": "glyph/12/1/2/11/11",
+   "category": "noteheadHalfInSpace",
+   "id": "act-0091",
+   "t": "2026-09-24T06:26:25+00:00"
+  },
+  {
+   "stage": "gather",
+   "note": "",
+   "kind": "confirm_box",
+   "glyph": "glyph/12/1/2/11/4",
+   "category": "tie",
+   "id": "act-0092",
+   "t": "2026-09-24T06:26:36+00:00"
+  },
+  {
+   "stage": "gather",
+   "note": "",
+   "kind": "confirm_box",
+   "glyph": "glyph/12/1/2/11/2",
+   "category": "tie",
+   "id": "act-0093",
+   "t": "2026-09-24T06:26:40+00:00"
+  }
+ ]
+}

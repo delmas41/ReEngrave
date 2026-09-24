@@ -1,0 +1,315 @@
+record provenance: {"commit": "dbc9962b641e0259763efb45acc204e4e78ffd55", "dirty": true, "settings": {"env_overrides": {"OMR_DIRECTION_TEXT_SCAN_GATE": "1", "OMR_SURYA_KEEP_ALIVE": "0"}, "args": {"against": null, "conf": 0.25, "dpi": 600, "imgsz": null, "ink_rows": false, "no_roster": false, "no_weight_routing": false
+replayed 174686 gather rows
+ADJUDICATE
+  adjudicate system_membership: 31 verdicts so far
+  adjudicate staff_group: 362 verdicts so far
+  adjudicate measure_partition: 693 verdicts so far
+  adjudicate staff_ordinal: 1024 verdicts so far
+  adjudicate system_staff_count: 1055 verdicts so far
+  adjudicate instrument: 1386 verdicts so far
+  adjudicate slot_index: 1717 verdicts so far
+  adjudicate part_partition: 1718 verdicts so far
+  adjudicate group_symbol: 1749 verdicts so far
+  adjudicate clef: 2080 verdicts so far
+  adjudicate system_key: 2111 verdicts so far
+  adjudicate part_key: 2112 verdicts so far
+  adjudicate key_signature: 2443 verdicts so far
+  adjudicate ledger_is_not_a_ledger: 10060 verdicts so far
+  adjudicate notehead_is_not_a_notehead: 21733 verdicts so far
+  adjudicate accidental_is_not_an_accidental: 23267 verdicts so far
+  adjudicate rest_is_not_a_rest: 26165 verdicts so far
+  adjudicate arpeggiato_is_not_an_arpeggiato: 28136 verdicts so far
+  adjudicate arc_is_not_an_arc: 30792 verdicts so far
+  adjudicate dynamic_is_not_a_dynamic: 32368 verdicts so far
+  adjudicate articulation_is_not_an_articulation: 32832 verdicts so far
+  adjudicate glyph_owner: 38845 verdicts so far
+  adjudicate arc_owner: 41501 verdicts so far
+  adjudicate arc_kind: 44157 verdicts so far
+  adjudicate articulation_owner: 44621 verdicts so far
+  adjudicate fermata_owner: 44801 verdicts so far
+  adjudicate ornament_owner: 44804 verdicts so far
+  adjudicate stem_direction: 56477 verdicts so far
+  adjudicate notehead_is_a_whole_rest: 68150 verdicts so far
+  adjudicate tuplet_ratio: 68164 verdicts so far
+  adjudicate duration: 82735 verdicts so far
+  adjudicate event: 87660 verdicts so far
+  adjudicate voices: 92930 verdicts so far
+  adjudicate onset_column: 92961 verdicts so far
+  adjudicate wedge_anchor: 92967 verdicts so far
+  adjudicate meter: 92998 verdicts so far
+  adjudicate dynamic: 98268 verdicts so far
+  adjudicate direction: 103538 verdicts so far
+GROUPS
+  groups meter_across_staves: 31 facts, 4 disagree
+  groups measure_count_across_staves: 31 facts, 0 disagree
+  groups instrument_across_systems: 60 facts, 0 disagree
+  groups clef_across_systems: 60 facts, 4 disagree
+  groups staff_group_across_systems: 60 facts, 0 disagree
+  groups key_signature_across_systems: 60 facts, 0 disagree
+EVALUATE
+  evaluate name_part: 200 fired so far
+  evaluate restate_pitch: 10818 fired so far
+  evaluate respell_accidental: 11917 fired so far
+  evaluate move_glyph: 14606 fired so far
+  evaluate size_measure_rest: 15577 fired so far
+  evaluate reconcile_duration: 15853 fired so far
+INFER
+  infer collapse_duration_by_column: 20 inferred
+  infer collapse_duration_to_barline: 52 inferred
+  infer collapse_slot_index_to_family_block: 28 inferred
+  infer fill_clef_gap: 9 inferred
+  infer fill_part_key: 186 inferred
+EVALUATE (bounded, over the inferred values)
+  evaluate name_part: 0 fired so far
+  evaluate restate_pitch: 328 fired so far
+  evaluate respell_accidental: 2925 fired so far
+  evaluate move_glyph: 3014 fired so far
+  evaluate size_measure_rest: 3014 fired so far
+  evaluate reconcile_duration: 3014 fired so far
+
+═══ CONTROL — did the replay reproduce the record? ══════════════
+   97959 of 98776 standing verdicts identical, 817 differ, 292 absent from the rebuild, 21401 new
+
+═══ THE SIDECAR ═════════════════════════════════════════════════
+   actions              144
+   rows_filed           292
+   actions_refused      0
+   frames_refused       0
+   grids_refused        0
+
+═══ VERDICTS THAT CHANGED ═══════════════════════════════════════
+   [INFER] clef                       staff/2/1/9
+        abstained/None (no_candidates)  ->  decided/'alto' (clef_from_other_systems)
+   [INFER] clef                       staff/3/0/9
+        abstained/None (no_candidates)  ->  decided/'alto' (clef_from_other_systems)
+   [INFER] clef                       staff/5/0/7
+        abstained/None (no_candidates)  ->  decided/'alto' (clef_from_other_systems)
+   [INFER] clef                       staff/5/1/5
+        abstained/None (no_candidates)  ->  decided/'alto' (clef_from_other_systems)
+   [INFER] clef                       staff/7/0/9
+        abstained/None (no_candidates)  ->  decided/'alto' (clef_from_other_systems)
+   [INFER] clef                       staff/7/1/9
+        abstained/None (no_candidates)  ->  decided/'alto' (clef_from_other_systems)
+   [INFER] clef                       staff/14/0/11
+        abstained/None (no_candidates)  ->  decided/'bass' (clef_from_other_systems)
+   [INFER] clef                       staff/15/0/9
+        abstained/None (no_candidates)  ->  decided/'alto' (clef_from_other_systems)
+   [INFER] clef                       staff/16/1/9
+        abstained/None (no_candidates)  ->  decided/'alto' (clef_from_other_systems)
+   [ADJUDICATE] key_signature              staff/1/0/0
+        decided/-3 (fitted_by_template)  ->  decided/-3 (markers)
+   [INFER] key_signature              staff/1/0/1
+        decided/-3 (fitted_by_template)  ->  decided/-3 (key_from_document_majority)
+   [ADJUDICATE] key_signature              staff/1/0/2
+        decided/-1 (fitted)  ->  decided/-1 (fitted_no_markers)
+   [INFER] key_signature              staff/1/0/3
+        decided/-3 (fitted_by_template)  ->  decided/-3 (key_from_document_majority)
+   [ADJUDICATE] key_signature              staff/1/0/4
+        decided/0 (fitted_by_template)  ->  decided/0 (fitted_no_markers)
+   [ADJUDICATE] key_signature              staff/1/0/5
+        decided/0 (fitted_by_template)  ->  decided/0 (fitted_no_markers)
+   [ADJUDICATE] key_signature              staff/1/0/6
+        decided/0 (fitted_by_template)  ->  decided/0 (fitted_no_markers)
+   [ADJUDICATE] key_signature              staff/1/0/7
+        decided/-3 (fitted_by_template)  ->  decided/-3 (markers)
+   [INFER] key_signature              staff/1/0/8
+        decided/-3 (fitted)  ->  decided/-3 (key_from_document_majority)
+   [INFER] key_signature              staff/1/0/9
+        decided/-1 (fitted)  ->  decided/-3 (key_from_document_majority)
+   [INFER] key_signature              staff/1/0/10
+        decided/-3 (fitted)  ->  decided/-3 (key_from_document_majority)
+   [INFER] key_signature              staff/1/0/11
+        decided/-3 (fitted_by_template)  ->  decided/-3 (key_from_document_majority)
+   [ADJUDICATE] key_signature              staff/2/0/0
+        decided/-3 (fitted_by_template)  ->  decided/-3 (markers)
+   [INFER] key_signature              staff/2/0/1
+        decided/-3 (fitted)  ->  decided/-3 (key_from_document_majority)
+   [ADJUDICATE] key_signature              staff/2/0/2
+        decided/-1 (fitted)  ->  decided/-1 (markers)
+   [ADJUDICATE] key_signature              staff/2/0/3
+        decided/-3 (fitted)  ->  decided/-3 (markers)
+   [ADJUDICATE] key_signature              staff/2/0/4
+        decided/0 (fitted_by_template)  ->  decided/0 (fitted_no_markers)
+   [ADJUDICATE] key_signature              staff/2/0/5
+        decided/0 (fitted_by_template)  ->  decided/0 (fitted_no_markers)
+   [ADJUDICATE] key_signature              staff/2/0/6
+        decided/0 (fitted_by_template)  ->  decided/0 (fitted_no_markers)
+   [ADJUDICATE] key_signature              staff/2/0/7
+        decided/-3 (fitted)  ->  decided/-3 (fitted_no_markers)
+   [INFER] key_signature              staff/2/0/8
+        decided/1 (fitted)  ->  decided/-3 (key_from_document_majority)
+   [INFER] key_signature              staff/2/0/9
+        abstained/None (no_evidence)  ->  decided/-3 (key_from_document_majority)
+   [ADJUDICATE] key_signature              staff/2/0/10
+        decided/-1 (fitted)  ->  decided/-2 (markers)
+   [INFER] key_signature              staff/2/1/0
+        decided/-2 (fitted_by_template)  ->  decided/-3 (key_from_document_majority)
+   [INFER] key_signature              staff/2/1/1
+        abstained/None (markers_without_a_run)  ->  decided/-3 (key_from_document_majority)
+   [ADJUDICATE] key_signature              staff/2/1/2
+        abstained/None (markers_without_a_run)  ->  decided/-1 (markers)
+   [INFER] key_signature              staff/2/1/3
+        abstained/None (no_evidence)  ->  decided/-3 (key_from_document_majority)
+   [INFER] key_signature              staff/2/1/4
+        abstained/None (no_evidence)  ->  decided/0 (key_from_other_systems)
+   [INFER] key_signature              staff/2/1/5
+        abstained/None (no_evidence)  ->  decided/0 (key_from_other_systems)
+   [ADJUDICATE] key_signature              staff/2/1/6
+        decided/0 (fitted_by_template)  ->  decided/0 (fitted_no_markers)
+   [INFER] key_signature              staff/2/1/7
+        decided/-3 (fitted_by_template)  ->  decided/-3 (key_from_document_majority)
+   [INFER] key_signature              staff/2/1/8
+        decided/-3 (fitted_by_template)  ->  decided/-3 (key_from_document_majority)
+   [INFER] key_signature              staff/2/1/9
+        abstained/None (needs_clef)  ->  decided/-3 (key_from_document_majority)
+   [ADJUDICATE] key_signature              staff/2/1/10
+        abstained/None (markers_without_a_run)  ->  decided/-2 (markers)
+   [INFER] key_signature              staff/3/0/0
+        decided/-2 (fitted)  ->  decided/-3 (key_from_document_majority)
+   [INFER] key_signature              staff/3/0/1
+        abstained/None (markers_without_a_run)  ->  decided/-3 (key_from_document_majority)
+   [ADJUDICATE] key_signature              staff/3/0/2
+        decided/-1 (fitted)  ->  decided/-1 (markers)
+   [INFER] key_signature              staff/3/0/3
+        decided/-1 (fitted)  ->  decided/-3 (key_from_document_majority)
+   [INFER] key_signature              staff/3/0/4
+        abstained/None (no_evidence)  ->  decided/0 (key_from_other_systems)
+   [INFER] key_signature              staff/3/0/5
+        abstained/None (no_evidence)  ->  decided/0 (key_from_other_systems)
+   [INFER] key_signature              staff/3/0/6
+        abstained/None (no_evidence)  ->  decided/0 (key_from_other_systems)
+   [ADJUDICATE] key_signature              staff/3/0/7
+        decided/-3 (fitted)  ->  decided/-3 (markers)
+   [INFER] key_signature              staff/3/0/8
+        decided/1 (fitted)  ->  decided/-3 (key_from_document_majority)
+   [INFER] key_signature              staff/3/0/9
+        abstained/None (needs_clef)  ->  decided/-3 (key_from_document_majority)
+   [ADJUDICATE] key_signature              staff/3/0/10
+        decided/-3 (fitted)  ->  decided/-3 (markers)
+   [ADJUDICATE] key_signature              staff/3/1/0
+        decided/-3 (fitted_by_template)  ->  decided/-3 (markers)
+   [ADJUDICATE] key_signature              staff/3/1/1
+        decided/-1 (fitted_by_template)  ->  decided/-1 (markers)
+   [ADJUDICATE] key_signature              staff/3/1/2
+        decided/-1 (fitted)  ->  decided/-3 (markers)
+   [INFER] key_signature              staff/3/1/3
+        abstained/None (run_fits_no_slot_table)  ->  decided/0 (key_from_other_systems)
+   [ADJUDICATE] key_signature              staff/3/1/4
+        decided/-3 (fitted)  ->  decided/-3 (markers)
+   [ADJUDICATE] key_signature              staff/3/1/5
+        abstained/None (markers_without_a_run)  ->  decided/-3 (markers)
+   ... 757 more
+
+═══ VERDICTS WHOSE EVIDENCE NAMES A HUMAN ROW ═══════════════════
+   ⚠️ `used` = the decision WEIGHED it; `basis`/`considered` = it was handed it and did not say it weighed it.
+   [ADJUDICATE|used] accidental_is_not_an_accidental glyph/2/1/9/4/11
+        decided/'True' (human_not_a_symbol) by adjudicate_accidental_is_not_an_accidental; human rows ['act-0035:obs:174469->obs:174469']
+   [ADJUDICATE|used] accidental_is_not_an_accidental glyph/2/1/9/4/17
+        decided/'True' (human_not_a_symbol) by adjudicate_accidental_is_not_an_accidental; human rows ['act-0033:obs:174466->obs:174466', 'act-0034:obs:174468->obs:174468']
+   [ADJUDICATE|used] accidental_is_not_an_accidental glyph/2/1/9/4/400000
+        decided/'False' (accidental) by adjudicate_accidental_is_not_an_accidental; human rows ['act-0033:obs:174465->obs:174465']
+   [ADJUDICATE|used] accidental_is_not_an_accidental glyph/2/1/9/4/400001
+        decided/'False' (accidental) by adjudicate_accidental_is_not_an_accidental; human rows ['act-0034:obs:174467->obs:174467']
+   [ADJUDICATE|used] accidental_is_not_an_accidental glyph/2/1/9/5/400006
+        decided/'False' (accidental) by adjudicate_accidental_is_not_an_accidental; human rows ['act-0052:obs:174501->obs:174501']
+   [ADJUDICATE|used] arc_is_not_an_arc          glyph/2/1/9/0/0
+        decided/'True' (human_not_a_symbol) by adjudicate_arc_is_not_an_arc; human rows ['act-0012:obs:174421->obs:174421']
+   [ADJUDICATE|used] arc_is_not_an_arc          glyph/2/1/9/2/0
+        decided/'True' (human_not_a_symbol) by adjudicate_arc_is_not_an_arc; human rows ['act-0019:obs:174435->obs:174435']
+   [ADJUDICATE|used] arc_kind                   glyph/2/1/9/0/18
+        decided/'tie' (tie) by adjudicate_arc_kind; human rows ['act-0001:obs:174395->obs:174395', 'act-0001:obs:174397->obs:174397', 'act-0002:obs:174399->obs:174399', 'act-0002:obs:174401->obs:174401', 'act-0003:obs:174403->obs:174403', 'act-0004:obs:174407->obs:174407', 'act-0005:obs:174409->obs:174409', 'act-0007:obs:174412->obs:174412', 'act-0008:obs:174414->obs:174414', 'act-0009:obs:174416->obs:174416', 'act-0010:obs:174418->obs:174418', 'act-0012:obs:174420->obs:174420']
+   [ADJUDICATE|used] arc_kind                   glyph/2/1/9/0/5
+        decided/'tie' (tie) by adjudicate_arc_kind; human rows ['act-0001:obs:174395->obs:174395', 'act-0001:obs:174397->obs:174397', 'act-0002:obs:174399->obs:174399', 'act-0002:obs:174401->obs:174401', 'act-0003:obs:174403->obs:174403', 'act-0004:obs:174407->obs:174407', 'act-0005:obs:174409->obs:174409', 'act-0007:obs:174412->obs:174412', 'act-0008:obs:174414->obs:174414', 'act-0009:obs:174416->obs:174416', 'act-0010:obs:174418->obs:174418', 'act-0012:obs:174420->obs:174420']
+   [ADJUDICATE|used] arc_kind                   glyph/2/1/9/13/2
+        decided/'tie' (tie) by adjudicate_arc_kind; human rows ['act-0126:obs:174628->obs:174628', 'act-0126:obs:174630->obs:174630', 'act-0127:obs:174632->obs:174632', 'act-0127:obs:174634->obs:174634', 'act-0128:obs:174636->obs:174636', 'act-0129:obs:174638->obs:174638', 'act-0129:obs:174640->obs:174640', 'act-0131:obs:174643->obs:174643', 'act-0131:obs:174645->obs:174645']
+   [ADJUDICATE|used] arc_kind                   glyph/2/1/9/13/3
+        decided/'tie' (tie) by adjudicate_arc_kind; human rows ['act-0126:obs:174628->obs:174628', 'act-0126:obs:174630->obs:174630', 'act-0127:obs:174632->obs:174632', 'act-0127:obs:174634->obs:174634', 'act-0128:obs:174636->obs:174636', 'act-0129:obs:174638->obs:174638', 'act-0129:obs:174640->obs:174640', 'act-0131:obs:174643->obs:174643', 'act-0131:obs:174645->obs:174645']
+   [ADJUDICATE|used] arc_kind                   glyph/2/1/9/13/9
+        decided/'tie' (tie) by adjudicate_arc_kind; human rows ['act-0126:obs:174628->obs:174628', 'act-0126:obs:174630->obs:174630', 'act-0127:obs:174632->obs:174632', 'act-0127:obs:174634->obs:174634', 'act-0128:obs:174636->obs:174636', 'act-0129:obs:174638->obs:174638', 'act-0129:obs:174640->obs:174640', 'act-0131:obs:174643->obs:174643', 'act-0131:obs:174645->obs:174645']
+   [ADJUDICATE|used] arc_kind                   glyph/2/1/9/2/0
+        decided/'slur' (slur) by adjudicate_arc_kind; human rows ['act-0017:obs:174426->obs:174426', 'act-0017:obs:174428->obs:174428', 'act-0018:obs:174430->obs:174430', 'act-0018:obs:174432->obs:174432', 'act-0019:obs:174434->obs:174434']
+   [ADJUDICATE|used] arc_kind                   glyph/2/1/9/2/2
+        decided/'slur' (slur) by adjudicate_arc_kind; human rows ['act-0017:obs:174426->obs:174426', 'act-0017:obs:174428->obs:174428', 'act-0018:obs:174430->obs:174430', 'act-0018:obs:174432->obs:174432', 'act-0019:obs:174434->obs:174434']
+   [ADJUDICATE|used] duration                   glyph/2/1/9/0/400000
+        decided/"{'beats': 1.0, 'written': 1.0, 'dots': 0, 'beam_levels': 0}" (head_and_marks) by adjudicate_duration; human rows ['act-0001:obs:174395->obs:174395', 'act-0001:obs:174396->obs:174396', 'act-0002:obs:174399->obs:174399', 'act-0002:obs:174400->obs:174400', 'act-0003:obs:174403->obs:174403', 'act-0004:obs:174407->obs:174407', 'act-0005:obs:174409->obs:174409', 'act-0007:obs:174412->obs:174412', 'act-0008:obs:174414->obs:174414', 'act-0009:obs:174416->obs:174416', 'act-0010:obs:174418->obs:174418', 'act-0012:obs:174420->obs:174420']
+   [ADJUDICATE|used] duration                   glyph/2/1/9/0/400001
+        decided/"{'beats': 1.0, 'written': 1.0, 'dots': 0, 'beam_levels': 0}" (head_and_marks) by adjudicate_duration; human rows ['act-0001:obs:174395->obs:174395', 'act-0001:obs:174396->obs:174396', 'act-0002:obs:174399->obs:174399', 'act-0002:obs:174400->obs:174400', 'act-0003:obs:174403->obs:174403', 'act-0004:obs:174407->obs:174407', 'act-0005:obs:174409->obs:174409', 'act-0007:obs:174412->obs:174412', 'act-0008:obs:174414->obs:174414', 'act-0009:obs:174416->obs:174416', 'act-0010:obs:174418->obs:174418', 'act-0012:obs:174420->obs:174420']
+   [ADJUDICATE|used] duration                   glyph/2/1/9/10/400001
+        decided/"{'beats': 1.0, 'written': 1.0, 'dots': 0, 'beam_levels': 0}" (head_and_marks) by adjudicate_duration; human rows ['act-0104:obs:174582->obs:174582', 'act-0113:obs:174592->obs:174592', 'act-0113:obs:174593->obs:174593', 'act-0114:obs:174596->obs:174596', 'act-0114:obs:174597->obs:174597']
+   [ADJUDICATE|used] duration                   glyph/2/1/9/10/400002
+        decided/"{'beats': 1.0, 'written': 1.0, 'dots': 0, 'beam_levels': 0}" (head_and_marks) by adjudicate_duration; human rows ['act-0104:obs:174582->obs:174582', 'act-0113:obs:174592->obs:174592', 'act-0113:obs:174593->obs:174593', 'act-0114:obs:174596->obs:174596', 'act-0114:obs:174597->obs:174597']
+   [ADJUDICATE|used] duration                   glyph/2/1/9/11/400000
+        decided/"{'beats': 1.0, 'written': 1.0, 'dots': 0, 'beam_levels': 0}" (head_and_marks) by adjudicate_duration; human rows ['act-0118:obs:174603->obs:174603', 'act-0118:obs:174604->obs:174604', 'act-0119:obs:174607->obs:174607', 'act-0120:obs:174609->obs:174609', 'act-0121:obs:174611->obs:174611', 'act-0121:obs:174612->obs:174612', 'act-0122:obs:174615->obs:174615', 'act-0122:obs:174616->obs:174616', 'act-0123:obs:174619->obs:174619', 'act-0123:obs:174620->obs:174620', 'act-0124:obs:174623->obs:174623', 'act-0124:obs:174624->obs:174624']
+   [ADJUDICATE|used] duration                   glyph/2/1/9/11/400003
+        decided/"{'beats': 2.0, 'written': 2.0, 'dots': 0, 'beam_levels': 0}" (head_and_marks) by adjudicate_duration; human rows ['act-0118:obs:174603->obs:174603', 'act-0118:obs:174604->obs:174604', 'act-0119:obs:174607->obs:174607', 'act-0120:obs:174609->obs:174609', 'act-0121:obs:174611->obs:174611', 'act-0121:obs:174612->obs:174612', 'act-0122:obs:174615->obs:174615', 'act-0122:obs:174616->obs:174616', 'act-0123:obs:174619->obs:174619', 'act-0123:obs:174620->obs:174620', 'act-0124:obs:174623->obs:174623', 'act-0124:obs:174624->obs:174624']
+   [ADJUDICATE|used] duration                   glyph/2/1/9/11/400004
+        decided/"{'beats': 2.0, 'written': 2.0, 'dots': 0, 'beam_levels': 0}" (head_and_marks) by adjudicate_duration; human rows ['act-0118:obs:174603->obs:174603', 'act-0118:obs:174604->obs:174604', 'act-0119:obs:174607->obs:174607', 'act-0120:obs:174609->obs:174609', 'act-0121:obs:174611->obs:174611', 'act-0121:obs:174612->obs:174612', 'act-0122:obs:174615->obs:174615', 'act-0122:obs:174616->obs:174616', 'act-0123:obs:174619->obs:174619', 'act-0123:obs:174620->obs:174620', 'act-0124:obs:174623->obs:174623', 'act-0124:obs:174624->obs:174624']
+   [ADJUDICATE|used] duration                   glyph/2/1/9/11/400005
+        decided/"{'beats': 2.0, 'written': 2.0, 'dots': 0, 'beam_levels': 0}" (head_and_marks) by adjudicate_duration; human rows ['act-0118:obs:174603->obs:174603', 'act-0118:obs:174604->obs:174604', 'act-0119:obs:174607->obs:174607', 'act-0120:obs:174609->obs:174609', 'act-0121:obs:174611->obs:174611', 'act-0121:obs:174612->obs:174612', 'act-0122:obs:174615->obs:174615', 'act-0122:obs:174616->obs:174616', 'act-0123:obs:174619->obs:174619', 'act-0123:obs:174620->obs:174620', 'act-0124:obs:174623->obs:174623', 'act-0124:obs:174624->obs:174624']
+   [ADJUDICATE|used] duration                   glyph/2/1/9/11/400006
+        decided/"{'beats': 2.0, 'written': 2.0, 'dots': 0, 'beam_levels': 0}" (head_and_marks) by adjudicate_duration; human rows ['act-0118:obs:174603->obs:174603', 'act-0118:obs:174604->obs:174604', 'act-0119:obs:174607->obs:174607', 'act-0120:obs:174609->obs:174609', 'act-0121:obs:174611->obs:174611', 'act-0121:obs:174612->obs:174612', 'act-0122:obs:174615->obs:174615', 'act-0122:obs:174616->obs:174616', 'act-0123:obs:174619->obs:174619', 'act-0123:obs:174620->obs:174620', 'act-0124:obs:174623->obs:174623', 'act-0124:obs:174624->obs:174624']
+   [ADJUDICATE|used] duration                   glyph/2/1/9/13/400000
+        decided/"{'beats': 1.0, 'written': 1.0, 'dots': 0, 'beam_levels': 0}" (head_and_marks) by adjudicate_duration; human rows ['act-0126:obs:174628->obs:174628', 'act-0126:obs:174629->obs:174629', 'act-0127:obs:174632->obs:174632', 'act-0127:obs:174633->obs:174633', 'act-0128:obs:174636->obs:174636', 'act-0129:obs:174638->obs:174638', 'act-0129:obs:174639->obs:174639', 'act-0131:obs:174643->obs:174643', 'act-0131:obs:174644->obs:174644']
+   [ADJUDICATE|used] duration                   glyph/2/1/9/13/400001
+        decided/"{'beats': 1.0, 'written': 1.0, 'dots': 0, 'beam_levels': 0}" (head_and_marks) by adjudicate_duration; human rows ['act-0126:obs:174628->obs:174628', 'act-0126:obs:174629->obs:174629', 'act-0127:obs:174632->obs:174632', 'act-0127:obs:174633->obs:174633', 'act-0128:obs:174636->obs:174636', 'act-0129:obs:174638->obs:174638', 'act-0129:obs:174639->obs:174639', 'act-0131:obs:174643->obs:174643', 'act-0131:obs:174644->obs:174644']
+   [ADJUDICATE|used] duration                   glyph/2/1/9/13/400003
+        decided/"{'beats': 2.0, 'written': 2.0, 'dots': 0, 'beam_levels': 0}" (head_and_marks) by adjudicate_duration; human rows ['act-0126:obs:174628->obs:174628', 'act-0126:obs:174629->obs:174629', 'act-0127:obs:174632->obs:174632', 'act-0127:obs:174633->obs:174633', 'act-0128:obs:174636->obs:174636', 'act-0129:obs:174638->obs:174638', 'act-0129:obs:174639->obs:174639', 'act-0131:obs:174643->obs:174643', 'act-0131:obs:174644->obs:174644']
+   [ADJUDICATE|used] duration                   glyph/2/1/9/13/400004
+        decided/"{'beats': 2.0, 'written': 2.0, 'dots': 0, 'beam_levels': 0}" (head_and_marks) by adjudicate_duration; human rows ['act-0126:obs:174628->obs:174628', 'act-0126:obs:174629->obs:174629', 'act-0127:obs:174632->obs:174632', 'act-0127:obs:174633->obs:174633', 'act-0128:obs:174636->obs:174636', 'act-0129:obs:174638->obs:174638', 'act-0129:obs:174639->obs:174639', 'act-0131:obs:174643->obs:174643', 'act-0131:obs:174644->obs:174644']
+   [ADJUDICATE|used] duration                   glyph/2/1/9/14/400000
+        decided/"{'beats': 1.0, 'written': 1.0, 'dots': 0, 'beam_levels': 0}" (head_and_marks) by adjudicate_duration; human rows ['act-0133:obs:174647->obs:174647', 'act-0133:obs:174648->obs:174648', 'act-0134:obs:174651->obs:174651', 'act-0134:obs:174652->obs:174652', 'act-0135:obs:174655->obs:174655', 'act-0136:obs:174657->obs:174657', 'act-0136:obs:174658->obs:174658', 'act-0137:obs:174661->obs:174661', 'act-0137:obs:174662->obs:174662', 'act-0139:obs:174666->obs:174666', 'act-0139:obs:174667->obs:174667', 'act-0140:obs:174670->obs:174670', 'act-0140:obs:174671->obs:174671', 'act-0141:obs:174674->obs:174674', 'act-0141:obs:174675->obs:174675', 'act-0142:obs:174678->obs:174678', 'act-0142:obs:174679->obs:174679', 'act-0143:obs:174682->obs:174682', 'act-0143:obs:174683->obs:174683']
+   [ADJUDICATE|used] duration                   glyph/2/1/9/14/400001
+        decided/"{'beats': 1.0, 'written': 1.0, 'dots': 0, 'beam_levels': 0}" (head_and_marks) by adjudicate_duration; human rows ['act-0133:obs:174647->obs:174647', 'act-0133:obs:174648->obs:174648', 'act-0134:obs:174651->obs:174651', 'act-0134:obs:174652->obs:174652', 'act-0135:obs:174655->obs:174655', 'act-0136:obs:174657->obs:174657', 'act-0136:obs:174658->obs:174658', 'act-0137:obs:174661->obs:174661', 'act-0137:obs:174662->obs:174662', 'act-0139:obs:174666->obs:174666', 'act-0139:obs:174667->obs:174667', 'act-0140:obs:174670->obs:174670', 'act-0140:obs:174671->obs:174671', 'act-0141:obs:174674->obs:174674', 'act-0141:obs:174675->obs:174675', 'act-0142:obs:174678->obs:174678', 'act-0142:obs:174679->obs:174679', 'act-0143:obs:174682->obs:174682', 'act-0143:obs:174683->obs:174683']
+   [ADJUDICATE|used] duration                   glyph/2/1/9/14/400003
+        decided/"{'beats': 1.0, 'written': 1.0, 'dots': 0, 'beam_levels': 0}" (head_and_marks) by adjudicate_duration; human rows ['act-0133:obs:174647->obs:174647', 'act-0133:obs:174648->obs:174648', 'act-0134:obs:174651->obs:174651', 'act-0134:obs:174652->obs:174652', 'act-0135:obs:174655->obs:174655', 'act-0136:obs:174657->obs:174657', 'act-0136:obs:174658->obs:174658', 'act-0137:obs:174661->obs:174661', 'act-0137:obs:174662->obs:174662', 'act-0139:obs:174666->obs:174666', 'act-0139:obs:174667->obs:174667', 'act-0140:obs:174670->obs:174670', 'act-0140:obs:174671->obs:174671', 'act-0141:obs:174674->obs:174674', 'act-0141:obs:174675->obs:174675', 'act-0142:obs:174678->obs:174678', 'act-0142:obs:174679->obs:174679', 'act-0143:obs:174682->obs:174682', 'act-0143:obs:174683->obs:174683']
+   [ADJUDICATE|used] duration                   glyph/2/1/9/14/400004
+        decided/"{'beats': 1.0, 'written': 1.0, 'dots': 0, 'beam_levels': 0}" (head_and_marks) by adjudicate_duration; human rows ['act-0133:obs:174647->obs:174647', 'act-0133:obs:174648->obs:174648', 'act-0134:obs:174651->obs:174651', 'act-0134:obs:174652->obs:174652', 'act-0135:obs:174655->obs:174655', 'act-0136:obs:174657->obs:174657', 'act-0136:obs:174658->obs:174658', 'act-0137:obs:174661->obs:174661', 'act-0137:obs:174662->obs:174662', 'act-0139:obs:174666->obs:174666', 'act-0139:obs:174667->obs:174667', 'act-0140:obs:174670->obs:174670', 'act-0140:obs:174671->obs:174671', 'act-0141:obs:174674->obs:174674', 'act-0141:obs:174675->obs:174675', 'act-0142:obs:174678->obs:174678', 'act-0142:obs:174679->obs:174679', 'act-0143:obs:174682->obs:174682', 'act-0143:obs:174683->obs:174683']
+   [ADJUDICATE|used] duration                   glyph/2/1/9/14/400005
+        decided/"{'beats': 1.0, 'written': 1.0, 'dots': 0, 'beam_levels': 0}" (head_and_marks) by adjudicate_duration; human rows ['act-0133:obs:174647->obs:174647', 'act-0133:obs:174648->obs:174648', 'act-0134:obs:174651->obs:174651', 'act-0134:obs:174652->obs:174652', 'act-0135:obs:174655->obs:174655', 'act-0136:obs:174657->obs:174657', 'act-0136:obs:174658->obs:174658', 'act-0137:obs:174661->obs:174661', 'act-0137:obs:174662->obs:174662', 'act-0139:obs:174666->obs:174666', 'act-0139:obs:174667->obs:174667', 'act-0140:obs:174670->obs:174670', 'act-0140:obs:174671->obs:174671', 'act-0141:obs:174674->obs:174674', 'act-0141:obs:174675->obs:174675', 'act-0142:obs:174678->obs:174678', 'act-0142:obs:174679->obs:174679', 'act-0143:obs:174682->obs:174682', 'act-0143:obs:174683->obs:174683']
+   [ADJUDICATE|used] duration                   glyph/2/1/9/14/400006
+        decided/"{'beats': 1.0, 'written': 1.0, 'dots': 0, 'beam_levels': 0}" (head_and_marks) by adjudicate_duration; human rows ['act-0133:obs:174647->obs:174647', 'act-0133:obs:174648->obs:174648', 'act-0134:obs:174651->obs:174651', 'act-0134:obs:174652->obs:174652', 'act-0135:obs:174655->obs:174655', 'act-0136:obs:174657->obs:174657', 'act-0136:obs:174658->obs:174658', 'act-0137:obs:174661->obs:174661', 'act-0137:obs:174662->obs:174662', 'act-0139:obs:174666->obs:174666', 'act-0139:obs:174667->obs:174667', 'act-0140:obs:174670->obs:174670', 'act-0140:obs:174671->obs:174671', 'act-0141:obs:174674->obs:174674', 'act-0141:obs:174675->obs:174675', 'act-0142:obs:174678->obs:174678', 'act-0142:obs:174679->obs:174679', 'act-0143:obs:174682->obs:174682', 'act-0143:obs:174683->obs:174683']
+   [ADJUDICATE|used] duration                   glyph/2/1/9/14/400007
+        decided/"{'beats': 2.0, 'written': 2.0, 'dots': 0, 'beam_levels': 0}" (head_and_marks) by adjudicate_duration; human rows ['act-0133:obs:174647->obs:174647', 'act-0133:obs:174648->obs:174648', 'act-0134:obs:174651->obs:174651', 'act-0134:obs:174652->obs:174652', 'act-0135:obs:174655->obs:174655', 'act-0136:obs:174657->obs:174657', 'act-0136:obs:174658->obs:174658', 'act-0137:obs:174661->obs:174661', 'act-0137:obs:174662->obs:174662', 'act-0139:obs:174666->obs:174666', 'act-0139:obs:174667->obs:174667', 'act-0140:obs:174670->obs:174670', 'act-0140:obs:174671->obs:174671', 'act-0141:obs:174674->obs:174674', 'act-0141:obs:174675->obs:174675', 'act-0142:obs:174678->obs:174678', 'act-0142:obs:174679->obs:174679', 'act-0143:obs:174682->obs:174682', 'act-0143:obs:174683->obs:174683']
+   [ADJUDICATE|used] duration                   glyph/2/1/9/14/400008
+        decided/"{'beats': 2.0, 'written': 2.0, 'dots': 0, 'beam_levels': 0}" (head_and_marks) by adjudicate_duration; human rows ['act-0133:obs:174647->obs:174647', 'act-0133:obs:174648->obs:174648', 'act-0134:obs:174651->obs:174651', 'act-0134:obs:174652->obs:174652', 'act-0135:obs:174655->obs:174655', 'act-0136:obs:174657->obs:174657', 'act-0136:obs:174658->obs:174658', 'act-0137:obs:174661->obs:174661', 'act-0137:obs:174662->obs:174662', 'act-0139:obs:174666->obs:174666', 'act-0139:obs:174667->obs:174667', 'act-0140:obs:174670->obs:174670', 'act-0140:obs:174671->obs:174671', 'act-0141:obs:174674->obs:174674', 'act-0141:obs:174675->obs:174675', 'act-0142:obs:174678->obs:174678', 'act-0142:obs:174679->obs:174679', 'act-0143:obs:174682->obs:174682', 'act-0143:obs:174683->obs:174683']
+   [ADJUDICATE|used] duration                   glyph/2/1/9/14/400009
+        decided/"{'beats': 1.0, 'written': 1.0, 'dots': 0, 'beam_levels': 0}" (head_and_marks) by adjudicate_duration; human rows ['act-0133:obs:174647->obs:174647', 'act-0133:obs:174648->obs:174648', 'act-0134:obs:174651->obs:174651', 'act-0134:obs:174652->obs:174652', 'act-0135:obs:174655->obs:174655', 'act-0136:obs:174657->obs:174657', 'act-0136:obs:174658->obs:174658', 'act-0137:obs:174661->obs:174661', 'act-0137:obs:174662->obs:174662', 'act-0139:obs:174666->obs:174666', 'act-0139:obs:174667->obs:174667', 'act-0140:obs:174670->obs:174670', 'act-0140:obs:174671->obs:174671', 'act-0141:obs:174674->obs:174674', 'act-0141:obs:174675->obs:174675', 'act-0142:obs:174678->obs:174678', 'act-0142:obs:174679->obs:174679', 'act-0143:obs:174682->obs:174682', 'act-0143:obs:174683->obs:174683']
+   [ADJUDICATE|used] duration                   glyph/2/1/9/2/400000
+        decided/"{'beats': 2.0, 'written': 2.0, 'dots': 0, 'beam_levels': 0}" (head_and_marks) by adjudicate_duration; human rows ['act-0017:obs:174426->obs:174426', 'act-0017:obs:174427->obs:174427', 'act-0018:obs:174430->obs:174430', 'act-0018:obs:174431->obs:174431', 'act-0019:obs:174434->obs:174434']
+   [ADJUDICATE|used] duration                   glyph/2/1/9/2/400001
+        decided/"{'beats': 2.0, 'written': 2.0, 'dots': 0, 'beam_levels': 0}" (head_and_marks) by adjudicate_duration; human rows ['act-0017:obs:174426->obs:174426', 'act-0017:obs:174427->obs:174427', 'act-0018:obs:174430->obs:174430', 'act-0018:obs:174431->obs:174431', 'act-0019:obs:174434->obs:174434']
+   [ADJUDICATE|used] duration                   glyph/2/1/9/3/400000
+        decided/"{'beats': 0.5, 'written': 0.5, 'dots': 0, 'beam_levels': 1}" (head_and_marks) by adjudicate_duration; human rows ['act-0020:obs:174436->obs:174436', 'act-0020:obs:174437->obs:174437', 'act-0021:obs:174440->obs:174440', 'act-0021:obs:174441->obs:174441', 'act-0023:obs:174445->obs:174445', 'act-0023:obs:174446->obs:174446', 'act-0025:obs:174450->obs:174450', 'act-0025:obs:174451->obs:174451', 'act-0027:obs:174455->obs:174455', 'act-0027:obs:174456->obs:174456', 'act-0029:obs:174460->obs:174460']
+   [ADJUDICATE|used] duration                   glyph/2/1/9/3/400001
+        decided/"{'beats': 0.5, 'written': 0.5, 'dots': 0, 'beam_levels': 1}" (head_and_marks) by adjudicate_duration; human rows ['act-0020:obs:174436->obs:174436', 'act-0020:obs:174437->obs:174437', 'act-0021:obs:174440->obs:174440', 'act-0021:obs:174441->obs:174441', 'act-0023:obs:174445->obs:174445', 'act-0023:obs:174446->obs:174446', 'act-0025:obs:174450->obs:174450', 'act-0025:obs:174451->obs:174451', 'act-0027:obs:174455->obs:174455', 'act-0027:obs:174456->obs:174456', 'act-0029:obs:174460->obs:174460']
+
+═══ HUMAN ROWS THAT REACHED NO VERDICT ══════════════════════════
+   ⚠️ reported, never hidden — a witness that changed nothing is the finding, not a gap in the report.
+   act-0004     obs:174408 (replayed as obs:174408)
+   act-0005     obs:174410 (replayed as obs:174410)
+   act-0006     obs:174411 (replayed as obs:174411)
+   act-0007     obs:174413 (replayed as obs:174413)
+   act-0008     obs:174415 (replayed as obs:174415)
+   act-0029     obs:174461 (replayed as obs:174461)
+   act-0051     obs:174500 (replayed as obs:174500)
+   act-0053     obs:174503 (replayed as obs:174503)
+   act-0061     obs:174511 (replayed as obs:174511)
+   act-0104     obs:174583 (replayed as obs:174583)
+   act-0105     obs:174584 (replayed as obs:174584)
+   act-0107     obs:174586 (replayed as obs:174586)
+
+═══ EXPORT ══════════════════════════════════════════════════════
+   <note> elements  8588 -> 8793 (+205)
+   MusicXML identical to the parent's: False
+   staff census before {"staff": "staff/2/1/9", "refused": {"no_pitch": 53, "owned_by_another_staff": 9, "not_a_notehead:too_narrow": 1}, "written": {"rest": 2}, "refused_total": 63, "written_total": 2}
+   staff census after  {"staff": "staff/2/1/9", "refused": {"not_a_notehead:human_not_a_symbol": 8, "duration_narrowed": 6, "owned_by_another_staff": 9, "not_a_rest:human_not_a_symbol": 1, "not_a_notehead:too_narrow": 1}, "written": {"notehead": 80, "rest": 1}, "refused_total": 25, "written_total": 81}
+
+═══ PER STAGE ═══════════════════════════════════════════════════
+{
+ "human_rows_no_stage_read": 12,
+ "human_rows_read": 280
+}
+   ADJUDICATE   {'verdicts_naming_a_human_row': 792, 'verdicts_that_WEIGHED_one': 196, 'distinct_human_rows_named': 247, 'distinct_human_rows_weighed': 152}
+   EVALUATE     {'verdicts_naming_a_human_row': 41, 'verdicts_that_WEIGHED_one': 0, 'distinct_human_rows_named': 41, 'distinct_human_rows_weighed': 0}
+
+wrote benchmarks/omr-stage-review-2026-09/out/sean-staff-2-1-9/diff.json, benchmarks/omr-stage-review-2026-09/out/sean-staff-2-1-9/feedback.json ({'actions': 144, 'human_rows': 292, 'actions_refused': 0, 'actions_that_reached_nothing': 4, 'verdicts_naming_a_human_row': 17421, 'verdicts_changed': 817, 'notes_before': 8588, 'notes_after': 8793})

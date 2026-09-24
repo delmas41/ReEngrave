@@ -1,0 +1,1341 @@
+{
+ "counts": {
+  "actions": 93,
+  "human_rows": 133,
+  "actions_refused": 0,
+  "actions_that_reached_nothing": 9,
+  "verdicts_naming_a_human_row": 6810,
+  "verdicts_changed": 822,
+  "notes_before": 8588,
+  "notes_after": 8770
+ },
+ "per_stage": {
+  "ADJUDICATE": {
+   "verdicts_naming_a_human_row": 6799,
+   "verdicts_that_WEIGHED_one": 342,
+   "by_decider": {
+    "adjudicate_arc_kind": 92,
+    "adjudicate_clef": 3,
+    "adjudicate_duration": 376,
+    "adjudicate_event": 37,
+    "adjudicate_stem_direction": 174,
+    "adjudicate_arc_owner": 4895,
+    "adjudicate_glyph_owner": 272,
+    "adjudicate_key_signature": 426,
+    "adjudicate_meter": 333,
+    "adjudicate_onset_column": 37,
+    "adjudicate_part_key": 3,
+    "adjudicate_system_key": 3,
+    "adjudicate_voices": 37,
+    "adjudicate_notehead_is_a_whole_rest": 11,
+    "adjudicate_notehead_is_not_a_notehead": 100
+   }
+  },
+  "EVALUATE": {
+   "verdicts_naming_a_human_row": 11,
+   "verdicts_that_WEIGHED_one": 0,
+   "by_decider": {
+    "restate_pitch": 11
+   }
+  },
+  "INFER": {
+   "verdicts_naming_a_human_row": 0,
+   "verdicts_that_WEIGHED_one": 0,
+   "by_decider": {}
+  }
+ },
+ "export": {
+  "notes_before": 8588,
+  "notes_after": 8770,
+  "staff_census_before": {
+   "staff": "staff/12/1/2",
+   "refused": {
+    "no_pitch": 53,
+    "owned_by_another_staff": 7,
+    "not_a_notehead:clipped_fragment": 2,
+    "duration_narrowed": 4
+   },
+   "written": {
+    "rest": 11
+   },
+   "refused_total": 66,
+   "written_total": 11
+  },
+  "staff_census_after": {
+   "staff": "staff/12/1/2",
+   "refused": {
+    "not_a_notehead:human_not_a_symbol": 4,
+    "owned_by_another_staff": 9,
+    "not_a_notehead:clipped_fragment": 2,
+    "duration_narrowed": 13
+   },
+   "written": {
+    "rest": 11,
+    "notehead": 49
+   },
+   "refused_total": 28,
+   "written_total": 60
+  }
+ },
+ "reached_nothing": [
+  "act-0015",
+  "act-0020",
+  "act-0027",
+  "act-0028",
+  "act-0031",
+  "act-0035",
+  "act-0039",
+  "act-0087",
+  "act-0092"
+ ],
+ "per_action": {
+  "act-0001": {
+   "kind": "add_box",
+   "subject": "glyph/12/1/2/0/400000",
+   "category": null,
+   "staff": null,
+   "weighed_by": [
+    [
+     "arc_kind",
+     3
+    ],
+    [
+     "clef",
+     3
+    ],
+    [
+     "duration",
+     5
+    ],
+    [
+     "event",
+     1
+    ],
+    [
+     "stem_direction",
+     3
+    ]
+   ],
+   "reached_nothing": false
+  },
+  "act-0002": {
+   "kind": "redraw_box",
+   "subject": "glyph/12/1/2/0/400001",
+   "category": null,
+   "staff": null,
+   "weighed_by": [
+    [
+     "arc_kind",
+     6
+    ],
+    [
+     "duration",
+     10
+    ],
+    [
+     "event",
+     2
+    ],
+    [
+     "notehead_is_a_whole_rest",
+     1
+    ],
+    [
+     "notehead_is_not_a_notehead",
+     2
+    ],
+    [
+     "stem_direction",
+     3
+    ]
+   ],
+   "reached_nothing": false
+  },
+  "act-0003": {
+   "kind": "redraw_box",
+   "subject": "glyph/12/1/2/0/400002",
+   "category": null,
+   "staff": null,
+   "weighed_by": [
+    [
+     "arc_kind",
+     6
+    ],
+    [
+     "duration",
+     10
+    ],
+    [
+     "event",
+     2
+    ],
+    [
+     "notehead_is_a_whole_rest",
+     1
+    ],
+    [
+     "notehead_is_not_a_notehead",
+     2
+    ],
+    [
+     "stem_direction",
+     3
+    ]
+   ],
+   "reached_nothing": false
+  },
+  "act-0004": {
+   "kind": "relabel_box",
+   "subject": "glyph/12/1/2/0/400003",
+   "category": null,
+   "staff": null,
+   "weighed_by": [
+    [
+     "arc_kind",
+     3
+    ],
+    [
+     "duration",
+     5
+    ],
+    [
+     "event",
+     1
+    ],
+    [
+     "notehead_is_not_a_notehead",
+     1
+    ],
+    [
+     "stem_direction",
+     3
+    ]
+   ],
+   "reached_nothing": false
+  },
+  "act-0005": {
+   "kind": "redraw_box",
+   "subject": "glyph/12/1/2/0/400004",
+   "category": null,
+   "staff": null,
+   "weighed_by": [
+    [
+     "arc_kind",
+     6
+    ],
+    [
+     "duration",
+     10
+    ],
+    [
+     "event",
+     2
+    ],
+    [
+     "notehead_is_a_whole_rest",
+     1
+    ],
+    [
+     "notehead_is_not_a_notehead",
+     1
+    ],
+    [
+     "stem_direction",
+     3
+    ]
+   ],
+   "reached_nothing": false
+  },
+  "act-0006": {
+   "kind": "delete_box",
+   "subject": "glyph/12/1/2/0/10",
+   "category": null,
+   "staff": null,
+   "weighed_by": [
+    [
+     "notehead_is_not_a_notehead",
+     1
+    ]
+   ],
+   "reached_nothing": false
+  },
+  "act-0007": {
+   "kind": "redraw_box",
+   "subject": "glyph/12/1/2/0/400005",
+   "category": null,
+   "staff": null,
+   "weighed_by": [
+    [
+     "arc_kind",
+     6
+    ],
+    [
+     "duration",
+     10
+    ],
+    [
+     "event",
+     2
+    ],
+    [
+     "notehead_is_a_whole_rest",
+     1
+    ],
+    [
+     "notehead_is_not_a_notehead",
+     1
+    ],
+    [
+     "stem_direction",
+     3
+    ]
+   ],
+   "reached_nothing": false
+  },
+  "act-0008": {
+   "kind": "add_box",
+   "subject": "glyph/12/1/2/0/400006",
+   "category": null,
+   "staff": null,
+   "weighed_by": [
+    [
+     "arc_kind",
+     6
+    ],
+    [
+     "duration",
+     10
+    ],
+    [
+     "event",
+     2
+    ],
+    [
+     "notehead_is_a_whole_rest",
+     1
+    ],
+    [
+     "notehead_is_not_a_notehead",
+     1
+    ],
+    [
+     "stem_direction",
+     3
+    ]
+   ],
+   "reached_nothing": false
+  },
+  "act-0009": {
+   "kind": "confirm_box",
+   "subject": "glyph/12/1/2/0/2",
+   "category": null,
+   "staff": null,
+   "weighed_by": [],
+   "reached_nothing": false
+  },
+  "act-0010": {
+   "kind": "relabel_box",
+   "subject": "glyph/12/1/2/0/400007",
+   "category": null,
+   "staff": null,
+   "weighed_by": [
+    [
+     "arc_kind",
+     3
+    ],
+    [
+     "duration",
+     5
+    ],
+    [
+     "event",
+     1
+    ],
+    [
+     "stem_direction",
+     3
+    ]
+   ],
+   "reached_nothing": false
+  },
+  "act-0011": {
+   "kind": "relabel_box",
+   "subject": "glyph/12/1/2/0/400008",
+   "category": null,
+   "staff": null,
+   "weighed_by": [
+    [
+     "arc_kind",
+     3
+    ],
+    [
+     "duration",
+     5
+    ],
+    [
+     "event",
+     1
+    ],
+    [
+     "stem_direction",
+     3
+    ]
+   ],
+   "reached_nothing": false
+  },
+  "act-0012": {
+   "kind": "add_box",
+   "subject": "glyph/12/1/2/2/400000",
+   "category": null,
+   "staff": null,
+   "weighed_by": [],
+   "reached_nothing": false
+  },
+  "act-0013": {
+   "kind": "add_box",
+   "subject": "glyph/12/1/2/3/400000",
+   "category": null,
+   "staff": null,
+   "weighed_by": [],
+   "reached_nothing": false
+  },
+  "act-0014": {
+   "kind": "relabel_box",
+   "subject": "glyph/12/1/2/4/400000",
+   "category": null,
+   "staff": null,
+   "weighed_by": [],
+   "reached_nothing": false
+  },
+  "act-0015": {
+   "kind": "confirm_box",
+   "subject": "glyph/12/1/2/4/6",
+   "category": null,
+   "staff": null,
+   "weighed_by": [],
+   "reached_nothing": true
+  },
+  "act-0016": {
+   "kind": "confirm_box",
+   "subject": "glyph/12/1/2/4/0",
+   "category": null,
+   "staff": null,
+   "weighed_by": [],
+   "reached_nothing": false
+  },
+  "act-0017": {
+   "kind": "confirm_box",
+   "subject": "glyph/12/1/2/4/1",
+   "category": null,
+   "staff": null,
+   "weighed_by": [],
+   "reached_nothing": false
+  },
+  "act-0018": {
+   "kind": "confirm_box",
+   "subject": "glyph/12/1/2/3/2",
+   "category": null,
+   "staff": null,
+   "weighed_by": [],
+   "reached_nothing": false
+  },
+  "act-0019": {
+   "kind": "confirm_box",
+   "subject": "glyph/12/1/2/3/1",
+   "category": null,
+   "staff": null,
+   "weighed_by": [],
+   "reached_nothing": false
+  },
+  "act-0020": {
+   "kind": "confirm_box",
+   "subject": "glyph/12/1/2/3/3",
+   "category": null,
+   "staff": null,
+   "weighed_by": [],
+   "reached_nothing": true
+  },
+  "act-0021": {
+   "kind": "confirm_box",
+   "subject": "glyph/12/1/2/2/0",
+   "category": null,
+   "staff": null,
+   "weighed_by": [],
+   "reached_nothing": false
+  },
+  "act-0022": {
+   "kind": "confirm_box",
+   "subject": "glyph/12/1/2/2/2",
+   "category": null,
+   "staff": null,
+   "weighed_by": [],
+   "reached_nothing": false
+  },
+  "act-0023": {
+   "kind": "confirm_box",
+   "subject": "glyph/12/1/2/2/1",
+   "category": null,
+   "staff": null,
+   "weighed_by": [],
+   "reached_nothing": false
+  },
+  "act-0024": {
+   "kind": "confirm_box",
+   "subject": "glyph/12/1/2/2/3",
+   "category": null,
+   "staff": null,
+   "weighed_by": [],
+   "reached_nothing": false
+  },
+  "act-0025": {
+   "kind": "confirm_box",
+   "subject": "glyph/12/1/2/1/2",
+   "category": null,
+   "staff": null,
+   "weighed_by": [],
+   "reached_nothing": false
+  },
+  "act-0026": {
+   "kind": "confirm_box",
+   "subject": "glyph/12/1/2/1/1",
+   "category": null,
+   "staff": null,
+   "weighed_by": [],
+   "reached_nothing": false
+  },
+  "act-0027": {
+   "kind": "confirm_box",
+   "subject": "glyph/12/1/2/0/0",
+   "category": null,
+   "staff": null,
+   "weighed_by": [],
+   "reached_nothing": true
+  },
+  "act-0028": {
+   "kind": "confirm_box",
+   "subject": "glyph/12/1/2/0/5",
+   "category": null,
+   "staff": null,
+   "weighed_by": [],
+   "reached_nothing": true
+  },
+  "act-0029": {
+   "kind": "confirm_box",
+   "subject": "glyph/12/1/2/0/3",
+   "category": null,
+   "staff": null,
+   "weighed_by": [],
+   "reached_nothing": false
+  },
+  "act-0030": {
+   "kind": "confirm_box",
+   "subject": "glyph/12/1/2/0/10",
+   "category": null,
+   "staff": null,
+   "weighed_by": [
+    [
+     "notehead_is_not_a_notehead",
+     1
+    ]
+   ],
+   "reached_nothing": false
+  },
+  "act-0031": {
+   "kind": "confirm_box",
+   "subject": "glyph/12/1/2/5/0",
+   "category": null,
+   "staff": null,
+   "weighed_by": [],
+   "reached_nothing": true
+  },
+  "act-0032": {
+   "kind": "confirm_box",
+   "subject": "glyph/12/1/2/5/1",
+   "category": null,
+   "staff": null,
+   "weighed_by": [],
+   "reached_nothing": false
+  },
+  "act-0033": {
+   "kind": "confirm_box",
+   "subject": "glyph/12/1/2/5/8",
+   "category": null,
+   "staff": null,
+   "weighed_by": [],
+   "reached_nothing": false
+  },
+  "act-0034": {
+   "kind": "relabel_box",
+   "subject": "glyph/12/1/2/6/400000",
+   "category": null,
+   "staff": null,
+   "weighed_by": [],
+   "reached_nothing": false
+  },
+  "act-0035": {
+   "kind": "confirm_box",
+   "subject": "glyph/12/1/2/6/3",
+   "category": null,
+   "staff": null,
+   "weighed_by": [],
+   "reached_nothing": true
+  },
+  "act-0036": {
+   "kind": "confirm_box",
+   "subject": "glyph/12/1/2/6/1",
+   "category": null,
+   "staff": null,
+   "weighed_by": [],
+   "reached_nothing": false
+  },
+  "act-0037": {
+   "kind": "confirm_box",
+   "subject": "glyph/12/1/2/6/2",
+   "category": null,
+   "staff": null,
+   "weighed_by": [],
+   "reached_nothing": false
+  },
+  "act-0038": {
+   "kind": "add_box",
+   "subject": "glyph/12/1/2/7/400000",
+   "category": null,
+   "staff": null,
+   "weighed_by": [],
+   "reached_nothing": false
+  },
+  "act-0039": {
+   "kind": "confirm_box",
+   "subject": "glyph/12/1/2/7/4",
+   "category": null,
+   "staff": null,
+   "weighed_by": [],
+   "reached_nothing": true
+  },
+  "act-0040": {
+   "kind": "confirm_box",
+   "subject": "glyph/12/1/2/7/2",
+   "category": null,
+   "staff": null,
+   "weighed_by": [],
+   "reached_nothing": false
+  },
+  "act-0041": {
+   "kind": "confirm_box",
+   "subject": "glyph/12/1/2/7/1",
+   "category": null,
+   "staff": null,
+   "weighed_by": [],
+   "reached_nothing": false
+  },
+  "act-0042": {
+   "kind": "add_box",
+   "subject": "glyph/12/1/2/8/400000",
+   "category": null,
+   "staff": null,
+   "weighed_by": [
+    [
+     "duration",
+     1
+    ],
+    [
+     "event",
+     1
+    ],
+    [
+     "stem_direction",
+     7
+    ]
+   ],
+   "reached_nothing": false
+  },
+  "act-0043": {
+   "kind": "confirm_box",
+   "subject": "glyph/12/1/2/8/9",
+   "category": null,
+   "staff": null,
+   "weighed_by": [],
+   "reached_nothing": false
+  },
+  "act-0044": {
+   "kind": "confirm_box",
+   "subject": "glyph/12/1/2/8/8",
+   "category": null,
+   "staff": null,
+   "weighed_by": [],
+   "reached_nothing": false
+  },
+  "act-0045": {
+   "kind": "add_box",
+   "subject": "glyph/12/1/2/8/400001",
+   "category": null,
+   "staff": null,
+   "weighed_by": [
+    [
+     "duration",
+     1
+    ],
+    [
+     "event",
+     1
+    ],
+    [
+     "stem_direction",
+     7
+    ]
+   ],
+   "reached_nothing": false
+  },
+  "act-0046": {
+   "kind": "confirm_box",
+   "subject": "glyph/12/1/2/8/6",
+   "category": null,
+   "staff": null,
+   "weighed_by": [],
+   "reached_nothing": false
+  },
+  "act-0047": {
+   "kind": "confirm_box",
+   "subject": "glyph/12/1/2/8/3",
+   "category": null,
+   "staff": null,
+   "weighed_by": [],
+   "reached_nothing": false
+  },
+  "act-0048": {
+   "kind": "confirm_box",
+   "subject": "glyph/12/1/2/8/2",
+   "category": null,
+   "staff": null,
+   "weighed_by": [],
+   "reached_nothing": false
+  },
+  "act-0049": {
+   "kind": "confirm_box",
+   "subject": "glyph/12/1/2/8/11",
+   "category": null,
+   "staff": null,
+   "weighed_by": [],
+   "reached_nothing": false
+  },
+  "act-0050": {
+   "kind": "own_box",
+   "subject": "glyph/12/1/2/8/1",
+   "category": null,
+   "staff": null,
+   "weighed_by": [
+    [
+     "glyph_owner",
+     1
+    ]
+   ],
+   "reached_nothing": false
+  },
+  "act-0051": {
+   "kind": "own_box",
+   "subject": "glyph/12/1/2/8/0",
+   "category": null,
+   "staff": null,
+   "weighed_by": [
+    [
+     "glyph_owner",
+     1
+    ]
+   ],
+   "reached_nothing": false
+  },
+  "act-0052": {
+   "kind": "own_box",
+   "subject": "glyph/12/1/2/8/5",
+   "category": null,
+   "staff": null,
+   "weighed_by": [
+    [
+     "glyph_owner",
+     1
+    ]
+   ],
+   "reached_nothing": false
+  },
+  "act-0053": {
+   "kind": "own_box",
+   "subject": "glyph/12/1/2/8/7",
+   "category": null,
+   "staff": null,
+   "weighed_by": [
+    [
+     "glyph_owner",
+     1
+    ]
+   ],
+   "reached_nothing": false
+  },
+  "act-0054": {
+   "kind": "own_box",
+   "subject": "glyph/12/1/2/8/4",
+   "category": null,
+   "staff": null,
+   "weighed_by": [
+    [
+     "glyph_owner",
+     1
+    ]
+   ],
+   "reached_nothing": false
+  },
+  "act-0055": {
+   "kind": "redraw_box",
+   "subject": "glyph/12/1/2/8/400002",
+   "category": null,
+   "staff": null,
+   "weighed_by": [
+    [
+     "duration",
+     1
+    ],
+    [
+     "event",
+     1
+    ],
+    [
+     "stem_direction",
+     7
+    ]
+   ],
+   "reached_nothing": false
+  },
+  "act-0056": {
+   "kind": "add_box",
+   "subject": "glyph/12/1/2/8/400003",
+   "category": null,
+   "staff": null,
+   "weighed_by": [
+    [
+     "duration",
+     2
+    ],
+    [
+     "event",
+     2
+    ],
+    [
+     "notehead_is_a_whole_rest",
+     1
+    ],
+    [
+     "notehead_is_not_a_notehead",
+     1
+    ],
+    [
+     "stem_direction",
+     7
+    ]
+   ],
+   "reached_nothing": false
+  },
+  "act-0057": {
+   "kind": "confirm_box",
+   "subject": "glyph/12/1/2/9/1",
+   "category": null,
+   "staff": null,
+   "weighed_by": [],
+   "reached_nothing": false
+  },
+  "act-0058": {
+   "kind": "confirm_box",
+   "subject": "glyph/12/1/2/8/12",
+   "category": null,
+   "staff": null,
+   "weighed_by": [],
+   "reached_nothing": false
+  },
+  "act-0059": {
+   "kind": "confirm_box",
+   "subject": "glyph/12/1/2/9/8",
+   "category": null,
+   "staff": null,
+   "weighed_by": [],
+   "reached_nothing": false
+  },
+  "act-0060": {
+   "kind": "confirm_box",
+   "subject": "glyph/12/1/2/9/3",
+   "category": null,
+   "staff": null,
+   "weighed_by": [],
+   "reached_nothing": false
+  },
+  "act-0061": {
+   "kind": "confirm_box",
+   "subject": "glyph/12/1/2/9/4",
+   "category": null,
+   "staff": null,
+   "weighed_by": [],
+   "reached_nothing": false
+  },
+  "act-0062": {
+   "kind": "confirm_box",
+   "subject": "glyph/12/1/2/9/5",
+   "category": null,
+   "staff": null,
+   "weighed_by": [],
+   "reached_nothing": false
+  },
+  "act-0063": {
+   "kind": "confirm_box",
+   "subject": "glyph/12/1/2/9/21",
+   "category": null,
+   "staff": null,
+   "weighed_by": [],
+   "reached_nothing": false
+  },
+  "act-0064": {
+   "kind": "confirm_box",
+   "subject": "glyph/12/1/2/9/15",
+   "category": null,
+   "staff": null,
+   "weighed_by": [],
+   "reached_nothing": false
+  },
+  "act-0065": {
+   "kind": "confirm_box",
+   "subject": "glyph/12/1/2/9/11",
+   "category": null,
+   "staff": null,
+   "weighed_by": [],
+   "reached_nothing": false
+  },
+  "act-0066": {
+   "kind": "dup_box",
+   "subject": "glyph/12/1/2/9/12",
+   "category": null,
+   "staff": null,
+   "weighed_by": [
+    [
+     "notehead_is_not_a_notehead",
+     1
+    ]
+   ],
+   "reached_nothing": false
+  },
+  "act-0067": {
+   "kind": "own_box",
+   "subject": "glyph/12/1/2/9/0",
+   "category": null,
+   "staff": null,
+   "weighed_by": [
+    [
+     "glyph_owner",
+     1
+    ]
+   ],
+   "reached_nothing": false
+  },
+  "act-0068": {
+   "kind": "own_box",
+   "subject": "glyph/12/1/2/9/7",
+   "category": null,
+   "staff": null,
+   "weighed_by": [
+    [
+     "glyph_owner",
+     1
+    ]
+   ],
+   "reached_nothing": false
+  },
+  "act-0069": {
+   "kind": "own_box",
+   "subject": "glyph/12/1/2/9/6",
+   "category": null,
+   "staff": null,
+   "weighed_by": [
+    [
+     "glyph_owner",
+     1
+    ]
+   ],
+   "reached_nothing": false
+  },
+  "act-0070": {
+   "kind": "own_box",
+   "subject": "glyph/12/1/2/9/13",
+   "category": null,
+   "staff": null,
+   "weighed_by": [
+    [
+     "glyph_owner",
+     1
+    ]
+   ],
+   "reached_nothing": false
+  },
+  "act-0071": {
+   "kind": "relabel_box",
+   "subject": "glyph/12/1/2/10/400000",
+   "category": null,
+   "staff": null,
+   "weighed_by": [
+    [
+     "duration",
+     1
+    ],
+    [
+     "event",
+     1
+    ],
+    [
+     "notehead_is_not_a_notehead",
+     1
+    ],
+    [
+     "stem_direction",
+     1
+    ]
+   ],
+   "reached_nothing": false
+  },
+  "act-0072": {
+   "kind": "confirm_box",
+   "subject": "glyph/12/1/2/10/2",
+   "category": null,
+   "staff": null,
+   "weighed_by": [],
+   "reached_nothing": false
+  },
+  "act-0073": {
+   "kind": "add_box",
+   "subject": "glyph/12/1/2/10/400001",
+   "category": null,
+   "staff": null,
+   "weighed_by": [
+    [
+     "duration",
+     1
+    ],
+    [
+     "event",
+     1
+    ],
+    [
+     "stem_direction",
+     1
+    ]
+   ],
+   "reached_nothing": false
+  },
+  "act-0074": {
+   "kind": "own_box",
+   "subject": "glyph/12/1/2/10/12",
+   "category": null,
+   "staff": null,
+   "weighed_by": [
+    [
+     "glyph_owner",
+     1
+    ]
+   ],
+   "reached_nothing": false
+  },
+  "act-0075": {
+   "kind": "own_box",
+   "subject": "glyph/12/1/2/10/5",
+   "category": null,
+   "staff": null,
+   "weighed_by": [
+    [
+     "glyph_owner",
+     1
+    ]
+   ],
+   "reached_nothing": false
+  },
+  "act-0076": {
+   "kind": "own_box",
+   "subject": "glyph/12/1/2/10/0",
+   "category": null,
+   "staff": null,
+   "weighed_by": [
+    [
+     "glyph_owner",
+     1
+    ]
+   ],
+   "reached_nothing": false
+  },
+  "act-0077": {
+   "kind": "add_box",
+   "subject": "glyph/12/1/2/10/400002",
+   "category": null,
+   "staff": null,
+   "weighed_by": [
+    [
+     "duration",
+     2
+    ],
+    [
+     "event",
+     2
+    ],
+    [
+     "notehead_is_a_whole_rest",
+     1
+    ],
+    [
+     "notehead_is_not_a_notehead",
+     1
+    ],
+    [
+     "stem_direction",
+     1
+    ]
+   ],
+   "reached_nothing": false
+  },
+  "act-0078": {
+   "kind": "own_box",
+   "subject": "glyph/12/1/2/10/8",
+   "category": null,
+   "staff": null,
+   "weighed_by": [],
+   "reached_nothing": false
+  },
+  "act-0079": {
+   "kind": "confirm_box",
+   "subject": "glyph/12/1/2/10/8",
+   "category": null,
+   "staff": null,
+   "weighed_by": [],
+   "reached_nothing": false
+  },
+  "act-0080": {
+   "kind": "confirm_box",
+   "subject": "glyph/12/1/2/10/7",
+   "category": null,
+   "staff": null,
+   "weighed_by": [],
+   "reached_nothing": false
+  },
+  "act-0081": {
+   "kind": "confirm_box",
+   "subject": "glyph/12/1/2/10/10",
+   "category": null,
+   "staff": null,
+   "weighed_by": [],
+   "reached_nothing": false
+  },
+  "act-0082": {
+   "kind": "confirm_box",
+   "subject": "glyph/12/1/2/10/3",
+   "category": null,
+   "staff": null,
+   "weighed_by": [],
+   "reached_nothing": false
+  },
+  "act-0083": {
+   "kind": "confirm_box",
+   "subject": "glyph/12/1/2/10/6",
+   "category": null,
+   "staff": null,
+   "weighed_by": [],
+   "reached_nothing": false
+  },
+  "act-0084": {
+   "kind": "confirm_box",
+   "subject": "glyph/12/1/2/10/4",
+   "category": null,
+   "staff": null,
+   "weighed_by": [],
+   "reached_nothing": false
+  },
+  "act-0085": {
+   "kind": "confirm_box",
+   "subject": "glyph/12/1/2/11/11",
+   "category": null,
+   "staff": null,
+   "weighed_by": [],
+   "reached_nothing": false
+  },
+  "act-0086": {
+   "kind": "redraw_box",
+   "subject": "glyph/12/1/2/11/400000",
+   "category": null,
+   "staff": null,
+   "weighed_by": [
+    [
+     "arc_kind",
+     4
+    ],
+    [
+     "duration",
+     4
+    ],
+    [
+     "event",
+     1
+    ],
+    [
+     "stem_direction",
+     3
+    ]
+   ],
+   "reached_nothing": false
+  },
+  "act-0087": {
+   "kind": "confirm_box",
+   "subject": "glyph/12/1/2/11/5",
+   "category": null,
+   "staff": null,
+   "weighed_by": [],
+   "reached_nothing": true
+  },
+  "act-0088": {
+   "kind": "redraw_box",
+   "subject": "glyph/12/1/2/11/400001",
+   "category": null,
+   "staff": null,
+   "weighed_by": [
+    [
+     "arc_kind",
+     8
+    ],
+    [
+     "duration",
+     8
+    ],
+    [
+     "event",
+     2
+    ],
+    [
+     "notehead_is_a_whole_rest",
+     1
+    ],
+    [
+     "notehead_is_not_a_notehead",
+     1
+    ],
+    [
+     "stem_direction",
+     3
+    ]
+   ],
+   "reached_nothing": false
+  },
+  "act-0089": {
+   "kind": "redraw_box",
+   "subject": "glyph/12/1/2/11/400002",
+   "category": null,
+   "staff": null,
+   "weighed_by": [
+    [
+     "arc_kind",
+     8
+    ],
+    [
+     "duration",
+     8
+    ],
+    [
+     "event",
+     2
+    ],
+    [
+     "notehead_is_a_whole_rest",
+     1
+    ],
+    [
+     "notehead_is_not_a_notehead",
+     1
+    ],
+    [
+     "stem_direction",
+     3
+    ]
+   ],
+   "reached_nothing": false
+  },
+  "act-0090": {
+   "kind": "relabel_box",
+   "subject": "glyph/12/1/2/11/400003",
+   "category": null,
+   "staff": null,
+   "weighed_by": [
+    [
+     "arc_kind",
+     8
+    ],
+    [
+     "duration",
+     8
+    ],
+    [
+     "event",
+     2
+    ],
+    [
+     "notehead_is_a_whole_rest",
+     1
+    ],
+    [
+     "notehead_is_not_a_notehead",
+     1
+    ],
+    [
+     "stem_direction",
+     3
+    ]
+   ],
+   "reached_nothing": false
+  },
+  "act-0091": {
+   "kind": "relabel_box",
+   "subject": "glyph/12/1/2/11/400004",
+   "category": null,
+   "staff": null,
+   "weighed_by": [
+    [
+     "arc_kind",
+     8
+    ],
+    [
+     "duration",
+     8
+    ],
+    [
+     "event",
+     2
+    ],
+    [
+     "notehead_is_a_whole_rest",
+     1
+    ],
+    [
+     "notehead_is_not_a_notehead",
+     1
+    ],
+    [
+     "stem_direction",
+     3
+    ]
+   ],
+   "reached_nothing": false
+  },
+  "act-0092": {
+   "kind": "confirm_box",
+   "subject": "glyph/12/1/2/11/4",
+   "category": null,
+   "staff": null,
+   "weighed_by": [],
+   "reached_nothing": true
+  },
+  "act-0093": {
+   "kind": "confirm_box",
+   "subject": "glyph/12/1/2/11/2",
+   "category": null,
+   "staff": null,
+   "weighed_by": [],
+   "reached_nothing": false
+  }
+ }
+}
