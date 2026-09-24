@@ -91,6 +91,38 @@ written before today ambiguous about which of the two it meant.
 | `own_box` | `glyph`, `staff` | `Q.HUMAN_BOX_VERDICT` = `"owner:<staff subject>"` on the glyph, plus `detail.twin_on_the_named_staff` — the id of the `Q.GLYPH_BAND_DISTANCE` row that proves the named staff holds the same ink, or `null`. A `staff` that is not a staff subject is refused (a part NAME is not a subject). |
 | `dup_box` | `glyph`, `of` | `Q.HUMAN_BOX_VERDICT` = `"duplicate_of:<glyph>"`. The `of` glyph must hold rows in this record or the action is refused. |
 | `unsure_box` | `glyph` | an **Abstention** on `Q.HUMAN_BOX_VERDICT`, reason `ABSTAIN.HUMAN_UNSURE`. ⚠️ Not a value: a reader who declined and a reader who answered are what `State.DECLINED` and `State.READ` exist to keep apart, and this is the record's first chance to say that of a PERSON. |
+| `confirm_box` | `glyph`, `category` | `Q.HUMAN_BOX_VERDICT` = `"confirmed:<class>"` on the glyph, with `detail.confirmed_class` and `detail.machine_called_it`. See below. |
+
+### The AGREEMENT on a box — an ADDITION, 2026-09-23 (roadmap 3.4d)
+
+Sean, after his second round: *"I just want to click a box and type in what I
+think it is and save it"*. Most of what he types is the class the detector
+already gave the box — and in the 3.4c viewer that answer went nowhere,
+because `relabel_box` to the same class is not a relabel and `agree` is a
+stance on a **verdict**.
+
+So `confirm_box` is its own verb. ⚠️ **It is not `agree` with a different
+argument.** `agree`/`disagree` carry a `verdict` id and lane (A) resolves it
+with `verdict_by_id`, which refuses an id naming no verdict; a detector box is
+an **Observation** of `Q.GLYPH_BOX`, so an `agree` naming one would be filed
+against nothing and reported as refused. A second meaning for `verdict` — *or
+an observation id, sometimes* — is exactly the ambiguity `id` exists to
+prevent.
+
+⚠️ **It reaches no decision, deliberately.** `human_says` parses the value to
+the verb `confirmed`, which neither `notehead_precision._human_not_a_symbol`
+nor `ownership._human_owner` acts on. What it buys is the distinction the
+record is FOR: a box a human read and agreed with now carries a `State.READ`
+row where it would otherwise carry nothing at all, and *nothing at all* is
+also what an unreviewed box carries. Without it the feedback file can count
+the corrections and cannot count what was checked — every other label is a
+numerator over a denominator nobody was writing down.
+
+⚠️ Optional for a reader of the sidecar: a lane (A) that had never heard of
+`confirm_box` read every sidecar it could read yesterday, because no other
+kind changed. A file containing one is refused by an OLDER lane (A) rather
+than misread — `check_sidecar` refuses a verb it has not been taught, which
+is the right failure.
 
 ### What each label REACHES — measured, not asserted
 
@@ -106,6 +138,7 @@ returns on this tree.
 | `duplicate_of:<glyph>` | `adjudicate_notehead_is_not_a_notehead` | `human_not_a_symbol`, `human_says` naming the twin |
 | `owner:<staff>` | `adjudicate_glyph_owner` | `human_owner` — **only on a glyph already in that decision's domain**, which is `subjects_from=Q.GLYPH_BAND_DISTANCE`, the CONTESTED population. On an uncontested glyph the row is filed, is handed to the notehead refusal (which declines it), and DECIDES nothing. |
 | `human_unsure` | **nothing**, by design | the print is ambiguous; that is a convention question, not evidence |
+| `confirmed:<class>` | **nothing**, by design | a human READ this box and agreed; it is the denominator, not a correction |
 
 ⚠️ **A clef-class box in CELL 0 also files `Q.CLEF_GLYPH` and
 `Q.CLEF_POSITION` on the STAFF** — the same two rows `gather_clefs` files for

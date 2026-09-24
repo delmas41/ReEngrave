@@ -195,6 +195,44 @@ def validate_action(action: Dict[str, Any]) -> Dict[str, Any]:
     return action
 
 
+def split_action_body(body: Dict[str, Any]) -> Tuple[str, Dict[str, Any]]:
+    """`(the staff being REVIEWED, the action)` — or raise.
+
+    ⚠️⚠️ TWO DIFFERENT STAVES, ONE WORD, AND IT BROKE A LABEL OUTRIGHT. The
+    route needs the staff whose sidecar this is; an `own_box` action needs
+    the staff that OWNS the box — *"belongs to the staff above"*, Sean's own
+    third answer. Both travelled as `staff`: the viewer spread the action
+    over the body, the owner won the key, and the route then STRIPPED it as
+    its own parameter. Every `own_box` came back `400 'own_box' needs
+    'staff'`, measured in the browser on 2026-09-24 and invisible to every
+    test, because the fixture has no PDF and a GATHER action is refused
+    before it is validated.
+
+    So the reviewed staff is `review_staff`. A body carrying only `staff` is
+    still read the old way — EXCEPT for a kind that declares a `staff` field
+    of its own, where the two meanings cannot both be honoured and the body
+    is REFUSED rather than guessed.
+    """
+    if not isinstance(body, dict):
+        raise ContractError("an action body is an object")
+    kind = body.get("kind")
+    owns_staff = "staff" in KIND_REQUIRES.get(kind, ())
+    review = body.get("review_staff")
+    if not review:
+        if owns_staff:
+            raise ContractError(
+                f"{kind!r} carries a `staff` of its OWN (the staff that owns "
+                f"the box), so the staff being REVIEWED must be named "
+                f"`review_staff` — one word cannot mean both")
+        review = body.get("staff")
+    if not review:
+        raise ContractError("an action needs its staff (`review_staff`)")
+    action = {k: v for k, v in body.items() if k != "review_staff"}
+    if not owns_staff:
+        action.pop("staff", None)
+    return str(review), action
+
+
 class Sidecar:
     """The review-actions file. Append-only, autosaved, one staff.
 
@@ -1265,7 +1303,15 @@ def create_app(D: ReviewData, sidecar_path: Optional[Path],
             return sc
         path = (Path(sidecar_path) if sidecar_path
                 else default_sidecar_path(_ROOT, staff))
-        sc = Sidecar(path, record=str(D.record_path), staff=staff)
+        try:
+            sc = Sidecar(path, record=str(D.record_path), staff=staff)
+        except ContractError as e:
+            # ⚠️ STILL REFUSED — one staff per file — but as a 409 the page
+            # can SAY, not a 500 that kills it. Measured: with an explicit
+            # `--sidecar`, picking a second staff raised out of the route and
+            # the whole screen died with "Internal Server Error", which reads
+            # as a broken viewer rather than as the rule it is.
+            raise HTTPException(409, str(e))
         state["sidecar"] = sc
         return sc
 
@@ -1410,11 +1456,11 @@ def create_app(D: ReviewData, sidecar_path: Optional[Path],
     @app.post("/api/sidecar/action")
     async def api_action(request: Request) -> dict:
         body = await request.json()
-        staff = body.get("staff")
-        if not staff:
-            raise HTTPException(400, "an action needs its staff")
+        try:
+            staff, action = split_action_body(body)
+        except ContractError as e:
+            raise HTTPException(400, str(e))
         _known(staff)
-        action = {k: v for k, v in body.items() if k != "staff"}
         if action.get("kind") in _GATHER_KINDS:
             # ⚠️ A BOX ON THE WRONG RASTER IS NOT EVIDENCE. The frame control
             # gates the GATHER actions, and a failure REFUSES rather than

@@ -93,7 +93,7 @@ from ..record import (ABSTAIN, Kind, Q, READERS, Subject, claim_of, glyph,
 #: a viewer that grows a verb this module has not been taught would otherwise
 #: have its actions silently dropped and the review would read as complete.
 GATHER_KINDS = ("add_box", "delete_box", "redraw_box", "relabel_box",
-                "own_box", "dup_box", "unsure_box")
+                "own_box", "dup_box", "unsure_box", "confirm_box")
 STANCE_KINDS = ("agree", "disagree")
 STAGES = ("gather", "adjudicate", "evaluate", "infer", "export")
 
@@ -144,6 +144,25 @@ HUMAN_BOX_LABELS: Tuple[Dict[str, Any], ...] = (
                 "`human_unsure`: a place the PRINT is ambiguous, reported by "
                 "review/feedback.py and read by no stage.",
      "keys": "u"},
+    # ⚠️ ROADMAP 3.4d — AN ADDITION, AND IT IS NOT A STANCE ON A VERDICT.
+    # Sean types the class he sees; where that is the class the detector
+    # already gave the box, he has AGREED with a GATHER row, and `agree` in
+    # this contract is a stance on a VERDICT (`verdict_by_id` refuses an id
+    # that names no verdict, and `Q.GLYPH_BOX` is an Observation). So the
+    # agreement is its own verb rather than a second meaning for `agree`.
+    # ⚠️ IT REACHES NOTHING AND IS NOT MEANT TO: `human_says` returns the
+    # verb `confirmed`, which neither `notehead_precision._human_not_a_symbol`
+    # nor `ownership._human_owner` acts on. What it buys is the distinction
+    # the record exists for — a reader who LOOKED and agreed is not a reader
+    # who never looked, and only the first of those two leaves a row.
+    {"label": "yes, that is what it is", "kind": "confirm_box",
+     "needs": ("glyph", "category"), "key": "category",
+     "value": "confirmed:<class>", "row": "observation",
+     "reaches": "NOTHING, by design. It is a READ row where there would "
+                "otherwise be no row at all, so `review/feedback.py` can say "
+                "which boxes a human went over and agreed with — the "
+                "denominator every other label is a numerator of.",
+     "keys": "Enter on the class already shown"},
 )
 
 #: kind -> the sidecar fields that kind cannot do without. DERIVED from the
@@ -155,7 +174,7 @@ KIND_REQUIRES: Dict[str, Tuple[str, ...]] = {
 }
 
 #: The `Q.HUMAN_BOX_VERDICT` values that carry an argument after a colon.
-_PREFIXED = ("is_a", "owner", "duplicate_of")
+_PREFIXED = ("is_a", "owner", "duplicate_of", "confirmed")
 
 
 def human_says(value: Any) -> Tuple[str, Optional[str]]:
@@ -874,7 +893,8 @@ def ingest(record: dict, sidecar: dict, *,
         # ⚠️ ONE BRANCH FOR ALL OF THEM, KEYED OFF `HUMAN_BOX_LABELS`. A
         # per-verb branch is how the fifth label added next month gets filed
         # with a subtly different frame or a missing `basis`.
-        if kind in ("delete_box", "own_box", "dup_box", "unsure_box"):
+        if kind in ("delete_box", "own_box", "dup_box", "unsure_box",
+                    "confirm_box"):
             gsub = a["glyph"]
             if not _subject_exists(out, gsub):
                 oc.refused = (f"no rows on {gsub!r} in this record — a human "
@@ -928,6 +948,16 @@ def ingest(record: dict, sidecar: dict, *,
                     continue
                 value = f"duplicate_of:{other}"
                 det["duplicate_of"] = other
+            elif kind == "confirm_box":
+                # ⚠️ WHAT HE AGREED WITH, NOT JUST THAT HE AGREED. The class
+                # travels in the value, so a confirmation filed against one
+                # reading of a box cannot be read as confirming a later,
+                # different one. The machine's own class is recorded beside
+                # it, and where the two differ THAT is the finding.
+                said = str(a["category"])
+                value = f"confirmed:{said}"
+                det["confirmed_class"] = said
+                det["machine_called_it"] = _category_of(out, gsub)
             else:
                 value = "not_a_symbol"
             rid = new_id()
