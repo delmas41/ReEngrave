@@ -671,3 +671,425 @@ class TestTheSelectionPanelsPayload(unittest.TestCase):
                  ["on_the_machines_own_subject"]["adjudicate_wants"])
         self.assertIn("adjudicate_glyph_owner", wants)
         self.assertIn("adjudicate_notehead_is_not_a_notehead", wants)
+
+
+# ─────────────────────────────────────────────────────────────────────────
+# 7. ROADMAP 3.4d — THE CROP IS THE SCREEN.
+#
+# Sean, after his second round on the page: *"The UI still feels very hard to
+# use — I just want to click a box and type in what I think it is and save
+# it, and then be able to draw a box around something that didn't get caught,
+# or resize the box for the actual symbol — all without scrolling down the
+# page. Make it as simple as you can."*
+#
+# ⚠️⚠️ THE WORDS AND THE FILTER ARE JAVASCRIPT, SO THESE TESTS ASK `node`.
+# A table only the browser can read is a table nothing checks — and the way
+# this fails is not a crash: a class with no friendly name, or two classes
+# sharing one, is a class he CANNOT TYPE and will never notice is missing.
+# Run RED by returning a constant from `friendlyName`: the collision test
+# then fails with 157 names collapsed onto one, and the ranking tests fail
+# with it.
+# ─────────────────────────────────────────────────────────────────────────
+
+_STATIC = Path(R.__file__).parent / "static"
+
+
+def _node():
+    import shutil
+    n = shutil.which("node")
+    if not n:
+        raise unittest.SkipTest("node is not on this machine")
+    return n
+
+
+def _run_js(body: str, payload: dict) -> dict:
+    """Run `body` with `L` (labels.js) and `IN` (the payload) in scope; what
+    it returns comes back as JSON."""
+    import subprocess
+    node = _node()
+    with tempfile.TemporaryDirectory() as td:
+        d = Path(td)
+        (d / "in.json").write_text(json.dumps(payload))
+        (d / "run.js").write_text(
+            f"const L = require({str(_STATIC / 'labels.js')!r});\n"
+            f"const IN = require({str(d / 'in.json')!r});\n"
+            f"const OUT = (() => {{\n{body}\n}})();\n"
+            "process.stdout.write(JSON.stringify(OUT));\n")
+        p = subprocess.run([node, str(d / "run.js")], capture_output=True,
+                           text=True)
+        if p.returncode != 0:                     # pragma: no cover - a red
+            raise AssertionError(p.stderr[:1200])
+        return json.loads(p.stdout)
+
+
+def _canonical_names():
+    from tools.omr.class_aliases import canonical, vocabulary
+    return sorted({canonical(n) for n in vocabulary()})
+
+
+class TestTheFriendlyNamesRoundTripEveryClass(unittest.TestCase):
+
+    @classmethod
+    def setUpClass(cls):
+        cls.names = _canonical_names()
+        cls.table = _run_js("return L.friendlyTable(IN.names);",
+                            {"names": cls.names})
+
+    def test_every_canonical_class_has_a_name(self):
+        """⚠️ The fallback is the RAW name, so this cannot fail by accident —
+        it fails only where the table returns nothing at all."""
+        self.assertEqual(sorted(self.table), self.names)
+        blank = [k for k, v in self.table.items() if not v]
+        self.assertEqual(blank, [], "a class with no words cannot be typed")
+
+    def test_no_two_classes_share_a_name(self):
+        """⚠️ A collision makes ONE OF THE TWO unreachable by typing, and the
+        page gives no sign of it: the list shows the same words twice."""
+        seen = {}
+        clash = []
+        for cls, words in sorted(self.table.items()):
+            if words in seen:
+                clash.append((seen[words], cls, words))
+            seen[words] = cls
+        self.assertEqual(clash, [])
+
+    def test_a_name_never_collides_with_another_classs_RAW_name(self):
+        """The filter matches BOTH spellings, so a friendly name that is
+        another class's canonical name would route the query to the wrong
+        row."""
+        raw = set(self.names)
+        bad = [(c, w) for c, w in self.table.items() if w in raw and w != c]
+        self.assertEqual(bad, [])
+
+    def test_the_names_a_musician_uses_are_the_ones_on_the_page(self):
+        """The handful Sean named, spelled the way a reader says them."""
+        for cls, want in (("clefCAlto", "alto clef"),
+                          ("accidentalFlat", "flat"),
+                          ("keyFlat", "flat (key signature)"),
+                          ("restQuarter", "quarter rest"),
+                          ("augmentationDot", "dot"),
+                          ("dynamicF", "f (dynamic letter)"),
+                          ("timeSig4", "4 (time signature)"),
+                          ("beam", "beam"), ("stem", "stem"),
+                          ("tie", "tie"), ("slur", "slur")):
+            with self.subTest(cls=cls):
+                self.assertEqual(self.table[cls], want)
+        for cls, must in (("noteheadBlackOnLine", "quarter/eighth head"),
+                          ("noteheadHalfOnLine", "half head")):
+            with self.subTest(cls=cls):
+                self.assertIn(must, self.table[cls])
+
+
+class TestThePopoverFilter(unittest.TestCase):
+    """One field, one list. ⚠️ The ranking is the whole design: he types two
+    letters and presses Enter, so the FIRST row is the answer."""
+
+    @classmethod
+    def setUpClass(cls):
+        from tools.omr.staged.review import human_evidence as HE
+        cls.payload = {
+            "names": _canonical_names(),
+            "labels": [{"kind": e["kind"], "label": e["label"]}
+                       for e in HE.HUMAN_BOX_LABELS],
+            "staves": [
+                {"staff": "staff/3/0/8", "part_name": "Oboe",
+                 "is_this_one": False},
+                {"staff": "staff/3/0/9", "part_name": "Viola",
+                 "is_this_one": True},
+                {"staff": "staff/3/0/10", "part_name": "Cello",
+                 "is_this_one": False}],
+            "current": "noteheadBlackOnLine",
+            "queries": ["alto", "no", "half head", "flat", "above", "unsure",
+                        "dup", "clefCAlto", ""],
+        }
+        cls.out = _run_js("""
+            const items = L.buildAnswers({classes: IN.names, labels: IN.labels,
+              staves: IN.staves, current: IN.current});
+            const out = {};
+            for (const q of IN.queries) {
+              out[q] = L.filterAnswers(items, q).slice(0, 5).map(
+                i => ({text: i.text, cls: i.cls || null, kind: i.kind,
+                       staff: i.staff || null}));
+            }
+            out['__n'] = items.length;
+            return out;
+        """, cls.payload)
+
+    def test_alto_finds_the_alto_clef_first(self):
+        first = self.out["alto"][0]
+        self.assertEqual(first["text"], "alto clef")
+        self.assertEqual(first["cls"], "clefCAlto")
+
+    def test_no_finds_NOTHING_first_and_not_a_notehead(self):
+        """⚠️ `no` is a prefix of `noteheadBlack…` too, and the notehead list
+        is 20 rows long. A human answer outranks a class at the same
+        literalness or the fastest answer on the page is the hardest to
+        type."""
+        first = self.out["no"][0]
+        self.assertEqual(first["text"], "nothing")
+        self.assertEqual(first["kind"], "delete_box")
+
+    def test_the_human_answers_are_words_not_verbs(self):
+        for q, word, kind in (("above", "above", "own_box"),
+                              ("unsure", "unsure", "unsure_box"),
+                              ("dup", "duplicate", "dup_box")):
+            with self.subTest(q=q):
+                first = self.out[q][0]
+                self.assertEqual(first["text"], word)
+                self.assertEqual(first["kind"], kind)
+        self.assertEqual(self.out["above"][0]["staff"], "staff/3/0/8",
+                         "'above' must name the staff ABOVE this one, from "
+                         "the record's own system_staves")
+
+    def test_the_canonical_name_still_works_for_whoever_types_it(self):
+        self.assertEqual(self.out["clefCAlto"][0]["cls"], "clefCAlto")
+
+    def test_the_whole_vocabulary_is_offered(self):
+        """⚠️ THE POSITIVE CONTROL for every ranking test above: a filter over
+        an empty list would satisfy none of them, and a list that had dropped
+        half the vocabulary would satisfy all of them."""
+        self.assertGreaterEqual(self.out["__n"], len(_canonical_names()))
+        self.assertTrue(self.out[""], "an empty query shows nothing at all")
+
+
+class TestTheBrowsersFrameIsTheSERVERS(unittest.TestCase):
+    """⚠️⚠️ The page draws in SCREEN pixels, over a CROP, whose numbers are
+    PAGE pixels. `labels.js` owns the last hop and it must be the exact
+    inverse of `CropFrame` — in BOTH directions, on a frame whose origin is
+    not 0 and whose zoom is not 1 (`TestCropFrame`'s own reason)."""
+
+    FRAME = R.CropFrame(x0=295, y0=1689, x1=2663, y1=1973, zoom=2, dpi=600)
+    BOX = [388.5175, 1828.1925, 415.135, 1850.085]
+    CROP_BOX = [17.0, 3.0, 201.5, 88.25]
+
+    def test_the_two_conversions_agree_box_for_box(self):
+        crop = {"page_px": [295, 1689, 2663, 1973], "zoom": 2,
+                "width": self.FRAME.width, "height": self.FRAME.height}
+        got = _run_js("""
+            return {to_crop: L.boxToCrop(IN.crop, IN.page_box),
+                    to_page: L.boxToPage(IN.crop, IN.crop_box),
+                    round_trip: L.boxToPage(IN.crop,
+                                            L.boxToCrop(IN.crop, IN.page_box))};
+        """, {"crop": crop, "page_box": self.BOX, "crop_box": self.CROP_BOX})
+        for g, w in zip(got["to_crop"], self.FRAME.box_to_crop(self.BOX)):
+            self.assertAlmostEqual(g, w, places=6)
+        for g, w in zip(got["to_page"], self.FRAME.box_to_page(self.CROP_BOX)):
+            self.assertAlmostEqual(g, w, places=6)
+        for g, w in zip(got["round_trip"], self.BOX):
+            self.assertAlmostEqual(g, w, places=6)
+
+    def test_it_is_not_the_identity(self):
+        """A conversion that dropped the origin and the zoom would round-trip
+        just as happily. The hand-computed numbers are the control."""
+        self.assertNotEqual(self.FRAME.box_to_crop(self.BOX)[:2], self.BOX[:2])
+
+
+class TestTheActionsTheScreenPOSTS(unittest.TestCase):
+    """⚠️ SHAPE FOR SHAPE WITH YESTERDAY'S. The screen was rebuilt; the
+    sidecar was not. Every answer posts the fields this table names and no
+    others, and the file on disk carries exactly them plus `id` and `t`.
+
+    ⚠️ The bodies here are the ACTIONS `app.js` builds; `fileAction` merges
+    `{review_staff, stage:"gather", note:""}` under each and the route puts
+    the first of those aside (see `split_action_body`). A change to either
+    side that is not a change to the other fails here rather than in a re-run
+    three days later.
+    """
+
+    POSTS = {
+        "relabel_box": {"stage": "gather", "kind": "relabel_box",
+                        "glyph": "glyph/3/0/9/12/4", "category": "clefCAlto",
+                        "note": ""},
+        "confirm_box": {"stage": "gather", "kind": "confirm_box",
+                        "glyph": "glyph/3/0/9/12/4",
+                        "category": "noteheadBlackOnLine", "note": ""},
+        "delete_box": {"stage": "gather", "kind": "delete_box",
+                       "glyph": "glyph/3/0/9/12/4", "note": ""},
+        "own_box": {"stage": "gather", "kind": "own_box",
+                    "glyph": "glyph/3/0/9/12/4", "staff": "staff/3/0/8",
+                    "note": ""},
+        "dup_box": {"stage": "gather", "kind": "dup_box",
+                    "glyph": "glyph/3/0/9/12/4", "of": "glyph/3/0/9/12/5",
+                    "note": ""},
+        "unsure_box": {"stage": "gather", "kind": "unsure_box",
+                       "glyph": "glyph/3/0/9/12/4", "note": ""},
+        "add_box": {"stage": "gather", "kind": "add_box",
+                    "bbox_page_px": [388.5, 1828.1, 415.1, 1850.0],
+                    "crop_px": [187.0, 278.3, 240.2, 322.1],
+                    "cell": "cell/3/0/9/12", "category": "noteheadBlack",
+                    "note": ""},
+        "redraw_box": {"stage": "gather", "kind": "redraw_box",
+                       "glyph": "glyph/3/0/9/12/4",
+                       "bbox_page_px": [390.0, 1830.0, 417.0, 1852.0],
+                       "prior_bbox_page_px": [388.5, 1828.1, 415.1, 1850.0],
+                       "crop_px": [190.0, 282.0, 244.0, 326.0],
+                       "note": ""},
+    }
+
+    def test_every_answer_validates_and_lands_unchanged(self):
+        tmp = Path(tempfile.mkdtemp())
+        path = tmp / "review-actions.json"
+        sc = R.Sidecar(path, record="rec.json", staff="staff/3/0/9")
+        for name, body in self.POSTS.items():
+            with self.subTest(answer=name):
+                saved = sc.append(dict(body))
+                self.assertEqual(set(saved) - {"id", "t"}, set(body))
+                for k, v in body.items():
+                    self.assertEqual(saved[k], v)
+        doc = json.loads(path.read_text())
+        self.assertEqual(len(doc["actions"]), len(self.POSTS))
+        for a in doc["actions"]:
+            R.validate_action(a)
+
+    def test_the_ingest_requires_exactly_what_the_screen_sends(self):
+        """⚠️ BOTH ENDS. The table above is checked against lane (A)'s
+        `KIND_REQUIRES` rather than against a copy of it."""
+        from tools.omr.staged.review import human_evidence as HE
+        for kind, needs in HE.KIND_REQUIRES.items():
+            with self.subTest(kind=kind):
+                self.assertIn(kind, self.POSTS,
+                              f"the screen posts nothing for {kind!r} — a "
+                              f"verb the ingest knows and the page cannot "
+                              f"reach")
+                for fld in needs:
+                    self.assertIn(fld, self.POSTS[kind])
+
+    def test_a_drawn_rectangle_with_no_class_is_refused(self):
+        """⚠️ Nothing is saved until a class is chosen: a human box with no
+        name is `Q.INK`, which GATHER already files."""
+        with self.assertRaises(R.ContractError):
+            R.validate_action({"id": "a", "t": "x", "stage": "gather",
+                               "kind": "add_box",
+                               "bbox_page_px": [1, 2, 3, 4]})
+
+
+class TestTheAgreementOnABox(unittest.TestCase):
+    """ROADMAP 3.4d. Typing the class the machine already gave the box is an
+    ANSWER, and it is filed.
+
+    ⚠️ IT IS NOT `agree`. That verb is a stance on a VERDICT and lane (A)
+    resolves it with `verdict_by_id`; a detector box is an Observation of
+    `Q.GLYPH_BOX`, so an `agree` naming one would be refused as naming
+    nothing. This class is the control on that claim.
+    """
+
+    def test_agree_on_an_observation_id_names_nothing(self):
+        from tools.omr.staged.review import human_evidence as HE
+        rec = fixture_record()["record"]
+        obs_id = next(o["id"] for o in rec["observations"]
+                      if o["quantity"] == Q.GLYPH_BOX)
+        self.assertIsNone(HE.verdict_by_id(rec, obs_id))
+        self.assertIsNotNone(
+            HE.verdict_by_id(rec, rec["verdicts"][0]["id"]),
+            "the positive control failed — `verdict_by_id` finds no verdict "
+            "at all, so the assertion above proves nothing")
+
+    def test_confirm_box_is_one_row_in_lane_As_table(self):
+        from tools.omr.staged.review import human_evidence as HE
+        entry = next(e for e in HE.HUMAN_BOX_LABELS
+                     if e["kind"] == "confirm_box")
+        self.assertEqual(tuple(entry["needs"]), ("glyph", "category"))
+        self.assertIn("confirm_box", HE.GATHER_KINDS)
+        self.assertIn("confirm_box", R.KIND_REQUIRES)
+        HE.check_sidecar({"actions": [
+            {"id": "c1", "kind": "confirm_box", "stage": "gather",
+             "glyph": "glyph/3/0/9/0/1", "category": "noteheadBlackOnLine"}]})
+        with self.assertRaises(HE.SidecarError):
+            HE.check_sidecar({"actions": [
+                {"id": "c1", "kind": "confirm_box", "stage": "gather",
+                 "glyph": "glyph/3/0/9/0/1"}]})
+
+    def test_the_value_parses_to_a_verb_NO_DECISION_ACTS_ON(self):
+        """⚠️ `human_says` is the one parser. `confirmed` must come back as
+        its own verb — not as `not_a_symbol`, and not as an `is_a`, which
+        would make an agreement REFUSE the head it agreed with."""
+        from tools.omr.staged.review import human_evidence as HE
+        verb, arg = HE.human_says("confirmed:noteheadBlackOnLine")
+        self.assertEqual((verb, arg), ("confirmed", "noteheadBlackOnLine"))
+        self.assertNotIn(verb, ("not_a_symbol", "is_a", "owner",
+                                "duplicate_of"))
+
+
+class TestTheStaticPageIsOneSCREEN(unittest.TestCase):
+    """⚠️ Sean's sentence ends *"all without scrolling down the page"*, and
+    the only way a browser cannot put something under the fold is
+    `overflow:hidden` on the body. Checked on the SERVED files, because a
+    page that scrolls is exactly the complaint."""
+
+    def test_the_body_cannot_scroll(self):
+        css = (_STATIC / "app.css").read_text()
+        self.assertRegex(css, r"body\s*\{[^}]*overflow\s*:\s*hidden")
+
+    def test_the_page_loads_the_words_before_the_screen(self):
+        html = (_STATIC / "index.html").read_text()
+        self.assertLess(html.index("labels.js"), html.index("app.js"),
+                        "app.js reads labels.js's globals at boot")
+
+    def test_both_scripts_parse(self):
+        import subprocess
+        node = _node()
+        for name in ("labels.js", "app.js"):
+            with self.subTest(file=name):
+                p = subprocess.run([node, "--check", str(_STATIC / name)],
+                                   capture_output=True, text=True)
+                self.assertEqual(p.returncode, 0, p.stderr[:600])
+
+
+class TestTheRouteKeepsTheTWOSTAVESApart(unittest.TestCase):
+    """⚠️⚠️ FOUND IN THE BROWSER, NOT IN A TEST. *"belongs to the staff
+    above"* is one of Sean's five answers and it could not be filed at all:
+    the viewer spread the action over the POST body, `own_box`'s own `staff`
+    (the OWNER) won the key the route uses for the staff being REVIEWED, and
+    the route then stripped it as its own parameter — so every `own_box`
+    came back `400 'own_box' needs 'staff'`.
+
+    ⚠️ Invisible to every test here, and this says why: the fixture has no
+    PDF, so a GATHER action is refused by the frame control (409) BEFORE it
+    is ever validated. The 409 below is therefore the positive control that
+    the body was split correctly — a 400 means it was not.
+    """
+
+    @classmethod
+    def setUpClass(cls):
+        cls.tmp = Path(tempfile.mkdtemp())
+        cls.D = _data(cls.tmp)
+        from fastapi.testclient import TestClient
+        cls.c = TestClient(R.create_app(cls.D, cls.tmp / "two-staves.json",
+                                        "staff/0/0/0"))
+
+    def test_the_owner_survives_the_split(self):
+        staff, action = R.split_action_body({
+            "review_staff": "staff/0/0/0", "stage": "gather",
+            "kind": "own_box", "glyph": "glyph/0/0/0/0/1",
+            "staff": "staff/0/0/1", "note": ""})
+        self.assertEqual(staff, "staff/0/0/0")
+        self.assertEqual(action["staff"], "staff/0/0/1")
+        R.validate_action({"id": "a", "t": "x", **action})
+
+    def test_a_kind_with_no_staff_field_still_reads_the_old_way(self):
+        staff, action = R.split_action_body({
+            "staff": "staff/0/0/0", "stage": "gather", "kind": "delete_box",
+            "glyph": "glyph/0/0/0/0/1"})
+        self.assertEqual(staff, "staff/0/0/0")
+        self.assertNotIn("staff", action)
+
+    def test_the_AMBIGUOUS_body_is_refused_rather_than_guessed(self):
+        with self.assertRaises(R.ContractError):
+            R.split_action_body({"staff": "staff/0/0/1", "stage": "gather",
+                                 "kind": "own_box",
+                                 "glyph": "glyph/0/0/0/0/1"})
+
+    def test_own_box_reaches_the_frame_control_instead_of_a_400(self):
+        r = self.c.post("/api/sidecar/action", json={
+            "review_staff": "staff/0/0/0", "stage": "gather",
+            "kind": "own_box", "glyph": "glyph/0/0/0/0/1",
+            "staff": "staff/0/0/1", "note": ""})
+        self.assertEqual(r.status_code, 409, r.text[:300])
+        self.assertIn("no crop", r.text)
+
+    def test_the_old_ambiguous_shape_is_a_400_that_SAYS_WHY(self):
+        r = self.c.post("/api/sidecar/action", json={
+            "staff": "staff/0/0/1", "stage": "gather", "kind": "own_box",
+            "glyph": "glyph/0/0/0/0/1"})
+        self.assertEqual(r.status_code, 400)
+        self.assertIn("review_staff", r.text)

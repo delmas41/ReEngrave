@@ -2,58 +2,79 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>ReEngrave — stage review</title>
 <link rel="stylesheet" href="/static/app.css">
 </head>
+<!-- ⚠️ THE CROP IS THE SCREEN (roadmap 3.4d). Sean, after his second round:
+     *"I just want to click a box and type in what I think it is and save it,
+     and then be able to draw a box around something that didn't get caught,
+     or resize the box for the actual symbol — all without scrolling down the
+     page."* So: one bar, the crop, and a popover at the box. Everything else
+     — every stage view this page used to put under the fold — is in a drawer
+     that slides OVER the crop and is closed on load. -->
 <body>
 
-<header>
-  <div class="hrow">
-    <h1>Stage review</h1>
-    <span id="staffTitle" class="staffTitle">—</span>
-    <span class="grow"></span>
-    <span id="provenance" class="prov"></span>
-  </div>
-  <nav id="tabs">
-    <button data-view="pick"       class="on">Pick</button>
-    <button data-view="gather">GATHER</button>
-    <button data-view="adjudicate">ADJUDICATE</button>
-    <button data-view="evaluate">EVALUATE</button>
-    <button data-view="infer">INFER</button>
-    <button data-view="export">EXPORT</button>
-  </nav>
+<header id="bar">
+  <b id="staffName">—</b>
+  <span id="staffBars" class="dim"></span>
+  <select id="staffPick" title="another staff"></select>
+  <span id="frameChip" class="chip hidden"></span>
+  <span class="grow"></span>
+  <span id="saveState" class="chip ok">saved</span>
+  <button id="undoBtn" title="take back the last action (z)">Undo</button>
+  <button id="rerunBtn" title="re-run the stages with these corrections">Re-run</button>
+  <button id="drawerBtn" title="the stage views, over the crop">Stages</button>
+  <span id="help" class="dim tiny">click a box · type what it is · Enter ·
+    drag empty space to draw · f fits</span>
 </header>
 
-<main>
-  <section id="view"></section>
+<main id="stage">
+  <canvas id="crop"></canvas>
 
-  <aside id="side">
-    <div class="sideHead">
-      <b>Review actions</b>
-      <span id="sidecarCount" class="pill">0</span>
+  <!-- the popover: one field, one list, anchored at the box -->
+  <div id="pop" class="pop hidden">
+    <div id="popHead" class="popHead"></div>
+    <input id="popInput" type="text" autocomplete="off" spellcheck="false">
+    <div id="popList" class="popList"></div>
+    <div class="popFoot">
+      <span><b>Enter</b> saves</span><span><b>Esc</b> cancels</span>
+      <span><b>⌫</b> on an empty box = nothing</span>
     </div>
-    <div id="sidecarPath" class="mono tiny"></div>
-    <div id="sidecarList" class="actions"></div>
-    <div class="sideFoot">
-      <button id="rerunBtn" class="primary">Re-run the stages</button>
-      <div id="rerunOut" class="tiny"></div>
-    </div>
-  </aside>
+  </div>
+
+  <div id="banner" class="banner hidden"></div>
 </main>
+
+<!-- the stage views, as a DRAWER over the crop — never below it -->
+<aside id="drawer" class="drawer hidden">
+  <div class="drawerHead">
+    <nav id="tabs">
+      <button data-view="actions" class="on">My actions</button>
+      <button data-view="pick">Staves</button>
+      <button data-view="adjudicate">ADJUDICATE</button>
+      <button data-view="evaluate">EVALUATE</button>
+      <button data-view="infer">INFER</button>
+      <button data-view="export">EXPORT</button>
+    </nav>
+    <span class="grow"></span>
+    <span id="provenance" class="tiny dim"></span>
+    <button id="drawerClose" title="Esc">✕</button>
+  </div>
+  <div id="drawerBody" class="drawerBody"></div>
+</aside>
 
 <div id="modal" class="modal hidden">
   <div class="modalBox">
-    <h3 id="modalTitle">Add a box</h3>
+    <h3 id="modalTitle">—</h3>
     <div id="modalBody"></div>
-    <div class="modalFoot">
-      <button id="modalCancel">Cancel</button>
-      <button id="modalOk" class="primary">Save to the sidecar</button>
-    </div>
+    <div class="modalFoot"><button id="modalCancel">Close</button></div>
   </div>
 </div>
 
 <div id="toast" class="toast hidden"></div>
 
+<script src="/static/labels.js"></script>
 <script src="/static/app.js"></script>
 </body>
 </html>

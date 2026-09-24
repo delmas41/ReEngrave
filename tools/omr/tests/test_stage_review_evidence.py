@@ -1205,3 +1205,95 @@ class TestTheRerunIsThePipelinesOwnSequence(unittest.TestCase):
         import inspect
         sig = inspect.signature(pipeline.decide)
         self.assertIn("after_adjudicate", sig.parameters)
+
+
+# ═════════════════════════════════════════════════════════════════════════
+# 8. ROADMAP 3.4d — THE AGREEMENT ON A BOX.
+#
+# Sean's second round: *"I just want to click a box and type in what I think
+# it is and save it"*. Most of what he types is the class the box already
+# carries, and in 3.4c that answer went NOWHERE — `relabel_box` to the same
+# class is not a relabel, and `agree` is a stance on a VERDICT.
+#
+# ⚠️⚠️ RUN RED FIRST: against the tree before this branch, `check_sidecar`
+# refused the verb outright (`kind 'confirm_box' is not one of …`) and all
+# four tests below failed at `run_review`.
+#
+# ⚠️ THE POINT IS THAT IT REACHES NOTHING AND IS STILL WORTH FILING. A box a
+# human read and agreed with carries a `State.READ` row; an unreviewed box
+# carries nothing. Those are the two things the record exists to keep apart,
+# and until this verb existed they were the same.
+# ═════════════════════════════════════════════════════════════════════════
+
+CONFIRM = {"id": "act-ok", "t": "2026-09-23T12:05:00", "stage": "gather",
+           "kind": "confirm_box", "glyph": "glyph/0/0/0/0/1",
+           "category": "noteheadBlackOnLine",
+           "note": "yes, a black head on the middle line"}
+
+
+class TestAConfirmedBoxIsFiledAndChangesNothing(_Case):
+
+    def setUp(self) -> None:
+        super().setUp()
+        self.d, self.arm, self.ing = self.run_review(_sidecar(CONFIRM),
+                                                     tag="confirm")
+
+    def test_the_row_is_an_OBSERVATION_on_the_machines_own_subject(self):
+        rows = [o for o in self.arm["record"]["observations"]
+                if o["subject"] == "glyph/0/0/0/0/1"
+                and o["quantity"] == Q.HUMAN_BOX_VERDICT]
+        self.assertEqual(len(rows), 1)
+        self.assertEqual(rows[0]["value"], "confirmed:noteheadBlackOnLine")
+        self.assertEqual(rows[0]["reader"], READERS.SESSION_TEST)
+        self.assertEqual(rows[0]["detail"]["machine_called_it"],
+                         "noteheadBlackOnLine")
+
+    def test_the_machines_own_box_row_is_untouched(self):
+        boxes = [o for o in self.arm["record"]["observations"]
+                 if o["subject"] == "glyph/0/0/0/0/1"
+                 and o["quantity"] == Q.GLYPH_BOX]
+        self.assertEqual(len(boxes), 1)
+        self.assertEqual(boxes[0]["reader"], READERS.DETECTOR)
+
+    def test_the_head_is_NOT_refused_and_the_file_is_unchanged(self):
+        """⚠️ THE CONTROL THAT MATTERS. An agreement that deleted the note it
+        agreed with would be the worst bug in this package, and `is_a:` on a
+        notehead class is one `_PREFIXED` entry away from exactly that."""
+        v = self.standing(self.arm["record"], Q.NOTEHEAD_IS_NOT_A_NOTEHEAD,
+                          "glyph/0/0/0/0/1")
+        self.assertTrue(v is None or v["value"] is not True,
+                        "confirming a box refused it")
+        self.assertEqual(self.d.notes_before, self.d.notes_after)
+        self.assertTrue(self.d.musicxml_identical)
+
+    def test_it_reaches_the_FEEDBACK_FILE_and_is_HANDED_OVER_UNWEIGHED(self):
+        """⚠️ A row nothing acts on must still be REPORTED, or the reviewer
+        cannot tell *he agreed* from *he never looked*, which is the whole
+        reason for the verb.
+
+        ⚠️⚠️ AND THE FILE MUST NOT OVERSTATE IT. `Q.HUMAN_BOX_VERDICT` is in
+        `adjudicate_notehead_is_not_a_notehead`'s `wants`, so the row lands in
+        that verdict's BASIS — handed to the decision — while `used` stays
+        empty, because `_human_not_a_symbol` matches three verbs and
+        `confirmed` is none of them. Measured here rather than asserted: the
+        first cut of this test claimed `reached_nothing` and was wrong, which
+        is exactly the distinction `basis` and `used` exist to keep.
+        """
+        fb = FB.export_feedback(self.arm["record"], self.ing, self.d,
+                                str(self.dir / "confirm.feedback.json"))
+        entry = fb["actions"]["act-ok"]
+        self.assertEqual(entry["action"]["kind"], "confirm_box")
+        self.assertIsNone(entry["action"]["refused"])
+        self.assertEqual(entry["action"]["subject"], "glyph/0/0/0/0/1")
+        self.assertTrue(entry["human_rows"])
+        self.assertEqual(entry["human_rows"][0]["value"],
+                         "confirmed:noteheadBlackOnLine")
+        named = entry["verdicts_that_named_it"]
+        self.assertEqual([v["decider"] for v in named],
+                         ["adjudicate_notehead_is_not_a_notehead"])
+        self.assertEqual(named[0]["in_used"], [],
+                         "the agreement was WEIGHED — no rule reads "
+                         "`confirmed`, so this is a finding, not a pass")
+        self.assertIs(named[0]["value"], False)
+        self.assertNotEqual(named[0]["reason"], "human_not_a_symbol")
+        self.assertEqual(self.d.human_rows_unread, [])
