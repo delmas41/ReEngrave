@@ -679,5 +679,462 @@ class TestTheDerivationsAreNotVacuous(unittest.TestCase):
         self.assertEqual(claim_of(Q.HUMAN_VERDICT_STANCE), "interpretation")
 
 
+# ═════════════════════════════════════════════════════════════════════════
+# 7. ROADMAP 3.4c — THE LABELS. Sean, 2026-09-23, after his first minutes on
+#    the page: *"it works now but the UI is awkward — I need to be able to
+#    select a box and re-label it"*, and *"and to label boxes as nothing or
+#    belongs to another staff etc."*
+#
+# ⚠️⚠️ RUN RED FIRST, and the RED that matters is NOT "the verb did not
+# exist". With the whole ingest in place and ONLY the two CONNECTs neutered —
+# `notehead_precision._human_not_a_symbol`'s `is_a`/`duplicate_of` arms
+# returning None, and `ownership._human_owner` returning None — this file was
+# run again and the failures were exactly the four consequence tests
+# (`test_the_head_is_refused_...`, `test_the_refusal_names_WHAT_HE_SAID`,
+# `test_a_duplicate_is_refused_...`, `test_the_owner_is_the_HUMANS`), with
+# every ingest test still green. So these test the CONNECT, not the filing:
+# the rows are filed either way, which is the distinction this whole package
+# is built to keep visible.
+# ═════════════════════════════════════════════════════════════════════════
+
+def _add_second_cell(log):
+    """Cell 1 of the fixture staff: a unit, a box and one anchored notehead.
+
+    ⚠️ EXACTLY WHAT THE FRAME RECOVERY NEEDS AND NOTHING MORE — one
+    `Q.CELL_STAFF_SPACE`, one `Q.CELL_BOX` and ONE anchor box carrying both a
+    canonical rectangle and `detail.bbox_page_px`. The anchor is deliberately
+    NOT a notehead: a fourth head in a cell the exporter's partition does not
+    know about raises `export.Unbalanced` (measured — it did), and the
+    cell-0 rule this class tests is reached before any grid is recovered, so
+    the extra head would have bought nothing.
+    """
+    cell = R.cell(0, 0, 0, 1)
+    log.observe(cell, Q.CELL_STAFF_SPACE, SPACING, reader=READERS.GEOMETRY,
+                frame="cell:1", lines=5)
+    log.observe(cell, Q.CELL_BOX,
+                [CELL_ORIGIN[0] + 400, CELL_ORIGIN[1],
+                 CELL_ORIGIN[0] + 800, CELL_ORIGIN[1] + 400],
+                reader=READERS.GEOMETRY, frame="cell:1")
+    g = R.glyph(0, 0, 0, 1, 0)
+    (bx, by, bw, bh), page = _head_boxes(1600.0, 4.0)
+    log.observe(g, Q.GLYPH_BOX, ("accidentalSharp", bx, by, bw, bh),
+                reader=READERS.DETECTOR, frame="cell:1", score=0.9,
+                category="accidental", bbox_page_px=page)
+    return log
+
+
+def _relabel(category, glyph="glyph/0/0/0/0/1", **kw):
+    return {"id": "act-rl", "t": "2026-09-23T12:02:00", "stage": "gather",
+            "kind": "relabel_box", "glyph": glyph, "category": category, **kw}
+
+
+class TestARelabelOutsideTheNoteheadFamily(_Case):
+    """`noteheadBlackOnLine` -> `clefCAlto`: Sean's own first case, the two
+    heads the detector drew on the Viola staff's alto clef."""
+
+    def setUp(self) -> None:
+        super().setUp()
+        self.d, self.arm, self.ing = self.run_review(
+            _sidecar(_relabel("clefCAlto", note="that is the alto clef")),
+            tag="relabel-clef")
+        self.sub = f"glyph/0/0/0/0/{HE.HUMAN_GLYPH_BASE}"
+
+    def test_the_head_is_refused_with_the_humans_own_reason(self):
+        v = self.standing(self.arm["record"], Q.NOTEHEAD_IS_NOT_A_NOTEHEAD,
+                          "glyph/0/0/0/0/1")
+        self.assertIs(v["value"], True)
+        self.assertEqual(v["reason"], "human_not_a_symbol")
+
+    def test_the_refusal_names_WHAT_HE_SAID_not_merely_THAT_he_refused(self):
+        """⚠️ A refusal recording only *a human refused this* cannot be turned
+        into a fix. One recording *a human says this is a clefCAlto* can, and
+        that is the whole unit of roadmap 3.4."""
+        v = self.standing(self.arm["record"], Q.NOTEHEAD_IS_NOT_A_NOTEHEAD,
+                          "glyph/0/0/0/0/1")
+        self.assertEqual(v["detail"]["human_says"], "is_a:clefCAlto")
+        self.assertEqual(v["detail"]["human_reader"], READERS.SESSION_TEST)
+
+    def test_the_is_a_row_sits_on_the_MACHINES_own_subject(self):
+        rows = [o for o in self.arm["record"]["observations"]
+                if o["subject"] == "glyph/0/0/0/0/1"
+                and o["quantity"] == Q.HUMAN_BOX_VERDICT]
+        self.assertEqual([r["value"] for r in rows], ["is_a:clefCAlto"])
+        self.assertEqual(rows[0]["detail"]["filed_as"], self.sub)
+        self.assertEqual(rows[0]["detail"]["machine_called_it"],
+                         "noteheadBlackOnLine")
+        # the machine's own box row is untouched, as for every other label
+        boxes = [o for o in self.arm["record"]["observations"]
+                 if o["subject"] == "glyph/0/0/0/0/1"
+                 and o["quantity"] == Q.GLYPH_BOX]
+        self.assertEqual(len(boxes), 1)
+        self.assertEqual(boxes[0]["reader"], READERS.DETECTOR)
+
+    def test_the_new_class_becomes_a_human_BOX_of_its_own(self):
+        got = {o["quantity"] for o in self.arm["record"]["observations"]
+               if o["subject"] == self.sub}
+        self.assertIn(Q.GLYPH_BOX, got)
+        self.assertNotIn(Q.NOTEHEAD_CLASS, got)
+        row = [o for o in self.arm["record"]["observations"]
+               if o["subject"] == self.sub and o["quantity"] == Q.GLYPH_BOX][0]
+        self.assertEqual(row["value"][0], "clefCAlto")
+        self.assertEqual(row["detail"]["relabel_of"], "glyph/0/0/0/0/1")
+        self.assertEqual(row["detail"]["bbox_page_px"],
+                         _page_box_of(self.result["record"],
+                                      "glyph/0/0/0/0/1"),
+                         "the relabel moved the box — he said THIS box is a "
+                         "clef, not that a clef is somewhere near here")
+
+    def test_a_human_clefC_box_in_CELL_0_reaches_the_clef_decision(self):
+        """⚠️⚠️ THE CONNECT, AND IT IS A CONNECT BECAUSE IT FILES THE SAME TWO
+        ROWS `gather_clefs` FILES: `Q.CLEF_GLYPH` on the STAFF and
+        `Q.CLEF_POSITION` beside it from the cell's own grid. Nothing is
+        invented — the position is the same arithmetic a notehead's is.
+        """
+        rows = [o for o in self.arm["record"]["observations"]
+                if o["subject"] == "staff/0/0/0"
+                and o["reader"] == READERS.SESSION_TEST]
+        self.assertEqual({o["quantity"] for o in rows},
+                         {Q.CLEF_GLYPH, Q.CLEF_POSITION})
+        glyph_row = [o for o in rows if o["quantity"] == Q.CLEF_GLYPH][0]
+        self.assertEqual(glyph_row["value"], "clefCAlto")
+        self.assertIsNone(glyph_row["score"],
+                          "a person produced no softmax; a number here would "
+                          "be a fallback (CLAUDE.md rule 8)")
+        hit = [h for h in self.d.basis_names_human
+               if h["quantity"] == Q.CLEF and h["subject"] == "staff/0/0/0"]
+        self.assertTrue(hit, "the human's clef row reached no clef verdict at "
+                             "all — that is a wiring finding, not a test fix")
+
+    def test_THE_HUMANS_CLEF_ENTERS_AS_THE_WEAKEST_WITNESS_AND_IT_IS_SAID(self):
+        """⚠️⚠️ THE HONEST HALF, ASSERTED SO IT CANNOT ROT. `clef.
+        _detector_terms` weights by `row.score`, reading None as 0.0 and
+        therefore as `W_DETECTOR_LOW` — so a human who read the plate is
+        weighted BELOW a 0.9 detection of the same staff. That is wrong, it is
+        not repaired here (repairing it is a change to `clef.py`'s weighting
+        with its own measurement), and the row says so in its own detail.
+        """
+        glyph_row = [o for o in self.arm["record"]["observations"]
+                     if o["subject"] == "staff/0/0/0"
+                     and o["quantity"] == Q.CLEF_GLYPH
+                     and o["reader"] == READERS.SESSION_TEST][0]
+        self.assertIn("W_DETECTOR_LOW", glyph_row["detail"]["score_is_None"])
+
+    def test_a_clef_class_box_OUTSIDE_cell_0_files_no_clef_row(self):
+        """⚠️ `gather_clefs` reads cell 0 only — *a clef is read at the head
+        of the staff*. A mid-staff clef change is a reading GATHER does not
+        make, and this module may not invent one.
+
+        ⚠️ THE FIXTURE GROWS A SECOND CELL FOR THIS, because a clef-class box
+        in a cell with no rows is refused for the FRAME, one step earlier —
+        which would have made this test pass while proving nothing about the
+        cell-0 rule."""
+        log = build_log()
+        _add_second_cell(log)
+        RR.run_stages(log)
+        path = self.dir / "twocell.record.json"
+        path.write_text(json.dumps(
+            {"record": log.to_json(), "summary": log.summary(),
+             "provenance": {"commit": "fixture", "dirty": False}}, default=str))
+        _box, page = _head_boxes(1800.0, 0.0)
+        action = {"id": "act-midclef", "stage": "gather", "kind": "add_box",
+                  "cell": "cell/0/0/0/1", "bbox_page_px": page,
+                  "category": "clefCAlto"}
+        side = self.dir / "midclef.sidecar.json"
+        side.write_text(json.dumps(_sidecar(action)))
+        _d, arm, ing = RR.rerun(str(path), str(side),
+                                str(self.dir / "midclef.record.json"),
+                                staff="staff/0/0/0")
+        self.assertIsNone(ing.actions[0].refused,
+                          "refused before it reached the cell-0 rule, so this "
+                          "test would prove nothing")
+        self.assertEqual(
+            [o for o in arm["record"]["observations"]
+             if o["quantity"] == Q.CLEF_GLYPH
+             and o["reader"] == READERS.SESSION_TEST], [])
+        self.assertIn("cell 0", ing.actions[0].absent[Q.CLEF_GLYPH])
+
+
+class TestARelabelINSIDETheNoteheadFamily(_Case):
+    """black -> half. ⚠️ NOT a refusal: he disagrees about WHICH head, not
+    about whether there is one."""
+
+    def setUp(self) -> None:
+        super().setUp()
+        self.d, self.arm, self.ing = self.run_review(
+            _sidecar(_relabel("noteheadHalfOnLine",
+                              note="that is a half, not a quarter")),
+            tag="relabel-half")
+        self.sub = f"glyph/0/0/0/0/{HE.HUMAN_GLYPH_BASE}"
+
+    def test_the_machines_head_is_NOT_refused(self):
+        v = self.standing(self.arm["record"], Q.NOTEHEAD_IS_NOT_A_NOTEHEAD,
+                          "glyph/0/0/0/0/1")
+        self.assertIs(v["value"], False)
+        self.assertEqual(v["reason"], "notehead")
+        self.assertNotIn("human_says", v["detail"])
+
+    def test_EXACTLY_these_stages_see_the_relabelled_box(self):
+        """⚠️ THE EXACT SET, as for an added box. A change that starts or
+        stops reading a relabelled box fails HERE with the quantity named."""
+        got = {v["quantity"] for v in self.arm["record"]["verdicts"]
+               if v["subject"] == self.sub}
+        self.assertEqual(got, STAGES_THAT_SEE_A_HUMAN_BOX)
+
+    def test_the_consumer_that_sees_the_NEW_class_is_adjudicate_duration(self):
+        """⚠️⚠️ AND IT SEES IT ON THE HUMAN BOX'S OWN SUBJECT, NOT ON THE
+        MACHINE'S. `rhythm._head_class` is `max(rows, key=score or 0.0)`, so a
+        human `Q.NOTEHEAD_CLASS` row filed on the MACHINE's glyph (score None
+        -> 0.0) would LOSE to the detector's 0.9 — while still landing in that
+        verdict's `used`, because `adjudicate_duration` puts every
+        `Q.NOTEHEAD_CLASS` row it can see there. It would read as WEIGHED in
+        the feedback file and change nothing. So the relabel does not file
+        one; the new class arrives as a box of its own and `duration` decides
+        on that subject. Asserted here so the day `_head_class` stops reading
+        by score, this goes red and somebody re-reads this note.
+        """
+        v = self.standing(self.arm["record"], Q.DURATION, self.sub)
+        self.assertEqual(v["value"]["written"], 2.0)
+        self.assertEqual(
+            self.standing(self.arm["record"], Q.DURATION,
+                          "glyph/0/0/0/0/1")["value"]["written"], 1.0,
+            "the machine's own head was re-decided — nothing here may mutate "
+            "a machine row")
+        self.assertEqual(
+            [o for o in self.arm["record"]["observations"]
+             if o["subject"] == "glyph/0/0/0/0/1"
+             and o["quantity"] == Q.NOTEHEAD_CLASS
+             and o["reader"] == READERS.SESSION_TEST], [])
+
+    def test_AND_THE_PRICE_IS_TWO_NOTES_WHERE_THE_PLATE_HAS_ONE(self):
+        """⚠️⚠️ THE FINDING, ASSERTED RATHER THAN BURIED. An in-family relabel
+        adds a head and refuses none, so the bar now carries the machine's
+        quarter AND the human's half. Closing it needs either a rule that
+        `is_a:<other notehead>` supersedes the head class, or one that refuses
+        the machine's box — and the second is `redrawn`'s open question, which
+        nobody has decided. Out of 3.4c's scope, IN 3.4c's report."""
+        self.assertEqual(self.d.notes_after, self.d.notes_before + 1)
+
+
+class TestADuplicateIsOnePieceOfInk(_Case):
+    def setUp(self) -> None:
+        super().setUp()
+        self.d, self.arm, self.ing = self.run_review(_sidecar(
+            {"id": "act-dup", "t": "2026-09-23T12:03:00", "stage": "gather",
+             "kind": "dup_box", "glyph": "glyph/0/0/0/0/1",
+             "of": "glyph/0/0/0/0/0", "note": "the same head, boxed twice"}),
+            tag="dup")
+
+    def test_a_duplicate_is_refused_and_names_its_twin(self):
+        v = self.standing(self.arm["record"], Q.NOTEHEAD_IS_NOT_A_NOTEHEAD,
+                          "glyph/0/0/0/0/1")
+        self.assertIs(v["value"], True)
+        self.assertEqual(v["reason"], "human_not_a_symbol")
+        self.assertEqual(v["detail"]["human_says"],
+                         "duplicate_of:glyph/0/0/0/0/0")
+
+    def test_the_twin_is_untouched_and_one_fewer_note_is_written(self):
+        self.assertIs(
+            self.standing(self.arm["record"], Q.NOTEHEAD_IS_NOT_A_NOTEHEAD,
+                          "glyph/0/0/0/0/0")["value"], False)
+        self.assertEqual(self.d.notes_after, self.d.notes_before - 1)
+
+    def test_a_duplicate_OF_a_box_the_record_does_not_hold_is_REFUSED(self):
+        _d, arm, ing = self.run_review(_sidecar(
+            {"id": "act-dup2", "stage": "gather", "kind": "dup_box",
+             "glyph": "glyph/0/0/0/0/1", "of": "glyph/9/9/9/9/9"}),
+            tag="dup-missing")
+        self.assertEqual(ing.controls["actions_refused"], 1)
+        self.assertIn("holds no rows", ing.actions[0].refused)
+
+
+class TestICantTellIsAnABSTENTION(_Case):
+    def setUp(self) -> None:
+        super().setUp()
+        self.d, self.arm, self.ing = self.run_review(_sidecar(
+            {"id": "act-unsure", "t": "2026-09-23T12:04:00", "stage": "gather",
+             "kind": "unsure_box", "glyph": "glyph/0/0/0/0/1",
+             "note": "the plate is broken here; I cannot read it"}),
+            tag="unsure")
+
+    def test_it_is_an_abstention_row_with_the_humans_own_reason(self):
+        """⚠️ A HUMAN MAY DECLINE, AND THE RECORD MUST BE ABLE TO SAY SO. A
+        review tool that could only file his ANSWERS would quietly select for
+        the boxes he was sure about, and the places where the PLATE is
+        ambiguous would never reach the record at all."""
+        rows = [a for a in self.arm["record"]["abstentions"]
+                if a["reader"] == READERS.SESSION_TEST]
+        self.assertEqual(len(rows), 1)
+        self.assertEqual(rows[0]["quantity"], Q.HUMAN_BOX_VERDICT)
+        self.assertEqual(rows[0]["reason"], R.ABSTAIN.HUMAN_UNSURE)
+        self.assertEqual(rows[0]["subject"], "glyph/0/0/0/0/1")
+        self.assertEqual(
+            [o for o in self.arm["record"]["observations"]
+             if o["reader"] == READERS.SESSION_TEST], [],
+            "an abstention was also filed as an observation — that is the "
+            "READ/DECLINED collapse the record exists to prevent")
+
+    def test_it_changes_NOTHING_and_that_is_the_design(self):
+        self.assertEqual(self.d.notes_after, self.d.notes_before)
+        v = self.standing(self.arm["record"], Q.NOTEHEAD_IS_NOT_A_NOTEHEAD,
+                          "glyph/0/0/0/0/1")
+        self.assertIs(v["value"], False)
+
+    def test_the_feedback_file_reports_it_as_a_place_the_PRINT_is_ambiguous(self):
+        out = FB.export_feedback(
+            self.arm["record"], self.ing, self.d,
+            str(self.dir / "unsure.feedback.json"))
+        self.assertEqual(out["counts"]["actions"], 1)
+        entry = out["actions"]["act-unsure"]
+        self.assertEqual(entry["action"]["detail"]["row_kind"], "abstention")
+        self.assertTrue(entry["human_rows"][0]["reason"]
+                        == R.ABSTAIN.HUMAN_UNSURE)
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# 7b. `belongs to another staff` — the one label that DECIDES rather than
+#     refuses, and the only edit 3.4c makes to `ownership.py`.
+# ─────────────────────────────────────────────────────────────────────────────
+
+def _contested_record() -> dict:
+    """The fixture, plus ONE cross-staff contest on `glyph/0/0/0/0/1`.
+
+    ⚠️ `adjudicate_glyph_owner`'s domain is `subjects_from=
+    Q.GLYPH_BAND_DISTANCE` — the CONTESTED population. A glyph nobody disputes
+    gets no verdict at all, so a human owner row on one reaches nothing; that
+    is asserted in its own test below rather than left as a surprise.
+    """
+    log = build_log()
+    g = R.glyph(0, 0, 0, 0, 1)
+    log.observe(g, Q.GLYPH_BAND_DISTANCE, 0.4, reader=READERS.GEOMETRY,
+                frame="page", candidate="staff/0/0/1", own=False,
+                position_in_candidate=2.0)
+    log.observe(g, Q.GLYPH_BAND_DISTANCE, 3.1, reader=READERS.GEOMETRY,
+                frame="page", candidate="staff/0/0/0", own=True,
+                position_in_candidate=8.0)
+    RR.run_stages(log)
+    return {"record": log.to_json(), "summary": log.summary(),
+            "provenance": {"commit": "fixture", "dirty": False}}
+
+
+class TestBelongsToAnotherStaff(_Case):
+    def setUp(self) -> None:
+        super().setUp()
+        self.result = _contested_record()
+        self.record_path.write_text(json.dumps(self.result, default=str))
+
+    def test_THE_POSITIVE_CONTROL_no_human_row_leaves_the_contest_alone(self):
+        """⚠️ RULE 7. Without this, the test below passes for a
+        `_human_owner` that fires on every glyph — and a decision that always
+        returns the same answer looks exactly like one that works."""
+        d, arm, _ing = self.run_review(None, tag="own-control")
+        v = self.standing(arm["record"], Q.GLYPH_OWNER, "glyph/0/0/0/0/1")
+        self.assertEqual(v["value"], "staff/0/0/1")
+        self.assertEqual(v["reason"], "distance")
+        self.assertEqual(d.control_differ, 0)
+
+    def test_the_owner_is_the_HUMANS_and_the_reason_names_him(self):
+        d, arm, _ing = self.run_review(_sidecar(
+            {"id": "act-own", "t": "2026-09-23T12:05:00", "stage": "gather",
+             "kind": "own_box", "glyph": "glyph/0/0/0/0/1",
+             "staff": "staff/0/0/0", "note": "that is the flute's note"}),
+            tag="own")
+        v = self.standing(arm["record"], Q.GLYPH_OWNER, "glyph/0/0/0/0/1")
+        self.assertEqual(v["value"], "staff/0/0/0")
+        self.assertEqual(v["reason"], "human_owner")
+        self.assertEqual(v["detail"]["human_reader"], READERS.SESSION_TEST)
+        self.assertEqual(v["detail"]["human_says"], "owner:staff/0/0/0")
+        hit = [h for h in d.basis_names_human
+               if h["quantity"] == Q.GLYPH_OWNER]
+        self.assertEqual([h["how"] for h in hit], ["used"],
+                         "the owner row was handed to the decision and not "
+                         "weighed — that is a wiring finding")
+
+    def test_owning_it_BACK_recovers_the_note_the_contest_had_dropped(self):
+        """⚠️ THE FIXTURE'S CONTROL ALREADY LOSES THIS HEAD: distance awards
+        it to `staff/0/0/1`, so EXPORT refuses it here under
+        `owned_by_another_staff` and 2 of 3 heads are written. The human
+        owning it back is the only thing in the tree that puts it in the
+        file."""
+        d, arm, _ing = self.run_review(_sidecar(
+            {"id": "act-own1", "stage": "gather", "kind": "own_box",
+             "glyph": "glyph/0/0/0/0/1", "staff": "staff/0/0/0"}), tag="own1")
+        self.assertEqual((d.notes_before, d.notes_after), (2, 3))
+
+    def test_it_records_whether_the_named_staff_HOLDS_A_TWIN(self):
+        """⚠️⚠️ CLAUDE.md §10: a resolved contest DROPS the loser and NEVER
+        relocates it. So awarding a glyph to a staff whose own detector never
+        boxed that ink removes a note and adds none. The record says which of
+        the two happened, on the human's own row and on the verdict's detail;
+        nothing here repairs it.
+
+        ⚠️ AND THE NOTE COUNT CANNOT SHOW THE SECOND CASE ON THIS FIXTURE,
+        MEASURED: the contest had already awarded this head away, so owning it
+        to a THIRD staff leaves the count at 2 either way. The twin field is
+        the only thing that separates *moved somewhere real* from *moved
+        nowhere*, which is exactly why it is recorded rather than inferred
+        from the count."""
+        d, arm, _ing = self.run_review(_sidecar(
+            {"id": "act-own2", "stage": "gather", "kind": "own_box",
+             "glyph": "glyph/0/0/0/0/1", "staff": "staff/0/0/1"}), tag="own2")
+        v = self.standing(arm["record"], Q.GLYPH_OWNER, "glyph/0/0/0/0/1")
+        self.assertIsNotNone(v["detail"]["twin_on_the_named_staff"],
+                             "staff/0/0/1 IS a candidate of this contest, so "
+                             "the record does hold the same ink there")
+        d3, arm3, _i3 = self.run_review(_sidecar(
+            {"id": "act-own3", "stage": "gather", "kind": "own_box",
+             "glyph": "glyph/0/0/0/0/1", "staff": "staff/0/0/7"}), tag="own3")
+        v3 = self.standing(arm3["record"], Q.GLYPH_OWNER, "glyph/0/0/0/0/1")
+        self.assertEqual(v3["value"], "staff/0/0/7",
+                         "a human naming a staff the contest never offered is "
+                         "telling us the candidate set is wrong; swallowing "
+                         "it would hide that")
+        self.assertIsNone(v3["detail"]["twin_on_the_named_staff"])
+        self.assertEqual((d3.notes_before, d3.notes_after), (2, 2))
+
+    def test_an_owner_that_is_not_a_STAFF_subject_is_REFUSED(self):
+        _d, _arm, ing = self.run_review(_sidecar(
+            {"id": "act-own4", "stage": "gather", "kind": "own_box",
+             "glyph": "glyph/0/0/0/0/1", "staff": "Violino II"}), tag="own4")
+        self.assertEqual(ing.controls["actions_refused"], 1)
+        self.assertIn("not a staff subject", ing.actions[0].refused)
+
+    def test_an_owner_row_on_an_UNCONTESTED_glyph_DECIDES_NOTHING(self):
+        """⚠️ NAMED, NOT HIDDEN. `adjudicate_glyph_owner`'s domain is
+        `subjects_from=Q.GLYPH_BAND_DISTANCE` — the CONTESTED population — so
+        a human owning an uncontested box files a row that decision is never
+        asked about. There is no `Q.GLYPH_OWNER` verdict on that glyph at all.
+
+        ⚠️⚠️ AND `reached_nothing` IS THE WRONG ASSERTION HERE, MEASURED. The
+        row is NOT unread: `notehead_is_not_a_notehead` DECLARES
+        `Q.HUMAN_BOX_VERDICT`, so the harness hands it every such row on that
+        glyph and it lands in `basis` — where `_human_not_a_symbol` declines
+        it, because `owner:` is not its question. `used` is the only field
+        that separates OFFERED from WEIGHED, which is why the diff reports the
+        three apart; the identical trap is recorded for `redrawn` one class
+        up, and a test asserting `reached_nothing` would have been WRONG and
+        would have looked right."""
+        d, arm, ing = self.run_review(_sidecar(
+            {"id": "act-own5", "stage": "gather", "kind": "own_box",
+             "glyph": "glyph/0/0/0/0/2", "staff": "staff/0/0/1"}), tag="own5")
+        self.assertIsNone(self.standing(arm["record"], Q.GLYPH_OWNER,
+                                        "glyph/0/0/0/0/2"))
+        self.assertEqual(
+            [(h["quantity"], h["how"]) for h in d.basis_names_human],
+            [(Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, "basis")])
+        self.assertIs(
+            self.standing(arm["record"], Q.NOTEHEAD_IS_NOT_A_NOTEHEAD,
+                          "glyph/0/0/0/0/2")["value"], False,
+            "an `owner:` row was read as a refusal — that is a different "
+            "question answered by the wrong decision")
+        self.assertEqual(d.notes_after, d.notes_before)
+
+
+def _page_box_of(record: dict, glyph_key: str):
+    for o in record["observations"]:
+        if o["subject"] == glyph_key and o["quantity"] == Q.GLYPH_BOX:
+            return list((o.get("detail") or {})["bbox_page_px"])
+    return None
+
+
 if __name__ == "__main__":
     unittest.main()

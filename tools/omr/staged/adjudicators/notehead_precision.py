@@ -341,23 +341,66 @@ def _human_not_a_symbol(ev: Evidence, detail: Dict[str, Any]) -> Optional[Any]:
     about to grow, from a different lane on a different branch — lands beside
     it rather than through it.
 
-    ⚠️ `not_a_symbol` ONLY. `redrawn` says the box is in the wrong PLACE,
-    which is a different claim, and answering it needs a rule about what to do
-    with the machine's own box. It is reported by `review/feedback.py` as a
-    human row that reached no verdict rather than quietly read as a refusal.
+    ⚠️ THREE OF THE FIVE LABELS, AND THE OTHER TWO ARE DECLINED HERE ON
+    PURPOSE (ROADMAP 3.4c, Sean: *"and to label boxes as nothing or belongs to
+    another staff etc."*). The value vocabulary is
+    `review/human_evidence.HUMAN_BOX_LABELS` and it is parsed by that module's
+    `human_says`, never by a second `split(":")` here:
+
+      `not_a_symbol`              ✅ refuse. There is no symbol here.
+      `duplicate_of:<glyph>`      ✅ refuse. One piece of ink is one note, and
+                                     the twin he named is the one that keeps
+                                     it. ⚠️ THIS DECISION DOES NOT CHECK THAT
+                                     THE TWIN SURVIVES — if the human names a
+                                     box that is itself refused, both go and
+                                     the ink is lost. `rerun.py` measures the
+                                     note count, which is where that would
+                                     show; a rule that kept one of a pair
+                                     alive would be a rule nobody has written.
+      `is_a:<non-notehead>`       ✅ refuse, `detail.human_says` naming the
+                                     class. He looked at the print and said it
+                                     is a clef; a clef is not a notehead.
+      `is_a:<notehead class>`     ❌ NOT a refusal. black -> half is a
+                                     disagreement about WHICH head, not about
+                                     whether there is one, and answering it
+                                     here would delete the note instead of
+                                     re-reading it. `ingest` files the new
+                                     class as a human BOX of its own, so
+                                     `adjudicate_duration` decides on that
+                                     subject; the machine's head stands beside
+                                     it and `rerun.py` reports both.
+      `owner:<staff>`             ❌ a different question entirely — that is
+                                     `ownership._human_owner`'s.
+      `redrawn`                   ❌ the box is in the wrong PLACE, and what to
+                                     do with the machine's own box is a
+                                     decision nobody has taken. Reported by
+                                     `review/feedback.py` as a human row that
+                                     reached no verdict rather than quietly
+                                     read as a refusal.
 
     ⚠️ IT DOES NOT WEIGH ANYTHING. A human reading the print is not a term
     beside the width floor; he is the ground the width floor was measured
     against (`benchmarks/omr-notehead-width-2026-09`, 255 print-adjudicated
     boxes). So this is tested FIRST and returns the row that said so.
     """
-    rows = [r for r in ev.rows(Q.HUMAN_BOX_VERDICT)
-            if getattr(r, "value", None) == "not_a_symbol"]
+    from ..review.human_evidence import (NOTEHEAD_PREFIX as _HEAD,
+                                         human_says as _says)
+    rows = []
+    for r in ev.rows(Q.HUMAN_BOX_VERDICT):
+        verb, arg = _says(getattr(r, "value", None))
+        if verb == "not_a_symbol" or verb == "duplicate_of":
+            rows.append((r, verb, arg))
+        elif verb == "is_a" and not str(arg or "").startswith(_HEAD):
+            rows.append((r, verb, arg))
     if not rows:
         return None
-    row = rows[-1]
+    row, verb, arg = rows[-1]
     detail["human_reader"] = row.reader
     detail["human_row"] = row.id
+    # ⚠️ WHAT HE SAID, IN HIS OWN SPELLING, ON THE VERDICT'S OWN DETAIL. A
+    # refusal that records only *a human refused this* cannot be turned into a
+    # fix; a refusal that records *a human says this is a clefCAlto* can.
+    detail["human_says"] = (f"{verb}:{arg}" if arg is not None else verb)
     # ⚠️ The sidecar and the action id travel WITH the row, so the feedback
     # file can name the click that produced a refusal without re-reading the
     # sidecar and hoping the ids still line up.

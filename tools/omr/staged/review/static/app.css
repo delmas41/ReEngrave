@@ -62,6 +62,11 @@ aside#side{position:sticky;top:96px;background:var(--panel);
   padding:8px 12px;background:var(--head);border-bottom:1px solid var(--line)}
 .card>.b{padding:10px 12px}
 .two{display:grid;grid-template-columns:1fr 1fr;gap:0}
+/* ⚠️ GATHER's right half is now the SELECTION PANEL — the thing Sean is
+   actually using — and its left half is a short fixed summary. An even split
+   put the panel in a 300px column with a class list two buttons wide, which
+   is most of what "the UI is awkward" meant. */
+.two.gatherSplit{grid-template-columns:minmax(220px,300px) minmax(0,1fr)}
 .two>div{padding:10px 12px;min-width:0}
 .two>div:first-child{border-right:1px solid var(--line);background:#fcfbf7}
 .lbl{font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;
@@ -120,3 +125,28 @@ textarea{min-height:52px;resize:vertical}
 .filters{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:0 0 10px}
 .agreeRow{display:flex;gap:6px;align-items:center;margin-top:8px}
 .agreeRow input{flex:1}
+
+/* ── the selection panel (roadmap 3.4c) ──────────────────────────────── */
+.panel{border:1px solid var(--human);border-radius:5px;padding:9px 10px;
+  background:#fffafd}
+.panelHead{display:flex;gap:8px;align-items:baseline;margin:0 0 8px;
+  padding:0 0 6px;border-bottom:1px solid #f0d8e8}
+.panelHead b{font-family:ui-monospace,Menlo,monospace;font-size:13px}
+button.tiny{font-size:11px;padding:2px 7px}
+.labelRow{display:flex;gap:6px;align-items:center;flex-wrap:wrap;
+  padding:5px 0;border-bottom:1px dotted #eadfe6}
+.labelRow:last-child{border-bottom:none}
+.labelName{font-size:12px;font-weight:600;flex-basis:100%}
+.key{display:inline-block;margin-left:6px;padding:0 4px;border-radius:3px;
+  border:1px solid var(--line);background:#f6f3ec;color:var(--dim);
+  font:11px ui-monospace,Menlo,monospace}
+.classList{max-height:180px;overflow:auto;border:1px solid var(--line);
+  border-radius:4px;padding:4px;margin-top:5px;background:#fff}
+.famHead{font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;
+  color:#8a8272;margin:5px 0 2px}
+button.classBtn{font:11.5px ui-monospace,Menlo,monospace;padding:1px 6px;
+  margin:1px 2px 1px 0}
+button.classBtn.cur{border-color:var(--accent);font-weight:700;
+  background:#f3efe4}
+.addTool{border:1px solid var(--human);border-radius:4px;padding:2px 7px;
+  background:#fffafd}

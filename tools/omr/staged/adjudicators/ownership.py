@@ -35,12 +35,14 @@ W_DISTANCE = 0.5            # the tie-break, and only that
         "the owned glyph's implied pitch must fall in the owner's written range",
     ),
     implicates=(Q.GLYPH_OWNER, Q.DURATION, Q.METER, Q.INSTRUMENT),
-    composed_from=(Q.GLYPH_BAND_DISTANCE, Q.GLYPH_LADDER, Q.INSTRUMENT, Q.CLEF),
+    composed_from=(Q.GLYPH_BAND_DISTANCE, Q.GLYPH_LADDER, Q.INSTRUMENT, Q.CLEF,
+                   Q.HUMAN_BOX_VERDICT),
     scope=Kind.GLYPH,
     wants=(Q.GLYPH_LADDER, Q.GLYPH_BAND_DISTANCE, Q.GLYPH_CONF,
-           Q.NOTEHEAD_STAFF_POSITION, Q.INSTRUMENT, Q.CLEF),
-    reasons=("ladder", "range_veto", "distance", "no_contest", "no_evidence",
-             "tied"),
+           Q.NOTEHEAD_STAFF_POSITION, Q.INSTRUMENT, Q.CLEF,
+           Q.HUMAN_BOX_VERDICT),
+    reasons=("human_owner", "ladder", "range_veto", "distance", "no_contest",
+             "no_evidence", "tied"),
     mode=Mode.ADDITIVE,
     # ⚠️ The domain is the CONTESTED population. A glyph nobody disputes has
     # nothing to arbitrate, and a verdict per detection would bury 4,521 real
@@ -61,6 +63,33 @@ def adjudicate_glyph_owner(ev: Evidence) -> Ruling:
     because adjudication reads a frozen record. This function is the test of
     the architecture's central ordering claim (A-ORDER-2).
     """
+    # ⚠️⚠️ ROADMAP 3.4c, AND IT IS FIRST — BEFORE THE CONTEST IS EVEN READ.
+    # Ladder, range and distance are three ways of GUESSING which staff a
+    # piece of ink stands on; a human read the plate. Putting this test after
+    # the contest would make his answer a fourth term beside three that are
+    # assumed weights (A-OWN-1, none of them measured), which is exactly the
+    # inversion `notehead_precision._human_not_a_symbol` refuses one file
+    # along.
+    human = _human_owner(ev)
+    if human is not None:
+        row, owner = human
+        return Ruling(value=owner, reason="human_owner", used=(row.id,),
+                      detail={"human_reader": row.reader,
+                              "human_row": row.id,
+                              "human_says": row.value,
+                              # ⚠️ REPORTED, NEVER REPAIRED. CLAUDE.md §10: a
+                              # resolved contest DROPS the loser and never
+                              # relocates it, so if the staff he named holds
+                              # no box of this ink, this refuses the note HERE
+                              # and adds none THERE. `ingest` measured whether
+                              # the twin exists; the answer travels on his row.
+                              "twin_on_the_named_staff":
+                                  (row.detail or {}).get(
+                                      "twin_on_the_named_staff"),
+                              **{k: (row.detail or {})[k]
+                                 for k in ("sidecar", "review_action", "note")
+                                 if k in (row.detail or {})}})
+
     bands = ev.rows(Q.GLYPH_BAND_DISTANCE)
     if not bands:
         # Uncontested: the glyph belongs to the staff whose cell it was cut
@@ -143,6 +172,39 @@ def adjudicate_glyph_owner(ev: Evidence) -> Ruling:
                   used=tuple(r.id for r in bands),
                   detail={"scores": {k: sc for sc, k, _t, _d2 in scored},
                           "would_win_on_distance": by_distance[1]})
+
+
+def _human_owner(ev: Evidence):
+    """`(row, staff key)` where a human said this ink belongs to that staff.
+
+    ⚠️⚠️ ROADMAP 3.4c — THE SECOND PLACE IN THE PIPELINE THAT ACTS ON A REVIEW
+    ROW, and the first that acts on one by DECIDING rather than refusing.
+    `review/human_evidence.py` files `Q.HUMAN_BOX_VERDICT = owner:<staff>` on
+    the glyph subject the detector already owns; the machine's own rows stay
+    exactly where they were and this reads his beside them.
+
+    ⚠️ DELIBERATELY ITS OWN FUNCTION AND NOT A BRANCH IN THE BODY, for the
+    reason `_human_not_a_symbol` is one: the three measured-or-assumed tiers
+    below it are a contest, and a human's reading of the print is not a term
+    in a contest. It is the ground the contest is trying to approximate.
+
+    ⚠️ IT WEIGHS NOTHING AND IT CHECKS NOTHING. In particular it does NOT ask
+    whether the named staff is one of the contest's own candidates: a human
+    who names a staff the contest never offered is telling us the contest's
+    candidate set is wrong, which is a finding, not an error to swallow.
+    `review/rerun.py` measures what the award did to the note count.
+
+    ⚠️ ONLY THE LAST ROW COUNTS if he labelled the same box twice — the same
+    rule `_human_not_a_symbol` applies, because a sidecar is append-only and
+    the later click is the later reading.
+    """
+    from ..review.human_evidence import human_says as _says
+    hit = None
+    for row in ev.rows(Q.HUMAN_BOX_VERDICT):
+        verb, arg = _says(getattr(row, "value", None))
+        if verb == "owner" and arg:
+            hit = (row, arg)
+    return hit
 
 
 def _range_veto(ev: Evidence, cand_key: str, band_row):

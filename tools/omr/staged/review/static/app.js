@@ -19,9 +19,9 @@ const S = {
   layers: {lines: true, cells: true, ink: false, human: true,
            notehead: true, rest: true, clef: true, key: true,
            accidental: true, other: false},
-  sel: null, redrawFor: null, drag: null,
-  sidecar: {actions: []}, sidecarPath: '', classes: null,
-  pageFilter: '', stageCache: {},
+  sel: null, redrawFor: null, drag: null, addMode: false,
+  sidecar: {actions: []}, sidecarPath: '', classes: null, labels: null,
+  pageFilter: '', stageCache: {}, selTrace: null, pendingAdd: null,
 };
 
 const FAMILY_COLOUR = {
@@ -100,6 +100,11 @@ async function boot() {
      ${S.session.is_a_baseline ? '' :
        '· <b>DIRTY TREE — not a baseline (§4b)</b>'}`;
   S.classes = await api('/api/classes');
+  // ⚠️ THE LABEL SET COMES FROM THE SERVER, WHICH TAKES IT FROM LANE (A)'s
+  // `HUMAN_BOX_LABELS`. Sean's ask ends in "etc.", so a sixth answer is one
+  // row in one Python table — never a button hard-coded here as well.
+  S.labels = await api('/api/labels');
+  wireKeys();
   const params = new URLSearchParams(location.search);
   const staff = params.get('staff') || S.session.default_staff;
   document.querySelectorAll('#tabs button').forEach(b => {
@@ -213,6 +218,16 @@ async function renderGather(host) {
     ...g.families.map(f => layerBox(f, f, FAMILY_COLOUR[f])),
     layerBox('ink', 'Q.INK summary', '#3949ab'),
     layerBox('human', 'my actions', HUMAN),
+    el('label', {class: 'addTool'},
+      el('input', {type: 'checkbox', id: 'addTool',
+        onchange: e => {
+          S.addMode = e.target.checked;
+          if (S.addMode) { S.pendingAdd = null; showBox(null); }
+          toast(S.addMode ? 'Add tool ON — drag a rectangle'
+                          : 'Add tool off');
+        }}),
+      el('b', {}, 'Add tool'),
+      el('span', {class: 'tiny dim'}, ' (drag to draw a missing box)')),
     el('span', {class: 'grow'}),
     el('label', {}, 'display ',
       el('input', {type: 'range', min: '25', max: '200', value: '100',
@@ -240,7 +255,7 @@ async function renderGather(host) {
           `${counts.heads_boxed} notehead boxes · ${counts.boxes_all} boxes · `
           + `${counts.heads_written} written · ${counts.heads_lost} lost`)),
       banner, tools, wrap,
-      el('div', {class: 'two'},
+      el('div', {class: 'two gatherSplit'},
         el('div', {},
           el('div', {class: 'lbl'}, 'what this stage read'),
           gatherReadPane(g)),
@@ -326,20 +341,65 @@ function drawCrop() {
       x.fillText('ink ' + (i.n_components ?? '?'), a[0] + 4, canvas.height - 5);
     }
   }
+  // ⚠️ EVERY LABEL THE HUMAN HAS PUT ON A MACHINE BOX, keyed by glyph. The
+  // machine's box STAYS VISIBLE under every one of them — a correction is a
+  // witness beside the machine's row, never an erasure of it.
   const deleted = new Set(actionsOfKind('delete_box').map(a => a.glyph));
   const redrawn = new Map(actionsOfKind('redraw_box')
     .map(a => [a.glyph, a.bbox_page_px]));
+  const relabelled = new Map(actionsOfKind('relabel_box')
+    .map(a => [a.glyph, a.category]));
+  const owned = new Map(actionsOfKind('own_box').map(a => [a.glyph, a.staff]));
+  const dup = new Map(actionsOfKind('dup_box').map(a => [a.glyph, a.of]));
+  const unsure = new Set(actionsOfKind('unsure_box').map(a => a.glyph));
   for (const b of g.boxes) {
     if (!b.bbox_page_px || !S.layers[b.family]) continue;
     const p = boxToCrop(b.bbox_page_px);
-    x.lineWidth = (S.sel && S.sel.glyph === b.glyph) ? 3 : 1.5;
+    const isSel = !!(S.sel && S.sel.glyph === b.glyph);
+    // ⚠️ THE OTHERS ARE DIMMED, NOT HIDDEN. A selection that removed its
+    // neighbours would hide exactly the context a cross-staff or duplicate
+    // judgement needs.
+    x.globalAlpha = (!S.sel || isSel) ? 1 : 0.35;
+    x.lineWidth = isSel ? 3.5 : 1.5;
     x.strokeStyle = FAMILY_COLOUR[b.family] || '#777';
     x.strokeRect(p[0], p[1], p[2] - p[0], p[3] - p[1]);
+    if (isSel) {
+      x.strokeStyle = '#111'; x.lineWidth = 1;
+      x.setLineDash([3, 3]);
+      x.strokeRect(p[0] - 4, p[1] - 4, p[2] - p[0] + 8, p[3] - p[1] + 8);
+      x.setLineDash([]);
+    }
     if (b.written) {
       x.strokeStyle = '#1b7f3b'; x.lineWidth = 1.5;
       x.strokeRect(p[0] - 2, p[1] - 2, p[2] - p[0] + 4, p[3] - p[1] + 4);
     }
-    if (S.layers.human && deleted.has(b.glyph)) {
+    if (S.layers.human && relabelled.has(b.glyph)) {
+      // the OLD class struck through, the human's new one beside it
+      x.font = '11px monospace';
+      const oldW = x.measureText(b.class).width;
+      x.fillStyle = '#777';
+      x.fillText(b.class, p[0], p[1] - 4);
+      x.strokeStyle = '#777'; x.lineWidth = 1;
+      x.beginPath();
+      x.moveTo(p[0], p[1] - 7.5); x.lineTo(p[0] + oldW, p[1] - 7.5); x.stroke();
+      x.fillStyle = HUMAN;
+      x.fillText('→ ' + relabelled.get(b.glyph), p[0] + oldW + 4, p[1] - 4);
+      x.strokeStyle = HUMAN; x.lineWidth = 2;
+      x.strokeRect(p[0] - 1, p[1] - 1, p[2] - p[0] + 2, p[3] - p[1] + 2);
+    }
+    if (S.layers.human && owned.has(b.glyph)) {
+      x.fillStyle = HUMAN; x.font = '11px monospace';
+      x.fillText('⇢ ' + owned.get(b.glyph), p[0], p[3] + 12);
+      x.strokeStyle = HUMAN; x.lineWidth = 2;
+      x.setLineDash([2, 3]);
+      x.strokeRect(p[0] - 1, p[1] - 1, p[2] - p[0] + 2, p[3] - p[1] + 2);
+      x.setLineDash([]);
+    }
+    if (S.layers.human && unsure.has(b.glyph)) {
+      x.fillStyle = HUMAN; x.font = 'bold 13px monospace';
+      x.fillText('?', p[2] + 3, p[1] + 11);
+    }
+    if (S.layers.human && (deleted.has(b.glyph) || dup.has(b.glyph))) {
       // ⚠️ THE MACHINE'S BOX STAYS VISIBLE, struck through — a correction is a
       // witness beside the machine's row, never an erasure of it.
       x.strokeStyle = HUMAN; x.lineWidth = 2;
@@ -354,6 +414,7 @@ function drawCrop() {
       x.setLineDash([]);
     }
   }
+  x.globalAlpha = 1;
   if (S.layers.human) {
     x.strokeStyle = HUMAN; x.lineWidth = 2;
     for (const a of actionsOfKind('add_box')) {
@@ -416,6 +477,17 @@ function clickedAt(cx, cy) {
     const area = (x1 - x0) * (y1 - y0);
     if (!best || area < best.area) best = {b, area};
   }
+  // ⚠️ "this one duplicates THAT one": the second click names the twin, and
+  // the row is filed on the box that was SELECTED, never on the twin.
+  if (S.dupFor && best) {
+    const src = S.dupFor; S.dupFor = null;
+    if (best.b.glyph === src.glyph) {
+      return toast('a box cannot duplicate itself', true);
+    }
+    fileLabel(src, 'dup_box', {of: best.b.glyph},
+              document.getElementById('labelNote'));
+    return;
+  }
   showBox(best ? best.b : null);
 }
 
@@ -430,22 +502,78 @@ function drawnBox(cropBox) {
       `Redraw ${g.glyph} (${g.class})`, null);
     return;
   }
+  if (!S.addMode) {
+    // ⚠️ A DRAG IS NOT A BOX UNLESS HE ASKED FOR ONE. Before the Add tool
+    // existed, every stray drag on the crop opened an "add a box" dialog,
+    // which is half of what made the page awkward to use.
+    return toast('turn on the Add tool to draw a new box');
+  }
+  addPending(page, cropBox);
+}
+
+// ── the Add tool: a pending box, classed BEFORE it is saved ──────────────
+// ⚠️⚠️ NOTHING IS WRITTEN UNTIL A CLASS IS CHOSEN. A human box with no name
+// is `Q.INK`, which GATHER already files and this tool may not manufacture —
+// lane (A) refuses an `add_box` with no `category`, so a viewer that saved
+// first and asked later would be writing actions the ingest throws away.
+function addPending(page, cropBox) {
   const cell = cellUnder(page);
-  const picker = el('select', {id: 'catPick'},
-    ...Object.entries(S.classes.by_family).map(([fam, names]) =>
-      el('optgroup', {label: fam},
-        ...names.map(n => el('option', {value: n,
-          ...(n === 'noteheadBlack' ? {selected: ''} : {})}, n)))));
-  openAction({stage: 'gather', kind: 'add_box', bbox_page_px: page,
-              crop_px: cropBox, ...(cell ? {cell} : {})},
-    'Add a box the detector missed',
-    el('div', {},
-      el('div', {class: 'lbl'}, 'category (the canonical class list)'), picker,
-      el('div', {class: 'tiny dim', style: 'margin-top:6px'},
-        `page px [${page.map(v => v.toFixed(1)).join(', ')}] · `
-        + (cell ? cell : 'inside no single Q.CELL_BOX — the cell is left out '
-                       + 'rather than guessed'))),
-    a => { a.category = document.getElementById('catPick').value; return a; });
+  S.pendingAdd = {page, cropBox, cell};
+  const host = document.getElementById('boxDetail');
+  const search = el('input', {type: 'text', id: 'relabelSearch',
+    placeholder: 'search the canonical class list…',
+    oninput: () => paintPendingList()});
+  const note = el('input', {type: 'text', id: 'labelNote',
+    placeholder: 'why — in your words (optional)'});
+  S.sel = null;
+  host.replaceChildren(el('div', {class: 'panel'},
+    el('div', {class: 'panelHead'},
+      el('b', {}, 'a box the detector missed'),
+      el('span', {class: 'grow'}),
+      el('button', {class: 'tiny', onclick: () => {
+        S.pendingAdd = null; showBox(null);
+      }}, 'cancel ⎋')),
+    el('dl', {class: 'kv'},
+      el('dt', {}, 'page box'), el('dd', {},
+        page.map(v => v.toFixed(1)).join(', ')),
+      el('dt', {}, 'cell'), el('dd', {}, cell ||
+        'inside no single Q.CELL_BOX — LEFT OUT rather than guessed, and '
+        + 'lane (A) will refuse the action and say so')),
+    el('div', {class: 'lbl', style: 'margin-top:10px'},
+      'what is it? (nothing is saved until you choose)'),
+    note, search,
+    el('div', {id: 'relabelList', class: 'classList'})));
+  drawCrop();
+  paintPendingList();
+}
+
+function paintPendingList() {
+  const host = document.getElementById('relabelList');
+  if (!host || !S.pendingAdd) return;
+  const q = (document.getElementById('relabelSearch').value || '')
+    .trim().toLowerCase();
+  const kids = [];
+  for (const [fam, names] of Object.entries(S.classes.by_family)) {
+    const hits = names.filter(n => !q || n.toLowerCase().includes(q));
+    if (!hits.length) continue;
+    kids.push(el('div', {class: 'famHead'}, fam));
+    for (const n of hits.slice(0, 40)) {
+      kids.push(el('button', {class: 'classBtn', onclick: async () => {
+        const p = S.pendingAdd;
+        S.pendingAdd = null;
+        try {
+          await addAction({stage: 'gather', kind: 'add_box',
+                           bbox_page_px: p.page, crop_px: p.cropBox,
+                           ...(p.cell ? {cell: p.cell} : {}),
+                           category: n,
+                           note: (document.getElementById('labelNote') || {})
+                                   .value || ''});
+          showBox(null);
+        } catch (e) { toast(String(e.message || e), true); }
+      }}, n));
+    }
+  }
+  host.replaceChildren(...kids);
 }
 
 function cellUnder(page) {
@@ -457,23 +585,64 @@ function cellUnder(page) {
   return `cell/${p[1]}/${p[2]}/${p[3]}/${hits[0].index}`;
 }
 
+// ═══════════════════════════════════════════════════════════════════════
+// THE SELECTION PANEL — ROADMAP 3.4c
+//
+// Sean, 2026-09-23, after his first minutes on the page: *"it works now but
+// the UI is awkward — I need to be able to select a box and re-label it"*,
+// and *"and to label boxes as nothing or belongs to another staff etc."*
+//
+// So the panel asks ONE question — WHAT IS THIS? — and every answer is a
+// sidecar action the stages can read. The answers come from `/api/labels`,
+// which serves lane (A)'s own table; nothing here knows the list.
+// ═══════════════════════════════════════════════════════════════════════
+
 function showBox(b) {
   S.sel = b;
+  S.selTrace = null;
   const host = document.getElementById('boxDetail');
   if (!host) return;
   if (!b) {
     host.replaceChildren(el('div', {class: 'tiny dim'},
-      'Click a box to inspect it, or drag a rectangle to add one the '
-      + 'detector missed.'));
+      'Click a box to select it, or turn on the Add tool and drag a '
+      + 'rectangle to add one the detector missed.'));
     drawCrop();
     return;
   }
-  host.replaceChildren(
+  host.replaceChildren(boxPanel(b));
+  drawCrop();
+  // the verdicts already on this box, fetched once per selection
+  api('/api/subject', {key: b.glyph}).then(t => {
+    if (!S.sel || S.sel.glyph !== b.glyph) return;
+    S.selTrace = t;
+    const slot = document.getElementById('selVerdicts');
+    if (slot) slot.replaceChildren(verdictsOnSelection(t));
+  }).catch(e => {
+    const slot = document.getElementById('selVerdicts');
+    if (slot) slot.replaceChildren(el('div', {class: 'hint bad'},
+      String(e.message || e)));
+  });
+}
+
+function boxPanel(b) {
+  const mine = (S.sidecar.actions || []).filter(a => a.glyph === b.glyph);
+  return el('div', {class: 'panel'},
+    el('div', {class: 'panelHead'},
+      el('b', {}, b.class),
+      el('span', {class: 'dim tiny'}, '(' + b.category + ')'),
+      el('span', {class: 'grow'}),
+      el('button', {class: 'tiny', title: 'Esc',
+        onclick: () => showBox(null)}, 'deselect ⎋')),
     el('dl', {class: 'kv'},
       el('dt', {}, 'glyph'), el('dd', {}, b.glyph),
-      el('dt', {}, 'class'), el('dd', {}, b.class + '  (' + b.category + ')'),
       el('dt', {}, 'confidence'), el('dd', {},
-        b.conf === null || b.conf === undefined ? '—' : Number(b.conf).toFixed(3)),
+        b.conf === null || b.conf === undefined ? '—'
+          : Number(b.conf).toFixed(3)),
+      el('dt', {}, 'size'), el('dd', {}, b.size_spaces
+        // ⚠️ STAFF SPACES, the unit every measured rule is stated in — the
+        // notehead width floor is 1.0 SPACES, not 37 px.
+        ? b.size_spaces.map(v => v.toFixed(2)).join(' × ') + ' staff spaces'
+        : 'DECLINED — this row carries no page rectangle'),
       el('dt', {}, 'bar / cell'), el('dd', {}, `${b.bar ?? '?'} / ${b.cell}`),
       el('dt', {}, 'page box'), el('dd', {},
         b.bbox_page_px ? b.bbox_page_px.map(v => v.toFixed(1)).join(', ')
@@ -481,20 +650,227 @@ function showBox(b) {
       el('dt', {}, 'export'), el('dd', {},
         b.written ? el('span', {class: 'badge b-written'}, 'written')
           : (b.refused.length
-             ? el('span', {class: 'badge b-refused'}, 'refused: ' + b.refused.join(', '))
+             ? el('span', {class: 'badge b-refused'},
+                 'refused: ' + b.refused.join(', '))
              : el('span', {class: 'badge b-absent'}, 'never asked')))),
-    el('div', {style: 'margin-top:10px;display:flex;gap:6px;flex-wrap:wrap'},
-      el('button', {onclick: () => openAction(
-        {stage: 'gather', kind: 'delete_box', glyph: b.glyph},
-        `Delete ${b.glyph}`, el('div', {class: 'tiny dim'},
-          'The machine row stays on the record. This files YOUR reading that '
-          + 'there is no such symbol here.'))}, 'This is not a symbol — delete'),
+    mine.length ? el('div', {class: 'hint'},
+      'you have already said: '
+      + mine.map(a => a.kind + (a.category || a.staff || a.of
+          ? ' ' + (a.category || a.staff || a.of) : '')).join(' · ')) : null,
+    el('div', {class: 'lbl', style: 'margin-top:12px'}, 'what is this?'),
+    labelActions(b),
+    el('div', {class: 'lbl', style: 'margin-top:12px'},
+      'what the stages already said about it'),
+    el('div', {id: 'selVerdicts'}, el('div', {class: 'tiny dim'}, 'loading…')));
+}
+
+function labelActions(b) {
+  const search = el('input', {type: 'text', id: 'relabelSearch',
+    placeholder: 'search the canonical class list…',
+    oninput: () => paintClassList(b)});
+  const list = el('div', {id: 'relabelList', class: 'classList'});
+  const note = el('input', {type: 'text', id: 'labelNote',
+    placeholder: 'why — in your words (optional, and the most useful part)'});
+
+  const rows = [];
+  for (const entry of (S.labels.labels || [])) {
+    if (entry.kind === 'relabel_box') {
+      rows.push(el('div', {class: 'labelRow'},
+        el('div', {class: 'labelName'}, entry.label,
+          el('span', {class: 'key'}, entry.keys)),
+        search, list));
+      continue;
+    }
+    if (entry.kind === 'own_box') {
+      rows.push(el('div', {class: 'labelRow'},
+        el('div', {class: 'labelName'}, entry.label,
+          el('span', {class: 'key'}, entry.keys)),
+        ownButtons(b, note)));
+      continue;
+    }
+    if (entry.kind === 'dup_box') {
+      rows.push(el('div', {class: 'labelRow'},
+        el('div', {class: 'labelName'}, entry.label,
+          el('span', {class: 'key'}, entry.keys)),
+        el('div', {class: 'tiny dim'},
+          'click the box it duplicates, then press = there'),
+        el('button', {onclick: () => {
+          S.dupFor = b;
+          toast('now click the box this one duplicates');
+        }}, 'pick the twin…')));
+      continue;
+    }
+    rows.push(el('div', {class: 'labelRow'},
+      el('button', {class: entry.kind === 'delete_box' ? 'disagree' : '',
+        onclick: () => fileLabel(b, entry.kind, {}, note)},
+        entry.label, el('span', {class: 'key'}, entry.keys))));
+  }
+  rows.push(el('div', {class: 'labelRow'},
+    el('button', {onclick: () => {
+      S.redrawFor = b;
+      toast('now drag the rectangle you would have drawn');
+    }}, 'Redraw this box', el('span', {class: 'key'}, 'r')),
+    el('button', {onclick: () => openSubject(b.glyph)}, 'Trace this glyph')));
+  const wrap = el('div', {}, note, ...rows);
+  setTimeout(() => paintClassList(b), 0);
+  return wrap;
+}
+
+function paintClassList(b) {
+  const host = document.getElementById('relabelList');
+  if (!host) return;
+  const q = (document.getElementById('relabelSearch').value || '')
+    .trim().toLowerCase();
+  const kids = [];
+  for (const [fam, names] of Object.entries(S.classes.by_family)) {
+    const hits = names.filter(n => !q || n.toLowerCase().includes(q));
+    if (!hits.length) continue;
+    kids.push(el('div', {class: 'famHead'}, fam));
+    for (const n of hits.slice(0, 40)) {
+      kids.push(el('button', {
+        class: 'classBtn' + (n === b.class ? ' cur' : ''),
+        title: n === b.class ? 'the class the detector already gave it' : '',
+        onclick: () => fileLabel(b, 'relabel_box', {category: n},
+                                 document.getElementById('labelNote'))}, n));
+    }
+  }
+  if (!kids.length) {
+    kids.push(el('div', {class: 'tiny dim'},
+      'no canonical class matches — the list is the 157 from '
+      + '`class_aliases.canonical`, and this tool may not invent a name'));
+  }
+  host.replaceChildren(...kids);
+}
+
+function ownButtons(b, note) {
+  const staves = (S.gather.system_staves || []);
+  const i = staves.findIndex(r => r.is_this_one);
+  const above = i > 0 ? staves[i - 1] : null;
+  const below = (i >= 0 && i < staves.length - 1) ? staves[i + 1] : null;
+  const pick = el('select', {},
+    el('option', {value: ''}, 'another staff of this system…'),
+    ...staves.filter(r => !r.is_this_one).map(r => el('option',
+      {value: r.staff}, `${r.staff}  ${r.part_name || '(unnamed)'}`)));
+  return el('div', {},
+    el('div', {style: 'display:flex;gap:6px;flex-wrap:wrap'},
+      // ⚠️ ABSENT, NOT DISABLED-AND-LYING: the top staff of a system has no
+      // staff above it, and the honest page shows no button rather than one
+      // that files a subject the record does not hold.
+      above ? el('button', {onclick: () => fileLabel(b, 'own_box',
+        {staff: above.staff}, note)},
+        '↑ ' + (above.part_name || above.staff),
+        el('span', {class: 'key'}, '↑')) : null,
+      below ? el('button', {onclick: () => fileLabel(b, 'own_box',
+        {staff: below.staff}, note)},
+        '↓ ' + (below.part_name || below.staff),
+        el('span', {class: 'key'}, '↓')) : null),
+    el('div', {style: 'display:flex;gap:6px;margin-top:5px'}, pick,
       el('button', {onclick: () => {
-        S.redrawFor = b;
-        toast('now drag the rectangle you would have drawn');
-      }}, 'Redraw this box'),
-      el('button', {onclick: () => openSubject(b.glyph)}, 'Trace this glyph')));
-  drawCrop();
+        if (!pick.value) return toast('pick a staff first', true);
+        fileLabel(b, 'own_box', {staff: pick.value}, note);
+      }}, 'file')),
+    (!above && !below) ? el('div', {class: 'tiny dim'},
+      'this system has only one staff in the record') : null);
+}
+
+async function fileLabel(b, kind, extra, noteEl) {
+  try {
+    await addAction({stage: 'gather', kind, glyph: b.glyph, ...extra,
+                     note: (noteEl && noteEl.value) || ''});
+    if (noteEl) noteEl.value = '';
+    // ⚠️ THE BOX STAYS SELECTED. He may want to say two things about one
+    // box (*not a notehead*, AND *it belongs to the staff below*), and a
+    // panel that closed itself would make the second click find nothing.
+    const fresh = (S.gather.boxes || []).find(x => x.glyph === b.glyph);
+    showBox(fresh || b);
+  } catch (e) { toast(String(e.message || e), true); }
+}
+
+function verdictsOnSelection(t) {
+  const st = t.stages;
+  const rows = [];
+  for (const name of ['adjudicate', 'evaluate', 'infer']) {
+    const bucket = st[name];
+    for (const step of bucket.verdicts) {
+      rows.push({stage: name, quantity: step.quantity,
+                 outcome: step.outcome, value: step.value,
+                 reason: step.reason, decider: step.decided_by});
+    }
+    if (!bucket.verdicts.length) {
+      rows.push({stage: name, quantity: '—', outcome: null,
+                 value: null,
+                 reason: 'DID NOT RUN on this subject (State.ABSENT) — not an '
+                         + 'abstention, and it must not be read as one',
+                 decider: '—'});
+    }
+  }
+  return el('div', {class: 'scroll', style: 'max-height:240px'},
+    el('table', {},
+      el('thead', {}, el('tr', {}, ...['stage', 'quantity', 'outcome',
+        'value', 'reason'].map(h => el('th', {}, h)))),
+      el('tbody', {}, ...rows.map(r => el('tr', {},
+        el('td', {class: 'tiny'}, r.stage),
+        el('td', {class: 'tiny mono'}, r.quantity),
+        el('td', {}, r.outcome ? outcomeBadge(r.outcome)
+          : el('span', {class: 'badge b-absent'}, 'none')),
+        el('td', {class: 'tiny'}, short(r.value)),
+        el('td', {class: 'tiny'}, r.reason || '—'))))));
+}
+
+// ── the keyboard ────────────────────────────────────────────────────────
+// ⚠️ EVERY BINDING IS A LABEL THE SERVER DECLARES, looked up by `keys` in
+// `/api/labels` rather than hard-coded — except Esc, which is not a label.
+function wireKeys() {
+  window.addEventListener('keydown', e => {
+    if (e.metaKey || e.ctrlKey || e.altKey) return;
+    const tag = (e.target.tagName || '').toLowerCase();
+    const typing = tag === 'input' || tag === 'textarea' || tag === 'select';
+    if (e.key === 'Escape') {
+      if (!document.getElementById('modal').classList.contains('hidden')) {
+        return closeModal();
+      }
+      S.redrawFor = null; S.dupFor = null; S.addMode = false;
+      showBox(null);
+      const t = document.getElementById('addTool');
+      if (t) t.checked = false;
+      return;
+    }
+    if (typing || !S.sel || S.view !== 'gather') return;
+    const b = S.sel, note = document.getElementById('labelNote');
+    const go = (kind, extra) => {
+      e.preventDefault(); fileLabel(b, kind, extra || {}, note);
+    };
+    if (e.key === 'd' || e.key === '0') return go('delete_box');
+    if (e.key === 'u') return go('unsure_box');
+    if (e.key === 'r') {
+      e.preventDefault(); S.redrawFor = b;
+      return toast('now drag the rectangle you would have drawn');
+    }
+    if (e.key === '=') {
+      e.preventDefault(); S.dupFor = b;
+      return toast('now click the box this one duplicates');
+    }
+    if (e.key === 'l') {
+      e.preventDefault();
+      const s = document.getElementById('relabelSearch');
+      if (s) { s.focus(); s.select(); }
+      return;
+    }
+    if (e.key === 'n') {
+      e.preventDefault();
+      if (note) note.focus();
+      return;
+    }
+    if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
+      const staves = (S.gather.system_staves || []);
+      const i = staves.findIndex(r => r.is_this_one);
+      const t = e.key === 'ArrowUp'
+        ? (i > 0 ? staves[i - 1] : null)
+        : ((i >= 0 && i < staves.length - 1) ? staves[i + 1] : null);
+      if (!t) return toast('this system has no staff that way', true);
+      return go('own_box', {staff: t.staff});
+    }
+  });
 }
 
 // ═══════════════════════════════════════════════════════════════════════
@@ -851,9 +1227,12 @@ function paintSidecar() {
         onclick: () => undo(a.id)}, '×'),
       el('b', {}, a.id), ' ', el('span', {class: 'badge b-' +
         (a.kind === 'agree' ? 'read' : a.kind === 'disagree' ? 'abstained'
-          : 'inferred')}, a.kind),
+          : a.kind === 'unsure_box' ? 'declined' : 'inferred')}, a.kind),
       el('div', {class: 'tiny mono'}, a.stage + ' · '
-        + (a.glyph || a.verdict || (a.category || ''))),
+        + (a.glyph || a.verdict || (a.category || ''))
+        + (a.kind === 'relabel_box' ? ' → ' + a.category : '')
+        + (a.kind === 'own_box' ? ' ⇢ ' + a.staff : '')
+        + (a.kind === 'dup_box' ? ' = ' + a.of : '')),
       a.bbox_page_px ? el('div', {class: 'tiny dim mono'},
         '[' + a.bbox_page_px.map(v => v.toFixed(1)).join(', ') + ']') : null,
       a.note ? el('div', {class: 'tiny'}, '“' + a.note + '”') : null)));

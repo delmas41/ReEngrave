@@ -71,6 +71,17 @@ KNOWN_GAPS: Dict[str, str] = {
         "be one). ⚠️ THE ENTRY IS ABOUT THE PRODUCER, so it does not leave the "
         "list when the read lands; it leaves if a STAGE ever observes the "
         "quantity, which would itself be the finding.",
+    "glyph_owner wants 'human_box_verdict'":
+        "⚠️ THE SAME ENTRY ONE DECISION ALONG, roadmap 3.4c (Sean, "
+        "2026-09-23: *\"and to label boxes as nothing or belongs to another "
+        "staff etc.\"*). The declaration IS read — `ownership._human_owner` "
+        "decides `human_owner` off it, first, before the ladder/range/"
+        "distance contest — and what this tool reports is that the PRODUCER "
+        "is outside the pipeline: `review/human_evidence.py` files "
+        "`owner:<staff>` from a review sidecar and is in `reach.NOT_A_STAGE`. "
+        "Everything in the entry above applies verbatim, including why no "
+        "gather site will ever observe it. ⚠️ It leaves the list if a STAGE "
+        "observes the quantity, never because the read landed.",
     # ⚠️ TEN ENTRIES LEFT THIS LIST ON 2026-09-09 and the stale check is what
     # made them leave: `arc_box`, `articulation_mark`, `wedge_box` and
     # `dynamic_letter` are gathered now (`gather_glyph_families`), so the five

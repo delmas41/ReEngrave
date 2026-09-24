@@ -67,6 +67,7 @@ from .. import export as EXPORT
 from .. import trace as TRACE
 from ..record import Q, State
 from ..record_io import load_record
+from . import human_evidence as HE
 
 #: ⚠️ THE EXPORTER'S OWN HANDLE ON THE PURE RENDERERS, not a second import of
 #: the frozen legacy module. `export.py` spells a pitch through
@@ -110,10 +111,14 @@ STAGES: Tuple[str, ...] = ("gather", "adjudicate", "evaluate", "infer",
 #: ⚠️ FIXED BY THE CONTRACT WITH LANE (A). Optional fields may be ADDED (and
 #: are documented in `OPTIONAL_FIELDS`); a kind may not be renamed and a
 #: required field may not be dropped.
+#: ⚠️ THE BOX VERBS ARE READ OFF LANE (A)'s OWN TABLE, NOT RETYPED HERE.
+#: `human_evidence.KIND_REQUIRES` is derived from `HUMAN_BOX_LABELS`, so a
+#: label added there is validated by this server the moment it exists — the
+#: alternative is two lists that agree until the day they do not, and the
+#: failure mode is a viewer writing an action lane (A) then REFUSES, after the
+#: human has done the work.
 KIND_REQUIRES: Dict[str, Tuple[str, ...]] = {
-    "add_box":     ("bbox_page_px", "category"),
-    "delete_box":  ("glyph",),
-    "redraw_box":  ("glyph", "bbox_page_px"),
+    **HE.KIND_REQUIRES,
     "agree":       ("verdict",),
     "disagree":    ("verdict",),
 }
@@ -137,7 +142,10 @@ OPTIONAL_FIELDS: Dict[str, str] = {
                "re-checked from the file alone",
 }
 
-_GATHER_KINDS = frozenset({"add_box", "delete_box", "redraw_box"})
+#: ⚠️ LANE (A)'s LIST, not a second one. A verb it has not been taught is
+#: refused there; a verb this server does not know is refused here. They must
+#: be the SAME set or one of the two refusals is a lie.
+_GATHER_KINDS = frozenset(HE.GATHER_KINDS)
 _VERDICT_KINDS = frozenset({"agree", "disagree"})
 
 
@@ -1143,6 +1151,18 @@ def gather_view(D: ReviewData, staff: str, zoom: int) -> Dict[str, Any]:
             "page_box_state": "read" if page_box else "declined",
             "written": sub in D.export.placed,
             "refused": D.export.refusals.get(sub, []),
+            # ⚠️ IN STAFF SPACES, because that is the unit every measured rule
+            # in the tree is stated in — the notehead width floor is "1.0
+            # staff spaces", not "37 px" (`omr-notehead-width-2026-09`). A
+            # reviewer judging whether a box is too narrow needs the number
+            # the rule uses, and computing it in the page's own pixels is how
+            # two readers of one screen come to disagree about a threshold.
+            # DECLINED where the row has no page rectangle: a canonical frame
+            # cannot answer a page question.
+            "size_spaces": (
+                [(page_box[2] - page_box[0]) / geom["spacing"],
+                 (page_box[3] - page_box[1]) / geom["spacing"]]
+                if page_box and geom["spacing"] else None),
         })
     ink_rows: Dict[int, List[dict]] = {}
     for ci, o in D.ink_by_staff.get(staff, ()):
@@ -1170,7 +1190,35 @@ def gather_view(D: ReviewData, staff: str, zoom: int) -> Dict[str, Any]:
                      "`ink_n_components`. It is not a set of subjects."),
         "counts": D.staff_funnel(staff),
         "families": list(OVERLAY_FAMILIES),
+        # ⚠️ "THE STAFF ABOVE" IS RESOLVED HERE, FROM THE RECORD'S OWN STAVES,
+        # and it is a list rather than two buttons because the top staff of a
+        # system HAS no staff above it and the honest answer there is that the
+        # button is absent. Ordered by `staff_ordinal`, which is the printed
+        # order — the same order `_staff_sort_key` puts the pick list in.
+        "system_staves": system_staves(D, staff),
     }
+
+
+def system_staves(D: ReviewData, staff: str) -> List[Dict[str, Any]]:
+    """Every staff of THIS system, in printed order, with its part name.
+
+    ⚠️ `staff_ordinal` IS THE PRINTED ORDER AND NOTHING HERE RE-DERIVES IT
+    FROM y. The record already decided which staff is which; a viewer sorting
+    by pixel would be a second, disagreeing answer to a question
+    `adjudicate_staff_ordinal` owns.
+    """
+    p = staff.split("/")
+    mine = (int(p[1]), int(p[2]))
+    out = []
+    for key in D.staff_keys:
+        q = key.split("/")
+        if (int(q[1]), int(q[2])) != mine:
+            continue
+        out.append({"staff": key, "staff_ordinal": int(q[3]),
+                    "part_name": D.part_name_of(key),
+                    "is_this_one": key == staff})
+    out.sort(key=lambda r: r["staff_ordinal"])
+    return out
 
 
 # ═════════════════════════════════════════════════════════════════════════
@@ -1330,6 +1378,27 @@ def create_app(D: ReviewData, sidecar_path: Optional[Path],
                         "the 208-class vocabulary — the model's names are "
                         "spelled twice and this is the one place they are "
                         "folded"}
+
+    @app.get("/api/labels")
+    def api_labels() -> dict:
+        """The "what is this?" answers the panel offers.
+
+        ⚠️⚠️ SERVED FROM LANE (A)'s TABLE, so the viewer cannot offer a label
+        the ingest does not know — the *etc.* in Sean's ask is satisfied by
+        adding a row to `human_evidence.HUMAN_BOX_LABELS` and reloading, not
+        by editing this file and that one and the JS.
+
+        ⚠️ `reaches` IS A CLAIM, NOT A MEASUREMENT, and the page says so where
+        it prints it. What a label ACTUALLY reached is in the feedback file
+        after a re-run, per action, including *reached nothing*.
+        """
+        return {"labels": [dict(e) for e in HE.HUMAN_BOX_LABELS],
+                "kind_requires": {k: list(v)
+                                  for k, v in HE.KIND_REQUIRES.items()},
+                "what_a_human_box_can_and_cannot_reach": HE.visibility(),
+                "note": ("the label set is `human_evidence.HUMAN_BOX_LABELS`; "
+                         "`reaches` is this package's CLAIM about each label "
+                         "and `review/rerun.py` measures it per run")}
 
     @app.get("/api/sidecar")
     def api_sidecar(staff: str) -> dict:
