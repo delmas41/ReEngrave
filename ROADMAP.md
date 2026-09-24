@@ -17,118 +17,90 @@ re-enter.
 
 ---
 
-## START HERE — state at the end of the session of 2026-09-23
+## START HERE — state at the end of the session of 2026-09-23/24 (Sean went to bed; an overnight session picks up here)
 
-Main is `16ed0f50`; branch `claude/start-here-questions-7d5637` carries Sean's four answers below (`64c83c5f`, `fd656c20`, `6f269360` and the roadmap commit). The tree is the record; this
-block is the pointer. Read CLAUDE.md first (short), then this file, then
-`docs/DECISIONS.md`.
+Main is at or past `1d45144b` and carries everything below. The tree is the
+record; this block is the pointer. Read CLAUDE.md first (short), then this
+file, then `docs/DECISIONS.md` (nine entries dated 2026-09-23/24 are Sean's).
 
-**Landed today, in order:** **1.2** (the decide-stage cost lane, verified and
-landed — see its two gate corrections below) · **1.2b opened** (the budget
-line, the second of 1.2's two defects, still untouched) · **1.4** (a first
-cleanup count on the Beethoven page — **not Sean's**) · **1.1 Brahms whole
-movement** · **2.3** (evidence cut, the defect found and fixed).
+**What landed in this session, all on main, all verified against the tree
+before merging (fast tier 3,203 passed at the last full run; `staged.check`
+267 — see the ⚠️ below):**
+- **2.3** duration rules ON · **2.8** bars that do not add up are HELD OUT
+  (0 wrong bars on all three documents) · **2.6** ownership contest widened
+  (18/18 crops) · **2.11** clef read by geometry + **2.10** clef gap filled
+  from other systems (11/11 crops) · **2.9 / 2.9b / 2.12a** key signature
+  read off the detector's header boxes, checked against the document and
+  the part, header flats admitted (**46/46 staves** on the count pages
+  against Sean's truth; Litolff 12/12 parts) · **2.12** the shape-vs-role
+  audit (items 2.12a–g) · **2.12b/e** rest value from its slot, flag
+  direction from the stem (141 bars start adding up) · **3.4** the STAGE
+  REVIEW: one staff, one bar at a time, click-type-save, five labels,
+  corrections as witnesses, re-run via `pipeline.decide`, a feedback file
+  per pass · **3.4g** per-family refusals (Sean's reached-nothing 23 → 0)
+  · Sean's three passes (Viola p3: 7 → 52 written; Clarinet p12: 11 → 60;
+  Viola p2: 2 → 81).
 
-**The measurement of the day: 1.2 works at scale.** Brahms 1 mvt 1, 27 denser
-Breitkopf pages, **1 h 11 m** — GATHER ~28 min, ADJUDICATE ~33 min (28
-decisions, 196,757 verdicts), GROUPS+EVALUATE ~5 min. Against Beethoven's 16
-pages at **12.8 h**. EVALUATE took 4 m 55 s, so **1.2's named-but-unfixed
-residual did not bite**. ⚠️ Not a controlled base-vs-arm — different document
-and page count — but consistent with 1.2's own superlinear claim.
+**In flight — each lane pushes its own branch when done; merge in this
+order, verifying each with `pytest -m "not slow"` and `staged.check` on
+the merged tree (a lane's report is a ledger, the tree outranks it):**
+1. `claude/ledger-conventions-3.4g2` — Sean's two ledger conventions
+   (inside the staff → not a rung; no head on it → not a rung); gate = his
+   13 crops (`benchmarks/omr-family-refusals-2026-09/out/print/ADJUDICATION-sean-2026-09-24.json`).
+2. `claude/viewer-refusals-3.4h` — the viewer hides `staff`/`stem` boxes,
+   draws refused boxes struck through, a click never becomes a redraw.
+   After merging: restart the viewer (below).
+3. `claude/rest-slot-cal-2.12b` — rest-slot bands from the print-confirmed
+   population (Sean: 10 of 10 'overruled' rests were WHOLE; the class was
+   right, the slot geometry off by a step). Its Brahms run was ~3 h in.
+4. `claude/family-refusals-3.4g` — may gain one more commit (the Breitkopf
+   ledger arm); merge it if the branch moved past `87310287`.
+If a branch is absent from `origin`, the lane died with the session: its
+worktree is under `.claude/worktrees/agent-*` on this machine — commit and
+push from there, or re-dispatch from the roadmap line.
 
-**Acceptance now covers all three** (`current.json` previously held only
-Beethoven): Litolff notes 7,878/11,632 (0.677); Breitkopf 13,952/24,533
-(0.569); engraved 358/371 (0.965), F1 0.947, OMR-NED 0.1519. ⚠️ **Breitkopf's
-0.569 against the old 4-page 0.678 is NOT a regression** — that record predates
-2.4a, whose two refusals hold back 4,043 glyphs (16.5% of gathered); excluding
-them gives 0.681. Do not quote the pair without the decomposition.
+**The viewer** (Sean uses it on the Mac, Chrome):
+`python3 -m tools.omr.staged.review.server --record library/_shared-records/beethoven5-litolff-mvt1-whole-20260923.record.json --pdf library/editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf --staff staff/3/0/9`
+→ `http://localhost:5075/?staff=staff/3/0/9` (NOT 5060: Chrome refuses it,
+ERR_UNSAFE_PORT; the server listens dual-stack). Sidecars persist at
+`benchmarks/omr-stage-review-2026-09/out/review-actions--<staff>.json`.
+Reading a pass: `python3 -m tools.omr.staged.review.rerun <record> <sidecar> --staff <staff> --out <dir>` (~11 min, 3.7 GB), then `feedback-summary.json`'s `reached_nothing` list is the work order.
 
-**Two gate corrections 1.2 needed before it could land**, both worth knowing
-because the lane's own report asserted otherwise:
-- its identical-verdict control **could not finish on base** because the
-  control adjudicated all 7 systems and only filtered to one when dumping.
-  Restricted to one system's WORK it runs: **0 of 429 differing** on
-  subject/quantity/outcome/value/reason/basis/considered. The 52 `correlated`
-  differences are all the documented singleton removal, classified one by one.
-- one of the rewrite's **stated proofs was false** — the bucket-representative
-  shortcut assumed `_one_signal` ignores which observation it compares against;
-  it does not, through `closure(b)`. Repaired with a strictly faster rule.
+**Overnight work order (nothing here needs Sean; do not ask him anything
+until morning — leave crops in `out/print/` with `VERDICT_none_yet: null`):**
+1. Merge the four branches above as they land.
+2. **2.14** — `Q.GLYPH_LADDER` names its rungs, so refused ledger boxes
+   leave the ladder `glyph_owner` weighs (GATHER; two one-page re-gathers
+   `--pages 3 --no-surya --no-ocr` to price; the ladder count on the count
+   pages must fall by exactly the refused rungs).
+3. **3.4f** — a human clef box reaches the clef decision (one branch keyed
+   on the reader; Sean's own `act-0001` on `staff/3/0/9` is the test).
+4. **2.9c** — the key checks cannot see a part whose slot comes from INFER
+   (18 Litolff key changes, all Cello): decide the stage order by §4a.
+5. **3.4g** remainder — refusals for the families 3.4g did not cover
+   (flag, key marker, tuplet numeral): one `duplicate` on a flag reached
+   nothing in Sean's third pass.
+6. **0.5 / 3.4b-check** — the derived checks admit an out-of-pipeline
+   producer (a human reader) as WIRED; `check` is at 267 against a §4d
+   baseline of 254 and every one of the +13 is a named human-witness gap.
+7. Then 2.12c/d/f (dot vs staccato, meter agreement, articulation side) in
+   reach order, and 2.13 (the printed bar number — the viewer shows 48
+   where the plate prints 49).
+Rules that bit today, all in CLAUDE.md, restated once: a GATHER change is
+invisible to `readjudicate`/`rerun` (2.11's clef read never shows in a
+re-run); a stage sequence must be called, not restated (`rerun.py` drifted
+past 2.10 until `pipeline.decide` existed); two lanes numbering a convention
+in parallel collide (C88/C89 — check `conventions.py` first); the count-page
+records are DIRTY-tree gathers and are inputs, not baselines.
 
-**Sean answered the four open questions on 2026-09-23** (in one message,
-after the block above was written); the tree now carries the answers:
-1. **2.3 DECIDED: both duration rules ON** (`6f269360`). Measured OFF→ON on
-   both whole-movement records, balanced, and the funnel inverts between the
-   plates. Breitkopf has no subject checked against its own print yet.
-2. **2.6 opened — `glyph_owner`'s domain** (`64c83c5f`, FINDINGS §10): all
-   161 lack a band-distance row because GATHER's contest test compares smufl
-   NAMES (which encode on-line vs in-space) and IoU 0.5 where the frozen
-   legacy contest used category and 0.3. Process designed; a GATHER change,
-   two re-gathers to price; 87 of 161 would enter, the 38 with no twin must
-   not.
-3. **2.7 opened — the in-bar accidental.** GATHER a position, ADJUDICATE the
-   owner (right-of, same height, may abstain), EVALUATE a bar-scoped override
-   of the key, EXPORT through the legacy renderer already reused. **One
-   question for Sean before code**: how does Litolff print courtesy
-   accidentals, and are they written with `parentheses="yes"` or suppressed?
-4. **1.4 set up** (`fd656c20`): three readable per-system pages and three
-   empty sheets; `counts/HOW-TO-COUNT.md` is what Sean opens first. His count
-   is the next thing only he can do.
+**For Sean in the morning (leave it ready, do not send):** crops from
+3.4g-2 and 2.12b-cal if they landed; his next viewer pass — a staff he has
+not done, on the tree with 3.4g-2 and 3.4h merged; and one deliberate
+resize pass of ~10 boxes on one bar if he wants the box-geometry question
+measured (his eye says boxes are "a bit off"; nothing has measured it).
 
-**Sean looked at the count pages (2026-09-23, later) and the count was
-redirected before a number was written**: *"the amount of fixes is still too
-many to count — we are not even close to getting the noteheads correct"*, *"it
-is allowing for math that doesn't add up at all"*, *"the key signatures don't
-make sense either — they don't match each other on the same page, even the
-engraved Beethoven"*. All three measured and true (2.8, 2.9, and the Viola
-funnel: 24 heads written where the print has 49). The count is NOT taken on
-a page most of whose bars would be re-entered; those three sentences are the
-count result and are in DECISIONS.
-
-**Next actions, in order:**
-1. 2.8 (hold out bars that do not add up) and 2.9 (key by system majority) —
-   both cheap, both decision-level, both with a control that can fail.
-2. Viola, Litolff p3 system 1 — **TRACED** (`d8c1b801`,
-   `benchmarks/omr-notehead-funnel-2026-09/`): the detector boxed **48**
-   heads on that staff and the file holds **0**; 40 refused `no_pitch`
-   because the staff's CLEF abstained (`no_candidates`: no clef-class box —
-   the alto clef is merged into the lines and was boxed as two noteheads),
-   so `restate_pitch` had nothing and every head died at export. At most 2
-   heads were never boxed; 0 went to a neighbour. The same part one system
-   down (alto clef read) writes 24 of 27. **All 40 `no_pitch` refusals on the
-   page are this one staff.** `slot_index` DID decide the staff is Viola. Next
-   item (2.10, needs Sean's one line): a staff whose clef is unread and whose
-   INSTRUMENT is decided takes the instrument's conventional header clef,
-   GAPS ONLY, in INFER, labelled — the fact sheet already speaks a supplied
-   clef gaps-only (§8), and identity-upstream is Sean's 09-05 inversion.
-   Also found: the file's bar numbers run one behind the print from bar 48
-   (the p2 dropped barline `works.json` records), and system 1's Viola
-   writes 24 against the reference's 18.
-3. 2.6 build (in flight, `claude/owner-domain-2.6`).
-4. 2.7 (accidental) — PARKED — largest thing the count found; GATHER change, so plan
-   its two re-gathers together with 2.6's.
-3. 2.6 (`glyph_owner` domain) — build it as designed in FINDINGS §10, reach
-   first on both scans.
-4. A Breitkopf print check of the duration rules (2.3 is decided; this is
-   evidence, not a re-decision): cut crops for a sample of the 287 inferences
-   with `probe/crop_inferred.py` and send Sean the crops.
-5. **1.2b** — the run script's budget still covers GATHER only; it printed
-   "~41.9 min" for a run that took 1 h 11 m. Two data points now exist.
-6. 3.1b, 0.2b, 0.4a/0.4d as before.
-
-**Operational facts from the day:**
-- **`infer.py` imports `inferences` LAZILY** (`_ensure_rules`), so editing that
-  file mid-gather reaches a running process and makes its provenance stamp a
-  lie. Work in a separate worktree until the run is past INFER.
-- **`benchmarks/acceptance/out/` is deliberately NOT gitignored** (the
-  clean-tree guard exempts it by path), so `git add -A` there sweeps in the
-  gather's own 300-500 MB record and the push is rejected. Records live in
-  `library/_shared-records/`; only derived artefacts are committed. Now
-  gitignored by pattern.
-- **A crop that does not name its staff is not evidence.** Sean, on a crop
-  centred in the gap between two staves: *"i dont know which staff the cell is
-  focussing on."* Crops now draw the filed staff's own lines.
-- The gather script refuses to guess a movement's last page, and it is right
-  to: `0-26` for Brahms was a ledger claim until the plate was checked.
+**Parked:** 2.7 the in-bar accidental (`claude/accidental-2.7`, code
+committed unmeasured) — resume after heads and keys are right.
 
 ---
 
