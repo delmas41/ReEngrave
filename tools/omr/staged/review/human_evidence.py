@@ -764,22 +764,37 @@ def _twin_on(record: dict, glyph_key: str, staff_key: str) -> Optional[str]:
     whose `detail.candidate` is that staff means GATHER already found the
     same-category ink there and opened the contest. Anything else is None.
 
-    ⚠️ `own` IS CARRIED, because the commonest `own_box` is a human pulling a
-    glyph BACK to the staff it was cut from — and there the "twin" is the
-    glyph itself. Returning a bare row id would let a reader of the feedback
-    file conclude that a second copy exists somewhere when it does not.
+    Whether that staff is the glyph's OWN is carried too, because the
+    commonest `own_box` is a human pulling a glyph BACK to the staff it was
+    cut from — and there the "twin" IS the glyph itself. A bare row id would
+    let a reader of the feedback file conclude that a second copy exists
+    somewhere when it does not.
+
+    ⚠️⚠️ AND IT IS DERIVED FROM THE SUBJECT, NOT READ OFF THE BAND ROW'S OWN
+    DETAIL — which carries exactly that flag and would have been the obvious
+    read. `wiring --check`'s DETAIL question is a RAW-TEXT SUBSTRING SCAN over
+    everything under `tools/`, so one mention of that key in this file
+    reported a standing pipeline finding as CLOSED and turned the check red
+    (seen: 69 problems, 1 STALE gap entry). A review instrument reading a
+    detail key does not make a STAGE consume it, which is the same argument
+    `recover_cell_grid` records paying for one function along. The glyph's own
+    staff is in its subject; nothing else is needed.
     """
+    try:
+        mine = Subject.from_key(glyph_key).at(Kind.STAFF)
+    except Exception:
+        mine = None
+    is_own = bool(mine is not None and mine.to_key() == staff_key)
     for o in record.get("observations") or ():
         if o.get("subject") != glyph_key:
             continue
         if o.get("quantity") != Q.GLYPH_BAND_DISTANCE:
             continue
-        det = o.get("detail") or {}
-        if str(det.get("candidate") or "") == staff_key:
+        if str((o.get("detail") or {}).get("candidate") or "") == staff_key:
             return {"band_row": o.get("id"),
-                    "is_the_glyphs_own_staff": bool(det.get("own")),
+                    "is_the_glyphs_own_staff": is_own,
                     "means": ("this glyph was CUT from that staff's own cell"
-                              if det.get("own") else
+                              if is_own else
                               "GATHER opened a contest for this ink on that "
                               "staff, so the ink is boxed there too")}
     return None
