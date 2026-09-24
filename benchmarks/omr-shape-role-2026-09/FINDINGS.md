@@ -648,3 +648,373 @@ without a new vocabulary.
 * **The ink figures are FOUR PAGES of each plate**, not a movement — the
   acceptance records are all in roadmap 1.1's summary ink form, which
   aggregates away the per-component geometry (c) is about.
+
+---
+---
+
+# PART 3 — THE TWO RE-GATHER-FREE LINES, BUILT
+
+**2026-09-23** · branch `claude/shape-role-b-e-2.12`, base `de6213e7` ·
+`tools/omr/staged/adjudicators/rhythm.py`,
+`tools/omr/tests/test_staged_rest_slot_and_flag_direction.py`,
+`tools/omr/staged/reach.py`, `docs/engraving-conventions.md` C17.
+
+Both lines are ADJUDICATE-only, as §5 priced them, so `readjudicate_b_e.py` is
+the right instrument and its blindness to GATHER costs nothing here.
+
+### How every number in Part 3 was produced
+
+```bash
+python3 benchmarks/omr-shape-role-2026-09/probe/rest_slot_and_flag_join.py --all
+python3 benchmarks/omr-shape-role-2026-09/readjudicate_b_e.py <record> --label <id> --off --out out/be--<id>--base.json
+python3 benchmarks/omr-shape-role-2026-09/readjudicate_b_e.py <record> --label <id>       --out out/be--<id>--arm.json
+python3 benchmarks/omr-shape-role-2026-09/compare_b_e.py        # the tables below
+python3 benchmarks/omr-shape-role-2026-09/probe/crop_rest_slot.py --all
+```
+
+⚠️⚠️ **BASE AND ARM ARE BOTH REBUILT ON THIS TREE AND THE RECORD IS NOT THE
+BASELINE** (CLAUDE.md §6b). `--off` returns the two new rules to the nothing
+they produced before — `_rest_slot_verdict` returns `None`, `_flag_direction`
+returns `{}` — so the difference between the runs is this lane and nothing
+else. Wall time: Litolff 11 min per arm, Breitkopf 47 and 42 min, engraved 12 s.
+
+**The control, printed before any delta:**
+
+| record | `--off` reproduces the record's own `duration` verdicts | what differs |
+|---|---|---|
+| Litolff (`dbc9962b`, **dirty**) | 14,461 of 14,530 | 69 `narrowed → decided` |
+| Breitkopf (`47fbff1e`, **dirty**) | 32,369 of 32,656 | 287 `narrowed → decided` |
+| engraved (`f48a59ce`, clean) | **688 of 688** | — |
+
+The 69 and 287 are **the tree having moved since those records were gathered**,
+not this lane: every one is a beam-ambiguity narrowing that today decides. The
+engraved record, the only clean-tree one, reproduces exactly — which is what
+says the rebuild itself is sound and the two shortfalls are the inputs.
+
+---
+
+## §2.12b — A REST'S VALUE COMES FROM THE LINE IT HANGS ON
+
+### The change
+
+`_rest_ruling` took a rest's value off its class. C17 says in terms that *the
+vertical slot is the rest's IDENTITY, not decoration — NO shape, size or
+aspect-ratio classifier can ever separate a whole rest from a half rest*, so
+the detector choosing between those two classes reports something it cannot
+know. The slot is now MEASURED with `_staff_step` — **the function
+`adjudicate_notehead_is_a_whole_rest` already uses, CALLED not copied**,
+because the two ask one question from opposite sides.
+
+| the slot says | verdict | EXPORT |
+|---|---|---|
+| `class_not_contradicted` | DECIDED, exactly as before | written |
+| `lands_on_the_other_convention` | **NARROWED** over both values, measured one first | refuses to argmax → `rest_duration_narrowed`, counted |
+| `lands_on_neither_convention` | **ABSTAINED** `rest_stands_where_no_rest_hangs` | `rest_duration_abstained`, counted |
+| nothing measurable | DECIDED as before, `slot: no_page_frame` / `no_staff_geometry` | written |
+
+**It does not FLIP a value.** C17's own *Known exceptions* name two killers for
+the absolute slot on this repertoire — a scanned staff tilts and bows up to a
+whole step, and *in multi-voice writing rests are displaced from their default
+position*, which destroys the absolute-position discriminator outright.
+Deciding from the slot would be a default flipped on agreement with our own
+reading (rule 5) before one crop has been adjudicated. Where the ink lands on
+NEITHER slot there is no fallback to the class either: the class is the guess
+the ink has just contradicted, and 4.0 quarters of silence is a very loud
+answer to *we cannot tell* (rule 8).
+
+⚠️ `class_not_contradicted` is **not** *the slot confirms the class*, and the
+weaker word is the true one: the predicate is asymmetric (a rest must be
+nearer the OTHER slot BY MORE THAN THE SLACK before the class is contradicted
+at all), so ink displaced away from BOTH slots lands there too.
+
+Constants: `HALF_REST_STEP` is **derived** from `WHOLE_REST_STEP` — the whole
+content of the convention is *one line apart*, and two typed constants would
+be free to drift into a gap that is not one line. `REST_SLOT_SLACK = 0.5` is
+the audit probe's own constant, so the population this rule acts on and the
+population §1 reported are the same population. `_REST_SLOT_BY_CLASS` holds
+exactly two classes: every other rest names its value by its SHAPE.
+
+### Per record — what the slot said
+
+| | Litolff | Breitkopf | engraved |
+|---|--:|--:|--:|
+| `restWhole` + `restHalf` on the record | 1,642 | 2,104 | 216 |
+| measurable against the staff | 1,642 | 2,104 | 216 |
+| `class_not_contradicted` | 1,342 | 1,837 | **216** |
+| `lands_on_the_other_convention` | 102 | 32 | **0** |
+| `lands_on_neither_convention` | 198 | 235 | **0** |
+| median step, `class_not_contradicted` (nominal **5.5**) | 5.52 | 5.33 | 5.45 |
+| median step, `lands_on_the_other_convention` (nominal **4.5**) | 4.53 | 4.65 | — |
+
+**The engraved record is the control that can fail, and it does not fire**:
+216 of 216 land in `class_not_contradicted`, and the export is identical in
+every count in both arms. The two medians are the frame control this rule
+needed and did not have — **the convention holds on both plates and on the
+render**, to within 0.2 of a half step.
+
+⚠️ The adjudicator's frame (`_staff_step`: bottom line 0, up positive, whole
+5.5 / half 4.5) and the audit probe's (top line 0, down positive, whole 2.5 /
+half 3.5) are a reflection of each other, and they were checked rather than
+assumed: **they give the same verdict on all 3,962 rows**
+(`frames_disagree: 0` on every record).
+
+### On the record, after EVALUATE and INFER
+
+| | Litolff base → arm | Breitkopf base → arm |
+|---|---|---|
+| `duration` DECIDED | 13,054 → 12,760 | 28,651 → 28,385 |
+| `duration` NARROWED | 1,476 → 1,572 | 3,979 → 4,010 |
+| `duration` ABSTAINED | 0 → 198 | 26 → 261 |
+| reason `rest_slot_contradicts_class` | 0 → **99** | 0 → **31** |
+| reason `rest_stands_where_no_rest_hangs` | 0 → **198** | 0 → **235** |
+
+⚠️ **99 SURVIVING NARROWINGS AGAINST 102 MEASURED, AND THE THREE MISSING ARE
+THE SYSTEM WORKING.** The adjudicator narrowed 102; INFER then collapsed three
+of them to one of *that reader's own candidates* (`+3` on
+`the_neighbours_run_to_the_same_barline`), which is exactly the licence
+`infer.py` has and could not exercise while the verdict was a bare DECIDED
+value. Breitkopf's 31 against 32 is one such collapse. The narrowing is
+therefore not only a refusal — it is what gives a later stage something to
+work on.
+
+⚠️ The 26 Breitkopf ABSTENTIONS in the BASE are **not** this rule: they are the
+pre-existing `unreadable_rest`, `restHBar` / `restHNr` multi-measure
+indicators that name no single value.
+
+### The file
+
+| | Litolff base → arm | Breitkopf base → arm | engraved |
+|---|---|---|---|
+| `<note>` (rests included) | 8,605 → **8,696** | 7,822 → **7,872** | 666 → 666 |
+| `<rest>` | 4,950 → 4,898 | 6,679 → 6,696 | 335 → 335 |
+| `measure="yes"` | 4,385 → 4,309 | 5,514 → 5,497 | 251 → 251 |
+| pitched notes (`<note>` − `<rest>`) | 3,655 → **3,798** | 1,143 → **1,176** | 331 → 331 |
+| `rest_duration_narrowed` | 0 → 99 | 0 → 31 | 0 |
+| `rest_duration_abstained` | 0 → 198 | 26 → 261 | 0 |
+| `bar_does_not_add_up` (events) | 5,416 → **5,046** | 19,022 → **18,791** | 42 → 42 |
+| **bars held out (2.8)** | 1,874 → **1,771** | 4,565 → **4,525** | 36 → 36 |
+| bars moved **INTO** the held set | **0** | **0** | **0** |
+| bars moved **OUT** of the held set | **101** | **40** | 0 |
+| `status_census.unaccounted` | `[]` → `[]` | `[]` → `[]` | `[]` |
+| accounting `balanced` | True → True | True → True | True |
+
+⚠️⚠️ **THE RESULT IS THAT REFUSING 563 REST DURATIONS LET 141 BARS START
+ADDING UP, AND NOT ONE BAR STOPPED.** The direction is asymmetric by
+construction — a rest that no longer claims 4.0 quarters cannot make a bar
+*longer* — but the asymmetry was predicted, not assumed, and the count is
+measured: 0 in, 141 out, on two plates that fail in opposite ways. 176 more
+pitched notes reach the file because their bars now balance.
+
+⚠️ This is **not** an accuracy claim. Nothing says the 141 bars now hold the
+RIGHT notes; it says they hold a sum the meter admits, which is what 2.8's
+hold-out is a proxy for. The count that decides is Sean's.
+
+### ⚠️⚠️ THE FINDING UNDER THE `lands_on_neither` BUCKET: IT IS MOSTLY NOT ABOUT RESTS
+
+§5 said *the `lands_on_neither` bucket is bigger than the repairable one and is
+a different finding — do not let this line grow to cover it.* Cutting the crops
+and looking at them says what that different finding IS.
+
+| | Litolff | Breitkopf | pooled |
+|---|--:|--:|--:|
+| `lands_on_neither_convention` | 198 | 235 | 433 |
+| …standing **BELOW** the staff it is filed on | 82 | **186** | 268 |
+| …standing **ABOVE** it | 4 | 4 | 8 |
+| …**inside** its own staff | 112 | 45 | 157 |
+| median step of the bucket | 1.35 | **−7.31** (p10 −7.60) | — |
+
+**276 of the 433 stand outside the staff they are filed on**, and Breitkopf's
+186 are a tight cluster at step −7.3 — 3.65 spaces *below* the bottom line,
+which is the next staff down. The measure cell is padded 4 staff spaces (6
+where the neighbour is far) and on a conductor's page that reaches the next
+staff's ink (CLAUDE.md §10).
+`out/print/brahms1-breitkopf-p12-s0-st4-c13-g0-lands_on_neither_convention.png`
+shows it plainly: the green `Q.STAFF_LINES` are one staff, the bracketed rest
+is on the staff below, and it is hanging correctly under the fourth line **of
+that staff**.
+
+So that bucket is substantially `glyph_owner`'s contest showing through a
+rest-reading probe, and only the 157 inside-the-staff rows are a rest question
+at all.
+
+⚠️ **IT IS RECORDED AND DECIDES NOTHING.** `detail.outside_its_own_staff` is
+`below` / `above` / `null` on every measured rest, and the abstain reason
+stays ONE word. *Which staff owns this ink* is `glyph_owner`'s contest —
+ladder, then range, then distance, and a resolved contest DROPS the loser —
+and a duration decision inventing an ownership verdict would be a second,
+weaker copy of it wearing a rhythm decision's name. **This is a candidate
+roadmap line, not a thing 2.12b may grow to cover.**
+
+⚠️ And it cuts the other way too: 97 Breitkopf and 13 Litolff rests read
+`class_not_contradicted` while standing wholly ABOVE their own staff. The
+predicate's asymmetry protects them, correctly — but they are the same
+ownership population wearing a bucket name that sounds like agreement, which
+is why that bucket is not called `agrees`.
+
+### The crops for Sean
+
+`benchmarks/omr-shape-role-2026-09/out/print/` — **31 PNGs, 31 JSON sidecars,
+2 manifests**, cut from the plate at the gather's own DPI (600, read off
+`provenance.settings.args.dpi`, never assumed):
+
+* 21 of `lands_on_neither_convention` (9 Litolff, 12 Breitkopf);
+* 10 of `lands_on_the_other_convention` (4 Litolff, 6 Breitkopf).
+
+Each carries GREEN `Q.STAFF_LINES`, a BLUE dashed line at the whole-rest slot
+and an ORANGE dashed line at the half-rest slot **drawn from the adjudicator's
+own `WHOLE_REST_STEP` / `HALF_REST_STEP`** (a crop with a ruler, CLAUDE.md
+§6b), and a RED **corner bracket** on the exact rest — never a margin tick at
+its x. The sample is a stride over the subject-sorted population, not the
+first N, so it spreads across pages and systems.
+
+⚠️ **THE FRAME CONTROL CAN FAIL AND DID**: 5 of Litolff's 18 candidates were
+REFUSED with their contrast recorded (−103.89, −25.61, −23.50, 5.05, 7.77) and
+are listed in the manifest rather than dropped. `_frame_ok` is imported from
+`omr-infer-duration-print-2026-09/probe/crop_inferred.py`, not copied.
+
+⚠️ `VERDICT_none_yet` is `null` on every sidecar and on both manifests.
+**NOTHING IN 2.12b HAS BEEN ADJUDICATED AGAINST THE PRINT**, which is why the
+rule narrows and abstains and flips no value.
+
+### ⚠️ `Q.REST_POSITION` IS STILL UNREAD, AND THE REASON IS A TOOL BLIND SPOT
+
+`reach.py` names `adjudicate_duration` as that quantity's FIRST CONSUMER, and
+this was the day it should have come off the list. Two things stop it:
+
+1. **It files ZERO rows on all three acceptance records** — `positions.py` is
+   behind `OMR_FAMILY_POSITIONS`, which is DEFAULT OFF. A rule resting on it
+   would be inert exactly where it is needed.
+2. **Declaring it in `wants` opens a NEW `inventory --check` finding** —
+   *"duration wants 'rest_position', which no gather site observes and no
+   decision produces"* — because `inventory._producers` walks the AST of
+   `gather.py` **and nothing else**, so every quantity `positions.py` observes
+   is invisible to that tool.
+
+Suppressing (2) with a `KNOWN_GAPS` entry would be gaming: a known entry is a
+reason a gap EXISTS, never a reason one is acceptable. So the slot is measured
+from the box and the staff, which every record carries, and **the blind spot in
+`inventory` is now what that reach entry is about**. What `Q.REST_POSITION`
+would still add is real and unmeasured: it reads which EDGE of the rectangle is
+nearer a line and how decisively (`attach_margin`), which is strictly more of
+the convention than a centre is.
+
+---
+
+## §2.12e — A FLAG'S STEM DIRECTION IS THE STEM'S
+
+### The change
+
+A CONNECT, not a mechanism (CLAUDE.md §2 rule 6). `_flag_direction` reads the
+DECIDED `stem_direction` verdict on the notehead the flag is attached to,
+files it as the flag's direction, records the class suffix beside it as the
+detector's opinion, and marks `detector_role_disagrees` where they differ.
+Where there is no decided direction it names WHICH silence —
+`stem_direction_abstained` (with the abstention's own reason) or
+`no_stem_direction_verdict` — because *no reader ran* and *the reader could
+not say* are the distinction the record exists for.
+
+**A disagreement never drops the flag.** Its SHAPE claim — how many hooks —
+is what `_flag_levels_for` reads and what sets the duration, and it is
+untouched. A note with no flag carries **no** `flag_*` key at all, so *no
+flag* cannot be mistaken for *a flag with no direction*.
+
+### Per record
+
+| | Litolff base → arm | Breitkopf base → arm | engraved base → arm |
+|---|---|---|---|
+| flags attached to a head | 220 → 220 | 2,773 → 2,772 | 4 → 4 |
+| direction from `stem_direction` | 0 → **153** | 0 → **2,528** | 0 → **4** |
+| `stem_direction_abstained` | 0 → 34 | 0 → 50 | 0 → 0 |
+| **class contradicts the stem** | 0 → **22** | 0 → **11** | 0 → **0** |
+| `<note>` | 8,605 → 8,696 | 7,822 → 7,872 | 666 → 666 |
+| `status_census.unaccounted` | `[]` | `[]` | `[]` |
+
+⚠️ **THE `<note>` MOVEMENT IN THIS TABLE IS 2.12b's, NOT 2.12e's.** Both lines
+ran in one arm. 2.12e's own gate is that **zero durations move**, and it is
+met where it can be seen alone: on the engraved record the flag direction
+lands on 4 of 4 flags and the file is identical in every count. The scan
+columns cannot separate the two lines and are not quoted as if they could.
+
+⚠️ `flags attached` 2,773 → 2,772 on Breitkopf. **One flag left the population,
+and it is 2.12b's doing, not a lost flag**: a rest whose duration now abstains
+takes its whole verdict — and its `flags_attached` tally — off the record.
+
+### ⚠️ THE FINDING UNDERNEATH: THE AUDIT'S 2,676 UNJOINABLE FLAGS ARE 205
+
+§5 said *the join, not the disagreement, is the finding*, on the audit's count
+of **2,676** flags unjoinable to a stem (Litolff 163, Breitkopf 2,513). That
+number is an artefact of the probe's own restriction, not of the adjudicator's
+reach.
+
+`f_flag_stem` joins only cells holding **exactly one** flag row and **exactly
+one** DECIDED `stem_direction`, because a probe cannot re-run
+`_attached_flags`. The adjudicator joins a flag to a head through the STEM that
+touches both, so its population is *flags in a cell that holds at least one
+decided direction*:
+
+| | Litolff | Breitkopf | engraved | pooled |
+|---|--:|--:|--:|--:|
+| flags carrying a role half | 253 | 3,040 | 6 | 3,299 |
+| in a cell with a decided `stem_direction` | 213 | 2,877 | 4 | **3,094** |
+| **UNJOINABLE** | 40 | 163 | 2 | **205** |
+| …because every direction in the cell abstained | 34 | 139 | 0 | 173 |
+| …because no `stem_direction` verdict reached the cell | 6 | 24 | 2 | 32 |
+
+**205, not 2,676** — and the adjudicator confirms it from the other side: it
+sourced a direction for **2,685 of the 2,996** flags it found attached to a
+head. The residue is dominated by `stem_direction` ABSTAINING (173 of 205),
+which is `no_stem` and `stems_disagree`, not a join that does not exist.
+
+⚠️ **THE AUDIT'S FIGURE IS NOT WRONG, IT IS A DIFFERENT QUANTITY**, and Part 1
+said so at the time (*"whether it holds over the 2,676 unjoinable ones is
+unknown"*). What is corrected here is the inference §5 drew from it — *2,676
+flags are unjoinable today* — which reads as a reach problem and is not one.
+**Do not open a roadmap line for the flag join on the strength of that
+number.**
+
+### The disagreement rate, and what it is not
+
+33 disagreements over the 2,685 flags whose direction the stem answered —
+**1.2 %** — against the audit's 27 of 90 and 21 of 527 over its narrower join.
+Both are real; they are rates over different populations, and the wider one is
+the one the pipeline actually has. Nothing acts on either: the disagreement is
+on the record where none was, so the next lane can price it.
+
+---
+
+## Part 3's controls, tests and checks
+
+* **RED first, with the split recorded.** Restore `rhythm.py` from `de6213e7`
+  and `pytest tools/omr/tests/test_staged_rest_slot_and_flag_direction.py` is
+  **19 failed, 4 passed**. The 4 that pass are the positive controls — a rest
+  in its own slot still reads 4.0; the slack still protects a bowed plate; a
+  contradicted flag still counts and still reads 0.5 beats (2.12e's whole
+  gate); a note with no flag carries no `flag_*` key.
+* `pytest tools/omr/tests -m "not slow" -q` — **3,039 → 3,062 passed**, 3
+  skipped, 0 failed.
+* `python3 -m tools.omr.staged.check` — **258 → 258**. `inventory --check` 12,
+  `wiring --check` 69, `reach` 25 not LIVE / 0 unaccounted / 0 stale gap
+  entries, `conventions --check` 0 findings.
+* C17 in `docs/engraving-conventions.md` now names this consumer in its **Code**
+  row, and its **Status** says the discriminator is *READ but still DECIDES
+  NOTHING* — ⚠️ being read is not being measured, and the line must not be
+  promoted to MEASURED HERE until Sean has adjudicated the crops.
+
+## What Part 3 did NOT do, and the honest gaps
+
+* **Nothing is print-confirmed.** 31 crops are cut and `VERDICT_none_yet` is
+  null on all of them.
+* **Neither scan record is a baseline** — both are dirty-tree gathers, and the
+  `--off` control reproduces 99.5 % / 99.1 % of their duration verdicts, not
+  100 %. The deltas above are base-vs-arm ON THIS TREE and are sound; the
+  absolute counts are a census of those records, not of the pipeline.
+* **The two lines were measured in ONE arm**, so the scan `<note>` movement
+  cannot be attributed between them. Only the engraved record separates them,
+  and there 2.12b moves nothing and 2.12e moves nothing.
+* **The 157 inside-the-staff `lands_on_neither` rows are unexplained.** The 276
+  outside-the-staff ones have a mechanism; these do not, beyond *ink standing
+  where no rest of either kind hangs*.
+* **`Q.REST_POSITION`'s edge witness is unmeasured.** It is strictly more of the
+  convention than a centre and nothing here tests whether it separates better.
+* **No LilyPond, no OMR-NED, no scan gate.** The staged path exports MusicXML
+  only, and OMR-NED is the engraved control where this lane moves nothing.

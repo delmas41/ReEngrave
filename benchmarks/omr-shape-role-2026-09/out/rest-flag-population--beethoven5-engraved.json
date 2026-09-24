@@ -1,0 +1,63 @@
+{
+ "label": "beethoven5-engraved",
+ "record": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a88af2b375f8427cf/benchmarks/omr-staged-engraved-2026-09/out/engraved-p0p2-20260923.record.json",
+ "provenance": {
+  "commit": "f48a59ce9bc94d16192f35a27aaa7a16d49510eb",
+  "dirty": false
+ },
+ "rest_2_12b": {
+  "counts": {
+   "population": 216,
+   "measurable": 216,
+   "class_not_contradicted": 216,
+   "cross_checked": 216,
+   "other_rest_class": 101
+  },
+  "where_the_ink_stands_by_bucket": {
+   "agrees": {
+    "inside_its_own_staff": 215,
+    "above_its_own_staff": 1
+   }
+  },
+  "step_distribution_by_bucket": {
+   "agrees": {
+    "n": 216,
+    "median_step": 5.45,
+    "p10": 5.44,
+    "p90": 5.461
+   }
+  },
+  "rest_position_rows_on_the_record": 0,
+  "measured_steps_adjudicator_frame": {
+   "restWhole": {
+    "n": 216,
+    "median_step": 5.45,
+    "p10": 5.44,
+    "p90": 5.461
+   }
+  },
+  "convention": {
+   "restWhole": 5.5,
+   "restHalf": 4.5,
+   "slack_half_steps": 0.5,
+   "frame": "bottom line 0, one step per half space, up positive (rhythm._staff_step)"
+  },
+  "frames_disagree_examples": []
+ },
+ "flag_2_12e": {
+  "population_with_a_role_half": 6,
+  "flag_classes_with_no_role_half": 0,
+  "in_a_cell_with_a_decided_stem_direction": 4,
+  "unjoinable": 2,
+  "unjoinable_because_every_stem_direction_in_the_cell_abstained": 0,
+  "unjoinable_because_no_stem_direction_verdict_in_the_cell": 2,
+  "audit_cell_join": {
+   "joined_unambiguous_cells": 4,
+   "agree": 4,
+   "unjoinable_flags": 2,
+   "flag_classes_with_no_role_half": 0,
+   "note": "a flag is filed on its own glyph subject and the stem direction on the notehead's; only cells holding exactly one of each are joined here"
+  },
+  "audit_disagree": 0
+ }
+}

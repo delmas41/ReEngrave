@@ -1,0 +1,46 @@
+{
+ "png": "beethoven5-litolff-p8-s0-st3-c4-g3-lands_on_the_other_convention.png",
+ "caption": "beethoven5-litolff page 8, system 0, staff 3, bar-cell 4 \u2014 the detector called this rectangle `restWhole`. Measured against this staff's own lines its centre stands at step 4.70, where a whole rest hangs at 5.5 (BLUE dashes) and a half rest sits at 4.5 (ORANGE dashes). The rule says lands_on_the_other_convention. GREEN = the five Q.STAFF_LINES; RED corner bracket = the rest itself. QUESTION FOR SEAN: against the print, is this a whole rest, a half rest, or not a rest at all?",
+ "subject": "glyph/8/0/3/4/3",
+ "bucket": "lands_on_the_other_convention",
+ "page": 8,
+ "dpi": 600,
+ "zoom": 4,
+ "frame_control": {
+  "passed": true,
+  "contrast": 52.27
+ },
+ "detector_class": "restWhole",
+ "measured_staff_step": 4.7,
+ "convention": {
+  "restWhole": 5.5,
+  "restHalf": 4.5,
+  "slack_half_steps": 0.5,
+  "frame": "bottom line 0, one step per half space, up positive"
+ },
+ "what_the_rule_does": "NARROW over both values, the measured one first \u2014 EXPORT refuses to argmax it, so the rest is held out and counted",
+ "rest_page_px": [
+  855.42,
+  885.105,
+  876.9975,
+  894.87
+ ],
+ "staff_lines_page_px": [
+  864,
+  880,
+  896,
+  911,
+  927
+ ],
+ "ruler_page_px": {
+  "restWhole": 883.69,
+  "restHalf": 891.56
+ },
+ "crop_page_px": [
+  713.67,
+  722.25,
+  1018.7475,
+  1068.75
+ ],
+ "VERDICT_none_yet": null
+}

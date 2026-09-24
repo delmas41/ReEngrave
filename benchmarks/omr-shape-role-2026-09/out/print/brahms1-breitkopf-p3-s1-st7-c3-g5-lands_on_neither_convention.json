@@ -1,0 +1,46 @@
+{
+ "png": "brahms1-breitkopf-p3-s1-st7-c3-g5-lands_on_neither_convention.png",
+ "caption": "brahms1-breitkopf page 3, system 1, staff 7, bar-cell 3 \u2014 the detector called this rectangle `restWhole`. Measured against this staff's own lines its centre stands at step -7.60, where a whole rest hangs at 5.5 (BLUE dashes) and a half rest sits at 4.5 (ORANGE dashes). The rule says lands_on_neither_convention. GREEN = the five Q.STAFF_LINES; RED corner bracket = the rest itself. QUESTION FOR SEAN: against the print, is this a whole rest, a half rest, or not a rest at all?",
+ "subject": "glyph/3/1/7/3/5",
+ "bucket": "lands_on_neither_convention",
+ "page": 3,
+ "dpi": 600,
+ "zoom": 4,
+ "frame_control": {
+  "passed": true,
+  "contrast": 229.95
+ },
+ "detector_class": "restWhole",
+ "measured_staff_step": -7.6,
+ "convention": {
+  "restWhole": 5.5,
+  "restHalf": 4.5,
+  "slack_half_steps": 0.5,
+  "frame": "bottom line 0, one step per half space, up positive"
+ },
+ "what_the_rule_does": "ABSTAIN `rest_stands_where_no_rest_hangs` \u2014 the rest is held out of the file and counted",
+ "rest_page_px": [
+  2761.16,
+  5801.64,
+  2800.36,
+  5811.16
+ ],
+ "staff_lines_page_px": [
+  5588,
+  5616,
+  5643,
+  5671,
+  5700
+ ],
+ "ruler_page_px": {
+  "restWhole": 5623.0,
+  "restHalf": 5637.0
+ },
+ "crop_page_px": [
+  2509.16,
+  5336.0,
+  3052.36,
+  6063.16
+ ],
+ "VERDICT_none_yet": null
+}
