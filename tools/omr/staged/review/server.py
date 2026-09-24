@@ -1504,7 +1504,9 @@ def main(argv: Optional[List[str]] = None) -> int:
                          "review-actions--<staff>.json)")
     ap.add_argument("--staff", default=None,
                     help="open this staff directly, e.g. staff/3/0/9")
-    ap.add_argument("--host", default="127.0.0.1")
+    ap.add_argument("--host", default="localhost",
+                    help="`localhost` (default) listens dual-stack on ::1 AND "
+                         "127.0.0.1; any other value binds literally")
     ap.add_argument("--port", type=int, default=5060)
     ap.add_argument("--zoom", type=int, default=2)
     ap.add_argument("--break-control", action="store_true",
@@ -1543,6 +1545,23 @@ def main(argv: Optional[List[str]] = None) -> int:
     url = f"http://{args.host}:{args.port}"
     print(f"[review] listening on {url}")
     print(f"[review] open {url}/?staff={args.staff or D.funnels()[0]['staff']}")
+    if args.host == "localhost":
+        # ⚠️ DUAL-STACK ON PURPOSE. The first time Sean opened this page
+        # (2026-09-23) it said "site can't be reached": the server listened
+        # on 127.0.0.1 only and his browser resolved `localhost` to ::1
+        # first. Binding `::` alone inverts the failure (IPv4 refused). One
+        # socket with IPV6_V6ONLY off answers both, which is what the word
+        # `localhost` means to a browser; a literal host still binds as
+        # given.
+        import socket
+        sock = socket.socket(socket.AF_INET6, socket.SOCK_STREAM)
+        sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+        sock.setsockopt(socket.IPPROTO_IPV6, socket.IPV6_V6ONLY, 0)
+        sock.bind(("::", args.port))
+        sock.listen(128)
+        config = uvicorn.Config(app, port=args.port)
+        uvicorn.Server(config).run(sockets=[sock])
+        return 0
     uvicorn.run(app, host=args.host, port=args.port)
     return 0
 
