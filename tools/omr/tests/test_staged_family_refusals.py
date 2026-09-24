@@ -250,12 +250,51 @@ class TestAHumanNothingReachesEveryFamily(unittest.TestCase):
         self.assertEqual(v.reason, "human_not_a_symbol")
         self.assertEqual(v.detail["human_says"], "is_a:barline")
 
-    def test_a_named_owner_is_NOT_a_family_refusal(self):
-        """⚠️ THE TWO ANSWERS ARE KEPT APART. A human who NAMES a staff is
-        telling `glyph_owner` where the ink belongs, and that contest may
-        still award it here; only the nameless answer means *not here*."""
-        v = self._one(Q.ACCIDENTAL_IS_NOT_AN_ACCIDENTAL, "accidentalFlat",
-                      None, "owner:staff/0/0/3")
+    def _named_owner(self, value, *, contested):
+        """One accidental box, a named owner, and a band row or not.
+
+        ⚠️ THE BAND ROW IS THE WHOLE VARIABLE. `adjudicate_glyph_owner`'s
+        domain is `subjects_from=Q.GLYPH_BAND_DISTANCE`, so a glyph carrying
+        one is a glyph that contest WILL decide and a glyph carrying none is
+        one it never sees.
+        """
+        log = Log()
+        _staff_geometry(log)
+        g = _box(log, 0, "accidentalFlat", page_box=_page_box_at_step(-2.0))
+        if contested:
+            log.observe(g, Q.GLYPH_BAND_DISTANCE, 3.0,
+                        reader=READERS.GEOMETRY, frame="page",
+                        candidate="staff/0/0/1", own=False)
+        _human(log, g, value)
+        _run(log, Q.ACCIDENTAL_IS_NOT_AN_ACCIDENTAL)
+        return log.verdict(Q.ACCIDENTAL_IS_NOT_AN_ACCIDENTAL, g)
+
+    def test_a_named_owner_refuses_where_the_contest_cannot_hear_it(self):
+        """⚠️⚠️ SEAN'S TWO ACCIDENTALS. He marked them *belongs to Violin II*
+        and they reached NOTHING, because `glyph_owner`'s domain is the
+        contested notehead population and an accidental is never in it. An
+        uncontested glyph with a named owner has no contest to be awarded by,
+        so the only thing his reading can mean here is *not this staff*."""
+        v = self._named_owner("owner:staff/0/0/1", contested=False)
+        self.assertIs(v.value, True)
+        self.assertEqual(v.reason, "human_other_staff")
+        self.assertEqual(v.detail["human_says"], "owner:staff/0/0/1")
+
+    def test_a_named_owner_on_a_CONTESTED_glyph_is_left_to_the_contest(self):
+        """THE POSITIVE CONTROL for the rule above, and the reason it is
+        narrow: where `glyph_owner` CAN hear him it decides, and answering
+        the same question here would file two answers to one question and
+        rename the export bucket from `owned_by_another_staff` — which says
+        WHICH staff — to one that does not."""
+        v = self._named_owner("owner:staff/0/0/1", contested=True)
+        self.assertIs(v.value, False)
+        self.assertEqual(v.reason, "accidental")
+
+    def test_a_named_owner_that_is_THIS_staff_is_not_a_refusal(self):
+        """⚠️ `human_evidence._twin_on` records that the commonest `own_box`
+        is a human pulling a glyph BACK to the staff it was cut from, which
+        is the opposite claim and must never read as *not here*."""
+        v = self._named_owner(f"owner:{STAFF.to_key()}", contested=False)
         self.assertIs(v.value, False)
         self.assertEqual(v.reason, "accidental")
 

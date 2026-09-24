@@ -348,7 +348,8 @@ HUMAN_OTHER_STAFF = "human_other_staff"
 HUMAN_REFUSAL_REASONS = (HUMAN_NOT_A_SYMBOL, HUMAN_OTHER_STAFF)
 
 
-def _human_not_a_symbol(ev: Evidence, detail: Dict[str, Any]
+def _human_not_a_symbol(ev: Evidence, detail: Dict[str, Any], *,
+                        contested: Optional[bool] = None
                         ) -> Optional[Tuple[Any, str]]:
     """A human looked at this box and said the ink is not that kind of symbol.
 
@@ -426,12 +427,38 @@ def _human_not_a_symbol(ev: Evidence, detail: Dict[str, Any]
     from ..review.human_evidence import (NOTEHEAD_PREFIX as _HEAD,
                                          OWNER_OTHER as _OTHER,
                                          human_says as _says)
+    mine = ev.subject.at(Kind.STAFF)
+    mine = mine.to_key() if mine is not None else None
+    # ⚠️⚠️ ROADMAP 3.4g. A NAMED OWNER IS A REFUSAL **ONLY WHERE THE
+    # OWNERSHIP CONTEST CANNOT HEAR IT**, and the test is the record's own.
+    # `adjudicate_glyph_owner`'s domain is `subjects_from=
+    # Q.GLYPH_BAND_DISTANCE`, the CONTESTED population — so a glyph carrying
+    # a band row is one that decision WILL decide, and reading the same row
+    # here as well would file two answers to one question and rename its
+    # export bucket from `owned_by_another_staff` (which says WHICH staff) to
+    # a reason that does not. A glyph carrying NO band row is one `glyph_owner`
+    # never sees at all: on Sean's Viola pass both of the boxes he marked
+    # *belongs to Violin II* were ACCIDENTALS, and an accidental is never in
+    # that contest, so his reading reached nothing. Here it reaches a refusal.
+    # ⚠️ AND NEVER WHERE HE NAMED **THIS** STAFF: `human_evidence._twin_on`
+    # records that the commonest `own_box` is a human pulling a glyph BACK to
+    # the staff it was cut from, which is the opposite claim.
+    # ⚠️ `contested` IS THE CALLER'S READ, PASSED IN, NOT TAKEN HERE. Each
+    # consumer module has to read `Q.GLYPH_BAND_DISTANCE` at its own site or
+    # `inventory --check` reports the declaration as inert — it follows helper
+    # calls only inside the decision's OWN module — and a declared input the
+    # tool cannot see is how a `wants` entry comes to mean nothing. Default
+    # `None` reads the rows here, for a caller that has not looked.
+    band = (bool(ev.rows(Q.GLYPH_BAND_DISTANCE)) if contested is None
+            else bool(contested))
     rows = []
     for r in ev.rows(Q.HUMAN_BOX_VERDICT):
         verb, arg = _says(getattr(r, "value", None))
         if verb == "not_a_symbol" or verb == "duplicate_of":
             rows.append((r, verb, arg, HUMAN_NOT_A_SYMBOL))
         elif verb == "owner" and arg == _OTHER:
+            rows.append((r, verb, arg, HUMAN_OTHER_STAFF))
+        elif verb == "owner" and arg and arg != mine and not band:
             rows.append((r, verb, arg, HUMAN_OTHER_STAFF))
         elif verb == "is_a" and not str(arg or "").startswith(_HEAD):
             rows.append((r, verb, arg, HUMAN_NOT_A_SYMBOL))
@@ -457,11 +484,13 @@ def _human_not_a_symbol(ev: Evidence, detail: Dict[str, Any]
     quantity=Q.NOTEHEAD_IS_NOT_A_NOTEHEAD,
     composed_from=(Q.GLYPH_BOX, Q.CELL_BOX, Q.CELL_STAFF_SPACE,
                   Q.NOTEHEAD_STAFF_POSITION, Q.GLYPH_CONF, Q.CLEF_LOCATED,
-                  Q.HUMAN_BOX_VERDICT, Q.LEDGER_IS_NOT_A_LEDGER),
+                  Q.HUMAN_BOX_VERDICT, Q.LEDGER_IS_NOT_A_LEDGER,
+                  Q.GLYPH_BAND_DISTANCE),
     scope=Kind.GLYPH,
     wants=(Q.GLYPH_BOX, Q.CELL_BOX, Q.CELL_STAFF_SPACE,
           Q.NOTEHEAD_STAFF_POSITION, Q.GLYPH_CONF, Q.CLEF_LOCATED,
-          Q.HUMAN_BOX_VERDICT, Q.LEDGER_IS_NOT_A_LEDGER),
+          Q.HUMAN_BOX_VERDICT, Q.LEDGER_IS_NOT_A_LEDGER,
+          Q.GLYPH_BAND_DISTANCE),
     subjects_from=Q.NOTEHEAD_CLASS,
     reasons=HUMAN_REFUSAL_REASONS + ("is_a_clef", "clipped_fragment",
                                      "too_narrow", "notehead",

@@ -221,7 +221,14 @@ def _human_refusal(ev: Evidence, detail: Dict[str, Any]
     """
     if not ev.rows(Q.HUMAN_BOX_VERDICT):
         return None
-    return _human_says_no(ev, detail)
+    # ⚠️ READ HERE AND PASSED IN, for the same reason the line above is here:
+    # `inventory._never_read` follows helper calls only inside the decision's
+    # own module, so a `wants` entry this module never touches reads as inert.
+    # And it is the load-bearing fact, not a formality — it is what keeps a
+    # NAMED owner going to `adjudicate_glyph_owner` wherever that contest can
+    # hear it, and turns it into a refusal only where it cannot.
+    contested = bool(ev.rows(Q.GLYPH_BAND_DISTANCE))
+    return _human_says_no(ev, detail, contested=contested)
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -356,10 +363,11 @@ def _refused_by_a_human(ev: Evidence, detail: Dict[str, Any]
 @decision(
     quantity=Q.LEDGER_IS_NOT_A_LEDGER,
     composed_from=(Q.GLYPH_BOX, Q.STAFF_LINES, Q.STAFF_SPACING,
-                   Q.CELL_STAFF_SPACE, Q.HUMAN_BOX_VERDICT),
+                   Q.CELL_STAFF_SPACE, Q.HUMAN_BOX_VERDICT,
+                   Q.GLYPH_BAND_DISTANCE),
     scope=Kind.GLYPH,
     wants=(Q.GLYPH_BOX, Q.STAFF_LINES, Q.STAFF_SPACING, Q.CELL_STAFF_SPACE,
-           Q.HUMAN_BOX_VERDICT),
+           Q.HUMAN_BOX_VERDICT, Q.GLYPH_BAND_DISTANCE),
     subjects_from=Q.GLYPH_BOX,
     subjects_classed=("ledgerLine",),
     reasons=HUMAN_REFUSAL_REASONS + ("on_a_staff_line", "tall_not_a_rung",
@@ -456,9 +464,11 @@ def adjudicate_ledger_is_not_a_ledger(ev: Evidence) -> Ruling:
 
 @decision(
     quantity=Q.ACCIDENTAL_IS_NOT_AN_ACCIDENTAL,
-    composed_from=(Q.GLYPH_BOX, Q.HUMAN_BOX_VERDICT),
+    composed_from=(Q.GLYPH_BOX, Q.HUMAN_BOX_VERDICT,
+                   Q.GLYPH_BAND_DISTANCE),
     scope=Kind.GLYPH,
-    wants=(Q.GLYPH_BOX, Q.HUMAN_BOX_VERDICT),
+    wants=(Q.GLYPH_BOX, Q.HUMAN_BOX_VERDICT,
+           Q.GLYPH_BAND_DISTANCE),
     subjects_from=Q.GLYPH_BOX,
     subjects_classed=("accidental",),
     reasons=_human_only_reasons(Q.ACCIDENTAL_IS_NOT_AN_ACCIDENTAL),
@@ -482,9 +492,11 @@ def adjudicate_accidental_is_not_an_accidental(ev: Evidence) -> Ruling:
 
 @decision(
     quantity=Q.REST_IS_NOT_A_REST,
-    composed_from=(Q.GLYPH_BOX, Q.REST, Q.HUMAN_BOX_VERDICT),
+    composed_from=(Q.GLYPH_BOX, Q.REST, Q.HUMAN_BOX_VERDICT,
+                   Q.GLYPH_BAND_DISTANCE),
     scope=Kind.GLYPH,
-    wants=(Q.GLYPH_BOX, Q.REST, Q.HUMAN_BOX_VERDICT),
+    wants=(Q.GLYPH_BOX, Q.REST, Q.HUMAN_BOX_VERDICT,
+           Q.GLYPH_BAND_DISTANCE),
     subjects_from=Q.REST,
     reasons=_human_only_reasons(Q.REST_IS_NOT_A_REST),
     mode=Mode.ADDITIVE,
@@ -507,9 +519,11 @@ def adjudicate_rest_is_not_a_rest(ev: Evidence) -> Ruling:
 
 @decision(
     quantity=Q.ARPEGGIATO_IS_NOT_AN_ARPEGGIATO,
-    composed_from=(Q.GLYPH_BOX, Q.HUMAN_BOX_VERDICT),
+    composed_from=(Q.GLYPH_BOX, Q.HUMAN_BOX_VERDICT,
+                   Q.GLYPH_BAND_DISTANCE),
     scope=Kind.GLYPH,
-    wants=(Q.GLYPH_BOX, Q.HUMAN_BOX_VERDICT),
+    wants=(Q.GLYPH_BOX, Q.HUMAN_BOX_VERDICT,
+           Q.GLYPH_BAND_DISTANCE),
     subjects_from=Q.GLYPH_BOX,
     subjects_classed=("arpeggiato",),
     reasons=_human_only_reasons(Q.ARPEGGIATO_IS_NOT_AN_ARPEGGIATO),
@@ -531,9 +545,11 @@ def adjudicate_arpeggiato_is_not_an_arpeggiato(ev: Evidence) -> Ruling:
 
 @decision(
     quantity=Q.ARC_IS_NOT_AN_ARC,
-    composed_from=(Q.GLYPH_BOX, Q.ARC_BOX, Q.HUMAN_BOX_VERDICT),
+    composed_from=(Q.GLYPH_BOX, Q.ARC_BOX, Q.HUMAN_BOX_VERDICT,
+                   Q.GLYPH_BAND_DISTANCE),
     scope=Kind.GLYPH,
-    wants=(Q.GLYPH_BOX, Q.ARC_BOX, Q.HUMAN_BOX_VERDICT),
+    wants=(Q.GLYPH_BOX, Q.ARC_BOX, Q.HUMAN_BOX_VERDICT,
+           Q.GLYPH_BAND_DISTANCE),
     subjects_from=Q.ARC_BOX,
     reasons=_human_only_reasons(Q.ARC_IS_NOT_AN_ARC),
     mode=Mode.ADDITIVE,
@@ -555,9 +571,11 @@ def adjudicate_arc_is_not_an_arc(ev: Evidence) -> Ruling:
 
 @decision(
     quantity=Q.DYNAMIC_IS_NOT_A_DYNAMIC,
-    composed_from=(Q.GLYPH_BOX, Q.DYNAMIC_LETTER, Q.HUMAN_BOX_VERDICT),
+    composed_from=(Q.GLYPH_BOX, Q.DYNAMIC_LETTER, Q.HUMAN_BOX_VERDICT,
+                   Q.GLYPH_BAND_DISTANCE),
     scope=Kind.GLYPH,
-    wants=(Q.GLYPH_BOX, Q.DYNAMIC_LETTER, Q.HUMAN_BOX_VERDICT),
+    wants=(Q.GLYPH_BOX, Q.DYNAMIC_LETTER, Q.HUMAN_BOX_VERDICT,
+           Q.GLYPH_BAND_DISTANCE),
     subjects_from=Q.DYNAMIC_LETTER,
     reasons=_human_only_reasons(Q.DYNAMIC_IS_NOT_A_DYNAMIC),
     mode=Mode.ADDITIVE,
@@ -579,9 +597,11 @@ def adjudicate_dynamic_is_not_a_dynamic(ev: Evidence) -> Ruling:
 
 @decision(
     quantity=Q.ARTICULATION_IS_NOT_AN_ARTICULATION,
-    composed_from=(Q.GLYPH_BOX, Q.ARTICULATION_MARK, Q.HUMAN_BOX_VERDICT),
+    composed_from=(Q.GLYPH_BOX, Q.ARTICULATION_MARK, Q.HUMAN_BOX_VERDICT,
+                   Q.GLYPH_BAND_DISTANCE),
     scope=Kind.GLYPH,
-    wants=(Q.GLYPH_BOX, Q.ARTICULATION_MARK, Q.HUMAN_BOX_VERDICT),
+    wants=(Q.GLYPH_BOX, Q.ARTICULATION_MARK, Q.HUMAN_BOX_VERDICT,
+           Q.GLYPH_BAND_DISTANCE),
     subjects_from=Q.ARTICULATION_MARK,
     reasons=_human_only_reasons(Q.ARTICULATION_IS_NOT_AN_ARTICULATION),
     mode=Mode.ADDITIVE,
