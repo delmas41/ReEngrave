@@ -215,6 +215,48 @@ def _xml_keys(path):
     return out
 
 
+def check_carry(rows, xml_path) -> int:
+    """⚠️ THE CONTROL FOR THIS SCRIPT'S OWN CARRY, AND IT CAN FAIL.
+
+    Everything above reimplements what `export.py` does with a None key, so
+    it is measuring this script until it has been shown to agree with the
+    file. Per part, the sequence of DISTINCT `<key>` values the file states
+    must equal the sequence the record-derived carry produces.
+
+    ⚠️ ONE PART IS EXPECTED TO DIFFER ON A CONDENSED SCORE and the reason is
+    named rather than tolerated: `collapse_slot_index_to_family_block` files
+    `condensed_with_slot`, and `export._condensed_double` places the Cello
+    slot's runs on the Contrabass part as well — so that part's `<key>`
+    sequence is TWO slots interleaved and no per-slot walk can produce it.
+    Any OTHER mismatch is this script being wrong.
+    """
+    by_slot = collections.defaultdict(list)
+    for r in rows:
+        if r["value"] is None or r["slot"] is None:
+            continue
+        if not by_slot[r["slot"]] or by_slot[r["slot"]][-1] != r["value"]:
+            by_slot[r["slot"]].append(r["value"])
+    mine = [by_slot[k] for k in sorted(by_slot)]
+    root = ET.parse(xml_path).getroot()
+    theirs = []
+    for part in root.iter("part"):
+        s = []
+        for m in part.findall("measure"):
+            for a in m.findall("attributes"):
+                f = a.findtext("key/fifths")
+                if f is not None and (not s or s[-1] != int(f)):
+                    s.append(int(f))
+        theirs.append(s)
+    same = sum(1 for a, b in zip(mine, theirs) if a == b)
+    print(f"   CARRY CONTROL: {same} of {len(mine)} parts reproduce the "
+          f"file's own `<key>` sequence exactly")
+    for i, (a, b) in enumerate(zip(mine, theirs)):
+        if a != b:
+            print(f"      part {i} DIFFERS: record {len(a)} states, "
+                  f"file {len(b)} — condensed doubling?")
+    return same
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("tag")
@@ -257,6 +299,7 @@ def main() -> int:
                             for s in seqs)
             print(f"   file: {text.count('<note>')} <note>, "
                   f"{text.count('<key>')} <key>, {n_changes} key CHANGES")
+            check_carry(rows, xml)
         cov = HERE / "out" / f"{a.tag}-{arm}.coverage.json"
         if cov.exists():
             c = json.loads(cov.read_text()).get("status_census") or {}
