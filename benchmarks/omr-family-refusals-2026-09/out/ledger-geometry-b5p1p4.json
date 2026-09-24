@@ -1,0 +1,35 @@
+[
+ {
+  "record": "beethoven5-p1-p4.record.json",
+  "n_ledger_boxes": 0,
+  "no_page_frame": 0,
+  "n_with_step": 0,
+  "n_outside_the_staff_band": 0,
+  "n_inside_the_staff_band": 0,
+  "on_a_staff_line_within_0p25_spaces": 0,
+  "taller_than_wide": 0,
+  "rung_offset_spaces": {
+   "p5": null,
+   "p25": null,
+   "p50": null,
+   "p75": null,
+   "p90": null,
+   "p95": null,
+   "p99": null,
+   "max": null
+  },
+  "height_spaces": {
+   "p5": null,
+   "p50": null,
+   "p95": null,
+   "n": 0
+  },
+  "aspect_h_over_w": {
+   "p5": null,
+   "p50": null,
+   "p95": null,
+   "n": 0
+  },
+  "offset_hist_spaces": {}
+ }
+]

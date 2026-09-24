@@ -1,0 +1,133 @@
+{
+ "record": "beethoven5-litolff-mvt1-whole-20260923.record.json",
+ "ledger_boxes_on_the_record": 7617,
+ "ledger_verdicts_arm": 7617,
+ "ledger_verdicts_base": 7617,
+ "arm": {
+  "refused:on_a_staff_line": 4708,
+  "kept": 2887,
+  "refused:tall_not_a_rung": 22
+ },
+ "base": {
+  "kept": 7617
+ },
+ "glyph_owner_verdicts": {
+  "base": 6013,
+  "arm": 6013
+ },
+ "glyph_owner_moved": 0,
+ "glyph_owner_moved_named": [],
+ "unladdered_signal_base": {
+  "ledger_found_hist": {
+   "0": 1343,
+   "1": 385,
+   "2": 92,
+   "3": 52,
+   "4": 3,
+   "None": 580
+  },
+  "would_fire": 1343,
+  "signals": 2455
+ },
+ "unladdered_signal_arm": {
+  "ledger_found_hist": {
+   "0": 1349,
+   "1": 381,
+   "2": 90,
+   "3": 52,
+   "4": 3,
+   "None": 580
+  },
+  "would_fire": 1349,
+  "signals": 2455
+ },
+ "notes_base": 8696,
+ "notes_arm": 8696,
+ "notes_not_written_base": {
+  "ink_is_a_whole_rest": 105,
+  "not_a_notehead:too_narrow": 291,
+  "not_a_notehead:clipped_fragment": 344,
+  "duration_narrowed": 1319,
+  "rest_duration_narrowed": 99,
+  "owned_by_another_staff": 934,
+  "rest_duration_abstained": 198,
+  "no_pitch": 807,
+  "staff_not_identified": 312,
+  "bar_does_not_add_up": 5046
+ },
+ "notes_not_written_arm": {
+  "ink_is_a_whole_rest": 105,
+  "not_a_notehead:too_narrow": 291,
+  "not_a_notehead:clipped_fragment": 344,
+  "duration_narrowed": 1319,
+  "rest_duration_narrowed": 99,
+  "owned_by_another_staff": 934,
+  "rest_duration_abstained": 198,
+  "no_pitch": 807,
+  "staff_not_identified": 312,
+  "bar_does_not_add_up": 5046
+ },
+ "family_refusals_arm": {
+  "ledger_is_not_a_ledger": {
+   "refused": {
+    "on_a_staff_line": 4708,
+    "tall_not_a_rung": 22
+   },
+   "refused_total": 4730,
+   "kept": 2887,
+   "abstained": 0,
+   "verdicts": 7617,
+   "balanced": true
+  },
+  "accidental_is_not_an_accidental": {
+   "refused": {},
+   "refused_total": 0,
+   "kept": 1531,
+   "abstained": 0,
+   "verdicts": 1531,
+   "balanced": true
+  },
+  "rest_is_not_a_rest": {
+   "refused": {},
+   "refused_total": 0,
+   "kept": 2898,
+   "abstained": 0,
+   "verdicts": 2898,
+   "balanced": true
+  },
+  "arpeggiato_is_not_an_arpeggiato": {
+   "refused": {},
+   "refused_total": 0,
+   "kept": 1971,
+   "abstained": 0,
+   "verdicts": 1971,
+   "balanced": true
+  },
+  "arc_is_not_an_arc": {
+   "refused": {},
+   "refused_total": 0,
+   "kept": 2656,
+   "abstained": 0,
+   "verdicts": 2656,
+   "balanced": true
+  },
+  "dynamic_is_not_a_dynamic": {
+   "refused": {},
+   "refused_total": 0,
+   "kept": 1576,
+   "abstained": 0,
+   "verdicts": 1576,
+   "balanced": true
+  },
+  "articulation_is_not_an_articulation": {
+   "refused": {},
+   "refused_total": 0,
+   "kept": 464,
+   "abstained": 0,
+   "verdicts": 464,
+   "balanced": true
+  }
+ },
+ "status_census_arm_unaccounted": [],
+ "status_census_arm_balanced": true
+}

@@ -1,0 +1,311 @@
+[
+ {
+  "record": "beethoven5-p1-p4.record.json",
+  "n_ledger_boxes": 1878,
+  "no_page_frame": 0,
+  "n_inside_the_staff_band": 1370,
+  "n_inside_and_on_a_line_within_0p25": 1059,
+  "n_outside_the_staff_band": 508,
+  "n_derivation_population_clear_of_the_edge": 188,
+  "rung_offset_spaces_over_the_clear_population": {
+   "p5": 0.075,
+   "p25": 0.25,
+   "p50": 0.33,
+   "p75": 0.385,
+   "p90": 0.45,
+   "p95": 0.47,
+   "p99": 0.4883,
+   "max": 0.495
+  },
+  "height_spaces": {
+   "p5": 0.2,
+   "p50": 0.28,
+   "p95": 0.37,
+   "p99": 0.41,
+   "max": 0.68,
+   "n": 1878
+  },
+  "aspect_h_over_w": {
+   "p5": 0.0411,
+   "p50": 0.0918,
+   "p95": 0.1939,
+   "max": 0.4,
+   "n": 1878
+  },
+  "taller_than_wide": 0,
+  "height_over_half_a_space": 7,
+  "offset_hist_spaces_clear_population": {
+   "0.00": 1,
+   "0.05": 8,
+   "0.10": 10,
+   "0.15": 9,
+   "0.20": 8,
+   "0.25": 23,
+   "0.30": 33,
+   "0.35": 36,
+   "0.40": 34,
+   "0.45": 20,
+   "0.50": 6
+  },
+  "sweep_by_tolerance_spaces": {
+   "0.10": {
+    "on_a_staff_line": 363,
+    "not_at_a_rung_step": 1418,
+    "kept": 97,
+    "refused_with_a_head_over_them": 1395,
+    "kept_with_a_head_over_them": 85
+   },
+   "0.15": {
+    "on_a_staff_line": 705,
+    "not_at_a_rung_step": 981,
+    "kept": 192,
+    "refused_with_a_head_over_them": 1309,
+    "kept_with_a_head_over_them": 171
+   },
+   "0.20": {
+    "on_a_staff_line": 880,
+    "not_at_a_rung_step": 763,
+    "kept": 235,
+    "refused_with_a_head_over_them": 1267,
+    "kept_with_a_head_over_them": 213
+   },
+   "0.25": {
+    "on_a_staff_line": 1059,
+    "not_at_a_rung_step": 522,
+    "kept": 297,
+    "refused_with_a_head_over_them": 1210,
+    "kept_with_a_head_over_them": 270
+   },
+   "0.30": {
+    "on_a_staff_line": 1168,
+    "not_at_a_rung_step": 367,
+    "kept": 343,
+    "refused_with_a_head_over_them": 1166,
+    "kept_with_a_head_over_them": 314
+   },
+   "0.40": {
+    "on_a_staff_line": 1286,
+    "not_at_a_rung_step": 145,
+    "kept": 447,
+    "refused_with_a_head_over_them": 1065,
+    "kept_with_a_head_over_them": 415
+   }
+  },
+  "line_gap_spaces_inside_the_band": {
+   "n_inside": 1370,
+   "p50": 0.145,
+   "p75": 0.245,
+   "p90": 0.355,
+   "p95": 0.42,
+   "p99": 0.485,
+   "max": 0.5
+  },
+  "rows_cached_at": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a91acf1bfe7c6c80d/benchmarks/omr-family-refusals-2026-09/out/ledger-rows-beethoven5-p1-p4.json"
+ },
+ {
+  "record": "beethoven5-litolff-mvt1-whole-20260923.record.json",
+  "n_ledger_boxes": 7617,
+  "no_page_frame": 0,
+  "n_inside_the_staff_band": 5122,
+  "n_inside_and_on_a_line_within_0p25": 4011,
+  "n_outside_the_staff_band": 2495,
+  "n_derivation_population_clear_of_the_edge": 955,
+  "rung_offset_spaces_over_the_clear_population": {
+   "p5": 0.0733,
+   "p25": 0.1883,
+   "p50": 0.285,
+   "p75": 0.38,
+   "p90": 0.455,
+   "p95": 0.47,
+   "p99": 0.495,
+   "max": 0.5
+  },
+  "height_spaces": {
+   "p5": 0.2,
+   "p50": 0.28,
+   "p95": 0.37,
+   "p99": 0.41,
+   "max": 1.04,
+   "n": 7617
+  },
+  "aspect_h_over_w": {
+   "p5": 0.044,
+   "p50": 0.0917,
+   "p95": 0.1983,
+   "max": 0.7838,
+   "n": 7617
+  },
+  "taller_than_wide": 0,
+  "height_over_half_a_space": 22,
+  "offset_hist_spaces_clear_population": {
+   "0.00": 8,
+   "0.05": 42,
+   "0.10": 81,
+   "0.15": 84,
+   "0.20": 90,
+   "0.25": 141,
+   "0.30": 143,
+   "0.35": 112,
+   "0.40": 118,
+   "0.45": 99,
+   "0.50": 37
+  },
+  "sweep_by_tolerance_spaces": {
+   "0.10": {
+    "on_a_staff_line": 1544,
+    "not_at_a_rung_step": 5548,
+    "kept": 525,
+    "refused_with_a_head_over_them": 5927,
+    "kept_with_a_head_over_them": 495
+   },
+   "0.15": {
+    "on_a_staff_line": 2810,
+    "not_at_a_rung_step": 3768,
+    "kept": 1039,
+    "refused_with_a_head_over_them": 5451,
+    "kept_with_a_head_over_them": 971
+   },
+   "0.20": {
+    "on_a_staff_line": 3430,
+    "not_at_a_rung_step": 2829,
+    "kept": 1358,
+    "refused_with_a_head_over_them": 5149,
+    "kept_with_a_head_over_them": 1273
+   },
+   "0.25": {
+    "on_a_staff_line": 4011,
+    "not_at_a_rung_step": 1945,
+    "kept": 1661,
+    "refused_with_a_head_over_them": 4861,
+    "kept_with_a_head_over_them": 1561
+   },
+   "0.30": {
+    "on_a_staff_line": 4410,
+    "not_at_a_rung_step": 1312,
+    "kept": 1895,
+    "refused_with_a_head_over_them": 4635,
+    "kept_with_a_head_over_them": 1787
+   },
+   "0.40": {
+    "on_a_staff_line": 4801,
+    "not_at_a_rung_step": 593,
+    "kept": 2223,
+    "refused_with_a_head_over_them": 4315,
+    "kept_with_a_head_over_them": 2107
+   }
+  },
+  "line_gap_spaces_inside_the_band": {
+   "n_inside": 5122,
+   "p50": 0.135,
+   "p75": 0.235,
+   "p90": 0.345,
+   "p95": 0.425,
+   "p99": 0.4867,
+   "max": 0.5
+  },
+  "rows_cached_at": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a91acf1bfe7c6c80d/benchmarks/omr-family-refusals-2026-09/out/ledger-rows-beethoven5-litolff-mvt1-whole-20260923.json"
+ },
+ {
+  "record": "brahms1-breitkopf-mvt1-whole-20260923.record.json",
+  "n_ledger_boxes": 7818,
+  "no_page_frame": 0,
+  "n_inside_the_staff_band": 1222,
+  "n_inside_and_on_a_line_within_0p25": 1125,
+  "n_outside_the_staff_band": 6596,
+  "n_derivation_population_clear_of_the_edge": 3611,
+  "rung_offset_spaces_over_the_clear_population": {
+   "p5": 0.015,
+   "p25": 0.07,
+   "p50": 0.135,
+   "p75": 0.2574,
+   "p90": 0.402,
+   "p95": 0.455,
+   "p99": 0.49,
+   "max": 0.5
+  },
+  "height_spaces": {
+   "p5": 0.2,
+   "p50": 0.29,
+   "p95": 0.38,
+   "p99": 0.42,
+   "max": 0.627,
+   "n": 7818
+  },
+  "aspect_h_over_w": {
+   "p5": 0.075,
+   "p50": 0.1364,
+   "p95": 0.1949,
+   "max": 0.5714,
+   "n": 7818
+  },
+  "taller_than_wide": 0,
+  "height_over_half_a_space": 8,
+  "offset_hist_spaces_clear_population": {
+   "0.00": 269,
+   "0.05": 693,
+   "0.10": 744,
+   "0.15": 497,
+   "0.20": 347,
+   "0.25": 255,
+   "0.30": 189,
+   "0.35": 158,
+   "0.40": 179,
+   "0.45": 179,
+   "0.50": 101
+  },
+  "sweep_by_tolerance_spaces": {
+   "0.10": {
+    "on_a_staff_line": 509,
+    "not_at_a_rung_step": 4266,
+    "kept": 3043,
+    "refused_with_a_head_over_them": 4687,
+    "kept_with_a_head_over_them": 3034
+   },
+   "0.15": {
+    "on_a_staff_line": 864,
+    "not_at_a_rung_step": 2647,
+    "kept": 4307,
+    "refused_with_a_head_over_them": 3427,
+    "kept_with_a_head_over_them": 4294
+   },
+   "0.20": {
+    "on_a_staff_line": 1022,
+    "not_at_a_rung_step": 1712,
+    "kept": 5084,
+    "refused_with_a_head_over_them": 2650,
+    "kept_with_a_head_over_them": 5071
+   },
+   "0.25": {
+    "on_a_staff_line": 1125,
+    "not_at_a_rung_step": 1161,
+    "kept": 5532,
+    "refused_with_a_head_over_them": 2202,
+    "kept_with_a_head_over_them": 5519
+   },
+   "0.30": {
+    "on_a_staff_line": 1179,
+    "not_at_a_rung_step": 808,
+    "kept": 5831,
+    "refused_with_a_head_over_them": 1903,
+    "kept_with_a_head_over_them": 5818
+   },
+   "0.40": {
+    "on_a_staff_line": 1211,
+    "not_at_a_rung_step": 404,
+    "kept": 6203,
+    "refused_with_a_head_over_them": 1538,
+    "kept_with_a_head_over_them": 6183
+   }
+  },
+  "line_gap_spaces_inside_the_band": {
+   "n_inside": 1222,
+   "p50": 0.11,
+   "p75": 0.1621,
+   "p90": 0.2381,
+   "p95": 0.278,
+   "p99": 0.39,
+   "max": 0.4931
+  },
+  "rows_cached_at": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a91acf1bfe7c6c80d/benchmarks/omr-family-refusals-2026-09/out/ledger-rows-brahms1-breitkopf-mvt1-whole-20260923.json"
+ }
+]
