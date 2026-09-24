@@ -568,3 +568,265 @@ disagreeing reader on the record so the Litolff loss is diagnosable rather
 than invisible. The named next step for that loss is not this decision: it is
 the detector on a merging plate, and `[C25 + L38]`'s per-PART cross-system
 rule, which would fix the first-system dependence on every document at once.
+
+---
+---
+
+# §2.9b — The key the DOCUMENT reads, and the key each PART reads
+
+2026-09-23 · `claude/part-key-majority-2.9b` · branched from `7dead94b`
+
+**One sentence.** A staff's key no longer stands on its own header alone: a
+staff whose DECIDED key disagrees with its document's own majority of decided
+concert keys — or, where nothing on the page named its transposition, with its
+own part's majority of written keys — is ABSTAINED by a check that can fail,
+and INFER fills the abstention with that majority, labelled; and the
+detector's class name has stopped being the filter that decided which ink was
+allowed to be a key accidental at all.
+
+---
+
+## 2.9b.0 What Sean adjudicated, and why the answer is the DOCUMENT
+
+§10 put four system-header crops in front of him. His answer, 2026-09-23,
+covers all four:
+
+> *"all 4 of those crops are pieces with 3 flats and the staffs that have
+> fewer flats are transposing clefs."*
+
+Both works are in C minor. So on both count pages **every non-transposing
+staff prints three flats**, a B-flat clarinet prints **one**, and horn,
+trumpet and timpani print **none** (`[C81]`). Scored against that, the 2.9
+reader is wrong on **20 of 46 staves** — and the SHAPE of the wrongness is
+what decided the design: the wrong values are scattered (`+2`, `−4`, `+1`,
+`−2`) while the RIGHT answer is the same on 26 of 46. One answer repeated and
+noise everywhere else is what a majority is for.
+
+The population that holds it is not the SYSTEM (8 against 8 on the engraved
+page — §0) and not only the PART (on a merging plate a part can be
+under-counted on its own first systems, which is exactly §6a's regression).
+It is the DOCUMENT.
+
+---
+
+## 2.9b.1 The rule, in the order it runs
+
+`Q.PART_KEY` (`Kind.DOCUMENT`, in `ORDER` after `Q.SYSTEM_KEY` and before
+`Q.KEY_SIGNATURE`) publishes, per stretch of systems:
+
+* **the DOCUMENT tier** — the majority of the decided CONCERT keys of every
+  staff of every system in the stretch;
+* **the PART tier** — for each part, the majority of the decided WRITTEN keys
+  its own systems read.
+
+It decides no staff, exactly as `adjudicate_system_key` decides none. Then:
+
+1. `adjudicate_key_signature` reads the staff's own header as before, applies
+   2.9's SYSTEM check unchanged, and then asks `header.expected_fifths` what
+   the document (or, failing that, the part) says this staff should print. A
+   disagreement ABSTAINS — `disagrees_with_document` or `disagrees_with_part`
+   — with the reading it set aside on the verdict (`written_fifths`,
+   `read_by`, and the marker/fit detail).
+2. `inferences.fill_part_key` fills that abstention, and every other key gap
+   on a placed part, with **the same value from the same function**, stamped
+   `infer:fill_part_key` and `inferred: True`, with the other staves' own key
+   verdicts as witnesses.
+3. `evaluate.run_over` carries the filled key into `respell_accidental`
+   (2.10 built that second pass; this is its second consumer).
+
+### Why the repair is an ABSTENTION and not an overwrite
+
+`infer.INFERABLE` is `{NARROWED, ABSTAINED}` and CLAUDE.md §4a is explicit:
+INFER *"never overturns a DECIDED one"*. A staff that read its key wrongly HAS
+decided one. So the repair cannot live in INFER while the reading stands — it
+has to be a CHECK in ADJUDICATE, reading rows rather than verdicts, able to
+FAIL, and recording the dissent. That is the shape 2.9 gave
+`disagrees_with_system`, and it is why rule 3 survives intact: the record
+still separates *nobody could read this* from *this was read and the document
+contradicts it*.
+
+**Which staves went DECIDED → ABSTAINED → INFERRED, and why that is not a
+guess.** On Litolff the check abstains **148 `disagrees_with_document`** and
+**38 `disagrees_with_part`**, and INFER fills all 186 (§2.9b.4). The witnesses
+are **the same document's own header ink on other systems** — each a separate
+crop, a separate detector cell, a separate raster of a separate plate
+impression. The count rides on each verdict as `n_witnesses` and
+`n_independent_witnesses`, computed by `infer.independent_groups` from the
+provenance closures rather than claimed.
+
+⚠️ **And the honest limit is on the verdict too.** Because `Q.PART_KEY` rests
+on every staff's rows, its id is in every filled verdict's basis, so the
+closure partition collapses the witnesses to ONE group. That is a true
+statement about the provenance graph — once a staff's key comes from the
+document tally, the filled staves DO share that one signal — and it is hazard
+(b) made visible rather than argued away. What the partition cannot see is
+CLAUDE.md §10's other correlation: a plate that merges its flats merges them
+on every system. What makes the DOCUMENT tier survivable where the SYSTEM tier
+was not is population — it tallies every readable staff of every system of the
+movement (152 on Litolff), so a correlated misreading has to hold across
+sixteen pages and not merely across one header.
+
+### Why no transposition INSIDE a part, and why the DELTA at a change
+
+A part is one instrument with one transposition, so normalising its own
+systems to concert pitch is the identity map — and paying for it would mean
+requiring a margin label on every continuation system, which the Litolff plate
+prints on none. Transposition returns at the two places it bites:
+
+* **the document tier**, which speaks in concert pitch and re-transposes for
+  the staff it judges — and which needs the part's transposition carried along
+  the part, read once off a label (only where every resolvable label on that
+  slot agrees) and valid on every staff of it. **Measured: that carry takes
+  Litolff from 74 staff-systems normalisable to 152**, and the count page is
+  in the second number and not the first.
+* **a key CHANGE**, where `[C24]` says the BAR is shared and the VALUE is not.
+  So `admitted_changes` corroborates on the SHIFT, which needs no label at
+  all.
+
+---
+
+## 2.9b.2 When a key change is admitted, and the number behind it
+
+`[C24]`'s own **Numbers** field is `MIN_WITNESSES = 2`, and the LEGACY path
+enforces it (`key_signature_corroboration.MIN_WITNESSES`, default ON since
+2026-09-07, 7 of 7 spurious flips stopped); the staged METER mirror asserts
+equality with it (`rhythm.METER_CHANGE_MIN_STAVES`).
+`header.CHANGE_MIN_WITNESSES` is the **third site** and asserts the same
+equality on every run of the decision, so the three cannot drift.
+
+Two guards `[C24]` does not supply:
+
+* **a SHARE** (`CHANGE_MIN_SHARE = 0.5`). `[C24]` says a change is printed *on
+  EVERY staff of it*; two parts out of twenty-four is not that sentence.
+* **PERSISTENCE on both sides** (`CHANGE_MIN_RUN = 2`), and this one is
+  measured.
+
+### The sweep, and it is what chose the number
+
+    python3 benchmarks/omr-key-majority-2026-09/part_sim.py \
+        benchmarks/omr-key-majority-2026-09/out/2.9b-litolff-base.json --sweep
+
+Beethoven 5 mvt 1 prints **no key change at all**. On the Litolff whole
+movement (12 parts, 9 of which may witness a change, 213 decided readings):
+
+| witnesses ≥ | share ≥ | run ≥ | changes admitted |
+|---|---|---|---|
+| 2 | 0.0 | 1 | **14** |
+| 2 | 0.0 | 2 | **0** |
+| 2 | 0.5 | 1 | **5** |
+| 2 | 0.5 | **2** | **0** ← shipped |
+| 3 | 0.0 | 1 | **4** |
+| 3 | 0.5 | 1 | **1** |
+| 3 | 0.5 | 2 | **0** |
+
+**It is the persistence guard, not the witness count, that a merging plate
+needs.** At `run ≥ 1` every witness/share setting admits changes the plate
+does not print; at `run ≥ 2` every one of them admits zero.
+
+⚠️ **And one fixture found the persistence rule's first version wrong before
+any document did.** `test_a_value_that_does_not_HOLD_is_not_a_change` runs the
+sequence `-3 -3 -2 -3 -3` — the Litolff Flute part's actual opening. Counting
+persistence FORWARD only, the rule refused the change INTO the misreading (the
+`-2` stands alone) and then ADMITTED the change out of it, because `-3` holds
+for two systems afterwards: a transient under-count became a key change at the
+system where the reader RECOVERED. Persistence is now required on both sides.
+
+---
+
+## 2.9b.3 GATHER — the detector's class was the filter, and it is two claims
+
+Sean, 2026-09-23, on a crop: one header's three flats were boxed as one
+`accidentalFlat` and two `keyFlat`. `gather._KEYSIG_CLASSES` admitted only the
+key-class boxes into `Q.KEYSIG_MARKER`, so a printed flat was dropped at
+GATHER, before any reader saw it — and no derived check can see a GATHER
+change (CLAUDE.md §4d). His principle, now the rule:
+
+> the detector's class is TWO claims — the SHAPE (flat/sharp/natural), which
+> it is good at, and the ROLE (key member vs in-bar accidental), which is
+> geometry. GATHER files the shape and the position; the role-half is recorded
+> as its opinion, one witness, never the filter.
+
+What ships:
+
+* an accidental-SHAPED box joins `Q.KEYSIG_MARKER`, **filed under the KEY
+  class of the same shape**, so `_marker_run` — which abstains
+  `mixed_marker_kinds` on two KINDS — sees one kind and a pre-change record
+  reads identically;
+* bounded by `_keysig_header_limit()` = **14.5 cell staff spaces**, DERIVED
+  rather than typed: `clef_anchor_max_start_spaces` (5.50, swept over 42
+  ground-truth staves), `max_start_after_clef_spaces` (2.00), seven slots a
+  space apart (`[C21]`). It bounds ONLY the new class, so no row any shipped
+  record holds can be removed;
+* no measured `Q.CELL_STAFF_SPACE` → no window → the shipped behaviour
+  exactly. Guessing the scale is how three flats become five;
+* double sharps and flats stay out (`[C21]`: one accidental per slot);
+* `detector_class` and `detector_role` ride on every row, and `_marker_run`
+  CONSUMES the role into `keysig_marker_roles` on the verdict — so how much of
+  a run rests on un-filtered boxes is readable from the answer. `wiring
+  --check` is what forced that from decoration into a consumed witness.
+
+### ⚠️ The first draft admitted any shape and cost 84 runs on Breitkopf
+
+`_gather_keysig_markers` reads `R.cell(p, s, i, 0)` — the whole first MEASURE
+— so a natural or a sharp printed inside bar 1 is in this population.
+Admitting it turned clean flat runs into `mixed_marker_kinds`:
+
+| | runs read | lost to `mixed_marker_kinds` |
+|---|---|---|
+| Breitkopf, admit any shape | 457 → **407** | **84**, 35 of them already reading −3 |
+| Breitkopf, shipped (shape must match the key-class boxes') | 457 → **491** | **0** |
+
+`[C21]` is the fix: a standard signature carries ONE kind, and the detector's
+own key-class boxes say which kind this header is. Where there is no key-class
+box at all — **53 header cells on Litolff, 81 on Breitkopf** — nothing says
+which kind, so all are admitted and `_marker_run` abstains if they disagree.
+
+### Priced two ways, because `readjudicate` is blind to GATHER
+
+**(a) Recomputed from the records' own boxes.** `marker_regather.py` reads
+`Q.GLYPH_BOX` — which carries `(smufl_name, x_canonical, …)` for every
+detection — and runs the SHIPPED `_gather_keysig_markers` and `_marker_run`
+over them.
+
+    python3 benchmarks/omr-key-majority-2026-09/marker_regather.py <record>
+
+| | header cells with an accidental-shaped box | classes | runs read | value moved |
+|---|---|---|---|---|
+| Litolff | 246 | `keyFlat` 437, `accidentalFlat` 174, `accidentalNatural` 35, `accidentalSharp` 21, `keySharp` 11 | **183 → 220** | `−1→−2` 11, `−2→−3` 8, `−1→−3` 6 — **every move toward more flats**, 0 lost |
+| Breitkopf | 556 | `keyFlat` 1150, `accidentalFlat` 660, `accidentalNatural` 213, `accidentalSharp` 204, `keySharp` 62 | **457 → 491** | `−2→−3` 30, `−1→−3` 25, `−1→−2` 14, against `−3→−4` 1 and `−3→−5` 1 |
+
+37 and 34 runs are newly read; their values are `−1` 17/18, `−2` 12/4, `−3`
+6/11, `+1` 2/1.
+
+**(b) Two REAL gathers of one page.** CLAUDE.md §6b: *a GATHER change needs
+two full re-gathers*. Litolff pdf page 3 (the count page), base and arm, same
+command, `--pages 3 --no-surya --no-ocr` — so neither record carries a margin
+label or a slot and **this pair measures the MARKER READING ALONE**, with the
+document and part tiers structurally unable to fire.
+
+    OMR_DIRECTION_TEXT_SCAN_GATE=1 python3 -m tools.omr.staged <pdf> --pages 3 \
+        --no-surya --no-ocr --weights omr-weights/…hollow-graft-shift09….pt
+
+| system 0 staff | base | arm | truth (score order) |
+|---|---|---|---|
+| 0 | `−1` | **`−2`** | −3 — closer, still wrong |
+| 1 | `−1` | **`−3`** ✓ | −3 |
+| 2 | `−1` ✓ | `−1` ✓ | −1 (clarinet) |
+| 3 | `−1` | **abstained `mixed_marker_kinds`** | −3 — wrong → honest |
+| 4, 5, 6 | abstained | abstained | 0 (print none) |
+| 7 | `−3` ✓ | `−3` ✓ | −3 |
+| 8 | `+1` | **`−2`** | −3 — closer, still wrong |
+| 9 | `−2` | **`−3`** ✓ | −3 |
+| 10 | `−3` ✓ | `−3` ✓ | −3 |
+
+**3 right / 5 wrong → 5 right / 2 wrong / 1 abstained**, 0 broken. System 1 is
+IDENTICAL between the two arms — a control that this is not a blanket rewrite.
+⚠️ The staff names here are score order, not read identity: this pair has no
+OCR, so nothing on it names a staff, which is exactly why it measures only the
+marker half.
+
+⚠️⚠️ **THE WHOLE-DOCUMENT TABLES BELOW DO NOT INCLUDE THE GATHER CHANGE.**
+They are `readjudicate` arms over the SHIPPED records, which hold the
+pre-change marker rows; pricing both halves together needs a 12.8-hour
+re-gather of Litolff and a 1.2-hour one of Brahms. The two are measured apart
+and the numbers do not add.

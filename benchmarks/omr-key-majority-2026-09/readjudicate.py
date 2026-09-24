@@ -104,6 +104,19 @@ def main() -> int:
     adjudicate.run(log)
     evaluated = evaluate.run(log)
     infer.run(log, evaluated)
+    # ⚠️⚠️ THE SECOND EVALUATE PASS, AND THIS HARNESS WAS MISSING IT — WHICH
+    # `staged/pipeline.py` HAS RUN SINCE ROADMAP 2.10. Measured 2026-09-23 on
+    # the Litolff arm before this line existed: **186 staves with an inferred
+    # key and ZERO key-derived `Q.ACCIDENTAL` verdicts beneath any of them**,
+    # while the 142 read keys carried 1,099. An inference that changes nothing
+    # downstream is inert in exactly the way that looks like a clean result,
+    # and the arm was reporting the file it would produce WRONG — fewer
+    # `<alter>`s than the base, from a rule that decides more keys.
+    #
+    # ⚠️ It is the one line that makes this harness's exported MusicXML the
+    # same file the pipeline would write. `run_over` is bounded to the
+    # consequences of what INFER wrote, so it is not a second full pass.
+    evaluate.run_over(log, infer.inferred_verdicts(log))
 
     if a.control:
         bad = 0
