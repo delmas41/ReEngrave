@@ -830,6 +830,29 @@ class Q(_Vocab):
     #: signature at all (`key_consensus.NO_SIGNATURE_CONVENTION`), whose zero
     #: would otherwise stand as a disagreement with the whole page.
     SYSTEM_KEY = "system_key"
+    #: The key each PART holds, over the runs of systems it holds it for.
+    #:
+    #: ⚠️ THE PART, NOT THE SYSTEM, AND THE TWO ANSWER DIFFERENT QUESTIONS.
+    #: `Q.SYSTEM_KEY` asks whether one system's staves agree with EACH OTHER
+    #: and can only see one header's worth of ink; this asks whether ONE
+    #: PART's own systems agree with each other, which is the redundancy
+    #: `[C25 + L38]` names -- *a part has many independent readings of one
+    #: fact, which a cross-system vote can reconcile*. Measured 2026-09-23:
+    #: the system check leaves the Litolff file opening 6 of 12 parts right
+    #: because a part took its key from its FIRST system and that system
+    #: under-counts on a merging plate.
+    #:
+    #: ⚠️ ITS VALUES ARE **WRITTEN** FIFTHS AND NEED NO TRANSPOSITION, because
+    #: a part is ONE instrument with ONE transposition: normalising to concert
+    #: pitch inside a part is a no-op that would cost every staff whose margin
+    #: label is not printed on its system. Transposition returns at the only
+    #: place it bites -- a key CHANGE, where `[C24]` says the BAR is shared and
+    #: the VALUE is not, so the corroboration is on the DELTA.
+    #:
+    #: ⚠️ IT DECIDES NO STAFF. Like `Q.SYSTEM_KEY` it publishes what the
+    #: record holds; `adjudicate_key_signature` abstains a staff that
+    #: disagrees with it and INFER fills the abstention, labelled.
+    PART_KEY = "part_key"
     METER = "meter"
     DURATION = "duration"                    # ⚠️ a VERDICT, not a measurement
     #: Which glyphs of a bar sound TOGETHER — one event, N noteheads.
@@ -1363,6 +1386,7 @@ CLAIMS: "dict[str, str]" = {
     "CLEF": CLAIM.INTERPRETATION,
     "KEY_SIGNATURE": CLAIM.INTERPRETATION,
     "SYSTEM_KEY": CLAIM.INTERPRETATION,
+    "PART_KEY": CLAIM.INTERPRETATION,
     "METER": CLAIM.INTERPRETATION,
     "DURATION": CLAIM.INTERPRETATION,
     "EVENT": CLAIM.INTERPRETATION,

@@ -26,8 +26,8 @@ from dataclasses import dataclass
 from typing import Any, Dict, List, Optional, Sequence, Tuple
 
 from .adjudicators.rhythm import ONSET_COLUMN_TOLERANCE_SPACES, _page_x_of
-from .infer import (CLEF_GAP_SWITCH, FAMILY_BLOCK_SWITCH, Inference, Proposal,
-                    independent_groups, rule)
+from .infer import (CLEF_GAP_SWITCH, FAMILY_BLOCK_SWITCH, Inference,
+                    PART_KEY_SWITCH, Proposal, independent_groups, rule)
 from . import record as R
 from .record import Kind, Log, Outcome, Q, Scope, Subject, Verdict
 
@@ -1281,3 +1281,244 @@ def fill_clef_gap(log: Log, document: Subject) -> List[Proposal]:
             for g in clef_gap_census(log)
             if g.outcome in ("clef_from_other_systems",
                              "clef_from_instrument_convention")]
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Rule 5 — the key the document reads, on a staff whose own reading is a gap
+# ─────────────────────────────────────────────────────────────────────────────
+
+#: The prior outcomes this rule will speak into.
+#:
+#: ⚠️ ABSTAINED ONLY, and `NARROWED` is absent because `adjudicate_key_
+#: signature` never narrows: a key is read or it is not. The constant is
+#: written out anyway, beside `_CLEF_GAP_PRIOR`, so that a future narrowing
+#: reader has to come here and decide rather than inherit an answer.
+_PART_KEY_PRIOR = Outcome.ABSTAINED
+
+
+@dataclass(frozen=True)
+class _KeyGap:
+    """What this rule concluded about ONE staff, proposed or not.
+
+    ⚠️ A RECORD OF THE DECLINES TOO, for `clef_gap_census`' reason: a rule
+    that returns only its proposals cannot answer *"and what about the rest"*,
+    and the benchmark then grows its own copy of the population, which is how
+    one reported 542 where the exporter refused 738.
+    """
+
+    staff: Subject
+    #: `key_from_document_majority` | `key_from_other_systems` | a decline word
+    outcome: str
+    value: Optional[int] = None
+    detail: Optional[Dict[str, Any]] = None
+    basis: Tuple[str, ...] = ()
+    witnesses: Tuple[str, ...] = ()
+
+
+def _staff_offset(log: Log, staff: Subject) -> Optional[int]:
+    """This staff's `fifths_offset`, but only where a LABEL stated it.
+
+    ⚠️⚠️ THE TRANSPOSITION MUST BE **READ**, NEVER DEFAULTED, and the test is
+    `key_consensus.resolve_label`'s third value, imported rather than
+    restated: comparing the matched offset against the instrument's default
+    cannot tell *named B-flat* from *defaulted to B-flat*, the default
+    clarinet being the B-flat one. `adjudicators/header._transposition` runs
+    the identical test off `Evidence`; this is the `Log` side of the same
+    question and both call `resolve_label`, so the two cannot diverge on
+    which staves may be spoken for.
+    """
+    from ..key_consensus import (MAY_DIFFER_NOT_A_WITNESS,
+                                 NO_SIGNATURE_CONVENTION, resolve_label)
+    rows = log.rows(Q.MARGIN_LABEL, staff)
+    if not rows:
+        return None
+    name, offset, known = resolve_label(str(rows[-1].value))
+    if name is None or offset is None or not known:
+        return None
+    if name in NO_SIGNATURE_CONVENTION or name in MAY_DIFFER_NOT_A_WITNESS:
+        return None
+    return int(offset)
+
+
+def _key_witnesses(log: Log, want: int, *, slot: Optional[int],
+                   concert: bool) -> Tuple[str, ...]:
+    """The DECIDED key verdicts that read `want`, as verdict ids.
+
+    ⚠️⚠️ THE WITNESSES ARE THE OTHER STAVES' OWN VERDICTS, not a number this
+    rule computed. Hazard (b) is live here and the partition is what answers
+    it: `independent_groups` will merge any two of these that rest on a
+    shared row, so `n_independent_witnesses` can come back far below
+    `n_witnesses` and a reader can see it. ⚠️ And it rules out only the
+    correlation the RECORD can see: a plate that merges its flats merges them
+    on every system, and two staves of one bad plate share no row while
+    failing together. That is CLAUDE.md §10's unquantified correlation and
+    this rule cannot repair it — it is named on the verdict rather than
+    argued away.
+    """
+    out = []
+    for staff in log.subjects(Kind.STAFF):
+        key = log.verdict(Q.KEY_SIGNATURE, staff)
+        if key is None or key.outcome is not Outcome.DECIDED \
+                or not isinstance(key.value, int):
+            continue
+        if concert:
+            offset = _staff_offset(log, staff)
+            if offset is None or int(key.value) - offset != want:
+                continue
+        else:
+            sv = log.verdict(Q.SLOT_INDEX, staff)
+            if sv is None or sv.outcome is not Outcome.DECIDED \
+                    or sv.value != slot or int(key.value) != want:
+                continue
+        out.append(key.id)
+    return tuple(out)
+
+
+def part_key_census(log: Log) -> List[_KeyGap]:
+    """Every staff whose key ABSTAINED, and what this rule makes of it.
+
+    ⚠️ THE RULE'S WHOLE BODY LIVES HERE and the rule below only turns fills
+    into `Proposal`s — `clef_gap_census`' discipline, so the probe and the
+    rule cannot disagree about the population, the tally or the tier.
+
+    ⚠️⚠️ AND THE VALUE IS `header.expected_fifths`', NOT A SECOND COPY OF THE
+    TIER ORDER. `adjudicate_key_signature` abstained this staff because its
+    reading disagreed with what that function returned; computing the fill a
+    second way here would let the check abstain on one value and the
+    inference write another — a contradiction with nothing in the file to
+    show for it. One function, two stages.
+    """
+    from .adjudicators.header import effective_offset, expected_fifths
+
+    part_key = log.verdict(Q.PART_KEY, R.DOCUMENT)
+    out: List[_KeyGap] = []
+    for staff in log.subjects(Kind.STAFF):
+        key = log.verdict(Q.KEY_SIGNATURE, staff)
+        if key is None:
+            continue
+        if key.outcome is not _PART_KEY_PRIOR:
+            out.append(_KeyGap(staff, f"declined_prior_is_{key.outcome.value}"))
+            continue
+        if part_key is None or part_key.outcome is not Outcome.DECIDED:
+            out.append(_KeyGap(staff, "declined_no_document_key"))
+            continue
+        slot_v = log.verdict(Q.SLOT_INDEX, staff)
+        slot = (int(slot_v.value)
+                if slot_v is not None and slot_v.outcome is Outcome.DECIDED
+                and isinstance(slot_v.value, int) else None)
+        # ⚠️ THE EFFECTIVE OFFSET, NOT THIS STAFF'S OWN LABEL. The check used
+        # the part's where the staff printed none, and an inference computing
+        # it differently would fill a staff with a value the check never
+        # abstained it for.
+        offset = effective_offset(part_key.value, slot,
+                                  _staff_offset(log, staff))
+        sys_key = (staff.page or 0, staff.system or 0)
+        want, tier = expected_fifths(part_key.value, slot, offset, sys_key)
+        if want is None:
+            out.append(_KeyGap(staff, "declined_" + tier,
+                               None, {"slot": slot, "offset": offset}))
+            continue
+        basis = [part_key.id]
+        if slot_v is not None:
+            basis.append(slot_v.id)
+        if tier == "document_majority":
+            witnesses = _key_witnesses(log, want - int(offset), slot=None,
+                                       concert=True)
+            outcome = "key_from_document_majority"
+        else:
+            witnesses = _key_witnesses(log, want, slot=slot, concert=False)
+            outcome = "key_from_other_systems"
+        out.append(_KeyGap(
+            staff, outcome, int(want),
+            {"slot": slot, "fifths_offset": offset, "tier": tier,
+             "abstained_because": key.reason,
+             # ⚠️ WHAT THE STAFF ITSELF READ, carried onto the inference so a
+             # reader sees the dissent beside the value that replaced it
+             # without walking back to the superseded row.
+             "staff_read": (key.detail or {}).get("written_fifths"),
+             "document_segments": (part_key.value or {}).get("document"),
+             "part_from_an_inference": bool(
+                 slot_v is not None
+                 and str(getattr(slot_v, "decider", "") or "").startswith(
+                     "infer:"))},
+            basis=tuple(basis) + witnesses, witnesses=witnesses))
+    return out
+
+
+@rule(
+    inference=Inference.FILL_PART_KEY,
+    # ⚠️ ITS OWN FLAG, DEFAULT ON. See `infer.PART_KEY_ENV`.
+    switch=PART_KEY_SWITCH,
+    target=Q.KEY_SIGNATURE,
+    # ⚠️ `Q.KEY_SIGNATURE` IS IN `reads` AND THAT IS THE POINT, exactly as
+    # `Q.CLEF` is for the clef-gap rule: the witnesses are OTHER staves' key
+    # verdicts, which is the sideways read EVALUATE structurally cannot make.
+    # Not a loop — `Log.record`'s `UphillConsequence` guard refuses a verdict
+    # that reaches its own prior, and no staff is ever its own witness (a
+    # witness must be DECIDED and this rule only speaks where it is not).
+    reads=(Q.KEY_SIGNATURE, Q.PART_KEY, Q.SLOT_INDEX, Q.MARGIN_LABEL),
+    scope=Kind.DOCUMENT,
+    sideways=True,
+    bound=(
+        "It speaks ONLY where `adjudicate_key_signature` ABSTAINED. A DECIDED "
+        "key is never touched. The value is `header.expected_fifths`' and no "
+        "other: (2) the DOCUMENT-WIDE majority of the concert keys the record "
+        "DECIDED over this stretch of systems, re-transposed by THIS staff's "
+        "own READ `fifths_offset` — unavailable to a staff whose margin label "
+        "never stated one — or (3) the majority of the WRITTEN keys the same "
+        "PART's other systems decided. A tie abstains at both tiers and the "
+        "stretch boundaries are `Q.PART_KEY`'s, so a corroborated key CHANGE "
+        "is never flattened. It proposes one key per staff, invents no value, "
+        "moves no glyph and writes no accidental: the re-spellings are "
+        "`respell_accidental`'s, reached by `evaluate.run_over` over this "
+        "verdict alone."),
+    why_witnesses_are_independent=(
+        "The witnesses are OTHER STAVES' `Q.KEY_SIGNATURE` verdicts, each "
+        "resting on its own system's header ink and its own detector cell — "
+        "so `independent_groups` normally returns one group per staff and the "
+        "count rides on the verdict as `n_independent_witnesses`. ⚠️⚠️ AND "
+        "HAZARD (b) BITES HERE IN A FORM THE PARTITION CANNOT SEE, so it is "
+        "stated rather than computed away: a plate that MERGES its flats "
+        "merges them on every system, and two staves of one bad plate share "
+        "no row while failing together (CLAUDE.md §10, measured on Litolff in "
+        "`benchmarks/omr-key-majority-2026-09/FINDINGS.md` §6a, where three "
+        "staves of one system corroborated the same wrong −1). What makes "
+        "the DOCUMENT tier survivable where the SYSTEM tier did not is "
+        "population: it tallies every readable staff of every system of the "
+        "movement, so a correlated misreading has to hold across pages and "
+        "not merely across one header. The rule does NOT gate on the "
+        "independent count — Sean's rule is stated over the reads — and the "
+        "full tally rides on `Q.PART_KEY` so a reader can see whether a "
+        "majority of 200 was 200 or 3."),
+)
+def fill_part_key(log: Log, document: Subject) -> List[Proposal]:
+    """The document's own key, on a staff whose reading was a gap or a dissent.
+
+    Sean, 2026-09-23, adjudicating 2.9's four system-header crops: *"all 4 of
+    those crops are pieces with 3 flats and the staffs that have fewer flats
+    are transposing clefs."* Both works are in C minor and both count pages
+    print three flats on every non-transposing staff — and the 2.9 reader is
+    wrong on 20 of 46 of them, with the wrong values scattered (+2, −4, +1)
+    while the right one repeats.
+
+    **Why it is an inference and not a reading.** Nothing on this staff's own
+    header was read differently by this rule; the answer comes from OTHER
+    staves, on other systems, whose ink this staff's reader never saw. It is
+    BEST rather than FORCED, and a movement that really does change key on
+    some parts and not others would make it wrong — which is why the stretch
+    boundaries come from `Q.PART_KEY`'s corroborated changes and not from
+    this rule, and why the abstention stays in the log underneath the fill.
+
+    ⚠️ IT MUST RUN AFTER `collapse_slot_index_to_family_block`, and it does
+    because `infer.run` walks `RULES` in REGISTRATION order and this file is
+    read top to bottom: tier (3) needs a decided `Q.SLOT_INDEX`, and on
+    Litolff 28 of them are that rule's. Registered first, this one would find
+    fewer parts and report a clean, false number. `test_infer_part_key` pins
+    the order.
+    """
+    return [Proposal(subject=g.staff, value=g.value, reason=g.outcome,
+                     basis=g.basis, witnesses=g.witnesses,
+                     detail=dict(g.detail or {}))
+            for g in part_key_census(log)
+            if g.outcome in ("key_from_document_majority",
+                             "key_from_other_systems")]

@@ -32,6 +32,7 @@ from __future__ import annotations
 import argparse
 import collections
 import json
+import os
 import pathlib
 import sys
 
@@ -72,6 +73,12 @@ def _disable(which: str) -> None:
         H._marker_run = lambda marks, space: (None, "no_markers", {})
     if which in ("system", "all"):
         H._concert = lambda ev, subject, written: (None, None)
+    if which in ("part", "all"):
+        # ⚠️ ROADMAP 2.9b. ONE flag over both halves — `_part_checked` reads
+        # the same predicate the INFER rule's switch does, so this returns the
+        # decision to exactly 2.9's behaviour rather than to a half-state no
+        # shipped tree has been in.
+        os.environ["OMR_PART_KEY"] = "0"
 
 
 def verdicts_of(log: Log, quantity: str) -> dict:
@@ -83,7 +90,8 @@ def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("record")
     ap.add_argument("--control", action="store_true")
-    ap.add_argument("--off", choices=["markers", "system", "all"], default=None)
+    ap.add_argument("--off", choices=["markers", "system", "part", "all"],
+                    default=None)
     ap.add_argument("--out")
     a = ap.parse_args()
 

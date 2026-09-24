@@ -15,7 +15,9 @@ it) — which is why it is paired with a case that MUST supersede.
 
 from __future__ import annotations
 
+import os
 import unittest
+from unittest import mock
 
 from tools.omr.staged import adjudicate
 from tools.omr.staged import adjudicators  # noqa: F401
@@ -222,13 +224,28 @@ class TestTheSystemCheck(unittest.TestCase):
 
     def test_two_staves_reading_alike_are_never_touched(self):
         """⚠️ A majority would have overwritten both. A bitonal system, and a
-        page this reader half-misreads, must lose nothing."""
+        page this reader half-misreads, must lose nothing.
+
+        ⚠️⚠️ AND ROADMAP 2.9b LATER TOOK THE SECOND HALF OF THAT SENTENCE
+        BACK, ON SEAN'S ADJUDICATION OF FOUR CROPS — so this test runs with
+        `OMR_PART_KEY` OFF and says what it is asserting. The SYSTEM check
+        still never touches a corroborated pair; what changed is that the
+        DOCUMENT may, because *every non-transposing staff of both count pages
+        prints three flats* and a pair reading one flat on one system of a
+        movement in C minor is two readers failing together (CLAUDE.md §10).
+        `test_staged_key_by_part.TestTheDocumentCheck` asserts the new
+        behaviour on this same fixture; the flag is what separates the two
+        claims, and a genuinely bitonal document still loses nothing because
+        the document majority is taken over the stretch its own corroborated
+        changes cut.
+        """
         log = Log()
         keep = [_staff(log, i, label=n, markers=_flats(3))
                 for i, n in enumerate(["Flauti.", "Obol.", "Violino I."])]
         pair = [_staff(log, 3 + i, label=n, markers=_flats(1))
                 for i, n in enumerate(["Violino II.", "Viola."])]
-        adjudicate.run(log)
+        with mock.patch.dict(os.environ, {"OMR_PART_KEY": "0"}):
+            adjudicate.run(log)
         for sub in keep:
             self.assertEqual(log.verdict(Q.KEY_SIGNATURE, sub).value, -3)
         for sub in pair:
