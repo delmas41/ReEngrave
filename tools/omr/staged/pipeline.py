@@ -147,6 +147,98 @@ def _rung_header(surya_fallback: bool, ocr_fallback: bool) -> str:
             f" tesseract={_state('staff_labels_tesseract', directions_on)}")
 
 
+def decide(log, *, progress: bool = False, after_adjudicate=None) -> dict:
+    """THE ONE DECIDING SEQUENCE: ADJUDICATE → GROUPS → EVALUATE → INFER →
+    the bounded second EVALUATE over what INFER wrote.
+
+    ⚠️⚠️ EXTRACTED 2026-09-23 BECAUSE A SECOND COPY HAD ALREADY DRIFTED.
+    `review/rerun.py` restated this sequence when roadmap 3.4 landed, and
+    roadmap 2.10 then added the second EVALUATE pass HERE and not there --
+    so a re-run over a human's corrections filled the clef and restated
+    no pitch beneath it (`benchmarks/omr-stage-review-2026-09/FINDINGS.md`
+    §C: *"infer:fill_clef_gap decides alto and not one head gets a
+    pitch"*). One function, two callers, no order to keep in step.
+
+    `after_adjudicate(log)` runs on the log between ADJUDICATE and GROUPS
+    (the A/B divergence needs exactly that point) and its result is
+    returned as `divergence`.
+    """
+    if progress:
+        print("ADJUDICATE")
+    verdicts = adjudicate.run(log, progress=progress)
+
+    # On THIS log, before any consequence can restate a value. See the
+    # docstring -- the position is load-bearing, not incidental. The caller
+    # supplies the comparison so this function stays the ONE deciding
+    # sequence and knows nothing about a legacy file.
+    divergence_report = None if after_adjudicate is None \
+        else after_adjudicate(log)
+
+    # ⚠️ BETWEEN ADJUDICATE AND EVALUATE, and the position is the claim: the
+    # verdict-sourced groups need the decisions to have run, and running
+    # before EVALUATE means the report describes what was ADJUDICATED rather
+    # than what a consequence later restated.
+    if progress:
+        print("GROUPS")
+    agreement = groups.run(log, progress=progress)
+
+    if progress:
+        print("EVALUATE")
+    report = evaluate.run(log, progress=progress)
+
+    # ⚠️⚠️ INFER — AFTER EVALUATE, BEFORE EXPORT, AND OFF BY DEFAULT.
+    #
+    # The position is the claim: this stage weighs what is most LIKELY, and it
+    # cannot do that before the consequences of the settled decisions are in
+    # the log. `infer.run` takes `report` as an argument rather than trusting
+    # this call site, so the ordering is structural rather than a convention
+    # somebody has to preserve when editing this function.
+    #
+    # ⚠️ OFF MEANS ABSENT, NOT QUIET. The key is omitted entirely when the
+    # stage did not run -- the same `**({} if ... else {...})` shape the
+    # divergence table uses below -- so a record from a tree carrying INFER is
+    # byte-identical to one from a tree without it, and an arm isolating an
+    # EARLIER stage (`readjudicate`, `reexport_arm`) never has to know this
+    # stage exists. Writing `"inference": None` instead would break exactly
+    # that, and is the kind of harmless-looking addition that reaches an arm
+    # which was supposed to be blind to it.
+    inference_report = None
+    reevaluation_report = None
+    if infer.stage_should_run():
+        if progress:
+            print("INFER")
+        inference_report = infer.run(log, report, progress=progress)
+
+        # ⚠️⚠️ THE SECOND EVALUATE PASS, BOUNDED TO WHAT INFER JUST WROTE
+        # (roadmap 2.10). INFER runs AFTER EVALUATE, and a notehead's PITCH is
+        # an EVALUATE consequence of the clef -- so an inference that fills a
+        # clef the reader abstained on changes NOTHING unless something
+        # restates the pitches beneath it. `evaluate.run_over` fires a rule
+        # only where its own cause, or a verdict it DECLARES it also reads, is
+        # one of the verdicts INFER wrote this run; since INFER writes only
+        # where the record had no answer, every rule that fires here is one
+        # the first pass skipped. The rejected alternatives -- the guess in
+        # ADJUDICATE, the pitch in EXPORT, a second FULL `run` -- are recorded
+        # on `run_over` itself.
+        #
+        # ⚠️ ITS KEY IS ABSENT UNLESS INFER RAN, exactly like `inference`'s,
+        # so `OMR_INFER=0 OMR_SLOT_FAMILY_BLOCK=0 OMR_CLEF_GAP=0` still yields
+        # a record byte-identical to one from a tree without this stage.
+        # ⚠️ DERIVED FROM THE LOG, not walked out of the report's tuples:
+        # `infer.inferred_verdicts` is the query the stage already provides
+        # for exactly *"which verdicts did INFER write"*, and a second way of
+        # answering it is a second thing to keep in step.
+        if progress:
+            print("EVALUATE (bounded, over the inferred values)")
+        reevaluation_report = evaluate.run_over(
+            log, infer.inferred_verdicts(log), progress=progress)
+
+    return {"verdicts": verdicts, "agreement": agreement,
+            "evaluation": report, "inference": inference_report,
+            "reevaluation": reevaluation_report,
+            "divergence": divergence_report}
+
+
 def run_staged(pdf_path: str, pages: Sequence[int], *,
                detector: Any = None, dpi: int = 600,
                conf_threshold: float = 0.25, imgsz: Optional[int] = None,
@@ -252,72 +344,16 @@ def run_staged_on(prepared: Sequence[Tuple[Any, Sequence[Any]]], *,
                                 input_domain_classification,
                             progress=progress)
 
-    if progress:
-        print("ADJUDICATE")
-    verdicts = adjudicate.run(log, progress=progress)
-
-    # On THIS log, before any consequence can restate a value. See the
-    # docstring -- the position is load-bearing, not incidental.
-    divergence_report = None if legacy is None else divergence(log, legacy)
-
-    # ⚠️ BETWEEN ADJUDICATE AND EVALUATE, and the position is the claim: the
-    # verdict-sourced groups need the decisions to have run, and running
-    # before EVALUATE means the report describes what was ADJUDICATED rather
-    # than what a consequence later restated.
-    if progress:
-        print("GROUPS")
-    agreement = groups.run(log, progress=progress)
-
-    if progress:
-        print("EVALUATE")
-    report = evaluate.run(log, progress=progress)
-
-    # ⚠️⚠️ INFER — AFTER EVALUATE, BEFORE EXPORT, AND OFF BY DEFAULT.
-    #
-    # The position is the claim: this stage weighs what is most LIKELY, and it
-    # cannot do that before the consequences of the settled decisions are in
-    # the log. `infer.run` takes `report` as an argument rather than trusting
-    # this call site, so the ordering is structural rather than a convention
-    # somebody has to preserve when editing this function.
-    #
-    # ⚠️ OFF MEANS ABSENT, NOT QUIET. The key is omitted entirely when the
-    # stage did not run -- the same `**({} if ... else {...})` shape the
-    # divergence table uses below -- so a record from a tree carrying INFER is
-    # byte-identical to one from a tree without it, and an arm isolating an
-    # EARLIER stage (`readjudicate`, `reexport_arm`) never has to know this
-    # stage exists. Writing `"inference": None` instead would break exactly
-    # that, and is the kind of harmless-looking addition that reaches an arm
-    # which was supposed to be blind to it.
-    inference_report = None
-    reevaluation_report = None
-    if infer.stage_should_run():
-        if progress:
-            print("INFER")
-        inference_report = infer.run(log, report, progress=progress)
-
-        # ⚠️⚠️ THE SECOND EVALUATE PASS, BOUNDED TO WHAT INFER JUST WROTE
-        # (roadmap 2.10). INFER runs AFTER EVALUATE, and a notehead's PITCH is
-        # an EVALUATE consequence of the clef -- so an inference that fills a
-        # clef the reader abstained on changes NOTHING unless something
-        # restates the pitches beneath it. `evaluate.run_over` fires a rule
-        # only where its own cause, or a verdict it DECLARES it also reads, is
-        # one of the verdicts INFER wrote this run; since INFER writes only
-        # where the record had no answer, every rule that fires here is one
-        # the first pass skipped. The rejected alternatives -- the guess in
-        # ADJUDICATE, the pitch in EXPORT, a second FULL `run` -- are recorded
-        # on `run_over` itself.
-        #
-        # ⚠️ ITS KEY IS ABSENT UNLESS INFER RAN, exactly like `inference`'s,
-        # so `OMR_INFER=0 OMR_SLOT_FAMILY_BLOCK=0 OMR_CLEF_GAP=0` still yields
-        # a record byte-identical to one from a tree without this stage.
-        # ⚠️ DERIVED FROM THE LOG, not walked out of the report's tuples:
-        # `infer.inferred_verdicts` is the query the stage already provides
-        # for exactly *"which verdicts did INFER write"*, and a second way of
-        # answering it is a second thing to keep in step.
-        if progress:
-            print("EVALUATE (bounded, over the inferred values)")
-        reevaluation_report = evaluate.run_over(
-            log, infer.inferred_verdicts(log), progress=progress)
+    decided = decide(
+        log, progress=progress,
+        after_adjudicate=None if legacy is None
+        else (lambda lg: divergence(lg, legacy)))
+    verdicts = decided["verdicts"]
+    agreement = decided["agreement"]
+    report = decided["evaluation"]
+    inference_report = decided["inference"]
+    reevaluation_report = decided["reevaluation"]
+    divergence_report = decided["divergence"]
 
     return {
         "record": log.to_json(),

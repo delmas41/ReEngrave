@@ -104,18 +104,22 @@ def rebuild_gather(rec: dict) -> Tuple[Log, Dict[str, str]]:
 
 
 def run_stages(log: Log, *, progress: bool = False) -> dict:
-    """ADJUDICATE → GROUPS → EVALUATE → INFER, in `pipeline.run_staged`'s own
-    order. ⚠️ The order is the claim, not a convenience: INFER may only see a
-    log whose consequences have been drawn (CLAUDE.md §4a), and `infer.run`
-    takes EVALUATE's report as an argument so that stays structural."""
-    verdicts = adjudicate.run(log, progress=progress)
-    agreement = groups.run(log, progress=progress)
-    report = evaluate.run(log, progress=progress)
-    inference = None
-    if infer.stage_should_run():
-        inference = infer.run(log, report, progress=progress)
-    return {"verdicts": verdicts, "agreement": agreement,
-            "evaluation": report, "inference": inference}
+    """ADJUDICATE → GROUPS → EVALUATE → INFER → the bounded second EVALUATE,
+    by calling `pipeline.decide` -- the SAME function `run_staged` calls.
+
+    ⚠️⚠️ NOT RESTATED HERE, BECAUSE IT DRIFTED ONCE ALREADY. This function
+    used to spell the sequence out and stopped at INFER; roadmap 2.10 then
+    added the second EVALUATE pass to the pipeline and a re-run over a
+    human's corrections filled the clef and restated no pitch beneath it
+    (FINDINGS §C). The pipeline is the one place the order lives.
+    """
+    from .. import pipeline
+    decided = pipeline.decide(log, progress=progress)
+    return {"verdicts": decided["verdicts"],
+            "agreement": decided["agreement"],
+            "evaluation": decided["evaluation"],
+            "inference": decided["inference"],
+            "reevaluation": decided["reevaluation"]}
 
 
 # ─────────────────────────────────────────────────────────────────────────────

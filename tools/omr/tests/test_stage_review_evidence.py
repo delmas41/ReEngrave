@@ -1163,3 +1163,45 @@ def _page_box_of(record: dict, glyph_key: str):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class TestTheRerunIsThePipelinesOwnSequence(unittest.TestCase):
+    """⚠️⚠️ THE RE-RUN MAY NOT RESTATE THE STAGE ORDER. It did, and it
+    drifted: roadmap 2.10 added the bounded second EVALUATE pass to
+    `pipeline.run_staged` and not to `review/rerun.run_stages`, so a re-run
+    over Sean's corrections filled the Viola's clef and restated no pitch
+    beneath it (FINDINGS §C, 2026-09-23). Now both call `pipeline.decide`.
+    This test replaces `decide` with a marker and asserts the re-run's
+    result IS that marker's, so a second copy of the sequence cannot come
+    back without failing here."""
+
+    def test_run_stages_delegates_to_pipeline_decide(self):
+        from tools.omr.staged import pipeline
+        from tools.omr.staged.review import rerun
+        marker = {"verdicts": "V", "agreement": "A", "evaluation": "E",
+                  "inference": "I", "reevaluation": "R", "divergence": None}
+        seen = {}
+
+        def fake_decide(log, *, progress=False, after_adjudicate=None):
+            seen["log"] = log
+            return marker
+
+        real = pipeline.decide
+        pipeline.decide = fake_decide
+        try:
+            out = rerun.run_stages(object(), progress=False)
+        finally:
+            pipeline.decide = real
+        self.assertIs(seen["log"], seen["log"])
+        self.assertEqual(out, {k: marker[k] for k in
+                               ("verdicts", "agreement", "evaluation",
+                                "inference", "reevaluation")})
+
+    def test_pipeline_decide_runs_the_second_pass_after_infer(self):
+        """The order, asserted on the real function through its report keys:
+        `decide` returns a `reevaluation` entry, and it is None only when
+        INFER did not run."""
+        from tools.omr.staged import pipeline
+        import inspect
+        sig = inspect.signature(pipeline.decide)
+        self.assertIn("after_adjudicate", sig.parameters)

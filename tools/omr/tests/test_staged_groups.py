@@ -609,10 +609,16 @@ class TestTheGroupStageIsWiredIntoThePipeline(unittest.TestCase):
         import ast
         import inspect
         from tools.omr.staged import pipeline
-        tree = ast.parse(inspect.getsource(pipeline.run_staged_on))
-        calls = {ast.unparse(n.func) for n in ast.walk(tree)
-                 if isinstance(n, ast.Call)}
-        self.assertIn("groups.run", calls)
+        # ⚠️ The deciding sequence lives in `pipeline.decide` since
+        # 2026-09-23 (one function, two callers: `run_staged_on` and the
+        # stage review's re-run), so the wiring is asserted through both:
+        # the entry point calls `decide`, and `decide` calls `groups.run`.
+        def calls_of(fn):
+            tree = ast.parse(inspect.getsource(fn))
+            return {ast.unparse(n.func) for n in ast.walk(tree)
+                    if isinstance(n, ast.Call)}
+        self.assertIn("decide", calls_of(pipeline.run_staged_on))
+        self.assertIn("groups.run", calls_of(pipeline.decide))
 
     def test_the_result_carries_the_agreement_report(self):
         from tools.omr.staged import pipeline
