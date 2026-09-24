@@ -1,0 +1,238 @@
+record provenance: {"commit": "dbc9962b641e0259763efb45acc204e4e78ffd55", "dirty": true, "settings": {"env_overrides": {"OMR_DIRECTION_TEXT_SCAN_GATE": "1", "OMR_SURYA_KEEP_ALIVE": "0"}, "args": {"against": null, "conf": 0.25, "dpi": 600, "imgsz": null, "ink_rows": false, "no_roster": false, "no_weight_routing": false
+
+═══ CONTROL — did the replay reproduce the record? ══════════════
+   97623 of 98353 standing verdicts identical, 730 differ, 715 absent from the rebuild, 19713 new
+
+═══ THE SIDECAR ═════════════════════════════════════════════════
+   actions              68
+   rows_filed           127
+   actions_refused      0
+   frames_refused       0
+   grids_refused        0
+
+═══ VERDICTS THAT CHANGED ═══════════════════════════════════════
+   [INFER] clef                       staff/2/1/9
+        abstained/None (no_candidates)  ->  decided/'alto' (clef_from_other_systems)
+   [INFER] clef                       staff/3/0/9
+        abstained/None (no_candidates)  ->  decided/'alto' (clef_from_other_systems)
+   [INFER] clef                       staff/5/0/7
+        abstained/None (no_candidates)  ->  decided/'alto' (clef_from_other_systems)
+   [INFER] clef                       staff/5/1/5
+        abstained/None (no_candidates)  ->  decided/'alto' (clef_from_other_systems)
+   [INFER] clef                       staff/7/0/9
+        abstained/None (no_candidates)  ->  decided/'alto' (clef_from_other_systems)
+   [INFER] clef                       staff/7/1/9
+        abstained/None (no_candidates)  ->  decided/'alto' (clef_from_other_systems)
+   [INFER] clef                       staff/14/0/11
+        abstained/None (no_candidates)  ->  decided/'bass' (clef_from_other_systems)
+   [INFER] clef                       staff/15/0/9
+        abstained/None (no_candidates)  ->  decided/'alto' (clef_from_other_systems)
+   [INFER] clef                       staff/16/1/9
+        abstained/None (no_candidates)  ->  decided/'alto' (clef_from_other_systems)
+   [ADJUDICATE] key_signature              staff/1/0/0
+        decided/-3 (fitted_by_template)  ->  decided/-3 (markers)
+   [ADJUDICATE] key_signature              staff/1/0/1
+        decided/-3 (fitted_by_template)  ->  decided/-2 (markers)
+   [ADJUDICATE] key_signature              staff/1/0/2
+        decided/-1 (fitted)  ->  decided/-1 (fitted_no_markers)
+   [ADJUDICATE] key_signature              staff/1/0/3
+        decided/-3 (fitted_by_template)  ->  decided/-1 (markers)
+   [ADJUDICATE] key_signature              staff/1/0/4
+        decided/0 (fitted_by_template)  ->  decided/0 (fitted_no_markers)
+   [ADJUDICATE] key_signature              staff/1/0/5
+        decided/0 (fitted_by_template)  ->  decided/0 (fitted_no_markers)
+   [ADJUDICATE] key_signature              staff/1/0/6
+        decided/0 (fitted_by_template)  ->  decided/0 (fitted_no_markers)
+   [ADJUDICATE] key_signature              staff/1/0/7
+        decided/-3 (fitted_by_template)  ->  decided/-3 (markers)
+   [ADJUDICATE] key_signature              staff/1/0/8
+        decided/-3 (fitted)  ->  decided/-2 (markers)
+   [ADJUDICATE] key_signature              staff/1/0/9
+        decided/-1 (fitted)  ->  decided/-2 (markers)
+   [ADJUDICATE] key_signature              staff/1/0/10
+        decided/-3 (fitted)  ->  decided/-2 (markers)
+   [ADJUDICATE] key_signature              staff/1/0/11
+        decided/-3 (fitted_by_template)  ->  decided/-1 (markers)
+   [ADJUDICATE] key_signature              staff/2/0/0
+        decided/-3 (fitted_by_template)  ->  decided/-3 (markers)
+   [ADJUDICATE] key_signature              staff/2/0/1
+        decided/-3 (fitted)  ->  abstained/None (disagrees_with_system)
+   [ADJUDICATE] key_signature              staff/2/0/2
+        decided/-1 (fitted)  ->  decided/-1 (markers)
+   [ADJUDICATE] key_signature              staff/2/0/3
+        decided/-3 (fitted)  ->  decided/-3 (markers)
+   [ADJUDICATE] key_signature              staff/2/0/4
+        decided/0 (fitted_by_template)  ->  decided/0 (fitted_no_markers)
+   [ADJUDICATE] key_signature              staff/2/0/5
+        decided/0 (fitted_by_template)  ->  decided/0 (fitted_no_markers)
+   [ADJUDICATE] key_signature              staff/2/0/6
+        decided/0 (fitted_by_template)  ->  decided/0 (fitted_no_markers)
+   [ADJUDICATE] key_signature              staff/2/0/7
+        decided/-3 (fitted)  ->  decided/-3 (fitted_no_markers)
+   [ADJUDICATE] key_signature              staff/2/0/8
+        decided/1 (fitted)  ->  decided/-1 (markers)
+   [ADJUDICATE] key_signature              staff/2/0/10
+        decided/-1 (fitted)  ->  decided/-2 (markers)
+   [ADJUDICATE] key_signature              staff/2/1/0
+        decided/-2 (fitted_by_template)  ->  abstained/None (disagrees_with_system)
+   [ADJUDICATE] key_signature              staff/2/1/1
+        abstained/None (markers_without_a_run)  ->  abstained/None (disagrees_with_system)
+   [ADJUDICATE] key_signature              staff/2/1/2
+        abstained/None (markers_without_a_run)  ->  decided/-1 (markers)
+   [ADJUDICATE] key_signature              staff/2/1/6
+        decided/0 (fitted_by_template)  ->  decided/0 (fitted_no_markers)
+   [ADJUDICATE] key_signature              staff/2/1/7
+        decided/-3 (fitted_by_template)  ->  decided/-1 (markers)
+   [ADJUDICATE] key_signature              staff/2/1/8
+        decided/-3 (fitted_by_template)  ->  abstained/None (mixed_marker_kinds)
+   [ADJUDICATE] key_signature              staff/2/1/10
+        abstained/None (markers_without_a_run)  ->  decided/-2 (markers)
+   [ADJUDICATE] key_signature              staff/3/0/0
+        decided/-2 (fitted)  ->  decided/-1 (markers)
+   [ADJUDICATE] key_signature              staff/3/0/1
+        abstained/None (markers_without_a_run)  ->  decided/-1 (markers)
+   [ADJUDICATE] key_signature              staff/3/0/2
+        decided/-1 (fitted)  ->  decided/-1 (markers)
+   [ADJUDICATE] key_signature              staff/3/0/3
+        decided/-1 (fitted)  ->  decided/-1 (fitted_no_markers)
+   [ADJUDICATE] key_signature              staff/3/0/7
+        decided/-3 (fitted)  ->  decided/-3 (markers)
+   [ADJUDICATE] key_signature              staff/3/0/8
+        decided/1 (fitted)  ->  decided/1 (fitted_no_markers)
+   [ADJUDICATE] key_signature              staff/3/0/10
+        decided/-3 (fitted)  ->  decided/-3 (markers)
+   [ADJUDICATE] key_signature              staff/3/1/0
+        decided/-3 (fitted_by_template)  ->  decided/-3 (markers)
+   [ADJUDICATE] key_signature              staff/3/1/1
+        decided/-1 (fitted_by_template)  ->  decided/-1 (markers)
+   [ADJUDICATE] key_signature              staff/3/1/2
+        decided/-1 (fitted)  ->  decided/-3 (markers)
+   [ADJUDICATE] key_signature              staff/3/1/4
+        decided/-3 (fitted)  ->  decided/-3 (markers)
+   [ADJUDICATE] key_signature              staff/3/1/5
+        abstained/None (markers_without_a_run)  ->  decided/-3 (markers)
+   [ADJUDICATE] key_signature              staff/3/1/6
+        decided/7 (fitted)  ->  decided/-3 (markers)
+   [ADJUDICATE] key_signature              staff/3/1/7
+        decided/-3 (fitted)  ->  abstained/None (mixed_marker_kinds)
+   [ADJUDICATE] key_signature              staff/4/0/0
+        abstained/None (markers_without_a_run)  ->  abstained/None (disagrees_with_system)
+   [ADJUDICATE] key_signature              staff/4/0/1
+        abstained/None (run_fits_no_slot_table)  ->  abstained/None (disagrees_with_system)
+   [ADJUDICATE] key_signature              staff/4/0/2
+        decided/-1 (fitted)  ->  decided/-1 (markers)
+   [ADJUDICATE] key_signature              staff/4/0/5
+        decided/1 (fitted)  ->  decided/1 (fitted_no_markers)
+   [ADJUDICATE] key_signature              staff/4/0/6
+        decided/-2 (fitted_by_template)  ->  decided/-2 (fitted_no_markers)
+   [ADJUDICATE] key_signature              staff/4/0/7
+        abstained/None (markers_without_a_run)  ->  decided/-1 (markers)
+   [ADJUDICATE] key_signature              staff/4/0/10
+        decided/-3 (fitted_by_template)  ->  decided/-2 (markers)
+   [ADJUDICATE] key_signature              staff/4/1/0
+        decided/-3 (fitted)  ->  decided/-2 (markers)
+   ... 670 more
+
+═══ VERDICTS WHOSE EVIDENCE NAMES A HUMAN ROW ═══════════════════
+   ⚠️ `used` = the decision WEIGHED it; `basis`/`considered` = it was handed it and did not say it weighed it.
+   [ADJUDICATE|used] accidental_is_not_an_accidental glyph/3/0/9/0/11
+        decided/'True' (human_not_a_symbol) by adjudicate_accidental_is_not_an_accidental; human rows ['act-0003:obs:174399->obs:174399', 'act-0004:obs:174401->obs:174401']
+   [ADJUDICATE|used] accidental_is_not_an_accidental glyph/3/0/9/1/0
+        decided/'True' (human_other_staff) by adjudicate_accidental_is_not_an_accidental; human rows ['act-0008:obs:174409->obs:174409', 'act-0010:obs:174411->obs:174411']
+   [ADJUDICATE|used] accidental_is_not_an_accidental glyph/3/0/9/3/400003
+        decided/'False' (accidental) by adjudicate_accidental_is_not_an_accidental; human rows ['act-0024:obs:174441->obs:174441']
+   [ADJUDICATE|used] accidental_is_not_an_accidental glyph/3/0/9/4/400000
+        decided/'False' (accidental) by adjudicate_accidental_is_not_an_accidental; human rows ['act-0025:obs:174442->obs:174442']
+   [ADJUDICATE|used] accidental_is_not_an_accidental glyph/3/0/9/5/3
+        decided/'True' (human_not_a_symbol) by adjudicate_accidental_is_not_an_accidental; human rows ['act-0032:obs:174454->obs:174454']
+   [ADJUDICATE|used] accidental_is_not_an_accidental glyph/3/0/9/5/4
+        decided/'True' (human_not_a_symbol) by adjudicate_accidental_is_not_an_accidental; human rows ['act-0031:obs:174453->obs:174453']
+   [ADJUDICATE|used] accidental_is_not_an_accidental glyph/3/0/9/5/400000
+        decided/'False' (accidental) by adjudicate_accidental_is_not_an_accidental; human rows ['act-0028:obs:174447->obs:174447']
+   [ADJUDICATE|used] accidental_is_not_an_accidental glyph/3/0/9/5/400001
+        decided/'False' (accidental) by adjudicate_accidental_is_not_an_accidental; human rows ['act-0029:obs:174449->obs:174449']
+   [ADJUDICATE|used] accidental_is_not_an_accidental glyph/3/0/9/5/400002
+        decided/'False' (accidental) by adjudicate_accidental_is_not_an_accidental; human rows ['act-0030:obs:174451->obs:174451']
+   [ADJUDICATE|used] accidental_is_not_an_accidental glyph/3/0/9/6/400000
+        decided/'False' (accidental) by adjudicate_accidental_is_not_an_accidental; human rows ['act-0039:obs:174477->obs:174477']
+   [ADJUDICATE|used] accidental_is_not_an_accidental glyph/3/0/9/7/2
+        decided/'True' (human_other_staff) by adjudicate_accidental_is_not_an_accidental; human rows ['act-0045:obs:174490->obs:174490']
+   [ADJUDICATE|used] accidental_is_not_an_accidental glyph/3/0/9/7/400000
+        decided/'False' (accidental) by adjudicate_accidental_is_not_an_accidental; human rows ['act-0046:obs:174491->obs:174491']
+   [ADJUDICATE|used] arc_kind                   glyph/3/0/9/0/8
+        decided/'tie' (tie) by adjudicate_arc_kind; human rows ['act-0001:obs:174395->obs:174395', 'act-0004:obs:174400->obs:174400', 'act-0005:obs:174402->obs:174402', 'act-0007:obs:174405->obs:174405', 'act-0007:obs:174407->obs:174407']
+   [ADJUDICATE|used] arpeggiato_is_not_an_arpeggiato glyph/3/0/9/11/1
+        decided/'True' (human_not_a_symbol) by adjudicate_arpeggiato_is_not_an_arpeggiato; human rows ['act-0054:obs:174499->obs:174499']
+   [ADJUDICATE|used] arpeggiato_is_not_an_arpeggiato glyph/3/0/9/14/4
+        decided/'True' (human_not_a_symbol) by adjudicate_arpeggiato_is_not_an_arpeggiato; human rows ['act-0065:obs:174512->obs:174512']
+   [ADJUDICATE|used] arpeggiato_is_not_an_arpeggiato glyph/3/0/9/9/2
+        decided/'True' (human_not_a_symbol) by adjudicate_arpeggiato_is_not_an_arpeggiato; human rows ['act-0052:obs:174497->obs:174497']
+   [ADJUDICATE|used] duration                   glyph/3/0/9/0/400003
+        decided/"{'beats': 2.0, 'written': 2.0, 'dots': 0, 'beam_levels': 0}" (head_and_marks) by adjudicate_duration; human rows ['act-0001:obs:174395->obs:174395', 'act-0004:obs:174400->obs:174400', 'act-0005:obs:174402->obs:174402', 'act-0007:obs:174405->obs:174405', 'act-0007:obs:174406->obs:174406']
+   [ADJUDICATE|used] duration                   glyph/3/0/9/1/400000
+        decided/"{'beats': 2.0, 'written': 2.0, 'dots': 0, 'beam_levels': 0}" (head_and_marks) by adjudicate_duration; human rows ['act-0012:obs:174413->obs:174413', 'act-0012:obs:174414->obs:174414', 'act-0013:obs:174416->obs:174416', 'act-0013:obs:174417->obs:174417']
+   [ADJUDICATE|used] duration                   glyph/3/0/9/1/400001
+        decided/"{'beats': 2.0, 'written': 2.0, 'dots': 0, 'beam_levels': 0}" (head_and_marks) by adjudicate_duration; human rows ['act-0012:obs:174413->obs:174413', 'act-0012:obs:174414->obs:174414', 'act-0013:obs:174416->obs:174416', 'act-0013:obs:174417->obs:174417']
+   [ADJUDICATE|used] duration                   glyph/3/0/9/15/400000
+        decided/"{'beats': 2.0, 'written': 2.0, 'dots': 0, 'beam_levels': 0}" (head_and_marks) by adjudicate_duration; human rows ['act-0067:obs:174514->obs:174514', 'act-0067:obs:174515->obs:174515', 'act-0068:obs:174518->obs:174518', 'act-0068:obs:174519->obs:174519']
+   [ADJUDICATE|used] duration                   glyph/3/0/9/15/400001
+        decided/"{'beats': 2.0, 'written': 2.0, 'dots': 0, 'beam_levels': 0}" (head_and_marks) by adjudicate_duration; human rows ['act-0067:obs:174514->obs:174514', 'act-0067:obs:174515->obs:174515', 'act-0068:obs:174518->obs:174518', 'act-0068:obs:174519->obs:174519']
+   [ADJUDICATE|used] duration                   glyph/3/0/9/2/400002
+        narrowed/'None' (beams_ambiguous) by adjudicate_duration; human rows ['act-0014:obs:174419->obs:174419', 'act-0015:obs:174421->obs:174421', 'act-0018:obs:174425->obs:174425', 'act-0018:obs:174426->obs:174426', 'act-0020:obs:174430->obs:174430', 'act-0020:obs:174431->obs:174431']
+   [ADJUDICATE|used] duration                   glyph/3/0/9/2/400003
+        narrowed/'None' (beams_ambiguous) by adjudicate_duration; human rows ['act-0014:obs:174419->obs:174419', 'act-0015:obs:174421->obs:174421', 'act-0018:obs:174425->obs:174425', 'act-0018:obs:174426->obs:174426', 'act-0020:obs:174430->obs:174430', 'act-0020:obs:174431->obs:174431']
+   [ADJUDICATE|used] duration                   glyph/3/0/9/3/400002
+        decided/"{'beats': 0.5, 'written': 0.5, 'dots': 0, 'beam_levels': 1}" (head_and_marks) by adjudicate_duration; human rows ['act-0021:obs:174434->obs:174434', 'act-0022:obs:174436->obs:174436', 'act-0023:obs:174438->obs:174438', 'act-0023:obs:174439->obs:174439', 'act-0024:obs:174441->obs:174441']
+   [ADJUDICATE|used] duration                   glyph/3/0/9/4/400001
+        decided/"{'beats': 2.0, 'written': 2.0, 'dots': 0, 'beam_levels': 0}" (head_and_marks) by adjudicate_duration; human rows ['act-0025:obs:174442->obs:174442', 'act-0026:obs:174443->obs:174443', 'act-0026:obs:174444->obs:174444', 'act-0027:obs:174446->obs:174446']
+   [ADJUDICATE|used] duration                   glyph/3/0/9/5/400003
+        decided/"{'beats': 1.0, 'written': 1.0, 'dots': 0, 'beam_levels': 0}" (head_and_marks) by adjudicate_duration; human rows ['act-0028:obs:174447->obs:174447', 'act-0029:obs:174449->obs:174449', 'act-0030:obs:174451->obs:174451', 'act-0033:obs:174455->obs:174455', 'act-0033:obs:174456->obs:174456', 'act-0034:obs:174459->obs:174459', 'act-0034:obs:174460->obs:174460', 'act-0035:obs:174463->obs:174463', 'act-0035:obs:174464->obs:174464', 'act-0036:obs:174467->obs:174467', 'act-0036:obs:174468->obs:174468', 'act-0037:obs:174471->obs:174471', 'act-0037:obs:174472->obs:174472', 'act-0038:obs:174475->obs:174475']
+   [ADJUDICATE|used] duration                   glyph/3/0/9/5/400004
+        decided/"{'beats': 1.0, 'written': 1.0, 'dots': 0, 'beam_levels': 0}" (head_and_marks) by adjudicate_duration; human rows ['act-0028:obs:174447->obs:174447', 'act-0029:obs:174449->obs:174449', 'act-0030:obs:174451->obs:174451', 'act-0033:obs:174455->obs:174455', 'act-0033:obs:174456->obs:174456', 'act-0034:obs:174459->obs:174459', 'act-0034:obs:174460->obs:174460', 'act-0035:obs:174463->obs:174463', 'act-0035:obs:174464->obs:174464', 'act-0036:obs:174467->obs:174467', 'act-0036:obs:174468->obs:174468', 'act-0037:obs:174471->obs:174471', 'act-0037:obs:174472->obs:174472', 'act-0038:obs:174475->obs:174475']
+   [ADJUDICATE|used] duration                   glyph/3/0/9/5/400005
+        decided/"{'beats': 1.0, 'written': 1.0, 'dots': 0, 'beam_levels': 0}" (head_and_marks) by adjudicate_duration; human rows ['act-0028:obs:174447->obs:174447', 'act-0029:obs:174449->obs:174449', 'act-0030:obs:174451->obs:174451', 'act-0033:obs:174455->obs:174455', 'act-0033:obs:174456->obs:174456', 'act-0034:obs:174459->obs:174459', 'act-0034:obs:174460->obs:174460', 'act-0035:obs:174463->obs:174463', 'act-0035:obs:174464->obs:174464', 'act-0036:obs:174467->obs:174467', 'act-0036:obs:174468->obs:174468', 'act-0037:obs:174471->obs:174471', 'act-0037:obs:174472->obs:174472', 'act-0038:obs:174475->obs:174475']
+   [ADJUDICATE|used] duration                   glyph/3/0/9/5/400006
+        decided/"{'beats': 1.0, 'written': 1.0, 'dots': 0, 'beam_levels': 0}" (head_and_marks) by adjudicate_duration; human rows ['act-0028:obs:174447->obs:174447', 'act-0029:obs:174449->obs:174449', 'act-0030:obs:174451->obs:174451', 'act-0033:obs:174455->obs:174455', 'act-0033:obs:174456->obs:174456', 'act-0034:obs:174459->obs:174459', 'act-0034:obs:174460->obs:174460', 'act-0035:obs:174463->obs:174463', 'act-0035:obs:174464->obs:174464', 'act-0036:obs:174467->obs:174467', 'act-0036:obs:174468->obs:174468', 'act-0037:obs:174471->obs:174471', 'act-0037:obs:174472->obs:174472', 'act-0038:obs:174475->obs:174475']
+   [ADJUDICATE|used] duration                   glyph/3/0/9/5/400007
+        decided/"{'beats': 1.0, 'written': 1.0, 'dots': 0, 'beam_levels': 0}" (head_and_marks) by adjudicate_duration; human rows ['act-0028:obs:174447->obs:174447', 'act-0029:obs:174449->obs:174449', 'act-0030:obs:174451->obs:174451', 'act-0033:obs:174455->obs:174455', 'act-0033:obs:174456->obs:174456', 'act-0034:obs:174459->obs:174459', 'act-0034:obs:174460->obs:174460', 'act-0035:obs:174463->obs:174463', 'act-0035:obs:174464->obs:174464', 'act-0036:obs:174467->obs:174467', 'act-0036:obs:174468->obs:174468', 'act-0037:obs:174471->obs:174471', 'act-0037:obs:174472->obs:174472', 'act-0038:obs:174475->obs:174475']
+   [ADJUDICATE|used] duration                   glyph/3/0/9/6/400001
+        decided/"{'beats': 1.0, 'written': 1.0, 'dots': 0, 'beam_levels': 0}" (head_and_marks) by adjudicate_duration; human rows ['act-0039:obs:174477->obs:174477', 'act-0040:obs:174478->obs:174478', 'act-0040:obs:174479->obs:174479', 'act-0041:obs:174482->obs:174482', 'act-0041:obs:174483->obs:174483', 'act-0042:obs:174486->obs:174486']
+   [ADJUDICATE|used] duration                   glyph/3/0/9/6/400002
+        decided/"{'beats': 1.0, 'written': 1.0, 'dots': 0, 'beam_levels': 0}" (head_and_marks) by adjudicate_duration; human rows ['act-0039:obs:174477->obs:174477', 'act-0040:obs:174478->obs:174478', 'act-0040:obs:174479->obs:174479', 'act-0041:obs:174482->obs:174482', 'act-0041:obs:174483->obs:174483', 'act-0042:obs:174486->obs:174486']
+   [ADJUDICATE|used] event                      cell/3/0/9/0
+        decided/"{'events': [{'glyphs': [1, 6], 'x': 374.0, 'kind': 'chord'}, {'glyphs': [2, 5, 7, 9, 12, 4" (x_clustered) by adjudicate_event; human rows ['act-0001:obs:174395->obs:174395', 'act-0004:obs:174400->obs:174400', 'act-0005:obs:174402->obs:174402', 'act-0007:obs:174405->obs:174405', 'act-0007:obs:174406->obs:174406']
+   [ADJUDICATE|used] event                      cell/3/0/9/1
+        decided/"{'events': [{'glyphs': [3, 400000, 400001], 'x': 369.36, 'kind': 'chord'}, {'glyphs': [2, " (x_clustered) by adjudicate_event; human rows ['act-0012:obs:174413->obs:174413', 'act-0012:obs:174414->obs:174414', 'act-0013:obs:174416->obs:174416', 'act-0013:obs:174417->obs:174417']
+   [ADJUDICATE|used] event                      cell/3/0/9/15
+        decided/"{'events': [{'glyphs': [1, 2, 400000, 400001], 'x': 134.24, 'kind': 'chord'}]}" (x_clustered) by adjudicate_event; human rows ['act-0067:obs:174514->obs:174514', 'act-0067:obs:174515->obs:174515', 'act-0068:obs:174518->obs:174518', 'act-0068:obs:174519->obs:174519']
+   [ADJUDICATE|used] event                      cell/3/0/9/2
+        decided/"{'events': [{'glyphs': [4, 7, 19, 400002, 400003], 'x': 315.71, 'kind': 'chord'}, {'glyphs" (x_clustered) by adjudicate_event; human rows ['act-0014:obs:174419->obs:174419', 'act-0015:obs:174421->obs:174421', 'act-0018:obs:174425->obs:174425', 'act-0018:obs:174426->obs:174426', 'act-0020:obs:174430->obs:174430', 'act-0020:obs:174431->obs:174431']
+   [ADJUDICATE|used] event                      cell/3/0/9/3
+        decided/"{'events': [{'glyphs': [5, 11], 'x': 278.0, 'kind': 'chord'}, {'glyphs': [7, 400002], 'x':" (x_clustered) by adjudicate_event; human rows ['act-0021:obs:174434->obs:174434', 'act-0022:obs:174436->obs:174436', 'act-0023:obs:174438->obs:174438', 'act-0023:obs:174439->obs:174439', 'act-0024:obs:174441->obs:174441']
+   [ADJUDICATE|used] event                      cell/3/0/9/4
+        decided/"{'events': [{'glyphs': [0, 400001], 'x': 265.94, 'kind': 'chord'}]}" (x_clustered) by adjudicate_event; human rows ['act-0025:obs:174442->obs:174442', 'act-0026:obs:174443->obs:174443', 'act-0026:obs:174444->obs:174444', 'act-0027:obs:174446->obs:174446']
+   [ADJUDICATE|used] event                      cell/3/0/9/5
+        decided/"{'events': [{'glyphs': [1, 2, 5, 400003, 400004, 400005, 400006, 400007], 'x': 351.15, 'ki" (x_clustered) by adjudicate_event; human rows ['act-0028:obs:174447->obs:174447', 'act-0029:obs:174449->obs:174449', 'act-0030:obs:174451->obs:174451', 'act-0033:obs:174455->obs:174455', 'act-0033:obs:174456->obs:174456', 'act-0034:obs:174459->obs:174459', 'act-0034:obs:174460->obs:174460', 'act-0035:obs:174463->obs:174463', 'act-0035:obs:174464->obs:174464', 'act-0036:obs:174467->obs:174467', 'act-0036:obs:174468->obs:174468', 'act-0037:obs:174471->obs:174471', 'act-0037:obs:174472->obs:174472', 'act-0038:obs:174475->obs:174475']
+   [ADJUDICATE|used] event                      cell/3/0/9/6
+        decided/"{'events': [{'glyphs': [5, 6, 7, 400001, 400002], 'x': 304.92, 'kind': 'chord'}, {'glyphs'" (x_clustered) by adjudicate_event; human rows ['act-0039:obs:174477->obs:174477', 'act-0040:obs:174478->obs:174478', 'act-0040:obs:174479->obs:174479', 'act-0041:obs:174482->obs:174482', 'act-0041:obs:174483->obs:174483', 'act-0042:obs:174486->obs:174486']
+
+═══ HUMAN ROWS THAT REACHED NO VERDICT ══════════════════════════
+   ⚠️ reported, never hidden — a witness that changed nothing is the finding, not a gap in the report.
+   act-0021     obs:174435 (replayed as obs:174435)
+   act-0022     obs:174437 (replayed as obs:174437)
+
+═══ EXPORT ══════════════════════════════════════════════════════
+   <note> elements  8588 -> 8777 (+189)
+   MusicXML identical to the parent's: False
+   staff census before {"staff": "staff/3/0/9", "refused": {"no_pitch": 40, "not_a_notehead:clipped_fragment": 3, "ink_is_a_whole_rest": 1, "not_a_notehead:too_narrow": 1, "owned_by_another_staff": 3}, "written": {"rest": 7}, "refused_total": 48, "written_total": 7}
+   staff census after  {"staff": "staff/3/0/9", "refused": {"not_a_notehead:human_not_a_symbol": 8, "not_a_notehead:clipped_fragment": 3, "ink_is_a_whole_rest": 1, "duration_narrowed": 4, "owned_by_another_staff": 3, "not_a_notehead:human_other_staff": 1, "not_a_rest:human_not_a_symbol": 1}, "written": {"notehead": 44, "rest": 6}, "refused_total": 21, "written_total": 50}
+
+═══ PER STAGE ═══════════════════════════════════════════════════
+{
+ "human_rows_no_stage_read": 2,
+ "human_rows_read": 125
+}
+   ADJUDICATE   {'verdicts_naming_a_human_row': 414, 'verdicts_that_WEIGHED_one': 108, 'distinct_human_rows_named': 110, 'distinct_human_rows_weighed': 91}
+   EVALUATE     {'verdicts_naming_a_human_row': 16, 'verdicts_that_WEIGHED_one': 0, 'distinct_human_rows_named': 16, 'distinct_human_rows_weighed': 0}
+
+wrote benchmarks/omr-family-refusals-2026-09/out/sean-viola-p3-after/diff.json, benchmarks/omr-family-refusals-2026-09/out/sean-viola-p3-after/feedback.json ({'actions': 68, 'human_rows': 127, 'actions_refused': 0, 'actions_that_reached_nothing': 0, 'verdicts_naming_a_human_row': 7949, 'verdicts_changed': 730, 'notes_before': 8588, 'notes_after': 8777})
