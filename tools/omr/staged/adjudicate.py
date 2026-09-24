@@ -601,6 +601,30 @@ class DecisionSpec:
     #: ABOUT.
     subjects_from: Optional[str] = None
 
+    #: ⚠️ ROADMAP 3.4g. NARROWS `subjects_from` TO THE ROWS WHOSE DETECTOR
+    #: CLASS STARTS WITH ONE OF THESE, case-insensitively, read off
+    #: `row.value[0]` — the spelling every `Q.GLYPH_BOX` row uses.
+    #:
+    #: ⚠️⚠️ IT EXISTS BECAUSE THREE GATHERED FAMILIES HAVE NO QUANTITY OF
+    #: THEIR OWN AND A DECISION MUST STILL BE ABLE TO NAME ITS DOMAIN.
+    #: `gather_coverage.FAMILY_TO_Q` maps `ledger`, `accidental` and
+    #: `arpeggiato` to `None`: their ink reaches the record as an anonymous
+    #: `Q.GLYPH_BOX` and nothing else. A per-family refusal for them can
+    #: therefore only declare `subjects_from=Q.GLYPH_BOX`, whose domain is
+    #: EVERY detection on the page — 8,486 on four Litolff pages — so the
+    #: decision would file an abstention per glyph and bury 1,878 ledger
+    #: verdicts under 6,608 no-ops. That is the exact fault `subjects_from`'s
+    #: own docstring names one field up, arriving by a different door.
+    #:
+    #: ⚠️ A DECLARED TUPLE OF PREFIXES, NOT A PREDICATE, so `inventory` can
+    #: PRINT a decision's domain and a reader can check it against
+    #: `class_aliases.vocabulary()` without running anything. A lambda would
+    #: make the domain unreadable to every derived check at once.
+    #:
+    #: ⚠️ IT IS A NARROWING AND NEVER A WIDENING: with no `subjects_from` it
+    #: is meaningless and `decision()` refuses it.
+    subjects_classed: Tuple[str, ...] = ()
+
     #: Can this fact be checked with NO ground truth? See `Checkable`.
     checkable: Checkable = Checkable.UNCHECKABLE
     #: The SPECIFIC constraints, named. Never "consistency".
@@ -634,6 +658,7 @@ def decision(*, quantity: str, scope: Kind, wants: Sequence[str],
              excludes_tiers: Sequence[str] = (),
              revises: Optional[str] = None,
              subjects_from: Optional[str] = None,
+             subjects_classed: Sequence[str] = (),
              checkable: Checkable = Checkable.UNCHECKABLE,
              checked_by: Sequence[str] = (),
              implicates: Sequence[str] = (),
@@ -672,6 +697,12 @@ def decision(*, quantity: str, scope: Kind, wants: Sequence[str],
                 f"`composed_from`: an unverifiable fact's reliability is its "
                 f"WEAKEST INPUT, and a consumer cannot weigh it without "
                 f"knowing what those are.")
+    if subjects_classed and subjects_from is None:
+        raise ValueError(
+            f"{quantity} declares `subjects_classed` with no `subjects_from`. "
+            f"It is a NARROWING of a domain and never a domain of its own: "
+            f"without one, a reader would have to guess which quantity's rows "
+            f"the class names are matched against.")
     if mode is Mode.COMPETITIVE and margin_floor is None:
         raise ValueError(
             f"a COMPETITIVE decision on {quantity} must declare a "
@@ -686,6 +717,7 @@ def decision(*, quantity: str, scope: Kind, wants: Sequence[str],
             mode=mode, margin_floor=margin_floor,
             excludes_tiers=tuple(excludes_tiers), revises=revises,
             stub=stub, fn=fn, subjects_from=subjects_from,
+            subjects_classed=tuple(subjects_classed),
             checkable=checkable, checked_by=tuple(checked_by),
             implicates=tuple(implicates),
             composed_from=tuple(composed_from))
@@ -877,7 +909,23 @@ ORDER: Tuple[str, ...] = (
     # docstring), so the ordering guarantees a refused glyph is never WRITTEN
     # but does not yet guarantee it cannot WIN a contest against a genuine
     # partner. Measured, not assumed -- see the 2.4a report.
+    # ⚠️ ROADMAP 3.4g. THE LEDGER GOES BEFORE THE NOTEHEAD, AND THE ORDER IS A
+    # DEPENDENCY RATHER THAN A PREFERENCE: `notehead_precision.
+    # _ledger_rungs_in_cell` reads this decision's VERDICT so a refused rung
+    # is not counted in ADJUDICATE's own ladder search. The reverse order
+    # would let a staff-line fragment vouch for a note.
+    Q.LEDGER_IS_NOT_A_LEDGER,
     Q.NOTEHEAD_IS_NOT_A_NOTEHEAD,
+    # ⚠️ THE OTHER FIVE FAMILIES DEPEND ON NOTHING AND NOTHING IN ADJUDICATE
+    # DEPENDS ON THEM EXCEPT `Q.DYNAMIC`, which must not spell a refused
+    # letter into a word — so they stand here, beside the two refusals that
+    # do have an order, and before every consumer of theirs.
+    Q.ACCIDENTAL_IS_NOT_AN_ACCIDENTAL,
+    Q.REST_IS_NOT_A_REST,
+    Q.ARPEGGIATO_IS_NOT_AN_ARPEGGIATO,
+    Q.ARC_IS_NOT_AN_ARC,
+    Q.DYNAMIC_IS_NOT_A_DYNAMIC,
+    Q.ARTICULATION_IS_NOT_AN_ARTICULATION,
     # ownership, with identity and clef available
     Q.GLYPH_OWNER,
     Q.ARC_OWNER,
@@ -971,10 +1019,24 @@ def subjects_for(log: Log, spec: DecisionSpec) -> Tuple[Subject, ...]:
     wanted = domain_of(spec)
     if not wanted:
         return log.subjects(spec.scope)
+    # ⚠️ ROADMAP 3.4g. A CLASS NARROWING IS APPLIED TO THE ROW, NOT TO THE
+    # SUBJECT, because a subject can carry several rows and it is the one
+    # naming the family that puts it in this decision's domain.
+    classes = tuple(c.lower() for c in spec.subjects_classed)
     out = {}
     for row in log.all_rows():
         if getattr(row, "quantity", None) not in wanted:
             continue
+        if classes:
+            v = getattr(row, "value", None)
+            # ⚠️ AN ABSTENTION HAS NO VALUE AND THEREFORE NO CLASS, so it
+            # cannot put a subject in a class-narrowed domain. Admitting it
+            # would hand the decision a subject it can say nothing about and
+            # file an abstention that means only "the row we filtered on was
+            # itself an abstention".
+            if not (isinstance(v, (list, tuple)) and v
+                    and str(v[0]).lower().startswith(classes)):
+                continue
         sub = row.subject.at(spec.scope)
         if sub is not None:
             out[sub.to_key()] = sub

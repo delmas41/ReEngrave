@@ -163,6 +163,14 @@ const ANSWER_WORDS = {
   delete_box: {word: 'nothing', hint: 'not a symbol — there is no ink here'},
   own_box: {word: 'above', hint: 'belongs to the staff above'},
   own_box_below: {word: 'below', hint: 'belongs to the staff below'},
+  // ⚠️ ROADMAP 3.4g — THE ANSWER SEAN ACTUALLY GAVE. On his own `above` /
+  // `below` marks, 2026-09-23: *"'belongs to violin' were about the fact
+  // that they belonged to a different staff"*. Naming the neighbour was
+  // incidental, so this is the claim without the name: not this staff, and I
+  // am not saying which. It is ALWAYS offered — unlike `above` / `below`, it
+  // needs no neighbour to exist.
+  own_box_other: {word: 'other staff',
+                  hint: "belongs to a different staff — I can't say which"},
   dup_box: {word: 'duplicate', hint: 'the same ink as another box — pick it'},
   unsure_box: {word: 'unsure', hint: "I can't tell from the print"},
   confirm_box: {word: 'agree', hint: 'the machine had it right'},
@@ -192,11 +200,23 @@ function buildAnswers(opts) {
       own_box_below: (i >= 0 && i < staves.length - 1) ? staves[i + 1] : null,
     };
     for (const entry of labels) {
-      const kinds = entry.kind === 'own_box'
-        ? ['own_box', 'own_box_below'] : [entry.kind];
+      // ⚠️ ROADMAP 3.4g. TWO TABLE ROWS NOW SHARE THE KIND `own_box` — the
+      // one that names a staff and the one that does not — so the split is
+      // on the VALUE, which is the thing that differs. Splitting on `kind`
+      // here would offer `above`/`below` twice and drop `other staff`
+      // entirely, which is the shape of bug a shared kind invites.
+      const kinds = entry.value === 'owner:other' ? ['own_box_other']
+        : entry.kind === 'own_box' ? ['own_box', 'own_box_below']
+        : [entry.kind];
       for (const k of kinds) {
         const w = ANSWER_WORDS[k];
         if (!w) continue;                    // a verb with no word: see above
+        if (k === 'own_box_other') {
+          out.push({group: 'answer', kind: 'own_box', text: w.word,
+                    sub: '', staff: 'other', hint: w.hint,
+                    match: [w.word, 'o', 'other', entry.label || '']});
+          continue;
+        }
         if (k === 'own_box' || k === 'own_box_below') {
           const t = near[k];
           if (!t) continue;                  // ABSENT, not disabled

@@ -997,6 +997,91 @@ class Q(_Vocab):
     #: because geometry was available and was tested.
     NOTEHEAD_IS_NOT_A_NOTEHEAD = "notehead_is_not_a_notehead"
 
+    # ── THE SAME QUESTION, ONCE PER GATHERED FAMILY (roadmap 3.4g) ─────────
+    #
+    # ⚠️⚠️ SEVEN QUANTITIES AND NOT ONE, AND "ONE QUANTITY, ONE OWNER" IS WHY.
+    # `adjudicate.decision` refuses a second adjudicator on one quantity, so a
+    # single `Q.GLYPH_IS_NOT_ITS_CLASS` would have to be decided by one body
+    # over seven families whose evidence has nothing in common -- a ledger
+    # line is refused by STAFF GEOMETRY, an arc by nothing anybody has
+    # measured -- and `reasons` is a CLOSED VOCABULARY PER DECISION, so the
+    # merged decision's vocabulary would be the union and no consumer could
+    # tell which family a reason belonged to. Seven quantities keep the
+    # accounting per family, which is what `export.coverage` counts in.
+    #
+    # ⚠️⚠️ WHY THEY EXIST AT ALL, MEASURED: Sean's first stage-review pass
+    # (ROADMAP 3.4, 2026-09-23) marked 23 boxes as *nothing* and **18 of them
+    # reached no stage** -- `ledgerLine` x11, `arpeggiato` x3,
+    # `accidentalFlat` x2, `accidentalNatural`, `restQuarter` -- because
+    # `Q.NOTEHEAD_IS_NOT_A_NOTEHEAD` was the pipeline's ONLY "is this really
+    # one" question and it is asked of noteheads alone. A human witness that
+    # reaches nothing is a reader whose reading was filed and dropped, which
+    # is the ABSENT/DECLINED collapse this record exists to prevent, happening
+    # to the person.
+    #
+    # ⚠️ REFUSED, NEVER DELETED, exactly as the notehead one: the
+    # `Q.GLYPH_BOX` row stays where it is and a consumer declines to USE it,
+    # counted under a named reason. And a glyph no rule condemns decides
+    # `False` with the family's own name as the reason -- *we looked and found
+    # nothing wrong with it* is not *we could not tell*.
+    #
+    # ⚠️ `human_other_staff` IS A REFUSAL ON **THIS** STAFF AND NOTHING MORE.
+    # Sean, 2026-09-23, on his own `own_box` marks: *"'belongs to violin' were
+    # about the fact that they belonged to a different staff"* -- the point was
+    # NOT THIS STAFF and naming the neighbour was incidental. So
+    # `owner:other` refuses the glyph here and relocates nothing; CLAUDE.md
+    # §10, a resolved contest DROPS the loser. A NAMED owner still goes to
+    # `Q.GLYPH_OWNER` as before.
+
+    #: A `ledgerLine` box that is not a ledger line. ROADMAP 3.4g, the first
+    #: family, because 11 of the 18 were this one.
+    #:
+    #: ⚠️ THE CONVENTION IS SEAN'S, 2026-09-23 (`docs/DECISIONS.md`): what the
+    #: detector boxed as `ledgerLine` and he marked as nothing was *"often a
+    #: staff line, a bar line or extra ink"*; a LEDGER LINE stands OUTSIDE the
+    #: staff, at a whole number of spaces beyond the top or bottom line, short
+    #: and horizontal. Reasons: `human_not_a_symbol`, `human_other_staff`,
+    #: `on_a_staff_line`, `tall_not_a_rung`, and `not_at_a_rung_step` MEASURED
+    #: AND HELD BACK -- see `adjudicators/family_precision.py` for all three
+    #: measurements and for which one ships.
+    LEDGER_IS_NOT_A_LEDGER = "ledger_is_not_a_ledger"
+
+    #: An `accidental*` box that is not an accidental. HUMAN WITNESS ONLY: the
+    #: in-bar accidental is SCOPE rather than a mark (it holds to the barline)
+    #: and `gather_coverage.FAMILY_Q_IS_ELSEWHERE` records that the record has
+    #: nowhere to put that span, so no geometric convention is available to
+    #: this decision and none is invented.
+    ACCIDENTAL_IS_NOT_AN_ACCIDENTAL = "accidental_is_not_an_accidental"
+
+    #: A `rest*` box that is not a rest. ⚠️ A DIFFERENT QUESTION FROM
+    #: `Q.NOTEHEAD_IS_A_WHOLE_REST`, which asks whether a NOTEHEAD is really a
+    #: rest; this asks whether ink the detector called a rest is a symbol at
+    #: all. HUMAN WITNESS ONLY -- the rest's SLOT geometry is lane 2.12b-cal's
+    #: and a second copy of it here would be the rival reader this project
+    #: keeps paying for.
+    REST_IS_NOT_A_REST = "rest_is_not_a_rest"
+
+    #: An `arpeggiato` box that is not an arpeggiato. HUMAN WITNESS ONLY.
+    #: ⚠️ `arpeggiato` REACHES NOTHING TODAY -- `gather_coverage.FAMILY_TO_Q`
+    #: maps the family to `None` and no exporter writes one -- so this
+    #: refusal's only consumer is the EXPORT census, and that is stated rather
+    #: than dressed up: what it buys is that a human's *nothing* on one lands
+    #: on the record as a verdict instead of on no stage at all.
+    ARPEGGIATO_IS_NOT_AN_ARPEGGIATO = "arpeggiato_is_not_an_arpeggiato"
+
+    #: A `slur`/`tie` box that is not an arc. HUMAN WITNESS ONLY. ⚠️ NOT a
+    #: second opinion on `Q.ARC_KIND`: *slur or tie* and *a symbol or not* are
+    #: different questions and only the second is asked here.
+    ARC_IS_NOT_AN_ARC = "arc_is_not_an_arc"
+
+    #: A `dynamic*` LETTER box that is not a dynamic letter. HUMAN WITNESS
+    #: ONLY. Its consumer is `adjudicate_dynamic`, which must not spell a
+    #: refused letter into a word.
+    DYNAMIC_IS_NOT_A_DYNAMIC = "dynamic_is_not_a_dynamic"
+
+    #: An `artic*` box that is not an articulation mark. HUMAN WITNESS ONLY.
+    ARTICULATION_IS_NOT_AN_ARTICULATION = "articulation_is_not_an_articulation"
+
     # ── THE HUMAN AS A READER (roadmap 3.4, the stage review) ──────────────
     #
     # ⚠️⚠️ A CORRECTION IS A WITNESS, NEVER AN EDIT. Sean, 2026-09-23:
@@ -1419,6 +1504,14 @@ CLAIMS: "dict[str, str]" = {
     "GLYPH_OWNER": CLAIM.INTERPRETATION,
     "NOTEHEAD_IS_A_WHOLE_REST": CLAIM.INTERPRETATION,
     "NOTEHEAD_IS_NOT_A_NOTEHEAD": CLAIM.INTERPRETATION,
+    # ── roadmap 3.4g, the same claim once per gathered family ──────────────
+    "LEDGER_IS_NOT_A_LEDGER": CLAIM.INTERPRETATION,
+    "ACCIDENTAL_IS_NOT_AN_ACCIDENTAL": CLAIM.INTERPRETATION,
+    "REST_IS_NOT_A_REST": CLAIM.INTERPRETATION,
+    "ARPEGGIATO_IS_NOT_AN_ARPEGGIATO": CLAIM.INTERPRETATION,
+    "ARC_IS_NOT_AN_ARC": CLAIM.INTERPRETATION,
+    "DYNAMIC_IS_NOT_A_DYNAMIC": CLAIM.INTERPRETATION,
+    "ARTICULATION_IS_NOT_AN_ARTICULATION": CLAIM.INTERPRETATION,
     #: A human naming (or refusing a name for) THIS raster's ink. Wrong in
     #: exactly the way an OCR decode is wrong -- about what the ink is -- and
     #: not in the way a ruler is. That the reader is a person changes who to

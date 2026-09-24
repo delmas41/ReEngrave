@@ -1,0 +1,13 @@
+=== RED RUN (tree restored to origin/main for the 8 changed modules) ===
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+ERROR tools/omr/tests/test_staged_family_refusals.py
+!!!!!!!!!!!!!!!!!!!! Interrupted: 1 error during collection !!!!!!!!!!!!!!!!!!!!
+5 warnings, 1 error in 0.73s
+sys:1: DeprecationWarning: builtin type swigvarlink has no __module__ attribute
+=== restoring ===
+=== GREEN RUN (repaired tree) ===
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+50 passed, 5 warnings in 0.69s
+sys:1: DeprecationWarning: builtin type swigvarlink has no __module__ attribute

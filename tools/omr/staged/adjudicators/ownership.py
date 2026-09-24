@@ -197,12 +197,24 @@ def _human_owner(ev: Evidence):
     ⚠️ ONLY THE LAST ROW COUNTS if he labelled the same box twice — the same
     rule `_human_not_a_symbol` applies, because a sidecar is append-only and
     the later click is the later reading.
+
+    ⚠️⚠️ `owner:other` IS SKIPPED BY NAME, AND THAT IS NOT A GAP. ROADMAP
+    3.4g adds the answer *another staff, and I cannot say which* (Sean,
+    2026-09-23: *"'belongs to violin' were about the fact that they belonged
+    to a different staff"*). This decision's value is a STAFF KEY — every
+    consumer parses it as one — so awarding `other` would put a word where a
+    subject belongs and `A.is_relocated_copy` would compare it against real
+    staff keys forever after. The claim is a REFUSAL, not an award, and it is
+    read where refusals live: `notehead_precision._human_not_a_symbol` and
+    every per-family refusal in `family_precision.py`, reason
+    `human_other_staff`. Dropped here, relocated nowhere — CLAUDE.md §10.
     """
-    from ..review.human_evidence import human_says as _says
+    from ..review.human_evidence import (OWNER_OTHER as _OTHER,
+                                         human_says as _says)
     hit = None
     for row in ev.rows(Q.HUMAN_BOX_VERDICT):
         verb, arg = _says(getattr(row, "value", None))
-        if verb == "owner" and arg:
+        if verb == "owner" and arg and arg != _OTHER:
             hit = (row, arg)
     return hit
 

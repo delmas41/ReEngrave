@@ -875,6 +875,21 @@ def _place_notes(rec: Record, runs: Dict[str, StaffRun],
                     and npv["value"] is True):
                 _drop(f"not_a_notehead:{npv.get('reason', '?')}", s)
                 continue
+        else:
+            # ⚠️⚠️ ROADMAP 3.4g, AND IT IS THE REST'S OWN VERSION OF THE LINE
+            # ABOVE. `adjudicate_rest_is_not_a_rest` asks of rest ink the
+            # question `..._is_not_a_notehead` asks of a notehead, and until
+            # 2026-09-23 the pipeline asked it of noteheads ALONE — so one of
+            # Sean's eighteen unread *nothing* marks was a `restQuarter` and
+            # there was nowhere for it to land. FIRST, before the duration
+            # and the placement, for the same reason the notehead test is
+            # first: the count should say *this is not a rest at all* rather
+            # than a downstream reason that happens also to be true.
+            rnv = rec.verdict(Q.REST_IS_NOT_A_REST, sub)
+            if (rnv is not None and rnv["outcome"] == "decided"
+                    and rnv["value"] is True):
+                _drop(f"not_a_rest:{rnv.get('reason', '?')}", s)
+                continue
         if (not is_rest and refuse_whole_rest_ink
                 and rec.value(Q.NOTEHEAD_IS_A_WHOLE_REST, sub) is True):
             # ⚠️⚠️ SEAN'S OWN OBSERVATION, AND THE ASYMMETRY IS THE REASON.
@@ -1120,6 +1135,14 @@ def _place_arcs(rec: Record, runs: Dict[str, StaffRun]) -> Dict[str, int]:
         sub = o["subject"]
         s = _parse_subject(sub)
         if s["glyph"] is None:
+            continue
+        # ⚠️ ROADMAP 3.4g, AND BEFORE THE KIND: *slur or tie* and *a symbol
+        # at all* are different questions, and a box a human said is nothing
+        # must not be reported under a reason about which arc it is.
+        anv = rec.verdict(Q.ARC_IS_NOT_AN_ARC, sub)
+        if anv is not None and anv["outcome"] == "decided" \
+                and anv["value"] is True:
+            dropped[f"not_an_arc:{anv.get('reason', '?')}"] += 1
             continue
         kind_v = rec.verdict(Q.ARC_KIND, sub)
         if not kind_v or kind_v["outcome"] != "decided":
@@ -1779,6 +1802,13 @@ def _place_articulations(rec: Record, runs: Dict[str, StaffRun]) -> Dict[str, in
                     heads[str(det["glyph"])] = det
     for o in rec.obs_of(Q.ARTICULATION_MARK):
         sub = o["subject"]
+        # ⚠️ ROADMAP 3.4g, AND BEFORE THE OWNER: *whose mark is this* assumes
+        # there is a mark, and that assumption is what this refusal answers.
+        anv = rec.verdict(Q.ARTICULATION_IS_NOT_AN_ARTICULATION, sub)
+        if anv is not None and anv["outcome"] == "decided" \
+                and anv["value"] is True:
+            dropped[f"not_an_articulation:{anv.get('reason', '?')}"] += 1
+            continue
         v = rec.verdict(Q.ARTICULATION_OWNER, sub)
         if not v or v["outcome"] != "decided":
             dropped["artic_" + (v["reason"] if v else "absent")] += 1
@@ -4002,6 +4032,58 @@ def _inferred_clefs(rec: Record) -> List[Dict[str, Any]]:
     return sorted(out, key=lambda r: r["staff"])
 
 
+def _family_refusals(rec: Record) -> Dict[str, Any]:
+    """Every per-family refusal, by family and reason — ROADMAP 3.4g.
+
+    ⚠️⚠️ A PARTITION OVER EACH FAMILY'S OWN VERDICTS, not a filter: `refused`
+    + `kept` + `abstained` must sum to `verdicts`, which is counted from the
+    rows themselves, and `balanced` says whether it did. `status_census`'s
+    own discipline, one question down — that census
+    partitions notation FAMILIES by export status and structurally cannot see
+    a per-glyph refusal, so it cannot answer *how many boxes did we decline to
+    use, and why*.
+
+    ⚠️ THE FAMILY LIST IS DERIVED FROM THE ADJUDICATORS, never typed here.
+    `family_precision.FAMILY_REFUSALS` is built off the same table the
+    decisions take their `reason` words from, so a family added there is
+    counted here without anybody remembering a second list — the repair
+    `_place_notes`' own `by_system` docstring records paying for.
+
+    ⚠️ IT IS THE ONLY CONSUMER `accidental` AND `arpeggiato` HAVE, and that is
+    stated rather than hidden: neither family reaches a MusicXML element on
+    any path (`gather_coverage.FAMILY_TO_Q` maps both to `None`), so a human's
+    *nothing* on one of them buys a line in this block and nothing else. What
+    it buys is that the reading is on the record instead of on no stage.
+    """
+    from .adjudicators.family_precision import FAMILY_REFUSALS
+
+    out: Dict[str, Any] = {}
+    for quantity in FAMILY_REFUSALS:
+        refused: Dict[str, int] = collections.Counter()
+        kept = abstained = verdicts = 0
+        for v in rec.verdicts_of(quantity):
+            verdicts += 1
+            if v["outcome"] != "decided":
+                abstained += 1
+            elif v["value"] is True:
+                refused[str(v.get("reason", "?"))] += 1
+            else:
+                kept += 1
+        n_refused = sum(refused.values())
+        out[quantity] = {
+            "refused": dict(refused), "refused_total": n_refused,
+            "kept": kept, "abstained": abstained,
+            "verdicts": verdicts,
+            # ⚠️ A CHECK THAT CAN FAIL, not a restatement. The three buckets
+            # are filled from the outcome and the value; `verdicts` is
+            # counted from the rows themselves. They agree only if every
+            # verdict landed in exactly one bucket — which is what would stop
+            # being true the day a fourth outcome exists.
+            "balanced": n_refused + kept + abstained == verdicts,
+        }
+    return out
+
+
 def _census(rows: List[Dict[str, Any]]) -> Dict[str, Any]:
     """Every family row, filed under its status — a PARTITION, not a filter.
 
@@ -4364,6 +4446,10 @@ def coverage(result: Dict[str, Any],
         # the same inversion `NOT_NOTATION` uses, where the default for
         # something nobody has thought about is *reported*.
         "status_census": _census(rows),
+        # ⚠️⚠️ ROADMAP 3.4g. EVERY per-family "is this really one" refusal,
+        # counted by family and by reason, INCLUDING the two families whose
+        # refusal reaches nothing else. See `_family_refusals`.
+        "family_refusals": _family_refusals(rec),
         # ⚠️ ROADMAP 2.10. One line per staff whose clef came from INFER,
         # with the tier it came from and what it bought. See
         # `_inferred_clefs`: it is NAMED rather than counted because Sean

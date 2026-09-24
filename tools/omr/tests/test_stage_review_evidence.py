@@ -1123,35 +1123,56 @@ class TestBelongsToAnotherStaff(_Case):
         self.assertEqual(ing.controls["actions_refused"], 1)
         self.assertIn("not a staff subject", ing.actions[0].refused)
 
-    def test_an_owner_row_on_an_UNCONTESTED_glyph_DECIDES_NOTHING(self):
-        """⚠️ NAMED, NOT HIDDEN. `adjudicate_glyph_owner`'s domain is
-        `subjects_from=Q.GLYPH_BAND_DISTANCE` — the CONTESTED population — so
-        a human owning an uncontested box files a row that decision is never
-        asked about. There is no `Q.GLYPH_OWNER` verdict on that glyph at all.
+    def test_an_owner_row_on_an_UNCONTESTED_glyph_REFUSES_IT_HERE(self):
+        """⚠️⚠️ THIS ASSERTION WAS THE EXACT OPPOSITE UNTIL ROADMAP 3.4g, AND
+        SEAN IS WHY. It used to pin *an `owner:` row on an uncontested glyph
+        DECIDES NOTHING*, on the reasoning that `owner:` is `glyph_owner`'s
+        question and not the refusal's. His own gloss on the marks that
+        produced it, 2026-09-23: *"'belongs to violin' were about the fact
+        that they belonged to a DIFFERENT STAFF"* — the point was NOT THIS
+        STAFF and naming the neighbour was incidental. On an UNCONTESTED
+        glyph there is no contest to award anything, so *decides nothing* was
+        not neutrality, it was dropping the only thing he said.
 
-        ⚠️⚠️ AND `reached_nothing` IS THE WRONG ASSERTION HERE, MEASURED. The
-        row is NOT unread: `notehead_is_not_a_notehead` DECLARES
-        `Q.HUMAN_BOX_VERDICT`, so the harness hands it every such row on that
-        glyph and it lands in `basis` — where `_human_not_a_symbol` declines
-        it, because `owner:` is not its question. `used` is the only field
-        that separates OFFERED from WEIGHED, which is why the diff reports the
-        three apart; the identical trap is recorded for `redrawn` one class
-        up, and a test asserting `reached_nothing` would have been WRONG and
-        would have looked right."""
+        ⚠️ THE RULE IS NARROW AND ITS BOUND IS THE RECORD'S OWN.
+        `adjudicate_glyph_owner`'s domain is `subjects_from=
+        Q.GLYPH_BAND_DISTANCE`, so a glyph carrying a band row is one that
+        contest WILL decide and this refusal stays silent on it — see
+        `test_an_owner_row_on_a_CONTESTED_glyph_is_still_the_contest_s`
+        below, and `test_owning_it_BACK_...` above for the case where he
+        names THIS staff, which is the opposite claim.
+
+        ⚠️ AND THE NOTE COUNT MOVES, which is what says the refusal reached
+        the file rather than only the record."""
         d, arm, ing = self.run_review(_sidecar(
             {"id": "act-own5", "stage": "gather", "kind": "own_box",
              "glyph": "glyph/0/0/0/0/2", "staff": "staff/0/0/1"}), tag="own5")
         self.assertIsNone(self.standing(arm["record"], Q.GLYPH_OWNER,
-                                        "glyph/0/0/0/0/2"))
+                                        "glyph/0/0/0/0/2"),
+                          "the contest still never sees this glyph")
+        v = self.standing(arm["record"], Q.NOTEHEAD_IS_NOT_A_NOTEHEAD,
+                          "glyph/0/0/0/0/2")
+        self.assertIs(v["value"], True)
+        self.assertEqual(v["reason"], "human_other_staff")
         self.assertEqual(
             [(h["quantity"], h["how"]) for h in d.basis_names_human],
-            [(Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, "basis")])
+            [(Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, "used")])
+        self.assertEqual(d.notes_after, d.notes_before - 1)
+
+    def test_an_owner_row_on_a_CONTESTED_glyph_is_still_the_contest_s(self):
+        """THE POSITIVE CONTROL for the rule above. `glyph/0/0/0/0/1` carries
+        a band row, so `glyph_owner` decides it and the refusal must stay
+        silent — otherwise one question would have two answers and the export
+        bucket would stop naming WHICH staff."""
+        _d, arm, _ing = self.run_review(_sidecar(
+            {"id": "act-own6", "stage": "gather", "kind": "own_box",
+             "glyph": "glyph/0/0/0/0/1", "staff": "staff/0/0/1"}), tag="own6")
+        self.assertEqual(
+            self.standing(arm["record"], Q.GLYPH_OWNER,
+                          "glyph/0/0/0/0/1")["value"], "staff/0/0/1")
         self.assertIs(
             self.standing(arm["record"], Q.NOTEHEAD_IS_NOT_A_NOTEHEAD,
-                          "glyph/0/0/0/0/2")["value"], False,
-            "an `owner:` row was read as a refusal — that is a different "
-            "question answered by the wrong decision")
-        self.assertEqual(d.notes_after, d.notes_before)
+                          "glyph/0/0/0/0/1")["value"], False)
 
 
 def _page_box_of(record: dict, glyph_key: str):

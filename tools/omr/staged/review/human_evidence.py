@@ -130,6 +130,26 @@ HUMAN_BOX_LABELS: Tuple[Dict[str, Any], ...] = (
                 "uncontested glyph the row is filed and reaches nothing, and "
                 "the feedback file says so.",
      "keys": "↑ / ↓"},
+    # ⚠️⚠️ ROADMAP 3.4g — AN ADDITION, AND IT IS THE ANSWER SEAN ACTUALLY
+    # GAVE. On his own `own_box` marks, 2026-09-23: *"'belongs to violin'
+    # were about the fact that they belonged to a different staff"* — the
+    # point was NOT THIS STAFF and naming the neighbour was incidental. The
+    # named form above stays, because naming a staff is a stronger claim and
+    # `glyph_owner` can award it; this is the weaker claim spelled honestly
+    # instead of dressed up as the stronger one.
+    # ⚠️ IT REACHES A REFUSAL AND NEVER AN AWARD: `Q.GLYPH_OWNER`'s value is
+    # a STAFF KEY and `other` is not one, so `ownership._human_owner` skips
+    # it by name and the per-family refusals read it as *not here*, dropping
+    # the glyph on this staff and relocating nothing (CLAUDE.md §10).
+    {"label": "another staff — I can't say which", "kind": "own_box",
+     "needs": ("glyph", "staff"), "key": "staff",
+     "value": "owner:other", "row": "observation",
+     "reaches": "every per-family refusal AND "
+                "adjudicate_notehead_is_not_a_notehead, reason "
+                "`human_other_staff` — the glyph is refused on THIS staff "
+                "and awarded to none. It does NOT reach adjudicate_glyph_"
+                "owner, which must return a staff key.",
+     "keys": "o"},
     {"label": "a duplicate of another box", "kind": "dup_box",
      "needs": ("glyph", "of"), "key": "of",
      "value": "duplicate_of:<glyph subject>", "row": "observation",
@@ -175,6 +195,16 @@ KIND_REQUIRES: Dict[str, Tuple[str, ...]] = {
 
 #: The `Q.HUMAN_BOX_VERDICT` values that carry an argument after a colon.
 _PREFIXED = ("is_a", "owner", "duplicate_of", "confirmed")
+
+#: ⚠️ ROADMAP 3.4g. The one `owner:` argument that is NOT a staff subject:
+#: *another staff, and I cannot say which*. Named here so the three places
+#: that must treat it apart — this module's `own_box` ingest,
+#: `ownership._human_owner` (which skips it) and
+#: `notehead_precision._human_not_a_symbol` (which refuses on it) — all
+#: import the one spelling rather than each testing for the string.
+#: ⚠️ It can never collide with a staff key: `record.Subject.from_key`
+#: refuses it, which is exactly why the ingest below can branch on it first.
+OWNER_OTHER = "other"
 
 
 def human_says(value: Any) -> Tuple[str, Optional[str]]:
@@ -917,7 +947,17 @@ def ingest(record: dict, sidecar: dict, *,
                 oc.detail["row_kind"] = "abstention"
                 outcomes.append(oc)
                 continue
-            if kind == "own_box":
+            if kind == "own_box" and str(a["staff"]) == OWNER_OTHER:
+                # ⚠️⚠️ ROADMAP 3.4g — *ANOTHER STAFF, AND I CANNOT SAY WHICH*.
+                # Sean, 2026-09-23, on his own marks: *"'belongs to violin'
+                # were about the fact that they belonged to a different
+                # staff"*. It takes NO twin check, because there is no named
+                # staff on which a twin could be looked for: the only claim
+                # is *not this one*, and `_twin_on` would have to invent a
+                # target to answer a question nobody asked.
+                value = f"owner:{OWNER_OTHER}"
+                det["owner_named"] = None
+            elif kind == "own_box":
                 target = str(a["staff"])
                 try:
                     tsub = Subject.from_key(target)

@@ -91,6 +91,44 @@ KNOWN_GAPS: Dict[str, str] = {
         "`grep DOSSIER_FACT adjudicators/` returns two `wants` tuples and no "
         "read, so even an admitted dossier reaches NEITHER. Its one live "
         "consumer is `Q.CLEF_SEED` -> `adjudicate_clef` (`clef.py:301`)."),
+    # ── ROADMAP 3.4g. TWO FAMILIES WHOSE REFUSAL REACHES ONLY THE CENSUS ──
+    #
+    # ⚠️ TWO FACTS, BOTH TRUE, AND THE ENTRY IS USELESS WITHOUT BOTH.
+    #
+    #   1. THIS TOOL CANNOT SEE THE READ THAT EXISTS. `export._family_refusals`
+    #      reads every family refusal through `rec.verdicts_of(quantity)` in a
+    #      LOOP over `family_precision.FAMILY_REFUSALS`, which is DERIVED from
+    #      the adjudicators' own table rather than typed twice. `qname()`
+    #      resolves a literal `Q.X` or a literal string and nothing else, so a
+    #      loop-bound quantity reads as unresolved — the same blind spot
+    #      `inventory._gather_sites` documents paying for on `gather_cv_lines`
+    #      and answers with a loop resolver. The other five family refusals do
+    #      NOT appear here only because each has a second reader that names it
+    #      literally.
+    #   2. AND THE CENSUS REALLY IS THEIR ONLY READER, so the entry would be
+    #      half-true even with a loop resolver. Neither family reaches a
+    #      MusicXML element on ANY path: `gather_coverage.FAMILY_TO_Q` maps
+    #      `accidental` and `arpeggiato` to `None`, and
+    #      `FAMILY_Q_IS_ELSEWHERE` records why for the accidental — the in-bar
+    #      accidental is a SCOPE holding to the barline and the record has
+    #      nowhere to put that span. What the refusal buys is that a human's
+    #      *nothing* on one of these boxes lands on the record as a verdict he
+    #      can be shown, instead of on no stage at all, which is the whole of
+    #      3.4g's gate for these two families and is worth stating plainly.
+    #
+    # ⚠️ EACH LEAVES THE LIST when its family gains a reader that is not the
+    # census — for the accidental that is ROADMAP 2.7, parked (DECISIONS
+    # 2026-09-23) — and NOT when a loop resolver lands here.
+    Q.ACCIDENTAL_IS_NOT_AN_ACCIDENTAL: (
+        "READ BY `export._family_refusals` THROUGH A LOOP THIS TOOL CANNOT "
+        "RESOLVE, and read by nothing else, because the `accidental` family "
+        "reaches no MusicXML element on any path. See the block comment "
+        "above for both halves."),
+    Q.ARPEGGIATO_IS_NOT_AN_ARPEGGIATO: (
+        "READ BY `export._family_refusals` THROUGH A LOOP THIS TOOL CANNOT "
+        "RESOLVE, and read by nothing else, because the `arpeggiato` family "
+        "reaches no MusicXML element on any path. See the block comment "
+        "above for both halves."),
     Q.GAP_BRIDGING: (
         "inert declaration, owned by `inventory --check`: the connectivity veto "
         "already ran in GATHER and `adjudicate_system_membership` reads the "

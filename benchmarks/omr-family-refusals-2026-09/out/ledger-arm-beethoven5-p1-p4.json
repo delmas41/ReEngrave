@@ -1,0 +1,129 @@
+{
+ "record": "beethoven5-p1-p4.record.json",
+ "ledger_boxes_on_the_record": 1878,
+ "ledger_verdicts_arm": 1878,
+ "ledger_verdicts_base": 1878,
+ "arm": {
+  "refused:on_a_staff_line": 1214,
+  "kept": 657,
+  "refused:tall_not_a_rung": 7
+ },
+ "base": {
+  "kept": 1878
+ },
+ "glyph_owner_verdicts": {
+  "base": 1386,
+  "arm": 1386
+ },
+ "glyph_owner_moved": 0,
+ "glyph_owner_moved_named": [],
+ "unladdered_signal_base": {
+  "ledger_found_hist": {
+   "0": 278,
+   "1": 58,
+   "2": 13,
+   "3": 6,
+   "None": 133
+  },
+  "would_fire": 278,
+  "signals": 488
+ },
+ "unladdered_signal_arm": {
+  "ledger_found_hist": {
+   "0": 282,
+   "1": 55,
+   "2": 12,
+   "3": 6,
+   "None": 133
+  },
+  "would_fire": 282,
+  "signals": 488
+ },
+ "notes_base": 1769,
+ "notes_arm": 1769,
+ "notes_not_written_base": {
+  "ink_is_a_whole_rest": 25,
+  "not_a_notehead:too_narrow": 44,
+  "not_a_notehead:clipped_fragment": 78,
+  "duration_narrowed": 301,
+  "rest_duration_narrowed": 20,
+  "owned_by_another_staff": 177,
+  "rest_duration_abstained": 31,
+  "no_pitch": 194,
+  "bar_does_not_add_up": 906
+ },
+ "notes_not_written_arm": {
+  "ink_is_a_whole_rest": 25,
+  "not_a_notehead:too_narrow": 44,
+  "not_a_notehead:clipped_fragment": 78,
+  "duration_narrowed": 301,
+  "rest_duration_narrowed": 20,
+  "owned_by_another_staff": 177,
+  "rest_duration_abstained": 31,
+  "no_pitch": 194,
+  "bar_does_not_add_up": 906
+ },
+ "family_refusals_arm": {
+  "ledger_is_not_a_ledger": {
+   "refused": {
+    "on_a_staff_line": 1214,
+    "tall_not_a_rung": 7
+   },
+   "refused_total": 1221,
+   "kept": 657,
+   "abstained": 0,
+   "verdicts": 1878,
+   "balanced": true
+  },
+  "accidental_is_not_an_accidental": {
+   "refused": {},
+   "refused_total": 0,
+   "kept": 256,
+   "abstained": 0,
+   "verdicts": 256,
+   "balanced": true
+  },
+  "rest_is_not_a_rest": {
+   "refused": {},
+   "refused_total": 0,
+   "kept": 646,
+   "abstained": 0,
+   "verdicts": 646,
+   "balanced": true
+  },
+  "arpeggiato_is_not_an_arpeggiato": {
+   "refused": {},
+   "refused_total": 0,
+   "kept": 377,
+   "abstained": 0,
+   "verdicts": 377,
+   "balanced": true
+  },
+  "arc_is_not_an_arc": {
+   "refused": {},
+   "refused_total": 0,
+   "kept": 779,
+   "abstained": 0,
+   "verdicts": 779,
+   "balanced": true
+  },
+  "dynamic_is_not_a_dynamic": {
+   "refused": {},
+   "refused_total": 0,
+   "kept": 485,
+   "abstained": 0,
+   "verdicts": 485,
+   "balanced": true
+  },
+  "articulation_is_not_an_articulation": {
+   "refused": {},
+   "refused_total": 0,
+   "kept": 98,
+   "abstained": 0,
+   "verdicts": 98,
+   "balanced": true
+  }
+ },
+ "status_census_arm_unaccounted": [],
+ "status_census_arm_balanced": true
+}
