@@ -267,3 +267,14 @@ Format: `YYYY-MM-DD · who · the decision · because · (pointer)`
   'nothing' labels that reached no stage were `ledgerLine` boxes, and ledger
   lines feed `glyph_owner`'s ladder term, so a false rung is a false witness
   in the cross-staff contest · (ROADMAP 3.4g, first family)
+- 2026-09-24 · Sean, on 13 ledger-line crops · **Two ledger-line conventions,
+  stronger than the three geometric rules built the day before: (1) a ledger
+  line is only ever OUTSIDE the staff — a `ledgerLine` box inside the band
+  between line 1 and line 5 is not one, whatever its distance to a line; (2)
+  a ledger line only exists where there are notes — a bar holding only a
+  whole rest has none, and a rung with no head on or near it is not a rung.**
+  · *"a couple of obvious rules: the ledger lines will only be on the outside
+  of the staff and only happen if there are actual notes in the staff"* ·
+  measured on the crops: `on_a_staff_line` 4/4, kept 3/3, `tall_not_a_rung`
+  2/3 (one real rung refused), the held-back rung-step rule 2/3 (would refuse
+  a real rung — stays held back) · (ROADMAP 3.4g-2)

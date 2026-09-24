@@ -1,0 +1,121 @@
+{
+ "adjudicator": "Sean",
+ "date": "2026-09-24",
+ "method": "13 crops shown in chat, answered in order",
+ "conventions_from_sean": [
+  "ledger lines will only be on the OUTSIDE of the staff",
+  "ledger lines only happen if there are actual notes in the staff (bar)"
+ ],
+ "by_rule": {
+  "on_a_staff_line": "4 of 4 refusals correct",
+  "tall_not_a_rung": "2 of 3 correct \u2014 crop 9 is a real ledger line refused as tall",
+  "kept": "3 of 3 correct",
+  "not_at_a_rung_step (held back)": "2 of 3 \u2014 crop 3 is a real ledger line it would have refused; stays held back"
+ },
+ "verdicts": [
+  {
+   "n": 1,
+   "crop": "litolff-p1p4-p4-s0-st9-c1-g7-not_at_a_rung_step_WOULD_FIRE_held_back.png",
+   "rule": "would_fire",
+   "sean": "no \u2014 middle of the staff, where there would never be a ledger line",
+   "is_ledger_line": false,
+   "rule_right": true
+  },
+  {
+   "n": 2,
+   "crop": "litolff-p1p4-p4-s0-st9-c5-g14-not_at_a_rung_step_WOULD_FIRE_held_back.png",
+   "rule": "would_fire",
+   "sean": "no",
+   "is_ledger_line": false,
+   "rule_right": true
+  },
+  {
+   "n": 3,
+   "crop": "litolff-p1p4-p4-s1-st7-c5-g21-not_at_a_rung_step_WOULD_FIRE_held_back.png",
+   "rule": "would_fire",
+   "sean": "yes, a ledger line",
+   "is_ledger_line": true,
+   "rule_right": false
+  },
+  {
+   "n": 4,
+   "crop": "litolff-p1p4-p1-s0-st2-c15-g3-on_a_staff_line.png",
+   "rule": "on_a_staff_line",
+   "sean": "no \u2014 whole-rest bar; there are never ledger lines when there are no notes in the measure",
+   "is_ledger_line": false,
+   "rule_right": true
+  },
+  {
+   "n": 5,
+   "crop": "litolff-p1p4-p2-s0-st10-c14-g10-on_a_staff_line.png",
+   "rule": "on_a_staff_line",
+   "sean": "no",
+   "is_ledger_line": false,
+   "rule_right": true
+  },
+  {
+   "n": 6,
+   "crop": "litolff-p1p4-p3-s0-st2-c14-g1-on_a_staff_line.png",
+   "rule": "on_a_staff_line",
+   "sean": "no (whole rest)",
+   "is_ledger_line": false,
+   "rule_right": true
+  },
+  {
+   "n": 7,
+   "crop": "litolff-p1p4-p3-s0-st5-c13-g5-on_a_staff_line.png",
+   "rule": "on_a_staff_line",
+   "sean": "no (whole rest)",
+   "is_ledger_line": false,
+   "rule_right": true
+  },
+  {
+   "n": 8,
+   "crop": "litolff-p1p4-p2-s0-st1-c4-g12-tall_not_a_rung.png",
+   "rule": "tall_not_a_rung",
+   "sean": "no \u2014 too thick, it is a beam for 3 eighth notes",
+   "is_ledger_line": false,
+   "rule_right": true
+  },
+  {
+   "n": 9,
+   "crop": "litolff-p1p4-p4-s1-st2-c5-g14-tall_not_a_rung.png",
+   "rule": "tall_not_a_rung",
+   "sean": "yes",
+   "is_ledger_line": true,
+   "rule_right": false
+  },
+  {
+   "n": 10,
+   "crop": "litolff-p1p4-p4-s1-st9-c11-g17-tall_not_a_rung.png",
+   "rule": "tall_not_a_rung",
+   "sean": "no (middle of the staff)",
+   "is_ledger_line": false,
+   "rule_right": true
+  },
+  {
+   "n": 11,
+   "crop": "litolff-p1p4-p3-s0-st7-c6-g14-kept.png",
+   "rule": "kept",
+   "sean": "yes",
+   "is_ledger_line": true,
+   "rule_right": true
+  },
+  {
+   "n": 12,
+   "crop": "litolff-p1p4-p3-s0-st7-c7-g8-kept.png",
+   "rule": "kept",
+   "sean": "yes",
+   "is_ledger_line": true,
+   "rule_right": true
+  },
+  {
+   "n": 13,
+   "crop": "litolff-p1p4-p4-s1-st2-c3-g19-kept.png",
+   "rule": "kept",
+   "sean": "yes",
+   "is_ledger_line": true,
+   "rule_right": true
+  }
+ ]
+}
