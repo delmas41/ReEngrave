@@ -1077,9 +1077,23 @@ class TestBelongsToAnotherStaff(_Case):
             {"id": "act-own2", "stage": "gather", "kind": "own_box",
              "glyph": "glyph/0/0/0/0/1", "staff": "staff/0/0/1"}), tag="own2")
         v = self.standing(arm["record"], Q.GLYPH_OWNER, "glyph/0/0/0/0/1")
-        self.assertIsNotNone(v["detail"]["twin_on_the_named_staff"],
+        twin = v["detail"]["twin_on_the_named_staff"]
+        self.assertIsNotNone(twin,
                              "staff/0/0/1 IS a candidate of this contest, so "
                              "the record does hold the same ink there")
+        self.assertIs(twin["is_the_glyphs_own_staff"], False,
+                      "⚠️ the commonest own_box pulls a glyph BACK to the "
+                      "staff it was cut from, and there the 'twin' is the "
+                      "glyph itself — a bare row id would read as a second "
+                      "copy that does not exist")
+        own = self.run_review(_sidecar(
+            {"id": "act-own2b", "stage": "gather", "kind": "own_box",
+             "glyph": "glyph/0/0/0/0/1", "staff": "staff/0/0/0"}),
+            tag="own2b")[1]
+        self.assertIs(
+            self.standing(own["record"], Q.GLYPH_OWNER, "glyph/0/0/0/0/1")
+            ["detail"]["twin_on_the_named_staff"]["is_the_glyphs_own_staff"],
+            True)
         d3, arm3, _i3 = self.run_review(_sidecar(
             {"id": "act-own3", "stage": "gather", "kind": "own_box",
              "glyph": "glyph/0/0/0/0/1", "staff": "staff/0/0/7"}), tag="own3")

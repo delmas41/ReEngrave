@@ -763,14 +763,25 @@ def _twin_on(record: dict, glyph_key: str, staff_key: str) -> Optional[str]:
     The test is the record's own: a `Q.GLYPH_BAND_DISTANCE` row on this glyph
     whose `detail.candidate` is that staff means GATHER already found the
     same-category ink there and opened the contest. Anything else is None.
+
+    ⚠️ `own` IS CARRIED, because the commonest `own_box` is a human pulling a
+    glyph BACK to the staff it was cut from — and there the "twin" is the
+    glyph itself. Returning a bare row id would let a reader of the feedback
+    file conclude that a second copy exists somewhere when it does not.
     """
     for o in record.get("observations") or ():
         if o.get("subject") != glyph_key:
             continue
         if o.get("quantity") != Q.GLYPH_BAND_DISTANCE:
             continue
-        if str((o.get("detail") or {}).get("candidate") or "") == staff_key:
-            return o.get("id")
+        det = o.get("detail") or {}
+        if str(det.get("candidate") or "") == staff_key:
+            return {"band_row": o.get("id"),
+                    "is_the_glyphs_own_staff": bool(det.get("own")),
+                    "means": ("this glyph was CUT from that staff's own cell"
+                              if det.get("own") else
+                              "GATHER opened a contest for this ink on that "
+                              "staff, so the ink is boxed there too")}
     return None
 
 
