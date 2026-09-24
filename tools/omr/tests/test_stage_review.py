@@ -538,3 +538,136 @@ class TestPackageIsRegistered(unittest.TestCase):
         package's `server.py` is a new one. Seen failing before the line was
         added (`reach --check` exited 1 naming `review/server.py`)."""
         self.assertEqual(REACH.unaccounted_modules(), [])
+
+
+# ─────────────────────────────────────────────────────────────────────────
+# 6. ROADMAP 3.4c — THE LABEL SET, AND THE SELECTION PANEL'S PAYLOAD
+#
+# ⚠️ RUN RED FIRST. Against 2666f383 (before 3.4c) every test in these two
+# classes fails: the four label verbs did not exist (`ContractError: kind
+# 'relabel_box' is not one of ...`), `/api/labels` 404'd, and `gather_view`
+# carried neither `system_staves` nor `size_spaces` (`KeyError`).
+# ─────────────────────────────────────────────────────────────────────────
+
+class TestTheLabelVerbsAreOneTable(unittest.TestCase):
+    """⚠️ THE POINT IS THAT THERE IS ONE TABLE, NOT THAT THERE ARE FIVE ROWS.
+    Sean's ask ends in *"etc."*, so the set has to be extensible in one place
+    — and a test that listed the five by name would make adding the sixth a
+    two-file change with a red suite in between."""
+
+    def test_the_server_offers_exactly_lane_As_verbs(self):
+        from tools.omr.staged.review import human_evidence as HE
+        self.assertEqual(
+            set(R.KIND_REQUIRES) - {"agree", "disagree"},
+            set(HE.KIND_REQUIRES),
+            "the viewer and the ingest disagree about which verbs exist — "
+            "one of the two refusals is then a lie")
+        self.assertEqual(R._GATHER_KINDS, frozenset(HE.GATHER_KINDS))
+
+    def _action_for(self, entry, drop=None):
+        action = {"id": "a", "t": "x", "stage": "gather",
+                  "kind": entry["kind"]}
+        for fld in entry["needs"]:
+            if fld == drop:
+                continue
+            action[fld] = {"category": "clefCAlto", "staff": "staff/3/0/8",
+                           "of": "glyph/3/0/9/0/6"}.get(fld,
+                                                        "glyph/3/0/9/0/1")
+        return action
+
+    def test_every_label_in_the_table_validates_as_an_action(self):
+        """⚠️ THE POSITIVE CONTROL for the refusal test below: if the shapes
+        this table declares were themselves rejected, that test would pass by
+        refusing everything."""
+        from tools.omr.staged.review import human_evidence as HE
+        for entry in HE.HUMAN_BOX_LABELS:
+            with self.subTest(kind=entry["kind"]):
+                R.validate_action(self._action_for(entry))
+
+    def test_a_label_missing_its_own_field_is_REFUSED(self):
+        from tools.omr.staged.review import human_evidence as HE
+        for entry in HE.HUMAN_BOX_LABELS:
+            for drop in entry["needs"]:
+                with self.subTest(kind=entry["kind"], without=drop):
+                    with self.assertRaises(R.ContractError):
+                        R.validate_action(self._action_for(entry, drop=drop))
+
+    def test_a_relabel_with_no_category_is_refused_by_the_INGEST_too(self):
+        """⚠️ BOTH ENDS, because either end alone is a promise. Lane (B)
+        refuses to write it; lane (A) refuses to read it."""
+        from tools.omr.staged.review import human_evidence as HE
+        good = {"id": "a1", "kind": "relabel_box", "stage": "gather",
+                "glyph": "glyph/3/0/9/0/1", "category": "clefCAlto"}
+        HE.check_sidecar({"actions": [good]})           # the positive control
+        with self.assertRaises(HE.SidecarError):
+            HE.check_sidecar({"actions": [
+                {k: v for k, v in good.items() if k != "category"}]})
+
+
+class TestTheSelectionPanelsPayload(unittest.TestCase):
+    """What the panel needs, answered by the API rather than by the JS."""
+
+    @classmethod
+    def setUpClass(cls):
+        cls.tmp = Path(tempfile.mkdtemp())
+        cls.D = _data(cls.tmp)
+        cls.staff = "staff/0/0/0"
+
+    def test_a_box_carries_its_size_in_STAFF_SPACES(self):
+        """⚠️ Staff spaces, not page pixels: every measured rule in the tree
+        is stated in them (`omr-notehead-width-2026-09`'s 1.0-space floor),
+        and a panel showing pixels makes the reviewer convert in his head."""
+        g = R.gather_view(self.D, self.staff, zoom=2)
+        sized = [b for b in g["boxes"] if b["size_spaces"]]
+        self.assertTrue(sized, "no box carried a size — the panel would show "
+                               "nothing and this test would prove nothing")
+        for b in sized:
+            self.assertEqual(len(b["size_spaces"]), 2)
+            self.assertGreater(b["size_spaces"][0], 0)
+        for b in g["boxes"]:
+            if not b["bbox_page_px"]:
+                self.assertIsNone(
+                    b["size_spaces"],
+                    "a row with no page rectangle got a size — a canonical "
+                    "cell frame cannot answer a page question")
+
+    def test_the_panel_can_offer_the_staff_ABOVE_and_BELOW_by_name(self):
+        g = R.gather_view(self.D, self.staff, zoom=2)
+        rows = g["system_staves"]
+        self.assertEqual([r["staff"] for r in rows],
+                         ["staff/0/0/0", "staff/0/0/1"])
+        self.assertEqual([r["staff_ordinal"] for r in rows],
+                         sorted(r["staff_ordinal"] for r in rows))
+        self.assertEqual([r["staff"] for r in rows if r["is_this_one"]],
+                         [self.staff])
+        for r in rows:
+            self.assertIn("part_name", r)
+
+    def test_the_panel_payload_for_a_subject_carries_its_VERDICTS(self):
+        """⚠️ THE PANEL RE-USES `/api/subject`, it does not re-derive. Sean's
+        ask was *select a box and re-label it*; what makes that a review
+        rather than a guess is seeing what the stages already said about it."""
+        g = R.gather_view(self.D, self.staff, zoom=2)
+        self.assertTrue(g["boxes"], "the fixture staff has no boxes")
+        sub = g["boxes"][0]["glyph"]
+        v = R.subject_view(self.D, sub)
+        self.assertEqual(v["subject"], sub)
+        self.assertIn("verdicts", v["stages"]["adjudicate"])
+        self.assertIn(v["stages"]["adjudicate"]["state"],
+                      ("read", "declined", "absent"))
+        self.assertTrue(
+            [s["quantity"] for s in v["stages"]["adjudicate"]["verdicts"]],
+            "the fixture's own glyph carries no ADJUDICATE verdict, so this "
+            "test would pass against a panel that showed none")
+
+    def test_api_labels_is_served_from_lane_As_table(self):
+        from fastapi.testclient import TestClient
+        from tools.omr.staged.review import human_evidence as HE
+        app = R.create_app(self.D, self.tmp / "labels-sc.json", self.staff)
+        body = TestClient(app).get("/api/labels").json()
+        self.assertEqual([e["kind"] for e in body["labels"]],
+                         [e["kind"] for e in HE.HUMAN_BOX_LABELS])
+        wants = (body["what_a_human_box_can_and_cannot_reach"]["labels"]
+                 ["on_the_machines_own_subject"]["adjudicate_wants"])
+        self.assertIn("adjudicate_glyph_owner", wants)
+        self.assertIn("adjudicate_notehead_is_not_a_notehead", wants)

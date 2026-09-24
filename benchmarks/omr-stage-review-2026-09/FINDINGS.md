@@ -726,3 +726,389 @@ The amended record (239 MB) and the arm's MusicXML are NOT committed.
     OMR_INFER=0 python3 -m tools.omr.staged.review.rerun <record> \
       benchmarks/omr-stage-review-2026-09/out/viola-p3.sidecar.json \
       --out <scratch>/arm --staff staff/3/0/9 --progress
+
+
+# §C — the LABELS (roadmap 3.4c, 2026-09-23)
+
+Sean, after his first minutes on the §B viewer:
+
+> *"it works now but the UI is awkward — I need to be able to select a box and
+> re-label it"*
+
+and, in the same breath:
+
+> *"and to label boxes as nothing or belongs to another staff etc."*
+
+His first real case is on this very staff. The alto clef at the head of the
+Litolff p3 Viola is boxed by the detector as **two `noteheadBlackOnLine`
+glyphs** — `glyph/3/0/9/0/1` at conf 0.642 and `glyph/3/0/9/0/6` at conf
+0.364 — so `adjudicate_clef` abstains `no_candidates` and **all 48 notehead
+boxes on the staff are lost, 40 of them under `no_pitch`**. He did not want
+to delete those two boxes. He wanted to say what they ARE.
+
+## C1. The panel asks ONE question
+
+**WHAT IS THIS?** — five answers, each a witness, each a row the stages read
+or visibly fail to read. The set is ONE TABLE,
+`human_evidence.HUMAN_BOX_LABELS`; `check_sidecar`'s required fields,
+`server.KIND_REQUIRES`, `/api/labels`, the panel's buttons, its keyboard
+hints and `SIDECAR.md`'s table all derive from it, and
+`test_the_server_offers_exactly_lane_As_verbs` asserts the two ends cannot
+drift. The *etc.* in his ask is satisfied by adding a row there.
+
+| answer | kind | the row it becomes | key |
+|---|---|---|---|
+| a symbol of class … | `relabel_box` | `Q.HUMAN_BOX_VERDICT = is_a:<class>` on the machine's glyph, **plus** a human box of the new class | `l` |
+| nothing — not a symbol | `delete_box` | `= not_a_symbol` (the verb is unchanged) | `0` / `d` |
+| belongs to another staff | `own_box` | `= owner:<staff subject>` | `↑` / `↓` |
+| a duplicate of another box | `dup_box` | `= duplicate_of:<glyph>` | `=` |
+| I can't tell | `unsure_box` | an **Abstention**, reason `ABSTAIN.HUMAN_UNSURE` | `u` |
+
+⚠️ **`nothing` keeps the verb `delete_box`.** The panel shows him the word he
+means; the contract keeps the spelling it had. Two spellings for one claim
+would make every sidecar written before today ambiguous about which it meant.
+
+⚠️ **A human may DECLINE, and the record can now say so.** `unsure_box` is an
+Abstention, not a value, because `State.DECLINED` and `State.READ` are what
+the record exists to keep apart — and a review tool that could file only his
+ANSWERS would quietly select for the boxes he was sure about, so the places
+where the PLATE itself is ambiguous would never reach the record at all. It
+is read by nothing, deliberately.
+
+## C2. Which stages see what — DERIVED, and it is two questions
+
+`human_evidence.visibility()` reads this off `adjudicate.REGISTRY`,
+`evaluate.RULES` and `infer.RULES`; `rerun.py` then MEASURES it per run.
+Folding the two halves into one table is how a lane reports a quantity as
+live that nothing ever receives.
+
+**(i) A human BOX — a subject of its own** (`add_box`, and the box half of
+`relabel_box` / `redraw_box`). Quantities it can carry: `glyph_box`,
+`notehead_class`, `notehead_staff_position`, and — new in 3.4c, on the STAFF
+subject, for a clef-class box in CELL 0 only — `clef_glyph`, `clef_position`.
+
+| | decisions |
+|---|---|
+| **domain** (the human's subject IS a subject) | `duration`, `event`, `stem_direction`, `notehead_is_a_whole_rest`, `notehead_is_not_a_notehead` — all via `notehead_class` |
+| **wants** (declared as evidence) | `arc_kind`, `arc_owner`, `articulation_owner`, **`clef`** (`clef_glyph`, `clef_position`, `notehead_staff_position`), `duration`, `event`, `fermata_owner`, `glyph_owner`, `notehead_is_a_whole_rest`, `notehead_is_not_a_notehead`, `onset_column`, `ornament_owner`, **`slot_index`** (`clef_glyph`), `stem_direction`, `tuplet`, `wedge_anchor` |
+| **EVALUATE cause** | none directly; `restate_pitch` reaches a human box through its `notehead_staff_position` |
+| **INFER reads** | `collapse_duration_by_column`, `collapse_duration_to_barline` (`glyph_box`), **`collapse_slot_index_to_family_block`** (`clef_glyph`) |
+
+The two rows in bold are 3.4c's: before it, a human box could not reach the
+clef decision at all. `test_EXACTLY_these_stages_see_the_relabelled_box`
+pins the verdicts a human box actually RECEIVES —
+`{notehead_is_not_a_notehead, stem_direction, notehead_is_a_whole_rest,
+duration, pitch}` — exactly, so a change that starts or stops reading one
+fails there with the quantity named.
+
+**(ii) A human LABEL — a row on the MACHINE's own subject**
+(`Q.HUMAN_BOX_VERDICT`).
+
+| | decisions |
+|---|---|
+| **domain** | *none* — a label never creates a subject |
+| **wants** | `adjudicate_notehead_is_not_a_notehead`, `adjudicate_glyph_owner` |
+| **EVALUATE / INFER** | nothing |
+
+⚠️ **Two decisions DECLARE it, so the harness hands BOTH of them every label
+on that glyph** — including the ones that are not their question. A
+`owner:` row lands in the notehead refusal's `basis` and is declined there; a
+`redrawn` row did the same before 3.4c. **`used` is the only field that
+separates OFFERED from WEIGHED**, which is why the diff reports the three
+apart, and a test asserting "this row reached nothing" would have been WRONG
+and would have looked right
+(`test_an_owner_row_on_an_UNCONTESTED_glyph_DECIDES_NOTHING`).
+
+⚠️ **`own_box` only DECIDES on a CONTESTED glyph.**
+`adjudicate_glyph_owner`'s domain is `subjects_from=Q.GLYPH_BAND_DISTANCE` —
+the contested population. On an uncontested glyph there is no
+`Q.GLYPH_OWNER` verdict at all, so the human's row is filed, offered to the
+notehead refusal, declined, and decides nothing. Named rather than hidden.
+
+## C3. The clef connect, and the thing it exposes
+
+A clef-class box in **cell 0** files the same two rows `gather_clefs` files
+for a detected clef: `Q.CLEF_GLYPH` on the STAFF and `Q.CLEF_POSITION` beside
+it, the position from the cell's own recovered grid with the control that can
+fail. That is a CONNECT, not a guess — the arithmetic is the record's own and
+the class test is `gather._is_clef_class`, imported with its category half
+(without which 27 classes read as clefs, `flag8thUp` as a BASS clef).
+
+⚠️ **Cell 0 only.** *A clef is read at the head of the staff* is gather's own
+rule; a mid-staff clef change is a reading GATHER does not make and this
+module may not invent one. A clef-class box elsewhere gets no clef row and
+the action's `absent[Q.CLEF_GLYPH]` says why
+(`test_a_clef_class_box_OUTSIDE_cell_0_files_no_clef_row`).
+
+⚠️⚠️ **AND THE ROW CARRIES `score=None`, WHICH THE CLEF CONTEST READS AS THE
+WEAKEST EVIDENCE THERE IS.** `clef._detector_terms` weights by `row.score`
+and reads `None` as 0.0, i.e. `W_DETECTOR_LOW`. Measured on the fixture: a
+staff carrying a detector `gClef` at 0.9 and a human `clefCAlto` comes back
+**`treble`, scores `{treble: 1.0}`**, with the human's row in `basis` and
+never in `used` — offered and declined. A person who read the plate is
+outranked by one detection. That is wrong, it is NOT repaired here (writing a
+confidence would be exactly the fallback CLAUDE.md rule 8 forbids), and
+repairing it is a change to `clef.py`'s weighting with its own measurement.
+`test_THE_HUMANS_CLEF_ENTERS_AS_THE_WEAKEST_WITNESS_AND_IT_IS_SAID` pins it.
+
+## C4. `rhythm._head_class` traced — and the row it reads was NOT filed
+
+The brief asked whether a relabel INSIDE the notehead family should file a
+human `Q.NOTEHEAD_CLASS` on the machine's glyph, because that is what
+`adjudicate_duration` reads. It was traced, and the answer is **no**:
+
+    def _head_class(ev):
+        rows = ev.rows(Q.NOTEHEAD_CLASS)
+        return max(rows, key=lambda r: (r.score or 0.0)).value
+
+A human row carries `score=None` → 0.0 and would **lose** to the detector's
+0.9 — while still landing in that verdict's `used`, because
+`adjudicate_duration` puts every `Q.NOTEHEAD_CLASS` row it can see there. The
+feedback file would report the row as WEIGHED and the value would not move:
+this repo's own standing bug class (*the value existed and nothing read it*)
+wearing the opposite mask, and harder to catch.
+
+So the relabel files no such row. The new class arrives as a **human box of
+its own**, and `adjudicate_duration` decides on THAT subject — asserted
+exactly (`black → half` gives `written 2.0` on the human subject and leaves
+the machine's `1.0` untouched).
+
+⚠️ **The price is a duplicate note, and it is asserted rather than buried.**
+An in-family relabel adds a head and refuses none, so the bar carries the
+machine's quarter AND the human's half
+(`test_AND_THE_PRICE_IS_TWO_NOTES_WHERE_THE_PLATE_HAS_ONE`). Closing it needs
+either a rule that `is_a:<other notehead>` supersedes the head class — which
+means changing how `_head_class` ranks, not adding a row — or a rule that
+refuses the machine's box, which is `redrawn`'s open question and a decision
+nobody has taken. Neither is 3.4c's.
+
+## C5. The controls, and the RED
+
+⚠️ **RUN RED FIRST, and the RED that matters is not "the verb did not
+exist".** With the whole ingest in place and ONLY the two connects neutered —
+`_human_not_a_symbol`'s `is_a`/`duplicate_of` arms returning None and
+`_human_owner` returning None — the two test files ran **7 failed, 98
+passed**, and the seven are exactly the consequence tests. Every ingest test
+stayed green, so they test the CONNECT and not the filing: the rows are filed
+either way.
+
+⚠️ **The ownership test has a positive control in the same class.** Without a
+human row the same fixture contest decides `staff/0/0/1`, reason `distance`,
+and `control_differ == 0`. A `_human_owner` that fired on every glyph would
+look exactly like one that works, and this is what separates them.
+
+⚠️ **`own_box` reports whether the named staff HOLDS the ink, and repairs
+nothing.** CLAUDE.md §10: a resolved contest DROPS the loser and never
+relocates it, so awarding a glyph to a staff whose own detector never boxed
+that ink removes a note and adds none. `detail.twin_on_the_named_staff`
+carries the `Q.GLYPH_BAND_DISTANCE` row that proves otherwise, and says
+whether that staff is the glyph's OWN — because the commonest `own_box` pulls
+a head back to the staff it was cut from, where the "twin" is the glyph
+itself.
+
+⚠️ **The `wiring` substring trap caught this lane too — the sixth time.**
+`_twin_on` first read the band row's own detail flag for *is this the glyph's
+own staff*, which is the obvious read. `wiring --check`'s DETAIL question is
+a raw-text substring scan over everything under `tools/`, so that one mention
+reported a standing pipeline finding as CLOSED: **69 problems, 1 STALE gap
+entry, `staged.check` status=broken**. A review instrument reading a detail
+key does not make a STAGE consume it. The answer is the same one
+`recover_cell_grid` records one function along — derive it from the SUBJECT
+(the glyph's staff is in its key) and never name the key.
+
+⚠️ **A human naming a staff the contest never offered is NOT swallowed.**
+`_human_owner` checks nothing: if he names `staff/0/0/7` the verdict says
+`staff/0/0/7`, the twin field says `null`, and the note count does not move.
+That he disagrees with the candidate SET is the finding.
+
+## C6. `staged.check`: 258 → 259, and N GOING UP IS AGAINST CLAUDE.md §4d
+
+Reported rather than argued away. Baseline measured on this branch's own base
+(`git archive 2666f383` into a scratch tree, `staged.check` there = **258**).
+The +1 is `inventory`, one new `KNOWN_GAPS` entry: **`glyph_owner wants
+'human_box_verdict'`** — the same fact the `notehead_is_not_a_notehead` entry
+already carries, one decision along. The declaration IS read
+(`ownership._human_owner`); what the tool reports is that the quantity's
+PRODUCER is a human, outside the pipeline. Closing it would mean inventing a
+`gather_human_boxes()` that reads a JSON file, which puts a review artefact
+inside the measurement path — the same structural refusal that keeps a
+dossier out of it. `wiring` 70, `reach` 25, `brakes` 8: all unchanged.
+
+⚠️ Every CONNECT of a human witness to a further decision costs exactly one
+of these, by construction. That is the shape of the cost, and it should be
+priced before the next one rather than discovered.
+
+## C7. The run on the real record — Sean's own case
+
+Record: `library/_shared-records/beethoven5-litolff-mvt1-whole-20260923.record.json`
+(313 MB, 156,525 observations, 17,869 abstentions, 101,361 verdicts, 331
+staves, dpi 600, provenance `dbc9962b` **dirty** — not a baseline). The
+relabel was made **through the HTTP API** on a server run on port 5076
+(Sean's own is on 5075 and was not touched), so the frame control gated it
+exactly as it gates his clicks.
+
+⚠️⚠️ **THE CONTROL RUNS FIRST AND IT IS THE ONLY REASON ANY OF THIS IS
+READABLE.** An empty sidecar on today's tree gives **78 differing standing
+verdicts** and `<note>` **8,588 → 8,605 (+17)`** — 69 INFER `duration` and 9
+INFER `clef`, all of it drift between the tree that gathered the record and
+the tree that re-decides it. **Every one of those numbers would otherwise
+have been read as the relabel's.** The first draft of this section nearly
+was: nine staves across the movement gaining a decided `alto` clef is an
+extremely convincing thing to attribute to a human saying *that is an alto
+clef*, and it is not his.
+
+| | control | relabel arm | own_box arm |
+|---|---|---|---|
+| standing verdicts differ | **78** | **79** | **79** |
+| absent from the rebuild | 0 | 0 | **1** |
+| `<note>` | 8,588 → 8,605 | 8,588 → 8,605 | 8,588 → 8,605 |
+| the ONE extra verdict | — | `notehead_is_not_a_notehead` on `glyph/3/0/9/0/1` | `glyph_owner` on `glyph/3/0/9/6/3` |
+
+### C7a. `relabel_box glyph/3/0/9/0/1 → clefCAlto`
+
+Four rows, and the file names all four:
+
+    obs:174395  glyph/3/0/9/0/400000  glyph_box      ["clefCAlto", 289.0, 579.0, 169.0, 139.0]
+    obs:174396  staff/3/0/9           clef_glyph     "clefCAlto"          score=None
+    obs:174397  staff/3/0/9           clef_position  4.082857142857148
+    obs:174398  glyph/3/0/9/0/1       human_box_verdict  "is_a:clefCAlto"
+
+207 verdicts named one of them; **1 WEIGHED one** —
+`adjudicate_notehead_is_not_a_notehead` on `glyph/3/0/9/0/1`, `decided True`,
+reason `human_not_a_symbol`, `detail.human_says = is_a:clefCAlto`. Census on
+`staff/3/0/9`: `no_pitch` 40 → **39**, `not_a_notehead:human_not_a_symbol`
+0 → **1**, `refused_total` 48 both ways, `written {rest: 7}` both ways.
+
+⚠️ **`clef_position` 4.0829.** An alto clef's centre sits on the middle line,
+which is staff position **4.0** — so the human's box, converted through the
+cell's own recovered grid, places it **0.083 of a staff step** off the line
+it is printed on. That is the measurement `clef.py` says should name a C
+clef's line, derived honestly, on the record.
+
+**Did the clef decision change? NO.**
+
+    vrd:176191  staff/3/0/9  clef  ABSTAINED  no_candidates  adjudicate_clef
+      considered: [obs:174397, obs:174396, vrd:175497, obs:024447-50]
+      used:       []
+      basis:      [... obs:174395, obs:174396, obs:174397 ...]
+      declined:   [clef_located, keysig_clef_fit]
+      candidates: []
+
+The decision **read both of his rows and used neither**, and the cause is
+exact, in `adjudicators/clef.py`:
+
+* `_GLYPH_TO_CLEF` is `{clefG: treble, clefF: bass, clefUnpitchedPercussion:
+  percussion}`, so `_clef_of("clefCAlto")` is **None**. That is deliberate and
+  measured — *the class names the FAMILY, geometry names the LINE*, and
+  DeepScoresV2 has no soprano/mezzo/baritone class at all.
+* `_c_family_support` therefore admits his row only as support for **a C clef
+  somebody else NAMED**. Nothing named one (`Q.CLEF_LOCATED` declined), so
+  `named_c` is empty, the row supports nothing, and `candidates` stays empty.
+* `if not candidates: return Ruling.abstain("no_candidates")`.
+
+**Did any head get a pitch? NO. `<note>` on `staff/3/0/9`: 0 before, 0 after**
+(seven measure rests each way). The whole-document `<note>` count is
+**identical to the control**, so the relabel wrote no note and removed none.
+
+⚠️⚠️ **THIS IS THE FINDING, AND IT IS A GOOD ONE.** The refusal to let a class
+name a C clef's line is RIGHT for the detector — `benchmarks/` records
+`clefCTenor` firing where the locator measured alto, twice, at 0.91. It is
+WRONG for a person: he did not classify a glyph, he read which line the clef
+is printed on, and he handed over the position to prove it. Closing it is one
+branch in `_c_family_support`'s caller gated on the ROW'S READER — a human
+`clefC*` row NAMES its C clef instead of merely supporting one — with its own
+measurement. **That is the structural refinement this pass was run to find**
+(Sean: *"I mainly want this information so that we can then use it to
+determine how to refine the build, rules and decisions — structurally"*).
+
+⚠️ **A SECOND GAP, VISIBLE IN THE CONTROL AND THEREFORE NOT THE RELABEL'S.**
+`infer:fill_clef_gap` DOES give `staff/3/0/9` a decided **`alto`** (`tally
+{alto: 14, treble: 1, bass: 1}` over 16 systems of slot 9, superseding the
+abstention) — **and not one head gets a pitch anyway.** `restate_pitch` is an
+EVALUATE consequence and EVALUATE runs BEFORE INFER (§4a), so a clef decided
+at INFER pitches nothing. Forty `no_pitch` heads survive a correct, decided,
+document-wide clef. Measured in all three arms.
+
+⚠️ **The other half of his case is still there.** `glyph/3/0/9/0/6`, the
+alto clef's other arm (`noteheadBlackOnLine`, conf 0.364), was not in this
+sidecar and is still a notehead. One click, same panel.
+
+### C7b. `own_box glyph/3/0/9/6/3 → staff/3/0/9` (owned BACK to the Viola)
+
+`adjudicate_glyph_owner` had awarded this head to `staff/3/0/8` (**Violin**)
+on `distance`. One row (`owner:staff/3/0/9`), 145 verdicts named it, **1
+WEIGHED it**:
+
+    glyph_owner  glyph/3/0/9/6/3
+      before  decided  staff/3/0/8  distance
+      after   decided  staff/3/0/9  human_owner
+
+Census on `staff/3/0/9`: `owned_by_another_staff` 3 → **2**, `no_pitch`
+40 → **41**, `written {rest: 7}` unchanged, `<note>` identical to the control.
+
+⚠️ **The head came home and fell straight into the same clef gap.** The
+human's reading was applied exactly, the refusal moved from one named bucket
+to another, and the file did not change — because the Viola has no clef in
+EVALUATE. Two corrections are needed to write one note, and 3.4c can only
+file one of them.
+
+⚠️ **`absent_from_the_rebuild` went 0 → 1, and `Diff` COUNTS IT WITHOUT
+NAMING IT.** One standing verdict the parent held has no counterpart in this
+arm — almost certainly the `Q.PITCH` the head carried as the Violin's — and
+the diff cannot say which, because `diff_records` records only the count.
+**A review pass therefore cannot report which verdict a human's row
+REMOVED**, which is the same class of gap as the ones this lane exists to
+find. Naming the first N absent keys is a cheap fix and is not taken here.
+
+⚠️ **AND A HUMAN LABELLING ONE COPY DOES NOT LABEL THE TWIN.** A cross-staff
+contest is per-GLYPH-SUBJECT: the Violin's own copy of this ink is a
+different subject with its own `glyph_owner` verdict, which this row does not
+touch. Owning the Viola copy home does not take the Violin's away. On this
+staff it cost nothing (the Viola cannot write the note anyway), but on a
+staff whose clef is decided it would write the head TWICE. The panel should
+prompt for the twin; it does not yet.
+
+### C7c. What the feedback file says, and one thing it cannot
+
+`reached_nothing: []` and `refused: []` in both arms — every row reached a
+decision. The per-stage summary reports `verdicts_naming_a_human_row` 207 /
+145 against `verdicts_that_WEIGHED_one` **1** and **1**, which is the number
+that means anything.
+
+⚠️ **A human row weighed by a SUPERSEDED verdict disappears from the report.**
+`adjudicate_clef`'s abstention carries both of his clef rows in `considered`
+and `basis` — and `infer:fill_clef_gap` supersedes it, so `_verdict_index`
+resolves the standing verdict to the INFER one and `basis_names_human` never
+sees the ADJUDICATE pass. The rows are in the record; the feedback file omits
+them. That is how §C7a's diagnosis had to be read out of the amended record
+by hand rather than off the file, and it is worth closing.
+
+## C8. How to reproduce
+
+    # the CONTROL first — without it every number below is unattributable
+    python3 -m tools.omr.staged.review.rerun \
+      library/_shared-records/beethoven5-litolff-mvt1-whole-20260923.record.json \
+      --out <scratch>/control --staff staff/3/0/9 --progress
+
+    # the relabel arm
+    python3 -m tools.omr.staged.review.rerun <record> \
+      benchmarks/omr-stage-review-2026-09/out/relabel-clefCAlto.sidecar.json \
+      --out <scratch>/relabel --staff staff/3/0/9 --progress
+
+    # the own_box arm
+    python3 -m tools.omr.staged.review.rerun <record> \
+      benchmarks/omr-stage-review-2026-09/out/relabel-own-viola.sidecar.json \
+      --out <scratch>/own --staff staff/3/0/9 --progress
+
+    # the viewer the relabel was made in (⚠️ 5075 is Sean's; use another port)
+    python3 -m tools.omr.staged.review.server --record <record> \
+      --pdf library/editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf \
+      --staff staff/3/0/9 --port 5076
+
+Each run is ~12 minutes and ~4 GB, most of it loading the record.
+Committed here: `relabel-clefCAlto.sidecar.json`,
+`relabel-clefCAlto.arm.diff.json`, `relabel-clefCAlto.arm.feedback.json`,
+`relabel-own-viola.sidecar.json`, `relabel-own-viola.arm.diff.json`,
+`relabel-own-viola.arm.feedback.json` and
+`relabel-CONTROL-empty-sidecar.diff.json` — the control beside the arms,
+because an arm without its control is a number, not a measurement.

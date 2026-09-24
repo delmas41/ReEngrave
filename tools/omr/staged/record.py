@@ -984,12 +984,30 @@ class Q(_Vocab):
     # and what they do with it is measured. Nothing here mutates a machine
     # row and nothing here overwrites a verdict.
 
-    #: A human looked at a box the detector drew and said what it is NOT.
+    #: A human looked at a box the detector drew and said what it IS, or what
+    #: it is NOT. ROADMAP 3.4; Sean, 2026-09-23: *"I need to be able to select
+    #: a box and re-label it ... and to label boxes as nothing or belongs to
+    #: another staff etc."*
     #:
-    #: Value: one word. `not_a_symbol` -- this ink is not a symbol of the kind
-    #: the box claims -- or `redrawn`, the box is in the wrong PLACE (a
-    #: different claim, and today it reaches no consumer; `review/feedback.py`
-    #: reports that rather than hiding it).
+    #: Value: ONE WORD, or one word and a colon and its argument. The
+    #: vocabulary and its consumers are DERIVED, never re-listed --
+    #: `review/human_evidence.HUMAN_BOX_LABELS` is the one table and
+    #: `review/human_evidence.human_says` is the one parser:
+    #:
+    #:   `not_a_symbol`            this ink is not a symbol at all
+    #:   `is_a:<canonical class>`  it is a symbol of THIS class instead
+    #:   `owner:<staff subject>`   it belongs to that staff, not this one
+    #:   `duplicate_of:<glyph>`    one piece of ink, already boxed there
+    #:   `redrawn`                 the box is in the wrong PLACE (a different
+    #:                             claim, and today it reaches no consumer;
+    #:                             `review/feedback.py` reports that rather
+    #:                             than hiding it)
+    #:
+    #: ⚠️ *He could not tell* is NOT a value here. It is an ABSTENTION on this
+    #: quantity, reason `ABSTAIN.HUMAN_UNSURE` -- because a reader who
+    #: declined and a reader who answered are exactly what `State.DECLINED`
+    #: and `State.READ` keep apart, and spelling "unsure" as a value would
+    #: hand every consumer a word it has to remember not to act on.
     #:
     #: ⚠️ FILED ON THE GLYPH SUBJECT THE DETECTOR ALREADY OWNS, so the
     #: machine's own `Q.GLYPH_BOX` row stays exactly where it was and the two
@@ -1714,6 +1732,21 @@ class ABSTAIN(_Vocab):
     #: choose, and a consumer that cannot tell those apart would read a blank
     #: cover page as a close call.
     NO_DOMAIN_SIGNAL = "no_domain_signal"
+
+    #: A HUMAN looked at the print and could not say (ROADMAP 3.4, the stage
+    #: review's `unsure_box`).
+    #:
+    #: ⚠️ IT EXISTS BECAUSE A HUMAN IS A READER WITH A READER'S OBLIGATIONS,
+    #: AND THE FIRST OF THEM IS THE RIGHT TO DECLINE. A review tool that could
+    #: only file the human's ANSWERS would quietly select for the boxes he was
+    #: sure about, and the places where the PLATE ITSELF is ambiguous -- the
+    #: ones worth a convention decision -- would never reach the record at
+    #: all. Filed as an Abstention so `State.DECLINED` keeps it apart from
+    #: `State.ABSENT`, which is the distinction the record exists for (§4b).
+    #: ⚠️ Read by NO stage, deliberately: "he could not tell" is not an
+    #: argument for or against any value, and `review/feedback.py` reports it
+    #: as a place the print is ambiguous rather than as evidence.
+    HUMAN_UNSURE = "human_unsure"
 
     # the build itself
     NOT_IMPLEMENTED = "not_implemented"           # ⚠️ a declared stub

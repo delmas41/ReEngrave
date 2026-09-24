@@ -1,0 +1,16 @@
+{
+ "record": "/Users/seanjohnson/Desktop/ReEngrave/library/_shared-records/beethoven5-litolff-mvt1-whole-20260923.record.json",
+ "staff": "staff/3/0/9",
+ "reader": "session-test",
+ "actions": [
+  {
+   "stage": "gather",
+   "kind": "relabel_box",
+   "glyph": "glyph/3/0/9/0/1",
+   "category": "clefCAlto",
+   "note": "that is the alto clef, not a notehead \u2014 the detector boxed its two arms as heads",
+   "id": "act-0001",
+   "t": "2026-09-24T01:26:38+00:00"
+  }
+ ]
+}

@@ -82,7 +82,8 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Sequence, Tuple, Union
 
-from ..record import Kind, Q, READERS, Subject, claim_of, glyph
+from ..record import (ABSTAIN, Kind, Q, READERS, Subject, claim_of, glyph,
+                      staff as _staff_subject)
 
 # ─────────────────────────────────────────────────────────────────────────────
 # The sidecar
@@ -91,9 +92,86 @@ from ..record import Kind, Q, READERS, Subject, claim_of, glyph
 #: Every `kind` lane (B) may write. An unknown one is REFUSED, never ignored:
 #: a viewer that grows a verb this module has not been taught would otherwise
 #: have its actions silently dropped and the review would read as complete.
-GATHER_KINDS = ("add_box", "delete_box", "redraw_box")
+GATHER_KINDS = ("add_box", "delete_box", "redraw_box", "relabel_box",
+                "own_box", "dup_box", "unsure_box")
 STANCE_KINDS = ("agree", "disagree")
 STAGES = ("gather", "adjudicate", "evaluate", "infer", "export")
+
+#: ⚠️⚠️ THE ONE TABLE OF "WHAT IS THIS?" ANSWERS, AND EVERYTHING ELSE DERIVES
+#: FROM IT — `check_sidecar`'s required fields, the server's `/api/labels`,
+#: the viewer's panel, `SIDECAR.md`'s table and `visibility()`'s report. Sean,
+#: 2026-09-23: *"and to label boxes as nothing or belongs to another staff
+#: etc."* — the *etc.* is his, so the set must be extensible in ONE place.
+#:
+#: `reaches` is a CLAIM THIS MODULE MAKES AND `rerun.py` MEASURES. It is not
+#: how the answer is routed; it is what a reader should expect, and a run that
+#: contradicts it is the finding, not a bug in the table.
+HUMAN_BOX_LABELS: Tuple[Dict[str, Any], ...] = (
+    {"label": "a symbol of class …", "kind": "relabel_box",
+     "needs": ("glyph", "category"), "key": "category",
+     "value": "is_a:<class>", "row": "observation",
+     "reaches": "adjudicate_notehead_is_not_a_notehead (refuses the head "
+                "where the class is OUTSIDE the notehead family); the new "
+                "class is filed as a HUMAN BOX of its own, which every "
+                "decision whose domain that class enters then decides on",
+     "keys": "l"},
+    {"label": "nothing — not a symbol", "kind": "delete_box",
+     "needs": ("glyph",), "key": None,
+     "value": "not_a_symbol", "row": "observation",
+     "reaches": "adjudicate_notehead_is_not_a_notehead, reason "
+                "`human_not_a_symbol`",
+     "keys": "0 / d"},
+    {"label": "belongs to another staff", "kind": "own_box",
+     "needs": ("glyph", "staff"), "key": "staff",
+     "value": "owner:<staff subject>", "row": "observation",
+     "reaches": "adjudicate_glyph_owner, reason `human_owner` — but ONLY on a "
+                "glyph already in that decision's domain (`subjects_from="
+                "Q.GLYPH_BAND_DISTANCE`, the CONTESTED population). On an "
+                "uncontested glyph the row is filed and reaches nothing, and "
+                "the feedback file says so.",
+     "keys": "↑ / ↓"},
+    {"label": "a duplicate of another box", "kind": "dup_box",
+     "needs": ("glyph", "of"), "key": "of",
+     "value": "duplicate_of:<glyph subject>", "row": "observation",
+     "reaches": "adjudicate_notehead_is_not_a_notehead, reason "
+                "`human_not_a_symbol`, `detail.human_says` naming the twin — "
+                "one piece of ink, one note",
+     "keys": "="},
+    {"label": "I can't tell", "kind": "unsure_box",
+     "needs": ("glyph",), "key": None,
+     "value": None, "row": "abstention",
+     "reaches": "NOTHING, deliberately. An Abstention with reason "
+                "`human_unsure`: a place the PRINT is ambiguous, reported by "
+                "review/feedback.py and read by no stage.",
+     "keys": "u"},
+)
+
+#: kind -> the sidecar fields that kind cannot do without. DERIVED from the
+#: table above plus the two box verbs that predate it.
+KIND_REQUIRES: Dict[str, Tuple[str, ...]] = {
+    **{e["kind"]: tuple(e["needs"]) for e in HUMAN_BOX_LABELS},
+    "add_box": ("bbox_page_px", "category"),
+    "redraw_box": ("glyph", "bbox_page_px"),
+}
+
+#: The `Q.HUMAN_BOX_VERDICT` values that carry an argument after a colon.
+_PREFIXED = ("is_a", "owner", "duplicate_of")
+
+
+def human_says(value: Any) -> Tuple[str, Optional[str]]:
+    """`"is_a:clefCAlto"` -> `("is_a", "clefCAlto")`; `"not_a_symbol"` ->
+    `("not_a_symbol", None)`.
+
+    ⚠️ THE ONE PARSER, imported by every consumer. A second `split(":", 1)`
+    somewhere in an adjudicator is how a value spelling comes to mean two
+    things; `notehead_precision._human_not_a_symbol` and
+    `ownership._human_owner` both call this.
+    """
+    s = str(value or "")
+    for pre in _PREFIXED:
+        if s.startswith(pre + ":"):
+            return pre, s[len(pre) + 1:]
+    return s, None
 
 #: ⚠️ THE FIFTH BASE. See the module docstring; the four below it live in
 #: `gather.py` and the test derives them from that module rather than copying
@@ -106,6 +184,17 @@ try:                                              # pragma: no cover - import
     from ..gather import _NOTEHEAD_PREFIX as NOTEHEAD_PREFIX
 except Exception:                                 # pragma: no cover
     NOTEHEAD_PREFIX = "notehead"
+
+#: ⚠️ GATHER'S OWN CLEF TEST, IMPORTED WITH ITS CATEGORY HALF. See
+#: `gather._is_clef_class`: dropping the category argument admits 27 classes
+#: as clefs, `flag8thUp` among them as a BASS clef.
+from ..gather import _is_clef_class            # noqa: E402
+
+
+def R_staff_of(cell: Subject) -> Subject:
+    """The STAFF a cell belongs to. ⚠️ Through `record.staff`, not by string
+    surgery on the key: a subject's spelling is the record's business."""
+    return _staff_subject(cell.page, cell.system, cell.staff)
 
 #: How far two anchors may disagree before the recovered frame is REFUSED.
 #: Relative on the scale, absolute page pixels on the offsets. Chosen so the
@@ -163,19 +252,22 @@ def check_sidecar(sc: Any) -> None:
                                f"{STAGES}")
         if kind in STANCE_KINDS and not a.get("verdict"):
             raise SidecarError(f"action {aid}: a {kind} names no `verdict`")
-        if kind in ("delete_box", "redraw_box") and not a.get("glyph"):
-            raise SidecarError(f"action {aid}: a {kind} names no `glyph`")
+        # ⚠️ DERIVED FROM `KIND_REQUIRES`, never re-listed per verb: a label
+        # added to `HUMAN_BOX_LABELS` is validated the moment it exists, which
+        # is the only way an extensible set stays checked.
+        for fld in KIND_REQUIRES.get(kind, ()):
+            if not a.get(fld):
+                raise SidecarError(
+                    f"action {aid}: a {kind} names no `{fld}`"
+                    + (". A box with no name is `Q.INK`, which GATHER already "
+                       "files and this module may not manufacture."
+                       if fld == "category" else ""))
         if kind in ("add_box", "redraw_box"):
             bb = a.get("bbox_page_px")
             if not (isinstance(bb, (list, tuple)) and len(bb) == 4):
                 raise SidecarError(
                     f"action {aid}: a {kind} needs `bbox_page_px` "
                     f"[x0, y0, x1, y1] in PAGE pixels at the gather's own DPI")
-        if kind == "add_box" and not a.get("category"):
-            raise SidecarError(
-                f"action {aid}: an add_box names no `category`. A box with no "
-                f"name is `Q.INK`, which GATHER already files and this module "
-                f"may not manufacture.")
 
 
 def sidecar_digest(sc: dict) -> str:
@@ -492,7 +584,17 @@ def recover_cell_grid(record: dict, cell: Subject,
 #: The quantities a human box can be given. Consumed by `visibility()` and by
 #: the tests; a change here changes the honest table rather than a comment.
 HUMAN_BOX_QUANTITIES: Tuple[str, ...] = (
-    Q.GLYPH_BOX, Q.NOTEHEAD_CLASS, Q.NOTEHEAD_STAFF_POSITION)
+    Q.GLYPH_BOX, Q.NOTEHEAD_CLASS, Q.NOTEHEAD_STAFF_POSITION,
+    # ⚠️ ON THE STAFF SUBJECT, NOT THE GLYPH'S — filed only for a clef-class
+    # box in CELL 0, the one place `gather_clefs` looks. A human box of a
+    # notehead class never carries these and a clef-class box in cell 7 does
+    # not either; both facts are reported per action in `absent`.
+    Q.CLEF_GLYPH, Q.CLEF_POSITION)
+
+#: The `Q.HUMAN_BOX_VERDICT` values (and the one abstention) a LABEL files.
+#: Derived from the table so a new label appears in `visibility()` the moment
+#: it exists rather than the next time somebody remembers this list.
+HUMAN_LABEL_QUANTITIES: Tuple[str, ...] = (Q.HUMAN_BOX_VERDICT,)
 
 #: The quantities GATHER gives a detected notehead that a human box CANNOT
 #: have, each with the reason. ⚠️ An inventory, never a suppression list.
@@ -535,24 +637,45 @@ def visibility() -> dict:
     """
     from .. import adjudicate, evaluate, infer
     from .. import adjudicators, consequences, inferences   # noqa: F401
-    qs = set(HUMAN_BOX_QUANTITIES)
-    domain, wants = {}, {}
-    for quantity, spec in adjudicate.REGISTRY.items():
-        d = set(adjudicate.domain_of(spec)) & qs
-        if d:
-            domain[spec.name] = sorted(d)
-        w = set(spec.wants) & qs
-        if w:
-            wants[spec.name] = sorted(w)
-    ev = {r.name: r.cause for r in getattr(evaluate, "RULES", ())
-          if getattr(r, "cause", None) in qs}
-    inf = {getattr(r, "name", str(r)): sorted(set(getattr(r, "reads", ())) & qs)
-           for r in getattr(infer, "RULES", ())
-           if set(getattr(r, "reads", ())) & qs}
-    return {"quantities": sorted(qs),
-            "absent": {k: HUMAN_BOX_ABSENT[k] for k in sorted(HUMAN_BOX_ABSENT)},
-            "adjudicate_domain": domain, "adjudicate_wants": wants,
-            "evaluate_cause": ev, "infer_reads": inf}
+
+    def _over(qs: set) -> dict:
+        domain, wants = {}, {}
+        for quantity, spec in adjudicate.REGISTRY.items():
+            d = set(adjudicate.domain_of(spec)) & qs
+            if d:
+                domain[spec.name] = sorted(d)
+            w = set(spec.wants) & qs
+            if w:
+                wants[spec.name] = sorted(w)
+        ev = {r.name: r.cause for r in getattr(evaluate, "RULES", ())
+              if getattr(r, "cause", None) in qs}
+        # ⚠️ `Rule` HAS NO `.name` — the first cut's `getattr(r, "name",
+        # str(r))` fell through to the dataclass repr, so this table's INFER
+        # half printed a 2,000-character `Rule(...)` blob as the rule's name.
+        # The rule's own `Inference` enum is the spelling `infer.py` uses.
+        inf = {r.inference.value: sorted(set(getattr(r, "reads", ())) & qs)
+               for r in getattr(infer, "RULES", ())
+               if set(getattr(r, "reads", ())) & qs}
+        return {"quantities": sorted(qs), "adjudicate_domain": domain,
+                "adjudicate_wants": wants, "evaluate_cause": ev,
+                "infer_reads": inf}
+
+    out = _over(set(HUMAN_BOX_QUANTITIES))
+    out["absent"] = {k: HUMAN_BOX_ABSENT[k] for k in sorted(HUMAN_BOX_ABSENT)}
+    # ⚠️ THE LABELS ARE A SECOND, DIFFERENT QUESTION AND ARE REPORTED APART.
+    # A human BOX is a subject the stages decide ON; a human LABEL is a row
+    # filed on a subject the MACHINE already owns, and a decision reaches it
+    # only if it DECLARES `Q.HUMAN_BOX_VERDICT` in `wants` — which two do.
+    # Folding the two tables into one is how a lane reports a quantity as
+    # live that nothing ever receives.
+    out["labels"] = {
+        "table": [dict(e) for e in HUMAN_BOX_LABELS],
+        "on_the_machines_own_subject": _over(set(HUMAN_LABEL_QUANTITIES)),
+        "⚠️": ("`unsure_box` files an ABSTENTION, so it appears in no "
+               "`wants` list and reaches nothing by design — "
+               "ABSTAIN.HUMAN_UNSURE says why."),
+    }
+    return out
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -591,6 +714,90 @@ def _obs_json(row_id: str, subject: str, quantity: str, value: Any, *,
             # a ruler reading is not a guess, and a human's reading of the
             # print is not a scored one either.
             "score": None, "detail": dict(detail), "basis": list(basis)}
+
+
+def _abs_json(row_id: str, subject: str, quantity: str, *, reader: str,
+              frame: str, reason: str, detail: dict) -> dict:
+    """An Abstention in exactly `Abstention.to_json`'s spelling.
+
+    ⚠️ `ABSTAIN.check` IS CALLED HERE for `Log.abstain`'s reason: a reason
+    word outside the closed vocabulary must fail on the run that introduces
+    it, not on the replay, where it would surface as a `_Vocab` error from
+    inside `rebuild_gather` with no sidecar in sight.
+    """
+    ABSTAIN.check(reason, "abstention reason")
+    claim_of(quantity, reader)
+    return {"id": row_id, "subject": subject, "quantity": quantity,
+            "reader": reader, "frame": frame, "reason": reason,
+            "detail": dict(detail)}
+
+
+def _page_box_of(record: dict, glyph_key: Optional[str]
+                 ) -> Optional[Sequence[float]]:
+    """The PAGE rectangle on a glyph's own `Q.GLYPH_BOX` row, or None.
+
+    ⚠️ DECLINED, NEVER DEFAULTED. A canonical cell frame cannot answer a page
+    question (CLAUDE.md §10), so a row without `detail.bbox_page_px` has no
+    page rectangle and a relabel of it is refused rather than placed.
+    """
+    if not glyph_key:
+        return None
+    for o in record.get("observations") or ():
+        if o.get("subject") == glyph_key and o.get("quantity") == Q.GLYPH_BOX:
+            bb = (o.get("detail") or {}).get("bbox_page_px")
+            if isinstance(bb, (list, tuple)) and len(bb) == 4:
+                return [float(v) for v in bb]
+    return None
+
+
+def _twin_on(record: dict, glyph_key: str, staff_key: str) -> Optional[str]:
+    """Does the staff he named hold the SAME ink, boxed on its own side?
+
+    ⚠️⚠️ THIS IS NOT A REPAIR AND MUST NOT BECOME ONE. A cross-staff contest
+    is resolved by DROPPING the loser, never by relocating it (CLAUDE.md §10),
+    so awarding a glyph to a staff whose own detector never boxed that ink
+    removes a note and adds none. The answer is recorded on the human's row so
+    the feedback file can say which of the two happened, and `rerun.py`
+    MEASURES the note count either way.
+
+    The test is the record's own: a `Q.GLYPH_BAND_DISTANCE` row on this glyph
+    whose `detail.candidate` is that staff means GATHER already found the
+    same-category ink there and opened the contest. Anything else is None.
+
+    Whether that staff is the glyph's OWN is carried too, because the
+    commonest `own_box` is a human pulling a glyph BACK to the staff it was
+    cut from — and there the "twin" IS the glyph itself. A bare row id would
+    let a reader of the feedback file conclude that a second copy exists
+    somewhere when it does not.
+
+    ⚠️⚠️ AND IT IS DERIVED FROM THE SUBJECT, NOT READ OFF THE BAND ROW'S OWN
+    DETAIL — which carries exactly that flag and would have been the obvious
+    read. `wiring --check`'s DETAIL question is a RAW-TEXT SUBSTRING SCAN over
+    everything under `tools/`, so one mention of that key in this file
+    reported a standing pipeline finding as CLOSED and turned the check red
+    (seen: 69 problems, 1 STALE gap entry). A review instrument reading a
+    detail key does not make a STAGE consume it, which is the same argument
+    `recover_cell_grid` records paying for one function along. The glyph's own
+    staff is in its subject; nothing else is needed.
+    """
+    try:
+        mine = Subject.from_key(glyph_key).at(Kind.STAFF)
+    except Exception:
+        mine = None
+    is_own = bool(mine is not None and mine.to_key() == staff_key)
+    for o in record.get("observations") or ():
+        if o.get("subject") != glyph_key:
+            continue
+        if o.get("quantity") != Q.GLYPH_BAND_DISTANCE:
+            continue
+        if str((o.get("detail") or {}).get("candidate") or "") == staff_key:
+            return {"band_row": o.get("id"),
+                    "is_the_glyphs_own_staff": is_own,
+                    "means": ("this glyph was CUT from that staff's own cell"
+                              if is_own else
+                              "GATHER opened a contest for this ink on that "
+                              "staff, so the ink is boxed there too")}
+    return None
 
 
 def human_glyph_subject(cell: Subject, n: int) -> Subject:
@@ -663,26 +870,106 @@ def ingest(record: dict, sidecar: dict, *,
             outcomes.append(oc)
             continue
 
-        if kind == "delete_box":
+        # ── the LABEL verbs: one row on the box he was looking at ──────────
+        # ⚠️ ONE BRANCH FOR ALL OF THEM, KEYED OFF `HUMAN_BOX_LABELS`. A
+        # per-verb branch is how the fifth label added next month gets filed
+        # with a subtly different frame or a missing `basis`.
+        if kind in ("delete_box", "own_box", "dup_box", "unsure_box"):
             gsub = a["glyph"]
             if not _subject_exists(out, gsub):
                 oc.refused = (f"no rows on {gsub!r} in this record — a human "
-                              f"cannot delete a box the record does not hold")
+                              f"cannot label a box the record does not hold")
                 outcomes.append(oc)
                 continue
             oc.subject = gsub
+            det = {**base_detail(a), "bbox_page_px": a.get("bbox_page_px")}
+            if kind == "unsure_box":
+                # ⚠️⚠️ AN ABSTENTION, NOT A VALUE. See `ABSTAIN.HUMAN_UNSURE`:
+                # a reader who declined and a reader who answered are what
+                # `State.DECLINED` and `State.READ` exist to keep apart, and
+                # this is the record's first chance to say that of a PERSON.
+                rid = new_id()
+                out.setdefault("abstentions", []).append(_abs_json(
+                    rid, gsub, Q.HUMAN_BOX_VERDICT, reader=reader,
+                    frame="review:box", reason=ABSTAIN.HUMAN_UNSURE,
+                    detail=det))
+                oc.rows.append(rid)
+                oc.detail["row_kind"] = "abstention"
+                outcomes.append(oc)
+                continue
+            if kind == "own_box":
+                target = str(a["staff"])
+                try:
+                    tsub = Subject.from_key(target)
+                except Exception:
+                    tsub = None
+                if tsub is None or tsub.at(Kind.STAFF) is None:
+                    oc.refused = (
+                        f"`staff` {target!r} is not a staff subject — an "
+                        f"owner must be named as `staff/<page>/<system>/"
+                        f"<ordinal>`, never as a part name")
+                    outcomes.append(oc)
+                    continue
+                target = tsub.at(Kind.STAFF).to_key()
+                value = f"owner:{target}"
+                det["owner_named"] = target
+                # ⚠️ REPORTED, NEVER REPAIRED. CLAUDE.md §10: a resolved
+                # contest DROPS the loser and never relocates it. If the named
+                # staff holds no twin of this ink, awarding it there removes a
+                # note and adds none — which is what `rerun.py` will measure.
+                det["twin_on_the_named_staff"] = _twin_on(out, gsub, target)
+            elif kind == "dup_box":
+                other = str(a["of"])
+                if not _subject_exists(out, other):
+                    oc.refused = (f"`of` {other!r} holds no rows in this "
+                                  f"record — a duplicate names the box it "
+                                  f"duplicates, and that box must be here")
+                    outcomes.append(oc)
+                    continue
+                value = f"duplicate_of:{other}"
+                det["duplicate_of"] = other
+            else:
+                value = "not_a_symbol"
             rid = new_id()
             obs.append(_obs_json(
-                rid, gsub, Q.HUMAN_BOX_VERDICT, "not_a_symbol", reader=reader,
-                frame="review:box",
-                detail={**base_detail(a),
-                        "bbox_page_px": a.get("bbox_page_px")}))
+                rid, gsub, Q.HUMAN_BOX_VERDICT, value, reader=reader,
+                frame="review:box", detail=det))
             oc.rows.append(rid)
             outcomes.append(oc)
             continue
 
-        # ── add_box / redraw_box: a BOX, which needs the cell's frame ───────
-        anchor_sub = a.get("glyph") or a.get("cell") or a.get("staff")
+        # ── add_box / redraw_box / relabel_box: a BOX, which needs the
+        #    cell's frame ────────────────────────────────────────────────────
+        if kind == "relabel_box":
+            # ⚠️ A RELABEL IS TWO CLAIMS AND FILES BOTH: *that box is not what
+            # you called it* (on the machine's own subject, so the refusal can
+            # read it) and *there is a <class> HERE* (a human box of its own,
+            # so the new class enters the pipeline as a subject rather than as
+            # a note in a file). Neither half is an edit of a machine row.
+            gsub_old = a["glyph"]
+            if not _subject_exists(out, gsub_old):
+                oc.refused = (f"no rows on {gsub_old!r} in this record — a "
+                              f"human cannot relabel a box the record does "
+                              f"not hold")
+                outcomes.append(oc)
+                continue
+            if not a.get("bbox_page_px"):
+                # ⚠️ THE MACHINE'S OWN PAGE RECTANGLE, or nothing. He said
+                # *this box is a clef*, not *a clef is somewhere near here*;
+                # inventing a rectangle would be a measurement nobody made.
+                page = _page_box_of(out, gsub_old)
+                if page is None:
+                    oc.refused = (
+                        f"{gsub_old!r} carries no `detail.bbox_page_px`, so "
+                        f"the box he relabelled has no page rectangle and the "
+                        f"new class cannot be filed as a box of its own "
+                        f"(DECLINED, not defaulted). The `is_a:` row is not "
+                        f"filed either, because half a relabel is worse than "
+                        f"none.")
+                    outcomes.append(oc)
+                    continue
+                a = dict(a, bbox_page_px=list(page))
+
         cell = _cell_for_box(out, a)
         if cell is None:
             oc.refused = (
@@ -719,6 +1006,9 @@ def ingest(record: dict, sidecar: dict, *,
                "frame_anchors": frame.anchors}
         if kind == "redraw_box":
             det["replaces_box_of"] = a["glyph"]
+        if kind == "relabel_box":
+            det["relabel_of"] = a["glyph"]
+            det["machine_called_it"] = _category_of(out, a["glyph"])
         rid = new_id()
         obs.append(_obs_json(
             rid, gsub.to_key(), Q.GLYPH_BOX,
@@ -756,8 +1046,78 @@ def ingest(record: dict, sidecar: dict, *,
                                        "cell's own recovered grid"},
                     basis=[box_row_id]))
                 oc.rows.append(rid)
+        elif _is_clef_class(category, _category_word(category)):
+            # ⚠️⚠️ THE CLEF CONNECT, AND IT IS A CONNECT RATHER THAN A GUESS
+            # BECAUSE IT FILES THE SAME TWO ROWS GATHER FILES, MEASURED THE
+            # SAME WAY. `gather_clefs` gives a detected clef a `Q.CLEF_GLYPH`
+            # row on the STAFF (not on the glyph) and a `Q.CLEF_POSITION` row
+            # beside it from the cell's own grid; both come out of the cell's
+            # rows here, with the grid control that can fail. The class test
+            # is `gather._is_clef_class`, imported — including its CATEGORY
+            # half, which that function's own docstring records as
+            # load-bearing (without it 27 classes read as clefs).
+            #
+            # ⚠️ CELL 0 ONLY, and that is gather's rule, not a convenience:
+            # *a clef is read at the head of the staff*. A human box of a clef
+            # class in cell 7 is a MID-STAFF CLEF CHANGE, which gather does
+            # not gather and this module may not invent a reading of.
+            # ⚠️ AND THE SCORE IS None. `clef._detector_terms` weights by
+            # `row.score`, reading None as 0.0 and therefore as
+            # `W_DETECTOR_LOW` — so a human's clef enters the contest as the
+            # WEAKEST kind of witness. That is wrong and it is REPORTED here
+            # rather than repaired by inventing a confidence: fixing it is a
+            # change to `clef.py`'s weighting, with its own measurement.
+            staff_sub = R_staff_of(cell)
+            if cell.cell != 0:
+                oc.absent[Q.CLEF_GLYPH] = (
+                    f"a clef is gathered at the HEAD of the staff (cell 0) "
+                    f"and this box is in cell {cell.cell}; a mid-staff clef "
+                    f"change is a reading GATHER does not make and this "
+                    f"module may not invent")
+            else:
+                rid = new_id()
+                obs.append(_obs_json(
+                    rid, staff_sub.to_key(), Q.CLEF_GLYPH, category,
+                    reader=reader, frame=f"cell:{cell.cell}",
+                    detail={**base_detail(a),
+                            "y_center": y_c + h_c / 2.0,
+                            "x_center": x_c + w_c / 2.0,
+                            "human_box": gsub.to_key(),
+                            "score_is_None": (
+                                "a person produced no softmax; "
+                                "clef._detector_terms reads None as 0.0 and "
+                                "weights it W_DETECTOR_LOW")},
+                    basis=[box_row_id]))
+                oc.rows.append(rid)
+                grid, why = recover_cell_grid(out, cell, cell_rows)
+                if grid is None:
+                    grids_refused += 1
+                    oc.absent[Q.CLEF_POSITION] = why or "unrecoverable"
+                else:
+                    rid = new_id()
+                    obs.append(_obs_json(
+                        rid, staff_sub.to_key(), Q.CLEF_POSITION,
+                        grid.position_of(y_c + h_c / 2.0), reader=reader,
+                        frame=f"cell:{cell.cell}",
+                        detail={**base_detail(a), "glyph": category,
+                                "y_center": y_c + h_c / 2.0,
+                                "grid_anchors": grid.anchors,
+                                "grid_max_deviation_c": grid.max_deviation_c,
+                                "derived": "position from the human box and "
+                                           "the cell's own recovered grid"},
+                        basis=[box_row_id]))
+                    oc.rows.append(rid)
         for q, why_absent in HUMAN_BOX_ABSENT.items():
             oc.absent.setdefault(q, why_absent)
+        if kind == "relabel_box":
+            rid = new_id()
+            obs.append(_obs_json(
+                rid, a["glyph"], Q.HUMAN_BOX_VERDICT, f"is_a:{category}",
+                reader=reader, frame="review:box",
+                detail={**base_detail(a), "is_a": category,
+                        "machine_called_it": _category_of(out, a["glyph"]),
+                        "filed_as": gsub.to_key()}))
+            oc.rows.append(rid)
         if kind == "redraw_box":
             rid = new_id()
             obs.append(_obs_json(

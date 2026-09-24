@@ -1,0 +1,5039 @@
+{
+ "diff": {
+  "control_same": 98988,
+  "control_differ": 79,
+  "control_absent": 1,
+  "control_extra": 0,
+  "changed": [
+   {
+    "subject": "staff/2/1/9",
+    "quantity": "clef",
+    "stage": "INFER",
+    "before": {
+     "outcome": "abstained",
+     "value": null,
+     "reason": "no_candidates"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": "alto",
+     "reason": "clef_from_other_systems",
+     "id": "vrd:275825"
+    }
+   },
+   {
+    "subject": "staff/3/0/9",
+    "quantity": "clef",
+    "stage": "INFER",
+    "before": {
+     "outcome": "abstained",
+     "value": null,
+     "reason": "no_candidates"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": "alto",
+     "reason": "clef_from_other_systems",
+     "id": "vrd:275826"
+    }
+   },
+   {
+    "subject": "staff/5/0/7",
+    "quantity": "clef",
+    "stage": "INFER",
+    "before": {
+     "outcome": "abstained",
+     "value": null,
+     "reason": "no_candidates"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": "alto",
+     "reason": "clef_from_other_systems",
+     "id": "vrd:275827"
+    }
+   },
+   {
+    "subject": "staff/5/1/5",
+    "quantity": "clef",
+    "stage": "INFER",
+    "before": {
+     "outcome": "abstained",
+     "value": null,
+     "reason": "no_candidates"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": "alto",
+     "reason": "clef_from_other_systems",
+     "id": "vrd:275828"
+    }
+   },
+   {
+    "subject": "staff/7/0/9",
+    "quantity": "clef",
+    "stage": "INFER",
+    "before": {
+     "outcome": "abstained",
+     "value": null,
+     "reason": "no_candidates"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": "alto",
+     "reason": "clef_from_other_systems",
+     "id": "vrd:275829"
+    }
+   },
+   {
+    "subject": "staff/7/1/9",
+    "quantity": "clef",
+    "stage": "INFER",
+    "before": {
+     "outcome": "abstained",
+     "value": null,
+     "reason": "no_candidates"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": "alto",
+     "reason": "clef_from_other_systems",
+     "id": "vrd:275830"
+    }
+   },
+   {
+    "subject": "staff/14/0/11",
+    "quantity": "clef",
+    "stage": "INFER",
+    "before": {
+     "outcome": "abstained",
+     "value": null,
+     "reason": "no_candidates"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": "bass",
+     "reason": "clef_from_other_systems",
+     "id": "vrd:275831"
+    }
+   },
+   {
+    "subject": "staff/15/0/9",
+    "quantity": "clef",
+    "stage": "INFER",
+    "before": {
+     "outcome": "abstained",
+     "value": null,
+     "reason": "no_candidates"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": "alto",
+     "reason": "clef_from_other_systems",
+     "id": "vrd:275832"
+    }
+   },
+   {
+    "subject": "staff/16/1/9",
+    "quantity": "clef",
+    "stage": "INFER",
+    "before": {
+     "outcome": "abstained",
+     "value": null,
+     "reason": "no_candidates"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": "alto",
+     "reason": "clef_from_other_systems",
+     "id": "vrd:275833"
+    }
+   },
+   {
+    "subject": "glyph/3/0/9/6/3",
+    "quantity": "glyph_owner",
+    "stage": "ADJUDICATE",
+    "before": {
+     "outcome": "decided",
+     "value": "staff/3/0/8",
+     "reason": "distance"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": "staff/3/0/9",
+     "reason": "human_owner",
+     "id": "vrd:189137"
+    }
+   },
+   {
+    "subject": "glyph/2/0/9/15/5",
+    "quantity": "duration",
+    "stage": "INFER",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.5,
+      "written": 0.5,
+      "dots": 0,
+      "beam_levels": 1
+     },
+     "reason": "the_neighbours_name_this_gap",
+     "id": "vrd:275728"
+    }
+   },
+   {
+    "subject": "glyph/2/1/7/7/1",
+    "quantity": "duration",
+    "stage": "INFER",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.5,
+      "written": 0.5,
+      "dots": 0,
+      "beam_levels": 1
+     },
+     "reason": "the_neighbours_run_to_the_same_barline",
+     "id": "vrd:275748"
+    }
+   },
+   {
+    "subject": "glyph/2/1/7/7/3",
+    "quantity": "duration",
+    "stage": "INFER",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.5,
+      "written": 0.5,
+      "dots": 0,
+      "beam_levels": 1
+     },
+     "reason": "the_neighbours_name_this_gap",
+     "id": "vrd:275729"
+    }
+   },
+   {
+    "subject": "glyph/3/0/4/2/6",
+    "quantity": "duration",
+    "stage": "INFER",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 1.0,
+      "written": 1.0,
+      "dots": 0,
+      "beam_levels": 0
+     },
+     "reason": "the_neighbours_run_to_the_same_barline",
+     "id": "vrd:275749"
+    }
+   },
+   {
+    "subject": "glyph/3/0/4/2/7",
+    "quantity": "duration",
+    "stage": "INFER",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 1.0,
+      "written": 1.0,
+      "dots": 0,
+      "beam_levels": 0
+     },
+     "reason": "the_neighbours_run_to_the_same_barline",
+     "id": "vrd:275750"
+    }
+   },
+   {
+    "subject": "glyph/3/0/4/6/5",
+    "quantity": "duration",
+    "stage": "INFER",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 2.0,
+      "written": 2.0,
+      "dots": 0,
+      "beam_levels": 0
+     },
+     "reason": "the_neighbours_run_to_the_same_barline",
+     "id": "vrd:275751"
+    }
+   },
+   {
+    "subject": "glyph/3/0/4/6/6",
+    "quantity": "duration",
+    "stage": "INFER",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 2.0,
+      "written": 2.0,
+      "dots": 0,
+      "beam_levels": 0
+     },
+     "reason": "the_neighbours_run_to_the_same_barline",
+     "id": "vrd:275752"
+    }
+   },
+   {
+    "subject": "glyph/4/0/0/12/2",
+    "quantity": "duration",
+    "stage": "INFER",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 1.0,
+      "written": 1.0,
+      "dots": 0,
+      "beam_levels": 0
+     },
+     "reason": "the_neighbours_name_this_gap",
+     "id": "vrd:275730"
+    }
+   },
+   {
+    "subject": "glyph/4/0/0/12/4",
+    "quantity": "duration",
+    "stage": "INFER",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 1.0,
+      "written": 1.0,
+      "dots": 0,
+      "beam_levels": 0
+     },
+     "reason": "the_neighbours_name_this_gap",
+     "id": "vrd:275731"
+    }
+   },
+   {
+    "subject": "glyph/4/0/1/12/0",
+    "quantity": "duration",
+    "stage": "INFER",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 1.0,
+      "written": 1.0,
+      "dots": 0,
+      "beam_levels": 0
+     },
+     "reason": "the_neighbours_name_this_gap",
+     "id": "vrd:275732"
+    }
+   },
+   {
+    "subject": "glyph/4/0/1/12/4",
+    "quantity": "duration",
+    "stage": "INFER",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 1.0,
+      "written": 1.0,
+      "dots": 0,
+      "beam_levels": 0
+     },
+     "reason": "the_neighbours_name_this_gap",
+     "id": "vrd:275733"
+    }
+   },
+   {
+    "subject": "glyph/4/0/2/1/9",
+    "quantity": "duration",
+    "stage": "INFER",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 2.0,
+      "written": 2.0,
+      "dots": 0,
+      "beam_levels": 0
+     },
+     "reason": "the_neighbours_run_to_the_same_barline",
+     "id": "vrd:275753"
+    }
+   },
+   {
+    "subject": "glyph/4/0/8/2/3",
+    "quantity": "duration",
+    "stage": "INFER",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 1.0,
+      "written": 1.0,
+      "dots": 0,
+      "beam_levels": 0
+     },
+     "reason": "the_neighbours_run_to_the_same_barline",
+     "id": "vrd:275754"
+    }
+   },
+   {
+    "subject": "glyph/5/0/2/3/1",
+    "quantity": "duration",
+    "stage": "INFER",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.25,
+      "written": 0.25,
+      "dots": 0,
+      "beam_levels": 2
+     },
+     "reason": "the_neighbours_run_to_the_same_barline",
+     "id": "vrd:275755"
+    }
+   },
+   {
+    "subject": "glyph/5/0/2/3/5",
+    "quantity": "duration",
+    "stage": "INFER",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.25,
+      "written": 0.25,
+      "dots": 0,
+      "beam_levels": 2
+     },
+     "reason": "the_neighbours_run_to_the_same_barline",
+     "id": "vrd:275756"
+    }
+   },
+   {
+    "subject": "glyph/5/0/2/3/13",
+    "quantity": "duration",
+    "stage": "INFER",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.25,
+      "written": 0.25,
+      "dots": 0,
+      "beam_levels": 2
+     },
+     "reason": "the_neighbours_run_to_the_same_barline",
+     "id": "vrd:275757"
+    }
+   },
+   {
+    "subject": "glyph/5/0/6/4/1",
+    "quantity": "duration",
+    "stage": "INFER",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.5,
+      "written": 0.5,
+      "dots": 0,
+      "beam_levels": 1
+     },
+     "reason": "the_neighbours_run_to_the_same_barline",
+     "id": "vrd:275758"
+    }
+   },
+   {
+    "subject": "glyph/5/0/6/4/4",
+    "quantity": "duration",
+    "stage": "INFER",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.5,
+      "written": 0.5,
+      "dots": 0,
+      "beam_levels": 1
+     },
+     "reason": "the_neighbours_run_to_the_same_barline",
+     "id": "vrd:275759"
+    }
+   },
+   {
+    "subject": "glyph/6/1/3/2/3",
+    "quantity": "duration",
+    "stage": "INFER",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 1.0,
+      "written": 1.0,
+      "dots": 0,
+      "beam_levels": 0
+     },
+     "reason": "the_neighbours_name_this_gap",
+     "id": "vrd:275734"
+    }
+   },
+   {
+    "subject": "glyph/6/1/3/2/4",
+    "quantity": "duration",
+    "stage": "INFER",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 1.0,
+      "written": 1.0,
+      "dots": 0,
+      "beam_levels": 0
+     },
+     "reason": "the_neighbours_name_this_gap",
+     "id": "vrd:275735"
+    }
+   },
+   {
+    "subject": "glyph/6/1/3/2/7",
+    "quantity": "duration",
+    "stage": "INFER",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 1.0,
+      "written": 1.0,
+      "dots": 0,
+      "beam_levels": 1
+     },
+     "reason": "the_neighbours_name_this_gap",
+     "id": "vrd:275736"
+    }
+   },
+   {
+    "subject": "glyph/6/1/9/9/2",
+    "quantity": "duration",
+    "stage": "INFER",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.5,
+      "written": 0.5,
+      "dots": 0,
+      "beam_levels": 1
+     },
+     "reason": "the_neighbours_run_to_the_same_barline",
+     "id": "vrd:275760"
+    }
+   },
+   {
+    "subject": "glyph/8/1/2/3/2",
+    "quantity": "duration",
+    "stage": "INFER",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 2.0,
+      "written": 2.0,
+      "dots": 0,
+      "beam_levels": 0
+     },
+     "reason": "the_neighbours_run_to_the_same_barline",
+     "id": "vrd:275761"
+    }
+   },
+   {
+    "subject": "glyph/8/1/6/17/1",
+    "quantity": "duration",
+    "stage": "INFER",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.5,
+      "written": 0.5,
+      "dots": 0,
+      "beam_levels": 1
+     },
+     "reason": "the_neighbours_run_to_the_same_barline",
+     "id": "vrd:275762"
+    }
+   },
+   {
+    "subject": "glyph/8/1/6/18/2",
+    "quantity": "duration",
+    "stage": "INFER",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.5,
+      "written": 0.5,
+      "dots": 0,
+      "beam_levels": 1
+     },
+     "reason": "the_neighbours_name_this_gap",
+     "id": "vrd:275737"
+    }
+   },
+   {
+    "subject": "glyph/8/1/6/18/8",
+    "quantity": "duration",
+    "stage": "INFER",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.5,
+      "written": 0.5,
+      "dots": 0,
+      "beam_levels": 1
+     },
+     "reason": "the_neighbours_name_this_gap",
+     "id": "vrd:275738"
+    }
+   },
+   {
+    "subject": "glyph/8/1/7/16/3",
+    "quantity": "duration",
+    "stage": "INFER",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 2.0,
+      "written": 2.0,
+      "dots": 0,
+      "beam_levels": 0
+     },
+     "reason": "the_neighbours_run_to_the_same_barline",
+     "id": "vrd:275763"
+    }
+   },
+   {
+    "subject": "glyph/8/1/8/14/2",
+    "quantity": "duration",
+    "stage": "INFER",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 2.0,
+      "written": 2.0,
+      "dots": 0,
+      "beam_levels": 0
+     },
+     "reason": "the_neighbours_run_to_the_same_barline",
+     "id": "vrd:275764"
+    }
+   },
+   {
+    "subject": "glyph/9/0/0/4/3",
+    "quantity": "duration",
+    "stage": "INFER",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 2.0,
+      "written": 2.0,
+      "dots": 0,
+      "beam_levels": 0
+     },
+     "reason": "the_neighbours_run_to_the_same_barline",
+     "id": "vrd:275765"
+    }
+   },
+   {
+    "subject": "glyph/9/0/0/4/8",
+    "quantity": "duration",
+    "stage": "INFER",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 2.0,
+      "written": 2.0,
+      "dots": 0,
+      "beam_levels": 0
+     },
+     "reason": "the_neighbours_run_to_the_same_barline",
+     "id": "vrd:275766"
+    }
+   },
+   {
+    "subject": "glyph/9/0/0/4/9",
+    "quantity": "duration",
+    "stage": "INFER",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 2.0,
+      "written": 2.0,
+      "dots": 0,
+      "beam_levels": 0
+     },
+     "reason": "the_neighbours_run_to_the_same_barline",
+     "id": "vrd:275767"
+    }
+   },
+   {
+    "subject": "glyph/9/0/4/3/18",
+    "quantity": "duration",
+    "stage": "INFER",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.5,
+      "written": 0.5,
+      "dots": 0,
+      "beam_levels": 1
+     },
+     "reason": "the_neighbours_name_this_gap",
+     "id": "vrd:275739"
+    }
+   },
+   {
+    "subject": "glyph/9/0/6/4/3",
+    "quantity": "duration",
+    "stage": "INFER",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 2.0,
+      "written": 2.0,
+      "dots": 0,
+      "beam_levels": 0
+     },
+     "reason": "the_neighbours_run_to_the_same_barline",
+     "id": "vrd:275768"
+    }
+   },
+   {
+    "subject": "glyph/9/0/10/3/3",
+    "quantity": "duration",
+    "stage": "INFER",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 2.0,
+      "written": 2.0,
+      "dots": 0,
+      "beam_levels": 0
+     },
+     "reason": "the_neighbours_run_to_the_same_barline",
+     "id": "vrd:275769"
+    }
+   },
+   {
+    "subject": "glyph/10/0/4/6/4",
+    "quantity": "duration",
+    "stage": "INFER",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 1.0,
+      "written": 1.0,
+      "dots": 0,
+      "beam_levels": 0
+     },
+     "reason": "the_neighbours_run_to_the_same_barline",
+     "id": "vrd:275770"
+    }
+   },
+   {
+    "subject": "glyph/10/0/4/6/6",
+    "quantity": "duration",
+    "stage": "INFER",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 1.0,
+      "written": 1.0,
+      "dots": 0,
+      "beam_levels": 0
+     },
+     "reason": "the_neighbours_run_to_the_same_barline",
+     "id": "vrd:275771"
+    }
+   },
+   {
+    "subject": "glyph/10/1/0/11/3",
+    "quantity": "duration",
+    "stage": "INFER",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 1.0,
+      "written": 1.0,
+      "dots": 0,
+      "beam_levels": 1
+     },
+     "reason": "the_neighbours_run_to_the_same_barline",
+     "id": "vrd:275772"
+    }
+   },
+   {
+    "subject": "glyph/11/1/6/16/1",
+    "quantity": "duration",
+    "stage": "INFER",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.5,
+      "written": 0.5,
+      "dots": 0,
+      "beam_levels": 1
+     },
+     "reason": "the_neighbours_run_to_the_same_barline",
+     "id": "vrd:275773"
+    }
+   },
+   {
+    "subject": "glyph/11/1/7/14/0",
+    "quantity": "duration",
+    "stage": "INFER",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 1.0,
+      "written": 1.0,
+      "dots": 0,
+      "beam_levels": 0
+     },
+     "reason": "the_neighbours_run_to_the_same_barline",
+     "id": "vrd:275774"
+    }
+   },
+   {
+    "subject": "glyph/11/1/7/16/1",
+    "quantity": "duration",
+    "stage": "INFER",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.5,
+      "written": 0.5,
+      "dots": 0,
+      "beam_levels": 1
+     },
+     "reason": "the_neighbours_run_to_the_same_barline",
+     "id": "vrd:275775"
+    }
+   },
+   {
+    "subject": "glyph/11/1/9/14/2",
+    "quantity": "duration",
+    "stage": "INFER",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 1.0,
+      "written": 1.0,
+      "dots": 0,
+      "beam_levels": 0
+     },
+     "reason": "the_neighbours_run_to_the_same_barline",
+     "id": "vrd:275776"
+    }
+   },
+   {
+    "subject": "glyph/12/0/1/9/2",
+    "quantity": "duration",
+    "stage": "INFER",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.5,
+      "written": 0.5,
+      "dots": 0,
+      "beam_levels": 1
+     },
+     "reason": "the_neighbours_name_this_gap",
+     "id": "vrd:275740"
+    }
+   },
+   {
+    "subject": "glyph/12/0/1/9/3",
+    "quantity": "duration",
+    "stage": "INFER",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.5,
+      "written": 0.5,
+      "dots": 0,
+      "beam_levels": 1
+     },
+     "reason": "the_neighbours_name_this_gap",
+     "id": "vrd:275741"
+    }
+   },
+   {
+    "subject": "glyph/12/0/1/9/8",
+    "quantity": "duration",
+    "stage": "INFER",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.5,
+      "written": 0.5,
+      "dots": 0,
+      "beam_levels": 1
+     },
+     "reason": "the_neighbours_name_this_gap",
+     "id": "vrd:275742"
+    }
+   },
+   {
+    "subject": "glyph/12/0/3/9/2",
+    "quantity": "duration",
+    "stage": "INFER",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.5,
+      "written": 0.5,
+      "dots": 0,
+      "beam_levels": 1
+     },
+     "reason": "the_neighbours_name_this_gap",
+     "id": "vrd:275743"
+    }
+   },
+   {
+    "subject": "glyph/12/0/3/9/4",
+    "quantity": "duration",
+    "stage": "INFER",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.5,
+      "written": 0.5,
+      "dots": 0,
+      "beam_levels": 1
+     },
+     "reason": "the_neighbours_name_this_gap",
+     "id": "vrd:275744"
+    }
+   },
+   {
+    "subject": "glyph/12/1/1/10/5",
+    "quantity": "duration",
+    "stage": "INFER",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.25,
+      "written": 0.25,
+      "dots": 0,
+      "beam_levels": 2
+     },
+     "reason": "the_neighbours_run_to_the_same_barline",
+     "id": "vrd:275777"
+    }
+   },
+   {
+    "subject": "glyph/12/1/3/10/2",
+    "quantity": "duration",
+    "stage": "INFER",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.25,
+      "written": 0.25,
+      "dots": 0,
+      "beam_levels": 2
+     },
+     "reason": "the_neighbours_run_to_the_same_barline",
+     "id": "vrd:275778"
+    }
+   },
+   {
+    "subject": "glyph/12/1/5/11/0",
+    "quantity": "duration",
+    "stage": "INFER",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.5,
+      "written": 0.5,
+      "dots": 0,
+      "beam_levels": 1
+     },
+     "reason": "the_neighbours_run_to_the_same_barline",
+     "id": "vrd:275779"
+    }
+   },
+   {
+    "subject": "glyph/12/1/5/11/1",
+    "quantity": "duration",
+    "stage": "INFER",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.5,
+      "written": 0.5,
+      "dots": 0,
+      "beam_levels": 1
+     },
+     "reason": "the_neighbours_run_to_the_same_barline",
+     "id": "vrd:275780"
+    }
+   },
+   {
+    "subject": "glyph/13/0/0/4/2",
+    "quantity": "duration",
+    "stage": "INFER",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 1.0,
+      "written": 1.0,
+      "dots": 0,
+      "beam_levels": 0
+     },
+     "reason": "the_neighbours_run_to_the_same_barline",
+     "id": "vrd:275781"
+    }
+   },
+   {
+    "subject": "glyph/13/0/0/4/5",
+    "quantity": "duration",
+    "stage": "INFER",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 1.0,
+      "written": 1.0,
+      "dots": 0,
+      "beam_levels": 0
+     },
+     "reason": "the_neighbours_run_to_the_same_barline",
+     "id": "vrd:275782"
+    }
+   },
+   {
+    "subject": "glyph/13/0/7/10/5",
+    "quantity": "duration",
+    "stage": "INFER",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 2.0,
+      "written": 2.0,
+      "dots": 0,
+      "beam_levels": 1
+     },
+     "reason": "the_neighbours_run_to_the_same_barline",
+     "id": "vrd:275783"
+    }
+   },
+   {
+    "subject": "glyph/13/0/7/10/7",
+    "quantity": "duration",
+    "stage": "INFER",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 2.0,
+      "written": 2.0,
+      "dots": 0,
+      "beam_levels": 0
+     },
+     "reason": "the_neighbours_run_to_the_same_barline",
+     "id": "vrd:275784"
+    }
+   },
+   {
+    "subject": "glyph/13/0/9/3/9",
+    "quantity": "duration",
+    "stage": "INFER",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.5,
+      "written": 0.5,
+      "dots": 0,
+      "beam_levels": 1
+     },
+     "reason": "the_neighbours_name_this_gap",
+     "id": "vrd:275745"
+    }
+   },
+   {
+    "subject": "glyph/15/0/8/17/2",
+    "quantity": "duration",
+    "stage": "INFER",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 1.0,
+      "written": 1.0,
+      "dots": 0,
+      "beam_levels": 0
+     },
+     "reason": "the_neighbours_run_to_the_same_barline",
+     "id": "vrd:275785"
+    }
+   },
+   {
+    "subject": "glyph/15/1/6/11/4",
+    "quantity": "duration",
+    "stage": "INFER",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 1.0,
+      "written": 1.0,
+      "dots": 0,
+      "beam_levels": 0
+     },
+     "reason": "the_neighbours_run_to_the_same_barline",
+     "id": "vrd:275786"
+    }
+   },
+   {
+    "subject": "glyph/15/1/8/11/1",
+    "quantity": "duration",
+    "stage": "INFER",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 1.0,
+      "written": 1.0,
+      "dots": 0,
+      "beam_levels": 0
+     },
+     "reason": "the_neighbours_run_to_the_same_barline",
+     "id": "vrd:275787"
+    }
+   },
+   {
+    "subject": "glyph/15/1/8/17/1",
+    "quantity": "duration",
+    "stage": "INFER",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.5,
+      "written": 0.5,
+      "dots": 0,
+      "beam_levels": 1
+     },
+     "reason": "the_neighbours_name_this_gap",
+     "id": "vrd:275746"
+    }
+   },
+   {
+    "subject": "glyph/16/0/3/8/12",
+    "quantity": "duration",
+    "stage": "INFER",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 2.0,
+      "written": 2.0,
+      "dots": 0,
+      "beam_levels": 0
+     },
+     "reason": "the_neighbours_run_to_the_same_barline",
+     "id": "vrd:275788"
+    }
+   },
+   {
+    "subject": "glyph/16/0/3/8/15",
+    "quantity": "duration",
+    "stage": "INFER",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 2.0,
+      "written": 2.0,
+      "dots": 0,
+      "beam_levels": 0
+     },
+     "reason": "the_neighbours_run_to_the_same_barline",
+     "id": "vrd:275789"
+    }
+   },
+   {
+    "subject": "glyph/16/0/3/8/20",
+    "quantity": "duration",
+    "stage": "INFER",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 2.0,
+      "written": 2.0,
+      "dots": 0,
+      "beam_levels": 0
+     },
+     "reason": "the_neighbours_run_to_the_same_barline",
+     "id": "vrd:275790"
+    }
+   },
+   {
+    "subject": "glyph/16/0/8/8/2",
+    "quantity": "duration",
+    "stage": "INFER",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 2.0,
+      "written": 2.0,
+      "dots": 0,
+      "beam_levels": 0
+     },
+     "reason": "the_neighbours_run_to_the_same_barline",
+     "id": "vrd:275791"
+    }
+   },
+   {
+    "subject": "glyph/16/0/9/8/11",
+    "quantity": "duration",
+    "stage": "INFER",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 2.0,
+      "written": 2.0,
+      "dots": 0,
+      "beam_levels": 0
+     },
+     "reason": "the_neighbours_run_to_the_same_barline",
+     "id": "vrd:275792"
+    }
+   },
+   {
+    "subject": "glyph/16/1/2/5/3",
+    "quantity": "duration",
+    "stage": "INFER",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.5,
+      "written": 0.5,
+      "dots": 0,
+      "beam_levels": 1
+     },
+     "reason": "the_neighbours_run_to_the_same_barline",
+     "id": "vrd:275793"
+    }
+   },
+   {
+    "subject": "glyph/16/1/2/5/4",
+    "quantity": "duration",
+    "stage": "INFER",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.5,
+      "written": 0.5,
+      "dots": 0,
+      "beam_levels": 1
+     },
+     "reason": "the_neighbours_run_to_the_same_barline",
+     "id": "vrd:275794"
+    }
+   },
+   {
+    "subject": "glyph/16/1/3/5/5",
+    "quantity": "duration",
+    "stage": "INFER",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.5,
+      "written": 0.5,
+      "dots": 0,
+      "beam_levels": 1
+     },
+     "reason": "the_neighbours_run_to_the_same_barline",
+     "id": "vrd:275795"
+    }
+   },
+   {
+    "subject": "glyph/16/1/3/5/6",
+    "quantity": "duration",
+    "stage": "INFER",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.5,
+      "written": 0.5,
+      "dots": 0,
+      "beam_levels": 1
+     },
+     "reason": "the_neighbours_run_to_the_same_barline",
+     "id": "vrd:275796"
+    }
+   },
+   {
+    "subject": "glyph/16/1/6/5/9",
+    "quantity": "duration",
+    "stage": "INFER",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.5,
+      "written": 0.5,
+      "dots": 0,
+      "beam_levels": 1
+     },
+     "reason": "the_neighbours_name_this_gap",
+     "id": "vrd:275747"
+    }
+   }
+  ],
+  "basis_names_human": [
+   {
+    "subject": "glyph/3/0/9/6/3",
+    "quantity": "glyph_owner",
+    "stage": "ADJUDICATE",
+    "how": "used",
+    "verdict": "vrd:189137",
+    "outcome": "decided",
+    "value": "staff/3/0/9",
+    "reason": "human_owner",
+    "decider": "adjudicate_glyph_owner",
+    "human_rows": [
+     "act-0001:obs:174395->obs:174395"
+    ],
+    "in_basis": [
+     "obs:174395"
+    ],
+    "in_used": [
+     "obs:174395"
+    ],
+    "other_rows_used": []
+   },
+   {
+    "subject": "glyph/3/0/0/0/12",
+    "quantity": "arc_owner",
+    "stage": "ADJUDICATE",
+    "how": "basis",
+    "verdict": "vrd:194718",
+    "outcome": "decided",
+    "value": "staff/3/0/0",
+    "reason": "no_better_staff",
+    "decider": "adjudicate_arc_owner",
+    "human_rows": [
+     "act-0001:obs:174395->obs:174395"
+    ],
+    "in_basis": [
+     "obs:174395"
+    ],
+    "in_used": [],
+    "other_rows_used": [
+     "obs:022264"
+    ]
+   },
+   {
+    "subject": "glyph/3/0/0/0/14",
+    "quantity": "arc_owner",
+    "stage": "ADJUDICATE",
+    "how": "basis",
+    "verdict": "vrd:194719",
+    "outcome": "decided",
+    "value": "staff/3/0/0",
+    "reason": "no_better_staff",
+    "decider": "adjudicate_arc_owner",
+    "human_rows": [
+     "act-0001:obs:174395->obs:174395"
+    ],
+    "in_basis": [
+     "obs:174395"
+    ],
+    "in_used": [],
+    "other_rows_used": [
+     "obs:022265"
+    ]
+   },
+   {
+    "subject": "glyph/3/0/0/0/17",
+    "quantity": "arc_owner",
+    "stage": "ADJUDICATE",
+    "how": "basis",
+    "verdict": "vrd:194720",
+    "outcome": "decided",
+    "value": "staff/3/0/0",
+    "reason": "no_better_staff",
+    "decider": "adjudicate_arc_owner",
+    "human_rows": [
+     "act-0001:obs:174395->obs:174395"
+    ],
+    "in_basis": [
+     "obs:174395"
+    ],
+    "in_used": [],
+    "other_rows_used": [
+     "obs:022266"
+    ]
+   },
+   {
+    "subject": "glyph/3/0/0/0/2",
+    "quantity": "arc_owner",
+    "stage": "ADJUDICATE",
+    "how": "basis",
+    "verdict": "vrd:194715",
+    "outcome": "decided",
+    "value": "staff/3/0/0",
+    "reason": "no_better_staff",
+    "decider": "adjudicate_arc_owner",
+    "human_rows": [
+     "act-0001:obs:174395->obs:174395"
+    ],
+    "in_basis": [
+     "obs:174395"
+    ],
+    "in_used": [],
+    "other_rows_used": [
+     "obs:022261"
+    ]
+   },
+   {
+    "subject": "glyph/3/0/0/0/5",
+    "quantity": "arc_owner",
+    "stage": "ADJUDICATE",
+    "how": "basis",
+    "verdict": "vrd:194716",
+    "outcome": "decided",
+    "value": "staff/3/0/0",
+    "reason": "no_rival_staff",
+    "decider": "adjudicate_arc_owner",
+    "human_rows": [
+     "act-0001:obs:174395->obs:174395"
+    ],
+    "in_basis": [
+     "obs:174395"
+    ],
+    "in_used": [],
+    "other_rows_used": [
+     "obs:022262"
+    ]
+   },
+   {
+    "subject": "glyph/3/0/0/0/7",
+    "quantity": "arc_owner",
+    "stage": "ADJUDICATE",
+    "how": "basis",
+    "verdict": "vrd:194717",
+    "outcome": "decided",
+    "value": "staff/3/0/0",
+    "reason": "no_better_staff",
+    "decider": "adjudicate_arc_owner",
+    "human_rows": [
+     "act-0001:obs:174395->obs:174395"
+    ],
+    "in_basis": [
+     "obs:174395"
+    ],
+    "in_used": [],
+    "other_rows_used": [
+     "obs:022263"
+    ]
+   },
+   {
+    "subject": "glyph/3/0/0/1/0",
+    "quantity": "arc_owner",
+    "stage": "ADJUDICATE",
+    "how": "basis",
+    "verdict": "vrd:194721",
+    "outcome": "decided",
+    "value": "staff/3/0/0",
+    "reason": "no_better_staff",
+    "decider": "adjudicate_arc_owner",
+    "human_rows": [
+     "act-0001:obs:174395->obs:174395"
+    ],
+    "in_basis": [
+     "obs:174395"
+    ],
+    "in_used": [],
+    "other_rows_used": [
+     "obs:022267"
+    ]
+   },
+   {
+    "subject": "glyph/3/0/0/3/1",
+    "quantity": "arc_owner",
+    "stage": "ADJUDICATE",
+    "how": "basis",
+    "verdict": "vrd:194722",
+    "outcome": "decided",
+    "value": "staff/3/0/0",
+    "reason": "no_better_staff",
+    "decider": "adjudicate_arc_owner",
+    "human_rows": [
+     "act-0001:obs:174395->obs:174395"
+    ],
+    "in_basis": [
+     "obs:174395"
+    ],
+    "in_used": [],
+    "other_rows_used": [
+     "obs:022268"
+    ]
+   },
+   {
+    "subject": "glyph/3/0/0/3/6",
+    "quantity": "arc_owner",
+    "stage": "ADJUDICATE",
+    "how": "basis",
+    "verdict": "vrd:194723",
+    "outcome": "decided",
+    "value": "staff/3/0/0",
+    "reason": "no_better_staff",
+    "decider": "adjudicate_arc_owner",
+    "human_rows": [
+     "act-0001:obs:174395->obs:174395"
+    ],
+    "in_basis": [
+     "obs:174395"
+    ],
+    "in_used": [],
+    "other_rows_used": [
+     "obs:022269"
+    ]
+   },
+   {
+    "subject": "glyph/3/0/0/4/0",
+    "quantity": "arc_owner",
+    "stage": "ADJUDICATE",
+    "how": "basis",
+    "verdict": "vrd:194724",
+    "outcome": "decided",
+    "value": "staff/3/0/0",
+    "reason": "no_better_staff",
+    "decider": "adjudicate_arc_owner",
+    "human_rows": [
+     "act-0001:obs:174395->obs:174395"
+    ],
+    "in_basis": [
+     "obs:174395"
+    ],
+    "in_used": [],
+    "other_rows_used": [
+     "obs:022270"
+    ]
+   },
+   {
+    "subject": "glyph/3/0/0/4/1",
+    "quantity": "arc_owner",
+    "stage": "ADJUDICATE",
+    "how": "basis",
+    "verdict": "vrd:194725",
+    "outcome": "decided",
+    "value": "staff/3/0/0",
+    "reason": "no_better_staff",
+    "decider": "adjudicate_arc_owner",
+    "human_rows": [
+     "act-0001:obs:174395->obs:174395"
+    ],
+    "in_basis": [
+     "obs:174395"
+    ],
+    "in_used": [],
+    "other_rows_used": [
+     "obs:022271"
+    ]
+   },
+   {
+    "subject": "glyph/3/0/0/4/4",
+    "quantity": "arc_owner",
+    "stage": "ADJUDICATE",
+    "how": "basis",
+    "verdict": "vrd:194726",
+    "outcome": "decided",
+    "value": "staff/3/0/0",
+    "reason": "no_better_staff",
+    "decider": "adjudicate_arc_owner",
+    "human_rows": [
+     "act-0001:obs:174395->obs:174395"
+    ],
+    "in_basis": [
+     "obs:174395"
+    ],
+    "in_used": [],
+    "other_rows_used": [
+     "obs:022272"
+    ]
+   },
+   {
+    "subject": "glyph/3/0/0/5/1",
+    "quantity": "arc_owner",
+    "stage": "ADJUDICATE",
+    "how": "basis",
+    "verdict": "vrd:194727",
+    "outcome": "decided",
+    "value": "staff/3/0/0",
+    "reason": "no_better_staff",
+    "decider": "adjudicate_arc_owner",
+    "human_rows": [
+     "act-0001:obs:174395->obs:174395"
+    ],
+    "in_basis": [
+     "obs:174395"
+    ],
+    "in_used": [],
+    "other_rows_used": [
+     "obs:022273"
+    ]
+   },
+   {
+    "subject": "glyph/3/0/0/5/2",
+    "quantity": "arc_owner",
+    "stage": "ADJUDICATE",
+    "how": "basis",
+    "verdict": "vrd:194728",
+    "outcome": "decided",
+    "value": "staff/3/0/0",
+    "reason": "no_better_staff",
+    "decider": "adjudicate_arc_owner",
+    "human_rows": [
+     "act-0001:obs:174395->obs:174395"
+    ],
+    "in_basis": [
+     "obs:174395"
+    ],
+    "in_used": [],
+    "other_rows_used": [
+     "obs:022274"
+    ]
+   },
+   {
+    "subject": "glyph/3/0/0/5/4",
+    "quantity": "arc_owner",
+    "stage": "ADJUDICATE",
+    "how": "basis",
+    "verdict": "vrd:194729",
+    "outcome": "decided",
+    "value": "staff/3/0/0",
+    "reason": "no_better_staff",
+    "decider": "adjudicate_arc_owner",
+    "human_rows": [
+     "act-0001:obs:174395->obs:174395"
+    ],
+    "in_basis": [
+     "obs:174395"
+    ],
+    "in_used": [],
+    "other_rows_used": [
+     "obs:022275"
+    ]
+   },
+   {
+    "subject": "glyph/3/0/0/5/5",
+    "quantity": "arc_owner",
+    "stage": "ADJUDICATE",
+    "how": "basis",
+    "verdict": "vrd:194730",
+    "outcome": "decided",
+    "value": "staff/3/0/0",
+    "reason": "no_better_staff",
+    "decider": "adjudicate_arc_owner",
+    "human_rows": [
+     "act-0001:obs:174395->obs:174395"
+    ],
+    "in_basis": [
+     "obs:174395"
+    ],
+    "in_used": [],
+    "other_rows_used": [
+     "obs:022276"
+    ]
+   },
+   {
+    "subject": "glyph/3/0/0/5/9",
+    "quantity": "arc_owner",
+    "stage": "ADJUDICATE",
+    "how": "basis",
+    "verdict": "vrd:194731",
+    "outcome": "decided",
+    "value": "staff/3/0/0",
+    "reason": "no_better_staff",
+    "decider": "adjudicate_arc_owner",
+    "human_rows": [
+     "act-0001:obs:174395->obs:174395"
+    ],
+    "in_basis": [
+     "obs:174395"
+    ],
+    "in_used": [],
+    "other_rows_used": [
+     "obs:022277"
+    ]
+   },
+   {
+    "subject": "glyph/3/0/1/0/1",
+    "quantity": "arc_owner",
+    "stage": "ADJUDICATE",
+    "how": "basis",
+    "verdict": "vrd:194732",
+    "outcome": "decided",
+    "value": "staff/3/0/1",
+    "reason": "no_better_staff",
+    "decider": "adjudicate_arc_owner",
+    "human_rows": [
+     "act-0001:obs:174395->obs:174395"
+    ],
+    "in_basis": [
+     "obs:174395"
+    ],
+    "in_used": [],
+    "other_rows_used": [
+     "obs:022288"
+    ]
+   },
+   {
+    "subject": "glyph/3/0/1/0/7",
+    "quantity": "arc_owner",
+    "stage": "ADJUDICATE",
+    "how": "basis",
+    "verdict": "vrd:194733",
+    "outcome": "decided",
+    "value": "staff/3/0/1",
+    "reason": "no_better_staff",
+    "decider": "adjudicate_arc_owner",
+    "human_rows": [
+     "act-0001:obs:174395->obs:174395"
+    ],
+    "in_basis": [
+     "obs:174395"
+    ],
+    "in_used": [],
+    "other_rows_used": [
+     "obs:022289"
+    ]
+   },
+   {
+    "subject": "glyph/3/0/1/1/0",
+    "quantity": "arc_owner",
+    "stage": "ADJUDICATE",
+    "how": "basis",
+    "verdict": "vrd:194734",
+    "outcome": "decided",
+    "value": "staff/3/0/1",
+    "reason": "no_better_staff",
+    "decider": "adjudicate_arc_owner",
+    "human_rows": [
+     "act-0001:obs:174395->obs:174395"
+    ],
+    "in_basis": [
+     "obs:174395"
+    ],
+    "in_used": [],
+    "other_rows_used": [
+     "obs:022291"
+    ]
+   },
+   {
+    "subject": "glyph/3/0/1/1/10",
+    "quantity": "arc_owner",
+    "stage": "ADJUDICATE",
+    "how": "basis",
+    "verdict": "vrd:194739",
+    "outcome": "decided",
+    "value": "staff/3/0/1",
+    "reason": "no_better_staff",
+    "decider": "adjudicate_arc_owner",
+    "human_rows": [
+     "act-0001:obs:174395->obs:174395"
+    ],
+    "in_basis": [
+     "obs:174395"
+    ],
+    "in_used": [],
+    "other_rows_used": [
+     "obs:022296"
+    ]
+   },
+   {
+    "subject": "glyph/3/0/1/1/4",
+    "quantity": "arc_owner",
+    "stage": "ADJUDICATE",
+    "how": "basis",
+    "verdict": "vrd:194735",
+    "outcome": "decided",
+    "value": "staff/3/0/1",
+    "reason": "no_better_staff",
+    "decider": "adjudicate_arc_owner",
+    "human_rows": [
+     "act-0001:obs:174395->obs:174395"
+    ],
+    "in_basis": [
+     "obs:174395"
+    ],
+    "in_used": [],
+    "other_rows_used": [
+     "obs:022292"
+    ]
+   },
+   {
+    "subject": "glyph/3/0/1/1/5",
+    "quantity": "arc_owner",
+    "stage": "ADJUDICATE",
+    "how": "basis",
+    "verdict": "vrd:194736",
+    "outcome": "decided",
+    "value": "staff/3/0/1",
+    "reason": "no_better_staff",
+    "decider": "adjudicate_arc_owner",
+    "human_rows": [
+     "act-0001:obs:174395->obs:174395"
+    ],
+    "in_basis": [
+     "obs:174395"
+    ],
+    "in_used": [],
+    "other_rows_used": [
+     "obs:022293"
+    ]
+   },
+   {
+    "subject": "glyph/3/0/1/1/6",
+    "quantity": "arc_owner",
+    "stage": "ADJUDICATE",
+    "how": "basis",
+    "verdict": "vrd:194737",
+    "outcome": "decided",
+    "value": "staff/3/0/1",
+    "reason": "no_better_staff",
+    "decider": "adjudicate_arc_owner",
+    "human_rows": [
+     "act-0001:obs:174395->obs:174395"
+    ],
+    "in_basis": [
+     "obs:174395"
+    ],
+    "in_used": [],
+    "other_rows_used": [
+     "obs:022294"
+    ]
+   },
+   {
+    "subject": "glyph/3/0/1/1/8",
+    "quantity": "arc_owner",
+    "stage": "ADJUDICATE",
+    "how": "basis",
+    "verdict": "vrd:194738",
+    "outcome": "decided",
+    "value": "staff/3/0/1",
+    "reason": "no_better_staff",
+    "decider": "adjudicate_arc_owner",
+    "human_rows": [
+     "act-0001:obs:174395->obs:174395"
+    ],
+    "in_basis": [
+     "obs:174395"
+    ],
+    "in_used": [],
+    "other_rows_used": [
+     "obs:022295"
+    ]
+   },
+   {
+    "subject": "glyph/3/0/1/11/1",
+    "quantity": "arc_owner",
+    "stage": "ADJUDICATE",
+    "how": "basis",
+    "verdict": "vrd:194756",
+    "outcome": "decided",
+    "value": "staff/3/0/1",
+    "reason": "no_better_staff",
+    "decider": "adjudicate_arc_owner",
+    "human_rows": [
+     "act-0001:obs:174395->obs:174395"
+    ],
+    "in_basis": [
+     "obs:174395"
+    ],
+    "in_used": [],
+    "other_rows_used": [
+     "obs:022318"
+    ]
+   },
+   {
+    "subject": "glyph/3/0/1/3/0",
+    "quantity": "arc_owner",
+    "stage": "ADJUDICATE",
+    "how": "basis",
+    "verdict": "vrd:194740",
+    "outcome": "decided",
+    "value": "staff/3/0/1",
+    "reason": "no_better_staff",
+    "decider": "adjudicate_arc_owner",
+    "human_rows": [
+     "act-0001:obs:174395->obs:174395"
+    ],
+    "in_basis": [
+     "obs:174395"
+    ],
+    "in_used": [],
+    "other_rows_used": [
+     "obs:022297"
+    ]
+   },
+   {
+    "subject": "glyph/3/0/1/3/1",
+    "quantity": "arc_owner",
+    "stage": "ADJUDICATE",
+    "how": "basis",
+    "verdict": "vrd:194741",
+    "outcome": "decided",
+    "value": "staff/3/0/1",
+    "reason": "no_better_staff",
+    "decider": "adjudicate_arc_owner",
+    "human_rows": [
+     "act-0001:obs:174395->obs:174395"
+    ],
+    "in_basis": [
+     "obs:174395"
+    ],
+    "in_used": [],
+    "other_rows_used": [
+     "obs:022298"
+    ]
+   },
+   {
+    "subject": "glyph/3/0/1/3/11",
+    "quantity": "arc_owner",
+    "stage": "ADJUDICATE",
+    "how": "basis",
+    "verdict": "vrd:194744",
+    "outcome": "decided",
+    "value": "staff/3/0/1",
+    "reason": "no_better_staff",
+    "decider": "adjudicate_arc_owner",
+    "human_rows": [
+     "act-0001:obs:174395->obs:174395"
+    ],
+    "in_basis": [
+     "obs:174395"
+    ],
+    "in_used": [],
+    "other_rows_used": [
+     "obs:022301"
+    ]
+   },
+   {
+    "subject": "glyph/3/0/1/3/7",
+    "quantity": "arc_owner",
+    "stage": "ADJUDICATE",
+    "how": "basis",
+    "verdict": "vrd:194742",
+    "outcome": "decided",
+    "value": "staff/3/0/1",
+    "reason": "no_better_staff",
+    "decider": "adjudicate_arc_owner",
+    "human_rows": [
+     "act-0001:obs:174395->obs:174395"
+    ],
+    "in_basis": [
+     "obs:174395"
+    ],
+    "in_used": [],
+    "other_rows_used": [
+     "obs:022299"
+    ]
+   },
+   {
+    "subject": "glyph/3/0/1/3/9",
+    "quantity": "arc_owner",
+    "stage": "ADJUDICATE",
+    "how": "basis",
+    "verdict": "vrd:194743",
+    "outcome": "decided",
+    "value": "staff/3/0/1",
+    "reason": "no_better_staff",
+    "decider": "adjudicate_arc_owner",
+    "human_rows": [
+     "act-0001:obs:174395->obs:174395"
+    ],
+    "in_basis": [
+     "obs:174395"
+    ],
+    "in_used": [],
+    "other_rows_used": [
+     "obs:022300"
+    ]
+   },
+   {
+    "subject": "glyph/3/0/1/4/0",
+    "quantity": "arc_owner",
+    "stage": "ADJUDICATE",
+    "how": "basis",
+    "verdict": "vrd:194745",
+    "outcome": "decided",
+    "value": "staff/3/0/1",
+    "reason": "no_better_staff",
+    "decider": "adjudicate_arc_owner",
+    "human_rows": [
+     "act-0001:obs:174395->obs:174395"
+    ],
+    "in_basis": [
+     "obs:174395"
+    ],
+    "in_used": [],
+    "other_rows_used": [
+     "obs:022302"
+    ]
+   },
+   {
+    "subject": "glyph/3/0/1/4/11",
+    "quantity": "arc_owner",
+    "stage": "ADJUDICATE",
+    "how": "basis",
+    "verdict": "vrd:194750",
+    "outcome": "decided",
+    "value": "staff/3/0/1",
+    "reason": "no_better_staff",
+    "decider": "adjudicate_arc_owner",
+    "human_rows": [
+     "act-0001:obs:174395->obs:174395"
+    ],
+    "in_basis": [
+     "obs:174395"
+    ],
+    "in_used": [],
+    "other_rows_used": [
+     "obs:022307"
+    ]
+   },
+   {
+    "subject": "glyph/3/0/1/4/3",
+    "quantity": "arc_owner",
+    "stage": "ADJUDICATE",
+    "how": "basis",
+    "verdict": "vrd:194746",
+    "outcome": "decided",
+    "value": "staff/3/0/1",
+    "reason": "no_better_staff",
+    "decider": "adjudicate_arc_owner",
+    "human_rows": [
+     "act-0001:obs:174395->obs:174395"
+    ],
+    "in_basis": [
+     "obs:174395"
+    ],
+    "in_used": [],
+    "other_rows_used": [
+     "obs:022303"
+    ]
+   },
+   {
+    "subject": "glyph/3/0/1/4/5",
+    "quantity": "arc_owner",
+    "stage": "ADJUDICATE",
+    "how": "basis",
+    "verdict": "vrd:194747",
+    "outcome": "decided",
+    "value": "staff/3/0/1",
+    "reason": "no_better_staff",
+    "decider": "adjudicate_arc_owner",
+    "human_rows": [
+     "act-0001:obs:174395->obs:174395"
+    ],
+    "in_basis": [
+     "obs:174395"
+    ],
+    "in_used": [],
+    "other_rows_used": [
+     "obs:022304"
+    ]
+   },
+   {
+    "subject": "glyph/3/0/1/4/7",
+    "quantity": "arc_owner",
+    "stage": "ADJUDICATE",
+    "how": "basis",
+    "verdict": "vrd:194748",
+    "outcome": "decided",
+    "value": "staff/3/0/1",
+    "reason": "no_better_staff",
+    "decider": "adjudicate_arc_owner",
+    "human_rows": [
+     "act-0001:obs:174395->obs:174395"
+    ],
+    "in_basis": [
+     "obs:174395"
+    ],
+    "in_used": [],
+    "other_rows_used": [
+     "obs:022305"
+    ]
+   },
+   {
+    "subject": "glyph/3/0/1/4/8",
+    "quantity": "arc_owner",
+    "stage": "ADJUDICATE",
+    "how": "basis",
+    "verdict": "vrd:194749",
+    "outcome": "decided",
+    "value": "staff/3/0/1",
+    "reason": "no_better_staff",
+    "decider": "adjudicate_arc_owner",
+    "human_rows": [
+     "act-0001:obs:174395->obs:174395"
+    ],
+    "in_basis": [
+     "obs:174395"
+    ],
+    "in_used": [],
+    "other_rows_used": [
+     "obs:022306"
+    ]
+   },
+   {
+    "subject": "glyph/3/0/1/5/1",
+    "quantity": "arc_owner",
+    "stage": "ADJUDICATE",
+    "how": "basis",
+    "verdict": "vrd:194751",
+    "outcome": "decided",
+    "value": "staff/3/0/1",
+    "reason": "no_better_staff",
+    "decider": "adjudicate_arc_owner",
+    "human_rows": [
+     "act-0001:obs:174395->obs:174395"
+    ],
+    "in_basis": [
+     "obs:174395"
+    ],
+    "in_used": [],
+    "other_rows_used": [
+     "obs:022308"
+    ]
+   },
+   {
+    "subject": "glyph/3/0/1/5/2",
+    "quantity": "arc_owner",
+    "stage": "ADJUDICATE",
+    "how": "basis",
+    "verdict": "vrd:194752",
+    "outcome": "decided",
+    "value": "staff/3/0/1",
+    "reason": "no_better_staff",
+    "decider": "adjudicate_arc_owner",
+    "human_rows": [
+     "act-0001:obs:174395->obs:174395"
+    ],
+    "in_basis": [
+     "obs:174395"
+    ],
+    "in_used": [],
+    "other_rows_used": [
+     "obs:022309"
+    ]
+   },
+   {
+    "subject": "glyph/3/0/1/5/6",
+    "quantity": "arc_owner",
+    "stage": "ADJUDICATE",
+    "how": "basis",
+    "verdict": "vrd:194753",
+    "outcome": "decided",
+    "value": "staff/3/0/1",
+    "reason": "no_better_staff",
+    "decider": "adjudicate_arc_owner",
+    "human_rows": [
+     "act-0001:obs:174395->obs:174395"
+    ],
+    "in_basis": [
+     "obs:174395"
+    ],
+    "in_used": [],
+    "other_rows_used": [
+     "obs:022310"
+    ]
+   },
+   {
+    "subject": "glyph/3/0/1/5/9",
+    "quantity": "arc_owner",
+    "stage": "ADJUDICATE",
+    "how": "basis",
+    "verdict": "vrd:194754",
+    "outcome": "decided",
+    "value": "staff/3/0/1",
+    "reason": "no_better_staff",
+    "decider": "adjudicate_arc_owner",
+    "human_rows": [
+     "act-0001:obs:174395->obs:174395"
+    ],
+    "in_basis": [
+     "obs:174395"
+    ],
+    "in_used": [],
+    "other_rows_used": [
+     "obs:022311"
+    ]
+   },
+   {
+    "subject": "glyph/3/0/1/6/5",
+    "quantity": "arc_owner",
+    "stage": "ADJUDICATE",
+    "how": "basis",
+    "verdict": "vrd:194755",
+    "outcome": "decided",
+    "value": "staff/3/0/1",
+    "reason": "no_better_staff",
+    "decider": "adjudicate_arc_owner",
+    "human_rows": [
+     "act-0001:obs:174395->obs:174395"
+    ],
+    "in_basis": [
+     "obs:174395"
+    ],
+    "in_used": [],
+    "other_rows_used": [
+     "obs:022312"
+    ]
+   },
+   {
+    "subject": "glyph/3/0/10/0/12",
+    "quantity": "arc_owner",
+    "stage": "ADJUDICATE",
+    "how": "basis",
+    "verdict": "vrd:194856",
+    "outcome": "decided",
+    "value": "staff/3/0/10",
+    "reason": "no_better_staff",
+    "decider": "adjudicate_arc_owner",
+    "human_rows": [
+     "act-0001:obs:174395->obs:174395"
+    ],
+    "in_basis": [
+     "obs:174395"
+    ],
+    "in_used": [],
+    "other_rows_used": [
+     "obs:022484"
+    ]
+   },
+   {
+    "subject": "glyph/3/0/10/0/2",
+    "quantity": "arc_owner",
+    "stage": "ADJUDICATE",
+    "how": "basis",
+    "verdict": "vrd:194855",
+    "outcome": "decided",
+    "value": "staff/3/0/10",
+    "reason": "no_better_staff",
+    "decider": "adjudicate_arc_owner",
+    "human_rows": [
+     "act-0001:obs:174395->obs:174395"
+    ],
+    "in_basis": [
+     "obs:174395"
+    ],
+    "in_used": [],
+    "other_rows_used": [
+     "obs:022482"
+    ]
+   },
+   {
+    "subject": "glyph/3/0/10/6/1",
+    "quantity": "arc_owner",
+    "stage": "ADJUDICATE",
+    "how": "basis",
+    "verdict": "vrd:194857",
+    "outcome": "decided",
+    "value": "staff/3/0/10",
+    "reason": "no_better_staff",
+    "decider": "adjudicate_arc_owner",
+    "human_rows": [
+     "act-0001:obs:174395->obs:174395"
+    ],
+    "in_basis": [
+     "obs:174395"
+    ],
+    "in_used": [],
+    "other_rows_used": [
+     "obs:022485"
+    ]
+   },
+   {
+    "subject": "glyph/3/0/2/0/3",
+    "quantity": "arc_owner",
+    "stage": "ADJUDICATE",
+    "how": "basis",
+    "verdict": "vrd:194757",
+    "outcome": "decided",
+    "value": "staff/3/0/2",
+    "reason": "no_better_staff",
+    "decider": "adjudicate_arc_owner",
+    "human_rows": [
+     "act-0001:obs:174395->obs:174395"
+    ],
+    "in_basis": [
+     "obs:174395"
+    ],
+    "in_used": [],
+    "other_rows_used": [
+     "obs:022323"
+    ]
+   },
+   {
+    "subject": "glyph/3/0/2/0/6",
+    "quantity": "arc_owner",
+    "stage": "ADJUDICATE",
+    "how": "basis",
+    "verdict": "vrd:194758",
+    "outcome": "decided",
+    "value": "staff/3/0/2",
+    "reason": "no_rival_staff",
+    "decider": "adjudicate_arc_owner",
+    "human_rows": [
+     "act-0001:obs:174395->obs:174395"
+    ],
+    "in_basis": [
+     "obs:174395"
+    ],
+    "in_used": [],
+    "other_rows_used": [
+     "obs:022324"
+    ]
+   },
+   {
+    "subject": "glyph/3/0/2/1/2",
+    "quantity": "arc_owner",
+    "stage": "ADJUDICATE",
+    "how": "basis",
+    "verdict": "vrd:194759",
+    "outcome": "decided",
+    "value": "staff/3/0/2",
+    "reason": "no_better_staff",
+    "decider": "adjudicate_arc_owner",
+    "human_rows": [
+     "act-0001:obs:174395->obs:174395"
+    ],
+    "in_basis": [
+     "obs:174395"
+    ],
+    "in_used": [],
+    "other_rows_used": [
+     "obs:022325"
+    ]
+   },
+   {
+    "subject": "glyph/3/0/2/2/4",
+    "quantity": "arc_owner",
+    "stage": "ADJUDICATE",
+    "how": "basis",
+    "verdict": "vrd:194760",
+    "outcome": "decided",
+    "value": "staff/3/0/2",
+    "reason": "no_rival_staff",
+    "decider": "adjudicate_arc_owner",
+    "human_rows": [
+     "act-0001:obs:174395->obs:174395"
+    ],
+    "in_basis": [
+     "obs:174395"
+    ],
+    "in_used": [],
+    "other_rows_used": [
+     "obs:022326"
+    ]
+   },
+   {
+    "subject": "glyph/3/0/2/3/0",
+    "quantity": "arc_owner",
+    "stage": "ADJUDICATE",
+    "how": "basis",
+    "verdict": "vrd:194761",
+    "outcome": "decided",
+    "value": "staff/3/0/2",
+    "reason": "no_better_staff",
+    "decider": "adjudicate_arc_owner",
+    "human_rows": [
+     "act-0001:obs:174395->obs:174395"
+    ],
+    "in_basis": [
+     "obs:174395"
+    ],
+    "in_used": [],
+    "other_rows_used": [
+     "obs:022327"
+    ]
+   },
+   {
+    "subject": "glyph/3/0/2/3/4",
+    "quantity": "arc_owner",
+    "stage": "ADJUDICATE",
+    "how": "basis",
+    "verdict": "vrd:194762",
+    "outcome": "decided",
+    "value": "staff/3/0/2",
+    "reason": "no_better_staff",
+    "decider": "adjudicate_arc_owner",
+    "human_rows": [
+     "act-0001:obs:174395->obs:174395"
+    ],
+    "in_basis": [
+     "obs:174395"
+    ],
+    "in_used": [],
+    "other_rows_used": [
+     "obs:022328"
+    ]
+   },
+   {
+    "subject": "glyph/3/0/2/3/5",
+    "quantity": "arc_owner",
+    "stage": "ADJUDICATE",
+    "how": "basis",
+    "verdict": "vrd:194763",
+    "outcome": "decided",
+    "value": "staff/3/0/2",
+    "reason": "no_better_staff",
+    "decider": "adjudicate_arc_owner",
+    "human_rows": [
+     "act-0001:obs:174395->obs:174395"
+    ],
+    "in_basis": [
+     "obs:174395"
+    ],
+    "in_used": [],
+    "other_rows_used": [
+     "obs:022329"
+    ]
+   },
+   {
+    "subject": "glyph/3/0/2/4/0",
+    "quantity": "arc_owner",
+    "stage": "ADJUDICATE",
+    "how": "basis",
+    "verdict": "vrd:194764",
+    "outcome": "decided",
+    "value": "staff/3/0/3",
+    "reason": "hugs_noteheads",
+    "decider": "adjudicate_arc_owner",
+    "human_rows": [
+     "act-0001:obs:174395->obs:174395"
+    ],
+    "in_basis": [
+     "obs:174395"
+    ],
+    "in_used": [],
+    "other_rows_used": [
+     "obs:022330"
+    ]
+   },
+   {
+    "subject": "glyph/3/0/2/4/1",
+    "quantity": "arc_owner",
+    "stage": "ADJUDICATE",
+    "how": "basis",
+    "verdict": "vrd:194765",
+    "outcome": "decided",
+    "value": "staff/3/0/2",
+    "reason": "no_better_staff",
+    "decider": "adjudicate_arc_owner",
+    "human_rows": [
+     "act-0001:obs:174395->obs:174395"
+    ],
+    "in_basis": [
+     "obs:174395"
+    ],
+    "in_used": [],
+    "other_rows_used": [
+     "obs:022331"
+    ]
+   },
+   {
+    "subject": "glyph/3/0/2/4/5",
+    "quantity": "arc_owner",
+    "stage": "ADJUDICATE",
+    "how": "basis",
+    "verdict": "vrd:194766",
+    "outcome": "decided",
+    "value": "staff/3/0/2",
+    "reason": "no_better_staff",
+    "decider": "adjudicate_arc_owner",
+    "human_rows": [
+     "act-0001:obs:174395->obs:174395"
+    ],
+    "in_basis": [
+     "obs:174395"
+    ],
+    "in_used": [],
+    "other_rows_used": [
+     "obs:022332"
+    ]
+   },
+   {
+    "subject": "glyph/3/0/2/4/8",
+    "quantity": "arc_owner",
+    "stage": "ADJUDICATE",
+    "how": "basis",
+    "verdict": "vrd:194767",
+    "outcome": "decided",
+    "value": "staff/3/0/2",
+    "reason": "no_better_staff",
+    "decider": "adjudicate_arc_owner",
+    "human_rows": [
+     "act-0001:obs:174395->obs:174395"
+    ],
+    "in_basis": [
+     "obs:174395"
+    ],
+    "in_used": [],
+    "other_rows_used": [
+     "obs:022333"
+    ]
+   },
+   {
+    "subject": "glyph/3/0/2/5/0",
+    "quantity": "arc_owner",
+    "stage": "ADJUDICATE",
+    "how": "basis",
+    "verdict": "vrd:194768",
+    "outcome": "decided",
+    "value": "staff/3/0/2",
+    "reason": "no_better_staff",
+    "decider": "adjudicate_arc_owner",
+    "human_rows": [
+     "act-0001:obs:174395->obs:174395"
+    ],
+    "in_basis": [
+     "obs:174395"
+    ],
+    "in_used": [],
+    "other_rows_used": [
+     "obs:022334"
+    ]
+   },
+   {
+    "subject": "glyph/3/0/2/5/2",
+    "quantity": "arc_owner",
+    "stage": "ADJUDICATE",
+    "how": "basis",
+    "verdict": "vrd:194769",
+    "outcome": "decided",
+    "value": "staff/3/0/2",
+    "reason": "no_better_staff",
+    "decider": "adjudicate_arc_owner",
+    "human_rows": [
+     "act-0001:obs:174395->obs:174395"
+    ],
+    "in_basis": [
+     "obs:174395"
+    ],
+    "in_used": [],
+    "other_rows_used": [
+     "obs:022335"
+    ]
+   },
+   {
+    "subject": "glyph/3/0/2/5/6",
+    "quantity": "arc_owner",
+    "stage": "ADJUDICATE",
+    "how": "basis",
+    "verdict": "vrd:194770",
+    "outcome": "decided",
+    "value": "staff/3/0/2",
+    "reason": "no_better_staff",
+    "decider": "adjudicate_arc_owner",
+    "human_rows": [
+     "act-0001:obs:174395->obs:174395"
+    ],
+    "in_basis": [
+     "obs:174395"
+    ],
+    "in_used": [],
+    "other_rows_used": [
+     "obs:022337"
+    ]
+   },
+   {
+    "subject": "glyph/3/0/2/5/8",
+    "quantity": "arc_owner",
+    "stage": "ADJUDICATE",
+    "how": "basis",
+    "verdict": "vrd:194771",
+    "outcome": "decided",
+    "value": "staff/3/0/2",
+    "reason": "no_better_staff",
+    "decider": "adjudicate_arc_owner",
+    "human_rows": [
+     "act-0001:obs:174395->obs:174395"
+    ],
+    "in_basis": [
+     "obs:174395"
+    ],
+    "in_used": [],
+    "other_rows_used": [
+     "obs:022338"
+    ]
+   },
+   {
+    "subject": "glyph/3/0/3/0/0",
+    "quantity": "arc_owner",
+    "stage": "ADJUDICATE",
+    "how": "basis",
+    "verdict": "vrd:194772",
+    "outcome": "decided",
+    "value": "staff/3/0/3",
+    "reason": "no_better_staff",
+    "decider": "adjudicate_arc_owner",
+    "human_rows": [
+     "act-0001:obs:174395->obs:174395"
+    ],
+    "in_basis": [
+     "obs:174395"
+    ],
+    "in_used": [],
+    "other_rows_used": [
+     "obs:022347"
+    ]
+   },
+   {
+    "subject": "glyph/3/0/3/0/12",
+    "quantity": "arc_owner",
+    "stage": "ADJUDICATE",
+    "how": "basis",
+    "verdict": "vrd:194775",
+    "outcome": "decided",
+    "value": "staff/3/0/3",
+    "reason": "no_rival_staff",
+    "decider": "adjudicate_arc_owner",
+    "human_rows": [
+     "act-0001:obs:174395->obs:174395"
+    ],
+    "in_basis": [
+     "obs:174395"
+    ],
+    "in_used": [],
+    "other_rows_used": [
+     "obs:022350"
+    ]
+   },
+   {
+    "subject": "glyph/3/0/3/0/15",
+    "quantity": "arc_owner",
+    "stage": "ADJUDICATE",
+    "how": "basis",
+    "verdict": "vrd:194776",
+    "outcome": "decided",
+    "value": "staff/3/0/3",
+    "reason": "no_better_staff",
+    "decider": "adjudicate_arc_owner",
+    "human_rows": [
+     "act-0001:obs:174395->obs:174395"
+    ],
+    "in_basis": [
+     "obs:174395"
+    ],
+    "in_used": [],
+    "other_rows_used": [
+     "obs:022351"
+    ]
+   },
+   {
+    "subject": "glyph/3/0/3/0/16",
+    "quantity": "arc_owner",
+    "stage": "ADJUDICATE",
+    "how": "basis",
+    "verdict": "vrd:194777",
+    "outcome": "decided",
+    "value": "staff/3/0/3",
+    "reason": "no_better_staff",
+    "decider": "adjudicate_arc_owner",
+    "human_rows": [
+     "act-0001:obs:174395->obs:174395"
+    ],
+    "in_basis": [
+     "obs:174395"
+    ],
+    "in_used": [],
+    "other_rows_used": [
+     "obs:022352"
+    ]
+   },
+   {
+    "subject": "glyph/3/0/3/0/2",
+    "quantity": "arc_owner",
+    "stage": "ADJUDICATE",
+    "how": "basis",
+    "verdict": "vrd:194773",
+    "outcome": "decided",
+    "value": "staff/3/0/3",
+    "reason": "no_better_staff",
+    "decider": "adjudicate_arc_owner",
+    "human_rows": [
+     "act-0001:obs:174395->obs:174395"
+    ],
+    "in_basis": [
+     "obs:174395"
+    ],
+    "in_used": [],
+    "other_rows_used": [
+     "obs:022348"
+    ]
+   },
+   {
+    "subject": "glyph/3/0/3/0/4",
+    "quantity": "arc_owner",
+    "stage": "ADJUDICATE",
+    "how": "basis",
+    "verdict": "vrd:194774",
+    "outcome": "decided",
+    "value": "staff/3/0/3",
+    "reason": "no_rival_staff",
+    "decider": "adjudicate_arc_owner",
+    "human_rows": [
+     "act-0001:obs:174395->obs:174395"
+    ],
+    "in_basis": [
+     "obs:174395"
+    ],
+    "in_used": [],
+    "other_rows_used": [
+     "obs:022349"
+    ]
+   },
+   {
+    "subject": "glyph/3/0/3/1/1",
+    "quantity": "arc_owner",
+    "stage": "ADJUDICATE",
+    "how": "basis",
+    "verdict": "vrd:194778",
+    "outcome": "decided",
+    "value": "staff/3/0/3",
+    "reason": "no_better_staff",
+    "decider": "adjudicate_arc_owner",
+    "human_rows": [
+     "act-0001:obs:174395->obs:174395"
+    ],
+    "in_basis": [
+     "obs:174395"
+    ],
+    "in_used": [],
+    "other_rows_used": [
+     "obs:022353"
+    ]
+   },
+   {
+    "subject": "glyph/3/0/3/1/10",
+    "quantity": "arc_owner",
+    "stage": "ADJUDICATE",
+    "how": "basis",
+    "verdict": "vrd:194783",
+    "outcome": "decided",
+    "value": "staff/3/0/3",
+    "reason": "no_better_staff",
+    "decider": "adjudicate_arc_owner",
+    "human_rows": [
+     "act-0001:obs:174395->obs:174395"
+    ],
+    "in_basis": [
+     "obs:174395"
+    ],
+    "in_used": [],
+    "other_rows_used": [
+     "obs:022358"
+    ]
+   },
+   {
+    "subject": "glyph/3/0/3/1/5",
+    "quantity": "arc_owner",
+    "stage": "ADJUDICATE",
+    "how": "basis",
+    "verdict": "vrd:194779",
+    "outcome": "decided",
+    "value": "staff/3/0/3",
+    "reason": "no_better_staff",
+    "decider": "adjudicate_arc_owner",
+    "human_rows": [
+     "act-0001:obs:174395->obs:174395"
+    ],
+    "in_basis": [
+     "obs:174395"
+    ],
+    "in_used": [],
+    "other_rows_used": [
+     "obs:022354"
+    ]
+   },
+   {
+    "subject": "glyph/3/0/3/1/7",
+    "quantity": "arc_owner",
+    "stage": "ADJUDICATE",
+    "how": "basis",
+    "verdict": "vrd:194780",
+    "outcome": "decided",
+    "value": "staff/3/0/3",
+    "reason": "no_better_staff",
+    "decider": "adjudicate_arc_owner",
+    "human_rows": [
+     "act-0001:obs:174395->obs:174395"
+    ],
+    "in_basis": [
+     "obs:174395"
+    ],
+    "in_used": [],
+    "other_rows_used": [
+     "obs:022355"
+    ]
+   },
+   {
+    "subject": "glyph/3/0/3/1/8",
+    "quantity": "arc_owner",
+    "stage": "ADJUDICATE",
+    "how": "basis",
+    "verdict": "vrd:194781",
+    "outcome": "decided",
+    "value": "staff/3/0/3",
+    "reason": "no_better_staff",
+    "decider": "adjudicate_arc_owner",
+    "human_rows": [
+     "act-0001:obs:174395->obs:174395"
+    ],
+    "in_basis": [
+     "obs:174395"
+    ],
+    "in_used": [],
+    "other_rows_used": [
+     "obs:022356"
+    ]
+   },
+   {
+    "subject": "glyph/3/0/3/1/9",
+    "quantity": "arc_owner",
+    "stage": "ADJUDICATE",
+    "how": "basis",
+    "verdict": "vrd:194782",
+    "outcome": "decided",
+    "value": "staff/3/0/3",
+    "reason": "no_better_staff",
+    "decider": "adjudicate_arc_owner",
+    "human_rows": [
+     "act-0001:obs:174395->obs:174395"
+    ],
+    "in_basis": [
+     "obs:174395"
+    ],
+    "in_used": [],
+    "other_rows_used": [
+     "obs:022357"
+    ]
+   },
+   {
+    "subject": "glyph/3/0/3/2/7",
+    "quantity": "arc_owner",
+    "stage": "ADJUDICATE",
+    "how": "basis",
+    "verdict": "vrd:194784",
+    "outcome": "decided",
+    "value": "staff/3/0/3",
+    "reason": "no_better_staff",
+    "decider": "adjudicate_arc_owner",
+    "human_rows": [
+     "act-0001:obs:174395->obs:174395"
+    ],
+    "in_basis": [
+     "obs:174395"
+    ],
+    "in_used": [],
+    "other_rows_used": [
+     "obs:022359"
+    ]
+   },
+   {
+    "subject": "glyph/3/0/3/3/0",
+    "quantity": "arc_owner",
+    "stage": "ADJUDICATE",
+    "how": "basis",
+    "verdict": "vrd:194785",
+    "outcome": "decided",
+    "value": "staff/3/0/3",
+    "reason": "no_better_staff",
+    "decider": "adjudicate_arc_owner",
+    "human_rows": [
+     "act-0001:obs:174395->obs:174395"
+    ],
+    "in_basis": [
+     "obs:174395"
+    ],
+    "in_used": [],
+    "other_rows_used": [
+     "obs:022360"
+    ]
+   },
+   {
+    "subject": "glyph/3/0/3/3/9",
+    "quantity": "arc_owner",
+    "stage": "ADJUDICATE",
+    "how": "basis",
+    "verdict": "vrd:194786",
+    "outcome": "decided",
+    "value": "staff/3/0/3",
+    "reason": "no_better_staff",
+    "decider": "adjudicate_arc_owner",
+    "human_rows": [
+     "act-0001:obs:174395->obs:174395"
+    ],
+    "in_basis": [
+     "obs:174395"
+    ],
+    "in_used": [],
+    "other_rows_used": [
+     "obs:022361"
+    ]
+   },
+   {
+    "subject": "glyph/3/0/3/4/0",
+    "quantity": "arc_owner",
+    "stage": "ADJUDICATE",
+    "how": "basis",
+    "verdict": "vrd:194787",
+    "outcome": "decided",
+    "value": "staff/3/0/3",
+    "reason": "no_better_staff",
+    "decider": "adjudicate_arc_owner",
+    "human_rows": [
+     "act-0001:obs:174395->obs:174395"
+    ],
+    "in_basis": [
+     "obs:174395"
+    ],
+    "in_used": [],
+    "other_rows_used": [
+     "obs:022362"
+    ]
+   },
+   {
+    "subject": "glyph/3/0/3/4/2",
+    "quantity": "arc_owner",
+    "stage": "ADJUDICATE",
+    "how": "basis",
+    "verdict": "vrd:194788",
+    "outcome": "decided",
+    "value": "staff/3/0/3",
+    "reason": "no_better_staff",
+    "decider": "adjudicate_arc_owner",
+    "human_rows": [
+     "act-0001:obs:174395->obs:174395"
+    ],
+    "in_basis": [
+     "obs:174395"
+    ],
+    "in_used": [],
+    "other_rows_used": [
+     "obs:022363"
+    ]
+   },
+   {
+    "subject": "glyph/3/0/3/4/3",
+    "quantity": "arc_owner",
+    "stage": "ADJUDICATE",
+    "how": "basis",
+    "verdict": "vrd:194789",
+    "outcome": "decided",
+    "value": "staff/3/0/3",
+    "reason": "no_better_staff",
+    "decider": "adjudicate_arc_owner",
+    "human_rows": [
+     "act-0001:obs:174395->obs:174395"
+    ],
+    "in_basis": [
+     "obs:174395"
+    ],
+    "in_used": [],
+    "other_rows_used": [
+     "obs:022364"
+    ]
+   },
+   {
+    "subject": "glyph/3/0/3/5/0",
+    "quantity": "arc_owner",
+    "stage": "ADJUDICATE",
+    "how": "basis",
+    "verdict": "vrd:194790",
+    "outcome": "decided",
+    "value": "staff/3/0/3",
+    "reason": "no_better_staff",
+    "decider": "adjudicate_arc_owner",
+    "human_rows": [
+     "act-0001:obs:174395->obs:174395"
+    ],
+    "in_basis": [
+     "obs:174395"
+    ],
+    "in_used": [],
+    "other_rows_used": [
+     "obs:022365"
+    ]
+   },
+   {
+    "subject": "glyph/3/0/3/5/11",
+    "quantity": "arc_owner",
+    "stage": "ADJUDICATE",
+    "how": "basis",
+    "verdict": "vrd:194798",
+    "outcome": "decided",
+    "value": "staff/3/0/3",
+    "reason": "no_better_staff",
+    "decider": "adjudicate_arc_owner",
+    "human_rows": [
+     "act-0001:obs:174395->obs:174395"
+    ],
+    "in_basis": [
+     "obs:174395"
+    ],
+    "in_used": [],
+    "other_rows_used": [
+     "obs:022373"
+    ]
+   },
+   {
+    "subject": "glyph/3/0/3/5/3",
+    "quantity": "arc_owner",
+    "stage": "ADJUDICATE",
+    "how": "basis",
+    "verdict": "vrd:194791",
+    "outcome": "decided",
+    "value": "staff/3/0/3",
+    "reason": "no_better_staff",
+    "decider": "adjudicate_arc_owner",
+    "human_rows": [
+     "act-0001:obs:174395->obs:174395"
+    ],
+    "in_basis": [
+     "obs:174395"
+    ],
+    "in_used": [],
+    "other_rows_used": [
+     "obs:022366"
+    ]
+   },
+   {
+    "subject": "glyph/3/0/3/5/4",
+    "quantity": "arc_owner",
+    "stage": "ADJUDICATE",
+    "how": "basis",
+    "verdict": "vrd:194792",
+    "outcome": "decided",
+    "value": "staff/3/0/3",
+    "reason": "no_better_staff",
+    "decider": "adjudicate_arc_owner",
+    "human_rows": [
+     "act-0001:obs:174395->obs:174395"
+    ],
+    "in_basis": [
+     "obs:174395"
+    ],
+    "in_used": [],
+    "other_rows_used": [
+     "obs:022367"
+    ]
+   },
+   {
+    "subject": "glyph/3/0/3/5/5",
+    "quantity": "arc_owner",
+    "stage": "ADJUDICATE",
+    "how": "basis",
+    "verdict": "vrd:194793",
+    "outcome": "decided",
+    "value": "staff/3/0/3",
+    "reason": "no_better_staff",
+    "decider": "adjudicate_arc_owner",
+    "human_rows": [
+     "act-0001:obs:174395->obs:174395"
+    ],
+    "in_basis": [
+     "obs:174395"
+    ],
+    "in_used": [],
+    "other_rows_used": [
+     "obs:022368"
+    ]
+   },
+   {
+    "subject": "glyph/3/0/3/5/6",
+    "quantity": "arc_owner",
+    "stage": "ADJUDICATE",
+    "how": "basis",
+    "verdict": "vrd:194794",
+    "outcome": "decided",
+    "value": "staff/3/0/3",
+    "reason": "no_better_staff",
+    "decider": "adjudicate_arc_owner",
+    "human_rows": [
+     "act-0001:obs:174395->obs:174395"
+    ],
+    "in_basis": [
+     "obs:174395"
+    ],
+    "in_used": [],
+    "other_rows_used": [
+     "obs:022369"
+    ]
+   },
+   {
+    "subject": "glyph/3/0/3/5/7",
+    "quantity": "arc_owner",
+    "stage": "ADJUDICATE",
+    "how": "basis",
+    "verdict": "vrd:194795",
+    "outcome": "decided",
+    "value": "staff/3/0/3",
+    "reason": "no_better_staff",
+    "decider": "adjudicate_arc_owner",
+    "human_rows": [
+     "act-0001:obs:174395->obs:174395"
+    ],
+    "in_basis": [
+     "obs:174395"
+    ],
+    "in_used": [],
+    "other_rows_used": [
+     "obs:022370"
+    ]
+   },
+   {
+    "subject": "glyph/3/0/3/5/8",
+    "quantity": "arc_owner",
+    "stage": "ADJUDICATE",
+    "how": "basis",
+    "verdict": "vrd:194796",
+    "outcome": "decided",
+    "value": "staff/3/0/3",
+    "reason": "no_better_staff",
+    "decider": "adjudicate_arc_owner",
+    "human_rows": [
+     "act-0001:obs:174395->obs:174395"
+    ],
+    "in_basis": [
+     "obs:174395"
+    ],
+    "in_used": [],
+    "other_rows_used": [
+     "obs:022371"
+    ]
+   },
+   {
+    "subject": "glyph/3/0/3/5/9",
+    "quantity": "arc_owner",
+    "stage": "ADJUDICATE",
+    "how": "basis",
+    "verdict": "vrd:194797",
+    "outcome": "decided",
+    "value": "staff/3/0/3",
+    "reason": "no_better_staff",
+    "decider": "adjudicate_arc_owner",
+    "human_rows": [
+     "act-0001:obs:174395->obs:174395"
+    ],
+    "in_basis": [
+     "obs:174395"
+    ],
+    "in_used": [],
+    "other_rows_used": [
+     "obs:022372"
+    ]
+   },
+   {
+    "subject": "glyph/3/0/3/6/4",
+    "quantity": "arc_owner",
+    "stage": "ADJUDICATE",
+    "how": "basis",
+    "verdict": "vrd:194799",
+    "outcome": "decided",
+    "value": "staff/3/0/3",
+    "reason": "no_better_staff",
+    "decider": "adjudicate_arc_owner",
+    "human_rows": [
+     "act-0001:obs:174395->obs:174395"
+    ],
+    "in_basis": [
+     "obs:174395"
+    ],
+    "in_used": [],
+    "other_rows_used": [
+     "obs:022374"
+    ]
+   },
+   {
+    "subject": "glyph/3/0/4/0/3",
+    "quantity": "arc_owner",
+    "stage": "ADJUDICATE",
+    "how": "basis",
+    "verdict": "vrd:194800",
+    "outcome": "decided",
+    "value": "staff/3/0/4",
+    "reason": "no_better_staff",
+    "decider": "adjudicate_arc_owner",
+    "human_rows": [
+     "act-0001:obs:174395->obs:174395"
+    ],
+    "in_basis": [
+     "obs:174395"
+    ],
+    "in_used": [],
+    "other_rows_used": [
+     "obs:022383"
+    ]
+   },
+   {
+    "subject": "glyph/3/0/4/0/4",
+    "quantity": "arc_owner",
+    "stage": "ADJUDICATE",
+    "how": "basis",
+    "verdict": "vrd:194801",
+    "outcome": "decided",
+    "value": "staff/3/0/4",
+    "reason": "no_better_staff",
+    "decider": "adjudicate_arc_owner",
+    "human_rows": [
+     "act-0001:obs:174395->obs:174395"
+    ],
+    "in_basis": [
+     "obs:174395"
+    ],
+    "in_used": [],
+    "other_rows_used": [
+     "obs:022384"
+    ]
+   },
+   {
+    "subject": "glyph/3/0/4/0/6",
+    "quantity": "arc_owner",
+    "stage": "ADJUDICATE",
+    "how": "basis",
+    "verdict": "vrd:194802",
+    "outcome": "decided",
+    "value": "staff/3/0/4",
+    "reason": "no_better_staff",
+    "decider": "adjudicate_arc_owner",
+    "human_rows": [
+     "act-0001:obs:174395->obs:174395"
+    ],
+    "in_basis": [
+     "obs:174395"
+    ],
+    "in_used": [],
+    "other_rows_used": [
+     "obs:022385"
+    ]
+   },
+   {
+    "subject": "glyph/3/0/4/0/7",
+    "quantity": "arc_owner",
+    "stage": "ADJUDICATE",
+    "how": "basis",
+    "verdict": "vrd:194803",
+    "outcome": "decided",
+    "value": "staff/3/0/4",
+    "reason": "no_better_staff",
+    "decider": "adjudicate_arc_owner",
+    "human_rows": [
+     "act-0001:obs:174395->obs:174395"
+    ],
+    "in_basis": [
+     "obs:174395"
+    ],
+    "in_used": [],
+    "other_rows_used": [
+     "obs:022386"
+    ]
+   },
+   {
+    "subject": "glyph/3/0/4/1/1",
+    "quantity": "arc_owner",
+    "stage": "ADJUDICATE",
+    "how": "basis",
+    "verdict": "vrd:194804",
+    "outcome": "decided",
+    "value": "staff/3/0/4",
+    "reason": "no_better_staff",
+    "decider": "adjudicate_arc_owner",
+    "human_rows": [
+     "act-0001:obs:174395->obs:174395"
+    ],
+    "in_basis": [
+     "obs:174395"
+    ],
+    "in_used": [],
+    "other_rows_used": [
+     "obs:022387"
+    ]
+   },
+   {
+    "subject": "glyph/3/0/4/1/3",
+    "quantity": "arc_owner",
+    "stage": "ADJUDICATE",
+    "how": "basis",
+    "verdict": "vrd:194805",
+    "outcome": "decided",
+    "value": "staff/3/0/4",
+    "reason": "no_better_staff",
+    "decider": "adjudicate_arc_owner",
+    "human_rows": [
+     "act-0001:obs:174395->obs:174395"
+    ],
+    "in_basis": [
+     "obs:174395"
+    ],
+    "in_used": [],
+    "other_rows_used": [
+     "obs:022388"
+    ]
+   },
+   {
+    "subject": "glyph/3/0/4/1/6",
+    "quantity": "arc_owner",
+    "stage": "ADJUDICATE",
+    "how": "basis",
+    "verdict": "vrd:194806",
+    "outcome": "decided",
+    "value": "staff/3/0/4",
+    "reason": "no_better_staff",
+    "decider": "adjudicate_arc_owner",
+    "human_rows": [
+     "act-0001:obs:174395->obs:174395"
+    ],
+    "in_basis": [
+     "obs:174395"
+    ],
+    "in_used": [],
+    "other_rows_used": [
+     "obs:022389"
+    ]
+   },
+   {
+    "subject": "glyph/3/0/4/13/5",
+    "quantity": "arc_owner",
+    "stage": "ADJUDICATE",
+    "how": "basis",
+    "verdict": "vrd:194824",
+    "outcome": "decided",
+    "value": "staff/3/0/4",
+    "reason": "no_rival_staff",
+    "decider": "adjudicate_arc_owner",
+    "human_rows": [
+     "act-0001:obs:174395->obs:174395"
+    ],
+    "in_basis": [
+     "obs:174395"
+    ],
+    "in_used": [],
+    "other_rows_used": [
+     "obs:022410"
+    ]
+   },
+   {
+    "subject": "glyph/3/0/4/14/1",
+    "quantity": "arc_owner",
+    "stage": "ADJUDICATE",
+    "how": "basis",
+    "verdict": "vrd:194825",
+    "outcome": "decided",
+    "value": "staff/3/0/4",
+    "reason": "no_better_staff",
+    "decider": "adjudicate_arc_owner",
+    "human_rows": [
+     "act-0001:obs:174395->obs:174395"
+    ],
+    "in_basis": [
+     "obs:174395"
+    ],
+    "in_used": [],
+    "other_rows_used": [
+     "obs:022411"
+    ]
+   },
+   {
+    "subject": "glyph/3/0/4/15/0",
+    "quantity": "arc_owner",
+    "stage": "ADJUDICATE",
+    "how": "basis",
+    "verdict": "vrd:194826",
+    "outcome": "decided",
+    "value": "staff/3/0/4",
+    "reason": "no_rival_staff",
+    "decider": "adjudicate_arc_owner",
+    "human_rows": [
+     "act-0001:obs:174395->obs:174395"
+    ],
+    "in_basis": [
+     "obs:174395"
+    ],
+    "in_used": [],
+    "other_rows_used": [
+     "obs:022412"
+    ]
+   },
+   {
+    "subject": "glyph/3/0/4/3/11",
+    "quantity": "arc_owner",
+    "stage": "ADJUDICATE",
+    "how": "basis",
+    "verdict": "vrd:194810",
+    "outcome": "decided",
+    "value": "staff/3/0/4",
+    "reason": "no_better_staff",
+    "decider": "adjudicate_arc_owner",
+    "human_rows": [
+     "act-0001:obs:174395->obs:174395"
+    ],
+    "in_basis": [
+     "obs:174395"
+    ],
+    "in_used": [],
+    "other_rows_used": [
+     "obs:022393"
+    ]
+   },
+   {
+    "subject": "glyph/3/0/4/3/4",
+    "quantity": "arc_owner",
+    "stage": "ADJUDICATE",
+    "how": "basis",
+    "verdict": "vrd:194807",
+    "outcome": "decided",
+    "value": "staff/3/0/4",
+    "reason": "no_better_staff",
+    "decider": "adjudicate_arc_owner",
+    "human_rows": [
+     "act-0001:obs:174395->obs:174395"
+    ],
+    "in_basis": [
+     "obs:174395"
+    ],
+    "in_used": [],
+    "other_rows_used": [
+     "obs:022390"
+    ]
+   },
+   {
+    "subject": "glyph/3/0/4/3/5",
+    "quantity": "arc_owner",
+    "stage": "ADJUDICATE",
+    "how": "basis",
+    "verdict": "vrd:194808",
+    "outcome": "decided",
+    "value": "staff/3/0/4",
+    "reason": "no_better_staff",
+    "decider": "adjudicate_arc_owner",
+    "human_rows": [
+     "act-0001:obs:174395->obs:174395"
+    ],
+    "in_basis": [
+     "obs:174395"
+    ],
+    "in_used": [],
+    "other_rows_used": [
+     "obs:022391"
+    ]
+   },
+   {
+    "subject": "glyph/3/0/4/3/8",
+    "quantity": "arc_owner",
+    "stage": "ADJUDICATE",
+    "how": "basis",
+    "verdict": "vrd:194809",
+    "outcome": "decided",
+    "value": "staff/3/0/4",
+    "reason": "no_better_staff",
+    "decider": "adjudicate_arc_owner",
+    "human_rows": [
+     "act-0001:obs:174395->obs:174395"
+    ],
+    "in_basis": [
+     "obs:174395"
+    ],
+    "in_used": [],
+    "other_rows_used": [
+     "obs:022392"
+    ]
+   },
+   {
+    "subject": "glyph/3/0/4/4/0",
+    "quantity": "arc_owner",
+    "stage": "ADJUDICATE",
+    "how": "basis",
+    "verdict": "vrd:194811",
+    "outcome": "decided",
+    "value": "staff/3/0/4",
+    "reason": "no_better_staff",
+    "decider": "adjudicate_arc_owner",
+    "human_rows": [
+     "act-0001:obs:174395->obs:174395"
+    ],
+    "in_basis": [
+     "obs:174395"
+    ],
+    "in_used": [],
+    "other_rows_used": [
+     "obs:022394"
+    ]
+   },
+   {
+    "subject": "glyph/3/0/4/4/4",
+    "quantity": "arc_owner",
+    "stage": "ADJUDICATE",
+    "how": "basis",
+    "verdict": "vrd:194812",
+    "outcome": "decided",
+    "value": "staff/3/0/4",
+    "reason": "no_better_staff",
+    "decider": "adjudicate_arc_owner",
+    "human_rows": [
+     "act-0001:obs:174395->obs:174395"
+    ],
+    "in_basis": [
+     "obs:174395"
+    ],
+    "in_used": [],
+    "other_rows_used": [
+     "obs:022395"
+    ]
+   },
+   {
+    "subject": "glyph/3/0/4/4/5",
+    "quantity": "arc_owner",
+    "stage": "ADJUDICATE",
+    "how": "basis",
+    "verdict": "vrd:194813",
+    "outcome": "decided",
+    "value": "staff/3/0/4",
+    "reason": "no_better_staff",
+    "decider": "adjudicate_arc_owner",
+    "human_rows": [
+     "act-0001:obs:174395->obs:174395"
+    ],
+    "in_basis": [
+     "obs:174395"
+    ],
+    "in_used": [],
+    "other_rows_used": [
+     "obs:022396"
+    ]
+   },
+   {
+    "subject": "glyph/3/0/4/4/6",
+    "quantity": "arc_owner",
+    "stage": "ADJUDICATE",
+    "how": "basis",
+    "verdict": "vrd:194814",
+    "outcome": "decided",
+    "value": "staff/3/0/4",
+    "reason": "no_better_staff",
+    "decider": "adjudicate_arc_owner",
+    "human_rows": [
+     "act-0001:obs:174395->obs:174395"
+    ],
+    "in_basis": [
+     "obs:174395"
+    ],
+    "in_used": [],
+    "other_rows_used": [
+     "obs:022397"
+    ]
+   },
+   {
+    "subject": "glyph/3/0/4/4/7",
+    "quantity": "arc_owner",
+    "stage": "ADJUDICATE",
+    "how": "basis",
+    "verdict": "vrd:194815",
+    "outcome": "decided",
+    "value": "staff/3/0/4",
+    "reason": "no_better_staff",
+    "decider": "adjudicate_arc_owner",
+    "human_rows": [
+     "act-0001:obs:174395->obs:174395"
+    ],
+    "in_basis": [
+     "obs:174395"
+    ],
+    "in_used": [],
+    "other_rows_used": [
+     "obs:022398"
+    ]
+   },
+   {
+    "subject": "glyph/3/0/4/4/8",
+    "quantity": "arc_owner",
+    "stage": "ADJUDICATE",
+    "how": "basis",
+    "verdict": "vrd:194816",
+    "outcome": "decided",
+    "value": "staff/3/0/4",
+    "reason": "no_better_staff",
+    "decider": "adjudicate_arc_owner",
+    "human_rows": [
+     "act-0001:obs:174395->obs:174395"
+    ],
+    "in_basis": [
+     "obs:174395"
+    ],
+    "in_used": [],
+    "other_rows_used": [
+     "obs:022399"
+    ]
+   },
+   {
+    "subject": "glyph/3/0/4/4/9",
+    "quantity": "arc_owner",
+    "stage": "ADJUDICATE",
+    "how": "basis",
+    "verdict": "vrd:194817",
+    "outcome": "decided",
+    "value": "staff/3/0/4",
+    "reason": "no_better_staff",
+    "decider": "adjudicate_arc_owner",
+    "human_rows": [
+     "act-0001:obs:174395->obs:174395"
+    ],
+    "in_basis": [
+     "obs:174395"
+    ],
+    "in_used": [],
+    "other_rows_used": [
+     "obs:022400"
+    ]
+   },
+   {
+    "subject": "glyph/3/0/4/5/1",
+    "quantity": "arc_owner",
+    "stage": "ADJUDICATE",
+    "how": "basis",
+    "verdict": "vrd:194818",
+    "outcome": "decided",
+    "value": "staff/3/0/4",
+    "reason": "no_better_staff",
+    "decider": "adjudicate_arc_owner",
+    "human_rows": [
+     "act-0001:obs:174395->obs:174395"
+    ],
+    "in_basis": [
+     "obs:174395"
+    ],
+    "in_used": [],
+    "other_rows_used": [
+     "obs:022401"
+    ]
+   },
+   {
+    "subject": "glyph/3/0/4/5/10",
+    "quantity": "arc_owner",
+    "stage": "ADJUDICATE",
+    "how": "basis",
+    "verdict": "vrd:194822",
+    "outcome": "decided",
+    "value": "staff/3/0/4",
+    "reason": "no_better_staff",
+    "decider": "adjudicate_arc_owner",
+    "human_rows": [
+     "act-0001:obs:174395->obs:174395"
+    ],
+    "in_basis": [
+     "obs:174395"
+    ],
+    "in_used": [],
+    "other_rows_used": [
+     "obs:022405"
+    ]
+   },
+   {
+    "subject": "glyph/3/0/4/5/3",
+    "quantity": "arc_owner",
+    "stage": "ADJUDICATE",
+    "how": "basis",
+    "verdict": "vrd:194819",
+    "outcome": "decided",
+    "value": "staff/3/0/4",
+    "reason": "no_better_staff",
+    "decider": "adjudicate_arc_owner",
+    "human_rows": [
+     "act-0001:obs:174395->obs:174395"
+    ],
+    "in_basis": [
+     "obs:174395"
+    ],
+    "in_used": [],
+    "other_rows_used": [
+     "obs:022402"
+    ]
+   },
+   {
+    "subject": "glyph/3/0/4/5/7",
+    "quantity": "arc_owner",
+    "stage": "ADJUDICATE",
+    "how": "basis",
+    "verdict": "vrd:194820",
+    "outcome": "decided",
+    "value": "staff/3/0/4",
+    "reason": "no_better_staff",
+    "decider": "adjudicate_arc_owner",
+    "human_rows": [
+     "act-0001:obs:174395->obs:174395"
+    ],
+    "in_basis": [
+     "obs:174395"
+    ],
+    "in_used": [],
+    "other_rows_used": [
+     "obs:022403"
+    ]
+   },
+   {
+    "subject": "glyph/3/0/4/5/9",
+    "quantity": "arc_owner",
+    "stage": "ADJUDICATE",
+    "how": "basis",
+    "verdict": "vrd:194821",
+    "outcome": "decided",
+    "value": "staff/3/0/4",
+    "reason": "no_better_staff",
+    "decider": "adjudicate_arc_owner",
+    "human_rows": [
+     "act-0001:obs:174395->obs:174395"
+    ],
+    "in_basis": [
+     "obs:174395"
+    ],
+    "in_used": [],
+    "other_rows_used": [
+     "obs:022404"
+    ]
+   },
+   {
+    "subject": "glyph/3/0/4/6/3",
+    "quantity": "arc_owner",
+    "stage": "ADJUDICATE",
+    "how": "basis",
+    "verdict": "vrd:194823",
+    "outcome": "decided",
+    "value": "staff/3/0/4",
+    "reason": "no_rival_staff",
+    "decider": "adjudicate_arc_owner",
+    "human_rows": [
+     "act-0001:obs:174395->obs:174395"
+    ],
+    "in_basis": [
+     "obs:174395"
+    ],
+    "in_used": [],
+    "other_rows_used": [
+     "obs:022406"
+    ]
+   },
+   {
+    "subject": "glyph/3/0/5/11/5",
+    "quantity": "arc_owner",
+    "stage": "ADJUDICATE",
+    "how": "basis",
+    "verdict": "vrd:194840",
+    "outcome": "decided",
+    "value": "staff/3/0/5",
+    "reason": "no_better_staff",
+    "decider": "adjudicate_arc_owner",
+    "human_rows": [
+     "act-0001:obs:174395->obs:174395"
+    ],
+    "in_basis": [
+     "obs:174395"
+    ],
+    "in_used": [],
+    "other_rows_used": [
+     "obs:022436"
+    ]
+   },
+   {
+    "subject": "glyph/3/0/5/14/1",
+    "quantity": "arc_owner",
+    "stage": "ADJUDICATE",
+    "how": "basis",
+    "verdict": "vrd:194841",
+    "outcome": "decided",
+    "value": "staff/3/0/5",
+    "reason": "no_better_staff",
+    "decider": "adjudicate_arc_owner",
+    "human_rows": [
+     "act-0001:obs:174395->obs:174395"
+    ],
+    "in_basis": [
+     "obs:174395"
+    ],
+    "in_used": [],
+    "other_rows_used": [
+     "obs:022437"
+    ]
+   },
+   {
+    "subject": "glyph/3/0/5/15/0",
+    "quantity": "arc_owner",
+    "stage": "ADJUDICATE",
+    "how": "basis",
+    "verdict": "vrd:194842",
+    "outcome": "decided",
+    "value": "staff/3/0/5",
+    "reason": "no_rival_staff",
+    "decider": "adjudicate_arc_owner",
+    "human_rows": [
+     "act-0001:obs:174395->obs:174395"
+    ],
+    "in_basis": [
+     "obs:174395"
+    ],
+    "in_used": [],
+    "other_rows_used": [
+     "obs:022439"
+    ]
+   },
+   {
+    "subject": "glyph/3/0/5/3/0",
+    "quantity": "arc_owner",
+    "stage": "ADJUDICATE",
+    "how": "basis",
+    "verdict": "vrd:194827",
+    "outcome": "decided",
+    "value": "staff/3/0/5",
+    "reason": "no_better_staff",
+    "decider": "adjudicate_arc_owner",
+    "human_rows": [
+     "act-0001:obs:174395->obs:174395"
+    ],
+    "in_basis": [
+     "obs:174395"
+    ],
+    "in_used": [],
+    "other_rows_used": [
+     "obs:022416"
+    ]
+   },
+   {
+    "subject": "glyph/3/0/5/3/11",
+    "quantity": "arc_owner",
+    "stage": "ADJUDICATE",
+    "how": "basis",
+    "verdict": "vrd:194829",
+    "outcome": "decided",
+    "value": "staff/3/0/5",
+    "reason": "no_better_staff",
+    "decider": "adjudicate_arc_owner",
+    "human_rows": [
+     "act-0001:obs:174395->obs:174395"
+    ],
+    "in_basis": [
+     "obs:174395"
+    ],
+    "in_used": [],
+    "other_rows_used": [
+     "obs:022418"
+    ]
+   },
+   {
+    "subject": "glyph/3/0/5/3/5",
+    "quantity": "arc_owner",
+    "stage": "ADJUDICATE",
+    "how": "basis",
+    "verdict": "vrd:194828",
+    "outcome": "decided",
+    "value": "staff/3/0/5",
+    "reason": "no_better_staff",
+    "decider": "adjudicate_arc_owner",
+    "human_rows": [
+     "act-0001:obs:174395->obs:174395"
+    ],
+    "in_basis": [
+     "obs:174395"
+    ],
+    "in_used": [],
+    "other_rows_used": [
+     "obs:022417"
+    ]
+   },
+   {
+    "subject": "glyph/3/0/5/4/0",
+    "quantity": "arc_owner",
+    "stage": "ADJUDICATE",
+    "how": "basis",
+    "verdict": "vrd:194830",
+    "outcome": "decided",
+    "value": "staff/3/0/6",
+    "reason": "hugs_noteheads",
+    "decider": "adjudicate_arc_owner",
+    "human_rows": [
+     "act-0001:obs:174395->obs:174395"
+    ],
+    "in_basis": [
+     "obs:174395"
+    ],
+    "in_used": [],
+    "other_rows_used": [
+     "obs:022419"
+    ]
+   },
+   {
+    "subject": "glyph/3/0/5/4/3",
+    "quantity": "arc_owner",
+    "stage": "ADJUDICATE",
+    "how": "basis",
+    "verdict": "vrd:194831",
+    "outcome": "decided",
+    "value": "staff/3/0/5",
+    "reason": "no_better_staff",
+    "decider": "adjudicate_arc_owner",
+    "human_rows": [
+     "act-0001:obs:174395->obs:174395"
+    ],
+    "in_basis": [
+     "obs:174395"
+    ],
+    "in_used": [],
+    "other_rows_used": [
+     "obs:022420"
+    ]
+   },
+   {
+    "subject": "glyph/3/0/5/4/7",
+    "quantity": "arc_owner",
+    "stage": "ADJUDICATE",
+    "how": "basis",
+    "verdict": "vrd:194832",
+    "outcome": "decided",
+    "value": "staff/3/0/5",
+    "reason": "no_rival_staff",
+    "decider": "adjudicate_arc_owner",
+    "human_rows": [
+     "act-0001:obs:174395->obs:174395"
+    ],
+    "in_basis": [
+     "obs:174395"
+    ],
+    "in_used": [],
+    "other_rows_used": [
+     "obs:022421"
+    ]
+   },
+   {
+    "subject": "glyph/3/0/5/5/1",
+    "quantity": "arc_owner",
+    "stage": "ADJUDICATE",
+    "how": "basis",
+    "verdict": "vrd:194833",
+    "outcome": "decided",
+    "value": "staff/3/0/5",
+    "reason": "no_better_staff",
+    "decider": "adjudicate_arc_owner",
+    "human_rows": [
+     "act-0001:obs:174395->obs:174395"
+    ],
+    "in_basis": [
+     "obs:174395"
+    ],
+    "in_used": [],
+    "other_rows_used": [
+     "obs:022422"
+    ]
+   },
+   {
+    "subject": "glyph/3/0/5/5/3",
+    "quantity": "arc_owner",
+    "stage": "ADJUDICATE",
+    "how": "basis",
+    "verdict": "vrd:194834",
+    "outcome": "decided",
+    "value": "staff/3/0/5",
+    "reason": "no_better_staff",
+    "decider": "adjudicate_arc_owner",
+    "human_rows": [
+     "act-0001:obs:174395->obs:174395"
+    ],
+    "in_basis": [
+     "obs:174395"
+    ],
+    "in_used": [],
+    "other_rows_used": [
+     "obs:022423"
+    ]
+   },
+   {
+    "subject": "glyph/3/0/5/5/4",
+    "quantity": "arc_owner",
+    "stage": "ADJUDICATE",
+    "how": "basis",
+    "verdict": "vrd:194835",
+    "outcome": "decided",
+    "value": "staff/3/0/5",
+    "reason": "no_rival_staff",
+    "decider": "adjudicate_arc_owner",
+    "human_rows": [
+     "act-0001:obs:174395->obs:174395"
+    ],
+    "in_basis": [
+     "obs:174395"
+    ],
+    "in_used": [],
+    "other_rows_used": [
+     "obs:022424"
+    ]
+   },
+   {
+    "subject": "glyph/3/0/5/6/1",
+    "quantity": "arc_owner",
+    "stage": "ADJUDICATE",
+    "how": "basis",
+    "verdict": "vrd:194836",
+    "outcome": "decided",
+    "value": "staff/3/0/5",
+    "reason": "no_rival_staff",
+    "decider": "adjudicate_arc_owner",
+    "human_rows": [
+     "act-0001:obs:174395->obs:174395"
+    ],
+    "in_basis": [
+     "obs:174395"
+    ],
+    "in_used": [],
+    "other_rows_used": [
+     "obs:022425"
+    ]
+   },
+   {
+    "subject": "glyph/3/0/5/6/3",
+    "quantity": "arc_owner",
+    "stage": "ADJUDICATE",
+    "how": "basis",
+    "verdict": "vrd:194837",
+    "outcome": "decided",
+    "value": "staff/3/0/5",
+    "reason": "no_better_staff",
+    "decider": "adjudicate_arc_owner",
+    "human_rows": [
+     "act-0001:obs:174395->obs:174395"
+    ],
+    "in_basis": [
+     "obs:174395"
+    ],
+    "in_used": [],
+    "other_rows_used": [
+     "obs:022426"
+    ]
+   },
+   {
+    "subject": "glyph/3/0/5/6/6",
+    "quantity": "arc_owner",
+    "stage": "ADJUDICATE",
+    "how": "basis",
+    "verdict": "vrd:194838",
+    "outcome": "decided",
+    "value": "staff/3/0/5",
+    "reason": "no_better_staff",
+    "decider": "adjudicate_arc_owner",
+    "human_rows": [
+     "act-0001:obs:174395->obs:174395"
+    ],
+    "in_basis": [
+     "obs:174395"
+    ],
+    "in_used": [],
+    "other_rows_used": [
+     "obs:022427"
+    ]
+   },
+   {
+    "subject": "glyph/3/0/5/6/7",
+    "quantity": "arc_owner",
+    "stage": "ADJUDICATE",
+    "how": "basis",
+    "verdict": "vrd:194839",
+    "outcome": "decided",
+    "value": "staff/3/0/5",
+    "reason": "no_better_staff",
+    "decider": "adjudicate_arc_owner",
+    "human_rows": [
+     "act-0001:obs:174395->obs:174395"
+    ],
+    "in_basis": [
+     "obs:174395"
+    ],
+    "in_used": [],
+    "other_rows_used": [
+     "obs:022428"
+    ]
+   },
+   {
+    "subject": "glyph/3/0/6/3/2",
+    "quantity": "arc_owner",
+    "stage": "ADJUDICATE",
+    "how": "basis",
+    "verdict": "vrd:194843",
+    "outcome": "decided",
+    "value": "staff/3/0/6",
+    "reason": "no_better_staff",
+    "decider": "adjudicate_arc_owner",
+    "human_rows": [
+     "act-0001:obs:174395->obs:174395"
+    ],
+    "in_basis": [
+     "obs:174395"
+    ],
+    "in_used": [],
+    "other_rows_used": [
+     "obs:022442"
+    ]
+   },
+   {
+    "subject": "glyph/3/0/6/4/0",
+    "quantity": "arc_owner",
+    "stage": "ADJUDICATE",
+    "how": "basis",
+    "verdict": "vrd:194844",
+    "outcome": "decided",
+    "value": "staff/3/0/6",
+    "reason": "no_better_staff",
+    "decider": "adjudicate_arc_owner",
+    "human_rows": [
+     "act-0001:obs:174395->obs:174395"
+    ],
+    "in_basis": [
+     "obs:174395"
+    ],
+    "in_used": [],
+    "other_rows_used": [
+     "obs:022443"
+    ]
+   },
+   {
+    "subject": "glyph/3/0/6/5/0",
+    "quantity": "arc_owner",
+    "stage": "ADJUDICATE",
+    "how": "basis",
+    "verdict": "vrd:194845",
+    "outcome": "decided",
+    "value": "staff/3/0/6",
+    "reason": "no_better_staff",
+    "decider": "adjudicate_arc_owner",
+    "human_rows": [
+     "act-0001:obs:174395->obs:174395"
+    ],
+    "in_basis": [
+     "obs:174395"
+    ],
+    "in_used": [],
+    "other_rows_used": [
+     "obs:022444"
+    ]
+   },
+   {
+    "subject": "glyph/3/0/6/5/6",
+    "quantity": "arc_owner",
+    "stage": "ADJUDICATE",
+    "how": "basis",
+    "verdict": "vrd:194846",
+    "outcome": "decided",
+    "value": "staff/3/0/6",
+    "reason": "no_rival_staff",
+    "decider": "adjudicate_arc_owner",
+    "human_rows": [
+     "act-0001:obs:174395->obs:174395"
+    ],
+    "in_basis": [
+     "obs:174395"
+    ],
+    "in_used": [],
+    "other_rows_used": [
+     "obs:022445"
+    ]
+   },
+   {
+    "subject": "glyph/3/0/6/6/2",
+    "quantity": "arc_owner",
+    "stage": "ADJUDICATE",
+    "how": "basis",
+    "verdict": "vrd:194847",
+    "outcome": "decided",
+    "value": "staff/3/0/6",
+    "reason": "no_better_staff",
+    "decider": "adjudicate_arc_owner",
+    "human_rows": [
+     "act-0001:obs:174395->obs:174395"
+    ],
+    "in_basis": [
+     "obs:174395"
+    ],
+    "in_used": [],
+    "other_rows_used": [
+     "obs:022446"
+    ]
+   },
+   {
+    "subject": "glyph/3/0/6/6/4",
+    "quantity": "arc_owner",
+    "stage": "ADJUDICATE",
+    "how": "basis",
+    "verdict": "vrd:194848",
+    "outcome": "decided",
+    "value": "staff/3/0/6",
+    "reason": "no_better_staff",
+    "decider": "adjudicate_arc_owner",
+    "human_rows": [
+     "act-0001:obs:174395->obs:174395"
+    ],
+    "in_basis": [
+     "obs:174395"
+    ],
+    "in_used": [],
+    "other_rows_used": [
+     "obs:022447"
+    ]
+   },
+   {
+    "subject": "glyph/3/0/7/14/4",
+    "quantity": "arc_owner",
+    "stage": "ADJUDICATE",
+    "how": "basis",
+    "verdict": "vrd:194850",
+    "outcome": "decided",
+    "value": "staff/3/0/7",
+    "reason": "no_rival_staff",
+    "decider": "adjudicate_arc_owner",
+    "human_rows": [
+     "act-0001:obs:174395->obs:174395"
+    ],
+    "in_basis": [
+     "obs:174395"
+    ],
+    "in_used": [],
+    "other_rows_used": [
+     "obs:022463"
+    ]
+   },
+   {
+    "subject": "glyph/3/0/7/15/2",
+    "quantity": "arc_owner",
+    "stage": "ADJUDICATE",
+    "how": "basis",
+    "verdict": "vrd:194851",
+    "outcome": "decided",
+    "value": "staff/3/0/7",
+    "reason": "no_better_staff",
+    "decider": "adjudicate_arc_owner",
+    "human_rows": [
+     "act-0001:obs:174395->obs:174395"
+    ],
+    "in_basis": [
+     "obs:174395"
+    ],
+    "in_used": [],
+    "other_rows_used": [
+     "obs:022464"
+    ]
+   },
+   {
+    "subject": "glyph/3/0/7/4/11",
+    "quantity": "arc_owner",
+    "stage": "ADJUDICATE",
+    "how": "basis",
+    "verdict": "vrd:194849",
+    "outcome": "decided",
+    "value": "staff/3/0/7",
+    "reason": "no_rival_staff",
+    "decider": "adjudicate_arc_owner",
+    "human_rows": [
+     "act-0001:obs:174395->obs:174395"
+    ],
+    "in_basis": [
+     "obs:174395"
+    ],
+    "in_used": [],
+    "other_rows_used": [
+     "obs:022454"
+    ]
+   },
+   {
+    "subject": "glyph/3/0/8/14/1",
+    "quantity": "arc_owner",
+    "stage": "ADJUDICATE",
+    "how": "basis",
+    "verdict": "vrd:194852",
+    "outcome": "decided",
+    "value": "staff/3/0/8",
+    "reason": "no_better_staff",
+    "decider": "adjudicate_arc_owner",
+    "human_rows": [
+     "act-0001:obs:174395->obs:174395"
+    ],
+    "in_basis": [
+     "obs:174395"
+    ],
+    "in_used": [],
+    "other_rows_used": [
+     "obs:022472"
+    ]
+   },
+   {
+    "subject": "glyph/3/0/9/0/8",
+    "quantity": "arc_owner",
+    "stage": "ADJUDICATE",
+    "how": "basis",
+    "verdict": "vrd:194853",
+    "outcome": "decided",
+    "value": "staff/3/0/9",
+    "reason": "no_better_staff",
+    "decider": "adjudicate_arc_owner",
+    "human_rows": [
+     "act-0001:obs:174395->obs:174395"
+    ],
+    "in_basis": [
+     "obs:174395"
+    ],
+    "in_used": [],
+    "other_rows_used": [
+     "obs:022473"
+    ]
+   },
+   {
+    "subject": "glyph/3/0/9/14/1",
+    "quantity": "arc_owner",
+    "stage": "ADJUDICATE",
+    "how": "basis",
+    "verdict": "vrd:194854",
+    "outcome": "decided",
+    "value": "staff/3/0/9",
+    "reason": "no_better_staff",
+    "decider": "adjudicate_arc_owner",
+    "human_rows": [
+     "act-0001:obs:174395->obs:174395"
+    ],
+    "in_basis": [
+     "obs:174395"
+    ],
+    "in_used": [],
+    "other_rows_used": [
+     "obs:022481"
+    ]
+   },
+   {
+    "subject": "glyph/3/0/9/6/3",
+    "quantity": "notehead_is_not_a_notehead",
+    "stage": "ADJUDICATE",
+    "how": "basis",
+    "verdict": "vrd:177942",
+    "outcome": "decided",
+    "value": false,
+    "reason": "notehead",
+    "decider": "adjudicate_notehead_is_not_a_notehead",
+    "human_rows": [
+     "act-0001:obs:174395->obs:174395"
+    ],
+    "in_basis": [
+     "obs:174395"
+    ],
+    "in_used": [],
+    "other_rows_used": [
+     "obs:019103"
+    ]
+   }
+  ],
+  "human_rows_read": [
+   {
+    "action": "act-0001",
+    "row": "obs:174395",
+    "replayed_as": "obs:174395"
+   }
+  ],
+  "human_rows_unread": [],
+  "census_before": {
+   "staff": "staff/3/0/9",
+   "refused": {
+    "no_pitch": 40,
+    "not_a_notehead:clipped_fragment": 3,
+    "ink_is_a_whole_rest": 1,
+    "not_a_notehead:too_narrow": 1,
+    "owned_by_another_staff": 3
+   },
+   "written": {
+    "rest": 7
+   },
+   "refused_total": 48,
+   "written_total": 7
+  },
+  "census_after": {
+   "staff": "staff/3/0/9",
+   "refused": {
+    "no_pitch": 41,
+    "not_a_notehead:clipped_fragment": 3,
+    "ink_is_a_whole_rest": 1,
+    "not_a_notehead:too_narrow": 1,
+    "owned_by_another_staff": 2
+   },
+   "written": {
+    "rest": 7
+   },
+   "refused_total": 48,
+   "written_total": 7
+  },
+  "notes_before": 8588,
+  "notes_after": 8605,
+  "musicxml_identical": false,
+  "stage_summary": {
+   "ADJUDICATE": {
+    "verdicts_naming_a_human_row": 145,
+    "verdicts_that_WEIGHED_one": 1,
+    "distinct_human_rows_named": 1,
+    "distinct_human_rows_weighed": 1
+   },
+   "_unread": {
+    "human_rows_no_stage_read": 0,
+    "human_rows_read": 1
+   },
+   "_export": {
+    "status_census_before": {
+     "emitted": [
+      "articulation",
+      "clef",
+      "dynamic",
+      "fermata",
+      "key",
+      "note",
+      "slur",
+      "tie",
+      "time",
+      "tuplet",
+      "wedge"
+     ],
+     "decided_but_unwritten": [
+      "ornament"
+     ],
+     "decided_uncounted": [],
+     "abstained": [
+      "direction",
+      "rest"
+     ],
+     "stub": [],
+     "starved": [],
+     "NO_QUANTITY": [],
+     "unaccounted": [],
+     "n_families": 14,
+     "n_filed": 14,
+     "balanced": true
+    },
+    "status_census_after": {
+     "emitted": [
+      "articulation",
+      "clef",
+      "dynamic",
+      "fermata",
+      "key",
+      "note",
+      "slur",
+      "tie",
+      "time",
+      "tuplet",
+      "wedge"
+     ],
+     "decided_but_unwritten": [
+      "ornament"
+     ],
+     "decided_uncounted": [],
+     "abstained": [
+      "direction",
+      "rest"
+     ],
+     "stub": [],
+     "starved": [],
+     "NO_QUANTITY": [],
+     "unaccounted": [],
+     "n_families": 14,
+     "n_filed": 14,
+     "balanced": true
+    }
+   }
+  }
+ },
+ "ingestion": {
+  "actions": [
+   {
+    "id": "act-0001",
+    "kind": "own_box",
+    "stage": "gather",
+    "subject": "glyph/3/0/9/6/3",
+    "rows": [
+     "obs:174395"
+    ],
+    "absent": {},
+    "refused": null,
+    "note": "ownership awarded this head to Violin (staff/3/0/8) on distance; owning it back to the Viola it was cut from",
+    "detail": {
+     "reader": "session-test",
+     "rows_before_replay": [
+      "obs:275756"
+     ]
+    }
+   }
+  ],
+  "controls": {
+   "actions": 1,
+   "rows_filed": 1,
+   "actions_refused": 0,
+   "frames_refused": 0,
+   "grids_refused": 0,
+   "sidecar_sha256": "bc1c3afbfbfea581d19b144b3ca15b5af5ff82d2114a36505ded52a0b0313495",
+   "first_human_row_ordinal": 275756,
+   "provenance": {
+    "parent": {
+     "record": "/Users/seanjohnson/Desktop/ReEngrave/library/_shared-records/beethoven5-litolff-mvt1-whole-20260923.record.json",
+     "md5": "7dbee148868c39634a20d5881143d3ee",
+     "provenance": {
+      "commit": "dbc9962b641e0259763efb45acc204e4e78ffd55",
+      "dirty": true,
+      "settings": {
+       "env_overrides": {
+        "OMR_DIRECTION_TEXT_SCAN_GATE": "1",
+        "OMR_SURYA_KEEP_ALIVE": "0"
+       },
+       "args": {
+        "against": null,
+        "conf": 0.25,
+        "dpi": 600,
+        "imgsz": null,
+        "ink_rows": false,
+        "no_roster": false,
+        "no_weight_routing": false,
+        "ocr": true,
+        "pages": "1-16",
+        "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf",
+        "route_weights": true,
+        "sheet": null,
+        "surya": true,
+        "weights": "auto",
+        "work_id": null
+       }
+      }
+     }
+    },
+    "sidecar": {
+     "path": "benchmarks/omr-stage-review-2026-09/out/relabel-own-review-actions--staff-3-0-9.json",
+     "sha256": "bc1c3afbfbfea581d19b144b3ca15b5af5ff82d2114a36505ded52a0b0313495",
+     "actions": 1,
+     "staff": "staff/3/0/9",
+     "record_named_by_sidecar": "/Users/seanjohnson/Desktop/ReEngrave/library/_shared-records/beethoven5-litolff-mvt1-whole-20260923.record.json"
+    },
+    "amended_at": "2026-09-23T18:42:58.628583-07:00"
+   }
+  }
+ },
+ "visibility": {
+  "quantities": [
+   "clef_glyph",
+   "clef_position",
+   "glyph_box",
+   "notehead_class",
+   "notehead_staff_position"
+  ],
+  "adjudicate_domain": {
+   "adjudicate_duration": [
+    "notehead_class"
+   ],
+   "adjudicate_event": [
+    "notehead_class"
+   ],
+   "adjudicate_stem_direction": [
+    "notehead_class"
+   ],
+   "adjudicate_notehead_is_a_whole_rest": [
+    "notehead_class"
+   ],
+   "adjudicate_notehead_is_not_a_notehead": [
+    "notehead_class"
+   ]
+  },
+  "adjudicate_wants": {
+   "adjudicate_slot_index": [
+    "clef_glyph"
+   ],
+   "adjudicate_clef": [
+    "clef_glyph",
+    "clef_position",
+    "notehead_staff_position"
+   ],
+   "adjudicate_glyph_owner": [
+    "notehead_staff_position"
+   ],
+   "adjudicate_arc_owner": [
+    "glyph_box"
+   ],
+   "adjudicate_arc_kind": [
+    "glyph_box",
+    "notehead_staff_position"
+   ],
+   "adjudicate_articulation_owner": [
+    "glyph_box"
+   ],
+   "adjudicate_wedge_anchor": [
+    "glyph_box"
+   ],
+   "adjudicate_fermata_owner": [
+    "glyph_box"
+   ],
+   "adjudicate_ornament_owner": [
+    "glyph_box"
+   ],
+   "adjudicate_duration": [
+    "glyph_box",
+    "notehead_class"
+   ],
+   "adjudicate_tuplet": [
+    "notehead_class"
+   ],
+   "adjudicate_event": [
+    "glyph_box",
+    "notehead_class"
+   ],
+   "adjudicate_onset_column": [
+    "glyph_box"
+   ],
+   "adjudicate_stem_direction": [
+    "glyph_box"
+   ],
+   "adjudicate_notehead_is_a_whole_rest": [
+    "glyph_box"
+   ],
+   "adjudicate_notehead_is_not_a_notehead": [
+    "glyph_box",
+    "notehead_staff_position"
+   ]
+  },
+  "evaluate_cause": {},
+  "infer_reads": {
+   "collapse_duration_by_column": [
+    "glyph_box"
+   ],
+   "collapse_duration_to_barline": [
+    "glyph_box"
+   ],
+   "collapse_slot_index_to_family_block": [
+    "clef_glyph"
+   ]
+  },
+  "absent": {
+   "aug_dot": "read off the cell raster; not derivable from rows",
+   "beam_stroke": "read off the cell raster by line_detection; not derivable",
+   "flag": "read off the cell raster; not derivable from rows",
+   "glyph_band_distance": "produced by gather_ownership_evidence from the cell RASTER (a same-class overlap search); not derivable from rows, so a human box never enters glyph_owner's contest",
+   "glyph_conf": "a person produced no softmax; writing a number here would convert 'there is no such measurement' into a definite one",
+   "glyph_ladder": "produced by gather_ownership_evidence from the cell RASTER (a ledger-rung search); not derivable from rows"
+  },
+  "labels": {
+   "table": [
+    {
+     "label": "a symbol of class \u2026",
+     "kind": "relabel_box",
+     "needs": [
+      "glyph",
+      "category"
+     ],
+     "key": "category",
+     "value": "is_a:<class>",
+     "row": "observation",
+     "reaches": "adjudicate_notehead_is_not_a_notehead (refuses the head where the class is OUTSIDE the notehead family); the new class is filed as a HUMAN BOX of its own, which every decision whose domain that class enters then decides on",
+     "keys": "l"
+    },
+    {
+     "label": "nothing \u2014 not a symbol",
+     "kind": "delete_box",
+     "needs": [
+      "glyph"
+     ],
+     "key": null,
+     "value": "not_a_symbol",
+     "row": "observation",
+     "reaches": "adjudicate_notehead_is_not_a_notehead, reason `human_not_a_symbol`",
+     "keys": "0 / d"
+    },
+    {
+     "label": "belongs to another staff",
+     "kind": "own_box",
+     "needs": [
+      "glyph",
+      "staff"
+     ],
+     "key": "staff",
+     "value": "owner:<staff subject>",
+     "row": "observation",
+     "reaches": "adjudicate_glyph_owner, reason `human_owner` \u2014 but ONLY on a glyph already in that decision's domain (`subjects_from=Q.GLYPH_BAND_DISTANCE`, the CONTESTED population). On an uncontested glyph the row is filed and reaches nothing, and the feedback file says so.",
+     "keys": "\u2191 / \u2193"
+    },
+    {
+     "label": "a duplicate of another box",
+     "kind": "dup_box",
+     "needs": [
+      "glyph",
+      "of"
+     ],
+     "key": "of",
+     "value": "duplicate_of:<glyph subject>",
+     "row": "observation",
+     "reaches": "adjudicate_notehead_is_not_a_notehead, reason `human_not_a_symbol`, `detail.human_says` naming the twin \u2014 one piece of ink, one note",
+     "keys": "="
+    },
+    {
+     "label": "I can't tell",
+     "kind": "unsure_box",
+     "needs": [
+      "glyph"
+     ],
+     "key": null,
+     "value": null,
+     "row": "abstention",
+     "reaches": "NOTHING, deliberately. An Abstention with reason `human_unsure`: a place the PRINT is ambiguous, reported by review/feedback.py and read by no stage.",
+     "keys": "u"
+    }
+   ],
+   "on_the_machines_own_subject": {
+    "quantities": [
+     "human_box_verdict"
+    ],
+    "adjudicate_domain": {},
+    "adjudicate_wants": {
+     "adjudicate_glyph_owner": [
+      "human_box_verdict"
+     ],
+     "adjudicate_notehead_is_not_a_notehead": [
+      "human_box_verdict"
+     ]
+    },
+    "evaluate_cause": {},
+    "infer_reads": {}
+   },
+   "\u26a0\ufe0f": "`unsure_box` files an ABSTENTION, so it appears in no `wants` list and reaches nothing by design \u2014 ABSTAIN.HUMAN_UNSURE says why."
+  }
+ }
+}
