@@ -2363,6 +2363,63 @@ _SLOT_TABLE_CLEFS = ("treble", "bass", "alto", "tenor")
 
 _KEYSIG_CLASSES = ("keySharp", "keyFlat", "keyNatural")
 
+#: The IN-BAR accidental classes, and the KEY class each one SHARES A SHAPE
+#: with.
+#:
+#: ⚠️⚠️ **THE DETECTOR'S CLASS IS TWO CLAIMS AND ONLY ONE OF THEM IS ITS
+#: BUSINESS** (Sean, 2026-09-23). The SHAPE — flat, sharp, natural — is what
+#: it is good at. The ROLE — *is this a key signature member or an in-bar
+#: accidental?* — is GEOMETRY: a key member stands between the clef and the
+#: first barline, on the ladder; an accidental stands left of a head inside
+#: the bar. Until this line `_KEYSIG_CLASSES` was used as a FILTER, so a flat
+#: the detector labelled with the in-bar class was dropped from the header run
+#: before any reader saw it — silently, at GATHER, where no derived check can
+#: see it (CLAUDE.md §4d).
+#:
+#: ⚠️ MEASURED on the two whole-movement records, over cell 0 of every staff:
+#: Litolff **437 `keyFlat` against 174 `accidentalFlat`** (+35 natural, 21
+#: sharp), with **53 header cells carrying an accidental-class box and NO
+#: key-class box at all**; Breitkopf **1,150 against 660**, 84 accidental-only
+#: header cells. That is the under-count §6a blamed on the plate, and a
+#: sizeable part of it is a class name.
+#:
+#: ⚠️ DOUBLE sharps and flats are NOT here. They cannot stand in a standard
+#: signature (`[C21]`'s ladder has one accidental per slot), so a
+#: `accidentalDoubleFlat` in a header is either a misdetection or music, and
+#: admitting it would be widening the reader rather than un-filtering it.
+_ACCIDENTAL_SHAPE = {"accidentalFlat": "keyFlat",
+                     "accidentalSharp": "keySharp",
+                     "accidentalNatural": "keyNatural"}
+
+#: Seven slots, about a staff space apart — `[C21]`, and the same bound
+#: `adjudicators/header.MAX_FIFTHS` states one stage on. Written here rather
+#: than imported because `adjudicators` imports this module's stage, not the
+#: other way round.
+_MAX_KEYSIG_SLOTS = 7.0
+
+
+def _keysig_header_limit() -> float:
+    """How far into cell 0 an accidental-SHAPED box may sit and still be a
+    member of the header's signature, in the CELL's own staff spaces.
+
+    ⚠️ DERIVED FROM BOUNDS THAT WERE ALREADY MEASURED, never typed here: the
+    locator's `clef_anchor_max_start_spaces` (5.50, swept over 42
+    ground-truth staves plus WTC p.17 — *"every real clef stands between 1.2
+    and 4.3 spaces from the window's left edge"*), its
+    `max_start_after_clef_spaces` (2.00 — *"a key signature is printed hard
+    against its clef"*), and seven slots a space apart (`[C21]`). A box past
+    that sum is in the BAR, and this is the geometry half of the role the
+    detector's class name was being trusted for.
+
+    ⚠️ IT BOUNDS ONLY THE NEWLY ADMITTED CLASS. A `keyFlat` box is admitted
+    wherever the detector drew it, exactly as before, so this cannot remove a
+    row any shipped record holds — `_marker_run`'s ladder still decides which
+    of them form a RUN, and that is the test that has been measured.
+    """
+    from ..key_signature_locator import DEFAULT_LOCATOR_CONFIG as _cfg
+    return (_cfg.clef_anchor_max_start_spaces
+            + _cfg.max_start_after_clef_spaces + _MAX_KEYSIG_SLOTS)
+
 
 def gather_key_signature(log: Log, pws: Any, cells: Sequence[Any],
                          local: Dict[int, Tuple[int, int]],
@@ -2504,19 +2561,83 @@ def _gather_keysig_template(log: Log, sub: Subject, crop: Any) -> None:
 
 def _gather_keysig_markers(log: Log, sub: Subject, detections, p: int,
                            key) -> None:
-    """The DETECTOR's own key accidentals, from the staff's first cell."""
-    cell_key = R.cell(p, key[0], key[1], 0).to_key()
-    marks = [d for d in detections.get(cell_key, ())
-             if d.smufl_name in _KEYSIG_CLASSES]
+    """The DETECTOR's accidental SHAPES in the staff's header, with its own
+    class recorded beside them as an opinion about the ROLE.
+
+    ⚠️⚠️ THE VALUE IS THE SHAPE, AND THAT IS WHAT MAKES THE WIDENING SAFE FOR
+    EVERY READER DOWNSTREAM. A flat boxed `accidentalFlat` is filed as
+    `keyFlat` with `detector_class="accidentalFlat"` and
+    `detector_role="accidental"`, so `_marker_run` — which abstains
+    `mixed_marker_kinds` on a run of two KINDS — sees one kind, and a record
+    written before this change reads identically. The detector's role-claim is
+    on the row as one witness's opinion and is never the filter (Sean,
+    2026-09-23).
+
+    ⚠️ THE ROLE THE **RECORD** SETTLES IS STILL GEOMETRY, and it is
+    `_marker_run`'s ladder, one stage on: slots within 0.5 spaces are one
+    slot, a gap wider than 2.0 spaces ends the run. This function only stops
+    admitting the detector's class name as a veto, and bounds the newly
+    admitted class by `_keysig_header_limit`.
+
+    ⚠️ NO SCALE, NO WIDENING. Without a measured `Q.CELL_STAFF_SPACE` the
+    limit has no unit, so the accidental-class boxes are refused and the
+    behaviour is exactly the shipped one — the same refusal `_marker_run`
+    makes under `no_cell_scale`, and for the same reason: guessing the scale
+    is how three flats become five.
+    """
+    cell = R.cell(p, key[0], key[1], 0)
+    cell_key = cell.to_key()
+    space = 0.0
+    for row in log.rows(Q.CELL_STAFF_SPACE, cell):
+        try:
+            space = float(row.value)
+        except (TypeError, ValueError):
+            space = 0.0
+    limit = _keysig_header_limit() * space if space > 0 else 0.0
+
+    here = list(detections.get(cell_key, ()))
+    # ⚠️⚠️ THE WIDENING IS ONE-SIDED IN ITS **SHAPE** TOO, AND THE FIRST DRAFT
+    # WAS NOT — IT COST 84 RUNS ON BREITKOPF, 35 OF THEM READING THE RIGHT
+    # ANSWER. `_gather_keysig_markers` reads `R.cell(p, s, i, 0)`, the whole
+    # first MEASURE, so a natural or a sharp printed INSIDE bar 1 sits in this
+    # population; admitting it turned a clean three-flat run into
+    # `mixed_marker_kinds` on the shattering plate. `[C21]`: a standard
+    # signature carries ONE kind. So where the detector's own KEY-class boxes
+    # say which kind this header is, an accidental-shaped box of a DIFFERENT
+    # kind is not a member of it — it is the in-bar accidental the detector
+    # said it was. Where there is no key-class box at all (53 header cells on
+    # Litolff, 81 on Breitkopf) nothing says which kind, so they are all
+    # admitted and `_marker_run` abstains if they disagree.
+    key_shapes = {d.smufl_name for d in here
+                  if d.smufl_name in _KEYSIG_CLASSES}
+    marks = []
+    for d in here:
+        if d.smufl_name in _KEYSIG_CLASSES:
+            marks.append((d, d.smufl_name, "key"))
+            continue
+        if d.smufl_name not in _ACCIDENTAL_SHAPE:
+            continue
+        if limit <= 0 or float(d.x_canonical) > limit:
+            continue
+        shape = _ACCIDENTAL_SHAPE[d.smufl_name]
+        if key_shapes and shape not in key_shapes:
+            continue
+        marks.append((d, shape, "accidental"))
     if not marks:
         log.abstain(sub, Q.KEYSIG_MARKER, reader=READERS.DETECTOR,
                     frame=frame_cell(0), reason=ABSTAIN.NO_DETECTIONS)
         return
-    for d in sorted(marks, key=lambda m: m.x_canonical):
-        log.observe(sub, Q.KEYSIG_MARKER, d.smufl_name,
+    for d, shape, role in sorted(marks, key=lambda m: m[0].x_canonical):
+        log.observe(sub, Q.KEYSIG_MARKER, shape,
                     reader=READERS.DETECTOR, frame=frame_cell(0),
                     score=float(d.confidence), x=d.x_canonical,
-                    y_center=d.y_center)
+                    y_center=d.y_center,
+                    # ⚠️ THE DISAGREEMENT, ON THE RECORD. A run read from two
+                    # roles is exactly the case this change exists for, and a
+                    # reader of the record can count them without re-running
+                    # the detector.
+                    detector_class=d.smufl_name, detector_role=role,
+                    cell_staff_space=space)
 
 
 _METER_CLASSES = ("timeSigCommon", "timeSigCutCommon")

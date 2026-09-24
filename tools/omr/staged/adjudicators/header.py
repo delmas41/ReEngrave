@@ -237,8 +237,21 @@ def _marker_run(marks, space: float):
         if b - a > MARKER_RUN_GAP_SPACES * space:
             break
         slots += 1
+    # ⚠️ HOW MANY OF THESE THE DETECTOR CALLED AN IN-BAR ACCIDENTAL, ON THE
+    # VERDICT. `gather._gather_keysig_markers` admits an accidental-SHAPED box
+    # in the header window and files the detector's own role-claim beside it
+    # (Sean, 2026-09-23: the class is two claims and only the shape is the
+    # detector's); this is where that claim is CONSUMED rather than merely
+    # written, so a reader of any verdict can see how much of the run rests on
+    # boxes the shipped filter used to drop. Empty on a record gathered before
+    # that change, which is the honest answer for one.
+    roles: Dict[str, int] = {}
+    for m in marks:
+        role = (m.detail or {}).get("detector_role")
+        if role:
+            roles[str(role)] = roles.get(str(role), 0) + 1
     base.update(keysig_marker_slots=len(centres), keysig_run_slots=slots,
-                cell_staff_space=space)
+                cell_staff_space=space, keysig_marker_roles=roles)
     if kinds == [_NATURAL]:
         return None, "natural_markers", base
     if slots > MAX_FIFTHS:

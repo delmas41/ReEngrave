@@ -503,5 +503,132 @@ class TestTheInference(unittest.TestCase):
         self.assertTrue(infer.inferred_in_basis(log, acc))
 
 
+# ─────────────────────────────────────────────────────────────────────────────
+# GATHER — the detector's class is TWO claims, and only the SHAPE is its own
+# ─────────────────────────────────────────────────────────────────────────────
+
+
+class _Box:
+    """One detection, as `gather_detections` hands them on."""
+
+    def __init__(self, smufl_name, x, conf=0.9, y=500.0):
+        self.smufl_name = smufl_name
+        self.x_canonical = float(x)
+        self.y_center = float(y)
+        self.confidence = float(conf)
+
+
+def _refusal(log, sub):
+    rows = log.refusals(Q.KEYSIG_MARKER, sub)
+    return rows[-1].reason if rows else None
+
+
+class TestTheRoleIsGeometryNotAClassName(unittest.TestCase):
+    """Sean, 2026-09-23, on a crop: one header's three flats were boxed as one
+    `accidentalFlat` and two `keyFlat`, and `gather._KEYSIG_CLASSES` admitted
+    only the key-class ones — so a printed flat was dropped at GATHER, before
+    any reader saw it, where no derived check can see it (CLAUDE.md §4d).
+
+    ⚠️ THE PRINCIPLE, HIS: the detector's class is TWO claims. The SHAPE
+    (flat / sharp / natural) is what it is good at; the ROLE (key member vs
+    in-bar accidental) is GEOMETRY and belongs to a later stage. GATHER files
+    the shape and the position; the role-half is recorded as one witness's
+    opinion and is never the filter.
+    """
+
+    def _markers(self, boxes, *, space=SPACE):
+        from tools.omr.staged import gather as G
+        log = Log()
+        sub = R.staff(0, 0, 3)
+        cell = R.cell(0, 0, 3, 0)
+        if space:
+            log.observe(cell, Q.CELL_STAFF_SPACE, float(space),
+                        reader=READERS.GEOMETRY, frame="cell:0")
+        G._gather_keysig_markers(log, sub, {cell.to_key(): boxes}, 0, (0, 3))
+        return log, sub, log.rows(Q.KEYSIG_MARKER, sub)
+
+    def test_a_run_boxed_key_accidental_key_reads_THREE_slots(self):
+        boxes = [_Box("keyFlat", 375.0),
+                 _Box("accidentalFlat", 375.0 + SPACE),
+                 _Box("keyFlat", 375.0 + 2 * SPACE)]
+        _log, _sub, rows = self._markers(boxes)
+        self.assertEqual(len(rows), 3)
+        # ⚠️ THE VALUE IS THE SHAPE. `_marker_run` abstains
+        # `mixed_marker_kinds` on two KINDS, so filing the detector's raw
+        # class would turn the repair into a refusal.
+        self.assertEqual({str(r.value) for r in rows}, {"keyFlat"})
+        self.assertEqual([r.detail["detector_role"] for r in rows],
+                         ["key", "accidental", "key"])
+        fifths, reason, detail = H._marker_run(rows, SPACE)
+        self.assertEqual(fifths, -3)
+        self.assertEqual(reason, "markers")
+        self.assertEqual(detail["keysig_marker_slots"], 3)
+
+    def test_the_detectors_own_class_is_kept_as_its_OPINION(self):
+        _log, _sub, rows = self._markers([_Box("accidentalFlat", 375.0)])
+        self.assertEqual(rows[0].detail["detector_class"], "accidentalFlat")
+        self.assertEqual(rows[0].detail["detector_role"], "accidental")
+
+    def test_an_accidental_past_the_header_window_is_NOT_a_marker(self):
+        from tools.omr.staged import gather as G
+        far = (G._keysig_header_limit() + 1.0) * SPACE
+        _log, _sub, rows = self._markers(
+            [_Box("keyFlat", 375.0), _Box("accidentalFlat", far)])
+        self.assertEqual(len(rows), 1)
+        self.assertEqual(rows[0].detail["detector_role"], "key")
+
+    def test_a_KEY_class_box_is_admitted_wherever_it_was_drawn(self):
+        """⚠️ ONE-SIDED: the window bounds only the newly admitted class, so
+        this change cannot remove a row any shipped record holds."""
+        from tools.omr.staged import gather as G
+        far = (G._keysig_header_limit() + 5.0) * SPACE
+        _log, _sub, rows = self._markers([_Box("keyFlat", far)])
+        self.assertEqual(len(rows), 1)
+
+    def test_a_natural_inside_bar_1_does_not_JOIN_a_flat_signature(self):
+        """⚠️⚠️ THE FIRST DRAFT ADMITTED IT AND IT COST 84 RUNS ON BREITKOPF,
+        35 OF THEM ALREADY READING THE RIGHT ANSWER. `_gather_keysig_markers`
+        reads the whole first MEASURE, so an accidental printed inside bar 1
+        is in this population; admitting a natural turned a clean three-flat
+        run into `mixed_marker_kinds` on the shattering plate. `[C21]`: a
+        standard signature carries ONE kind, and the detector's own key-class
+        boxes say which kind this header is."""
+        boxes = [_Box("keyFlat", 375.0),
+                 _Box("accidentalFlat", 375.0 + SPACE),
+                 _Box("accidentalNatural", 375.0 + 3 * SPACE)]
+        _log, _sub, rows = self._markers(boxes)
+        self.assertEqual({str(r.value) for r in rows}, {"keyFlat"})
+        self.assertEqual(len(rows), 2)
+        self.assertEqual(H._marker_run(rows, SPACE)[0], -2)
+
+    def test_with_NO_key_class_box_nothing_says_which_kind(self):
+        """⚠️ 53 header cells on Litolff and 81 on Breitkopf carry an
+        accidental-class box and no key-class box at all. Nothing there says
+        which kind the header is, so both are admitted and `_marker_run`
+        abstains if they disagree — which is the honest answer, not a guess."""
+        boxes = [_Box("accidentalFlat", 375.0),
+                 _Box("accidentalSharp", 375.0 + SPACE)]
+        _log, _sub, rows = self._markers(boxes)
+        self.assertEqual(len(rows), 2)
+        fifths, reason, _d = H._marker_run(rows, SPACE)
+        self.assertIsNone(fifths)
+        self.assertEqual(reason, "mixed_marker_kinds")
+
+    def test_a_DOUBLE_accidental_is_not_a_signature_member(self):
+        """`[C21]`'s ladder has one accidental per slot."""
+        log, sub, rows = self._markers([_Box("accidentalDoubleFlat", 375.0)])
+        self.assertEqual(len(rows), 0)
+        self.assertEqual(_refusal(log, sub), "no_detections")
+
+    def test_with_no_measured_cell_space_the_widening_does_not_happen(self):
+        """⚠️ No unit, no window — so the behaviour is exactly the shipped one
+        rather than a guess at the scale, which is how three flats become
+        five."""
+        log, sub, rows = self._markers([_Box("accidentalFlat", 375.0)],
+                                       space=None)
+        self.assertEqual(len(rows), 0)
+        self.assertEqual(_refusal(log, sub), "no_detections")
+
+
 if __name__ == "__main__":
     unittest.main()

@@ -281,16 +281,16 @@ def main() -> int:
         scored = sum(1 for _n, _v, t in opens.values() if t is not None)
         print(f"   parts opening right: {ok} of {scored} scored "
               f"({len(opens)} parts)")
-        for slot in sorted(opens):
+        for slot in sorted(opens, key=lambda k: (k is None, k)):
             name, v, t = opens[slot]
             mark = "" if t is None or v == t else "  <-- WRONG"
-            print(f"      slot {slot:2d} {str(name)[:20]:20s} opens {v:>3} "
+            print(f"      slot {str(slot):>3} {str(name)[:20]:20s} opens {v:>3} "
                   f"truth {t}{mark}")
         ch = changes_written(rows)
         print(f"   key CHANGES written: {len(ch)}")
-        for slot, name, sys_key, was, now in ch[:40]:
-            print(f"      slot {slot:2d} {str(name)[:16]:16s} at {sys_key} "
-                  f"{was} -> {now}")
+        for slot, name, sys_key, was, now in ch[:60]:
+            print(f"      slot {str(slot):>3} {str(name)[:16]:16s} "
+                  f"at {sys_key} {was} -> {now}")
         xml = HERE / "out" / f"{a.tag}-{arm}.musicxml"
         if xml.exists():
             text = xml.read_text()
