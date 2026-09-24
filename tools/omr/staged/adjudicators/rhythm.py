@@ -231,6 +231,83 @@ def _flag_levels_for(value) -> Optional[int]:
     return _FLAG_LEVELS.get(str(value).lower())
 
 
+#: The ROLE-half of a flag class: `flag8thUp` -> `up`, `flag16thDown` ->
+#: `down`. ⚠️ THE SUFFIX AND NOTHING ELSE. The SHAPE-half -- how many hooks --
+#: is `_FLAG_LEVELS`' business and is read there; these two functions read one
+#: name for two different claims ON PURPOSE, which is the whole of ROADMAP
+#: 2.12's methodology said in two lookups.
+_FLAG_ROLE_SUFFIX = {"up": "up", "down": "down"}
+
+
+def _flag_class_direction(value) -> Optional[str]:
+    """Which way the DETECTOR says this flag's stem points -- one witness.
+
+    ⚠️ IT IS A GUESS FROM A CROP AND IS TREATED AS ONE. A flag is drawn from
+    the far end of a stem, so a reader with the stem in hand knows the
+    direction and a reader with only the flag's own 40 px is inferring it from
+    the hook's curl. `adjudicate_stem_direction` has the stem
+    (`gather_cv_lines` reads 916 of them on a three-page record) and decides
+    the same fact from it; this value exists so the two can DISAGREE on the
+    record instead of one of them silently standing in for the other.
+    """
+    s = str(value).lower()
+    for suffix, direction in _FLAG_ROLE_SUFFIX.items():
+        if s.endswith(suffix):
+            return direction
+    return None
+
+
+def _flag_direction(ev: Evidence, flags) -> Dict[str, Any]:
+    """ROADMAP 2.12e — a flag's stem direction is the STEM's, not its name.
+
+    ⚠️ THE FLAG IS STILL A FLAG WHATEVER WAY IT POINTS. Its SHAPE claim -- *a
+    flag of N hooks stands on this stem* -- is what `_flag_levels_for` reads
+    and what sets the duration, and it is untouched here. Only the ROLE-half
+    is reassigned, and a disagreement never drops the flag: a detector that
+    curled the hook the wrong way has still seen a flag.
+
+    ⚠️ IT DECIDES NOTHING AND CHANGES NO DURATION, DELIBERATELY. Nothing on
+    this path reads a flag's `Up`/`Down` suffix today -- the audit's row 9 is
+    *"THE VALUE EXISTS AND NOTHING READS IT"* -- so the whole of this line is
+    a CONNECT (CLAUDE.md §2 rule 6): it puts the comparison on the record,
+    where none was, so a later stage can weigh it and so the disagreement rate
+    can be measured at all. A rule that ACTED on the disagreement would be a
+    new mechanism and needs its own roadmap item and its own print check.
+
+    ⚠️ AND THE UNJOINABLE COUNT IS WHY THE LINE EXISTS. `source` says which of
+    three things happened -- the stem answered, the stem ABSTAINED, or no
+    `stem_direction` verdict reached this head at all -- because *no reader
+    ran* and *the reader could not say* are the distinction the record exists
+    for (CLAUDE.md §4b) and folding them would hide the join's real reach.
+    """
+    claims = [c for c in (_flag_class_direction(f.value) for f in flags)
+              if c is not None]
+    if not flags:
+        return {}
+    out: Dict[str, Any] = {"flag_class_says": sorted(set(claims)) or None}
+
+    v = ev.verdict(Q.STEM_DIRECTION)
+    if v is None:
+        out["flag_direction"] = None
+        out["flag_direction_source"] = "no_stem_direction_verdict"
+        return out
+    if v.outcome is not Outcome.DECIDED:
+        out["flag_direction"] = None
+        out["flag_direction_source"] = "stem_direction_" + v.outcome.value
+        out["stem_direction_reason"] = v.reason
+        return out
+
+    stem_says = str(v.value)
+    out["flag_direction"] = stem_says
+    out["flag_direction_source"] = "stem_direction"
+    # ⚠️ RECORDED, NEVER DROPPED. The flag keeps counting as a flag and the
+    # detector's opinion keeps its place beside the stem's answer; what is
+    # written down is that the two do not agree about this one piece of ink.
+    if claims and any(c != stem_says for c in claims):
+        out["detector_role_disagrees"] = True
+    return out
+
+
 def _attached_flags(ev: Evidence, cell, attached_stems):
     """The flags on THIS notehead's stem: (rows, levels).
 
@@ -410,13 +487,26 @@ def _head_class(ev: Evidence) -> Optional[str]:
     ),
     implicates=(Q.DURATION, Q.METER, Q.GLYPH_OWNER, Q.MEASURE_PARTITION,
                 Q.TUPLET_RATIO),
+    # ⚠️ ROADMAP 2.12b PUTS `Q.STAFF_LINES` AND `Q.STAFF_SPACING` IN
+    # `composed_from`, AND THAT IS A CLAIM ABOUT THE VALUE. A `restWhole` and
+    # a `restHalf` are the same rectangle one line apart, so for those two
+    # classes the staff's own lines are not context -- they are where the
+    # VALUE comes from, and the class is the corroborating witness.
     composed_from=(Q.BEAM_STROKE, Q.FLAG, Q.AUG_DOT, Q.NOTEHEAD_CLASS,
-                   Q.STEM, Q.REST),
+                   Q.STEM, Q.REST, Q.STAFF_LINES, Q.STAFF_SPACING),
     scope=Kind.GLYPH,
+    # ⚠️ `Q.STEM_DIRECTION` IS A `wants` AND NOT A `composed_from` (2.12e).
+    # A flag's class suffix names the way its stem points; the DURATION is
+    # composed from the flag's HOOK COUNT and is not touched by the direction
+    # at all. Declaring it as composing the value would claim a dependence
+    # that does not exist, and the gate for 2.12e is precisely that zero
+    # durations move.
     wants=(Q.BEAM_STROKE, Q.FLAG, Q.AUG_DOT, Q.NOTEHEAD_CLASS, Q.STEM,
-           Q.TUPLET_RATIO, Q.GLYPH_BOX, Q.REST, Q.CELL_STAFF_SPACE),
+           Q.TUPLET_RATIO, Q.GLYPH_BOX, Q.REST, Q.CELL_STAFF_SPACE,
+           Q.STAFF_LINES, Q.STAFF_SPACING, Q.STEM_DIRECTION),
     reasons=("head_and_marks", "beams_ambiguous", "no_notehead",
-             "unknown_head", "rest_class", "unreadable_rest"),
+             "unknown_head", "rest_class", "unreadable_rest",
+             "rest_slot_contradicts_class", "rest_stands_where_no_rest_hangs"),
     mode=Mode.ADDITIVE,
     # ⚠️ NOTEHEADS *AND* RESTS. One question -- how long is this event -- for
     # two kinds of ink. A rest reads its value straight off its class and
@@ -546,7 +636,14 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
               "flags_attached": len(flags), "flag_levels": flag_levels,
               "dots_attached": n_dots,
               "staff_space": space,
-              "levels_certain": certain, "levels_possible": possible}
+              "levels_certain": certain, "levels_possible": possible,
+              # ⚠️ ROADMAP 2.12e. Read AFTER `flag_levels` is fixed, so the
+              # ordering on the page says what the code does: the hook count
+              # is the flag's SHAPE claim and sets the duration; the direction
+              # is its ROLE claim and comes from the stem. Empty where this
+              # head carries no flag, so a reader cannot mistake *no flag* for
+              # *a flag with no direction*.
+              **_flag_direction(ev, flags)}
 
     # ⚠️ WHERE THE BEAM READING IS A RANGE, SO IS THE DURATION. Narrowing is
     # not a weaker answer than deciding -- it is the true one, and it is what
@@ -576,8 +673,129 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
                   reason="head_and_marks", used=tuple(used), detail=shared)
 
 
+def _rest_slot(ev: Evidence, box_rows) -> Tuple[Optional[float], Dict[str, Any],
+                                                List[str]]:
+    """This rest's centre as a staff step, in `WHOLE_REST_STEP`'s own frame.
+
+    ⚠️ `_staff_step` IS CALLED, NOT COPIED. It is the function
+    `adjudicate_notehead_is_a_whole_rest` measures the mirror case with -- *is
+    this ink the detector called a notehead actually a whole rest* -- and the
+    two questions are one measurement asked from opposite sides. A second
+    spelling here would be free to answer differently about the same ink on
+    the same page, and a reader would have no way to tell the drift from a
+    reading fault.
+
+    ⚠️ PAGE PIXELS, and the frame control is that there is no other frame
+    available: `Q.GLYPH_BOX` carries `bbox_page_px` BESIDE its canonical box
+    and omits it rather than inventing one, `Q.STAFF_LINES` and
+    `Q.STAFF_SPACING` are filed in the page frame, and a canonical box --
+    measured inside one cell rescaled so the staff span is constant -- cannot
+    be compared with a staff's own lines at all. Where the page box is missing
+    this returns `None` and the caller leaves the class's reading alone.
+
+    Returns `(step, detail, used_row_ids)`; `step` is `None` where the
+    measurement could not be made, and `detail` says which input was missing.
+    """
+    page_box = None
+    used: List[str] = []
+    for r in box_rows:
+        page_box = (r.detail or {}).get("bbox_page_px") or page_box
+    if not page_box:
+        return None, {"slot": "no_page_frame"}, used
+
+    staff = ev.subject.at(Kind.STAFF)
+    lines = ev.rows(Q.STAFF_LINES, scope=Scope.SELF_AND_ANCESTORS,
+                    subject=staff)
+    space = ev.rows(Q.STAFF_SPACING, scope=Scope.SELF_AND_ANCESTORS,
+                    subject=staff)
+    if not lines or not space:
+        return None, {"slot": ABSTAIN.NO_STAFF_GEOMETRY}, used
+    step = _staff_step(page_box, lines[-1].value, space[-1].value)
+    if step is None:
+        return None, {"slot": ABSTAIN.NO_STAFF_GEOMETRY}, used
+    used = [lines[-1].id, space[-1].id]
+
+    detail: Dict[str, Any] = {"slot": "measured", "staff_step": round(step, 3)}
+    # ⚠️⚠️ `Q.REST_POSITION` IS **NOT** READ HERE, AND THE REASON IS A
+    # MEASUREMENT AND A TOOL BLIND SPOT, NOT AN OVERSIGHT.
+    #
+    # `reach.py` names `adjudicate_duration` as that quantity's FIRST
+    # CONSUMER, and on the face of it this is the day the entry comes out:
+    # `positions._rest_discriminator` measures which EDGE of the rectangle is
+    # nearer a line and how decisively (`attach_margin`), which is strictly
+    # more of the convention than a centre is. Two things stop it.
+    #
+    #   1. It files ZERO rows on ALL THREE acceptance records, measured
+    #      (`probe/rest_slot_and_flag_join.py`): `OMR_FAMILY_POSITIONS` is
+    #      DEFAULT OFF. A rule resting on it would be inert exactly where it
+    #      is needed -- CLAUDE.md §6b, reach before accuracy.
+    #   2. Declaring it in `wants` opens a NEW finding on `inventory --check`
+    #      -- *"duration wants 'rest_position', which no gather site observes
+    #      and no decision produces"* -- because `inventory._producers` walks
+    #      the AST of `gather.py` AND NOTHING ELSE, so every quantity
+    #      `positions.py` observes is invisible to it. That is a blind spot in
+    #      the tool, and closing it is a change to a derived check, which is
+    #      its own roadmap item and not this one. Suppressing the finding with
+    #      a `KNOWN_GAPS` entry would be worse: a known entry is a reason a
+    #      gap EXISTS, never a reason one is acceptable.
+    #
+    # So the slot is measured from the box and the staff, which every record
+    # carries. REMOVE THIS NOTE the day either constraint goes.
+    return step, detail, used
+
+
+def _rest_slot_verdict(name: str, step: Optional[float]) -> Optional[str]:
+    """`agrees` / `other` / `neither` -- or `None` where nothing was measured.
+
+    ⚠️ THE AUDIT'S PREDICATE, CHARACTER FOR CHARACTER
+    (`benchmarks/omr-shape-role-2026-09/probe/role_disagreement.py`
+    `f_rest_whole_half`). It is deliberately NOT "which slot is nearest": a
+    rest must be nearer the OTHER slot BY MORE THAN THE SLACK before the class
+    is contradicted at all, so ink sitting between the two, or displaced away
+    from both, leaves the class's reading standing. That asymmetry is what
+    keeps this rule from firing on the whole population of a bowed plate.
+
+    ⚠️ AND `other` AND `neither` ARE TWO FACTS THAT MUST NOT COLLAPSE. Ink
+    landing ON the other convention is a role error the geometry can repair;
+    ink landing on NEITHER is a rectangle standing where no rest of either
+    kind can hang, which is a weaker claim and a different finding (433 rows
+    against 134 on the two scans).
+    """
+    slot = _REST_SLOT_BY_CLASS.get(name.lower())
+    if slot is None or step is None:
+        return None
+    other = HALF_REST_STEP if slot == WHOLE_REST_STEP else WHOLE_REST_STEP
+    if abs(step - other) + REST_SLOT_SLACK < abs(step - slot):
+        return "other" if abs(step - other) <= REST_SLOT_SLACK else "neither"
+    return "agrees"
+
+
 def _rest_ruling(ev: Evidence, rest_rows) -> Ruling:
-    """A rest's value is its CLASS, and almost nothing else.
+    """A rest's value is its SHAPE, and for two of the classes its SLOT.
+
+    ⚠️⚠️ ROADMAP 2.12b. `restWhole` and `restHalf` are THE SAME RECTANGLE and
+    differ only in which line they touch and on which side -- a whole rest
+    HANGS below the fourth line from the bottom, a half rest SITS on the
+    third. The registry says so in terms: *the vertical slot is the rest's
+    IDENTITY, not decoration -- NO shape, size or aspect-ratio classifier can
+    ever separate a whole rest from a half rest.* So the detector deciding
+    between them is reporting something it cannot know, and this function
+    used to take that report as the value.
+
+    It no longer does. The slot is MEASURED (`_rest_slot`) and the class
+    becomes the corroborating witness, recorded beside it:
+
+      * the measurement agrees with the class, or does not contradict it ->
+        DECIDED exactly as before, with `slot_says: "agrees"` on the record;
+      * the rectangle lands on the OTHER convention -> NARROWED over both
+        values, the measured one first. Not flipped: see the branch's own
+        note -- a bowed plate and multi-voice displacement both move a rest
+        off its slot, and EXPORT already refuses to argmax a narrowing;
+      * it lands on NEITHER -> ABSTAIN. No fallback to the class, because the
+        class is the guess the ink has just contradicted.
+
+    ⚠️ ONLY THOSE TWO CLASSES. Every other rest names its value by its shape
+    and no slot can speak to it; `_REST_SLOT_BY_CLASS` holds the whole domain.
 
     ⚠️ THE TABLE IS `rhythm._REST_DURATIONS`, IMPORTED RATHER THAN RESTATED.
     It is the paid-for mapping, including the two entries it deliberately
@@ -636,12 +854,80 @@ def _rest_ruling(ev: Evidence, rest_rows) -> Ruling:
         total += add
 
     ratio = ev.verdict(Q.TUPLET_RATIO, subject=ev.subject.at(Kind.CELL))
+    detail: Dict[str, Any] = {
+        "rest": str(row.value), "written_type": written_type,
+        "tuplet_in_cell": ratio is not None and ratio.value is not None}
+
+    # ── ROADMAP 2.12b — THE SLOT DECIDES; THE CLASS CORROBORATES ────────────
+    step, slot_detail, slot_used = _rest_slot(ev, box)
+    detail.update(slot_detail)
+    used.extend(slot_used)
+    slot = _rest_slot_verdict(str(row.value), step)
+    detail["slot_says"] = slot
+    if slot is not None:
+        detail["slot_convention"] = {
+            "restWhole": WHOLE_REST_STEP, "restHalf": HALF_REST_STEP,
+            "slack_half_steps": REST_SLOT_SLACK,
+            "frame": "bottom line 0, one step per half space, up positive"}
+
+    if slot == "neither":
+        # ⚠️ ABSTAIN, AND THE REST IS HELD OUT RATHER THAN VALUED. This is a
+        # rectangle standing where NEITHER convention puts a rest, so the one
+        # measurement that can separate a whole rest from a half rest has
+        # separated nothing -- and the class cannot be fallen back on, because
+        # the class is precisely the guess this ink has just contradicted.
+        # CLAUDE.md §2 rule 8: a fallback never converts *cannot tell* into an
+        # answer, and 4.0 quarters of silence is a very loud answer.
+        #
+        # ⚠️ IT IS THE BIGGER BUCKET AND THE WEAKER CLAIM -- 433 rows against
+        # 134 on the two scans -- and `benchmarks/omr-shape-role-2026-09/`
+        # §5 says in terms that it is a DIFFERENT finding. Crops go to Sean
+        # (`out/print/`); nothing here reads the population as repaired.
+        return Ruling.abstain("rest_stands_where_no_rest_hangs", **detail)
+
+    if slot == "other":
+        # ⚠️ NARROWED, NOT FLIPPED, AND THE REFUSAL TO FLIP IS THE POINT.
+        # The geometry is the measurement that can separate these two glyphs
+        # and the class is a guess from a crop -- but the convention's own
+        # registry entry names two killers for the absolute slot on this
+        # repertoire: a scanned staff tilts and bows up to a whole step, and
+        # *in multi-voice writing rests are displaced from their default
+        # position*, which destroys the absolute-position discriminator
+        # outright. Deciding here would be a default flipped on agreement
+        # with our own reading, which CLAUDE.md §2 rule 5 forbids until a
+        # print check says otherwise. EXPORT already refuses to argmax a
+        # narrowing, so the bar is held out and counted rather than filled
+        # with either answer.
+        #
+        # ⚠️ THE ORDER IS THE CLAIM. `support` is in this decision's own units
+        # and is not a probability: the MEASURED slot outranks the class,
+        # which is the whole of "shape from the class, role from the geometry"
+        # said as a number a later stage can read.
+        other_name = ("restHalf" if str(row.value).lower() == "restwhole"
+                      else "restWhole")
+        other = _rest_duration(other_name)
+        cands = [Candidate(value={"beats": total, "written": total,
+                                  "dots": len(dots), "beam_levels": 0,
+                                  "is_rest": True, "rest": str(row.value)},
+                           support=1.0)]
+        if other is not None:
+            o_total, add = other[0], other[0]
+            for _ in range(len(dots)):
+                add /= 2.0
+                o_total += add
+            cands.append(Candidate(
+                value={"beats": o_total, "written": o_total,
+                       "dots": len(dots), "beam_levels": 0, "is_rest": True,
+                       "rest": other_name},
+                support=2.0))
+        return Ruling.narrow(cands, "rest_slot_contradicts_class",
+                             used=tuple(used),
+                             **{**detail, "slot_prefers": other_name})
+
     return Ruling(
         value={"beats": total, "written": total, "dots": len(dots),
                "beam_levels": 0, "is_rest": True},
-        reason="rest_class", used=tuple(used),
-        detail={"rest": str(row.value), "written_type": written_type,
-                "tuplet_in_cell": ratio is not None and ratio.value is not None})
+        reason="rest_class", used=tuple(used), detail=detail)
 
 
 def _scale(total: float, ratio, ev: Evidence) -> float:
@@ -2940,6 +3226,42 @@ WHOLE_REST_INK_MAX_ASPECT = 3.09
 #: and it is an obligation rather than a preference, which is what makes it
 #: usable as a witness at all.
 WHOLE_REST_STEP = 5.5
+#: Where a HALF rest SITS: on the third line from the bottom, its body
+#: standing in the space ABOVE it, so its centre is one half space -- one step
+#: -- lower in this frame than the whole rest's.
+#:
+#: ⚠️ DERIVED FROM `WHOLE_REST_STEP`, NEVER TYPED. The two rests are the same
+#: rectangle one line apart, and that is the whole content of the convention
+#: (`docs/engraving-conventions.md`, *A whole rest HANGS under the 4th line; a
+#: half rest SITS on the 3rd -- and they are the same shape*). Two independent
+#: constants would be free to drift into a gap that is not one line, which is
+#: the one number this rule stands on.
+HALF_REST_STEP = WHOLE_REST_STEP - 1.0
+#: How far a rest's measured centre may stand from the slot its class claims
+#: before the geometry is said to CONTRADICT the class, in half steps.
+#:
+#: ⚠️ NOT TUNED AND NOT TUNABLE: the two conventions are exactly 1.0 apart, so
+#: anything under 0.5 calls every borderline row a disagreement and anything
+#: over 0.5 calls none. 0.5 is the midpoint, and it is the constant
+#: `benchmarks/omr-shape-role-2026-09/probe/role_disagreement.py` measured the
+#: audit's 134 / 433 split with -- the same number, so the population this
+#: rule acts on and the population the audit reported are the same population.
+#:
+#: ⚠️ IT IS NOT `WHOLE_REST_STEP_TOLERANCE`. That one is registration error on
+#: a warped plate (1.0) and is used to ask *could a whole rest hang here at
+#: all*; this one asks *which of two slots one line apart is this ink nearer*,
+#: which is a comparison and so cannot use a window wider than the gap.
+REST_SLOT_SLACK = 0.5
+#: The two classes whose ROLE-half this rule reads, and the slot each claims.
+#:
+#: ⚠️ EXACTLY TWO, AND NOTHING ELSE IS TOUCHED. `restQuarter`, `restEighth`
+#: and the rest of the table name a value by their SHAPE -- a quarter rest is
+#: not a half rest one line away, it is a different glyph -- so no slot can
+#: corroborate or contradict them and this rule must be silent about them.
+#: A lone quarter rest does NOT mean the bar (CLAUDE.md §10), and widening
+#: this map is how that fact would be lost.
+_REST_SLOT_BY_CLASS = {"restwhole": WHOLE_REST_STEP,
+                       "resthalf": HALF_REST_STEP}
 #: ⚠️ THE TOLERANCE IS STAFF-LINE REGISTRATION ERROR, NOT ENGRAVING SLACK.
 #: `Q.STAFF_LINES` models a staff as five ideal rows while a scanned staff tilts
 #: and bows 8-17 page px across its width (CLAUDE.md, `OMR_CELL_LINE_TRACE`),
