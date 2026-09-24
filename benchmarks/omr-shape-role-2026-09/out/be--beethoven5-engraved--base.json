@@ -35,6 +35,7 @@
  "export": {
   "notes": 666,
   "rests": 335,
+  "measure_rests": 251,
   "notes_not_written": {
    "not_a_notehead:clipped_fragment": 6,
    "owned_by_another_staff": 9,
@@ -54,6 +55,53 @@
   },
   "census_unaccounted": [],
   "census_balanced": true,
-  "bars_held_out": 42
+  "bars_held_out_sum": {
+   "bars": 36,
+   "bars_on_a_doubled_staff": 0,
+   "of_bars_with_events": 449,
+   "bars_with_events_without_a_meter": 0,
+   "bars_judged_by_a_carried_meter": 0,
+   "fraction": 0.0801781737193764,
+   "noteheads_and_rests": 42
+  },
+  "held_out_bar_keys": [
+   "1/0/5/0",
+   "2/0/0/4",
+   "2/0/0/5",
+   "2/0/1/4",
+   "2/0/1/5",
+   "2/0/10/4",
+   "2/0/10/5",
+   "2/0/11/4",
+   "2/0/11/5",
+   "2/0/12/4",
+   "2/0/12/5",
+   "2/0/14/4",
+   "2/0/14/5",
+   "2/0/15/4",
+   "2/0/15/5",
+   "2/0/16/4",
+   "2/0/16/5",
+   "2/0/17/4",
+   "2/0/17/5",
+   "2/0/2/4",
+   "2/0/2/5",
+   "2/0/3/4",
+   "2/0/3/5",
+   "2/0/4/4",
+   "2/0/4/5",
+   "2/0/5/4",
+   "2/0/5/5",
+   "2/0/6/1",
+   "2/0/6/4",
+   "2/0/6/5",
+   "2/0/7/4",
+   "2/0/7/5",
+   "2/0/8/4",
+   "2/0/8/5",
+   "2/0/9/4",
+   "2/0/9/5"
+  ],
+  "events_in_held_out_bars": 42
  }
 }

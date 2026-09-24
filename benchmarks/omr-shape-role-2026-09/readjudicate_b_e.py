@@ -133,6 +133,7 @@ def _export(log: Log) -> dict:
     return {
         "notes": xml.count("<note"),
         "rests": xml.count("<rest"),
+        "measure_rests": xml.count('measure="yes"'),
         "notes_not_written": report.get("notes_not_written") or {},
         "notes_not_written_total": report.get("notes_not_written_total"),
         # ⚠️ `to_musicxml` RAISES on an imbalance, so reading `False` here is
@@ -141,7 +142,25 @@ def _export(log: Log) -> dict:
         "balance": report.get("balance") or {},
         "census_unaccounted": census.get("unaccounted"),
         "census_balanced": census.get("balanced"),
-        "bars_held_out": (report.get("notes_not_written") or {}).get(
+        # ⚠️⚠️ TWO DIFFERENT UNITS AND THEY MUST NOT BE READ AS ONE. ROADMAP
+        # 2.8 holds out a BAR whose durations do not sum to the meter, and the
+        # refusal counter counts the EVENTS inside those bars. A rest that
+        # narrows removes one event from a bar's sum, so it can push a bar
+        # either into or out of the held set -- and the bar count is the only
+        # one that answers *how many bars moved*.
+        "bars_held_out_sum": {k: v for k, v in
+                              (report.get("bars_held_out_sum") or {}).items()
+                              if k != "held"},
+        # ⚠️ THE KEYS, NOT THE ROWS. `bars_held_out_sum["held"]` carries a
+        # dict per held bar and runs to thousands on a whole movement; what
+        # this lane needs is the SET, so that *which bars moved in* and *which
+        # moved out* can be differenced rather than inferred from two totals
+        # that happen to be equal.
+        "held_out_bar_keys": sorted(
+            "%s/%s/%s/%s" % (h.get("page"), h.get("system"), h.get("staff"),
+                             h.get("cell"))
+            for h in ((report.get("bars_held_out_sum") or {}).get("held") or ())),
+        "events_in_held_out_bars": (report.get("notes_not_written") or {}).get(
             "bar_does_not_add_up"),
     }
 
