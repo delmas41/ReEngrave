@@ -74,6 +74,12 @@ canvas#crop.move{cursor:move}
 .popHead .refusedNote{color:#8a8a8a;font-weight:600;
   font-family:ui-monospace,Menlo,monospace;font-size:11px;
   flex-basis:100%;text-decoration:line-through}
+/* a refused box's own agree/disagree row (roadmap 3.4h part 2) — full width,
+   the same as the refusal note it answers, and NOT struck through: this is
+   his answer, not the machine's claim. */
+.popHead .refusalAgree{flex-basis:100%;display:flex;gap:6px;
+  align-items:center;flex-wrap:wrap}
+.popHead .refusalAgree .agreeRow{flex:1;min-width:0}
 .pop input{width:100%;font:13.5px/1.4 inherit;padding:5px 7px;
   border:1px solid var(--line);border-radius:4px}
 .pop input:focus{outline:2px solid var(--human);outline-offset:-1px}

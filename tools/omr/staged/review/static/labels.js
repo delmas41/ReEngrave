@@ -498,6 +498,25 @@ function refusalWords(box) {
   return parts.join('\n');
 }
 
+// ── 8. CV-ONLY BOXES ARE NOT DRAWN (roadmap 3.4h) ───────────────────────
+
+/**
+ * Split the gathered boxes into what the crop DRAWS and what it does not,
+ * by the server's own `cv_only` flag (`server.CV_ONLY_CLASSES` — `staff`
+ * and `stem`, page geometry no stage will ever write).
+ *
+ * ⚠️ PURE, AND THAT IS THE WHOLE REASON IT LIVES HERE rather than inline in
+ * `app.js`'s `setBoxes` — the same reason `isADrag` does (see above): a test
+ * can call it via `node` with a plain array, with no `document` to fake.
+ * `app.js` calls this and nothing else to decide what `S.boxes` (drawn) and
+ * `S.hidden` (counted, never drawn) hold.
+ */
+function splitCVOnly(boxes) {
+  const shown = [], hidden = [];
+  for (const b of (boxes || [])) (b.cv_only ? hidden : shown).push(b);
+  return {shown, hidden};
+}
+
 /** Where in `cells` the bar spelled `want` sits, or -1. Matches what the top
  *  bar SHOWS, so `49` and `c7` are both typeable. */
 function barIndex(cells, want) {
@@ -516,7 +535,7 @@ if (typeof module !== 'undefined' && module.exports) {
   module.exports = {friendlyName, friendlyTable, buildAnswers, filterAnswers,
                     cropToPage, pageToCrop, boxToPage, boxToCrop,
                     barWindow, viewForRect, barLabel, barIndex,
-                    dragSlopScreenPx, isADrag, refusalWords,
+                    dragSlopScreenPx, isADrag, refusalWords, splitCVOnly,
                     BAR_PAD_X_SPACES, BAR_PAD_Y_SPACES,
                     CLICK_SLOP_SCREEN_PX, CLICK_SLOP_SPACES,
                     ANSWER_WORDS, FRIENDLY_EXACT};

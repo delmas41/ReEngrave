@@ -754,11 +754,22 @@ class ReviewData:
                 continue
             if v.get("value") is not True:
                 continue
+            # ⚠️ TWO SPELLINGS OF THE SAME THREE FACTS, ON PURPOSE (roadmap
+            # 3.4h). `quantity`/`decided_by`/`verdict_id` are the names this
+            # module's other rows already use (`refusals_at` reads the
+            # record's own field names) and are what `labels.js`'s
+            # `refusalWords` and `agreeRow`'s `verdict:` field consume today;
+            # `decision`/`verdict` are the two words Sean and the roadmap
+            # item use for the same values. A reader of either vocabulary
+            # finds the fact under its own name; dropping one to avoid the
+            # duplication would break whichever caller was not rewritten.
             out.append({"quantity": v.get("quantity"),
+                        "decision": v.get("quantity"),
                         "reason": v.get("reason"),
                         "outcome": v.get("outcome"),
                         "decided_by": v.get("decider"),
-                        "verdict_id": v.get("id")})
+                        "verdict_id": v.get("id"),
+                        "verdict": v.get("id")})
         return out
 
     def part_name_of(self, staff: str) -> Optional[str]:
@@ -1315,7 +1326,15 @@ def gather_view(D: ReviewData, staff: str, zoom: int) -> Dict[str, Any]:
                      "row per connected ink component, or (with "
                      "`ink_rows: False`) one per CELL carrying "
                      "`ink_n_components`. It is not a set of subjects."),
-        "counts": D.staff_funnel(staff),
+        "counts": {
+            **D.staff_funnel(staff),
+            # ⚠️ ROADMAP 3.4h. Also on `counts` (not only on `box_counts`
+            # below), because `counts` is the funnel this page and
+            # `export_view` both already treat as THE staff-level tally —
+            # a second, differently-named home for the same number is how a
+            # reader ends up trusting the one that is not being updated.
+            "hidden_cv_only": sum(1 for b in boxes if b["cv_only"]),
+        },
         # ⚠️ COUNTED HERE, OVER THE ROWS THE BROWSER IS ABOUT TO DRAW, so the
         # top bar's "n hidden" cannot drift from what the canvas does. A
         # second count taken from the funnel would be a second answer to the

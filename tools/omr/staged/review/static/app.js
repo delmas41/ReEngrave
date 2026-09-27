@@ -1002,6 +1002,25 @@ function openPop(glyph, opts) {
             'the box and its row are still on the record — a decision '
             + 'refused it, nothing erased it'}, w))
       : []),
+    // ⚠️ ROADMAP 3.4h PART 2, THE HALF THE WIP LEFT UNDONE: a refused box
+    // must be answerable, not only readable. Each entry in `refused_by` is
+    // an ADJUDICATE decision (`quantity`/`decision`, with its `verdict`/
+    // `verdict_id`); this files an `agree`/`disagree` STANCE against THAT
+    // verdict, through the same `/api/sidecar/action` contract the drawer's
+    // stage views already use (`agreeRow`) — never a second endpoint and
+    // never a mutation of the refusal itself, which stays the adjudicator's.
+    // ⚠️ THE EXPORT-LADDER `refused` BUCKETS (`no_pitch`, …) ARE NOT HERE:
+    // they name no verdict id, so there is nothing for a stance to attach
+    // to; only `refused_by` — the decision-level refusals — get this row.
+    ...(b && (b.refused_by || []).length
+      ? b.refused_by.filter(r => r.verdict).map(r => el('div',
+          {class: 'refusalAgree'},
+          el('span', {class: 'tiny dim'},
+            'a decision refused this — is it wrong? '),
+          agreeRow({stage: 'adjudicate', verdict: r.verdict,
+                    quantity: r.decision, outcome: r.outcome,
+                    value: true, subject: b.glyph})))
+      : []),
     ...said.map(a => el('span', {class: 'said'},
       'you said: ' + sayWord(a, b),
       el('button', {class: 'x', title: 'take it back',
@@ -1336,9 +1355,12 @@ async function refreshBoxes() {
  * drawn struck through rather than hidden.
  */
 function setBoxes(g) {
-  const all = g.boxes || [];
-  S.boxes = all.filter(b => !b.cv_only);
-  S.hidden = all.filter(b => b.cv_only);
+  // ⚠️ THE SPLIT ITSELF IS `labels.js`'s (`splitCVOnly`) — pure, and tested
+  // via `node` with no `document` to fake. This function is only the part
+  // that touches page state.
+  const {shown, hidden} = L.splitCVOnly(g.boxes || []);
+  S.boxes = shown;
+  S.hidden = hidden;
   S.byGlyph = {};
   for (const b of S.boxes) S.byGlyph[b.glyph] = b;
 }
