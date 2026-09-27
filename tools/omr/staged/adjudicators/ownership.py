@@ -957,13 +957,23 @@ _ACC_AMBIGUOUS_MARGIN_POSITIONS = 0.5
 @decision(
     quantity=Q.ACCIDENTAL_OWNER,
     composed_from=(Q.ACCIDENTAL_STAFF_POSITION, Q.NOTEHEAD_STAFF_POSITION,
-                   Q.GLYPH_BOX, Q.CELL_STAFF_SPACE),
+                   Q.GLYPH_BOX, Q.CELL_STAFF_SPACE,
+                   Q.ACCIDENTAL_IS_NOT_AN_ACCIDENTAL,
+                   Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, Q.GLYPH_OWNER),
     scope=Kind.GLYPH,
+    # ⚠️ THREE VERDICTS BESIDE THE FOUR GATHER ROWS, added when 2.7 was
+    # MERGED onto the tree that had grown them overnight (2026-09-27). Each is
+    # a fact the ADJUDICATE order has already settled by the time this runs
+    # (`adjudicate.ORDER` puts the per-family refusals and `glyph_owner`
+    # first), so reading them is connecting a decision, never guessing one.
     wants=(Q.ACCIDENTAL_STAFF_POSITION, Q.NOTEHEAD_STAFF_POSITION,
-           Q.GLYPH_BOX, Q.CELL_STAFF_SPACE),
+           Q.GLYPH_BOX, Q.CELL_STAFF_SPACE,
+           Q.ACCIDENTAL_IS_NOT_AN_ACCIDENTAL,
+           Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, Q.GLYPH_OWNER),
     subjects_from=Q.ACCIDENTAL_STAFF_POSITION,
     reasons=("immediately_right_same_position", "ambiguous_height",
-             "no_candidate", "no_unit", "no_evidence"),
+             "no_candidate", "no_unit", "no_evidence",
+             "refused_not_an_accidental"),
     checked_by=(
         "L32: an accidental stands BEFORE its note, at the same staff "
         "position -- SIDE and HEIGHT, two constraints and not one",
@@ -1032,6 +1042,23 @@ def adjudicate_accidental_owner(ev: Evidence) -> Ruling:
     if alteration is None:
         return Ruling.abstain("no_evidence")
 
+    # ⚠️⚠️ A REFUSED ACCIDENTAL OWNS NOTHING (roadmap 3.4g, merged before this
+    # item landed). `adjudicate_accidental_is_not_an_accidental` refuses a box
+    # a human marked *nothing* or *belongs to another staff*; once it has, the
+    # ink is not an accidental of THIS staff, and handing it a notehead here
+    # would put the alteration Sean struck out back into the file one stage
+    # later. An ABSTENTION and not a decision of "no owner": the glyph's
+    # meaning was settled elsewhere, and this decision says so by name
+    # rather than filing it under `no_candidate`, which would read as a
+    # geometry failure.
+    refusal = ev.verdict(Q.ACCIDENTAL_IS_NOT_AN_ACCIDENTAL)
+    if (refusal is not None and refusal.outcome is Outcome.DECIDED
+            and refusal.value is True):
+        return Ruling.abstain("refused_not_an_accidental",
+                              alteration=alteration,
+                              refusal=refusal.id,
+                              refusal_reason=refusal.reason)
+
     cell = ev.subject.at(Kind.CELL)
     unit_rows = ev.rows(Q.CELL_STAFF_SPACE, scope=Scope.SELF_AND_ANCESTORS,
                         subject=cell)
@@ -1043,17 +1070,46 @@ def adjudicate_accidental_owner(ev: Evidence) -> Ruling:
         return Ruling.abstain("no_unit")
     space = float(unit_rows[0].value)
 
+    own_staff = ev.subject.at(Kind.STAFF).to_key()
     heads = {}
+    excluded: Dict[str, str] = {}
     for r in ev.rows(Q.GLYPH_BOX, scope=Scope.SELF_AND_DESCENDANTS,
                      subject=cell):
         if (r.detail or {}).get("category") != "notehead":
             continue
         if not isinstance(r.value, (list, tuple)) or len(r.value) < 5:
             continue
-        heads[r.subject.to_key()] = r
+        # ⚠️⚠️ A HEAD THE RECORD HAS ALREADY SAID IS NOT A HEAD OF THIS STAFF
+        # IS NOT A CANDIDATE (merge onto 3.4A/C + 2.6, 2026-09-27). Two
+        # settled facts, both upstream in `adjudicate.ORDER`:
+        #   * `notehead_is_not_a_notehead` DECIDED True -- a clef fragment, a
+        #     barline sliver, a box a human struck out. The exporter refuses
+        #     to write it; an accidental owned onto it would be decided and
+        #     never written, and worse, it would have WON the height contest
+        #     against the real head beside it.
+        #   * `glyph_owner` names ANOTHER staff -- the contest DROPS the loser
+        #     here (CLAUDE.md §10) and the note is written from the winner's
+        #     own detection, never from this cell.
+        # This is not a fallback converting "cannot tell" into an answer: the
+        # excluded boxes are not noteheads of this staff by a verdict, and the
+        # ambiguity test below runs over what is left exactly as before.
+        sub = r.subject
+        npv = ev.verdict(Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, subject=sub)
+        if (npv is not None and npv.outcome is Outcome.DECIDED
+                and npv.value is True):
+            excluded[sub.to_key()] = "not_a_notehead"
+            continue
+        owner = ev.verdict(Q.GLYPH_OWNER, subject=sub)
+        if (owner is not None and owner.outcome is Outcome.DECIDED
+                and isinstance(owner.value, str)
+                and owner.value != own_staff):
+            excluded[sub.to_key()] = "owned_by_another_staff"
+            continue
+        heads[sub.to_key()] = r
     if not heads:
         return Ruling.abstain("no_candidate", alteration=alteration,
-                              why="no notehead in this cell")
+                              why="no notehead in this cell",
+                              heads_excluded=excluded or None)
 
     # ⚠️ THE HEAD'S POSITION IS READ, NOT RE-DERIVED. `Q.NOTEHEAD_STAFF_POSITION`
     # is the same measurement off the same grid that this glyph's own row was
@@ -1091,6 +1147,7 @@ def adjudicate_accidental_owner(ev: Evidence) -> Ruling:
             "no_candidate", alteration=alteration,
             detector_class=detail.get("detector_class"),
             heads_in_cell=len(heads),
+            heads_excluded=excluded or None,
             max_dx_spaces=_ACC_MAX_DX_SPACES,
             max_dy_positions=_ACC_MAX_DY_POSITIONS)
 
@@ -1131,7 +1188,8 @@ def adjudicate_accidental_owner(ev: Evidence) -> Ruling:
                 "dy_positions": round(dpos, 3),
                 "accidental_position": round(apos, 3),
                 "anchor_fraction": detail.get("anchor_fraction"),
-                "confidence": detail.get("confidence")})
+                "confidence": detail.get("confidence"),
+                "heads_excluded": excluded or None})
 
 
 #: How far either side of a hairpin's own cell a notehead may stand and still

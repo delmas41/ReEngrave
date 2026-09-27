@@ -4003,8 +4003,9 @@ def _accidental_census(rec: "Record", detected: Dict[str, int],
     """What became of every PRINTED accidental glyph — ROADMAP 2.7.
 
     ⚠️⚠️ A PARTITION, AND ITS OWN ARITHMETIC IS THE CONTROL. `gathered` is
-    split with no remainder into `applied`, `abstained_ambiguous`,
-    `no_candidate`, `no_unit`, `no_evidence` and `unowned`; `unaccounted` is
+    split with no remainder into `owner_decided` (itself `applied` +
+    `unowned`), `abstained_ambiguous`, `no_candidate`, `no_unit`,
+    `no_evidence` and `refused_not_an_accidental`; `unaccounted` is
     what is left and a reader that finds it non-zero has found a branch
     nobody declared. It is the `status_census` discipline applied to one
     family, and for the same reason: a headline coverage number cannot be
@@ -4055,6 +4056,11 @@ def _accidental_census(rec: "Record", detected: Dict[str, int],
         "no_candidate": by_reason.get("no_candidate", 0),
         "no_unit": by_reason.get("no_unit", 0),
         "no_evidence": by_reason.get("no_evidence", 0),
+        # ⚠️ ROADMAP 3.4g, merged before 2.7 landed: a box
+        # `accidental_is_not_an_accidental` refused (a human's *nothing* or
+        # *another staff*) owns no head, by name and not as a geometry miss.
+        "refused_not_an_accidental": by_reason.get(
+            "refused_not_an_accidental", 0),
         "unowned": max(0, decided - applied),
         "carried_in_bar": sum(
             1 for v in rec.verdicts_of(Q.ACCIDENTAL)
@@ -4070,7 +4076,8 @@ def _accidental_census(rec: "Record", detected: Dict[str, int],
     }
     census["unaccounted"] = gathered - sum(
         census[k] for k in ("owner_decided", "abstained_ambiguous",
-                            "no_candidate", "no_unit", "no_evidence"))
+                            "no_candidate", "no_unit", "no_evidence",
+                            "refused_not_an_accidental"))
     return census
 
 
@@ -4199,11 +4206,14 @@ def _family_refusals(rec: Record) -> Dict[str, Any]:
     counted here without anybody remembering a second list — the repair
     `_place_notes`' own `by_system` docstring records paying for.
 
-    ⚠️ IT IS THE ONLY CONSUMER `accidental` AND `arpeggiato` HAVE, and that is
-    stated rather than hidden: neither family reaches a MusicXML element on
-    any path (`gather_coverage.FAMILY_TO_Q` maps both to `None`), so a human's
-    *nothing* on one of them buys a line in this block and nothing else. What
-    it buys is that the reading is on the record instead of on no stage.
+    ⚠️ IT IS THE ONLY CONSUMER `arpeggiato` HAS, and that is stated rather
+    than hidden: that family reaches no MusicXML element on any path
+    (`gather_coverage.FAMILY_TO_Q` maps it to `None`), so a human's *nothing*
+    on one buys a line in this block and nothing else. `accidental` HAD the
+    same status until roadmap 2.7 landed (2026-09-27): its refusal is now also
+    read by `adjudicate_accidental_owner`, so a refused glyph owns no head and
+    writes no `<accidental>` — counted in `accidental_reading` as
+    `refused_not_an_accidental`.
     """
     from .adjudicators.family_precision import FAMILY_REFUSALS
 

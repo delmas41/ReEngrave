@@ -640,6 +640,190 @@ class TestTheCensusIsAPartition(unittest.TestCase):
                          1)
 
 
+# ─────────────────────────────────────────────────────────────────────────────
+# THE MERGE ONTO THE OVERNIGHT TREE (2026-09-27)
+#
+# ⚠️ Written when `claude/accidental-2.7` (`69d64d95`, cut from `848dda47`)
+# was MERGED onto a main that had grown 3.4g's per-family refusals, 2.6's
+# ownership contest, 2.9b's inferred key and 2.10's bounded second EVALUATE
+# pass. Each class below is a fact the branch could not see. They were run
+# RED against the as-merged tree (the branch's code, no adaptation) before
+# the adaptation was written; the commit message records which failed.
+# ─────────────────────────────────────────────────────────────────────────────
+
+
+def _verdict(log, subject, quantity, value, *, reason="fixture",
+             outcome=R.Outcome.DECIDED, decider="t", supersedes=None):
+    return log.record(R.Verdict(
+        id=log._next_id("vrd"), subject=subject, quantity=quantity,
+        outcome=outcome, value=value, decider=decider, reason=reason,
+        supersedes=supersedes))
+
+
+class TestARefusedAccidentalOwnsNothing(unittest.TestCase):
+    """3.4g: `accidental_is_not_an_accidental` refuses a box a human struck
+    out. The owner must hear it, or the alteration Sean deleted comes back
+    one stage later."""
+
+    def test_a_refused_glyph_abstains_by_name(self):
+        log = Log()
+        _cell_unit(log)
+        acc = _acc(log, 0, 100.0, 4.0)
+        _head(log, 1, 106.0, 4.0)
+        _verdict(log, acc, Q.ACCIDENTAL_IS_NOT_AN_ACCIDENTAL, True,
+                 reason="human_not_a_symbol")
+        v = _decide(log).verdict(Q.ACCIDENTAL_OWNER, acc)
+        self.assertEqual(v.outcome, "abstained")
+        self.assertEqual(v.reason, "refused_not_an_accidental")
+
+    def test_a_KEPT_glyph_still_decides(self):
+        """The positive control in the same class: the refusal decision ran
+        and said `False` (the 3.4g default for a box nobody struck out)."""
+        log = Log()
+        _cell_unit(log)
+        acc = _acc(log, 0, 100.0, 4.0)
+        head = _head(log, 1, 106.0, 4.0)
+        _verdict(log, acc, Q.ACCIDENTAL_IS_NOT_AN_ACCIDENTAL, False,
+                 reason="accidental")
+        v = _decide(log).verdict(Q.ACCIDENTAL_OWNER, acc)
+        self.assertEqual(v.outcome, "decided")
+        self.assertEqual(v.value, head.to_key())
+
+    def test_the_refusal_is_its_own_census_bucket(self):
+        log = Log()
+        _cell_unit(log)
+        acc = _acc(log, 0, 100.0, 7.0)
+        _head(log, 1, 106.0, 7.0)
+        _durations(log, 1)
+        _verdict(log, acc, Q.ACCIDENTAL_IS_NOT_AN_ACCIDENTAL, True,
+                 reason="human_other_staff")
+        xml, report = E.to_musicxml(_full(_decide(log)))
+        c = report["accidental_reading"]
+        self.assertEqual(c["refused_not_an_accidental"], 1)
+        self.assertEqual(c["applied"], 0)
+        self.assertEqual(c["unaccounted"], 0)
+        self.assertNotIn("<accidental>", xml)
+
+
+class TestAHeadTheRecordDisownedIsNotACandidate(unittest.TestCase):
+    """A box `notehead_is_not_a_notehead` refused, or a head `glyph_owner`
+    awarded to another staff, is not a head of THIS staff. Left in, it wins
+    the height contest against the real head beside it and the alteration is
+    decided onto a note the exporter never writes."""
+
+    def _two_heads(self, log):
+        _cell_unit(log)
+        acc = _acc(log, 0, 100.0, 4.0)
+        near = _head(log, 1, 106.0, 4.0)       # at the glyph's own height
+        far = _head(log, 2, 110.0, 5.0)        # a step below, same column
+        return acc, near, far
+
+    def test_control_the_nearer_head_wins_when_nothing_disowns_it(self):
+        log = Log()
+        acc, near, _far = self._two_heads(log)
+        v = _decide(log).verdict(Q.ACCIDENTAL_OWNER, acc)
+        self.assertEqual(v.value, near.to_key())
+
+    def test_a_refused_notehead_is_not_a_candidate(self):
+        log = Log()
+        acc, near, far = self._two_heads(log)
+        _verdict(log, near, Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, True,
+                 reason="clipped_fragment")
+        v = _decide(log).verdict(Q.ACCIDENTAL_OWNER, acc)
+        self.assertEqual(v.value, far.to_key())
+        self.assertEqual(v.detail["heads_excluded"],
+                         {near.to_key(): "not_a_notehead"})
+
+    def test_a_head_owned_by_another_staff_is_not_a_candidate(self):
+        log = Log()
+        acc, near, far = self._two_heads(log)
+        _verdict(log, near, Q.GLYPH_OWNER, R.staff(0, 0, 1).to_key(),
+                 reason="ladder")
+        v = _decide(log).verdict(Q.ACCIDENTAL_OWNER, acc)
+        self.assertEqual(v.value, far.to_key())
+
+    def test_a_head_the_contest_KEPT_here_is_still_a_candidate(self):
+        """The positive control for the line above: `glyph_owner` DECIDED,
+        naming this staff."""
+        log = Log()
+        acc, near, _far = self._two_heads(log)
+        _verdict(log, near, Q.GLYPH_OWNER, STAFF.to_key(), reason="ladder")
+        v = _decide(log).verdict(Q.ACCIDENTAL_OWNER, acc)
+        self.assertEqual(v.value, near.to_key())
+
+
+class TestTheBoundedSecondPassKeepsThePage(unittest.TestCase):
+    """2.9b's `fill_part_key` and 2.10's `fill_clef_gap` write verdicts in
+    INFER, after EVALUATE, and `evaluate.run_over` fires the rules downstream
+    of them. The printed accidental must survive the first and follow the
+    second."""
+
+    def _structure(self, log):
+        _verdict(log, STAFF, Q.MEASURE_PARTITION, 1)
+        _verdict(log, R.system(0, 0), Q.SYSTEM_STAFF_COUNT, 1)
+        _verdict(log, R.DOCUMENT, Q.PART_PARTITION,
+                 {"join": "ordinal", "staves_per_system": 1},
+                 reason="ordinal")
+
+    def _acc_of(self, log, head):
+        v = log.verdict(Q.ACCIDENTAL, head)
+        return None if v is None else (v.value, v.decider,
+                                       (v.detail or {}).get("printed"))
+
+    def test_an_inferred_key_does_not_overwrite_a_printed_accidental(self):
+        log = Log()
+        _cell_unit(log)
+        before = _head(log, 0, 40.0, 7.0)                   # F4, before it
+        _acc(log, 1, 100.0, 7.0, cls="accidentalNatural",
+             alteration="natural")
+        owned = _head(log, 2, 106.0, 7.0)                   # F4, natural
+        carried = _head(log, 3, 300.0, 7.0)                 # F4, no glyph
+        _decide(log)
+        _verdict(log, STAFF, Q.CLEF, "treble")
+        key0 = _verdict(log, STAFF, Q.KEY_SIGNATURE, None,
+                        outcome=R.Outcome.ABSTAINED, reason="no_evidence")
+        self._structure(log)
+        evaluate.run(log)
+        self.assertEqual(self._acc_of(log, owned)[0], "natural")
+        self.assertIsNone(self._acc_of(log, before))
+        # INFER fills the key: one sharp, F#.
+        inferred = _verdict(log, STAFF, Q.KEY_SIGNATURE, 1,
+                            decider="infer:fill_part_key",
+                            reason="document_majority", supersedes=key0.id)
+        evaluate.run_over(log, [inferred])
+        self.assertEqual(self._acc_of(log, before),
+                         ("#", "respell_accidental", None))
+        self.assertEqual(self._acc_of(log, owned),
+                         ("natural", "apply_printed_accidental", True))
+        self.assertEqual(self._acc_of(log, carried),
+                         ("natural", "apply_printed_accidental", False))
+
+    def test_an_inferred_clef_brings_the_printed_accidental_with_it(self):
+        log = Log()
+        _cell_unit(log)
+        _acc(log, 0, 100.0, 7.0)
+        owned = _head(log, 1, 106.0, 7.0)
+        carried = _head(log, 2, 300.0, 7.0)
+        _decide(log)
+        clef0 = _verdict(log, STAFF, Q.CLEF, None,
+                         outcome=R.Outcome.ABSTAINED, reason="no_evidence")
+        _verdict(log, STAFF, Q.KEY_SIGNATURE, 0)
+        self._structure(log)
+        evaluate.run(log)
+        # the first pass: no clef, no pitch, so nothing to alter
+        self.assertIsNone(log.verdict(Q.PITCH, owned))
+        self.assertIsNone(self._acc_of(log, owned))
+        inferred = _verdict(log, STAFF, Q.CLEF, "treble",
+                            decider="infer:fill_clef_gap",
+                            reason="other_systems", supersedes=clef0.id)
+        evaluate.run_over(log, [inferred])
+        self.assertEqual(log.verdict(Q.PITCH, owned).value, "F4")
+        self.assertEqual(self._acc_of(log, owned),
+                         ("#", "apply_printed_accidental", True))
+        self.assertEqual(self._acc_of(log, carried),
+                         ("#", "apply_printed_accidental", False))
+
+
 class TestTheTreeNoLongerSaysNothingReadsIt(unittest.TestCase):
 
     def test_the_family_table_names_the_owner_quantity(self):

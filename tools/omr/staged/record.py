@@ -1075,11 +1075,13 @@ class Q(_Vocab):
     #: measurements and for which one ships.
     LEDGER_IS_NOT_A_LEDGER = "ledger_is_not_a_ledger"
 
-    #: An `accidental*` box that is not an accidental. HUMAN WITNESS ONLY: the
-    #: in-bar accidental is SCOPE rather than a mark (it holds to the barline)
-    #: and `gather_coverage.FAMILY_Q_IS_ELSEWHERE` records that the record has
-    #: nowhere to put that span, so no geometric convention is available to
-    #: this decision and none is invented.
+    #: An `accidental*` box that is not an accidental. HUMAN WITNESS ONLY: no
+    #: geometric convention for *this ink is not an accidental* has been
+    #: stated or measured, and none is invented. ⚠️ Since roadmap 2.7 landed
+    #: (2026-09-27) the glyph has a reading of its own
+    #: (`Q.ACCIDENTAL_STAFF_POSITION` -> `Q.ACCIDENTAL_OWNER`), and a refusal
+    #: here is READ by `adjudicate_accidental_owner`: a refused glyph owns no
+    #: head (`refused_not_an_accidental`).
     ACCIDENTAL_IS_NOT_AN_ACCIDENTAL = "accidental_is_not_an_accidental"
 
     #: A `rest*` box that is not a rest. ⚠️ A DIFFERENT QUESTION FROM

@@ -492,22 +492,25 @@ def respell_accidental(log: Log, subject: Subject, key: Verdict) -> List[Verdict
         letter = pitch.value[0]
         if letter not in altered:
             continue
-        # ⚠️⚠️ AN INLINE ACCIDENTAL OVERRIDES THE SIGNATURE, AND THIS GUARD
-        # IS NOT THE PLACE THAT ENFORCES IT -- roadmap 2.7 measured the
-        # ordering and found this branch UNREACHABLE for the printed glyph.
-        # `evaluate.run` orders rules by the DOWNHILL index of their CAUSE,
-        # this rule's cause is `Q.KEY_SIGNATURE` (index 8) and
-        # `apply_printed_accidental`'s is `Q.ACCIDENTAL_OWNER` (index 11), so
-        # the key-derived row is always written FIRST and there is never an
-        # inline verdict here to find. The override is done by SUPERSESSION
-        # instead, exactly as `move_glyph` supersedes `Q.PITCH` for the same
-        # ordering reason.
+        # ⚠️⚠️ AN INLINE ACCIDENTAL OVERRIDES THE SIGNATURE, AND IN THE FIRST
+        # PASS THIS GUARD IS NOT THE PLACE THAT ENFORCES IT -- roadmap 2.7
+        # measured the ordering. `evaluate.run` orders rules by the DOWNHILL
+        # index of their CAUSE, this rule's cause is `Q.KEY_SIGNATURE` and
+        # `apply_printed_accidental`'s is `Q.ACCIDENTAL_OWNER`, below it, so
+        # in the first pass the key-derived row is always written FIRST and
+        # the override is done by SUPERSESSION, exactly as `move_glyph`
+        # supersedes `Q.PITCH` for the same ordering reason.
         #
-        # ⚠️ THE GUARD STAYS, and it is not dead code in the harmful sense: it
-        # is what makes this rule idempotent under any re-run and what keeps
-        # it honest if the DOWNHILL order is ever changed. It is documented as
-        # unreachable rather than deleted so the next reader does not
-        # rediscover the ordering by removing the supersession.
+        # ⚠️⚠️ IN THE BOUNDED SECOND PASS IT IS THE ENFORCEMENT, and that is
+        # what changed when 2.7 was merged onto 2.9b (2026-09-27). The 2.7
+        # branch called this guard unreachable; it was, on a tree where the
+        # key was only ever READ. `fill_part_key` now INFERS a key where the
+        # reader abstained, and `evaluate.run_over` brings this rule back
+        # over that staff AFTER `apply_printed_accidental` wrote the page's
+        # alterations in the first pass -- so without this line an inferred
+        # key would overwrite every printed natural and every carried
+        # alteration on the staff. Pinned by
+        # `test_staged_accidental.py::test_an_inferred_key_does_not_overwrite_a_printed_accidental`.
         if log.verdict(Q.ACCIDENTAL, pitch.subject) is not None:
             continue
         out.append(_verdict(
@@ -535,8 +538,34 @@ def _letter_octave(pitch_value: Any) -> Optional[Tuple[str, int]]:
     return letter, int(octave)
 
 
+def _apply_printed_also_reads(log: Log, subject: Subject,
+                              owner: Verdict) -> List[str]:
+    """The OWNED HEAD'S STAFF'S CLEF -- the verdict this rule reads besides
+    its cause, declared for `evaluate.run_over` (roadmap 2.10's mechanism,
+    which 2.7 was merged onto on 2026-09-27).
+
+    ⚠️ WITHOUT IT A FILLED CLEF LEAVES EVERY PRINTED ACCIDENTAL ON THAT STAFF
+    UNWRITTEN, SILENTLY. The rule needs the head's PITCH (C21 is keyed on
+    letter and octave), and a staff whose clef abstained has no pitches, so
+    the first pass returns [] for every glyph on it. When INFER then fills the
+    clef (`fill_clef_gap`), `restate_pitch` fires again over that staff in the
+    bounded second pass -- and a rule keyed on its cause alone, the OWNER,
+    which did not change, would be skipped as `not_downstream_of_an_
+    inference`. That is `_move_glyph_also_reads`' failure one rule down.
+    """
+    if not isinstance(owner.value, str):
+        return []
+    head = Subject.from_key(owner.value)
+    staff = head.at(Kind.STAFF)
+    if staff is None:
+        return []
+    clef = log.verdict(Q.CLEF, staff)
+    return [clef.id] if clef is not None else []
+
+
 @rule(consequence=Consequence.APPLY_PRINTED_ACCIDENTAL,
       cause=Q.ACCIDENTAL_OWNER, effect=Q.ACCIDENTAL, scope=Kind.GLYPH,
+      reads_beyond_cause=_apply_printed_also_reads,
       bound="Writes an alteration onto the owned notehead and onto later "
             "noteheads IN THE SAME CELL at the SAME letter and octave that "
             "carry no printed glyph of their own. Never leaves the cell, "
@@ -659,6 +688,15 @@ def apply_printed_accidental(log: Log, subject: Subject,
         if lx is None or lx <= own_x:
             continue                    # standing to the LEFT: not governed
         if _letter_octave(later.value) != target:
+            continue
+        # ⚠️ A HEAD THE CONTEST AWARDED TO ANOTHER STAFF IS NOT IN THIS BAR.
+        # Its `Q.PITCH` was restated by `move_glyph` on the WINNER's clef, so
+        # a letter match here compares this staff's accidental against
+        # another staff's note; the exporter drops it from this staff
+        # (`owned_by_another_staff`), and the carry must not reach it either.
+        moved = log.verdict(Q.GLYPH_OWNER, later.subject)
+        if (moved is not None and isinstance(moved.value, str)
+                and moved.value != head.at(Kind.STAFF).to_key()):
             continue
         # ⚠️ A NOTE THAT CARRIES ITS OWN PRINTED GLYPH IS LEFT ALONE. That
         # glyph's own firing writes it, with `printed=True`; overwriting it
