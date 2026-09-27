@@ -38,6 +38,11 @@ SPACING_PAGE = 20.0                  # one staff space in PAGE pixels
 #: Five staff lines in page px, bottom line last. Bottom line y = 1080,
 #: top line y = 1000 — `_staff_step`'s step 0 and step 8.
 LINE_YS = [1000.0, 1020.0, 1040.0, 1060.0, 1080.0]
+#: Where a fixture's `ledgerLine` box sits in the CELL's own frame. The head
+#: rule (3.4g-2) reads a distance in this frame, so the rung needs a fixed
+#: canonical origin to measure it from.
+LEDGER_X_CANONICAL = 200.0
+LEDGER_Y_CANONICAL = 200.0
 
 #: One row per family: (quantity, a detector class of that family, the word
 #: the decision decides `False` with, the extra quantity GATHER files).
@@ -360,23 +365,46 @@ class TestOwnerOtherDoesNotReachTheOwnershipContest(unittest.TestCase):
 # §LEDGER — the geometry
 # ─────────────────────────────────────────────────────────────────────────────
 
+def _ledger_verdict(*, step, h_c=20.0, w_c=140.0, page_box=True,
+                    geometry=True, heads_at=None, head_dist_spaces=None,
+                    head_x_overlaps=True):
+    """One `ledgerLine` box, and optionally the head it stands under.
+
+    ⚠️ THE HEAD'S DISTANCE IS SET IN THE CANONICAL CELL FRAME and the
+    rung's POSITION in page pixels, because that is where each of them
+    is measured — `family_precision` never compares the two. `heads_at`
+    gives the head a page box (it needs one only to look like a real
+    row); `head_dist_spaces` is the number the rule reads.
+    """
+    log = Log()
+    if geometry:
+        _staff_geometry(log)
+    else:
+        log.observe(CELL, Q.CELL_STAFF_SPACE, SPACING_CANONICAL,
+                    reader=READERS.GEOMETRY, frame="cell:0")
+    if heads_at is not None or head_dist_spaces is not None:
+        head_h = 18.0
+        rung_mid = LEDGER_Y_CANONICAL + h_c / 2.0
+        d = 0.0 if head_dist_spaces is None else head_dist_spaces
+        head_mid = rung_mid + d * SPACING_CANONICAL
+        _box(log, 9, "noteheadBlackOnLine", quantity=Q.NOTEHEAD_CLASS,
+             page_box=_page_box_at_step(
+                 step if heads_at is None else heads_at),
+             w_c=26.0, h_c=head_h,
+             x_c=(LEDGER_X_CANONICAL if head_x_overlaps
+                  else LEDGER_X_CANONICAL + w_c + 40.0),
+             y_c=head_mid - head_h / 2.0)
+    g = _box(log, 0, "ledgerLine", w_c=w_c, h_c=h_c,
+             x_c=LEDGER_X_CANONICAL, y_c=LEDGER_Y_CANONICAL,
+             page_box=_page_box_at_step(step) if page_box else None)
+    _run(log, Q.LEDGER_IS_NOT_A_LEDGER)
+    return log.verdict(Q.LEDGER_IS_NOT_A_LEDGER, g)
+
+
 class TestTheLedgerGeometry(unittest.TestCase):
 
-    def _rung(self, *, step, h_c=20.0, w_c=140.0, page_box=True,
-              geometry=True, heads_at=None):
-        log = Log()
-        if geometry:
-            _staff_geometry(log)
-        else:
-            log.observe(CELL, Q.CELL_STAFF_SPACE, SPACING_CANONICAL,
-                        reader=READERS.GEOMETRY, frame="cell:0")
-        if heads_at is not None:
-            _box(log, 9, "noteheadBlackOnLine", quantity=Q.NOTEHEAD_CLASS,
-                 page_box=_page_box_at_step(heads_at), w_c=26.0, h_c=18.0)
-        g = _box(log, 0, "ledgerLine", w_c=w_c, h_c=h_c,
-                 page_box=_page_box_at_step(step) if page_box else None)
-        _run(log, Q.LEDGER_IS_NOT_A_LEDGER)
-        return log.verdict(Q.LEDGER_IS_NOT_A_LEDGER, g)
+    def _rung(self, **kw):
+        return _ledger_verdict(**kw)
 
     # ── the positive control, first ─────────────────────────────────────────
 
@@ -397,48 +425,168 @@ class TestTheLedgerGeometry(unittest.TestCase):
     def test_the_second_and_third_rungs_are_KEPT(self):
         for step in (-4.0, -6.0, 12.0, 14.0):
             with self.subTest(step=step):
-                self.assertIs(self._rung(step=step).value, False)
+                self.assertIs(self._rung(step=step, heads_at=step).value,
+                              False)
 
-    # ── on_a_staff_line ─────────────────────────────────────────────────────
+    # ── inside_the_staff — Sean's FIRST convention, 2026-09-24 ──────────────
 
     def test_a_box_on_the_middle_line_is_refused(self):
         v = self._rung(step=4.0)
         self.assertIs(v.value, True)
-        self.assertEqual(v.reason, "on_a_staff_line")
+        self.assertEqual(v.reason, "inside_the_staff")
 
     def test_a_box_on_each_of_the_five_lines_is_refused(self):
+        """⚠️ THE REASON CHANGED IN 3.4g-2 AND THE OUTCOME DID NOT. All five
+        lines are INSIDE the band (steps 0 and 8 are its edges), so Sean's
+        position convention condemns them before the line tolerance is
+        consulted at all."""
         for step in (0.0, 2.0, 4.0, 6.0, 8.0):
             with self.subTest(step=step):
                 v = self._rung(step=step)
                 self.assertIs(v.value, True)
-                self.assertEqual(v.reason, "on_a_staff_line")
+                self.assertEqual(v.reason, "inside_the_staff")
+
+    def test_a_box_in_the_middle_of_the_staff_is_refused_even_off_every_line(
+            self):
+        """⚠️⚠️ THE RULE `on_a_staff_line` COULD NOT REACH, and the reason
+        3.4g-2 exists. Sean's crop 1 (`glyph/4/0/9/1/7`) sits at step 4.96 —
+        0.48 spaces from the nearest line, twice the measured tolerance — and
+        he answered *"no — middle of the staff, where there would never be a
+        ledger line"*."""
+        v = self._rung(step=4.96, head_dist_spaces=2.06)
+        self.assertIs(v.value, True)
+        self.assertEqual(v.reason, "inside_the_staff")
+
+    def test_inside_the_staff_outranks_a_head_standing_right_on_it(self):
+        """A head on the box does not make a box inside the band a rung."""
+        v = self._rung(step=4.0, head_dist_spaces=0.0)
+        self.assertEqual(v.reason, "inside_the_staff")
+
+    # ── on_a_staff_line — now the OUTER lines only ──────────────────────────
+
+    def test_a_box_just_outside_the_band_on_the_outer_line_is_refused(self):
+        v = self._rung(step=-0.2, head_dist_spaces=0.0)
+        self.assertIs(v.value, True)
+        self.assertEqual(v.reason, "on_a_staff_line")
 
     def test_the_tolerance_is_the_measured_one_and_holds_at_its_edge(self):
         """⚠️ THE BOUND THAT MATTERS IS THE OTHER ONE: inside the tolerance
-        refuses, and a real rung at 1.0 space is FOUR TIMES clear of it."""
+        refuses, and a real rung at 1.0 space is FOUR TIMES clear of it.
+
+        ⚠️ BOTH BOXES CARRY A HEAD since 3.4g-2, or the one outside the
+        tolerance would be refused by Sean's second convention instead and
+        this test would pass while measuring nothing."""
         inside = FP.ON_A_STAFF_LINE_TOL_SPACES - 0.01
         outside = FP.ON_A_STAFF_LINE_TOL_SPACES + 0.01
-        self.assertIs(self._rung(step=-2.0 * inside).value, True)
-        self.assertIs(self._rung(step=-2.0 * outside).value, False)
+        self.assertIs(self._rung(step=-2.0 * inside,
+                                 head_dist_spaces=0.0).value, True)
+        self.assertIs(self._rung(step=-2.0 * outside,
+                                 head_dist_spaces=0.0).value, False)
 
     def test_the_tolerance_cannot_reach_the_first_rung(self):
         self.assertLess(FP.ON_A_STAFF_LINE_TOL_SPACES, 0.5)
 
-    # ── tall_not_a_rung ─────────────────────────────────────────────────────
+    # ── no_head_on_the_rung — Sean's SECOND convention, 2026-09-24 ──────────
+
+    def test_a_rung_with_no_head_anywhere_in_the_cell_is_refused(self):
+        v = self._rung(step=-2.0)
+        self.assertIs(v.value, True)
+        self.assertEqual(v.reason, "no_head_on_the_rung")
+
+    def test_a_head_that_does_not_x_overlap_the_rung_is_not_its_head(self):
+        v = self._rung(step=-2.0, head_dist_spaces=0.0,
+                       head_x_overlaps=False)
+        self.assertIs(v.value, True)
+        self.assertEqual(v.reason, "no_head_on_the_rung")
+        self.assertEqual(v.detail["heads_x_overlapping"], 0)
+
+    def test_a_head_further_than_the_measured_tolerance_is_not_its_head(self):
+        v = self._rung(step=-2.0,
+                       head_dist_spaces=FP.HEAD_NEAR_TOL_SPACES + 0.5)
+        self.assertIs(v.value, True)
+        self.assertEqual(v.reason, "no_head_on_the_rung")
+
+    def test_the_head_tolerance_holds_at_its_edge(self):
+        """THE POSITIVE CONTROL for the head rule, at the derived number."""
+        inside = self._rung(step=-2.0,
+                            head_dist_spaces=FP.HEAD_NEAR_TOL_SPACES - 0.01)
+        outside = self._rung(step=-2.0,
+                             head_dist_spaces=FP.HEAD_NEAR_TOL_SPACES + 0.01)
+        self.assertIs(inside.value, False)
+        self.assertIs(outside.value, True)
+
+    def test_an_inner_rung_of_a_three_rung_run_is_KEPT(self):
+        """⚠️⚠️ WHY THE TOLERANCE IS TWO AND THREE QUARTER SPACES AND NOT
+        ONE. A note three spaces above the staff prints THREE rungs and
+        stands on the OUTERMOST: the innermost is two whole spaces from the
+        only head that x-overlaps it. A one-space rule would delete the
+        bottom of every long ladder — which is `Q.GLYPH_LADDER`'s own
+        completeness term (`C4`) being destroyed by its neighbour."""
+        v = self._rung(step=10.0, head_dist_spaces=2.0)
+        self.assertIs(v.value, False)
+        self.assertEqual(v.reason, "ledger_line")
+
+    def test_the_head_tolerance_is_the_measured_p95(self):
+        """⚠️ DERIVED, NOT CHOSEN — p95 of the kept rungs' head distance is
+        2.67 / 2.67 / 1.885 spaces on the three records, and the one beam
+        Sean adjudicated (crop 8) stands 2.975 spaces from its nearest head.
+        The constant must cover the first and NOT reach the second."""
+        self.assertGreaterEqual(FP.HEAD_NEAR_TOL_SPACES, 2.67)
+        self.assertLess(FP.HEAD_NEAR_TOL_SPACES, 2.975)
+
+    def test_the_distance_and_the_count_are_both_recorded(self):
+        v = self._rung(step=-2.0, head_dist_spaces=1.25)
+        self.assertEqual(v.detail["heads_x_overlapping"], 1)
+        self.assertAlmostEqual(v.detail["head_distance_spaces"], 1.25,
+                               places=3)
+
+    # ── tall_not_a_rung — RE-MEASURED in 3.4g-2 ─────────────────────────────
 
     def test_a_tall_box_is_refused(self):
         v = self._rung(step=-2.0, h_c=0.6 * SPACING_CANONICAL)
         self.assertIs(v.value, True)
         self.assertEqual(v.reason, "tall_not_a_rung")
 
+    def test_a_tall_box_with_a_head_on_it_is_KEPT(self):
+        """⚠️⚠️ SEAN'S CROP 9 (`glyph/4/1/2/5/14`), THE ONE REAL RUNG THE
+        OLD RULES REFUSED. Measured: height 0.68 spaces — past the 0.5 floor
+        — with a notehead 0.085 spaces from its centre and eight heads
+        x-overlapping it. On a MERGING plate the rung's box has swallowed
+        the head's ink, so the height is measuring the head. A rung with its
+        head on it is not a barline whatever it measures."""
+        v = self._rung(step=12.58, h_c=0.68 * SPACING_CANONICAL,
+                       head_dist_spaces=0.085)
+        self.assertIs(v.value, False)
+        self.assertEqual(v.reason, "ledger_line")
+
+    def test_a_tall_box_with_its_heads_far_below_is_still_refused(self):
+        """SEAN'S CROP 8 — *"too thick, it is a beam for 3 eighth notes"*.
+        Measured: height 0.62 spaces, nearest x-overlapping head 2.975
+        spaces away, which is the far side of the head tolerance."""
+        v = self._rung(step=-6.04, h_c=0.62 * SPACING_CANONICAL,
+                       head_dist_spaces=2.975)
+        self.assertIs(v.value, True)
+        self.assertEqual(v.reason, "tall_not_a_rung")
+
     def test_a_rung_thick_box_is_KEPT(self):
         """THE POSITIVE CONTROL for the height rule: the measured population
         sits at p50 0.28 and p95 0.37 spaces, well under the floor."""
-        v = self._rung(step=-2.0, h_c=0.37 * SPACING_CANONICAL)
+        v = self._rung(step=-2.0, h_c=0.37 * SPACING_CANONICAL,
+                       head_dist_spaces=0.0)
         self.assertIs(v.value, False)
 
     def test_the_height_floor_is_past_the_measured_population(self):
         self.assertGreaterEqual(FP.TALL_MIN_HEIGHT_SPACES, 0.42)
+
+    def test_tall_runs_before_the_head_rule_or_it_could_never_fire(self):
+        """⚠️ THE ORDER IS LOAD-BEARING AND THIS IS WHY. `tall_not_a_rung`
+        now requires that no head stands on the box; a tall box with no head
+        would be condemned by `no_head_on_the_rung` first if that rule ran
+        earlier, and the height rule would be DEAD — a reason declared and
+        unreachable, which is what `brakes.vocabulary_gap` exists to catch.
+        The fixture is the one that separates the two orders."""
+        v = self._rung(step=-2.0, h_c=0.6 * SPACING_CANONICAL)
+        self.assertEqual(v.reason, "tall_not_a_rung")
 
     # ── not_at_a_rung_step — MEASURED AND HELD BACK ─────────────────────────
 
@@ -446,19 +594,27 @@ class TestTheLedgerGeometry(unittest.TestCase):
         """⚠️ `RUNG_STEP_SHIPS = False`. The offset-from-the-rung measurement
         is very nearly UNIFORM on Litolff, so the rule would refuse on noise;
         the signal is recorded and sets no value."""
-        v = self._rung(step=-3.0)          # 1.5 spaces below line 1
+        v = self._rung(step=-3.0, head_dist_spaces=0.0)
         self.assertIs(v.value, False)
         self.assertEqual(v.reason, "ledger_line")
 
     def test_the_held_back_signal_is_still_on_the_record(self):
-        v = self._rung(step=-3.0)
+        v = self._rung(step=-3.0, head_dist_spaces=0.0)
         sig = v.detail["rung_step_signal"]
         self.assertIs(sig["would_fire"], True)
         self.assertIs(sig["ships"], False)
         self.assertAlmostEqual(sig["offset_spaces"], 0.5, places=3)
 
+    def test_the_signal_is_recorded_even_where_another_rule_condemns_it(self):
+        """⚠️ COMPUTED BEFORE ANY SHIPPED RULE RETURNS, so the held-back
+        measurement survives a box Sean's conventions already refuse."""
+        sig = self._rung(step=-3.0).detail["rung_step_signal"]
+        self.assertIs(sig["ships"], False)
+        self.assertAlmostEqual(sig["offset_spaces"], 0.5, places=3)
+
     def test_the_signal_on_a_real_rung_would_not_fire(self):
-        sig = self._rung(step=-2.0).detail["rung_step_signal"]
+        sig = self._rung(step=-2.0,
+                         head_dist_spaces=0.0).detail["rung_step_signal"]
         self.assertIs(sig["would_fire"], False)
 
     def test_the_rule_is_not_in_the_declared_vocabulary(self):
@@ -486,7 +642,11 @@ class TestTheLedgerGeometry(unittest.TestCase):
         """A box the geometry would KEEP, and a human says is nothing."""
         log = Log()
         _staff_geometry(log)
-        g = _box(log, 0, "ledgerLine", page_box=_page_box_at_step(-2.0))
+        _box(log, 9, "noteheadBlackOnLine", quantity=Q.NOTEHEAD_CLASS,
+             page_box=_page_box_at_step(-2.0), w_c=26.0, h_c=18.0,
+             x_c=LEDGER_X_CANONICAL, y_c=LEDGER_Y_CANONICAL)
+        g = _box(log, 0, "ledgerLine", x_c=LEDGER_X_CANONICAL,
+                 y_c=LEDGER_Y_CANONICAL, page_box=_page_box_at_step(-2.0))
         _human(log, g, "not_a_symbol")
         _run(log, Q.LEDGER_IS_NOT_A_LEDGER)
         v = log.verdict(Q.LEDGER_IS_NOT_A_LEDGER, g)
@@ -502,6 +662,118 @@ class TestTheLedgerGeometry(unittest.TestCase):
         _human(log, g, "not_a_symbol")
         _run(log, Q.LEDGER_IS_NOT_A_LEDGER)
         self.assertIs(log.verdict(Q.LEDGER_IS_NOT_A_LEDGER, g).value, True)
+
+
+#: ⚠️⚠️ SEAN'S THIRTEEN CROPS, AS FIXTURES — ROADMAP 3.4g-2.
+#:
+#: Each row is one crop of `benchmarks/omr-family-refusals-2026-09/out/print/`
+#: that Sean adjudicated against the print on 2026-09-24
+#: (`ADJUDICATION-sean-2026-09-24.json`), carrying the geometry MEASURED off
+#: `beethoven5-p1-p4.record.json` by `probe/ledger_heads.py` — never numbers
+#: read off the picture by eye.
+#:
+#: `(n, subject, is a ledger line?, staff step, height in spaces, distance to
+#:  the nearest x-overlapping head in spaces or None, expected reason)`
+#:
+#: ⚠️ THE EXPECTED REASON IS NOT THE ASSERTION. The assertion is that the
+#: decision's REFUSAL agrees with SEAN — the reason is carried so a change of
+#: reason shows up as a change and not as a silent re-attribution.
+SEANS_CROPS = (
+    (1, "glyph/4/0/9/1/7", False, 4.960, 0.240, 2.060, "inside_the_staff"),
+    (2, "glyph/4/0/9/5/14", False, 1.490, 0.210, 4.205, "inside_the_staff"),
+    (3, "glyph/4/1/7/5/21", True, -6.720, 0.280, 0.515, "ledger_line"),
+    (4, "glyph/1/0/2/15/3", False, 5.550, 0.230, 0.245, "inside_the_staff"),
+    (5, "glyph/2/0/10/14/10", False, 2.140, 0.360, 1.050, "inside_the_staff"),
+    (6, "glyph/3/0/2/14/1", False, 5.650, 0.190, None, "inside_the_staff"),
+    (7, "glyph/3/0/5/13/5", False, 0.150, 0.350, 2.725, "inside_the_staff"),
+    (8, "glyph/2/0/1/4/12", False, -6.040, 0.620, 2.975, "tall_not_a_rung"),
+    (9, "glyph/4/1/2/5/14", True, 12.580, 0.680, 0.085, "ledger_line"),
+    (10, "glyph/4/1/9/11/17", False, 4.320, 0.520, 0.415, "inside_the_staff"),
+    (11, "glyph/3/0/7/6/14", True, -1.850, 0.350, 1.210, "ledger_line"),
+    (12, "glyph/3/0/7/7/8", True, -1.900, 0.400, 1.125, "ledger_line"),
+    (13, "glyph/4/1/2/3/19", True, 10.220, 0.340, 0.585, "ledger_line"),
+)
+
+
+class TestSeansThirteenCrops(unittest.TestCase):
+    """⚠️⚠️ THE GATE OF ROADMAP 3.4g-2: the rule agrees with the man.
+
+    Thirteen `ledgerLine` boxes, cut from the plate at the gather's own DPI
+    behind a frame control, shown to Sean in chat and answered one by one.
+    Under the rules of 3.4g he was right and the machine was wrong twice —
+    crop 9 (a real rung refused `tall_not_a_rung`) and crop 3 (a real rung
+    the held-back `not_at_a_rung_step` would have refused, which is why it
+    stayed held back). Both must now be KEPT, and none of the eleven he
+    called *nothing* may be.
+
+    ⚠️ A REFUSAL BATTERY PASSES BY REFUSING EVERYTHING, so the five he
+    called REAL are the positive control and they are inside this same table
+    rather than in a test of their own.
+    """
+
+    def _crop(self, row):
+        _n, _subject, _real, step, h_spaces, head, _reason = row
+        return _ledger_verdict(
+            step=step, h_c=h_spaces * SPACING_CANONICAL,
+            head_dist_spaces=head)
+
+    def test_every_crop_agrees_with_sean(self):
+        for row in SEANS_CROPS:
+            n, subject, real, _s, _h, _d, _r = row
+            with self.subTest(crop=n, subject=subject):
+                v = self._crop(row)
+                self.assertEqual(v.outcome, Outcome.DECIDED)
+                # `value is True` means REFUSED — *this is not a ledger line*
+                self.assertIs(v.value, not real)
+
+    def test_every_crop_gets_the_reason_this_lane_measured(self):
+        for row in SEANS_CROPS:
+            n, subject, _real, _s, _h, _d, reason = row
+            with self.subTest(crop=n, subject=subject):
+                self.assertEqual(self._crop(row).reason, reason)
+
+    def test_the_two_real_rungs_the_old_rules_refused_are_KEPT(self):
+        """Crop 9 (`tall_not_a_rung`, shipped) and crop 3 (the held-back
+        rung-step rule). ⚠️ NAMED rather than counted, so a table edited to
+        make this pass reads as the edit it is."""
+        for n in (3, 9):
+            row = next(r for r in SEANS_CROPS if r[0] == n)
+            with self.subTest(crop=n, subject=row[1]):
+                v = self._crop(row)
+                self.assertIs(v.value, False)
+                self.assertEqual(v.reason, "ledger_line")
+
+    def test_the_positive_control_five_he_called_real(self):
+        real = [r for r in SEANS_CROPS if r[2]]
+        self.assertEqual(len(real), 5)          # reach, before accuracy
+        for row in real:
+            with self.subTest(crop=row[0]):
+                self.assertIs(self._crop(row).value, False)
+
+    def test_the_table_is_the_adjudication_file(self):
+        """⚠️ THE TABLE ABOVE IS A COPY AND THIS IS THE JOIN THAT KEEPS IT
+        HONEST. `ADJUDICATION-sean-2026-09-24.json` is the record of what he
+        said; if it is on disk, every verdict in it must appear here with
+        the same answer. The file is a benchmark artefact and a checkout
+        without it SKIPS rather than passes silently."""
+        import json
+        import os
+        import re
+        path = os.path.join(
+            os.path.dirname(os.path.dirname(os.path.dirname(
+                os.path.dirname(os.path.abspath(__file__))))),
+            "benchmarks", "omr-family-refusals-2026-09", "out", "print",
+            "ADJUDICATION-sean-2026-09-24.json")
+        if not os.path.exists(path):        # pragma: no cover - artefact
+            self.skipTest("the adjudication file is not in this checkout")
+        said = json.load(open(path, encoding="utf-8"))["verdicts"]
+        self.assertEqual(len(said), len(SEANS_CROPS))
+        mine = {r[0]: (r[1], r[2]) for r in SEANS_CROPS}
+        for v in said:
+            m = re.match(r".*-p(\d+)-s(\d+)-st(\d+)-c(\d+)-g(\d+)-",
+                         v["crop"])
+            subject = "glyph/" + "/".join(m.groups())
+            self.assertEqual(mine[v["n"]], (subject, v["is_ledger_line"]))
 
 
 class TestARefusedRungIsNotCountedInTheLadder(unittest.TestCase):
@@ -758,7 +1030,14 @@ class TestEachFamilyByName(unittest.TestCase):
         for value in (f"owner:{HE.OWNER_OTHER}", None):
             log = Log()
             _staff_geometry(log)
+            # ⚠️ THE HEAD IS HERE FOR THE LEDGER'S SAKE (3.4g-2): without one
+            # the kept CONTROL would be refused `no_head_on_the_rung` and the
+            # positive control in this family would be testing the wrong rule.
+            _box(log, 9, "noteheadBlackOnLine", quantity=Q.NOTEHEAD_CLASS,
+                 page_box=_page_box_at_step(-2.0), w_c=26.0, h_c=18.0,
+                 x_c=LEDGER_X_CANONICAL, y_c=LEDGER_Y_CANONICAL)
             g = _box(log, 0, cls, quantity=extra,
+                     x_c=LEDGER_X_CANONICAL, y_c=LEDGER_Y_CANONICAL,
                      page_box=_page_box_at_step(-2.0))
             if value is not None:
                 _human(log, g, value)
