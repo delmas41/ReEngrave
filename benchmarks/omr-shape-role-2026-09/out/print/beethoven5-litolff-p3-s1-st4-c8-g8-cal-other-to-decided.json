@@ -1,0 +1,47 @@
+{
+ "png": "beethoven5-litolff-p3-s1-st4-c8-g8-cal-other-to-decided.png",
+ "caption": "beethoven5-litolff page 3, system 1, staff 4, bar-cell 8 \u2014 the detector called this rectangle `restWhole`. Measured against this staff's own lines its centre stands at step 4.70, where a whole rest hangs at 5.5 (BLUE dashes) and a half rest sits at 4.5 (ORANGE dashes). The rule says cal-other-to-decided. GREEN = the five Q.STAFF_LINES; RED corner bracket = the rest itself. QUESTION FOR SEAN: against the print, is this a whole rest, a half rest, or not a rest at all?",
+ "subject": "glyph/3/1/4/8/8",
+ "bucket": "cal-other-to-decided",
+ "page": 3,
+ "dpi": 600,
+ "zoom": 4,
+ "frame_control": {
+  "passed": true,
+  "contrast": 69.48
+ },
+ "detector_class": "restWhole",
+ "measured_staff_step": 4.7,
+ "convention": {
+  "restWhole": 5.5,
+  "restHalf": 4.5,
+  "tolerance_below_whole_half_steps": 1.35,
+  "tolerance_above_half_half_steps": 0.5,
+  "frame": "bottom line 0, one step per half space, up positive"
+ },
+ "what_the_rule_does": "DECIDE the class's own value \u2014 2.12b NARROWED this row over both values and the recalibrated band does not contradict it. \u26a0\ufe0f THE ONLY BUCKET IN WHICH A VALUE APPEARS, and the one Sean's ten adjudicated rests are a sample of (all ten whole, 2026-09-23).",
+ "rest_page_px": [
+  1546.305,
+  3018.205,
+  1567.695,
+  3034.945
+ ],
+ "staff_lines_page_px": [
+  3001,
+  3017,
+  3032,
+  3048,
+  3063
+ ],
+ "ruler_page_px": {
+  "restWhole": 3020.38,
+  "restHalf": 3028.12
+ },
+ "crop_page_px": [
+  1406.805,
+  2861.5,
+  1707.195,
+  3202.5
+ ],
+ "VERDICT_none_yet": null
+}

@@ -126,6 +126,64 @@ def _classify(rec: dict) -> Dict[str, List[dict]]:
     return out
 
 
+#: ROADMAP 2.12b-cal — the three move buckets, and the crop prefix they carry.
+#: ⚠️ A ROW THAT DID NOT MOVE IS NOT CROPPED. The question this pass asks is
+#: not *is the rule right* — 2.12b's pass asked that and Sean answered it —
+#: but *what did the calibration change*, and a crop of an unchanged row
+#: cannot answer it.
+MOVED_PREFIX = "cal"
+MOVE_BUCKETS = {
+    # the 124 the calibration DECIDES that 2.12b narrowed: the rows Sean's
+    # ten are a sample of, and the ONLY bucket in which a value appears
+    (RH.SLOT_OTHER, RH.SLOT_NOT_CONTRADICTED): "other-to-decided",
+    # the 39 the calibration NARROWS that 2.12b refused outright — no value
+    # appears here either, the claim merely gets stronger
+    (RH.SLOT_NEITHER, RH.SLOT_OTHER): "neither-to-other",
+    # ⚠️ AND THE ROWS THAT DID NOT MOVE OUT OF `other`: the ten still standing
+    # below the recalibrated band. They are the new boundary and the next
+    # question for a human, so they are cropped although nothing about them
+    # changed.
+    (RH.SLOT_OTHER, RH.SLOT_OTHER): "still-other",
+}
+
+#: What the CALIBRATED rule does with each move bucket, in the sidecar, so a
+#: reader of one crop does not have to reconstruct it.
+_WHAT_THE_RULE_DOES = {
+    "cal-other-to-decided": (
+        "DECIDE the class's own value — 2.12b NARROWED this row over both "
+        "values and the recalibrated band does not contradict it. ⚠️ THE "
+        "ONLY BUCKET IN WHICH A VALUE APPEARS, and the one Sean's ten "
+        "adjudicated rests are a sample of (all ten whole, 2026-09-23)."),
+    "cal-neither-to-other": (
+        "NARROW over both values — 2.12b ABSTAINED outright. EXPORT refuses "
+        "to argmax a narrowing, so the rest is still held out and counted; "
+        "what changed is the record's claim about it, not the file."),
+    "cal-still-other": (
+        "NARROW over both values, unchanged by the calibration — this row "
+        "stands BELOW the recalibrated band as well. It is the new boundary, "
+        "and it is the next thing a human should look at."),
+}
+
+
+def _nominal_verdicts(rows) -> dict:
+    """2.12b's verdict for every row, from ONE definition of it.
+
+    ⚠️ `readjudicate_b_e._nominal_bands` IS CALLED, NOT COPIED. The retired
+    predicate exists once, in the arm that prices the calibration; a second
+    spelling here would be free to disagree about which rows moved, and the
+    move list is the whole of this pass.
+    """
+    sys.path.insert(0, str(_REPO / "benchmarks" / "omr-shape-role-2026-09"))
+    import readjudicate_b_e                                       # noqa: E402
+    live = RH._rest_slot_verdict
+    try:
+        readjudicate_b_e._nominal_bands()
+        return {r["subject"]: RH._rest_slot_verdict(r["class"], r["step"])
+                for r in rows}
+    finally:
+        RH._rest_slot_verdict = live
+
+
 def _cut(a, rec_path: str, pdf: str, label: str, out_dir: Path) -> dict:
     import fitz
     import numpy as np
@@ -143,10 +201,28 @@ def _cut(a, rec_path: str, pdf: str, label: str, out_dir: Path) -> dict:
              len(groups[RH.SLOT_NOT_CONTRADICTED]),
              len(groups["unmeasurable"]), dpi), flush=True)
 
-    jobs = ([(RH.SLOT_NEITHER, r)
-             for r in _spread(groups[RH.SLOT_NEITHER], a.neither)]
-            + [(RH.SLOT_OTHER, r)
-               for r in _spread(groups[RH.SLOT_OTHER], a.other)])
+    if getattr(a, "moved", False):
+        # ── ROADMAP 2.12b-cal — crop only what the calibration MOVED ────────
+        every = [r for k, v in groups.items() if k != "unmeasurable"
+                 for r in v]
+        was = _nominal_verdicts(every)
+        buckets: Dict[str, List[dict]] = {}
+        for r in every:
+            key = (was.get(r["subject"]), RH._rest_slot_verdict(r["class"],
+                                                                r["step"]))
+            name = MOVE_BUCKETS.get(key)
+            if name:
+                buckets.setdefault(name, []).append(r)
+        print("  moved: %s"
+              % {k: len(v) for k, v in sorted(buckets.items())}, flush=True)
+        jobs = [("%s-%s" % (MOVED_PREFIX, name), r)
+                for name, rows in sorted(buckets.items())
+                for r in _spread(rows, a.moved_each)]
+    else:
+        jobs = ([(RH.SLOT_NEITHER, r)
+                 for r in _spread(groups[RH.SLOT_NEITHER], a.neither)]
+                + [(RH.SLOT_OTHER, r)
+                   for r in _spread(groups[RH.SLOT_OTHER], a.other)])
 
     out_dir.mkdir(parents=True, exist_ok=True)
     doc = fitz.open(pdf)
@@ -243,10 +319,14 @@ def _cut(a, rec_path: str, pdf: str, label: str, out_dir: Path) -> dict:
             "measured_staff_step": round(r["step"], 3),
             "convention": {"restWhole": RH.WHOLE_REST_STEP,
                            "restHalf": RH.HALF_REST_STEP,
-                           "slack_half_steps": RH.REST_SLOT_SLACK,
+                           "tolerance_below_whole_half_steps":
+                               RH.REST_SLOT_TOLERANCE_WHOLE,
+                           "tolerance_above_half_half_steps":
+                               RH.REST_SLOT_TOLERANCE_HALF,
                            "frame": "bottom line 0, one step per half space, "
                                     "up positive"},
-            "what_the_rule_does": (
+            "what_the_rule_does": _WHAT_THE_RULE_DOES.get(
+                bucket,
                 "ABSTAIN `rest_stands_where_no_rest_hangs` — the rest is held "
                 "out of the file and counted"
                 if bucket == RH.SLOT_NEITHER else
@@ -271,6 +351,14 @@ def _cut(a, rec_path: str, pdf: str, label: str, out_dir: Path) -> dict:
         "crops": manifest, "refused": refused,
         "VERDICT_none_yet": None,
         "_readme": (
+            "ROADMAP 2.12b-cal. Every crop here is a row whose verdict the "
+            "RECALIBRATED bands moved, or one still narrowed under them. "
+            "⚠️ NO REST'S DECIDED VALUE CHANGES FROM ONE VALUE TO ANOTHER in "
+            "this pass: the rule never flipped, so a row that gains a value "
+            "gains the CLASS's own reading, and Sean has confirmed that "
+            "reading on ten rows of this same population. "
+            "`VERDICT_none_yet` is null on every crop and on this manifest."
+            if getattr(a, "moved", False) else
             "ROADMAP 2.12b. Twelve rests whose ink stands where NEITHER "
             "convention puts a rest and six the geometry says are the OTHER "
             "kind. `VERDICT_none_yet` is null on every crop and on this "
@@ -279,8 +367,9 @@ def _cut(a, rec_path: str, pdf: str, label: str, out_dir: Path) -> dict:
             "value. A sample is a stride over the subject-sorted population, "
             "not the first N."),
     }
-    (out_dir / ("MANIFEST-%s.json" % label)).write_text(
-        json.dumps(man, indent=1))
+    stem = ("MANIFEST-%s-%s" % (MOVED_PREFIX, label)
+            if getattr(a, "moved", False) else "MANIFEST-%s" % label)
+    (out_dir / (stem + ".json")).write_text(json.dumps(man, indent=1))
     if refused:
         print("  refused: %s" % refused, flush=True)
     return man
@@ -295,6 +384,11 @@ def main() -> int:
                     help="both SCAN documents of the acceptance manifest")
     ap.add_argument("--neither", type=int, default=12)
     ap.add_argument("--other", type=int, default=6)
+    ap.add_argument("--moved", action="store_true",
+                    help="ROADMAP 2.12b-cal: crop only the rows whose verdict "
+                         "the recalibration MOVED, plus the ones still "
+                         "narrowed under it")
+    ap.add_argument("--moved-each", type=int, default=8)
     #: ⚠️ WIDE ENOUGH TO SEE THE BAR. A crop tight on the rectangle shows a
     #: rectangle, and the question Sean is being asked -- *is this a whole
     #: rest, a half rest, or not a rest at all* -- is answered from what is

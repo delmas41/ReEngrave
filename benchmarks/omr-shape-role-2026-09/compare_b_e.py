@@ -23,12 +23,24 @@ _OUT = pathlib.Path(__file__).resolve().parent / "out"
 _LABELS = ("beethoven5-litolff", "brahms1-breitkopf", "beethoven5-engraved")
 
 
+#: ROADMAP 2.12b-cal writes its own pair of files rather than overwriting
+#: 2.12b's, because 2.12b's are the evidence under a merged roadmap line and a
+#: rerun that lands on top of them destroys the thing a later reader would
+#: check the line against. `--prefix cal` reads `cal--<label>--base/arm.json`,
+#: where BASE is 2.12b's nominal bands (`readjudicate_b_e.py --old-bands`) and
+#: ARM is the calibrated ones, both rebuilt on ONE tree.
+_PREFIX = "be"
+
+
 def _load(label: str, arm: str):
-    p = _OUT / ("be--%s--%s.json" % (label, arm))
+    p = _OUT / ("%s--%s--%s.json" % (_PREFIX, label, arm))
     return json.loads(p.read_text()) if p.exists() else None
 
 
 def main() -> int:
+    global _PREFIX
+    if len(sys.argv) > 2 and sys.argv[1] == "--prefix":
+        _PREFIX = sys.argv[2]
     missing = []
     rows = []
     for label in _LABELS:
@@ -45,13 +57,23 @@ def main() -> int:
     print("=== CONTROL — the `--off` rebuild against the record's own "
           "duration verdicts ===")
     for label, b, _a in rows:
-        c = b.get("control") or {}
-        print("  %-20s %d of %d reproduced, %d differ %s   [record %s "
-              "dirty=%s]"
+        c = b.get("control")
+        prov = "[record %s dirty=%s]" % (
+            (b.get("provenance") or {}).get("commit", "?")[:8],
+            (b.get("provenance") or {}).get("dirty"))
+        if not c:
+            # ⚠️ NOT PRINTED AS A ZERO. `--old-bands` (2.12b-cal's base) does
+            # not carry the control, because the control compares a RULE-OFF
+            # rebuild with the record's own verdicts and this base has the
+            # rule on. Saying so beats printing -1 of -1, which reads like a
+            # control that ran and found nothing.
+            print("  %-20s base arm=%s — no control in this arm; run "
+                  "`--control` separately   %s"
+                  % (label, b.get("arm"), prov))
+            continue
+        print("  %-20s %d of %d reproduced, %d differ %s   %s"
               % (label, c.get("reproduced", -1), c.get("on_the_record", -1),
-                 c.get("differ", -1), c.get("kinds") or "",
-                 (b.get("provenance") or {}).get("commit", "?")[:8],
-                 (b.get("provenance") or {}).get("dirty")))
+                 c.get("differ", -1), c.get("kinds") or "", prov))
 
     print()
     print("=== 2.12b — what the slot said about each rest ===")
