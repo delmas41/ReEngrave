@@ -1,6 +1,3 @@
-[brahms1-breitkopf-mvt1-whole-20260923.record.json] POPULATION FIRST: 7818 ledgerLine boxes
-[brahms1-breitkopf-mvt1-whole-20260923.record.json] base (geometry off) ...
-[brahms1-breitkopf-mvt1-whole-20260923.record.json] arm  (geometry on)  ...
 {
  "record": "brahms1-breitkopf-mvt1-whole-20260923.record.json",
  "ledger_boxes_on_the_record": 7818,
@@ -19,6 +16,7 @@
   "arm": 24795
  },
  "glyph_owner_moved": 0,
+ "glyph_owner_moved_named": [],
  "unladdered_signal_base": {
   "ledger_found_hist": {
    "0": 2138,
@@ -135,4 +133,3 @@
  "status_census_arm_unaccounted": [],
  "status_census_arm_balanced": true
 }
-wrote benchmarks/omr-family-refusals-2026-09/out/ledger-arm-brahms1-breitkopf-mvt1-whole-20260923.json

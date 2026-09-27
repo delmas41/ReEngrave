@@ -695,6 +695,14 @@ says the rebuild itself is sound and the two shortfalls are the inputs.
 
 ## §2.12b — A REST'S VALUE COMES FROM THE LINE IT HANGS ON
 
+> ⚠️⚠️ **SUPERSEDED IN ITS NUMBERS BY PART 4 (§2.12b-cal), 2026-09-23.** Sean
+> adjudicated all ten `lands_on_the_other_convention` crops this section cut:
+> **ten of ten are whole rests**, so `REST_SLOT_SLACK = 0.5` — the constant
+> named below — was measuring the convention's nominal line and not these
+> plates. It no longer exists; the bands are measured. Everything in this
+> section about the RULE'S SHAPE (three outcomes, never flips, the mirror
+> `_staff_step`, the `neither` bucket's ownership half) stands unchanged.
+
 ### The change
 
 `_rest_ruling` took a rest's value off its class. C17 says in terms that *the
@@ -1018,3 +1026,199 @@ on the record where none was, so the next lane can price it.
   convention than a centre and nothing here tests whether it separates better.
 * **No LilyPond, no OMR-NED, no scan gate.** The staged path exports MusicXML
   only, and OMR-NED is the engraved control where this lane moves nothing.
+
+---
+
+# PART 4 — §2.12b-cal: THE BANDS CAME FROM THE PLATE
+
+**2026-09-23** · branch `claude/rest-slot-cal-2.12b`, base `dd64da6a` ·
+`tools/omr/staged/adjudicators/rhythm.py`,
+`tools/omr/tests/test_staged_rest_slot_and_flag_direction.py`,
+`docs/engraving-conventions.md` C17,
+`benchmarks/omr-shape-role-2026-09/probe/rest_slot_calibration.py`.
+
+**The fact this item starts from.** Sean adjudicated all ten
+`lands_on_the_other_convention` crops §2.12b cut
+(`out/print/ADJUDICATION-sean-2026-09-23-rests.json`): *"they are all whole
+notes."* **Ten of ten are whole rests — the detector's `restWhole` was right
+10 of 10 and the slot geometry wrong 10 of 10.** Their measured steps run
+4.16–4.713 against a nominal whole-rest slot of 5.5. The rule NARROWED and
+never flipped, so no value was lost; what was wrong was the band.
+
+### How every number in Part 4 was produced
+
+```bash
+python3 benchmarks/omr-shape-role-2026-09/probe/rest_slot_calibration.py --all
+python3 benchmarks/omr-shape-role-2026-09/probe/rest_slot_calibration.py --derive
+python3 benchmarks/omr-shape-role-2026-09/readjudicate_b_e.py <rec> --label <id> --control
+python3 benchmarks/omr-shape-role-2026-09/readjudicate_b_e.py <rec> --label <id> --old-bands --out out/cal--<id>--base.json
+python3 benchmarks/omr-shape-role-2026-09/readjudicate_b_e.py <rec> --label <id>              --out out/cal--<id>--arm.json
+python3 benchmarks/omr-shape-role-2026-09/compare_b_e.py --prefix cal
+python3 benchmarks/omr-shape-role-2026-09/probe/crop_rest_slot.py --record <rec> --pdf <plate> --label <id> --moved
+```
+
+⚠️⚠️ **THE BASE IS §2.12b's NOMINAL BANDS, NOT THE PRE-2.12b NOTHING.** This
+item changes exactly one thing — where the bands come from — so the base it
+must be read against is 2.12b as merged. `readjudicate_b_e.py --old-bands`
+restores that predicate verbatim and both arms are rebuilt on ONE tree
+(CLAUDE.md §6b). `--off` is untouched and answers the other question; §2.12b's
+own `be--*` artefacts are untouched, which is why this pass writes `cal--*`.
+
+⚠️ **THE DERIVATION POPULATION IS PINNED TO THE NOMINAL BANDS AND CANNOT
+WIDEN ITSELF.** `rest_slot_calibration.py` records `verdict_nominal` beside
+`verdict` and the confirmed population is read off the first. Without that
+pin, the moment the calibrated bands land the population grows by the 124 rows
+they newly decide, and a re-run would "confirm" the wider band with the rows
+that band itself admitted.
+
+---
+
+## 1. The measurement — where rests actually hang
+
+Every `restWhole` / `restHalf` box on the three acceptance records, measured
+with `rhythm._staff_step` (CALLED, not copied) against its own staff's
+`Q.STAFF_LINES` and `Q.STAFF_SPACING` in page pixels. Frame: bottom line 0,
+one step per half space, up positive — a whole rest hangs at 5.5, a half rest
+sits at 4.5. **3,918 `restWhole`, 44 `restHalf`, 0 unmeasurable.**
+
+### 1a. Per family, per record — the print-confirmed population
+
+*Confirmed = the class §2.12b's bands do not contradict, standing inside its
+own staff, plus Sean's ten.*
+
+| record | family | n | p1 | p5 | p50 | p95 | p99 |
+|---|---|--:|--:|--:|--:|--:|--:|
+| engraved | `restWhole` | 215 | 5.43 | 5.43 | **5.45** | 5.473 | 5.497 |
+| engraved | `restHalf` | **0** | — | — | — | — | — |
+| Litolff | `restWhole` | 1,329 | 4.76 | 4.94 | **5.52** | 5.964 | 7.09 |
+| Litolff | `restHalf` | **2** | 3.16 | 3.16 | 3.16 | 3.21 | 3.21 |
+| Breitkopf | `restWhole` | 1,715 | 4.855 | 5.036 | **5.32** | 5.93 | 6.94 |
+| Breitkopf | `restHalf` | **0** | — | — | — | — | — |
+| **pooled** | `restWhole` | **3,259** | 4.79 | **5.01** | **5.412** | **5.91** | 7.06 |
+| **pooled** | `restHalf` | **2** | 3.16 | 3.16 | 3.16 | 3.21 | 3.21 |
+
+0.1-step histograms per record and per reference point are in
+`out/rest-slot-cal--<id>.json` (`families.<class>.<population>.histogram_*`).
+
+### 1b. ⚠️⚠️ WHERE THE TWO FAMILIES SEPARATE: NOWHERE, BECAUSE ONE IS EMPTY
+
+The question this item asks — *the gap between the whole-rest distribution's
+upper tail and the half-rest distribution's lower tail* — **has no answer on
+these three documents, and that is the finding.**
+
+* **The half-rest family does not exist here.** The detector says `restHalf`
+  **44 times against 3,918 `restWhole`** (1.1%). Of the 44, **3 stand inside
+  the staff they are filed on**: two on Litolff at steps 3.16 and 3.21, one at
+  7.18. The other 41 are outside their staff — 31 of Breitkopf's 35 at step
+  −7.4, the next staff down through the cell's 4-space pad, which is the
+  ownership finding §2.12b already recorded.
+* **The whole-rest family covers the half-rest slot completely.** Its low tail
+  is a smooth ramp with no second mode and no trough anywhere near 4.5. All
+  `restWhole` rows standing inside a staff, in 0.1-step bins, reading down:
+
+  | step | 4.8 | 4.7 | 4.6 | 4.5 | 4.4 | 4.3 | 4.2 | 4.1 | 4.0 | 3.9 | 3.8 | 3.7 | 3.6 | 3.5 | 3.4 |
+  |---|--:|--:|--:|--:|--:|--:|--:|--:|--:|--:|--:|--:|--:|--:|--:|
+  | n | 51 | 45 | 27 | 23 | 12 | 6 | 11 | 9 | 6 | 4 | 3 | 1 | 6 | 1 | 4 |
+
+  §2.12b's threshold fell at **4.75**, in the middle of that ramp. Sean's ten
+  are a direct sample of the rows below it, and they are the bottom **0.3%**
+  of the whole population's own tail (4.16 at its 0.00-th percentile, 4.713 at
+  its 0.28-th).
+* **The only measured trough is at 3.4–3.9** — bins of 1–6 rows against 23–51
+  just above, a full staff space below the half rest's slot. Nothing has ever
+  been cropped there.
+
+**So the plates show one rest distribution, not two, and any band claiming a
+separation near 4.5 is claiming something the plates do not show.**
+
+### 1c. ⚠️ THE MEASUREMENT POINT WAS CHECKED FIRST, AND IT IS NOT THE FAULT
+
+A whole rest HANGS (top edge on the 4th line) and a half rest SITS (bottom
+edge on the 3rd), so a box CENTRE is the right reading only where the box is
+exactly one step tall. `_staff_step` reads the centre. Measured at all three
+reference points on the confirmed population:
+
+| record | height p50 | centre p50 | top p50 | bottom p50 | p5–p95 span: centre / top / bottom |
+|---|--:|--:|--:|--:|---|
+| engraved | 0.98 | 5.45 | **5.94** | 4.96 | 0.04 / 0.05 / 0.10 |
+| Litolff | 1.32 | 5.52 | 6.16 | 4.897 | 1.02 / 1.14 / **0.98** |
+| Breitkopf | 0.98 | 5.32 | 5.80 | 4.82 | 0.89 / 1.08 / **0.84** |
+
+* **The convention is confirmed exactly on the engraved control**: box height
+  0.98 steps, top edge 5.94 — the 4th line — bottom edge 4.96, centre 5.45.
+  The nominal 5.5 is right to within 0.05 of a step.
+* **The bottom edge is the tightest reading on both scans**, by 0.04 and 0.05
+  of a step, and the height column says why: Litolff's boxes run 1.32 steps
+  where the glyph is 1.0, and the extra height goes on at the TOP (top edge
+  0.22 above the engraved one, bottom edge 0.06 below) — the rest touches its
+  line and the merging plate takes the box up with it.
+* **But that is a 0.05-step effect against a 1.0-step error.** Sean's ten sit
+  a full step low at EVERY reference point: their top edges (4.50–5.32) are
+  where an ordinary whole rest's BOTTOM edge is (4.82–4.90). No choice of
+  reference point decides them.
+
+**⇒ The fix is the BAND, not the reference point.** `_staff_step` is
+unchanged, and the mirror rule `adjudicate_notehead_is_a_whole_rest`, which
+shares it, is untouched.
+
+---
+
+## 2. The change
+
+`REST_SLOT_SLACK = 0.5` — half the gap between the two slots, a statement
+about the convention — is replaced by two named tolerances, and each class's
+band is bounded **only on the side the other convention lies on**:
+
+| constant | value | measured? |
+|---|--:|---|
+| `WHOLE_REST_STEP` | 5.5 | the convention, confirmed by the engraved control at 5.45 — **unchanged** |
+| `HALF_REST_STEP` | 4.5 | DERIVED from it, never typed — **unchanged** |
+| `REST_SLOT_TOLERANCE_WHOLE` | **1.35** | **MEASURED HERE** — 5.5 − 4.16, the lowest rest a musician confirmed off the print, rounded out to the next 0.05 |
+| `REST_SLOT_TOLERANCE_HALF` | 0.5 | **NOT MEASURED** — the convention's own midpoint, kept because 3 half rests inside a staff is nothing to measure on, and a SEPARATE constant so the record can say which is which |
+
+For a `restWhole`: **DECIDED** at step ≥ 4.15, **NARROWED** over both values at
+3.15 ≤ step < 4.15, **ABSTAINED** `rest_stands_where_no_rest_hangs` below 3.15.
+For a `restHalf`, the mirror about its own slot: DECIDED at ≤ 5.0, NARROWED at
+5.0 < step ≤ 6.85, ABSTAINED above. Three outcomes, as before, and **no value
+is ever flipped** — a row that gains a value gains the CLASS's own reading.
+
+### ⚠️ Why the band is NOT the pooled p5/p95, which the item asked for
+
+A ±(p95 − p5)/2 band is **±0.45** — the nominal 0.5 back again — and it
+contradicts ten of ten rests a musician read off the plate. **The dispersion
+of the BULK is not the extent of the POPULATION**: on a scan, warp and
+multi-voice displacement move individual rests and not the median, so the TAIL
+is the thing being measured. The p5/p95 numbers are reported in §1a and
+refused as the band's source, with the reason.
+
+### ⚠️ Why the tolerance sits BELOW its own plateau
+
+Sweeping the lower edge over the whole `restWhole` population:
+
+| tolerance | lower edge | decided | narrowed | abstained |
+|--:|--:|--:|--:|--:|
+| 1.25 | 4.25 | 3,475 | 47 | 396 |
+| **1.35** | **4.15** | **3,484** | **49** | **385** |
+| 1.50 | 4.00 | 3,494 | 59 | 365 |
+| 1.60 | 3.90 | 3,500 | **68** | 350 |
+| 1.70 | 3.80 | 3,505 | **68** | 345 |
+| 1.80 | 3.70 | 3,506 | **68** | 344 |
+| 1.90 | 3.60 | 3,509 | **68** | 341 |
+| 2.00 | 3.50 | 3,513 | 65 | 340 |
+
+The narrowed count is flat at **68 for a tolerance of 1.60–1.90** — the
+measured 3.4–3.9 trough. **1.35 is deliberately under that plateau.** A band at
+1.90 would DECIDE **25 more rows** that nobody has looked at, which is a
+default flipped on agreement with our own reading (CLAUDE.md §2 rule 5); a
+narrower band narrows instead, and a narrowing loses nothing because EXPORT
+refuses to argmax one.
+
+### ⚠️ Why neither band has an edge on its far side
+
+There is no third rest convention above the whole rest's slot or below the
+half rest's, so ink there is DISPLACED, not AMBIGUOUS — and displacement is
+`glyph_owner`'s contest, not this decision's. **111 of the print-confirmed
+rests stand outside their own staff altogether.** An upper edge on the whole
+band would convert **2–3% of a print-confirmed population into abstentions**
+(68 rows above 6.66, 41 above 7.0) to answer a question nothing asked. This is
+a convention argument, not a tolerance choice, and a test pins it.

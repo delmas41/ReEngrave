@@ -1,0 +1,781 @@
+{
+ "label": "beethoven5-litolff",
+ "record": "/Users/seanjohnson/Desktop/ReEngrave/library/_shared-records/beethoven5-litolff-mvt1-whole-20260923.record.json",
+ "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf",
+ "dpi": 600,
+ "provenance": {
+  "commit": "dbc9962b641e0259763efb45acc204e4e78ffd55",
+  "dirty": true
+ },
+ "population": {
+  "lands_on_neither_convention": 171,
+  "lands_on_the_other_convention": 37,
+  "class_not_contradicted": 1434,
+  "unmeasurable": 0
+ },
+ "crops": [
+  {
+   "png": "beethoven5-litolff-p10-s0-st1-c0-g3-cal-neither-to-other.png",
+   "caption": "beethoven5-litolff page 10, system 0, staff 1, bar-cell 0 \u2014 the detector called this rectangle `restWhole`. Measured against this staff's own lines its centre stands at step 3.65, where a whole rest hangs at 5.5 (BLUE dashes) and a half rest sits at 4.5 (ORANGE dashes). The rule says cal-neither-to-other. GREEN = the five Q.STAFF_LINES; RED corner bracket = the rest itself. QUESTION FOR SEAN: against the print, is this a whole rest, a half rest, or not a rest at all?",
+   "subject": "glyph/10/0/1/0/3",
+   "bucket": "cal-neither-to-other",
+   "page": 10,
+   "dpi": 600,
+   "zoom": 4,
+   "frame_control": {
+    "passed": true,
+    "contrast": 41.41
+   },
+   "detector_class": "restWhole",
+   "measured_staff_step": 3.65,
+   "convention": {
+    "restWhole": 5.5,
+    "restHalf": 4.5,
+    "tolerance_below_whole_half_steps": 1.35,
+    "tolerance_above_half_half_steps": 0.5,
+    "frame": "bottom line 0, one step per half space, up positive"
+   },
+   "what_the_rule_does": "NARROW over both values \u2014 2.12b ABSTAINED outright. EXPORT refuses to argmax a narrowing, so the rest is still held out and counted; what changed is the record's claim about it, not the file.",
+   "rest_page_px": [
+    558.2950000000001,
+    588.61,
+    580.975,
+    597.9025
+   ],
+   "staff_lines_page_px": [
+    559,
+    573,
+    590,
+    605,
+    622
+   ],
+   "ruler_page_px": {
+    "restWhole": 578.69,
+    "restHalf": 586.56
+   },
+   "crop_page_px": [
+    416.5450000000001,
+    417.25,
+    722.725,
+    763.75
+   ],
+   "VERDICT_none_yet": null
+  },
+  {
+   "png": "beethoven5-litolff-p16-s1-st10-c4-g2-cal-neither-to-other.png",
+   "caption": "beethoven5-litolff page 16, system 1, staff 10, bar-cell 4 \u2014 the detector called this rectangle `restWhole`. Measured against this staff's own lines its centre stands at step 3.29, where a whole rest hangs at 5.5 (BLUE dashes) and a half rest sits at 4.5 (ORANGE dashes). The rule says cal-neither-to-other. GREEN = the five Q.STAFF_LINES; RED corner bracket = the rest itself. QUESTION FOR SEAN: against the print, is this a whole rest, a half rest, or not a rest at all?",
+   "subject": "glyph/16/1/10/4/2",
+   "bucket": "cal-neither-to-other",
+   "page": 16,
+   "dpi": 600,
+   "zoom": 4,
+   "frame_control": {
+    "passed": true,
+    "contrast": 123.19
+   },
+   "detector_class": "restWhole",
+   "measured_staff_step": 3.29,
+   "convention": {
+    "restWhole": 5.5,
+    "restHalf": 4.5,
+    "tolerance_below_whole_half_steps": 1.35,
+    "tolerance_above_half_half_steps": 0.5,
+    "frame": "bottom line 0, one step per half space, up positive"
+   },
+   "what_the_rule_does": "NARROW over both values \u2014 2.12b ABSTAINED outright. EXPORT refuses to argmax a narrowing, so the rest is still held out and counted; what changed is the record's claim about it, not the file.",
+   "rest_page_px": [
+    1039.48,
+    3558.2,
+    1062.04,
+    3571.16
+   ],
+   "staff_lines_page_px": [
+    3527,
+    3543,
+    3559,
+    3574,
+    3591
+   ],
+   "ruler_page_px": {
+    "restWhole": 3547.0,
+    "restHalf": 3555.0
+   },
+   "crop_page_px": [
+    895.48,
+    3383.0,
+    1206.04,
+    3735.0
+   ],
+   "VERDICT_none_yet": null
+  },
+  {
+   "png": "beethoven5-litolff-p6-s0-st7-c9-g5-cal-neither-to-other.png",
+   "caption": "beethoven5-litolff page 6, system 0, staff 7, bar-cell 9 \u2014 the detector called this rectangle `restWhole`. Measured against this staff's own lines its centre stands at step 3.34, where a whole rest hangs at 5.5 (BLUE dashes) and a half rest sits at 4.5 (ORANGE dashes). The rule says cal-neither-to-other. GREEN = the five Q.STAFF_LINES; RED corner bracket = the rest itself. QUESTION FOR SEAN: against the print, is this a whole rest, a half rest, or not a rest at all?",
+   "subject": "glyph/6/0/7/9/5",
+   "bucket": "cal-neither-to-other",
+   "page": 6,
+   "dpi": 600,
+   "zoom": 4,
+   "frame_control": {
+    "passed": true,
+    "contrast": 195.14
+   },
+   "detector_class": "restWhole",
+   "measured_staff_step": 3.34,
+   "convention": {
+    "restWhole": 5.5,
+    "restHalf": 4.5,
+    "tolerance_below_whole_half_steps": 1.35,
+    "tolerance_above_half_half_steps": 0.5,
+    "frame": "bottom line 0, one step per half space, up positive"
+   },
+   "what_the_rule_does": "NARROW over both values \u2014 2.12b ABSTAINED outright. EXPORT refuses to argmax a narrowing, so the rest is still held out and counted; what changed is the record's claim about it, not the file.",
+   "rest_page_px": [
+    2015.7575,
+    1474.35,
+    2038.28,
+    1491.045
+   ],
+   "staff_lines_page_px": [
+    1446,
+    1461,
+    1477,
+    1493,
+    1509
+   ],
+   "ruler_page_px": {
+    "restWhole": 1465.69,
+    "restHalf": 1473.56
+   },
+   "crop_page_px": [
+    1874.0075,
+    1304.25,
+    2180.0299999999997,
+    1650.75
+   ],
+   "VERDICT_none_yet": null
+  },
+  {
+   "png": "beethoven5-litolff-p7-s1-st8-c5-g6-cal-neither-to-other.png",
+   "caption": "beethoven5-litolff page 7, system 1, staff 8, bar-cell 5 \u2014 the detector called this rectangle `restWhole`. Measured against this staff's own lines its centre stands at step 3.89, where a whole rest hangs at 5.5 (BLUE dashes) and a half rest sits at 4.5 (ORANGE dashes). The rule says cal-neither-to-other. GREEN = the five Q.STAFF_LINES; RED corner bracket = the rest itself. QUESTION FOR SEAN: against the print, is this a whole rest, a half rest, or not a rest at all?",
+   "subject": "glyph/7/1/8/5/6",
+   "bucket": "cal-neither-to-other",
+   "page": 7,
+   "dpi": 600,
+   "zoom": 4,
+   "frame_control": {
+    "passed": true,
+    "contrast": 227.11
+   },
+   "detector_class": "restWhole",
+   "measured_staff_step": 3.89,
+   "convention": {
+    "restWhole": 5.5,
+    "restHalf": 4.5,
+    "tolerance_below_whole_half_steps": 1.35,
+    "tolerance_above_half_half_steps": 0.5,
+    "frame": "bottom line 0, one step per half space, up positive"
+   },
+   "what_the_rule_does": "NARROW over both values \u2014 2.12b ABSTAINED outright. EXPORT refuses to argmax a narrowing, so the rest is still held out and counted; what changed is the record's claim about it, not the file.",
+   "rest_page_px": [
+    1270.825,
+    3232.35,
+    1306.7350000000001,
+    3240.3825
+   ],
+   "staff_lines_page_px": [
+    3204,
+    3220,
+    3235,
+    3251,
+    3267
+   ],
+   "ruler_page_px": {
+    "restWhole": 3223.69,
+    "restHalf": 3231.56
+   },
+   "crop_page_px": [
+    1129.075,
+    3062.25,
+    1448.4850000000001,
+    3408.75
+   ],
+   "VERDICT_none_yet": null
+  },
+  {
+   "png": "beethoven5-litolff-p1-s0-st11-c10-g3-cal-other-to-decided.png",
+   "caption": "beethoven5-litolff page 1, system 0, staff 11, bar-cell 10 \u2014 the detector called this rectangle `restWhole`. Measured against this staff's own lines its centre stands at step 4.16, where a whole rest hangs at 5.5 (BLUE dashes) and a half rest sits at 4.5 (ORANGE dashes). The rule says cal-other-to-decided. GREEN = the five Q.STAFF_LINES; RED corner bracket = the rest itself. QUESTION FOR SEAN: against the print, is this a whole rest, a half rest, or not a rest at all?",
+   "subject": "glyph/1/0/11/10/3",
+   "bucket": "cal-other-to-decided",
+   "page": 1,
+   "dpi": 600,
+   "zoom": 4,
+   "frame_control": {
+    "passed": true,
+    "contrast": 195.21
+   },
+   "detector_class": "restWhole",
+   "measured_staff_step": 4.16,
+   "convention": {
+    "restWhole": 5.5,
+    "restHalf": 4.5,
+    "tolerance_below_whole_half_steps": 1.35,
+    "tolerance_above_half_half_steps": 0.5,
+    "frame": "bottom line 0, one step per half space, up positive"
+   },
+   "what_the_rule_does": "DECIDE the class's own value \u2014 2.12b NARROWED this row over both values and the recalibrated band does not contradict it. \u26a0\ufe0f THE ONLY BUCKET IN WHICH A VALUE APPEARS, and the one Sean's ten adjudicated rests are a sample of (all ten whole, 2026-09-23).",
+   "rest_page_px": [
+    1906.0,
+    3117.0,
+    2038.16,
+    3122.44
+   ],
+   "staff_lines_page_px": [
+    3089,
+    3105,
+    3121,
+    3137,
+    3153
+   ],
+   "ruler_page_px": {
+    "restWhole": 3109.0,
+    "restHalf": 3117.0
+   },
+   "crop_page_px": [
+    1762.0,
+    2945.0,
+    2182.16,
+    3297.0
+   ],
+   "VERDICT_none_yet": null
+  },
+  {
+   "png": "beethoven5-litolff-p12-s0-st4-c2-g1-cal-other-to-decided.png",
+   "caption": "beethoven5-litolff page 12, system 0, staff 4, bar-cell 2 \u2014 the detector called this rectangle `restWhole`. Measured against this staff's own lines its centre stands at step 4.47, where a whole rest hangs at 5.5 (BLUE dashes) and a half rest sits at 4.5 (ORANGE dashes). The rule says cal-other-to-decided. GREEN = the five Q.STAFF_LINES; RED corner bracket = the rest itself. QUESTION FOR SEAN: against the print, is this a whole rest, a half rest, or not a rest at all?",
+   "subject": "glyph/12/0/4/2/1",
+   "bucket": "cal-other-to-decided",
+   "page": 12,
+   "dpi": 600,
+   "zoom": 4,
+   "frame_control": {
+    "passed": true,
+    "contrast": 30.94
+   },
+   "detector_class": "restWhole",
+   "measured_staff_step": 4.47,
+   "convention": {
+    "restWhole": 5.5,
+    "restHalf": 4.5,
+    "tolerance_below_whole_half_steps": 1.35,
+    "tolerance_above_half_half_steps": 0.5,
+    "frame": "bottom line 0, one step per half space, up positive"
+   },
+   "what_the_rule_does": "DECIDE the class's own value \u2014 2.12b NARROWED this row over both values and the recalibrated band does not contradict it. \u26a0\ufe0f THE ONLY BUCKET IN WHICH A VALUE APPEARS, and the one Sean's ten adjudicated rests are a sample of (all ten whole, 2026-09-23).",
+   "rest_page_px": [
+    818.2825,
+    1005.1525,
+    840.175,
+    1014.445
+   ],
+   "staff_lines_page_px": [
+    982,
+    998,
+    1013,
+    1029,
+    1045
+   ],
+   "ruler_page_px": {
+    "restWhole": 1001.69,
+    "restHalf": 1009.56
+   },
+   "crop_page_px": [
+    676.5325,
+    840.25,
+    981.925,
+    1186.75
+   ],
+   "VERDICT_none_yet": null
+  },
+  {
+   "png": "beethoven5-litolff-p14-s0-st1-c5-g0-cal-other-to-decided.png",
+   "caption": "beethoven5-litolff page 14, system 0, staff 1, bar-cell 5 \u2014 the detector called this rectangle `restWhole`. Measured against this staff's own lines its centre stands at step 4.64, where a whole rest hangs at 5.5 (BLUE dashes) and a half rest sits at 4.5 (ORANGE dashes). The rule says cal-other-to-decided. GREEN = the five Q.STAFF_LINES; RED corner bracket = the rest itself. QUESTION FOR SEAN: against the print, is this a whole rest, a half rest, or not a rest at all?",
+   "subject": "glyph/14/0/1/5/0",
+   "bucket": "cal-other-to-decided",
+   "page": 14,
+   "dpi": 600,
+   "zoom": 4,
+   "frame_control": {
+    "passed": true,
+    "contrast": 49.62
+   },
+   "detector_class": "restWhole",
+   "measured_staff_step": 4.64,
+   "convention": {
+    "restWhole": 5.5,
+    "restHalf": 4.5,
+    "tolerance_below_whole_half_steps": 1.35,
+    "tolerance_above_half_half_steps": 0.5,
+    "frame": "bottom line 0, one step per half space, up positive"
+   },
+   "what_the_rule_does": "DECIDE the class's own value \u2014 2.12b NARROWED this row over both values and the recalibrated band does not contradict it. \u26a0\ufe0f THE ONLY BUCKET IN WHICH A VALUE APPEARS, and the one Sean's ten adjudicated rests are a sample of (all ten whole, 2026-09-23).",
+   "rest_page_px": [
+    1217.105,
+    572.5775,
+    1239.785,
+    582.3425
+   ],
+   "staff_lines_page_px": [
+    551,
+    567,
+    583,
+    596,
+    614
+   ],
+   "ruler_page_px": {
+    "restWhole": 570.69,
+    "restHalf": 578.56
+   },
+   "crop_page_px": [
+    1075.355,
+    409.25,
+    1381.535,
+    755.75
+   ],
+   "VERDICT_none_yet": null
+  },
+  {
+   "png": "beethoven5-litolff-p14-s0-st6-c2-g2-cal-other-to-decided.png",
+   "caption": "beethoven5-litolff page 14, system 0, staff 6, bar-cell 2 \u2014 the detector called this rectangle `restWhole`. Measured against this staff's own lines its centre stands at step 4.48, where a whole rest hangs at 5.5 (BLUE dashes) and a half rest sits at 4.5 (ORANGE dashes). The rule says cal-other-to-decided. GREEN = the five Q.STAFF_LINES; RED corner bracket = the rest itself. QUESTION FOR SEAN: against the print, is this a whole rest, a half rest, or not a rest at all?",
+   "subject": "glyph/14/0/6/2/2",
+   "bucket": "cal-other-to-decided",
+   "page": 14,
+   "dpi": 600,
+   "zoom": 4,
+   "frame_control": {
+    "passed": true,
+    "contrast": 48.42
+   },
+   "detector_class": "restWhole",
+   "measured_staff_step": 4.48,
+   "convention": {
+    "restWhole": 5.5,
+    "restHalf": 4.5,
+    "tolerance_below_whole_half_steps": 1.35,
+    "tolerance_above_half_half_steps": 0.5,
+    "frame": "bottom line 0, one step per half space, up positive"
+   },
+   "what_the_rule_does": "DECIDE the class's own value \u2014 2.12b NARROWED this row over both values and the recalibrated band does not contradict it. \u26a0\ufe0f THE ONLY BUCKET IN WHICH A VALUE APPEARS, and the one Sean's ten adjudicated rests are a sample of (all ten whole, 2026-09-23).",
+   "rest_page_px": [
+    799.975,
+    1256.31,
+    823.1275,
+    1265.13
+   ],
+   "staff_lines_page_px": [
+    1233,
+    1249,
+    1265,
+    1280,
+    1296
+   ],
+   "ruler_page_px": {
+    "restWhole": 1252.69,
+    "restHalf": 1260.56
+   },
+   "crop_page_px": [
+    658.225,
+    1091.25,
+    964.8775,
+    1437.75
+   ],
+   "VERDICT_none_yet": null
+  },
+  {
+   "png": "beethoven5-litolff-p2-s0-st6-c0-g2-cal-other-to-decided.png",
+   "caption": "beethoven5-litolff page 2, system 0, staff 6, bar-cell 0 \u2014 the detector called this rectangle `restWhole`. Measured against this staff's own lines its centre stands at step 4.18, where a whole rest hangs at 5.5 (BLUE dashes) and a half rest sits at 4.5 (ORANGE dashes). The rule says cal-other-to-decided. GREEN = the five Q.STAFF_LINES; RED corner bracket = the rest itself. QUESTION FOR SEAN: against the print, is this a whole rest, a half rest, or not a rest at all?",
+   "subject": "glyph/2/0/6/0/2",
+   "bucket": "cal-other-to-decided",
+   "page": 2,
+   "dpi": 600,
+   "zoom": 4,
+   "frame_control": {
+    "passed": true,
+    "contrast": 29.67
+   },
+   "detector_class": "restWhole",
+   "measured_staff_step": 4.18,
+   "convention": {
+    "restWhole": 5.5,
+    "restHalf": 4.5,
+    "tolerance_below_whole_half_steps": 1.35,
+    "tolerance_above_half_half_steps": 0.5,
+    "frame": "bottom line 0, one step per half space, up positive"
+   },
+   "what_the_rule_does": "DECIDE the class's own value \u2014 2.12b NARROWED this row over both values and the recalibrated band does not contradict it. \u26a0\ufe0f THE ONLY BUCKET IN WHICH A VALUE APPEARS, and the one Sean's ten adjudicated rests are a sample of (all ten whole, 2026-09-23).",
+   "rest_page_px": [
+    543.04,
+    1299.76,
+    565.92,
+    1309.36
+   ],
+   "staff_lines_page_px": [
+    1274,
+    1290,
+    1306,
+    1322,
+    1338
+   ],
+   "ruler_page_px": {
+    "restWhole": 1294.0,
+    "restHalf": 1302.0
+   },
+   "crop_page_px": [
+    399.03999999999996,
+    1130.0,
+    709.92,
+    1482.0
+   ],
+   "VERDICT_none_yet": null
+  },
+  {
+   "png": "beethoven5-litolff-p3-s1-st4-c8-g8-cal-other-to-decided.png",
+   "caption": "beethoven5-litolff page 3, system 1, staff 4, bar-cell 8 \u2014 the detector called this rectangle `restWhole`. Measured against this staff's own lines its centre stands at step 4.70, where a whole rest hangs at 5.5 (BLUE dashes) and a half rest sits at 4.5 (ORANGE dashes). The rule says cal-other-to-decided. GREEN = the five Q.STAFF_LINES; RED corner bracket = the rest itself. QUESTION FOR SEAN: against the print, is this a whole rest, a half rest, or not a rest at all?",
+   "subject": "glyph/3/1/4/8/8",
+   "bucket": "cal-other-to-decided",
+   "page": 3,
+   "dpi": 600,
+   "zoom": 4,
+   "frame_control": {
+    "passed": true,
+    "contrast": 69.48
+   },
+   "detector_class": "restWhole",
+   "measured_staff_step": 4.7,
+   "convention": {
+    "restWhole": 5.5,
+    "restHalf": 4.5,
+    "tolerance_below_whole_half_steps": 1.35,
+    "tolerance_above_half_half_steps": 0.5,
+    "frame": "bottom line 0, one step per half space, up positive"
+   },
+   "what_the_rule_does": "DECIDE the class's own value \u2014 2.12b NARROWED this row over both values and the recalibrated band does not contradict it. \u26a0\ufe0f THE ONLY BUCKET IN WHICH A VALUE APPEARS, and the one Sean's ten adjudicated rests are a sample of (all ten whole, 2026-09-23).",
+   "rest_page_px": [
+    1546.305,
+    3018.205,
+    1567.695,
+    3034.945
+   ],
+   "staff_lines_page_px": [
+    3001,
+    3017,
+    3032,
+    3048,
+    3063
+   ],
+   "ruler_page_px": {
+    "restWhole": 3020.38,
+    "restHalf": 3028.12
+   },
+   "crop_page_px": [
+    1406.805,
+    2861.5,
+    1707.195,
+    3202.5
+   ],
+   "VERDICT_none_yet": null
+  },
+  {
+   "png": "beethoven5-litolff-p9-s0-st0-c9-g2-cal-other-to-decided.png",
+   "caption": "beethoven5-litolff page 9, system 0, staff 0, bar-cell 9 \u2014 the detector called this rectangle `restWhole`. Measured against this staff's own lines its centre stands at step 4.74, where a whole rest hangs at 5.5 (BLUE dashes) and a half rest sits at 4.5 (ORANGE dashes). The rule says cal-other-to-decided. GREEN = the five Q.STAFF_LINES; RED corner bracket = the rest itself. QUESTION FOR SEAN: against the print, is this a whole rest, a half rest, or not a rest at all?",
+   "subject": "glyph/9/0/0/9/2",
+   "bucket": "cal-other-to-decided",
+   "page": 9,
+   "dpi": 600,
+   "zoom": 4,
+   "frame_control": {
+    "passed": true,
+    "contrast": 33.84
+   },
+   "detector_class": "restWhole",
+   "measured_staff_step": 4.737,
+   "convention": {
+    "restWhole": 5.5,
+    "restHalf": 4.5,
+    "tolerance_below_whole_half_steps": 1.35,
+    "tolerance_above_half_half_steps": 0.5,
+    "frame": "bottom line 0, one step per half space, up positive"
+   },
+   "what_the_rule_does": "DECIDE the class's own value \u2014 2.12b NARROWED this row over both values and the recalibrated band does not contradict it. \u26a0\ufe0f THE ONLY BUCKET IN WHICH A VALUE APPEARS, and the one Sean's ten adjudicated rests are a sample of (all ten whole, 2026-09-23).",
+   "rest_page_px": [
+    1847.1875,
+    432.03,
+    1870.655,
+    443.37
+   ],
+   "staff_lines_page_px": [
+    412,
+    427,
+    444,
+    459,
+    475
+   ],
+   "ruler_page_px": {
+    "restWhole": 431.69,
+    "restHalf": 439.56
+   },
+   "crop_page_px": [
+    1705.4375,
+    270.25,
+    2012.405,
+    616.75
+   ],
+   "VERDICT_none_yet": null
+  },
+  {
+   "png": "beethoven5-litolff-p10-s0-st2-c0-g1-cal-still-other.png",
+   "caption": "beethoven5-litolff page 10, system 0, staff 2, bar-cell 0 \u2014 the detector called this rectangle `restWhole`. Measured against this staff's own lines its centre stands at step 4.14, where a whole rest hangs at 5.5 (BLUE dashes) and a half rest sits at 4.5 (ORANGE dashes). The rule says cal-still-other. GREEN = the five Q.STAFF_LINES; RED corner bracket = the rest itself. QUESTION FOR SEAN: against the print, is this a whole rest, a half rest, or not a rest at all?",
+   "subject": "glyph/10/0/2/0/1",
+   "bucket": "cal-still-other",
+   "page": 10,
+   "dpi": 600,
+   "zoom": 4,
+   "frame_control": {
+    "passed": true,
+    "contrast": 24.63
+   },
+   "detector_class": "restWhole",
+   "measured_staff_step": 4.14,
+   "convention": {
+    "restWhole": 5.5,
+    "restHalf": 4.5,
+    "tolerance_below_whole_half_steps": 1.35,
+    "tolerance_above_half_half_steps": 0.5,
+    "frame": "bottom line 0, one step per half space, up positive"
+   },
+   "what_the_rule_does": "NARROW over both values, unchanged by the calibration \u2014 this row stands BELOW the recalibrated band as well. It is the new boundary, and it is the next thing a human should look at.",
+   "rest_page_px": [
+    557.98,
+    736.46,
+    580.975,
+    744.335
+   ],
+   "staff_lines_page_px": [
+    710,
+    726,
+    742,
+    758,
+    773
+   ],
+   "ruler_page_px": {
+    "restWhole": 729.69,
+    "restHalf": 737.56
+   },
+   "crop_page_px": [
+    416.23,
+    568.25,
+    722.725,
+    914.75
+   ],
+   "VERDICT_none_yet": null
+  },
+  {
+   "png": "beethoven5-litolff-p14-s0-st1-c0-g3-cal-still-other.png",
+   "caption": "beethoven5-litolff page 14, system 0, staff 1, bar-cell 0 \u2014 the detector called this rectangle `restWhole`. Measured against this staff's own lines its centre stands at step 4.12, where a whole rest hangs at 5.5 (BLUE dashes) and a half rest sits at 4.5 (ORANGE dashes). The rule says cal-still-other. GREEN = the five Q.STAFF_LINES; RED corner bracket = the rest itself. QUESTION FOR SEAN: against the print, is this a whole rest, a half rest, or not a rest at all?",
+   "subject": "glyph/14/0/1/0/3",
+   "bucket": "cal-still-other",
+   "page": 14,
+   "dpi": 600,
+   "zoom": 4,
+   "frame_control": {
+    "passed": true,
+    "contrast": 49.62
+   },
+   "detector_class": "restWhole",
+   "measured_staff_step": 4.12,
+   "convention": {
+    "restWhole": 5.5,
+    "restHalf": 4.5,
+    "tolerance_below_whole_half_steps": 1.35,
+    "tolerance_above_half_half_steps": 0.5,
+    "frame": "bottom line 0, one step per half space, up positive"
+   },
+   "what_the_rule_does": "NARROW over both values, unchanged by the calibration \u2014 this row stands BELOW the recalibrated band as well. It is the new boundary, and it is the next thing a human should look at.",
+   "rest_page_px": [
+    562.9725000000001,
+    575.885,
+    586.2825,
+    587.225
+   ],
+   "staff_lines_page_px": [
+    551,
+    567,
+    583,
+    596,
+    614
+   ],
+   "ruler_page_px": {
+    "restWhole": 570.69,
+    "restHalf": 578.56
+   },
+   "crop_page_px": [
+    421.2225000000001,
+    409.25,
+    728.0325,
+    755.75
+   ],
+   "VERDICT_none_yet": null
+  },
+  {
+   "png": "beethoven5-litolff-p2-s0-st1-c2-g9-cal-still-other.png",
+   "caption": "beethoven5-litolff page 2, system 0, staff 1, bar-cell 2 \u2014 the detector called this rectangle `restWhole`. Measured against this staff's own lines its centre stands at step 4.13, where a whole rest hangs at 5.5 (BLUE dashes) and a half rest sits at 4.5 (ORANGE dashes). The rule says cal-still-other. GREEN = the five Q.STAFF_LINES; RED corner bracket = the rest itself. QUESTION FOR SEAN: against the print, is this a whole rest, a half rest, or not a rest at all?",
+   "subject": "glyph/2/0/1/2/9",
+   "bucket": "cal-still-other",
+   "page": 2,
+   "dpi": 600,
+   "zoom": 4,
+   "frame_control": {
+    "passed": true,
+    "contrast": 116.96
+   },
+   "detector_class": "restWhole",
+   "measured_staff_step": 4.13,
+   "convention": {
+    "restWhole": 5.5,
+    "restHalf": 4.5,
+    "tolerance_below_whole_half_steps": 1.35,
+    "tolerance_above_half_half_steps": 0.5,
+    "frame": "bottom line 0, one step per half space, up positive"
+   },
+   "what_the_rule_does": "NARROW over both values, unchanged by the calibration \u2014 this row stands BELOW the recalibrated band as well. It is the new boundary, and it is the next thing a human should look at.",
+   "rest_page_px": [
+    890.385,
+    570.735,
+    915.1125,
+    588.2175
+   ],
+   "staff_lines_page_px": [
+    549,
+    565,
+    581,
+    596,
+    612
+   ],
+   "ruler_page_px": {
+    "restWhole": 568.69,
+    "restHalf": 576.56
+   },
+   "crop_page_px": [
+    748.635,
+    407.25,
+    1056.8625,
+    753.75
+   ],
+   "VERDICT_none_yet": null
+  },
+  {
+   "png": "beethoven5-litolff-p8-s0-st1-c0-g6-cal-still-other.png",
+   "caption": "beethoven5-litolff page 8, system 0, staff 1, bar-cell 0 \u2014 the detector called this rectangle `restWhole`. Measured against this staff's own lines its centre stands at step 4.13, where a whole rest hangs at 5.5 (BLUE dashes) and a half rest sits at 4.5 (ORANGE dashes). The rule says cal-still-other. GREEN = the five Q.STAFF_LINES; RED corner bracket = the rest itself. QUESTION FOR SEAN: against the print, is this a whole rest, a half rest, or not a rest at all?",
+   "subject": "glyph/8/0/1/0/6",
+   "bucket": "cal-still-other",
+   "page": 8,
+   "dpi": 600,
+   "zoom": 4,
+   "frame_control": {
+    "passed": true,
+    "contrast": 61.99
+   },
+   "detector_class": "restWhole",
+   "measured_staff_step": 4.13,
+   "convention": {
+    "restWhole": 5.5,
+    "restHalf": 4.5,
+    "tolerance_below_whole_half_steps": 1.35,
+    "tolerance_above_half_half_steps": 0.5,
+    "frame": "bottom line 0, one step per half space, up positive"
+   },
+   "what_the_rule_does": "NARROW over both values, unchanged by the calibration \u2014 this row stands BELOW the recalibrated band as well. It is the new boundary, and it is the next thing a human should look at.",
+   "rest_page_px": [
+    518.3125,
+    603.6175000000001,
+    540.9925000000001,
+    611.335
+   ],
+   "staff_lines_page_px": [
+    577,
+    593,
+    609,
+    624,
+    640
+   ],
+   "ruler_page_px": {
+    "restWhole": 596.69,
+    "restHalf": 604.56
+   },
+   "crop_page_px": [
+    376.5625,
+    435.25,
+    682.7425000000001,
+    781.75
+   ],
+   "VERDICT_none_yet": null
+  }
+ ],
+ "refused": [
+  {
+   "subject": "glyph/12/0/1/0/1",
+   "bucket": "cal-neither-to-other",
+   "why": "FRAME CONTROL FAILED",
+   "contrast": -77.66
+  },
+  {
+   "subject": "glyph/4/0/0/1/2",
+   "bucket": "cal-neither-to-other",
+   "why": "FRAME CONTROL FAILED",
+   "contrast": 7.77
+  },
+  {
+   "subject": "glyph/4/0/5/2/1",
+   "bucket": "cal-neither-to-other",
+   "why": "FRAME CONTROL FAILED",
+   "contrast": -80.83
+  },
+  {
+   "subject": "glyph/6/0/0/12/6",
+   "bucket": "cal-neither-to-other",
+   "why": "FRAME CONTROL FAILED",
+   "contrast": -99.75
+  },
+  {
+   "subject": "glyph/8/0/0/8/0",
+   "bucket": "cal-other-to-decided",
+   "why": "FRAME CONTROL FAILED",
+   "contrast": -25.61
+  },
+  {
+   "subject": "glyph/12/0/1/1/7",
+   "bucket": "cal-still-other",
+   "why": "FRAME CONTROL FAILED",
+   "contrast": -77.66
+  },
+  {
+   "subject": "glyph/6/0/1/2/4",
+   "bucket": "cal-still-other",
+   "why": "FRAME CONTROL FAILED",
+   "contrast": -103.89
+  },
+  {
+   "subject": "glyph/6/0/1/3/3",
+   "bucket": "cal-still-other",
+   "why": "FRAME CONTROL FAILED",
+   "contrast": -103.89
+  },
+  {
+   "subject": "glyph/6/0/1/4/2",
+   "bucket": "cal-still-other",
+   "why": "FRAME CONTROL FAILED",
+   "contrast": -103.89
+  }
+ ],
+ "VERDICT_none_yet": null,
+ "_readme": "ROADMAP 2.12b-cal. Every crop here is a row whose verdict the RECALIBRATED bands moved, or one still narrowed under them. \u26a0\ufe0f NO REST'S DECIDED VALUE CHANGES FROM ONE VALUE TO ANOTHER in this pass: the rule never flipped, so a row that gains a value gains the CLASS's own reading, and Sean has confirmed that reading on ten rows of this same population. `VERDICT_none_yet` is null on every crop and on this manifest."
+}

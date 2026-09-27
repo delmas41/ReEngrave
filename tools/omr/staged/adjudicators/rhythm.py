@@ -766,11 +766,14 @@ def _rest_slot(ev: Evidence, box_rows) -> Tuple[Optional[float], Dict[str, Any],
 #: so the rule's census and the audit's table use ONE vocabulary.
 #:
 #: ⚠️⚠️ `class_not_contradicted` IS NOT `the slot confirms the class`, and the
-#: weaker word is the true one. The predicate is asymmetric on purpose (see
-#: `_rest_slot_verdict`), so ink displaced AWAY from both slots -- 97 Breitkopf
-#: and 13 Litolff rests standing wholly ABOVE the staff they are filed on --
-#: falls in here rather than in a disagreement bucket. Calling that `agrees`
-#: would be this rule claiming corroboration it has not got.
+#: weaker word is the true one. Each class's band is bounded only on the side
+#: the other convention lies on (see `_rest_slot_verdict`), so ink displaced
+#: AWAY from both slots -- 97 Breitkopf and 13 Litolff rests standing wholly
+#: ABOVE the staff they are filed on -- falls in here rather than in a
+#: disagreement bucket. Calling that `agrees` would be this rule claiming
+#: corroboration it has not got, and 2.12b-cal made the word truer still: the
+#: whole-rest band now reaches a step and a third below its slot, so a great
+#: deal of what it covers is ink it can say nothing against.
 SLOT_NOT_CONTRADICTED = "class_not_contradicted"
 SLOT_OTHER = "lands_on_the_other_convention"
 SLOT_NEITHER = "lands_on_neither_convention"
@@ -779,28 +782,64 @@ SLOT_NEITHER = "lands_on_neither_convention"
 def _rest_slot_verdict(name: str, step: Optional[float]) -> Optional[str]:
     """Which of the three the slot says -- or `None` where nothing was measured.
 
-    ⚠️ THE AUDIT'S PREDICATE, CHARACTER FOR CHARACTER
-    (`benchmarks/omr-shape-role-2026-09/probe/role_disagreement.py`
-    `f_rest_whole_half`). It is deliberately NOT "which slot is nearest": a
-    rest must be nearer the OTHER slot BY MORE THAN THE SLACK before the class
-    is contradicted at all, so ink sitting between the two, or displaced away
-    from both, leaves the class's reading standing. That asymmetry is what
-    keeps this rule from firing on the whole population of a bowed plate.
+    ⚠️⚠️ **ROADMAP 2.12b-cal: THE BANDS ARE MEASURED, AND EACH CLASS IS
+    BOUNDED ONLY ON THE SIDE THE OTHER CONVENTION LIES ON.** 2.12b asked
+    *which of two slots one line apart is this ink nearer*, with a slack of
+    half the gap -- a comparison whose answer is fixed by the convention's two
+    nominal lines and cannot be widened past 1.0 without going silent
+    everywhere. Sean adjudicated the rows it fired on: **ten of ten are whole
+    rests**, at steps 4.16-4.713. So the comparison was reading a real
+    population's low tail as a role error.
 
-    ⚠️ AND `other` AND `neither` ARE TWO FACTS THAT MUST NOT COLLAPSE. Ink
-    landing ON the other convention is a role error the geometry can repair;
-    ink landing on NEITHER is a rectangle standing where no rest of either
-    kind can hang, which is a weaker claim and a different finding (433 rows
-    against 134 on the two scans).
+    What replaced it is a BAND per class, from the plate:
+
+      * a `restWhole` is contradicted only BELOW
+        `WHOLE_REST_STEP - REST_SLOT_TOLERANCE_WHOLE` (5.5 - 1.35 = 4.15) --
+        the extent of the print-confirmed whole-rest population;
+      * a `restHalf` only ABOVE
+        `HALF_REST_STEP + REST_SLOT_TOLERANCE_HALF` (4.5 + 0.5 = 5.0) --
+        NOT measured, because these plates print 3 half rests inside a staff.
+
+    ⚠️ AND NO EDGE ON THE FAR SIDE, WHICH IS A CONVENTION ARGUMENT AND NOT A
+    TOLERANCE CHOICE. There is no third rest convention above the whole rest's
+    slot or below the half rest's, so ink there is DISPLACED, not AMBIGUOUS,
+    and displacement is not this decision's question -- 111 confirmed rests
+    stand outside their own staff altogether and `glyph_owner` owns that
+    contest. An upper edge on the whole band would convert 2-3% of a
+    print-confirmed population into abstentions to answer a question nothing
+    asked.
+
+    ⚠️ `other` AND `neither` ARE TWO FACTS THAT MUST NOT COLLAPSE. Ink landing
+    where the OTHER convention puts a rest is a role error the geometry could
+    repair; ink landing on NEITHER is a rectangle standing where no rest of
+    either kind can hang, which is a weaker claim and a different finding. The
+    other band's far edge is carried over from the whole rest's own measured
+    tolerance -- the two glyphs are the same rectangle and whatever displaces
+    one displaces the other -- and it only ever bounds a NARROWING, never
+    creates a DECISION.
+
+    ⚠️ THE AUDIT PROBE NO LONGER AGREES WITH THIS FUNCTION, AND THAT IS
+    DELIBERATE. `benchmarks/omr-shape-role-2026-09/probe/role_disagreement.py`
+    `f_rest_whole_half` keeps the nominal 0.5 because it is the 2.12 AUDIT's
+    frozen measurement, and its 134 / 433 split is the population this
+    calibration was derived against; a probe rewritten to match the rule it
+    priced would be a probe that can no longer price it.
+    `probe/rest_slot_calibration.py` records both verdicts per row for exactly
+    this reason.
     """
     slot = _REST_SLOT_BY_CLASS.get(name.lower())
     if slot is None or step is None:
         return None
-    other = HALF_REST_STEP if slot == WHOLE_REST_STEP else WHOLE_REST_STEP
-    if abs(step - other) + REST_SLOT_SLACK < abs(step - slot):
-        return (SLOT_OTHER if abs(step - other) <= REST_SLOT_SLACK
+    if slot == WHOLE_REST_STEP:
+        if step >= WHOLE_REST_STEP - REST_SLOT_TOLERANCE_WHOLE:
+            return SLOT_NOT_CONTRADICTED
+        return (SLOT_OTHER
+                if step >= HALF_REST_STEP - REST_SLOT_TOLERANCE_WHOLE
                 else SLOT_NEITHER)
-    return SLOT_NOT_CONTRADICTED
+    if step <= HALF_REST_STEP + REST_SLOT_TOLERANCE_HALF:
+        return SLOT_NOT_CONTRADICTED
+    return (SLOT_OTHER if step <= WHOLE_REST_STEP + REST_SLOT_TOLERANCE_WHOLE
+            else SLOT_NEITHER)
 
 
 def _rest_ruling(ev: Evidence, rest_rows) -> Ruling:
@@ -820,14 +859,29 @@ def _rest_ruling(ev: Evidence, rest_rows) -> Ruling:
 
       * the measurement does not contradict the class -> DECIDED exactly as
         before, with `slot_says: "class_not_contradicted"` on the record --
-        the weaker word, deliberately, because the predicate is asymmetric
-        and ink displaced away from BOTH slots also lands here;
+        the weaker word, deliberately, because each band is bounded only on
+        the side facing the other convention and ink displaced away from BOTH
+        slots also lands here;
       * the rectangle lands on the OTHER convention -> NARROWED over both
         values, the measured one first. Not flipped: see the branch's own
         note -- a bowed plate and multi-voice displacement both move a rest
         off its slot, and EXPORT already refuses to argmax a narrowing;
       * it lands on NEITHER -> ABSTAIN. No fallback to the class, because the
         class is the guess the ink has just contradicted.
+
+    ⚠️⚠️ ROADMAP 2.12b-cal, 2026-09-23 -- **THE BANDS CAME FROM THE PLATES,
+    NOT FROM THE CONVENTION'S NOMINAL LINES.** 2.12b's slack was half the gap
+    between the two slots, so the rule contradicted a `restWhole` below step
+    4.75; Sean adjudicated ten of the rows that fired and **all ten are whole
+    rests**, measured at 4.16-4.713. The print-confirmed whole-rest population
+    (n = 3,259 over the three acceptance records, p5 5.01 / p50 5.41 / p95
+    5.91, reaching to 4.16) is one continuous distribution with **no gap
+    anywhere through the half rest's slot** -- and the half-rest population
+    that would have to separate from it is **3 rows inside a staff in the
+    whole corpus**. So the two families do not separate on this repertoire,
+    and `REST_SLOT_TOLERANCE_WHOLE` says by how much. 124 of the 134 rows
+    2.12b narrowed are DECIDED whole here; the slot's remaining claim is the
+    ~40 rows a step or more below even that.
 
     ⚠️ ONLY THOSE TWO CLASSES. Every other rest names its value by its shape
     and no slot can speak to it; `_REST_SLOT_BY_CLASS` holds the whole domain.
@@ -902,7 +956,16 @@ def _rest_ruling(ev: Evidence, rest_rows) -> Ruling:
     if slot is not None:
         detail["slot_convention"] = {
             "restWhole": WHOLE_REST_STEP, "restHalf": HALF_REST_STEP,
-            "slack_half_steps": REST_SLOT_SLACK,
+            # ⚠️ BOTH, AND NAMED APART, because one is MEASURED HERE from the
+            # print-confirmed population (2.12b-cal) and the other is the
+            # convention's own midpoint on a plate that prints nothing to
+            # measure. A record that carried one number could not say which.
+            "tolerance_below_whole_half_steps": REST_SLOT_TOLERANCE_WHOLE,
+            "tolerance_above_half_half_steps": REST_SLOT_TOLERANCE_HALF,
+            "whole_band_from": round(
+                WHOLE_REST_STEP - REST_SLOT_TOLERANCE_WHOLE, 3),
+            "half_band_to": round(
+                HALF_REST_STEP + REST_SLOT_TOLERANCE_HALF, 3),
             "frame": "bottom line 0, one step per half space, up positive"}
 
     if slot == SLOT_NEITHER:
@@ -3272,21 +3335,56 @@ WHOLE_REST_STEP = 5.5
 #: constants would be free to drift into a gap that is not one line, which is
 #: the one number this rule stands on.
 HALF_REST_STEP = WHOLE_REST_STEP - 1.0
-#: How far a rest's measured centre may stand from the slot its class claims
-#: before the geometry is said to CONTRADICT the class, in half steps.
+#: How far BELOW its slot a whole rest's centre may stand and still be read as
+#: a whole rest, in half steps. ⚠️⚠️ **MEASURED HERE, ROADMAP 2.12b-cal,
+#: 2026-09-23** -- it replaces a nominal 0.5, which was half the gap between
+#: the two slots and therefore a statement about the CONVENTION rather than
+#: about these plates.
 #:
-#: ⚠️ NOT TUNED AND NOT TUNABLE: the two conventions are exactly 1.0 apart, so
-#: anything under 0.5 calls every borderline row a disagreement and anything
-#: over 0.5 calls none. 0.5 is the midpoint, and it is the constant
-#: `benchmarks/omr-shape-role-2026-09/probe/role_disagreement.py` measured the
-#: audit's 134 / 433 split with -- the same number, so the population this
-#: rule acts on and the population the audit reported are the same population.
+#: The derivation, reproducible with one command
+#: (`probe/rest_slot_calibration.py --all` then `--derive`):
 #:
-#: ⚠️ IT IS NOT `WHOLE_REST_STEP_TOLERANCE`. That one is registration error on
-#: a warped plate (1.0) and is used to ask *could a whole rest hang here at
-#: all*; this one asks *which of two slots one line apart is this ink nearer*,
-#: which is a comparison and so cannot use a window wider than the gap.
-REST_SLOT_SLACK = 0.5
+#:   * the print-confirmed whole-rest population -- every `restWhole` the
+#:     bands do not contradict, standing inside its own staff, on all three
+#:     acceptance records, plus the ten Sean adjudicated against the print --
+#:     is **n = 3,259, p5 5.01, p50 5.41, p95 5.91, min 4.16, max 7.93**;
+#:   * **Sean, 2026-09-23: ten of ten of the rows the nominal band called the
+#:     other convention are WHOLE RESTS** (`out/print/ADJUDICATION-sean-
+#:     2026-09-23-rests.json`), measured at steps **4.16 - 4.713** -- the
+#:     bottom 0.3% of that population's own low tail;
+#:   * so the tolerance is the distance from the slot to the LOWEST rest a
+#:     human has confirmed off the print: 5.5 - 4.16 = 1.34, rounded out to
+#:     **1.35** so that rest is inside the band rather than on its edge.
+#:
+#: ⚠️ THE POOLED p5/p95 IS NOT THE BAND, AND THE REASON IS THE WHOLE FINDING.
+#: A ±(p95-p5)/2 band is ±0.45 -- the nominal 0.5 back again -- and it
+#: contradicts ten of ten rests a musician read off the plate. The dispersion
+#: of the BULK is not the extent of the POPULATION: on a scan the tail is the
+#: thing being measured, because warp and multi-voice displacement move
+#: individual rests and not the median.
+#:
+#: ⚠️ IT SITS BELOW THE PLATEAU, DELIBERATELY. The narrowed count is flat at
+#: 68 rows for a tolerance of 1.60-1.90 (the measured density trough of the
+#: `restWhole` population, steps 3.4-3.9); 1.35 lies under it, which is the
+#: conservative side -- it NARROWS 24 rows a wider band would DECIDE, and a
+#: narrowing loses nothing (EXPORT refuses to argmax one) while a decision on
+#: ink no one has looked at is a default flipped on agreement with our own
+#: reading (CLAUDE.md §2 rule 5).
+REST_SLOT_TOLERANCE_WHOLE = 1.35
+#: The same question for the HALF rest, ABOVE its slot -- and it is **NOT
+#: MEASURED HERE**, which is why it is a second constant and not the first
+#: one reused.
+#:
+#: ⚠️⚠️ THESE PLATES PRINT ALMOST NO HALF RESTS AND THERE IS NOTHING TO
+#: MEASURE. Across all three acceptance records the detector says `restHalf`
+#: **44 times against 3,918 `restWhole`** (1.1%), and **3 of those 44 stand
+#: inside the staff they are filed on** -- 31 of Breitkopf's 35 sit at step
+#: −7.4, which is the next staff down through the cell's pad. A tolerance
+#: derived from three rows would be a number wearing a measurement's clothes.
+#: So this stays at the convention's own midpoint, unchanged from 2.12b, and
+#: says so. It is the number to revisit when a plate that prints half rests
+#: is read.
+REST_SLOT_TOLERANCE_HALF = 0.5
 #: The two classes whose ROLE-half this rule reads, and the slot each claims.
 #:
 #: ⚠️ EXACTLY TWO, AND NOTHING ELSE IS TOUCHED. `restQuarter`, `restEighth`
