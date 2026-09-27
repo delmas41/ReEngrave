@@ -1,0 +1,2791 @@
+{
+ "label": "beethoven5-engraved",
+ "record": "benchmarks/omr-staged-engraved-2026-09/out/engraved-p0p2-20260923.record.json",
+ "provenance": {
+  "commit": "f48a59ce9bc94d16192f35a27aaa7a16d49510eb",
+  "dirty": false
+ },
+ "bands_in_force": {
+  "whole": 5.5,
+  "half": 4.5,
+  "tolerance_below_whole": 1.35,
+  "tolerance_above_half": 0.5
+ },
+ "no_geometry": {},
+ "other_rest_classes": {
+  "restQuarter": 55,
+  "rest8th": 46
+ },
+ "verdict_census": {
+  "class_not_contradicted": 216
+ },
+ "families": {
+  "restWhole": {
+   "all": {
+    "centre": {
+     "n": 216,
+     "p5": 5.43,
+     "p25": 5.44,
+     "p50": 5.45,
+     "p75": 5.45,
+     "p95": 5.473,
+     "min": 5.406,
+     "max": 19.37
+    },
+    "top": {
+     "n": 216,
+     "p5": 5.908,
+     "p25": 5.92,
+     "p50": 5.94,
+     "p75": 5.94,
+     "p95": 5.96,
+     "min": 5.865,
+     "max": 19.96
+    },
+    "bottom": {
+     "n": 216,
+     "p5": 4.94,
+     "p25": 4.94,
+     "p50": 4.96,
+     "p75": 4.98,
+     "p95": 5.038,
+     "min": 4.9,
+     "max": 18.78
+    },
+    "height_steps": {
+     "n": 216,
+     "p5": 0.88,
+     "p25": 0.94,
+     "p50": 0.98,
+     "p75": 1.0,
+     "p95": 1.0,
+     "min": 0.86,
+     "max": 1.18
+    },
+    "histogram_centre": {
+     "bin_width": 0.1,
+     "below_-2.0": 0,
+     "at_or_above_12.0": 1,
+     "bins": {
+      "5.4": 215
+     }
+    },
+    "histogram_top": {
+     "bin_width": 0.1,
+     "below_-2.0": 0,
+     "at_or_above_12.0": 1,
+     "bins": {
+      "5.8": 1,
+      "5.9": 214
+     }
+    },
+    "histogram_bottom": {
+     "bin_width": 0.1,
+     "below_-2.0": 0,
+     "at_or_above_12.0": 1,
+     "bins": {
+      "4.9": 181,
+      "5.0": 34
+     }
+    }
+   },
+   "confirmed": {
+    "centre": {
+     "n": 216,
+     "p5": 5.43,
+     "p25": 5.44,
+     "p50": 5.45,
+     "p75": 5.45,
+     "p95": 5.473,
+     "min": 5.406,
+     "max": 19.37
+    },
+    "top": {
+     "n": 216,
+     "p5": 5.908,
+     "p25": 5.92,
+     "p50": 5.94,
+     "p75": 5.94,
+     "p95": 5.96,
+     "min": 5.865,
+     "max": 19.96
+    },
+    "bottom": {
+     "n": 216,
+     "p5": 4.94,
+     "p25": 4.94,
+     "p50": 4.96,
+     "p75": 4.98,
+     "p95": 5.038,
+     "min": 4.9,
+     "max": 18.78
+    },
+    "height_steps": {
+     "n": 216,
+     "p5": 0.88,
+     "p25": 0.94,
+     "p50": 0.98,
+     "p75": 1.0,
+     "p95": 1.0,
+     "min": 0.86,
+     "max": 1.18
+    },
+    "histogram_centre": {
+     "bin_width": 0.1,
+     "below_-2.0": 0,
+     "at_or_above_12.0": 1,
+     "bins": {
+      "5.4": 215
+     }
+    },
+    "histogram_top": {
+     "bin_width": 0.1,
+     "below_-2.0": 0,
+     "at_or_above_12.0": 1,
+     "bins": {
+      "5.8": 1,
+      "5.9": 214
+     }
+    },
+    "histogram_bottom": {
+     "bin_width": 0.1,
+     "below_-2.0": 0,
+     "at_or_above_12.0": 1,
+     "bins": {
+      "4.9": 181,
+      "5.0": 34
+     }
+    }
+   },
+   "confirmed_inside_the_staff": {
+    "centre": {
+     "n": 215,
+     "p5": 5.43,
+     "p25": 5.44,
+     "p50": 5.45,
+     "p75": 5.45,
+     "p95": 5.473,
+     "min": 5.406,
+     "max": 5.497
+    },
+    "top": {
+     "n": 215,
+     "p5": 5.908,
+     "p25": 5.92,
+     "p50": 5.94,
+     "p75": 5.94,
+     "p95": 5.96,
+     "min": 5.865,
+     "max": 5.98
+    },
+    "bottom": {
+     "n": 215,
+     "p5": 4.94,
+     "p25": 4.94,
+     "p50": 4.96,
+     "p75": 4.98,
+     "p95": 5.038,
+     "min": 4.9,
+     "max": 5.067
+    },
+    "height_steps": {
+     "n": 215,
+     "p5": 0.88,
+     "p25": 0.94,
+     "p50": 0.98,
+     "p75": 1.0,
+     "p95": 1.0,
+     "min": 0.86,
+     "max": 1.04
+    },
+    "histogram_centre": {
+     "bin_width": 0.1,
+     "below_-2.0": 0,
+     "at_or_above_12.0": 0,
+     "bins": {
+      "5.4": 215
+     }
+    },
+    "histogram_top": {
+     "bin_width": 0.1,
+     "below_-2.0": 0,
+     "at_or_above_12.0": 0,
+     "bins": {
+      "5.8": 1,
+      "5.9": 214
+     }
+    },
+    "histogram_bottom": {
+     "bin_width": 0.1,
+     "below_-2.0": 0,
+     "at_or_above_12.0": 0,
+     "bins": {
+      "4.9": 181,
+      "5.0": 34
+     }
+    }
+   }
+  },
+  "restHalf": {
+   "all": {
+    "centre": {
+     "n": 0,
+     "p5": null,
+     "p25": null,
+     "p50": null,
+     "p75": null,
+     "p95": null,
+     "min": null,
+     "max": null
+    },
+    "top": {
+     "n": 0,
+     "p5": null,
+     "p25": null,
+     "p50": null,
+     "p75": null,
+     "p95": null,
+     "min": null,
+     "max": null
+    },
+    "bottom": {
+     "n": 0,
+     "p5": null,
+     "p25": null,
+     "p50": null,
+     "p75": null,
+     "p95": null,
+     "min": null,
+     "max": null
+    },
+    "height_steps": {
+     "n": 0,
+     "p5": null,
+     "p25": null,
+     "p50": null,
+     "p75": null,
+     "p95": null,
+     "min": null,
+     "max": null
+    },
+    "histogram_centre": {
+     "bin_width": 0.1,
+     "below_-2.0": 0,
+     "at_or_above_12.0": 0,
+     "bins": {}
+    },
+    "histogram_top": {
+     "bin_width": 0.1,
+     "below_-2.0": 0,
+     "at_or_above_12.0": 0,
+     "bins": {}
+    },
+    "histogram_bottom": {
+     "bin_width": 0.1,
+     "below_-2.0": 0,
+     "at_or_above_12.0": 0,
+     "bins": {}
+    }
+   },
+   "confirmed": {
+    "centre": {
+     "n": 0,
+     "p5": null,
+     "p25": null,
+     "p50": null,
+     "p75": null,
+     "p95": null,
+     "min": null,
+     "max": null
+    },
+    "top": {
+     "n": 0,
+     "p5": null,
+     "p25": null,
+     "p50": null,
+     "p75": null,
+     "p95": null,
+     "min": null,
+     "max": null
+    },
+    "bottom": {
+     "n": 0,
+     "p5": null,
+     "p25": null,
+     "p50": null,
+     "p75": null,
+     "p95": null,
+     "min": null,
+     "max": null
+    },
+    "height_steps": {
+     "n": 0,
+     "p5": null,
+     "p25": null,
+     "p50": null,
+     "p75": null,
+     "p95": null,
+     "min": null,
+     "max": null
+    },
+    "histogram_centre": {
+     "bin_width": 0.1,
+     "below_-2.0": 0,
+     "at_or_above_12.0": 0,
+     "bins": {}
+    },
+    "histogram_top": {
+     "bin_width": 0.1,
+     "below_-2.0": 0,
+     "at_or_above_12.0": 0,
+     "bins": {}
+    },
+    "histogram_bottom": {
+     "bin_width": 0.1,
+     "below_-2.0": 0,
+     "at_or_above_12.0": 0,
+     "bins": {}
+    }
+   },
+   "confirmed_inside_the_staff": {
+    "centre": {
+     "n": 0,
+     "p5": null,
+     "p25": null,
+     "p50": null,
+     "p75": null,
+     "p95": null,
+     "min": null,
+     "max": null
+    },
+    "top": {
+     "n": 0,
+     "p5": null,
+     "p25": null,
+     "p50": null,
+     "p75": null,
+     "p95": null,
+     "min": null,
+     "max": null
+    },
+    "bottom": {
+     "n": 0,
+     "p5": null,
+     "p25": null,
+     "p50": null,
+     "p75": null,
+     "p95": null,
+     "min": null,
+     "max": null
+    },
+    "height_steps": {
+     "n": 0,
+     "p5": null,
+     "p25": null,
+     "p50": null,
+     "p75": null,
+     "p95": null,
+     "min": null,
+     "max": null
+    },
+    "histogram_centre": {
+     "bin_width": 0.1,
+     "below_-2.0": 0,
+     "at_or_above_12.0": 0,
+     "bins": {}
+    },
+    "histogram_top": {
+     "bin_width": 0.1,
+     "below_-2.0": 0,
+     "at_or_above_12.0": 0,
+     "bins": {}
+    },
+    "histogram_bottom": {
+     "bin_width": 0.1,
+     "below_-2.0": 0,
+     "at_or_above_12.0": 0,
+     "bins": {}
+    }
+   }
+  }
+ },
+ "rows": [
+  {
+   "subject": "glyph/0/0/0/0/7",
+   "class": "restWhole",
+   "centre": 5.438,
+   "top": 5.932,
+   "bottom": 4.944,
+   "height_steps": 0.988,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/0/0/0/1/2",
+   "class": "restWhole",
+   "centre": 5.44,
+   "top": 5.94,
+   "bottom": 4.94,
+   "height_steps": 1.0,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/0/0/0/2/1",
+   "class": "restWhole",
+   "centre": 5.45,
+   "top": 5.94,
+   "bottom": 4.96,
+   "height_steps": 0.98,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/0/0/0/3/0",
+   "class": "restWhole",
+   "centre": 5.45,
+   "top": 5.94,
+   "bottom": 4.96,
+   "height_steps": 0.98,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/0/0/0/4/2",
+   "class": "restWhole",
+   "centre": 5.44,
+   "top": 5.94,
+   "bottom": 4.94,
+   "height_steps": 1.0,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/0/0/0/5/1",
+   "class": "restWhole",
+   "centre": 5.45,
+   "top": 5.94,
+   "bottom": 4.96,
+   "height_steps": 0.98,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/0/0/0/6/1",
+   "class": "restWhole",
+   "centre": 5.44,
+   "top": 5.94,
+   "bottom": 4.94,
+   "height_steps": 1.0,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/0/0/1/0/7",
+   "class": "restWhole",
+   "centre": 5.461,
+   "top": 5.908,
+   "bottom": 5.014,
+   "height_steps": 0.894,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/0/0/1/1/2",
+   "class": "restWhole",
+   "centre": 5.46,
+   "top": 5.96,
+   "bottom": 4.96,
+   "height_steps": 1.0,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/0/0/1/2/1",
+   "class": "restWhole",
+   "centre": 5.45,
+   "top": 5.92,
+   "bottom": 4.98,
+   "height_steps": 0.94,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/0/0/1/3/0",
+   "class": "restWhole",
+   "centre": 5.45,
+   "top": 5.94,
+   "bottom": 4.96,
+   "height_steps": 0.98,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/0/0/1/4/2",
+   "class": "restWhole",
+   "centre": 5.44,
+   "top": 5.94,
+   "bottom": 4.94,
+   "height_steps": 1.0,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/0/0/1/5/1",
+   "class": "restWhole",
+   "centre": 5.45,
+   "top": 5.92,
+   "bottom": 4.98,
+   "height_steps": 0.94,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/0/0/1/6/1",
+   "class": "restWhole",
+   "centre": 5.43,
+   "top": 5.92,
+   "bottom": 4.94,
+   "height_steps": 0.98,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/0/0/2/0/7",
+   "class": "restWhole",
+   "centre": 5.461,
+   "top": 5.908,
+   "bottom": 5.014,
+   "height_steps": 0.894,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/0/0/2/1/2",
+   "class": "restWhole",
+   "centre": 5.46,
+   "top": 5.96,
+   "bottom": 4.96,
+   "height_steps": 1.0,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/0/0/2/2/1",
+   "class": "restWhole",
+   "centre": 5.45,
+   "top": 5.92,
+   "bottom": 4.98,
+   "height_steps": 0.94,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/0/0/2/3/0",
+   "class": "restWhole",
+   "centre": 5.45,
+   "top": 5.94,
+   "bottom": 4.96,
+   "height_steps": 0.98,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/0/0/2/4/2",
+   "class": "restWhole",
+   "centre": 5.44,
+   "top": 5.94,
+   "bottom": 4.94,
+   "height_steps": 1.0,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/0/0/2/5/1",
+   "class": "restWhole",
+   "centre": 5.45,
+   "top": 5.92,
+   "bottom": 4.98,
+   "height_steps": 0.94,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/0/0/2/6/1",
+   "class": "restWhole",
+   "centre": 5.43,
+   "top": 5.92,
+   "bottom": 4.94,
+   "height_steps": 0.98,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/0/0/3/0/7",
+   "class": "restWhole",
+   "centre": 5.461,
+   "top": 5.908,
+   "bottom": 5.014,
+   "height_steps": 0.894,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/0/0/3/1/2",
+   "class": "restWhole",
+   "centre": 5.46,
+   "top": 5.96,
+   "bottom": 4.96,
+   "height_steps": 1.0,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/0/0/3/2/1",
+   "class": "restWhole",
+   "centre": 5.45,
+   "top": 5.92,
+   "bottom": 4.98,
+   "height_steps": 0.94,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/0/0/3/3/0",
+   "class": "restWhole",
+   "centre": 5.45,
+   "top": 5.94,
+   "bottom": 4.96,
+   "height_steps": 0.98,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/0/0/3/4/2",
+   "class": "restWhole",
+   "centre": 5.44,
+   "top": 5.94,
+   "bottom": 4.94,
+   "height_steps": 1.0,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/0/0/3/5/1",
+   "class": "restWhole",
+   "centre": 5.45,
+   "top": 5.92,
+   "bottom": 4.98,
+   "height_steps": 0.94,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/0/0/3/6/1",
+   "class": "restWhole",
+   "centre": 5.43,
+   "top": 5.92,
+   "bottom": 4.94,
+   "height_steps": 0.98,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/0/0/4/5/1",
+   "class": "restWhole",
+   "centre": 5.45,
+   "top": 5.92,
+   "bottom": 4.98,
+   "height_steps": 0.94,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/0/0/4/6/1",
+   "class": "restWhole",
+   "centre": 5.43,
+   "top": 5.92,
+   "bottom": 4.94,
+   "height_steps": 0.98,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/0/0/5/5/1",
+   "class": "restWhole",
+   "centre": 5.45,
+   "top": 5.92,
+   "bottom": 4.98,
+   "height_steps": 0.94,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/0/0/5/6/1",
+   "class": "restWhole",
+   "centre": 5.43,
+   "top": 5.92,
+   "bottom": 4.94,
+   "height_steps": 0.98,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/0/0/6/0/8",
+   "class": "restWhole",
+   "centre": 5.473,
+   "top": 5.908,
+   "bottom": 5.038,
+   "height_steps": 0.87,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/0/0/6/1/2",
+   "class": "restWhole",
+   "centre": 5.46,
+   "top": 5.96,
+   "bottom": 4.96,
+   "height_steps": 1.0,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/0/0/6/2/1",
+   "class": "restWhole",
+   "centre": 5.45,
+   "top": 5.92,
+   "bottom": 4.98,
+   "height_steps": 0.94,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/0/0/6/3/0",
+   "class": "restWhole",
+   "centre": 5.45,
+   "top": 5.94,
+   "bottom": 4.96,
+   "height_steps": 0.98,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/0/0/6/4/2",
+   "class": "restWhole",
+   "centre": 5.44,
+   "top": 5.94,
+   "bottom": 4.94,
+   "height_steps": 1.0,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/0/0/6/5/1",
+   "class": "restWhole",
+   "centre": 5.45,
+   "top": 5.92,
+   "bottom": 4.98,
+   "height_steps": 0.94,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/0/0/7/0/7",
+   "class": "restWhole",
+   "centre": 5.473,
+   "top": 5.908,
+   "bottom": 5.038,
+   "height_steps": 0.87,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/0/0/7/1/2",
+   "class": "restWhole",
+   "centre": 5.46,
+   "top": 5.96,
+   "bottom": 4.96,
+   "height_steps": 1.0,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/0/0/7/2/1",
+   "class": "restWhole",
+   "centre": 5.45,
+   "top": 5.92,
+   "bottom": 4.98,
+   "height_steps": 0.94,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/0/0/7/3/0",
+   "class": "restWhole",
+   "centre": 5.45,
+   "top": 5.94,
+   "bottom": 4.96,
+   "height_steps": 0.98,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/0/0/7/4/2",
+   "class": "restWhole",
+   "centre": 5.44,
+   "top": 5.94,
+   "bottom": 4.94,
+   "height_steps": 1.0,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/0/0/7/5/1",
+   "class": "restWhole",
+   "centre": 5.45,
+   "top": 5.92,
+   "bottom": 4.98,
+   "height_steps": 0.94,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/0/0/8/0/4",
+   "class": "restWhole",
+   "centre": 5.461,
+   "top": 5.908,
+   "bottom": 5.014,
+   "height_steps": 0.894,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/0/0/8/1/2",
+   "class": "restWhole",
+   "centre": 5.46,
+   "top": 5.96,
+   "bottom": 4.96,
+   "height_steps": 1.0,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/0/0/8/2/1",
+   "class": "restWhole",
+   "centre": 5.45,
+   "top": 5.92,
+   "bottom": 4.98,
+   "height_steps": 0.94,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/0/0/8/3/0",
+   "class": "restWhole",
+   "centre": 5.45,
+   "top": 5.94,
+   "bottom": 4.96,
+   "height_steps": 0.98,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/0/0/8/4/2",
+   "class": "restWhole",
+   "centre": 5.44,
+   "top": 5.94,
+   "bottom": 4.94,
+   "height_steps": 1.0,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/0/0/8/5/1",
+   "class": "restWhole",
+   "centre": 5.45,
+   "top": 5.92,
+   "bottom": 4.98,
+   "height_steps": 0.94,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/0/0/8/6/1",
+   "class": "restWhole",
+   "centre": 5.43,
+   "top": 5.92,
+   "bottom": 4.94,
+   "height_steps": 0.98,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/0/0/9/0/4",
+   "class": "restWhole",
+   "centre": 5.461,
+   "top": 5.908,
+   "bottom": 5.014,
+   "height_steps": 0.894,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/0/0/9/1/2",
+   "class": "restWhole",
+   "centre": 5.46,
+   "top": 5.96,
+   "bottom": 4.96,
+   "height_steps": 1.0,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/0/0/9/2/1",
+   "class": "restWhole",
+   "centre": 5.45,
+   "top": 5.92,
+   "bottom": 4.98,
+   "height_steps": 0.94,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/0/0/9/3/0",
+   "class": "restWhole",
+   "centre": 5.45,
+   "top": 5.94,
+   "bottom": 4.96,
+   "height_steps": 0.98,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/0/0/9/4/2",
+   "class": "restWhole",
+   "centre": 5.44,
+   "top": 5.94,
+   "bottom": 4.94,
+   "height_steps": 1.0,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/0/0/9/5/1",
+   "class": "restWhole",
+   "centre": 5.45,
+   "top": 5.92,
+   "bottom": 4.98,
+   "height_steps": 0.94,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/0/0/9/6/1",
+   "class": "restWhole",
+   "centre": 5.43,
+   "top": 5.92,
+   "bottom": 4.94,
+   "height_steps": 0.98,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/0/0/10/0/7",
+   "class": "restWhole",
+   "centre": 5.461,
+   "top": 5.908,
+   "bottom": 5.014,
+   "height_steps": 0.894,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/0/0/10/1/2",
+   "class": "restWhole",
+   "centre": 5.46,
+   "top": 5.96,
+   "bottom": 4.96,
+   "height_steps": 1.0,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/0/0/10/2/1",
+   "class": "restWhole",
+   "centre": 5.45,
+   "top": 5.92,
+   "bottom": 4.98,
+   "height_steps": 0.94,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/0/0/10/3/0",
+   "class": "restWhole",
+   "centre": 5.45,
+   "top": 5.94,
+   "bottom": 4.96,
+   "height_steps": 0.98,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/0/0/10/4/2",
+   "class": "restWhole",
+   "centre": 5.44,
+   "top": 5.94,
+   "bottom": 4.94,
+   "height_steps": 1.0,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/0/0/10/5/1",
+   "class": "restWhole",
+   "centre": 5.45,
+   "top": 5.92,
+   "bottom": 4.98,
+   "height_steps": 0.94,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/0/0/10/6/1",
+   "class": "restWhole",
+   "centre": 5.43,
+   "top": 5.92,
+   "bottom": 4.94,
+   "height_steps": 0.98,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/0/0/11/0/7",
+   "class": "restWhole",
+   "centre": 5.461,
+   "top": 5.908,
+   "bottom": 5.014,
+   "height_steps": 0.894,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/0/0/11/1/2",
+   "class": "restWhole",
+   "centre": 5.46,
+   "top": 5.96,
+   "bottom": 4.96,
+   "height_steps": 1.0,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/0/0/11/2/1",
+   "class": "restWhole",
+   "centre": 5.45,
+   "top": 5.92,
+   "bottom": 4.98,
+   "height_steps": 0.94,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/0/0/11/3/0",
+   "class": "restWhole",
+   "centre": 5.45,
+   "top": 5.94,
+   "bottom": 4.96,
+   "height_steps": 0.98,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/0/0/11/4/2",
+   "class": "restWhole",
+   "centre": 5.44,
+   "top": 5.94,
+   "bottom": 4.94,
+   "height_steps": 1.0,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/0/0/11/5/1",
+   "class": "restWhole",
+   "centre": 5.45,
+   "top": 5.92,
+   "bottom": 4.98,
+   "height_steps": 0.94,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/0/0/11/6/1",
+   "class": "restWhole",
+   "centre": 5.43,
+   "top": 5.92,
+   "bottom": 4.94,
+   "height_steps": 0.98,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/0/0/12/0/7",
+   "class": "restWhole",
+   "centre": 5.473,
+   "top": 5.908,
+   "bottom": 5.038,
+   "height_steps": 0.87,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/0/0/12/1/2",
+   "class": "restWhole",
+   "centre": 5.46,
+   "top": 5.96,
+   "bottom": 4.96,
+   "height_steps": 1.0,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/0/0/12/2/1",
+   "class": "restWhole",
+   "centre": 5.45,
+   "top": 5.92,
+   "bottom": 4.98,
+   "height_steps": 0.94,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/0/0/12/3/0",
+   "class": "restWhole",
+   "centre": 5.45,
+   "top": 5.94,
+   "bottom": 4.96,
+   "height_steps": 0.98,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/0/0/12/4/2",
+   "class": "restWhole",
+   "centre": 5.44,
+   "top": 5.94,
+   "bottom": 4.94,
+   "height_steps": 1.0,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/0/0/12/5/1",
+   "class": "restWhole",
+   "centre": 5.45,
+   "top": 5.92,
+   "bottom": 4.98,
+   "height_steps": 0.94,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/0/0/12/6/1",
+   "class": "restWhole",
+   "centre": 5.43,
+   "top": 5.92,
+   "bottom": 4.94,
+   "height_steps": 0.98,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/0/0/13/5/1",
+   "class": "restWhole",
+   "centre": 5.45,
+   "top": 5.94,
+   "bottom": 4.96,
+   "height_steps": 0.98,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/0/0/13/6/1",
+   "class": "restWhole",
+   "centre": 5.44,
+   "top": 5.94,
+   "bottom": 4.94,
+   "height_steps": 1.0,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/0/0/15/5/2",
+   "class": "restWhole",
+   "centre": 5.43,
+   "top": 5.92,
+   "bottom": 4.94,
+   "height_steps": 0.98,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/0/0/16/5/1",
+   "class": "restWhole",
+   "centre": 5.45,
+   "top": 5.94,
+   "bottom": 4.96,
+   "height_steps": 0.98,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/0/0/17/5/1",
+   "class": "restWhole",
+   "centre": 5.48,
+   "top": 5.92,
+   "bottom": 5.04,
+   "height_steps": 0.88,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/0/0/17/6/1",
+   "class": "restWhole",
+   "centre": 5.47,
+   "top": 5.92,
+   "bottom": 5.02,
+   "height_steps": 0.9,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/1/0/0/0/5",
+   "class": "restWhole",
+   "centre": 5.457,
+   "top": 5.907,
+   "bottom": 5.007,
+   "height_steps": 0.9,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/1/0/0/1/0",
+   "class": "restWhole",
+   "centre": 5.497,
+   "top": 5.927,
+   "bottom": 5.067,
+   "height_steps": 0.86,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/1/0/0/2/1",
+   "class": "restWhole",
+   "centre": 5.487,
+   "top": 5.927,
+   "bottom": 5.047,
+   "height_steps": 0.88,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/1/0/0/3/1",
+   "class": "restWhole",
+   "centre": 5.487,
+   "top": 5.927,
+   "bottom": 5.047,
+   "height_steps": 0.88,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/1/0/0/4/1",
+   "class": "restWhole",
+   "centre": 5.487,
+   "top": 5.927,
+   "bottom": 5.047,
+   "height_steps": 0.88,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/1/0/0/5/0",
+   "class": "restWhole",
+   "centre": 5.487,
+   "top": 5.927,
+   "bottom": 5.047,
+   "height_steps": 0.88,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/1/0/0/6/1",
+   "class": "restWhole",
+   "centre": 5.497,
+   "top": 5.927,
+   "bottom": 5.067,
+   "height_steps": 0.86,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/1/0/0/7/1",
+   "class": "restWhole",
+   "centre": 5.487,
+   "top": 5.927,
+   "bottom": 5.047,
+   "height_steps": 0.88,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/1/0/0/8/1",
+   "class": "restWhole",
+   "centre": 5.497,
+   "top": 5.927,
+   "bottom": 5.067,
+   "height_steps": 0.86,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/1/0/1/0/5",
+   "class": "restWhole",
+   "centre": 5.46,
+   "top": 5.92,
+   "bottom": 5.0,
+   "height_steps": 0.92,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/1/0/1/1/0",
+   "class": "restWhole",
+   "centre": 5.44,
+   "top": 5.94,
+   "bottom": 4.94,
+   "height_steps": 1.0,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/1/0/1/2/1",
+   "class": "restWhole",
+   "centre": 5.44,
+   "top": 5.94,
+   "bottom": 4.94,
+   "height_steps": 1.0,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/1/0/1/3/1",
+   "class": "restWhole",
+   "centre": 5.45,
+   "top": 5.94,
+   "bottom": 4.96,
+   "height_steps": 0.98,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/1/0/1/4/1",
+   "class": "restWhole",
+   "centre": 5.44,
+   "top": 5.94,
+   "bottom": 4.94,
+   "height_steps": 1.0,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/1/0/1/5/0",
+   "class": "restWhole",
+   "centre": 5.44,
+   "top": 5.94,
+   "bottom": 4.94,
+   "height_steps": 1.0,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/1/0/1/6/1",
+   "class": "restWhole",
+   "centre": 5.44,
+   "top": 5.94,
+   "bottom": 4.94,
+   "height_steps": 1.0,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/1/0/1/7/1",
+   "class": "restWhole",
+   "centre": 5.44,
+   "top": 5.94,
+   "bottom": 4.94,
+   "height_steps": 1.0,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/1/0/1/8/1",
+   "class": "restWhole",
+   "centre": 5.44,
+   "top": 5.94,
+   "bottom": 4.94,
+   "height_steps": 1.0,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/1/0/2/0/5",
+   "class": "restWhole",
+   "centre": 5.46,
+   "top": 5.92,
+   "bottom": 5.0,
+   "height_steps": 0.92,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/1/0/2/1/0",
+   "class": "restWhole",
+   "centre": 5.44,
+   "top": 5.94,
+   "bottom": 4.94,
+   "height_steps": 1.0,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/1/0/2/2/1",
+   "class": "restWhole",
+   "centre": 5.44,
+   "top": 5.94,
+   "bottom": 4.94,
+   "height_steps": 1.0,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/1/0/2/3/1",
+   "class": "restWhole",
+   "centre": 5.45,
+   "top": 5.94,
+   "bottom": 4.96,
+   "height_steps": 0.98,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/1/0/2/4/1",
+   "class": "restWhole",
+   "centre": 5.44,
+   "top": 5.94,
+   "bottom": 4.94,
+   "height_steps": 1.0,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/1/0/2/5/0",
+   "class": "restWhole",
+   "centre": 5.44,
+   "top": 5.94,
+   "bottom": 4.94,
+   "height_steps": 1.0,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/1/0/2/6/1",
+   "class": "restWhole",
+   "centre": 5.44,
+   "top": 5.94,
+   "bottom": 4.94,
+   "height_steps": 1.0,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/1/0/2/7/1",
+   "class": "restWhole",
+   "centre": 5.44,
+   "top": 5.94,
+   "bottom": 4.94,
+   "height_steps": 1.0,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/1/0/2/8/1",
+   "class": "restWhole",
+   "centre": 5.44,
+   "top": 5.94,
+   "bottom": 4.94,
+   "height_steps": 1.0,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/1/0/3/0/5",
+   "class": "restWhole",
+   "centre": 5.46,
+   "top": 5.92,
+   "bottom": 5.0,
+   "height_steps": 0.92,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/1/0/3/1/0",
+   "class": "restWhole",
+   "centre": 5.44,
+   "top": 5.94,
+   "bottom": 4.94,
+   "height_steps": 1.0,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/1/0/3/2/1",
+   "class": "restWhole",
+   "centre": 5.44,
+   "top": 5.94,
+   "bottom": 4.94,
+   "height_steps": 1.0,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/1/0/3/3/1",
+   "class": "restWhole",
+   "centre": 5.45,
+   "top": 5.94,
+   "bottom": 4.96,
+   "height_steps": 0.98,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/1/0/3/4/1",
+   "class": "restWhole",
+   "centre": 5.44,
+   "top": 5.94,
+   "bottom": 4.94,
+   "height_steps": 1.0,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/1/0/3/5/0",
+   "class": "restWhole",
+   "centre": 5.44,
+   "top": 5.94,
+   "bottom": 4.94,
+   "height_steps": 1.0,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/1/0/3/6/1",
+   "class": "restWhole",
+   "centre": 5.44,
+   "top": 5.94,
+   "bottom": 4.94,
+   "height_steps": 1.0,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/1/0/3/7/1",
+   "class": "restWhole",
+   "centre": 5.44,
+   "top": 5.94,
+   "bottom": 4.94,
+   "height_steps": 1.0,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/1/0/3/8/1",
+   "class": "restWhole",
+   "centre": 5.44,
+   "top": 5.94,
+   "bottom": 4.94,
+   "height_steps": 1.0,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/1/0/4/0/3",
+   "class": "restWhole",
+   "centre": 5.46,
+   "top": 5.92,
+   "bottom": 5.0,
+   "height_steps": 0.92,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/1/0/4/1/0",
+   "class": "restWhole",
+   "centre": 5.44,
+   "top": 5.94,
+   "bottom": 4.94,
+   "height_steps": 1.0,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/1/0/4/2/1",
+   "class": "restWhole",
+   "centre": 5.44,
+   "top": 5.94,
+   "bottom": 4.94,
+   "height_steps": 1.0,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/1/0/4/3/1",
+   "class": "restWhole",
+   "centre": 5.45,
+   "top": 5.94,
+   "bottom": 4.96,
+   "height_steps": 0.98,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/1/0/4/4/1",
+   "class": "restWhole",
+   "centre": 5.44,
+   "top": 5.94,
+   "bottom": 4.94,
+   "height_steps": 1.0,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/1/0/4/5/0",
+   "class": "restWhole",
+   "centre": 5.44,
+   "top": 5.94,
+   "bottom": 4.94,
+   "height_steps": 1.0,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/1/0/4/6/1",
+   "class": "restWhole",
+   "centre": 5.44,
+   "top": 5.94,
+   "bottom": 4.94,
+   "height_steps": 1.0,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/1/0/4/7/1",
+   "class": "restWhole",
+   "centre": 5.44,
+   "top": 5.94,
+   "bottom": 4.94,
+   "height_steps": 1.0,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/1/0/4/8/1",
+   "class": "restWhole",
+   "centre": 5.44,
+   "top": 5.94,
+   "bottom": 4.94,
+   "height_steps": 1.0,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/1/0/5/0/3",
+   "class": "restWhole",
+   "centre": 5.46,
+   "top": 5.92,
+   "bottom": 5.0,
+   "height_steps": 0.92,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/1/0/5/1/0",
+   "class": "restWhole",
+   "centre": 5.44,
+   "top": 5.94,
+   "bottom": 4.94,
+   "height_steps": 1.0,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/1/0/5/2/1",
+   "class": "restWhole",
+   "centre": 5.44,
+   "top": 5.94,
+   "bottom": 4.94,
+   "height_steps": 1.0,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/1/0/5/3/1",
+   "class": "restWhole",
+   "centre": 5.45,
+   "top": 5.94,
+   "bottom": 4.96,
+   "height_steps": 0.98,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/1/0/5/4/1",
+   "class": "restWhole",
+   "centre": 5.44,
+   "top": 5.94,
+   "bottom": 4.94,
+   "height_steps": 1.0,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/1/0/5/5/0",
+   "class": "restWhole",
+   "centre": 5.44,
+   "top": 5.94,
+   "bottom": 4.94,
+   "height_steps": 1.0,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/1/0/5/6/1",
+   "class": "restWhole",
+   "centre": 5.44,
+   "top": 5.94,
+   "bottom": 4.94,
+   "height_steps": 1.0,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/1/0/5/7/1",
+   "class": "restWhole",
+   "centre": 5.44,
+   "top": 5.94,
+   "bottom": 4.94,
+   "height_steps": 1.0,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/1/0/5/8/1",
+   "class": "restWhole",
+   "centre": 5.44,
+   "top": 5.94,
+   "bottom": 4.94,
+   "height_steps": 1.0,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/1/0/8/0/2",
+   "class": "restWhole",
+   "centre": 5.46,
+   "top": 5.92,
+   "bottom": 5.0,
+   "height_steps": 0.92,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/1/0/8/1/0",
+   "class": "restWhole",
+   "centre": 5.44,
+   "top": 5.94,
+   "bottom": 4.94,
+   "height_steps": 1.0,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/1/0/8/2/1",
+   "class": "restWhole",
+   "centre": 5.44,
+   "top": 5.94,
+   "bottom": 4.94,
+   "height_steps": 1.0,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/1/0/8/3/1",
+   "class": "restWhole",
+   "centre": 5.45,
+   "top": 5.94,
+   "bottom": 4.96,
+   "height_steps": 0.98,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/1/0/8/4/1",
+   "class": "restWhole",
+   "centre": 5.44,
+   "top": 5.94,
+   "bottom": 4.94,
+   "height_steps": 1.0,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/1/0/8/5/0",
+   "class": "restWhole",
+   "centre": 5.44,
+   "top": 5.94,
+   "bottom": 4.94,
+   "height_steps": 1.0,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/1/0/8/6/1",
+   "class": "restWhole",
+   "centre": 5.44,
+   "top": 5.94,
+   "bottom": 4.94,
+   "height_steps": 1.0,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/1/0/8/7/1",
+   "class": "restWhole",
+   "centre": 5.44,
+   "top": 5.94,
+   "bottom": 4.94,
+   "height_steps": 1.0,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/1/0/8/8/1",
+   "class": "restWhole",
+   "centre": 5.44,
+   "top": 5.94,
+   "bottom": 4.94,
+   "height_steps": 1.0,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/1/0/9/0/2",
+   "class": "restWhole",
+   "centre": 5.46,
+   "top": 5.92,
+   "bottom": 5.0,
+   "height_steps": 0.92,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/1/0/9/1/0",
+   "class": "restWhole",
+   "centre": 5.44,
+   "top": 5.94,
+   "bottom": 4.94,
+   "height_steps": 1.0,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/1/0/9/2/1",
+   "class": "restWhole",
+   "centre": 5.44,
+   "top": 5.94,
+   "bottom": 4.94,
+   "height_steps": 1.0,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/1/0/9/3/1",
+   "class": "restWhole",
+   "centre": 5.45,
+   "top": 5.94,
+   "bottom": 4.96,
+   "height_steps": 0.98,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/1/0/9/4/1",
+   "class": "restWhole",
+   "centre": 5.44,
+   "top": 5.94,
+   "bottom": 4.94,
+   "height_steps": 1.0,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/1/0/9/5/0",
+   "class": "restWhole",
+   "centre": 5.44,
+   "top": 5.94,
+   "bottom": 4.94,
+   "height_steps": 1.0,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/1/0/9/6/1",
+   "class": "restWhole",
+   "centre": 5.44,
+   "top": 5.94,
+   "bottom": 4.94,
+   "height_steps": 1.0,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/1/0/9/7/1",
+   "class": "restWhole",
+   "centre": 5.44,
+   "top": 5.94,
+   "bottom": 4.94,
+   "height_steps": 1.0,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/1/0/9/8/1",
+   "class": "restWhole",
+   "centre": 5.44,
+   "top": 5.94,
+   "bottom": 4.94,
+   "height_steps": 1.0,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/1/0/10/0/5",
+   "class": "restWhole",
+   "centre": 5.46,
+   "top": 5.92,
+   "bottom": 5.0,
+   "height_steps": 0.92,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/1/0/10/1/0",
+   "class": "restWhole",
+   "centre": 5.44,
+   "top": 5.94,
+   "bottom": 4.94,
+   "height_steps": 1.0,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/1/0/10/2/1",
+   "class": "restWhole",
+   "centre": 5.44,
+   "top": 5.94,
+   "bottom": 4.94,
+   "height_steps": 1.0,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/1/0/10/3/1",
+   "class": "restWhole",
+   "centre": 5.45,
+   "top": 5.94,
+   "bottom": 4.96,
+   "height_steps": 0.98,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/1/0/10/4/1",
+   "class": "restWhole",
+   "centre": 5.44,
+   "top": 5.94,
+   "bottom": 4.94,
+   "height_steps": 1.0,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/1/0/10/5/0",
+   "class": "restWhole",
+   "centre": 5.44,
+   "top": 5.94,
+   "bottom": 4.94,
+   "height_steps": 1.0,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/1/0/10/6/1",
+   "class": "restWhole",
+   "centre": 5.44,
+   "top": 5.94,
+   "bottom": 4.94,
+   "height_steps": 1.0,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/1/0/10/7/1",
+   "class": "restWhole",
+   "centre": 5.44,
+   "top": 5.94,
+   "bottom": 4.94,
+   "height_steps": 1.0,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/1/0/10/8/1",
+   "class": "restWhole",
+   "centre": 5.44,
+   "top": 5.94,
+   "bottom": 4.94,
+   "height_steps": 1.0,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/1/0/11/0/5",
+   "class": "restWhole",
+   "centre": 5.46,
+   "top": 5.92,
+   "bottom": 5.0,
+   "height_steps": 0.92,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/1/0/11/1/0",
+   "class": "restWhole",
+   "centre": 5.44,
+   "top": 5.94,
+   "bottom": 4.94,
+   "height_steps": 1.0,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/1/0/11/2/1",
+   "class": "restWhole",
+   "centre": 5.44,
+   "top": 5.94,
+   "bottom": 4.94,
+   "height_steps": 1.0,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/1/0/11/3/1",
+   "class": "restWhole",
+   "centre": 5.45,
+   "top": 5.94,
+   "bottom": 4.96,
+   "height_steps": 0.98,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/1/0/11/4/1",
+   "class": "restWhole",
+   "centre": 5.44,
+   "top": 5.94,
+   "bottom": 4.94,
+   "height_steps": 1.0,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/1/0/11/5/0",
+   "class": "restWhole",
+   "centre": 5.44,
+   "top": 5.94,
+   "bottom": 4.94,
+   "height_steps": 1.0,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/1/0/11/6/1",
+   "class": "restWhole",
+   "centre": 5.44,
+   "top": 5.94,
+   "bottom": 4.94,
+   "height_steps": 1.0,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/1/0/11/7/1",
+   "class": "restWhole",
+   "centre": 5.44,
+   "top": 5.94,
+   "bottom": 4.94,
+   "height_steps": 1.0,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/1/0/11/8/1",
+   "class": "restWhole",
+   "centre": 5.44,
+   "top": 5.94,
+   "bottom": 4.94,
+   "height_steps": 1.0,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/1/0/12/0/5",
+   "class": "restWhole",
+   "centre": 5.46,
+   "top": 5.92,
+   "bottom": 5.0,
+   "height_steps": 0.92,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/1/0/12/1/0",
+   "class": "restWhole",
+   "centre": 5.44,
+   "top": 5.94,
+   "bottom": 4.94,
+   "height_steps": 1.0,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/1/0/12/2/1",
+   "class": "restWhole",
+   "centre": 5.44,
+   "top": 5.94,
+   "bottom": 4.94,
+   "height_steps": 1.0,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/1/0/12/3/1",
+   "class": "restWhole",
+   "centre": 5.45,
+   "top": 5.94,
+   "bottom": 4.96,
+   "height_steps": 0.98,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/1/0/12/4/1",
+   "class": "restWhole",
+   "centre": 5.44,
+   "top": 5.94,
+   "bottom": 4.94,
+   "height_steps": 1.0,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/1/0/12/5/0",
+   "class": "restWhole",
+   "centre": 5.44,
+   "top": 5.94,
+   "bottom": 4.94,
+   "height_steps": 1.0,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/1/0/12/6/1",
+   "class": "restWhole",
+   "centre": 5.44,
+   "top": 5.94,
+   "bottom": 4.94,
+   "height_steps": 1.0,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/1/0/12/7/1",
+   "class": "restWhole",
+   "centre": 5.44,
+   "top": 5.94,
+   "bottom": 4.94,
+   "height_steps": 1.0,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/1/0/12/8/1",
+   "class": "restWhole",
+   "centre": 5.44,
+   "top": 5.94,
+   "bottom": 4.94,
+   "height_steps": 1.0,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/1/0/13/3/1",
+   "class": "restWhole",
+   "centre": 5.45,
+   "top": 5.94,
+   "bottom": 4.96,
+   "height_steps": 0.98,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/1/0/17/0/5",
+   "class": "restWhole",
+   "centre": 5.47,
+   "top": 5.92,
+   "bottom": 5.02,
+   "height_steps": 0.9,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/1/0/17/1/0",
+   "class": "restWhole",
+   "centre": 5.45,
+   "top": 5.94,
+   "bottom": 4.96,
+   "height_steps": 0.98,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/1/0/17/2/1",
+   "class": "restWhole",
+   "centre": 5.45,
+   "top": 5.94,
+   "bottom": 4.96,
+   "height_steps": 0.98,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/1/0/17/3/1",
+   "class": "restWhole",
+   "centre": 5.47,
+   "top": 5.96,
+   "bottom": 4.98,
+   "height_steps": 0.98,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/1/0/17/4/1",
+   "class": "restWhole",
+   "centre": 5.45,
+   "top": 5.94,
+   "bottom": 4.96,
+   "height_steps": 0.98,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/1/0/17/5/0",
+   "class": "restWhole",
+   "centre": 5.45,
+   "top": 5.94,
+   "bottom": 4.96,
+   "height_steps": 0.98,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/1/0/17/6/1",
+   "class": "restWhole",
+   "centre": 5.45,
+   "top": 5.94,
+   "bottom": 4.96,
+   "height_steps": 0.98,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/1/0/17/7/1",
+   "class": "restWhole",
+   "centre": 5.45,
+   "top": 5.94,
+   "bottom": 4.96,
+   "height_steps": 0.98,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/1/0/17/8/1",
+   "class": "restWhole",
+   "centre": 5.45,
+   "top": 5.94,
+   "bottom": 4.96,
+   "height_steps": 0.98,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/2/0/0/0/5",
+   "class": "restWhole",
+   "centre": 5.484,
+   "top": 5.915,
+   "bottom": 5.054,
+   "height_steps": 0.861,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/2/0/1/0/5",
+   "class": "restWhole",
+   "centre": 5.447,
+   "top": 5.933,
+   "bottom": 4.96,
+   "height_steps": 0.973,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/2/0/2/0/5",
+   "class": "restWhole",
+   "centre": 5.42,
+   "top": 5.865,
+   "bottom": 4.974,
+   "height_steps": 0.892,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/2/0/3/0/5",
+   "class": "restWhole",
+   "centre": 5.46,
+   "top": 5.947,
+   "bottom": 4.974,
+   "height_steps": 0.973,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/2/0/4/0/3",
+   "class": "restWhole",
+   "centre": 5.45,
+   "top": 5.947,
+   "bottom": 4.953,
+   "height_steps": 0.993,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/2/0/5/0/4",
+   "class": "restWhole",
+   "centre": 5.437,
+   "top": 5.933,
+   "bottom": 4.94,
+   "height_steps": 0.993,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/2/0/6/1/9",
+   "class": "restWhole",
+   "centre": 19.37,
+   "top": 19.96,
+   "bottom": 18.78,
+   "height_steps": 1.18,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/2/0/8/0/2",
+   "class": "restWhole",
+   "centre": 5.43,
+   "top": 5.947,
+   "bottom": 4.913,
+   "height_steps": 1.034,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/2/0/9/0/2",
+   "class": "restWhole",
+   "centre": 5.43,
+   "top": 5.947,
+   "bottom": 4.913,
+   "height_steps": 1.034,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/2/0/10/0/5",
+   "class": "restWhole",
+   "centre": 5.43,
+   "top": 5.947,
+   "bottom": 4.913,
+   "height_steps": 1.034,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/2/0/10/6/3",
+   "class": "restWhole",
+   "centre": 5.46,
+   "top": 5.98,
+   "bottom": 4.94,
+   "height_steps": 1.04,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/2/0/10/7/0",
+   "class": "restWhole",
+   "centre": 5.46,
+   "top": 5.94,
+   "bottom": 4.98,
+   "height_steps": 0.96,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/2/0/10/8/2",
+   "class": "restWhole",
+   "centre": 5.45,
+   "top": 5.96,
+   "bottom": 4.94,
+   "height_steps": 1.02,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/2/0/11/0/5",
+   "class": "restWhole",
+   "centre": 5.46,
+   "top": 5.947,
+   "bottom": 4.974,
+   "height_steps": 0.973,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/2/0/11/6/1",
+   "class": "restWhole",
+   "centre": 5.47,
+   "top": 5.94,
+   "bottom": 5.0,
+   "height_steps": 0.94,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/2/0/11/7/0",
+   "class": "restWhole",
+   "centre": 5.46,
+   "top": 5.94,
+   "bottom": 4.98,
+   "height_steps": 0.96,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/2/0/11/8/2",
+   "class": "restWhole",
+   "centre": 5.46,
+   "top": 5.96,
+   "bottom": 4.96,
+   "height_steps": 1.0,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/2/0/12/0/5",
+   "class": "restWhole",
+   "centre": 5.406,
+   "top": 5.913,
+   "bottom": 4.9,
+   "height_steps": 1.013,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/2/0/12/6/1",
+   "class": "restWhole",
+   "centre": 5.45,
+   "top": 5.94,
+   "bottom": 4.96,
+   "height_steps": 0.98,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/2/0/12/7/0",
+   "class": "restWhole",
+   "centre": 5.45,
+   "top": 5.94,
+   "bottom": 4.96,
+   "height_steps": 0.98,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/2/0/12/8/2",
+   "class": "restWhole",
+   "centre": 5.44,
+   "top": 5.94,
+   "bottom": 4.94,
+   "height_steps": 1.0,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  },
+  {
+   "subject": "glyph/2/0/17/0/5",
+   "class": "restWhole",
+   "centre": 5.45,
+   "top": 5.947,
+   "bottom": 4.953,
+   "height_steps": 0.993,
+   "verdict": "class_not_contradicted",
+   "verdict_nominal": "class_not_contradicted",
+   "sean": null
+  }
+ ],
+ "sean_ten": []
+}

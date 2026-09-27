@@ -78,6 +78,37 @@ def _disable() -> None:
     RH._flag_direction = lambda ev, flags: {}
 
 
+def _nominal_bands() -> None:
+    """ROADMAP 2.12b-cal — restore 2.12b's NOMINAL band predicate, verbatim.
+
+    ⚠️⚠️ BASE AND ARM ON ONE TREE (CLAUDE.md §6b). 2.12b-cal changes exactly
+    one thing: where the bands come from. The base this arm must be read
+    against is therefore 2.12b as merged — *nearer the other slot by more than
+    half the gap* — and not the pre-2.12b nothing that `--off` restores. Both
+    are available, and the two answer different questions: `--off` prices the
+    slot rule as a whole, this prices the CALIBRATION.
+
+    ⚠️ IT IS A CONTROL THAT CAN FAIL. With this in force the rest census must
+    reproduce `FINDINGS.md` §2.12b's published split (Litolff 1,342 / 102 /
+    198; Breitkopf 1,837 / 32 / 235; engraved 216 / 0 / 0) row for row. A
+    number short of those is the tree having moved somewhere else, and it is
+    printed beside every delta rather than assumed away.
+    """
+    whole, half, slack = RH.WHOLE_REST_STEP, RH.HALF_REST_STEP, 0.5
+
+    def verdict(name, step):
+        slot = RH._REST_SLOT_BY_CLASS.get(name.lower())
+        if slot is None or step is None:
+            return None
+        other = half if slot == whole else whole
+        if abs(step - other) + slack < abs(step - slot):
+            return (RH.SLOT_OTHER if abs(step - other) <= slack
+                    else RH.SLOT_NEITHER)
+        return RH.SLOT_NOT_CONTRADICTED
+
+    RH._rest_slot_verdict = verdict
+
+
 def _run(rec: dict) -> Log:
     log = rebuild(rec)
     adjudicate.run(log)
@@ -176,6 +207,10 @@ def main() -> int:
     ap.add_argument("--label", default="?")
     ap.add_argument("--control", action="store_true")
     ap.add_argument("--off", action="store_true")
+    ap.add_argument("--old-bands", action="store_true",
+                    help="ROADMAP 2.12b-cal: run 2.12b's NOMINAL band "
+                         "predicate, so base and arm differ only by the "
+                         "calibration")
     ap.add_argument("--out")
     a = ap.parse_args()
 
@@ -216,6 +251,8 @@ def main() -> int:
     # of a 478 MB record spent reproducing a number the base run already has.
     if a.off or a.control:
         _disable()
+    elif a.old_bands:
+        _nominal_bands()
     log = _run(rec)
     if a.control or a.off:
         ctrl = control(log)
@@ -223,7 +260,8 @@ def main() -> int:
             return 0 if ctrl["differ"] == 0 and ctrl["extra"] == 0 else 1
     else:
         ctrl = None
-    res = {"label": a.label, "record": a.record, "arm": "off" if a.off else "on",
+    arm = "off" if a.off else ("nominal_bands" if a.old_bands else "on")
+    res = {"label": a.label, "record": a.record, "arm": arm,
            "provenance": {"commit": prov.get("commit"),
                           "dirty": prov.get("dirty")},
            "control": ctrl,
