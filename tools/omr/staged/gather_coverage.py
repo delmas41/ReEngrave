@@ -586,7 +586,13 @@ def stub_starvation() -> Dict[str, Dict[str, Any]]:
 #: octave markers `clef8`/`clef15`. The shipped detector spells them
 #: `clefC*`/`clefF`/`clefG`/`clefUnpitchedPercussion`, all family `clef`.
 FAMILY_TO_Q: Dict[str, Optional[str]] = {
-    "accidental": None,          # in-bar accidentals: only GLYPH_BOX carries them
+    # ⚠️ NO LONGER `None` — ROADMAP 2.7, 2026-09-23. This was the LARGEST
+    # entry in `FAMILY_Q_IS_ELSEWHERE`: 1,531 in-bar accidental glyphs on the
+    # Litolff whole movement filed as anonymous `Q.GLYPH_BOX` rows, reaching
+    # no quantity, so no adjudicator could be written about them and no
+    # abstention could be recorded. `gather_accidental_positions` now files
+    # the glyph's own staff position on the notehead's grid.
+    "accidental": "ACCIDENTAL_STAFF_POSITION",
     "arpeggiato": None,
     "artic": "ARTICULATION_MARK",
     # ⚠️ THE COARSE SPELLING OF `artic`, AND IT IS GATHERED. `_family`
@@ -653,15 +659,17 @@ FAMILY_TO_Q: Dict[str, Optional[str]] = {
 #: with the reason. ⚠️ An inventory, not a suppression: the guard in
 #: `test_staged_gather_coverage.py` fails on any other None-with-a-Q, so a
 #: family that quietly grows a gather quantity is a loud failure.
-FAMILY_Q_IS_ELSEWHERE: Dict[str, str] = {
-    "accidental":
-        "`Q.ACCIDENTAL` exists but is an EVALUATE consequence -- the pitch "
-        "respelled once the key settles -- not a gather-stage reading of the "
-        "printed glyph. The in-bar accidental is still filed only as an "
-        "anonymous `Q.GLYPH_BOX`, and it is SCOPE rather than a mark: it "
-        "holds to the barline (`transcribe.py:2210` implements exactly that), "
-        "which is a span the record has nowhere to put.",
-}
+#:
+#: ⚠️⚠️ THIS TABLE IS EMPTY AS OF 2026-09-23 (ROADMAP 2.7) AND THAT IS A
+#: RESULT, NOT A CLEANUP. Its one entry was `accidental`, and it stood for a
+#: year of the tree's own most-repeated fault: the printed in-bar accidental
+#: was detected 1,531 times on one movement, filed only as an anonymous
+#: `Q.GLYPH_BOX`, and read by nothing. `gather_accidental_positions` closed
+#: it. An EMPTY dict here means every detector family with a `Q` of its own
+#: name now files under it — the state this table exists to make visible, and
+#: the guard in `test_staged_gather_coverage.py` still fails on any new
+#: None-with-a-Q, so the next such family is loud rather than silent.
+FAMILY_Q_IS_ELSEWHERE: Dict[str, str] = {}
 
 
 def _family(class_name: str) -> str:
