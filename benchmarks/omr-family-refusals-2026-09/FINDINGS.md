@@ -812,7 +812,7 @@ every quantity (outcome, value, reason):
 |---|---|---|---|---|---|
 | `beethoven5-p1-p4` | 1,878 of 1,878 | **18 -> 18** | 18, all `ledger_is_not_a_ledger` | 1,769 / 1,769 | balanced, `[]` |
 | Litolff whole | 7,617 of 7,617 | **79 -> 79** | 79, all `ledger_is_not_a_ledger` | 8,686 / 8,686 | balanced, `[]` |
-| Breitkopf whole | (running at the time of the first commit; filled by the follow-up) | | | | |
+| Breitkopf whole | 7,818 of 7,818 | **38 -> 38** | 38, all `ledger_is_not_a_ledger` | 7,872 / 7,872 | balanced, `[]` |
 
 `notes_not_written` identical on every record; `unladdered_signal` identical
 base/arm on every record (below).
