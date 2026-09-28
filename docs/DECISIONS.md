@@ -308,3 +308,13 @@ Format: `YYYY-MM-DD · who · the decision · because · (pointer)`
   is displayed nowhere · *"it feels less important than what we already have
   to get done and I'm worried about scope creep"* · recorded so the idea is
   not lost; no lane until he un-parks it
+- 2026-09-28 · Sean · **Build and wire; stop burning runs on proof.** A lane
+  proves its change with RED→GREEN unit tests, ONE count page or ONE saved
+  record read, and a handful of crops for Sean — NOT whole-movement base-vs-arm
+  re-adjudications or re-gathers, unless the item exists to move the
+  whole-movement number. Re-gather once at the end of a batch, not per change ·
+  *"I feel like we are burning through a lot of my limit for test runs … we
+  should be building and wiring"* · what the night showed: the cheap checks
+  (one record read → the Brahms funnel; six crops → 2.4c's text marks) paid;
+  the expensive ones (2.11b ~5 h for one clef; 2.14 two re-gathers for zero)
+  did not, and per-rule deltas on a file 78% held out say little
