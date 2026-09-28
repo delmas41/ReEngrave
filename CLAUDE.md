@@ -85,9 +85,11 @@ There are two OMR pipelines in the tree.
 
 **STAGED** (`tools/omr/staged/`) is the product path (DECISIONS 2026-09-22).
 Every decision is filed against a subject on an append-only record, may
-abstain, and can be traced. It exports MusicXML. It does not yet export
-LilyPond, is not yet called by the web app, and lacks several legacy filters —
-those are Phase 3 items on the roadmap.
+abstain, and can be traced. It exports MusicXML and, since roadmap 3.1,
+LilyPond (`--lilypond`) and a compiled PDF (`--pdf`, roadmap 3.3). Roadmap
+3.3's first half wires `omr_engine=staged` into the web app, but `local`
+remains the web app's default engine there, and it lacks several legacy
+filters — those are Phase 3 items on the roadmap.
 
 **LEGACY** (`tools/omr/transcribe.py`, `tools/omr/export.py`,
 `tools/omr/contextual.py` and their satellites) is FROZEN: bug fixes only, no
@@ -263,12 +265,16 @@ and can only re-export or re-adjudicate a committed record.
 ```bash
 python3 -m tools.omr.staged score.pdf --pages 0-2 --weights omr-weights/<file>.pt --out rec.json
 python3 -m tools.omr.staged score.pdf --pages 0 --weights <...> --musicxml out.musicxml
+python3 -m tools.omr.staged score.pdf --pages 0 --weights <...> --musicxml out.musicxml --lilypond out.ly --pdf out.pdf
 python3 -m tools.omr.staged score.pdf --pages 0-2 --weights <...> --against legacy.omr.json
 ```
 
 Options: `--pages`, `--weights`, `--dpi`, `--conf`, `--imgsz`, `--out`,
-`--against`, `--musicxml`, `--no-surya`, `--no-ocr`, `--work-id`, `--sheet`,
-`--no-roster`, `--progress`. There is no `--dossier` and there will not be
+`--against`, `--musicxml`, `--lilypond`, `--pdf`, `--no-surya`, `--no-ocr`,
+`--work-id`, `--sheet`, `--no-roster`, `--progress`. `--pdf` compiles the
+`.ly` with the `lilypond` binary (reusing `--lilypond`'s own text when both
+are given); `lilypond` absent still writes the `.ly` and exits 0. There is
+no `--dossier` and there will not be
 one: a dossier reaches the pipeline only through a human-confirmed fact
 sheet (`--sheet`, §8), so the measurement path is structurally unable to
 consume a truth file.

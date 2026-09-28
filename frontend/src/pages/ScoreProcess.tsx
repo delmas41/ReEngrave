@@ -206,6 +206,9 @@ export default function ScoreProcess() {
   const [polling, setPolling] = useState(false);
   const wasProcessing = useRef(false);
   const [selectedEngine, setSelectedEngine] = useState<OMREngine>('claude_vision');
+  // ROADMAP 3.3, second half: an optional whole-movement page range,
+  // staged only (e.g. '0-26'). Blank keeps the server's OMR_MAX_PAGES cap.
+  const [pagesInput, setPagesInput] = useState('');
 
   const { data: score, isLoading } = useQuery({
     queryKey: ['score', scoreId],
@@ -228,7 +231,12 @@ export default function ScoreProcess() {
   }, [score?.status, scoreId, navigate]);
 
   const omrMutation = useMutation({
-    mutationFn: () => runOMR(scoreId!, selectedEngine),
+    mutationFn: () =>
+      runOMR(
+        scoreId!,
+        selectedEngine,
+        selectedEngine === 'staged' && pagesInput.trim() ? pagesInput.trim() : undefined
+      ),
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ['score', scoreId] });
       wasProcessing.current = true;
@@ -324,6 +332,25 @@ export default function ScoreProcess() {
                 ? 'The staged pipeline (tools/omr/staged): every decision is filed against evidence and may abstain. Experimental — not yet the default.'
                 : 'In-house YOLOv8 + classical-CV pipeline (tools/omr). Default. Fast, runs locally, no API cost.'}
             </p>
+            {selectedEngine === 'staged' && (
+              <div style={{ marginBottom: 20 }}>
+                <input
+                  type="text"
+                  value={pagesInput}
+                  onChange={(e) => setPagesInput(e.target.value)}
+                  placeholder="Pages (optional), e.g. 0-26"
+                  style={{
+                    padding: '6px 12px', borderRadius: 6, border: '1px solid #ccc',
+                    fontSize: 13, width: 220, textAlign: 'center' as const,
+                  }}
+                />
+                <p style={{ color: '#aaa', fontSize: 11, marginTop: 6 }}>
+                  A whole-movement page range (e.g. "0-26"). Its estimated cost is
+                  checked against the server's job budget before it starts. Leave
+                  blank to use the default page cap.
+                </p>
+              </div>
+            )}
             <button
               style={styles.primaryBtn}
               onClick={() => omrMutation.mutate()}

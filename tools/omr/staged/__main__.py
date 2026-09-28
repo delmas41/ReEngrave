@@ -31,7 +31,7 @@ import json
 import os
 import sys
 from pathlib import Path
-from typing import Any
+from typing import Any, Optional
 
 
 def parse_pages(spec: str) -> list:
@@ -56,7 +56,12 @@ def parse_pages(spec: str) -> list:
 #: every pair look like a different configuration and
 #: `regather_control.check_provenance` would accept a record compared with
 #: itself -- the exact trap that guard exists to catch.
-_OUTPUT_ONLY_ARGS = ("out", "musicxml", "lilypond", "progress")
+#: ⚠️ `pdf_out`, NOT `pdf` -- the positional `pdf` argument is the INPUT
+#: score, and belongs in the settings stamp like any other reading-affecting
+#: argument; only the NEW `--pdf` output flag (below, `dest="pdf_out"` for
+#: exactly this reason -- argparse would otherwise collide it with the
+#: positional) is output-only.
+_OUTPUT_ONLY_ARGS = ("out", "musicxml", "lilypond", "pdf_out", "progress")
 
 
 def _settings(args: Any = None) -> dict:
@@ -189,6 +194,25 @@ def main(argv=None) -> int:
                          "coverage report -- including marks LilyPond has no "
                          "syntax for (tremolo, dynamic-word directives) -- "
                          "goes beside it as <path>.coverage.json.")
+    # ⚠️ ROADMAP 3.3, PART A / product definition (CLAUDE.md §1): "one
+    # command, a whole movement, MusicXML and a LilyPond PDF". Before this,
+    # a PDF needed a THIRD command (`lilypond out.ly` by hand, after
+    # `--lilypond` wrote it). `--pdf` closes that -- it compiles the
+    # LilyPond text with the `lilypond` BINARY, reusing the already-computed
+    # `.ly` when `--lilypond` was also given (one `to_lilypond` call, not
+    # two) and writing one anyway, beside the PDF, when it was not, so the
+    # run still leaves the intermediate a musician (or a later `lilypond`
+    # invocation) can use.
+    ap.add_argument("--pdf", dest="pdf_out", default=None,
+                    help="also RENDER the LilyPond output to a PDF here, via "
+                         "the `lilypond` binary on PATH -- located the same "
+                         "way `tools.omr.acceptance.lilypond_check` does "
+                         "(`shutil.which('lilypond')`, never a hardcoded "
+                         "path). If `lilypond` is not on PATH, the .ly is "
+                         "still written and this exits 0 with a clear "
+                         "message -- a missing renderer is not a failed "
+                         "gather (CLAUDE.md rule 8: never turn 'cannot "
+                         "render' into a silent success OR a crash).")
     # ⚠️⚠️ BOTH OCR RUNGS DEFAULT **ON** SINCE 2026-09-16 (Sean's call), and
     # the flags are `--no-surya` / `--no-ocr` so ABSENCE IS ON. The text
     # layer is free and reads NOTHING on a 19th-century scan (0 labels over
@@ -417,12 +441,107 @@ def main(argv=None) -> int:
         ly_cov.write_text(json.dumps(ly_report, indent=2, default=str))
         print(f"wrote {args.lilypond} and {ly_cov}")
 
+    # ⚠️⚠️ ROADMAP 3.3 PART A / CLAUDE.md §1's PRODUCT DEFINITION: "one
+    # command, a whole movement, MusicXML and a LilyPond PDF". Before this,
+    # a PDF needed `--lilypond` here PLUS a separate `lilypond out.ly`
+    # invocation -- a second command, run by hand, after the gather that
+    # produced `out.ly` had already finished. `--pdf` closes that gap.
+    #
+    # ⚠️ REUSES `--lilypond`'s ALREADY-COMPUTED TEXT WHEN BOTH ARE GIVEN --
+    # never a second `to_lilypond(result)` call over the same record, for
+    # the same "ONE gather" reason `--against` reuses the loaded legacy
+    # result rather than re-running anything.
+    if args.pdf_out:
+        if args.lilypond:
+            pdf_ly_report = ly_report
+            ly_source = Path(args.lilypond)
+        else:
+            from . import lilypond as staged_lily
+            pdf_ly_text, pdf_ly_report = staged_lily.to_lilypond(result)
+            ly_source = Path(args.pdf_out).with_suffix(".ly")
+            ly_source.write_text(pdf_ly_text)
+            ly_cov = Path(str(ly_source) + ".coverage.json")
+            ly_cov.write_text(json.dumps(pdf_ly_report, indent=2, default=str))
+            print(f"wrote {ly_source} and {ly_cov} "
+                  f"(--lilypond not given -- one is needed to render a PDF, "
+                  f"so this run wrote it anyway)")
+        _render_pdf(ly_source, Path(args.pdf_out))
+
     _report(result)
     if args.musicxml:
         staged_export._report(report)
     if args.lilypond:
         staged_lily._report(ly_report)
+    # ⚠️ LAST, ON PURPOSE (CLAUDE.md §1): "every bar the reader could not
+    # read is MARKED as unread and never invented ... and the user must see
+    # how many". Everything above is the per-stage / per-family detail a
+    # session digs through; this is the one line Sean (or anyone running
+    # the CLI) should be able to read without opening the coverage JSON.
+    if args.musicxml or args.lilypond:
+        _print_accounting_summary(
+            musicxml_report=report if args.musicxml else None,
+            lilypond_report=ly_report if args.lilypond else None)
     return 0
+
+
+def _render_pdf(ly_source: Path, pdf_out: Path) -> None:
+    """Compile `ly_source` to `pdf_out` with the `lilypond` binary.
+
+    ⚠️ THE SAME LOOKUP `tools.omr.acceptance.lilypond_check` USES (roadmap
+    3.1b) -- `shutil.which("lilypond")`, never a hardcoded path or an env
+    var this module would have to invent and keep in sync. `lilypond`
+    absent is reported and this still exits 0 (CLAUDE.md rule 8: a missing
+    renderer is "cannot tell", never converted into a crash OR a silent
+    empty file called a success).
+    """
+    import shutil
+    import subprocess
+
+    binary = shutil.which("lilypond")
+    if not binary:
+        print(f"NO PDF: `lilypond` is not on PATH. Wrote {ly_source} -- "
+              f"render it yourself once lilypond is installed "
+              f"(`lilypond -o <dir> {ly_source}`).")
+        return
+
+    pdf_out = pdf_out.resolve()
+    pdf_out.parent.mkdir(parents=True, exist_ok=True)
+    try:
+        proc = subprocess.run(
+            [binary, "-o", str(pdf_out.parent), str(ly_source)],
+            capture_output=True, text=True, timeout=1800)
+    except subprocess.TimeoutExpired:
+        print(f"NO PDF: `lilypond` did not finish within 1800s compiling "
+              f"{ly_source}. Wrote {ly_source} -- render it yourself "
+              f"(`lilypond -o <dir> {ly_source}`).")
+        return
+    log = (proc.stdout or "") + "\n" + (proc.stderr or "")
+
+    # ⚠️ THE SAME TWO REGEXES `tools.omr.acceptance` confirmed against a real
+    # `lilypond 2.24.4` run (roadmap 3.1b's own session) -- imported rather
+    # than re-derived, so this call site and `lilypond_check` can never read
+    # one stderr string differently. Deferred: `tools.omr.acceptance` is a
+    # benchmark-harness module a plain gather-and-export run should not pay
+    # to import unless a PDF was actually requested.
+    from .. import acceptance as _acceptance
+    barcheck_failures = len(_acceptance._BARCHECK_RE.findall(log))
+    unterminated_ties = len(_acceptance._UNTERMINATED_TIE_RE.findall(log))
+
+    produced = pdf_out.parent / (ly_source.stem + ".pdf")
+    if produced != pdf_out and produced.is_file():
+        produced.replace(pdf_out)
+        produced = pdf_out
+    ok = produced.is_file()
+
+    print(f"lilypond exit {proc.returncode}: "
+          f"{'wrote ' + str(pdf_out) if ok else 'NO PDF produced'}")
+    print(f"  {barcheck_failures} bar-check failures, "
+          f"{unterminated_ties} unterminated ties, from lilypond's own "
+          f"stderr (CLAUDE.md §6a: a control, never a substitute for a "
+          f"human reading the PDF)")
+    if not ok:
+        print(f"  ⚠️ lilypond exited {proc.returncode} and produced no PDF "
+              f"-- log tail:\n{log[-2000:]}")
 
 
 def _report(result: dict) -> None:
@@ -471,6 +590,59 @@ def _report(result: dict) -> None:
           f"{len(result['stubs']['consequences'])} consequences", file=sys.stderr)
     if "divergence" in result:
         print(f"── DIVERGENCE: {result['divergence']['counts']}", file=sys.stderr)
+
+
+def _print_accounting_summary(*, musicxml_report: Optional[dict],
+                              lilypond_report: Optional[dict]) -> None:
+    """CLAUDE.md §1, in plain words: *"every bar the reader could not read
+    is MARKED as unread and never invented, and every staff is named or
+    held out and counted"*. The `--musicxml` / `--lilypond` coverage reports
+    already carry these numbers (`staged.export.coverage`,
+    ROADMAP 2.8 / part-join provenance) -- this reads them, never
+    recomputes them, so the console line and the JSON a session opens next
+    can never disagree.
+
+    Prefers the MusicXML report for `unread bars`: that figure comes from
+    ROADMAP 2.8's per-bar hold-out, computed while rendering `_part_xml`,
+    which `--lilypond` alone does not run. `held out staves` is read off
+    whichever report is present (both share the same part-join provenance).
+    """
+    held_out_staves = None
+    for rpt in (musicxml_report, lilypond_report):
+        if rpt and (rpt.get("part_join") or {}).get("held_out_staves") is not None:
+            held_out_staves = rpt["part_join"]["held_out_staves"]
+            break
+
+    print("\n── ACCOUNTING (CLAUDE.md §1: every unread bar is MARKED, "
+          "never invented) ──", file=sys.stderr)
+
+    if musicxml_report is not None:
+        held = musicxml_report.get("bars_held_out_sum") or {}
+        unread_bars = held.get("bars", 0)
+        of_bars = held.get("of_bars_with_events", 0)
+        print(f"  unread bars: {unread_bars} of {of_bars} bars carrying "
+              f"events did not add up to the meter in force -- held out of "
+              f"the MusicXML and counted, not guessed", file=sys.stderr)
+    else:
+        print("  unread bars: not computed (needs --musicxml -- "
+              "roadmap 2.8's hold-out is that exporter's own accounting)",
+              file=sys.stderr)
+
+    if held_out_staves is not None:
+        print(f"  staves held out: {held_out_staves} (the part join could "
+              f"not NAME them, so they are held out of the file and "
+              f"counted, never silently dropped -- "
+              f"OMR_HOLD_OUT_UNIDENTIFIED)", file=sys.stderr)
+    else:
+        print("  staves held out: not computed", file=sys.stderr)
+
+    census = (musicxml_report or lilypond_report or {}).get("status_census") or {}
+    unaccounted = census.get("unaccounted")
+    if unaccounted:
+        print(f"  ⚠️ status_census.unaccounted is NOT EMPTY: {unaccounted} "
+              f"-- a family the census cannot place; see "
+              f"`python3 -m tools.omr.staged.trace --family <name>`",
+              file=sys.stderr)
 
 
 if __name__ == "__main__":

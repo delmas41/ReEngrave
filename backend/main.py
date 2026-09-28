@@ -4,6 +4,7 @@ All API routes for file import, OMR processing,
 Claude Vision comparison, review, export, and analytics.
 """
 
+import logging
 import os
 import uuid
 from contextlib import asynccontextmanager
@@ -61,6 +62,8 @@ from routers.auth import router as auth_router
 from routers.payments import router as payments_router, webhook_router
 from slowapi import _rate_limit_exceeded_handler
 from slowapi.errors import RateLimitExceeded
+
+logger = logging.getLogger(__name__)
 
 
 # ---------------------------------------------------------------------------
@@ -208,6 +211,14 @@ async def run_omr(
     db: AsyncSession = Depends(get_db),
     current_user: User = Depends(get_current_user),
     omr_engine: str = Query("local", regex="^(local|claude_vision|staged)$"),
+    pages: Optional[str] = Query(
+        None,
+        description="STAGED ENGINE ONLY (ROADMAP 3.3): a page range for a "
+                    "whole movement, e.g. '0-26' or '0,2,4-6' (same syntax "
+                    "as the staged CLI's --pages). Omitted keeps the "
+                    "existing OMR_MAX_PAGES cap — nothing changes for a "
+                    "caller that sends none.",
+    ),
 ):
     """Run OMR on a score's PDF.
 
@@ -221,7 +232,10 @@ async def run_omr(
         ``tools/omr/staged`` (see ``backend/modules/staged_omr.py``). The
         product path per CLAUDE.md §3, but not yet the web app's default —
         it does not yet carry the legacy filters or the LilyPond default
-        this route's ``local`` engine gets from ``export_module``.
+        this route's ``local`` engine gets from ``export_module``. Accepts
+        an optional ``pages`` range (a whole movement); the estimated cost
+        (``tools.omr.staged.budget``) is refused up front, with the
+        estimate in the error, when it exceeds ``OMR_JOB_BUDGET_S``.
     """
     result = await db.execute(select(Score).where(Score.id == score_id))
     score = result.scalar_one_or_none()
@@ -230,10 +244,76 @@ async def run_omr(
     if not score.original_pdf_path:
         raise HTTPException(status_code=400, detail="No PDF available for OMR")
 
+    if pages is not None and omr_engine != "staged":
+        raise HTTPException(
+            status_code=400,
+            detail=f"pages={pages!r} is only supported for "
+                  f"omr_engine=staged (got omr_engine={omr_engine!r})",
+        )
+
+    # ⚠️⚠️ ROADMAP 3.3, second half: THE JOB BUDGET, CHECKED BEFORE
+    # `score.status = "processing"` IS EVEN SET — a request whose estimate
+    # exceeds the server limit is refused up front, with the estimate in
+    # the error, never silently truncated to OMR_MAX_PAGES and never left
+    # to fail hours into a background task. `pages=None` (no whole-movement
+    # range requested) skips this entirely: the existing OMR_MAX_PAGES cap
+    # is cheap enough that CLAUDE.md's own budget constants were never
+    # meant to gate it, and a caller that sends nothing sees no behaviour
+    # change at all.
+    page_list: Optional[list[int]] = None
+    budget: Optional[dict] = None
+    if omr_engine == "staged" and pages is not None:
+        try:
+            page_list = staged_omr.parse_page_range(pages)
+        except Exception as exc:
+            raise HTTPException(
+                status_code=400,
+                detail=f"could not parse pages={pages!r}: {exc}",
+            )
+        if not page_list:
+            raise HTTPException(
+                status_code=400, detail=f"pages={pages!r} names no pages")
+
+        budget = staged_omr.estimate_budget_s(len(page_list))
+        logger.info(
+            "staged OMR job budget for score %s, %d pages: expected %.0fs "
+            "(~%.1fh), upper bound %.0fs (~%.1fh) -- %s",
+            score_id, len(page_list),
+            budget["total_s_expected"], budget["total_s_expected"] / 3600,
+            budget["total_s_upper_bound"], budget["total_s_upper_bound"] / 3600,
+            budget["caveat"],
+        )
+        # ⚠️ THE UPPER BOUND, NOT THE EXPECTED FIGURE — the same
+        # conservative choice CLAUDE.md rule 5 asks for ("no default flips
+        # on agreement with our own reading"): refusing on the smaller
+        # number would let a request through whose real cost, if the
+        # direction-text scan gate never fires, exceeds the limit anyway.
+        if budget["total_s_upper_bound"] > settings.omr_job_budget_s:
+            raise HTTPException(
+                status_code=413,
+                detail=(
+                    f"staged job over budget: {len(page_list)} pages "
+                    f"estimated at {budget['total_s_upper_bound']:.0f}s "
+                    f"(~{budget['total_s_upper_bound'] / 3600:.1f}h, upper "
+                    f"bound) against a server limit of "
+                    f"{settings.omr_job_budget_s:.0f}s "
+                    f"(~{settings.omr_job_budget_s / 3600:.1f}h). "
+                    f"Expected (with the direction-text scan gate): "
+                    f"{budget['total_s_expected']:.0f}s. Data point: "
+                    f"{budget['data_point']}. Request fewer pages, or raise "
+                    f"OMR_JOB_BUDGET_S."
+                ),
+            )
+
     score.status = "processing"
     score.metadata_json = {"omr_engine": omr_engine, "omr_progress": {
         "total_pages": 0, "current_page": 0, "status": "starting", "failed_pages": [],
     }}
+    if budget is not None:
+        # ⚠️ STORED, NOT JUST LOGGED — CLAUDE.md §1: the user must be able
+        # to see how many pages this run priced and what it cost.
+        score.metadata_json["omr_budget"] = budget
+        score.metadata_json["omr_pages_requested"] = page_list
     await db.commit()
 
     async def _run_omr():
@@ -282,13 +362,24 @@ async def run_omr(
                 elif omr_engine == "staged":
                     # STAGED (ROADMAP 3.3, experimental) — no per-page
                     # progress callback (runs inside asyncio.to_thread),
-                    # same as `local` below.
+                    # same as `local` below. `page_list` (closed over from
+                    # the outer request handler) is the exact whole-movement
+                    # range already priced and approved above; `None` (no
+                    # `pages` query param) keeps the OMR_MAX_PAGES cap.
                     omr = await staged_omr.run_staged_omr(
-                        s.original_pdf_path, output_dir,
+                        s.original_pdf_path, output_dir, pages=page_list,
                     )
                     s.musicxml_path = omr.musicxml_path or s.musicxml_path
                     s.status = "review" if omr.musicxml_path else "error"
                     meta = {"omr_engine": omr_engine}
+                    # ⚠️ CARRIED THROUGH TO THE FINAL metadata_json, not just
+                    # the transient "starting" one above (which this
+                    # assignment replaces wholesale) — CLAUDE.md §1: the user
+                    # must still be able to see what a finished whole-
+                    # movement job was priced and approved at.
+                    if budget is not None:
+                        meta["omr_budget"] = budget
+                        meta["omr_pages_requested"] = page_list
                     if omr.record_path:
                         meta["omr_record_path"] = omr.record_path
                     if omr.pages_processed:
