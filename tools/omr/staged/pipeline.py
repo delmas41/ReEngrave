@@ -1,32 +1,18 @@
 """The staged pipeline's entry point — GATHER, then ADJUDICATE, then EVALUATE.
 
-⚠️ ALONGSIDE. Nothing in this module is reachable from `transcribe.py`. With
-`OMR_ADJUDICATE` unset or "0" the existing pipeline is what runs, and this
-file is never imported by it.
+⚠️ ALONGSIDE. Nothing in this module is reachable from `transcribe.py`; the
+legacy path never imports it. `run_staged` (and `run_staged_on`) is the
+entry point, called directly by the staged CLI (`staged/__main__.py`) and by
+the web app's staged job (`backend/modules/staged_omr.py`, roadmap 3.3) —
+unconditionally, with no mode switch. `OMR_ADJUDICATE`, an early mode flag
+for a shadow-run design (one gather, one process, a divergence table against
+the legacy path) that was never wired to anything and never run, was removed
+at roadmap 0.2b; `divergence()` below is that design's surviving, genuinely
+used half, reached through `--against` rather than through a flag.
 
-    OMR_ADJUDICATE=0        (default) the existing pipeline. Byte-identical.
-    OMR_ADJUDICATE=shadow   both paths, ONE gather, ONE process, plus a
-                            divergence table. The legacy half stays
-                            authoritative.
-    OMR_ADJUDICATE=1        the staged path is authoritative.
-
-⚠️ WHY SHADOW IS ONE PROCESS ON ONE GATHER, and it is not a convenience.
-Three failure modes this project has actually been bitten by all disappear:
-
-  * THE CACHED A/B. `scan_eval.run_pipeline` returns early if the prediction
-    file exists, so two arms sharing a fixtures dir with an empty `--tag`
-    reuse the first arm's transcriptions and the second arm never runs --
-    reporting "identical on every bucket and every row", which is exactly the
-    clean result a flag-guarded change hopes for. The only tell was wall
-    time. Here there is no second arm to cache.
-  * DETECTOR JITTER. A from-scratch rebuild of the hairpin fix reproduced the
-    categorical result and NOT the edit count: the same four boxes'
-    confidences moved between runs on byte-identical code. Here both paths
-    consume the same detections and jitter cancels exactly.
-  * THE WORKTREE VENV TRAPS. Four symlinks, three of which fail on the scan
-    side only. The divergence table needs no venv, no scorer, no benchmark.
-
-⚠️ NOTHING IN HERE HAS BEEN MEASURED. Not one accuracy arm has been run.
+⚠️ NOTHING IN HERE HAS BEEN MEASURED AGAINST THE LEGACY PATH THE WAY A SHADOW
+RUN WOULD HAVE. Accuracy arms are run through the staged CLI's own `--against`
+comparison and the acceptance harness, not through an in-process shadow mode.
 """
 
 from __future__ import annotations
@@ -37,27 +23,11 @@ from typing import Any, Dict, List, Optional, Sequence, Tuple
 from . import consequences  # noqa: F401  -- registers the EVALUATE rules
 from . import adjudicators  # noqa: F401  -- registers the decisions
 from . import adjudicate, evaluate, gather, groups
-# ⚠️ `infer` imports ONLY `record`, and it loads its own rules lazily inside
-# `_ensure_rules`. So importing it here costs nothing and -- more to the
-# point -- changes nothing: with the flag off this module registers no rule,
-# writes no verdict and adds no key to the result. See `test_infer_bypass.py`.
+# `infer` imports ONLY `record` and loads its own rules lazily inside
+# `_ensure_rules`, so importing it here is cheap regardless of which of its
+# rules (each gated by its own flag) end up firing.
 from . import infer
 from .record import Kind, Log, Outcome, Q, State, Subject
-
-MODE_OFF = "0"
-MODE_SHADOW = "shadow"
-MODE_ON = "1"
-
-
-def mode() -> str:
-    """Read the flag. Anything unrecognised is OFF -- a typo must not silently
-    switch a user onto an unmeasured pipeline."""
-    raw = os.environ.get("OMR_ADJUDICATE", MODE_OFF).strip().lower()
-    return raw if raw in (MODE_OFF, MODE_SHADOW, MODE_ON) else MODE_OFF
-
-
-def enabled() -> bool:
-    return mode() in (MODE_SHADOW, MODE_ON)
 
 
 # ─────────────────────────────────────────────────────────────────────────────

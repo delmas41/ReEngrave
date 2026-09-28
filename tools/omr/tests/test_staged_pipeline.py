@@ -238,30 +238,6 @@ class TestNoDetectorIsAMode(unittest.TestCase):
             [])
 
 
-class TestTheFlag(unittest.TestCase):
-    def test_default_is_off(self):
-        import os
-        old = os.environ.pop("OMR_ADJUDICATE", None)
-        try:
-            self.assertEqual(pipeline.mode(), pipeline.MODE_OFF)
-            self.assertFalse(pipeline.enabled())
-        finally:
-            if old is not None:
-                os.environ["OMR_ADJUDICATE"] = old
-
-    def test_a_typo_does_not_switch_anyone_on(self):
-        import os
-        old = os.environ.get("OMR_ADJUDICATE")
-        os.environ["OMR_ADJUDICATE"] = "yes-please"
-        try:
-            self.assertEqual(pipeline.mode(), pipeline.MODE_OFF)
-        finally:
-            if old is None:
-                os.environ.pop("OMR_ADJUDICATE", None)
-            else:
-                os.environ["OMR_ADJUDICATE"] = old
-
-
 class TestDivergence(unittest.TestCase):
     def test_new_abstention_is_counted_apart(self):
         """⚠️ It is a FEATURE THAT SCORES AS A LOSS -- musicdiff charges an

@@ -1,8 +1,10 @@
 """The staged pipeline — GATHER · ADJUDICATE · EVALUATE.
 
-An alternative path built ALONGSIDE `tools/omr/transcribe.py`, selected by
-`OMR_ADJUDICATE`. With the flag off nothing in here runs and the existing
-pipeline is untouched.
+An alternative path built ALONGSIDE `tools/omr/transcribe.py`. It is never
+imported by the legacy pipeline, and it is entered directly — `pipeline.
+run_staged`, called by the staged CLI and by the web app's staged job
+(roadmap 3.3) — with no mode flag of its own; `OMR_ADJUDICATE`, an unused
+early mode switch, was removed at roadmap 0.2b.
 
 Design: `docs/architecture-design-2026-09-07.md`.
 Assumptions made during the build, for the tester: `ASSUMPTIONS.md`.

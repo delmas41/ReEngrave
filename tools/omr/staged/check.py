@@ -230,6 +230,7 @@ def _check_producers() -> CheckResult:
 _SOURCE_TEXT_ALLOWLIST = {
     "test_flag_default_direction.py",
     "test_flag_docs_match_predicates.py",
+    "test_flag_triage.py",
 }
 
 

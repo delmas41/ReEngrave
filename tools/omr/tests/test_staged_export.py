@@ -1255,46 +1255,18 @@ class TestTheMeterIsReadPerBARNotPerRUN(unittest.TestCase):
                             t.get("symbol")))
         return out
 
-    def _run(self, page, on):
-        import os
-        prev = os.environ.get(SX.METER_SEGMENTS_ENV)
-        # ⚠️ BOTH ARMS SET THE VARIABLE EXPLICITLY, including the off one.
-        # Popping it used to mean "off" and now means "on" — the default
-        # flipped on 2026-09-09 — so an arm that relies on absence silently
-        # measures the other arm. This is the same trap `run_arms.py` avoids by
-        # handing subprocess an environment dict with both flags set.
-        os.environ[SX.METER_SEGMENTS_ENV] = "1" if on else "0"
-        try:
-            return SX.to_musicxml(page)
-        finally:
-            if prev is None:
-                os.environ.pop(SX.METER_SEGMENTS_ENV, None)
-            else:
-                os.environ[SX.METER_SEGMENTS_ENV] = prev
+    def _run(self, page):
+        return SX.to_musicxml(page)
 
-    def _export(self, page, on):
-        return self._run(page, on)[0]
+    def _export(self, page):
+        return self._run(page)[0]
 
     SEGS = [{"from_cell": 0, "numerator": 3, "denominator": 4, "raw": "3/4"},
             {"from_cell": 2, "numerator": 4, "denominator": 4, "raw": "C"}]
 
     def test_the_change_reaches_the_file_at_the_BAR_it_is_printed_on(self):
-        times = self._times(self._export(self._page(self.SEGS), on=True))
+        times = self._times(self._export(self._page(self.SEGS)))
         self.assertEqual(times, [("1", "3/4", None), ("3", "4/4", "common")])
-
-    def test_flag_OFF_is_the_old_behaviour_exactly(self):
-        """⚠️ The control every new mechanism here needs: off, only the
-        system's opening is declared and it is declared once."""
-        times = self._times(self._export(self._page(self.SEGS), on=False))
-        self.assertEqual(times, [("1", "3/4", None)])
-
-    def test_a_system_with_ONE_segment_is_byte_identical_either_way(self):
-        """A page that prints no change must not move at all — which is what
-        makes the flag's blast radius exactly 'pages with a read change'."""
-        page = self._page([{"from_cell": 0, "numerator": 2,
-                            "denominator": 4, "raw": "2/4"}])
-        self.assertEqual(self._export(page, on=False),
-                         self._export(page, on=True))
 
     def test_a_bar_NO_segment_covers_gets_no_time_rather_than_the_next_one(self):
         """⚠️ `meter_at` RETURNS None THERE, AND THAT IS A REAL ANSWER. A
@@ -1310,65 +1282,12 @@ class TestTheMeterIsReadPerBARNotPerRUN(unittest.TestCase):
         """
         page = self._page([{"from_cell": 2, "numerator": 3,
                             "denominator": 4, "raw": "3/4"}])
-        xml, rep = self._run(page, on=True)
+        xml, rep = self._run(page)
         self.assertEqual(self._times(xml), [("3", "3/4", None)])
         # ⚠️ and the bars BEFORE it are padded without a meter, not with the
         # one that follows them
         self.assertEqual(rep["written"].get(
             "empty_bars_padded_without_meter"), 2)
-        # the control: flag off, every bar inherits the opening and none is
-        # padded meterless
-        _, off = self._run(page, on=False)
-        self.assertEqual(off["written"].get(
-            "empty_bars_padded_without_meter", 0), 0)
-
-
-class TestTheMeterSegmentsFlagIsONByDefault(unittest.TestCase):
-    """⚠️ Sean's call, 2026-09-09. The default is a DECISION and belongs in a
-    test, not only in a docstring — this repo has had a flag site's docstring
-    carry a refuted claim for a day after CLAUDE.md was corrected.
-
-    ⚠️ AND THE `0` ESCAPE IS PART OF THE DECISION. Flipping a default without
-    a working way back is not a default, it is a removal.
-    """
-
-    def setUp(self):
-        import os
-        self._prev = os.environ.get(SX.METER_SEGMENTS_ENV)
-        os.environ.pop(SX.METER_SEGMENTS_ENV, None)
-
-    def tearDown(self):
-        import os
-        if self._prev is None:
-            os.environ.pop(SX.METER_SEGMENTS_ENV, None)
-        else:
-            os.environ[SX.METER_SEGMENTS_ENV] = self._prev
-
-    def test_absent_means_ON(self):
-        self.assertTrue(SX.meter_segments_enabled())
-
-    def test_an_explicit_zero_still_turns_it_off(self):
-        import os
-        for off in ("0", "off", "false", "no", ""):
-            os.environ[SX.METER_SEGMENTS_ENV] = off
-            self.assertFalse(SX.meter_segments_enabled(), off)
-
-    def test_a_typo_does_not_silently_disable_it(self):
-        """⚠️ THE ASYMMETRY IS DELIBERATE AND IT REVERSED WITH THE DEFAULT.
-        While it was off, `_carry_meter`'s rule applied — anything but an
-        explicit "1" is off, so a typo could not switch a document ONTO a
-        mechanism. On by default the hazard runs the other way: a typo must
-        not switch it OFF and quietly restore the bug.
-
-        ⚠️ `""` IS NOT A TYPO HERE, it is an off word — the repo's existing
-        idiom for a `"1"`-defaulted flag (`OMR_LEFT_EDGE_SPLIT`,
-        `OMR_DIRECTION_TEXT`), and what `test_roster.py::test_flag_parsing`
-        pins. Whether an empty value SHOULD mean off is a real question this
-        does not settle; what it declines to do is fork a third convention."""
-        import os
-        for typo in ("yess", "1 1", "ON!", "tru", "0x0"):
-            os.environ[SX.METER_SEGMENTS_ENV] = typo
-            self.assertTrue(SX.meter_segments_enabled(), repr(typo))
 
 
 class TestADecidedDynamicREACHESTheFile(unittest.TestCase):

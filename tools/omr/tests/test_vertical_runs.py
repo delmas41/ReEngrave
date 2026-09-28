@@ -96,10 +96,16 @@ def _run(cells, *, on=True):
     be the OFF arm today, which is exactly what makes writing it that way
     dangerous: the day the default flips, both arms become the ON arm and every
     off-test starts passing by measuring nothing.
+
+    ⚠️ ROADMAP 0.2b: `vertical_runs_enabled()` also requires `OMR_RESEARCH` to
+    name `OMR_VERTICAL_RUNS` (docs/flags-2026-09.md §1) — driven together with
+    the flag itself so the ON arm still reaches the code being tested.
     """
     log = Log()
     old = os.environ.get(G.VERTICAL_RUNS_ENV)
+    old_research = os.environ.get(G.RESEARCH_ENV)
     os.environ[G.VERTICAL_RUNS_ENV] = "1" if on else "0"
+    os.environ[G.RESEARCH_ENV] = G.VERTICAL_RUNS_ENV if on else ""
     try:
         G.gather_cv_lines(log, cells, _local())
     finally:
@@ -107,6 +113,10 @@ def _run(cells, *, on=True):
             os.environ.pop(G.VERTICAL_RUNS_ENV, None)
         else:
             os.environ[G.VERTICAL_RUNS_ENV] = old
+        if old_research is None:
+            os.environ.pop(G.RESEARCH_ENV, None)
+        else:
+            os.environ[G.RESEARCH_ENV] = old_research
     return log
 
 
@@ -243,8 +253,14 @@ class TestFlagOffIsAbsentRatherThanQuiet(unittest.TestCase):
              if getattr(r, "quantity", None) == Q.VERTICAL_RUN], [])
 
     def test_the_on_test_is_an_allow_list(self):
-        """Default OFF, so a typo must leave it OFF."""
+        """Default OFF, so a typo must leave it OFF.
+
+        ⚠️ `OMR_RESEARCH` granted throughout: this test is about the OWN
+        flag's word parsing, not the roadmap-0.2b umbrella (see
+        `TestTheResearchUmbrellaCannotBeBypassed`)."""
         old = os.environ.get(G.VERTICAL_RUNS_ENV)
+        old_research = os.environ.get(G.RESEARCH_ENV)
+        os.environ[G.RESEARCH_ENV] = G.VERTICAL_RUNS_ENV
         try:
             for word, want in (("1", True), ("true", True), ("yes", True),
                                ("on", True), ("ON", True),
@@ -255,6 +271,10 @@ class TestFlagOffIsAbsentRatherThanQuiet(unittest.TestCase):
             os.environ.pop(G.VERTICAL_RUNS_ENV, None)
             self.assertFalse(G.vertical_runs_enabled(), "default must be OFF")
         finally:
+            if old_research is None:
+                os.environ.pop(G.RESEARCH_ENV, None)
+            else:
+                os.environ[G.RESEARCH_ENV] = old_research
             if old is None:
                 os.environ.pop(G.VERTICAL_RUNS_ENV, None)
             else:
@@ -679,6 +699,43 @@ class TestNothingReadsItYet(unittest.TestCase):
         for mod in ("export.py", "consequences.py", "inferences.py"):
             text = (root / mod).read_text(encoding="utf-8")
             self.assertNotIn("VERTICAL_RUN", text, mod)
+
+
+class TestTheResearchUmbrellaCannotBeBypassed(unittest.TestCase):
+    """Roadmap 0.2b: `research`-verdict flags move behind `OMR_RESEARCH`
+    (docs/flags-2026-09.md §1) — a research switch may not be flipped alone.
+    `OMR_VERTICAL_RUNS` is default OFF, so wiring this cannot have changed
+    what a run with neither variable set produces; what it changes is that
+    the OWN flag alone is no longer enough."""
+
+    def setUp(self):
+        self._old = os.environ.pop(G.VERTICAL_RUNS_ENV, None)
+        self._old_research = os.environ.pop(G.RESEARCH_ENV, None)
+
+    def tearDown(self):
+        if self._old is not None:
+            os.environ[G.VERTICAL_RUNS_ENV] = self._old
+        else:
+            os.environ.pop(G.VERTICAL_RUNS_ENV, None)
+        if self._old_research is not None:
+            os.environ[G.RESEARCH_ENV] = self._old_research
+        else:
+            os.environ.pop(G.RESEARCH_ENV, None)
+
+    def test_the_own_flag_alone_is_not_enough(self):
+        os.environ[G.VERTICAL_RUNS_ENV] = "1"
+        os.environ.pop(G.RESEARCH_ENV, None)
+        self.assertFalse(G.vertical_runs_enabled())
+
+    def test_naming_it_in_research_without_its_own_flag_is_not_enough(self):
+        os.environ.pop(G.VERTICAL_RUNS_ENV, None)
+        os.environ[G.RESEARCH_ENV] = G.VERTICAL_RUNS_ENV
+        self.assertFalse(G.vertical_runs_enabled())
+
+    def test_both_together_turn_it_on(self):
+        os.environ[G.VERTICAL_RUNS_ENV] = "1"
+        os.environ[G.RESEARCH_ENV] = "OMR_FAMILY_POSITIONS," + G.VERTICAL_RUNS_ENV
+        self.assertTrue(G.vertical_runs_enabled())
 
 
 if __name__ == "__main__":

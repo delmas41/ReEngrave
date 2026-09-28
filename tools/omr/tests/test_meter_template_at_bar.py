@@ -204,9 +204,15 @@ class TestTheGatherer(unittest.TestCase):
         return cells
 
     def _run(self, enabled, stamped_staves=(0, 1, 2)):
+        """⚠️ ROADMAP 0.2b: `_meter_template_at_bar_enabled()` also requires
+        `OMR_RESEARCH` to name `OMR_METER_TEMPLATE_AT_BAR` (docs/flags-2026-09
+        .md §1) — driven together with the flag itself so the ON arm still
+        reaches the code being tested."""
         log = Log()
         dets = _detections(0, self.LOCAL, {(0, 2): ["timeSig3", "timeSig4"]})
-        env = {G.METER_TEMPLATE_AT_BAR_ENV: "1"} if enabled else {}
+        env = ({G.METER_TEMPLATE_AT_BAR_ENV: "1",
+                G.RESEARCH_ENV: G.METER_TEMPLATE_AT_BAR_ENV} if enabled
+               else {})
         with mock.patch.dict(os.environ, env, clear=False):
             if not enabled:
                 os.environ.pop(G.METER_TEMPLATE_AT_BAR_ENV, None)
@@ -281,14 +287,38 @@ class TestTheGatherer(unittest.TestCase):
     def test_the_flag_is_an_ALLOW_LIST_because_the_default_is_OFF(self):
         """⚠️ CLAUDE.md, *A flag's OFF test must follow its DEFAULT*: written
         as a deny-list, a typo would switch a document ON to a mechanism whose
-        cost has never been priced."""
+        cost has never been priced.
+
+        ⚠️ `OMR_RESEARCH` granted throughout: this test is about the OWN
+        flag's word parsing, not the roadmap-0.2b umbrella."""
         for value, expect in (("1", True), ("true", True), ("on", True),
                               ("", False), ("yess", False), ("ON!", False),
                               ("0", False)):
-            with mock.patch.dict(os.environ,
-                                 {G.METER_TEMPLATE_AT_BAR_ENV: value}):
+            with mock.patch.dict(
+                    os.environ,
+                    {G.METER_TEMPLATE_AT_BAR_ENV: value,
+                     G.RESEARCH_ENV: G.METER_TEMPLATE_AT_BAR_ENV}):
                 self.assertIs(G._meter_template_at_bar_enabled(), expect,
                               f"{value!r}")
+
+    def test_the_research_umbrella_cannot_be_bypassed(self):
+        """Roadmap 0.2b: the own flag alone is not enough, naming it in
+        `OMR_RESEARCH` without the own flag is not enough, and naming a
+        DIFFERENT flag does not turn this one on."""
+        with mock.patch.dict(os.environ, {G.METER_TEMPLATE_AT_BAR_ENV: "1"},
+                             clear=False):
+            os.environ.pop(G.RESEARCH_ENV, None)
+            self.assertFalse(G._meter_template_at_bar_enabled())
+        with mock.patch.dict(
+                os.environ,
+                {G.RESEARCH_ENV: G.METER_TEMPLATE_AT_BAR_ENV}, clear=False):
+            os.environ.pop(G.METER_TEMPLATE_AT_BAR_ENV, None)
+            self.assertFalse(G._meter_template_at_bar_enabled())
+        with mock.patch.dict(
+                os.environ,
+                {G.METER_TEMPLATE_AT_BAR_ENV: "1",
+                 G.RESEARCH_ENV: "OMR_VERTICAL_RUNS"}, clear=False):
+            self.assertFalse(G._meter_template_at_bar_enabled())
 
 
 # ─────────────────────────────────────────────────────────────────────────────

@@ -416,9 +416,9 @@ def bars_add_up(xml_text: str) -> Dict[str, Any]:
     `--bar-beats` is REQUIRED precisely because a constant silently carries
     one document's meter onto another (its docstring, 2026-09-16 Brahms
     incident: 96.3% "overfull" against the wrong constant). The staged
-    exporter tracks the meter in force per bar itself when
-    `OMR_METER_SEGMENTS` is on (default; `export.meter_segments_enabled`),
-    so the fact is already IN the file: each `<attributes><time>` starts a
+    exporter tracks the meter in force per bar itself (promoted at roadmap
+    0.2b; formerly `OMR_METER_SEGMENTS`), so the fact is already IN the
+    file: each `<attributes><time>` starts a
     new meter that holds until the next one, per part. Reading it back out
     of the XML avoids a second, possibly-diverging read of `Q.METER`.
 

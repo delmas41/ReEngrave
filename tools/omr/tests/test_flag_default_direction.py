@@ -154,8 +154,12 @@ class TestADefaultOnFlagFailsSafe(unittest.TestCase):
         # ⚠️ `OMR_INFER` is in this list BECAUSE the scan could not see it
         # until 2026-09-15: its word set is a module constant. A named flag
         # is the only thing that keeps a derived check honest about its own
-        # blind spots.
-        for expect in ("OMR_SLOT_STITCH", "OMR_METER_SEGMENTS", "OMR_ROSTER",
+        # blind spots. `OMR_WHOLE_REST_INK` is here for the same reason
+        # (`WHOLE_REST_INK_ENV`, `staged/export.py`) — it replaces
+        # `OMR_METER_SEGMENTS` in this list, promoted and its flag read
+        # removed at roadmap 0.2b, which is exactly why a hand-picked name
+        # like this one needs a live flag behind it rather than a retired one.
+        for expect in ("OMR_SLOT_STITCH", "OMR_WHOLE_REST_INK", "OMR_ROSTER",
                        "OMR_INFER"):
             self.assertIn(expect, flags)
 

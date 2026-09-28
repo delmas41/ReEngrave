@@ -1,6 +1,6 @@
 """A POSITION fact for every notation family — symbol-specific, by design.
 
-    OMR_FAMILY_POSITIONS=1 python3 -m tools.omr.staged <pdf> ...
+    OMR_FAMILY_POSITIONS=1 OMR_RESEARCH=OMR_FAMILY_POSITIONS python3 -m tools.omr.staged <pdf> ...
 
 ⚠️⚠️ **THE JOB, AND THE SECOND HALF OF THE INSTRUCTION IS AS LOAD-BEARING AS
 THE FIRST.** Sean, 2026-09-17:
@@ -178,7 +178,10 @@ _ON_WORDS = ("1", "true", "yes", "on")
 
 
 def positions_enabled() -> bool:
-    return os.environ.get(POSITIONS_ENV, "0").strip().lower() in _ON_WORDS
+    """`research` verdict (docs/flags-2026-09.md §1) — also requires
+    `OMR_RESEARCH` to name `OMR_FAMILY_POSITIONS` (roadmap 0.2b)."""
+    return (os.environ.get(POSITIONS_ENV, "0").strip().lower() in _ON_WORDS
+            and G.research_enabled(POSITIONS_ENV))
 
 
 # ─────────────────────────────────────────────────────────────────────────────
