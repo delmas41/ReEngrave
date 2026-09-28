@@ -3443,6 +3443,12 @@ def _measure_events_xml(events: List[Dict[str, Any]], divisions: int,
             # two apart.
             if head.get("printed_accidental"):
                 counters["accidentals_printed"] += 1
+                if doubled:
+                    # ⚠️ ROADMAP 2.1b: a condensed staff's doubled copy
+                    # writes the SAME head's glyph a second time. The file
+                    # really holds two elements; the head partition in
+                    # `_accidental_census` must count the head once.
+                    counters["accidentals_printed_on_a_doubled_copy"] += 1
             # ⚠️ COUNTED AT THE RENDER, where the ELEMENT is written, and not
             # where `annotate_beams` attached it -- the rule the arc export
             # learned by reporting 55 slurs into a file holding 23. The two
@@ -4053,6 +4059,8 @@ def _accidental_census(rec: "Record", detected: Dict[str, int],
     # decided and not written, and this project has already reported 55 slurs
     # into a file holding 23 by counting at the wrong end.
     applied = int((written or {}).get("accidentals_printed", 0))
+    doubled_copies = int(
+        (written or {}).get("accidentals_printed_on_a_doubled_copy", 0))
     gathered = len(rec.obs_of(Q.ACCIDENTAL_STAFF_POSITION))
     decided = by_reason.get("decided", 0)
     census = {
@@ -4079,7 +4087,12 @@ def _accidental_census(rec: "Record", detected: Dict[str, int],
         # decided onto a head that was not contradicted and still did not
         # reach the file: the head was refused, its bar held out (2.8), or it
         # had no pitch for the consequence to alter.
-        "unowned": heads_owned - heads_contradicted - applied,
+        # ⚠️ `applied` is ELEMENTS IN THE FILE; a condensed staff's doubled
+        # copy (2.1b) writes one head's glyph twice, so the head partition
+        # subtracts those copies rather than counting a head twice.
+        "applied_on_a_doubled_copy": doubled_copies,
+        "unowned": heads_owned - heads_contradicted
+        - (applied - doubled_copies),
         "carried_in_bar": sum(
             1 for v in rec.verdicts_of(Q.ACCIDENTAL)
             if v.get("reason") == "carried_in_bar"),
