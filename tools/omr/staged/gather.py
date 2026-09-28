@@ -4305,6 +4305,36 @@ def gather_external(log: Log, pws, *, dossier: Any = None,
     return sources
 
 
+def gather_movements(log: Log, movements: Any) -> None:
+    """ROADMAP 4.2: the `--movements` spec, filed as `Q.MOVEMENT_SPANS` on
+    the DOCUMENT -- once, however many pages this run holds.
+
+    `movements` is already a tuple of parsed spans
+    (`tools.omr.staged.movements.parse_movement_spec`'s own shape) by the
+    time it reaches here; this function does no parsing of its own. `None`
+    (no `--movements` given) abstains rather than filing an empty list, the
+    same `ABSTAIN.OUT_OF_SCOPE` word `gather_external` uses for "no dossier
+    supplied" -- a record with nothing here reads as the single-movement
+    default everywhere `tools.omr.staged.movements.same_movement` is asked.
+
+    ⚠️ ONCE PER DOCUMENT, THE SAME GUARD `gather_document_identity` USES.
+    `gather()` calls this once per page in the batch; without the guard a
+    four-page run would file four identical rows on the one DOCUMENT
+    subject.
+    """
+    if log.rows(Q.MOVEMENT_SPANS, R.DOCUMENT) \
+            or log.refusals(Q.MOVEMENT_SPANS, R.DOCUMENT):
+        return
+    if not movements:
+        log.abstain(R.DOCUMENT, Q.MOVEMENT_SPANS, reader=READERS.CLI,
+                    frame=FRAME_PAGE, reason=ABSTAIN.OUT_OF_SCOPE,
+                    note="no --movements supplied")
+        return
+    spans = list(movements)
+    log.observe(R.DOCUMENT, Q.MOVEMENT_SPANS, spans, reader=READERS.CLI,
+               frame=FRAME_PAGE, tier="movements")
+
+
 # ─────────────────────────────────────────────────────────────────────────────
 # The stage
 # ─────────────────────────────────────────────────────────────────────────────
@@ -4334,6 +4364,7 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
            surya_fallback: bool = False, ocr_fallback: bool = False,
            ink_component_rows: bool = False,
            input_domain_classification: Any = None,
+           movements: Any = None,
            log: Optional[Log] = None,
            progress: bool = False) -> Log:
     """Run every reader over already-prepared pages and return a frozen Log.
@@ -4384,6 +4415,9 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
         # exists to prevent.
         sources = gather_external(log, pws, dossier=dossier, roster=roster)
         gather_document_identity(log, pdf_path)
+        # ⚠️ ROADMAP 4.2. Once-per-document, guarded the same way
+        # `gather_document_identity` is -- see `gather_movements`.
+        gather_movements(log, movements)
         # ⚠️ THE PAGES THIS RUN IS READING, derived from the batch rather than
         # from the first 12 of the file: a gather of pages 60-63 of an 88-page
         # scan must not be classified on its cover sheet. Both calls are

@@ -271,7 +271,13 @@ python3 -m tools.omr.staged score.pdf --pages 0-2 --weights <...> --against lega
 
 Options: `--pages`, `--weights`, `--dpi`, `--conf`, `--imgsz`, `--out`,
 `--against`, `--musicxml`, `--lilypond`, `--pdf`, `--no-surya`, `--no-ocr`,
-`--work-id`, `--sheet`, `--no-roster`, `--progress`. `--pdf` compiles the
+`--work-id`, `--sheet`, `--no-roster`, `--movements`, `--progress`. ROADMAP
+4.2: `--movements "1:0-11,2:12.1-20"` names movement boundaries by PDF page
+(or `page.system`); a meter/key carry never crosses one, and `--musicxml`/
+`--lilypond`/`--pdf` then write one file per movement (`out-mvt1.musicxml`,
+…) — `tools.omr.staged.export` takes the same option to split an existing
+record with no re-gather. Omitted, a document is one movement, exactly as
+before this option existed. `--pdf` compiles the
 `.ly` with the `lilypond` binary (reusing `--lilypond`'s own text when both
 are given); `lilypond` absent still writes the `.ly` and exits 0. There is
 no `--dossier` and there will not be

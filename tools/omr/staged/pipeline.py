@@ -216,6 +216,7 @@ def run_staged(pdf_path: str, pages: Sequence[int], *,
                surya_fallback: bool = True, ocr_fallback: bool = True,
                ink_component_rows: bool = False,
                input_domain_classification: Any = None,
+               movements: Any = None,
                legacy: Optional[Dict[str, Dict[str, Any]]] = None,
                progress: bool = False) -> Dict[str, Any]:
     """GATHER -> ADJUDICATE -> EVALUATE, once, in that order.
@@ -247,6 +248,7 @@ def run_staged(pdf_path: str, pages: Sequence[int], *,
                          ocr_fallback=ocr_fallback,
                          ink_component_rows=ink_component_rows,
                          input_domain_classification=input_domain_classification,
+                         movements=movements,
                          legacy=legacy, progress=progress)
 
 
@@ -257,6 +259,7 @@ def run_staged_on(prepared: Sequence[Tuple[Any, Sequence[Any]]], *,
                   surya_fallback: bool = True, ocr_fallback: bool = True,
                   ink_component_rows: bool = False,
                   input_domain_classification: Any = None,
+                  movements: Any = None,
                   legacy: Optional[Dict[str, Dict[str, Any]]] = None,
                   progress: bool = False) -> Dict[str, Any]:
     """The stages, over pages someone else prepared.
@@ -312,6 +315,7 @@ def run_staged_on(prepared: Sequence[Tuple[Any, Sequence[Any]]], *,
                             ink_component_rows=ink_component_rows,
                             input_domain_classification=
                                 input_domain_classification,
+                            movements=movements,
                             progress=progress)
 
     decided = decide(

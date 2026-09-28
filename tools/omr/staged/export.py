@@ -5069,32 +5069,74 @@ def main(argv: Optional[List[str]] = None) -> int:
     ap.add_argument("--lilypond", default=None, help="also write a .ly here")
     ap.add_argument("--coverage", default=None, help="write the report here")
     ap.add_argument("--coverage-only", action="store_true")
+    # ⚠️ ROADMAP 4.2. "There is no re-gather: movements must be applicable at
+    # EXPORT time from an existing record too" -- this is that rung. A
+    # record gathered WITH `--movements` already carries `Q.MOVEMENT_SPANS`
+    # and needs nothing here; this option is for splitting an OLDER record
+    # that has none, or for overriding what it does carry.
+    ap.add_argument("--movements", default=None,
+                    help="movement boundaries, e.g. '1:0-11,2:12.1-20' -- "
+                         "see tools.omr.staged.movements.parse_movement_spec. "
+                         "Overrides any Q.MOVEMENT_SPANS already in the "
+                         "record when given.")
     args = ap.parse_args(argv)
 
+    from . import movements as movements_mod
     from .record_io import load_record
     result = load_record(args.staged_json)
+    export_spans = (movements_mod.parse_movement_spec(args.movements)
+                    if args.movements
+                    else movements_mod.spans_from_result(result))
+
+    if export_spans and not args.out and not args.coverage_only:
+        print("--movements names more than one movement, which needs "
+              "somewhere to write EACH one -- pass --out (or drop "
+              "--movements to get the single, undivided file on stdout).",
+              file=sys.stderr)
+        return 2
+
     if args.coverage_only:
         report = coverage(result)
-    else:
+    elif not export_spans:
         xml, report = to_musicxml(result)
         if args.out:
             pathlib.Path(args.out).write_text(xml)
             print(f"wrote {args.out}", file=sys.stderr)
         else:
             print(xml)
+    else:
+        report = None
+        for number, path, _xml, rpt in movements_mod.export_each(
+                result, export_spans, args.out, to_musicxml):
+            print(f"── movement {number}: wrote {path} and "
+                  f"{path}.coverage.json ──", file=sys.stderr)
+            _report(rpt)
+            report = rpt
 
     if args.lilypond:
         from . import lilypond as _lily
-        ly_text, ly_report = _lily.to_lilypond(result)
-        pathlib.Path(args.lilypond).write_text(ly_text)
-        print(f"wrote {args.lilypond}", file=sys.stderr)
-        _lily._report(ly_report)
+        if not export_spans:
+            ly_text, ly_report = _lily.to_lilypond(result)
+            pathlib.Path(args.lilypond).write_text(ly_text)
+            print(f"wrote {args.lilypond}", file=sys.stderr)
+            _lily._report(ly_report)
+        else:
+            for number, path, _ly, rpt in movements_mod.export_each(
+                    result, export_spans, args.lilypond, _lily.to_lilypond):
+                print(f"── movement {number}: wrote {path} and "
+                      f"{path}.coverage.json ──", file=sys.stderr)
+                _lily._report(rpt)
 
-    if args.coverage:
+    if args.coverage and report is not None:
         pathlib.Path(args.coverage).write_text(json.dumps(report, indent=2))
         print(f"wrote {args.coverage}", file=sys.stderr)
 
-    _report(report)
+    # ⚠️ NOT for the multi-movement branch -- each movement already printed
+    # its own `_report` above, against its OWN written/part_join numbers;
+    # printing the LAST movement's report a second time here, unlabelled,
+    # would read as a whole-document figure it is not.
+    if report is not None and not export_spans:
+        _report(report)
     return 0
 
 
