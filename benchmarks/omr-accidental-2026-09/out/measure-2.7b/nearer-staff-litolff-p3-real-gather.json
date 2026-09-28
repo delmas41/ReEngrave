@@ -1,5 +1,5 @@
 {
- "label": "p3real-arm",
+ "label": "litolff-p3-fresh-gather-ARM",
  "record": "/private/tmp/claude-501/-Users-seanjohnson-Desktop-ReEngrave--claude-worktrees-start-here-questions-7d5637/3707ff6b-4757-4644-b4c5-de906d20a7bb/scratchpad/27b/arm/p3real-base.record.json",
  "control": {
   "band_rows_checked": 494,
@@ -248,7 +248,7 @@
    ],
    "unladdered_signal": null,
    "rungs_to_filed": {
-    "kept": 3,
+    "kept": 2,
     "refused": {},
     "first_kept": true
    },
@@ -288,7 +288,7 @@
    "rungs_to_near": {
     "kept": 3,
     "refused": {
-     "inside_the_staff": 3
+     "inside_the_staff": 2
     },
     "first_kept": false
    },

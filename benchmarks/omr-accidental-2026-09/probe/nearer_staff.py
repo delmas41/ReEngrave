@@ -42,6 +42,8 @@ HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE.parents[2]))
 
 from tools.omr.staged.record_io import load_record  # noqa: E402
+from tools.omr.staged.adjudicators.notehead_precision import (  # noqa: E402
+    OWN_LEDGER_MAX_SPACES)
 
 #: The heads Sean adjudicated (2.7, `out/print/ADJUDICATION-sean-2026-09-27.json`).
 ADJ = HERE.parent / "out" / "print" / "ADJUDICATION-sean-2026-09-27.json"
@@ -160,6 +162,10 @@ def main() -> int:
             if not (lo < ly < hi):
                 continue
             if min(lb[2], pb[2]) - max(lb[0], pb[0]) <= 0:
+                continue
+            # the head's OWN ledger line joins it to no staff in particular
+            # (`notehead_precision.OWN_LEDGER_MAX_SPACES`, imported)
+            if abs(ly - y) / sp <= OWN_LEDGER_MAX_SPACES:
                 continue
             lv = V.get((lsub, "ledger_is_not_a_ledger"))
             if lv is not None and lv.get("outcome") == "decided" \
