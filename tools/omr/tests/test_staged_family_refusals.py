@@ -1,4 +1,4 @@
-"""*Is this really one?*, once per gathered family — ROADMAP 3.4g.
+"""*Is this really one?*, once per gathered family — ROADMAP 3.4g / 3.4g-4.
 
 ⚠️ RUN RED FIRST, against the unrepaired tree (`origin/main` at `5f109dd2`,
 with `adjudicators/family_precision.py` absent, `owner:other` unknown to
@@ -9,6 +9,15 @@ Every test below then fails at import or at the first attribute lookup —
 what says these fixtures exercise code that did not previously exist. See
 `benchmarks/omr-family-refusals-2026-09/FINDINGS.md` §RED for the captured
 run.
+
+⚠️ ROADMAP 3.4g-4 ADDS THREE ROWS TO THE SAME TABLE, RUN RED THE SAME WAY:
+against the tree before `Q.FLAG_IS_NOT_A_FLAG` / `Q.KEYSIG_MARKER_IS_NOT_A_
+MARKER` / `Q.TUPLET_MARKER_IS_NOT_A_MARKER` existed, every test naming one
+fails the same `AttributeError` on `Q.`. Their CONSUMER wiring — a refused
+flag/marker changing `rhythm.adjudicate_duration` / `header._staff_reading` /
+`rhythm.adjudicate_tuplet`'s verdict — is asserted in `test_staged_
+duration.py` and `test_staged_key_from_markers.py`, not here: this file is
+the refusal decisions themselves, in isolation.
 
 ⚠️ EVERY REFUSAL TEST HAS A POSITIVE CONTROL IN THE SAME CLASS, because a
 battery of refusal tests passes by refusing everything — the discipline
@@ -58,6 +67,11 @@ FAMILIES = (
     (Q.DYNAMIC_IS_NOT_A_DYNAMIC, "dynamicF", "dynamic", Q.DYNAMIC_LETTER),
     (Q.ARTICULATION_IS_NOT_AN_ARTICULATION, "articStaccatoAbove",
      "articulation", Q.ARTICULATION_MARK),
+    # ── roadmap 3.4g-4 ──────────────────────────────────────────────────────
+    (Q.FLAG_IS_NOT_A_FLAG, "flag8thUp", "flag", Q.FLAG),
+    (Q.KEYSIG_MARKER_IS_NOT_A_MARKER, "keySharp", "keysig_marker", None),
+    (Q.TUPLET_MARKER_IS_NOT_A_MARKER, "tuplet3", "tuplet_marker",
+     Q.TUPLET_MARKER),
 )
 
 
@@ -174,6 +188,33 @@ class TestEveryGatheredFamilyHasOne(unittest.TestCase):
                 spec = adjudicate.REGISTRY[quantity]
                 self.assertEqual(spec.subjects_from, Q.GLYPH_BOX)
                 self.assertTrue(spec.subjects_classed)
+
+    def test_the_key_marker_narrows_by_class_for_a_DIFFERENT_reason(self):
+        """⚠️ ROADMAP 3.4g-4. Not *no quantity of its own* — `Q.KEYSIG_MARKER`
+        exists — but *its quantity names no glyph*: `gather.
+        _gather_keysig_markers` files it on the STAFF, so `subjects_from=Q.
+        KEYSIG_MARKER` at `scope=Kind.GLYPH` would collapse to nothing.
+        `subjects_classed` is `gather._KEYSIG_CLASSES` exactly, never a bare
+        `key` prefix (`key_signature_corroboration.py`'s own `startswith
+        ("key")` catches `keyboardPedalUp`)."""
+        spec = adjudicate.REGISTRY[Q.KEYSIG_MARKER_IS_NOT_A_MARKER]
+        self.assertEqual(spec.subjects_from, Q.GLYPH_BOX)
+        self.assertEqual(sorted(spec.subjects_classed),
+                         sorted(("keySharp", "keyFlat", "keyNatural")))
+
+    def test_flag_and_tuplet_marker_narrow_by_THEIR_OWN_quantity_instead(self):
+        """⚠️ ROADMAP 3.4g-4. Unlike the three above, `Q.FLAG` and `Q.TUPLET_
+        MARKER` are gathered 1:1 on the glyph they name, exactly as `Q.REST`/
+        `Q.ARC_BOX`/`Q.DYNAMIC_LETTER`/`Q.ARTICULATION_MARK` are — so
+        `subjects_from` is the quantity itself and no class list is declared
+        at all."""
+        for quantity, expected in ((Q.FLAG_IS_NOT_A_FLAG, Q.FLAG),
+                                   (Q.TUPLET_MARKER_IS_NOT_A_MARKER,
+                                    Q.TUPLET_MARKER)):
+            with self.subTest(quantity):
+                spec = adjudicate.REGISTRY[quantity]
+                self.assertEqual(spec.subjects_from, expected)
+                self.assertFalse(spec.subjects_classed)
 
 
 class TestTheClassNarrowingIsTheDomain(unittest.TestCase):
@@ -1268,18 +1309,73 @@ class TestEachFamilyByName(unittest.TestCase):
         self.assertEqual(kept.reason, "articulation")
         self.assertEqual(kept.detail["class"], "articStaccatoAbove")
 
+    # ── roadmap 3.4g-4 ──────────────────────────────────────────────────────
+
+    def test_flag_is_not_a_flag(self):
+        refused, kept = self._pair(Q.FLAG_IS_NOT_A_FLAG, "flag8thUp", Q.FLAG)
+        self.assertEqual(refused.outcome, Outcome.DECIDED)
+        self.assertIs(refused.value, True)
+        self.assertEqual(refused.reason, "human_other_staff")
+        # ⚠️ WHAT IT RECORDS, not merely what it decided.
+        self.assertEqual(refused.detail["class"], "flag8thUp")
+        self.assertEqual(refused.detail["human_reader"], READERS.SEAN)
+        self.assertEqual(len(refused.used), 1)
+        self.assertIn(refused.used[0], refused.basis)
+        # the positive control, in the same class
+        self.assertEqual(kept.outcome, Outcome.DECIDED)
+        self.assertIs(kept.value, False)
+        self.assertEqual(kept.reason, "flag")
+        self.assertEqual(kept.detail["class"], "flag8thUp")
+
+    def test_keysig_marker_is_not_a_marker(self):
+        refused, kept = self._pair(Q.KEYSIG_MARKER_IS_NOT_A_MARKER,
+                                   "keySharp", None)
+        self.assertEqual(refused.outcome, Outcome.DECIDED)
+        self.assertIs(refused.value, True)
+        self.assertEqual(refused.reason, "human_other_staff")
+        # ⚠️ WHAT IT RECORDS, not merely what it decided.
+        self.assertEqual(refused.detail["class"], "keySharp")
+        self.assertEqual(refused.detail["human_reader"], READERS.SEAN)
+        self.assertEqual(len(refused.used), 1)
+        self.assertIn(refused.used[0], refused.basis)
+        # the positive control, in the same class
+        self.assertEqual(kept.outcome, Outcome.DECIDED)
+        self.assertIs(kept.value, False)
+        self.assertEqual(kept.reason, "keysig_marker")
+        self.assertEqual(kept.detail["class"], "keySharp")
+
+    def test_tuplet_marker_is_not_a_marker(self):
+        refused, kept = self._pair(Q.TUPLET_MARKER_IS_NOT_A_MARKER,
+                                   "tuplet3", Q.TUPLET_MARKER)
+        self.assertEqual(refused.outcome, Outcome.DECIDED)
+        self.assertIs(refused.value, True)
+        self.assertEqual(refused.reason, "human_other_staff")
+        # ⚠️ WHAT IT RECORDS, not merely what it decided.
+        self.assertEqual(refused.detail["class"], "tuplet3")
+        self.assertEqual(refused.detail["human_reader"], READERS.SEAN)
+        self.assertEqual(len(refused.used), 1)
+        self.assertIn(refused.used[0], refused.basis)
+        # the positive control, in the same class
+        self.assertEqual(kept.outcome, Outcome.DECIDED)
+        self.assertIs(kept.value, False)
+        self.assertEqual(kept.reason, "tuplet_marker")
+        self.assertEqual(kept.detail["class"], "tuplet3")
+
     def test_only_the_ledger_can_abstain_and_it_does(self):
         """⚠️ THE ASYMMETRY, STATED AS A TEST. `Q.LEDGER_IS_NOT_A_LEDGER` is
         the one family with a geometric rule, so it is the one that can lack
-        the geometry to run it (`ABSTAIN.NO_STAFF_GEOMETRY`). The other six
-        refuse on a human witness and nothing else, and a human who left no
-        row is the ABSENCE OF A REFUSAL — a fact about the box — not a
-        measurement that went missing. Each of the six is asserted here to
-        DECIDE rather than abstain, and the reason words below are what
-        `Q.ARC_IS_NOT_AN_ARC`, `Q.DYNAMIC_IS_NOT_A_DYNAMIC`,
-        `Q.REST_IS_NOT_A_REST`, `Q.ACCIDENTAL_IS_NOT_AN_ACCIDENTAL`,
-        `Q.ARPEGGIATO_IS_NOT_AN_ARPEGGIATO` and
-        `Q.ARTICULATION_IS_NOT_AN_ARTICULATION` say instead.
+        the geometry to run it (`ABSTAIN.NO_STAFF_GEOMETRY`). The other nine
+        (3.4g's six plus 3.4g-4's flag/key-marker/tuplet-numeral) refuse on a
+        human witness and nothing else, and a human who left no row is the
+        ABSENCE OF A REFUSAL — a fact about the box — not a measurement that
+        went missing. Each of the nine is asserted here (via `FAMILIES`, so a
+        tenth added later is covered for free) to DECIDE rather than abstain,
+        and the reason words below are what `Q.ARC_IS_NOT_AN_ARC`,
+        `Q.DYNAMIC_IS_NOT_A_DYNAMIC`, `Q.REST_IS_NOT_A_REST`,
+        `Q.ACCIDENTAL_IS_NOT_AN_ACCIDENTAL`, `Q.ARPEGGIATO_IS_NOT_AN_
+        ARPEGGIATO`, `Q.ARTICULATION_IS_NOT_AN_ARTICULATION`, `Q.FLAG_IS_NOT_
+        A_FLAG`, `Q.KEYSIG_MARKER_IS_NOT_A_MARKER` and `Q.TUPLET_MARKER_IS_
+        NOT_A_MARKER` say instead.
         """
         log = Log()
         g = _box(log, 0, "ledgerLine", page_box=None)

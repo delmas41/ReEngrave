@@ -1133,6 +1133,47 @@ class Q(_Vocab):
     #: An `artic*` box that is not an articulation mark. HUMAN WITNESS ONLY.
     ARTICULATION_IS_NOT_AN_ARTICULATION = "articulation_is_not_an_articulation"
 
+    # ── ROADMAP 3.4g-4 -- the three families 3.4g's first pass did not cover
+    #
+    # ⚠️ Sean's own second and third stage-review passes (page 12 Clarinet,
+    # page 2 Viola) found the remainder: *"the flag and key-marker families
+    # have no refusal yet (3.4g covered seven families; flags/keys/tuplets are
+    # the remainder)"* (ROADMAP, 09-23/24 session). Each is HUMAN WITNESS ONLY,
+    # on the same pattern as the seven above, and each now has a consumer that
+    # did not exist for the first seven's `arpeggiato`: a refused box must not
+    # reach the READING it would otherwise feed.
+
+    #: A `flag*` box that is not a flag. HUMAN WITNESS ONLY. Its consumer is
+    #: `rhythm._attached_flags`: a refused flag must not hand a duration its
+    #: hook count -- exactly the way `Q.DYNAMIC_IS_NOT_A_DYNAMIC` stops a
+    #: refused letter reaching `adjudicate_dynamic`.
+    FLAG_IS_NOT_A_FLAG = "flag_is_not_a_flag"
+
+    #: A `keySharp`/`keyFlat`/`keyNatural` box -- the header's OWN key-
+    #: signature glyphs, never an in-bar accidental (`gather.
+    #: _KEY_SIGNATURE_PREFIX`) -- that is not a key-signature marker. HUMAN
+    #: WITNESS ONLY.
+    #:
+    #: ⚠️ `Q.KEYSIG_MARKER` NAMES NO GLYPH OF ITS OWN: `gather.
+    #: _gather_keysig_markers` files it on the STAFF, one row per detection,
+    #: carrying the detection's canonical `x`/`y_center` and its
+    #: `detector_class` rather than a glyph subject. So this decision's
+    #: SUBJECTS are the `key*` `Q.GLYPH_BOX` rows the marker rows are built
+    #: from, and its consumer -- `header._staff_reading`'s marker-run intake
+    #: -- rejoins a marker to its glyph by frame, class and point, the same
+    #: join `ownership._keysig_marker_row` already makes in the opposite
+    #: direction. A refused marker must not count toward the run
+    #: `_marker_run` reads a key from, or toward `_marker_ink`'s count of what
+    #: the detector saw.
+    KEYSIG_MARKER_IS_NOT_A_MARKER = "keysig_marker_is_not_a_marker"
+
+    #: A `tuplet*` or `fingering3` box (`gather._TUPLET_CLASSES` -- the two
+    #: families `gather_coverage.FAMILY_TO_Q` maps to `Q.TUPLET_MARKER`) that
+    #: is not a tuplet numeral or bracket. HUMAN WITNESS ONLY. Its consumer is
+    #: `rhythm.adjudicate_tuplet`, which must not read a 3:2 ratio off a
+    #: marker Sean struck out.
+    TUPLET_MARKER_IS_NOT_A_MARKER = "tuplet_marker_is_not_a_marker"
+
     # ── THE HUMAN AS A READER (roadmap 3.4, the stage review) ──────────────
     #
     # ⚠️⚠️ A CORRECTION IS A WITNESS, NEVER AN EDIT. Sean, 2026-09-23:
@@ -1590,6 +1631,10 @@ CLAIMS: "dict[str, str]" = {
     "ARC_IS_NOT_AN_ARC": CLAIM.INTERPRETATION,
     "DYNAMIC_IS_NOT_A_DYNAMIC": CLAIM.INTERPRETATION,
     "ARTICULATION_IS_NOT_AN_ARTICULATION": CLAIM.INTERPRETATION,
+    # ── roadmap 3.4g-4, the three families 3.4g's first pass did not cover ─
+    "FLAG_IS_NOT_A_FLAG": CLAIM.INTERPRETATION,
+    "KEYSIG_MARKER_IS_NOT_A_MARKER": CLAIM.INTERPRETATION,
+    "TUPLET_MARKER_IS_NOT_A_MARKER": CLAIM.INTERPRETATION,
     #: A human naming (or refusing a name for) THIS raster's ink. Wrong in
     #: exactly the way an OCR decode is wrong -- about what the ink is -- and
     #: not in the way a ruler is. That the reader is a person changes who to

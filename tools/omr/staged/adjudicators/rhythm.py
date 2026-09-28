@@ -331,6 +331,12 @@ def _attached_flags(ev: Evidence, cell, attached_stems):
     and 80 eighth rests, and every one of those eighths was read as a QUARTER
     -- four `quarter + 8th-rest` pairs summing to 6.0 in a 4/4 bar, on 20 of
     23 staves.
+
+    ⚠️ ROADMAP 3.4g-4: A REFUSED FLAG IS SKIPPED BEFORE THE STEM TEST, not
+    after. `Q.FLAG_IS_NOT_A_FLAG` is decided on the flag's own glyph subject
+    (`f.subject`), the same one `Q.FLAG` is gathered on, so no join is needed
+    -- unlike the key-signature marker, this family's quantity already names
+    its glyph.
     """
     # ⚠️ NO `if not attached_stems: return` FAST PATH. One was written and a
     # mutation arm SURVIVED it -- `any()` over an empty list is already False,
@@ -340,6 +346,10 @@ def _attached_flags(ev: Evidence, cell, attached_stems):
     boxes = _cell_boxes(ev, cell)
     out = []
     for f in ev.rows(Q.FLAG, scope=Scope.SELF_AND_DESCENDANTS, subject=cell):
+        refusal = ev.verdict(Q.FLAG_IS_NOT_A_FLAG, subject=f.subject)
+        if refusal is not None and refusal.outcome is Outcome.DECIDED \
+                and refusal.value is True:
+            continue
         box_row = boxes.get(f.subject.to_key())
         box = _xywh_head(box_row.value) if box_row else None
         if box is None:
@@ -493,7 +503,8 @@ def _head_class(ev: Evidence) -> Optional[str]:
     # classes the staff's own lines are not context -- they are where the
     # VALUE comes from, and the class is the corroborating witness.
     composed_from=(Q.BEAM_STROKE, Q.FLAG, Q.AUG_DOT, Q.NOTEHEAD_CLASS,
-                   Q.STEM, Q.REST, Q.STAFF_LINES, Q.STAFF_SPACING),
+                   Q.STEM, Q.REST, Q.STAFF_LINES, Q.STAFF_SPACING,
+                   Q.FLAG_IS_NOT_A_FLAG),
     scope=Kind.GLYPH,
     # ⚠️ `Q.STEM_DIRECTION` IS A `wants` AND NOT A `composed_from` (2.12e).
     # A flag's class suffix names the way its stem points; the DURATION is
@@ -503,7 +514,8 @@ def _head_class(ev: Evidence) -> Optional[str]:
     # durations move.
     wants=(Q.BEAM_STROKE, Q.FLAG, Q.AUG_DOT, Q.NOTEHEAD_CLASS, Q.STEM,
            Q.TUPLET_RATIO, Q.GLYPH_BOX, Q.REST, Q.CELL_STAFF_SPACE,
-           Q.STAFF_LINES, Q.STAFF_SPACING, Q.STEM_DIRECTION),
+           Q.STAFF_LINES, Q.STAFF_SPACING, Q.STEM_DIRECTION,
+           Q.FLAG_IS_NOT_A_FLAG),
     reasons=("head_and_marks", "beams_ambiguous", "no_notehead",
              "unknown_head", "rest_class", "unreadable_rest",
              "rest_slot_contradicts_class", "rest_stands_where_no_rest_hangs"),
@@ -1036,6 +1048,18 @@ def _scale(total: float, ratio, ev: Evidence) -> float:
     return total
 
 
+def _tuplet_marker_refused(ev: Evidence, mark) -> bool:
+    """Did a human strike out the glyph THIS `Q.TUPLET_MARKER` row IS?
+
+    ROADMAP 3.4g-4. Unlike the key-signature marker, `Q.TUPLET_MARKER` is
+    gathered on its own glyph subject, so the refusal is read there directly
+    and no frame/class/point join is needed.
+    """
+    refusal = ev.verdict(Q.TUPLET_MARKER_IS_NOT_A_MARKER, subject=mark.subject)
+    return (refusal is not None and refusal.outcome is Outcome.DECIDED
+            and refusal.value is True)
+
+
 @decision(
     quantity=Q.TUPLET_RATIO,
     checkable=Checkable.MIXED,
@@ -1044,9 +1068,11 @@ def _scale(total: float, ratio, ev: Evidence) -> float:
         '"the group must hold exactly as many notes as the digit claims"',
     ),
     implicates=(Q.TUPLET_RATIO, Q.DURATION, Q.METER),
-    composed_from=(Q.TUPLET_MARKER, Q.BEAM_STROKE, Q.NOTEHEAD_CLASS),
+    composed_from=(Q.TUPLET_MARKER, Q.BEAM_STROKE, Q.NOTEHEAD_CLASS,
+                   Q.TUPLET_MARKER_IS_NOT_A_MARKER),
     scope=Kind.CELL,
-    wants=(Q.TUPLET_MARKER, Q.BEAM_STROKE, Q.NOTEHEAD_CLASS),
+    wants=(Q.TUPLET_MARKER, Q.BEAM_STROKE, Q.NOTEHEAD_CLASS,
+           Q.TUPLET_MARKER_IS_NOT_A_MARKER),
     reasons=("digit", "bracket", "no_marker", "wrong_member_count",
              "ambiguous_bracket"),
     mode=Mode.ADDITIVE,
@@ -1077,7 +1103,14 @@ def adjudicate_tuplet(ev: Evidence) -> Ruling:
     # reading at EXACT scope finds nothing and reports `no_marker` -- which
     # reads exactly like a cell that prints no tuplet. Found by the test
     # asserting a REASON rather than just an outcome.
-    marks = ev.rows(Q.TUPLET_MARKER, scope=Scope.SELF_AND_DESCENDANTS)
+    #
+    # ⚠️ ROADMAP 3.4g-4: A REFUSED MARKER READS EXACTLY LIKE NO MARKER AT ALL,
+    # not like a cell whose digit disagrees with its bracket. `Q.TUPLET_
+    # MARKER_IS_NOT_A_MARKER` is decided on the marker's own glyph subject
+    # (`m.subject`) -- the same one `Q.TUPLET_MARKER` is gathered on -- so, as
+    # with the flag, no cross-quantity join is needed.
+    marks = [m for m in ev.rows(Q.TUPLET_MARKER, scope=Scope.SELF_AND_DESCENDANTS)
+             if not _tuplet_marker_refused(ev, m)]
     if not marks:
         return Ruling.abstain("no_marker")
 

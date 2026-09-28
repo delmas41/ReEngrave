@@ -1193,3 +1193,288 @@ python3 $B/probe/compare_gathers_2_14.py base_l.json arm_l.json --out cmp_l.json
 python3 $B/probe/crop_owner_2_14.py --base base_l.json --arm arm_l.json --pdf $PDF_L --label l214-litolff-p3
 # repeat with $PDF_B --pages 1 for Brahms
 ```
+
+## §3.4g-4 — the three families 3.4g did not cover; a rest on round ink (2026-09-28)
+
+Work order item 6, ROADMAP START HERE: *"Refusals for the families 3.4g did
+not cover (flag, key marker, tuplet numeral; a rest box on round ink —
+Sean's rest crop 5)."*
+
+### Part A — flag, key-signature marker, tuplet numeral
+
+Family names as the tree spells them (`gather_coverage.FAMILY_TO_Q`,
+`class_aliases.py`): `flag` → `Q.FLAG`, `key` → `Q.KEYSIG_MARKER` (the
+header's `keySharp`/`keyFlat`/`keyNatural` glyphs, never the in-bar
+accidental — `gather._KEY_SIGNATURE_PREFIX`), `tuplet`/`fingering` →
+`Q.TUPLET_MARKER` (but see below — the family and the quantity are NOT the
+same population for two of these three).
+
+Three new `Q.<X>_IS_NOT_A_<X>` decisions, on the seven's own pattern
+(`family_precision.py`, human-witness-only, reading `Q.HUMAN_BOX_VERDICT`
+through `notehead_precision._human_not_a_symbol`, the one parser):
+
+| decision | quantity | domain | consumer |
+|---|---|---|---|
+| `adjudicate_flag_is_not_a_flag` | `Q.FLAG_IS_NOT_A_FLAG` | `subjects_from=Q.FLAG` | `rhythm._attached_flags` (reads the refusal on the flag's own glyph subject directly — no join, `Q.FLAG` already names it) |
+| `adjudicate_keysig_marker_is_not_a_marker` | `Q.KEYSIG_MARKER_IS_NOT_A_MARKER` | `subjects_from=Q.GLYPH_BOX`, `subjects_classed=("keySharp","keyFlat","keyNatural")` | `header._staff_reading`'s marker-run intake, via a NEW join (`_keysig_marker_glyph_refused`) |
+| `adjudicate_tuplet_marker_is_not_a_marker` | `Q.TUPLET_MARKER_IS_NOT_A_MARKER` | `subjects_from=Q.TUPLET_MARKER` | `rhythm.adjudicate_tuplet` (reads the refusal on the marker's own glyph subject directly — no join) |
+
+⚠️ **WHY TWO OF THE THREE NARROW BY THEIR OWN QUANTITY AND ONE NARROWS BY
+CLASS.** `Q.FLAG` and `Q.TUPLET_MARKER` are gathered 1:1 on the glyph they
+name (`gather.gather_rhythm_marks`), exactly as `Q.REST`/`Q.ARC_BOX`/
+`Q.DYNAMIC_LETTER`/`Q.ARTICULATION_MARK` already are in 3.4g, so
+`subjects_from` is the quantity itself. `Q.KEYSIG_MARKER` cannot take that
+route: `gather._gather_keysig_markers` files it on the STAFF, one row per
+detection, with NO glyph subject of its own — so its refusal narrows
+`Q.GLYPH_BOX` by class instead, on the LEDGER/ACCIDENTAL/ARPEGGIATO pattern.
+
+⚠️ **A BARE CLASS PREFIX IS A DOCUMENTED FOOTGUN, AVOIDED TWICE.**
+`subjects_for`'s class narrowing matches `str.startswith` against the WHOLE
+lower-cased class name, not against `class_aliases`' family boundary.
+`key_signature_corroboration.py`'s own comment says `startswith("key")` "also
+catches `keyboardPedalUp` — a PEDAL marking", so the key-marker decision
+names the three exact classes (`gather._KEYSIG_CLASSES`) rather than the
+bare `key` prefix. The tuplet family has the mirror shape: `gather_coverage.
+FAMILY_TO_Q` maps the WHOLE `tuplet` family (`tuplet0`-`9`, `tupletBracket`)
+and the WHOLE `fingering` family to `Q.TUPLET_MARKER`, but `gather.
+_TUPLET_CLASSES` only ever files `tuplet3`, `tupletBracket` and `fingering3`
+under it — reading `Q.TUPLET_MARKER` directly is already exactly that
+population, with no class list to keep in step by hand.
+
+#### The key-marker join
+
+`Q.KEYSIG_MARKER` names no glyph, so its refusal has to be rejoined to the
+`Q.GLYPH_BOX` row the SAME detection produced — by frame, class and point,
+the mirror of `ownership._keysig_marker_row` (which makes the identical join
+in the opposite direction, for the accidental owner). `header.
+_keysig_marker_glyph_refused` is called DIRECTLY from `_staff_reading`
+(not through a second wrapper): `inventory --check`'s `_never_read` follows a
+decision's own call chain three levels deep, and `adjudicate_part_key`'s own
+docstring already records losing `_cell0_space`/`_proved_engraved` to one
+extra hop of wrapper — the same fault would have hidden `Q.GLYPH_BOX` and
+`Q.KEYSIG_MARKER_IS_NOT_A_MARKER` as "declared, never read" had a wrapper
+been kept.
+
+`Q.KEYSIG_MARKER_IS_NOT_A_MARKER` also had to move earlier in `adjudicate.
+ORDER` than the other two 3.4g-4 families: `Q.SYSTEM_KEY`/`Q.PART_KEY`/
+`Q.KEY_SIGNATURE` all sit BEFORE the block the six pre-existing human-only
+families stand in, so the key-marker refusal runs beside `Q.CLEF`, ahead of
+`Q.SYSTEM_KEY` — a dependency, not a preference, on the same footing as
+`Q.LEDGER_IS_NOT_A_LEDGER` before `Q.NOTEHEAD_IS_NOT_A_NOTEHEAD`. `Q.FLAG_IS_
+NOT_A_FLAG` and `Q.TUPLET_MARKER_IS_NOT_A_MARKER` did not need to move: their
+consumers (`Q.DURATION`, `Q.TUPLET_RATIO`) are already later in `ORDER` than
+the human-only block.
+
+#### RED → GREEN
+
+Every test naming `Q.FLAG_IS_NOT_A_FLAG` / `Q.KEYSIG_MARKER_IS_NOT_A_MARKER`
+/ `Q.TUPLET_MARKER_IS_NOT_A_MARKER` fails at attribute lookup on the
+unrepaired tree (`AttributeError`, the same shape 3.4g's own RED state
+documents). Three layers, each with a positive control:
+
+1. **`test_staged_family_refusals.py`** — the three rows added to the shared
+   `FAMILIES` table (all the table-driven human-witness tests now cover ten
+   families, not seven) and three NAMED tests added to `TestEachFamilyByName`
+   (the health tool scans each test FUNCTION's own AST for `Q.` names, so a
+   loop over a table names none of them — the same reason that class exists
+   for the original seven). A dedicated pair of tests documents WHY the
+   key-marker narrows by class while flag/tuplet narrow by their own
+   quantity, so the asymmetry reads as a decision, not an oversight.
+2. **`test_staged_duration.py`** — `test_a_human_refused_flag_does_not_reach_
+   the_duration`: the identical fixture as `test_a_flag_on_this_notes_stem_is_
+   read` (0.5 beats), with one `Q.HUMAN_BOX_VERDICT` row added, reads 1.0
+   beats (`flags_attached: 0`) — the note falls back to an unflagged quarter.
+   `test_a_human_refused_marker_reads_like_no_marker_at_all` — the identical
+   triplet fixture as `test_the_written_value_is_untouched_and_the_time_is_
+   scaled` (2/3 beats), with the marker refused, ABSTAINS `no_marker` and the
+   notes read their WRITTEN 1.0 beats unscaled.
+3. **`test_staged_key_from_markers.py`** — `TestAHumanRefusedMarkerDoesNotCount
+   TowardTheRun`: three `keyFlat` markers (Sean's own `_flats(3)` fixture)
+   read `-3` undisturbed; refusing the third glyph's `Q.GLYPH_BOX` drops the
+   run to two slots and the key signature reads `-2`, reason still `markers`
+   — the refused box counts toward NEITHER the ladder nor the kind check. A
+   third test confirms a marker with no matching `Q.GLYPH_BOX` at all
+   (an older record, or an ungathered glyph) is NOT dropped: the join needs a
+   glyph to decide the refusal ON, and finding none is silence, not a
+   refusal.
+
+`python3 -m tools.omr.staged.health --check`: three "NO staged test names it
+at all" findings appeared the moment the three quantities were registered
+(the table-driven tests alone do not satisfy it) and cleared once the named
+tests above landed — **EMPTY CELLS: none**.
+
+#### The out-of-pipeline producer count moved, and the fix is in this branch too
+
+`test_staged_out_of_pipeline_producer.py` (roadmap 0.5/3.4b-check, landed the
+night before this lane started) hard-codes the COUNT of decisions wanting
+`Q.HUMAN_BOX_VERDICT` at nine — the nine 3.4g/3.4g's-precursor decisions that
+existed when `producers.py` was built. Adding three more human-only family
+decisions on the same pattern moved the true count to twelve, which failed
+three assertions (`test_a_want_no_producer_anywhere_files_is_STILL_reported`,
+`test_reproduces_the_RED_state_this_lane_found`,
+`test_wanted_but_out_of_pipeline_names_the_nine_decisions`) — correctly,
+since `producers.py`'s OWN classification (which reads `review/
+human_evidence.py`'s AST, never a hand-typed list) already covered the three
+new decisions for free (`staged.producers` stayed at `open=0` throughout).
+Fixed by updating the three hard-coded counts/lists to 12, with the ORIGINAL
+nine kept as a named historical constant (`test_reproduces_the_RED_state_
+this_lane_found` still pins them by name) so the test that is a frozen
+snapshot and the test that is a live property of the registry are not the
+same assertion.
+
+#### The family_refusals census
+
+`export._family_refusals` iterates `family_precision.FAMILY_REFUSALS`, which
+is `tuple(_OK)` — derived from the SAME dict the new decisions' `_OK` entries
+were added to (`flag`, `keysig_marker`, `tuplet_marker`). No `export.py` edit
+was needed for the three new families to be counted: `FAMILY_REFUSALS` grew
+from 7 to 10 entries the moment `_OK` did, and `_family_refusals`'s own
+per-family partition (`refused`/`kept`/`abstained`/`verdicts`, `balanced`
+required) applies to them exactly as it does to the original seven.
+
+### Part B — a rest box on round ink (MEASURED; NOT SHIPPED)
+
+**CONVENTION ASSUMED / WHAT WOULD FALSIFY IT / NOT CONFIRMED**: a rest glyph
+is never a filled ellipse; a box whose ink is a filled, roughly elliptical
+blob about one staff-space tall is a notehead, not a rest. Sean has
+confirmed exactly ONE instance: `glyph/3/1/4/8/8` on the Litolff count page
+(`benchmarks/omr-shape-role-2026-09/out/print/
+ADJUDICATION-sean-2026-09-27-cal.json`, crop 5 of the `cal-other-to-decided`
+batch — *"Rest crop 1-4 whole, 5 is a quarter note head - not a rest, 6-11
+whole rests"*). Nothing else below has been shown to him.
+
+#### Measurement
+
+`benchmarks/omr-family-refusals-2026-09/probe/rest_round_ink.py` reads every
+`Q.REST` row on the two scan count pages (Litolff pdf index 3, Breitkopf pdf
+index 1) via `record_io.load_record`, joins each to its OWN `Q.GLYPH_BOX`
+row (same subject — `Q.REST` is gathered 1:1 on the rest's own glyph, unlike
+the key-signature marker in Part A), rasterises the source PDF page at the
+GATHER'S OWN DPI (read off `provenance.settings.args.dpi`, 600 on both — the
+same discipline `crop_rest_slot.py` uses), and measures the detector's own
+box with an Otsu threshold per crop (so one rule reads a bitonal and a
+grayscale plate alike) and `cv2.connectedComponentsWithStats`:
+
+  * `fill_ratio` — ink pixels / box area, inside the detector's own box.
+  * `largest_fill_ratio` — the largest connected ink component's own pixel
+    count / ITS OWN tight bounding box area (an ellipse inscribed in its
+    bounding box fills π/4 = 0.785 of it).
+  * `largest_aspect_h_over_w` — that component's own bounding-box
+    height/width (a notehead is close to 1; CLAUDE.md §10: "a notehead is
+    ~1.3 staff spaces wide", roughly as tall as wide).
+
+Reach first: 504 `Q.REST` rows across the two pages (154 Litolff, 350
+Breitkopf), every one carrying a page box, 503 of 504 measured (one
+Breitkopf `restWhole` crop was a uniform block — no Otsu split, declined
+rather than defaulted). By class:
+
+| class | n | fill_ratio p50 | largest_fill_ratio p50 | aspect h/w p50 |
+|---|--:|--:|--:|--:|
+| `restWhole` | 243 | 0.902 | 0.944 | 0.364 |
+| `restHalf` | 2 | 0.896 | 0.905 | 0.189 |
+| `restQuarter` | 122 | 0.628 | 0.632 | 2.736 |
+| `rest8th` | 132 | 0.573 | 0.575 | 1.594 |
+| `rest16th` | 3 | 0.750 | 0.757 | 1.750 |
+| `restHBar` | 1 | 0.301 | 0.301 | 0.029 |
+
+`restQuarter`/`rest8th`/`rest16th` never come near notehead shape at all —
+their aspect p1 across both classes is 0.92–1.25 and rises from there
+(TALL strokes, as the convention predicts); `fill_ratio` stays in a narrow
+band well under a notehead's. **The convention holds cleanly for every
+rest DURATION except the one Sean's confirmed case actually is: `restWhole`.**
+
+⚠️ **`fill_ratio` DOES NOT DISCRIMINATE WITHIN `restWhole` AT ALL.** A
+genuine whole rest is a solid filled RECTANGLE, so it fills its own
+detector box almost completely too — `largest_fill_ratio` p50 0.944, p75
+0.973, p90 0.988 — HIGHER than Sean's confirmed notehead's own 0.8316 (its
+rank is 24th of 243, the 9.5th percentile, on this feature). The only
+feature that could possibly separate a round blob from a flat rectangle is
+`largest_aspect_h_over_w`.
+
+**And that is where the measurement stops the rule.** Sorted by aspect
+h/w descending, the top of the `restWhole` population is a smooth ramp with
+NO gap anywhere near the confirmed case:
+
+| rank | subject | aspect h/w | fill_ratio |
+|--:|---|--:|--:|
+| 1 | `glyph/1/1/4/0/17` | 0.8750 | 0.9643 |
+| 2 | `glyph/1/1/1/1/12` | 0.8636 | 0.9234 |
+| 3 | `glyph/3/1/4/0/11` | 0.8182 | 0.7576 |
+| 4 | `glyph/1/1/4/3/18` | 0.8182 | 0.9874 |
+| 5 | `glyph/1/1/5/4/11` | 0.8182 | 0.9495 |
+| **6** | **`glyph/3/1/4/8/8` (Sean's confirmed notehead)** | **0.7727** | **0.8316** |
+| 7 | `glyph/3/0/7/5/6` | 0.7273 | 0.9233 |
+| 8 | `glyph/3/1/4/14/3` | 0.6957 | 0.7954 |
+| 9 | `glyph/1/1/4/3/9` | 0.6842 | 0.9919 |
+| 10 | `glyph/3/1/4/16/3` | 0.6364 | 0.7528 |
+
+Five OTHER `restWhole` boxes — three on Breitkopf (`glyph/1/...`), two on
+Litolff (`glyph/3/...`), so this is not one plate's registration artefact —
+sit ABOVE the confirmed case on both features, with steps of 0.01–0.05
+between neighbours the whole way down. The confirmed case is not an outlier
+at the tail of an otherwise well-behaved population; it stands INSIDE a
+five-to-ten-row cluster of equally round, equally filled boxes that nobody
+has looked at. `largest_aspect_h_over_w`'s own percentiles for the class —
+p90 0.496, p95 0.598, p99 0.818, p100 0.875 — show the same thing from the
+other end: the population's own tail is wide and gradual, not a cliff with
+one row hanging off it.
+
+**⇒ NO CLEAN GAP. THE RULE DOES NOT SHIP** (CLAUDE.md rule 5: "no default
+flips on agreement with our own reading" and "if no clean gap exists, do not
+ship"). Whether any of the other five-to-ten candidates are ALSO
+misclassified noteheads is a real, open question this measurement raises —
+but answering it needs Sean's eyes on those specific boxes, not a threshold
+fit to a population of one.
+
+#### GATHER vs ADJUDICATE (moot, recorded anyway)
+
+Had the gap been clean, it would not have been buildable as an ADJUDICATE
+rule regardless: `fill_ratio`/`largest_aspect_h_over_w` need `cv2.threshold`
+and `connectedComponentsWithStats` over the RASTER, which ADJUDICATE may
+never read (CLAUDE.md §4a — it reads a frozen log; §9's "never erase staff
+lines before the detector" and the whole `Q.LEDGER_INK_UNDER` precedent in
+3.4g-3 are both GATHER-side for the same reason). Shipping this would have
+meant a new `Q.<...>` quantity filed in GATHER, priced by two full
+re-gathers (CLAUDE.md §4d/§6b) — exactly the step this measurement stops
+before, since there is nothing to price.
+
+No crops were cut: Part B's own instructions cut crops only where a clean
+gap justifies naming a new refusal, and none exists.
+
+### Checks and tests
+
+- RED, actually run: source changes stashed by path (`git stash push -u --
+  <the five staged/ files>`), test changes left in place, `pytest
+  tools/omr/tests/test_staged_family_refusals.py ...` → `AttributeError:
+  type object 'Q' has no attribute 'FLAG_IS_NOT_A_FLAG'` at COLLECTION
+  (`FAMILIES` is a module-level tuple, so the whole file fails to import,
+  not one test) — the same shape 3.4g's own RED state documents. Source
+  changes restored (`git stash apply` by sha, then dropped) before GREEN.
+- `pytest tools/omr/tests -m "not slow"`: **3,400 passed, 3 skipped**
+  (unrelated pre-existing skips).
+- `python3 -m tools.omr.staged.inventory --check`: exit 0, no new inert
+  declaration (`Q.GLYPH_BOX`/`Q.KEYSIG_MARKER_IS_NOT_A_MARKER` are read at
+  depth 2 from each of the three key decisions, within `_never_read`'s
+  3-level reach).
+- `python3 -m tools.omr.staged.health --check`: **EMPTY CELLS: none** (three
+  appeared, three cleared, by the named tests in Part A).
+- `python3 -m tools.omr.staged.check`: **253 → 253** (unchanged: `staged.
+  health` rose 0 → 3 the moment the three decisions registered with no named
+  test yet, then fell back to 0 once the named tests landed; every other
+  check's count is untouched — no new `KNOWN_GAPS` entry, none closed).
+
+### Reproducing
+
+```bash
+# Part A — RED first, against a worktree at this branch's merge-base
+python3 -m pytest tools/omr/tests/test_staged_family_refusals.py \
+  tools/omr/tests/test_staged_duration.py \
+  tools/omr/tests/test_staged_key_from_markers.py \
+  tools/omr/tests/test_staged_out_of_pipeline_producer.py -q
+
+# Part B — the measurement (writes the histogram JSON per document)
+python3 benchmarks/omr-family-refusals-2026-09/probe/rest_round_ink.py \
+  --doc litolff --out benchmarks/omr-family-refusals-2026-09/out/r34g4-round-ink-litolff.json
+python3 benchmarks/omr-family-refusals-2026-09/probe/rest_round_ink.py \
+  --doc breitkopf --out benchmarks/omr-family-refusals-2026-09/out/r34g4-round-ink-breitkopf.json
+```

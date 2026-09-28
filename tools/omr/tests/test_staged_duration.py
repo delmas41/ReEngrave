@@ -237,6 +237,31 @@ class TestTupletScalesTimeNotValue(unittest.TestCase):
         order = list(adjudicate.ORDER)
         self.assertLess(order.index(Q.TUPLET_RATIO), order.index(Q.DURATION))
 
+    def test_a_human_refused_marker_reads_like_no_marker_at_all(self):
+        """⚠️ ROADMAP 3.4g-4. `Q.TUPLET_MARKER` is gathered on its own glyph
+        subject, so `adjudicate_tuplet` reads the refusal directly -- no join
+        needed. RUN RED FIRST: `Q.TUPLET_MARKER_IS_NOT_A_MARKER` does not
+        exist before 3.4g-4 and this test fails at attribute lookup.
+        """
+        log = self._triplet()
+        marker = R.glyph(0, 0, 0, 0, 99)
+        log.observe(marker, Q.HUMAN_BOX_VERDICT, "not_a_symbol",
+                    reader=READERS.SEAN, frame="review:box",
+                    sidecar="t.json", action="act-0001")
+        adjudicate.run(log)
+        refusal = log.verdict(Q.TUPLET_MARKER_IS_NOT_A_MARKER, marker)
+        self.assertIs(refusal.outcome, Outcome.DECIDED)
+        self.assertIs(refusal.value, True)
+        v = log.verdict(Q.TUPLET_RATIO, CELL)
+        self.assertIs(v.outcome, Outcome.ABSTAINED)
+        self.assertEqual(v.reason, "no_marker")
+        # the notes fall back to their WRITTEN value, unscaled.
+        note = log.verdict(Q.DURATION, R.glyph(0, 0, 0, 0, 0))
+        self.assertAlmostEqual(note.value["beats"], 1.0)
+        # ⚠️ THE POSITIVE CONTROL: the identical fixture with no human row is
+        # `test_the_written_value_is_untouched_and_the_time_is_scaled`, which
+        # reads 2/3 -- so this is not passing because the tuplet path is dead.
+
 
 class TestTheOneBoundedLoop(unittest.TestCase):
     """⚠️ Durations vote the meter; the meter then re-reads the durations. The
@@ -729,6 +754,32 @@ class TestAMarkMustBeATTACHEDToItsNotehead(unittest.TestCase):
         v = log.verdict(Q.DURATION, g)
         self.assertEqual(v.detail["beam_evidence"], "read")
         self.assertEqual(v.value["beats"], 0.5)
+
+    def test_a_human_refused_flag_does_not_reach_the_duration(self):
+        """⚠️ ROADMAP 3.4g-4. `Q.FLAG_IS_NOT_A_FLAG` is decided on the flag's
+        OWN glyph subject, the same one `Q.FLAG` is gathered on, so
+        `_attached_flags` reads the refusal directly -- no join needed, unlike
+        the key-signature marker. RUN RED FIRST: `Q.FLAG_IS_NOT_A_FLAG` does
+        not exist before 3.4g-4 and this test fails at attribute lookup.
+        """
+        log = Log()
+        g, _ = self._stemmed(log)
+        f = _flag(log, gi=50, cls="flag8thUp", x=X - 10, y=40, w=12, h=40)
+        log.observe(f.subject, Q.HUMAN_BOX_VERDICT, "not_a_symbol",
+                    reader=READERS.SEAN, frame="review:box",
+                    sidecar="t.json", action="act-0001")
+        adjudicate.run(log)
+        refusal = log.verdict(Q.FLAG_IS_NOT_A_FLAG, f.subject)
+        self.assertIs(refusal.outcome, Outcome.DECIDED)
+        self.assertIs(refusal.value, True)
+        v = log.verdict(Q.DURATION, g)
+        # the note reads as an UNFLAGGED quarter, exactly as if the detector
+        # had never drawn the flag at all.
+        self.assertEqual(v.detail["flags_attached"], 0)
+        self.assertEqual(v.value["beats"], 1.0)
+        # ⚠️ THE POSITIVE CONTROL: the identical fixture with no human row is
+        # `test_a_flag_on_this_notes_stem_is_read`, which reads 0.5 beats --
+        # so this test is not passing because the flag path is dead.
 
     # ── dots ────────────────────────────────────────────────────────────────
 

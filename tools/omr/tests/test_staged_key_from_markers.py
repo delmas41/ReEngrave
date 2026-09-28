@@ -319,5 +319,67 @@ class TestTheSystemCheck(unittest.TestCase):
         self.assertEqual(v.value["corroborated"], [-3])
 
 
+class TestAHumanRefusedMarkerDoesNotCountTowardTheRun(unittest.TestCase):
+    """ROADMAP 3.4g-4. `Q.KEYSIG_MARKER` names no glyph of its own --
+    `gather._gather_keysig_markers` files it on the STAFF -- so a human's
+    *nothing* on a `key*` box could not reach `_marker_run` before `Q.
+    KEYSIG_MARKER_IS_NOT_A_MARKER` existed to be rejoined to it by frame,
+    class and point (`header._keysig_marker_glyph_refused`).
+
+    ⚠️ RUN RED FIRST: `Q.KEYSIG_MARKER_IS_NOT_A_MARKER` does not exist before
+    3.4g-4 and every test below fails at attribute lookup.
+    """
+
+    def _flat_glyph(self, log, gi, x, *, y_center=500.0, h=20.0):
+        """The `Q.GLYPH_BOX` row the SAME detection that filed a `Q.
+        KEYSIG_MARKER` row also produces -- `_staff`/`_flats` file the
+        marker's own STAFF-level row; this is its glyph half."""
+        g = R.glyph(0, 0, 0, 0, gi)
+        log.observe(g, Q.GLYPH_BOX,
+                    ("keyFlat", x, y_center - h / 2.0, 20.0, h),
+                    reader=READERS.DETECTOR, frame="cell:0", score=0.9)
+        return g
+
+    def test_a_refused_flat_drops_the_run_by_one_slot(self):
+        log = Log()
+        sub = _staff(log, 0, markers=_flats(3))
+        third = self._flat_glyph(log, 2, 375.0 + 2 * SPACE)
+        log.observe(third, Q.HUMAN_BOX_VERDICT, "not_a_symbol",
+                    reader=READERS.SEAN, frame="review:box",
+                    sidecar="t.json", action="act-0001")
+        adjudicate.run(log)
+        refusal = log.verdict(Q.KEYSIG_MARKER_IS_NOT_A_MARKER, third)
+        self.assertIs(refusal.outcome, Outcome.DECIDED)
+        self.assertIs(refusal.value, True)
+        v = log.verdict(Q.KEY_SIGNATURE, sub)
+        self.assertIs(v.outcome, Outcome.DECIDED)
+        self.assertEqual(v.value, -2, "the refused third flat must not count")
+        self.assertEqual(v.reason, "markers")
+
+    def test_the_positive_control_keeps_all_three(self):
+        """The identical fixture with no human row: the run is untouched, so
+        the test above is not passing because the marker-run path is dead."""
+        log = Log()
+        sub = _staff(log, 0, markers=_flats(3))
+        self._flat_glyph(log, 2, 375.0 + 2 * SPACE)
+        adjudicate.run(log)
+        v = log.verdict(Q.KEY_SIGNATURE, sub)
+        self.assertIs(v.outcome, Outcome.DECIDED)
+        self.assertEqual(v.value, -3)
+
+    def test_a_refused_marker_with_no_matching_glyph_box_is_not_dropped(self):
+        """⚠️ THE JOIN NEEDS A `Q.GLYPH_BOX` TO HOLD ON TO. A record gathered
+        before roadmap 3.4g-4's own `Q.GLYPH_BOX` reading was added to `_KEY_
+        WANTS`, or a marker whose glyph never entered the record for some
+        other reason, must not silently drop -- there is nothing to refuse
+        because there is no glyph the refusal could be decided on."""
+        log = Log()
+        sub = _staff(log, 0, markers=_flats(3))       # no glyph boxes at all
+        adjudicate.run(log)
+        v = log.verdict(Q.KEY_SIGNATURE, sub)
+        self.assertIs(v.outcome, Outcome.DECIDED)
+        self.assertEqual(v.value, -3)
+
+
 if __name__ == "__main__":
     unittest.main()
