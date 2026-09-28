@@ -38,7 +38,14 @@ from ..record import ABSTAIN, Kind, Q, READERS, Scope, State
 # the ONE measured answer to "which line does this position name" -- the CV
 # locator already trusts them (`clef_geometry.resolve_clef`), and a second
 # copy here is exactly how a human's row would drift from the locator's.
-from ...clef_geometry import CLEF_BY_FAMILY_LINE, DEFAULT_CONFIG, clef_family
+#
+# ⚠️ AND `_clef_core` / `clef_name_from_class`, for what a human's OWN class
+# choice (`clefC` / `clefCAlto` / `clefCTenor`) claims -- manager review of
+# the first cut of 3.4f: a specific sub-class is a READING, not a class-only
+# guess, and geometry must not silently overrule it. A second name table here
+# is exactly how that reading would drift from `clef_geometry`'s.
+from ...clef_geometry import (CLEF_BY_FAMILY_LINE, DEFAULT_CONFIG, _clef_core,
+                              clef_family, clef_name_from_class)
 
 # ─────────────────────────────────────────────────────────────────────────────
 # ⚠️ ASSUMED CONSTANTS. NOT ONE OF THESE IS MEASURED.
@@ -271,13 +278,14 @@ def _is_human_clef_reader(reader: Optional[str]) -> bool:
 #: not a second calibration.
 _STEPS_PER_LINE_SPACING = 2.0
 
-#: What a human's OWN measured C-clef line is worth once it names one.
-#: (A-CLEF-9) ⚠️ NOT MEASURED, like every weight in this file (line 38ff).
-#: Set equal to `W_LOCATOR` because the two play the IDENTICAL functional
-#: role -- naming a C clef's LINE from a geometric measurement rather than
-#: from a class label -- not because a measurement has shown them equal; none
-#: has. `_human_named_c_clef` cites the POSITION row, exactly as
-#: `_locator_terms` cites the locator's, so a lone human reading clears
+#: What a human's OWN C-clef reading is worth once it names a candidate --
+#: whether the name comes from his measured POSITION (the unplaced `clefC`
+#: case), from his CLASS confirmed by that position, or from his CLASS alone
+#: where the position can't confirm or contradict it. (A-CLEF-9) ⚠️ NOT
+#: MEASURED, like every weight in this file (line 38ff). Set equal to
+#: `W_LOCATOR` because it plays the IDENTICAL functional role -- naming a C
+#: clef's LINE from something more than a bare class label -- not because a
+#: measurement has shown them equal; none has. A lone human reading clears
 #: `MARGIN_FLOOR` on its own -- the same absolute floor a lone detector or
 #: locator reading must clear (line 66ff).
 W_HUMAN_C_LINE = W_LOCATOR
@@ -330,30 +338,98 @@ def _snap_c_clef_position(position: float) -> Optional[Tuple[str, float]]:
     return name, residual
 
 
-def _human_named_c_clef(ev: Evidence, glyph_row: Any
-                         ) -> Optional[Tuple[str, Term]]:
-    """Does this human's OWN `Q.CLEF_POSITION` name a line confidently enough
-    to name the CLEF, rather than merely support a name someone else gave?
+#: Reason word filed in `detail` (not returned as the verdict's own `reason`
+#: -- the verdict may still be `scored` on OTHER evidence) when a human's own
+#: two witnesses -- the class he clicked, the position he drew -- disagree.
+CONTRADICTION_REASON = "human_class_contradicts_position"
 
-    Returns `(clef_name, Term)` citing the POSITION row -- the measurement
-    does the naming here, exactly as it does for the CV locator
-    (`_locator_terms`), and NOT the glyph row: citing the glyph row would put
-    the term in the wrong correlated group and risks double-counting the
-    same box against `_c_family_support`'s own (glyph-row) citation.
 
-    `None` is deliberately NOT an abstention. The caller falls back to plain
-    family support -- CLAUDE.md rule 8, a fallback never turns "cannot tell"
-    into an answer, so a box that will not confidently name a line still
-    contributes only what it can honestly claim.
+def _human_class_name(value: str) -> Optional[str]:
+    """The alto/tenor name a human's OWN class choice claims, or `None` where
+    he left it UNPLACED.
+
+    `review/static/labels.js` offers three C-clef choices: `clefC` ("C clef
+    (alto or tenor -- unplaced)"), `clefCAlto` ("alto clef") and `clefCTenor`
+    ("tenor clef"). Clicking one of the latter two is a READING -- he looked
+    at the print and said which one -- and is treated as evidence in its own
+    right below; clicking the first is exactly as unplaced as a detector's
+    `clefC` box would be, and geometry is the only thing that can name it.
+
+    ⚠️ `clef_geometry.clef_name_from_class` answers `"alto"` for EVERY
+    C-family class, including the unplaced one -- that is ITS fallback
+    default for when geometry cannot run at all, not a signal that the class
+    was specific. Telling "unplaced" apart from "specifically alto" needs
+    `_clef_core`: the unplaced class's core is the bare family letter, `"c"`,
+    and a specific one's is longer (`"calto"`, `"ctenor"`).
     """
+    core = _clef_core(value)
+    if not core or core == "c":
+        return None
+    return clef_name_from_class(value)
+
+
+def _human_named_c_clef(ev: Evidence, glyph_row: Any
+                         ) -> Tuple[Optional[Tuple[str, Term]], Optional[str]]:
+    """Does this human's C-clef box name a candidate -- and where his own two
+    witnesses (the class he clicked, the position he drew) disagree, say so
+    rather than letting one silently overrule the other.
+
+    Returns `(named, contradiction)`. `named` is `(clef_name, Term)` to add
+    to the contest, or `None`. `contradiction` is `CONTRADICTION_REASON`, or
+    `None`. Manager review of the first cut of this function (it let geometry
+    decide unconditionally): four cases, by `_human_class_name`.
+
+      **UNPLACED** (`clefC`) -- he named a C clef and nothing more; geometry
+      alone may name the line, exactly as it does for the CV locator. Citing
+      the POSITION row only, exactly as `_locator_terms` cites the locator's
+      -- citing the glyph row too would put the term in the wrong correlated
+      group and risk double-counting against `_c_family_support`'s own
+      (glyph-row) citation for a row that falls through instead. Unsnappable
+      -> `(None, None)`: the pre-existing family-support-only path.
+
+      **SPECIFIC CLASS** (`clefCAlto` / `clefCTenor`), **geometry AGREES** --
+      two of his own witnesses corroborate one answer. Cites BOTH rows: the
+      glyph row is now itself evidence (the class IS the reading), and the
+      position confirms it.
+
+      **SPECIFIC CLASS, geometry NAMES A DIFFERENT LINE** -- a contradiction
+      between two things ONE PERSON said. Geometry does not get to overrule
+      the class he read, and the class does not get to overrule the position
+      he measured either: name NOTHING (CLAUDE.md rule 8, a fallback never
+      turns "cannot tell" into an answer), fall through to plain family
+      support, and say why via `CONTRADICTION_REASON` so `trace` shows it.
+
+      **SPECIFIC CLASS, position does not snap within tolerance** (a loosely
+      drawn box, or no recoverable position at all) -- geometry has nothing
+      to contradict him with, so his reading of the CLASS stands alone,
+      citing the glyph row.
+    """
+    class_name = _human_class_name(str(glyph_row.value))
     pos_row = _human_clef_position(ev, glyph_row)
-    if pos_row is None:
-        return None
-    snapped = _snap_c_clef_position(float(pos_row.value))
+    snapped = (_snap_c_clef_position(float(pos_row.value))
+               if pos_row is not None else None)
+
+    if class_name is None:
+        # UNPLACED: geometry alone may name the line.
+        if snapped is None:
+            return None, None
+        name, _residual = snapped
+        return (name, Term("human_c_clef_line", W_HUMAN_C_LINE,
+                            (pos_row.id,))), None
+
     if snapped is None:
-        return None
-    name, _residual = snapped
-    return name, Term("human_c_clef_line", W_HUMAN_C_LINE, (pos_row.id,))
+        # A loose box, or an unrecoverable grid: nothing to contradict him
+        # with. His reading of the CLASS stands alone.
+        return (class_name, Term("human_c_clef_class_name_only",
+                                  W_HUMAN_C_LINE, (glyph_row.id,))), None
+
+    geom_name, _residual = snapped
+    if geom_name == class_name:
+        return (class_name, Term("human_c_clef_line_confirmed",
+                                  W_HUMAN_C_LINE,
+                                  (glyph_row.id, pos_row.id))), None
+
+    return None, CONTRADICTION_REASON
 
 
 def _on_staff_rows(ev: Evidence) -> Dict[float, Any]:
@@ -507,6 +583,10 @@ def _carry_terms(ev: Evidence, *,
 )
 def adjudicate_clef(ev: Evidence) -> Ruling:
     candidates: Dict[str, List[Term]] = {}
+    # ⚠️ ROADMAP 3.4f. A human's two witnesses (his class, his position)
+    # disagreeing on ONE box is recorded here rather than silently resolved
+    # either way -- see `_human_named_c_clef`.
+    contradictions: List[Dict[str, Any]] = []
     # ⚠️ THE GAP TEST IS THE READ EVIDENCE ONLY, and `page_spoke` is computed
     # BEFORE the supplied terms are built so it can never see them. A staff
     # the page said nothing about is the supplied clef's entire domain.
@@ -552,20 +632,26 @@ def adjudicate_clef(ev: Evidence) -> Ruling:
     # honest outcome, not a fallback to alto.
     #
     # ⚠️ ROADMAP 3.4f -- THE ONE BRANCH, KEYED ON THE READER. A human witness
-    # did not classify a glyph; he read which line the clef prints on, and
-    # his box carries the measurement to prove it (`_human_named_c_clef`
-    # above). Every other reader's row falls straight through to the
-    # existing support-only treatment below, unchanged -- and so does a
-    # human's row whose position will not snap within tolerance, which is
-    # the SAME "supports nothing" honest outcome the comment above already
-    # describes, not a new fallback.
+    # did not classify a glyph; he read the clef -- as a placed sub-class, a
+    # specific line, or both -- and `_human_named_c_clef` reconciles his own
+    # class choice against his own measured position (manager review: a
+    # contradiction between his two witnesses names NOTHING and falls
+    # through here rather than letting either overrule the other). Every
+    # other reader's row falls straight through to the existing
+    # support-only treatment below, unchanged -- and so does a human's row
+    # this reconciliation could not name (unplaced and unsnappable, or
+    # contradictory), which is the SAME "supports nothing" honest outcome
+    # the comment above already describes, not a new fallback.
     for row in _c_family_support(ev):
         if _is_human_clef_reader(row.reader):
-            named = _human_named_c_clef(ev, row)
+            named, contradiction = _human_named_c_clef(ev, row)
             if named is not None:
                 name, term = named
                 candidates.setdefault(name, []).append(term)
                 continue
+            if contradiction is not None:
+                contradictions.append({"glyph_row": row.id,
+                                        "reason": contradiction})
         named_c = [n for n in candidates if n in C_CLEF_NAMES]
         for name in named_c:
             candidates[name].append(
@@ -574,6 +660,12 @@ def adjudicate_clef(ev: Evidence) -> Ruling:
             ev._declined.add(Q.CLEF_LOCATED)
 
     if not candidates:
+        # ⚠️ A contradiction still belongs in `detail` even where nothing
+        # else named a candidate -- an abstention that hides WHY a human's
+        # own row named nothing is exactly the silence rule 8 forbids.
+        if contradictions:
+            return Ruling.abstain("no_candidates",
+                                   **{CONTRADICTION_REASON: contradictions})
         return Ruling.abstain("no_candidates")
 
     correlated = ev.correlated_groups()
@@ -586,8 +678,12 @@ def adjudicate_clef(ev: Evidence) -> Ruling:
     runner_up = scored[1][0] if len(scored) > 1 else 0.0
     margin = top_score - runner_up
 
-    used = tuple(t.rows[0] for terms in candidates.values() for t in terms
-                 if t.rows)
+    # ⚠️ EVERY id a term cites, not just the first. `_human_named_c_clef`'s
+    # CONFIRMED case is this file's first multi-row term (`(glyph_row.id,
+    # pos_row.id)`) -- every other term here has always carried exactly one,
+    # so `rows[0]` alone happened to mean "all of them" until now.
+    used = tuple(rid for terms in candidates.values() for t in terms
+                 for rid in t.rows)
     # ⚠️ THE CONTEST TRAVELS WITH THE VERDICT, and it costs nothing: `scored`
     # was already computed and thrown away. Where the margin clears the floor
     # this rides along on a DECIDED verdict so a consumer can see the winner
@@ -603,5 +699,7 @@ def adjudicate_clef(ev: Evidence) -> Ruling:
         # that the sheet disagreed with a page that spoke, which is the one
         # signal a GAPS-ONLY rule would otherwise throw away.
         detail["supplied_clefs_withheld_because_the_page_spoke"] = seeds_withheld
+    if contradictions:
+        detail[CONTRADICTION_REASON] = contradictions
     return Ruling(value=top_name, reason="scored", margin=margin, used=used,
                   candidates=cands, detail=detail)

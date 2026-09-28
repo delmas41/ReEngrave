@@ -39,6 +39,7 @@ from pathlib import Path
 
 from tools.omr.staged import gather as G
 from tools.omr.staged import record as R
+from tools.omr.staged.adjudicators import clef as clef_mod
 from tools.omr.staged.record import Log, Q, READERS
 from tools.omr.staged.review import feedback as FB
 from tools.omr.staged.review import human_evidence as HE
@@ -806,42 +807,46 @@ class TestARelabelOutsideTheNoteheadFamily(_Case):
                              "all — that is a wiring finding, not a test fix")
 
     def test_THE_HUMANS_CLEF_ENTERS_AS_THE_WEAKEST_WITNESS_AND_IT_IS_SAID(self):
-        """⚠️⚠️ HALF OF THIS IS STILL TRUE, AND HALF WAS REPAIRED BY ROADMAP
-        3.4f. `clef._detector_terms` still weights by `row.score`, still
-        reads `None` as 0.0 and therefore as `W_DETECTOR_LOW` — a human's G
-        or F clef row still enters THAT path as the weakest witness there is,
-        and repairing THAT is still a change to `clef.py`'s general
-        weighting with its own measurement, not made here.
+        """⚠️⚠️ HALF OF THIS IS STILL TRUE, AND MANAGER REVIEW CAUGHT THIS
+        FIXTURE BEING THE OTHER HALF'S CONTRADICTION CASE, NOT ITS AGREEMENT
+        ONE. `clef._detector_terms` still weights a human's G/F clef row by
+        `row.score`, still reads `None` as 0.0 and therefore as
+        `W_DETECTOR_LOW` — that half of the original finding stands, and
+        repairing it is still a change to `clef.py`'s general weighting with
+        its own measurement, not made here.
 
-        But this fixture's row is a C clef, and 3.4f gave a human's OWN
-        `Q.CLEF_POSITION` the standing to NAME the line it measures instead
-        of merely supporting a name someone else gave
-        (`clef._human_named_c_clef`) — so it no longer goes through
-        `_detector_terms` at all, and `score_is_None` describes a path this
-        row no longer takes. It is still filed (`review/human_evidence.py`
-        does not know which path will read it), and the detail string below
-        is still correct about what WOULD happen to a human's G/F clef row.
+        This fixture's row IS a C clef, `clefCAlto` at `Q.CLEF_POSITION`
+        2.0 — but 2.0 is the TENOR line
+        (`clef_geometry.CLEF_BY_FAMILY_LINE["C"][4]`), not the alto line his
+        `clefCAlto` class claims and his own note describes. That is
+        `_human_named_c_clef`'s CONTRADICTION case: two of his own witnesses
+        (the class he clicked, the position he drew) disagree, so neither
+        gets to overrule the other and the row names NOTHING — it falls
+        through to the SAME support-only path a detector's `clefC*` row
+        takes, and "tenor"/"alto" both being outside `C_CLEF_NAMES` support
+        for `treble` means it contributes nothing at all here. So the
+        detector's `gClef` at 0.9 decides UNCONTESTED, exactly as it did
+        before 3.4f existed — the fixture's own inconsistency (a relabel
+        note claiming alto, a measured position naming tenor) means this
+        particular case was never the agreement one to begin with.
+        `tools/omr/tests/test_staged_clef_human_box.py` covers the class-vs-
+        geometry mechanism directly and exhaustively; this test's job is
+        only to confirm the SAME wiring holds through the review ingest
+        path.
         """
         glyph_row = [o for o in self.arm["record"]["observations"]
                      if o["subject"] == "staff/0/0/0"
                      and o["quantity"] == Q.CLEF_GLYPH
                      and o["reader"] == READERS.SESSION_TEST][0]
         self.assertIn("W_DETECTOR_LOW", glyph_row["detail"]["score_is_None"])
-        # ⚠️ THE CONSEQUENCE, MEASURED ON THIS FIXTURE RATHER THAN ASSERTED,
-        # AND IT FLIPPED UNDER 3.4f. The staff carries a detector `gClef` at
-        # 0.9; the human says C-alto at `Q.CLEF_POSITION` 2.0 — which is the
-        # TENOR line (`clef_geometry.CLEF_BY_FAMILY_LINE["C"][4]`), not the
-        # alto line his note describes; geometry names the line regardless of
-        # which C-clef sub-class he clicked, exactly as it does for the CV
-        # locator. Before 3.4f this fixture read `treble`, scores
-        # `{treble: 1.0}`, with the human's row in `basis` and never `used` —
-        # offered and declined. `tools/omr/tests/test_staged_clef_human_box.
-        # py` covers the mechanism directly; this test's job is only to
-        # confirm the SAME wiring holds through the review ingest path.
         v = self.standing(self.arm["record"], Q.CLEF, "staff/0/0/0")
-        self.assertEqual(v["value"], "tenor")
+        self.assertEqual(v["value"], "treble")
+        # ⚠️ THE CONTRADICTION IS VISIBLE, not swallowed by the abstention/
+        # decision either way (CLAUDE.md rule 8).
+        entries = v["detail"][clef_mod.CONTRADICTION_REASON]
+        self.assertEqual(entries[0]["glyph_row"], glyph_row["id"])
         hit = [h for h in self.d.basis_names_human if h["quantity"] == Q.CLEF]
-        self.assertEqual([h["how"] for h in hit], ["used"])
+        self.assertEqual([h["how"] for h in hit], ["basis"])
 
     def test_a_clef_class_box_OUTSIDE_cell_0_files_no_clef_row(self):
         """⚠️ `gather_clefs` reads cell 0 only — *a clef is read at the head

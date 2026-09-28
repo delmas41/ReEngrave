@@ -1311,6 +1311,136 @@ arm, because CLAUDE.md §6b: an arm without its control is a number, not a
 measurement, and this is the arm/control pair that produced every number in
 this section. The 289 MB amended records are not committed.
 
+## D8. Manager review: geometry does not get to overrule the person
+
+The first cut let geometry name a C clef's line UNCONDITIONALLY whenever a
+human's row snapped, ignoring which of the three C-clef choices
+(`review/static/labels.js`: `clefC` "unplaced", `clefCAlto`, `clefCTenor`) he
+actually clicked. That is wrong where he clicked a SPECIFIC one: he did not
+merely say "a C clef is here", he read WHICH ONE, and a geometric snap that
+disagrees with his own reading is a second witness contradicting the first,
+not a tie-break in geometry's favour.
+
+`_human_named_c_clef` now reconciles his own two witnesses (`_human_class_name`
+tells "unplaced" from "specific" — `clef_geometry.clef_name_from_class` alone
+cannot, since it defaults the unplaced case to `"alto"`):
+
+| his class | his geometry | outcome |
+|---|---|---|
+| unplaced (`clefC`) | snaps | geometry names the line alone (unchanged) |
+| unplaced (`clefC`) | doesn't snap | names nothing (unchanged) |
+| specific, AGREES with geometry | snaps to the SAME line | decided, citing BOTH rows |
+| specific, CONTRADICTS geometry | snaps to a DIFFERENT line | names NOTHING; falls through to plain support; `CONTRADICTION_REASON` in `detail` |
+| specific | doesn't snap | the class name decides ALONE, citing the glyph row |
+
+Fixing the CONFIRMED case's citation (both rows, not the position row alone)
+exposed that `adjudicate_clef`'s own `used = tuple(t.rows[0] for ...)`
+construction only ever took the FIRST id of a term's `rows` tuple — every
+term in this file had exactly one until now, so `rows[0]` happened to mean
+"all of them." Widened to flatten every id from every term; a strict
+superset for every existing single-row term, so nothing else moves.
+
+**RED, twice.** The original RED (7 failed / 3 passed, §D1) is against the
+tree with no reader-keyed branch at all. This revision's own tests
+(`test_staged_clef_human_box.py`, 10 new/changed methods) were run RED
+against the FIRST CUT of this branch (geometry-always-wins): **10 failed, 9
+passed**. The 9 that already passed are the ones this revision does not
+touch — the unplaced case, the positive control, and the two tests already
+fixed to use `clefC` instead of `clefCAlto` for the "ambiguous, falls
+through" scenario (see below). GREEN after the revision: **19 passed.**
+
+**The manager's own worked example, checked directly:** `clefCAlto` at
+position 2.0 is the TENOR line, not alto — `test_clefCAlto_on_the_tenor_
+line_names_NOTHING` and `test_the_contradiction_is_VISIBLE_in_detail_so_
+trace_shows_it` pin exactly this.
+
+**Two pre-existing tests were WRONG under the new rule and are fixed, not
+merely left passing by coincidence.** `test_a_position_exactly_between_two_
+lines_names_NOTHING` and `test_an_ambiguous_box_still_SUPPORTS_a_name_
+someone_else_gave` used `clefCAlto` (a SPECIFIC class) at the ambiguous
+position 3.0 — under the new rule that is "specific class, unsnappable
+position", which now DECIDES `alto` alone rather than falling through. Both
+were changed to use `clefC` (unplaced) instead, which is the case they were
+actually meant to test; the SPECIFIC-class-unsnappable scenario now has its
+own tests (`TestASpecificClassNamesAloneWhenUnconfirmable`).
+
+**`test_stage_review_evidence.py`'s pinned fixture is the contradiction
+case, not the agreement one.** `TestARelabelOutsideTheNoteheadFamily::
+test_THE_HUMANS_CLEF_ENTERS_AS_THE_WEAKEST_WITNESS_AND_IT_IS_SAID`'s fixture
+is `clefCAlto` at `Q.CLEF_POSITION` 2.0 — the tenor line, contradicting the
+`clefCAlto` reading his own note describes as alto. Under the new rule this
+row names NOTHING and falls through; since "alto"/"tenor" are not the
+detector's `treble`, it contributes no support either, so the detector's
+`gClef` at 0.9 decides `treble` UNCONTESTED — exactly as it did before 3.4f
+existed. The fixture's own inconsistency (a note claiming alto, a measured
+position naming tenor) means it was never the agreement case; updated to
+assert `treble`, `CONTRADICTION_REASON` in `detail`, and the human row's
+`used`/`basis` split back to `basis` (matching §C3's ORIGINAL, pre-3.4f
+measurement exactly).
+
+`check` unaffected (not re-run for this revision — no new quantity, no new
+`wants=`, no new terminal `reason=` on the final `Ruling`; `CONTRADICTION_
+REASON` lives in `detail`, which `inventory`/`wiring` do not enumerate).
+Fast tier re-run below (§D10).
+
+## D9. The manager's question: why did `key_signature` −2 survive?
+
+Answered from the already-amended arm record only (`<scratch>/rerun-3.4f/
+amended.record.json`) — **no new rerun**:
+
+    python3 -m tools.omr.staged.trace \
+      --run <scratch>/rerun-3.4f/amended.record.json --subject staff/3/0/9
+
+**The manager's guess (roadmap 2.9c: the staff's slot is INFER-placed) is
+RIGHT for HALF of it, and there is a second, independent gate that would
+have stopped it even if 2.9c were fixed today.** Both had to fail for −2 to
+survive:
+
+1. **`_system_checked` (roadmap 2.9) never ran the comparison at all**, for
+   a reason that has nothing to do with slot_index. `_transposition`
+   (`header.py`) reads `Q.MARGIN_LABEL` **on this staff itself** to learn its
+   instrument/transposition; `staff/3/0/9` carries `DECLINED margin_label
+   no_ink` (GATHER, this trace) — margin labels print on a piece's FIRST
+   system and nowhere else (§10), and system 3 is not the first. No label →
+   `_transposition` returns `(None, None)` → `_concert` returns `(None,
+   name)` → `_system_checked`'s `if concert is None: return reading` skips
+   the check outright, keeping `reading` (the raw `-2`) with its ORIGINAL
+   reason (`markers`), never `disagrees_with_system` — even though
+   `system/3/0`'s own `Q.SYSTEM_KEY` verdict corroborates `-1`, not `-2`, on
+   this very system.
+
+2. **`_part_checked` (roadmap 2.9b) IS the 2.9c gap, confirmed directly.**
+   `_slot_of(ev, subject)` reads `Q.SLOT_INDEX`, and at ADJUDICATE time (when
+   `adjudicate_key_signature` runs) this staff's own verdict is
+   `NARROWED slot_index=None reason=family_block_not_forced, candidates=
+   [{9},{10}]` — decided `9` only afterward, at INFER, by
+   `collapse_slot_index_to_family_block` (`reason=the_short_block_is_
+   condensed_at_its_foot`, confirmed in the trace's own INFER section). With
+   `slot=None`, `expected_fifths` cannot look up either the part's offset
+   (`effective_offset` needs a slot to read `parts[str(slot)]`) or the part's
+   own written majority, and returns `(None, "nothing_to_compare")` —
+   `_part_checked` returns `reading` unchanged, exactly the shape 2.9c's own
+   ROADMAP line names: *"A staff whose SLOT comes from INFER is invisible to
+   the ADJUDICATE key/document checks (its PART does not exist yet when they
+   run)."*
+
+**So this is the SAME open gap 2.9c already names, on a DIFFERENT instrument
+and a DIFFERENT symptom.** 2.9c's own text scopes its measured residual to
+"all on the Cello" and to key CHANGES (18 Litolff changes); `staff/3/0/9` is
+the VIOLA and the residual here is a plain VALUE (no change, a first
+reading) slipping through uncontested — the same stage-order hole reaching
+further than 2.9c's own text currently states. Not fixed here (another lane
+owns 2.9c, and CLAUDE.md's fence keeps this lane off `ownership.py`/
+`gather.py`, though 2.9c's own fix lands in `header.py`/`infer.py`, neither
+fenced — still not this lane's item to pick up mid-review). Whether the GATHER-
+level cause underneath BOTH checks (only 2 of a presumed 3 `keysig_marker`
+boxes detected on this staff's own header, `corroborated_by: 0`, disagreeing
+with both `cv_header` (`n_accidentals=1`) and `template` (`n_accidentals=4`)
+— none of the three readers agrees with the true count) is itself a finding
+for a different lane is not established here either; recorded because the
+manager asked why `-2` SURVIVED THE CHECKS, not why the marker count was
+wrong, and both parts of that answer are now on the record.
+
 ## D7. What this does NOT touch
 
 - A human's G or F clef row still enters `_detector_terms` scored at

@@ -12,18 +12,31 @@ relabel to `clefCAlto` filed `Q.CLEF_POSITION` = 4.0829 (0.083 of a step off
 the printed middle line) and the clef stayed ABSTAINED `no_candidates` --
 both rows sat in `basis` and neither reached `used`.
 
-The fix is the ONE branch `adjudicate_clef` takes on `_c_family_support`'s
-population, keyed on the row's READER: a human witness's row may NAME the
-line his own `Q.CLEF_POSITION` measures, snapped to the nearest staff line
-with `clef_geometry`'s own table and tolerance; every other reader's row
-still only supports a name someone else gave.
+⚠️⚠️ MANAGER REVIEW OF THE FIRST CUT (which let geometry decide the line
+UNCONDITIONALLY): `review/static/labels.js` offers THREE C-clef choices --
+`clefC` ("alto or tenor -- unplaced"), `clefCAlto`, `clefCTenor`. Clicking a
+SPECIFIC one is a READING, not a class-only guess, so geometry may not
+silently overrule it. `_human_named_c_clef` now reconciles a human's own
+class choice against his own measured position, four ways
+(`_human_class_name` tells "unplaced" from "specific"):
 
-⚠️ RUN RED FIRST. Every test below fails against the unrepaired tree except
-`TestThePositiveControlCanFail.test_the_control_CAN_FAIL_widen_the_branch_
-to_every_reader`, which asserts what the REPAIRED code does under a
-deliberately widened gate and therefore needs the repair to exist at all
-(`clef_mod._is_human_clef_reader` does not exist on the unrepaired tree, so
-that test errors rather than fails RED -- recorded as such in the commit).
+  * UNPLACED (`clefC`)                    -> geometry alone names the line.
+  * specific class, geometry AGREES       -> decide it, citing BOTH rows.
+  * specific class, geometry names ANOTHER line
+                                           -> CONTRADICTION: name NOTHING,
+                                              fall through to plain support,
+                                              `CONTRADICTION_REASON` in detail.
+  * specific class, position UNSNAPPABLE  -> the class name decides ALONE.
+
+⚠️ RUN RED FIRST, TWICE. The original RED (7 failed, 3 passed) is against the
+tree with no reader-keyed branch at all. This file's SECOND wave -- the four
+classes below reconciling class against geometry -- was run RED again
+against the FIRST (geometry-always-wins) cut of this branch; see the commit
+message for those counts. `TestThePositiveControlCanFail.test_the_control_
+CAN_FAIL_widen_the_branch_to_every_reader` needs the repair to exist at all
+to run (`_is_human_clef_reader` does not exist before it), so it errors
+rather than fails on the ORIGINAL unrepaired tree -- recorded as such in the
+first commit.
 """
 
 from __future__ import annotations
@@ -60,7 +73,8 @@ def _file_clef_box(log: Log, *, reader: str, glyph: str, position: float,
 class TestAHumanAltoBoxDecidesAlto(unittest.TestCase):
     """The positive case -- Sean's own act-0001 shape (§C7a): a `clefCAlto`
     box whose measured position is a few hundredths of a step off the
-    printed middle line."""
+    printed middle line. His class (`alto`) and his own geometry (the middle
+    line) AGREE -- the CONFIRMED case."""
 
     def test_a_human_alto_box_DECIDES_alto(self):
         log = _log()
@@ -71,11 +85,13 @@ class TestAHumanAltoBoxDecidesAlto(unittest.TestCase):
         self.assertIs(v.outcome, Outcome.DECIDED)
         self.assertEqual(v.value, "alto")
 
-    def test_the_naming_term_cites_the_POSITION_row_not_the_glyph_row(self):
-        """⚠️ The measurement does the naming, exactly as it does for the CV
-        locator (`_locator_terms`) -- citing the glyph row instead would put
-        the term in the wrong correlated group and risks double-counting the
-        same box against `_c_family_support`'s own glyph-row citation."""
+    def test_the_confirmed_case_cites_BOTH_rows(self):
+        """⚠️ CHANGED BY MANAGER REVIEW. The first cut cited the POSITION row
+        only (to dodge a correlation risk that turned out to apply to a
+        different case). Where his class and his geometry agree, both of his
+        own witnesses corroborate one answer and both are cited -- this is
+        `clef.py`'s first multi-row term, which is why `adjudicate_clef`'s
+        own `used=` construction had to stop taking only `rows[0]`."""
         log = _log()
         _file_clef_box(log, reader=READERS.SEAN, glyph="clefCAlto",
                         position=4.0829)
@@ -84,12 +100,13 @@ class TestAHumanAltoBoxDecidesAlto(unittest.TestCase):
         pos_row = log.rows(Q.CLEF_POSITION, SUB)[0]
         glyph_row = log.rows(Q.CLEF_GLYPH, SUB)[0]
         self.assertIn(pos_row.id, v.used)
-        self.assertNotIn(glyph_row.id, v.used)
+        self.assertIn(glyph_row.id, v.used)
 
 
 class TestAHumanTenorBoxDecidesTenor(unittest.TestCase):
     """One staff line up from alto --
-    `clef_geometry.CLEF_BY_FAMILY_LINE["C"][4] == "tenor"`."""
+    `clef_geometry.CLEF_BY_FAMILY_LINE["C"][4] == "tenor"`. His class
+    (`tenor`) and his geometry AGREE here too."""
 
     def test_a_human_box_on_the_tenor_line_DECIDES_tenor(self):
         log = _log()
@@ -99,6 +116,21 @@ class TestAHumanTenorBoxDecidesTenor(unittest.TestCase):
         v = log.verdict(Q.CLEF, SUB)
         self.assertIs(v.outcome, Outcome.DECIDED)
         self.assertEqual(v.value, "tenor")
+
+    def test_clefCTenor_at_the_tenor_line_is_ALSO_the_confirmed_case(self):
+        """The manager's own worked example: `clefCTenor` at position 2.0
+        (exactly the tenor line) -- class and geometry agree, both cited."""
+        log = _log()
+        _file_clef_box(log, reader=READERS.SEAN, glyph="clefCTenor",
+                        position=2.0)
+        adjudicate.run(log)
+        v = log.verdict(Q.CLEF, SUB)
+        self.assertIs(v.outcome, Outcome.DECIDED)
+        self.assertEqual(v.value, "tenor")
+        pos_row = log.rows(Q.CLEF_POSITION, SUB)[0]
+        glyph_row = log.rows(Q.CLEF_GLYPH, SUB)[0]
+        self.assertIn(pos_row.id, v.used)
+        self.assertIn(glyph_row.id, v.used)
 
 
 class TestThePositiveControlCanFail(unittest.TestCase):
@@ -142,39 +174,72 @@ class TestThePositiveControlCanFail(unittest.TestCase):
         self.assertIs(v2.outcome, Outcome.ABSTAINED)
 
 
-class TestAnAmbiguousPositionDoesNotSnapSilently(unittest.TestCase):
-    """A box exactly midway between two staff lines. `clef.py`'s tolerance
-    (borrowed from `clef_geometry.DEFAULT_CONFIG.max_residual = 0.35`, one
-    line spacing) makes the exact midpoint -- position 3.0, residual 0.5 --
-    the genuinely ambiguous case.
+class TestUnplacedClefCLeavesGeometryToDecide(unittest.TestCase):
+    """`clefC` -- "C clef (alto or tenor -- unplaced)" in the review palette
+    -- is exactly as unplaced as a detector's own `clefC` box. He named a C
+    clef and nothing more, so geometry alone may name the line, exactly as
+    for the CV locator."""
 
-    ⚠️ THE BRIEF'S OWN ILLUSTRATIVE VALUE (3.5) IS NOT AMBIGUOUS UNDER THIS
-    TOLERANCE -- residual 0.25, comfortably inside 0.35 -- and snaps to alto
-    just as confidently as 4.0829 does; asserted below as its own control so
-    the claim is not merely asserted in a comment.
-    """
+    def test_unplaced_clefC_on_the_tenor_line_DECIDES_tenor(self):
+        log = _log()
+        _file_clef_box(log, reader=READERS.SEAN, glyph="clefC", position=2.0)
+        adjudicate.run(log)
+        v = log.verdict(Q.CLEF, SUB)
+        self.assertIs(v.outcome, Outcome.DECIDED)
+        self.assertEqual(v.value, "tenor")
+        # Geometry alone names it -- the POSITION row, not the glyph row
+        # (`_locator_terms`'s own idiom), because the class claimed nothing.
+        pos_row = log.rows(Q.CLEF_POSITION, SUB)[0]
+        glyph_row = log.rows(Q.CLEF_GLYPH, SUB)[0]
+        self.assertIn(pos_row.id, v.used)
+        self.assertNotIn(glyph_row.id, v.used)
 
-    def test_a_position_exactly_between_two_lines_names_NOTHING(self):
-        """Idiom picked: NOT a new abstention reason. The row falls back to
-        the SAME "supports nothing" honest outcome a detector's row gets
-        when nothing else named a candidate (`_c_family_support`'s own
-        docstring) -- so with nothing else on the staff, the clef stays
-        ABSTAINED `no_candidates`, unchanged from before this fix."""
+
+class TestAContradictionNamesNothing(unittest.TestCase):
+    """⚠️ THE CASE THE FIRST CUT GOT WRONG. `clefCAlto` at position 2.0 is
+    the TENOR line, not the alto line his class reading claims -- two of his
+    own witnesses disagree. Geometry does not get to overrule the class he
+    read (the first cut's bug: this used to decide `tenor`), and the class
+    does not get to overrule the position he measured either: NAME NOTHING,
+    fall through to plain support, and say why."""
+
+    def test_clefCAlto_on_the_tenor_line_names_NOTHING(self):
         log = _log()
         _file_clef_box(log, reader=READERS.SEAN, glyph="clefCAlto",
-                        position=3.0)
+                        position=2.0)
         adjudicate.run(log)
         v = log.verdict(Q.CLEF, SUB)
         self.assertIs(v.outcome, Outcome.ABSTAINED)
         self.assertEqual(v.reason, "no_candidates")
+        self.assertNotEqual(v.value, "tenor")
+        self.assertNotEqual(v.value, "alto")
 
-    def test_an_ambiguous_box_still_SUPPORTS_a_name_someone_else_gave(self):
-        """"Falls through", not "discarded" -- the same honest support-only
-        path a detector's `clefC` row takes when it cannot name a line
-        itself."""
+    def test_the_contradiction_is_VISIBLE_in_detail_so_trace_shows_it(self):
+        """CLAUDE.md rule 8: a fallback never turns "cannot tell" into an
+        answer -- and it must not turn it into SILENCE either. The reason
+        belongs in `detail` even though the verdict abstained, because an
+        abstention that hides WHY a human's own row named nothing would be
+        exactly the silence the rule forbids."""
         log = _log()
         _file_clef_box(log, reader=READERS.SEAN, glyph="clefCAlto",
-                        position=3.0)
+                        position=2.0)
+        adjudicate.run(log)
+        v = log.verdict(Q.CLEF, SUB)
+        glyph_row = log.rows(Q.CLEF_GLYPH, SUB)[0]
+        entries = v.detail[clef_mod.CONTRADICTION_REASON]
+        self.assertEqual(len(entries), 1)
+        self.assertEqual(entries[0]["glyph_row"], glyph_row.id)
+        self.assertEqual(entries[0]["reason"], clef_mod.CONTRADICTION_REASON)
+
+    def test_a_contradicting_row_STILL_supports_a_name_someone_else_gave(self):
+        """Falling through means falling through to the SAME support-only
+        path a detector's row takes -- not disappearing. The locator names
+        `tenor` independently; the human's contradicting row still adds
+        `W_C_FAMILY` to it, exactly as an ordinary detector `clefC*` row
+        would."""
+        log = _log()
+        _file_clef_box(log, reader=READERS.SEAN, glyph="clefCAlto",
+                        position=2.0)
         log.observe(SUB, Q.CLEF_LOCATED, "tenor", reader=READERS.CV_LOCATOR,
                     frame="header_window", score=0.88, family="C", line=4)
         adjudicate.run(log)
@@ -184,8 +249,40 @@ class TestAnAmbiguousPositionDoesNotSnapSilently(unittest.TestCase):
             v.detail["scores"]["tenor"],
             clef_mod.W_LOCATOR + clef_mod.W_C_FAMILY)
 
+
+class TestASpecificClassNamesAloneWhenUnconfirmable(unittest.TestCase):
+    """A box exactly midway between two staff lines (`clef.py`'s tolerance,
+    borrowed from `clef_geometry.DEFAULT_CONFIG.max_residual = 0.35` of one
+    line spacing -- position 3.0, residual 0.5, is comfortably over it: the
+    genuinely ambiguous position). Geometry has nothing to CONFIRM or
+    CONTRADICT him with here, so a SPECIFIC class reading stands alone --
+    the box was drawn loosely, not wrongly.
+
+    ⚠️ THE ORIGINAL BRIEF'S OWN ILLUSTRATIVE VALUE (3.5) IS NOT AMBIGUOUS
+    UNDER THIS TOLERANCE -- residual 0.25, inside 0.35 -- and reaches the
+    CONFIRMED case exactly like 4.0829 does; see
+    `test_the_briefs_illustrative_3_5_actually_SNAPS`.
+    """
+
+    def test_a_specific_class_with_an_unsnappable_position_names_ALONE(self):
+        log = _log()
+        _file_clef_box(log, reader=READERS.SEAN, glyph="clefCAlto",
+                        position=3.0)
+        adjudicate.run(log)
+        v = log.verdict(Q.CLEF, SUB)
+        self.assertIs(v.outcome, Outcome.DECIDED)
+        self.assertEqual(v.value, "alto")
+        # Named ALONE: the glyph row (the class IS the reading), not the
+        # position row -- geometry contributed nothing here.
+        glyph_row = log.rows(Q.CLEF_GLYPH, SUB)[0]
+        pos_row = log.rows(Q.CLEF_POSITION, SUB)[0]
+        self.assertIn(glyph_row.id, v.used)
+        self.assertNotIn(pos_row.id, v.used)
+
     def test_the_briefs_illustrative_3_5_actually_SNAPS(self):
-        """The control for the docstring's own claim above."""
+        """Not the "unconfirmable" case at all -- 3.5 snaps to alto
+        (residual 0.25 < 0.35) and reaches the CONFIRMED case, citing both
+        rows, exactly like 4.0829."""
         log = _log()
         _file_clef_box(log, reader=READERS.SEAN, glyph="clefCAlto",
                         position=3.5)
@@ -193,6 +290,39 @@ class TestAnAmbiguousPositionDoesNotSnapSilently(unittest.TestCase):
         v = log.verdict(Q.CLEF, SUB)
         self.assertIs(v.outcome, Outcome.DECIDED)
         self.assertEqual(v.value, "alto")
+        glyph_row = log.rows(Q.CLEF_GLYPH, SUB)[0]
+        pos_row = log.rows(Q.CLEF_POSITION, SUB)[0]
+        self.assertIn(glyph_row.id, v.used)
+        self.assertIn(pos_row.id, v.used)
+
+
+class TestAnUnplacedAmbiguousPositionStillNamesNothingItself(unittest.TestCase):
+    """The UNPLACED (`clefC`) analogue of the class above: with no class
+    reading to fall back on AND a position that will not snap, the row
+    genuinely has nothing to offer beyond plain family support."""
+
+    def test_unplaced_at_an_ambiguous_position_names_NOTHING(self):
+        log = _log()
+        _file_clef_box(log, reader=READERS.SEAN, glyph="clefC", position=3.0)
+        adjudicate.run(log)
+        v = log.verdict(Q.CLEF, SUB)
+        self.assertIs(v.outcome, Outcome.ABSTAINED)
+        self.assertEqual(v.reason, "no_candidates")
+
+    def test_unplaced_ambiguous_STILL_supports_a_name_someone_else_gave(self):
+        """"Falls through", not "discarded" -- the same honest support-only
+        path a detector's `clefC` row takes when it cannot name a line
+        itself."""
+        log = _log()
+        _file_clef_box(log, reader=READERS.SEAN, glyph="clefC", position=3.0)
+        log.observe(SUB, Q.CLEF_LOCATED, "tenor", reader=READERS.CV_LOCATOR,
+                    frame="header_window", score=0.88, family="C", line=4)
+        adjudicate.run(log)
+        v = log.verdict(Q.CLEF, SUB)
+        self.assertEqual(v.value, "tenor")
+        self.assertAlmostEqual(
+            v.detail["scores"]["tenor"],
+            clef_mod.W_LOCATOR + clef_mod.W_C_FAMILY)
 
 
 class TestOnlyTheClosedHumanReadersQualify(unittest.TestCase):
@@ -219,6 +349,21 @@ class TestOnlyTheClosedHumanReadersQualify(unittest.TestCase):
             self.assertFalse(clef_mod._is_human_clef_reader(reader), reader)
         self.assertTrue(clef_mod._is_human_clef_reader(READERS.SEAN))
         self.assertTrue(clef_mod._is_human_clef_reader(READERS.SESSION_TEST))
+
+
+class TestHumanClassNameHelper(unittest.TestCase):
+    """`_human_class_name` is the one place "unplaced" is told apart from
+    "specific" -- pinned directly since `clef_geometry.clef_name_from_class`
+    alone cannot tell them apart (it defaults the unplaced case to `alto`)."""
+
+    def test_unplaced_clefC_has_no_class_name(self):
+        self.assertIsNone(clef_mod._human_class_name("clefC"))
+
+    def test_clefCAlto_names_alto(self):
+        self.assertEqual(clef_mod._human_class_name("clefCAlto"), "alto")
+
+    def test_clefCTenor_names_tenor(self):
+        self.assertEqual(clef_mod._human_class_name("clefCTenor"), "tenor")
 
 
 if __name__ == "__main__":
