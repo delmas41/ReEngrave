@@ -92,7 +92,7 @@ reader — an overnight job, item 0 below.
 
 **Work order for the next session (nothing here needs Sean; leave crops in
 `out/print/` with `VERDICT_none_yet: null`):**
-0. **Re-gather the three acceptance records on current main** (`gather_movement.sh`
+0. **IN FLIGHT since 2026-09-28 02:53 on `10e9c6bd`** (detached worktree `.claude/worktrees/regather-20260928`, driver `../regather-20260928-driver.sh`, log `../regather-20260928-driver.log`; order engraved → Brahms 0-26 → Litolff 1-16; records land in that worktree's `benchmarks/acceptance/out/<doc>/`). When done: point `manifest.json` at them, run `tools.omr.acceptance`, commit. **Re-gather the three acceptance records on current main** (`gather_movement.sh`
    in `benchmarks/acceptance/`; `OMR_SURYA_KEEP_ALIVE=0`; sequentially;
    update `manifest.json`'s md5 receipts), then `tools.omr.acceptance`.
 1. ~~Merge `claude/accidental-2.7b` at `60b8e2c4`~~ **merged `e23ba4dd`**; re-decide the record and
