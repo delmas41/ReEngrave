@@ -4010,8 +4010,9 @@ def _accidental_census(rec: "Record", detected: Dict[str, int],
 
     ⚠️⚠️ A PARTITION, AND ITS OWN ARITHMETIC IS THE CONTROL. `gathered` is
     split with no remainder into `owner_decided`, `abstained_ambiguous`,
-    `no_candidate`, `no_unit`, `no_evidence` and
-    `refused_not_an_accidental`; and the HEADS the decided owners name are
+    `no_candidate`, `no_unit`, `no_evidence`,
+    `refused_not_an_accidental`, `is_a_key_signature_marker` and
+    `head_belongs_to_a_nearer_staff` (2.7b); and the HEADS the decided owners name are
     split into `heads_contradicted` + `applied` + `unowned`
     (`heads_balanced`). `unaccounted` is
     what is left and a reader that finds it non-zero has found a branch
@@ -4081,6 +4082,14 @@ def _accidental_census(rec: "Record", detected: Dict[str, int],
         # *another staff*) owns no head, by name and not as a geometry miss.
         "refused_not_an_accidental": by_reason.get(
             "refused_not_an_accidental", 0),
+        # ⚠️ ROADMAP 2.7b: a header box the key signature's marker run
+        # already counted (never an in-bar accidental), and a glyph whose
+        # head was refused `belongs_to_a_nearer_staff` (it follows its note
+        # off this staff rather than onto the next head in the cell).
+        "is_a_key_signature_marker": by_reason.get(
+            "is_a_key_signature_marker", 0),
+        "head_belongs_to_a_nearer_staff": by_reason.get(
+            "head_belongs_to_a_nearer_staff", 0),
         "heads_owned": heads_owned,
         "heads_contradicted": heads_contradicted,
         "owners_sharing_a_head": decided - heads_owned,
@@ -4113,7 +4122,9 @@ def _accidental_census(rec: "Record", detected: Dict[str, int],
     census["unaccounted"] = gathered - sum(
         census[k] for k in ("owner_decided", "abstained_ambiguous",
                             "no_candidate", "no_unit", "no_evidence",
-                            "refused_not_an_accidental"))
+                            "refused_not_an_accidental",
+                            "is_a_key_signature_marker",
+                            "head_belongs_to_a_nearer_staff"))
     return census
 
 

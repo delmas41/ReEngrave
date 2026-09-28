@@ -63,7 +63,7 @@ from typing import Any, Dict, List, Optional, Tuple
 from ... import transcribe as _legacy
 from ..adjudicate import Evidence, Mode, Ruling, decision
 from .. import record as R
-from ..record import ABSTAIN, Kind, Q, Scope
+from ..record import ABSTAIN, Kind, Outcome, Q, Scope
 
 # ─────────────────────────────────────────────────────────────────────────────
 # Thresholds — IMPORTED from the legacy path, never restated, so the two
@@ -147,6 +147,47 @@ UNLADDERED_SHIPS = False
 #: Above this staff position (half-step units, top line = 0), a note is
 #: standing on the bottom line of a normal 5-line staff.
 _STAFF_BOTTOM_POSITION = 8.0
+
+# ─────────────────────────────────────────────────────────────────────────────
+# ROADMAP 2.7b — `belongs_to_a_nearer_staff`, Sean's convention (2026-09-27):
+# *"notes should never be that far away from a staff unless there are ledger
+# lines close to the staff connecting the note conceptually to the staff."*
+#
+# ⚠️ NOT `unladdered` RE-ENABLED, AND THE DIFFERENCE IS THE WHOLE DESIGN.
+# `unladdered` (held back above) asks only *is there a rung?* and was measured
+# net negative because ledger RECALL fails on scans: a real note whose rung the
+# detector never boxed looked unladdered. This rule asks a question with a
+# SECOND witness from a different source — the page's own staff geometry: the
+# head is far from its filed staff AND another staff of the same system is
+# near it. A real high violin note with a missing rung is far from its staff
+# and near NOTHING, and this rule does not fire on it. The measurement is in
+# `benchmarks/omr-accidental-2026-09/FINDINGS.md` §2.7b.
+# ─────────────────────────────────────────────────────────────────────────────
+
+#: A head whose centre is MORE than this many staff spaces outside the band of
+#: the staff it was filed on is "that far away" in Sean's sense.
+#:
+#: ⚠️ MEASURED on the Litolff acceptance record (FINDINGS §2.7b,
+#: `probe/nearer_staff.py`): Sean's six wrong-staff heads (crops 2, 4, 13, 20,
+#: 23, 26) stand **3.485-3.670** spaces from their filed staff; the eighteen
+#: heads of his twenty-one confirmed crops stand **0.000-2.440**. The empty
+#: interval is (2.44, 3.485) and 3.0 is its round middle — and it is also,
+#: on this plate, about half the gap between two staves (~5.9 spaces), so
+#: past it a head is on the other staff's side of the air. The population
+#: that crosses it falls off a cliff below 3.25 (4 heads in the 3.0 bin
+#: against 40 / 113 / 88 in 3.25 / 3.5 / 3.75), so the value is not on a slope.
+NEARER_STAFF_FILED_MIN_SPACES = 3.0
+
+#: ... AND another staff of the same system has a line within this many staff
+#: spaces of it (0 = inside that staff's band), nearer than the filed one.
+#:
+#: ⚠️ MEASURED: the six wrong-staff heads stand **2.291-2.588** spaces from
+#: the staff Sean put them on — low notes on ledger lines UNDER the staff
+#: above, not ink inside it — so the bound must pass 2.588; 2.75 is the
+#: quarter-space above it. The confirmed heads are nearer their own staff
+#: than any other by at least 1.19 spaces, so the `nearer than the filed
+#: one` clause alone already keeps all of them.
+NEARER_STAFF_NEAR_MAX_SPACES = 2.75
 
 
 def _glyph_box_row(ev: Evidence):
@@ -339,6 +380,150 @@ def _unladdered(ev: Evidence, box_row, spacing_canonical: float,
     return found == 0
 
 
+def _band_spaces(y: float, line_ys, spacing: float) -> Optional[float]:
+    """Distance from `y` to a staff's five-line band, in its staff spaces.
+
+    ⚠️ GATHER's own arithmetic (`gather._band_distance_spaces`), CALLED, not
+    restated, so this rule's distance and the contest's `Q.GLYPH_BAND_DISTANCE`
+    are one number and cannot drift.
+    """
+    from ..gather import _band_distance_spaces
+    try:
+        ys = [float(v) for v in line_ys]
+        sp = float(spacing)
+    except (TypeError, ValueError):
+        return None
+    if len(ys) < 2 or sp <= 0:
+        return None
+    return _band_distance_spaces(y, ys, sp)
+
+
+def _staff_geometry(ev: Evidence, staff) -> Optional[Tuple[List[float],
+                                                           float, List[str]]]:
+    lines = ev.rows(Q.STAFF_LINES, subject=staff)
+    spacing = ev.rows(Q.STAFF_SPACING, subject=staff)
+    if not lines or not spacing:
+        return None
+    try:
+        ys = sorted(float(v) for v in lines[-1].value)
+        sp = float(spacing[-1].value)
+    except (TypeError, ValueError):
+        return None
+    if len(ys) < 2 or sp <= 0:
+        return None
+    return ys, sp, [lines[-1].id, spacing[-1].id]
+
+
+def _belongs_to_a_nearer_staff(ev: Evidence, box_row, contested_by,
+                               detail: Dict[str, Any]
+                               ) -> Optional[Tuple[str, List[str]]]:
+    """ROADMAP 2.7b — `(near staff key, rows used)` where this head is far
+    from the staff it was filed on, joined to it by no kept rung, and close to
+    another staff of its system. `None` otherwise (and the facts it measured
+    are left in `detail["nearer_staff_signal"]` either way).
+
+    Four conditions, ALL in the PAGE frame (`Q.STAFF_LINES`, `Q.STAFF_SPACING`
+    and `bbox_page_px`, the three facts every staff and glyph carries):
+
+      1. the head's centre is more than `NEARER_STAFF_FILED_MIN_SPACES` outside
+         the band of its FILED staff (CLAUDE.md §10: the cell pad is 4-6
+         spaces and reaches the next staff's ink — the pad is what put it
+         here, not the engraver);
+      2. another staff of the SAME system has a line within
+         `NEARER_STAFF_NEAR_MAX_SPACES` of it, and is nearer than the filed
+         one;
+      3. no KEPT ledger rung of the head's own cell stands between it and the
+         filed staff (3.4g-2's kept set: `ledger_is_not_a_ledger` not True —
+         the refusal VERDICTS are read, never the raw boxes, so a staff-line
+         fragment cannot vouch for the note); a rung is Sean's exception;
+      4. the near staff does NOT hold a twin of this ink: a glyph carrying a
+         `Q.GLYPH_BAND_DISTANCE` row that names the near staff is inside
+         `glyph_owner`'s contest (ROADMAP 2.6), which decides who owns it and
+         DROPS the loser there. Refusing it here as well would be two answers
+         to one question — and would drop the winner too if the contest kept
+         it on this staff. So this rule YIELDS, and says so in `detail`.
+
+    ⚠️ DROPPED, NEVER RELOCATED (CLAUDE.md §10). The head is refused on the
+    staff it was filed on; nothing is added to the near staff. Where the near
+    staff's own cell did not detect the ink (no twin), the note goes missing
+    rather than being written a staff too high at the wrong pitch — Sean's
+    trade: a missing note is visible as a gap, a wrong one has to be hunted.
+    """
+    page_box = (box_row.detail or {}).get("bbox_page_px")
+    staff = ev.subject.at(Kind.STAFF)
+    if not page_box or len(page_box) != 4 or staff is None:
+        return None
+    mine = _staff_geometry(ev, staff)
+    if mine is None:
+        return None
+    ys, sp, used = mine
+    y = (float(page_box[1]) + float(page_box[3])) / 2.0
+    filed = _band_spaces(y, ys, sp)
+    if filed is None:
+        return None
+    signal: Dict[str, Any] = {"filed_spaces": round(filed, 3)}
+    detail["nearer_staff_signal"] = signal
+    if filed <= NEARER_STAFF_FILED_MIN_SPACES:
+        return None
+
+    near = None
+    for other in ev.subjects(Kind.STAFF):
+        if (other.page, other.system) != (staff.page, staff.system) \
+                or other == staff:
+            continue
+        geo = _staff_geometry(ev, other)
+        if geo is None:
+            continue
+        d = _band_spaces(y, geo[0], geo[1])
+        if d is not None and (near is None or d < near[0]):
+            near = (d, other, geo[2])
+    if near is None:
+        return None
+    signal["near_staff"] = near[1].to_key()
+    signal["near_spaces"] = round(near[0], 3)
+    if near[0] > NEARER_STAFF_NEAR_MAX_SPACES or near[0] >= filed:
+        return None
+
+    # ── 3. a kept rung toward the filed staff is Sean's exception ──────────
+    edge = ys[0] if y < ys[0] else ys[-1]
+    lo, hi = (y, edge) if y < edge else (edge, y)
+    x0, x1 = float(page_box[0]), float(page_box[2])
+    cell = ev.subject.at(Kind.CELL)
+    kept: List[str] = []
+    refused: Dict[str, int] = {}
+    for r in ev.rows(Q.GLYPH_BOX, scope=Scope.SELF_AND_DESCENDANTS,
+                     subject=cell):
+        v = r.value
+        if not isinstance(v, (list, tuple)) or len(v) != 5 \
+                or str(v[0]) != "ledgerLine":
+            continue
+        lb = (r.detail or {}).get("bbox_page_px")
+        if not lb or len(lb) != 4:
+            continue
+        ly = (float(lb[1]) + float(lb[3])) / 2.0
+        if not (lo < ly < hi):
+            continue
+        if min(float(lb[2]), x1) - max(float(lb[0]), x0) <= 0.0:
+            continue
+        lv = ev.verdict(Q.LEDGER_IS_NOT_A_LEDGER, subject=r.subject)
+        if lv is not None and lv.outcome is Outcome.DECIDED \
+                and lv.value is True:
+            refused[str(lv.reason)] = refused.get(str(lv.reason), 0) + 1
+            continue
+        kept.append(r.subject.to_key())
+    signal["kept_rungs_toward_filed"] = len(kept)
+    if refused:
+        signal["refused_rungs_toward_filed"] = refused
+    if kept:
+        return None
+
+    # ── 4. a twin on the near staff: `glyph_owner` decides, not this ───────
+    if near[1].to_key() in contested_by:
+        signal["yields_to_glyph_owner"] = True
+        return None
+    return near[1].to_key(), used + near[2]
+
+
 #: The two reasons a HUMAN row can refuse a box, and they are kept apart
 #: because they are different claims about the page. ⚠️ ROADMAP 3.4g: every
 #: per-family refusal declares BOTH, so a reader of a census can tell *there
@@ -485,15 +670,16 @@ def _human_not_a_symbol(ev: Evidence, detail: Dict[str, Any], *,
     composed_from=(Q.GLYPH_BOX, Q.CELL_BOX, Q.CELL_STAFF_SPACE,
                   Q.NOTEHEAD_STAFF_POSITION, Q.GLYPH_CONF, Q.CLEF_LOCATED,
                   Q.HUMAN_BOX_VERDICT, Q.LEDGER_IS_NOT_A_LEDGER,
-                  Q.GLYPH_BAND_DISTANCE),
+                  Q.GLYPH_BAND_DISTANCE, Q.STAFF_LINES, Q.STAFF_SPACING),
     scope=Kind.GLYPH,
     wants=(Q.GLYPH_BOX, Q.CELL_BOX, Q.CELL_STAFF_SPACE,
           Q.NOTEHEAD_STAFF_POSITION, Q.GLYPH_CONF, Q.CLEF_LOCATED,
           Q.HUMAN_BOX_VERDICT, Q.LEDGER_IS_NOT_A_LEDGER,
-          Q.GLYPH_BAND_DISTANCE),
+          Q.GLYPH_BAND_DISTANCE, Q.STAFF_LINES, Q.STAFF_SPACING),
     subjects_from=Q.NOTEHEAD_CLASS,
     reasons=HUMAN_REFUSAL_REASONS + ("is_a_clef", "clipped_fragment",
-                                     "too_narrow", "notehead",
+                                     "too_narrow", "belongs_to_a_nearer_staff",
+                                     "notehead",
                                      ABSTAIN.NO_STAFF_GEOMETRY),
     mode=Mode.ADDITIVE,
 )
@@ -536,6 +722,16 @@ def adjudicate_notehead_is_not_a_notehead(ev: Evidence) -> Ruling:
        signal"]` on every notehead so the finding stays on the record and a
        future session can re-enable it once a page-frame, cross-cell ledger
        search is built and re-measured — it does not set `value=True`.
+    2b. `belongs_to_a_nearer_staff` (ROADMAP 2.7b, SHIPS) — Sean's
+       convention: a head more than `NEARER_STAFF_FILED_MIN_SPACES` outside
+       its filed staff, joined to it by no KEPT rung, with another staff of
+       its system nearer and within `NEARER_STAFF_NEAR_MAX_SPACES`, is that
+       staff's note and not this one's. It is NOT `unladdered` re-enabled:
+       that rule's single witness (a rung) failed on ledger recall; this one
+       adds the page's own staff geometry as a second, independent witness,
+       and a note far from its staff but near no other is untouched. It YIELDS
+       to `glyph_owner` wherever the near staff holds a twin (see
+       `_belongs_to_a_nearer_staff`). Dropped, never relocated.
 
     ⚠️ A GLYPH NONE OF THE SHIPPED RULES CONDEMNS DECIDES `False`, REASON
     `notehead` — not an abstention. Geometry was available and was tested;
@@ -617,6 +813,19 @@ def adjudicate_notehead_is_not_a_notehead(ev: Evidence) -> Ruling:
     if _too_narrow(box_row, spacing, detail):
         return Ruling(value=True, reason="too_narrow",
                       used=tuple(used), detail=detail)
+    # ⚠️ ROADMAP 2.7b. AFTER THE SHAPE RULES: a sliver or a too-narrow box is
+    # not a note at all, which is the load-bearing thing to say about it;
+    # this rule says the ink IS a note, and another staff's. The contest
+    # domain is read HERE, at the decision's own site, and passed in (the
+    # reason `_human_not_a_symbol` gives): the rule must yield to
+    # `glyph_owner` wherever the near staff holds a twin.
+    contested_by = {(r.detail or {}).get("candidate")
+                    for r in ev.rows(Q.GLYPH_BAND_DISTANCE)}
+    nearer = _belongs_to_a_nearer_staff(ev, box_row, contested_by, detail)
+    if nearer is not None:
+        near_key, geo_used = nearer
+        return Ruling(value=True, reason="belongs_to_a_nearer_staff",
+                      used=tuple(used + geo_used), detail=detail)
     if UNLADDERED_SHIPS and would_unladder:
         return Ruling(value=True, reason="unladdered",
                       used=tuple(used), detail=detail)
