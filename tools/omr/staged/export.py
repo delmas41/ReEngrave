@@ -4003,9 +4003,11 @@ def _accidental_census(rec: "Record", detected: Dict[str, int],
     """What became of every PRINTED accidental glyph — ROADMAP 2.7.
 
     ⚠️⚠️ A PARTITION, AND ITS OWN ARITHMETIC IS THE CONTROL. `gathered` is
-    split with no remainder into `owner_decided` (itself `applied` +
-    `unowned`), `abstained_ambiguous`, `no_candidate`, `no_unit`,
-    `no_evidence` and `refused_not_an_accidental`; `unaccounted` is
+    split with no remainder into `owner_decided`, `abstained_ambiguous`,
+    `no_candidate`, `no_unit`, `no_evidence` and
+    `refused_not_an_accidental`; and the HEADS the decided owners name are
+    split into `heads_contradicted` + `applied` + `unowned`
+    (`heads_balanced`). `unaccounted` is
     what is left and a reader that finds it non-zero has found a branch
     nobody declared. It is the `status_census` discipline applied to one
     family, and for the same reason: a headline coverage number cannot be
@@ -4026,15 +4028,25 @@ def _accidental_census(rec: "Record", detected: Dict[str, int],
     """
     owners = rec.verdicts_of(Q.ACCIDENTAL_OWNER)
     by_reason: Dict[str, int] = {}
-    decided_heads = set()
+    alterations_by_head: Dict[str, set] = {}
     for v in owners:
         if v.get("outcome") == "decided":
             by_reason["decided"] = by_reason.get("decided", 0) + 1
             if isinstance(v.get("value"), str):
-                decided_heads.add(v["value"])
+                alterations_by_head.setdefault(v["value"], set()).add(
+                    (v.get("detail") or {}).get("alteration"))
         else:
             r = str(v.get("reason") or "unstated")
             by_reason[r] = by_reason.get(r, 0) + 1
+    # ⚠️ THE SECOND PARTITION IS OVER HEADS, NOT GLYPHS. Two glyphs can own
+    # one head (a duplicate detection agreeing, or a contradiction), and the
+    # file writes at most one `<accidental>` per note -- so `applied` (a
+    # render count of notes) is comparable with HEADS owned, never with
+    # owners decided. `apply_printed_accidental` writes nothing on a head
+    # whose owners disagree.
+    heads_owned = len(alterations_by_head)
+    heads_contradicted = sum(1 for alts in alterations_by_head.values()
+                             if len(alts) > 1)
 
     # ⚠️ THE FILE'S OWN FIGURE, taken from the render counter and not from the
     # verdicts: a glyph decided onto a head the exporter then dropped is
@@ -4061,7 +4073,13 @@ def _accidental_census(rec: "Record", detected: Dict[str, int],
         # *another staff*) owns no head, by name and not as a geometry miss.
         "refused_not_an_accidental": by_reason.get(
             "refused_not_an_accidental", 0),
-        "unowned": max(0, decided - applied),
+        "heads_owned": heads_owned,
+        "heads_contradicted": heads_contradicted,
+        "owners_sharing_a_head": decided - heads_owned,
+        # decided onto a head that was not contradicted and still did not
+        # reach the file: the head was refused, its bar held out (2.8), or it
+        # had no pitch for the consequence to alter.
+        "unowned": heads_owned - heads_contradicted - applied,
         "carried_in_bar": sum(
             1 for v in rec.verdicts_of(Q.ACCIDENTAL)
             if v.get("reason") == "carried_in_bar"),
@@ -4074,6 +4092,11 @@ def _accidental_census(rec: "Record", detected: Dict[str, int],
             1 for v in rec.verdicts_of(Q.ACCIDENTAL)
             if v.get("decider") != "respell_accidental"),
     }
+    # ⚠️ `unowned` is a REMAINDER and a negative one is a branch nobody
+    # declared (a note written with a printed glyph no decided owner names),
+    # so it is surfaced rather than clamped to zero the way the first draft
+    # did (`max(0, decided - applied)`), which could hide exactly that.
+    census["heads_balanced"] = census["unowned"] >= 0
     census["unaccounted"] = gathered - sum(
         census[k] for k in ("owner_decided", "abstained_ambiguous",
                             "no_candidate", "no_unit", "no_evidence",

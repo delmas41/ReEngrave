@@ -824,6 +824,51 @@ class TestTheBoundedSecondPassKeepsThePage(unittest.TestCase):
                          ("#", "apply_printed_accidental", False))
 
 
+class TestTwoGlyphsOnOneHead(unittest.TestCase):
+    """Measured on the merged tree: 100 Litolff heads are owned by more than
+    one decided glyph, 79 by glyphs that DISAGREE. Before the guard the last
+    glyph to fire won, i.e. the file depended on iteration order."""
+
+    def _two(self, log, cls2, alt2):
+        _cell_unit(log)
+        _acc(log, 0, 100.0, 7.0, cls="accidentalNatural",
+             alteration="natural")
+        _acc(log, 1, 102.0, 7.0, cls=cls2, alteration=alt2)
+        head = _head(log, 2, 106.0, 7.0)                    # F4
+        _durations(log, 2)
+        return head
+
+    def test_DISAGREEING_owners_write_no_accidental(self):
+        log = Log()
+        head = self._two(log, "accidentalSharp", "#")
+        doc = _full(_decide(log), fifths=1)                 # key: F sharp
+        owners = [v for v in doc["record"]["verdicts"]
+                  if v["quantity"] == "accidental_owner"]
+        self.assertEqual({v["value"] for v in owners}, {head.to_key()})
+        xml, report = E.to_musicxml(doc)
+        self.assertNotIn("<accidental>", xml)
+        c = report["accidental_reading"]
+        self.assertEqual(c["heads_contradicted"], 1)
+        self.assertEqual(c["applied"], 0)
+        self.assertEqual(c["unowned"], 0)
+        self.assertTrue(c["heads_balanced"])
+        # the key's F sharp stands: nothing the page says was READ here
+        self.assertIn("<alter>1</alter>", xml)
+
+    def test_AGREEING_owners_are_one_fact_read_twice(self):
+        """The positive control in the same class: one fact differs (both
+        glyphs are naturals), and the natural is written once."""
+        log = Log()
+        self._two(log, "accidentalNatural", "natural")
+        xml, report = E.to_musicxml(_full(_decide(log), fifths=1))
+        self.assertEqual(xml.count("<accidental>natural</accidental>"), 1)
+        c = report["accidental_reading"]
+        self.assertEqual(c["heads_contradicted"], 0)
+        self.assertEqual(c["owners_sharing_a_head"], 1)
+        self.assertEqual(c["applied"], 1)
+        self.assertEqual(c["unowned"], 0)
+
+
 class TestTheTreeNoLongerSaysNothingReadsIt(unittest.TestCase):
 
     def test_the_family_table_names_the_owner_quantity(self):

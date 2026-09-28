@@ -641,6 +641,29 @@ def apply_printed_accidental(log: Log, subject: Subject,
     if cell is None:
         return []
 
+    # ⚠️⚠️ TWO GLYPHS THAT CLAIM ONE HEAD WITH DIFFERENT ALTERATIONS: NOTHING
+    # FOLLOWS, SO NOTHING IS WRITTEN. Measured on the MERGED tree
+    # (2026-09-27), not foreseen by the branch: on the Litolff whole movement
+    # 100 heads are owned by more than one decided glyph, and 79 of them by
+    # glyphs that DISAGREE -- flat vs natural 45, sharp vs natural 23 (the
+    # merging plate boxes one piece of ink twice under two classes, or two
+    # glyphs stand within the window of one head). `accidental_owner` decides
+    # per GLYPH and cannot see the other claim; this rule is where both are
+    # on the record at once. Before this guard the rule fired once per glyph
+    # and the LAST to fire superseded the first, so the written alteration
+    # depended on subject iteration order -- exactly what the order-free
+    # docstring above says this rule must not do. Two claims that agree are
+    # one fact read twice and are written (the second supersedes the first
+    # with the same value); two that disagree are a contradiction, and a
+    # contradiction is not converted into an answer (CLAUDE.md §2 rule 8).
+    # The head keeps whatever the key gave it, and `accidental_reading`
+    # counts it under `heads_contradicted`.
+    for other in _standing(log, cell, Q.ACCIDENTAL_OWNER):
+        if (other.id != owner.id and other.outcome is Outcome.DECIDED
+                and other.value == owner.value
+                and (other.detail or {}).get("alteration") != alteration):
+            return []
+
     x_of = {}
     for row in log.rows(Q.GLYPH_BOX, cell, scope=Scope.SELF_AND_DESCENDANTS):
         v = row.value
