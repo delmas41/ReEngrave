@@ -868,6 +868,23 @@ def adjudicate_one(log: Log, spec: DecisionSpec, subject: Subject) -> Verdict:
 #: order and is the single place to change it. It is an assumption, not a
 #: measurement: see ASSUMPTIONS.md.
 ORDER: Tuple[str, ...] = (
+    # ⚠️ ROADMAP 4.2b, BEFORE EVEN STRUCTURE. `movement_start` reads GATHER
+    # ONLY (never another decision's verdict -- see its module docstring), so
+    # nothing here constrains where it COULD run; it runs FIRST because
+    # `rhythm._movement_spans` / `header._movement_spans` fall back to ITS
+    # verdict (`ev.verdict(Q.MOVEMENT_SPANS, subject=DOCUMENT)`) wherever no
+    # human `--movements` was filed at GATHER time, and that fallback can
+    # only see an answer that has ALREADY been recorded -- ADJUDICATE reads a
+    # frozen log, so a later decision sees an earlier one's VERDICT only
+    # through this list's own order (A-ORDER-1, above). The two DIRECT
+    # consumers are `Q.PART_KEY` (`header._movement_spans`, its own
+    # document-wide majority) and `Q.METER` (`rhythm._movement_spans`, the
+    # carry and the cautionary-signature adjacency); `Q.KEY_SIGNATURE` reads
+    # `Q.PART_KEY`'s VERDICT rather than calling `_movement_spans` itself, so
+    # it inherits the boundary transitively and is not a third direct one.
+    # The cheapest correct placement is ahead of everything rather than
+    # threading it in just above those two.
+    Q.MOVEMENT_SPANS,
     # structure first -- everything else is addressed in terms of it
     Q.SYSTEM_MEMBERSHIP,
     Q.STAFF_GROUP,

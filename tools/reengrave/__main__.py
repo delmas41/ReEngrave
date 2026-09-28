@@ -12,9 +12,13 @@ Steps (docs/plan-2026-09-22-from-here-to-a-finished-score.md §4.1):
     2. GET THE FILE. Held -> use it, no browser touched. Not held -> open
        the IMSLP page for the one click the gate requires, watch the
        download directory, then ingest it (`tools.reengrave.fetch`).
-    3. MOVEMENTS. `--movements` is passed straight to the staged CLI. With
-       none given, the whole work runs as ONE movement -- printed loudly,
-       never guessed (CLAUDE.md rule 6).
+    3. MOVEMENTS. `--movements` is passed straight to the staged CLI and
+       always wins outright when given. With none given, ROADMAP 4.2b's
+       detection runs instead -- inside ADJUDICATE, on the actual gathered
+       evidence, unconditionally, on every staged run -- and decides for
+       itself whether the work is one movement or several. Nothing here
+       tells it how many; the split is known only AFTER the gather, which
+       is why `--dry-run` (below) cannot report it and says so.
     4. BUDGET. `tools.omr.staged.budget`'s own estimate, printed before the
        run. `--yes` skips the confirmation prompt for an unattended run,
        which also sets `OMR_SURYA_KEEP_ALIVE=0` (CLAUDE.md §5b) so the run
@@ -119,9 +123,20 @@ def cmd_import(args: argparse.Namespace) -> int:
              f"for a new PDF (timeout {args.timeout:.0f}s)")
 
     if not args.movements:
-        print("⚠️ no --movements given: importing the WHOLE work as ONE "
-             "movement. Movement boundaries are never guessed off the page "
-             "(CLAUDE.md rule 6) -- pass --movements to split by movement.")
+        # ROADMAP 4.2b: nothing is guessed HERE -- `tools.omr.staged`'s own
+        # ADJUDICATE stage runs `movement_start` on every gather regardless
+        # of this flag, reading a tempo heading, a meter STATEMENT, a
+        # margin-label reset and a wider indent off the actual page, and
+        # requires at least two of those together before calling a system a
+        # boundary (never a bare guess -- CLAUDE.md rule 6). This process
+        # never gathers anything during --dry-run, so it cannot know
+        # detection's answer and does not pretend to.
+        print("⚠️ no --movements given: ROADMAP 4.2b detection will run "
+             "during the gather and decide the movement count for itself, "
+             "off the actual page (tempo heading + meter statement + "
+             "margin-label reset + indent) -- pass --movements to fix the "
+             "split by hand instead. The split is known only AFTER the "
+             "run; a --dry-run cannot report it.")
     pages_spec, spans = planning.resolve_pages_spec(picked.get("pages"), args.movements)
     if spans:
         print(f"MOVEMENTS: {len(spans)} ({', '.join(str(s['number']) for s in spans)})")

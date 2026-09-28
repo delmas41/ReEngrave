@@ -1,0 +1,56 @@
+{
+  "window": {
+    "pages_0idx": [
+      16,
+      17
+    ],
+    "dpi": 600,
+    "boundary_system": "system/17/0",
+    "continuation_system_shown": "system/16/1"
+  },
+  "crops": [
+    {
+      "file": "movements-01-boundary-head.png",
+      "question": "Does this system's header show a tempo heading and FULL instrument names, wider than the system before it?",
+      "page_px_box": [
+        0,
+        230,
+        1750,
+        1950
+      ],
+      "frame_min": 0,
+      "frame_max": 255,
+      "frame_spread": 255,
+      "VERDICT_none_yet": null
+    },
+    {
+      "file": "movements-02-continuation-head.png",
+      "question": "Does the system directly before the boundary show only abbreviated labels and no tempo word?",
+      "page_px_box": [
+        0,
+        1980,
+        1750,
+        3200
+      ],
+      "frame_min": 0,
+      "frame_max": 255,
+      "frame_spread": 255,
+      "VERDICT_none_yet": null
+    },
+    {
+      "file": "movements-03-tempo-word-zoom.png",
+      "question": "Is the bracketed text really 'Andante con moto' -- a tempo heading, not a dynamic or expression mark?",
+      "page_px_box": [
+        818.0,
+        228.0,
+        1362.0,
+        377.0
+      ],
+      "subject": "glyph/17/0/0/0/90000",
+      "frame_min": 0,
+      "frame_max": 255,
+      "frame_spread": 255,
+      "VERDICT_none_yet": null
+    }
+  ]
+}

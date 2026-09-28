@@ -6,6 +6,7 @@ a missing decision is indistinguishable from one that always abstains and
 nobody can tell which they are looking at.
 """
 
+from . import movement    # noqa: F401
 from . import structure   # noqa: F401
 from . import identity    # noqa: F401
 from . import clef        # noqa: F401

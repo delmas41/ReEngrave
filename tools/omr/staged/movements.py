@@ -197,11 +197,28 @@ def spans_from_result(result: Dict[str, Any]) -> Tuple[Dict[str, Any], ...]:
     """The same fact, read back out of a LOADED record dict
     (`record_io.load_record`'s own shape) rather than off a live `Log` --
     what EXPORT uses, including on a record `--musicxml`/`--lilypond` loads
-    from disk with no gather in this process at all."""
+    from disk with no gather in this process at all.
+
+    ⚠️ ROADMAP 4.2b. A human `--movements` is an OBSERVATION and always wins
+    outright -- checked first, unconditionally, exactly as
+    `rhythm._movement_spans` / `header._movement_spans` check the live
+    `Log` first. Where none was supplied, this ALSO looks at the record's
+    VERDICTS for a DECIDED `Q.MOVEMENT_SPANS` --
+    `adjudicators.movement.adjudicate_movement_start`'s own answer, which a
+    normal gather always runs (it reads GATHER only and costs nothing where
+    there is nothing to find) but which is invisible to a reader that only
+    ever looked at `observations`, as this function did before this line
+    existed. A `--movements` re-export (`staged.export --movements ...`)
+    still overrides both, at its own call site, unchanged.
+    """
     doc_key = DOCUMENT.to_key()
     for o in (result.get("record") or {}).get("observations") or ():
         if o.get("quantity") == Q.MOVEMENT_SPANS and o.get("subject") == doc_key:
             return tuple(o.get("value") or ())
+    for v in (result.get("record") or {}).get("verdicts") or ():
+        if (v.get("quantity") == Q.MOVEMENT_SPANS and v.get("subject") == doc_key
+                and v.get("outcome") == "decided"):
+            return tuple(v.get("value") or ())
     return ()
 
 

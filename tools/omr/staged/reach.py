@@ -19,7 +19,9 @@ own docstring defers that one to run time -- *"`export.status_census` already
 answers it at RUN time as a PARTITION"* -- and that is measurement-first. A
 quantity that is gathered, declared by nobody and read by nobody is reported
 by `gather_coverage` as **GATHERED (observed)**, i.e. as healthy.
-`Q.STAFF_EXTENT` and `Q.STAFF_SKEW` sit in exactly that cell today.
+`Q.STAFF_SKEW` sits in exactly that cell today (`Q.STAFF_EXTENT` did too,
+until ROADMAP 4.2b's movement-boundary detection became its first reader --
+see `KNOWN_GAPS` below).
 
 ## ⚠️ THE ACCESSOR SET IS DERIVED, AND THIS TOOL'S OWN FIRST RUN PROVES WHY
 
@@ -282,12 +284,15 @@ KNOWN_GAPS: Dict[str, str] = {
 
     # ── OPEN FINDINGS. Reported by NO other instrument. Recorded rather than
     #    excused, so `--check` can pass while the finding stays visible.
-    Q.STAFF_EXTENT: (
-        "⚠️ OPEN FINDING, NOT EXCUSED — recorded 2026-09-16, found by this "
-        "check. `gather_geometry` observes it (`gather.py:121`) and it appears "
-        "NOWHERE else in the whole non-test tree: no `wants`, no read, no "
-        "export. `gather_coverage` files it under GATHERED (observed), i.e. as "
-        "healthy. REMOVE THIS ENTRY the day a consumer lands."),
+    #
+    # ⚠️ `Q.STAFF_EXTENT`'S ENTRY REMOVED 2026-09-28 (ROADMAP 4.2b), AS ITS
+    # OWN TEXT SAID TO: `adjudicators.movement.adjudicate_movement_start`
+    # (`wants=(..., Q.STAFF_EXTENT, ...)`) is now a real consumer -- the
+    # system's own top-staff left edge, read for the "wider first-system
+    # indent" movement-boundary cue. `reach --check` itself catches a stale
+    # entry left in place (`stale gap entries`), which is how this one was
+    # found; the module docstring's own "sit in exactly that cell today"
+    # line (above) is corrected the same day.
     Q.STAFF_SKEW: (
         "⚠️ OPEN FINDING, NOT EXCUSED — recorded 2026-09-16, found by this "
         "check. Same shape as STAFF_EXTENT: observed at `gather.py:133` (and "
