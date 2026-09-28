@@ -1825,3 +1825,52 @@ detector box at the opening's own cell 0, and the crop itself.
 
 The brief's suggested re-decision tool does not do what its own flag name
 suggests — recorded above rather than silently worked around.
+
+---
+
+## §2.12h.b — the 6/8 RETURN, one bar after the 9/8, is not gathered at all
+(manager follow-up, TRACE ONLY: no code, no runs, no re-adjudication)
+
+*(Reads the SAME saved record via `record_io.load_record`, plus two crops
+straight off the PDF — no detector, no re-gather, no re-adjudication.)*
+
+**(1) Is the return gathered?** No, effectively not. Across all 14 staves of
+`system/1/0`, `cell:1` (the bar immediately after the system's own opening
+bar, cell 0) carries exactly **ONE observation, of any quantity, on any
+staff**: `staff/1/0/9`, `Q.METER_GLYPH` `timeSig1`, score 0.72 — unpaired
+(no second digit row at that cell on that staff, so `_meter_from_digits`
+cannot even form a candidate from it) and unrelated to a `6/8` shape. **Zero**
+`timeSig6` detections exist anywhere in the whole system (checked all 21
+`Q.METER_GLYPH` rows the system holds, at every cell). This is a genuine
+DETECTOR RECALL miss, not a misclassification: two crops cut straight off the
+PDF at `cell:1`'s own geometry —
+`out/print/m212h-brahms1-breitkopf/m212hb-brahms1-breitkopf-sys1-0-return-
+cell1-staff1-clean.png` and a tall strip spanning the whole system's height
+at that same x — show a clean, unambiguous **`6/8`** stacked at the very
+start of `cell:1`, confirmed by eye on very close to every one of the
+system's 14 staves (13 legible in the tall strip). The detector simply never
+boxed it — no stray box under any class, at any confidence, sits there for
+12 of 14 staves.
+
+**(2) Declined, or never a candidate?** Never a candidate — there is nothing
+for `_meter_changes` to decline, because nothing pairs. The mid-system
+candidates that DO exist near this point (cells 2–6, one lone staff each —
+staff 5 at cells 3/4/5, staff 7 at cells 2/3/6 — all low-confidence `timeSig4`
+pairs, `staves_reading_it` length 1) are a SEPARATE, unrelated false-positive
+population (already the cell-2 row in Part 5's 19-row table) that 2.12d's
+`METER_CHANGE_MIN_STAVES = 2` correctly declines — but declining them answers
+a different question. The true `6/8` restatement never reaches `_meter_
+changes` at all, corroborated or not, because GATHER produced no digit rows
+for it to read.
+
+**(3) What meter carries from m.9 onward?** `9/8` — the corrected opening
+from 2.12h §2.12h itself — stands for the REST of `system/1/0` (no segment
+ever supersedes it, since nothing was gathered to propose one) and would
+carry into any later abstaining system exactly as the wrong `9/4` used to.
+**2.12h fixed the OPENING misread; the RETURN one bar later is untouched and
+is a GATHER-side gap, not an ADJUDICATE one** — `time_signature_locator` (or
+whatever reads `Q.METER_GLYPH`'s digit boxes) needs to be asked why a
+clean, unambiguous, system-wide `6/8` produces one stray unrelated box on
+one staff and nothing on the other thirteen. Not investigated further here
+(trace only, per the manager's instruction) — flagged as the next lever on
+this same funnel.
