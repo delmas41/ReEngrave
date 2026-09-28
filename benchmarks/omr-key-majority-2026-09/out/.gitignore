@@ -23,3 +23,14 @@ brahms-arm.musicxml
 2.9b-litolff-arm.musicxml
 2.9b-breitkopf-base.musicxml
 2.9b-breitkopf-arm.musicxml
+
+# Roadmap 2.9c's arms, same rule and same reason: the whole-movement MusicXML
+# is 1.8 MB (Litolff) / 1.8 MB (Brahms) per arm and reproducible from the
+# shared record by `readjudicate.py --off narrowed_slot|<nothing>` +
+# `staged.export`. What FINDINGS §2.9c cites is committed beside it --
+# `*.part-report.txt`. The engraved acceptance page's MusicXML is tiny (158 KB)
+# and stays, exactly as 2.9b's own engraved arms do.
+2.9c-litolff-base.musicxml
+2.9c-litolff-arm.musicxml
+2.9c-brahms-base.musicxml
+2.9c-brahms-arm.musicxml
