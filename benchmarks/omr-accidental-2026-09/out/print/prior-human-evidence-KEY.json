@@ -1,0 +1,27 @@
+{
+ "_readme": "KEY MATERIAL -- read AFTER adjudicating the crops. Sean's 2026-09-23 stage-review pass on the Viola (benchmarks/omr-stage-review-2026-09/out/sean-viola-p3/sean.sidecar.json) already labelled three of the glyphs in this crop set. Re-deciding the Litolff whole movement WITH that sidecar ingested (regather_accidentals.py --sidecar; out/measure/litolff-with-sean-viola-sidecar-summary.json) refuses 5 glyphs (refused_not_an_accidental), 2 of which the machine-only arm had DECIDED.",
+ "crops": [
+  {
+   "file": "acc-14.png",
+   "glyph": "glyph/3/0/9/5/3",
+   "machine": "decided -> glyph/3/0/9/5/5",
+   "sean_2026_09_23": "human_not_a_symbol"
+  },
+  {
+   "file": "acc-13.png",
+   "glyph": "glyph/3/0/9/7/2",
+   "machine": "decided -> glyph/3/0/9/7/5",
+   "sean_2026_09_23": "human_other_staff"
+  },
+  {
+   "file": "acc-03.png",
+   "glyph": "glyph/3/0/9/5/4",
+   "machine": "abstained no_candidate (a control)",
+   "sean_2026_09_23": "human_not_a_symbol"
+  }
+ ],
+ "refused_with_sidecar_not_in_crop_set": [
+  "glyph/3/0/9/0/11 (machine: no_candidate)",
+  "glyph/3/0/9/1/0 (machine: no_candidate)"
+ ]
+}
