@@ -1,0 +1,23 @@
+{
+ "record": "/private/tmp/claude-501/-Users-seanjohnson-Desktop-ReEngrave--claude-worktrees-start-here-questions-7d5637/3707ff6b-4757-4644-b4c5-de906d20a7bb/scratchpad/acc/new/litolff-arm.record.json",
+ "keysig_marker_rows": 448,
+ "marker_glyphs_joined": 462,
+ "marker_rows_not_joined": 0,
+ "accidental_owners_on_a_key_marker": {
+  "abstained:no_candidate": 12
+ },
+ "sample_marker_row": {
+  "id": "obs:003687",
+  "subject": "staff/1/0/0",
+  "quantity": "keysig_marker",
+  "value": "keyFlat",
+  "reader": "detector",
+  "frame": "cell:0",
+  "score": 0.7194244861602783,
+  "detail": {
+   "x": 541,
+   "y_center": 665
+  },
+  "basis": []
+ }
+}

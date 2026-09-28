@@ -1,0 +1,28 @@
+{
+ "/private/tmp/claude-501/-Users-seanjohnson-Desktop-ReEngrave--claude-worktrees-start-here-questions-7d5637/3707ff6b-4757-4644-b4c5-de906d20a7bb/scratchpad/acc/new/brahms-arm.record.json": {
+  "accidentalDoubleFlat": {
+   "<=0.5": 16,
+   "0.5-1.0": 5
+  },
+  "accidentalDoubleSharp": {
+   "<=0.5": 46,
+   "1.0-1.4": 17,
+   "0.5-1.0": 19
+  },
+  "accidentalFlat": {
+   "<=0.5": 1363,
+   "0.5-1.0": 141,
+   "1.0-1.4": 251
+  },
+  "accidentalNatural": {
+   "<=0.5": 1225,
+   "0.5-1.0": 84,
+   "1.0-1.4": 22
+  },
+  "accidentalSharp": {
+   "<=0.5": 1213,
+   "0.5-1.0": 82,
+   "1.0-1.4": 32
+  }
+ }
+}

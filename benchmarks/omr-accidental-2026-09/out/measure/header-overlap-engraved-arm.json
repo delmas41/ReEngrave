@@ -1,0 +1,21 @@
+{
+ "record": "/private/tmp/claude-501/-Users-seanjohnson-Desktop-ReEngrave--claude-worktrees-start-here-questions-7d5637/3707ff6b-4757-4644-b4c5-de906d20a7bb/scratchpad/acc/new/engraved-arm.record.json",
+ "keysig_marker_rows": 133,
+ "marker_glyphs_joined": 133,
+ "marker_rows_not_joined": 0,
+ "accidental_owners_on_a_key_marker": {},
+ "sample_marker_row": {
+  "id": "obs:002508",
+  "subject": "staff/0/0/0",
+  "quantity": "keysig_marker",
+  "value": "keyFlat",
+  "reader": "detector",
+  "frame": "cell:0",
+  "score": 0.9228690266609192,
+  "detail": {
+   "x": 375,
+   "y_center": 631
+  },
+  "basis": []
+ }
+}
