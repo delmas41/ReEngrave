@@ -1,0 +1,8 @@
+{
+  "subject": "system/1/0",
+  "note": "a tall strip across the whole system's height, cut at the page-x range just after cell 0's closing barline (the start of cell:1 for every staff at once) -- NOT bracketed to one staff's geometry, for the manager follow-up 2.12h.b: is the 6/8 return printed system-wide right after the 9/8 bar. Rendered straight off the PDF at 600 dpi, no detector, no re-gather.",
+  "page_px_x_range": [1780, 2100],
+  "page_px_y_range": [600, 3000],
+  "reads": "a clean stacked 6/8 at the top of roughly 13 of the system's 14 staves",
+  "VERDICT_none_yet": null
+}
