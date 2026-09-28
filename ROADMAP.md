@@ -81,9 +81,8 @@ revert, labelled; (2) shorten the markers to "held" / "unread"?
 **Parked by Sean:** 2.16 maestroAnalyst in INFER.
 
 **Work order (build first):**
-1. ~~Read the Brahms re-decision~~ **read 2026-09-28 12:18** (re-decided on `92b6ab04`, 1 h 58 m): pitched notes written **965 → 1,410**, rests 1,255 → 1,380, bars held **4,513 → 4,494** — the 9/4 bucket is gone and bars judged at 3.0 rose 361 → 1,260, but **3,234 held bars are still judged against 4/4** → 2.12j (in flight: where the 4/4 comes from). The amended record is `.claude/worktrees/redecide-92b6ab04/out-redecide/brahms/amended.record.json` — point the viewer at it.
-2. The m. 9 return to 6/8 — the INFER revert if Sean says yes, else
-   self-templated digits from the plate's own header.
+1. ~~Read the Brahms re-decision~~ **read 2026-09-28 12:18** (re-decided on `92b6ab04`, 1 h 58 m): pitched notes written **965 → 1,410**, rests 1,255 → 1,380, bars held **4,513 → 4,494** — the 9/4 bucket is gone and bars judged at 3.0 rose 361 → 1,260, but **3,234 held bars are still judged against 4/4** → 2.12j. **Re-decided again on `f4168dfd` (after 2.12j), 15:21: pitched notes 965 → 1,410 → 3,529, notes held 18,629 → 15,406, and ALL 4,607 held bars are judged at 3.0 (6/8) — the meter chain is fixed end to end; what is still held is genuine under-reading (the funnel's missing / extra events and dots), not a wrong meter.** Record: `.claude/worktrees/redecide-f4168dfd/out-redecide/brahms/amended.record.json`. The amended record is `.claude/worktrees/redecide-92b6ab04/out-redecide/brahms/amended.record.json` — point the viewer at it.
+2. ~~The m. 9 return to 6/8~~ — no longer binding: after 2.12j every held bar is judged at 6/8. Re-check only if a later record regresses.
 3. `owned_by_another_staff` (6,008 Brahms heads) — the largest missing-events
    cause; needs Sean's print check on 2.6's contest at scale first.
 4. The whole-work gate for 4.1/4.2: Beethoven 5, four movements, one
