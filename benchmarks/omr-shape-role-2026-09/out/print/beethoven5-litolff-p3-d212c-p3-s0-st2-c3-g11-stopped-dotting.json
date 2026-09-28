@@ -1,0 +1,42 @@
+{
+ "png": "beethoven5-litolff-p3-d212c-p3-s0-st2-c3-g11-stopped-dotting.png",
+ "subject": "glyph/3/0/2/3/11",
+ "bucket": "stopped-dotting",
+ "detector_role": "dot",
+ "detector_class": "augmentationDot",
+ "dot_role_verdict": {
+  "outcome": "abstained",
+  "value": null,
+  "reason": "dot_role_ambiguous",
+  "detail": {
+   "detector_role": "dot",
+   "detector_class": "augmentationDot"
+  }
+ },
+ "caption": "beethoven5-litolff-p3-d212c page 3, system 0, staff 2, bar-cell 3 -- the detector called this box `augmentationDot`. `adjudicate_dot_role` reads it as ABSTAINED: dot_role_ambiguous (stopped-dotting). RED corner bracket = the mark itself; ORANGE = the head the augmentation window matched, when one did. QUESTION FOR SEAN: against the print, is this an augmentation dot (lengthens the note) or a staccato (does not)?",
+ "frame_control": {
+  "passed": true,
+  "contrast": 132.58
+ },
+ "mark_page_px": [
+  1065.615,
+  787.8975,
+  1072.7025,
+  797.19
+ ],
+ "owner_page_px": null,
+ "staff_lines_page_px": [
+  726,
+  742,
+  758,
+  773,
+  789
+ ],
+ "crop_page_px": [
+  971.115,
+  631.5,
+  1167.2025,
+  891.69
+ ],
+ "VERDICT_none_yet": null
+}

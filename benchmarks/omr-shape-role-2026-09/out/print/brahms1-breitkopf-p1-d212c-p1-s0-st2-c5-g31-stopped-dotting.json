@@ -1,0 +1,42 @@
+{
+ "png": "brahms1-breitkopf-p1-d212c-p1-s0-st2-c5-g31-stopped-dotting.png",
+ "subject": "glyph/1/0/2/5/31",
+ "bucket": "stopped-dotting",
+ "detector_role": "dot",
+ "detector_class": "augmentationDot",
+ "dot_role_verdict": {
+  "outcome": "abstained",
+  "value": null,
+  "reason": "dot_role_ambiguous",
+  "detail": {
+   "detector_role": "dot",
+   "detector_class": "augmentationDot"
+  }
+ },
+ "caption": "brahms1-breitkopf-p1-d212c page 1, system 0, staff 2, bar-cell 5 -- the detector called this box `augmentationDot`. `adjudicate_dot_role` reads it as ABSTAINED: dot_role_ambiguous (stopped-dotting). RED corner bracket = the mark itself; ORANGE = the head the augmentation window matched, when one did. QUESTION FOR SEAN: against the print, is this an augmentation dot (lengthens the note) or a staccato (does not)?",
+ "frame_control": {
+  "passed": true,
+  "contrast": 154.99
+ },
+ "mark_page_px": [
+  4645.880859375,
+  1166.396484375,
+  4660.224609375,
+  1181.337890625
+ ],
+ "owner_page_px": null,
+ "staff_lines_page_px": [
+  1046,
+  1073,
+  1101,
+  1128,
+  1156
+ ],
+ "crop_page_px": [
+  4480.880859375,
+  881.0,
+  4825.224609375,
+  1346.337890625
+ ],
+ "VERDICT_none_yet": null
+}

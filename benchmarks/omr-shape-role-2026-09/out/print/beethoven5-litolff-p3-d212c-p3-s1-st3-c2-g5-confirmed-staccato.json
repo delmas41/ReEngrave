@@ -1,0 +1,49 @@
+{
+ "png": "beethoven5-litolff-p3-d212c-p3-s1-st3-c2-g5-confirmed-staccato.png",
+ "subject": "glyph/3/1/3/2/5",
+ "bucket": "confirmed-staccato",
+ "detector_role": "staccato",
+ "detector_class": "articStaccatoBelow",
+ "dot_role_verdict": {
+  "outcome": "decided",
+  "value": "staccato",
+  "reason": "centred_and_offset_from_a_head",
+  "detail": {
+   "detector_role": "staccato",
+   "detector_class": "articStaccatoBelow",
+   "owner": "glyph/3/1/3/2/4",
+   "articulation": "staccato"
+  }
+ },
+ "caption": "beethoven5-litolff-p3-d212c page 3, system 1, staff 3, bar-cell 2 -- the detector called this box `articStaccatoBelow`. `adjudicate_dot_role` reads it as staccato (confirmed-staccato). RED corner bracket = the mark itself; ORANGE = the head the augmentation window matched, when one did. QUESTION FOR SEAN: against the print, is this an augmentation dot (lengthens the note) or a staccato (does not)?",
+ "frame_control": {
+  "passed": true,
+  "contrast": 171.66
+ },
+ "mark_page_px": [
+  787.405,
+  2892.525,
+  791.9725,
+  2896.1475
+ ],
+ "owner_page_px": [
+  779.215,
+  2865.5925,
+  803.785,
+  2881.3425
+ ],
+ "staff_lines_page_px": [
+  2818,
+  2834,
+  2850,
+  2866,
+  2881
+ ],
+ "crop_page_px": [
+  684.715,
+  2723.5,
+  898.285,
+  2990.6475
+ ],
+ "VERDICT_none_yet": null
+}
