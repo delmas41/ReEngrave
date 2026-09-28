@@ -51,7 +51,7 @@ file, then `docs/DECISIONS.md` (the entries dated 2026-09-23 → 27 are Sean's).
 **In flight — each lane pushes its branch when done; merge in this order,
 verifying each with `pytest -m "not slow"` and `staged.check` on the merged
 tree (the tree outranks the lane's report):**
-1. `claude/accidental-2.7b` (**pushed at `478cddbe`, salvaged from its worktree — rule + tests + Litolff/engraved measured; Breitkopf arm and crops NOT run; the overnight manager merges it**) — a head filed far from its staff with no rung,
+1. `claude/accidental-2.7b` (**COMPLETE at `60b8e2c4` — the lane was not dead; it finished after my salvage commit `478cddbe`, which it absorbed; Breitkopf measured, 24 crops cut; the overnight manager merges it**) — a head filed far from its staff with no rung,
    another staff near: refused on the filed staff, never relocated (Sean's
    five: crops 4, 13, 20, 23, 26 in
    `benchmarks/omr-accidental-2026-09/out/print/`); the header exclusion as
@@ -79,9 +79,23 @@ Sidecars persist at
 reading a pass: the same `rerun` with the sidecar, then
 `feedback-summary.json`'s `reached_nothing` list is the work order.
 
+**Two corrections from 2.7b's final report (FINDINGS §2.7b):** (a) the
+direction was backwards in the roadmap text — Sean's five heads sit ABOVE
+their filed staff, on the ledger lines of the staff above, i.e. filed one
+staff too LOW; the rule works either way; (b) **on a FRESH gather 2.6
+already resolves all five** (each gets a twin and `glyph_owner` awards it
+right) — they showed only because the acceptance records were gathered
+before 2.6. **The acceptance records must be RE-GATHERED on today's tree**
+(Litolff 16 pages ≈ 12.8 h, Brahms 27 pages ≈ 1 h 11 m, engraved minutes)
+before any ownership, ledger or accidental figure on them describes today's
+reader — an overnight job, item 0 below.
+
 **Work order for the next session (nothing here needs Sean; leave crops in
 `out/print/` with `VERDICT_none_yet: null`):**
-1. Merge the two branches above as they land; re-decide the record and
+0. **Re-gather the three acceptance records on current main** (`gather_movement.sh`
+   in `benchmarks/acceptance/`; `OMR_SURYA_KEEP_ALIVE=0`; sequentially;
+   update `manifest.json`'s md5 receipts), then `tools.omr.acceptance`.
+1. Merge `claude/accidental-2.7b` at `60b8e2c4`; re-decide the record and
    restart the viewer.
 2. **2.14** — `Q.GLYPH_LADDER` names its rungs, so refused ledger boxes
    leave the ladder `glyph_owner` weighs (GATHER; every ledger refusal
