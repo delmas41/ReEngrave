@@ -312,6 +312,12 @@ python3 -m tools.omr.factsheet draft score.pdf --record rec.json -o sheet.json
 python3 -m tools.omr.factsheet show sheet.json
 ```
 
+**One command (ROADMAP 4.1, BUILT not merged):** `python3 -m tools.reengrave
+import <work_id> [--edition ID] [--movements SPEC] [--yes] [--dry-run]` ranks
+editions (`build_wishlist`'s logic), uses a held one or opens IMSLP for the
+one click and watches `~/Downloads`, then runs `tools.omr.staged` per
+movement into `out/<work_id>/`. Never defeats the download gate (§8).
+
 ### 5c. The legacy pipeline (frozen; benchmarks and the web app until Phase 3)
 
 ```bash
