@@ -76,12 +76,74 @@ guard.
   itself: a note standing on a printed line is completely normal and would
   span roughly a full staff space straddling it, not sit thinly astride it.
 
+## The third guard — a CONNECT, added after the crop pass (roadmap 2.4c,
+manager review 2026-09-28)
+
+⚠️⚠️ THE CROP PASS FOUND THE DOMINANT FAILURE MODE AND IT WAS NEITHER OF THE
+ABOVE. `benchmarks/omr-ink-gather-2026-09/FINDINGS.md` SS13.3b: 6 of 6
+Breitkopf crops cut for this decision are printed DIRECTION-WORD TEXT
+(`espr.`, `arco` x2, `unis.` x2, a dynamic `p`), not notes. Neither guard
+above has any reason to exclude a normal printed letter sitting cleanly
+above or below a staff, and `ink_detector_coverage` (test 1) cannot see it
+either -- that field is computed only from the YOLO detector's own boxes
+(`gather_ink`'s `detections` argument), and prose text is read by a wholly
+different subsystem (`gather_direction_words`, Surya/Tesseract OCR) that
+writes `Q.DIRECTION_WORD`, never a detector box.
+
+* **Overlaps a read direction word or a detected dynamic letter** -- a
+  component whose page box overlaps a `Q.DIRECTION_WORD` observation (an
+  OCRed word Surya or Tesseract actually READ, filed with `bbox_page_px`)
+  or a `Q.DYNAMIC_LETTER` observation (a detected `dynamicPiano`/`dynamicMf`/
+  etc. glyph, also `bbox_page_px`) ANYWHERE ON THE SAME SYSTEM is excluded.
+  SYSTEM scope, not the candidate's own cell: `gather_direction_words` files
+  its glyph on whichever staff `key_of_page_staff` attributes the candidate
+  to, which need not be the staff the surrounding ink visually sits nearest
+  to, and CLAUDE.md SS10's own margin-label lesson is that a label's true
+  home is a join question, not a geometry one. Both quantities are CONNECTED
+  here, not re-derived: this decision reads the box either reader already
+  wrote, exactly as it reads `Q.ONSET_COLUMN`'s own column list.
+
+  ⚠️⚠️ **CORRECTION, PRICED AFTER ALL: `--no-surya` DOES NOT GATE THIS
+  READER.** The plan going in was that this measurement's own gathers ran
+  Surya-free (`--no-surya --no-ocr`, because another process owned the Surya
+  server the night 2.4c was built) and the guard could only be unit-tested,
+  not priced, until a fresh gather ran. That plan was WRONG: `--no-surya` /
+  `--no-ocr` gate only `gather_margin_labels` (the instrument-name reader);
+  `gather_direction_words` takes no such parameter and calls Surya
+  unconditionally (`tools/omr/staged/gather.py:3747` on). Both saved
+  gathers (`litolff-p3-ink.record.json`, `breitkopf-p1-ink.record.json`)
+  therefore already carry REAL `Q.DIRECTION_WORD` rows (Breitkopf: 8
+  accepted words of 205 candidates, the rest `no_reading` abstentions) --
+  no new Surya call was made to get this number, only a re-read of data this
+  session had already produced. Re-adjudicating both saved records with this
+  guard added: **Litolff 7 of 7 still fire (0 excluded -- no recognized word
+  or dynamic overlaps any candidate on this page). Breitkopf 16 -> 11 (5
+  excluded)**, and the five are exactly `cell/1/0/1/3`, `cell/1/0/10/1`,
+  `cell/1/0/12/3`, `cell/1/1/2/0`, `cell/1/1/8/0` -- the first three
+  independently confirmed by eye in the SS13.3b crop pass as `espr.`,
+  `unis.` and `arco`.
+
+  ⚠️⚠️ **AND IT IS A PARTIAL FIX, MEASURED AS SUCH.** `cell/1/0/10/3` and
+  `cell/1/0/11/3` -- BOTH independently confirmed by eye as printed text
+  (`espr. arco` and `arco`) in the SAME crop pass -- are STILL AMONG THE 11
+  THAT FIRE. Their ink lies where a word is printed, but no `Q.DIRECTION_
+  WORD` OBSERVATION covers that exact box: the reader's own OCR/lexicon gate
+  is deliberately narrow (CLAUDE.md's own history: "never loosen") and
+  abstains `no_reading`/`not_in_lexicon` far more than it accepts on this
+  page, so a genuine word the lexicon did not recognise leaves no box to
+  connect to. This guard therefore CONNECTS to what the direction-text
+  reader actually READ; it inherits that reader's own recall ceiling rather
+  than fixing it, and the 11 still-fired Breitkopf bars should not be read
+  as "cleared" by this guard's silence on them. FINDINGS SS13.9 has the
+  fuller account.
+
 ## Stage
 
 ADJUDICATE: the answer FOLLOWS from rows already on the record (`Q.INK`,
-`Q.ONSET_COLUMN`, `Q.STAFF_LINES`, `Q.CELL_BOX`) or the decision abstains.
-Nothing here is INFER's business -- there is no candidate to narrow, only a
-test that passes or does not.
+`Q.ONSET_COLUMN`, `Q.STAFF_LINES`, `Q.CELL_BOX`, `Q.DIRECTION_WORD`,
+`Q.DYNAMIC_LETTER`) or the decision abstains. Nothing here is INFER's
+business -- there is no candidate to narrow, only a test that passes or
+does not.
 """
 from __future__ import annotations
 
@@ -168,6 +230,50 @@ def _on_a_staff_line(d: Dict[str, Any], lines_y_page: Optional[List[float]],
     return any(abs(y_center - ly) <= tol for ly in lines_y_page)
 
 
+def _text_and_dynamic_boxes(ev: Evidence, system_subj
+                            ) -> List[Tuple[float, float, float, float]]:
+    """Every page-frame box a direction-word or dynamic-letter READ filed,
+    anywhere on this SYSTEM.
+
+    ⚠️ SYSTEM SCOPE, NOT THE CANDIDATE'S OWN CELL. `gather_direction_words`
+    files its glyph on whichever staff `key_of_page_staff` attributes the
+    OCR candidate to -- which need not be the staff the word visually reads
+    nearest, the same join question CLAUDE.md SS10 names for margin labels.
+    Narrowing to the candidate's own cell would silently miss a word the
+    join placed one staff over from where the ink actually sits.
+
+    ⚠️ ONLY OBSERVATIONS. `Q.DIRECTION_WORD` also carries ABSTENTIONS
+    (`no_reading`, `not_in_lexicon`, `reader_unavailable`) that name a
+    CANDIDATE crop with no page box worth trusting as a positive exclusion;
+    `ev.rows` returns Observations only, so those never reach here.
+    """
+    boxes: List[Tuple[float, float, float, float]] = []
+    for q in (Q.DIRECTION_WORD, Q.DYNAMIC_LETTER):
+        for r in ev.rows(q, scope=Scope.SELF_AND_DESCENDANTS,
+                         subject=system_subj):
+            b = (r.detail or {}).get("bbox_page_px")
+            if b and len(b) == 4:
+                boxes.append(tuple(float(v) for v in b))
+    return boxes
+
+
+def _overlaps_text_or_dynamic(
+        page_box: List[float],
+        text_boxes: List[Tuple[float, float, float, float]]) -> bool:
+    """Does this component's page box overlap ANY read word or dynamic
+    letter's box -- a plain axis-aligned rectangle intersection, not a
+    tolerance. `benchmarks/omr-ink-gather-2026-09/FINDINGS.md` SS13.3b: 6 of
+    6 Breitkopf crops cut for this decision are printed direction-word text
+    (`espr.`, `arco` x2, `unis.` x2, a dynamic `p`) that neither the
+    barline nor the staff-line guard has any reason to exclude.
+    """
+    ax0, ay0, ax1, ay1 = page_box
+    for (bx0, by0, bx1, by1) in text_boxes:
+        if ax0 < bx1 and bx0 < ax1 and ay0 < by1 and by0 < ay1:
+            return True
+    return False
+
+
 def _staff_lines_page(ev: Evidence, staff_subj) -> Optional[List[float]]:
     rows = ev.rows(Q.STAFF_LINES, subject=staff_subj)
     if not rows or not isinstance(rows[-1].value, (list, tuple)):
@@ -228,13 +334,14 @@ def _corroborated_column(x_center_page: float, staff_idx: int,
 @decision(
     quantity=Q.UNREAD_MARK,
     scope=Kind.CELL,
-    wants=(Q.INK, Q.ONSET_COLUMN, Q.STAFF_LINES, Q.CELL_BOX, Q.STAFF_SPACING),
+    wants=(Q.INK, Q.ONSET_COLUMN, Q.STAFF_LINES, Q.CELL_BOX, Q.STAFF_SPACING,
+          Q.DIRECTION_WORD, Q.DYNAMIC_LETTER),
     subjects_from=Q.INK,
     reasons=("unread_mark", "no_mark", "no_ink_component_rows",
              "no_onset_column", "no_page_frame"),
     mode=Mode.ADDITIVE,
     composed_from=(Q.INK, Q.ONSET_COLUMN, Q.STAFF_LINES, Q.CELL_BOX,
-                  Q.STAFF_SPACING),
+                  Q.STAFF_SPACING, Q.DIRECTION_WORD, Q.DYNAMIC_LETTER),
 )
 def adjudicate_unread_mark(ev: Evidence) -> Ruling:
     """Does this BAR hold ink the record cannot account for, at a
@@ -274,6 +381,7 @@ def adjudicate_unread_mark(ev: Evidence) -> Ruling:
     lines_y = _staff_lines_page(ev, staff_subj)
     cell_box = _cell_box(ev)
     spacing_px = _staff_spacing_page(ev, staff_subj)
+    text_boxes = _text_and_dynamic_boxes(ev, system_subj)
 
     used = [onset.id]
     #: ⚠️ TWO DIFFERENT "NOTHING HAPPENED"S, KEPT APART. A cell where no
@@ -309,6 +417,10 @@ def adjudicate_unread_mark(ev: Evidence) -> Ruling:
         if _on_a_staff_line(d, lines_y, spacing_px):
             excluded.append({"glyph": row.subject.to_key(),
                              "guard": "on_a_staff_line"})
+            continue
+        if text_boxes and _overlaps_text_or_dynamic(page_box, text_boxes):
+            excluded.append({"glyph": row.subject.to_key(),
+                             "guard": "overlaps_direction_text_or_dynamic"})
             continue
 
         tol_px = spacing_px * ONSET_COLUMN_TOLERANCE_SPACES

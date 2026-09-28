@@ -2521,6 +2521,13 @@ def _part_xml(rec: Record, part: Sequence[StaffRun], pid: str,
     at the render site for why that is a stated scope limit, not an
     oversight.
 
+    ⚠️⚠️ MANAGER REVIEW 2026-09-28: `marked_bars` HOLDS EVERY BAR THE
+    DECISION FIRED ON, NOT ONLY THE ONES ACTUALLY EMPTIED. See
+    `UNREAD_MARK_HOLDS_OUT`'s own comment -- each entry carries `held_out`
+    so `to_musicxml` can report the whole population (`report[
+    "possibly_unread_mark"]`) and the held-out subset (`report[
+    "bars_held_out_unread_mark"]`) from the one list.
+
     ⚠️⚠️ `drops` AND `held_bars` ARE ROADMAP 2.8, AND `drops` IS NOT OPTIONAL
     IN PRACTICE. It is `_place_notes._drop`'s discipline reaching the render:
     one callable that counts a refused note BY REASON and BY SYSTEM at once,
@@ -2690,6 +2697,29 @@ def _part_xml(rec: Record, part: Sequence[StaffRun], pid: str,
                 mv = rec.verdict(Q.UNREAD_MARK, R_cell_key(run, i))
                 if mv and mv.get("outcome") == "decided" and mv.get("value") is True:
                     mark = mv.get("detail") or {}
+            # ⚠️⚠️ RECORDED UNCONDITIONALLY, BEFORE `UNREAD_MARK_HOLDS_OUT` IS
+            # EVEN CONSULTED. "This bar carries a possible unread mark" is a
+            # fact worth having whether or not the file acts on it -- see
+            # that constant's own comment. `marked_bars` therefore holds
+            # EVERY bar `mark` fired on, each entry saying whether IT in
+            # particular was held out (`held_out`), so `report[
+            # "possibly_unread_mark"]` is the whole population and `report[
+            # "bars_held_out_unread_mark"]` is the (today, empty) subset that
+            # actually lost its notes.
+            if mark is not None:
+                counters["bars_with_a_possible_unread_mark"] += 1
+                if run.condensed_from is None and marked_bars is not None:
+                    marked_bars.append({
+                        "page": run.page, "system": run.system,
+                        "staff": run.staff, "cell": i,
+                        "measure": number if base is None else base + i + 1,
+                        "part": pid, "events": len(events),
+                        "noteheads_and_rests": _bar_event_rows(events),
+                        "ink_components": mark.get("ink_components"),
+                        "column_x_page": mark.get("column_x_page"),
+                        "column_witnesses": mark.get("column_witnesses"),
+                        "held_out": UNREAD_MARK_HOLDS_OUT,
+                    })
             if events:
                 counters["bars_with_events"] += 1
                 counters["bars_with_events_without_a_meter"] += (
@@ -2765,19 +2795,23 @@ def _part_xml(rec: Record, part: Sequence[StaffRun], pid: str,
                 lines.extend(_legacy._mxl_empty_measure(
                     judged, divisions, directions or None, "      "))
                 _count_directions(counters, directions)
-            elif mark is not None:
+            elif mark is not None and UNREAD_MARK_HOLDS_OUT:
                 # ⚠️⚠️ ROADMAP 2.4c, THE SAME BRANCH SHAPE AS THE BAR-SUM
                 # HOLD-OUT THREE PARAGRAPHS UP -- ONE MECHANISM, A SECOND
-                # NAMED REASON. This bar's events WOULD otherwise be written
-                # as read; `Q.UNREAD_MARK` says a piece of printed ink this
-                # staff never explained sits at a column another staff
-                # corroborates, so the bar as a whole cannot be vouched for
-                # (CLAUDE.md's definition of done: every bar we could not
-                # read is MARKED as unread and never invented). The notes
-                # this staff DID read in it follow 2.8's own choice exactly:
-                # they are counted as unread rather than written, because a
-                # bar that might be missing a note must not export looking
-                # complete.
+                # NAMED REASON. GATED BEHIND `UNREAD_MARK_HOLDS_OUT` (default
+                # False, that constant's own comment): this branch is fully
+                # built and tested but does not run live until the text
+                # guard (SS13.9's `Q.DIRECTION_WORD`/`Q.DYNAMIC_LETTER`
+                # exclusion) is priced. This bar's events WOULD otherwise be
+                # written as read; `Q.UNREAD_MARK` says a piece of printed
+                # ink this staff never explained sits at a column another
+                # staff corroborates, so the bar as a whole cannot be
+                # vouched for (CLAUDE.md's definition of done: every bar we
+                # could not read is MARKED as unread and never invented).
+                # The notes this staff DID read in it follow 2.8's own
+                # choice exactly: they are counted as unread rather than
+                # written, because a bar that might be missing a note must
+                # not export looking complete -- once this is trusted to run.
                 counters["bars_held_out_unread_mark"] += 1
                 if split[0] is not None:
                     # ⚠️ MIRRORS `two_voice_bars_held_out_by_sum` for the
@@ -2807,17 +2841,12 @@ def _part_xml(rec: Record, part: Sequence[StaffRun], pid: str,
                     if marks is not None:
                         for _fam, _n in _held_bar_marks(events).items():
                             marks[_fam] += _n
-                    if marked_bars is not None:
-                        marked_bars.append({
-                            "page": run.page, "system": run.system,
-                            "staff": run.staff, "cell": i,
-                            "measure": number if base is None else base + i + 1,
-                            "part": pid, "events": len(events),
-                            "noteheads_and_rests": n_rows,
-                            "ink_components": mark.get("ink_components"),
-                            "column_x_page": mark.get("column_x_page"),
-                            "column_witnesses": mark.get("column_witnesses"),
-                        })
+                    # ⚠️ NOT a second `marked_bars.append` here: the
+                    # unconditional block above already recorded this exact
+                    # bar (with `held_out=True`, since `UNREAD_MARK_HOLDS_
+                    # OUT` is what gated us into this branch at all). A
+                    # second append would double the bar in `report[
+                    # "possibly_unread_mark"]["marked"]`.
                 else:
                     # ⚠️ MIRRORS THE BAR-SUM BRANCH'S OWN CONDENSED CASE, for
                     # the identical reason: a condensed staff's doubled copy
@@ -3151,6 +3180,27 @@ _BAR_SUM_REFUSAL = "bar_does_not_add_up"
 #: note must not export looking complete (CLAUDE.md rule 8: a fallback never
 #: converts "cannot tell" into an answer, not even "clean").
 _MARK_REFUSAL = "possibly_unread_mark"
+
+#: ⚠️⚠️ MANAGER REVIEW, 2026-09-28: RECORD-ONLY UNTIL PRINT-CHECKED.
+#: `notehead_precision.UNLADDERED_SHIPS`'s own pattern -- a MODULE CONSTANT,
+#: never an env flag, because CLAUDE.md's flag discipline is for a code path
+#: meant to ship switchable at runtime, and this one is not: it waits on a
+#: measurement (rule 5, "print before default"), not a deployment choice.
+#: `benchmarks/omr-ink-gather-2026-09/FINDINGS.md` SS13.3b: 6 of 6 Breitkopf
+#: crops cut for this decision are printed direction-word TEXT, not notes,
+#: and a held-out bar throws away the notes that WERE read correctly in it
+#: -- so the hold-out may not run live before the text guard (SS13.9) is
+#: built and priced. With this False (the default), `Q.UNREAD_MARK`'s
+#: verdicts still reach the file: `mark is not None` is still computed and
+#: reported below (`bars_with_a_possible_unread_mark`, `report[
+#: "possibly_unread_mark"]`) for every bar, so `status_census`/the coverage
+#: report can say "N bars carry a possible unread mark" -- but the bar's own
+#: notes are written EXACTLY as they would be with no mark at all, because
+#: rule 8 cuts the other way here too: converting "the file might be wrong"
+#: into "the file discards correct notes" is its own unearned certainty.
+#: `test_staged_unread_mark.py::TestExport` flips this constant in-process
+#: to prove the hold-out branch still works when it is finally trusted.
+UNREAD_MARK_HOLDS_OUT = False
 
 
 def _event_units(ev: Dict[str, Any], divisions: int) -> int:
@@ -3769,7 +3819,8 @@ def to_musicxml(result: Dict[str, Any]) -> Tuple[str, Dict[str, Any]]:
                "bars_held_out_sum_on_a_doubled_staff",
                "bars_held_out_unread_mark", "notes_held_out_unread_mark",
                "bars_held_out_unread_mark_on_a_doubled_staff",
-               "two_voice_bars_held_out_by_unread_mark"):
+               "two_voice_bars_held_out_by_unread_mark",
+               "bars_with_a_possible_unread_mark"):
         counters[_k] += 0
 
     xml = _legacy._score_partwise(result.get("source", {}) or {},
@@ -3840,6 +3891,24 @@ def to_musicxml(result: Dict[str, Any]) -> Tuple[str, Dict[str, Any]]:
     # carries an unread mark (never both -- `_part_xml` tests `held is None`
     # before asking about a mark), and the two lists above/below are kept
     # apart so a reader can tell which without re-deriving the rule.
+    #
+    # ⚠️⚠️ MANAGER REVIEW 2026-09-28, RECORD-ONLY: `marked_bars` holds EVERY
+    # bar the decision fired on, whether or not `UNREAD_MARK_HOLDS_OUT`
+    # actually emptied it (each entry says `held_out`). `report[
+    # "possibly_unread_mark"]` is that WHOLE population -- the fact
+    # `status_census` / a future "N bars carry a possible unread mark" CLI
+    # line reads regardless of the constant. `report[
+    # "bars_held_out_unread_mark"]["held"]` stays scoped to the ACTUALLY
+    # held-out subset, so it reads as "we held out none" (an empty list, the
+    # counters below already zero) rather than silently changing meaning
+    # when the constant flips.
+    _actually_held = [b for b in marked_bars if b.get("held_out")]
+    report["possibly_unread_mark"] = {
+        "bars": int(counters.get("bars_with_a_possible_unread_mark", 0)),
+        "holds_out": UNREAD_MARK_HOLDS_OUT,
+        "of_bars_with_events": int(counters.get("bars_with_events", 0)),
+        "marked": marked_bars,
+    }
     report["bars_held_out_unread_mark"] = {
         "bars": int(counters.get("bars_held_out_unread_mark", 0)),
         "bars_on_a_doubled_staff": int(
@@ -3850,7 +3919,7 @@ def to_musicxml(result: Dict[str, Any]) -> Tuple[str, Dict[str, Any]]:
                      if counters.get("bars_with_events") else None),
         "noteheads_and_rests": int(
             counters.get("notes_held_out_unread_mark", 0)),
-        "held": marked_bars,
+        "held": _actually_held,
     }
     # ⚠️ THE SAME REFUSALS, KEYED BY PRINTED SYSTEM. Written so the cleanup
     # artefact can ask its question one system at a time without holding a

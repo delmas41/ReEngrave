@@ -803,80 +803,104 @@ tell a letterform from a notehead by shape alone at the sizes involved** —
 "espr." and "arco"'s individual letters routinely fall inside the same
 1.0–1.8 x 0.34–1.8 staff-space window a real head does (SS13.2's own table).
 
-**This is the OPEN QUESTION, and it did not exist as a testable population
-until this crop pass ran.** The cheapest CONNECT (not a new measurement) is
-excluding a component whose page box overlaps a `Q.DIRECTION_WORD` region
-where the direction-text reader ran — but that reader needs Surya, which
-this measurement deliberately ran without, so the guard's own effect size is
-unmeasured. It is named here as the ranked next step rather than built
-now (rule 5: reach before accuracy; a guard built on a 6-crop sample with no
-control is a coin flip dressed as a fix). **Until it exists, this decision's
-fired verdicts on a plate with heavy direction-text (Breitkopf, and likely
-any full orchestral score) should be treated as MOSTLY the word "arco", not
-mostly missed notes**, and the two acceptance documents diverge sharply
-enough (0/6 vs 5/6 plausible) that this is a PLATE fact, not a tuning
-question — exactly CLAUDE.md's own axis (Litolff MERGES, Breitkopf SHATTERS)
-showing up a second time, in a population this project had not yet tested.
+**This was the OPEN QUESTION, and it did not exist as a testable population
+until this crop pass ran.** Manager review (2026-09-28) asked for the cheapest
+CONNECT — excluding a component overlapping a `Q.DIRECTION_WORD` or
+`Q.DYNAMIC_LETTER` region — built and PRICED; see SS13.9. Until then, and
+still true of the residue SS13.9 measures: this decision's fired verdicts on
+a plate with heavy direction-text (Breitkopf, and likely any full orchestral
+score) run heavily toward printed words, not missed notes, and the two
+acceptance documents diverge sharply enough (0/6 vs 5/6 plausible on the
+crop sample) that this is a PLATE fact, not a tuning question — exactly
+CLAUDE.md's own axis (Litolff MERGES, Breitkopf SHATTERS) showing up a
+second time, in a population this project had not yet tested. Manager
+review also required the hold-out itself to go RECORD-ONLY
+(`export.UNREAD_MARK_HOLDS_OUT = False`) until this population is trusted —
+see SS13.4's rewrite.
 
-### 13.4 EXPORT — the same mechanism roadmap 2.8 built, a second name
+### 13.4 EXPORT — RECORD-ONLY until print-checked (manager review 2026-09-28)
 
-`export.py`: a bar with events (`held is None`, i.e. the bar-sum hold-out did
-not already claim it) and a decided `Q.UNREAD_MARK=True` verdict is held out
-exactly the way 2.8 holds out a bar whose durations do not sum to the meter
-— `_mxl_empty_measure`, directions kept, `measure="yes"` written where a
-meter is known — under its OWN counters (`bars_held_out_unread_mark`,
-`notes_held_out_unread_mark`, `bars_held_out_unread_mark_on_a_doubled_
-staff`, `two_voice_bars_held_out_by_unread_mark`) and its OWN refusal name
-(`possibly_unread_mark`, never `bar_does_not_add_up`) so a reader can tell
-which mechanism held a bar out without re-deriving the rule. The notes this
-staff DID read in such a bar are counted as unread rather than written —
-2.8's own choice, taken exactly, because a bar that might be missing a note
-must not export looking complete.
+⚠️⚠️ **REVISED. The original landing held the bar out live; manager review
+reverted that** for the reason SS13.3b measures: a held-out bar throws away
+notes that were read CORRECTLY, and 6 of 6 Breitkopf crops turned out to be
+printed text, not missed notes — rule 5, print before default, cuts against
+shipping a hold-out this population has not earned.
 
-⚠️ **A STATED SCOPE LIMIT, NOT AN OVERSIGHT**: the six SECONDARY family
-accounts (`arcs`/`ties`, `articulations`, `dot_role`, `ornaments`, `wedges`,
-`fermatas`) fold an unread-mark hold-out's marks into 2.8's own
-`bar_does_not_add_up` bucket rather than getting a seventh named bucket
-apiece — forking six family-accounting sites was out of scope for this lane.
-Every one of those families' own accounting EQUALITY still balances (nothing
-goes uncounted); only the stated REASON for six specific families'
-not-written marks is imprecise where the two mechanisms coincide with a
-mark on a chord/tie/dynamic. The headline this roadmap item is about —
-noteheads and rests, the same population `Unbalanced` and `status_census`
-already guard — gets its own name.
+`export.UNREAD_MARK_HOLDS_OUT` — a MODULE CONSTANT, `notehead_precision.
+UNLADDERED_SHIPS`'s own pattern, never an env flag — defaults `False`. With
+it `False`: `adjudicate_unread_mark` still fires exactly as before (nothing
+in ADJUDICATE changed), and `export.py` still RECORDS every bar it fires on
+— `report["possibly_unread_mark"]` (`bars`, `holds_out`, the full `marked`
+list, each entry's own `held_out` flag) — but the bar's notes are written
+UNCHANGED, exactly as if no mark existed. The full hold-out branch (`_mxl_
+empty_measure`, `bars_held_out_unread_mark`, `notes_held_out_unread_mark`,
+the `possibly_unread_mark` refusal name, all unchanged from the original
+landing) is fully built and kept alive behind the constant, proved by
+`TestTheHoldOutBranchStillWorksWhenTrusted`, which flips it in-process.
+`report["bars_held_out_unread_mark"]["held"]` is the (today, empty)
+`held_out=True` subset of `marked`, so the two report keys read consistently
+whichever way the constant is set.
+
+⚠️ **A STATED SCOPE LIMIT, NOT AN OVERSIGHT** (unchanged by the record-only
+revision, since it concerns the HOLD-OUT branch's own accounting): the six
+SECONDARY family accounts (`arcs`/`ties`, `articulations`, `dot_role`,
+`ornaments`, `wedges`, `fermatas`) fold an unread-mark hold-out's marks into
+2.8's own `bar_does_not_add_up` bucket rather than getting a seventh named
+bucket apiece — forking six family-accounting sites was out of scope for
+this lane. Every one of those families' own accounting EQUALITY still
+balances; only the stated REASON is imprecise where the two mechanisms
+coincide with a mark on a chord/tie/dynamic, and only once the constant is
+trusted to run.
 
 ### 13.5 Tests, RED first
 
-`tools/omr/tests/test_staged_unread_mark.py`, 14 tests. RED confirmed by
-inspection rather than a literal old-tree run (worktree hygiene: this branch
-never held the pre-2.4c tree): `git show origin/main:tools/omr/staged/
-record.py | grep -c UNREAD_MARK` returns 0, so `SPEC = adjudicate.REGISTRY[
-Q.UNREAD_MARK]`-shaped code fails at collection with `AttributeError` before
-this lane's commits, exactly as importing `adjudicators.unread_mark` does
-(`ModuleNotFoundError`). The population test, its negative control at an
-uncorroborated x (CLAUDE.md rule 7 — and the control that caught the
-frame-mixing bug above), the too-few-witnesses control, the covered-
-component control, the size-window control, both guard tests (each with its
-own dead-threshold bug found and fixed mid-lane — see the guard constants'
-own comments), and the old-record compatibility case. `TestExport` mirrors
-`test_staged_bar_sum_holdout.py`'s own pattern for the render-side branch:
-the positive hold-out, the two-mechanism naming split, the negative control
-(no verdict → written normally), the decided-False control, and the
-cannot-double-refuse case where bar-sum already claimed the bar.
+`tools/omr/tests/test_staged_unread_mark.py`, 20 tests across four classes.
+RED confirmed by inspection rather than a literal old-tree run (worktree
+hygiene: this branch never held the pre-2.4c tree): `git show origin/main:
+tools/omr/staged/record.py | grep -c UNREAD_MARK` returns 0, so code shaped
+like `adjudicate.REGISTRY[Q.UNREAD_MARK]` fails at collection with
+`AttributeError` before this lane's commits, exactly as importing
+`adjudicators.unread_mark` does (`ModuleNotFoundError`).
+
+* `TestTheAdjudicateDecision` (9): the population test, its negative control
+  at an uncorroborated x (CLAUDE.md rule 7 — and the control that caught the
+  frame-mixing bug above), the too-few-witnesses control, the covered-
+  component control, the size-window control, both original guard tests
+  (each with its own dead-threshold bug found and fixed mid-lane), and the
+  old-record compatibility case.
+* `TestTheDirectionTextGuard` (4): a component inside a direction-word box
+  is not marked, the SAME component with no word box IS marked (the control
+  that can fail), a non-overlapping word box does not blanket-exclude, and
+  the `Q.DYNAMIC_LETTER` half of the guard.
+* `TestExport` (4): by default a decided mark is RECORDED but the bar's
+  notes are written unchanged; the no-mark negative control; the decided-
+  `False` control; the bar-sum-already-claimed-it case is not also recorded.
+* `TestTheHoldOutBranchStillWorksWhenTrusted` (3): flipping
+  `UNREAD_MARK_HOLDS_OUT` to `True` in-process reproduces the original
+  landing's hold-out exactly (own refusal name, own counters, the two
+  report keys agree), it is still not confused with the bar-sum refusal, and
+  the flip does not leak into a later call that never set it.
 
 ### 13.6 Landing numbers
 
-`pytest tools/omr/tests -m "not slow" -q`: 3,441 passed, 3 skipped, 0 failed
-(this branch's own new file contributes 14 of those; the origin/main fast-
-tier count was not separately measured, only `staged.check`'s baseline was,
-via `git stash` below). `staged.check`:
-origin/main baseline measured at **253** (via `git stash`, not assumed);
-this branch reports **251** — `staged.reach` and `staged.wiring` each lose
-one entry (`Q.INK`, `DETAIL Q.INK.ink_bbox_canonical`) because this decision
-is the consumer both were waiting for, per each entry's own "LEAVES THIS
-LIST the day a decision reads it" clause; `staged.health` gains and then
-loses one EMPTY CELL (`unread_mark` — a scanner-visibility fix in the test
-file's own `_decide` helper, not a real gap, see its comment). **N fell.**
+Two landings on this branch: the original (hold-out live, 14 tests) and the
+manager-review revision (record-only + text guard, 20 tests). Numbers below
+are the REVISION's.
+
+`pytest tools/omr/tests -m "not slow" -q`: 3,447 passed, 3 skipped, 0 failed
+(this branch's own test file contributes 20 of those; the origin/main
+fast-tier count was not separately measured, only `staged.check`'s baseline
+was, via `git stash` below). `staged.check`: origin/main baseline measured
+at **253** (via `git stash`, not assumed); this branch reports **251**,
+unchanged by the revision — `staged.reach` and `staged.wiring` each lose one
+entry (`Q.INK`, `DETAIL Q.INK.ink_bbox_canonical`) because this decision is
+the consumer both were waiting for, per each entry's own "LEAVES THIS LIST
+the day a decision reads it" clause; `staged.health` gains and then loses
+one EMPTY CELL (`unread_mark` — a scanner-visibility fix in the test file's
+own `_decide` helper, not a real gap, see its comment). Adding
+`Q.DIRECTION_WORD`/`Q.DYNAMIC_LETTER` to `wants` opened no new inventory or
+wiring gap (both are already-consumed GATHER quantities elsewhere). **N
+fell, and stayed fallen.**
 
 ### 13.7 Crops
 
@@ -900,10 +924,75 @@ not crop. The opposite bias is just as real: a stratified or random sample
 was not built here, so neither number should be quoted past "the two plates
 disagree sharply on this small sample."
 
+### 13.9 The text guard, built AND priced (manager review 2026-09-28)
+
+The third guard: exclude a component whose page box overlaps a
+`Q.DIRECTION_WORD` (a word Surya/Tesseract actually READ and the lexicon
+accepted) or `Q.DYNAMIC_LETTER` (a detected `dynamicPiano`/etc glyph)
+observation anywhere on the SAME SYSTEM. Both are CONNECTED, not
+re-derived — the same discipline `Q.ONSET_COLUMN` itself is read under.
+
+⚠️⚠️ **THE PLAN WAS WRONG, AND IT WAS WRONG BEFORE ANY CODE RAN.** The
+instruction going in was that this could only be unit-tested tonight,
+because the reach gathers ran `--no-surya --no-ocr` to leave the shared
+Surya server alone. Checked against the tree: **`--no-surya`/`--no-ocr` gate
+only `gather_margin_labels`** (the instrument-name reader, `staff_labels_
+surya`/`staff_labels_tesseract`); `gather_direction_words` takes no such
+parameter and calls Surya UNCONDITIONALLY (`gather.py:3747` on). Both saved
+gathers from SS13.1 therefore already carry real `Q.DIRECTION_WORD` rows —
+Breitkopf: 8 accepted words of 205 candidates (the other 197 `no_reading`
+abstentions); Litolff: similarly abstention-heavy. **No new Surya call was
+made** to get the numbers below — only a re-read of data this session had
+already produced, honouring "do not start a Surya gather" while still
+pricing the guard rather than leaving it a promise.
+
+**Re-adjudicating both saved records with the guard added:**
+
+| | before (SS13.3) | after | excluded |
+|---|--:|--:|--:|
+| Litolff p3 | 7 | **7** | 0 |
+| Breitkopf p1 | 16 | **11** | 5 |
+
+The 5 excluded on Breitkopf are `cell/1/0/1/3`, `cell/1/0/10/1`,
+`cell/1/0/12/3`, `cell/1/1/2/0`, `cell/1/1/8/0`. The first three are
+INDEPENDENTLY CONFIRMED by eye in the SS13.3b crop pass as `espr.`, `unis.`
+and `arco` — the guard removed exactly the bars a human already read as
+text, not an unrelated set. Litolff's 0 exclusions are consistent with
+SS13.3b's own read (5 of 6 Litolff crops looked like real noteheads; there
+was little text to connect to on that page).
+
+⚠️⚠️ **AND IT IS MEASURABLY A PARTIAL FIX.** `cell/1/0/10/3` and
+`cell/1/0/11/3` — BOTH independently confirmed by eye as printed text
+(`espr. arco` and `arco`, the SAME crop pass) — are STILL AMONG THE 11 THAT
+FIRE after the guard. Their ink sits where a word is printed, but no
+`Q.DIRECTION_WORD` OBSERVATION covers that exact box: the reader's own
+lexicon gate is deliberately narrow (CLAUDE.md: "never loosen") and on this
+page it abstains `no_reading`/`not_in_lexicon` on the large majority of
+candidates, so a genuine word the OCR/lexicon chain did not accept leaves no
+box for this guard to connect to. **The guard inherits the direction-text
+reader's own recall ceiling; it does not exceed it.** The 11 still-fired
+Breitkopf bars must not be read as "cleared" by the guard's silence — several
+are very likely more unrecognised text, not missed notes, and only a human
+crop review (or a recall-side fix to the direction-text reader itself, out
+of scope here) can tell which.
+
+**What this changes and does not change.** It does not change the decision
+to ship record-only (SS13.4): a guard that removes under a third of one
+page's measured false positives, on a REACH-ONLY page pair rather than the
+committed acceptance set, is not grounds for trusting the hold-out live. It
+DOES mean the next step is sharper than "gather with Surya and see" — the
+data already shows the guard helps and is incomplete, so the next step is
+either widening the lexicon/recall on this page's specific vocabulary or
+finding a shape-side signal (text is usually laid out in a straight
+baseline row at fixed letter spacing; a single isolated notehead is not) to
+catch what OCR recall misses.
+
 ### 13.8 Not established
 
-- **Ranked #1**: no guard excludes printed direction-word text (SS13.3b) —
-  the dominant failure mode measured, not merely a named risk.
+- The direction-text guard (SS13.9) is priced only on two REACH pages, not
+  the committed acceptance set, and even there removes fewer than half of
+  the measured Breitkopf false positives (recall-limited, not shape-limited)
+  — the residue is the new ranked #1, not a closed question.
 - The two guards' exact tolerances are asserted, not print-measured (SS13.2).
 - Whole-movement reach: not measured. `--ink-rows` costs the roadmap-1.1b
   slimming AND the schema switch (SS2 above), so a real whole-movement run
