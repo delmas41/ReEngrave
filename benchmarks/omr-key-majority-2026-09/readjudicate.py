@@ -79,6 +79,15 @@ def _disable(which: str) -> None:
         # decision to exactly 2.9's behaviour rather than to a half-state no
         # shipped tree has been in.
         os.environ["OMR_PART_KEY"] = "0"
+    if which in ("narrowed_slot", "all"):
+        # ⚠️ ROADMAP 2.9C, ISOLATED FROM 2.9b. Rule 9 forbids a new flag for
+        # this, so the base for 2.9c's own A/B is a TEMPORARY REVERT of the
+        # one function the item adds: `_slot_candidates` returning `()`
+        # always is exactly what an un-patched tree does for a NARROWED slot
+        # (see `_slot_of`'s own docstring), so `_part_checked` falls through
+        # to `return reading` on every staff a decided slot could not reach
+        # — 2.9b's behaviour, untouched, with 2.9c's own switch off.
+        H._slot_candidates = lambda ev, subject: ()
 
 
 def verdicts_of(log: Log, quantity: str) -> dict:
@@ -90,7 +99,9 @@ def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("record")
     ap.add_argument("--control", action="store_true")
-    ap.add_argument("--off", choices=["markers", "system", "part", "all"],
+    ap.add_argument("--off",
+                    choices=["markers", "system", "part", "narrowed_slot",
+                             "all"],
                     default=None)
     ap.add_argument("--out")
     a = ap.parse_args()

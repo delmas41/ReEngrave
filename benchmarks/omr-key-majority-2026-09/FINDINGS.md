@@ -1149,3 +1149,255 @@ own output: §2.9b.6 scores our file against Sean's reading of 2.9's crops, and
 the staves 2.9b MOVED have not themselves been put in front of him. Those
 crops — the systems where `key_from_document_majority` overrode a `markers`
 reading — are the next thing to ask for.
+
+---
+
+# §2.9c — The part check speaks to a NARROWED slot, exactly where every candidate agrees
+
+2026-09-27/28 · `claude/key-narrowed-slot-2.9c` · branched from `d01e0282`
+
+**One sentence.** §2.9b's residual 18 Litolff key changes were all one part's
+(Cello, and its condensed double Contrabass) because 13 of its 15
+reader-decided staves get their `Q.SLOT_INDEX` from INFER, which runs after
+ADJUDICATE; the part check (`header._part_checked`) now also tries every
+candidate of a NARROWED slot and speaks only where they are UNANIMOUS,
+never placing the staff and never letting it vote in a part's own majority —
+**Litolff's written key changes go 18 → 0.**
+
+## 2.9c.1 The rule, and why it stays in ADJUDICATE and not INFER
+
+CLAUDE.md §4a asks one question of a stage change: does the answer FOLLOW, or
+is it merely BEST? `collapse_slot_index_to_family_block` (INFER) picks ONE
+candidate off equal support — *"position alone has run out"*
+(`identity._place_in_family_block`'s own docstring, every candidate support
+1.0) — and is rightly INFER: which slot wins is BEST, not forced. But *what
+every candidate would conclude about the KEY* is a different question, and
+where they agree it FOLLOWS regardless of which candidate is eventually
+chosen. The narrowing does not need to be collapsed for the check to answer
+it, so the fix stays in ADJUDICATE, as the manager's brief specified.
+
+`header._slot_candidates(ev, subject)` is the new, narrow door: it returns
+every value a NARROWED `Q.SLOT_INDEX` verdict still admits, and `()` for a
+DECIDED or ABSTAINED one. `header._slot_of` — the function
+`adjudicate_part_key`'s own tallies read to decide who votes in a part's
+majority — is **unchanged**: it still returns `(None, None)` on a NARROWED
+slot, so a staff nobody has PLACED still cannot vote in the very majority its
+placement would be checked against (a comment is left at both call sites
+saying so). **Only** `_part_checked` reads `_slot_candidates`.
+
+`_part_checked` runs 2.9b's own computation FIRST, unconditionally, with
+`slot` exactly as `_slot_of` left it. That computation already answers a
+slot-less staff through the DOCUMENT tier alone — a staff's own read
+transposition needs no slot at all (`test_staged_key_by_part.py`'s
+`TestTheDocumentCheck` fixtures are exactly this: a labelled but unplaced
+clarinet). Only where 2.9b's own answer was "nothing to compare" **and** the
+slot is genuinely unplaced does the new branch try each candidate: for each,
+`expected_fifths` computes what it would conclude; if **every** candidate
+reaches the identical `(expected fifths, tier)` pair the check applies it
+(recording `slot_candidates` and `part_check_via="narrowed_slot_unanimous"`
+in `detail`); if any candidate has nothing to compare, or they disagree, the
+check stays silent and the reading passes through exactly as it did before
+this item (rule 8: a narrowing is not resolved by picking the candidates
+that answer).
+
+`Q.SLOT_INDEX` runs before `Q.KEY_SIGNATURE` in `adjudicate.ORDER` (and
+before `Q.PART_KEY` too — both are declared after `Q.SLOT_INDEX` and before
+`Q.KEY_SIGNATURE` in the tuple), so the NARROWED verdict this check reads is
+already on the record when `key_signature` runs. Confirmed by reading
+`ORDER`, not asserted in a test (no test may assert on module source text).
+
+No new reason word is introduced — `disagrees_with_document` and
+`disagrees_with_part` are unchanged and already declared in
+`adjudicate_key_signature`'s `reasons=` — so `inventory --check` and
+`wiring --check` needed no declaration changes; both ran clean before and
+after (§2.9c.5).
+
+## 2.9c.2 RED, on the unrepaired tree, and a regression the cycle caught
+
+`tools/omr/tests/test_staged_key_narrowed_slot.py`, four tests, run against
+`header.py` reverted to `d01e0282` (the tree before this item): **1 failed, 3
+passed**. Only `test_narrowed_to_two_unanimous_parts_is_abstained` — the new
+capability — fails (`DECIDED` where `ABSTAINED` was expected): a narrowed
+slot was simply never judged before this item, so the other three tests
+(positive control on a DECIDED slot, the split, and the no-part-answer case)
+already passed on the unrepaired tree, because all three assert the check
+stays SILENT, which was already true there. With the fix, all four pass, and
+the full `test_staged_key_by_part.py` suite (32 of 2.9b's own tests) passes
+on both trees.
+
+**A regression the cycle caught before it shipped.** The first version of
+the fix read `slot is None` as meaning "try the narrowed candidates" — but
+`_slot_of` also returns `None` for a staff with **no** `Q.SLOT_INDEX` verdict
+at all, which is exactly `test_staged_key_by_part.TestTheDocumentCheck`'s own
+fixtures: a labelled but unplaced clarinet judged by the DOCUMENT tier
+through its own read transposition alone, needing no slot. That first
+version broke three of `test_staged_key_by_part.py`'s tests
+(`test_a_TRANSPOSING_staff_is_re_transposed_and_stands`,
+`test_a_staff_disagreeing_with_its_document_is_abstained`,
+`test_the_document_tier_re_transposes_for_the_staff_it_fills`). The fix:
+2.9b's own `expected_fifths(part_key.value, slot, offset, sys_key)` call
+runs first and unconditionally; the narrowed-candidates branch is reached
+only where THAT answer was already "nothing to compare."
+
+## 2.9c.3 Measurement — base vs arm, one tree, three documents
+
+Per CLAUDE.md §6b, base and arm are the SAME committed tree, differing only
+in one temporary revert (rule 9 forbids a new flag for a benchmark-only A/B):
+`readjudicate.py --off narrowed_slot` monkey-patches `header._slot_candidates`
+to always return `()`, which is exactly what an un-patched tree does for a
+DECIDED or ABSTAINED slot and is now what the base arm does for a NARROWED
+one too — 2.9b's own behaviour, with 2.9c's own switch off. 2.9b's `--off
+part` is untouched and unused here; 2.9b stays ON in both arms of this
+measurement.
+
+    python3 benchmarks/omr-key-majority-2026-09/readjudicate.py <rec> --off narrowed_slot --out out/2.9c-<tag>-base.json
+    python3 benchmarks/omr-key-majority-2026-09/readjudicate.py <rec>                     --out out/2.9c-<tag>-arm.json
+    python3 -m tools.omr.staged.export out/2.9c-<tag>-{base,arm}.json --out ...
+    python3 benchmarks/omr-key-majority-2026-09/part_report.py 2.9c-<tag> --truth beethoven5|brahms1|engraved [--page N]
+
+Records: the same shared whole-movement records 2.9b measured
+(`library/_shared-records/beethoven5-litolff-mvt1-whole-20260923.record.json`,
+`.../brahms1-breitkopf-mvt1-whole-20260923.record.json`) and the committed
+engraved acceptance record
+(`benchmarks/omr-staged-engraved-2026-09/out/engraved-p0p2-20260923.record.json`).
+`readjudicate.py` re-adjudicates from GATHER-level observations/abstentions
+only (it discards prior verdicts), so this is valid on today's tree
+regardless of later, unrelated redecisions to these same shared records.
+
+⚠️ **The absolute counts differ from §2.9b's own table** (Litolff `<note>`
+8,674 → 8,758; Brahms `<note>` 7,822 → 7,872) because other roadmap items
+(2.10–3.4x) have landed on the tree since 2.9b was measured. This is NOT an
+effect of 2.9c: on both documents the BASE arm (2.9c off) reproduces these
+same today's-tree numbers, so the comparison that matters — base vs arm, one
+tree — is unaffected.
+
+### Engraved acceptance page — 54 staff-systems
+
+**Byte-identical, base and arm** (`diff` exits 0 on the two exported
+MusicXML files): 54/54 decided, 18/18 parts, 0 key changes, 666 `<note>`, 18
+`<key>`, in both arms. Expected and inert by construction — the fixture's
+`join_decided` is `ordinal`, every part is named directly, and no staff
+there is ever narrowed.
+
+### Beethoven 5, Litolff, whole movement — 331 staff-systems
+
+| | base (2.9c off = 2.9b's own arm) | arm (2.9c on) |
+|---|---|---|
+| key verdicts | 328 decided / 3 abstained | 323 decided / 8 abstained |
+| reasons | `key_from_document_majority` 148, `markers` 88, `fitted_no_markers` 54, `key_from_other_systems` 38, `mixed_marker_kinds` 2, `no_evidence` 1 | `key_from_document_majority` **157**, `markers` **74**, `fitted_no_markers` 54, `key_from_other_systems` 38, `disagrees_with_document` **5** (new), `mixed_marker_kinds` 2, `no_evidence` 1 |
+| inferred | 186 | **195** |
+| per staff, against Sean's truth (§2.9b.0) | 125 right + 186 inferred right / **9 wrong** / 11 unscored | 125 right + **195 inferred right** / **0 wrong** / 11 unscored |
+| parts opening right | 12 of 12 | 12 of 12 |
+| **key CHANGES actually written in the file** | **18** | **0** |
+| `<key>` elements | 72 | 60 |
+| `<note>` | 8,758 | 8,758 |
+| key-derived alterations | 1,189 | 1,215 |
+| CARRY CONTROL | 11 of 12 (1 known condensed-doubling artefact) | **12 of 12** |
+| count page (pdf p3, 19 staves) | 19/19 right | 19/19 right (unchanged — 2.9b's own gate, untouched) |
+
+**The gate is met exactly: Litolff's written key changes go 18 → 0, and the
+per-staff wrong count 9 → 0, with nothing moving the wrong way.**
+
+**The 9 staves that flip from wrong to right, named** — all Cello, all
+`slot 10`, all filled `key_from_document_majority`:
+`staff/2/0/10`, `staff/2/1/10`, `staff/7/1/10`, `staff/10/0/10`,
+`staff/12/1/10`, `staff/13/0/10`, `staff/15/1/10`, `staff/16/0/10`,
+`staff/16/1/10` — each read a wrong value at ADJUDICATE time (`-2` or `-1`
+against a true `-3`) while unguarded (its slot was still NARROWED when
+`key_signature` ran), and 2.9c's check now abstains each one and INFER fills
+it correctly once `collapse_slot_index_to_family_block` has placed the slot.
+These are 9 of `collapse_slot_index_to_family_block`'s own 17 Cello/Contrabass
+placements (`export`'s `condensed_doubling` list), so the fix reaches the
+exact population it was built for.
+
+**Five more staves are newly abstained and named, and they cost nothing.**
+`staff/8/0/8`, `staff/11/0/6`, `staff/14/1/7`, `staff/14/1/8`,
+`staff/14/1/9` all get a unanimous verdict from the new check
+(`disagrees_with_document`, `slot_candidates` of two adjacent string slots)
+but `collapse_slot_index_to_family_block` never places their block at all
+(a whole-block refusal — a contradicting clef, most likely, per that rule's
+own gate), so their `Q.SLOT_INDEX` is still NARROWED after INFER and
+`fill_part_key` has no decided slot to fill them from — they stay abstained.
+**This is invisible to the file**: a staff whose slot never resolves is held
+out of the export entirely (`OMR_HOLD_OUT_UNIDENTIFIED`, `held_out_staves:
+11` — the same 11 the per-staff table calls `unscored`, identical in base
+and arm), so whether their internal key verdict is a wrong DECIDED value or
+a documented ABSTAINED dissent changes nothing about `<note>`/`<key>` counts.
+It is a strictly more honest record of the same, pre-existing, roadmap 2.6
+identity gap — not a new one.
+
+Two further abstentions (`no_evidence` 1, `mixed_marker_kinds` 2 = 3 total)
+are pre-2.9c and unchanged between base and arm.
+
+### Brahms 1, Breitkopf, whole movement — 691 staff-systems
+
+**Base and arm are byte-identical** — `cmp` on the two `readjudicate.py`
+output records exits 0, and the two exported MusicXML files are therefore
+identical too (one export was run and copied for the report's benefit,
+recorded here rather than re-run for a foregone conclusion):
+
+| | base = arm |
+|---|---|
+| key verdicts | 678 decided / 13 abstained |
+| reasons | `markers` 318, `key_from_document_majority` 190, `fitted_no_markers` 109, `key_from_other_systems` 61, `no_evidence` 10, `run_fits_no_slot_table` 3 |
+| inferred | 251 |
+| per staff, against Sean's truth | 379 right / 248 inferred right / 17 wrong / 3 inferred wrong / 2 abstained (both carrying right) / 42 unscored |
+| parts opening right | 14 of 14 |
+| key CHANGES written | 20 (the plate's own two, unchanged from 2.9b) |
+| `<note>` | 7,872 |
+| `<key>` | 756 |
+| count page (pdf p1, 27 staves) | unaffected — byte-identical to 2.9b's own arm |
+
+**No Breitkopf staff ever reaches the narrowed-candidates branch** — Breitkopf's
+identity join has a different shape (42 staves with no part at all, per
+§2.9b.7, rather than Litolff's narrowed string blocks), so `_slot_candidates`
+finds fewer than 2 candidates everywhere it is asked and 2.9c is a clean,
+verified no-op on this document. **Brahms figures are unchanged, exactly as
+the gate requires.**
+
+## 2.9c.4 The verdict
+
+| | parts opening right | key changes written (plate prints) | per-staff wrong | `<note>` |
+|---|---|---|---|---|
+| engraved acceptance | 18/18 → 18/18 | 0 → 0 (0) | 0 → 0 | 666 → 666 |
+| Brahms 1 / Breitkopf | 14/14 → 14/14 | 20 → **20**, unchanged (2) | 17 → 17 | 7,872 → 7,872 |
+| Beethoven 5 / Litolff | 12/12 → 12/12 | **18 → 0** | **9 → 0** | 8,758 → 8,758 |
+
+**The gate stated in ROADMAP.md 2.9c is met exactly**: Litolff's key changes
+go 18 → 0 with every remaining Litolff finding named (§2.9c.3), the Brahms
+whole-movement figures are unchanged (byte-identical), and the engraved
+figure is unchanged (byte-identical). Nothing moved the wrong way on either
+scanned document.
+
+## 2.9c.5 Controls
+
+`python3 -m tools.omr.staged.check`: **264** before this item's code change
+and **264** after — unchanged, because this is an ADJUDICATE-only change and
+none of the derived checks' 14 parts read `key_signature`'s internal branch
+structure. `inventory --check` and `wiring --check` both exit 0 before and
+after, with no new finding naming `key_signature`, `part_key` or
+`slot_index` in either run. Fast tier (`pytest -m "not slow"`): **3,302
+passed, 3 skipped**, unchanged, plus the new file's 4 tests (RED → GREEN,
+§2.9c.2). `test_staged_key_by_part.py`'s 32 tests: unchanged, pass on both
+trees.
+
+## 2.9c.6 Open
+
+* **The five newly-abstained-and-unfilled staves (§2.9c.3) are a symptom of
+  roadmap 2.6's identity gap, not a new gap 2.9c created** — a whole-block
+  refusal in `collapse_slot_index_to_family_block` (contradicting clef) means
+  no amount of key-check unanimity can place them. Worth a crop for Sean if
+  that rule's own gate is ever revisited, but it is a `collapse_slot_index_to_
+  family_block` question, not a §2.9c one.
+* **No print check of the 9 repaired Cello staves.** §2.9b.6's crops covered
+  2.9b's own moves; the 9 staves this item fixes are a further, disjoint set
+  and have not themselves been shown to Sean. They are close to certain to be
+  right (Cello and Contrabass share a key by convention and by measurement
+  here — every one of the two candidates' own tallies agreed before the check
+  fired), but "close to certain" is not a print check.
+* **The same shape may recur wherever else a NARROWED slot has exactly two
+  unanimous candidates** — this item does not special-case Cello/Contrabass in
+  code, only in its test fixtures and its expected population; whether other
+  string blocks (e.g. a short Violin/Viola block) ever reach the same
+  unanimous condition on either document was not swept separately, because
+  the file-level counts (§2.9c.3) already show the gate met.

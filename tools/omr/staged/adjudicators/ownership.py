@@ -35,12 +35,15 @@ W_DISTANCE = 0.5            # the tie-break, and only that
         "the owned glyph's implied pitch must fall in the owner's written range",
     ),
     implicates=(Q.GLYPH_OWNER, Q.DURATION, Q.METER, Q.INSTRUMENT),
+    # ⚠️ ROADMAP 2.14. `Q.LEDGER_IS_NOT_A_LEDGER` joins the composition: the
+    # ladder tier's reliability now depends on a rung's own refusal verdict,
+    # not only on GATHER's anonymous count.
     composed_from=(Q.GLYPH_BAND_DISTANCE, Q.GLYPH_LADDER, Q.INSTRUMENT, Q.CLEF,
-                   Q.HUMAN_BOX_VERDICT),
+                   Q.HUMAN_BOX_VERDICT, Q.LEDGER_IS_NOT_A_LEDGER),
     scope=Kind.GLYPH,
     wants=(Q.GLYPH_LADDER, Q.GLYPH_BAND_DISTANCE, Q.GLYPH_CONF,
            Q.NOTEHEAD_STAFF_POSITION, Q.INSTRUMENT, Q.CLEF,
-           Q.HUMAN_BOX_VERDICT),
+           Q.HUMAN_BOX_VERDICT, Q.LEDGER_IS_NOT_A_LEDGER),
     reasons=("human_owner", "ladder", "range_veto", "distance", "no_contest",
              "no_evidence", "tied"),
     mode=Mode.ADDITIVE,
@@ -100,6 +103,7 @@ def adjudicate_glyph_owner(ev: Evidence) -> Ruling:
     ladders = {r.detail.get("candidate"): r for r in ev.rows(Q.GLYPH_LADDER)}
 
     scored = []
+    ladder_discounts: Dict[str, Tuple[str, ...]] = {}
     for row in bands:
         cand_key = row.detail.get("candidate")
         if cand_key is None:
@@ -108,8 +112,13 @@ def adjudicate_glyph_owner(ev: Evidence) -> Ruling:
 
         # ── tier 1: the ledger ladder ───────────────────────────────────────
         lad = ladders.get(cand_key)
-        if lad is not None and bool(lad.value):
-            terms.append(Term("ladder_complete", W_LADDER_COMPLETE, (lad.id,)))
+        if lad is not None:
+            complete, discounted = _ladder_complete(ev, lad)
+            if discounted:
+                ladder_discounts[cand_key] = discounted
+            if complete:
+                terms.append(Term("ladder_complete", W_LADDER_COMPLETE,
+                                  (lad.id,)))
         # ⚠️ A BROKEN ladder contributes NOTHING -- not a negative. Two broken
         # ladders are not evidence either way: a found rung can belong to the
         # other staff's note exactly as a gap can, and on the Beethoven
@@ -167,11 +176,71 @@ def adjudicate_glyph_owner(ev: Evidence) -> Ruling:
     else:
         reason = "distance"
 
+    detail = {"scores": {k: sc for sc, k, _t, _d2 in scored},
+              "would_win_on_distance": by_distance[1]}
+    if ladder_discounts:
+        # ⚠️ ROADMAP 2.14, FOR `trace`. Per candidate, the rung glyph keys a
+        # refused `Q.LEDGER_IS_NOT_A_LEDGER` verdict removed from this
+        # contest's ladder count -- present whether or not that candidate
+        # won, so a losing candidate's discount is visible too.
+        detail["ladder_discounted_rungs"] = ladder_discounts
+
     return Ruling(value=top_key, reason=reason,
                   margin=(top_score - runner) if runner is not None else None,
                   used=tuple(r.id for r in bands),
-                  detail={"scores": {k: sc for sc, k, _t, _d2 in scored},
-                          "would_win_on_distance": by_distance[1]})
+                  detail=detail)
+
+
+def _ladder_complete(ev: Evidence, lad_row) -> Tuple[bool, Tuple[str, ...]]:
+    """`(is the ladder complete, the named rungs a refusal discounted)`.
+
+    ⚠️⚠️ ROADMAP 2.14 — THE JOIN `adjudicate_ledger_is_not_a_ledger`'s OWN
+    DOCSTRING SAYS DOES NOT EXIST, BUILT. `gather._observe_ladder` now names,
+    in `detail["rungs"]`, the ledger glyph subject that matched each counted
+    step, in the same order `found` was counted — so a rung's OWN refusal
+    verdict can be read back and discounted from THIS contest's completeness,
+    which GATHER's anonymous `found`/`expected` count never allowed.
+
+    A named rung whose `Q.LEDGER_IS_NOT_A_LEDGER` verdict is DECIDED `True`
+    (refused — a staff-line fragment, a barline, ink with no boxed head) no
+    longer counts. One the ledger decision ABSTAINED on (`rung_without_
+    boxed_head` — CLAUDE.md rule 8, *cannot tell* may never become *not a
+    rung*), one it never ran on at all, or one it DECIDED `False` (a real
+    rung) all keep their place.
+
+    ⚠️ NO CYCLE: `adjudicate_ledger_is_not_a_ledger` runs BEFORE `glyph_owner`
+    in `adjudicate.ORDER`, and its own declared evidence is `Q.GLYPH_BOX`,
+    `Q.STAFF_LINES`, `Q.STAFF_SPACING`, `Q.CELL_STAFF_SPACE`,
+    `Q.HUMAN_BOX_VERDICT`, `Q.GLYPH_BAND_DISTANCE` and `Q.LEDGER_INK_UNDER` —
+    `Q.GLYPH_OWNER` is nowhere in its ancestry, so reading its verdict back
+    here closes nothing.
+
+    ⚠️ AN OLD RECORD (no `rungs` named, pre-2.14) IS UNCHANGED: falls back to
+    the row's own `value`, exactly as `glyph_owner` read it before this lane.
+    An EMPTY `rungs` list (a genuinely named ladder with `found == 0`) has
+    nothing to discount either, so it takes the same path.
+    """
+    detail = lad_row.detail or {}
+    names = detail.get("rungs")
+    expected = detail.get("expected")
+    if not names or not isinstance(expected, int):
+        return bool(lad_row.value), ()
+
+    kept = 0
+    discounted: List[str] = []
+    for key in names:
+        try:
+            subject = R.Subject.from_key(key)
+        except ValueError:
+            kept += 1                # cannot even ask -- never guess a refusal
+            continue
+        verdict = ev.verdict(Q.LEDGER_IS_NOT_A_LEDGER, subject=subject)
+        if verdict is not None and verdict.outcome == Outcome.DECIDED \
+                and verdict.value is True:
+            discounted.append(key)
+            continue
+        kept += 1
+    return kept == expected, tuple(discounted)
 
 
 def _human_owner(ev: Evidence):
@@ -959,7 +1028,8 @@ _ACC_AMBIGUOUS_MARGIN_POSITIONS = 0.5
     composed_from=(Q.ACCIDENTAL_STAFF_POSITION, Q.NOTEHEAD_STAFF_POSITION,
                    Q.GLYPH_BOX, Q.CELL_STAFF_SPACE,
                    Q.ACCIDENTAL_IS_NOT_AN_ACCIDENTAL,
-                   Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, Q.GLYPH_OWNER),
+                   Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, Q.GLYPH_OWNER,
+                   Q.KEYSIG_MARKER),
     scope=Kind.GLYPH,
     # ⚠️ THREE VERDICTS BESIDE THE FOUR GATHER ROWS, added when 2.7 was
     # MERGED onto the tree that had grown them overnight (2026-09-27). Each is
@@ -969,11 +1039,13 @@ _ACC_AMBIGUOUS_MARGIN_POSITIONS = 0.5
     wants=(Q.ACCIDENTAL_STAFF_POSITION, Q.NOTEHEAD_STAFF_POSITION,
            Q.GLYPH_BOX, Q.CELL_STAFF_SPACE,
            Q.ACCIDENTAL_IS_NOT_AN_ACCIDENTAL,
-           Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, Q.GLYPH_OWNER),
+           Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, Q.GLYPH_OWNER,
+           Q.KEYSIG_MARKER),
     subjects_from=Q.ACCIDENTAL_STAFF_POSITION,
     reasons=("immediately_right_same_position", "ambiguous_height",
              "no_candidate", "no_unit", "no_evidence",
-             "refused_not_an_accidental"),
+             "refused_not_an_accidental", "is_a_key_signature_marker",
+             "head_belongs_to_a_nearer_staff"),
     checked_by=(
         "L32: an accidental stands BEFORE its note, at the same staff "
         "position -- SIDE and HEIGHT, two constraints and not one",
@@ -1059,6 +1131,28 @@ def adjudicate_accidental_owner(ev: Evidence) -> Ruling:
                               refusal=refusal.id,
                               refusal_reason=refusal.reason)
 
+    # ⚠️⚠️ ROADMAP 2.7b — A KEY-SIGNATURE MARKER IS NEVER AN IN-BAR
+    # ACCIDENTAL, AND THAT IS NOW A STATED RULE RATHER THAN A GEOMETRY
+    # ACCIDENT. 2.9/2.12a admit accidental-SHAPED header boxes into the key
+    # signature's marker run (`gather._gather_keysig_markers`: the detector
+    # does not always spell a signature flat `keyFlat`), so one box is read
+    # twice — once as a marker, once here. Sean's crop 7 (2026-09-27) is
+    # exactly that box: *"the glyph is a KEY-SIGNATURE flat"*; the reader
+    # abstained on it, but for `no_candidate`, a geometry reason that would
+    # have become a pairing the day a head stood at its height. Only a
+    # marker the key reader COUNTED in its run is one (see
+    # `_keysig_marker_row`: a marker past the run's gap is Sean's confirmed
+    # in-bar natural of crop 12, boxed twice). Checked BEFORE the pairing
+    # geometry: it says what the glyph IS.
+    marker = _keysig_marker_row(ev)
+    if marker is not None:
+        return Ruling.abstain("is_a_key_signature_marker",
+                              alteration=alteration,
+                              marker=marker.id,
+                              marker_shape=marker.value,
+                              marker_role=(marker.detail or {}).get(
+                                  "detector_role"))
+
     cell = ev.subject.at(Kind.CELL)
     unit_rows = ev.rows(Q.CELL_STAFF_SPACE, scope=Scope.SELF_AND_ANCESTORS,
                         subject=cell)
@@ -1072,6 +1166,7 @@ def adjudicate_accidental_owner(ev: Evidence) -> Ruling:
 
     own_staff = ev.subject.at(Kind.STAFF).to_key()
     heads = {}
+    elsewhere = {}
     excluded: Dict[str, str] = {}
     for r in ev.rows(Q.GLYPH_BOX, scope=Scope.SELF_AND_DESCENDANTS,
                      subject=cell):
@@ -1097,6 +1192,12 @@ def adjudicate_accidental_owner(ev: Evidence) -> Ruling:
         npv = ev.verdict(Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, subject=sub)
         if (npv is not None and npv.outcome is Outcome.DECIDED
                 and npv.value is True):
+            if npv.reason == "belongs_to_a_nearer_staff":
+                # ⚠️ ROADMAP 2.7b: a NOTE, and another staff's. Kept aside,
+                # not dropped from sight: see `elsewhere` below.
+                excluded[sub.to_key()] = "belongs_to_a_nearer_staff"
+                elsewhere[sub.to_key()] = r
+                continue
             excluded[sub.to_key()] = "not_a_notehead"
             continue
         owner = ev.verdict(Q.GLYPH_OWNER, subject=sub)
@@ -1106,7 +1207,7 @@ def adjudicate_accidental_owner(ev: Evidence) -> Ruling:
             excluded[sub.to_key()] = "owned_by_another_staff"
             continue
         heads[sub.to_key()] = r
-    if not heads:
+    if not heads and not elsewhere:
         return Ruling.abstain("no_candidate", alteration=alteration,
                               why="no notehead in this cell",
                               heads_excluded=excluded or None)
@@ -1126,7 +1227,7 @@ def adjudicate_accidental_owner(ev: Evidence) -> Ruling:
     apos = float(acc.value)
 
     cands = []
-    for key, row in heads.items():
+    for key, row in list(heads.items()) + list(elsewhere.items()):
         _cls, hx, hy, hw, hh = row.value[:5]
         if float(hx) + float(hw) < ax1:
             continue                    # the head does not reach past the glyph
@@ -1152,6 +1253,19 @@ def adjudicate_accidental_owner(ev: Evidence) -> Ruling:
             max_dy_positions=_ACC_MAX_DY_POSITIONS)
 
     cands.sort(key=lambda t: (t[0], t[1]))
+    # ⚠️⚠️ ROADMAP 2.7b — THE ACCIDENTAL FOLLOWS ITS HEAD. A head refused
+    # `belongs_to_a_nearer_staff` is still a NOTE, and the glyph printed at
+    # its height immediately left of it is that note's accidental — on the
+    # other staff, with it. Where it is this glyph's BEST candidate the glyph
+    # abstains by name rather than falling through to the next head in the
+    # cell: the other refusals (`clipped_fragment`, `too_narrow`, a human's
+    # *nothing*) say the ink is no note at all, so a second-best head may
+    # well be the glyph's own; this one says the glyph's note is elsewhere.
+    if cands[0][2] in elsewhere:
+        return Ruling.abstain("head_belongs_to_a_nearer_staff",
+                              alteration=alteration, head=cands[0][2],
+                              heads_excluded=excluded or None)
+    cands = [c for c in cands if c[2] not in elsewhere]
     best = cands[0]
     widths = sorted(float(r.value[3]) for r in heads.values())
     nh_width = widths[len(widths) // 2] or 1.0
@@ -1190,6 +1304,55 @@ def adjudicate_accidental_owner(ev: Evidence) -> Ruling:
                 "anchor_fraction": detail.get("anchor_fraction"),
                 "confidence": detail.get("confidence"),
                 "heads_excluded": excluded or None})
+
+
+def _keysig_marker_row(ev: Evidence):
+    """The `Q.KEYSIG_MARKER` row this accidental glyph IS, or None.
+
+    ⚠️ ONLY A ROW THE KEY READER COUNTED (`header.marker_run_members`): a
+    marker past the run's gap, or in a run of mixed kinds the reader refused,
+    is not a signature member and the glyph is judged on its geometry.
+
+    ⚠️ A JOIN BY FRAME, CLASS AND POINT, because the marker row names no
+    glyph (`gather._gather_keysig_markers` files it on the STAFF with the
+    detection's `detector_class`, canonical `x` and `y_center`, frame
+    `cell:N`). The glyph's own `Q.GLYPH_BOX` is the same detection, so the
+    class and the integer `x` agree exactly and `y + h/2` to the detector's
+    rounding. The CLASS is not optional: Litolff p3 Violino I boxes one ink
+    twice at x 1007/1008, once `accidentalFlat` (admitted as a marker) and
+    once `accidentalNatural` (Sean's crop 12, a confirmed in-bar natural).
+    """
+    from .header import marker_run_members
+    boxes = ev.rows(Q.GLYPH_BOX)
+    if not boxes or not isinstance(boxes[-1].value, (list, tuple)) \
+            or len(boxes[-1].value) != 5:
+        return None
+    name, x, y, _w, h = boxes[-1].value
+    frame = f"cell:{ev.subject.cell}"
+    marks = [r for r in ev.rows(Q.KEYSIG_MARKER,
+                                scope=Scope.SELF_AND_ANCESTORS)
+             if str(r.frame) == frame]
+    if not marks:
+        return None
+    unit = ev.rows(Q.CELL_STAFF_SPACE, scope=Scope.SELF_AND_ANCESTORS,
+                   subject=ev.subject.at(Kind.CELL))
+    try:
+        space = float(unit[0].value) if unit else 0.0
+    except (TypeError, ValueError):
+        space = 0.0
+    for r in marker_run_members(marks, space):
+        d = r.detail or {}
+        try:
+            mx, my = float(d["x"]), float(d["y_center"])
+        except (KeyError, TypeError, ValueError):
+            continue
+        cls = d.get("detector_class")
+        if cls is not None and str(cls) != str(name):
+            continue
+        if abs(mx - float(x)) < 0.5 \
+                and abs(my - (float(y) + float(h) / 2.0)) <= 1.0:
+            return r
+    return None
 
 
 #: How far either side of a hairpin's own cell a notehead may stand and still

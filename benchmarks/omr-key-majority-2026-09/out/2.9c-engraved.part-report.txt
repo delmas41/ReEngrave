@@ -1,0 +1,52 @@
+== 2.9c-engraved [base]  54 staff-systems
+   reasons {'markers': 48, 'fitted_no_markers': 6}
+   inferred 0
+   score {'right': 54}
+   parts opening right: 18 of 18 scored (18 parts)
+      slot   0 Flute                opens  -3 truth -3
+      slot   1 Flute                opens  -3 truth -3
+      slot   2 Oboe                 opens  -3 truth -3
+      slot   3 Oboe                 opens  -3 truth -3
+      slot   4 Clarinet             opens  -1 truth -1
+      slot   5 Clarinet             opens  -1 truth -1
+      slot   6 Bassoon              opens  -3 truth -3
+      slot   7 Bassoon              opens  -3 truth -3
+      slot   8 Horn                 opens   0 truth 0
+      slot   9 Horn                 opens   0 truth 0
+      slot  10 Trumpet              opens  -3 truth -3
+      slot  11 Trumpet              opens  -3 truth -3
+      slot  12 Timpani              opens  -3 truth -3
+      slot  13 Violin               opens  -3 truth -3
+      slot  14 Violin               opens  -3 truth -3
+      slot  15 Viola                opens  -3 truth -3
+      slot  16 Cello                opens  -3 truth -3
+      slot  17 Contrabass           opens  -3 truth -3
+   key CHANGES written: 0
+   file: 666 <note>, 18 <key>, 0 key CHANGES
+   CARRY CONTROL: 18 of 18 parts reproduce the file's own `<key>` sequence exactly
+== 2.9c-engraved [arm]  54 staff-systems
+   reasons {'markers': 48, 'fitted_no_markers': 6}
+   inferred 0
+   score {'right': 54}
+   parts opening right: 18 of 18 scored (18 parts)
+      slot   0 Flute                opens  -3 truth -3
+      slot   1 Flute                opens  -3 truth -3
+      slot   2 Oboe                 opens  -3 truth -3
+      slot   3 Oboe                 opens  -3 truth -3
+      slot   4 Clarinet             opens  -1 truth -1
+      slot   5 Clarinet             opens  -1 truth -1
+      slot   6 Bassoon              opens  -3 truth -3
+      slot   7 Bassoon              opens  -3 truth -3
+      slot   8 Horn                 opens   0 truth 0
+      slot   9 Horn                 opens   0 truth 0
+      slot  10 Trumpet              opens  -3 truth -3
+      slot  11 Trumpet              opens  -3 truth -3
+      slot  12 Timpani              opens  -3 truth -3
+      slot  13 Violin               opens  -3 truth -3
+      slot  14 Violin               opens  -3 truth -3
+      slot  15 Viola                opens  -3 truth -3
+      slot  16 Cello                opens  -3 truth -3
+      slot  17 Contrabass           opens  -3 truth -3
+   key CHANGES written: 0
+   file: 666 <note>, 18 <key>, 0 key CHANGES
+   CARRY CONTROL: 18 of 18 parts reproduce the file's own `<key>` sequence exactly
