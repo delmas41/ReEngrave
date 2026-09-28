@@ -1,0 +1,24 @@
+{
+  "subject": "cell/2/0/0/2",
+  "cause": "missing_events",
+  "page": 2,
+  "system": 0,
+  "staff": 0,
+  "cell": 2,
+  "measure": 26,
+  "part": "P1",
+  "want_quarters": 4.0,
+  "true_quarters": 3.0,
+  "sum_quarters": [
+    0.625
+  ],
+  "note": "3 duration verdicts NARROWED (beams_ambiguous); 4 noteheads reassigned away by glyph_owner (3x reason 'distance', 1x 'range_veto', all -> staff/2/0/1).",
+  "bbox_page_px": [
+    2682.0,
+    367.0,
+    3305.0,
+    748.0
+  ],
+  "file": "funnel-brahms1-breitkopf-missing_events-2-0-0-2.png",
+  "VERDICT_none_yet": null
+}

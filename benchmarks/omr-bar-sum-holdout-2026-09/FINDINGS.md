@@ -297,3 +297,202 @@ Three things worth saying plainly:
 * **LilyPond barcheck failures 3 -> 0** is a genuine downstream consequence: a
   held-out bar is a correct-length measure rest, so the bars that used to fail
   LilyPond's own `|` check no longer exist.
+
+## 13. § funnel — why 78% of Brahms bars do not add up (2026-09-28, record c19cbca7)
+
+Diagnosis lane, no pipeline code changed (a separate worktree; the record
+below was read but never written to, and nothing in the concurrent Litolff
+gather running alongside it was touched). Brief: START HERE item 5, *"the
+lever is the meter/bar-sum funnel."* Read on tonight's fresh whole-movement
+gather, `brahms1-breitkopf-whole-movement-20260928T110702Z.record.json`
+(1.1 GB), provenance `{commit: c19cbca7b733, dirty: True}`, loaded exactly
+ONCE via `record_io.load_record` and pickled to scratch (CLAUDE.md §4b: the
+one sanctioned reader; a naive read of `considered`/`correlated`/`basis`
+would silently see a pool reference, but neither field was read here).
+
+**Reproduced, not trusted, against the record's own `.coverage.json`**:
+4,513 of 5,792 bars-with-events held out = **77.9%** (the brief's "~78%" and
+"4,513 of 5,792" both check out exactly), 18,629 noteheads+rests held,
+**965** pitched notes reach the file (`written.notes`), and
+`bars_judged_by_a_carried_meter` = **3,948** — not the brief's 3,105, which
+is ROADMAP's own line from the 2026-09-23 gather; tonight's is 843 higher.
+**Assume every number in a brief is stale until reproduced — this one was.**
+
+The dossier (`data/dossiers/brahms-sym1-mvt1.json`, `source_kind: encoding`,
+diagnosis only here, never a pipeline input): `starting_meter` 6/8,
+`meter_changes` has exactly ONE entry, measure 8 → 9/8, back to 6/8 at
+measure 9, `constant_meter: False`. **The brief's own line needed checking,
+and checking it mattered**: the movement is 6/8 throughout with one
+exceptional bar, not "6/8 in the introduction and the Allegro" as if those
+were two agreements to verify separately.
+
+### A fact independent of any classification choice below
+
+Of the 4,513 held bars, the meter they are JUDGED against
+(`bars_held_out_sum.held[*].want_quarters`) is **4.0 on 4,126 of them
+(91.4%)** — a 4/4 the plate does not print anywhere near this movement
+outside measure 8's single 9/8 bar — against 361 at 3.0 (the true 6/8) and
+26 at 9.0 (a misread `9/4`, the same failure mode `omr-meter-carry-brahms
+-2026-09/FINDINGS.md` named on a 4-page slice three weeks ago, now measured
+whole-movement). This holds regardless of how a bar's own reading is scored.
+
+### The partition
+
+Per held bar: most-specific-first. `duplicate_rest_detection` (below) is
+checked first — it is a record-level contradiction, not a numeric
+coincidence. Then `meter_wrong`: the bar's own voice sum(s) agree EXACTLY
+with the TRUE meter (3.0q, or 4.5q at measure 8) while the judged meter does
+not — the reading was right, the judgment wasn't. Then `dots`: short by a
+plausible dot deficit (0.125/0.25/0.375/0.5/0.75q) — but ONLY kept here if
+the cell's own `Q.AUG_DOT`/`Q.DOT_ROLE` verdicts are absent or ABSTAINED;
+where a dot IS filed and DECIDED, the numeric match is a coincidence and the
+bar falls through to the rules below. Then a clean ≥2x multiple
+(`voices_merged_or_chord_split`), then short/over by ≥0.5q
+(`missing_events`/`extra_events`), then a 3:2 correction that lands exactly
+(`tuplet`), then `other`.
+
+| cause | whole movement | count page (pdf idx 1) |
+|---|--:|--:|
+| `missing_events` | 2,315 (51.3%) | 38 |
+| `meter_wrong` | 859 (19.0%) | 20 |
+| `extra_events` | 652 (14.4%) | 41 |
+| `dots` | 281 (6.2%) | 13 |
+| `duplicate_rest_detection` | 240 (5.3%) | 19 |
+| `other` | 133 (2.9%) | 1 |
+| `voices_merged_or_chord_split` | 33 (0.7%) | 2 |
+| **total** | **4,513** | **134** |
+
+⚠️ The count page's own total here is 134, not 68 — 2.8's ROADMAP line
+quotes 68 of 408 on the **Litolff** count page, a different document; this
+Brahms count page has not been separately adjudicated by Sean under
+`omr-cleanup-count-2026-09/CATEGORIES.md`, and this funnel is not that
+count. `dots` is reported net of the coincidence check above: the raw
+numeric match fires on 701 bars; 420 of those (60%) have a DECIDED
+`dot_role` in the cell and are reclassified away — mostly into
+`missing_events`.
+
+### Top 3 causes, what corroborates each, what it would release
+
+**1. `missing_events`, 2,315 bars (51.3%).** Short by ≥0.5q against the TRUE
+meter. Corroborated against the record for all 2,315 cells (not a sample —
+every held cell's glyph-level `Q.DURATION`/`Q.GLYPH_OWNER`/
+`Q.NOTEHEAD_IS_NOT_A_NOTEHEAD` verdicts were read): the dominant refusal by
+a wide margin is `owned_by_another_staff` (6,008 `glyph_owner` verdicts
+across those cells deciding OUT to a neighbouring staff — 2.6's contest,
+which "DROPS THE LOSER, never relocates it," CLAUDE.md §10), then
+`duration_narrowed:beams_ambiguous` (2,472 — the beam-level reader could not
+tell how many flags/beams, so the note contributes nothing), then
+`not_a_notehead:too_narrow`/`clipped_fragment` (1,486 combined — 2.4a's
+width-floor refusal). ⚠️ **This is evidence about SCALE, not about which
+side of the contest is right.** 2.6's own FINDINGS say plainly *"Not one of
+the 161 [Litolff near-neighbour contests] has been read against a
+print"* — and Breitkopf (the SHATTERING plate, CLAUDE.md §10) was never
+sampled there at all. 6,008 refusal instances on ONE document, tonight, is
+the strongest argument yet that 2.6's own open question is overdue, but
+releasing it does not by itself fix 2.8: a note correctly relocated to its
+true staff still has to pass THAT staff's own beam/width checks.
+
+**2. `meter_wrong`, 859 bars (19.0%).** The bar's own sum agrees with the
+TRUE meter but is judged against a carried or misread 4.0q — the reading is
+already right. This is 2.12d's own premise (*"a mid-staff `timeSig*` states
+a meter only where the system agrees"*), priced whole-movement for the
+first time tonight: `want_quarters` is 4.0 on 91.4% of ALL held bars (see
+above) and `meter_carried_in_file` is True on 3,948 of 4,513 — once ONE
+system states an uncorroborated 4/4, `in_force` (§2 above) hands it to
+every later bar that never declares its own `<time>`, and 2.9's
+header-box reading never gets a second chance mid-document. Releasing this
+bucket needs no notehead-level fix — the 859 bars' own readings are already
+correct.
+
+**3. `extra_events`, 652 bars (14.4%).** Over the TRUE meter by ≥0.5q, not
+matching the duplicate-rest signature. ⚠️ **Not reduced to one mechanism**:
+`glyph_owner` verdicts inside these cells split almost evenly between
+confirming this staff (1,752) and moving away (1,663) — unlike
+`missing_events`, this is not dominantly a cross-staff GAIN. Deltas range
+0.5q (one plausible extra event, the cleanest cases) to 7.0q (something
+closer to two bars' worth of ink read into one cell — crop
+`extra_events-1-0-0-5`, measure 14, a dense system-start bar). Releasing it
+needs per-bar attention, not one rule; not further reduced in this pass.
+
+### The clean find: `duplicate_rest_detection`, 240 bars (5.3%) — not asked for, cheapest lever in the funnel
+
+240 held bars — 189 of them exactly 2 duplicates, the rest 3–8 — carry TWO
+OR MORE independently **DECIDED** `Q.DURATION` rest verdicts in the SAME
+cell with IDENTICAL `beats` (201 of 240 at 4.0 — a whole rest counted
+twice; 24 at 1.0; 13 at 0.5; 2 at 2.0), spread across **14 of the
+document's parts** and staves 0–13 — not one instrument, not one page.
+`_bar_holds_out`'s own "a LONE measure rest IS the bar" rule (§1/§3 above)
+fires only when `len(stream) == 1`; with two rest events the stream is not
+lone, so both are summed literally and the bar reads double or worse.
+Named example, verified on the record: `cell/2/1/0/7` (page 2, system 1,
+staff 0, cell 7, measure 37) carries `glyph/2/1/0/7/0` and
+`glyph/2/1/0/7/1`, BOTH decided `{beats: 4.0, is_rest: True, reason:
+rest_class}` — the same physical whole rest, boxed twice, and nothing at
+GATHER or ADJUDICATE collapses the pair before EXPORT sums them. This is
+the one cause in this funnel that is fully mechanical — no reading
+ambiguity, no cross-staff judgment call — and it needs no print check to
+act on: a crop would only confirm there is one rest on the page where the
+record already holds two contradictory verdicts about it.
+
+### Crops
+
+12 crops, 4 per top-3 cause,
+`benchmarks/omr-bar-sum-holdout-2026-09/out/print/funnel-2026-09-28/`, each
+with the staff drawn (the SAME `Q.STAFF_LINES` row the reader used), the
+bar's own `Q.CELL_BOX` frame bracketed in red, and `judged meter / true
+meter / read sum` written in the margin. Sidecars are `VERDICT_none_yet:
+null`. Script and bar list: `probe/crop_funnel.py` +
+`probe/funnel_bars.json` — self-contained, reads the record ONCE for
+geometry only (`cell_box`/`staff_lines`/`staff_spacing`), renders pages
+straight off the PDF (no detector, no re-gather, no re-adjudication).
+
+| cause | file | measure | judged | true | read sum |
+|---|---|--:|--:|--:|---|
+| meter_wrong | `funnel-brahms1-breitkopf-meter_wrong-1-0-0-6.png` | 15 | 4.0 | 3.0 | [3.0] |
+| meter_wrong | `funnel-brahms1-breitkopf-meter_wrong-1-1-0-2.png` | 18 | 4.0 | 3.0 | [3.0] |
+| meter_wrong | `funnel-brahms1-breitkopf-meter_wrong-2-0-0-1.png` | 25 | 4.0 | 3.0 | [3.0] |
+| meter_wrong | `funnel-brahms1-breitkopf-meter_wrong-2-0-0-4.png` | 28 | 4.0 | 3.0 | [3.0] |
+| missing_events | `funnel-brahms1-breitkopf-missing_events-0-0-0-1.png` | 2 | 3.0 | 3.0 | [0.625] |
+| missing_events | `funnel-brahms1-breitkopf-missing_events-0-0-0-5.png` | 6 | 3.0 | 3.0 | [0.25] |
+| missing_events | `funnel-brahms1-breitkopf-missing_events-1-0-0-4.png` | 13 | 4.0 | 3.0 | [1.031] |
+| missing_events | `funnel-brahms1-breitkopf-missing_events-2-0-0-2.png` | 26 | 4.0 | 3.0 | [0.625] |
+| extra_events | `funnel-brahms1-breitkopf-extra_events-1-0-0-5.png` | 14 | 4.0 | 3.0 | [5.5] |
+| extra_events | `funnel-brahms1-breitkopf-extra_events-2-0-0-5.png` | 29 | 4.0 | 3.0 | [4.5] |
+| extra_events | `funnel-brahms1-breitkopf-extra_events-2-1-0-0.png` | 30 | 4.0 | 3.0 | [3.5] |
+| extra_events | `funnel-brahms1-breitkopf-extra_events-3-0-0-4.png` | 43 | 4.0 | 3.0 | [3.5] |
+
+Each PNG has a sidecar `.json` naming the subject, the refusal evidence
+found in that cell, and `VERDICT_none_yet: null` for Sean.
+
+### Recommended next roadmap item
+
+Not 2.12d (already `todo`, and it only reaches `meter_wrong`, 19% of this
+funnel) and not a restatement of 2.6's open print-check (already named
+there, and it would need Sean's eyes on crops 2.6 itself should cut, not
+this lane's). The one NEW, fully-diagnosed, mechanically cheap finding this
+funnel turned up is `duplicate_rest_detection` — added to ROADMAP.md as
+**2.15** (next free Phase 2 number; 2.13 and 2.14 are taken).
+
+### What contradicted this brief
+
+The 3,105-carried-meter figure (stale by 843, §above); the count-page total
+(134 here, not 68 — different document); the "6/8 in the introduction and
+the Allegro" framing (one constant meter with one exceptional bar, not two
+regions to separately confirm); and the working assumption that `dots`
+would be a clean bucket — 60% of the raw numeric matches are coincidental
+once checked against `Q.DOT_ROLE`.
+
+⚠️ **One more, worth stating plainly rather than leaving implicit.**
+ROADMAP's work-order item 5 (*"the lever is the meter/bar-sum funnel, not
+the accidental reader"*) is about **Litolff**'s 2.7 gate (pdf-index 3, 18
+owned heads sitting in bars 2.8 holds out) — this brief pointed a Litolff
+sentence at a Brahms diagnosis. Everything measured above is Brahms only;
+Litolff's own funnel has NOT been run and its shape need not match (Litolff
+is the MERGING plate, Brahms the SHATTERING one — CLAUDE.md §10 — and
+`omr-meter-carry-brahms-2026-09/FINDINGS.md` §10 already found the two
+plates fail in opposite ways: Litolff has abstaining systems and no wrong
+carried meter to serve them, Breitkopf the reverse). **2.15 (the duplicate
+rest) and 2.12d (the meter_wrong lever) are recommended from Brahms
+evidence and are not yet shown to move Litolff's 18 owned heads at all** —
+that needs Litolff's own count-page funnel, not an assumption that one
+document's partition transfers to the other.

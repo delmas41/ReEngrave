@@ -1,0 +1,24 @@
+{
+  "subject": "cell/1/1/0/2",
+  "cause": "meter_wrong",
+  "page": 1,
+  "system": 1,
+  "staff": 0,
+  "cell": 2,
+  "measure": 18,
+  "part": "P1",
+  "want_quarters": 4.0,
+  "true_quarters": 3.0,
+  "sum_quarters": [
+    3.0
+  ],
+  "note": "same pattern as measure 15: reading is correct (3.0q), carried judgment (4.0q) is not.",
+  "bbox_page_px": [
+    2147.0,
+    4070.0,
+    2800.0,
+    4455.0
+  ],
+  "file": "funnel-brahms1-breitkopf-meter_wrong-1-1-0-2.png",
+  "VERDICT_none_yet": null
+}

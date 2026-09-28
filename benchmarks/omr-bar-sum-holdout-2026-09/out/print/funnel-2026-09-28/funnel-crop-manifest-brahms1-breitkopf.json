@@ -1,0 +1,295 @@
+{
+  "label": "brahms1-breitkopf",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf",
+  "dpi": 600,
+  "tiles": [
+    {
+      "subject": "cell/1/0/0/6",
+      "cause": "meter_wrong",
+      "page": 1,
+      "system": 0,
+      "staff": 0,
+      "cell": 6,
+      "measure": 15,
+      "part": "P1",
+      "want_quarters": 4.0,
+      "true_quarters": 3.0,
+      "sum_quarters": [
+        3.0
+      ],
+      "note": "own reading sums to EXACTLY the true 6/8 bar (3.0q); held only because the file judges it against a carried 4.0q -- Q.METER never confirmed a meter on this system and export.in_force is still holding an earlier misread 4/4.",
+      "bbox_page_px": [
+        4896.0,
+        399.0,
+        5507.0,
+        780.0
+      ],
+      "file": "funnel-brahms1-breitkopf-meter_wrong-1-0-0-6.png",
+      "VERDICT_none_yet": null
+    },
+    {
+      "subject": "cell/1/1/0/2",
+      "cause": "meter_wrong",
+      "page": 1,
+      "system": 1,
+      "staff": 0,
+      "cell": 2,
+      "measure": 18,
+      "part": "P1",
+      "want_quarters": 4.0,
+      "true_quarters": 3.0,
+      "sum_quarters": [
+        3.0
+      ],
+      "note": "same pattern as measure 15: reading is correct (3.0q), carried judgment (4.0q) is not.",
+      "bbox_page_px": [
+        2147.0,
+        4070.0,
+        2800.0,
+        4455.0
+      ],
+      "file": "funnel-brahms1-breitkopf-meter_wrong-1-1-0-2.png",
+      "VERDICT_none_yet": null
+    },
+    {
+      "subject": "cell/2/0/0/1",
+      "cause": "meter_wrong",
+      "page": 2,
+      "system": 0,
+      "staff": 0,
+      "cell": 1,
+      "measure": 25,
+      "part": "P1",
+      "want_quarters": 4.0,
+      "true_quarters": 3.0,
+      "sum_quarters": [
+        3.0
+      ],
+      "note": "same pattern, a later page -- the carried 4/4 has not been corrected across a page turn.",
+      "bbox_page_px": [
+        1683.0,
+        367.0,
+        2682.0,
+        748.0
+      ],
+      "file": "funnel-brahms1-breitkopf-meter_wrong-2-0-0-1.png",
+      "VERDICT_none_yet": null
+    },
+    {
+      "subject": "cell/2/0/0/4",
+      "cause": "meter_wrong",
+      "page": 2,
+      "system": 0,
+      "staff": 0,
+      "cell": 4,
+      "measure": 28,
+      "part": "P1",
+      "want_quarters": 4.0,
+      "true_quarters": 3.0,
+      "sum_quarters": [
+        3.0
+      ],
+      "note": "same pattern.",
+      "bbox_page_px": [
+        4085.0,
+        367.0,
+        4747.0,
+        748.0
+      ],
+      "file": "funnel-brahms1-breitkopf-meter_wrong-2-0-0-4.png",
+      "VERDICT_none_yet": null
+    },
+    {
+      "subject": "cell/0/0/0/1",
+      "cause": "missing_events",
+      "page": 0,
+      "system": 0,
+      "staff": 0,
+      "cell": 1,
+      "measure": 2,
+      "part": "P1",
+      "want_quarters": 3.0,
+      "true_quarters": 3.0,
+      "sum_quarters": [
+        0.625
+      ],
+      "note": "reads 0.625 of 3.0q. Record shows 2 duration verdicts NARROWED (beams_ambiguous, glyph 6 and 15) and 1 notehead reassigned away by glyph_owner (glyph 2 -> staff/0/0/1, reason 'distance').",
+      "bbox_page_px": [
+        2112.0,
+        1391.0,
+        2671.0,
+        1906.0
+      ],
+      "file": "funnel-brahms1-breitkopf-missing_events-0-0-0-1.png",
+      "VERDICT_none_yet": null
+    },
+    {
+      "subject": "cell/0/0/0/5",
+      "cause": "missing_events",
+      "page": 0,
+      "system": 0,
+      "staff": 0,
+      "cell": 5,
+      "measure": 6,
+      "part": "P1",
+      "want_quarters": 3.0,
+      "true_quarters": 3.0,
+      "sum_quarters": [
+        0.25
+      ],
+      "note": "reads 0.25 of 3.0q, the worst case in the sample. 5 duration verdicts NARROWED (beams_ambiguous) and 2 noteheads reassigned away by glyph_owner (-> staff/0/0/1, reason 'distance').",
+      "bbox_page_px": [
+        4107.0,
+        1391.0,
+        4684.0,
+        1906.0
+      ],
+      "file": "funnel-brahms1-breitkopf-missing_events-0-0-0-5.png",
+      "VERDICT_none_yet": null
+    },
+    {
+      "subject": "cell/1/0/0/4",
+      "cause": "missing_events",
+      "page": 1,
+      "system": 0,
+      "staff": 0,
+      "cell": 4,
+      "measure": 13,
+      "part": "P1",
+      "want_quarters": 4.0,
+      "true_quarters": 3.0,
+      "sum_quarters": [
+        1.03125
+      ],
+      "note": "9 duration verdicts NARROWED (beams_ambiguous) in this cell; 1 notehead reassigned away by glyph_owner (reason 'range_veto', -> staff/1/0/1).",
+      "bbox_page_px": [
+        3582.0,
+        399.0,
+        4284.0,
+        780.0
+      ],
+      "file": "funnel-brahms1-breitkopf-missing_events-1-0-0-4.png",
+      "VERDICT_none_yet": null
+    },
+    {
+      "subject": "cell/2/0/0/2",
+      "cause": "missing_events",
+      "page": 2,
+      "system": 0,
+      "staff": 0,
+      "cell": 2,
+      "measure": 26,
+      "part": "P1",
+      "want_quarters": 4.0,
+      "true_quarters": 3.0,
+      "sum_quarters": [
+        0.625
+      ],
+      "note": "3 duration verdicts NARROWED (beams_ambiguous); 4 noteheads reassigned away by glyph_owner (3x reason 'distance', 1x 'range_veto', all -> staff/2/0/1).",
+      "bbox_page_px": [
+        2682.0,
+        367.0,
+        3305.0,
+        748.0
+      ],
+      "file": "funnel-brahms1-breitkopf-missing_events-2-0-0-2.png",
+      "VERDICT_none_yet": null
+    },
+    {
+      "subject": "cell/1/0/0/5",
+      "cause": "extra_events",
+      "page": 1,
+      "system": 0,
+      "staff": 0,
+      "cell": 5,
+      "measure": 14,
+      "part": "P1",
+      "want_quarters": 4.0,
+      "true_quarters": 3.0,
+      "sum_quarters": [
+        5.5
+      ],
+      "note": "a dense cell (10 decided duration verdicts, rests and noteheads mixed); over by 2.5q against the true bar. Not a duplicate-rest pattern (durations differ) and not dominated by a cross-staff gain -- composition not further reduced in this pass.",
+      "bbox_page_px": [
+        4284.0,
+        399.0,
+        4896.0,
+        780.0
+      ],
+      "file": "funnel-brahms1-breitkopf-extra_events-1-0-0-5.png",
+      "VERDICT_none_yet": null
+    },
+    {
+      "subject": "cell/2/0/0/5",
+      "cause": "extra_events",
+      "page": 2,
+      "system": 0,
+      "staff": 0,
+      "cell": 5,
+      "measure": 29,
+      "part": "P1",
+      "want_quarters": 4.0,
+      "true_quarters": 3.0,
+      "sum_quarters": [
+        4.5
+      ],
+      "note": "over by 1.5q; cell carries several cross-staff-contested noteheads (glyph_owner decisions both confirming this staff and moving to staff/2/0/1) -- a mixed population, not one clean mechanism.",
+      "bbox_page_px": [
+        4747.0,
+        367.0,
+        5501.0,
+        748.0
+      ],
+      "file": "funnel-brahms1-breitkopf-extra_events-2-0-0-5.png",
+      "VERDICT_none_yet": null
+    },
+    {
+      "subject": "cell/2/1/0/0",
+      "cause": "extra_events",
+      "page": 2,
+      "system": 1,
+      "staff": 0,
+      "cell": 0,
+      "measure": 30,
+      "part": "P1",
+      "want_quarters": 4.0,
+      "true_quarters": 3.0,
+      "sum_quarters": [
+        3.5
+      ],
+      "note": "the smallest overage in the sample (0.5q, one plausible extra event) -- the cleanest single case of this cause.",
+      "bbox_page_px": [
+        640.0,
+        3966.0,
+        1458.0,
+        4347.0
+      ],
+      "file": "funnel-brahms1-breitkopf-extra_events-2-1-0-0.png",
+      "VERDICT_none_yet": null
+    },
+    {
+      "subject": "cell/3/0/0/4",
+      "cause": "extra_events",
+      "page": 3,
+      "system": 0,
+      "staff": 0,
+      "cell": 4,
+      "measure": 43,
+      "part": "P1",
+      "want_quarters": 4.0,
+      "true_quarters": 3.0,
+      "sum_quarters": [
+        3.5
+      ],
+      "note": "same magnitude as measure 30 (0.5q over); cell carries a notehead reassigned away by glyph_owner (range_veto) alongside the overage, so the two effects (a loss AND a gain) can coexist in one bar.",
+      "bbox_page_px": [
+        2660.0,
+        357.0,
+        3108.0,
+        745.0
+      ],
+      "file": "funnel-brahms1-breitkopf-extra_events-3-0-0-4.png",
+      "VERDICT_none_yet": null
+    }
+  ]
+}

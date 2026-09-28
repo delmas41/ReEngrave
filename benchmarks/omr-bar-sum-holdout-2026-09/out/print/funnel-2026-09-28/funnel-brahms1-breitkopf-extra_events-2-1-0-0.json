@@ -1,0 +1,24 @@
+{
+  "subject": "cell/2/1/0/0",
+  "cause": "extra_events",
+  "page": 2,
+  "system": 1,
+  "staff": 0,
+  "cell": 0,
+  "measure": 30,
+  "part": "P1",
+  "want_quarters": 4.0,
+  "true_quarters": 3.0,
+  "sum_quarters": [
+    3.5
+  ],
+  "note": "the smallest overage in the sample (0.5q, one plausible extra event) -- the cleanest single case of this cause.",
+  "bbox_page_px": [
+    640.0,
+    3966.0,
+    1458.0,
+    4347.0
+  ],
+  "file": "funnel-brahms1-breitkopf-extra_events-2-1-0-0.png",
+  "VERDICT_none_yet": null
+}

@@ -1,0 +1,24 @@
+{
+  "subject": "cell/1/0/0/6",
+  "cause": "meter_wrong",
+  "page": 1,
+  "system": 0,
+  "staff": 0,
+  "cell": 6,
+  "measure": 15,
+  "part": "P1",
+  "want_quarters": 4.0,
+  "true_quarters": 3.0,
+  "sum_quarters": [
+    3.0
+  ],
+  "note": "own reading sums to EXACTLY the true 6/8 bar (3.0q); held only because the file judges it against a carried 4.0q -- Q.METER never confirmed a meter on this system and export.in_force is still holding an earlier misread 4/4.",
+  "bbox_page_px": [
+    4896.0,
+    399.0,
+    5507.0,
+    780.0
+  ],
+  "file": "funnel-brahms1-breitkopf-meter_wrong-1-0-0-6.png",
+  "VERDICT_none_yet": null
+}

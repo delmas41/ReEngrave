@@ -1,0 +1,24 @@
+{
+  "subject": "cell/0/0/0/1",
+  "cause": "missing_events",
+  "page": 0,
+  "system": 0,
+  "staff": 0,
+  "cell": 1,
+  "measure": 2,
+  "part": "P1",
+  "want_quarters": 3.0,
+  "true_quarters": 3.0,
+  "sum_quarters": [
+    0.625
+  ],
+  "note": "reads 0.625 of 3.0q. Record shows 2 duration verdicts NARROWED (beams_ambiguous, glyph 6 and 15) and 1 notehead reassigned away by glyph_owner (glyph 2 -> staff/0/0/1, reason 'distance').",
+  "bbox_page_px": [
+    2112.0,
+    1391.0,
+    2671.0,
+    1906.0
+  ],
+  "file": "funnel-brahms1-breitkopf-missing_events-0-0-0-1.png",
+  "VERDICT_none_yet": null
+}
