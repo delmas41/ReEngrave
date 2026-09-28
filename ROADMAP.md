@@ -17,146 +17,93 @@ re-enter.
 
 ---
 
-## START HERE — state at the end of the session of 2026-09-27 (the 09-23/24 session, resumed after the weekly limit and landed)
+## START HERE — state at the end of the overnight session of 2026-09-27 → 28
 
-Main is at or past `8226aa93` and carries everything below. The tree is the
-record; this block is the pointer. Read CLAUDE.md first (short), then this
-file, then `docs/DECISIONS.md` (the entries dated 2026-09-23 → 27 are Sean's).
+Main is at or past `26e09a43`. The tree is the record; this block is the
+pointer. Read CLAUDE.md first, then this block, then `docs/DECISIONS.md`
+(the 2026-09-28 entries). The previous START HERE (09-27) is in git history.
 
-**Landed on main, verified against the tree before each merge (fast tier
-3,298 passed at the last full run; `staged.check` 264, down from 267):**
-- Phase 2, in funnel order: **2.3** duration rules ON · **2.8** bars that
-  do not add up HELD OUT (0 wrong bars, all three documents) · **2.6**
-  ownership contest widened (18/18 crops) · **2.11 + 2.10** clef by
-  geometry, gaps from other systems (11/11) · **2.9 / 2.9b / 2.12a** key
-  from the detector's header boxes, checked against document and part,
-  header flats admitted (**46/46 staves** on the count pages) · **2.12**
-  the shape-vs-role audit and items a–g · **2.12b / b-cal / e** rest value
-  from its slot with bands from the plate (Sean: 10/10 and 10/11 whole),
-  flag direction from the stem · **2.7 the in-bar accidental, MERGED AND
-  MEASURED** — 216 / 233 / 15 `<accidental>` on the three documents where
-  there were 0; **25 of 25 decided pairings right by Sean**, 5 of them on
-  the staff above (→ 2.7b); reach half of the gate unmet (15 < 18 on the
-  acceptance record, 29 on a fresh page gather — 2.8's hold-out is the
-  reason).
-- Phase 3 / the instrument: **3.4** the STAGE REVIEW (one staff, one bar at
-  a time, click-type-save, labels, corrections as witnesses, re-run through
-  `pipeline.decide`, a feedback file per pass) · **3.4g / g-2** per-family
-  refusals + Sean's two ledger conventions (13/13 crops; 62% of Litolff's
-  ledger boxes were staff lines) · **3.4h** refused boxes drawn refused,
-  CV-only boxes hidden, a click never a redraw (browser-verified) · Sean's
-  three passes: Viola p3 7 → 52 written, Clarinet p12 11 → 60, Viola p2
-  2 → 81; reached-nothing 23 → 0.
+**How lanes work now (DECISIONS 2026-09-28, Sean): build and wire; cheap
+proof only.** RED→GREEN unit tests + ONE count page or ONE saved record read
++ a handful of crops. No whole-movement base-vs-arm and no re-gathers unless
+the item exists to move the whole-movement number; re-gather once per batch.
+A long run the manager needs is a plain `nohup` script, never an agent
+babysitting it. Max 2 lanes; merge each on the merged tree (fast tier +
+`staged.check`), push, update the line.
 
-**In flight — each lane pushes its branch when done; merge in this order,
-verifying each with `pytest -m "not slow"` and `staged.check` on the merged
-tree (the tree outranks the lane's report):**
-1. **merged `2f065ca3`** `claude/accidental-2.7b` (salvaged at `478cddbe`; **the lane then FINISHED on its own — `60b8e2c4` on origin carries the Breitkopf arm (421 refused, probe exact, 0 unexplained) and 24 crops; merge that commit on top**) — a head filed far from its staff with no rung,
-   another staff near: refused on the filed staff, never relocated (Sean's
-   five: crops 4, 13, 20, 23, 26 in
-   `benchmarks/omr-accidental-2026-09/out/print/`); the header exclusion as
-   a rule. Gate on the roadmap line.
-2. **merged `7ee992b0`** `claude/ledger-ink-3.4g3` — Part A: `no_head_on_the_rung` ABSTAINS (Sean:
-   2 of 4 refusals were real rungs with an unboxed head); Part B (GATHER):
-   `Q.LEDGER_INK_UNDER`, ink under the rung as the second witness, priced
-   by one `--pages 3` gather.
-If a branch is absent from `origin`, the lane died: its worktree is under
-`.claude/worktrees/agent-*` on this machine — commit and push from there
-(that is how the four lanes killed by the 09-24 limit were recovered on
-09-27), or re-dispatch from the roadmap line.
+**Landed 09-28 (all merged, each verified on the merged tree; fast tier
+3,511, `staged.check` 264 → 251):**
+- Checks: **0.5** the human reviewer is a declared out-of-pipeline producer
+  · **0.2b** flag triage enforced (2 promoted, `OMR_ADJUDICATE` deleted,
+  `OMR_RESEARCH` umbrella, derived flag test).
+- Reading: **2.9c** key check speaks to a narrowed slot (Litolff key changes
+  18 → 0) · **3.4f** a human C-clef box names its line · **2.11b** an
+  off-staff detector clef box is discounted · **2.12c** dot vs staccato from
+  where it sits · **2.7b** a head on the wrong staff is refused there ·
+  **3.4g-3 / 3.4g-4** ledger ink witness; human refusals for flag, key
+  marker, tuplet numeral · **2.15** a rest boxed twice is counted once ·
+  **2.12d** a lone-staff meter change is declined · **2.12h** Brahms m. 8
+  reads 9/8 (was 9/4) · **2.14** ladder names its rungs (dead at zero) ·
+  **2.4c** unread-ink marks, RECORD-ONLY (6/6 Breitkopf samples were words).
+- Product: **3.1b / 3.3 / 3.3b / 3.3c** one command to MusicXML + LilyPond
+  + PDF (`--pdf`), `omr_engine=staged` in the web app with a page range under
+  a recalibrated budget, and an accounting panel (unread / held / staves) —
+  containers NOT rebuilt · **3.5** unread and held-out bars are RED with a
+  reason word in MusicXML and PDF (the PDF never applied 2.8 before) ·
+  **4.2** movements (`--movements`, one file per movement) · **4.1**
+  `python3 -m tools.reengrave import <work>` (one human click at IMSLP, never
+  automated).
+- Records: the three acceptance records RE-GATHERED on `c19cbca7` and
+  adopted (`manifest.json`, `current.json`); Litolff whole movement now
+  **32 min** (was 12.8 h).
 
-**The viewer** (Sean uses it on the Mac, in Chrome):
-`python3 -m tools.omr.staged.review.server --record library/_shared-records/beethoven5-litolff-mvt1-whole-20260923.redecided-20260927b.record.json --pdf library/editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf --staff staff/3/0/9`
-→ `http://localhost:5075/?staff=staff/3/0/9` (NOT 5060 — Chrome refuses
-it; the server listens dual-stack). ⚠️ Point it at a RE-DECIDED record: the
-shared 09-23 record's verdicts predate every rule above. To re-decide on
-the current tree: `python3 -m tools.omr.staged.review.rerun <record>
---control --record --staff staff/3/0/9 --out <dir>` (~15 min, 3.7 GB; the
-"CONTROL FAILED" line is expected — it is reporting the tree's own
-changes), then copy `amended.record.json` beside the shared records.
-Sidecars persist at
-`benchmarks/omr-stage-review-2026-09/out/review-actions--<staff>.json`;
-reading a pass: the same `rerun` with the sidecar, then
-`feedback-summary.json`'s `reached_nothing` list is the work order.
+**The finding that sets the next work:** on today's reader the whole Brahms
+movement writes ~965 pitched notes; 4,513 of 5,792 bars are held by 2.8.
+The funnel (`benchmarks/omr-bar-sum-holdout-2026-09/FINDINGS.md` §funnel):
+missing events 2,315 (mostly `owned_by_another_staff`), meter wrong 859,
+extra events 652, dots 281, duplicate rests 240 (→ 2.15, done). The meter
+chain: the stray 4/4 is declined (2.12d), m. 8 reads 9/8 (2.12h), but **the
+return to 6/8 at m. 9 is printed on ~13/14 staves and never boxed**; the
+bar-head template reader fails on this plate (2.12i, not promoted), so 9/8
+still carries.
 
-**Two corrections from 2.7b's final report (FINDINGS §2.7b):** (a) the
-direction was backwards in the roadmap text — Sean's five heads sit ABOVE
-their filed staff, on the ledger lines of the staff above, i.e. filed one
-staff too LOW; the rule works either way; (b) **on a FRESH gather 2.6
-already resolves all five** (each gets a twin and `glyph_owner` awards it
-right) — they showed only because the acceptance records were gathered
-before 2.6. **The acceptance records must be RE-GATHERED on today's tree**
-(Litolff 16 pages ≈ 12.8 h, Brahms 27 pages ≈ 1 h 11 m, engraved minutes)
-before any ownership, ledger or accidental figure on them describes today's
-reader — an overnight job, item 0 below.
+**Running when this was written (no agent):** a re-decision of the Brahms
+record on `92b6ab04` + export —
+`.claude/worktrees/redecide-92b6ab04.sh`, log `…redecide-92b6ab04.log`,
+output `.claude/worktrees/redecide-92b6ab04/out-redecide/` (`brahms.coverage.json`
+→ `written.bars_held_out_sum`). Read it; it is the one batch measurement.
 
-**Work order for the next session (nothing here needs Sean; leave crops in
-`out/print/` with `VERDICT_none_yet: null`):**
-0. ~~**IN FLIGHT since 2026-09-28 04:04 on `c19cbca7`**~~ **done (`claude/adopt-regather-20260928`, `10187c37` + `2796a101` + `8fd68d5e`)** — the overnight re-gather (detached worktree `.claude/worktrees/regather-20260928`, driver `../regather-20260928-driver.log`, order engraved → Brahms 0-26 → Litolff 1-16, all on clean commit `c19cbca7`) adopted: `manifest.json`'s three `record.path`/`record.md5` now point at
-   `library/_shared-records/beethoven5-litolff-mvt1-whole-20260928.record.json`
-   (md5 `719c57a6e06d1b3705091495e516a9ba`, 16 pages, driver bracket
-   06:36:32Z–07:08:53Z = 32 m 21 s, was 12.8 h pre-1.2),
-   `library/_shared-records/brahms1-breitkopf-mvt1-whole-20260928.record.json`
-   (md5 `862548d1a635537c6065102a45aa15a2`, 27 pages, driver bracket
-   04:07:02Z–06:36:32Z = 2 h 29 m 30 s — slower than the 09-23 run's 1 h 11 m
-   on the same pages because the machine ran under heavy contention that
-   night, not a regression), and the committed
-   `benchmarks/omr-staged-engraved-2026-09/out/engraved-p0p2-20260928.record.json`
-   (md5 `2156d49eacbeda2b43c43df4d5cec645`, 3 pages, 2 m 34 s). All three
-   md5s verified against the driver worktree's own `.md5` receipts (or a
-   fresh md5 for the engraved one, which has none upstream) before
-   committing; the 09-23 records stay on disk, untouched. `tools.omr.
-   acceptance` ran clean and wrote `benchmarks/acceptance/current.json`:
-   litolff 3867/11632 notes reaching file (0.332), 1857/4564 bars held out
-   (0.407), 12/12 parts named; brahms 965/24533 reaching (0.039!), 4513/5792
-   held out (0.779!), 14/14 parts named; engraved 331/371 reaching (0.892),
-   36/449 held out, 18/18 parts, reading F1 0.951, OMR-NED 0.1454, LilyPond
-   compiled (17 barcheck failures). ⚠️ **Brahms's reach/hold-out figures are
-   far worse than Litolff's and have never been scored by this harness
-   before now — no prior whole-movement proxy exists for this document to
-   compare against** (ROADMAP 1.1's own report for it names wall time and
-   part count only). Worth a look before reading it either as "the reader
-   regressed" or "it was always like this" — not investigated further here,
-   per this item's own brief (no reading-logic changes in this lane).
-   ⚠️⚠️ **THESE RECORDS CARRY ADJUDICATE/EVALUATE/INFER VERDICTS EXACTLY AS
-   DECIDED AT `c19cbca7`.** Later merges from that same night — 2.11b,
-   2.15, 2.4c (record-only) and 0.2b — landed on main AFTER `c19cbca7` and
-   are NOT reflected in these records or in `current.json`:
-   `tools.omr.acceptance` exports existing verdicts, it does not
-   re-adjudicate (roadmap 1.3b). Re-adjudicating onto today's tree is a
-   separate, deliberate decision, not taken here. 1.2b's budget constants
-   recalibrated from these same two scan logs — see that line below.
-1. ~~Merge `claude/accidental-2.7b` at `60b8e2c4`~~ **merged `e23ba4dd`**; re-decide the record and
-   restart the viewer.
-2. ~~**2.14**~~ **done, dead at zero** — `Q.GLYPH_LADDER` names its rungs, so refused ledger boxes
-   leave the ladder `glyph_owner` weighs (GATHER; every ledger refusal
-   above changes 0 ownership verdicts until this exists).
-3. ~~**3.4f**~~ **done** — a human clef box reaches the clef decision (Sean's own
-   `act-0001` on `staff/3/0/9` is the test).
-4. ~~**2.9c**~~ **done** — the key checks cannot see a part whose slot comes from INFER
-   (18 Litolff key changes, all Cello): decide the stage order by §4a.
-5. **2.7's reach** — the accidental gate's 15 < 18 is 2.8's hold-out on
-   that page (18 owned heads in held bars); the lever is the meter/bar-sum
-   funnel, not the accidental reader. Do not widen the reader for it.
-6. ~~**Refusals for the families 3.4g did not cover**~~ **done (3.4g-4); rest-on-round-ink measured, NO GAP, not shipped** (flag, key marker,
-   tuplet numeral; a rest box on round ink — Sean's rest crop 5).
-7. ~~**0.5 / 3.4b-check**~~ **done `51641406`** — the derived checks admit an out-of-pipeline
-   producer; every one of `check`'s +10 since the 09-22 baseline is a named
-   human-witness gap.
-8. Then 2.12c/d/f/g in reach order, 2.13 (the printed bar number), and
-   Phase 3 (3.1b, 3.3: one command to MusicXML + PDF through the web app).
+**Waiting on Sean:** crops `VERDICT_none_yet: null` from 2.7b (24), 3.4g-3
+(12, 8 sent), the funnel (12), 2.11b (5), 2.12c (9), 2.12d/h (m212*), 2.4c
+(12), 2.15 (8). Two questions asked 09-28: (1) after a one-bar 9/8 in a 6/8
+movement, is the return to 6/8 always printed? — if yes, an INFER rule can
+revert, labelled; (2) shorten the markers to "held" / "unread"?
+**Parked by Sean:** 2.16 maestroAnalyst in INFER.
+
+**Work order (build first):**
+1. Read the Brahms re-decision above; point the viewer at it.
+2. The m. 9 return to 6/8 — the INFER revert if Sean says yes, else
+   self-templated digits from the plate's own header.
+3. `owned_by_another_staff` (6,008 Brahms heads) — the largest missing-events
+   cause; needs Sean's print check on 2.6's contest at scale first.
+4. The whole-work gate for 4.1/4.2: Beethoven 5, four movements, one
+   `reengrave import` run at the end of the batch (needs the movement page
+   ranges; the catalog has none — 4.2b detects them).
+5. Then 2.13 (printed bar number), 3.2 (port the legacy-only list), 3.3's
+   default flip on acceptance parity.
+
+**The viewer:** `python3 -m tools.omr.staged.review.server --record <a
+RE-DECIDED record> --pdf <pdf> --staff staff/3/0/9` →
+`http://localhost:5075/?staff=staff/3/0/9` (not 5060). Re-decide with
+`python3 -m tools.omr.staged.review.rerun <record> --control --record --out
+<dir>` and copy `amended.record.json` beside the shared records. Sidecars:
+`benchmarks/omr-stage-review-2026-09/out/review-actions--<staff>.json`.
+
 Rules that bit, restated once: a GATHER change is invisible to
-`readjudicate`/`rerun`; a stage sequence is CALLED, never restated; two
-lanes numbering a convention collide (C88–C91 are taken); the 09-23 records
-are DIRTY-tree gathers and are inputs, not baselines; a lane's "reached
-nothing" needs a per-family consumer before it means anything; a refusal
-that is right 2 of 4 on the print ships as an ABSTENTION.
-
-**For Sean when he wants it:** a viewer pass on a staff he has not done, on
-the re-decided record; crops from 2.7b and 3.4g-3 when they land.
-
-**Parked:** nothing. 2.7 is live; its reach half waits on the bar-sum
-funnel.
+`readjudicate`/`rerun`; a lane's claim is checked against the tree before
+merge (tonight: a peer's "fix" to `_ledger_rungs_in_cell` would have turned
+abstentions into refusals); an export-time `--movements` only splits files;
+`OMR_RESEARCH` must NAME the flag, `=1` enables nothing.
 
 ---
 
