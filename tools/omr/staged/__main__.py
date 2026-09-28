@@ -598,14 +598,22 @@ def _print_accounting_summary(*, musicxml_report: Optional[dict],
     is MARKED as unread and never invented, and every staff is named or
     held out and counted"*. The `--musicxml` / `--lilypond` coverage reports
     already carry these numbers (`staged.export.coverage`,
-    ROADMAP 2.8 / part-join provenance) -- this reads them, never
-    recomputes them, so the console line and the JSON a session opens next
-    can never disagree.
+    ROADMAP 2.8 / 3.5's `unread_bar_marks` / part-join provenance) -- this
+    reads them, never recomputes them, so the console line and the JSON a
+    session opens next can never disagree.
 
-    Prefers the MusicXML report for `unread bars`: that figure comes from
-    ROADMAP 2.8's per-bar hold-out, computed while rendering `_part_xml`,
-    which `--lilypond` alone does not run. `held out staves` is read off
-    whichever report is present (both share the same part-join provenance).
+    Prefers the MusicXML report for the bar counts: `bars_with_events` (the
+    denominator) is only computed while rendering `_part_xml`, which
+    `--lilypond` alone does not run. `held out staves` is read off whichever
+    report is present (both share the same part-join provenance).
+
+    ⚠️⚠️ ROADMAP 3.5. THIS USED TO PRINT ONE NUMBER LABELLED "unread bars"
+    THAT WAS ACTUALLY ONLY `bars_held_out_sum` -- a bar we read NOTHING in
+    at all (`empty_bars_padded`, CLAUDE.md §1's own "unread") never reached
+    this line. Both are printed now, by the SAME words `staged.export.
+    UNREAD_BAR_MARK_WORDS` stamps into the file itself, so a session reading
+    the console output and a musician reading the PDF see the same two
+    reasons rather than one figure standing in for both.
     """
     held_out_staves = None
     for rpt in (musicxml_report, lilypond_report):
@@ -616,17 +624,18 @@ def _print_accounting_summary(*, musicxml_report: Optional[dict],
     print("\n── ACCOUNTING (CLAUDE.md §1: every unread bar is MARKED, "
           "never invented) ──", file=sys.stderr)
 
-    if musicxml_report is not None:
-        held = musicxml_report.get("bars_held_out_sum") or {}
-        unread_bars = held.get("bars", 0)
-        of_bars = held.get("of_bars_with_events", 0)
-        print(f"  unread bars: {unread_bars} of {of_bars} bars carrying "
-              f"events did not add up to the meter in force -- held out of "
-              f"the MusicXML and counted, not guessed", file=sys.stderr)
+    marks = (musicxml_report or {}).get("unread_bar_marks")
+    if marks is not None:
+        print(f"  unread bars (\"{marks['words']['unread']}\", read NOTHING): "
+              f"{marks['unread']}", file=sys.stderr)
+        print(f"  held-out bars (\"{marks['words'].get('bar_does_not_add_up', 'held: does not add up')}\"): "
+              f"{marks['held_out_sum']}", file=sys.stderr)
+        print(f"  total bars marked red in the file: {marks['written']} "
+              f"(colour {marks['color']})", file=sys.stderr)
     else:
-        print("  unread bars: not computed (needs --musicxml -- "
-              "roadmap 2.8's hold-out is that exporter's own accounting)",
-              file=sys.stderr)
+        print("  unread / held-out bars: not computed (needs --musicxml -- "
+              "roadmap 2.8/3.5's hold-out and marking is that exporter's "
+              "own accounting)", file=sys.stderr)
 
     if held_out_staves is not None:
         print(f"  staves held out: {held_out_staves} (the part join could "
