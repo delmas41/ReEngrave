@@ -2028,16 +2028,63 @@ METER_CHANGE_FLOOR = 3.0
 #: How many staves of a system must read the SAME meter at one bar for that
 #: change to be carried off the system — the staff itself plus one witness.
 #:
-#: ⚠️ NOT A TUNED CONSTANT, and on this corpus it could not be one: the TRUE
-#: and FALSE one-staff populations OVERLAP at exactly 1 (see A-METER-6), so no
-#: threshold separates them and every value above 1 confines the same four
-#: segments here. 2 is the weakest bar that can confine anything at all —
-#: `key_signature_corroboration.MIN_WITNESSES`' own reasoning, and for the same
-#: reason it is not a fraction of the system: the sibling meter guard's
-#: `max(2, round(0.5 * n_staves))` would demand twelve witnesses on a 24-staff
-#: score, and a mid-system meter glyph is detected on one staff far more often
-#: than on twelve.
+#: ⚠️ NOT A TUNED CONSTANT, and on the four-page corpus that set it, it could
+#: not be one: the TRUE and FALSE one-staff populations OVERLAP at exactly 1
+#: (see A-METER-6), so no threshold separates them there and every value above
+#: 1 confines the same four segments. 2 is the weakest bar that can confine
+#: anything at all — `key_signature_corroboration.MIN_WITNESSES`' own
+#: reasoning — and it remains the ABSOLUTE floor below which nothing is ever
+#: corroborated, on a system of any size.
+#:
+#: ⚠️⚠️ ROADMAP 2.12j — "FOR THE SAME REASON IT IS NOT A FRACTION OF THE
+#: SYSTEM" IS SUPERSEDED, NOT DELETED (a correction beside the measurement it
+#: corrects is worth more than a gap). That reasoning guarded against a
+#: HYPOTHETICAL 24-staff score; `_required_corroboration` below is a
+#: MEASUREMENT on a real 12-14-staff whole movement (Brahms 1/i, Breitkopf):
+#: eleven mid-system `change_only` segments, each corroborated at this
+#: absolute floor alone (2-4 of 12-14 staves, 14.3%-28.6% coverage), each with
+#: `bars_fit: 0` on every one of its own bars — a control that can never fail,
+#: since `len(staves) >= 2` alone already clears `METER_CHANGE_FLOOR` before a
+#: single bar term is added (`W_CHANGE_GLYPH_PAIR = 3.0` twice is 6.0). Two
+#: staves independently misreading the SAME wrong meter is not evidence a
+#: THIRTEEN-staff system printed anything — CLAUDE.md §10's "a key change is
+#: printed at one bar on every staff of the system" is the convention this
+#: file already assumes for meter (2.12d's own CONVENTION ASSUMED note). See
+#: `_required_corroboration` for what changed and why it does not touch any
+#: existing corroborated fixture (every one already reads at or near 100%).
 METER_CHANGE_MIN_STAVES = 2
+
+#: ROADMAP 2.12j. The prior art this raises the floor with: the LEGACY
+#: pipeline's OWN sibling guard, `tools/omr/rhythm.py:631`
+#: `drop_uncorroborated_meter_changes`, already uses
+#: `max(2, round(0.5 * n_staves))` — cited, never imported (LEGACY is frozen
+#: and may not be read from `tools/omr/staged/`, CLAUDE.md §3), so the number
+#: is reused and the two modules stay independent.
+METER_CHANGE_COVERAGE_FLOOR = 0.5
+
+
+def _required_corroboration(total_staves: Optional[int]) -> int:
+    """How many staves must agree before a mid-system meter fact (a CHANGE or
+    a CAUTIONARY) is `corroborated` — `METER_CHANGE_MIN_STAVES`, raised on a
+    system large enough that two staves are no longer a meaningful fraction
+    of it.
+
+    ⚠️ `total_staves` MAY BE `None` (`Q.SYSTEM_STAFF_COUNT` undecided) — the
+    ABSENCE of a count is not evidence the system is large, so the ABSOLUTE
+    floor alone applies, exactly as before this item. This is the same
+    "missing is not zero" discipline `Outcome.ABSTAINED` uses everywhere else
+    in this file.
+
+    ⚠️ THIS RAISES THE FLOOR; IT NEVER LOWERS IT. `max` with
+    `METER_CHANGE_MIN_STAVES` means a tiny system (say 2 staves) still needs
+    both, not `round(0.5 * 2) == 1` — a fraction can only make agreement
+    HARDER to reach, never easier than the two-witness floor A-METER-6 always
+    required.
+    """
+    if not total_staves:
+        return METER_CHANGE_MIN_STAVES
+    return max(METER_CHANGE_MIN_STAVES,
+               round(METER_CHANGE_COVERAGE_FLOOR * total_staves))
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -2083,6 +2130,15 @@ METER_CHANGE_MIN_STAVES = 2
 # be. A stronger, fraction-of-the-system threshold is visible in the fresh
 # record too (`system/2/0` corroborates at 2 of an orchestral system's staves
 # and is still wrong) and is NOT this item's to fix — flagged, not chased.
+#
+# ⚠️⚠️ ROADMAP 2.12j — CHASED. The batch re-decision of the whole movement
+# (this constant, `_required_corroboration`) found ELEVEN such segments, not
+# one, together governing thousands of held-out bars through the carry — see
+# `benchmarks/omr-shape-role-2026-09/FINDINGS.md` PART 8. `corroborated` now
+# reads `_required_corroboration(total_staves)` instead of the bare absolute
+# floor; this gate (`METER_CHANGE_GATES_OWN_SYSTEM`) is unchanged and still
+# reads that SAME flag, so the fix lands entirely in what "corroborated"
+# means, not in a second place that has to agree with this one.
 # ─────────────────────────────────────────────────────────────────────────────
 
 #: Not a flag (CLAUDE.md: no new flag, no new benchmark derived check or
@@ -2236,6 +2292,19 @@ def _last_cell_per_staff(ev: Evidence) -> dict:
     return out
 
 
+def _total_staff_count(ev: Evidence) -> Optional[int]:
+    """ROADMAP 2.12j. This system's own `Q.SYSTEM_STAFF_COUNT`, or `None`.
+
+    ⚠️ FETCHED HERE, BESIDE `_bar_lengths_for`/`_last_cell_per_staff`, NOT
+    inside `_meter_changes` — the same `inventory._never_read` depth-3 shape
+    those two are already threaded as arguments for (see `_meter_changes`'s
+    own docstring). `Q.SYSTEM_STAFF_COUNT` is already in `adjudicate_meter`'s
+    `wants`, read the identical way at that decision's own top level.
+    """
+    v = ev.verdict(Q.SYSTEM_STAFF_COUNT)
+    return v.value if v is not None and v.value else None
+
+
 # ─────────────────────────────────────────────────────────────────────────────
 # A CAUTIONARY IS NOT A CHANGE. (A-METER-5)
 #
@@ -2368,17 +2437,21 @@ def _admit_template_consensus(readings: dict, at_this_bar: dict,
 
 
 def _meter_changes(ev: Evidence, opening: dict, bars: dict,
-                   last_cell: dict, templates: Optional[dict] = None) -> tuple:
+                   last_cell: dict, templates: Optional[dict] = None,
+                   total_staves: Optional[int] = None) -> tuple:
     """Every mid-system meter change this system's own evidence supports.
 
-    Takes its facts as arguments — `opening`, `bars` and `last_cell` — rather
-    than reaching for them, which is how `bars` already worked. ⚠️ The
-    inconsistency was surfaced by `inventory._never_read`, which follows a
-    decision's own helpers to depth 3: with `last_cell` fetched HERE the read
-    sat one level too deep and `measure_partition` was reported as an inert
-    `wants` entry. The check was right that the call chain was one link longer
-    than the others, and moving the fetch beside `_bar_lengths_for` is the fix
-    the report was pointing at — not a workaround for it.
+    Takes its facts as arguments — `opening`, `bars`, `last_cell` and
+    `total_staves` — rather than reaching for them, which is how `bars`
+    already worked. ⚠️ The inconsistency was surfaced by
+    `inventory._never_read`, which follows a decision's own helpers to depth
+    3: with `last_cell` fetched HERE the read sat one level too deep and
+    `measure_partition` was reported as an inert `wants` entry. The check was
+    right that the call chain was one link longer than the others, and moving
+    the fetch beside `_bar_lengths_for` is the fix the report was pointing at
+    — not a workaround for it. `total_staves` (ROADMAP 2.12j) follows the
+    SAME shape for the SAME reason: `Q.SYSTEM_STAFF_COUNT` is fetched by the
+    two callers, beside `_bar_lengths_for`, not by this function.
 
     Returns `(changes, cautionaries, declined)` — segment dicts in bar order,
     each with `from_cell` and the terms that carried it. The GLYPH opens each
@@ -2394,6 +2467,10 @@ def _meter_changes(ev: Evidence, opening: dict, bars: dict,
     updates `in_force`, and is recorded under `METER_CHANGE_NOT_SYSTEM_WIDE`
     so a reader can tell "the system printed nothing here" apart from "the
     system printed something we chose not to act on."
+
+    ⚠️ 2.12j: "THE STAVES" IS NOW A FRACTION OF `total_staves`, NOT A BARE
+    COUNT — see `_required_corroboration`. `None` (staff count undecided)
+    falls back to the absolute floor alone, exactly as before this item.
     """
     rows = ev.rows(Q.METER_GLYPH, scope=Scope.SELF_AND_DESCENDANTS)
     cautionaries: list = []
@@ -2535,7 +2612,12 @@ def _meter_changes(ev: Evidence, opening: dict, bars: dict,
                     # written only on the bad branch made "we sized all 184
                     # correctly" and "this figure was never computed" read
                     # identically.
-                    "corroborated": len(staves) >= METER_CHANGE_MIN_STAVES,
+                    # ⚠️ 2.12j: `_required_corroboration`, NOT THE BARE
+                    # ABSOLUTE FLOOR — see that helper and the constant above
+                    # it. `total_staves=None` (staff count undecided) reduces
+                    # to the SAME `METER_CHANGE_MIN_STAVES` this always was.
+                    "corroborated": (len(staves)
+                                     >= _required_corroboration(total_staves)),
                     "bars_fit": fits, "bars_contradict": misses,
                     "loose_digits": loose}
             # ─── BEGIN template-at-bar consumer ──────────────────────────────
@@ -2618,7 +2700,8 @@ def _with_segments(ev: Evidence, opening: dict) -> dict:
     changes, cautionaries, declined = _meter_changes(
         ev, opening, _bar_lengths_for(ev), _last_cell_per_staff(ev),
         # ─── template-at-bar consumer: `{}` with the flag off ───
-        _template_readings_at_bars(ev))
+        _template_readings_at_bars(ev),
+        total_staves=_total_staff_count(ev))
     # ⚠️ A-METER-6's flag rides along in `_segment_from_change`: a segment still
     # governs THIS system's bars through `record.meter_at` exactly as before,
     # and the flag is read only by `_meter_in_force_at_end`, on the way OFF.
@@ -3154,7 +3237,8 @@ def _change_only(ev: Evidence, why: str, **detail) -> Ruling:
     changes, cautionaries, declined = _meter_changes(
         ev, {}, _bar_lengths_for(ev), _last_cell_per_staff(ev),
         # ─── template-at-bar consumer: `{}` with the flag off ───
-        _template_readings_at_bars(ev))
+        _template_readings_at_bars(ev),
+        total_staves=_total_staff_count(ev))
     if cautionaries:
         detail = dict(detail, cautionary=cautionaries[-1])
     if declined:

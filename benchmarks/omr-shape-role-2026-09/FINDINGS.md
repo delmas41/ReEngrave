@@ -2060,3 +2060,326 @@ reading them. `pytest tools/omr/tests -m "not slow"` and `tools.omr.staged.
 check` were run unmodified as a landing sanity check (numbers in the
 ROADMAP line); both were already green/251 on this branch's base and remain
 so, since no code moved.
+
+---
+
+# PART 8 — §2.12j: THE RESIDUAL 4/4 IS ELEVEN MINORITY-CORROBORATED
+`change_only` SEGMENTS, EACH CLEARING THE ABSOLUTE FLOOR ON STAFF COUNT
+ALONE WHILE ITS OWN BARS NEVER AGREE
+
+*(Branch `claude/brahms-common-time-2.12j`, 2026-09-28. Base: the 2.12d + 2.12h
+batch re-decision `.claude/worktrees/redecide-92b6ab04/out-redecide/brahms/
+amended.record.json` (1.6 GB; 53 `Q.METER` verdicts over 27 pages — page 0
+carries one system, pages 1-26 two each), committed on `main` at `92b6ab04`
+(distinct from the larger 89-system whole-movement gather Part 5 above priced
+separately and never finished exporting — this is the record the manager's
+own batch re-decision produced and named for this item), read ONCE via a
+targeted `ijson` stream over `record.verdicts`/`record.
+observations` for `quantity == "meter"` / `"meter_glyph"` — no re-gather, no
+re-adjudication, per the proof budget. `record_io.load_record`'s full pool
+expansion was not run against this file; the fields this item reads
+[`considered`/`basis`/`correlated` id-lists] were never dereferenced, so the
+sanctioned expansion path was unnecessary for this trace and would have cost
+minutes rather than the ~8s/pass `ijson` took.)*
+
+## Where the 4/4 comes from — the whole causal chain, traced once
+
+Every one of the 53 `Q.METER` verdicts on the amended record was read (value,
+`reason`, `raw`, `segments`, `corroborated`, `bars_fit`/`bars_contradict`) and
+matched against `bars_held_out_sum.held`'s own per-`(page, system)` count of
+bars judged `want_quarters: 4.0` vs `3.0` (`brahms.coverage.json`):
+
+| system | outcome / reason | value | held bars @3.0 / @4.0 |
+|---|---|---|---:|
+| 0/0 | decided / voted | 6/8 | 71 / 0 |
+| 1/0, 1/1 | abstained / `carry_not_corroborated` | — | 177 / 0 |
+| **2/0** | **decided / change_only** | **4/4** (from_cell 4) | 37 / 24 |
+| **2/1** | **decided / change_only** | **4/4** (from_cell 1) | 0 / 48 |
+| **3/0** | **decided / change_only** | **4/4** (from_cell 6) | 0 / 83 |
+| **3/1** | **decided / change_only** | **4/4** (from_cell 3) | 0 / 108 |
+| 4/0 | decided / **derived_from_bars** | 6/8 (borrowed from 0/0) | 85 / 0 |
+| 4/1 – 9/0 (10 systems) | abstained (carry, mostly `carry_not_corroborated`) | — | 806 / 0 |
+| **9/1** | **decided / change_only** | **4/4** (from_cell 7) | 62 / 23 |
+| **10/0** | **decided / change_only** | **4/4** (from_cell 4) | 0 / 93 |
+| 10/1 | abstained / `carry_not_corroborated` | — | 12 / 63 |
+| **11/0** | **decided / change_only** | **4/4** (from_cell 8) | 10 / 89 |
+| 11/1 | abstained / `carry_not_corroborated` | — | 0 / 71 |
+| **12/0** | **decided / change_only** | **4/4** (from_cell 12) | 0 / 131 |
+| 12/1 | abstained / `carry_outweighed_by_the_bars` | — | 0 / 95 |
+| **13/0** | **decided / change_only** | **4/4** (from_cell 7) | 0 / 108 |
+| 13/1 – 26/1 (27 systems, includes 15/0 and 16/0 below) | abstained (carry, mixed reasons) except 15/0, 16/0 | — | 0 / 2,298 |
+| **15/0** | **decided / change_only** | **4/4** (from_cell 4) | 0 / 57 |
+| **16/0** | **decided / change_only** | **4/4** (from_cell 2) | 0 / 115 |
+
+(15/0 and 16/0's own 57 + 115 = 172 are already counted inside the 13/1–26/1
+row's 2,298; broken out on their own line because they are two of the eleven
+causes. Every figure above was read directly off `brahms.coverage.json`; the
+column sums to the file's own grand total, 1,260 bars @ 3.0 and 3,234 @ 4.0,
+exactly.) **ELEVEN systems** — page/local `(2,0) (2,1) (3,0)
+(3,1) (9,1) (10,0) (11,0) (12,0) (13,0) (15,0) (16,0)` — each carry a
+`Q.METER` verdict `DECIDED` `change_only` `4/4`, and every one is the SAME
+shape:
+
+| system | from_cell | staves reading it | `Q.SYSTEM_STAFF_COUNT` | coverage | required (2.12j) | support | bars_fit | bars_contradict |
+|---|--:|---|--:|---:|--:|--:|--:|--:|
+| 2/0 | 4 | [6, 8] | 14 | 14.3% | 7 | 6.0 | 0 | 0 |
+| 2/1 | 1 | [7, 8] | 14 | 14.3% | 7 | 4.5 | 0 | 2 |
+| 3/0 | 6 | [2, 4, 5, 7] | 14 | 28.6% | 7 | 11.5 | 0 | 1 |
+| 3/1 | 3 | [5, 6, 7] | 14 | 21.4% | 7 | 7.0 | 0 | 2 |
+| 9/1 | 7 | [9, 10] | 13 | 15.4% | 6 | 5.5 | 0 | 1 |
+| 10/0 | 4 | [0, 4] | 13 | 15.4% | 6 | 6.0 | 0 | 0 |
+| 11/0 | 8 | [1, 2] | 14 | 14.3% | 7 | 6.5 | 0 | 0 |
+| 12/0 | 12 | [4, 5] | 14 | 14.3% | 7 | 5.0 | 0 | 1 |
+| 13/0 | 7 | [0, 6] | 14 | 14.3% | 7 | 6.0 | 0 | 0 |
+| 15/0 | 4 | [4, 5] | 12 | 16.7% | 6 | 4.0 | 0 | 2 |
+| 16/0 | 2 | [6, 7] | 14 | 14.3% | 7 | 6.5 | 0 | 0 |
+
+(`Q.SYSTEM_STAFF_COUNT` read directly off the record's own verdicts, not
+approximated; `required = max(2, round(0.5 * count))`, Python's round-half-
+to-even. Every one of the eleven reads on 2-4 staves, 3-6 short of what its
+OWN system's size now requires.)
+
+**`bars_fit` is 0 on every single one** — not one of the eleven candidates has
+so much as ONE bar of its own system agreeing with the 4/4 it declares; five
+of them have the bars actively CONTRADICTING it (`bars_contradict` 1-2), and
+it wins anyway, because `support` never needed `bars_fit` in the first place:
+`2 * W_CHANGE_GLYPH_PAIR = 6.0` already clears `METER_CHANGE_FLOOR = 3.0`
+before a single bar term is added. The bar-math control CANNOT FAIL a
+2-staff-corroborated candidate — CLAUDE.md rule 7's own example of "a control
+that must be able to fail," found here rather than merely quoted.
+
+## The mechanism downstream — one write poisons the file until the next one
+
+`export._part_xml`'s own carry (`in_force`, ROADMAP 2.8, unchanged and
+CORRECT — see its own comment: *"the meter a reader of this file sees... a
+bar whose own system never settled a meter is, to music21 or to Verovio, in
+the last meter this part declared"*) means every one of these eleven DECIDED
+`4/4` verdicts REWRITES `<time>` for the file from that bar on, and every
+LATER system that itself abstains (the overwhelming majority — 40 of 53
+systems: 33 `carry_not_corroborated` + 7 `carry_outweighed_by_the_bars`)
+inherits whatever the file last wrote, not its own system's
+(non-)reading. `system/4/0`'s `derived_from_bars` `6/8` is the one place the
+file self-corrects (a length read off the ACTUAL bars, borrowing 0/0's
+spelling) — pages 4-8 are entirely `3.0` because of it. Nothing resets it a
+second time: from `system/13/0` on, the file never writes anything but `4/4`
+again for the rest of the movement (13 more pages), which is where the bulk
+of the 3,234 lives.
+
+## The cause is ONE mechanism, not several
+
+Every one of the eleven shares the identical shape: `_meter_changes`'s
+`corroborated` flag was `len(staves) >= METER_CHANGE_MIN_STAVES` (an
+ABSOLUTE floor of 2), on systems of 12-14 staves. 2.12d's own session
+measured and flagged exactly this in Part 5 above (*"a fraction-of-the-system
+threshold is visible in the fresh record too... and is NOT this item's to
+fix — flagged, not chased"*) and named the prior art: the LEGACY pipeline's
+own `tools/omr/rhythm.py:631 drop_uncorroborated_meter_changes` already uses
+`max(2, round(0.5 * n_staves))`. **One cause, eleven instances, thousands of
+bars** — not several unrelated mechanisms. (A GATHER-level theory was also
+checked and set aside: the underlying `Q.METER_GLYPH` rows behind several of
+these — e.g. `staff/2/0/6` cell 4 carries SIX separate `timeSig4` detector
+boxes at scattered `y_center` spanning ~4.4 canonical staff-spaces, all the
+identical digit, on ONE staff — look like detector noise on ordinary ink
+rather than a real printed digit stack, and a geometry-based rejection in
+`_meter_from_digits` was prototyped and simulated against all eleven cases.
+It was set aside in favour of the coverage fix: geometry clustering resolved
+9 of 11 cleanly but left 2 borderline on tolerance choice, `_meter_from_
+digits` has zero existing unit coverage to protect against a wrong guess at
+the right window size, and the coverage fix — reusing an ALREADY-MEASURED
+legacy constant rather than a new geometric threshold this lane would have to
+invent — resolves all eleven with no fixture in the suite needing more than
+100% or a name-checked majority. CLAUDE.md rule 6: connect, never guess.)
+
+## The fix — ADJUDICATE only, one flag's meaning changed, nothing new declared
+
+`tools/omr/staged/adjudicators/rhythm.py`. `METER_CHANGE_MIN_STAVES = 2`
+(the absolute floor A-METER-6 measured and still the floor below which
+nothing is EVER corroborated) is unchanged, along with its own test
+(`test_the_constant_is_the_weakest_bar_that_can_confine_anything`, still
+`== 2`, still `== key_signature_corroboration.MIN_WITNESSES`). What changed
+is what `corroborated` MEANS: a new `_required_corroboration(total_staves)`
+returns `max(METER_CHANGE_MIN_STAVES, round(METER_CHANGE_COVERAGE_FLOOR *
+total_staves))` (`METER_CHANGE_COVERAGE_FLOOR = 0.5`, the cited legacy prior
+art, NOT imported — LEGACY is frozen, CLAUDE.md §3), and `total_staves` is
+`None` (falls back to the unchanged absolute floor) wherever `Q.SYSTEM_
+STAFF_COUNT` is undecided. `_meter_changes` gained one new parameter,
+`total_staves`, fetched by its two callers (`_with_segments`, `_change_only`)
+via a new `_total_staff_count(ev)` helper placed beside `_bar_lengths_for`/
+`_last_cell_per_staff` — the SAME `inventory._never_read` depth-3 shape those
+two are already threaded as arguments for, so `Q.SYSTEM_STAFF_COUNT` (already
+in `adjudicate_meter`'s own `wants`) does not become a new inert declaration.
+This gates BOTH rule (1) (`METER_CHANGE_GATES_OWN_SYSTEM`, unchanged, still
+reads the same `corroborated` flag) and rule (2) (A-METER-6's carry
+eligibility) through the one flag both already shared — no second place had
+to be told to agree with this one.
+
+On the eleven real systems (12-14 staves each, per the table above),
+`required` is 6 or 7; the largest reading is 4 staves (28.6%). All eleven
+now DECLINE (`meter_change_not_system_wide`), recorded in `declined_changes`
+exactly as 2.12d already files a declined candidate, never silently dropped.
+**Predicted, not yet re-measured** (the proof budget excludes a whole-
+movement re-adjudication; the manager's own batch re-decision is the
+instrument that will confirm this): with all eleven declined, the file's
+`in_force` is never rewritten away from `6/8` by any of them, so the causal
+chain traced above collapses back to the `4/0` reset's own `6/8` — and stays
+there for the remainder of the movement, since nothing else in the traced
+chain ever asserted anything but the eleven phantom changes. This would
+release close to the full 3,234-bar `4.0` population, not a subset of it,
+because the eleven are not eleven independent releases but ONE broken
+mechanism poisoning one shared file-wide `in_force`. The 1,260 bars already
+judged at `3.0` are untouched (2.12b/2.12b-cal territory, unrelated).
+
+## Existing test suite checked for regressions before writing anything new
+
+- `test_staged_meter_system_agreement.py` (2.12d, `N_STAVES=4/12`): every
+  positive control uses ALL staves (100% coverage; `max(2, round(0.5*4))=2`,
+  `max(2, round(0.5*12))=6`, both `<=` the count used) — unaffected. Its
+  negative control (1 staff) was already below the absolute floor —
+  unaffected.
+- `test_staged_header_rhythm.py`'s `TestAnUncorroboratedChangeIsNotCarriedOff
+  ItsSystem` (`N_STAVES=4`): same shape, same result — unaffected.
+- `test_staged_opening_meter.py` (2.12h, `N_STAVES=3`): the cautionary
+  corroboration positive control uses 2 of 3 staves; `max(2, round(0.5*3)) =
+  max(2, 2) = 2` (Python's round-half-to-even rounds 1.5 to 2) — identical
+  requirement, unaffected. Its negative control (1 of 3) was already below
+  the absolute floor.
+- On the REAL record, `system/0/0`'s own corroborated `9/8` cautionary reads
+  9 of 14 staves (64.3%), comfortably above the new floor — 2.12h's carry-via-
+  cautionary mechanism (which reads the SAME `corroborated` flag) is
+  unaffected on the document this item is about.
+
+All confirmed by running `pytest tools/omr/tests/test_staged_meter_system_
+agreement.py tools/omr/tests/test_staged_header_rhythm.py tools/omr/tests/
+test_staged_opening_meter.py tools/omr/tests/test_meter_template_at_bar.py
+-q`: 139 passed, no regressions.
+
+## The export-side hypothesis — checked and NOT found
+
+The brief's third possible cause, "an export-side 4.0 fallback judging a
+bar," does not hold up: `export._bar_quarters` already refuses the `4.0`
+fallback for a `None`/incomplete meter (its own docstring: *"AND ITS 4.0
+FALLBACK IS REFUSED HERE... No meter, no verdict"* — ROADMAP 2.8, shipped
+well before this item), and `_bar_holds_out` calls it before doing anything
+else. This matches 2.12d's own PART 5 finding above (*"`_bar_holds_out`...
+still requires a `Q.METER` reading before it will judge a bar at all, so
+export-side there is no independent default-to-4/4 path"*) and this item's
+own re-check of the same code confirms it a second time, on the actual
+functions rather than by re-reading the comment. `TestExportNeverJudgesAn
+UnknownBarAgainstFour4` in the new test file is a NEGATIVE-finding regression
+guard, not a fix — both its assertions already pass unmodified before this
+item.
+
+## Crops
+
+4 print crops cut, `benchmarks/omr-shape-role-2026-09/out/print/
+m212j-phantom-change/` (script: `crop_2_12j_phantom_change.py`; geometry —
+`staff_lines`/`staff_spacing`/`cell_box` only, for the ten specific staff/cell
+subjects needed — streamed ONCE via a targeted `ijson` pass over `record.
+observations` rather than the full `record_io.load_record` on a 1.6 GB file,
+since these three quantities are never pooled by `record_io` — pooling there
+applies only to a VERDICT's own `considered`/`basis`/`correlated` id-lists;
+pages rendered straight off the PDF; no detector, no re-gather, no
+re-adjudication). Each crop brackets EVERY reading staff's own cell frame in
+one image (never a neighbour's lines borrowed for another staff) and labels
+the decided value, its support, and what fraction of the system's own staves
+read it:
+
+| file | system | decided | support | staves | coverage |
+|---|---|---|--:|---|---|
+| `m212j-phantom-2-0-4.png` | 2/0 | 4/4 | 6.0 | [6, 8] | 2/14 |
+| `m212j-phantom-3-0-6.png` | 3/0 | 4/4 | 11.5 | [2, 4, 5, 7] | 4/14 |
+| `m212j-phantom-9-1-7.png` | 9/1 | 4/4 | 5.5 | [9, 10] | 2/13 |
+| `m212j-phantom-12-0-12.png` | 12/0 | 4/4 | 5.0 | [4, 5] | 2/14 |
+
+`VERDICT_none_yet: null` on every sidecar, for Sean — these let him confirm
+no time-signature digit stack is printed at any of these mid-system cells,
+matching the eleven's own `bars_fit: 0` (nothing on the page corroborates the
+reading either way but the staves themselves, and those staves are a small
+minority). Inspected in this session (not by Sean — the crops still stand for
+his own read): three of the four show exactly what IS printed instead of a
+meter — `m212j-phantom-9-1-7.png` brackets an italic **`ff agitato`**
+expression marking directly in the cell; `m212j-phantom-12-0-12.png` brackets
+a **`p cresc.`** dynamic-and-hairpin marking; `m212j-phantom-3-0-6.png` shows
+ordinary noteheads, a beam and a slur arc, no text. Consistent with a
+detector class trained to recognise `timeSig4`'s dense, closed-loop stroke
+shape occasionally firing on ordinary printed TEXT at low confidence — every
+one of the underlying `Q.METER_GLYPH` rows behind these eleven segments scores
+0.25-0.73, well under the confidence a genuine header digit stack reads at
+(2.12h's own crops: 0.42-0.53) — not a finding this item chased further
+(GATHER-side, out of scope for a proof-budget item), but recorded here as the
+likely PHYSICAL source of the ink, for whoever does.
+
+## Tests, RED first
+
+`tools/omr/tests/test_staged_meter_no_phantom_common_time.py` (new file, 8
+tests):
+
+- **(a) RED, verified two ways.** (i) `test_the_fix_is_reachable_RED_without_
+  it` monkeypatches `_required_corroboration` back to the bare absolute floor
+  it replaces — the phantom `4/4` stands as a segment. (ii) Independently,
+  `rhythm.py` was restored from `git show HEAD:...` (the fix's own commit not
+  yet made — the pre-2.12j tree) and the whole new file re-run: the two
+  behavioural tests that assert the decline FAILED (`[(0, 6, 8), (4, 4, 4)]
+  != [(0, 6, 8)]`) while the positive-control and export-negative-finding
+  tests passed unchanged, then the fixed file was restored and all 8 passed.
+  A THIRD test in this class writes real, actively-CONTRADICTING bar evidence
+  (3 bars of `6/8`-length `3.0` quarters at and after the change's own cell)
+  and shows the fix still declines on staff coverage, not because the bars
+  happened to race to the rescue this time (CLAUDE.md rule 7).
+- **(b) Positive controls, so (a)'s refusal cannot pass for a rule that
+  refuses everything (CLAUDE.md §6b).** All 14 of 14 staves reading a change
+  still states it; 8 of 14 (57.1%, a clear majority but NOT unanimity) also
+  clears the new proportional floor; the movement-start OPENING vote (a
+  different code path, `adjudicate_meter`'s `voted` branch above `_meter_
+  changes` entirely) is untouched.
+- **(c) The export-fallback hypothesis, confirmed negative.** `_bar_quarters`
+  refuses the `4.0` fallback for `None`/incomplete meters; `_bar_holds_out`
+  never manufactures a `want_quarters: 4.0` refusal when no meter has ever
+  been declared (a positive control in the same test proves the fixture is
+  realistic: the SAME bar, WITH a meter supplied, correctly holds out).
+
+`pytest tools/omr/tests/test_staged_meter_no_phantom_common_time.py -v`: 8
+passed. `pytest tools/omr/tests -m "not slow" -q -p no:warnings -x`: **3,519
+passed, 3 skipped** (3,511 on this branch's `origin/main` base — 649831a7 —
+plus exactly this item's 8 new tests; no other test file touched). `python3
+-m tools.omr.staged.check`: **251** (unchanged from main — this item re-wires
+an EXISTING quantity's EXISTING consumer more correctly; it declares nothing
+new and reaches nothing new).
+
+## What contradicted this brief
+
+- **"In 2.12h, `C` was a runner-up template on Brahms's headers"** pointed at
+  the wrong mechanism for THIS item. The `would_have_been: "C"` detail that
+  appears on several of the eleven `change_only` verdicts comes from the
+  SAME system's own OPENING vote failing coverage at cell 0 (a low-confidence
+  template match on ordinary continuation-header ink, unrelated to the
+  meter this movement actually carries) — it is `_meter_fallbacks`' own
+  detail riding along into `_change_only`'s result, NOT the cause of the
+  mid-system `4/4` itself. The real mid-system candidates read via `Q.METER_
+  GLYPH`'s raw DETECTOR classes (`timeSig4`, never a `C`-shaped letter class)
+  at cells that are NOT the header window (cells 1-12, never cell 0).
+- **"A continuation-system template match... because every staff has the
+  same key-signature shape"** does not apply either — these are mid-system
+  candidates, not header/cell-0 opening reads, so there is no key-signature
+  window for them to share.
+- **The export-side `4.0` fallback hypothesis is negative** — see above;
+  2.12d's own Part 5 already established this and this item re-confirms it
+  rather than finding it wrong.
+- **A GATHER-side fix (rejecting `_meter_from_digits`'s scattered-digit
+  reads geometrically) was viable but strictly worse for this item's proof
+  budget**: it resolved 9 of 11 cases cleanly in simulation but left 2
+  borderline on the exact clustering tolerance chosen, is untested territory
+  (`_meter_from_digits` has no existing unit coverage), and would have
+  required inventing a new geometric constant this lane could not measure
+  against a calibration corpus in the time available — set aside in favour
+  of reusing an already-measured legacy constant that resolves all eleven.
+  Not chased further; flagged here as the SAME shape 2.12b/2.12c already
+  named as a residual gap in `Q.METER_GLYPH`'s own reading quality, should a
+  future item want the GATHER-side half too.
+
+## Landing
+
+`pytest tools/omr/tests -m "not slow" -q -p no:warnings -x`: 3,519 passed, 3
+skipped. `python3 -m tools.omr.staged.check`: 251 (unchanged from main). No
+GATHER change; `tools/omr/staged/adjudicators/rhythm.py` is the only file
+touched besides the new test file and this benchmark's own crop script.
