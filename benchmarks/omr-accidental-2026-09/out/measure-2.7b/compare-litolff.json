@@ -4,13 +4,13 @@
   121730,
   121712
  ],
- "differing": 353,
+ "differing": 363,
  "differing_by_quantity": {
-  "notehead_is_not_a_notehead": 283,
+  "notehead_is_not_a_notehead": 293,
   "accidental_owner": 44,
   "accidental": 26
  },
- "refused_belongs_to_a_nearer_staff": 283,
+ "refused_belongs_to_a_nearer_staff": 293,
  "npv_changes_not_to_the_new_reason": [],
  "accidental_owner_changes_by_new_reason": {
   "head_belongs_to_a_nearer_staff": 42,
@@ -25,7 +25,7 @@
  "unexplained_sample": [],
  "notes_in_file": [
   8758,
-  8701
+  8697
  ],
  "accidental_elements": [
   216,
@@ -33,9 +33,9 @@
  ],
  "alter_elements": [
   1151,
-  1120
+  1118
  ],
- "notes_not_written_new_reason": 283,
+ "notes_not_written_new_reason": 293,
  "accidental_census": {
   "gathered": [
    1531,
@@ -167,6 +167,7 @@
   "glyph/13/1/2/14/12",
   "glyph/13/1/2/14/8",
   "glyph/13/1/6/11/7",
+  "glyph/13/1/6/9/9",
   "glyph/14/0/0/8/4",
   "glyph/14/0/1/4/1",
   "glyph/14/0/1/8/1",
@@ -185,6 +186,7 @@
   "glyph/14/1/0/7/1",
   "glyph/14/1/2/12/2",
   "glyph/14/1/3/9/9",
+  "glyph/14/1/6/10/3",
   "glyph/14/1/6/11/4",
   "glyph/14/1/9/10/1",
   "glyph/14/1/9/9/4",
@@ -222,6 +224,7 @@
   "glyph/2/1/0/5/3",
   "glyph/2/1/10/6/2",
   "glyph/2/1/5/12/3",
+  "glyph/2/1/6/6/8",
   "glyph/2/1/9/6/10",
   "glyph/2/1/9/6/11",
   "glyph/3/0/10/2/7",
@@ -301,10 +304,13 @@
   "glyph/6/1/10/9/0",
   "glyph/6/1/5/10/6",
   "glyph/6/1/5/4/6",
+  "glyph/6/1/6/11/5",
   "glyph/6/1/6/4/1",
   "glyph/6/1/6/6/2",
   "glyph/6/1/9/8/1",
   "glyph/6/1/9/8/3",
+  "glyph/7/0/0/2/4",
+  "glyph/7/0/0/2/6",
   "glyph/7/0/0/3/3",
   "glyph/7/0/0/4/11",
   "glyph/7/0/0/4/20",
@@ -327,11 +333,15 @@
   "glyph/7/0/9/2/2",
   "glyph/7/0/9/6/5",
   "glyph/7/0/9/6/6",
+  "glyph/7/1/6/13/3",
+  "glyph/7/1/6/9/3",
   "glyph/8/0/7/1/7",
+  "glyph/8/0/7/12/3",
   "glyph/8/0/7/14/5",
   "glyph/8/0/7/20/2",
   "glyph/8/0/7/20/3",
   "glyph/8/0/8/20/0",
+  "glyph/8/1/0/2/3",
   "glyph/8/1/2/0/10",
   "glyph/8/1/8/10/0",
   "glyph/8/1/8/10/1",

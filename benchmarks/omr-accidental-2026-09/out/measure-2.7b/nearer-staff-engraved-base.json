@@ -681,7 +681,7 @@
     "first_kept": false
    },
    "rungs_to_near": {
-    "kept": 1,
+    "kept": 0,
     "refused": {},
     "first_kept": false
    },
@@ -718,7 +718,7 @@
     "first_kept": false
    },
    "rungs_to_near": {
-    "kept": 1,
+    "kept": 0,
     "refused": {},
     "first_kept": false
    },
@@ -755,7 +755,7 @@
     "first_kept": false
    },
    "rungs_to_near": {
-    "kept": 1,
+    "kept": 0,
     "refused": {},
     "first_kept": false
    },
@@ -823,7 +823,7 @@
     "first_kept": false
    },
    "rungs_to_near": {
-    "kept": 1,
+    "kept": 0,
     "refused": {},
     "first_kept": false
    },
@@ -860,7 +860,7 @@
     "first_kept": false
    },
    "rungs_to_near": {
-    "kept": 1,
+    "kept": 0,
     "refused": {},
     "first_kept": false
    },
@@ -897,7 +897,7 @@
     "first_kept": false
    },
    "rungs_to_near": {
-    "kept": 1,
+    "kept": 0,
     "refused": {},
     "first_kept": false
    },
@@ -1045,9 +1045,9 @@
     "first_kept": false
    },
    "rungs_to_near": {
-    "kept": 1,
+    "kept": 0,
     "refused": {},
-    "first_kept": true
+    "first_kept": false
    },
    "named": null,
    "crops": null
