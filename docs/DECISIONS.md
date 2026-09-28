@@ -331,3 +331,12 @@ Format: `YYYY-MM-DD · who · the decision · because · (pointer)`
   these rows is untouched — the single-movement default — and EXPORT can
   split an already-adjudicated record with no re-gather at all (build
   `claude/movements-4.2`)
+- 2026-09-28 · Sean · **A meter change holds until the plate prints a change
+  back; the return is always printed.** · *"Anytime the meter changes it must
+  show a change back to the original meter or it stays at the new meter"* ·
+  corrects CLAUDE.md §10's "a meter is printed at a movement's start and
+  nowhere else". Consequence: Brahms 1/i m. 9's return to 6/8 is a READING
+  miss (printed on ~13/14 staves, never boxed — 2.12h.b), and the file gets
+  6/8 back today only because the bars weigh against carrying 9/8. Where the
+  bars overturn a carried change, the switch must be LABELLED as an inferred
+  unread return and the bar marked (→ ROADMAP 2.12k), never silent

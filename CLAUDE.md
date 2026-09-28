@@ -516,8 +516,11 @@ Each of these has cost at least one lane and is still true.
   heads are at one staff position (empty interval 0.168 vs 0.435 spaces). A
   key change is printed at one bar on every staff of the system. A
   cautionary meter after a system's last barline governs no bar. A meter is
-  printed at a movement's start and nowhere else; the carry is WEIGHED by
-  the bars, not gated. Stems: up → right, down → left; right-and-down does
+  printed at a movement's start and at every change, and a change HOLDS
+  until a printed change back — the return is always printed (Sean,
+  2026-09-28). So where the bars overturn a carried change, a printed return
+  was MISSED: label the switch and mark the bar, never switch silently. The
+  carry is WEIGHED by the bars, not gated. Stems: up → right, down → left; right-and-down does
   not exist (96 of 96 against print). Sean's middle-line convention is strong
   and where it looks wrong it is measuring the grid.
 - **A page truth is not an encoding truth**: a clef prints per system and
