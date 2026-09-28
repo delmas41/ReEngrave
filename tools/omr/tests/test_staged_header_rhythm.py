@@ -1764,28 +1764,44 @@ class TestACautionaryIsNotAChange(unittest.TestCase):
         self.assertIsNone((v.value or {}).get("cautionary"))
 
 class TestAnUncorroboratedChangeIsNotCarriedOffItsSystem(unittest.TestCase):
-    """A-METER-6. A meter change is printed at ONE bar of ONE system, ON EVERY
-    STAFF of that system — the convention `key_signature_corroboration` already
-    transplants for key signatures. A change ONE staff read is the weakest meter
-    fact this pipeline produces, and at `W_CHANGE_GLYPH_PAIR = 3.0` it clears
-    `METER_CHANGE_FLOOR` alone, by design.
+    """A-METER-6, then ROADMAP 2.12d. A meter change is printed at ONE bar of
+    ONE system, ON EVERY STAFF of that system — the convention
+    `key_signature_corroboration` already transplants for key signatures. A
+    change ONE staff read is the weakest meter fact this pipeline produces,
+    and at `W_CHANGE_GLYPH_PAIR = 3.0` it clears `METER_CHANGE_FLOOR` alone,
+    by design.
 
-    ⚠️⚠️ **WHAT THIS CLASS DOES NOT DO IS REFUSE SUCH A CHANGE, AND THAT IS THE
-    MEASUREMENT RATHER THAN A PREFERENCE.** On the committed boundary records
-    the TRUE and FALSE one-staff populations OVERLAP: Beethoven 5 / Litolff
-    p.62's printed `3/4` — the one true meter change this project has ever
-    found on a scan — reads on **ONE staff of seventeen** at support 3.0, and
-    the three false changes on the same corpus read one staff at support 3.0,
-    4.0 and 4.5. Two of the false ones score HIGHER than the true one, and the
-    only one whose bars say anything (p.61's `C`, 1 bar fitting) is FALSE. So a
-    veto keyed on stave count, on support or on bar math deletes the flagship
-    result to remove the noise.
+    ⚠️⚠️ **A-METER-6 DID NOT REFUSE SUCH A CHANGE ON ITS OWN SYSTEM, AND THAT
+    WAS THE MEASUREMENT RATHER THAN A PREFERENCE — MEASURED ON FOUR PAGES.**
+    On that small boundary corpus the TRUE and FALSE one-staff populations
+    OVERLAPPED: Beethoven 5 / Litolff p.62's printed `3/4` — the one true
+    meter change this project had then found on a scan — read on **ONE staff
+    of seventeen** at support 3.0, and the three false changes on the same
+    corpus read one staff at support 3.0, 4.0 and 4.5. Two of the false ones
+    scored HIGHER than the true one, and the only one whose bars said
+    anything (p.61's `C`, 1 bar fitting) was FALSE. So a veto keyed on stave
+    count, on support or on bar math deleted the flagship result to remove
+    the noise, and rule (1) — "governs its own system" — was left open while
+    rule (2) — "may be carried off it" — was gated.
 
-    What IS one-sided is confining it: the change still governs its own
-    system's bars through `record.meter_at`, and may not become the meter
-    handed to every following system that abstains. The tests below assert both
-    halves, because asserting only the second would pass for a rule that
-    deleted the segment outright.
+    ⚠️⚠️ **REVERSED BY 2.12d, ON A FRESH WHOLE-MOVEMENT BREITKOPF GATHER**
+    (`benchmarks/omr-bar-sum-holdout-2026-09/FINDINGS.md` §13): a lone-staff
+    `4/4` governing only ITS OWN system, with the bars themselves
+    disagreeing (`bars_contradict: 1`), was enough by itself to put 859 bars
+    whose own reading already summed to the TRUE meter into 2.8's held-out
+    pile. `METER_CHANGE_GATES_OWN_SYSTEM` now applies the SAME
+    `METER_CHANGE_MIN_STAVES` corroboration to rule (1) that A-METER-6 always
+    applied to rule (2) — see that constant's own note for the convention
+    assumed and what would falsify it. The Litolff p.62 case this class was
+    built to protect is now also DECLINED, on the same evidence that made it
+    indistinguishable from the three false ones at the time; that trade is
+    named here, not hidden, and crops are cut for Sean under
+    `benchmarks/omr-shape-role-2026-09/out/print/m212d-*`.
+
+    The tests below now assert the REVERSED halves — a lone-staff change
+    governs NEITHER its own system NOR any system it might have been carried
+    to — plus the positive control that a genuinely corroborated change still
+    does both, so a rule that refused everything could not pass here either.
     """
 
     N_STAVES = 4
@@ -1907,32 +1923,58 @@ class TestAnUncorroboratedChangeIsNotCarriedOffItsSystem(unittest.TestCase):
         segs = (v.value or {}).get("segments") or []
         return [(s["from_cell"], s["raw"]) for s in segs]
 
-    # ── the change REACHES ITS OWN system either way ────────────────────────
+    # ── 2.12d: the change no longer reaches its own system alone ────────────
 
-    def test_a_one_staff_change_still_governs_its_own_system(self):
-        """⚠️ THE HALF THAT MUST NOT MOVE. Litolff p.62 is exactly this shape,
-        and a rule that deleted the segment would delete the printed `3/4`
-        this project celebrates."""
+    def test_a_one_staff_change_no_longer_governs_its_own_system(self):
+        """⚠️ REVERSED BY 2.12d — THE HALF THAT USED TO NOT MOVE, NOW DOES.
+        Litolff p.62 is exactly this shape, and A-METER-6 protected it
+        deliberately; the fresh Brahms whole-movement evidence overturned
+        that trade (class docstring above). The declined candidate is
+        recorded, not silently dropped."""
         log, src, _dst = self._log(change_staves={0})
         self._run(log)
         v = log.verdict(Q.METER, src)
-        self.assertEqual(self._segments(v), [(0, "3/4"), (1, "2/4")])
-        # and `meter_at` — how a bar's meter is READ — still answers 2/4.
-        self.assertEqual(R.meter_at(v.value, 2)["raw"], "2/4")
+        self.assertEqual(self._segments(v), [(0, "3/4")])
+        # `meter_at` — how a bar's meter is READ — now still answers 3/4,
+        # the opening: the lone-staff `2/4` never became a segment.
+        self.assertEqual(R.meter_at(v.value, 2)["raw"], "3/4")
+        declined = (v.value or {}).get("declined_changes") or []
+        self.assertEqual(len(declined), 1)
+        self.assertEqual(declined[0]["declined_reason"],
+                         rhythm_mod.METER_CHANGE_NOT_SYSTEM_WIDE)
+        self.assertEqual(
+            (declined[0]["numerator"], declined[0]["denominator"]), (2, 4))
+        # ⚠️ THE POSITIVE CONTROL, IN THE TEST: a change every staff reads
+        # still governs its own system — without this the assertions above
+        # pass for free the moment nothing is ever accepted at all.
+        ok, ok_src, _ = self._log(change_staves=set(range(self.N_STAVES)))
+        self._run(ok)
+        okv = ok.verdict(Q.METER, ok_src)
+        self.assertEqual(self._segments(okv), [(0, "3/4"), (1, "2/4")])
 
-    def test_the_segment_records_the_corroboration_either_way(self):
-        """⚠️ WRITTEN ON EVERY CHANGE, corroborated or not, so `True` means
-        "asked and answered" rather than "this build did not look" — the
-        `empty_bars_padded_without_meter` lesson, where a counter written only
-        on the bad branch made "all correct" and "never computed" identical."""
-        for staves, want in (({0}, False), (set(range(self.N_STAVES)), True)):
-            with self.subTest(staves=len(staves)):
-                log, src, _dst = self._log(change_staves=staves)
-                self._run(log)
-                seg = (log.verdict(Q.METER, src).value or {})["segments"][1]
-                self.assertIn("corroborated", seg)
-                self.assertIs(seg["corroborated"], want)
-                self.assertEqual(seg["staves_reading_a_meter"], len(staves))
+    def test_corroboration_is_recorded_either_way__declined_or_kept(self):
+        """⚠️ 2.12d's counterpart to the old always-written-either-way test:
+        an uncorroborated candidate is written into `declined_changes`
+        (never `segments`, which now holds only what took effect); a
+        corroborated one is written into `segments` exactly as before. A
+        reader can always find `corroborated` and `staves_reading_a_meter`
+        on whichever list actually holds this system's candidate."""
+        log, src, _dst = self._log(change_staves={0})
+        self._run(log)
+        v = (log.verdict(Q.METER, src).value or {})
+        self.assertEqual(len(v.get("segments") or []), 1)      # opening only
+        declined = v.get("declined_changes") or []
+        self.assertEqual(len(declined), 1)
+        self.assertIs(declined[0]["corroborated"], False)
+        self.assertEqual(declined[0]["staves_reading_a_meter"], 1)
+
+        log2, src2, _dst2 = self._log(change_staves=set(range(self.N_STAVES)))
+        self._run(log2)
+        v2 = (log2.verdict(Q.METER, src2).value or {})
+        self.assertNotIn("declined_changes", v2)
+        seg = v2["segments"][1]
+        self.assertIs(seg["corroborated"], True)
+        self.assertEqual(seg["staves_reading_a_meter"], self.N_STAVES)
 
     # ── what confinement does ───────────────────────────────────────────────
 
@@ -1963,25 +2005,60 @@ class TestAnUncorroboratedChangeIsNotCarriedOffItsSystem(unittest.TestCase):
         self.assertEqual(v.reason, "carried")
         self.assertEqual((v.value["numerator"], v.value["denominator"]), (3, 4))
 
-    def test_the_skipped_source_is_NAMED_rather_than_skipped_silently(self):
-        """⚠️ A page that found no carry source and a page that walked past one
-        are two different pages. `change_only` gives the source NO corroborated
-        meter at all, so the walk runs out and must say why."""
+    def test_an_uncorroborated_change_only_system_now_abstains_outright(self):
+        """⚠️ REVERSED BY 2.12d. Before this item, a system whose ONLY meter
+        fact was a lone-staff change still DECIDED via `change_only` and the
+        CARRY alone refused it (`carry_source_uncorroborated`) — the walk
+        found a source, and had to say it was walking past one. That
+        mechanism still exists and is still covered directly, for a record
+        WRITTEN BEFORE this item, by `test_the_helper_returns_None_rather_
+        than_an_unfiltered_value` and `test_a_record_written_before_the_
+        rule_still_carries` below, which construct the value dict by hand
+        rather than through a live gather.
+
+        Live, post-2.12d, rule (1) already declines the same candidate at
+        the SOURCE, so there is nothing left to decide there either: the
+        source abstains OUTRIGHT, the destination finds no DECIDED source at
+        all (not a decided-but-uncarryable one), and the two rules — govern
+        its own system, be carried off it — now agree instead of disagreeing
+        by design."""
         log = Log()
         src, dst = R.system(0, 0), R.system(1, 0)
         self._skeleton(log, (src, dst))
         # No METER_TEMPLATE anywhere: the source's ONLY meter fact is a change
-        # one staff read, which is the `change_only` shape Litolff p.61-62 has.
+        # one staff read, which is the shape Litolff p.61-62 has.
         self._change_glyphs(log, 0)
         self._bars(log, 0, 2.0)
         self._bars(log, 1, 2.0)
         self._run(log)
         srcv = log.verdict(Q.METER, src)
-        self.assertEqual(srcv.reason, "change_only")   # it still reads its own
+        self.assertIs(srcv.outcome, Outcome.ABSTAINED)
+        declined = (srcv.detail or {}).get("declined_changes") or []
+        self.assertEqual(len(declined), 1)
+        self.assertEqual(declined[0]["declined_reason"],
+                         rhythm_mod.METER_CHANGE_NOT_SYSTEM_WIDE)
         v = log.verdict(Q.METER, dst)
         self.assertIs(v.outcome, Outcome.ABSTAINED)
-        self.assertEqual(v.reason, "carry_source_uncorroborated")
-        self.assertEqual(v.detail["skipped_uncorroborated"], [src.to_key()])
+
+    def test_a_CORROBORATED_change_only_system_still_decides_and_carries(self):
+        """The positive control for the test above: with a SECOND staff
+        reading the same change at the same bar, `change_only` still decides
+        and the carry still reaches the next system — 2.12d did not touch
+        the corroborated case, only the lone-staff one."""
+        log = Log()
+        src, dst = R.system(0, 0), R.system(1, 0)
+        self._skeleton(log, (src, dst))
+        self._change_glyphs(log, 0)
+        self._change_glyphs(log, 1)
+        self._bars(log, 0, 2.0)
+        self._bars(log, 1, 2.0)
+        self._run(log)
+        srcv = log.verdict(Q.METER, src)
+        self.assertEqual(srcv.reason, "change_only")
+        v = log.verdict(Q.METER, dst)
+        self.assertIs(v.outcome, Outcome.DECIDED)
+        self.assertEqual(v.reason, "carried")
+        self.assertEqual((v.value["numerator"], v.value["denominator"]), (2, 4))
 
     def test_the_helper_returns_None_rather_than_an_unfiltered_value(self):
         """⚠️ Asserted DIRECTLY, because the fallback is where "cannot tell"
