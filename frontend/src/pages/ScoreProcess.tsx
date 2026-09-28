@@ -304,10 +304,24 @@ export default function ScoreProcess() {
               >
                 Local YOLO OMR
               </button>
+              <button
+                style={{
+                  padding: '8px 16px', borderRadius: 8, fontSize: 13, fontWeight: 600,
+                  cursor: 'pointer', transition: 'all 0.15s',
+                  border: selectedEngine === 'staged' ? '2px solid #1a1a2e' : '2px solid #ccc',
+                  background: selectedEngine === 'staged' ? '#1a1a2e' : '#fff',
+                  color: selectedEngine === 'staged' ? '#fff' : '#555',
+                }}
+                onClick={() => setSelectedEngine('staged')}
+              >
+                Staged (experimental)
+              </button>
             </div>
             <p style={{ color: '#888', fontSize: 12, marginBottom: 16, textAlign: 'center' as const }}>
               {selectedEngine === 'claude_vision'
                 ? 'Claude Vision reads the score visually and generates MusicXML. Slower; uses API credits.'
+                : selectedEngine === 'staged'
+                ? 'The staged pipeline (tools/omr/staged): every decision is filed against evidence and may abstain. Experimental — not yet the default.'
                 : 'In-house YOLOv8 + classical-CV pipeline (tools/omr). Default. Fast, runs locally, no API cost.'}
             </p>
             <button
@@ -327,6 +341,8 @@ export default function ScoreProcess() {
             <div style={styles.ctaTitle}>
               {omrEngine === 'claude_vision'
                 ? 'Claude Vision is reading your score…'
+                : omrEngine === 'staged'
+                ? 'The staged pipeline is reading your score…'
                 : 'Local YOLO OMR is scanning your score…'}
             </div>
             {omrProgress && omrProgress.total_pages > 0 ? (

@@ -271,6 +271,72 @@ class TestMachineProxies(unittest.TestCase):
         self.assertIsNone(out["held_out"]["fraction"])
 
 
+# ── lilypond (roadmap 3.1b: the native exporter, not musicxml2ly) ────────
+
+class TestLilypondCheck(unittest.TestCase):
+    """`A.lilypond_check` now takes the LOADED RECORD, not a MusicXML path —
+    it calls `staged/lilypond.py:to_lilypond` (roadmap 3.1) directly, the
+    same object `_load_and_export` already holds, never a second
+    `load_record` and never the `musicxml2ly` round-trip this replaced.
+
+    Reuses `test_staged_export.py`'s fixture helpers (the same pattern
+    `test_staged_lilypond.py` uses) rather than duplicating them.
+    """
+
+    def test_lilypond_missing_is_a_reason_not_a_crash(self):
+        from tools.omr.tests.test_staged_export import QUARTER, _one_staff_page
+        with mock.patch("shutil.which", return_value=None):
+            out = A.lilypond_check(_one_staff_page(notes=[("C4", QUARTER)]),
+                                   Path(tempfile.mkdtemp()))
+        self.assertFalse(out["available"])
+        self.assertIn("reason", out)
+
+    def test_a_tiny_record_compiles_and_the_proxies_are_zero(self):
+        """A one-note, no-tie, one-bar fixture must compile clean: zero
+        bar-check failures, zero unterminated ties — the CONTROL this proxy
+        needs (Sec.6a: "a control must be able to fail"; the failing half
+        is `test_an_unresolved_tie_is_counted` below)."""
+        import shutil as _shutil
+        if _shutil.which("lilypond") is None:
+            self.skipTest("lilypond not on PATH")
+        from tools.omr.tests.test_staged_export import QUARTER, _one_staff_page
+        # An explicit 1/4 meter matching the one quarter note -- WITHOUT it
+        # the exporter's own meter default and this fixture's one-beat bar
+        # disagree, which is a real (and separately known) shortfall, not
+        # the thing this test is checking for.
+        page = _one_staff_page(
+            notes=[("C4", QUARTER)],
+            meter={"numerator": 1, "denominator": 4, "raw": "1/4"})
+        with tempfile.TemporaryDirectory() as tmp:
+            out = A.lilypond_check(page, Path(tmp))
+        self.assertTrue(out["available"])
+        self.assertTrue(out["converted"])
+        self.assertTrue(out["compiled"], out.get("log_tail"))
+        self.assertTrue(out["pdf_produced"])
+        self.assertEqual(out["barcheck_failures"], 0)
+        self.assertEqual(out["unterminated_ties"], 0)
+        self.assertIsInstance(out["export_report"], dict)
+
+    def test_the_regexes_match_lilyponds_actual_wording(self):
+        """A control must be able to fail (CLAUDE.md rule 7), and the
+        cheapest honest way to show that here is against LilyPond's OWN
+        wording rather than a string this test invented: confirmed against
+        a real `lilypond 2.24.4` run, in this item's own session, on a
+        deliberately unresolved tie (`c'4~ d'4`) and a deliberately wrong
+        bar length — the literal stderr lines are "warning: unterminated
+        tie" and "warning: barcheck failed at: 3/4". This pins the two
+        regexes to that wording and shows each can both match and fail to
+        match."""
+        self.assertTrue(A._UNTERMINATED_TIE_RE.search(
+            "warning: unterminated tie"))
+        self.assertTrue(A._BARCHECK_RE.search(
+            "warning: barcheck failed at: 3/4"))
+        self.assertFalse(A._UNTERMINATED_TIE_RE.search(
+            "Success: compilation successfully completed"))
+        self.assertFalse(A._BARCHECK_RE.search(
+            "Success: compilation successfully completed"))
+
+
 # ── skipped / absent / error are never a numeric 0 ───────────────────────
 
 class TestStepOutcomesAreDistinctFromAValue(unittest.TestCase):
