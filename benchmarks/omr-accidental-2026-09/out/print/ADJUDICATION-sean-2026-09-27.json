@@ -571,23 +571,21 @@
   "a box merged with neighbouring ink (3: tall, 14: the barline)"
  ],
  "summary": {
-  "right_pairing": 20,
-  "right_pairing_wrong_staff_above": [
-   2,
+  "decided_pairings": 25,
+  "decided_right": 20,
+  "decided_right_but_wrong_staff_above": [
    4,
    13,
    20,
    23,
    26
   ],
-  "wrong": {
-   "3": "tremolo slash taken as the head; tall merged box",
-   "7": "a key-signature flat read as in-bar; the true sharp undetected"
+  "decided_wrong": 0,
+  "abstained_controls": {
+   "2": "right pairing shown, wrong staff above \u2014 the reader abstained",
+   "3": "tremolo slash as the candidate head \u2014 the reader abstained (correctly)",
+   "7": "a key-signature flat as the candidate \u2014 the reader abstained (correctly)"
   },
-  "abstained_controls_in_the_28": [
-   "acc-02.png",
-   "acc-03.png",
-   "acc-07.png"
-  ]
+  "gate_0_wrong_on_decided_pairings": "MET for the PAIRING (25 of 25 accidental\u2192note); the staff attribution is wrong on 5 of 25 \u2014 a notehead ownership fault, not the accidental reader's"
  }
 }
