@@ -677,3 +677,334 @@ unaffected by construction.
   `arc_owner` verdict, 2,207 verdicts on Breitkopf. That is an ADJUDICATE
   wall-time cost, not a size one, and was NOT measured here. It is the
   natural next question if a whole-movement adjudicate is slow.
+
+## 13. ROADMAP 2.4c — the first consumer lands: an UNREAD MARK
+
+2026-09-28. `A-DUR-5`'s own text named the shape this rung would need: *"we
+know what this blob is in 3 of the 10 systems and they all line up."*
+`Q.ONSET_COLUMN` is that alignment, already built and already measured
+against a null (SS5 above); this is the decision that reads both of them
+together. `adjudicators/unread_mark.py`, registered in `adjudicate.ORDER`
+right after `Q.ONSET_COLUMN` (its one dependency).
+
+### 13.1 REACH FIRST — the two shared whole-movement records hold no
+component boxes at all
+
+Before anything else: does `library/_shared-records/beethoven5-litolff-
+mvt1-whole-20260923.record.json` and `brahms1-breitkopf-mvt1-whole-
+20260923.record.json` carry the per-component form this decision needs?
+Grepped directly (`grep -o ink_bbox_canonical | wc -l`, the one key that
+tells the two `Q.INK` forms apart): **0 occurrences in either file**, against
+5,270 / 6,685 occurrences of `ink_total_area_px` (the SUMMARY form's own key,
+one row per CELL). Both whole-movement records were gathered under
+roadmap 1.1's default (`component_rows=False`), which drops the box and
+keeps only the aggregate — exactly what SS3 above (`gather_ink`'s own
+docstring) says it would. **So this decision's own compatibility test
+(`test_an_old_record_without_ink_rows_abstains_and_does_not_crash`) is not
+a hypothetical: it is the shape of every record this project has committed
+so far**, and a whole-movement run needs `--ink-rows` before this decision
+can see anything on it at all — a real cost (SS2 above: the schema switch
+alone is ~3-4% of a record; `--ink-rows` also loses roadmap 1.1b's slimming).
+
+So REACH was measured on ONE FRESH PAGE per acceptance scan instead, gathered
+with `--ink-rows --no-surya --no-ocr` (another session held the Surya
+server), weights `hollow-graft-shift09-2026-09-04`: Litolff Beethoven 5 pdf
+page 3 (2 systems, 19 staves), Breitkopf Brahms 1 pdf page 1 (2 systems, 27
+staves). Population, per the brief, component-by-component:
+
+| | Litolff p3 | Breitkopf p1 |
+|---|--:|--:|
+| total `Q.INK` component rows | 1,780 | 6,055 |
+| (a) zero detector coverage | 809 | 3,655 |
+| (b) of those, notehead-sized (`[1.0, 1.8] x [0.34, 1.8]` staff spaces — floor imported from `notehead_precision.TOO_NARROW_MIN_SPACES`, ceiling from `omr-notehead-width-2026-09`'s own measured p5–p95 band) | 38 | 107 |
+| (c) of those, at a column `Q.ONSET_COLUMN` already calls corroborated (`n_witness >= 2`, this component's own staff not among the witnesses) | **7** | **21** |
+
+**Non-zero on both pages — not DEAD AT ZERO.** ⚠️⚠️ **(c) WAS MEASURED
+TWICE, AND THE FIRST NUMBER WAS WRONG BY A FRAME-MIXING BUG THIS PROJECT HAS
+NAMED BEFORE.** The first pass (and the first draft of the decision itself)
+converted `ONSET_COLUMN_TOLERANCE_SPACES` to pixels using `Q.INK`'s own
+`cell_staff_space_px` — which is the component's CANONICAL-frame unit
+(`gather_ink` measures it off `cell.image_no_staff`, the rescaled crop),
+not the PAGE-frame unit every other quantity in this test is expressed in
+(`bbox_page_px`, `Q.CELL_BOX`, `Q.STAFF_LINES`, `Q.ONSET_COLUMN`'s own
+`x_page`). On Litolff that canonical unit is 100.0px against a real
+page-frame `Q.STAFF_SPACING` of **15.75px** — a 6.3x error — and the
+raw (wrong-unit) pass reported (c) = 13 / 37. Caught by a test that
+fabricated the exact shape (`test_the_SAME_component_at_an_uncorroborated_x_
+does_not_fire` passing for the wrong reason), then confirmed by hand on
+`cell/3/0/2/5`: a real candidate sitting 9.14 page-px from its nearest
+column, comfortably inside the wrong 10px tolerance and comfortably outside
+the right 1.575px one. `Q.ONSET_COLUMN`'s own `_system_spacing` reads
+`Q.STAFF_SPACING` for exactly this reason; the fix here is CONNECT, not a
+new measurement — read the same quantity the sibling decision already reads.
+The table above is the CORRECTED (c).
+
+### 13.2 The rule, and its stage
+
+**ADJUDICATE** (`adjudicate_unread_mark`, `Q.UNREAD_MARK`, scope CELL,
+`subjects_from=Q.INK`): decided `True` ("unread_mark") where at least one
+component in the bar passes zero-coverage, notehead-sized and corroborated-
+column AND neither guard excludes it; decided `False` ("no_mark") where the
+component-form data was present and nothing in the bar qualifies (an ANSWER,
+`notehead_is_not_a_notehead`'s own reasoning for its False branch); abstains
+only where the INPUT is missing (`no_ink_component_rows`, `no_onset_column`,
+`no_page_frame`). The value is a bare `True`/`False` — no pitch, no
+duration, no class is ever written; `detail` names the triggering component,
+its size, and the column that corroborated it.
+
+Two guards, both stated as CONVENTION ASSUMED / NOT PRINT-CONFIRMED (nobody
+was available to ask, CLAUDE.md rule 3), narrower than the notehead-sized
+window so they cannot swallow it:
+
+- **touches a barline** — `measure_extractor.py`: a cell is bounded by its
+  own adjacent barlines, so `Q.CELL_BOX`'s edge IS the barline; a component
+  within 0.5 staff spaces of it is excluded (a SHATTERING plate's barline
+  fragment). Fired on 3 of Breitkopf's 21 candidates, 0 of Litolff's 7.
+- **lies on a staff line's y** — a component both short (inside the
+  notehead floor but well under a genuine note's own height) and centred on
+  one of `Q.STAFF_LINES`' five values is excluded (a MERGING plate's line
+  residue). Fired on 0 of the 28 real candidates on either page — reported
+  here as UNEXERCISED ON REAL DATA rather than omitted, exactly the
+  discipline `Verdict.correlated`'s own dead-arm history asks for.
+
+### 13.3 What fired
+
+**Litolff p3: 7 of 7 corroborated candidates fire** (0 guard exclusions, 0
+duplicate-cell collapses). **Breitkopf p1: 16 of 21** (3 barline exclusions,
+2 candidate pairs sharing one cell collapse to one verdict each, since a
+decision fires once per BAR not once per component). Zero abstentions on
+either page once component rows exist — every bar with any ink tested clean.
+
+### 13.3b ⚠️⚠️ THE CROP PASS FOUND THE DOMINANT FAILURE MODE, AND IT IS NOT
+EITHER GUARD
+
+This is my own read while cutting the crops, for quality control before
+handing them to Sean — not a recorded verdict, and not a substitute for his.
+**Breitkopf: 6 of 6 crops cut are printed DIRECTION-WORD TEXT, not notes**
+— `espr.`, `arco` (twice), `unis.` (twice) and a dynamic `p` — every one a
+word or letter sitting above or below the staff, at a column another staff's
+REAL note corroborates by coincidence (these directive words are commonly
+printed at a beat that also carries a note in a nearby part). **Litolff: 5
+of 6 look like plausible real noteheads** sitting cleanly on the staff's own
+second line; the sixth (`cell/3/0/1/3`) sits in dense, ornate ink between
+two staves and is genuinely ambiguous — see its own crop note below.
+
+**Why neither guard catches the text.** `ink_detector_coverage` — the
+"zero coverage" test itself — is computed only from the YOLO detector's own
+boxes (`gather_ink`'s `detections` argument); a direction word is read by a
+completely different subsystem (`gather_direction_words`, Surya/Tesseract
+OCR over an ink-minus-detections band) that writes `Q.DIRECTION_WORD`, never
+a detector box. So a word's ink is "zero coverage" to this rule NO MATTER
+WHETHER SURYA RAN — disabling it for this measurement (`--no-surya --no-ocr`,
+REACH FIRST's own instruction) is not the cause. Neither the barline guard
+nor the staff-line guard has any reason to fire on a normal printed letter
+sitting cleanly above a staff. **This decision, as built, has no way to
+tell a letterform from a notehead by shape alone at the sizes involved** —
+"espr." and "arco"'s individual letters routinely fall inside the same
+1.0–1.8 x 0.34–1.8 staff-space window a real head does (SS13.2's own table).
+
+**This was the OPEN QUESTION, and it did not exist as a testable population
+until this crop pass ran.** Manager review (2026-09-28) asked for the cheapest
+CONNECT — excluding a component overlapping a `Q.DIRECTION_WORD` or
+`Q.DYNAMIC_LETTER` region — built and PRICED; see SS13.9. Until then, and
+still true of the residue SS13.9 measures: this decision's fired verdicts on
+a plate with heavy direction-text (Breitkopf, and likely any full orchestral
+score) run heavily toward printed words, not missed notes, and the two
+acceptance documents diverge sharply enough (0/6 vs 5/6 plausible on the
+crop sample) that this is a PLATE fact, not a tuning question — exactly
+CLAUDE.md's own axis (Litolff MERGES, Breitkopf SHATTERS) showing up a
+second time, in a population this project had not yet tested. Manager
+review also required the hold-out itself to go RECORD-ONLY
+(`export.UNREAD_MARK_HOLDS_OUT = False`) until this population is trusted —
+see SS13.4's rewrite.
+
+### 13.4 EXPORT — RECORD-ONLY until print-checked (manager review 2026-09-28)
+
+⚠️⚠️ **REVISED. The original landing held the bar out live; manager review
+reverted that** for the reason SS13.3b measures: a held-out bar throws away
+notes that were read CORRECTLY, and 6 of 6 Breitkopf crops turned out to be
+printed text, not missed notes — rule 5, print before default, cuts against
+shipping a hold-out this population has not earned.
+
+`export.UNREAD_MARK_HOLDS_OUT` — a MODULE CONSTANT, `notehead_precision.
+UNLADDERED_SHIPS`'s own pattern, never an env flag — defaults `False`. With
+it `False`: `adjudicate_unread_mark` still fires exactly as before (nothing
+in ADJUDICATE changed), and `export.py` still RECORDS every bar it fires on
+— `report["possibly_unread_mark"]` (`bars`, `holds_out`, the full `marked`
+list, each entry's own `held_out` flag) — but the bar's notes are written
+UNCHANGED, exactly as if no mark existed. The full hold-out branch (`_mxl_
+empty_measure`, `bars_held_out_unread_mark`, `notes_held_out_unread_mark`,
+the `possibly_unread_mark` refusal name, all unchanged from the original
+landing) is fully built and kept alive behind the constant, proved by
+`TestTheHoldOutBranchStillWorksWhenTrusted`, which flips it in-process.
+`report["bars_held_out_unread_mark"]["held"]` is the (today, empty)
+`held_out=True` subset of `marked`, so the two report keys read consistently
+whichever way the constant is set.
+
+⚠️ **A STATED SCOPE LIMIT, NOT AN OVERSIGHT** (unchanged by the record-only
+revision, since it concerns the HOLD-OUT branch's own accounting): the six
+SECONDARY family accounts (`arcs`/`ties`, `articulations`, `dot_role`,
+`ornaments`, `wedges`, `fermatas`) fold an unread-mark hold-out's marks into
+2.8's own `bar_does_not_add_up` bucket rather than getting a seventh named
+bucket apiece — forking six family-accounting sites was out of scope for
+this lane. Every one of those families' own accounting EQUALITY still
+balances; only the stated REASON is imprecise where the two mechanisms
+coincide with a mark on a chord/tie/dynamic, and only once the constant is
+trusted to run.
+
+### 13.5 Tests, RED first
+
+`tools/omr/tests/test_staged_unread_mark.py`, 20 tests across four classes.
+RED confirmed by inspection rather than a literal old-tree run (worktree
+hygiene: this branch never held the pre-2.4c tree): `git show origin/main:
+tools/omr/staged/record.py | grep -c UNREAD_MARK` returns 0, so code shaped
+like `adjudicate.REGISTRY[Q.UNREAD_MARK]` fails at collection with
+`AttributeError` before this lane's commits, exactly as importing
+`adjudicators.unread_mark` does (`ModuleNotFoundError`).
+
+* `TestTheAdjudicateDecision` (9): the population test, its negative control
+  at an uncorroborated x (CLAUDE.md rule 7 — and the control that caught the
+  frame-mixing bug above), the too-few-witnesses control, the covered-
+  component control, the size-window control, both original guard tests
+  (each with its own dead-threshold bug found and fixed mid-lane), and the
+  old-record compatibility case.
+* `TestTheDirectionTextGuard` (4): a component inside a direction-word box
+  is not marked, the SAME component with no word box IS marked (the control
+  that can fail), a non-overlapping word box does not blanket-exclude, and
+  the `Q.DYNAMIC_LETTER` half of the guard.
+* `TestExport` (4): by default a decided mark is RECORDED but the bar's
+  notes are written unchanged; the no-mark negative control; the decided-
+  `False` control; the bar-sum-already-claimed-it case is not also recorded.
+* `TestTheHoldOutBranchStillWorksWhenTrusted` (3): flipping
+  `UNREAD_MARK_HOLDS_OUT` to `True` in-process reproduces the original
+  landing's hold-out exactly (own refusal name, own counters, the two
+  report keys agree), it is still not confused with the bar-sum refusal, and
+  the flip does not leak into a later call that never set it.
+
+### 13.6 Landing numbers
+
+Two landings on this branch: the original (hold-out live, 14 tests) and the
+manager-review revision (record-only + text guard, 20 tests). Numbers below
+are the REVISION's.
+
+`pytest tools/omr/tests -m "not slow" -q`: 3,447 passed, 3 skipped, 0 failed
+(this branch's own test file contributes 20 of those; the origin/main
+fast-tier count was not separately measured, only `staged.check`'s baseline
+was, via `git stash` below). `staged.check`: origin/main baseline measured
+at **253** (via `git stash`, not assumed); this branch reports **251**,
+unchanged by the revision — `staged.reach` and `staged.wiring` each lose one
+entry (`Q.INK`, `DETAIL Q.INK.ink_bbox_canonical`) because this decision is
+the consumer both were waiting for, per each entry's own "LEAVES THIS LIST
+the day a decision reads it" clause; `staged.health` gains and then loses
+one EMPTY CELL (`unread_mark` — a scanner-visibility fix in the test file's
+own `_decide` helper, not a real gap, see its comment). Adding
+`Q.DIRECTION_WORD`/`Q.DYNAMIC_LETTER` to `wants` opened no new inventory or
+wiring gap (both are already-consumed GATHER quantities elsewhere). **N
+fell, and stayed fallen.**
+
+### 13.7 Crops
+
+12 crops cut (6 Litolff, 6 of 16 Breitkopf, `benchmarks/omr-ink-gather-2026-
+09/probe/crop_unread_mark.py`, self-contained — re-gathers the one page
+in-process rather than depending on a saved multi-MB record file), under
+`out/print/u24c-<label>-cell-<page>-<system>-<staff>-<cell>.png` with a
+`.json` sidecar per tile (`VERDICT_none_yet: null`). Each crop draws the
+flagged staff's own `Q.STAFF_LINES` (blue), the corroborated column's x
+(green dashed), and corner brackets on the exact flagged ink component
+(red), labelled `p/sys/staff/cell` in the corner — `feedback_send_sean_the_
+crop`'s own rule: never crop between two staves, never leave the subject
+unnamed. Sean adjudicates; this job does not claim their accuracy.
+
+⚠️ **THE 6 PER PAGE ARE THE FIRST 6 BY SUBJECT KEY (STAFF, THEN CELL), NOT A
+RANDOM OR STRATIFIED SAMPLE.** On Breitkopf that sorts toward the lower
+strings (staves 8–12), which is exactly where `arco`/`pizz.`/`unis.`
+markings cluster on an orchestral page — so SS13.3b's 6-of-6 text rate may
+overstate the true-population rate on the other 10 fired bars this pass did
+not crop. The opposite bias is just as real: a stratified or random sample
+was not built here, so neither number should be quoted past "the two plates
+disagree sharply on this small sample."
+
+### 13.9 The text guard, built AND priced (manager review 2026-09-28)
+
+The third guard: exclude a component whose page box overlaps a
+`Q.DIRECTION_WORD` (a word Surya/Tesseract actually READ and the lexicon
+accepted) or `Q.DYNAMIC_LETTER` (a detected `dynamicPiano`/etc glyph)
+observation anywhere on the SAME SYSTEM. Both are CONNECTED, not
+re-derived — the same discipline `Q.ONSET_COLUMN` itself is read under.
+
+⚠️⚠️ **THE PLAN WAS WRONG, AND IT WAS WRONG BEFORE ANY CODE RAN.** The
+instruction going in was that this could only be unit-tested tonight,
+because the reach gathers ran `--no-surya --no-ocr` to leave the shared
+Surya server alone. Checked against the tree: **`--no-surya`/`--no-ocr` gate
+only `gather_margin_labels`** (the instrument-name reader, `staff_labels_
+surya`/`staff_labels_tesseract`); `gather_direction_words` takes no such
+parameter and calls Surya UNCONDITIONALLY (`gather.py:3747` on). Both saved
+gathers from SS13.1 therefore already carry real `Q.DIRECTION_WORD` rows —
+Breitkopf: 8 accepted words of 205 candidates (the other 197 `no_reading`
+abstentions); Litolff: similarly abstention-heavy. **No new Surya call was
+made** to get the numbers below — only a re-read of data this session had
+already produced, honouring "do not start a Surya gather" while still
+pricing the guard rather than leaving it a promise.
+
+**Re-adjudicating both saved records with the guard added:**
+
+| | before (SS13.3) | after | excluded |
+|---|--:|--:|--:|
+| Litolff p3 | 7 | **7** | 0 |
+| Breitkopf p1 | 16 | **11** | 5 |
+
+The 5 excluded on Breitkopf are `cell/1/0/1/3`, `cell/1/0/10/1`,
+`cell/1/0/12/3`, `cell/1/1/2/0`, `cell/1/1/8/0`. The first three are
+INDEPENDENTLY CONFIRMED by eye in the SS13.3b crop pass as `espr.`, `unis.`
+and `arco` — the guard removed exactly the bars a human already read as
+text, not an unrelated set. Litolff's 0 exclusions are consistent with
+SS13.3b's own read (5 of 6 Litolff crops looked like real noteheads; there
+was little text to connect to on that page).
+
+⚠️⚠️ **AND IT IS MEASURABLY A PARTIAL FIX.** `cell/1/0/10/3` and
+`cell/1/0/11/3` — BOTH independently confirmed by eye as printed text
+(`espr. arco` and `arco`, the SAME crop pass) — are STILL AMONG THE 11 THAT
+FIRE after the guard. Their ink sits where a word is printed, but no
+`Q.DIRECTION_WORD` OBSERVATION covers that exact box: the reader's own
+lexicon gate is deliberately narrow (CLAUDE.md: "never loosen") and on this
+page it abstains `no_reading`/`not_in_lexicon` on the large majority of
+candidates, so a genuine word the OCR/lexicon chain did not accept leaves no
+box for this guard to connect to. **The guard inherits the direction-text
+reader's own recall ceiling; it does not exceed it.** The 11 still-fired
+Breitkopf bars must not be read as "cleared" by the guard's silence — several
+are very likely more unrecognised text, not missed notes, and only a human
+crop review (or a recall-side fix to the direction-text reader itself, out
+of scope here) can tell which.
+
+**What this changes and does not change.** It does not change the decision
+to ship record-only (SS13.4): a guard that removes under a third of one
+page's measured false positives, on a REACH-ONLY page pair rather than the
+committed acceptance set, is not grounds for trusting the hold-out live. It
+DOES mean the next step is sharper than "gather with Surya and see" — the
+data already shows the guard helps and is incomplete, so the next step is
+either widening the lexicon/recall on this page's specific vocabulary or
+finding a shape-side signal (text is usually laid out in a straight
+baseline row at fixed letter spacing; a single isolated notehead is not) to
+catch what OCR recall misses.
+
+### 13.8 Not established
+
+- The direction-text guard (SS13.9) is priced only on two REACH pages, not
+  the committed acceptance set, and even there removes fewer than half of
+  the measured Breitkopf false positives (recall-limited, not shape-limited)
+  — the residue is the new ranked #1, not a closed question.
+- The two guards' exact tolerances are asserted, not print-measured (SS13.2).
+- Whole-movement reach: not measured. `--ink-rows` costs the roadmap-1.1b
+  slimming AND the schema switch (SS2 above), so a real whole-movement run
+  needs the ink-summary persisted ALONGSIDE a decision-time re-derivation, or
+  a second full gather pass — unbuilt.
+- The `on_a_staff_line` guard fired zero times on 28 real candidates; it is
+  shape-plausible (SS4/SS10) and untested against a real staff-line-residue
+  case that also happens to be notehead-sized and corroborated. A crop pass
+  that finds one would be the first real exercise of it.
+- Cross-staff bleed (CLAUDE.md's measure-cell-padding note, SS10) is not
+  separately guarded: a component that is genuinely the NEIGHBOUR staff's
+  ink, reaching into this cell's vertical padding, would need to be far
+  enough from every `Q.STAFF_LINES` value to dodge the sliver guard and
+  still land in the notehead-sized window — plausible on a crowded page,
+  unmeasured here. The crops are the instrument for finding one.

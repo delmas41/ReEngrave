@@ -1,0 +1,179 @@
+{
+  "label": "litolff",
+  "pdf": "library/editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf",
+  "page": 3,
+  "dpi": 600,
+  "tiles": [
+    {
+      "subject": "cell/3/0/1/3",
+      "page": 3,
+      "system": 0,
+      "staff": 1,
+      "cell": 3,
+      "reason": "unread_mark",
+      "ink_components": [
+        "glyph/3/0/1/3/200009"
+      ],
+      "width_spaces": 1.39,
+      "height_spaces": 0.38,
+      "bbox_page_px": [
+        1026.0825,
+        716.015,
+        1047.975,
+        722.0
+      ],
+      "column_x_page": 1037.62,
+      "column_witnesses": [
+        5,
+        6
+      ],
+      "column_n_witness": 2,
+      "excluded_by_guard": [],
+      "file": "u24c-litolff-cell-3-0-1-3.png",
+      "VERDICT_none_yet": null
+    },
+    {
+      "subject": "cell/3/0/2/13",
+      "page": 3,
+      "system": 0,
+      "staff": 2,
+      "cell": 13,
+      "reason": "unread_mark",
+      "ink_components": [
+        "glyph/3/0/2/13/200001"
+      ],
+      "width_spaces": 1.33,
+      "height_spaces": 0.7,
+      "bbox_page_px": [
+        2339.035,
+        742.065,
+        2359.9825,
+        753.09
+      ],
+      "column_x_page": 2349.06,
+      "column_witnesses": [
+        1,
+        5,
+        10
+      ],
+      "column_n_witness": 3,
+      "excluded_by_guard": [],
+      "file": "u24c-litolff-cell-3-0-2-13.png",
+      "VERDICT_none_yet": null
+    },
+    {
+      "subject": "cell/3/0/5/1",
+      "page": 3,
+      "system": 0,
+      "staff": 5,
+      "cell": 1,
+      "reason": "unread_mark",
+      "ink_components": [
+        "glyph/3/0/5/1/200003"
+      ],
+      "width_spaces": 1.4,
+      "height_spaces": 0.83,
+      "bbox_page_px": [
+        717.0575,
+        1170.065,
+        739.1075,
+        1183.1375
+      ],
+      "column_x_page": 728.37,
+      "column_witnesses": [
+        7,
+        8,
+        9
+      ],
+      "column_n_witness": 3,
+      "excluded_by_guard": [],
+      "file": "u24c-litolff-cell-3-0-5-1.png",
+      "VERDICT_none_yet": null
+    },
+    {
+      "subject": "cell/3/0/5/15",
+      "page": 3,
+      "system": 0,
+      "staff": 5,
+      "cell": 15,
+      "reason": "unread_mark",
+      "ink_components": [
+        "glyph/3/0/5/15/200003"
+      ],
+      "width_spaces": 1.33,
+      "height_spaces": 0.76,
+      "bbox_page_px": [
+        2527.035,
+        1169.12,
+        2547.9825,
+        1181.09
+      ],
+      "column_x_page": 2536.33,
+      "column_witnesses": [
+        2,
+        3
+      ],
+      "column_n_witness": 2,
+      "excluded_by_guard": [],
+      "file": "u24c-litolff-cell-3-0-5-15.png",
+      "VERDICT_none_yet": null
+    },
+    {
+      "subject": "cell/3/0/6/1",
+      "page": 3,
+      "system": 0,
+      "staff": 6,
+      "cell": 1,
+      "reason": "unread_mark",
+      "ink_components": [
+        "glyph/3/0/6/1/200003"
+      ],
+      "width_spaces": 1.34,
+      "height_spaces": 0.77,
+      "bbox_page_px": [
+        718.0025,
+        1314.9625,
+        739.1075,
+        1327.09
+      ],
+      "column_x_page": 728.37,
+      "column_witnesses": [
+        7,
+        8,
+        9
+      ],
+      "column_n_witness": 3,
+      "excluded_by_guard": [],
+      "file": "u24c-litolff-cell-3-0-6-1.png",
+      "VERDICT_none_yet": null
+    },
+    {
+      "subject": "cell/3/0/6/15",
+      "page": 3,
+      "system": 0,
+      "staff": 6,
+      "cell": 15,
+      "reason": "unread_mark",
+      "ink_components": [
+        "glyph/3/0/6/15/200001"
+      ],
+      "width_spaces": 1.27,
+      "height_spaces": 0.77,
+      "bbox_page_px": [
+        2529.0825,
+        1314.9625,
+        2549.085,
+        1327.09
+      ],
+      "column_x_page": 2538.77,
+      "column_witnesses": [
+        0,
+        1
+      ],
+      "column_n_witness": 2,
+      "excluded_by_guard": [],
+      "file": "u24c-litolff-cell-3-0-6-15.png",
+      "VERDICT_none_yet": null
+    }
+  ]
+}

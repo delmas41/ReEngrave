@@ -934,6 +934,15 @@ class Q(_Vocab):
     #: definitions. It is a diagnostic only, and a good one: a residual of
     #: exactly 0.0 is what exposed the glyph-ordinal collision bug.
     ONSET_COLUMN = "onset_column"
+    #: ROADMAP 2.4c -- a BAR (cell) holds ink no detection explains, sized
+    #: like a notehead, at a column another staff of the system corroborates
+    #: (`Q.ONSET_COLUMN`). A MARK, never a note: the value is a bare
+    #: True/False and carries no pitch, no duration, no class -- only which
+    #: `Q.INK` component(s) triggered it. `export.py` holds the whole bar
+    #: out, the same mechanism roadmap 2.8 built for a bar whose durations do
+    #: not sum to the meter, so "we cannot vouch for this bar" is said one
+    #: way. See `adjudicators/unread_mark.py`.
+    UNREAD_MARK = "unread_mark"
     GLYPH_OWNER = "glyph_owner"
     ARC_OWNER = "arc_owner"
     ARC_KIND = "arc_kind"                    # tie | slur
@@ -1641,6 +1650,7 @@ CLAIMS: "dict[str, str]" = {
     "DURATION": CLAIM.INTERPRETATION,
     "EVENT": CLAIM.INTERPRETATION,
     "ONSET_COLUMN": CLAIM.INTERPRETATION,
+    "UNREAD_MARK": CLAIM.INTERPRETATION,
     "VOICES": CLAIM.INTERPRETATION,
     "STEM_DIRECTION": CLAIM.INTERPRETATION,
     "TUPLET_RATIO": CLAIM.INTERPRETATION,

@@ -1,0 +1,29 @@
+{
+  "subject": "cell/3/0/2/13",
+  "page": 3,
+  "system": 0,
+  "staff": 2,
+  "cell": 13,
+  "reason": "unread_mark",
+  "ink_components": [
+    "glyph/3/0/2/13/200001"
+  ],
+  "width_spaces": 1.33,
+  "height_spaces": 0.7,
+  "bbox_page_px": [
+    2339.035,
+    742.065,
+    2359.9825,
+    753.09
+  ],
+  "column_x_page": 2349.06,
+  "column_witnesses": [
+    1,
+    5,
+    10
+  ],
+  "column_n_witness": 3,
+  "excluded_by_guard": [],
+  "file": "u24c-litolff-cell-3-0-2-13.png",
+  "VERDICT_none_yet": null
+}
