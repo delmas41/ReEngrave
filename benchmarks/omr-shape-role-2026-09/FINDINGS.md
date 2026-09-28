@@ -1874,3 +1874,189 @@ clean, unambiguous, system-wide `6/8` produces one stray unrelated box on
 one staff and nothing on the other thirteen. Not investigated further here
 (trace only, per the manager's instruction) — flagged as the next lever on
 this same funnel.
+
+
+# PART 7 — §2.12i: THE BAR-HEAD TEMPLATE READER WAS PRICED AGAINST THE REAL
+FIXTURE IT WAS WAITING FOR, AND REFUSES THE CHANGE IT WAS BUILT TO CATCH
+
+*(Branch `claude/meter-at-bar-2.12i`, 2026-09-28, base `origin/main` at
+`c323cd96` (2.12h.b). Brief: promote `OMR_METER_TEMPLATE_AT_BAR` — `docs/
+flags-2026-09.md`'s own row said "review when a fixture with a real
+mid-staff change exists", and 2.12h.b just found one: Brahms 1/i Breitkopf
+`317803`, pdf index 1, `system/1/0` cell 1, a clean printed `6/8` the
+detector never boxes on 13 of 14 staves.)*
+
+## Setup, and one correction to the brief
+
+`_meter_template_at_bar_enabled()` (`gather.py:3234`) ANDs the flag's own
+switch with `research_enabled(METER_TEMPLATE_AT_BAR_ENV)`, which tests
+whether `OMR_RESEARCH`'s comma-separated value NAMES the flag's own string —
+`docs/flags-2026-09.md`'s worked example is `OMR_RESEARCH=OMR_FAMILY_
+POSITIONS`. The brief's `OMR_RESEARCH=1` does not satisfy this (`"1" != "OMR_
+METER_TEMPLATE_AT_BAR"`) and the arm would silently run as a no-op OFF
+gather. Corrected to `OMR_METER_TEMPLATE_AT_BAR=1 OMR_RESEARCH=OMR_METER_
+TEMPLATE_AT_BAR` before running anything, confirmed by the reach numbers
+below being non-zero.
+
+## The two one-page gathers (per the proof budget — no whole-movement run)
+
+Tree clean, committed at base before both arms; symlinks per CLAUDE.md §5a
+(a fresh worktree has none of them); weights `deepscoresv2-yolov8l-hollow-
+graft-shift09-2026-09-04.pt`; `--dpi 600 --no-surya --no-ocr`, no
+`--musicxml` during gather (export run separately afterward on the saved
+records, per CLAUDE.md's own operational note about the exporter import
+order).
+
+```
+python3 -m tools.omr.staged brahms...317803.pdf --pages 1 --weights ... --dpi 600 --no-surya --no-ocr --out arm-off.staged.json
+OMR_METER_TEMPLATE_AT_BAR=1 OMR_RESEARCH=OMR_METER_TEMPLATE_AT_BAR python3 -m tools.omr.staged brahms...317803.pdf --pages 1 ... --out arm-on.staged.json
+```
+
+## REACH — real, not dead
+
+OFF arm: 0 `meter_template_at_bar` rows (byte-identity control holds). ON
+arm: **162 rows asked** across `system/1/0` (14 staves × 6 candidate cells:
+1–6) and `system/1/1` (13 staves × 5 candidate cells), **2 answered**. The
+candidate-column gate (`_meter_candidate_columns`, `MIN_CANDIDATE_STAVES=1`)
+is exactly as loose as designed: cell 1's own candidacy comes from a SINGLE
+stray `timeSig1` box on one staff (2.12h.b's own finding), which is enough
+to open the column to all 14 staves — the mechanism worked exactly as
+built. The reach is not the failure here.
+
+## THE FIXTURE CELL ITSELF — `system/1/0`, cell 1, all 14 staves
+
+| staff | verdict | its score | `6/8`'s own rank | `6/8`'s own score | top-1 | top-2 |
+|--:|---|--:|--:|--:|---|---|
+| 0  | abstain (below 0.50) | – | 4  | 0.4046 | `6/4` 0.4707 | `12/4` 0.4297 |
+| 1  | abstain | – | 7  | 0.3725 | `6/4` 0.4963 | `9/8` 0.4430 |
+| 2  | abstain | – | 8  | 0.3573 | `9/8` 0.4625 | `6/4` 0.4443 |
+| 3  | abstain | – | 7  | 0.3908 | `6/4` 0.4757 | `9/8` 0.4430 |
+| **4**  | **`9/8`** | **0.5113** | 2  | 0.4266 | `9/8` 0.5113 | `6/8` 0.4266 |
+| 5  | abstain | – | 8  | 0.3377 | `9/8` 0.4425 | `6/4` 0.4096 |
+| **6**  | **`6/4`** | **0.5030** | >2 (not top-2) | – | `6/4` 0.5030 | `9/8` 0.4611 |
+| 7  | abstain | – | 6  | 0.3855 | `6/4` 0.4738 | `9/8` 0.4692 |
+| 8  | abstain | – | 3  | 0.3871 | `9/8` 0.4747 | `6/4` 0.4073 |
+| 9  | abstain | – | 6  | 0.3588 | `6/4` 0.4500 | `9/8` 0.4406 |
+| 10 | abstain | – | 4  | 0.3961 | `6/4` 0.4743 | `9/8` 0.4231 |
+| 11 | abstain | – | 6  | 0.3436 | `9/8` 0.4521 | `6/4` 0.4171 |
+| 12 | abstain | – | 4  | 0.3608 | `9/8` 0.4627 | `6/4` 0.3994 |
+| 13 | abstain | – | 4  | 0.3490 | `9/8` 0.4433 | `6/4` 0.4127 |
+
+**`6/8` — the print's own answer, confirmed by eye on close to all 14
+staves in 2.12h.b's crops — never wins on ANY staff, and is the runner-up on
+exactly ONE (staff 4, still 8.5 points behind the winner).** Its own score
+sits at 0.34–0.47 everywhere, always below the winner AND the runner-up. The
+two staves that DO clear the 0.50 floor (4 and 6) clear it by less than
+0.013 above the floor, into the WRONG answer, each alone (`METER_TEMPLATE_
+AT_BAR_MIN_STAVES = 3`; 1 « 3 on both). `_admit_template_consensus` therefore
+admits nothing at cell 1, or at any of the other 10 candidate cells on this
+page (0 answered outside cell 1).
+
+## THE CAUSE, named — the SAME confusion 2.12h already measured, plus a new one
+
+2.12h (this same document, this same reader, the system's OPENING at cell
+0, a 16-space header window) already measured *"the denominator digit '8'
+is misread as '4' ... the numerator '9' is read correctly."* Here, one bar
+later, the SAME denominator confusion recurs (`6/8`'s `8` loses to `9/8`'s
+and `6/4`'s templates) and is joined by a NEW numerator confusion (`6/8`'s
+`6` loses to `9/8`'s `9` — a rotationally similar loop-shaped digit, the
+same family of confusion). The two crops 2.12h.b already cut
+(`out/print/m212h-brahms1-breitkopf/m212hb-*-staff1-clean.png`, `*-staff7
+.png`) show why on inspection: this Breitkopf plate's `6` and `8` are
+heavier, blobbier strokes than the Bravura NCC templates
+`time_signature_locator` matches against (staff 7's `8` fuses into the
+staff line as a single dark blob) — the true shape is a worse NCC match to
+its OWN template than the neighbouring wrong ones are, on this specific
+engraving. This is not a new mechanism defect to fix here (out of scope for
+a proof-budget item) — it is the answer to "why was this left in research":
+**the reader's known weak axis (denominator legibility) is exactly the axis
+this fixture tests, twice over (denominator AND, newly, numerator).**
+
+## Every other cell and system on the page
+
+Untouched: 0 of the other 10 candidate cells (`system/1/0` cells 2–6, `system
+/1/1` cells 1,2,4,5,6,7) answer at all — the pre-existing single-staff false
+positives at those cells that 2.12d already declines (`meter_change_not_
+system_wide`) are UNCHANGED, because this reader never reaches quorum there
+either.
+
+## Openings, segments, and the export — byte-identical
+
+`system/1/0` opening: `9/4 (voted)` in BOTH arms (this one-page gather has
+no preceding page to carry 2.12h's corroborated cautionary from — expected,
+and orthogonal to this item: `Q.METER_TEMPLATE_AT_BAR` is a separate
+quantity precisely so it cannot touch an opening vote). `system/1/1`:
+`carry_not_corroborated` in both. **Systems whose segments moved: 0.
+Systems whose opening moved: 0.** Exporting both saved records
+(`tools.omr.staged.export`, no gather): `bars_held_out_sum` **85 → 85**, and
+the two `.musicxml` files are **byte-for-byte identical** (`diff` clean).
+The flag has zero measurable effect anywhere on this page.
+
+## The no-change control — Litolff, pdf index 3
+
+Base: 0 rows (clean). Arm: **19 rows asked, 0 answered** (this continuation
+page does carry some meter-shaped ink mid-system, unlike Litolff p.1 in the
+original research, so reach is non-zero here too — the mechanism is live,
+not dead). Meter verdicts, segments and openings identical in both arms on
+both systems present (`system/3/0`, `system/3/1`, both `bars_name_a_length_
+without_a_form`).
+
+## THE GATE, against the brief's own wording
+
+Brief: *"the arm states 6/8 at `system/1/0` cell 1, with the quorum and the
+per-staff scores named, and it passes 2.12d's system-agreement rule."* It
+does not. No staff states `6/8`; no quorum of any value forms; the two
+answers that exist are wrong, single-staff, and would be declined by
+2.12d's own rule even if `METER_TEMPLATE_AT_BAR_MIN_STAVES` were removed
+entirely. **GATE FAILS.**
+
+## DECISION: NOT PROMOTED
+
+Per CLAUDE.md rule 5 (reach before accuracy — reach is real, accuracy is
+now measured and negative) and the proof budget's own instruction ("if the
+gate fails, do not promote — write the numbers into FINDINGS and stop"):
+`OMR_METER_TEMPLATE_AT_BAR` is left exactly as `docs/flags-2026-09.md`
+already has it — `research`, default OFF, gated behind `OMR_RESEARCH`. No
+code changed under `tools/omr/staged/`; no test file added or removed. The
+mechanism's own safety (`METER_TEMPLATE_AT_BAR_MIN_STAVES = 3`) did its job
+here — it refused the two wrong single-staff answers exactly as it would
+refuse two wrong answers under any circumstance, which is a working control,
+not a wasted one.
+
+## What is now established that was not before
+
+* This was the first time any page in reach printed a real mid-staff meter
+  change; it no longer isn't. The answer the original FINDINGS flagged as
+  entirely unmeasured (*"it has never been shown that this reads a real
+  one"*) is now measured, and is negative on this one fixture.
+* The failure mode is not the safety net (quorum) catching a good reading
+  too late — the READER itself does not produce a correct candidate on any
+  of the 14 staves, so no quorum threshold, however loosened, would have
+  helped here without also un-refusing the 16 spurious single-staff columns
+  section 2 of the original FINDINGS measured on blank ink.
+* The cause is not this fixture's alone: it is the SAME denominator
+  confusion 2.12h measured at this system's own opening, one bar earlier, on
+  the SAME reader. Two independent measurements on two adjacent bars of one
+  document now agree that this specific Breitkopf plate's digit strokes are
+  a poor NCC match to the Bravura template on both axes (`8`→`4`/`6`, `6`→
+  `9`) — a fact about THIS ENGRAVING's typeface at this weight, not a
+  one-off. A different publisher's digit strokes were not tested here and
+  might score differently; nothing here claims otherwise.
+
+## What contradicted this brief
+
+* `OMR_RESEARCH=1` does not enable the flag; it must name `OMR_METER_
+  TEMPLATE_AT_BAR` itself (see "Setup", above).
+* The gate's predicted outcome — a clean 6/8 consensus — did not hold. The
+  print IS a clean, unambiguous 6/8 (2.12h.b already established this by
+  eye and this item did not need to re-verify it), but the READER does not
+  see it that way.
+
+## Landing
+
+No promotion, so no new tests, no `docs/flags-2026-09.md` row change, no
+`test_flag_triage.py` change, no touch to `gather.py` or `rhythm.py` beyond
+reading them. `pytest tools/omr/tests -m "not slow"` and `tools.omr.staged.
+check` were run unmodified as a landing sanity check (numbers in the
+ROADMAP line); both were already green/251 on this branch's base and remain
+so, since no code moved.
