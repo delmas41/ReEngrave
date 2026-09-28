@@ -14,6 +14,7 @@ import {
   runTheoryCheck,
 } from '../api/client';
 import DiffCard from '../components/DiffCard';
+import StagedAccountingPanel from '../components/StagedAccountingPanel';
 import type { FlaggedDifference, HumanDecision } from '../types';
 
 interface TheoryIssue {
@@ -342,6 +343,8 @@ export default function ReviewUI() {
           </p>
         )}
       </div>
+
+      {score && <StagedAccountingPanel score={score} />}
 
       {/* Processing banner */}
       {score?.status === 'processing' && (
