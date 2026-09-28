@@ -1,0 +1,218 @@
+{
+ "label": "litolff-sean-viola",
+ "mode": "arm",
+ "root": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-aa87b7168f7b14458",
+ "sidecar": "benchmarks/omr-stage-review-2026-09/out/sean-viola-p3/sean.sidecar.json",
+ "record": "/Users/seanjohnson/Desktop/ReEngrave/library/_shared-records/beethoven5-litolff-mvt1-whole-20260923.record.json",
+ "record_md5": "7dbee148868c39634a20d5881143d3ee",
+ "recompute": {
+  "rows": 1538,
+  "top_from_page_cells": 61,
+  "top_from_notehead_cells": 930,
+  "page_vs_notehead_top_positions": {
+   "n": 930,
+   "median": 0.12349206349206952,
+   "p90": 0.760000000000033,
+   "max": 1.5400000000000182
+  },
+  "by_class": {
+   "accidentalFlat": 779,
+   "accidentalNatural": 504,
+   "accidentalSharp": 167,
+   "accidentalDoubleSharp": 85,
+   "accidentalDoubleFlat": 3
+  }
+ },
+ "decide_seconds": 1145,
+ "musicxml_md5": "4d8af32aad69fbc2941e34eddf777156",
+ "notes_in_file": 8767,
+ "accidental_elements": 218,
+ "alter_elements": 1160,
+ "written": {
+  "arc_notes_reachable_at_a_stem": 6174,
+  "tie_links_marked": 360,
+  "tie_links_crossing_a_barline": 34,
+  "tie_chains_marked": 275,
+  "tie_chains_over_two_notes": 24,
+  "tie_spans_marked": 360,
+  "slur_spans_marked": 317,
+  "tie_links_crossing_a_system_break": 2,
+  "tacet_bars_padded": 594,
+  "tacet_bars_not_padded_without_meter": 0,
+  "tacet_spans_declined_unidentified_part": 0,
+  "bars_with_events": 4502,
+  "bars_with_events_without_a_meter": 0,
+  "bars_judged_by_a_carried_meter": 0,
+  "bars_held_out_sum": 1806,
+  "notes_held_out_sum": 5191,
+  "measure_rests_read": 1022,
+  "fermatas": 66,
+  "beam_cells_without_a_frame_ruler": 266,
+  "empty_bars_padded": 844,
+  "empty_bars_padded_without_meter": 0,
+  "empty_bars_sized_by_a_carried_meter": 0,
+  "dynamics": 704,
+  "notes": 3900,
+  "articulations": 147,
+  "ornaments": 0,
+  "accidentals_printed": 218,
+  "beams": 901,
+  "pitches_altered_by_the_key": 1160,
+  "rests": 601,
+  "ties": 160,
+  "tie_stops_on_an_upper_chord_note": 48,
+  "two_voice_bars_held_out_by_sum": 115,
+  "tie_starts_on_an_upper_chord_note": 58,
+  "slurs": 107,
+  "two_voice_bars_refused_event_straddles_two_streams": 5,
+  "beamed_events": 887,
+  "two_voice_bars_refused_a_stream_has_no_written_note": 10,
+  "two_voice_bars": 7,
+  "rests_duplicated_across_voices": 8,
+  "fermatas_duplicated_across_voices": 0,
+  "two_voice_bars_in_an_unread_bar": 20,
+  "wedges": 1,
+  "bars_held_out_sum_on_a_doubled_staff": 89,
+  "notes_doubled_to_condensed_slot": 260,
+  "accidentals_printed_on_a_doubled_copy": 2,
+  "parts": 12,
+  "divisions": 96
+ },
+ "notes_not_written": {
+  "ink_is_a_whole_rest": 105,
+  "not_a_notehead:too_narrow": 290,
+  "not_a_notehead:clipped_fragment": 344,
+  "duration_narrowed": 1345,
+  "owned_by_another_staff": 934,
+  "rest_duration_narrowed": 37,
+  "rest_duration_abstained": 171,
+  "not_a_notehead:human_not_a_symbol": 8,
+  "not_a_notehead:human_other_staff": 1,
+  "not_a_rest:human_not_a_symbol": 1,
+  "no_pitch": 552,
+  "staff_not_identified": 312,
+  "bar_does_not_add_up": 5191
+ },
+ "status_census": {
+  "emitted": [
+   "accidental",
+   "articulation",
+   "clef",
+   "dynamic",
+   "fermata",
+   "key",
+   "note",
+   "slur",
+   "tie",
+   "time",
+   "tuplet",
+   "wedge"
+  ],
+  "decided_but_unwritten": [
+   "ornament"
+  ],
+  "decided_uncounted": [],
+  "abstained": [
+   "direction",
+   "rest"
+  ],
+  "stub": [],
+  "starved": [],
+  "NO_QUANTITY": [],
+  "unaccounted": [],
+  "n_families": 15,
+  "n_filed": 15,
+  "balanced": true
+ },
+ "accidental_reading": {
+  "printed_glyphs_detected": 1538,
+  "key_signature_glyphs_detected_and_owned_elsewhere": 541,
+  "gathered": 1538,
+  "owner_decided": 716,
+  "applied": 218,
+  "abstained_ambiguous": 20,
+  "no_candidate": 797,
+  "no_unit": 0,
+  "no_evidence": 0,
+  "refused_not_an_accidental": 5,
+  "heads_owned": 605,
+  "heads_contradicted": 79,
+  "owners_sharing_a_head": 111,
+  "applied_on_a_doubled_copy": 2,
+  "unowned": 310,
+  "carried_in_bar": 153,
+  "pitches_altered_by_the_key": 1160,
+  "printed_glyphs_read_into_a_verdict": 660,
+  "heads_balanced": true,
+  "unaccounted": 0
+ },
+ "family_refusals": {
+  "ledger_is_not_a_ledger": {
+   "refused": {
+    "on_a_staff_line": 4699,
+    "tall_not_a_rung": 22,
+    "human_not_a_symbol": 11
+   },
+   "refused_total": 4732,
+   "kept": 2887,
+   "abstained": 0,
+   "verdicts": 7619,
+   "balanced": true
+  },
+  "accidental_is_not_an_accidental": {
+   "refused": {
+    "human_not_a_symbol": 3,
+    "human_other_staff": 2
+   },
+   "refused_total": 5,
+   "kept": 1533,
+   "abstained": 0,
+   "verdicts": 1538,
+   "balanced": true
+  },
+  "rest_is_not_a_rest": {
+   "refused": {
+    "human_not_a_symbol": 1
+   },
+   "refused_total": 1,
+   "kept": 2897,
+   "abstained": 0,
+   "verdicts": 2898,
+   "balanced": true
+  },
+  "arpeggiato_is_not_an_arpeggiato": {
+   "refused": {
+    "human_not_a_symbol": 3
+   },
+   "refused_total": 3,
+   "kept": 1968,
+   "abstained": 0,
+   "verdicts": 1971,
+   "balanced": true
+  },
+  "arc_is_not_an_arc": {
+   "refused": {},
+   "refused_total": 0,
+   "kept": 2656,
+   "abstained": 0,
+   "verdicts": 2656,
+   "balanced": true
+  },
+  "dynamic_is_not_a_dynamic": {
+   "refused": {},
+   "refused_total": 0,
+   "kept": 1576,
+   "abstained": 0,
+   "verdicts": 1576,
+   "balanced": true
+  },
+  "articulation_is_not_an_articulation": {
+   "refused": {},
+   "refused_total": 0,
+   "kept": 464,
+   "abstained": 0,
+   "verdicts": 464,
+   "balanced": true
+  }
+ }
+}

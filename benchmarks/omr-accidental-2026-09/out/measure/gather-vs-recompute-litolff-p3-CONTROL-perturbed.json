@@ -1,0 +1,34 @@
+{
+ "record": "/private/tmp/claude-501/-Users-seanjohnson-Desktop-ReEngrave--claude-worktrees-start-here-questions-7d5637/3707ff6b-4757-4644-b4c5-de906d20a7bb/scratchpad/gather/arm-p3.record.json",
+ "perturbed": true,
+ "real_rows": 74,
+ "recomputed_rows": 74,
+ "only_in_real": [],
+ "only_in_recompute": [],
+ "joined": 74,
+ "exact_within_1e-9": 0,
+ "max_abs_position_diff": 0.83599313217033,
+ "rounded_or_class_mismatch": 6,
+ "by_top_route": {
+  "notehead": {
+   "n": 69,
+   "exact_1e-9": 0,
+   "max_abs": 0.18886811881188148
+  },
+  "page": {
+   "n": 5,
+   "exact_1e-9": 0,
+   "max_abs": 0.83599313217033
+  }
+ },
+ "recompute_controls": {
+  "top_from_notehead_cells": 43,
+  "top_from_page_cells": 4,
+  "page_vs_notehead_top_positions": {
+   "n": 43,
+   "median": 0.13821782178216957,
+   "p90": 0.7320792079207904,
+   "max": 0.8308910891089127
+  }
+ }
+}

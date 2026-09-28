@@ -1,0 +1,27 @@
+{
+ "/private/tmp/claude-501/-Users-seanjohnson-Desktop-ReEngrave--claude-worktrees-start-here-questions-7d5637/3707ff6b-4757-4644-b4c5-de906d20a7bb/scratchpad/acc/new/litolff-arm.record.json": {
+  "accidentalDoubleFlat": {
+   "<=0.5": 1
+  },
+  "accidentalDoubleSharp": {
+   "<=0.5": 17,
+   "0.5-1.0": 8,
+   "1.0-1.4": 3
+  },
+  "accidentalFlat": {
+   "0.5-1.0": 62,
+   "<=0.5": 130,
+   "1.0-1.4": 43
+  },
+  "accidentalNatural": {
+   "<=0.5": 227,
+   "0.5-1.0": 85,
+   "1.0-1.4": 30
+  },
+  "accidentalSharp": {
+   "0.5-1.0": 13,
+   "<=0.5": 87,
+   "1.0-1.4": 6
+  }
+ }
+}

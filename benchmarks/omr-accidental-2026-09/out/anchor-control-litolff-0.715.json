@@ -1,0 +1,706 @@
+{
+  "label": "litolff",
+  "record": "/Users/seanjohnson/Desktop/ReEngrave/library/_shared-records/beethoven5-litolff-mvt1-whole-20260923.record.json",
+  "accidental_glyphs": 2058,
+  "in_bar_only": true,
+  "in_bar_glyphs": 1531,
+  "by_class": {
+    "accidentalFlat": 772,
+    "keyFlat": 515,
+    "accidentalNatural": 504,
+    "accidentalSharp": 167,
+    "accidentalDoubleSharp": 85,
+    "keySharp": 12,
+    "accidentalDoubleFlat": 3
+  },
+  "no_notehead_to_the_right": 195,
+  "dx_spaces": {
+    "n": 1336,
+    "p05": 0.0,
+    "p25": 0.17,
+    "median": 0.3,
+    "p75": 0.47,
+    "p90": 1.67,
+    "p95": 3.69,
+    "p99": 5.62,
+    "max": 12.04,
+    "hist_0_to_6_step_0.25": [
+      [
+        0,
+        500
+      ],
+      [
+        0.25,
+        519
+      ],
+      [
+        0.5,
+        116
+      ],
+      [
+        0.75,
+        30
+      ],
+      [
+        1.0,
+        15
+      ],
+      [
+        1.25,
+        14
+      ],
+      [
+        1.5,
+        14
+      ],
+      [
+        1.75,
+        4
+      ],
+      [
+        2.0,
+        8
+      ],
+      [
+        2.25,
+        6
+      ],
+      [
+        2.5,
+        9
+      ],
+      [
+        2.75,
+        4
+      ],
+      [
+        3.0,
+        15
+      ],
+      [
+        3.25,
+        8
+      ],
+      [
+        3.5,
+        8
+      ],
+      [
+        3.75,
+        9
+      ],
+      [
+        4.0,
+        12
+      ],
+      [
+        4.25,
+        8
+      ],
+      [
+        4.5,
+        6
+      ],
+      [
+        4.75,
+        6
+      ],
+      [
+        5.0,
+        4
+      ],
+      [
+        5.25,
+        5
+      ],
+      [
+        5.5,
+        4
+      ],
+      [
+        5.75,
+        1
+      ]
+    ]
+  },
+  "dy_spaces_best_height_within_3sp": {
+    "n": 1240,
+    "median": 0.2628,
+    "p75": 0.6719,
+    "p90": 2.2807,
+    "p95": 5.7991,
+    "p99": 10.1422,
+    "max": 13.174,
+    "hist_0_to_3_step_0.1": [
+      [
+        0,
+        309
+      ],
+      [
+        0.1,
+        198
+      ],
+      [
+        0.2,
+        160
+      ],
+      [
+        0.3,
+        89
+      ],
+      [
+        0.4,
+        58
+      ],
+      [
+        0.5,
+        79
+      ],
+      [
+        0.6,
+        52
+      ],
+      [
+        0.7,
+        38
+      ],
+      [
+        0.8,
+        33
+      ],
+      [
+        0.9,
+        18
+      ],
+      [
+        1.0,
+        11
+      ],
+      [
+        1.1,
+        12
+      ],
+      [
+        1.2,
+        7
+      ],
+      [
+        1.3,
+        13
+      ],
+      [
+        1.4,
+        6
+      ],
+      [
+        1.5,
+        5
+      ],
+      [
+        1.6,
+        5
+      ],
+      [
+        1.7,
+        7
+      ],
+      [
+        1.8,
+        2
+      ],
+      [
+        1.9,
+        1
+      ],
+      [
+        2.0,
+        8
+      ],
+      [
+        2.1,
+        1
+      ],
+      [
+        2.2,
+        5
+      ],
+      [
+        2.3,
+        2
+      ],
+      [
+        2.4,
+        4
+      ],
+      [
+        2.5,
+        2
+      ],
+      [
+        2.6,
+        3
+      ],
+      [
+        2.7,
+        2
+      ],
+      [
+        2.8,
+        0
+      ],
+      [
+        2.9,
+        4
+      ]
+    ]
+  },
+  "dx_window_spaces_used": 1.75,
+  "anchor_flat_used": 0.715,
+  "dy_positions_inside_dx_window": {
+    "n": 1208,
+    "median": 0.5544,
+    "p75": 1.3603,
+    "p90": 4.4735,
+    "p95": 11.3562,
+    "p99": 19.75,
+    "max": 26.407,
+    "hist_0_to_4_step_0.1": [
+      [
+        0,
+        141
+      ],
+      [
+        0.1,
+        146
+      ],
+      [
+        0.2,
+        107
+      ],
+      [
+        0.3,
+        88
+      ],
+      [
+        0.4,
+        87
+      ],
+      [
+        0.5,
+        58
+      ],
+      [
+        0.6,
+        56
+      ],
+      [
+        0.7,
+        40
+      ],
+      [
+        0.8,
+        33
+      ],
+      [
+        0.9,
+        25
+      ],
+      [
+        1.0,
+        34
+      ],
+      [
+        1.1,
+        46
+      ],
+      [
+        1.2,
+        28
+      ],
+      [
+        1.3,
+        28
+      ],
+      [
+        1.4,
+        16
+      ],
+      [
+        1.5,
+        23
+      ],
+      [
+        1.6,
+        14
+      ],
+      [
+        1.7,
+        21
+      ],
+      [
+        1.8,
+        8
+      ],
+      [
+        1.9,
+        9
+      ],
+      [
+        2.0,
+        8
+      ],
+      [
+        2.1,
+        3
+      ],
+      [
+        2.2,
+        5
+      ],
+      [
+        2.3,
+        6
+      ],
+      [
+        2.4,
+        3
+      ],
+      [
+        2.5,
+        4
+      ],
+      [
+        2.6,
+        6
+      ],
+      [
+        2.7,
+        5
+      ],
+      [
+        2.8,
+        4
+      ],
+      [
+        2.9,
+        1
+      ],
+      [
+        3.0,
+        2
+      ],
+      [
+        3.1,
+        3
+      ],
+      [
+        3.2,
+        4
+      ],
+      [
+        3.3,
+        1
+      ],
+      [
+        3.4,
+        3
+      ],
+      [
+        3.5,
+        3
+      ],
+      [
+        3.6,
+        1
+      ],
+      [
+        3.7,
+        2
+      ],
+      [
+        3.8,
+        1
+      ],
+      [
+        3.9,
+        1
+      ]
+    ],
+    "by_class_median": {
+      "accidentalDoubleFlat": 0.354,
+      "accidentalDoubleSharp": 1.71,
+      "accidentalFlat": 0.8247,
+      "accidentalNatural": 0.48,
+      "accidentalSharp": 0.26
+    },
+    "by_class_n": {
+      "accidentalDoubleFlat": 3,
+      "accidentalDoubleSharp": 72,
+      "accidentalFlat": 529,
+      "accidentalNatural": 472,
+      "accidentalSharp": 132
+    },
+    "by_class_p90": {
+      "accidentalDoubleFlat": 9.0084,
+      "accidentalDoubleSharp": 5.41,
+      "accidentalFlat": 11.6169,
+      "accidentalNatural": 1.26,
+      "accidentalSharp": 1.33
+    }
+  },
+  "signed_dy_positions_by_class": {
+    "accidentalDoubleFlat": {
+      "n": 3,
+      "p25": -9.0084,
+      "median": 0.1462,
+      "p75": 0.354
+    },
+    "accidentalDoubleSharp": {
+      "n": 72,
+      "p25": -2.71,
+      "median": -0.15,
+      "p75": 0.64
+    },
+    "accidentalFlat": {
+      "n": 529,
+      "p25": -1.7952,
+      "median": -0.5909,
+      "p75": 0.1134
+    },
+    "accidentalNatural": {
+      "n": 472,
+      "p25": -0.36,
+      "median": 0.06,
+      "p75": 0.58
+    },
+    "accidentalSharp": {
+      "n": 132,
+      "p25": -0.28,
+      "median": 0.0,
+      "p75": 0.24
+    }
+  },
+  "UNBIASED_only_one_head_in_window_signed_dy_positions": {
+    "accidentalDoubleFlat": {
+      "n": 1,
+      "p25": 0.354,
+      "median": 0.354,
+      "p75": 0.354
+    },
+    "accidentalDoubleSharp": {
+      "n": 21,
+      "p25": -3.22,
+      "median": -0.08,
+      "p75": 1.66
+    },
+    "accidentalFlat": {
+      "n": 225,
+      "p25": -2.0596,
+      "median": -0.9642,
+      "p75": 0.0762
+    },
+    "accidentalNatural": {
+      "n": 163,
+      "p25": -0.4,
+      "median": 0.01,
+      "p75": 0.39
+    },
+    "accidentalSharp": {
+      "n": 51,
+      "p25": -0.45,
+      "median": -0.04,
+      "p75": 0.21
+    }
+  },
+  "UNBIASED_only_one_head_in_window_anchor_fraction": {
+    "accidentalDoubleFlat": {
+      "n": 1,
+      "p25": 0.7955,
+      "median": 0.7955,
+      "p75": 0.7955
+    },
+    "accidentalDoubleSharp": {
+      "n": 21,
+      "p25": -0.2174,
+      "median": 0.4869,
+      "p75": 0.9258
+    },
+    "accidentalFlat": {
+      "n": 225,
+      "p25": 0.4108,
+      "median": 0.5803,
+      "p75": 0.7291
+    },
+    "accidentalNatural": {
+      "n": 163,
+      "p25": 0.447,
+      "median": 0.5013,
+      "p75": 0.5519
+    },
+    "accidentalSharp": {
+      "n": 51,
+      "p25": 0.4199,
+      "median": 0.4948,
+      "p75": 0.5343
+    }
+  },
+  "head_centre_as_fraction_of_glyph_height_by_class": {
+    "accidentalDoubleFlat": {
+      "n": 3,
+      "p25": -1.6809,
+      "median": 0.7425,
+      "p75": 0.7955
+    },
+    "accidentalDoubleSharp": {
+      "n": 72,
+      "p25": -0.165,
+      "median": 0.4631,
+      "p75": 0.6856
+    },
+    "accidentalFlat": {
+      "n": 529,
+      "p25": 0.4587,
+      "median": 0.6063,
+      "p75": 0.7371
+    },
+    "accidentalNatural": {
+      "n": 472,
+      "p25": 0.4544,
+      "median": 0.51,
+      "p75": 0.5836
+    },
+    "accidentalSharp": {
+      "n": 132,
+      "p25": 0.4429,
+      "median": 0.5,
+      "p75": 0.5364
+    }
+  },
+  "dy_spaces_nearest_by_x": {
+    "n": 1336,
+    "median": 0.8561,
+    "p90": 8.16,
+    "hist_0_to_3_step_0.1": [
+      [
+        0,
+        181
+      ],
+      [
+        0.1,
+        124
+      ],
+      [
+        0.2,
+        102
+      ],
+      [
+        0.3,
+        68
+      ],
+      [
+        0.4,
+        46
+      ],
+      [
+        0.5,
+        54
+      ],
+      [
+        0.6,
+        42
+      ],
+      [
+        0.7,
+        30
+      ],
+      [
+        0.8,
+        39
+      ],
+      [
+        0.9,
+        28
+      ],
+      [
+        1.0,
+        25
+      ],
+      [
+        1.1,
+        15
+      ],
+      [
+        1.2,
+        17
+      ],
+      [
+        1.3,
+        21
+      ],
+      [
+        1.4,
+        7
+      ],
+      [
+        1.5,
+        15
+      ],
+      [
+        1.6,
+        9
+      ],
+      [
+        1.7,
+        9
+      ],
+      [
+        1.8,
+        11
+      ],
+      [
+        1.9,
+        5
+      ],
+      [
+        2.0,
+        10
+      ],
+      [
+        2.1,
+        7
+      ],
+      [
+        2.2,
+        9
+      ],
+      [
+        2.3,
+        7
+      ],
+      [
+        2.4,
+        16
+      ],
+      [
+        2.5,
+        13
+      ],
+      [
+        2.6,
+        4
+      ],
+      [
+        2.7,
+        9
+      ],
+      [
+        2.8,
+        7
+      ],
+      [
+        2.9,
+        11
+      ]
+    ]
+  }
+}

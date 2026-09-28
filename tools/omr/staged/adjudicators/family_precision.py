@@ -33,12 +33,15 @@ seven unmeasured defaults shipped at once.
 RATHER THAN EVENED OUT. `rest` stops a `<rest>` being written, `arc` stops a
 `<slur>`/`<tie>`, `articulation` stops an `<articulations>` entry, `dynamic`
 stops a letter being spelled into a word, `ledger` stops a rung being counted
-in ADJUDICATE's own ladder. `accidental` and `arpeggiato` reach the EXPORT
-CENSUS AND NOTHING ELSE, because neither family reaches a file today at all
-(`gather_coverage.FAMILY_TO_Q` maps both to `None`). For those two what the
-decision buys is precisely that a human's *nothing* lands on the record as a
-verdict he can be shown, instead of on no stage — which is the whole of
-3.4g's gate and is worth saying plainly rather than dressing up.
+in ADJUDICATE's own ladder. `arpeggiato` reaches the EXPORT CENSUS AND
+NOTHING ELSE, because the family reaches no file today at all
+(`gather_coverage.FAMILY_TO_Q` maps it to `None`); what the decision buys is
+precisely that a human's *nothing* lands on the record as a verdict he can be
+shown, instead of on no stage — which is the whole of 3.4g's gate and is
+worth saying plainly rather than dressing up. `accidental` was in the same
+position when this file was written; since roadmap 2.7 landed (2026-09-27)
+its refusal is also read by `adjudicate_accidental_owner`, so a refused
+accidental owns no notehead and no `<accidental>` is written for it.
 
 ⚠️ THE DOMAIN OF THREE OF THEM IS CLASS-NARROWED, and `adjudicate.
 DecisionSpec.subjects_classed` records why: `ledger`, `accidental` and
