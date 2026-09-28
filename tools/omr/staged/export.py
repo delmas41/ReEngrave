@@ -2792,8 +2792,9 @@ def _part_xml(rec: Record, part: Sequence[StaffRun], pid: str,
                 # write a whole rest into a 6/8 bar the file has already
                 # declared as three quarters. A bar can only be HELD OUT where
                 # a length is known, so this is never the fallback.
-                lines.extend(_legacy._mxl_empty_measure(
-                    judged, divisions, directions or None, "      "))
+                lines.extend(_marked_empty_measure(
+                    _BAR_SUM_REFUSAL, judged, divisions,
+                    directions or None, "      ", counters=counters))
                 _count_directions(counters, directions)
             elif mark is not None and UNREAD_MARK_HOLDS_OUT:
                 # ⚠️⚠️ ROADMAP 2.4c, THE SAME BRANCH SHAPE AS THE BAR-SUM
@@ -2854,8 +2855,9 @@ def _part_xml(rec: Record, part: Sequence[StaffRun], pid: str,
                     # refusal for it would charge the balance for a row that
                     # does not exist.
                     counters["bars_held_out_unread_mark_on_a_doubled_staff"] += 1
-                lines.extend(_legacy._mxl_empty_measure(
-                    judged, divisions, directions or None, "      "))
+                lines.extend(_marked_empty_measure(
+                    _MARK_REFUSAL, judged, divisions,
+                    directions or None, "      ", counters=counters))
                 _count_directions(counters, directions)
             elif not events:
                 # ⚠️ COUNTED AS `empty_bars_padded`, NOT AS A MEASURE REST.
@@ -2927,8 +2929,9 @@ def _part_xml(rec: Record, part: Sequence[StaffRun], pid: str,
                 # to see it -- an engraved page puts an event in every bar. The
                 # staged path is fed the marks from the start rather than
                 # rediscovering that.
-                lines.extend(_legacy._mxl_empty_measure(
-                    judged, divisions, directions or None, "      "))
+                lines.extend(_marked_empty_measure(
+                    UNREAD_BAR_MARK_REASON_UNREAD, judged, divisions,
+                    directions or None, "      ", counters=counters))
                 _count_directions(counters, directions)
             else:
                 # ⚠️ AT THE HEAD OF THE BAR, AND THAT IS A DECLARED
@@ -3201,6 +3204,94 @@ _MARK_REFUSAL = "possibly_unread_mark"
 #: `test_staged_unread_mark.py::TestExport` flips this constant in-process
 #: to prove the hold-out branch still works when it is finally trusted.
 UNREAD_MARK_HOLDS_OUT = False
+
+
+#: ROADMAP 3.5 (CLAUDE.md SS1's definition of done: "every bar the reader
+#: could not read is MARKED as unread and never invented"; rule 8: "a
+#: fallback never converts 'cannot tell' into an answer ... not into a whole
+#: rest that means silence"). `color` is a standard MusicXML attribute on
+#: `<note>` (a notation program that ignores it still shows the withheld
+#: `measure="yes"`; one that reads it shows every hold-out reason the same
+#: red, and the `<direction>` above the staff says which).
+#:
+#: CONVENTION ASSUMED / WHAT WOULD FALSIFY IT / NOT CONFIRMED: red, and these
+#: exact three words, is a guess at what reads clearly to Sean, not a
+#: measurement -- he may rename any of them. Nothing downstream reads the
+#: STRING; only whether a bar took this branch at all is counted
+#: (`report["unread_bar_marks"]`).
+UNREAD_BAR_MARK_COLOR = "#D00000"
+
+#: The eventless branch (`_part_xml`'s `elif not events:`) has no refusal
+#: name of its own -- nothing was ever DECIDED there to refuse, which is
+#: exactly why it is the "unread" case rather than a "held" one. A TACET
+#: bar (`_pad_tacet_span`) and a DECIDED whole-bar rest never reach this
+#: table at all: both are a bar we READ as silent, not one we could not
+#: read, and `_part_xml`'s own docstring is where that distinction is made.
+UNREAD_BAR_MARK_REASON_UNREAD = "unread"
+
+#: ONE TABLE for every hold-out reason this exporter can print, so a reader
+#: finds every word by reading this dict once (rule 9: nothing here is
+#: restated anywhere else) and every call site dresses its bar identically.
+#: Keyed by the SAME refusal name the accounting already uses
+#: (`_BAR_SUM_REFUSAL`, `_MARK_REFUSAL`, both defined above) or, for a bar we
+#: read nothing in at all, `UNREAD_BAR_MARK_REASON_UNREAD`.
+UNREAD_BAR_MARK_WORDS: Dict[str, str] = {
+    UNREAD_BAR_MARK_REASON_UNREAD: "unread",
+    _BAR_SUM_REFUSAL: "held: does not add up",
+    _MARK_REFUSAL: "held: possible unread mark",
+}
+
+
+def _marked_empty_measure(reason: str, time_sig: Optional[Dict[str, Any]],
+                          divisions: int,
+                          directions: Optional[List[Tuple[float, str, str]]],
+                          indent: str,
+                          counters: Optional[Dict[str, int]] = None
+                          ) -> List[str]:
+    """`_legacy._mxl_empty_measure`, with the placeholder rest MARKED.
+
+    ROADMAP 3.5. LEGACY's own renderer is reused UNCHANGED (CLAUDE.md SS3:
+    legacy is frozen, no new mechanism there) -- this calls it exactly as
+    every caller below always has, and only POST-PROCESSES the lines it
+    returns, here, in STAGED code: the `<note>` line gains a `color`
+    attribute, and a `<direction placement="above">` naming WHY is
+    prepended so a reader opening the file sees the word before the rest
+    it explains.
+
+    ⚠️ EVERY CALLER OF THIS FUNCTION IS A BAR THIS READER REFUSES TO VOUCH
+    FOR. A bar read as a DECIDED whole-bar rest, or a part's printed TACET
+    span, is a different fact (we READ silence, rather than failing to
+    read) and takes `_legacy._mxl_empty_measure` directly, unmarked --
+    that is the control this roadmap item names.
+
+    ⚠️ THE MARKER IS NOT A `directions` ENTRY, and must never become one.
+    `_count_directions` and `direction_balance` (SS `report["direction_
+    balance"]`) read exactly the list this bar's CELL gathered off the
+    page; folding the marker into that list would inflate `direction_words`
+    by a fact about the EXPORT rather than about the page, and the balance
+    would report a word nobody read. It is counted separately
+    (`counters["unread_bar_marks_written"]`), asserted below in
+    `to_musicxml` to equal the three reasons summed, and never touches
+    `direction_words` or `dynamics`.
+    """
+    lines = _legacy._mxl_empty_measure(time_sig, divisions, directions, indent)
+    prefix = f"{indent}<note>"
+    marked: List[str] = []
+    for line in lines:
+        if line.startswith(prefix):
+            marked.append(f'{indent}<note color="{UNREAD_BAR_MARK_COLOR}">'
+                          + line[len(prefix):])
+        else:
+            marked.append(line)
+    word = UNREAD_BAR_MARK_WORDS.get(reason, reason)
+    marker = (f'{indent}<direction placement="above">\n'
+             f"{indent}  <direction-type>\n"
+             f"{indent}    <words>{_legacy._xml_escape(word)}</words>\n"
+             f"{indent}  </direction-type>\n"
+             f"{indent}</direction>")
+    if counters is not None:
+        counters["unread_bar_marks_written"] += 1
+    return [marker] + marked
 
 
 def _event_units(ev: Dict[str, Any], divisions: int) -> int:
@@ -3921,6 +4012,41 @@ def to_musicxml(result: Dict[str, Any]) -> Tuple[str, Dict[str, Any]]:
             counters.get("notes_held_out_unread_mark", 0)),
         "held": _actually_held,
     }
+    # ⚠️⚠️ ROADMAP 3.5: ONE NUMBER FOR EVERY BAR THIS EXPORTER REFUSED TO
+    # VOUCH FOR, ACROSS ALL THREE REASONS ABOVE -- a bar we read NOTHING in
+    # (`empty_bars_padded`), a bar whose durations do not add up
+    # (`bars_held_out_sum`), and a bar `Q.UNREAD_MARK` refused
+    # (`bars_held_out_unread_mark`, today always zero because
+    # `UNREAD_MARK_HOLDS_OUT` is False). CLAUDE.md SS1's definition of done
+    # ends "... is MARKED as unread and never invented" -- until this, the
+    # only marker was a withheld `measure="yes"`, which no notation program
+    # shows, so a musician opening the file in MuseScore saw plain silence.
+    # `written` is `_marked_empty_measure`'s OWN count of `<note>` elements
+    # it actually coloured, asserted equal to the three reasons summed so a
+    # marking bug (a bar refused twice, or a branch that forgets to call the
+    # marking wrapper) cannot silently miss a bar or double-mark one --
+    # `raise Unbalanced` rather than a quietly wrong report, the same
+    # discipline `to_musicxml`'s other equalities already use.
+    report["unread_bar_marks"] = {
+        "words": dict(UNREAD_BAR_MARK_WORDS),
+        "color": UNREAD_BAR_MARK_COLOR,
+        "unread": int(counters.get("empty_bars_padded", 0)),
+        "held_out_sum": int(counters.get("bars_held_out_sum", 0)),
+        "held_out_unread_mark": int(
+            counters.get("bars_held_out_unread_mark", 0)),
+        "written": int(counters.get("unread_bar_marks_written", 0)),
+    }
+    _ubm = report["unread_bar_marks"]
+    _ubm_expected = (_ubm["unread"] + _ubm["held_out_sum"]
+                     + _ubm["held_out_unread_mark"])
+    if _ubm["written"] != _ubm_expected:
+        raise Unbalanced(
+            "unread-bar marks written (%d) do not equal unread (%d) + "
+            "held-out-by-sum (%d) + held-out-by-unread-mark (%d) = %d -- "
+            "a bar was refused without being marked, or marked without "
+            "being refused" % (
+                _ubm["written"], _ubm["unread"], _ubm["held_out_sum"],
+                _ubm["held_out_unread_mark"], _ubm_expected))
     # ⚠️ THE SAME REFUSALS, KEYED BY PRINTED SYSTEM. Written so the cleanup
     # artefact can ask its question one system at a time without holding a
     # second copy of the rule -- which is how `build_sheet.py`'s own

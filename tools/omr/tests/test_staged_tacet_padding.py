@@ -152,8 +152,14 @@ class TestATacetSpanIsPadded(unittest.TestCase):
         # P2's OWN two bars must still be: same staff shape, same meter.
         mine = [b for n, b in _measures(on)["P2"] if n in (4, 5)]
         theirs = [b for n, b in _measures(on)["P1"] if n in (4, 5)]
+        # ⚠️ ROADMAP 3.5: `<note[^>]*>`, NOT the literal `<note>`. Every bar in
+        # this fixture is eventless (the page carries no glyphs at all), so
+        # both P1's and P2's bars 4/5 now carry `color="..."` from the
+        # "unread" marker -- identically on both sides, which is exactly the
+        # equality this test checks, so the looser pattern still proves the
+        # same thing the strict one did before the marker existed.
         notes = lambda bs: re.findall(          # noqa: E731
-            r"<note>.*?</note>", "".join(bs), re.S)
+            r"<note[^>]*>.*?</note>", "".join(bs), re.S)
         self.assertTrue(notes(mine))            # positive control: not empty
         self.assertEqual(notes(mine), notes(theirs))
 

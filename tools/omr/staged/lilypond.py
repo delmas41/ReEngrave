@@ -141,6 +141,14 @@ class _Bar:
     #: original event carried, so a fermata over that rest has nowhere to
     #: attach unless it is carried here and appended at render time.
     fermata: bool = False
+    #: ROADMAP 3.5. None for a bar we READ as silent -- a TACET bar, or the
+    #: lone-measure-rest branch below (a DECIDED whole-bar rest; the
+    #: control this roadmap item names). One of `SX.UNREAD_BAR_MARK_WORDS`'s
+    #: keys for a bar this reader REFUSES to vouch for: `_render_bar` reads
+    #: it to colour the rest and stamp the naming word above the staff, the
+    #: SAME table `staged.export._marked_empty_measure` reads for MusicXML,
+    #: so the two files can never print a different word for one bar.
+    reason: Optional[str] = None
 
 
 def _tally(events: Sequence[Dict[str, Any]], counters: Dict[str, int],
@@ -212,7 +220,8 @@ def _collect_bars(rec: SX.Record, part: Sequence[SX.StaffRun],
                   offsets: Optional[Dict[Tuple[int, int], int]],
                   spans: Optional[Sequence[Tuple[Tuple[int, int], int]]],
                   meters: Dict[Tuple[int, int], Any],
-                  counters: Dict[str, int]
+                  counters: Dict[str, int],
+                  divisions: int
                   ) -> Tuple[List[_Bar], List[Dict[str, Any]], List[Dict[str, Any]]]:
     """This part's bars in DOCUMENT order, plus the two LilyPond "lanes" a
     hairpin plan is built over.
@@ -231,10 +240,32 @@ def _collect_bars(rec: SX.Record, part: Sequence[SX.StaffRun],
     `tools.omr.export._lily_staff_block` runs it once per lane across a
     whole staff — the difference is that a lane here spans the whole PART,
     not one system.
+
+    ⚠️⚠️ ROADMAP 3.5, AND IT WAS FOUND HANDING THIS BRIEF: before this,
+    NOTHING in this module read `staged.export._bar_holds_out` at all --
+    roadmap 2.8's hold-out existed only on the MusicXML side, so a bar whose
+    durations do not add up to the meter was written here as its own
+    (possibly wrong) notes, unmarked, the exact gap this roadmap item exists
+    to close. `divisions` (`SX._divisions(parts)`, the SAME function and the
+    SAME `parts` the MusicXML exporter calls it over) exists ONLY so this
+    arithmetic check can share MusicXML's ruler; it names no duration in the
+    `.ly` text LilyPond itself never needs one.
+
+    ⚠️ `in_force` IS THE LILYPOND TWIN OF `_part_xml`'s OWN VARIABLE: the
+    meter the ASSEMBLED SCORE is currently declaring, which a bar whose own
+    system never settled one is judged and SIZED against -- never the 4.0
+    fallback `_lily_measure_rest(None)`/`_mxl_empty_measure(None, ...)` both
+    reach for. It is updated on EVERY bar (tacet included: a part's leading
+    system can be tacet, and `_staff_block` writes `\\time` for a tacet bar
+    exactly as it does for a real one), never only where the emitted
+    `\\time` actually changes -- the two are equivalent in the end (a
+    `\\time` re-stated at an unchanged value is silent noise, never a wrong
+    answer) and this is the simpler rule to read back.
     """
     bars: List[_Bar] = []
     lane0: List[Dict[str, Any]] = []
     lane1: List[Dict[str, Any]] = []
+    in_force: Optional[Dict[str, Any]] = None
     for sys_key, maybe_run, sys_bars in SX._tacet_walk(part, offsets, spans):
         if maybe_run is None:
             sys_meter = meters.get(sys_key)
@@ -249,6 +280,7 @@ def _collect_bars(rec: SX.Record, part: Sequence[SX.StaffRun],
                     continue
                 bars.append(_Bar("tacet", meter))
                 counters["tacet_bars_padded"] += 1
+                in_force = meter
             continue
 
         run = maybe_run
@@ -256,6 +288,14 @@ def _collect_bars(rec: SX.Record, part: Sequence[SX.StaffRun],
         condensed = bool(run.condensed_from)
         for i in range(run.n_measures):
             meter = SX._meter_dict(meter_at(run.meter, i))
+            # ⚠️⚠️ ROADMAP 2.8/3.5: THE METER A READER OF THIS FILE SEES, not
+            # always the one this bar's own system filed -- see the
+            # docstring's `in_force` paragraph. Computed BEFORE the branches
+            # below so every one of them judges and sizes against the same
+            # answer `_part_xml` would.
+            judged = meter if meter is not None else in_force
+            if meter is not None:
+                in_force = meter
             cell = run.cells.get(i)
             directions = tuple(cell.directions) if cell else ()
             events = SX._events(cell)
@@ -263,15 +303,48 @@ def _collect_bars(rec: SX.Record, part: Sequence[SX.StaffRun],
 
             if not events:
                 # ⚠️ AN EVENTLESS BAR IS A BAR WE READ NOTHING IN, not a bar
-                # we read silence in -- `_lily_measure_rest(None)` falls back
-                # to 4.0 quarters exactly as `_mxl_empty_measure` does, so the
-                # two files make the identical guess where the meter is
-                # unread.
+                # we read silence in. Sized by `judged`, NOT `meter` --
+                # `_lily_measure_rest(None)` falls back to 4.0 quarters, and
+                # a part whose own system never settled a meter but whose
+                # file has already declared 3/4 must not contradict its own
+                # declaration by writing a whole rest there (the identical
+                # repair 2.8 made on the MusicXML side).
                 counters["empty_bars_padded"] += 1
                 counters["empty_bars_padded_without_meter"] += (
-                    1 if meter is None else 0)
-                bars.append(_Bar("empty", meter, run.clef, key,
-                                 directions=directions, condensed=condensed))
+                    1 if judged is None else 0)
+                bars.append(_Bar("empty", judged, run.clef, key,
+                                 directions=directions, condensed=condensed,
+                                 reason=SX.UNREAD_BAR_MARK_REASON_UNREAD))
+                continue
+
+            # ⚠️⚠️ ROADMAP 2.8/3.5: COMPUTED BEFORE THE LONE-MEASURE-REST
+            # CHECK BELOW, AND THAT ORDER IS SAFE RATHER THAN INCIDENTAL.
+            # `_bar_holds_out` treats a lone measure rest as automatically
+            # filling the bar (CLAUDE.md §10: a whole rest means the BAR) —
+            # it can never itself be held out — so testing it first cannot
+            # change which bars take that branch; it only adds the ONE
+            # check `_part_xml` already makes for every bar with events,
+            # single- or two-voice alike. `streams` is computed once here
+            # and reused below rather than asking `_voice_split` twice.
+            streams = SX._voice_split(rec, run, i, events)
+            held = SX._bar_holds_out(events, streams, divisions, judged)
+            if held is not None:
+                # ⚠️ THE SAME BRANCH SHAPE AS THE EVENTLESS CASE ABOVE, AND
+                # FOR THE SAME REASON (CLAUDE.md rule 8): a bar we could not
+                # read to its meter is a bar we could not read. Nothing pads,
+                # trims or re-times it.
+                counters["bars_held_out_sum"] += 1
+                if condensed:
+                    # ⚠️ MIRRORS `staged.export`'s own condensed case: a
+                    # doubled Contrabass copy holds ink the log recorded
+                    # once, so counting a second refusal for it would charge
+                    # the balance for a row that does not exist.
+                    counters["bars_held_out_sum_on_a_doubled_staff"] += 1
+                else:
+                    counters["notes_held_out_sum"] += SX._bar_event_rows(events)
+                bars.append(_Bar("empty", judged, run.clef, key,
+                                 directions=directions, condensed=condensed,
+                                 reason=SX._BAR_SUM_REFUSAL))
                 continue
 
             if (len(events) == 1 and events[0].get("kind") == "rest"
@@ -291,7 +364,9 @@ def _collect_bars(rec: SX.Record, part: Sequence[SX.StaffRun],
                                  fermata=bool(events[0].get("fermata"))))
                 continue
 
-            streams = SX._voice_split(rec, run, i, events)
+            # ⚠️ `streams` IS ALREADY COMPUTED, ABOVE, FOR THE HOLD-OUT CHECK
+            # -- reused here rather than asking `_voice_split` a second time
+            # over the same bar.
             if streams is None:
                 lane0.extend(events)
                 bars.append(_Bar("single", meter, run.clef, key,
@@ -326,6 +401,25 @@ def _render_bar(bar: _Bar, wedges: Dict[int, str],
         if bar.fermata:
             rest += "\\fermata"
             counters["fermatas"] += 1
+        if bar.reason is not None:
+            # ⚠️⚠️ ROADMAP 3.5. THE MUSICXML TWIN: `staged.export.
+            # _marked_empty_measure` colours the `<note>` and prepends a
+            # `<direction>`; this colours the REST GROB and appends a
+            # `^\markup` naming the same word, off the SAME table
+            # (`SX.UNREAD_BAR_MARK_WORDS`) so the two files can never
+            # disagree on the wording. `_lily_measure_rest` can return
+            # EITHER a plain rest ("r2.", the `Rest` grob) or LilyPond's own
+            # multi-measure notation ("R1*5/4", a DIFFERENT `MultiMeasureRest`
+            # grob) depending on whether the bar's length reduces to a single
+            # dotted value -- overriding the wrong one is silently a no-op,
+            # so which grob applies is read off the token itself rather than
+            # guessed from the meter a second time. CONVENTION ASSUMED: `red`
+            # approximates MusicXML's `#D00000`, and Sean may rename either.
+            grob = "MultiMeasureRest" if rest.startswith("R") else "Rest"
+            word = SX.UNREAD_BAR_MARK_WORDS.get(bar.reason, bar.reason)
+            counters["unread_bar_marks_written"] += 1
+            return (f"\\once \\override {grob}.color = #red "
+                   f'{rest}^\\markup {{ "{_ly_escape(word)}" }} |')
         return rest + " |"
     if bar.kind == "single":
         _tally(bar.events, counters, bar.condensed)
@@ -354,9 +448,10 @@ def _staff_block(rec: SX.Record, part: Sequence[SX.StaffRun], name: str,
                  offsets: Optional[Dict[Tuple[int, int], int]],
                  spans: Optional[Sequence[Tuple[Tuple[int, int], int]]],
                  meters: Dict[Tuple[int, int], Any],
-                 counters: Dict[str, int], indent: str = "    ") -> str:
+                 counters: Dict[str, int], divisions: int,
+                 indent: str = "    ") -> str:
     bars, lane0, lane1 = _collect_bars(rec, part, offsets, spans, meters,
-                                       counters)
+                                       counters, divisions)
     wedges: Dict[int, str] = {}
     wedges.update(_legacy._lily_wedge_plan(lane0))
     wedges.update(_legacy._lily_wedge_plan(lane1))
@@ -440,12 +535,20 @@ def to_lilypond(result: Dict[str, Any], *, out: Optional[str] = None
     for p in parts:
         for r in p:
             meters[(r.page, r.system)] = r.meter
+    # ⚠️⚠️ ROADMAP 2.8/3.5: THE SAME RULER THE MUSICXML EXPORTER USES, over
+    # the SAME `parts` -- `_divisions` is a pure function of the document's
+    # own tuplet ratios, so calling it a second time here can never disagree
+    # with `to_musicxml`'s own value. LilyPond's own duration syntax never
+    # reads this number; it exists only so `_bar_holds_out`'s integer
+    # arithmetic has one to share.
+    divisions = SX._divisions(parts)
 
     part_blocks: List[str] = []
     for part in parts:
         name = next((r.name for r in part if r.name), None) or SX._default_name(part)
         part_blocks.append(
-            _staff_block(rec, part, name, offsets, spans, meters, counters))
+            _staff_block(rec, part, name, offsets, spans, meters, counters,
+                        divisions))
 
     version = _lilypond_version()
     # ⚠️ THE SAME FALLBACK `_legacy._score_partwise` USES, over the SAME
@@ -508,6 +611,36 @@ def to_lilypond(result: Dict[str, Any], *, out: Optional[str] = None
         "cross_system_arcs_and_wedges": "handled, not dropped -- see module docstring",
         "two_voice_bars": int(counters.get("two_voice_bars", 0)),
         "version": version,
+    }
+    # ⚠️⚠️ ROADMAP 3.5, THE LILYPOND TWIN OF `staged.export.to_musicxml`'s
+    # OWN `report["unread_bar_marks"]`. `held_out_unread_mark` is not wired
+    # here (roadmap 2.4c's hold-out is OFF everywhere,
+    # `SX.UNREAD_MARK_HOLDS_OUT` is False, and this brief's own test list
+    # never asks for it on this side) -- only the two reasons this module
+    # can actually produce are summed. `written` is `_render_bar`'s own
+    # count of bars it actually coloured, asserted equal to the reasons
+    # summed so a marking bug cannot silently miss or double-mark a bar.
+    report["unread_bar_marks"] = {
+        "words": dict(SX.UNREAD_BAR_MARK_WORDS),
+        "color": SX.UNREAD_BAR_MARK_COLOR,
+        "unread": int(counters.get("empty_bars_padded", 0)),
+        "held_out_sum": int(counters.get("bars_held_out_sum", 0)),
+        "written": int(counters.get("unread_bar_marks_written", 0)),
+    }
+    _ubm = report["unread_bar_marks"]
+    _ubm_expected = _ubm["unread"] + _ubm["held_out_sum"]
+    if _ubm["written"] != _ubm_expected:
+        raise SX.Unbalanced(
+            "lilypond unread-bar marks written (%d) do not equal unread "
+            "(%d) + held-out-by-sum (%d) = %d -- a bar was refused without "
+            "being marked, or marked without being refused" % (
+                _ubm["written"], _ubm["unread"], _ubm["held_out_sum"],
+                _ubm_expected))
+    report["bars_held_out_sum"] = {
+        "bars": int(counters.get("bars_held_out_sum", 0)),
+        "bars_on_a_doubled_staff": int(
+            counters.get("bars_held_out_sum_on_a_doubled_staff", 0)),
+        "noteheads_and_rests": int(counters.get("notes_held_out_sum", 0)),
     }
     if out:
         pathlib.Path(out).write_text(text)
