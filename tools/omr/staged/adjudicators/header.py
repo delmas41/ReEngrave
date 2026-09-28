@@ -190,6 +190,53 @@ def _cell0_space(ev: Evidence, subject=None) -> float:
     return 0.0
 
 
+def _slot_centres(xs, space: float):
+    """`(slot centres, slots in the run)` over sorted marker x's — the one
+    arithmetic `_marker_run` reads a key from and `marker_run_members` reads
+    membership from, so the two cannot drift."""
+    centres = [xs[0]]
+    for a, b in zip(xs, xs[1:]):
+        if b - a > MARKER_SLOT_TOLERANCE_SPACES * space:
+            centres.append(b)
+    slots = 1
+    for a, b in zip(centres, centres[1:]):
+        if b - a > MARKER_RUN_GAP_SPACES * space:
+            break
+        slots += 1
+    return centres, slots
+
+
+def marker_run_members(marks, space: float):
+    """The `Q.KEYSIG_MARKER` rows the key reader COUNTED as its signature.
+
+    ⚠️ ROADMAP 2.7b. `accidental_owner` refuses a glyph that is one of these
+    (`is_a_key_signature_marker`), and "filed as a marker" is NOT the same
+    set: `gather._gather_keysig_markers` admits every accidental-shaped box
+    of the whole first bar up to the header limit, and `_marker_run` then
+    ends the run at the first gap wider than `MARKER_RUN_GAP_SPACES` and
+    abstains on mixed kinds. Measured on a fresh Litolff p3 gather: the
+    marker admitted at x=1007 on Violino I is PAST the three-flat run's gap
+    — it is the in-bar natural of Sean's confirmed crop 12, boxed twice —
+    and staff 3's natural sits in a run the reader refused as mixed. Only
+    what the reading was built from is a key-signature marker.
+
+    Empty wherever `_marker_run` reads no key from the run (mixed kinds, no
+    scale, an all-natural cancellation, more than `MAX_FIFTHS` slots).
+    """
+    if not marks or space <= 0:
+        return ()
+    kinds = {str(m.value) for m in marks}
+    if len(kinds) != 1 or kinds == {_NATURAL}:
+        return ()
+    xs = sorted(float(m.detail.get("x") or 0.0) for m in marks)
+    centres, slots = _slot_centres(xs, space)
+    if slots > MAX_FIFTHS:
+        return ()
+    end = centres[slots] if slots < len(centres) else None
+    return tuple(m for m in marks
+                 if end is None or float(m.detail.get("x") or 0.0) < end)
+
+
 def _marker_run(marks, space: float):
     """The detector's key accidentals as `(fifths, reason, detail)`.
 
@@ -228,15 +275,7 @@ def _marker_run(marks, space: float):
         return None, "mixed_marker_kinds", base
     if space <= 0:
         return None, "no_cell_scale", base
-    centres = [xs[0]]
-    for a, b in zip(xs, xs[1:]):
-        if b - a > MARKER_SLOT_TOLERANCE_SPACES * space:
-            centres.append(b)
-    slots = 1
-    for a, b in zip(centres, centres[1:]):
-        if b - a > MARKER_RUN_GAP_SPACES * space:
-            break
-        slots += 1
+    centres, slots = _slot_centres(xs, space)
     # ⚠️ HOW MANY OF THESE THE DETECTOR CALLED AN IN-BAR ACCIDENTAL, ON THE
     # VERDICT. `gather._gather_keysig_markers` admits an accidental-SHAPED box
     # in the header window and files the detector's own role-claim beside it
