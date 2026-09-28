@@ -557,3 +557,211 @@ true}` and nothing else), so `crop_ledger.py` REFUSES to guess and takes
 `--dpi` explicitly; 600 is the CLI default CLAUDE.md §7 records, and the
 frame control is what says it was right — it passed on 13 crops and failed on
 3, which is the control working rather than a number to trust.
+
+---
+
+## §3.4g-2 — Sean's two ledger conventions (2026-09-27)
+
+Branch `claude/ledger-conventions-3.4g2`, resumed from the WIP `5b41b234`
+(head-distance probe and fixtures; the lane was killed by the weekly limit)
+and merged with `origin/main` `0470fb80`.
+
+Sean, 2026-09-24, on the 13 crops of §5 (`out/print/ADJUDICATION-sean-2026-09-24.json`):
+*"the ledger lines will only be on the outside of the staff and only happen
+if there are actual notes in the staff"*. Registered as `[C90]` and `[C91]`
+in `docs/engraving-conventions.md` (written straight into the registry, as
+`C89` was; `conventions --check` clean, 118 entries).
+
+### What changed, in `family_precision.adjudicate_ledger_is_not_a_ledger` only
+
+Order: human -> `inside_the_staff` -> `on_a_staff_line` (outer lines only) ->
+`tall_not_a_rung` (tall AND no head ON it) -> `no_head_on_the_rung` -> kept.
+`RUNG_STEP_SHIPS` stays `False`.
+
+| reason | rule |
+|---|---|
+| `inside_the_staff` (new, `[C90]`) | the box's centre is in the band from line 1 to line 5 (step 0..8). No tolerance: the band's edges ARE the outer lines. |
+| `on_a_staff_line` (kept) | now reaches only a box just OUTSIDE line 1 or 5, within the measured 0.25 spaces. Kept as its own reason rather than folded into the band with a tolerance, because the band is Sean's statement and the tolerance is registration scatter. |
+| `tall_not_a_rung` (tightened) | height > 0.5 spaces AND no notehead box INTERSECTS the rung's box. The 0.5 floor is not retuned; "on" is an intersection and needs no constant. |
+| `no_head_on_the_rung` (new, `[C91]`) | no `notehead*` `Q.GLYPH_BOX` in the same cell that x-overlaps the rung with its centre within `HEAD_NEAR_TOL_SPACES`, AND none standing FARTHER OUT than the rung. |
+
+Every box with a cell unit carries `heads_x_overlapping`,
+`head_distance_spaces`, `head_outward_spaces` and `head_on_the_box` in its
+detail, so a box both conventions condemn shows both.
+
+### The head tolerance — p95, and the outward clause
+
+`probe/ledger_heads.py` (extended with the SIGNED side), over the rungs the
+3.4g rules keep:
+
+| record | kept by 3.4g | head distance p50 | **p95** | p99 |
+|---|---|---|---|---|
+| `beethoven5-p1-p4` | 346 | 0.70 | **2.67** | 5.895 |
+| Litolff whole | 1,777 | 0.86 | **2.67** | 4.995 |
+| Breitkopf whole | 6,305 | 0.58 | **1.885** | 2.93 |
+
+`HEAD_NEAR_TOL_SPACES = 2.75`, the smallest quarter-space value covering all
+three — the arithmetic that made `ON_A_STAFF_LINE_TOL_SPACES` 0.25.
+
+⚠️ **A symmetric tolerance alone cuts long ladders.** Of the kept rungs past
+2.75 spaces, split by which side of the rung the x-overlapping heads stand:
+
+| record | past 2.75 | a head farther OUT (ladder inner rung) | heads only STAFFWARD (the beam shape) | no head x-overlapping |
+|---|---|---|---|---|
+| p1-p4 | 23 | 5 | 10 | 8 |
+| Litolff | 122 | 43 | 35 | 44 |
+| Breitkopf | 89 | 51 | 19 | 19 |
+
+The outward heads sit 2.9-4.6 spaces off — four- and five-rung ladders, and
+nothing at the 6+ spaces a neighbouring staff's head would sit at. So a head
+farther out than the rung keeps it at any distance (`[C4]`: the ladder runs
+from the staff to its note). This is an ADDITION to the brief's "within a
+measured vertical tolerance", made because the measurement said the
+symmetric rule alone would refuse 99 plausible inner rungs.
+
+### `tall_not_a_rung`, re-measured on its one miss (crop 9, `glyph/4/1/2/5/14`)
+
+Height **0.68 spaces in BOTH frames** (canonical 68 on a 100-unit cell space;
+page 10.7 px on a 15.75 px staff spacing) — not a frame artefact. A
+`noteheadBlackOnLine` (`glyph/4/1/2/5/1`, 1.37 spaces tall) has its centre
+**0.085 spaces** from the rung's and its box contains the rung box's whole
+height; a second head (`glyph/4/1/2/5/8`) overlaps it by 0.52. On the merging
+plate the rung's box has swallowed the ink of the head standing on it, so the
+height was measuring the head. Crop 8 (the beam): 0.62 spaces, its nearest
+x-overlapping head 2.975 spaces STAFFWARD, no intersection — still refused.
+Whole-record effect: tall refusals **7 -> 1 / 22 -> 5 / 8 -> 0**; of the
+released boxes 5 / 15 / 7 become KEPT, 1 / 2 / 0 are refused
+`inside_the_staff` and 0 / 0 / 1 `on_a_staff_line`.
+
+### Sean's 13 crops under the new rules
+
+All 13 agree with Sean. RED first: the fixtures (`TestSeansThirteenCrops`)
+fail on the 3.4g rule.
+
+| n | subject | Sean | 3.4g | **3.4g-2** | step | heads: nearest / farthest out (spaces) |
+|---|---|---|---|---|---|---|
+| 1 | `glyph/4/0/9/1/7` | no — middle of the staff | kept (held-back would fire) | **`inside_the_staff`** | 4.96 | 2.06 / — |
+| 2 | `glyph/4/0/9/5/14` | no | kept (held-back would fire) | **`inside_the_staff`** | 1.49 | 4.205 / — |
+| 3 | `glyph/4/1/7/5/21` | **yes** | kept (held-back would fire) | **kept** | -6.72 | 0.515 / -0.515 |
+| 4 | `glyph/1/0/2/15/3` | no — whole-rest bar | `on_a_staff_line` | **`inside_the_staff`** | 5.55 | 0.245 / — |
+| 5 | `glyph/2/0/10/14/10` | no | `on_a_staff_line` | **`inside_the_staff`** | 2.14 | 1.05 / — |
+| 6 | `glyph/3/0/2/14/1` | no — whole rest | `on_a_staff_line` | **`inside_the_staff`** | 5.65 | none in the cell |
+| 7 | `glyph/3/0/5/13/5` | no — whole rest | `on_a_staff_line` | **`inside_the_staff`** | 0.15 | 2.725 / — |
+| 8 | `glyph/2/0/1/4/12` | no — a beam | `tall_not_a_rung` | **`tall_not_a_rung`** | -6.04 | 2.975 / -2.975 |
+| 9 | `glyph/4/1/2/5/14` | **yes** | `tall_not_a_rung` (wrong) | **kept** | 12.58 | 0.085 / 0.505, on the box |
+| 10 | `glyph/4/1/9/11/17` | no — middle of the staff | `tall_not_a_rung` | **`inside_the_staff`** | 4.32 | 0.415 / — |
+| 11 | `glyph/3/0/7/6/14` | **yes** | kept | **kept** | -1.85 | 1.21 / 1.21 |
+| 12 | `glyph/3/0/7/7/8` | **yes** | kept | **kept** | -1.90 | 1.125 / 1.125 |
+| 13 | `glyph/4/1/2/3/19` | **yes** | kept | **kept** | 10.22 | 0.585 / 1.145 |
+
+⚠️ **Crops 4, 6 and 7 are refused `inside_the_staff`, not
+`no_head_on_the_rung`.** All three lie inside the band, and position runs
+first because the head tolerance was measured on boxes OUTSIDE it. Under the
+other order only crop 6 would read `no_head_on_the_rung`: crops 4 and 7 each
+have an x-overlapping `notehead*` box (0.245 and 2.725 spaces off) standing
+at the whole-rest slot (step 5.5): on crop 4 a `noteheadWholeInSpace` at step
+5.06 on top of a `restWhole` at the same 5.06 (`glyph/1/0/2/15/5` and `/2`),
+on crop 7 a `noteheadBlackInSpace` at step 5.60 (`glyph/3/0/5/13/4`) — the
+WHOLE REST boxed by the detector as a head. And `notehead_is_a_whole_rest` runs after this decision in
+`adjudicate.ORDER`, so the ledger rule cannot know. The refusal is right
+either way; the limit is recorded (`[C91]` Known exceptions) and pinned by
+`test_crop_6_is_condemned_by_BOTH_conventions_and_the_record_says_so`.
+
+### Base vs arm, on ONE tree — `probe/readjudicate_ledger_g2.py`
+
+BASE = 3.4g's function loaded from `origin/main` and swapped into today's
+registry entry; ARM = this tree. Full ADJUDICATE -> EXPORT in both.
+**Control first, and it could fail: the BASE ledger tally equals 3.4g's
+recorded arm reason for reason — 1,878 of 1,878 / 7,617 of 7,617 / 7,818 of
+7,818.** Run sequentially; logs `out/arm-g2-*.log`, results
+`out/ledger-g2-arm-*.json`.
+
+| record | boxes | `inside_the_staff` | `on_a_staff_line` | `tall_not_a_rung` | `no_head_on_the_rung` | kept |
+|---|---|---|---|---|---|---|
+| p1-p4 before | 1,878 | — | 1,214 | 7 | — | 657 |
+| p1-p4 **after** | | **1,370** | **156** | **1** | **18** | **333** |
+| Litolff before | 7,617 | — | 4,708 | 22 | — | 2,887 |
+| Litolff **after** | | **5,122** | **698** | **5** | **79** | **1,713** |
+| Breitkopf before | 7,818 | — | 1,408 | 8 | — | 6,402 |
+| Breitkopf **after** | | **1,222** | **284** | **0** | **38** | **6,274** |
+
+Transitions (the boxes that MOVE): kept -> `inside_the_staff` **311 / 1,110 /
+97**; kept -> `no_head_on_the_rung` **18 / 79 / 38**; `tall_not_a_rung` ->
+kept **5 / 15 / 7**; `on_a_staff_line` -> `inside_the_staff` 1,058 / 4,010 /
+1,125 (a renaming — the same boxes, now refused on position). Newly refused
+from kept: **329 / 1,189 / 135**; newly kept: **5 / 15 / 7**.
+
+| record | `glyph_owner` moved | `unladdered_signal` `ledger_found==0` base -> arm | `<note>` base / arm | `notes_not_written` identical | census `unaccounted` / balanced |
+|---|---|---|---|---|---|
+| p1-p4 | **0** of 1,386 | 282 -> 278 | 1,769 / 1,769 | yes | `[]` / yes |
+| Litolff | **0** of 6,013 | 1,349 -> 1,344 | 8,686 / 8,686 | yes | `[]` / yes |
+| Breitkopf | **0** of 24,795 | 2,138 -> 2,138 | 7,872 / 7,872 | yes | `[]` / yes |
+
+**`glyph_owner` does not move, and that is expected, not a result:** its
+ladder tier reads `Q.GLYPH_LADDER`, GATHER's anonymous rung COUNT (§2b), so
+no ADJUDICATE refusal reaches it until roadmap 2.14. ADJUDICATE's own ladder
+does see the change — the rescued rungs give a few heads their rung back
+(`ledger_found==0` 282 -> 278, 1,349 -> 1,344) — and that signal does not
+ship (`UNLADDERED_SHIPS = False`). The music does not change on any record.
+
+### The crops — `probe/crop_ledger_g2.py`
+
+From `beethoven5-p1-p4` (the record Sean's 13 came from), 600 dpi, frame
+control imported (`crop_inferred._frame_ok`) — **it fired on 2 of 16
+candidates** (contrast -39.38 and 7.77), so 14 were written, all under
+`out/print/g2-litolff-p1p4-*`. Each draws the staff's own lines (GREEN), the
+box (RED bracket), every notehead box that x-overlaps it (ORANGE) and both
+verdicts. Manifest `out/print/crop-manifest-g2-litolff-p1p4.json`, every row
+`VERDICT_none_yet: null`.
+
+- kept -> `inside_the_staff`: `p4-s0-st9-c2-g6`, `p2-s0-st5-c4-g5`,
+  `p2-s0-st4-c2-g13`, `p2-s0-st4-c1-g6`
+- kept -> `no_head_on_the_rung`: `p1-s0-st3-c14-g0`, `p2-s0-st2-c2-g12`,
+  `p2-s1-st0-c12-g6`, `p3-s1-st0-c6-g12`
+- kept by both: `p2-s0-st8-c2-g16`, `p2-s0-st6-c1-g8`, `p2-s0-st5-c1-g25`,
+  `p3-s0-st7-c7-g8`
+- rescued: `p4-s1-st2-c5-g14` (crop 9), `p4-s1-st7-c5-g21` (crop 3)
+
+⚠️ **Not adjudicated, and one thing is worth Sean's eye first.** To this
+lane's eye (not his), two of the four `no_head_on_the_rung` crops
+(`p1-s0-st3-c14-g0`, `p2-s1-st0-c12-g6`) look like REAL rungs whose notehead
+is printed but was never boxed by the detector — the rule reads the
+detector's heads, and on a merging plate the heads on ledger lines are what
+the detector loses. The other two look like staff-line fragments beside heads
+hanging below line 1. Of the newly refused `no_head` boxes, **8 / 44 / 19**
+have no x-overlapping head at all (where a missed head would hide) and **10 /
+35 / 19** have heads only staffward past the tolerance. If Sean calls the two
+real, the next step is a second witness for "a note is here" that is not the
+detector (ink under the rung), not a wider tolerance.
+
+### What could NOT be done, or was done differently from the brief
+
+1. Crops 4, 6, 7 carry `inside_the_staff`, not `no_head_on_the_rung` — above.
+2. The head check has an OUTWARD clause beyond the brief's symmetric
+   tolerance — measured above; removing it is one line and refuses 99 inner
+   rungs.
+3. A whole rest boxed as a notehead counts as a head (ORDER) — `[C91]`.
+4. `glyph_owner` is unreachable until 2.14.
+5. The new refusals are unadjudicated; only the 13 original crops are Sean's.
+
+### Checks and tests
+
+- RED: `out/red-run-g2.txt` — the final test file against `origin/main`'s
+  `family_precision.py` (copied aside with `cp`, never a checkout): **19
+  failed, 67 passed**; with the 3.4g-2 rule: **86 passed**.
+- `pytest tools/omr/tests -m "not slow"`: **3,248 passed, 3 skipped**.
+- `python3 -m tools.omr.staged.check`: **267** (baseline 267, unchanged).
+  `inventory --check`, `wiring --check`, `reach --check`,
+  `conventions --check`: all exit 0.
+
+### Reproducing
+
+```bash
+L=/Users/seanjohnson/Desktop/ReEngrave/library/_shared-records
+B=benchmarks/omr-family-refusals-2026-09
+python3 $B/probe/ledger_heads.py $L/beethoven5-p1-p4.record.json   # one record per call
+python3 $B/probe/readjudicate_ledger_g2.py $L/<record>.json --out $B/out   # SEQUENTIALLY
+python3 $B/probe/crop_ledger_g2.py --record $L/beethoven5-p1-p4.record.json \
+  --pdf <library>/editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf \
+  --label litolff-p1p4 --dpi 600
+```

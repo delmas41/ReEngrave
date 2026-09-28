@@ -1,0 +1,163 @@
+[beethoven5-litolff-mvt1-whole-20260923.record.json] POPULATION FIRST: 7617 ledgerLine boxes
+[beethoven5-litolff-mvt1-whole-20260923.record.json] base (3.4g rule from origin/main) ...
+[beethoven5-litolff-mvt1-whole-20260923.record.json] CONTROL base == 3.4g's recorded arm: True (7617 of 7617)
+[beethoven5-litolff-mvt1-whole-20260923.record.json] arm  (3.4g-2 rule, this tree) ...
+{
+ "record": "beethoven5-litolff-mvt1-whole-20260923.record.json",
+ "base_ref": "origin/main",
+ "ledger_boxes_on_the_record": 7617,
+ "control": {
+  "prior_file": "benchmarks/omr-family-refusals-2026-09/out/ledger-arm-beethoven5-litolff-mvt1-whole-20260923.json",
+  "prior_3_4g_arm": {
+   "refused:on_a_staff_line": 4708,
+   "kept": 2887,
+   "refused:tall_not_a_rung": 22
+  },
+  "base_here": {
+   "kept": 2887,
+   "refused:on_a_staff_line": 4708,
+   "refused:tall_not_a_rung": 22
+  },
+  "agrees": true,
+  "agreeing_boxes": "7617 of 7617"
+ },
+ "base": {
+  "kept": 2887,
+  "refused:on_a_staff_line": 4708,
+  "refused:tall_not_a_rung": 22
+ },
+ "arm": {
+  "kept": 1713,
+  "refused:inside_the_staff": 5122,
+  "refused:no_head_on_the_rung": 79,
+  "refused:on_a_staff_line": 698,
+  "refused:tall_not_a_rung": 5
+ },
+ "transitions": {
+  "counts": {
+   "kept -> kept": 1698,
+   "kept -> refused:inside_the_staff": 1110,
+   "kept -> refused:no_head_on_the_rung": 79,
+   "refused:on_a_staff_line -> refused:inside_the_staff": 4010,
+   "refused:on_a_staff_line -> refused:on_a_staff_line": 698,
+   "refused:tall_not_a_rung -> kept": 15,
+   "refused:tall_not_a_rung -> refused:inside_the_staff": 2,
+   "refused:tall_not_a_rung -> refused:tall_not_a_rung": 5
+  },
+  "named": {
+   "refused:on_a_staff_line -> refused:inside_the_staff": [
+    "glyph/1/0/0/0/7",
+    "glyph/1/0/0/15/3",
+    "glyph/1/0/0/15/4",
+    "glyph/1/0/0/4/2",
+    "glyph/1/0/0/8/1",
+    "glyph/1/0/1/3/1",
+    "glyph/1/0/1/4/2",
+    "glyph/1/0/1/4/4",
+    "glyph/1/0/1/8/1",
+    "glyph/1/0/1/8/2",
+    "glyph/1/0/10/1/4",
+    "glyph/1/0/10/1/5"
+   ],
+   "kept -> refused:no_head_on_the_rung": [
+    "glyph/1/0/3/14/0",
+    "glyph/10/1/0/2/5",
+    "glyph/10/1/0/4/5",
+    "glyph/10/1/3/11/3",
+    "glyph/10/1/5/11/2",
+    "glyph/12/0/0/8/26",
+    "glyph/12/0/4/4/4",
+    "glyph/12/0/4/4/5",
+    "glyph/13/0/1/10/0",
+    "glyph/13/0/7/11/2",
+    "glyph/13/0/7/11/9",
+    "glyph/13/0/7/14/3"
+   ],
+   "kept -> refused:inside_the_staff": [
+    "glyph/10/0/0/10/9",
+    "glyph/10/0/0/11/8",
+    "glyph/10/0/1/3/5",
+    "glyph/10/0/1/3/6",
+    "glyph/10/0/1/3/8",
+    "glyph/10/0/1/6/9",
+    "glyph/10/0/1/7/6",
+    "glyph/10/0/1/8/8",
+    "glyph/10/0/3/5/4",
+    "glyph/10/0/3/6/11",
+    "glyph/10/0/3/6/14",
+    "glyph/10/0/3/6/8"
+   ],
+   "refused:tall_not_a_rung -> kept": [
+    "glyph/10/1/0/12/8",
+    "glyph/11/0/0/8/7",
+    "glyph/12/0/10/12/9",
+    "glyph/12/0/8/14/15",
+    "glyph/15/1/2/15/4",
+    "glyph/16/0/0/8/31",
+    "glyph/4/0/1/6/8",
+    "glyph/4/0/4/4/8",
+    "glyph/4/1/0/6/13",
+    "glyph/4/1/2/12/16",
+    "glyph/4/1/2/5/14",
+    "glyph/6/0/0/12/7"
+   ],
+   "refused:tall_not_a_rung -> refused:inside_the_staff": [
+    "glyph/12/0/4/8/6",
+    "glyph/4/1/9/11/17"
+   ]
+  }
+ },
+ "glyph_owner_verdicts": {
+  "base": 6013,
+  "arm": 6013
+ },
+ "glyph_owner_moved": 0,
+ "unladdered_signal_base": {
+  "ledger_found_hist": {
+   "0": 1349,
+   "1": 381,
+   "2": 90,
+   "3": 52,
+   "4": 3,
+   "None": 580
+  },
+  "would_fire": 1349
+ },
+ "unladdered_signal_arm": {
+  "ledger_found_hist": {
+   "0": 1344,
+   "1": 385,
+   "2": 91,
+   "3": 52,
+   "4": 3,
+   "None": 580
+  },
+  "would_fire": 1344
+ },
+ "notes_base": 8686,
+ "notes_arm": 8686,
+ "notes_not_written_identical": true,
+ "census_base": {
+  "unaccounted": [],
+  "balanced": true
+ },
+ "census_arm": {
+  "unaccounted": [],
+  "balanced": true
+ },
+ "family_refusals_ledger_arm": {
+  "refused": {
+   "inside_the_staff": 5122,
+   "on_a_staff_line": 698,
+   "no_head_on_the_rung": 79,
+   "tall_not_a_rung": 5
+  },
+  "refused_total": 5904,
+  "kept": 1713,
+  "abstained": 0,
+  "verdicts": 7617,
+  "balanced": true
+ }
+}
+wrote benchmarks/omr-family-refusals-2026-09/out/ledger-g2-arm-beethoven5-litolff-mvt1-whole-20260923.json
+LITOLFF_EXIT 0

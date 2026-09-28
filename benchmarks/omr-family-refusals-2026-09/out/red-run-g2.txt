@@ -1,0 +1,306 @@
+.....................F.FFFF.....FF.F.F.F...FFF...F.....FFFF.F........... [ 83%]
+..............                                                           [100%]
+=================================== FAILURES ===================================
+_ TestTheLedgerGeometry.test_a_box_in_the_middle_of_the_staff_is_refused_even_off_every_line _
+
+self = <omr.tests.test_staged_family_refusals.TestTheLedgerGeometry testMethod=test_a_box_in_the_middle_of_the_staff_is_refused_even_off_every_line>
+
+    def test_a_box_in_the_middle_of_the_staff_is_refused_even_off_every_line(
+            self):
+        """⚠️⚠️ THE RULE `on_a_staff_line` COULD NOT REACH, and the reason
+        3.4g-2 exists. Sean's crop 1 (`glyph/4/0/9/1/7`) sits at step 4.96 —
+        0.48 spaces from the nearest line, twice the measured tolerance — and
+        he answered *"no — middle of the staff, where there would never be a
+        ledger line"*."""
+        v = self._rung(step=4.96, head_dist_spaces=2.06)
+>       self.assertIs(v.value, True)
+E       AssertionError: False is not True
+
+tools/omr/tests/test_staged_family_refusals.py:484: AssertionError
+____ TestTheLedgerGeometry.test_a_box_on_each_of_the_five_lines_is_refused _____
+
+self = <omr.tests.test_staged_family_refusals.TestTheLedgerGeometry testMethod=test_a_box_on_each_of_the_five_lines_is_refused>
+
+    def test_a_box_on_each_of_the_five_lines_is_refused(self):
+        """⚠️ THE REASON CHANGED IN 3.4g-2 AND THE OUTCOME DID NOT. All five
+        lines are INSIDE the band (steps 0 and 8 are its edges), so Sean's
+        position convention condemns them before the line tolerance is
+        consulted at all."""
+        for step in (0.0, 2.0, 4.0, 6.0, 8.0):
+            with self.subTest(step=step):
+                v = self._rung(step=step)
+                self.assertIs(v.value, True)
+>               self.assertEqual(v.reason, "inside_the_staff")
+E               AssertionError: 'on_a_staff_line' != 'inside_the_staff'
+E               - on_a_staff_line
+E               + inside_the_staff
+
+tools/omr/tests/test_staged_family_refusals.py:474: AssertionError
+________ TestTheLedgerGeometry.test_a_box_on_the_middle_line_is_refused ________
+
+self = <omr.tests.test_staged_family_refusals.TestTheLedgerGeometry testMethod=test_a_box_on_the_middle_line_is_refused>
+
+    def test_a_box_on_the_middle_line_is_refused(self):
+        v = self._rung(step=4.0)
+        self.assertIs(v.value, True)
+>       self.assertEqual(v.reason, "inside_the_staff")
+E       AssertionError: 'on_a_staff_line' != 'inside_the_staff'
+E       - on_a_staff_line
+E       + inside_the_staff
+
+tools/omr/tests/test_staged_family_refusals.py:463: AssertionError
+_ TestTheLedgerGeometry.test_a_head_further_than_the_measured_tolerance_is_not_its_head _
+
+self = <omr.tests.test_staged_family_refusals.TestTheLedgerGeometry testMethod=test_a_head_further_than_the_measured_tolerance_is_not_its_head>
+
+    def test_a_head_further_than_the_measured_tolerance_is_not_its_head(self):
+        v = self._rung(step=-2.0,
+>                      head_dist_spaces=FP.HEAD_NEAR_TOL_SPACES + 0.5)
+E       AttributeError: module 'tools.omr.staged.adjudicators.family_precision' has no attribute 'HEAD_NEAR_TOL_SPACES'
+
+tools/omr/tests/test_staged_family_refusals.py:532: AttributeError
+_ TestTheLedgerGeometry.test_a_head_that_does_not_x_overlap_the_rung_is_not_its_head _
+
+self = <omr.tests.test_staged_family_refusals.TestTheLedgerGeometry testMethod=test_a_head_that_does_not_x_overlap_the_rung_is_not_its_head>
+
+    def test_a_head_that_does_not_x_overlap_the_rung_is_not_its_head(self):
+        v = self._rung(step=-2.0, head_dist_spaces=0.0,
+                       head_x_overlaps=False)
+>       self.assertIs(v.value, True)
+E       AssertionError: False is not True
+
+tools/omr/tests/test_staged_family_refusals.py:526: AssertionError
+_ TestTheLedgerGeometry.test_a_rung_with_no_head_anywhere_in_the_cell_is_refused _
+
+self = <omr.tests.test_staged_family_refusals.TestTheLedgerGeometry testMethod=test_a_rung_with_no_head_anywhere_in_the_cell_is_refused>
+
+    def test_a_rung_with_no_head_anywhere_in_the_cell_is_refused(self):
+        v = self._rung(step=-2.0)
+>       self.assertIs(v.value, True)
+E       AssertionError: False is not True
+
+tools/omr/tests/test_staged_family_refusals.py:520: AssertionError
+_ TestTheLedgerGeometry.test_a_tall_box_a_head_is_NEAR_but_not_ON_is_still_tall _
+
+self = <omr.tests.test_staged_family_refusals.TestTheLedgerGeometry testMethod=test_a_tall_box_a_head_is_NEAR_but_not_ON_is_still_tall>
+
+    def test_a_tall_box_a_head_is_NEAR_but_not_ON_is_still_tall(self):
+        """⚠️ "ON" IS AN INTERSECTION, NOT THE HEAD TOLERANCE. A head 1.5
+        spaces staffward of a tall box is near enough for the head rule and
+        does not stand on the box, so the height rule still speaks — which
+        is what separates a beam from a rung its head has swallowed."""
+        v = self._rung(step=-6.0, h_c=0.6 * SPACING_CANONICAL,
+                       heads_outward=[-1.5])
+        self.assertIs(v.value, True)
+        self.assertEqual(v.reason, "tall_not_a_rung")
+>       self.assertIs(v.detail["head_on_the_box"], False)
+E       KeyError: 'head_on_the_box'
+
+tools/omr/tests/test_staged_family_refusals.py:648: KeyError
+_______ TestTheLedgerGeometry.test_a_tall_box_with_a_head_on_it_is_KEPT ________
+
+self = <omr.tests.test_staged_family_refusals.TestTheLedgerGeometry testMethod=test_a_tall_box_with_a_head_on_it_is_KEPT>
+
+    def test_a_tall_box_with_a_head_on_it_is_KEPT(self):
+        """⚠️⚠️ SEAN'S CROP 9 (`glyph/4/1/2/5/14`), THE ONE REAL RUNG THE
+        OLD RULES REFUSED. Measured: height 0.68 spaces — past the 0.5 floor
+        — with a notehead 0.085 spaces from its centre and eight heads
+        x-overlapping it. On a MERGING plate the rung's box has swallowed
+        the head's ink, so the height is measuring the head. A rung with its
+        head on it is not a barline whatever it measures."""
+        v = self._rung(step=12.58, h_c=0.68 * SPACING_CANONICAL,
+                       heads_outward=[-0.085, 0.505])
+>       self.assertIs(v.value, False)
+E       AssertionError: True is not False
+
+tools/omr/tests/test_staged_family_refusals.py:617: AssertionError
+_ TestTheLedgerGeometry.test_an_inner_rung_of_a_FIVE_rung_run_is_KEPT_past_the_tolerance _
+
+self = <omr.tests.test_staged_family_refusals.TestTheLedgerGeometry testMethod=test_an_inner_rung_of_a_FIVE_rung_run_is_KEPT_past_the_tolerance>
+
+    def test_an_inner_rung_of_a_FIVE_rung_run_is_KEPT_past_the_tolerance(
+            self):
+        """⚠️⚠️ THE OUTWARD CLAUSE, MEASURED. A head farther OUT than the
+        rung is its note at any distance — the rung lies between the staff
+        and the note, the only place an engraver prints one. Of the rungs
+        3.4g kept past 2.75 spaces, 5 / 43 / 51 (p1-p4 / Litolff /
+        Breitkopf) have exactly this shape at 2.9-4.6 spaces; a symmetric
+        tolerance alone would refuse every one."""
+        for step in (10.0, -2.0):
+            with self.subTest(step=step):
+                v = self._rung(step=step, heads_outward=[4.0])
+                self.assertIs(v.value, False)
+                self.assertEqual(v.reason, "ledger_line")
+>               self.assertAlmostEqual(v.detail["head_outward_spaces"], 4.0,
+                                       places=3)
+E               KeyError: 'head_outward_spaces'
+
+tools/omr/tests/test_staged_family_refusals.py:569: KeyError
+_ TestTheLedgerGeometry.test_inside_the_staff_outranks_a_head_standing_right_on_it _
+
+self = <omr.tests.test_staged_family_refusals.TestTheLedgerGeometry testMethod=test_inside_the_staff_outranks_a_head_standing_right_on_it>
+
+    def test_inside_the_staff_outranks_a_head_standing_right_on_it(self):
+        """A head on the box does not make a box inside the band a rung."""
+        v = self._rung(step=4.0, head_dist_spaces=0.0)
+>       self.assertEqual(v.reason, "inside_the_staff")
+E       AssertionError: 'on_a_staff_line' != 'inside_the_staff'
+E       - on_a_staff_line
+E       + inside_the_staff
+
+tools/omr/tests/test_staged_family_refusals.py:490: AssertionError
+___ TestTheLedgerGeometry.test_the_distance_and_the_count_are_both_recorded ____
+
+self = <omr.tests.test_staged_family_refusals.TestTheLedgerGeometry testMethod=test_the_distance_and_the_count_are_both_recorded>
+
+    def test_the_distance_and_the_count_are_both_recorded(self):
+        v = self._rung(step=-2.0, head_dist_spaces=1.25)
+>       self.assertEqual(v.detail["heads_x_overlapping"], 1)
+E       KeyError: 'heads_x_overlapping'
+
+tools/omr/tests/test_staged_family_refusals.py:597: KeyError
+_______ TestTheLedgerGeometry.test_the_head_tolerance_holds_at_its_edge ________
+
+self = <omr.tests.test_staged_family_refusals.TestTheLedgerGeometry testMethod=test_the_head_tolerance_holds_at_its_edge>
+
+    def test_the_head_tolerance_holds_at_its_edge(self):
+        """THE POSITIVE CONTROL for the head rule, at the derived number."""
+        inside = self._rung(step=-2.0,
+>                           head_dist_spaces=FP.HEAD_NEAR_TOL_SPACES - 0.01)
+E       AttributeError: module 'tools.omr.staged.adjudicators.family_precision' has no attribute 'HEAD_NEAR_TOL_SPACES'
+
+tools/omr/tests/test_staged_family_refusals.py:539: AttributeError
+______ TestTheLedgerGeometry.test_the_head_tolerance_is_the_measured_p95 _______
+
+self = <omr.tests.test_staged_family_refusals.TestTheLedgerGeometry testMethod=test_the_head_tolerance_is_the_measured_p95>
+
+    def test_the_head_tolerance_is_the_measured_p95(self):
+        """⚠️ DERIVED, NOT CHOSEN — p95 of the kept rungs' head distance is
+        2.67 / 2.67 / 1.885 spaces on the three records; the constant is the
+        smallest quarter-space value covering all three.
+    
+        ⚠️ IT IS NOT BOUNDED BY SEAN'S CROP 8 (a beam, 2.975 spaces from its
+        heads) and must not be: a threshold fitted between one crop and one
+        percentile is a threshold tuned on one crop. Crop 8 is refused by
+        `tall_not_a_rung`, which does not read this constant at all."""
+        p95s = (2.67, 2.67, 1.885)
+>       self.assertGreaterEqual(FP.HEAD_NEAR_TOL_SPACES, max(p95s))
+E       AttributeError: module 'tools.omr.staged.adjudicators.family_precision' has no attribute 'HEAD_NEAR_TOL_SPACES'
+
+tools/omr/tests/test_staged_family_refusals.py:592: AttributeError
+_ TestTheLedgerGeometry.test_the_same_head_STAFFWARD_past_the_tolerance_is_refused _
+
+self = <omr.tests.test_staged_family_refusals.TestTheLedgerGeometry testMethod=test_the_same_head_STAFFWARD_past_the_tolerance_is_refused>
+
+    def test_the_same_head_STAFFWARD_past_the_tolerance_is_refused(self):
+        """THE NEGATIVE CONTROL for the outward clause, at the same
+        distance: heads only between the rung and the staff are what a beam
+        below its heads looks like (Sean's crop 8), not a ladder."""
+        for step in (10.0, -2.0):
+            with self.subTest(step=step):
+                v = self._rung(step=step, heads_outward=[-4.0])
+>               self.assertIs(v.value, True)
+E               AssertionError: False is not True
+
+tools/omr/tests/test_staged_family_refusals.py:579: AssertionError
+_ TestSeansThirteenCrops.test_crop_6_is_condemned_by_BOTH_conventions_and_the_record_says_so _
+
+self = <omr.tests.test_staged_family_refusals.TestSeansThirteenCrops testMethod=test_crop_6_is_condemned_by_BOTH_conventions_and_the_record_says_so>
+
+    def test_crop_6_is_condemned_by_BOTH_conventions_and_the_record_says_so(
+            self):
+        """⚠️ SEAN GAVE A WHOLE-REST BAR AS HIS REASON for crops 4, 6 and 7
+        (*"there are never ledger lines when there are no notes in the
+        measure"*), and all three are ALSO inside the band. The decision
+        records ONE reason — position first, because the head tolerance was
+        measured OUTSIDE the band — and the head facts on every box, so the
+        second convention's verdict is on the row and not lost. Crop 6 has
+        no head in its cell at all."""
+        v = self._crop(next(r for r in SEANS_CROPS if r[0] == 6))
+>       self.assertEqual(v.reason, "inside_the_staff")
+E       AssertionError: 'on_a_staff_line' != 'inside_the_staff'
+E       - on_a_staff_line
+E       + inside_the_staff
+
+tools/omr/tests/test_staged_family_refusals.py:839: AssertionError
+___________ TestSeansThirteenCrops.test_every_crop_agrees_with_sean ____________
+
+self = <omr.tests.test_staged_family_refusals.TestSeansThirteenCrops testMethod=test_every_crop_agrees_with_sean>
+
+    def test_every_crop_agrees_with_sean(self):
+        for row in SEANS_CROPS:
+            n, subject, real, _s, _h, _d, _r = row
+            with self.subTest(crop=n, subject=subject):
+                v = self._crop(row)
+                self.assertEqual(v.outcome, Outcome.DECIDED)
+                # `value is True` means REFUSED — *this is not a ledger line*
+>               self.assertIs(v.value, not real)
+E               AssertionError: False is not True
+
+tools/omr/tests/test_staged_family_refusals.py:810: AssertionError
+__ TestSeansThirteenCrops.test_every_crop_gets_the_reason_this_lane_measured ___
+
+self = <omr.tests.test_staged_family_refusals.TestSeansThirteenCrops testMethod=test_every_crop_gets_the_reason_this_lane_measured>
+
+    def test_every_crop_gets_the_reason_this_lane_measured(self):
+        for row in SEANS_CROPS:
+            n, subject, _real, _s, _h, _d, reason = row
+            with self.subTest(crop=n, subject=subject):
+>               self.assertEqual(self._crop(row).reason, reason)
+E               AssertionError: 'ledger_line' != 'inside_the_staff'
+E               - ledger_line
+E               + inside_the_staff
+
+tools/omr/tests/test_staged_family_refusals.py:816: AssertionError
+_____ TestSeansThirteenCrops.test_the_positive_control_five_he_called_real _____
+
+self = <omr.tests.test_staged_family_refusals.TestSeansThirteenCrops testMethod=test_the_positive_control_five_he_called_real>
+
+    def test_the_positive_control_five_he_called_real(self):
+        real = [r for r in SEANS_CROPS if r[2]]
+        self.assertEqual(len(real), 5)          # reach, before accuracy
+        for row in real:
+            with self.subTest(crop=row[0]):
+>               self.assertIs(self._crop(row).value, False)
+E               AssertionError: True is not False
+
+tools/omr/tests/test_staged_family_refusals.py:848: AssertionError
+_ TestSeansThirteenCrops.test_the_two_real_rungs_the_old_rules_refused_are_KEPT _
+
+self = <omr.tests.test_staged_family_refusals.TestSeansThirteenCrops testMethod=test_the_two_real_rungs_the_old_rules_refused_are_KEPT>
+
+    def test_the_two_real_rungs_the_old_rules_refused_are_KEPT(self):
+        """Crop 9 (`tall_not_a_rung`, shipped) and crop 3 (the held-back
+        rung-step rule). ⚠️ NAMED rather than counted, so a table edited to
+        make this pass reads as the edit it is."""
+        for n in (3, 9):
+            row = next(r for r in SEANS_CROPS if r[0] == n)
+            with self.subTest(crop=n, subject=row[1]):
+                v = self._crop(row)
+>               self.assertIs(v.value, False)
+E               AssertionError: True is not False
+
+tools/omr/tests/test_staged_family_refusals.py:826: AssertionError
+=========================== short test summary info ============================
+FAILED tools/omr/tests/test_staged_family_refusals.py::TestTheLedgerGeometry::test_a_box_in_the_middle_of_the_staff_is_refused_even_off_every_line
+FAILED tools/omr/tests/test_staged_family_refusals.py::TestTheLedgerGeometry::test_a_box_on_each_of_the_five_lines_is_refused
+FAILED tools/omr/tests/test_staged_family_refusals.py::TestTheLedgerGeometry::test_a_box_on_the_middle_line_is_refused
+FAILED tools/omr/tests/test_staged_family_refusals.py::TestTheLedgerGeometry::test_a_head_further_than_the_measured_tolerance_is_not_its_head
+FAILED tools/omr/tests/test_staged_family_refusals.py::TestTheLedgerGeometry::test_a_head_that_does_not_x_overlap_the_rung_is_not_its_head
+FAILED tools/omr/tests/test_staged_family_refusals.py::TestTheLedgerGeometry::test_a_rung_with_no_head_anywhere_in_the_cell_is_refused
+FAILED tools/omr/tests/test_staged_family_refusals.py::TestTheLedgerGeometry::test_a_tall_box_a_head_is_NEAR_but_not_ON_is_still_tall
+FAILED tools/omr/tests/test_staged_family_refusals.py::TestTheLedgerGeometry::test_a_tall_box_with_a_head_on_it_is_KEPT
+FAILED tools/omr/tests/test_staged_family_refusals.py::TestTheLedgerGeometry::test_an_inner_rung_of_a_FIVE_rung_run_is_KEPT_past_the_tolerance
+FAILED tools/omr/tests/test_staged_family_refusals.py::TestTheLedgerGeometry::test_inside_the_staff_outranks_a_head_standing_right_on_it
+FAILED tools/omr/tests/test_staged_family_refusals.py::TestTheLedgerGeometry::test_the_distance_and_the_count_are_both_recorded
+FAILED tools/omr/tests/test_staged_family_refusals.py::TestTheLedgerGeometry::test_the_head_tolerance_holds_at_its_edge
+FAILED tools/omr/tests/test_staged_family_refusals.py::TestTheLedgerGeometry::test_the_head_tolerance_is_the_measured_p95
+FAILED tools/omr/tests/test_staged_family_refusals.py::TestTheLedgerGeometry::test_the_same_head_STAFFWARD_past_the_tolerance_is_refused
+FAILED tools/omr/tests/test_staged_family_refusals.py::TestSeansThirteenCrops::test_crop_6_is_condemned_by_BOTH_conventions_and_the_record_says_so
+FAILED tools/omr/tests/test_staged_family_refusals.py::TestSeansThirteenCrops::test_every_crop_agrees_with_sean
+FAILED tools/omr/tests/test_staged_family_refusals.py::TestSeansThirteenCrops::test_every_crop_gets_the_reason_this_lane_measured
+FAILED tools/omr/tests/test_staged_family_refusals.py::TestSeansThirteenCrops::test_the_positive_control_five_he_called_real
+FAILED tools/omr/tests/test_staged_family_refusals.py::TestSeansThirteenCrops::test_the_two_real_rungs_the_old_rules_refused_are_KEPT
+19 failed, 67 passed in 1.09s
+--- GREEN, same file, rule of 3.4g-2 restored:
+86 passed in 0.82s

@@ -1,0 +1,149 @@
+{
+ "record": "brahms1-breitkopf-mvt1-whole-20260923.record.json",
+ "base_ref": "origin/main",
+ "ledger_boxes_on_the_record": 7818,
+ "control": {
+  "prior_file": "benchmarks/omr-family-refusals-2026-09/out/ledger-arm-brahms1-breitkopf-mvt1-whole-20260923.json",
+  "prior_3_4g_arm": {
+   "kept": 6402,
+   "refused:on_a_staff_line": 1408,
+   "refused:tall_not_a_rung": 8
+  },
+  "base_here": {
+   "kept": 6402,
+   "refused:on_a_staff_line": 1408,
+   "refused:tall_not_a_rung": 8
+  },
+  "agrees": true,
+  "agreeing_boxes": "7818 of 7818"
+ },
+ "base": {
+  "kept": 6402,
+  "refused:on_a_staff_line": 1408,
+  "refused:tall_not_a_rung": 8
+ },
+ "arm": {
+  "kept": 6274,
+  "refused:inside_the_staff": 1222,
+  "refused:no_head_on_the_rung": 38,
+  "refused:on_a_staff_line": 284
+ },
+ "transitions": {
+  "counts": {
+   "kept -> kept": 6267,
+   "kept -> refused:inside_the_staff": 97,
+   "kept -> refused:no_head_on_the_rung": 38,
+   "refused:on_a_staff_line -> refused:inside_the_staff": 1125,
+   "refused:on_a_staff_line -> refused:on_a_staff_line": 283,
+   "refused:tall_not_a_rung -> kept": 7,
+   "refused:tall_not_a_rung -> refused:on_a_staff_line": 1
+  },
+  "named": {
+   "refused:on_a_staff_line -> refused:inside_the_staff": [
+    "glyph/0/0/0/1/20",
+    "glyph/0/0/0/2/15",
+    "glyph/0/0/1/3/13",
+    "glyph/0/0/1/4/14",
+    "glyph/0/0/1/4/17",
+    "glyph/0/0/10/0/28",
+    "glyph/0/0/10/3/14",
+    "glyph/0/0/10/5/17",
+    "glyph/0/0/10/5/19",
+    "glyph/0/0/10/5/20",
+    "glyph/0/0/10/6/26",
+    "glyph/0/0/11/1/23"
+   ],
+   "refused:tall_not_a_rung -> kept": [
+    "glyph/1/0/1/0/64",
+    "glyph/14/1/7/2/15",
+    "glyph/18/1/10/7/28",
+    "glyph/2/0/0/5/28",
+    "glyph/24/1/0/8/27",
+    "glyph/5/0/6/7/16",
+    "glyph/9/0/7/4/12"
+   ],
+   "kept -> refused:inside_the_staff": [
+    "glyph/1/1/11/4/9",
+    "glyph/1/1/12/4/5",
+    "glyph/1/1/12/4/6",
+    "glyph/1/1/8/7/12",
+    "glyph/1/1/8/7/13",
+    "glyph/1/1/8/7/9",
+    "glyph/1/1/9/7/16",
+    "glyph/1/1/9/7/18",
+    "glyph/10/0/5/0/15",
+    "glyph/12/0/11/1/4",
+    "glyph/12/0/7/1/12",
+    "glyph/12/0/9/13/10"
+   ],
+   "kept -> refused:no_head_on_the_rung": [
+    "glyph/1/1/5/0/5",
+    "glyph/11/0/3/7/5",
+    "glyph/11/0/3/7/9",
+    "glyph/12/0/5/8/13",
+    "glyph/12/1/5/6/3",
+    "glyph/12/1/7/3/3",
+    "glyph/12/1/8/2/11",
+    "glyph/12/1/8/3/7",
+    "glyph/13/0/9/1/10",
+    "glyph/13/0/9/1/6",
+    "glyph/13/0/9/1/7",
+    "glyph/13/0/9/1/9"
+   ],
+   "refused:tall_not_a_rung -> refused:on_a_staff_line": [
+    "glyph/12/1/1/9/27"
+   ]
+  }
+ },
+ "glyph_owner_verdicts": {
+  "base": 24795,
+  "arm": 24795
+ },
+ "glyph_owner_moved": 0,
+ "glyph_owner_moved_named": [],
+ "unladdered_signal_base": {
+  "ledger_found_hist": {
+   "0": 2138,
+   "1": 243,
+   "2": 117,
+   "3": 33,
+   "4": 3,
+   "None": 598
+  },
+  "would_fire": 2138
+ },
+ "unladdered_signal_arm": {
+  "ledger_found_hist": {
+   "0": 2138,
+   "1": 243,
+   "2": 117,
+   "3": 33,
+   "4": 3,
+   "None": 598
+  },
+  "would_fire": 2138
+ },
+ "notes_base": 7872,
+ "notes_arm": 7872,
+ "notes_not_written_identical": true,
+ "census_base": {
+  "unaccounted": [],
+  "balanced": true
+ },
+ "census_arm": {
+  "unaccounted": [],
+  "balanced": true
+ },
+ "family_refusals_ledger_arm": {
+  "refused": {
+   "inside_the_staff": 1222,
+   "on_a_staff_line": 284,
+   "no_head_on_the_rung": 38
+  },
+  "refused_total": 1544,
+  "kept": 6274,
+  "abstained": 0,
+  "verdicts": 7818,
+  "balanced": true
+ }
+}
