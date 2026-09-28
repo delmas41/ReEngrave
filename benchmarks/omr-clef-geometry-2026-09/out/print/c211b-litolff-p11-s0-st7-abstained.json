@@ -1,0 +1,89 @@
+{
+ "png": "c211b-litolff-p11-s0-st7-abstained.png",
+ "staff": "staff/11/0/7",
+ "page": 11,
+ "dpi": 600,
+ "zoom": 4,
+ "caption": "c211b-litolff system 0 staff 7 \u2014 arm clef abstained/None (base decided/treble). GREEN = the staff's five Q.STAFF_LINES; RED = a detector clef box DISCOUNTED clef_box_off_the_staff; BLUE = the box the winning verdict USED; ORANGE = present but neither.",
+ "frame_control": {
+  "passed": true,
+  "contrast": 226.37
+ },
+ "arm_verdict": {
+  "outcome": "abstained",
+  "value": null,
+  "reason": "no_candidates",
+  "decider": "adjudicate_clef"
+ },
+ "base_verdict": {
+  "id": "vrd:176350",
+  "subject": "staff/11/0/7",
+  "quantity": "clef",
+  "outcome": "decided",
+  "value": "treble",
+  "decider": "adjudicate_clef",
+  "reason": "scored",
+  "considered": [
+   "obs:114455",
+   "obs:114454",
+   "vrd:175656"
+  ],
+  "used": [
+   "obs:114454"
+  ],
+  "missing": [
+   "clef_seed",
+   "keysig_clef_fit"
+  ],
+  "declined": [
+   "clef_located"
+  ],
+  "excluded": [],
+  "correlated": [],
+  "candidates": [
+   {
+    "value": "treble",
+    "support": 3.0
+   }
+  ],
+  "basis": [
+   "obs:114454",
+   "obs:114455",
+   "vrd:175656"
+  ],
+  "margin": 3.0,
+  "supersedes": null,
+  "detail": {
+   "scores": {
+    "treble": 3.0
+   }
+  }
+ },
+ "boxes": [
+  {
+   "glyph_row": "obs:114454",
+   "class": "clefG",
+   "colour": "RED (discounted)",
+   "page_px": [
+    382.5,
+    1379.0,
+    420.5,
+    1391.8333333333333
+   ]
+  }
+ ],
+ "staff_lines_page_px": [
+  1441,
+  1456,
+  1472,
+  1488,
+  1503
+ ],
+ "crop_page_px": [
+  331.5,
+  1286.0,
+  575.5,
+  1658.0
+ ],
+ "VERDICT_none_yet": null
+}

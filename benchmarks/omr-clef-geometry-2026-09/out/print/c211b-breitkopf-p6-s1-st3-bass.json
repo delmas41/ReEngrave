@@ -1,0 +1,138 @@
+{
+ "png": "c211b-breitkopf-p6-s1-st3-bass.png",
+ "staff": "staff/6/1/3",
+ "page": 6,
+ "dpi": 600,
+ "zoom": 4,
+ "caption": "c211b-breitkopf system 1 staff 3 \u2014 arm clef decided/bass (base decided/treble). GREEN = the staff's five Q.STAFF_LINES; RED = a detector clef box DISCOUNTED clef_box_off_the_staff; BLUE = the box the winning verdict USED; ORANGE = present but neither.",
+ "frame_control": {
+  "passed": true,
+  "contrast": 179.09
+ },
+ "arm_verdict": {
+  "outcome": "decided",
+  "value": "bass",
+  "reason": "scored",
+  "decider": "adjudicate_clef"
+ },
+ "base_verdict": {
+  "id": "vrd:437387",
+  "subject": "staff/6/1/3",
+  "quantity": "clef",
+  "outcome": "decided",
+  "value": "treble",
+  "decider": "adjudicate_clef",
+  "reason": "scored",
+  "considered": [
+   "obs:127003",
+   "obs:127002",
+   "vrd:435951",
+   "obs:127094",
+   "obs:127095",
+   "obs:127096",
+   "obs:127097"
+  ],
+  "used": [
+   "obs:127002",
+   "vrd:435951"
+  ],
+  "missing": [
+   "clef_seed"
+  ],
+  "declined": [
+   "clef_located",
+   "keysig_clef_fit"
+  ],
+  "excluded": [],
+  "correlated": [
+   [
+    "obs:127094",
+    "obs:127095",
+    "obs:127096",
+    "obs:127097"
+   ]
+  ],
+  "candidates": [
+   {
+    "value": "treble",
+    "support": 3.0
+   },
+   {
+    "value": "bass",
+    "support": 1.0
+   }
+  ],
+  "basis": [
+   "obs:022793",
+   "obs:029436",
+   "obs:045719",
+   "obs:058228",
+   "obs:076048",
+   "obs:094750",
+   "obs:113997",
+   "obs:127002",
+   "obs:127003",
+   "obs:127094",
+   "obs:127095",
+   "obs:127096",
+   "obs:127097",
+   "obs:127142",
+   "obs:127150",
+   "obs:138956",
+   "obs:149457",
+   "obs:163813",
+   "obs:180312",
+   "obs:195980",
+   "obs:213725",
+   "obs:233406",
+   "obs:246860",
+   "obs:258594",
+   "obs:277638",
+   "obs:295335",
+   "obs:312999",
+   "obs:331589",
+   "obs:342661",
+   "obs:354275",
+   "obs:366579",
+   "obs:383042",
+   "obs:401575",
+   "obs:417285",
+   "vrd:435951"
+  ],
+  "margin": 2.0,
+  "supersedes": null,
+  "detail": {
+   "scores": {
+    "treble": 3.0,
+    "bass": 1.0
+   }
+  }
+ },
+ "boxes": [
+  {
+   "glyph_row": "obs:127002",
+   "class": "clefG",
+   "colour": "RED (discounted)",
+   "page_px": [
+    674.9533073929961,
+    5148.112840466926,
+    750.0233463035019,
+    5171.439688715954
+   ]
+  }
+ ],
+ "staff_lines_page_px": [
+  4900,
+  4927,
+  4954,
+  4981,
+  5009
+ ],
+ "crop_page_px": [
+  588.75,
+  4627.5,
+  1022.5233463035019,
+  5281.5
+ ],
+ "VERDICT_none_yet": null
+}

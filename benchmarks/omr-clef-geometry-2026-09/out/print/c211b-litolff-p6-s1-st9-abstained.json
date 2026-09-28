@@ -1,0 +1,113 @@
+{
+ "png": "c211b-litolff-p6-s1-st9-abstained.png",
+ "staff": "staff/6/1/9",
+ "page": 6,
+ "dpi": 600,
+ "zoom": 4,
+ "caption": "c211b-litolff system 1 staff 9 \u2014 arm clef narrowed/None (base decided/treble). GREEN = the staff's five Q.STAFF_LINES; RED = a detector clef box DISCOUNTED clef_box_off_the_staff; BLUE = the box the winning verdict USED; ORANGE = present but neither.",
+ "frame_control": {
+  "passed": true,
+  "contrast": 28.66
+ },
+ "arm_verdict": {
+  "outcome": "narrowed",
+  "value": null,
+  "reason": "margin_below_floor",
+  "decider": "adjudicate_clef"
+ },
+ "base_verdict": {
+  "id": "vrd:176254",
+  "subject": "staff/6/1/9",
+  "quantity": "clef",
+  "outcome": "decided",
+  "value": "treble",
+  "decider": "adjudicate_clef",
+  "reason": "scored",
+  "considered": [
+   "obs:069873",
+   "obs:069872",
+   "vrd:175560",
+   "obs:069969",
+   "obs:069970",
+   "obs:069971"
+  ],
+  "used": [
+   "obs:069872",
+   "obs:069969",
+   "obs:069970",
+   "obs:069971"
+  ],
+  "missing": [
+   "clef_seed"
+  ],
+  "declined": [
+   "clef_located"
+  ],
+  "excluded": [],
+  "correlated": [
+   [
+    "obs:069969",
+    "obs:069970",
+    "obs:069971"
+   ]
+  ],
+  "candidates": [
+   {
+    "value": "treble",
+    "support": 4.5
+   },
+   {
+    "value": "bass",
+    "support": 1.5
+   },
+   {
+    "value": "alto",
+    "support": 1.5
+   }
+  ],
+  "basis": [
+   "obs:069872",
+   "obs:069873",
+   "obs:069969",
+   "obs:069970",
+   "obs:069971",
+   "vrd:175560"
+  ],
+  "margin": 3.0,
+  "supersedes": null,
+  "detail": {
+   "scores": {
+    "treble": 4.5,
+    "bass": 1.5,
+    "alto": 1.5
+   }
+  }
+ },
+ "boxes": [
+  {
+   "glyph_row": "obs:069872",
+   "class": "clefG",
+   "colour": "RED (discounted)",
+   "page_px": [
+    371.335,
+    3236.0,
+    416.53749999999997,
+    3265.1375
+   ]
+  }
+ ],
+ "staff_lines_page_px": [
+  3299,
+  3314,
+  3330,
+  3346,
+  3362
+ ],
+ "crop_page_px": [
+  321.25,
+  3141.5,
+  574.0374999999999,
+  3519.5
+ ],
+ "VERDICT_none_yet": null
+}

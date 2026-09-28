@@ -1,0 +1,3840 @@
+{
+  "name": "breitkopf",
+  "n_base": 691,
+  "n_arm": 691,
+  "changed": [
+    {
+      "subject": "staff/14/0/11",
+      "base": {
+        "outcome": "narrowed",
+        "value": null,
+        "reason": "margin_below_floor",
+        "decider": "adjudicate_clef"
+      },
+      "arm": {
+        "outcome": "decided",
+        "value": "alto",
+        "reason": "scored",
+        "decider": "adjudicate_clef"
+      }
+    },
+    {
+      "subject": "staff/6/1/3",
+      "base": {
+        "outcome": "decided",
+        "value": "treble",
+        "reason": "scored",
+        "decider": "adjudicate_clef"
+      },
+      "arm": {
+        "outcome": "decided",
+        "value": "bass",
+        "reason": "scored",
+        "decider": "adjudicate_clef"
+      }
+    }
+  ],
+  "read_clefs_changed": [
+    {
+      "subject": "staff/6/1/3",
+      "base": {
+        "outcome": "decided",
+        "value": "treble",
+        "reason": "scored",
+        "decider": "adjudicate_clef"
+      },
+      "arm": {
+        "outcome": "decided",
+        "value": "bass",
+        "reason": "scored",
+        "decider": "adjudicate_clef"
+      }
+    }
+  ],
+  "newly_filled": [
+    {
+      "subject": "staff/14/0/11",
+      "base": {
+        "outcome": "narrowed",
+        "value": null,
+        "reason": "margin_below_floor",
+        "decider": "adjudicate_clef"
+      },
+      "arm": {
+        "outcome": "decided",
+        "value": "alto",
+        "reason": "scored",
+        "decider": "adjudicate_clef"
+      }
+    }
+  ],
+  "discounted": [
+    {
+      "subject": "staff/1/0/1",
+      "discounted": [
+        {
+          "glyph_row": "obs:045430",
+          "position_row": "obs:045432",
+          "family": "treble",
+          "position_steps": 14.832432432432432,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/1/0/3",
+      "discounted": [
+        {
+          "glyph_row": "obs:045437",
+          "position_row": "obs:045440",
+          "family": "bass",
+          "position_steps": 15.264864864864865,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/1/0/4",
+      "discounted": [
+        {
+          "glyph_row": "obs:045441",
+          "position_row": "obs:045443",
+          "family": "treble",
+          "position_steps": 13.647058823529411,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/1/0/7",
+      "discounted": [
+        {
+          "glyph_row": "obs:045450",
+          "position_row": "obs:045452",
+          "family": "bass",
+          "position_steps": 14.085106382978724,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/1/0/8",
+      "discounted": [
+        {
+          "glyph_row": "obs:045453",
+          "position_row": "obs:045455",
+          "family": "treble",
+          "position_steps": -4.791443850267379,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/1/0/9",
+      "discounted": [
+        {
+          "glyph_row": "obs:045458",
+          "position_row": "obs:045460",
+          "family": "treble",
+          "position_steps": 14.75268817204301,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/1/1/0",
+      "discounted": [
+        {
+          "glyph_row": "obs:045470",
+          "position_row": "obs:045473",
+          "family": "treble",
+          "position_steps": 13.442379182156134,
+          "reason": "clef_box_off_the_staff"
+        },
+        {
+          "glyph_row": "obs:045471",
+          "position_row": "obs:045474",
+          "family": "bass",
+          "position_steps": -11.598513011152416,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/1/1/1",
+      "discounted": [
+        {
+          "glyph_row": "obs:045476",
+          "position_row": "obs:045479",
+          "family": "treble",
+          "position_steps": -5.29368029739777,
+          "reason": "clef_box_off_the_staff"
+        },
+        {
+          "glyph_row": "obs:045477",
+          "position_row": "obs:045480",
+          "family": "treble",
+          "position_steps": 14.423791821561338,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/1/1/2",
+      "discounted": [
+        {
+          "glyph_row": "obs:045482",
+          "position_row": "obs:045484",
+          "family": "treble",
+          "position_steps": -6.304832713754647,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/1/1/4",
+      "discounted": [
+        {
+          "glyph_row": "obs:045487",
+          "position_row": "obs:045489",
+          "family": "treble",
+          "position_steps": 13.273408239700375,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/1/1/5",
+      "discounted": [
+        {
+          "glyph_row": "obs:045492",
+          "position_row": "obs:045494",
+          "family": "treble",
+          "position_steps": 13.183520599250937,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/1/1/6",
+      "discounted": [
+        {
+          "glyph_row": "obs:045496",
+          "position_row": "obs:045498",
+          "family": "treble",
+          "position_steps": -5.185185185185185,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/1/1/7",
+      "discounted": [
+        {
+          "glyph_row": "obs:045500",
+          "position_row": "obs:045503",
+          "family": "treble",
+          "position_steps": 14.831460674157304,
+          "reason": "clef_box_off_the_staff"
+        },
+        {
+          "glyph_row": "obs:045501",
+          "position_row": "obs:045504",
+          "family": "treble",
+          "position_steps": -6.921348314606742,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/1/1/9",
+      "discounted": [
+        {
+          "glyph_row": "obs:045508",
+          "position_row": "obs:045510",
+          "family": "treble",
+          "position_steps": -7.340823970037453,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/2/0/0",
+      "discounted": [
+        {
+          "glyph_row": "obs:057939",
+          "position_row": "obs:057941",
+          "family": "treble",
+          "position_steps": 14.654205607476635,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/2/0/1",
+      "discounted": [
+        {
+          "glyph_row": "obs:057943",
+          "position_row": "obs:057946",
+          "family": "treble",
+          "position_steps": 14.317757009345794,
+          "reason": "clef_box_off_the_staff"
+        },
+        {
+          "glyph_row": "obs:057944",
+          "position_row": "obs:057947",
+          "family": "treble",
+          "position_steps": -6.728971962616822,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/2/0/2",
+      "discounted": [
+        {
+          "glyph_row": "obs:057949",
+          "position_row": "obs:057951",
+          "family": "treble",
+          "position_steps": -6.347417840375587,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/2/0/3",
+      "discounted": [
+        {
+          "glyph_row": "obs:057953",
+          "position_row": "obs:057955",
+          "family": "bass",
+          "position_steps": 14.018691588785046,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/2/0/4",
+      "discounted": [
+        {
+          "glyph_row": "obs:057956",
+          "position_row": "obs:057959",
+          "family": "treble",
+          "position_steps": 13.633802816901408,
+          "reason": "clef_box_off_the_staff"
+        },
+        {
+          "glyph_row": "obs:057958",
+          "position_row": "obs:057961",
+          "family": "bass",
+          "position_steps": -7.023474178403756,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/2/0/6",
+      "discounted": [
+        {
+          "glyph_row": "obs:057965",
+          "position_row": "obs:057968",
+          "family": "treble",
+          "position_steps": 13.906542056074766,
+          "reason": "clef_box_off_the_staff"
+        },
+        {
+          "glyph_row": "obs:057966",
+          "position_row": "obs:057969",
+          "family": "treble",
+          "position_steps": -7.775700934579439,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/2/0/7",
+      "discounted": [
+        {
+          "glyph_row": "obs:057970",
+          "position_row": "obs:057972",
+          "family": "treble",
+          "position_steps": -6.0663507109004735,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/2/0/8",
+      "discounted": [
+        {
+          "glyph_row": "obs:057974",
+          "position_row": "obs:057977",
+          "family": "treble",
+          "position_steps": -7.0,
+          "reason": "clef_box_off_the_staff"
+        },
+        {
+          "glyph_row": "obs:057975",
+          "position_row": "obs:057978",
+          "family": "treble",
+          "position_steps": 18.59259259259259,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/2/1/1",
+      "discounted": [
+        {
+          "glyph_row": "obs:057991",
+          "position_row": "obs:057993",
+          "family": "treble",
+          "position_steps": -7.17948717948718,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/2/1/4",
+      "discounted": [
+        {
+          "glyph_row": "obs:057999",
+          "position_row": "obs:058001",
+          "family": "treble",
+          "position_steps": 14.183150183150182,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/2/1/5",
+      "discounted": [
+        {
+          "glyph_row": "obs:058003",
+          "position_row": "obs:058005",
+          "family": "treble",
+          "position_steps": 13.655677655677655,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/2/1/6",
+      "discounted": [
+        {
+          "glyph_row": "obs:058006",
+          "position_row": "obs:058009",
+          "family": "treble",
+          "position_steps": -5.626373626373627,
+          "reason": "clef_box_off_the_staff"
+        },
+        {
+          "glyph_row": "obs:058008",
+          "position_row": "obs:058011",
+          "family": "bass",
+          "position_steps": 12.981684981684982,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/2/1/7",
+      "discounted": [
+        {
+          "glyph_row": "obs:058012",
+          "position_row": "obs:058014",
+          "family": "treble",
+          "position_steps": -4.9523809523809526,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/2/1/10",
+      "discounted": [
+        {
+          "glyph_row": "obs:058021",
+          "position_row": "obs:058023",
+          "family": "treble",
+          "position_steps": -6.144927536231884,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/3/0/1",
+      "discounted": [
+        {
+          "glyph_row": "obs:075760",
+          "position_row": "obs:075762",
+          "family": "treble",
+          "position_steps": 14.54071661237785,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/3/0/2",
+      "discounted": [
+        {
+          "glyph_row": "obs:075764",
+          "position_row": "obs:075766",
+          "family": "treble",
+          "position_steps": -6.415335463258786,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/3/0/4",
+      "discounted": [
+        {
+          "glyph_row": "obs:075769",
+          "position_row": "obs:075771",
+          "family": "treble",
+          "position_steps": 14.128205128205128,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/3/0/6",
+      "discounted": [
+        {
+          "glyph_row": "obs:075776",
+          "position_row": "obs:075779",
+          "family": "treble",
+          "position_steps": 13.13738019169329,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/3/0/7",
+      "discounted": [
+        {
+          "glyph_row": "obs:075782",
+          "position_row": "obs:075784",
+          "family": "treble",
+          "position_steps": -4.95483870967742,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/3/0/8",
+      "discounted": [
+        {
+          "glyph_row": "obs:075785",
+          "position_row": "obs:075787",
+          "family": "treble",
+          "position_steps": -6.834951456310679,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/3/1/0",
+      "discounted": [
+        {
+          "glyph_row": "obs:075802",
+          "position_row": "obs:075804",
+          "family": "treble",
+          "position_steps": 14.083333333333334,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/3/1/1",
+      "discounted": [
+        {
+          "glyph_row": "obs:075806",
+          "position_row": "obs:075808",
+          "family": "treble",
+          "position_steps": 14.366782006920415,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/3/1/2",
+      "discounted": [
+        {
+          "glyph_row": "obs:075810",
+          "position_row": "obs:075812",
+          "family": "treble",
+          "position_steps": -6.213058419243986,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/3/1/3",
+      "discounted": [
+        {
+          "glyph_row": "obs:075814",
+          "position_row": "obs:075816",
+          "family": "treble",
+          "position_steps": -7.252595155709343,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/3/1/4",
+      "discounted": [
+        {
+          "glyph_row": "obs:075817",
+          "position_row": "obs:075819",
+          "family": "treble",
+          "position_steps": 13.965635738831615,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/3/1/5",
+      "discounted": [
+        {
+          "glyph_row": "obs:075822",
+          "position_row": "obs:075824",
+          "family": "treble",
+          "position_steps": 14.477508650519031,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/3/1/6",
+      "discounted": [
+        {
+          "glyph_row": "obs:075826",
+          "position_row": "obs:075829",
+          "family": "treble",
+          "position_steps": -6.43298969072165,
+          "reason": "clef_box_off_the_staff"
+        },
+        {
+          "glyph_row": "obs:075827",
+          "position_row": "obs:075830",
+          "family": "treble",
+          "position_steps": 13.11340206185567,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/3/1/7",
+      "discounted": [
+        {
+          "glyph_row": "obs:075832",
+          "position_row": "obs:075834",
+          "family": "treble",
+          "position_steps": -4.190476190476191,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/3/1/8",
+      "discounted": [
+        {
+          "glyph_row": "obs:075836",
+          "position_row": "obs:075840",
+          "family": "treble",
+          "position_steps": -4.893470790378007,
+          "reason": "clef_box_off_the_staff"
+        },
+        {
+          "glyph_row": "obs:075837",
+          "position_row": "obs:075841",
+          "family": "treble",
+          "position_steps": 19.353951890034363,
+          "reason": "clef_box_off_the_staff"
+        },
+        {
+          "glyph_row": "obs:075838",
+          "position_row": "obs:075842",
+          "family": "treble",
+          "position_steps": 18.034364261168385,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/3/1/9",
+      "discounted": [
+        {
+          "glyph_row": "obs:075844",
+          "position_row": "obs:075846",
+          "family": "treble",
+          "position_steps": 15.175257731958762,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/3/1/10",
+      "discounted": [
+        {
+          "glyph_row": "obs:075848",
+          "position_row": "obs:075850",
+          "family": "treble",
+          "position_steps": -6.8728522336769755,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/4/0/0",
+      "discounted": [
+        {
+          "glyph_row": "obs:094455",
+          "position_row": "obs:094457",
+          "family": "treble",
+          "position_steps": 14.636132315521628,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/4/0/1",
+      "discounted": [
+        {
+          "glyph_row": "obs:094459",
+          "position_row": "obs:094461",
+          "family": "treble",
+          "position_steps": 15.126903553299492,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/4/0/2",
+      "discounted": [
+        {
+          "glyph_row": "obs:094463",
+          "position_row": "obs:094465",
+          "family": "treble",
+          "position_steps": -7.015384615384615,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/4/0/4",
+      "discounted": [
+        {
+          "glyph_row": "obs:094469",
+          "position_row": "obs:094471",
+          "family": "treble",
+          "position_steps": 13.558974358974359,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/4/0/6",
+      "discounted": [
+        {
+          "glyph_row": "obs:094475",
+          "position_row": "obs:094477",
+          "family": "treble",
+          "position_steps": 13.497435897435897,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/4/0/7",
+      "discounted": [
+        {
+          "glyph_row": "obs:094479",
+          "position_row": "obs:094481",
+          "family": "treble",
+          "position_steps": -5.299492385786802,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/4/1/0",
+      "discounted": [
+        {
+          "glyph_row": "obs:094497",
+          "position_row": "obs:094499",
+          "family": "treble",
+          "position_steps": 14.940397350993377,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/4/1/1",
+      "discounted": [
+        {
+          "glyph_row": "obs:094501",
+          "position_row": "obs:094504",
+          "family": "treble",
+          "position_steps": -6.531147540983606,
+          "reason": "clef_box_off_the_staff"
+        },
+        {
+          "glyph_row": "obs:094502",
+          "position_row": "obs:094505",
+          "family": "treble",
+          "position_steps": 14.688524590163935,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/4/1/2",
+      "discounted": [
+        {
+          "glyph_row": "obs:094507",
+          "position_row": "obs:094509",
+          "family": "treble",
+          "position_steps": -6.337662337662338,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/4/1/4",
+      "discounted": [
+        {
+          "glyph_row": "obs:094513",
+          "position_row": "obs:094515",
+          "family": "treble",
+          "position_steps": 13.721854304635762,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/4/1/6",
+      "discounted": [
+        {
+          "glyph_row": "obs:094519",
+          "position_row": "obs:094521",
+          "family": "treble",
+          "position_steps": 13.298360655737705,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/4/1/7",
+      "discounted": [
+        {
+          "glyph_row": "obs:094523",
+          "position_row": "obs:094526",
+          "family": "treble",
+          "position_steps": -5.298360655737705,
+          "reason": "clef_box_off_the_staff"
+        },
+        {
+          "glyph_row": "obs:094524",
+          "position_row": "obs:094527",
+          "family": "bass",
+          "position_steps": 14.426229508196721,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/4/1/8",
+      "discounted": [
+        {
+          "glyph_row": "obs:094529",
+          "position_row": "obs:094533",
+          "family": "treble",
+          "position_steps": -4.938906752411576,
+          "reason": "clef_box_off_the_staff"
+        },
+        {
+          "glyph_row": "obs:094530",
+          "position_row": "obs:094535",
+          "family": "treble",
+          "position_steps": 15.382636655948554,
+          "reason": "clef_box_off_the_staff"
+        },
+        {
+          "glyph_row": "obs:094531",
+          "position_row": "obs:094535",
+          "family": "treble",
+          "position_steps": 15.382636655948554,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/4/1/9",
+      "discounted": [
+        {
+          "glyph_row": "obs:094537",
+          "position_row": "obs:094539",
+          "family": "treble",
+          "position_steps": 14.493506493506494,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/4/1/10",
+      "discounted": [
+        {
+          "glyph_row": "obs:094541",
+          "position_row": "obs:094543",
+          "family": "treble",
+          "position_steps": -6.19016393442623,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/5/0/4",
+      "discounted": [
+        {
+          "glyph_row": "obs:113772",
+          "position_row": "obs:113774",
+          "family": "treble",
+          "position_steps": 13.779359430604982,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/5/0/5",
+      "discounted": [
+        {
+          "glyph_row": "obs:113776",
+          "position_row": "obs:113778",
+          "family": "treble",
+          "position_steps": 13.637010676156583,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/5/0/6",
+      "discounted": [
+        {
+          "glyph_row": "obs:113780",
+          "position_row": "obs:113784",
+          "family": "treble",
+          "position_steps": -5.362007168458781,
+          "reason": "clef_box_off_the_staff"
+        },
+        {
+          "glyph_row": "obs:113781",
+          "position_row": "obs:113785",
+          "family": "treble",
+          "position_steps": 13.476702508960573,
+          "reason": "clef_box_off_the_staff"
+        },
+        {
+          "glyph_row": "obs:113782",
+          "position_row": "obs:113786",
+          "family": "bass",
+          "position_steps": 13.448028673835125,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/5/0/7",
+      "discounted": [
+        {
+          "glyph_row": "obs:113788",
+          "position_row": "obs:113790",
+          "family": "treble",
+          "position_steps": -5.295373665480427,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/5/1/4",
+      "discounted": [
+        {
+          "glyph_row": "obs:113810",
+          "position_row": "obs:113812",
+          "family": "treble",
+          "position_steps": 14.043343653250774,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/6/0/0",
+      "discounted": [
+        {
+          "glyph_row": "obs:126967",
+          "position_row": "obs:126969",
+          "family": "treble",
+          "position_steps": 15.290102389078498,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/6/0/3",
+      "discounted": [
+        {
+          "glyph_row": "obs:126975",
+          "position_row": "obs:126978",
+          "family": "treble",
+          "position_steps": 15.475862068965517,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/6/0/5",
+      "discounted": [
+        {
+          "glyph_row": "obs:126983",
+          "position_row": "obs:126986",
+          "family": "treble",
+          "position_steps": 19.166666666666668,
+          "reason": "clef_box_off_the_staff"
+        },
+        {
+          "glyph_row": "obs:126984",
+          "position_row": "obs:126987",
+          "family": "treble",
+          "position_steps": -6.666666666666667,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/6/1/0",
+      "discounted": [
+        {
+          "glyph_row": "obs:126997",
+          "position_row": "obs:126999",
+          "family": "treble",
+          "position_steps": 15.55719557195572,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/6/1/3",
+      "discounted": [
+        {
+          "glyph_row": "obs:127002",
+          "position_row": "obs:127003",
+          "family": "treble",
+          "position_steps": 19.361867704280154,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/7/0/1",
+      "discounted": [
+        {
+          "glyph_row": "obs:138761",
+          "position_row": "obs:138763",
+          "family": "treble",
+          "position_steps": -7.87987987987988,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/7/0/2",
+      "discounted": [
+        {
+          "glyph_row": "obs:138765",
+          "position_row": "obs:138767",
+          "family": "treble",
+          "position_steps": -7.738095238095238,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/7/0/4",
+      "discounted": [
+        {
+          "glyph_row": "obs:138771",
+          "position_row": "obs:138773",
+          "family": "treble",
+          "position_steps": 14.654867256637168,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/7/1/1",
+      "discounted": [
+        {
+          "glyph_row": "obs:138793",
+          "position_row": "obs:138795",
+          "family": "treble",
+          "position_steps": -11.439024390243903,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/7/1/4",
+      "discounted": [
+        {
+          "glyph_row": "obs:138801",
+          "position_row": "obs:138803",
+          "family": "treble",
+          "position_steps": 14.097560975609756,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/7/1/5",
+      "discounted": [
+        {
+          "glyph_row": "obs:138805",
+          "position_row": "obs:138807",
+          "family": "treble",
+          "position_steps": -6.429003021148036,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/8/1/2",
+      "discounted": [
+        {
+          "glyph_row": "obs:149296",
+          "position_row": "obs:149298",
+          "family": "treble",
+          "position_steps": -7.619047619047619,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/9/0/1",
+      "discounted": [
+        {
+          "glyph_row": "obs:163596",
+          "position_row": "obs:163598",
+          "family": "treble",
+          "position_steps": 14.813688212927756,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/9/0/5",
+      "discounted": [
+        {
+          "glyph_row": "obs:163606",
+          "position_row": "obs:163608",
+          "family": "treble",
+          "position_steps": 14.537313432835822,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/9/1/0",
+      "discounted": [
+        {
+          "glyph_row": "obs:163626",
+          "position_row": "obs:163628",
+          "family": "treble",
+          "position_steps": 15.144827586206896,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/9/1/1",
+      "discounted": [
+        {
+          "glyph_row": "obs:163630",
+          "position_row": "obs:163632",
+          "family": "treble",
+          "position_steps": -6.986301369863014,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/9/1/4",
+      "discounted": [
+        {
+          "glyph_row": "obs:163638",
+          "position_row": "obs:163640",
+          "family": "treble",
+          "position_steps": 14.975778546712803,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/9/1/5",
+      "discounted": [
+        {
+          "glyph_row": "obs:163642",
+          "position_row": "obs:163644",
+          "family": "treble",
+          "position_steps": 15.03114186851211,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/9/1/6",
+      "discounted": [
+        {
+          "glyph_row": "obs:163646",
+          "position_row": "obs:163649",
+          "family": "treble",
+          "position_steps": -7.123287671232877,
+          "reason": "clef_box_off_the_staff"
+        },
+        {
+          "glyph_row": "obs:163647",
+          "position_row": "obs:163650",
+          "family": "treble",
+          "position_steps": 14.73972602739726,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/9/1/7",
+      "discounted": [
+        {
+          "glyph_row": "obs:163652",
+          "position_row": "obs:163654",
+          "family": "treble",
+          "position_steps": -6.876712328767123,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/9/1/8",
+      "discounted": [
+        {
+          "glyph_row": "obs:163656",
+          "position_row": "obs:163658",
+          "family": "treble",
+          "position_steps": 15.037800687285223,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/9/1/9",
+      "discounted": [
+        {
+          "glyph_row": "obs:163660",
+          "position_row": "obs:163662",
+          "family": "treble",
+          "position_steps": -7.1506849315068495,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/10/0/2",
+      "discounted": [
+        {
+          "glyph_row": "obs:180041",
+          "position_row": "obs:180043",
+          "family": "treble",
+          "position_steps": -7.124087591240876,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/10/0/5",
+      "discounted": [
+        {
+          "glyph_row": "obs:180049",
+          "position_row": "obs:180051",
+          "family": "treble",
+          "position_steps": 15.036496350364963,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/10/0/6",
+      "discounted": [
+        {
+          "glyph_row": "obs:180053",
+          "position_row": "obs:180056",
+          "family": "treble",
+          "position_steps": -6.8321167883211675,
+          "reason": "clef_box_off_the_staff"
+        },
+        {
+          "glyph_row": "obs:180054",
+          "position_row": "obs:180057",
+          "family": "treble",
+          "position_steps": 15.094890510948906,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/10/0/8",
+      "discounted": [
+        {
+          "glyph_row": "obs:180061",
+          "position_row": "obs:180063",
+          "family": "treble",
+          "position_steps": 14.686131386861314,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/10/1/6",
+      "discounted": [
+        {
+          "glyph_row": "obs:180088",
+          "position_row": "obs:180091",
+          "family": "treble",
+          "position_steps": 14.032786885245901,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/10/1/7",
+      "discounted": [
+        {
+          "glyph_row": "obs:180093",
+          "position_row": "obs:180095",
+          "family": "treble",
+          "position_steps": -5.797570850202429,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/10/1/9",
+      "discounted": [
+        {
+          "glyph_row": "obs:180099",
+          "position_row": "obs:180101",
+          "family": "treble",
+          "position_steps": 14.295081967213115,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/11/0/0",
+      "discounted": [
+        {
+          "glyph_row": "obs:195733",
+          "position_row": "obs:195735",
+          "family": "treble",
+          "position_steps": 14.042296072507552,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/11/0/2",
+      "discounted": [
+        {
+          "glyph_row": "obs:195739",
+          "position_row": "obs:195741",
+          "family": "treble",
+          "position_steps": -6.7073170731707314,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/11/0/5",
+      "discounted": [
+        {
+          "glyph_row": "obs:195747",
+          "position_row": "obs:195749",
+          "family": "treble",
+          "position_steps": 15.121951219512194,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/11/0/6",
+      "discounted": [
+        {
+          "glyph_row": "obs:195751",
+          "position_row": "obs:195754",
+          "family": "treble",
+          "position_steps": 14.048780487804878,
+          "reason": "clef_box_off_the_staff"
+        },
+        {
+          "glyph_row": "obs:195752",
+          "position_row": "obs:195755",
+          "family": "treble",
+          "position_steps": -6.853658536585366,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/11/0/7",
+      "discounted": [
+        {
+          "glyph_row": "obs:195757",
+          "position_row": "obs:195760",
+          "family": "treble",
+          "position_steps": -5.829268292682927,
+          "reason": "clef_box_off_the_staff"
+        },
+        {
+          "glyph_row": "obs:195758",
+          "position_row": "obs:195761",
+          "family": "bass",
+          "position_steps": 14.048780487804878,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/11/0/8",
+      "discounted": [
+        {
+          "glyph_row": "obs:195762",
+          "position_row": "obs:195764",
+          "family": "treble",
+          "position_steps": -4.7073170731707314,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/11/0/9",
+      "discounted": [
+        {
+          "glyph_row": "obs:195767",
+          "position_row": "obs:195769",
+          "family": "treble",
+          "position_steps": 14.707317073170731,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/11/1/0",
+      "discounted": [
+        {
+          "glyph_row": "obs:195785",
+          "position_row": "obs:195787",
+          "family": "treble",
+          "position_steps": 14.303886925795053,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/11/1/1",
+      "discounted": [
+        {
+          "glyph_row": "obs:195789",
+          "position_row": "obs:195791",
+          "family": "treble",
+          "position_steps": 13.810526315789474,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/11/1/2",
+      "discounted": [
+        {
+          "glyph_row": "obs:195793",
+          "position_row": "obs:195795",
+          "family": "treble",
+          "position_steps": -5.761092150170649,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/11/1/3",
+      "discounted": [
+        {
+          "glyph_row": "obs:195797",
+          "position_row": "obs:195799",
+          "family": "treble",
+          "position_steps": -7.775438596491228,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/11/1/4",
+      "discounted": [
+        {
+          "glyph_row": "obs:195800",
+          "position_row": "obs:195802",
+          "family": "treble",
+          "position_steps": 13.434482758620689,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/11/1/5",
+      "discounted": [
+        {
+          "glyph_row": "obs:195805",
+          "position_row": "obs:195808",
+          "family": "treble",
+          "position_steps": 14.98976109215017,
+          "reason": "clef_box_off_the_staff"
+        },
+        {
+          "glyph_row": "obs:195806",
+          "position_row": "obs:195809",
+          "family": "bass",
+          "position_steps": -7.508532423208191,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/11/1/7",
+      "discounted": [
+        {
+          "glyph_row": "obs:195813",
+          "position_row": "obs:195816",
+          "family": "treble",
+          "position_steps": -6.203508771929824,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/11/1/8",
+      "discounted": [
+        {
+          "glyph_row": "obs:195818",
+          "position_row": "obs:195821",
+          "family": "treble",
+          "position_steps": -5.184668989547038,
+          "reason": "clef_box_off_the_staff"
+        },
+        {
+          "glyph_row": "obs:195820",
+          "position_row": "obs:195823",
+          "family": "treble",
+          "position_steps": 14.634146341463415,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/11/1/9",
+      "discounted": [
+        {
+          "glyph_row": "obs:195825",
+          "position_row": "obs:195827",
+          "family": "treble",
+          "position_steps": 14.801393728222996,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/11/1/10",
+      "discounted": [
+        {
+          "glyph_row": "obs:195829",
+          "position_row": "obs:195831",
+          "family": "treble",
+          "position_steps": -6.786206896551724,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/11/1/11",
+      "discounted": [
+        {
+          "glyph_row": "obs:195832",
+          "position_row": "obs:195836",
+          "family": "treble",
+          "position_steps": -7.527777777777778,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/12/0/0",
+      "discounted": [
+        {
+          "glyph_row": "obs:213468",
+          "position_row": "obs:213470",
+          "family": "treble",
+          "position_steps": 13.808785529715763,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/12/0/1",
+      "discounted": [
+        {
+          "glyph_row": "obs:213472",
+          "position_row": "obs:213474",
+          "family": "treble",
+          "position_steps": -5.8860103626943,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/12/0/2",
+      "discounted": [
+        {
+          "glyph_row": "obs:213476",
+          "position_row": "obs:213478",
+          "family": "treble",
+          "position_steps": -6.361702127659575,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/12/0/4",
+      "discounted": [
+        {
+          "glyph_row": "obs:213482",
+          "position_row": "obs:213484",
+          "family": "treble",
+          "position_steps": 12.919896640826874,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/12/0/6",
+      "discounted": [
+        {
+          "glyph_row": "obs:213488",
+          "position_row": "obs:213490",
+          "family": "treble",
+          "position_steps": 13.678756476683938,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/12/0/7",
+      "discounted": [
+        {
+          "glyph_row": "obs:213492",
+          "position_row": "obs:213494",
+          "family": "treble",
+          "position_steps": -6.098191214470284,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/12/0/9",
+      "discounted": [
+        {
+          "glyph_row": "obs:213498",
+          "position_row": "obs:213500",
+          "family": "treble",
+          "position_steps": 13.746770025839794,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/12/1/1",
+      "discounted": [
+        {
+          "glyph_row": "obs:213514",
+          "position_row": "obs:213516",
+          "family": "treble",
+          "position_steps": 13.718120805369127,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/12/1/2",
+      "discounted": [
+        {
+          "glyph_row": "obs:213518",
+          "position_row": "obs:213520",
+          "family": "treble",
+          "position_steps": -6.249158249158249,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/12/1/4",
+      "discounted": [
+        {
+          "glyph_row": "obs:213524",
+          "position_row": "obs:213526",
+          "family": "treble",
+          "position_steps": 13.07641196013289,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/12/1/7",
+      "discounted": [
+        {
+          "glyph_row": "obs:213532",
+          "position_row": "obs:213534",
+          "family": "treble",
+          "position_steps": -6.791946308724833,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/12/1/8",
+      "discounted": [
+        {
+          "glyph_row": "obs:213536",
+          "position_row": "obs:213538",
+          "family": "treble",
+          "position_steps": -5.782178217821782,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/12/1/9",
+      "discounted": [
+        {
+          "glyph_row": "obs:213540",
+          "position_row": "obs:213543",
+          "family": "treble",
+          "position_steps": 14.547945205479452,
+          "reason": "clef_box_off_the_staff"
+        },
+        {
+          "glyph_row": "obs:213541",
+          "position_row": "obs:213544",
+          "family": "treble",
+          "position_steps": -10.082191780821917,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/12/1/10",
+      "discounted": [
+        {
+          "glyph_row": "obs:213546",
+          "position_row": "obs:213548",
+          "family": "treble",
+          "position_steps": -6.671186440677966,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/12/1/11",
+      "discounted": [
+        {
+          "glyph_row": "obs:213550",
+          "position_row": "obs:213552",
+          "family": "treble",
+          "position_steps": -6.303030303030303,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/13/0/1",
+      "discounted": [
+        {
+          "glyph_row": "obs:233138",
+          "position_row": "obs:233140",
+          "family": "treble",
+          "position_steps": 14.629283489096574,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/13/0/4",
+      "discounted": [
+        {
+          "glyph_row": "obs:233146",
+          "position_row": "obs:233148",
+          "family": "treble",
+          "position_steps": 14.0125786163522,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/13/0/5",
+      "discounted": [
+        {
+          "glyph_row": "obs:233150",
+          "position_row": "obs:233152",
+          "family": "treble",
+          "position_steps": 14.031152647975079,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/13/0/8",
+      "discounted": [
+        {
+          "glyph_row": "obs:233158",
+          "position_row": "obs:233161",
+          "family": "treble",
+          "position_steps": -4.575079872204473,
+          "reason": "clef_box_off_the_staff"
+        },
+        {
+          "glyph_row": "obs:233159",
+          "position_row": "obs:233162",
+          "family": "treble",
+          "position_steps": 19.578274760383387,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/13/0/9",
+      "discounted": [
+        {
+          "glyph_row": "obs:233164",
+          "position_row": "obs:233166",
+          "family": "treble",
+          "position_steps": 14.037735849056604,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/13/0/10",
+      "discounted": [
+        {
+          "glyph_row": "obs:233168",
+          "position_row": "obs:233170",
+          "family": "treble",
+          "position_steps": -5.582554517133956,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/13/1/0",
+      "discounted": [
+        {
+          "glyph_row": "obs:233178",
+          "position_row": "obs:233180",
+          "family": "treble",
+          "position_steps": 15.063063063063064,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/13/1/1",
+      "discounted": [
+        {
+          "glyph_row": "obs:233182",
+          "position_row": "obs:233185",
+          "family": "treble",
+          "position_steps": -6.795180722891566,
+          "reason": "clef_box_off_the_staff"
+        },
+        {
+          "glyph_row": "obs:233183",
+          "position_row": "obs:233186",
+          "family": "treble",
+          "position_steps": 14.578313253012048,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/13/1/2",
+      "discounted": [
+        {
+          "glyph_row": "obs:233188",
+          "position_row": "obs:233190",
+          "family": "treble",
+          "position_steps": -6.2485207100591715,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/13/1/4",
+      "discounted": [
+        {
+          "glyph_row": "obs:233194",
+          "position_row": "obs:233196",
+          "family": "treble",
+          "position_steps": 15.523809523809524,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/13/1/5",
+      "discounted": [
+        {
+          "glyph_row": "obs:233198",
+          "position_row": "obs:233200",
+          "family": "treble",
+          "position_steps": 14.523809523809524,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/13/1/6",
+      "discounted": [
+        {
+          "glyph_row": "obs:233202",
+          "position_row": "obs:233205",
+          "family": "treble",
+          "position_steps": 13.640117994100295,
+          "reason": "clef_box_off_the_staff"
+        },
+        {
+          "glyph_row": "obs:233203",
+          "position_row": "obs:233206",
+          "family": "treble",
+          "position_steps": -6.466076696165191,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/13/1/7",
+      "discounted": [
+        {
+          "glyph_row": "obs:233208",
+          "position_row": "obs:233210",
+          "family": "treble",
+          "position_steps": -5.564179104477612,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/13/1/8",
+      "discounted": [
+        {
+          "glyph_row": "obs:233212",
+          "position_row": "obs:233214",
+          "family": "treble",
+          "position_steps": -6.9879518072289155,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/13/1/9",
+      "discounted": [
+        {
+          "glyph_row": "obs:233216",
+          "position_row": "obs:233218",
+          "family": "treble",
+          "position_steps": 14.506024096385541,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/13/1/10",
+      "discounted": [
+        {
+          "glyph_row": "obs:233220",
+          "position_row": "obs:233222",
+          "family": "treble",
+          "position_steps": -6.352238805970149,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/13/1/11",
+      "discounted": [
+        {
+          "glyph_row": "obs:233223",
+          "position_row": "obs:233224",
+          "family": "treble",
+          "position_steps": -7.221238938053097,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/14/0/1",
+      "discounted": [
+        {
+          "glyph_row": "obs:246635",
+          "position_row": "obs:246637",
+          "family": "treble",
+          "position_steps": 14.494773519163763,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/14/0/2",
+      "discounted": [
+        {
+          "glyph_row": "obs:246639",
+          "position_row": "obs:246641",
+          "family": "treble",
+          "position_steps": -6.568421052631579,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/14/0/3",
+      "discounted": [
+        {
+          "glyph_row": "obs:246643",
+          "position_row": "obs:246645",
+          "family": "treble",
+          "position_steps": -7.693379790940766,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/14/0/4",
+      "discounted": [
+        {
+          "glyph_row": "obs:246646",
+          "position_row": "obs:246648",
+          "family": "treble",
+          "position_steps": 14.86896551724138,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/14/0/6",
+      "discounted": [
+        {
+          "glyph_row": "obs:246653",
+          "position_row": "obs:246655",
+          "family": "treble",
+          "position_steps": 14.020905923344948,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/14/0/9",
+      "discounted": [
+        {
+          "glyph_row": "obs:246661",
+          "position_row": "obs:246664",
+          "family": "treble",
+          "position_steps": 14.837370242214533,
+          "reason": "clef_box_off_the_staff"
+        },
+        {
+          "glyph_row": "obs:246662",
+          "position_row": "obs:246665",
+          "family": "treble",
+          "position_steps": -10.961937716262975,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/14/0/10",
+      "discounted": [
+        {
+          "glyph_row": "obs:246667",
+          "position_row": "obs:246669",
+          "family": "treble",
+          "position_steps": -6.905263157894737,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/14/0/11",
+      "discounted": [
+        {
+          "glyph_row": "obs:246670",
+          "position_row": "obs:246671",
+          "family": "treble",
+          "position_steps": -7.326315789473684,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/14/1/1",
+      "discounted": [
+        {
+          "glyph_row": "obs:246677",
+          "position_row": "obs:246679",
+          "family": "treble",
+          "position_steps": -6.487272727272727,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/15/0/0",
+      "discounted": [
+        {
+          "glyph_row": "obs:258371",
+          "position_row": "obs:258373",
+          "family": "treble",
+          "position_steps": 14.591549295774648,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/15/0/1",
+      "discounted": [
+        {
+          "glyph_row": "obs:258374",
+          "position_row": "obs:258377",
+          "family": "treble",
+          "position_steps": -6.035087719298246,
+          "reason": "clef_box_off_the_staff"
+        },
+        {
+          "glyph_row": "obs:258376",
+          "position_row": "obs:258379",
+          "family": "treble",
+          "position_steps": 14.96140350877193,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/15/0/3",
+      "discounted": [
+        {
+          "glyph_row": "obs:258383",
+          "position_row": "obs:258385",
+          "family": "treble",
+          "position_steps": 15.380281690140846,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/15/0/7",
+      "discounted": [
+        {
+          "glyph_row": "obs:258393",
+          "position_row": "obs:258395",
+          "family": "treble",
+          "position_steps": 15.183098591549296,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/15/1/7",
+      "discounted": [
+        {
+          "glyph_row": "obs:258419",
+          "position_row": "obs:258421",
+          "family": "treble",
+          "position_steps": -6.588235294117647,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/16/0/0",
+      "discounted": [
+        {
+          "glyph_row": "obs:277336",
+          "position_row": "obs:277338",
+          "family": "treble",
+          "position_steps": 14.480446927374302,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/16/0/1",
+      "discounted": [
+        {
+          "glyph_row": "obs:277340",
+          "position_row": "obs:277342",
+          "family": "treble",
+          "position_steps": 14.541436464088397,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/16/0/4",
+      "discounted": [
+        {
+          "glyph_row": "obs:277348",
+          "position_row": "obs:277350",
+          "family": "treble",
+          "position_steps": 14.212290502793296,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/16/0/5",
+      "discounted": [
+        {
+          "glyph_row": "obs:277352",
+          "position_row": "obs:277354",
+          "family": "treble",
+          "position_steps": 13.588732394366197,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/16/0/6",
+      "discounted": [
+        {
+          "glyph_row": "obs:277356",
+          "position_row": "obs:277359",
+          "family": "treble",
+          "position_steps": 13.814084507042253,
+          "reason": "clef_box_off_the_staff"
+        },
+        {
+          "glyph_row": "obs:277357",
+          "position_row": "obs:277360",
+          "family": "treble",
+          "position_steps": -5.543661971830986,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/16/0/7",
+      "discounted": [
+        {
+          "glyph_row": "obs:277362",
+          "position_row": "obs:277365",
+          "family": "treble",
+          "position_steps": -5.720547945205479,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/16/0/8",
+      "discounted": [
+        {
+          "glyph_row": "obs:277367",
+          "position_row": "obs:277369",
+          "family": "treble",
+          "position_steps": -5.523287671232877,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/16/0/9",
+      "discounted": [
+        {
+          "glyph_row": "obs:277372",
+          "position_row": "obs:277374",
+          "family": "treble",
+          "position_steps": 14.512676056338028,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/16/0/10",
+      "discounted": [
+        {
+          "glyph_row": "obs:277376",
+          "position_row": "obs:277378",
+          "family": "treble",
+          "position_steps": -6.391061452513966,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/16/0/11",
+      "discounted": [
+        {
+          "glyph_row": "obs:277379",
+          "position_row": "obs:277382",
+          "family": "treble",
+          "position_steps": -7.262569832402234,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/16/1/0",
+      "discounted": [
+        {
+          "glyph_row": "obs:277390",
+          "position_row": "obs:277392",
+          "family": "treble",
+          "position_steps": 15.13588850174216,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/16/1/1",
+      "discounted": [
+        {
+          "glyph_row": "obs:277394",
+          "position_row": "obs:277396",
+          "family": "treble",
+          "position_steps": 13.938983050847458,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/16/1/2",
+      "discounted": [
+        {
+          "glyph_row": "obs:277398",
+          "position_row": "obs:277401",
+          "family": "treble",
+          "position_steps": -6.145328719723183,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/16/1/3",
+      "discounted": [
+        {
+          "glyph_row": "obs:277404",
+          "position_row": "obs:277406",
+          "family": "treble",
+          "position_steps": -6.606271777003484,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/16/1/4",
+      "discounted": [
+        {
+          "glyph_row": "obs:277408",
+          "position_row": "obs:277410",
+          "family": "treble",
+          "position_steps": 14.885017421602788,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/16/1/5",
+      "discounted": [
+        {
+          "glyph_row": "obs:277412",
+          "position_row": "obs:277414",
+          "family": "treble",
+          "position_steps": 14.30716723549488,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/16/1/6",
+      "discounted": [
+        {
+          "glyph_row": "obs:277415",
+          "position_row": "obs:277418",
+          "family": "treble",
+          "position_steps": 13.602787456445993,
+          "reason": "clef_box_off_the_staff"
+        },
+        {
+          "glyph_row": "obs:277417",
+          "position_row": "obs:277420",
+          "family": "treble",
+          "position_steps": -6.299651567944251,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/16/1/7",
+      "discounted": [
+        {
+          "glyph_row": "obs:277421",
+          "position_row": "obs:277423",
+          "family": "treble",
+          "position_steps": -5.536332179930795,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/16/1/8",
+      "discounted": [
+        {
+          "glyph_row": "obs:277425",
+          "position_row": "obs:277428",
+          "family": "treble",
+          "position_steps": -6.283737024221454,
+          "reason": "clef_box_off_the_staff"
+        },
+        {
+          "glyph_row": "obs:277426",
+          "position_row": "obs:277429",
+          "family": "treble",
+          "position_steps": 18.602076124567475,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/16/1/9",
+      "discounted": [
+        {
+          "glyph_row": "obs:277432",
+          "position_row": "obs:277434",
+          "family": "treble",
+          "position_steps": 14.191780821917808,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/16/1/10",
+      "discounted": [
+        {
+          "glyph_row": "obs:277436",
+          "position_row": "obs:277438",
+          "family": "treble",
+          "position_steps": -6.062283737024221,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/16/1/12",
+      "discounted": [
+        {
+          "glyph_row": "obs:277441",
+          "position_row": "obs:277443",
+          "family": "treble",
+          "position_steps": -7.13588850174216,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/17/0/0",
+      "discounted": [
+        {
+          "glyph_row": "obs:295066",
+          "position_row": "obs:295068",
+          "family": "treble",
+          "position_steps": 15.148936170212766,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/17/0/1",
+      "discounted": [
+        {
+          "glyph_row": "obs:295070",
+          "position_row": "obs:295073",
+          "family": "treble",
+          "position_steps": 14.169491525423728,
+          "reason": "clef_box_off_the_staff"
+        },
+        {
+          "glyph_row": "obs:295071",
+          "position_row": "obs:295074",
+          "family": "treble",
+          "position_steps": -6.305084745762712,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/17/0/2",
+      "discounted": [
+        {
+          "glyph_row": "obs:295076",
+          "position_row": "obs:295078",
+          "family": "treble",
+          "position_steps": -5.6177777777777775,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/17/0/3",
+      "discounted": [
+        {
+          "glyph_row": "obs:295080",
+          "position_row": "obs:295083",
+          "family": "treble",
+          "position_steps": -5.932203389830509,
+          "reason": "clef_box_off_the_staff"
+        },
+        {
+          "glyph_row": "obs:295081",
+          "position_row": "obs:295084",
+          "family": "bass",
+          "position_steps": 15.322033898305085,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/17/0/5",
+      "discounted": [
+        {
+          "glyph_row": "obs:295088",
+          "position_row": "obs:295090",
+          "family": "treble",
+          "position_steps": 15.11864406779661,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/17/0/6",
+      "discounted": [
+        {
+          "glyph_row": "obs:295092",
+          "position_row": "obs:295095",
+          "family": "treble",
+          "position_steps": 14.101694915254237,
+          "reason": "clef_box_off_the_staff"
+        },
+        {
+          "glyph_row": "obs:295093",
+          "position_row": "obs:295096",
+          "family": "treble",
+          "position_steps": -6.338983050847458,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/17/0/7",
+      "discounted": [
+        {
+          "glyph_row": "obs:295098",
+          "position_row": "obs:295100",
+          "family": "treble",
+          "position_steps": -5.367088607594937,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/17/0/10",
+      "discounted": [
+        {
+          "glyph_row": "obs:295106",
+          "position_row": "obs:295108",
+          "family": "treble",
+          "position_steps": -6.481012658227848,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/17/1/0",
+      "discounted": [
+        {
+          "glyph_row": "obs:295118",
+          "position_row": "obs:295120",
+          "family": "treble",
+          "position_steps": 13.782178217821782,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/17/1/1",
+      "discounted": [
+        {
+          "glyph_row": "obs:295122",
+          "position_row": "obs:295125",
+          "family": "treble",
+          "position_steps": -5.556650246305419,
+          "reason": "clef_box_off_the_staff"
+        },
+        {
+          "glyph_row": "obs:295123",
+          "position_row": "obs:295126",
+          "family": "treble",
+          "position_steps": 15.0935960591133,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/17/1/2",
+      "discounted": [
+        {
+          "glyph_row": "obs:295128",
+          "position_row": "obs:295130",
+          "family": "treble",
+          "position_steps": -6.4950495049504955,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/17/1/4",
+      "discounted": [
+        {
+          "glyph_row": "obs:295134",
+          "position_row": "obs:295136",
+          "family": "treble",
+          "position_steps": 14.851485148514852,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/17/1/6",
+      "discounted": [
+        {
+          "glyph_row": "obs:295140",
+          "position_row": "obs:295142",
+          "family": "treble",
+          "position_steps": 14.431372549019608,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/17/1/7",
+      "discounted": [
+        {
+          "glyph_row": "obs:295144",
+          "position_row": "obs:295146",
+          "family": "treble",
+          "position_steps": -6.138613861386139,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/17/1/8",
+      "discounted": [
+        {
+          "glyph_row": "obs:295148",
+          "position_row": "obs:295152",
+          "family": "treble",
+          "position_steps": -6.811881188118812,
+          "reason": "clef_box_off_the_staff"
+        },
+        {
+          "glyph_row": "obs:295149",
+          "position_row": "obs:295153",
+          "family": "treble",
+          "position_steps": 14.930693069306932,
+          "reason": "clef_box_off_the_staff"
+        },
+        {
+          "glyph_row": "obs:295150",
+          "position_row": "obs:295154",
+          "family": "treble",
+          "position_steps": 14.772277227722773,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/17/1/9",
+      "discounted": [
+        {
+          "glyph_row": "obs:295156",
+          "position_row": "obs:295158",
+          "family": "treble",
+          "position_steps": 14.653465346534654,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/17/1/10",
+      "discounted": [
+        {
+          "glyph_row": "obs:295160",
+          "position_row": "obs:295162",
+          "family": "treble",
+          "position_steps": -6.4236453201970445,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/17/1/11",
+      "discounted": [
+        {
+          "glyph_row": "obs:295164",
+          "position_row": "obs:295167",
+          "family": "treble",
+          "position_steps": -6.48,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/18/0/0",
+      "discounted": [
+        {
+          "glyph_row": "obs:312743",
+          "position_row": "obs:312745",
+          "family": "treble",
+          "position_steps": 14.67219917012448,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/18/0/1",
+      "discounted": [
+        {
+          "glyph_row": "obs:312748",
+          "position_row": "obs:312751",
+          "family": "treble",
+          "position_steps": 14.639004149377593,
+          "reason": "clef_box_off_the_staff"
+        },
+        {
+          "glyph_row": "obs:312749",
+          "position_row": "obs:312752",
+          "family": "treble",
+          "position_steps": -6.3070539419087135,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/18/0/2",
+      "discounted": [
+        {
+          "glyph_row": "obs:312754",
+          "position_row": "obs:312756",
+          "family": "treble",
+          "position_steps": -6.493723849372385,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/18/0/3",
+      "discounted": [
+        {
+          "glyph_row": "obs:312757",
+          "position_row": "obs:312759",
+          "family": "treble",
+          "position_steps": -7.1037344398340245,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/18/0/4",
+      "discounted": [
+        {
+          "glyph_row": "obs:312761",
+          "position_row": "obs:312763",
+          "family": "treble",
+          "position_steps": 14.37344398340249,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/18/0/5",
+      "discounted": [
+        {
+          "glyph_row": "obs:312766",
+          "position_row": "obs:312768",
+          "family": "treble",
+          "position_steps": 15.004149377593361,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/18/0/6",
+      "discounted": [
+        {
+          "glyph_row": "obs:312770",
+          "position_row": "obs:312773",
+          "family": "treble",
+          "position_steps": 13.723849372384937,
+          "reason": "clef_box_off_the_staff"
+        },
+        {
+          "glyph_row": "obs:312771",
+          "position_row": "obs:312774",
+          "family": "treble",
+          "position_steps": -6.828451882845188,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/18/0/9",
+      "discounted": [
+        {
+          "glyph_row": "obs:312780",
+          "position_row": "obs:312782",
+          "family": "treble",
+          "position_steps": 13.723849372384937,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/18/0/10",
+      "discounted": [
+        {
+          "glyph_row": "obs:312784",
+          "position_row": "obs:312786",
+          "family": "treble",
+          "position_steps": -5.540983606557377,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/18/0/11",
+      "discounted": [
+        {
+          "glyph_row": "obs:312787",
+          "position_row": "obs:312789",
+          "family": "treble",
+          "position_steps": -6.1078838174273855,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/18/1/0",
+      "discounted": [
+        {
+          "glyph_row": "obs:312796",
+          "position_row": "obs:312798",
+          "family": "treble",
+          "position_steps": 14.382352941176471,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/18/1/4",
+      "discounted": [
+        {
+          "glyph_row": "obs:312808",
+          "position_row": "obs:312810",
+          "family": "treble",
+          "position_steps": 14.205882352941176,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/18/1/5",
+      "discounted": [
+        {
+          "glyph_row": "obs:312812",
+          "position_row": "obs:312814",
+          "family": "treble",
+          "position_steps": 13.891696750902527,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/18/1/6",
+      "discounted": [
+        {
+          "glyph_row": "obs:312816",
+          "position_row": "obs:312819",
+          "family": "treble",
+          "position_steps": 13.585454545454546,
+          "reason": "clef_box_off_the_staff"
+        },
+        {
+          "glyph_row": "obs:312817",
+          "position_row": "obs:312820",
+          "family": "treble",
+          "position_steps": -5.847272727272728,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/18/1/7",
+      "discounted": [
+        {
+          "glyph_row": "obs:312822",
+          "position_row": "obs:312825",
+          "family": "treble",
+          "position_steps": -5.735294117647059,
+          "reason": "clef_box_off_the_staff"
+        },
+        {
+          "glyph_row": "obs:312823",
+          "position_row": "obs:312826",
+          "family": "bass",
+          "position_steps": 15.029411764705882,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/18/1/8",
+      "discounted": [
+        {
+          "glyph_row": "obs:312828",
+          "position_row": "obs:312830",
+          "family": "treble",
+          "position_steps": -5.701818181818182,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/18/1/10",
+      "discounted": [
+        {
+          "glyph_row": "obs:312834",
+          "position_row": "obs:312836",
+          "family": "treble",
+          "position_steps": -6.588235294117647,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/19/0/1",
+      "discounted": [
+        {
+          "glyph_row": "obs:331348",
+          "position_row": "obs:331350",
+          "family": "treble",
+          "position_steps": -6.784,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/19/0/4",
+      "discounted": [
+        {
+          "glyph_row": "obs:331355",
+          "position_row": "obs:331357",
+          "family": "treble",
+          "position_steps": 13.664,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/19/0/5",
+      "discounted": [
+        {
+          "glyph_row": "obs:331360",
+          "position_row": "obs:331362",
+          "family": "treble",
+          "position_steps": 14.577075098814229,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/19/0/6",
+      "discounted": [
+        {
+          "glyph_row": "obs:331364",
+          "position_row": "obs:331367",
+          "family": "treble",
+          "position_steps": 13.896414342629482,
+          "reason": "clef_box_off_the_staff"
+        },
+        {
+          "glyph_row": "obs:331365",
+          "position_row": "obs:331368",
+          "family": "treble",
+          "position_steps": -6.247011952191235,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/19/0/7",
+      "discounted": [
+        {
+          "glyph_row": "obs:331370",
+          "position_row": "obs:331373",
+          "family": "treble",
+          "position_steps": -5.824,
+          "reason": "clef_box_off_the_staff"
+        },
+        {
+          "glyph_row": "obs:331371",
+          "position_row": "obs:331374",
+          "family": "bass",
+          "position_steps": 14.944,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/19/0/9",
+      "discounted": [
+        {
+          "glyph_row": "obs:331378",
+          "position_row": "obs:331380",
+          "family": "treble",
+          "position_steps": 14.725099601593625,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/19/0/10",
+      "discounted": [
+        {
+          "glyph_row": "obs:331382",
+          "position_row": "obs:331384",
+          "family": "treble",
+          "position_steps": -6.650602409638554,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/19/1/8",
+      "discounted": [
+        {
+          "glyph_row": "obs:331408",
+          "position_row": "obs:331410",
+          "family": "treble",
+          "position_steps": 14.191950464396285,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/19/1/9",
+      "discounted": [
+        {
+          "glyph_row": "obs:331412",
+          "position_row": "obs:331414",
+          "family": "treble",
+          "position_steps": -6.155763239875389,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/20/0/0",
+      "discounted": [
+        {
+          "glyph_row": "obs:342436",
+          "position_row": "obs:342438",
+          "family": "treble",
+          "position_steps": 15.13888888888889,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/20/0/1",
+      "discounted": [
+        {
+          "glyph_row": "obs:342440",
+          "position_row": "obs:342442",
+          "family": "treble",
+          "position_steps": 15.129251700680273,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/20/0/2",
+      "discounted": [
+        {
+          "glyph_row": "obs:342444",
+          "position_row": "obs:342446",
+          "family": "treble",
+          "position_steps": -7.020979020979021,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/20/0/4",
+      "discounted": [
+        {
+          "glyph_row": "obs:342450",
+          "position_row": "obs:342452",
+          "family": "treble",
+          "position_steps": 15.75,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/20/0/7",
+      "discounted": [
+        {
+          "glyph_row": "obs:342458",
+          "position_row": "obs:342460",
+          "family": "treble",
+          "position_steps": 19.18339100346021,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/20/1/5",
+      "discounted": [
+        {
+          "glyph_row": "obs:342484",
+          "position_row": "obs:342486",
+          "family": "treble",
+          "position_steps": 19.384615384615383,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/20/1/6",
+      "discounted": [
+        {
+          "glyph_row": "obs:342488",
+          "position_row": "obs:342490",
+          "family": "treble",
+          "position_steps": 14.494773519163763,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/20/1/7",
+      "discounted": [
+        {
+          "glyph_row": "obs:342492",
+          "position_row": "obs:342494",
+          "family": "treble",
+          "position_steps": -6.084507042253521,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/21/0/1",
+      "discounted": [
+        {
+          "glyph_row": "obs:354089",
+          "position_row": "obs:354091",
+          "family": "treble",
+          "position_steps": 15.279742765273312,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/21/0/2",
+      "discounted": [
+        {
+          "glyph_row": "obs:354093",
+          "position_row": "obs:354095",
+          "family": "treble",
+          "position_steps": -7.344262295081967,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/21/0/4",
+      "discounted": [
+        {
+          "glyph_row": "obs:354099",
+          "position_row": "obs:354101",
+          "family": "treble",
+          "position_steps": 19.142857142857142,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/21/0/5",
+      "discounted": [
+        {
+          "glyph_row": "obs:354103",
+          "position_row": "obs:354106",
+          "family": "treble",
+          "position_steps": -10.906752411575562,
+          "reason": "clef_box_off_the_staff"
+        },
+        {
+          "glyph_row": "obs:354104",
+          "position_row": "obs:354107",
+          "family": "treble",
+          "position_steps": 19.344051446945336,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/22/0/1",
+      "discounted": [
+        {
+          "glyph_row": "obs:366400",
+          "position_row": "obs:366402",
+          "family": "treble",
+          "position_steps": 19.07356948228883,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/22/0/2",
+      "discounted": [
+        {
+          "glyph_row": "obs:366404",
+          "position_row": "obs:366406",
+          "family": "treble",
+          "position_steps": -11.024128686327078,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/22/0/3",
+      "discounted": [
+        {
+          "glyph_row": "obs:366408",
+          "position_row": "obs:366410",
+          "family": "treble",
+          "position_steps": 19.239669421487605,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/22/0/5",
+      "discounted": [
+        {
+          "glyph_row": "obs:366413",
+          "position_row": "obs:366415",
+          "family": "treble",
+          "position_steps": -7.113513513513514,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/22/0/7",
+      "discounted": [
+        {
+          "glyph_row": "obs:366420",
+          "position_row": "obs:366422",
+          "family": "treble",
+          "position_steps": -11.11484593837535,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/23/0/0",
+      "discounted": [
+        {
+          "glyph_row": "obs:382824",
+          "position_row": "obs:382826",
+          "family": "treble",
+          "position_steps": 15.255172413793103,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/23/0/1",
+      "discounted": [
+        {
+          "glyph_row": "obs:382828",
+          "position_row": "obs:382831",
+          "family": "treble",
+          "position_steps": -6.958904109589041,
+          "reason": "clef_box_off_the_staff"
+        },
+        {
+          "glyph_row": "obs:382829",
+          "position_row": "obs:382832",
+          "family": "treble",
+          "position_steps": 15.150684931506849,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/23/0/4",
+      "discounted": [
+        {
+          "glyph_row": "obs:382838",
+          "position_row": "obs:382840",
+          "family": "treble",
+          "position_steps": 15.534246575342467,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/23/0/7",
+      "discounted": [
+        {
+          "glyph_row": "obs:382846",
+          "position_row": "obs:382848",
+          "family": "treble",
+          "position_steps": 14.101694915254237,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/23/0/8",
+      "discounted": [
+        {
+          "glyph_row": "obs:382850",
+          "position_row": "obs:382852",
+          "family": "treble",
+          "position_steps": -5.820689655172414,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/23/0/9",
+      "discounted": [
+        {
+          "glyph_row": "obs:382853",
+          "position_row": "obs:382854",
+          "family": "treble",
+          "position_steps": -10.843205574912892,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/23/1/0",
+      "discounted": [
+        {
+          "glyph_row": "obs:382860",
+          "position_row": "obs:382862",
+          "family": "treble",
+          "position_steps": 14.931750741839762,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/23/1/6",
+      "discounted": [
+        {
+          "glyph_row": "obs:382873",
+          "position_row": "obs:382875",
+          "family": "treble",
+          "position_steps": 14.235294117647058,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/23/1/7",
+      "discounted": [
+        {
+          "glyph_row": "obs:382878",
+          "position_row": "obs:382880",
+          "family": "treble",
+          "position_steps": -6.040816326530612,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/23/1/8",
+      "discounted": [
+        {
+          "glyph_row": "obs:382881",
+          "position_row": "obs:382883",
+          "family": "treble",
+          "position_steps": 14.235294117647058,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/24/0/0",
+      "discounted": [
+        {
+          "glyph_row": "obs:401316",
+          "position_row": "obs:401318",
+          "family": "treble",
+          "position_steps": 15.065292096219931,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/24/0/1",
+      "discounted": [
+        {
+          "glyph_row": "obs:401320",
+          "position_row": "obs:401323",
+          "family": "treble",
+          "position_steps": -6.707903780068729,
+          "reason": "clef_box_off_the_staff"
+        },
+        {
+          "glyph_row": "obs:401321",
+          "position_row": "obs:401324",
+          "family": "treble",
+          "position_steps": 14.982817869415808,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/24/0/2",
+      "discounted": [
+        {
+          "glyph_row": "obs:401326",
+          "position_row": "obs:401328",
+          "family": "treble",
+          "position_steps": -6.680701754385965,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/24/0/5",
+      "discounted": [
+        {
+          "glyph_row": "obs:401334",
+          "position_row": "obs:401336",
+          "family": "treble",
+          "position_steps": 14.545454545454545,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/24/0/6",
+      "discounted": [
+        {
+          "glyph_row": "obs:401338",
+          "position_row": "obs:401340",
+          "family": "treble",
+          "position_steps": -6.315789473684211,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/24/0/9",
+      "discounted": [
+        {
+          "glyph_row": "obs:401344",
+          "position_row": "obs:401346",
+          "family": "treble",
+          "position_steps": 15.027777777777779,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/24/0/10",
+      "discounted": [
+        {
+          "glyph_row": "obs:401348",
+          "position_row": "obs:401350",
+          "family": "treble",
+          "position_steps": -6.7368421052631575,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/24/0/11",
+      "discounted": [
+        {
+          "glyph_row": "obs:401351",
+          "position_row": "obs:401352",
+          "family": "treble",
+          "position_steps": -6.845360824742268,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/24/1/0",
+      "discounted": [
+        {
+          "glyph_row": "obs:401358",
+          "position_row": "obs:401361",
+          "family": "treble",
+          "position_steps": 14.52482269503546,
+          "reason": "clef_box_off_the_staff"
+        },
+        {
+          "glyph_row": "obs:401359",
+          "position_row": "obs:401362",
+          "family": "treble",
+          "position_steps": 14.553191489361701,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/24/1/1",
+      "discounted": [
+        {
+          "glyph_row": "obs:401364",
+          "position_row": "obs:401366",
+          "family": "treble",
+          "position_steps": 14.893617021276595,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/24/1/2",
+      "discounted": [
+        {
+          "glyph_row": "obs:401368",
+          "position_row": "obs:401370",
+          "family": "treble",
+          "position_steps": -6.530035335689046,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/24/1/8",
+      "discounted": [
+        {
+          "glyph_row": "obs:401382",
+          "position_row": "obs:401384",
+          "family": "treble",
+          "position_steps": -6.070921985815603,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/24/1/9",
+      "discounted": [
+        {
+          "glyph_row": "obs:401386",
+          "position_row": "obs:401388",
+          "family": "treble",
+          "position_steps": 14.808510638297872,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/24/1/10",
+      "discounted": [
+        {
+          "glyph_row": "obs:401390",
+          "position_row": "obs:401392",
+          "family": "treble",
+          "position_steps": -6.315789473684211,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/25/0/5",
+      "discounted": [
+        {
+          "glyph_row": "obs:417025",
+          "position_row": "obs:417027",
+          "family": "treble",
+          "position_steps": 14.76923076923077,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/25/0/6",
+      "discounted": [
+        {
+          "glyph_row": "obs:417029",
+          "position_row": "obs:417032",
+          "family": "treble",
+          "position_steps": 14.68041237113402,
+          "reason": "clef_box_off_the_staff"
+        },
+        {
+          "glyph_row": "obs:417030",
+          "position_row": "obs:417033",
+          "family": "treble",
+          "position_steps": -6.323024054982818,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/25/0/7",
+      "discounted": [
+        {
+          "glyph_row": "obs:417035",
+          "position_row": "obs:417037",
+          "family": "treble",
+          "position_steps": -6.405594405594406,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/25/0/8",
+      "discounted": [
+        {
+          "glyph_row": "obs:417039",
+          "position_row": "obs:417042",
+          "family": "treble",
+          "position_steps": -6.378006872852234,
+          "reason": "clef_box_off_the_staff"
+        },
+        {
+          "glyph_row": "obs:417040",
+          "position_row": "obs:417043",
+          "family": "treble",
+          "position_steps": 15.422680412371134,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/25/1/0",
+      "discounted": [
+        {
+          "glyph_row": "obs:417055",
+          "position_row": "obs:417057",
+          "family": "treble",
+          "position_steps": 14.742857142857142,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/25/1/1",
+      "discounted": [
+        {
+          "glyph_row": "obs:417059",
+          "position_row": "obs:417061",
+          "family": "treble",
+          "position_steps": -6.405693950177936,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/25/1/2",
+      "discounted": [
+        {
+          "glyph_row": "obs:417063",
+          "position_row": "obs:417065",
+          "family": "treble",
+          "position_steps": -7.208480565371024,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/25/1/4",
+      "discounted": [
+        {
+          "glyph_row": "obs:417069",
+          "position_row": "obs:417071",
+          "family": "treble",
+          "position_steps": 14.219081272084805,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/25/1/5",
+      "discounted": [
+        {
+          "glyph_row": "obs:417073",
+          "position_row": "obs:417075",
+          "family": "treble",
+          "position_steps": 15.406360424028268,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/25/1/6",
+      "discounted": [
+        {
+          "glyph_row": "obs:417077",
+          "position_row": "obs:417079",
+          "family": "treble",
+          "position_steps": -7.321554770318021,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/25/1/7",
+      "discounted": [
+        {
+          "glyph_row": "obs:417081",
+          "position_row": "obs:417083",
+          "family": "treble",
+          "position_steps": 14.558303886925795,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/25/1/8",
+      "discounted": [
+        {
+          "glyph_row": "obs:417085",
+          "position_row": "obs:417087",
+          "family": "treble",
+          "position_steps": -6.41696113074205,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/26/0/0",
+      "discounted": [
+        {
+          "glyph_row": "obs:433360",
+          "position_row": "obs:433362",
+          "family": "treble",
+          "position_steps": 13.82857142857143,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/26/1/0",
+      "discounted": [
+        {
+          "glyph_row": "obs:433386",
+          "position_row": "obs:433388",
+          "family": "treble",
+          "position_steps": 14.845070422535212,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/26/1/1",
+      "discounted": [
+        {
+          "glyph_row": "obs:433389",
+          "position_row": "obs:433391",
+          "family": "treble",
+          "position_steps": -6.643598615916955,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/26/1/7",
+      "discounted": [
+        {
+          "glyph_row": "obs:433404",
+          "position_row": "obs:433408",
+          "family": "treble",
+          "position_steps": -6.256055363321799,
+          "reason": "clef_box_off_the_staff"
+        },
+        {
+          "glyph_row": "obs:433405",
+          "position_row": "obs:433409",
+          "family": "treble",
+          "position_steps": 18.380622837370243,
+          "reason": "clef_box_off_the_staff"
+        },
+        {
+          "glyph_row": "obs:433406",
+          "position_row": "obs:433410",
+          "family": "treble",
+          "position_steps": 18.408304498269896,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/26/1/9",
+      "discounted": [
+        {
+          "glyph_row": "obs:433414",
+          "position_row": "obs:433416",
+          "family": "treble",
+          "position_steps": -7.342465753424658,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    },
+    {
+      "subject": "staff/26/1/10",
+      "discounted": [
+        {
+          "glyph_row": "obs:433417",
+          "position_row": "obs:433420",
+          "family": "treble",
+          "position_steps": -11.183391003460208,
+          "reason": "clef_box_off_the_staff"
+        }
+      ]
+    }
+  ]
+}
