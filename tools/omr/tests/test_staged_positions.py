@@ -105,10 +105,17 @@ def _run(cells, detections, *, on=True, pws=None):
     on-test. CLAUDE.md records that costing ten red tests on the meter flip
     ("three harnesses expressed 'off' by POPPING the variable"), and
     `test_staged_ink`'s helper had the same bug. Set the value.
+
+    ⚠️ ROADMAP 0.2b: `positions_enabled()` also requires `OMR_RESEARCH` to
+    name `OMR_FAMILY_POSITIONS` (the umbrella over every `research`-verdict
+    flag, docs/flags-2026-09.md §1) — both switches are driven together here
+    so the ON arm still reaches the code being tested.
     """
     log = Log()
     old = os.environ.get(POS.POSITIONS_ENV)
+    old_research = os.environ.get(G.RESEARCH_ENV)
     os.environ[POS.POSITIONS_ENV] = "1" if on else "0"
+    os.environ[G.RESEARCH_ENV] = POS.POSITIONS_ENV if on else ""
     try:
         POS.gather_family_positions(
             log, pws or _Pws([_Staff()]), cells, _local(len(
@@ -118,6 +125,10 @@ def _run(cells, detections, *, on=True, pws=None):
             os.environ.pop(POS.POSITIONS_ENV, None)
         else:
             os.environ[POS.POSITIONS_ENV] = old
+        if old_research is None:
+            os.environ.pop(G.RESEARCH_ENV, None)
+        else:
+            os.environ[G.RESEARCH_ENV] = old_research
     return log
 
 
@@ -145,22 +156,32 @@ class TestTheFlagIsOffByDefaultAndIsAnAllowList(unittest.TestCase):
 
     def setUp(self):
         self._old = os.environ.pop(POS.POSITIONS_ENV, None)
+        self._old_research = os.environ.pop(G.RESEARCH_ENV, None)
 
     def tearDown(self):
         if self._old is not None:
             os.environ[POS.POSITIONS_ENV] = self._old
         else:
             os.environ.pop(POS.POSITIONS_ENV, None)
+        if self._old_research is not None:
+            os.environ[G.RESEARCH_ENV] = self._old_research
+        else:
+            os.environ.pop(G.RESEARCH_ENV, None)
 
     def test_absent_is_off(self):
         self.assertFalse(POS.positions_enabled())
 
     def test_a_typo_leaves_it_off(self):
+        # ⚠️ `OMR_RESEARCH` granted throughout: this class is about the OWN
+        # flag's word parsing, not the roadmap-0.2b umbrella (see the class
+        # below for that).
+        os.environ[G.RESEARCH_ENV] = POS.POSITIONS_ENV
         for word in ("yess", "", "ON!", "2", "true-ish", " "):
             os.environ[POS.POSITIONS_ENV] = word
             self.assertFalse(POS.positions_enabled(), word)
 
     def test_an_explicit_on_word_turns_it_on(self):
+        os.environ[G.RESEARCH_ENV] = POS.POSITIONS_ENV
         for word in ("1", "true", "YES", "on", " On "):
             os.environ[POS.POSITIONS_ENV] = word
             self.assertTrue(POS.positions_enabled(), word)
@@ -174,6 +195,48 @@ class TestTheFlagIsOffByDefaultAndIsAnAllowList(unittest.TestCase):
         self.assertEqual(len(_run([cell], dets, on=False).all_rows()), 0)
         # the POSITIVE CONTROL that makes the zero mean something
         self.assertGreater(len(_run([cell], dets, on=True).all_rows()), 0)
+
+
+class TestTheResearchUmbrellaCannotBeBypassed(unittest.TestCase):
+    """Roadmap 0.2b: `research`-verdict flags move behind `OMR_RESEARCH`
+    (docs/flags-2026-09.md §1) — a research switch may not be flipped alone.
+    `OMR_FAMILY_POSITIONS` is default OFF, so wiring this cannot have changed
+    what a run with neither variable set produces; what it changes is that
+    the OWN flag alone is no longer enough."""
+
+    def setUp(self):
+        self._old = os.environ.pop(POS.POSITIONS_ENV, None)
+        self._old_research = os.environ.pop(G.RESEARCH_ENV, None)
+
+    def tearDown(self):
+        if self._old is not None:
+            os.environ[POS.POSITIONS_ENV] = self._old
+        else:
+            os.environ.pop(POS.POSITIONS_ENV, None)
+        if self._old_research is not None:
+            os.environ[G.RESEARCH_ENV] = self._old_research
+        else:
+            os.environ.pop(G.RESEARCH_ENV, None)
+
+    def test_the_own_flag_alone_is_not_enough(self):
+        os.environ[POS.POSITIONS_ENV] = "1"
+        os.environ.pop(G.RESEARCH_ENV, None)
+        self.assertFalse(POS.positions_enabled())
+
+    def test_naming_it_in_research_without_its_own_flag_is_not_enough(self):
+        os.environ.pop(POS.POSITIONS_ENV, None)
+        os.environ[G.RESEARCH_ENV] = POS.POSITIONS_ENV
+        self.assertFalse(POS.positions_enabled())
+
+    def test_naming_a_DIFFERENT_flag_in_research_does_not_turn_this_one_on(self):
+        os.environ[POS.POSITIONS_ENV] = "1"
+        os.environ[G.RESEARCH_ENV] = "OMR_VERTICAL_RUNS"
+        self.assertFalse(POS.positions_enabled())
+
+    def test_both_together_turn_it_on(self):
+        os.environ[POS.POSITIONS_ENV] = "1"
+        os.environ[G.RESEARCH_ENV] = "OMR_VERTICAL_RUNS," + POS.POSITIONS_ENV
+        self.assertTrue(POS.positions_enabled())
 
 
 class TestARestIsWhichSideOfWhichLine(unittest.TestCase):

@@ -61,110 +61,31 @@ from . import adjudicate as A
 from .record import Q, meter_at
 
 
-METER_SEGMENTS_ENV = "OMR_METER_SEGMENTS"
-#: `OMR_HOLD_OUT_UNIDENTIFIED` -- a staff the join could not NAME is held out
-#: of the file rather than emitted as a part of its own.
+#: `OMR_HOLD_OUT_UNIDENTIFIED` and `OMR_METER_SEGMENTS` — PROMOTED at roadmap
+#: 0.2b (docs/flags-2026-09.md §1, "promote — remove now"): both were
+#: default-ON and unconditionally measured better, so the flags are gone and
+#: what follows is the behaviour they always defaulted to.
 #:
-#: **Default ON since 2026-09-17 (Sean's call: *"hold out - I want truth"*),**
-#: written as a DENY-list because it is default-ON.
+#: **A staff the join could not NAME is held out of the file** rather than
+#: emitted as a part of its own (Sean, 2026-09-17: *"hold out - I want
+#: truth"*). Emitting a part is a positive claim — a `<part>` says *"here is
+#: an instrument"*; what we know about an unnamed staff is *"this music
+#: belongs to a part we could not name"* — and on Litolff Beethoven 5 pp.1-4
+#: the old behaviour invented 25 instruments on top of the 12 the page
+#: prints. The music is counted, never swallowed: every note on a held-out
+#: staff is dropped under `staff_not_identified` and the accounting control
+#: stays an EQUALITY. Scoped to the `slot` join: on the `fragments` fallback
+#: nothing is named, so holding out the unidentified would hold out the
+#: whole document; there, one part per staff remains the honest answer.
 #:
-#: ⚠️⚠️ EMITTING A PART IS A POSITIVE CLAIM, AND THAT IS THE BUG. A `<part>`
-#: says *"here is an instrument"*; what we know about an unnamed staff is
-#: *"this music belongs to a part we could not name"*. Turning the second
-#: into the first is CANNOT TELL converted into a definite answer -- the
-#: failure this file forbids at four other sites -- and it is the loudest
-#: one, because on Litolff Beethoven 5 pp.1-4 it invented **25 instruments**
-#: on top of the 12 the page prints, and a human opening the artefact could
-#: not read it.
-#:
-#: ⚠️ THE MUSIC IS COUNTED, NEVER SWALLOWED: every note on a held-out staff
-#: is dropped under `staff_not_identified` and the accounting control stays
-#: an EQUALITY, so the file is smaller and the record still says exactly what
-#: was lost and why. That is the whole of *"I want truth"*: the shortfall is
-#: visible instead of being dressed as an orchestra.
-#:
-#: ⚠️ SCOPED TO THE `slot` JOIN, deliberately. On the `fragments` fallback
-#: NOTHING is named, so holding out the unidentified would hold out the whole
-#: document and write an empty file -- a rule that turns a bad page into no
-#: page. There, one part per staff remains the honest answer.
-HOLD_OUT_UNIDENTIFIED_ENV = "OMR_HOLD_OUT_UNIDENTIFIED"
-
-
-def hold_out_unidentified_enabled() -> bool:
-    return os.environ.get(HOLD_OUT_UNIDENTIFIED_ENV, "1").strip().lower() \
-        not in ("0", "", "false", "no", "off")
-
-
+#: **The meter in force is read PER BAR** (`record.meter_at`, `Q.METER`'s
+#: `segments`), not once per staff-run, so a printed mid-system meter change
+#: reaches the file at the bar it is actually printed on. Measured strictly
+#: better on every ENGRAVED fixture (Brahms 1 iv's `¢`: 0 of 24 parts to all
+#: 24; Beethoven 5 / Litolff's printed `3/4`: moved from bar 1 to bar 9,
+#: where the hand-read truth puts it) — see
+#: `benchmarks/omr-staged-meter-segments-2026-09/FINDINGS.md`.
 WHOLE_REST_INK_ENV = "OMR_WHOLE_REST_INK"
-
-
-def meter_segments_enabled() -> bool:
-    """`OMR_METER_SEGMENTS` — export the meter in force at each BAR.
-
-    **DEFAULT ON since 2026-09-09 (Sean's call.)** `Q.METER` carries
-    `segments`, and this exporter used to read only the system's OPENING — so
-    a printed mid-system meter change could not reach a MusicXML file at all,
-    and `record.meter_at`, whose own docstring says it *is* how a bar's meter
-    is read, was called by nothing but its own tests.
-
-    ⚠️ WHAT IT GATES IS A BUG FIX OF THE `computed-and-unread` FAMILY, which
-    is why the shipped default is on. Measured strictly better on every
-    ENGRAVED fixture: Brahms 1 iv's `¢` — read on 24 staves of 24 at support
-    74.0 — went from reaching NO file to reaching all 24 parts, and Beethoven
-    5 / Litolff's printed `3/4` moved from the first bar of its system to the
-    ninth, which is where the hand-read truth puts it. The boundary tally goes
-    ENGRAVED 4 printed / 4 found / 1 -> 0 false.
-
-    ⚠️⚠️ THE STANDING OBJECTION, WHICH THE FLIP OVERRIDES RATHER THAN
-    RESOLVES: the boundary benchmark's SCANNED arm still proposes seven false
-    segments on one page of one publisher — five spurious `4/4` changes at
-    support 3.5-4.0 against a floor of 3.0, read on ONE staff of twenty — and
-    with this on, every one of them RE-SIZES BARS IN THE FILE instead of
-    sitting inertly on the record. FINDINGS §4b attributes that fixture's
-    failure to the meter GLYPH readers rather than to the weighing, and the
-    left-fractions confirm it from the other side: each of those segments
-    reads 0.000, at the head of its bar where a real change stands, so they
-    are misreads and no placement rule can reach them. **The lever is the
-    glyph readers (`_meter_from_digits`, `time_signature_locator`), and until
-    that lands a scan can export a meter change its page does not print.**
-
-    ⚠️ PRICED, so the cost is a number rather than a worry. On that page —
-    Brahms 1 / Breitkopf p.1-2, 14 parts — the flip takes `<time>` elements
-    from **41 to 138**: `4/4` declarations 13 -> 96, plus 14 spurious `9/8`
-    from the courtesy signature this rule cannot reach there. Every ENGRAVED
-    fixture gains only correct changes, and four of the nine committed
-    boundary records are byte-identical either way.
-
-    ⚠️ Set `0` to restore the per-run meter exactly. Flag-off is byte-identical
-    to the pre-2026-09-09 exporter and is asserted so, per page and per
-    fixture; a system that prints no change is byte-identical either way BY
-    CONSTRUCTION, which is what bounds the blast radius to pages carrying a
-    read change.
-
-    ⚠️⚠️ THE TEST IS A DENY-LIST, NOT AN ALLOW-LIST, AND THE DIRECTION FLIPPED
-    WITH THE DEFAULT. `_carry_meter` reads *"anything but an explicit 1 is
-    off"* because a typo must not switch a document ONTO a mechanism whose
-    hazard is a whole wrong movement. On by default the hazard runs the other
-    way: with an allow-list (`in ("1", "true", "yes", "on")`, which is what
-    `OMR_SLOT_STITCH` and the other default-on flags here use) an empty value
-    or a typo silently RESTORES the bug, and a flag that fails closed on a
-    misspelling is a flag nobody can trust in an environment file. Only an
-    explicit off word turns it off. ⚠️ Worth knowing: the default-on flags
-    that use the allow-list form have this hazard today — this one does not
-    copy it.
-
-    See `benchmarks/omr-staged-meter-segments-2026-09/FINDINGS.md`.
-        ⚠️ `""` COUNTS AS OFF, matching `OMR_LEFT_EDGE_SPLIT` and
-    `OMR_DIRECTION_TEXT` — the repo's existing idiom for a `"1"`-defaulted
-    flag, and what `test_roster.py::test_flag_parsing` already pins. It is a
-    genuinely ambiguous value (`OMR_X=` may be a deliberate blank or an
-    expanded-but-unset variable) and this does NOT settle that; it declines to
-    fork a third convention over it. A flag whose DEFAULT is `""` — choir
-    grouping, bracket columns, keysig corroboration, cell line trace — must of
-    course read empty as ON, or its default would be off.
-"""
-    return os.environ.get(METER_SEGMENTS_ENV, "1").strip().lower() not in (
-        "0", "", "false", "no", "off")
 
 
 def whole_rest_ink_enabled() -> bool:
@@ -571,8 +492,7 @@ def build(rec: Record) -> Tuple[List[List[StaffRun]], Dict[str, Any],
     # this file spent 2026-09-17 removing four copies of. The join loop
     # CONSUMES this set rather than re-asking.
     held_out_runs: set = set()
-    if hold_out_unidentified_enabled() \
-            and (rec.value(Q.PART_PARTITION, "document") or {}).get("join") \
+    if (rec.value(Q.PART_PARTITION, "document") or {}).get("join") \
             == "slot":
         for _k in runs:
             if not isinstance(rec.value(Q.SLOT_INDEX, _k), int):
@@ -680,14 +600,17 @@ def build(rec: Record) -> Tuple[List[List[StaffRun]], Dict[str, Any],
                 if not isinstance(slot, int):
                     stranded += 1
                     if run.key in held_out_runs:
-                        # ⚠️ NO PART. See `HOLD_OUT_UNIDENTIFIED_ENV`: the
-                        # staff is held out and its music counted, rather
-                        # than asserted to be an instrument of its own.
+                        # ⚠️ NO PART. The staff is held out and its music
+                        # counted, rather than asserted to be an instrument
+                        # of its own (roadmap 0.2b promoted this default-on
+                        # behaviour; formerly `OMR_HOLD_OUT_UNIDENTIFIED`).
                         held_out_runs.add(run.key)
                         continue
-                    # ⚠️⚠️ FLAG OFF -- the pre-2026-09-17 behaviour exactly.
-                    # The part is emitted, and the tacet padding must still
-                    # not write silence for it on systems it is absent from.
+                    # ⚠️⚠️ THE `fragments` FALLBACK, where nothing is named
+                    # and `held_out_runs` is never populated (see its
+                    # definition above): the part is emitted, and the tacet
+                    # padding must still not write silence for it on systems
+                    # it is absent from.
                     unidentified.add(len(parts))
                     parts.append([run])
                     continue
@@ -2503,7 +2426,7 @@ def _pad_tacet_span(lines: List[str], sys_key: Tuple[int, int], sys_bars: int,
                     offsets: Dict[Tuple[int, int], int],
                     meters: Dict[Tuple[int, int], Any],
                     divisions: int, counters: Dict[str, int],
-                    segments_on: bool, first: bool
+                    first: bool
                     ) -> Tuple[bool, Optional[Dict[str, Any]]]:
     """The bars of one system this part does not print.
 
@@ -2547,8 +2470,7 @@ def _pad_tacet_span(lines: List[str], sys_key: Tuple[int, int], sys_bars: int,
         counters["tacet_bars_not_padded_without_a_number"] += sys_bars
         return first, None
     for i in range(sys_bars):
-        meter = _meter_dict(meter_at(sys_meter, i) if segments_on
-                            else sys_meter)
+        meter = _meter_dict(meter_at(sys_meter, i))
         if meter is None:
             # ⚠️⚠️ THE REFUSAL, AND IT IS THE POINT OF THE WHOLE FUNCTION.
             # `_mxl_measure_rest(None)` returns 4.0 quarters — a whole rest —
@@ -2636,7 +2558,6 @@ def _part_xml(rec: Record, part: Sequence[StaffRun], pid: str,
     number = 0
     prev = {"clef": object(), "key": object(), "time": object()}
     first = True
-    segments_on = meter_segments_enabled()
     # ⚠️⚠️ ROADMAP 2.8: THE METER A READER OF THIS FILE SEES, which is NOT
     # always the one `Q.METER` filed on this bar's own system. `<time>` is
     # written only where it CHANGES, so once a part has declared one it stays
@@ -2655,7 +2576,7 @@ def _part_xml(rec: Record, part: Sequence[StaffRun], pid: str,
         if maybe_run is None:
             first, _declared = _pad_tacet_span(
                 lines, sys_key, sys_bars, offsets or {}, meters or {},
-                divisions, counters, segments_on, first)
+                divisions, counters, first)
             # ⚠️ ROADMAP 2.8: a LEADING pad can be the only place this part
             # ever declares a `<time>`, and every later bar is read against
             # it. See `_pad_tacet_span`'s second return value.
@@ -2688,8 +2609,7 @@ def _part_xml(rec: Record, part: Sequence[StaffRun], pid: str,
             # `meter is None` branch below already withholds `measure="yes"`
             # for exactly that reason, so an unknown opening stays unknown
             # instead of inheriting the meter that follows it.
-            meter = _meter_dict(meter_at(run.meter, i) if segments_on
-                                else run.meter)
+            meter = _meter_dict(meter_at(run.meter, i))
             number += 1
             lines.append(
                 f'    <measure number="{number if base is None else base + i + 1}">')

@@ -235,13 +235,11 @@ def _collect_bars(rec: SX.Record, part: Sequence[SX.StaffRun],
     bars: List[_Bar] = []
     lane0: List[Dict[str, Any]] = []
     lane1: List[Dict[str, Any]] = []
-    segments_on = SX.meter_segments_enabled()
     for sys_key, maybe_run, sys_bars in SX._tacet_walk(part, offsets, spans):
         if maybe_run is None:
             sys_meter = meters.get(sys_key)
             for i in range(sys_bars):
-                meter = SX._meter_dict(
-                    meter_at(sys_meter, i) if segments_on else sys_meter)
+                meter = SX._meter_dict(meter_at(sys_meter, i))
                 if meter is None:
                     # ⚠️ NOT WRITTEN, exactly as `staged.export._pad_tacet_
                     # span` refuses: a MusicXML rest -- and a LilyPond one --
@@ -257,8 +255,7 @@ def _collect_bars(rec: SX.Record, part: Sequence[SX.StaffRun],
         key = SX._key_dict(run.fifths)
         condensed = bool(run.condensed_from)
         for i in range(run.n_measures):
-            meter = SX._meter_dict(
-                meter_at(run.meter, i) if segments_on else run.meter)
+            meter = SX._meter_dict(meter_at(run.meter, i))
             cell = run.cells.get(i)
             directions = tuple(cell.directions) if cell else ()
             events = SX._events(cell)

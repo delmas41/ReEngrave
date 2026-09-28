@@ -135,7 +135,7 @@ funnel.
 |---|---|---|
 | 0.1 | Staged is the product path; legacy frozen | done (DECISIONS 2026-09-22) |
 | 0.2 | Flag triage table, ≤ 15 product flags | done — table with a verdict on all 60 (`docs/flags-2026-09.md`) |
-| 0.2b | Enforce the triage: remove the `promote — now` flags, delete `OMR_ADJUDICATE`, add `OMR_RESEARCH`, a derived test that staged reads no frozen flag and every `OMR_*` read has a row | todo |
+| 0.2b | Enforce the triage: remove the `promote — now` flags, delete `OMR_ADJUDICATE`, add `OMR_RESEARCH`, a derived test that staged reads no frozen flag and every `OMR_*` read has a row | BUILT — branch `claude/flag-triage-0.2b` c64f9ba0, not merged. 2 flags promoted (`OMR_HOLD_OUT_UNIDENTIFIED`, `OMR_METER_SEGMENTS`), 1 deleted (`OMR_ADJUDICATE`, dead code), 3 gated behind the new `OMR_RESEARCH` umbrella (`OMR_FAMILY_POSITIONS`, `OMR_METER_TEMPLATE_AT_BAR`, `OMR_VERTICAL_RUNS`); `OMR_INK` and the `OMR_DOCUMENT_IDENTITY` catalog half kept as-is (default-ON research flags — gating would flip behaviour). `check` holds at 253 |
 | 0.3a | Archive CLAUDE.md → `docs/chronicle-2026-09.md` | done (2b441cb3) |
 | 0.3b | New CLAUDE.md spec ≤ 6,000 words | done (2b441cb3; 4,700 words) |
 | 0.3c | `docs/DECISIONS.md`, `ROADMAP.md` | done |

@@ -34,6 +34,26 @@ from typing import (Any, Dict, Iterable, List, Optional, Sequence, Tuple)
 from . import record as R
 from .record import ABSTAIN, Log, Q, READERS, Subject
 
+#: `OMR_RESEARCH` — the single umbrella docs/flags-2026-09.md's triage put
+#: over every `research`-verdict flag (roadmap 0.2b): "moves behind the
+#: single umbrella `OMR_RESEARCH=<name>[,<name>]`, may not be read by the
+#: product path". A research flag's OWN switch still governs it — this is
+#: ANDED with that switch, never a replacement for it — so a research
+#: mechanism needs BOTH its own flag on AND its name listed here; naming it
+#: here alone does nothing, and its own flag alone does not reach the product
+#: path either. Only flags whose default is OFF are wired to this (a
+#: default-ON research flag would change behaviour the moment this landed,
+#: which a triage-enforcement lane may not do — see docs/flags-2026-09.md).
+RESEARCH_ENV = "OMR_RESEARCH"
+
+
+def research_enabled(name: str) -> bool:
+    """Is `name` named in the comma-separated `OMR_RESEARCH` list?"""
+    named = {n.strip() for n in os.environ.get(RESEARCH_ENV, "").split(",")
+             if n.strip()}
+    return name in named
+
+
 # ─────────────────────────────────────────────────────────────────────────────
 # Frames -- WHERE a reading was taken. Two readers of the same quantity on
 # different crops are two signals; on the same crop they are one.
@@ -1587,9 +1607,13 @@ _VERTICAL_RUN_GLYPH_BASE = 300_000
 
 
 def vertical_runs_enabled() -> bool:
-    """Is the vertical-run candidate population gathered? Default OFF."""
-    return os.environ.get(VERTICAL_RUNS_ENV, "0").strip().lower() in (
-        "1", "true", "yes", "on")
+    """Is the vertical-run candidate population gathered? Default OFF.
+
+    `research` verdict (docs/flags-2026-09.md §1) — also requires
+    `OMR_RESEARCH` to name `OMR_VERTICAL_RUNS` (roadmap 0.2b).
+    """
+    return (os.environ.get(VERTICAL_RUNS_ENV, "0").strip().lower() in (
+        "1", "true", "yes", "on") and research_enabled(VERTICAL_RUNS_ENV))
 
 
 def _emit_vertical_runs(log: Log, cell: Any, sub, frame, sys_idx: int,
@@ -3208,8 +3232,11 @@ METER_TEMPLATE_AT_BAR_MIN_CANDIDATE_STAVES = 1
 
 
 def _meter_template_at_bar_enabled() -> bool:
-    return os.environ.get(METER_TEMPLATE_AT_BAR_ENV, "0").strip().lower() in (
+    """`research` verdict (docs/flags-2026-09.md §1) — also requires
+    `OMR_RESEARCH` to name `OMR_METER_TEMPLATE_AT_BAR` (roadmap 0.2b)."""
+    return (os.environ.get(METER_TEMPLATE_AT_BAR_ENV, "0").strip().lower() in (
         "1", "true", "yes", "on")
+            and research_enabled(METER_TEMPLATE_AT_BAR_ENV))
 
 
 def _bar_head_window(cell: Any, spaces: float):

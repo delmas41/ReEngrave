@@ -9,8 +9,10 @@ files are the real guard — a contradiction of a pinned decision fails a test
 rather than passing quietly.
 
 **What this is.** `tools/omr/staged/` is an alternative OMR pipeline built
-ALONGSIDE `tools/omr/transcribe.py`, selected by `OMR_ADJUDICATE`
-(`0` default / `shadow` / `1`). Four stages: **GATHER** (readers emit
+ALONGSIDE `tools/omr/transcribe.py`, entered directly through
+`pipeline.run_staged` (the staged CLI, and the web app's staged job) —
+no mode flag of its own; `OMR_ADJUDICATE`, an early and never-wired mode
+switch, was removed at roadmap 0.2b. Four stages: **GATHER** (readers emit
 measurements as rows), **ADJUDICATE** (decisions declare their evidence and
 return a value *and* a record), **GROUPS** (redundant groups — N witnesses to
 one fact, and whether they agree), **EVALUATE** (consequences, downhill only,
