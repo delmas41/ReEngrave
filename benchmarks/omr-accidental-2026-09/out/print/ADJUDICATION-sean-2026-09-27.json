@@ -1,7 +1,7 @@
 {
  "adjudicator": "Sean",
  "date": "2026-09-27",
- "status": "PARTIAL \u2014 crops 1\u201310 of 28",
+ "status": "PARTIAL \u2014 crops 1\u201320 of 28",
  "verdicts": [
   {
    "crop": "acc-01.png",
@@ -52,11 +52,62 @@
    "crop": "acc-10.png",
    "sean": "correct; a second accidental on a note below on the same beat",
    "pairing_correct": true
+  },
+  {
+   "crop": "acc-11.png",
+   "sean": "correct",
+   "pairing_correct": true
+  },
+  {
+   "crop": "acc-12.png",
+   "sean": "correct",
+   "pairing_correct": true
+  },
+  {
+   "crop": "acc-13.png",
+   "sean": "WRONG STAFF (the staff above)",
+   "pairing_correct": null
+  },
+  {
+   "crop": "acc-14.png",
+   "sean": "correct, but the box is very big \u2014 it merges the flat's stem with the barline",
+   "pairing_correct": true
+  },
+  {
+   "crop": "acc-15.png",
+   "sean": "correct",
+   "pairing_correct": true
+  },
+  {
+   "crop": "acc-16.png",
+   "sean": "correct",
+   "pairing_correct": true
+  },
+  {
+   "crop": "acc-17.png",
+   "sean": "correct; another accidental on the same beat on a note below",
+   "pairing_correct": true
+  },
+  {
+   "crop": "acc-18.png",
+   "sean": "correct",
+   "pairing_correct": true
+  },
+  {
+   "crop": "acc-19.png",
+   "sean": "correct; another on the same beat below",
+   "pairing_correct": true
+  },
+  {
+   "crop": "acc-20.png",
+   "sean": "WRONG STAFF (the staff above)",
+   "pairing_correct": null
   }
  ],
  "patterns": [
-  "right pairing, wrong staff (2, 4): accidental and head filed on the staff ABOVE \u2014 cross-staff ownership reaching accidentals",
+  "right pairing, wrong staff (2, 4, 13, 20): accidental and head filed on the staff ABOVE \u2014 cross-staff ownership reaching accidentals",
   "a header key-signature flat read as an in-bar accidental (7); the true accidental (a sharp) undetected",
-  "a tremolo boxed as a notehead chosen as the head (3); a merged tall accidental box"
+  "a tremolo boxed as a notehead chosen as the head (3); a merged tall accidental box",
+  "a box merged with neighbouring ink (3: tall, 14: the barline)"
  ]
 }
