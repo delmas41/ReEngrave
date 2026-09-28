@@ -931,29 +931,33 @@ class TestARefusedRungIsNotCountedInTheLadder(unittest.TestCase):
         _log, sig = self._signal(refuse_the_rung=True)
         self.assertEqual(sig["ledger_found"], 0)
 
-    def test_gather_s_own_ladder_row_NAMES_NO_RUNG_GLYPH(self):
-        """⚠️⚠️ THE FINDING, PINNED BEHAVIOURALLY. `gather._observe_ladder`
-        is called here for real and the row it files is read: it carries
-        `expected` and `found` as COUNTS and NOTHING that names the ledger
-        glyphs it matched — so no ADJUDICATE refusal can discount a
-        GATHER-counted rung, and `glyph_owner`'s ladder tier is out of this
-        lane's reach without a GATHER change. The day that row names its
-        rungs, this goes red and the discount can move there too.
+    def test_gather_s_own_ladder_row_NOW_NAMES_ITS_RUNG_GLYPH(self):
+        """⚠️⚠️ ROADMAP 2.14 — THE FLIP. Before this lane, `gather.
+        _observe_ladder` filed `expected` and `found` as anonymous COUNTS and
+        named NONE of the ledger glyphs it matched, so no ADJUDICATE refusal
+        could discount a GATHER-counted rung and `glyph_owner`'s ladder tier
+        was out of reach without a GATHER change — the assertion this test
+        used to make (`named == []`) was the pin on that gap, docstring and
+        all. `gather._ledger_index` now carries each ledger detection's own
+        `Subject.to_key()` alongside its rectangle, and `_observe_ladder`
+        records the SAME key, per counted step, in `detail["rungs"]` — so this
+        goes GREEN on the repair rather than staying red, and the discount
+        this enables lives in `adjudicators.ownership._ladder_complete`
+        (see `test_staged_ladder_rungs.py`).
         """
         from tools.omr.staged import gather
         log = Log()
         # a head one space below the bottom line, with a rung under it
         box = _page_box_at_step(-2.0)
+        rung_key = R.glyph(0, 0, 0, 0, 7).to_key()
         rungs = {(0, 0): [(box[0] - 5.0, box[2] + 5.0,
-                           (box[1] + box[3]) / 2.0)]}
+                           (box[1] + box[3]) / 2.0, rung_key)]}
         gather._observe_ladder(log, R.glyph(0, 0, 0, 0, 0), box,
                                STAFF.to_key(), LINE_YS, SPACING_PAGE, rungs)
         rows = [r for r in log.all_rows() if r.quantity == Q.GLYPH_LADDER]
         self.assertEqual(len(rows), 1)          # the positive control
         self.assertEqual(rows[0].detail.get("found"), 1)
-        named = [k for k, v in (rows[0].detail or {}).items()
-                 if isinstance(v, str) and v.startswith("glyph/")]
-        self.assertEqual(named, [])
+        self.assertEqual(rows[0].detail.get("rungs"), [rung_key])
 
 
 # ─────────────────────────────────────────────────────────────────────────────

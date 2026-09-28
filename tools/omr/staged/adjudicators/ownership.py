@@ -35,12 +35,15 @@ W_DISTANCE = 0.5            # the tie-break, and only that
         "the owned glyph's implied pitch must fall in the owner's written range",
     ),
     implicates=(Q.GLYPH_OWNER, Q.DURATION, Q.METER, Q.INSTRUMENT),
+    # ⚠️ ROADMAP 2.14. `Q.LEDGER_IS_NOT_A_LEDGER` joins the composition: the
+    # ladder tier's reliability now depends on a rung's own refusal verdict,
+    # not only on GATHER's anonymous count.
     composed_from=(Q.GLYPH_BAND_DISTANCE, Q.GLYPH_LADDER, Q.INSTRUMENT, Q.CLEF,
-                   Q.HUMAN_BOX_VERDICT),
+                   Q.HUMAN_BOX_VERDICT, Q.LEDGER_IS_NOT_A_LEDGER),
     scope=Kind.GLYPH,
     wants=(Q.GLYPH_LADDER, Q.GLYPH_BAND_DISTANCE, Q.GLYPH_CONF,
            Q.NOTEHEAD_STAFF_POSITION, Q.INSTRUMENT, Q.CLEF,
-           Q.HUMAN_BOX_VERDICT),
+           Q.HUMAN_BOX_VERDICT, Q.LEDGER_IS_NOT_A_LEDGER),
     reasons=("human_owner", "ladder", "range_veto", "distance", "no_contest",
              "no_evidence", "tied"),
     mode=Mode.ADDITIVE,
@@ -100,6 +103,7 @@ def adjudicate_glyph_owner(ev: Evidence) -> Ruling:
     ladders = {r.detail.get("candidate"): r for r in ev.rows(Q.GLYPH_LADDER)}
 
     scored = []
+    ladder_discounts: Dict[str, Tuple[str, ...]] = {}
     for row in bands:
         cand_key = row.detail.get("candidate")
         if cand_key is None:
@@ -108,8 +112,13 @@ def adjudicate_glyph_owner(ev: Evidence) -> Ruling:
 
         # ── tier 1: the ledger ladder ───────────────────────────────────────
         lad = ladders.get(cand_key)
-        if lad is not None and bool(lad.value):
-            terms.append(Term("ladder_complete", W_LADDER_COMPLETE, (lad.id,)))
+        if lad is not None:
+            complete, discounted = _ladder_complete(ev, lad)
+            if discounted:
+                ladder_discounts[cand_key] = discounted
+            if complete:
+                terms.append(Term("ladder_complete", W_LADDER_COMPLETE,
+                                  (lad.id,)))
         # ⚠️ A BROKEN ladder contributes NOTHING -- not a negative. Two broken
         # ladders are not evidence either way: a found rung can belong to the
         # other staff's note exactly as a gap can, and on the Beethoven
@@ -167,11 +176,71 @@ def adjudicate_glyph_owner(ev: Evidence) -> Ruling:
     else:
         reason = "distance"
 
+    detail = {"scores": {k: sc for sc, k, _t, _d2 in scored},
+              "would_win_on_distance": by_distance[1]}
+    if ladder_discounts:
+        # ⚠️ ROADMAP 2.14, FOR `trace`. Per candidate, the rung glyph keys a
+        # refused `Q.LEDGER_IS_NOT_A_LEDGER` verdict removed from this
+        # contest's ladder count -- present whether or not that candidate
+        # won, so a losing candidate's discount is visible too.
+        detail["ladder_discounted_rungs"] = ladder_discounts
+
     return Ruling(value=top_key, reason=reason,
                   margin=(top_score - runner) if runner is not None else None,
                   used=tuple(r.id for r in bands),
-                  detail={"scores": {k: sc for sc, k, _t, _d2 in scored},
-                          "would_win_on_distance": by_distance[1]})
+                  detail=detail)
+
+
+def _ladder_complete(ev: Evidence, lad_row) -> Tuple[bool, Tuple[str, ...]]:
+    """`(is the ladder complete, the named rungs a refusal discounted)`.
+
+    ⚠️⚠️ ROADMAP 2.14 — THE JOIN `adjudicate_ledger_is_not_a_ledger`'s OWN
+    DOCSTRING SAYS DOES NOT EXIST, BUILT. `gather._observe_ladder` now names,
+    in `detail["rungs"]`, the ledger glyph subject that matched each counted
+    step, in the same order `found` was counted — so a rung's OWN refusal
+    verdict can be read back and discounted from THIS contest's completeness,
+    which GATHER's anonymous `found`/`expected` count never allowed.
+
+    A named rung whose `Q.LEDGER_IS_NOT_A_LEDGER` verdict is DECIDED `True`
+    (refused — a staff-line fragment, a barline, ink with no boxed head) no
+    longer counts. One the ledger decision ABSTAINED on (`rung_without_
+    boxed_head` — CLAUDE.md rule 8, *cannot tell* may never become *not a
+    rung*), one it never ran on at all, or one it DECIDED `False` (a real
+    rung) all keep their place.
+
+    ⚠️ NO CYCLE: `adjudicate_ledger_is_not_a_ledger` runs BEFORE `glyph_owner`
+    in `adjudicate.ORDER`, and its own declared evidence is `Q.GLYPH_BOX`,
+    `Q.STAFF_LINES`, `Q.STAFF_SPACING`, `Q.CELL_STAFF_SPACE`,
+    `Q.HUMAN_BOX_VERDICT`, `Q.GLYPH_BAND_DISTANCE` and `Q.LEDGER_INK_UNDER` —
+    `Q.GLYPH_OWNER` is nowhere in its ancestry, so reading its verdict back
+    here closes nothing.
+
+    ⚠️ AN OLD RECORD (no `rungs` named, pre-2.14) IS UNCHANGED: falls back to
+    the row's own `value`, exactly as `glyph_owner` read it before this lane.
+    An EMPTY `rungs` list (a genuinely named ladder with `found == 0`) has
+    nothing to discount either, so it takes the same path.
+    """
+    detail = lad_row.detail or {}
+    names = detail.get("rungs")
+    expected = detail.get("expected")
+    if not names or not isinstance(expected, int):
+        return bool(lad_row.value), ()
+
+    kept = 0
+    discounted: List[str] = []
+    for key in names:
+        try:
+            subject = R.Subject.from_key(key)
+        except ValueError:
+            kept += 1                # cannot even ask -- never guess a refusal
+            continue
+        verdict = ev.verdict(Q.LEDGER_IS_NOT_A_LEDGER, subject=subject)
+        if verdict is not None and verdict.outcome == Outcome.DECIDED \
+                and verdict.value is True:
+            discounted.append(key)
+            continue
+        kept += 1
+    return kept == expected, tuple(discounted)
 
 
 def _human_owner(ev: Evidence):
