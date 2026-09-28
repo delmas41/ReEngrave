@@ -1,0 +1,30 @@
+{
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf",
+  "label": "brahms1-breitkopf",
+  "items": [
+    {"subject": "system/1/0", "page": 1, "system": 0, "staff": 7,
+     "from_cell": 2, "numerator": 4, "denominator": 4, "raw": "4/4",
+     "support": 4.0, "staves_reading_it": [7]},
+    {"subject": "system/1/1", "page": 1, "system": 1, "staff": 7,
+     "from_cell": 4, "numerator": 4, "denominator": 4, "raw": "4/4",
+     "support": 3.0, "staves_reading_it": [7]},
+    {"subject": "system/4/1", "page": 4, "system": 1, "staff": 1,
+     "from_cell": 3, "numerator": 4, "denominator": 4, "raw": "4/4",
+     "support": 3.0, "staves_reading_it": [1]},
+    {"subject": "system/5/1", "page": 5, "system": 1, "staff": 6,
+     "from_cell": 2, "numerator": 3, "denominator": 4, "raw": "3/4",
+     "support": 3.5, "staves_reading_it": [6]},
+    {"subject": "system/7/0", "page": 7, "system": 0, "staff": 10,
+     "from_cell": 6, "numerator": 4, "denominator": 4, "raw": "C",
+     "support": 3.0, "staves_reading_it": [10]},
+    {"subject": "system/8/1", "page": 8, "system": 1, "staff": 0,
+     "from_cell": 8, "numerator": 4, "denominator": 4, "raw": "4/4",
+     "support": 3.0, "staves_reading_it": [0]},
+    {"subject": "system/10/0", "page": 10, "system": 0, "staff": 5,
+     "from_cell": 3, "numerator": 4, "denominator": 4, "raw": "4/4",
+     "support": 3.0, "staves_reading_it": [5]},
+    {"subject": "system/11/0", "page": 11, "system": 0, "staff": 8,
+     "from_cell": 2, "numerator": 4, "denominator": 4, "raw": "4/4",
+     "support": 3.0, "staves_reading_it": [8]}
+  ]
+}

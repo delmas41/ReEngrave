@@ -1352,3 +1352,301 @@ rests stand outside their own staff altogether.** An upper edge on the whole
 band would convert **2–3% of a print-confirmed population into abstentions**
 (68 rows above 6.66, 41 above 7.0) to answer a question nothing asked. This is
 a convention argument, not a tolerance choice, and a test pins it.
+
+---
+
+# PART 5 — §2.12d: A MID-STAFF `timeSig*` STATES A METER ONLY WHERE THE
+SYSTEM AGREES
+
+*(Branch `claude/meter-agree-2.12d`, 2026-09-28. Diagnosis:
+`benchmarks/omr-bar-sum-holdout-2026-09/FINDINGS.md` §13, "the funnel", on
+the fresh whole-movement Breitkopf Brahms 1/i record `c19cbca7`. This item's
+own reach row in Part 3 above: reach 106 total, Litolff 23, Breitkopf 83.)*
+
+## The mechanism, before this item
+
+`adjudicate_meter` (`tools/omr/staged/adjudicators/rhythm.py`) already
+computed a `corroborated` flag on every mid-system change candidate
+(`METER_CHANGE_MIN_STAVES = 2`, A-METER-6) and used it for exactly ONE of the
+two things a change does: it gated whether the change could be CARRIED to a
+later, abstaining system (`_meter_in_force_at_end`). It did NOT gate whether
+the change governed its OWN system's bars — A-METER-6 deliberately left that
+half open, because on the boundary corpus available then (4 pages, two
+scans) the one confirmed true single-staff change (Litolff p.62, a real
+`3/4` read on 1 of 17 staves) was indistinguishable by support, staff count
+or bar math from three false ones on the same corpus.
+
+## The change
+
+`METER_CHANGE_GATES_OWN_SYSTEM = True` — a plain module constant, not a
+flag, per the roadmap item's own instruction ("NOT a new env flag"; the
+constant is toggled directly by `price_2_12d.py` below, the same way this
+suite's own tests already reference `rhythm_mod.METER_CHANGE_MIN_STAVES`
+directly). `_meter_changes` now declines a candidate that clears
+`METER_CHANGE_FLOOR` but not `METER_CHANGE_MIN_STAVES` BEFORE it can become a
+segment: it is filed into a new `declined_changes` list on the system's
+`Q.METER` value, under `declined_reason: "meter_change_not_system_wide"`
+(`rhythm.METER_CHANGE_NOT_SYSTEM_WIDE`), and the meter in force is left
+exactly as it was. A cautionary past the system's last barline (A-METER-5) is
+tested FIRST and is unaffected either way. Where a system's ONLY candidate
+meter fact is a declined lone-staff change, `_change_only` now abstains
+outright rather than deciding via `change_only` — rule 8: never convert
+"cannot tell" into 4/4 or any other default.
+
+CONVENTION ASSUMED / WHAT WOULD FALSIFY IT / NOT CONFIRMED (also in the code,
+beside `METER_CHANGE_GATES_OWN_SYSTEM`): CLAUDE.md §10's "a key change is
+printed at one bar on every staff of the system" is taken to hold for a
+meter change too. It would be FALSIFIED by a genuine printed change this
+gate declines only because the system's other staves were simply never
+DETECTED at that bar (a coverage failure wearing a convention failure's
+clothes) — exactly the risk A-METER-6 priced against Litolff p.62, now
+accepted on the strength of the evidence below. **NOT CONFIRMED WITH SEAN.**
+
+## Where the Brahms 4/4 comes from — traced on the record directly
+
+The fresh whole-movement Breitkopf record (`c19cbca7`, 53 `Q.METER`
+verdicts) was loaded once via `record_io.load_record` and its `meter`
+verdicts inspected directly — this part needed no re-adjudication, because
+the `corroborated` flag already committed on each segment says exactly what
+2.12d would decide. `system/0/0` opens the movement `6/8` (`reason: voted`),
+correctly, with a correctly-read corroborated cautionary `9/8` at its last
+cell (10 staves). `system/1/0` VOTES an opening of **`9/4`** — the misread
+`omr-meter-carry-brahms-2026-09/FINDINGS.md` already named on a 4-page
+slice, now confirmed whole-movement — and its own `Q.METER_GLYPH` rows also
+propose a further, uncorroborated `4/4` at cell 2 (staff 7 only, support
+4.0). `system/1/1` is the funnel's own named case: opening unknown
+(`change_only`), a lone-staff `4/4` at cell 4 (staff 7, support 3.0,
+`bars_contradict: 1` — **the bars themselves disagreeing with the one staff
+that read it**) — and under the OLD rule this governed the ENTIRE system's
+bars from cell 4 on, which is exactly what the funnel's `meter_wrong` bucket
+(859 bars) measures.
+
+**19 mid-system change segments across the whole document already carry
+`corroborated: false`** on the committed (pre-2.12d) record — every one of
+them read by exactly ONE staff, values `4/4` (17 of 19), `3/4` (1) and one
+letter `C`, on systems 1, 4, 5, 7, 8, 10, 11, 14, 15, 18, 20, 21 and 26.
+These are the exact candidates 2.12d declines:
+
+| system | cell | value | support | staff(s) | bars_fit/contradict |
+|---|--:|---|--:|---|---|
+| system/1/0 | 2 | 4/4 | 4.0 | [7] | 0/0 |
+| system/1/1 | 4 | 4/4 | 3.0 | [7] | 0/1 |
+| system/4/1 | 3 | 4/4 | 3.0 | [1] | 0/0 |
+| system/5/1 | 2 | 3/4 | 3.5 | [6] | 0/0 |
+| system/5/1 | 6 | 4/4 | 3.0 | [4] | 0/0 |
+| system/7/0 | 6 | C (4/4) | 3.0 | [10] | 0/0 |
+| system/8/1 | 8 | 4/4 | 3.0 | [0] | 0/0 |
+| system/10/0 | 3 | 4/4 | 3.0 | [5] | 0/0 |
+| system/11/0 | 2 | 4/4 | 3.0 | [8] | 1/1 |
+| system/11/1 | 7 | 4/4 | 3.5 | [7] | 0/0 |
+| system/11/1 | 8 | 3/4 | 3.0 | [8] | 0/0 |
+| system/14/0 | 3 | 4/4 | 3.0 | [9] | 0/0 |
+| system/14/1 | 7 | 4/4 | 3.0 | [5] | 0/0 |
+| system/15/1 | 6 | 4/4 | 3.0 | [6] | 0/0 |
+| system/18/0 | 2 | 4/4 | 3.0 | [0] | 0/0 |
+| system/18/1 | 4 | 4/4 | 3.5 | [6] | 0/0 |
+| system/20/1 | 7 | 4/4 | 3.0 | [5] | 0/0 |
+| system/21/0 | 6 | 4/4 | 3.0 | [0] | 0/0 |
+| system/26/0 | 2 | 4/4 | 3.5 | [1] | 0/0 |
+
+⚠️ A SEPARATE, small cluster of early systems (2 and 3) carries
+`corroborated: true` on a WRONG `4/4` at 2–4 staves of an orchestral
+system's ~14 (`system/2/0`: 2 staves, support 6.0; `system/2/1`: 2 staves;
+`system/3/0`: **4 staves**, support 11.5; `system/3/1`: 3 staves). 2.12d does
+not reach these — flagged, not chased. `METER_CHANGE_MIN_STAVES`'s absolute
+floor of 2 is not the same question as a FRACTION of the system, and the
+LEGACY pipeline's own `drop_uncorroborated_meter_changes`
+(`tools/omr/rhythm.py:631`) already uses `max(2, round(0.5 * n_staves))` —
+prior art for a stronger, proportional threshold, deliberately NOT retuned
+here (this item reuses the existing staged-pipeline constant rather than
+introducing a new, unmeasured one).
+
+## Litolff: reach is ZERO, established without re-adjudication
+
+The Litolff shared record (`library/_shared-records/beethoven5-litolff-
+mvt1-whole-20260923.record.json`, provenance `dbc9962b`, 101,361 verdicts,
+156,525 observations, 31 `Q.METER` verdicts) carries **no mid-system change
+segments at all** — every system's value holds only its opening
+(`from_cell: 0`) segment; `_meter_changes` never once cleared
+`METER_CHANGE_FLOOR` on a mid-staff candidate anywhere in this document.
+2.12d's gate only ever acts on a candidate that already reached `segments`;
+with none present, base and arm are necessarily byte-identical on this
+document — established by DIRECT INSPECTION of the committed record rather
+than by running two full re-adjudications that could only confirm the same
+zero (CLAUDE.md §6b: *"reach before accuracy... a change that moves nothing
+because it is inert and one that moves nothing because the page holds
+nothing to move are the same number"* — here it is verifiably the latter,
+not a guess). This matches the funnel's own caveat: *"2.15 and 2.12d are
+recommended from Brahms evidence and are not yet shown to move Litolff's 18
+owned heads at all."*
+
+## The engraved document: fully re-adjudicated and exported, byte-identical
+
+Unlike Brahms and Litolff, the small engraved fixture record
+(`beethoven5-engraved-p0p2-20260928T110428Z`, 8,148 observations, 6,022
+verdicts) WAS fully re-adjudicated and exported both ways with
+`price_2_12d.py` (below): CONTROL 3 of 3 `Q.METER` verdicts reproduced
+exactly with the gate off (0 differ, +0 extra — the harness is sound).
+Base (gate off) and arm (gate on): meters in force `{(2,4): 450}` on both,
+`bars_held_out_sum` 36/449 (`fraction` 0.0802) on both, pitched `<note>`
+count **331 on both**, and 2.8's independent bar-sum control (own parser, no
+exporter import) **450 assessed / 450 exact / 0 wrong** on both. Clean,
+unanimous ink corroborates its own meter on every staff; there is nothing
+for this gate to decline, and nothing moved — the positive-direction control
+this item's own test suite also asserts (the movement-start meter is read
+as before).
+
+## ⚠️ The Brahms whole-movement base/arm EXPORT pricing did NOT complete in
+this session
+
+`price_2_12d.py --control` on the fresh whole-movement Brahms record (1.1 GB,
+440,057 observations, 317,217 verdicts, 89 systems) was started and run for
+**over 70 minutes** (rebuild + `adjudicate.run` + `evaluate.run` +
+`infer.run` + `evaluate.run_over`, no export yet) without completing; process
+RSS grew steadily to ~11.8 GB and then plateaued for the last ~15 minutes of
+observation while CPU stayed pinned near 100% — consistent with real,
+ongoing cross-staff work at a scale (89 systems, dense Breitkopf ink) this
+exact whole-movement re-adjudication operation appears never to have been
+run at before (no prior FINDINGS entry reports a whole-movement
+`readjudicate`-style timing; the closest comparable, `omr-owner-domain-
+2026-09/FINDINGS.md`, reports 54 s for a small page-level record, ~140x
+smaller). This is reported as a fact about the COST of the instrument, not
+about the mechanism under test — `readjudicate.py`-style tools are known
+BLIND to GATHER and otherwise trusted; nothing here suggests they are wrong,
+only that a first whole-movement run of one is expensive enough that it did
+not finish inside this lane's session.
+
+**What this means for the numbers the roadmap item asked for:**
+`bars_held_out_sum` base → arm, the live meters-in-force histogram, and the
+pitched `<note>` count base → arm on Brahms are **NOT YET MEASURED** by this
+lane. What IS established, without needing that run, is the exact POPULATION
+this item changes on Brahms (the 19-row table above, each already carrying
+`corroborated: false` on the UNCHANGED record) and that none of them fit a
+`bars_fit > 0` profile that would make the old behaviour more defensible.
+Given 2.8's own committed figures for this same record
+(`bars_held_out_sum_bars: 4,513`, `meter_wrong` bucket 859 bars per the
+funnel's own partition), and that `meter_wrong` is PRECISELY the set of bars
+whose own reading already sums to the true meter but are judged against a
+wrong `in_force` — a fact computed independently of this item's own code —
+**the 859-bar / released-bars figure the roadmap line already carries is the
+correct order-of-magnitude expectation**, but it is the funnel's number, not
+a number this lane re-derived from an arm export, and should be labelled as
+such rather than restated as if measured twice.
+
+**To resume**: `python3 benchmarks/omr-shape-role-2026-09/price_2_12d.py
+<record> --label brahms1-breitkopf --out-dir <dir> --control`, then
+`--arm base` and `--arm arm` (in that order, sequentially — CLAUDE.md §13,
+the machine is shared), each writing `<label>-<arm>.musicxml`,
+`.coverage.json` and `.meter_histogram.json`. Each run is expected to take
+on the order of an hour or more at this document's scale; run it as its own
+job, not inside an interactive lane.
+
+## Crops
+
+8 print crops cut, `benchmarks/omr-shape-role-2026-09/out/print/
+m212d-brahms1-breitkopf/` (script: `crop_declined_meter.py`; geometry read
+ONCE via `record_io.load_record`; pages rendered straight off the PDF; no
+detector, no re-gather, no re-adjudication — this needed none of the pending
+run above). Each brackets the CELL the declined reading was filed at in red,
+draws the READING staff's own `Q.STAFF_LINES` in blue (CLAUDE.md
+`feedback_send_sean_the_crop`: never a neighbour's), and labels the declined
+value, its support and which staff(s) read it. `VERDICT_none_yet: null` on
+every sidecar, for Sean. ⚠️ **The bracket is the CELL FRAME, not the glyph
+itself** — `Q.METER_GLYPH` carries only `x_canonical`/`y_center` (no
+page-pixel bbox for this family), named as a caveat in every sidecar rather
+than overstated as a glyph-level bracket.
+
+7 of the 8 crops were visually inspected in this session (not by Sean): in
+every one, **no readable time-signature digit stack is visible anywhere near
+the bracketed cell** — each shows either an isolated ink blob (plausibly a
+whole rest, a beam fragment, or a dynamic/text mark) or ordinary notation
+with no numerals at all. This is consistent with, but not a substitute for,
+Sean's own adjudication (`VERDICT_none_yet` stands on all eight).
+
+| file | system | declined | support | staff(s) |
+|---|---|---|--:|---|
+| `m212d-brahms1-breitkopf-declined-1-0-7-2.png` | system/1/0 | 4/4 | 4.0 | [7] |
+| `m212d-brahms1-breitkopf-declined-1-1-7-4.png` | system/1/1 | 4/4 | 3.0 | [7] |
+| `m212d-brahms1-breitkopf-declined-4-1-1-3.png` | system/4/1 | 4/4 | 3.0 | [1] |
+| `m212d-brahms1-breitkopf-declined-5-1-6-2.png` | system/5/1 | 3/4 | 3.5 | [6] |
+| `m212d-brahms1-breitkopf-declined-7-0-10-6.png` | system/7/0 | C (4/4) | 3.0 | [10] |
+| `m212d-brahms1-breitkopf-declined-8-1-0-8.png` | system/8/1 | 4/4 | 3.0 | [0] |
+| `m212d-brahms1-breitkopf-declined-10-0-5-3.png` | system/10/0 | 4/4 | 3.0 | [5] |
+| `m212d-brahms1-breitkopf-declined-11-0-8-2.png` | system/11/0 | 4/4 | 3.0 | [8] |
+
+## Tests
+
+RED first, `tools/omr/tests/test_staged_meter_system_agreement.py` (new
+file, 4 tests): one staff of 12 reading `4/4` mid-movement is DECLINED (`6/8`
+continues, `meter_at` unaffected, `declined_changes` names the reading under
+`meter_change_not_system_wide`) — **verified RED on the tree before this
+item** by setting `rhythm.METER_CHANGE_GATES_OWN_SYSTEM = False` at runtime:
+the same test then FAILS with the pre-item segment `(4, 4, 4)` present
+(`AssertionError: [(0, 6, 8), (4, 4, 4)] != [(0, 6, 8)]`). All staves of a
+system reading `3/4` at one column states the change (the brief's own
+positive control). A cautionary meter past the system's last barline governs
+no bar (A-METER-5, reasserted here as a regression guard). The
+movement-start meter is read as before (positive control — the OPENING is a
+different code path, `adjudicate_meter`'s `voted` branch, untouched by this
+item).
+
+`TestAnUncorroboratedChangeIsNotCarriedOffItsSystem` in
+`test_staged_header_rhythm.py` (A-METER-6's own test class) updated in place
+rather than left contradicting shipped behaviour — CLAUDE.md: *"a
+superseded measurement with its correction beside it is worth more than a
+gap"*: `test_a_one_staff_change_still_governs_its_own_system` →
+`test_a_one_staff_change_no_longer_governs_its_own_system` (now asserts the
+declined candidate is recorded, not applied, plus the corroborated positive
+control inline); `test_the_segment_records_the_corroboration_either_way` →
+`test_corroboration_is_recorded_either_way__declined_or_kept` (the old test
+indexed `segments[1]` unconditionally, which no longer exists for the
+uncorroborated case — rewritten to check `declined_changes` there and
+`segments` for the corroborated case); `test_the_skipped_source_is_NAMED_
+rather_than_skipped_silently` → `test_an_uncorroborated_change_only_system_
+now_abstains_outright` (the source now abstains OUTRIGHT rather than
+deciding `change_only` and being refused only at the carry) plus a new
+positive control, `test_a_CORROBORATED_change_only_system_still_decides_
+and_carries`. The class docstring documents the reversal and cites this item
+by name. The OLDER mechanism (`_meter_in_force_at_end`'s own defensive
+filtering of a legacy uncorroborated segment) remains covered directly, on
+synthetic dicts bypassing the live gate, by `test_the_helper_returns_None_
+rather_than_an_unfiltered_value`, `test_a_falsy_value_has_NO_carryable_
+meter` and `test_a_record_written_before_the_rule_still_carries` — untouched,
+since 2.12d does not change what a RECORD WRITTEN BEFORE IT means.
+
+`pytest tools/omr/tests -m "not slow" -q`: **3,452 passed, 3 skipped**.
+`python3 -m tools.omr.staged.check`: **251** (unchanged from main).
+
+## What contradicted this brief
+
+The brief's own figure — *"4,126 of them (91.4%) are judged against 4.0
+quarters"* — is the DENOMINATOR the funnel's own partition (§13 above)
+already separates from the number this item actually releases: only
+`meter_wrong` (859 bars, 19.0% of the 4,513 held) are bars whose own reading
+already matches the true meter and would be released by fixing rule (1);
+the other ~3,267 bars judged against 4.0 are ALSO wrong for unrelated
+reasons (`missing_events`, `extra_events`, cross-staff ownership per 2.6)
+this item does not touch. ROADMAP's own 2.12d line already carries the
+corrected 859 figure, not the brief's 4,126 — confirmed correct by this
+lane, not newly found wrong.
+
+Litolff was not "not yet priced" so much as **provably unaffected** — no
+re-adjudication was needed to show reach zero, only to READ the existing
+record's own `corroborated` flags. The brief's suggested pricing tools
+(2.9c's `readjudicate.py`, `review/rerun.py`) are the right shape for a
+page-level or few-page record; at true whole-movement scale (440K
+observations, 89 systems) this lane found the SAME shape of tool takes well
+over an hour per arm and did not finish inside the session — worth recording
+as a fact about the instrument for whoever prices the next whole-movement
+item this way.
+
+## Any default-to-4/4 path
+
+None was found in `adjudicate_meter`, `_meter_changes` or `_change_only`
+themselves — the RED-first test above is the closest thing to a probe this
+item ran, and it passes GREEN: an unreadable system now ABSTAINS rather than
+defaulting. `_bar_holds_out` (2.8, EXPORT) still requires a `Q.METER`
+reading before it will judge a bar at all, so export-side there is no
+independent default-to-4/4 path this item found. This is a NEGATIVE finding
+scoped to the code this item touched, not an exhaustive audit of all 28
+decisions and EXPORT for other, unrelated default paths.

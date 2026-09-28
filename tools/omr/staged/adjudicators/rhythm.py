@@ -2039,6 +2039,69 @@ METER_CHANGE_FLOOR = 3.0
 METER_CHANGE_MIN_STAVES = 2
 
 
+# ─────────────────────────────────────────────────────────────────────────────
+# ROADMAP 2.12d — THE SAME AGREEMENT ALSO GATES WHETHER A CHANGE GOVERNS ITS
+# OWN SYSTEM, NOT ONLY WHETHER IT IS CARRIED OFF IT.
+#
+# A-METER-6 above deliberately left rule (1) — "it governs the bars of ITS
+# OWN system" — ungated, measured on four pages of two scans where the TRUE
+# and FALSE one-staff populations overlapped at support 3.0-4.5 and confining
+# it would have deleted the one true meter change this project had then
+# found (Litolff p.62, one staff of seventeen).
+#
+# ⚠️⚠️ RE-MEASURED 2026-09-28 ON A FRESH WHOLE-MOVEMENT BREITKOPF GATHER
+# (`benchmarks/omr-bar-sum-holdout-2026-09/FINDINGS.md` §13, "the funnel") AND
+# THE TRADE FLIPPED. `system/1/1` reads a lone-staff `4/4` at support 3.0 with
+# `bars_contradict: 1` — the bars themselves disagreeing with the one staff
+# that read it — and still governed the whole system under the old rule,
+# because rule (1) asked nothing but `METER_CHANGE_FLOOR`. Whole-movement,
+# 91.4% of every bar 2.8 holds out is judged against a `4.0` the plate does
+# not print anywhere in this movement outside one 9/8 bar at measure 8, and
+# 859 of those bars' OWN readings already sum to the TRUE meter — thrown away
+# only because an uncorroborated glyph on one staff had already overwritten
+# `in_force` for everything after it on that system.
+#
+# CONVENTION ASSUMED / WHAT WOULD FALSIFY IT / NOT CONFIRMED: CLAUDE.md §10's
+# "a key change is printed at one bar on every staff of the system" is taken
+# to hold for a METER change too — an engraver does not silently retime one
+# part alone. It would be FALSIFIED by a genuine printed meter change this
+# gate refuses because the system's OTHER staves were simply never detected
+# at that bar (a coverage failure wearing a convention failure's clothes) —
+# which is exactly the risk A-METER-6 priced against Litolff p.62 and the
+# risk this reversal now accepts on the strength of the Brahms evidence
+# above. NOT CONFIRMED WITH SEAN — crops are cut for his read under
+# `benchmarks/omr-shape-role-2026-09/out/print/m212d-*`.
+#
+# The BAR side of A-METER-6 is unchanged and is not what this gate asks:
+# `support` already folds `bars_fit`/`bars_contradict` into the floor a
+# candidate must clear before it is a candidate at all (`METER_CHANGE_FLOOR`,
+# above). This gate is orthogonal to that, and it is the SAME threshold
+# `METER_CHANGE_MIN_STAVES` already computes into `corroborated` for rule
+# (2) — reused, not retuned: tonight's evidence is about whether to also
+# apply the existing number to rule (1), not about what the number should
+# be. A stronger, fraction-of-the-system threshold is visible in the fresh
+# record too (`system/2/0` corroborates at 2 of an orchestral system's staves
+# and is still wrong) and is NOT this item's to fix — flagged, not chased.
+# ─────────────────────────────────────────────────────────────────────────────
+
+#: Not a flag (CLAUDE.md: no new flag, no new benchmark derived check or
+#: handoff without a roadmap item, and this roadmap item is explicit that a
+#: pricing arm's "base" is the SAME tree with this parameter set False, never
+#: a new `OMR_*` env var). A plain module constant, the same shape
+#: `METER_CHANGE_MIN_STAVES` already is and is already read directly by this
+#: suite's own tests (`rhythm_mod.METER_CHANGE_MIN_STAVES`).
+METER_CHANGE_GATES_OWN_SYSTEM = True
+
+
+#: The reason word a DECLINED mid-system change is filed under — never a
+#: verdict `reason` (the system's own outcome keeps "voted" / "change_only" /
+#: etc, unaffected by how many of its candidate changes were declined), only
+#: a per-candidate tag inside `declined_changes` so a reader can tell "this
+#: system's own change never existed" apart from "this system printed a
+#: change we chose not to act on."
+METER_CHANGE_NOT_SYSTEM_WIDE = "meter_change_not_system_wide"
+
+
 #: The meters the repertoire actually prints, from the template reader's own
 #: `DEFAULT_METERS` -- imported rather than restated so the two readers cannot
 #: drift apart about what a meter IS.
@@ -2316,16 +2379,24 @@ def _meter_changes(ev: Evidence, opening: dict, bars: dict,
     than the others, and moving the fetch beside `_bar_lengths_for` is the fix
     the report was pointing at — not a workaround for it.
 
-    Returns `(changes, cautionaries)` — segment dicts in bar order, each with
-    `from_cell` and the terms that carried it. The GLYPH opens each candidate;
-    the bar math confirms it, refuses it, or chooses between two staves that
-    read it differently.
+    Returns `(changes, cautionaries, declined)` — segment dicts in bar order,
+    each with `from_cell` and the terms that carried it. The GLYPH opens each
+    candidate; the bar math confirms it, refuses it, or chooses between two
+    staves that read it differently.
 
     ⚠️ A CAUTIONARY IS SEPARATED OUT RATHER THAN DROPPED — see `A-METER-5`
     above. It is a statement about the NEXT system and governs nothing here.
+
+    ⚠️ 2.12d: A CANDIDATE THAT CLEARS THE FLOOR BUT NOT THE STAVES IS
+    SEPARATED OUT THE SAME WAY, into `declined` — see
+    `METER_CHANGE_GATES_OWN_SYSTEM` above. It never reaches `changes`, never
+    updates `in_force`, and is recorded under `METER_CHANGE_NOT_SYSTEM_WIDE`
+    so a reader can tell "the system printed nothing here" apart from "the
+    system printed something we chose not to act on."
     """
     rows = ev.rows(Q.METER_GLYPH, scope=Scope.SELF_AND_DESCENDANTS)
     cautionaries: list = []
+    declined: list = []
     by_cell: dict = {}
     for r in rows:
         cell = (r.detail or {}).get("cell")
@@ -2488,11 +2559,23 @@ def _meter_changes(ev: Evidence, opening: dict, bars: dict,
                 and not best["bars_fit"]):
             cautionaries.append(dict(best, cautionary=True))
             continue
+        # ⚠️ 2.12d, AND IT COMES BEFORE THE RESTATEMENT TEST FOR THE SAME
+        # REASON THE CAUTIONARY TEST DOES: a candidate nobody but one staff
+        # printed is not evidence about whether the system changed AT ALL,
+        # so it must not be allowed to silently agree with `in_force` either
+        # — it is declined outright, on its own terms, before anything asks
+        # what it would have meant. Only the SAME-VALUE requirement
+        # `METER_CHANGE_MIN_STAVES` already computes into `corroborated`; the
+        # bar math stays exactly where A-METER-6 left it, already folded into
+        # `support` before a candidate is even a candidate for this gate.
+        if not best["corroborated"] and METER_CHANGE_GATES_OWN_SYSTEM:
+            declined.append(dict(best, declined_reason=METER_CHANGE_NOT_SYSTEM_WIDE))
+            continue
         if (best["numerator"], best["denominator"]) == in_force:
             continue                      # a RESTATEMENT, not a change
         out.append(best)
         in_force = (best["numerator"], best["denominator"])
-    return out, cautionaries
+    return out, cautionaries, declined
 
 
 #: Which fields of a change candidate reach the SEGMENT, written ONCE.
@@ -2531,7 +2614,7 @@ def _with_segments(ev: Evidence, opening: dict) -> dict:
     nothing changes -- so a consumer never has to ask whether this system is
     the special case. `record.meter_at` is how a bar's meter is read.
     """
-    changes, cautionaries = _meter_changes(
+    changes, cautionaries, declined = _meter_changes(
         ev, opening, _bar_lengths_for(ev), _last_cell_per_staff(ev),
         # ─── template-at-bar consumer: `{}` with the flag off ───
         _template_readings_at_bars(ev))
@@ -2555,6 +2638,13 @@ def _with_segments(ev: Evidence, opening: dict) -> dict:
         # music the next system opens with — a consumer reading this system's
         # meter is exactly who needs to find it.
         out["cautionary"] = cautionaries[-1]
+    if declined:
+        # ⚠️ 2.12d, ON THE VALUE beside `cautionary` for the same reason: a
+        # reader of this system's meter is exactly who needs to see what was
+        # printed here and refused, not only what took effect. Never read by
+        # `meter_at` (segments only) or by `_meter_in_force_at_end` (which
+        # strips to a fixed key set), so it cannot leak into a carry.
+        out["declined_changes"] = declined
     return out
 
 
@@ -2903,12 +2993,20 @@ def _change_only(ev: Evidence, why: str, **detail) -> Ruling:
     nowhere to put the `3/4` its print states plainly at bar 155. As segments
     it says the true thing: *unknown until bar 8, 3/4 from there*.
     """
-    changes, cautionaries = _meter_changes(
+    changes, cautionaries, declined = _meter_changes(
         ev, {}, _bar_lengths_for(ev), _last_cell_per_staff(ev),
         # ─── template-at-bar consumer: `{}` with the flag off ───
         _template_readings_at_bars(ev))
     if cautionaries:
         detail = dict(detail, cautionary=cautionaries[-1])
+    if declined:
+        # ⚠️ 2.12d. A system whose ONLY candidate meter fact was a lone-staff
+        # change now has NOTHING left once that candidate is declined — the
+        # abstention below is real, not a gap, and `why` (the reason its
+        # OPENING was never read either) is still the truest thing to say:
+        # the system read nothing usable anywhere. `declined_changes` says
+        # what was printed and refused, so the two are not the same abstain.
+        detail = dict(detail, declined_changes=declined)
     if not changes:
         return Ruling.abstain(why, **detail)
     first = changes[0]
