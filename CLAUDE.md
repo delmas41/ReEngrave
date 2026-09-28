@@ -15,6 +15,8 @@ chronicle.
    why. Append-only.
 4. [docs/plan-2026-09-22-from-here-to-a-finished-score.md](docs/plan-2026-09-22-from-here-to-a-finished-score.md)
    — the assessment that produced the roadmap, if you need the reasoning.
+   Phase 6 (the question and its likelihood) has its own:
+   [docs/plan-2026-09-28-the-question-and-its-likelihood.md](docs/plan-2026-09-28-the-question-and-its-likelihood.md).
 
 The 850 KB chronicle this file replaced is
 [docs/chronicle-2026-09.md](docs/chronicle-2026-09.md). It is the record of
@@ -182,6 +184,13 @@ duration rules (`collapse_duration_by_column`, `collapse_duration_to_barline`,
 default OFF, never print-checked — roadmap 2.3). The harness enforces: runs
 after EVALUATE, refuses an unfrozen log, writes only where the record has no
 answer, never invents a value, supersedes visibly.
+
+A `Candidate`'s `support` is an ORDER in its decision's own units, never a
+probability. A calibrated likelihood is planned work (ROADMAP Phase 6,
+DECISIONS 2026-09-28): it will exist only for a family with a calibration
+table against human answers, be filed in INFER, and never turn a NARROWED
+verdict into a DECIDED one by itself. No Phase 6 code until the manager
+dispatches it.
 
 **EXPORT** (`staged/export.py`): MusicXML only. Reuses the legacy pure
 renderers (`_mxl_*`) over its own positions. The accounting control is an

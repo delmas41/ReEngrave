@@ -292,3 +292,33 @@ Format: `YYYY-MM-DD · who · the decision · because · (pointer)`
   a fast-forward; merging is not completion — the 2.7 gate stands ·
   (`benchmarks/acceptance/out/*/…coverage.json` → `accidental_reading`;
   `benchmarks/omr-cleanup-count-2026-09/counts/README.md`)
+- 2026-09-28 · Sean · **Probability is REOPENED as planned work, reversing
+  the park in plan 2026-09-22 §7: the pipeline will carry a likelihood on its
+  candidates, calibrated against human answers, so that (1) the review can
+  show a human one bar and a multiple-choice list of what the ink could be,
+  (2) ink the detector did not box can be narrowed from what is known about
+  it, and (3) where two decisions depend on each other, the more certain
+  informs the less certain.** · *"I think the probabilities idea got ruled
+  out too early because at the time the structure/system could easily lead
+  to over confidence and cyclical feedback. With the new staged pipeline I
+  can see how the probabilities portions could be very helpful both as we
+  start to categorize what initially is hard to box in the gather stage and
+  to help us improve the system in the long term based on measuring the
+  systemic probabilities compared to the human answers."* · because the park
+  rested on one measurement of instrument-name probabilities (ECE 0.1277,
+  n = 197) whose recorded diagnosis was "the corpus, not the estimator", and
+  the staged record now has both the corpus (the review's human answers) and
+  the guards (`correlated_groups`, the fixpoint guard, INFER's harness,
+  EXPORT's refusal to argmax) · `Candidate.support` stays an ORDER; the
+  seven rules a likelihood must obey are PROPOSED in the plan's §3 and are
+  not decided until Sean answers its §8 Q1 ·
+  (`docs/plan-2026-09-28-the-question-and-its-likelihood.md`; ROADMAP
+  Phase 6)
+- 2026-09-28 · Sean · **No Phase 6 code until the coding session now running
+  reaches a break; one manager session then coordinates Phase 6 with
+  everything else.** Planning and documentation proceed now. · *"I don't want
+  to start any actual coding until the current session that is doing the
+  Coding reaches a break so that I can have one main manager agent
+  coordinating all of this."* · because Phase 6 touches the viewer, the
+  detector call and `gather.py`, which in-flight lanes are also changing ·
+  (ROADMAP Phase 6; plan §7 fences)
