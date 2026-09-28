@@ -1,0 +1,32 @@
+{
+ "adjudicator": "Sean",
+ "date": "2026-09-27",
+ "crops": "g2-*-kept_to_no_head_on_the_rung (4)",
+ "verdicts": [
+  {
+   "n": 1,
+   "crop": "g2-litolff-p1p4-p1-s0-st3-c14-g0-kept_to_no_head_on_the_rung.png",
+   "sean": "yes \u2014 a real ledger line",
+   "rule_right": false
+  },
+  {
+   "n": 2,
+   "crop": "g2-litolff-p1p4-p2-s0-st2-c2-g12-kept_to_no_head_on_the_rung.png",
+   "sean": "no \u2014 the bottom line of the staff",
+   "rule_right": true
+  },
+  {
+   "n": 3,
+   "crop": "g2-litolff-p1p4-p2-s1-st0-c12-g6-kept_to_no_head_on_the_rung.png",
+   "sean": "yes \u2014 a real ledger line",
+   "rule_right": false
+  },
+  {
+   "n": 4,
+   "crop": "g2-litolff-p1p4-p3-s1-st0-c6-g12-kept_to_no_head_on_the_rung.png",
+   "sean": "no \u2014 a whole rest hanging on the bottom line of the staff",
+   "rule_right": true
+  }
+ ],
+ "summary": "`no_head_on_the_rung` is right 2 of 4 as a REFUSAL: crops 1 and 3 are real rungs whose printed notehead the detector never boxed. The convention stands; the evidence for 'a note is there' must include ink under the rung, not only a detector box. Until GATHER files that, the rule ABSTAINS (rung_without_boxed_head) rather than refuses."
+}
