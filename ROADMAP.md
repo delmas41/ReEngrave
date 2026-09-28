@@ -51,7 +51,7 @@ file, then `docs/DECISIONS.md` (the entries dated 2026-09-23 → 27 are Sean's).
 **In flight — each lane pushes its branch when done; merge in this order,
 verifying each with `pytest -m "not slow"` and `staged.check` on the merged
 tree (the tree outranks the lane's report):**
-1. **merged `2f065ca3`** `claude/accidental-2.7b` — a head filed far from its staff with no rung,
+1. **merged `2f065ca3`** `claude/accidental-2.7b` (salvaged at `478cddbe`; Breitkopf arm, merged-tree re-measure and crops still owed) — a head filed far from its staff with no rung,
    another staff near: refused on the filed staff, never relocated (Sean's
    five: crops 4, 13, 20, 23, 26 in
    `benchmarks/omr-accidental-2026-09/out/print/`); the header exclusion as
