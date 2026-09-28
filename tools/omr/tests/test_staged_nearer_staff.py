@@ -318,6 +318,51 @@ class TestAKeySignatureMarkerIsNeverAnInBarAccidental(unittest.TestCase):
         _a, v = self._header_flat(cell=1)
         self.assertEqual(v.reason, "immediately_right_same_position")
 
+    def _with_signature(self, *, cls, gap_spaces, kinds=("keyFlat",) * 3):
+        """Three signature markers ending `gap_spaces` left of the glyph,
+        plus a marker filed on the glyph itself (its class as detected)."""
+        log = Log()
+        _cell_unit(log)
+        acc = _acc(log, 0, 200.0, 4.0, cls=cls,
+                   alteration="natural" if "Natural" in cls else "b")
+        _head(log, 1, 206.0, 4.0)
+        box = log.rows(Q.GLYPH_BOX, acc)[-1].value
+        last = box[1] - gap_spaces * 20.0            # SPACE = 20
+        for i, kind in enumerate(kinds):
+            log.observe(STAFF, Q.KEYSIG_MARKER, kind, reader=READERS.DETECTOR,
+                        frame="cell:0", score=0.9,
+                        x=last - (len(kinds) - 1 - i) * 20.0, y_center=40.0,
+                        detector_class=kind, detector_role="key")
+        log.observe(STAFF, Q.KEYSIG_MARKER, "keyFlat", reader=READERS.DETECTOR,
+                    frame="cell:0", score=0.8, x=box[1],
+                    y_center=box[2] + box[4] / 2.0,
+                    detector_class="accidentalFlat",
+                    detector_role="accidental")
+        return _decide(log).verdict(Q.ACCIDENTAL_OWNER, acc)
+
+    def test_a_flat_INSIDE_the_run_is_a_marker(self):
+        v = self._with_signature(cls="accidentalFlat", gap_spaces=1.0)
+        self.assertEqual(v.reason, "is_a_key_signature_marker")
+
+    def test_crop_12_a_marker_PAST_the_runs_gap_is_not_one(self):
+        """Measured on a fresh Litolff p3 gather: Violino I's in-bar natural
+        (Sean's confirmed crop 12) was ALSO boxed `accidentalFlat` and that
+        box admitted as a marker 2.8 spaces past the three-flat run. The key
+        reader's own run ends at the gap; so does the exclusion."""
+        v = self._with_signature(cls="accidentalFlat", gap_spaces=2.8)
+        self.assertEqual(v.reason, "immediately_right_same_position")
+
+    def test_crop_12_the_OTHER_class_on_the_same_ink_is_not_joined(self):
+        """The natural box of the same ink, at the marker's own point: the
+        marker's `detector_class` is the flat, so the natural is not it."""
+        v = self._with_signature(cls="accidentalNatural", gap_spaces=1.0)
+        self.assertEqual(v.reason, "immediately_right_same_position")
+
+    def test_a_run_the_key_reader_REFUSED_as_mixed_excludes_nothing(self):
+        v = self._with_signature(cls="accidentalFlat", gap_spaces=1.0,
+                                 kinds=("keyFlat", "keyNatural", "keyFlat"))
+        self.assertEqual(v.reason, "immediately_right_same_position")
+
     def test_the_census_counts_it_and_stays_a_partition(self):
         from tools.omr.tests.test_staged_accidental import _full
         log = Log()

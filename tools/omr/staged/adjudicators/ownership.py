@@ -1070,12 +1070,11 @@ def adjudicate_accidental_owner(ev: Evidence) -> Ruling:
     # twice — once as a marker, once here. Sean's crop 7 (2026-09-27) is
     # exactly that box: *"the glyph is a KEY-SIGNATURE flat"*; the reader
     # abstained on it, but for `no_candidate`, a geometry reason that would
-    # have become a pairing the day a head stood at its height. The marker
-    # row is filed on the STAFF with the box's canonical `x` and `y_center`
-    # in its own `cell:N` frame and names no glyph, so the join is by that
-    # frame and that point (±1 canonical px — `y_center` is the detector's
-    # float, the box its integer rounding). Checked BEFORE the unit: it needs
-    # none, and it says what the glyph IS.
+    # have become a pairing the day a head stood at its height. Only a
+    # marker the key reader COUNTED in its run is one (see
+    # `_keysig_marker_row`: a marker past the run's gap is Sean's confirmed
+    # in-bar natural of crop 12, boxed twice). Checked BEFORE the pairing
+    # geometry: it says what the glyph IS.
     marker = _keysig_marker_row(ev)
     if marker is not None:
         return Ruling.abstain("is_a_key_signature_marker",
@@ -1241,27 +1240,47 @@ def adjudicate_accidental_owner(ev: Evidence) -> Ruling:
 def _keysig_marker_row(ev: Evidence):
     """The `Q.KEYSIG_MARKER` row this accidental glyph IS, or None.
 
-    ⚠️ A JOIN BY FRAME AND POINT, because the marker row names no glyph
-    (`gather._gather_keysig_markers` files it on the STAFF with the
-    detection's canonical `x` and `y_center`, frame `cell:N`). The glyph's
-    own `Q.GLYPH_BOX` holds the same detection's integer box, so `x` agrees
-    exactly and `y + h/2` to within the detector's own rounding.
+    ⚠️ ONLY A ROW THE KEY READER COUNTED (`header.marker_run_members`): a
+    marker past the run's gap, or in a run of mixed kinds the reader refused,
+    is not a signature member and the glyph is judged on its geometry.
+
+    ⚠️ A JOIN BY FRAME, CLASS AND POINT, because the marker row names no
+    glyph (`gather._gather_keysig_markers` files it on the STAFF with the
+    detection's `detector_class`, canonical `x` and `y_center`, frame
+    `cell:N`). The glyph's own `Q.GLYPH_BOX` is the same detection, so the
+    class and the integer `x` agree exactly and `y + h/2` to the detector's
+    rounding. The CLASS is not optional: Litolff p3 Violino I boxes one ink
+    twice at x 1007/1008, once `accidentalFlat` (admitted as a marker) and
+    once `accidentalNatural` (Sean's crop 12, a confirmed in-bar natural).
     """
+    from .header import marker_run_members
     boxes = ev.rows(Q.GLYPH_BOX)
     if not boxes or not isinstance(boxes[-1].value, (list, tuple)) \
             or len(boxes[-1].value) != 5:
         return None
-    _n, x, y, _w, h = boxes[-1].value
+    name, x, y, _w, h = boxes[-1].value
     frame = f"cell:{ev.subject.cell}"
-    for r in ev.rows(Q.KEYSIG_MARKER, scope=Scope.SELF_AND_ANCESTORS):
-        if str(r.frame) != frame:
-            continue
+    marks = [r for r in ev.rows(Q.KEYSIG_MARKER,
+                                scope=Scope.SELF_AND_ANCESTORS)
+             if str(r.frame) == frame]
+    if not marks:
+        return None
+    unit = ev.rows(Q.CELL_STAFF_SPACE, scope=Scope.SELF_AND_ANCESTORS,
+                   subject=ev.subject.at(Kind.CELL))
+    try:
+        space = float(unit[0].value) if unit else 0.0
+    except (TypeError, ValueError):
+        space = 0.0
+    for r in marker_run_members(marks, space):
         d = r.detail or {}
         try:
             mx, my = float(d["x"]), float(d["y_center"])
         except (KeyError, TypeError, ValueError):
             continue
-        if abs(mx - float(x)) <= 1.0 \
+        cls = d.get("detector_class")
+        if cls is not None and str(cls) != str(name):
+            continue
+        if abs(mx - float(x)) < 0.5 \
                 and abs(my - (float(y) + float(h) / 2.0)) <= 1.0:
             return r
     return None
