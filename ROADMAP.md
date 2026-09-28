@@ -17,98 +17,101 @@ re-enter.
 
 ---
 
-## START HERE — state at the end of the session of 2026-09-23/24 (Sean went to bed; an overnight session picks up here)
+## START HERE — state at the end of the session of 2026-09-27 (the 09-23/24 session, resumed after the weekly limit and landed)
 
-Main is at or past `1d45144b` and carries everything below. The tree is the
+Main is at or past `8226aa93` and carries everything below. The tree is the
 record; this block is the pointer. Read CLAUDE.md first (short), then this
-file, then `docs/DECISIONS.md` (nine entries dated 2026-09-23/24 are Sean's).
+file, then `docs/DECISIONS.md` (the entries dated 2026-09-23 → 27 are Sean's).
 
-**What landed in this session, all on main, all verified against the tree
-before merging (fast tier 3,203 passed at the last full run; `staged.check`
-267 — see the ⚠️ below):**
-- **2.3** duration rules ON · **2.8** bars that do not add up are HELD OUT
-  (0 wrong bars on all three documents) · **2.6** ownership contest widened
-  (18/18 crops) · **2.11** clef read by geometry + **2.10** clef gap filled
-  from other systems (11/11 crops) · **2.9 / 2.9b / 2.12a** key signature
-  read off the detector's header boxes, checked against the document and
-  the part, header flats admitted (**46/46 staves** on the count pages
-  against Sean's truth; Litolff 12/12 parts) · **2.12** the shape-vs-role
-  audit (items 2.12a–g) · **2.12b/e** rest value from its slot, flag
-  direction from the stem (141 bars start adding up) · **3.4** the STAGE
-  REVIEW: one staff, one bar at a time, click-type-save, five labels,
-  corrections as witnesses, re-run via `pipeline.decide`, a feedback file
-  per pass · **3.4g** per-family refusals (Sean's reached-nothing 23 → 0)
-  · Sean's three passes (Viola p3: 7 → 52 written; Clarinet p12: 11 → 60;
-  Viola p2: 2 → 81).
+**Landed on main, verified against the tree before each merge (fast tier
+3,298 passed at the last full run; `staged.check` 264, down from 267):**
+- Phase 2, in funnel order: **2.3** duration rules ON · **2.8** bars that
+  do not add up HELD OUT (0 wrong bars, all three documents) · **2.6**
+  ownership contest widened (18/18 crops) · **2.11 + 2.10** clef by
+  geometry, gaps from other systems (11/11) · **2.9 / 2.9b / 2.12a** key
+  from the detector's header boxes, checked against document and part,
+  header flats admitted (**46/46 staves** on the count pages) · **2.12**
+  the shape-vs-role audit and items a–g · **2.12b / b-cal / e** rest value
+  from its slot with bands from the plate (Sean: 10/10 and 10/11 whole),
+  flag direction from the stem · **2.7 the in-bar accidental, MERGED AND
+  MEASURED** — 216 / 233 / 15 `<accidental>` on the three documents where
+  there were 0; **25 of 25 decided pairings right by Sean**, 5 of them on
+  the staff above (→ 2.7b); reach half of the gate unmet (15 < 18 on the
+  acceptance record, 29 on a fresh page gather — 2.8's hold-out is the
+  reason).
+- Phase 3 / the instrument: **3.4** the STAGE REVIEW (one staff, one bar at
+  a time, click-type-save, labels, corrections as witnesses, re-run through
+  `pipeline.decide`, a feedback file per pass) · **3.4g / g-2** per-family
+  refusals + Sean's two ledger conventions (13/13 crops; 62% of Litolff's
+  ledger boxes were staff lines) · **3.4h** refused boxes drawn refused,
+  CV-only boxes hidden, a click never a redraw (browser-verified) · Sean's
+  three passes: Viola p3 7 → 52 written, Clarinet p12 11 → 60, Viola p2
+  2 → 81; reached-nothing 23 → 0.
 
-**In flight — each lane pushes its own branch when done; merge in this
-order, verifying each with `pytest -m "not slow"` and `staged.check` on
-the merged tree (a lane's report is a ledger, the tree outranks it):**
-1. `claude/ledger-conventions-3.4g2` — Sean's two ledger conventions
-   (inside the staff → not a rung; no head on it → not a rung); gate = his
-   13 crops (`benchmarks/omr-family-refusals-2026-09/out/print/ADJUDICATION-sean-2026-09-24.json`).
-2. `claude/viewer-refusals-3.4h` — the viewer hides `staff`/`stem` boxes,
-   draws refused boxes struck through, a click never becomes a redraw.
-   After merging: restart the viewer (below).
-3. `claude/rest-slot-cal-2.12b` — rest-slot bands from the print-confirmed
-   population (Sean: 10 of 10 'overruled' rests were WHOLE; the class was
-   right, the slot geometry off by a step). Its Brahms run was ~3 h in.
-4. `claude/family-refusals-3.4g` — may gain one more commit (the Breitkopf
-   ledger arm); merge it if the branch moved past `87310287`.
-If a branch is absent from `origin`, the lane died with the session: its
-worktree is under `.claude/worktrees/agent-*` on this machine — commit and
-push from there, or re-dispatch from the roadmap line.
+**In flight — each lane pushes its branch when done; merge in this order,
+verifying each with `pytest -m "not slow"` and `staged.check` on the merged
+tree (the tree outranks the lane's report):**
+1. `claude/accidental-2.7b` — a head filed far from its staff with no rung,
+   another staff near: refused on the filed staff, never relocated (Sean's
+   five: crops 4, 13, 20, 23, 26 in
+   `benchmarks/omr-accidental-2026-09/out/print/`); the header exclusion as
+   a rule. Gate on the roadmap line.
+2. `claude/ledger-ink-3.4g3` — Part A: `no_head_on_the_rung` ABSTAINS (Sean:
+   2 of 4 refusals were real rungs with an unboxed head); Part B (GATHER):
+   `Q.LEDGER_INK_UNDER`, ink under the rung as the second witness, priced
+   by one `--pages 3` gather.
+If a branch is absent from `origin`, the lane died: its worktree is under
+`.claude/worktrees/agent-*` on this machine — commit and push from there
+(that is how the four lanes killed by the 09-24 limit were recovered on
+09-27), or re-dispatch from the roadmap line.
 
-**The viewer** (Sean uses it on the Mac, Chrome):
-`python3 -m tools.omr.staged.review.server --record library/_shared-records/beethoven5-litolff-mvt1-whole-20260923.record.json --pdf library/editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf --staff staff/3/0/9`
-→ `http://localhost:5075/?staff=staff/3/0/9` (NOT 5060: Chrome refuses it,
-ERR_UNSAFE_PORT; the server listens dual-stack). Sidecars persist at
-`benchmarks/omr-stage-review-2026-09/out/review-actions--<staff>.json`.
-Reading a pass: `python3 -m tools.omr.staged.review.rerun <record> <sidecar> --staff <staff> --out <dir>` (~11 min, 3.7 GB), then `feedback-summary.json`'s `reached_nothing` list is the work order.
+**The viewer** (Sean uses it on the Mac, in Chrome):
+`python3 -m tools.omr.staged.review.server --record library/_shared-records/beethoven5-litolff-mvt1-whole-20260923.redecided-20260927b.record.json --pdf library/editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf --staff staff/3/0/9`
+→ `http://localhost:5075/?staff=staff/3/0/9` (NOT 5060 — Chrome refuses
+it; the server listens dual-stack). ⚠️ Point it at a RE-DECIDED record: the
+shared 09-23 record's verdicts predate every rule above. To re-decide on
+the current tree: `python3 -m tools.omr.staged.review.rerun <record>
+--control --record --staff staff/3/0/9 --out <dir>` (~15 min, 3.7 GB; the
+"CONTROL FAILED" line is expected — it is reporting the tree's own
+changes), then copy `amended.record.json` beside the shared records.
+Sidecars persist at
+`benchmarks/omr-stage-review-2026-09/out/review-actions--<staff>.json`;
+reading a pass: the same `rerun` with the sidecar, then
+`feedback-summary.json`'s `reached_nothing` list is the work order.
 
-**Overnight work order (nothing here needs Sean; do not ask him anything
-until morning — leave crops in `out/print/` with `VERDICT_none_yet: null`):**
-1. Merge the four branches above as they land.
+**Work order for the next session (nothing here needs Sean; leave crops in
+`out/print/` with `VERDICT_none_yet: null`):**
+1. Merge the two branches above as they land; re-decide the record and
+   restart the viewer.
 2. **2.14** — `Q.GLYPH_LADDER` names its rungs, so refused ledger boxes
-   leave the ladder `glyph_owner` weighs (GATHER; two one-page re-gathers
-   `--pages 3 --no-surya --no-ocr` to price; the ladder count on the count
-   pages must fall by exactly the refused rungs).
-3. **3.4f** — a human clef box reaches the clef decision (one branch keyed
-   on the reader; Sean's own `act-0001` on `staff/3/0/9` is the test).
+   leave the ladder `glyph_owner` weighs (GATHER; every ledger refusal
+   above changes 0 ownership verdicts until this exists).
+3. **3.4f** — a human clef box reaches the clef decision (Sean's own
+   `act-0001` on `staff/3/0/9` is the test).
 4. **2.9c** — the key checks cannot see a part whose slot comes from INFER
    (18 Litolff key changes, all Cello): decide the stage order by §4a.
-5. **3.4g** remainder — refusals for the families 3.4g did not cover
-   (flag, key marker, tuplet numeral): one `duplicate` on a flag reached
-   nothing in Sean's third pass.
-6. **0.5 / 3.4b-check** — the derived checks admit an out-of-pipeline
-   producer (a human reader) as WIRED; `check` is at 267 against a §4d
-   baseline of 254 and every one of the +13 is a named human-witness gap.
-7. Then 2.12c/d/f (dot vs staccato, meter agreement, articulation side) in
-   reach order, and 2.13 (the printed bar number — the viewer shows 48
-   where the plate prints 49).
-Rules that bit today, all in CLAUDE.md, restated once: a GATHER change is
-invisible to `readjudicate`/`rerun` (2.11's clef read never shows in a
-re-run); a stage sequence must be called, not restated (`rerun.py` drifted
-past 2.10 until `pipeline.decide` existed); two lanes numbering a convention
-in parallel collide (C88/C89 — check `conventions.py` first); the count-page
-records are DIRTY-tree gathers and are inputs, not baselines.
+5. **2.7's reach** — the accidental gate's 15 < 18 is 2.8's hold-out on
+   that page (18 owned heads in held bars); the lever is the meter/bar-sum
+   funnel, not the accidental reader. Do not widen the reader for it.
+6. **Refusals for the families 3.4g did not cover** (flag, key marker,
+   tuplet numeral; a rest box on round ink — Sean's rest crop 5).
+7. **0.5 / 3.4b-check** — the derived checks admit an out-of-pipeline
+   producer; every one of `check`'s +10 since the 09-22 baseline is a named
+   human-witness gap.
+8. Then 2.12c/d/f/g in reach order, 2.13 (the printed bar number), and
+   Phase 3 (3.1b, 3.3: one command to MusicXML + PDF through the web app).
+Rules that bit, restated once: a GATHER change is invisible to
+`readjudicate`/`rerun`; a stage sequence is CALLED, never restated; two
+lanes numbering a convention collide (C88–C91 are taken); the 09-23 records
+are DIRTY-tree gathers and are inputs, not baselines; a lane's "reached
+nothing" needs a per-family consumer before it means anything; a refusal
+that is right 2 of 4 on the print ships as an ABSTENTION.
 
-**For Sean in the morning (leave it ready, do not send):** crops from
-3.4g-2 and 2.12b-cal if they landed; his next viewer pass — a staff he has
-not done, on the tree with 3.4g-2 and 3.4h merged; and one deliberate
-resize pass of ~10 boxes on one bar if he wants the box-geometry question
-measured (his eye says boxes are "a bit off"; nothing has measured it).
+**For Sean when he wants it:** a viewer pass on a staff he has not done, on
+the re-decided record; crops from 2.7b and 3.4g-3 when they land.
 
-**Sean, 2026-09-24 morning — supersedes the park above:** **2.7 the in-bar
-accidental is UN-PARKED and goes AHEAD of 2.3 and of every item in the work
-order above** (DECISIONS 2026-09-24). Two whole movements now measure it:
-8,064 accidental glyphs detected, 0 read (Litolff 1,531, Breitkopf 6,533).
-Its own park condition (2.8/2.9 done) was met overnight. Code is on
-`claude/accidental-2.7` at `69d64d95`, unmeasured, and needs a MERGE onto
-today's main (20 files, overlapping the overnight lanes) — verify on the
-merged tree, then run the 2.7 gate: ≥ 18 `<accidental>` on Litolff pdf-index
-3 and 0 wrong against the count's declared print sample. Kept as 2.7: 2.6 is
-taken and renumbering breaks cited references.
+**Parked:** nothing. 2.7 is live; its reach half waits on the bar-sum
+funnel.
 
 ---
 
