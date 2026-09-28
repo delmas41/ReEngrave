@@ -1,0 +1,142 @@
+{
+ "png": "c211b-breitkopf-p14-s0-st11-alto.png",
+ "staff": "staff/14/0/11",
+ "page": 14,
+ "dpi": 600,
+ "zoom": 4,
+ "caption": "c211b-breitkopf system 0 staff 11 \u2014 arm clef decided/alto (base narrowed/None). GREEN = the staff's five Q.STAFF_LINES; RED = a detector clef box DISCOUNTED clef_box_off_the_staff; BLUE = the box the winning verdict USED; ORANGE = present but neither.",
+ "frame_control": {
+  "passed": true,
+  "contrast": 197.19
+ },
+ "arm_verdict": {
+  "outcome": "decided",
+  "value": "alto",
+  "reason": "scored",
+  "decider": "adjudicate_clef"
+ },
+ "base_verdict": {
+  "id": "vrd:437586",
+  "subject": "staff/14/0/11",
+  "quantity": "clef",
+  "outcome": "narrowed",
+  "value": null,
+  "decider": "adjudicate_clef",
+  "reason": "margin_below_floor",
+  "considered": [
+   "obs:246671",
+   "obs:246670",
+   "obs:246700",
+   "obs:246701",
+   "vrd:436150",
+   "obs:246750",
+   "obs:246751"
+  ],
+  "used": [
+   "obs:246670",
+   "obs:246750",
+   "obs:246700",
+   "obs:246701",
+   "vrd:436150",
+   "obs:246751"
+  ],
+  "missing": [
+   "clef_seed"
+  ],
+  "declined": [],
+  "excluded": [],
+  "correlated": [
+   [
+    "obs:246750",
+    "obs:246751"
+   ]
+  ],
+  "candidates": [
+   {
+    "value": "alto",
+    "support": 5.0
+   },
+   {
+    "value": "treble",
+    "support": 4.5
+   },
+   {
+    "value": "tenor",
+    "support": 1.5
+   }
+  ],
+  "basis": [
+   "obs:022793",
+   "obs:029436",
+   "obs:045719",
+   "obs:058228",
+   "obs:076048",
+   "obs:094750",
+   "obs:113997",
+   "obs:127150",
+   "obs:138956",
+   "obs:149457",
+   "obs:163813",
+   "obs:180312",
+   "obs:195980",
+   "obs:213725",
+   "obs:233406",
+   "obs:246670",
+   "obs:246671",
+   "obs:246700",
+   "obs:246701",
+   "obs:246750",
+   "obs:246751",
+   "obs:246845",
+   "obs:246860",
+   "obs:258594",
+   "obs:277638",
+   "obs:295335",
+   "obs:312999",
+   "obs:331589",
+   "obs:342661",
+   "obs:354275",
+   "obs:366579",
+   "obs:383042",
+   "obs:401575",
+   "obs:417285",
+   "vrd:436150"
+  ],
+  "margin": 0.5,
+  "supersedes": null,
+  "detail": {
+   "scores": {
+    "alto": 5.0,
+    "treble": 4.5,
+    "tenor": 1.5
+   }
+  }
+ },
+ "boxes": [
+  {
+   "glyph_row": "obs:246670",
+   "class": "clefG",
+   "colour": "RED (discounted)",
+   "page_px": [
+    700.6035087719298,
+    3079.0,
+    761.7964912280702,
+    3102.7122807017545
+   ]
+  }
+ ],
+ "staff_lines_page_px": [
+  3188,
+  3215,
+  3242,
+  3270,
+  3297
+ ],
+ "crop_page_px": [
+  616.75,
+  2915.5,
+  1034.2964912280702,
+  3569.5
+ ],
+ "VERDICT_none_yet": null
+}

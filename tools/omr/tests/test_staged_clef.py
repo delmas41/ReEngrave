@@ -221,13 +221,27 @@ class TestAGlyphStandingOnANeighbouringStaff(unittest.TestCase):
         self.assertIsNot(v.outcome, Outcome.DECIDED)
         self.assertEqual(v.reason, "margin_below_floor")
 
-    def test_a_lone_glyph_standing_OFF_the_staff_is_still_the_best_evidence(self):
-        """⚠️ ADDITIVE, NEVER A FILTER. Removing an off-staff glyph's term
-        would make an arbitration invisibly, and it would be the wrong call
-        where a staff's only candidate stands off it."""
+    def test_a_lone_glyph_standing_OFF_the_staff_now_ABSTAINS(self):
+        """⚠️ ROADMAP 2.11b REVERSES THIS TEST'S ORIGINAL CLAIM, WHICH WAS
+        "ADDITIVE, NEVER A FILTER... it would be the wrong call where a
+        staff's only candidate stands off it." That was true the day it was
+        written and stopped being true once roadmap 2.10 gave an abstained
+        clef somewhere else to land: `infer.fill_clef_gap` fills it from the
+        same part on other systems, or the instrument's conventional header
+        clef, GAPS ONLY. Measured on Brahms 1 p.6 `staff/6/1/3`
+        (`benchmarks/omr-clef-geometry-2026-09/FINDINGS.md` Sec.4c): a lone
+        off-staff `clefG` decided `treble` UNOPPOSED against a plate that
+        prints a C clef there. A detector box this far off the staff is now
+        DISCOUNTED (`clef_box_off_the_staff`) and cannot decide a staff
+        alone -- it still stays in `basis` (still read), it is just no
+        longer `used`."""
         v = self._staff(("clefG", 0.90, 13.6))
-        self.assertIs(v.outcome, Outcome.DECIDED)
-        self.assertEqual(v.value, "treble")
+        self.assertIs(v.outcome, Outcome.ABSTAINED)
+        self.assertEqual(v.reason, "no_candidates")
+        from tools.omr.staged.adjudicators import clef as C
+        self.assertEqual(v.detail[C.OFF_STAFF_REASON][0]["family"], "treble")
+        self.assertNotIn(v.detail[C.OFF_STAFF_REASON][0]["glyph_row"], v.used)
+        self.assertIn(v.detail[C.OFF_STAFF_REASON][0]["glyph_row"], v.basis)
 
     def test_an_UNMEASURED_position_is_not_read_as_off_the_staff(self):
         """`None` means the cell had no grid. Treating that as "off the staff"

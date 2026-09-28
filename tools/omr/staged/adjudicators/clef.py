@@ -127,6 +127,47 @@ W_ON_THIS_STAFF = 1.5
 ON_STAFF_MIN_STEPS = -2.0
 ON_STAFF_MAX_STEPS = 10.0
 
+# ─────────────────────────────────────────────────────────────────────────────
+# ⚠️ ROADMAP 2.11b -- A DETECTOR CLEF BOX WAY OFF THIS BAND IS DISCOUNTED, NOT
+# JUST DENIED THE BONUS.
+#
+# 2.11 found a `clefG` box on Brahms 1 p.6 `staff/6/1/3` at `Q.CLEF_POSITION`
+# 19.36 (~5.7 staff spaces below the bottom line -- a neighbour's clef
+# bleeding into this staff's padded cell) deciding `treble` UNOPPOSED at
+# `W_DETECTOR_HIGH` alone: `_stands_on_this_staff` already answered False for
+# it (19.36 is nowhere near [-2, 10]), which correctly withheld the
+# `stands_on_this_staff` BONUS -- but the base `detector@score` term below was
+# unconditional, so the same reading that failed the on-staff test still won
+# the staff by itself. The value existed and nothing read it.
+#
+# ⚠️ MEASURED FIRST, PER FAMILY, OFF THE THREE ACCEPTANCE RECORDS
+# (`probe/price_position_bands.py`, `out/position-bands.json`), by matching
+# every DETECTOR `Q.CLEF_GLYPH` row to its `Q.CLEF_POSITION` row (the same
+# `y_center` join `_on_staff_rows` performs per-staff) and histogramming the
+# position by family, over all three documents (n=1,482 matched):
+#
+#     G  (n=1,063, Litolff+Breitkopf+engraved): on-staff cluster 2.60..7.58;
+#        off-staff clusters below -4.19 and above 12.92 -- gaps of 7.68-8.15
+#        and 5.34-5.74 steps EACH SIDE of the on-staff cluster.
+#     F  (n=322): on-staff cluster 1.42..3.74 (Litolff), 2.01..3.58
+#        (Breitkopf), 3.35..3.40 (engraved); off-staff below -7.02 and above
+#        12.98 -- gaps of >9 steps each side.
+#     C  (n=97): TWO valid on-staff clusters, not one -- tenor's line (~2.0)
+#        and alto's (~4.0..4.3), confirming 3.4f's own table
+#        (`CLEF_BY_FAMILY_LINE["C"]`) rather than a single peak "on its
+#        line"; off-staff only above 13.97 (Breitkopf) -- a 7.74-step gap.
+#
+# ⚠️ THE CUT IS NOT A NEW NUMBER. Every document's every family gap
+# straddles the ALREADY-SHIPPED `ON_STAFF_MIN_STEPS`/`ON_STAFF_MAX_STEPS`
+# band above (-2.0 falls inside every negative-side gap measured; 10.0 falls
+# inside every positive-side gap measured) and no genuine on-staff reading of
+# any family, on any of the three documents, sits outside it. A second,
+# narrower definition of "on this staff" here would drift from the one two
+# lines up the moment either is retuned -- so the DISCOUNT below reuses
+# `_stands_on_this_staff`, the same predicate the bonus already trusted,
+# rather than restating the band a third time.
+OFF_STAFF_REASON = "clef_box_off_the_staff"
+
 
 #: What "the measured accidental run fits this clef's slot table" is worth.
 #: (A-CLEF-7) ⚠️ Contributed only when the fit DISCRIMINATES -- a run that fits
@@ -458,13 +499,79 @@ def _stands_on_this_staff(row) -> Optional[bool]:
     return ON_STAFF_MIN_STEPS <= float(row.value) <= ON_STAFF_MAX_STEPS
 
 
-def _detector_terms(ev: Evidence) -> Dict[str, List[Term]]:
+def _off_staff_discount_applies(row: Any, on_staff: Optional[bool]) -> bool:
+    """Whether THIS detector clef row's off-staff position should discount
+    its base term (roadmap 2.11b).
+
+    ⚠️ FACTORED OUT, NOT INLINED, SO A MEASUREMENT CAN DISABLE EXACTLY THIS
+    RULE. `on_staff is False` and the human-reader exemption both matter to
+    the answer and NEITHER may drift out of step with the other -- a
+    measurement that wants the pre-2.11b base arm (`benchmarks/
+    omr-clef-geometry-2026-09/probe/readjudicate_offstaff.py`) monkeypatches
+    this ONE function to `lambda row, on_staff: False` rather than a new
+    flag (CLAUDE.md rule 9) or a broader patch that would also touch the
+    `stands_on_this_staff` bonus or the C-clef reader gate.
+    """
+    return on_staff is False and not _is_human_clef_reader(row.reader)
+
+
+def _detector_terms(ev: Evidence
+                     ) -> Tuple[Dict[str, List[Term]], List[Dict[str, Any]]]:
+    """Returns `(terms_by_name, discounted)`.
+
+    ⚠️ ROADMAP 2.11b REVISES THE COMMENT THIS ONE REPLACES, WHICH SAID
+    "ADDITIVE, NOT A FILTER" AND ARGUED THAT REMOVING AN OFF-STAFF GLYPH'S
+    TERM WOULD BE WRONG WHERE IT IS A STAFF'S ONLY CANDIDATE. That reasoning
+    was sound the day it was written and is now measurably wrong: on Brahms 1
+    p.6 `staff/6/1/3` the off-staff glyph WAS the only candidate, and being
+    "the best evidence there is" was not good enough -- it decided `treble`
+    at `W_DETECTOR_HIGH` alone against a plate that prints a C clef there
+    (`benchmarks/omr-clef-geometry-2026-09/FINDINGS.md` Sec.4c). What makes
+    the reversal safe now and not then is roadmap 2.10: a staff this
+    discount empties is not left silent, it ABSTAINS `no_candidates` and
+    `infer.fill_clef_gap` (same part's clef on another system, then the
+    instrument's conventional header clef) picks it up -- machinery that did
+    not exist when "additive, not a filter" was the only option on the
+    table. CLAUDE.md rule 8: a fallback must never convert "cannot tell"
+    into an answer, and an off-staff box deciding a staff alone was doing
+    exactly that.
+    """
     out: Dict[str, List[Term]] = {}
+    discounted: List[Dict[str, Any]] = []
     placed = _on_staff_rows(ev)
     for row in ev.rows(Q.CLEF_GLYPH):
         name = _clef_of(str(row.value))
         if name is None:
             continue
+        pos_row = placed.get(float(row.detail.get("y_center", -1e9)))
+        on_staff = _stands_on_this_staff(pos_row)
+
+        # ⚠️ DISCOUNTED ONLY WHERE WE CAN TELL. `on_staff is False` means a
+        # GRID measured this box's position and it falls outside
+        # [ON_STAFF_MIN_STEPS, ON_STAFF_MAX_STEPS] -- the band measured
+        # above, per family, across the three acceptance documents.
+        # `on_staff is None` (no grid) stays on the pre-2.11b path
+        # unchanged: an unmeasured position is not evidence of anything,
+        # and discounting it would be the SAME fallback rule 8 forbids, in
+        # the opposite direction.
+        #
+        # ⚠️ AND NEVER A HUMAN'S ROW (roadmap 3.4f's population). A G/F clef
+        # box `review/human_evidence.py` files reaches THIS function, not
+        # `_c_family_support` (`_clef_of` names G/F/percussion by class,
+        # which a human's box also is) -- and a human at an unusual position
+        # is a person reading an unusual print, not a neighbour's clef
+        # bleeding into the cell. Geometry discounting a witness is exactly
+        # the "does not get to overrule" question 3.4f's own manager review
+        # already answered for the C-clef case; the answer does not change
+        # because the glyph is a G or an F.
+        if _off_staff_discount_applies(row, on_staff):
+            discounted.append({
+                "glyph_row": row.id, "position_row": pos_row.id,
+                "family": name, "position_steps": pos_row.value,
+                "reason": OFF_STAFF_REASON,
+            })
+            continue
+
         score = row.score if row.score is not None else 0.0
         if score >= CONF_HIGH:
             w = W_DETECTOR_HIGH
@@ -478,20 +585,13 @@ def _detector_terms(ev: Evidence) -> Dict[str, List[Term]]:
         out.setdefault(name, []).append(
             Term(f"detector@{score:.2f}", w, (row.id,)))
 
-        # ⚠️ ADDITIVE, NOT A FILTER, and the difference is the whole design.
-        # Removing an off-staff glyph's term would make an arbitration
-        # invisibly -- and it would be the WRONG call where a staff's only
-        # candidate stands off it, which is still the best evidence there is.
-        # A glyph standing ON this staff simply gets a second term.
-        #
         # ⚠️ AND IT CITES THE GEOMETRY ROW, NOT THE GLYPH ROW. Citing the
         # glyph would put this term in the detector's own correlated group,
         # where `tally` counts the group once and 1.5 beside 3.0 is 3.0.
-        pos_row = placed.get(float(row.detail.get("y_center", -1e9)))
-        if _stands_on_this_staff(pos_row):
+        if on_staff:
             out[name].append(
                 Term("stands_on_this_staff", W_ON_THIS_STAFF, (pos_row.id,)))
-    return out
+    return out, discounted
 
 
 def _locator_terms(ev: Evidence) -> Dict[str, List[Term]]:
@@ -587,10 +687,16 @@ def adjudicate_clef(ev: Evidence) -> Ruling:
     # disagreeing on ONE box is recorded here rather than silently resolved
     # either way -- see `_human_named_c_clef`.
     contradictions: List[Dict[str, Any]] = []
+    # ⚠️ ROADMAP 2.11b. A detector clef box discounted `clef_box_off_the_staff`
+    # (see `_detector_terms`) never enters `detector_terms`, so it counts
+    # toward neither `candidates` nor `page_spoke` below -- a staff whose only
+    # detector evidence is off-staff is, correctly, a staff the page did not
+    # usefully speak on, exactly as if nothing had been detected there at all.
+    detector_terms, discounted = _detector_terms(ev)
     # ⚠️ THE GAP TEST IS THE READ EVIDENCE ONLY, and `page_spoke` is computed
     # BEFORE the supplied terms are built so it can never see them. A staff
     # the page said nothing about is the supplied clef's entire domain.
-    read = (_detector_terms(ev), _locator_terms(ev))
+    read = (detector_terms, _locator_terms(ev))
     page_spoke = any(bool(source) for source in read)
     carried, seeds_withheld = _carry_terms(ev, page_spoke=page_spoke)
     for source in (*read, carried):
@@ -660,12 +766,21 @@ def adjudicate_clef(ev: Evidence) -> Ruling:
             ev._declined.add(Q.CLEF_LOCATED)
 
     if not candidates:
-        # ⚠️ A contradiction still belongs in `detail` even where nothing
-        # else named a candidate -- an abstention that hides WHY a human's
-        # own row named nothing is exactly the silence rule 8 forbids.
+        # ⚠️ A contradiction, or an off-staff discount, still belongs in
+        # `detail` even where nothing else named a candidate -- an abstention
+        # that hides WHY a human's own row named nothing, or why a detector
+        # box on the page was not enough, is exactly the silence rule 8
+        # forbids. This is the roadmap 2.11b ABSTAIN path: a staff whose only
+        # detector clef was discounted `clef_box_off_the_staff` lands here,
+        # for the gap machinery (2.10's `clef_from_other_systems`, then
+        # `infer.fill_clef_gap`) to take over -- never a default to treble.
+        extra: Dict[str, Any] = {}
         if contradictions:
-            return Ruling.abstain("no_candidates",
-                                   **{CONTRADICTION_REASON: contradictions})
+            extra[CONTRADICTION_REASON] = contradictions
+        if discounted:
+            extra[OFF_STAFF_REASON] = discounted
+        if extra:
+            return Ruling.abstain("no_candidates", **extra)
         return Ruling.abstain("no_candidates")
 
     correlated = ev.correlated_groups()
@@ -701,5 +816,13 @@ def adjudicate_clef(ev: Evidence) -> Ruling:
         detail["supplied_clefs_withheld_because_the_page_spoke"] = seeds_withheld
     if contradictions:
         detail[CONTRADICTION_REASON] = contradictions
+    if discounted:
+        # ⚠️ ROADMAP 2.11b. The winner may still be `scored` on OTHER
+        # evidence even where a detector box was discounted -- e.g. the
+        # locator or another detector box on the same staff decided it. The
+        # discount is recorded regardless, so `trace` shows every box this
+        # staff's clef did NOT let vote, not only the ones that mattered to
+        # the final margin.
+        detail[OFF_STAFF_REASON] = discounted
     return Ruling(value=top_name, reason="scored", margin=margin, used=used,
                   candidates=cands, detail=detail)
