@@ -100,14 +100,27 @@ def rows(path):
         sp = cellspace.get(cell)
         step = _staff_step(pb, lines.get(st), spacing.get(st))
         rung_mid = y_c + h_c / 2.0
-        over, dists = 0, []
+        over, dists, outward = 0, [], []
+        # ⚠️ 3.4g-2 SIGNED HALF. Which side of the rung the head stands on:
+        # + = FARTHER from the staff than the rung (the side a ledger run
+        # grows towards), - = between the rung and the staff. The canonical
+        # cell frame has y growing DOWN the page, so for a rung above the
+        # staff "outward" is up (smaller y) and below the staff it is down.
+        sign = None
+        if step is not None and step > 8.0:
+            sign = -1.0
+        elif step is not None and step < 0.0:
+            sign = 1.0
         for hh in heads.get(cell, ()):
             _hn, hx, hy, hw, hh_ = hh["value"]
             if min(hx + hw, x_c + w_c) - max(hx, x_c) <= 0.0:
                 continue
             over += 1
             if sp:
-                dists.append(abs((hy + hh_ / 2.0) - rung_mid) / float(sp))
+                dy = ((hy + hh_ / 2.0) - rung_mid) / float(sp)
+                dists.append(abs(dy))
+                if sign is not None:
+                    outward.append(sign * dy)
         out.append(dict(
             id=o["id"], subject=o["subject"], cell=cell, staff=st,
             step=step,
@@ -118,6 +131,7 @@ def rows(path):
             heads_in_cell=len(heads.get(cell, ())),
             heads_over=over,
             head_dist=min(dists) if dists else None,
+            head_outward_max=max(outward) if outward else None,
         ))
     return out
 
@@ -178,6 +192,35 @@ def summarise(rs, name):
     }
 
 
+def far_heads(rs, t=2.75):
+    """⚠️ 3.4g-2: the kept rungs the symmetric head tolerance would REFUSE,
+    split by whether an x-overlapping head stands FARTHER OUT than the rung.
+
+    A ledger run grows from the staff towards its note, so the inner rungs of
+    a long run are far from the head and the head is OUTWARD of them. If the
+    refused tail is mostly `outward`, the symmetric rule is cutting ladders;
+    if it is mostly `inward_or_none`, it is cutting junk.
+    """
+    kept = kept_by_the_shipped_rules(rs)
+    far = [r for r in kept if r["head_dist"] is None or r["head_dist"] > t]
+    out = collections.Counter()
+    for r in far:
+        o = r.get("head_outward_max")
+        if o is not None and o > t:
+            out["a_head_farther_out_than_the_rung"] += 1
+        elif r["head_dist"] is None:
+            out["no_head_x_overlapping"] += 1
+        else:
+            out["heads_only_between_the_rung_and_the_staff"] += 1
+    ow = [r["head_outward_max"] for r in far
+          if r.get("head_outward_max") is not None]
+    return {"tolerance": t, "kept_rungs_beyond_it": len(far),
+            "by_side": dict(out),
+            "outward_distance_of_those_with_one": {
+                k: pct(ow, v) for k, v in (("p50", 50), ("p95", 95),
+                                           ("max", 100))}}
+
+
 def sweep(rs, name, tols=(0.5, 1.0, 1.5, 2.0, 2.5, 2.75, 3.0, 4.0)):
     """Reach of the FOUR rules in the order 3.4g-2 ships them, per tolerance.
 
@@ -215,6 +258,7 @@ if __name__ == "__main__":
         dest.write_text(json.dumps(rs))
         s = summarise(rs, Path(p).name)
         s["reach_sweep_by_head_tolerance_spaces"] = sweep(rs, Path(p).name)
+        s["kept_rungs_past_the_head_tolerance"] = far_heads(rs)
         s["rows_cached_at"] = str(dest)
         out.append(s)
     print(json.dumps(out, indent=1))

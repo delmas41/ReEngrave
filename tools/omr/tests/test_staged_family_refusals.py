@@ -213,6 +213,13 @@ class TestAHumanNothingReachesEveryFamily(unittest.TestCase):
         # geometry cannot be what refuses it — the human must be.
         g = _box(log, 0, cls, quantity=extra,
                  page_box=_page_box_at_step(-2.0))
+        if cls == "ledgerLine":
+            # ⚠️ 3.4g-2: a rung with no note on it is refused by Sean's
+            # second convention, so the positive control stands one ON it —
+            # or the "untouched" control would be refused by geometry and
+            # prove nothing about the human.
+            _box(log, 9, "noteheadBlackOnLine", quantity=Q.NOTEHEAD_CLASS,
+                 page_box=_page_box_at_step(-2.0))
         if value is not None:
             _human(log, g, value)
         _run(log, quantity)
@@ -365,16 +372,29 @@ class TestOwnerOtherDoesNotReachTheOwnershipContest(unittest.TestCase):
 # §LEDGER — the geometry
 # ─────────────────────────────────────────────────────────────────────────────
 
+#: A notehead's height in the CELL frame: one staff space. ⚠️ REALISTIC ON
+#: PURPOSE, not a token size — `tall_not_a_rung` asks whether a head's box
+#: INTERSECTS the rung's, and an 18-unit head would make that test measure
+#: the fixture instead of the geometry.
+HEAD_H_CANONICAL = SPACING_CANONICAL
+
+
 def _ledger_verdict(*, step, h_c=20.0, w_c=140.0, page_box=True,
                     geometry=True, heads_at=None, head_dist_spaces=None,
-                    head_x_overlaps=True):
-    """One `ledgerLine` box, and optionally the head it stands under.
+                    head_x_overlaps=True, heads_outward=None):
+    """One `ledgerLine` box, and optionally the heads that x-overlap it.
 
-    ⚠️ THE HEAD'S DISTANCE IS SET IN THE CANONICAL CELL FRAME and the
-    rung's POSITION in page pixels, because that is where each of them
-    is measured — `family_precision` never compares the two. `heads_at`
-    gives the head a page box (it needs one only to look like a real
-    row); `head_dist_spaces` is the number the rule reads.
+    ⚠️ THE HEADS' DISTANCES ARE SET IN THE CANONICAL CELL FRAME and the
+    rung's POSITION in page pixels, because that is where each of them is
+    measured — `family_precision` never compares the two; the step says only
+    which way is OUT (up above the staff, down below it).
+
+    `heads_outward` — SIGNED distances in spaces, one head each, + farther
+    from the staff than the rung, - between the rung and the staff.
+    `head_dist_spaces` — ONE head at that distance on the STAFFWARD side (the
+    side only the tolerance can keep; below the rung for a box inside the
+    band, where out is undefined). `heads_at` only gives a head a page box
+    (it needs one only to look like a real row).
     """
     log = Log()
     if geometry:
@@ -382,18 +402,25 @@ def _ledger_verdict(*, step, h_c=20.0, w_c=140.0, page_box=True,
     else:
         log.observe(CELL, Q.CELL_STAFF_SPACE, SPACING_CANONICAL,
                     reader=READERS.GEOMETRY, frame="cell:0")
-    if heads_at is not None or head_dist_spaces is not None:
-        head_h = 18.0
-        rung_mid = LEDGER_Y_CANONICAL + h_c / 2.0
-        d = 0.0 if head_dist_spaces is None else head_dist_spaces
-        head_mid = rung_mid + d * SPACING_CANONICAL
-        _box(log, 9, "noteheadBlackOnLine", quantity=Q.NOTEHEAD_CLASS,
+    out_dir = -1.0 if step > 8.0 else 1.0     # canonical y grows DOWN
+    offsets = []                              # canonical, + = down
+    if heads_outward is not None:
+        offsets += [o * out_dir for o in heads_outward]
+    if head_dist_spaces is not None:
+        staffward = (1.0 if 0.0 <= step <= 8.0 else -out_dir)
+        offsets.append(head_dist_spaces * staffward)
+    if heads_at is not None and not offsets:
+        offsets.append(0.0)
+    rung_mid = LEDGER_Y_CANONICAL + h_c / 2.0
+    for i, off in enumerate(offsets):
+        head_mid = rung_mid + off * SPACING_CANONICAL
+        _box(log, 9 + i, "noteheadBlackOnLine", quantity=Q.NOTEHEAD_CLASS,
              page_box=_page_box_at_step(
                  step if heads_at is None else heads_at),
-             w_c=26.0, h_c=head_h,
+             w_c=130.0, h_c=HEAD_H_CANONICAL,
              x_c=(LEDGER_X_CANONICAL if head_x_overlaps
                   else LEDGER_X_CANONICAL + w_c + 40.0),
-             y_c=head_mid - head_h / 2.0)
+             y_c=head_mid - HEAD_H_CANONICAL / 2.0)
     g = _box(log, 0, "ledgerLine", w_c=w_c, h_c=h_c,
              x_c=LEDGER_X_CANONICAL, y_c=LEDGER_Y_CANONICAL,
              page_box=_page_box_at_step(step) if page_box else None)
@@ -522,17 +549,48 @@ class TestTheLedgerGeometry(unittest.TestCase):
         only head that x-overlaps it. A one-space rule would delete the
         bottom of every long ladder — which is `Q.GLYPH_LADDER`'s own
         completeness term (`C4`) being destroyed by its neighbour."""
-        v = self._rung(step=10.0, head_dist_spaces=2.0)
+        v = self._rung(step=10.0, heads_outward=[2.0])
         self.assertIs(v.value, False)
         self.assertEqual(v.reason, "ledger_line")
 
+    def test_an_inner_rung_of_a_FIVE_rung_run_is_KEPT_past_the_tolerance(
+            self):
+        """⚠️⚠️ THE OUTWARD CLAUSE, MEASURED. A head farther OUT than the
+        rung is its note at any distance — the rung lies between the staff
+        and the note, the only place an engraver prints one. Of the rungs
+        3.4g kept past 2.75 spaces, 5 / 43 / 51 (p1-p4 / Litolff /
+        Breitkopf) have exactly this shape at 2.9-4.6 spaces; a symmetric
+        tolerance alone would refuse every one."""
+        for step in (10.0, -2.0):
+            with self.subTest(step=step):
+                v = self._rung(step=step, heads_outward=[4.0])
+                self.assertIs(v.value, False)
+                self.assertEqual(v.reason, "ledger_line")
+                self.assertAlmostEqual(v.detail["head_outward_spaces"], 4.0,
+                                       places=3)
+
+    def test_the_same_head_STAFFWARD_past_the_tolerance_is_refused(self):
+        """THE NEGATIVE CONTROL for the outward clause, at the same
+        distance: heads only between the rung and the staff are what a beam
+        below its heads looks like (Sean's crop 8), not a ladder."""
+        for step in (10.0, -2.0):
+            with self.subTest(step=step):
+                v = self._rung(step=step, heads_outward=[-4.0])
+                self.assertIs(v.value, True)
+                self.assertEqual(v.reason, "no_head_on_the_rung")
+
     def test_the_head_tolerance_is_the_measured_p95(self):
         """⚠️ DERIVED, NOT CHOSEN — p95 of the kept rungs' head distance is
-        2.67 / 2.67 / 1.885 spaces on the three records, and the one beam
-        Sean adjudicated (crop 8) stands 2.975 spaces from its nearest head.
-        The constant must cover the first and NOT reach the second."""
-        self.assertGreaterEqual(FP.HEAD_NEAR_TOL_SPACES, 2.67)
-        self.assertLess(FP.HEAD_NEAR_TOL_SPACES, 2.975)
+        2.67 / 2.67 / 1.885 spaces on the three records; the constant is the
+        smallest quarter-space value covering all three.
+
+        ⚠️ IT IS NOT BOUNDED BY SEAN'S CROP 8 (a beam, 2.975 spaces from its
+        heads) and must not be: a threshold fitted between one crop and one
+        percentile is a threshold tuned on one crop. Crop 8 is refused by
+        `tall_not_a_rung`, which does not read this constant at all."""
+        p95s = (2.67, 2.67, 1.885)
+        self.assertGreaterEqual(FP.HEAD_NEAR_TOL_SPACES, max(p95s))
+        self.assertLess(FP.HEAD_NEAR_TOL_SPACES - 0.25, max(p95s))
 
     def test_the_distance_and_the_count_are_both_recorded(self):
         v = self._rung(step=-2.0, head_dist_spaces=1.25)
@@ -555,16 +613,16 @@ class TestTheLedgerGeometry(unittest.TestCase):
         the head's ink, so the height is measuring the head. A rung with its
         head on it is not a barline whatever it measures."""
         v = self._rung(step=12.58, h_c=0.68 * SPACING_CANONICAL,
-                       head_dist_spaces=0.085)
+                       heads_outward=[-0.085, 0.505])
         self.assertIs(v.value, False)
         self.assertEqual(v.reason, "ledger_line")
 
     def test_a_tall_box_with_its_heads_far_below_is_still_refused(self):
         """SEAN'S CROP 8 — *"too thick, it is a beam for 3 eighth notes"*.
-        Measured: height 0.62 spaces, nearest x-overlapping head 2.975
-        spaces away, which is the far side of the head tolerance."""
+        Measured: height 0.62 spaces, every x-overlapping head STAFFWARD of
+        it, the nearest 2.975 spaces away — no head stands ON the box."""
         v = self._rung(step=-6.04, h_c=0.62 * SPACING_CANONICAL,
-                       head_dist_spaces=2.975)
+                       heads_outward=[-2.975])
         self.assertIs(v.value, True)
         self.assertEqual(v.reason, "tall_not_a_rung")
 
@@ -577,6 +635,17 @@ class TestTheLedgerGeometry(unittest.TestCase):
 
     def test_the_height_floor_is_past_the_measured_population(self):
         self.assertGreaterEqual(FP.TALL_MIN_HEIGHT_SPACES, 0.42)
+
+    def test_a_tall_box_a_head_is_NEAR_but_not_ON_is_still_tall(self):
+        """⚠️ "ON" IS AN INTERSECTION, NOT THE HEAD TOLERANCE. A head 1.5
+        spaces staffward of a tall box is near enough for the head rule and
+        does not stand on the box, so the height rule still speaks — which
+        is what separates a beam from a rung its head has swallowed."""
+        v = self._rung(step=-6.0, h_c=0.6 * SPACING_CANONICAL,
+                       heads_outward=[-1.5])
+        self.assertIs(v.value, True)
+        self.assertEqual(v.reason, "tall_not_a_rung")
+        self.assertIs(v.detail["head_on_the_box"], False)
 
     def test_tall_runs_before_the_head_rule_or_it_could_never_fire(self):
         """⚠️ THE ORDER IS LOAD-BEARING AND THIS IS WHY. `tall_not_a_rung`
@@ -672,26 +741,40 @@ class TestTheLedgerGeometry(unittest.TestCase):
 #: `beethoven5-p1-p4.record.json` by `probe/ledger_heads.py` — never numbers
 #: read off the picture by eye.
 #:
-#: `(n, subject, is a ledger line?, staff step, height in spaces, distance to
-#:  the nearest x-overlapping head in spaces or None, expected reason)`
+#: `(n, subject, is a ledger line?, staff step, height in spaces, the
+#:  x-overlapping heads as SIGNED distances in spaces, expected reason)`
+#:
+#: The heads column is the probe's two measured numbers — the nearest head's
+#: distance and the largest OUTWARD distance (`head_outward_max`, + farther
+#: from the staff than the rung) — placed on their measured sides: a nearest
+#: head whose side the probe does not pin is put STAFFWARD, the side only the
+#: tolerance can keep. ⚠️ Inside the band OUT is undefined and the sign is
+#: not a measurement; those boxes are refused on position before a head is
+#: consulted.
 #:
 #: ⚠️ THE EXPECTED REASON IS NOT THE ASSERTION. The assertion is that the
 #: decision's REFUSAL agrees with SEAN — the reason is carried so a change of
 #: reason shows up as a change and not as a silent re-attribution.
 SEANS_CROPS = (
-    (1, "glyph/4/0/9/1/7", False, 4.960, 0.240, 2.060, "inside_the_staff"),
-    (2, "glyph/4/0/9/5/14", False, 1.490, 0.210, 4.205, "inside_the_staff"),
-    (3, "glyph/4/1/7/5/21", True, -6.720, 0.280, 0.515, "ledger_line"),
-    (4, "glyph/1/0/2/15/3", False, 5.550, 0.230, 0.245, "inside_the_staff"),
-    (5, "glyph/2/0/10/14/10", False, 2.140, 0.360, 1.050, "inside_the_staff"),
-    (6, "glyph/3/0/2/14/1", False, 5.650, 0.190, None, "inside_the_staff"),
-    (7, "glyph/3/0/5/13/5", False, 0.150, 0.350, 2.725, "inside_the_staff"),
-    (8, "glyph/2/0/1/4/12", False, -6.040, 0.620, 2.975, "tall_not_a_rung"),
-    (9, "glyph/4/1/2/5/14", True, 12.580, 0.680, 0.085, "ledger_line"),
-    (10, "glyph/4/1/9/11/17", False, 4.320, 0.520, 0.415, "inside_the_staff"),
-    (11, "glyph/3/0/7/6/14", True, -1.850, 0.350, 1.210, "ledger_line"),
-    (12, "glyph/3/0/7/7/8", True, -1.900, 0.400, 1.125, "ledger_line"),
-    (13, "glyph/4/1/2/3/19", True, 10.220, 0.340, 0.585, "ledger_line"),
+    (1, "glyph/4/0/9/1/7", False, 4.960, 0.240, (2.060,), "inside_the_staff"),
+    (2, "glyph/4/0/9/5/14", False, 1.490, 0.210, (4.205,),
+     "inside_the_staff"),
+    (3, "glyph/4/1/7/5/21", True, -6.720, 0.280, (-0.515,), "ledger_line"),
+    (4, "glyph/1/0/2/15/3", False, 5.550, 0.230, (0.245,), "inside_the_staff"),
+    (5, "glyph/2/0/10/14/10", False, 2.140, 0.360, (1.050,),
+     "inside_the_staff"),
+    (6, "glyph/3/0/2/14/1", False, 5.650, 0.190, (), "inside_the_staff"),
+    (7, "glyph/3/0/5/13/5", False, 0.150, 0.350, (2.725,), "inside_the_staff"),
+    (8, "glyph/2/0/1/4/12", False, -6.040, 0.620, (-2.975,),
+     "tall_not_a_rung"),
+    (9, "glyph/4/1/2/5/14", True, 12.580, 0.680, (-0.085, 0.505),
+     "ledger_line"),
+    (10, "glyph/4/1/9/11/17", False, 4.320, 0.520, (0.415,),
+     "inside_the_staff"),
+    (11, "glyph/3/0/7/6/14", True, -1.850, 0.350, (1.210,), "ledger_line"),
+    (12, "glyph/3/0/7/7/8", True, -1.900, 0.400, (1.125,), "ledger_line"),
+    (13, "glyph/4/1/2/3/19", True, 10.220, 0.340, (-0.585, 1.145),
+     "ledger_line"),
 )
 
 
@@ -712,10 +795,10 @@ class TestSeansThirteenCrops(unittest.TestCase):
     """
 
     def _crop(self, row):
-        _n, _subject, _real, step, h_spaces, head, _reason = row
+        _n, _subject, _real, step, h_spaces, heads, _reason = row
         return _ledger_verdict(
             step=step, h_c=h_spaces * SPACING_CANONICAL,
-            head_dist_spaces=head)
+            heads_outward=list(heads))
 
     def test_every_crop_agrees_with_sean(self):
         for row in SEANS_CROPS:
@@ -742,6 +825,20 @@ class TestSeansThirteenCrops(unittest.TestCase):
                 v = self._crop(row)
                 self.assertIs(v.value, False)
                 self.assertEqual(v.reason, "ledger_line")
+
+    def test_crop_6_is_condemned_by_BOTH_conventions_and_the_record_says_so(
+            self):
+        """⚠️ SEAN GAVE A WHOLE-REST BAR AS HIS REASON for crops 4, 6 and 7
+        (*"there are never ledger lines when there are no notes in the
+        measure"*), and all three are ALSO inside the band. The decision
+        records ONE reason — position first, because the head tolerance was
+        measured OUTSIDE the band — and the head facts on every box, so the
+        second convention's verdict is on the row and not lost. Crop 6 has
+        no head in its cell at all."""
+        v = self._crop(next(r for r in SEANS_CROPS if r[0] == 6))
+        self.assertEqual(v.reason, "inside_the_staff")
+        self.assertEqual(v.detail["heads_x_overlapping"], 0)
+        self.assertIsNone(v.detail["head_distance_spaces"])
 
     def test_the_positive_control_five_he_called_real(self):
         real = [r for r in SEANS_CROPS if r[2]]

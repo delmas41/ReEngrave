@@ -113,6 +113,28 @@ population where the ink can only be a staff-line fragment, so the number is
 registration scatter and nothing else. That p75 is 0.245 / 0.235 / 0.162
 spaces on the three records; 0.25 is the smallest round value covering all
 three. See `ON_A_STAFF_LINE_TOL_SPACES` for why it cannot reach a real rung.
+
+§LEDGER, 3.4g-2 — SEAN'S TWO CONVENTIONS (2026-09-24, on 13 crops)
+─────────────────────────────────────────────────────────────────────────────
+*"the ledger lines will only be on the outside of the staff and only happen
+if there are actual notes in the staff"* — `[C90]` and `[C91]` in
+`docs/engraving-conventions.md`. Two reasons join the three above:
+
+  `inside_the_staff`     the box's centre lies in the band between line 1
+                         and line 5. Subsumes `on_a_staff_line` for the
+                         inner lines, which now reaches only a box just
+                         OUTSIDE an outer line; catches the "middle of the
+                         staff" boxes no line tolerance could (crops 1, 10).
+  `no_head_on_the_rung`  no notehead box in the same cell x-overlaps the
+                         rung within `HEAD_NEAR_TOL_SPACES` (a measured p95),
+                         and none stands farther OUT than it.
+
+and `tall_not_a_rung` now requires that no head's box INTERSECTS the rung's:
+its one miss on the print (crop 9) was a real rung whose box had swallowed
+the head standing on it. Crops 3 and 9 — the two real rungs the 3.4g rules
+refused or would have — are KEPT; the 13 crops are pinned as fixtures in
+`tests/test_staged_family_refusals.py`. Measurement and crops:
+`benchmarks/omr-family-refusals-2026-09/FINDINGS.md` §3.4g-2.
 """
 
 from __future__ import annotations
@@ -188,6 +210,28 @@ RUNG_STEP_TOL_SPACES = 0.25
 #: (`OMR_CELL_LINE_TRACE` traces one per cell and this decision does not read
 #: it), re-measured on Litolff, with the offset histogram peaked.
 RUNG_STEP_SHIPS = False
+
+#: ⚠️⚠️ SEAN'S SECOND CONVENTION, 2026-09-24 (`docs/DECISIONS.md`, ROADMAP
+#: 3.4g-2, `[C91]`): *"only happen if there are actual notes in the staff"* —
+#: a rung with no notehead on or near it is not a rung. How near is "near",
+#: in STAFF SPACES of the cell's own frame, measured centre to centre between
+#: the rung box and a notehead box that x-overlaps it in the same cell.
+#:
+#: ⚠️ DERIVED, NOT CHOSEN: the p95 of that distance over the rungs the 3.4g
+#: rules KEEP (outside the band, off every line, rung-thick) —
+#: **2.67 (beethoven5-p1-p4) / 2.67 (litolff whole) / 1.885 (breitkopf
+#: whole)** spaces (`benchmarks/omr-family-refusals-2026-09/probe/
+#: ledger_heads.py`, `out/ledger-heads*.json`). 2.75 is the smallest
+#: quarter-space value covering all three, by the same arithmetic that made
+#: `ON_A_STAFF_LINE_TOL_SPACES` 0.25.
+#:
+#: ⚠️ WHY A TAIL AS LONG AS TWO AND THREE-QUARTER SPACES AND NOT ONE: a note
+#: three spaces beyond the staff prints three rungs and stands on the
+#: outermost, so the innermost is two spaces from the only head that
+#: x-overlaps it. The p95 is "how long is a ledger run on this plate", not
+#: "how thick is a notehead". And past it — see `_heads_on_the_rung` — a head
+#: FARTHER OUT than the rung is always its note, whatever the distance.
+HEAD_NEAR_TOL_SPACES = 2.75
 
 
 def _glyph_box_row(ev: Evidence):
@@ -286,6 +330,101 @@ def _rung_offset_spaces(step: float) -> Optional[float]:
     return abs(b - round(b))
 
 
+def _is_notehead_class(name: Any) -> bool:
+    """GATHER's own notehead test, imported not restated (see
+    `review.human_evidence.NOTEHEAD_PREFIX`, which imports it from
+    `gather._NOTEHEAD_PREFIX`)."""
+    from ..review.human_evidence import NOTEHEAD_PREFIX
+    return str(name).startswith(NOTEHEAD_PREFIX)
+
+
+def _heads_on_the_rung(ev: Evidence, box_row, space: float,
+                       step: Optional[float]) -> Dict[str, Any]:
+    """Sean's second convention, measured: is there a NOTE on this rung?
+
+    Every `notehead*` box in the SAME CELL whose x range overlaps the rung's,
+    measured in the cell's own canonical frame against the cell's own staff
+    space (`Q.CELL_STAFF_SPACE`) — one ruler for all three numbers. The staff
+    STEP (page pixels) is used for one thing only: which way is OUT.
+
+    Returns the facts, not a verdict:
+      `heads_x_overlapping`   how many heads x-overlap the rung
+      `head_distance_spaces`  the nearest one's |centre - centre|, or None
+      `head_outward_spaces`   the largest SIGNED distance of one of them,
+                              + meaning farther from the staff than the rung
+                              (None inside the band, where out is undefined)
+      `head_on_the_box`       a head's box INTERSECTS the rung's box — the
+                              head is standing on it, not merely near it
+      `near`                  within `HEAD_NEAR_TOL_SPACES`, OR farther out
+                              than the rung (the rung lies between the staff
+                              and its note, which is the only place an
+                              engraver prints one — `[C4]`, the unbroken
+                              ladder)
+
+    ⚠️ THE OUTWARD CLAUSE IS MEASURED, NOT ASSUMED. Of the rungs the 3.4g
+    rules keep that stand PAST the 2.75-space tolerance, **5 of 23 / 43 of
+    122 / 51 of 89** (p1-p4 / Litolff / Breitkopf) have an x-overlapping head
+    farther out than the rung, at 2.9-4.6 spaces — the inner rungs of four-
+    and five-rung ladders. A symmetric tolerance alone would refuse all 99.
+    The rungs with heads ONLY between them and the staff (10 / 35 / 19) are
+    what it should refuse: Sean's crop 8 is one — *"a beam for 3 eighth
+    notes"*, its heads 2.975 spaces staffward.
+
+    ⚠️ SAME CELL ONLY, as `notehead_precision._ledger_rungs_in_cell` reads
+    rungs: the padding that holds a note's rungs also holds the note.
+
+    ⚠️ A WHOLE REST THE DETECTOR BOXED AS A NOTEHEAD COUNTS AS A HEAD HERE,
+    and that is a known limit rather than an oversight: `notehead_is_a_
+    whole_rest` runs AFTER this decision in `adjudicate.ORDER` (it must —
+    `notehead_is_not_a_notehead` reads this one, and the whole-rest decision
+    sits downstream of both), so its verdict is not on the frozen log yet.
+    Sean's crops 4 and 7 are exactly this case; both are INSIDE the band and
+    refused by his first convention before this test is consulted.
+    """
+    _n, x_r, y_r, w_r, h_r = box_row.value
+    rung_mid = y_r + h_r / 2.0
+    # canonical y grows DOWN the page: above the staff OUT is up.
+    sign: Optional[float] = None
+    if step is not None and step > _BAND_TOP_STEP:
+        sign = -1.0
+    elif step is not None and step < 0.0:
+        sign = 1.0
+    cell = ev.subject.at(Kind.CELL)
+    over = 0
+    dists: List[float] = []
+    outward: List[float] = []
+    on_box = False
+    for r in ev.rows(Q.GLYPH_BOX, scope=Scope.SELF_AND_DESCENDANTS,
+                     subject=cell):
+        v = r.value
+        if not isinstance(v, (list, tuple)) or len(v) != 5:
+            continue
+        if not _is_notehead_class(v[0]):
+            continue
+        _hn, hx, hy, hw, hh = v
+        if min(hx + hw, x_r + w_r) - max(hx, x_r) <= 0.0:
+            continue
+        over += 1
+        dy = ((hy + hh / 2.0) - rung_mid) / space
+        dists.append(abs(dy))
+        if sign is not None:
+            outward.append(sign * dy)
+        if min(hy + hh, y_r + h_r) - max(hy, y_r) > 0.0:
+            on_box = True
+    nearest = min(dists) if dists else None
+    out_max = max(outward) if outward else None
+    near = ((nearest is not None and nearest <= HEAD_NEAR_TOL_SPACES)
+            or (out_max is not None and out_max > 0.0))
+    return {
+        "heads_x_overlapping": over,
+        "head_distance_spaces": (None if nearest is None
+                                 else round(nearest, 4)),
+        "head_outward_spaces": None if out_max is None else round(out_max, 4),
+        "head_on_the_box": on_box,
+        "near": near,
+    }
+
+
 # ─────────────────────────────────────────────────────────────────────────────
 # The seven decisions
 #
@@ -370,7 +509,8 @@ def _refused_by_a_human(ev: Evidence, detail: Dict[str, Any]
            Q.HUMAN_BOX_VERDICT, Q.GLYPH_BAND_DISTANCE),
     subjects_from=Q.GLYPH_BOX,
     subjects_classed=("ledgerLine",),
-    reasons=HUMAN_REFUSAL_REASONS + ("on_a_staff_line", "tall_not_a_rung",
+    reasons=HUMAN_REFUSAL_REASONS + ("inside_the_staff", "on_a_staff_line",
+                                     "tall_not_a_rung", "no_head_on_the_rung",
                                      "ledger_line",
                                      ABSTAIN.NO_STAFF_GEOMETRY),
     mode=Mode.ADDITIVE,
@@ -415,32 +555,60 @@ def adjudicate_ledger_is_not_a_ledger(ev: Evidence) -> Ruling:
 
     used = [box_row.id]
 
-    # ── tall_not_a_rung: canonical box against the CELL's own unit ──────────
+    # ⚠️⚠️ THE ORDER, 3.4g-2, AND WHY. Human (above) -> POSITION (inside the
+    # band, then on an outer line: need nothing but the staff) -> SHAPE (tall,
+    # and only where no head stands ON the box) -> NOTES (no head on or near
+    # the rung). `tall` must precede the head rule or it could never fire on
+    # a tall box with no head near it, a declared reason made unreachable.
+    # Position precedes the head rule because the head tolerance was
+    # MEASURED on boxes OUTSIDE the band and is applied only where it was
+    # measured; inside the band Sean's first convention settles it whatever a
+    # head does (the head facts are still recorded, for every box that has a
+    # cell unit, so a box both conventions condemn shows both).
+
+    # ── the cell's own unit, and the head facts, in the CELL frame ──────────
     #
-    # ⚠️ BEFORE THE PAGE-FRAME TEST AND IN A DIFFERENT FRAME ON PURPOSE. A
-    # height is a length inside one cell and `Q.CELL_STAFF_SPACE` is that
-    # cell's own staff space; the step is a position on a staff and lives in
-    # page pixels. Each is measured in the frame its own unit is in, and
-    # neither number is ever compared with the other.
+    # ⚠️ A height and a head distance are lengths inside one cell and
+    # `Q.CELL_STAFF_SPACE` is that cell's own staff space; the step is a
+    # position on a staff and lives in page pixels. Each is measured in the
+    # frame its own unit is in, and neither number is compared with the
+    # other — the step only says which way is OUT.
     _name, _x, _y, w_c, h_c = box_row.value
     space = _cell_staff_space(ev)
+    step, geom_rows = _ledger_geometry(ev, box_row)
+    tall = False
+    heads: Optional[Dict[str, Any]] = None
     if space is not None:
         detail["height_spaces"] = round(h_c / space, 4)
         detail["aspect_h_over_w"] = round(h_c / w_c, 4) if w_c else None
-        if h_c / space > TALL_MIN_HEIGHT_SPACES:
-            return Ruling(value=True, reason="tall_not_a_rung",
-                          used=tuple(used), detail=detail)
+        heads = _heads_on_the_rung(ev, box_row, space, step)
+        detail.update({k: v for k, v in heads.items() if k != "near"})
+        # ── tall_not_a_rung: tall AND no head standing ON it (3.4g-2) ──────
+        # ⚠️ RE-MEASURED ON ITS ONE MISS, NOT RETUNED: Sean's crop 9
+        # (`glyph/4/1/2/5/14`) is a real rung at 0.68 spaces whose box has
+        # swallowed the ink of the head standing on it (nearest head 0.085
+        # spaces, eight x-overlapping) — on a MERGING plate the height was
+        # measuring the head. The 0.5 floor is unchanged; what changed is
+        # that a box a head stands ON is not a barline or a beam whatever it
+        # measures. "On" is the two boxes INTERSECTING, which needs no
+        # constant. Crop 8 (a beam, heads 2.975 spaces off) still fires.
+        tall = (h_c / space > TALL_MIN_HEIGHT_SPACES
+                and not heads["head_on_the_box"])
 
-    step, geom_rows = _ledger_geometry(ev, box_row)
     if step is None:
         # ⚠️ DECLINED, NOT DEFAULTED. Without the staff's own lines in the
-        # box's own frame neither position rule can run, and a ledger box of
-        # unknown height is not thereby a rung.
+        # box's own frame no position rule can run, and a ledger box of
+        # unknown position is not thereby a rung. The height rule needs no
+        # position, so it still speaks.
+        if tall:
+            return Ruling(value=True, reason="tall_not_a_rung",
+                          used=tuple(used), detail=detail)
         return Ruling.abstain(ABSTAIN.NO_STAFF_GEOMETRY)
     used += geom_rows
 
     detail["staff_step"] = round(step, 4)
-    detail["beyond_the_band_spaces"] = round(_beyond_spaces(step), 4)
+    beyond = _beyond_spaces(step)
+    detail["beyond_the_band_spaces"] = round(beyond, 4)
     gap = _line_gap_spaces(step)
     detail["line_gap_spaces"] = round(gap, 4)
 
@@ -455,8 +623,40 @@ def adjudicate_ledger_is_not_a_ledger(ev: Evidence) -> Ruling:
         "ships": RUNG_STEP_SHIPS,
     }
 
+    # ── inside_the_staff: Sean's FIRST convention, 2026-09-24 (`[C90]`) ─────
+    # *"the ledger lines will only be on the outside of the staff"*. A box
+    # whose centre lies in the band between line 1 and line 5 is not a rung,
+    # whatever its distance to a line — which is what `on_a_staff_line`
+    # could not say about a box in the MIDDLE of a space (Sean's crops 1 and
+    # 10: *"middle of the staff, where there would never be a ledger line"*).
+    # ⚠️ NO TOLERANCE, AND THAT IS THE HONEST SHAPE: the band's edges ARE
+    # lines 1 and 5, so a box registered a hair outside them is caught by
+    # `on_a_staff_line` below at its measured tolerance, not by widening the
+    # band with a number the convention does not state.
+    if beyond <= 0.0:
+        return Ruling(value=True, reason="inside_the_staff",
+                      used=tuple(used), detail=detail)
+
+    # ── on_a_staff_line: the OUTER lines only, since 3.4g-2 ─────────────────
+    # Everything inside the band is refused above, so this now reaches only a
+    # box just OUTSIDE line 1 or line 5 and within the measured registration
+    # scatter of it — a staff-line fragment the band test cannot see.
     if gap <= ON_A_STAFF_LINE_TOL_SPACES:
         return Ruling(value=True, reason="on_a_staff_line",
+                      used=tuple(used), detail=detail)
+
+    if tall:
+        return Ruling(value=True, reason="tall_not_a_rung",
+                      used=tuple(used), detail=detail)
+
+    # ── no_head_on_the_rung: Sean's SECOND convention, 2026-09-24 (`[C91]`) ─
+    # *"only happen if there are actual notes in the staff"*. No notehead
+    # x-overlapping the rung within the measured tolerance, and none farther
+    # out than it. A bar holding only a whole rest has none.
+    # ⚠️ WITHOUT A CELL UNIT THE HEAD RULE CANNOT RUN AND DOES NOT GUESS:
+    # the box falls through to `ledger_line` exactly as it did before 3.4g-2.
+    if heads is not None and not heads["near"]:
+        return Ruling(value=True, reason="no_head_on_the_rung",
                       used=tuple(used), detail=detail)
     return Ruling(value=False, reason="ledger_line", used=tuple(used),
                   detail=detail)

@@ -40,7 +40,7 @@ a system from a group* (floors at 8 sp under compression, by construction).
 
 ## Counts
 
-**116 registry entries**, from 168 source entries (167 compiled, plus `C89` written straight into this registry).
+**118 registry entries**, from 170 source entries (167 compiled, plus `C89`, `C90` and `C91` written straight into this registry).
 
 ⚠️ **The 167th source entry is `C88`** (*A clef's SIZE is consistent with its
 staff…*), added 2026-09-23 under ROADMAP 2.11. It is the first entry added
@@ -56,9 +56,16 @@ be claiming a measurement that file does not hold. (Both lanes numbered
 their entry `C88` in parallel; the clef-size entry keeps `C88` because the code
 registry `tools/omr/conventions.py` carries it under that id.)
 
+⚠️ **`C90` and `C91`** (*A ledger line is only ever OUTSIDE the staff* and *A
+ledger line exists only where there is a NOTE on it*) are Sean's two
+conventions of 2026-09-24 (`docs/DECISIONS.md`), stated on 13 ledger-line
+crops and written straight into this registry by roadmap 3.4g-2, for the same
+reason as `C89`: `from-this-repo.md` is a dated compilation and is not
+re-opened to take them.
+
 | status | n |
 |---|--:|
-| **MEASURED HERE** | 68 |
+| **MEASURED HERE** | 70 |
 | **LITERATURE ONLY (untested here)** | 27 |
 | **ASSERTED (untested here)** | 14 |
 | **REFUTED HERE** | 5 |
@@ -66,7 +73,7 @@ registry `tools/omr/conventions.py` carries it under that id.)
 
 | category | entries | of which literature-only |
 |---|--:|--:|
-| Staff & pitch geometry | 14 | 6 |
+| Staff & pitch geometry | 16 | 6 |
 | Stems & beams | 18 | 9 |
 | Rests & bar filling | 8 | 3 |
 | Accidentals & key signatures | 10 | 1 |
@@ -77,7 +84,7 @@ registry `tools/omr/conventions.py` carries it under that id.)
 | Score layout & systems | 18 | 1 |
 | Text & margin labels | 8 | 1 |
 | Barlines & repeats | 4 | 1 |
-| **total** | **116** | **27** |
+| **total** | **118** | **27** |
 
 **Publisher- or edition-dependent, by the entry's leading word:** **10** of the
 87 repo-side entries (the repo file's own count) and **6** of the 27
@@ -101,7 +108,7 @@ directly on this repertoire.
 
 - [Conventions that FAILED here](#conventions-that-failed-here) — read this first
 - [Where the two sources DISAGREE](#where-the-two-sources-disagree)
-- [Staff & pitch geometry](#staff--pitch-geometry) — 14
+- [Staff & pitch geometry](#staff--pitch-geometry) — 16
 - [Stems & beams](#stems--beams) — 18
 - [Rests & bar filling](#rests--bar-filling) — 8
 - [Accidentals & key signatures](#accidentals--key-signatures) — 10
@@ -361,6 +368,34 @@ the repo file's rule is that **the tree outranks the ledger**:
 - **Would be falsified by:** a plate that omits interior rungs, or a corpus where rung *count* out-discriminates rung *completeness*.
 - **Known exceptions:** the detector fires `ledgerLine` on **1,107** ordinary staff lines inside the staff on one four-page record, and "whether that path filters them is unchecked". A tenuto is the same shape and is a live confusable.
 - **Code:** `tools/omr/transcribe.py:3290` `_dedupe_cross_staff_detections` (ladder tier); `tools/omr/transcribe.py:3739` `_drop_unladdered_noteheads`.
+
+### A ledger line is only ever OUTSIDE the staff
+`[C90]`
+
+- **Says:** Sean, 2026-09-24 (`docs/DECISIONS.md`), on 13 ledger-line crops: *"the ledger lines will only be on the outside of the staff"*. A `ledgerLine` box whose centre lies in the band between line 1 and line 5 is not a ledger line, whatever its distance to a staff line.
+- **Predicts (mechanically):** every detector `ledgerLine` box inside the band is a staff-line fragment, a slice of a head, a rest or a barline — never a rung. It **subsumes** the 3.4g rule *on a staff line's y* for the three inner lines and reaches what that rule could not: a box in the MIDDLE of a space (Sean's crops 1 and 10). ⚠️ It needs no tolerance: the band's edges ARE lines 1 and 5, and a box registered a hair outside them is the outer-line fragment rule's, at its own measured tolerance.
+- **Numbers:** none of its own — the band is the staff's own `Q.STAFF_LINES`, step 0 to step 8 in `rhythm._staff_step`'s frame.
+- **Literature:** not stated as a rule; it is the definition of a ledger line (*"extends the staff"*, `[L5]`).
+- **Measured here:** Sean's 13 crops: **7 of 7** boxes inside the band are refused and he called every one *not a ledger line*; **0** of the 5 he called real is inside it. Reach, base (3.4g) → arm on one tree: `beethoven5-p1-p4` **1,370 of 1,878** `ledgerLine` boxes are inside the band, **311 of them kept by 3.4g**; Litolff whole **5,122 of 7,617 (1,110 kept by 3.4g)**; Breitkopf whole **1,222 of 7,818 (97)** — the merging plate boxes its staff lines, the shattering one mostly does not. `benchmarks/omr-family-refusals-2026-09/FINDINGS.md` §3.4g-2.
+- **Status:** MEASURED HERE (13 crops adjudicated by Sean; reach on three records) / ⚠️ the 311+ newly refused boxes are cropped (`out/print/g2-…-kept_to_inside_the_staff.png`) and NOT yet adjudicated.
+- **Rigid or publisher-dependent:** RIGID.
+- **Would be falsified by:** a printed ledger line inside the band — which no engraving convention produces; more plausibly, a `Q.STAFF_LINES` registration wrong by a whole space, which would put real rungs inside the modelled band.
+- **Known exceptions:** ⚠️ the band is the MODELLED staff; on a bowed scanned staff (`rhythm.py`: up to a whole STEP of drift) a first rung sits 1 space out, twice that error, so the exception is theoretical on the measured plates.
+- **Code:** `tools/omr/staged/adjudicators/family_precision.py` `adjudicate_ledger_is_not_a_ledger` (reason `inside_the_staff`).
+
+### A ledger line exists only where there is a NOTE on it
+`[C91]`
+
+- **Says:** Sean, 2026-09-24 (`docs/DECISIONS.md`): *"… and only happen if there are actual notes in the staff"* — a bar holding only a whole rest has no ledger lines, and a rung with no notehead on or near it is not a rung.
+- **Predicts (mechanically):** a `ledgerLine` box outside the staff with no notehead box that x-overlaps it within a measured vertical distance — and none standing FARTHER OUT than it, the side a ledger run grows towards (`[C4]`) — is not a rung. ⚠️ It reads the DETECTOR's heads, so a head the detector never boxed makes its own rung fail the rule.
+- **Numbers:** vertical tolerance **2.75 spaces** = the smallest quarter-space value covering the p95 of the head distance over the rungs 3.4g keeps: **2.67 / 2.67 / 1.885** (p1-p4 / Litolff whole / Breitkopf whole). Past it, **5 / 43 / 51** kept rungs have a head farther out (inner rungs of 4- and 5-rung ladders, 2.9–4.6 spaces) and are kept; **10 / 35 / 19** have heads only staffward (the beam shape) and are refused.
+- **Literature:** not covered.
+- **Measured here:** Sean's crops 4, 6 and 7 (whole-rest bars) are the convention's own examples — all three also lie inside the band and are refused by `[C90]` first; crop 6 has no head in its cell at all. Reach on `beethoven5-p1-p4`: **18** boxes 3.4g kept are refused `no_head_on_the_rung` (Litolff whole **79**, Breitkopf whole **38**; of those, **8 / 44 / 19** have no x-overlapping head at all and **10 / 35 / 19** only heads staffward past the tolerance); **15 / 7** tall refusals rescued on the two whole records. `benchmarks/omr-family-refusals-2026-09/FINDINGS.md` §3.4g-2. The height rule `tall_not_a_rung` now fires only where no head's box INTERSECTS the rung's — Sean's crop 9, a real rung 0.68 spaces tall whose box lies wholly inside a `noteheadBlackOnLine` box, is KEPT.
+- **Status:** MEASURED HERE (the tolerance and the reach) / ⚠️ **the new refusals are NOT print-adjudicated, and of the 4 cropped, 2 look to this lane's eye like real rungs whose head the detector did not box** (the four `out/print/g2-…-kept_to_no_head_on_the_rung.png`).
+- **Rigid or publisher-dependent:** RIGID as engraving; the READING is detector-dependent (a merging plate loses heads on ledger lines first).
+- **Would be falsified by:** a printed rung with no note on or beyond it; operationally, Sean calling a `no_head_on_the_rung` crop a real ledger line whose head is visibly printed.
+- **Known exceptions:** ⚠️ a WHOLE REST boxed by the detector as a notehead counts as a head — `notehead_is_a_whole_rest` runs after the ledger decision in `adjudicate.ORDER`. ⚠️ A cue-size or grace head the detector misses. ⚠️ The ladder `glyph_owner` weighs is GATHER's anonymous count (roadmap 2.14) and does not see this refusal.
+- **Code:** `tools/omr/staged/adjudicators/family_precision.py` `_heads_on_the_rung`, `HEAD_NEAR_TOL_SPACES`, reasons `no_head_on_the_rung` and `tall_not_a_rung`.
 
 ### The engraver opens the gap above a staff PRECISELY so its ledger notes can live there
 `[C5]`
@@ -2006,13 +2041,14 @@ not be placed; the unplaced list is empty.**
     46  merged entries
   + 42  repo-only entries
   + 27  literature-only entries
-  +  1  written straight into this registry (C89, 2026-09-23, roadmap 2.10)
+  +  3  written straight into this registry (C89, 2026-09-23, roadmap 2.10;
+                                              C90 + C91, 2026-09-24, roadmap 3.4g-2)
 ─────
- 116  registry entries
+ 118  registry entries
 ```
 
 **Check both ways:** repo side `46 + 42 = 88` ✅ · literature side `52 + 27 = 79` ✅ ·
-output `46 + 42 + 27 + 1 = 116` ✅.
+output `46 + 42 + 27 + 3 = 118` ✅.
 
 ⚠️ **C89 IS NOT IN `from-this-repo.md` AND ITS 88 IS NOT BUMPED.** That file is a
 compilation whose stated scope is *"only conventions this tree has evidence
@@ -2120,13 +2156,15 @@ instead, so the ledger still accounts for every id an entry carries.
 | C87 | A TRILL, TURN or MORDENT is printed clear ABOVE its note, centred on it | *(same title)* | kept standalone |
 | C88 | A clef's SIZE is consistent with its staff, and it stands at the system's first-measure edge | *(same title)* | kept standalone — ⚠️ added 2026-09-23 (ROADMAP 2.11), after the merge |
 
-### Written straight into this registry — 1
+### Written straight into this registry — 3
 
 ⚠️ Not from either source file. See the arithmetic above.
 
 | src | source entry name | landed in | with |
 |---|---|---|---|
 | C89 | An instrument's HEADER CLEF is a property of the instrument, not of the page | *(same title)* | kept standalone — written straight into this registry (roadmap 2.10) |
+| C90 | A ledger line is only ever OUTSIDE the staff | *(same title)* | kept standalone — Sean, 2026-09-24, written straight into this registry (roadmap 3.4g-2) |
+| C91 | A ledger line exists only where there is a NOTE on it | *(same title)* | kept standalone — Sean, 2026-09-24, written straight into this registry (roadmap 3.4g-2) |
 
 **Repo tally: 46 merged + 41 standalone = 87** ✅
 

@@ -45,6 +45,7 @@
   },
   "inside_the_band_with_no_head_x_overlapping": 1067,
   "n_inside_the_band": 5122,
+  "no_cell_staff_space": 0,
   "tall_boxes": {
    "n": 22,
    "with_a_head_x_overlapping": 22,
@@ -129,13 +130,6 @@
     "on_a_staff_line": 129,
     "tall_not_a_rung": 8
    },
-   "0.75": {
-    "inside_the_staff": 5122,
-    "no_head_on_the_rung": 1498,
-    "kept": 783,
-    "on_a_staff_line": 208,
-    "tall_not_a_rung": 6
-   },
    "1.00": {
     "inside_the_staff": 5122,
     "no_head_on_the_rung": 1203,
@@ -164,6 +158,13 @@
     "kept": 1647,
     "tall_not_a_rung": 4
    },
+   "2.75": {
+    "inside_the_staff": 5122,
+    "no_head_on_the_rung": 294,
+    "on_a_staff_line": 526,
+    "kept": 1672,
+    "tall_not_a_rung": 3
+   },
    "3.00": {
     "inside_the_staff": 5122,
     "no_head_on_the_rung": 257,
@@ -177,7 +178,21 @@
     "kept": 1728
    }
   },
-  "rows_cached_at": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a019b23e2126cc909/benchmarks/omr-family-refusals-2026-09/out/ledger-head-rows-beethoven5-litolff-mvt1-whole-20260923.json"
+  "kept_rungs_past_the_head_tolerance": {
+   "tolerance": 2.75,
+   "kept_rungs_beyond_it": 122,
+   "by_side": {
+    "no_head_x_overlapping": 44,
+    "heads_only_between_the_rung_and_the_staff": 35,
+    "a_head_farther_out_than_the_rung": 43
+   },
+   "outward_distance_of_those_with_one": {
+    "p50": 2.895,
+    "p95": 4.39,
+    "max": 4.63
+   }
+  },
+  "rows_cached_at": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a1d5d52f3495b3d79/benchmarks/omr-family-refusals-2026-09/out/ledger-head-rows-beethoven5-litolff-mvt1-whole-20260923.json"
  },
  {
   "record": "brahms1-breitkopf-mvt1-whole-20260923.record.json",
@@ -224,6 +239,7 @@
   },
   "inside_the_band_with_no_head_x_overlapping": 74,
   "n_inside_the_band": 1222,
+  "no_cell_staff_space": 0,
   "tall_boxes": {
    "n": 8,
    "with_a_head_x_overlapping": 8,
@@ -266,13 +282,6 @@
     "on_a_staff_line": 144,
     "tall_not_a_rung": 1
    },
-   "0.75": {
-    "kept": 4247,
-    "no_head_on_the_rung": 2155,
-    "inside_the_staff": 1222,
-    "on_a_staff_line": 193,
-    "tall_not_a_rung": 1
-   },
    "1.00": {
     "kept": 4543,
     "inside_the_staff": 1222,
@@ -297,6 +306,12 @@
     "no_head_on_the_rung": 173,
     "on_a_staff_line": 274
    },
+   "2.75": {
+    "kept": 6223,
+    "inside_the_staff": 1222,
+    "no_head_on_the_rung": 96,
+    "on_a_staff_line": 277
+   },
    "3.00": {
     "kept": 6241,
     "inside_the_staff": 1222,
@@ -310,6 +325,20 @@
     "no_head_on_the_rung": 39
    }
   },
-  "rows_cached_at": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a019b23e2126cc909/benchmarks/omr-family-refusals-2026-09/out/ledger-head-rows-brahms1-breitkopf-mvt1-whole-20260923.json"
+  "kept_rungs_past_the_head_tolerance": {
+   "tolerance": 2.75,
+   "kept_rungs_beyond_it": 89,
+   "by_side": {
+    "a_head_farther_out_than_the_rung": 51,
+    "no_head_x_overlapping": 19,
+    "heads_only_between_the_rung_and_the_staff": 19
+   },
+   "outward_distance_of_those_with_one": {
+    "p50": 3.01,
+    "p95": 3.98,
+    "max": 4.3072
+   }
+  },
+  "rows_cached_at": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a1d5d52f3495b3d79/benchmarks/omr-family-refusals-2026-09/out/ledger-head-rows-brahms1-breitkopf-mvt1-whole-20260923.json"
  }
 ]

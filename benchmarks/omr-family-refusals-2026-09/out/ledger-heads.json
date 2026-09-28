@@ -127,7 +127,21 @@
     "kept": 336
    }
   },
-  "rows_cached_at": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a019b23e2126cc909/benchmarks/omr-family-refusals-2026-09/out/ledger-head-rows-beethoven5-p1-p4.json"
+  "kept_rungs_past_the_head_tolerance": {
+   "tolerance": 2.75,
+   "kept_rungs_beyond_it": 23,
+   "by_side": {
+    "no_head_x_overlapping": 8,
+    "heads_only_between_the_rung_and_the_staff": 10,
+    "a_head_farther_out_than_the_rung": 5
+   },
+   "outward_distance_of_those_with_one": {
+    "p50": -4.955,
+    "p95": 3.23,
+    "max": 3.265
+   }
+  },
+  "rows_cached_at": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a1d5d52f3495b3d79/benchmarks/omr-family-refusals-2026-09/out/ledger-head-rows-beethoven5-p1-p4.json"
  },
  {
   "record": "beethoven5-litolff-mvt1-whole-20260923.record.json",
@@ -308,7 +322,21 @@
     "kept": 1728
    }
   },
-  "rows_cached_at": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a019b23e2126cc909/benchmarks/omr-family-refusals-2026-09/out/ledger-head-rows-beethoven5-litolff-mvt1-whole-20260923.json"
+  "kept_rungs_past_the_head_tolerance": {
+   "tolerance": 2.75,
+   "kept_rungs_beyond_it": 122,
+   "by_side": {
+    "no_head_x_overlapping": 44,
+    "heads_only_between_the_rung_and_the_staff": 35,
+    "a_head_farther_out_than_the_rung": 43
+   },
+   "outward_distance_of_those_with_one": {
+    "p50": 2.895,
+    "p95": 4.39,
+    "max": 4.63
+   }
+  },
+  "rows_cached_at": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a1d5d52f3495b3d79/benchmarks/omr-family-refusals-2026-09/out/ledger-head-rows-beethoven5-litolff-mvt1-whole-20260923.json"
  },
  {
   "record": "brahms1-breitkopf-mvt1-whole-20260923.record.json",
@@ -441,6 +469,20 @@
     "no_head_on_the_rung": 39
    }
   },
-  "rows_cached_at": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a019b23e2126cc909/benchmarks/omr-family-refusals-2026-09/out/ledger-head-rows-brahms1-breitkopf-mvt1-whole-20260923.json"
+  "kept_rungs_past_the_head_tolerance": {
+   "tolerance": 2.75,
+   "kept_rungs_beyond_it": 89,
+   "by_side": {
+    "a_head_farther_out_than_the_rung": 51,
+    "no_head_x_overlapping": 19,
+    "heads_only_between_the_rung_and_the_staff": 19
+   },
+   "outward_distance_of_those_with_one": {
+    "p50": 3.01,
+    "p95": 3.98,
+    "max": 4.3072
+   }
+  },
+  "rows_cached_at": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a1d5d52f3495b3d79/benchmarks/omr-family-refusals-2026-09/out/ledger-head-rows-brahms1-breitkopf-mvt1-whole-20260923.json"
  }
 ]
