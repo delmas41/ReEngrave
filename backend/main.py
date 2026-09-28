@@ -388,10 +388,29 @@ async def run_omr(
                     # coverage report (CLAUDE.md §4d) — never recomputed —
                     # so the review UI can show "N staves held out / N bars
                     # unread" without re-deriving the accounting.
+                    #
+                    # ⚠️ ROADMAP 3.3c: `staged_unread_bars` now reads the
+                    # BARS-WE-READ-NOTHING-IN count (report's own
+                    # `unread_bar_marks["unread"]`) — a fix from 3.3's first
+                    # half, which stored `bars_held_out_sum["bars"]` (the
+                    # DOES-NOT-ADD-UP count, now `staged_held_out_bars`)
+                    # under this name. Both reasons are surfaced separately
+                    # so the web app never conflates "we read nothing" with
+                    # "we read it, but it does not add up" — CLAUDE.md §1's
+                    # "every bar the reader could not read is MARKED as
+                    # unread" is two different marks for two different
+                    # reasons (roadmap 3.5), and the accounting panel needs
+                    # both, not their sum silently relabelled.
                     if omr.held_out_staves is not None:
                         meta["staged_held_out_staves"] = omr.held_out_staves
                     if omr.unread_bars is not None:
                         meta["staged_unread_bars"] = omr.unread_bars
+                    if omr.held_out_bars is not None:
+                        meta["staged_held_out_bars"] = omr.held_out_bars
+                    if omr.bars_total is not None:
+                        meta["staged_bars_total"] = omr.bars_total
+                    if omr.held_out_bars_by_page is not None:
+                        meta["staged_held_out_bars_by_page"] = omr.held_out_bars_by_page
                     if omr.status_census is not None:
                         meta["staged_status_census"] = omr.status_census
                     if omr.error_message:

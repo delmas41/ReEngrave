@@ -7,6 +7,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { getScore, runOMR } from '../api/client';
+import StagedAccountingPanel from '../components/StagedAccountingPanel';
 import type { OMREngine, OMRProgress, ProcessingStatus } from '../types';
 
 const STATUS_COLOR: Record<ProcessingStatus, string> = {
@@ -277,6 +278,8 @@ export default function ScoreProcess() {
       </p>
 
       <StepIndicator currentStatus={score.status} />
+
+      <StagedAccountingPanel score={score} />
 
       <div style={styles.ctaCard}>
         {/* Pending — show engine selector + ReEngrave CTA */}

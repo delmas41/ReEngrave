@@ -109,10 +109,27 @@ class StagedOmrResult:
     """Mirrors ``local_omr.LocalOmrResult`` so the caller in ``main.py`` can
     branch on ``omr_engine`` with a similar shape on both sides.
 
-    ``held_out_staves``, ``unread_bars`` and ``status_census`` are read
-    straight off ``staged.export.to_musicxml``'s own coverage report — never
-    recomputed — so the web app's accounting can never disagree with the
-    exporter's about what it did not write.
+    ``held_out_staves``, ``unread_bars``, ``held_out_bars``, ``bars_total``,
+    ``held_out_bars_by_page`` and ``status_census`` are read straight off
+    ``staged.export.to_musicxml``'s own coverage report — never recomputed —
+    so the web app's accounting can never disagree with the exporter's about
+    what it did not write.
+
+    ⚠️ ROADMAP 3.3c: the exporter's report (CLAUDE.md §4c/§4d) distinguishes
+    TWO reasons a bar carries no music — a bar we READ NOTHING IN at all
+    (``report["unread_bar_marks"]["unread"]``, 2.4c's own claim) and a bar
+    roadmap 2.8 HELD OUT because its durations do not sum to the meter in
+    force (``report["unread_bar_marks"]["held_out_sum"]``) — and 3.3's first
+    half collapsed both into one field under the misleading name
+    ``unread_bars`` (it was actually reading ``bars_held_out_sum["bars"]``,
+    i.e. only the SECOND reason). Fixed here: ``unread_bars`` now reads the
+    FIRST reason, and ``held_out_bars`` is the second, each straight off the
+    same report key a reader would use directly. ``bars_total`` is the one
+    arithmetic this module performs — ``unread_bars + bars_with_events``,
+    two counts the exporter already computed, summed for display exactly as
+    the exporter's own ``fraction`` fields already divide by
+    ``bars_with_events`` — never a re-derivation of which bar landed in
+    which bucket.
     """
     musicxml_path: str
     record_path: str
@@ -120,6 +137,9 @@ class StagedOmrResult:
     runtime_seconds: float = 0.0
     held_out_staves: Optional[int] = None
     unread_bars: Optional[int] = None
+    held_out_bars: Optional[int] = None
+    bars_total: Optional[int] = None
+    held_out_bars_by_page: Optional[Dict[str, int]] = None
     status_census: Optional[dict] = None
     error_message: Optional[str] = None
 
@@ -322,12 +342,52 @@ def _run_staged_blocking(
 
     part_join = report.get("part_join") or {}
     bars_held = report.get("bars_held_out_sum") or {}
+    unread_marks = report.get("unread_bar_marks") or {}
+
+    # ⚠️ ROADMAP 3.3c: THE TWO REASONS, NAMED SEPARATELY, EACH OFF ITS OWN
+    # REPORT KEY (CLAUDE.md §4c: EXPORT's own accounting, never recomputed).
+    # `unread_bars` = bars we read NOTHING in at all; `held_out_bars` =
+    # bars roadmap 2.8 held out because their durations did not sum to the
+    # meter in force. Both are `None` only if the exporter's report itself
+    # carries no `unread_bar_marks` key (a shape this module does not
+    # otherwise expect from `to_musicxml`), matching the existing
+    # `.get(...)` fallbacks below rather than raising.
+    unread_bars = unread_marks.get("unread")
+    held_out_bars = unread_marks.get("held_out_sum")
+    bars_with_events = bars_held.get("of_bars_with_events")
+    bars_total = (
+        unread_bars + bars_with_events
+        if unread_bars is not None and bars_with_events is not None
+        else None
+    )
+
+    # ⚠️ A SMALL PER-PAGE TALLY OF THE HELD-OUT-BY-SUM BARS ONLY — grouping
+    # roadmap 2.8's own list (`bars_held_out_sum["held"]`, one dict per held
+    # bar naming its page/system/staff/cell/measure/part, CLAUDE.md §3956)
+    # by page. Never a second count of its own: each entry already exists in
+    # the exporter's report, this only tallies which page it names. The
+    # UNREAD bars (`empty_bars_padded`, a bar with no events read at all)
+    # have NO per-bar list in the report — only a total — so there is
+    # nothing to group for them; `held_out_bars_by_page` covers the held-out
+    # reason only and says so via its own name.
+    held_out_bars_by_page: Optional[Dict[str, int]] = None
+    held_list = bars_held.get("held")
+    if isinstance(held_list, list):
+        by_page: Dict[str, int] = {}
+        for entry in held_list:
+            page_key = str(entry.get("page"))
+            by_page[page_key] = by_page.get(page_key, 0) + 1
+        held_out_bars_by_page = dict(
+            sorted(by_page.items(), key=lambda kv: (len(kv[0]), kv[0])))
 
     return StagedOmrResult(
         musicxml_path=musicxml_path,
         record_path=record_path,
         pages_processed=len(pages),
         held_out_staves=part_join.get("held_out_staves"),
-        unread_bars=bars_held.get("bars"),
+        unread_bars=unread_bars,
+        held_out_bars=held_out_bars,
+        bars_total=bars_total,
+        held_out_bars_by_page=held_out_bars_by_page,
         status_census=report.get("status_census"),
     )
