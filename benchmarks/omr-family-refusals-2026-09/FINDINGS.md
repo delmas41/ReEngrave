@@ -1010,3 +1010,186 @@ python3 $B/probe/ledger_ink_crops_g3.py --record $L/beethoven5-p1-p4.record.json
   --label litolff-p1p4 --subjects glyph/1/0/3/14/0 glyph/2/0/2/2/12 glyph/2/1/0/12/6 glyph/3/1/0/6/12 \
   --names sean1-real sean2-bottom-line sean3-real sean4-whole-rest --manifest m.json
 ```
+
+## §2.14 — `Q.GLYPH_LADDER` NAMES its rungs; `glyph_owner` discounts a refused one
+
+Branch `claude/ladder-rungs-2.14`, off `origin/main`'s own ancestor `998e5f04`
+(the commit this branch actually forked from — `origin/main` moved to
+`892abb35` mid-session on a different lane's push; CLAUDE.md §6b's "one
+tree" is read here as *base is an ancestor of arm*, not *base is whatever
+origin/main is right now*).
+
+### The gap this closes
+
+3.4g found that `glyph_owner` changed 0 of 6,013 verdicts when the ledger
+refusal shipped, because `gather._observe_ladder` files `Q.GLYPH_LADDER` as
+an anonymous `found`/`expected` COUNT and names none of the `ledgerLine`
+glyphs it matched — so no ADJUDICATE refusal could ever discount a
+GATHER-counted rung. `adjudicate_ledger_is_not_a_ledger`'s own docstring
+states this as the reason its refusal cannot reach the ladder.
+
+### The repair
+
+- **GATHER** (`gather.py`): `_ledger_index` now carries each `ledgerLine`
+  detection's own `Subject.to_key()` alongside its `(x0, x1, y_centre)`
+  rectangle. `_observe_ladder` records, per counted step and in the same
+  order `found` was counted, which rung glyph matched
+  (`detail["rungs"]`) — `found`, `expected` and the row's `value` are
+  computed by the identical predicate, in the identical order, as before;
+  this is a pure addition to the row's detail, never a change to what it
+  decides.
+- **ADJUDICATE** (`adjudicators/ownership.py`, new `_ladder_complete`):
+  `glyph_owner`'s ladder term re-counts completeness from the named rungs,
+  dropping any whose own `Q.LEDGER_IS_NOT_A_LEDGER` verdict is DECIDED
+  `True` (refused). One the ledger decision ABSTAINED on
+  (`rung_without_boxed_head`), one it never ran on, or one it DECIDED
+  `False` (a real rung) all keep their place — CLAUDE.md rule 8, *cannot
+  tell* may never become *not a rung*. An old record with no `rungs` named
+  falls back to the row's own `value`, unchanged. Discounted rungs are
+  recorded on the `Q.GLYPH_OWNER` verdict's own detail
+  (`ladder_discounted_rungs`, keyed by candidate staff, present for a
+  losing candidate too) so `trace` shows them.
+- **`wants`/`composed_from`** on `glyph_owner` grew `Q.LEDGER_IS_NOT_A_LEDGER`.
+
+### Order and circularity — checked, no cycle
+
+`adjudicate.ORDER` already runs `Q.LEDGER_IS_NOT_A_LEDGER` (index 917)
+before `Q.NOTEHEAD_IS_NOT_A_NOTEHEAD` (918) and `Q.GLYPH_OWNER` (930), so no
+reorder was needed. The ledger refusal's own `wants`/`composed_from` are
+`Q.GLYPH_BOX`, `Q.STAFF_LINES`, `Q.STAFF_SPACING`, `Q.CELL_STAFF_SPACE`,
+`Q.HUMAN_BOX_VERDICT`, `Q.GLYPH_BAND_DISTANCE` and `Q.LEDGER_INK_UNDER` —
+`Q.GLYPH_OWNER` is nowhere in it (grepped; it does not read ownership, only
+raw geometry, the human witness and the ink witness), so `glyph_owner`
+reading its verdict back closes nothing. `Evidence._admit`'s own closure
+check (`adjudicate.py`) would refuse the read structurally if it did.
+
+### RED first, against `998e5f04`
+
+Both fail on the unrepaired tree, for different reasons — the GATHER shape
+and the ADJUDICATE discount:
+
+- `test_gather_s_own_ladder_row_NOW_NAMES_ITS_RUNG_GLYPH` (flipped from
+  `..._NAMES_NO_RUNG_GLYPH`, which pinned the gap) — `ValueError: too many
+  values to unpack (expected 3)`: the old `_observe_ladder` iterates
+  3-tuples and the fixture now supplies a 4th field, the glyph key.
+- `test_found_drops_and_the_ladder_term_is_withdrawn` — asserts UPPER wins
+  on distance once a named rung is refused; on `998e5f04` LOWER wins on
+  the ladder instead, because the unrepaired code trusts the row's stored
+  `value` unconditionally and never looks at `rungs`.
+
+The other four new tests (the positive control, the abstained-rung control,
+and both old-record-shape tests) pass UNCHANGED on both trees — they are
+controls in the same class, not assertions of the new behaviour, per
+CLAUDE.md §6b's "a refusal test needs a positive control that can fail."
+
+### Base vs arm, two full re-gathers (a GATHER change; `readjudicate` is blind to it)
+
+Both records `dirty: False`; base = `998e5f04`, arm = this branch's tip at
+gather time (`5b2537f7` for Litolff, `071c7976` for Brahms — two more
+commits landed between the two pricing runs, both benchmark-only files, so
+`base` stays an ancestor of `arm` throughout). `600 dpi`,
+`OMR_DIRECTION_TEXT_SCAN_GATE=1`, `OMR_SURYA_KEEP_ALIVE=0`, scan weights
+(`hollow-graft-shift09`). `probe/compare_gathers_2_14.py`.
+
+| | Litolff pdf idx 3 | Brahms pdf idx 1 |
+|---|---|---|
+| detector boxes | 1,928 / 1,928 — **identical** | 3,951 / 3,951 — **identical** |
+| `Q.GLYPH_LADDER` rows | 116 / 116 | 253 / 253 |
+| rows now naming `rungs` (arm) | 116 (38 non-empty) | 253 (89 non-empty) |
+| named rung-INSTANCES (with duplicates) | 48, across 38 rows | 123, across 89 rows |
+| … resolving REFUSED | **0** | **0** |
+| … resolving ABSTAINED | 0 | 0 |
+| … resolving KEPT (decided `False`) | 48 | 123 |
+| `glyph_owner` verdicts (contested population) | 247, 8 win on `ladder` | 1,238, 39 win on `ladder` |
+| `glyph_owner` verdicts CHANGED base→arm | **0** | **0** |
+| `ladder_discounted_rungs` filed on any verdict | 0 | 0 |
+| `<note>` / MusicXML | 549 / 549, byte-identical | 262 / 262, byte-identical |
+| census `unaccounted` | `[]` both | `[]` both |
+
+**The mechanism reaches — every named rung got a real verdict, none came
+back silent — and on both pages it discounts nothing, because the two
+populations barely overlap.** Widening the question from *rungs that feed a
+COMPLETE ladder* to *rungs a ladder computation names AT ALL, complete or
+not*: Litolff names 19 distinct `ledgerLine` glyphs across all 116 rows (of
+500 total; 420 refused, 4 abstained, 76 kept) and Brahms names 46 (of 219;
+80 refused, 1 abstained, 138 kept) — **and in both records, every single
+named glyph is one the ledger decision KEPT. Not one of the 500 (or 219)
+refused or abstained glyphs is EVER named by a ladder row, complete or
+broken.** Reading `_observe_ladder`'s predicate against `family_precision`'s
+refusal reasons explains the shape rather than leaving it a coincidence: a
+rung only gets "found" when it sits within half a space of an EXACT
+predicted position *and* x-overlaps the very note the ladder is being built
+for — which means the note itself is almost always the head the ledger
+decision's own `no_head_on_the_rung`/`tall_not_a_rung` tests would find
+sitting on or near that same box, so those two refusals structurally avoid
+naming it; `inside_the_staff` and `on_a_staff_line` fire only at distances
+(inside the band, or within `ON_A_STAFF_LINE_TOL_SPACES` of an outer line)
+that a ladder step — a full space or more beyond the outer line — never
+reaches. This is offered as the mechanical reading of the two rule shapes,
+not a third measurement; the counts above are the measurement.
+
+### Ownership verdicts changed: none — so no crops
+
+`probe/crop_owner_2_14.py` diffs `Q.GLYPH_OWNER` verdicts base vs arm and
+would cut a print crop (winning staff's lines in GREEN, a red corner
+bracket on the exact box, both verdicts and the discounted rungs in the
+caption) for up to 8 changed subjects. Run on both pages it printed
+`glyph_owner verdicts changed: 0` / `DEAD AT ZERO — no changed ownership
+verdict to crop` and exited 2, honestly, rather than being pointed at
+something to draw. Per CLAUDE.md §6b ("reach before accuracy... an arm
+prints its population first and exits non-zero declaring itself DEAD at
+zero"), zero crops is the correct artefact for zero changes on these two
+pages — the RED→GREEN unit tests in `test_staged_ladder_rungs.py` are what
+demonstrate the discount firing, on a fixture built to exercise it.
+
+### What could NOT be done, or was done differently from the brief
+
+1. **Base was NOT `origin/main`** as the brief's worktree command literally
+   names it — `origin/main` advanced to `892abb35` (a different lane's
+   merge) between this branch's creation and the pricing run. Used this
+   branch's own merge-base (`998e5f04`) instead, per CLAUDE.md's own "base
+   vs arm on ONE tree" and rule 10 ("the tree outranks every ledger");
+   `compare_gathers_2_14.py` enforces `git merge-base --is-ancestor` rather
+   than commit equality for exactly this reason, since a GATHER change
+   without a flag cannot be priced on a single unchanging commit the way
+   3.4g-3's flag-toggled arm was.
+2. **Two more commits landed between the Litolff and Brahms pricing runs**
+   (the comparator and the crop tool, both benchmark-only) — each new
+   untracked file makes the tree `dirty` at the run that FINISHES with it
+   present (CLAUDE.md §5a), so each was committed before its own re-gather
+   rather than left uncommitted. `base` is an ancestor of both `arm` shas.
+3. **No crops committed** — see above; nothing changed to draw.
+4. **The gathered records are not committed** (~10 MB Litolff, larger for
+   Brahms).
+
+### Checks and tests
+
+- RED: 2 of 6 new/flipped tests fail against `998e5f04` (`ValueError` and a
+  wrong-owner assertion); the other 4 pass unchanged on both trees as
+  controls.
+- `pytest tools/omr/tests -m "not slow"`: **3,366 passed, 3 skipped** (arm).
+- `python3 -m tools.omr.staged.inventory --check`: exit 0, no new inert
+  declaration for `glyph_owner`/`ledger_is_not_a_ledger` (the read is
+  through the module's own `_ladder_complete` helper, at depth 1).
+- `python3 -m tools.omr.staged.wiring --check`: 69 problems, 0 unaccounted
+  — unchanged; the new `subject=` read is a SCOPE-exempt "reach elsewhere"
+  the same way `notehead_precision._ledger_rungs_in_cell`'s identical read
+  already was.
+- `python3 -m tools.omr.staged.check`: **253 → 253** (unchanged; no new
+  named gap, none closed).
+
+### Reproducing
+
+```bash
+B=benchmarks/omr-family-refusals-2026-09
+PDF_L=library/editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf
+PDF_B=library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf
+W=omr-weights/deepscoresv2-yolov8l-hollow-graft-shift09-2026-09-04.pt
+# base: a worktree at THIS branch's merge-base, never origin/main's moving tip
+git worktree add --detach /tmp/l214-base 998e5f04
+OMR_DIRECTION_TEXT_SCAN_GATE=1 OMR_SURYA_KEEP_ALIVE=0 python3 -m tools.omr.staged $PDF_L --pages 3 --weights $W --out base_l.json
+OMR_DIRECTION_TEXT_SCAN_GATE=1 OMR_SURYA_KEEP_ALIVE=0 python3 -m tools.omr.staged $PDF_L --pages 3 --weights $W --out arm_l.json   # this branch, clean tree
+python3 $B/probe/compare_gathers_2_14.py base_l.json arm_l.json --out cmp_l.json
+python3 $B/probe/crop_owner_2_14.py --base base_l.json --arm arm_l.json --pdf $PDF_L --label l214-litolff-p3
+# repeat with $PDF_B --pages 1 for Brahms
+```
