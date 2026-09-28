@@ -721,11 +721,32 @@ def class_space_coverage() -> Dict[str, Any]:
 # ─────────────────────────────────────────────────────────────────────────────
 
 
+def out_of_pipeline_quantities() -> Set[str]:
+    """Quantities a DECLARED out-of-pipeline producer files, in THIS module's
+    own vocabulary -- the attribute NAME (`"HUMAN_BOX_VERDICT"`), not the `Q`
+    string VALUE `producers.all_filed()` returns.
+
+    ⚠️ ROADMAP 0.5 / 3.4b-check. Before this, a quantity only `review/human_
+    evidence.py` files (`Q.HUMAN_BOX_VERDICT`, `Q.HUMAN_VERDICT_STANCE`)
+    landed in `declared_ungathered` with no explanation at all -- unlike
+    `verdict_elsewhere`/`consequence_elsewhere`, this file has no `KNOWN_GAPS`
+    apparatus, so the two just silently inflated the open count forever. A
+    human producer is a real answer to "who files this", the same as a
+    verdict or a consequence rule is, and belongs beside them rather than in
+    the pile of things nothing produces.
+    """
+    from . import producers as OOP
+    from .record import Q
+    by_value = {getattr(Q, n): n for n in declared()}
+    return {by_value[q] for q in OOP.all_filed() if q in by_value}
+
+
 def report() -> Dict[str, Any]:
     got = gathered()
     decl = set(declared())
     verdicts = verdict_quantities()
     consequences = consequence_quantities()
+    out_of_pipeline = out_of_pipeline_quantities()
     wants = wanted()
 
     observed = {q for q, r in got.items() if r["observed_by"]}
@@ -735,13 +756,23 @@ def report() -> Dict[str, Any]:
                      and not got[q]["abstained_by"]}
 
     ungathered = decl - set(got)
-    measurement_gap = sorted(ungathered - verdicts - consequences)
+    measurement_gap = sorted(ungathered - verdicts - consequences
+                             - out_of_pipeline)
     verdict_elsewhere = sorted(ungathered & verdicts)
     consequence_elsewhere = sorted((ungathered & consequences) - verdicts)
+    # ⚠️ NEVER A GATHER SITE, so kept in its own bucket rather than folded
+    # into `observed`/`mentioned_only` above -- a reader must be able to tell
+    # a human witness from a stage's own measurement.
+    produced_out_of_pipeline = sorted(ungathered & out_of_pipeline
+                                      - verdicts - consequences)
 
     wanted_ungathered = {q: d for q, d in wants.items()
                          if q in decl and q not in observed
-                         and q not in verdicts and q not in consequences}
+                         and q not in verdicts and q not in consequences
+                         and q not in out_of_pipeline}
+    wanted_out_of_pipeline = {q: d for q, d in wants.items()
+                              if q in out_of_pipeline and q not in observed
+                              and q not in verdicts and q not in consequences}
 
     return {
         "gathered": {
@@ -754,8 +785,13 @@ def report() -> Dict[str, Any]:
             "verdict_elsewhere": verdict_elsewhere,
             "consequence_elsewhere": consequence_elsewhere,
             "declared_ungathered": measurement_gap,
+            # ⚠️ OUT-OF-PIPELINE / HUMAN. Filed by `producers.py`'s declared
+            # registry, never by a gather site -- CLAUDE.md §5b's `--dossier`
+            # refusal applies here exactly as it does in `inventory.py`.
+            "out_of_pipeline": produced_out_of_pipeline,
         },
         "wanted_but_ungathered": wanted_ungathered,
+        "wanted_but_out_of_pipeline": wanted_out_of_pipeline,
         "no_vocabulary": {k: {"why": v,
                               "seen_in": legacy_event_keys().get(k, [])}
                           for k, v in sorted(NO_VOCABULARY.items())},
@@ -768,6 +804,7 @@ def report() -> Dict[str, Any]:
             "observed": len(observed),
             "abstain_only": len(abstain_only),
             "declared_ungathered": len(measurement_gap),
+            "out_of_pipeline": len(produced_out_of_pipeline),
             "no_vocabulary": len(NO_VOCABULARY),
             "unaccounted": len(unaccounted()),
         },
@@ -781,6 +818,7 @@ def _print(rep: Dict[str, Any]) -> None:
     print(f"  OBSERVED by a gatherer     {c['observed']:>4}")
     print(f"  abstain-only (declared)    {c['abstain_only']:>4}")
     print(f"  declared, never gathered   {c['declared_ungathered']:>4}")
+    print(f"  OUT-OF-PIPELINE (human)    {c['out_of_pipeline']:>4}")
     print(f"  NO VOCABULARY AT ALL       {c['no_vocabulary']:>4}")
     print(f"  unaccounted (must be 0)    {c['unaccounted']:>4}")
 
@@ -801,10 +839,18 @@ def _print(rep: Dict[str, Any]) -> None:
     print(f"  owned by adjudicate  : {', '.join(ng['verdict_elsewhere']) or '-'}")
     print(f"  owned by evaluate    : {', '.join(ng['consequence_elsewhere']) or '-'}")
     print(f"  DECLARED, UNGATHERED : {', '.join(ng['declared_ungathered']) or '-'}")
+    print(f"  OUT-OF-PIPELINE (human), never a gather site : "
+          f"{', '.join(ng['out_of_pipeline']) or '-'}")
 
     if rep["wanted_but_ungathered"]:
         print("\n─── 3. WANTED BY A DECISION AND NEVER GATHERED ───")
         for q, who in sorted(rep["wanted_but_ungathered"].items()):
+            print(f"  {q:<28} wanted by {', '.join(who)}")
+
+    if rep["wanted_but_out_of_pipeline"]:
+        print("\n─── 3a. WANTED BY A DECISION, FILED BY AN OUT-OF-PIPELINE "
+              "PRODUCER (human) ───")
+        for q, who in sorted(rep["wanted_but_out_of_pipeline"].items()):
             print(f"  {q:<28} wanted by {', '.join(who)}")
 
     print("\n─── 4. NO VOCABULARY (legacy carries it, record cannot name it) ───")
