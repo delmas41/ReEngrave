@@ -1,0 +1,23 @@
+{
+ "report": {
+  "label": "engraved",
+  "duplicates_refused": 0,
+  "duplicates_by_reason": {},
+  "base": {
+   "bars_held_out_sum": 36,
+   "written_notes": 331,
+   "written_rests": 84,
+   "written_measure_rests": 214,
+   "notes_not_written_total": 59
+  },
+  "arm": {
+   "bars_held_out_sum": 36,
+   "written_notes": 331,
+   "written_rests": 84,
+   "written_measure_rests": 214,
+   "notes_not_written_total": 59,
+   "not_a_rest_duplicate_box": 0
+  }
+ },
+ "changed": []
+}

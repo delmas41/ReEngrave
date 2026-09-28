@@ -496,3 +496,196 @@ rest) and 2.12d (the meter_wrong lever) are recommended from Brahms
 evidence and are not yet shown to move Litolff's 18 owned heads at all** —
 that needs Litolff's own count-page funnel, not an assumption that one
 document's partition transfers to the other.
+
+## 14. ROADMAP 2.15 — one physical rest, boxed more than once
+
+Branch `claude/duplicate-rest-2.15`. `adjudicators/family_precision.py`'s
+`adjudicate_rest_is_not_a_rest` (ROADMAP 3.4g, HUMAN WITNESS ONLY until now)
+grows a geometric rule that runs after the human one: two rest glyphs in one
+cell whose `Q.GLYPH_BOX` boxes overlap (IoU) are the SAME physical mark.
+Same class, same overlap → the higher-confidence box survives, the other is
+refused `rest_is_a_duplicate_box`. Different class → NEITHER survives (rule
+8: cannot tell is never converted into a pick), and the bar loses that
+event's contribution; ROADMAP 2.8 holds it out if that now leaves it short.
+`export._place_notes` already read `Q.REST_IS_NOT_A_REST` first, before
+duration or placement, so no export-side change was needed — this is
+GATHER-adjacent evidence (`Q.GLYPH_BOX`, `Q.REST`'s class) read at ADJUDICATE,
+never a second rest-VALUE geometry (that stays lane 2.12b-cal's, `rhythm.py`).
+
+### §14a. The work order's own claim did not survive contact with the record
+
+ROADMAP 2.15 (and the funnel that produced it, §13 above) said the named
+example's two boxes "overlap substantially." Measured on the record
+(`glyph/2/1/0/7/0` / `.../1`, Brahms provenance c19cbca7): **IoU 0.16.**
+Crop `r215-brahms-collapse-glyph-2-1-0-7-1.png` shows why the word was
+wrong without the FINDING being wrong: one filled rectangle (a whole rest),
+two detector boxes covering roughly the left and right half of it — the
+SHATTERING plate (CLAUDE.md §10) fragmenting one mark's ink, not two boxes
+drawn on top of each other. **"Substantially" describes the WRONG geometry**
+(two near-identical boxes) for the RIGHT mechanism (one mark read twice).
+
+### §14b. Why the mark is two glyphs — two DIFFERENT causes, not one
+
+Cropped and visually confirmed both, across Litolff and Brahms (8 crops,
+`out/print/r215-2026-09-28/`, `VERDICT_none_yet: null` for Sean):
+
+* **Same class, moderate overlap (IoU 0.03–0.71 on both documents, never
+  higher).** The SHATTERING/print-quality case: a filled rectangle (or a
+  quarter/eighth rest's hook) breaks into two ink fragments and the
+  detector boxes each one, both correctly classed. Crops at IoU 0.05, 0.16,
+  0.37, 0.71 (Brahms) and 0.43 (Litolff) are all this shape.
+* **Different class, high overlap (IoU 0.80–1.00 on Brahms; the Litolff
+  disagree crop is lower but still a real overlap, §14d).** A role-twin
+  read: one physical mark, two class guesses. One Brahms crop
+  (`rest8th`/`rest16th`, IoU 0.98) is a single hook-shaped mark with both
+  boxes drawn almost exactly on top of each other. **One Litolff crop
+  (`glyph/2/1/6/13/5`/`.../8`, `restQuarter`/`restWhole`) turned out to be a
+  THIRD cause the brief did not name**: a STAFF LINE crossing through a
+  genuine quarter rest got its own box, misclassified `restHalf` (a
+  horizontal rectangle sitting on a line reads like a half rest at a
+  glance). Refusing both is still the right answer — one of the two boxes
+  is not ink from a rest at all, and nothing at this stage can tell WHICH
+  — but it is a different mechanism from the role-twin case, filed under
+  the same reason because the record cannot yet tell them apart either.
+
+Neither cause is "two detector boxes on one ink after NMS failed to merge
+them" in the sense the brief's phrasing suggested (identical boxes, an NMS
+threshold miss) — the record's own IoU distribution has **no population
+near IoU 1.0 for a SAME-CLASS pair** (max measured 0.7113 on Brahms, 0.7211
+on Litolff, on populations of 1,713 and 154 pairs respectively). The
+IoU-near-1.0 cluster belongs entirely to DIFFERENT-class pairs.
+
+⚠️ **Supersession must be resolved before any of this is measured.** A
+naive scan of `outcome == "decided"` over every `Q.DURATION` verdict row —
+what this lane's own first pass did, and what the ORIGINAL funnel's
+`verdicts_by_cell` extraction (§13, `extract_from_record.py`) also did —
+counts an EVALUATE-stage revision (`consequences.reconcile_duration`)
+alongside the ADJUDICATE-stage reading it superseded as if they were two
+glyphs. On the ENGRAVED control this manufactured **214 fake "duplicates,"
+100% of them one subject counted twice**, before `export.Record`'s own
+resolution rule (drop every row a later one SUPERSEDES, take the last of
+what remains) was applied to the probe. After that fix, engraved shows
+**zero** same-cell rest pairs of any kind — the clean control this
+document is supposed to be.
+
+### §14c. The IoU gap, and where it was cut
+
+Every pair of rest glyphs with a STANDING decided `Q.DURATION` verdict in
+one cell (supersession resolved), Brahms and Litolff:
+
+| population | n pairs | shape |
+|---|--:|---|
+| same class, IoU exactly 0 | 1,284 / 83 | genuinely unrelated (two voices, or a stray misdetection elsewhere) |
+| same class, IoU > 0 | 429 / 71 | ONE mark, smoothly 0.03–0.71, no internal gap |
+| different class, IoU exactly 0 | 4,399 / 286 | unrelated |
+| different class, IoU 0.80–1.00 | 79 / — | role-twin, one mark |
+| different class, IoU 0.15–0.75 (sparse) | 13 / small | the third cause, §14b |
+
+`REST_DUPLICATE_IOU_MIN = 0.02`: the smallest round value clearing the
+Litolff noise floor (0.0019, 0.016 — two boxes ~1,000 canonical units
+apart, not the same mark) while catching every crop-confirmed real pair
+(0.028 and up). One threshold serves both same-class and different-class
+comparisons because `Q.DURATION` has not run yet at this point in
+`adjudicate.ORDER` — the rule reads the CLASS `Q.REST`/`Q.GLYPH_BOX` already
+filed at GATHER, never a beats figure it cannot see.
+
+### §14d. Per-document pricing (GATHER once, re-adjudicate `Q.REST_IS_NOT_A_REST` only, re-export)
+
+Base = the saved record exactly as gathered (this rule never ran on it,
+no flag exists to disable it). Arm = the SAME record with the newly-decided
+refusals appended (`supersedes` set where an old verdict existed) — base
+and arm differ in EXACTLY the rows this fix adds. `Q.REST_IS_NOT_A_REST` is
+the only quantity re-adjudicated: nothing upstream of it in `ORDER` reads
+it and nothing downstream except EXPORT does, so a full pipeline re-run
+would price the same number at far higher cost.
+
+| | engraved | Litolff | Brahms |
+|---|--:|--:|--:|
+| duplicates refused (collapse) | 0 | 87 | 693 |
+| duplicates refused (disagree, both) | 0 | 24 | 189 |
+| **total refused** | **0** | **111** | **882** |
+| `bars_held_out_sum` base → arm | 36 → 36 | 1,879 → 1,867 | 4,513 → 4,424 |
+| `<note>` written base → arm | 331 → 331 | 3,627 → 3,656 | 965 → 888 |
+| `<rest>` written base → arm | 84 → 84 | 565 → 574 | 1,255 → 1,197 |
+| measure rests base → arm | 214 → 214 | 1,040 → 1,040 | 348 → 348 |
+| 2.8 control (bar_sum_check.py), base | 450/450 exact | 5,940/5,940 exact | 6,405/6,405 exact |
+| 2.8 control, arm | 450/450 exact | 5,940/5,940 exact | 6,405/6,405 exact |
+
+**2.8's independent control (mandatory, CLAUDE.md §6b) holds on all three
+documents in BOTH arms: 0 exported bars whose sum ≠ meter.** This fix
+changes WHICH bars are held out, never whether the control passes.
+
+Engraved is the clean control end to end: 0 duplicates found, 0 refused,
+nothing moves. This is the expected shape, not a null result — the
+detector on a Verovio render does not fragment ink the way a scan does.
+
+### §14e. Brahms: 129 of the ROADMAP-named 240 released, 111 still held for a DIFFERENT reason, 65 newly held elsewhere
+
+The 240 count in ROADMAP 2.15's own line is itself the OLD (unresolved-
+supersession) measurement, carried over from §13 without being
+re-verified here — checked directly (`by_cause_bars2.pkl`, the funnel's
+own saved bar list) rather than assumed correct:
+
+* **0 of the 240 have the supersession artefact** (a repeated subject in
+  one bar's `subjects` list) — §14b's fake-duplicate bug did not happen to
+  reach this specific bucket, so the 240 figure itself is not inflated by
+  it.
+* **129 of 240 are RELEASED** — no longer held out once the duplicate
+  collapses to one rest. Of the 153 bars in the 240 with exactly two
+  subjects, 134 show the intended pattern (exactly one glyph refused, one
+  survives); 19 disagree with my rule entirely (their two subjects are not
+  geometrically overlapping under this measurement) and are left as-is.
+* **111 of 240 are STILL held out** — the duplicate was real and is now
+  collapsed, but the bar has a SECOND, independent problem (e.g.
+  `cell/4/0/0/0`: want 3.0q, reads 4.0q even after the collapse — an extra
+  event elsewhere in the same bar). The funnel's own "most-specific-first"
+  classification named ONE cause per bar; a bar can have two.
+* **65 bars NOT in the original 240 became NEWLY held out.** These are
+  bars where a duplicate (usually a disagreeing pair, which removes BOTH
+  readings rather than collapsing to one) was previously providing enough
+  duration, by accident, to make the bar's sum match the meter it was
+  being judged against. Removing the accidental padding reveals the bar
+  does not actually add up — the check catching something the double-count
+  was hiding, not a regression. `154 released − 65 newly held = 89 net`,
+  matching `bars_held_out_sum`'s own base→arm delta.
+
+This gate is NOT "0 of the 240 still hold out" (ROADMAP 2.15's own gate,
+written before this measurement) — it is roughly half of them, because a
+Brahms bar's held-out reasons compound (§13) and this item fixes exactly
+one of them. The gate that DOES hold: **every one of the 882 refused
+glyphs is a real duplicate box, confirmed by IoU and, for 8 of them, by a
+printed crop**, and 2.8's control never breaks.
+
+### §14f. Tests, RED → GREEN
+
+`tools/omr/tests/test_staged_duplicate_rest.py`, run RED against
+`family_precision.py` before this branch's edit (git-stashed, re-run,
+restored): 4 of 8 fail — the two adjudicator tests that assert a REFUSAL
+(same-class collapse, different-class both-refused), the 3-way cluster
+test, and the `detail["duplicate_of"]` test. The other 4 (the disjoint
+control, both export fixtures) pass unchanged, which is correct — they
+exercise `export._place_notes`'s existing, already-shipped consumer of
+`Q.REST_IS_NOT_A_REST`, not this branch's new rule. GREEN: 8/8. No test
+asserts on module source text.
+
+### §14g. Landing
+
+`python3 -m pytest tools/omr/tests -m "not slow" -q`: **3,460 passed, 3
+skipped**, 0 failed (`out/pytest-fast-r215.txt`). `python3 -m
+tools.omr.staged.check`: **251 open findings**, identical to the tree
+before this branch (`source_text_tests` moves 216→217 test files scanned,
+`open=46` unchanged — the new test file adds no source-text assertion).
+
+### §14h. What contradicted this brief
+
+The named example's boxes do not "overlap substantially" (IoU 0.16, §14a).
+The mechanism is not one NMS-miss on identical boxes but TWO geometrically
+distinct causes (§14b), plus a third (a staff line crossing a rest,
+misclassified) neither the brief nor this lane's first pass anticipated.
+The 240-bar gate does not clear to 0 — 111 stay held for reasons this item
+does not touch, and 65 bars elsewhere become newly (and correctly) held
+out. The measurement instrument itself (verdict supersession) had to be
+fixed before any of the above could be trusted — the same bug class
+CLAUDE.md already names four times over, found a fifth time here on the
+engraved control specifically because it is the one document clean enough
+to show 214 fake findings as 214, not as noise inside a real signal.

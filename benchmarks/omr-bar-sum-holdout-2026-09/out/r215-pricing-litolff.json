@@ -1,0 +1,1073 @@
+{
+ "report": {
+  "label": "litolff",
+  "duplicates_refused": 111,
+  "duplicates_by_reason": {
+   "rest_is_a_duplicate_box": 111
+  },
+  "base": {
+   "bars_held_out_sum": 1879,
+   "written_notes": 3627,
+   "written_rests": 565,
+   "written_measure_rests": 1040,
+   "notes_not_written_total": 9559
+  },
+  "arm": {
+   "bars_held_out_sum": 1867,
+   "written_notes": 3656,
+   "written_rests": 574,
+   "written_measure_rests": 1040,
+   "notes_not_written_total": 9523,
+   "not_a_rest_duplicate_box": 111
+  }
+ },
+ "changed": [
+  {
+   "subject": "glyph/1/0/10/0/15",
+   "reason": "rest_is_a_duplicate_box",
+   "detail": {
+    "class": "restQuarter",
+    "duplicate_of": "obs:001662"
+   },
+   "old": null
+  },
+  {
+   "subject": "glyph/1/0/11/15/2",
+   "reason": "rest_is_a_duplicate_box",
+   "detail": {
+    "class": "restWhole",
+    "duplicate_of": "obs:001945"
+   },
+   "old": null
+  },
+  {
+   "subject": "glyph/2/0/0/12/2",
+   "reason": "rest_is_a_duplicate_box",
+   "detail": {
+    "class": "restWhole",
+    "duplicate_of": "obs:004402"
+   },
+   "old": null
+  },
+  {
+   "subject": "glyph/2/0/4/14/6",
+   "reason": "rest_is_a_duplicate_box",
+   "detail": {
+    "class": "restWhole",
+    "duplicate_of": "obs:005462"
+   },
+   "old": null
+  },
+  {
+   "subject": "glyph/2/0/6/15/2",
+   "reason": "rest_is_a_duplicate_box",
+   "detail": {
+    "class": "restWhole",
+    "duplicate_of": "obs:005918"
+   },
+   "old": null
+  },
+  {
+   "subject": "glyph/2/0/8/8/7",
+   "reason": "rest_is_a_duplicate_box",
+   "detail": {
+    "class": "rest8th",
+    "duplicate_of": "obs:006439"
+   },
+   "old": null
+  },
+  {
+   "subject": "glyph/2/1/0/1/3",
+   "reason": "rest_is_a_duplicate_box",
+   "detail": {
+    "class": "restWhole",
+    "duplicate_of": "obs:007166"
+   },
+   "old": null
+  },
+  {
+   "subject": "glyph/2/1/4/4/9",
+   "reason": "rest_is_a_duplicate_box",
+   "detail": {
+    "class": "restQuarter",
+    "duplicate_of": "obs:008298"
+   },
+   "old": null
+  },
+  {
+   "subject": "glyph/2/1/5/0/4",
+   "reason": "rest_is_a_duplicate_box",
+   "detail": {
+    "class": "restWhole",
+    "duplicate_of": "obs:008464"
+   },
+   "old": null
+  },
+  {
+   "subject": "glyph/2/1/5/11/1",
+   "reason": "rest_is_a_duplicate_box",
+   "detail": {
+    "class": "restWhole",
+    "duplicate_of": "obs:008588"
+   },
+   "old": null
+  },
+  {
+   "subject": "glyph/2/1/6/13/5",
+   "reason": "rest_is_a_duplicate_box",
+   "detail": {
+    "class": "restQuarter",
+    "duplicate_disagrees_with": [
+     "obs:008937"
+    ]
+   },
+   "old": null
+  },
+  {
+   "subject": "glyph/2/1/6/13/8",
+   "reason": "rest_is_a_duplicate_box",
+   "detail": {
+    "class": "restWhole",
+    "duplicate_disagrees_with": [
+     "obs:008930"
+    ]
+   },
+   "old": null
+  },
+  {
+   "subject": "glyph/2/1/10/0/15",
+   "reason": "rest_is_a_duplicate_box",
+   "detail": {
+    "class": "restWhole",
+    "duplicate_of": "obs:010330"
+   },
+   "old": null
+  },
+  {
+   "subject": "glyph/3/0/5/11/4",
+   "reason": "rest_is_a_duplicate_box",
+   "detail": {
+    "class": "restQuarter",
+    "duplicate_of": "obs:017971"
+   },
+   "old": null
+  },
+  {
+   "subject": "glyph/3/0/10/9/2",
+   "reason": "rest_is_a_duplicate_box",
+   "detail": {
+    "class": "restQuarter",
+    "duplicate_of": "obs:019363"
+   },
+   "old": null
+  },
+  {
+   "subject": "glyph/4/0/10/7/2",
+   "reason": "rest_is_a_duplicate_box",
+   "detail": {
+    "class": "rest8th",
+    "duplicate_disagrees_with": [
+     "obs:028572"
+    ]
+   },
+   "old": null
+  },
+  {
+   "subject": "glyph/4/0/10/7/11",
+   "reason": "rest_is_a_duplicate_box",
+   "detail": {
+    "class": "rest16th",
+    "duplicate_disagrees_with": [
+     "obs:028552"
+    ]
+   },
+   "old": null
+  },
+  {
+   "subject": "glyph/4/1/0/8/7",
+   "reason": "rest_is_a_duplicate_box",
+   "detail": {
+    "class": "restQuarter",
+    "duplicate_of": "obs:028907"
+   },
+   "old": null
+  },
+  {
+   "subject": "glyph/4/1/0/8/8",
+   "reason": "rest_is_a_duplicate_box",
+   "detail": {
+    "class": "restQuarter",
+    "duplicate_of": "obs:028909"
+   },
+   "old": null
+  },
+  {
+   "subject": "glyph/5/1/3/0/6",
+   "reason": "rest_is_a_duplicate_box",
+   "detail": {
+    "class": "restWhole",
+    "duplicate_of": "obs:042170"
+   },
+   "old": null
+  },
+  {
+   "subject": "glyph/6/0/0/1/2",
+   "reason": "rest_is_a_duplicate_box",
+   "detail": {
+    "class": "restWhole",
+    "duplicate_of": "obs:046567"
+   },
+   "old": null
+  },
+  {
+   "subject": "glyph/6/1/2/3/10",
+   "reason": "rest_is_a_duplicate_box",
+   "detail": {
+    "class": "restQuarter",
+    "duplicate_of": "obs:049786"
+   },
+   "old": null
+  },
+  {
+   "subject": "glyph/6/1/2/3/12",
+   "reason": "rest_is_a_duplicate_box",
+   "detail": {
+    "class": "restQuarter",
+    "duplicate_of": "obs:049793"
+   },
+   "old": null
+  },
+  {
+   "subject": "glyph/7/0/0/10/1",
+   "reason": "rest_is_a_duplicate_box",
+   "detail": {
+    "class": "restWhole",
+    "duplicate_of": "obs:058324"
+   },
+   "old": null
+  },
+  {
+   "subject": "glyph/7/0/0/14/2",
+   "reason": "rest_is_a_duplicate_box",
+   "detail": {
+    "class": "restWhole",
+    "duplicate_of": "obs:058338"
+   },
+   "old": null
+  },
+  {
+   "subject": "glyph/7/0/4/3/3",
+   "reason": "rest_is_a_duplicate_box",
+   "detail": {
+    "class": "restQuarter",
+    "duplicate_disagrees_with": [
+     "obs:059471"
+    ]
+   },
+   "old": null
+  },
+  {
+   "subject": "glyph/7/0/4/3/6",
+   "reason": "rest_is_a_duplicate_box",
+   "detail": {
+    "class": "restHalf",
+    "duplicate_disagrees_with": [
+     "obs:059465"
+    ]
+   },
+   "old": null
+  },
+  {
+   "subject": "glyph/7/0/4/5/6",
+   "reason": "rest_is_a_duplicate_box",
+   "detail": {
+    "class": "restQuarter",
+    "duplicate_of": "obs:059516"
+   },
+   "old": null
+  },
+  {
+   "subject": "glyph/7/0/4/7/2",
+   "reason": "rest_is_a_duplicate_box",
+   "detail": {
+    "class": "restWhole",
+    "duplicate_of": "obs:059539"
+   },
+   "old": null
+  },
+  {
+   "subject": "glyph/7/0/4/8/3",
+   "reason": "rest_is_a_duplicate_box",
+   "detail": {
+    "class": "restWhole",
+    "duplicate_of": "obs:059546"
+   },
+   "old": null
+  },
+  {
+   "subject": "glyph/7/0/4/16/4",
+   "reason": "rest_is_a_duplicate_box",
+   "detail": {
+    "class": "restWhole",
+    "duplicate_of": "obs:059605"
+   },
+   "old": null
+  },
+  {
+   "subject": "glyph/7/0/7/0/19",
+   "reason": "rest_is_a_duplicate_box",
+   "detail": {
+    "class": "restQuarter",
+    "duplicate_of": "obs:060236"
+   },
+   "old": null
+  },
+  {
+   "subject": "glyph/7/0/9/0/13",
+   "reason": "rest_is_a_duplicate_box",
+   "detail": {
+    "class": "rest16th",
+    "duplicate_disagrees_with": [
+     "obs:061070"
+    ]
+   },
+   "old": null
+  },
+  {
+   "subject": "glyph/7/0/9/0/20",
+   "reason": "rest_is_a_duplicate_box",
+   "detail": {
+    "class": "rest32nd",
+    "duplicate_disagrees_with": [
+     "obs:061054"
+    ]
+   },
+   "old": null
+  },
+  {
+   "subject": "glyph/7/0/9/15/3",
+   "reason": "rest_is_a_duplicate_box",
+   "detail": {
+    "class": "rest32nd",
+    "duplicate_disagrees_with": [
+     "obs:061334"
+    ]
+   },
+   "old": null
+  },
+  {
+   "subject": "glyph/7/0/9/15/9",
+   "reason": "rest_is_a_duplicate_box",
+   "detail": {
+    "class": "rest16th",
+    "duplicate_disagrees_with": [
+     "obs:061322"
+    ]
+   },
+   "old": null
+  },
+  {
+   "subject": "glyph/7/1/1/3/2",
+   "reason": "rest_is_a_duplicate_box",
+   "detail": {
+    "class": "restWhole",
+    "duplicate_of": "obs:061857"
+   },
+   "old": null
+  },
+  {
+   "subject": "glyph/7/1/1/15/1",
+   "reason": "rest_is_a_duplicate_box",
+   "detail": {
+    "class": "restWhole",
+    "duplicate_of": "obs:061973"
+   },
+   "old": null
+  },
+  {
+   "subject": "glyph/7/1/2/15/1",
+   "reason": "rest_is_a_duplicate_box",
+   "detail": {
+    "class": "restWhole",
+    "duplicate_of": "obs:062196"
+   },
+   "old": null
+  },
+  {
+   "subject": "glyph/7/1/6/5/2",
+   "reason": "rest_is_a_duplicate_box",
+   "detail": {
+    "class": "restWhole",
+    "duplicate_of": "obs:062757"
+   },
+   "old": null
+  },
+  {
+   "subject": "glyph/7/1/9/17/1",
+   "reason": "rest_is_a_duplicate_box",
+   "detail": {
+    "class": "restWhole",
+    "duplicate_of": "obs:063563"
+   },
+   "old": null
+  },
+  {
+   "subject": "glyph/7/1/10/16/1",
+   "reason": "rest_is_a_duplicate_box",
+   "detail": {
+    "class": "restWhole",
+    "duplicate_of": "obs:063710"
+   },
+   "old": null
+  },
+  {
+   "subject": "glyph/8/0/0/1/1",
+   "reason": "rest_is_a_duplicate_box",
+   "detail": {
+    "class": "restWhole",
+    "duplicate_of": "obs:069628"
+   },
+   "old": null
+  },
+  {
+   "subject": "glyph/8/0/1/0/9",
+   "reason": "rest_is_a_duplicate_box",
+   "detail": {
+    "class": "restWhole",
+    "duplicate_of": "obs:069917"
+   },
+   "old": null
+  },
+  {
+   "subject": "glyph/8/0/5/10/3",
+   "reason": "rest_is_a_duplicate_box",
+   "detail": {
+    "class": "rest32nd",
+    "duplicate_disagrees_with": [
+     "obs:070941"
+    ]
+   },
+   "old": null
+  },
+  {
+   "subject": "glyph/8/0/5/10/5",
+   "reason": "rest_is_a_duplicate_box",
+   "detail": {
+    "class": "rest16th",
+    "duplicate_disagrees_with": [
+     "obs:070936"
+    ]
+   },
+   "old": null
+  },
+  {
+   "subject": "glyph/8/0/7/21/2",
+   "reason": "rest_is_a_duplicate_box",
+   "detail": {
+    "class": "restWhole",
+    "duplicate_of": "obs:071739"
+   },
+   "old": null
+  },
+  {
+   "subject": "glyph/8/1/3/0/15",
+   "reason": "rest_is_a_duplicate_box",
+   "detail": {
+    "class": "rest8th",
+    "duplicate_of": "obs:073281"
+   },
+   "old": null
+  },
+  {
+   "subject": "glyph/8/1/5/14/2",
+   "reason": "rest_is_a_duplicate_box",
+   "detail": {
+    "class": "restWhole",
+    "duplicate_of": "obs:074061"
+   },
+   "old": null
+  },
+  {
+   "subject": "glyph/9/0/6/3/9",
+   "reason": "rest_is_a_duplicate_box",
+   "detail": {
+    "class": "rest8th",
+    "duplicate_disagrees_with": [
+     "obs:082513"
+    ]
+   },
+   "old": null
+  },
+  {
+   "subject": "glyph/9/0/6/3/12",
+   "reason": "rest_is_a_duplicate_box",
+   "detail": {
+    "class": "restWhole",
+    "duplicate_disagrees_with": [
+     "obs:082507"
+    ]
+   },
+   "old": null
+  },
+  {
+   "subject": "glyph/9/0/9/6/8",
+   "reason": "rest_is_a_duplicate_box",
+   "detail": {
+    "class": "restQuarter",
+    "duplicate_of": "obs:083210"
+   },
+   "old": null
+  },
+  {
+   "subject": "glyph/9/1/0/10/1",
+   "reason": "rest_is_a_duplicate_box",
+   "detail": {
+    "class": "restWhole",
+    "duplicate_of": "obs:083789"
+   },
+   "old": null
+  },
+  {
+   "subject": "glyph/9/1/1/7/2",
+   "reason": "rest_is_a_duplicate_box",
+   "detail": {
+    "class": "restWhole",
+    "duplicate_of": "obs:083931"
+   },
+   "old": null
+  },
+  {
+   "subject": "glyph/9/1/6/11/6",
+   "reason": "rest_is_a_duplicate_box",
+   "detail": {
+    "class": "restHalf",
+    "duplicate_disagrees_with": [
+     "obs:084742"
+    ]
+   },
+   "old": null
+  },
+  {
+   "subject": "glyph/9/1/6/11/7",
+   "reason": "rest_is_a_duplicate_box",
+   "detail": {
+    "class": "restWhole",
+    "duplicate_disagrees_with": [
+     "obs:084740"
+    ]
+   },
+   "old": null
+  },
+  {
+   "subject": "glyph/9/1/9/7/2",
+   "reason": "rest_is_a_duplicate_box",
+   "detail": {
+    "class": "restWhole",
+    "duplicate_of": "obs:085400"
+   },
+   "old": null
+  },
+  {
+   "subject": "glyph/10/0/0/2/3",
+   "reason": "rest_is_a_duplicate_box",
+   "detail": {
+    "class": "restWhole",
+    "duplicate_of": "obs:089796"
+   },
+   "old": null
+  },
+  {
+   "subject": "glyph/10/0/0/11/5",
+   "reason": "rest_is_a_duplicate_box",
+   "detail": {
+    "class": "rest8th",
+    "duplicate_disagrees_with": [
+     "obs:089901"
+    ]
+   },
+   "old": null
+  },
+  {
+   "subject": "glyph/10/0/0/11/6",
+   "reason": "rest_is_a_duplicate_box",
+   "detail": {
+    "class": "rest16th",
+    "duplicate_disagrees_with": [
+     "obs:089899"
+    ]
+   },
+   "old": null
+  },
+  {
+   "subject": "glyph/10/0/1/6/6",
+   "reason": "rest_is_a_duplicate_box",
+   "detail": {
+    "class": "rest8th",
+    "duplicate_of": "obs:090056"
+   },
+   "old": null
+  },
+  {
+   "subject": "glyph/10/1/5/13/1",
+   "reason": "rest_is_a_duplicate_box",
+   "detail": {
+    "class": "restWhole",
+    "duplicate_of": "obs:094057"
+   },
+   "old": null
+  },
+  {
+   "subject": "glyph/10/1/8/14/4",
+   "reason": "rest_is_a_duplicate_box",
+   "detail": {
+    "class": "restQuarter",
+    "duplicate_of": "obs:095028"
+   },
+   "old": null
+  },
+  {
+   "subject": "glyph/11/0/1/6/1",
+   "reason": "rest_is_a_duplicate_box",
+   "detail": {
+    "class": "restWhole",
+    "duplicate_of": "obs:101321"
+   },
+   "old": null
+  },
+  {
+   "subject": "glyph/11/0/4/15/3",
+   "reason": "rest_is_a_duplicate_box",
+   "detail": {
+    "class": "restWhole",
+    "duplicate_of": "obs:102052"
+   },
+   "old": null
+  },
+  {
+   "subject": "glyph/11/0/4/16/3",
+   "reason": "rest_is_a_duplicate_box",
+   "detail": {
+    "class": "restWhole",
+    "duplicate_of": "obs:102061"
+   },
+   "old": null
+  },
+  {
+   "subject": "glyph/11/0/7/10/3",
+   "reason": "rest_is_a_duplicate_box",
+   "detail": {
+    "class": "restWhole",
+    "duplicate_of": "obs:102463"
+   },
+   "old": null
+  },
+  {
+   "subject": "glyph/11/0/8/2/1",
+   "reason": "rest_is_a_duplicate_box",
+   "detail": {
+    "class": "restWhole",
+    "duplicate_of": "obs:102533"
+   },
+   "old": null
+  },
+  {
+   "subject": "glyph/11/0/8/10/2",
+   "reason": "rest_is_a_duplicate_box",
+   "detail": {
+    "class": "restWhole",
+    "duplicate_of": "obs:102584"
+   },
+   "old": null
+  },
+  {
+   "subject": "glyph/11/1/0/5/8",
+   "reason": "rest_is_a_duplicate_box",
+   "detail": {
+    "class": "restQuarter",
+    "duplicate_of": "obs:102729"
+   },
+   "old": null
+  },
+  {
+   "subject": "glyph/11/1/0/11/2",
+   "reason": "rest_is_a_duplicate_box",
+   "detail": {
+    "class": "restWhole",
+    "duplicate_of": "obs:102800"
+   },
+   "old": null
+  },
+  {
+   "subject": "glyph/11/1/1/3/1",
+   "reason": "rest_is_a_duplicate_box",
+   "detail": {
+    "class": "restWhole",
+    "duplicate_of": "obs:102863"
+   },
+   "old": null
+  },
+  {
+   "subject": "glyph/11/1/1/16/2",
+   "reason": "rest_is_a_duplicate_box",
+   "detail": {
+    "class": "restWhole",
+    "duplicate_of": "obs:102928"
+   },
+   "old": null
+  },
+  {
+   "subject": "glyph/11/1/8/12/4",
+   "reason": "rest_is_a_duplicate_box",
+   "detail": {
+    "class": "restQuarter",
+    "duplicate_of": "obs:104077"
+   },
+   "old": null
+  },
+  {
+   "subject": "glyph/11/1/8/13/11",
+   "reason": "rest_is_a_duplicate_box",
+   "detail": {
+    "class": "rest8th",
+    "duplicate_of": "obs:104091"
+   },
+   "old": null
+  },
+  {
+   "subject": "glyph/12/0/5/7/5",
+   "reason": "rest_is_a_duplicate_box",
+   "detail": {
+    "class": "restQuarter",
+    "duplicate_of": "obs:110508"
+   },
+   "old": null
+  },
+  {
+   "subject": "glyph/12/0/9/14/22",
+   "reason": "rest_is_a_duplicate_box",
+   "detail": {
+    "class": "restQuarter",
+    "duplicate_of": "obs:112168"
+   },
+   "old": null
+  },
+  {
+   "subject": "glyph/12/0/10/11/7",
+   "reason": "rest_is_a_duplicate_box",
+   "detail": {
+    "class": "restQuarter",
+    "duplicate_of": "obs:112507"
+   },
+   "old": null
+  },
+  {
+   "subject": "glyph/12/0/10/11/8",
+   "reason": "rest_is_a_duplicate_box",
+   "detail": {
+    "class": "restQuarter",
+    "duplicate_of": "obs:112513"
+   },
+   "old": null
+  },
+  {
+   "subject": "glyph/12/0/11/4/5",
+   "reason": "rest_is_a_duplicate_box",
+   "detail": {
+    "class": "restQuarter",
+    "duplicate_of": "obs:112667"
+   },
+   "old": null
+  },
+  {
+   "subject": "glyph/12/1/0/6/14",
+   "reason": "rest_is_a_duplicate_box",
+   "detail": {
+    "class": "restQuarter",
+    "duplicate_of": "obs:113062"
+   },
+   "old": null
+  },
+  {
+   "subject": "glyph/12/1/0/7/5",
+   "reason": "rest_is_a_duplicate_box",
+   "detail": {
+    "class": "restQuarter",
+    "duplicate_of": "obs:113077"
+   },
+   "old": null
+  },
+  {
+   "subject": "glyph/12/1/2/2/11",
+   "reason": "rest_is_a_duplicate_box",
+   "detail": {
+    "class": "restQuarter",
+    "duplicate_of": "obs:113686"
+   },
+   "old": null
+  },
+  {
+   "subject": "glyph/12/1/2/5/5",
+   "reason": "rest_is_a_duplicate_box",
+   "detail": {
+    "class": "restWhole",
+    "duplicate_of": "obs:113730"
+   },
+   "old": null
+  },
+  {
+   "subject": "glyph/12/1/4/9/2",
+   "reason": "rest_is_a_duplicate_box",
+   "detail": {
+    "class": "restWhole",
+    "duplicate_of": "obs:114482"
+   },
+   "old": null
+  },
+  {
+   "subject": "glyph/13/0/4/3/4",
+   "reason": "rest_is_a_duplicate_box",
+   "detail": {
+    "class": "rest8th",
+    "duplicate_of": "obs:124694"
+   },
+   "old": null
+  },
+  {
+   "subject": "glyph/13/0/9/0/9",
+   "reason": "rest_is_a_duplicate_box",
+   "detail": {
+    "class": "restQuarter",
+    "duplicate_of": "obs:126420"
+   },
+   "old": null
+  },
+  {
+   "subject": "glyph/14/0/4/6/3",
+   "reason": "rest_is_a_duplicate_box",
+   "detail": {
+    "class": "restWhole",
+    "duplicate_of": "obs:137709"
+   },
+   "old": null
+  },
+  {
+   "subject": "glyph/14/0/7/0/5",
+   "reason": "rest_is_a_duplicate_box",
+   "detail": {
+    "class": "rest8th",
+    "duplicate_of": "obs:138127"
+   },
+   "old": null
+  },
+  {
+   "subject": "glyph/14/0/7/5/1",
+   "reason": "rest_is_a_duplicate_box",
+   "detail": {
+    "class": "restWhole",
+    "duplicate_of": "obs:138257"
+   },
+   "old": null
+  },
+  {
+   "subject": "glyph/14/0/8/1/5",
+   "reason": "rest_is_a_duplicate_box",
+   "detail": {
+    "class": "restWhole",
+    "duplicate_of": "obs:138511"
+   },
+   "old": null
+  },
+  {
+   "subject": "glyph/14/1/4/4/3",
+   "reason": "rest_is_a_duplicate_box",
+   "detail": {
+    "class": "restQuarter",
+    "duplicate_of": "obs:140625"
+   },
+   "old": null
+  },
+  {
+   "subject": "glyph/14/1/4/5/1",
+   "reason": "rest_is_a_duplicate_box",
+   "detail": {
+    "class": "restQuarter",
+    "duplicate_disagrees_with": [
+     "obs:140636"
+    ]
+   },
+   "old": null
+  },
+  {
+   "subject": "glyph/14/1/4/5/2",
+   "reason": "rest_is_a_duplicate_box",
+   "detail": {
+    "class": "restWhole",
+    "duplicate_disagrees_with": [
+     "obs:140634"
+    ]
+   },
+   "old": null
+  },
+  {
+   "subject": "glyph/15/0/6/7/6",
+   "reason": "rest_is_a_duplicate_box",
+   "detail": {
+    "class": "restQuarter",
+    "duplicate_of": "obs:150523"
+   },
+   "old": null
+  },
+  {
+   "subject": "glyph/15/0/10/6/3",
+   "reason": "rest_is_a_duplicate_box",
+   "detail": {
+    "class": "restQuarter",
+    "duplicate_of": "obs:152048"
+   },
+   "old": null
+  },
+  {
+   "subject": "glyph/15/1/1/8/12",
+   "reason": "rest_is_a_duplicate_box",
+   "detail": {
+    "class": "restQuarter",
+    "duplicate_of": "obs:152930"
+   },
+   "old": null
+  },
+  {
+   "subject": "glyph/15/1/7/0/5",
+   "reason": "rest_is_a_duplicate_box",
+   "detail": {
+    "class": "rest8th",
+    "duplicate_of": "obs:154909"
+   },
+   "old": null
+  },
+  {
+   "subject": "glyph/15/1/8/0/5",
+   "reason": "rest_is_a_duplicate_box",
+   "detail": {
+    "class": "rest8th",
+    "duplicate_of": "obs:155239"
+   },
+   "old": null
+  },
+  {
+   "subject": "glyph/16/0/0/10/2",
+   "reason": "rest_is_a_duplicate_box",
+   "detail": {
+    "class": "restWhole",
+    "duplicate_of": "obs:163287"
+   },
+   "old": null
+  },
+  {
+   "subject": "glyph/16/0/0/12/1",
+   "reason": "rest_is_a_duplicate_box",
+   "detail": {
+    "class": "restWhole",
+    "duplicate_of": "obs:163297"
+   },
+   "old": null
+  },
+  {
+   "subject": "glyph/16/0/0/14/3",
+   "reason": "rest_is_a_duplicate_box",
+   "detail": {
+    "class": "restWhole",
+    "duplicate_of": "obs:163324"
+   },
+   "old": null
+  },
+  {
+   "subject": "glyph/16/0/1/4/6",
+   "reason": "rest_is_a_duplicate_box",
+   "detail": {
+    "class": "rest8th",
+    "duplicate_of": "obs:163452"
+   },
+   "old": null
+  },
+  {
+   "subject": "glyph/16/0/3/15/4",
+   "reason": "rest_is_a_duplicate_box",
+   "detail": {
+    "class": "restWhole",
+    "duplicate_of": "obs:164249"
+   },
+   "old": null
+  },
+  {
+   "subject": "glyph/16/0/6/6/6",
+   "reason": "rest_is_a_duplicate_box",
+   "detail": {
+    "class": "rest8th",
+    "duplicate_disagrees_with": [
+     "obs:164731"
+    ]
+   },
+   "old": null
+  },
+  {
+   "subject": "glyph/16/0/6/6/9",
+   "reason": "rest_is_a_duplicate_box",
+   "detail": {
+    "class": "restQuarter",
+    "duplicate_disagrees_with": [
+     "obs:164725"
+    ]
+   },
+   "old": null
+  },
+  {
+   "subject": "glyph/16/0/10/10/2",
+   "reason": "rest_is_a_duplicate_box",
+   "detail": {
+    "class": "restWhole",
+    "duplicate_of": "obs:165731"
+   },
+   "old": null
+  },
+  {
+   "subject": "glyph/16/1/0/7/12",
+   "reason": "rest_is_a_duplicate_box",
+   "detail": {
+    "class": "rest8th",
+    "duplicate_of": "obs:166018"
+   },
+   "old": null
+  },
+  {
+   "subject": "glyph/16/1/3/3/2",
+   "reason": "rest_is_a_duplicate_box",
+   "detail": {
+    "class": "rest16th",
+    "duplicate_disagrees_with": [
+     "obs:167002"
+    ]
+   },
+   "old": null
+  },
+  {
+   "subject": "glyph/16/1/3/3/11",
+   "reason": "rest_is_a_duplicate_box",
+   "detail": {
+    "class": "rest32nd",
+    "duplicate_disagrees_with": [
+     "obs:166981"
+    ]
+   },
+   "old": null
+  },
+  {
+   "subject": "glyph/16/1/10/4/2",
+   "reason": "rest_is_a_duplicate_box",
+   "detail": {
+    "class": "restWhole",
+    "duplicate_of": "obs:168921"
+   },
+   "old": null
+  }
+ ]
+}

@@ -1,0 +1,29 @@
+{
+  "subject": "glyph/1/0/11/15/2",
+  "sibling": "glyph/1/0/11/15/1",
+  "cause": "rest_is_a_duplicate_box",
+  "kind": "collapse",
+  "reason": "rest_is_a_duplicate_box",
+  "detail": {
+    "class": "restWhole",
+    "duplicate_of": "obs:001945"
+  },
+  "class_a": "restWhole",
+  "class_b": "restWhole",
+  "score_a": 0.3716830313205719,
+  "score_b": 0.5002574920654297,
+  "bbox_page_px_a": [
+    2467.12,
+    3104.04,
+    2524.4,
+    3112.04
+  ],
+  "bbox_page_px_b": [
+    2499.44,
+    3108.52,
+    2522.64,
+    3114.44
+  ],
+  "file": "r215-litolff-collapse-glyph-1-0-11-15-2.png",
+  "VERDICT_none_yet": null
+}
