@@ -36,6 +36,13 @@ they are what says this battery does not pass by refusing everything:
   2.12e's whole gate** (*zero durations move*) and it passes on both trees;
 * `test_a_note_with_NO_flag_carries_no_flag_direction_key_at_all`.
 
+⚠️ **THAT SPLIT IS A RECORD OF THIS FILE AS IT STOOD ON 2026-09-23 BEFORE
+2.12b-cal, AND IT NO LONGER REPRODUCES** — the item rewrote two of the
+fixtures and `REST_SLOT_SLACK` is gone. The RED record that reproduces today
+is 2.12b-cal's, in `TestTheBandsCameFromThePlate`'s own docstring: restore
+`rhythm.py` from `dd64da6a` and this file is **9 failed, 25 passed**. Both are
+kept, because a RED record is evidence about the day it was run.
+
 Of the 19 reds, three fail because `HALF_REST_STEP`, `REST_SLOT_SLACK` and
 `_REST_SLOT_BY_CLASS` do not exist there at all, and the rest because the
 verdict is DECIDED where it must narrow or abstain, or because the detail the
@@ -119,9 +126,28 @@ class TestTheTwoSlotsAreOneLineApart(unittest.TestCase):
         """⚠️ ONE CONSTANT, NOT TWO. The convention's entire content is *the
         same rectangle, one line apart*; two independently typed constants
         would be free to drift into a gap that is not one line, and the gap is
-        what `REST_SLOT_SLACK` is the midpoint of."""
+        the one number this rule stands on."""
         self.assertEqual(rhythm.HALF_REST_STEP, rhythm.WHOLE_REST_STEP - 1.0)
-        self.assertEqual(rhythm.REST_SLOT_SLACK,
+
+    def test_the_tolerance_is_MEASURED_and_is_NOT_half_the_gap(self):
+        """⚠️⚠️ ROADMAP 2.12b-cal. 2.12b's slack was half the distance between
+        the two slots — a statement about the CONVENTION, not about these
+        plates — and Sean adjudicated ten of the rows it fired on: **ten of
+        ten are whole rests**, at steps 4.16–4.713. This assertion is the
+        guard against a quiet slide back to the nominal midpoint."""
+        gap = abs(rhythm.WHOLE_REST_STEP - rhythm.HALF_REST_STEP)
+        self.assertGreater(rhythm.REST_SLOT_TOLERANCE_WHOLE, gap / 2.0)
+        self.assertGreater(rhythm.REST_SLOT_TOLERANCE_WHOLE, gap)
+
+    def test_the_two_tolerances_are_SEPARATE_because_one_is_unmeasured(self):
+        """⚠️ THE HALF REST'S TOLERANCE IS NOT THE WHOLE REST'S, and the two
+        constants exist so the record can say which is which. These plates
+        print `restHalf` 44 times against 3,918 `restWhole` and only 3 of the
+        44 stand inside the staff they are filed on, so there is nothing to
+        measure on that side and the convention's own midpoint stays."""
+        self.assertNotEqual(rhythm.REST_SLOT_TOLERANCE_WHOLE,
+                            rhythm.REST_SLOT_TOLERANCE_HALF)
+        self.assertEqual(rhythm.REST_SLOT_TOLERANCE_HALF,
                          abs(rhythm.WHOLE_REST_STEP
                              - rhythm.HALF_REST_STEP) / 2.0)
 
@@ -185,12 +211,21 @@ class TestARestsValueComesFromTheLineItHangsOn(unittest.TestCase):
         # value is on the verdict at all, so EXPORT has nothing to argmax.
         self.assertIsNone(v.value)
 
-    def test_a_restWhole_SITTING_on_line_3_is_narrowed(self):
+    def test_a_restWhole_BELOW_its_measured_band_is_narrowed(self):
         """The mirror, so the rule cannot be passing by always preferring the
-        whole rest — which is the value a plate prints far more of."""
+        whole rest — which is the value a plate prints far more of.
+
+        ⚠️ ROADMAP 2.12b-cal MOVED THIS FIXTURE AND THE MOVE IS THE FINDING.
+        It used to stand a `restWhole` on the half rest's own slot, and that
+        row is now DECIDED whole — because Sean adjudicated ten real rests
+        standing there and all ten ARE whole rests. The case the geometry can
+        still speak to is a rest a full step below even that, which is what
+        this fixture is: the band's lower edge minus a third of a step."""
+        step = (rhythm.WHOLE_REST_STEP - rhythm.REST_SLOT_TOLERANCE_WHOLE
+                - 0.33)
         log = Log()
         _staff(log)
-        g = _rest_at(log, 0, "restWhole", step=rhythm.HALF_REST_STEP)
+        g = _rest_at(log, 0, "restWhole", step=step)
         v = _duration(log, g)
         self.assertIs(v.outcome, Outcome.NARROWED)
         self.assertEqual(v.detail["slot_prefers"], "restHalf")
@@ -328,6 +363,191 @@ class TestARestsValueComesFromTheLineItHangsOn(unittest.TestCase):
         self.assertIs(v.outcome, Outcome.NARROWED)
         self.assertEqual([c.value["dots"] for c in v.candidates],
                          [v.candidates[0].value["dots"]] * len(v.candidates))
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# 2.12b-cal — the bands come from the plate, not from the nominal line
+# ─────────────────────────────────────────────────────────────────────────────
+
+#: The ten rows Sean adjudicated against the print on 2026-09-23, as their
+#: MEASURED staff steps and the subjects they were measured on.
+#: `benchmarks/omr-shape-role-2026-09/out/print/ADJUDICATION-sean-2026-09-23-
+#: rests.json` — *"they are all whole notes"*, 10 of 10, the detector class
+#: right and the slot geometry wrong.
+#:
+#: ⚠️ THE NUMBERS ARE COPIED IN BECAUSE A TEST MAY NOT READ A BENCHMARK FILE
+#: — a fixture that loads an artefact stops being a fixture and starts being
+#: a second run of the measurement. The subject ids are carried beside them so
+#: any row can be traced back to the crop a human looked at.
+SEAN_ADJUDICATED_WHOLE = (
+    ("glyph/1/0/11/10/3", 4.16),      # beethoven5-litolff p1
+    ("glyph/14/0/5/4/1", 4.58),       # beethoven5-litolff p14
+    ("glyph/2/0/6/4/1", 4.71),        # beethoven5-litolff p2
+    ("glyph/8/0/3/4/3", 4.70),        # beethoven5-litolff p8
+    ("glyph/11/1/7/3/3", 4.713),      # brahms1-breitkopf p11
+    ("glyph/12/1/8/1/5", 4.57),       # brahms1-breitkopf p12
+    ("glyph/20/0/7/8/3", 4.654),      # brahms1-breitkopf p20
+    ("glyph/25/0/1/9/0", 4.57),       # brahms1-breitkopf p25
+    ("glyph/7/0/1/3/0", 4.69),        # brahms1-breitkopf p7
+    ("glyph/8/1/0/0/5", 4.533),       # brahms1-breitkopf p8
+)
+
+
+class TestTheBandsCameFromThePlate(unittest.TestCase):
+    """ROADMAP 2.12b-cal — Sean's ten, and the three outcomes around them.
+
+    ⚠️⚠️ **RUN RED FIRST, AND THE EXACT SPLIT IS RECORDED BECAUSE IT IS THE
+    PROOF.** Restore `rhythm.py` from `dd64da6a` — 2.12b as merged, with its
+    nominal slack of half the gap — and run this FILE: **9 fail, 25 pass**.
+    Six of the nine are in this class: all ten of Sean's rests come out
+    NARROWED rather than DECIDED, neither tolerance constant exists, and the
+    recorded convention detail carries a single `slack_half_steps` key.
+
+    **The three in this class that pass on the unrepaired tree are the
+    controls**, and they are what says the battery does not pass by widening
+    everything: `test_a_restHalf_at_its_bands_centre_is_DECIDED_half`,
+    `test_the_three_outcomes_are_CONTIGUOUS_with_no_gap_between_them` and
+    `test_no_band_has_an_edge_on_the_side_AWAY_from_the_other_slot` — one
+    outcome that must not move, the partition, and the shape of the question.
+    """
+
+    def test_all_ten_of_SEANS_rests_are_DECIDED_whole(self):
+        """⚠️⚠️ THE ITEM, IN ONE ASSERTION. A musician read every one of these
+        ten crops against the print and called all ten whole rests; the rule
+        called all ten a contradiction of their own class. The band that does
+        not decide them is measuring a convention's nominal line rather than
+        this plate."""
+        for subject, step in SEAN_ADJUDICATED_WHOLE:
+            with self.subTest(subject=subject, step=step):
+                log = Log()
+                _staff(log)
+                g = _rest_at(log, 0, "restWhole", step=step)
+                v = _duration(log, g)
+                self.assertIs(v.outcome, Outcome.DECIDED)
+                self.assertEqual(v.value["beats"], 4.0)
+                self.assertTrue(v.value["is_rest"])
+                self.assertEqual(v.reason, "rest_class")
+                # ⚠️ AND THE CLASS IS RECORDED AS AGREEING, not merely
+                # unremarked: the corroboration is the claim this rule makes.
+                self.assertEqual(v.detail["slot_says"],
+                                 rhythm.SLOT_NOT_CONTRADICTED)
+
+    def test_the_lowest_of_SEANS_ten_is_INSIDE_the_band_not_ON_its_edge(self):
+        """⚠️ THE EDGE IS DERIVED FROM 4.16 AND MUST CLEAR IT. A band whose
+        lower edge is exactly the extreme observation narrows the next rest
+        like it — which is the safe direction, but the constant is rounded out
+        for a reason and this is the reason, asserted."""
+        edge = rhythm.WHOLE_REST_STEP - rhythm.REST_SLOT_TOLERANCE_WHOLE
+        lowest = min(step for _s, step in SEAN_ADJUDICATED_WHOLE)
+        self.assertLess(edge, lowest)
+
+    def test_a_restHalf_at_its_bands_centre_is_DECIDED_half(self):
+        """POSITIVE CONTROL IN THE OTHER CLASS. The recalibration widened the
+        WHOLE rest's band downward, and a rule that had quietly swallowed the
+        half rest's slot whole would still pass every assertion above."""
+        log = Log()
+        _staff(log)
+        g = _rest_at(log, 0, "restHalf", step=rhythm.HALF_REST_STEP)
+        v = _duration(log, g)
+        self.assertIs(v.outcome, Outcome.DECIDED)
+        self.assertEqual(v.value["beats"], 2.0)
+        self.assertEqual(v.detail["slot_says"], rhythm.SLOT_NOT_CONTRADICTED)
+
+    def test_a_rest_BELOW_BOTH_bands_abstains_and_names_no_value(self):
+        """⚠️ THE THIRD OUTCOME SURVIVES THE WIDENING, and this is the control
+        that says so. Below the half rest's own band there is no convention
+        left to appeal to, and the class is the guess the ink contradicts —
+        so nothing is decided and nothing is guessed (CLAUDE.md §2 rule 8)."""
+        step = (rhythm.HALF_REST_STEP - rhythm.REST_SLOT_TOLERANCE_WHOLE
+                - 0.5)
+        log = Log()
+        _staff(log)
+        g = _rest_at(log, 0, "restWhole", step=step)
+        v = _duration(log, g)
+        self.assertIs(v.outcome, Outcome.ABSTAINED)
+        self.assertEqual(v.reason, "rest_stands_where_no_rest_hangs")
+        self.assertIsNone(v.value)
+        self.assertEqual(v.detail["slot_says"], rhythm.SLOT_NEITHER)
+
+    def test_the_three_outcomes_are_CONTIGUOUS_with_no_gap_between_them(self):
+        """⚠️ A BAND REWRITE IS WHERE A HOLE GETS LEFT. Walking a `restWhole`
+        down the staff in fortieths of a step must pass DECIDED → NARROWED →
+        ABSTAINED and never return, and every step must get one of the three
+        — a `None` anywhere is a rest the rule silently stopped reading."""
+        seen = []
+        for i in range(0, 401):
+            step = 8.0 - i * 0.02
+            says = rhythm._rest_slot_verdict("restWhole", step)
+            self.assertIsNotNone(says)
+            if not seen or seen[-1][0] != says:
+                seen.append((says, round(step, 2)))
+        self.assertEqual([s for s, _ in seen],
+                         [rhythm.SLOT_NOT_CONTRADICTED, rhythm.SLOT_OTHER,
+                          rhythm.SLOT_NEITHER])
+
+    def test_the_record_says_WHICH_tolerance_was_measured(self):
+        """⚠️ ONE OF THE TWO NUMBERS IS MEASURED HERE AND THE OTHER IS THE
+        CONVENTION'S MIDPOINT, and a record carrying a single `slack` could
+        not say which. A later reader must be able to tell a band derived from
+        3,259 confirmed rests from one derived from three."""
+        log = Log()
+        _staff(log)
+        g = _rest_at(log, 0, "restWhole", step=rhythm.WHOLE_REST_STEP)
+        v = _duration(log, g)
+        conv = v.detail["slot_convention"]
+        self.assertEqual(conv["tolerance_below_whole_half_steps"],
+                         rhythm.REST_SLOT_TOLERANCE_WHOLE)
+        self.assertEqual(conv["tolerance_above_half_half_steps"],
+                         rhythm.REST_SLOT_TOLERANCE_HALF)
+        self.assertAlmostEqual(
+            conv["whole_band_from"],
+            rhythm.WHOLE_REST_STEP - rhythm.REST_SLOT_TOLERANCE_WHOLE)
+        self.assertAlmostEqual(
+            conv["half_band_to"],
+            rhythm.HALF_REST_STEP + rhythm.REST_SLOT_TOLERANCE_HALF)
+
+    def test_no_band_has_an_edge_on_the_side_AWAY_from_the_other_slot(self):
+        """⚠️⚠️ A CONVENTION ARGUMENT, NOT A TOLERANCE ONE. There is no third
+        rest convention above the whole rest's slot or below the half rest's,
+        so ink there is DISPLACED, not AMBIGUOUS — and 111 print-confirmed
+        rests stand outside their own staff altogether, which is
+        `glyph_owner`'s contest and not this decision's. An edge on the far
+        side would turn 2–3% of a confirmed population into abstentions to
+        answer a question nothing asked."""
+        for step in (7.9, 12.0, 40.0):
+            with self.subTest(cls="restWhole", step=step):
+                self.assertEqual(rhythm._rest_slot_verdict("restWhole", step),
+                                 rhythm.SLOT_NOT_CONTRADICTED)
+        for step in (-7.3, -40.0):
+            with self.subTest(cls="restHalf", step=step):
+                self.assertEqual(rhythm._rest_slot_verdict("restHalf", step),
+                                 rhythm.SLOT_NOT_CONTRADICTED)
+
+    def test_a_restHalf_ABOVE_its_band_still_narrows_over_both(self):
+        """POSITIVE CONTROL FOR THE HALF CLASS'S OWN EDGE — the side that was
+        NOT recalibrated. It has to keep firing, or the unmeasured tolerance
+        has quietly become no tolerance at all."""
+        step = rhythm.HALF_REST_STEP + rhythm.REST_SLOT_TOLERANCE_HALF + 0.25
+        self.assertEqual(rhythm._rest_slot_verdict("restHalf", step),
+                         rhythm.SLOT_OTHER)
+        log = Log()
+        _staff(log)
+        g = _rest_at(log, 0, "restHalf", step=step)
+        v = _duration(log, g)
+        self.assertIs(v.outcome, Outcome.NARROWED)
+        self.assertEqual(v.detail["slot_prefers"], "restWhole")
+
+    def test_the_rule_still_CONTRADICTS_something_on_both_scans(self):
+        """⚠️⚠️ THE CONTROL THAT CAN FAIL, AND THE ONE THIS ITEM MOST NEEDS.
+        A recalibration that widens a band can pass every assertion above by
+        going silent everywhere. Measured on the three acceptance records
+        after the change: 39 rows NARROW and 394 ABSTAIN that the nominal band
+        also refused; the arm is not inert. These two fixtures stand where
+        those populations stand."""
+        self.assertEqual(rhythm._rest_slot_verdict("restWhole", 3.5),
+                         rhythm.SLOT_OTHER)
+        self.assertEqual(rhythm._rest_slot_verdict("restWhole", -7.3),
+                         rhythm.SLOT_NEITHER)
 
 
 # ─────────────────────────────────────────────────────────────────────────────

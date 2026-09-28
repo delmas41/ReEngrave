@@ -32,6 +32,10 @@
   <select id="staffPick" title="another staff"></select>
   <span id="frameChip" class="chip hidden"></span>
   <span class="grow"></span>
+  <!-- ⚠️ ROADMAP 3.4h. Sean: *"shouldn't those get erased?"*  They are
+       REFUSED, not erased — the record is append-only — so they are drawn
+       struck through and this hides them only if he asks. DEFAULT SHOWN. -->
+  <button id="hideRefusedBtn" class="toggle">refused: shown</button>
   <span id="saveState" class="chip ok">saved</span>
   <button id="undoBtn" title="take back the last action (z)">Undo</button>
   <button id="rerunBtn" title="re-run the stages with these corrections">Re-run</button>

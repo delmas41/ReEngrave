@@ -1,0 +1,135 @@
+{
+ "record": "brahms1-breitkopf-mvt1-whole-20260923.record.json",
+ "ledger_boxes_on_the_record": 7818,
+ "ledger_verdicts_arm": 7818,
+ "ledger_verdicts_base": 7818,
+ "arm": {
+  "kept": 6402,
+  "refused:on_a_staff_line": 1408,
+  "refused:tall_not_a_rung": 8
+ },
+ "base": {
+  "kept": 7818
+ },
+ "glyph_owner_verdicts": {
+  "base": 24795,
+  "arm": 24795
+ },
+ "glyph_owner_moved": 0,
+ "glyph_owner_moved_named": [],
+ "unladdered_signal_base": {
+  "ledger_found_hist": {
+   "0": 2138,
+   "1": 243,
+   "2": 117,
+   "3": 33,
+   "4": 3,
+   "None": 598
+  },
+  "would_fire": 2138,
+  "signals": 3132
+ },
+ "unladdered_signal_arm": {
+  "ledger_found_hist": {
+   "0": 2138,
+   "1": 243,
+   "2": 117,
+   "3": 33,
+   "4": 3,
+   "None": 598
+  },
+  "would_fire": 2138,
+  "signals": 3132
+ },
+ "notes_base": 7872,
+ "notes_arm": 7872,
+ "notes_not_written_base": {
+  "duration_narrowed": 3339,
+  "not_a_notehead:too_narrow": 3426,
+  "owned_by_another_staff": 2283,
+  "not_a_notehead:clipped_fragment": 617,
+  "rest_duration_abstained": 261,
+  "written_value_fits_no_note": 135,
+  "ink_is_a_whole_rest": 72,
+  "staff_not_identified": 925,
+  "rest_duration_narrowed": 31,
+  "no_pitch": 61,
+  "bar_does_not_add_up": 18791
+ },
+ "notes_not_written_arm": {
+  "duration_narrowed": 3339,
+  "not_a_notehead:too_narrow": 3426,
+  "owned_by_another_staff": 2283,
+  "not_a_notehead:clipped_fragment": 617,
+  "rest_duration_abstained": 261,
+  "written_value_fits_no_note": 135,
+  "ink_is_a_whole_rest": 72,
+  "staff_not_identified": 925,
+  "rest_duration_narrowed": 31,
+  "no_pitch": 61,
+  "bar_does_not_add_up": 18791
+ },
+ "family_refusals_arm": {
+  "ledger_is_not_a_ledger": {
+   "refused": {
+    "on_a_staff_line": 1408,
+    "tall_not_a_rung": 8
+   },
+   "refused_total": 1416,
+   "kept": 6402,
+   "abstained": 0,
+   "verdicts": 7818,
+   "balanced": true
+  },
+  "accidental_is_not_an_accidental": {
+   "refused": {},
+   "refused_total": 0,
+   "kept": 6533,
+   "abstained": 0,
+   "verdicts": 6533,
+   "balanced": true
+  },
+  "rest_is_not_a_rest": {
+   "refused": {},
+   "refused_total": 0,
+   "kept": 8123,
+   "abstained": 0,
+   "verdicts": 8123,
+   "balanced": true
+  },
+  "arpeggiato_is_not_an_arpeggiato": {
+   "refused": {},
+   "refused_total": 0,
+   "kept": 850,
+   "abstained": 0,
+   "verdicts": 850,
+   "balanced": true
+  },
+  "arc_is_not_an_arc": {
+   "refused": {},
+   "refused_total": 0,
+   "kept": 14788,
+   "abstained": 0,
+   "verdicts": 14788,
+   "balanced": true
+  },
+  "dynamic_is_not_a_dynamic": {
+   "refused": {},
+   "refused_total": 0,
+   "kept": 3949,
+   "abstained": 0,
+   "verdicts": 3949,
+   "balanced": true
+  },
+  "articulation_is_not_an_articulation": {
+   "refused": {},
+   "refused_total": 0,
+   "kept": 4130,
+   "abstained": 0,
+   "verdicts": 4130,
+   "balanced": true
+  }
+ },
+ "status_census_arm_unaccounted": [],
+ "status_census_arm_balanced": true
+}

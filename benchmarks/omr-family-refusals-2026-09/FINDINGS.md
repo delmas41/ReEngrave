@@ -195,7 +195,7 @@ because this lane files no new GATHER row.
 |---|---|---|---|---|---|---|
 | `beethoven5-p1-p4` | 1,878 | **1,214** | **7** | 657 | 0 | 0 |
 | `litolff whole` | 7,617 | **4,708** | **22** | 2,887 | 0 | 0 |
-| `breitkopf whole` | _not run_ | | | | | |
+| `breitkopf whole` | 7,818 | **1,408** | **8** | 6,402 | 0 | 0 |
 
 The BASE refuses nothing on any record: the arm is the only thing moving,
 which is what says the numbers are the rule's and not the rebuild's.
@@ -206,7 +206,7 @@ which is what says the numbers are the rule's and not the rebuild's.
 |---|---|---|
 | `beethoven5-p1-p4` | 1,386 / 1,386 | **0** |
 | `litolff whole` | 6,013 / 6,013 | **0** |
-| `breitkopf whole` | _not run_ | |
+| `breitkopf whole` | 24,795 / 24,795 | **0** |
 
 This is not a null result. It is the answer to item 3 of the brief, and it is
 structural:
@@ -239,7 +239,7 @@ Over the noteheads that produce an `unladdered_signal`:
 |---|---|---|---|---|---|
 | `beethoven5-p1-p4` | 488 | 278 -> **282** | 58 -> 55 | 13 -> 12 | 278 -> **282** |
 | `litolff whole` | 2,455 | 1,343 -> **1,349** | 385 -> 381 | 92 -> 90 | 1,343 -> **1,349** |
-| `breitkopf whole` | _not run_ | | | | |
+| `breitkopf whole` | 3,132 | 2,138 -> **2,138** | 243 -> 243 | 117 -> 117 | 2,138 -> **2,138** |
 
 Noteheads lose the only rung that joined them to their staff, and it was a
 staff-line fragment. **Nothing changes in the file**, because
@@ -253,7 +253,7 @@ rather than inflated.
 |---|---|---|---|---|---|
 | `beethoven5-p1-p4` | 1,769 | 1,769 | yes | `[]` | yes |
 | `litolff whole` | 8,696 | 8,696 | yes | `[]` | yes |
-| `breitkopf whole` | _not run_ | | | | |
+| `breitkopf whole` | 7,872 | 7,872 | yes | `[]` | yes |
 
 The ledger rule moves the ACCOUNTING and not the music, which is the honest
 outcome for a rule whose only live consumer today is a signal that does not

@@ -423,6 +423,187 @@ class TestViewsOnAFixture(unittest.TestCase):
                     R.subject_view(self.D, g)
 
 
+# ─────────────────────────────────────────────────────────────────────────
+# ⚠️⚠️ ROADMAP 3.4h — hide CV-only classes, draw refused boxes, and let a
+# refusal be answered. Sean, 2026-09-24: *"a lot of uncolored boxes around
+# partial staff lines — shouldn't those get erased?"* They are `staff` and
+# `stem` boxes (CV-only, CLAUDE.md §9) mixed with `ledgerLine` refusals
+# (3.4g); the fix is to hide the first kind and show the second kind AS
+# refused, answerable, never erased.
+# ─────────────────────────────────────────────────────────────────────────
+
+def fixture_record_with_refusals() -> dict:
+    """The base fixture plus a CV-only `stem`/`staff` pair on staff 0's
+    first cell, and a notehead the ADJUDICATE precision decision refused."""
+    data = fixture_record()
+    obs, vrd = data["record"]["observations"], data["record"]["verdicts"]
+    n = 900000
+    obs.append(_obs(n, "glyph/0/0/0/0/2", Q.GLYPH_BOX,
+                    ["stem", 90, 140, 4, 40],
+                    bbox_page_px=[90.0, 140.0, 94.0, 180.0]))
+    n += 1
+    obs.append(_obs(n, "glyph/0/0/0/0/3", Q.GLYPH_BOX,
+                    ["staff", 50, 96, 300, 4],
+                    bbox_page_px=[50.0, 96.0, 350.0, 100.0]))
+    n += 1
+    # ⚠️ `glyph/0/0/0/0/0` already carries a `Q.DURATION` verdict from the
+    # base fixture (and a `Q.PITCH` one, staff 0 reads its clef) — a
+    # refused glyph is not a glyph nothing else ever decided about.
+    vrd.append(_vrd(n, "glyph/0/0/0/0/0", Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, True,
+                    decider="adjudicate_notehead_is_not_a_notehead",
+                    reason="unladdered"))
+    n += 1
+    return data
+
+
+class TestRoadmap34hCVOnlyAndDecisionRefusals(unittest.TestCase):
+
+    @classmethod
+    def setUpClass(cls):
+        cls.tmp = Path(tempfile.mkdtemp())
+        p = cls.tmp / "fixture.record.json"
+        p.write_text(json.dumps(fixture_record_with_refusals()))
+        cls.D = R.ReviewData(p, None)
+
+    def _boxes(self):
+        g = R.gather_view(self.D, "staff/0/0/0", 2)
+        return g, {b["glyph"]: b for b in g["boxes"]}
+
+    def test_stem_and_staff_boxes_are_flagged_cv_only(self):
+        _, by_glyph = self._boxes()
+        self.assertTrue(by_glyph["glyph/0/0/0/0/2"]["cv_only"])
+        self.assertTrue(by_glyph["glyph/0/0/0/0/3"]["cv_only"])
+        # a real notehead on the same staff is NOT swept up by the flag
+        self.assertFalse(by_glyph["glyph/0/0/0/0/1"]["cv_only"])
+
+    def test_cv_only_is_counted_on_BOTH_counts_and_box_counts(self):
+        """⚠️ TWO NAMES FOR ONE NUMBER (roadmap 3.4h): `counts` is the funnel
+        every other view already reads, `box_counts` is what the top bar
+        prints. A viewer that only updated one would let the other go
+        stale — this pins that they cannot drift apart."""
+        g, _ = self._boxes()
+        self.assertEqual(g["counts"]["hidden_cv_only"], 2)
+        self.assertEqual(g["box_counts"]["cv_only_hidden"], 2)
+        self.assertEqual(g["counts"]["hidden_cv_only"],
+                         g["box_counts"]["cv_only_hidden"])
+        self.assertEqual(set(g["cv_only_classes"]), {"staff", "stem"})
+
+    def test_a_decision_refusal_carries_its_decision_reason_and_verdict_id(self):
+        """The payload the viewer needs to draw a refused box struck through,
+        say why on hover, and let Sean disagree with the VERDICT — not the
+        EXPORT bucket, which names no verdict id at all."""
+        _, by_glyph = self._boxes()
+        box = by_glyph["glyph/0/0/0/0/0"]
+        self.assertTrue(box["is_refused"])
+        self.assertEqual(len(box["refused_by"]), 1)
+        r = box["refused_by"][0]
+        self.assertEqual(r["decision"], Q.NOTEHEAD_IS_NOT_A_NOTEHEAD)
+        self.assertEqual(r["reason"], "unladdered")
+        self.assertTrue(str(r["verdict"]).startswith("vrd:"))
+        # the two vocabularies (this module's own, and the roadmap item's
+        # words) name the SAME fact, never two different ones
+        self.assertEqual(r["decision"], r["quantity"])
+        self.assertEqual(r["verdict"], r["verdict_id"])
+        # a box no decision touched carries no refusal at all
+        self.assertFalse(by_glyph["glyph/0/0/0/0/1"]["is_refused"])
+        self.assertEqual(by_glyph["glyph/0/0/0/0/1"]["refused_by"], [])
+
+    def test_a_disagree_against_the_refusal_lands_in_the_sidecar(self):
+        """⚠️ ROUND-TRIP, THROUGH THE REAL ENDPOINT. `disagree` is not a
+        GATHER kind, so it is never gated by the frame control (no PDF is
+        needed) — and `stage='adjudicate'` is legal because `agree`/
+        `disagree` may name any non-GATHER stage (`validate_action`)."""
+        from fastapi.testclient import TestClient
+        _, by_glyph = self._boxes()
+        r = by_glyph["glyph/0/0/0/0/0"]["refused_by"][0]
+        app = R.create_app(self.D, self.tmp / "disagree.json", "staff/0/0/0")
+        c = TestClient(app)
+        resp = c.post("/api/sidecar/action", json={
+            "review_staff": "staff/0/0/0", "stage": "adjudicate",
+            "kind": "disagree", "verdict": r["verdict"],
+            "quantity": r["decision"], "outcome": "decided", "value": True,
+            "subject": "glyph/0/0/0/0/0", "note": "it is a real notehead"})
+        self.assertEqual(resp.status_code, 200, resp.text[:400])
+        # the response's own sidecar doc, and the file it was saved to, agree
+        actions = resp.json()["sidecar"]["actions"]
+        self.assertEqual(len(actions), 1)
+        self.assertEqual(actions[0]["kind"], "disagree")
+        self.assertEqual(actions[0]["verdict"], r["verdict"])
+        self.assertEqual(actions[0]["note"], "it is a real notehead")
+        doc = json.loads(Path(resp.json()["path"]).read_text())
+        self.assertEqual(doc["actions"][-1]["verdict"], r["verdict"])
+
+
+#: `CLICK_SLOP_SCREEN_PX` (4) + 1, computed by hand — a hair past the
+#: screen floor, so a fixture with no `Q.STAFF_SPACING` reading still tells
+#: a click from a drag.
+R_CLICK_SLOP_PLUS = 5
+
+
+class TestRoadmap34hSplitCVOnlyIsAPureFunction(unittest.TestCase):
+    """`labels.js`'s `splitCVOnly`, run through `node` — the half of "CV-only
+    classes never drawn" that a test can check with no `document` to fake
+    (`app.js`'s `setBoxes` calls this and only touches page state)."""
+
+    def test_cv_only_boxes_are_split_out_and_nothing_else_is(self):
+        out = _run_js(
+            "return L.splitCVOnly(IN.boxes);",
+            {"boxes": [{"glyph": "a", "cv_only": False},
+                      {"glyph": "b", "cv_only": True},
+                      {"glyph": "c", "cv_only": False},
+                      {"glyph": "d", "cv_only": True}]})
+        self.assertEqual([b["glyph"] for b in out["shown"]], ["a", "c"])
+        self.assertEqual([b["glyph"] for b in out["hidden"]], ["b", "d"])
+
+    def test_an_empty_or_missing_list_splits_to_two_empty_lists(self):
+        out = _run_js("return L.splitCVOnly(IN.boxes);", {"boxes": None})
+        self.assertEqual(out, {"shown": [], "hidden": []})
+
+
+class TestRoadmap34hDragThresholdIsAPureFunction(unittest.TestCase):
+    """`labels.js`'s `isADrag`/`dragSlopScreenPx`, run through `node` — the
+    half of the click-vs-drag fix a test can check with no browser. Sean:
+    *"I didn't resize the 2 new ones"* — 59 clicks were filed as
+    `redraw_box` on a few pixels of mouse travel; these pin that a couple of
+    screen pixels is a CLICK and a couple dozen is a DRAG, at a realistic
+    zoom/scale, and that the threshold holds the SCREEN floor even where a
+    staff carries no spacing reading at all."""
+
+    def test_two_screen_pixels_is_a_click_not_a_drag(self):
+        out = _run_js(
+            "return L.isADrag(2, 0, 16.0, 2, 1.0);", {})
+        self.assertFalse(out)
+
+    def test_twenty_screen_pixels_is_a_drag(self):
+        out = _run_js(
+            "return L.isADrag(20, 0, 16.0, 2, 1.0);", {})
+        self.assertTrue(out)
+
+    def test_the_diagonal_is_measured_as_DISPLACEMENT_not_path_length(self):
+        # 3-4-5 triangle: sqrt(3^2+4^2) = 5, comfortably under the 4px floor
+        # only if BOTH components are tiny; here it clears it.
+        out = _run_js("return L.isADrag(3, 4, 16.0, 2, 1.0);", {})
+        self.assertTrue(out)
+
+    def test_missing_spacing_falls_to_the_SCREEN_FLOOR_never_to_zero(self):
+        """CLAUDE.md §2 rule 8: a fallback never converts *cannot tell* into
+        an answer. A staff with no `Q.STAFF_SPACING` reading must not let
+        every twitch through as a drag."""
+        below = _run_js("return L.isADrag(2, 0, null, null, null);", {})
+        above = _run_js(
+            f"return L.isADrag({R_CLICK_SLOP_PLUS}, 0, null, null, null);",
+            {})
+        self.assertFalse(below)
+        self.assertTrue(above)
+
+    def test_the_floor_is_the_LARGER_of_the_two_thresholds(self):
+        """At extreme zoom the musical floor (spaces) can swamp the screen
+        floor (px); the slop must be at least the screen floor regardless."""
+        slop_tiny_zoom = _run_js(
+            "return L.dragSlopScreenPx(16.0, 0.01, 1.0);", {})
+        self.assertGreaterEqual(slop_tiny_zoom, 4)
+
+
 class TestTheAppItself(unittest.TestCase):
     """⚠️⚠️ THIS CLASS EXISTS BECAUSE THE VIEW TESTS ABOVE ALL PASSED WHILE THE
     SERVER COULD NOT START. `create_app` is where FastAPI resolves each

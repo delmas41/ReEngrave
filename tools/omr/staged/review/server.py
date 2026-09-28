@@ -535,6 +535,44 @@ def _overlay_family(name: str) -> str:
     return "other"
 
 
+#: The detected classes that are NOT symbols on the plate — page geometry the
+#: CV consumers measure, which no stage will ever write and no human can
+#: usefully label.
+#:
+#: ⚠️⚠️ TWO NAMES, AND THE AUTHORITY IS CLAUDE.md §9 — *"`stem` and `staff`
+#: are CV-only and cost nothing; `beam` and `ledgerLine` are CONSUMED"* —
+#: corroborated by `export.NOT_NOTATION`, whose `stem` entry reads *"CV-only;
+#: `Q.STEM` is gathered and no exporter writes a stem"* and whose `staff`
+#: entry reads *"the staff lines: page geometry, not a symbol"*. It is a
+#: LITERAL PAIR rather than a derivation because the thing that makes a class
+#: CV-only is not a property of the class name or of its category: `staff`'s
+#: category is `structural`, which it shares with `beam`, `tie`, `slur` and
+#: `ledgerLine` — every one of which IS consumed. `test_stage_review.py`
+#: pins both halves: each name here is in `export.NOT_NOTATION`, and
+#: `ledgerLine` is NOT here (Sean's *"uncolored boxes around partial staff
+#: lines"* are mostly ledger boxes, and those are REFUSED and shown refused,
+#: never hidden — a hidden box cannot be disagreed with).
+CV_ONLY_CLASSES: Tuple[str, ...] = ("staff", "stem")
+
+#: Every ADJUDICATE decision that can REFUSE a gathered box: the notehead
+#: precision one and roadmap 3.4g's seven family ones.
+#:
+#: ⚠️ DERIVED FROM `Q`, NEVER TYPED OUT (CLAUDE.md §4b: the quantities are the
+#: vocabulary and their list is not retyped anywhere). A ninth family
+#: refusal — flags and key markers are the remainder 3.4g left — is drawn
+#: struck through by this viewer the day its quantity is added, with no edit
+#: here. The substring catches `..._is_not_a_...` and `..._is_not_an_...`
+#: both, and `Q.NOTEHEAD_IS_A_WHOLE_REST` (which reclassifies rather than
+#: refuses) does not match it.
+REFUSAL_QUANTITIES: frozenset = frozenset(
+    v for v in Q.all() if "_is_not_a" in v)
+
+
+def _is_cv_only(name: str) -> bool:
+    from ...class_aliases import canonical
+    return canonical(str(name)) in CV_ONLY_CLASSES
+
+
 class ReviewData:
     """One record, one PDF, indexed once and held for the session."""
 
@@ -694,6 +732,45 @@ class ReviewData:
         return {"state": State.READ.value, "id": v.get("id"),
                 "outcome": v.get("outcome"), "value": v.get("value"),
                 "reason": v.get("reason"), "decided_by": v.get("decider")}
+
+    def refusals_at(self, subject: str) -> List[Dict[str, Any]]:
+        """Every REFUSAL decision that condemned this glyph, with its reason.
+
+        ⚠️ `value is True` AND NOTHING ELSE. Each of these decisions answers
+        *is this box NOT what the detector called it*, so `False` is the
+        decision that the box is FINE — a row, with a reason word of its own
+        (`ledger_line`, `notehead`), that a viewer treating "has a verdict" as
+        "was refused" would draw struck through on every clean box on the
+        page. An ABSTENTION is likewise not a refusal: `no_staff_geometry`
+        means the rule could not run, and CLAUDE.md §2 rule 8 is that a
+        fallback never converts *cannot tell* into an answer.
+
+        ⚠️ IT REPORTS, IT DOES NOT DECIDE. The refusal is the adjudicator's;
+        this reads the verdict rows the record already carries.
+        """
+        out: List[Dict[str, Any]] = []
+        for v in self.vrd_by_subject.get(subject, ()):
+            if v.get("quantity") not in REFUSAL_QUANTITIES:
+                continue
+            if v.get("value") is not True:
+                continue
+            # ⚠️ TWO SPELLINGS OF THE SAME THREE FACTS, ON PURPOSE (roadmap
+            # 3.4h). `quantity`/`decided_by`/`verdict_id` are the names this
+            # module's other rows already use (`refusals_at` reads the
+            # record's own field names) and are what `labels.js`'s
+            # `refusalWords` and `agreeRow`'s `verdict:` field consume today;
+            # `decision`/`verdict` are the two words Sean and the roadmap
+            # item use for the same values. A reader of either vocabulary
+            # finds the fact under its own name; dropping one to avoid the
+            # duplication would break whichever caller was not rewritten.
+            out.append({"quantity": v.get("quantity"),
+                        "decision": v.get("quantity"),
+                        "reason": v.get("reason"),
+                        "outcome": v.get("outcome"),
+                        "decided_by": v.get("decider"),
+                        "verdict_id": v.get("id"),
+                        "verdict": v.get("id")})
+        return out
 
     def part_name_of(self, staff: str) -> Optional[str]:
         run = self.export.runs.get(staff)
@@ -1176,9 +1253,24 @@ def gather_view(D: ReviewData, staff: str, zoom: int) -> Dict[str, Any]:
         name, x, y, w, h = row["value"]
         page_box = (row.get("detail") or {}).get("bbox_page_px")
         conf = (D.obs_by_qs.get((Q.GLYPH_CONF, sub)) or [{}])[0].get("value")
+        # ⚠️ TWO REFUSAL LEDGERS AND THEY ARE KEPT APART ON THE ROW. The
+        # ADJUDICATE one is a DECISION about what the box is
+        # (`ledger_is_not_a_ledger — on_a_staff_line`); the EXPORT one is the
+        # exporter's ladder saying why a head did not reach the file
+        # (`no_pitch`, `duration_narrowed`). A box can carry both — a glyph
+        # refused by `notehead_is_not_a_notehead` is also counted at EXPORT
+        # under `not_a_notehead:<reason>` — and merging them would print one
+        # refusal twice and lose which stage said it.
+        refused_by = D.refusals_at(sub)
+        export_refused = D.export.refusals.get(sub, [])
         boxes.append({
             "glyph": sub, "class": name, "family": _overlay_family(name),
             "category": _category(name),
+            # ⚠️ NOT A SYMBOL — see `CV_ONLY_CLASSES`. It is SERVED and
+            # flagged rather than dropped from the payload, so the browser
+            # can say how many it is not drawing; a box the page silently
+            # never mentions is a box nobody can find out about.
+            "cv_only": _is_cv_only(name),
             "cell": int(sub.split("/")[4]),
             "bar": D.bar_number(staff, int(sub.split("/")[4])),
             "conf": conf,
@@ -1188,7 +1280,15 @@ def gather_view(D: ReviewData, staff: str, zoom: int) -> Dict[str, Any]:
             # none rather than placed at a made-up x.
             "page_box_state": "read" if page_box else "declined",
             "written": sub in D.export.placed,
-            "refused": D.export.refusals.get(sub, []),
+            "refused": export_refused,
+            "refused_by": refused_by,
+            # ⚠️ "REFUSED", NEVER "ERASED" (Sean, 2026-09-24: *"shouldn't
+            # those get erased?"*). The record is append-only: the
+            # `Q.GLYPH_BOX` row stays exactly where it was, the box stays on
+            # the screen and stays clickable, and what changed is that a
+            # decision said it is not what it was called. A viewer that
+            # removed it would hide the one thing he can disagree with.
+            "is_refused": bool(refused_by) or bool(export_refused),
             # ⚠️ IN STAFF SPACES, because that is the unit every measured rule
             # in the tree is stated in — the notehead width floor is "1.0
             # staff spaces", not "37 px" (`omr-notehead-width-2026-09`). A
@@ -1226,7 +1326,30 @@ def gather_view(D: ReviewData, staff: str, zoom: int) -> Dict[str, Any]:
                      "row per connected ink component, or (with "
                      "`ink_rows: False`) one per CELL carrying "
                      "`ink_n_components`. It is not a set of subjects."),
-        "counts": D.staff_funnel(staff),
+        "counts": {
+            **D.staff_funnel(staff),
+            # ⚠️ ROADMAP 3.4h. Also on `counts` (not only on `box_counts`
+            # below), because `counts` is the funnel this page and
+            # `export_view` both already treat as THE staff-level tally —
+            # a second, differently-named home for the same number is how a
+            # reader ends up trusting the one that is not being updated.
+            "hidden_cv_only": sum(1 for b in boxes if b["cv_only"]),
+        },
+        # ⚠️ COUNTED HERE, OVER THE ROWS THE BROWSER IS ABOUT TO DRAW, so the
+        # top bar's "n hidden" cannot drift from what the canvas does. A
+        # second count taken from the funnel would be a second answer to the
+        # same question.
+        "box_counts": {
+            "all": len(boxes),
+            "cv_only_hidden": sum(1 for b in boxes if b["cv_only"]),
+            "refused": sum(1 for b in boxes
+                           if b["is_refused"] and not b["cv_only"]),
+            "by_refusal": dict(sorted(collections.Counter(
+                f'{r["quantity"]} — {r["reason"]}'
+                for b in boxes if not b["cv_only"]
+                for r in b["refused_by"]).items())),
+        },
+        "cv_only_classes": list(CV_ONLY_CLASSES),
         "families": list(OVERLAY_FAMILIES),
         # ⚠️ "THE STAFF ABOVE" IS RESOLVED HERE, FROM THE RECORD'S OWN STAVES,
         # and it is a list rather than two buttons because the top staff of a

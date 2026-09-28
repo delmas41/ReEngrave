@@ -278,3 +278,17 @@ Format: `YYYY-MM-DD · who · the decision · because · (pointer)`
   measured on the crops: `on_a_staff_line` 4/4, kept 3/3, `tall_not_a_rung`
   2/3 (one real rung refused), the held-back rung-step rule 2/3 (would refuse
   a real rung — stays held back) · (ROADMAP 3.4g-2)
+- 2026-09-24 · Sean · **The in-bar accidental (roadmap 2.7) is UN-PARKED and
+  placed AHEAD of 2.3, at the head of Phase 2.** Kept as 2.7, not renumbered to
+  2.6 as first asked: 2.6 is the merged ownership-domain item, and renumbering
+  breaks every branch name, commit and pointer that cites either. · because
+  two whole movements now measure it — Litolff 1,531 accidental glyphs
+  detected and 0 read into a verdict, Breitkopf 6,533 and 0: **8,064 of 8,064
+  unread**, every `<alter>` in both files from the key signature alone — and
+  the first cleanup count named it the largest single fault on the page ·
+  reverses the 2026-09-23 park, whose own condition (resume after 2.8/2.9)
+  was met overnight; the notehead recall (2.4b) is NOT waited for · the code
+  on `claude/accidental-2.7` (`69d64d95`) is unmeasured and needs a merge, not
+  a fast-forward; merging is not completion — the 2.7 gate stands ·
+  (`benchmarks/acceptance/out/*/…coverage.json` → `accidental_reading`;
+  `benchmarks/omr-cleanup-count-2026-09/counts/README.md`)

@@ -61,7 +61,33 @@ const S = {
   classes: null, labels: null,
   drawerView: 'actions', stageCache: {}, saving: 0, space: false,
   actionsOnGlyph: {},
+  hidden: [],                         // the CV-only boxes, kept for the count
+  hideRefused: false,                 // ⚠️ DEFAULT OFF — see `loadHideRefused`
 };
+
+//: the grey a refused box is struck through in
+const REFUSED_INK = '#8a8a8a';
+//: how far down a refused box's stroke and strike are turned
+const REFUSED_ALPHA = 0.4;
+const HIDE_REFUSED_KEY = 'reengrave.review.hideRefused';
+
+/** ⚠️ DEFAULT OFF, AND THE DEFAULT IS THE POINT. Sean asked whether the
+ *  boxes around partial staff lines *"get erased"*; the answer the page has
+ *  to give is that they are REFUSED, which he can only read if they are on
+ *  the screen. Hiding them is a thing he can ask for, never the thing he
+ *  arrives at.
+ *
+ *  ⚠️ EVERY `localStorage` TOUCH IS IN A `try` — it throws outright in a
+ *  private window and in the headless browser these lanes test with, and a
+ *  remembered toggle is not worth a dead page. */
+function loadHideRefused() {
+  try { return localStorage.getItem(HIDE_REFUSED_KEY) === '1'; }
+  catch (e) { return false; }
+}
+function rememberHideRefused() {
+  try { localStorage.setItem(HIDE_REFUSED_KEY, S.hideRefused ? '1' : '0'); }
+  catch (e) { /* a browser that will not remember is not an error */ }
+}
 
 //: how far down a box in another bar is turned — DIMMED, never hidden. A
 //: head straddling the barline is the case ownership fights over
@@ -167,7 +193,9 @@ async function boot() {
   S.labels = await api('/api/labels');
   S.staves = await api('/api/staves');
 
+  S.hideRefused = loadHideRefused();
   wireBar();
+  paintRefusedToggle();
   wireCanvas();
   wireKeys();
   const onResize = () => {
@@ -219,9 +247,7 @@ async function loadStaff(staff, useHash) {
   closePop();
   S.gather = await api('/api/gather', {staff});
   S.crop = S.gather.crop;
-  S.boxes = S.gather.boxes;
-  S.byGlyph = {};
-  for (const b of S.boxes) S.byGlyph[b.glyph] = b;
+  setBoxes(S.gather);
   S.cropMeta = await api('/api/crop_meta', {staff});
   await loadSidecar();
   startAtBar(wanted !== null ? wanted : rememberedBar());
@@ -245,7 +271,20 @@ function paintBar() {
   // ⚠️ THE RANGE MOVED INTO `#barNow` ("bar 49 of 49–64") and is not printed
   // twice — a one-line header that says the same thing in two places is how
   // the second one goes stale.
-  $('staffBars').textContent = `${g.counts.boxes_all} boxes`;
+  // ⚠️ THE HIDDEN ONES ARE COUNTED OUT LOUD. `n boxes · n hidden · n refused`
+  // is the whole accounting of what the canvas is and is not showing, and it
+  // is the payload's own `box_counts` rather than a second tally here.
+  const bc = g.box_counts || {};
+  const bits = [`${bc.all === undefined ? g.counts.boxes_all : bc.all} boxes`];
+  if (bc.cv_only_hidden) {
+    bits.push(`${bc.cv_only_hidden} hidden `
+      + `(${(g.cv_only_classes || []).join('/')} — not symbols)`);
+  }
+  if (bc.refused) bits.push(`${bc.refused} refused`);
+  $('staffBars').textContent = bits.join(' · ');
+  $('staffBars').title = Object.entries(bc.by_refusal || {})
+    .map(([k, n]) => `${n} × ${k}`).join('\n');
+  paintRefusedToggle();
   paintBarNav();
   const ctl = (S.cropMeta || {}).control || {};
   const chip = $('frameChip');
@@ -265,6 +304,18 @@ function paintBar() {
       + 'evidence, and the server refuses every box action on it.';
   }
   paintSaveState();
+}
+
+function paintRefusedToggle() {
+  const b = $('hideRefusedBtn');
+  if (!b) return;
+  b.classList.toggle('on', S.hideRefused);
+  b.textContent = S.hideRefused ? 'refused: hidden' : 'refused: shown';
+  b.title = S.hideRefused
+    ? 'a decision refused these boxes — they are on the record and are '
+      + 'being hidden from the canvas. Click to show them again.'
+    : 'a decision refused these boxes: they are struck through, NOT erased '
+      + '(the record is append-only). Click to hide them.';
 }
 
 function paintSaveState() {
@@ -446,6 +497,15 @@ function wireBar() {
     go.value = ''; go.blur();
     setBar(cs[i].index);
   });
+  $('hideRefusedBtn').onclick = () => {
+    S.hideRefused = !S.hideRefused;
+    rememberHideRefused();
+    paintRefusedToggle();
+    if (S.sel && isHiddenRefusal(S.byGlyph[S.sel] || {})) {
+      select(null); closePop();
+    }
+    draw();
+  };
   $('undoBtn').onclick = undoLast;
   $('rerunBtn').onclick = () => { openDrawer('actions'); rerun(); };
   $('drawerBtn').onclick = () => S.drawerOpen ? closeDrawer()
@@ -544,17 +604,27 @@ function paintCanvas() {
   const mine = S.actionsOnGlyph;
   for (const b of S.boxes) {
     if (!b.bbox_page_px) continue;         // DECLINED: no page rectangle
+    if (isHiddenRefusal(b)) continue;      // he asked for these to be hidden
     const p = pageBoxToScreen(b.bbox_page_px);
     const acts = mine[b.glyph] || [];
     const sel = S.sel === b.glyph;
     const said = acts.length ? acts[acts.length - 1] : null;
+    // ⚠️ REFUSED LOOKS REFUSED (roadmap 3.4h): grey, turned down, and struck
+    // corner to corner. A box a decision condemned looked exactly like a box
+    // nobody had looked at, which is why Sean read them as ink the page had
+    // simply failed to clean up. His own answer still wins the colour — the
+    // human's mark is never greyed out by the machine's.
+    const refused = b.is_refused && !said;
     x.lineWidth = sel ? 3 : 1.5;
-    x.strokeStyle = said ? HUMAN : (FAMILY_COLOUR[b.family] || '#777');
+    x.strokeStyle = said ? HUMAN
+      : refused ? REFUSED_INK : (FAMILY_COLOUR[b.family] || '#777');
     // ⚠️ ANOTHER BAR'S BOX IS DIMMED, NOT HIDDEN — and a box he has already
     // answered stays bright wherever it is, so an answer never disappears.
     x.globalAlpha = !inCurrentBar(b.cell) && !said ? OTHER_BAR_ALPHA
+      : refused ? REFUSED_ALPHA
       : (S.sel && !sel) ? 0.55 : 1;
     x.strokeRect(p[0], p[1], p[2] - p[0], p[3] - p[1]);
+    if (refused) drawStrike(x, p, sel);
     if (said) drawSaidTag(x, p, said, b);
     x.globalAlpha = 1;
     if (sel) drawHandles(x, p);
@@ -577,6 +647,21 @@ function paintCanvas() {
       Math.abs(rect[2] - rect[0]), Math.abs(rect[3] - rect[1]));
     x.setLineDash([]);
   }
+}
+
+/** One thin diagonal, corner to corner — the mark that says *a decision
+ *  refused this*. ⚠️ A STRIKE, NOT A CROSS-OUT IN THE DELETING SENSE: the
+ *  box is still there, still clickable, and the record still carries its
+ *  `Q.GLYPH_BOX` row. */
+function drawStrike(x, p, sel) {
+  x.save();
+  x.strokeStyle = REFUSED_INK;
+  x.lineWidth = sel ? 1.5 : 1;
+  x.beginPath();
+  x.moveTo(p[0], p[1]);
+  x.lineTo(p[2], p[3]);
+  x.stroke();
+  x.restore();
 }
 
 function drawSaidTag(x, p, a, b) {
@@ -645,6 +730,11 @@ function boxAt(sx, sy) {
   for (const b of S.boxes) {
     if (!b.bbox_page_px) continue;
     if (!inCurrentBar(b.cell)) continue;
+    // ⚠️ A REFUSED BOX STAYS CLICKABLE — that is the whole point of drawing
+    // it (he must be able to say the refusal is wrong). Only one he has
+    // explicitly asked to HIDE stops answering the pointer, because a box
+    // that is not on the screen must not be selectable from it.
+    if (isHiddenRefusal(b)) continue;
     const [x0, y0, x1, y1] = b.bbox_page_px;
     if (px < x0 || px > x1 || py < y0 || py > y1) continue;
     const area = (x1 - x0) * (y1 - y0);
@@ -698,6 +788,11 @@ function wireCanvas() {
       : h >= 0 ? HANDLE_CURSOR[h]
       : (over && over.glyph === S.sel) ? 'move'
       : over ? 'overBox' : '';
+    // ⚠️ THE REFUSAL ON HOVER, and it is the canvas's `title` because there
+    // is no per-box DOM to hang one on (one canvas, 121 boxes — the file's
+    // own note). Cleared the moment the pointer leaves a refused box, so it
+    // can never name the box before last.
+    c.title = (over && over.is_refused) ? L.refusalWords(over) : '';
   });
 
   c.addEventListener('mousedown', e => {
@@ -770,8 +865,18 @@ function onDragMove(sx, sy) {
   }
   if (d.mode === 'draw') { d.rect = [d.sx, d.sy, sx, sy]; draw(); return; }
   if (d.mode === 'click') {
-    if (Math.abs(sx - d.sx) > 3 || Math.abs(sy - d.sy) > 3) d.moved = true;
+    if (dragPassedSlop(d, sx, sy)) d.moved = true;
     return;
+  }
+  // ⚠️⚠️ NOTHING MOVES UNTIL THE POINTER HAS CLEARED THE SLOP (roadmap
+  // 3.4h). Until 2026-09-24 the first `mousemove` of any gesture on the
+  // selected box moved it, and `d.dirty` fired at half a PAGE pixel — which
+  // at the fitted view is a fraction of one screen pixel — so a click that
+  // twitched filed a `redraw_box`. 59 of them were filed on the two staves
+  // Sean labelled on 09-23/24 and he had resized none of them.
+  if (!d.passed) {
+    if (!dragPassedSlop(d, sx, sy)) return;
+    d.passed = true;
   }
   const dpx = (sx - d.sx) / S.view.scale / S.crop.zoom;
   const dpy = (sy - d.sy) / S.view.scale / S.crop.zoom;
@@ -782,8 +887,16 @@ function onDragMove(sx, sy) {
   }
   // ⚠️ THE LIVE RECTANGLE IS THE BOX'S OWN — one canvas, no DOM.
   S.byGlyph[d.glyph].bbox_page_px = d.box;
-  d.dirty = Math.abs(dpx) > 0.5 || Math.abs(dpy) > 0.5;
   draw();
+}
+
+/** Has this gesture travelled far enough to be a drag rather than a click?
+ *  ⚠️ THE THRESHOLD IS `labels.js`'s, because it is the half of this that a
+ *  test can run without a browser. */
+function dragPassedSlop(d, sx, sy) {
+  return L.isADrag(sx - d.sx, sy - d.sy,
+                   (S.gather || {}).spacing, (S.crop || {}).zoom,
+                   S.view.scale);
 }
 
 function onDragEnd(sx, sy) {
@@ -813,8 +926,20 @@ function onDragEnd(sx, sy) {
     return;
   }
   // move / resize — the box is where he put it, so file the redraw
-  if (!d.dirty) { draw(); return; }
   const b = S.byGlyph[d.glyph];
+  // ⚠️⚠️ A CLICK IS A CLICK, AND THE BOX GOES BACK. `d.passed` is only the
+  // live rectangle's gate; what decides whether anything is FILED is the
+  // mouse-down → mouse-up DISPLACEMENT, measured here. A hand that wandered
+  // out and came back moved the box nowhere, and filing that would be the
+  // 3.4h bug with a longer path. Restoring `d.orig` is not cosmetic: without
+  // it the screen would show the box at the wobbled position while the
+  // record and the sidecar both say it never moved.
+  if (!dragPassedSlop(d, sx, sy)) {
+    b.bbox_page_px = d.orig;
+    select(d.glyph);
+    openPop(d.glyph);
+    return;
+  }
   fileAction({kind: 'redraw_box', glyph: d.glyph,
               bbox_page_px: b.bbox_page_px.map(n => +n.toFixed(2)),
               prior_bbox_page_px: d.orig,
@@ -867,6 +992,35 @@ function openPop(glyph, opts) {
           + 'cell resolved' : 'inside no single cell — lane (A) will refuse '
           + 'this box and say so')
       : el('span', {class: 'mono tiny'}, b.class),
+    // ⚠️ THE REFUSAL IS SPELLED OUT WHERE HE ANSWERS, not only on hover. It
+    // names the DECISION and the REASON, and it says "refused", never
+    // "erased" — the box is still on the record and this popover is where he
+    // says the refusal is wrong.
+    ...(b && b.is_refused
+      ? L.refusalWords(b).split('\n').map(w =>
+          el('span', {class: 'refusedNote', title:
+            'the box and its row are still on the record — a decision '
+            + 'refused it, nothing erased it'}, w))
+      : []),
+    // ⚠️ ROADMAP 3.4h PART 2, THE HALF THE WIP LEFT UNDONE: a refused box
+    // must be answerable, not only readable. Each entry in `refused_by` is
+    // an ADJUDICATE decision (`quantity`/`decision`, with its `verdict`/
+    // `verdict_id`); this files an `agree`/`disagree` STANCE against THAT
+    // verdict, through the same `/api/sidecar/action` contract the drawer's
+    // stage views already use (`agreeRow`) — never a second endpoint and
+    // never a mutation of the refusal itself, which stays the adjudicator's.
+    // ⚠️ THE EXPORT-LADDER `refused` BUCKETS (`no_pitch`, …) ARE NOT HERE:
+    // they name no verdict id, so there is nothing for a stance to attach
+    // to; only `refused_by` — the decision-level refusals — get this row.
+    ...(b && (b.refused_by || []).length
+      ? b.refused_by.filter(r => r.verdict).map(r => el('div',
+          {class: 'refusalAgree'},
+          el('span', {class: 'tiny dim'},
+            'a decision refused this — is it wrong? '),
+          agreeRow({stage: 'adjudicate', verdict: r.verdict,
+                    quantity: r.decision, outcome: r.outcome,
+                    value: true, subject: b.glyph})))
+      : []),
     ...said.map(a => el('span', {class: 'said'},
       'you said: ' + sayWord(a, b),
       el('button', {class: 'x', title: 'take it back',
@@ -1174,8 +1328,47 @@ async function undoLast() {
 }
 async function refreshBoxes() {
   const g = await api('/api/gather', {staff: S.staff});
-  S.gather = g; S.boxes = g.boxes; S.byGlyph = {};
+  S.gather = g;
+  setBoxes(g);
+}
+
+/**
+ * The boxes the screen works with, and the ones it does not draw.
+ *
+ * ⚠️⚠️ `staff` AND `stem` BOXES ARE NOT SYMBOLS AND ARE NOT DRAWN (roadmap
+ * 3.4h). They are CV-only (CLAUDE.md §9: *"`stem` and `staff` are CV-only and
+ * cost nothing"*), no exporter writes one, and there is no answer Sean could
+ * give about one that any stage would read — so on the plate they are pure
+ * noise, and the noise is what he reported: *"a lot of uncolored boxes around
+ * partial staff lines."*
+ *
+ * ⚠️ HIDDEN FROM THE CANVAS, NEVER FROM THE ACCOUNTING. They stay in
+ * `S.hidden`, the top bar says how many there are, and the drawer's stage
+ * tables — which are a different payload (`/api/stage`) and are NOT filtered
+ * here — still list any that carry a verdict. A box that vanished from every
+ * count would be a box the page lied about.
+ *
+ * ⚠️ `ledgerLine` IS NOT ONE OF THEM. Most of the uncoloured boxes Sean meant
+ * ARE ledger boxes, and those are CONSUMED (by `glyph_owner`'s ladder) and
+ * REFUSED by `ledger_is_not_a_ledger` where they sit on a staff line. A
+ * refusal he cannot see is a refusal he cannot disagree with, so they are
+ * drawn struck through rather than hidden.
+ */
+function setBoxes(g) {
+  // ⚠️ THE SPLIT ITSELF IS `labels.js`'s (`splitCVOnly`) — pure, and tested
+  // via `node` with no `document` to fake. This function is only the part
+  // that touches page state.
+  const {shown, hidden} = L.splitCVOnly(g.boxes || []);
+  S.boxes = shown;
+  S.hidden = hidden;
+  S.byGlyph = {};
   for (const b of S.boxes) S.byGlyph[b.glyph] = b;
+}
+
+/** Is this box one the *hide refused* toggle takes off the screen? */
+function isHiddenRefusal(b) {
+  return S.hideRefused && b.is_refused
+    && !(S.actionsOnGlyph[b.glyph] || []).length;
 }
 
 // ═══════════════════════════════════════════════════════════════════════

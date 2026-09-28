@@ -411,6 +411,112 @@ function barLabel(cell) {
     ? 'c' + cell.index : String(cell.bar);
 }
 
+// ── 6. A CLICK IS A CLICK (roadmap 3.4h) ────────────────────────────────
+// Sean, 2026-09-24, on the 59 `redraw_box` actions filed against the two
+// staves he had just labelled: *"I didn't resize the 2 new ones."*  He
+// clicked; the viewer read a few pixels of mouse travel as a drag and filed a
+// redraw on each one. So a gesture on a box is a CLICK until it has travelled
+// far enough to be a drag, and this is the one place that line is drawn.
+
+//: the hand-tremor floor, in SCREEN pixels, and it holds at every zoom
+const CLICK_SLOP_SCREEN_PX = 4;
+//: ...and the musical floor: a move smaller than this means nothing on the
+//: page, whatever the screen was showing
+const CLICK_SLOP_SPACES = 0.05;
+
+/**
+ * How far the pointer must travel before a gesture on a box is a DRAG, in
+ * SCREEN pixels.
+ *
+ * ⚠️⚠️ THE LARGER OF THE TWO, AND BOTH ARE NEEDED BECAUSE EACH IS BLIND
+ * WHERE THE OTHER BINDS. A pure screen threshold is a different musical
+ * distance at every zoom — 4 px is a third of a staff space fitted to the
+ * whole system and a twentieth of a page pixel at 24x, so at high zoom it
+ * would let a sub-pixel twitch through as a resize. A pure staff-space
+ * threshold is a different NUMBER OF PIXELS at every zoom — at the fitted
+ * view 0.05 spaces is under one screen pixel, which no hand can stay inside.
+ * Taking the larger means a drag must clear BOTH: it must be a movement the
+ * hand meant, and it must be a distance the page can tell apart.
+ *
+ * ⚠️ DISPLACEMENT, NOT PATH LENGTH. The question this answers is *did the
+ * box end up somewhere else*, and a hand that wobbles two pixels out and two
+ * back has moved the box nowhere — filing that as a redraw is exactly the
+ * bug. (`onDragEnd` also puts the box back where it was, because the live
+ * rectangle followed the wobble.)
+ *
+ * @param spacing `Q.STAFF_SPACING` for this staff, PAGE px per staff space
+ * @param zoom    `crop.zoom`, crop px per page px
+ * @param scale   `S.view.scale`, screen px per crop px
+ */
+function dragSlopScreenPx(spacing, zoom, scale) {
+  const sp = Number(spacing), z = Number(zoom), s = Number(scale);
+  // ⚠️ A MISSING READING FALLS TO THE SCREEN FLOOR, never to zero. A staff
+  // with no `Q.STAFF_SPACING` row cannot state the musical half of the rule
+  // (CLAUDE.md §2 rule 8) — but "we cannot tell how big a staff space is" is
+  // not a licence to file every twitch as a redraw.
+  const musical = (sp > 0 && z > 0 && s > 0)
+    ? CLICK_SLOP_SPACES * sp * z * s : 0;
+  return Math.max(CLICK_SLOP_SCREEN_PX, musical);
+}
+
+/** Has this gesture travelled far enough to be a drag? `dx`/`dy` are the
+ *  mouse-down → mouse-up displacement in SCREEN pixels. */
+function isADrag(dx, dy, spacing, zoom, scale) {
+  return Math.sqrt(dx * dx + dy * dy)
+    > dragSlopScreenPx(spacing, zoom, scale);
+}
+
+// ── 7. WHAT A REFUSAL SAYS (roadmap 3.4h) ───────────────────────────────
+
+/**
+ * The one sentence a refused box shows — on hover, and at the head of its
+ * popover.
+ *
+ * ⚠️ "REFUSED", NEVER "ERASED". Sean, 2026-09-24: *"There were also a lot of
+ * uncolored boxes around partial staff lines — shouldn't those get erased?"*
+ * They are not erased and cannot be: the record is APPEND-ONLY and the
+ * `Q.GLYPH_BOX` row stays (`family_precision`: *"it refuses, it does not
+ * delete"*). What a refusal changes is that no stage writes the glyph. So the
+ * box stays on the screen, struck through, clickable — because the answer
+ * *the machine was wrong to refuse this* is one he must be able to give.
+ *
+ * ⚠️ IT NAMES THE DECISION, NOT JUST THE REASON. `on_a_staff_line` on its own
+ * does not say who said it or which question it answers; the pair
+ * `ledger_is_not_a_ledger — on_a_staff_line` is traceable back to one
+ * adjudicator in one file.
+ */
+function refusalWords(box) {
+  if (!box) return '';
+  const parts = [];
+  for (const r of (box.refused_by || [])) {
+    parts.push('refused: ' + r.quantity
+      + (r.reason ? ' — ' + r.reason : ''));
+  }
+  for (const b of (box.refused || [])) {
+    parts.push('not written at EXPORT: ' + b);
+  }
+  return parts.join('\n');
+}
+
+// ── 8. CV-ONLY BOXES ARE NOT DRAWN (roadmap 3.4h) ───────────────────────
+
+/**
+ * Split the gathered boxes into what the crop DRAWS and what it does not,
+ * by the server's own `cv_only` flag (`server.CV_ONLY_CLASSES` — `staff`
+ * and `stem`, page geometry no stage will ever write).
+ *
+ * ⚠️ PURE, AND THAT IS THE WHOLE REASON IT LIVES HERE rather than inline in
+ * `app.js`'s `setBoxes` — the same reason `isADrag` does (see above): a test
+ * can call it via `node` with a plain array, with no `document` to fake.
+ * `app.js` calls this and nothing else to decide what `S.boxes` (drawn) and
+ * `S.hidden` (counted, never drawn) hold.
+ */
+function splitCVOnly(boxes) {
+  const shown = [], hidden = [];
+  for (const b of (boxes || [])) (b.cv_only ? hidden : shown).push(b);
+  return {shown, hidden};
+}
+
 /** Where in `cells` the bar spelled `want` sits, or -1. Matches what the top
  *  bar SHOWS, so `49` and `c7` are both typeable. */
 function barIndex(cells, want) {
@@ -429,6 +535,8 @@ if (typeof module !== 'undefined' && module.exports) {
   module.exports = {friendlyName, friendlyTable, buildAnswers, filterAnswers,
                     cropToPage, pageToCrop, boxToPage, boxToCrop,
                     barWindow, viewForRect, barLabel, barIndex,
+                    dragSlopScreenPx, isADrag, refusalWords, splitCVOnly,
                     BAR_PAD_X_SPACES, BAR_PAD_Y_SPACES,
+                    CLICK_SLOP_SCREEN_PX, CLICK_SLOP_SPACES,
                     ANSWER_WORDS, FRIENDLY_EXACT};
 }

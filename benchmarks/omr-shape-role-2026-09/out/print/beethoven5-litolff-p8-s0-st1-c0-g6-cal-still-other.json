@@ -1,0 +1,47 @@
+{
+ "png": "beethoven5-litolff-p8-s0-st1-c0-g6-cal-still-other.png",
+ "caption": "beethoven5-litolff page 8, system 0, staff 1, bar-cell 0 \u2014 the detector called this rectangle `restWhole`. Measured against this staff's own lines its centre stands at step 4.13, where a whole rest hangs at 5.5 (BLUE dashes) and a half rest sits at 4.5 (ORANGE dashes). The rule says cal-still-other. GREEN = the five Q.STAFF_LINES; RED corner bracket = the rest itself. QUESTION FOR SEAN: against the print, is this a whole rest, a half rest, or not a rest at all?",
+ "subject": "glyph/8/0/1/0/6",
+ "bucket": "cal-still-other",
+ "page": 8,
+ "dpi": 600,
+ "zoom": 4,
+ "frame_control": {
+  "passed": true,
+  "contrast": 61.99
+ },
+ "detector_class": "restWhole",
+ "measured_staff_step": 4.13,
+ "convention": {
+  "restWhole": 5.5,
+  "restHalf": 4.5,
+  "tolerance_below_whole_half_steps": 1.35,
+  "tolerance_above_half_half_steps": 0.5,
+  "frame": "bottom line 0, one step per half space, up positive"
+ },
+ "what_the_rule_does": "NARROW over both values, unchanged by the calibration \u2014 this row stands BELOW the recalibrated band as well. It is the new boundary, and it is the next thing a human should look at.",
+ "rest_page_px": [
+  518.3125,
+  603.6175000000001,
+  540.9925000000001,
+  611.335
+ ],
+ "staff_lines_page_px": [
+  577,
+  593,
+  609,
+  624,
+  640
+ ],
+ "ruler_page_px": {
+  "restWhole": 596.69,
+  "restHalf": 604.56
+ },
+ "crop_page_px": [
+  376.5625,
+  435.25,
+  682.7425000000001,
+  781.75
+ ],
+ "VERDICT_none_yet": null
+}
