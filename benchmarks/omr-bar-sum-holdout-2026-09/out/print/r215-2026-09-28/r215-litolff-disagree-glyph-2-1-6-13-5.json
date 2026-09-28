@@ -1,0 +1,31 @@
+{
+  "subject": "glyph/2/1/6/13/5",
+  "sibling": "glyph/2/1/6/13/8",
+  "cause": "rest_is_a_duplicate_box",
+  "kind": "disagree",
+  "reason": "rest_is_a_duplicate_box",
+  "detail": {
+    "class": "restQuarter",
+    "duplicate_disagrees_with": [
+      "obs:008937"
+    ]
+  },
+  "class_a": "restQuarter",
+  "class_b": "restWhole",
+  "score_a": 0.44921183586120605,
+  "score_b": 0.3144572675228119,
+  "bbox_page_px_a": [
+    2346.53,
+    2950.4175,
+    2365.5875,
+    3000.8175
+  ],
+  "bbox_page_px_b": [
+    2346.215,
+    2988.2175,
+    2364.485,
+    2996.88
+  ],
+  "file": "r215-litolff-disagree-glyph-2-1-6-13-5.png",
+  "VERDICT_none_yet": null
+}

@@ -1,0 +1,242 @@
+[
+  {
+    "subject": "glyph/1/0/10/0/15",
+    "sibling": "glyph/1/0/10/0/9",
+    "cause": "rest_is_a_duplicate_box",
+    "kind": "collapse",
+    "reason": "rest_is_a_duplicate_box",
+    "detail": {
+      "class": "restQuarter",
+      "duplicate_of": "obs:001662"
+    },
+    "class_a": "restQuarter",
+    "class_b": "restQuarter",
+    "score_a": 0.28595593571662903,
+    "score_b": 0.6918221712112427,
+    "bbox_page_px_a": [
+      887.8193359375,
+      2932.1435546875,
+      909.9443359375,
+      2964.12109375
+    ],
+    "bbox_page_px_b": [
+      898.1904296875,
+      2931.970703125,
+      909.771484375,
+      2964.466796875
+    ],
+    "file": "r215-litolff-collapse-glyph-1-0-10-0-15.png",
+    "VERDICT_none_yet": null
+  },
+  {
+    "subject": "glyph/1/0/11/15/2",
+    "sibling": "glyph/1/0/11/15/1",
+    "cause": "rest_is_a_duplicate_box",
+    "kind": "collapse",
+    "reason": "rest_is_a_duplicate_box",
+    "detail": {
+      "class": "restWhole",
+      "duplicate_of": "obs:001945"
+    },
+    "class_a": "restWhole",
+    "class_b": "restWhole",
+    "score_a": 0.3716830313205719,
+    "score_b": 0.5002574920654297,
+    "bbox_page_px_a": [
+      2467.12,
+      3104.04,
+      2524.4,
+      3112.04
+    ],
+    "bbox_page_px_b": [
+      2499.44,
+      3108.52,
+      2522.64,
+      3114.44
+    ],
+    "file": "r215-litolff-collapse-glyph-1-0-11-15-2.png",
+    "VERDICT_none_yet": null
+  },
+  {
+    "subject": "glyph/2/1/6/13/5",
+    "sibling": "glyph/2/1/6/13/8",
+    "cause": "rest_is_a_duplicate_box",
+    "kind": "disagree",
+    "reason": "rest_is_a_duplicate_box",
+    "detail": {
+      "class": "restQuarter",
+      "duplicate_disagrees_with": [
+        "obs:008937"
+      ]
+    },
+    "class_a": "restQuarter",
+    "class_b": "restWhole",
+    "score_a": 0.44921183586120605,
+    "score_b": 0.3144572675228119,
+    "bbox_page_px_a": [
+      2346.53,
+      2950.4175,
+      2365.5875,
+      3000.8175
+    ],
+    "bbox_page_px_b": [
+      2346.215,
+      2988.2175,
+      2364.485,
+      2996.88
+    ],
+    "file": "r215-litolff-disagree-glyph-2-1-6-13-5.png",
+    "VERDICT_none_yet": null
+  },
+  {
+    "subject": "glyph/2/1/6/13/8",
+    "sibling": "glyph/2/1/6/13/5",
+    "cause": "rest_is_a_duplicate_box",
+    "kind": "disagree",
+    "reason": "rest_is_a_duplicate_box",
+    "detail": {
+      "class": "restWhole",
+      "duplicate_disagrees_with": [
+        "obs:008930"
+      ]
+    },
+    "class_a": "restWhole",
+    "class_b": "restQuarter",
+    "score_a": 0.3144572675228119,
+    "score_b": 0.44921183586120605,
+    "bbox_page_px_a": [
+      2346.215,
+      2988.2175,
+      2364.485,
+      2996.88
+    ],
+    "bbox_page_px_b": [
+      2346.53,
+      2950.4175,
+      2365.5875,
+      3000.8175
+    ],
+    "file": "r215-litolff-disagree-glyph-2-1-6-13-8.png",
+    "VERDICT_none_yet": null
+  },
+  {
+    "subject": "glyph/2/1/0/7/1",
+    "sibling": "glyph/2/1/0/7/0",
+    "cause": "rest_is_a_duplicate_box",
+    "kind": "collapse",
+    "reason": "rest_is_a_duplicate_box",
+    "detail": {
+      "class": "restWhole",
+      "duplicate_of": "obs:029911"
+    },
+    "class_a": "restWhole",
+    "class_b": "restWhole",
+    "score_a": 0.5216858983039856,
+    "score_b": 0.5629211664199829,
+    "bbox_page_px_a": [
+      4806.57,
+      4150.21,
+      4823.1925,
+      4165.47
+    ],
+    "bbox_page_px_b": [
+      4816.925,
+      4150.21,
+      4845.81,
+      4165.47
+    ],
+    "file": "r215-brahms-collapse-glyph-2-1-0-7-1.png",
+    "VERDICT_none_yet": null
+  },
+  {
+    "subject": "glyph/0/0/7/0/21",
+    "sibling": "glyph/0/0/7/0/17",
+    "cause": "rest_is_a_duplicate_box",
+    "kind": "collapse",
+    "reason": "rest_is_a_duplicate_box",
+    "detail": {
+      "class": "rest8th",
+      "duplicate_of": "obs:002169"
+    },
+    "class_a": "rest8th",
+    "class_b": "rest8th",
+    "score_a": 0.36712509393692017,
+    "score_b": 0.5455993413925171,
+    "bbox_page_px_a": [
+      2020.099609375,
+      4343.404296875,
+      2086.73828125,
+      4406.994140625
+    ],
+    "bbox_page_px_b": [
+      2020.53515625,
+      4344.275390625,
+      2064.9609375,
+      4407.4296875
+    ],
+    "file": "r215-brahms-collapse-glyph-0-0-7-0-21.png",
+    "VERDICT_none_yet": null
+  },
+  {
+    "subject": "glyph/1/0/2/1/22",
+    "sibling": "glyph/1/0/2/1/24",
+    "cause": "rest_is_a_duplicate_box",
+    "kind": "disagree",
+    "reason": "rest_is_a_duplicate_box",
+    "detail": {
+      "class": "restHalf",
+      "duplicate_disagrees_with": [
+        "obs:008918"
+      ]
+    },
+    "class_a": "restHalf",
+    "class_b": "restQuarter",
+    "score_a": 0.502683162689209,
+    "score_b": 0.464974045753479,
+    "bbox_page_px_a": [
+      2209.4423828125,
+      1297.12890625,
+      2261.8125,
+      1307.41015625
+    ],
+    "bbox_page_px_b": [
+      2210.0849609375,
+      1264.6787109375,
+      2229.041015625,
+      1320.904296875
+    ],
+    "file": "r215-brahms-disagree-glyph-1-0-2-1-22.png",
+    "VERDICT_none_yet": null
+  },
+  {
+    "subject": "glyph/1/0/2/1/24",
+    "sibling": "glyph/1/0/2/1/22",
+    "cause": "rest_is_a_duplicate_box",
+    "kind": "disagree",
+    "reason": "rest_is_a_duplicate_box",
+    "detail": {
+      "class": "restQuarter",
+      "duplicate_disagrees_with": [
+        "obs:008914"
+      ]
+    },
+    "class_a": "restQuarter",
+    "class_b": "restHalf",
+    "score_a": 0.464974045753479,
+    "score_b": 0.502683162689209,
+    "bbox_page_px_a": [
+      2210.0849609375,
+      1264.6787109375,
+      2229.041015625,
+      1320.904296875
+    ],
+    "bbox_page_px_b": [
+      2209.4423828125,
+      1297.12890625,
+      2261.8125,
+      1307.41015625
+    ],
+    "file": "r215-brahms-disagree-glyph-1-0-2-1-24.png",
+    "VERDICT_none_yet": null
+  }
+]

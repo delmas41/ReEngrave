@@ -1,0 +1,29 @@
+{
+  "subject": "glyph/2/1/0/7/1",
+  "sibling": "glyph/2/1/0/7/0",
+  "cause": "rest_is_a_duplicate_box",
+  "kind": "collapse",
+  "reason": "rest_is_a_duplicate_box",
+  "detail": {
+    "class": "restWhole",
+    "duplicate_of": "obs:029911"
+  },
+  "class_a": "restWhole",
+  "class_b": "restWhole",
+  "score_a": 0.5216858983039856,
+  "score_b": 0.5629211664199829,
+  "bbox_page_px_a": [
+    4806.57,
+    4150.21,
+    4823.1925,
+    4165.47
+  ],
+  "bbox_page_px_b": [
+    4816.925,
+    4150.21,
+    4845.81,
+    4165.47
+  ],
+  "file": "r215-brahms-collapse-glyph-2-1-0-7-1.png",
+  "VERDICT_none_yet": null
+}

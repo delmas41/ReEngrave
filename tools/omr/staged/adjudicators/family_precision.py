@@ -280,6 +280,173 @@ def _glyph_box_row(ev: Evidence):
     return rows[-1] if rows else None
 
 
+# ─────────────────────────────────────────────────────────────────────────────
+# §REST-DUPLICATE — ROADMAP 2.15. One physical rest, boxed more than once.
+# ─────────────────────────────────────────────────────────────────────────────
+#
+# ⚠️⚠️ MEASURED, NOT THE WORK ORDER'S OWN GUESS. ROADMAP 2.15 said the two
+# boxes of its own named example "overlap substantially"; the record
+# disagrees. `glyph/2/1/0/7/0` / `.../1` (Brahms, provenance c19cbca7)
+# measure IoU 0.16 -- moderate, not substantial -- and a crop of it
+# (`benchmarks/omr-bar-sum-holdout-2026-09/out/print/r215-*`) shows ONE
+# filled rectangle (a whole rest) with two detector boxes side by side, each
+# covering roughly half of it: the SHATTERING plate (CLAUDE.md SS10)
+# fragmented one mark's ink and the detector drew a box per fragment.
+#
+# The record's own IoU distribution, over every pair of rest glyphs with a
+# STANDING decided `Q.DURATION` verdict in one cell on both documents
+# (Brahms whole-movement 20260928T110702Z and the Litolff shared record --
+# ⚠️ SUPERSESSION MUST BE RESOLVED FIRST: a naive read of `outcome ==
+# "decided"` over every verdict row counts an EVALUATE-stage revision
+# alongside the ADJUDICATE-stage reading it superseded as if they were two
+# glyphs, and manufactured 214 fake "duplicates" -- all ONE subject twice --
+# on the clean engraved control before that bug was found and fixed in the
+# probe), splits into three populations, not one:
+#
+#   genuinely unrelated   IoU exactly 0.0 -- 1,284/1,713 same-class pairs on
+#                         Brahms, 83/154 on Litolff. The smallest NONZERO
+#                         pair the other direction (Litolff, 0.0019) is two
+#                         boxes roughly 1,000 canonical units apart, one of
+#                         them a misdetection nowhere near the other.
+#   one mark, same class  ANY nonzero overlap, up to 0.71 on BOTH documents
+#                         and never higher -- crops across that whole range
+#                         (Brahms 0.05, 0.16, 0.37, 0.71) each show ONE
+#                         rectangle, two boxes. No gap exists inside this
+#                         population; the gap is between it and zero.
+#   one mark, role-twin   DIFFERENT classes (`rest8th`/`rest16th` etc.), IoU
+#                         clustered 0.80-1.00 on Brahms -- a crop shows one
+#                         hook-shaped mark with both boxes drawn almost
+#                         exactly on top of each other.
+#
+# So ONE threshold serves both same-class and different-class pairs: it
+# sits inside the empty gap above "exactly 0" and above the Litolff noise
+# floor (0.0019, 0.016) and below every crop-confirmed real pair (0.028 and
+# up). ⚠️ `Q.DURATION` HAS NOT RUN YET at this point in `adjudicate.ORDER`
+# (`Q.REST_IS_NOT_A_REST` is scheduled before it), so "do the two boxes
+# AGREE" is read off the CLASS `Q.REST`/`Q.GLYPH_BOX` already filed at
+# GATHER, never off a beats figure this decision cannot see -- which is
+# also why this is not the second rest-slot geometry the module docstring
+# warns against: it never asks what VALUE a box means, only whether two
+# boxes are the same ink.
+REST_DUPLICATE_IOU_MIN = 0.02
+
+
+def _rest_box_iou(a: Any, b: Any) -> float:
+    """IoU of two `Q.GLYPH_BOX` VALUE tuples `(class, x, y, w, h)`.
+
+    ⚠️ CANONICAL, NOT PAGE PIXELS, and that is safe ONLY because both boxes
+    come from `_cell_rest_boxes`'s domain -- the SAME cell. A canonical box
+    is rescaled PER CELL (CLAUDE.md SS10: "a canonical cell frame cannot
+    answer a cross-staff question"), so two boxes sharing one cell share one
+    rescaling and the ratio is exact; comparing across cells this way would
+    not be, and nothing here does.
+    """
+    _, x0a, y0a, wa, ha = a
+    _, x0b, y0b, wb, hb = b
+    x1a, y1a = x0a + wa, y0a + ha
+    x1b, y1b = x0b + wb, y0b + hb
+    iw = max(0.0, min(x1a, x1b) - max(x0a, x0b))
+    ih = max(0.0, min(y1a, y1b) - max(y0a, y0b))
+    inter = iw * ih
+    union = wa * ha + wb * hb - inter
+    return inter / union if union > 0 else 0.0
+
+
+def _cell_rest_boxes(ev: Evidence, cell) -> Dict[Any, Any]:
+    """Every rest glyph's `Q.GLYPH_BOX` row in THIS glyph's own cell, keyed
+    by subject -- including this glyph's own.
+
+    ⚠️ SAME CELL ONLY, `_ledger_rungs_in_cell`'s own rule (this module's
+    §LEDGER docstring): the crop that makes a cell wide enough to hold a
+    note also holds the rest ink a duplicate detection would fragment, and a
+    physical mark that is genuinely one cell wide never needs a wider
+    search. `Q.REST` names the domain, `Q.GLYPH_BOX` carries the geometry --
+    two reads of two quantities already in `wants`, not a new one.
+    """
+    rest_subjects = {r.subject for r in
+                     ev.rows(Q.REST, scope=Scope.SELF_AND_DESCENDANTS,
+                             subject=cell)}
+    out: Dict[Any, Any] = {}
+    for r in ev.rows(Q.GLYPH_BOX, scope=Scope.SELF_AND_DESCENDANTS,
+                     subject=cell):
+        if r.subject in rest_subjects:
+            out[r.subject] = r
+    return out
+
+
+def _rest_duplicate_priority(row) -> Tuple[float, int]:
+    """Higher wins: detector confidence first, then the LOWER glyph index --
+    an arbitrary but total and DETERMINISTIC tie-break, so two glyphs
+    evaluating each other always agree on which one survives."""
+    score = row.score if row.score is not None else 0.0
+    idx = row.subject.glyph if row.subject.glyph is not None else 0
+    return (score, -idx)
+
+
+def _duplicate_box_refusal(ev: Evidence, this_row, detail: Dict[str, Any]
+                           ) -> Optional[Ruling]:
+    """ROADMAP 2.15: is this box the SAME physical mark as another rest
+    glyph the detector boxed in this cell?
+
+    ⚠️ TWO OUTCOMES, SYMMETRIC BY CONSTRUCTION, NEVER A THIRD. Every glyph
+    in an overlapping cluster runs this SAME rule over the SAME evidence
+    (no shared state between calls), so:
+
+    * a SAME-CLASS overlapping pair is one mark under two readings that
+      would otherwise both reach EXPORT and both be summed -- ROADMAP
+      2.15's whole complaint. The pair converges on exactly one survivor
+      (`_rest_duplicate_priority`'s max) and the other is refused
+      `rest_is_a_duplicate_box`.
+    * a DIFFERENT-CLASS overlapping pair is one mark whose VALUE this
+      decision cannot tell -- CLAUDE.md rule 8, "a fallback never converts
+      cannot tell into an answer" -- so BOTH are refused. The bar loses
+      this event's contribution; ROADMAP 2.8 holds the bar out if that now
+      leaves it short, which is the right outcome for ink nobody could read
+      to one value, and the right one FOR EXPORT to reach on its own
+      (`export._place_notes` already honours a decided `Q.REST_IS_NOT_A_
+      REST`, so no export-side change is needed for either outcome).
+
+    A glyph that disagrees with ANY overlapping sibling is refused for the
+    disagreement even if it would also have won a same-class comparison
+    against a different sibling -- disagreement is the more conservative
+    reading and wins.
+    """
+    cell = ev.subject.at(Kind.CELL)
+    if cell is None:
+        return None
+    this_val = this_row.value
+    if not isinstance(this_val, (list, tuple)) or len(this_val) != 5:
+        return None
+    this_class = this_val[0]
+    this_priority = _rest_duplicate_priority(this_row)
+
+    disagreeing: List[str] = []
+    better: Optional[Any] = None
+    for subj, row in _cell_rest_boxes(ev, cell).items():
+        if subj == ev.subject:
+            continue
+        other_val = row.value
+        if not isinstance(other_val, (list, tuple)) or len(other_val) != 5:
+            continue
+        if _rest_box_iou(this_val, other_val) < REST_DUPLICATE_IOU_MIN:
+            continue
+        if other_val[0] != this_class:
+            disagreeing.append(row.id)
+            continue
+        if _rest_duplicate_priority(row) > this_priority:
+            better = row
+
+    if disagreeing:
+        detail["duplicate_disagrees_with"] = list(disagreeing)
+        return Ruling(value=True, reason="rest_is_a_duplicate_box",
+                      used=(this_row.id,) + tuple(disagreeing), detail=detail)
+    if better is not None:
+        detail["duplicate_of"] = better.id
+        return Ruling(value=True, reason="rest_is_a_duplicate_box",
+                      used=(this_row.id, better.id), detail=detail)
+    return None
+
+
 def _cell_staff_space(ev: Evidence) -> Optional[float]:
     rows = ev.rows(Q.CELL_STAFF_SPACE, scope=Scope.SELF_AND_ANCESTORS)
     if not rows:
@@ -804,22 +971,34 @@ def adjudicate_accidental_is_not_an_accidental(ev: Evidence) -> Ruling:
     wants=(Q.GLYPH_BOX, Q.REST, Q.HUMAN_BOX_VERDICT,
            Q.GLYPH_BAND_DISTANCE),
     subjects_from=Q.REST,
-    reasons=_human_only_reasons(Q.REST_IS_NOT_A_REST),
+    reasons=HUMAN_REFUSAL_REASONS + (_OK[Q.REST_IS_NOT_A_REST],
+                                     "rest_is_a_duplicate_box"),
     mode=Mode.ADDITIVE,
 )
 def adjudicate_rest_is_not_a_rest(ev: Evidence) -> Ruling:
     """Is this box the detector called a rest a symbol at all?
 
-    HUMAN WITNESS ONLY. ⚠️ NOT A SECOND REST GEOMETRY: the rest's SLOT is
-    lane 2.12b-cal's open question (`rhythm.py`), and a rival copy of it here
-    would be the second reader of one fact this project keeps paying for.
-    `Q.REST` is read for the domain — every rest glyph and only those.
+    HUMAN WITNESS, THEN ROADMAP 2.15's GEOMETRY. ⚠️ NOT A SECOND REST-VALUE
+    GEOMETRY: the rest's SLOT (which LINE it hangs on, and so what it is
+    WORTH) is lane 2.12b-cal's open question (`rhythm.py`), and a rival copy
+    of that here would be the second reader of one fact this project keeps
+    paying for. 2.15's question is narrower and does not touch it: not
+    *what is this rest worth*, but *is this box the SAME PHYSICAL INK as
+    another rest box in this cell* -- answered from `Q.GLYPH_BOX`'s geometry
+    and `Q.REST`'s class, both already filed at GATHER, never from a slot
+    reading. `Q.REST` is read for the domain — every rest glyph and only
+    those.
     """
     _ = ev.rows(Q.REST)       # the domain's own quantity, declared and read
     detail, used = _class_detail(ev)
     refused = _refused_by_a_human(ev, detail)
     if refused is not None:
         return refused
+    box_row = _glyph_box_row(ev)
+    if box_row is not None:
+        dup = _duplicate_box_refusal(ev, box_row, detail)
+        if dup is not None:
+            return dup
     return Ruling(value=False, reason="rest", used=used, detail=detail)
 
 

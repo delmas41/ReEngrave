@@ -1,0 +1,31 @@
+{
+  "subject": "glyph/1/0/2/1/22",
+  "sibling": "glyph/1/0/2/1/24",
+  "cause": "rest_is_a_duplicate_box",
+  "kind": "disagree",
+  "reason": "rest_is_a_duplicate_box",
+  "detail": {
+    "class": "restHalf",
+    "duplicate_disagrees_with": [
+      "obs:008918"
+    ]
+  },
+  "class_a": "restHalf",
+  "class_b": "restQuarter",
+  "score_a": 0.502683162689209,
+  "score_b": 0.464974045753479,
+  "bbox_page_px_a": [
+    2209.4423828125,
+    1297.12890625,
+    2261.8125,
+    1307.41015625
+  ],
+  "bbox_page_px_b": [
+    2210.0849609375,
+    1264.6787109375,
+    2229.041015625,
+    1320.904296875
+  ],
+  "file": "r215-brahms-disagree-glyph-1-0-2-1-22.png",
+  "VERDICT_none_yet": null
+}
