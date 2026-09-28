@@ -26,13 +26,19 @@ from typing import Any, Dict, List, Optional, Tuple
 
 from ..adjudicate import (Candidate, Checkable, READINGS, Evidence, Mode, Ruling, Term, decision,
                           tally)
-from ..record import ABSTAIN, Kind, Q, Scope, State
+from ..record import ABSTAIN, Kind, Q, READERS, Scope, State
 # ⚠️ The ONE measured answer to "which clef family is this class name",
 # imported rather than restated: it collapses both spellings of the
 # vocabulary (`clefCAlto` and DeepScoresV2's `cClefAlto`) onto one core, and a
 # second copy here is precisely how `_c_family_support` came to be keyed on a
 # name the detector never emits.
-from ...clef_geometry import clef_family
+#
+# ⚠️ ROADMAP 3.4f ALSO IMPORTS THE LINE TABLE AND TOLERANCE, for the same
+# reason: `CLEF_BY_FAMILY_LINE["C"]` and `DEFAULT_CONFIG.max_residual` are
+# the ONE measured answer to "which line does this position name" -- the CV
+# locator already trusts them (`clef_geometry.resolve_clef`), and a second
+# copy here is exactly how a human's row would drift from the locator's.
+from ...clef_geometry import CLEF_BY_FAMILY_LINE, DEFAULT_CONFIG, clef_family
 
 # ─────────────────────────────────────────────────────────────────────────────
 # ⚠️ ASSUMED CONSTANTS. NOT ONE OF THESE IS MEASURED.
@@ -213,6 +219,141 @@ def _c_family_support(ev: Evidence):
         if clef_family(str(row.value)) == "C":
             out.append(row)
     return out
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# ⚠️ ROADMAP 3.4f -- A HUMAN'S OWN C-CLEF BOX MAY NAME ITS LINE.
+#
+# `_clef_of` and `_c_family_support` above are right for the DETECTOR: a
+# class name cannot say WHICH C clef, only geometry can. They are wrong for a
+# PERSON, who did not classify a glyph -- he read which line the clef is
+# printed on, and `review/human_evidence.py` files that reading as the SAME
+# `Q.CLEF_POSITION` row `gather_clef` files for a detected clef (measured on
+# Sean's own `act-0001`, `benchmarks/omr-stage-review-2026-09/FINDINGS.md`
+# §C7a: a relabel to `clefCAlto` filed a position 0.083 of a step off the
+# printed middle line, and the clef stayed ABSTAINED `no_candidates` because
+# nothing named a candidate at all). Everything below is ONE branch on
+# `_c_family_support`'s population, keyed on the row's READER -- see the call
+# site in `adjudicate_clef`.
+# ─────────────────────────────────────────────────────────────────────────────
+
+#: Readers `review/human_evidence.py` may stamp on a box a person drew --
+#: `record.READERS`'s own closed "THE HUMAN (roadmap 3.4)" section.
+#:
+#: ⚠️ SESSION_TEST COUNTS TOO, AND THAT IS NOT A RELAXATION. `record.READERS`
+#: says SESSION_TEST rows are "NOT A HUMAN WITNESS" and must never be read as
+#: evidence ABOUT THE PRINT -- true, and irrelevant to what this tuple gates.
+#: This gates which rows may exercise the REVIEW WIRING, not which rows are
+#: admissible as measurement: `ownership._human_owner` and
+#: `notehead_precision._human_not_a_symbol` already treat SEAN and
+#: SESSION_TEST identically for the same reason -- a session standing in for
+#: a person exercises the IDENTICAL mechanism a real reading would -- and
+#: this lane's own real-case artefact
+#: (`benchmarks/omr-stage-review-2026-09/out/relabel-clefCAlto.sidecar.json`,
+#: `staff/3/0/9`) is itself stamped `"session-test"`, not `"sean"`. A reader
+#: outside this closed section can never reach a `Q.CLEF_GLYPH` row in the
+#: first place -- `human_evidence.py` refuses an unrecognised reader at
+#: ingest -- so widening this tuple is never silent; it is a one-line,
+#: reviewed change beside the vocabulary it mirrors.
+_HUMAN_CLEF_READERS = (READERS.SEAN, READERS.SESSION_TEST)
+
+
+def _is_human_clef_reader(reader: Optional[str]) -> bool:
+    return reader in _HUMAN_CLEF_READERS
+
+
+#: `Q.CLEF_POSITION` counts HALF-spaces down from a staff's TOP line
+#: (`gather_clef`, `_on_staff_rows` below): a five-line staff's own lines
+#: fall at steps 0, 2, 4, 6, 8 -- `test_staged_c_clef.py`'s fixture: a 40px
+#: line spacing, `half_step` 20px, the middle line at position 4.0.
+#: `clef_geometry.DEFAULT_CONFIG.max_residual` is in units of one FULL line
+#: spacing, i.e. two of these steps -- the conversion below is that ratio,
+#: not a second calibration.
+_STEPS_PER_LINE_SPACING = 2.0
+
+#: What a human's OWN measured C-clef line is worth once it names one.
+#: (A-CLEF-9) ⚠️ NOT MEASURED, like every weight in this file (line 38ff).
+#: Set equal to `W_LOCATOR` because the two play the IDENTICAL functional
+#: role -- naming a C clef's LINE from a geometric measurement rather than
+#: from a class label -- not because a measurement has shown them equal; none
+#: has. `_human_named_c_clef` cites the POSITION row, exactly as
+#: `_locator_terms` cites the locator's, so a lone human reading clears
+#: `MARGIN_FLOOR` on its own -- the same absolute floor a lone detector or
+#: locator reading must clear (line 66ff).
+W_HUMAN_C_LINE = W_LOCATOR
+
+
+def _human_clef_position(ev: Evidence, glyph_row: Any) -> Optional[Any]:
+    """The `Q.CLEF_POSITION` row `review/human_evidence.py` filed beside this
+    SAME box -- matched by reader and `y_center`, the one key the two rows
+    share (see `_on_staff_rows`). Both come from one ingest of one review
+    action, so an exact float match is the same value computed twice, not a
+    coincidence to guard against.
+    """
+    y_center = (glyph_row.detail or {}).get("y_center")
+    if y_center is None:
+        return None
+    for row in ev.rows(Q.CLEF_POSITION):
+        if row.reader != glyph_row.reader:
+            continue
+        row_y = (row.detail or {}).get("y_center")
+        if row_y is not None and float(row_y) == float(y_center):
+            return row
+    return None
+
+
+def _snap_c_clef_position(position: float) -> Optional[Tuple[str, float]]:
+    """Which of the five staff lines this measured position sits on, read as
+    a C clef -- `(name, residual_in_line_spacings)`, or `None` where the
+    position will not snap within tolerance.
+
+    CONVENTION ASSUMED / WHAT WOULD FALSIFY IT / NOT CONFIRMED: this reuses
+    `clef_geometry.CLEF_BY_FAMILY_LINE["C"]` and `DEFAULT_CONFIG.
+    max_residual` rather than restating either, on the assumption that a
+    cell's recovered grid always places a staff's five lines at steps
+    0/2/4/6/8 in `Q.CLEF_POSITION`'s own units -- true of every grid measured
+    so far (`test_staged_c_clef.py`). It would be falsified by a grid
+    recovered from other than 5 visible staff lines; `Q.CLEF_POSITION`
+    carries no line count to check that against, so this cannot detect that
+    case and does not try to.
+    """
+    nearest_step = round(position / _STEPS_PER_LINE_SPACING) * _STEPS_PER_LINE_SPACING
+    if not (0.0 <= nearest_step <= 8.0):
+        return None
+    residual = abs(position - nearest_step) / _STEPS_PER_LINE_SPACING
+    if residual > DEFAULT_CONFIG.max_residual:
+        return None
+    line_from_bottom = 5 - int(nearest_step // _STEPS_PER_LINE_SPACING)
+    name = CLEF_BY_FAMILY_LINE["C"].get(line_from_bottom)
+    if name is None:
+        return None
+    return name, residual
+
+
+def _human_named_c_clef(ev: Evidence, glyph_row: Any
+                         ) -> Optional[Tuple[str, Term]]:
+    """Does this human's OWN `Q.CLEF_POSITION` name a line confidently enough
+    to name the CLEF, rather than merely support a name someone else gave?
+
+    Returns `(clef_name, Term)` citing the POSITION row -- the measurement
+    does the naming here, exactly as it does for the CV locator
+    (`_locator_terms`), and NOT the glyph row: citing the glyph row would put
+    the term in the wrong correlated group and risks double-counting the
+    same box against `_c_family_support`'s own (glyph-row) citation.
+
+    `None` is deliberately NOT an abstention. The caller falls back to plain
+    family support -- CLAUDE.md rule 8, a fallback never turns "cannot tell"
+    into an answer, so a box that will not confidently name a line still
+    contributes only what it can honestly claim.
+    """
+    pos_row = _human_clef_position(ev, glyph_row)
+    if pos_row is None:
+        return None
+    snapped = _snap_c_clef_position(float(pos_row.value))
+    if snapped is None:
+        return None
+    name, _residual = snapped
+    return name, Term("human_c_clef_line", W_HUMAN_C_LINE, (pos_row.id,))
 
 
 def _on_staff_rows(ev: Evidence) -> Dict[float, Any]:
@@ -409,7 +550,22 @@ def adjudicate_clef(ev: Evidence) -> Ruling:
     # ⚠️ A `clefC` detection supports every C clef a reader NAMED, and names
     # none itself. If nothing named one, it supports nothing -- which is the
     # honest outcome, not a fallback to alto.
+    #
+    # ⚠️ ROADMAP 3.4f -- THE ONE BRANCH, KEYED ON THE READER. A human witness
+    # did not classify a glyph; he read which line the clef prints on, and
+    # his box carries the measurement to prove it (`_human_named_c_clef`
+    # above). Every other reader's row falls straight through to the
+    # existing support-only treatment below, unchanged -- and so does a
+    # human's row whose position will not snap within tolerance, which is
+    # the SAME "supports nothing" honest outcome the comment above already
+    # describes, not a new fallback.
     for row in _c_family_support(ev):
+        if _is_human_clef_reader(row.reader):
+            named = _human_named_c_clef(ev, row)
+            if named is not None:
+                name, term = named
+                candidates.setdefault(name, []).append(term)
+                continue
         named_c = [n for n in candidates if n in C_CLEF_NAMES]
         for name in named_c:
             candidates[name].append(

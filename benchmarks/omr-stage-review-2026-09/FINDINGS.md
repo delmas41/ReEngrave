@@ -1112,3 +1112,217 @@ Committed here: `relabel-clefCAlto.sidecar.json`,
 `relabel-own-viola.arm.feedback.json` and
 `relabel-CONTROL-empty-sidecar.diff.json` — the control beside the arms,
 because an arm without its control is a number, not a measurement.
+
+---
+
+# §D — the C-clef connect (roadmap 3.4f, 2026-09-27)
+
+§C7a found the exact cause: a relabel to `clefCAlto` on `staff/3/0/9` filed
+`Q.CLEF_GLYPH` and `Q.CLEF_POSITION` (4.0829 — 0.083 of a step off the
+printed middle line), and `adjudicate_clef` (`tools/omr/staged/adjudicators/
+clef.py`) read both rows and used neither: `_clef_of` maps only G/F/
+percussion by class name, and `_c_family_support` only lets a `clefC*` row
+SUPPORT a C clef the CV locator had already named. Nothing had named one, so
+the staff stayed `ABSTAINED no_candidates`.
+
+The fix is the ONE branch `_c_family_support`'s caller in `adjudicate_clef`
+now takes, keyed on the row's READER (`_is_human_clef_reader`, closed to
+`READERS.SEAN` and `READERS.SESSION_TEST` — `record.READERS`'s own "THE
+HUMAN" section): a human witness's row may NAME the line his own
+`Q.CLEF_POSITION` measures — snapped to the nearest of the five staff lines
+with `clef_geometry.CLEF_BY_FAMILY_LINE["C"]` and `clef_geometry.
+DEFAULT_CONFIG.max_residual`, the SAME table and tolerance the CV locator
+trusts — instead of merely supporting a name someone else gave. Every other
+reader's row, and a human row whose position will not snap within tolerance,
+falls straight through to the pre-existing support-only treatment,
+unchanged. New weight `W_HUMAN_C_LINE = W_LOCATOR` (2.0, unmeasured, set
+equal because the two play the identical functional role — naming a line
+from geometry — not because a measurement has shown them equal).
+
+## D1. RED, then GREEN
+
+`tools/omr/tests/test_staged_clef_human_box.py`, written first and run
+against the unrepaired tree (`clef.py` at HEAD, `d01e0282`):
+
+    7 failed, 3 passed
+
+The 3 that passed on the UNREPAIRED tree are exactly the ones that must not
+move: the detector's own `clefCAlto` box still abstains, and an ambiguous
+human position (falls through to "supports nothing" / "supports whoever was
+already named") was already the honest outcome before this fix touched
+anything. The 7 that failed are the ones that depend on the new branch or
+the new `_is_human_clef_reader` function existing at all (two of the seven
+fail via `AttributeError` rather than a value mismatch, since the function
+does not exist pre-fix — counted as RED all the same).
+
+After the fix, the same file:
+
+    10 passed
+
+## D2. The positive control, and it CAN fail
+
+`TestThePositiveControlCanFail.test_the_detectors_own_box_still_ABSTAINS`:
+the DETECTOR's own `clefCAlto` box, same measured position (4.0829), still
+comes back `ABSTAINED no_candidates` — the class cannot name a line, exactly
+as `_clef_of` and `_c_family_support`'s own docstrings say it must not.
+
+CLAUDE.md rule 7: a control must be able to fail. Run in a state where it
+fails first. `test_the_control_CAN_FAIL_widen_the_branch_to_every_reader`
+monkeypatches `_is_human_clef_reader` to admit every reader for the
+DURATION OF ONE ASSERTION, re-runs the identical detector fixture, and
+confirms it THEN decides `alto` — i.e. that the control above is actually
+exercising the reader gate and would fail if the gate were removed, not
+passing for some unrelated reason. The patch is reverted by the `with`
+block; a second run of the same fixture immediately afterward confirms nothing
+was left widened.
+
+## D3. The ambiguous position, and where the brief's own example lands
+
+Picked NARROW/ABSTAIN idiom: a human position that will not snap within
+tolerance is not a new abstention reason. It falls through to the SAME
+"supports nothing" / "supports whoever else was named" honest outcome
+`_c_family_support` already gives a detector's row that cannot name a line
+itself.
+
+⚠️ **The brief's own illustrative value (3.5) is not ambiguous under the
+tolerance this fix actually uses.** `clef_geometry.DEFAULT_CONFIG.
+max_residual = 0.35` of one line spacing; a position of 3.5 (half a step
+short of the alto line at 4.0) has a residual of 0.25 — comfortably inside
+tolerance — and snaps to `alto` exactly as confidently as the real case's
+4.0829 does (`test_the_briefs_illustrative_3_5_actually_SNAPS`, asserted as
+its own control rather than left as a claim in a comment). The genuinely
+ambiguous position, at this tolerance, is the exact midpoint between two
+lines — 3.0, residual 0.5 — which is what
+`test_a_position_exactly_between_two_lines_names_NOTHING` uses.
+
+## D4. `staged.check`, before and after
+
+    before (clef.py at d01e0282):  TOTAL open=264  status=ok  exit=1
+    after  (this fix):             TOTAL open=264  status=ok  exit=1
+
+Byte-identical output apart from the run itself — `inventory`, `wiring` and
+`reach` did not change their declarations (this fix reads only quantities
+`adjudicate_clef` already declares in `wants=`, and returns only the
+`reason="scored"` the decision already returns), so no `wants=`/`reasons=`
+update was needed on `adjudicate_clef`. `N` did not go up.
+
+## D5. `tools/omr/tests/test_stage_review_evidence.py` had to change
+
+`TestARelabelOutsideTheNoteheadFamily::
+test_THE_HUMANS_CLEF_ENTERS_AS_THE_WEAKEST_WITNESS_AND_IT_IS_SAID` (§C3)
+pinned the OLD outcome of exactly the fixture this fix repairs: a detector
+`gClef` at 0.9 beside a human `clefCAlto` (reader `session-test`) used to
+decide `treble`, with the human's row in `basis` and never `used`. This
+fixture's human row measures `Q.CLEF_POSITION = 2.0`, which is the TENOR
+line (`clef_geometry.CLEF_BY_FAMILY_LINE["C"][4]`), not the alto line the
+review note describes — geometry names the line regardless of which C-clef
+sub-class was clicked, exactly as it already does for the CV locator. The
+verdict is now `tenor`, and the human's row moved from `basis` to `used`.
+The test was updated in place (not deleted or renamed) to assert the new,
+correct outcome, with a docstring explaining which half of the original
+finding is still true (a human's G/F clef row still enters
+`_detector_terms` with `score=None → W_DETECTOR_LOW`, unrepaired, a
+different code path this fix does not touch) and which half this fix closed.
+
+## D6. The real case, re-run — WITH ITS CONTROL, on today's tree
+
+    # the sidecar arm
+    python3 -m tools.omr.staged.review.rerun \
+      library/_shared-records/beethoven5-litolff-mvt1-whole-20260923.record.json \
+      benchmarks/omr-stage-review-2026-09/out/relabel-clefCAlto.sidecar.json \
+      --out <scratch>/rerun-3.4f --staff staff/3/0/9 --progress
+
+    # the CONTROL -- same record, same tree, empty sidecar (CLAUDE.md §6b:
+    # "give every arm its own tag"; a number without this is not a measurement)
+    python3 -m tools.omr.staged.review.rerun \
+      library/_shared-records/beethoven5-litolff-mvt1-whole-20260923.record.json \
+      --control --out <scratch>/rerun-3.4f-control --staff staff/3/0/9 --progress
+
+Both ran. Provenance: `commit dbc9962b...` (2026-09-22, `dirty: true` — the
+gather ran on top of uncommitted work beyond that commit; the file's own name
+dates it 09-23). **The control's own
+`--control` flag reports exit 1** — "the sidecar was empty and the record did
+not reproduce" — confirming CLAUDE.md §6b in the same breath: the parent
+record is 09-23's and four more landings have touched these SAME saved
+verdicts since (2.7, 2.12b, 3.4g/g-2, 3.4h), independent of anything this
+fix does. That is exactly why the two runs are read AGAINST EACH OTHER below,
+never against the raw "differs from the 09-23 record" count alone.
+
+**First surprise: `staff/3/0/9`'s clef decides `alto` in BOTH runs.** On
+today's tree, `infer:fill_clef_gap`/`clef_from_other_systems` already fills
+this staff's clef from its Viola-role neighbours even with an EMPTY sidecar
+— a general improvement landed since 09-23, nothing to do with this fix.
+Diffing the two runs' own `changed` lists against each other (not against
+the 09-23 record) isolates what is actually this fix's:
+
+    only in the SIDECAR run (2 entries differ from the control; 1 more only exists there):
+      staff/3/0/9  clef            ADJUDICATE  'alto'  scored               (control: INFER  'alto'  clef_from_other_systems)
+      staff/3/0/9  key_signature   ADJUDICATE  -2      markers              (control: INFER  -3      key_from_document_majority)
+      glyph/3/0/9/0/1  notehead_is_not_a_notehead  decided True  human_not_a_symbol   (absent from the control -- needs the relabel at all)
+    only in the CONTROL run: none
+    <note> elements 8588 -> 8758 (+170) -- IDENTICAL in both runs
+
+So the clef VALUE is not the finding — its STAGE is. Without this fix, this
+staff's clef is UNDECIDED at ADJUDICATE and only acquired later by INFER's
+opportunistic cross-system fill, which needs OTHER same-role staves to have
+already decided (it is a guess with a name, not a read of this plate, and on
+a staff with no useful neighbour it would still abstain). With this fix, the
+clef is decided directly off the human's own reading, at ADJUDICATE, on THIS
+staff alone.
+
+**And that earliness is what the key signature actually needed.**
+`adjudicate_key_signature` runs in `adjudicate.ORDER` after `clef`, in the
+SAME stage — so with the clef decided early, its own `needs_clef` abstention
+clears in ADJUDICATE and it reads the STAFF'S OWN accidental markers:
+`decided/-2 (markers)`. Without this fix, ADJUDICATE still abstains
+`needs_clef` (the clef isn't decided until INFER, one stage later), and the
+key signature is filled only afterward by INFER's `key_from_document_majority`
+— a document-wide guess, and it disagrees: `decided/-3`. **Two flats read off
+this system's own markers, against three flats guessed from what the rest of
+the document mostly is.** ⚠️ Which one the plate actually prints is NOT
+established here — that is a print check, not a rerun, and it is the natural
+next step (`out/print/` per §6b) rather than something this pass asserts.
+
+`<note>` (+170, identical in both runs) and the eight-staff clef cascade
+(`staff/2/1/9`, `staff/5/0/7`, `staff/5/1/5`, `staff/7/0/9`, `staff/7/1/9`,
+`staff/14/0/11`, `staff/15/0/9`, `staff/16/1/9`, all `no_candidates ->
+decided` via `clef_from_other_systems`) are **NOT this fix's** — they are in
+the control too, byte-for-byte. ⚠️ §C7a's own "not one head gets a pitch
+anyway, because EVALUATE runs BEFORE INFER" no longer holds on today's tree
+for EITHER run — both progress logs show a second pass, `EVALUATE (bounded,
+over the inferred values)`, running AFTER `INFER`. That pass is credited with
+closing the pitch gap here, not this fix; whether it existed but was inert at
+09-23's gather or landed afterward is not established by this rerun (the
+09-23 code state was not reproduced to check) and is not asserted either way.
+
+`used`, not `basis`: the sidecar run's per-stage summary reports
+`verdicts_that_WEIGHED_one: 2` (was 1 before this fix — `notehead_is_not_a_
+notehead` alone) and `human_rows_no_stage_read: 0` (all 4 of the sidecar's
+rows now reach a verdict that reads them). `clef staff/3/0/9` is listed
+`[ADJUDICATE|used]`, citing `obs:174395/174396/174397` — the box, the glyph,
+and the position — because the harness's own `basis` already carried the
+glyph and box rows through `_c_family_support`'s population before this fix;
+`used` is what changed.
+
+Committed here: `relabel-clefCAlto.rerun-3.4f.diff.json` /
+`.feedback.json` (the sidecar arm) and `relabel-clefCAlto.rerun-3.4f.control.
+diff.json` / `.control.feedback.json` (the control) — the control beside the
+arm, because CLAUDE.md §6b: an arm without its control is a number, not a
+measurement, and this is the arm/control pair that produced every number in
+this section. The 289 MB amended records are not committed.
+
+## D7. What this does NOT touch
+
+- A human's G or F clef row still enters `_detector_terms` scored at
+  `W_DETECTOR_LOW` (score `None` → 0.0) — the general weighting question
+  §C3 raised, and still not repaired here; it is a change to `clef.py`'s
+  scoring for EVERY reader, with its own measurement, not a reader-keyed
+  connect.
+- `page_spoke` (the gate on the GAPS-ONLY dossier tier, §A5's
+  `_carry_terms`) is computed from `_detector_terms` and `_locator_terms`
+  only, unchanged — a staff whose only read evidence is a human's C-clef box
+  still does not count as "the page spoke" for that gate. Left alone because
+  the brief says one branch and nothing else changes; flagged here as the
+  next place this connect could be widened, not fixed silently.
+- The alto clef's OTHER arm noted in §C7a (`glyph/3/0/9/0/6`, still a
+  notehead) is untouched — a different roadmap item (relabelling that box).
