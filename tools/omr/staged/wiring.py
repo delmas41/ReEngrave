@@ -418,12 +418,13 @@ KNOWN_GAPS: Dict[str, str] = {
     # gatherers at once.
     #
     # Each entry LEAVES this list the day a decision reads it.
-    "DETAIL Q.INK.ink_bbox_canonical": (
-        "the component's box in the CELL's own canonical frame, beside the "
-        "page-frame one. Kept because a cell-local consumer (a residue rule, "
-        "which compares a component against this cell's own staff-line rows) "
-        "wants the frame the rows are measured in, and converting back from "
-        "page pixels would reintroduce the rounding the cell already paid."),
+    #
+    # ⚠️ `ink_bbox_canonical` LEFT THIS LIST ROADMAP 2.4c, 2026-09-28:
+    # `adjudicators.unread_mark._component_rows` tests for its PRESENCE (the
+    # one key that tells a per-component `Q.INK` row apart from roadmap 1.1's
+    # per-cell summary form) on every cell carrying any ink at all. It is not
+    # the residue consumer this comment named — that decision does not exist
+    # yet — but the read is real and literal, and a closed gap must leave.
     "DETAIL Q.INK.ink_area_px": (
         "ink pixels in the component, as against the AREA OF ITS BOX. The "
         "pair is the discriminator a residue rule needs and neither half is "

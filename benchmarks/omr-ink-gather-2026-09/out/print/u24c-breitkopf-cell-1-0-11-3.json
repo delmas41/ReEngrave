@@ -1,0 +1,29 @@
+{
+  "subject": "cell/1/0/11/3",
+  "page": 1,
+  "system": 0,
+  "staff": 11,
+  "cell": 3,
+  "reason": "unread_mark",
+  "ink_components": [
+    "glyph/1/0/11/3/200026"
+  ],
+  "width_spaces": 1.31,
+  "height_spaces": 1.27,
+  "bbox_page_px": [
+    3171.125,
+    3235.125,
+    3207.15,
+    3270.05
+  ],
+  "column_x_page": 3187.11,
+  "column_witnesses": [
+    0,
+    2,
+    3
+  ],
+  "column_n_witness": 3,
+  "excluded_by_guard": [],
+  "file": "u24c-breitkopf-cell-1-0-11-3.png",
+  "VERDICT_none_yet": null
+}

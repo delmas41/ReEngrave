@@ -2507,8 +2507,19 @@ def _part_xml(rec: Record, part: Sequence[StaffRun], pid: str,
               meters: Optional[Dict[Tuple[int, int], Any]] = None,
               drops: Optional[Any] = None,
               held_bars: Optional[List[Dict[str, Any]]] = None,
-              marks: Optional[Dict[str, int]] = None) -> str:
+              marks: Optional[Dict[str, int]] = None,
+              marked_bars: Optional[List[Dict[str, Any]]] = None) -> str:
     """One `<part>`: every measure of every system this part appears on.
+
+    ⚠️ `marked_bars` IS ROADMAP 2.4c, THE SAME SHAPE AS `held_bars` ONE
+    PARAGRAPH DOWN AND A SEPARATE LIST ON PURPOSE. A bar can be held out for
+    two different reasons (its durations do not sum to the meter, or it
+    carries an unread mark) and a reader asking "which kind is this bar"
+    must be able to tell -- folding the two lists together would make that
+    a re-derivation rather than a read. `marks` (the family accounting) IS
+    shared with roadmap 2.8's own counter: see `_MARK_REFUSAL`'s own comment
+    at the render site for why that is a stated scope limit, not an
+    oversight.
 
     ⚠️⚠️ `drops` AND `held_bars` ARE ROADMAP 2.8, AND `drops` IS NOT OPTIONAL
     IN PRACTICE. It is `_place_notes._drop`'s discipline reaching the render:
@@ -2664,6 +2675,21 @@ def _part_xml(rec: Record, part: Sequence[StaffRun], pid: str,
             judged = meter if meter is not None else in_force
             held = (_bar_holds_out(events, split[0], divisions, judged)
                     if events else None)
+            # ⚠️⚠️ ROADMAP 2.4c, AND IT IS TESTED ONLY WHERE `held` IS NONE.
+            # A bar the bar-sum hold-out already refuses is refused once, for
+            # its own stated reason -- `held is not None` below already takes
+            # this bar's events out of the file, so asking a second question
+            # about the SAME withheld notes would double-count them against
+            # the accounting equality. An EVENTLESS bar (`not events`) needs
+            # no mark check either: it already exports as unread via the
+            # branch below (`empty_bars_padded`), which is 2.4c's own claim
+            # ("we could not read this") arrived at by a different, older
+            # route.
+            mark = None
+            if held is None and events:
+                mv = rec.verdict(Q.UNREAD_MARK, R_cell_key(run, i))
+                if mv and mv.get("outcome") == "decided" and mv.get("value") is True:
+                    mark = mv.get("detail") or {}
             if events:
                 counters["bars_with_events"] += 1
                 counters["bars_with_events_without_a_meter"] += (
@@ -2736,6 +2762,69 @@ def _part_xml(rec: Record, part: Sequence[StaffRun], pid: str,
                 # write a whole rest into a 6/8 bar the file has already
                 # declared as three quarters. A bar can only be HELD OUT where
                 # a length is known, so this is never the fallback.
+                lines.extend(_legacy._mxl_empty_measure(
+                    judged, divisions, directions or None, "      "))
+                _count_directions(counters, directions)
+            elif mark is not None:
+                # ⚠️⚠️ ROADMAP 2.4c, THE SAME BRANCH SHAPE AS THE BAR-SUM
+                # HOLD-OUT THREE PARAGRAPHS UP -- ONE MECHANISM, A SECOND
+                # NAMED REASON. This bar's events WOULD otherwise be written
+                # as read; `Q.UNREAD_MARK` says a piece of printed ink this
+                # staff never explained sits at a column another staff
+                # corroborates, so the bar as a whole cannot be vouched for
+                # (CLAUDE.md's definition of done: every bar we could not
+                # read is MARKED as unread and never invented). The notes
+                # this staff DID read in it follow 2.8's own choice exactly:
+                # they are counted as unread rather than written, because a
+                # bar that might be missing a note must not export looking
+                # complete.
+                counters["bars_held_out_unread_mark"] += 1
+                if split[0] is not None:
+                    # ⚠️ MIRRORS `two_voice_bars_held_out_by_sum` for the
+                    # identical reason: this bar never reaches `_measure_xml`,
+                    # so its own two-voice verdict needs a bucket here or it
+                    # is accounted for nowhere.
+                    counters["two_voice_bars_held_out_by_unread_mark"] += 1
+                if run.condensed_from is None:
+                    n_rows = _bar_event_rows(events)
+                    counters["notes_held_out_unread_mark"] += n_rows
+                    if drops is not None:
+                        for _ in range(n_rows):
+                            drops(_MARK_REFUSAL, run.page, run.system)
+                    # ⚠️ FOLDED INTO THE SAME FAMILY COUNTERS THE BAR-SUM
+                    # HOLD-OUT USES (`marks`, roadmap 2.8's own `held_marks`),
+                    # A STATED SCOPE LIMIT AND NOT AN OVERSIGHT: forking
+                    # SIX separate family-accounting sites (arcs/ties,
+                    # articulations, dot-role, ornaments, wedges, fermatas)
+                    # to give 2.4c its own bucket in each was out of scope
+                    # for this lane. The equality every one of those families
+                    # asserts still balances -- nothing here goes uncounted,
+                    # it is folded under `_BAR_SUM_REFUSAL`'s name rather
+                    # than `_MARK_REFUSAL`'s own for those six families only.
+                    # The headline this roadmap item is about -- noteheads
+                    # and rests, `status_census`'s own accounting -- gets its
+                    # own name above.
+                    if marks is not None:
+                        for _fam, _n in _held_bar_marks(events).items():
+                            marks[_fam] += _n
+                    if marked_bars is not None:
+                        marked_bars.append({
+                            "page": run.page, "system": run.system,
+                            "staff": run.staff, "cell": i,
+                            "measure": number if base is None else base + i + 1,
+                            "part": pid, "events": len(events),
+                            "noteheads_and_rests": n_rows,
+                            "ink_components": mark.get("ink_components"),
+                            "column_x_page": mark.get("column_x_page"),
+                            "column_witnesses": mark.get("column_witnesses"),
+                        })
+                else:
+                    # ⚠️ MIRRORS THE BAR-SUM BRANCH'S OWN CONDENSED CASE, for
+                    # the identical reason: a condensed staff's doubled copy
+                    # holds ink the log recorded once, and counting a second
+                    # refusal for it would charge the balance for a row that
+                    # does not exist.
+                    counters["bars_held_out_unread_mark_on_a_doubled_staff"] += 1
                 lines.extend(_legacy._mxl_empty_measure(
                     judged, divisions, directions or None, "      "))
                 _count_directions(counters, directions)
@@ -3052,6 +3141,16 @@ def _measure_xml(rec: Record, run: StaffRun, cell_index: int,
 #: *"hold out -- I want to know what we are getting correct"*) and every event
 #: in it is counted here, so the accounting EQUALITY still balances.
 _BAR_SUM_REFUSAL = "bar_does_not_add_up"
+
+#: ROADMAP 2.4c's refusal. A bar we WOULD otherwise write as read carries a
+#: decided `Q.UNREAD_MARK` -- ink no detection explains, notehead-sized, at a
+#: column another staff of the system corroborates. The SAME hold-out branch
+#: 2.8 built for a bar whose durations do not sum to the meter: nothing pads,
+#: trims or invents a pitch for the mark, and the bar's own read events are
+#: counted here rather than written, because a bar that MIGHT be missing a
+#: note must not export looking complete (CLAUDE.md rule 8: a fallback never
+#: converts "cannot tell" into an answer, not even "clean").
+_MARK_REFUSAL = "possibly_unread_mark"
 
 
 def _event_units(ev: Dict[str, Any], divisions: int) -> int:
@@ -3569,10 +3668,15 @@ def to_musicxml(result: Dict[str, Any]) -> Tuple[str, Dict[str, Any]]:
     #: roadmap's own requirement, and the only place a human can find out
     #: WHICH bars the file is missing without re-deriving the rule.
     held_bars: List[Dict[str, Any]] = []
+    #: ROADMAP 2.4c's own list, the same shape as `held_bars` and kept
+    #: separate so a reader can tell WHICH mechanism held a bar out without
+    #: re-deriving it.
+    marked_bars: List[Dict[str, Any]] = []
     #: The MARKS a held-out bar would have written, by family. See
     #: `_held_bar_marks`: every one of them has to reach its family's own
     #: not-written bucket or that family's balance control goes False for
-    #: correct behaviour.
+    #: correct behaviour. Shared by roadmap 2.4c's own hold-out for these six
+    #: families -- see `_MARK_REFUSAL`'s comment at the render site.
     held_marks: Dict[str, int] = collections.Counter()
     # ⚠️ AFTER the parts are joined and BEFORE any measure is rendered. A part
     # is what an arc is merged along -- the junction between two systems is a
@@ -3652,7 +3756,8 @@ def to_musicxml(result: Dict[str, Any]) -> Tuple[str, Dict[str, Any]]:
         parts_xml.append(_part_xml(rec, part, pid, divisions, counters,
                                    offsets, pad, meters,
                                    drops=_drop_at_render,
-                                   held_bars=held_bars, marks=held_marks))
+                                   held_bars=held_bars, marks=held_marks,
+                                   marked_bars=marked_bars))
 
     # ⚠️ WRITTEN EVEN WHEN ZERO, the `empty_bars_padded_without_meter` lesson
     # again: on a document where every bar adds up, *"we held out none"* must
@@ -3661,7 +3766,10 @@ def to_musicxml(result: Dict[str, Any]) -> Tuple[str, Dict[str, Any]]:
                "bars_held_out_sum", "notes_held_out_sum",
                "bars_judged_by_a_carried_meter",
                "empty_bars_sized_by_a_carried_meter",
-               "bars_held_out_sum_on_a_doubled_staff"):
+               "bars_held_out_sum_on_a_doubled_staff",
+               "bars_held_out_unread_mark", "notes_held_out_unread_mark",
+               "bars_held_out_unread_mark_on_a_doubled_staff",
+               "two_voice_bars_held_out_by_unread_mark"):
         counters[_k] += 0
 
     xml = _legacy._score_partwise(result.get("source", {}) or {},
@@ -3726,6 +3834,23 @@ def to_musicxml(result: Dict[str, Any]) -> Tuple[str, Dict[str, Any]]:
                      if counters.get("bars_with_events") else None),
         "noteheads_and_rests": int(counters.get("notes_held_out_sum", 0)),
         "held": held_bars,
+    }
+    # ⚠️⚠️ ROADMAP 2.4c: THE SAME SHAPE, A DIFFERENT MECHANISM. A bar can be
+    # held out because its durations do not sum to the meter OR because it
+    # carries an unread mark (never both -- `_part_xml` tests `held is None`
+    # before asking about a mark), and the two lists above/below are kept
+    # apart so a reader can tell which without re-deriving the rule.
+    report["bars_held_out_unread_mark"] = {
+        "bars": int(counters.get("bars_held_out_unread_mark", 0)),
+        "bars_on_a_doubled_staff": int(
+            counters.get("bars_held_out_unread_mark_on_a_doubled_staff", 0)),
+        "of_bars_with_events": int(counters.get("bars_with_events", 0)),
+        "fraction": ((counters.get("bars_held_out_unread_mark", 0)
+                      / counters["bars_with_events"])
+                     if counters.get("bars_with_events") else None),
+        "noteheads_and_rests": int(
+            counters.get("notes_held_out_unread_mark", 0)),
+        "held": marked_bars,
     }
     # ⚠️ THE SAME REFUSALS, KEYED BY PRINTED SYSTEM. Written so the cleanup
     # artefact can ask its question one system at a time without holding a

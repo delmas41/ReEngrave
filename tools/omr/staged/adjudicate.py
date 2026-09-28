@@ -1018,6 +1018,12 @@ ORDER: Tuple[str, ...] = (
     # system. Answering the same question twice would let the two
     # answers disagree.
     Q.ONSET_COLUMN,
+    # ⚠️ ROADMAP 2.4c, AFTER `Q.ONSET_COLUMN` FOR THE SAME DEPENDENCY REASON
+    # `Q.ONSET_COLUMN` ITSELF IS AFTER `Q.EVENT`: this decision reads the
+    # column verdict rather than re-deriving cross-staff simultaneity, so it
+    # must already exist. It needs no other decision's verdict -- its other
+    # two inputs (`Q.INK`, `Q.STAFF_LINES`, `Q.CELL_BOX`) are GATHER rows.
+    Q.UNREAD_MARK,
     # ⚠️⚠️ AFTER `VOICES`, AND IT SAT BESIDE THE FERMATA UNTIL THE INVENTORY
     # SAID OTHERWISE. Both ends of a hairpin must come from ONE voice --
     # MusicXML pairs a wedge within a `<voice>` stream, so a start in voice 1
