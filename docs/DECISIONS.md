@@ -301,3 +301,10 @@ Format: `YYYY-MM-DD · who · the decision · because · (pointer)`
   whereas "every candidate part expects −3" FOLLOWS whichever candidate is
   right · Litolff key changes 18 → 0, wrong staves 9 → 0, Brahms and engraved
   byte-identical · (ROADMAP 2.9c, merge `2d2352fb`)
+- 2026-09-28 · Sean · **maestroAnalyst stays OFF by default and its INFER
+  role is PARKED (ROADMAP 2.16).** Scoped in chat: it fits INFER (choose among
+  a narrowed verdict's own candidates, labelled) but not meter/key, and today
+  it is not in the container, reads nothing on the staged path, and its output
+  is displayed nowhere · *"it feels less important than what we already have
+  to get done and I'm worried about scope creep"* · recorded so the idea is
+  not lost; no lane until he un-parks it
