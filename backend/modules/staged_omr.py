@@ -1,12 +1,13 @@
 """
 Staged OMR — runs the STAGED pipeline (``tools/omr/staged``) in-process,
 BESIDE the legacy ``local`` engine (``backend/modules/local_omr.py``).
-ROADMAP 3.3, first half: ``omr_engine=staged`` in the web app. The default
-web engine stays ``local`` (CLAUDE.md §3: STAGED is the product path per
-DECISIONS 2026-09-22, but it does not yet export LilyPond by default here
-and is not yet the web app's default).
+ROADMAP 3.3: ``omr_engine=staged`` in the web app (first half), plus the
+page-cap -> job-budget half (this module's ``parse_page_range`` /
+``estimate_budget_s``). The default web engine stays ``local`` (CLAUDE.md
+§3: STAGED is the product path per DECISIONS 2026-09-22, but it does not
+yet export LilyPond by default here and is not yet the web app's default).
 
-Provides ``run_staged_omr(pdf_path, output_dir) -> StagedOmrResult``,
+Provides ``run_staged_omr(pdf_path, output_dir, pages=None) -> StagedOmrResult``,
 mirroring ``local_omr.run_local_omr``'s contract:
 
   * writes ``{stem}.record.json`` — the pooled staged record, via
@@ -23,11 +24,23 @@ mirroring ``local_omr.run_local_omr``'s contract:
     un-exercised branch this repo's own findings keep calling out.
 
 ⚠️ SAME ENV KNOBS AS ``local_omr`` (CLAUDE.md rule 9: no new flags).
-``OMR_WEIGHTS_PATH``, ``OMR_DPI``, ``OMR_CONF_THRESHOLD``, ``OMR_IMGSZ`` and
-``OMR_MAX_PAGES`` are read via ``local_omr``'s own helpers, imported rather
-than restated, so the two engines can never silently disagree about what one
-of these means. The page cap ("page cap → job budget") is the second half
-of 3.3 and is NOT changed here.
+``OMR_WEIGHTS_PATH``, ``OMR_DPI``, ``OMR_CONF_THRESHOLD`` and ``OMR_IMGSZ``
+are read via ``local_omr``'s own helpers, imported rather than restated, so
+the two engines can never silently disagree about what one of these means.
+``OMR_MAX_PAGES`` is still the fallback when a caller supplies no explicit
+``pages`` — see ``parse_page_range`` / ``run_staged_omr``'s own ``pages``
+argument for the whole-movement path this route now also accepts.
+
+ROADMAP 3.3's job budget (the "page cap → job budget" item): a request for
+an explicit page RANGE is priced with ``tools.omr.staged.budget.
+estimate_job_budget_s`` (the ONE place those per-page constants live —
+CLAUDE.md §5b, ROADMAP 1.2b) BEFORE the job starts, and ``backend/main.py``
+refuses a request whose estimate exceeds ``settings.omr_job_budget_s`` up
+front rather than starting a job that would run for hours and then be
+silently capped. ``parse_page_range`` / ``estimate_budget_s`` below are thin
+wrappers so ``main.py`` never has to reach past this module into
+``tools.omr.staged`` directly — the same layering ``run_staged_omr`` itself
+already keeps.
 
 ⚠️ WEIGHT ROUTING is ``staged/weight_routing.py:resolve_staged_weights`` —
 the SAME call the staged CLI makes under ``--route-weights`` — never a
@@ -54,7 +67,7 @@ import os
 import sys
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Optional
+from typing import Any, Dict, List, Optional
 
 logger = logging.getLogger(__name__)
 
@@ -112,13 +125,54 @@ class StagedOmrResult:
 
 
 # ---------------------------------------------------------------------------
+# Page range / job budget (ROADMAP 3.3, second half)
+# ---------------------------------------------------------------------------
+
+
+def parse_page_range(pages: str) -> List[int]:
+    """Parse a `pages` query param ("0-26", "0,2,4-6") into a page list.
+
+    ⚠️ REUSES `tools.omr.staged.__main__.parse_pages` — the SAME parser the
+    staged CLI's own `--pages` and `gather_movement.sh` use — rather than a
+    second, web-only spelling of "what does a page range string mean" that
+    could silently disagree with the CLI's. Raises `ValueError` on a
+    malformed string; `backend/main.py` turns that into a 400.
+    """
+    from tools.omr.staged.__main__ import parse_pages
+    return parse_pages(pages)
+
+
+def estimate_budget_s(n_pages: int, *,
+                      direction_text_scan_gate: bool = True) -> Dict[str, Any]:
+    """The same per-page time estimate `gather_movement.sh` prints
+    (ROADMAP 1.2b) — `tools.omr.staged.budget.estimate_job_budget_s`,
+    imported rather than restated, so the CLI script and this web job can
+    never quote two different numbers for one page count. See that
+    module's docstring for why the post-GATHER half is an UPPER BOUND, not
+    a measurement.
+    """
+    from tools.omr.staged.budget import estimate_job_budget_s
+    return estimate_job_budget_s(
+        n_pages, direction_text_scan_gate=direction_text_scan_gate)
+
+
+# ---------------------------------------------------------------------------
 # Public API
 # ---------------------------------------------------------------------------
 
 
-async def run_staged_omr(pdf_path: str, output_dir: str) -> StagedOmrResult:
+async def run_staged_omr(pdf_path: str, output_dir: str,
+                         pages: Optional[List[int]] = None) -> StagedOmrResult:
     """Run the staged pipeline on `pdf_path` and write the pooled record +
     a MusicXML file to `output_dir`.
+
+    `pages`, when given, is the EXACT page list to gather (ROADMAP 3.3's
+    whole-movement job, priced by the caller with `estimate_budget_s`
+    BEFORE this is called) — it overrides `OMR_MAX_PAGES` entirely rather
+    than being clamped by it, since a caller that already paid for the
+    budget check gets the range it asked for. `None` (no `pages` query
+    param — the pre-3.3-second-half behaviour) keeps reading the first
+    `OMR_MAX_PAGES` pages, unchanged.
 
     Heavy compute runs in a thread, matching ``run_local_omr``.
     """
@@ -138,6 +192,7 @@ async def run_staged_omr(pdf_path: str, output_dir: str) -> StagedOmrResult:
             output_dir=output_dir,
             weights=_weights_path(),
             max_pages=_max_pages(),
+            pages=pages,
             conf_threshold=_conf_threshold(),
             imgsz=_imgsz(),
             dpi=_dpi(),
@@ -170,6 +225,7 @@ def _run_staged_blocking(
     conf_threshold: float,
     imgsz: int | None,
     dpi: int,
+    pages: Optional[List[int]] = None,
 ) -> StagedOmrResult:
     import fitz  # PyMuPDF
 
@@ -181,13 +237,30 @@ def _run_staged_blocking(
     doc = fitz.open(pdf_path)
     n_pages = doc.page_count
     doc.close()
-    pages = list(range(min(n_pages, max_pages)))
-    if not pages:
-        return StagedOmrResult(
-            musicxml_path="",
-            record_path="",
-            error_message=f"PDF has no pages: {pdf_path}",
-        )
+
+    # ⚠️ ROADMAP 3.3, second half: an EXPLICIT `pages` list — already priced
+    # against the job budget by `backend/main.py` before this thread was
+    # even started — overrides `OMR_MAX_PAGES` entirely, rather than being
+    # clamped by it: a caller that asked for (and was approved for) pages
+    # 0-26 gets 0-26, not whatever OMR_MAX_PAGES happens to be set to today.
+    # `None` (no `pages` query param) keeps the pre-3.3-second-half cap,
+    # byte-identical to before.
+    if pages is not None:
+        requested = list(pages)
+        page_list = [p for p in requested if 0 <= p < n_pages]
+    else:
+        requested = None
+        page_list = list(range(min(n_pages, max_pages)))
+
+    if not page_list:
+        if n_pages == 0:
+            msg = f"PDF has no pages: {pdf_path}"
+        else:
+            msg = (f"none of the requested pages {requested} fall within "
+                  f"{pdf_path}'s {n_pages} pages")
+        return StagedOmrResult(musicxml_path="", record_path="",
+                               error_message=msg)
+    pages = page_list
 
     # ⚠️ THE SAME CALL THE STAGED CLI MAKES under --route-weights
     # (tools/omr/staged/__main__.py). An explicit OMR_WEIGHTS_PATH pins (no

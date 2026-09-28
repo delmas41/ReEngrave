@@ -32,6 +32,15 @@ class Settings(BaseSettings):
     cors_origins: str = "http://localhost:5173"
     frontend_url: str = "http://localhost:5173"
 
+    # --- OMR job budget (ROADMAP 3.3, second half) ---
+    # A `staged` job whose estimated cost (tools.omr.staged.budget) exceeds
+    # this is refused up front, never silently truncated to the page cap.
+    # ~14 h: just over the one measured whole-movement data point (16
+    # Litolff pages, ~12.7-13.9 h depending on the direction-text gate —
+    # see budget.py's own module docstring for why that figure is an upper
+    # bound). Override with OMR_JOB_BUDGET_S.
+    omr_job_budget_s: float = 50400.0
+
     class Config:
         env_file = ".env"
         extra = "ignore"

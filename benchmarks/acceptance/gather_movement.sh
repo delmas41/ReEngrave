@@ -184,28 +184,31 @@ EOF
 fi
 
 # ── 5. the budget estimate, before starting anything expensive ─────────────
+# ⚠️ ROADMAP 1.2b, CLOSED HERE: this used to spell the GATHER-only half of
+# this arithmetic inline (`n * 93`, `n * (93 + 267)`) and said NOTHING about
+# ADJUDICATE/EVALUATE/INFER/write -- the stages that turned a 25-minute
+# GATHER into a 12.8-hour run on 16 Beethoven pages. `tools.omr.staged.
+# budget.estimate_job_budget_s` is the ONE place those constants (GATHER
+# and the post-GATHER upper bound alike) now live -- the same function
+# `backend/modules/staged_omr.py` calls for the web app's job budget
+# (ROADMAP 3.3's second half) -- so this script and that module can never
+# quote two different numbers for one page count.
 N_PAGES="$(python3 -c "
 from tools.omr.staged.__main__ import parse_pages
 print(len(parse_pages('$PAGES')))
 ")"
 python3 - "$N_PAGES" "$KIND" <<'PYEOF'
 import sys
+from tools.omr.staged.budget import estimate_job_budget_s, format_budget_report
 n = int(sys.argv[1])
-# CLAUDE.md Sec.5b: ~93 s/page with the margin-label rungs; ~267 s/page if
-# the direction-word reader also runs. OMR_DIRECTION_TEXT_SCAN_GATE=1 (set
-# below, per roadmap 1.2) skips that reader on a page PROVED to be a scan,
-# so the lower figure is what applies here -- printed alongside the
-# without-the-gate figure so a reviewer can see what the gate is buying.
-with_gate = n * 93
-without_gate = n * (93 + 267)
-def fmt(s):
-    return f"{s}s (~{s/60:.1f} min, ~{s/3600:.1f} h)"
-print(f"── budget estimate over {n} pages, OMR_DIRECTION_TEXT_SCAN_GATE=1:")
-print(f"   expected (gate skips the direction reader on scan pages): {fmt(with_gate)}")
-print(f"   if the gate did not fire on any page (upper bound):        {fmt(without_gate)}")
-print("   ⚠️ n=1 document at this scale (roadmap 1.1's own first run) --")
-print("   these figures are the CLAUDE.md per-page constants times page")
-print("   count, not a measurement of a whole movement.")
+# OMR_DIRECTION_TEXT_SCAN_GATE=1 (set below, per roadmap 1.2) skips the
+# direction-word reader on a page PROVED to be a scan -- the expected case
+# this estimate reflects; `format_budget_report` also prints the
+# without-the-gate upper bound so a reviewer can see what the gate buys.
+print(format_budget_report(estimate_job_budget_s(n, direction_text_scan_gate=True)))
+print("   ⚠️ n=1 document at this scale (roadmap 1.1's own first run) -- "
+      "the GATHER half of this is CLAUDE.md's own per-page constants times "
+      "page count, not a measurement of a whole movement.")
 PYEOF
 
 # ── 6. the gather itself ────────────────────────────────────────────────────

@@ -225,10 +225,18 @@ export async function deleteScore(id: string): Promise<{ deleted: string }> {
 
 export async function runOMR(
   scoreId: string,
-  engine: 'local' | 'claude_vision' | 'staged' = 'local'
+  engine: 'local' | 'claude_vision' | 'staged' = 'local',
+  // ROADMAP 3.3, second half: a whole-movement page range, staged only
+  // (e.g. '0-26'). Omitted (the default for every existing caller) keeps
+  // the server's OMR_MAX_PAGES cap — nothing changes for local/claude_vision.
+  pages?: string
 ): Promise<{ score_id: string; status: string }> {
+  const params: Record<string, string> = { omr_engine: engine };
+  if (pages) {
+    params.pages = pages;
+  }
   const res = await api.post(`/api/scores/${scoreId}/process/omr`, null, {
-    params: { omr_engine: engine },
+    params,
   });
   return res.data;
 }

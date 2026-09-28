@@ -486,6 +486,15 @@ NOT_A_STAGE = frozenset({
     # quantity in order to report on it is not a consumer of it. It still has
     # to be in one of the two lists or `unaccounted_modules()` reports it.
     "producers.py",
+    # ⚠️ ROADMAP 1.2b / 3.3 (second half). `budget.py` is a per-page TIME
+    # ESTIMATE, not a pipeline stage or a derived check: it multiplies a
+    # page count by constants CLAUDE.md §5b already names and returns
+    # seconds. It reads no `Q.*` quantity and touches no `Record`/`Log` at
+    # all -- `estimate_job_budget_s`'s only input is an integer. Registered
+    # here for the reason every entry above gives: an unregistered staged
+    # `.py` trips `unaccounted_modules()`, the guard that caught
+    # `positions.py` on arrival.
+    "budget.py",
 })
 
 
