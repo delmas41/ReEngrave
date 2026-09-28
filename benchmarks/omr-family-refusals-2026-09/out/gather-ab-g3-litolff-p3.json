@@ -1,0 +1,104 @@
+{
+ "provenance": {
+  "commit": "99a6b278247959c8ad1f35e35731c31b5706a9cc",
+  "dirty": false
+ },
+ "detector_boxes": {
+  "base": 1928,
+  "arm": 1928,
+  "identical": true
+ },
+ "ledger_ink_rows": {
+  "base": 0,
+  "arm": 500,
+  "arm_abstentions": 0
+ },
+ "ledger_tally": {
+  "base": {
+   "kept:ledger_line": 75,
+   "refused:inside_the_staff": 383,
+   "refused:no_head_on_the_rung": 8,
+   "refused:on_a_staff_line": 34
+  },
+  "arm": {
+   "ABSTAINED:rung_without_boxed_head": 4,
+   "kept:ink_under_the_rung": 1,
+   "kept:ledger_line": 75,
+   "refused:inside_the_staff": 383,
+   "refused:no_head_on_the_rung": 3,
+   "refused:on_a_staff_line": 34
+  }
+ },
+ "verdicts_moved_by_quantity": {
+  "ledger_is_not_a_ledger": 5
+ },
+ "verdicts_moved_named": {
+  "ledger_is_not_a_ledger": [
+   {
+    "subject": "glyph/3/1/0/6/11",
+    "base": "refused:no_head_on_the_rung",
+    "arm": "ABSTAINED:rung_without_boxed_head"
+   },
+   {
+    "subject": "glyph/3/1/0/6/12",
+    "base": "refused:no_head_on_the_rung",
+    "arm": "ABSTAINED:rung_without_boxed_head"
+   },
+   {
+    "subject": "glyph/3/1/2/17/3",
+    "base": "refused:no_head_on_the_rung",
+    "arm": "kept:ink_under_the_rung"
+   },
+   {
+    "subject": "glyph/3/1/7/10/1",
+    "base": "refused:no_head_on_the_rung",
+    "arm": "ABSTAINED:rung_without_boxed_head"
+   },
+   {
+    "subject": "glyph/3/1/7/14/3",
+    "base": "refused:no_head_on_the_rung",
+    "arm": "ABSTAINED:rung_without_boxed_head"
+   }
+  ]
+ },
+ "notes": {
+  "base": 549,
+  "arm": 549
+ },
+ "musicxml_identical": true,
+ "notes_not_written_identical": true,
+ "family_refusals_ledger": {
+  "base": {
+   "refused": {
+    "inside_the_staff": 383,
+    "on_a_staff_line": 34,
+    "no_head_on_the_rung": 8
+   },
+   "refused_total": 425,
+   "kept": 75,
+   "abstained": 0,
+   "abstained_reasons": {},
+   "verdicts": 500,
+   "balanced": true
+  },
+  "arm": {
+   "refused": {
+    "inside_the_staff": 383,
+    "on_a_staff_line": 34,
+    "no_head_on_the_rung": 3
+   },
+   "refused_total": 420,
+   "kept": 76,
+   "abstained": 4,
+   "abstained_reasons": {
+    "rung_without_boxed_head": 4
+   },
+   "verdicts": 500,
+   "balanced": true
+  }
+ },
+ "census_unaccounted": {
+  "base": [],
+  "arm": []
+ }
+}

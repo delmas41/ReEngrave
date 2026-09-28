@@ -295,7 +295,8 @@ def main() -> int:
             cd.text((6, 52), f"background {m['background']}  "
                              f"{m['background_windows']}   contrast "
                              f"{round(m['under'] - (m['background'] or 0), 4)}"
-                             f"   KEPT >= {FP.LEDGER_INK_KEPT_MIN} contrast, "
+                             f"   KEPT: under >= {FP.LEDGER_INK_KEPT_MIN} & "
+                             f"contrast >= {FP.LEDGER_INK_KEPT_CONTRAST_MIN}; "
                              f"REFUSED <= {FP.LEDGER_INK_REFUSED_MAX} under",
                     fill=(0, 0, 0))
         cd.text((6, 68), "LEFT: the cell as the detector saw it   RIGHT: "
@@ -333,6 +334,7 @@ def main() -> int:
             "LEDGER_INK_BACKGROUND_SPACES":
                 gather.LEDGER_INK_BACKGROUND_SPACES,
             "LEDGER_INK_KEPT_MIN": FP.LEDGER_INK_KEPT_MIN,
+            "LEDGER_INK_KEPT_CONTRAST_MIN": FP.LEDGER_INK_KEPT_CONTRAST_MIN,
             "LEDGER_INK_REFUSED_MAX": FP.LEDGER_INK_REFUSED_MAX},
         "refused_by_frame_control": refused,
         "crops": manifest}, indent=2, default=str))

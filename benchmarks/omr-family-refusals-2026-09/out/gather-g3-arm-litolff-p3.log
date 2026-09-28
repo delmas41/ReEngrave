@@ -1,0 +1,19 @@
+ARM: this tree
+
+── ADJUDICATE ─────────────────────────────────────────
+  decided:   {'accidental_is_not_an_accidental': 74, 'accidental_owner': 41, 'arc_is_not_an_arc': 251, 'arc_kind': 251, 'arc_owner': 251, 'arpeggiato_is_not_an_arpeggiato': 77, 'articulation_is_not_an_articulation': 9, 'articulation_owner': 4, 'clef': 19, 'duration': 537, 'dynamic': 318, 'dynamic_is_not_a_dynamic': 77, 'event': 300, 'glyph_owner': 247, 'key_signature': 13, 'ledger_is_not_a_ledger': 496, 'measure_partition': 19, 'notehead_is_a_whole_rest': 474, 'notehead_is_not_a_notehead': 474, 'onset_column': 2, 'part_key': 1, 'part_partition': 1, 'rest_is_not_a_rest': 154, 'slot_index': 11, 'staff_group': 19, 'staff_ordinal': 19, 'stem_direction': 350, 'system_membership': 2, 'system_staff_count': 2, 'voices': 300}
+  abstained: {'accidental_owner': {'no_candidate': 33}, 'articulation_owner': {'no_notehead': 5}, 'direction': {'out_of_scope': 320}, 'duration': {'beams_ambiguous': 84, 'rest_stands_where_no_rest_hangs': 6, 'rest_slot_contradicts_class': 1}, 'dynamic': {'unspellable': 2}, 'group_symbol': {'no_identity': 2}, 'instrument': {'no_evidence': 19}, 'key_signature': {'mixed_marker_kinds': 2, 'no_evidence': 3, 'run_fits_no_slot_table': 1}, 'ledger_is_not_a_ledger': {'rung_without_boxed_head': 4}, 'meter': {'bars_name_a_length_without_a_form': 2}, 'slot_index': {'reference_names_nothing': 8}, 'stem_direction': {'no_stem': 118, 'stems_disagree': 6}, 'system_key': {'no_staff_read_a_key': 2}, 'voices': {'nothing_to_split': 20}}
+── GROUPS ─────────────────────────────────────────────
+  clef_across_systems: 12 facts, 19 witnesses, 12 uninformative, {'none': 1, 'single': 11, 'unanimous': 0, 'majority': 0, 'split': 0}
+  instrument_across_systems: 12 facts, 0 witnesses, 12 uninformative, {'none': 12, 'single': 0, 'unanimous': 0, 'majority': 0, 'split': 0}
+  key_signature_across_systems: 12 facts, 13 witnesses, 12 uninformative, {'none': 5, 'single': 7, 'unanimous': 0, 'majority': 0, 'split': 0}
+  measure_count_across_staves: 2 facts, 19 witnesses, 0 uninformative, {'none': 0, 'single': 0, 'unanimous': 2, 'majority': 0, 'split': 0}
+  meter_across_staves: 2 facts, 4 witnesses, 1 uninformative, {'none': 1, 'single': 0, 'unanimous': 1, 'majority': 0, 'split': 0}
+  staff_group_across_systems: 12 facts, 19 witnesses, 12 uninformative, {'none': 1, 'single': 11, 'unanimous': 0, 'majority': 0, 'split': 0}
+  ⚠️ witnessed_by_nobody (no witness spoke): ['instrument_across_systems']
+  ⚠️ checked_nothing (never two independent signals -- corroborated NOTHING, however busy it looks): ['clef_across_systems', 'instrument_across_systems', 'key_signature_across_systems', 'staff_group_across_systems']
+  ⚠️ DISAGREEMENTS: 0 (each implicates its WHOLE group, not its dissenter)
+── EVALUATE: 781 fired, 4233 skipped
+── INFER: 4 inferred, 0 skipped  ⚠️ every one is LABELLED and supersedes a recorded narrowing
+── DECLARED STUBS: 0 decisions, 1 consequences
+wrote /private/tmp/claude-501/-Users-seanjohnson-Desktop-ReEngrave--claude-worktrees-start-here-questions-7d5637/3707ff6b-4757-4644-b4c5-de906d20a7bb/scratchpad/g3-arm-litolff-p3.record.json

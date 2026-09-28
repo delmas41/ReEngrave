@@ -7,7 +7,7 @@ reports p5/p25/p50/p75/p95 of three numbers per population:
 
   under       the filed value (best of the three head windows)
   background  the control window one space away (the smaller side)
-  contrast    under - background (what `LEDGER_INK_KEPT_MIN` reads)
+  contrast    under - background (`LEDGER_INK_KEPT_CONTRAST_MIN`)
 
 POPULATIONS (by the verdict the SAME record carries, which is the tree's
 3.4g-2 geometry — position, shape, boxed heads — none of which reads ink):

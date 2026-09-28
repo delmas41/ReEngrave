@@ -212,6 +212,29 @@ class TestPartB_TheWitnessResolves(unittest.TestCase):
     def test_the_thresholds_are_ordered_and_leave_a_gap(self):
         self.assertLess(FP.LEDGER_INK_REFUSED_MAX, FP.LEDGER_INK_KEPT_MIN)
 
+    def test_high_ink_just_under_the_contrast_floor_abstains(self):
+        high = FP.LEDGER_INK_KEPT_MIN + 0.2
+        v = _crop(SEANS_FOUR[0], ink=(
+            high, high - FP.LEDGER_INK_KEPT_CONTRAST_MIN + 0.01))
+        self.assertEqual(v.outcome, Outcome.ABSTAINED)
+        self.assertEqual(v.reason, "rung_without_boxed_head")
+
+    def test_contrast_alone_does_not_keep_faint_ink(self):
+        """A faint smudge on clean paper has contrast but no head's worth
+        of ink: the under floor is the positives' p5, not zero."""
+        faint = FP.LEDGER_INK_KEPT_MIN - 0.05
+        v = _crop(SEANS_FOUR[0], ink=(faint, 0.0))
+        self.assertEqual(v.outcome, Outcome.ABSTAINED)
+
+    def test_the_thresholds_are_the_measured_ones(self):
+        """⚠️ DERIVED on the Litolff pages 1-12 arm gather (FINDINGS
+        §3.4g-3): positives' p5 of `under` 0.574 and of contrast 0.098;
+        positives' minimum `under` 0.076."""
+        self.assertLessEqual(FP.LEDGER_INK_KEPT_MIN, 0.574)
+        self.assertGreater(FP.LEDGER_INK_KEPT_MIN, 0.574 - 0.05)
+        self.assertLessEqual(FP.LEDGER_INK_KEPT_CONTRAST_MIN, 0.10)
+        self.assertLess(FP.LEDGER_INK_REFUSED_MAX, 0.076)
+
     def test_ink_that_is_all_BACKGROUND_does_not_keep(self):
         """⚠️ THE CONTROL WINDOW IS READ. A cell dark everywhere (a smear, a
         dense tutti) is not a head under the rung: the under-window must

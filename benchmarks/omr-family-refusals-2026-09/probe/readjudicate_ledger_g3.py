@@ -57,6 +57,9 @@ def main() -> int:
     ap.add_argument("record")
     ap.add_argument("--out", required=True)
     ap.add_argument("--base-ref", default="8226aa93")
+    ap.add_argument("--write-arm", default=None,
+                    help="also write the ARM's re-decided record here (a "
+                         "GATHER record's verdicts re-decided on this tree)")
     a = ap.parse_args()
 
     name = pathlib.Path(a.record).name
@@ -157,6 +160,14 @@ def main() -> int:
                        "balanced": sc.get("balanced")},
         "family_refusals_ledger_arm": fam,
     }
+    if a.write_arm:
+        from tools.omr.staged.record_io import dumps_for_file
+        full = load_record(a.record)
+        full["record"] = arm["record"]
+        full.setdefault("provenance", {})["readjudicated_on"] = "3.4g-3 tree"
+        pathlib.Path(a.write_arm).write_text(
+            dumps_for_file(full, separators=(",", ":"), default=str))
+        print("wrote arm record", a.write_arm)
     dest = pathlib.Path(a.out) / f"ledger-g3-arm-{stem}.json"
     dest.parent.mkdir(parents=True, exist_ok=True)
     dest.write_text(json.dumps(out, indent=1, default=str))

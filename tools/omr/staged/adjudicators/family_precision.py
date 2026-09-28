@@ -236,24 +236,42 @@ RUNG_STEP_SHIPS = False
 #: FARTHER OUT than the rung is always its note, whatever the distance.
 HEAD_NEAR_TOL_SPACES = 2.75
 
-#: ⚠️⚠️ ROADMAP 3.4g-3 — THE SECOND WITNESS'S TWO THRESHOLDS, on
+#: ⚠️⚠️ ROADMAP 3.4g-3 — THE SECOND WITNESS'S THRESHOLDS, on
 #: `Q.LEDGER_INK_UNDER` (the ink fraction in a notehead-sized window on the
 #: rung, stroke removed, off the staff-erased raster; `gather.
 #: ledger_ink_under`). Sean, 2026-09-27: of the four rungs 3.4g-2 refused
 #: `no_head_on_the_rung`, TWO were real rungs whose head the detector never
 #: boxed — so "no boxed head" is *cannot tell*, and the paper decides.
 #:
-#: `LEDGER_INK_KEPT_MIN` — the under-window must stand at least this far
-#: ABOVE its own background (the same window one space away) for the rung to
-#: be KEPT (`ink_under_the_rung`). `LEDGER_INK_REFUSED_MAX` — at or below
-#: this the paper under the rung is EMPTY and Sean's `[C91]` refusal returns
-#: with two witnesses. Between them the abstention stands.
+#:   KEPT (`ink_under_the_rung`)  under >= `LEDGER_INK_KEPT_MIN` AND
+#:                                under - background >=
+#:                                `LEDGER_INK_KEPT_CONTRAST_MIN`
+#:   REFUSED (`no_head_on_the_rung`, two witnesses)
+#:                                under <= `LEDGER_INK_REFUSED_MAX`
+#:   otherwise                    the abstention stands
 #:
-#: ⚠️ MEASURED, NOT CHOSEN: see `benchmarks/omr-family-refusals-2026-09/
-#: FINDINGS.md` §3.4g-3 for the histograms (rungs WITH a boxed head on them
-#: vs the in-band / on-a-line population, one real gather of Litolff pdf
-#: index 3) and the RED run with the windows swapped.
-LEDGER_INK_KEPT_MIN = 0.30
+#: ⚠️ MEASURED, NOT CHOSEN — `benchmarks/omr-family-refusals-2026-09/probe/
+#: ledger_ink_hist.py` on a real arm gather of Litolff pdf pages 1-12
+#: (4,947 ledger boxes; FINDINGS §3.4g-3). Positives = kept rungs with a
+#: notehead box ON the rung (n 548); negatives = boxes refused
+#: `inside_the_staff` / `on_a_staff_line` (n 3,821).
+#:   * `LEDGER_INK_KEPT_MIN` 0.55 = the positives' p5 of `under` (0.574),
+#:     floored to 0.05.
+#:   * `LEDGER_INK_KEPT_CONTRAST_MIN` 0.10 = the positives' p5 of
+#:     under - background (0.098), to 0.05. Together they keep 501 of 548
+#:     positives (0.91).
+#:   * `LEDGER_INK_REFUSED_MAX` 0.05: 0 of 548 positives read at or below it
+#:     (their minimum is 0.076); 1,024 of 3,821 negatives do.
+#: ⚠️ THE NEGATIVES CANNOT BOUND THE KEEP SIDE, and that is stated rather
+#: than hidden: inside the band the erased raster still holds the staff's
+#: own notes, so 23% of negatives clear both keep thresholds. The keep rule
+#: is only ever applied to a box that is OUTSIDE the band, off every line,
+#: rung-thick and has no boxed head — the population where a head-sized
+#: blot of ink is least likely to be anything else. RED (the windows
+#: swapped, background read as `under`): AUC 0.786 against 0.931 for the
+#: real window, so the window measures something its neighbourhood does not.
+LEDGER_INK_KEPT_MIN = 0.55
+LEDGER_INK_KEPT_CONTRAST_MIN = 0.10
 LEDGER_INK_REFUSED_MAX = 0.05
 
 
@@ -704,7 +722,8 @@ def adjudicate_ledger_is_not_a_ledger(ev: Evidence) -> Ruling:
         if witness is not None:
             used.append(witness["row"])
             under, back = witness["under"], witness["background"]
-            if back is not None and under - back >= LEDGER_INK_KEPT_MIN:
+            if (under >= LEDGER_INK_KEPT_MIN and back is not None
+                    and under - back >= LEDGER_INK_KEPT_CONTRAST_MIN):
                 return Ruling(value=False, reason="ink_under_the_rung",
                               used=tuple(used), detail=detail)
             if under <= LEDGER_INK_REFUSED_MAX:
