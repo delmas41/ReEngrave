@@ -70,11 +70,15 @@ def main() -> int:
     ap.add_argument("--controls", type=int, default=3)
     ap.add_argument("--seed", type=int, default=27)
     ap.add_argument("--break-frame", action="store_true")
+    ap.add_argument("--fate", default=None,
+                    help="owner_fate.py --out JSON: adds, to the manifest KEY "
+                         "only, whether the owned head reached the file")
     a = ap.parse_args()
 
     import fitz
     import numpy as np
-    from PIL import Image, ImageDraw
+    from PIL import Image, ImageDraw, ImageFont
+    font = ImageFont.load_default(size=20)
 
     staves = {int(x) for x in a.staves.split(",")}
     c0, c1 = (int(x) for x in a.cells.split("-"))
@@ -157,6 +161,8 @@ def main() -> int:
             "L", (pm.width, pm.height), pm.samples).convert("RGB")
     arr = np.asarray(im.convert("L"), dtype=float)
 
+    head_fate = (json.loads(Path(a.fate).read_text())["head_fate"]
+                 if a.fate else {})
     manifest, refused = [], []
     for n, (kind, v, head) in enumerate(jobs, 1):
         acc = v["subject"]
@@ -176,7 +182,7 @@ def main() -> int:
               if head and ("glyph_box", head) in obs else None)
         xs = [ab[0], ab[2]] + ([hb[0], hb[2]] if hb else [])
         ys = [ab[1], ab[3], lines[0], lines[-1]] + ([hb[1], hb[3]] if hb else [])
-        pad = 5.0 * spacing
+        pad = 8.0 * spacing
         cx0, cx1 = int(max(0, min(xs) - pad)), int(min(im.width, max(xs) + pad))
         cy0 = int(max(0, min(ys) - 2.5 * spacing))
         cy1 = int(min(im.height, max(ys) + 2.5 * spacing))
@@ -217,18 +223,19 @@ def main() -> int:
         # decided owner and a control.
         staff_pitch = pitch_v["value"] if pitch_v else "no pitch"
         bar = a.first_bar + int(c)
-        band_h = 56
+        band_h = 84
         out_im = Image.new("RGB", (crop.width, crop.height + band_h), "white")
         out_im.paste(crop, (0, band_h))
         cd = ImageDraw.Draw(out_im)
         name = f"acc-{n:02d}"
         cd.text((6, 4), f"{name}   page idx {p}, system {int(s) + 1}, "
-                        f"bar {bar}", fill=(0, 0, 0))
-        cd.text((6, 20), f"FILED ON staff {st} = {STAFF_NAMES.get(int(st), '?')}"
-                         f"   (its 5 lines are drawn GREEN)", fill=(0, 120, 45))
-        cd.text((6, 36), f"RED = the glyph, detector class {cls}   |   "
+                        f"bar {bar}", fill=(0, 0, 0), font=font)
+        cd.text((6, 28), f"FILED ON staff {st} = {STAFF_NAMES.get(int(st), '?')}"
+                         f"   (its 5 lines are drawn GREEN)", fill=(0, 120, 45),
+                font=font)
+        cd.text((6, 54), f"RED = the glyph, detector class {cls}   |   "
                          f"BLUE = the notehead, staff pitch {staff_pitch} "
-                         f"(before any accidental)", fill=(140, 0, 0))
+                         f"(before any accidental)", fill=(140, 0, 0), font=font)
         out_im.save(out_dir / f"{name}.png")
         acc_v = standing.get(("accidental", head)) if head else None
         manifest.append({
@@ -252,6 +259,8 @@ def main() -> int:
                 .get("printed"),
                 "dx_spaces": (v.get("detail") or {}).get("dx_spaces"),
                 "dy_positions": (v.get("detail") or {}).get("dy_positions"),
+                "head_fate_in_file": (head_fate.get(head)
+                                      if kind == "decided" else None),
             },
             "VERDICT_none_yet": None,
         })

@@ -1,0 +1,28 @@
+{
+ "record": "/private/tmp/claude-501/-Users-seanjohnson-Desktop-ReEngrave--claude-worktrees-start-here-questions-7d5637/3707ff6b-4757-4644-b4c5-de906d20a7bb/scratchpad/acc/new/engraved-arm.record.json",
+ "accidental_elements": 15,
+ "notes": 666,
+ "accidental_reading": {
+  "printed_glyphs_detected": 22,
+  "key_signature_glyphs_detected_and_owned_elsewhere": 133,
+  "gathered": 22,
+  "owner_decided": 20,
+  "applied": 15,
+  "abstained_ambiguous": 0,
+  "no_candidate": 2,
+  "no_unit": 0,
+  "no_evidence": 0,
+  "refused_not_an_accidental": 0,
+  "heads_owned": 20,
+  "heads_contradicted": 0,
+  "owners_sharing_a_head": 0,
+  "applied_on_a_doubled_copy": 0,
+  "unowned": 5,
+  "carried_in_bar": 11,
+  "pitches_altered_by_the_key": 95,
+  "printed_glyphs_read_into_a_verdict": 31,
+  "heads_balanced": true,
+  "unaccounted": 0
+ },
+ "status_census_balanced": true
+}

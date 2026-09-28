@@ -68,6 +68,11 @@ def _args():
     ap.add_argument("--out-dir", required=True)
     ap.add_argument("--root", default=str(ROOT),
                     help="the tree whose `tools` package is imported")
+    ap.add_argument("--sidecar", default=None,
+                    help="a stage-review sidecar (roadmap 3.4): its human rows "
+                         "are ingested (review.human_evidence.ingest) BEFORE "
+                         "the recompute, so 3.4g's refusals can reach the "
+                         "accidental owner")
     ap.add_argument("--save-record", action="store_true",
                     help="also write the re-decided record (pooled, via "
                          "record_io) for the crop and trace tools")
@@ -213,7 +218,15 @@ def main() -> int:
     rec = doc["record"] if "record" in doc else doc
     print(f"loaded {a.record} in {time.time() - t0:.0f}s", flush=True)
 
+    if a.sidecar:
+        from tools.omr.staged.review import human_evidence as HE
+        ing = HE.ingest(rec, HE.load_sidecar(a.sidecar),
+                        sidecar_path=a.sidecar, parent_path=a.record,
+                        parent_md5=HE.file_md5(a.record),
+                        provenance=doc.get("provenance"))
+        rec = ing.record
     summary = {"label": a.label, "mode": a.mode, "root": a.root,
+               "sidecar": a.sidecar,
                "record": a.record,
                "record_md5": hashlib.md5(Path(a.record).read_bytes())
                .hexdigest()}

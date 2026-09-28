@@ -1,0 +1,202 @@
+{
+ "tally": {
+  "agree": 15
+ },
+ "rows": [
+  {
+   "part": 2,
+   "measure": "20",
+   "note": "F5",
+   "ours": [
+    1,
+    "sharp"
+   ],
+   "truth_alters": [
+    1
+   ],
+   "check": "agree"
+  },
+  {
+   "part": 4,
+   "measure": "18",
+   "note": "C4",
+   "ours": [
+    1,
+    "sharp"
+   ],
+   "truth_alters": [
+    1
+   ],
+   "check": "agree"
+  },
+  {
+   "part": 4,
+   "measure": "20",
+   "note": "G4",
+   "ours": [
+    1,
+    "sharp"
+   ],
+   "truth_alters": [
+    1
+   ],
+   "check": "agree"
+  },
+  {
+   "part": 5,
+   "measure": "18",
+   "note": "C4",
+   "ours": [
+    1,
+    "sharp"
+   ],
+   "truth_alters": [
+    1
+   ],
+   "check": "agree"
+  },
+  {
+   "part": 6,
+   "measure": "11",
+   "note": "B3",
+   "ours": [
+    0,
+    "natural"
+   ],
+   "truth_alters": [
+    0
+   ],
+   "check": "agree"
+  },
+  {
+   "part": 6,
+   "measure": "16",
+   "note": "B3",
+   "ours": [
+    0,
+    "natural"
+   ],
+   "truth_alters": [
+    0
+   ],
+   "check": "agree"
+  },
+  {
+   "part": 7,
+   "measure": "11",
+   "note": "B3",
+   "ours": [
+    0,
+    "natural"
+   ],
+   "truth_alters": [
+    0
+   ],
+   "check": "agree"
+  },
+  {
+   "part": 7,
+   "measure": "16",
+   "note": "B3",
+   "ours": [
+    0,
+    "natural"
+   ],
+   "truth_alters": [
+    0
+   ],
+   "check": "agree"
+  },
+  {
+   "part": 7,
+   "measure": "18",
+   "note": "B3",
+   "ours": [
+    0,
+    "natural"
+   ],
+   "truth_alters": [
+    0
+   ],
+   "check": "agree"
+  },
+  {
+   "part": 13,
+   "measure": "20",
+   "note": "F4",
+   "ours": [
+    1,
+    "sharp"
+   ],
+   "truth_alters": [
+    1
+   ],
+   "check": "agree"
+  },
+  {
+   "part": 14,
+   "measure": "20",
+   "note": "F4",
+   "ours": [
+    1,
+    "sharp"
+   ],
+   "truth_alters": [
+    1
+   ],
+   "check": "agree"
+  },
+  {
+   "part": 16,
+   "measure": "11",
+   "note": "B3",
+   "ours": [
+    0,
+    "natural"
+   ],
+   "truth_alters": [
+    0
+   ],
+   "check": "agree"
+  },
+  {
+   "part": 16,
+   "measure": "16",
+   "note": "B3",
+   "ours": [
+    0,
+    "natural"
+   ],
+   "truth_alters": [
+    0
+   ],
+   "check": "agree"
+  },
+  {
+   "part": 16,
+   "measure": "18",
+   "note": "B3",
+   "ours": [
+    0,
+    "natural"
+   ],
+   "truth_alters": [
+    0
+   ],
+   "check": "agree"
+  },
+  {
+   "part": 17,
+   "measure": "18",
+   "note": "B2",
+   "ours": [
+    0,
+    "natural"
+   ],
+   "truth_alters": [
+    0
+   ],
+   "check": "agree"
+  }
+ ]
+}

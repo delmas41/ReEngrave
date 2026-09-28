@@ -1,0 +1,1068 @@
+{
+  "window": {
+    "page": 3,
+    "system": 0,
+    "staves": [
+      7,
+      8,
+      9,
+      10
+    ],
+    "cells": [
+      0,
+      7
+    ],
+    "bars": [
+      49,
+      56
+    ]
+  },
+  "owners_in_window": 38,
+  "decided": 25,
+  "abstained_by_reason": {
+    "no_candidate": 13
+  },
+  "controls": 3,
+  "seed": 27,
+  "dpi": 600,
+  "arm_record": "/private/tmp/claude-501/-Users-seanjohnson-Desktop-ReEngrave--claude-worktrees-start-here-questions-7d5637/3707ff6b-4757-4644-b4c5-de906d20a7bb/scratchpad/acc/new/litolff-arm.record.json",
+  "crops": [
+    {
+      "file": "acc-01.png",
+      "question": "Does the RED glyph alter the BLUE notehead, and is the glyph the class the caption names?",
+      "accidental_glyph": "glyph/3/0/7/4/9",
+      "notehead": "glyph/3/0/7/4/2",
+      "staff": 7,
+      "staff_name": "Violino I",
+      "bar": 53,
+      "detector_class": "accidentalNatural",
+      "staff_pitch_before_accidental": "A5",
+      "glyph_page_box": [
+        1226.8,
+        1441.5,
+        1234.5,
+        1503.6
+      ],
+      "head_page_box": [
+        1239.6,
+        1459.6,
+        1263.3,
+        1480.6
+      ],
+      "frame_contrast": 184.67,
+      "reading": {
+        "kind": "decided",
+        "outcome": "decided",
+        "reason": "immediately_right_same_position",
+        "alteration": "natural",
+        "written_alteration_on_head": "natural",
+        "written_by": "apply_printed_accidental",
+        "printed_flag": true,
+        "dx_spaces": 0.32,
+        "dy_positions": 0.351,
+        "head_fate_in_file": "bar_held_out:bar_does_not_add_up"
+      },
+      "VERDICT_none_yet": null
+    },
+    {
+      "file": "acc-02.png",
+      "question": "Does the RED glyph alter the BLUE notehead, and is the glyph the class the caption names?",
+      "accidental_glyph": "glyph/3/0/8/7/5",
+      "notehead": "glyph/3/0/8/7/1",
+      "staff": 8,
+      "staff_name": "Violino II",
+      "bar": 56,
+      "detector_class": "accidentalNatural",
+      "staff_pitch_before_accidental": "G3",
+      "glyph_page_box": [
+        1698.6,
+        1581.0,
+        1710.8,
+        1609.8
+      ],
+      "head_page_box": [
+        1716.6,
+        1581.0,
+        1742.2,
+        1593.2
+      ],
+      "frame_contrast": 175.55,
+      "reading": {
+        "kind": "control",
+        "outcome": "abstained",
+        "reason": "no_candidate",
+        "alteration": "natural",
+        "written_alteration_on_head": null,
+        "written_by": null,
+        "printed_flag": null,
+        "dx_spaces": null,
+        "dy_positions": null,
+        "head_fate_in_file": null
+      },
+      "VERDICT_none_yet": null
+    },
+    {
+      "file": "acc-03.png",
+      "question": "Does the RED glyph alter the BLUE notehead, and is the glyph the class the caption names?",
+      "accidental_glyph": "glyph/3/0/9/5/4",
+      "notehead": "glyph/3/0/9/5/1",
+      "staff": 9,
+      "staff_name": "Viola",
+      "bar": 54,
+      "detector_class": "accidentalFlat",
+      "staff_pitch_before_accidental": "E4",
+      "glyph_page_box": [
+        1337.3,
+        1751.3,
+        1353.7,
+        1869.3
+      ],
+      "head_page_box": [
+        1394.6,
+        1810.2,
+        1409.3,
+        1826.3
+      ],
+      "frame_contrast": 152.51,
+      "reading": {
+        "kind": "control",
+        "outcome": "abstained",
+        "reason": "no_candidate",
+        "alteration": "b",
+        "written_alteration_on_head": "b",
+        "written_by": "respell_accidental",
+        "printed_flag": null,
+        "dx_spaces": null,
+        "dy_positions": null,
+        "head_fate_in_file": null
+      },
+      "VERDICT_none_yet": null
+    },
+    {
+      "file": "acc-04.png",
+      "question": "Does the RED glyph alter the BLUE notehead, and is the glyph the class the caption names?",
+      "accidental_glyph": "glyph/3/0/9/2/1",
+      "notehead": "glyph/3/0/9/2/6",
+      "staff": 9,
+      "staff_name": "Viola",
+      "bar": 51,
+      "detector_class": "accidentalNatural",
+      "staff_pitch_before_accidental": "A5",
+      "glyph_page_box": [
+        880.6,
+        1737.0,
+        894.0,
+        1763.9
+      ],
+      "head_page_box": [
+        897.1,
+        1737.0,
+        919.4,
+        1747.4
+      ],
+      "frame_contrast": 152.51,
+      "reading": {
+        "kind": "decided",
+        "outcome": "decided",
+        "reason": "immediately_right_same_position",
+        "alteration": "natural",
+        "written_alteration_on_head": "natural",
+        "written_by": "apply_printed_accidental",
+        "printed_flag": true,
+        "dx_spaces": 0.2,
+        "dy_positions": 1.064,
+        "head_fate_in_file": "bar_held_out:bar_does_not_add_up"
+      },
+      "VERDICT_none_yet": null
+    },
+    {
+      "file": "acc-05.png",
+      "question": "Does the RED glyph alter the BLUE notehead, and is the glyph the class the caption names?",
+      "accidental_glyph": "glyph/3/0/7/6/5",
+      "notehead": "glyph/3/0/7/6/2",
+      "staff": 7,
+      "staff_name": "Violino I",
+      "bar": 55,
+      "detector_class": "accidentalNatural",
+      "staff_pitch_before_accidental": "A3",
+      "glyph_page_box": [
+        1572.6,
+        1550.5,
+        1585.5,
+        1608.9
+      ],
+      "head_page_box": [
+        1591.0,
+        1573.7,
+        1612.2,
+        1594.6
+      ],
+      "frame_contrast": 184.67,
+      "reading": {
+        "kind": "decided",
+        "outcome": "decided",
+        "reason": "immediately_right_same_position",
+        "alteration": "natural",
+        "written_alteration_on_head": "natural",
+        "written_by": "apply_printed_accidental",
+        "printed_flag": true,
+        "dx_spaces": 0.34,
+        "dy_positions": 0.521,
+        "head_fate_in_file": "bar_held_out:bar_does_not_add_up"
+      },
+      "VERDICT_none_yet": null
+    },
+    {
+      "file": "acc-06.png",
+      "question": "Does the RED glyph alter the BLUE notehead, and is the glyph the class the caption names?",
+      "accidental_glyph": "glyph/3/0/7/7/6",
+      "notehead": "glyph/3/0/7/7/3",
+      "staff": 7,
+      "staff_name": "Violino I",
+      "bar": 56,
+      "detector_class": "accidentalFlat",
+      "staff_pitch_before_accidental": "A4",
+      "glyph_page_box": [
+        1694.8,
+        1495.8,
+        1710.7,
+        1542.5
+      ],
+      "head_page_box": [
+        1717.2,
+        1516.7,
+        1740.1,
+        1534.2
+      ],
+      "frame_contrast": 184.67,
+      "reading": {
+        "kind": "decided",
+        "outcome": "decided",
+        "reason": "immediately_right_same_position",
+        "alteration": "b",
+        "written_alteration_on_head": "b",
+        "written_by": "respell_accidental",
+        "printed_flag": null,
+        "dx_spaces": 0.41,
+        "dy_positions": 0.476,
+        "head_fate_in_file": "contradicted"
+      },
+      "VERDICT_none_yet": null
+    },
+    {
+      "file": "acc-07.png",
+      "question": "Does the RED glyph alter the BLUE notehead, and is the glyph the class the caption names?",
+      "accidental_glyph": "glyph/3/0/8/0/2",
+      "notehead": "glyph/3/0/8/0/3",
+      "staff": 8,
+      "staff_name": "Violino II",
+      "bar": 49,
+      "detector_class": "accidentalFlat",
+      "staff_pitch_before_accidental": "B4",
+      "glyph_page_box": [
+        445.9,
+        1627.3,
+        462.2,
+        1667.5
+      ],
+      "head_page_box": [
+        523.9,
+        1669.7,
+        547.3,
+        1691.5
+      ],
+      "frame_contrast": 175.55,
+      "reading": {
+        "kind": "control",
+        "outcome": "abstained",
+        "reason": "no_candidate",
+        "alteration": "b",
+        "written_alteration_on_head": "b",
+        "written_by": "respell_accidental",
+        "printed_flag": null,
+        "dx_spaces": null,
+        "dy_positions": null,
+        "head_fate_in_file": null
+      },
+      "VERDICT_none_yet": null
+    },
+    {
+      "file": "acc-08.png",
+      "question": "Does the RED glyph alter the BLUE notehead, and is the glyph the class the caption names?",
+      "accidental_glyph": "glyph/3/0/8/7/2",
+      "notehead": "glyph/3/0/8/7/0",
+      "staff": 8,
+      "staff_name": "Violino II",
+      "bar": 56,
+      "detector_class": "accidentalNatural",
+      "staff_pitch_before_accidental": "A3",
+      "glyph_page_box": [
+        1698.9,
+        1705.3,
+        1711.3,
+        1763.7
+      ],
+      "head_page_box": [
+        1716.7,
+        1728.9,
+        1740.0,
+        1749.2
+      ],
+      "frame_contrast": 175.55,
+      "reading": {
+        "kind": "decided",
+        "outcome": "decided",
+        "reason": "immediately_right_same_position",
+        "alteration": "natural",
+        "written_alteration_on_head": "natural",
+        "written_by": "apply_printed_accidental",
+        "printed_flag": true,
+        "dx_spaces": 0.35,
+        "dy_positions": 0.54,
+        "head_fate_in_file": "written"
+      },
+      "VERDICT_none_yet": null
+    },
+    {
+      "file": "acc-09.png",
+      "question": "Does the RED glyph alter the BLUE notehead, and is the glyph the class the caption names?",
+      "accidental_glyph": "glyph/3/0/7/5/2",
+      "notehead": "glyph/3/0/7/5/1",
+      "staff": 7,
+      "staff_name": "Violino I",
+      "bar": 54,
+      "detector_class": "accidentalFlat",
+      "staff_pitch_before_accidental": "G5",
+      "glyph_page_box": [
+        1347.7,
+        1451.1,
+        1364.5,
+        1492.9
+      ],
+      "head_page_box": [
+        1366.9,
+        1469.8,
+        1389.6,
+        1488.9
+      ],
+      "frame_contrast": 184.67,
+      "reading": {
+        "kind": "decided",
+        "outcome": "decided",
+        "reason": "immediately_right_same_position",
+        "alteration": "b",
+        "written_alteration_on_head": "b",
+        "written_by": "apply_printed_accidental",
+        "printed_flag": true,
+        "dx_spaces": 0.15,
+        "dy_positions": 0.212,
+        "head_fate_in_file": "bar_held_out:bar_does_not_add_up"
+      },
+      "VERDICT_none_yet": null
+    },
+    {
+      "file": "acc-10.png",
+      "question": "Does the RED glyph alter the BLUE notehead, and is the glyph the class the caption names?",
+      "accidental_glyph": "glyph/3/0/8/6/13",
+      "notehead": "glyph/3/0/8/6/11",
+      "staff": 8,
+      "staff_name": "Violino II",
+      "bar": 55,
+      "detector_class": "accidentalNatural",
+      "staff_pitch_before_accidental": "A4",
+      "glyph_page_box": [
+        1575.3,
+        1651.2,
+        1588.0,
+        1715.8
+      ],
+      "head_page_box": [
+        1592.9,
+        1672.1,
+        1613.8,
+        1691.8
+      ],
+      "frame_contrast": 175.55,
+      "reading": {
+        "kind": "decided",
+        "outcome": "decided",
+        "reason": "immediately_right_same_position",
+        "alteration": "natural",
+        "written_alteration_on_head": "b",
+        "written_by": "respell_accidental",
+        "printed_flag": null,
+        "dx_spaces": 0.32,
+        "dy_positions": 0.243,
+        "head_fate_in_file": "contradicted"
+      },
+      "VERDICT_none_yet": null
+    },
+    {
+      "file": "acc-11.png",
+      "question": "Does the RED glyph alter the BLUE notehead, and is the glyph the class the caption names?",
+      "accidental_glyph": "glyph/3/0/8/5/1",
+      "notehead": "glyph/3/0/8/5/2",
+      "staff": 8,
+      "staff_name": "Violino II",
+      "bar": 54,
+      "detector_class": "accidentalFlat",
+      "staff_pitch_before_accidental": "G4",
+      "glyph_page_box": [
+        1347.8,
+        1660.7,
+        1363.0,
+        1709.5
+      ],
+      "head_page_box": [
+        1366.9,
+        1681.3,
+        1388.8,
+        1701.6
+      ],
+      "frame_contrast": 175.55,
+      "reading": {
+        "kind": "decided",
+        "outcome": "decided",
+        "reason": "immediately_right_same_position",
+        "alteration": "b",
+        "written_alteration_on_head": "b",
+        "written_by": "apply_printed_accidental",
+        "printed_flag": true,
+        "dx_spaces": 0.25,
+        "dy_positions": 0.545,
+        "head_fate_in_file": "written"
+      },
+      "VERDICT_none_yet": null
+    },
+    {
+      "file": "acc-12.png",
+      "question": "Does the RED glyph alter the BLUE notehead, and is the glyph the class the caption names?",
+      "accidental_glyph": "glyph/3/0/7/0/1",
+      "notehead": "glyph/3/0/7/0/7",
+      "staff": 7,
+      "staff_name": "Violino I",
+      "bar": 49,
+      "detector_class": "accidentalNatural",
+      "staff_pitch_before_accidental": "B5",
+      "glyph_page_box": [
+        504.3,
+        1441.0,
+        516.1,
+        1497.0
+      ],
+      "head_page_box": [
+        523.0,
+        1456.7,
+        544.0,
+        1478.3
+      ],
+      "frame_contrast": 184.67,
+      "reading": {
+        "kind": "decided",
+        "outcome": "decided",
+        "reason": "immediately_right_same_position",
+        "alteration": "natural",
+        "written_alteration_on_head": "natural",
+        "written_by": "apply_printed_accidental",
+        "printed_flag": true,
+        "dx_spaces": 0.43,
+        "dy_positions": 0.228,
+        "head_fate_in_file": "bar_held_out:bar_does_not_add_up"
+      },
+      "VERDICT_none_yet": null
+    },
+    {
+      "file": "acc-13.png",
+      "question": "Does the RED glyph alter the BLUE notehead, and is the glyph the class the caption names?",
+      "accidental_glyph": "glyph/3/0/9/7/2",
+      "notehead": "glyph/3/0/9/7/5",
+      "staff": 9,
+      "staff_name": "Viola",
+      "bar": 56,
+      "detector_class": "accidentalNatural",
+      "staff_pitch_before_accidental": "G5",
+      "glyph_page_box": [
+        1699.0,
+        1737.0,
+        1712.1,
+        1764.1
+      ],
+      "head_page_box": [
+        1714.6,
+        1737.0,
+        1740.6,
+        1749.4
+      ],
+      "frame_contrast": 152.51,
+      "reading": {
+        "kind": "decided",
+        "outcome": "decided",
+        "reason": "immediately_right_same_position",
+        "alteration": "natural",
+        "written_alteration_on_head": "natural",
+        "written_by": "apply_printed_accidental",
+        "printed_flag": true,
+        "dx_spaces": 0.16,
+        "dy_positions": 0.954,
+        "head_fate_in_file": "written"
+      },
+      "VERDICT_none_yet": null
+    },
+    {
+      "file": "acc-14.png",
+      "question": "Does the RED glyph alter the BLUE notehead, and is the glyph the class the caption names?",
+      "accidental_glyph": "glyph/3/0/9/5/3",
+      "notehead": "glyph/3/0/9/5/5",
+      "staff": 9,
+      "staff_name": "Viola",
+      "bar": 54,
+      "detector_class": "accidentalFlat",
+      "staff_pitch_before_accidental": "G3",
+      "glyph_page_box": [
+        1337.2,
+        1741.9,
+        1356.5,
+        1906.9
+      ],
+      "head_page_box": [
+        1369.4,
+        1847.1,
+        1395.4,
+        1865.8
+      ],
+      "frame_contrast": 152.51,
+      "reading": {
+        "kind": "decided",
+        "outcome": "decided",
+        "reason": "immediately_right_same_position",
+        "alteration": "b",
+        "written_alteration_on_head": "b",
+        "written_by": "apply_printed_accidental",
+        "printed_flag": true,
+        "dx_spaces": 0.82,
+        "dy_positions": 0.446,
+        "head_fate_in_file": "written"
+      },
+      "VERDICT_none_yet": null
+    },
+    {
+      "file": "acc-15.png",
+      "question": "Does the RED glyph alter the BLUE notehead, and is the glyph the class the caption names?",
+      "accidental_glyph": "glyph/3/0/8/1/0",
+      "notehead": "glyph/3/0/8/1/3",
+      "staff": 8,
+      "staff_name": "Violino II",
+      "bar": 50,
+      "detector_class": "accidentalNatural",
+      "staff_pitch_before_accidental": "B3",
+      "glyph_page_box": [
+        700.4,
+        1706.9,
+        713.6,
+        1766.8
+      ],
+      "head_page_box": [
+        717.1,
+        1721.1,
+        740.1,
+        1746.4
+      ],
+      "frame_contrast": 175.55,
+      "reading": {
+        "kind": "decided",
+        "outcome": "decided",
+        "reason": "immediately_right_same_position",
+        "alteration": "natural",
+        "written_alteration_on_head": "natural",
+        "written_by": "apply_printed_accidental",
+        "printed_flag": true,
+        "dx_spaces": 0.23,
+        "dy_positions": 0.441,
+        "head_fate_in_file": "written"
+      },
+      "VERDICT_none_yet": null
+    },
+    {
+      "file": "acc-16.png",
+      "question": "Does the RED glyph alter the BLUE notehead, and is the glyph the class the caption names?",
+      "accidental_glyph": "glyph/3/0/7/2/0",
+      "notehead": "glyph/3/0/7/2/2",
+      "staff": 7,
+      "staff_name": "Violino I",
+      "bar": 51,
+      "detector_class": "accidentalNatural",
+      "staff_pitch_before_accidental": "B3",
+      "glyph_page_box": [
+        877.1,
+        1552.1,
+        889.8,
+        1611.1
+      ],
+      "head_page_box": [
+        895.5,
+        1569.0,
+        916.5,
+        1591.9
+      ],
+      "frame_contrast": 184.67,
+      "reading": {
+        "kind": "decided",
+        "outcome": "decided",
+        "reason": "immediately_right_same_position",
+        "alteration": "natural",
+        "written_alteration_on_head": "natural",
+        "written_by": "apply_printed_accidental",
+        "printed_flag": true,
+        "dx_spaces": 0.36,
+        "dy_positions": 0.18,
+        "head_fate_in_file": "bar_held_out:bar_does_not_add_up"
+      },
+      "VERDICT_none_yet": null
+    },
+    {
+      "file": "acc-17.png",
+      "question": "Does the RED glyph alter the BLUE notehead, and is the glyph the class the caption names?",
+      "accidental_glyph": "glyph/3/0/8/6/21",
+      "notehead": "glyph/3/0/8/6/11",
+      "staff": 8,
+      "staff_name": "Violino II",
+      "bar": 55,
+      "detector_class": "accidentalSharp",
+      "staff_pitch_before_accidental": "A4",
+      "glyph_page_box": [
+        1575.4,
+        1651.4,
+        1588.6,
+        1712.4
+      ],
+      "head_page_box": [
+        1592.9,
+        1672.1,
+        1613.8,
+        1691.8
+      ],
+      "frame_contrast": 175.55,
+      "reading": {
+        "kind": "decided",
+        "outcome": "decided",
+        "reason": "immediately_right_same_position",
+        "alteration": "#",
+        "written_alteration_on_head": "b",
+        "written_by": "respell_accidental",
+        "printed_flag": null,
+        "dx_spaces": 0.28,
+        "dy_positions": 0.008,
+        "head_fate_in_file": "contradicted"
+      },
+      "VERDICT_none_yet": null
+    },
+    {
+      "file": "acc-18.png",
+      "question": "Does the RED glyph alter the BLUE notehead, and is the glyph the class the caption names?",
+      "accidental_glyph": "glyph/3/0/8/4/4",
+      "notehead": "glyph/3/0/8/4/5",
+      "staff": 8,
+      "staff_name": "Violino II",
+      "bar": 53,
+      "detector_class": "accidentalNatural",
+      "staff_pitch_before_accidental": "A4",
+      "glyph_page_box": [
+        1224.5,
+        1654.6,
+        1239.5,
+        1714.9
+      ],
+      "head_page_box": [
+        1244.5,
+        1676.0,
+        1265.3,
+        1694.3
+      ],
+      "frame_contrast": 175.55,
+      "reading": {
+        "kind": "decided",
+        "outcome": "decided",
+        "reason": "immediately_right_same_position",
+        "alteration": "natural",
+        "written_alteration_on_head": "natural",
+        "written_by": "apply_printed_accidental",
+        "printed_flag": true,
+        "dx_spaces": 0.32,
+        "dy_positions": 0.019,
+        "head_fate_in_file": "bar_held_out:bar_does_not_add_up"
+      },
+      "VERDICT_none_yet": null
+    },
+    {
+      "file": "acc-19.png",
+      "question": "Does the RED glyph alter the BLUE notehead, and is the glyph the class the caption names?",
+      "accidental_glyph": "glyph/3/0/8/7/4",
+      "notehead": "glyph/3/0/8/7/9",
+      "staff": 8,
+      "staff_name": "Violino II",
+      "bar": 56,
+      "detector_class": "accidentalNatural",
+      "staff_pitch_before_accidental": "A4",
+      "glyph_page_box": [
+        1695.3,
+        1651.4,
+        1711.3,
+        1709.7
+      ],
+      "head_page_box": [
+        1718.0,
+        1673.2,
+        1740.3,
+        1691.4
+      ],
+      "frame_contrast": 175.55,
+      "reading": {
+        "kind": "decided",
+        "outcome": "decided",
+        "reason": "immediately_right_same_position",
+        "alteration": "natural",
+        "written_alteration_on_head": "natural",
+        "written_by": "apply_printed_accidental",
+        "printed_flag": true,
+        "dx_spaces": 0.43,
+        "dy_positions": 0.19,
+        "head_fate_in_file": "written"
+      },
+      "VERDICT_none_yet": null
+    },
+    {
+      "file": "acc-20.png",
+      "question": "Does the RED glyph alter the BLUE notehead, and is the glyph the class the caption names?",
+      "accidental_glyph": "glyph/3/0/8/6/6",
+      "notehead": "glyph/3/0/8/6/12",
+      "staff": 8,
+      "staff_name": "Violino II",
+      "bar": 55,
+      "detector_class": "accidentalNatural",
+      "staff_pitch_before_accidental": "F6",
+      "glyph_page_box": [
+        1573.5,
+        1581.0,
+        1585.0,
+        1608.7
+      ],
+      "head_page_box": [
+        1591.4,
+        1581.0,
+        1611.2,
+        1595.0
+      ],
+      "frame_contrast": 175.55,
+      "reading": {
+        "kind": "decided",
+        "outcome": "decided",
+        "reason": "immediately_right_same_position",
+        "alteration": "natural",
+        "written_alteration_on_head": "natural",
+        "written_by": "apply_printed_accidental",
+        "printed_flag": true,
+        "dx_spaces": 0.41,
+        "dy_positions": 0.904,
+        "head_fate_in_file": "head_refused:duration_narrowed"
+      },
+      "VERDICT_none_yet": null
+    },
+    {
+      "file": "acc-21.png",
+      "question": "Does the RED glyph alter the BLUE notehead, and is the glyph the class the caption names?",
+      "accidental_glyph": "glyph/3/0/7/4/4",
+      "notehead": "glyph/3/0/7/4/2",
+      "staff": 7,
+      "staff_name": "Violino I",
+      "bar": 53,
+      "detector_class": "accidentalNatural",
+      "staff_pitch_before_accidental": "A5",
+      "glyph_page_box": [
+        1221.7,
+        1441.4,
+        1233.7,
+        1501.4
+      ],
+      "head_page_box": [
+        1239.6,
+        1459.6,
+        1263.3,
+        1480.6
+      ],
+      "frame_contrast": 184.67,
+      "reading": {
+        "kind": "decided",
+        "outcome": "decided",
+        "reason": "immediately_right_same_position",
+        "alteration": "natural",
+        "written_alteration_on_head": "natural",
+        "written_by": "apply_printed_accidental",
+        "printed_flag": true,
+        "dx_spaces": 0.37,
+        "dy_positions": 0.2,
+        "head_fate_in_file": "bar_held_out:bar_does_not_add_up"
+      },
+      "VERDICT_none_yet": null
+    },
+    {
+      "file": "acc-22.png",
+      "question": "Does the RED glyph alter the BLUE notehead, and is the glyph the class the caption names?",
+      "accidental_glyph": "glyph/3/0/8/6/1",
+      "notehead": "glyph/3/0/8/6/0",
+      "staff": 8,
+      "staff_name": "Violino II",
+      "bar": 55,
+      "detector_class": "accidentalNatural",
+      "staff_pitch_before_accidental": "G3",
+      "glyph_page_box": [
+        1573.1,
+        1719.1,
+        1585.0,
+        1765.6
+      ],
+      "head_page_box": [
+        1591.5,
+        1732.6,
+        1614.2,
+        1753.0
+      ],
+      "frame_contrast": 175.55,
+      "reading": {
+        "kind": "decided",
+        "outcome": "decided",
+        "reason": "immediately_right_same_position",
+        "alteration": "natural",
+        "written_alteration_on_head": "natural",
+        "written_by": "apply_printed_accidental",
+        "printed_flag": true,
+        "dx_spaces": 0.42,
+        "dy_positions": 0.036,
+        "head_fate_in_file": "bar_held_out:bar_does_not_add_up"
+      },
+      "VERDICT_none_yet": null
+    },
+    {
+      "file": "acc-23.png",
+      "question": "Does the RED glyph alter the BLUE notehead, and is the glyph the class the caption names?",
+      "accidental_glyph": "glyph/3/0/9/6/2",
+      "notehead": "glyph/3/0/9/6/8",
+      "staff": 9,
+      "staff_name": "Viola",
+      "bar": 55,
+      "detector_class": "accidentalNatural",
+      "staff_pitch_before_accidental": "G5",
+      "glyph_page_box": [
+        1573.3,
+        1737.0,
+        1585.1,
+        1764.9
+      ],
+      "head_page_box": [
+        1592.1,
+        1737.0,
+        1613.8,
+        1753.2
+      ],
+      "frame_contrast": 152.51,
+      "reading": {
+        "kind": "decided",
+        "outcome": "decided",
+        "reason": "immediately_right_same_position",
+        "alteration": "natural",
+        "written_alteration_on_head": "natural",
+        "written_by": "apply_printed_accidental",
+        "printed_flag": true,
+        "dx_spaces": 0.44,
+        "dy_positions": 0.764,
+        "head_fate_in_file": "bar_held_out:bar_does_not_add_up"
+      },
+      "VERDICT_none_yet": null
+    },
+    {
+      "file": "acc-24.png",
+      "question": "Does the RED glyph alter the BLUE notehead, and is the glyph the class the caption names?",
+      "accidental_glyph": "glyph/3/0/7/7/1",
+      "notehead": "glyph/3/0/7/7/0",
+      "staff": 7,
+      "staff_name": "Violino I",
+      "bar": 56,
+      "detector_class": "accidentalNatural",
+      "staff_pitch_before_accidental": "A3",
+      "glyph_page_box": [
+        1697.6,
+        1545.2,
+        1709.1,
+        1610.2
+      ],
+      "head_page_box": [
+        1717.1,
+        1572.9,
+        1740.8,
+        1593.5
+      ],
+      "frame_contrast": 184.67,
+      "reading": {
+        "kind": "decided",
+        "outcome": "decided",
+        "reason": "immediately_right_same_position",
+        "alteration": "natural",
+        "written_alteration_on_head": "natural",
+        "written_by": "apply_printed_accidental",
+        "printed_flag": true,
+        "dx_spaces": 0.5,
+        "dy_positions": 0.648,
+        "head_fate_in_file": "written"
+      },
+      "VERDICT_none_yet": null
+    },
+    {
+      "file": "acc-25.png",
+      "question": "Does the RED glyph alter the BLUE notehead, and is the glyph the class the caption names?",
+      "accidental_glyph": "glyph/3/0/7/6/0",
+      "notehead": "glyph/3/0/7/6/10",
+      "staff": 7,
+      "staff_name": "Violino I",
+      "bar": 55,
+      "detector_class": "accidentalNatural",
+      "staff_pitch_before_accidental": "A4",
+      "glyph_page_box": [
+        1574.2,
+        1499.1,
+        1587.8,
+        1559.8
+      ],
+      "head_page_box": [
+        1591.1,
+        1518.0,
+        1611.8,
+        1536.2
+      ],
+      "frame_contrast": 184.67,
+      "reading": {
+        "kind": "decided",
+        "outcome": "decided",
+        "reason": "immediately_right_same_position",
+        "alteration": "natural",
+        "written_alteration_on_head": "natural",
+        "written_by": "apply_printed_accidental",
+        "printed_flag": true,
+        "dx_spaces": 0.21,
+        "dy_positions": 0.32,
+        "head_fate_in_file": "bar_held_out:bar_does_not_add_up"
+      },
+      "VERDICT_none_yet": null
+    },
+    {
+      "file": "acc-26.png",
+      "question": "Does the RED glyph alter the BLUE notehead, and is the glyph the class the caption names?",
+      "accidental_glyph": "glyph/3/0/8/2/1",
+      "notehead": "glyph/3/0/8/2/3",
+      "staff": 8,
+      "staff_name": "Violino II",
+      "bar": 51,
+      "detector_class": "accidentalNatural",
+      "staff_pitch_before_accidental": "G6",
+      "glyph_page_box": [
+        877.3,
+        1581.0,
+        889.5,
+        1610.8
+      ],
+      "head_page_box": [
+        895.4,
+        1581.0,
+        916.0,
+        1592.3
+      ],
+      "frame_contrast": 175.55,
+      "reading": {
+        "kind": "decided",
+        "outcome": "decided",
+        "reason": "immediately_right_same_position",
+        "alteration": "natural",
+        "written_alteration_on_head": "natural",
+        "written_by": "apply_printed_accidental",
+        "printed_flag": true,
+        "dx_spaces": 0.38,
+        "dy_positions": 1.215,
+        "head_fate_in_file": "bar_held_out:bar_does_not_add_up"
+      },
+      "VERDICT_none_yet": null
+    },
+    {
+      "file": "acc-27.png",
+      "question": "Does the RED glyph alter the BLUE notehead, and is the glyph the class the caption names?",
+      "accidental_glyph": "glyph/3/0/8/2/0",
+      "notehead": "glyph/3/0/8/2/6",
+      "staff": 8,
+      "staff_name": "Violino II",
+      "bar": 51,
+      "detector_class": "accidentalNatural",
+      "staff_pitch_before_accidental": "A3",
+      "glyph_page_box": [
+        880.7,
+        1705.5,
+        892.6,
+        1763.7
+      ],
+      "head_page_box": [
+        897.3,
+        1723.4,
+        919.6,
+        1747.6
+      ],
+      "frame_contrast": 175.55,
+      "reading": {
+        "kind": "decided",
+        "outcome": "decided",
+        "reason": "immediately_right_same_position",
+        "alteration": "natural",
+        "written_alteration_on_head": "natural",
+        "written_by": "apply_printed_accidental",
+        "printed_flag": true,
+        "dx_spaces": 0.3,
+        "dy_positions": 0.09,
+        "head_fate_in_file": "bar_held_out:bar_does_not_add_up"
+      },
+      "VERDICT_none_yet": null
+    },
+    {
+      "file": "acc-28.png",
+      "question": "Does the RED glyph alter the BLUE notehead, and is the glyph the class the caption names?",
+      "accidental_glyph": "glyph/3/0/7/7/2",
+      "notehead": "glyph/3/0/7/7/3",
+      "staff": 7,
+      "staff_name": "Violino I",
+      "bar": 56,
+      "detector_class": "accidentalNatural",
+      "staff_pitch_before_accidental": "A4",
+      "glyph_page_box": [
+        1694.8,
+        1495.6,
+        1710.8,
+        1553.0
+      ],
+      "head_page_box": [
+        1717.2,
+        1516.7,
+        1740.1,
+        1534.2
+      ],
+      "frame_contrast": 184.67,
+      "reading": {
+        "kind": "decided",
+        "outcome": "decided",
+        "reason": "immediately_right_same_position",
+        "alteration": "natural",
+        "written_alteration_on_head": "b",
+        "written_by": "respell_accidental",
+        "printed_flag": null,
+        "dx_spaces": 0.4,
+        "dy_positions": 0.101,
+        "head_fate_in_file": "contradicted"
+      },
+      "VERDICT_none_yet": null
+    }
+  ],
+  "refused": []
+}
