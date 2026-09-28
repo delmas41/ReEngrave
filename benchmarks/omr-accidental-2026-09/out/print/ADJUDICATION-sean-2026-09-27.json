@@ -1,113 +1,593 @@
 {
  "adjudicator": "Sean",
  "date": "2026-09-27",
- "status": "PARTIAL \u2014 crops 1\u201320 of 28",
+ "status": "COMPLETE \u2014 28 of 28",
  "verdicts": [
   {
    "crop": "acc-01.png",
    "sean": "yes",
-   "pairing_correct": true
+   "pairing_correct": true,
+   "reading": {
+    "kind": "decided",
+    "outcome": "decided",
+    "reason": "immediately_right_same_position",
+    "alteration": "natural",
+    "written_alteration_on_head": "natural",
+    "written_by": "apply_printed_accidental",
+    "printed_flag": true,
+    "dx_spaces": 0.32,
+    "dy_positions": 0.351,
+    "head_fate_in_file": "bar_held_out:bar_does_not_add_up"
+   },
+   "staff": 7,
+   "glyph": "glyph/3/0/7/4/9",
+   "head": "glyph/3/0/7/4/2"
   },
   {
    "crop": "acc-02.png",
    "sean": "pairing right, but filed on the WRONG STAFF (the staff above)",
-   "pairing_correct": null
+   "pairing_correct": null,
+   "reading": {
+    "kind": "control",
+    "outcome": "abstained",
+    "reason": "no_candidate",
+    "alteration": "natural",
+    "written_alteration_on_head": null,
+    "written_by": null,
+    "printed_flag": null,
+    "dx_spaces": null,
+    "dy_positions": null,
+    "head_fate_in_file": null
+   },
+   "staff": 8,
+   "glyph": "glyph/3/0/8/7/5",
+   "head": "glyph/3/0/8/7/1"
   },
   {
    "crop": "acc-03.png",
    "sean": "WRONG: the accidental box is very tall \u2014 the accidental is the lower third; the blue head is a tremolo slash, not a note; the correct note is the half note on the bottom space",
-   "pairing_correct": false
+   "pairing_correct": false,
+   "reading": {
+    "kind": "control",
+    "outcome": "abstained",
+    "reason": "no_candidate",
+    "alteration": "b",
+    "written_alteration_on_head": "b",
+    "written_by": "respell_accidental",
+    "printed_flag": null,
+    "dx_spaces": null,
+    "dy_positions": null,
+    "head_fate_in_file": null
+   },
+   "staff": 9,
+   "glyph": "glyph/3/0/9/5/4",
+   "head": "glyph/3/0/9/5/1"
   },
   {
    "crop": "acc-04.png",
    "sean": "pairing right, but filed on the WRONG STAFF (the staff above)",
-   "pairing_correct": null
+   "pairing_correct": null,
+   "reading": {
+    "kind": "decided",
+    "outcome": "decided",
+    "reason": "immediately_right_same_position",
+    "alteration": "natural",
+    "written_alteration_on_head": "natural",
+    "written_by": "apply_printed_accidental",
+    "printed_flag": true,
+    "dx_spaces": 0.2,
+    "dy_positions": 1.064,
+    "head_fate_in_file": "bar_held_out:bar_does_not_add_up"
+   },
+   "staff": 9,
+   "glyph": "glyph/3/0/9/2/1",
+   "head": "glyph/3/0/9/2/6"
   },
   {
    "crop": "acc-05.png",
    "sean": "correct; a second accidental on a note above at the same time is not in the crop",
-   "pairing_correct": true
+   "pairing_correct": true,
+   "reading": {
+    "kind": "decided",
+    "outcome": "decided",
+    "reason": "immediately_right_same_position",
+    "alteration": "natural",
+    "written_alteration_on_head": "natural",
+    "written_by": "apply_printed_accidental",
+    "printed_flag": true,
+    "dx_spaces": 0.34,
+    "dy_positions": 0.521,
+    "head_fate_in_file": "bar_held_out:bar_does_not_add_up"
+   },
+   "staff": 7,
+   "glyph": "glyph/3/0/7/6/5",
+   "head": "glyph/3/0/7/6/2"
   },
   {
    "crop": "acc-06.png",
    "sean": "correct; another note with its own accidental on the same beat below",
-   "pairing_correct": true
+   "pairing_correct": true,
+   "reading": {
+    "kind": "decided",
+    "outcome": "decided",
+    "reason": "immediately_right_same_position",
+    "alteration": "b",
+    "written_alteration_on_head": "b",
+    "written_by": "respell_accidental",
+    "printed_flag": null,
+    "dx_spaces": 0.41,
+    "dy_positions": 0.476,
+    "head_fate_in_file": "contradicted"
+   },
+   "staff": 7,
+   "glyph": "glyph/3/0/7/7/6",
+   "head": "glyph/3/0/7/7/3"
   },
   {
    "crop": "acc-07.png",
    "sean": "WRONG: the glyph is a KEY-SIGNATURE flat; the chosen note has a sharp in front of it that was not detected",
-   "pairing_correct": false
+   "pairing_correct": false,
+   "reading": {
+    "kind": "control",
+    "outcome": "abstained",
+    "reason": "no_candidate",
+    "alteration": "b",
+    "written_alteration_on_head": "b",
+    "written_by": "respell_accidental",
+    "printed_flag": null,
+    "dx_spaces": null,
+    "dy_positions": null,
+    "head_fate_in_file": null
+   },
+   "staff": 8,
+   "glyph": "glyph/3/0/8/0/2",
+   "head": "glyph/3/0/8/0/3"
   },
   {
    "crop": "acc-08.png",
    "sean": "correct",
-   "pairing_correct": true
+   "pairing_correct": true,
+   "reading": {
+    "kind": "decided",
+    "outcome": "decided",
+    "reason": "immediately_right_same_position",
+    "alteration": "natural",
+    "written_alteration_on_head": "natural",
+    "written_by": "apply_printed_accidental",
+    "printed_flag": true,
+    "dx_spaces": 0.35,
+    "dy_positions": 0.54,
+    "head_fate_in_file": "written"
+   },
+   "staff": 8,
+   "glyph": "glyph/3/0/8/7/2",
+   "head": "glyph/3/0/8/7/0"
   },
   {
    "crop": "acc-09.png",
    "sean": "correct",
-   "pairing_correct": true
+   "pairing_correct": true,
+   "reading": {
+    "kind": "decided",
+    "outcome": "decided",
+    "reason": "immediately_right_same_position",
+    "alteration": "b",
+    "written_alteration_on_head": "b",
+    "written_by": "apply_printed_accidental",
+    "printed_flag": true,
+    "dx_spaces": 0.15,
+    "dy_positions": 0.212,
+    "head_fate_in_file": "bar_held_out:bar_does_not_add_up"
+   },
+   "staff": 7,
+   "glyph": "glyph/3/0/7/5/2",
+   "head": "glyph/3/0/7/5/1"
   },
   {
    "crop": "acc-10.png",
    "sean": "correct; a second accidental on a note below on the same beat",
-   "pairing_correct": true
+   "pairing_correct": true,
+   "reading": {
+    "kind": "decided",
+    "outcome": "decided",
+    "reason": "immediately_right_same_position",
+    "alteration": "natural",
+    "written_alteration_on_head": "b",
+    "written_by": "respell_accidental",
+    "printed_flag": null,
+    "dx_spaces": 0.32,
+    "dy_positions": 0.243,
+    "head_fate_in_file": "contradicted"
+   },
+   "staff": 8,
+   "glyph": "glyph/3/0/8/6/13",
+   "head": "glyph/3/0/8/6/11"
   },
   {
    "crop": "acc-11.png",
    "sean": "correct",
-   "pairing_correct": true
+   "pairing_correct": true,
+   "reading": {
+    "kind": "decided",
+    "outcome": "decided",
+    "reason": "immediately_right_same_position",
+    "alteration": "b",
+    "written_alteration_on_head": "b",
+    "written_by": "apply_printed_accidental",
+    "printed_flag": true,
+    "dx_spaces": 0.25,
+    "dy_positions": 0.545,
+    "head_fate_in_file": "written"
+   },
+   "staff": 8,
+   "glyph": "glyph/3/0/8/5/1",
+   "head": "glyph/3/0/8/5/2"
   },
   {
    "crop": "acc-12.png",
    "sean": "correct",
-   "pairing_correct": true
+   "pairing_correct": true,
+   "reading": {
+    "kind": "decided",
+    "outcome": "decided",
+    "reason": "immediately_right_same_position",
+    "alteration": "natural",
+    "written_alteration_on_head": "natural",
+    "written_by": "apply_printed_accidental",
+    "printed_flag": true,
+    "dx_spaces": 0.43,
+    "dy_positions": 0.228,
+    "head_fate_in_file": "bar_held_out:bar_does_not_add_up"
+   },
+   "staff": 7,
+   "glyph": "glyph/3/0/7/0/1",
+   "head": "glyph/3/0/7/0/7"
   },
   {
    "crop": "acc-13.png",
    "sean": "WRONG STAFF (the staff above)",
-   "pairing_correct": null
+   "pairing_correct": null,
+   "reading": {
+    "kind": "decided",
+    "outcome": "decided",
+    "reason": "immediately_right_same_position",
+    "alteration": "natural",
+    "written_alteration_on_head": "natural",
+    "written_by": "apply_printed_accidental",
+    "printed_flag": true,
+    "dx_spaces": 0.16,
+    "dy_positions": 0.954,
+    "head_fate_in_file": "written"
+   },
+   "staff": 9,
+   "glyph": "glyph/3/0/9/7/2",
+   "head": "glyph/3/0/9/7/5"
   },
   {
    "crop": "acc-14.png",
    "sean": "correct, but the box is very big \u2014 it merges the flat's stem with the barline",
-   "pairing_correct": true
+   "pairing_correct": true,
+   "reading": {
+    "kind": "decided",
+    "outcome": "decided",
+    "reason": "immediately_right_same_position",
+    "alteration": "b",
+    "written_alteration_on_head": "b",
+    "written_by": "apply_printed_accidental",
+    "printed_flag": true,
+    "dx_spaces": 0.82,
+    "dy_positions": 0.446,
+    "head_fate_in_file": "written"
+   },
+   "staff": 9,
+   "glyph": "glyph/3/0/9/5/3",
+   "head": "glyph/3/0/9/5/5"
   },
   {
    "crop": "acc-15.png",
    "sean": "correct",
-   "pairing_correct": true
+   "pairing_correct": true,
+   "reading": {
+    "kind": "decided",
+    "outcome": "decided",
+    "reason": "immediately_right_same_position",
+    "alteration": "natural",
+    "written_alteration_on_head": "natural",
+    "written_by": "apply_printed_accidental",
+    "printed_flag": true,
+    "dx_spaces": 0.23,
+    "dy_positions": 0.441,
+    "head_fate_in_file": "written"
+   },
+   "staff": 8,
+   "glyph": "glyph/3/0/8/1/0",
+   "head": "glyph/3/0/8/1/3"
   },
   {
    "crop": "acc-16.png",
    "sean": "correct",
-   "pairing_correct": true
+   "pairing_correct": true,
+   "reading": {
+    "kind": "decided",
+    "outcome": "decided",
+    "reason": "immediately_right_same_position",
+    "alteration": "natural",
+    "written_alteration_on_head": "natural",
+    "written_by": "apply_printed_accidental",
+    "printed_flag": true,
+    "dx_spaces": 0.36,
+    "dy_positions": 0.18,
+    "head_fate_in_file": "bar_held_out:bar_does_not_add_up"
+   },
+   "staff": 7,
+   "glyph": "glyph/3/0/7/2/0",
+   "head": "glyph/3/0/7/2/2"
   },
   {
    "crop": "acc-17.png",
    "sean": "correct; another accidental on the same beat on a note below",
-   "pairing_correct": true
+   "pairing_correct": true,
+   "reading": {
+    "kind": "decided",
+    "outcome": "decided",
+    "reason": "immediately_right_same_position",
+    "alteration": "#",
+    "written_alteration_on_head": "b",
+    "written_by": "respell_accidental",
+    "printed_flag": null,
+    "dx_spaces": 0.28,
+    "dy_positions": 0.008,
+    "head_fate_in_file": "contradicted"
+   },
+   "staff": 8,
+   "glyph": "glyph/3/0/8/6/21",
+   "head": "glyph/3/0/8/6/11"
   },
   {
    "crop": "acc-18.png",
    "sean": "correct",
-   "pairing_correct": true
+   "pairing_correct": true,
+   "reading": {
+    "kind": "decided",
+    "outcome": "decided",
+    "reason": "immediately_right_same_position",
+    "alteration": "natural",
+    "written_alteration_on_head": "natural",
+    "written_by": "apply_printed_accidental",
+    "printed_flag": true,
+    "dx_spaces": 0.32,
+    "dy_positions": 0.019,
+    "head_fate_in_file": "bar_held_out:bar_does_not_add_up"
+   },
+   "staff": 8,
+   "glyph": "glyph/3/0/8/4/4",
+   "head": "glyph/3/0/8/4/5"
   },
   {
    "crop": "acc-19.png",
    "sean": "correct; another on the same beat below",
-   "pairing_correct": true
+   "pairing_correct": true,
+   "reading": {
+    "kind": "decided",
+    "outcome": "decided",
+    "reason": "immediately_right_same_position",
+    "alteration": "natural",
+    "written_alteration_on_head": "natural",
+    "written_by": "apply_printed_accidental",
+    "printed_flag": true,
+    "dx_spaces": 0.43,
+    "dy_positions": 0.19,
+    "head_fate_in_file": "written"
+   },
+   "staff": 8,
+   "glyph": "glyph/3/0/8/7/4",
+   "head": "glyph/3/0/8/7/9"
   },
   {
    "crop": "acc-20.png",
    "sean": "WRONG STAFF (the staff above)",
-   "pairing_correct": null
+   "pairing_correct": null,
+   "reading": {
+    "kind": "decided",
+    "outcome": "decided",
+    "reason": "immediately_right_same_position",
+    "alteration": "natural",
+    "written_alteration_on_head": "natural",
+    "written_by": "apply_printed_accidental",
+    "printed_flag": true,
+    "dx_spaces": 0.41,
+    "dy_positions": 0.904,
+    "head_fate_in_file": "head_refused:duration_narrowed"
+   },
+   "staff": 8,
+   "glyph": "glyph/3/0/8/6/6",
+   "head": "glyph/3/0/8/6/12"
+  },
+  {
+   "crop": "acc-21.png",
+   "sean": "correct",
+   "pairing_correct": true,
+   "reading": {
+    "kind": "decided",
+    "outcome": "decided",
+    "reason": "immediately_right_same_position",
+    "alteration": "natural",
+    "written_alteration_on_head": "natural",
+    "written_by": "apply_printed_accidental",
+    "printed_flag": true,
+    "dx_spaces": 0.37,
+    "dy_positions": 0.2,
+    "head_fate_in_file": "bar_held_out:bar_does_not_add_up"
+   },
+   "staff": 7,
+   "glyph": "glyph/3/0/7/4/4",
+   "head": "glyph/3/0/7/4/2"
+  },
+  {
+   "crop": "acc-22.png",
+   "sean": "correct; another accidental below",
+   "pairing_correct": true,
+   "reading": {
+    "kind": "decided",
+    "outcome": "decided",
+    "reason": "immediately_right_same_position",
+    "alteration": "natural",
+    "written_alteration_on_head": "natural",
+    "written_by": "apply_printed_accidental",
+    "printed_flag": true,
+    "dx_spaces": 0.42,
+    "dy_positions": 0.036,
+    "head_fate_in_file": "bar_held_out:bar_does_not_add_up"
+   },
+   "staff": 8,
+   "glyph": "glyph/3/0/8/6/1",
+   "head": "glyph/3/0/8/6/0"
+  },
+  {
+   "crop": "acc-23.png",
+   "sean": "WRONG STAFF (the staff above)",
+   "pairing_correct": null,
+   "reading": {
+    "kind": "decided",
+    "outcome": "decided",
+    "reason": "immediately_right_same_position",
+    "alteration": "natural",
+    "written_alteration_on_head": "natural",
+    "written_by": "apply_printed_accidental",
+    "printed_flag": true,
+    "dx_spaces": 0.44,
+    "dy_positions": 0.764,
+    "head_fate_in_file": "bar_held_out:bar_does_not_add_up"
+   },
+   "staff": 9,
+   "glyph": "glyph/3/0/9/6/2",
+   "head": "glyph/3/0/9/6/8"
+  },
+  {
+   "crop": "acc-24.png",
+   "sean": "correct; another accidental above on the same beat",
+   "pairing_correct": true,
+   "reading": {
+    "kind": "decided",
+    "outcome": "decided",
+    "reason": "immediately_right_same_position",
+    "alteration": "natural",
+    "written_alteration_on_head": "natural",
+    "written_by": "apply_printed_accidental",
+    "printed_flag": true,
+    "dx_spaces": 0.5,
+    "dy_positions": 0.648,
+    "head_fate_in_file": "written"
+   },
+   "staff": 7,
+   "glyph": "glyph/3/0/7/7/1",
+   "head": "glyph/3/0/7/7/0"
+  },
+  {
+   "crop": "acc-25.png",
+   "sean": "correct; another accidental below on the same beat",
+   "pairing_correct": true,
+   "reading": {
+    "kind": "decided",
+    "outcome": "decided",
+    "reason": "immediately_right_same_position",
+    "alteration": "natural",
+    "written_alteration_on_head": "natural",
+    "written_by": "apply_printed_accidental",
+    "printed_flag": true,
+    "dx_spaces": 0.21,
+    "dy_positions": 0.32,
+    "head_fate_in_file": "bar_held_out:bar_does_not_add_up"
+   },
+   "staff": 7,
+   "glyph": "glyph/3/0/7/6/0",
+   "head": "glyph/3/0/7/6/10"
+  },
+  {
+   "crop": "acc-26.png",
+   "sean": "WRONG STAFF (the staff above)",
+   "pairing_correct": null,
+   "reading": {
+    "kind": "decided",
+    "outcome": "decided",
+    "reason": "immediately_right_same_position",
+    "alteration": "natural",
+    "written_alteration_on_head": "natural",
+    "written_by": "apply_printed_accidental",
+    "printed_flag": true,
+    "dx_spaces": 0.38,
+    "dy_positions": 1.215,
+    "head_fate_in_file": "bar_held_out:bar_does_not_add_up"
+   },
+   "staff": 8,
+   "glyph": "glyph/3/0/8/2/1",
+   "head": "glyph/3/0/8/2/3"
+  },
+  {
+   "crop": "acc-27.png",
+   "sean": "correct; other accidentals on the same beat",
+   "pairing_correct": true,
+   "reading": {
+    "kind": "decided",
+    "outcome": "decided",
+    "reason": "immediately_right_same_position",
+    "alteration": "natural",
+    "written_alteration_on_head": "natural",
+    "written_by": "apply_printed_accidental",
+    "printed_flag": true,
+    "dx_spaces": 0.3,
+    "dy_positions": 0.09,
+    "head_fate_in_file": "bar_held_out:bar_does_not_add_up"
+   },
+   "staff": 8,
+   "glyph": "glyph/3/0/8/2/0",
+   "head": "glyph/3/0/8/2/6"
+  },
+  {
+   "crop": "acc-28.png",
+   "sean": "correct; other accidentals on the same beat",
+   "pairing_correct": true,
+   "reading": {
+    "kind": "decided",
+    "outcome": "decided",
+    "reason": "immediately_right_same_position",
+    "alteration": "natural",
+    "written_alteration_on_head": "b",
+    "written_by": "respell_accidental",
+    "printed_flag": null,
+    "dx_spaces": 0.4,
+    "dy_positions": 0.101,
+    "head_fate_in_file": "contradicted"
+   },
+   "staff": 7,
+   "glyph": "glyph/3/0/7/7/2",
+   "head": "glyph/3/0/7/7/3"
   }
  ],
  "patterns": [
-  "right pairing, wrong staff (2, 4, 13, 20): accidental and head filed on the staff ABOVE \u2014 cross-staff ownership reaching accidentals",
+  "right pairing, wrong staff (2, 4, 13, 20, 23, 26 \u2014 6 of 28): accidental AND head filed on the staff ABOVE the true one \u2014 the notehead's cross-staff ownership, not the accidental reader's; pitch would be read against the wrong staff",
   "a header key-signature flat read as an in-bar accidental (7); the true accidental (a sharp) undetected",
   "a tremolo boxed as a notehead chosen as the head (3); a merged tall accidental box",
   "a box merged with neighbouring ink (3: tall, 14: the barline)"
- ]
+ ],
+ "summary": {
+  "right_pairing": 20,
+  "right_pairing_wrong_staff_above": [
+   2,
+   4,
+   13,
+   20,
+   23,
+   26
+  ],
+  "wrong": {
+   "3": "tremolo slash taken as the head; tall merged box",
+   "7": "a key-signature flat read as in-bar; the true sharp undetected"
+  },
+  "abstained_controls_in_the_28": [
+   "acc-02.png",
+   "acc-03.png",
+   "acc-07.png"
+  ]
+ }
 }
