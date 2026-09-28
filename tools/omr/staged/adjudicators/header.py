@@ -7,7 +7,8 @@ import os
 from typing import Dict, List, Optional
 
 from ..adjudicate import Checkable, Evidence, Mode, Ruling, decision
-from ..record import Kind, Outcome, Q, Scope, State
+from .. import movements as _movements
+from ..record import DOCUMENT, Kind, Outcome, Q, Scope, State
 
 #: ⚠️⚠️ DEFAULT **ON** SINCE 2026-09-22 (evening) — **SEAN'S CALL**, on the
 #: measurement in `benchmarks/omr-document-identity-2026-09/FINDINGS.md`: key
@@ -615,6 +616,20 @@ def _assert_change_threshold_matches_legacy() -> None:
             f"{CHANGE_MIN_WITNESSES}. One convention, one number.")
 
 
+def _movement_spans(ev: Evidence) -> tuple:
+    """ROADMAP 4.2: the declared `Q.MOVEMENT_SPANS` fact, empty with none
+    supplied (the single-movement default).
+
+    ⚠️ READ HERE, IN THIS MODULE, for the same reason `rhythm._movement_spans`
+    is its own copy rather than a shared `movements.spans_from_evidence`:
+    `inventory --check` / `wiring --check` trace a decision's reads by
+    walking helpers defined in its OWN FILE, and a call crossing into
+    `movements.py` would be invisible to either.
+    """
+    rows = ev.rows(Q.MOVEMENT_SPANS, subject=DOCUMENT)
+    return tuple(rows[0].value or ()) if rows else ()
+
+
 def admitted_changes(readings, *,
                      min_witnesses: int = CHANGE_MIN_WITNESSES,
                      min_share: float = CHANGE_MIN_SHARE,
@@ -691,7 +706,7 @@ def admitted_changes(readings, *,
     return sorted(out)
 
 
-def _segments(values_by_system, changes):
+def _segments(values_by_system, changes, extra_cuts=()):
     """Majority per stretch of systems. The one body both tiers use.
 
     `values_by_system` is `[((page, system), value or None), ...]` in document
@@ -703,14 +718,24 @@ def _segments(values_by_system, changes):
     admitted change cuts the sequence in two and each side keeps its own
     answer, so the rule cannot delete a change it has itself admitted.
 
+    ⚠️⚠️ ROADMAP 4.2: `extra_cuts` IS THE SAME RULE FOR A BOUNDARY NOBODY HAD
+    TO CORROBORATE. `changes` are found by counting witnesses
+    (`admitted_changes`), which a genuine but thinly-witnessed movement
+    boundary can fail to clear -- and the failure mode is not "no change
+    found", it is a stretch that silently BLENDS the two movements' votes
+    into one majority. `extra_cuts` (from `movements.movement_boundaries`,
+    empty with no `--movements`) forces the cut regardless of witness count,
+    without pretending it is a CONFIRMED key change: only `changes`, never
+    `extra_cuts`, is echoed back to the caller as `detail["changes"]`.
+
     ⚠️ A TIE ABSTAINS -- Sean's standing rule for every vote in this tree, and
     load-bearing in a second way here: a population read eight ways once each
     is one this rule knows nothing about, and answering with the earliest or
     the alphabetically-first reading would convert *cannot tell* into an
     answer (CLAUDE.md rule 8).
     """
-    cuts = [sys_key for sys_key, _delta in changes]
-    bounds = [None] + sorted(cuts)
+    cuts = [sys_key for sys_key, _delta in changes] + list(extra_cuts)
+    bounds = [None] + sorted(set(cuts))
     out = []
     for i, start in enumerate(bounds):
         end = bounds[i + 1] if i + 1 < len(bounds) else None
@@ -1022,7 +1047,8 @@ def _part_checked(ev: Evidence, subject, reading: Ruling) -> Ruling:
                    Q.CLEF, Q.SLOT_INDEX, Q.MARGIN_LABEL, Q.SYSTEM_KEY,
                    Q.GLYPH_BOX, Q.KEYSIG_MARKER_IS_NOT_A_MARKER),
     scope=Kind.DOCUMENT,
-    wants=_KEY_WANTS + (Q.SYSTEM_KEY, Q.SLOT_INDEX, Q.INSTRUMENT),
+    wants=_KEY_WANTS + (Q.SYSTEM_KEY, Q.SLOT_INDEX, Q.INSTRUMENT,
+                        Q.MOVEMENT_SPANS),
     reasons=("read", "no_staff_read_a_key"),
     mode=Mode.ADDITIVE,
 )
@@ -1144,11 +1170,18 @@ def adjudicate_part_key(ev: Evidence) -> Ruling:
                  if names.get(slot) not in NO_SIGNATURE_CONVENTION
                  and names.get(slot) not in MAY_DIFFER_NOT_A_WITNESS}
     changes = admitted_changes(witnesses)
+    # ⚠️ ROADMAP 4.2: a `--movements` boundary is a HARD cut for the majority
+    # below, whether or not enough witnesses corroborated a change AT it --
+    # see `_segments`'s own comment. Empty (and therefore a no-op) on a
+    # record with no `Q.MOVEMENT_SPANS` fact.
+    movement_spans = _movement_spans(ev)
+    extra_cuts = _movements.movement_boundaries(movement_spans)
 
-    document = _segments(concert_rows, changes)
+    document = _segments(concert_rows, changes, extra_cuts=extra_cuts)
     parts = {str(slot): {"name": names.get(slot),
                          "offset": (part_offsets.get(slot) or (None, None))[1],
-                         "segments": _segments(rows, changes)}
+                         "segments": _segments(rows, changes,
+                                               extra_cuts=extra_cuts)}
              for slot, rows in sorted(by_part.items())}
     # ⚠️ TWO REACH NUMBERS, REPORTED SEPARATELY ON EVERY RUN. `own_label` is
     # what 2.9's concert tally could see; `staves_normalised` is what this one

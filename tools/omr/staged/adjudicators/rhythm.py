@@ -33,8 +33,9 @@ from collections import Counter
 from ... import transcribe as _legacy_stems
 from ... import voicing as _legacy_voicing
 
-from ..record import (ABSTAIN, Kind, Outcome, Q, READERS, Scope, State,
-                      Subject, meter_at)
+from .. import movements as _movements
+from ..record import (ABSTAIN, DOCUMENT, Kind, Outcome, Q, READERS, Scope,
+                      State, Subject, meter_at)
 
 
 #: Notehead class -> written value in beats, before dots and beams.
@@ -2772,6 +2773,22 @@ METER_SOURCE_REASONS = ("voted", "change_only")
 # ─────────────────────────────────────────────────────────────────────────────
 
 
+def _movement_spans(ev: Evidence) -> tuple:
+    """ROADMAP 4.2: the declared `Q.MOVEMENT_SPANS` fact, empty with none
+    supplied (the single-movement default).
+
+    ⚠️ READ HERE, IN THIS MODULE, RATHER THAN THROUGH `movements.
+    spans_from_evidence` (which does not exist for exactly this reason).
+    `inventory --check` and `wiring --check` both trace a decision's reads by
+    walking helpers defined in ITS OWN FILE; a call that crossed into
+    `movements.py` would be invisible to either tool and `Q.MOVEMENT_SPANS`
+    would report as an inert, unreachable declaration on `adjudicate_meter`
+    even though this line reads it every time.
+    """
+    rows = ev.rows(Q.MOVEMENT_SPANS, subject=DOCUMENT)
+    return tuple(rows[0].value or ()) if rows else ()
+
+
 def _adjacent_corroborated_cautionary(ev: Evidence,
                                       here: Subject) -> Optional[Dict[str, Any]]:
     """The STRICT immediate predecessor system's cautionary, if corroborated.
@@ -2781,6 +2798,14 @@ def _adjacent_corroborated_cautionary(ev: Evidence,
     cautionary — or printed one no second staff confirmed (A-METER-6's own
     `corroborated` flag, computed once by `_meter_changes` and read here
     rather than re-derived).
+
+    ⚠️ ROADMAP 4.2: ALSO None ACROSS A MOVEMENT BOUNDARY. A courtesy
+    signature announces the very next system's opening — but where `--
+    movements` has drawn a boundary between the two, "the very next system"
+    is a different movement's first system, and a meter/key carry may never
+    cross one (CLAUDE.md §1). With no `Q.MOVEMENT_SPANS` fact on the record
+    `_movements.same_movement` is always True, so a record with no
+    `--movements` is unaffected.
     """
     all_systems = ev.subjects(Kind.SYSTEM)
     try:
@@ -2790,6 +2815,9 @@ def _adjacent_corroborated_cautionary(ev: Evidence,
     if idx <= 0:
         return None
     prev = all_systems[idx - 1]
+    spans = _movement_spans(ev)
+    if not _movements.same_movement(spans, here, prev):
+        return None
     found = ev.verdict(Q.METER, subject=prev)
     if found is None or found.outcome is not Outcome.DECIDED:
         return None
@@ -2817,10 +2845,20 @@ def _carry_meter(ev: Evidence, instead_of: str) -> Optional[Ruling]:
 
     ⚠️ It is also why this needs no reach constant of its own -- see
     `METER_CARRY_ENV`, where the reach bound is refuted outright.
+
+    ⚠️⚠️ ROADMAP 4.2: A CARRY NEVER CROSSES A `--movements` BOUNDARY. Walking
+    backward through the document's systems STOPS outright (not merely
+    "skips") the first time it steps into a movement earlier than `here`'s --
+    movements are contiguous, non-overlapping page/system ranges, so every
+    system further back is in that SAME earlier movement or one earlier
+    still, and none of them may answer for `here`. With no `Q.MOVEMENT_SPANS`
+    fact on the record `_movements.same_movement` is always True, so this is
+    a no-op on a record with no `--movements` -- exactly the pre-4.2 walk.
     """
     if not meter_carry_enabled():
         return None
     here = ev.subject
+    spans = _movement_spans(ev)
     #: Sources walked PAST because A-METER-6 left them nothing carryable.
     #: ⚠️ A page with no carry source and a page that walked past one are two
     #: different pages and must not read the same in the log.
@@ -2831,6 +2869,10 @@ def _carry_meter(ev: Evidence, instead_of: str) -> Optional[Ruling]:
     # "in force at end" on its OWN named system only.
     adjacent_caution = _adjacent_corroborated_cautionary(ev, here)
     for src in reversed([s for s in ev.subjects(Kind.SYSTEM) if s < here]):
+        if not _movements.same_movement(spans, here, src):
+            # ⚠️ BREAK, NOT CONTINUE. Every system before `src` in document
+            # order is in `src`'s movement or an earlier one, never `here`'s.
+            break
         found = ev.verdict(Q.METER, subject=src)
         if found is None or found.outcome is not Outcome.DECIDED:
             continue
@@ -3016,9 +3058,16 @@ def _form_for_length(ev: Evidence, length: float) -> Optional[dict]:
     could read. So the borrowed meter is spelled in digits and the source's
     own `raw` is recorded beside it rather than copied. The same distinction
     `export._mxl_attributes_block` already makes for `rhythm._propagated_meter`.
+
+    ⚠️ ROADMAP 4.2: THE SAME MOVEMENT-BOUNDARY STOP `_carry_meter` USES. A
+    borrowed spelling is still a carry in every sense CLAUDE.md §1 means by
+    the word, and must not reach across a `--movements` boundary either.
     """
     here = ev.subject
+    spans = _movement_spans(ev)
     for src in reversed([s for s in ev.subjects(Kind.SYSTEM) if s < here]):
+        if not _movements.same_movement(spans, here, src):
+            break
         found = ev.verdict(Q.METER, subject=src)
         if found is None or found.outcome is not Outcome.DECIDED:
             continue
@@ -3185,7 +3234,7 @@ def _meter_fallbacks(ev: Evidence, why: str, **detail) -> Ruling:
     wants=(Q.METER_GLYPH, Q.METER_TEMPLATE, Q.METER_TEMPLATE_AT_BAR,
            Q.DURATION, Q.DOSSIER_FACT,
            Q.SYSTEM_STAFF_COUNT, Q.METER, Q.EVENT, Q.REST,
-           Q.MEASURE_PARTITION),
+           Q.MEASURE_PARTITION, Q.MOVEMENT_SPANS),
     reasons=("voted", "no_agreement", "no_evidence",
              "too_few_staves_read_it", "carried",
              "carry_not_corroborated", "carry_outweighed_by_the_bars",

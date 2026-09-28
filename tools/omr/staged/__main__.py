@@ -282,6 +282,21 @@ def main(argv=None) -> int:
                          "ONLY way a dossier reaches this pipeline.")
     ap.add_argument("--no-roster", action="store_true",
                     help="do not look the work's catalog roster up at all.")
+    # ⚠️ ROADMAP 4.2. A whole work is several movements; a meter/key carry
+    # must never cross one, and a document with more than one is exported as
+    # one file PER MOVEMENT (see `tools.omr.staged.movements`). Human-
+    # supplied, like `--sheet` -- an OPTION, never an `OMR_*` flag (CLAUDE.md
+    # §7), because it is read once per run, not toggled.
+    #
+    # Grammar: comma-separated `NUMBER:START-END`, where START/END are a page
+    # `P` or `P.S` (page and, where a movement starts mid-page, its first
+    # system): `"1:0-11,2:12.1-20"` is movement 1 on pages 0-11 and movement 2
+    # starting at page 12 system 1 through the end of page 20. Omit entirely
+    # and the document is one movement, exactly as before this option
+    # existed.
+    ap.add_argument("--movements", default=None,
+                    help="movement boundaries, e.g. '1:0-11,2:12.1-20' -- "
+                         "see tools.omr.staged.movements.parse_movement_spec")
     ap.add_argument("--ink-rows", action="store_true",
                     help="file one Q.INK row per INK COMPONENT (the pre-"
                          "roadmap-1.1 form) instead of one aggregated row "
@@ -299,9 +314,15 @@ def main(argv=None) -> int:
     args = ap.parse_args(argv)
 
     from . import legacy, pipeline
+    from . import movements as movements_mod
     from . import weight_routing as weight_routing_mod
 
     pages = parse_pages(args.pages)
+    # ⚠️ RAISES `movements_mod.MalformedMovementSpec` (a `ValueError`) ON A
+    # BAD SPEC, loudly and before anything runs -- CLAUDE.md rule 8: a
+    # `--movements` typo must never be read as "no movements given".
+    movement_spans = (movements_mod.parse_movement_spec(args.movements)
+                      if args.movements else None)
 
     # ⚠️ `weight_routing.resolve_staged_weights` never triggers on bare
     # omission (see --weights' own help text): `args.weights` is either a
@@ -367,6 +388,7 @@ def main(argv=None) -> int:
         surya_fallback=args.surya, ocr_fallback=args.ocr,
         ink_component_rows=args.ink_rows,
         input_domain_classification=input_domain_classification,
+        movements=movement_spans,
         legacy=legacy.load(args.against) if args.against else None,
         progress=args.progress)
     result["weight_routing"] = weight_routing
@@ -418,69 +440,135 @@ def main(argv=None) -> int:
     else:
         print(dumps_for_file(result, indent=2, default=str))
 
+    # ⚠️ ROADMAP 4.2. `movement_spans` (above) is what `--movements` asked
+    # for BEFORE the gather; `result` is what the record actually HOLDS
+    # after it -- read back through `movements_mod.spans_from_result` so a
+    # record loaded from disk (not built in this process at all) would take
+    # the same branch. **A record with no `Q.MOVEMENT_SPANS` fact -- no
+    # `--movements` was given -- returns `()` here and takes the EXACT
+    # single-file path this CLI has always taken.**
+    export_spans = (movements_mod.spans_from_result(result)
+                    if (args.musicxml or args.lilypond or args.pdf_out)
+                    else ())
+
+    if not export_spans:
+        if args.musicxml:
+            from . import export as staged_export
+            xml, report = staged_export.to_musicxml(result)
+            Path(args.musicxml).write_text(xml)
+            cov = Path(args.musicxml + ".coverage.json")
+            cov.write_text(json.dumps(report, indent=2, default=str))
+            print(f"wrote {args.musicxml} and {cov}")
+
+        # ⚠️⚠️ IMPORTED HERE, AFTER THE GATHER -- the same rule `--musicxml`
+        # follows and for the same reason: `staged/export.py` says so in its
+        # own comment (`export._pad_tacet_span`'s neighbourhood) because an
+        # editor importing the exporter BEFORE a long unattended gather
+        # finishes means an edit made mid-run reaches an already-imported
+        # module's OLD code while its line numbers report the NEW file.
+        # `tools.omr.staged.lilypond` imports `export` itself, so this
+        # import is transitively the same one.
+        if args.lilypond:
+            from . import lilypond as staged_lily
+            ly_text, ly_report = staged_lily.to_lilypond(result)
+            Path(args.lilypond).write_text(ly_text)
+            ly_cov = Path(args.lilypond + ".coverage.json")
+            ly_cov.write_text(json.dumps(ly_report, indent=2, default=str))
+            print(f"wrote {args.lilypond} and {ly_cov}")
+
+        # ⚠️⚠️ ROADMAP 3.3 PART A / CLAUDE.md §1's PRODUCT DEFINITION: "one
+        # command, a whole movement, MusicXML and a LilyPond PDF". Before
+        # this, a PDF needed `--lilypond` here PLUS a separate
+        # `lilypond out.ly` invocation -- a second command, run by hand,
+        # after the gather that produced `out.ly` had already finished.
+        # `--pdf` closes that gap.
+        #
+        # ⚠️ REUSES `--lilypond`'s ALREADY-COMPUTED TEXT WHEN BOTH ARE
+        # GIVEN -- never a second `to_lilypond(result)` call over the same
+        # record, for the same "ONE gather" reason `--against` reuses the
+        # loaded legacy result rather than re-running anything.
+        if args.pdf_out:
+            if args.lilypond:
+                pdf_ly_report = ly_report
+                ly_source = Path(args.lilypond)
+            else:
+                from . import lilypond as staged_lily
+                pdf_ly_text, pdf_ly_report = staged_lily.to_lilypond(result)
+                ly_source = Path(args.pdf_out).with_suffix(".ly")
+                ly_source.write_text(pdf_ly_text)
+                ly_cov = Path(str(ly_source) + ".coverage.json")
+                ly_cov.write_text(
+                    json.dumps(pdf_ly_report, indent=2, default=str))
+                print(f"wrote {ly_source} and {ly_cov} "
+                      f"(--lilypond not given -- one is needed to render a "
+                      f"PDF, so this run wrote it anyway)")
+            _render_pdf(ly_source, Path(args.pdf_out))
+
+        _report(result)
+        if args.musicxml:
+            staged_export._report(report)
+        if args.lilypond:
+            staged_lily._report(ly_report)
+        # ⚠️ LAST, ON PURPOSE (CLAUDE.md §1): "every bar the reader could not
+        # read is MARKED as unread and never invented ... and the user must
+        # see how many". Everything above is the per-stage / per-family
+        # detail a session digs through; this is the one line Sean (or
+        # anyone running the CLI) should be able to read without opening the
+        # coverage JSON.
+        if args.musicxml or args.lilypond:
+            _print_accounting_summary(
+                musicxml_report=report if args.musicxml else None,
+                lilypond_report=ly_report if args.lilypond else None)
+        return 0
+
+    # ── ROADMAP 4.2: more than one movement -- one file set per movement ────
+    _report(result)
+    print(f"\n── MOVEMENTS: {len(export_spans)} "
+          f"({', '.join(str(s['number']) for s in export_spans)}) ──",
+          file=sys.stderr)
+    ly_by_number: dict = {}
     if args.musicxml:
         from . import export as staged_export
-        xml, report = staged_export.to_musicxml(result)
-        Path(args.musicxml).write_text(xml)
-        cov = Path(args.musicxml + ".coverage.json")
-        cov.write_text(json.dumps(report, indent=2, default=str))
-        print(f"wrote {args.musicxml} and {cov}")
-
-    # ⚠️⚠️ IMPORTED HERE, AFTER THE GATHER -- the same rule `--musicxml`
-    # follows and for the same reason: `staged/export.py` says so in its own
-    # comment (`export._pad_tacet_span`'s neighbourhood) because an editor
-    # importing the exporter BEFORE a long unattended gather finishes means
-    # an edit made mid-run reaches an already-imported module's OLD code
-    # while its line numbers report the NEW file. `tools.omr.staged.lilypond`
-    # imports `export` itself, so this import is transitively the same one.
+        for number, path, _xml, rpt in movements_mod.export_each(
+                result, export_spans, args.musicxml, staged_export.to_musicxml):
+            print(f"── movement {number}: wrote {path} and "
+                  f"{path}.coverage.json ──", file=sys.stderr)
+            staged_export._report(rpt)
+            _print_accounting_summary(musicxml_report=rpt,
+                                      lilypond_report=None)
     if args.lilypond:
         from . import lilypond as staged_lily
-        ly_text, ly_report = staged_lily.to_lilypond(result)
-        Path(args.lilypond).write_text(ly_text)
-        ly_cov = Path(args.lilypond + ".coverage.json")
-        ly_cov.write_text(json.dumps(ly_report, indent=2, default=str))
-        print(f"wrote {args.lilypond} and {ly_cov}")
-
-    # ⚠️⚠️ ROADMAP 3.3 PART A / CLAUDE.md §1's PRODUCT DEFINITION: "one
-    # command, a whole movement, MusicXML and a LilyPond PDF". Before this,
-    # a PDF needed `--lilypond` here PLUS a separate `lilypond out.ly`
-    # invocation -- a second command, run by hand, after the gather that
-    # produced `out.ly` had already finished. `--pdf` closes that gap.
-    #
-    # ⚠️ REUSES `--lilypond`'s ALREADY-COMPUTED TEXT WHEN BOTH ARE GIVEN --
-    # never a second `to_lilypond(result)` call over the same record, for
-    # the same "ONE gather" reason `--against` reuses the loaded legacy
-    # result rather than re-running anything.
+        for number, path, ly_text, rpt in movements_mod.export_each(
+                result, export_spans, args.lilypond, staged_lily.to_lilypond):
+            ly_by_number[number] = ly_text
+            print(f"── movement {number}: wrote {path} and "
+                  f"{path}.coverage.json ──", file=sys.stderr)
+            staged_lily._report(rpt)
     if args.pdf_out:
-        if args.lilypond:
-            pdf_ly_report = ly_report
-            ly_source = Path(args.lilypond)
-        else:
-            from . import lilypond as staged_lily
-            pdf_ly_text, pdf_ly_report = staged_lily.to_lilypond(result)
-            ly_source = Path(args.pdf_out).with_suffix(".ly")
-            ly_source.write_text(pdf_ly_text)
-            ly_cov = Path(str(ly_source) + ".coverage.json")
-            ly_cov.write_text(json.dumps(pdf_ly_report, indent=2, default=str))
-            print(f"wrote {ly_source} and {ly_cov} "
-                  f"(--lilypond not given -- one is needed to render a PDF, "
-                  f"so this run wrote it anyway)")
-        _render_pdf(ly_source, Path(args.pdf_out))
-
-    _report(result)
-    if args.musicxml:
-        staged_export._report(report)
-    if args.lilypond:
-        staged_lily._report(ly_report)
-    # ⚠️ LAST, ON PURPOSE (CLAUDE.md §1): "every bar the reader could not
-    # read is MARKED as unread and never invented ... and the user must see
-    # how many". Everything above is the per-stage / per-family detail a
-    # session digs through; this is the one line Sean (or anyone running
-    # the CLI) should be able to read without opening the coverage JSON.
-    if args.musicxml or args.lilypond:
-        _print_accounting_summary(
-            musicxml_report=report if args.musicxml else None,
-            lilypond_report=ly_report if args.lilypond else None)
+        from . import lilypond as staged_lily
+        by_number = dict(movements_mod.split_result(result, export_spans))
+        for span in export_spans:
+            number = span["number"]
+            pdf_path = movements_mod.movement_path(args.pdf_out, number)
+            if number in ly_by_number:
+                # Already written above by `--lilypond` -- reuse it rather
+                # than a second `to_lilypond` call over the same movement,
+                # the same "ONE gather" reason the single-movement path
+                # reuses `--lilypond`'s text.
+                ly_source = movements_mod.movement_path(args.lilypond, number)
+            else:
+                pdf_ly_text, pdf_ly_report = staged_lily.to_lilypond(
+                    by_number[number])
+                ly_source = movements_mod.movement_path(
+                    Path(args.pdf_out).with_suffix(".ly"), number)
+                ly_source.write_text(pdf_ly_text)
+                ly_cov = Path(str(ly_source) + ".coverage.json")
+                ly_cov.write_text(
+                    json.dumps(pdf_ly_report, indent=2, default=str))
+                print(f"wrote {ly_source} and {ly_cov} "
+                      f"(--lilypond not given -- one is needed to render a "
+                      f"PDF, so this run wrote it anyway)")
+            _render_pdf(ly_source, pdf_path)
     return 0
 
 

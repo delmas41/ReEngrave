@@ -318,3 +318,16 @@ Format: `YYYY-MM-DD · who · the decision · because · (pointer)`
   (one record read → the Brahms funnel; six crops → 2.4c's text marks) paid;
   the expensive ones (2.11b ~5 h for one clef; 2.14 two re-gathers for zero)
   did not, and per-rule deltas on a file 78% held out say little
+- 2026-09-28 · overnight manager, by CLAUDE.md §4a (not Sean) · **ROADMAP 4.2:
+  a movement is a MEMBERSHIP fact, not a new `Kind` in the `Subject` path.**
+  The plan's own text says "`Kind.MOVEMENT` between DOCUMENT and PAGE", but
+  inserting a level would change every subject id (`glyph/p/s/st/c/g`) this
+  repo has ever saved a record under, including the three acceptance records
+  adopted this same day — so `Kind`/`Subject` stay untouched and a movement is
+  `Q.MOVEMENT_SPANS`, an ordinary external-fact Observation on the DOCUMENT
+  (human-supplied via `--movements`, the same admissibility as `Q.DOSSIER_
+  FACT`/`Q.ROSTER_ENTRY`), read by `tools.omr.staged.movements`'s pure
+  `same_movement`/`movement_of`/`movement_boundaries`. A record with none of
+  these rows is untouched — the single-movement default — and EXPORT can
+  split an already-adjudicated record with no re-gather at all (build
+  `claude/movements-4.2`)

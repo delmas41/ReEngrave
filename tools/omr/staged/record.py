@@ -854,6 +854,24 @@ class Q(_Vocab):
     #: almost all scans because it is almost all IMSLP.
     INPUT_DOMAIN = "input_domain"            # scan vs engraved (weights, keys)
 
+    #: ROADMAP 4.2. Which PAGE/SYSTEM ranges belong to which MOVEMENT of a
+    #: whole work, human-supplied (the CLI's `--movements`, or eventually a
+    #: confirmed fact sheet field) -- admissible for the same reason
+    #: `DOSSIER_FACT` is: it does not come off THIS raster and does not fall
+    #: silent when the raster is bad.
+    #:
+    #: ⚠️⚠️ FILED ON THE DOCUMENT, NEVER A NEW `Kind`. Inserting a level
+    #: between `DOCUMENT` and `PAGE` would change every subject id this repo
+    #: has ever saved a record under; a movement is a MEMBERSHIP fact over
+    #: the EXISTING page/system space instead (`tools.omr.staged.movements`),
+    #: and a record with none of these rows reads exactly as it did before
+    #: this quantity existed -- the single-movement default.
+    #:
+    #: Value: a tuple of spans, each `{"number", "first_page",
+    #: "first_system", "last_page", "last_system"}` -- see
+    #: `tools.omr.staged.movements.parse_movement_spec`.
+    MOVEMENT_SPANS = "movement_spans"
+
     # ── verdicts ────────────────────────────────────────────────────────────
     SYSTEM_MEMBERSHIP = "system_membership"  # which staves are one system
     STAFF_GROUP = "staff_group"              # which staves are one FAMILY
@@ -1633,6 +1651,10 @@ CLAIMS: "dict[str, str]" = {
     #: a fact about the FILE, and like the other externals it does not degrade
     #: with the print.
     "INPUT_DOMAIN": CLAIM.EXTERNAL,
+    #: ROADMAP 4.2. Human-typed (`--movements`), not read off the raster and
+    #: not derived from any other row -- the same reason `DOSSIER_FACT` is
+    #: EXTERNAL rather than INTERPRETATION.
+    "MOVEMENT_SPANS": CLAIM.EXTERNAL,
 
     # ── fits, votes, adjudications and consequences ────────────────────────
     "KEYSIG_CLEF_FIT": CLAIM.INTERPRETATION,
@@ -1869,6 +1891,13 @@ class READERS(_Vocab):
     #: independent of print quality in a way no reader of the INK can be.
     CONTAINER = "container"                  # input_domain: the PDF container
     CARRY = "carry"                          # this fact, read on another system
+    #: ROADMAP 4.2. A movement boundary typed straight into the CLI
+    #: (`--movements`) -- not a reading of anything, and not yet a confirmed
+    #: fact sheet either (`DOSSIER`), but a direct human instruction in the
+    #: same sense `--pages`/`--work-id` are, made a named row because a
+    #: movement span is a FACT the record and every consumer must be able to
+    #: trace rather than a bare run parameter.
+    CLI = "cli"                              # a human-typed CLI option
 
     # ── THE HUMAN (roadmap 3.4) ────────────────────────────────────────────
     #

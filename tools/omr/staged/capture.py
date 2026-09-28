@@ -446,6 +446,10 @@ UNSCORED: Dict[str, Tuple[str, str, Any]] = {
     "CLEF_SEED": (NOT_A_MARK, "the dossier's clef; no ink.", None),
     "DOSSIER_FACT": (NOT_A_MARK, "a fact about the WORK.", None),
     "ROSTER_ENTRY": (NOT_A_MARK, "the catalog's instrument list.", None),
+    #: ROADMAP 4.2. Human-typed (`--movements`), never a reading of the
+    #: raster -- the same reason `DOSSIER_FACT`/`ROSTER_ENTRY` are scoreless.
+    "MOVEMENT_SPANS": (NOT_A_MARK, "a fact about the WORK's movement "
+                       "boundaries, human-supplied.", None),
     "MARGIN_LABEL": (
         NOT_A_MARK,
         "an instrument name in the margin. It carries `y_center_px` for the "
@@ -573,6 +577,9 @@ READER_RASTER: Dict[str, Optional[Tuple[str, str]]] = {
     "DOSSIER": None,
     "CATALOG": None,
     "CARRY": None,
+    # ⚠️ ROADMAP 4.2. A human-typed CLI option (`--movements`), never a
+    # reading of anything -- the same `None` `DOSSIER`/`CATALOG` carry.
+    "CLI": None,
 }
 
 #: A second raster the same reader name reaches, where the gather site calls a

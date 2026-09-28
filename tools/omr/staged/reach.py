@@ -337,6 +337,14 @@ STAGE_OF_FILE = {
     # `ev.rows`/`ev.value`-shaped call in it), so it is HARNESS for the same
     # reason `pipeline.py` is, not a stage with its own row of the table.
     "weight_routing.py": "HARNESS",
+    # ⚠️ ROADMAP 4.2. `movements.py` holds the one real accessor call this
+    # module makes (`spans_from_evidence`'s `ev.rows(Q.MOVEMENT_SPANS, ...)`),
+    # and it is called from ADJUDICATE (`rhythm.py`, `header.py`) -- its
+    # other functions (`spans_from_result`, `split_result`, `export_each`,
+    # the parser, the membership tests) read a loaded record's plain dict or
+    # take no `Evidence`/`Log` at all, so `_accessors()`'s scan finds nothing
+    # in them to attribute to any other stage.
+    "movements.py": "ADJUDICATE",
 }
 ORDER = ["GATHER", "ADJUDICATE", "EVALUATE", "INFER", "EXPORT", "HARNESS"]
 
