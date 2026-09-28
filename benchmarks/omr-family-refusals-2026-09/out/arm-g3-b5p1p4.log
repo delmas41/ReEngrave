@@ -1,0 +1,114 @@
+[beethoven5-p1-p4.record.json] POPULATION FIRST: 1878 ledgerLine boxes, 0 Q.LEDGER_INK_UNDER rows
+[beethoven5-p1-p4.record.json] base (3.4g-2 rule from 8226aa93) ...
+[beethoven5-p1-p4.record.json] CONTROL base == 3.4g-2's recorded arm: True (1878 of 1878)
+[beethoven5-p1-p4.record.json] arm  (3.4g-3, this tree) ...
+{
+ "record": "beethoven5-p1-p4.record.json",
+ "base_ref": "8226aa93",
+ "ledger_boxes_on_the_record": 1878,
+ "ledger_ink_rows_on_the_record": 0,
+ "control": {
+  "prior_file": "benchmarks/omr-family-refusals-2026-09/out/ledger-g2-arm-beethoven5-p1-p4.json",
+  "prior_3_4g2_arm": {
+   "kept": 333,
+   "refused:inside_the_staff": 1370,
+   "refused:no_head_on_the_rung": 18,
+   "refused:on_a_staff_line": 156,
+   "refused:tall_not_a_rung": 1
+  },
+  "base_here": {
+   "kept": 333,
+   "refused:inside_the_staff": 1370,
+   "refused:no_head_on_the_rung": 18,
+   "refused:on_a_staff_line": 156,
+   "refused:tall_not_a_rung": 1
+  },
+  "agrees": true,
+  "agreeing_boxes": "1878 of 1878"
+ },
+ "base": {
+  "kept": 333,
+  "refused:inside_the_staff": 1370,
+  "refused:no_head_on_the_rung": 18,
+  "refused:on_a_staff_line": 156,
+  "refused:tall_not_a_rung": 1
+ },
+ "arm": {
+  "ABSTAINED:rung_without_boxed_head": 18,
+  "kept": 333,
+  "refused:inside_the_staff": 1370,
+  "refused:on_a_staff_line": 156,
+  "refused:tall_not_a_rung": 1
+ },
+ "transitions": {
+  "counts": {
+   "kept -> kept": 333,
+   "refused:inside_the_staff -> refused:inside_the_staff": 1370,
+   "refused:no_head_on_the_rung -> ABSTAINED:rung_without_boxed_head": 18,
+   "refused:on_a_staff_line -> refused:on_a_staff_line": 156,
+   "refused:tall_not_a_rung -> refused:tall_not_a_rung": 1
+  },
+  "named": {
+   "refused:no_head_on_the_rung -> ABSTAINED:rung_without_boxed_head": [
+    "glyph/1/0/3/14/0",
+    "glyph/2/0/2/2/12",
+    "glyph/2/0/3/2/13",
+    "glyph/2/1/0/12/5",
+    "glyph/2/1/0/12/6",
+    "glyph/2/1/10/14/9",
+    "glyph/3/1/0/5/8",
+    "glyph/3/1/0/6/11",
+    "glyph/3/1/0/6/12",
+    "glyph/3/1/2/17/3",
+    "glyph/3/1/4/0/15",
+    "glyph/3/1/7/10/1"
+   ]
+  }
+ },
+ "verdicts_moved_by_quantity": {
+  "ledger_is_not_a_ledger": 18
+ },
+ "unladdered_signal_base": {
+  "ledger_found_hist": {
+   "0": 278,
+   "1": 59,
+   "2": 12,
+   "3": 6,
+   "None": 133
+  },
+  "would_fire": 278
+ },
+ "unladdered_signal_arm": {
+  "ledger_found_hist": {
+   "0": 278,
+   "1": 59,
+   "2": 12,
+   "3": 6,
+   "None": 133
+  },
+  "would_fire": 278
+ },
+ "notes_base": 1769,
+ "notes_arm": 1769,
+ "notes_not_written_identical": true,
+ "census_arm": {
+  "unaccounted": [],
+  "balanced": true
+ },
+ "family_refusals_ledger_arm": {
+  "refused": {
+   "inside_the_staff": 1370,
+   "on_a_staff_line": 156,
+   "tall_not_a_rung": 1
+  },
+  "refused_total": 1527,
+  "kept": 333,
+  "abstained": 18,
+  "abstained_reasons": {
+   "rung_without_boxed_head": 18
+  },
+  "verdicts": 1878,
+  "balanced": true
+ }
+}
+wrote benchmarks/omr-family-refusals-2026-09/out/ledger-g3-arm-beethoven5-p1-p4.json

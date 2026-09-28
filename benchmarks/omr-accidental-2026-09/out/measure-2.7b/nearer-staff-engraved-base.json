@@ -1,0 +1,1087 @@
+{
+ "label": "engraved-base",
+ "record": "/private/tmp/claude-501/-Users-seanjohnson-Desktop-ReEngrave--claude-worktrees-start-here-questions-7d5637/3707ff6b-4757-4644-b4c5-de906d20a7bb/scratchpad/27b/base/engraved-arm.record.json",
+ "control": {
+  "band_rows_checked": 260,
+  "band_rows_differing": 0,
+  "break_control": false
+ },
+ "heads": 371,
+ "named": [],
+ "grid": {
+  "N>2.0 M<=0.0": {
+   "heads": 0,
+   "twin_on_near": 0,
+   "no_twin": 0,
+   "already_refused": 0,
+   "owner_elsewhere": 0,
+   "newly_refused": 0,
+   "newly_refused_with_kept_rung_to_near": 0,
+   "confirmed_hit": 0,
+   "wrong_staff_hit": 0
+  },
+  "N>2.0 M<=1.0": {
+   "heads": 0,
+   "twin_on_near": 0,
+   "no_twin": 0,
+   "already_refused": 0,
+   "owner_elsewhere": 0,
+   "newly_refused": 0,
+   "newly_refused_with_kept_rung_to_near": 0,
+   "confirmed_hit": 0,
+   "wrong_staff_hit": 0
+  },
+  "N>2.0 M<=2.0": {
+   "heads": 2,
+   "twin_on_near": 1,
+   "no_twin": 1,
+   "already_refused": 1,
+   "owner_elsewhere": 1,
+   "newly_refused": 0,
+   "newly_refused_with_kept_rung_to_near": 0,
+   "confirmed_hit": 0,
+   "wrong_staff_hit": 0
+  },
+  "N>2.0 M<=2.5": {
+   "heads": 9,
+   "twin_on_near": 4,
+   "no_twin": 5,
+   "already_refused": 5,
+   "owner_elsewhere": 4,
+   "newly_refused": 0,
+   "newly_refused_with_kept_rung_to_near": 0,
+   "confirmed_hit": 0,
+   "wrong_staff_hit": 0
+  },
+  "N>2.0 M<=2.75": {
+   "heads": 17,
+   "twin_on_near": 12,
+   "no_twin": 5,
+   "already_refused": 6,
+   "owner_elsewhere": 12,
+   "newly_refused": 0,
+   "newly_refused_with_kept_rung_to_near": 0,
+   "confirmed_hit": 0,
+   "wrong_staff_hit": 0
+  },
+  "N>2.0 M<=3.0": {
+   "heads": 17,
+   "twin_on_near": 12,
+   "no_twin": 5,
+   "already_refused": 6,
+   "owner_elsewhere": 12,
+   "newly_refused": 0,
+   "newly_refused_with_kept_rung_to_near": 0,
+   "confirmed_hit": 0,
+   "wrong_staff_hit": 0
+  },
+  "N>2.0 M<=3.5": {
+   "heads": 17,
+   "twin_on_near": 12,
+   "no_twin": 5,
+   "already_refused": 6,
+   "owner_elsewhere": 12,
+   "newly_refused": 0,
+   "newly_refused_with_kept_rung_to_near": 0,
+   "confirmed_hit": 0,
+   "wrong_staff_hit": 0
+  },
+  "N>2.5 M<=0.0": {
+   "heads": 0,
+   "twin_on_near": 0,
+   "no_twin": 0,
+   "already_refused": 0,
+   "owner_elsewhere": 0,
+   "newly_refused": 0,
+   "newly_refused_with_kept_rung_to_near": 0,
+   "confirmed_hit": 0,
+   "wrong_staff_hit": 0
+  },
+  "N>2.5 M<=1.0": {
+   "heads": 0,
+   "twin_on_near": 0,
+   "no_twin": 0,
+   "already_refused": 0,
+   "owner_elsewhere": 0,
+   "newly_refused": 0,
+   "newly_refused_with_kept_rung_to_near": 0,
+   "confirmed_hit": 0,
+   "wrong_staff_hit": 0
+  },
+  "N>2.5 M<=2.0": {
+   "heads": 2,
+   "twin_on_near": 1,
+   "no_twin": 1,
+   "already_refused": 1,
+   "owner_elsewhere": 1,
+   "newly_refused": 0,
+   "newly_refused_with_kept_rung_to_near": 0,
+   "confirmed_hit": 0,
+   "wrong_staff_hit": 0
+  },
+  "N>2.5 M<=2.5": {
+   "heads": 9,
+   "twin_on_near": 4,
+   "no_twin": 5,
+   "already_refused": 5,
+   "owner_elsewhere": 4,
+   "newly_refused": 0,
+   "newly_refused_with_kept_rung_to_near": 0,
+   "confirmed_hit": 0,
+   "wrong_staff_hit": 0
+  },
+  "N>2.5 M<=2.75": {
+   "heads": 17,
+   "twin_on_near": 12,
+   "no_twin": 5,
+   "already_refused": 6,
+   "owner_elsewhere": 12,
+   "newly_refused": 0,
+   "newly_refused_with_kept_rung_to_near": 0,
+   "confirmed_hit": 0,
+   "wrong_staff_hit": 0
+  },
+  "N>2.5 M<=3.0": {
+   "heads": 17,
+   "twin_on_near": 12,
+   "no_twin": 5,
+   "already_refused": 6,
+   "owner_elsewhere": 12,
+   "newly_refused": 0,
+   "newly_refused_with_kept_rung_to_near": 0,
+   "confirmed_hit": 0,
+   "wrong_staff_hit": 0
+  },
+  "N>2.5 M<=3.5": {
+   "heads": 17,
+   "twin_on_near": 12,
+   "no_twin": 5,
+   "already_refused": 6,
+   "owner_elsewhere": 12,
+   "newly_refused": 0,
+   "newly_refused_with_kept_rung_to_near": 0,
+   "confirmed_hit": 0,
+   "wrong_staff_hit": 0
+  },
+  "N>2.75 M<=0.0": {
+   "heads": 0,
+   "twin_on_near": 0,
+   "no_twin": 0,
+   "already_refused": 0,
+   "owner_elsewhere": 0,
+   "newly_refused": 0,
+   "newly_refused_with_kept_rung_to_near": 0,
+   "confirmed_hit": 0,
+   "wrong_staff_hit": 0
+  },
+  "N>2.75 M<=1.0": {
+   "heads": 0,
+   "twin_on_near": 0,
+   "no_twin": 0,
+   "already_refused": 0,
+   "owner_elsewhere": 0,
+   "newly_refused": 0,
+   "newly_refused_with_kept_rung_to_near": 0,
+   "confirmed_hit": 0,
+   "wrong_staff_hit": 0
+  },
+  "N>2.75 M<=2.0": {
+   "heads": 2,
+   "twin_on_near": 1,
+   "no_twin": 1,
+   "already_refused": 1,
+   "owner_elsewhere": 1,
+   "newly_refused": 0,
+   "newly_refused_with_kept_rung_to_near": 0,
+   "confirmed_hit": 0,
+   "wrong_staff_hit": 0
+  },
+  "N>2.75 M<=2.5": {
+   "heads": 9,
+   "twin_on_near": 4,
+   "no_twin": 5,
+   "already_refused": 5,
+   "owner_elsewhere": 4,
+   "newly_refused": 0,
+   "newly_refused_with_kept_rung_to_near": 0,
+   "confirmed_hit": 0,
+   "wrong_staff_hit": 0
+  },
+  "N>2.75 M<=2.75": {
+   "heads": 17,
+   "twin_on_near": 12,
+   "no_twin": 5,
+   "already_refused": 6,
+   "owner_elsewhere": 12,
+   "newly_refused": 0,
+   "newly_refused_with_kept_rung_to_near": 0,
+   "confirmed_hit": 0,
+   "wrong_staff_hit": 0
+  },
+  "N>2.75 M<=3.0": {
+   "heads": 17,
+   "twin_on_near": 12,
+   "no_twin": 5,
+   "already_refused": 6,
+   "owner_elsewhere": 12,
+   "newly_refused": 0,
+   "newly_refused_with_kept_rung_to_near": 0,
+   "confirmed_hit": 0,
+   "wrong_staff_hit": 0
+  },
+  "N>2.75 M<=3.5": {
+   "heads": 17,
+   "twin_on_near": 12,
+   "no_twin": 5,
+   "already_refused": 6,
+   "owner_elsewhere": 12,
+   "newly_refused": 0,
+   "newly_refused_with_kept_rung_to_near": 0,
+   "confirmed_hit": 0,
+   "wrong_staff_hit": 0
+  },
+  "N>3.0 M<=0.0": {
+   "heads": 0,
+   "twin_on_near": 0,
+   "no_twin": 0,
+   "already_refused": 0,
+   "owner_elsewhere": 0,
+   "newly_refused": 0,
+   "newly_refused_with_kept_rung_to_near": 0,
+   "confirmed_hit": 0,
+   "wrong_staff_hit": 0
+  },
+  "N>3.0 M<=1.0": {
+   "heads": 0,
+   "twin_on_near": 0,
+   "no_twin": 0,
+   "already_refused": 0,
+   "owner_elsewhere": 0,
+   "newly_refused": 0,
+   "newly_refused_with_kept_rung_to_near": 0,
+   "confirmed_hit": 0,
+   "wrong_staff_hit": 0
+  },
+  "N>3.0 M<=2.0": {
+   "heads": 2,
+   "twin_on_near": 1,
+   "no_twin": 1,
+   "already_refused": 1,
+   "owner_elsewhere": 1,
+   "newly_refused": 0,
+   "newly_refused_with_kept_rung_to_near": 0,
+   "confirmed_hit": 0,
+   "wrong_staff_hit": 0
+  },
+  "N>3.0 M<=2.5": {
+   "heads": 9,
+   "twin_on_near": 4,
+   "no_twin": 5,
+   "already_refused": 5,
+   "owner_elsewhere": 4,
+   "newly_refused": 0,
+   "newly_refused_with_kept_rung_to_near": 0,
+   "confirmed_hit": 0,
+   "wrong_staff_hit": 0
+  },
+  "N>3.0 M<=2.75": {
+   "heads": 17,
+   "twin_on_near": 12,
+   "no_twin": 5,
+   "already_refused": 6,
+   "owner_elsewhere": 12,
+   "newly_refused": 0,
+   "newly_refused_with_kept_rung_to_near": 0,
+   "confirmed_hit": 0,
+   "wrong_staff_hit": 0
+  },
+  "N>3.0 M<=3.0": {
+   "heads": 17,
+   "twin_on_near": 12,
+   "no_twin": 5,
+   "already_refused": 6,
+   "owner_elsewhere": 12,
+   "newly_refused": 0,
+   "newly_refused_with_kept_rung_to_near": 0,
+   "confirmed_hit": 0,
+   "wrong_staff_hit": 0
+  },
+  "N>3.0 M<=3.5": {
+   "heads": 17,
+   "twin_on_near": 12,
+   "no_twin": 5,
+   "already_refused": 6,
+   "owner_elsewhere": 12,
+   "newly_refused": 0,
+   "newly_refused_with_kept_rung_to_near": 0,
+   "confirmed_hit": 0,
+   "wrong_staff_hit": 0
+  },
+  "N>3.25 M<=0.0": {
+   "heads": 0,
+   "twin_on_near": 0,
+   "no_twin": 0,
+   "already_refused": 0,
+   "owner_elsewhere": 0,
+   "newly_refused": 0,
+   "newly_refused_with_kept_rung_to_near": 0,
+   "confirmed_hit": 0,
+   "wrong_staff_hit": 0
+  },
+  "N>3.25 M<=1.0": {
+   "heads": 0,
+   "twin_on_near": 0,
+   "no_twin": 0,
+   "already_refused": 0,
+   "owner_elsewhere": 0,
+   "newly_refused": 0,
+   "newly_refused_with_kept_rung_to_near": 0,
+   "confirmed_hit": 0,
+   "wrong_staff_hit": 0
+  },
+  "N>3.25 M<=2.0": {
+   "heads": 2,
+   "twin_on_near": 1,
+   "no_twin": 1,
+   "already_refused": 1,
+   "owner_elsewhere": 1,
+   "newly_refused": 0,
+   "newly_refused_with_kept_rung_to_near": 0,
+   "confirmed_hit": 0,
+   "wrong_staff_hit": 0
+  },
+  "N>3.25 M<=2.5": {
+   "heads": 9,
+   "twin_on_near": 4,
+   "no_twin": 5,
+   "already_refused": 5,
+   "owner_elsewhere": 4,
+   "newly_refused": 0,
+   "newly_refused_with_kept_rung_to_near": 0,
+   "confirmed_hit": 0,
+   "wrong_staff_hit": 0
+  },
+  "N>3.25 M<=2.75": {
+   "heads": 17,
+   "twin_on_near": 12,
+   "no_twin": 5,
+   "already_refused": 6,
+   "owner_elsewhere": 12,
+   "newly_refused": 0,
+   "newly_refused_with_kept_rung_to_near": 0,
+   "confirmed_hit": 0,
+   "wrong_staff_hit": 0
+  },
+  "N>3.25 M<=3.0": {
+   "heads": 17,
+   "twin_on_near": 12,
+   "no_twin": 5,
+   "already_refused": 6,
+   "owner_elsewhere": 12,
+   "newly_refused": 0,
+   "newly_refused_with_kept_rung_to_near": 0,
+   "confirmed_hit": 0,
+   "wrong_staff_hit": 0
+  },
+  "N>3.25 M<=3.5": {
+   "heads": 17,
+   "twin_on_near": 12,
+   "no_twin": 5,
+   "already_refused": 6,
+   "owner_elsewhere": 12,
+   "newly_refused": 0,
+   "newly_refused_with_kept_rung_to_near": 0,
+   "confirmed_hit": 0,
+   "wrong_staff_hit": 0
+  },
+  "N>3.5 M<=0.0": {
+   "heads": 0,
+   "twin_on_near": 0,
+   "no_twin": 0,
+   "already_refused": 0,
+   "owner_elsewhere": 0,
+   "newly_refused": 0,
+   "newly_refused_with_kept_rung_to_near": 0,
+   "confirmed_hit": 0,
+   "wrong_staff_hit": 0
+  },
+  "N>3.5 M<=1.0": {
+   "heads": 0,
+   "twin_on_near": 0,
+   "no_twin": 0,
+   "already_refused": 0,
+   "owner_elsewhere": 0,
+   "newly_refused": 0,
+   "newly_refused_with_kept_rung_to_near": 0,
+   "confirmed_hit": 0,
+   "wrong_staff_hit": 0
+  },
+  "N>3.5 M<=2.0": {
+   "heads": 2,
+   "twin_on_near": 1,
+   "no_twin": 1,
+   "already_refused": 1,
+   "owner_elsewhere": 1,
+   "newly_refused": 0,
+   "newly_refused_with_kept_rung_to_near": 0,
+   "confirmed_hit": 0,
+   "wrong_staff_hit": 0
+  },
+  "N>3.5 M<=2.5": {
+   "heads": 9,
+   "twin_on_near": 4,
+   "no_twin": 5,
+   "already_refused": 5,
+   "owner_elsewhere": 4,
+   "newly_refused": 0,
+   "newly_refused_with_kept_rung_to_near": 0,
+   "confirmed_hit": 0,
+   "wrong_staff_hit": 0
+  },
+  "N>3.5 M<=2.75": {
+   "heads": 17,
+   "twin_on_near": 12,
+   "no_twin": 5,
+   "already_refused": 6,
+   "owner_elsewhere": 12,
+   "newly_refused": 0,
+   "newly_refused_with_kept_rung_to_near": 0,
+   "confirmed_hit": 0,
+   "wrong_staff_hit": 0
+  },
+  "N>3.5 M<=3.0": {
+   "heads": 17,
+   "twin_on_near": 12,
+   "no_twin": 5,
+   "already_refused": 6,
+   "owner_elsewhere": 12,
+   "newly_refused": 0,
+   "newly_refused_with_kept_rung_to_near": 0,
+   "confirmed_hit": 0,
+   "wrong_staff_hit": 0
+  },
+  "N>3.5 M<=3.5": {
+   "heads": 17,
+   "twin_on_near": 12,
+   "no_twin": 5,
+   "already_refused": 6,
+   "owner_elsewhere": 12,
+   "newly_refused": 0,
+   "newly_refused_with_kept_rung_to_near": 0,
+   "confirmed_hit": 0,
+   "wrong_staff_hit": 0
+  }
+ },
+ "hist_filed_near_nearer_other": {
+  "4.0|2.0": 3,
+  "5.0|2.5": 7,
+  "5.5|1.0": 1,
+  "5.5|2.0": 4,
+  "5.5|2.5": 2
+ },
+ "signature_rows_N2_M3.5": [
+  {
+   "subject": "glyph/1/0/15/0/7",
+   "class": "noteheadWholeOnLine",
+   "filed_spaces": 3.82,
+   "filed_side": "below",
+   "near_staff": "staff/1/0/16",
+   "near_spaces": 2.18,
+   "near_side": "below",
+   "contested": false,
+   "contest_candidates": [],
+   "twin_on_near": false,
+   "glyph_owner": null,
+   "npv": [
+    "decided",
+    true,
+    "clipped_fragment"
+   ],
+   "unladdered_signal": null,
+   "rungs_to_filed": {
+    "kept": 0,
+    "refused": {},
+    "first_kept": false
+   },
+   "rungs_to_near": {
+    "kept": 0,
+    "refused": {},
+    "first_kept": false
+   },
+   "named": null,
+   "crops": null
+  },
+  {
+   "subject": "glyph/1/0/5/0/4",
+   "class": "noteheadWholeOnLine",
+   "filed_spaces": 3.825,
+   "filed_side": "below",
+   "near_staff": "staff/1/0/6",
+   "near_spaces": 2.175,
+   "near_side": "below",
+   "contested": false,
+   "contest_candidates": [],
+   "twin_on_near": false,
+   "glyph_owner": null,
+   "npv": [
+    "decided",
+    true,
+    "clipped_fragment"
+   ],
+   "unladdered_signal": {
+    "would_fire": true,
+    "ledger_expected": 4,
+    "ledger_found": 0
+   },
+   "rungs_to_filed": {
+    "kept": 0,
+    "refused": {},
+    "first_kept": false
+   },
+   "rungs_to_near": {
+    "kept": 0,
+    "refused": {},
+    "first_kept": false
+   },
+   "named": null,
+   "crops": null
+  },
+  {
+   "subject": "glyph/1/0/6/0/8",
+   "class": "noteheadWholeOnLine",
+   "filed_spaces": 3.825,
+   "filed_side": "below",
+   "near_staff": "staff/1/0/7",
+   "near_spaces": 2.175,
+   "near_side": "below",
+   "contested": false,
+   "contest_candidates": [],
+   "twin_on_near": false,
+   "glyph_owner": null,
+   "npv": [
+    "decided",
+    true,
+    "clipped_fragment"
+   ],
+   "unladdered_signal": null,
+   "rungs_to_filed": {
+    "kept": 0,
+    "refused": {},
+    "first_kept": false
+   },
+   "rungs_to_near": {
+    "kept": 0,
+    "refused": {},
+    "first_kept": false
+   },
+   "named": null,
+   "crops": null
+  },
+  {
+   "subject": "glyph/2/0/0/1/3",
+   "class": "noteheadBlackInSpace",
+   "filed_spaces": 4.992,
+   "filed_side": "below",
+   "near_staff": "staff/2/0/1",
+   "near_spaces": 2.53,
+   "near_side": "below",
+   "contested": true,
+   "contest_candidates": [
+    "staff/2/0/1"
+   ],
+   "twin_on_near": true,
+   "glyph_owner": [
+    "decided",
+    "staff/2/0/1",
+    "distance"
+   ],
+   "npv": [
+    "decided",
+    false,
+    "notehead"
+   ],
+   "unladdered_signal": null,
+   "rungs_to_filed": {
+    "kept": 0,
+    "refused": {},
+    "first_kept": false
+   },
+   "rungs_to_near": {
+    "kept": 0,
+    "refused": {},
+    "first_kept": false
+   },
+   "named": null,
+   "crops": null
+  },
+  {
+   "subject": "glyph/2/0/0/1/5",
+   "class": "noteheadBlackInSpace",
+   "filed_spaces": 5.002,
+   "filed_side": "below",
+   "near_staff": "staff/2/0/1",
+   "near_spaces": 2.52,
+   "near_side": "below",
+   "contested": true,
+   "contest_candidates": [
+    "staff/2/0/1"
+   ],
+   "twin_on_near": true,
+   "glyph_owner": [
+    "decided",
+    "staff/2/0/1",
+    "ladder"
+   ],
+   "npv": [
+    "decided",
+    false,
+    "notehead"
+   ],
+   "unladdered_signal": null,
+   "rungs_to_filed": {
+    "kept": 0,
+    "refused": {},
+    "first_kept": false
+   },
+   "rungs_to_near": {
+    "kept": 1,
+    "refused": {},
+    "first_kept": false
+   },
+   "named": null,
+   "crops": null
+  },
+  {
+   "subject": "glyph/2/0/0/1/6",
+   "class": "noteheadBlackInSpace",
+   "filed_spaces": 5.012,
+   "filed_side": "below",
+   "near_staff": "staff/2/0/1",
+   "near_spaces": 2.51,
+   "near_side": "below",
+   "contested": true,
+   "contest_candidates": [
+    "staff/2/0/1"
+   ],
+   "twin_on_near": true,
+   "glyph_owner": [
+    "decided",
+    "staff/2/0/1",
+    "distance"
+   ],
+   "npv": [
+    "decided",
+    false,
+    "notehead"
+   ],
+   "unladdered_signal": null,
+   "rungs_to_filed": {
+    "kept": 0,
+    "refused": {},
+    "first_kept": false
+   },
+   "rungs_to_near": {
+    "kept": 0,
+    "refused": {},
+    "first_kept": false
+   },
+   "named": null,
+   "crops": null
+  },
+  {
+   "subject": "glyph/2/0/0/2/4",
+   "class": "noteheadBlackOnLine",
+   "filed_spaces": 5.467,
+   "filed_side": "below",
+   "near_staff": "staff/2/0/1",
+   "near_spaces": 2.06,
+   "near_side": "below",
+   "contested": true,
+   "contest_candidates": [
+    "staff/2/0/1"
+   ],
+   "twin_on_near": true,
+   "glyph_owner": [
+    "decided",
+    "staff/2/0/1",
+    "ladder"
+   ],
+   "npv": [
+    "decided",
+    false,
+    "notehead"
+   ],
+   "unladdered_signal": null,
+   "rungs_to_filed": {
+    "kept": 0,
+    "refused": {},
+    "first_kept": false
+   },
+   "rungs_to_near": {
+    "kept": 0,
+    "refused": {},
+    "first_kept": false
+   },
+   "named": null,
+   "crops": null
+  },
+  {
+   "subject": "glyph/2/0/0/3/3",
+   "class": "noteheadBlackOnLine",
+   "filed_spaces": 5.477,
+   "filed_side": "below",
+   "near_staff": "staff/2/0/1",
+   "near_spaces": 2.05,
+   "near_side": "below",
+   "contested": true,
+   "contest_candidates": [
+    "staff/2/0/1"
+   ],
+   "twin_on_near": true,
+   "glyph_owner": [
+    "decided",
+    "staff/2/0/1",
+    "distance"
+   ],
+   "npv": [
+    "decided",
+    false,
+    "notehead"
+   ],
+   "unladdered_signal": null,
+   "rungs_to_filed": {
+    "kept": 0,
+    "refused": {},
+    "first_kept": false
+   },
+   "rungs_to_near": {
+    "kept": 0,
+    "refused": {},
+    "first_kept": false
+   },
+   "named": null,
+   "crops": null
+  },
+  {
+   "subject": "glyph/2/0/0/4/2",
+   "class": "noteheadBlackInSpace",
+   "filed_spaces": 5.737,
+   "filed_side": "below",
+   "near_staff": "staff/2/0/1",
+   "near_spaces": 1.793,
+   "near_side": "below",
+   "contested": false,
+   "contest_candidates": [],
+   "twin_on_near": false,
+   "glyph_owner": null,
+   "npv": [
+    "decided",
+    true,
+    "clipped_fragment"
+   ],
+   "unladdered_signal": null,
+   "rungs_to_filed": {
+    "kept": 0,
+    "refused": {},
+    "first_kept": false
+   },
+   "rungs_to_near": {
+    "kept": 0,
+    "refused": {},
+    "first_kept": false
+   },
+   "named": null,
+   "crops": null
+  },
+  {
+   "subject": "glyph/2/0/12/1/6",
+   "class": "noteheadBlackInSpace",
+   "filed_spaces": 4.92,
+   "filed_side": "above",
+   "near_staff": "staff/2/0/11",
+   "near_spaces": 2.502,
+   "near_side": "above",
+   "contested": true,
+   "contest_candidates": [
+    "staff/2/0/11"
+   ],
+   "twin_on_near": true,
+   "glyph_owner": [
+    "decided",
+    "staff/2/0/11",
+    "distance"
+   ],
+   "npv": [
+    "decided",
+    false,
+    "notehead"
+   ],
+   "unladdered_signal": null,
+   "rungs_to_filed": {
+    "kept": 0,
+    "refused": {},
+    "first_kept": false
+   },
+   "rungs_to_near": {
+    "kept": 0,
+    "refused": {},
+    "first_kept": false
+   },
+   "named": null,
+   "crops": null
+  },
+  {
+   "subject": "glyph/2/0/12/1/7",
+   "class": "noteheadBlackInSpace",
+   "filed_spaces": 4.92,
+   "filed_side": "above",
+   "near_staff": "staff/2/0/11",
+   "near_spaces": 2.502,
+   "near_side": "above",
+   "contested": true,
+   "contest_candidates": [
+    "staff/2/0/11"
+   ],
+   "twin_on_near": true,
+   "glyph_owner": [
+    "decided",
+    "staff/2/0/11",
+    "distance"
+   ],
+   "npv": [
+    "decided",
+    false,
+    "notehead"
+   ],
+   "unladdered_signal": null,
+   "rungs_to_filed": {
+    "kept": 0,
+    "refused": {},
+    "first_kept": false
+   },
+   "rungs_to_near": {
+    "kept": 0,
+    "refused": {},
+    "first_kept": false
+   },
+   "named": null,
+   "crops": null
+  },
+  {
+   "subject": "glyph/2/0/12/1/8",
+   "class": "noteheadBlackInSpace",
+   "filed_spaces": 4.915,
+   "filed_side": "above",
+   "near_staff": "staff/2/0/11",
+   "near_spaces": 2.507,
+   "near_side": "above",
+   "contested": true,
+   "contest_candidates": [
+    "staff/2/0/11"
+   ],
+   "twin_on_near": true,
+   "glyph_owner": [
+    "decided",
+    "staff/2/0/11",
+    "distance"
+   ],
+   "npv": [
+    "decided",
+    false,
+    "notehead"
+   ],
+   "unladdered_signal": null,
+   "rungs_to_filed": {
+    "kept": 0,
+    "refused": {},
+    "first_kept": false
+   },
+   "rungs_to_near": {
+    "kept": 0,
+    "refused": {},
+    "first_kept": false
+   },
+   "named": null,
+   "crops": null
+  },
+  {
+   "subject": "glyph/2/0/12/4/1",
+   "class": "noteheadBlackInSpace",
+   "filed_spaces": 4.91,
+   "filed_side": "above",
+   "near_staff": "staff/2/0/11",
+   "near_spaces": 2.512,
+   "near_side": "above",
+   "contested": true,
+   "contest_candidates": [
+    "staff/2/0/11"
+   ],
+   "twin_on_near": true,
+   "glyph_owner": [
+    "decided",
+    "staff/2/0/11",
+    "distance"
+   ],
+   "npv": [
+    "decided",
+    false,
+    "notehead"
+   ],
+   "unladdered_signal": null,
+   "rungs_to_filed": {
+    "kept": 0,
+    "refused": {},
+    "first_kept": false
+   },
+   "rungs_to_near": {
+    "kept": 1,
+    "refused": {},
+    "first_kept": false
+   },
+   "named": null,
+   "crops": null
+  },
+  {
+   "subject": "glyph/2/0/14/3/4",
+   "class": "noteheadBlackOnLine",
+   "filed_spaces": 5.635,
+   "filed_side": "above",
+   "near_staff": "staff/2/0/13",
+   "near_spaces": 2.187,
+   "near_side": "above",
+   "contested": true,
+   "contest_candidates": [
+    "staff/2/0/13"
+   ],
+   "twin_on_near": true,
+   "glyph_owner": [
+    "decided",
+    "staff/2/0/13",
+    "distance"
+   ],
+   "npv": [
+    "decided",
+    false,
+    "notehead"
+   ],
+   "unladdered_signal": null,
+   "rungs_to_filed": {
+    "kept": 0,
+    "refused": {},
+    "first_kept": false
+   },
+   "rungs_to_near": {
+    "kept": 0,
+    "refused": {},
+    "first_kept": false
+   },
+   "named": null,
+   "crops": null
+  },
+  {
+   "subject": "glyph/2/0/15/4/1",
+   "class": "noteheadBlackInSpace",
+   "filed_spaces": 5.705,
+   "filed_side": "above",
+   "near_staff": "staff/2/0/14",
+   "near_spaces": 2.739,
+   "near_side": "above",
+   "contested": true,
+   "contest_candidates": [
+    "staff/2/0/14"
+   ],
+   "twin_on_near": true,
+   "glyph_owner": [
+    "decided",
+    "staff/2/0/14",
+    "distance"
+   ],
+   "npv": [
+    "decided",
+    true,
+    "clipped_fragment"
+   ],
+   "unladdered_signal": null,
+   "rungs_to_filed": {
+    "kept": 0,
+    "refused": {},
+    "first_kept": false
+   },
+   "rungs_to_near": {
+    "kept": 0,
+    "refused": {},
+    "first_kept": false
+   },
+   "named": null,
+   "crops": null
+  },
+  {
+   "subject": "glyph/2/0/5/1/7",
+   "class": "noteheadBlackOnLine",
+   "filed_spaces": 5.61,
+   "filed_side": "above",
+   "near_staff": "staff/2/0/4",
+   "near_spaces": 1.146,
+   "near_side": "above",
+   "contested": true,
+   "contest_candidates": [
+    "staff/2/0/4"
+   ],
+   "twin_on_near": true,
+   "glyph_owner": [
+    "decided",
+    "staff/2/0/4",
+    "ladder"
+   ],
+   "npv": [
+    "decided",
+    false,
+    "notehead"
+   ],
+   "unladdered_signal": null,
+   "rungs_to_filed": {
+    "kept": 0,
+    "refused": {},
+    "first_kept": false
+   },
+   "rungs_to_near": {
+    "kept": 0,
+    "refused": {},
+    "first_kept": false
+   },
+   "named": null,
+   "crops": null
+  },
+  {
+   "subject": "glyph/2/0/6/1/8",
+   "class": "noteheadBlackInSpace",
+   "filed_spaces": 5.69,
+   "filed_side": "above",
+   "near_staff": "staff/2/0/5",
+   "near_spaces": 2.266,
+   "near_side": "above",
+   "contested": false,
+   "contest_candidates": [],
+   "twin_on_near": false,
+   "glyph_owner": null,
+   "npv": [
+    "decided",
+    true,
+    "clipped_fragment"
+   ],
+   "unladdered_signal": null,
+   "rungs_to_filed": {
+    "kept": 0,
+    "refused": {},
+    "first_kept": false
+   },
+   "rungs_to_near": {
+    "kept": 0,
+    "refused": {},
+    "first_kept": false
+   },
+   "named": null,
+   "crops": null
+  }
+ ]
+}

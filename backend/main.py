@@ -54,6 +54,7 @@ from modules import (
     export_module,
     file_import,
     local_omr,
+    staged_omr,
 )
 from modules.export_module import ExportFormat
 from routers.auth import router as auth_router
@@ -206,15 +207,21 @@ async def run_omr(
     background_tasks: BackgroundTasks,
     db: AsyncSession = Depends(get_db),
     current_user: User = Depends(get_current_user),
-    omr_engine: str = Query("local", regex="^(local|claude_vision)$"),
+    omr_engine: str = Query("local", regex="^(local|claude_vision|staged)$"),
 ):
     """Run OMR on a score's PDF.
 
     Engines:
       - ``local`` (default): in-house YOLOv8 + classical-CV pipeline in
-        ``tools/omr`` (see ``backend/modules/local_omr.py``).
+        ``tools/omr`` (see ``backend/modules/local_omr.py``). This is the
+        LEGACY reader (CLAUDE.md §3) and stays the default until Phase 3.
       - ``claude_vision``: Claude Vision API reads each page directly
         (slower, costs API tokens, but supports per-page progress).
+      - ``staged`` (experimental, ROADMAP 3.3): the STAGED pipeline in
+        ``tools/omr/staged`` (see ``backend/modules/staged_omr.py``). The
+        product path per CLAUDE.md §3, but not yet the web app's default —
+        it does not yet carry the legacy filters or the LilyPond default
+        this route's ``local`` engine gets from ``export_module``.
     """
     result = await db.execute(select(Score).where(Score.id == score_id))
     score = result.scalar_one_or_none()
@@ -271,6 +278,36 @@ async def run_omr(
                         meta["measures_count"] = omr.measures_count
                     if omr.confidence_score:
                         meta["confidence_score"] = omr.confidence_score
+                    s.metadata_json = meta
+                elif omr_engine == "staged":
+                    # STAGED (ROADMAP 3.3, experimental) — no per-page
+                    # progress callback (runs inside asyncio.to_thread),
+                    # same as `local` below.
+                    omr = await staged_omr.run_staged_omr(
+                        s.original_pdf_path, output_dir,
+                    )
+                    s.musicxml_path = omr.musicxml_path or s.musicxml_path
+                    s.status = "review" if omr.musicxml_path else "error"
+                    meta = {"omr_engine": omr_engine}
+                    if omr.record_path:
+                        meta["omr_record_path"] = omr.record_path
+                    if omr.pages_processed:
+                        meta["omr_pages"] = omr.pages_processed
+                    # ⚠️ Straight off `staged.export.to_musicxml`'s own
+                    # coverage report (CLAUDE.md §4d) — never recomputed —
+                    # so the review UI can show "N staves held out / N bars
+                    # unread" without re-deriving the accounting.
+                    if omr.held_out_staves is not None:
+                        meta["staged_held_out_staves"] = omr.held_out_staves
+                    if omr.unread_bars is not None:
+                        meta["staged_unread_bars"] = omr.unread_bars
+                    if omr.status_census is not None:
+                        meta["staged_status_census"] = omr.status_census
+                    if omr.error_message:
+                        # ⚠️ Includes `staged.export.Unbalanced` — surfaced
+                        # here with its own message, never swallowed. See
+                        # staged_omr.py's module docstring.
+                        meta["omr_error"] = omr.error_message
                     s.metadata_json = meta
                 else:
                     # local (YOLO) — primary engine. No per-page progress

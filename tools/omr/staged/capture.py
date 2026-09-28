@@ -424,6 +424,14 @@ UNSCORED: Dict[str, Tuple[str, str, Any]] = {
         "argues cannot act as an independent witness.",
         None),
     "GLYPH_LADDER": (RELATION, "ledger rung completeness for a contest.", None),
+    "LEDGER_INK_UNDER": (
+        RELATION,
+        "ROADMAP 3.4g-3: the ink fraction in a notehead-sized window ON a "
+        "located `ledgerLine` box (and half a space either side), the rung's "
+        "stroke removed, off the staff-ERASED raster, with a background one "
+        "space away — a relation between a located rung and the paper "
+        "around it. Scoreless because it is a ruler reading, not a naming.",
+        None),
 
     # ── ink with no class ───────────────────────────────────────────────────
     "INK": (

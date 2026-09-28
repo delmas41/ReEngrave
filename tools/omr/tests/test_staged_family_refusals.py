@@ -1,4 +1,4 @@
-"""*Is this really one?*, once per gathered family — ROADMAP 3.4g.
+"""*Is this really one?*, once per gathered family — ROADMAP 3.4g / 3.4g-4.
 
 ⚠️ RUN RED FIRST, against the unrepaired tree (`origin/main` at `5f109dd2`,
 with `adjudicators/family_precision.py` absent, `owner:other` unknown to
@@ -9,6 +9,15 @@ Every test below then fails at import or at the first attribute lookup —
 what says these fixtures exercise code that did not previously exist. See
 `benchmarks/omr-family-refusals-2026-09/FINDINGS.md` §RED for the captured
 run.
+
+⚠️ ROADMAP 3.4g-4 ADDS THREE ROWS TO THE SAME TABLE, RUN RED THE SAME WAY:
+against the tree before `Q.FLAG_IS_NOT_A_FLAG` / `Q.KEYSIG_MARKER_IS_NOT_A_
+MARKER` / `Q.TUPLET_MARKER_IS_NOT_A_MARKER` existed, every test naming one
+fails the same `AttributeError` on `Q.`. Their CONSUMER wiring — a refused
+flag/marker changing `rhythm.adjudicate_duration` / `header._staff_reading` /
+`rhythm.adjudicate_tuplet`'s verdict — is asserted in `test_staged_
+duration.py` and `test_staged_key_from_markers.py`, not here: this file is
+the refusal decisions themselves, in isolation.
 
 ⚠️ EVERY REFUSAL TEST HAS A POSITIVE CONTROL IN THE SAME CLASS, because a
 battery of refusal tests passes by refusing everything — the discipline
@@ -58,6 +67,11 @@ FAMILIES = (
     (Q.DYNAMIC_IS_NOT_A_DYNAMIC, "dynamicF", "dynamic", Q.DYNAMIC_LETTER),
     (Q.ARTICULATION_IS_NOT_AN_ARTICULATION, "articStaccatoAbove",
      "articulation", Q.ARTICULATION_MARK),
+    # ── roadmap 3.4g-4 ──────────────────────────────────────────────────────
+    (Q.FLAG_IS_NOT_A_FLAG, "flag8thUp", "flag", Q.FLAG),
+    (Q.KEYSIG_MARKER_IS_NOT_A_MARKER, "keySharp", "keysig_marker", None),
+    (Q.TUPLET_MARKER_IS_NOT_A_MARKER, "tuplet3", "tuplet_marker",
+     Q.TUPLET_MARKER),
 )
 
 
@@ -174,6 +188,33 @@ class TestEveryGatheredFamilyHasOne(unittest.TestCase):
                 spec = adjudicate.REGISTRY[quantity]
                 self.assertEqual(spec.subjects_from, Q.GLYPH_BOX)
                 self.assertTrue(spec.subjects_classed)
+
+    def test_the_key_marker_narrows_by_class_for_a_DIFFERENT_reason(self):
+        """⚠️ ROADMAP 3.4g-4. Not *no quantity of its own* — `Q.KEYSIG_MARKER`
+        exists — but *its quantity names no glyph*: `gather.
+        _gather_keysig_markers` files it on the STAFF, so `subjects_from=Q.
+        KEYSIG_MARKER` at `scope=Kind.GLYPH` would collapse to nothing.
+        `subjects_classed` is `gather._KEYSIG_CLASSES` exactly, never a bare
+        `key` prefix (`key_signature_corroboration.py`'s own `startswith
+        ("key")` catches `keyboardPedalUp`)."""
+        spec = adjudicate.REGISTRY[Q.KEYSIG_MARKER_IS_NOT_A_MARKER]
+        self.assertEqual(spec.subjects_from, Q.GLYPH_BOX)
+        self.assertEqual(sorted(spec.subjects_classed),
+                         sorted(("keySharp", "keyFlat", "keyNatural")))
+
+    def test_flag_and_tuplet_marker_narrow_by_THEIR_OWN_quantity_instead(self):
+        """⚠️ ROADMAP 3.4g-4. Unlike the three above, `Q.FLAG` and `Q.TUPLET_
+        MARKER` are gathered 1:1 on the glyph they name, exactly as `Q.REST`/
+        `Q.ARC_BOX`/`Q.DYNAMIC_LETTER`/`Q.ARTICULATION_MARK` are — so
+        `subjects_from` is the quantity itself and no class list is declared
+        at all."""
+        for quantity, expected in ((Q.FLAG_IS_NOT_A_FLAG, Q.FLAG),
+                                   (Q.TUPLET_MARKER_IS_NOT_A_MARKER,
+                                    Q.TUPLET_MARKER)):
+            with self.subTest(quantity):
+                spec = adjudicate.REGISTRY[quantity]
+                self.assertEqual(spec.subjects_from, expected)
+                self.assertFalse(spec.subjects_classed)
 
 
 class TestTheClassNarrowingIsTheDomain(unittest.TestCase):
@@ -513,25 +554,31 @@ class TestTheLedgerGeometry(unittest.TestCase):
     def test_the_tolerance_cannot_reach_the_first_rung(self):
         self.assertLess(FP.ON_A_STAFF_LINE_TOL_SPACES, 0.5)
 
-    # ── no_head_on_the_rung — Sean's SECOND convention, 2026-09-24 ──────────
+    # ── no BOXED head — Sean's SECOND convention, 2026-09-24 ────────────────
+    #
+    # ⚠️ ROADMAP 3.4g-3: with no boxed head near the rung and no GATHER ink
+    # witness on it, the decision ABSTAINS (`rung_without_boxed_head`) — two
+    # of the four rungs 3.4g-2 refused here were real rungs whose head the
+    # detector never boxed (Sean, 2026-09-27). What resolves it is
+    # `Q.LEDGER_INK_UNDER`; `test_staged_ledger_ink.py` pins that half.
 
-    def test_a_rung_with_no_head_anywhere_in_the_cell_is_refused(self):
-        v = self._rung(step=-2.0)
-        self.assertIs(v.value, True)
-        self.assertEqual(v.reason, "no_head_on_the_rung")
+    def _no_boxed_head(self, v):
+        self.assertEqual(v.outcome, Outcome.ABSTAINED)
+        self.assertIsNot(v.value, True)
+        self.assertEqual(v.reason, "rung_without_boxed_head")
+
+    def test_a_rung_with_no_head_anywhere_in_the_cell_abstains(self):
+        self._no_boxed_head(self._rung(step=-2.0))
 
     def test_a_head_that_does_not_x_overlap_the_rung_is_not_its_head(self):
         v = self._rung(step=-2.0, head_dist_spaces=0.0,
                        head_x_overlaps=False)
-        self.assertIs(v.value, True)
-        self.assertEqual(v.reason, "no_head_on_the_rung")
+        self._no_boxed_head(v)
         self.assertEqual(v.detail["heads_x_overlapping"], 0)
 
     def test_a_head_further_than_the_measured_tolerance_is_not_its_head(self):
-        v = self._rung(step=-2.0,
-                       head_dist_spaces=FP.HEAD_NEAR_TOL_SPACES + 0.5)
-        self.assertIs(v.value, True)
-        self.assertEqual(v.reason, "no_head_on_the_rung")
+        self._no_boxed_head(self._rung(
+            step=-2.0, head_dist_spaces=FP.HEAD_NEAR_TOL_SPACES + 0.5))
 
     def test_the_head_tolerance_holds_at_its_edge(self):
         """THE POSITIVE CONTROL for the head rule, at the derived number."""
@@ -540,7 +587,8 @@ class TestTheLedgerGeometry(unittest.TestCase):
         outside = self._rung(step=-2.0,
                              head_dist_spaces=FP.HEAD_NEAR_TOL_SPACES + 0.01)
         self.assertIs(inside.value, False)
-        self.assertIs(outside.value, True)
+        self.assertEqual(outside.outcome, Outcome.ABSTAINED)
+        self.assertEqual(outside.reason, "rung_without_boxed_head")
 
     def test_an_inner_rung_of_a_three_rung_run_is_KEPT(self):
         """⚠️⚠️ WHY THE TOLERANCE IS TWO AND THREE QUARTER SPACES AND NOT
@@ -569,15 +617,18 @@ class TestTheLedgerGeometry(unittest.TestCase):
                 self.assertAlmostEqual(v.detail["head_outward_spaces"], 4.0,
                                        places=3)
 
-    def test_the_same_head_STAFFWARD_past_the_tolerance_is_refused(self):
+    def test_the_same_head_STAFFWARD_past_the_tolerance_is_not_its_head(
+            self):
         """THE NEGATIVE CONTROL for the outward clause, at the same
         distance: heads only between the rung and the staff are what a beam
-        below its heads looks like (Sean's crop 8), not a ladder."""
+        below its heads looks like (Sean's crop 8), not a ladder — so the
+        boxed heads do not keep it. (3.4g-3: without the ink witness it
+        abstains rather than refuses.)"""
         for step in (10.0, -2.0):
             with self.subTest(step=step):
                 v = self._rung(step=step, heads_outward=[-4.0])
-                self.assertIs(v.value, True)
-                self.assertEqual(v.reason, "no_head_on_the_rung")
+                self.assertEqual(v.outcome, Outcome.ABSTAINED)
+                self.assertEqual(v.reason, "rung_without_boxed_head")
 
     def test_the_head_tolerance_is_the_measured_p95(self):
         """⚠️ DERIVED, NOT CHOSEN — p95 of the kept rungs' head distance is
@@ -921,29 +972,33 @@ class TestARefusedRungIsNotCountedInTheLadder(unittest.TestCase):
         _log, sig = self._signal(refuse_the_rung=True)
         self.assertEqual(sig["ledger_found"], 0)
 
-    def test_gather_s_own_ladder_row_NAMES_NO_RUNG_GLYPH(self):
-        """⚠️⚠️ THE FINDING, PINNED BEHAVIOURALLY. `gather._observe_ladder`
-        is called here for real and the row it files is read: it carries
-        `expected` and `found` as COUNTS and NOTHING that names the ledger
-        glyphs it matched — so no ADJUDICATE refusal can discount a
-        GATHER-counted rung, and `glyph_owner`'s ladder tier is out of this
-        lane's reach without a GATHER change. The day that row names its
-        rungs, this goes red and the discount can move there too.
+    def test_gather_s_own_ladder_row_NOW_NAMES_ITS_RUNG_GLYPH(self):
+        """⚠️⚠️ ROADMAP 2.14 — THE FLIP. Before this lane, `gather.
+        _observe_ladder` filed `expected` and `found` as anonymous COUNTS and
+        named NONE of the ledger glyphs it matched, so no ADJUDICATE refusal
+        could discount a GATHER-counted rung and `glyph_owner`'s ladder tier
+        was out of reach without a GATHER change — the assertion this test
+        used to make (`named == []`) was the pin on that gap, docstring and
+        all. `gather._ledger_index` now carries each ledger detection's own
+        `Subject.to_key()` alongside its rectangle, and `_observe_ladder`
+        records the SAME key, per counted step, in `detail["rungs"]` — so this
+        goes GREEN on the repair rather than staying red, and the discount
+        this enables lives in `adjudicators.ownership._ladder_complete`
+        (see `test_staged_ladder_rungs.py`).
         """
         from tools.omr.staged import gather
         log = Log()
         # a head one space below the bottom line, with a rung under it
         box = _page_box_at_step(-2.0)
+        rung_key = R.glyph(0, 0, 0, 0, 7).to_key()
         rungs = {(0, 0): [(box[0] - 5.0, box[2] + 5.0,
-                           (box[1] + box[3]) / 2.0)]}
+                           (box[1] + box[3]) / 2.0, rung_key)]}
         gather._observe_ladder(log, R.glyph(0, 0, 0, 0, 0), box,
                                STAFF.to_key(), LINE_YS, SPACING_PAGE, rungs)
         rows = [r for r in log.all_rows() if r.quantity == Q.GLYPH_LADDER]
         self.assertEqual(len(rows), 1)          # the positive control
         self.assertEqual(rows[0].detail.get("found"), 1)
-        named = [k for k, v in (rows[0].detail or {}).items()
-                 if isinstance(v, str) and v.startswith("glyph/")]
-        self.assertEqual(named, [])
+        self.assertEqual(rows[0].detail.get("rungs"), [rung_key])
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -1254,18 +1309,73 @@ class TestEachFamilyByName(unittest.TestCase):
         self.assertEqual(kept.reason, "articulation")
         self.assertEqual(kept.detail["class"], "articStaccatoAbove")
 
+    # ── roadmap 3.4g-4 ──────────────────────────────────────────────────────
+
+    def test_flag_is_not_a_flag(self):
+        refused, kept = self._pair(Q.FLAG_IS_NOT_A_FLAG, "flag8thUp", Q.FLAG)
+        self.assertEqual(refused.outcome, Outcome.DECIDED)
+        self.assertIs(refused.value, True)
+        self.assertEqual(refused.reason, "human_other_staff")
+        # ⚠️ WHAT IT RECORDS, not merely what it decided.
+        self.assertEqual(refused.detail["class"], "flag8thUp")
+        self.assertEqual(refused.detail["human_reader"], READERS.SEAN)
+        self.assertEqual(len(refused.used), 1)
+        self.assertIn(refused.used[0], refused.basis)
+        # the positive control, in the same class
+        self.assertEqual(kept.outcome, Outcome.DECIDED)
+        self.assertIs(kept.value, False)
+        self.assertEqual(kept.reason, "flag")
+        self.assertEqual(kept.detail["class"], "flag8thUp")
+
+    def test_keysig_marker_is_not_a_marker(self):
+        refused, kept = self._pair(Q.KEYSIG_MARKER_IS_NOT_A_MARKER,
+                                   "keySharp", None)
+        self.assertEqual(refused.outcome, Outcome.DECIDED)
+        self.assertIs(refused.value, True)
+        self.assertEqual(refused.reason, "human_other_staff")
+        # ⚠️ WHAT IT RECORDS, not merely what it decided.
+        self.assertEqual(refused.detail["class"], "keySharp")
+        self.assertEqual(refused.detail["human_reader"], READERS.SEAN)
+        self.assertEqual(len(refused.used), 1)
+        self.assertIn(refused.used[0], refused.basis)
+        # the positive control, in the same class
+        self.assertEqual(kept.outcome, Outcome.DECIDED)
+        self.assertIs(kept.value, False)
+        self.assertEqual(kept.reason, "keysig_marker")
+        self.assertEqual(kept.detail["class"], "keySharp")
+
+    def test_tuplet_marker_is_not_a_marker(self):
+        refused, kept = self._pair(Q.TUPLET_MARKER_IS_NOT_A_MARKER,
+                                   "tuplet3", Q.TUPLET_MARKER)
+        self.assertEqual(refused.outcome, Outcome.DECIDED)
+        self.assertIs(refused.value, True)
+        self.assertEqual(refused.reason, "human_other_staff")
+        # ⚠️ WHAT IT RECORDS, not merely what it decided.
+        self.assertEqual(refused.detail["class"], "tuplet3")
+        self.assertEqual(refused.detail["human_reader"], READERS.SEAN)
+        self.assertEqual(len(refused.used), 1)
+        self.assertIn(refused.used[0], refused.basis)
+        # the positive control, in the same class
+        self.assertEqual(kept.outcome, Outcome.DECIDED)
+        self.assertIs(kept.value, False)
+        self.assertEqual(kept.reason, "tuplet_marker")
+        self.assertEqual(kept.detail["class"], "tuplet3")
+
     def test_only_the_ledger_can_abstain_and_it_does(self):
         """⚠️ THE ASYMMETRY, STATED AS A TEST. `Q.LEDGER_IS_NOT_A_LEDGER` is
         the one family with a geometric rule, so it is the one that can lack
-        the geometry to run it (`ABSTAIN.NO_STAFF_GEOMETRY`). The other six
-        refuse on a human witness and nothing else, and a human who left no
-        row is the ABSENCE OF A REFUSAL — a fact about the box — not a
-        measurement that went missing. Each of the six is asserted here to
-        DECIDE rather than abstain, and the reason words below are what
-        `Q.ARC_IS_NOT_AN_ARC`, `Q.DYNAMIC_IS_NOT_A_DYNAMIC`,
-        `Q.REST_IS_NOT_A_REST`, `Q.ACCIDENTAL_IS_NOT_AN_ACCIDENTAL`,
-        `Q.ARPEGGIATO_IS_NOT_AN_ARPEGGIATO` and
-        `Q.ARTICULATION_IS_NOT_AN_ARTICULATION` say instead.
+        the geometry to run it (`ABSTAIN.NO_STAFF_GEOMETRY`). The other nine
+        (3.4g's six plus 3.4g-4's flag/key-marker/tuplet-numeral) refuse on a
+        human witness and nothing else, and a human who left no row is the
+        ABSENCE OF A REFUSAL — a fact about the box — not a measurement that
+        went missing. Each of the nine is asserted here (via `FAMILIES`, so a
+        tenth added later is covered for free) to DECIDE rather than abstain,
+        and the reason words below are what `Q.ARC_IS_NOT_AN_ARC`,
+        `Q.DYNAMIC_IS_NOT_A_DYNAMIC`, `Q.REST_IS_NOT_A_REST`,
+        `Q.ACCIDENTAL_IS_NOT_AN_ACCIDENTAL`, `Q.ARPEGGIATO_IS_NOT_AN_
+        ARPEGGIATO`, `Q.ARTICULATION_IS_NOT_AN_ARTICULATION`, `Q.FLAG_IS_NOT_
+        A_FLAG`, `Q.KEYSIG_MARKER_IS_NOT_A_MARKER` and `Q.TUPLET_MARKER_IS_
+        NOT_A_MARKER` say instead.
         """
         log = Log()
         g = _box(log, 0, "ledgerLine", page_box=None)

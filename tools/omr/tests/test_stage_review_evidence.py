@@ -39,6 +39,7 @@ from pathlib import Path
 
 from tools.omr.staged import gather as G
 from tools.omr.staged import record as R
+from tools.omr.staged.adjudicators import clef as clef_mod
 from tools.omr.staged.record import Log, Q, READERS
 from tools.omr.staged.review import feedback as FB
 from tools.omr.staged.review import human_evidence as HE
@@ -806,27 +807,44 @@ class TestARelabelOutsideTheNoteheadFamily(_Case):
                              "all — that is a wiring finding, not a test fix")
 
     def test_THE_HUMANS_CLEF_ENTERS_AS_THE_WEAKEST_WITNESS_AND_IT_IS_SAID(self):
-        """⚠️⚠️ THE HONEST HALF, ASSERTED SO IT CANNOT ROT. `clef.
-        _detector_terms` weights by `row.score`, reading None as 0.0 and
-        therefore as `W_DETECTOR_LOW` — so a human who read the plate is
-        weighted BELOW a 0.9 detection of the same staff. That is wrong, it is
-        not repaired here (repairing it is a change to `clef.py`'s weighting
-        with its own measurement), and the row says so in its own detail.
+        """⚠️⚠️ HALF OF THIS IS STILL TRUE, AND MANAGER REVIEW CAUGHT THIS
+        FIXTURE BEING THE OTHER HALF'S CONTRADICTION CASE, NOT ITS AGREEMENT
+        ONE. `clef._detector_terms` still weights a human's G/F clef row by
+        `row.score`, still reads `None` as 0.0 and therefore as
+        `W_DETECTOR_LOW` — that half of the original finding stands, and
+        repairing it is still a change to `clef.py`'s general weighting with
+        its own measurement, not made here.
+
+        This fixture's row IS a C clef, `clefCAlto` at `Q.CLEF_POSITION`
+        2.0 — but 2.0 is the TENOR line
+        (`clef_geometry.CLEF_BY_FAMILY_LINE["C"][4]`), not the alto line his
+        `clefCAlto` class claims and his own note describes. That is
+        `_human_named_c_clef`'s CONTRADICTION case: two of his own witnesses
+        (the class he clicked, the position he drew) disagree, so neither
+        gets to overrule the other and the row names NOTHING — it falls
+        through to the SAME support-only path a detector's `clefC*` row
+        takes, and "tenor"/"alto" both being outside `C_CLEF_NAMES` support
+        for `treble` means it contributes nothing at all here. So the
+        detector's `gClef` at 0.9 decides UNCONTESTED, exactly as it did
+        before 3.4f existed — the fixture's own inconsistency (a relabel
+        note claiming alto, a measured position naming tenor) means this
+        particular case was never the agreement one to begin with.
+        `tools/omr/tests/test_staged_clef_human_box.py` covers the class-vs-
+        geometry mechanism directly and exhaustively; this test's job is
+        only to confirm the SAME wiring holds through the review ingest
+        path.
         """
         glyph_row = [o for o in self.arm["record"]["observations"]
                      if o["subject"] == "staff/0/0/0"
                      and o["quantity"] == Q.CLEF_GLYPH
                      and o["reader"] == READERS.SESSION_TEST][0]
         self.assertIn("W_DETECTOR_LOW", glyph_row["detail"]["score_is_None"])
-        # ⚠️ AND HERE IS THE CONSEQUENCE, MEASURED ON THIS FIXTURE RATHER THAN
-        # ASSERTED. The staff carries a detector `gClef` at 0.9; the human
-        # says C-alto. The verdict comes back `treble`, scores {treble: 1.0},
-        # and the human's row is in `basis` and NOT in `used` — offered and
-        # declined. This is not a bug in this lane: it is `clef.py`'s
-        # weighting reading "no softmax" as "lowest confidence", and it is the
-        # one change 3.4c deliberately did NOT make.
         v = self.standing(self.arm["record"], Q.CLEF, "staff/0/0/0")
         self.assertEqual(v["value"], "treble")
+        # ⚠️ THE CONTRADICTION IS VISIBLE, not swallowed by the abstention/
+        # decision either way (CLAUDE.md rule 8).
+        entries = v["detail"][clef_mod.CONTRADICTION_REASON]
+        self.assertEqual(entries[0]["glyph_row"], glyph_row["id"])
         hit = [h for h in self.d.basis_names_human if h["quantity"] == Q.CLEF]
         self.assertEqual([h["how"] for h in hit], ["basis"])
 

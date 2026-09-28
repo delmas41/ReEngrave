@@ -7,7 +7,7 @@ import os
 from typing import Dict, List, Optional
 
 from ..adjudicate import Checkable, Evidence, Mode, Ruling, decision
-from ..record import Kind, Q, Scope, State
+from ..record import Kind, Outcome, Q, Scope, State
 
 #: ⚠️⚠️ DEFAULT **ON** SINCE 2026-09-22 (evening) — **SEAN'S CALL**, on the
 #: measurement in `benchmarks/omr-document-identity-2026-09/FINDINGS.md`: key
@@ -190,6 +190,53 @@ def _cell0_space(ev: Evidence, subject=None) -> float:
     return 0.0
 
 
+def _slot_centres(xs, space: float):
+    """`(slot centres, slots in the run)` over sorted marker x's — the one
+    arithmetic `_marker_run` reads a key from and `marker_run_members` reads
+    membership from, so the two cannot drift."""
+    centres = [xs[0]]
+    for a, b in zip(xs, xs[1:]):
+        if b - a > MARKER_SLOT_TOLERANCE_SPACES * space:
+            centres.append(b)
+    slots = 1
+    for a, b in zip(centres, centres[1:]):
+        if b - a > MARKER_RUN_GAP_SPACES * space:
+            break
+        slots += 1
+    return centres, slots
+
+
+def marker_run_members(marks, space: float):
+    """The `Q.KEYSIG_MARKER` rows the key reader COUNTED as its signature.
+
+    ⚠️ ROADMAP 2.7b. `accidental_owner` refuses a glyph that is one of these
+    (`is_a_key_signature_marker`), and "filed as a marker" is NOT the same
+    set: `gather._gather_keysig_markers` admits every accidental-shaped box
+    of the whole first bar up to the header limit, and `_marker_run` then
+    ends the run at the first gap wider than `MARKER_RUN_GAP_SPACES` and
+    abstains on mixed kinds. Measured on a fresh Litolff p3 gather: the
+    marker admitted at x=1007 on Violino I is PAST the three-flat run's gap
+    — it is the in-bar natural of Sean's confirmed crop 12, boxed twice —
+    and staff 3's natural sits in a run the reader refused as mixed. Only
+    what the reading was built from is a key-signature marker.
+
+    Empty wherever `_marker_run` reads no key from the run (mixed kinds, no
+    scale, an all-natural cancellation, more than `MAX_FIFTHS` slots).
+    """
+    if not marks or space <= 0:
+        return ()
+    kinds = {str(m.value) for m in marks}
+    if len(kinds) != 1 or kinds == {_NATURAL}:
+        return ()
+    xs = sorted(float(m.detail.get("x") or 0.0) for m in marks)
+    centres, slots = _slot_centres(xs, space)
+    if slots > MAX_FIFTHS:
+        return ()
+    end = centres[slots] if slots < len(centres) else None
+    return tuple(m for m in marks
+                 if end is None or float(m.detail.get("x") or 0.0) < end)
+
+
 def _marker_run(marks, space: float):
     """The detector's key accidentals as `(fifths, reason, detail)`.
 
@@ -228,15 +275,7 @@ def _marker_run(marks, space: float):
         return None, "mixed_marker_kinds", base
     if space <= 0:
         return None, "no_cell_scale", base
-    centres = [xs[0]]
-    for a, b in zip(xs, xs[1:]):
-        if b - a > MARKER_SLOT_TOLERANCE_SPACES * space:
-            centres.append(b)
-    slots = 1
-    for a, b in zip(centres, centres[1:]):
-        if b - a > MARKER_RUN_GAP_SPACES * space:
-            break
-        slots += 1
+    centres, slots = _slot_centres(xs, space)
     # ⚠️ HOW MANY OF THESE THE DETECTOR CALLED AN IN-BAR ACCIDENTAL, ON THE
     # VERDICT. `gather._gather_keysig_markers` admits an accidental-SHAPED box
     # in the header window and files the detector's own role-claim beside it
@@ -275,6 +314,50 @@ def _fit_for_clef(rows, clef):
     return None, None
 
 
+def _keysig_marker_glyph_refused(ev: Evidence, subject, mark) -> bool:
+    """Does the `Q.GLYPH_BOX` glyph THIS `Q.KEYSIG_MARKER` row IS carry a
+    DECIDED `Q.KEYSIG_MARKER_IS_NOT_A_MARKER` refusal? ROADMAP 3.4g-4.
+
+    ⚠️ A JOIN BY FRAME, CLASS AND POINT — THE SAME ONE `ownership.
+    _keysig_marker_row` MAKES, IN THE OPPOSITE DIRECTION. That function finds
+    the marker row an ACCIDENTAL glyph IS; this finds the GLYPH a marker row
+    IS, because `gather._gather_keysig_markers` files `Q.KEYSIG_MARKER` on the
+    STAFF with no glyph subject of its own — the detection's own
+    `detector_class`, canonical `x` and `y_center` are the only handle back to
+    the `Q.GLYPH_BOX` row the SAME detection also produced. The glyph's class
+    and integer `x` agree with the marker's exactly and `y + h/2` to the
+    detector's rounding, which is why the tolerances below are copied from
+    that function rather than re-measured.
+    """
+    d = mark.detail or {}
+    try:
+        mx = float(d.get("x"))
+        my = float(d.get("y_center"))
+    except (TypeError, ValueError):
+        return False
+    cls = d.get("detector_class") or str(mark.value)
+    frame = str(mark.frame)
+    sub = subject if subject is not None else ev.subject
+    for row in ev.rows(Q.GLYPH_BOX, scope=Scope.SELF_AND_DESCENDANTS,
+                       subject=sub):
+        if str(row.frame) != frame:
+            continue
+        v = row.value
+        if not isinstance(v, (list, tuple)) or len(v) != 5:
+            continue
+        name, x, y, _w, h = v
+        if str(name) != str(cls):
+            continue
+        if abs(float(x) - mx) >= 0.5 \
+                or abs((float(y) + float(h) / 2.0) - my) > 1.0:
+            continue
+        refusal = ev.verdict(Q.KEYSIG_MARKER_IS_NOT_A_MARKER,
+                             subject=row.subject)
+        return (refusal is not None and refusal.outcome is Outcome.DECIDED
+                and refusal.value is True)
+    return False
+
+
 def _staff_reading(ev: Evidence, subject=None) -> Optional[Ruling]:
     """What ONE staff's header says, before any system check.
 
@@ -286,12 +369,22 @@ def _staff_reading(ev: Evidence, subject=None) -> Optional[Ruling]:
     rather than a second copy of the precedence. One projection, two callers
     — `_spans_from_numbering`'s discipline, and the reason the tally and the
     staff verdict cannot drift apart.
+
+    ⚠️ ROADMAP 3.4g-4: `_keysig_marker_glyph_refused` IS CALLED DIRECTLY HERE
+    AND NOT THROUGH A SECOND WRAPPER, for the reason `adjudicate_part_key`'s
+    own docstring already states about this same function: a wrapper existed
+    around `_staff_reading` itself until `inventory --check` reported the
+    decisions declaring `input_domain`/`cell_staff_space` and reading neither
+    — `_never_read` follows the call chain three levels deep inside the
+    module, and one extra hop pushed the helpers doing the actual reading out
+    of reach. A fourth hop here would do it again.
     """
     clef = ev.verdict(Q.CLEF, subject=subject)
     if clef is None or clef.value is None:
         return None
 
-    marks = ev.rows(Q.KEYSIG_MARKER, subject=subject)
+    marks = tuple(m for m in ev.rows(Q.KEYSIG_MARKER, subject=subject)
+                 if not _keysig_marker_glyph_refused(ev, subject, m))
     fifths, reason, detail = _marker_run(marks, _cell0_space(ev, subject))
 
     fits = ev.rows(Q.KEYSIG_CLEF_FIT, subject=subject)
@@ -424,9 +517,14 @@ def _transposition(ev: Evidence, subject):
 #: a quantity missing from either declaration would raise inside the other
 #: decision's call of the same function — a failure that would only appear on
 #: whichever document happened to reach that branch first.
+#: ⚠️ ROADMAP 3.4g-4 ADDS `Q.GLYPH_BOX` AND `Q.KEYSIG_MARKER_IS_NOT_A_MARKER`:
+#: `_keysig_marker_glyph_refused` (called from `_staff_reading`, shared by all
+#: three decisions below) rejoins a marker row to the `Q.GLYPH_BOX` glyph it
+#: was built from and reads that glyph's refusal verdict off it.
 _KEY_WANTS = (Q.KEYSIG_RUN_POSITION, Q.KEYSIG_MARKER, Q.KEYSIG_CLEF_FIT,
               Q.KEYSIG_TEMPLATE_FIT, Q.CLEF, Q.INPUT_DOMAIN,
-              Q.CELL_STAFF_SPACE, Q.MARGIN_LABEL)
+              Q.CELL_STAFF_SPACE, Q.MARGIN_LABEL, Q.GLYPH_BOX,
+              Q.KEYSIG_MARKER_IS_NOT_A_MARKER)
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -666,6 +764,14 @@ def _slot_of(ev: Evidence, subject):
     ⚠️ AND THE EXPORTER JOINS ITS PARTS BY THIS SAME SLOT (`export.build`,
     `join == "slot"`), so *the part this rule speaks about* and *the `<part>`
     the file writes* are one object rather than two that happen to line up.
+
+    ⚠️⚠️ RETURNS `(None, None)` ON A NARROWED SLOT, AND ROADMAP 2.9C DEPENDS
+    ON THAT STAYING TRUE. `adjudicate_part_key`'s tallies read this function
+    to decide which staves vote in a part's majority, and a staff nobody has
+    PLACED must not vote — narrowing it here would let an un-placed staff's
+    reading into the very majority the placement is supposed to be checked
+    against. `_slot_candidates` below is the other door, read ONLY by
+    `_part_checked`, for the question this function must not answer.
     """
     slot = ev.verdict(Q.SLOT_INDEX, subject=subject)
     if slot is None or not isinstance(slot.value, int):
@@ -677,6 +783,24 @@ def _slot_of(ev: Evidence, subject):
     if not name:
         name = (slot.detail or {}).get("instrument")
     return int(slot.value), (str(name) if name else None)
+
+
+def _slot_candidates(ev: Evidence, subject) -> tuple:
+    """Every slot a NARROWED `Q.SLOT_INDEX` verdict still admits, else `()`.
+
+    Roadmap 2.9c. `_part_checked` is the ONLY reader of this — never
+    `adjudicate_part_key`'s tallies, which must keep seeing `_slot_of`'s
+    `None` on a narrowed staff so it cannot vote in a part's majority. This
+    hands back candidates so the check can ask "would EVERY one of these
+    reach the SAME conclusion", never to place the staff: a DECIDED verdict
+    (or an ABSTAINED one) answers `()` here on purpose, because placing is
+    not this function's question.
+    """
+    slot = ev.verdict(Q.SLOT_INDEX, subject=subject)
+    if slot is None or slot.outcome is not Outcome.NARROWED:
+        return ()
+    return tuple(int(c.value) for c in slot.candidates
+                if isinstance(c.value, int))
 
 
 def _system_checked(ev: Evidence, subject, reading: Ruling) -> Ruling:
@@ -785,6 +909,23 @@ def _part_checked(ev: Evidence, subject, reading: Ruling) -> Ruling:
     ⚠️ A STAFF NEITHER TIER CAN REACH IS NOT JUDGED. No READ transposition and
     no decided slot means no other reading of THIS staff's key exists anywhere
     in the document; its own reading stands exactly as it did before 2.9b.
+
+    ⚠️⚠️ ROADMAP 2.9C — A NARROWED SLOT MAY SPEAK, BUT ONLY THROUGH THIS
+    CHECK, AND ONLY WHERE EVERY CANDIDATE AGREES. 13 of 15 reader-decided
+    Cello staves on Litolff get their `Q.SLOT_INDEX` from INFER
+    (`inferences.collapse_slot_index_to_family_block`), which runs AFTER
+    ADJUDICATE — so at the time this check ran, `_slot_of` found a NARROWED
+    verdict and no part, and the staff went unjudged (§2.9b.7). By CLAUDE.md
+    §4a the placement itself stays in INFER, because which candidate wins is
+    BEST rather than FORCED — but *what every candidate would conclude* can
+    still FOLLOW: if the cello and its condensed double both read the same
+    key, a narrowing between exactly those two slots is one part's question
+    asked twice, not a genuine choice, and the check may answer it without
+    placing the staff. `_slot_of` still returns `None` for it below, so
+    `adjudicate_part_key`'s own tallies never see this staff and it never
+    votes in a part's majority — ONLY this check reads the narrowing. Any
+    split between candidates, or any candidate with nothing to compare, is
+    rule 8's "cannot tell" and the check stays silent exactly as before.
     """
     # ⚠️⚠️ ONE FLAG OVER BOTH HALVES OF ONE RULE, AND IT LIVES IN `infer` WITH
     # THE OTHER THREE. The check and the inference are not two features: the
@@ -805,19 +946,55 @@ def _part_checked(ev: Evidence, subject, reading: Ruling) -> Ruling:
     _name, offset = _transposition(ev, subject)
     staff = ev.subject if subject is None else subject
     sys_key = (staff.page or 0, staff.system or 0)
+
+    slot_candidates = None
+    # ⚠️⚠️ THE ORIGINAL (2.9b) COMPUTATION RUNS UNCHANGED, WITH `slot` AS
+    # `_slot_of` LEFT IT -- `None` FOR NO VERDICT, AN ABSTAINED ONE, OR A
+    # NARROWED ONE ALIKE. It must run first and exactly as before: the
+    # DOCUMENT tier needs no slot at all, only THIS staff's own read
+    # transposition (`offset`), so an unlabelled slot and a labelled staff
+    # (a clarinet naming its own transposition) already reach an answer here
+    # -- `expected_fifths(part_key.value, None, offset, sys_key)` is 2.9b's
+    # own call for that staff, not a case 2.9c may intercept.
     want, tier = expected_fifths(part_key.value, slot, offset, sys_key)
-    if want is None:
+    if want is None and slot is None:
+        # ⚠️ ROADMAP 2.9C, AND ONLY REACHED WHERE 2.9B'S OWN ANSWER WAS
+        # "NOTHING TO COMPARE". `slot` stays `None` below on purpose -- see
+        # the docstring and `_slot_of`'s own. This staff is not placed by
+        # this branch; it is only ASKED, for every slot it might still be,
+        # whether the answer would come out the same.
+        candidates = _slot_candidates(ev, subject)
+        if len(candidates) < 2:
+            return reading
+        conclusions = set()
+        for cand in candidates:
+            cand_want, cand_tier = expected_fifths(
+                part_key.value, cand, offset, sys_key)
+            if cand_want is None:
+                # One candidate has nothing to compare -- "cannot tell which
+                # part" is still "cannot tell", so the whole check abstains
+                # from judging rather than picking the candidates that do.
+                return reading
+            conclusions.add((int(cand_want), cand_tier))
+        if len(conclusions) != 1:
+            return reading  # the candidates split -- stay silent
+        want, tier = next(iter(conclusions))
+        slot_candidates = candidates
+    elif want is None:
         return reading
+
     if int(reading.value) == int(want):
         detail = dict(reading.detail)
         detail.update(part_slot=slot, part_instrument=name or _name,
                       agrees_with=tier, expected_fifths=int(want))
+        if slot_candidates is not None:
+            detail.update(slot_candidates=list(slot_candidates),
+                          part_check_via="narrowed_slot_unanimous")
         return Ruling(value=reading.value, reason=reading.reason,
                       used=tuple(reading.used) + (part_key.id,), detail=detail)
     reason = ("disagrees_with_document" if tier == "document_majority"
               else "disagrees_with_part")
-    return Ruling.abstain(
-        reason,
+    detail = dict(
         part_slot=slot, part_instrument=name or _name, tier=tier,
         expected_fifths=int(want), written_fifths=int(reading.value),
         fifths_offset=offset, read_by=reading.reason,
@@ -825,6 +1002,10 @@ def _part_checked(ev: Evidence, subject, reading: Ruling) -> Ruling:
            if k.startswith("keysig_") or k in ("disagreeing_readers",
                                                "concert_fifths",
                                                "system_peers")})
+    if slot_candidates is not None:
+        detail.update(slot_candidates=list(slot_candidates),
+                      part_check_via="narrowed_slot_unanimous")
+    return Ruling.abstain(reason, **detail)
 
 
 @decision(
@@ -838,7 +1019,8 @@ def _part_checked(ev: Evidence, subject, reading: Ruling) -> Ruling:
     ),
     implicates=(Q.PART_KEY, Q.KEY_SIGNATURE, Q.SLOT_INDEX, Q.MARGIN_LABEL),
     composed_from=(Q.KEYSIG_MARKER, Q.KEYSIG_CLEF_FIT, Q.KEYSIG_TEMPLATE_FIT,
-                   Q.CLEF, Q.SLOT_INDEX, Q.MARGIN_LABEL, Q.SYSTEM_KEY),
+                   Q.CLEF, Q.SLOT_INDEX, Q.MARGIN_LABEL, Q.SYSTEM_KEY,
+                   Q.GLYPH_BOX, Q.KEYSIG_MARKER_IS_NOT_A_MARKER),
     scope=Kind.DOCUMENT,
     wants=_KEY_WANTS + (Q.SYSTEM_KEY, Q.SLOT_INDEX, Q.INSTRUMENT),
     reasons=("read", "no_staff_read_a_key"),
@@ -887,6 +1069,12 @@ def adjudicate_part_key(ev: Evidence) -> Ruling:
     read = []
     for staff in ev.subjects(Kind.STAFF):
         sys_key = (staff.page or 0, staff.system or 0)
+        # ⚠️ ROADMAP 2.9C: `_slot_of` returns `None` for a NARROWED
+        # `Q.SLOT_INDEX`, so an un-placed staff never lands in `by_part`
+        # below and never votes in a part's majority. `_part_checked` (the
+        # only reader of `_slot_candidates`) may still answer FOR such a
+        # staff where every candidate agrees, but that is the CHECK judging
+        # it, never this tally counting it.
         slot, name = _slot_of(ev, staff)
         if name and slot is not None and slot not in names:
             names[slot] = name
@@ -993,7 +1181,8 @@ def adjudicate_part_key(ev: Evidence) -> Ruling:
     ),
     implicates=(Q.SYSTEM_KEY, Q.KEY_SIGNATURE, Q.CLEF, Q.MARGIN_LABEL),
     composed_from=(Q.KEYSIG_MARKER, Q.KEYSIG_CLEF_FIT, Q.KEYSIG_TEMPLATE_FIT,
-                   Q.CLEF, Q.MARGIN_LABEL),
+                   Q.CLEF, Q.MARGIN_LABEL, Q.GLYPH_BOX,
+                   Q.KEYSIG_MARKER_IS_NOT_A_MARKER),
     scope=Kind.SYSTEM,
     wants=_KEY_WANTS,
     reasons=("read", "one_staff_only", "no_staff_read_a_key"),
@@ -1080,7 +1269,8 @@ def adjudicate_system_key(ev: Evidence) -> Ruling:
     implicates=(Q.KEY_SIGNATURE, Q.CLEF, Q.KEYSIG_RUN_POSITION,
                 Q.KEYSIG_MARKER),
     composed_from=(Q.KEYSIG_MARKER, Q.KEYSIG_RUN_POSITION,
-                   Q.KEYSIG_TEMPLATE_FIT, Q.CLEF),
+                   Q.KEYSIG_TEMPLATE_FIT, Q.CLEF, Q.GLYPH_BOX,
+                   Q.KEYSIG_MARKER_IS_NOT_A_MARKER),
     scope=Kind.STAFF,
     wants=_KEY_WANTS + (Q.SYSTEM_KEY, Q.PART_KEY, Q.SLOT_INDEX, Q.INSTRUMENT),
     reasons=("markers", "fitted_no_markers", "needs_clef",

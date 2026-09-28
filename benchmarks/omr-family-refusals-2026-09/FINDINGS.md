@@ -765,3 +765,716 @@ python3 $B/probe/crop_ledger_g2.py --record $L/beethoven5-p1-p4.record.json \
   --pdf <library>/editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf \
   --label litolff-p1p4 --dpi 600
 ```
+
+---
+
+## §3.4g-3 — a rung with no BOXED head abstains; the paper is the second witness (2026-09-28)
+
+Branch `claude/ledger-ink-3.4g3`, off `origin/main` `8226aa93`. Sean,
+2026-09-27 (`out/print/ADJUDICATION-sean-2026-09-27.json`), on the four
+`no_head_on_the_rung` crops of §3.4g-2: crops 1 and 3 are REAL rungs whose
+printed notehead the detector never boxed; 2 is the bottom staff line; 4 is a
+whole rest hanging on the bottom line. So the refusal was being witnessed by
+the detector's recall alone — the witness that fails exactly where heads fuse
+with their rungs — and a missing box is *cannot tell* (CLAUDE.md §2 rule 8).
+
+### Part A (ADJUDICATE) — `no_head_on_the_rung` stops refusing on boxes alone
+
+Where no notehead box is near the rung (the 3.4g-2 test, unchanged), the
+ledger decision now ABSTAINS `rung_without_boxed_head` — unless Part B's ink
+witness settles it. The abstention carries its evidence (`used`, the head
+facts, `ink_witness: null`, and GATHER's own abstention reason as
+`ink_witness_declined` where GATHER could not look). `inside_the_staff`,
+`on_a_staff_line`, `tall_not_a_rung` are untouched. `export._family_refusals`
+now names abstentions by reason (`abstained_reasons`), so 79 of these are not
+read as 79 `no_staff_geometry`.
+
+⚠️ **The brief said crop 2 was refused on position "as before". It was not.**
+Its centre is 0.315 spaces outside line 1 in the PAGE frame (step -0.63), past
+`ON_A_STAFF_LINE_TOL_SPACES` 0.25, so 3.4g-2 refused it `no_head_on_the_rung`
+like the other three; crop 4 likewise (0.29 spaces). Under Part A alone all
+four ABSTAIN; the two refusals can come back only through Part B. On the cell
+raster both boxes lie ON the bottom staff line (the erasure removed it — see
+the crops): the page-frame `Q.STAFF_LINES` sits ~0.3 spaces off on this
+merging plate, the registration cause `RUNG_STEP_SHIPS = False` already
+records. A cell-frame line test would catch both; not built here.
+
+RED first: `out/red-run-g3.txt` — the Part A tests against `8226aa93`: 5
+failed, 2 passed (the two positive controls).
+
+`probe/readjudicate_ledger_g3.py` — BASE = 3.4g-2's function from `8226aa93`
+swapped into today's registry, ARM = this tree, one tree, full ADJUDICATE ->
+EXPORT in both; **control: the BASE tally equals 3.4g-2's recorded arm reason
+for reason**; "nothing else moves" is MEASURED by comparing every verdict of
+every quantity (outcome, value, reason):
+
+| record | control | `no_head` refused -> abstained | verdicts moved, all quantities | `<note>` base / arm | census |
+|---|---|---|---|---|---|
+| `beethoven5-p1-p4` | 1,878 of 1,878 | **18 -> 18** | 18, all `ledger_is_not_a_ledger` | 1,769 / 1,769 | balanced, `[]` |
+| Litolff whole | 7,617 of 7,617 | **79 -> 79** | 79, all `ledger_is_not_a_ledger` | 8,686 / 8,686 | balanced, `[]` |
+| Breitkopf whole | (running at the time of the first commit; filled by the follow-up) | | | | |
+
+`notes_not_written` identical on every record; `unladdered_signal` identical
+base/arm on every record (below).
+
+⚠️ **The one consumer of kept rungs does NOT yet treat an abstained rung as
+not-kept.** `notehead_precision._ledger_rungs_in_cell` skips a rung only when
+its verdict `value is True`, so an ABSTAINED rung (value `None`) is counted —
+that file belongs to lane 2.7b and was not edited. Measured effect: none (the
+`unladdered_signal` histogram is identical base/arm on all three records — a
+rung with no head near it is by construction on no head's ladder search — and
+that signal does not ship, `UNLADDERED_SHIPS = False`). The fix is one line
+for 2.7b: skip unless the verdict is DECIDED `False`. EXPORT reads no kept
+rung anywhere; `glyph_owner` reads GATHER's anonymous ladder (2.14).
+
+### Part B (GATHER) — `Q.LEDGER_INK_UNDER`
+
+`gather.gather_ledger_ink`, beside `gather_ink` and off the SAME staff-erased
+raster (`READERS.CV_INK`; CLAUDE.md §9: erase for the CV consumer, never for
+the detector). Per `ledgerLine` box, `gather.ledger_ink_under`: the ink
+fraction in a notehead-sized window (1.3 x 1.0 spaces) centred on the rung,
+and the same window half a space above and below (a head sits ON its rung or
+hangs beside it), with the rung's stroke rows (box +- 0.1 space) removed from
+count AND area; value = the best of the three; `detail` carries all three and
+a BACKGROUND = the smaller of the two windows one full space above/below.
+Declined, never defaulted: no erased raster -> `no_mask`; no unit ->
+`no_staff_geometry`. Registered in `record.Q` (CLAIM `measurement`;
+`capture.UNSCORED` `relation`), declared in the ledger decision's `wants` and
+`composed_from`; every detail key it writes is read by the decision.
+
+The rule, only where no boxed head is near:
+
+| witness | outcome |
+|---|---|
+| `under >= LEDGER_INK_KEPT_MIN` (0.55) AND `under - background >= LEDGER_INK_KEPT_CONTRAST_MIN` (0.10) | KEPT, `ink_under_the_rung` |
+| `under <= LEDGER_INK_REFUSED_MAX` (0.05) | REFUSED, `no_head_on_the_rung` — two witnesses (box row + ink row in `used`) |
+| anything else, or no witness | ABSTAINED, `rung_without_boxed_head` |
+
+### The thresholds, measured — `probe/ledger_ink_hist.py`, `probe/ledger_ink_thresholds.py`
+
+On a real ARM gather of Litolff pdf pages 1-12 (4,947 ledger boxes; the
+priced page 3 alone has 500). Populations by the same record's 3.4g-2
+verdicts (which read no ink): POS_on = kept with a notehead box ON the rung
+(548); POS_near = kept, nearest head <= 0.75 sp (495); NEG = refused
+`inside_the_staff` (3,414) + `on_a_staff_line` (407); TARGET = no boxed head
+(50). `out/ledger-ink-hist-litolff-p1-12.json`, `…-p3.json`,
+`out/ledger-ink-thresholds-litolff-{p1-12,p3}.txt`.
+
+`under`:
+
+| population | n | p5 | p25 | p50 | p75 | p95 |
+|---|---|---|---|---|---|---|
+| POS_on | 548 | **0.574** | 0.718 | 0.847 | 0.902 | 0.974 |
+| POS_near | 495 | 0.563 | 0.731 | 0.847 | 0.900 | 0.976 |
+| NEG_inside | 3,414 | 0.0 | 0.024 | 0.259 | 0.520 | 0.810 |
+| NEG_online | 407 | 0.0 | 0.106 | 0.339 | 0.594 | 0.830 |
+| TARGET | 50 | 0.0 | 0.007 | 0.373 | 0.733 | 0.794 |
+
+`under - background` (contrast): POS_on p5 **0.098**, p25 0.43, p50 0.61;
+NEG_inside p50 0.15, p75 0.40, p95 0.68. (Page 3 alone: POS_on `under` p5
+0.54, NEG_inside p50 0.18 / p95 0.75.)
+
+Where they separate: **at the bottom, cleanly** — 0 of 548 POS_on (minimum
+0.076) and 0 of 495 POS_near read `under <= 0.05`, against 1,024 of 3,821
+negatives and 15 of 50 targets. **At the top, not by these negatives**: 23%
+of them clear both keep thresholds, because inside the band the erased raster
+still holds the staff's own notes — a staff-line fragment is where the
+detector fires beside a head. So the KEEP thresholds are the positives' own
+p5s (under 0.574 -> 0.55; contrast 0.098 -> 0.10; together 501 of 548 = 0.91
+of positives kept), and they are only ever applied to a box that is outside
+the band, off every line, rung-thick and has no boxed head.
+
+**RED (the windows swapped — background read as `under`)**: AUC against the
+negatives **0.786** vs **0.931** for the real window (POS_on, pages 1-12). On
+page 3 alone (37 / 417) the gap is narrower, 0.887 vs 0.940 — positives sit
+in dense neighbourhoods, so the neighbourhood alone separates somewhat; the
+window adds what the neighbourhood does not. The control can fail and on the
+one page nearly did, which is why the thresholds come from twelve.
+
+### Priced by two full re-gathers — `probe/gather_ledger_ink_ab.py`, `probe/compare_gathers_g3.py`
+
+Litolff pdf index 3, `--no-surya --no-ocr`, scan weights
+(`hollow-graft-shift09`), 600 dpi, `OMR_DIRECTION_TEXT_SCAN_GATE=1`; both
+arms `python3 -m tools.omr.staged` on commit `99a6b278`, **`dirty: False`
+both** (the compare refuses otherwise). BASE = the same process with
+`gather_ledger_ink` a no-op and the 3.4g-2 decision. The records stay in the
+session scratchpad (machine-local). `out/gather-ab-g3-litolff-p3.json`.
+
+| | base | arm |
+|---|---|---|
+| detector boxes | 1,928 | 1,928 — **identical list** (no jitter; every difference is the change) |
+| `Q.LEDGER_INK_UNDER` rows | 0 | 500 (0 abstentions) |
+| kept `ledger_line` | 75 | 75 |
+| kept `ink_under_the_rung` | — | **1** |
+| refused `no_head_on_the_rung` | 8 | **3** (two witnesses) |
+| abstained `rung_without_boxed_head` | — | **4** |
+| `inside_the_staff` / `on_a_staff_line` | 383 / 34 | 383 / 34 |
+| verdicts moved, all quantities | | **5, all ledger** |
+| `<note>` | 549 | 549 — MusicXML byte-identical |
+| census | balanced | balanced |
+
+Pages 1-12 (the arm gather re-decided on this tree; base = 3.4g-2 on the
+same rows; `out/ledger-g3-arm-g3-arm-litolff-p1-12.json`): of **50** former
+`no_head_on_the_rung` refusals, **22 KEPT** `ink_under_the_rung`, **15
+REFUSED** with two witnesses, **13 ABSTAIN**; 35 verdicts moved, all ledger;
+`<note>` 5,476 / 5,476.
+
+`staged.check` **264** (baseline 264): `gather_coverage` lists the quantity
+as gathered by `gather_ledger_ink`; `inventory`, `wiring`, `reach` exit 0.
+
+### Sean's four, re-measured off the PDF — `probe/ledger_ink_crops_g3.py`
+
+Pages re-prepared exactly as GATHER prepares them; the cell found by GATHER's
+own numbering and checked against the p1-p4 record (**frame controls: the
+cell's page box and the rung's canonical-to-page box both 0.0 px off**, all
+four); `gather.ledger_ink_under` on the record's own box; today's decision
+run over the record's rows plus the measured value. Crop 4's subject exists
+on the fresh page-3 gather too (`glyph/3/1/0/6/12`) and its FILED value there
+is 0.1314 — the same number.
+
+| n | subject | Sean | under | best | background | contrast | 3.4g-2 | **3.4g-3** |
+|---|---|---|---|---|---|---|---|---|
+| 1 | `glyph/1/0/3/14/0` | real rung | 0.737 | on | 0.087 | 0.650 | refused | **KEPT `ink_under_the_rung`** |
+| 2 | `glyph/2/0/2/2/12` | bottom staff line | 0.005 | above | 0.000 | 0.005 | refused | **REFUSED `no_head_on_the_rung`** |
+| 3 | `glyph/2/1/0/12/6` | real rung | 0.937 | above | 0.747 | 0.190 | refused | **KEPT `ink_under_the_rung`** |
+| 4 | `glyph/3/1/0/6/12` | whole rest on the bottom line | 0.131 | on | 0.009 | 0.122 | refused | **ABSTAINED** |
+
+**1 and 3 kept, 2 refused. Crop 4 is NOT refused: it ABSTAINS.** The window
+centred on the box catches the left corner of the whole rest (0.13), above
+the paper floor and far below a head; the machine cannot tell it from a faint
+head by ink alone and says so — it never keeps it. Crop 3's contrast (0.19)
+clears the floor because the floor is the positives' p5; at 0.2 it would
+abstain. It was not tuned to it.
+
+### The crops — `out/print/g3-*`
+
+Each: LEFT the cell as the detector saw it, RIGHT staff-erased as the witness
+reads it; the staff's own lines GREEN; the rung box a RED corner bracket; the
+three head windows MAGENTA (solid = best), the two background windows CYAN;
+both verdicts and every number in the caption. Manifests
+`out/print/crop-manifest-g3-seans-four.json` and
+`crop-manifest-g3-ink-kept.json`, every row `VERDICT_none_yet: null`; the
+frame control refused none.
+
+- Sean's four: `g3-litolff-p1p4-p1-s0-st3-c14-g0-sean1-real`,
+  `…-p2-s0-st2-c2-g12-sean2-bottom-line`, `…-p2-s1-st0-c12-g6-sean3-real`,
+  `…-p3-s1-st0-c6-g12-sean4-whole-rest`.
+- 8 newly KEPT `ink_under_the_rung` (of 22 on pages 1-12; one per staff
+  first, seeded): `g3-litolff-p1-12-p2-s1-st10-c14-g9`, `-p5-s0-st6-c13-g8`,
+  `-p5-s1-st1-c6-g5`, `-p5-s1-st3-c10-g1`, `-p6-s1-st7-c8-g14`,
+  `-p8-s0-st6-c10-g3`, `-p9-s0-st10-c4-g2`, `-p9-s1-st3-c0-g10`
+  (`-ink_kept.png`). The re-measured value equals the filed one on all 8 (a
+  control that could fail).
+
+⚠️ **Not adjudicated. To this lane's eye (not Sean's), 7 of the 8 are real
+rungs with a head on or hanging from them, and one is not**:
+`glyph/6/1/7/8/14` — the "rung" is a long horizontal stroke the cell's own
+line model does not cover (it looks like the staff's bottom line), and the
+ink under it is the word *cresc.* The witness cannot tell a head from a
+letter — it is ink — and the keep side has no negative population to bound
+it (above). Same registration family as crops 2 and 4.
+
+### What could NOT be done, or was done differently from the brief
+
+1. **Crop 4 abstains; it is not refused** — measured 0.131, between the floor
+   and a head. "2 and 4 refused" is half met.
+2. **Crop 2 was never a position refusal** (0.315 sp outside line 1 in the
+   page frame); it is refused now by the ink.
+3. **The ADJUDICATE consumer of kept rungs** (`_ledger_rungs_in_cell`, lane
+   2.7b's file) still counts an abstained rung; effect measured zero.
+4. **The negatives cannot bound the keep thresholds** (in-band ink holds the
+   staff's own notes); they are the positives' p5s.
+5. **Pricing is one page** (p3), as briefed; the threshold population is a
+   second, arm-only gather of pages 1-12, re-decided on its own rows.
+6. The gathered records are not committed (~10 MB and ~135 MB).
+
+### Checks and tests
+
+- RED: `out/red-run-g3.txt` (5 failed / 2 passed against `8226aa93`).
+- `pytest tools/omr/tests -m "not slow"`: **3,323 passed, 3 skipped** (was 3,320 before the threshold tests).
+- `python3 -m tools.omr.staged.check`: **264** (baseline 264).
+
+### Reproducing
+
+```bash
+L=/Users/seanjohnson/Desktop/ReEngrave/library/_shared-records
+B=benchmarks/omr-family-refusals-2026-09
+PDF=<library>/editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf
+W=omr-weights/deepscoresv2-yolov8l-hollow-graft-shift09-2026-09-04.pt
+python3 $B/probe/readjudicate_ledger_g3.py $L/<record>.json --out $B/out        # Part A, SEQUENTIALLY
+OMR_DIRECTION_TEXT_SCAN_GATE=1 python3 $B/probe/gather_ledger_ink_ab.py --arm base -- $PDF --pages 3 --weights $W --no-surya --no-ocr --out base.json
+OMR_DIRECTION_TEXT_SCAN_GATE=1 python3 $B/probe/gather_ledger_ink_ab.py --arm arm  -- $PDF --pages 3 --weights $W --no-surya --no-ocr --out arm.json
+python3 $B/probe/compare_gathers_g3.py base.json arm.json --out ab.json        # clean tree only
+python3 $B/probe/ledger_ink_hist.py arm.json --out hist.json
+python3 $B/probe/ledger_ink_crops_g3.py --record $L/beethoven5-p1-p4.record.json --pdf $PDF \
+  --label litolff-p1p4 --subjects glyph/1/0/3/14/0 glyph/2/0/2/2/12 glyph/2/1/0/12/6 glyph/3/1/0/6/12 \
+  --names sean1-real sean2-bottom-line sean3-real sean4-whole-rest --manifest m.json
+```
+
+## §2.14 — `Q.GLYPH_LADDER` NAMES its rungs; `glyph_owner` discounts a refused one
+
+Branch `claude/ladder-rungs-2.14`, off `origin/main`'s own ancestor `998e5f04`
+(the commit this branch actually forked from — `origin/main` moved to
+`892abb35` mid-session on a different lane's push; CLAUDE.md §6b's "one
+tree" is read here as *base is an ancestor of arm*, not *base is whatever
+origin/main is right now*).
+
+### The gap this closes
+
+3.4g found that `glyph_owner` changed 0 of 6,013 verdicts when the ledger
+refusal shipped, because `gather._observe_ladder` files `Q.GLYPH_LADDER` as
+an anonymous `found`/`expected` COUNT and names none of the `ledgerLine`
+glyphs it matched — so no ADJUDICATE refusal could ever discount a
+GATHER-counted rung. `adjudicate_ledger_is_not_a_ledger`'s own docstring
+states this as the reason its refusal cannot reach the ladder.
+
+### The repair
+
+- **GATHER** (`gather.py`): `_ledger_index` now carries each `ledgerLine`
+  detection's own `Subject.to_key()` alongside its `(x0, x1, y_centre)`
+  rectangle. `_observe_ladder` records, per counted step and in the same
+  order `found` was counted, which rung glyph matched
+  (`detail["rungs"]`) — `found`, `expected` and the row's `value` are
+  computed by the identical predicate, in the identical order, as before;
+  this is a pure addition to the row's detail, never a change to what it
+  decides.
+- **ADJUDICATE** (`adjudicators/ownership.py`, new `_ladder_complete`):
+  `glyph_owner`'s ladder term re-counts completeness from the named rungs,
+  dropping any whose own `Q.LEDGER_IS_NOT_A_LEDGER` verdict is DECIDED
+  `True` (refused). One the ledger decision ABSTAINED on
+  (`rung_without_boxed_head`), one it never ran on, or one it DECIDED
+  `False` (a real rung) all keep their place — CLAUDE.md rule 8, *cannot
+  tell* may never become *not a rung*. An old record with no `rungs` named
+  falls back to the row's own `value`, unchanged. Discounted rungs are
+  recorded on the `Q.GLYPH_OWNER` verdict's own detail
+  (`ladder_discounted_rungs`, keyed by candidate staff, present for a
+  losing candidate too) so `trace` shows them.
+- **`wants`/`composed_from`** on `glyph_owner` grew `Q.LEDGER_IS_NOT_A_LEDGER`.
+
+### Order and circularity — checked, no cycle
+
+`adjudicate.ORDER` already runs `Q.LEDGER_IS_NOT_A_LEDGER` (index 917)
+before `Q.NOTEHEAD_IS_NOT_A_NOTEHEAD` (918) and `Q.GLYPH_OWNER` (930), so no
+reorder was needed. The ledger refusal's own `wants`/`composed_from` are
+`Q.GLYPH_BOX`, `Q.STAFF_LINES`, `Q.STAFF_SPACING`, `Q.CELL_STAFF_SPACE`,
+`Q.HUMAN_BOX_VERDICT`, `Q.GLYPH_BAND_DISTANCE` and `Q.LEDGER_INK_UNDER` —
+`Q.GLYPH_OWNER` is nowhere in it (grepped; it does not read ownership, only
+raw geometry, the human witness and the ink witness), so `glyph_owner`
+reading its verdict back closes nothing. `Evidence._admit`'s own closure
+check (`adjudicate.py`) would refuse the read structurally if it did.
+
+### RED first, against `998e5f04`
+
+Both fail on the unrepaired tree, for different reasons — the GATHER shape
+and the ADJUDICATE discount:
+
+- `test_gather_s_own_ladder_row_NOW_NAMES_ITS_RUNG_GLYPH` (flipped from
+  `..._NAMES_NO_RUNG_GLYPH`, which pinned the gap) — `ValueError: too many
+  values to unpack (expected 3)`: the old `_observe_ladder` iterates
+  3-tuples and the fixture now supplies a 4th field, the glyph key.
+- `test_found_drops_and_the_ladder_term_is_withdrawn` — asserts UPPER wins
+  on distance once a named rung is refused; on `998e5f04` LOWER wins on
+  the ladder instead, because the unrepaired code trusts the row's stored
+  `value` unconditionally and never looks at `rungs`.
+
+The other four new tests (the positive control, the abstained-rung control,
+and both old-record-shape tests) pass UNCHANGED on both trees — they are
+controls in the same class, not assertions of the new behaviour, per
+CLAUDE.md §6b's "a refusal test needs a positive control that can fail."
+
+### Base vs arm, two full re-gathers (a GATHER change; `readjudicate` is blind to it)
+
+Both records `dirty: False`; base = `998e5f04`, arm = this branch's tip at
+gather time (`5b2537f7` for Litolff, `071c7976` for Brahms — two more
+commits landed between the two pricing runs, both benchmark-only files, so
+`base` stays an ancestor of `arm` throughout). `600 dpi`,
+`OMR_DIRECTION_TEXT_SCAN_GATE=1`, `OMR_SURYA_KEEP_ALIVE=0`, scan weights
+(`hollow-graft-shift09`). `probe/compare_gathers_2_14.py`.
+
+| | Litolff pdf idx 3 | Brahms pdf idx 1 |
+|---|---|---|
+| detector boxes | 1,928 / 1,928 — **identical** | 3,951 / 3,951 — **identical** |
+| `Q.GLYPH_LADDER` rows | 116 / 116 | 253 / 253 |
+| rows now naming `rungs` (arm) | 116 (38 non-empty) | 253 (89 non-empty) |
+| named rung-INSTANCES (with duplicates) | 48, across 38 rows | 123, across 89 rows |
+| … resolving REFUSED | **0** | **0** |
+| … resolving ABSTAINED | 0 | 0 |
+| … resolving KEPT (decided `False`) | 48 | 123 |
+| `glyph_owner` verdicts (contested population) | 247, 8 win on `ladder` | 1,238, 39 win on `ladder` |
+| `glyph_owner` verdicts CHANGED base→arm | **0** | **0** |
+| `ladder_discounted_rungs` filed on any verdict | 0 | 0 |
+| `<note>` / MusicXML | 549 / 549, byte-identical | 262 / 262, byte-identical |
+| census `unaccounted` | `[]` both | `[]` both |
+
+**The mechanism reaches — every named rung got a real verdict, none came
+back silent — and on both pages it discounts nothing, because the two
+populations barely overlap.** Widening the question from *rungs that feed a
+COMPLETE ladder* to *rungs a ladder computation names AT ALL, complete or
+not*: Litolff names 19 distinct `ledgerLine` glyphs across all 116 rows (of
+500 total; 420 refused, 4 abstained, 76 kept) and Brahms names 46 (of 219;
+80 refused, 1 abstained, 138 kept) — **and in both records, every single
+named glyph is one the ledger decision KEPT. Not one of the 500 (or 219)
+refused or abstained glyphs is EVER named by a ladder row, complete or
+broken.** Reading `_observe_ladder`'s predicate against `family_precision`'s
+refusal reasons explains the shape rather than leaving it a coincidence: a
+rung only gets "found" when it sits within half a space of an EXACT
+predicted position *and* x-overlaps the very note the ladder is being built
+for — which means the note itself is almost always the head the ledger
+decision's own `no_head_on_the_rung`/`tall_not_a_rung` tests would find
+sitting on or near that same box, so those two refusals structurally avoid
+naming it; `inside_the_staff` and `on_a_staff_line` fire only at distances
+(inside the band, or within `ON_A_STAFF_LINE_TOL_SPACES` of an outer line)
+that a ladder step — a full space or more beyond the outer line — never
+reaches. This is offered as the mechanical reading of the two rule shapes,
+not a third measurement; the counts above are the measurement.
+
+### Ownership verdicts changed: none — so no crops
+
+`probe/crop_owner_2_14.py` diffs `Q.GLYPH_OWNER` verdicts base vs arm and
+would cut a print crop (winning staff's lines in GREEN, a red corner
+bracket on the exact box, both verdicts and the discounted rungs in the
+caption) for up to 8 changed subjects. Run on both pages it printed
+`glyph_owner verdicts changed: 0` / `DEAD AT ZERO — no changed ownership
+verdict to crop` and exited 2, honestly, rather than being pointed at
+something to draw. Per CLAUDE.md §6b ("reach before accuracy... an arm
+prints its population first and exits non-zero declaring itself DEAD at
+zero"), zero crops is the correct artefact for zero changes on these two
+pages — the RED→GREEN unit tests in `test_staged_ladder_rungs.py` are what
+demonstrate the discount firing, on a fixture built to exercise it.
+
+### What could NOT be done, or was done differently from the brief
+
+1. **Base was NOT `origin/main`** as the brief's worktree command literally
+   names it — `origin/main` advanced to `892abb35` (a different lane's
+   merge) between this branch's creation and the pricing run. Used this
+   branch's own merge-base (`998e5f04`) instead, per CLAUDE.md's own "base
+   vs arm on ONE tree" and rule 10 ("the tree outranks every ledger");
+   `compare_gathers_2_14.py` enforces `git merge-base --is-ancestor` rather
+   than commit equality for exactly this reason, since a GATHER change
+   without a flag cannot be priced on a single unchanging commit the way
+   3.4g-3's flag-toggled arm was.
+2. **Two more commits landed between the Litolff and Brahms pricing runs**
+   (the comparator and the crop tool, both benchmark-only) — each new
+   untracked file makes the tree `dirty` at the run that FINISHES with it
+   present (CLAUDE.md §5a), so each was committed before its own re-gather
+   rather than left uncommitted. `base` is an ancestor of both `arm` shas.
+3. **No crops committed** — see above; nothing changed to draw.
+4. **The gathered records are not committed** (~10 MB Litolff, larger for
+   Brahms).
+
+### Checks and tests
+
+- RED: 2 of 6 new/flipped tests fail against `998e5f04` (`ValueError` and a
+  wrong-owner assertion); the other 4 pass unchanged on both trees as
+  controls.
+- `pytest tools/omr/tests -m "not slow"`: **3,366 passed, 3 skipped** (arm).
+- `python3 -m tools.omr.staged.inventory --check`: exit 0, no new inert
+  declaration for `glyph_owner`/`ledger_is_not_a_ledger` (the read is
+  through the module's own `_ladder_complete` helper, at depth 1).
+- `python3 -m tools.omr.staged.wiring --check`: 69 problems, 0 unaccounted
+  — unchanged; the new `subject=` read is a SCOPE-exempt "reach elsewhere"
+  the same way `notehead_precision._ledger_rungs_in_cell`'s identical read
+  already was.
+- `python3 -m tools.omr.staged.check`: **253 → 253** (unchanged; no new
+  named gap, none closed).
+
+### Reproducing
+
+```bash
+B=benchmarks/omr-family-refusals-2026-09
+PDF_L=library/editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf
+PDF_B=library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf
+W=omr-weights/deepscoresv2-yolov8l-hollow-graft-shift09-2026-09-04.pt
+# base: a worktree at THIS branch's merge-base, never origin/main's moving tip
+git worktree add --detach /tmp/l214-base 998e5f04
+OMR_DIRECTION_TEXT_SCAN_GATE=1 OMR_SURYA_KEEP_ALIVE=0 python3 -m tools.omr.staged $PDF_L --pages 3 --weights $W --out base_l.json
+OMR_DIRECTION_TEXT_SCAN_GATE=1 OMR_SURYA_KEEP_ALIVE=0 python3 -m tools.omr.staged $PDF_L --pages 3 --weights $W --out arm_l.json   # this branch, clean tree
+python3 $B/probe/compare_gathers_2_14.py base_l.json arm_l.json --out cmp_l.json
+python3 $B/probe/crop_owner_2_14.py --base base_l.json --arm arm_l.json --pdf $PDF_L --label l214-litolff-p3
+# repeat with $PDF_B --pages 1 for Brahms
+```
+
+## §3.4g-4 — the three families 3.4g did not cover; a rest on round ink (2026-09-28)
+
+Work order item 6, ROADMAP START HERE: *"Refusals for the families 3.4g did
+not cover (flag, key marker, tuplet numeral; a rest box on round ink —
+Sean's rest crop 5)."*
+
+### Part A — flag, key-signature marker, tuplet numeral
+
+Family names as the tree spells them (`gather_coverage.FAMILY_TO_Q`,
+`class_aliases.py`): `flag` → `Q.FLAG`, `key` → `Q.KEYSIG_MARKER` (the
+header's `keySharp`/`keyFlat`/`keyNatural` glyphs, never the in-bar
+accidental — `gather._KEY_SIGNATURE_PREFIX`), `tuplet`/`fingering` →
+`Q.TUPLET_MARKER` (but see below — the family and the quantity are NOT the
+same population for two of these three).
+
+Three new `Q.<X>_IS_NOT_A_<X>` decisions, on the seven's own pattern
+(`family_precision.py`, human-witness-only, reading `Q.HUMAN_BOX_VERDICT`
+through `notehead_precision._human_not_a_symbol`, the one parser):
+
+| decision | quantity | domain | consumer |
+|---|---|---|---|
+| `adjudicate_flag_is_not_a_flag` | `Q.FLAG_IS_NOT_A_FLAG` | `subjects_from=Q.FLAG` | `rhythm._attached_flags` (reads the refusal on the flag's own glyph subject directly — no join, `Q.FLAG` already names it) |
+| `adjudicate_keysig_marker_is_not_a_marker` | `Q.KEYSIG_MARKER_IS_NOT_A_MARKER` | `subjects_from=Q.GLYPH_BOX`, `subjects_classed=("keySharp","keyFlat","keyNatural")` | `header._staff_reading`'s marker-run intake, via a NEW join (`_keysig_marker_glyph_refused`) |
+| `adjudicate_tuplet_marker_is_not_a_marker` | `Q.TUPLET_MARKER_IS_NOT_A_MARKER` | `subjects_from=Q.TUPLET_MARKER` | `rhythm.adjudicate_tuplet` (reads the refusal on the marker's own glyph subject directly — no join) |
+
+⚠️ **WHY TWO OF THE THREE NARROW BY THEIR OWN QUANTITY AND ONE NARROWS BY
+CLASS.** `Q.FLAG` and `Q.TUPLET_MARKER` are gathered 1:1 on the glyph they
+name (`gather.gather_rhythm_marks`), exactly as `Q.REST`/`Q.ARC_BOX`/
+`Q.DYNAMIC_LETTER`/`Q.ARTICULATION_MARK` already are in 3.4g, so
+`subjects_from` is the quantity itself. `Q.KEYSIG_MARKER` cannot take that
+route: `gather._gather_keysig_markers` files it on the STAFF, one row per
+detection, with NO glyph subject of its own — so its refusal narrows
+`Q.GLYPH_BOX` by class instead, on the LEDGER/ACCIDENTAL/ARPEGGIATO pattern.
+
+⚠️ **A BARE CLASS PREFIX IS A DOCUMENTED FOOTGUN, AVOIDED TWICE.**
+`subjects_for`'s class narrowing matches `str.startswith` against the WHOLE
+lower-cased class name, not against `class_aliases`' family boundary.
+`key_signature_corroboration.py`'s own comment says `startswith("key")` "also
+catches `keyboardPedalUp` — a PEDAL marking", so the key-marker decision
+names the three exact classes (`gather._KEYSIG_CLASSES`) rather than the
+bare `key` prefix. The tuplet family has the mirror shape: `gather_coverage.
+FAMILY_TO_Q` maps the WHOLE `tuplet` family (`tuplet0`-`9`, `tupletBracket`)
+and the WHOLE `fingering` family to `Q.TUPLET_MARKER`, but `gather.
+_TUPLET_CLASSES` only ever files `tuplet3`, `tupletBracket` and `fingering3`
+under it — reading `Q.TUPLET_MARKER` directly is already exactly that
+population, with no class list to keep in step by hand.
+
+#### The key-marker join
+
+`Q.KEYSIG_MARKER` names no glyph, so its refusal has to be rejoined to the
+`Q.GLYPH_BOX` row the SAME detection produced — by frame, class and point,
+the mirror of `ownership._keysig_marker_row` (which makes the identical join
+in the opposite direction, for the accidental owner). `header.
+_keysig_marker_glyph_refused` is called DIRECTLY from `_staff_reading`
+(not through a second wrapper): `inventory --check`'s `_never_read` follows a
+decision's own call chain three levels deep, and `adjudicate_part_key`'s own
+docstring already records losing `_cell0_space`/`_proved_engraved` to one
+extra hop of wrapper — the same fault would have hidden `Q.GLYPH_BOX` and
+`Q.KEYSIG_MARKER_IS_NOT_A_MARKER` as "declared, never read" had a wrapper
+been kept.
+
+`Q.KEYSIG_MARKER_IS_NOT_A_MARKER` also had to move earlier in `adjudicate.
+ORDER` than the other two 3.4g-4 families: `Q.SYSTEM_KEY`/`Q.PART_KEY`/
+`Q.KEY_SIGNATURE` all sit BEFORE the block the six pre-existing human-only
+families stand in, so the key-marker refusal runs beside `Q.CLEF`, ahead of
+`Q.SYSTEM_KEY` — a dependency, not a preference, on the same footing as
+`Q.LEDGER_IS_NOT_A_LEDGER` before `Q.NOTEHEAD_IS_NOT_A_NOTEHEAD`. `Q.FLAG_IS_
+NOT_A_FLAG` and `Q.TUPLET_MARKER_IS_NOT_A_MARKER` did not need to move: their
+consumers (`Q.DURATION`, `Q.TUPLET_RATIO`) are already later in `ORDER` than
+the human-only block.
+
+#### RED → GREEN
+
+Every test naming `Q.FLAG_IS_NOT_A_FLAG` / `Q.KEYSIG_MARKER_IS_NOT_A_MARKER`
+/ `Q.TUPLET_MARKER_IS_NOT_A_MARKER` fails at attribute lookup on the
+unrepaired tree (`AttributeError`, the same shape 3.4g's own RED state
+documents). Three layers, each with a positive control:
+
+1. **`test_staged_family_refusals.py`** — the three rows added to the shared
+   `FAMILIES` table (all the table-driven human-witness tests now cover ten
+   families, not seven) and three NAMED tests added to `TestEachFamilyByName`
+   (the health tool scans each test FUNCTION's own AST for `Q.` names, so a
+   loop over a table names none of them — the same reason that class exists
+   for the original seven). A dedicated pair of tests documents WHY the
+   key-marker narrows by class while flag/tuplet narrow by their own
+   quantity, so the asymmetry reads as a decision, not an oversight.
+2. **`test_staged_duration.py`** — `test_a_human_refused_flag_does_not_reach_
+   the_duration`: the identical fixture as `test_a_flag_on_this_notes_stem_is_
+   read` (0.5 beats), with one `Q.HUMAN_BOX_VERDICT` row added, reads 1.0
+   beats (`flags_attached: 0`) — the note falls back to an unflagged quarter.
+   `test_a_human_refused_marker_reads_like_no_marker_at_all` — the identical
+   triplet fixture as `test_the_written_value_is_untouched_and_the_time_is_
+   scaled` (2/3 beats), with the marker refused, ABSTAINS `no_marker` and the
+   notes read their WRITTEN 1.0 beats unscaled.
+3. **`test_staged_key_from_markers.py`** — `TestAHumanRefusedMarkerDoesNotCount
+   TowardTheRun`: three `keyFlat` markers (Sean's own `_flats(3)` fixture)
+   read `-3` undisturbed; refusing the third glyph's `Q.GLYPH_BOX` drops the
+   run to two slots and the key signature reads `-2`, reason still `markers`
+   — the refused box counts toward NEITHER the ladder nor the kind check. A
+   third test confirms a marker with no matching `Q.GLYPH_BOX` at all
+   (an older record, or an ungathered glyph) is NOT dropped: the join needs a
+   glyph to decide the refusal ON, and finding none is silence, not a
+   refusal.
+
+`python3 -m tools.omr.staged.health --check`: three "NO staged test names it
+at all" findings appeared the moment the three quantities were registered
+(the table-driven tests alone do not satisfy it) and cleared once the named
+tests above landed — **EMPTY CELLS: none**.
+
+#### The out-of-pipeline producer count moved, and the fix is in this branch too
+
+`test_staged_out_of_pipeline_producer.py` (roadmap 0.5/3.4b-check, landed the
+night before this lane started) hard-codes the COUNT of decisions wanting
+`Q.HUMAN_BOX_VERDICT` at nine — the nine 3.4g/3.4g's-precursor decisions that
+existed when `producers.py` was built. Adding three more human-only family
+decisions on the same pattern moved the true count to twelve, which failed
+three assertions (`test_a_want_no_producer_anywhere_files_is_STILL_reported`,
+`test_reproduces_the_RED_state_this_lane_found`,
+`test_wanted_but_out_of_pipeline_names_the_nine_decisions`) — correctly,
+since `producers.py`'s OWN classification (which reads `review/
+human_evidence.py`'s AST, never a hand-typed list) already covered the three
+new decisions for free (`staged.producers` stayed at `open=0` throughout).
+Fixed by updating the three hard-coded counts/lists to 12, with the ORIGINAL
+nine kept as a named historical constant (`test_reproduces_the_RED_state_
+this_lane_found` still pins them by name) so the test that is a frozen
+snapshot and the test that is a live property of the registry are not the
+same assertion.
+
+#### The family_refusals census
+
+`export._family_refusals` iterates `family_precision.FAMILY_REFUSALS`, which
+is `tuple(_OK)` — derived from the SAME dict the new decisions' `_OK` entries
+were added to (`flag`, `keysig_marker`, `tuplet_marker`). No `export.py` edit
+was needed for the three new families to be counted: `FAMILY_REFUSALS` grew
+from 7 to 10 entries the moment `_OK` did, and `_family_refusals`'s own
+per-family partition (`refused`/`kept`/`abstained`/`verdicts`, `balanced`
+required) applies to them exactly as it does to the original seven.
+
+### Part B — a rest box on round ink (MEASURED; NOT SHIPPED)
+
+**CONVENTION ASSUMED / WHAT WOULD FALSIFY IT / NOT CONFIRMED**: a rest glyph
+is never a filled ellipse; a box whose ink is a filled, roughly elliptical
+blob about one staff-space tall is a notehead, not a rest. Sean has
+confirmed exactly ONE instance: `glyph/3/1/4/8/8` on the Litolff count page
+(`benchmarks/omr-shape-role-2026-09/out/print/
+ADJUDICATION-sean-2026-09-27-cal.json`, crop 5 of the `cal-other-to-decided`
+batch — *"Rest crop 1-4 whole, 5 is a quarter note head - not a rest, 6-11
+whole rests"*). Nothing else below has been shown to him.
+
+#### Measurement
+
+`benchmarks/omr-family-refusals-2026-09/probe/rest_round_ink.py` reads every
+`Q.REST` row on the two scan count pages (Litolff pdf index 3, Breitkopf pdf
+index 1) via `record_io.load_record`, joins each to its OWN `Q.GLYPH_BOX`
+row (same subject — `Q.REST` is gathered 1:1 on the rest's own glyph, unlike
+the key-signature marker in Part A), rasterises the source PDF page at the
+GATHER'S OWN DPI (read off `provenance.settings.args.dpi`, 600 on both — the
+same discipline `crop_rest_slot.py` uses), and measures the detector's own
+box with an Otsu threshold per crop (so one rule reads a bitonal and a
+grayscale plate alike) and `cv2.connectedComponentsWithStats`:
+
+  * `fill_ratio` — ink pixels / box area, inside the detector's own box.
+  * `largest_fill_ratio` — the largest connected ink component's own pixel
+    count / ITS OWN tight bounding box area (an ellipse inscribed in its
+    bounding box fills π/4 = 0.785 of it).
+  * `largest_aspect_h_over_w` — that component's own bounding-box
+    height/width (a notehead is close to 1; CLAUDE.md §10: "a notehead is
+    ~1.3 staff spaces wide", roughly as tall as wide).
+
+Reach first: 504 `Q.REST` rows across the two pages (154 Litolff, 350
+Breitkopf), every one carrying a page box, 503 of 504 measured (one
+Breitkopf `restWhole` crop was a uniform block — no Otsu split, declined
+rather than defaulted). By class:
+
+| class | n | fill_ratio p50 | largest_fill_ratio p50 | aspect h/w p50 |
+|---|--:|--:|--:|--:|
+| `restWhole` | 243 | 0.902 | 0.944 | 0.364 |
+| `restHalf` | 2 | 0.896 | 0.905 | 0.189 |
+| `restQuarter` | 122 | 0.628 | 0.632 | 2.736 |
+| `rest8th` | 132 | 0.573 | 0.575 | 1.594 |
+| `rest16th` | 3 | 0.750 | 0.757 | 1.750 |
+| `restHBar` | 1 | 0.301 | 0.301 | 0.029 |
+
+`restQuarter`/`rest8th`/`rest16th` never come near notehead shape at all —
+their aspect p1 across both classes is 0.92–1.25 and rises from there
+(TALL strokes, as the convention predicts); `fill_ratio` stays in a narrow
+band well under a notehead's. **The convention holds cleanly for every
+rest DURATION except the one Sean's confirmed case actually is: `restWhole`.**
+
+⚠️ **`fill_ratio` DOES NOT DISCRIMINATE WITHIN `restWhole` AT ALL.** A
+genuine whole rest is a solid filled RECTANGLE, so it fills its own
+detector box almost completely too — `largest_fill_ratio` p50 0.944, p75
+0.973, p90 0.988 — HIGHER than Sean's confirmed notehead's own 0.8316 (its
+rank is 24th of 243, the 9.5th percentile, on this feature). The only
+feature that could possibly separate a round blob from a flat rectangle is
+`largest_aspect_h_over_w`.
+
+**And that is where the measurement stops the rule.** Sorted by aspect
+h/w descending, the top of the `restWhole` population is a smooth ramp with
+NO gap anywhere near the confirmed case:
+
+| rank | subject | aspect h/w | fill_ratio |
+|--:|---|--:|--:|
+| 1 | `glyph/1/1/4/0/17` | 0.8750 | 0.9643 |
+| 2 | `glyph/1/1/1/1/12` | 0.8636 | 0.9234 |
+| 3 | `glyph/3/1/4/0/11` | 0.8182 | 0.7576 |
+| 4 | `glyph/1/1/4/3/18` | 0.8182 | 0.9874 |
+| 5 | `glyph/1/1/5/4/11` | 0.8182 | 0.9495 |
+| **6** | **`glyph/3/1/4/8/8` (Sean's confirmed notehead)** | **0.7727** | **0.8316** |
+| 7 | `glyph/3/0/7/5/6` | 0.7273 | 0.9233 |
+| 8 | `glyph/3/1/4/14/3` | 0.6957 | 0.7954 |
+| 9 | `glyph/1/1/4/3/9` | 0.6842 | 0.9919 |
+| 10 | `glyph/3/1/4/16/3` | 0.6364 | 0.7528 |
+
+Five OTHER `restWhole` boxes — three on Breitkopf (`glyph/1/...`), two on
+Litolff (`glyph/3/...`), so this is not one plate's registration artefact —
+sit ABOVE the confirmed case on both features, with steps of 0.01–0.05
+between neighbours the whole way down. The confirmed case is not an outlier
+at the tail of an otherwise well-behaved population; it stands INSIDE a
+five-to-ten-row cluster of equally round, equally filled boxes that nobody
+has looked at. `largest_aspect_h_over_w`'s own percentiles for the class —
+p90 0.496, p95 0.598, p99 0.818, p100 0.875 — show the same thing from the
+other end: the population's own tail is wide and gradual, not a cliff with
+one row hanging off it.
+
+**⇒ NO CLEAN GAP. THE RULE DOES NOT SHIP** (CLAUDE.md rule 5: "no default
+flips on agreement with our own reading" and "if no clean gap exists, do not
+ship"). Whether any of the other five-to-ten candidates are ALSO
+misclassified noteheads is a real, open question this measurement raises —
+but answering it needs Sean's eyes on those specific boxes, not a threshold
+fit to a population of one.
+
+#### GATHER vs ADJUDICATE (moot, recorded anyway)
+
+Had the gap been clean, it would not have been buildable as an ADJUDICATE
+rule regardless: `fill_ratio`/`largest_aspect_h_over_w` need `cv2.threshold`
+and `connectedComponentsWithStats` over the RASTER, which ADJUDICATE may
+never read (CLAUDE.md §4a — it reads a frozen log; §9's "never erase staff
+lines before the detector" and the whole `Q.LEDGER_INK_UNDER` precedent in
+3.4g-3 are both GATHER-side for the same reason). Shipping this would have
+meant a new `Q.<...>` quantity filed in GATHER, priced by two full
+re-gathers (CLAUDE.md §4d/§6b) — exactly the step this measurement stops
+before, since there is nothing to price.
+
+No crops were cut: Part B's own instructions cut crops only where a clean
+gap justifies naming a new refusal, and none exists.
+
+### Checks and tests
+
+- RED, actually run: source changes stashed by path (`git stash push -u --
+  <the five staged/ files>`), test changes left in place, `pytest
+  tools/omr/tests/test_staged_family_refusals.py ...` → `AttributeError:
+  type object 'Q' has no attribute 'FLAG_IS_NOT_A_FLAG'` at COLLECTION
+  (`FAMILIES` is a module-level tuple, so the whole file fails to import,
+  not one test) — the same shape 3.4g's own RED state documents. Source
+  changes restored (`git stash apply` by sha, then dropped) before GREEN.
+- `pytest tools/omr/tests -m "not slow"`: **3,400 passed, 3 skipped**
+  (unrelated pre-existing skips).
+- `python3 -m tools.omr.staged.inventory --check`: exit 0, no new inert
+  declaration (`Q.GLYPH_BOX`/`Q.KEYSIG_MARKER_IS_NOT_A_MARKER` are read at
+  depth 2 from each of the three key decisions, within `_never_read`'s
+  3-level reach).
+- `python3 -m tools.omr.staged.health --check`: **EMPTY CELLS: none** (three
+  appeared, three cleared, by the named tests in Part A).
+- `python3 -m tools.omr.staged.check`: **253 → 253** (unchanged: `staged.
+  health` rose 0 → 3 the moment the three decisions registered with no named
+  test yet, then fell back to 0 once the named tests landed; every other
+  check's count is untouched — no new `KNOWN_GAPS` entry, none closed).
+
+### Reproducing
+
+```bash
+# Part A — RED first, against a worktree at this branch's merge-base
+python3 -m pytest tools/omr/tests/test_staged_family_refusals.py \
+  tools/omr/tests/test_staged_duration.py \
+  tools/omr/tests/test_staged_key_from_markers.py \
+  tools/omr/tests/test_staged_out_of_pipeline_producer.py -q
+
+# Part B — the measurement (writes the histogram JSON per document)
+python3 benchmarks/omr-family-refusals-2026-09/probe/rest_round_ink.py \
+  --doc litolff --out benchmarks/omr-family-refusals-2026-09/out/r34g4-round-ink-litolff.json
+python3 benchmarks/omr-family-refusals-2026-09/probe/rest_round_ink.py \
+  --doc breitkopf --out benchmarks/omr-family-refusals-2026-09/out/r34g4-round-ink-breitkopf.json
+```

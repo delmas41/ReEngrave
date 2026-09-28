@@ -27,8 +27,13 @@ WHAT IT DOES, per document (Sec.6a):
     5. build a side-by-side for the fixed count page (a full print-page
        crop plus a best-effort Verovio render of the corresponding bars;
        falls back to the print crop alone if the bar-range render fails);
-    6. for the engraved document only: `musicxml2ly` + `lilypond`, if both
-       binaries are on PATH, and the bar-check failure count.
+    6. for the engraved document only: render to LilyPond NATIVELY
+       (`staged/lilypond.py:to_lilypond`, roadmap 3.1) over the SAME
+       in-memory record step 2 already loaded, compile it if `lilypond` is
+       on PATH, and report the bar-check failure count and the
+       unterminated-tie count from the compiler's own stderr, as proxies
+       (roadmap 3.1b — this replaced an earlier `musicxml2ly` + `lilypond`
+       stopgap that round-tripped through the exported MusicXML file).
 
 Each step is wrapped in its own time budget (`--step-timeout`, default 900s
 = 15 minutes) and its own `try/except`; a step that times out or raises is
@@ -66,6 +71,7 @@ sys.path.insert(0, str(REPO))
 
 from tools.library.score_library import library_root  # noqa: E402
 from tools.omr.staged import export as X  # noqa: E402
+from tools.omr.staged import lilypond as LY  # noqa: E402  -- roadmap 3.1b
 from tools.omr import omr_ned as ON  # noqa: E402
 
 MANIFEST_PATH = REPO / "benchmarks" / "acceptance" / "manifest.json"
@@ -89,6 +95,12 @@ _SIDE_BY_SIDE_MODULE = (REPO / "benchmarks" / "omr-cleanup-count-2026-09"
                         / "build_sidebyside.py")
 
 _BARCHECK_RE = re.compile(r"barcheck failed", re.I)
+#: ROADMAP 3.1b. Confirmed against a real `lilypond 2.24.4` run on a
+#: deliberately unresolved tie (`.scratch/tie_test.ly`, this item's own
+#: session): the literal stderr line is
+#: "warning: unterminated tie" — case as shown, hence `re.I` to not depend
+#: on it staying lowercase across LilyPond versions.
+_UNTERMINATED_TIE_RE = re.compile(r"unterminated tie", re.I)
 
 
 class TimeBudgetExceeded(RuntimeError):
@@ -572,39 +584,50 @@ def omr_ned_score(pred_xml_path: Path, truth_xml_path: Path) -> Dict[str, Any]:
 
 
 # ─────────────────────────────────────────────────────────────────────────
-# LilyPond (engraved only; a native staged exporter is roadmap 3.1)
+# LilyPond (engraved only). ROADMAP 3.1b: the native staged exporter
+# (`staged/lilypond.py:to_lilypond`, roadmap 3.1, done) over the SAME
+# in-memory record `_load_and_export` already loaded — never a second
+# `load_record`, and never the `musicxml2ly` round-trip this replaced.
 # ─────────────────────────────────────────────────────────────────────────
 
-def lilypond_check(xml_path: Path, out_dir: Path) -> Dict[str, Any]:
+def lilypond_check(result: Dict[str, Any], out_dir: Path) -> Dict[str, Any]:
+    """Render `result` (a loaded staged record) to LilyPond natively and
+    compile it, reporting the bar-check failure count and the unterminated-
+    tie count from the compiler's own stderr as PROXIES (CLAUDE.md Sec.6a:
+    "controls, never objectives") — never a substitute for a human reading
+    the PDF or the print.
+
+    `lilypond` not on PATH is reported as `available: False` with a reason,
+    never a crash — `musicxml2ly` is no longer part of this path at all, so
+    only one binary's absence can gate it now.
+    """
     import shutil as _shutil
-    musicxml2ly = _shutil.which("musicxml2ly")
     lilypond = _shutil.which("lilypond")
-    if not musicxml2ly or not lilypond:
-        return {"available": False,
-                "reason": f"musicxml2ly={musicxml2ly!r} lilypond={lilypond!r}"}
+    if not lilypond:
+        return {"available": False, "reason": f"lilypond={lilypond!r}"}
     out_dir.mkdir(parents=True, exist_ok=True)
-    ly_path = out_dir / (xml_path.stem + ".ly")
-    proc = subprocess.run([musicxml2ly, str(xml_path), "-o", str(ly_path)],
-                         capture_output=True, text=True, timeout=120)
-    if proc.returncode != 0 or not ly_path.is_file():
-        return {"available": True, "converted": False,
-                "stderr": proc.stderr[-2000:], "stdout": proc.stdout[-2000:]}
-    # musicxml2ly stamps the ABSOLUTE input path into a comment, which differs
-    # per worktree and made two runs of an unchanged tree disagree. Relativise it.
-    ly_text = ly_path.read_text()
-    ly_text = ly_text.replace(str(xml_path.resolve()), str(xml_path.resolve().relative_to(REPO)))
+
+    ly_text, export_report = LY.to_lilypond(result)
+    ly_path = out_dir / "acceptance.ly"
     ly_path.write_text(ly_text)
-    proc2 = subprocess.run([lilypond, "-o", str(out_dir), str(ly_path)],
-                          capture_output=True, text=True, timeout=300)
-    log = (proc2.stdout or "") + "\n" + (proc2.stderr or "")
+
+    proc = subprocess.run([lilypond, "-o", str(out_dir), str(ly_path)],
+                         capture_output=True, text=True, timeout=300)
+    log = (proc.stdout or "") + "\n" + (proc.stderr or "")
     pdf_path = out_dir / (ly_path.stem + ".pdf")
     return {
         "available": True, "converted": True,
-        "compiled": proc2.returncode == 0,
+        "compiled": proc.returncode == 0,
         "pdf_produced": pdf_path.is_file(),
         "barcheck_failures": len(_BARCHECK_RE.findall(log)),
-        "lilypond_exit": proc2.returncode,
+        "unterminated_ties": len(_UNTERMINATED_TIE_RE.findall(log)),
+        "lilypond_exit": proc.returncode,
         "log_tail": log[-2000:],
+        # ⚠️ roadmap 3.1b: fold the exporter's OWN coverage report in here
+        # rather than discarding it — the same "a documented drop must be
+        # counted" requirement `to_musicxml`'s report answers, now answered
+        # for the LilyPond path too.
+        "export_report": export_report,
     }
 
 
@@ -770,7 +793,12 @@ def process_document(doc: Dict[str, Any], *, step_timeout_s: float
         result = load_record(record_path)
         provenance = result.get("provenance") or {}
         xml, report = X.to_musicxml(result)
-        return {"xml": xml, "report": report, "provenance": provenance}
+        # ⚠️ roadmap 3.1b: `result` travels with the step's own output so the
+        # LilyPond step below can call `LY.to_lilypond` on the SAME in-memory
+        # record — never a second `load_record`, and never routed back
+        # through the MusicXML file this step just wrote.
+        return {"xml": xml, "report": report, "provenance": provenance,
+                "result": result}
 
     step = _run_step("load+export", step_timeout_s, _load_and_export)
     if not step["ok"]:
@@ -840,7 +868,7 @@ def process_document(doc: Dict[str, Any], *, step_timeout_s: float
             block["omr_ned"] = {"status": _ABSENT, "reason": "no truth musicxml"}
 
         lstep = _run_step("lilypond", step_timeout_s, lilypond_check,
-                          xml_path, out_dir / "lilypond")
+                          step["value"]["result"], out_dir / "lilypond")
         block["lilypond"] = (lstep["value"] if lstep["ok"] else
                              {"status": ("error" if "error" in lstep else _SKIPPED),
                               **{k: v for k, v in lstep.items() if k != "value"}})
@@ -951,7 +979,8 @@ def render_table(current: Dict[str, Any]) -> str:
             if isinstance(ly, dict) and ly.get("available"):
                 lines.append(f"  LilyPond              compiled="
                             f"{ly.get('compiled')} pdf={ly.get('pdf_produced')} "
-                            f"barcheck_failures={ly.get('barcheck_failures')}")
+                            f"barcheck_failures={ly.get('barcheck_failures')} "
+                            f"unterminated_ties={ly.get('unterminated_ties')}")
             else:
                 lines.append(f"  LilyPond:             "
                             f"{ly.get('reason', ly.get('status'))}")

@@ -236,6 +236,44 @@ RUNG_STEP_SHIPS = False
 #: FARTHER OUT than the rung is always its note, whatever the distance.
 HEAD_NEAR_TOL_SPACES = 2.75
 
+#: ⚠️⚠️ ROADMAP 3.4g-3 — THE SECOND WITNESS'S THRESHOLDS, on
+#: `Q.LEDGER_INK_UNDER` (the ink fraction in a notehead-sized window on the
+#: rung, stroke removed, off the staff-erased raster; `gather.
+#: ledger_ink_under`). Sean, 2026-09-27: of the four rungs 3.4g-2 refused
+#: `no_head_on_the_rung`, TWO were real rungs whose head the detector never
+#: boxed — so "no boxed head" is *cannot tell*, and the paper decides.
+#:
+#:   KEPT (`ink_under_the_rung`)  under >= `LEDGER_INK_KEPT_MIN` AND
+#:                                under - background >=
+#:                                `LEDGER_INK_KEPT_CONTRAST_MIN`
+#:   REFUSED (`no_head_on_the_rung`, two witnesses)
+#:                                under <= `LEDGER_INK_REFUSED_MAX`
+#:   otherwise                    the abstention stands
+#:
+#: ⚠️ MEASURED, NOT CHOSEN — `benchmarks/omr-family-refusals-2026-09/probe/
+#: ledger_ink_hist.py` on a real arm gather of Litolff pdf pages 1-12
+#: (4,947 ledger boxes; FINDINGS §3.4g-3). Positives = kept rungs with a
+#: notehead box ON the rung (n 548); negatives = boxes refused
+#: `inside_the_staff` / `on_a_staff_line` (n 3,821).
+#:   * `LEDGER_INK_KEPT_MIN` 0.55 = the positives' p5 of `under` (0.574),
+#:     floored to 0.05.
+#:   * `LEDGER_INK_KEPT_CONTRAST_MIN` 0.10 = the positives' p5 of
+#:     under - background (0.098), to 0.05. Together they keep 501 of 548
+#:     positives (0.91).
+#:   * `LEDGER_INK_REFUSED_MAX` 0.05: 0 of 548 positives read at or below it
+#:     (their minimum is 0.076); 1,024 of 3,821 negatives do.
+#: ⚠️ THE NEGATIVES CANNOT BOUND THE KEEP SIDE, and that is stated rather
+#: than hidden: inside the band the erased raster still holds the staff's
+#: own notes, so 23% of negatives clear both keep thresholds. The keep rule
+#: is only ever applied to a box that is OUTSIDE the band, off every line,
+#: rung-thick and has no boxed head — the population where a head-sized
+#: blot of ink is least likely to be anything else. RED (the windows
+#: swapped, background read as `under`): AUC 0.786 against 0.931 for the
+#: real window, so the window measures something its neighbourhood does not.
+LEDGER_INK_KEPT_MIN = 0.55
+LEDGER_INK_KEPT_CONTRAST_MIN = 0.10
+LEDGER_INK_REFUSED_MAX = 0.05
+
 
 def _glyph_box_row(ev: Evidence):
     rows = ev.rows(Q.GLYPH_BOX)
@@ -429,14 +467,14 @@ def _heads_on_the_rung(ev: Evidence, box_row, space: float,
 
 
 # ─────────────────────────────────────────────────────────────────────────────
-# The seven decisions
+# The seven decisions, plus 3.4g-4's three
 #
-# ⚠️ SEVEN NAMED FUNCTIONS AND ONE BODY, AND THE SHAPE IS DELIBERATE. A
+# ⚠️ NAMED FUNCTIONS AND ONE BODY EACH, AND THE SHAPE IS DELIBERATE. A
 # factory returning closures would give every spec a `fn.__name__` that
 # `inventory._never_read` cannot find in the source it parses (it looks for a
 # `FunctionDef` named `spec.name`), so every declared `wants` would be
 # reported as unread — a derived check silently disabled by a code-style
-# choice. Seven two-line functions keep the AST honest.
+# choice. Ten two-line functions keep the AST honest.
 # ─────────────────────────────────────────────────────────────────────────────
 
 #: The reason a glyph NO rule condemns decides `False` with, per family.
@@ -452,6 +490,10 @@ _OK = {
     Q.ARC_IS_NOT_AN_ARC: "arc",
     Q.DYNAMIC_IS_NOT_A_DYNAMIC: "dynamic",
     Q.ARTICULATION_IS_NOT_AN_ARTICULATION: "articulation",
+    # ── roadmap 3.4g-4 ──────────────────────────────────────────────────────
+    Q.FLAG_IS_NOT_A_FLAG: "flag",
+    Q.KEYSIG_MARKER_IS_NOT_A_MARKER: "keysig_marker",
+    Q.TUPLET_MARKER_IS_NOT_A_MARKER: "tuplet_marker",
 }
 
 #: Every reason a HUMAN-ONLY family decision can return. Derived from the two
@@ -506,15 +548,16 @@ def _refused_by_a_human(ev: Evidence, detail: Dict[str, Any]
     quantity=Q.LEDGER_IS_NOT_A_LEDGER,
     composed_from=(Q.GLYPH_BOX, Q.STAFF_LINES, Q.STAFF_SPACING,
                    Q.CELL_STAFF_SPACE, Q.HUMAN_BOX_VERDICT,
-                   Q.GLYPH_BAND_DISTANCE),
+                   Q.GLYPH_BAND_DISTANCE, Q.LEDGER_INK_UNDER),
     scope=Kind.GLYPH,
     wants=(Q.GLYPH_BOX, Q.STAFF_LINES, Q.STAFF_SPACING, Q.CELL_STAFF_SPACE,
-           Q.HUMAN_BOX_VERDICT, Q.GLYPH_BAND_DISTANCE),
+           Q.HUMAN_BOX_VERDICT, Q.GLYPH_BAND_DISTANCE, Q.LEDGER_INK_UNDER),
     subjects_from=Q.GLYPH_BOX,
     subjects_classed=("ledgerLine",),
     reasons=HUMAN_REFUSAL_REASONS + ("inside_the_staff", "on_a_staff_line",
                                      "tall_not_a_rung", "no_head_on_the_rung",
-                                     "ledger_line",
+                                     "ink_under_the_rung", "ledger_line",
+                                     "rung_without_boxed_head",
                                      ABSTAIN.NO_STAFF_GEOMETRY),
     mode=Mode.ADDITIVE,
 )
@@ -652,17 +695,77 @@ def adjudicate_ledger_is_not_a_ledger(ev: Evidence) -> Ruling:
         return Ruling(value=True, reason="tall_not_a_rung",
                       used=tuple(used), detail=detail)
 
-    # ── no_head_on_the_rung: Sean's SECOND convention, 2026-09-24 (`[C91]`) ─
+    # ── no BOXED head: Sean's SECOND convention (`[C91]`), WITNESSED ─────────
     # *"only happen if there are actual notes in the staff"*. No notehead
-    # x-overlapping the rung within the measured tolerance, and none farther
-    # out than it. A bar holding only a whole rest has none.
+    # box x-overlapping the rung within the measured tolerance, and none
+    # farther out than it.
+    #
+    # ⚠️⚠️ ROADMAP 3.4g-3: NO BOXED HEAD IS *CANNOT TELL*, NOT *NO HEAD*.
+    # Sean, 2026-09-27, on the four crops 3.4g-2 refused here: two were REAL
+    # rungs whose printed notehead the detector never boxed. The detector's
+    # recall is the one witness that fails where heads fuse with their
+    # rungs, so on its own it may not refuse (CLAUDE.md §2 rule 8). The
+    # paper is the second witness — `Q.LEDGER_INK_UNDER`, GATHER's ink
+    # fraction in a notehead-sized window on the rung — and only it resolves:
+    #   ink well above its own background -> KEPT, `ink_under_the_rung`
+    #   ink at the paper's floor          -> REFUSED, `no_head_on_the_rung`
+    #   in between, or no witness at all  -> ABSTAINED,
+    #                                        `rung_without_boxed_head`
+    # An abstained rung is NOT a kept rung for any consumer that counts kept
+    # rungs; see FINDINGS §3.4g-3 for the one consumer that does not yet
+    # honour that (`notehead_precision._ledger_rungs_in_cell`, lane 2.7b).
     # ⚠️ WITHOUT A CELL UNIT THE HEAD RULE CANNOT RUN AND DOES NOT GUESS:
     # the box falls through to `ledger_line` exactly as it did before 3.4g-2.
     if heads is not None and not heads["near"]:
-        return Ruling(value=True, reason="no_head_on_the_rung",
+        witness = _ink_under_the_rung(ev)
+        detail["ink_witness"] = witness
+        if witness is None:
+            declined = ev.refusals(Q.LEDGER_INK_UNDER)
+            if declined:
+                detail["ink_witness_declined"] = declined[-1].reason
+        if witness is not None:
+            used.append(witness["row"])
+            under, back = witness["under"], witness["background"]
+            if (under >= LEDGER_INK_KEPT_MIN and back is not None
+                    and under - back >= LEDGER_INK_KEPT_CONTRAST_MIN):
+                return Ruling(value=False, reason="ink_under_the_rung",
+                              used=tuple(used), detail=detail)
+            if under <= LEDGER_INK_REFUSED_MAX:
+                return Ruling(value=True, reason="no_head_on_the_rung",
+                              used=tuple(used), detail=detail)
+        return Ruling(value=None, reason="rung_without_boxed_head",
                       used=tuple(used), detail=detail)
     return Ruling(value=False, reason="ledger_line", used=tuple(used),
                   detail=detail)
+
+
+def _ink_under_the_rung(ev: Evidence) -> Optional[Dict[str, Any]]:
+    """GATHER's `Q.LEDGER_INK_UNDER` on this glyph, or `None`.
+
+    ⚠️ AN ABSTENTION IS NOT A READING OF EMPTY PAPER. GATHER files
+    `no_mask` / `no_staff_geometry` where it could not look; `ev.rows`
+    returns observations only, so those arrive here as `None` — declined,
+    and the decision abstains rather than reading 0.0 into a refusal.
+    """
+    rows = ev.rows(Q.LEDGER_INK_UNDER)
+    if not rows:
+        return None
+    row = rows[-1]
+    try:
+        under = float(row.value)
+    except (TypeError, ValueError):
+        return None
+    d = row.detail or {}
+    back = d.get("ink_background")
+    # ⚠️ ALL FIVE OF GATHER'S NUMBERS RIDE ON THE VERDICT, so the viewer and
+    # a crop can show WHICH window saw the head and what the paper beside it
+    # read -- a threshold crossed by one window is a different fact from one
+    # crossed by all three.
+    return {"row": row.id, "under": round(under, 4),
+            "background": None if back is None else round(float(back), 4),
+            "best_window": d.get("ink_best_window"),
+            "windows": d.get("ink_windows"),
+            "background_windows": d.get("ink_background_windows")}
 
 
 @decision(
@@ -820,6 +923,140 @@ def adjudicate_articulation_is_not_an_articulation(ev: Evidence) -> Ruling:
     if refused is not None:
         return refused
     return Ruling(value=False, reason="articulation", used=used, detail=detail)
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# ROADMAP 3.4g-4 — the three families 3.4g's first pass did not cover
+#
+# ⚠️ Sean's second and third stage-review passes (Clarinet p12, Viola p2)
+# found them: the flag family (a `duplicate` on a `flag8thDown`, page 2) and
+# the key-marker family named by the ROADMAP work order; the tuplet numeral
+# is 3.4g's own closing line, *"a human witness reaches EVERY gathered
+# family"* — `tuplet`/`fingering3` were the one family left with a gathered
+# quantity (`Q.TUPLET_MARKER`) and no precision decision at all.
+#
+# ⚠️ FLAG AND TUPLET USE `subjects_from=Q.FLAG` / `Q.TUPLET_MARKER` — THEIR
+# OWN GATHERED QUANTITY — EXACTLY AS REST/ARC/DYNAMIC/ARTICULATION DO, and
+# NEVER a `Q.GLYPH_BOX` class narrowing, because a bare class-prefix narrowing
+# is a documented footgun in this tree already: `key_signature_
+# corroboration.py`'s own `startswith("key")` "also catches `keyboardPedalUp`
+# — a PEDAL marking." `subjects_for`'s class narrowing matches `str.
+# startswith` against the WHOLE lower-cased class name, not against
+# `class_aliases`' family boundary, so a decision keyed on the bare `key`
+# prefix would silently widen its domain to a family `gather_coverage.
+# FAMILY_TO_Q` maps to `None`.
+#
+# `Q.KEYSIG_MARKER` cannot take that same route — `gather.
+# _gather_keysig_markers` files it on the STAFF, not on a glyph, so
+# `subjects_from=Q.KEYSIG_MARKER` at `scope=Kind.GLYPH` would find no glyph to
+# collapse to. Its domain is therefore `Q.GLYPH_BOX` narrowed by
+# `subjects_classed=("keySharp", "keyFlat", "keyNatural")` — `gather.
+# _KEYSIG_CLASSES` exactly, not the bare `key` prefix above.
+#
+# The tuplet family has the SAME shape the key marker's `subjects_classed`
+# avoids, which is why `subjects_from` is the exact quantity and not a class
+# name at all: `gather_coverage.FAMILY_TO_Q` maps the WHOLE `tuplet` family
+# (`tuplet0`-`9`, `tupletBracket`) and the WHOLE `fingering` family to
+# `Q.TUPLET_MARKER`, but `gather._TUPLET_CLASSES = ("tuplet3", "fingering3",
+# "tupletBracket", "tupleBracket")` only ever FILES four literal class names
+# under it — `tuplet0/1/2/4-9` are a digit the tuplet reader never acts on
+# ("only 3:2 is acted on at all") and `fingering1/2/4/5` are ordinary piano
+# fingerings, neither ever reaching a `Q.TUPLET_MARKER` row at all. Reading
+# `Q.TUPLET_MARKER` itself is therefore already exactly the population
+# `adjudicate_tuplet` can read, with no separate list to keep in step with
+# `_TUPLET_CLASSES`.
+# ─────────────────────────────────────────────────────────────────────────────
+
+
+@decision(
+    quantity=Q.FLAG_IS_NOT_A_FLAG,
+    composed_from=(Q.GLYPH_BOX, Q.FLAG, Q.HUMAN_BOX_VERDICT,
+                   Q.GLYPH_BAND_DISTANCE),
+    scope=Kind.GLYPH,
+    wants=(Q.GLYPH_BOX, Q.FLAG, Q.HUMAN_BOX_VERDICT, Q.GLYPH_BAND_DISTANCE),
+    subjects_from=Q.FLAG,
+    reasons=_human_only_reasons(Q.FLAG_IS_NOT_A_FLAG),
+    mode=Mode.ADDITIVE,
+)
+def adjudicate_flag_is_not_a_flag(ev: Evidence) -> Ruling:
+    """Is this box the detector called a flag a symbol at all?
+
+    HUMAN WITNESS ONLY, on the same pattern REST/ARC/DYNAMIC/ARTICULATION
+    take in 3.4g: `subjects_from=Q.FLAG` rather than a `Q.GLYPH_BOX` class
+    narrowing, because `gather_rhythm_marks` files `Q.FLAG` on every
+    `flag*`-prefixed glyph 1:1 — no widening the way `Q.ACCIDENTAL_STAFF_
+    POSITION` excludes key-signature shapes. Its consumer is `rhythm.
+    _attached_flags`: a refused flag is a glyph a human struck out and must
+    not hand an unbeamed notehead its hook count.
+    """
+    _ = ev.rows(Q.FLAG)       # the domain's own quantity, declared and read
+    detail, used = _class_detail(ev)
+    refused = _refused_by_a_human(ev, detail)
+    if refused is not None:
+        return refused
+    return Ruling(value=False, reason="flag", used=used, detail=detail)
+
+
+@decision(
+    quantity=Q.KEYSIG_MARKER_IS_NOT_A_MARKER,
+    composed_from=(Q.GLYPH_BOX, Q.HUMAN_BOX_VERDICT, Q.GLYPH_BAND_DISTANCE),
+    scope=Kind.GLYPH,
+    wants=(Q.GLYPH_BOX, Q.HUMAN_BOX_VERDICT, Q.GLYPH_BAND_DISTANCE),
+    subjects_from=Q.GLYPH_BOX,
+    subjects_classed=("keySharp", "keyFlat", "keyNatural"),
+    reasons=_human_only_reasons(Q.KEYSIG_MARKER_IS_NOT_A_MARKER),
+    mode=Mode.ADDITIVE,
+)
+def adjudicate_keysig_marker_is_not_a_marker(ev: Evidence) -> Ruling:
+    """Is this `key*` box the detector drew in the header a symbol at all?
+
+    HUMAN WITNESS ONLY. `Q.KEYSIG_MARKER` names no glyph of its own
+    (`gather._gather_keysig_markers` files it on the STAFF), so this
+    decision's subjects are the `key*` `Q.GLYPH_BOX` rows the marker rows are
+    built from — exactly the glyphs a human box-labels in the stage review.
+    Its consumer is `header._staff_reading`'s marker-run intake, which rejoins
+    a refused glyph to the marker row it produced by frame, class and point
+    (the same join `ownership._keysig_marker_row` makes in the opposite
+    direction) and drops it before `_marker_run` ever sees it.
+    """
+    detail, used = _class_detail(ev)
+    refused = _refused_by_a_human(ev, detail)
+    if refused is not None:
+        return refused
+    return Ruling(value=False, reason="keysig_marker", used=used,
+                  detail=detail)
+
+
+@decision(
+    quantity=Q.TUPLET_MARKER_IS_NOT_A_MARKER,
+    composed_from=(Q.GLYPH_BOX, Q.TUPLET_MARKER, Q.HUMAN_BOX_VERDICT,
+                   Q.GLYPH_BAND_DISTANCE),
+    scope=Kind.GLYPH,
+    wants=(Q.GLYPH_BOX, Q.TUPLET_MARKER, Q.HUMAN_BOX_VERDICT,
+           Q.GLYPH_BAND_DISTANCE),
+    subjects_from=Q.TUPLET_MARKER,
+    reasons=_human_only_reasons(Q.TUPLET_MARKER_IS_NOT_A_MARKER),
+    mode=Mode.ADDITIVE,
+)
+def adjudicate_tuplet_marker_is_not_a_marker(ev: Evidence) -> Ruling:
+    """Is this box the detector called a tuplet numeral or bracket a symbol
+    at all?
+
+    HUMAN WITNESS ONLY, `subjects_from=Q.TUPLET_MARKER` rather than a
+    `Q.GLYPH_BOX` class narrowing — `gather._TUPLET_CLASSES` already files
+    exactly `tuplet3`, `tupletBracket` and `fingering3` under it (see the
+    module comment above for why the wider `tuplet`/`fingering` FAMILIES are
+    not named: most of their classes never reach this quantity at all). Its
+    consumer is `rhythm.adjudicate_tuplet`, which must not read a 3:2 ratio
+    off a marker a human struck out.
+    """
+    _ = ev.rows(Q.TUPLET_MARKER)  # the domain's own quantity, declared and read
+    detail, used = _class_detail(ev)
+    refused = _refused_by_a_human(ev, detail)
+    if refused is not None:
+        return refused
+    return Ruling(value=False, reason="tuplet_marker", used=used,
+                  detail=detail)
 
 
 #: Every family refusal, and the quantity that names it. ⚠️ DERIVED FROM

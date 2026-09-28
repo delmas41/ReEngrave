@@ -292,6 +292,15 @@ Format: `YYYY-MM-DD · who · the decision · because · (pointer)`
   a fast-forward; merging is not completion — the 2.7 gate stands ·
   (`benchmarks/acceptance/out/*/…coverage.json` → `accidental_reading`;
   `benchmarks/omr-cleanup-count-2026-09/counts/README.md`)
+- 2026-09-28 · overnight manager, by CLAUDE.md §4a (not Sean) · **2.9c: the
+  slot placement STAYS in INFER, and the ADJUDICATE part check speaks to a
+  NARROWED slot only when every candidate reaches the identical expected key.**
+  · `collapse_slot_index_to_family_block`'s own docstring says its answer is
+  BEST rather than FORCED (a tacet Violino II or another condensed pair would
+  shift the block), so moving it into ADJUDICATE would promote a guess;
+  whereas "every candidate part expects −3" FOLLOWS whichever candidate is
+  right · Litolff key changes 18 → 0, wrong staves 9 → 0, Brahms and engraved
+  byte-identical · (ROADMAP 2.9c, merge `2d2352fb`)
 - 2026-09-28 · Sean · **Probability is REOPENED as planned work, reversing
   the park in plan 2026-09-22 §7: the pipeline will carry a likelihood on its
   candidates, calibrated against human answers, so that (1) the review can
