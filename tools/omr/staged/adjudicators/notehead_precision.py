@@ -466,19 +466,26 @@ def _belongs_to_a_nearer_staff(ev: Evidence, box_row, contested_by,
     if filed <= NEARER_STAFF_FILED_MIN_SPACES:
         return None
 
-    near = None
-    for other in ev.subjects(Kind.STAFF):
-        if (other.page, other.system) != (staff.page, staff.system) \
-                or other == staff:
-            continue
-        geo = _staff_geometry(ev, other)
-        if geo is None:
-            continue
-        d = _band_spaces(y, geo[0], geo[1])
-        if d is not None and (near is None or d < near[0]):
-            near = (d, other, geo[2])
-    if near is None:
+    # ⚠️ THE ADJACENT STAFF ON THE HEAD'S OWN SIDE, AND ONLY THAT ONE. Staff
+    # indices run down the system in page order, so the only staff that can
+    # be nearer than the filed one lies on the side the head stands on, and
+    # the nearest of those is the adjacent one. NOT `ev.subjects(Kind.
+    # STAFF)`: `Log._index` clears that cache on every verdict write, so a
+    # per-head call walks the whole index once per head — measured, the
+    # Litolff whole-movement ADJUDICATE ran past 31 CPU-minutes against ~20.
+    # A system's top staff has no staff above it; a bottom staff's
+    # neighbour below is simply absent from the record, which is the truth.
+    if staff.staff is None or (y < ys[0] and staff.staff == 0):
         return None
+    other = R.staff(staff.page, staff.system,
+                    staff.staff - 1 if y < ys[0] else staff.staff + 1)
+    geo = _staff_geometry(ev, other)
+    if geo is None:
+        return None
+    d = _band_spaces(y, geo[0], geo[1])
+    if d is None:
+        return None
+    near = (d, other, geo[2])
     signal["near_staff"] = near[1].to_key()
     signal["near_spaces"] = round(near[0], 3)
     if near[0] > NEARER_STAFF_NEAR_MAX_SPACES or near[0] >= filed:
