@@ -716,7 +716,7 @@ def _print_accounting_summary(*, musicxml_report: Optional[dict],
     if marks is not None:
         print(f"  unread bars (\"{marks['words']['unread']}\", read NOTHING): "
               f"{marks['unread']}", file=sys.stderr)
-        print(f"  held-out bars (\"{marks['words'].get('bar_does_not_add_up', 'held: does not add up')}\"): "
+        print(f"  held-out bars (\"{marks['words'].get('bar_does_not_add_up', 'unread')}\"): "
               f"{marks['held_out_sum']}", file=sys.stderr)
         print(f"  total bars marked red in the file: {marks['written']} "
               f"(colour {marks['color']})", file=sys.stderr)

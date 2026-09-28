@@ -79,7 +79,7 @@ class TestAnUnreadBarIsMarked(unittest.TestCase):
 
 class TestAHeldOutBarIsMarked(unittest.TestCase):
     """(b) A bar roadmap 2.8 holds out (its durations do not sum to the
-    meter in force) -> a red rest plus the words 'held: does not add up'."""
+    meter in force) -> a red rest plus the word 'unread' (Sean 2026-09-28: one word for every reason)."""
 
     def _page(self):
         return _bar([("C4", QUARTER), ("D4", QUARTER), ("E4", QUARTER)])

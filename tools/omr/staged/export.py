@@ -3235,10 +3235,16 @@ UNREAD_BAR_MARK_REASON_UNREAD = "unread"
 #: Keyed by the SAME refusal name the accounting already uses
 #: (`_BAR_SUM_REFUSAL`, `_MARK_REFUSAL`, both defined above) or, for a bar we
 #: read nothing in at all, `UNREAD_BAR_MARK_REASON_UNREAD`.
+#:
+#: ⚠️ ONE WORD ON THE PAGE FOR EVERY REASON (Sean, 2026-09-28: *"Shorten to
+#: unread"*). A bar held because it does not add up is a bar we could not
+#: read, and three stacked phrases over a crowded system were illegible. The
+#: REASON is not lost: it stays keyed here and in the accounting
+#: (`report["unread_bar_marks"]`, the web panel), just not printed.
 UNREAD_BAR_MARK_WORDS: Dict[str, str] = {
     UNREAD_BAR_MARK_REASON_UNREAD: "unread",
-    _BAR_SUM_REFUSAL: "held: does not add up",
-    _MARK_REFUSAL: "held: possible unread mark",
+    _BAR_SUM_REFUSAL: "unread",
+    _MARK_REFUSAL: "unread",
 }
 
 
