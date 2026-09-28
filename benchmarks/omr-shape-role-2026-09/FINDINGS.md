@@ -1650,3 +1650,178 @@ reading before it will judge a bar at all, so export-side there is no
 independent default-to-4/4 path this item found. This is a NEGATIVE finding
 scoped to the code this item touched, not an exhaustive audit of all 28
 decisions and EXPORT for other, unrelated default paths.
+
+---
+
+# PART 6 — §2.12h: A VOTE IS NOT THE ONLY WITNESS TO A SYSTEM'S OPENING —
+THE ADJACENT CAUTIONARY IS THE ONE THAT WAS NEVER ASKED
+
+*(Branch `claude/opening-meter-2.12h`, 2026-09-28. Brief: Brahms 1/i's
+opening meter reads `9/4` on `system/1/0` where the plate "prints `6/8`".
+That premise was WRONG — see "What contradicted this brief" below — and the
+trace, not the brief, is what this item was built against.)*
+
+## The trace (one record, read once)
+
+`python3 -m tools.omr.staged.trace --run <the 2026-09-28 whole-movement
+Brahms record> --subject system/1/0`: `meter = {numerator: 9, denominator: 4,
+raw: "9/4", ...}`, `decider=adjudicate_meter reason=voted`, `read 10 of 1034
+rows considered`. Reading the record's own `Q.METER_TEMPLATE` rows directly
+(`record_io.load_record`, once) for the ten staves that spoke: every one of
+them reads `raw: "9/4"` at `score` 0.50–0.53 (barely over `min_score = 0.50`)
+with a runner-up of `"6/4"` or `"C"` — **never `"9/8"`** — at a margin of only
+0.04–0.09. `LocatedTimeSignature` keeps only the winner and ONE runner-up, so
+the template reader's own score for a genuine `9/8` candidate is not on the
+record at all; an ADJUDICATE-only fix cannot "pick a better candidate" out of
+what GATHER wrote down, only weigh the vote against a DIFFERENT witness
+already on the record.
+
+That witness already exists. `system/0/0` — the immediately preceding system
+— is DECIDED `voted` `6/8` and its own value carries `cautionary: {from_cell:
+7, numerator: 9, denominator: 8, raw: "9/8", support: 26.5, staves_reading_
+it: [0,1,2,3,4,6,8,10,12] (9 of 14), corroborated: true, bars_fit: 0}`. A-
+METER-5 already reads and RECORDS this courtesy signature, with the comment
+*"consuming it belongs with the carry"* — but nothing before this item ever
+did: `_carry_meter` only ever asks `_meter_in_force_at_end` for a source's
+own bar-governing meter, and the "voted" success path returns outright the
+moment coverage and agreement clear, never consulting a neighbour.
+
+## The print (crops, not inference)
+
+`benchmarks/omr-shape-role-2026-09/crop_opening_meter.py` (self-contained,
+geometry-only read of `cell_box`/`staff_lines`/`staff_spacing` from the same
+record, pages rendered straight off the PDF, no detector, no re-gather) cuts
+`system/1/0` cell 0 (the header, where `Q.METER_GLYPH` already files a
+low-confidence `timeSig8` box on 2 of 14 staves at `x≈432`) on staves 1, 4,
+6, 8, plus `system/0/0`'s own cautionary cell (7) for contrast:
+`benchmarks/omr-shape-role-2026-09/out/print/m212h-brahms1-breitkopf/`.
+Every crop shows the SAME two-digit stack: a single-loop "9" (tail below,
+left) over a DOUBLE-loop "8" (two stacked closed counters) — unambiguously
+`9/8`, on both the opening and the cautionary. **Not `9/4`** (a "4" has no
+enclosed counter at this weight) **and not `6/8`** (a "6" has its loop at the
+BOTTOM with the tail rising, the mirror of what is printed). `VERDICT_none_
+yet: null` on every sidecar, for Sean.
+
+## The cause, named
+
+The denominator digit "8" is misread as "4" by the header-window TEMPLATE
+reader (`time_signature_locator.locate_time_signature`) specifically on this
+crop — `9/8` IS one of `DEFAULT_METERS`' 21 candidate templates, so this is
+not a missing template, it is that candidate's own NCC score losing to `9/4`
+and `6/4` on this particular (Breitkopf-shattered) ink. The numerator digit
+"9" is read correctly by the SAME reader on the SAME ten staves — the fault
+is confined to the denominator half of the match.
+
+## The fix — ADJUDICATE only, two connected pieces
+
+No GATHER change; both pieces are new code in
+`tools/omr/staged/adjudicators/rhythm.py`, wiring an already-recorded fact
+into two consumers that never read it before (CLAUDE.md rule 6: connect,
+never guess):
+
+1. `_adjacent_corroborated_cautionary(ev, here)` — the STRICT immediate
+   predecessor system's `cautionary`, if `corroborated`. Adjacency is
+   computed off `Subject`'s own document ordering (`ev.subjects(Kind.
+   SYSTEM)`, sorted), not "nearest system with a decided meter" — a
+   cautionary names the system directly after it and nothing farther, so a
+   system `_carry_meter` had to walk past an abstention to reach never
+   qualifies.
+2. `adjudicate_meter`'s "voted" success path now calls it: where the
+   immediate predecessor's corroborated cautionary DISAGREES with this
+   system's own unanimous vote, the vote is not asserted outright — it is
+   rerouted through the existing `_meter_fallbacks` ladder under a new
+   reason, `opening_disagrees_with_prior_cautionary`.
+3. `_carry_meter` itself: when the source it is examining is that same
+   strict-adjacent cautionary-bearer, it substitutes the cautionary's
+   `(numerator, denominator, raw)` for `_meter_in_force_at_end`'s answer
+   (which would otherwise just repeat the source's OWN in-force meter —
+   the wrong question once a change is printed between the two systems),
+   then weighs it via the SAME `_corroborate` bar-arbitration every other
+   carry candidate already goes through (`METER_CARRY_FLOOR`, `METER_CARRY_
+   MIN_BARS`). `detail["carried_via_cautionary"]` says which fact of the
+   source travelled, for anyone reading the record later.
+
+A vote is never simply overruled by the cautionary, and the cautionary is
+never asserted on its own say-so (rule 8: a fallback never converts "cannot
+tell" into an answer) — the destination's OWN bars still decide whether the
+carried candidate stands, exactly as for any other carry, and a bar-refusal
+still ends in an ABSTAIN naming `carry_outweighed_by_the_bars`, never a
+default.
+
+## Tests, RED first
+
+`tools/omr/tests/test_staged_opening_meter.py` (new file, 7 tests, synthetic
+two- and three-system fixtures reproducing the Brahms shape at fixture
+scale — no real record needed to prove the mechanism):
+
+- **RED, verified two ways.** (a) `test_the_fix_is_reachable_RED_without_it`
+  monkeypatches `_adjacent_corroborated_cautionary` to always return `None`
+  (exactly what every call site saw before this item) and asserts the
+  destination still asserts its own wrong vote — this passes GREEN today as
+  a live regression guard. (b) Independently, the pre-fix `rhythm.py` was
+  restored from `git show HEAD:...` and the suite re-run: `test_the_bars_
+  confirm_the_cautionary_and_it_is_carried` and `test_the_bars_can_still_
+  REFUSE_the_cautionary` both FAILED (the second with an `AttributeError`
+  for the function this item adds, the first by asserting `9/4` where `9/8`
+  is now expected) — then the fixed file was restored and all 7 passed.
+- **GREEN, the fix.** The destination's own bars (2 bars of 4.5 quarters,
+  3 staves each) fit `9/8` and refuse `9/4`'s own 9.0-quarter length →
+  `reason="carried"`, value `9/8`, `detail["carried_via_cautionary"] is
+  True`.
+- **Positive control — a clean opening is untouched.** No preceding system
+  at all → a plain unanimous `4/4` vote reads `4/4`, `reason="voted"`
+  (the brief's own requested control).
+- **Control — agreement means no reroute.** Destination votes `9/8` (the
+  SAME value the cautionary names) → `reason="voted"` still, proving the
+  mechanism does not fire needlessly even though it would reach the same
+  answer either way.
+- **Control — an UNCORROBORATED cautionary does not override.** Only 1 of 3
+  staves reads the courtesy signature → below `METER_CHANGE_MIN_STAVES = 2`
+  → the vote stands.
+- **Control — the bars can still REFUSE the cautionary (the brief's second
+  requested control, rule 8).** Destination's own bars measure 2.0 quarters
+  twice — neither witness's length — → `Outcome.ABSTAINED`, reason `carry_
+  outweighed_by_the_bars`, never a default and never the cautionary by fiat.
+- **Control — adjacency, not "nearest decided system".** Three systems: the
+  cautionary-bearer, an intervening system that AGREES with it (so it is not
+  itself rerouted) and prints no cautionary of its own, then a third system
+  voting a DIFFERENT, conflicting value — the third system is unaffected,
+  because the cautionary was never printed for it.
+
+`pytest tools/omr/tests/test_staged_opening_meter.py -v`: 7 passed.
+`pytest tools/omr/tests/test_staged_header_rhythm.py`: 94 passed (no
+regression in the existing meter/cautionary suite). `pytest tools/omr/tests
+-m "not slow" -q -p no:warnings -x`: **3,472 passed, 3 skipped** (up from
+3,465/3 on `41cdc025` by exactly this item's 7 new tests).
+`python3 -m tools.omr.staged.check`: **251** (unchanged from main).
+
+## The one-subject re-decision — SKIPPED, and why
+
+The brief asked for one narrow re-decision of `system/1/0`'s `Q.METER` from
+the saved record, naming `review/rerun.py --staff` as a candidate tool.
+Read closely: `--staff` only narrows the CENSUS `rerun.py` reports (`staff_
+census`, which subjects a diff line is grouped under) — `rebuild_gather`
+replays every observation and abstention in the file into a fresh `Log` and
+`run_stages` then calls `pipeline.decide`, which re-adjudicates the WHOLE
+document (89 systems, 440K observations on this record), not one subject.
+This is exactly the cost 2.12d's own session already measured and the
+proof budget for this item explicitly excludes ("no whole-movement re-
+adjudications"). No tool in the tree re-decides a single `Q.METER` verdict
+in isolation from a saved record — **skipped, per the brief's own
+fallback instruction.**
+
+## What contradicted this brief
+
+**"The plate prints `6/8`" was wrong.** The crops (above) show `9/8`
+unambiguously at both `system/1/0`'s opening and `system/0/0`'s cautionary
+one system earlier — the SAME shape 2.12d's own session already named in
+passing (*"the opening `9/8` is voted `9/4`"*) without this item's brief
+picking it up. The fix reads `9/8`, not `6/8`, and the tests assert that
+value throughout. Sean has not adjudicated the crops (`VERDICT_none_yet:
+null` on every sidecar) — if he reads the print differently the fix should
+be revisited, but three independent sources agree here: the cautionary's
+own corroborated reading (9 of 14 staves), the low-confidence `timeSig8`
+detector box at the opening's own cell 0, and the crop itself.
+
+The brief's suggested re-decision tool does not do what its own flag name
+suggests — recorded above rather than silently worked around.

@@ -1,0 +1,85 @@
+{
+  "label": "brahms1-breitkopf",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf",
+  "dpi": 600,
+  "tiles": [
+    {
+      "cell_subject": "cell/1/0/1/0",
+      "staff_subject": "staff/1/0/1",
+      "bbox_page_px": [
+        625.0,
+        712.0,
+        1830.0,
+        1039.0
+      ],
+      "caveat": "the bracket is the CELL FRAME (header + first bar for cell 0), not any one glyph -- Q.METER_GLYPH carries no page-pixel bbox for this family",
+      "file": "m212h-brahms1-breitkopf-sys1-0-opening-cell0-staff1.png",
+      "VERDICT_none_yet": null
+    },
+    {
+      "cell_subject": "cell/1/0/1/1",
+      "staff_subject": "staff/1/0/1",
+      "bbox_page_px": [
+        1830.0,
+        712.0,
+        2488.0,
+        1039.0
+      ],
+      "caveat": "the bracket is the CELL FRAME (header + first bar for cell 0), not any one glyph -- Q.METER_GLYPH carries no page-pixel bbox for this family",
+      "file": "m212h-brahms1-breitkopf-sys1-0-opening-cell1-staff1.png",
+      "VERDICT_none_yet": null
+    },
+    {
+      "cell_subject": "cell/1/0/4/0",
+      "staff_subject": "staff/1/0/4",
+      "bbox_page_px": [
+        625.0,
+        1452.0,
+        1830.0,
+        1782.0
+      ],
+      "caveat": "the bracket is the CELL FRAME (header + first bar for cell 0), not any one glyph -- Q.METER_GLYPH carries no page-pixel bbox for this family",
+      "file": "m212h-brahms1-breitkopf-sys1-0-opening-cell0-staff4.png",
+      "VERDICT_none_yet": null
+    },
+    {
+      "cell_subject": "cell/1/0/6/0",
+      "staff_subject": "staff/1/0/6",
+      "bbox_page_px": [
+        625.0,
+        1903.0,
+        1830.0,
+        2284.0
+      ],
+      "caveat": "the bracket is the CELL FRAME (header + first bar for cell 0), not any one glyph -- Q.METER_GLYPH carries no page-pixel bbox for this family",
+      "file": "m212h-brahms1-breitkopf-sys1-0-opening-cell0-staff6.png",
+      "VERDICT_none_yet": null
+    },
+    {
+      "cell_subject": "cell/1/0/8/0",
+      "staff_subject": "staff/1/0/8",
+      "bbox_page_px": [
+        625.0,
+        2382.0,
+        1830.0,
+        2712.0
+      ],
+      "caveat": "the bracket is the CELL FRAME (header + first bar for cell 0), not any one glyph -- Q.METER_GLYPH carries no page-pixel bbox for this family",
+      "file": "m212h-brahms1-breitkopf-sys1-0-opening-cell0-staff8.png",
+      "VERDICT_none_yet": null
+    },
+    {
+      "cell_subject": "cell/0/0/1/7",
+      "staff_subject": "staff/0/0/1",
+      "bbox_page_px": [
+        5388.0,
+        1777.0,
+        5501.0,
+        2289.0
+      ],
+      "caveat": "the bracket is the CELL FRAME (header + first bar for cell 0), not any one glyph -- Q.METER_GLYPH carries no page-pixel bbox for this family",
+      "file": "m212h-brahms1-breitkopf-sys0-0-cautionary-cell7-staff1.png",
+      "VERDICT_none_yet": null
+    }
+  ]
+}

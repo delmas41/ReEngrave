@@ -2728,6 +2728,84 @@ def _meter_in_force_at_end(value: dict, n_cells: int) -> Optional[dict]:
 METER_SOURCE_REASONS = ("voted", "change_only")
 
 
+# ─────────────────────────────────────────────────────────────────────────────
+# ROADMAP 2.12h — A CAUTIONARY NAMES THE VERY NEXT SYSTEM'S OPENING.
+#
+# A-METER-5 already reads and RECORDS a courtesy signature (`cautionary` on
+# the value, never a segment of the printing system's own bars) with the
+# comment that consuming it "belongs with the carry" — but nothing ever did.
+# Brahms 1 / Breitkopf, whole-movement: `system/0/0`'s last cell corroborates
+# a `9/8` cautionary at support 26.5 on 9 of 14 staves (measured, not a
+# fixture number); `system/1/0` — the very next system — VOTES its own
+# opening unanimously (10 of 10 staves that spoke) at `9/4`, and every one of
+# those 10 template readings carries a THIN margin over its own runner-up
+# (0.04-0.09, never `9/8`) with a score barely over `min_score`. A print crop
+# of the header (`benchmarks/omr-shape-role-2026-09/out/print/
+# m212h-brahms1-breitkopf/`) shows `9/8` engraved, not `9/4` — the "9" is
+# right, the denominator "8" is not.
+#
+# ⚠️ THE TEMPLATE READER'S OWN SCORE FOR A GENUINE `9/8` CANDIDATE IS NOT ON
+# THE RECORD AT ALL — `LocatedTimeSignature` keeps only the WINNER and its
+# single runner-up, so an ADJUDICATE-only fix cannot "pick a better
+# candidate" out of what GATHER wrote down; it can only WEIGH the vote
+# against a DIFFERENT witness already on the record. The cautionary is
+# exactly that witness: read from a different crop, on more staves, at
+# higher support, by the same per-staff template reader.
+#
+# ⚠️ CONNECT, NEVER GUESS (CLAUDE.md rule 6). This does not adopt the
+# cautionary on its own say-so — a corroborated courtesy signature could
+# itself be a misread. It reroutes a vote that CONTRADICTS one through the
+# existing fallback ladder, where `_carry_meter` weighs the cautionary
+# against THIS system's own bars via `_corroborate` exactly as any other
+# carry candidate is weighed (`METER_CARRY_FLOOR`, `METER_CARRY_MIN_BARS`) —
+# the same safety net that already refuses a bad carry
+# (`carry_outweighed_by_the_bars`). A vote is never simply overruled; it is
+# RECHECKED against a witness the vote itself cannot see, and if the bars
+# refuse the cautionary too the system ABSTAINS (rule 8: never converts
+# "cannot tell" into an answer) rather than asserting either one.
+#
+# ⚠️ ADJACENCY, NOT "nearest system with a decided meter". A cautionary is a
+# statement about the system directly after it and nothing farther — so only
+# the STRICT immediate predecessor in document order (by page then system,
+# `Subject`'s own ordering) may ever supply one, never a system `_carry_meter`
+# had to walk past an abstention to reach.
+# ─────────────────────────────────────────────────────────────────────────────
+
+
+def _adjacent_corroborated_cautionary(ev: Evidence,
+                                      here: Subject) -> Optional[Dict[str, Any]]:
+    """The STRICT immediate predecessor system's cautionary, if corroborated.
+
+    None where `here` is the document's first system, where the predecessor's
+    own meter is not DECIDED, or where it decided one but printed no
+    cautionary — or printed one no second staff confirmed (A-METER-6's own
+    `corroborated` flag, computed once by `_meter_changes` and read here
+    rather than re-derived).
+    """
+    all_systems = ev.subjects(Kind.SYSTEM)
+    try:
+        idx = all_systems.index(here)
+    except ValueError:
+        return None
+    if idx <= 0:
+        return None
+    prev = all_systems[idx - 1]
+    found = ev.verdict(Q.METER, subject=prev)
+    if found is None or found.outcome is not Outcome.DECIDED:
+        return None
+    caution = (found.value or {}).get("cautionary")
+    if not caution or not caution.get("corroborated"):
+        return None
+    num, den = caution.get("numerator"), caution.get("denominator")
+    if not num or not den:
+        return None
+    return {"numerator": int(num), "denominator": int(den),
+            "raw": caution.get("raw") or f"{num}/{den}",
+            "source": prev.to_key(),
+            "support": caution.get("support"),
+            "staves_reading_it": caution.get("staves_reading_it")}
+
+
 def _carry_meter(ev: Evidence, instead_of: str) -> Optional[Ruling]:
     """The nearest preceding system whose meter was READ, or None.
 
@@ -2747,6 +2825,11 @@ def _carry_meter(ev: Evidence, instead_of: str) -> Optional[Ruling]:
     #: ⚠️ A page with no carry source and a page that walked past one are two
     #: different pages and must not read the same in the log.
     skipped_uncorroborated: list = []
+    # ⚠️ 2.12h, computed ONCE: the strict immediate predecessor's corroborated
+    # cautionary, if any. See the block comment above
+    # `_adjacent_corroborated_cautionary` for why this is safe to prefer over
+    # "in force at end" on its OWN named system only.
+    adjacent_caution = _adjacent_corroborated_cautionary(ev, here)
     for src in reversed([s for s in ev.subjects(Kind.SYSTEM) if s < here]):
         found = ev.verdict(Q.METER, subject=src)
         if found is None or found.outcome is not Outcome.DECIDED:
@@ -2754,6 +2837,12 @@ def _carry_meter(ev: Evidence, instead_of: str) -> Optional[Ruling]:
         if found.reason not in METER_SOURCE_REASONS:
             continue
         pages = (here.page or 0) - (src.page or 0)
+        # ⚠️ 2.12h: THIS source, and only this one, may be the cautionary's
+        # own named system -- `_adjacent_corroborated_cautionary` already
+        # checked strict adjacency and corroboration, so nothing here
+        # re-derives either.
+        is_cautionary_source = (adjacent_caution is not None
+                                and adjacent_caution["source"] == src.to_key())
         # ⚠️⚠️ THE SECOND WITNESS, AND IT IS WHAT MAKES THE CARRY SAFE
         # WITHOUT A MOVEMENT DETECTOR. A carried meter is a CANDIDATE; this
         # system's own bars confirm or refuse it. A movement boundary needs no
@@ -2782,7 +2871,17 @@ def _carry_meter(ev: Evidence, instead_of: str) -> Optional[Ruling]:
                               scope=Scope.SELF_AND_DESCENDANTS, subject=src):
             if mp.outcome is Outcome.DECIDED and isinstance(mp.value, int):
                 n_cells = max(n_cells, mp.value)
-        carried = _meter_in_force_at_end(found.value, n_cells)
+        # ⚠️ 2.12h: THE COURTESY SIGNATURE OUTRANKS "in force at end" ON ITS
+        # OWN NAMED SYSTEM. A cautionary states what `here` opens with
+        # directly; `_meter_in_force_at_end` only ever answers what the
+        # SOURCE's own bars were doing, which is a different question the
+        # moment a change is printed between them.
+        if is_cautionary_source:
+            carried = {"numerator": adjacent_caution["numerator"],
+                      "denominator": adjacent_caution["denominator"],
+                      "raw": adjacent_caution["raw"]}
+        else:
+            carried = _meter_in_force_at_end(found.value, n_cells)
         if carried is None:
             # ⚠️ A-METER-6: this source's only meter is a change ONE staff
             # read, so it has nothing anyone corroborated to hand on. Keep
@@ -2799,6 +2898,7 @@ def _carry_meter(ev: Evidence, instead_of: str) -> Optional[Ruling]:
                                   carried_from=src.to_key(),
                                   pages_since_read=pages,
                                   instead_of=instead_of,
+                                  carried_via_cautionary=is_cautionary_source,
                                   skipped_uncorroborated=skipped_uncorroborated,
                                   **check)
         # ⚠️ THE CARRY IS A TERM, NOT A DECISION. It enters the sum on the
@@ -2809,9 +2909,18 @@ def _carry_meter(ev: Evidence, instead_of: str) -> Optional[Ruling]:
         detail = {"carried_from": src.to_key(),
                   "pages_since_read": pages,
                   "instead_of": instead_of,
-                  "source_share": (found.detail or {}).get("share"),
+                  # ⚠️ 2.12h: WHICH FACT of the source travelled -- its own
+                  # in-force meter, or the courtesy signature naming `here`
+                  # directly -- because the two answer different questions
+                  # and a reader must be able to tell them apart.
+                  "carried_via_cautionary": is_cautionary_source,
+                  "source_share": (adjacent_caution.get("support")
+                                   if is_cautionary_source
+                                   else (found.detail or {}).get("share")),
                   "source_staves_spoke":
-                      (found.detail or {}).get("n_staves_spoke"),
+                      (len(adjacent_caution.get("staves_reading_it") or [])
+                       if is_cautionary_source
+                       else (found.detail or {}).get("n_staves_spoke")),
                   "support": round(support, 3),
                   "floor": METER_CARRY_FLOOR,
                   "bars_agree": check["bars_agree"],
@@ -3082,7 +3191,8 @@ def _meter_fallbacks(ev: Evidence, why: str, **detail) -> Ruling:
              "carry_not_corroborated", "carry_outweighed_by_the_bars",
              "carry_source_uncorroborated",
              "change_only", "derived_from_bars",
-             "bars_name_a_length_without_a_form"),
+             "bars_name_a_length_without_a_form",
+             "opening_disagrees_with_prior_cautionary"),
     mode=Mode.ADDITIVE,
 )
 def adjudicate_meter(ev: Evidence) -> Ruling:
@@ -3144,6 +3254,23 @@ def adjudicate_meter(ev: Evidence) -> Ruling:
     opening = {"numerator": witnesses[0].value[0],
                "denominator": witnesses[0].value[1],
                "raw": best_raw}
+    # ⚠️ ROADMAP 2.12h. A vote -- however unanimous -- is not the only
+    # witness to this system's OPENING: the immediately preceding system's
+    # own courtesy signature names it directly (A-METER-5). Where that
+    # cautionary is CORROBORATED and disagrees, this vote is not asserted
+    # outright; it is rerouted through the same fallback ladder an
+    # unreadable opening already uses, so `_carry_meter` can weigh the
+    # cautionary against THIS system's own bars (`_corroborate`) exactly as
+    # any other carry candidate -- never a blind swap, and never a default.
+    # See the block comment above `_adjacent_corroborated_cautionary`.
+    caution = _adjacent_corroborated_cautionary(ev, ev.subject)
+    if caution is not None and (
+            (caution["numerator"], caution["denominator"])
+            != (opening["numerator"], opening["denominator"])):
+        return _meter_fallbacks(
+            ev, "opening_disagrees_with_prior_cautionary",
+            would_have_been=best_raw, would_have_been_share=round(share, 3),
+            contradicts_cautionary=caution)
     return Ruling(value=_with_segments(ev, opening),
                   reason="voted", margin=share,
                   used=tuple(r.id for r in witnesses),
