@@ -237,3 +237,32 @@ Gate: Beethoven 5, four movements, four MusicXML + four PDFs, page ranges right.
 Cleanup count every two weeks on the fixed pages; corrections filed as
 evidence; auto-accept rules from recorded verdicts. Done for a publisher when
 Sean would rather fix than re-enter.
+
+## Phase 6 — The question and its likelihood (planned 2026-09-28; NO CODE until the manager dispatches)
+
+Defined in [docs/plan-2026-09-28-the-question-and-its-likelihood.md](docs/plan-2026-09-28-the-question-and-its-likelihood.md)
+(its §5 is each item's gate, control and fence; its §8 is Sean's open
+questions). Sean, 2026-09-28: probability reopened as planned work; nothing
+here starts before the current coding session reaches a break, and one
+manager session dispatches it (DECISIONS 2026-09-28). Goals: a human is
+shown one bar and picks from a short list of what the ink could be; the
+pipeline's likelihoods are calibrated against those answers; unboxed ink is
+narrowed from what is known about it; where two decisions depend on each
+other the more certain informs the less certain.
+
+| item | what | status |
+|---|---|---|
+| 6.0 | Probability reopened as planned work (reverses plan 09-22 §7's park); a likelihood obeys the seven rules of plan §3 | **decided** (DECISIONS 2026-09-28); the §3 rules are PROPOSED until Sean answers plan §8 Q1 |
+| 6.1 | The question: the viewer shows each NARROWED verdict as choices (candidates in support order + "none of these" + "something else"); sidecar verb `choose`; first consumer `adjudicate_duration` (reason `human_choice`, only on its own candidate) | todo — waits for the manager; no re-gather; RED first; control: a pick outside the candidate list is REFUSED |
+| 6.2 | The answer log: every question SHOWN is logged with its candidates, order, support, `Q.GLYPH_CONF`, the answer or `unanswered`, reader and provenance (optional sidecar field `shown`); an extractor builds the corpus from committed sidecars | todo — one lane with 6.1; gate: Sean's three passes reproduce, untouched boxes read `unanswered`, never confirmed |
+| 6.3 | GATHER files the detector's opinions: top-k classes + raw scores per box, and sub-threshold boxes, as NEW quantities nothing existing reads (`detect` unchanged, legacy byte-identical) | todo — after 2.12g (same detector call); two full re-gathers; control: base and arm verdicts + MusicXML identical |
+| 6.4 | `ink_kind`, the first reader of `Q.INK`: DECIDES only on a convention Sean states, NARROWS unboxed ink by shape + 6.3's weak opinions, ABSTAINS otherwise; reaches EXPORT only as an unread-bar mark, never a note | todo — after 2.4c and 6.3; needs per-component ink on the count pages; crops to Sean before any default |
+| 6.5a | First reliability table for the detector's own score from Sean's three committed review passes (confirm / relabel / nothing per score band, per family) | todo — read-only, needs the three records on the Mac, no pipeline change; small n stated |
+| 6.5 | Calibration tables per (decider or detector family) from 6.2's corpus: top-1 reliability, top-k coverage, ECE on bins fixed in advance; INFER files the likelihood as a labelled row naming its table; below a minimum n there is none | todo — after 6.2; controls: held-out split, shuffled answers must worsen it; authorises `benchmarks/omr-likelihood-2026-09/` |
+| 6.6 | The question queue: a bar at a time across staves, ordered by consequence (what an answer releases), then by calibrated uncertainty | todo — after 6.1 (consequence order), 6.5 (likelihood order); gate: questions per page vs fix-actions per page on one count page |
+| 6.7 | Most-certain-first resolution in INFER for dependent pairs (meter ↔ durations, key ↔ accidental, clef ↔ pitch, ownership ↔ pitch); a step reads only facts more certain than itself; fixpoint guard stays | todo — after 6.5; default OFF; print-checked before any flip |
+| 6.8 | Auto-accept above a calibrated bar Sean sets per family (3.4's and Phase 5's "auto-accept rules", made measurable) | todo — after 6.5; default OFF; gated on the count |
+
+Gate: on one count page, a pass through the question queue costs less than
+the fix-actions it replaces, and every likelihood the page shows comes from a
+table whose held-out control can fail.
