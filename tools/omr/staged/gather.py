@@ -870,14 +870,26 @@ def gather_ownership_evidence(log: Log, pws: Any, cells: Sequence[Any],
                                 ledgers)
 
 
-def _ledger_index(placed) -> Dict[Tuple[int, int], List[Tuple[float, float, float]]]:
-    """Ledger-line detections per system, as (x0, x1, y_centre) in page px."""
-    out: Dict[Tuple[int, int], List[Tuple[float, float, float]]] = {}
+def _ledger_index(
+    placed,
+) -> Dict[Tuple[int, int], List[Tuple[float, float, float, str]]]:
+    """Ledger-line detections per system, as (x0, x1, y_centre, glyph key).
+
+    ⚠️ ROADMAP 2.14. The glyph key is `g.to_key()` -- THE SAME SUBJECT
+    `adjudicate_ledger_is_not_a_ledger` decides on. Before this, the index
+    carried only the rectangle and `_observe_ladder` filed `Q.GLYPH_LADDER`
+    as an anonymous `found`/`expected` COUNT: a ledger refusal had nowhere to
+    reach, because nothing on the record said WHICH ledger glyph a `found`
+    rung was (`family_precision.adjudicate_ledger_is_not_a_ledger`'s own
+    docstring names this as the finding 3.4g could not close). Carrying the
+    key here is what lets `_observe_ladder` NAME the rungs it counted.
+    """
+    out: Dict[Tuple[int, int], List[Tuple[float, float, float, str]]] = {}
     for g, box, det in placed:
         if det.smufl_name != _LEDGER_CLASS:
             continue
         out.setdefault((g.page, g.system), []).append(
-            (box[0], box[2], (box[1] + box[3]) / 2.0))
+            (box[0], box[2], (box[1] + box[3]) / 2.0, g.to_key()))
     return out
 
 
@@ -890,6 +902,18 @@ def _observe_ladder(log: Log, g: Subject, box, cand_key: str,
     found rung can belong to the other staff's note exactly as a gap can. On
     the Beethoven bassoon pair the ghost's single rung WAS the real C4's own
     ledger, and counting rungs beat the real note.
+
+    ⚠️⚠️ ROADMAP 2.14 -- `rungs` NAMES THE GLYPH SUBJECT THAT MATCHED EACH
+    COUNTED STEP, in the SAME ORDER `found` was counted in. `found` and
+    `expected` are computed EXACTLY as before (same predicate, same
+    iteration order, same first-match-wins semantics `any(...)` had) so this
+    is a pure ADDITION to the row's detail, never a change to its `value`.
+    The join this enables lives in ADJUDICATE
+    (`adjudicators.ownership._ladder_complete`): a rung named here whose own
+    `Q.LEDGER_IS_NOT_A_LEDGER` verdict is DECIDED `True` is discounted from
+    `glyph_owner`'s completeness re-count; one that decision ABSTAINED on
+    keeps its place, because CLAUDE.md rule 8 says *cannot tell* may never
+    become *not a rung*.
     """
     y = (box[1] + box[3]) / 2.0
     top, bottom = min(line_ys), max(line_ys)
@@ -902,14 +926,21 @@ def _observe_ladder(log: Log, g: Subject, box, cand_key: str,
     rungs = ledgers.get((g.page, g.system), [])
     x0, x1 = box[0], box[2]
     found = 0
+    rung_keys: List[str] = []
     for k in range(1, expected + 1):
         want = (top - k * spacing) if y < top else (bottom + k * spacing)
-        if any(rx0 <= x1 and rx1 >= x0 and abs(ry - want) <= spacing * 0.5
-               for rx0, rx1, ry in rungs):
+        match_key = None
+        for rx0, rx1, ry, rkey in rungs:
+            if rx0 <= x1 and rx1 >= x0 and abs(ry - want) <= spacing * 0.5:
+                match_key = rkey
+                break
+        if match_key is not None:
             found += 1
+            rung_keys.append(match_key)
     log.observe(g, Q.GLYPH_LADDER, found == expected,
                 reader=READERS.DETECTOR, frame=FRAME_PAGE,
-                candidate=cand_key, expected=expected, found=found)
+                candidate=cand_key, expected=expected, found=found,
+                rungs=rung_keys)
 
 
 # ─────────────────────────────────────────────────────────────────────────────
