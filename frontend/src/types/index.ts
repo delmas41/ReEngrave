@@ -38,7 +38,9 @@ export type ProcessingStatus =
 
 export type HumanDecision = 'accept' | 'reject' | 'edit';
 
-export type OMREngine = 'local' | 'claude_vision';
+// ROADMAP 3.3: 'staged' is the experimental STAGED pipeline
+// (backend/modules/staged_omr.py) — 'local' stays the default engine.
+export type OMREngine = 'local' | 'claude_vision' | 'staged';
 
 export interface OMRProgress {
   total_pages: number;

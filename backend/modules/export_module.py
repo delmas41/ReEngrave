@@ -115,16 +115,34 @@ async def export_as_lilypond(
 ) -> str:
     """Export corrected score as a LilyPond .ly source file.
 
-    Prefers a direct OMR-JSON → LilyPond conversion (via
-    `tools.omr.export.to_lilypond`) when available, which skips the
-    lossy musicxml2ly hop. Falls back to MusicXML → musicxml2ly when
-    the OMR JSON isn't on disk (e.g. direct MusicXML uploads).
+    Preference order, each skipping the lossy musicxml2ly hop:
+      1. ROADMAP 3.3/3.1 — a STAGED record (`omr_engine == "staged"`) via
+         `tools.omr.staged.lilypond.to_lilypond`, the native staged
+         exporter (see CLAUDE.md §3: STAGED is the product path).
+      2. A LEGACY transcribe.py JSON via `tools.omr.export.to_lilypond`.
+      3. Falls back to MusicXML → musicxml2ly when neither is on disk
+         (e.g. direct MusicXML uploads).
 
     Returns the path to the .ly file.
     """
     score = await _get_score(score_id, db)
-    omr_json_path = _omr_json_path_for(score)
+    record_path = _staged_record_path_for(score)
 
+    if record_path and os.path.isfile(record_path):
+        ly_path = os.path.join(output_dir, f"{score_id}_corrected.ly")
+        Path(output_dir).mkdir(parents=True, exist_ok=True)
+        # lazy imports — same reasoning as the legacy `to_lilypond` import
+        # below: a missing/heavy tools.omr dependency shouldn't break import
+        # of this module.
+        from tools.omr.staged import lilypond as staged_lilypond
+        from tools.omr.staged import record_io
+        omr_result = record_io.load_record(record_path)
+        ly_str, _report = staged_lilypond.to_lilypond(omr_result)
+        with open(ly_path, "w", encoding="utf-8") as fh:
+            fh.write(ly_str)
+        return ly_path
+
+    omr_json_path = _omr_json_path_for(score)
     if omr_json_path and os.path.isfile(omr_json_path):
         ly_path = os.path.join(output_dir, f"{score_id}_corrected.ly")
         Path(output_dir).mkdir(parents=True, exist_ok=True)
@@ -147,14 +165,15 @@ async def export_as_pdf(
 ) -> str:
     """Run full LilyPond engrave pipeline and return PDF path.
 
-    Same preference order as `export_as_lilypond`: tools.omr.export →
-    LilyPond → PDF when an OMR JSON is on disk, otherwise the
-    MusicXML route.
+    Same preference order as `export_as_lilypond`: a staged record, then a
+    legacy OMR JSON, both via LilyPond → PDF, otherwise the MusicXML route.
     """
     score = await _get_score(score_id, db)
+    record_path = _staged_record_path_for(score)
     omr_json_path = _omr_json_path_for(score)
 
-    if omr_json_path and os.path.isfile(omr_json_path):
+    if ((record_path and os.path.isfile(record_path))
+            or (omr_json_path and os.path.isfile(omr_json_path))):
         ly_path = await export_as_lilypond(score_id, output_dir, db)
         engrave_result = await engrave_score(ly_path, output_dir)
         if engrave_result.error_message:
@@ -171,10 +190,24 @@ async def export_as_pdf(
 
 def _omr_json_path_for(score: Score) -> str:
     """Return the path to the transcribe.py JSON for this score, or ""
-    if not present. Stored on Score.metadata_json by the OMR step.
+    if not present. Stored on Score.metadata_json by the LEGACY OMR step.
     """
     meta = score.metadata_json or {}
     return str(meta.get("omr_json_path") or "")
+
+
+def _staged_record_path_for(score: Score) -> str:
+    """Return the path to the STAGED pipeline's pooled record for this
+    score, or "" if not present. Stored on Score.metadata_json by
+    `staged_omr.run_staged_omr` (ROADMAP 3.3) only when the score was
+    processed with `omr_engine == "staged"` — a score reprocessed with
+    `local` afterwards has no `omr_record_path` and falls through to the
+    legacy branch below, as it should.
+    """
+    meta = score.metadata_json or {}
+    if meta.get("omr_engine") != "staged":
+        return ""
+    return str(meta.get("omr_record_path") or "")
 
 
 async def apply_corrections_to_musicxml(
