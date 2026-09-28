@@ -2295,7 +2295,19 @@ read it:
 no time-signature digit stack is printed at any of these mid-system cells,
 matching the eleven's own `bars_fit: 0` (nothing on the page corroborates the
 reading either way but the staves themselves, and those staves are a small
-minority).
+minority). Inspected in this session (not by Sean — the crops still stand for
+his own read): three of the four show exactly what IS printed instead of a
+meter — `m212j-phantom-9-1-7.png` brackets an italic **`ff agitato`**
+expression marking directly in the cell; `m212j-phantom-12-0-12.png` brackets
+a **`p cresc.`** dynamic-and-hairpin marking; `m212j-phantom-3-0-6.png` shows
+ordinary noteheads, a beam and a slur arc, no text. Consistent with a
+detector class trained to recognise `timeSig4`'s dense, closed-loop stroke
+shape occasionally firing on ordinary printed TEXT at low confidence — every
+one of the underlying `Q.METER_GLYPH` rows behind these eleven segments scores
+0.25-0.73, well under the confidence a genuine header digit stack reads at
+(2.12h's own crops: 0.42-0.53) — not a finding this item chased further
+(GATHER-side, out of scope for a proof-budget item), but recorded here as the
+likely PHYSICAL source of the ink, for whoever does.
 
 ## Tests, RED first
 
