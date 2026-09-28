@@ -1,0 +1,24 @@
+{
+  "subject": "cell/2/0/0/5",
+  "cause": "extra_events",
+  "page": 2,
+  "system": 0,
+  "staff": 0,
+  "cell": 5,
+  "measure": 29,
+  "part": "P1",
+  "want_quarters": 4.0,
+  "true_quarters": 3.0,
+  "sum_quarters": [
+    4.5
+  ],
+  "note": "over by 1.5q; cell carries several cross-staff-contested noteheads (glyph_owner decisions both confirming this staff and moving to staff/2/0/1) -- a mixed population, not one clean mechanism.",
+  "bbox_page_px": [
+    4747.0,
+    367.0,
+    5501.0,
+    748.0
+  ],
+  "file": "funnel-brahms1-breitkopf-extra_events-2-0-0-5.png",
+  "VERDICT_none_yet": null
+}

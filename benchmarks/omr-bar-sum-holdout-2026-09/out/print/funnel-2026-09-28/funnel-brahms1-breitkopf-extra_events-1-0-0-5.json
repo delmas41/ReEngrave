@@ -1,0 +1,24 @@
+{
+  "subject": "cell/1/0/0/5",
+  "cause": "extra_events",
+  "page": 1,
+  "system": 0,
+  "staff": 0,
+  "cell": 5,
+  "measure": 14,
+  "part": "P1",
+  "want_quarters": 4.0,
+  "true_quarters": 3.0,
+  "sum_quarters": [
+    5.5
+  ],
+  "note": "a dense cell (10 decided duration verdicts, rests and noteheads mixed); over by 2.5q against the true bar. Not a duplicate-rest pattern (durations differ) and not dominated by a cross-staff gain -- composition not further reduced in this pass.",
+  "bbox_page_px": [
+    4284.0,
+    399.0,
+    4896.0,
+    780.0
+  ],
+  "file": "funnel-brahms1-breitkopf-extra_events-1-0-0-5.png",
+  "VERDICT_none_yet": null
+}

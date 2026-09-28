@@ -1,0 +1,24 @@
+{
+  "subject": "cell/2/0/0/4",
+  "cause": "meter_wrong",
+  "page": 2,
+  "system": 0,
+  "staff": 0,
+  "cell": 4,
+  "measure": 28,
+  "part": "P1",
+  "want_quarters": 4.0,
+  "true_quarters": 3.0,
+  "sum_quarters": [
+    3.0
+  ],
+  "note": "same pattern.",
+  "bbox_page_px": [
+    4085.0,
+    367.0,
+    4747.0,
+    748.0
+  ],
+  "file": "funnel-brahms1-breitkopf-meter_wrong-2-0-0-4.png",
+  "VERDICT_none_yet": null
+}
