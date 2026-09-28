@@ -1,0 +1,79 @@
+{
+ "label": "p3real",
+ "standing_verdicts": [
+  6159,
+  6158
+ ],
+ "differing": 11,
+ "differing_by_quantity": {
+  "accidental_owner": 9,
+  "accidental": 1,
+  "notehead_is_not_a_notehead": 1
+ },
+ "refused_belongs_to_a_nearer_staff": 1,
+ "npv_changes_not_to_the_new_reason": [],
+ "accidental_owner_changes_by_new_reason": {
+  "is_a_key_signature_marker": 8,
+  "head_belongs_to_a_nearer_staff": 1
+ },
+ "accidental_owner_changes_unexpected": [],
+ "other_changes_attributed": {
+  "accidental (on a refused head)": 1
+ },
+ "unexplained": 0,
+ "unexplained_sample": [],
+ "notes_in_file": [
+  549,
+  548
+ ],
+ "accidental_elements": [
+  29,
+  28
+ ],
+ "alter_elements": [
+  111,
+  110
+ ],
+ "notes_not_written_new_reason": 1,
+ "accidental_census": {
+  "gathered": [
+   74,
+   74
+  ],
+  "owner_decided": [
+   41,
+   40
+  ],
+  "applied": [
+   29,
+   28
+  ],
+  "no_candidate": [
+   33,
+   25
+  ],
+  "is_a_key_signature_marker": [
+   null,
+   8
+  ],
+  "head_belongs_to_a_nearer_staff": [
+   null,
+   1
+  ],
+  "heads_balanced": [
+   true,
+   true
+  ],
+  "unaccounted": [
+   0,
+   0
+  ]
+ },
+ "status_census_unaccounted": [
+  [],
+  []
+ ],
+ "refused_heads": [
+  "glyph/3/1/1/14/5"
+ ]
+}

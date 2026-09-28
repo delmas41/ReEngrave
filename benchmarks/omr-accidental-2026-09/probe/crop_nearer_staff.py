@@ -181,7 +181,7 @@ def main() -> int:
             continue
         cls, hb = D["box"][sub]
         ys = [hb[1], hb[3], min(lf), max(lf), min(ln), max(ln)]
-        pad = 6.0 * sp_f
+        pad = 10.0 * sp_f
         cx0 = int(max(0, hb[0] - pad))
         cx1 = int(min(im.width, hb[2] + pad))
         cy0 = int(max(0, min(ys) - 1.5 * sp_f))
@@ -210,19 +210,19 @@ def main() -> int:
                                 (bx0, by1, 1, -1), (bx1, by1, -1, -1)):
             dr.line([(x, yy), (x + dx * arm, yy)], fill=(0, 60, 230), width=4)
             dr.line([(x, yy), (x, yy + dy * arm)], fill=(0, 60, 230), width=4)
-        band_h = 84
+        band_h = 112
         out_im = Image.new("RGB", (crop.width, crop.height + band_h), "white")
         out_im.paste(crop, (0, band_h))
         cd = ImageDraw.Draw(out_im)
         name = f"{a.prefix}{n:02d}"
-        cd.text((6, 4), f"{name}   {it['label']}  pdf page idx {p}, system "
-                        f"{int(s) + 1}, cell {c}", fill=(0, 0, 0), font=font)
-        cd.text((6, 28), f"GREEN = staff {st} (the head was FILED here)   "
-                         f"ORANGE = staff {near.split('/')[3]} (the nearest "
-                         f"other staff)", fill=(0, 110, 40), font=font)
-        cd.text((6, 54), f"BLUE = the notehead ({cls}). Which staff's note "
-                         f"is it: GREEN, ORANGE, or not a note?",
-                fill=(0, 40, 160), font=font)
+        cd.text((6, 4), f"{name}  {it['label']}  pdf idx {p}, sys {int(s) + 1},"
+                        f" cell {c}", fill=(0, 0, 0), font=font)
+        cd.text((6, 30), f"GREEN = staff {st}: the head was FILED here",
+                fill=(0, 110, 40), font=font)
+        cd.text((6, 56), f"ORANGE = staff {near.split('/')[3]}: nearest "
+                         f"other staff", fill=(200, 100, 0), font=font)
+        cd.text((6, 82), f"BLUE = the head ({cls}): GREEN, ORANGE, or not "
+                         f"a note?", fill=(0, 40, 160), font=font)
         out_im.save(out_dir / f"{name}.png")
         manifest.append({
             "file": f"{name}.png",

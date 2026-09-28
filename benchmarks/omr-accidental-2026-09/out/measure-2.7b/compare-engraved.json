@@ -1,0 +1,76 @@
+{
+ "label": "engraved",
+ "control": {
+  "standing_verdicts": [
+   5574,
+   5574
+  ],
+  "differing": 0,
+  "musicxml_identical": true
+ },
+ "standing_verdicts": [
+  5574,
+  5574
+ ],
+ "differing": 0,
+ "differing_by_quantity": {},
+ "refused_belongs_to_a_nearer_staff": 0,
+ "npv_changes_not_to_the_new_reason": [],
+ "accidental_owner_changes_by_new_reason": {},
+ "accidental_owner_changes_unexpected": [],
+ "other_changes_attributed": {},
+ "unexplained": 0,
+ "unexplained_sample": [],
+ "notes_in_file": [
+  666,
+  666
+ ],
+ "accidental_elements": [
+  15,
+  15
+ ],
+ "alter_elements": [
+  95,
+  95
+ ],
+ "notes_not_written_new_reason": null,
+ "accidental_census": {
+  "gathered": [
+   22,
+   22
+  ],
+  "owner_decided": [
+   20,
+   20
+  ],
+  "applied": [
+   15,
+   15
+  ],
+  "no_candidate": [
+   2,
+   2
+  ],
+  "is_a_key_signature_marker": [
+   null,
+   0
+  ],
+  "head_belongs_to_a_nearer_staff": [
+   null,
+   0
+  ],
+  "heads_balanced": [
+   true,
+   true
+  ],
+  "unaccounted": [
+   0,
+   0
+  ]
+ },
+ "status_census_unaccounted": [
+  [],
+  []
+ ],
+ "refused_heads": []
+}
