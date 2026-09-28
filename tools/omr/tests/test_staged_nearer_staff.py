@@ -198,6 +198,25 @@ class TestAKeptRungIsSeansException(unittest.TestCase):
                          {"on_a_staff_line": 1})
 
 
+    def test_the_heads_OWN_ledger_line_is_not_a_rung_toward_either_staff(self):
+        """A kept ledger through the head's centre says the note stands on a
+        ledger line, not whose — measured: 43 of the 79 far heads the first
+        cut kept were kept by exactly that (`probe/kept_rungs.py`)."""
+        k = sorted(FIVE)[0]
+        h = HEADS[k]
+        x0, y0, x1, y1 = h["bbox_page_px"]
+        y = (y0 + y1) / 2.0
+        parts = k.split("/")
+        own = {"subject": "/".join(parts[:5] + ["998"]),
+               "value": ["ledgerLine", 0, 0, 10, 2],
+               "bbox_page_px": [x0 - 5.0, y - 1.0, x1 + 5.0, y + 3.0],
+               "refused": False, "reason": None}
+        v = _build(k, extra_ledgers=[own])
+        self.assertEqual(v.reason, "belongs_to_a_nearer_staff")
+        self.assertEqual(
+            v.detail["nearer_staff_signal"]["kept_rungs_toward_filed"], 0)
+
+
 class TestItYieldsToTheContestWhereTheNearStaffHoldsATwin(unittest.TestCase):
 
     def test_crop_2_is_in_the_contest_and_this_rule_yields(self):

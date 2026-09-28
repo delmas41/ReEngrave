@@ -189,6 +189,20 @@ NEARER_STAFF_FILED_MIN_SPACES = 3.0
 #: one` clause alone already keeps all of them.
 NEARER_STAFF_NEAR_MAX_SPACES = 2.75
 
+#: A kept rung this close to the head's own centre is the head's OWN ledger
+#: line (a note standing on a ledger line) and joins it to NO staff in
+#: particular — between two staves it could be a rung of either. Only a rung
+#: farther than this toward the filed staff is Sean's *"ledger lines close to
+#: the staff connecting the note conceptually to the staff"*.
+#:
+#: ⚠️ MEASURED on the Litolff arm (`probe/kept_rungs.py`): of 79 heads past
+#: both bands that the first cut KEPT on a rung, **43 were kept by a rung at
+#: 0.00-0.37 spaces from the head** (its own line; one of them the print
+#: check's own first kept crop, a note on a ledger above the staff BELOW it)
+#: and the rest stand at 0.63+ — the interval (0.37, 0.63) is empty, 0.5 is
+#: its middle.
+OWN_LEDGER_MAX_SPACES = 0.5
+
 
 def _glyph_box_row(ev: Evidence):
     rows = ev.rows(Q.GLYPH_BOX)
@@ -435,7 +449,10 @@ def _belongs_to_a_nearer_staff(ev: Evidence, box_row, contested_by,
       3. no KEPT ledger rung of the head's own cell stands between it and the
          filed staff (3.4g-2's kept set: `ledger_is_not_a_ledger` not True —
          the refusal VERDICTS are read, never the raw boxes, so a staff-line
-         fragment cannot vouch for the note); a rung is Sean's exception;
+         fragment cannot vouch for the note); a rung is Sean's exception,
+         and the head's OWN ledger line (within `OWN_LEDGER_MAX_SPACES` of
+         its centre) is not one — it says the note stands on a ledger, not
+         whose;
       4. the near staff does NOT hold a twin of this ink: a glyph carrying a
          `Q.GLYPH_BAND_DISTANCE` row that names the near staff is inside
          `glyph_owner`'s contest (ROADMAP 2.6), which decides who owns it and
@@ -510,6 +527,8 @@ def _belongs_to_a_nearer_staff(ev: Evidence, box_row, contested_by,
         ly = (float(lb[1]) + float(lb[3])) / 2.0
         if not (lo < ly < hi):
             continue
+        if abs(ly - y) / sp <= OWN_LEDGER_MAX_SPACES:
+            continue                 # the head's own line joins no staff
         if min(float(lb[2]), x1) - max(float(lb[0]), x0) <= 0.0:
             continue
         lv = ev.verdict(Q.LEDGER_IS_NOT_A_LEDGER, subject=r.subject)
