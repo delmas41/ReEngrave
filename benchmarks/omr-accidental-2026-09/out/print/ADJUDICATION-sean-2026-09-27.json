@@ -1,0 +1,62 @@
+{
+ "adjudicator": "Sean",
+ "date": "2026-09-27",
+ "status": "PARTIAL \u2014 crops 1\u201310 of 28",
+ "verdicts": [
+  {
+   "crop": "acc-01.png",
+   "sean": "yes",
+   "pairing_correct": true
+  },
+  {
+   "crop": "acc-02.png",
+   "sean": "pairing right, but filed on the WRONG STAFF (the staff above)",
+   "pairing_correct": null
+  },
+  {
+   "crop": "acc-03.png",
+   "sean": "WRONG: the accidental box is very tall \u2014 the accidental is the lower third; the blue head is a tremolo slash, not a note; the correct note is the half note on the bottom space",
+   "pairing_correct": false
+  },
+  {
+   "crop": "acc-04.png",
+   "sean": "pairing right, but filed on the WRONG STAFF (the staff above)",
+   "pairing_correct": null
+  },
+  {
+   "crop": "acc-05.png",
+   "sean": "correct; a second accidental on a note above at the same time is not in the crop",
+   "pairing_correct": true
+  },
+  {
+   "crop": "acc-06.png",
+   "sean": "correct; another note with its own accidental on the same beat below",
+   "pairing_correct": true
+  },
+  {
+   "crop": "acc-07.png",
+   "sean": "WRONG: the glyph is a KEY-SIGNATURE flat; the chosen note has a sharp in front of it that was not detected",
+   "pairing_correct": false
+  },
+  {
+   "crop": "acc-08.png",
+   "sean": "correct",
+   "pairing_correct": true
+  },
+  {
+   "crop": "acc-09.png",
+   "sean": "correct",
+   "pairing_correct": true
+  },
+  {
+   "crop": "acc-10.png",
+   "sean": "correct; a second accidental on a note below on the same beat",
+   "pairing_correct": true
+  }
+ ],
+ "patterns": [
+  "right pairing, wrong staff (2, 4): accidental and head filed on the staff ABOVE \u2014 cross-staff ownership reaching accidentals",
+  "a header key-signature flat read as an in-bar accidental (7); the true accidental (a sharp) undetected",
+  "a tremolo boxed as a notehead chosen as the head (3); a merged tall accidental box"
+ ]
+}
