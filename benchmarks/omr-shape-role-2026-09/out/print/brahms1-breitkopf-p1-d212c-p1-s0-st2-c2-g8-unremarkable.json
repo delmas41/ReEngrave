@@ -1,0 +1,42 @@
+{
+ "png": "brahms1-breitkopf-p1-d212c-p1-s0-st2-c2-g8-unremarkable.png",
+ "subject": "glyph/1/0/2/2/8",
+ "bucket": "unremarkable",
+ "detector_role": "dot",
+ "detector_class": "augmentationDot",
+ "dot_role_verdict": {
+  "outcome": "decided",
+  "value": "augmentation",
+  "reason": "right_of_and_level_with_a_head",
+  "detail": {
+   "detector_role": "dot",
+   "detector_class": "augmentationDot"
+  }
+ },
+ "caption": "brahms1-breitkopf-p1-d212c page 1, system 0, staff 2, bar-cell 2 -- the detector called this box `augmentationDot`. `adjudicate_dot_role` reads it as augmentation (unremarkable). RED corner bracket = the mark itself; ORANGE = the head the augmentation window matched, when one did. QUESTION FOR SEAN: against the print, is this an augmentation dot (lengthens the note) or a staccato (does not)?",
+ "frame_control": {
+  "passed": true,
+  "contrast": 154.99
+ },
+ "mark_page_px": [
+  2594.975,
+  1077.35,
+  2609.55,
+  1091.1
+ ],
+ "owner_page_px": null,
+ "staff_lines_page_px": [
+  1046,
+  1073,
+  1101,
+  1128,
+  1156
+ ],
+ "crop_page_px": [
+  2429.975,
+  881.0,
+  2774.55,
+  1321.0
+ ],
+ "VERDICT_none_yet": null
+}

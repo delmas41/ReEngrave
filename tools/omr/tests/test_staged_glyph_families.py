@@ -71,10 +71,13 @@ class TestEachFamilyGetsATypedRow(unittest.TestCase):
         self.assertEqual(_values(log, Q.DYNAMIC_LETTER), [])
 
     def test_an_articulation_is_observed_with_the_side_its_class_names(self):
-        log = _log(Det("articStaccatoAbove", category="ornament"))
+        """⚠️ NOT `articStaccato*` — ROADMAP 2.12c moved that pair (and the
+        coarse `articulationStaccato`) to `Q.AUG_DOT`, so `articMarcatoAbove`
+        is the example here now; see `TestADotOrStaccatoIsRoutedByShape`."""
+        log = _log(Det("articMarcatoAbove", category="ornament"))
         rows = log.rows(Q.ARTICULATION_MARK, CELL,
                         scope=Scope.SELF_AND_DESCENDANTS)
-        self.assertEqual(rows[0].value, "articStaccatoAbove")
+        self.assertEqual(rows[0].value, "articMarcatoAbove")
         self.assertEqual(rows[0].detail["side"], "above")
 
     def test_a_class_that_states_no_side_records_None_rather_than_guessing(self):
@@ -82,11 +85,23 @@ class TestEachFamilyGetsATypedRow(unittest.TestCase):
         `articulationAccent` / `Staccato` / `Tenuto` as coarser than the
         canonical spelling precisely because they carry NO side, and the
         legacy attach pass requires the geometry to agree with the side when
-        there is one."""
-        log = _log(Det("articulationStaccato", category="ornament"))
+        there is one. NOT `articulationStaccato` — ROADMAP 2.12c routes that
+        one to `Q.AUG_DOT` instead; see `TestADotOrStaccatoIsRoutedByShape`."""
+        log = _log(Det("articulationAccent", category="ornament"))
         rows = log.rows(Q.ARTICULATION_MARK, CELL,
                         scope=Scope.SELF_AND_DESCENDANTS)
         self.assertIsNone(rows[0].detail["side"])
+
+    def test_a_staccato_is_NOT_gathered_as_an_articulation_mark(self):
+        """⚠️ ROADMAP 2.12c. All three staccato spellings start with
+        `_ARTIC_PREFIX` and used to land here; `gather_rhythm_marks` files
+        them into `Q.AUG_DOT` instead (see `test_staged_dot_role.py`), so
+        this function must file NONE of them — filing both would be two rows
+        from one reader on one glyph (CLAUDE.md Sec.4b)."""
+        log = _log(Det("articStaccatoAbove", category="ornament"),
+                  Det("articStaccatoBelow", x=200, category="ornament"),
+                  Det("articulationStaccato", x=400, category="ornament"))
+        self.assertEqual(_values(log, Q.ARTICULATION_MARK), [])
 
 
 class TestAFermataIsItsOwnFamilyAndNotAnArticulation(unittest.TestCase):
@@ -112,8 +127,9 @@ class TestAFermataIsItsOwnFamilyAndNotAnArticulation(unittest.TestCase):
     def test_an_articulation_is_NOT_a_fermata_mark(self):
         """The mirror, because one shared category makes the confusion run
         both ways and a one-directional test would pass with both routed
-        into either bucket."""
-        log = _log(Det("articStaccatoAbove", category="ornament"))
+        into either bucket. NOT `articStaccato*` — see
+        `TestADotOrStaccatoIsRoutedByShape`."""
+        log = _log(Det("articMarcatoAbove", category="ornament"))
         self.assertEqual(_values(log, Q.FERMATA_MARK), [])
 
     def test_a_fermataBelow_records_its_side(self):

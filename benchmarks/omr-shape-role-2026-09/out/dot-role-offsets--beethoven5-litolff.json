@@ -1,0 +1,3474 @@
+{
+ "label": "beethoven5-litolff",
+ "record": "/Users/seanjohnson/Desktop/ReEngrave/library/_shared-records/beethoven5-litolff-mvt1-whole-20260923.record.json",
+ "provenance": {
+  "commit": "dbc9962b641e0259763efb45acc204e4e78ffd55",
+  "dirty": true
+ },
+ "no_cell_staff_space": 0,
+ "no_notehead_in_cell": 37,
+ "summary": {
+  "dot": {
+   "n": 141,
+   "dx": {
+    "p5": -1.91,
+    "p25": -0.125,
+    "p50": 0.535,
+    "p75": 1.4846,
+    "p95": 3.8636
+   },
+   "dy": {
+    "p5": -4.485,
+    "p25": -1.35,
+    "p50": -0.15,
+    "p75": 1.22,
+    "p95": 5.33
+   }
+  },
+  "staccato": {
+   "n": 430,
+   "dx": {
+    "p5": -0.975,
+    "p25": -0.075,
+    "p50": 0.035,
+    "p75": 0.165,
+    "p95": 2.21
+   },
+   "dy": {
+    "p5": -5.015,
+    "p25": -1.2,
+    "p50": 1.23,
+    "p75": 1.48,
+    "p95": 3.165
+   }
+  }
+ },
+ "rows": [
+  {
+   "class": "augmentationDot",
+   "detector_role": "dot",
+   "dx": 8.2563,
+   "dy": 4.2396
+  },
+  {
+   "class": "augmentationDot",
+   "detector_role": "dot",
+   "dx": -0.33,
+   "dy": 6.76
+  },
+  {
+   "class": "augmentationDot",
+   "detector_role": "dot",
+   "dx": -1.91,
+   "dy": -4.485
+  },
+  {
+   "class": "augmentationDot",
+   "detector_role": "dot",
+   "dx": -1.91,
+   "dy": 3.68
+  },
+  {
+   "class": "augmentationDot",
+   "detector_role": "dot",
+   "dx": 0.14,
+   "dy": -1.425
+  },
+  {
+   "class": "augmentationDot",
+   "detector_role": "dot",
+   "dx": 1.605,
+   "dy": 0.55
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": 0.16,
+   "dy": 1.05
+  },
+  {
+   "class": "augmentationDot",
+   "detector_role": "dot",
+   "dx": -1.8,
+   "dy": 0.435
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": 0.135,
+   "dy": 1.265
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": 0.31,
+   "dy": 1.465
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": 0.11,
+   "dy": 1.265
+  },
+  {
+   "class": "augmentationDot",
+   "detector_role": "dot",
+   "dx": 0.67,
+   "dy": -0.95
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": 0.08,
+   "dy": 1.665
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": 0.14,
+   "dy": 1.335
+  },
+  {
+   "class": "augmentationDot",
+   "detector_role": "dot",
+   "dx": -0.05,
+   "dy": 1.3
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": 0.17,
+   "dy": 1.37
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": -0.075,
+   "dy": 1.785
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": 0.18,
+   "dy": 1.285
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": 0.3,
+   "dy": 1.46
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": 0.23,
+   "dy": 1.58
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": 0.07,
+   "dy": 1.495
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": 0.12,
+   "dy": 1.285
+  },
+  {
+   "class": "augmentationDot",
+   "detector_role": "dot",
+   "dx": 0.915,
+   "dy": -6.585
+  },
+  {
+   "class": "augmentationDot",
+   "detector_role": "dot",
+   "dx": 5.4,
+   "dy": -3.515
+  },
+  {
+   "class": "augmentationDot",
+   "detector_role": "dot",
+   "dx": -0.895,
+   "dy": -2.37
+  },
+  {
+   "class": "augmentationDot",
+   "detector_role": "dot",
+   "dx": -0.025,
+   "dy": -1.775
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": -0.195,
+   "dy": 0.79
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": 0.895,
+   "dy": -8.575
+  },
+  {
+   "class": "augmentationDot",
+   "detector_role": "dot",
+   "dx": 1.485,
+   "dy": 1.195
+  },
+  {
+   "class": "augmentationDot",
+   "detector_role": "dot",
+   "dx": 2.12,
+   "dy": -1.86
+  },
+  {
+   "class": "augmentationDot",
+   "detector_role": "dot",
+   "dx": 1.99,
+   "dy": 1.805
+  },
+  {
+   "class": "augmentationDot",
+   "detector_role": "dot",
+   "dx": 0.945,
+   "dy": 1.15
+  },
+  {
+   "class": "articStaccatoBelow",
+   "detector_role": "staccato",
+   "dx": 0.705,
+   "dy": -1.205
+  },
+  {
+   "class": "augmentationDot",
+   "detector_role": "dot",
+   "dx": 1.855,
+   "dy": 1.34
+  },
+  {
+   "class": "articStaccatoBelow",
+   "detector_role": "staccato",
+   "dx": -0.115,
+   "dy": -1.325
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": -0.005,
+   "dy": 1.865
+  },
+  {
+   "class": "articStaccatoBelow",
+   "detector_role": "staccato",
+   "dx": 1.505,
+   "dy": 6.26
+  },
+  {
+   "class": "articStaccatoBelow",
+   "detector_role": "staccato",
+   "dx": 3.355,
+   "dy": -3.33
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": -0.595,
+   "dy": 1.735
+  },
+  {
+   "class": "augmentationDot",
+   "detector_role": "dot",
+   "dx": 2.035,
+   "dy": 0.095
+  },
+  {
+   "class": "augmentationDot",
+   "detector_role": "dot",
+   "dx": 1.42,
+   "dy": -0.59
+  },
+  {
+   "class": "augmentationDot",
+   "detector_role": "dot",
+   "dx": 1.28,
+   "dy": -0.64
+  },
+  {
+   "class": "augmentationDot",
+   "detector_role": "dot",
+   "dx": 1.48,
+   "dy": 4.035
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": -0.04,
+   "dy": 1.345
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": 0.0,
+   "dy": 1.075
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": -0.21,
+   "dy": 1.54
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": 2.645,
+   "dy": -0.42
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": -0.025,
+   "dy": 1.33
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": 0.01,
+   "dy": 1.355
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": 0.13,
+   "dy": 1.04
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": -0.155,
+   "dy": 1.28
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": -0.22,
+   "dy": 1.575
+  },
+  {
+   "class": "augmentationDot",
+   "detector_role": "dot",
+   "dx": 0.2,
+   "dy": 1.175
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": -0.035,
+   "dy": 1.23
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": 0.23,
+   "dy": 1.275
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": -0.075,
+   "dy": 1.925
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": -0.15,
+   "dy": 1.24
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": 0.165,
+   "dy": 1.35
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": 0.21,
+   "dy": 1.235
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": 0.055,
+   "dy": 1.28
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": -0.1,
+   "dy": 1.49
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": 0.24,
+   "dy": 1.85
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": 3.16,
+   "dy": -5.205
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": -0.595,
+   "dy": 2.19
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": 0.18,
+   "dy": 1.215
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": -0.04,
+   "dy": 1.225
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": 0.065,
+   "dy": 1.46
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": 0.2,
+   "dy": 1.195
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": -0.05,
+   "dy": 1.235
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": 0.105,
+   "dy": 1.46
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": -0.26,
+   "dy": 0.965
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": 0.04,
+   "dy": 1.31
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": 0.12,
+   "dy": 1.235
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": -0.06,
+   "dy": 0.965
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": 2.81,
+   "dy": 0.6
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": -0.07,
+   "dy": 1.32
+  },
+  {
+   "class": "articStaccatoBelow",
+   "detector_role": "staccato",
+   "dx": 0.06,
+   "dy": -1.205
+  },
+  {
+   "class": "articStaccatoBelow",
+   "detector_role": "staccato",
+   "dx": -1.575,
+   "dy": -0.795
+  },
+  {
+   "class": "augmentationDot",
+   "detector_role": "dot",
+   "dx": 0.36,
+   "dy": -0.735
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": 0.12,
+   "dy": 1.535
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": -0.105,
+   "dy": 1.375
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": -0.035,
+   "dy": 1.345
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": 0.0,
+   "dy": 1.4
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": 0.035,
+   "dy": 1.275
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": 0.09,
+   "dy": 1.17
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": 0.0,
+   "dy": 1.23
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": 0.0,
+   "dy": 1.42
+  },
+  {
+   "class": "augmentationDot",
+   "detector_role": "dot",
+   "dx": 1.535,
+   "dy": 0.71
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": 3.015,
+   "dy": 0.125
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": -0.09,
+   "dy": 1.685
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": 0.15,
+   "dy": 1.745
+  },
+  {
+   "class": "augmentationDot",
+   "detector_role": "dot",
+   "dx": -0.04,
+   "dy": 1.4
+  },
+  {
+   "class": "augmentationDot",
+   "detector_role": "dot",
+   "dx": -0.08,
+   "dy": 1.49
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": -0.075,
+   "dy": 1.505
+  },
+  {
+   "class": "articStaccatoBelow",
+   "detector_role": "staccato",
+   "dx": 1.765,
+   "dy": -2.285
+  },
+  {
+   "class": "articStaccatoBelow",
+   "detector_role": "staccato",
+   "dx": -0.115,
+   "dy": -1.55
+  },
+  {
+   "class": "articStaccatoBelow",
+   "detector_role": "staccato",
+   "dx": 0.245,
+   "dy": -1.275
+  },
+  {
+   "class": "articStaccatoBelow",
+   "detector_role": "staccato",
+   "dx": -0.01,
+   "dy": -1.305
+  },
+  {
+   "class": "augmentationDot",
+   "detector_role": "dot",
+   "dx": 0.05,
+   "dy": -1.165
+  },
+  {
+   "class": "articStaccatoBelow",
+   "detector_role": "staccato",
+   "dx": 0.17,
+   "dy": -1.345
+  },
+  {
+   "class": "articStaccatoBelow",
+   "detector_role": "staccato",
+   "dx": -0.165,
+   "dy": -1.395
+  },
+  {
+   "class": "articStaccatoBelow",
+   "detector_role": "staccato",
+   "dx": 0.075,
+   "dy": -0.8
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": -0.095,
+   "dy": 1.425
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": -0.025,
+   "dy": 1.34
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": 0.085,
+   "dy": 1.165
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": 0.12,
+   "dy": 1.47
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": 0.165,
+   "dy": 1.525
+  },
+  {
+   "class": "articStaccatoBelow",
+   "detector_role": "staccato",
+   "dx": -0.975,
+   "dy": 2.265
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": -0.01,
+   "dy": 1.565
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": 0.02,
+   "dy": 1.31
+  },
+  {
+   "class": "augmentationDot",
+   "detector_role": "dot",
+   "dx": 0.01,
+   "dy": 1.22
+  },
+  {
+   "class": "augmentationDot",
+   "detector_role": "dot",
+   "dx": -0.21,
+   "dy": -1.165
+  },
+  {
+   "class": "articStaccatoBelow",
+   "detector_role": "staccato",
+   "dx": 3.105,
+   "dy": 5.055
+  },
+  {
+   "class": "articStaccatoBelow",
+   "detector_role": "staccato",
+   "dx": 0.14,
+   "dy": -1.315
+  },
+  {
+   "class": "articStaccatoBelow",
+   "detector_role": "staccato",
+   "dx": 0.155,
+   "dy": -1.335
+  },
+  {
+   "class": "articStaccatoBelow",
+   "detector_role": "staccato",
+   "dx": -0.05,
+   "dy": -1.365
+  },
+  {
+   "class": "articStaccatoBelow",
+   "detector_role": "staccato",
+   "dx": 3.315,
+   "dy": 5.195
+  },
+  {
+   "class": "articStaccatoBelow",
+   "detector_role": "staccato",
+   "dx": 4.75,
+   "dy": 6.52
+  },
+  {
+   "class": "articStaccatoBelow",
+   "detector_role": "staccato",
+   "dx": 0.16,
+   "dy": -0.94
+  },
+  {
+   "class": "articStaccatoBelow",
+   "detector_role": "staccato",
+   "dx": 0.14,
+   "dy": -1.275
+  },
+  {
+   "class": "augmentationDot",
+   "detector_role": "dot",
+   "dx": -0.005,
+   "dy": -1.57
+  },
+  {
+   "class": "articStaccatoBelow",
+   "detector_role": "staccato",
+   "dx": 3.44,
+   "dy": 5.57
+  },
+  {
+   "class": "articStaccatoBelow",
+   "detector_role": "staccato",
+   "dx": 0.14,
+   "dy": -1.2
+  },
+  {
+   "class": "articStaccatoBelow",
+   "detector_role": "staccato",
+   "dx": 0.0,
+   "dy": -1.01
+  },
+  {
+   "class": "articStaccatoBelow",
+   "detector_role": "staccato",
+   "dx": 0.18,
+   "dy": -0.93
+  },
+  {
+   "class": "augmentationDot",
+   "detector_role": "dot",
+   "dx": 0.535,
+   "dy": 1.465
+  },
+  {
+   "class": "augmentationDot",
+   "detector_role": "dot",
+   "dx": 1.53,
+   "dy": 0.74
+  },
+  {
+   "class": "augmentationDot",
+   "detector_role": "dot",
+   "dx": 1.605,
+   "dy": 3.63
+  },
+  {
+   "class": "augmentationDot",
+   "detector_role": "dot",
+   "dx": 0.035,
+   "dy": -0.96
+  },
+  {
+   "class": "augmentationDot",
+   "detector_role": "dot",
+   "dx": 1.695,
+   "dy": 0.49
+  },
+  {
+   "class": "augmentationDot",
+   "detector_role": "dot",
+   "dx": -0.83,
+   "dy": -1.35
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": 0.075,
+   "dy": 1.85
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": -0.32,
+   "dy": 1.55
+  },
+  {
+   "class": "augmentationDot",
+   "detector_role": "dot",
+   "dx": -9.92,
+   "dy": -1.96
+  },
+  {
+   "class": "augmentationDot",
+   "detector_role": "dot",
+   "dx": 0.47,
+   "dy": -2.57
+  },
+  {
+   "class": "articStaccatoBelow",
+   "detector_role": "staccato",
+   "dx": -0.245,
+   "dy": -0.84
+  },
+  {
+   "class": "augmentationDot",
+   "detector_role": "dot",
+   "dx": -0.245,
+   "dy": -0.86
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": -4.96,
+   "dy": -5.455
+  },
+  {
+   "class": "augmentationDot",
+   "detector_role": "dot",
+   "dx": 1.0,
+   "dy": -1.21
+  },
+  {
+   "class": "articStaccatoBelow",
+   "detector_role": "staccato",
+   "dx": -0.75,
+   "dy": 6.2
+  },
+  {
+   "class": "augmentationDot",
+   "detector_role": "dot",
+   "dx": 1.005,
+   "dy": -1.235
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": -4.7747,
+   "dy": -8.9316
+  },
+  {
+   "class": "augmentationDot",
+   "detector_role": "dot",
+   "dx": -0.295,
+   "dy": -0.975
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": 0.295,
+   "dy": 0.915
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": 0.425,
+   "dy": -2.715
+  },
+  {
+   "class": "augmentationDot",
+   "detector_role": "dot",
+   "dx": 0.115,
+   "dy": 3.95
+  },
+  {
+   "class": "augmentationDot",
+   "detector_role": "dot",
+   "dx": -0.755,
+   "dy": 1.005
+  },
+  {
+   "class": "augmentationDot",
+   "detector_role": "dot",
+   "dx": 2.6,
+   "dy": 0.195
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": 0.675,
+   "dy": 1.08
+  },
+  {
+   "class": "articStaccatoBelow",
+   "detector_role": "staccato",
+   "dx": -0.175,
+   "dy": -1.905
+  },
+  {
+   "class": "augmentationDot",
+   "detector_role": "dot",
+   "dx": -1.54,
+   "dy": -1.15
+  },
+  {
+   "class": "augmentationDot",
+   "detector_role": "dot",
+   "dx": 0.9,
+   "dy": -2.155
+  },
+  {
+   "class": "augmentationDot",
+   "detector_role": "dot",
+   "dx": 0.895,
+   "dy": 0.55
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": -0.29,
+   "dy": 1.22
+  },
+  {
+   "class": "articStaccatoBelow",
+   "detector_role": "staccato",
+   "dx": 0.135,
+   "dy": -1.69
+  },
+  {
+   "class": "articStaccatoBelow",
+   "detector_role": "staccato",
+   "dx": 0.125,
+   "dy": -1.605
+  },
+  {
+   "class": "articStaccatoBelow",
+   "detector_role": "staccato",
+   "dx": 0.01,
+   "dy": -1.315
+  },
+  {
+   "class": "articStaccatoBelow",
+   "detector_role": "staccato",
+   "dx": -0.035,
+   "dy": -1.25
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": -0.265,
+   "dy": 1.535
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": -0.06,
+   "dy": 1.635
+  },
+  {
+   "class": "articStaccatoBelow",
+   "detector_role": "staccato",
+   "dx": 0.015,
+   "dy": -1.285
+  },
+  {
+   "class": "articStaccatoBelow",
+   "detector_role": "staccato",
+   "dx": 0.03,
+   "dy": -1.15
+  },
+  {
+   "class": "articStaccatoBelow",
+   "detector_role": "staccato",
+   "dx": -0.005,
+   "dy": -0.91
+  },
+  {
+   "class": "augmentationDot",
+   "detector_role": "dot",
+   "dx": -1.12,
+   "dy": -2.355
+  },
+  {
+   "class": "augmentationDot",
+   "detector_role": "dot",
+   "dx": -0.43,
+   "dy": -3.275
+  },
+  {
+   "class": "augmentationDot",
+   "detector_role": "dot",
+   "dx": -0.025,
+   "dy": 0.0
+  },
+  {
+   "class": "augmentationDot",
+   "detector_role": "dot",
+   "dx": 1.705,
+   "dy": 8.6
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": 3.19,
+   "dy": 0.09
+  },
+  {
+   "class": "augmentationDot",
+   "detector_role": "dot",
+   "dx": 1.385,
+   "dy": 0.585
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": 0.005,
+   "dy": 1.57
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": -0.005,
+   "dy": 1.29
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": 0.005,
+   "dy": 1.485
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": -0.23,
+   "dy": 1.51
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": 0.01,
+   "dy": 1.405
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": -0.325,
+   "dy": -8.01
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": 0.0,
+   "dy": 1.735
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": 3.87,
+   "dy": 0.57
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": -0.25,
+   "dy": 1.435
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": -0.07,
+   "dy": 1.57
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": 0.0,
+   "dy": 1.555
+  },
+  {
+   "class": "articStaccatoBelow",
+   "detector_role": "staccato",
+   "dx": 0.025,
+   "dy": -1.24
+  },
+  {
+   "class": "articStaccatoBelow",
+   "detector_role": "staccato",
+   "dx": 0.095,
+   "dy": -1.25
+  },
+  {
+   "class": "articStaccatoBelow",
+   "detector_role": "staccato",
+   "dx": -0.64,
+   "dy": 2.23
+  },
+  {
+   "class": "augmentationDot",
+   "detector_role": "dot",
+   "dx": -3.755,
+   "dy": -5.45
+  },
+  {
+   "class": "augmentationDot",
+   "detector_role": "dot",
+   "dx": 0.995,
+   "dy": -0.87
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": -0.37,
+   "dy": 6.21
+  },
+  {
+   "class": "articStaccatoBelow",
+   "detector_role": "staccato",
+   "dx": -1.85,
+   "dy": 6.67
+  },
+  {
+   "class": "augmentationDot",
+   "detector_role": "dot",
+   "dx": -1.17,
+   "dy": -0.345
+  },
+  {
+   "class": "augmentationDot",
+   "detector_role": "dot",
+   "dx": -7.1163,
+   "dy": 1.9276
+  },
+  {
+   "class": "augmentationDot",
+   "detector_role": "dot",
+   "dx": -0.27,
+   "dy": -5.365
+  },
+  {
+   "class": "augmentationDot",
+   "detector_role": "dot",
+   "dx": 0.085,
+   "dy": 3.375
+  },
+  {
+   "class": "augmentationDot",
+   "detector_role": "dot",
+   "dx": 4.05,
+   "dy": -4.425
+  },
+  {
+   "class": "augmentationDot",
+   "detector_role": "dot",
+   "dx": 1.6,
+   "dy": 0.09
+  },
+  {
+   "class": "augmentationDot",
+   "detector_role": "dot",
+   "dx": 4.48,
+   "dy": 2.495
+  },
+  {
+   "class": "augmentationDot",
+   "detector_role": "dot",
+   "dx": 1.555,
+   "dy": -1.98
+  },
+  {
+   "class": "augmentationDot",
+   "detector_role": "dot",
+   "dx": 0.4749,
+   "dy": -3.7414
+  },
+  {
+   "class": "augmentationDot",
+   "detector_role": "dot",
+   "dx": 2.03,
+   "dy": -1.255
+  },
+  {
+   "class": "augmentationDot",
+   "detector_role": "dot",
+   "dx": 1.865,
+   "dy": 0.0
+  },
+  {
+   "class": "augmentationDot",
+   "detector_role": "dot",
+   "dx": 1.33,
+   "dy": -0.745
+  },
+  {
+   "class": "augmentationDot",
+   "detector_role": "dot",
+   "dx": 0.365,
+   "dy": -6.235
+  },
+  {
+   "class": "augmentationDot",
+   "detector_role": "dot",
+   "dx": 0.76,
+   "dy": 5.285
+  },
+  {
+   "class": "augmentationDot",
+   "detector_role": "dot",
+   "dx": 4.115,
+   "dy": 0.52
+  },
+  {
+   "class": "augmentationDot",
+   "detector_role": "dot",
+   "dx": 1.095,
+   "dy": 5.33
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": 0.27,
+   "dy": 1.405
+  },
+  {
+   "class": "augmentationDot",
+   "detector_role": "dot",
+   "dx": -1.875,
+   "dy": 0.145
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": 0.145,
+   "dy": 1.205
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": -0.005,
+   "dy": 1.225
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": -0.23,
+   "dy": 1.72
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": 0.265,
+   "dy": 1.65
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": 0.34,
+   "dy": 1.495
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": 0.16,
+   "dy": 1.415
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": -2.31,
+   "dy": 0.605
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": -0.14,
+   "dy": 1.665
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": 0.13,
+   "dy": 1.69
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": 0.135,
+   "dy": 1.405
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": -0.04,
+   "dy": 1.23
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": 0.1,
+   "dy": 1.555
+  },
+  {
+   "class": "articStaccatoBelow",
+   "detector_role": "staccato",
+   "dx": -0.23,
+   "dy": 1.735
+  },
+  {
+   "class": "augmentationDot",
+   "detector_role": "dot",
+   "dx": -1.455,
+   "dy": 4.42
+  },
+  {
+   "class": "augmentationDot",
+   "detector_role": "dot",
+   "dx": 0.875,
+   "dy": 6.45
+  },
+  {
+   "class": "augmentationDot",
+   "detector_role": "dot",
+   "dx": 1.395,
+   "dy": 0.22
+  },
+  {
+   "class": "augmentationDot",
+   "detector_role": "dot",
+   "dx": 1.93,
+   "dy": 6.345
+  },
+  {
+   "class": "augmentationDot",
+   "detector_role": "dot",
+   "dx": 0.9,
+   "dy": -3.735
+  },
+  {
+   "class": "augmentationDot",
+   "detector_role": "dot",
+   "dx": 1.4,
+   "dy": -4.42
+  },
+  {
+   "class": "augmentationDot",
+   "detector_role": "dot",
+   "dx": 0.89,
+   "dy": -4.02
+  },
+  {
+   "class": "augmentationDot",
+   "detector_role": "dot",
+   "dx": 0.885,
+   "dy": 0.395
+  },
+  {
+   "class": "augmentationDot",
+   "detector_role": "dot",
+   "dx": 0.77,
+   "dy": -0.19
+  },
+  {
+   "class": "articStaccatoBelow",
+   "detector_role": "staccato",
+   "dx": 0.275,
+   "dy": -1.0
+  },
+  {
+   "class": "augmentationDot",
+   "detector_role": "dot",
+   "dx": 1.33,
+   "dy": 0.99
+  },
+  {
+   "class": "augmentationDot",
+   "detector_role": "dot",
+   "dx": -1.48,
+   "dy": -0.635
+  },
+  {
+   "class": "augmentationDot",
+   "detector_role": "dot",
+   "dx": -1.265,
+   "dy": 1.185
+  },
+  {
+   "class": "augmentationDot",
+   "detector_role": "dot",
+   "dx": 1.275,
+   "dy": -0.58
+  },
+  {
+   "class": "articStaccatoBelow",
+   "detector_role": "staccato",
+   "dx": -0.79,
+   "dy": -2.855
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": 0.25,
+   "dy": 1.085
+  },
+  {
+   "class": "augmentationDot",
+   "detector_role": "dot",
+   "dx": 1.055,
+   "dy": -0.285
+  },
+  {
+   "class": "augmentationDot",
+   "detector_role": "dot",
+   "dx": 3.4032,
+   "dy": 0.586
+  },
+  {
+   "class": "augmentationDot",
+   "detector_role": "dot",
+   "dx": -3.24,
+   "dy": -4.295
+  },
+  {
+   "class": "augmentationDot",
+   "detector_role": "dot",
+   "dx": -5.02,
+   "dy": -4.585
+  },
+  {
+   "class": "augmentationDot",
+   "detector_role": "dot",
+   "dx": -1.035,
+   "dy": -3.305
+  },
+  {
+   "class": "augmentationDot",
+   "detector_role": "dot",
+   "dx": -4.19,
+   "dy": -3.81
+  },
+  {
+   "class": "articStaccatoBelow",
+   "detector_role": "staccato",
+   "dx": -1.92,
+   "dy": -1.84
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": -1.395,
+   "dy": -2.835
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": -3.05,
+   "dy": -7.865
+  },
+  {
+   "class": "augmentationDot",
+   "detector_role": "dot",
+   "dx": -0.015,
+   "dy": 3.365
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": -0.135,
+   "dy": 1.555
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": -0.01,
+   "dy": 1.255
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": 0.315,
+   "dy": 0.995
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": 0.155,
+   "dy": 0.95
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": -0.09,
+   "dy": 1.54
+  },
+  {
+   "class": "augmentationDot",
+   "detector_role": "dot",
+   "dx": 0.185,
+   "dy": 1.175
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": 0.0,
+   "dy": 1.065
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": -0.03,
+   "dy": 1.475
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": -0.03,
+   "dy": 1.415
+  },
+  {
+   "class": "articStaccatoBelow",
+   "detector_role": "staccato",
+   "dx": -0.01,
+   "dy": -1.43
+  },
+  {
+   "class": "articStaccatoBelow",
+   "detector_role": "staccato",
+   "dx": 0.04,
+   "dy": -1.18
+  },
+  {
+   "class": "articStaccatoBelow",
+   "detector_role": "staccato",
+   "dx": 0.26,
+   "dy": -0.98
+  },
+  {
+   "class": "articStaccatoBelow",
+   "detector_role": "staccato",
+   "dx": 0.165,
+   "dy": -1.36
+  },
+  {
+   "class": "articStaccatoBelow",
+   "detector_role": "staccato",
+   "dx": -0.24,
+   "dy": -1.455
+  },
+  {
+   "class": "articStaccatoBelow",
+   "detector_role": "staccato",
+   "dx": 0.03,
+   "dy": -1.32
+  },
+  {
+   "class": "augmentationDot",
+   "detector_role": "dot",
+   "dx": 1.83,
+   "dy": -0.475
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": -0.14,
+   "dy": 1.54
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": 0.22,
+   "dy": 1.41
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": 0.19,
+   "dy": 1.33
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": 0.055,
+   "dy": 1.4
+  },
+  {
+   "class": "augmentationDot",
+   "detector_role": "dot",
+   "dx": -0.125,
+   "dy": 1.1
+  },
+  {
+   "class": "articStaccatoBelow",
+   "detector_role": "staccato",
+   "dx": 0.185,
+   "dy": -1.575
+  },
+  {
+   "class": "articStaccatoBelow",
+   "detector_role": "staccato",
+   "dx": 0.14,
+   "dy": -1.2
+  },
+  {
+   "class": "articStaccatoBelow",
+   "detector_role": "staccato",
+   "dx": 4.695,
+   "dy": 4.655
+  },
+  {
+   "class": "articStaccatoBelow",
+   "detector_role": "staccato",
+   "dx": 1.86,
+   "dy": 5.285
+  },
+  {
+   "class": "articStaccatoBelow",
+   "detector_role": "staccato",
+   "dx": 0.3,
+   "dy": -0.795
+  },
+  {
+   "class": "articStaccatoBelow",
+   "detector_role": "staccato",
+   "dx": 0.195,
+   "dy": -1.16
+  },
+  {
+   "class": "articStaccatoBelow",
+   "detector_role": "staccato",
+   "dx": -0.055,
+   "dy": -1.275
+  },
+  {
+   "class": "articStaccatoBelow",
+   "detector_role": "staccato",
+   "dx": -1.455,
+   "dy": -0.095
+  },
+  {
+   "class": "articStaccatoBelow",
+   "detector_role": "staccato",
+   "dx": 0.055,
+   "dy": -1.3
+  },
+  {
+   "class": "augmentationDot",
+   "detector_role": "dot",
+   "dx": -0.19,
+   "dy": -0.97
+  },
+  {
+   "class": "articStaccatoBelow",
+   "detector_role": "staccato",
+   "dx": 0.15,
+   "dy": -0.875
+  },
+  {
+   "class": "articStaccatoBelow",
+   "detector_role": "staccato",
+   "dx": -2.76,
+   "dy": -0.205
+  },
+  {
+   "class": "articStaccatoBelow",
+   "detector_role": "staccato",
+   "dx": 0.18,
+   "dy": -1.125
+  },
+  {
+   "class": "articStaccatoBelow",
+   "detector_role": "staccato",
+   "dx": -1.755,
+   "dy": -0.22
+  },
+  {
+   "class": "augmentationDot",
+   "detector_role": "dot",
+   "dx": 1.0642,
+   "dy": -3.4189
+  },
+  {
+   "class": "augmentationDot",
+   "detector_role": "dot",
+   "dx": 1.3154,
+   "dy": 0.7231
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": 0.01,
+   "dy": 1.08
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": -0.155,
+   "dy": 1.285
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": 3.525,
+   "dy": 0.645
+  },
+  {
+   "class": "augmentationDot",
+   "detector_role": "dot",
+   "dx": 0.77,
+   "dy": 0.885
+  },
+  {
+   "class": "articStaccatoBelow",
+   "detector_role": "staccato",
+   "dx": 0.0462,
+   "dy": -1.1769
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": -0.02,
+   "dy": 1.42
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": 0.03,
+   "dy": 1.47
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": 0.105,
+   "dy": 1.235
+  },
+  {
+   "class": "augmentationDot",
+   "detector_role": "dot",
+   "dx": 0.105,
+   "dy": 1.26
+  },
+  {
+   "class": "augmentationDot",
+   "detector_role": "dot",
+   "dx": 1.6,
+   "dy": 0.57
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": 4.045,
+   "dy": 0.045
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": 0.155,
+   "dy": 1.61
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": 1.19,
+   "dy": 1.175
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": 0.005,
+   "dy": 1.55
+  },
+  {
+   "class": "articStaccatoBelow",
+   "detector_role": "staccato",
+   "dx": -0.11,
+   "dy": -1.315
+  },
+  {
+   "class": "articStaccatoBelow",
+   "detector_role": "staccato",
+   "dx": -0.05,
+   "dy": -1.46
+  },
+  {
+   "class": "augmentationDot",
+   "detector_role": "dot",
+   "dx": -0.05,
+   "dy": -1.455
+  },
+  {
+   "class": "articStaccatoBelow",
+   "detector_role": "staccato",
+   "dx": -0.1,
+   "dy": -1.21
+  },
+  {
+   "class": "articStaccatoBelow",
+   "detector_role": "staccato",
+   "dx": -0.09,
+   "dy": -1.315
+  },
+  {
+   "class": "articStaccatoBelow",
+   "detector_role": "staccato",
+   "dx": 0.245,
+   "dy": -1.295
+  },
+  {
+   "class": "articStaccatoBelow",
+   "detector_role": "staccato",
+   "dx": -0.06,
+   "dy": -1.175
+  },
+  {
+   "class": "augmentationDot",
+   "detector_role": "dot",
+   "dx": 1.4846,
+   "dy": 1.4308
+  },
+  {
+   "class": "articStaccatoBelow",
+   "detector_role": "staccato",
+   "dx": 0.0231,
+   "dy": -1.2846
+  },
+  {
+   "class": "articStaccatoBelow",
+   "detector_role": "staccato",
+   "dx": 0.1462,
+   "dy": -1.5077
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": 0.11,
+   "dy": 1.4
+  },
+  {
+   "class": "articStaccatoBelow",
+   "detector_role": "staccato",
+   "dx": 0.32,
+   "dy": -1.555
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": 0.055,
+   "dy": 1.445
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": 0.065,
+   "dy": 1.41
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": 1.075,
+   "dy": 0.92
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": 0.1,
+   "dy": 1.29
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": -0.09,
+   "dy": 1.735
+  },
+  {
+   "class": "articStaccatoBelow",
+   "detector_role": "staccato",
+   "dx": 0.055,
+   "dy": -1.49
+  },
+  {
+   "class": "articStaccatoBelow",
+   "detector_role": "staccato",
+   "dx": 0.01,
+   "dy": -1.225
+  },
+  {
+   "class": "articStaccatoBelow",
+   "detector_role": "staccato",
+   "dx": -0.1,
+   "dy": -1.255
+  },
+  {
+   "class": "articStaccatoBelow",
+   "detector_role": "staccato",
+   "dx": 0.05,
+   "dy": -1.315
+  },
+  {
+   "class": "articStaccatoBelow",
+   "detector_role": "staccato",
+   "dx": 2.865,
+   "dy": 5.69
+  },
+  {
+   "class": "articStaccatoBelow",
+   "detector_role": "staccato",
+   "dx": -0.965,
+   "dy": -1.625
+  },
+  {
+   "class": "articStaccatoBelow",
+   "detector_role": "staccato",
+   "dx": 0.23,
+   "dy": -1.17
+  },
+  {
+   "class": "articStaccatoBelow",
+   "detector_role": "staccato",
+   "dx": 0.225,
+   "dy": -1.035
+  },
+  {
+   "class": "articStaccatoBelow",
+   "detector_role": "staccato",
+   "dx": -1.345,
+   "dy": -0.23
+  },
+  {
+   "class": "articStaccatoBelow",
+   "detector_role": "staccato",
+   "dx": 0.1439,
+   "dy": -1.4394
+  },
+  {
+   "class": "articStaccatoBelow",
+   "detector_role": "staccato",
+   "dx": 0.275,
+   "dy": -1.045
+  },
+  {
+   "class": "augmentationDot",
+   "detector_role": "dot",
+   "dx": 0.005,
+   "dy": -1.205
+  },
+  {
+   "class": "articStaccatoBelow",
+   "detector_role": "staccato",
+   "dx": -0.01,
+   "dy": -1.19
+  },
+  {
+   "class": "articStaccatoBelow",
+   "detector_role": "staccato",
+   "dx": 0.135,
+   "dy": -1.465
+  },
+  {
+   "class": "articStaccatoBelow",
+   "detector_role": "staccato",
+   "dx": 2.78,
+   "dy": 6.04
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": 0.455,
+   "dy": 3.11
+  },
+  {
+   "class": "articStaccatoBelow",
+   "detector_role": "staccato",
+   "dx": 0.2,
+   "dy": -0.955
+  },
+  {
+   "class": "articStaccatoBelow",
+   "detector_role": "staccato",
+   "dx": -0.165,
+   "dy": -1.435
+  },
+  {
+   "class": "augmentationDot",
+   "detector_role": "dot",
+   "dx": 3.8636,
+   "dy": 1.2348
+  },
+  {
+   "class": "articStaccatoBelow",
+   "detector_role": "staccato",
+   "dx": 0.105,
+   "dy": -0.965
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": -0.075,
+   "dy": 1.15
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": 0.015,
+   "dy": 1.205
+  },
+  {
+   "class": "augmentationDot",
+   "detector_role": "dot",
+   "dx": 0.54,
+   "dy": -3.56
+  },
+  {
+   "class": "augmentationDot",
+   "detector_role": "dot",
+   "dx": 4.5,
+   "dy": -0.015
+  },
+  {
+   "class": "articStaccatoBelow",
+   "detector_role": "staccato",
+   "dx": -0.09,
+   "dy": -0.66
+  },
+  {
+   "class": "augmentationDot",
+   "detector_role": "dot",
+   "dx": 0.495,
+   "dy": -7.775
+  },
+  {
+   "class": "augmentationDot",
+   "detector_role": "dot",
+   "dx": 2.175,
+   "dy": 1.805
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": 0.78,
+   "dy": -8.15
+  },
+  {
+   "class": "augmentationDot",
+   "detector_role": "dot",
+   "dx": 1.525,
+   "dy": 0.36
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": -6.0653,
+   "dy": -1.7839
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": 0.3,
+   "dy": 0.83
+  },
+  {
+   "class": "augmentationDot",
+   "detector_role": "dot",
+   "dx": 0.545,
+   "dy": -3.09
+  },
+  {
+   "class": "augmentationDot",
+   "detector_role": "dot",
+   "dx": -0.48,
+   "dy": -3.375
+  },
+  {
+   "class": "articStaccatoBelow",
+   "detector_role": "staccato",
+   "dx": 2.21,
+   "dy": -1.415
+  },
+  {
+   "class": "articStaccatoBelow",
+   "detector_role": "staccato",
+   "dx": 2.32,
+   "dy": 2.225
+  },
+  {
+   "class": "augmentationDot",
+   "detector_role": "dot",
+   "dx": 0.955,
+   "dy": -0.165
+  },
+  {
+   "class": "augmentationDot",
+   "detector_role": "dot",
+   "dx": 0.775,
+   "dy": 0.91
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": -0.045,
+   "dy": 1.125
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": 0.565,
+   "dy": -5.42
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": 0.53,
+   "dy": -7.395
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": 0.485,
+   "dy": -5.9
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": -0.51,
+   "dy": 1.3
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": 2.61,
+   "dy": -3.88
+  },
+  {
+   "class": "augmentationDot",
+   "detector_role": "dot",
+   "dx": -1.035,
+   "dy": -1.095
+  },
+  {
+   "class": "articStaccatoBelow",
+   "detector_role": "staccato",
+   "dx": -0.1,
+   "dy": -1.21
+  },
+  {
+   "class": "augmentationDot",
+   "detector_role": "dot",
+   "dx": -1.02,
+   "dy": -0.89
+  },
+  {
+   "class": "articStaccatoBelow",
+   "detector_role": "staccato",
+   "dx": -0.175,
+   "dy": -1.235
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": 0.06,
+   "dy": 1.22
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": 0.43,
+   "dy": 1.27
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": 0.19,
+   "dy": 1.315
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": 0.115,
+   "dy": 1.03
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": 0.045,
+   "dy": 1.28
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": 2.11,
+   "dy": 0.3
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": 1.79,
+   "dy": 2.025
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": -0.09,
+   "dy": 1.56
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": 2.27,
+   "dy": -6.63
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": -0.18,
+   "dy": 1.175
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": 0.02,
+   "dy": 1.105
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": 0.035,
+   "dy": 1.345
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": -0.05,
+   "dy": 1.26
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": 0.155,
+   "dy": 1.04
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": -0.115,
+   "dy": 1.555
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": 0.11,
+   "dy": 1.41
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": 0.045,
+   "dy": 1.485
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": -0.045,
+   "dy": 1.48
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": 0.02,
+   "dy": 1.56
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": 0.045,
+   "dy": -10.695
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": -0.275,
+   "dy": 1.055
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": -0.16,
+   "dy": 1.095
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": 0.025,
+   "dy": 1.08
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": 0.095,
+   "dy": 1.285
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": -0.08,
+   "dy": 1.34
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": -0.09,
+   "dy": 1.3
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": 0.01,
+   "dy": 1.095
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": -0.02,
+   "dy": 1.385
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": -0.16,
+   "dy": 1.3
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": -0.065,
+   "dy": 1.22
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": 0.14,
+   "dy": 1.6
+  },
+  {
+   "class": "articStaccatoBelow",
+   "detector_role": "staccato",
+   "dx": 0.03,
+   "dy": 1.74
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": 0.22,
+   "dy": 1.42
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": -0.435,
+   "dy": 1.845
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": 0.065,
+   "dy": 1.815
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": -0.325,
+   "dy": 1.29
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": -0.19,
+   "dy": 1.24
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": -0.04,
+   "dy": 1.23
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": 0.035,
+   "dy": 1.41
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": 0.015,
+   "dy": 1.31
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": -0.02,
+   "dy": 1.49
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": 0.3,
+   "dy": -5.45
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": -0.14,
+   "dy": 1.435
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": 0.39,
+   "dy": -5.015
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": -0.03,
+   "dy": 1.245
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": 0.125,
+   "dy": 1.495
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": 0.085,
+   "dy": 2.13
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": 0.17,
+   "dy": 1.27
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": 0.055,
+   "dy": 1.385
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": -0.02,
+   "dy": 1.505
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": 0.115,
+   "dy": 1.6
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": -0.16,
+   "dy": 1.515
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": -0.29,
+   "dy": 1.165
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": -0.075,
+   "dy": 1.595
+  },
+  {
+   "class": "augmentationDot",
+   "detector_role": "dot",
+   "dx": 1.715,
+   "dy": -3.43
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": 0.235,
+   "dy": 3.175
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": 0.07,
+   "dy": 1.185
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": 0.23,
+   "dy": 3.165
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": -0.075,
+   "dy": 1.51
+  },
+  {
+   "class": "articStaccatoBelow",
+   "detector_role": "staccato",
+   "dx": 0.025,
+   "dy": 2.965
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": -0.21,
+   "dy": 1.335
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": 0.195,
+   "dy": 1.54
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": -0.095,
+   "dy": 1.44
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": 0.03,
+   "dy": -6.26
+  },
+  {
+   "class": "articStaccatoBelow",
+   "detector_role": "staccato",
+   "dx": -0.09,
+   "dy": -1.465
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": 0.565,
+   "dy": -3.29
+  },
+  {
+   "class": "articStaccatoBelow",
+   "detector_role": "staccato",
+   "dx": -0.155,
+   "dy": -1.315
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": 0.4,
+   "dy": -1.95
+  },
+  {
+   "class": "articStaccatoBelow",
+   "detector_role": "staccato",
+   "dx": 0.12,
+   "dy": -1.285
+  },
+  {
+   "class": "articStaccatoBelow",
+   "detector_role": "staccato",
+   "dx": 0.26,
+   "dy": -1.365
+  },
+  {
+   "class": "articStaccatoBelow",
+   "detector_role": "staccato",
+   "dx": 0.1,
+   "dy": -1.195
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": 0.17,
+   "dy": -4.565
+  },
+  {
+   "class": "augmentationDot",
+   "detector_role": "dot",
+   "dx": 1.215,
+   "dy": -0.325
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": -0.015,
+   "dy": 1.795
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": 0.055,
+   "dy": 1.13
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": 0.17,
+   "dy": 1.4
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": 0.485,
+   "dy": -3.09
+  },
+  {
+   "class": "articStaccatoBelow",
+   "detector_role": "staccato",
+   "dx": -0.18,
+   "dy": -1.23
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": 0.415,
+   "dy": -1.945
+  },
+  {
+   "class": "articStaccatoBelow",
+   "detector_role": "staccato",
+   "dx": -0.14,
+   "dy": -1.3
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": -0.15,
+   "dy": 1.52
+  },
+  {
+   "class": "articStaccatoBelow",
+   "detector_role": "staccato",
+   "dx": 0.17,
+   "dy": -0.785
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": -0.125,
+   "dy": 1.33
+  },
+  {
+   "class": "articStaccatoBelow",
+   "detector_role": "staccato",
+   "dx": -0.025,
+   "dy": 6.275
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": 0.225,
+   "dy": 3.025
+  },
+  {
+   "class": "articStaccatoBelow",
+   "detector_role": "staccato",
+   "dx": 0.175,
+   "dy": -1.345
+  },
+  {
+   "class": "articStaccatoBelow",
+   "detector_role": "staccato",
+   "dx": -0.05,
+   "dy": -1.19
+  },
+  {
+   "class": "articStaccatoBelow",
+   "detector_role": "staccato",
+   "dx": -0.015,
+   "dy": -1.14
+  },
+  {
+   "class": "articStaccatoBelow",
+   "detector_role": "staccato",
+   "dx": -0.03,
+   "dy": -1.32
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": 3.085,
+   "dy": -3.475
+  },
+  {
+   "class": "articStaccatoBelow",
+   "detector_role": "staccato",
+   "dx": 0.07,
+   "dy": 5.81
+  },
+  {
+   "class": "articStaccatoBelow",
+   "detector_role": "staccato",
+   "dx": 0.025,
+   "dy": -0.59
+  },
+  {
+   "class": "articStaccatoBelow",
+   "detector_role": "staccato",
+   "dx": -0.025,
+   "dy": 5.795
+  },
+  {
+   "class": "articStaccatoBelow",
+   "detector_role": "staccato",
+   "dx": 0.22,
+   "dy": -1.44
+  },
+  {
+   "class": "articStaccatoBelow",
+   "detector_role": "staccato",
+   "dx": -0.13,
+   "dy": -1.53
+  },
+  {
+   "class": "articStaccatoBelow",
+   "detector_role": "staccato",
+   "dx": -0.055,
+   "dy": -1.265
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": -0.175,
+   "dy": 1.395
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": -0.275,
+   "dy": -7.39
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": 2.325,
+   "dy": -7.19
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": -0.185,
+   "dy": 1.45
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": 0.035,
+   "dy": 1.435
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": -3.16,
+   "dy": 1.15
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": -0.12,
+   "dy": 1.62
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": -0.08,
+   "dy": 1.19
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": 0.24,
+   "dy": 1.655
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": 0.12,
+   "dy": 1.035
+  },
+  {
+   "class": "augmentationDot",
+   "detector_role": "dot",
+   "dx": 0.045,
+   "dy": 1.445
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": 0.235,
+   "dy": 1.49
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": 0.105,
+   "dy": 1.295
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": 0.0,
+   "dy": 1.475
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": 0.165,
+   "dy": 1.375
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": 0.11,
+   "dy": 1.345
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": -1.62,
+   "dy": -6.52
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": 0.11,
+   "dy": 1.27
+  },
+  {
+   "class": "augmentationDot",
+   "detector_role": "dot",
+   "dx": 1.53,
+   "dy": -7.165
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": 0.1,
+   "dy": 1.485
+  },
+  {
+   "class": "articStaccatoBelow",
+   "detector_role": "staccato",
+   "dx": 0.065,
+   "dy": -1.435
+  },
+  {
+   "class": "augmentationDot",
+   "detector_role": "dot",
+   "dx": 0.025,
+   "dy": -1.04
+  },
+  {
+   "class": "articStaccatoBelow",
+   "detector_role": "staccato",
+   "dx": -0.035,
+   "dy": -1.355
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": 0.235,
+   "dy": 1.38
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": -0.12,
+   "dy": 1.335
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": 0.05,
+   "dy": 1.56
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": -0.07,
+   "dy": -8.025
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": -0.285,
+   "dy": 1.835
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": -0.07,
+   "dy": -7.945
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": -0.075,
+   "dy": 1.475
+  },
+  {
+   "class": "augmentationDot",
+   "detector_role": "dot",
+   "dx": 1.665,
+   "dy": -0.15
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": 0.095,
+   "dy": 1.48
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": 0.21,
+   "dy": 1.46
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": -0.06,
+   "dy": 1.385
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": -0.015,
+   "dy": 1.485
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": 0.17,
+   "dy": 1.245
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": 0.115,
+   "dy": 1.39
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": 0.085,
+   "dy": 1.305
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": 0.055,
+   "dy": 1.45
+  },
+  {
+   "class": "articStaccatoBelow",
+   "detector_role": "staccato",
+   "dx": 0.27,
+   "dy": -1.58
+  },
+  {
+   "class": "articStaccatoBelow",
+   "detector_role": "staccato",
+   "dx": 0.005,
+   "dy": -1.365
+  },
+  {
+   "class": "articStaccatoBelow",
+   "detector_role": "staccato",
+   "dx": 0.035,
+   "dy": -1.055
+  },
+  {
+   "class": "articStaccatoBelow",
+   "detector_role": "staccato",
+   "dx": -2.12,
+   "dy": 6.99
+  },
+  {
+   "class": "articStaccatoBelow",
+   "detector_role": "staccato",
+   "dx": 0.125,
+   "dy": -1.04
+  },
+  {
+   "class": "articStaccatoBelow",
+   "detector_role": "staccato",
+   "dx": 0.065,
+   "dy": -1.205
+  },
+  {
+   "class": "articStaccatoBelow",
+   "detector_role": "staccato",
+   "dx": -0.045,
+   "dy": -1.175
+  },
+  {
+   "class": "articStaccatoBelow",
+   "detector_role": "staccato",
+   "dx": 0.095,
+   "dy": -1.125
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": -0.095,
+   "dy": 1.575
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": -0.11,
+   "dy": 1.505
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": -0.365,
+   "dy": 1.625
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": -0.16,
+   "dy": 1.35
+  },
+  {
+   "class": "augmentationDot",
+   "detector_role": "dot",
+   "dx": -0.05,
+   "dy": 1.58
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": -0.13,
+   "dy": 1.34
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": -0.08,
+   "dy": 1.36
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": -2.055,
+   "dy": -5.825
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": -0.02,
+   "dy": 1.71
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": -0.075,
+   "dy": 1.455
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": 0.195,
+   "dy": 1.04
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": -0.235,
+   "dy": 1.19
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": 0.035,
+   "dy": 1.47
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": 0.13,
+   "dy": -6.915
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": -0.065,
+   "dy": 1.505
+  },
+  {
+   "class": "articStaccatoBelow",
+   "detector_role": "staccato",
+   "dx": 0.19,
+   "dy": -1.415
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": 0.095,
+   "dy": 1.58
+  },
+  {
+   "class": "articStaccatoBelow",
+   "detector_role": "staccato",
+   "dx": 0.16,
+   "dy": -1.14
+  },
+  {
+   "class": "articStaccatoBelow",
+   "detector_role": "staccato",
+   "dx": -2.12,
+   "dy": 7.78
+  },
+  {
+   "class": "articStaccatoBelow",
+   "detector_role": "staccato",
+   "dx": 0.11,
+   "dy": -1.19
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": -1.335,
+   "dy": -3.68
+  },
+  {
+   "class": "articStaccatoBelow",
+   "detector_role": "staccato",
+   "dx": 0.125,
+   "dy": -0.985
+  },
+  {
+   "class": "articStaccatoBelow",
+   "detector_role": "staccato",
+   "dx": 0.27,
+   "dy": -1.735
+  },
+  {
+   "class": "articStaccatoBelow",
+   "detector_role": "staccato",
+   "dx": 0.125,
+   "dy": -1.36
+  },
+  {
+   "class": "articStaccatoBelow",
+   "detector_role": "staccato",
+   "dx": 0.105,
+   "dy": -0.72
+  },
+  {
+   "class": "articStaccatoBelow",
+   "detector_role": "staccato",
+   "dx": -0.035,
+   "dy": -1.575
+  },
+  {
+   "class": "articStaccatoBelow",
+   "detector_role": "staccato",
+   "dx": -0.035,
+   "dy": -1.155
+  },
+  {
+   "class": "augmentationDot",
+   "detector_role": "dot",
+   "dx": 0.11,
+   "dy": -0.685
+  },
+  {
+   "class": "articStaccatoBelow",
+   "detector_role": "staccato",
+   "dx": -0.24,
+   "dy": -1.51
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": 0.07,
+   "dy": 0.965
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": 0.055,
+   "dy": 1.845
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": 0.015,
+   "dy": 1.665
+  },
+  {
+   "class": "augmentationDot",
+   "detector_role": "dot",
+   "dx": 0.275,
+   "dy": -1.03
+  },
+  {
+   "class": "augmentationDot",
+   "detector_role": "dot",
+   "dx": 0.135,
+   "dy": -1.35
+  },
+  {
+   "class": "articStaccatoBelow",
+   "detector_role": "staccato",
+   "dx": 0.225,
+   "dy": -0.69
+  },
+  {
+   "class": "augmentationDot",
+   "detector_role": "dot",
+   "dx": -1.375,
+   "dy": 1.65
+  },
+  {
+   "class": "articStaccatoBelow",
+   "detector_role": "staccato",
+   "dx": -0.135,
+   "dy": -1.395
+  },
+  {
+   "class": "articStaccatoBelow",
+   "detector_role": "staccato",
+   "dx": 0.055,
+   "dy": -1.235
+  },
+  {
+   "class": "articStaccatoBelow",
+   "detector_role": "staccato",
+   "dx": 0.365,
+   "dy": 7.06
+  },
+  {
+   "class": "articStaccatoBelow",
+   "detector_role": "staccato",
+   "dx": -2.525,
+   "dy": 6.875
+  },
+  {
+   "class": "articStaccatoBelow",
+   "detector_role": "staccato",
+   "dx": 0.04,
+   "dy": -1.15
+  },
+  {
+   "class": "augmentationDot",
+   "detector_role": "dot",
+   "dx": 0.255,
+   "dy": -1.005
+  },
+  {
+   "class": "articStaccatoBelow",
+   "detector_role": "staccato",
+   "dx": 0.08,
+   "dy": 7.185
+  },
+  {
+   "class": "augmentationDot",
+   "detector_role": "dot",
+   "dx": 0.065,
+   "dy": 7.295
+  },
+  {
+   "class": "augmentationDot",
+   "detector_role": "dot",
+   "dx": 0.105,
+   "dy": 7.205
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": 0.035,
+   "dy": 1.31
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": 0.065,
+   "dy": 1.145
+  },
+  {
+   "class": "augmentationDot",
+   "detector_role": "dot",
+   "dx": -1.59,
+   "dy": 0.175
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": 0.055,
+   "dy": 1.555
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": -0.05,
+   "dy": 1.285
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": 0.125,
+   "dy": 1.56
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": 0.14,
+   "dy": 1.12
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": 0.035,
+   "dy": 1.625
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": -0.06,
+   "dy": 1.415
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": 0.075,
+   "dy": 1.225
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": -0.035,
+   "dy": 1.465
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": 0.045,
+   "dy": 1.41
+  },
+  {
+   "class": "augmentationDot",
+   "detector_role": "dot",
+   "dx": -1.35,
+   "dy": -0.725
+  },
+  {
+   "class": "augmentationDot",
+   "detector_role": "dot",
+   "dx": 1.495,
+   "dy": -2.085
+  },
+  {
+   "class": "augmentationDot",
+   "detector_role": "dot",
+   "dx": 1.62,
+   "dy": 0.755
+  },
+  {
+   "class": "augmentationDot",
+   "detector_role": "dot",
+   "dx": 0.95,
+   "dy": -0.14
+  },
+  {
+   "class": "augmentationDot",
+   "detector_role": "dot",
+   "dx": 7.125,
+   "dy": -0.235
+  },
+  {
+   "class": "articStaccatoAbove",
+   "detector_role": "staccato",
+   "dx": 0.615,
+   "dy": 1.3
+  },
+  {
+   "class": "augmentationDot",
+   "detector_role": "dot",
+   "dx": 0.095,
+   "dy": 4.91
+  },
+  {
+   "class": "augmentationDot",
+   "detector_role": "dot",
+   "dx": 0.2,
+   "dy": 4.52
+  },
+  {
+   "class": "augmentationDot",
+   "detector_role": "dot",
+   "dx": -0.45,
+   "dy": 4.38
+  },
+  {
+   "class": "articStaccatoBelow",
+   "detector_role": "staccato",
+   "dx": 0.42,
+   "dy": -0.945
+  },
+  {
+   "class": "articStaccatoBelow",
+   "detector_role": "staccato",
+   "dx": -3.39,
+   "dy": 0.7
+  },
+  {
+   "class": "augmentationDot",
+   "detector_role": "dot",
+   "dx": -0.445,
+   "dy": 5.855
+  }
+ ]
+}

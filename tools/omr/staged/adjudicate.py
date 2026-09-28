@@ -946,6 +946,16 @@ ORDER: Tuple[str, ...] = (
     Q.GLYPH_OWNER,
     Q.ARC_OWNER,
     Q.ARC_KIND,
+    # ⚠️ ROADMAP 2.12c, BEFORE `Q.DURATION` AND `Q.ARTICULATION_OWNER`. Its
+    # evidence is GATHER rows only (`Q.AUG_DOT`, `Q.GLYPH_BOX`,
+    # `Q.NOTEHEAD_CLASS`, `Q.REST`, `Q.CELL_STAFF_SPACE`), so it needs no
+    # verdict of any kind -- but `_attached_dots` (inside `adjudicate_
+    # duration`) reads THIS verdict back to decide which `Q.AUG_DOT` rows may
+    # lengthen a note, so it must have already run. `Q.ARTICULATION_OWNER`
+    # does not read it (gather no longer files a staccato-classed box into
+    # `Q.ARTICULATION_MARK` at all), but the two are natural neighbours: both
+    # place a small mark against the head it belongs to.
+    Q.DOT_ROLE,
     Q.ARTICULATION_OWNER,
     # ⚠️ BESIDE THE ARTICULATION AND BEFORE THE RHYTHM, and the placement is
     # the same argument the fermata makes just below: its evidence is GATHER

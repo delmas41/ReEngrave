@@ -604,6 +604,11 @@ def build(rec: Record) -> Tuple[List[List[StaffRun]], Dict[str, Any],
     # reason the arcs are: an articulation is not a note, and folding it into
     # `dropped` would make the note balance raise on a different family.
     artics_dropped = _place_articulations(rec, runs)
+    # ⚠️ ROADMAP 2.12c, AND ITS OWN BUCKET FOR THE SAME REASON: `Q.AUG_DOT`
+    # is not `Q.ARTICULATION_MARK`, so folding it into `artics_dropped` would
+    # make `articulation_balance` raise about a population it never counted.
+    # See `_place_dot_role_marks` and `_merged_articulations`.
+    dot_role_report = _place_dot_role_marks(rec, runs)
     # ⚠️ ITS OWN BUCKET, for the same reason the arcs and articulations have
     # one: a fermata is not a note, and folding its shortfall into `dropped`
     # would make the note-accounting control raise about a different family.
@@ -741,7 +746,8 @@ def build(rec: Record) -> Tuple[List[List[StaffRun]], Dict[str, Any],
     # prevent: a hairpin claimed by both `dynamic` and `wedge` was counted
     # twice, and a reader cannot unpick one number into two afterwards.
     return (parts, provenance, dropped, arcs_dropped, artics_dropped,
-            fermatas_dropped, ornaments_dropped, notes_dropped_by_system)
+            fermatas_dropped, ornaments_dropped, notes_dropped_by_system,
+            dot_role_report)
 
 
 #: The alterations `respell_accidental` can write, and what each does to a
@@ -1808,6 +1814,30 @@ def _arcs_by_kind(measures, arcs, kinds, spacings, tops, breaks
     return out, n_groups
 
 
+def _merged_articulations(head: Dict[str, Any]) -> Optional[List[str]]:
+    """A note's articulations for THE FILE: the real ones `_place_
+    articulations` set, plus a ROADMAP 2.12c staccato-role dot `_place_
+    dot_role_marks` set, if either did.
+
+    ⚠️ KEPT IN TWO LISTS, MERGED ONLY HERE, and the reason is the balance
+    controls. `counters["articulations"]` at the render site is what
+    `articulation_balance` compares against `len(rec.obs_of(Q.
+    ARTICULATION_MARK))` -- a population that does NOT include a 2.12c mark,
+    since `gather_glyph_families` no longer files a staccato-classed box into
+    that quantity at all. Writing a 2.12c mark into the SAME list would
+    inflate that counter with ink the population side never counted, and
+    `articulation_balance.balanced` would go False for CORRECT behaviour --
+    the exact `wedge_balance` fault CLAUDE.md already records this file
+    committing once. `dot_role_articulations` is counted under its own key
+    (`dot_role_balance`, an equality over `Q.AUG_DOT`) and merged into ONE
+    `<articulations>` element only at the point the FILE is written, where
+    MusicXML does not care which Python list a mark came from.
+    """
+    merged = list(head.get("articulations") or ()) + list(
+        head.get("dot_role_articulations") or ())
+    return merged or None
+
+
 def _place_articulations(rec: Record, runs: Dict[str, StaffRun]) -> Dict[str, int]:
     """Every decided articulation, onto the notehead its OWNER names.
 
@@ -1858,6 +1888,79 @@ def _place_articulations(rec: Record, runs: Dict[str, StaffRun]) -> Dict[str, in
             continue
         head.setdefault("articulations", []).append(str(name))
     return dict(dropped)
+
+
+def _place_dot_role_marks(rec: Record, runs: Dict[str, StaffRun]
+                          ) -> Dict[str, Any]:
+    """Every `Q.AUG_DOT` glyph, partitioned by what its ROLE verdict did with
+    it -- ROADMAP 2.12c.
+
+    ⚠️⚠️ A THIRD FAMILY, NOT A SUBSET OF THE ARTICULATION ONE. `Q.AUG_DOT`
+    now pools two detector classes (`augmentationDot` and `articStaccato*`),
+    and `adjudicate_dot_role` decides which of two DIFFERENT consumers each
+    row belongs to: `"augmentation"` feeds `adjudicate_duration` (counted
+    there, in `n_dots`/`dots_attached` -- never as an element of its own, so
+    the check here is whether the OBSERVATION's own id reached some
+    duration's `used`), `"staccato"` feeds THIS function, writing
+    `head["dot_role_articulations"]` (never `head["articulations"]` --
+    `_merged_articulations` says why). Every row lands in exactly one bucket
+    below, which is the partition `status_census` asks of every family.
+
+    ⚠️ THE JOIN IS THE OWNER'S SUBJECT KEY, exactly as `_place_articulations`
+    joins on `Q.ARTICULATION_OWNER`'s value -- `adjudicate_dot_role` carries
+    it in `detail["owner"]` for the `"staccato"` case for the identical
+    reason: re-deriving nearest-notehead here from raw pixels would be a
+    second, possibly divergent, spelling of a fact the record already states.
+    """
+    dropped: Dict[str, int] = collections.Counter()
+    heads: Dict[str, Dict[str, Any]] = {}
+    for run in runs.values():
+        for cell in run.cells.values():
+            for det in cell.detections:
+                if det.get("category") == "notehead" and det.get("glyph"):
+                    heads[str(det["glyph"])] = det
+
+    # ⚠️ BUILT ONCE, NOT PER GLYPH. `adjudicate_duration`'s `used` names every
+    # row it actually composed the value from, `Q.AUG_DOT` rows included --
+    # so a dot-role row reaching THIS set is the file's own record of having
+    # been attached, not a re-derivation of the geometry test that decided it
+    # (CLAUDE.md rule 6, "connect, never guess").
+    used_by_duration = set()
+    for v in rec.verdicts_of(Q.DURATION):
+        used_by_duration.update(v.get("used") or ())
+
+    attached_augmentation = 0
+    written_staccato = 0
+    for o in rec.obs_of(Q.AUG_DOT):
+        sub = o["subject"]
+        v = rec.verdict(Q.DOT_ROLE, sub)
+        if not v or v["outcome"] != "decided":
+            dropped["abstained_" + (v["reason"] if v else "absent")] += 1
+            continue
+        if v["value"] == "augmentation":
+            if o["id"] in used_by_duration:
+                attached_augmentation += 1
+            else:
+                # ⚠️ SHOULD BE RARE TO NEVER: `adjudicate_dot_role` and
+                # `_attached_dots` run the identical `_in_augmentation_window`
+                # test, so a row DECIDED augmentation here and not attached
+                # there means the reciprocal note-assignment gave this dot to
+                # NEITHER candidate note -- not a bug, but not silent either.
+                dropped["augmentation_decided_but_unattached"] += 1
+            continue
+        if v["value"] != "staccato":
+            dropped["dot_role_names_an_unknown_value"] += 1
+            continue
+        owner = (v.get("detail") or {}).get("owner")
+        head = heads.get(str(owner)) if owner else None
+        if head is None:
+            dropped["staccato_owning_notehead_not_written"] += 1
+            continue
+        head.setdefault("dot_role_articulations", []).append("staccato")
+        written_staccato += 1
+    return {"attached_augmentation": attached_augmentation,
+           "written_staccato": written_staccato,
+           "dropped": dict(dropped)}
 
 
 def _place_fermatas(rec: Record, runs: Dict[str, StaffRun]) -> Dict[str, int]:
@@ -3180,6 +3283,9 @@ def _held_bar_marks(events: Sequence[Dict[str, Any]]) -> Dict[str, int]:
         heads = ev.get("noteheads") or []
         for head in heads:
             out["articulations"] += len(head.get("articulations") or ())
+            # ⚠️ ROADMAP 2.12c, its own key -- see `_merged_articulations`.
+            out["dot_role_articulations"] += len(
+                head.get("dot_role_articulations") or ())
             out["ornaments"] += len(
                 _legacy._mxl_ornament_elements(head.get("ornaments") or []))
             if head.get("tied_to_next"):
@@ -3326,7 +3432,7 @@ def _measure_events_xml(events: List[Dict[str, Any]], divisions: int,
                 # SPAN. An articulation is not a span: each member of a chord
                 # wears its own staccato, and hoisting them onto the first
                 # would write one dot where the page prints three.
-                articulations=(head.get("articulations") or None),
+                articulations=_merged_articulations(head),
                 # ⚠️ PER HEAD, like the articulations and unlike the fermata:
                 # a trill is played on a NOTE, so a chord can carry one on any
                 # subset of its members.
@@ -3363,6 +3469,15 @@ def _measure_events_xml(events: List[Dict[str, Any]], divisions: int,
             # report the first while claiming the second. The arc export
             # learned this by reporting 55 slurs into a file holding 23.
             counters["articulations"] += len(head.get("articulations") or ())
+            # ⚠️ ROADMAP 2.12c, ITS OWN KEY -- NOT FOLDED INTO
+            # `counters["articulations"]` above. That counter is what
+            # `articulation_balance` compares against `Q.ARTICULATION_MARK`'s
+            # population, which never counted a `Q.AUG_DOT` row; adding this
+            # mark to it would inflate `written` past a population that did
+            # not grow, and the balance would go False for CORRECT behaviour.
+            # `dot_role_balance` (over `Q.AUG_DOT`) reads THIS key instead.
+            counters["dot_role_articulations"] += len(
+                head.get("dot_role_articulations") or ())
             # ⚠️ COUNTED AT THE RENDER, where the ELEMENT is written, and only
             # for the kinds `_mxl_ornament_elements` can spell -- the counter
             # says what reached the FILE, which is the `FAMILIES` rule.
@@ -3512,7 +3627,7 @@ def to_musicxml(result: Dict[str, Any]) -> Tuple[str, Dict[str, Any]]:
     rec = Record(result)
     (parts, provenance, dropped, arcs_dropped, artics_dropped,
      fermatas_dropped, ornaments_dropped,
-     notes_dropped_by_system) = build(rec)
+     notes_dropped_by_system, dot_role_report) = build(rec)
     divisions = _divisions(parts)
     counters: Dict[str, int] = collections.Counter()
     # ⚠️⚠️ ROADMAP 2.8. `build` refuses a note it cannot PLACE; this refuses a
@@ -3747,6 +3862,37 @@ def to_musicxml(result: Dict[str, Any]) -> Tuple[str, Dict[str, Any]]:
         "not_written": report["articulations_not_written_total"],
         "balanced": marks_in_log == (int(counters.get("articulations", 0))
                                      + report["articulations_not_written_total"]),
+    }
+    # ⚠️⚠️ ROADMAP 2.12c. A FOURTH PARTITION, NOT A SUBSET OF THE ONE ABOVE --
+    # `Q.AUG_DOT` is its own population (`gather_glyph_families` no longer
+    # files a staccato-classed box into `Q.ARTICULATION_MARK` at all), and
+    # every row lands in exactly one of three places: attached to a note's
+    # DURATION as an augmentation dot (a RECORD-level fact, unaffected by a
+    # later hold-out -- `adjudicate_duration` already composed the value),
+    # written as a `<staccato>` element (a FILE-level fact, read at the
+    # render the same way `articulation_balance` reads `written` above, so a
+    # held-out bar's mark is correctly absent from it), or counted under a
+    # named reason. `_place_dot_role_marks`'s OWN `written_staccato` is the
+    # ATTACH-time count, before a bar's hold-out is decided -- reported apart
+    # so the two numbers are never confused for one another.
+    dot_role_dropped = collections.Counter(dot_role_report["dropped"])
+    if held_marks.get("dot_role_articulations"):
+        dot_role_dropped[_BAR_SUM_REFUSAL] += held_marks[
+            "dot_role_articulations"]
+    report["dot_role_not_placed"] = dict(dot_role_dropped)
+    report["dot_role_not_placed_total"] = sum(dot_role_dropped.values())
+    dot_role_population = len(rec.obs_of(Q.AUG_DOT))
+    dot_role_written = int(counters.get("dot_role_articulations", 0))
+    report["dot_role_balance"] = {
+        "population": dot_role_population,
+        "attached_augmentation": dot_role_report["attached_augmentation"],
+        "written_staccato": dot_role_written,
+        "attached_staccato_before_hold_out": dot_role_report[
+            "written_staccato"],
+        "not_placed": report["dot_role_not_placed_total"],
+        "balanced": dot_role_population == (
+            dot_role_report["attached_augmentation"] + dot_role_written
+            + report["dot_role_not_placed_total"]),
     }
     # ⚠️ THE FERMATA BALANCE IS A PARTITION AND DELIBERATELY NOT AN EQUALITY,
     # which is the one place it differs from the articulation control above. A

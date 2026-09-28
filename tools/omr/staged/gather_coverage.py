@@ -595,15 +595,24 @@ FAMILY_TO_Q: Dict[str, Optional[str]] = {
     "accidental": "ACCIDENTAL_STAFF_POSITION",
     "arpeggiato": None,
     "artic": "ARTICULATION_MARK",
-    # ⚠️ THE COARSE SPELLING OF `artic`, AND IT IS GATHERED. `_family`
-    # splits at the first camel hump, so `articulationStaccato` lands here
-    # while `articStaccatoAbove` lands in `artic` -- but `gather.py:884`
-    # routes on the PREFIX `artic`, which both share, and files both under
-    # `Q.ARTICULATION_MARK` with `side=_artic_side(name)`. The coarse names
-    # state no side and that reader returns None rather than guessing, so
-    # the ink IS named -- it arrives carrying one fact fewer. Checked at
-    # the emit site, not inferred from the prefix table.
+    # ⚠️ THE COARSE SPELLING OF `artic`, AND IT IS GATHERED -- BUT NOT ALL OF
+    # IT LANDS HERE ANY MORE. `_family` splits at the first camel hump, so
+    # `articulationStaccato` lands in THIS family while `articStaccatoAbove`
+    # lands in `artic`; before ROADMAP 2.12c both shared the `_ARTIC_PREFIX`
+    # route to `Q.ARTICULATION_MARK` with `side=_artic_side(name)`. Now
+    # `gather_glyph_families` EXCLUDES every staccato spelling from that
+    # route -- `gather_rhythm_marks` files them into `Q.AUG_DOT` instead,
+    # tagged `detail.detector_role`, because a staccato and an augmentation
+    # dot are one shape and the role is a geometry question, not a class
+    # one. The non-staccato coarse names (`articulationAccent`,
+    # `articulationTenuto`) are unaffected and still state no side, which
+    # that reader returns None for rather than guessing. Checked at the
+    # emit site, not inferred from the prefix table.
     "articulation": "ARTICULATION_MARK",
+    # ⚠️ ROADMAP 2.12c WIDENED THIS FAMILY'S GATHER SITE, NOT JUST ITS
+    # DETECTOR CLASS: `gather_rhythm_marks` now files every `articStaccato*`
+    # box here too (`detail.detector_role` says which class it came from),
+    # so `augmentation`'s population is no longer `augmentationDot` alone.
     "augmentation": "AUG_DOT",
     "beam": "BEAM_STROKE",
     "brace": None,               # the GLYPH; `Q.GROUP_SYMBOL` is the verdict

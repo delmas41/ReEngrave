@@ -1,0 +1,49 @@
+{
+ "png": "brahms1-breitkopf-p1-d212c-p1-s0-st0-c1-g10-confirmed-staccato.png",
+ "subject": "glyph/1/0/0/1/10",
+ "bucket": "confirmed-staccato",
+ "detector_role": "staccato",
+ "detector_class": "articStaccatoAbove",
+ "dot_role_verdict": {
+  "outcome": "decided",
+  "value": "staccato",
+  "reason": "centred_and_offset_from_a_head",
+  "detail": {
+   "detector_role": "staccato",
+   "detector_class": "articStaccatoAbove",
+   "owner": "glyph/1/0/0/1/9",
+   "articulation": "staccato"
+  }
+ },
+ "caption": "brahms1-breitkopf-p1-d212c page 1, system 0, staff 0, bar-cell 1 -- the detector called this box `articStaccatoAbove`. `adjudicate_dot_role` reads it as staccato (confirmed-staccato). RED corner bracket = the mark itself; ORANGE = the head the augmentation window matched, when one did. QUESTION FOR SEAN: against the print, is this an augmentation dot (lengthens the note) or a staccato (does not)?",
+ "frame_control": {
+  "passed": true,
+  "contrast": 205.29
+ },
+ "mark_page_px": [
+  1994.1787109375,
+  509.8447265625,
+  2004.78125,
+  521.08984375
+ ],
+ "owner_page_px": [
+  1979.078125,
+  529.7646484375,
+  2017.6328125,
+  560.6083984375
+ ],
+ "staff_lines_page_px": [
+  562,
+  589,
+  616,
+  643,
+  671
+ ],
+ "crop_page_px": [
+  1815.578125,
+  346.3447265625,
+  2181.1328125,
+  834.5
+ ],
+ "VERDICT_none_yet": null
+}

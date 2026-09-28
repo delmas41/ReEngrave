@@ -1,0 +1,140 @@
+[
+ {
+  "label": "beethoven5-litolff",
+  "record": "/Users/seanjohnson/Desktop/ReEngrave/library/_shared-records/beethoven5-litolff-mvt1-whole-20260923.record.json",
+  "provenance": {
+   "commit": "dbc9962b641e0259763efb45acc204e4e78ffd55",
+   "dirty": true
+  },
+  "no_cell_staff_space": 0,
+  "no_notehead_in_cell": 37,
+  "summary": {
+   "dot": {
+    "n": 141,
+    "dx": {
+     "p5": -1.91,
+     "p25": -0.125,
+     "p50": 0.535,
+     "p75": 1.4846,
+     "p95": 3.8636
+    },
+    "dy": {
+     "p5": -4.485,
+     "p25": -1.35,
+     "p50": -0.15,
+     "p75": 1.22,
+     "p95": 5.33
+    }
+   },
+   "staccato": {
+    "n": 430,
+    "dx": {
+     "p5": -0.975,
+     "p25": -0.075,
+     "p50": 0.035,
+     "p75": 0.165,
+     "p95": 2.21
+    },
+    "dy": {
+     "p5": -5.015,
+     "p25": -1.2,
+     "p50": 1.23,
+     "p75": 1.48,
+     "p95": 3.165
+    }
+   }
+  }
+ },
+ {
+  "label": "brahms1-breitkopf",
+  "record": "/Users/seanjohnson/Desktop/ReEngrave/library/_shared-records/brahms1-breitkopf-mvt1-whole-20260923.record.json",
+  "provenance": {
+   "commit": "47fbff1e15e35723c96bbfe5fd43c6aa5f0e908b",
+   "dirty": true
+  },
+  "no_cell_staff_space": 0,
+  "no_notehead_in_cell": 49,
+  "summary": {
+   "dot": {
+    "n": 6816,
+    "dx": {
+     "p5": 0.7,
+     "p25": 1.28,
+     "p50": 1.345,
+     "p75": 1.415,
+     "p95": 1.555
+    },
+    "dy": {
+     "p5": -0.495,
+     "p25": 0.0,
+     "p50": 0.135,
+     "p75": 0.5,
+     "p95": 0.66
+    }
+   },
+   "staccato": {
+    "n": 2818,
+    "dx": {
+     "p5": -1.84,
+     "p25": -0.0424,
+     "p50": 0.03,
+     "p75": 0.085,
+     "p95": 0.85
+    },
+    "dy": {
+     "p5": -5.495,
+     "p25": -1.1228,
+     "p50": 1.045,
+     "p75": 1.205,
+     "p95": 3.6614
+    }
+   }
+  }
+ },
+ {
+  "label": "beethoven5-engraved",
+  "record": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a6ad3ccaf50d5cd22/benchmarks/omr-staged-engraved-2026-09/out/engraved-p0p2-20260923.record.json",
+  "provenance": {
+   "commit": "f48a59ce9bc94d16192f35a27aaa7a16d49510eb",
+   "dirty": false
+  },
+  "no_cell_staff_space": 0,
+  "no_notehead_in_cell": 1,
+  "summary": {
+   "staccato": {
+    "n": 1,
+    "dx": {
+     "p5": 0.925,
+     "p25": 0.925,
+     "p50": 0.925,
+     "p75": 0.925,
+     "p95": 0.925
+    },
+    "dy": {
+     "p5": 3.345,
+     "p25": 3.345,
+     "p50": 3.345,
+     "p75": 3.345,
+     "p95": 3.345
+    }
+   },
+   "dot": {
+    "n": 2,
+    "dx": {
+     "p5": 1.13,
+     "p25": 1.13,
+     "p50": 1.13,
+     "p75": 1.13,
+     "p95": 1.13
+    },
+    "dy": {
+     "p5": 0.475,
+     "p25": 0.475,
+     "p50": 0.475,
+     "p75": 3.86,
+     "p95": 3.86
+    }
+   }
+  }
+ }
+]

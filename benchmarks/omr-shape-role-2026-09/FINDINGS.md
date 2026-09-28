@@ -273,6 +273,136 @@ of two classes the detector picked.** *(reach 672; Litolff 116, Breitkopf 555)*
   the 43 + 9 staccatos sitting where a dot sits start dotting; bar sums do not
   get worse on any of the three records; engraved unchanged (population 4).
 
+**BUILT AND MEASURED 2026-09-28** (`claude/dot-role-2.12c` `67e320ae`, not
+merged). GATHER and ADJUDICATE landed as planned above, ONE quantity
+(`Q.AUG_DOT`, `detail.detector_role`), never two. EXPORT did not: the plan's
+"one above or below is an articulation" would have routed a staccato-role
+mark back through `Q.ARTICULATION_MARK`/`articulation_owner`, and gather no
+longer files a staccato-classed box there at all (the correlation fix
+forbids it) — so a new decision, `adjudicate_dot_role` (`Q.DOT_ROLE`), and a
+new export function, `_place_dot_role_marks`, carry the role and the
+placement instead. `_attached_dots`'s own window test was pulled out to
+`_in_augmentation_window` unchanged, so nothing that used to dot a note
+stops dotting IT SPECIFICALLY for a reason other than a real geometry
+failure.
+
+### The measurement (before any cut)
+
+`probe/dot_role_offsets.py` — every `augmentationDot` and `articStaccato*`
+box on the three acceptance records, offset from its NEAREST notehead
+centre, in staff spaces (dx: centre-to-centre, positive = right; dy:
+centre-to-centre, positive = above). Read-only, no gather, no code path this
+item touches. Breitkopf is the population the cut is taken from (6,816
+`augmentationDot`, 2,818 `articStaccato*` — the larger, cleaner plate);
+Litolff (MERGING, per CLAUDE.md §10) agrees on the SHAPE of the two clusters
+and is markedly noisier, which the pricing run below explains further.
+
+| population | dx cluster | dy cluster | n in cluster / total |
+|---|---|---|---|
+| `augmentationDot` | **+1.00 to +1.75**, peak 1.25–1.50 | **[-0.25, +0.75]** | 6,333 / 6,816 (93%) |
+| `articStaccato*` | **[-0.25, +0.25]** | \|dy\| ≥ ~1.0, both signs | 2,378 / 2,818 (84%) |
+
+The dy cluster for `augmentationDot` is an INDEPENDENT confirmation of the
+already-shipped `DOT_ABOVE_NOTE_MAX_SPACES` (0.75) / `DOT_BELOW_NOTE_MAX_SPACES`
+(0.25) — measured from the opposite side (dot-to-head instead of the
+2026-09 116-dot calibration), landing on the same window. The gap the
+`articStaccato*` cut is taken in is a real valley, not a smooth taper: the
+dy histogram holds **19 of 2,818** rows in [0.50, 0.75) against **169** in
+[0.75, 1.00) and **970** in [1.00, 1.25) — a 9x jump either side of 0.75.
+The dx histogram for `articStaccato*` falls from 2,378 inside [-0.25,+0.25]
+to 27 in [0.25,0.50) and 9 in [-0.50,-0.25) — nothing supports widening past
+±0.5. **Cut: `STACCATO_CENTRED_MAX_SPACES = 0.5`, `STACCATO_OFFSET_MIN_SPACES
+= 0.75`** (`tools/omr/staged/adjudicators/rhythm.py`). Full histograms:
+`out/dot-role-offsets--<id>.json`.
+
+⚠️ **CONVENTION ASSUMED / WHAT WOULD FALSIFY IT / NOT CONFIRMED.** Sean has
+not adjudicated a single print crop of this family. Nine crops are cut below
+(`out/print/*-d212c-*`); `VERDICT_none_yet: null` on every sidecar.
+
+### RED → GREEN
+
+`tools/omr/tests/test_staged_dot_role.py`, 12 tests: GATHER routes both
+classes into `Q.AUG_DOT` and neither into `Q.ARTICULATION_MARK` (4 tests);
+ADJUDICATE — RED (a staccato-classed box right of the head must dot the
+note), the mirror (a dot-classed box above the head must not), a positive
+control (a correctly classed and placed dot still dots), an ambiguous
+offset abstains and feeds neither consumer (4 tests); EXPORT — a
+staccato-role mark reaches the file without inflating `articulation_balance`,
+an augmentation-role mark is not written as an articulation, an abstention
+is counted by its reason, the whole population is a partition (4 tests). All
+12 were RED against the pre-2.12c tree (`Q.DOT_ROLE` does not exist there)
+and GREEN after. `pytest tools/omr/tests -m "not slow"`: 3,417 passed, 0
+failed. `staged.check`: **253**, unchanged from main.
+
+### Pricing — two one-page GATHERS, base (merge-base `ad7d473b`, a detached
+worktree) vs arm (`67e320ae`), both clean, `--no-surya --no-ocr`
+
+| | Litolff p3 | Breitkopf p1 |
+|---|--:|--:|
+| `Q.AUG_DOT` population | 6 → 15 | 49 → 68 |
+| dots (`augmentationDot`-class) that stop dotting | 6 | 21 |
+| — of those, DECIDED `staccato` instead (not just abstained) | 0 | 4 |
+| staccatos (`articStaccato*`-class) that start dotting | 0 | 0 |
+| `Q.DOT_ROLE` abstained (`dot_role_ambiguous` / no candidate) | 12 | 21 |
+| `Q.DURATION` verdicts changed | 0 / 628 | 0 / 1,365 |
+| real staccati reaching a file-shaped owner, TOTAL (was `articulation_owner`
+  decided `staccato`, now `Q.DOT_ROLE` decided `staccato`, either origin
+  class) | 4 → 3 | 16 → 19 |
+| — of the arm total, RECOVERED from a `dot`-classed box the old path could
+  never reach (staccato-class only) | 0 | 4 |
+| — of the arm total, from the SAME staccato-classed population base owned | 3 | 15 |
+
+**Zero durations move on either page.** That is not a null result: on
+BOTH pages, every `augmentationDot`-classed row that now abstains was
+*already* failing `_attached_dots`'s own (unchanged) window test before
+2.12c — the window is the SAME code, just unnamed until now. What 2.12c
+changes is that a box the pipeline silently dropped now says WHY
+(`dot_role_ambiguous`, `no_notehead_or_rest_in_cell`) instead of vanishing
+with no row at all — rule 8, the fallback CLAUDE.md forbids is exactly
+"drop it and say nothing," and that is what the pre-2.12c tree did to every
+one of these 27 rows.
+
+**Net, Breitkopf GAINS three real staccati it never had a path to before**
+(16 → 19): four `augmentationDot`-classed boxes turn out to sit centred and
+clear of a head, and only a role decided from GEOMETRY — never from a
+class the detector cannot be argued out of — can hand them to the
+articulation path at all. That is the mechanism working in the direction
+the audit predicted (row 6: "43 + 9 staccatos sitting where a dot sits").
+
+**One real regression per page, measured, not hidden, on the
+staccato-CLASSED population specifically:** both pages lose exactly ONE
+staccato that `articulation_owner`'s wider tolerance (`_ARTIC_MAX_DX_
+NOTEHEAD_WIDTHS`, measured in NOTEHEAD WIDTHS) placed and the 0.5-STAFF-SPACE
+cut does not — Litolff's is `glyph/3/0/10/0/10` (centred at 0.70 spaces,
+confidence 0.38); Breitkopf's is `glyph/1/0/1/5/16` (`dx_notehead_widths`
+0.585 in the old measure, 0.725 staff spaces in the new one, confidence
+0.49) — the SAME near-miss shape on both plates, both just past the cut,
+both at confidence under 0.5. **The Litolff crop says this loss may not be
+a loss at all** — see below.
+
+**A finding this pricing run was not built to make, and made anyway:** two
+of the nine crops below — one on Litolff (the LOST staccato) and one
+"confirmed staccato" on the same page — land on the CUSP where two slur
+segments cross below a notehead, not on a dot at all. Geometry disambiguates
+ROLE (augmentation vs staccato) between two candidates that both exist; it
+cannot say whether the ink is a real mark in the first place, and a slur
+cusp sits in roughly the same place a staccato does. This is the audit's own
+row 4 in a new costume ("two spellings of one head, both surviving NMS...
+no adjudicator can repair it") and is NOT this item's to fix — flagged for
+whoever picks up 2.12g or the ink-first line.
+
+### Crops for Sean
+
+`out/print/beethoven5-litolff-p3-d212c-*.png` (5) and
+`out/print/brahms1-breitkopf-p1-d212c-*.png` (4), 9 total: the lost
+staccato (slur-cusp candidate, above), three `stopped-dotting` abstentions,
+one `confirmed-staccato`, one dot-classed row the geometry moved TO
+staccato, and one unchanged positive control. GREEN = the five
+`Q.STAFF_LINES`; RED corner bracket = the dot-or-staccato box itself; ORANGE
+= the notehead the augmentation window matched, where one did.
+`VERDICT_none_yet: null` on every sidecar and on both manifests
+(`MANIFEST-*-d212c.json`) — nothing here has been print-confirmed.
+
 ---
 
 **2.12d — a mid-staff `timeSig*` box states a meter only where the system

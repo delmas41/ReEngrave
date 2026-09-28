@@ -429,8 +429,8 @@ def to_lilypond(result: Dict[str, Any], *, out: Optional[str] = None
     """
     rec = SX.Record(result)
     (parts, provenance, dropped, arcs_dropped, artics_dropped,
-     fermatas_dropped, ornaments_dropped, notes_dropped_by_system
-     ) = SX.build(rec)
+     fermatas_dropped, ornaments_dropped, notes_dropped_by_system,
+     _dot_role_report) = SX.build(rec)
 
     counters: Dict[str, int] = collections.Counter()
     arcs_dropped = collections.Counter(arcs_dropped) + collections.Counter(
