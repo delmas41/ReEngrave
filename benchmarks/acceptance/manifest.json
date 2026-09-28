@@ -8,8 +8,8 @@
       "publisher": "Litolff",
       "record": {
         "root": "library",
-        "path": "_shared-records/beethoven5-litolff-mvt1-whole-20260923.record.json",
-        "md5": "7dbee148868c39634a20d5881143d3ee"
+        "path": "_shared-records/beethoven5-litolff-mvt1-whole-20260928.record.json",
+        "md5": "719c57a6e06d1b3705091495e516a9ba"
       },
       "pdf": {
         "root": "library",
@@ -24,10 +24,10 @@
       "truth": null,
       "whole_movement": {
         "pages": "1-16",
-        "gathered_on": "6b7dd3a3",
-        "gather_started": "2026-09-22T19:54 MST",
-        "wall_hours": 12.8,
-        "note": "unpooled record form (predates dbc9962b). Replaces the 4-page _shared-records/beethoven5-p1-p4-ink-identity.record.json (md5 ea80ae5908288c76baaa502054a37d43)."
+        "gathered_on": "c19cbca7",
+        "gather_started": "2026-09-28T06:36:32Z (driver bracket 06:36:32Z-07:08:53Z)",
+        "wall_hours": 0.54,
+        "note": "RE-GATHERED 2026-09-28 on c19cbca7 (ROADMAP 0 work order; the 2.7b/2.14/3.4f/2.9c fixes landed after the 09-23 gather now apply). 32 min 21 s wall, 16 pages -- against the 09-23 record's 12.8 h on the same page range (pre-1.2 cost fixes); see ROADMAP 1.2b. ⚠️ These verdicts are exactly ADJUDICATE/EVALUATE/INFER as decided at c19cbca7 -- the 2.11b, 2.15, 2.4c (record-only) and 0.2b merges that landed on main AFTER c19cbca7 are NOT reflected (tools.omr.acceptance exports existing verdicts, it does not re-adjudicate; roadmap 1.3b). Was 'unpooled record form (predates dbc9962b)', gathered_on 6b7dd3a3, 12.8 h -- record kept on disk as beethoven5-litolff-mvt1-whole-20260923.record.json (md5 7dbee148868c39634a20d5881143d3ee). That record replaced the 4-page _shared-records/beethoven5-p1-p4-ink-identity.record.json (md5 ea80ae5908288c76baaa502054a37d43)."
       }
     },
     {
@@ -37,8 +37,8 @@
       "publisher": "Breitkopf",
       "record": {
         "root": "library",
-        "path": "_shared-records/brahms1-breitkopf-mvt1-whole-20260923.record.json",
-        "md5": "e5561c8b7bc80a03311294afae8eccf4"
+        "path": "_shared-records/brahms1-breitkopf-mvt1-whole-20260928.record.json",
+        "md5": "862548d1a635537c6065102a45aa15a2"
       },
       "pdf": {
         "root": "library",
@@ -53,7 +53,8 @@
       "truth": null,
       "caveats": [
         "Whole movement, pdf pages 0-26 (27 pages). The movement boundary was VERIFIED against the plate, not assumed: pdf page 27 opens 'Andante sostenuto', which is movement 2, so movement 1 ends at page 26.",
-        "Gathered 2026-09-23 on commit 275641c0 with a clean tree, 1 h 11 m wall (GATHER ~28 min, ADJUDICATE ~33 min, GROUPS+EVALUATE ~5 min, INFER+EXPORT the rest) -- the first whole-movement run after roadmap 1.2 bounded the deciding stages.",
+        "RE-GATHERED 2026-09-28 on c19cbca7 (ROADMAP 0 work order), driver bracket 04:07:02Z-06:36:32Z = 2 h 29 m 30 s wall -- SLOWER than the 09-23 run (1 h 11 m) on the SAME 27 pages; the machine ran under heavy contention from other sessions that night (see ROADMAP.md 1.2b/3.3), not a regression in the pipeline. ⚠️ These verdicts are exactly ADJUDICATE/EVALUATE/INFER as decided at c19cbca7 -- 2.11b, 2.15, 2.4c (record-only) and 0.2b landed on main AFTER c19cbca7 and are NOT reflected here (tools.omr.acceptance exports existing verdicts, it does not re-adjudicate; roadmap 1.3b).",
+        "Gathered 2026-09-23 on commit 275641c0 with a clean tree, 1 h 11 m wall (GATHER ~28 min, ADJUDICATE ~33 min, GROUPS+EVALUATE ~5 min, INFER+EXPORT the rest) -- the first whole-movement run after roadmap 1.2 bounded the deciding stages. Record kept on disk as brahms1-breitkopf-mvt1-whole-20260923.record.json (md5 e5561c8b7bc80a03311294afae8eccf4).",
         "SUPERSEDES the 4-page p0-p3 record this entry pointed at (_shared-records/brahms1-breitkopf-p0-p3-ink.record.json), which stays on disk."
       ]
     },
@@ -64,9 +65,9 @@
       "publisher": null,
       "record": {
         "root": "repo",
-        "path": "benchmarks/omr-staged-engraved-2026-09/out/engraved-p0p2-20260923.record.json",
-        "md5": "23c01008ee8087dcbed2fcbc921f91b4",
-        "note": "RE-GATHERED 2026-09-23 on f48a59ce with a CLEAN tree (roadmap 2.9). The record this replaced, benchmarks/omr-staged-engraved-2026-09/out/engraved-p0p2.record.json (md5 d349e3631f3a1737aa6fc2f15c13b374), was gathered on 7754d277 with dirty=True and BEFORE the document-identity work, so it carries no Q.INPUT_DOMAIN row at all -- roadmap 2.2's engraved-template tier could not fire on the acceptance page and 0 of 54 key verdicts read `fitted_by_template_engraved`. A record from a dirty tree is not a baseline (CLAUDE.md Sec.4b); this one is. The superseded file stays on disk. benchmarks/omr-key-majority-2026-09/FINDINGS.md Sec.1a."
+        "path": "benchmarks/omr-staged-engraved-2026-09/out/engraved-p0p2-20260928.record.json",
+        "md5": "2156d49eacbeda2b43c43df4d5cec645",
+        "note": "RE-GATHERED 2026-09-28 on c19cbca7 (ROADMAP 0 work order), driver bracket 04:04:28Z-04:07:02Z = 2 min 34 s wall over 3 pages. ⚠️ This record's own provenance carries dirty:true, as every acceptance-harness gather's provenance has since before this item (see benchmarks/acceptance/out/ is deliberately not gitignored, so its own sibling-document artefacts read as untracked files at export time -- CODE-tree cleanliness is what gather_movement.sh's own start-of-run guard checks, filtered exactly for that reason; the 09-23 record it replaces carries the same dirty:true). These verdicts are exactly ADJUDICATE/EVALUATE/INFER as decided at c19cbca7 -- 2.11b, 2.15, 2.4c (record-only) and 0.2b landed on main AFTER c19cbca7 and are NOT reflected here (roadmap 1.3b). Replaces benchmarks/omr-staged-engraved-2026-09/out/engraved-p0p2-20260923.record.json (md5 23c01008ee8087dcbed2fcbc921f91b4, gathered 2026-09-23 on f48a59ce), which stays on disk and was itself RE-GATHERED on a CLEAN tree (roadmap 2.9) to replace engraved-p0p2.record.json (md5 d349e3631f3a1737aa6fc2f15c13b374, gathered on 7754d277 with dirty=True and BEFORE the document-identity work, carrying no Q.INPUT_DOMAIN row -- roadmap 2.2's engraved-template tier could not fire and 0 of 54 key verdicts read `fitted_by_template_engraved`). Both superseded files stay on disk. benchmarks/omr-key-majority-2026-09/FINDINGS.md Sec.1a."
       },
       "pdf": {
         "root": "repo",
