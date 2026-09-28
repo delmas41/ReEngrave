@@ -1,0 +1,95 @@
+[g3-arm-litolff-p3.record.json] POPULATION FIRST: 500 ledgerLine boxes, 500 Q.LEDGER_INK_UNDER rows
+[g3-arm-litolff-p3.record.json] base (3.4g-2 rule from 8226aa93) ...
+[g3-arm-litolff-p3.record.json] no 3.4g-2 arm on disk — control NOT RUN
+[g3-arm-litolff-p3.record.json] arm  (3.4g-3, this tree) ...
+wrote arm record /private/tmp/claude-501/-Users-seanjohnson-Desktop-ReEngrave--claude-worktrees-start-here-questions-7d5637/3707ff6b-4757-4644-b4c5-de906d20a7bb/scratchpad/g3-arm-litolff-p3.redecided.record.json
+{
+ "record": "g3-arm-litolff-p3.record.json",
+ "base_ref": "8226aa93",
+ "ledger_boxes_on_the_record": 500,
+ "ledger_ink_rows_on_the_record": 500,
+ "control": {
+  "prior_file": "benchmarks/omr-family-refusals-2026-09/out/ledger-g2-arm-g3-arm-litolff-p3.json",
+  "agrees": null
+ },
+ "base": {
+  "kept": 75,
+  "refused:inside_the_staff": 383,
+  "refused:no_head_on_the_rung": 8,
+  "refused:on_a_staff_line": 34
+ },
+ "arm": {
+  "ABSTAINED:rung_without_boxed_head": 4,
+  "kept": 76,
+  "refused:inside_the_staff": 383,
+  "refused:no_head_on_the_rung": 3,
+  "refused:on_a_staff_line": 34
+ },
+ "transitions": {
+  "counts": {
+   "kept -> kept": 75,
+   "refused:inside_the_staff -> refused:inside_the_staff": 383,
+   "refused:no_head_on_the_rung -> ABSTAINED:rung_without_boxed_head": 4,
+   "refused:no_head_on_the_rung -> kept": 1,
+   "refused:no_head_on_the_rung -> refused:no_head_on_the_rung": 3,
+   "refused:on_a_staff_line -> refused:on_a_staff_line": 34
+  },
+  "named": {
+   "refused:no_head_on_the_rung -> ABSTAINED:rung_without_boxed_head": [
+    "glyph/3/1/0/6/11",
+    "glyph/3/1/0/6/12",
+    "glyph/3/1/7/10/1",
+    "glyph/3/1/7/14/3"
+   ],
+   "refused:no_head_on_the_rung -> kept": [
+    "glyph/3/1/2/17/3"
+   ]
+  }
+ },
+ "verdicts_moved_by_quantity": {
+  "ledger_is_not_a_ledger": 5
+ },
+ "unladdered_signal_base": {
+  "ledger_found_hist": {
+   "0": 32,
+   "1": 11,
+   "2": 6,
+   "3": 3,
+   "None": 39
+  },
+  "would_fire": 32
+ },
+ "unladdered_signal_arm": {
+  "ledger_found_hist": {
+   "0": 32,
+   "1": 11,
+   "2": 6,
+   "3": 3,
+   "None": 39
+  },
+  "would_fire": 32
+ },
+ "notes_base": 549,
+ "notes_arm": 549,
+ "notes_not_written_identical": true,
+ "census_arm": {
+  "unaccounted": [],
+  "balanced": true
+ },
+ "family_refusals_ledger_arm": {
+  "refused": {
+   "inside_the_staff": 383,
+   "on_a_staff_line": 34,
+   "no_head_on_the_rung": 3
+  },
+  "refused_total": 420,
+  "kept": 76,
+  "abstained": 4,
+  "abstained_reasons": {
+   "rung_without_boxed_head": 4
+  },
+  "verdicts": 500,
+  "balanced": true
+ }
+}
+wrote benchmarks/omr-family-refusals-2026-09/out/ledger-g3-arm-g3-arm-litolff-p3.json

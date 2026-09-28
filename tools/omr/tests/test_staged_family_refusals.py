@@ -513,25 +513,31 @@ class TestTheLedgerGeometry(unittest.TestCase):
     def test_the_tolerance_cannot_reach_the_first_rung(self):
         self.assertLess(FP.ON_A_STAFF_LINE_TOL_SPACES, 0.5)
 
-    # ── no_head_on_the_rung — Sean's SECOND convention, 2026-09-24 ──────────
+    # ── no BOXED head — Sean's SECOND convention, 2026-09-24 ────────────────
+    #
+    # ⚠️ ROADMAP 3.4g-3: with no boxed head near the rung and no GATHER ink
+    # witness on it, the decision ABSTAINS (`rung_without_boxed_head`) — two
+    # of the four rungs 3.4g-2 refused here were real rungs whose head the
+    # detector never boxed (Sean, 2026-09-27). What resolves it is
+    # `Q.LEDGER_INK_UNDER`; `test_staged_ledger_ink.py` pins that half.
 
-    def test_a_rung_with_no_head_anywhere_in_the_cell_is_refused(self):
-        v = self._rung(step=-2.0)
-        self.assertIs(v.value, True)
-        self.assertEqual(v.reason, "no_head_on_the_rung")
+    def _no_boxed_head(self, v):
+        self.assertEqual(v.outcome, Outcome.ABSTAINED)
+        self.assertIsNot(v.value, True)
+        self.assertEqual(v.reason, "rung_without_boxed_head")
+
+    def test_a_rung_with_no_head_anywhere_in_the_cell_abstains(self):
+        self._no_boxed_head(self._rung(step=-2.0))
 
     def test_a_head_that_does_not_x_overlap_the_rung_is_not_its_head(self):
         v = self._rung(step=-2.0, head_dist_spaces=0.0,
                        head_x_overlaps=False)
-        self.assertIs(v.value, True)
-        self.assertEqual(v.reason, "no_head_on_the_rung")
+        self._no_boxed_head(v)
         self.assertEqual(v.detail["heads_x_overlapping"], 0)
 
     def test_a_head_further_than_the_measured_tolerance_is_not_its_head(self):
-        v = self._rung(step=-2.0,
-                       head_dist_spaces=FP.HEAD_NEAR_TOL_SPACES + 0.5)
-        self.assertIs(v.value, True)
-        self.assertEqual(v.reason, "no_head_on_the_rung")
+        self._no_boxed_head(self._rung(
+            step=-2.0, head_dist_spaces=FP.HEAD_NEAR_TOL_SPACES + 0.5))
 
     def test_the_head_tolerance_holds_at_its_edge(self):
         """THE POSITIVE CONTROL for the head rule, at the derived number."""
@@ -540,7 +546,8 @@ class TestTheLedgerGeometry(unittest.TestCase):
         outside = self._rung(step=-2.0,
                              head_dist_spaces=FP.HEAD_NEAR_TOL_SPACES + 0.01)
         self.assertIs(inside.value, False)
-        self.assertIs(outside.value, True)
+        self.assertEqual(outside.outcome, Outcome.ABSTAINED)
+        self.assertEqual(outside.reason, "rung_without_boxed_head")
 
     def test_an_inner_rung_of_a_three_rung_run_is_KEPT(self):
         """⚠️⚠️ WHY THE TOLERANCE IS TWO AND THREE QUARTER SPACES AND NOT
@@ -569,15 +576,18 @@ class TestTheLedgerGeometry(unittest.TestCase):
                 self.assertAlmostEqual(v.detail["head_outward_spaces"], 4.0,
                                        places=3)
 
-    def test_the_same_head_STAFFWARD_past_the_tolerance_is_refused(self):
+    def test_the_same_head_STAFFWARD_past_the_tolerance_is_not_its_head(
+            self):
         """THE NEGATIVE CONTROL for the outward clause, at the same
         distance: heads only between the rung and the staff are what a beam
-        below its heads looks like (Sean's crop 8), not a ladder."""
+        below its heads looks like (Sean's crop 8), not a ladder — so the
+        boxed heads do not keep it. (3.4g-3: without the ink witness it
+        abstains rather than refuses.)"""
         for step in (10.0, -2.0):
             with self.subTest(step=step):
                 v = self._rung(step=step, heads_outward=[-4.0])
-                self.assertIs(v.value, True)
-                self.assertEqual(v.reason, "no_head_on_the_rung")
+                self.assertEqual(v.outcome, Outcome.ABSTAINED)
+                self.assertEqual(v.reason, "rung_without_boxed_head")
 
     def test_the_head_tolerance_is_the_measured_p95(self):
         """⚠️ DERIVED, NOT CHOSEN — p95 of the kept rungs' head distance is

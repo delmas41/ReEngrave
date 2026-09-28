@@ -1,0 +1,28 @@
+AUC vs NEG (inside+online): {"under": {"POS_on": 0.94, "POS_near": 0.937, "POS_kept": 0.84}, "contrast": {"POS_on": 0.765, "POS_near": 0.778, "POS_kept": 0.724}, "RED_background": {"POS_on": 0.887, "POS_near": 0.88, "POS_kept": 0.812}}
+RED: AUC of the SWAPPED measure (background read as under) vs the real one
+under<=0.02: POS_on 0/37  POS_near 0  NEG 146/417  TARGET 3/8
+under<=0.05: POS_on 0/37  POS_near 0  NEG 162/417  TARGET 3/8
+under<=0.1: POS_on 0/37  POS_near 0  NEG 182/417  TARGET 4/8
+under<=0.15: POS_on 0/37  POS_near 0  NEG 198/417  TARGET 6/8
+under<=0.2: POS_on 0/37  POS_near 0  NEG 221/417  TARGET 6/8
+POS_on lowest under [0.43, 0.455, 0.563, 0.584, 0.587, 0.596, 0.638, 0.651]
+under>=0.4 contrast>=0.0: POS_on 37/37 (1.00)  NEG 119/417 (0.285)  TARGET 1
+under>=0.4 contrast>=0.1: POS_on 32/37 (0.86)  NEG 119/417 (0.285)  TARGET 1
+under>=0.4 contrast>=0.2: POS_on 25/37 (0.68)  NEG 113/417 (0.271)  TARGET 1
+under>=0.4 contrast>=0.3: POS_on 24/37 (0.65)  NEG 103/417 (0.247)  TARGET 1
+under>=0.4 contrast>=0.4: POS_on 19/37 (0.51)  NEG 88/417 (0.211)  TARGET 1
+under>=0.5 contrast>=0.0: POS_on 35/37 (0.95)  NEG 90/417 (0.216)  TARGET 1
+under>=0.5 contrast>=0.1: POS_on 30/37 (0.81)  NEG 90/417 (0.216)  TARGET 1
+under>=0.5 contrast>=0.2: POS_on 24/37 (0.65)  NEG 88/417 (0.211)  TARGET 1
+under>=0.5 contrast>=0.3: POS_on 24/37 (0.65)  NEG 83/417 (0.199)  TARGET 1
+under>=0.5 contrast>=0.4: POS_on 19/37 (0.51)  NEG 71/417 (0.170)  TARGET 1
+under>=0.55 contrast>=0.0: POS_on 35/37 (0.95)  NEG 72/417 (0.173)  TARGET 1
+under>=0.55 contrast>=0.1: POS_on 30/37 (0.81)  NEG 72/417 (0.173)  TARGET 1
+under>=0.55 contrast>=0.2: POS_on 24/37 (0.65)  NEG 70/417 (0.168)  TARGET 1
+under>=0.55 contrast>=0.3: POS_on 24/37 (0.65)  NEG 67/417 (0.161)  TARGET 1
+under>=0.55 contrast>=0.4: POS_on 19/37 (0.51)  NEG 59/417 (0.141)  TARGET 1
+under>=0.6 contrast>=0.0: POS_on 31/37 (0.84)  NEG 57/417 (0.137)  TARGET 1
+under>=0.6 contrast>=0.1: POS_on 29/37 (0.78)  NEG 57/417 (0.137)  TARGET 1
+under>=0.6 contrast>=0.2: POS_on 23/37 (0.62)  NEG 56/417 (0.134)  TARGET 1
+under>=0.6 contrast>=0.3: POS_on 23/37 (0.62)  NEG 54/417 (0.129)  TARGET 1
+under>=0.6 contrast>=0.4: POS_on 19/37 (0.51)  NEG 49/417 (0.118)  TARGET 1

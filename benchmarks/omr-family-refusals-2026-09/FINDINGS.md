@@ -765,3 +765,248 @@ python3 $B/probe/crop_ledger_g2.py --record $L/beethoven5-p1-p4.record.json \
   --pdf <library>/editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf \
   --label litolff-p1p4 --dpi 600
 ```
+
+---
+
+## §3.4g-3 — a rung with no BOXED head abstains; the paper is the second witness (2026-09-28)
+
+Branch `claude/ledger-ink-3.4g3`, off `origin/main` `8226aa93`. Sean,
+2026-09-27 (`out/print/ADJUDICATION-sean-2026-09-27.json`), on the four
+`no_head_on_the_rung` crops of §3.4g-2: crops 1 and 3 are REAL rungs whose
+printed notehead the detector never boxed; 2 is the bottom staff line; 4 is a
+whole rest hanging on the bottom line. So the refusal was being witnessed by
+the detector's recall alone — the witness that fails exactly where heads fuse
+with their rungs — and a missing box is *cannot tell* (CLAUDE.md §2 rule 8).
+
+### Part A (ADJUDICATE) — `no_head_on_the_rung` stops refusing on boxes alone
+
+Where no notehead box is near the rung (the 3.4g-2 test, unchanged), the
+ledger decision now ABSTAINS `rung_without_boxed_head` — unless Part B's ink
+witness settles it. The abstention carries its evidence (`used`, the head
+facts, `ink_witness: null`, and GATHER's own abstention reason as
+`ink_witness_declined` where GATHER could not look). `inside_the_staff`,
+`on_a_staff_line`, `tall_not_a_rung` are untouched. `export._family_refusals`
+now names abstentions by reason (`abstained_reasons`), so 79 of these are not
+read as 79 `no_staff_geometry`.
+
+⚠️ **The brief said crop 2 was refused on position "as before". It was not.**
+Its centre is 0.315 spaces outside line 1 in the PAGE frame (step -0.63), past
+`ON_A_STAFF_LINE_TOL_SPACES` 0.25, so 3.4g-2 refused it `no_head_on_the_rung`
+like the other three; crop 4 likewise (0.29 spaces). Under Part A alone all
+four ABSTAIN; the two refusals can come back only through Part B. On the cell
+raster both boxes lie ON the bottom staff line (the erasure removed it — see
+the crops): the page-frame `Q.STAFF_LINES` sits ~0.3 spaces off on this
+merging plate, the registration cause `RUNG_STEP_SHIPS = False` already
+records. A cell-frame line test would catch both; not built here.
+
+RED first: `out/red-run-g3.txt` — the Part A tests against `8226aa93`: 5
+failed, 2 passed (the two positive controls).
+
+`probe/readjudicate_ledger_g3.py` — BASE = 3.4g-2's function from `8226aa93`
+swapped into today's registry, ARM = this tree, one tree, full ADJUDICATE ->
+EXPORT in both; **control: the BASE tally equals 3.4g-2's recorded arm reason
+for reason**; "nothing else moves" is MEASURED by comparing every verdict of
+every quantity (outcome, value, reason):
+
+| record | control | `no_head` refused -> abstained | verdicts moved, all quantities | `<note>` base / arm | census |
+|---|---|---|---|---|---|
+| `beethoven5-p1-p4` | 1,878 of 1,878 | **18 -> 18** | 18, all `ledger_is_not_a_ledger` | 1,769 / 1,769 | balanced, `[]` |
+| Litolff whole | 7,617 of 7,617 | **79 -> 79** | 79, all `ledger_is_not_a_ledger` | 8,686 / 8,686 | balanced, `[]` |
+| Breitkopf whole | (running at the time of the first commit; filled by the follow-up) | | | | |
+
+`notes_not_written` identical on every record; `unladdered_signal` identical
+base/arm on every record (below).
+
+⚠️ **The one consumer of kept rungs does NOT yet treat an abstained rung as
+not-kept.** `notehead_precision._ledger_rungs_in_cell` skips a rung only when
+its verdict `value is True`, so an ABSTAINED rung (value `None`) is counted —
+that file belongs to lane 2.7b and was not edited. Measured effect: none (the
+`unladdered_signal` histogram is identical base/arm on all three records — a
+rung with no head near it is by construction on no head's ladder search — and
+that signal does not ship, `UNLADDERED_SHIPS = False`). The fix is one line
+for 2.7b: skip unless the verdict is DECIDED `False`. EXPORT reads no kept
+rung anywhere; `glyph_owner` reads GATHER's anonymous ladder (2.14).
+
+### Part B (GATHER) — `Q.LEDGER_INK_UNDER`
+
+`gather.gather_ledger_ink`, beside `gather_ink` and off the SAME staff-erased
+raster (`READERS.CV_INK`; CLAUDE.md §9: erase for the CV consumer, never for
+the detector). Per `ledgerLine` box, `gather.ledger_ink_under`: the ink
+fraction in a notehead-sized window (1.3 x 1.0 spaces) centred on the rung,
+and the same window half a space above and below (a head sits ON its rung or
+hangs beside it), with the rung's stroke rows (box +- 0.1 space) removed from
+count AND area; value = the best of the three; `detail` carries all three and
+a BACKGROUND = the smaller of the two windows one full space above/below.
+Declined, never defaulted: no erased raster -> `no_mask`; no unit ->
+`no_staff_geometry`. Registered in `record.Q` (CLAIM `measurement`;
+`capture.UNSCORED` `relation`), declared in the ledger decision's `wants` and
+`composed_from`; every detail key it writes is read by the decision.
+
+The rule, only where no boxed head is near:
+
+| witness | outcome |
+|---|---|
+| `under >= LEDGER_INK_KEPT_MIN` (0.55) AND `under - background >= LEDGER_INK_KEPT_CONTRAST_MIN` (0.10) | KEPT, `ink_under_the_rung` |
+| `under <= LEDGER_INK_REFUSED_MAX` (0.05) | REFUSED, `no_head_on_the_rung` — two witnesses (box row + ink row in `used`) |
+| anything else, or no witness | ABSTAINED, `rung_without_boxed_head` |
+
+### The thresholds, measured — `probe/ledger_ink_hist.py`, `probe/ledger_ink_thresholds.py`
+
+On a real ARM gather of Litolff pdf pages 1-12 (4,947 ledger boxes; the
+priced page 3 alone has 500). Populations by the same record's 3.4g-2
+verdicts (which read no ink): POS_on = kept with a notehead box ON the rung
+(548); POS_near = kept, nearest head <= 0.75 sp (495); NEG = refused
+`inside_the_staff` (3,414) + `on_a_staff_line` (407); TARGET = no boxed head
+(50). `out/ledger-ink-hist-litolff-p1-12.json`, `…-p3.json`,
+`out/ledger-ink-thresholds-litolff-{p1-12,p3}.txt`.
+
+`under`:
+
+| population | n | p5 | p25 | p50 | p75 | p95 |
+|---|---|---|---|---|---|---|
+| POS_on | 548 | **0.574** | 0.718 | 0.847 | 0.902 | 0.974 |
+| POS_near | 495 | 0.563 | 0.731 | 0.847 | 0.900 | 0.976 |
+| NEG_inside | 3,414 | 0.0 | 0.024 | 0.259 | 0.520 | 0.810 |
+| NEG_online | 407 | 0.0 | 0.106 | 0.339 | 0.594 | 0.830 |
+| TARGET | 50 | 0.0 | 0.007 | 0.373 | 0.733 | 0.794 |
+
+`under - background` (contrast): POS_on p5 **0.098**, p25 0.43, p50 0.61;
+NEG_inside p50 0.15, p75 0.40, p95 0.68. (Page 3 alone: POS_on `under` p5
+0.54, NEG_inside p50 0.18 / p95 0.75.)
+
+Where they separate: **at the bottom, cleanly** — 0 of 548 POS_on (minimum
+0.076) and 0 of 495 POS_near read `under <= 0.05`, against 1,024 of 3,821
+negatives and 15 of 50 targets. **At the top, not by these negatives**: 23%
+of them clear both keep thresholds, because inside the band the erased raster
+still holds the staff's own notes — a staff-line fragment is where the
+detector fires beside a head. So the KEEP thresholds are the positives' own
+p5s (under 0.574 -> 0.55; contrast 0.098 -> 0.10; together 501 of 548 = 0.91
+of positives kept), and they are only ever applied to a box that is outside
+the band, off every line, rung-thick and has no boxed head.
+
+**RED (the windows swapped — background read as `under`)**: AUC against the
+negatives **0.786** vs **0.931** for the real window (POS_on, pages 1-12). On
+page 3 alone (37 / 417) the gap is narrower, 0.887 vs 0.940 — positives sit
+in dense neighbourhoods, so the neighbourhood alone separates somewhat; the
+window adds what the neighbourhood does not. The control can fail and on the
+one page nearly did, which is why the thresholds come from twelve.
+
+### Priced by two full re-gathers — `probe/gather_ledger_ink_ab.py`, `probe/compare_gathers_g3.py`
+
+Litolff pdf index 3, `--no-surya --no-ocr`, scan weights
+(`hollow-graft-shift09`), 600 dpi, `OMR_DIRECTION_TEXT_SCAN_GATE=1`; both
+arms `python3 -m tools.omr.staged` on commit `99a6b278`, **`dirty: False`
+both** (the compare refuses otherwise). BASE = the same process with
+`gather_ledger_ink` a no-op and the 3.4g-2 decision. The records stay in the
+session scratchpad (machine-local). `out/gather-ab-g3-litolff-p3.json`.
+
+| | base | arm |
+|---|---|---|
+| detector boxes | 1,928 | 1,928 — **identical list** (no jitter; every difference is the change) |
+| `Q.LEDGER_INK_UNDER` rows | 0 | 500 (0 abstentions) |
+| kept `ledger_line` | 75 | 75 |
+| kept `ink_under_the_rung` | — | **1** |
+| refused `no_head_on_the_rung` | 8 | **3** (two witnesses) |
+| abstained `rung_without_boxed_head` | — | **4** |
+| `inside_the_staff` / `on_a_staff_line` | 383 / 34 | 383 / 34 |
+| verdicts moved, all quantities | | **5, all ledger** |
+| `<note>` | 549 | 549 — MusicXML byte-identical |
+| census | balanced | balanced |
+
+Pages 1-12 (the arm gather re-decided on this tree; base = 3.4g-2 on the
+same rows; `out/ledger-g3-arm-g3-arm-litolff-p1-12.json`): of **50** former
+`no_head_on_the_rung` refusals, **22 KEPT** `ink_under_the_rung`, **15
+REFUSED** with two witnesses, **13 ABSTAIN**; 35 verdicts moved, all ledger;
+`<note>` 5,476 / 5,476.
+
+`staged.check` **264** (baseline 264): `gather_coverage` lists the quantity
+as gathered by `gather_ledger_ink`; `inventory`, `wiring`, `reach` exit 0.
+
+### Sean's four, re-measured off the PDF — `probe/ledger_ink_crops_g3.py`
+
+Pages re-prepared exactly as GATHER prepares them; the cell found by GATHER's
+own numbering and checked against the p1-p4 record (**frame controls: the
+cell's page box and the rung's canonical-to-page box both 0.0 px off**, all
+four); `gather.ledger_ink_under` on the record's own box; today's decision
+run over the record's rows plus the measured value. Crop 4's subject exists
+on the fresh page-3 gather too (`glyph/3/1/0/6/12`) and its FILED value there
+is 0.1314 — the same number.
+
+| n | subject | Sean | under | best | background | contrast | 3.4g-2 | **3.4g-3** |
+|---|---|---|---|---|---|---|---|---|
+| 1 | `glyph/1/0/3/14/0` | real rung | 0.737 | on | 0.087 | 0.650 | refused | **KEPT `ink_under_the_rung`** |
+| 2 | `glyph/2/0/2/2/12` | bottom staff line | 0.005 | above | 0.000 | 0.005 | refused | **REFUSED `no_head_on_the_rung`** |
+| 3 | `glyph/2/1/0/12/6` | real rung | 0.937 | above | 0.747 | 0.190 | refused | **KEPT `ink_under_the_rung`** |
+| 4 | `glyph/3/1/0/6/12` | whole rest on the bottom line | 0.131 | on | 0.009 | 0.122 | refused | **ABSTAINED** |
+
+**1 and 3 kept, 2 refused. Crop 4 is NOT refused: it ABSTAINS.** The window
+centred on the box catches the left corner of the whole rest (0.13), above
+the paper floor and far below a head; the machine cannot tell it from a faint
+head by ink alone and says so — it never keeps it. Crop 3's contrast (0.19)
+clears the floor because the floor is the positives' p5; at 0.2 it would
+abstain. It was not tuned to it.
+
+### The crops — `out/print/g3-*`
+
+Each: LEFT the cell as the detector saw it, RIGHT staff-erased as the witness
+reads it; the staff's own lines GREEN; the rung box a RED corner bracket; the
+three head windows MAGENTA (solid = best), the two background windows CYAN;
+both verdicts and every number in the caption. Manifests
+`out/print/crop-manifest-g3-seans-four.json` and
+`crop-manifest-g3-ink-kept.json`, every row `VERDICT_none_yet: null`; the
+frame control refused none.
+
+- Sean's four: `g3-litolff-p1p4-p1-s0-st3-c14-g0-sean1-real`,
+  `…-p2-s0-st2-c2-g12-sean2-bottom-line`, `…-p2-s1-st0-c12-g6-sean3-real`,
+  `…-p3-s1-st0-c6-g12-sean4-whole-rest`.
+- 8 newly KEPT `ink_under_the_rung` (of 22 on pages 1-12; one per staff
+  first, seeded): `g3-litolff-p1-12-p2-s1-st10-c14-g9`, `-p5-s0-st6-c13-g8`,
+  `-p5-s1-st1-c6-g5`, `-p5-s1-st3-c10-g1`, `-p6-s1-st7-c8-g14`,
+  `-p8-s0-st6-c10-g3`, `-p9-s0-st10-c4-g2`, `-p9-s1-st3-c0-g10`
+  (`-ink_kept.png`). The re-measured value equals the filed one on all 8 (a
+  control that could fail).
+
+⚠️ **Not adjudicated. To this lane's eye (not Sean's), 7 of the 8 are real
+rungs with a head on or hanging from them, and one is not**:
+`glyph/6/1/7/8/14` — the "rung" is a long horizontal stroke the cell's own
+line model does not cover (it looks like the staff's bottom line), and the
+ink under it is the word *cresc.* The witness cannot tell a head from a
+letter — it is ink — and the keep side has no negative population to bound
+it (above). Same registration family as crops 2 and 4.
+
+### What could NOT be done, or was done differently from the brief
+
+1. **Crop 4 abstains; it is not refused** — measured 0.131, between the floor
+   and a head. "2 and 4 refused" is half met.
+2. **Crop 2 was never a position refusal** (0.315 sp outside line 1 in the
+   page frame); it is refused now by the ink.
+3. **The ADJUDICATE consumer of kept rungs** (`_ledger_rungs_in_cell`, lane
+   2.7b's file) still counts an abstained rung; effect measured zero.
+4. **The negatives cannot bound the keep thresholds** (in-band ink holds the
+   staff's own notes); they are the positives' p5s.
+5. **Pricing is one page** (p3), as briefed; the threshold population is a
+   second, arm-only gather of pages 1-12, re-decided on its own rows.
+6. The gathered records are not committed (~10 MB and ~135 MB).
+
+### Checks and tests
+
+- RED: `out/red-run-g3.txt` (5 failed / 2 passed against `8226aa93`).
+- `pytest tools/omr/tests -m "not slow"`: **3,323 passed, 3 skipped** (was 3,320 before the threshold tests).
+- `python3 -m tools.omr.staged.check`: **264** (baseline 264).
+
+### Reproducing
+
+```bash
+L=/Users/seanjohnson/Desktop/ReEngrave/library/_shared-records
+B=benchmarks/omr-family-refusals-2026-09
+PDF=<library>/editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf
+W=omr-weights/deepscoresv2-yolov8l-hollow-graft-shift09-2026-09-04.pt
+python3 $B/probe/readjudicate_ledger_g3.py $L/<record>.json --out $B/out        # Part A, SEQUENTIALLY
+OMR_DIRECTION_TEXT_SCAN_GATE=1 python3 $B/probe/gather_ledger_ink_ab.py --arm base -- $PDF --pages 3 --weights $W --no-surya --no-ocr --out base.json
+OMR_DIRECTION_TEXT_SCAN_GATE=1 python3 $B/probe/gather_ledger_ink_ab.py --arm arm  -- $PDF --pages 3 --weights $W --no-surya --no-ocr --out arm.json
+python3 $B/probe/compare_gathers_g3.py base.json arm.json --out ab.json        # clean tree only
+python3 $B/probe/ledger_ink_hist.py arm.json --out hist.json
+python3 $B/probe/ledger_ink_crops_g3.py --record $L/beethoven5-p1-p4.record.json --pdf $PDF \
+  --label litolff-p1p4 --subjects glyph/1/0/3/14/0 glyph/2/0/2/2/12 glyph/2/1/0/12/6 glyph/3/1/0/6/12 \
+  --names sean1-real sean2-bottom-line sean3-real sean4-whole-rest --manifest m.json
+```

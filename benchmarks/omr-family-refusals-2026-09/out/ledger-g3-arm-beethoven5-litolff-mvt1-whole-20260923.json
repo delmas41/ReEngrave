@@ -1,0 +1,219 @@
+{
+ "record": "beethoven5-litolff-mvt1-whole-20260923.record.json",
+ "base_ref": "8226aa93",
+ "ledger_boxes_on_the_record": 7617,
+ "ledger_ink_rows_on_the_record": 0,
+ "control": {
+  "prior_file": "benchmarks/omr-family-refusals-2026-09/out/ledger-g2-arm-beethoven5-litolff-mvt1-whole-20260923.json",
+  "prior_3_4g2_arm": {
+   "kept": 1713,
+   "refused:inside_the_staff": 5122,
+   "refused:no_head_on_the_rung": 79,
+   "refused:on_a_staff_line": 698,
+   "refused:tall_not_a_rung": 5
+  },
+  "base_here": {
+   "kept": 1713,
+   "refused:inside_the_staff": 5122,
+   "refused:no_head_on_the_rung": 79,
+   "refused:on_a_staff_line": 698,
+   "refused:tall_not_a_rung": 5
+  },
+  "agrees": true,
+  "agreeing_boxes": "7617 of 7617"
+ },
+ "base": {
+  "kept": 1713,
+  "refused:inside_the_staff": 5122,
+  "refused:no_head_on_the_rung": 79,
+  "refused:on_a_staff_line": 698,
+  "refused:tall_not_a_rung": 5
+ },
+ "arm": {
+  "ABSTAINED:rung_without_boxed_head": 79,
+  "kept": 1713,
+  "refused:inside_the_staff": 5122,
+  "refused:on_a_staff_line": 698,
+  "refused:tall_not_a_rung": 5
+ },
+ "transitions": {
+  "counts": {
+   "kept -> kept": 1713,
+   "refused:inside_the_staff -> refused:inside_the_staff": 5122,
+   "refused:no_head_on_the_rung -> ABSTAINED:rung_without_boxed_head": 79,
+   "refused:on_a_staff_line -> refused:on_a_staff_line": 698,
+   "refused:tall_not_a_rung -> refused:tall_not_a_rung": 5
+  },
+  "named": {
+   "refused:no_head_on_the_rung -> ABSTAINED:rung_without_boxed_head": [
+    "glyph/1/0/3/14/0",
+    "glyph/10/1/0/2/5",
+    "glyph/10/1/0/4/5",
+    "glyph/10/1/3/11/3",
+    "glyph/10/1/5/11/2",
+    "glyph/12/0/0/8/26",
+    "glyph/12/0/4/4/4",
+    "glyph/12/0/4/4/5",
+    "glyph/13/0/1/10/0",
+    "glyph/13/0/7/11/2",
+    "glyph/13/0/7/11/9",
+    "glyph/13/0/7/14/3"
+   ]
+  }
+ },
+ "verdicts_moved_by_quantity": {
+  "ledger_is_not_a_ledger": 79
+ },
+ "verdicts_moved_named": {
+  "ledger_is_not_a_ledger": [
+   {
+    "subject": "glyph/1/0/3/14/0",
+    "base": [
+     "decided",
+     "true",
+     "no_head_on_the_rung"
+    ],
+    "arm": [
+     "abstained",
+     "null",
+     "rung_without_boxed_head"
+    ]
+   },
+   {
+    "subject": "glyph/10/1/0/2/5",
+    "base": [
+     "decided",
+     "true",
+     "no_head_on_the_rung"
+    ],
+    "arm": [
+     "abstained",
+     "null",
+     "rung_without_boxed_head"
+    ]
+   },
+   {
+    "subject": "glyph/10/1/0/4/5",
+    "base": [
+     "decided",
+     "true",
+     "no_head_on_the_rung"
+    ],
+    "arm": [
+     "abstained",
+     "null",
+     "rung_without_boxed_head"
+    ]
+   },
+   {
+    "subject": "glyph/10/1/3/11/3",
+    "base": [
+     "decided",
+     "true",
+     "no_head_on_the_rung"
+    ],
+    "arm": [
+     "abstained",
+     "null",
+     "rung_without_boxed_head"
+    ]
+   },
+   {
+    "subject": "glyph/10/1/5/11/2",
+    "base": [
+     "decided",
+     "true",
+     "no_head_on_the_rung"
+    ],
+    "arm": [
+     "abstained",
+     "null",
+     "rung_without_boxed_head"
+    ]
+   },
+   {
+    "subject": "glyph/12/0/0/8/26",
+    "base": [
+     "decided",
+     "true",
+     "no_head_on_the_rung"
+    ],
+    "arm": [
+     "abstained",
+     "null",
+     "rung_without_boxed_head"
+    ]
+   },
+   {
+    "subject": "glyph/12/0/4/4/4",
+    "base": [
+     "decided",
+     "true",
+     "no_head_on_the_rung"
+    ],
+    "arm": [
+     "abstained",
+     "null",
+     "rung_without_boxed_head"
+    ]
+   },
+   {
+    "subject": "glyph/12/0/4/4/5",
+    "base": [
+     "decided",
+     "true",
+     "no_head_on_the_rung"
+    ],
+    "arm": [
+     "abstained",
+     "null",
+     "rung_without_boxed_head"
+    ]
+   }
+  ]
+ },
+ "unladdered_signal_base": {
+  "ledger_found_hist": {
+   "0": 1344,
+   "1": 385,
+   "2": 91,
+   "3": 52,
+   "4": 3,
+   "None": 580
+  },
+  "would_fire": 1344
+ },
+ "unladdered_signal_arm": {
+  "ledger_found_hist": {
+   "0": 1344,
+   "1": 385,
+   "2": 91,
+   "3": 52,
+   "4": 3,
+   "None": 580
+  },
+  "would_fire": 1344
+ },
+ "notes_base": 8686,
+ "notes_arm": 8686,
+ "notes_not_written_identical": true,
+ "census_arm": {
+  "unaccounted": [],
+  "balanced": true
+ },
+ "family_refusals_ledger_arm": {
+  "refused": {
+   "inside_the_staff": 5122,
+   "on_a_staff_line": 698,
+   "tall_not_a_rung": 5
+  },
+  "refused_total": 5825,
+  "kept": 1713,
+  "abstained": 79,
+  "abstained_reasons": {
+   "rung_without_boxed_head": 79
+  },
+  "verdicts": 7617,
+  "balanced": true
+ }
+}

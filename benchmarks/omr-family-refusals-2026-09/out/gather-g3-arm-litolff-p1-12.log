@@ -1,0 +1,19 @@
+ARM: this tree
+
+── ADJUDICATE ─────────────────────────────────────────
+  decided:   {'accidental_is_not_an_accidental': 1104, 'accidental_owner': 497, 'arc_is_not_an_arc': 1954, 'arc_kind': 1954, 'arc_owner': 1954, 'arpeggiato_is_not_an_arpeggiato': 1372, 'articulation_is_not_an_articulation': 251, 'articulation_owner': 200, 'clef': 229, 'duration': 8605, 'dynamic': 3731, 'dynamic_is_not_a_dynamic': 1331, 'event': 3501, 'fermata_owner': 124, 'glyph_owner': 5604, 'key_signature': 181, 'ledger_is_not_a_ledger': 4933, 'measure_partition': 242, 'meter': 23, 'notehead_is_a_whole_rest': 7751, 'notehead_is_not_a_notehead': 7751, 'onset_column': 23, 'ornament_owner': 2, 'part_key': 1, 'part_partition': 1, 'rest_is_not_a_rest': 2158, 'slot_index': 48, 'staff_group': 242, 'staff_ordinal': 242, 'stem_direction': 5275, 'system_membership': 23, 'system_staff_count': 23, 'tuplet_ratio': 2, 'voices': 3501, 'wedge_anchor': 4}
+  abstained: {'accidental_owner': {'no_candidate': 591, 'ambiguous_height': 16}, 'articulation_owner': {'no_notehead': 51}, 'clef': {'margin_below_floor': 8, 'no_candidates': 5}, 'direction': {'out_of_scope': 3759}, 'duration': {'beams_ambiguous': 1145, 'rest_slot_contradicts_class': 33, 'rest_stands_where_no_rest_hangs': 126}, 'dynamic': {'unspellable': 28}, 'fermata_owner': {'no_carrier': 25}, 'group_symbol': {'no_identity': 23}, 'instrument': {'no_evidence': 242}, 'key_signature': {'disagrees_with_part': 11, 'no_evidence': 17, 'mixed_marker_kinds': 15, 'run_fits_no_slot_table': 5, 'needs_clef': 13}, 'ledger_is_not_a_ledger': {'rung_without_boxed_head': 14}, 'ornament_owner': {'no_notehead': 1}, 'slot_index': {'reference_names_nothing': 194}, 'stem_direction': {'no_stem': 2074, 'stems_disagree': 402}, 'system_key': {'no_staff_read_a_key': 23}, 'tuplet_ratio': {'wrong_member_count': 4}, 'voices': {'nothing_to_split': 258}}
+── GROUPS ─────────────────────────────────────────────
+  clef_across_systems: 13 facts, 229 witnesses, 1 uninformative, {'none': 1, 'single': 0, 'unanimous': 10, 'majority': 2, 'split': 0}
+  instrument_across_systems: 13 facts, 0 witnesses, 13 uninformative, {'none': 13, 'single': 0, 'unanimous': 0, 'majority': 0, 'split': 0}
+  key_signature_across_systems: 13 facts, 181 witnesses, 13 uninformative, {'none': 1, 'single': 9, 'unanimous': 0, 'majority': 0, 'split': 3}
+  measure_count_across_staves: 23 facts, 242 witnesses, 0 uninformative, {'none': 0, 'single': 0, 'unanimous': 23, 'majority': 0, 'split': 0}
+  meter_across_staves: 23 facts, 56 witnesses, 12 uninformative, {'none': 3, 'single': 9, 'unanimous': 9, 'majority': 2, 'split': 0}
+  staff_group_across_systems: 13 facts, 242 witnesses, 1 uninformative, {'none': 1, 'single': 0, 'unanimous': 12, 'majority': 0, 'split': 0}
+  ⚠️ witnessed_by_nobody (no witness spoke): ['instrument_across_systems']
+  ⚠️ checked_nothing (never two independent signals -- corroborated NOTHING, however busy it looks): ['instrument_across_systems', 'key_signature_across_systems']
+  ⚠️ DISAGREEMENTS: 7 (each implicates its WHOLE group, not its dissenter)
+── EVALUATE: 12764 fired, 46661 skipped
+── INFER: 52 inferred, 0 skipped  ⚠️ every one is LABELLED and supersedes a recorded narrowing
+── DECLARED STUBS: 0 decisions, 1 consequences
+wrote /private/tmp/claude-501/-Users-seanjohnson-Desktop-ReEngrave--claude-worktrees-start-here-questions-7d5637/3707ff6b-4757-4644-b4c5-de906d20a7bb/scratchpad/g3-arm-litolff-p1-12.record.json

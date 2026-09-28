@@ -2080,6 +2080,159 @@ def gather_ink(log: Log, cells: Sequence[Any],
                   f"{'' if component_rows else ' (summary row)'}")
 
 
+#: ⚠️ THE WINDOW IS A NOTEHEAD, (width, height) in STAFF SPACES. 1.3 is the
+#: notehead width `notehead_precision` measured (the width floor costs 0 of
+#: 103 confirmed heads -- CLAUDE.md §10); 1.0 is one space, a head's height.
+LEDGER_INK_WINDOW_SPACES = (1.3, 1.0)
+#: Where a head can stand relative to its rung, in spaces (+ = down the
+#: raster): ON it (the rung through its middle) or hanging HALF A SPACE
+#: above or below it (the head in the space beside the rung).
+LEDGER_INK_OFFSETS_SPACES = (("on", 0.0), ("above", -0.5), ("below", 0.5))
+#: The BACKGROUND control: the same window one full space away, both sides.
+LEDGER_INK_BACKGROUND_SPACES = (-1.0, 1.0)
+#: ⚠️ THE RUNG'S OWN STROKE: the box's rows, padded by this many spaces each
+#: side, across the WHOLE window width -- a rung is a horizontal stroke wider
+#: than any head, and a detector box drawn a pixel short of its ink would
+#: otherwise let every rung vouch for itself.
+LEDGER_INK_STROKE_PAD_SPACES = 0.1
+
+
+def ledger_ink_under(img: Any, box: Tuple[float, float, float, float],
+                     space: float) -> Optional[Dict[str, Any]]:
+    """The ink under one rung, in the cell's own units. ROADMAP 3.4g-3.
+
+    `img` is a cell raster with 0 = ink (the staff-ERASED one in GATHER),
+    `box` the rung's `(x, y, w, h)` in that raster's frame, `space` one staff
+    space in its pixels. Returns `None` without a unit -- declined, never
+    defaulted.
+
+    Every window is a notehead (`LEDGER_INK_WINDOW_SPACES`) centred on the
+    rung's centre x; the rung's stroke rows (`LEDGER_INK_STROKE_PAD_SPACES`)
+    are removed from both the ink count AND the area, so a fraction is "of
+    the paper that is not the rung". A window clipped by the raster's edge
+    is measured over what remains of it; one with nothing left reads `None`.
+
+      `under`          the best of the three head windows (`on`, `above`,
+                       `below`) -- the value GATHER files
+      `windows`        all three
+      `background`     the SMALLER of the two windows one full space above
+                       and below: the paper beside the rung. The smaller,
+                       because one side of a first rung is the staff (erased,
+                       but a chord's note may stand there) and one side of an
+                       inner rung is the next rung and its note.
+      `background_windows`  both
+    """
+    import numpy as np
+    if img is None or getattr(img, "ndim", 0) != 2 or not space \
+            or space <= 0:
+        return None
+    ink = (img == 0)
+    H, W = ink.shape
+    x, y, w, h = (float(v) for v in box)
+    cx, cy = x + w / 2.0, y + h / 2.0
+    ww, wh = (LEDGER_INK_WINDOW_SPACES[0] * space,
+              LEDGER_INK_WINDOW_SPACES[1] * space)
+    pad = LEDGER_INK_STROKE_PAD_SPACES * space
+    s0 = int(np.floor(y - pad))
+    s1 = int(np.ceil(y + h + pad))
+
+    def frac(dy_spaces: float) -> Optional[float]:
+        yc = cy + dy_spaces * space
+        x0 = max(0, int(round(cx - ww / 2.0)))
+        x1 = min(W, int(round(cx + ww / 2.0)))
+        y0 = max(0, int(round(yc - wh / 2.0)))
+        y1 = min(H, int(round(yc + wh / 2.0)))
+        if x1 <= x0 or y1 <= y0:
+            return None
+        rows = np.arange(y0, y1)
+        keep = (rows < s0) | (rows >= s1)
+        if not keep.any():
+            return None
+        region = ink[y0:y1, x0:x1][keep]
+        return float(region.sum()) / float(region.size)
+
+    windows = {name: frac(dy) for name, dy in LEDGER_INK_OFFSETS_SPACES}
+    back = {f"{dy:+.1f}": frac(dy) for dy in LEDGER_INK_BACKGROUND_SPACES}
+    measured = {k: v for k, v in windows.items() if v is not None}
+    if not measured:
+        return None
+    best = max(measured, key=lambda k: measured[k])
+    bvals = [v for v in back.values() if v is not None]
+    return {
+        "under": round(measured[best], 4),
+        "best_window": best,
+        "windows": {k: (None if v is None else round(v, 4))
+                    for k, v in windows.items()},
+        "background": None if not bvals else round(min(bvals), 4),
+        "background_windows": {k: (None if v is None else round(v, 4))
+                               for k, v in back.items()},
+    }
+
+
+def gather_ledger_ink(log: Log, cells: Sequence[Any],
+                      local: Dict[int, Tuple[int, int]],
+                      detections: Dict[str, List[Any]]) -> None:
+    """`Q.LEDGER_INK_UNDER` on every `ledgerLine` glyph. ROADMAP 3.4g-3.
+
+    ⚠️ THE SECOND WITNESS FOR `[C91]`, AND IT HAS TO BE GATHERED. Sean's
+    convention -- a rung exists only where a note stands on it -- was read in
+    ADJUDICATE off the detector's notehead boxes alone, and on a merging
+    plate the heads the detector loses are precisely the ones fused with
+    their rungs (his crops 1 and 3, 2026-09-27). The raster is gone by
+    ADJUDICATE, so the paper has to be read here or not at all.
+
+    ⚠️ OFF THE ERASED RASTER, beside `gather_ink` and for its reason: with
+    the staff lines in, a window near the staff reads the line, not a head.
+    CLAUDE.md §9 -- erase for the CV consumer, never for the detector; this
+    is a CV consumer.
+
+    ⚠️ A MEASUREMENT, FILED ON THE GLYPH, NAMING NOTHING. The thresholds
+    that read it live in the decision (`family_precision`), measured.
+    Declined, never defaulted: no erased raster -> `no_mask`; no staff unit
+    -> `no_staff_geometry`.
+    """
+    for c in cells:
+        key = local.get(c.staff_index)
+        if key is None:
+            continue
+        sub = R.cell(c.page_index, key[0], key[1], c.measure_index)
+        dets = detections.get(sub.to_key(), ())
+        idx = [gi for gi, d in enumerate(dets)
+               if d.smufl_name == _LEDGER_CLASS]
+        if not idx:
+            continue
+        frame = frame_cell(c.measure_index)
+        img = getattr(c, "image_no_staff", None)
+        grid = _cell_grid(c)
+        space = grid[1] * 2.0 if grid else None
+        for gi in idx:
+            g = R.glyph(c.page_index, key[0], key[1], c.measure_index, gi)
+            if img is None or getattr(img, "ndim", 0) != 2:
+                log.abstain(g, Q.LEDGER_INK_UNDER, reader=READERS.CV_INK,
+                            frame=frame, reason=ABSTAIN.NO_MASK,
+                            note="cell carries no image_no_staff")
+                continue
+            if not space:
+                log.abstain(g, Q.LEDGER_INK_UNDER, reader=READERS.CV_INK,
+                            frame=frame, reason=ABSTAIN.NO_STAFF_GEOMETRY)
+                continue
+            d = dets[gi]
+            m = ledger_ink_under(img, (d.x_canonical, d.y_canonical,
+                                       d.width_canonical,
+                                       d.height_canonical), space)
+            if m is None:
+                log.abstain(g, Q.LEDGER_INK_UNDER, reader=READERS.CV_INK,
+                            frame=frame, reason=ABSTAIN.NO_STAFF_GEOMETRY,
+                            note="window off the raster")
+                continue
+            log.observe(g, Q.LEDGER_INK_UNDER, m["under"],
+                        reader=READERS.CV_INK, frame=frame,
+                        ink_best_window=m["best_window"],
+                        ink_windows=m["windows"],
+                        ink_background=m["background"],
+                        ink_background_windows=m["background_windows"])
+
+
 def gather_detector_beams(log: Log, detections: Dict[str, List[Any]]) -> None:
     """The DETECTOR's beam boxes, kept as rows beside the CV strokes.
 
@@ -4185,6 +4338,10 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
         # default -- see `INK_ENV`.
         gather_ink(log, cells, local, detections,
                   component_rows=ink_component_rows, progress=progress)
+        # ⚠️ ROADMAP 3.4g-3, BESIDE `gather_ink` because it reads the SAME
+        # erased raster (and says so: `READERS.CV_INK`). The second witness
+        # for Sean's `[C91]` -- see the function.
+        gather_ledger_ink(log, cells, local, detections)
         gather_detector_beams(log, detections)
         gather_clef(log, cells, local, detections)
         gather_clef_locator(log, pws, cells, local, detections)

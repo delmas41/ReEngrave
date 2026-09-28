@@ -1,0 +1,158 @@
+{
+  "record": "beethoven5-p1-p4.record.json",
+  "dpi": 600,
+  "constants": {
+    "LEDGER_INK_WINDOW_SPACES": [
+      1.3,
+      1.0
+    ],
+    "LEDGER_INK_OFFSETS_SPACES": [
+      [
+        "on",
+        0.0
+      ],
+      [
+        "above",
+        -0.5
+      ],
+      [
+        "below",
+        0.5
+      ]
+    ],
+    "LEDGER_INK_BACKGROUND_SPACES": [
+      -1.0,
+      1.0
+    ],
+    "LEDGER_INK_KEPT_MIN": 0.55,
+    "LEDGER_INK_KEPT_CONTRAST_MIN": 0.1,
+    "LEDGER_INK_REFUSED_MAX": 0.05
+  },
+  "refused_by_frame_control": [],
+  "crops": [
+    {
+      "file": "g3-litolff-p1p4-p1-s0-st3-c14-g0-sean1-real.png",
+      "subject": "glyph/1/0/3/14/0",
+      "staff": "staff/1/0/3",
+      "tag": "sean1-real",
+      "verdict_on_the_record": "<none>",
+      "verdict_3_4g_3_remeasured": "kept:ink_under_the_rung",
+      "ink": {
+        "under": 0.7372,
+        "best_window": "on",
+        "windows": {
+          "on": 0.7372,
+          "above": 0.364,
+          "below": 0.647
+        },
+        "background": 0.0872,
+        "background_windows": {
+          "-1.0": 0.0872,
+          "+1.0": 0.3605
+        }
+      },
+      "filed_under_on_the_record": null,
+      "cell_staff_space_px": 100.0,
+      "cell_staff_space_on_record": 100.0,
+      "frame_control": {
+        "cell_box_delta_px": 0.0,
+        "rung_box_delta_px": 0.0,
+        "tol_px": 2.0
+      },
+      "VERDICT_none_yet": null
+    },
+    {
+      "file": "g3-litolff-p1p4-p2-s0-st2-c2-g12-sean2-bottom-line.png",
+      "subject": "glyph/2/0/2/2/12",
+      "staff": "staff/2/0/2",
+      "tag": "sean2-bottom-line",
+      "verdict_on_the_record": "<none>",
+      "verdict_3_4g_3_remeasured": "refused:no_head_on_the_rung",
+      "ink": {
+        "under": 0.0052,
+        "best_window": "above",
+        "windows": {
+          "on": 0.0,
+          "above": 0.0052,
+          "below": 0.0
+        },
+        "background": 0.0,
+        "background_windows": {
+          "-1.0": 0.106,
+          "+1.0": 0.0
+        }
+      },
+      "filed_under_on_the_record": null,
+      "cell_staff_space_px": 100.0,
+      "cell_staff_space_on_record": 100.0,
+      "frame_control": {
+        "cell_box_delta_px": 0.0,
+        "rung_box_delta_px": 0.0,
+        "tol_px": 2.0
+      },
+      "VERDICT_none_yet": null
+    },
+    {
+      "file": "g3-litolff-p1p4-p2-s1-st0-c12-g6-sean3-real.png",
+      "subject": "glyph/2/1/0/12/6",
+      "staff": "staff/2/1/0",
+      "tag": "sean3-real",
+      "verdict_on_the_record": "<none>",
+      "verdict_3_4g_3_remeasured": "kept:ink_under_the_rung",
+      "ink": {
+        "under": 0.9366,
+        "best_window": "above",
+        "windows": {
+          "on": 0.8286,
+          "above": 0.9366,
+          "below": 0.6925
+        },
+        "background": 0.7465,
+        "background_windows": {
+          "-1.0": 0.8807,
+          "+1.0": 0.7465
+        }
+      },
+      "filed_under_on_the_record": null,
+      "cell_staff_space_px": 100.0,
+      "cell_staff_space_on_record": 100.0,
+      "frame_control": {
+        "cell_box_delta_px": 0.0,
+        "rung_box_delta_px": 0.0,
+        "tol_px": 2.0
+      },
+      "VERDICT_none_yet": null
+    },
+    {
+      "file": "g3-litolff-p1p4-p3-s1-st0-c6-g12-sean4-whole-rest.png",
+      "subject": "glyph/3/1/0/6/12",
+      "staff": "staff/3/1/0",
+      "tag": "sean4-whole-rest",
+      "verdict_on_the_record": "<none>",
+      "verdict_3_4g_3_remeasured": "ABSTAINED:rung_without_boxed_head",
+      "ink": {
+        "under": 0.1314,
+        "best_window": "on",
+        "windows": {
+          "on": 0.1314,
+          "above": 0.0611,
+          "below": 0.0952
+        },
+        "background": 0.009,
+        "background_windows": {
+          "-1.0": 0.1562,
+          "+1.0": 0.009
+        }
+      },
+      "filed_under_on_the_record": null,
+      "cell_staff_space_px": 100.0,
+      "cell_staff_space_on_record": 100.0,
+      "frame_control": {
+        "cell_box_delta_px": 0.0,
+        "rung_box_delta_px": 0.0,
+        "tol_px": 2.0
+      },
+      "VERDICT_none_yet": null
+    }
+  ]
+}
