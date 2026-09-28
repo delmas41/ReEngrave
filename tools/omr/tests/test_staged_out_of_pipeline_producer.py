@@ -11,6 +11,14 @@ exists, `review/human_evidence.py`, reclassified as a hole) and
 all. `test_the_nine_...` and `test_gather_coverage_...` below are the record
 of that RED state, reproduced by disabling the repair rather than by
 reverting it.
+
+⚠️ THE COUNT IS 12 TODAY, NOT 9 — ROADMAP 3.4g-4 added three more human-only
+family decisions (`flag_is_not_a_flag`, `keysig_marker_is_not_a_marker`,
+`tuplet_marker_is_not_a_marker`) on the same pattern after this lane landed,
+and `producers.py`'s classification covers them for free because it reads
+`review/human_evidence.py`'s own AST rather than a hand-typed list. The tests
+below say which count is a frozen historical snapshot (the original nine, by
+name) and which is a live property of the current registry (12).
 """
 from __future__ import annotations
 
@@ -90,28 +98,45 @@ class TestTheControlsCanFail(unittest.TestCase):
         registry disabled (as if `producers.py` did not exist), a decision
         wanting `Q.HUMAN_BOX_VERDICT` must go back to being reported
         UNSATISFIABLE -- proving the new `out_of_pipeline` classification is
-        what suppresses the finding today, not some unrelated change."""
+        what suppresses the finding today, not some unrelated change.
+
+        ⚠️ 12, NOT 9: ROADMAP 3.4g-4 added three more human-only family
+        decisions (`flag_is_not_a_flag`, `keysig_marker_is_not_a_marker`,
+        `tuplet_marker_is_not_a_marker`) to the nine this lane found, and the
+        count is a property of the CURRENT registry, not a frozen historical
+        one -- `test_reproduces_the_RED_state_this_lane_found` below is the
+        one test that pins the original nine BY NAME."""
         with mock.patch.object(OOP, "all_filed", return_value={}):
             inv = inventory.build()
         unsatisfiable_human = [
             p for p in inv["problems"]
             if "human_box_verdict" in p and "no gather site" in p]
-        self.assertEqual(len(unsatisfiable_human), 9, inv["problems"])
+        self.assertEqual(len(unsatisfiable_human), 12, inv["problems"])
 
     def test_reproduces_the_RED_state_this_lane_found(self):
         """The exact shape reported before this repair: nine decisions,
-        UNSATISFIABLE, with the out-of-pipeline registry disabled."""
+        UNSATISFIABLE, with the out-of-pipeline registry disabled.
+
+        ⚠️ ROADMAP 3.4g-4 ADDED THREE MORE, ON THE SAME PATTERN, AFTER THIS
+        LANE LANDED: `flag_is_not_a_flag`, `keysig_marker_is_not_a_marker`,
+        `tuplet_marker_is_not_a_marker` are asserted SEPARATELY below rather
+        than folded into the historical nine, so this list stays the exact
+        RED state this lane's own commit found and fixed."""
         with mock.patch.object(OOP, "all_filed", return_value={}):
             inv = inventory.build()
         decisions = sorted(
             p.split(" wants ")[0] for p in inv["problems"]
             if "human_box_verdict" in p and "no gather site" in p)
-        self.assertEqual(decisions, sorted([
+        original_nine = [
             "ledger_is_not_a_ledger", "notehead_is_not_a_notehead",
             "accidental_is_not_an_accidental", "rest_is_not_a_rest",
             "arpeggiato_is_not_an_arpeggiato", "arc_is_not_an_arc",
             "dynamic_is_not_a_dynamic", "articulation_is_not_an_articulation",
-            "glyph_owner"]))
+            "glyph_owner"]
+        added_by_3_4g_4 = [
+            "flag_is_not_a_flag", "keysig_marker_is_not_a_marker",
+            "tuplet_marker_is_not_a_marker"]
+        self.assertEqual(decisions, sorted(original_nine + added_by_3_4g_4))
 
 
 class TestInventoryClassifiesOutOfPipelineCorrectly(unittest.TestCase):
@@ -167,8 +192,11 @@ class TestGatherCoverageLabelsTheProducerHuman(unittest.TestCase):
         self.assertIn("HUMAN_VERDICT_STANCE", ng["out_of_pipeline"])
 
     def test_wanted_but_out_of_pipeline_names_the_nine_decisions(self):
+        """⚠️ 12, NOT 9 — see `test_reproduces_the_RED_state_this_lane_found`
+        for why: ROADMAP 3.4g-4 added three more human-only family decisions
+        on the same pattern after this lane landed."""
         who = self.rep["wanted_but_out_of_pipeline"]["HUMAN_BOX_VERDICT"]
-        self.assertEqual(len(who), 9, who)
+        self.assertEqual(len(who), 12, who)
         self.assertNotIn("HUMAN_BOX_VERDICT",
                          self.rep["wanted_but_ungathered"])
 

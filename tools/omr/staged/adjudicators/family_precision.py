@@ -467,14 +467,14 @@ def _heads_on_the_rung(ev: Evidence, box_row, space: float,
 
 
 # ─────────────────────────────────────────────────────────────────────────────
-# The seven decisions
+# The seven decisions, plus 3.4g-4's three
 #
-# ⚠️ SEVEN NAMED FUNCTIONS AND ONE BODY, AND THE SHAPE IS DELIBERATE. A
+# ⚠️ NAMED FUNCTIONS AND ONE BODY EACH, AND THE SHAPE IS DELIBERATE. A
 # factory returning closures would give every spec a `fn.__name__` that
 # `inventory._never_read` cannot find in the source it parses (it looks for a
 # `FunctionDef` named `spec.name`), so every declared `wants` would be
 # reported as unread — a derived check silently disabled by a code-style
-# choice. Seven two-line functions keep the AST honest.
+# choice. Ten two-line functions keep the AST honest.
 # ─────────────────────────────────────────────────────────────────────────────
 
 #: The reason a glyph NO rule condemns decides `False` with, per family.
@@ -490,6 +490,10 @@ _OK = {
     Q.ARC_IS_NOT_AN_ARC: "arc",
     Q.DYNAMIC_IS_NOT_A_DYNAMIC: "dynamic",
     Q.ARTICULATION_IS_NOT_AN_ARTICULATION: "articulation",
+    # ── roadmap 3.4g-4 ──────────────────────────────────────────────────────
+    Q.FLAG_IS_NOT_A_FLAG: "flag",
+    Q.KEYSIG_MARKER_IS_NOT_A_MARKER: "keysig_marker",
+    Q.TUPLET_MARKER_IS_NOT_A_MARKER: "tuplet_marker",
 }
 
 #: Every reason a HUMAN-ONLY family decision can return. Derived from the two
@@ -919,6 +923,140 @@ def adjudicate_articulation_is_not_an_articulation(ev: Evidence) -> Ruling:
     if refused is not None:
         return refused
     return Ruling(value=False, reason="articulation", used=used, detail=detail)
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# ROADMAP 3.4g-4 — the three families 3.4g's first pass did not cover
+#
+# ⚠️ Sean's second and third stage-review passes (Clarinet p12, Viola p2)
+# found them: the flag family (a `duplicate` on a `flag8thDown`, page 2) and
+# the key-marker family named by the ROADMAP work order; the tuplet numeral
+# is 3.4g's own closing line, *"a human witness reaches EVERY gathered
+# family"* — `tuplet`/`fingering3` were the one family left with a gathered
+# quantity (`Q.TUPLET_MARKER`) and no precision decision at all.
+#
+# ⚠️ FLAG AND TUPLET USE `subjects_from=Q.FLAG` / `Q.TUPLET_MARKER` — THEIR
+# OWN GATHERED QUANTITY — EXACTLY AS REST/ARC/DYNAMIC/ARTICULATION DO, and
+# NEVER a `Q.GLYPH_BOX` class narrowing, because a bare class-prefix narrowing
+# is a documented footgun in this tree already: `key_signature_
+# corroboration.py`'s own `startswith("key")` "also catches `keyboardPedalUp`
+# — a PEDAL marking." `subjects_for`'s class narrowing matches `str.
+# startswith` against the WHOLE lower-cased class name, not against
+# `class_aliases`' family boundary, so a decision keyed on the bare `key`
+# prefix would silently widen its domain to a family `gather_coverage.
+# FAMILY_TO_Q` maps to `None`.
+#
+# `Q.KEYSIG_MARKER` cannot take that same route — `gather.
+# _gather_keysig_markers` files it on the STAFF, not on a glyph, so
+# `subjects_from=Q.KEYSIG_MARKER` at `scope=Kind.GLYPH` would find no glyph to
+# collapse to. Its domain is therefore `Q.GLYPH_BOX` narrowed by
+# `subjects_classed=("keySharp", "keyFlat", "keyNatural")` — `gather.
+# _KEYSIG_CLASSES` exactly, not the bare `key` prefix above.
+#
+# The tuplet family has the SAME shape the key marker's `subjects_classed`
+# avoids, which is why `subjects_from` is the exact quantity and not a class
+# name at all: `gather_coverage.FAMILY_TO_Q` maps the WHOLE `tuplet` family
+# (`tuplet0`-`9`, `tupletBracket`) and the WHOLE `fingering` family to
+# `Q.TUPLET_MARKER`, but `gather._TUPLET_CLASSES = ("tuplet3", "fingering3",
+# "tupletBracket", "tupleBracket")` only ever FILES four literal class names
+# under it — `tuplet0/1/2/4-9` are a digit the tuplet reader never acts on
+# ("only 3:2 is acted on at all") and `fingering1/2/4/5` are ordinary piano
+# fingerings, neither ever reaching a `Q.TUPLET_MARKER` row at all. Reading
+# `Q.TUPLET_MARKER` itself is therefore already exactly the population
+# `adjudicate_tuplet` can read, with no separate list to keep in step with
+# `_TUPLET_CLASSES`.
+# ─────────────────────────────────────────────────────────────────────────────
+
+
+@decision(
+    quantity=Q.FLAG_IS_NOT_A_FLAG,
+    composed_from=(Q.GLYPH_BOX, Q.FLAG, Q.HUMAN_BOX_VERDICT,
+                   Q.GLYPH_BAND_DISTANCE),
+    scope=Kind.GLYPH,
+    wants=(Q.GLYPH_BOX, Q.FLAG, Q.HUMAN_BOX_VERDICT, Q.GLYPH_BAND_DISTANCE),
+    subjects_from=Q.FLAG,
+    reasons=_human_only_reasons(Q.FLAG_IS_NOT_A_FLAG),
+    mode=Mode.ADDITIVE,
+)
+def adjudicate_flag_is_not_a_flag(ev: Evidence) -> Ruling:
+    """Is this box the detector called a flag a symbol at all?
+
+    HUMAN WITNESS ONLY, on the same pattern REST/ARC/DYNAMIC/ARTICULATION
+    take in 3.4g: `subjects_from=Q.FLAG` rather than a `Q.GLYPH_BOX` class
+    narrowing, because `gather_rhythm_marks` files `Q.FLAG` on every
+    `flag*`-prefixed glyph 1:1 — no widening the way `Q.ACCIDENTAL_STAFF_
+    POSITION` excludes key-signature shapes. Its consumer is `rhythm.
+    _attached_flags`: a refused flag is a glyph a human struck out and must
+    not hand an unbeamed notehead its hook count.
+    """
+    _ = ev.rows(Q.FLAG)       # the domain's own quantity, declared and read
+    detail, used = _class_detail(ev)
+    refused = _refused_by_a_human(ev, detail)
+    if refused is not None:
+        return refused
+    return Ruling(value=False, reason="flag", used=used, detail=detail)
+
+
+@decision(
+    quantity=Q.KEYSIG_MARKER_IS_NOT_A_MARKER,
+    composed_from=(Q.GLYPH_BOX, Q.HUMAN_BOX_VERDICT, Q.GLYPH_BAND_DISTANCE),
+    scope=Kind.GLYPH,
+    wants=(Q.GLYPH_BOX, Q.HUMAN_BOX_VERDICT, Q.GLYPH_BAND_DISTANCE),
+    subjects_from=Q.GLYPH_BOX,
+    subjects_classed=("keySharp", "keyFlat", "keyNatural"),
+    reasons=_human_only_reasons(Q.KEYSIG_MARKER_IS_NOT_A_MARKER),
+    mode=Mode.ADDITIVE,
+)
+def adjudicate_keysig_marker_is_not_a_marker(ev: Evidence) -> Ruling:
+    """Is this `key*` box the detector drew in the header a symbol at all?
+
+    HUMAN WITNESS ONLY. `Q.KEYSIG_MARKER` names no glyph of its own
+    (`gather._gather_keysig_markers` files it on the STAFF), so this
+    decision's subjects are the `key*` `Q.GLYPH_BOX` rows the marker rows are
+    built from — exactly the glyphs a human box-labels in the stage review.
+    Its consumer is `header._staff_reading`'s marker-run intake, which rejoins
+    a refused glyph to the marker row it produced by frame, class and point
+    (the same join `ownership._keysig_marker_row` makes in the opposite
+    direction) and drops it before `_marker_run` ever sees it.
+    """
+    detail, used = _class_detail(ev)
+    refused = _refused_by_a_human(ev, detail)
+    if refused is not None:
+        return refused
+    return Ruling(value=False, reason="keysig_marker", used=used,
+                  detail=detail)
+
+
+@decision(
+    quantity=Q.TUPLET_MARKER_IS_NOT_A_MARKER,
+    composed_from=(Q.GLYPH_BOX, Q.TUPLET_MARKER, Q.HUMAN_BOX_VERDICT,
+                   Q.GLYPH_BAND_DISTANCE),
+    scope=Kind.GLYPH,
+    wants=(Q.GLYPH_BOX, Q.TUPLET_MARKER, Q.HUMAN_BOX_VERDICT,
+           Q.GLYPH_BAND_DISTANCE),
+    subjects_from=Q.TUPLET_MARKER,
+    reasons=_human_only_reasons(Q.TUPLET_MARKER_IS_NOT_A_MARKER),
+    mode=Mode.ADDITIVE,
+)
+def adjudicate_tuplet_marker_is_not_a_marker(ev: Evidence) -> Ruling:
+    """Is this box the detector called a tuplet numeral or bracket a symbol
+    at all?
+
+    HUMAN WITNESS ONLY, `subjects_from=Q.TUPLET_MARKER` rather than a
+    `Q.GLYPH_BOX` class narrowing — `gather._TUPLET_CLASSES` already files
+    exactly `tuplet3`, `tupletBracket` and `fingering3` under it (see the
+    module comment above for why the wider `tuplet`/`fingering` FAMILIES are
+    not named: most of their classes never reach this quantity at all). Its
+    consumer is `rhythm.adjudicate_tuplet`, which must not read a 3:2 ratio
+    off a marker a human struck out.
+    """
+    _ = ev.rows(Q.TUPLET_MARKER)  # the domain's own quantity, declared and read
+    detail, used = _class_detail(ev)
+    refused = _refused_by_a_human(ev, detail)
+    if refused is not None:
+        return refused
+    return Ruling(value=False, reason="tuplet_marker", used=used,
+                  detail=detail)
 
 
 #: Every family refusal, and the quantity that names it. ⚠️ DERIVED FROM

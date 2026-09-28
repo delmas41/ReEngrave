@@ -884,6 +884,16 @@ ORDER: Tuple[str, ...] = (
     Q.GROUP_SYMBOL,
     # now the header facts, with identity in hand
     Q.CLEF,
+    # ⚠️ ROADMAP 3.4g-4. BEFORE `Q.SYSTEM_KEY`, `Q.PART_KEY` AND
+    # `Q.KEY_SIGNATURE`, AND THE ORDER IS A DEPENDENCY RATHER THAN A
+    # PREFERENCE, THE SAME SHAPE AS THE LEDGER'S: all three call
+    # `header._staff_reading`, which reads THIS decision's VERDICT (through
+    # `_unrefused_markers`'s join) to drop a human-refused `key*` marker
+    # before `_marker_run` ever sees it -- so it must have already run.
+    # Placed beside the header facts rather than in the human-only block
+    # below because every consumer of THAT block is later in this list; this
+    # one's earliest consumer is three lines down.
+    Q.KEYSIG_MARKER_IS_NOT_A_MARKER,
     # ⚠️ BEFORE `Q.KEY_SIGNATURE`, AND THE ORDER IS THE WHOLE REASON THERE IS
     # NO CYCLE. `adjudicate_system_key` reads its staves' MARKER AND FIT ROWS
     # through `_staff_reading`, never their key VERDICTS, so `Q.KEY_SIGNATURE`
@@ -916,16 +926,22 @@ ORDER: Tuple[str, ...] = (
     # would let a staff-line fragment vouch for a note.
     Q.LEDGER_IS_NOT_A_LEDGER,
     Q.NOTEHEAD_IS_NOT_A_NOTEHEAD,
-    # ⚠️ THE OTHER FIVE FAMILIES DEPEND ON NOTHING AND NOTHING IN ADJUDICATE
-    # DEPENDS ON THEM EXCEPT `Q.DYNAMIC`, which must not spell a refused
-    # letter into a word — so they stand here, beside the two refusals that
-    # do have an order, and before every consumer of theirs.
+    # ⚠️ THESE DEPEND ON NOTHING, and nothing in ADJUDICATE depends on most of
+    # them EXCEPT `Q.DYNAMIC`, `Q.DURATION` and `Q.TUPLET_RATIO` -- each of
+    # which must not read ink a human struck out -- so they stand here,
+    # beside the two refusals that do have an order, and before every
+    # consumer of theirs. (`Q.KEYSIG_MARKER_IS_NOT_A_MARKER` is the one
+    # family whose earliest consumer is EARLIER than this block, so it runs
+    # above, beside `Q.CLEF`, instead.)
     Q.ACCIDENTAL_IS_NOT_AN_ACCIDENTAL,
     Q.REST_IS_NOT_A_REST,
     Q.ARPEGGIATO_IS_NOT_AN_ARPEGGIATO,
     Q.ARC_IS_NOT_AN_ARC,
     Q.DYNAMIC_IS_NOT_A_DYNAMIC,
     Q.ARTICULATION_IS_NOT_AN_ARTICULATION,
+    # ── roadmap 3.4g-4 ──────────────────────────────────────────────────────
+    Q.FLAG_IS_NOT_A_FLAG,
+    Q.TUPLET_MARKER_IS_NOT_A_MARKER,
     # ownership, with identity and clef available
     Q.GLYPH_OWNER,
     Q.ARC_OWNER,

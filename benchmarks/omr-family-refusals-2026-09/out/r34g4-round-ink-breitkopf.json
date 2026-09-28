@@ -1,0 +1,6655 @@
+{
+ "documents": {
+  "breitkopf": {
+   "document": "breitkopf",
+   "dpi": 600,
+   "page": 1,
+   "n_rows": 350,
+   "rows": [
+    {
+     "subject": "glyph/1/0/0/1/0",
+     "class": "rest8th",
+     "page_box": [
+      2150.3251953125,
+      619.7255859375,
+      2184.3818359375,
+      669.8466796875
+     ],
+     "features": {
+      "fill_ratio": 0.5924,
+      "n_components": 4,
+      "largest_share": 0.996,
+      "largest_aspect_h_over_w": 1.4706,
+      "largest_fill_ratio": 0.59,
+      "largest_w": 34,
+      "largest_h": 50
+     }
+    },
+    {
+     "subject": "glyph/1/0/0/1/1",
+     "class": "rest8th",
+     "page_box": [
+      2393.541015625,
+      620.3681640625,
+      2426.955078125,
+      672.095703125
+     ],
+     "features": {
+      "fill_ratio": 0.6066,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 1.5758,
+      "largest_fill_ratio": 0.6066,
+      "largest_w": 33,
+      "largest_h": 52
+     }
+    },
+    {
+     "subject": "glyph/1/0/0/1/2",
+     "class": "rest8th",
+     "page_box": [
+      2084.4609375,
+      618.4404296875,
+      2117.232421875,
+      670.16796875
+     ],
+     "features": {
+      "fill_ratio": 0.5699,
+      "n_components": 2,
+      "largest_share": 0.999,
+      "largest_aspect_h_over_w": 1.5758,
+      "largest_fill_ratio": 0.5693,
+      "largest_w": 33,
+      "largest_h": 52
+     }
+    },
+    {
+     "subject": "glyph/1/0/0/1/6",
+     "class": "restQuarter",
+     "page_box": [
+      2214.26171875,
+      598.5205078125,
+      2244.1416015625,
+      679.1640625
+     ],
+     "features": {
+      "fill_ratio": 0.6408,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 2.6333,
+      "largest_fill_ratio": 0.6489,
+      "largest_w": 30,
+      "largest_h": 79
+     }
+    },
+    {
+     "subject": "glyph/1/0/0/1/21",
+     "class": "restQuarter",
+     "page_box": [
+      2253.1376953125,
+      710.0078125,
+      2285.587890625,
+      779.7275390625
+     ],
+     "features": {
+      "fill_ratio": 0.3736,
+      "n_components": 6,
+      "largest_share": 0.9907,
+      "largest_aspect_h_over_w": 2.1212,
+      "largest_fill_ratio": 0.3701,
+      "largest_w": 33,
+      "largest_h": 70
+     }
+    },
+    {
+     "subject": "glyph/1/0/0/2/3",
+     "class": "restWhole",
+     "page_box": [
+      2724.2575,
+      642.0699999999999,
+      2768.675,
+      659.51
+     ],
+     "features": {
+      "fill_ratio": 0.9123,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 0.4,
+      "largest_fill_ratio": 0.9123,
+      "largest_w": 45,
+      "largest_h": 18
+     }
+    },
+    {
+     "subject": "glyph/1/0/0/2/7",
+     "class": "restQuarter",
+     "page_box": [
+      2784.48,
+      736.0825,
+      2810.3675,
+      779.9549999999999
+     ],
+     "features": {
+      "fill_ratio": 0.4886,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 1.6923,
+      "largest_fill_ratio": 0.4886,
+      "largest_w": 26,
+      "largest_h": 44
+     }
+    },
+    {
+     "subject": "glyph/1/0/0/3/9",
+     "class": "rest8th",
+     "page_box": [
+      3061.8775,
+      594.3824999999999,
+      3095.1225,
+      646.1575
+     ],
+     "features": {
+      "fill_ratio": 0.5793,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 1.5758,
+      "largest_fill_ratio": 0.5793,
+      "largest_w": 33,
+      "largest_h": 52
+     }
+    },
+    {
+     "subject": "glyph/1/0/0/5/2",
+     "class": "rest8th",
+     "page_box": [
+      4787.82421875,
+      621.92578125,
+      4820.396484375,
+      674.220703125
+     ],
+     "features": {
+      "fill_ratio": 0.5367,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 1.625,
+      "largest_fill_ratio": 0.5367,
+      "largest_w": 32,
+      "largest_h": 52
+     }
+    },
+    {
+     "subject": "glyph/1/0/0/5/4",
+     "class": "restQuarter",
+     "page_box": [
+      4601.953125,
+      598.916015625,
+      4635.720703125,
+      682.587890625
+     ],
+     "features": {
+      "fill_ratio": 0.5473,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 2.4412,
+      "largest_fill_ratio": 0.5539,
+      "largest_w": 34,
+      "largest_h": 83
+     }
+    },
+    {
+     "subject": "glyph/1/0/0/5/6",
+     "class": "rest8th",
+     "page_box": [
+      4530.83203125,
+      621.626953125,
+      4563.404296875,
+      673.025390625
+     ],
+     "features": {
+      "fill_ratio": 0.5221,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 1.5938,
+      "largest_fill_ratio": 0.5221,
+      "largest_w": 32,
+      "largest_h": 51
+     }
+    },
+    {
+     "subject": "glyph/1/0/0/5/11",
+     "class": "rest8th",
+     "page_box": [
+      4458.515625,
+      620.431640625,
+      4491.685546875,
+      674.51953125
+     ],
+     "features": {
+      "fill_ratio": 0.5135,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 1.6667,
+      "largest_fill_ratio": 0.5135,
+      "largest_w": 33,
+      "largest_h": 55
+     }
+    },
+    {
+     "subject": "glyph/1/0/0/6/9",
+     "class": "restWhole",
+     "page_box": [
+      5171.96435546875,
+      642.74365234375,
+      5211.34521484375,
+      660.64404296875
+     ],
+     "features": {
+      "fill_ratio": 0.9801,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 0.4615,
+      "largest_fill_ratio": 0.9801,
+      "largest_w": 39,
+      "largest_h": 18
+     }
+    },
+    {
+     "subject": "glyph/1/0/1/1/1",
+     "class": "rest8th",
+     "page_box": [
+      2080.2841796875,
+      880.35546875,
+      2114.3408203125,
+      933.3681640625
+     ],
+     "features": {
+      "fill_ratio": 0.596,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 1.5588,
+      "largest_fill_ratio": 0.596,
+      "largest_w": 34,
+      "largest_h": 53
+     }
+    },
+    {
+     "subject": "glyph/1/0/1/1/5",
+     "class": "rest8th",
+     "page_box": [
+      2153.216796875,
+      877.78515625,
+      2187.916015625,
+      931.4404296875
+     ],
+     "features": {
+      "fill_ratio": 0.572,
+      "n_components": 5,
+      "largest_share": 0.9925,
+      "largest_aspect_h_over_w": 1.5143,
+      "largest_fill_ratio": 0.5677,
+      "largest_w": 35,
+      "largest_h": 53
+     }
+    },
+    {
+     "subject": "glyph/1/0/1/1/8",
+     "class": "restQuarter",
+     "page_box": [
+      2217.1533203125,
+      857.5439453125,
+      2249.603515625,
+      938.1875
+     ],
+     "features": {
+      "fill_ratio": 0.6265,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 2.3939,
+      "largest_fill_ratio": 0.6344,
+      "largest_w": 33,
+      "largest_h": 79
+     }
+    },
+    {
+     "subject": "glyph/1/0/1/1/18",
+     "class": "restQuarter",
+     "page_box": [
+      1830.3212890625,
+      974.171875,
+      1844.13671875,
+      1038.7509765625
+     ],
+     "features": {
+      "fill_ratio": 0.7879,
+      "n_components": 3,
+      "largest_share": 0.9972,
+      "largest_aspect_h_over_w": 4.6429,
+      "largest_fill_ratio": 0.7857,
+      "largest_w": 14,
+      "largest_h": 65
+     }
+    },
+    {
+     "subject": "glyph/1/0/1/1/19",
+     "class": "rest8th",
+     "page_box": [
+      2394.5048828125,
+      879.3916015625,
+      2428.5615234375,
+      933.046875
+     ],
+     "features": {
+      "fill_ratio": 0.5621,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 1.5882,
+      "largest_fill_ratio": 0.5621,
+      "largest_w": 34,
+      "largest_h": 54
+     }
+    },
+    {
+     "subject": "glyph/1/0/1/1/28",
+     "class": "restQuarter",
+     "page_box": [
+      2247.3544921875,
+      712.0,
+      2270.80859375,
+      794.25
+     ],
+     "features": {
+      "fill_ratio": 0.4583,
+      "n_components": 7,
+      "largest_share": 0.9878,
+      "largest_aspect_h_over_w": 3.4167,
+      "largest_fill_ratio": 0.4527,
+      "largest_w": 24,
+      "largest_h": 82
+     }
+    },
+    {
+     "subject": "glyph/1/0/1/2/6",
+     "class": "restWhole",
+     "page_box": [
+      2723.1675,
+      934.905,
+      2764.0425,
+      944.9875
+     ],
+     "features": {
+      "fill_ratio": 0.9659,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 0.2439,
+      "largest_fill_ratio": 0.9659,
+      "largest_w": 41,
+      "largest_h": 10
+     }
+    },
+    {
+     "subject": "glyph/1/0/1/2/9",
+     "class": "restQuarter",
+     "page_box": [
+      2574.9275,
+      1005.21,
+      2587.19,
+      1037.6375
+     ],
+     "features": {
+      "fill_ratio": 0.5581,
+      "n_components": 3,
+      "largest_share": 0.991,
+      "largest_aspect_h_over_w": 2.9091,
+      "largest_fill_ratio": 0.6222,
+      "largest_w": 11,
+      "largest_h": 32
+     }
+    },
+    {
+     "subject": "glyph/1/0/1/3/0",
+     "class": "rest8th",
+     "page_box": [
+      3462.725,
+      825.0875,
+      3496.515,
+      878.77
+     ],
+     "features": {
+      "fill_ratio": 0.5768,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 1.5882,
+      "largest_fill_ratio": 0.5768,
+      "largest_w": 34,
+      "largest_h": 54
+     }
+    },
+    {
+     "subject": "glyph/1/0/1/3/1",
+     "class": "rest8th",
+     "page_box": [
+      3177.145,
+      825.905,
+      3209.0275,
+      874.9549999999999
+     ],
+     "features": {
+      "fill_ratio": 0.5918,
+      "n_components": 2,
+      "largest_share": 0.9989,
+      "largest_aspect_h_over_w": 1.5312,
+      "largest_fill_ratio": 0.5912,
+      "largest_w": 32,
+      "largest_h": 49
+     }
+    },
+    {
+     "subject": "glyph/1/0/1/3/2",
+     "class": "rest8th",
+     "page_box": [
+      3235.7325,
+      824.815,
+      3270.34,
+      877.9525
+     ],
+     "features": {
+      "fill_ratio": 0.591,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 1.5588,
+      "largest_fill_ratio": 0.591,
+      "largest_w": 34,
+      "largest_h": 53
+     }
+    },
+    {
+     "subject": "glyph/1/0/1/3/3",
+     "class": "restQuarter",
+     "page_box": [
+      3306.31,
+      801.925,
+      3333.015,
+      875.2275
+     ],
+     "features": {
+      "fill_ratio": 0.6865,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 2.7037,
+      "largest_fill_ratio": 0.6865,
+      "largest_w": 27,
+      "largest_h": 73
+     }
+    },
+    {
+     "subject": "glyph/1/0/1/3/4",
+     "class": "restWhole",
+     "page_box": [
+      3271.975,
+      928.91,
+      3313.94,
+      947.1675
+     ],
+     "features": {
+      "fill_ratio": 0.9365,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 0.4286,
+      "largest_fill_ratio": 0.9365,
+      "largest_w": 42,
+      "largest_h": 18
+     }
+    },
+    {
+     "subject": "glyph/1/0/1/3/11",
+     "class": "restQuarter",
+     "page_box": [
+      3105.4775,
+      808.1925,
+      3121.2825,
+      884.22
+     ],
+     "features": {
+      "fill_ratio": 0.5263,
+      "n_components": 2,
+      "largest_share": 0.9984,
+      "largest_aspect_h_over_w": 4.1875,
+      "largest_fill_ratio": 0.5961,
+      "largest_w": 16,
+      "largest_h": 67
+     }
+    },
+    {
+     "subject": "glyph/1/0/1/3/12",
+     "class": "rest8th",
+     "page_box": [
+      3235.46,
+      826.45,
+      3269.795,
+      861.875
+     ],
+     "features": {
+      "fill_ratio": 0.623,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 1.0286,
+      "largest_fill_ratio": 0.623,
+      "largest_w": 35,
+      "largest_h": 36
+     }
+    },
+    {
+     "subject": "glyph/1/0/1/4/2",
+     "class": "restWhole",
+     "page_box": [
+      3904.20703125,
+      855.96484375,
+      3941.5693359375,
+      865.5625
+     ],
+     "features": {
+      "fill_ratio": 0.9263,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 0.2632,
+      "largest_fill_ratio": 0.9263,
+      "largest_w": 38,
+      "largest_h": 10
+     }
+    },
+    {
+     "subject": "glyph/1/0/1/4/3",
+     "class": "restWhole",
+     "page_box": [
+      3903.8642578125,
+      851.5087890625,
+      3942.2548828125,
+      865.9052734375
+     ],
+     "features": {
+      "fill_ratio": 0.9474,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 0.3684,
+      "largest_fill_ratio": 0.9474,
+      "largest_w": 38,
+      "largest_h": 14
+     }
+    },
+    {
+     "subject": "glyph/1/0/1/5/1",
+     "class": "rest8th",
+     "page_box": [
+      4341.375,
+      852.748046875,
+      4371.85546875,
+      905.341796875
+     ],
+     "features": {
+      "fill_ratio": 0.5782,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 1.6774,
+      "largest_fill_ratio": 0.5782,
+      "largest_w": 31,
+      "largest_h": 52
+     }
+    },
+    {
+     "subject": "glyph/1/0/2/0/36",
+     "class": "restQuarter",
+     "page_box": [
+      1621.7138671875,
+      1284.90869140625,
+      1636.42333984375,
+      1320.7998046875
+     ],
+     "features": {
+      "fill_ratio": 0.7302,
+      "n_components": 3,
+      "largest_share": 0.9864,
+      "largest_aspect_h_over_w": 2.5714,
+      "largest_fill_ratio": 0.7202,
+      "largest_w": 14,
+      "largest_h": 36
+     }
+    },
+    {
+     "subject": "glyph/1/0/2/1/9",
+     "class": "rest8th",
+     "page_box": [
+      2153.5380859375,
+      1131.0224609375,
+      2186.630859375,
+      1184.03515625
+     ],
+     "features": {
+      "fill_ratio": 0.53,
+      "n_components": 2,
+      "largest_share": 0.9881,
+      "largest_aspect_h_over_w": 1.6061,
+      "largest_fill_ratio": 0.5237,
+      "largest_w": 33,
+      "largest_h": 53
+     }
+    },
+    {
+     "subject": "glyph/1/0/2/1/12",
+     "class": "restQuarter",
+     "page_box": [
+      2215.546875,
+      1112.708984375,
+      2248.318359375,
+      1199.1357421875
+     ],
+     "features": {
+      "fill_ratio": 0.5552,
+      "n_components": 3,
+      "largest_share": 0.9777,
+      "largest_aspect_h_over_w": 2.5938,
+      "largest_fill_ratio": 0.5625,
+      "largest_w": 32,
+      "largest_h": 83
+     }
+    },
+    {
+     "subject": "glyph/1/0/2/1/14",
+     "class": "rest8th",
+     "page_box": [
+      2084.1396484375,
+      1128.4521484375,
+      2118.517578125,
+      1183.392578125
+     ],
+     "features": {
+      "fill_ratio": 0.5216,
+      "n_components": 4,
+      "largest_share": 0.989,
+      "largest_aspect_h_over_w": 1.5714,
+      "largest_fill_ratio": 0.5158,
+      "largest_w": 35,
+      "largest_h": 55
+     }
+    },
+    {
+     "subject": "glyph/1/0/2/1/17",
+     "class": "rest8th",
+     "page_box": [
+      1978.7568359375,
+      936.0,
+      1995.142578125,
+      957.5263671875
+     ],
+     "features": {
+      "fill_ratio": 0.5511,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 1.3125,
+      "largest_fill_ratio": 0.5774,
+      "largest_w": 16,
+      "largest_h": 21
+     }
+    },
+    {
+     "subject": "glyph/1/0/2/1/18",
+     "class": "rest8th",
+     "page_box": [
+      2391.9345703125,
+      1132.3076171875,
+      2423.4208984375,
+      1183.7138671875
+     ],
+     "features": {
+      "fill_ratio": 0.5397,
+      "n_components": 2,
+      "largest_share": 0.9977,
+      "largest_aspect_h_over_w": 1.6452,
+      "largest_fill_ratio": 0.549,
+      "largest_w": 31,
+      "largest_h": 51
+     }
+    },
+    {
+     "subject": "glyph/1/0/2/1/22",
+     "class": "restHalf",
+     "page_box": [
+      2209.4423828125,
+      1297.12890625,
+      2261.8125,
+      1307.41015625
+     ],
+     "features": {
+      "fill_ratio": 0.8717,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 0.1887,
+      "largest_fill_ratio": 0.8717,
+      "largest_w": 53,
+      "largest_h": 10
+     }
+    },
+    {
+     "subject": "glyph/1/0/2/1/24",
+     "class": "restQuarter",
+     "page_box": [
+      2210.0849609375,
+      1264.6787109375,
+      2229.041015625,
+      1320.904296875
+     ],
+     "features": {
+      "fill_ratio": 0.6288,
+      "n_components": 3,
+      "largest_share": 0.9925,
+      "largest_aspect_h_over_w": 2.9474,
+      "largest_fill_ratio": 0.6241,
+      "largest_w": 19,
+      "largest_h": 56
+     }
+    },
+    {
+     "subject": "glyph/1/0/2/1/38",
+     "class": "restHalf",
+     "page_box": [
+      2074.822265625,
+      1269.8193359375,
+      2129.44140625,
+      1280.421875
+     ],
+     "features": {
+      "fill_ratio": 0.9204,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 0.1887,
+      "largest_fill_ratio": 0.9377,
+      "largest_w": 53,
+      "largest_h": 10
+     }
+    },
+    {
+     "subject": "glyph/1/0/2/2/2",
+     "class": "rest8th",
+     "page_box": [
+      2545.2,
+      1129.05,
+      2576.55,
+      1182.4
+     ],
+     "features": {
+      "fill_ratio": 0.5454,
+      "n_components": 3,
+      "largest_share": 0.9978,
+      "largest_aspect_h_over_w": 1.6562,
+      "largest_fill_ratio": 0.5442,
+      "largest_w": 32,
+      "largest_h": 53
+     }
+    },
+    {
+     "subject": "glyph/1/0/2/2/9",
+     "class": "restWhole",
+     "page_box": [
+      2724.225,
+      936.0,
+      2763.825,
+      945.35
+     ],
+     "features": {
+      "fill_ratio": 0.9861,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 0.225,
+      "largest_fill_ratio": 0.9861,
+      "largest_w": 40,
+      "largest_h": 9
+     }
+    },
+    {
+     "subject": "glyph/1/0/2/2/13",
+     "class": "restWhole",
+     "page_box": [
+      2724.5,
+      936.275,
+      2764.1,
+      947.825
+     ],
+     "features": {
+      "fill_ratio": 0.7604,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 0.25,
+      "largest_fill_ratio": 0.9125,
+      "largest_w": 40,
+      "largest_h": 10
+     }
+    },
+    {
+     "subject": "glyph/1/0/2/3/0",
+     "class": "rest8th",
+     "page_box": [
+      3462.625,
+      1080.375,
+      3496.725,
+      1131.525
+     ],
+     "features": {
+      "fill_ratio": 0.5798,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 1.5294,
+      "largest_fill_ratio": 0.5798,
+      "largest_w": 34,
+      "largest_h": 52
+     }
+    },
+    {
+     "subject": "glyph/1/0/2/3/2",
+     "class": "restQuarter",
+     "page_box": [
+      3300.65,
+      1051.775,
+      3333.65,
+      1136.475
+     ],
+     "features": {
+      "fill_ratio": 0.5866,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 2.5152,
+      "largest_fill_ratio": 0.5936,
+      "largest_w": 33,
+      "largest_h": 83
+     }
+    },
+    {
+     "subject": "glyph/1/0/2/3/14",
+     "class": "rest8th",
+     "page_box": [
+      3237.95,
+      1076.525,
+      3272.05,
+      1129.6
+     ],
+     "features": {
+      "fill_ratio": 0.6071,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 1.5588,
+      "largest_fill_ratio": 0.6071,
+      "largest_w": 34,
+      "largest_h": 53
+     }
+    },
+    {
+     "subject": "glyph/1/0/2/3/19",
+     "class": "rest8th",
+     "page_box": [
+      3169.475,
+      1076.25,
+      3202.2,
+      1130.425
+     ],
+     "features": {
+      "fill_ratio": 0.5802,
+      "n_components": 2,
+      "largest_share": 0.9961,
+      "largest_aspect_h_over_w": 1.6364,
+      "largest_fill_ratio": 0.578,
+      "largest_w": 33,
+      "largest_h": 54
+     }
+    },
+    {
+     "subject": "glyph/1/0/2/3/22",
+     "class": "restQuarter",
+     "page_box": [
+      3092.475,
+      1265.45,
+      3122.45,
+      1321.0
+     ],
+     "features": {
+      "fill_ratio": 0.3958,
+      "n_components": 4,
+      "largest_share": 0.8241,
+      "largest_aspect_h_over_w": 2.3333,
+      "largest_fill_ratio": 0.4077,
+      "largest_w": 24,
+      "largest_h": 56
+     }
+    },
+    {
+     "subject": "glyph/1/0/2/3/25",
+     "class": "restWhole",
+     "page_box": [
+      3272.325,
+      936.0,
+      3313.3,
+      947.55
+     ],
+     "features": {
+      "fill_ratio": 0.8293,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 0.2683,
+      "largest_fill_ratio": 0.9047,
+      "largest_w": 41,
+      "largest_h": 11
+     }
+    },
+    {
+     "subject": "glyph/1/0/2/4/6",
+     "class": "restWhole",
+     "page_box": [
+      3904.892578125,
+      1077.5654296875,
+      3943.283203125,
+      1089.5625
+     ],
+     "features": {
+      "fill_ratio": 0.989,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 0.3158,
+      "largest_fill_ratio": 0.989,
+      "largest_w": 38,
+      "largest_h": 12
+     }
+    },
+    {
+     "subject": "glyph/1/0/2/5/0",
+     "class": "rest8th",
+     "page_box": [
+      4526.947265625,
+      1248.873046875,
+      4559.818359375,
+      1302.36328125
+     ],
+     "features": {
+      "fill_ratio": 0.3631,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 1.5758,
+      "largest_fill_ratio": 0.37,
+      "largest_w": 33,
+      "largest_h": 52
+     }
+    },
+    {
+     "subject": "glyph/1/0/2/5/3",
+     "class": "rest8th",
+     "page_box": [
+      4604.34375,
+      1243.1953125,
+      4638.111328125,
+      1298.77734375
+     ],
+     "features": {
+      "fill_ratio": 0.3887,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 1.6176,
+      "largest_fill_ratio": 0.3957,
+      "largest_w": 34,
+      "largest_h": 55
+     }
+    },
+    {
+     "subject": "glyph/1/0/2/5/10",
+     "class": "rest8th",
+     "page_box": [
+      4453.435546875,
+      1246.78125,
+      4485.111328125,
+      1300.869140625
+     ],
+     "features": {
+      "fill_ratio": 0.4311,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 1.6875,
+      "largest_fill_ratio": 0.4311,
+      "largest_w": 32,
+      "largest_h": 54
+     }
+    },
+    {
+     "subject": "glyph/1/0/2/5/22",
+     "class": "rest8th",
+     "page_box": [
+      4342.271484375,
+      1078.541015625,
+      4376.935546875,
+      1133.2265625
+     ],
+     "features": {
+      "fill_ratio": 0.5767,
+      "n_components": 3,
+      "largest_share": 0.9982,
+      "largest_aspect_h_over_w": 1.5429,
+      "largest_fill_ratio": 0.5757,
+      "largest_w": 35,
+      "largest_h": 54
+     }
+    },
+    {
+     "subject": "glyph/1/0/3/0/52",
+     "class": "restQuarter",
+     "page_box": [
+      1143.9501953125,
+      1562.1484375,
+      1154.541015625,
+      1575.68115234375
+     ],
+     "features": {
+      "fill_ratio": 0.6753,
+      "n_components": 2,
+      "largest_share": 0.9904,
+      "largest_aspect_h_over_w": 1.2727,
+      "largest_fill_ratio": 0.6688,
+      "largest_w": 11,
+      "largest_h": 14
+     }
+    },
+    {
+     "subject": "glyph/1/0/3/0/55",
+     "class": "rest8th",
+     "page_box": [
+      878.0029296875,
+      1355.62744140625,
+      919.77783203125,
+      1402.69775390625
+     ],
+     "features": {
+      "fill_ratio": 0.7497,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 1.119,
+      "largest_fill_ratio": 0.7497,
+      "largest_w": 42,
+      "largest_h": 47
+     }
+    },
+    {
+     "subject": "glyph/1/0/3/1/33",
+     "class": "rest8th",
+     "page_box": [
+      1873.6953125,
+      1353.3955078125,
+      1915.1416015625,
+      1405.123046875
+     ],
+     "features": {
+      "fill_ratio": 0.7406,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 1.2439,
+      "largest_fill_ratio": 0.7551,
+      "largest_w": 41,
+      "largest_h": 51
+     }
+    },
+    {
+     "subject": "glyph/1/0/3/2/16",
+     "class": "restQuarter",
+     "page_box": [
+      2757.5025,
+      1384.115,
+      2777.6675,
+      1477.31
+     ],
+     "features": {
+      "fill_ratio": 0.6672,
+      "n_components": 2,
+      "largest_share": 0.9992,
+      "largest_aspect_h_over_w": 4.65,
+      "largest_fill_ratio": 0.6667,
+      "largest_w": 20,
+      "largest_h": 93
+     }
+    },
+    {
+     "subject": "glyph/1/0/3/3/30",
+     "class": "restQuarter",
+     "page_box": [
+      3050.9775,
+      1195.0,
+      3084.7675,
+      1213.8025
+     ],
+     "features": {
+      "fill_ratio": 0.2585,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 1.3571,
+      "largest_fill_ratio": 0.6278,
+      "largest_w": 14,
+      "largest_h": 19
+     }
+    },
+    {
+     "subject": "glyph/1/0/3/3/41",
+     "class": "restQuarter",
+     "page_box": [
+      3058.335,
+      1461.2325,
+      3071.1425,
+      1536.9875
+     ],
+     "features": {
+      "fill_ratio": 0.6559,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 5.7692,
+      "largest_fill_ratio": 0.6646,
+      "largest_w": 13,
+      "largest_h": 75
+     }
+    },
+    {
+     "subject": "glyph/1/0/3/4/34",
+     "class": "restQuarter",
+     "page_box": [
+      3960.421875,
+      1392.0947265625,
+      3974.4755859375,
+      1486.357421875
+     ],
+     "features": {
+      "fill_ratio": 0.7128,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 6.7143,
+      "largest_fill_ratio": 0.7128,
+      "largest_w": 14,
+      "largest_h": 94
+     }
+    },
+    {
+     "subject": "glyph/1/0/3/5/0",
+     "class": "rest8th",
+     "page_box": [
+      4604.044921875,
+      1243.708984375,
+      4638.111328125,
+      1298.9921875
+     ],
+     "features": {
+      "fill_ratio": 0.3957,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 1.6176,
+      "largest_fill_ratio": 0.3957,
+      "largest_w": 34,
+      "largest_h": 55
+     }
+    },
+    {
+     "subject": "glyph/1/0/3/5/1",
+     "class": "rest8th",
+     "page_box": [
+      4526.6484375,
+      1250.283203125,
+      4559.51953125,
+      1303.474609375
+     ],
+     "features": {
+      "fill_ratio": 0.3665,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 1.6061,
+      "largest_fill_ratio": 0.3665,
+      "largest_w": 33,
+      "largest_h": 53
+     }
+    },
+    {
+     "subject": "glyph/1/0/3/5/2",
+     "class": "rest8th",
+     "page_box": [
+      4453.734375,
+      1248.490234375,
+      4484.8125,
+      1301.681640625
+     ],
+     "features": {
+      "fill_ratio": 0.4462,
+      "n_components": 3,
+      "largest_share": 0.9933,
+      "largest_aspect_h_over_w": 1.7419,
+      "largest_fill_ratio": 0.4432,
+      "largest_w": 31,
+      "largest_h": 54
+     }
+    },
+    {
+     "subject": "glyph/1/0/3/5/19",
+     "class": "restQuarter",
+     "page_box": [
+      4381.41796875,
+      1299.888671875,
+      4405.921875,
+      1382.06640625
+     ],
+     "features": {
+      "fill_ratio": 0.3259,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 2.8,
+      "largest_fill_ratio": 0.3817,
+      "largest_w": 25,
+      "largest_h": 70
+     }
+    },
+    {
+     "subject": "glyph/1/0/3/5/20",
+     "class": "restQuarter",
+     "page_box": [
+      4389.486328125,
+      1301.3828125,
+      4405.623046875,
+      1381.767578125
+     ],
+     "features": {
+      "fill_ratio": 0.3508,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 3.4706,
+      "largest_fill_ratio": 0.4816,
+      "largest_w": 17,
+      "largest_h": 59
+     }
+    },
+    {
+     "subject": "glyph/1/0/4/1/2",
+     "class": "restQuarter",
+     "page_box": [
+      2215.8681640625,
+      1574.732421875,
+      2245.10546875,
+      1655.0546875
+     ],
+     "features": {
+      "fill_ratio": 0.6405,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 2.7586,
+      "largest_fill_ratio": 0.6405,
+      "largest_w": 29,
+      "largest_h": 80
+     }
+    },
+    {
+     "subject": "glyph/1/0/4/1/17",
+     "class": "rest8th",
+     "page_box": [
+      2154.501953125,
+      1598.8291015625,
+      2186.3095703125,
+      1648.62890625
+     ],
+     "features": {
+      "fill_ratio": 0.6419,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 1.6129,
+      "largest_fill_ratio": 0.6419,
+      "largest_w": 31,
+      "largest_h": 50
+     }
+    },
+    {
+     "subject": "glyph/1/0/4/1/25",
+     "class": "restQuarter",
+     "page_box": [
+      2012.8134765625,
+      1745.658203125,
+      2037.8740234375,
+      1781.9638671875
+     ],
+     "features": {
+      "fill_ratio": 0.6267,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 1.44,
+      "largest_fill_ratio": 0.6267,
+      "largest_w": 25,
+      "largest_h": 36
+     }
+    },
+    {
+     "subject": "glyph/1/0/4/2/7",
+     "class": "restWhole",
+     "page_box": [
+      2729.45,
+      1597.475,
+      2770.15,
+      1606.825
+     ],
+     "features": {
+      "fill_ratio": 0.9585,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 0.2439,
+      "largest_fill_ratio": 0.9585,
+      "largest_w": 41,
+      "largest_h": 10
+     }
+    },
+    {
+     "subject": "glyph/1/0/4/2/8",
+     "class": "rest16th",
+     "page_box": [
+      2758.875,
+      1452.0,
+      2772.075,
+      1476.75
+     ],
+     "features": {
+      "fill_ratio": 0.7569,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 1.9231,
+      "largest_fill_ratio": 0.7569,
+      "largest_w": 13,
+      "largest_h": 25
+     }
+    },
+    {
+     "subject": "glyph/1/0/4/2/10",
+     "class": "restQuarter",
+     "page_box": [
+      2624.95,
+      1452.0,
+      2634.575,
+      1481.15
+     ],
+     "features": {
+      "fill_ratio": 0.7621,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 2.9,
+      "largest_fill_ratio": 0.7621,
+      "largest_w": 10,
+      "largest_h": 29
+     }
+    },
+    {
+     "subject": "glyph/1/0/4/3/13",
+     "class": "restWhole",
+     "page_box": [
+      3271.775,
+      1589.775,
+      3310.825,
+      1605.725
+     ],
+     "features": {
+      "fill_ratio": 0.9247,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 0.4103,
+      "largest_fill_ratio": 0.9247,
+      "largest_w": 39,
+      "largest_h": 16
+     }
+    },
+    {
+     "subject": "glyph/1/0/4/3/15",
+     "class": "restWhole",
+     "page_box": [
+      3271.5,
+      1594.45,
+      3310.55,
+      1605.175
+     ],
+     "features": {
+      "fill_ratio": 0.9767,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 0.2821,
+      "largest_fill_ratio": 0.9767,
+      "largest_w": 39,
+      "largest_h": 11
+     }
+    },
+    {
+     "subject": "glyph/1/0/4/3/27",
+     "class": "restQuarter",
+     "page_box": [
+      3167.275,
+      1452.0,
+      3177.45,
+      1485.0
+     ],
+     "features": {
+      "fill_ratio": 0.6333,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 2.6,
+      "largest_fill_ratio": 0.8038,
+      "largest_w": 10,
+      "largest_h": 26
+     }
+    },
+    {
+     "subject": "glyph/1/0/4/4/4",
+     "class": "rest16th",
+     "page_box": [
+      3840.451171875,
+      1452.0,
+      3856.21875,
+      1480.4501953125
+     ],
+     "features": {
+      "fill_ratio": 0.6853,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 1.75,
+      "largest_fill_ratio": 0.6853,
+      "largest_w": 16,
+      "largest_h": 28
+     }
+    },
+    {
+     "subject": "glyph/1/0/4/4/8",
+     "class": "restWhole",
+     "page_box": [
+      3904.892578125,
+      1594.59375,
+      3948.4248046875,
+      1606.93359375
+     ],
+     "features": {
+      "fill_ratio": 0.9438,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 0.2791,
+      "largest_fill_ratio": 0.9438,
+      "largest_w": 43,
+      "largest_h": 12
+     }
+    },
+    {
+     "subject": "glyph/1/0/4/5/6",
+     "class": "restWhole",
+     "page_box": [
+      4566.392578125,
+      1597.529296875,
+      4606.435546875,
+      1607.689453125
+     ],
+     "features": {
+      "fill_ratio": 0.96,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 0.25,
+      "largest_fill_ratio": 0.96,
+      "largest_w": 40,
+      "largest_h": 10
+     }
+    },
+    {
+     "subject": "glyph/1/0/4/5/8",
+     "class": "restWhole",
+     "page_box": [
+      4566.69140625,
+      1592.150390625,
+      4606.435546875,
+      1607.689453125
+     ],
+     "features": {
+      "fill_ratio": 0.9888,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 0.4103,
+      "largest_fill_ratio": 0.9888,
+      "largest_w": 39,
+      "largest_h": 16
+     }
+    },
+    {
+     "subject": "glyph/1/0/4/5/20",
+     "class": "restQuarter",
+     "page_box": [
+      4715.208984375,
+      1452.0,
+      4726.564453125,
+      1487.859375
+     ],
+     "features": {
+      "fill_ratio": 0.6435,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 3.0,
+      "largest_fill_ratio": 0.6435,
+      "largest_w": 12,
+      "largest_h": 36
+     }
+    },
+    {
+     "subject": "glyph/1/0/4/6/2",
+     "class": "restWhole",
+     "page_box": [
+      5172.56103515625,
+      1595.203125,
+      5208.36181640625,
+      1607.7333984375
+     ],
+     "features": {
+      "fill_ratio": 0.9802,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 0.3714,
+      "largest_fill_ratio": 0.9802,
+      "largest_w": 35,
+      "largest_h": 13
+     }
+    },
+    {
+     "subject": "glyph/1/0/5/1/2",
+     "class": "rest8th",
+     "page_box": [
+      2086.7099609375,
+      1791.580078125,
+      2119.802734375,
+      1842.34375
+     ],
+     "features": {
+      "fill_ratio": 0.6224,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 1.5152,
+      "largest_fill_ratio": 0.6224,
+      "largest_w": 33,
+      "largest_h": 50
+     }
+    },
+    {
+     "subject": "glyph/1/0/5/1/4",
+     "class": "rest8th",
+     "page_box": [
+      2156.4296875,
+      1791.580078125,
+      2188.8798828125,
+      1840.0947265625
+     ],
+     "features": {
+      "fill_ratio": 0.6225,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 1.4545,
+      "largest_fill_ratio": 0.6225,
+      "largest_w": 33,
+      "largest_h": 48
+     }
+    },
+    {
+     "subject": "glyph/1/0/5/1/5",
+     "class": "rest8th",
+     "page_box": [
+      2391.2919921875,
+      1788.3671875,
+      2423.4208984375,
+      1842.6650390625
+     ],
+     "features": {
+      "fill_ratio": 0.6227,
+      "n_components": 2,
+      "largest_share": 0.9945,
+      "largest_aspect_h_over_w": 1.7188,
+      "largest_fill_ratio": 0.6193,
+      "largest_w": 32,
+      "largest_h": 55
+     }
+    },
+    {
+     "subject": "glyph/1/0/5/1/6",
+     "class": "restQuarter",
+     "page_box": [
+      2219.40234375,
+      1768.447265625,
+      2251.2099609375,
+      1847.1630859375
+     ],
+     "features": {
+      "fill_ratio": 0.6404,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 2.4375,
+      "largest_fill_ratio": 0.6486,
+      "largest_w": 32,
+      "largest_h": 78
+     }
+    },
+    {
+     "subject": "glyph/1/0/5/1/22",
+     "class": "restQuarter",
+     "page_box": [
+      2030.8056640625,
+      1756.5595703125,
+      2051.3681640625,
+      1836.8818359375
+     ],
+     "features": {
+      "fill_ratio": 0.4481,
+      "n_components": 3,
+      "largest_share": 0.8745,
+      "largest_aspect_h_over_w": 3.2,
+      "largest_fill_ratio": 0.4898,
+      "largest_w": 20,
+      "largest_h": 64
+     }
+    },
+    {
+     "subject": "glyph/1/0/5/1/25",
+     "class": "rest16th",
+     "page_box": [
+      1875.623046875,
+      1753.3466796875,
+      1917.390625,
+      1807.9658203125
+     ],
+     "features": {
+      "fill_ratio": 0.7499,
+      "n_components": 2,
+      "largest_share": 0.9994,
+      "largest_aspect_h_over_w": 1.2927,
+      "largest_fill_ratio": 0.7777,
+      "largest_w": 41,
+      "largest_h": 53
+     }
+    },
+    {
+     "subject": "glyph/1/0/5/2/3",
+     "class": "restWhole",
+     "page_box": [
+      2729.725,
+      1788.625,
+      2770.7,
+      1802.1
+     ],
+     "features": {
+      "fill_ratio": 0.9587,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 0.3171,
+      "largest_fill_ratio": 0.9587,
+      "largest_w": 41,
+      "largest_h": 13
+     }
+    },
+    {
+     "subject": "glyph/1/0/5/3/6",
+     "class": "restWhole",
+     "page_box": [
+      3276.175,
+      1791.65,
+      3314.675,
+      1801.55
+     ],
+     "features": {
+      "fill_ratio": 0.9128,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 0.2564,
+      "largest_fill_ratio": 0.9128,
+      "largest_w": 39,
+      "largest_h": 10
+     }
+    },
+    {
+     "subject": "glyph/1/0/5/4/1",
+     "class": "restWhole",
+     "page_box": [
+      3905.578125,
+      1791.9931640625,
+      3941.5693359375,
+      1803.3046875
+     ],
+     "features": {
+      "fill_ratio": 0.9697,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 0.3056,
+      "largest_fill_ratio": 0.9697,
+      "largest_w": 36,
+      "largest_h": 11
+     }
+    },
+    {
+     "subject": "glyph/1/0/5/5/1",
+     "class": "restWhole",
+     "page_box": [
+      4568.185546875,
+      1791.931640625,
+      4608.228515625,
+      1802.689453125
+     ],
+     "features": {
+      "fill_ratio": 0.9477,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 0.275,
+      "largest_fill_ratio": 0.9477,
+      "largest_w": 40,
+      "largest_h": 11
+     }
+    },
+    {
+     "subject": "glyph/1/0/5/5/9",
+     "class": "restQuarter",
+     "page_box": [
+      4885.2421875,
+      1647.0,
+      4896.0,
+      1706.16796875
+     ],
+     "features": {
+      "fill_ratio": 0.8336,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 5.3636,
+      "largest_fill_ratio": 0.8336,
+      "largest_w": 11,
+      "largest_h": 59
+     }
+    },
+    {
+     "subject": "glyph/1/0/5/6/2",
+     "class": "restWhole",
+     "page_box": [
+      5171.666015625,
+      1789.30810546875,
+      5210.74853515625,
+      1802.7333984375
+     ],
+     "features": {
+      "fill_ratio": 0.9121,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 0.359,
+      "largest_fill_ratio": 0.9121,
+      "largest_w": 39,
+      "largest_h": 14
+     }
+    },
+    {
+     "subject": "glyph/1/0/6/0/7",
+     "class": "restQuarter",
+     "page_box": [
+      985.087890625,
+      2074.806640625,
+      1015.68359375,
+      2153.6494140625
+     ],
+     "features": {
+      "fill_ratio": 0.6374,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 2.4839,
+      "largest_fill_ratio": 0.654,
+      "largest_w": 31,
+      "largest_h": 77
+     }
+    },
+    {
+     "subject": "glyph/1/0/6/0/9",
+     "class": "restQuarter",
+     "page_box": [
+      1313.4033203125,
+      2074.21826171875,
+      1349.29443359375,
+      2158.3564453125
+     ],
+     "features": {
+      "fill_ratio": 0.5886,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 2.25,
+      "largest_fill_ratio": 0.6104,
+      "largest_w": 36,
+      "largest_h": 81
+     }
+    },
+    {
+     "subject": "glyph/1/0/6/0/12",
+     "class": "rest8th",
+     "page_box": [
+      1219.2626953125,
+      2097.1650390625,
+      1252.80029296875,
+      2148.9423828125
+     ],
+     "features": {
+      "fill_ratio": 0.6239,
+      "n_components": 3,
+      "largest_share": 0.9955,
+      "largest_aspect_h_over_w": 1.5294,
+      "largest_fill_ratio": 0.621,
+      "largest_w": 34,
+      "largest_h": 52
+     }
+    },
+    {
+     "subject": "glyph/1/0/6/0/28",
+     "class": "rest8th",
+     "page_box": [
+      1218.0859375,
+      2095.39990234375,
+      1238.67919921875,
+      2146.00048828125
+     ],
+     "features": {
+      "fill_ratio": 0.6359,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 2.4286,
+      "largest_fill_ratio": 0.6359,
+      "largest_w": 21,
+      "largest_h": 51
+     }
+    },
+    {
+     "subject": "glyph/1/0/6/1/4",
+     "class": "rest8th",
+     "page_box": [
+      2153.859375,
+      2095.4521484375,
+      2188.8798828125,
+      2147.5009765625
+     ],
+     "features": {
+      "fill_ratio": 0.6243,
+      "n_components": 3,
+      "largest_share": 0.9948,
+      "largest_aspect_h_over_w": 1.5143,
+      "largest_fill_ratio": 0.621,
+      "largest_w": 35,
+      "largest_h": 53
+     }
+    },
+    {
+     "subject": "glyph/1/0/6/1/5",
+     "class": "restQuarter",
+     "page_box": [
+      2216.5107421875,
+      2074.568359375,
+      2250.888671875,
+      2153.9267578125
+     ],
+     "features": {
+      "fill_ratio": 0.6288,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 2.2941,
+      "largest_fill_ratio": 0.6369,
+      "largest_w": 34,
+      "largest_h": 78
+     }
+    },
+    {
+     "subject": "glyph/1/0/6/1/7",
+     "class": "rest8th",
+     "page_box": [
+      2084.4609375,
+      2093.845703125,
+      2120.1240234375,
+      2150.0712890625
+     ],
+     "features": {
+      "fill_ratio": 0.627,
+      "n_components": 2,
+      "largest_share": 0.9984,
+      "largest_aspect_h_over_w": 1.5556,
+      "largest_fill_ratio": 0.626,
+      "largest_w": 36,
+      "largest_h": 56
+     }
+    },
+    {
+     "subject": "glyph/1/0/6/1/8",
+     "class": "rest8th",
+     "page_box": [
+      2396.111328125,
+      2098.6650390625,
+      2428.8828125,
+      2150.392578125
+     ],
+     "features": {
+      "fill_ratio": 0.6108,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 1.5455,
+      "largest_fill_ratio": 0.6108,
+      "largest_w": 33,
+      "largest_h": 51
+     }
+    },
+    {
+     "subject": "glyph/1/0/6/2/5",
+     "class": "restWhole",
+     "page_box": [
+      2731.07,
+      2097.8375,
+      2771.1275,
+      2108.7375
+     ],
+     "features": {
+      "fill_ratio": 0.9568,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 0.275,
+      "largest_fill_ratio": 0.9568,
+      "largest_w": 40,
+      "largest_h": 11
+     }
+    },
+    {
+     "subject": "glyph/1/0/6/3/0",
+     "class": "restWhole",
+     "page_box": [
+      3274.9725,
+      2097.8375,
+      3314.7575,
+      2109.01
+     ],
+     "features": {
+      "fill_ratio": 0.9477,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 0.275,
+      "largest_fill_ratio": 0.9477,
+      "largest_w": 40,
+      "largest_h": 11
+     }
+    },
+    {
+     "subject": "glyph/1/0/6/4/0",
+     "class": "restWhole",
+     "page_box": [
+      3909.005859375,
+      2097.3525390625,
+      3944.3115234375,
+      2108.3212890625
+     ],
+     "features": null
+    },
+    {
+     "subject": "glyph/1/0/6/4/4",
+     "class": "restWhole",
+     "page_box": [
+      3905.578125,
+      2094.267578125,
+      3943.283203125,
+      2108.3212890625
+     ],
+     "features": {
+      "fill_ratio": 0.9865,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 0.3784,
+      "largest_fill_ratio": 0.9865,
+      "largest_w": 37,
+      "largest_h": 14
+     }
+    },
+    {
+     "subject": "glyph/1/0/6/5/0",
+     "class": "restWhole",
+     "page_box": [
+      4568.484375,
+      2098.732421875,
+      4607.9296875,
+      2107.99609375
+     ],
+     "features": {
+      "fill_ratio": 0.9917,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 0.225,
+      "largest_fill_ratio": 0.9917,
+      "largest_w": 40,
+      "largest_h": 9
+     }
+    },
+    {
+     "subject": "glyph/1/0/6/6/0",
+     "class": "restWhole",
+     "page_box": [
+      5177.0361328125,
+      2098.41259765625,
+      5214.92529296875,
+      2108.2578125
+     ],
+     "features": {
+      "fill_ratio": 0.9947,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 0.2632,
+      "largest_fill_ratio": 0.9947,
+      "largest_w": 38,
+      "largest_h": 10
+     }
+    },
+    {
+     "subject": "glyph/1/0/7/0/4",
+     "class": "restWhole",
+     "page_box": [
+      1380.478515625,
+      2350.3876953125,
+      1417.54638671875,
+      2363.92041015625
+     ],
+     "features": {
+      "fill_ratio": 0.9718,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 0.3684,
+      "largest_fill_ratio": 0.9718,
+      "largest_w": 38,
+      "largest_h": 14
+     }
+    },
+    {
+     "subject": "glyph/1/0/7/0/5",
+     "class": "restQuarter",
+     "page_box": [
+      1251.03515625,
+      2489.83349609375,
+      1266.3330078125,
+      2540.43408203125
+     ],
+     "features": {
+      "fill_ratio": 0.6893,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 3.3333,
+      "largest_fill_ratio": 0.6893,
+      "largest_w": 15,
+      "largest_h": 50
+     }
+    },
+    {
+     "subject": "glyph/1/0/7/0/10",
+     "class": "restQuarter",
+     "page_box": [
+      1600.5322265625,
+      2491.01025390625,
+      1612.88818359375,
+      2540.43408203125
+     ],
+     "features": {
+      "fill_ratio": 0.6888,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 4.0833,
+      "largest_fill_ratio": 0.6888,
+      "largest_w": 12,
+      "largest_h": 49
+     }
+    },
+    {
+     "subject": "glyph/1/0/7/0/11",
+     "class": "restQuarter",
+     "page_box": [
+      1688.7890625,
+      2496.3056640625,
+      1701.7333984375,
+      2540.43408203125
+     ],
+     "features": {
+      "fill_ratio": 0.7098,
+      "n_components": 2,
+      "largest_share": 0.9975,
+      "largest_aspect_h_over_w": 3.3846,
+      "largest_fill_ratio": 0.708,
+      "largest_w": 13,
+      "largest_h": 44
+     }
+    },
+    {
+     "subject": "glyph/1/0/7/0/15",
+     "class": "restQuarter",
+     "page_box": [
+      1506.3916015625,
+      2481.59619140625,
+      1517.57080078125,
+      2540.43408203125
+     ],
+     "features": {
+      "fill_ratio": 0.7572,
+      "n_components": 2,
+      "largest_share": 0.9981,
+      "largest_aspect_h_over_w": 4.8333,
+      "largest_fill_ratio": 0.7557,
+      "largest_w": 12,
+      "largest_h": 58
+     }
+    },
+    {
+     "subject": "glyph/1/0/7/1/1",
+     "class": "restWhole",
+     "page_box": [
+      2203.0166015625,
+      2346.4755859375,
+      2242.2138671875,
+      2361.576171875
+     ],
+     "features": {
+      "fill_ratio": 0.9744,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 0.4103,
+      "largest_fill_ratio": 0.9744,
+      "largest_w": 39,
+      "largest_h": 16
+     }
+    },
+    {
+     "subject": "glyph/1/0/7/1/2",
+     "class": "restQuarter",
+     "page_box": [
+      2223.2578125,
+      2501.658203125,
+      2247.9970703125,
+      2540.85546875
+     ],
+     "features": {
+      "fill_ratio": 0.6164,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 1.52,
+      "largest_fill_ratio": 0.6326,
+      "largest_w": 25,
+      "largest_h": 38
+     }
+    },
+    {
+     "subject": "glyph/1/0/7/1/13",
+     "class": "restQuarter",
+     "page_box": [
+      2017.6328125,
+      2505.1923828125,
+      2035.9462890625,
+      2540.5341796875
+     ],
+     "features": {
+      "fill_ratio": 0.6173,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 1.8889,
+      "largest_fill_ratio": 0.6536,
+      "largest_w": 18,
+      "largest_h": 34
+     }
+    },
+    {
+     "subject": "glyph/1/0/7/1/18",
+     "class": "rest8th",
+     "page_box": [
+      1876.265625,
+      2318.5234375,
+      1918.033203125,
+      2366.716796875
+     ],
+     "features": {
+      "fill_ratio": 0.7644,
+      "n_components": 2,
+      "largest_share": 0.9994,
+      "largest_aspect_h_over_w": 1.1429,
+      "largest_fill_ratio": 0.7639,
+      "largest_w": 42,
+      "largest_h": 48
+     }
+    },
+    {
+     "subject": "glyph/1/0/7/2/0",
+     "class": "restQuarter",
+     "page_box": [
+      3016.6375,
+      2495.2125,
+      3023.8525,
+      2541.0
+     ],
+     "features": {
+      "fill_ratio": 0.6553,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 6.5714,
+      "largest_fill_ratio": 0.6553,
+      "largest_w": 7,
+      "largest_h": 46
+     }
+    },
+    {
+     "subject": "glyph/1/0/7/2/1",
+     "class": "restWhole",
+     "page_box": [
+      2734.975,
+      2526.8475,
+      2774.1025,
+      2535.1725
+     ],
+     "features": {
+      "fill_ratio": 0.9744,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 0.2051,
+      "largest_fill_ratio": 0.9744,
+      "largest_w": 39,
+      "largest_h": 8
+     }
+    },
+    {
+     "subject": "glyph/1/0/7/2/2",
+     "class": "restWhole",
+     "page_box": [
+      2732.4775,
+      2353.41,
+      2773.825,
+      2362.5675
+     ],
+     "features": {
+      "fill_ratio": 0.881,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 0.2439,
+      "largest_fill_ratio": 0.9024,
+      "largest_w": 41,
+      "largest_h": 10
+     }
+    },
+    {
+     "subject": "glyph/1/0/7/2/7",
+     "class": "restWhole",
+     "page_box": [
+      2734.1425,
+      2517.9674999999997,
+      2771.8825,
+      2529.6225
+     ],
+     "features": {
+      "fill_ratio": 0.989,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 0.3158,
+      "largest_fill_ratio": 0.989,
+      "largest_w": 38,
+      "largest_h": 12
+     }
+    },
+    {
+     "subject": "glyph/1/0/7/3/0",
+     "class": "restWhole",
+     "page_box": [
+      3277.635,
+      2527.125,
+      3317.04,
+      2535.7275
+     ],
+     "features": {
+      "fill_ratio": 0.9031,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 0.2308,
+      "largest_fill_ratio": 0.9031,
+      "largest_w": 39,
+      "largest_h": 9
+     }
+    },
+    {
+     "subject": "glyph/1/0/7/3/1",
+     "class": "restWhole",
+     "page_box": [
+      3279.0225,
+      2352.0225,
+      3319.26,
+      2361.18
+     ],
+     "features": {
+      "fill_ratio": 0.9917,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 0.225,
+      "largest_fill_ratio": 0.9917,
+      "largest_w": 40,
+      "largest_h": 9
+     }
+    },
+    {
+     "subject": "glyph/1/0/7/4/0",
+     "class": "restWhole",
+     "page_box": [
+      3910.0341796875,
+      2353.3359375,
+      3950.4814453125,
+      2362.248046875
+     ],
+     "features": {
+      "fill_ratio": 0.9806,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 0.225,
+      "largest_fill_ratio": 0.9806,
+      "largest_w": 40,
+      "largest_h": 9
+     }
+    },
+    {
+     "subject": "glyph/1/0/7/4/1",
+     "class": "restWhole",
+     "page_box": [
+      3909.3486328125,
+      2527.8076171875,
+      3948.4248046875,
+      2536.0341796875
+     ],
+     "features": {
+      "fill_ratio": 0.9487,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 0.2051,
+      "largest_fill_ratio": 0.9487,
+      "largest_w": 39,
+      "largest_h": 8
+     }
+    },
+    {
+     "subject": "glyph/1/0/7/5/0",
+     "class": "restWhole",
+     "page_box": [
+      4572.966796875,
+      2531.33203125,
+      4608.52734375,
+      2536.11328125
+     ],
+     "features": {
+      "fill_ratio": 0.9722,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 0.1429,
+      "largest_fill_ratio": 1.0,
+      "largest_w": 35,
+      "largest_h": 5
+     }
+    },
+    {
+     "subject": "glyph/1/0/7/5/2",
+     "class": "restWhole",
+     "page_box": [
+      4570.576171875,
+      2352.6328125,
+      4609.423828125,
+      2362.494140625
+     ],
+     "features": {
+      "fill_ratio": 0.9912,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 0.2368,
+      "largest_fill_ratio": 0.9912,
+      "largest_w": 38,
+      "largest_h": 9
+     }
+    },
+    {
+     "subject": "glyph/1/0/7/6/0",
+     "class": "restWhole",
+     "page_box": [
+      5178.2294921875,
+      2350.30810546875,
+      5217.013671875,
+      2363.13671875
+     ],
+     "features": {
+      "fill_ratio": 0.9684,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 0.3333,
+      "largest_fill_ratio": 0.9684,
+      "largest_w": 39,
+      "largest_h": 13
+     }
+    },
+    {
+     "subject": "glyph/1/0/7/6/1",
+     "class": "restWhole",
+     "page_box": [
+      5177.6328125,
+      2518.57177734375,
+      5215.8203125,
+      2536.7705078125
+     ],
+     "features": {
+      "fill_ratio": 0.9898,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 0.4737,
+      "largest_fill_ratio": 0.9898,
+      "largest_w": 38,
+      "largest_h": 18
+     }
+    },
+    {
+     "subject": "glyph/1/0/8/0/22",
+     "class": "restQuarter",
+     "page_box": [
+      1146.3037109375,
+      2479.6708984375,
+      1159.248046875,
+      2556.16015625
+     ],
+     "features": {
+      "fill_ratio": 0.751,
+      "n_components": 2,
+      "largest_share": 0.9973,
+      "largest_aspect_h_over_w": 5.8462,
+      "largest_fill_ratio": 0.749,
+      "largest_w": 13,
+      "largest_h": 76
+     }
+    },
+    {
+     "subject": "glyph/1/0/8/1/2",
+     "class": "restQuarter",
+     "page_box": [
+      2219.40234375,
+      2501.51953125,
+      2252.4951171875,
+      2584.0908203125
+     ],
+     "features": {
+      "fill_ratio": 0.6179,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 2.4545,
+      "largest_fill_ratio": 0.6255,
+      "largest_w": 33,
+      "largest_h": 81
+     }
+    },
+    {
+     "subject": "glyph/1/0/8/1/6",
+     "class": "rest8th",
+     "page_box": [
+      2397.396484375,
+      2525.6162109375,
+      2431.7744140625,
+      2577.0224609375
+     ],
+     "features": {
+      "fill_ratio": 0.6011,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 1.4571,
+      "largest_fill_ratio": 0.6011,
+      "largest_w": 35,
+      "largest_h": 51
+     }
+    },
+    {
+     "subject": "glyph/1/0/8/1/7",
+     "class": "rest8th",
+     "page_box": [
+      2159.3212890625,
+      2523.3671875,
+      2191.4501953125,
+      2578.62890625
+     ],
+     "features": {
+      "fill_ratio": 0.582,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 1.7188,
+      "largest_fill_ratio": 0.5926,
+      "largest_w": 32,
+      "largest_h": 55
+     }
+    },
+    {
+     "subject": "glyph/1/0/8/1/9",
+     "class": "rest8th",
+     "page_box": [
+      2089.9228515625,
+      2523.0458984375,
+      2120.1240234375,
+      2579.271484375
+     ],
+     "features": {
+      "fill_ratio": 0.625,
+      "n_components": 2,
+      "largest_share": 0.999,
+      "largest_aspect_h_over_w": 1.8,
+      "largest_fill_ratio": 0.6475,
+      "largest_w": 30,
+      "largest_h": 54
+     }
+    },
+    {
+     "subject": "glyph/1/0/8/1/15",
+     "class": "restQuarter",
+     "page_box": [
+      2479.646484375,
+      2541.6806640625,
+      2488.0,
+      2606.5810546875
+     ],
+     "features": {
+      "fill_ratio": 0.8346,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 8.0,
+      "largest_fill_ratio": 0.8477,
+      "largest_w": 8,
+      "largest_h": 64
+     }
+    },
+    {
+     "subject": "glyph/1/0/8/2/2",
+     "class": "restWhole",
+     "page_box": [
+      2735.225,
+      2526.1,
+      2774.275,
+      2535.175
+     ],
+     "features": {
+      "fill_ratio": 0.9772,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 0.2308,
+      "largest_fill_ratio": 0.9772,
+      "largest_w": 39,
+      "largest_h": 9
+     }
+    },
+    {
+     "subject": "glyph/1/0/8/3/6",
+     "class": "restWhole",
+     "page_box": [
+      3277.55,
+      2525.825,
+      3317.15,
+      2534.35
+     ],
+     "features": {
+      "fill_ratio": 0.9936,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 0.2051,
+      "largest_fill_ratio": 0.9936,
+      "largest_w": 39,
+      "largest_h": 8
+     }
+    },
+    {
+     "subject": "glyph/1/0/8/4/4",
+     "class": "restWhole",
+     "page_box": [
+      3909.005859375,
+      2525.96484375,
+      3947.396484375,
+      2535.2197265625
+     ],
+     "features": {
+      "fill_ratio": 0.9766,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 0.2368,
+      "largest_fill_ratio": 0.9766,
+      "largest_w": 38,
+      "largest_h": 9
+     }
+    },
+    {
+     "subject": "glyph/1/0/8/5/0",
+     "class": "restWhole",
+     "page_box": [
+      4569.380859375,
+      2526.333984375,
+      4608.52734375,
+      2536.494140625
+     ],
+     "features": {
+      "fill_ratio": 0.9725,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 0.25,
+      "largest_fill_ratio": 0.9725,
+      "largest_w": 40,
+      "largest_h": 10
+     }
+    },
+    {
+     "subject": "glyph/1/0/8/6/1",
+     "class": "restWhole",
+     "page_box": [
+      5177.0361328125,
+      2521.623046875,
+      5215.2236328125,
+      2537.7333984375
+     ],
+     "features": {
+      "fill_ratio": 0.9441,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 0.4211,
+      "largest_fill_ratio": 0.9441,
+      "largest_w": 38,
+      "largest_h": 16
+     }
+    },
+    {
+     "subject": "glyph/1/0/9/1/0",
+     "class": "rest8th",
+     "page_box": [
+      2398.3603515625,
+      2769.724609375,
+      2431.7744140625,
+      2820.48828125
+     ],
+     "features": {
+      "fill_ratio": 0.5594,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 1.4706,
+      "largest_fill_ratio": 0.5594,
+      "largest_w": 34,
+      "largest_h": 50
+     }
+    },
+    {
+     "subject": "glyph/1/0/9/1/3",
+     "class": "rest8th",
+     "page_box": [
+      2327.35546875,
+      2771.009765625,
+      2359.8056640625,
+      2823.3798828125
+     ],
+     "features": {
+      "fill_ratio": 0.588,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 1.5758,
+      "largest_fill_ratio": 0.588,
+      "largest_w": 33,
+      "largest_h": 52
+     }
+    },
+    {
+     "subject": "glyph/1/0/9/2/0",
+     "class": "rest8th",
+     "page_box": [
+      2864.595,
+      2768.7925,
+      2897.295,
+      2822.2025
+     ],
+     "features": {
+      "fill_ratio": 0.6026,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 1.6562,
+      "largest_fill_ratio": 0.6026,
+      "largest_w": 32,
+      "largest_h": 53
+     }
+    },
+    {
+     "subject": "glyph/1/0/9/2/1",
+     "class": "rest8th",
+     "page_box": [
+      2932.72,
+      2769.3375,
+      2965.42,
+      2822.2025
+     ],
+     "features": {
+      "fill_ratio": 0.6221,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 1.6562,
+      "largest_fill_ratio": 0.6221,
+      "largest_w": 32,
+      "largest_h": 53
+     }
+    },
+    {
+     "subject": "glyph/1/0/9/2/6",
+     "class": "rest8th",
+     "page_box": [
+      2547.1325,
+      2770.7,
+      2579.8325,
+      2822.475
+     ],
+     "features": {
+      "fill_ratio": 0.5876,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 1.5455,
+      "largest_fill_ratio": 0.5876,
+      "largest_w": 33,
+      "largest_h": 51
+     }
+    },
+    {
+     "subject": "glyph/1/0/9/3/7",
+     "class": "rest8th",
+     "page_box": [
+      3068.9625,
+      2769.8825,
+      3100.5725,
+      2821.1125
+     ],
+     "features": {
+      "fill_ratio": 0.5919,
+      "n_components": 2,
+      "largest_share": 0.999,
+      "largest_aspect_h_over_w": 1.5938,
+      "largest_fill_ratio": 0.5913,
+      "largest_w": 32,
+      "largest_h": 51
+     }
+    },
+    {
+     "subject": "glyph/1/0/9/3/22",
+     "class": "rest8th",
+     "page_box": [
+      3068.9625,
+      2769.3375,
+      3092.3975,
+      2815.935
+     ],
+     "features": {
+      "fill_ratio": 0.5976,
+      "n_components": 2,
+      "largest_share": 0.9985,
+      "largest_aspect_h_over_w": 2.0435,
+      "largest_fill_ratio": 0.5967,
+      "largest_w": 23,
+      "largest_h": 47
+     }
+    },
+    {
+     "subject": "glyph/1/0/9/5/0",
+     "class": "rest8th",
+     "page_box": [
+      4725.66796875,
+      2769.44921875,
+      4758.5390625,
+      2823.23828125
+     ],
+     "features": {
+      "fill_ratio": 0.5943,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 1.6364,
+      "largest_fill_ratio": 0.5943,
+      "largest_w": 33,
+      "largest_h": 54
+     }
+    },
+    {
+     "subject": "glyph/1/0/9/5/2",
+     "class": "rest8th",
+     "page_box": [
+      4800.076171875,
+      2769.748046875,
+      4831.751953125,
+      2820.84765625
+     ],
+     "features": {
+      "fill_ratio": 0.5839,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 1.5938,
+      "largest_fill_ratio": 0.5839,
+      "largest_w": 32,
+      "largest_h": 51
+     }
+    },
+    {
+     "subject": "glyph/1/0/9/6/2",
+     "class": "rest8th",
+     "page_box": [
+      4965.21484375,
+      2769.51806640625,
+      4998.0322265625,
+      2822.32421875
+     ],
+     "features": {
+      "fill_ratio": 0.5804,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 1.5758,
+      "largest_fill_ratio": 0.5804,
+      "largest_w": 33,
+      "largest_h": 52
+     }
+    },
+    {
+     "subject": "glyph/1/0/9/6/6",
+     "class": "rest8th",
+     "page_box": [
+      5321.13427734375,
+      2767.72802734375,
+      5353.056640625,
+      2821.7275390625
+     ],
+     "features": {
+      "fill_ratio": 0.5851,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 1.6875,
+      "largest_fill_ratio": 0.5851,
+      "largest_w": 32,
+      "largest_h": 54
+     }
+    },
+    {
+     "subject": "glyph/1/0/10/1/8",
+     "class": "rest8th",
+     "page_box": [
+      2159.642578125,
+      2993.9736328125,
+      2192.0927734375,
+      3046.0224609375
+     ],
+     "features": {
+      "fill_ratio": 0.5511,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 1.625,
+      "largest_fill_ratio": 0.5511,
+      "largest_w": 32,
+      "largest_h": 52
+     }
+    },
+    {
+     "subject": "glyph/1/0/10/1/11",
+     "class": "rest8th",
+     "page_box": [
+      2087.9951171875,
+      2992.6884765625,
+      2121.73046875,
+      3044.7373046875
+     ],
+     "features": {
+      "fill_ratio": 0.5385,
+      "n_components": 2,
+      "largest_share": 0.9968,
+      "largest_aspect_h_over_w": 1.5294,
+      "largest_fill_ratio": 0.5368,
+      "largest_w": 34,
+      "largest_h": 52
+     }
+    },
+    {
+     "subject": "glyph/1/0/10/1/24",
+     "class": "rest8th",
+     "page_box": [
+      2223.900390625,
+      2992.3671875,
+      2256.029296875,
+      3047.62890625
+     ],
+     "features": {
+      "fill_ratio": 0.5218,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 1.6875,
+      "largest_fill_ratio": 0.5411,
+      "largest_w": 32,
+      "largest_h": 54
+     }
+    },
+    {
+     "subject": "glyph/1/0/10/2/0",
+     "class": "rest8th",
+     "page_box": [
+      2634.575,
+      2992.9,
+      2668.4,
+      3046.525
+     ],
+     "features": {
+      "fill_ratio": 0.5915,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 1.6364,
+      "largest_fill_ratio": 0.5915,
+      "largest_w": 33,
+      "largest_h": 54
+     }
+    },
+    {
+     "subject": "glyph/1/0/10/2/1",
+     "class": "rest8th",
+     "page_box": [
+      2704.7,
+      2994.55,
+      2737.425,
+      3043.5
+     ],
+     "features": {
+      "fill_ratio": 0.5491,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 1.5312,
+      "largest_fill_ratio": 0.5491,
+      "largest_w": 32,
+      "largest_h": 49
+     }
+    },
+    {
+     "subject": "glyph/1/0/10/2/2",
+     "class": "rest8th",
+     "page_box": [
+      2770.15,
+      2993.725,
+      2803.7,
+      3044.05
+     ],
+     "features": {
+      "fill_ratio": 0.5847,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 1.4706,
+      "largest_fill_ratio": 0.5847,
+      "largest_w": 34,
+      "largest_h": 50
+     }
+    },
+    {
+     "subject": "glyph/1/0/10/4/21",
+     "class": "rest8th",
+     "page_box": [
+      3844.9072265625,
+      2851.0,
+      3866.501953125,
+      2880.8212890625
+     ],
+     "features": {
+      "fill_ratio": 0.4818,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 1.3182,
+      "largest_fill_ratio": 0.4984,
+      "largest_w": 22,
+      "largest_h": 29
+     }
+    },
+    {
+     "subject": "glyph/1/0/10/4/34",
+     "class": "restQuarter",
+     "page_box": [
+      3877.8134765625,
+      2963.0869140625,
+      3899.0654296875,
+      3054.607421875
+     ],
+     "features": {
+      "fill_ratio": 0.5435,
+      "n_components": 2,
+      "largest_share": 0.999,
+      "largest_aspect_h_over_w": 4.381,
+      "largest_fill_ratio": 0.543,
+      "largest_w": 21,
+      "largest_h": 92
+     }
+    },
+    {
+     "subject": "glyph/1/0/10/4/35",
+     "class": "restQuarter",
+     "page_box": [
+      3877.8134765625,
+      2963.4296875,
+      3890.8388671875,
+      3061.8056640625
+     ],
+     "features": {
+      "fill_ratio": 0.6682,
+      "n_components": 2,
+      "largest_share": 0.9988,
+      "largest_aspect_h_over_w": 7.6154,
+      "largest_fill_ratio": 0.6674,
+      "largest_w": 13,
+      "largest_h": 99
+     }
+    },
+    {
+     "subject": "glyph/1/0/10/4/38",
+     "class": "restQuarter",
+     "page_box": [
+      3878.15625,
+      2963.0869140625,
+      3909.69140625,
+      3050.8369140625
+     ],
+     "features": {
+      "fill_ratio": 0.5096,
+      "n_components": 2,
+      "largest_share": 0.9993,
+      "largest_aspect_h_over_w": 2.75,
+      "largest_fill_ratio": 0.5092,
+      "largest_w": 32,
+      "largest_h": 88
+     }
+    },
+    {
+     "subject": "glyph/1/0/10/5/2",
+     "class": "rest8th",
+     "page_box": [
+      4609.72265625,
+      2994.138671875,
+      4643.490234375,
+      3046.732421875
+     ],
+     "features": {
+      "fill_ratio": 0.5723,
+      "n_components": 2,
+      "largest_share": 0.999,
+      "largest_aspect_h_over_w": 1.6061,
+      "largest_fill_ratio": 0.5718,
+      "largest_w": 33,
+      "largest_h": 53
+     }
+    },
+    {
+     "subject": "glyph/1/0/10/5/7",
+     "class": "rest8th",
+     "page_box": [
+      4464.193359375,
+      2994.138671875,
+      4493.77734375,
+      3046.43359375
+     ],
+     "features": {
+      "fill_ratio": 0.5346,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 1.7333,
+      "largest_fill_ratio": 0.5346,
+      "largest_w": 30,
+      "largest_h": 52
+     }
+    },
+    {
+     "subject": "glyph/1/0/10/5/9",
+     "class": "rest8th",
+     "page_box": [
+      4537.705078125,
+      2994.138671875,
+      4569.978515625,
+      3044.939453125
+     ],
+     "features": {
+      "fill_ratio": 0.5705,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 1.5938,
+      "largest_fill_ratio": 0.5705,
+      "largest_w": 32,
+      "largest_h": 51
+     }
+    },
+    {
+     "subject": "glyph/1/0/10/5/13",
+     "class": "rest8th",
+     "page_box": [
+      4537.107421875,
+      2992.345703125,
+      4567.2890625,
+      3020.435546875
+     ],
+     "features": {
+      "fill_ratio": 0.7107,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 0.8667,
+      "largest_fill_ratio": 0.7654,
+      "largest_w": 30,
+      "largest_h": 26
+     }
+    },
+    {
+     "subject": "glyph/1/0/10/6/2",
+     "class": "rest8th",
+     "page_box": [
+      5062.17529296875,
+      2992.4130859375,
+      5094.6943359375,
+      3046.1142578125
+     ],
+     "features": {
+      "fill_ratio": 0.5612,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 1.6364,
+      "largest_fill_ratio": 0.5612,
+      "largest_w": 33,
+      "largest_h": 54
+     }
+    },
+    {
+     "subject": "glyph/1/0/10/6/4",
+     "class": "rest8th",
+     "page_box": [
+      5208.95849609375,
+      2995.396484375,
+      5240.58251953125,
+      3044.32421875
+     ],
+     "features": {
+      "fill_ratio": 0.5568,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 1.5312,
+      "largest_fill_ratio": 0.5568,
+      "largest_w": 32,
+      "largest_h": 49
+     }
+    },
+    {
+     "subject": "glyph/1/0/10/6/6",
+     "class": "rest8th",
+     "page_box": [
+      5134.0751953125,
+      2993.30810546875,
+      5167.4892578125,
+      3045.81591796875
+     ],
+     "features": {
+      "fill_ratio": 0.5712,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 1.6061,
+      "largest_fill_ratio": 0.5712,
+      "largest_w": 33,
+      "largest_h": 53
+     }
+    },
+    {
+     "subject": "glyph/1/0/10/6/13",
+     "class": "rest8th",
+     "page_box": [
+      5207.76513671875,
+      2993.6064453125,
+      5233.42236328125,
+      3038.65576171875
+     ],
+     "features": {
+      "fill_ratio": 0.5716,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 1.8,
+      "largest_fill_ratio": 0.5716,
+      "largest_w": 25,
+      "largest_h": 45
+     }
+    },
+    {
+     "subject": "glyph/1/0/11/1/3",
+     "class": "rest8th",
+     "page_box": [
+      2399.6455078125,
+      3313.7734375,
+      2433.0595703125,
+      3370.962890625
+     ],
+     "features": {
+      "fill_ratio": 0.5396,
+      "n_components": 2,
+      "largest_share": 0.998,
+      "largest_aspect_h_over_w": 1.7273,
+      "largest_fill_ratio": 0.5385,
+      "largest_w": 33,
+      "largest_h": 57
+     }
+    },
+    {
+     "subject": "glyph/1/0/11/1/7",
+     "class": "rest8th",
+     "page_box": [
+      2329.6044921875,
+      3318.5927734375,
+      2363.0185546875,
+      3369.677734375
+     ],
+     "features": {
+      "fill_ratio": 0.552,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 1.5455,
+      "largest_fill_ratio": 0.552,
+      "largest_w": 33,
+      "largest_h": 51
+     }
+    },
+    {
+     "subject": "glyph/1/0/11/1/16",
+     "class": "restQuarter",
+     "page_box": [
+      2221.97265625,
+      3272.005859375,
+      2238.6796875,
+      3373.2119140625
+     ],
+     "features": {
+      "fill_ratio": 0.615,
+      "n_components": 3,
+      "largest_share": 0.9972,
+      "largest_aspect_h_over_w": 5.8824,
+      "largest_fill_ratio": 0.6194,
+      "largest_w": 17,
+      "largest_h": 100
+     }
+    },
+    {
+     "subject": "glyph/1/0/11/2/0",
+     "class": "rest8th",
+     "page_box": [
+      2860.9,
+      3315.425,
+      2894.175,
+      3371.25
+     ],
+     "features": {
+      "fill_ratio": 0.5768,
+      "n_components": 2,
+      "largest_share": 0.9878,
+      "largest_aspect_h_over_w": 1.697,
+      "largest_fill_ratio": 0.5698,
+      "largest_w": 33,
+      "largest_h": 56
+     }
+    },
+    {
+     "subject": "glyph/1/0/11/2/1",
+     "class": "rest8th",
+     "page_box": [
+      2551.8,
+      3317.625,
+      2584.8,
+      3369.6
+     ],
+     "features": {
+      "fill_ratio": 0.539,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 1.5758,
+      "largest_fill_ratio": 0.539,
+      "largest_w": 33,
+      "largest_h": 52
+     }
+    },
+    {
+     "subject": "glyph/1/0/11/2/2",
+     "class": "rest8th",
+     "page_box": [
+      2931.3,
+      3316.25,
+      2964.3,
+      3367.95
+     ],
+     "features": {
+      "fill_ratio": 0.5851,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 1.5758,
+      "largest_fill_ratio": 0.5851,
+      "largest_w": 33,
+      "largest_h": 52
+     }
+    },
+    {
+     "subject": "glyph/1/0/11/3/8",
+     "class": "rest8th",
+     "page_box": [
+      3069.925,
+      3318.725,
+      3104.3,
+      3370.975
+     ],
+     "features": {
+      "fill_ratio": 0.5848,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 1.5294,
+      "largest_fill_ratio": 0.5848,
+      "largest_w": 34,
+      "largest_h": 52
+     }
+    },
+    {
+     "subject": "glyph/1/0/11/5/1",
+     "class": "rest8th",
+     "page_box": [
+      4726.564453125,
+      3311.353515625,
+      4759.734375,
+      3369.923828125
+     ],
+     "features": {
+      "fill_ratio": 0.6415,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 1.7879,
+      "largest_fill_ratio": 0.6415,
+      "largest_w": 33,
+      "largest_h": 59
+     }
+    },
+    {
+     "subject": "glyph/1/0/11/5/3",
+     "class": "rest8th",
+     "page_box": [
+      4800.076171875,
+      3314.939453125,
+      4831.751953125,
+      3370.22265625
+     ],
+     "features": {
+      "fill_ratio": 0.6068,
+      "n_components": 4,
+      "largest_share": 0.9934,
+      "largest_aspect_h_over_w": 1.7188,
+      "largest_fill_ratio": 0.6028,
+      "largest_w": 32,
+      "largest_h": 55
+     }
+    },
+    {
+     "subject": "glyph/1/0/11/6/0",
+     "class": "rest8th",
+     "page_box": [
+      5321.4326171875,
+      3316.1142578125,
+      5354.25,
+      3366.53369140625
+     ],
+     "features": {
+      "fill_ratio": 0.5597,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 1.5455,
+      "largest_fill_ratio": 0.5597,
+      "largest_w": 33,
+      "largest_h": 51
+     }
+    },
+    {
+     "subject": "glyph/1/0/11/6/1",
+     "class": "rest8th",
+     "page_box": [
+      4967.89990234375,
+      3318.5009765625,
+      5000.12060546875,
+      3368.32373046875
+     ],
+     "features": {
+      "fill_ratio": 0.5855,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 1.5312,
+      "largest_fill_ratio": 0.5855,
+      "largest_w": 32,
+      "largest_h": 49
+     }
+    },
+    {
+     "subject": "glyph/1/0/11/6/5",
+     "class": "rest8th",
+     "page_box": [
+      5393.0341796875,
+      3316.41259765625,
+      5425.2548828125,
+      3368.025390625
+     ],
+     "features": {
+      "fill_ratio": 0.5565,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 1.625,
+      "largest_fill_ratio": 0.5565,
+      "largest_w": 32,
+      "largest_h": 52
+     }
+    },
+    {
+     "subject": "glyph/1/0/12/1/0",
+     "class": "rest8th",
+     "page_box": [
+      2096.9912109375,
+      3577.65234375,
+      2129.7626953125,
+      3629.05859375
+     ],
+     "features": {
+      "fill_ratio": 0.5472,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 1.5455,
+      "largest_fill_ratio": 0.5472,
+      "largest_w": 33,
+      "largest_h": 51
+     }
+    },
+    {
+     "subject": "glyph/1/0/12/1/12",
+     "class": "restQuarter",
+     "page_box": [
+      2172.8154296875,
+      3575.08203125,
+      2201.41015625,
+      3631.3076171875
+     ],
+     "features": {
+      "fill_ratio": 0.5982,
+      "n_components": 2,
+      "largest_share": 0.9989,
+      "largest_aspect_h_over_w": 1.9643,
+      "largest_fill_ratio": 0.6084,
+      "largest_w": 28,
+      "largest_h": 55
+     }
+    },
+    {
+     "subject": "glyph/1/0/12/1/13",
+     "class": "restQuarter",
+     "page_box": [
+      1990.3232421875,
+      3548.4150390625,
+      2007.6728515625,
+      3655.7255859375
+     ],
+     "features": {
+      "fill_ratio": 0.6152,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 6.0,
+      "largest_fill_ratio": 0.6152,
+      "largest_w": 18,
+      "largest_h": 108
+     }
+    },
+    {
+     "subject": "glyph/1/0/12/1/17",
+     "class": "restQuarter",
+     "page_box": [
+      2237.7158203125,
+      3574.7607421875,
+      2258.599609375,
+      3629.05859375
+     ],
+     "features": {
+      "fill_ratio": 0.6323,
+      "n_components": 3,
+      "largest_share": 0.993,
+      "largest_aspect_h_over_w": 2.5714,
+      "largest_fill_ratio": 0.6279,
+      "largest_w": 21,
+      "largest_h": 54
+     }
+    },
+    {
+     "subject": "glyph/1/0/12/1/21",
+     "class": "rest8th",
+     "page_box": [
+      1883.9765625,
+      3543.9169921875,
+      1926.7080078125,
+      3594.0380859375
+     ],
+     "features": {
+      "fill_ratio": 0.7549,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 1.1628,
+      "largest_fill_ratio": 0.7549,
+      "largest_w": 43,
+      "largest_h": 50
+     }
+    },
+    {
+     "subject": "glyph/1/0/12/2/0",
+     "class": "rest8th",
+     "page_box": [
+      2705.1825,
+      3573.975,
+      2739.79,
+      3627.93
+     ],
+     "features": {
+      "fill_ratio": 0.5286,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 1.5429,
+      "largest_fill_ratio": 0.5286,
+      "largest_w": 35,
+      "largest_h": 54
+     }
+    },
+    {
+     "subject": "glyph/1/0/12/2/8",
+     "class": "rest8th",
+     "page_box": [
+      2773.58,
+      3575.065,
+      2807.37,
+      3627.93
+     ],
+     "features": {
+      "fill_ratio": 0.578,
+      "n_components": 2,
+      "largest_share": 0.9951,
+      "largest_aspect_h_over_w": 1.6061,
+      "largest_fill_ratio": 0.5752,
+      "largest_w": 33,
+      "largest_h": 53
+     }
+    },
+    {
+     "subject": "glyph/1/0/12/2/10",
+     "class": "rest8th",
+     "page_box": [
+      2650.1375,
+      3577.79,
+      2676.57,
+      3628.7475
+     ],
+     "features": {
+      "fill_ratio": 0.6107,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 1.8889,
+      "largest_fill_ratio": 0.6107,
+      "largest_w": 27,
+      "largest_h": 51
+     }
+    },
+    {
+     "subject": "glyph/1/0/12/5/1",
+     "class": "rest8th",
+     "page_box": [
+      4464.4921875,
+      3575.44921875,
+      4495.869140625,
+      3626.84765625
+     ],
+     "features": {
+      "fill_ratio": 0.5541,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 1.625,
+      "largest_fill_ratio": 0.5541,
+      "largest_w": 32,
+      "largest_h": 52
+     }
+    },
+    {
+     "subject": "glyph/1/0/12/5/2",
+     "class": "rest8th",
+     "page_box": [
+      4613.90625,
+      3574.552734375,
+      4646.478515625,
+      3626.84765625
+     ],
+     "features": {
+      "fill_ratio": 0.5619,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 1.5938,
+      "largest_fill_ratio": 0.5729,
+      "largest_w": 32,
+      "largest_h": 51
+     }
+    },
+    {
+     "subject": "glyph/1/0/12/5/3",
+     "class": "rest8th",
+     "page_box": [
+      4544.876953125,
+      3576.64453125,
+      4577.150390625,
+      3629.23828125
+     ],
+     "features": {
+      "fill_ratio": 0.5775,
+      "n_components": 2,
+      "largest_share": 0.999,
+      "largest_aspect_h_over_w": 1.625,
+      "largest_fill_ratio": 0.5769,
+      "largest_w": 32,
+      "largest_h": 52
+     }
+    },
+    {
+     "subject": "glyph/1/0/12/5/5",
+     "class": "rest8th",
+     "page_box": [
+      4464.193359375,
+      3574.25390625,
+      4486.904296875,
+      3627.146484375
+     ],
+     "features": {
+      "fill_ratio": 0.5882,
+      "n_components": 2,
+      "largest_share": 0.9944,
+      "largest_aspect_h_over_w": 2.3043,
+      "largest_fill_ratio": 0.5849,
+      "largest_w": 23,
+      "largest_h": 53
+     }
+    },
+    {
+     "subject": "glyph/1/0/12/6/1",
+     "class": "rest8th",
+     "page_box": [
+      5213.43359375,
+      3572.8330078125,
+      5248.041015625,
+      3627.42919921875
+     ],
+     "features": {
+      "fill_ratio": 0.5212,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 1.5429,
+      "largest_fill_ratio": 0.5212,
+      "largest_w": 35,
+      "largest_h": 54
+     }
+    },
+    {
+     "subject": "glyph/1/0/12/6/3",
+     "class": "rest8th",
+     "page_box": [
+      5066.650390625,
+      3577.30810546875,
+      5101.2578125,
+      3628.32421875
+     ],
+     "features": {
+      "fill_ratio": 0.5675,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 1.5,
+      "largest_fill_ratio": 0.5675,
+      "largest_w": 34,
+      "largest_h": 51
+     }
+    },
+    {
+     "subject": "glyph/1/0/12/6/4",
+     "class": "rest8th",
+     "page_box": [
+      5137.05859375,
+      3576.4130859375,
+      5169.8759765625,
+      3627.7275390625
+     ],
+     "features": {
+      "fill_ratio": 0.5833,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 1.5758,
+      "largest_fill_ratio": 0.5833,
+      "largest_w": 33,
+      "largest_h": 52
+     }
+    },
+    {
+     "subject": "glyph/1/0/13/0/27",
+     "class": "restQuarter",
+     "page_box": [
+      1574.05517578125,
+      3645.0,
+      1588.17626953125,
+      3672.65380859375
+     ],
+     "features": {
+      "fill_ratio": 0.4847,
+      "n_components": 2,
+      "largest_share": 0.9895,
+      "largest_aspect_h_over_w": 1.7857,
+      "largest_fill_ratio": 0.5371,
+      "largest_w": 14,
+      "largest_h": 25
+     }
+    },
+    {
+     "subject": "glyph/1/0/13/1/4",
+     "class": "restQuarter",
+     "page_box": [
+      2229.3623046875,
+      3769.9814453125,
+      2262.1337890625,
+      3853.5166015625
+     ],
+     "features": {
+      "fill_ratio": 0.5819,
+      "n_components": 2,
+      "largest_share": 0.9988,
+      "largest_aspect_h_over_w": 2.5152,
+      "largest_fill_ratio": 0.5882,
+      "largest_w": 33,
+      "largest_h": 83
+     }
+    },
+    {
+     "subject": "glyph/1/0/13/1/5",
+     "class": "rest8th",
+     "page_box": [
+      2097.3125,
+      3786.0458984375,
+      2131.369140625,
+      3840.6650390625
+     ],
+     "features": {
+      "fill_ratio": 0.5476,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 1.6176,
+      "largest_fill_ratio": 0.5476,
+      "largest_w": 34,
+      "largest_h": 55
+     }
+    },
+    {
+     "subject": "glyph/1/0/13/1/6",
+     "class": "rest8th",
+     "page_box": [
+      2403.822265625,
+      3787.3310546875,
+      2434.3447265625,
+      3840.6650390625
+     ],
+     "features": {
+      "fill_ratio": 0.5772,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 1.8,
+      "largest_fill_ratio": 0.5772,
+      "largest_w": 30,
+      "largest_h": 54
+     }
+    },
+    {
+     "subject": "glyph/1/0/13/1/7",
+     "class": "rest8th",
+     "page_box": [
+      2169.28125,
+      3789.580078125,
+      2202.6953125,
+      3839.701171875
+     ],
+     "features": {
+      "fill_ratio": 0.5912,
+      "n_components": 3,
+      "largest_share": 0.997,
+      "largest_aspect_h_over_w": 1.4706,
+      "largest_fill_ratio": 0.5894,
+      "largest_w": 34,
+      "largest_h": 50
+     }
+    },
+    {
+     "subject": "glyph/1/0/13/1/17",
+     "class": "restQuarter",
+     "page_box": [
+      2022.7734375,
+      3768.0537109375,
+      2053.6171875,
+      3861.2275390625
+     ],
+     "features": {
+      "fill_ratio": 0.5161,
+      "n_components": 4,
+      "largest_share": 0.9966,
+      "largest_aspect_h_over_w": 2.9677,
+      "largest_fill_ratio": 0.52,
+      "largest_w": 31,
+      "largest_h": 92
+     }
+    },
+    {
+     "subject": "glyph/1/0/13/2/0",
+     "class": "restWhole",
+     "page_box": [
+      2743.2,
+      3785.525,
+      2783.075,
+      3798.45
+     ],
+     "features": {
+      "fill_ratio": 0.9729,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 0.3,
+      "largest_fill_ratio": 0.9729,
+      "largest_w": 40,
+      "largest_h": 12
+     }
+    },
+    {
+     "subject": "glyph/1/0/13/3/9",
+     "class": "rest8th",
+     "page_box": [
+      3072.4,
+      3787.45,
+      3104.025,
+      3839.15
+     ],
+     "features": {
+      "fill_ratio": 0.5547,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 1.625,
+      "largest_fill_ratio": 0.5547,
+      "largest_w": 32,
+      "largest_h": 52
+     }
+    },
+    {
+     "subject": "glyph/1/0/13/3/13",
+     "class": "restQuarter",
+     "page_box": [
+      3024.825,
+      3775.625,
+      3039.95,
+      3865.275
+     ],
+     "features": {
+      "fill_ratio": 0.7798,
+      "n_components": 2,
+      "largest_share": 0.9981,
+      "largest_aspect_h_over_w": 5.9333,
+      "largest_fill_ratio": 0.7783,
+      "largest_w": 15,
+      "largest_h": 89
+     }
+    },
+    {
+     "subject": "glyph/1/0/13/5/2",
+     "class": "rest8th",
+     "page_box": [
+      4466.8828125,
+      3787.83984375,
+      4496.765625,
+      3837.146484375
+     ],
+     "features": {
+      "fill_ratio": 0.5898,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 1.6333,
+      "largest_fill_ratio": 0.5898,
+      "largest_w": 30,
+      "largest_h": 49
+     }
+    },
+    {
+     "subject": "glyph/1/0/13/5/5",
+     "class": "rest8th",
+     "page_box": [
+      4806.650390625,
+      3785.748046875,
+      4835.935546875,
+      3836.25
+     ],
+     "features": {
+      "fill_ratio": 0.5738,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 1.7241,
+      "largest_fill_ratio": 0.5738,
+      "largest_w": 29,
+      "largest_h": 50
+     }
+    },
+    {
+     "subject": "glyph/1/0/13/5/6",
+     "class": "restQuarter",
+     "page_box": [
+      4610.91796875,
+      3763.3359375,
+      4642.294921875,
+      3842.82421875
+     ],
+     "features": {
+      "fill_ratio": 0.5923,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 2.5161,
+      "largest_fill_ratio": 0.6075,
+      "largest_w": 31,
+      "largest_h": 78
+     }
+    },
+    {
+     "subject": "glyph/1/0/13/5/7",
+     "class": "rest8th",
+     "page_box": [
+      4805.75390625,
+      3783.65625,
+      4823.384765625,
+      3805.171875
+     ],
+     "features": {
+      "fill_ratio": 0.8347,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 1.2353,
+      "largest_fill_ratio": 0.8347,
+      "largest_w": 17,
+      "largest_h": 21
+     }
+    },
+    {
+     "subject": "glyph/1/0/13/6/0",
+     "class": "restWhole",
+     "page_box": [
+      5178.52783203125,
+      3785.2197265625,
+      5216.71533203125,
+      3795.66162109375
+     ],
+     "features": {
+      "fill_ratio": 0.9785,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 0.2895,
+      "largest_fill_ratio": 0.9785,
+      "largest_w": 38,
+      "largest_h": 11
+     }
+    },
+    {
+     "subject": "glyph/1/0/13/6/4",
+     "class": "restWhole",
+     "page_box": [
+      5179.12451171875,
+      3788.50146484375,
+      5217.013671875,
+      3796.25830078125
+     ],
+     "features": {
+      "fill_ratio": 0.9662,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 0.1842,
+      "largest_fill_ratio": 0.9662,
+      "largest_w": 38,
+      "largest_h": 7
+     }
+    },
+    {
+     "subject": "glyph/1/1/0/0/3",
+     "class": "rest8th",
+     "page_box": [
+      1367.6533203125,
+      4240.015625,
+      1399.93994140625,
+      4293.962890625
+     ],
+     "features": {
+      "fill_ratio": 0.5799,
+      "n_components": 2,
+      "largest_share": 0.998,
+      "largest_aspect_h_over_w": 1.6875,
+      "largest_fill_ratio": 0.5787,
+      "largest_w": 32,
+      "largest_h": 54
+     }
+    },
+    {
+     "subject": "glyph/1/1/0/0/7",
+     "class": "rest8th",
+     "page_box": [
+      1060.72607421875,
+      4241.24169921875,
+      1093.0126953125,
+      4293.962890625
+     ],
+     "features": {
+      "fill_ratio": 0.5489,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 1.6562,
+      "largest_fill_ratio": 0.5489,
+      "largest_w": 32,
+      "largest_h": 53
+     }
+    },
+    {
+     "subject": "glyph/1/1/0/0/8",
+     "class": "restQuarter",
+     "page_box": [
+      1195.185546875,
+      4221.2158203125,
+      1229.10693359375,
+      4304.99755859375
+     ],
+     "features": {
+      "fill_ratio": 0.5403,
+      "n_components": 2,
+      "largest_share": 0.9994,
+      "largest_aspect_h_over_w": 2.4412,
+      "largest_fill_ratio": 0.5464,
+      "largest_w": 34,
+      "largest_h": 83
+     }
+    },
+    {
+     "subject": "glyph/1/1/0/0/10",
+     "class": "restWhole",
+     "page_box": [
+      1172.298828125,
+      4348.7275390625,
+      1210.30712890625,
+      4363.84912109375
+     ],
+     "features": {
+      "fill_ratio": 0.9667,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 0.3947,
+      "largest_fill_ratio": 0.9667,
+      "largest_w": 38,
+      "largest_h": 15
+     }
+    },
+    {
+     "subject": "glyph/1/1/0/0/11",
+     "class": "rest8th",
+     "page_box": [
+      1060.3173828125,
+      4238.78955078125,
+      1084.021484375,
+      4292.73681640625
+     ],
+     "features": {
+      "fill_ratio": 0.5725,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 2.25,
+      "largest_fill_ratio": 0.5725,
+      "largest_w": 24,
+      "largest_h": 54
+     }
+    },
+    {
+     "subject": "glyph/1/1/0/0/12",
+     "class": "rest8th",
+     "page_box": [
+      1128.9775390625,
+      4241.24169921875,
+      1162.08154296875,
+      4294.37158203125
+     ],
+     "features": {
+      "fill_ratio": 0.5392,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 1.6061,
+      "largest_fill_ratio": 0.5392,
+      "largest_w": 33,
+      "largest_h": 53
+     }
+    },
+    {
+     "subject": "glyph/1/1/0/1/3",
+     "class": "restWhole",
+     "page_box": [
+      1786.3671875,
+      4269.2626953125,
+      1824.58642578125,
+      4279.38916015625
+     ],
+     "features": {
+      "fill_ratio": 0.9897,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 0.2564,
+      "largest_fill_ratio": 0.9897,
+      "largest_w": 39,
+      "largest_h": 10
+     }
+    },
+    {
+     "subject": "glyph/1/1/0/2/0",
+     "class": "restQuarter",
+     "page_box": [
+      2198.97216796875,
+      4246.6416015625,
+      2231.17578125,
+      4324.75927734375
+     ],
+     "features": {
+      "fill_ratio": 0.5853,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 2.4062,
+      "largest_fill_ratio": 0.5929,
+      "largest_w": 32,
+      "largest_h": 77
+     }
+    },
+    {
+     "subject": "glyph/1/1/0/2/1",
+     "class": "rest8th",
+     "page_box": [
+      2415.78857421875,
+      4262.90283203125,
+      2447.3544921875,
+      4318.0634765625
+     ],
+     "features": {
+      "fill_ratio": 0.6129,
+      "n_components": 3,
+      "largest_share": 0.9866,
+      "largest_aspect_h_over_w": 1.7742,
+      "largest_fill_ratio": 0.6047,
+      "largest_w": 31,
+      "largest_h": 55
+     }
+    },
+    {
+     "subject": "glyph/1/1/0/2/2",
+     "class": "restQuarter",
+     "page_box": [
+      2503.4716796875,
+      4247.279296875,
+      2534.0810546875,
+      4332.73046875
+     ],
+     "features": {
+      "fill_ratio": 0.6047,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 2.7097,
+      "largest_fill_ratio": 0.619,
+      "largest_w": 31,
+      "largest_h": 84
+     }
+    },
+    {
+     "subject": "glyph/1/1/0/6/1",
+     "class": "restQuarter",
+     "page_box": [
+      4784.525,
+      4239.4,
+      4817.8,
+      4325.475
+     ],
+     "features": {
+      "fill_ratio": 0.5803,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 2.5455,
+      "largest_fill_ratio": 0.5942,
+      "largest_w": 33,
+      "largest_h": 84
+     }
+    },
+    {
+     "subject": "glyph/1/1/0/6/3",
+     "class": "rest8th",
+     "page_box": [
+      4893.425,
+      4261.675,
+      4922.3,
+      4316.4
+     ],
+     "features": {
+      "fill_ratio": 0.5875,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 1.8621,
+      "largest_fill_ratio": 0.5875,
+      "largest_w": 29,
+      "largest_h": 54
+     }
+    },
+    {
+     "subject": "glyph/1/1/0/6/5",
+     "class": "rest8th",
+     "page_box": [
+      4685.525,
+      4263.325,
+      4719.075,
+      4317.775
+     ],
+     "features": {
+      "fill_ratio": 0.5399,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 1.6364,
+      "largest_fill_ratio": 0.5499,
+      "largest_w": 33,
+      "largest_h": 54
+     }
+    },
+    {
+     "subject": "glyph/1/1/0/7/0",
+     "class": "restWhole",
+     "page_box": [
+      5219.75,
+      4253.425,
+      5255.775,
+      4271.575
+     ],
+     "features": {
+      "fill_ratio": 0.902,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 0.5,
+      "largest_fill_ratio": 0.9522,
+      "largest_w": 36,
+      "largest_h": 18
+     }
+    },
+    {
+     "subject": "glyph/1/1/1/0/2",
+     "class": "rest8th",
+     "page_box": [
+      1057.45654296875,
+      4455.4072265625,
+      1091.3779296875,
+      4508.537109375
+     ],
+     "features": {
+      "fill_ratio": 0.5256,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 1.5882,
+      "largest_fill_ratio": 0.5256,
+      "largest_w": 34,
+      "largest_h": 54
+     }
+    },
+    {
+     "subject": "glyph/1/1/1/0/4",
+     "class": "rest8th",
+     "page_box": [
+      1130.20361328125,
+      4457.859375,
+      1162.89892578125,
+      4506.90234375
+     ],
+     "features": {
+      "fill_ratio": 0.5591,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 1.4848,
+      "largest_fill_ratio": 0.5591,
+      "largest_w": 33,
+      "largest_h": 49
+     }
+    },
+    {
+     "subject": "glyph/1/1/1/0/8",
+     "class": "restQuarter",
+     "page_box": [
+      1198.04638671875,
+      4435.38134765625,
+      1231.55908203125,
+      4518.345703125
+     ],
+     "features": {
+      "fill_ratio": 0.5836,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 2.4118,
+      "largest_fill_ratio": 0.5907,
+      "largest_w": 34,
+      "largest_h": 82
+     }
+    },
+    {
+     "subject": "glyph/1/1/1/0/11",
+     "class": "restWhole",
+     "page_box": [
+      1173.1162109375,
+      4347.5126953125,
+      1209.8984375,
+      4363.45166015625
+     ],
+     "features": {
+      "fill_ratio": 0.9928,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 0.4054,
+      "largest_fill_ratio": 0.9928,
+      "largest_w": 37,
+      "largest_h": 15
+     }
+    },
+    {
+     "subject": "glyph/1/1/1/0/12",
+     "class": "rest8th",
+     "page_box": [
+      1366.42724609375,
+      4454.99853515625,
+      1399.53125,
+      4509.3544921875
+     ],
+     "features": {
+      "fill_ratio": 0.5795,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 1.5882,
+      "largest_fill_ratio": 0.5795,
+      "largest_w": 34,
+      "largest_h": 54
+     }
+    },
+    {
+     "subject": "glyph/1/1/1/0/15",
+     "class": "restQuarter",
+     "page_box": [
+      974.4921875,
+      4599.2666015625,
+      1005.14404296875,
+      4643.81396484375
+     ],
+     "features": {
+      "fill_ratio": 0.4229,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 1.4516,
+      "largest_fill_ratio": 0.4229,
+      "largest_w": 31,
+      "largest_h": 45
+     }
+    },
+    {
+     "subject": "glyph/1/1/1/1/3",
+     "class": "restWhole",
+     "page_box": [
+      1786.3671875,
+      4457.73046875,
+      1809.56005859375,
+      4468.18359375
+     ],
+     "features": {
+      "fill_ratio": 0.9458,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 0.4167,
+      "largest_fill_ratio": 0.9458,
+      "largest_w": 24,
+      "largest_h": 10
+     }
+    },
+    {
+     "subject": "glyph/1/1/1/1/8",
+     "class": "restWhole",
+     "page_box": [
+      1786.04052734375,
+      4452.83056640625,
+      1811.193359375,
+      4467.85693359375
+     ],
+     "features": {
+      "fill_ratio": 0.9653,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 0.6,
+      "largest_fill_ratio": 0.9653,
+      "largest_w": 25,
+      "largest_h": 15
+     }
+    },
+    {
+     "subject": "glyph/1/1/1/1/9",
+     "class": "restWhole",
+     "page_box": [
+      1785.7138671875,
+      4448.91064453125,
+      1811.193359375,
+      4464.263671875
+     ],
+     "features": {
+      "fill_ratio": 0.9307,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 0.6,
+      "largest_fill_ratio": 0.9307,
+      "largest_w": 25,
+      "largest_h": 15
+     }
+    },
+    {
+     "subject": "glyph/1/1/1/1/12",
+     "class": "restWhole",
+     "page_box": [
+      1806.94677734375,
+      4449.2373046875,
+      1829.486328125,
+      4468.18359375
+     ],
+     "features": {
+      "fill_ratio": 0.9234,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 0.8636,
+      "largest_fill_ratio": 0.9234,
+      "largest_w": 22,
+      "largest_h": 19
+     }
+    },
+    {
+     "subject": "glyph/1/1/1/1/14",
+     "class": "restQuarter",
+     "page_box": [
+      2134.26025390625,
+      4314.32666015625,
+      2146.3466796875,
+      4357.44580078125
+     ],
+     "features": {
+      "fill_ratio": 0.9089,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 3.5833,
+      "largest_fill_ratio": 0.9089,
+      "largest_w": 12,
+      "largest_h": 43
+     }
+    },
+    {
+     "subject": "glyph/1/1/1/2/1",
+     "class": "restWhole",
+     "page_box": [
+      2448.6298828125,
+      4453.33642578125,
+      2487.21044921875,
+      4466.4091796875
+     ],
+     "features": {
+      "fill_ratio": 0.9838,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 0.3421,
+      "largest_fill_ratio": 0.9838,
+      "largest_w": 38,
+      "largest_h": 13
+     }
+    },
+    {
+     "subject": "glyph/1/1/1/3/2",
+     "class": "restWhole",
+     "page_box": [
+      3084.7158203125,
+      4456.96240234375,
+      3123.4033203125,
+      4467.541015625
+     ],
+     "features": {
+      "fill_ratio": 0.9522,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 0.2895,
+      "largest_fill_ratio": 0.9522,
+      "largest_w": 38,
+      "largest_h": 11
+     }
+    },
+    {
+     "subject": "glyph/1/1/1/3/6",
+     "class": "restHBar",
+     "page_box": [
+      2800.30224609375,
+      4498.06787109375,
+      3419.0,
+      4516.20263671875
+     ],
+     "features": {
+      "fill_ratio": 0.3007,
+      "n_components": 2,
+      "largest_share": 0.9994,
+      "largest_aspect_h_over_w": 0.0291,
+      "largest_fill_ratio": 0.3005,
+      "largest_w": 619,
+      "largest_h": 18
+     }
+    },
+    {
+     "subject": "glyph/1/1/1/4/1",
+     "class": "restWhole",
+     "page_box": [
+      3674.3291015625,
+      4451.0537109375,
+      3713.0068359375,
+      4467.029296875
+     ],
+     "features": {
+      "fill_ratio": 0.9583,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 0.4103,
+      "largest_fill_ratio": 0.9583,
+      "largest_w": 39,
+      "largest_h": 16
+     }
+    },
+    {
+     "subject": "glyph/1/1/1/5/3",
+     "class": "restWhole",
+     "page_box": [
+      4235.275,
+      4455.9,
+      4273.5,
+      4466.625
+     ],
+     "features": {
+      "fill_ratio": 0.9301,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 0.2821,
+      "largest_fill_ratio": 0.9301,
+      "largest_w": 39,
+      "largest_h": 11
+     }
+    },
+    {
+     "subject": "glyph/1/1/1/6/6",
+     "class": "restWhole",
+     "page_box": [
+      4726.775,
+      4453.975,
+      4765.275,
+      4464.7
+     ],
+     "features": {
+      "fill_ratio": 0.878,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 0.2895,
+      "largest_fill_ratio": 0.878,
+      "largest_w": 38,
+      "largest_h": 11
+     }
+    },
+    {
+     "subject": "glyph/1/1/1/7/0",
+     "class": "restWhole",
+     "page_box": [
+      5216.45,
+      4443.525,
+      5254.95,
+      4460.85
+     ],
+     "features": {
+      "fill_ratio": 0.9713,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 0.4359,
+      "largest_fill_ratio": 0.9713,
+      "largest_w": 39,
+      "largest_h": 17
+     }
+    },
+    {
+     "subject": "glyph/1/1/2/0/2",
+     "class": "restQuarter",
+     "page_box": [
+      1200.49853515625,
+      4652.46826171875,
+      1233.6025390625,
+      4735.02392578125
+     ],
+     "features": {
+      "fill_ratio": 0.4954,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 2.4118,
+      "largest_fill_ratio": 0.5014,
+      "largest_w": 34,
+      "largest_h": 82
+     }
+    },
+    {
+     "subject": "glyph/1/1/2/0/3",
+     "class": "rest8th",
+     "page_box": [
+      1367.6533203125,
+      4669.224609375,
+      1399.53125,
+      4724.39794921875
+     ],
+     "features": {
+      "fill_ratio": 0.5182,
+      "n_components": 2,
+      "largest_share": 0.9989,
+      "largest_aspect_h_over_w": 1.7188,
+      "largest_fill_ratio": 0.5176,
+      "largest_w": 32,
+      "largest_h": 55
+     }
+    },
+    {
+     "subject": "glyph/1/1/2/0/5",
+     "class": "rest8th",
+     "page_box": [
+      1131.02099609375,
+      4670.45068359375,
+      1164.125,
+      4725.21533203125
+     ],
+     "features": {
+      "fill_ratio": 0.4777,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 1.6061,
+      "largest_fill_ratio": 0.4957,
+      "largest_w": 33,
+      "largest_h": 53
+     }
+    },
+    {
+     "subject": "glyph/1/1/2/0/13",
+     "class": "rest8th",
+     "page_box": [
+      1058.6826171875,
+      4670.0419921875,
+      1092.60400390625,
+      4725.6240234375
+     ],
+     "features": {
+      "fill_ratio": 0.4779,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 1.5882,
+      "largest_fill_ratio": 0.4956,
+      "largest_w": 34,
+      "largest_h": 54
+     }
+    },
+    {
+     "subject": "glyph/1/1/2/0/19",
+     "class": "restQuarter",
+     "page_box": [
+      1465.7392578125,
+      4527.0,
+      1477.59130859375,
+      4596.88623046875
+     ],
+     "features": {
+      "fill_ratio": 0.8226,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 5.8333,
+      "largest_fill_ratio": 0.8226,
+      "largest_w": 12,
+      "largest_h": 70
+     }
+    },
+    {
+     "subject": "glyph/1/1/2/1/2",
+     "class": "restWhole",
+     "page_box": [
+      1785.060546875,
+      4666.1572265625,
+      1822.953125,
+      4681.51025390625
+     ],
+     "features": {
+      "fill_ratio": 0.9539,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 0.4211,
+      "largest_fill_ratio": 0.9539,
+      "largest_w": 38,
+      "largest_h": 16
+     }
+    },
+    {
+     "subject": "glyph/1/1/2/2/4",
+     "class": "restWhole",
+     "page_box": [
+      2451.49951171875,
+      4667.61181640625,
+      2490.39892578125,
+      4679.09033203125
+     ],
+     "features": {
+      "fill_ratio": 0.9837,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 0.2821,
+      "largest_fill_ratio": 0.9837,
+      "largest_w": 39,
+      "largest_h": 11
+     }
+    },
+    {
+     "subject": "glyph/1/1/2/3/9",
+     "class": "restWhole",
+     "page_box": [
+      3085.01806640625,
+      4666.33544921875,
+      3124.31005859375,
+      4680.541015625
+     ],
+     "features": {
+      "fill_ratio": 0.9829,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 0.3846,
+      "largest_fill_ratio": 0.9829,
+      "largest_w": 39,
+      "largest_h": 15
+     }
+    },
+    {
+     "subject": "glyph/1/1/2/4/2",
+     "class": "restWhole",
+     "page_box": [
+      3674.609375,
+      4663.4931640625,
+      3714.408203125,
+      4678.6279296875
+     ],
+     "features": {
+      "fill_ratio": 0.9856,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 0.4103,
+      "largest_fill_ratio": 0.9856,
+      "largest_w": 39,
+      "largest_h": 16
+     }
+    },
+    {
+     "subject": "glyph/1/1/2/5/6",
+     "class": "restWhole",
+     "page_box": [
+      4234.45,
+      4666.975,
+      4272.675,
+      4677.425
+     ],
+     "features": {
+      "fill_ratio": 0.9821,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 0.2564,
+      "largest_fill_ratio": 0.9821,
+      "largest_w": 39,
+      "largest_h": 10
+     }
+    },
+    {
+     "subject": "glyph/1/1/2/6/0",
+     "class": "restWhole",
+     "page_box": [
+      4728.975,
+      4664.5,
+      4765.275,
+      4675.775
+     ],
+     "features": {
+      "fill_ratio": 0.9676,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 0.3333,
+      "largest_fill_ratio": 0.9676,
+      "largest_w": 36,
+      "largest_h": 12
+     }
+    },
+    {
+     "subject": "glyph/1/1/2/7/0",
+     "class": "restWhole",
+     "page_box": [
+      5217.0,
+      4655.975,
+      5256.6,
+      4671.925
+     ],
+     "features": {
+      "fill_ratio": 0.9641,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 0.4,
+      "largest_fill_ratio": 0.9641,
+      "largest_w": 40,
+      "largest_h": 16
+     }
+    },
+    {
+     "subject": "glyph/1/1/3/2/21",
+     "class": "restQuarter",
+     "page_box": [
+      2203.7548828125,
+      4951.380859375,
+      2219.37841796875,
+      5038.107421875
+     ],
+     "features": {
+      "fill_ratio": 0.6797,
+      "n_components": 4,
+      "largest_share": 0.9921,
+      "largest_aspect_h_over_w": 5.8,
+      "largest_fill_ratio": 0.6743,
+      "largest_w": 15,
+      "largest_h": 87
+     }
+    },
+    {
+     "subject": "glyph/1/1/3/3/23",
+     "class": "restQuarter",
+     "page_box": [
+      3407.5146484375,
+      4769.0,
+      3419.0,
+      4862.99853515625
+     ],
+     "features": {
+      "fill_ratio": 0.8752,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 8.5455,
+      "largest_fill_ratio": 0.8752,
+      "largest_w": 11,
+      "largest_h": 94
+     }
+    },
+    {
+     "subject": "glyph/1/1/3/6/1",
+     "class": "restQuarter",
+     "page_box": [
+      4792.94,
+      4931.105,
+      4826.3775,
+      5010.285
+     ],
+     "features": {
+      "fill_ratio": 0.5815,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 2.3636,
+      "largest_fill_ratio": 0.589,
+      "largest_w": 33,
+      "largest_h": 78
+     }
+    },
+    {
+     "subject": "glyph/1/1/3/6/2",
+     "class": "rest8th",
+     "page_box": [
+      4689.4175,
+      4946.8875,
+      4722.0525,
+      5000.9225
+     ],
+     "features": {
+      "fill_ratio": 0.5707,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 1.6364,
+      "largest_fill_ratio": 0.5707,
+      "largest_w": 33,
+      "largest_h": 54
+     }
+    },
+    {
+     "subject": "glyph/1/1/3/6/5",
+     "class": "rest8th",
+     "page_box": [
+      4894.3225,
+      4945.8175,
+      4924.55,
+      5001.4575
+     ],
+     "features": {
+      "fill_ratio": 0.5408,
+      "n_components": 2,
+      "largest_share": 0.9338,
+      "largest_aspect_h_over_w": 1.6452,
+      "largest_fill_ratio": 0.5446,
+      "largest_w": 31,
+      "largest_h": 51
+     }
+    },
+    {
+     "subject": "glyph/1/1/3/6/7",
+     "class": "restQuarter",
+     "page_box": [
+      4966.0125,
+      4861.2875,
+      4974.84,
+      4911.845
+     ],
+     "features": {
+      "fill_ratio": 0.6754,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 6.375,
+      "largest_fill_ratio": 0.7598,
+      "largest_w": 8,
+      "largest_h": 51
+     }
+    },
+    {
+     "subject": "glyph/1/1/3/7/0",
+     "class": "restWhole",
+     "page_box": [
+      5221.1,
+      4943.1425,
+      5258.55,
+      4958.925
+     ],
+     "features": {
+      "fill_ratio": 0.9967,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 0.4211,
+      "largest_fill_ratio": 0.9967,
+      "largest_w": 38,
+      "largest_h": 16
+     }
+    },
+    {
+     "subject": "glyph/1/1/3/7/1",
+     "class": "restWhole",
+     "page_box": [
+      5221.1,
+      4939.9325,
+      5256.945,
+      4956.5175
+     ],
+     "features": {
+      "fill_ratio": 0.9706,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 0.4722,
+      "largest_fill_ratio": 0.9706,
+      "largest_w": 36,
+      "largest_h": 17
+     }
+    },
+    {
+     "subject": "glyph/1/1/4/0/12",
+     "class": "restWhole",
+     "page_box": [
+      1173.52490234375,
+      5168.63330078125,
+      1199.68115234375,
+      5184.98095703125
+     ],
+     "features": {
+      "fill_ratio": 0.9856,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 0.6154,
+      "largest_fill_ratio": 0.9856,
+      "largest_w": 26,
+      "largest_h": 16
+     }
+    },
+    {
+     "subject": "glyph/1/1/4/0/13",
+     "class": "restQuarter",
+     "page_box": [
+      1059.09130859375,
+      5026.0,
+      1072.16943359375,
+      5044.7998046875
+     ],
+     "features": {
+      "fill_ratio": 0.6397,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 1.3846,
+      "largest_fill_ratio": 0.6752,
+      "largest_w": 13,
+      "largest_h": 18
+     }
+    },
+    {
+     "subject": "glyph/1/1/4/0/16",
+     "class": "restQuarter",
+     "page_box": [
+      1205.40283203125,
+      5026.0,
+      1213.57666015625,
+      5050.93017578125
+     ],
+     "features": {
+      "fill_ratio": 0.6978,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 2.6667,
+      "largest_fill_ratio": 0.7269,
+      "largest_w": 9,
+      "largest_h": 24
+     }
+    },
+    {
+     "subject": "glyph/1/1/4/0/17",
+     "class": "restWhole",
+     "page_box": [
+      1196.0029296875,
+      5172.3115234375,
+      1211.533203125,
+      5185.79833984375
+     ],
+     "features": {
+      "fill_ratio": 0.9643,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 0.875,
+      "largest_fill_ratio": 0.9643,
+      "largest_w": 16,
+      "largest_h": 14
+     }
+    },
+    {
+     "subject": "glyph/1/1/4/1/3",
+     "class": "restWhole",
+     "page_box": [
+      1789.96044921875,
+      5168.423828125,
+      1830.1396484375,
+      5183.77685546875
+     ],
+     "features": {
+      "fill_ratio": 0.9531,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 0.4,
+      "largest_fill_ratio": 0.9531,
+      "largest_w": 40,
+      "largest_h": 16
+     }
+    },
+    {
+     "subject": "glyph/1/1/4/1/7",
+     "class": "restQuarter",
+     "page_box": [
+      1730.181640625,
+      5026.0,
+      1759.25439453125,
+      5061.60595703125
+     ],
+     "features": {
+      "fill_ratio": 0.5431,
+      "n_components": 3,
+      "largest_share": 0.9753,
+      "largest_aspect_h_over_w": 1.2414,
+      "largest_fill_ratio": 0.5297,
+      "largest_w": 29,
+      "largest_h": 36
+     }
+    },
+    {
+     "subject": "glyph/1/1/4/2/1",
+     "class": "restWhole",
+     "page_box": [
+      2453.41259765625,
+      5169.16259765625,
+      2492.31201171875,
+      5180.322265625
+     ],
+     "features": {
+      "fill_ratio": 0.9814,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 0.2821,
+      "largest_fill_ratio": 0.9814,
+      "largest_w": 39,
+      "largest_h": 11
+     }
+    },
+    {
+     "subject": "glyph/1/1/4/2/3",
+     "class": "restQuarter",
+     "page_box": [
+      2413.556640625,
+      5026.0,
+      2426.310546875,
+      5050.8701171875
+     ],
+     "features": {
+      "fill_ratio": 0.7333,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 2.0833,
+      "largest_fill_ratio": 0.7333,
+      "largest_w": 12,
+      "largest_h": 25
+     }
+    },
+    {
+     "subject": "glyph/1/1/4/2/9",
+     "class": "restWhole",
+     "page_box": [
+      2453.09375,
+      5164.06103515625,
+      2492.31201171875,
+      5180.00341796875
+     ],
+     "features": {
+      "fill_ratio": 0.9872,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 0.4103,
+      "largest_fill_ratio": 0.9872,
+      "largest_w": 39,
+      "largest_h": 16
+     }
+    },
+    {
+     "subject": "glyph/1/1/4/3/9",
+     "class": "restWhole",
+     "page_box": [
+      3107.38427734375,
+      5165.033203125,
+      3125.51904296875,
+      5178.33203125
+     ],
+     "features": {
+      "fill_ratio": 0.9919,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 0.6842,
+      "largest_fill_ratio": 0.9919,
+      "largest_w": 19,
+      "largest_h": 13
+     }
+    },
+    {
+     "subject": "glyph/1/1/4/3/11",
+     "class": "restQuarter",
+     "page_box": [
+      2800.0,
+      5311.9248046875,
+      2806.95166015625,
+      5352.72802734375
+     ],
+     "features": {
+      "fill_ratio": 0.6969,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 5.8571,
+      "largest_fill_ratio": 0.6969,
+      "largest_w": 7,
+      "largest_h": 41
+     }
+    },
+    {
+     "subject": "glyph/1/1/4/3/18",
+     "class": "restWhole",
+     "page_box": [
+      3086.83154296875,
+      5159.89501953125,
+      3108.8955078125,
+      5178.02978515625
+     ],
+     "features": {
+      "fill_ratio": 0.9874,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 0.8182,
+      "largest_fill_ratio": 0.9874,
+      "largest_w": 22,
+      "largest_h": 18
+     }
+    },
+    {
+     "subject": "glyph/1/1/4/4/1",
+     "class": "restWhole",
+     "page_box": [
+      3681.0556640625,
+      5341.587890625,
+      3720.2939453125,
+      5352.23828125
+     ],
+     "features": {
+      "fill_ratio": 0.9538,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 0.2564,
+      "largest_fill_ratio": 0.9538,
+      "largest_w": 39,
+      "largest_h": 10
+     }
+    },
+    {
+     "subject": "glyph/1/1/4/4/7",
+     "class": "restWhole",
+     "page_box": [
+      3676.0107421875,
+      5166.4169921875,
+      3716.3701171875,
+      5176.5068359375
+     ],
+     "features": {
+      "fill_ratio": 0.9705,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 0.275,
+      "largest_fill_ratio": 0.9705,
+      "largest_w": 40,
+      "largest_h": 11
+     }
+    },
+    {
+     "subject": "glyph/1/1/4/5/0",
+     "class": "restWhole",
+     "page_box": [
+      4237.9775,
+      5341.01,
+      4278.58,
+      5351.6375
+     ],
+     "features": {
+      "fill_ratio": 0.9756,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 0.2683,
+      "largest_fill_ratio": 0.9756,
+      "largest_w": 41,
+      "largest_h": 11
+     }
+    },
+    {
+     "subject": "glyph/1/1/4/5/1",
+     "class": "restWhole",
+     "page_box": [
+      4238.5225,
+      5164.1575,
+      4278.58,
+      5173.695
+     ],
+     "features": {
+      "fill_ratio": 0.9725,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 0.25,
+      "largest_fill_ratio": 0.9725,
+      "largest_w": 40,
+      "largest_h": 10
+     }
+    },
+    {
+     "subject": "glyph/1/1/4/5/5",
+     "class": "restQuarter",
+     "page_box": [
+      3993.0,
+      5310.49,
+      3999.8125,
+      5353.0
+     ],
+     "features": {
+      "fill_ratio": 0.7342,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 6.1429,
+      "largest_fill_ratio": 0.7342,
+      "largest_w": 7,
+      "largest_h": 43
+     }
+    },
+    {
+     "subject": "glyph/1/1/4/6/2",
+     "class": "restWhole",
+     "page_box": [
+      4730.2,
+      5337.74,
+      4769.985,
+      5352.1825
+     ],
+     "features": {
+      "fill_ratio": 0.9625,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 0.35,
+      "largest_fill_ratio": 0.9625,
+      "largest_w": 40,
+      "largest_h": 14
+     }
+    },
+    {
+     "subject": "glyph/1/1/4/6/4",
+     "class": "restWhole",
+     "page_box": [
+      4729.11,
+      5153.2575,
+      4767.805,
+      5171.2425
+     ],
+     "features": {
+      "fill_ratio": 0.9672,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 0.4615,
+      "largest_fill_ratio": 0.9672,
+      "largest_w": 39,
+      "largest_h": 18
+     }
+    },
+    {
+     "subject": "glyph/1/1/4/7/0",
+     "class": "restWhole",
+     "page_box": [
+      5222.7025,
+      5152.985,
+      5261.67,
+      5167.4275
+     ],
+     "features": {
+      "fill_ratio": 0.9652,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 0.359,
+      "largest_fill_ratio": 0.9652,
+      "largest_w": 39,
+      "largest_h": 14
+     }
+    },
+    {
+     "subject": "glyph/1/1/4/7/1",
+     "class": "restWhole",
+     "page_box": [
+      5221.34,
+      5338.0125,
+      5259.2175,
+      5348.3675
+     ],
+     "features": {
+      "fill_ratio": 0.9974,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 0.2632,
+      "largest_fill_ratio": 0.9974,
+      "largest_w": 38,
+      "largest_h": 10
+     }
+    },
+    {
+     "subject": "glyph/1/1/4/7/8",
+     "class": "restWhole",
+     "page_box": [
+      5219.16,
+      5338.83,
+      5245.865,
+      5348.64
+     ],
+     "features": {
+      "fill_ratio": 0.9519,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 0.3846,
+      "largest_fill_ratio": 0.9885,
+      "largest_w": 26,
+      "largest_h": 10
+     }
+    },
+    {
+     "subject": "glyph/1/1/5/0/2",
+     "class": "restWhole",
+     "page_box": [
+      1171.4814453125,
+      5362.9462890625,
+      1210.30712890625,
+      5370.71142578125
+     ],
+     "features": {
+      "fill_ratio": 0.891,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 0.2105,
+      "largest_fill_ratio": 0.9145,
+      "largest_w": 38,
+      "largest_h": 8
+     }
+    },
+    {
+     "subject": "glyph/1/1/5/1/0",
+     "class": "restWhole",
+     "page_box": [
+      1790.61376953125,
+      5348.60400390625,
+      1834.712890625,
+      5366.5703125
+     ],
+     "features": {
+      "fill_ratio": 0.9596,
+      "n_components": 2,
+      "largest_share": 0.9987,
+      "largest_aspect_h_over_w": 0.4091,
+      "largest_fill_ratio": 0.9583,
+      "largest_w": 44,
+      "largest_h": 18
+     }
+    },
+    {
+     "subject": "glyph/1/1/5/1/3",
+     "class": "restQuarter",
+     "page_box": [
+      2138.5068359375,
+      5475.34814453125,
+      2147.0,
+      5541.98681640625
+     ],
+     "features": {
+      "fill_ratio": 0.7556,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 8.375,
+      "largest_fill_ratio": 0.7556,
+      "largest_w": 8,
+      "largest_h": 67
+     }
+    },
+    {
+     "subject": "glyph/1/1/5/2/0",
+     "class": "restWhole",
+     "page_box": [
+      2455.0068359375,
+      5351.78564453125,
+      2495.8193359375,
+      5365.17724609375
+     ],
+     "features": {
+      "fill_ratio": 0.9475,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 0.3171,
+      "largest_fill_ratio": 0.9475,
+      "largest_w": 41,
+      "largest_h": 13
+     }
+    },
+    {
+     "subject": "glyph/1/1/5/2/7",
+     "class": "restQuarter",
+     "page_box": [
+      2792.66650390625,
+      5467.52734375,
+      2800.0,
+      5541.81884765625
+     ],
+     "features": {
+      "fill_ratio": 0.8475,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 10.5714,
+      "largest_fill_ratio": 0.8475,
+      "largest_w": 7,
+      "largest_h": 74
+     }
+    },
+    {
+     "subject": "glyph/1/1/5/3/0",
+     "class": "restWhole",
+     "page_box": [
+      3088.3427734375,
+      5354.33544921875,
+      3128.54150390625,
+      5363.705078125
+     ],
+     "features": {
+      "fill_ratio": 0.8878,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 0.25,
+      "largest_fill_ratio": 0.91,
+      "largest_w": 40,
+      "largest_h": 10
+     }
+    },
+    {
+     "subject": "glyph/1/1/5/3/2",
+     "class": "restWhole",
+     "page_box": [
+      3089.85400390625,
+      5529.9404296875,
+      3128.54150390625,
+      5541.12353515625
+     ],
+     "features": {
+      "fill_ratio": 0.9814,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 0.2821,
+      "largest_fill_ratio": 0.9814,
+      "largest_w": 39,
+      "largest_h": 11
+     }
+    },
+    {
+     "subject": "glyph/1/1/5/4/0",
+     "class": "restWhole",
+     "page_box": [
+      3681.3359375,
+      5345.607421875,
+      3718.33203125,
+      5359.3408203125
+     ],
+     "features": {
+      "fill_ratio": 0.9751,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 0.3514,
+      "largest_fill_ratio": 0.9751,
+      "largest_w": 37,
+      "largest_h": 13
+     }
+    },
+    {
+     "subject": "glyph/1/1/5/4/4",
+     "class": "restWhole",
+     "page_box": [
+      3678.533203125,
+      5530.587890625,
+      3720.013671875,
+      5541.23828125
+     ],
+     "features": {
+      "fill_ratio": 0.9805,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 0.2439,
+      "largest_fill_ratio": 0.9805,
+      "largest_w": 41,
+      "largest_h": 10
+     }
+    },
+    {
+     "subject": "glyph/1/1/5/4/9",
+     "class": "restWhole",
+     "page_box": [
+      3678.2529296875,
+      5525.8232421875,
+      3719.7333984375,
+      5540.1171875
+     ],
+     "features": {
+      "fill_ratio": 0.9762,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 0.3333,
+      "largest_fill_ratio": 0.9762,
+      "largest_w": 42,
+      "largest_h": 14
+     }
+    },
+    {
+     "subject": "glyph/1/1/5/4/11",
+     "class": "restWhole",
+     "page_box": [
+      3681.0556640625,
+      5341.123046875,
+      3702.9169921875,
+      5359.060546875
+     ],
+     "features": {
+      "fill_ratio": 0.9495,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 0.8182,
+      "largest_fill_ratio": 0.9495,
+      "largest_w": 22,
+      "largest_h": 18
+     }
+    },
+    {
+     "subject": "glyph/1/1/5/5/3",
+     "class": "restWhole",
+     "page_box": [
+      4258.415,
+      5529.7375,
+      4281.305,
+      5538.73
+     ],
+     "features": {
+      "fill_ratio": 0.9662,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 0.3913,
+      "largest_fill_ratio": 0.9662,
+      "largest_w": 23,
+      "largest_h": 9
+     }
+    },
+    {
+     "subject": "glyph/1/1/5/5/6",
+     "class": "restWhole",
+     "page_box": [
+      4243.4275,
+      5532.19,
+      4263.5925,
+      5539.0025
+     ],
+     "features": {
+      "fill_ratio": 0.966,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 0.3333,
+      "largest_fill_ratio": 0.966,
+      "largest_w": 21,
+      "largest_h": 7
+     }
+    },
+    {
+     "subject": "glyph/1/1/5/5/9",
+     "class": "restWhole",
+     "page_box": [
+      4237.705,
+      5347.98,
+      4278.3075,
+      5358.88
+     ],
+     "features": {
+      "fill_ratio": 0.8477,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 0.25,
+      "largest_fill_ratio": 0.9325,
+      "largest_w": 40,
+      "largest_h": 10
+     }
+    },
+    {
+     "subject": "glyph/1/1/5/6/0",
+     "class": "restWhole",
+     "page_box": [
+      4730.2,
+      5341.985,
+      4770.8025,
+      5353.43
+     ],
+     "features": {
+      "fill_ratio": 0.9202,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 0.2683,
+      "largest_fill_ratio": 0.9202,
+      "largest_w": 41,
+      "largest_h": 11
+     }
+    },
+    {
+     "subject": "glyph/1/1/5/6/3",
+     "class": "restWhole",
+     "page_box": [
+      4734.015,
+      5495.9475,
+      4772.165,
+      5509.3
+     ],
+     "features": {
+      "fill_ratio": 0.9838,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 0.3421,
+      "largest_fill_ratio": 0.9838,
+      "largest_w": 38,
+      "largest_h": 13
+     }
+    },
+    {
+     "subject": "glyph/1/1/5/6/7",
+     "class": "restQuarter",
+     "page_box": [
+      4964.2775,
+      5433.545,
+      4974.905,
+      5482.595
+     ],
+     "features": {
+      "fill_ratio": 0.1224,
+      "n_components": 2,
+      "largest_share": 0.9545,
+      "largest_aspect_h_over_w": 1.0,
+      "largest_fill_ratio": 0.5207,
+      "largest_w": 11,
+      "largest_h": 11
+     }
+    },
+    {
+     "subject": "glyph/1/1/5/6/10",
+     "class": "restWhole",
+     "page_box": [
+      4729.655,
+      5334.6275,
+      4775.435,
+      5346.0725
+     ],
+     "features": {
+      "fill_ratio": 0.9192,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 0.2444,
+      "largest_fill_ratio": 0.9192,
+      "largest_w": 45,
+      "largest_h": 11
+     }
+    },
+    {
+     "subject": "glyph/1/1/5/6/11",
+     "class": "restWhole",
+     "page_box": [
+      4732.38,
+      5494.585,
+      4763.7175,
+      5510.1175
+     ],
+     "features": {
+      "fill_ratio": 0.9229,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 0.4688,
+      "largest_fill_ratio": 0.9229,
+      "largest_w": 32,
+      "largest_h": 15
+     }
+    },
+    {
+     "subject": "glyph/1/1/5/7/1",
+     "class": "restWhole",
+     "page_box": [
+      5219.705,
+      5335.1725,
+      5258.945,
+      5349.3425
+     ],
+     "features": {
+      "fill_ratio": 0.9927,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 0.359,
+      "largest_fill_ratio": 0.9927,
+      "largest_w": 39,
+      "largest_h": 14
+     }
+    },
+    {
+     "subject": "glyph/1/1/6/0/2",
+     "class": "restWhole",
+     "page_box": [
+      1169.43798828125,
+      5533.3203125,
+      1209.0810546875,
+      5551.71142578125
+     ],
+     "features": {
+      "fill_ratio": 0.9618,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 0.475,
+      "largest_fill_ratio": 0.9618,
+      "largest_w": 40,
+      "largest_h": 19
+     }
+    },
+    {
+     "subject": "glyph/1/1/6/1/0",
+     "class": "restWhole",
+     "page_box": [
+      1792.900390625,
+      5533.8505859375,
+      1835.69287109375,
+      5548.55029296875
+     ],
+     "features": {
+      "fill_ratio": 0.9473,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 0.3488,
+      "largest_fill_ratio": 0.9473,
+      "largest_w": 43,
+      "largest_h": 15
+     }
+    },
+    {
+     "subject": "glyph/1/1/6/2/3",
+     "class": "restWhole",
+     "page_box": [
+      2456.2822265625,
+      5534.3798828125,
+      2494.86279296875,
+      5546.49609375
+     ],
+     "features": {
+      "fill_ratio": 0.9509,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 0.3077,
+      "largest_fill_ratio": 0.9509,
+      "largest_w": 39,
+      "largest_h": 12
+     }
+    },
+    {
+     "subject": "glyph/1/1/6/2/6",
+     "class": "restQuarter",
+     "page_box": [
+      2792.66650390625,
+      5672.44091796875,
+      2800.0,
+      5725.6884765625
+     ],
+     "features": {
+      "fill_ratio": 0.7249,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 7.7143,
+      "largest_fill_ratio": 0.7249,
+      "largest_w": 7,
+      "largest_h": 54
+     }
+    },
+    {
+     "subject": "glyph/1/1/6/2/7",
+     "class": "restWhole",
+     "page_box": [
+      2455.32568359375,
+      5538.84375,
+      2494.86279296875,
+      5547.1337890625
+     ],
+     "features": {
+      "fill_ratio": 0.8812,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 0.2051,
+      "largest_fill_ratio": 0.9038,
+      "largest_w": 39,
+      "largest_h": 8
+     }
+    },
+    {
+     "subject": "glyph/1/1/6/3/0",
+     "class": "restWhole",
+     "page_box": [
+      3088.947265625,
+      5537.75341796875,
+      3127.93701171875,
+      5546.21630859375
+     ],
+     "features": {
+      "fill_ratio": 0.8782,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 0.2051,
+      "largest_fill_ratio": 0.8782,
+      "largest_w": 39,
+      "largest_h": 8
+     }
+    },
+    {
+     "subject": "glyph/1/1/6/4/0",
+     "class": "restWhole",
+     "page_box": [
+      3679.09375,
+      5524.365234375,
+      3716.08984375,
+      5542.5830078125
+     ],
+     "features": {
+      "fill_ratio": 0.9559,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 0.5135,
+      "largest_fill_ratio": 0.9559,
+      "largest_w": 37,
+      "largest_h": 19
+     }
+    },
+    {
+     "subject": "glyph/1/1/6/5/0",
+     "class": "restWhole",
+     "page_box": [
+      4246.55,
+      5524.7,
+      4281.475,
+      5539.55
+     ],
+     "features": {
+      "fill_ratio": 0.9667,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 0.4412,
+      "largest_fill_ratio": 0.9667,
+      "largest_w": 34,
+      "largest_h": 15
+     }
+    },
+    {
+     "subject": "glyph/1/1/6/6/4",
+     "class": "restWhole",
+     "page_box": [
+      4731.45,
+      5498.025,
+      4771.05,
+      5509.575
+     ],
+     "features": {
+      "fill_ratio": 0.9521,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 0.3077,
+      "largest_fill_ratio": 0.9765,
+      "largest_w": 39,
+      "largest_h": 12
+     }
+    },
+    {
+     "subject": "glyph/1/1/6/6/10",
+     "class": "restQuarter",
+     "page_box": [
+      4964.925,
+      5396.825,
+      4974.825,
+      5492.25
+     ],
+     "features": {
+      "fill_ratio": 0.2726,
+      "n_components": 4,
+      "largest_share": 0.722,
+      "largest_aspect_h_over_w": 3.3,
+      "largest_fill_ratio": 0.5667,
+      "largest_w": 10,
+      "largest_h": 33
+     }
+    },
+    {
+     "subject": "glyph/1/1/7/0/1",
+     "class": "restWhole",
+     "page_box": [
+      1171.89013671875,
+      5764.54638671875,
+      1212.75927734375,
+      5780.4853515625
+     ],
+     "features": {
+      "fill_ratio": 0.9642,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 0.3659,
+      "largest_fill_ratio": 0.9642,
+      "largest_w": 41,
+      "largest_h": 15
+     }
+    },
+    {
+     "subject": "glyph/1/1/7/1/0",
+     "class": "restWhole",
+     "page_box": [
+      1797.14697265625,
+      5759.60400390625,
+      1837.9794921875,
+      5778.2236328125
+     ],
+     "features": {
+      "fill_ratio": 0.977,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 0.439,
+      "largest_fill_ratio": 0.977,
+      "largest_w": 41,
+      "largest_h": 18
+     }
+    },
+    {
+     "subject": "glyph/1/1/7/2/0",
+     "class": "restWhole",
+     "page_box": [
+      2454.05029296875,
+      5761.51025390625,
+      2498.05126953125,
+      5774.5830078125
+     ],
+     "features": {
+      "fill_ratio": 0.9563,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 0.2955,
+      "largest_fill_ratio": 0.9563,
+      "largest_w": 44,
+      "largest_h": 13
+     }
+    },
+    {
+     "subject": "glyph/1/1/7/4/7",
+     "class": "restWhole",
+     "page_box": [
+      3683.2978515625,
+      5762.212890625,
+      3720.57421875,
+      5770.3408203125
+     ],
+     "features": {
+      "fill_ratio": 0.9934,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 0.2105,
+      "largest_fill_ratio": 0.9934,
+      "largest_w": 38,
+      "largest_h": 8
+     }
+    },
+    {
+     "subject": "glyph/1/1/7/5/1",
+     "class": "restWhole",
+     "page_box": [
+      4240.7025,
+      5752.44,
+      4280.215,
+      5768.245
+     ],
+     "features": {
+      "fill_ratio": 0.9984,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 0.4103,
+      "largest_fill_ratio": 0.9984,
+      "largest_w": 39,
+      "largest_h": 16
+     }
+    },
+    {
+     "subject": "glyph/1/1/8/0/8",
+     "class": "rest8th",
+     "page_box": [
+      949.970703125,
+      6023.18115234375,
+      983.07470703125,
+      6076.7197265625
+     ],
+     "features": {
+      "fill_ratio": 0.5365,
+      "n_components": 3,
+      "largest_share": 0.9979,
+      "largest_aspect_h_over_w": 1.6364,
+      "largest_fill_ratio": 0.5354,
+      "largest_w": 33,
+      "largest_h": 54
+     }
+    },
+    {
+     "subject": "glyph/1/1/8/2/19",
+     "class": "restQuarter",
+     "page_box": [
+      2450.22412109375,
+      5985.98779296875,
+      2465.84765625,
+      6081.00439453125
+     ],
+     "features": {
+      "fill_ratio": 0.6664,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 5.9375,
+      "largest_fill_ratio": 0.6664,
+      "largest_w": 16,
+      "largest_h": 95
+     }
+    },
+    {
+     "subject": "glyph/1/1/8/4/12",
+     "class": "restQuarter",
+     "page_box": [
+      3419.0,
+      6111.142578125,
+      3432.1728515625,
+      6203.9130859375
+     ],
+     "features": {
+      "fill_ratio": 0.6369,
+      "n_components": 5,
+      "largest_share": 0.987,
+      "largest_aspect_h_over_w": 7.1538,
+      "largest_fill_ratio": 0.6286,
+      "largest_w": 13,
+      "largest_h": 93
+     }
+    },
+    {
+     "subject": "glyph/1/1/9/1/25",
+     "class": "restQuarter",
+     "page_box": [
+      1767.4208984375,
+      6256.50390625,
+      1793.88037109375,
+      6361.03515625
+     ],
+     "features": {
+      "fill_ratio": 0.4975,
+      "n_components": 3,
+      "largest_share": 0.9964,
+      "largest_aspect_h_over_w": 3.8519,
+      "largest_fill_ratio": 0.4957,
+      "largest_w": 27,
+      "largest_h": 104
+     }
+    },
+    {
+     "subject": "glyph/1/1/9/4/1",
+     "class": "rest8th",
+     "page_box": [
+      3627.5234375,
+      6257.015625,
+      3660.595703125,
+      6309.4267578125
+     ],
+     "features": {
+      "fill_ratio": 0.5822,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 1.5758,
+      "largest_fill_ratio": 0.5822,
+      "largest_w": 33,
+      "largest_h": 52
+     }
+    },
+    {
+     "subject": "glyph/1/1/9/4/3",
+     "class": "rest8th",
+     "page_box": [
+      3876.40625,
+      6257.2958984375,
+      3909.1982421875,
+      6304.662109375
+     ],
+     "features": {
+      "fill_ratio": 0.5612,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 1.4545,
+      "largest_fill_ratio": 0.5612,
+      "largest_w": 33,
+      "largest_h": 48
+     }
+    },
+    {
+     "subject": "glyph/1/1/9/4/4",
+     "class": "restQuarter",
+     "page_box": [
+      3700.1142578125,
+      6234.8740234375,
+      3733.1865234375,
+      6313.9111328125
+     ],
+     "features": {
+      "fill_ratio": 0.5681,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 2.3333,
+      "largest_fill_ratio": 0.5828,
+      "largest_w": 33,
+      "largest_h": 77
+     }
+    },
+    {
+     "subject": "glyph/1/1/9/5/2",
+     "class": "restWhole",
+     "page_box": [
+      4243.155,
+      6246.8925,
+      4281.305,
+      6264.06
+     ],
+     "features": {
+      "fill_ratio": 0.9412,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 0.4474,
+      "largest_fill_ratio": 0.9412,
+      "largest_w": 38,
+      "largest_h": 17
+     }
+    },
+    {
+     "subject": "glyph/1/1/9/5/3",
+     "class": "restQuarter",
+     "page_box": [
+      3993.8175,
+      6271.9625,
+      4006.3525,
+      6341.45
+     ],
+     "features": {
+      "fill_ratio": 0.8478,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 5.75,
+      "largest_fill_ratio": 0.8478,
+      "largest_w": 12,
+      "largest_h": 69
+     }
+    },
+    {
+     "subject": "glyph/1/1/9/6/15",
+     "class": "restQuarter",
+     "page_box": [
+      4608.3925,
+      6118.0,
+      4628.83,
+      6145.5225
+     ],
+     "features": {
+      "fill_ratio": 0.5153,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 1.3333,
+      "largest_fill_ratio": 0.5153,
+      "largest_w": 21,
+      "largest_h": 28
+     }
+    },
+    {
+     "subject": "glyph/1/1/10/0/1",
+     "class": "rest8th",
+     "page_box": [
+      954.0576171875,
+      6546.90283203125,
+      986.34423828125,
+      6598.39794921875
+     ],
+     "features": {
+      "fill_ratio": 0.568,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 1.5938,
+      "largest_fill_ratio": 0.568,
+      "largest_w": 32,
+      "largest_h": 51
+     }
+    },
+    {
+     "subject": "glyph/1/1/10/2/27",
+     "class": "restQuarter",
+     "page_box": [
+      2418.97705078125,
+      6566.48193359375,
+      2456.919921875,
+      6650.65771484375
+     ],
+     "features": {
+      "fill_ratio": 0.5328,
+      "n_components": 4,
+      "largest_share": 0.9971,
+      "largest_aspect_h_over_w": 2.2105,
+      "largest_fill_ratio": 0.5376,
+      "largest_w": 38,
+      "largest_h": 84
+     }
+    },
+    {
+     "subject": "glyph/1/1/10/4/1",
+     "class": "restQuarter",
+     "page_box": [
+      3699.5537109375,
+      6516.1923828125,
+      3731.5048828125,
+      6601.115234375
+     ],
+     "features": {
+      "fill_ratio": 0.5827,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 2.5938,
+      "largest_fill_ratio": 0.5968,
+      "largest_w": 32,
+      "largest_h": 83
+     }
+    },
+    {
+     "subject": "glyph/1/1/10/4/3",
+     "class": "rest8th",
+     "page_box": [
+      3629.205078125,
+      6538.0537109375,
+      3661.9970703125,
+      6592.4267578125
+     ],
+     "features": {
+      "fill_ratio": 0.5522,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 1.6364,
+      "largest_fill_ratio": 0.5522,
+      "largest_w": 33,
+      "largest_h": 54
+     }
+    },
+    {
+     "subject": "glyph/1/1/10/4/4",
+     "class": "rest8th",
+     "page_box": [
+      3876.40625,
+      6534.6904296875,
+      3906.9560546875,
+      6586.2607421875
+     ],
+     "features": {
+      "fill_ratio": 0.5585,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 1.6452,
+      "largest_fill_ratio": 0.5585,
+      "largest_w": 31,
+      "largest_h": 51
+     }
+    },
+    {
+     "subject": "glyph/1/1/10/5/0",
+     "class": "restWhole",
+     "page_box": [
+      4243.86,
+      6525.5975,
+      4286.8725,
+      6542.2475
+     ],
+     "features": {
+      "fill_ratio": 0.9549,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 0.3721,
+      "largest_fill_ratio": 0.9549,
+      "largest_w": 43,
+      "largest_h": 16
+     }
+    },
+    {
+     "subject": "glyph/1/1/11/1/17",
+     "class": "restQuarter",
+     "page_box": [
+      1771.3408203125,
+      6778.60400390625,
+      1787.673828125,
+      6857.00244140625
+     ],
+     "features": {
+      "fill_ratio": 0.6456,
+      "n_components": 3,
+      "largest_share": 0.9977,
+      "largest_aspect_h_over_w": 4.5882,
+      "largest_fill_ratio": 0.644,
+      "largest_w": 17,
+      "largest_h": 78
+     }
+    },
+    {
+     "subject": "glyph/1/1/11/4/2",
+     "class": "rest8th",
+     "page_box": [
+      3628.083984375,
+      6772.5244140625,
+      3661.15625,
+      6828.5791015625
+     ],
+     "features": {
+      "fill_ratio": 0.5482,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 1.697,
+      "largest_fill_ratio": 0.5482,
+      "largest_w": 33,
+      "largest_h": 56
+     }
+    },
+    {
+     "subject": "glyph/1/1/11/4/3",
+     "class": "rest8th",
+     "page_box": [
+      3878.3681640625,
+      6777.0087890625,
+      3910.599609375,
+      6828.298828125
+     ],
+     "features": {
+      "fill_ratio": 0.5835,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 1.5455,
+      "largest_fill_ratio": 0.5835,
+      "largest_w": 33,
+      "largest_h": 51
+     }
+    },
+    {
+     "subject": "glyph/1/1/11/4/4",
+     "class": "restQuarter",
+     "page_box": [
+      3703.4775390625,
+      6757.3896484375,
+      3735.9892578125,
+      6829.98046875
+     ],
+     "features": {
+      "fill_ratio": 0.5849,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 2.1818,
+      "largest_fill_ratio": 0.593,
+      "largest_w": 33,
+      "largest_h": 72
+     }
+    },
+    {
+     "subject": "glyph/1/1/11/4/6",
+     "class": "rest8th",
+     "page_box": [
+      3878.087890625,
+      6775.3271484375,
+      3908.0771484375,
+      6796.34765625
+     ],
+     "features": {
+      "fill_ratio": 0.7016,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 0.6667,
+      "largest_fill_ratio": 0.7367,
+      "largest_w": 30,
+      "largest_h": 20
+     }
+    },
+    {
+     "subject": "glyph/1/1/11/5/0",
+     "class": "restWhole",
+     "page_box": [
+      4247.515,
+      6769.805,
+      4286.755,
+      6782.885
+     ],
+     "features": {
+      "fill_ratio": 0.9822,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 0.3333,
+      "largest_fill_ratio": 0.9822,
+      "largest_w": 39,
+      "largest_h": 13
+     }
+    },
+    {
+     "subject": "glyph/1/1/11/5/1",
+     "class": "restWhole",
+     "page_box": [
+      4248.3325,
+      6765.99,
+      4286.21,
+      6780.705
+     ],
+     "features": {
+      "fill_ratio": 0.993,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 0.3947,
+      "largest_fill_ratio": 0.993,
+      "largest_w": 38,
+      "largest_h": 15
+     }
+    },
+    {
+     "subject": "glyph/1/1/11/6/8",
+     "class": "restQuarter",
+     "page_box": [
+      4534.2725,
+      6787.79,
+      4549.5325,
+      6851.8275
+     ],
+     "features": {
+      "fill_ratio": 0.7002,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 4.0,
+      "largest_fill_ratio": 0.7002,
+      "largest_w": 16,
+      "largest_h": 64
+     }
+    },
+    {
+     "subject": "glyph/1/1/12/0/14",
+     "class": "rest8th",
+     "page_box": [
+      954.46630859375,
+      7000.859375,
+      987.97900390625,
+      7052.3544921875
+     ],
+     "features": {
+      "fill_ratio": 0.5779,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 1.5,
+      "largest_fill_ratio": 0.5779,
+      "largest_w": 34,
+      "largest_h": 51
+     }
+    },
+    {
+     "subject": "glyph/1/1/12/2/5",
+     "class": "restQuarter",
+     "page_box": [
+      2191.638671875,
+      7022.80078125,
+      2213.00146484375,
+      7105.38232421875
+     ],
+     "features": {
+      "fill_ratio": 0.4913,
+      "n_components": 5,
+      "largest_share": 0.9858,
+      "largest_aspect_h_over_w": 3.5714,
+      "largest_fill_ratio": 0.5295,
+      "largest_w": 21,
+      "largest_h": 75
+     }
+    },
+    {
+     "subject": "glyph/1/1/12/4/1",
+     "class": "restQuarter",
+     "page_box": [
+      3702.9169921875,
+      6967.1474609375,
+      3734.587890625,
+      7051.7900390625
+     ],
+     "features": {
+      "fill_ratio": 0.5493,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 2.625,
+      "largest_fill_ratio": 0.5558,
+      "largest_w": 32,
+      "largest_h": 84
+     }
+    },
+    {
+     "subject": "glyph/1/1/12/4/3",
+     "class": "rest8th",
+     "page_box": [
+      3879.208984375,
+      6985.0849609375,
+      3911.720703125,
+      7039.4580078125
+     ],
+     "features": {
+      "fill_ratio": 0.5084,
+      "n_components": 3,
+      "largest_share": 0.9879,
+      "largest_aspect_h_over_w": 1.6364,
+      "largest_fill_ratio": 0.5022,
+      "largest_w": 33,
+      "largest_h": 54
+     }
+    },
+    {
+     "subject": "glyph/1/1/12/5/0",
+     "class": "restWhole",
+     "page_box": [
+      4250.675,
+      6986.25,
+      4288.9,
+      6995.05
+     ],
+     "features": {
+      "fill_ratio": 0.9854,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 0.2368,
+      "largest_fill_ratio": 0.9854,
+      "largest_w": 38,
+      "largest_h": 9
+     }
+    },
+    {
+     "subject": "glyph/1/1/12/6/3",
+     "class": "restWhole",
+     "page_box": [
+      4739.975,
+      6977.725,
+      4778.2,
+      6991.475
+     ],
+     "features": {
+      "fill_ratio": 0.9879,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 0.3421,
+      "largest_fill_ratio": 0.9879,
+      "largest_w": 38,
+      "largest_h": 13
+     }
+    },
+    {
+     "subject": "glyph/1/1/12/7/0",
+     "class": "restWhole",
+     "page_box": [
+      5227.45,
+      6971.4,
+      5265.125,
+      6983.775
+     ],
+     "features": {
+      "fill_ratio": 0.9798,
+      "n_components": 1,
+      "largest_share": 1.0,
+      "largest_aspect_h_over_w": 0.3421,
+      "largest_fill_ratio": 0.9798,
+      "largest_w": 38,
+      "largest_h": 13
+     }
+    }
+   ]
+  }
+ },
+ "sean_confirmed_notehead": null
+}

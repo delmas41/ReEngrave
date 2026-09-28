@@ -314,6 +314,50 @@ def _fit_for_clef(rows, clef):
     return None, None
 
 
+def _keysig_marker_glyph_refused(ev: Evidence, subject, mark) -> bool:
+    """Does the `Q.GLYPH_BOX` glyph THIS `Q.KEYSIG_MARKER` row IS carry a
+    DECIDED `Q.KEYSIG_MARKER_IS_NOT_A_MARKER` refusal? ROADMAP 3.4g-4.
+
+    ⚠️ A JOIN BY FRAME, CLASS AND POINT — THE SAME ONE `ownership.
+    _keysig_marker_row` MAKES, IN THE OPPOSITE DIRECTION. That function finds
+    the marker row an ACCIDENTAL glyph IS; this finds the GLYPH a marker row
+    IS, because `gather._gather_keysig_markers` files `Q.KEYSIG_MARKER` on the
+    STAFF with no glyph subject of its own — the detection's own
+    `detector_class`, canonical `x` and `y_center` are the only handle back to
+    the `Q.GLYPH_BOX` row the SAME detection also produced. The glyph's class
+    and integer `x` agree with the marker's exactly and `y + h/2` to the
+    detector's rounding, which is why the tolerances below are copied from
+    that function rather than re-measured.
+    """
+    d = mark.detail or {}
+    try:
+        mx = float(d.get("x"))
+        my = float(d.get("y_center"))
+    except (TypeError, ValueError):
+        return False
+    cls = d.get("detector_class") or str(mark.value)
+    frame = str(mark.frame)
+    sub = subject if subject is not None else ev.subject
+    for row in ev.rows(Q.GLYPH_BOX, scope=Scope.SELF_AND_DESCENDANTS,
+                       subject=sub):
+        if str(row.frame) != frame:
+            continue
+        v = row.value
+        if not isinstance(v, (list, tuple)) or len(v) != 5:
+            continue
+        name, x, y, _w, h = v
+        if str(name) != str(cls):
+            continue
+        if abs(float(x) - mx) >= 0.5 \
+                or abs((float(y) + float(h) / 2.0) - my) > 1.0:
+            continue
+        refusal = ev.verdict(Q.KEYSIG_MARKER_IS_NOT_A_MARKER,
+                             subject=row.subject)
+        return (refusal is not None and refusal.outcome is Outcome.DECIDED
+                and refusal.value is True)
+    return False
+
+
 def _staff_reading(ev: Evidence, subject=None) -> Optional[Ruling]:
     """What ONE staff's header says, before any system check.
 
@@ -325,12 +369,22 @@ def _staff_reading(ev: Evidence, subject=None) -> Optional[Ruling]:
     rather than a second copy of the precedence. One projection, two callers
     — `_spans_from_numbering`'s discipline, and the reason the tally and the
     staff verdict cannot drift apart.
+
+    ⚠️ ROADMAP 3.4g-4: `_keysig_marker_glyph_refused` IS CALLED DIRECTLY HERE
+    AND NOT THROUGH A SECOND WRAPPER, for the reason `adjudicate_part_key`'s
+    own docstring already states about this same function: a wrapper existed
+    around `_staff_reading` itself until `inventory --check` reported the
+    decisions declaring `input_domain`/`cell_staff_space` and reading neither
+    — `_never_read` follows the call chain three levels deep inside the
+    module, and one extra hop pushed the helpers doing the actual reading out
+    of reach. A fourth hop here would do it again.
     """
     clef = ev.verdict(Q.CLEF, subject=subject)
     if clef is None or clef.value is None:
         return None
 
-    marks = ev.rows(Q.KEYSIG_MARKER, subject=subject)
+    marks = tuple(m for m in ev.rows(Q.KEYSIG_MARKER, subject=subject)
+                 if not _keysig_marker_glyph_refused(ev, subject, m))
     fifths, reason, detail = _marker_run(marks, _cell0_space(ev, subject))
 
     fits = ev.rows(Q.KEYSIG_CLEF_FIT, subject=subject)
@@ -463,9 +517,14 @@ def _transposition(ev: Evidence, subject):
 #: a quantity missing from either declaration would raise inside the other
 #: decision's call of the same function — a failure that would only appear on
 #: whichever document happened to reach that branch first.
+#: ⚠️ ROADMAP 3.4g-4 ADDS `Q.GLYPH_BOX` AND `Q.KEYSIG_MARKER_IS_NOT_A_MARKER`:
+#: `_keysig_marker_glyph_refused` (called from `_staff_reading`, shared by all
+#: three decisions below) rejoins a marker row to the `Q.GLYPH_BOX` glyph it
+#: was built from and reads that glyph's refusal verdict off it.
 _KEY_WANTS = (Q.KEYSIG_RUN_POSITION, Q.KEYSIG_MARKER, Q.KEYSIG_CLEF_FIT,
               Q.KEYSIG_TEMPLATE_FIT, Q.CLEF, Q.INPUT_DOMAIN,
-              Q.CELL_STAFF_SPACE, Q.MARGIN_LABEL)
+              Q.CELL_STAFF_SPACE, Q.MARGIN_LABEL, Q.GLYPH_BOX,
+              Q.KEYSIG_MARKER_IS_NOT_A_MARKER)
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -960,7 +1019,8 @@ def _part_checked(ev: Evidence, subject, reading: Ruling) -> Ruling:
     ),
     implicates=(Q.PART_KEY, Q.KEY_SIGNATURE, Q.SLOT_INDEX, Q.MARGIN_LABEL),
     composed_from=(Q.KEYSIG_MARKER, Q.KEYSIG_CLEF_FIT, Q.KEYSIG_TEMPLATE_FIT,
-                   Q.CLEF, Q.SLOT_INDEX, Q.MARGIN_LABEL, Q.SYSTEM_KEY),
+                   Q.CLEF, Q.SLOT_INDEX, Q.MARGIN_LABEL, Q.SYSTEM_KEY,
+                   Q.GLYPH_BOX, Q.KEYSIG_MARKER_IS_NOT_A_MARKER),
     scope=Kind.DOCUMENT,
     wants=_KEY_WANTS + (Q.SYSTEM_KEY, Q.SLOT_INDEX, Q.INSTRUMENT),
     reasons=("read", "no_staff_read_a_key"),
@@ -1121,7 +1181,8 @@ def adjudicate_part_key(ev: Evidence) -> Ruling:
     ),
     implicates=(Q.SYSTEM_KEY, Q.KEY_SIGNATURE, Q.CLEF, Q.MARGIN_LABEL),
     composed_from=(Q.KEYSIG_MARKER, Q.KEYSIG_CLEF_FIT, Q.KEYSIG_TEMPLATE_FIT,
-                   Q.CLEF, Q.MARGIN_LABEL),
+                   Q.CLEF, Q.MARGIN_LABEL, Q.GLYPH_BOX,
+                   Q.KEYSIG_MARKER_IS_NOT_A_MARKER),
     scope=Kind.SYSTEM,
     wants=_KEY_WANTS,
     reasons=("read", "one_staff_only", "no_staff_read_a_key"),
@@ -1208,7 +1269,8 @@ def adjudicate_system_key(ev: Evidence) -> Ruling:
     implicates=(Q.KEY_SIGNATURE, Q.CLEF, Q.KEYSIG_RUN_POSITION,
                 Q.KEYSIG_MARKER),
     composed_from=(Q.KEYSIG_MARKER, Q.KEYSIG_RUN_POSITION,
-                   Q.KEYSIG_TEMPLATE_FIT, Q.CLEF),
+                   Q.KEYSIG_TEMPLATE_FIT, Q.CLEF, Q.GLYPH_BOX,
+                   Q.KEYSIG_MARKER_IS_NOT_A_MARKER),
     scope=Kind.STAFF,
     wants=_KEY_WANTS + (Q.SYSTEM_KEY, Q.PART_KEY, Q.SLOT_INDEX, Q.INSTRUMENT),
     reasons=("markers", "fitted_no_markers", "needs_clef",
