@@ -1,0 +1,85 @@
+{
+ "adjudicator": "Sean",
+ "date": "2026-09-27",
+ "method": "11 'cal-other-to-decided' crops shown in chat; Sean: 'Rest crop 1-4 whole, 5 is a quarter note head - not a rest, 6-11 whole rests'",
+ "verdicts": [
+  {
+   "n": 1,
+   "crop": "beethoven5-litolff-p12-s0-st4-c2-g1-cal-other-to-decided.png",
+   "rule_decided": "whole",
+   "sean": "whole rest",
+   "rule_right": true
+  },
+  {
+   "n": 2,
+   "crop": "beethoven5-litolff-p14-s0-st1-c5-g0-cal-other-to-decided.png",
+   "rule_decided": "whole",
+   "sean": "whole rest",
+   "rule_right": true
+  },
+  {
+   "n": 3,
+   "crop": "beethoven5-litolff-p14-s0-st6-c2-g2-cal-other-to-decided.png",
+   "rule_decided": "whole",
+   "sean": "whole rest",
+   "rule_right": true
+  },
+  {
+   "n": 4,
+   "crop": "beethoven5-litolff-p2-s0-st6-c0-g2-cal-other-to-decided.png",
+   "rule_decided": "whole",
+   "sean": "whole rest",
+   "rule_right": true
+  },
+  {
+   "n": 5,
+   "crop": "beethoven5-litolff-p3-s1-st4-c8-g8-cal-other-to-decided.png",
+   "rule_decided": "whole",
+   "sean": "quarter notehead \u2014 NOT a rest",
+   "rule_right": false
+  },
+  {
+   "n": 6,
+   "crop": "beethoven5-litolff-p9-s0-st0-c9-g2-cal-other-to-decided.png",
+   "rule_decided": "whole",
+   "sean": "whole rest",
+   "rule_right": true
+  },
+  {
+   "n": 7,
+   "crop": "brahms1-breitkopf-p12-s1-st8-c0-g11-cal-other-to-decided.png",
+   "rule_decided": "whole",
+   "sean": "whole rest",
+   "rule_right": true
+  },
+  {
+   "n": 8,
+   "crop": "brahms1-breitkopf-p13-s0-st7-c11-g3-cal-other-to-decided.png",
+   "rule_decided": "whole",
+   "sean": "whole rest",
+   "rule_right": true
+  },
+  {
+   "n": 9,
+   "crop": "brahms1-breitkopf-p20-s1-st0-c8-g1-cal-other-to-decided.png",
+   "rule_decided": "whole",
+   "sean": "whole rest",
+   "rule_right": true
+  },
+  {
+   "n": 10,
+   "crop": "brahms1-breitkopf-p8-s0-st0-c1-g2-cal-other-to-decided.png",
+   "rule_decided": "whole",
+   "sean": "whole rest",
+   "rule_right": true
+  },
+  {
+   "n": 11,
+   "crop": "brahms1-breitkopf-p8-s1-st1-c1-g0-cal-other-to-decided.png",
+   "rule_decided": "whole",
+   "sean": "whole rest",
+   "rule_right": true
+  }
+ ],
+ "summary": "10 of 11 whole rests decided correctly by the recalibrated band; crop 5 (glyph/3/1/4/8/8, the count page) is a quarter NOTEHEAD the detector boxed as restWhole \u2014 a rest-family precision case for the `rest_is_not_a_rest` refusal (round ink is not a rest), not a band question"
+}
