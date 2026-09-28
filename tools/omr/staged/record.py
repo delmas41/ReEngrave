@@ -1255,6 +1255,30 @@ class Q(_Vocab):
     VOICES = "voices"
     TUPLET_RATIO = "tuplet_ratio"
     ARTICULATION_OWNER = "articulation_owner"
+    #: Whether a small filled dot LENGTHENS its note (an augmentation dot) or
+    #: marks it SHORT (a staccato) -- ROADMAP 2.12c, DECISIONS 2026-09-23
+    #: "SHAPE FROM THE CLASS, ROLE FROM THE GEOMETRY".
+    #:
+    #: ⚠️ THE CLASS IS A GUESS AND THIS IS THE ANSWER. `gather_rhythm_marks`
+    #: files `Q.AUG_DOT` for BOTH `augmentationDot` and `articStaccato*`
+    #: boxes now (`detail.detector_role` carries which), because the two
+    #: classes name one shape -- a small filled dot -- and only its POSITION
+    #: relative to a notehead says which role it plays. This is the decision
+    #: that reads that position: `"augmentation"` when `adjudicate_duration`'s
+    #: own asymmetric window (right of the head, level with it) admits it,
+    #: `"staccato"` when it sits centred over a head and well clear of it in
+    #: y. Neither window fitting is an ABSTENTION, never a default -- CLAUDE.md
+    #: rule 8, "a fallback never converts cannot-tell into an answer".
+    #:
+    #: ⚠️ VALUE IS THE ROLE STRING; THE OWNING GLYPH TRAVELS IN THE DETAIL for
+    #: the `"staccato"` case only (`detail["owner"]`), exactly as
+    #: `Q.ARTICULATION_OWNER`'s kind rides in its own detail. The
+    #: `"augmentation"` case names no owner here: `adjudicate_duration`'s
+    #: `_attached_dots` still does that reciprocal assignment itself (a
+    #: double stop's two heads cannot both claim one dot), so recomputing an
+    #: owner here would be a second, possibly divergent, spelling of the same
+    #: fact.
+    DOT_ROLE = "dot_role"
     #: Which NOTEHEAD a PRINTED accidental glyph alters (C21, L32).
     #:
     #: ⚠️ THE VALUE IS THE NOTEHEAD'S SUBJECT KEY AND THE ALTERATION TRAVELS
@@ -1649,6 +1673,7 @@ CLAIMS: "dict[str, str]" = {
     "ARC_KIND": CLAIM.INTERPRETATION,
     "ARC_OWNER": CLAIM.INTERPRETATION,
     "ARTICULATION_OWNER": CLAIM.INTERPRETATION,
+    "DOT_ROLE": CLAIM.INTERPRETATION,
     "ACCIDENTAL_OWNER": CLAIM.INTERPRETATION,
     "FERMATA_OWNER": CLAIM.INTERPRETATION,
     "ORNAMENT_OWNER": CLAIM.INTERPRETATION,

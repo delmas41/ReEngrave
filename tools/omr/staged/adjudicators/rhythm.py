@@ -368,6 +368,75 @@ def _attached_flags(ev: Evidence, cell, attached_stems):
     return out, levels
 
 
+def _in_augmentation_window(dot_box, head_box, max_above, max_below):
+    """Does `dot_box` sit in `head_box`'s augmentation-dot window?
+
+    ⚠️ PULLED OUT OF `_attached_dots`'S OWN LOOP, ROADMAP 2.12c, so
+    `adjudicate_dot_role` can ask the identical per-candidate question
+    without re-deriving it -- a second spelling of "is this box right of and
+    level with that head" would be free to drift from the one this project
+    already paid to measure. The three tests and their order are unchanged
+    from the loop this replaced.
+    """
+    dot_x_left, _dot_y0, dot_w, dot_h = dot_box
+    dot_y = _dot_y0 + dot_h / 2.0
+    hx, hy0, hw, hh = head_box
+    hx_right = hx + hw
+    if hx_right > dot_x_left:
+        return False                          # the note must be to the LEFT
+    hy = hy0 + hh / 2.0
+    above = hy - dot_y                        # positive: the dot sits HIGHER
+    if above > max_above or above < -max_below:
+        return False
+    dx = dot_x_left - hx_right
+    if dx > max(dot_w, 12) * 5:
+        return False
+    return True
+
+
+#: A staccato sits ABOVE or BELOW its head, centred on the head's x -- the
+#: mirror shape of the augmentation-dot window above. ROADMAP 2.12c.
+#:
+#: ⚠️ MEASURED, PER CLAUDE.md RULE 5/"measure before fixing any cut, and cut
+#: in the gap": `benchmarks/omr-shape-role-2026-09/probe/dot_role_offsets.py`
+#: over every `augmentationDot` and `articStaccato*` box on the three
+#: acceptance records, offset from its NEAREST notehead centre, in staff
+#: spaces. The Breitkopf record (6,816 dots, 2,818 staccati -- the larger,
+#: cleaner population; Litolff's MERGING plate agrees qualitatively and is
+#: noisier) shows two separated clusters:
+#:   * augmentation dots: dx +1.00..+1.75 (peak 1.25-1.50, 5,049 of 6,816 --
+#:     a notehead is ~1.3 staff spaces wide, so a dot just past its right
+#:     edge lands there) and dy in [-0.25, +0.75] -- an INDEPENDENT
+#:     confirmation of `DOT_ABOVE_NOTE_MAX_SPACES` / `DOT_BELOW_NOTE_MAX_SPACES`
+#:     above, measured from the opposite side;
+#:   * staccati: dx in [-0.25, +0.25] (2,378 of 2,818) and |dy| with a VALLEY
+#:     at [0.50, 0.75) -- 19 of 2,818 -- then a ramp to a peak at
+#:     [1.00, 1.25) -- 970. The cut below is taken in that valley.
+#: CONVENTION ASSUMED / WHAT WOULD FALSIFY IT / NOT CONFIRMED: Sean has not
+#: adjudicated a print crop of this family; ask before trusting a borderline
+#: case, and see `benchmarks/omr-shape-role-2026-09/FINDINGS.md` Sec.2.12c.
+STACCATO_CENTRED_MAX_SPACES = 0.5
+STACCATO_OFFSET_MIN_SPACES = 0.75
+
+
+def _in_staccato_window(dot_box, head_box, space,
+                        centred_max_spaces=STACCATO_CENTRED_MAX_SPACES,
+                        offset_min_spaces=STACCATO_OFFSET_MIN_SPACES):
+    """Does `dot_box` sit in `head_box`'s staccato window -- centred on its
+    x, at least `offset_min_spaces` staff spaces above or below it?"""
+    if not space:
+        return False
+    dx0, dy0, dw, dh = dot_box
+    hx, hy0, hw, hh = head_box
+    dot_cx, dot_cy = dx0 + dw / 2.0, dy0 + dh / 2.0
+    head_cx, head_cy = hx + hw / 2.0, hy0 + hh / 2.0
+    if abs(dot_cx - head_cx) > centred_max_spaces * space:
+        return False
+    if abs(head_cy - dot_cy) < offset_min_spaces * space:
+        return False
+    return True
+
+
 def _attached_dots(ev: Evidence, cell, head_box, space):
     """The augmentation dots belonging to THIS notehead.
 
@@ -401,6 +470,18 @@ def _attached_dots(ev: Evidence, cell, head_box, space):
     awarded to some notehead further off, because the rule asks which target
     is best among those it can see. Widening the pool can therefore TAKE a
     dot from a notehead, which is the rule working, not a regression.
+
+    ⚠️ ROADMAP 2.12c. `Q.AUG_DOT` now also holds every `articStaccato*` box
+    (tagged `detail.detector_role`), because the class only guesses the role
+    and this decision must not. Each row is admitted here ONLY where
+    `adjudicate_dot_role` DECIDED it augmentation -- a staccato-positioned
+    row is excluded whatever class the detector gave it, and a dot-classed
+    row that `adjudicate_dot_role` could not place (or placed as a
+    staccato) is excluded the same way. That decision runs the identical
+    `_in_augmentation_window` test this function always ran, so no
+    previously-dotted note stops being dotted; it only adds the reciprocal
+    of the 2.12c gate -- a staccato-classed box sitting where a dot sits now
+    reaches this pool too.
     """
     if head_box is None or not space:
         return []
@@ -424,6 +505,10 @@ def _attached_dots(ev: Evidence, cell, head_box, space):
     out = []
     for d in ev.rows(Q.AUG_DOT, scope=Scope.SELF_AND_DESCENDANTS,
                      subject=cell):
+        role = ev.verdict(Q.DOT_ROLE, subject=d.subject)
+        if (role is None or role.outcome is not Outcome.DECIDED
+                or role.value != "augmentation"):
+            continue
         box_row = boxes.get(d.subject.to_key())
         db = _xywh_head(box_row.value) if box_row else None
         if db is None:
@@ -432,22 +517,132 @@ def _attached_dots(ev: Evidence, cell, head_box, space):
         dot_y = db[1] + db[3] / 2.0
         best, best_score = None, float("inf")
         for key, hb in heads:
+            if not _in_augmentation_window(db, hb, max_above, max_below):
+                continue
             hx_right = hb[0] + hb[2]
-            if hx_right > dot_x_left:
-                continue                      # the note must be to the LEFT
             hy = hb[1] + hb[3] / 2.0
-            above = hy - dot_y                # positive: the dot sits HIGHER
-            if above > max_above or above < -max_below:
-                continue
             dx = dot_x_left - hx_right
-            if dx > max(dot_w, 12) * 5:
-                continue
             score = dx + abs(hy - dot_y) * 2
             if score < best_score:
                 best_score, best = score, key
         if best == mine:
             out.append(d)
     return out
+
+
+@decision(
+    quantity=Q.DOT_ROLE,
+    checkable=Checkable.UNCHECKABLE,
+    composed_from=(Q.AUG_DOT, Q.GLYPH_BOX, Q.NOTEHEAD_CLASS, Q.REST,
+                   Q.CELL_STAFF_SPACE),
+    scope=Kind.GLYPH,
+    wants=(Q.AUG_DOT, Q.GLYPH_BOX, Q.NOTEHEAD_CLASS, Q.REST,
+           Q.CELL_STAFF_SPACE),
+    reasons=("right_of_and_level_with_a_head", "centred_and_offset_from_a_head",
+             "no_glyph_box", "no_cell_staff_space",
+             "no_notehead_or_rest_in_cell", "dot_role_ambiguous"),
+    mode=Mode.ADDITIVE,
+    subjects_from=Q.AUG_DOT,
+)
+def adjudicate_dot_role(ev: Evidence) -> Ruling:
+    """A small filled dot's ROLE -- does it lengthen the note (augmentation)
+    or mark it short (staccato) -- ROADMAP 2.12c.
+
+    CONVENTION ASSUMED / WHAT WOULD FALSIFY IT / NOT CONFIRMED (CLAUDE.md
+    Sec.2 rule 3 -- ask first, and nobody has been asked yet): an
+    augmentation dot sits to the RIGHT of its notehead and level with it (a
+    space higher on a line note); a staccato sits directly ABOVE or BELOW,
+    centred on the head's x, on the side opposite the stem. It would be
+    falsified by a Sean-adjudicated print crop reading a decided role the
+    other way; none has been adjudicated yet
+    (`benchmarks/omr-shape-role-2026-09/FINDINGS.md` Sec.2.12c).
+
+    DECISIONS 2026-09-23 "SHAPE FROM THE CLASS, ROLE FROM THE GEOMETRY":
+    `Q.AUG_DOT` pools two detector classes now (`augmentationDot` and
+    `articStaccato*`, `detail.detector_role` remembers which) because both
+    name the SAME shape -- one small filled dot -- and the class is only a
+    guess about which role it plays. This is the decision that reads the
+    role from the ink's POSITION instead. `_attached_dots` (the
+    augmentation window's own owner, this file, above) reads this verdict
+    back rather than re-deriving the same test twice; `export.py` reads it
+    to route a staccato-role mark to the file, since `gather_glyph_families`
+    no longer files these classes into `Q.ARTICULATION_MARK` at all.
+
+    The augmentation window is tried FIRST, against every notehead OR rest
+    in the cell -- the identical pool `_attached_dots` scores against, and
+    for the identical reason: a dot after a rest is rarer but real. Only
+    where NOTHING in that pool admits it is the staccato window tried,
+    against noteheads alone (a staccato marks a NOTE, never a rest), taking
+    the nearest qualifying head as the mark's owner. Neither window fitting
+    is an ABSTENTION and never a default: CLAUDE.md rule 8, "a fallback
+    never converts cannot-tell into an answer".
+    """
+    rows = ev.rows(Q.AUG_DOT)
+    if not rows:
+        return Ruling.abstain("no_notehead_or_rest_in_cell")
+    row = rows[-1]
+    v = row.value
+    if not (isinstance(v, (list, tuple)) and len(v) >= 2):
+        return Ruling.abstain("dot_role_ambiguous")
+
+    box_rows = ev.rows(Q.GLYPH_BOX)
+    dot_box = _xywh_head(box_rows[-1].value) if box_rows else None
+    if dot_box is None:
+        return Ruling.abstain("no_glyph_box")
+
+    cell = ev.subject.at(Kind.CELL)
+    space_row = ev.rows(Q.CELL_STAFF_SPACE, scope=Scope.SELF_AND_ANCESTORS,
+                        subject=cell)
+    space = float(space_row[-1].value) if space_row else None
+    if not space:
+        return Ruling.abstain("no_cell_staff_space")
+
+    boxes = _cell_boxes(ev, cell)
+    all_targets = []                    # heads AND rests, for the aug window
+    note_targets = []                   # noteheads only, for the staccato one
+    for q in (Q.NOTEHEAD_CLASS, Q.REST):
+        for r in ev.rows(q, scope=Scope.SELF_AND_DESCENDANTS, subject=cell):
+            box_row = boxes.get(r.subject.to_key())
+            b = _xywh_head(box_row.value) if box_row else None
+            if b is None:
+                continue
+            all_targets.append(b)
+            if q == Q.NOTEHEAD_CLASS:
+                note_targets.append((r.subject.to_key(), b))
+    if not all_targets:
+        return Ruling.abstain("no_notehead_or_rest_in_cell")
+
+    used = (row.id, box_rows[-1].id) + ((space_row[-1].id,) if space_row
+                                        else ())
+    detail = {"detector_role": (row.detail or {}).get("detector_role"),
+              "detector_class": (row.detail or {}).get("detector_class")}
+
+    max_above = max(1.0, space * DOT_ABOVE_NOTE_MAX_SPACES)
+    max_below = max(1.0, space * DOT_BELOW_NOTE_MAX_SPACES)
+    for hb in all_targets:
+        if _in_augmentation_window(dot_box, hb, max_above, max_below):
+            return Ruling(value="augmentation",
+                          reason="right_of_and_level_with_a_head",
+                          used=used, detail=detail)
+
+    dot_cx = dot_box[0] + dot_box[2] / 2.0
+    dot_cy = dot_box[1] + dot_box[3] / 2.0
+    best_owner, best_dist = None, float("inf")
+    for key, hb in note_targets:
+        if not _in_staccato_window(dot_box, hb, space):
+            continue
+        hx, hy0, hw, hh = hb
+        dist = ((hx + hw / 2.0 - dot_cx) ** 2
+                + (hy0 + hh / 2.0 - dot_cy) ** 2)
+        if dist < best_dist:
+            best_dist, best_owner = dist, key
+    if best_owner is not None:
+        return Ruling(value="staccato",
+                      reason="centred_and_offset_from_a_head", used=used,
+                      detail={**detail, "owner": best_owner,
+                              "articulation": "staccato"})
+
+    return Ruling.abstain("dot_role_ambiguous", **detail)
 
 
 def _beam_levels(beams, x_center, width, joined=()):
@@ -502,9 +697,13 @@ def _head_class(ev: Evidence) -> Optional[str]:
     # a `restHalf` are the same rectangle one line apart, so for those two
     # classes the staff's own lines are not context -- they are where the
     # VALUE comes from, and the class is the corroborating witness.
-    composed_from=(Q.BEAM_STROKE, Q.FLAG, Q.AUG_DOT, Q.NOTEHEAD_CLASS,
-                   Q.STEM, Q.REST, Q.STAFF_LINES, Q.STAFF_SPACING,
-                   Q.FLAG_IS_NOT_A_FLAG),
+    # ⚠️ ROADMAP 2.12c ADDS `Q.DOT_ROLE`: `Q.AUG_DOT` now pools two classes
+    # and the VALUE this decision reaches for -- how many dots lengthen the
+    # note -- depends on which of its rows the geometry actually placed as an
+    # augmentation dot, not on which rows merely carry the class.
+    composed_from=(Q.BEAM_STROKE, Q.FLAG, Q.AUG_DOT, Q.DOT_ROLE,
+                   Q.NOTEHEAD_CLASS, Q.STEM, Q.REST, Q.STAFF_LINES,
+                   Q.STAFF_SPACING, Q.FLAG_IS_NOT_A_FLAG),
     scope=Kind.GLYPH,
     # ⚠️ `Q.STEM_DIRECTION` IS A `wants` AND NOT A `composed_from` (2.12e).
     # A flag's class suffix names the way its stem points; the DURATION is
@@ -512,8 +711,8 @@ def _head_class(ev: Evidence) -> Optional[str]:
     # at all. Declaring it as composing the value would claim a dependence
     # that does not exist, and the gate for 2.12e is precisely that zero
     # durations move.
-    wants=(Q.BEAM_STROKE, Q.FLAG, Q.AUG_DOT, Q.NOTEHEAD_CLASS, Q.STEM,
-           Q.TUPLET_RATIO, Q.GLYPH_BOX, Q.REST, Q.CELL_STAFF_SPACE,
+    wants=(Q.BEAM_STROKE, Q.FLAG, Q.AUG_DOT, Q.DOT_ROLE, Q.NOTEHEAD_CLASS,
+           Q.STEM, Q.TUPLET_RATIO, Q.GLYPH_BOX, Q.REST, Q.CELL_STAFF_SPACE,
            Q.STAFF_LINES, Q.STAFF_SPACING, Q.STEM_DIRECTION,
            Q.FLAG_IS_NOT_A_FLAG),
     reasons=("head_and_marks", "beams_ambiguous", "no_notehead",

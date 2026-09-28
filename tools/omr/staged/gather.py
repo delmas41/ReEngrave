@@ -949,6 +949,18 @@ def _observe_ladder(log: Log, g: Subject, box, cand_key: str,
 
 _FLAG_PREFIX = "flag"
 _DOT_CLASS = "augmentationDot"
+#: ROADMAP 2.12c, DECISIONS 2026-09-23 "SHAPE FROM THE CLASS, ROLE FROM THE
+#: GEOMETRY". A small filled dot arrives under one of these classes or
+#: `_DOT_CLASS`, and the SHAPE the detector names (a dot, printed above/below
+#: vs after a head) is not the ROLE (does it lengthen the note, or mark it
+#: short) -- that is `adjudicate_dot_role`'s question, decided from where the
+#: ink sits relative to a notehead, never from which of these names it wears.
+#: The two fine spellings state a side; the coarse one
+#: (`class_aliases.COARSER_THAN_CANONICAL["articulationStaccato"]`) does not,
+#: which is irrelevant here since the role decision never reads the side
+#: either.
+_STACCATO_CLASSES = ("articStaccatoAbove", "articStaccatoBelow",
+                     "articulationStaccato")
 #: ⚠️ DSv2's `tuplet3` / `fingering3` distinction is POSITIONAL -- a `3` over a
 #: beamed group vs a `3` beside a notehead -- and the detector reproduces it
 #: badly on orchestral pages: 33 `fingering3` against 16 `tuplet3` over twelve
@@ -974,6 +986,16 @@ def gather_rhythm_marks(log: Log, cells: Sequence[Any],
     it and NEVER under -- a symmetric window ties on Brahms's double stops and
     double-dots the upper note while the lower loses its dot. That arithmetic
     is the adjudicator's; this only records where the ink is.
+
+    ⚠️ ROADMAP 2.12c. `Q.AUG_DOT` now holds every `_STACCATO_CLASSES` box
+    TOO, tagged `detail.detector_role`, because a staccato and an
+    augmentation dot are the SAME shape claim (one small filled dot) and only
+    their POSITION says which role they play -- `adjudicate_dot_role` is
+    where that is decided, never here. This is the ONE quantity the ink is
+    filed under; `gather_glyph_families` no longer files these classes into
+    `Q.ARTICULATION_MARK` at all, so a staccato-class box cannot become two
+    rows from one reader on one glyph (CLAUDE.md Sec.4b, `Evidence.
+    correlated_groups`).
     """
     for cell_key, dets in detections.items():
         sub = Subject.from_key(cell_key)
@@ -985,10 +1007,13 @@ def gather_rhythm_marks(log: Log, cells: Sequence[Any],
                 log.observe(g, Q.FLAG, name, reader=READERS.DETECTOR,
                             frame=frame, score=float(d.confidence),
                             y_center=d.y_center, x_center=d.x_center)
-            elif name == _DOT_CLASS:
+            elif name == _DOT_CLASS or name in _STACCATO_CLASSES:
                 log.observe(g, Q.AUG_DOT, (d.x_center, d.y_center),
                             reader=READERS.DETECTOR, frame=frame,
-                            score=float(d.confidence))
+                            score=float(d.confidence),
+                            detector_role=("dot" if name == _DOT_CLASS
+                                          else "staccato"),
+                            detector_class=name)
             elif name in _TUPLET_CLASSES:
                 log.observe(g, Q.TUPLET_MARKER, name,
                             reader=READERS.DETECTOR, frame=frame,
@@ -1148,7 +1173,16 @@ def gather_glyph_families(log: Log, detections: Dict[str, List[Any]],
             # "two rows from one reader are ONE signal" fault made by accident.
             if name in _ARC_CLASSES:
                 log.observe(g, Q.ARC_BOX, name, **common, **box)
-            elif name.startswith(_ARTIC_PREFIX):
+            # ⚠️ ROADMAP 2.12c. `_STACCATO_CLASSES` is EXCLUDED here even
+            # though every one of them starts with `_ARTIC_PREFIX`, and the
+            # exclusion is the fix: `gather_rhythm_marks` already files this
+            # exact box into `Q.AUG_DOT` (tagged `detail.detector_role`), and
+            # filing it AGAIN here would be two rows from one reader on one
+            # glyph -- one signal wearing two hats (CLAUDE.md Sec.4b). A
+            # staccato's role (does it lengthen the note, or mark it short)
+            # is `adjudicate_dot_role`'s question now, never this router's.
+            elif (name.startswith(_ARTIC_PREFIX)
+                  and name not in _STACCATO_CLASSES):
                 log.observe(g, Q.ARTICULATION_MARK, name, **common, **box,
                             side=_artic_side(name))
             elif name.lower().startswith(_REST_PREFIX):
