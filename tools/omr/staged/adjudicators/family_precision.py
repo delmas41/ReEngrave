@@ -236,6 +236,26 @@ RUNG_STEP_SHIPS = False
 #: FARTHER OUT than the rung is always its note, whatever the distance.
 HEAD_NEAR_TOL_SPACES = 2.75
 
+#: ⚠️⚠️ ROADMAP 3.4g-3 — THE SECOND WITNESS'S TWO THRESHOLDS, on
+#: `Q.LEDGER_INK_UNDER` (the ink fraction in a notehead-sized window on the
+#: rung, stroke removed, off the staff-erased raster; `gather.
+#: ledger_ink_under`). Sean, 2026-09-27: of the four rungs 3.4g-2 refused
+#: `no_head_on_the_rung`, TWO were real rungs whose head the detector never
+#: boxed — so "no boxed head" is *cannot tell*, and the paper decides.
+#:
+#: `LEDGER_INK_KEPT_MIN` — the under-window must stand at least this far
+#: ABOVE its own background (the same window one space away) for the rung to
+#: be KEPT (`ink_under_the_rung`). `LEDGER_INK_REFUSED_MAX` — at or below
+#: this the paper under the rung is EMPTY and Sean's `[C91]` refusal returns
+#: with two witnesses. Between them the abstention stands.
+#:
+#: ⚠️ MEASURED, NOT CHOSEN: see `benchmarks/omr-family-refusals-2026-09/
+#: FINDINGS.md` §3.4g-3 for the histograms (rungs WITH a boxed head on them
+#: vs the in-band / on-a-line population, one real gather of Litolff pdf
+#: index 3) and the RED run with the windows swapped.
+LEDGER_INK_KEPT_MIN = 0.30
+LEDGER_INK_REFUSED_MAX = 0.05
+
 
 def _glyph_box_row(ev: Evidence):
     rows = ev.rows(Q.GLYPH_BOX)
@@ -506,15 +526,16 @@ def _refused_by_a_human(ev: Evidence, detail: Dict[str, Any]
     quantity=Q.LEDGER_IS_NOT_A_LEDGER,
     composed_from=(Q.GLYPH_BOX, Q.STAFF_LINES, Q.STAFF_SPACING,
                    Q.CELL_STAFF_SPACE, Q.HUMAN_BOX_VERDICT,
-                   Q.GLYPH_BAND_DISTANCE),
+                   Q.GLYPH_BAND_DISTANCE, Q.LEDGER_INK_UNDER),
     scope=Kind.GLYPH,
     wants=(Q.GLYPH_BOX, Q.STAFF_LINES, Q.STAFF_SPACING, Q.CELL_STAFF_SPACE,
-           Q.HUMAN_BOX_VERDICT, Q.GLYPH_BAND_DISTANCE),
+           Q.HUMAN_BOX_VERDICT, Q.GLYPH_BAND_DISTANCE, Q.LEDGER_INK_UNDER),
     subjects_from=Q.GLYPH_BOX,
     subjects_classed=("ledgerLine",),
     reasons=HUMAN_REFUSAL_REASONS + ("inside_the_staff", "on_a_staff_line",
                                      "tall_not_a_rung", "no_head_on_the_rung",
-                                     "ledger_line",
+                                     "ink_under_the_rung", "ledger_line",
+                                     "rung_without_boxed_head",
                                      ABSTAIN.NO_STAFF_GEOMETRY),
     mode=Mode.ADDITIVE,
 )
@@ -652,17 +673,76 @@ def adjudicate_ledger_is_not_a_ledger(ev: Evidence) -> Ruling:
         return Ruling(value=True, reason="tall_not_a_rung",
                       used=tuple(used), detail=detail)
 
-    # ── no_head_on_the_rung: Sean's SECOND convention, 2026-09-24 (`[C91]`) ─
+    # ── no BOXED head: Sean's SECOND convention (`[C91]`), WITNESSED ─────────
     # *"only happen if there are actual notes in the staff"*. No notehead
-    # x-overlapping the rung within the measured tolerance, and none farther
-    # out than it. A bar holding only a whole rest has none.
+    # box x-overlapping the rung within the measured tolerance, and none
+    # farther out than it.
+    #
+    # ⚠️⚠️ ROADMAP 3.4g-3: NO BOXED HEAD IS *CANNOT TELL*, NOT *NO HEAD*.
+    # Sean, 2026-09-27, on the four crops 3.4g-2 refused here: two were REAL
+    # rungs whose printed notehead the detector never boxed. The detector's
+    # recall is the one witness that fails where heads fuse with their
+    # rungs, so on its own it may not refuse (CLAUDE.md §2 rule 8). The
+    # paper is the second witness — `Q.LEDGER_INK_UNDER`, GATHER's ink
+    # fraction in a notehead-sized window on the rung — and only it resolves:
+    #   ink well above its own background -> KEPT, `ink_under_the_rung`
+    #   ink at the paper's floor          -> REFUSED, `no_head_on_the_rung`
+    #   in between, or no witness at all  -> ABSTAINED,
+    #                                        `rung_without_boxed_head`
+    # An abstained rung is NOT a kept rung for any consumer that counts kept
+    # rungs; see FINDINGS §3.4g-3 for the one consumer that does not yet
+    # honour that (`notehead_precision._ledger_rungs_in_cell`, lane 2.7b).
     # ⚠️ WITHOUT A CELL UNIT THE HEAD RULE CANNOT RUN AND DOES NOT GUESS:
     # the box falls through to `ledger_line` exactly as it did before 3.4g-2.
     if heads is not None and not heads["near"]:
-        return Ruling(value=True, reason="no_head_on_the_rung",
+        witness = _ink_under_the_rung(ev)
+        detail["ink_witness"] = witness
+        if witness is None:
+            declined = ev.refusals(Q.LEDGER_INK_UNDER)
+            if declined:
+                detail["ink_witness_declined"] = declined[-1].reason
+        if witness is not None:
+            used.append(witness["row"])
+            under, back = witness["under"], witness["background"]
+            if back is not None and under - back >= LEDGER_INK_KEPT_MIN:
+                return Ruling(value=False, reason="ink_under_the_rung",
+                              used=tuple(used), detail=detail)
+            if under <= LEDGER_INK_REFUSED_MAX:
+                return Ruling(value=True, reason="no_head_on_the_rung",
+                              used=tuple(used), detail=detail)
+        return Ruling(value=None, reason="rung_without_boxed_head",
                       used=tuple(used), detail=detail)
     return Ruling(value=False, reason="ledger_line", used=tuple(used),
                   detail=detail)
+
+
+def _ink_under_the_rung(ev: Evidence) -> Optional[Dict[str, Any]]:
+    """GATHER's `Q.LEDGER_INK_UNDER` on this glyph, or `None`.
+
+    ⚠️ AN ABSTENTION IS NOT A READING OF EMPTY PAPER. GATHER files
+    `no_mask` / `no_staff_geometry` where it could not look; `ev.rows`
+    returns observations only, so those arrive here as `None` — declined,
+    and the decision abstains rather than reading 0.0 into a refusal.
+    """
+    rows = ev.rows(Q.LEDGER_INK_UNDER)
+    if not rows:
+        return None
+    row = rows[-1]
+    try:
+        under = float(row.value)
+    except (TypeError, ValueError):
+        return None
+    d = row.detail or {}
+    back = d.get("ink_background")
+    # ⚠️ ALL FIVE OF GATHER'S NUMBERS RIDE ON THE VERDICT, so the viewer and
+    # a crop can show WHICH window saw the head and what the paper beside it
+    # read -- a threshold crossed by one window is a different fact from one
+    # crossed by all three.
+    return {"row": row.id, "under": round(under, 4),
+            "background": None if back is None else round(float(back), 4),
+            "best_window": d.get("ink_best_window"),
+            "windows": d.get("ink_windows"),
+            "background_windows": d.get("ink_background_windows")}
 
 
 @decision(

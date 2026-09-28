@@ -4256,11 +4256,17 @@ def _family_refusals(rec: Record) -> Dict[str, Any]:
     out: Dict[str, Any] = {}
     for quantity in FAMILY_REFUSALS:
         refused: Dict[str, int] = collections.Counter()
+        # ⚠️ ROADMAP 3.4g-3: THE ABSTENTIONS BY REASON. The ledger decision
+        # now abstains for two different reasons -- no geometry at all, and
+        # a rung with no BOXED head that the paper has not settled -- and
+        # a bare count would read 79 of the second as 79 of the first.
+        abstained_reasons: Dict[str, int] = collections.Counter()
         kept = abstained = verdicts = 0
         for v in rec.verdicts_of(quantity):
             verdicts += 1
             if v["outcome"] != "decided":
                 abstained += 1
+                abstained_reasons[str(v.get("reason", "?"))] += 1
             elif v["value"] is True:
                 refused[str(v.get("reason", "?"))] += 1
             else:
@@ -4269,6 +4275,7 @@ def _family_refusals(rec: Record) -> Dict[str, Any]:
         out[quantity] = {
             "refused": dict(refused), "refused_total": n_refused,
             "kept": kept, "abstained": abstained,
+            "abstained_reasons": dict(abstained_reasons),
             "verdicts": verdicts,
             # ⚠️ A CHECK THAT CAN FAIL, not a restatement. The three buckets
             # are filled from the outcome and the value; `verdicts` is

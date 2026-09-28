@@ -1,0 +1,9 @@
+RED run, Part A tests of test_staged_ledger_ink.py against origin/main 8226aa93 (family_precision.py unmodified)
+PASSED tools/omr/tests/test_staged_ledger_ink.py::TestPartA_NoBoxedHeadAbstains::test_a_rung_with_its_head_on_it_is_still_KEPT
+PASSED tools/omr/tests/test_staged_ledger_ink.py::TestPartA_NoBoxedHeadAbstains::test_position_and_shape_refusals_are_untouched
+FAILED tools/omr/tests/test_staged_ledger_ink.py::TestPartA_NoBoxedHeadAbstains::test_a_witness_that_abstained_is_not_a_witness
+FAILED tools/omr/tests/test_staged_ledger_ink.py::TestPartA_NoBoxedHeadAbstains::test_every_one_of_the_four_abstains_without_the_witness
+FAILED tools/omr/tests/test_staged_ledger_ink.py::TestPartA_NoBoxedHeadAbstains::test_seans_real_rungs_are_never_refused
+FAILED tools/omr/tests/test_staged_ledger_ink.py::TestPartA_NoBoxedHeadAbstains::test_the_abstention_keeps_its_evidence
+FAILED tools/omr/tests/test_staged_ledger_ink.py::TestPartA_NoBoxedHeadAbstains::test_the_census_counts_the_abstention_by_reason
+5 failed, 2 passed, 15 deselected in 0.68s

@@ -575,6 +575,26 @@ class Q(_Vocab):
     #: neither.
     INK = "ink"
 
+    #: ⚠️⚠️ ROADMAP 3.4g-3 — IS THERE A NOTE ON THIS RUNG, READ OFF THE PAPER
+    #: AND NOT OFF THE DETECTOR. One row per `ledgerLine` glyph: the ink
+    #: fraction inside a NOTEHEAD-SIZED window (1.3 x 1.0 staff spaces, the
+    #: width floor `notehead_precision` measured) centred on the rung, and
+    #: the same window half a space above and below it -- a head sits ON its
+    #: rung or hangs beside it -- with the rung's own stroke taken out, read
+    #: off the cell's STAFF-ERASED raster (`image_no_staff`; CLAUDE.md §9:
+    #: erase for the CV consumer, never for the detector). The value is the
+    #: best of the three; `detail` carries all three and a BACKGROUND -- the
+    #: same window one full space away -- so a consumer can ask "above the
+    #: paper around it", not merely "dark".
+    #:
+    #: ⚠️ WHY IT EXISTS: Sean, 2026-09-27, on the four `no_head_on_the_rung`
+    #: crops of 3.4g-2 -- two were REAL rungs whose printed notehead the
+    #: detector never boxed. The convention (*"only if there are actual
+    #: notes"*, `[C91]`) was being witnessed by the detector's recall alone,
+    #: which is exactly the witness that fails where the heads merge with
+    #: their rungs. A MEASUREMENT, never a verdict: it names nothing.
+    LEDGER_INK_UNDER = "ledger_ink_under"
+
     # ── EVERY FAMILY'S OWN POSITION (measurements, scoreless) ───────────────
     #
     # ⚠️⚠️ ELEVEN FAMILIES HAD NO POSITION FACT AT ALL, and `capture.py`'s
@@ -1489,6 +1509,9 @@ CLAIMS: "dict[str, str]" = {
     #: ATTRIBUTE that may be zero -- a COVERAGE claim riding on a MEASUREMENT
     #: row, which is the DETAIL-GRAIN limit `claims_unaccounted` records.
     "INK": CLAIM.MEASUREMENT,
+    #: ROADMAP 3.4g-3: an ink FRACTION under one ledger box -- a ruler
+    #: reading off the erased raster, naming nothing.
+    "LEDGER_INK_UNDER": CLAIM.MEASUREMENT,
 
     # ── relations between things already located ───────────────────────────
     #: ⚠️ A JUDGEMENT CALL, NAMED — MEASUREMENT and not COVERAGE, though
