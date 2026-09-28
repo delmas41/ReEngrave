@@ -57,82 +57,29 @@ from .record import Q
 # ─────────────────────────────────────────────────────────────────────────────
 
 KNOWN_GAPS: Dict[str, str] = {
-    "notehead_is_not_a_notehead wants 'human_box_verdict'":
-        "⚠️ NOT INERT AND NOT A GAP — the declaration IS read "
-        "(`notehead_precision._human_not_a_symbol`), and what this tool is "
-        "reporting is that the quantity's PRODUCER is outside the pipeline. "
-        "Roadmap 3.4: `review/human_evidence.py` files it from a review "
-        "sidecar, and that module is in `reach.NOT_A_STAGE` because it is not "
-        "a stage. So no gather site observes it and none ever will: a human "
-        "is not a gather rung, and manufacturing a `gather_human_boxes()` "
-        "that reads a JSON file would put a review artefact inside the "
-        "measurement path — the same structural refusal that keeps a dossier "
-        "out of it (CLAUDE.md §5b: there is no `--dossier` and there will not "
-        "be one). ⚠️ THE ENTRY IS ABOUT THE PRODUCER, so it does not leave the "
-        "list when the read lands; it leaves if a STAGE ever observes the "
-        "quantity, which would itself be the finding.",
-    # ── ROADMAP 3.4g — SEVEN MORE OF THE SAME ENTRY, ONE PER GATHERED FAMILY
-    #
-    # ⚠️⚠️ THE GAP IS THE PRODUCER AND IT IS STRUCTURAL, WHICH IS WHY THE
-    # COUNT GOES UP RATHER THAN A CHECK BEING SILENCED. `Q.HUMAN_BOX_VERDICT`
-    # has NO gather site and never will: a human is not a gather rung, and a
-    # `gather_human_boxes()` reading a review sidecar would put a review
-    # artefact inside the measurement path — the structural refusal that
-    # keeps a dossier out of it (CLAUDE.md §5b). `review/human_evidence.py`
-    # files the rows and is in `reach.NOT_A_STAGE`. So every decision that
-    # reads a human witness opens exactly one of these, and 3.4A and 3.4C
-    # each opened one before this lane opened seven. ⚠️ THE REAL REPAIR IS
-    # **3.4b-check** — give the derived checks a DECLARED out-of-pipeline
-    # producer, so a human reader is WIRED rather than explained — and these
-    # nine entries are its measured size. ⚠️ Each leaves the list only if a
-    # STAGE ever observes the quantity, never because the read landed.
-    "ledger_is_not_a_ledger wants 'human_box_verdict'":
-        "⚠️ NOT INERT AND NOT A GAP IN THE READ — `family_precision."
-        "_human_refusal` reads it, and `adjudicate_ledger_is_not_a_ledger` "
-        "refuses on it FIRST, before its own geometry. The gap is the "
-        "PRODUCER; see the block comment above. ROADMAP 3.4g, the first "
-        "family: 11 of the 18 `nothing` marks that reached no stage on "
-        "Sean's first pass were `ledgerLine` boxes.",
-    "accidental_is_not_an_accidental wants 'human_box_verdict'":
-        "⚠️ The same PRODUCER gap, one family along (ROADMAP 3.4g). The read "
-        "IS live — `family_precision._human_refusal` — and this decision has "
-        "no other rule at all, so the declaration is the whole of it. Three "
-        "of Sean's eighteen were `accidental*` boxes and two more were the "
-        "accidentals he marked as another staff's.",
-    "rest_is_not_a_rest wants 'human_box_verdict'":
-        "⚠️ The same PRODUCER gap (ROADMAP 3.4g). The read is live and its "
-        "consumer is `export._place_notes`, which refuses to write a "
-        "`<rest>` for a refused box and counts it under `not_a_rest:"
-        "<reason>`. One of Sean's eighteen was a `restQuarter`.",
-    "arpeggiato_is_not_an_arpeggiato wants 'human_box_verdict'":
-        "⚠️ The same PRODUCER gap (ROADMAP 3.4g). The read is live; its only "
-        "consumer is `export._family_refusals`, because the `arpeggiato` "
-        "family reaches no MusicXML element on any path "
-        "(`gather_coverage.FAMILY_TO_Q` maps it to `None`). Three of Sean's "
-        "eighteen were these.",
-    "arc_is_not_an_arc wants 'human_box_verdict'":
-        "⚠️ The same PRODUCER gap (ROADMAP 3.4g). The read is live and its "
-        "consumer is `export._place_arcs`, before the `Q.ARC_KIND` test.",
-    "dynamic_is_not_a_dynamic wants 'human_box_verdict'":
-        "⚠️ The same PRODUCER gap (ROADMAP 3.4g). The read is live and its "
-        "consumer is `adjudicate_dynamic`, which must not spell a refused "
-        "letter into a word — one spurious `f` beside a real one is the "
-        "difference between `f` and `ff`.",
-    "articulation_is_not_an_articulation wants 'human_box_verdict'":
-        "⚠️ The same PRODUCER gap (ROADMAP 3.4g). The read is live and its "
-        "consumer is `export._place_articulations`, before the "
-        "`Q.ARTICULATION_OWNER` test.",
-    "glyph_owner wants 'human_box_verdict'":
-        "⚠️ THE SAME ENTRY ONE DECISION ALONG, roadmap 3.4c (Sean, "
-        "2026-09-23: *\"and to label boxes as nothing or belongs to another "
-        "staff etc.\"*). The declaration IS read — `ownership._human_owner` "
-        "decides `human_owner` off it, first, before the ladder/range/"
-        "distance contest — and what this tool reports is that the PRODUCER "
-        "is outside the pipeline: `review/human_evidence.py` files "
-        "`owner:<staff>` from a review sidecar and is in `reach.NOT_A_STAGE`. "
-        "Everything in the entry above applies verbatim, including why no "
-        "gather site will ever observe it. ⚠️ It leaves the list if a STAGE "
-        "observes the quantity, never because the read landed.",
+    # ⚠️ ROADMAP 0.5 / 3.4b-check, CLOSED 2026-09-27. NINE ENTRIES LEFT THIS
+    # LIST HERE: `notehead_is_not_a_notehead`, `ledger_is_not_a_ledger`,
+    # `accidental_is_not_an_accidental`, `rest_is_not_a_rest`,
+    # `arpeggiato_is_not_an_arpeggiato`, `arc_is_not_an_arc`,
+    # `dynamic_is_not_a_dynamic`, `articulation_is_not_an_articulation` and
+    # `glyph_owner`, all `wants 'human_box_verdict'`. Every one of them was
+    # read live (`family_precision._human_refusal`, `notehead_precision.
+    # _human_not_a_symbol`, `ownership._human_owner`) and reported
+    # UNSATISFIABLE anyway, because `_gather_sites` asked only whether a
+    # GATHER site observes a quantity and a human reader is not one --
+    # correct, and also not the question a `wants` declaration with a live
+    # read should be failing. `producers.py` is the missing declaration: a
+    # DERIVED registry of out-of-pipeline producers (`review/human_
+    # evidence.py` today), read the same way `_gather_sites` reads
+    # `gather.py` -- by AST, off the module's own row-filing calls, never
+    # hand-typed. `build()` now classifies a `wants` entry only an
+    # out-of-pipeline producer files as `kind: "out_of_pipeline"`, labelled
+    # as such and never folded into a GATHER site, so none of the nine
+    # reports UNSATISFIABLE any more and the entries have nothing left to
+    # explain. See `producers.py` and `test_staged_out_of_pipeline_producer.
+    # py`. A future decision reading a NEW human witness some family adds
+    # will not reopen one of these -- `producers.filed()` sees it the moment
+    # `human_evidence.py` files it, with no new entry required.
     # ⚠️ TEN ENTRIES LEFT THIS LIST ON 2026-09-09 and the stale check is what
     # made them leave: `arc_box`, `articulation_mark`, `wedge_box` and
     # `dynamic_letter` are gathered now (`gather_glyph_families`), so the five
@@ -220,16 +167,73 @@ def stale_gaps(problems: Sequence[str]) -> List[str]:
 
 
 # ─────────────────────────────────────────────────────────────────────────────
-# Where a MEASUREMENT comes from: the AST of gather.py
+# Where a MEASUREMENT comes from: the AST of every GATHER-stage file
 # ─────────────────────────────────────────────────────────────────────────────
 
 
+def _gather_files() -> List[str]:
+    """Every staged file whose stage is GATHER, DERIVED from
+    `reach.STAGE_OF_FILE` rather than a second hand list.
+
+    ⚠️ ROADMAP 0.5 / 3.4b-check. This function used to be a single hard-coded
+    `"gather.py"`, and `reach.py`'s own `Q.REST_POSITION` entry named the
+    consequence: every quantity `positions.py` observes (landed 2026-09-17,
+    ten producers) was invisible to this module, so declaring one of them in
+    a decision's `wants` would have reported UNSATISFIABLE — a producer that
+    plainly exists, reclassified as a hole. `wiring._row_writer_files` made
+    the identical repair for the identical reason (`positions.py`'s writes
+    registering as reads through the old hard-coded `"gather.py"` exclusion);
+    this derives the same set the same way rather than copying its list.
+    """
+    from .reach import STAGE_OF_FILE
+    return sorted(name for name, stage in STAGE_OF_FILE.items()
+                 if stage == "GATHER")
+
+
+def _module_level_q_tables(tree: ast.Module) -> Dict[str, Set[str]]:
+    """`{name: {Q attrs in its RHS}}` for every MODULE-LEVEL assignment whose
+    value contains a literal `Q.X` — e.g. `positions._STEP_FAMILIES = {"rest":
+    (Q.REST_POSITION, ...), ...}`.
+
+    ⚠️ WHY THIS EXISTS. `gather_step_positions` records
+    (`log.abstain(...)`/`_observe_step` -> `log.observe(...)`) but never
+    mentions `Q.REST_POSITION` (or its five siblings) literally in its OWN
+    body — it looks the quantity up at run time, `quantity, discriminate =
+    _STEP_FAMILIES[fam]`, off a table declared once at module scope. A
+    per-function literal scan alone reports the widened `_gather_files` as
+    still blind to it. This is scoped to MODULE-LEVEL name bindings only, not
+    an arbitrary call-graph walk, and it is a real, narrow finding rather
+    than a broadened false-positive risk: `gather.py` has no such table at
+    all (checked), and `positions.py` has exactly one, `_STEP_FAMILIES`,
+    naming exactly the six quantities routed through it.
+    """
+    out: Dict[str, Set[str]] = {}
+    for node in tree.body:
+        targets = None
+        if isinstance(node, ast.Assign):
+            targets = [t.id for t in node.targets if isinstance(t, ast.Name)]
+        elif isinstance(node, ast.AnnAssign) and isinstance(node.target, ast.Name):
+            targets = [node.target.id]
+        if not targets or node.value is None:
+            continue
+        qs = {a.attr for a in ast.walk(node.value)
+              if isinstance(a, ast.Attribute)
+              and isinstance(a.value, ast.Name) and a.value.id == "Q"}
+        if qs:
+            for name in targets:
+                out.setdefault(name, set()).update(qs)
+    return out
+
+
 def _gather_sites() -> Tuple[Dict[str, List[str]], Dict[str, List[str]]]:
-    """`({quantity: [gather fn]}, {quantity: [gather fn]})` off `gather.py`.
+    """`({quantity: [gather fn]}, {quantity: [gather fn]})` off every
+    GATHER-stage file (`_gather_files()`), never `gather.py` alone.
 
     The first map is the DIRECT sites -- `log.observe(subject, Q.X, ...)` with
-    `Q.X` written literally at the call. The second is INDIRECT: a `Q.X` named
-    anywhere inside a gather function that makes such a call at all.
+    `Q.X` written literally at the call. The second is INDIRECT: a `Q.X`
+    named anywhere inside a gather function that makes such a call at all, OR
+    reachable from it through a MODULE-LEVEL table the function indexes into
+    (`_module_level_q_tables`) -- the `_STEP_FAMILIES` case.
 
     ⚠️ THE SPLIT IS NOT PEDANTRY, AND THE FIRST VERSION OF THIS CHECK WAS
     WRONG WITHOUT IT. `gather_cv_lines` observes both its quantities through
@@ -239,47 +243,63 @@ def _gather_sites() -> Tuple[Dict[str, List[str]], Dict[str, List[str]]]:
     moved to classical CV on purpose. Indirect is weaker evidence and is
     labelled as such; absent from BOTH maps is the real finding.
     """
-    path = pathlib.Path(__file__).with_name("gather.py")
-    tree = ast.parse(path.read_text())
     direct: Dict[str, Set[str]] = {}
     indirect: Dict[str, Set[str]] = {}
 
-    class V(ast.NodeVisitor):
-        def __init__(self) -> None:
-            self.fn: List[str] = []
+    for fname in _gather_files():
+        path = pathlib.Path(__file__).with_name(fname)
+        if not path.is_file():
+            continue
+        tree = ast.parse(path.read_text())
+        tables = _module_level_q_tables(tree)
 
-        def visit_FunctionDef(self, node: ast.FunctionDef) -> None:
-            self.fn.append(node.name)
-            names = {a.attr for a in ast.walk(node)
-                     if isinstance(a, ast.Attribute)
-                     and isinstance(a.value, ast.Name) and a.value.id == "Q"}
-            records = any(
-                isinstance(c, ast.Call) and isinstance(c.func, ast.Attribute)
-                and c.func.attr in ("observe", "abstain", "decline")
-                for c in ast.walk(node))
-            if records:
-                for attr in names:
-                    q = getattr(Q, attr, None)
-                    if isinstance(q, str):
-                        indirect.setdefault(q, set()).add(node.name)
-            self.generic_visit(node)
-            self.fn.pop()
+        class V(ast.NodeVisitor):
+            def __init__(self) -> None:
+                self.fn: List[str] = []
 
-        def visit_Call(self, node: ast.Call) -> None:
-            f = node.func
-            if (isinstance(f, ast.Attribute)
-                    and f.attr in ("observe", "abstain", "decline")
-                    and len(node.args) >= 2):
-                q = node.args[1]
-                if (isinstance(q, ast.Attribute)
-                        and isinstance(q.value, ast.Name) and q.value.id == "Q"):
-                    name = getattr(Q, q.attr, None)
-                    if isinstance(name, str):
-                        direct.setdefault(name, set()).add(
-                            self.fn[0] if self.fn else "<module>")
-            self.generic_visit(node)
+            def visit_FunctionDef(self, node: ast.FunctionDef) -> None:
+                self.fn.append(node.name)
+                names = {a.attr for a in ast.walk(node)
+                         if isinstance(a, ast.Attribute)
+                         and isinstance(a.value, ast.Name)
+                         and a.value.id == "Q"}
+                # ⚠️ THE `_STEP_FAMILIES` CASE: a module-level table's Q
+                # attrs count for this function too, if the function refers
+                # to that table's NAME anywhere in its own body.
+                referenced = {n.id for n in ast.walk(node)
+                             if isinstance(n, ast.Name)}
+                for table_name, qs in tables.items():
+                    if table_name in referenced:
+                        names |= qs
+                records = any(
+                    isinstance(c, ast.Call) and isinstance(c.func, ast.Attribute)
+                    and c.func.attr in ("observe", "abstain", "decline")
+                    for c in ast.walk(node))
+                if records:
+                    for attr in names:
+                        q = getattr(Q, attr, None)
+                        if isinstance(q, str):
+                            indirect.setdefault(q, set()).add(node.name)
+                self.generic_visit(node)
+                self.fn.pop()
 
-    V().visit(tree)
+            def visit_Call(self, node: ast.Call) -> None:
+                f = node.func
+                if (isinstance(f, ast.Attribute)
+                        and f.attr in ("observe", "abstain", "decline")
+                        and len(node.args) >= 2):
+                    q = node.args[1]
+                    if (isinstance(q, ast.Attribute)
+                            and isinstance(q.value, ast.Name)
+                            and q.value.id == "Q"):
+                        name = getattr(Q, q.attr, None)
+                        if isinstance(name, str):
+                            direct.setdefault(name, set()).add(
+                                self.fn[0] if self.fn else "<module>")
+                self.generic_visit(node)
+
+        V().visit(tree)
+
     return ({k: sorted(v) for k, v in sorted(direct.items())},
             {k: sorted(v) for k, v in sorted(indirect.items())})
 
@@ -404,6 +424,14 @@ def build() -> Dict[str, Any]:
     G._ensure_declarations()
 
     sites, indirect = _gather_sites()
+    # ⚠️ ROADMAP 0.5 / 3.4b-check. `oop` is quantity -> producer path for
+    # every DECLARED out-of-pipeline producer (`producers.all_filed()`,
+    # derived from that module's own AST -- see `producers.py`). Its own
+    # `validate()` is what keeps this from drifting; this function only
+    # consumes the result and NEVER treats an entry here as a gather site --
+    # `gathered` above stays defined purely off `sites`/`indirect`.
+    from . import producers as OOP
+    oop = OOP.all_filed()
     mods = _legacy_modules()
     order = list(A.ORDER)
     rank = {q: i for i, q in enumerate(order)}
@@ -424,15 +452,28 @@ def build() -> Dict[str, Any]:
             # cycle. Only a wants entry that is ONLY a later verdict is one.
             gathered = w in sites or w in indirect
             decided = w in A.REGISTRY
+            out_of_pipeline_producer = oop.get(w)
+            # ⚠️ OUT-OF-PIPELINE IS NEVER A GATHER SITE, AND IS RANKED LAST.
+            # A quantity a real stage also produces (`Q.GLYPH_BOX`, gathered
+            # AND re-filed by a human box) must still read as "measurement" /
+            # "both" -- the ranking only matters for a quantity ONLY an
+            # out-of-pipeline producer files, which is exactly the case a
+            # human witness is.
             kind = ("both" if gathered and decided else
                     "verdict" if decided else
-                    "measurement" if gathered else "UNSATISFIABLE")
+                    "measurement" if gathered else
+                    "out_of_pipeline" if out_of_pipeline_producer else
+                    "UNSATISFIABLE")
             consumes.append({
                 "quantity": w,
                 "kind": kind,
                 "gathered_by": sites.get(w, []),
                 "gathered_indirectly_by": [f for f in indirect.get(w, [])
                                            if f not in sites.get(w, [])],
+                # ⚠️ LABELLED, NEVER FOLDED INTO `gathered_by`: a reader of
+                # this table must be able to tell a GATHER site from a human
+                # reading a review sidecar at a glance.
+                "out_of_pipeline_producer": out_of_pipeline_producer,
             })
         rows.append({
             "quantity": quantity,
@@ -491,13 +532,14 @@ def build() -> Dict[str, Any]:
         "n_decisions": len(order),
         "decisions": rows,
         "consequences": consequence_rows,
-        "problems": _problems(rows, order, rank, sites, indirect),
+        "problems": _problems(rows, order, rank, sites, indirect, oop),
     }
 
 
 def _problems(rows: List[Dict[str, Any]], order: List[str],
               rank: Dict[str, int], sites: Dict[str, List[str]],
-              indirect: Optional[Dict[str, List[str]]] = None) -> List[str]:
+              indirect: Optional[Dict[str, List[str]]] = None,
+              oop: Optional[Dict[str, str]] = None) -> List[str]:
     """The teeth. Each of these is a fact the inventory can prove wrong.
 
     ⚠️ These are DERIVED invariants, not style rules. Every one of them is a
@@ -553,8 +595,10 @@ def _problems(rows: List[Dict[str, Any]], order: List[str],
         # referenced here and never a parameter: a latent NameError that only
         # a domain outside `sites` could reach, and no domain was until now.
         indirect = indirect or {}
+        oop = oop or {}
         for d in (row["domain"] or ()):
-            if d not in sites and d not in indirect and d not in A.REGISTRY:
+            if (d not in sites and d not in indirect and d not in A.REGISTRY
+                    and d not in oop):
                 out.append(
                     f"{q}'s domain {d!r} is never produced, so it can never "
                     f"have a subject")
@@ -628,6 +672,7 @@ def render(inv: Dict[str, Any]) -> str:
             f"{c['quantity']}"
             f"{'*' if c['kind'] in ('verdict', 'both') else ''}"
             f"{'!' if c['kind'] == 'UNSATISFIABLE' else ''}"
+            f"{'^' if c['kind'] == 'out_of_pipeline' else ''}"
             for c in row["consumes"]) or "—"
         produces = ", ".join(row["produces"]["consumed_by"]
                              + row["produces"]["causes"]) or "—"
@@ -641,8 +686,10 @@ def render(inv: Dict[str, Any]) -> str:
     lines.append("")
     lines.append("`*` = also produced as a VERDICT by another decision; "
                  "`!` = **never gathered and never decided — this input does "
-                 "not exist in the log at all**; everything else is a "
-                 "MEASUREMENT gathered off the page.")
+                 "not exist in the log at all**; `^` = filed by a DECLARED "
+                 "OUT-OF-PIPELINE producer (a human reader, `producers.py`) "
+                 "and never a gather site; everything else is a MEASUREMENT "
+                 "gathered off the page.")
     lines.append("")
 
     lines.append("## Consequences (EVALUATE)")

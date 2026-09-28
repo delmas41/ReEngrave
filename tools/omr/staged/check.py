@@ -207,6 +207,19 @@ def _check_accuracy_record() -> CheckResult:
     return CheckResult("accuracy_record", open=len(probs))
 
 
+def _check_producers() -> CheckResult:
+    """ROADMAP 0.5 / 3.4b-check. `producers.py` declares the out-of-pipeline
+    producers `inventory`/`gather_coverage` now read as producers rather than
+    holes. `open` is always 0 -- there is nothing here for a human to read as
+    "N findings" -- but `producers.validate()` is a CONTROL THAT CAN FAIL
+    (CLAUDE.md rule 7): a declared writer function that stops existing, or a
+    producer entry that stops filing anything, raises, and `_safe` turns that
+    into BROKEN rather than a silent pass."""
+    from . import producers as OOP
+    OOP.validate()
+    return CheckResult("staged.producers", open=0)
+
+
 # ─────────────────────────────────────────────────────────────────────────────
 # The two informational sub-checks (plan §3 item 2 / §5 Phase 0.4d, 0.4e)
 # ─────────────────────────────────────────────────────────────────────────────
@@ -313,6 +326,7 @@ CHECKS: List[tuple] = [
     ("no_producer", _check_no_producer),
     ("export_coverage", _check_export_coverage),
     ("accuracy_record", _check_accuracy_record),
+    ("staged.producers", _check_producers),
     ("source_text_tests", _check_source_text_tests),
     ("mutation_batteries_live", _check_mutation_batteries),
 ]

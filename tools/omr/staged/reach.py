@@ -215,12 +215,18 @@ KNOWN_GAPS: Dict[str, str] = {
         "abstains where it lands on neither. It does not read `Q.REST_POSITION` "
         "because (i) that quantity files ZERO rows on all three acceptance "
         "records, `OMR_FAMILY_POSITIONS` being default OFF, so a rule resting "
-        "on it would be inert exactly where it is needed, and (ii) declaring "
-        "it in `wants` opens a NEW `inventory --check` finding — *no gather "
-        "site observes it* — because `inventory._producers` walks the AST of "
-        "`gather.py` AND NOTHING ELSE, so every quantity `positions.py` "
-        "observes is invisible to that tool. **The blind spot in `inventory` "
-        "is what this entry is now about.** What `Q.REST_POSITION` would still "
+        "on it would be inert exactly where it is needed. ⚠️ (ii) IS CLOSED, "
+        "ROADMAP 0.5 / 3.4b-check: declaring it in `wants` USED TO open a "
+        "NEW `inventory --check` finding — *no gather site observes it* — "
+        "because `inventory._gather_sites` walked the AST of `gather.py` "
+        "AND NOTHING ELSE, so every quantity `positions.py` observes, "
+        "including this one (routed through its own `_STEP_FAMILIES` table), "
+        "was invisible to that tool. `inventory` now walks every file "
+        "`reach.STAGE_OF_FILE` marks GATHER and follows a module-level table "
+        "a recording function indexes into, so declaring `Q.REST_POSITION` "
+        "in `wants` today would read as a MEASUREMENT, not a hole — measured "
+        "by `test_staged_out_of_pipeline_producer.py`. What remains open is "
+        "reason (i) alone. What `Q.REST_POSITION` would still "
         "ADD is real and unmeasured: it reads which EDGE of the rectangle is "
         "nearer a line and how decisively (`attach_margin`), which is strictly "
         "more of the convention than a centre. Second CONSUMER: "
@@ -470,6 +476,16 @@ NOT_A_STAGE = frozenset({
     # fast tier's `test_brakes.py::test_reach_accounts_for_this_module` and
     # `check` both went red), which is that guard doing its job.
     "record_io.py",
+    # ⚠️ ROADMAP 0.5 / 3.4b-check. `producers.py` DECLARES the out-of-pipeline
+    # producers (`review/human_evidence.py` today) and reads none of `record.Q`
+    # at run time itself -- it walks THEIR AST for a literal `Q.X` argument,
+    # the same way `inventory._gather_sites` walks `gather.py`'s. Registering
+    # it as a stage would make `survey()` scan IT for `.observe`/`.abstain`/
+    # read calls, which it makes none of, and would risk exactly the trap this
+    # comment warns about elsewhere in this file: a module that NAMES a
+    # quantity in order to report on it is not a consumer of it. It still has
+    # to be in one of the two lists or `unaccounted_modules()` reports it.
+    "producers.py",
 })
 
 
