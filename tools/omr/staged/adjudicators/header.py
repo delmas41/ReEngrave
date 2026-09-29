@@ -625,9 +625,18 @@ def _movement_spans(ev: Evidence) -> tuple:
     `inventory --check` / `wiring --check` trace a decision's reads by
     walking helpers defined in its OWN FILE, and a call crossing into
     `movements.py` would be invisible to either.
+
+    ⚠️ ROADMAP 4.2b -- the same VERDICT fallback `rhythm._movement_spans`
+    carries, and for the identical reason: see that copy's docstring. A
+    human `--movements` observation still always wins outright.
     """
     rows = ev.rows(Q.MOVEMENT_SPANS, subject=DOCUMENT)
-    return tuple(rows[0].value or ()) if rows else ()
+    if rows:
+        return tuple(rows[0].value or ())
+    verdict = ev.verdict(Q.MOVEMENT_SPANS, subject=DOCUMENT)
+    if verdict is not None and verdict.outcome is Outcome.DECIDED:
+        return tuple(verdict.value or ())
+    return ()
 
 
 def admitted_changes(readings, *,

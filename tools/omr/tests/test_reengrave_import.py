@@ -346,23 +346,28 @@ class TestCliDryRun(unittest.TestCase):
         out = buf.getvalue()
         self.assertIn("budget estimate", out)
 
-    def test_no_movements_prints_the_one_movement_warning(self):
+    def test_no_movements_prints_the_detection_warning(self):
+        """ROADMAP 4.2b superseded 4.1's "always ONE movement" claim: with no
+        `--movements`, `tools.omr.staged`'s ADJUDICATE stage runs detection
+        on the actual gathered page and decides the count for itself, which
+        a `--dry-run` (no gather at all) cannot know in advance."""
         import io
         import contextlib
         buf = io.StringIO()
         with contextlib.redirect_stdout(buf), mock.patch("subprocess.run"):
             main(["import", WORK_ID, "--dry-run"])
         out = buf.getvalue()
-        self.assertIn("ONE movement", out)
+        self.assertIn("4.2b detection", out)
+        self.assertIn("known only AFTER the run", out)
 
-    def test_movements_given_suppresses_the_one_movement_warning(self):
+    def test_movements_given_suppresses_the_detection_warning(self):
         import io
         import contextlib
         buf = io.StringIO()
         with contextlib.redirect_stdout(buf), mock.patch("subprocess.run"):
             main(["import", WORK_ID, "--dry-run", "--movements", "1:1-16"])
         out = buf.getvalue()
-        self.assertNotIn("ONE movement", out)
+        self.assertNotIn("4.2b detection", out)
 
 
 class TestCliHeldEditionRun(unittest.TestCase):

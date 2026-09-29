@@ -2867,9 +2867,29 @@ def _movement_spans(ev: Evidence) -> tuple:
     `movements.py` would be invisible to either tool and `Q.MOVEMENT_SPANS`
     would report as an inert, unreachable declaration on `adjudicate_meter`
     even though this line reads it every time.
+
+    ⚠️ ROADMAP 4.2b, THE FALLBACK ADDED BELOW. A human `--movements` is filed
+    at GATHER time as an OBSERVATION on this exact subject/quantity, and
+    `ev.rows()` reads it -- so where one was given, it is returned first and
+    ALWAYS (CLAUDE.md rule 3: a human always wins over detection, and the
+    `if rows:` below never even looks at the alternative). Where none was
+    given, `adjudicators.movement.adjudicate_movement_start` may have
+    DECIDED a detected set of spans -- filed as a VERDICT on the same
+    subject/quantity, not an observation, because it runs in ADJUDICATE and
+    ADJUDICATE reads no raster. `ev.verdict()` is declared through the SAME
+    `wants=(..., Q.MOVEMENT_SPANS)` this function's `rows()` call already
+    requires, so no new declaration was needed; what makes the fallback
+    reachable at all is `adjudicate.ORDER` running `movement_start` before
+    `adjudicate_meter` -- see the comment on `Q.MOVEMENT_SPANS` at the top of
+    that list.
     """
     rows = ev.rows(Q.MOVEMENT_SPANS, subject=DOCUMENT)
-    return tuple(rows[0].value or ()) if rows else ()
+    if rows:
+        return tuple(rows[0].value or ())
+    verdict = ev.verdict(Q.MOVEMENT_SPANS, subject=DOCUMENT)
+    if verdict is not None and verdict.outcome is Outcome.DECIDED:
+        return tuple(verdict.value or ())
+    return ()
 
 
 def _adjacent_corroborated_cautionary(ev: Evidence,
