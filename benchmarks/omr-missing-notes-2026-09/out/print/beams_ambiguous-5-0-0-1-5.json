@@ -1,0 +1,69 @@
+{
+  "subject": "glyph/5/0/0/1/5",
+  "cause": "duration_narrowed:beams_ambiguous",
+  "page": 5,
+  "system": 0,
+  "staff": 0,
+  "cell": 1,
+  "candidates": [
+    {
+      "value": {
+        "beats": 1.0,
+        "written": 1.0,
+        "dots": 0,
+        "beam_levels": 0
+      },
+      "support": 2.0
+    },
+    {
+      "value": {
+        "beats": 0.5,
+        "written": 0.5,
+        "dots": 0,
+        "beam_levels": 1
+      },
+      "support": 1.0
+    },
+    {
+      "value": {
+        "beats": 0.25,
+        "written": 0.25,
+        "dots": 0,
+        "beam_levels": 2
+      },
+      "support": 1.0
+    },
+    {
+      "value": {
+        "beats": 0.125,
+        "written": 0.125,
+        "dots": 0,
+        "beam_levels": 3
+      },
+      "support": 1.0
+    }
+  ],
+  "detail": {
+    "head": "noteheadBlackInSpace",
+    "beam_evidence": "none_over_this_note",
+    "cv_beams": 2,
+    "yolo_beams": 6,
+    "yolo_kept": 3,
+    "stems_attached": 0,
+    "beams_by_stem": 0,
+    "flags_attached": 0,
+    "flag_levels": 0,
+    "dots_attached": 0,
+    "staff_space": 95.0,
+    "levels_certain": 0,
+    "levels_possible": 3
+  },
+  "bbox_page": [
+    1794.83056640625,
+    719.11083984375,
+    1834.6708984375,
+    747.486328125
+  ],
+  "file": "beams_ambiguous-5-0-0-1-5.png",
+  "VERDICT_none_yet": null
+}

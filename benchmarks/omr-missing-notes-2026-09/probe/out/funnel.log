@@ -1,0 +1,43 @@
+[23:15:04] loading /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/redecide-f4168dfd/out-redecide/brahms/amended.record.json via record_io.load_record (ONE read) ...
+[23:15:17] loaded in 12.6s
+[23:15:17] provenance: {'commit': 'c19cbca7b7339d74e255a26b80e7fc3a385d428e', 'dirty': True, 'settings': {'env_overrides': {'OMR_DIRECTION_TEXT_SCAN_GATE': '1', 'OMR_SURYA_KEEP_ALIVE': '0'}, 'args': {'against': None, 'conf': 0.25, 'dpi': 600, 'imgsz': None, 'ink_rows': False, 'no_roster': False, 'no_weight_routing': False, 'ocr': True, 'pages': '0-26', 'pdf': '/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf', 'route_weights': True, 'sheet': None, 'surya': True, 'weights': 'auto', 'work_id': None}}, 'review': {'parent': {'record': 'library/_shared-records/brahms1-breitkopf-mvt1-whole-20260928.record.json', 'md5': '862548d1a635537c6065102a45aa15a2', 'provenance': {'commit': 'c19cbca7b7339d74e255a26b80e7fc3a385d428e', 'dirty': True, 'settings': {'env_overrides': {'OMR_DIRECTION_TEXT_SCAN_GATE': '1', 'OMR_SURYA_KEEP_ALIVE': '0'}, 'args': {'against': None, 'conf': 0.25, 'dpi': 600, 'imgsz': None, 'ink_rows': False, 'no_roster': False, 'no_weight_routing': False, 'ocr': True, 'pages': '0-26', 'pdf': '/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf', 'route_weights': True, 'sheet': None, 'surya': True, 'weights': 'auto', 'work_id': None}}}}, 'sidecar': {'path': None, 'sha256': '7d357b0ef1f85ba71c5ccebb6671b0c34f4b3950f5b21d2af7b4a3d4e9dcd570', 'actions': 0, 'staff': None, 'record_named_by_sidecar': None}, 'amended_at': '2026-09-28T13:18:14.953367-07:00'}}
+[23:15:17] building Record() index ...
+[23:15:20] Record() built in 3.6s (440057 observations, 323786 verdicts)
+[23:15:20] calling export.build(rec) for the pre-render (_place_notes) funnel ...
+[23:15:21] build() done in 0.9s
+[23:15:21] calling export.to_musicxml(doc) for the full (post-render) census ...
+[23:15:25] to_musicxml() done in 3.7s, xml is 3110582 chars
+[23:15:25] pre-render key mismatch (should be empty): {}
+[23:15:25] sub-reason walk over Q.GLYPH_BOX (mirrors _place_notes's prefix) ...
+[23:15:25] sub-reason walk done in 0.3s over 98908 Q.GLYPH_BOX rows
+[23:15:25] walk vs. authoritative mismatch (should be empty): {}
+[23:15:25] collecting crop geometry for example subjects ...
+[23:15:25] geometry collected for 169 example subjects
+[23:15:25] wrote benchmarks/omr-missing-notes-2026-09/probe/out/funnel.json
+{
+ "notes_not_written_total": 27620,
+ "top5": [
+  [
+   "bar_does_not_add_up",
+   15406
+  ],
+  [
+   "not_a_notehead:too_narrow",
+   3401
+  ],
+  [
+   "duration_narrowed",
+   3333
+  ],
+  [
+   "owned_by_another_staff",
+   2532
+  ],
+  [
+   "not_a_rest:rest_is_a_duplicate_box",
+   882
+  ]
+ ],
+ "walk_mismatch_n": 0,
+ "prerender_mismatch_n": 0
+}
