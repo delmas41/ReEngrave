@@ -473,8 +473,10 @@ class TestDisplacedRestsJoinOneVoice(unittest.TestCase):
 
     def test_a_rest_pushed_ABOVE_centre_joins_voice_1_only(self):
         log = Log()
-        _head(log, 0, 90)
-        _head(log, 1, 300)
+        # Two voices by Sean's rule (1): the two heads SOUND TOGETHER (one
+        # page x) with opposite stems (merged with 2.21b, DECISIONS 09-29).
+        _head_pf(log, 0, 90, 0, page_x=200)
+        _head_pf(log, 1, 300, 0, page_x=200)
         _staff_geometry(log)
         _rest_positioned(log, 2, 500, center_y=20.0)    # step 6.0 -- upper
         _stem(log, 88, -60, h=64)                        # up  -> voice 1
@@ -488,8 +490,10 @@ class TestDisplacedRestsJoinOneVoice(unittest.TestCase):
 
     def test_a_rest_pushed_BELOW_centre_joins_voice_2_only(self):
         log = Log()
-        _head(log, 0, 90)
-        _head(log, 1, 300)
+        # Two voices by Sean's rule (1): the two heads SOUND TOGETHER (one
+        # page x) with opposite stems (merged with 2.21b, DECISIONS 09-29).
+        _head_pf(log, 0, 90, 0, page_x=200)
+        _head_pf(log, 1, 300, 0, page_x=200)
         _staff_geometry(log)
         _rest_positioned(log, 2, 500, center_y=60.0)    # step 2.0 -- lower
         _stem(log, 88, -60, h=64)                        # up  -> voice 1
@@ -508,8 +512,10 @@ class TestDisplacedRestsJoinOneVoice(unittest.TestCase):
         (above) already pins, so this filter existing does not itself widen
         who counts as "displaced"."""
         log = Log()
-        _head(log, 0, 90)
-        _head(log, 1, 300)
+        # Two voices by Sean's rule (1): the two heads SOUND TOGETHER (one
+        # page x) with opposite stems (merged with 2.21b, DECISIONS 09-29).
+        _head_pf(log, 0, 90, 0, page_x=200)
+        _head_pf(log, 1, 300, 0, page_x=200)
         _staff_geometry(log)
         _rest_positioned(log, 2, 500, center_y=40.0)    # step 4.0 -- centred
         _stem(log, 88, -60, h=64)
@@ -552,8 +558,10 @@ class TestDisplacedRestsJoinOneVoice(unittest.TestCase):
         it is pulled into one voice stream -- nothing here ever constructs a
         subject naming a different staff."""
         log = Log()
-        _head(log, 0, 90)
-        _head(log, 1, 300)
+        # Two voices by Sean's rule (1): the two heads SOUND TOGETHER (one
+        # page x) with opposite stems (merged with 2.21b, DECISIONS 09-29).
+        _head_pf(log, 0, 90, 0, page_x=200)
+        _head_pf(log, 1, 300, 0, page_x=200)
         _staff_geometry(log)
         rest = _rest_positioned(log, 2, 500, center_y=20.0)   # "upper"
         _stem(log, 88, -60, h=64)
