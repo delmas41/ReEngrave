@@ -300,11 +300,14 @@ def _forced_pairing(system: List[Optional[str]],
     ),
     implicates=(Q.SLOT_INDEX, Q.INSTRUMENT, Q.SYSTEM_STAFF_COUNT),
     composed_from=(Q.INSTRUMENT, Q.STAFF_ORDINAL, Q.SYSTEM_STAFF_COUNT,
-                   Q.STAFF_GROUP, Q.CLEF_GLYPH, Q.CLEF_LOCATED, Q.MARGIN_LABEL),
+                   Q.STAFF_GROUP, Q.CLEF_GLYPH, Q.CLEF_LOCATED, Q.MARGIN_LABEL,
+                   Q.ROSTER_ENTRY),
     scope=Kind.STAFF,
     wants=(Q.INSTRUMENT, Q.STAFF_ORDINAL, Q.SYSTEM_STAFF_COUNT,
-           Q.STAFF_GROUP, Q.CLEF_GLYPH, Q.CLEF_LOCATED, Q.MARGIN_LABEL),
+           Q.STAFF_GROUP, Q.CLEF_GLYPH, Q.CLEF_LOCATED, Q.MARGIN_LABEL,
+           Q.ROSTER_ENTRY),
     reasons=("full_lineup", "named", "paired_by_name", "paired_by_crook",
+             "paired_by_bare_crook",
              "no_reference", "no_ordinal", "reference_names_nothing",
              "unnamed_in_short_system", "not_in_reference", "ambiguous_pairing",
              "family_block", "family_block_not_forced",
@@ -439,6 +442,24 @@ def adjudicate_slot_index(ev: Evidence) -> Ruling:
                 return narrowed
         if placed is not None:
             return placed
+        # ⚠️⚠️ ROADMAP 2.26b. `unnamed_in_short_system`'s own population --
+        # a staff whose margin text is ONLY a crook, no instrument word at
+        # all -- asked of Sean in 2.26 (`benchmarks/omr-staff-identity-2026-09
+        # /HORN-CROOK-RESEARCH.md`). His answer: for Brahms 1/i, a bare
+        # crook always continues the braced Horn pair above it, because the
+        # plate keeps the brace and one `Hr.` and drops the instrument word
+        # on the lower staff only where NOTHING else in the movement is
+        # crooked in that key. That "nothing else" clause is why this is not
+        # position alone: it needs an INDEPENDENT witness that no other
+        # instrument shares the crook, and the reference lineup (the SAME
+        # raster this staff's own text came off) cannot be that witness on
+        # its own (CLAUDE.md §10, "two witnesses off the same raster fall
+        # silent together") -- see `_try_bare_crook_pairing`.
+        bare_placed = _try_bare_crook_pairing(
+            ev, document, ref_system, ref_names, ref_texts, my_text,
+            used=(ordinal.id, count.id))
+        if bare_placed is not None:
+            return bare_placed
         return Ruling.abstain("unnamed_in_short_system",
                               reference=ref_system.to_key())
 
@@ -563,6 +584,137 @@ def _crook_tokens(text: Optional[str]) -> frozenset:
         return frozenset()
     return frozenset(t.strip().upper() for t in re.findall(r"\(([^)]*)\)", text)
                      if t.strip())
+
+
+def _bare_crook(text: Optional[str]) -> Optional[str]:
+    """The crook token if `text` is a parenthetical crook AND NOTHING ELSE --
+    no instrument word at all, unlike `_crook_tokens`'s `"(C) Hr."` case.
+
+    ⚠️ ROADMAP 2.26b. This is `unnamed_in_short_system`'s own shape: measured
+    on Brahms 1/i, `"(Es)"` (19 systems) and `"(C)"` (1) -- the plate keeps
+    one shared `Hr.` for the braced pair and drops the instrument word on
+    the LOWER staff only, leaving a bare crook with no root word for
+    `adjudicate_instrument`'s lexicon to catch at all
+    (`benchmarks/omr-staff-identity-2026-09/HORN-CROOK-RESEARCH.md`).
+    """
+    if not text:
+        return None
+    m = re.fullmatch(r"[\s.,;:]*\(([^)]*)\)[\s.,;:]*", text)
+    if not m:
+        return None
+    tok = m.group(1).strip().upper()
+    return tok or None
+
+
+def _roster_crook_owners(ev: Evidence, document, crook: str) -> Set[str]:
+    """Instrument names the ROSTER independently attests carry `crook`.
+
+    ⚠️ ROADMAP 2.26b, AND THE WHOLE REASON THIS IS A SEPARATE FUNCTION.
+    `Q.ROSTER_ENTRY` is `source_kind: catalog` (from the IMSLP work page,
+    read by `_work_roster`, which already refuses anything else -- CLAUDE.md
+    §8: a roster is admissible because it does NOT fall silent when the scan
+    is bad, unlike `source_kind: page`, and the DOSSIER is `source_kind:
+    encoding`, refused in any measurement path). This is a SECOND witness,
+    off a DIFFERENT source than the reference lineup's own margin text --
+    CLAUDE.md §10, "two witnesses off the same raster fall silent together".
+
+    ⚠️ THE `"crooked"` MAP IS AN ADDITIVE, OPTIONAL ENRICHMENT OF THE ROSTER
+    ROW (`{instrument name: [crook, ...]}`), NOT SOMETHING `work_roster.py`
+    POPULATES TODAY. Real Brahms's own catalog `InstrDetail` text names no
+    crook at all (`HORN-CROOK-RESEARCH.md`: `"4 horns, 2 trumpets, ...
+    timpani, strings"`), so this reads an empty set on every roster this
+    repo has gathered so far and the caller correctly abstains -- honestly
+    DEAD AT ZERO on real data today, not silently guessed around. Wiring a
+    producer (parsing crook mentions out of the catalog's OWN raw text, the
+    same way `Q.MARGIN_LABEL` text already is) is a further roadmap item,
+    not this one -- widening the LEXICON to assume a crook is refused
+    (CLAUDE.md rule 6; `work_roster.py`'s own "widening the lexicon is the
+    refused fix and stays refused"), but reading a field the catalog ALREADY
+    has room for is not that.
+    """
+    rows = ev.rows(Q.ROSTER_ENTRY, scope=Scope.SELF_AND_ANCESTORS,
+                   subject=document)
+    if not rows:
+        return set()
+    value = rows[-1].value
+    if _work_roster(value) is None:
+        return set()   # tier refused (not `catalog`) -- same guard as the
+                        # `instrument` decision's own roster read
+    crooked = value.get("crooked") if isinstance(value, dict) else None
+    if not isinstance(crooked, dict):
+        return set()
+    out = set()
+    for name, crooks in crooked.items():
+        if not isinstance(crooks, (list, tuple, set)):
+            continue
+        if crook in {str(c).strip().upper() for c in crooks}:
+            out.add(str(name))
+    return out
+
+
+def _try_bare_crook_pairing(ev: Evidence, document, ref_system, ref_names,
+                            ref_texts, my_text: Optional[str], *,
+                            used: Tuple[str, ...]) -> Optional[Ruling]:
+    """Place a BARE-CROOK staff on the other half of a braced pair, or
+    return `None` -- the roadmap 2.26b rule.
+
+    **The claim, stated so it can be argued with.** A staff whose margin
+    text is only a crook `(X)` is the OTHER crook of a braced instrument
+    pair IF (a) the reference lineup already shows that SAME instrument
+    name repeated, with the SAME crook `X` among its members' own crooks --
+    i.e. a staff already decided as that instrument, in the brace this
+    crook belongs to -- AND (b) the ROSTER independently attests EXACTLY
+    ONE instrument carries crook `X` in this movement. Both conditions must
+    hold; either one failing is a refusal, never a guess.
+
+    ⚠️ (a) ALONE IS NOT ENOUGH, and this is not belt-and-braces: the
+    reference lineup is read off the SAME page this bare staff is on, so a
+    match against it ALONE is one witness twice, not two. (b) alone is not
+    enough either -- the roster names no STAFF, only a work-level fact, and
+    could not by itself place anything.
+
+    ⚠️ IT NEVER INVENTS A CANDIDATE. `group_matches`/`target` only ever
+    narrow the reference's OWN already-decided rows; a crook printed on
+    more than one brace, or shared by more than one roster instrument, both
+    refuse rather than pick a first guess (CLAUDE.md rule 6).
+    """
+    bare = _bare_crook(my_text)
+    if bare is None:
+        return None
+
+    by_name: Dict[str, List[int]] = {}
+    for j, n in enumerate(ref_names):
+        if n is not None:
+            by_name.setdefault(n, []).append(j)
+
+    group_matches = []
+    for name, slots in by_name.items():
+        if len(slots) < 2:
+            continue   # a single-crook instrument is not a braced PAIR
+        crooks = {c for j in slots
+                 for c in _crook_tokens(ref_texts[j] if j < len(ref_texts)
+                                        else None)}
+        if bare in crooks:
+            group_matches.append((name, slots))
+    if len(group_matches) != 1:
+        return None   # no brace carries this crook, or more than one does
+    name, slots = group_matches[0]
+    target = [j for j in slots
+             if bare in _crook_tokens(ref_texts[j] if j < len(ref_texts)
+                                      else None)]
+    if len(target) != 1:
+        return None   # the SAME crook printed on >1 slot of the SAME brace
+
+    owners = _roster_crook_owners(ev, document, bare)
+    if owners != {name}:
+        return None   # the roster is silent, or names another instrument
+                        # too -- refuse rather than trust the page alone
+
+    return Ruling(
+        value=int(target[0]), reason="paired_by_bare_crook", used=used,
+        detail={"crook": bare, "instrument": name, "brace_slots": slots,
+               "roster_owners": sorted(owners), "my_text": my_text,
+               "reference": ref_system.to_key()})
 
 
 def _pick_reference(sizes, widest, names):
