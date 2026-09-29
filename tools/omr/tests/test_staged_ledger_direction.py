@@ -398,6 +398,95 @@ class TestExportCountsAnUnreadOwner(unittest.TestCase):
         self.assertEqual(rep["written"]["notes"], 2)
         self.assertNotIn("owner_not_read", rep["notes_not_written"])
 
+    # ── ROADMAP 2.6e ────────────────────────────────────────────────────────
+    # `adjudicate_glyph_owner` abstains `tied` where two candidates score
+    # exactly equal (line ~306: "two equal-cost mappings that disagree carry
+    # literally zero information"). Measured on the acceptance Litolff record
+    # (`library/_shared-records/beethoven5-litolff-mvt1-whole-20260928.
+    # record.json`, read once via `record_io.load_record`): 7,879 `decided`,
+    # 101 `abstained` and every one of them `tied` (`no_evidence` — the other
+    # abstain reason this decision can emit, `line 276`, "not one row named a
+    # candidate" — 0 occurrences on this record; its export path is IDENTICAL
+    # and fixed alongside `tied` here because it is reachable in principle and
+    # CLAUDE.md rule 8 does not carve out an exception for a rare one).
+    #
+    # ⚠️ THE SHAPE IS THE SAME AS `far_no_rungs`, AND SO IS THE BUG. A `tied`
+    # contest is TWO subjects — one per twin, one filed on each staff's own
+    # cell — each abstaining independently and each falling through
+    # `is_relocated_copy(None) == False` to be WRITTEN on the staff its own
+    # cell was cut from: the same printed note on two staves. RED on
+    # `ae776515` (pre-2.6e): both of the next two tests fail because the
+    # abstained owner is written anyway.
+
+    def test_an_abstained_tied_owner_is_counted_not_written(self):
+        """RED on `ae776515`: a `tied` owner used to be written on its filed
+        staff exactly like a `far_no_rungs` one before 2.6c. Now dropped and
+        counted under `owner_not_read`; the balance holds."""
+        from tools.omr.tests.test_staged_notehead_precision import (
+            _two_note_page, _vrd)
+        page = _two_note_page(flagged=False)
+        page["record"]["verdicts"].append(
+            _vrd(960, "glyph/0/0/0/0/0", Q.GLYPH_OWNER, None,
+                 outcome="abstained", reason="tied"))
+        _, rep = SX.to_musicxml(page)
+        self.assertEqual(rep["notes_not_written"].get("owner_not_read"), 1)
+        self.assertEqual(rep["written"]["notes"]
+                         + rep["notes_not_written_total"], 2)
+
+    def test_a_tied_contests_BOTH_sides_are_dropped_not_both_written(self):
+        """The shape the roadmap item names: a contested head is detected
+        TWICE (once from each staff's cell), so BOTH of a contest's two
+        subjects file their OWN `tied` abstention independently. Standing in
+        for that with this fixture's two note subjects (each abstaining
+        `tied` on its own): RED on `ae776515` — before this fix an abstained
+        owner fell through to a guess and BOTH would have been written; now
+        both are refused and NEITHER is, so a `tied` twin can never leave one
+        copy of a printed note on each of two staves."""
+        from tools.omr.tests.test_staged_notehead_precision import (
+            _two_note_page, _vrd)
+        page = _two_note_page(flagged=False)
+        page["record"]["verdicts"].append(
+            _vrd(960, "glyph/0/0/0/0/0", Q.GLYPH_OWNER, None,
+                 outcome="abstained", reason="tied"))
+        page["record"]["verdicts"].append(
+            _vrd(961, "glyph/0/0/0/0/1", Q.GLYPH_OWNER, None,
+                 outcome="abstained", reason="tied"))
+        _, rep = SX.to_musicxml(page)
+        self.assertEqual(rep["notes_not_written"].get("owner_not_read"), 2)
+        self.assertEqual(rep["written"].get("notes", 0), 0)
+        self.assertEqual(rep["notes_not_written_total"], 2)
+
+    def test_an_abstained_no_evidence_owner_is_counted_not_written(self):
+        """The sibling abstain reason `glyph_owner` can also emit (line 276,
+        `if not scored`) — 0 occurrences measured on the Litolff acceptance
+        record, but the fall-through it feeds is the SAME code path as
+        `tied`/`far_no_rungs`, so it is fixed here too rather than left as a
+        guess waiting for the right page."""
+        from tools.omr.tests.test_staged_notehead_precision import (
+            _two_note_page, _vrd)
+        page = _two_note_page(flagged=False)
+        page["record"]["verdicts"].append(
+            _vrd(960, "glyph/0/0/0/0/0", Q.GLYPH_OWNER, None,
+                 outcome="abstained", reason="no_evidence"))
+        _, rep = SX.to_musicxml(page)
+        self.assertEqual(rep["notes_not_written"].get("owner_not_read"), 1)
+        self.assertEqual(rep["written"]["notes"]
+                         + rep["notes_not_written_total"], 2)
+
+    def test_POSITIVE_CONTROL_a_noncontested_head_is_unaffected(self):
+        """`no_contest` is a DECIDED reason (the glyph's own cell, nothing to
+        arbitrate) and must keep writing normally — 2.6e touches only the
+        ABSTAINED reasons that used to fall through to a guess."""
+        from tools.omr.tests.test_staged_notehead_precision import (
+            _two_note_page, _vrd)
+        page = _two_note_page(flagged=False)
+        page["record"]["verdicts"].append(
+            _vrd(960, "glyph/0/0/0/0/0", Q.GLYPH_OWNER, "staff/0/0/0",
+                 reason="no_contest"))
+        _, rep = SX.to_musicxml(page)
+        self.assertEqual(rep["written"]["notes"], 2)
+        self.assertNotIn("owner_not_read", rep["notes_not_written"])
+
 
 if __name__ == "__main__":
     unittest.main()
