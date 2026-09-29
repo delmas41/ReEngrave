@@ -1,0 +1,34 @@
+{
+  "subject": "glyph/4/0/1/12/4",
+  "cause": "duration_narrowed:beams_ambiguous / stem_gap",
+  "gap_kind": "CELL_EMPTY",
+  "page": 4,
+  "system": 0,
+  "staff": 1,
+  "cell": 12,
+  "detail": {
+    "head": "noteheadBlackOnLine",
+    "beam_evidence": "none_over_this_note",
+    "cv_beams": 0,
+    "yolo_beams": 1,
+    "yolo_kept": 1,
+    "stems_attached": 0,
+    "beams_by_stem": 0,
+    "flags_attached": 0,
+    "flag_levels": 0,
+    "dots_attached": 0,
+    "staff_space": 100.0,
+    "levels_certain": 0,
+    "levels_possible": 1
+  },
+  "min_dist_notehead_widths": null,
+  "cell_stem_rows": null,
+  "bbox_page": [
+    2168.5075,
+    557.7625,
+    2192.29,
+    579.1825
+  ],
+  "file": "stem_gap-litolff-4-0-1-12-4.png",
+  "VERDICT_none_yet": null
+}

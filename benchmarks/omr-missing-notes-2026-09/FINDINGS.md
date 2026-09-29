@@ -335,3 +335,253 @@ probe/out/funnel.log               the three run logs (control passing each time
 out/print/beams_ambiguous-*.png    the 12 crops + .json sidecars, VERDICT_none_yet: null
 out/print/funnel-crop-manifest-beams_ambiguous.json
 ```
+
+## 9. ROADMAP 2.17 -- the GATHER-reach measurement, and the priced fix that does not pay for itself (2026-09-28)
+
+PATH: STAGED. Answers roadmap 2.17 exactly as scoped: measure `Q.STEM`'s
+GATHER yield on Breitkopf's beamed noteheads specifically, Litolff vs.
+Breitkopf, on the `stems_attached==0` population `duration_narrowed:
+beams_ambiguous` names, BEFORE any ADJUDICATE or GATHER change; then, only
+if the plate difference confirms a GATHER-side shortfall, print-check a
+handful of crops.
+
+### CONVENTION ASSUMED / WHAT WOULD FALSIFY IT / NOT CONFIRMED
+
+Assumes CLAUDE.md SS10's stated stem/beam conventions (a stem stands at the
+side of its head; a beam runs stem-to-stem) without re-asking Sean this
+session. Falsified by a crop where Sean says a flagged "stem-gap" example's
+own ink shows no stem was ever printed there. NOT CONFIRMED with Sean.
+
+### 9.1 Step 1 -- the FULL-POPULATION measurement (no re-gather)
+
+The prior session's own mechanism section (SS3) sampled 20 examples and
+reported "75% of the sample" carry `stems_attached==0` -- true, but a
+20-row sample cannot separate "the cell has literally nothing" from "the
+cell has stems, just not this note's". This session re-asks the SAME
+question over the WHOLE `Q.DURATION` population of both acceptance
+records (`library/_shared-records/beethoven5-litolff-mvt1-whole-20260928.
+record.json`, `.../brahms1-breitkopf-mvt1-whole-20260928.record.json`,
+both provenance `c19cbca7`, the SAME commit -- a fair A/B), read ONCE each
+via `record_io.load_record` inside `probe/stem_yield.py`. No re-gather, no
+re-adjudicate, no code change under `tools/omr/staged/`.
+
+**Per-CELL yield, every beamed cell (has >=1 `Q.BEAM_STROKE` row from
+either reader):**
+
+| | Litolff | Breitkopf |
+|---|--:|--:|
+| beamed cells | 1,726 | 3,886 |
+| beamed cells with ZERO `Q.STEM` rows at all | 139 (8.1%) | 432 (11.1%) |
+
+At the whole-CELL level the two plates are close -- Breitkopf's rate is
+higher but not dramatically so. **The cell-level number alone does not
+show the shortfall the prior sample suggested.**
+
+**The population roadmap 2.17 actually names** -- every `Q.DURATION`
+verdict standing as `narrowed`/`beams_ambiguous` with `detail.
+stems_attached==0` -- split three ways, the third of which the prior
+session's 20-row sample could not distinguish: does the cell have ZERO
+stem rows at all, or does it have stems that simply are not near THIS
+head (within one notehead width of its own x-centre -- `_stem_joined`'s
+own `_boxes_overlap` test has ZERO tolerance, so "near" here is a
+generous stand-in for "a real join-tolerance candidate exists")?
+
+| | Litolff (n=640) | Breitkopf (n=2,102) |
+|---|--:|--:|
+| cell has ZERO stem rows | 138 (21.6%) | 432 (20.6%) |
+| cell has stems, NEAREST within 1 notehead width (join-tolerance candidate) | 354 (55.3%) | 592 (28.2%) |
+| cell has stems, NEAREST over 1 notehead width away (no local candidate) | 148 (23.1%) | 1,078 (51.3%) |
+| **no local candidate at all (empty + far)** | **286 (44.7%)** | **1,510 (71.8%)** |
+
+**This is the plate difference roadmap 2.17 asks for, and it is real, but
+it is not the one the prior sample described.** The "cell is literally
+empty" rate barely differs (21.6% vs 20.6% -- Breitkopf is not even
+higher). What differs is what happens when the cell is NOT empty: on
+Litolff, a non-empty cell's nearest stem is usually right there (354 of
+502, 70.5% -- a genuine join-TOLERANCE question, consistent with `[C12]`'s
+own fix already working well on this plate, 147 -> 29 narrowed). On
+Breitkopf, a non-empty cell's nearest stem is usually nowhere near this
+note (1,078 of 1,670, 64.6%) -- this note's own local ink produced no
+accepted candidate even though OTHER notes in the same (wide) cell did.
+Combined with the truly-empty cells, **71.8% of Breitkopf's
+`beams_ambiguous`/`stems_attached==0` population has no local stem
+candidate at all, against 44.7% on Litolff.** That gap -- not the raw
+"cell empty" rate -- is roadmap 2.17's GATHER-side confirmation: this
+IS materially a plate-specific reach shortfall, not (mainly) a
+join-tolerance one, and it warrants the print check.
+
+Reproduce: `probe/stem_yield.py --record <path> --label <l> --out
+<out.json>` (each record read exactly once; ~4-16s per record, no
+re-gather).
+
+### 9.2 Step 1b -- print-check: crops of the "no local candidate" population
+
+`probe/crop_stem_gap.py` cuts crops from the SAME geometry `stem_yield.py`
+already pulled off its one record read (no second record read), in the
+banded style `crop_beams_ambiguous.py` established. 12 Breitkopf + 12
+Litolff crops, spread one/two per page across pages 0-6 (Breitkopf) and
+2-7 (Litolff), `benchmarks/omr-missing-notes-2026-09/out/print/
+stem_gap-<label>-*.png` + `.json` sidecars, `VERDICT_none_yet: null`.
+
+Read by eye (NOT Sean-adjudicated -- flagged, not claimed):
+
+* **`stem_gap-breitkopf-2-0-0-3-3.png`** (page 2, 8.56 notehead widths to
+  the nearest accepted stem): the flagged notehead has a clearly PRINTED
+  stem descending from it -- visible, curving slightly at its foot -- that
+  the CV opening never accepted; the cell's two accepted stems belong to
+  two OTHER notes several notehead-widths to the left. **This is a clean
+  positive: ink genuinely printed, genuinely undetected** -- the
+  GATHER-reach fault roadmap 2.17 asks about.
+* **`stem_gap-breitkopf-1-0-2-0-17.png`** (page 1, a dense fused 16th-note
+  passage, `n_cell_stem_rows=8`, `cv_beams=4`): the flagged note sits
+  inside a run where stems, beams and noteheads visibly fuse into solid
+  black regions -- consistent with `benchmarks/omr-stem-ink-2026-09`'s own
+  census ("a component EXISTS and is the wrong SHAPE," the dominant
+  Breitkopf failure at 74%), not with ink being absent.
+* **`stem_gap-breitkopf-0-0-0-1-6.png` / `-0-0-0-1-15.png`** (page 0, two
+  adjacent glyph indices in the SAME cell, stacked canonical boxes
+  touching exactly at the join, `yolo_beams=2 cv_beams=0`): zoomed
+  (`fitz` render at the recorded `bbox_page_px`, +/-80px pad, 6x), this is
+  **NOT a notehead with a missing stem at all** -- the ink is a small
+  rounded head with a thin curved hooked tail, the classic shape of an
+  OLD-STYLE ENGRAVED EIGHTH REST, sitting on the top line beside a slur
+  end and the word "tenuto". The detector's own class for this glyph
+  (`noteheadBlackInSpace`, `NOT_a_notehead`/`REST` never fired) is a
+  **misclassification, not a stem-detection gap** -- a different fault
+  (detector/notehead-precision, `notehead_precision.py`'s domain, which
+  this session was told not to touch: another lane owns
+  `ownership.py`/`notehead_precision.py`). Flagged rather than fixed:
+  **not every "stem gap" example is a stem-gap example** -- some of the
+  71.8% "no local candidate" population is this same class-confusion
+  fault wearing the `beams_ambiguous` label instead of `duration_narrowed`
+  because the class read as a NOTEHEAD in the first place. Not quantified
+  this session (would need a hand pass over the 54 gathered crop
+  candidates, out of budget); named as an open question for whoever picks
+  up `notehead_precision.py` next, not claimed as sized.
+
+**Net read: the print check is MIXED but net POSITIVE for the GATHER-reach
+hypothesis** -- at least one clean case of printed-and-undetected ink
+(2-0-0-3-3), plausible support from a fused-ink passage (1-0-2-0-17), and
+one case that turned out to be an unrelated bug wearing this funnel's
+label (0-0-0-1-6/15). The plate-level population number (SS9.1, 71.8% vs
+44.7%) stands regardless of how any one crop reads; Sean has not
+adjudicated any of these 24 crops and this is not claimed as his
+verdict.
+
+### 9.3 Step 2 -- the one candidate repair ALREADY BUILT, priced at the FILE level for the first time
+
+The obvious lever is not new: `OMR_STEM_STROKE` (`line_detection.py`
+`_column_stroke_bands`) was built and measured in
+`benchmarks/omr-stem-stroke-2026-09/` for exactly this failure mode -- "a
+component EXISTS and is the wrong SHAPE," reading a stem from a COLUMN
+PROFILE (bands columns that AGREE about where a vertical run starts and
+ends) rather than from a connected component, so a stem fused to its own
+notehead or to a beam no longer gets measured at the fused blob's width.
+That benchmark's own chronicle entry says explicitly: **"no effect on a
+FILE has been measured"** -- the flag is default OFF, gated behind no
+umbrella (stays OFF per `docs/flags-2026-09.md` SS1, re-decided at roadmap
+2.4a), because its effect on the exported CENSUS was never priced, only
+its effect on raw stem RECALL.
+
+This session prices it, for the first time, on the EXACT population
+roadmap 2.17 names: a base-vs-arm re-gather of Breitkopf pdf page 1 (the
+count page), `--no-surya --no-ocr --no-roster` (this question needs
+neither), scan weights
+(`deepscoresv2-yolov8l-hollow-graft-shift09-2026-09-04.pt`), each arm its
+own `--out` dir (`out/stem-stroke-arm/{base,arm}/`), ~85s each:
+
+| | base | arm (`OMR_STEM_STROKE=1`) | delta |
+|---|--:|--:|--:|
+| `Q.STEM` rows | 792 | 1,242 | **+450 (+56.8%)** |
+| `Q.BEAM_STROKE` rows | 924 | 972 | +48 |
+| `duration_narrowed:beams_ambiguous` (narrowed count) | 177 | 180 | +3 |
+| of those, `stems_attached==0` | 85 | 78 | -7 |
+| **notes written** | **226** | **222** | **-4** |
+| rests written | 123 | 119 | -4 |
+| `notes_not_written[duration_narrowed]` | 104 | 104 | **0 (unchanged)** |
+| `notes_not_written[bar_does_not_add_up]` | 529 | 535 | **+6 (worse)** |
+| `bars_held_out_sum` | 85 | 86 | +1 (worse) |
+| beams (exported) | 169 | 198 | +29 |
+
+**The raw-recall claim reproduces exactly as its own FINDINGS predicted
+(+56.8% stem rows, in the same range as the prior Litolff/Breitkopf-scale
+gains).** But at the FILE level, on the EXACT page and EXACT population
+this roadmap item was opened to fix, the flag is a
+**wash-to-slightly-negative**: `duration_narrowed` (the count that
+includes `beams_ambiguous`) does not move at all -- every one of the 450
+recovered stems either belongs to a note that was already correctly
+decided, or attaches without resolving that note's own certain/possible
+gap -- and the exported note count goes DOWN by 4 while bar-sum
+hold-outs go UP by 6. **This is a control that can fail (CLAUDE.md rule
+7), and here it failed**: turning the lever on does not pay for itself on
+this page.
+
+Per CLAUDE.md rule 5 ("reach before accuracy, and print before default;
+no default flips on agreement with our own reading") and rule 6 ("connect,
+never guess"), this result does NOT license flipping `OMR_STEM_STROKE` on,
+building a new join-tolerance change, or touching `line_detection.py`'s
+filters on the strength of this session's evidence alone -- the ONE
+available, already-built candidate repair was connected and measured
+honestly, and the honest answer is that it does not close this funnel.
+Inventing a NEW filter change (a length floor tweak, a join-tolerance
+pad) without further per-example evidence would be exactly the "guessing
+lives in INFER and is labelled" trap rule 6 warns against, given the
+crops in SS9.2 already show the population is NOT uniform in cause (one
+of four read crops was an unrelated detector bug, not a stem gap at all).
+
+Reproduce: `probe/compare_arm.py <label> <rec.json>` reads a record once
+via the same `export.Record`/`to_musicxml` path `notehead_funnel.py`
+uses; `out/stem-stroke-arm/{base,arm}.compare.json` are the two runs'
+numbers above, `{base,arm}.log` the gather logs. The two ~23 MB
+single-page records themselves were not committed (CLAUDE.md's own
+discipline of committing derived summaries, not records); they are
+reproducible in ~85s each from the commands named in `{base,arm}.log`'s
+own argv.
+
+### 9.4 Conclusion and roadmap disposition
+
+* The plate difference IS real and DOES confirm a GATHER-side (not
+  mainly join-tolerance) shortfall on Breitkopf specifically, at
+  population scale (71.8% vs 44.7% "no local stem candidate" among the
+  narrowed population) -- roadmap 2.17's own gate for proceeding to a
+  print check.
+* The print check is genuinely mixed: real printed-and-undetected ink
+  confirmed in at least one case, but ALSO an unrelated detector
+  class-confusion fault (a rest misread as a notehead) hiding inside the
+  same population -- named, not sized, this session.
+* The one already-built candidate repair (`OMR_STEM_STROKE`) was priced
+  at the file level for the first time (closing that flag's own long-
+  standing open question) and does NOT close this funnel -- flat on
+  `duration_narrowed`, slightly negative on the exported census.
+* **No code under `tools/omr/staged/` or `tools/omr/line_detection.py`
+  was changed this session.** No flag default was flipped. This is a
+  MEASUREMENT delivering the answer roadmap 2.17 asked for
+  ("only if... print-check... versus genuinely absent") plus one
+  additional, unscoped-but-free measurement (the file-level pricing of
+  the one candidate fix) -- not a BUILT repair, because the repair that
+  was tried does not work and inventing another was judged (rule 6) to
+  need more per-example evidence than this session's budget allowed.
+* Next lever, for whoever picks this up: (a) size the detector
+  class-confusion fault SS9.2 flagged inside this same population
+  (belongs beside `notehead_precision.py`, out of this session's fence);
+  (b) if that is sized and subtracted, re-ask whether the REMAINING
+  genuine stem-gap population still shows the 71.8%-vs-44.7% split, since
+  right now that number is not yet cleaned of the class-confusion cases.
+
+### 9.5 Files
+
+```
+probe/stem_yield.py                     Step 1 -- the full-population, per-cell/per-note
+                                         measurement, two records each read ONCE
+probe/out/stem_yield_litolff.json       Litolff's numbers + 12 crop-geometry examples
+probe/out/stem_yield_breitkopf.json     Breitkopf's numbers + 54 crop-geometry examples
+probe/crop_stem_gap.py                  Step 1b -- crops of the "no local candidate" population
+out/print/stem_gap-breitkopf-*.png(.json)  12 Breitkopf crops, VERDICT_none_yet: null
+out/print/stem_gap-litolff-*.png(.json)    12 Litolff crops, VERDICT_none_yet: null
+out/print/stem-gap-crop-manifest-{breitkopf,litolff}.json
+probe/compare_arm.py                    Step 2 -- reads a record once, reports the
+                                         census both `stem-stroke-arm/*.compare.json` cite
+out/stem-stroke-arm/{base,arm}.log      the two one-page gather runs (argv, timing)
+out/stem-stroke-arm/{base,arm}.compare.json  the file-level pricing table (SS9.3)
+out/stem-stroke-arm/{base,arm}/out.musicxml(.coverage.json)  the two exports compared
+```

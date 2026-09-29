@@ -1,0 +1,145 @@
+{
+  "subject": "glyph/5/0/0/0/7",
+  "cause": "duration_narrowed:beams_ambiguous / stem_gap",
+  "gap_kind": "FAR (1.41 notehead widths)",
+  "page": 5,
+  "system": 0,
+  "staff": 0,
+  "cell": 0,
+  "detail": {
+    "head": "noteheadBlackOnLine",
+    "beam_evidence": "none_over_this_note",
+    "cv_beams": 2,
+    "yolo_beams": 0,
+    "yolo_kept": 0,
+    "stems_attached": 0,
+    "beams_by_stem": 0,
+    "flags_attached": 0,
+    "flag_levels": 0,
+    "dots_attached": 0,
+    "staff_space": 69.75,
+    "levels_certain": 0,
+    "levels_possible": 2
+  },
+  "min_dist_notehead_widths": 1.4069767441860466,
+  "cell_stem_rows": [
+    {
+      "value": [
+        1473,
+        0,
+        18,
+        216
+      ],
+      "x0": 1473,
+      "x1": 1491
+    },
+    {
+      "value": [
+        1297,
+        32,
+        20,
+        187
+      ],
+      "x0": 1297,
+      "x1": 1317
+    },
+    {
+      "value": [
+        205,
+        60,
+        5,
+        149
+      ],
+      "x0": 205,
+      "x1": 210
+    },
+    {
+      "value": [
+        320,
+        63,
+        21,
+        146
+      ],
+      "x0": 320,
+      "x1": 341
+    },
+    {
+      "value": [
+        798,
+        129,
+        23,
+        460
+      ],
+      "x0": 798,
+      "x1": 821
+    },
+    {
+      "value": [
+        1389,
+        140,
+        20,
+        424
+      ],
+      "x0": 1389,
+      "x1": 1409
+    },
+    {
+      "value": [
+        484,
+        308,
+        20,
+        189
+      ],
+      "x0": 484,
+      "x1": 504
+    },
+    {
+      "value": [
+        269,
+        316,
+        13,
+        148
+      ],
+      "x0": 269,
+      "x1": 282
+    },
+    {
+      "value": [
+        402,
+        400,
+        18,
+        207
+      ],
+      "x0": 402,
+      "x1": 420
+    },
+    {
+      "value": [
+        563,
+        451,
+        18,
+        190
+      ],
+      "x0": 563,
+      "x1": 581
+    },
+    {
+      "value": [
+        144,
+        510,
+        25,
+        164
+      ],
+      "x0": 144,
+      "x1": 169
+    }
+  ],
+  "bbox_page": [
+    1235.88330078125,
+    725.86865234375,
+    1252.701171875,
+    743.07763671875
+  ],
+  "file": "stem_gap-breitkopf-5-0-0-0-7.png",
+  "VERDICT_none_yet": null
+}

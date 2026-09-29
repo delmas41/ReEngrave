@@ -1,0 +1,34 @@
+{
+  "subject": "glyph/4/0/4/5/4",
+  "cause": "duration_narrowed:beams_ambiguous / stem_gap",
+  "gap_kind": "CELL_EMPTY",
+  "page": 4,
+  "system": 0,
+  "staff": 4,
+  "cell": 5,
+  "detail": {
+    "head": "noteheadBlackInSpace",
+    "beam_evidence": "read",
+    "cv_beams": 0,
+    "yolo_beams": 2,
+    "yolo_kept": 2,
+    "stems_attached": 0,
+    "beams_by_stem": 0,
+    "flags_attached": 0,
+    "flag_levels": 0,
+    "dots_attached": 1,
+    "staff_space": 100.0,
+    "levels_certain": 1,
+    "levels_possible": 2
+  },
+  "min_dist_notehead_widths": null,
+  "cell_stem_rows": null,
+  "bbox_page": [
+    2810.6,
+    1405.55,
+    2848.55,
+    1440.2
+  ],
+  "file": "stem_gap-breitkopf-4-0-4-5-4.png",
+  "VERDICT_none_yet": null
+}
