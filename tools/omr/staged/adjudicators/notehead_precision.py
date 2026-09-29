@@ -54,6 +54,32 @@ them agreeing to 0.0000-0.0142 STAFF SPACES (i.e. the residual is float
 rounding, not a frame mismatch). Testing edge-coincidence against `Q.CELL_BOX`
 in page pixels is therefore the SAME comparison the legacy rule makes, in a
 frame the record actually carries.
+
+⚠️ ROADMAP 2.30 — `notehead_is_a_duplicate_box`, and the question it does
+NOT answer. `benchmarks/omr-bar-sum-holdout-2026-09/FINDINGS.md` §17's
+whole-movement funnel found many bars held out by ONE spurious extra event
+that nothing refused (class `X`: Litolff 155 bars, 253 released by that fix
+alone; Brahms 229, 453). ROADMAP 2.15 already measured and shipped the fix
+for the SAME mechanism (one physical mark, boxed twice by a SHATTERING
+plate, CLAUDE.md §10) on the REST family
+(`family_precision.adjudicate_rest_is_not_a_rest`); this module had no
+equivalent for noteheads, so a duplicated notehead box was never refused —
+"the value existed and nothing read it" (`feedback_value_computed_and_
+unread`). `_notehead_duplicate_box_refusal` below ports 2.15's SAME-CLASS
+rule (same IoU floor, same priority tie-break) to `Q.NOTEHEAD_CLASS`.
+
+CONVENTION ASSUMED / WHAT WOULD FALSIFY IT / NOT CONFIRMED: whether a
+REST box and a NOTEHEAD box overlapping at or above the same IoU floor are
+ALSO one mark read twice (a cross-FAMILY duplicate, not just within one
+family) is not measured here — no crop in §17c's or §14's evidence shows a
+rest box and a notehead box on the same ink, only single-family pairs (rest/
+rest) and single mis-boxings with no second box at all (§17c: "two quarter
+rests boxed as heads" — one box, wrong class, nothing to compare against).
+Building a cross-family refusal now would be a GUESS, not a connection.
+**Sean: where a rest-class box and a notehead-class box in one cell overlap
+at 2.15's measured floor, is that the same one-mark-twice-boxed mechanism
+(refuse both, CLAUDE.md rule 8), or does it need its own measurement?** NOT
+CONFIRMED, NOT BUILT.
 """
 
 from __future__ import annotations
@@ -561,6 +587,147 @@ def _too_narrow(box_row, spacing_canonical: float,
     return w_spaces < TOO_NARROW_MIN_SPACES
 
 
+#: ROADMAP 2.30 — the SAME floor `family_precision.REST_DUPLICATE_IOU_MIN`
+#: measured for rests (ROADMAP 2.15), cited here rather than restated. NOT
+#: imported: `family_precision` imports FROM this module
+#: (`HUMAN_OTHER_STAFF`, `HUMAN_REFUSAL_REASONS`), so the reverse import
+#: would be a cycle. A test pins the two constants equal so they cannot
+#: drift apart by an edit to one.
+NOTEHEAD_DUPLICATE_IOU_MIN = 0.02
+
+#: CONVENTION ASSUMED / WHAT WOULD FALSIFY IT / NOT CONFIRMED — the manager's
+#: own catch before merge: IoU alone is a REST threshold and is unsafe for
+#: noteheads, because a CHORD legitimately puts two same-class heads with
+#: touching or overlapping boxes right beside each other — a second (heads a
+#: half staff space apart vertically, set on opposite sides of the stem) or
+#: a third (one full space apart). Those are two real notes, not one mark
+#: twice. So a same-class pair is a duplicate only where the two boxes'
+#: CENTRES also sit at the same staff position AND the same x: a second is
+#: 0.5 space apart vertically, so 0.25 space is the midpoint between "one
+#: mark" and "the closest interval print actually uses"; 0.5 head widths is
+#: the matching horizontal half-tolerance. NOT CONFIRMED with Sean; falsified
+#: by a real duplicate crop whose two fragment centres sit farther apart
+#: than this in either axis.
+NOTEHEAD_DUPLICATE_MAX_DY_STAFF_SPACES = 0.25
+NOTEHEAD_DUPLICATE_MAX_DX_HEAD_WIDTHS = 0.5
+
+
+def _notehead_box_iou(a: Any, b: Any) -> float:
+    """IoU of two `Q.GLYPH_BOX` VALUE tuples `(class, x, y, w, h)` in the
+    SAME cell's canonical frame — `family_precision._rest_box_iou`'s exact
+    arithmetic, restated rather than imported (see the module constant's
+    own note on why)."""
+    _, x0a, y0a, wa, ha = a
+    _, x0b, y0b, wb, hb = b
+    x1a, y1a = x0a + wa, y0a + ha
+    x1b, y1b = x0b + wb, y0b + hb
+    iw = max(0.0, min(x1a, x1b) - max(x0a, x0b))
+    ih = max(0.0, min(y1a, y1b) - max(y0a, y0b))
+    inter = iw * ih
+    union = wa * ha + wb * hb - inter
+    return inter / union if union > 0 else 0.0
+
+
+def _notehead_duplicate_priority(row) -> Tuple[float, int]:
+    """Higher wins: detector confidence first, then the LOWER glyph index —
+    `family_precision._rest_duplicate_priority`'s tie-break, so two glyphs
+    evaluating each other always agree on which one survives."""
+    score = row.score if row.score is not None else 0.0
+    idx = row.subject.glyph if row.subject.glyph is not None else 0
+    return (score, -idx)
+
+
+def _same_mark_centres(a: Any, b: Any, spacing_canonical: float) -> bool:
+    """Are two `Q.GLYPH_BOX` VALUE tuples' CENTRES close enough to be one
+    physical mark rather than two chord members? See
+    `NOTEHEAD_DUPLICATE_MAX_DY_STAFF_SPACES`'s own docstring for why."""
+    _, x0a, y0a, wa, ha = a
+    _, x0b, y0b, wb, hb = b
+    dy_spaces = abs((y0a + ha / 2.0) - (y0b + hb / 2.0)) / spacing_canonical
+    if dy_spaces >= NOTEHEAD_DUPLICATE_MAX_DY_STAFF_SPACES:
+        return False
+    head_width = (wa + wb) / 2.0
+    if head_width <= 0:
+        return False
+    dx = abs((x0a + wa / 2.0) - (x0b + wb / 2.0))
+    return dx < NOTEHEAD_DUPLICATE_MAX_DX_HEAD_WIDTHS * head_width
+
+
+def _cell_notehead_boxes(ev: Evidence, cell) -> Dict[Any, Any]:
+    """Every notehead glyph's `Q.GLYPH_BOX` row in THIS glyph's own cell,
+    keyed by subject — including this glyph's own.
+    `family_precision._cell_rest_boxes`'s rule, ported: SAME CELL ONLY, the
+    crop that makes a cell wide enough to hold a note also holds the ink a
+    duplicate detection would fragment.
+    """
+    notehead_subjects = {
+        r.subject for r in
+        ev.rows(Q.NOTEHEAD_CLASS, scope=Scope.SELF_AND_DESCENDANTS,
+                subject=cell)}
+    out: Dict[Any, Any] = {}
+    for r in ev.rows(Q.GLYPH_BOX, scope=Scope.SELF_AND_DESCENDANTS,
+                     subject=cell):
+        if r.subject in notehead_subjects:
+            out[r.subject] = r
+    return out
+
+
+def _notehead_duplicate_box_refusal(ev: Evidence, this_row,
+                                    spacing_canonical: float,
+                                    detail: Dict[str, Any]
+                                    ) -> Optional[Ruling]:
+    """ROADMAP 2.30: is this box the SAME physical mark as another notehead
+    glyph the detector boxed in this cell?
+
+    SAME CLASS ONLY, unlike `family_precision._duplicate_box_refusal`
+    (which also refuses a DIFFERENT-class rest pair, because a rest's class
+    disagreement leaves no value worth protecting). A different-class
+    notehead pair (`noteheadBlack` vs `noteheadHalf`) is a chord member's
+    VALUE disagreement — FINDINGS §17c's "role twins", 2.12g's open
+    question — and refusing both here would discard a real note, not
+    settle a "cannot tell". So this rule does not compare across classes at
+    all; see the module docstring for the cross-FAMILY (rest-vs-notehead)
+    question left for Sean.
+
+    ⚠️ IoU ALONE IS UNSAFE HERE (caught before merge): a CHORD legitimately
+    puts two same-class heads with touching or overlapping boxes beside
+    each other (a second, a third). `_same_mark_centres` is a SECOND,
+    independent gate — both boxes' centres must sit at the same staff
+    position AND the same x — and BOTH IoU and the centre test must agree
+    before a box is refused.
+    """
+    cell = ev.subject.at(Kind.CELL)
+    if cell is None:
+        return None
+    this_val = this_row.value
+    if not isinstance(this_val, (list, tuple)) or len(this_val) != 5:
+        return None
+    this_class = this_val[0]
+    this_priority = _notehead_duplicate_priority(this_row)
+
+    better = None
+    for subj, row in _cell_notehead_boxes(ev, cell).items():
+        if subj == ev.subject:
+            continue
+        other_val = row.value
+        if not isinstance(other_val, (list, tuple)) or len(other_val) != 5:
+            continue
+        if other_val[0] != this_class:
+            continue
+        if _notehead_box_iou(this_val, other_val) < NOTEHEAD_DUPLICATE_IOU_MIN:
+            continue
+        if not _same_mark_centres(this_val, other_val, spacing_canonical):
+            continue
+        if _notehead_duplicate_priority(row) > this_priority:
+            better = row
+
+    if better is not None:
+        detail["duplicate_of"] = better.id
+        return Ruling(value=True, reason="notehead_is_a_duplicate_box",
+                      used=(this_row.id, better.id), detail=detail)
+    return None
+
+
 def _ledger_rungs_in_cell(ev: Evidence) -> List[Tuple[float, float, float]]:
     """Every `ledgerLine` glyph's canonical `(x0, x1, y_centre)` in this cell.
 
@@ -967,11 +1134,16 @@ def _human_not_a_symbol(ev: Evidence, detail: Dict[str, Any], *,
     # ⚠️ ROADMAP 2.6d adds `Q.LEDGER_RUNG_INK`: `_belongs_to_a_nearer_staff`
     # asks the same `ownership.ledger_direction` helper `glyph_owner` does,
     # over the same merged (detector + CV) rung pool.
+    # ⚠️ ROADMAP 2.30 adds `Q.NOTEHEAD_CLASS` for the SAME reason
+    # `family_precision`'s rest decision declares `Q.REST` explicitly
+    # despite `subjects_from` already naming it: `_cell_notehead_boxes`
+    # reads it over the whole CELL (`Scope.SELF_AND_DESCENDANTS`), a wider
+    # read than `subjects_from` covers.
     composed_from=(Q.GLYPH_BOX, Q.CELL_BOX, Q.CELL_STAFF_SPACE,
                   Q.NOTEHEAD_STAFF_POSITION, Q.GLYPH_CONF, Q.CLEF_LOCATED,
                   Q.HUMAN_BOX_VERDICT, Q.LEDGER_IS_NOT_A_LEDGER,
                   Q.GLYPH_BAND_DISTANCE, Q.STAFF_LINES, Q.STAFF_SPACING,
-                  Q.LEDGER_RUNG_INK,
+                  Q.LEDGER_RUNG_INK, Q.NOTEHEAD_CLASS,
                   # ⚠️ ROADMAP 2.12l: the cross-staff quorum reads how many
                   # staves this system has, and nothing else this decision
                   # already declares carries that fact.
@@ -981,10 +1153,12 @@ def _human_not_a_symbol(ev: Evidence, detail: Dict[str, Any], *,
           Q.NOTEHEAD_STAFF_POSITION, Q.GLYPH_CONF, Q.CLEF_LOCATED,
           Q.HUMAN_BOX_VERDICT, Q.LEDGER_IS_NOT_A_LEDGER,
           Q.GLYPH_BAND_DISTANCE, Q.STAFF_LINES, Q.STAFF_SPACING,
-          Q.LEDGER_RUNG_INK, Q.SYSTEM_STAFF_COUNT),
+          Q.LEDGER_RUNG_INK, Q.NOTEHEAD_CLASS, Q.SYSTEM_STAFF_COUNT),
     subjects_from=Q.NOTEHEAD_CLASS,
     reasons=HUMAN_REFUSAL_REASONS + ("is_a_clef", "clipped_fragment",
-                                     "too_narrow", "belongs_to_a_nearer_staff",
+                                     "too_narrow",
+                                     "notehead_is_a_duplicate_box",
+                                     "belongs_to_a_nearer_staff",
                                      "is_a_meter_digit",
                                      "notehead",
                                      ABSTAIN.NO_STAFF_GEOMETRY),
@@ -1039,6 +1213,29 @@ def adjudicate_notehead_is_not_a_notehead(ev: Evidence) -> Ruling:
        and a note far from its staff but near no other is untouched. It YIELDS
        to `glyph_owner` wherever the near staff holds a twin (see
        `_belongs_to_a_nearer_staff`). Dropped, never relocated.
+    2c. `notehead_is_a_duplicate_box` (ROADMAP 2.30, SHIPS) — CONVENTION
+       ESTABLISHED: two boxes in one cell with IoU at or above
+       `NOTEHEAD_DUPLICATE_IOU_MIN` AND centres within
+       `NOTEHEAD_DUPLICATE_MAX_DY_STAFF_SPACES`/`_DX_HEAD_WIDTHS`
+       (`_same_mark_centres`) are one physical mark read twice, the SAME
+       geometric fact ROADMAP 2.15 measured and shipped for rests
+       (`family_precision.REST_DUPLICATE_IOU_MIN`, same value, cited not
+       restated) — CLAUDE.md §10's SHATTERING plate fragments a filled
+       rectangle's ink regardless of which family the detector calls it,
+       and a notehead is that page's most common filled rectangle. THE
+       CENTRE TEST IS NOT OPTIONAL: IoU alone would also fire on a real
+       CHORD, whose same-class heads sit right beside each other with
+       touching or overlapping boxes (a second, a third) — two real notes,
+       not one mark. SAME CLASS ONLY: the higher-confidence box survives,
+       the lower-confidence one is refused. A DIFFERENT-class overlapping
+       pair (`noteheadBlack` vs `noteheadHalf`) is left alone here — that
+       is a chord member's VALUE disagreement, FINDINGS §17c's "2.12g's
+       role twins", recorded as an open question there and not settled by
+       refusing both (unlike a rest, where a class disagreement has no
+       value left to protect). Whether a cross-FAMILY pair (a rest box and
+       a notehead box on one mark) is the same phenomenon is ASSUMED, NOT
+       CONFIRMED, and not built — see the module docstring's question to
+       Sean.
 
     ⚠️ A GLYPH NONE OF THE SHIPPED RULES CONDEMNS DECIDES `False`, REASON
     `notehead` — not an abstention. Geometry was available and was tested;
@@ -1120,6 +1317,15 @@ def adjudicate_notehead_is_not_a_notehead(ev: Evidence) -> Ruling:
     if _too_narrow(box_row, spacing, detail):
         return Ruling(value=True, reason="too_narrow",
                       used=tuple(used), detail=detail)
+    # ⚠️ ROADMAP 2.30. AFTER THE SHAPE RULES (a sliver or too-narrow box is
+    # not a note regardless of what else is in the cell) and BEFORE the
+    # meter-digit / ownership rules below, which both ask what this ink
+    # MEANS — this rule only asks whether it is the SAME ink as another
+    # notehead box already in the cell. `Q.NOTEHEAD_CLASS` and `Q.GLYPH_BOX`
+    # are both already filed at GATHER; nothing here re-derives a value.
+    dup = _notehead_duplicate_box_refusal(ev, box_row, spacing, detail)
+    if dup is not None:
+        return dup
     # ⚠️ ROADMAP 2.12l. AFTER THE SHAPE RULES (a sliver or a too-narrow box is
     # not a note at all regardless of what else prints at this x) and BEFORE
     # the ownership contest (a meter digit is nobody's note, so there is
