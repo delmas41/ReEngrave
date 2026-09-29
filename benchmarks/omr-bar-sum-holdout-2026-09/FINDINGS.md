@@ -1427,13 +1427,114 @@ starts running on those 34 systems too.
 5. **Chord members that disagree** (§17c): 2.12g's twins, written by the
    first head's type.
 
-### §17g. Gates
+### §17g. ROADMAP 2.22b — the manager applied Sean's 09-28 decision: a carried meter HOLDS where the bars are silent
+
+PATH: STAGED. Branch `claude/meter-holds-2.22b`, off `origin/main`
+`7f2e7898` (2.22 merged).
+
+**Who decided.** §17e's question was NOT answered by Sean in this session.
+The manager (coordinator) applied his RECORDED words: DECISIONS 2026-09-28,
+"a meter change holds until the plate prints a change back; the return is
+always printed", and CLAUDE.md §10, "the carry is WEIGHED by the bars, not
+gated". The question stays open in `out/print/held-mvt-2026-09-29-W-manifest.json`
+(`answer_none_yet: null`, plus a note saying it was applied this way) so he
+can overturn it.
+
+**The rule (`rhythm._carry_meter`, ADJUDICATE).** Where the bars are SILENT,
+the carried meter is DECIDED with reason `carried_uncontested`, basis = the
+carry source's verdict, and `margin` = `W_METER_CARRIED`. "Silent" is
+defined narrowly, so three conditions must all hold:
+
+1. `_corroborate` found too few assessable bars (the old
+   `carry_not_corroborated` rung).
+2. None of the bars that could be summed contradicts the carry
+   (`bars_disagree == 0`). One bar that disagrees is not silence, so it
+   still abstains `carry_not_corroborated`.
+3. This system read NOTHING of its own (`instead_of == "no_evidence"`).
+   A system whose staves read a meter-shaped thing (`too_few_staves_read_it`,
+   `no_agreement`, `opening_disagrees_with_prior_cautionary`) still
+   abstains.
+
+It still ABSTAINS, unchanged, in these cases:
+
+- The bars outweigh the carry (`carry_outweighed_by_the_bars`).
+- 2.12k's cautionary return (`meter_return_not_read`).
+- 2.12l's digit witness on the carry SOURCE (`meter_change_digits_misread`).
+- A printed change witnessed unread on THIS system. The abstention stays
+  `carry_not_corroborated` and gains
+  `detail.unread_change_on_this_system_at_cell`.
+
+A carry still never crosses a movement boundary (4.2). `carried_uncontested`
+is not a carry SOURCE, so a carry still never chains onto a carry. The old
+design comment ("a page with no assessable bar is exactly the page where a
+movement may have started unseen") is the hazard this accepts. With
+`--movements` declared it is closed. Without it, a movement start nobody
+reads would now carry silently. That is Sean's rule taken at its word: the
+new movement's printed meter is a printed change, and missing it is a
+reading miss.
+
+**RED → GREEN.** `tools/omr/tests/test_staged_meter_holds_where_bars_are_silent.py`
+has 9 tests. On the unrepaired tree **4 failed and 5 passed**
+(`out/r222/tests-RED-2.22b.txt`):
+
+- The 4 RED tests: silent bars, where the carried meter is decided; one
+  agreeing bar is still silence; an uncontested carry is not a source; the
+  unread-change detail is named.
+- The 5 controls: a contradicting bar; bars that outweigh; a system that
+  read a meter shape; a witnessed unread change here; a movement boundary.
+
+After the change, 181 of 181 pass across the seven meter test files
+(`out/r222/tests-GREEN-2.22b.txt`). Two existing assertions in
+`test_staged_header_rhythm.py` pinned the old gate and were changed on
+purpose. `test_a_page_that_cannot_corroborate_does_not_carry` is now
+`..._carries_UNCONTESTED`. `test_a_LONE_WHOLE_REST_MAY_NOT_CORROBORATE_ANYTHING`
+still asserts that the rests corroborate nothing (`bars_agree == 0`,
+`too_few_assessable_bars`), but the carry now holds. The constants test
+keeps its assertion (a carry alone does not clear `METER_CARRY_FLOOR`),
+with the message reworded.
+
+**Priced: base (`git archive HEAD`) vs arm, re-decided in-process**
+(`probe/run_price_2_22b.sh`, `probe/price_2_22.py`):
+
+| | held (2.8) | released / newly held | `<note>` | `bar_sum_check`, base / arm |
+|---|--:|--:|--:|--:|
+| engraved p0–p2 (control) | 37 → 37 | 0 / 0 | 658 → 658 | 450/450 / 450/450 exact |
+| Litolff p1–p4 | 260 → 260 | 0 / 0 | 1,878 → 1,878 | 1,183 / 1,183 |
+| Brahms p0–p3 | 566 → 566 | 0 / 0 | 1,334 → 1,334 | 818 / 818 |
+
+**⚠️ THE ARM IS DEAD ON BOTH PRICED RECORDS. REACH 0, NOT "SAFE".** Neither
+record has a single `carry_not_corroborated` system on today's tree:
+
+- Litolff p1–p4: 6 systems `carried`, 1 `voted`.
+- Brahms p0–p3: 1 `voted`, 1 `carried`, 1 `meter_return_not_read`, and
+  **4 `meter_change_digits_misread`**.
+
+The Brahms figure is the finding. After 2.12l, every later system that
+carries from `system/1/0` (the last `voted` source, whose m. 9 change is
+witnessed but unread) is labelled by that witness, and it stays abstained
+by design, because the value it would carry is the one the unread change
+superseded. **Prediction, unmeasured:** on the whole Brahms movement most of
+§17a's 2,705 `carry_not_corroborated` bars (counted on pre-2.12l verdicts)
+are now `meter_change_digits_misread`, so 2.22b alone releases far fewer
+than §17e's upper bound of 608. The lever for those bars is READING the m. 9
+6/8 (2.12i's fixture). The whole-movement re-decide (>30 min) is left to
+the manager's nohup run:
+
+    sh benchmarks/omr-bar-sum-holdout-2026-09/probe/run_arm_2_22.sh <base tree> brahms-base <brahms whole record>
+    sh benchmarks/omr-bar-sum-holdout-2026-09/probe/run_arm_2_22.sh <this tree> brahms-arm <brahms whole record>
+    python3 benchmarks/omr-bar-sum-holdout-2026-09/probe/price_2_22.py benchmarks/omr-bar-sum-holdout-2026-09/out/r222 brahms-base brahms-arm
+
+**Gates.** Fast tier **3,770 passed** (main's 3,761 + 9 new), 3 skipped
+(`out/r222/pytest-fast-2.22b.txt`). `check` **TOTAL 247**
+(`out/r222/staged-check-2.22b.txt`).
+
+### §17h. Gates (2.22)
 
 Fast tier: **3,758 passed** (main's 3,748 + 10 new), 3 skipped
 (`out/r222/pytest-fast.txt`). `python3 -m tools.omr.staged.check`: **TOTAL
 247**, unchanged (`out/r222/staged-check.txt`).
 
-### §17h. Files
+### §17i. Files (2.22)
 
 - `probe/held_funnel_mvt_2_22.py`, `probe/classify_held_mvt_2_22.py`,
   `probe/summarise_2_22.py`: the dump, the partition, the tables.

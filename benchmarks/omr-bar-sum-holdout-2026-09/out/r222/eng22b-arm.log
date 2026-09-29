@@ -1,0 +1,86 @@
+[    1.1s] loading /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-ac4283fdc4cf16d33/benchmarks/omr-staged-engraved-2026-09/out/engraved-p0p2-20260928.record.json
+[    1.2s] loaded
+[    1.2s] redecide: rebuild_gather
+[    2.2s] redecide: run_stages
+ADJUDICATE
+  adjudicate movement_spans: 1 verdicts so far
+  adjudicate system_membership: 4 verdicts so far
+  adjudicate staff_group: 58 verdicts so far
+  adjudicate measure_partition: 112 verdicts so far
+  adjudicate staff_ordinal: 166 verdicts so far
+  adjudicate system_staff_count: 169 verdicts so far
+  adjudicate instrument: 223 verdicts so far
+  adjudicate slot_index: 277 verdicts so far
+  adjudicate part_partition: 278 verdicts so far
+  adjudicate group_symbol: 281 verdicts so far
+  adjudicate clef: 335 verdicts so far
+  adjudicate keysig_marker_is_not_a_marker: 468 verdicts so far
+  adjudicate system_key: 471 verdicts so far
+  adjudicate part_key: 472 verdicts so far
+  adjudicate key_signature: 526 verdicts so far
+  adjudicate ledger_is_not_a_ledger: 553 verdicts so far
+  adjudicate notehead_is_not_a_notehead: 924 verdicts so far
+  adjudicate accidental_is_not_an_accidental: 946 verdicts so far
+  adjudicate rest_is_not_a_rest: 1263 verdicts so far
+  adjudicate arpeggiato_is_not_an_arpeggiato: 1263 verdicts so far
+  adjudicate arc_is_not_an_arc: 1338 verdicts so far
+  adjudicate dynamic_is_not_a_dynamic: 1485 verdicts so far
+  adjudicate articulation_is_not_an_articulation: 1485 verdicts so far
+  adjudicate flag_is_not_a_flag: 1491 verdicts so far
+  adjudicate tuplet_marker_is_not_a_marker: 1491 verdicts so far
+  adjudicate glyph_owner: 1660 verdicts so far
+  adjudicate arc_owner: 1735 verdicts so far
+  adjudicate arc_kind: 1810 verdicts so far
+  adjudicate tie_pair: 1885 verdicts so far
+  adjudicate dot_role: 1889 verdicts so far
+  adjudicate articulation_owner: 1889 verdicts so far
+  adjudicate accidental_owner: 1911 verdicts so far
+  adjudicate fermata_owner: 1994 verdicts so far
+  adjudicate ornament_owner: 1995 verdicts so far
+  adjudicate stem_direction: 2366 verdicts so far
+  adjudicate notehead_is_a_whole_rest: 2737 verdicts so far
+  adjudicate tuplet_ratio: 2737 verdicts so far
+  adjudicate duration: 3425 verdicts so far
+  adjudicate event: 3874 verdicts so far
+  adjudicate voices: 4324 verdicts so far
+  adjudicate onset_column: 4327 verdicts so far
+  adjudicate unread_mark: 4777 verdicts so far
+  adjudicate wedge_anchor: 4777 verdicts so far
+  adjudicate meter: 4780 verdicts so far
+  adjudicate dynamic: 5230 verdicts so far
+  adjudicate direction: 5680 verdicts so far
+  adjudicate printed_bar_number: 5683 verdicts so far
+GROUPS
+  groups meter_across_staves: 3 facts, 0 disagree
+  groups measure_count_across_staves: 3 facts, 0 disagree
+  groups instrument_across_systems: 18 facts, 0 disagree
+  groups clef_across_systems: 18 facts, 0 disagree
+  groups staff_group_across_systems: 18 facts, 0 disagree
+  groups key_signature_across_systems: 18 facts, 0 disagree
+EVALUATE
+  evaluate name_part: 50 fired so far
+  evaluate restate_pitch: 421 fired so far
+  evaluate respell_accidental: 542 fired so far
+  evaluate move_glyph: 613 fired so far
+  evaluate apply_printed_accidental: 644 fired so far
+  evaluate size_measure_rest: 859 fired so far
+  evaluate reconcile_duration: 861 fired so far
+INFER
+  infer collapse_duration_by_column: 0 inferred
+  infer collapse_duration_to_barline: 0 inferred
+  infer collapse_slot_index_to_family_block: 0 inferred
+  infer fill_clef_gap: 0 inferred
+  infer fill_part_key: 0 inferred
+EVALUATE (bounded, over the inferred values)
+  evaluate name_part: 0 fired so far
+  evaluate restate_pitch: 0 fired so far
+  evaluate respell_accidental: 0 fired so far
+  evaluate move_glyph: 0 fired so far
+  evaluate apply_printed_accidental: 0 fired so far
+  evaluate size_measure_rest: 0 fired so far
+  evaluate reconcile_duration: 0 fired so far
+[   24.7s] redecide: stages done
+[   24.8s] redecided: export
+[   25.0s] redecided: exported, 37 held captured; indexing
+[   25.0s] redecided: held 37 (doubled 0) of 448; captured 37; control PASS; -> /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-ac4283fdc4cf16d33/benchmarks/omr-bar-sum-holdout-2026-09/probe/../out/r222/eng22b-arm-redecided.held.json
+[   25.0s] done

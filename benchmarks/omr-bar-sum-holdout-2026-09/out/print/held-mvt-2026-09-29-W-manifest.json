@@ -138,5 +138,6 @@
    "frame_contrast": 234.5,
    "VERDICT_none_yet": null
   }
- ]
+ ],
+ "applied_meanwhile": "2026-09-29, ROADMAP 2.22b (branch claude/meter-holds-2.22b): the manager applied Sean's recorded 09-28 decision ('a meter change holds until the plate prints a change back') and CLAUDE.md \u00a710 ('the carry is WEIGHED by the bars, not gated'): where the bars are silent the carry is DECIDED 'carried_uncontested'. This question stays OPEN for Sean to confirm or overturn."
 }

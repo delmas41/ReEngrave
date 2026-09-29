@@ -3313,6 +3313,12 @@ def _meter_in_force_at_end(value: dict, n_cells: int) -> Optional[dict]:
 
 METER_SOURCE_REASONS = ("voted", "change_only")
 
+#: ROADMAP 2.22b: a carried meter DECIDED because the bars were silent (too
+#: few assessable, none contradicting) -- Sean 2026-09-28, "a change holds
+#: until the plate prints a change back". Not a carry SOURCE (above): a carry
+#: still never chains onto a carry.
+METER_CARRIED_UNCONTESTED = "carried_uncontested"
+
 
 # ─────────────────────────────────────────────────────────────────────────────
 # ROADMAP 2.12k — A CHANGE HOLDS UNTIL A PRINTED CHANGE BACK, AND THE RETURN
@@ -3615,6 +3621,46 @@ def _carry_meter(ev: Evidence, instead_of: str) -> Optional[Ruling]:
                                       skipped_uncorroborated=skipped_uncorroborated,
                                       digit_misread_at_cell=digit_misread["from_cell"],
                                       **check)
+            # ⚠️⚠️ ROADMAP 2.22b: WHERE THE BARS ARE SILENT, THE CARRY HOLDS.
+            # Sean, 2026-09-28 (DECISIONS): "a meter change holds until the
+            # plate prints a change back"; CLAUDE.md §10: "the carry is
+            # WEIGHED by the bars, not gated". Too few assessable bars is
+            # not a vote against the carry -- it is no vote -- so a system
+            # that READ nothing of its own (`no_evidence`), whose one or
+            # two speaking bars contradict nothing, and on which no printed
+            # change was witnessed unread, is IN the meter it was carried
+            # into. Applied by the manager from Sean's recorded words
+            # (FINDINGS §17g); the question stays open in
+            # `held-mvt-2026-09-29-W-manifest.json` for him to overturn.
+            # Still ABSTAINED, each with its own reason: a bar that DOES
+            # contradict it (not silent); a system whose own staves read a
+            # meter-shaped thing (`instead_of` other than `no_evidence`);
+            # a printed change witnessed here but unread (2.12l's digit
+            # witness, below); the two labelled cases above (2.12k's
+            # cautionary return, 2.12l's witness on the source); and a
+            # carry never crosses a movement boundary (the walk above
+            # BREAKS at one, 4.2).
+            if instead_of == "no_evidence" and not check.get("bars_disagree"):
+                value = _with_segments(ev, carried)
+                unread_here = _carry_source_digit_misread(value)
+                if unread_here is None:
+                    return Ruling(value=value, reason=METER_CARRIED_UNCONTESTED,
+                                  used=(found.id,), margin=W_METER_CARRIED,
+                                  detail={"carried_from": src.to_key(),
+                                          "pages_since_read": pages,
+                                          "instead_of": instead_of,
+                                          "carried_via_cautionary":
+                                              is_cautionary_source,
+                                          "skipped_uncorroborated":
+                                              skipped_uncorroborated,
+                                          **check})
+                return Ruling.abstain(
+                    "carry_not_corroborated", carried_from=src.to_key(),
+                    pages_since_read=pages, instead_of=instead_of,
+                    carried_via_cautionary=is_cautionary_source,
+                    skipped_uncorroborated=skipped_uncorroborated,
+                    unread_change_on_this_system_at_cell=unread_here["from_cell"],
+                    **check)
             return Ruling.abstain("carry_not_corroborated",
                                   carried_from=src.to_key(),
                                   pages_since_read=pages,
@@ -3943,6 +3989,8 @@ def _meter_fallbacks(ev: Evidence, why: str, **detail) -> Ruling:
            Q.GLYPH_BOX, Q.CELL_STAFF_SPACE, Q.NOTEHEAD_IS_NOT_A_NOTEHEAD),
     reasons=("voted", "no_agreement", "no_evidence",
              "too_few_staves_read_it", "carried",
+             # ⚠️ ROADMAP 2.22b: the carry held where the bars were silent.
+             "carried_uncontested",
              "carry_not_corroborated", "carry_outweighed_by_the_bars",
              "carry_source_uncorroborated",
              "change_only", "derived_from_bars",
