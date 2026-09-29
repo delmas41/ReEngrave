@@ -3796,6 +3796,67 @@ def gather_meter(log: Log, pws: Any, cells: Sequence[Any],
                     runner_up_score=found.runner_up_score,
                     score_margin=found.score_margin)
 
+        _gather_meter_ocr_header(log, sub, crop)
+
+
+def _gather_meter_ocr_header(log: Log, sub: Subject, crop: Any) -> None:
+    """ROADMAP 2.29. `Q.METER_OCR` — Tesseract, on the SAME header crop
+    `locate_time_signature` just read, split at the crop's own MIDDLE staff
+    line (`crop.staff_line_ys_canonical[2]` of 5 -- see `meter_digit_ocr`'s
+    own CONVENTION-ASSUMED note on the split). ⚠️ No flag: like
+    `bar_number_text` (ROADMAP 2.13) this is Tesseract-only, always
+    attempted, and abstains cleanly where Tesseract is unavailable -- there
+    is nothing to gate.
+    """
+    try:
+        from .. import meter_digit_ocr
+    except Exception:                                         # noqa: BLE001
+        log.abstain(sub, Q.METER_OCR, reader=READERS.TESSERACT,
+                    frame=FRAME_HEADER_WINDOW,
+                    reason=ABSTAIN.READER_UNAVAILABLE)
+        return
+    if not meter_digit_ocr.available():
+        log.abstain(sub, Q.METER_OCR, reader=READERS.TESSERACT,
+                    frame=FRAME_HEADER_WINDOW,
+                    reason=ABSTAIN.READER_UNAVAILABLE)
+        return
+    image = getattr(crop, "image", None)
+    line_ys = getattr(crop, "staff_line_ys_canonical", None) or []
+    if image is None or image.size == 0 or len(line_ys) < 5:
+        log.abstain(sub, Q.METER_OCR, reader=READERS.TESSERACT,
+                    frame=FRAME_HEADER_WINDOW,
+                    reason=ABSTAIN.NO_STAFF_GEOMETRY)
+        return
+    split_row = int(round(line_ys[2]))
+    trace: Dict[str, Any] = {}
+    try:
+        found = meter_digit_ocr.read_meter_digits(
+            image, split_row=split_row, trace=trace)
+    except Exception:                                         # noqa: BLE001
+        log.abstain(sub, Q.METER_OCR, reader=READERS.TESSERACT,
+                    frame=FRAME_HEADER_WINDOW,
+                    reason=ABSTAIN.READER_UNAVAILABLE)
+        return
+    if found is None:
+        # ⚠️ THE COMMON CASE, exactly as `Q.METER_TEMPLATE`'s own abstention
+        # says: a header window prints no meter almost everywhere a system
+        # is not the movement's opening.
+        log.abstain(sub, Q.METER_OCR, reader=READERS.TESSERACT,
+                    frame=FRAME_HEADER_WINDOW,
+                    reason=ABSTAIN.BELOW_THRESHOLD, **trace)
+        return
+    # ⚠️ SCORE, NOT JUST DETAIL — the same convention `Q.PRINTED_BAR_NUMBER`
+    # (ROADMAP 2.13) uses for its own Tesseract mean confidence
+    # (`conf / 100.0`). The WEAKER of the two halves, because a stack read
+    # confidently on top and poorly on the bottom is only as sure as its
+    # worst half.
+    log.observe(sub, Q.METER_OCR, (found.numerator, found.denominator),
+                reader=READERS.TESSERACT, frame=FRAME_HEADER_WINDOW,
+                score=min(found.numerator_confidence,
+                         found.denominator_confidence) / 100.0,
+                numerator_confidence=found.numerator_confidence,
+                denominator_confidence=found.denominator_confidence)
+
 
 def _gather_meter_glyphs(log: Log, sub: Subject, detections, p: int,
                          key) -> None:
@@ -4075,6 +4136,182 @@ def gather_meter_at_bars(log: Log, cells: Sequence[Any],
                         runner_up_score=found.runner_up_score,
                         score_margin=found.score_margin,
                         candidate_staves=n_seen)
+
+
+#: ROADMAP 2.29's mid-bar OCR reader. DEFAULT OFF, its OWN flag rather than
+#: `METER_TEMPLATE_AT_BAR_ENV` -- this is a GATHER change with no pricing run
+#: behind it yet (Sean 2026-09-29: microscopic wiring, proved by RED->GREEN
+#: tests, no gathers), and 2.12i's own flag stays exactly as that item
+#: measured and left it. An allow-list, because the default is OFF.
+METER_OCR_AT_BAR_ENV = "OMR_METER_OCR_AT_BAR"
+
+
+def _meter_ocr_at_bar_enabled() -> bool:
+    return (os.environ.get(METER_OCR_AT_BAR_ENV, "0").strip().lower()
+            in ("1", "true", "yes", "on")
+            and research_enabled(METER_OCR_AT_BAR_ENV))
+
+
+def _meter_digit_pair_box(cell_dets, spacing: float
+                          ) -> Optional[Tuple[float, float, float, float]]:
+    """This staff's own stacked notehead PAIR near the barline, as a page-
+    canonical `(x0, y0, x1, y1)` bounding box over BOTH boxes, or `None`.
+
+    ⚠️ THE SAME GEOMETRY `notehead_precision._meter_digit_pair_partner` /
+    `_has_a_stacked_pair` TEST — cited, not imported: that module reads it
+    back off `Q.GLYPH_BOX` ROWS at ADJUDICATE time (after the cross-staff
+    quorum is knowable); this runs at GATHER time, directly off the
+    detector's own boxes, before any quorum exists to ask. Firing here is
+    deliberately LOOSER than `is_a_meter_digit` (no cross-staff repetition
+    required) — it only decides whether it is worth SPENDING an OCR call,
+    never whether the pair IS a meter digit. That verdict stays
+    `notehead_precision`'s alone; a false hit here costs one wasted crop and
+    files nothing else.
+    """
+    # ⚠️ IMPORTED, NOT RESTATED — the exact thresholds ROADMAP 2.12l measured
+    # (`notehead_precision.METER_DIGIT_X_MAX_SPACES` et al.), so this pass
+    # can never drift from what `is_a_meter_digit` will later test the same
+    # boxes against. A lazy import: `gather.py` is the GATHER layer and this
+    # module lives under `adjudicators/`, imported only where this one
+    # function needs its constants.
+    from .adjudicators import notehead_precision as _np
+    notes = [d for d in cell_dets
+             if str(getattr(d, "smufl_name", "")).lower().startswith(
+                 _NOTEHEAD_PREFIX.lower())]
+    candidates = []
+    for d in notes:
+        x_sp = d.x_canonical / spacing
+        if not (0.0 <= x_sp <= _np.METER_DIGIT_X_MAX_SPACES):
+            continue
+        yc = (d.y_canonical + d.height_canonical / 2.0) / spacing
+        candidates.append((x_sp, yc, d))
+    for i in range(len(candidates)):
+        for j in range(i + 1, len(candidates)):
+            x0, yc0, d0 = candidates[i]
+            x1, yc1, d1 = candidates[j]
+            if abs(x1 - x0) > _np.METER_DIGIT_PAIR_X_TOL_SPACES:
+                continue
+            y_gap = abs(yc1 - yc0)
+            if not (_np.METER_DIGIT_PAIR_Y_GAP_MIN_SPACES <= y_gap
+                    <= _np.METER_DIGIT_PAIR_Y_GAP_MAX_SPACES):
+                continue
+            bx0 = min(d0.x_canonical, d1.x_canonical)
+            by0 = min(d0.y_canonical, d1.y_canonical)
+            bx1 = max(d0.x_canonical + d0.width_canonical,
+                      d1.x_canonical + d1.width_canonical)
+            by1 = max(d0.y_canonical + d0.height_canonical,
+                      d1.y_canonical + d1.height_canonical)
+            return (bx0, by0, bx1, by1)
+    return None
+
+
+def gather_meter_ocr_at_bars(log: Log, cells: Sequence[Any],
+                             local: Dict[int, Tuple[int, int]],
+                             detections: Dict[str, List[Any]]) -> None:
+    """ROADMAP 2.29. `Q.METER_OCR_AT_BAR` — the OCR reader, aimed at a
+    mid-staff bar head from EITHER of two starting points: a detector
+    `timeSig*` box at that cell (the SAME window `gather_meter_at_bars`
+    builds, `_bar_head_window`), or — where the detector boxed the change's
+    digits as noteheads instead — this staff's own stacked notehead pair
+    near the barline (`_meter_digit_pair_box`, ROADMAP 2.12l's own
+    geometry). Filed on the CELL subject: `_meter_digit_witness_cells`
+    (`rhythm.py`) reads it back at the exact cell it already found a
+    cross-staff witness at, as a CANDIDATE for the carry to weigh — never a
+    decision made here.
+
+    ⚠️ Off by default (`METER_OCR_AT_BAR_ENV`): unlike the header reading
+    (always on, like `Q.PRINTED_BAR_NUMBER`), this pass has no pricing run
+    behind it, per Sean 2026-09-29's own instruction to wire conceptually
+    rather than spend a run on it.
+    """
+    if not _meter_ocr_at_bar_enabled():
+        return
+    try:
+        from .. import meter_digit_ocr
+    except Exception:                                         # noqa: BLE001
+        meter_digit_ocr = None                                # type: ignore
+
+    by_staff_cell: Dict[Tuple[int, int], Any] = {}
+    page_index = 0
+    for c in cells:
+        if c.staff_index in local:
+            by_staff_cell[(c.staff_index, c.measure_index)] = c
+            page_index = c.page_index
+
+    for staff_index, key in sorted(local.items()):
+        sys_idx, st_idx = key
+        for (s_idx, cell_index), cell in sorted(by_staff_cell.items()):
+            if s_idx != staff_index or cell_index == 0:
+                continue
+            sub = R.cell(page_index, sys_idx, st_idx, cell_index)
+            frame = frame_bar_head(cell_index)
+            if meter_digit_ocr is None or not meter_digit_ocr.available():
+                log.abstain(sub, Q.METER_OCR_AT_BAR, reader=READERS.TESSERACT,
+                            frame=frame, reason=ABSTAIN.READER_UNAVAILABLE,
+                            cell=cell_index)
+                continue
+            cell_key = R.cell(page_index, sys_idx, st_idx, cell_index).to_key()
+            cell_dets = detections.get(cell_key, [])
+            image = None
+            split_row = None
+            origin = None
+            if any(str(getattr(d, "smufl_name", "")).startswith("timeSig")
+                  for d in cell_dets):
+                window = _bar_head_window(cell, METER_TEMPLATE_AT_BAR_WINDOW_SPACES)
+                if window is not None:
+                    image = getattr(window, "image", None)
+                    line_ys = getattr(window, "staff_line_ys_canonical", None) or []
+                    if len(line_ys) >= 5:
+                        split_row = int(round(line_ys[2]))
+                    origin = "timesig_box"
+            if image is None:
+                metrics = None
+                try:
+                    from ..header_ink import staff_metrics
+                    metrics = staff_metrics(cell)
+                except Exception:                                 # noqa: BLE001
+                    metrics = None
+                if metrics is not None:
+                    spacing = metrics[0]
+                    box = _meter_digit_pair_box(cell_dets, spacing)
+                    if box is not None:
+                        bx0, by0, bx1, by1 = box
+                        full = getattr(cell, "image", None)
+                        if full is not None and full.size:
+                            x0i, y0i = max(0, int(bx0)), max(0, int(by0))
+                            x1i = min(full.shape[1], int(bx1) + 1)
+                            y1i = min(full.shape[0], int(by1) + 1)
+                            if x1i > x0i and y1i > y0i:
+                                image = full[y0i:y1i, x0i:x1i]
+                                split_row = (y1i - y0i) // 2
+                                origin = "digit_pair_witness"
+            if image is None or image.size == 0:
+                log.abstain(sub, Q.METER_OCR_AT_BAR, reader=READERS.TESSERACT,
+                            frame=frame, reason=ABSTAIN.NO_DETECTIONS,
+                            cell=cell_index)
+                continue
+            trace: Dict[str, Any] = {}
+            try:
+                found = meter_digit_ocr.read_meter_digits(
+                    image, split_row=split_row, trace=trace)
+            except Exception:                                     # noqa: BLE001
+                log.abstain(sub, Q.METER_OCR_AT_BAR, reader=READERS.TESSERACT,
+                            frame=frame, reason=ABSTAIN.READER_UNAVAILABLE,
+                            cell=cell_index, origin=origin)
+                continue
+            if found is None:
+                log.abstain(sub, Q.METER_OCR_AT_BAR, reader=READERS.TESSERACT,
+                            frame=frame, reason=ABSTAIN.BELOW_THRESHOLD,
+                            cell=cell_index, origin=origin, **trace)
+                continue
+            log.observe(sub, Q.METER_OCR_AT_BAR,
+                        (found.numerator, found.denominator),
+                        reader=READERS.TESSERACT, frame=frame,
+                        cell=cell_index, origin=origin,
+                        score=min(found.numerator_confidence,
+                                 found.denominator_confidence) / 100.0,
+                        numerator_confidence=found.numerator_confidence,
+                        denominator_confidence=found.denominator_confidence)
 
 
 def _label_rung_state(surya_fallback: bool, ocr_fallback: bool) -> Dict[str, Any]:
@@ -5305,6 +5542,10 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
         # DIFFERENT crop and the header reading is the one a consumer reaches
         # for first. Off by default — see `METER_TEMPLATE_AT_BAR_ENV`.
         gather_meter_at_bars(log, cells, local, detections)
+        # ⚠️ ROADMAP 2.29, BESIDE `gather_meter_at_bars` for the same reason
+        # `_bar_head_window` is shared: a second reader of the SAME mid-bar
+        # region, off by default (`METER_OCR_AT_BAR_ENV`) until priced.
+        gather_meter_ocr_at_bars(log, cells, local, detections)
         gather_margin_labels(log, pws, cells, local, pdf_path=pdf_path,
                              surya_fallback=surya_fallback,
                              ocr_fallback=ocr_fallback)
