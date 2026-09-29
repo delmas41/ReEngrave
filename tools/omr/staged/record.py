@@ -876,6 +876,25 @@ class Q(_Vocab):
     #: how `Q.METER_GLYPH` already carries it — a mid-staff reading whose bar
     #: is unknown is not a change, it is noise.
     METER_TEMPLATE_AT_BAR = "meter_template_at_bar"
+    #: ROADMAP 2.29. A SECOND, INDEPENDENT reader of the header window
+    #: `Q.METER_TEMPLATE` reads — Tesseract OCR on the numerator/denominator
+    #: halves separately, rather than an NCC template match on the stack —
+    #: see `tools.omr.meter_digit_ocr`'s own docstring for why the two fail
+    #: independently rather than being two names for one signal. Filed on
+    #: the STAFF subject, same as `Q.METER_TEMPLATE`, for the same reason:
+    #: this states the system's OPENING, never a change.
+    METER_OCR = "meter_ocr"
+    #: The SAME OCR reader, aimed at a mid-staff BAR HEAD — a printed meter
+    #: CHANGE, including one whose digits the detector boxed as noteheads
+    #: (ROADMAP 2.12l's `is_a_meter_digit` witness) and which therefore has
+    #: no `Q.METER_GLYPH`/`Q.METER_TEMPLATE_AT_BAR` reading to agree or
+    #: disagree with at all. ⚠️ A SEPARATE QUANTITY from `Q.METER_OCR` for
+    #: the same reason `Q.METER_TEMPLATE_AT_BAR` is separate from
+    #: `Q.METER_TEMPLATE`: pooling the opening and a change would make a
+    #: change at bar 9 argue about what bar 1 prints. The bar is in
+    #: `detail["cell"]`, filed on the CELL subject (the window is a
+    #: per-bar fact, unlike the header window which is per-staff).
+    METER_OCR_AT_BAR = "meter_ocr_at_bar"
 
     # ── text (measurements) ─────────────────────────────────────────────────
     MARGIN_LABEL = "margin_label"            # the STRING, before the lexicon
@@ -1654,6 +1673,11 @@ CLAIMS: "dict[str, str]" = {
     #: score is how confident that naming is, not a second claim.
     "METER_TEMPLATE": CLAIM.IDENTIFICATION,
     "METER_TEMPLATE_AT_BAR": CLAIM.IDENTIFICATION,
+    #: ROADMAP 2.29. Same reasoning as `METER_TEMPLATE` immediately above:
+    #: the VALUE is the meter Tesseract read the ink AS, and the confidence
+    #: pair is how sure that reading is, not a second claim.
+    "METER_OCR": CLAIM.IDENTIFICATION,
+    "METER_OCR_AT_BAR": CLAIM.IDENTIFICATION,
     #: ⚠️ A JUDGEMENT CALL, NAMED. A CV stem is scoreless and is a pair of
     #: endpoints, which reads like a ruler -- but the rung has already decided
     #: the run of ink IS a stem, and `_stem_joined` consumes it as one. It is

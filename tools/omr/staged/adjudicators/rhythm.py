@@ -3171,6 +3171,45 @@ def _meter_digit_witness_cells(ev: Evidence,
             if len(sts) >= floor}
 
 
+def _ocr_at_bar_candidates(ev: Evidence) -> Dict[int, dict]:
+    """ROADMAP 2.29. `{cell_index: majority reading}` for every cell of this
+    system `Q.METER_OCR_AT_BAR` read anything plausible at -- most systems
+    empty, and every system empty while `OMR_METER_OCR_AT_BAR` is off
+    (CLAUDE.md, "off writes nothing at all").
+
+    ⚠️ FETCHED HERE, ONCE, AND PASSED DOWN -- the same shape `_carry_meter`
+    already uses for `n_cells` (see that function's own comment): a `Q.`
+    read a further call inside `_meter_changes` would be invisible to
+    `inventory._never_read`'s depth-3 walk from `adjudicate_meter` and read
+    as an INERT declaration despite being genuinely consumed.
+
+    ⚠️ READ BACK, NEVER RE-DERIVED -- the same "connect, never guess" shape
+    `_carry_source_digit_misread` already uses for the digit witness itself.
+    NEVER TREATED AS A DECISION: `_meter_changes` files this on a
+    `declined_changes` entry as `ocr_candidate`, a value for the carry
+    ladder (or a human) to weigh -- see the ROADMAP 2.12l block comment
+    above `_meter_digit_witness_cells`. This function itself decides
+    nothing about the SYSTEM's meter.
+    """
+    by_cell: Dict[int, dict] = {}
+    for r in ev.rows(Q.METER_OCR_AT_BAR, scope=Scope.SELF_AND_DESCENDANTS):
+        cell_index = getattr(r.subject, "cell", None)
+        if cell_index is None:
+            continue
+        v = r.value
+        if not isinstance(v, (list, tuple)) or len(v) != 2:
+            continue
+        by_cell.setdefault(int(cell_index), {}).setdefault(
+            (int(v[0]), int(v[1])), []).append(r)
+    out: Dict[int, dict] = {}
+    for cell_index, tally in by_cell.items():
+        (num, den), witnesses = max(tally.items(), key=lambda kv: len(kv[1]))
+        out[cell_index] = {"numerator": num, "denominator": den,
+                           "raw": "%d/%d" % (num, den),
+                           "staves_reading_it": len(witnesses)}
+    return out
+
+
 def _carry_source_digit_misread(value: Optional[dict]) -> Optional[dict]:
     """The first `declined_changes` entry on a `Q.METER` VALUE (this
     system's own, or a carry source's) filed `meter_change_digits_misread`,
@@ -3464,7 +3503,8 @@ def _admit_template_consensus(readings: dict, at_this_bar: dict,
 def _meter_changes(ev: Evidence, opening: dict, bars: dict,
                    last_cell: dict, templates: Optional[dict] = None,
                    total_staves: Optional[int] = None,
-                   digit_witnesses: Optional[dict] = None) -> tuple:
+                   digit_witnesses: Optional[dict] = None,
+                   ocr_at_bar: Optional[dict] = None) -> tuple:
     """Every mid-system meter change this system's own evidence supports.
 
     Takes its facts as arguments — `opening`, `bars`, `last_cell` and
@@ -3721,10 +3761,21 @@ def _meter_changes(ev: Evidence, opening: dict, bars: dict,
     for cell, staves in sorted(digit_witnesses.items()):
         if cell in cells_with_a_candidate or cell <= last_read_cell:
             continue
-        declined.append({"from_cell": cell, "numerator": None,
-                         "denominator": None, "raw": None,
-                         "declined_reason": METER_CHANGE_DIGITS_MISREAD,
-                         "staves_with_digit_witness": list(staves)})
+        entry = {"from_cell": cell, "numerator": None,
+                "denominator": None, "raw": None,
+                "declined_reason": METER_CHANGE_DIGITS_MISREAD,
+                "staves_with_digit_witness": list(staves)}
+        # ⚠️ ROADMAP 2.29: A CANDIDATE, ABSENT-NOT-ZERO, NEVER A VALUE ON
+        # THIS ENTRY'S OWN `numerator`/`denominator`. The digit witness
+        # above is still value-free by construction (`is_a_meter_digit`
+        # names a PLACE, never a reading); where the OCR reader also read
+        # something plausible at this same cell, it rides alongside as a
+        # candidate for `_carry_meter` (or a human) to weigh -- see
+        # `_ocr_at_bar_candidate_for_cell`'s own docstring.
+        ocr_candidate = (ocr_at_bar or {}).get(cell)
+        if ocr_candidate is not None:
+            entry["ocr_candidate"] = ocr_candidate
+        declined.append(entry)
     # ─────────────────────────────────────────────────────────────────────────
     return out, cautionaries, declined
 
@@ -3773,7 +3824,9 @@ def _with_segments(ev: Evidence, opening: dict) -> dict:
         total_staves=total_staves,
         # ⚠️ ROADMAP 2.12l: fetched HERE, beside `total_staves`, not inside
         # `_meter_changes` -- see that function's own docstring.
-        digit_witnesses=_meter_digit_witness_cells(ev, total_staves))
+        digit_witnesses=_meter_digit_witness_cells(ev, total_staves),
+        # ⚠️ ROADMAP 2.29: fetched HERE too, for the SAME reason.
+        ocr_at_bar=_ocr_at_bar_candidates(ev))
     # ⚠️ A-METER-6's flag rides along in `_segment_from_change`: a segment still
     # governs THIS system's bars through `record.meter_at` exactly as before,
     # and the flag is read only by `_meter_in_force_at_end`, on the way OFF.
@@ -4183,6 +4236,18 @@ def _carry_meter(ev: Evidence, instead_of: str) -> Optional[Ruling]:
             # few bars to check the carry against" is not a generic gap here,
             # it is the same gap that change witnessed.
             if digit_misread is not None:
+                # ⚠️ ROADMAP 2.29: THE OCR CANDIDATE RIDES ALONG, STILL NOT
+                # DECIDED. `digit_misread["ocr_candidate"]` (absent, not
+                # `None`, where the OCR reader never read this cell -- see
+                # `_ocr_at_bar_candidate_for_cell`) is a NAME for what the
+                # carry ladder or a human should look at next, not a value
+                # this abstention asserts. `Ruling.abstain` refuses `value`
+                # by construction (`record.Verdict.__post_init__`), so
+                # surfacing it in `detail` is the only way to weigh it
+                # without silently deciding it here.
+                extra = {}
+                if "ocr_candidate" in digit_misread:
+                    extra["ocr_candidate"] = digit_misread["ocr_candidate"]
                 return Ruling.abstain(METER_CHANGE_DIGITS_MISREAD,
                                       carried_from=src.to_key(),
                                       pages_since_read=pages,
@@ -4190,7 +4255,7 @@ def _carry_meter(ev: Evidence, instead_of: str) -> Optional[Ruling]:
                                       carried_via_cautionary=is_cautionary_source,
                                       skipped_uncorroborated=skipped_uncorroborated,
                                       digit_misread_at_cell=digit_misread["from_cell"],
-                                      **check)
+                                      **extra, **check)
             # ⚠️⚠️ ROADMAP 2.22b: WHERE THE BARS ARE SILENT, THE CARRY HOLDS.
             # Sean, 2026-09-28 (DECISIONS): "a meter change holds until the
             # plate prints a change back"; CLAUDE.md §10: "the carry is
@@ -4534,6 +4599,50 @@ def _meter_fallbacks(ev: Evidence, why: str, **detail) -> Ruling:
     return from_bars or carried or changed
 
 
+# ─────────────────────────────────────────────────────────────────────────────
+# ROADMAP 2.29 — a SECOND, INDEPENDENT reader of the system's OPENING meter.
+# `meter_digit_ocr` OCRs the numerator/denominator halves of the SAME header
+# crop `Q.METER_TEMPLATE`'s own NCC match already read; see that module's
+# docstring for why the two readers' failure modes do not correlate (shape
+# match vs. stroke topology) rather than merely asserting it here.
+# ─────────────────────────────────────────────────────────────────────────────
+
+
+def _ocr_opening_reading(ev: Evidence) -> Optional[Tuple[int, int, float, tuple]]:
+    """`(numerator, denominator, share, witness_rows)` for the OCR reader's
+    OWN majority reading of this system's opening, or `None` where it read
+    nothing at all. ⚠️ NO coverage/agreement floor of its own -- this reader
+    has no measured floor yet (CLAUDE.md rule 5: reach before accuracy), so
+    `adjudicate_meter` decides what a disagreement means; this only reports
+    what was read."""
+    rows = ev.rows(Q.METER_OCR, scope=Scope.SELF_AND_DESCENDANTS)
+    if not rows:
+        return None
+    tally: dict = {}
+    for row in rows:
+        v = row.value
+        if not isinstance(v, (list, tuple)) or len(v) != 2:
+            continue
+        tally.setdefault((int(v[0]), int(v[1])), []).append(row)
+    if not tally:
+        return None
+    best, witnesses = max(tally.items(), key=lambda kv: len(kv[1]))
+    return best[0], best[1], len(witnesses) / len(rows), tuple(witnesses)
+
+
+def _bar_corroboration_margin(ev: Evidence, candidate: dict) -> Optional[float]:
+    """Net signed support (`Term.weight` summed) this system's own bars give
+    `candidate`, via the SAME `_corroborate` the carry ladder already uses --
+    never a second arbiter. `None` where the bars have nothing assessable to
+    say (too few bars, or no candidate), which `adjudicate_meter` treats as
+    "the bars did not settle it", never as a zero."""
+    check = _corroborate(ev, candidate)
+    terms = check.get("terms")
+    if terms is None:
+        return None
+    return sum(t.weight for t in terms)
+
+
 @decision(
     quantity=Q.METER,
     checkable=Checkable.MIXED,
@@ -4543,6 +4652,12 @@ def _meter_fallbacks(ev: Evidence, why: str, **detail) -> Ruling:
     ),
     implicates=(Q.METER, Q.DURATION, Q.MEASURE_PARTITION),
     composed_from=(Q.METER_GLYPH, Q.METER_TEMPLATE, Q.METER_TEMPLATE_AT_BAR,
+                   # ⚠️ ROADMAP 2.29: a SECOND, INDEPENDENT reader of the
+                   # opening (`Q.METER_OCR`) and of a mid-bar change,
+                   # including a 2.12l witness cell with no template
+                   # reading at all (`Q.METER_OCR_AT_BAR`, read back by
+                   # `_meter_digit_witness_cells`).
+                   Q.METER_OCR, Q.METER_OCR_AT_BAR,
                    Q.DURATION,
                    # ⚠️ ROADMAP 2.12l: `_meter_digit_witness_cells` finds its
                    # candidates from `Q.GLYPH_BOX`/`Q.CELL_STAFF_SPACE` (plain
@@ -4553,6 +4668,7 @@ def _meter_fallbacks(ev: Evidence, why: str, **detail) -> Ruling:
                    Q.NOTEHEAD_IS_NOT_A_NOTEHEAD),
     scope=Kind.SYSTEM,
     wants=(Q.METER_GLYPH, Q.METER_TEMPLATE, Q.METER_TEMPLATE_AT_BAR,
+           Q.METER_OCR, Q.METER_OCR_AT_BAR,
            Q.DURATION, Q.DOSSIER_FACT,
            Q.SYSTEM_STAFF_COUNT, Q.METER, Q.EVENT, Q.REST,
            Q.MEASURE_PARTITION, Q.MOVEMENT_SPANS,
@@ -4578,7 +4694,12 @@ def _meter_fallbacks(ev: Evidence, why: str, **detail) -> Ruling:
              # whose digits were boxed as noteheads, refused there and read
              # back here -- an ABSTENTION naming the specific, known cause
              # rather than the generic "the bars outweighed it."
-             "meter_change_digits_misread"),
+             "meter_change_digits_misread",
+             # ⚠️ ROADMAP 2.29: the template and OCR readers disagree about
+             # this system's opening and this system's own bars did not
+             # settle it either -- NARROWED, never an argmax on either
+             # reader's share.
+             "template_ocr_disagree"),
     mode=Mode.ADDITIVE,
 )
 def adjudicate_meter(ev: Evidence) -> Ruling:
@@ -4598,11 +4719,26 @@ def adjudicate_meter(ev: Evidence) -> Ruling:
     EVALUATE, not in this vote. See `consequences.reconcile_duration`.
     """
     rows = ev.rows(Q.METER_TEMPLATE, scope=Scope.SELF_AND_DESCENDANTS)
+    ocr = _ocr_opening_reading(ev)
     if not rows:
         # ⚠️ THE CARRY IS TRIED ONLY WHERE THIS SYSTEM'S OWN EVIDENCE FAILED,
         # so it can never overturn a reading. Off by default -- see
         # `METER_CARRY_ENV` for the movement-boundary hazard, measured.
-        return _meter_fallbacks(ev, "no_evidence")
+        #
+        # ⚠️ ROADMAP 2.29: WHERE ONLY THE OCR READ, IT IS STILL NOT DECIDED
+        # HERE. `ocr` is handed to `_meter_fallbacks` as a NAMED CANDIDATE
+        # for the carry ladder to weigh (CLAUDE.md rule 6) -- never asserted
+        # as this system's opening on its own say, however plausible.
+        fallback = _meter_fallbacks(ev, "no_evidence")
+        if ocr is not None:
+            import dataclasses
+            fallback = dataclasses.replace(
+                fallback, detail=dict(fallback.detail,
+                                      ocr_only_candidate={
+                                          "numerator": ocr[0],
+                                          "denominator": ocr[1],
+                                          "share": round(ocr[2], 3)}))
+        return fallback
 
     tally_: dict = {}
     for row in rows:
@@ -4640,6 +4776,70 @@ def adjudicate_meter(ev: Evidence) -> Ruling:
     opening = {"numerator": witnesses[0].value[0],
                "denominator": witnesses[0].value[1],
                "raw": best_raw}
+
+    # ─── ROADMAP 2.29: THE OCR READER WEIGHS IN ON THE SAME OPENING ────────
+    # ⚠️ A SECOND, INDEPENDENT READER OF THE SAME INK (see `meter_digit_ocr`'s
+    # own docstring for why OCR and the NCC template are not one signal
+    # wearing two names). Silent where `ocr is None` -- an OCR abstention is
+    # not evidence either way, and the template's own vote stands exactly as
+    # it always has.
+    ocr_used: tuple = ()
+    ocr_detail: dict = {}
+    if ocr is not None:
+        ocr_num, ocr_den, ocr_share, ocr_rows = ocr
+        if (ocr_num, ocr_den) == (opening["numerator"], opening["denominator"]):
+            # AGREE: a second witness for the SAME opening, never a second
+            # vote -- the template's own share still decides the margin.
+            ocr_used = tuple(r.id for r in ocr_rows)
+            ocr_detail = {"ocr_agrees": True, "ocr_share": round(ocr_share, 3)}
+        else:
+            # DISAGREE. Never an argmax on reader share (CLAUDE.md rule 5/6):
+            # ask this system's OWN bars which of the two candidates they
+            # corroborate, through the SAME `_corroborate` the carry ladder
+            # already uses -- never re-derived, never a new arbiter.
+            template_candidate = {"numerator": opening["numerator"],
+                                  "denominator": opening["denominator"]}
+            ocr_candidate = {"numerator": ocr_num, "denominator": ocr_den}
+            t_margin = _bar_corroboration_margin(ev, template_candidate)
+            o_margin = _bar_corroboration_margin(ev, ocr_candidate)
+            if (t_margin is not None and o_margin is not None
+                    and t_margin != o_margin):
+                # The bars settle it -- DECIDED, but on the bars' own say,
+                # never on which reader merely spoke first or loudest.
+                if o_margin > t_margin:
+                    opening = {"numerator": ocr_num, "denominator": ocr_den,
+                              "raw": "%d/%d" % (ocr_num, ocr_den)}
+                    used = tuple(r.id for r in ocr_rows)
+                else:
+                    used = tuple(r.id for r in witnesses)
+                return Ruling(
+                    value=_with_segments(ev, opening),
+                    reason="voted", margin=share, used=used,
+                    detail={"share": round(share, 3),
+                            "n_staves_spoke": len(rows),
+                            "template_ocr_disagree": True,
+                            "template_reading": template_candidate,
+                            "ocr_reading": ocr_candidate,
+                            "template_bar_margin": t_margin,
+                            "ocr_bar_margin": o_margin,
+                            "settled_by": "bars"})
+            # Neither the bars nor an argmax may settle it: NARROW. "It is
+            # one of these" (`Ruling.narrow`), and the carry ladder at the
+            # NEXT system sees a NARROWED, not DECIDED, verdict here and
+            # falls to its own evidence rather than inheriting either guess.
+            return Ruling.narrow(
+                candidates=(
+                    Candidate(value=dict(template_candidate, raw=best_raw),
+                             support=share),
+                    Candidate(value=dict(ocr_candidate,
+                                        raw="%d/%d" % (ocr_num, ocr_den)),
+                             support=ocr_share)),
+                reason="template_ocr_disagree",
+                used=tuple(r.id for r in witnesses) + tuple(r.id for r in ocr_rows),
+                template_reading=template_candidate, ocr_reading=ocr_candidate,
+                template_share=round(share, 3), ocr_share=round(ocr_share, 3))
+    # ─────────────────────────────────────────────────────────────────────
+
     # ⚠️ ROADMAP 2.12h. A vote -- however unanimous -- is not the only
     # witness to this system's OPENING: the immediately preceding system's
     # own courtesy signature names it directly (A-METER-5). Where that
@@ -4659,9 +4859,9 @@ def adjudicate_meter(ev: Evidence) -> Ruling:
             contradicts_cautionary=caution)
     return Ruling(value=_with_segments(ev, opening),
                   reason="voted", margin=share,
-                  used=tuple(r.id for r in witnesses),
-                  detail={"share": round(share, 3),
-                          "n_staves_spoke": len(rows)})
+                  used=tuple(r.id for r in witnesses) + ocr_used,
+                  detail=dict({"share": round(share, 3),
+                              "n_staves_spoke": len(rows)}, **ocr_detail))
 
 
 
