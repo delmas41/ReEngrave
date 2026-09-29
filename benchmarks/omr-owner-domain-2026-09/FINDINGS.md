@@ -1359,3 +1359,53 @@ shows up here first).
   mid-gather despite `--no-surya` and the run was killed rather than
   re-tried a third time (CLAUDE.md §5b: the resident server is shared with
   other sessions; not a `tools/` defect this lane introduced).
+
+## §2.6d.3 — the manager's pre-merge check: because `ledger_direction` is a HARD gate, one false CV rung decides a staff outright (2026-09-29)
+
+`ledger_direction` returns BEFORE any additive weight is summed (2.6c.2),
+so a wrongly-credited `Q.LEDGER_RUNG_INK` row does not merely nudge a
+score — it decides the contest outright. Before merging: list EVERY
+`glyph_owner` / `belongs_to_a_nearer_staff` verdict that changes base
+(no CV reader) → arm (this tree) on the one page with real data (Breitkopf
+pdf idx 22), plus a random sample of the `found=True` rows that changed
+nothing, and look at every one.
+
+**Method, no re-gather beyond the one page already needed to reconstitute
+the record this session's own cleanup had deleted**: `verify_cv_rungs_
+2_6d.py` replays a saved record's own GATHER rows twice via `review.rerun.
+rebuild_gather` — once as-is (ARM) and once with every `ledger_rung_ink`
+row stripped before the replay (BASE, i.e. no CV reader at all) — injects
+the same saved `ledger_is_not_a_ledger`/`instrument`/`clef` verdicts into
+both, and re-decides `glyph_owner` (every contest) and `notehead_is_not_a_
+notehead` (every head with a nearer-staff signal) on each. A pure ADJUDICATE
+comparison; the GATHER measurement itself is unchanged from §2.6d.2's final
+state (38 of 712 `found=True`).
+
+**Result: `glyph_owner` changed on 2 of the page's contests; `belongs_to_a_
+nearer_staff` changed on 0.** Both changed contests kept the SAME winner
+(`staff/22/0/7`) — the reason moved from `hairpin_separates` to `ledger_
+direction`, so the CV rung reinforced an answer the hairpin term already
+gave rather than flipping one. `crop_cv_rung_2_6d.py` gained `--subjects`
+(an explicit `subject:candidate:step` list, for exactly this check) and cut
+12 banded crops: the 2 changed contests plus a random 10 of the 36 `found=
+True` rows that changed nothing (`--seed 2026092901`).
+
+**Read by eye, all 12: a printed ledger line is there.** Ten are
+unambiguous — a rung with wings poking into open paper on both sides of the
+head. Two (crops 09, 11) are dense chords where the wing touches a
+neighbouring note's own ink before reaching open paper — still the SAME
+printed ledger, on the convention CLAUDE.md §10 already states (several
+notes of a chord stand on one ledger); not a stem, not a beam, not a
+barline. **0 of 12 false.** Nothing to tighten; the two verdicts the CV
+reader changed are both backed by real ink, and the sampled unchanged
+credits are real too, so the 38-of-712 population this page produced is
+not, on this sample, hiding a false positive that the HARD gate would have
+acted on.
+
+Crops committed as `out/print/2.6d-changed-{01..12}.png` +
+`2.6d-changed-manifest.json` (`VERDICT_none_yet: null` per crop, for Sean;
+`session_read_2026_09_29` carries this session's own read, kept separate
+from his verdict slot). ⚠️ Sample size: 12 of 38 credited rows on ONE page
+of ONE document — a clean result here is not a swept threshold, and the
+open items in §2.6d.2 (step 1's adjacent-guard miss, the own-line
+exclusion, untested slant/adjacent edge cases) all still stand.

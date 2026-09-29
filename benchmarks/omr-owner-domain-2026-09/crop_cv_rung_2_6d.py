@@ -61,14 +61,34 @@ def main(argv=None) -> int:
     ap.add_argument("--pdf", required=True)
     ap.add_argument("--tag", required=True)
     ap.add_argument("--n", type=int, default=8)
+    ap.add_argument("--subjects", default="",
+                    help="explicit `subject:candidate:step,...` list, in "
+                         "order, instead of the auto-picked closest-miss "
+                         "ranking -- ROADMAP 2.6d manager check.")
     a = ap.parse_args(argv)
 
     rec = load_record(a.record)["record"]
     rung_rows = [o for o in rec["observations"]
                 if o["quantity"] == "ledger_rung_ink"]
-    # credited rows first (there may be none), then by closeness
-    rung_rows.sort(key=lambda o: (0 if o["value"] is True else 1,
-                                  -_score(o["detail"])))
+    if a.subjects:
+        want = []
+        for spec in a.subjects.split(","):
+            spec = spec.strip()
+            if not spec:
+                continue
+            subj, cand, step = spec.rsplit(":", 2)
+            want.append((subj, cand, int(step)))
+        by_key = {(o["subject"], o["detail"].get("candidate"),
+                  o["detail"].get("step")): o for o in rung_rows}
+        rung_rows = [by_key[w] for w in want if w in by_key]
+        missing = [w for w in want if w not in by_key]
+        if missing:
+            print(f"⚠️ {len(missing)} requested rows not on the record: "
+                  f"{missing}")
+    else:
+        # credited rows first (there may be none), then by closeness
+        rung_rows.sort(key=lambda o: (0 if o["value"] is True else 1,
+                                      -_score(o["detail"])))
 
     box_by_subject: dict = {}
     for o in rec["observations"]:
