@@ -2373,6 +2373,81 @@ def _spans_from_numbering(
             for r in numbering["systems"] if r["bars"] is not None]
 
 
+def _printed_bar_number_check(rec: "Record",
+                              numbering: Dict[str, Any]) -> Dict[str, Any]:
+    """ROADMAP 2.13. Per system: the ADJUDICATED printed bar number against
+    the file's own cumulative count at that system's first bar -- the
+    numeral's second witness.
+
+    ⚠️ A REPORT, HUNG BESIDE THE NUMBERING IT CHECKS, exactly the way
+    `_tacet_report` hangs beside the padding it checks. The comparison
+    FOLLOWS from two facts already on the record (the adjudicated numeral,
+    the counted offset) rather than choosing between them, which is why it
+    lives here and not as a third ADJUDICATE decision: `adjudicate_
+    printed_bar_number` only interprets the numeral GATHER read, because the
+    document-wide count it is compared against does not exist until the
+    parts are joined, here, at EXPORT.
+
+    ⚠️⚠️ IT NEVER RENUMBERS OR INSERTS A BAR, AND NEVER OVERWRITES `numbering`
+    ITSELF. This is additive reporting only -- CLAUDE.md rule 8, a fallback
+    (or, here, a disagreement) must never be converted into an answer the
+    file acts on.
+
+    Three states per system, and every system in `numbering["systems"]` gets
+    exactly one of them:
+
+      * `"agree"` -- the numeral read equals `offset + 1` (this system's
+        first bar's 1-based position in the document).
+      * `"disagree"` -- it read a DIFFERENT number, `delta` signed.
+      * `"abstained"` -- no numeral was decided for this system (GATHER found
+        nothing, ADJUDICATE could not parse it, or the document-wide offset
+        itself is undetermined) -- `reason` says which.
+    """
+    rows: List[Dict[str, Any]] = []
+    n_agree = n_disagree = n_abstain = 0
+    # ⚠️ THE REFUSAL IS WHOLE-FILE HERE TOO, for the reason
+    # `_document_bar_offsets`'s own docstring gives its own refusal: a
+    # partial comparison -- real offsets before the system that broke
+    # numbering, `None` after -- would let some rows of one report answer to
+    # a document-wide count that the exporter itself declined to write.
+    doc_wide = numbering.get("scheme") == "document"
+    for r in numbering.get("systems", ()):
+        sub_key = f"system/{r['page']}/{r['system_index']}"
+        v = rec.verdict(Q.PRINTED_BAR_NUMBER, sub_key)
+        if v is None or v.get("outcome") != "decided":
+            n_abstain += 1
+            rows.append({
+                "system": r["system"], "printed": None, "file_number": None,
+                "state": "abstained",
+                "reason": (v or {}).get("reason") if v else "no_verdict"})
+            continue
+        printed = int(v["value"])
+        if not doc_wide or r.get("offset") is None:
+            # The document-wide count is itself undetermined (or refused)
+            # for this system -- nothing to compare the reading against,
+            # and turning that into an answer either way is exactly what
+            # CLAUDE.md rule 8 forbids.
+            n_abstain += 1
+            rows.append({
+                "system": r["system"], "printed": printed,
+                "file_number": None, "state": "abstained",
+                "reason": "document_numbering_undetermined"})
+            continue
+        file_number = int(r["offset"]) + 1
+        delta = printed - file_number
+        if delta == 0:
+            n_agree += 1
+            rows.append({"system": r["system"], "printed": printed,
+                        "file_number": file_number, "state": "agree"})
+        else:
+            n_disagree += 1
+            rows.append({"system": r["system"], "printed": printed,
+                        "file_number": file_number, "state": "disagree",
+                        "delta": delta})
+    return {"systems": rows, "agree": n_agree, "disagree": n_disagree,
+            "abstained": n_abstain}
+
+
 def _tacet_walk(
         part: Sequence[StaffRun],
         offsets: Optional[Dict[Tuple[int, int], int]],
@@ -3943,6 +4018,10 @@ def to_musicxml(result: Dict[str, Any]) -> Tuple[str, Dict[str, Any]]:
     # line is a fact about the DOCUMENT's systems while what gets written on it
     # is a fact about a PART — and only the join says which runs are one part.
     offsets, numbering = _document_bar_offsets(parts)
+    # ⚠️ ROADMAP 2.13, RIGHT BESIDE THE NUMBERING IT CHECKS -- see that
+    # function's own docstring for why this stays a report and never feeds
+    # back into `offsets`/`numbering` itself.
+    numbering["printed_bar_check"] = _printed_bar_number_check(rec, numbering)
     # ⚠️ BOTH DERIVED FROM THAT ONE TALLY, never re-counted. `spans` is the
     # document's systems in order with each one's own bar count — the tacet
     # padding's whole input — and reading it off `numbering["systems"]` is what

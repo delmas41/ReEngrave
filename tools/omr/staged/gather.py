@@ -63,6 +63,11 @@ FRAME_PAGE = "page"
 FRAME_SYSTEM = "system"
 FRAME_HEADER_WINDOW = "header_window"
 FRAME_MARGIN = "system_margin"
+#: ROADMAP 2.13: the crop directly above a SYSTEM's topmost staff, where the
+#: printed bar number sits. Its own frame, not `FRAME_SYSTEM`, because two
+#: readers sharing a frame word are declared ONE signal by
+#: `adjudicate.Evidence.correlated_groups` -- and nothing else reads this box.
+FRAME_BAR_NUMBER = "bar_number_crop"
 
 
 def frame_cell(measure_index: int) -> str:
@@ -3722,6 +3727,130 @@ def _label_rung_state(surya_fallback: bool, ocr_fallback: bool) -> Dict[str, Any
             "unavailable": unavailable}
 
 
+def gather_printed_bar_numbers(log: Log, pws: Any) -> None:
+    """ROADMAP 2.13. The small numeral an engraver prints above a SYSTEM's
+    first bar, read with Tesseract off a crop directly above the system's
+    topmost staff.
+
+    ⚠️ ONE ROW PER SYSTEM, ON THE SYSTEM SUBJECT -- not per staff, because
+    the numeral is printed once per system regardless of how many staves it
+    carries. The topmost staff of a system is `min(members, key=top_y)`,
+    the same ordering `_system_local` uses to assign ordinal 0 -- no second
+    geometry pass is needed to find it.
+
+    ⚠️ TESSERACT ONLY, NO SERVER. `bar_number_text` whitelists ASCII digits
+    and never asks for Surya, so a `--no-surya` run is unaffected by this
+    reader and never falls back -- there is nothing here to fall back FROM.
+
+    ⚠️⚠️ FOUR STATES, THE SAME CONTRACT `gather_direction_words` DECLARES
+    FOR ITS OWN READER:
+
+    | what happened | what is written |
+    |---|---|
+    | Tesseract is not installed here | `READER_UNAVAILABLE` |
+    | this system's geometry could not be measured | `NO_STAFF_GEOMETRY` |
+    | the rung ran and read no text at all | `NO_INK` |
+    | the rung read something | an OBSERVATION |
+
+    ⚠️ WHETHER THAT TEXT IS ACTUALLY A NUMBER is not decided here -- GATHER
+    decides nothing. A rehearsal letter, or noise, arrives as an Observation
+    like any other reading; `adjudicate_printed_bar_number`
+    (`adjudicators/text.py`) is where a non-numeric read is told apart from
+    a numeric one.
+
+    CONVENTION ASSUMED / WHAT WOULD FALSIFY IT / NOT CONFIRMED: the numeral
+    sits 0.8-6.2 staff spaces above the top staff's own top line, within
+    about six staff spaces right of `Staff.x_start` (already past the
+    clef/key/meter margin) -- MEASURED against both of this item's gate
+    pages (Litolff Beethoven 5 p.3: reads 49 and 65; Breitkopf Brahms 1 p.2:
+    reads 8 and 15 -- FINDINGS.md §1). A plate that boxes the number above
+    the BARLINE rather than the margin, or prints it further from the top
+    line than this band, would be missed by this crop and would read
+    `NO_INK` rather than a wrong number -- CLAUDE.md rule 8, a fallback
+    never turns "cannot tell" into an answer.
+    """
+    p = pws.page.page_index if hasattr(pws.page, "page_index") else 0
+    by_system: Dict[int, List[Any]] = {}
+    for st in pws.staves:
+        by_system.setdefault(st.system_index, []).append(st)
+
+    try:
+        from .. import bar_number_text as BNT
+    except Exception as exc:                                  # noqa: BLE001
+        for sys_idx in sorted(by_system):
+            log.abstain(R.system(p, sys_idx), Q.PRINTED_BAR_NUMBER,
+                        reader=READERS.TESSERACT, frame=FRAME_BAR_NUMBER,
+                        reason=ABSTAIN.READER_UNAVAILABLE,
+                        error=type(exc).__name__, note=str(exc)[:200])
+        return
+
+    if not BNT.available():
+        for sys_idx in sorted(by_system):
+            log.abstain(R.system(p, sys_idx), Q.PRINTED_BAR_NUMBER,
+                        reader=READERS.TESSERACT, frame=FRAME_BAR_NUMBER,
+                        reason=ABSTAIN.READER_UNAVAILABLE,
+                        note="tesseract is not installed here")
+        return
+
+    image = getattr(pws.page, "rgb", None)
+    h = int(image.shape[0]) if image is not None else 0
+    w = int(image.shape[1]) if image is not None else 0
+
+    for sys_idx, members in sorted(by_system.items()):
+        sys_sub = R.system(p, sys_idx)
+        top = min(members, key=lambda s: s.top_y)
+        # ⚠️ `_spacing`, NOT `Staff.line_spacing_px`. This module's other
+        # geometry readers (`gather_geometry`) go through the same helper
+        # rather than the dataclass property, and a test fixture built as a
+        # plain `FakeStaff` (`test_staged_pipeline.py`) has `line_ys` but no
+        # derived property -- the helper is the one thing both can answer.
+        space = _spacing(top)
+        if image is None or not space or space <= 0:
+            log.abstain(sys_sub, Q.PRINTED_BAR_NUMBER,
+                        reader=READERS.TESSERACT, frame=FRAME_BAR_NUMBER,
+                        reason=ABSTAIN.NO_STAFF_GEOMETRY)
+            continue
+
+        # ⚠️ ABOVE the top staff, starting at `x_start` -- see the module
+        # docstring's CONVENTION note for what this assumes and how it fails.
+        # ⚠️ THE BAND IS 0.8-6.2 STAFF SPACES ABOVE THE TOP LINE, measured
+        # against both gate pages (FINDINGS.md §1): a tighter band clipped
+        # the numeral's own top on Litolff p3 ("49" read as blank, "65" read
+        # as "9" -- the top half of each digit was outside the crop).
+        x0 = max(0, int(top.x_start))
+        x1 = min(w, int(top.x_start + 6.0 * space))
+        y1 = max(0, int(top.top_y - 0.8 * space))
+        y0 = max(0, int(top.top_y - 6.2 * space))
+        if x1 <= x0 or y1 <= y0:
+            log.abstain(sys_sub, Q.PRINTED_BAR_NUMBER,
+                        reader=READERS.TESSERACT, frame=FRAME_BAR_NUMBER,
+                        reason=ABSTAIN.NO_STAFF_GEOMETRY)
+            continue
+        crop = image[y0:y1, x0:x1]
+
+        try:
+            found = BNT.read_crop(crop)
+        except Exception as exc:                              # noqa: BLE001
+            log.abstain(sys_sub, Q.PRINTED_BAR_NUMBER,
+                        reader=READERS.TESSERACT, frame=FRAME_BAR_NUMBER,
+                        reason=ABSTAIN.READER_UNAVAILABLE,
+                        error=type(exc).__name__, note=str(exc)[:200])
+            continue
+
+        if found is None:
+            log.abstain(sys_sub, Q.PRINTED_BAR_NUMBER,
+                        reader=READERS.TESSERACT, frame=FRAME_BAR_NUMBER,
+                        reason=ABSTAIN.NO_INK,
+                        bbox_page_px=[float(x0), float(y0), float(x1), float(y1)])
+            continue
+
+        text, conf = found
+        log.observe(sys_sub, Q.PRINTED_BAR_NUMBER, text,
+                    reader=READERS.TESSERACT, frame=FRAME_BAR_NUMBER,
+                    score=conf / 100.0,
+                    bbox_page_px=[float(x0), float(y0), float(x1), float(y1)])
+
+
 #: `_credit_labels`'s rung words -> the reader vocabulary. Written out rather
 #: than derived from the string, because `READERS` is a vocabulary a row is
 #: validated against and a silent `getattr` miss would file a real reading
@@ -4733,6 +4862,11 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
         local = gather_geometry(log, pws)
         gather_systems(log, pws, getattr(pws, "used_bridging", True))
         gather_measures(log, pws, cells, local)
+        # ⚠️ ROADMAP 2.13. Pure geometry + Tesseract, no detections needed --
+        # placed here rather than beside `gather_margin_labels` because it
+        # needs nothing detection produces and there is no reason to make it
+        # wait.
+        gather_printed_bar_numbers(log, pws)
 
         detections = gather_detections(
             log, cells, local, detector=detector,

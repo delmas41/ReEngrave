@@ -1,0 +1,61 @@
+{
+  "VERDICT_none_yet": null,
+  "crops": [
+    {
+      "file": "litolff_984073_p3_sys0.png",
+      "pdf": "beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf",
+      "page": 3,
+      "system": 0,
+      "box_page_px": [
+        339,
+        353,
+        432,
+        437
+      ],
+      "read_text": "49",
+      "parsed_bar_number": 49
+    },
+    {
+      "file": "litolff_984073_p3_sys1.png",
+      "pdf": "beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf",
+      "page": 3,
+      "system": 1,
+      "box_page_px": [
+        340,
+        2219,
+        434,
+        2304
+      ],
+      "read_text": "65",
+      "parsed_bar_number": 65
+    },
+    {
+      "file": "brahms_317803_p1_sys0.png",
+      "pdf": "brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf",
+      "page": 1,
+      "system": 0,
+      "box_page_px": [
+        625,
+        393,
+        788,
+        540
+      ],
+      "read_text": "8",
+      "parsed_bar_number": 8
+    },
+    {
+      "file": "brahms_317803_p1_sys1.png",
+      "pdf": "brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf",
+      "page": 1,
+      "system": 1,
+      "box_page_px": [
+        642,
+        4064,
+        807,
+        4213
+      ],
+      "read_text": null,
+      "parsed_bar_number": null
+    }
+  ]
+}

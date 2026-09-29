@@ -832,6 +832,15 @@ class Q(_Vocab):
     MARGIN_LABEL = "margin_label"            # the STRING, before the lexicon
     DIRECTION_WORD = "direction_word"        # an OCRed word inside a system
     TEXT_LAYER = "text_layer"                # the PDF's own text, if any
+    #: ROADMAP 2.13. The small numeral an engraver prints above a SYSTEM's
+    #: first bar -- the OCRed STRING, filed on `Kind.SYSTEM`, before it is
+    #: read as an integer. Reused for BOTH stages, the same way
+    #: `Q.MOVEMENT_SPANS` is: GATHER files the raw OCR text as an
+    #: Observation, and `adjudicate_printed_bar_number` files the parsed
+    #: integer (or an abstention) as a Verdict under this same name. A
+    #: rehearsal LETTER is not this quantity -- see the adjudicator's own
+    #: `not_numeric` reason.
+    PRINTED_BAR_NUMBER = "printed_bar_number"
 
     # ── external facts (measurements, but not from THIS raster) ─────────────
     ROSTER_ENTRY = "roster_entry"            # the catalog's instrumentation
@@ -1589,6 +1598,10 @@ CLAIMS: "dict[str, str]" = {
     #: runtime) and NOT claim-split: both rungs are OCR of this raster, so one
     #: word is the honest answer rather than a simplification.
     "DIRECTION_WORD": CLAIM.IDENTIFICATION,
+    #: ROADMAP 2.13. An OCR reading of a printed numeral, wrong exactly when
+    #: Tesseract misreads the ink -- the same nature as `DIRECTION_WORD`, one
+    #: reader, no claim split.
+    "PRINTED_BAR_NUMBER": CLAIM.IDENTIFICATION,
     #: ⚠️ A JUDGEMENT CALL, NAMED.
     #: ⚠️ THE PDF'S OWN TEXT OBJECTS, not a reading of ink -- "the PDF's own
     #: text, if any", the FREE rung of the identity cascade. It reads no
