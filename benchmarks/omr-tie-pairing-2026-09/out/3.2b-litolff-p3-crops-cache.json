@@ -1,0 +1,403 @@
+{
+ "record": {
+  "commit": "c19cbca7b7339d74e255a26b80e7fc3a385d428e",
+  "dirty": true,
+  "settings": {
+   "env_overrides": {
+    "OMR_DIRECTION_TEXT_SCAN_GATE": "1",
+    "OMR_SURYA_KEEP_ALIVE": "0"
+   },
+   "args": {
+    "against": null,
+    "conf": 0.25,
+    "dpi": 600,
+    "imgsz": null,
+    "ink_rows": false,
+    "no_roster": false,
+    "no_weight_routing": false,
+    "ocr": true,
+    "pages": "1-16",
+    "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf",
+    "route_weights": true,
+    "sheet": null,
+    "surya": true,
+    "weights": "auto",
+    "work_id": null
+   }
+  }
+ },
+ "linked": [
+  {
+   "kind": "linked",
+   "start": "glyph/3/0/0/3/7",
+   "stop": "glyph/3/0/0/4/8",
+   "pitches": [
+    "C6",
+    "C6"
+   ],
+   "arcs": [
+    "glyph/3/0/0/3/6"
+   ],
+   "staff": "staff/3/0/0",
+   "start_box": [
+    1023.59,
+    412.645,
+    1048.545,
+    428.3
+   ],
+   "stop_box": [
+    1186.995,
+    412.49,
+    1208.695,
+    426.595
+   ],
+   "arc_boxes": [
+    [
+     1025.45,
+     442.56,
+     1165.26,
+     452.17
+    ]
+   ],
+   "staff_lines": [
+    450,
+    465,
+    481,
+    497,
+    512
+   ],
+   "staff_spacing": 15.5
+  },
+  {
+   "kind": "linked",
+   "start": "glyph/3/0/3/3/7",
+   "stop": "glyph/3/0/3/4/6",
+   "pitches": [
+    "Eb3",
+    "Eb3"
+   ],
+   "arcs": [
+    "glyph/3/0/3/3/9"
+   ],
+   "staff": "staff/3/0/3",
+   "start_box": [
+    1020.885,
+    880.9625,
+    1045.14,
+    902.225
+   ],
+   "stop_box": [
+    1189.5225,
+    877.025,
+    1213.7775,
+    900.4925000000001
+   ],
+   "arc_boxes": [
+    [
+     1060.7325,
+     910.2575,
+     1165.155,
+     926.3225
+    ]
+   ],
+   "staff_lines": [
+    866,
+    882,
+    898,
+    913,
+    929
+   ],
+   "staff_spacing": 15.75
+  },
+  {
+   "kind": "linked",
+   "start": "glyph/3/0/3/5/2",
+   "stop": "glyph/3/0/3/6/5",
+   "pitches": [
+    "Ab3",
+    "Ab3"
+   ],
+   "arcs": [
+    "glyph/3/0/3/5/3",
+    "glyph/3/0/3/5/4",
+    "glyph/3/0/3/5/5",
+    "glyph/3/0/3/5/6",
+    "glyph/3/0/3/5/7",
+    "glyph/3/0/3/5/11"
+   ],
+   "staff": "staff/3/0/3",
+   "start_box": [
+    1364.405,
+    851.825,
+    1389.4475,
+    874.3475
+   ],
+   "stop_box": [
+    1536.6175,
+    853.715,
+    1562.92,
+    875.45
+   ],
+   "arc_boxes": [
+    [
+     1364.8775,
+     887.8925,
+     1507.5725,
+     907.895
+    ],
+    [
+     1390.3925,
+     860.645,
+     1507.1,
+     868.52
+    ],
+    [
+     1386.455,
+     891.2,
+     1506.47,
+     907.58
+    ],
+    [
+     1382.99,
+     875.6075,
+     1507.2575,
+     884.585
+    ],
+    [
+     1378.1075,
+     884.9,
+     1507.1,
+     901.7525
+    ],
+    [
+     1387.8725,
+     888.5225,
+     1507.8875,
+     900.1775
+    ]
+   ],
+   "staff_lines": [
+    866,
+    882,
+    898,
+    913,
+    929
+   ],
+   "staff_spacing": 15.75
+  },
+  {
+   "kind": "linked",
+   "start": "glyph/3/1/3/2/3",
+   "stop": "glyph/3/1/3/3/2",
+   "pitches": [
+    "G4",
+    "G4"
+   ],
+   "arcs": [
+    "glyph/3/1/3/2/1"
+   ],
+   "staff": "staff/3/1/3",
+   "start_box": [
+    778.7425,
+    2855.1975,
+    804.73,
+    2876.46
+   ],
+   "stop_box": [
+    890.105,
+    2855.985,
+    916.4075,
+    2879.295
+   ],
+   "arc_boxes": [
+    [
+     799.375,
+     2899.6125,
+     868.045,
+     2913.1575
+    ]
+   ],
+   "staff_lines": [
+    2818,
+    2834,
+    2850,
+    2866,
+    2881
+   ],
+   "staff_spacing": 15.75
+  },
+  {
+   "kind": "linked",
+   "start": "glyph/3/0/6/6/1",
+   "stop": "glyph/3/0/6/7/0",
+   "pitches": [
+    "C3",
+    "C3"
+   ],
+   "arcs": [
+    "glyph/3/0/6/6/2"
+   ],
+   "staff": "staff/3/0/6",
+   "start_box": [
+    1539.295,
+    1327.405,
+    1563.865,
+    1347.0925
+   ],
+   "stop_box": [
+    1717.145,
+    1329.1375,
+    1739.6675,
+    1347.25
+   ],
+   "arc_boxes": [
+    [
+     1541.9725,
+     1293.5425,
+     1689.55,
+     1301.1025
+    ]
+   ],
+   "staff_lines": [
+    1300,
+    1316,
+    1331,
+    1347,
+    1363
+   ],
+   "staff_spacing": 15.75
+  }
+ ],
+ "contradictions": [
+  {
+   "kind": "tie_pitch_contradiction",
+   "start": "glyph/3/0/3/4/4",
+   "stop": "glyph/3/0/3/5/10",
+   "pitches": [
+    "Bb3",
+    "Ab3"
+   ],
+   "arcs": [
+    "glyph/3/0/3/4/3"
+   ],
+   "staff": "staff/3/0/3",
+   "start_box": [
+    1189.995,
+    854.345,
+    1209.525,
+    867.1025
+   ],
+   "stop_box": [
+    1364.2475,
+    852.14,
+    1389.4475,
+    875.45
+   ],
+   "arc_boxes": [
+    [
+     1205.5875,
+     882.5375,
+     1331.5875,
+     906.635
+    ]
+   ],
+   "staff_lines": [
+    866,
+    882,
+    898,
+    913,
+    929
+   ],
+   "staff_spacing": 15.75
+  },
+  {
+   "kind": "tie_pitch_contradiction",
+   "start": "glyph/3/1/2/10/2",
+   "stop": "glyph/3/1/2/11/1",
+   "pitches": [
+    "G3",
+    "Ab3"
+   ],
+   "arcs": [
+    "glyph/3/1/2/10/4",
+    "glyph/3/1/2/10/5"
+   ],
+   "staff": "staff/3/1/2",
+   "start_box": [
+    1741.165,
+    2635.38,
+    1767.825,
+    2652.895
+   ],
+   "stop_box": [
+    1847.745,
+    2628.87,
+    1872.39,
+    2647.935
+   ],
+   "arc_boxes": [
+    [
+     1774.49,
+     2684.98,
+     1817.27,
+     2693.66
+    ],
+    [
+     1756.665,
+     2678.47,
+     1817.735,
+     2695.52
+    ]
+   ],
+   "staff_lines": [
+    2636,
+    2652,
+    2667,
+    2682,
+    2698
+   ],
+   "staff_spacing": 15.5
+  },
+  {
+   "kind": "tie_pitch_contradiction",
+   "start": "glyph/3/1/3/1/1",
+   "stop": "glyph/3/1/3/2/4",
+   "pitches": [
+    "G4",
+    "F4"
+   ],
+   "arcs": [
+    "glyph/3/1/3/2/6"
+   ],
+   "staff": "staff/3/1/3",
+   "start_box": [
+    678.5775,
+    2856.1425,
+    703.935,
+    2880.555
+   ],
+   "stop_box": [
+    779.215,
+    2865.5925,
+    803.785,
+    2881.3425
+   ],
+   "arc_boxes": [
+    [
+     760.4725,
+     2883.39,
+     806.935,
+     2888.5875
+    ]
+   ],
+   "staff_lines": [
+    2818,
+    2834,
+    2850,
+    2866,
+    2881
+   ],
+   "staff_spacing": 15.75
+  }
+ ]
+}

@@ -201,9 +201,9 @@ class TestTheFindingsAreStillTrue(unittest.TestCase):
         hand-written figure that has rotted three times in this repo; the
         assertion below is the authority, not the sentence.
         """
-        self.assertEqual(
-            sorted(GC.NO_VOCABULARY),
-            ["tied_from_prev", "tied_to_next"])
+        # ⚠️ EMPTY since ROADMAP 3.2b (2026-09-29): the last two,
+        # `tied_to_next` / `tied_from_prev`, left for `Q.TIE_PAIR`.
+        self.assertEqual(sorted(GC.NO_VOCABULARY), [])
 
     def test_the_fermata_gap_is_CLOSED_and_stays_accounted(self) -> None:
         """Closed 2026-09-10. A closed gap must leave `NO_VOCABULARY` or the

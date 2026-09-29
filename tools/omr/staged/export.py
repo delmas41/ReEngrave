@@ -1362,8 +1362,105 @@ def _stem_probes(rec: Record, part: Sequence[StaffRun],
     return probes
 
 
+#: `Q.TIE_PAIR` abstentions that are ALREADY counted elsewhere in
+#: `arcs_not_written`, so they are not counted a second time under a
+#: `tie_pair_*` name: a slur is the slur family's (`not_a_tie`), and
+#: `_place_arcs` counts a refused arc and an arc with no page box itself.
+_TIE_PAIR_COUNTED_ELSEWHERE = frozenset(
+    {"not_a_tie", "not_an_arc", "no_page_frame"})
+
+
+def _record_tie_pairs(rec: Record) -> Optional[Dict[str, Any]]:
+    """The tie links the RECORD names (`Q.TIE_PAIR`), or None if it names none.
+
+    ⚠️⚠️ ROADMAP 3.2b: ONE PAIRING, AND IT IS THE RECORD'S. Until this
+    quantity existed the exporter paired ties itself with SLUR coverage
+    (`_paired_spans` -> `_noteheads_under`, the heads UNDER an arc) -- the
+    wrong question for a tie, which FLANKS its heads -- and bound 1 of 22
+    decided ties on the engraved acceptance page. `adjudicate_tie_pair` now
+    answers it in ADJUDICATE, where it can abstain and be traced.
+
+    ⚠️ None -- NOT an empty result -- for a record that carries NO
+    `Q.TIE_PAIR` verdict at all: such a record predates the decision (every
+    shared record gathered before 3.2b), and "no reader ran" must not export
+    as "every tie abstained". The caller then keeps the exporter's own
+    pairing and the report NAMES which one ran (`tie_pairing`). One record is
+    never paired both ways.
+    """
+    standing = [v for v in rec.verdicts_of(Q.TIE_PAIR)
+                if rec.verdict(Q.TIE_PAIR, v["subject"]) is v]
+    if not standing:
+        return None
+    pairs: Dict[Tuple[str, str], List[str]] = {}
+    refused: Dict[str, int] = collections.Counter()
+    for v in standing:
+        if v["outcome"] == "decided" and isinstance(v.get("value"), dict):
+            key = (str(v["value"]["start"]), str(v["value"]["stop"]))
+            pairs.setdefault(key, []).append(v["subject"])
+        elif v["outcome"] == "narrowed":
+            refused["tie_pair_narrowed"] += 1
+        elif v.get("reason") not in _TIE_PAIR_COUNTED_ELSEWHERE:
+            refused["tie_pair_" + str(v.get("reason"))] += 1
+    return {"pairs": pairs, "refused": refused, "consumed": set(),
+            "contradictions": [], "linked": []}
+
+
+def _record_tie_spans(measures: Sequence[Dict[str, Any]],
+                      ties: Dict[str, Any], voice_of: Dict[int, int],
+                      dropped: Dict[str, int]) -> List[tuple]:
+    """This part's tie spans, in `_paired_spans`' shape, from the record.
+
+    ⚠️ A TIE'S TWO HEADS SOUND ONE PITCH, and this is the one place a pitch
+    reading can be CHECKED with no truth file (`record.Checkable`: *"C vs C#
+    IS checkable at a tie and nowhere else"*). A pair whose two placed pitches
+    differ after EVALUATE is a contradiction: the tie is NOT written and the
+    pair is REPORTED (`tie_contradictions`) -- it is evidence one of the two
+    pitches, or the pair, is wrong, and says which heads to look at. Same
+    STEP with a different spelling (`F#4 -> F4`: the far head of a
+    cross-barline tie does not restate its accidental) is counted apart
+    (`tie_spelling_differs`), because it names a pitch fix and not a pairing
+    fault.
+    """
+    index: Dict[str, Tuple[int, Dict[str, Any]]] = {}
+    for m_idx, m in enumerate(measures):
+        for det in m["detections"] or ():
+            key = det.get("glyph")
+            if key and det.get("category") == "notehead":
+                index.setdefault(str(key), (m_idx, det))
+    spans = []
+    for (start, stop), arcs in ties["pairs"].items():
+        if start not in index or stop not in index:
+            continue
+        ties["consumed"].add((start, stop))
+        (sm, first), (tm, last) = index[start], index[stop]
+        if first is last:
+            dropped["tie_pair_names_one_note"] += 1
+            continue
+        p0, p1 = first.get("pitch"), last.get("pitch")
+        if p0 != p1:
+            same_step = (_legacy._pitch_step(p0) == _legacy._pitch_step(p1))
+            reason = ("tie_spelling_differs" if same_step
+                      else "tie_pitch_contradiction")
+            dropped[reason] += 1
+            ties["contradictions"].append(
+                {"start": start, "stop": stop, "pitches": [p0, p1],
+                 "kind": reason, "arcs": list(arcs)})
+            continue
+        # ⚠️ The one-voice rule `_paired_spans` states for every span: the two
+        # ends of a tie split across `<voice>` streams are each unpaired.
+        if voice_of.get(id(first), 0) != voice_of.get(id(last), 0):
+            dropped["tie_ends_in_two_voices"] += 1
+            continue
+        spans.append(((sm, None), (tm, None), first, last))
+        ties["linked"].append({"start": start, "stop": stop,
+                               "pitch": p0, "arcs": list(arcs)})
+    return spans
+
+
 def _pair_arcs(rec: Record, parts: Sequence[Sequence[StaffRun]],
-               counters: Dict[str, int]) -> Dict[str, int]:
+               counters: Dict[str, int],
+               tie_report: Optional[Dict[str, Any]] = None
+               ) -> Dict[str, int]:
     """Join each part's arcs across its barlines and mark the notes they bind.
 
     ⚠️⚠️ THIS IS A PART PASS AND NOT A MEASURE ONE, AND THE NUMBER SAYS WHY.
@@ -1389,6 +1486,7 @@ def _pair_arcs(rec: Record, parts: Sequence[Sequence[StaffRun]],
     """
     dropped: Dict[str, int] = collections.Counter()
     stems = _stem_boxes_by_cell(rec)
+    record_ties = _record_tie_pairs(rec)
     for part in parts:
         measures, per_measure_arcs, kinds, spacings, tops, breaks = \
             _flatten_part(part)
@@ -1425,23 +1523,33 @@ def _pair_arcs(rec: Record, parts: Sequence[Sequence[StaffRun]],
         # GEOMETRIC and knows nothing about kind, so a group's arcs all carry
         # one kind into one pool, and the merge inside `_paired_spans`
         # re-derives that group exactly. Nothing is split by moving it.
+        groups_by_kind: Dict[str, int] = collections.Counter()
         by_kind, merged = _arcs_by_kind(measures, per_measure_arcs, kinds,
-                                        spacings, tops, breaks)
+                                        spacings, tops, breaks,
+                                        groups_by_kind=groups_by_kind)
         n_spans = 0
         for kind, pools in by_kind.items():
-            spans = _legacy._paired_spans(measures, pools, spacings, tops,
-                                          breaks, voice_of,
-                                          x_probes=x_probes)
-            n_spans += len(spans)
+            if kind == "tie" and record_ties is not None:
+                # ⚠️ ROADMAP 3.2b. The record's pairs, not the tie POOL's
+                # coverage: a tie arc that paired nothing is accounted by its
+                # own `Q.TIE_PAIR` reason below, never as
+                # `arc_binds_fewer_than_two_notes`, so the tie groups leave
+                # the merge's arithmetic here.
+                spans = _record_tie_spans(measures, record_ties, voice_of,
+                                          dropped)
+                merged -= groups_by_kind.get("tie", 0)
+            else:
+                spans = _legacy._paired_spans(measures, pools, spacings,
+                                              tops, breaks, voice_of,
+                                              x_probes=x_probes)
+                n_spans += len(spans)
             if kind == "tie":
                 # ⚠️⚠️ THE CHAIN IS COUNTED HERE BECAUSE THIS IS THE ONLY
-                # PLACE THAT KNOWS IT. `tied_to_next` / `tied_from_prev` are
-                # the last two entries in `gather_coverage.NO_VOCABULARY`: no
-                # `Q` names the chain, because a chain is a fact about a PART
-                # -- it crosses barlines and system breaks -- and the part is
-                # built HERE, after `Q.PART_PARTITION` is read. So the record
-                # cannot say how many ties this document has; the exporter
-                # can, and until this counter it did not say either.
+                # PLACE THAT KNOWS IT. Since ROADMAP 3.2b the record names each
+                # LINK (`Q.TIE_PAIR`, within a system); a CHAIN is the union
+                # of links along a PART, and the part is built HERE, after
+                # `Q.PART_PARTITION` is read -- so the chain is still the
+                # exporter's to count, and until this counter it did not.
                 #
                 # ⚠️ A CHAIN IS NOT A LINK AND THE NUMBERS DIFFER: on
                 # Breitkopf Brahms 1 p0-3 632 links make 275 chains, 82 of
@@ -1489,6 +1597,30 @@ def _pair_arcs(rec: Record, parts: Sequence[Sequence[StaffRun]],
         # READING shortfall and belongs in the record, not in the silence.
         if merged > n_spans:
             dropped["arc_binds_fewer_than_two_notes"] += merged - n_spans
+    if record_ties is not None:
+        for reason, n in record_ties["refused"].items():
+            dropped[reason] += n
+        # ⚠️ A PAIR THE RECORD NAMED AND NO PART HOLDS BOTH ENDS OF -- a head
+        # refused on the way to the file (no pitch, a held-out staff, an
+        # owner not read). Counted, so a named tie never vanishes silently.
+        lost = [k for k in record_ties["pairs"]
+                if k not in record_ties["consumed"]]
+        if lost:
+            dropped["tie_end_not_in_file"] += len(lost)
+        # ⚠️ Both halves of a tie a barline cut name the SAME pair; the file
+        # writes it once. Counted as written information, not as a drop.
+        counters["tie_arcs_naming_an_already_named_pair"] += sum(
+            len(arcs) - 1 for arcs in record_ties["pairs"].values())
+    if tie_report is not None:
+        tie_report["tie_pairing"] = ("record" if record_ties is not None
+                                     else "exporter")
+        # ⚠️ The links MARKED, by their two heads: what a print check crops.
+        # A marked link can still fail to reach the file inside one chord
+        # (`arc_ends_in_one_chord`), so this is marked, not written.
+        tie_report["tie_links"] = (
+            record_ties["linked"] if record_ties is not None else [])
+        tie_report["tie_contradictions"] = (
+            record_ties["contradictions"] if record_ties is not None else [])
     return dict(dropped)
 
 
@@ -1718,7 +1850,8 @@ def _flatten_part(part: Sequence[StaffRun]):
     return measures, arcs, kinds, spacings, tops, frozenset(breaks)
 
 
-def _arcs_by_kind(measures, arcs, kinds, spacings, tops, breaks
+def _arcs_by_kind(measures, arcs, kinds, spacings, tops, breaks,
+                  groups_by_kind: Optional[Dict[str, int]] = None
                   ) -> Tuple[Dict[str, List[List[List[float]]]], int]:
     """`({"slur" | "tie": per-measure arc lists}, n merged arcs)`.
 
@@ -1751,6 +1884,8 @@ def _arcs_by_kind(measures, arcs, kinds, spacings, tops, breaks
         n_groups += 1
         seen = {kinds.get(id(box)) for _m, box in segments}
         kind = "tie" if "tie" in seen else "slur"
+        if groups_by_kind is not None:
+            groups_by_kind[kind] += 1
         pool = out.setdefault(kind, [[] for _ in measures])
         for m_idx, box in segments:
             pool[m_idx].append(box)
@@ -4008,7 +4143,9 @@ def to_musicxml(result: Dict[str, Any]) -> Tuple[str, Dict[str, Any]]:
     # ⚠️ `+=`, not `update`. A Counter's `update` ADDS and a dict's REPLACES,
     # and the two spellings are one character apart -- an arc counted in both
     # halves would be silently overwritten rather than summed.
-    arcs_dropped += collections.Counter(_pair_arcs(rec, parts, counters))
+    tie_report: Dict[str, Any] = {}
+    arcs_dropped += collections.Counter(
+        _pair_arcs(rec, parts, counters, tie_report))
     # ⚠️ A PART PASS TOO, and for the `number=` half of the same reason: two
     # hairpins overlapping in one part need two levels, which no per-measure
     # pass can see. Unlike the arcs it needs no merge -- see `_place_wedges`.
@@ -4274,6 +4411,12 @@ def to_musicxml(result: Dict[str, Any]) -> Tuple[str, Dict[str, Any]]:
         if lost > 0:
             arcs_dropped["arc_ends_in_one_chord"] += lost
     report["arcs_not_written"] = dict(arcs_dropped)
+    # ⚠️ ROADMAP 3.2b: WHICH pairing wrote this file's ties, and every pair the
+    # record named that the pitch check refused -- named by its two heads so a
+    # human can look at exactly those two notes.
+    report["tie_pairing"] = tie_report.get("tie_pairing")
+    report["tie_contradictions"] = tie_report.get("tie_contradictions", [])
+    report["tie_links"] = tie_report.get("tie_links", [])
     report["arcs_not_written_total"] = sum(arcs_dropped.values())
     # ⚠️ A THIRD PARTITION, AND IT IS ASSERTED RATHER THAN HOPED FOR. Every
     # gathered articulation mark is either written onto a note or counted here

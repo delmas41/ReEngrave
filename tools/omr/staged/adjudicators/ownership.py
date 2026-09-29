@@ -1429,6 +1429,305 @@ def adjudicate_arc_kind(ev: Evidence) -> Ruling:
                           "confidence": arc.score})
 
 
+#: How far past an arc's end a flanking head's CENTRE may sit, in that head's
+#: own widths. RESTATED from `transcribe._pair_ties_in_staff` (the legacy
+#: reference reader), whose "3x notehead width" window is what lets a tie
+#: crossing a barline reach the first head of the next bar. Not re-measured
+#: here: it is the window the legacy tie count has always been produced under.
+TIE_FLANK_MAX_DX_HEAD_WIDTHS = 3.0
+
+#: How far INSIDE an arc's end a flanking head's centre may sit, in that
+#: head's own widths. ⚠️ THE ONE NUMBER THE LEGACY RULE DOES NOT HAVE, and it
+#: is a SCAN fact: the legacy window starts at the arc's edge (`0 <= dx`),
+#: which holds on an engraved page (7 of 7 heads outside) and fails on a scan,
+#: where the detector's tie box begins OVER the start head -- measured on
+#: Litolff `984073` p3: start-head centres 0.37-0.54 widths inside the box.
+#: One width admits those with room and cannot admit the far head of any arc
+#: longer than two widths. NOT swept; recorded in
+#: `benchmarks/omr-tie-pairing-2026-09/FINDINGS.md` §3.2b as assumed.
+TIE_FLANK_MAX_OVERLAP_HEAD_WIDTHS = 1.0
+
+#: How far a flanking head's centre may sit from the arc's own y-centre, in
+#: average notehead heights (one staff space), with the legacy floor of 30 px.
+#: RESTATED from the same function (`y_tol = max(avg_nh_h * 3, 30)`).
+TIE_FLANK_MAX_DY_HEAD_HEIGHTS = 3.0
+TIE_FLANK_MIN_DY_PX = 30.0
+
+
+@decision(
+    quantity=Q.TIE_PAIR,
+    checkable=Checkable.MIXED,
+    checked_by=(
+        "a TIE's two heads sound ONE pitch -- EXPORT compares the two placed "
+        "pitches and refuses (and counts) a pair that differs",
+    ),
+    implicates=(Q.TIE_PAIR, Q.PITCH, Q.ACCIDENTAL, Q.ARC_KIND),
+    composed_from=(Q.ARC_BOX, Q.GLYPH_BOX),
+    scope=Kind.GLYPH,
+    wants=(Q.ARC_BOX, Q.ARC_KIND, Q.ARC_OWNER, Q.ARC_IS_NOT_AN_ARC,
+           Q.GLYPH_BOX, Q.GLYPH_OWNER, Q.NOTEHEAD_IS_NOT_A_NOTEHEAD,
+           Q.CELL_BOX),
+    subjects_from=Q.ARC_BOX,
+    reasons=("paired", "more_than_one_pair", "not_a_tie", "not_an_arc",
+             "no_page_frame", "no_start_head", "no_stop_head",
+             "no_head_near_the_arc", "spans_a_whole_bar",
+             "enters_from_previous_system", "runs_off_the_system",
+             "no_pair_at_one_position", "no_evidence"),
+    mode=Mode.ADDITIVE,
+)
+def adjudicate_tie_pair(ev: Evidence) -> Ruling:
+    """WHICH two noteheads this tie joins -- ROADMAP 3.2b.
+
+    CONVENTION (CLAUDE.md §10, measured): *a tie's two heads are at one staff
+    position* (empty interval 0.168 vs 0.435 spaces over every paired link of
+    the eleven engraved fixtures), and a tie FLANKS its heads -- it spans the
+    gap between them -- so it is found by the heads just OUTSIDE its two ends,
+    not by the heads under it (which is slur coverage, `_noteheads_under`, and
+    the wrong question: the staged exporter asked it of ties until this
+    decision existed and bound 1 of 22 decided ties on the engraved page).
+
+    The rule is `transcribe._pair_ties_in_staff`'s, the legacy reference
+    reader: a start head whose centre sits at or left of the arc's left edge
+    within 3 of its own widths, a stop head likewise on the right, both within
+    3 average head heights of the arc in y; and among the pairs those windows
+    admit, the ones whose two heads sit at ONE STAFF POSITION
+    (`transcribe.TIE_SAME_POSITION_MAX_SPACES`, IMPORTED).
+
+    ⚠️⚠️ TWO DELIBERATE DIFFERENCES FROM THE LEGACY RULE, BOTH REFUSALS TO
+    GUESS (CLAUDE.md rule 6):
+
+    * where NO admitted pair sits at one position the legacy rule falls
+      through to the nearest heads in x and ties two different notes. Here it
+      ABSTAINS `no_pair_at_one_position`: a tie between two positions is not
+      a tie, and which of the arc, the class or a head is wrong is not
+      something this decision can tell;
+    * where MORE THAN ONE pair sits at one position (a tied chord's members,
+      a duplicate detection) the legacy rule takes the nearest in x. Here it
+      NARROWS to all of them (`more_than_one_pair`) and EXPORT refuses to
+      argmax a narrowing.
+
+    ⚠️ ACROSS A BARLINE, NEVER ACROSS A SYSTEM. The search runs over the
+    arc's own bar and the one on either side, on the arc's OWNER staff, in
+    page pixels -- the only frame two cells share. A tie cut in two by a
+    barline is detected as two arcs and each half names the SAME pair; EXPORT
+    writes it once. A half whose search runs into the edge of the system
+    abstains `runs_off_the_system` / `enters_from_previous_system`: the other
+    head is on another system and this decision cannot see it (the chain
+    FINDINGS measured 2 of 632 Breitkopf links crossing a system break).
+
+    ⚠️ THE HEAD SET IS THE ONE EXPORT WRITES: heads filed on the owner staff,
+    minus a copy `glyph_owner` gives to another staff (it has a twin there by
+    construction -- `adjudicate.is_relocated_copy`) and minus a box a human
+    refused as a notehead. Its pitch is NOT read here: the same-position test
+    reads BOXES, and the pitch check is EXPORT's, after EVALUATE has restated
+    every pitch (see `checked_by`).
+    """
+    arcs = ev.rows(Q.ARC_BOX)
+    if not arcs:
+        return Ruling.abstain("no_evidence")
+    arc = arcs[0]
+    refused = ev.verdict(Q.ARC_IS_NOT_AN_ARC)
+    if (refused is not None and refused.outcome is Outcome.DECIDED
+            and refused.value is True):
+        return Ruling.abstain("not_an_arc")
+    kind = ev.verdict(Q.ARC_KIND)
+    if kind is None or kind.outcome is not Outcome.DECIDED \
+            or kind.value != "tie":
+        return Ruling.abstain("not_a_tie",
+                              kind=None if kind is None else kind.value)
+    box = arc.detail.get("bbox_page_px")
+    if not box or len(box) != 4:
+        return Ruling.abstain("no_page_frame")
+    ax0, ay0, ax1, ay1 = (float(v) for v in box)
+    arc_yc = (ay0 + ay1) / 2.0
+
+    owner = ev.verdict(Q.ARC_OWNER)
+    home = (owner.value if owner is not None and isinstance(owner.value, str)
+            and owner.value else ev.subject.at(Kind.STAFF).to_key())
+    staff = R.Subject.from_key(home)
+    cell_index = ev.subject.cell or 0
+
+    def cell_subject(i: int) -> "R.Subject":
+        return R.Subject(Kind.CELL, page=staff.page, system=staff.system,
+                         staff=staff.staff, cell=i)
+
+    def cell_box(i: int):
+        if i < 0:
+            return None
+        for row in ev.rows(Q.CELL_BOX, subject=cell_subject(i)):
+            v = row.value
+            if isinstance(v, (list, tuple)) and len(v) == 4:
+                return tuple(float(x) for x in v)
+        return None
+
+    own_box = cell_box(cell_index)
+    has_prev = cell_box(cell_index - 1) is not None
+    has_next = cell_box(cell_index + 1) is not None
+
+    heads = []
+    for i in (cell_index - 1, cell_index, cell_index + 1):
+        if i < 0:
+            continue
+        for row in ev.rows(Q.GLYPH_BOX, scope=Scope.SELF_AND_DESCENDANTS,
+                           subject=cell_subject(i)):
+            if (row.detail or {}).get("category") != "notehead":
+                continue
+            b = row.detail.get("bbox_page_px")
+            if not b or len(b) != 4:
+                continue
+            x0, y0, x1, y1 = (float(v) for v in b)
+            if x1 <= x0 or y1 <= y0:
+                continue
+            heads.append((row, i, (x0 + x1) / 2.0, (y0 + y1) / 2.0,
+                          x1 - x0, y1 - y0))
+    if not heads:
+        return Ruling.abstain("no_start_head", heads_in_reach=0)
+    avg_h = sum(h[5] for h in heads) / len(heads)
+    y_tol = max(avg_h * TIE_FLANK_MAX_DY_HEAD_HEIGHTS, TIE_FLANK_MIN_DY_PX)
+
+    # ⚠️ A TIE CUT BY A BARLINE IS DETECTED AS TWO ARCS, and the half that
+    # begins AT the barline has its start head a whole first-half away -- past
+    # any fixed reach. `_legacy._SLUR_BOUNDARY_SPACES` (0.5 spaces, IMPORTED,
+    # measured for the legacy merge) says when an arc's end sits ON its bar's
+    # edge; such an end searches the WHOLE adjacent bar instead of 3 widths.
+    # Where there is no adjacent bar the arc is cut by the SYSTEM's edge.
+    from ...export import _SLUR_BOUNDARY_SPACES
+    edge_tol = _SLUR_BOUNDARY_SPACES * avg_h
+    cut_left = own_box is not None and abs(ax0 - own_box[0]) <= edge_tol
+    cut_right = own_box is not None and abs(ax1 - own_box[2]) <= edge_tol
+    if cut_left and cut_right:
+        # ⚠️ A TIE JOINS TWO CONSECUTIVE NOTES, so it can never cross a WHOLE
+        # bar: that bar would have to hold nothing at all. An arc cut at both
+        # of its bar's edges is not a tie half, and searching both adjacent
+        # bars would pair two notes a bar apart -- found on the first Litolff
+        # crop (`3.2b` FINDINGS), a staff line read as a tie.
+        return Ruling.abstain("spans_a_whole_bar")
+
+    def usable(row) -> bool:
+        # ⚠️ Asked only of a head already inside a window, so the verdicts
+        # this decision reads -- and the ids it files as considered -- are the
+        # handful that could matter, not every head of three bars.
+        own = ev.verdict(Q.GLYPH_OWNER, subject=row.subject)
+        if own is not None and _is_relocated_copy(row.subject, own.value):
+            return False
+        np_ = ev.verdict(Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, subject=row.subject)
+        return not (np_ is not None and np_.outcome is Outcome.DECIDED
+                    and np_.value is True)
+
+    lefts, rights = [], []
+    for row, i, xc, yc, w, _h in heads:
+        if abs(yc - arc_yc) > y_tol:
+            continue
+        reach = w * TIE_FLANK_MAX_DX_HEAD_WIDTHS
+        inside = -w * TIE_FLANK_MAX_OVERLAP_HEAD_WIDTHS
+        dxl = ax0 - xc
+        dxr = xc - ax1
+        # ⚠️ A head can be a start only LEFT of the arc's middle and a stop
+        # only right of it, so one head is never both ends of one arc.
+        mid = (ax0 + ax1) / 2.0
+        if xc < mid and dxl >= inside and (
+                dxl < reach or (cut_left and i == cell_index - 1)) \
+                and usable(row):
+            lefts.append((dxl, yc, row, i))
+        if xc > mid and dxr >= inside and (
+                dxr < reach or (cut_right and i == cell_index + 1)) \
+                and usable(row):
+            rights.append((dxr, yc, row, i))
+
+    counts = {"lefts": len(lefts), "rights": len(rights),
+              "cut_left": cut_left, "cut_right": cut_right}
+    # ⚠️ "THE SYSTEM STARTS/ENDS HERE" IS A FACT ABOUT THE STAFF, NOT ABOUT
+    # THE ARC: nothing on this staff precedes the arc in the system's first
+    # bar (a continuation is engraved after the clef and key, which are not
+    # heads), or nothing follows it in the system's last bar. It bounds the
+    # cross-system population from above; the partner is on another system
+    # and this decision cannot see it.
+    starts_system = not has_prev and not any(
+        h[1] == cell_index and h[2] < ax0 for h in heads)
+    ends_system = not has_next and not any(
+        h[1] == cell_index and h[2] > ax1 for h in heads)
+    if not lefts and starts_system:
+        return Ruling.abstain("enters_from_previous_system", **counts)
+    if not rights and ends_system:
+        return Ruling.abstain("runs_off_the_system", **counts)
+    if not lefts and not rights:
+        # ⚠️ Usually the TWIN of a tie filed on the NEXT staff: a measure
+        # cell is padded into its neighbour, and `arc_owner` asks which heads
+        # an arc COVERS -- a tie covers none, so it cannot move one. Its twin
+        # on the right staff pairs there; this copy says so and stops.
+        return Ruling.abstain("no_head_near_the_arc", **counts)
+    if not lefts:
+        return Ruling.abstain("no_start_head", **counts)
+    if not rights:
+        return Ruling.abstain("no_stop_head", **counts)
+
+    limit = _legacy_articulation.TIE_SAME_POSITION_MAX_SPACES
+
+    def one_position(ya: float, yb: float) -> bool:
+        return abs(ya - yb) / avg_h <= limit
+
+    # ⚠️ A TIE JOINS CONSECUTIVE NOTES. Of two heads at the partner's position
+    # on one side, the nearer is the tied one -- a farther one has the nearer
+    # between it and the arc -- so only the nearest at that position is a
+    # candidate. That is forced, not preferred; what remains ambiguous (two
+    # DIFFERENT positions each with a pair -- a tied chord -- or two heads at
+    # one x) is NARROWED, never argmaxed.
+    pairs = []
+    for dxl, yl, rl, il in lefts:
+        for dxr, yr, rr, ir in rights:
+            if rl.subject == rr.subject or not one_position(yl, yr):
+                continue
+            if any(d < dxl for d, y, r, _i in lefts
+                   if r is not rl and one_position(y, yr)):
+                continue
+            if any(d < dxr for d, y, r, _i in rights
+                   if r is not rr and one_position(y, yl)):
+                continue
+            pairs.append(((dxl + dxr) / avg_h, abs(yl - yr) / avg_h,
+                          rl, rr, il, ir))
+    if not pairs:
+        nearest = min(((abs(yl - yr) / avg_h) for _a, yl, _b, _c in lefts
+                       for _d, yr, _e, _f in rights), default=None)
+        return Ruling.abstain(
+            "no_pair_at_one_position", **counts,
+            nearest_dy_spaces=None if nearest is None else round(nearest, 3))
+    pairs.sort(key=lambda p: (p[0], p[1]))
+
+    def value_of(p) -> Dict[str, Any]:
+        return {"start": p[2].subject.to_key(), "stop": p[3].subject.to_key()}
+
+    if len(pairs) > 1:
+        return Ruling.narrow(
+            [R.Candidate(value_of(p), -round(p[0], 3)) for p in pairs],
+            "more_than_one_pair", used=(arc.id,), **counts,
+            pairs_at_one_position=len(pairs))
+    dx, dy, rl, rr, il, ir = pairs[0]
+    return Ruling(
+        value=value_of(pairs[0]), reason="paired",
+        used=(arc.id, rl.id, rr.id),
+        detail={**counts, "dy_spaces": round(dy, 3),
+                "dx_spaces": round(dx, 3),
+                # ⚠️ RECORDED, NOT GATED: how far the arc sits from its pair
+                # in y. The window is the legacy 3 head heights; the Litolff
+                # crops show false `tie` boxes on a staff line 2-3 spaces from
+                # the pair they flank, so this is what a tighter window would
+                # be priced from.
+                "arc_dy_spaces": round(abs(
+                    arc_yc - (_head_yc(heads, rl) + _head_yc(heads, rr)) / 2)
+                    / avg_h, 3),
+                "crosses_barline": il != ir,
+                "home_staff": home})
+
+
+def _head_yc(heads, row) -> float:
+    return next(h[3] for h in heads if h[0] is row)
+
+
+def _is_relocated_copy(subject, owner_value) -> bool:
+    from ..adjudicate import is_relocated_copy
+    return is_relocated_copy(subject, owner_value)
+
+
 @decision(
     quantity=Q.ARTICULATION_OWNER,
     composed_from=(Q.ARTICULATION_MARK, Q.GLYPH_BOX),

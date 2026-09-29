@@ -963,6 +963,11 @@ ORDER: Tuple[str, ...] = (
     Q.GLYPH_OWNER,
     Q.ARC_OWNER,
     Q.ARC_KIND,
+    # ⚠️ ROADMAP 3.2b, AFTER ALL THREE IT READS: `Q.ARC_KIND` (only a tie is
+    # paired), `Q.ARC_OWNER` (the staff whose heads are searched) and
+    # `Q.GLYPH_OWNER` (a relocated copy is not a candidate). ADJUDICATE reads
+    # a frozen log, so a verdict decided after this line would be None here.
+    Q.TIE_PAIR,
     # ⚠️ ROADMAP 2.12c, BEFORE `Q.DURATION` AND `Q.ARTICULATION_OWNER`. Its
     # evidence is GATHER rows only (`Q.AUG_DOT`, `Q.GLYPH_BOX`,
     # `Q.NOTEHEAD_CLASS`, `Q.REST`, `Q.CELL_STAFF_SPACE`), so it needs no
