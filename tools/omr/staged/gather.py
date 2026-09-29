@@ -1000,10 +1000,29 @@ def _observe_ladder(log: Log, g: Subject, box, cand_key: str,
 #: CONFIRMED -- argued from CLAUDE.md's own notehead-width finding, never
 #: measured against a ledger crop.
 LEDGER_RUNG_INK_WIDTH_HEAD_MULT = 1.75
-#: How far past the head's own edge, in HEAD WIDTHS, must show ink for the
-#: run to "extend beyond it on both sides" (the guard against a stem, which
-#: does not reach past the head at all).
+#: How far past the head's own edge, in HEAD WIDTHS, the CONTEXT window
+#: reaches (used for the crop/background bands, not the overhang test
+#: itself -- see `LEDGER_RUNG_INK_OVERHANG_TEST_FRAC` for why the two are
+#: no longer the same span).
 LEDGER_RUNG_INK_OVERHANG_HEAD_FRAC = 0.25
+#: ⚠️⚠️ ROADMAP 2.6d CALIBRATION (2026-09-29). The overhang test used to
+#: average density over the WHOLE span out to the context window's edge
+#: (`head_w * 0.375`) -- and on the one real printed rung this lane found
+#: on a positive-case re-gather (Breitkopf pdf idx 22, `glyph/22/1/6/10/2`
+#: toward `staff/22/1/6`, step 2: a notehead with a ledger line visibly
+#: crossing it, wings poking out both sides in the crop), that averaging
+#: is what missed it -- `left=0.5126` against the `DENSE` floor of 0.55,
+#: `right=0.6632` passing, on a rung whose wing is shorter than the window
+#: tested. A NARROWER band anchored right at the head's edge (this
+#: fraction of a head width, not the wider context span) tests where the
+#: wing actually is instead of diluting it with the blank paper beyond a
+#: short one. CONVENTION ASSUMED / WHAT WOULD FALSIFY IT / NOT CONFIRMED:
+#: 0.20 head widths is short enough to sit inside even a wing at the low
+#: end of CLAUDE.md's "1.5-2 head widths" convention (0.25-0.5 each side)
+#: without reaching the blank paper past a real one -- falsified by a
+#: confirmed rung whose wing is shorter than 0.20 head widths, or by a
+#: stem/serif this narrow a band now credits that the wider one refused.
+LEDGER_RUNG_INK_OVERHANG_TEST_FRAC = 0.20
 #: The thin band tested is the staff's own measured line thickness
 #: (`Q.STAFF_SKEW`'s `thickness_px`, read here off the same `line_
 #: thickness_px` attribute `gather_geometry` files it from -- one measurement,
@@ -1026,6 +1045,29 @@ LEDGER_RUNG_INK_DENSE = 0.55
 #: at a shallow angle within the tested window -- NOT CONFIRMED, no crop
 #: adjudicated a beam false positive.
 LEDGER_RUNG_INK_ADJACENT_MAX = 0.35
+#: ⚠️⚠️ ROADMAP 2.6d CALIBRATION (2026-09-29), THE COST OF THE OVERHANG FIX.
+#: Narrowing the overhang test (above) to find a real short-wing rung ALSO
+#: newly credited a slanted BEAM crossing a head on a positive-case re-
+#: gather (Breitkopf pdf idx 22 -- `2.6d-cv-brk22-calibration-02/-03.png`):
+#: the beam's own slope carries its ink out of the fixed-x `ADJACENT` bands
+#: (the guard above tests the SAME x-range one thickness further up/down,
+#: and a sloped stroke is not there any more), so 40 of 40 `found=True`
+#: rows on that page needed a look and 2 were the same beam. A LEVEL guard:
+#: the ink-weighted row centroid of the LEFT band and of the RIGHT band
+#: must not differ by more than this fraction of the tested band's own
+#: half-height, or the "horizontal" run is rising/falling across the head
+#: -- exactly what a rung crossing perpendicular to a staff never does and
+#: a beam crossing it at an angle always does. CONVENTION ASSUMED / WHAT
+#: WOULD FALSIFY IT / NOT CONFIRMED: 0.6 clears the one real rung this lane
+#: measured (centroids essentially level) and rejects the one beam crop
+#: found by chance, not by a swept threshold -- falsified by a confirmed
+#: rung on a wandering/skewed staff line this narrow, or a shallow beam
+#: still passing. ⚠️ FIRST MEASURED AT 0.6 AND THAT DID NOT CLEAR THE BEAM
+#: (slant 11.3-12.1 against a half-height around 26.7, i.e. ~0.42-0.45 --
+#: comfortably under 0.6). Retuned to 0.2: still four times the real
+#: rung's own measured slant (1.0) and well under half the beam's, the
+#: only two data points this lane has.
+LEDGER_RUNG_INK_SLANT_MAX_HALF_H = 0.2
 
 
 def ledger_rung_ink(img: Any, head_x0: float, head_x1: float, y_center: float,
@@ -1075,24 +1117,58 @@ def ledger_rung_ink(img: Any, head_x0: float, head_x1: float, y_center: float,
         region = ink[iy0:iy1, ix0:ix1]
         return float(region.sum()) / float(region.size)
 
+    def row_centroid(x0: float, x1: float, y0: float, y1: float
+                     ) -> Optional[float]:
+        """The ink-weighted mean row (absolute y) in this band, or `None`
+        with nothing to weigh. ROADMAP 2.6d: the slant guard's own ruler --
+        a level rung's left and right bands centre on the SAME row; a
+        beam crossing at an angle does not."""
+        ix0, ix1 = max(0, int(round(x0))), min(W, int(round(x1)))
+        iy0, iy1 = max(0, int(round(y0))), min(H, int(round(y1)))
+        if ix1 <= ix0 or iy1 <= iy0:
+            return None
+        region = ink[iy0:iy1, ix0:ix1]
+        weights = region.sum(axis=1).astype(float)
+        total = weights.sum()
+        if total <= 0:
+            return None
+        rows = np.arange(iy0, iy1, dtype=float)
+        return float((rows * weights).sum() / total)
+
     y0, y1 = y_center - half_h, y_center + half_h
     center = frac(head_x0, head_x1, y0, y1)
-    left = frac(cx - ww / 2.0, head_x0, y0, y1)
-    right = frac(head_x1, cx + ww / 2.0, y0, y1)
+    # ⚠️ THE OVERHANG TEST IS A NARROW BAND AT THE EDGE, NOT THE WHOLE
+    # CONTEXT WINDOW -- see `LEDGER_RUNG_INK_OVERHANG_TEST_FRAC`'s comment.
+    overhang_w = LEDGER_RUNG_INK_OVERHANG_TEST_FRAC * head_w
+    left_x0, left_x1 = head_x0 - overhang_w, head_x0
+    right_x0, right_x1 = head_x1, head_x1 + overhang_w
+    left = frac(left_x0, left_x1, y0, y1)
+    right = frac(right_x0, right_x1, y0, y1)
     if center is None or left is None or right is None:
         return None
     above = frac(cx - ww / 2.0, cx + ww / 2.0, y0 - 2 * half_h, y0)
     below = frac(cx - ww / 2.0, cx + ww / 2.0, y1, y1 + 2 * half_h)
     adjacent_vals = [v for v in (above, below) if v is not None]
     adjacent = max(adjacent_vals) if adjacent_vals else None
+    # ⚠️ THE LEVEL GUARD -- see `LEDGER_RUNG_INK_SLANT_MAX_HALF_H`'s comment.
+    # A band with no ink to weigh (already failing DENSE) reports no slant;
+    # `extends` fails on the density test regardless, so this never turns a
+    # refusal into a guess in the other direction.
+    left_cy = row_centroid(left_x0, left_x1, y0, y1)
+    right_cy = row_centroid(right_x0, right_x1, y0, y1)
+    slant = (abs(left_cy - right_cy)
+            if left_cy is not None and right_cy is not None else None)
+    level = slant is None or slant <= LEDGER_RUNG_INK_SLANT_MAX_HALF_H * half_h
     extends = (center >= LEDGER_RUNG_INK_DENSE
               and left >= LEDGER_RUNG_INK_DENSE
               and right >= LEDGER_RUNG_INK_DENSE
-              and (adjacent is None or adjacent <= LEDGER_RUNG_INK_ADJACENT_MAX))
+              and (adjacent is None or adjacent <= LEDGER_RUNG_INK_ADJACENT_MAX)
+              and level)
     return {
         "found": bool(extends),
         "center": round(center, 4), "left": round(left, 4),
         "right": round(right, 4),
+        "slant": None if slant is None else round(slant, 3),
         "adjacent": None if adjacent is None else round(adjacent, 4),
         "window_canonical": [round(cx - ww / 2.0, 2), round(cx + ww / 2.0, 2),
                              round(y0, 2), round(y1, 2)],
@@ -1117,6 +1193,15 @@ def _observe_ledger_rung_ink(log: Log, g: Subject, box, cand_key: str,
     -- never guesses -- where neither cell has an erased raster or a staff
     unit, or a step's window falls off the raster.
     """
+    # ⚠️ RECONSTRUCTED, NOT PASSED THROUGH -- `wiring._SubjectKinds` resolves
+    # a subject's Kind from the CONSTRUCTOR EXPRESSION at the site
+    # (`R.glyph(...)`), never from a parameter's static type; every other
+    # gather site in this file rebuilds its own `g` the same way rather than
+    # accepting one from a caller (`gather.py:518,658,1244` etc.), which is
+    # what keeps THEIR `log.observe`/`log.abstain` calls resolved. This one
+    # line is the fix, not a workaround: every `g` below is the SAME subject,
+    # spelled so the static walk can tell.
+    g = R.glyph(g.page, g.system, g.staff, g.cell, g.glyph)
     y = (box[1] + box[3]) / 2.0
     top, bottom = min(line_ys), max(line_ys)
     if top <= y <= bottom:

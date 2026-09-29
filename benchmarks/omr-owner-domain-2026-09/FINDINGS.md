@@ -1164,7 +1164,14 @@ these two specific pages the compound test never once said `found=True`, so
 nothing downstream had a new fact to read. This is the honest result, not a
 null run: reach is measured first (CLAUDE.md rule 5) and it reaches;
 accuracy on these two pages is exactly zero credits, which the six crops
-below explain rather than merely report.
+below explain rather than merely report. ⚠️ **UPDATE, §2.6d.2 (2026-09-29,
+manager follow-up)**: zero on these two ACCEPTANCE-SET pages specifically
+is not zero everywhere — calibrating on the 2.6c.2 crops' own positive case
+(a different page, Breitkopf pdf idx 22) found a real printed rung this
+first pass MISSED (an overhang-averaging bug) and, once fixed, a real
+BEAM false positive the fix's own widening exposed (a second, level-guard
+fix). See §2.6d.2 for both, the retuned constants, and the real positive
+fixture that proves it.
 
 ### Six crops for Sean (`out/print/2.6d-cv-{brahms,litolff}-0{1,2,4}.png`,
 `2.6d-cv-litolff-0{3,4,8}.png`)
@@ -1224,4 +1231,131 @@ sample to check it does not ALSO fire on a genuine rung).
 - `staged.check` TOTAL is 252, not ≤249 — see the RED→GREEN section above
   for the accounting; every point of the increase is inside an existing,
   already-tolerated `wiring` bucket, and none of `inventory`/`capture`/
-  `gather_coverage`/`reach` moved from their 2.6c.2 counts.
+  `gather_coverage`/`reach` moved from their 2.6c.2 counts. → **CLOSED,
+  §2.6d.2 below: `_observe_ledger_rung_ink`'s `g` is now RECONSTRUCTED via
+  `R.glyph(...)` at the top of the function (the same convention every
+  other resolved GATHER site already uses) rather than accepted as an
+  opaque parameter, so `wiring._SubjectKinds`'s constructor-expression
+  resolver sees it. `staged.check` is back to 249, main's own number, with
+  0 unaccounted.**
+
+## §2.6d.2 — calibration on a POSITIVE case, and two real bugs (2026-09-29, manager follow-up, BUILT not merged)
+
+Manager, on the first landing: *"found=True fired on ZERO windows, so the
+arm is DEAD at zero on the pages tried"* (CLAUDE.md rule 5) — calibrate on a
+positive case before merging. §2.6d's own two acceptance-set pages (pdf idx
+1 and 3) turn out not to hold one; the fix is elsewhere.
+
+### The eight §2.6c.2 crops, read by eye
+
+All eight (`out/print/2.6c-far-{litolff,breitkopf}-0{1..4}.png`) were opened
+and looked at directly, then a wide, unbanded re-render of each head's own
+neighbourhood (not bounded to the recorded candidate staves, so nothing a
+tight crop could hide) checked for a rung the banded crop's margin might
+have cut off. **Six of eight show no ledger line of any kind** — isolated
+noteheads in open space (litolff 01-04, breitkopf 01), or (breitkopf 04) a
+detector false positive at a system's opening barline, no note there at
+all. **Breitkopf 03** (`glyph/22/1/6/10/2`, pdf idx 22, toward
+`staff/22/1/6`) is the one unambiguous positive: a notehead with a printed
+ledger line visibly crossing it, wings poking out both sides.
+
+### The miss, measured, and the fix
+
+A one-page re-gather of pdf idx 22 measured this exact head:
+
+| step | want_y (page) | centre | left | right | adjacent | found (before) |
+|---|--:|--:|--:|--:|--:|---|
+| 1 (nearer staff) | 5935.25 | 0.682 | 0.633 | 0.739 | 0.400 | False |
+| 2 (the visible rung) | 5962.5 | 0.982 | **0.513** | 0.663 | 0.313 | **False** |
+
+Step 2 fails ONLY on `left` (0.513 against the 0.55 `DENSE` floor) — the
+overhang test averaged density over the WHOLE context window out to
+`head_w * 0.375`, and this rung's left wing is shorter than that span, so
+blank paper beyond it diluted the reading. **Fix**: a NARROWER overhang
+band, anchored right at the head's edge (`LEDGER_RUNG_INK_OVERHANG_TEST_
+FRAC = 0.20`, distinct from the wider context span `LEDGER_RUNG_INK_
+OVERHANG_HEAD_FRAC` still used for the adjacent/background bands). Re-
+measured: `left = 0.648`, `found = True`. Step 1 stays `False` (adjacent
+0.400, unchanged) — an OPEN finding below, not fixed.
+
+**A real bug the fix's own re-run found**: with the overhang narrowed,
+`found=True` jumped from 0 to **40 of 712** rows on this one page — and two
+of the forty (`glyph/22/0/7/4/9`, `glyph/22/0/6/4/2`, both `staff/22/0/7`
+step 4) are a SLANTED BEAM crossing two heads, not a rung (`out/print/
+2.6d-cv-brk22-calibration-beam-rejected.png`): the `ADJACENT` guard tests a
+FIXED x-range one thickness-band up and down, and a sloped stroke's ink
+moves out of that fixed range, so the guard that catches a thick blob does
+not catch a thin one lying at an angle. **Second fix**: a LEVEL guard —
+the ink-weighted row centroid of the LEFT band and of the RIGHT band must
+not differ by more than `LEDGER_RUNG_INK_SLANT_MAX_HALF_H` (0.2) times the
+tested band's own half-height, or the "horizontal" run is rising/falling
+across the head. Measured on the two data points this lane has: the real
+rung's centroids differ by 1.0 px (slant reads `1.003`), the beam's by
+11.3-12.1 px — first tried at 0.6 (too loose, both beam rows still passed
+at 11.3-12.1 against a half-height of ~26.7, i.e. ~0.42-0.45), retuned to
+0.2 (four times the real rung's own slant, well under half the beam's).
+**Re-measured a third time: 38 of 712 `found=True`, the beam pair gone, the
+real rung (`slant=1.003`) and a second confirmed real rung found by the
+same pass (`glyph/22/1/3/7/2`, a half note, `out/print/2.6d-cv-brk22-
+calibration-spot1-real.png`) both still credited.** `far_no_rungs` on this
+page: 10 (base) → 6 (arm) — the first REAL, non-zero, reach-confirmed
+improvement this roadmap item has produced.
+
+CONVENTION ASSUMED / WHAT WOULD FALSIFY IT / NOT CONFIRMED: both new
+constants are tuned against exactly ONE real rung and ONE real beam — see
+each constant's own header comment in `gather.py` for the falsifying case.
+
+### The wiring fix
+
+`staged.check`'s `wiring` bucket went 249→252 at the first landing because
+`_observe_ledger_rung_ink` accepted its subject `g` as an opaque parameter;
+`wiring._SubjectKinds` resolves a subject's Kind from the CONSTRUCTOR
+EXPRESSION at the call site (`R.glyph(...)`), never from a parameter, and
+every OTHER gather site in the file already reconstructs its own `g` this
+way rather than passing one through (`gather.py:518,658,1244` etc. — the
+convention was already there, `_observe_ledger_rung_ink` just did not
+follow it). One line, `g = R.glyph(g.page, g.system, g.staff, g.cell,
+g.glyph)`, at the top of the function: `staged.check` back to 249.
+
+### A REAL positive fixture (`tools/omr/tests/test_staged_ledger_rung_ink.
+py`, `TestARealPrintedRung`)
+
+`ledger_rung_ink_brk_p22_real.png` is not redrawn or re-rendered — it is
+the EXACT canonical raster `_observe_ledger_rung_ink` sampled for this one
+(glyph, candidate) pair on the real re-gather, dumped from inside the
+function (a temporary debug hook, removed before commit) and cropped with
+margin around the two tested steps. Three tests: the real rung IS found;
+the SAME ink tested against the pre-fix wider overhang span reproduces the
+miss (proving the fixture can tell the two thresholds apart, not only pass
+regardless); step 1 still misses it (pinned, so a future adjacent-guard fix
+shows up here first).
+
+### Not done / open (2.6d.2)
+
+- **Step 1's adjacent-guard miss is NOT fixed.** It sits close enough to
+  the staff that the guard's "one band further up" reads dense — plausibly
+  the staff's own ink (imperfectly erased) or simple proximity, not
+  measured to a cause. `test_step_1_still_misses_it_the_adjacent_guard_
+  open_finding` pins the current (wrong) behaviour so a fix shows up as a
+  test needing an update, not a silent change.
+- **The "own line" exclusion can still swallow a single-ledger note's only
+  evidence.** Even with step 2 now `found=True`, `glyph_owner` for THIS
+  head still abstains `far_no_rungs` on the real re-gather: the credited
+  step sits within `OWN_LINE_MAX_SPACES` of the head's own centre (the note
+  stands ON its ledger, which is what a note standing on its ONLY rung
+  looks like), so `ladder_side` classifies it as the head's own line and
+  excludes it from `n_toward` — leaving zero TOWARD evidence for a note
+  that in fact has a rung. This is `ownership.py`'s pre-existing, SHARED
+  design (2.6c.2, unchanged here) and affects the detector-boxed reader
+  identically; not a 2.6d defect, and not fixed in this pass — flagged for
+  whoever picks up the own-line rule next.
+- Both new constants are tuned against one real rung and one real beam,
+  not swept. A slanted beam at a shallower angle, or a real rung on a
+  wandering/skewed staff, could sit on either side of either threshold.
+- The remaining calibration pages (Litolff pdf idx 5, 6; the second half of
+  Breitkopf's own p22 population) were read for reach only, not exhaustively
+  cross-checked crop by crop; Litolff pdf idx 6 (`lit-02`, `lit-04`) did not
+  complete in this pass — a shared Surya worker session stalled for 900 s
+  mid-gather despite `--no-surya` and the run was killed rather than
+  re-tried a third time (CLAUDE.md §5b: the resident server is shared with
+  other sessions; not a `tools/` defect this lane introduced).

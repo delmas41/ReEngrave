@@ -28,8 +28,10 @@ control in the same class, or it passes by refusing everything"*).
 from __future__ import annotations
 
 import unittest
+from pathlib import Path
 
 import numpy as np
+from PIL import Image
 
 from tools.omr.staged import adjudicate, gather
 from tools.omr.staged import adjudicators  # noqa: F401  registers them
@@ -135,6 +137,108 @@ class TestTheMeasurement(unittest.TestCase):
         wide = gather.ledger_rung_ink(img, HEAD_X0, HEAD_X1, CY, SP,
                                       thickness_px=thin_px * 20)
         self.assertFalse(wide["found"])
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Part 1b — a REAL printed rung, cut from the page (CALIBRATION, 2026-09-29)
+#
+# Manager follow-up on the first landing: `found=True` fired on ZERO of 876
+# windows measured on the two acceptance-set pages, so before merging,
+# calibrate on a POSITIVE case. Sean's own 2.6c.2 crops
+# (`benchmarks/omr-owner-domain-2026-09/out/print/2.6c-far-*-manifest.json`)
+# are real `far_no_rungs` heads; read visually (all 8), only ONE shows an
+# unambiguous printed ledger line: Breitkopf pdf idx 22, `glyph/22/1/6/10/2`
+# toward `staff/22/1/6` -- a notehead with a ledger line visibly crossing it,
+# wings poking out both sides (`out/print/2.6c-far-breitkopf-03.png`, its own
+# zoom confirms it). A one-page re-gather measured it and MISSED it:
+# `left=0.5126` against the 0.55 `DENSE` floor, `right=0.6632` passing --
+# the overhang test was averaging density over the WHOLE context window
+# (0.375 head widths) and a short wing was diluted by the blank paper past
+# it. `LEDGER_RUNG_INK_OVERHANG_TEST_FRAC` narrows the tested band to sit
+# right at the edge (0.20 head widths); re-measured, `found=True`.
+#
+# `ledger_rung_ink_brk_p22_real.png` is the EXACT canonical raster this
+# lane's own re-gather sampled (dumped from inside `_observe_ledger_rung_
+# ink` for this one (glyph, candidate) pair, cropped to the two tested
+# steps with margin) -- not redrawn, not re-rendered at a different DPI or
+# scale, so this test exercises the real ink, not an approximation of it.
+# ─────────────────────────────────────────────────────────────────────────────
+
+REAL_RUNG_FIXTURE = (Path(__file__).parent / "fixtures"
+                    / "ledger_rung_ink_brk_p22_real.png")
+#: The head's own canonical x-span in the fixture's OWN frame (a crop, so
+#: these are relative to the crop's origin, not the page).
+REAL_RUNG_HEAD_X = (150.0, 291.0)
+#: The two tested steps' y, in the SAME frame -- step 1 (nearer the staff,
+#: adjacent-guard rejects it: this ink sits close enough to the staff that
+#: the guard's "one band further up" reads staff ink, an OPEN finding, not
+#: fixed here) and step 2 (the one this calibration confirms).
+REAL_RUNG_STEP1_Y = 70.165137614679
+REAL_RUNG_STEP2_Y = 170.165137614679
+REAL_RUNG_SPACE_C = 100.0
+REAL_RUNG_THICKNESS_C = 29.357798165137616
+
+
+class TestARealPrintedRung(unittest.TestCase):
+    """`benchmarks/omr-owner-domain-2026-09/out/print/2.6c-far-breitkopf-03.
+    png` shows it; this is the ink itself, byte-identical to what
+    `_observe_ledger_rung_ink` sampled on the real page."""
+
+    def _measure(self, y):
+        img = np.array(Image.open(REAL_RUNG_FIXTURE))
+        return gather.ledger_rung_ink(img, *REAL_RUNG_HEAD_X, y,
+                                      REAL_RUNG_SPACE_C,
+                                      REAL_RUNG_THICKNESS_C)
+
+    def test_the_real_rung_is_found(self):
+        """THE POSITIVE CASE: step 2, where the crop shows the ledger's
+        wings crossing the notehead on both sides."""
+        m = self._measure(REAL_RUNG_STEP2_Y)
+        self.assertTrue(m["found"])
+        self.assertGreaterEqual(m["center"], gather.LEDGER_RUNG_INK_DENSE)
+        self.assertGreaterEqual(m["left"], gather.LEDGER_RUNG_INK_DENSE)
+        self.assertGreaterEqual(m["right"], gather.LEDGER_RUNG_INK_DENSE)
+
+    def test_RED_on_the_wider_overhang_window(self):
+        """RED-before-the-fix control: the SAME real ink, tested with the
+        pre-calibration overhang span (0.375 head widths, `head_w *
+        LEDGER_RUNG_INK_WIDTH_HEAD_MULT` minus the head itself, halved) —
+        reproduces the miss this lane found (`left` under `DENSE`), so the
+        fixture is proven to distinguish the two thresholds and this is not
+        a test that would pass regardless of the fix."""
+        img = np.array(Image.open(REAL_RUNG_FIXTURE))
+        head_w = REAL_RUNG_HEAD_X[1] - REAL_RUNG_HEAD_X[0]
+        cx = sum(REAL_RUNG_HEAD_X) / 2.0
+        ww = head_w * gather.LEDGER_RUNG_INK_WIDTH_HEAD_MULT
+        thickness = REAL_RUNG_THICKNESS_C
+        pad = gather.LEDGER_RUNG_INK_THICKNESS_PAD_SPACES * REAL_RUNG_SPACE_C
+        half_h = thickness / 2.0 + pad
+        y0, y1 = REAL_RUNG_STEP2_Y - half_h, REAL_RUNG_STEP2_Y + half_h
+        ink = (img == 0)
+
+        def frac(x0, x1, ya, yb):
+            ix0, ix1 = max(0, int(round(x0))), min(img.shape[1], int(round(x1)))
+            iy0, iy1 = max(0, int(round(ya))), min(img.shape[0], int(round(yb)))
+            region = ink[iy0:iy1, ix0:ix1]
+            return float(region.sum()) / float(region.size)
+
+        left_wide = frac(cx - ww / 2.0, REAL_RUNG_HEAD_X[0], y0, y1)
+        self.assertLess(left_wide, gather.LEDGER_RUNG_INK_DENSE,
+                        "the wide window's own left density")
+
+    def test_step_1_still_misses_it_the_adjacent_guard_open_finding(self):
+        """NOT FIXED here, and pinned so a change to the guard shows up:
+        step 1 sits close enough to the staff that the adjacent-band test
+        reads dense (the staff itself, or ink the erasure left behind), so
+        the SAME real rung's inner step is still rejected. `staged.check`
+        and this test are how a future fix proves itself against this
+        exact ink rather than a synthetic stand-in."""
+        m = self._measure(REAL_RUNG_STEP1_Y)
+        self.assertFalse(m["found"])
+        self.assertGreaterEqual(m["center"], gather.LEDGER_RUNG_INK_DENSE)
+        self.assertGreaterEqual(m["left"], gather.LEDGER_RUNG_INK_DENSE)
+        self.assertGreaterEqual(m["right"], gather.LEDGER_RUNG_INK_DENSE)
+        self.assertGreater(m["adjacent"], gather.LEDGER_RUNG_INK_ADJACENT_MAX)
 
 
 # ─────────────────────────────────────────────────────────────────────────────
