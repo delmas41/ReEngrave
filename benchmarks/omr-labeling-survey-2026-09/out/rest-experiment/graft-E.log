@@ -1,0 +1,8 @@
+=== grafting rests from epoch0.pt onto deepscoresv2-yolov8l-hollow-ft-2026-09-03.pt
+labels root: data/user-labeled  versions: 14  boxes: 3871
+classes KEPT from the fine-tune (12, --keep ['rest16th', 'rest8th', 'restHBar', 'restHalf', 'restQuarter', 'restWhole']): ['rest16th', 'rest8th', 'restHBar', 'restHalf', 'restQuarter', 'restWhole']
+classes RESTORED from the base (196)
+restored 1176 per-class parameter rows across 3 head scales
+shifted the bias of 12 kept classes by -0.9 across 3 scales — a conf 0.25 detection of those classes now needs ~0.45 of the pre-shift score
+wrote -> /var/folders/kp/klfnv8ds6_52q4vvr2g6nxd40000gn/T/tmp.4eW4hSImsg/step1_rests.pt
+composed 1 specialist(s) at bias shift 0.9 -> benchmarks/omr-labeling-survey-2026-09/out/rest-experiment/composite-E.pt

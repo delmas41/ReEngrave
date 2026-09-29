@@ -1,0 +1,1059 @@
+{
+ "beet5hr-p48-sys0-s12-m0": {
+  "version": "v14-2026-09-03-complete-litolff",
+  "sean": [
+   {
+    "cls": "restWhole",
+    "cx": 1318.00064,
+    "cy": 654.5000759999999,
+    "w": 160.0,
+    "h": 133.00025399999998
+   }
+  ],
+  "corrected": [
+   {
+    "cls": "restWhole",
+    "cx": 1318.00064,
+    "cy": 654.5000759999999,
+    "w": 160.0,
+    "h": 133.00025399999998
+   }
+  ],
+  "image_path": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a0b689cec50b2fdc6/data/specialist-rests/v14-2026-09-03-complete-litolff/images/beet5hr-p48-sys0-s12-m0.png"
+ },
+ "beet5hr-p49-sys0-s1-m0": {
+  "version": "v14-2026-09-03-complete-litolff",
+  "sean": [
+   {
+    "cls": "restQuarter",
+    "cx": 1048.000512,
+    "cy": 646.499392,
+    "w": 120.000512,
+    "h": 266.999348
+   },
+   {
+    "cls": "restQuarter",
+    "cx": 1639.000064,
+    "cy": 639.500169,
+    "w": 106.000384,
+    "h": 232.999382
+   }
+  ],
+  "corrected": [
+   {
+    "cls": "restQuarter",
+    "cx": 1048.000512,
+    "cy": 646.499392,
+    "w": 120.000512,
+    "h": 266.999348
+   },
+   {
+    "cls": "restQuarter",
+    "cx": 1639.000064,
+    "cy": 639.500169,
+    "w": 106.000384,
+    "h": 232.999382
+   }
+  ],
+  "image_path": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a0b689cec50b2fdc6/data/specialist-rests/v14-2026-09-03-complete-litolff/images/beet5hr-p49-sys0-s1-m0.png"
+ },
+ "beet5hr-p49-sys0-s13-m4": {
+  "version": "v14-2026-09-03-complete-litolff",
+  "sean": [
+   {
+    "cls": "restQuarter",
+    "cx": 873.50049,
+    "cy": 756.499212,
+    "w": 103.00014,
+    "h": 278.999952
+   },
+   {
+    "cls": "restHalf",
+    "cx": 240.00021,
+    "cy": 776.500284,
+    "w": 148.00050000000002,
+    "h": 74.99923199999999
+   }
+  ],
+  "corrected": [
+   {
+    "cls": "restQuarter",
+    "cx": 873.50049,
+    "cy": 756.499212,
+    "w": 103.00014,
+    "h": 278.999952
+   },
+   {
+    "cls": "restHalf",
+    "cx": 240.00021,
+    "cy": 776.500284,
+    "w": 148.00050000000002,
+    "h": 74.99923199999999
+   }
+  ],
+  "image_path": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a0b689cec50b2fdc6/data/specialist-rests/v14-2026-09-03-complete-litolff/images/beet5hr-p49-sys0-s13-m4.png"
+ },
+ "beet5hr-p49-sys0-s2-m0": {
+  "version": "v14-2026-09-03-complete-litolff",
+  "sean": [
+   {
+    "cls": "restQuarter",
+    "cx": 1046.499328,
+    "cy": 598.5,
+    "w": 123.000832,
+    "h": 233.00046
+   },
+   {
+    "cls": "restQuarter",
+    "cx": 1634.500608,
+    "cy": 598.5,
+    "w": 103.000064,
+    "h": 233.00046
+   }
+  ],
+  "corrected": [
+   {
+    "cls": "restQuarter",
+    "cx": 1046.499328,
+    "cy": 598.5,
+    "w": 123.000832,
+    "h": 233.00046
+   },
+   {
+    "cls": "restQuarter",
+    "cx": 1634.500608,
+    "cy": 598.5,
+    "w": 103.000064,
+    "h": 233.00046
+   }
+  ],
+  "image_path": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a0b689cec50b2fdc6/data/specialist-rests/v14-2026-09-03-complete-litolff/images/beet5hr-p49-sys0-s2-m0.png"
+ },
+ "beet5hr-p49-sys0-s4-m3": {
+  "version": "v14-2026-09-03-complete-litolff",
+  "sean": [
+   {
+    "cls": "restQuarter",
+    "cx": 876.000081,
+    "cy": 1052.999304,
+    "w": 114.000744,
+    "h": 291.999372
+   },
+   {
+    "cls": "restQuarter",
+    "cx": 1693.5006,
+    "cy": 443.49967200000003,
+    "w": 96.99954000000001,
+    "h": 282.999528
+   },
+   {
+    "cls": "rest8th",
+    "cx": 1477.000041,
+    "cy": 490.50027600000004,
+    "w": 139.999035,
+    "h": 169.00044
+   },
+   {
+    "cls": "rest8th",
+    "cx": 663.500607,
+    "cy": 1004.500056,
+    "w": 142.999362,
+    "h": 201.00024
+   },
+   {
+    "cls": "restHalf",
+    "cx": 1251.500448,
+    "cy": 969.999324,
+    "w": 142.999362,
+    "h": 68.000772
+   }
+  ],
+  "corrected": [
+   {
+    "cls": "restQuarter",
+    "cx": 876.000081,
+    "cy": 1052.999304,
+    "w": 114.000744,
+    "h": 291.999372
+   },
+   {
+    "cls": "restQuarter",
+    "cx": 1693.5006,
+    "cy": 443.49967200000003,
+    "w": 96.99954000000001,
+    "h": 282.999528
+   },
+   {
+    "cls": "rest8th",
+    "cx": 1477.000041,
+    "cy": 490.50027600000004,
+    "w": 139.999035,
+    "h": 169.00044
+   },
+   {
+    "cls": "rest8th",
+    "cx": 663.500607,
+    "cy": 1004.500056,
+    "w": 142.999362,
+    "h": 201.00024
+   },
+   {
+    "cls": "restHalf",
+    "cx": 1251.500448,
+    "cy": 969.999324,
+    "w": 142.999362,
+    "h": 68.000772
+   }
+  ],
+  "image_path": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a0b689cec50b2fdc6/data/specialist-rests/v14-2026-09-03-complete-litolff/images/beet5hr-p49-sys0-s4-m3.png"
+ },
+ "beet5hr-p49-sys0-s8-m1": {
+  "version": "v14-2026-09-03-complete-litolff",
+  "sean": [
+   {
+    "cls": "restWhole",
+    "cx": 1005.000704,
+    "cy": 723.000573,
+    "w": 143.998976,
+    "h": 77.999652
+   }
+  ],
+  "corrected": [
+   {
+    "cls": "restWhole",
+    "cx": 1005.000704,
+    "cy": 723.000573,
+    "w": 143.998976,
+    "h": 77.999652
+   }
+  ],
+  "image_path": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a0b689cec50b2fdc6/data/specialist-rests/v14-2026-09-03-complete-litolff/images/beet5hr-p49-sys0-s8-m1.png"
+ },
+ "mahler5-p175-sys1-s14-m6": {
+  "version": "v15-2026-09-03-complete-peters",
+  "sean": [
+   {
+    "cls": "restQuarter",
+    "cx": 676.999128,
+    "cy": 613.499718,
+    "w": 90.000552,
+    "h": 328.999728
+   },
+   {
+    "cls": "restHalf",
+    "cx": 1027.499496,
+    "cy": 578.999874,
+    "w": 158.999448,
+    "h": 80.00055
+   }
+  ],
+  "corrected": [
+   {
+    "cls": "restQuarter",
+    "cx": 676.999128,
+    "cy": 613.499718,
+    "w": 90.000552,
+    "h": 328.999728
+   },
+   {
+    "cls": "restHalf",
+    "cx": 1027.499496,
+    "cy": 578.999874,
+    "w": 158.999448,
+    "h": 80.00055
+   }
+  ],
+  "image_path": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a0b689cec50b2fdc6/data/specialist-rests/v15-2026-09-03-complete-peters/images/mahler5-p175-sys1-s14-m6.png"
+ },
+ "mahler5-p177-sys0-s1-m5": {
+  "version": "v15-2026-09-03-complete-peters",
+  "sean": [
+   {
+    "cls": "rest8th",
+    "cx": 888.499953,
+    "cy": 591.0,
+    "w": 140.999436,
+    "h": 194.0004
+   }
+  ],
+  "corrected": [
+   {
+    "cls": "rest8th",
+    "cx": 888.499953,
+    "cy": 591.0,
+    "w": 140.999436,
+    "h": 194.0004
+   }
+  ],
+  "image_path": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a0b689cec50b2fdc6/data/specialist-rests/v15-2026-09-03-complete-peters/images/mahler5-p177-sys0-s1-m5.png"
+ },
+ "mahler5-p177-sys1-s8-m6": {
+  "version": "v15-2026-09-03-complete-peters",
+  "sean": [
+   {
+    "cls": "restWhole",
+    "cx": 983.00016,
+    "cy": 527.0006,
+    "w": 161.999928,
+    "h": 86.00059999999999
+   }
+  ],
+  "corrected": [
+   {
+    "cls": "restWhole",
+    "cx": 983.00016,
+    "cy": 527.0006,
+    "w": 161.999928,
+    "h": 86.00059999999999
+   }
+  ],
+  "image_path": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a0b689cec50b2fdc6/data/specialist-rests/v15-2026-09-03-complete-peters/images/mahler5-p177-sys1-s8-m6.png"
+ },
+ "schehe-p2-sys0-s0-m4": {
+  "version": "v16-2026-09-03-complete-eulenburg",
+  "sean": [
+   {
+    "cls": "restWhole",
+    "cx": 1133.500416,
+    "cy": 208.500016,
+    "w": 36.999168,
+    "h": 12.999835999999998
+   }
+  ],
+  "corrected": [
+   {
+    "cls": "restWhole",
+    "cx": 1133.500416,
+    "cy": 208.500016,
+    "w": 36.999168,
+    "h": 12.999835999999998
+   }
+  ],
+  "image_path": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a0b689cec50b2fdc6/data/specialist-rests/v16-2026-09-03-complete-eulenburg/images/schehe-p2-sys0-s0-m4.png"
+ },
+ "schehe-p2-sys0-s9-m4": {
+  "version": "v16-2026-09-03-complete-eulenburg",
+  "sean": [
+   {
+    "cls": "restWhole",
+    "cx": 1152.0,
+    "cy": 154.000073,
+    "w": 48.001024,
+    "h": 20.000122
+   }
+  ],
+  "corrected": [
+   {
+    "cls": "restWhole",
+    "cx": 1152.0,
+    "cy": 154.000073,
+    "w": 48.001024,
+    "h": 20.000122
+   }
+  ],
+  "image_path": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a0b689cec50b2fdc6/data/specialist-rests/v16-2026-09-03-complete-eulenburg/images/schehe-p2-sys0-s9-m4.png"
+ },
+ "schehe-p3-sys0-s0-m2": {
+  "version": "v16-2026-09-03-complete-eulenburg",
+  "sean": [
+   {
+    "cls": "restWhole",
+    "cx": 723.500304,
+    "cy": 719.5006,
+    "w": 175.000248,
+    "h": 74.9994
+   }
+  ],
+  "corrected": [
+   {
+    "cls": "restWhole",
+    "cx": 723.500304,
+    "cy": 719.5006,
+    "w": 175.000248,
+    "h": 74.9994
+   }
+  ],
+  "image_path": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a0b689cec50b2fdc6/data/specialist-rests/v16-2026-09-03-complete-eulenburg/images/schehe-p3-sys0-s0-m2.png"
+ },
+ "schehe-p3-sys0-s5-m1": {
+  "version": "v16-2026-09-03-complete-eulenburg",
+  "sean": [
+   {
+    "cls": "restQuarter",
+    "cx": 1183.00032,
+    "cy": 554.4996,
+    "w": 94.000272,
+    "h": 294.9996
+   },
+   {
+    "cls": "restQuarter",
+    "cx": 1372.9998879999998,
+    "cy": 557.4996,
+    "w": 87.999904,
+    "h": 288.9996
+   }
+  ],
+  "corrected": [
+   {
+    "cls": "restQuarter",
+    "cx": 1183.00032,
+    "cy": 554.4996,
+    "w": 94.000272,
+    "h": 294.9996
+   },
+   {
+    "cls": "restQuarter",
+    "cx": 1372.9998879999998,
+    "cy": 557.4996,
+    "w": 87.999904,
+    "h": 288.9996
+   }
+  ],
+  "image_path": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a0b689cec50b2fdc6/data/specialist-rests/v16-2026-09-03-complete-eulenburg/images/schehe-p3-sys0-s5-m1.png"
+ },
+ "schehe-p4-sys0-s5-m0": {
+  "version": "v16-2026-09-03-complete-eulenburg",
+  "sean": [
+   {
+    "cls": "restQuarter",
+    "cx": 1225.500672,
+    "cy": 422.00004,
+    "w": 50.999296,
+    "h": 201.999672
+   },
+   {
+    "cls": "restQuarter",
+    "cx": 1386.500096,
+    "cy": 434.50016,
+    "w": 64.999424,
+    "h": 185.000032
+   },
+   {
+    "cls": "restHalf",
+    "cx": 1578.000384,
+    "cy": 420.5002,
+    "w": 92.000256,
+    "h": 46.999928000000004
+   }
+  ],
+  "corrected": [
+   {
+    "cls": "restQuarter",
+    "cx": 1225.500672,
+    "cy": 422.00004,
+    "w": 50.999296,
+    "h": 201.999672
+   },
+   {
+    "cls": "restQuarter",
+    "cx": 1386.500096,
+    "cy": 434.50016,
+    "w": 64.999424,
+    "h": 185.000032
+   },
+   {
+    "cls": "restHalf",
+    "cx": 1578.000384,
+    "cy": 420.5002,
+    "w": 92.000256,
+    "h": 46.999928000000004
+   }
+  ],
+  "image_path": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a0b689cec50b2fdc6/data/specialist-rests/v16-2026-09-03-complete-eulenburg/images/schehe-p4-sys0-s5-m0.png"
+ },
+ "brahms1-p2-sys0-s1-m1": {
+  "version": "v18-2026-09-03-complete-breitkopf",
+  "sean": [
+   {
+    "cls": "restQuarter",
+    "cx": 1259.999232,
+    "cy": 591.5004210000001,
+    "w": 120.000512,
+    "h": 287.000451
+   },
+   {
+    "cls": "rest8th",
+    "cx": 828.99968,
+    "cy": 594.999918,
+    "w": 134.00064,
+    "h": 164.000403
+   },
+   {
+    "cls": "rest8th",
+    "cx": 1058.500608,
+    "cy": 590.000346,
+    "w": 113.000448,
+    "h": 154.00024200000001
+   },
+   {
+    "cls": "rest8th",
+    "cx": 1809.000448,
+    "cy": 587.999907,
+    "w": 116.000768,
+    "h": 158.000103
+   }
+  ],
+  "corrected": [
+   {
+    "cls": "restQuarter",
+    "cx": 1259.999232,
+    "cy": 591.5004210000001,
+    "w": 120.000512,
+    "h": 287.000451
+   },
+   {
+    "cls": "rest8th",
+    "cx": 828.99968,
+    "cy": 594.999918,
+    "w": 134.00064,
+    "h": 164.000403
+   },
+   {
+    "cls": "rest8th",
+    "cx": 1058.500608,
+    "cy": 590.000346,
+    "w": 113.000448,
+    "h": 154.00024200000001
+   },
+   {
+    "cls": "rest8th",
+    "cx": 1809.000448,
+    "cy": 587.999907,
+    "w": 116.000768,
+    "h": 158.000103
+   }
+  ],
+  "image_path": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a0b689cec50b2fdc6/data/specialist-rests/v18-2026-09-03-complete-breitkopf/images/brahms1-p2-sys0-s1-m1.png"
+ },
+ "brahms1-p2-sys0-s2-m2": {
+  "version": "v18-2026-09-03-complete-breitkopf",
+  "sean": [
+   {
+    "cls": "rest8th",
+    "cx": 267.999194,
+    "cy": 795.4996,
+    "w": 140.000568,
+    "h": 199.00019999999998
+   },
+   {
+    "cls": "rest8th",
+    "cx": 264.999683,
+    "cy": 804.9999999999999,
+    "w": 107.99993699999999,
+    "h": 217.9996
+   }
+  ],
+  "corrected": [
+   {
+    "cls": "rest8th",
+    "cx": 267.999194,
+    "cy": 795.4996,
+    "w": 140.000568,
+    "h": 199.00019999999998
+   },
+   {
+    "cls": "rest8th",
+    "cx": 264.999683,
+    "cy": 804.9999999999999,
+    "w": 107.99993699999999,
+    "h": 217.9996
+   }
+  ],
+  "image_path": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a0b689cec50b2fdc6/data/specialist-rests/v18-2026-09-03-complete-breitkopf/images/brahms1-p2-sys0-s2-m2.png"
+ },
+ "brahms1-p2-sys1-s20-m6": {
+  "version": "v18-2026-09-03-complete-breitkopf",
+  "sean": [
+   {
+    "cls": "restWhole",
+    "cx": 797.500515,
+    "cy": 384.0,
+    "w": 171.00002500000002,
+    "h": 72.0
+   }
+  ],
+  "corrected": [
+   {
+    "cls": "restWhole",
+    "cx": 797.500515,
+    "cy": 384.0,
+    "w": 171.00002500000002,
+    "h": 72.0
+   }
+  ],
+  "image_path": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a0b689cec50b2fdc6/data/specialist-rests/v18-2026-09-03-complete-breitkopf/images/brahms1-p2-sys1-s20-m6.png"
+ },
+ "brahms1-p3-sys0-s1-m0": {
+  "version": "v18-2026-09-03-complete-breitkopf",
+  "sean": [
+   {
+    "cls": "restWhole",
+    "cx": 1295.998976,
+    "cy": 285.50016,
+    "w": 96.0,
+    "h": 37.00032
+   }
+  ],
+  "corrected": [
+   {
+    "cls": "restWhole",
+    "cx": 1295.998976,
+    "cy": 285.50016,
+    "w": 96.0,
+    "h": 37.00032
+   }
+  ],
+  "image_path": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a0b689cec50b2fdc6/data/specialist-rests/v18-2026-09-03-complete-breitkopf/images/brahms1-p3-sys0-s1-m0.png"
+ },
+ "brahms1-p3-sys1-s18-m1": {
+  "version": "v18-2026-09-03-complete-breitkopf",
+  "sean": [
+   {
+    "cls": "restWhole",
+    "cx": 988.500912,
+    "cy": 534.9996,
+    "w": 175.000528,
+    "h": 81.9996
+   }
+  ],
+  "corrected": [
+   {
+    "cls": "restWhole",
+    "cx": 988.500912,
+    "cy": 534.9996,
+    "w": 175.000528,
+    "h": 81.9996
+   }
+  ],
+  "image_path": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a0b689cec50b2fdc6/data/specialist-rests/v18-2026-09-03-complete-breitkopf/images/brahms1-p3-sys1-s18-m1.png"
+ },
+ "brahms1-p4-sys0-s13-m3": {
+  "version": "v18-2026-09-03-complete-breitkopf",
+  "sean": [
+   {
+    "cls": "rest8th",
+    "cx": 592.500303,
+    "cy": 594.000414,
+    "w": 143.000148,
+    "h": 184.00056600000002
+   },
+   {
+    "cls": "rest8th",
+    "cx": 1076.999644,
+    "cy": 595.5004680000001,
+    "w": 140.00002999999998,
+    "h": 181.000458
+   },
+   {
+    "cls": "rest8th",
+    "cx": 1330.0002849999998,
+    "cy": 604.999878,
+    "w": 126.00002699999999,
+    "h": 184.00056600000002
+   },
+   {
+    "cls": "restQuarter",
+    "cx": 301.500358,
+    "cy": 582.999552,
+    "w": 136.999912,
+    "h": 331.999836
+   }
+  ],
+  "corrected": [
+   {
+    "cls": "rest8th",
+    "cx": 592.500303,
+    "cy": 594.000414,
+    "w": 143.000148,
+    "h": 184.00056600000002
+   },
+   {
+    "cls": "rest8th",
+    "cx": 1076.999644,
+    "cy": 595.5004680000001,
+    "w": 140.00002999999998,
+    "h": 181.000458
+   },
+   {
+    "cls": "rest8th",
+    "cx": 1330.0002849999998,
+    "cy": 604.999878,
+    "w": 126.00002699999999,
+    "h": 184.00056600000002
+   },
+   {
+    "cls": "restQuarter",
+    "cx": 301.500358,
+    "cy": 582.999552,
+    "w": 136.999912,
+    "h": 331.999836
+   }
+  ],
+  "image_path": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a0b689cec50b2fdc6/data/specialist-rests/v18-2026-09-03-complete-breitkopf/images/brahms1-p4-sys0-s13-m3.png"
+ },
+ "brahms1-p4-sys0-s3-m8": {
+  "version": "v18-2026-09-03-complete-breitkopf",
+  "sean": [
+   {
+    "cls": "rest8th",
+    "cx": 492.00005500000003,
+    "cy": 590.0004,
+    "w": 161.999495,
+    "h": 189.99960000000002
+   },
+   {
+    "cls": "rest8th",
+    "cx": 778.49949,
+    "cy": 600.9996,
+    "w": 136.99917,
+    "h": 186.0
+   }
+  ],
+  "corrected": [
+   {
+    "cls": "rest8th",
+    "cx": 492.00005500000003,
+    "cy": 590.0004,
+    "w": 161.999495,
+    "h": 189.99960000000002
+   },
+   {
+    "cls": "rest8th",
+    "cx": 778.49949,
+    "cy": 600.9996,
+    "w": 136.99917,
+    "h": 186.0
+   }
+  ],
+  "image_path": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a0b689cec50b2fdc6/data/specialist-rests/v18-2026-09-03-complete-breitkopf/images/brahms1-p4-sys0-s3-m8.png"
+ },
+ "elgar1-p101-sys0-s10-m9": {
+  "version": "v20-2026-09-03-complete-elgar1",
+  "sean": [
+   {
+    "cls": "restWhole",
+    "cx": 637.49976,
+    "cy": 446.4996,
+    "w": 149.000272,
+    "h": 69.0
+   }
+  ],
+  "corrected": [
+   {
+    "cls": "restWhole",
+    "cx": 637.49976,
+    "cy": 446.4996,
+    "w": 149.000272,
+    "h": 69.0
+   }
+  ],
+  "image_path": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a0b689cec50b2fdc6/data/specialist-rests/v20-2026-09-03-complete-elgar1/images/elgar1-p101-sys0-s10-m9.png"
+ },
+ "dvorak9-p10-sys0-s1-m10": {
+  "version": "v22-2026-09-04-simrock-dense",
+  "sean": [
+   {
+    "cls": "restWhole",
+    "cx": 732.500444,
+    "cy": 601.99977,
+    "w": 115.00008,
+    "h": 59.999364
+   }
+  ],
+  "corrected": [
+   {
+    "cls": "restWhole",
+    "cx": 732.500444,
+    "cy": 601.99977,
+    "w": 115.00008,
+    "h": 59.999364
+   }
+  ],
+  "image_path": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a0b689cec50b2fdc6/data/specialist-rests/v22-2026-09-04-simrock-dense/images/dvorak9-p10-sys0-s1-m10.png"
+ },
+ "dvorak9-p10-sys1-s17-m4": {
+  "version": "v22-2026-09-04-simrock-dense",
+  "sean": [
+   {
+    "cls": "restWhole",
+    "cx": 1038.999552,
+    "cy": 793.000588,
+    "w": 106.000384,
+    "h": 56.000334
+   }
+  ],
+  "corrected": [
+   {
+    "cls": "restWhole",
+    "cx": 1038.999552,
+    "cy": 793.000588,
+    "w": 106.000384,
+    "h": 56.000334
+   }
+  ],
+  "image_path": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a0b689cec50b2fdc6/data/specialist-rests/v22-2026-09-04-simrock-dense/images/dvorak9-p10-sys1-s17-m4.png"
+ },
+ "dvorak9-p10-sys1-s19-m5": {
+  "version": "v22-2026-09-04-simrock-dense",
+  "sean": [
+   {
+    "cls": "restWhole",
+    "cx": 1005.000704,
+    "cy": 626.999464,
+    "w": 110.000128,
+    "h": 57.999448
+   }
+  ],
+  "corrected": [
+   {
+    "cls": "restWhole",
+    "cx": 1005.000704,
+    "cy": 626.999464,
+    "w": 110.000128,
+    "h": 57.999448
+   }
+  ],
+  "image_path": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a0b689cec50b2fdc6/data/specialist-rests/v22-2026-09-04-simrock-dense/images/dvorak9-p10-sys1-s19-m5.png"
+ },
+ "dvorak9-p13-sys0-s4-m2": {
+  "version": "v22-2026-09-04-simrock-dense",
+  "sean": [
+   {
+    "cls": "restWhole",
+    "cx": 761.499255,
+    "cy": 597.9995769999999,
+    "w": 114.9995,
+    "h": 60.000689
+   }
+  ],
+  "corrected": [
+   {
+    "cls": "restWhole",
+    "cx": 761.499255,
+    "cy": 597.9995769999999,
+    "w": 114.9995,
+    "h": 60.000689
+   }
+  ],
+  "image_path": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a0b689cec50b2fdc6/data/specialist-rests/v22-2026-09-04-simrock-dense/images/dvorak9-p13-sys0-s4-m2.png"
+ },
+ "dvorak9-p13-sys0-s8-m4": {
+  "version": "v22-2026-09-04-simrock-dense",
+  "sean": [
+   {
+    "cls": "restWhole",
+    "cx": 793.9991699999999,
+    "cy": 595.9998,
+    "w": 114.00057000000001,
+    "h": 60.000345
+   }
+  ],
+  "corrected": [
+   {
+    "cls": "restWhole",
+    "cx": 793.9991699999999,
+    "cy": 595.9998,
+    "w": 114.00057000000001,
+    "h": 60.000345
+   }
+  ],
+  "image_path": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a0b689cec50b2fdc6/data/specialist-rests/v22-2026-09-04-simrock-dense/images/dvorak9-p13-sys0-s8-m4.png"
+ },
+ "dvorak9-p14-sys1-s22-m8": {
+  "version": "v22-2026-09-04-simrock-dense",
+  "sean": [
+   {
+    "cls": "restWhole",
+    "cx": 870.0006480000001,
+    "cy": 647.9998,
+    "w": 114.00017199999999,
+    "h": 59.9998
+   }
+  ],
+  "corrected": [
+   {
+    "cls": "restWhole",
+    "cx": 870.0006480000001,
+    "cy": 647.9998,
+    "w": 114.00017199999999,
+    "h": 59.9998
+   }
+  ],
+  "image_path": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a0b689cec50b2fdc6/data/specialist-rests/v22-2026-09-04-simrock-dense/images/dvorak9-p14-sys1-s22-m8.png"
+ },
+ "dvorak9-p16-sys0-s0-m9": {
+  "version": "v22-2026-09-04-simrock-dense",
+  "sean": [
+   {
+    "cls": "restWhole",
+    "cx": 995.00032,
+    "cy": 670.4998449999999,
+    "w": 110.000128,
+    "h": 56.999632999999996
+   }
+  ],
+  "corrected": [
+   {
+    "cls": "restWhole",
+    "cx": 995.00032,
+    "cy": 670.4998449999999,
+    "w": 110.000128,
+    "h": 56.999632999999996
+   }
+  ],
+  "image_path": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a0b689cec50b2fdc6/data/specialist-rests/v22-2026-09-04-simrock-dense/images/dvorak9-p16-sys0-s0-m9.png"
+ },
+ "dvorak9-p18-sys0-s18-m0": {
+  "version": "v22-2026-09-04-simrock-dense",
+  "sean": [
+   {
+    "cls": "rest8th",
+    "cx": 1769.500492,
+    "cy": 447.99972499999996,
+    "w": 65.00043799999999,
+    "h": 111.999706
+   }
+  ],
+  "corrected": [
+   {
+    "cls": "rest8th",
+    "cx": 1769.500492,
+    "cy": 447.99972499999996,
+    "w": 65.00043799999999,
+    "h": 111.999706
+   }
+  ],
+  "image_path": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a0b689cec50b2fdc6/data/specialist-rests/v22-2026-09-04-simrock-dense/images/dvorak9-p18-sys0-s18-m0.png"
+ },
+ "dvorak9-p18-sys0-s9-m0": {
+  "version": "v22-2026-09-04-simrock-dense",
+  "sean": [
+   {
+    "cls": "rest8th",
+    "cx": 1011.999954,
+    "cy": 482.999704,
+    "w": 63.999455000000005,
+    "h": 109.99966
+   }
+  ],
+  "corrected": [
+   {
+    "cls": "rest8th",
+    "cx": 1011.999954,
+    "cy": 482.999704,
+    "w": 63.999455000000005,
+    "h": 109.99966
+   }
+  ],
+  "image_path": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a0b689cec50b2fdc6/data/specialist-rests/v22-2026-09-04-simrock-dense/images/dvorak9-p18-sys0-s9-m0.png"
+ },
+ "dvorak9-p19-sys0-s1-m2": {
+  "version": "v22-2026-09-04-simrock-dense",
+  "sean": [
+   {
+    "cls": "rest8th",
+    "cx": 1063.499776,
+    "cy": 683.499711,
+    "w": 99.00032,
+    "h": 169.000428
+   }
+  ],
+  "corrected": [
+   {
+    "cls": "rest8th",
+    "cx": 1063.499776,
+    "cy": 683.499711,
+    "w": 99.00032,
+    "h": 169.000428
+   }
+  ],
+  "image_path": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a0b689cec50b2fdc6/data/specialist-rests/v22-2026-09-04-simrock-dense/images/dvorak9-p19-sys0-s1-m2.png"
+ },
+ "dvorak9-p19-sys0-s6-m4": {
+  "version": "v22-2026-09-04-simrock-dense",
+  "sean": [
+   {
+    "cls": "rest8th",
+    "cx": 1089.500819,
+    "cy": 696.500376,
+    "w": 98.999604,
+    "h": 169.000026
+   }
+  ],
+  "corrected": [
+   {
+    "cls": "rest8th",
+    "cx": 1089.500819,
+    "cy": 696.500376,
+    "w": 98.999604,
+    "h": 169.000026
+   }
+  ],
+  "image_path": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a0b689cec50b2fdc6/data/specialist-rests/v22-2026-09-04-simrock-dense/images/dvorak9-p19-sys0-s6-m4.png"
+ },
+ "dvorak9-p19-sys0-s9-m1": {
+  "version": "v22-2026-09-04-simrock-dense",
+  "sean": [
+   {
+    "cls": "rest8th",
+    "cx": 1152.0,
+    "cy": 554.999594,
+    "w": 85.999616,
+    "h": 148.00049
+   }
+  ],
+  "corrected": [
+   {
+    "cls": "rest8th",
+    "cx": 1152.0,
+    "cy": 554.999594,
+    "w": 85.999616,
+    "h": 148.00049
+   }
+  ],
+  "image_path": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a0b689cec50b2fdc6/data/specialist-rests/v22-2026-09-04-simrock-dense/images/dvorak9-p19-sys0-s9-m1.png"
+ },
+ "dvorak9-p9-sys1-s28-m6": {
+  "version": "v22-2026-09-04-simrock-dense",
+  "sean": [
+   {
+    "cls": "restQuarter",
+    "cx": 259.500032,
+    "cy": 679.00014,
+    "w": 109.000704,
+    "h": 297.999975
+   },
+   {
+    "cls": "rest8th",
+    "cx": 1168.500736,
+    "cy": 679.00014,
+    "w": 99.00032,
+    "h": 169.99983
+   }
+  ],
+  "corrected": [
+   {
+    "cls": "restQuarter",
+    "cx": 259.500032,
+    "cy": 679.00014,
+    "w": 109.000704,
+    "h": 297.999975
+   },
+   {
+    "cls": "rest8th",
+    "cx": 1168.500736,
+    "cy": 679.00014,
+    "w": 99.00032,
+    "h": 169.99983
+   },
+   {
+    "cls": "restQuarter",
+    "cx": 286.0,
+    "cy": 1311.5,
+    "w": 68,
+    "h": 97
+   }
+  ],
+  "image_path": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a0b689cec50b2fdc6/data/specialist-rests/v22-2026-09-04-simrock-dense/images/dvorak9-p9-sys1-s28-m6.png"
+ }
+}

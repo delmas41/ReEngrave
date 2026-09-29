@@ -1,0 +1,120 @@
+{
+  "sheet": "arm C paint-outs -- unmatched teacher rest regions erased to paper color",
+  "source": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a0b689cec50b2fdc6/data/rest-exp-C-painted/painted.json",
+  "seed": 20260930,
+  "n": 8,
+  "crops": [
+    {
+      "n": 1,
+      "file": "c-paint-01.png",
+      "cell_id": "dvorak9-p19-sys0-s11-m6",
+      "version": "v22-2026-09-04-simrock-dense",
+      "cls": "rest16th",
+      "conf": 0.268,
+      "question": "Was erasing the RED region correct?  Y = yes, it was noise/not a real symbol   N = no, it erased something real",
+      "answer_codes": {
+        "Y": "correctly erased noise",
+        "N": "erased something real"
+      },
+      "VERDICT_none_yet": null
+    },
+    {
+      "n": 2,
+      "file": "c-paint-02.png",
+      "cell_id": "dvorak9-p20-sys0-s6-m6",
+      "version": "v22-2026-09-04-simrock-dense",
+      "cls": "restHBar",
+      "conf": 0.26,
+      "question": "Was erasing the RED region correct?  Y = yes, it was noise/not a real symbol   N = no, it erased something real",
+      "answer_codes": {
+        "Y": "correctly erased noise",
+        "N": "erased something real"
+      },
+      "VERDICT_none_yet": null
+    },
+    {
+      "n": 3,
+      "file": "c-paint-03.png",
+      "cell_id": "schehe-p3-sys0-s3-m5",
+      "version": "v16-2026-09-03-complete-eulenburg",
+      "cls": "restQuarter",
+      "conf": 0.255,
+      "question": "Was erasing the RED region correct?  Y = yes, it was noise/not a real symbol   N = no, it erased something real",
+      "answer_codes": {
+        "Y": "correctly erased noise",
+        "N": "erased something real"
+      },
+      "VERDICT_none_yet": null
+    },
+    {
+      "n": 4,
+      "file": "c-paint-04.png",
+      "cell_id": "dvorak9-p10-sys0-s13-m4",
+      "version": "v22-2026-09-04-simrock-dense",
+      "cls": "rest8th",
+      "conf": 0.28,
+      "question": "Was erasing the RED region correct?  Y = yes, it was noise/not a real symbol   N = no, it erased something real",
+      "answer_codes": {
+        "Y": "correctly erased noise",
+        "N": "erased something real"
+      },
+      "VERDICT_none_yet": null
+    },
+    {
+      "n": 5,
+      "file": "c-paint-05.png",
+      "cell_id": "schehe-p2-sys0-s6-m4",
+      "version": "v16-2026-09-03-complete-eulenburg",
+      "cls": "rest16th",
+      "conf": 0.5,
+      "question": "Was erasing the RED region correct?  Y = yes, it was noise/not a real symbol   N = no, it erased something real",
+      "answer_codes": {
+        "Y": "correctly erased noise",
+        "N": "erased something real"
+      },
+      "VERDICT_none_yet": null
+    },
+    {
+      "n": 6,
+      "file": "c-paint-06.png",
+      "cell_id": "brahms1-p4-sys1-s24-m3",
+      "version": "v18-2026-09-03-complete-breitkopf",
+      "cls": "restHalf",
+      "conf": 0.276,
+      "question": "Was erasing the RED region correct?  Y = yes, it was noise/not a real symbol   N = no, it erased something real",
+      "answer_codes": {
+        "Y": "correctly erased noise",
+        "N": "erased something real"
+      },
+      "VERDICT_none_yet": null
+    },
+    {
+      "n": 7,
+      "file": "c-paint-07.png",
+      "cell_id": "brahms1-p2-sys0-s2-m5",
+      "version": "v18-2026-09-03-complete-breitkopf",
+      "cls": "rest8th",
+      "conf": 0.895,
+      "question": "Was erasing the RED region correct?  Y = yes, it was noise/not a real symbol   N = no, it erased something real",
+      "answer_codes": {
+        "Y": "correctly erased noise",
+        "N": "erased something real"
+      },
+      "VERDICT_none_yet": null
+    },
+    {
+      "n": 8,
+      "file": "c-paint-08.png",
+      "cell_id": "schehe-p2-sys0-s0-m2",
+      "version": "v16-2026-09-03-complete-eulenburg",
+      "cls": "restWhole",
+      "conf": 0.253,
+      "question": "Was erasing the RED region correct?  Y = yes, it was noise/not a real symbol   N = no, it erased something real",
+      "answer_codes": {
+        "Y": "correctly erased noise",
+        "N": "erased something real"
+      },
+      "VERDICT_none_yet": null
+    }
+  ]
+}

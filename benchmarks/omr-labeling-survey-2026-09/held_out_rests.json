@@ -1,0 +1,148 @@
+{
+ "seed": 20260929,
+ "source": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a0b689cec50b2fdc6/data/specialist-rests",
+ "n_positive_pool": 152,
+ "n_held_out": 35,
+ "cells": [
+  {
+   "version": "v14-2026-09-03-complete-litolff",
+   "cell_id": "beet5hr-p48-sys0-s12-m0"
+  },
+  {
+   "version": "v14-2026-09-03-complete-litolff",
+   "cell_id": "beet5hr-p49-sys0-s1-m0"
+  },
+  {
+   "version": "v14-2026-09-03-complete-litolff",
+   "cell_id": "beet5hr-p49-sys0-s13-m4"
+  },
+  {
+   "version": "v14-2026-09-03-complete-litolff",
+   "cell_id": "beet5hr-p49-sys0-s2-m0"
+  },
+  {
+   "version": "v14-2026-09-03-complete-litolff",
+   "cell_id": "beet5hr-p49-sys0-s4-m3"
+  },
+  {
+   "version": "v14-2026-09-03-complete-litolff",
+   "cell_id": "beet5hr-p49-sys0-s8-m1"
+  },
+  {
+   "version": "v15-2026-09-03-complete-peters",
+   "cell_id": "mahler5-p175-sys1-s14-m6"
+  },
+  {
+   "version": "v15-2026-09-03-complete-peters",
+   "cell_id": "mahler5-p177-sys0-s1-m5"
+  },
+  {
+   "version": "v15-2026-09-03-complete-peters",
+   "cell_id": "mahler5-p177-sys1-s8-m6"
+  },
+  {
+   "version": "v16-2026-09-03-complete-eulenburg",
+   "cell_id": "schehe-p2-sys0-s0-m4"
+  },
+  {
+   "version": "v16-2026-09-03-complete-eulenburg",
+   "cell_id": "schehe-p2-sys0-s9-m4"
+  },
+  {
+   "version": "v16-2026-09-03-complete-eulenburg",
+   "cell_id": "schehe-p3-sys0-s0-m2"
+  },
+  {
+   "version": "v16-2026-09-03-complete-eulenburg",
+   "cell_id": "schehe-p3-sys0-s5-m1"
+  },
+  {
+   "version": "v16-2026-09-03-complete-eulenburg",
+   "cell_id": "schehe-p4-sys0-s5-m0"
+  },
+  {
+   "version": "v18-2026-09-03-complete-breitkopf",
+   "cell_id": "brahms1-p2-sys0-s1-m1"
+  },
+  {
+   "version": "v18-2026-09-03-complete-breitkopf",
+   "cell_id": "brahms1-p2-sys0-s2-m2"
+  },
+  {
+   "version": "v18-2026-09-03-complete-breitkopf",
+   "cell_id": "brahms1-p2-sys1-s20-m6"
+  },
+  {
+   "version": "v18-2026-09-03-complete-breitkopf",
+   "cell_id": "brahms1-p3-sys0-s1-m0"
+  },
+  {
+   "version": "v18-2026-09-03-complete-breitkopf",
+   "cell_id": "brahms1-p3-sys1-s18-m1"
+  },
+  {
+   "version": "v18-2026-09-03-complete-breitkopf",
+   "cell_id": "brahms1-p4-sys0-s13-m3"
+  },
+  {
+   "version": "v18-2026-09-03-complete-breitkopf",
+   "cell_id": "brahms1-p4-sys0-s3-m8"
+  },
+  {
+   "version": "v20-2026-09-03-complete-elgar1",
+   "cell_id": "elgar1-p101-sys0-s10-m9"
+  },
+  {
+   "version": "v22-2026-09-04-simrock-dense",
+   "cell_id": "dvorak9-p10-sys0-s1-m10"
+  },
+  {
+   "version": "v22-2026-09-04-simrock-dense",
+   "cell_id": "dvorak9-p10-sys1-s17-m4"
+  },
+  {
+   "version": "v22-2026-09-04-simrock-dense",
+   "cell_id": "dvorak9-p10-sys1-s19-m5"
+  },
+  {
+   "version": "v22-2026-09-04-simrock-dense",
+   "cell_id": "dvorak9-p13-sys0-s4-m2"
+  },
+  {
+   "version": "v22-2026-09-04-simrock-dense",
+   "cell_id": "dvorak9-p13-sys0-s8-m4"
+  },
+  {
+   "version": "v22-2026-09-04-simrock-dense",
+   "cell_id": "dvorak9-p14-sys1-s22-m8"
+  },
+  {
+   "version": "v22-2026-09-04-simrock-dense",
+   "cell_id": "dvorak9-p16-sys0-s0-m9"
+  },
+  {
+   "version": "v22-2026-09-04-simrock-dense",
+   "cell_id": "dvorak9-p18-sys0-s18-m0"
+  },
+  {
+   "version": "v22-2026-09-04-simrock-dense",
+   "cell_id": "dvorak9-p18-sys0-s9-m0"
+  },
+  {
+   "version": "v22-2026-09-04-simrock-dense",
+   "cell_id": "dvorak9-p19-sys0-s1-m2"
+  },
+  {
+   "version": "v22-2026-09-04-simrock-dense",
+   "cell_id": "dvorak9-p19-sys0-s6-m4"
+  },
+  {
+   "version": "v22-2026-09-04-simrock-dense",
+   "cell_id": "dvorak9-p19-sys0-s9-m1"
+  },
+  {
+   "version": "v22-2026-09-04-simrock-dense",
+   "cell_id": "dvorak9-p9-sys1-s28-m6"
+  }
+ ]
+}
