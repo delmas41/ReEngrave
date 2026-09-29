@@ -70,6 +70,38 @@ class TestNoteheadDuplicateBox(unittest.TestCase):
         self.assertIs(_verdict(log, a).value, False)
         self.assertIs(_verdict(log, b).value, False)
 
+    def test_a_chord_SECOND_is_not_mistaken_for_a_duplicate(self):
+        """⚠️ CAUGHT BEFORE MERGE (manager): IoU alone is unsafe for
+        noteheads -- a chord second (heads a half staff space apart
+        vertically, displaced sideways onto opposite sides of the stem)
+        legitimately has touching/overlapping same-class boxes. Two real
+        notes; both kept."""
+        log = Log()
+        _cell_geometry(log)  # SPACING = 100.0 canonical px / staff space
+        a = _notehead(log, 0, cls="noteheadBlackInSpace", x_c=200.0,
+                     y_c=200.0, w_c=140.0, h_c=100.0, conf=0.5)
+        b = _notehead(log, 1, cls="noteheadBlackInSpace", x_c=230.0,
+                     y_c=250.0, w_c=140.0, h_c=100.0, conf=0.6)  # dy=0.5 sp
+        log = _run(log)
+
+        self.assertIs(_verdict(log, a).value, False)
+        self.assertIs(_verdict(log, b).value, False)
+
+    def test_a_chord_THIRD_is_not_mistaken_for_a_duplicate(self):
+        """A chord third (one full staff space apart vertically, boxes
+        touching/slightly overlapping) is likewise two real notes, not one
+        mark boxed twice."""
+        log = Log()
+        _cell_geometry(log)
+        a = _notehead(log, 0, cls="noteheadBlackInSpace", x_c=200.0,
+                     y_c=200.0, w_c=140.0, h_c=110.0, conf=0.5)
+        b = _notehead(log, 1, cls="noteheadBlackInSpace", x_c=200.0,
+                     y_c=300.0, w_c=140.0, h_c=110.0, conf=0.6)  # dy=1.0 sp
+        log = _run(log)
+
+        self.assertIs(_verdict(log, a).value, False)
+        self.assertIs(_verdict(log, b).value, False)
+
     def test_overlapping_DIFFERENT_class_boxes_are_left_alone(self):
         """A role-twin pair (`noteheadBlackInSpace`/`noteheadHalfInSpace`)
         at high overlap is a chord member's VALUE disagreement (FINDINGS

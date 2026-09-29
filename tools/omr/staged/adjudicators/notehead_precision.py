@@ -595,6 +595,22 @@ def _too_narrow(box_row, spacing_canonical: float,
 #: drift apart by an edit to one.
 NOTEHEAD_DUPLICATE_IOU_MIN = 0.02
 
+#: CONVENTION ASSUMED / WHAT WOULD FALSIFY IT / NOT CONFIRMED — the manager's
+#: own catch before merge: IoU alone is a REST threshold and is unsafe for
+#: noteheads, because a CHORD legitimately puts two same-class heads with
+#: touching or overlapping boxes right beside each other — a second (heads a
+#: half staff space apart vertically, set on opposite sides of the stem) or
+#: a third (one full space apart). Those are two real notes, not one mark
+#: twice. So a same-class pair is a duplicate only where the two boxes'
+#: CENTRES also sit at the same staff position AND the same x: a second is
+#: 0.5 space apart vertically, so 0.25 space is the midpoint between "one
+#: mark" and "the closest interval print actually uses"; 0.5 head widths is
+#: the matching horizontal half-tolerance. NOT CONFIRMED with Sean; falsified
+#: by a real duplicate crop whose two fragment centres sit farther apart
+#: than this in either axis.
+NOTEHEAD_DUPLICATE_MAX_DY_STAFF_SPACES = 0.25
+NOTEHEAD_DUPLICATE_MAX_DX_HEAD_WIDTHS = 0.5
+
 
 def _notehead_box_iou(a: Any, b: Any) -> float:
     """IoU of two `Q.GLYPH_BOX` VALUE tuples `(class, x, y, w, h)` in the
@@ -621,6 +637,22 @@ def _notehead_duplicate_priority(row) -> Tuple[float, int]:
     return (score, -idx)
 
 
+def _same_mark_centres(a: Any, b: Any, spacing_canonical: float) -> bool:
+    """Are two `Q.GLYPH_BOX` VALUE tuples' CENTRES close enough to be one
+    physical mark rather than two chord members? See
+    `NOTEHEAD_DUPLICATE_MAX_DY_STAFF_SPACES`'s own docstring for why."""
+    _, x0a, y0a, wa, ha = a
+    _, x0b, y0b, wb, hb = b
+    dy_spaces = abs((y0a + ha / 2.0) - (y0b + hb / 2.0)) / spacing_canonical
+    if dy_spaces >= NOTEHEAD_DUPLICATE_MAX_DY_STAFF_SPACES:
+        return False
+    head_width = (wa + wb) / 2.0
+    if head_width <= 0:
+        return False
+    dx = abs((x0a + wa / 2.0) - (x0b + wb / 2.0))
+    return dx < NOTEHEAD_DUPLICATE_MAX_DX_HEAD_WIDTHS * head_width
+
+
 def _cell_notehead_boxes(ev: Evidence, cell) -> Dict[Any, Any]:
     """Every notehead glyph's `Q.GLYPH_BOX` row in THIS glyph's own cell,
     keyed by subject — including this glyph's own.
@@ -641,6 +673,7 @@ def _cell_notehead_boxes(ev: Evidence, cell) -> Dict[Any, Any]:
 
 
 def _notehead_duplicate_box_refusal(ev: Evidence, this_row,
+                                    spacing_canonical: float,
                                     detail: Dict[str, Any]
                                     ) -> Optional[Ruling]:
     """ROADMAP 2.30: is this box the SAME physical mark as another notehead
@@ -655,6 +688,13 @@ def _notehead_duplicate_box_refusal(ev: Evidence, this_row,
     settle a "cannot tell". So this rule does not compare across classes at
     all; see the module docstring for the cross-FAMILY (rest-vs-notehead)
     question left for Sean.
+
+    ⚠️ IoU ALONE IS UNSAFE HERE (caught before merge): a CHORD legitimately
+    puts two same-class heads with touching or overlapping boxes beside
+    each other (a second, a third). `_same_mark_centres` is a SECOND,
+    independent gate — both boxes' centres must sit at the same staff
+    position AND the same x — and BOTH IoU and the centre test must agree
+    before a box is refused.
     """
     cell = ev.subject.at(Kind.CELL)
     if cell is None:
@@ -675,6 +715,8 @@ def _notehead_duplicate_box_refusal(ev: Evidence, this_row,
         if other_val[0] != this_class:
             continue
         if _notehead_box_iou(this_val, other_val) < NOTEHEAD_DUPLICATE_IOU_MIN:
+            continue
+        if not _same_mark_centres(this_val, other_val, spacing_canonical):
             continue
         if _notehead_duplicate_priority(row) > this_priority:
             better = row
@@ -1173,21 +1215,27 @@ def adjudicate_notehead_is_not_a_notehead(ev: Evidence) -> Ruling:
        `_belongs_to_a_nearer_staff`). Dropped, never relocated.
     2c. `notehead_is_a_duplicate_box` (ROADMAP 2.30, SHIPS) — CONVENTION
        ESTABLISHED: two boxes in one cell with IoU at or above
-       `NOTEHEAD_DUPLICATE_IOU_MIN` are one physical mark read twice, the
-       SAME geometric fact ROADMAP 2.15 measured and shipped for rests
+       `NOTEHEAD_DUPLICATE_IOU_MIN` AND centres within
+       `NOTEHEAD_DUPLICATE_MAX_DY_STAFF_SPACES`/`_DX_HEAD_WIDTHS`
+       (`_same_mark_centres`) are one physical mark read twice, the SAME
+       geometric fact ROADMAP 2.15 measured and shipped for rests
        (`family_precision.REST_DUPLICATE_IOU_MIN`, same value, cited not
        restated) — CLAUDE.md §10's SHATTERING plate fragments a filled
        rectangle's ink regardless of which family the detector calls it,
-       and a notehead is that page's most common filled rectangle. SAME
-       CLASS ONLY: the higher-confidence box survives, the lower-confidence
-       one is refused. A DIFFERENT-class overlapping pair (`noteheadBlack`
-       vs `noteheadHalf`) is left alone here — that is a chord member's
-       VALUE disagreement, FINDINGS §17c's "2.12g's role twins", recorded
-       as an open question there and not settled by refusing both (unlike
-       a rest, where a class disagreement has no value left to protect).
-       Whether a cross-FAMILY pair (a rest box and a notehead box on one
-       mark) is the same phenomenon is ASSUMED, NOT CONFIRMED, and not
-       built — see the module docstring's question to Sean.
+       and a notehead is that page's most common filled rectangle. THE
+       CENTRE TEST IS NOT OPTIONAL: IoU alone would also fire on a real
+       CHORD, whose same-class heads sit right beside each other with
+       touching or overlapping boxes (a second, a third) — two real notes,
+       not one mark. SAME CLASS ONLY: the higher-confidence box survives,
+       the lower-confidence one is refused. A DIFFERENT-class overlapping
+       pair (`noteheadBlack` vs `noteheadHalf`) is left alone here — that
+       is a chord member's VALUE disagreement, FINDINGS §17c's "2.12g's
+       role twins", recorded as an open question there and not settled by
+       refusing both (unlike a rest, where a class disagreement has no
+       value left to protect). Whether a cross-FAMILY pair (a rest box and
+       a notehead box on one mark) is the same phenomenon is ASSUMED, NOT
+       CONFIRMED, and not built — see the module docstring's question to
+       Sean.
 
     ⚠️ A GLYPH NONE OF THE SHIPPED RULES CONDEMNS DECIDES `False`, REASON
     `notehead` — not an abstention. Geometry was available and was tested;
@@ -1275,7 +1323,7 @@ def adjudicate_notehead_is_not_a_notehead(ev: Evidence) -> Ruling:
     # MEANS — this rule only asks whether it is the SAME ink as another
     # notehead box already in the cell. `Q.NOTEHEAD_CLASS` and `Q.GLYPH_BOX`
     # are both already filed at GATHER; nothing here re-derives a value.
-    dup = _notehead_duplicate_box_refusal(ev, box_row, detail)
+    dup = _notehead_duplicate_box_refusal(ev, box_row, spacing, detail)
     if dup is not None:
         return dup
     # ⚠️ ROADMAP 2.12l. AFTER THE SHAPE RULES (a sliver or a too-narrow box is

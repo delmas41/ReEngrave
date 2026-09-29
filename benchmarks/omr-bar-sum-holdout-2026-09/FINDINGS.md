@@ -1828,13 +1828,29 @@ export-side change. This is the same "connect, don't restate" shape 2.15's
 own rest rule had with `export._place_notes`.
 
 **RED → GREEN.** `tools/omr/tests/test_staged_notehead_duplicate_box.py`,
-4 tests. RED confirmed by swapping in `origin/main`'s
+now 6 tests. RED confirmed by swapping in `origin/main`'s
 `notehead_precision.py` (not `git checkout` on the dirty file — copied
 aside and restored): **2 of 4 fail** (the refusal itself, and the
 constant-pin test); the 2 CONTROLS (no-overlap pair both kept; a
 different-class pair left alone — proving the SAME-class restriction is a
 choice, not an accident of the fixture) pass on both trees, unchanged.
 GREEN: 4/4 after restoring the edit.
+
+**Caught before merge (manager): IoU alone is a REST threshold and is
+UNSAFE for noteheads.** A CHORD legitimately puts two same-class heads
+with touching or overlapping boxes right beside each other — a second
+(0.5 staff space apart vertically, displaced sideways onto opposite sides
+of the stem) or a third (1.0 space apart) — and those are two real notes,
+not one mark twice. Added `_same_mark_centres` as a SECOND, independent
+gate that must ALSO agree: both boxes' centres within
+`NOTEHEAD_DUPLICATE_MAX_DY_STAFF_SPACES` (0.25 — CONVENTION ASSUMED, the
+midpoint between "one mark" and a second's 0.5-space interval) AND
+`NOTEHEAD_DUPLICATE_MAX_DX_HEAD_WIDTHS` (0.5) of each other; NOT CONFIRMED
+with Sean, falsified by a real duplicate crop whose fragment centres sit
+farther apart than this in either axis. Two new tests
+(`test_a_chord_SECOND_is_not_mistaken_for_a_duplicate`,
+`..._THIRD_...`), RED confirmed against the pre-guard commit (both fail,
+the other 4 stay green) → GREEN 6/6 after adding the guard.
 
 ### §19c. Asked, not built: the cross-family question (class 5)
 
