@@ -129,8 +129,13 @@ into both manifests). Against the hidden key:
 | kept | O | **2** (#4 `glyph/10/1/2/12/6`, #22 `glyph/4/1/2/8/31`) | missed — belongs to the nearer staff |
 | kept | N | 1 (#10 `glyph/8/0/6/12/7`) | not a note |
 
-**The refusal is sound; the rung EXCEPTION is not** — 3 of 6 heads it kept
-were wrong. A rung credited as "toward the filed staff" for a head that
+⚠️ **CORRECTED BY SEAN the same hour** (*"Nearer to the staff is not always
+going to be right but ledger lines will be. If it is not working out that
+way right now then the tests are off"*): the PRINCIPLE is the ledger lines;
+nearness only agreed in these 18. So the 3 wrong keeps are a fault in how
+the rungs were FOUND or CREDITED (a staff-line fragment boxed as a rung, a
+rung attached to the wrong head, a direction computed wrong) — not evidence
+against the ledger rule. Three of six heads kept by a rung were wrong. A rung credited as "toward the filed staff" for a head that
 belongs to the other staff is the ledger-direction question of Sean's
 convention (DECISIONS 2026-09-28: the ledger lines lie between a note and
 ITS staff) → handed to 2.6c as RED cases. Sean also noted the colours swap

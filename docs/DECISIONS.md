@@ -353,3 +353,13 @@ Format: `YYYY-MM-DD · who · the decision · because · (pointer)`
   is a witness from a different glyph family, not correlated with the
   notehead reading (§10) · → ROADMAP 2.6c, which waits on Sean's o26b
   verdicts
+- 2026-09-28 · Sean, correcting the manager's reading of the 2.7b verdicts ·
+  **The ledger lines are AUTHORITATIVE for which staff a far note belongs
+  to; nearness is only a hint and never overrides them.** · *"Nearer to the
+  staff is not always going to be right but ledger lines will be. If it is
+  not working out that way right now then the tests are off"* · so when a
+  ledger-based answer disagrees with the print, the fault is in FINDING or
+  CREDITING the rungs (staff-line fragments boxed as rungs, a rung attached
+  to the wrong head, a wrong direction), never a reason to prefer nearness;
+  a far note with no rungs found either way is a reading gap and abstains ·
+  2.7b's 18/18 nearer-staff refusals stand as results, not as the principle
