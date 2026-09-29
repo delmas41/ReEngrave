@@ -177,26 +177,43 @@ def main() -> int:
         Z = 3
         crop = im.crop((cx0, cy0, cx1, cy1)).resize(
             ((cx1 - cx0) * Z, (cy1 - cy0) * Z), Image.LANCZOS)
+        # ⚠️ Sean, 2026-09-28: "it's not very clear which staff is green and
+        # which is blue -- the lines are so thin". Each staff is now a
+        # TRANSLUCENT BAND from its top line to its bottom line, its lines
+        # drawn thick over the print, and a large label inside the band, so
+        # the colour survives the contact sheet's downscale.
+        overlay = Image.new("RGBA", crop.size, (0, 0, 0, 0))
+        od = ImageDraw.Draw(overlay)
+        big = ImageFont.load_default(size=max(30, int(sp_own * Z * 0.8)))
+        for lines_, rgb, label in (
+                (win_lines, (0, 170, 60), "GREEN - won"),
+                (own_lines, (30, 90, 255), "BLUE - lost")):
+            top = (min(lines_) - cy0) * Z
+            bot = (max(lines_) - cy0) * Z
+            od.rectangle([0, top, crop.width, bot], fill=rgb + (60,))
+            for ly in lines_:
+                y = (ly - cy0) * Z
+                if 0 <= y < crop.height:
+                    od.line([(0, y), (crop.width, y)], fill=rgb + (230,),
+                            width=5)
+            ty = max(0, top + (bot - top) / 2 - big.size / 2)
+            tw = od.textlength(label, font=big)
+            od.rectangle([30, ty - 4, 30 + tw + 12, ty + big.size + 6],
+                         fill=(255, 255, 255, 235), outline=rgb + (255,),
+                         width=4)
+            od.text((36, ty), label, fill=rgb + (255,), font=big)
+        crop = Image.alpha_composite(crop.convert("RGBA"), overlay).convert("RGB")
         dr = ImageDraw.Draw(crop)
-
-        for ly in win_lines:
-            y = (ly - cy0) * Z
-            if 0 <= y < crop.height:
-                dr.line([(0, y), (crop.width, y)], fill=(0, 160, 60), width=2)
-        for ly in own_lines:
-            y = (ly - cy0) * Z
-            if 0 <= y < crop.height:
-                dr.line([(0, y), (crop.width, y)], fill=(30, 80, 220), width=2)
 
         bx0, by0 = (px0 - cx0) * Z, (py0 - cy0) * Z
         bx1, by1 = (px1 - cx0) * Z, (py1 - cy0) * Z
-        arm_len = max(8, int((bx1 - bx0) * 0.4))
+        arm_len = max(12, int((bx1 - bx0) * 0.45))
         for (ax, ay, dx, dy) in ((bx0, by0, 1, 1), (bx1, by0, -1, 1),
                                  (bx0, by1, 1, -1), (bx1, by1, -1, -1)):
             dr.line([(ax, ay), (ax + dx * arm_len, ay)], fill=(220, 0, 0),
-                    width=3)
+                    width=6)
             dr.line([(ax, ay), (ax, ay + dy * arm_len)], fill=(220, 0, 0),
-                    width=3)
+                    width=6)
 
         # ruler: one tick per staff space, off the FILED (own) staff's top line
         step = sp_own * Z
