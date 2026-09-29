@@ -371,4 +371,8 @@ Format: `YYYY-MM-DD · who · the decision · because · (pointer)`
   re-adjudications, no crop batches per change · *"our process spends too
   much time and context on pricing runs"* · tightens 2026-09-28's "build and
   wire": the one-record read and the crops are no longer the default proof;
-  a whole-movement number is taken rarely, as a nohup script, never by a lane
+  a whole-movement number is taken rarely, as a nohup script, never by a lane ·
+  clarified the same day (Sean): *"I dont mind anything that costs machine
+  time if it doesnt cost context or tokens"* — so long runs are FINE as
+  unattended nohup scripts that write a small summary file; what is
+  forbidden is an AGENT waiting on, reading, or iterating over a run
