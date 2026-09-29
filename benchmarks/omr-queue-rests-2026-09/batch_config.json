@@ -1,0 +1,12 @@
+{
+ "pass_name": "rests-reconcile",
+ "note": "adjudicate the teacher's unmatched rest boxes: t = real, f = not (fix the class with c if the teacher named the wrong rest class). Draw any rest BOTH missed.",
+ "classes": [
+  "restWhole",
+  "restHalf",
+  "restQuarter",
+  "rest8th",
+  "rest16th",
+  "restHBar"
+ ]
+}

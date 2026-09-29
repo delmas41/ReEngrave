@@ -1,0 +1,55 @@
+{
+ "cell_id": "schehe-p2-sys0-s9-m4",
+ "detections": [
+  {
+   "id": "D0",
+   "smufl_name": "restWhole",
+   "category": "structural",
+   "x": 1127,
+   "y": 144,
+   "w": 48,
+   "h": 20,
+   "confidence": 1.0
+  },
+  {
+   "id": "D1",
+   "smufl_name": "restWhole",
+   "category": "structural",
+   "x": 1118,
+   "y": 350,
+   "w": 50,
+   "h": 9,
+   "confidence": 0.561
+  },
+  {
+   "id": "D2",
+   "smufl_name": "restWhole",
+   "category": "structural",
+   "x": 1664,
+   "y": 179,
+   "w": 13,
+   "h": 9,
+   "confidence": 0.384
+  },
+  {
+   "id": "D3",
+   "smufl_name": "restWhole",
+   "category": "structural",
+   "x": 597,
+   "y": 37,
+   "w": 59,
+   "h": 8,
+   "confidence": 0.285
+  },
+  {
+   "id": "D4",
+   "smufl_name": "restWhole",
+   "category": "structural",
+   "x": 918,
+   "y": 149,
+   "w": 16,
+   "h": 9,
+   "confidence": 0.261
+  }
+ ]
+}

@@ -1,0 +1,15 @@
+{
+ "cell_id": "lamer-p2-sys0-s4-m3",
+ "detections": [
+  {
+   "id": "D0",
+   "smufl_name": "restHalf",
+   "category": "structural",
+   "x": 235,
+   "y": 361,
+   "w": 113,
+   "h": 55,
+   "confidence": 1.0
+  }
+ ]
+}

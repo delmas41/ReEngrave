@@ -28,6 +28,33 @@ construction, so `build_specialist_versions.py` is not needed for it.
 ⚠️ The batch_config palette is the family only, and each cell opens in draw
 mode so a symbol BOTH the human and the teacher missed can still be added —
 the queue lowers the residue, it cannot prove it zero.
+
+--- 2026-09-29 (rests / accidentals queues) ---
+
+Two exclusions added on top of the ties queue's own matching rule, so Sean
+never triages junk:
+
+* `--weights` (new) lets a caller point at the PRODUCTION scan weights
+  (`hollow-graft-shift09`) instead of the round-6 teacher, which is what a
+  live queue should be teaching against.
+* A candidate within HALF A STAFF SPACE of an existing human box's centre is
+  a matching artefact, not a miss, and is dropped (counted separately from
+  the pre-existing IoU/inside-box test, which still runs too — either one
+  drops a candidate).
+* For the `accidentals` family only: a candidate sitting inside the staff's
+  own HEADER window (the leftmost `HeaderWindowConfig.max_width_spaces` — 16
+  staff spaces per `tools/omr/staff_header.py` — of an `m0` cell, the cell
+  `staff_header.py` documents as overlapping the header) is dropped. This is
+  belt-and-suspenders: the class filter already keeps `keyFlat/Natural/Sharp`
+  out of `want`, so this catches only a detector class MISTAKE (a key-sig
+  glyph the teacher called `accidentalSharp` instead of `keySharp`), not the
+  normal case. "Matching a decided key-signature marker" (the third clause
+  Sean asked about) needs an adjudicated record and this script never builds
+  one — raw teacher detection over a specialist corpus, same as the ties
+  queue — so that clause is NOT implemented here and is called out in the
+  written report rather than silently skipped.
+* The confidence floor is the ties queue's own `--conf` default (0.25, same
+  number as `OMR_CONF_THRESHOLD`'s product default) — stated, not changed.
 """
 from __future__ import annotations
 
@@ -45,6 +72,15 @@ sys.path.insert(0, os.getcwd())
 REPO = Path.cwd()
 MAIN = Path("/Users/seanjohnson/Desktop/ReEngrave")
 TEACHER = MAIN / "omr-weights" / "deepscoresv2-yolov8l-hollow-ft-2026-09-03.pt"
+
+# HeaderWindowConfig.max_width_spaces (tools/omr/staff_header.py) — the outer
+# bound the header-window measurement itself caps at when no barline is found
+# near the header. Used here only as an exclusion radius on m0 cells, not as
+# a re-implementation of the header-window walk (that needs the full page).
+HEADER_MAX_WIDTH_SPACES = 16.0
+# The centre-match radius the task specified for "a matching artefact, not a
+# miss" — half a staff space.
+MATCH_HALF_SPACE = 0.5
 
 FAMILIES = {
     "ties": {"classes": ["tie"], "label": "tie"},
@@ -85,6 +121,9 @@ def main() -> int:
     ap.add_argument("--conf", type=float, default=0.25)
     ap.add_argument("--iou", type=float, default=0.20)
     ap.add_argument("--device", default="mps")
+    ap.add_argument("--weights", type=Path, default=None,
+                    help="teacher checkpoint; default is round-6's own "
+                         "hollow-ft teacher (kept for reproducibility)")
     a = ap.parse_args()
 
     fams = [FAMILIES[f] for f in a.family]
@@ -116,7 +155,8 @@ def main() -> int:
             s.staff_line_ys_canonical = ys
             s.image = im
 
-    det = YoloDetector(str(TEACHER), device=a.device)
+    teacher = a.weights if a.weights else TEACHER
+    det = YoloDetector(str(teacher), device=a.device)
 
     if a.out.exists():
         print(f"REFUSING to overwrite {a.out} — it may hold verdicts")
@@ -132,8 +172,20 @@ def main() -> int:
         for lab in sorted(spec.glob("v*/labels/*.txt")):
             by_cell[lab.stem].append(lab)
 
+    # measure_index of a cell_id, from its own "-m<N>" suffix (m0 is the
+    # staff-start cell staff_header.py documents as OVERLAPPING the header —
+    # "the staff-START measure cell contains the header").
+    import re as _re
+
+    def _measure_index(cell_id: str) -> int | None:
+        m = _re.search(r"-m(-?\d+)$", cell_id)
+        return int(m.group(1)) if m else None
+
+    header_guard = a.family == ["accidentals"]
+
     manifest_rows = []
     n_tp = n_pending = 0
+    n_excl_header = n_excl_matched = n_raw_candidates = 0
     for cid, labs in sorted(by_cell.items()):
         lab = labs[0]
         entry = mans.get(cid)
@@ -172,15 +224,40 @@ def main() -> int:
             did += 1
         n_human = did
         hb = [(x, y, bw, bh) for _c, x, y, bw, bh in human]
+        staff_space = ((ys[-1] - ys[0]) / 4.0) if len(ys) >= 2 else None
+        m_idx = _measure_index(cid)
         for d in det.detect(cell, conf_threshold=a.conf, imgsz=imgsz_for_cell(cell)):
             if d.smufl_name not in want:
-                continue
+                continue                     # already excludes key* classes
+            n_raw_candidates += 1
             box = (d.x_canonical, d.y_canonical,
                    d.width_canonical, d.height_canonical)
             bcx, bcy = box[0] + box[2] / 2, box[1] + box[3] / 2
-            if any(iou(box, b) > a.iou
-                   or (b[0] <= bcx <= b[0] + b[2] and b[1] <= bcy <= b[1] + b[3])
-                   for b in hb):
+            # (a) header-window guard, accidentals only, m0 cells only: a
+            # candidate this close to the staff's own left edge is inside the
+            # region staff_header.py measures as clef+key+meter, so an
+            # "accidental" class here is more likely a mislabeled key-sig
+            # glyph than a real note accidental.
+            if header_guard and m_idx == 0 and staff_space:
+                if box[0] < HEADER_MAX_WIDTH_SPACES * staff_space:
+                    n_excl_header += 1
+                    continue
+            # (b) matching artefact: within IoU of an existing human box, OR
+            # its centre is within half a staff space of one — either is a
+            # re-detection of an already-labeled instance, not a miss.
+            def _matched(b):
+                if iou(box, b) > a.iou:
+                    return True
+                if b[0] <= bcx <= b[0] + b[2] and b[1] <= bcy <= b[1] + b[3]:
+                    return True
+                if staff_space:
+                    hcx, hcy = b[0] + b[2] / 2, b[1] + b[3] / 2
+                    dist = ((bcx - hcx) ** 2 + (bcy - hcy) ** 2) ** 0.5
+                    if dist <= MATCH_HALF_SPACE * staff_space:
+                        return True
+                return False
+            if any(_matched(b) for b in hb):
+                n_excl_matched += 1
                 continue
             dets.append({"id": f"D{did}", "smufl_name": d.smufl_name,
                          "category": "structural",
@@ -206,14 +283,32 @@ def main() -> int:
 
     (a.out / "cells.json").write_text(json.dumps(manifest_rows, indent=1))
     pass_name = "+".join(a.family) + "-reconcile"
+    # "fix the class with c" only makes sense to spell out for the arc pair
+    # (tie vs slur is a live confusion the teacher makes); for every other
+    # family the fix-class hotkey still works but there is no paired class
+    # worth naming, so the note stays generic rather than saying "arc".
+    fix_hint = ("fix the class with c if it is the OTHER arc"
+                if set(a.family) & {"ties", "slurs"}
+                else "fix the class with c if the teacher named the wrong "
+                     f"{labels_txt} class")
     (a.out / "batch_config.json").write_text(json.dumps(
         {"pass_name": pass_name,
          "note": f"adjudicate the teacher's unmatched {labels_txt} boxes: "
-                 f"t = real, f = not (fix the class with c if it is the "
-                 f"OTHER arc). Draw any {labels_txt} BOTH missed.",
+                 f"t = real, f = not ({fix_hint}). Draw any {labels_txt} "
+                 f"BOTH missed.",
          "classes": classes}, indent=1))
     print(f"{len(manifest_rows)} cells, {n_tp} human boxes pre-marked TP, "
           f"{n_pending} teacher candidates PENDING -> {a.out}")
+    print(f"  teacher raw candidates (post class-filter, pre-exclusion): "
+          f"{n_raw_candidates}")
+    print(f"  excluded, header-window guard (accidentals, m0 cells only): "
+          f"{n_excl_header}")
+    print(f"  excluded, matched an existing human box "
+          f"(IoU > {a.iou} or centre <= {MATCH_HALF_SPACE} staff space): "
+          f"{n_excl_matched}")
+    print(f"  confidence floor: {a.conf} (detector's own conf_threshold, "
+          f"same default as OMR_CONF_THRESHOLD) — no separate filter needed")
+    print(f"  teacher checkpoint: {teacher}")
     print(f"next: python3 -m tools.omr.annotate.recut_cells --bench-dir {a.out}")
     return 0
 

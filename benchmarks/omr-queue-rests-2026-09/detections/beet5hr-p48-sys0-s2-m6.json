@@ -1,0 +1,25 @@
+{
+ "cell_id": "beet5hr-p48-sys0-s2-m6",
+ "detections": [
+  {
+   "id": "D0",
+   "smufl_name": "restQuarter",
+   "category": "structural",
+   "x": 646,
+   "y": 598,
+   "w": 159,
+   "h": 296,
+   "confidence": 1.0
+  },
+  {
+   "id": "D1",
+   "smufl_name": "restHalf",
+   "category": "structural",
+   "x": 1150,
+   "y": 734,
+   "w": 205,
+   "h": 84,
+   "confidence": 1.0
+  }
+ ]
+}

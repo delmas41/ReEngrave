@@ -1,0 +1,15 @@
+{
+ "cell_id": "dvorak9-p19-sys1-s23-m7",
+ "detections": [
+  {
+   "id": "D0",
+   "smufl_name": "restWhole",
+   "category": "structural",
+   "x": 426,
+   "y": 1282,
+   "w": 125,
+   "h": 49,
+   "confidence": 0.547
+  }
+ ]
+}

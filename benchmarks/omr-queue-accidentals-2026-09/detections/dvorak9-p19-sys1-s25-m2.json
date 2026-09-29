@@ -1,0 +1,95 @@
+{
+ "cell_id": "dvorak9-p19-sys1-s25-m2",
+ "detections": [
+  {
+   "id": "D0",
+   "smufl_name": "accidentalNatural",
+   "category": "structural",
+   "x": 135,
+   "y": 217,
+   "w": 56,
+   "h": 229,
+   "confidence": 1.0
+  },
+  {
+   "id": "D1",
+   "smufl_name": "accidentalNatural",
+   "category": "structural",
+   "x": 1333,
+   "y": 47,
+   "w": 56,
+   "h": 229,
+   "confidence": 1.0
+  },
+  {
+   "id": "D2",
+   "smufl_name": "accidentalNatural",
+   "category": "structural",
+   "x": 398,
+   "y": 90,
+   "w": 56,
+   "h": 229,
+   "confidence": 1.0
+  },
+  {
+   "id": "D3",
+   "smufl_name": "accidentalFlat",
+   "category": "structural",
+   "x": 1043,
+   "y": 942,
+   "w": 84,
+   "h": 227,
+   "confidence": 0.87
+  },
+  {
+   "id": "D4",
+   "smufl_name": "accidentalNatural",
+   "category": "structural",
+   "x": 1335,
+   "y": 1037,
+   "w": 74,
+   "h": 219,
+   "confidence": 0.773
+  },
+  {
+   "id": "D5",
+   "smufl_name": "accidentalSharp",
+   "category": "structural",
+   "x": 142,
+   "y": 992,
+   "w": 75,
+   "h": 264,
+   "confidence": 0.753
+  },
+  {
+   "id": "D6",
+   "smufl_name": "accidentalNatural",
+   "category": "structural",
+   "x": 143,
+   "y": 994,
+   "w": 74,
+   "h": 262,
+   "confidence": 0.672
+  },
+  {
+   "id": "D7",
+   "smufl_name": "accidentalFlat",
+   "category": "structural",
+   "x": 143,
+   "y": 994,
+   "w": 74,
+   "h": 262,
+   "confidence": 0.546
+  },
+  {
+   "id": "D8",
+   "smufl_name": "accidentalNatural",
+   "category": "structural",
+   "x": 414,
+   "y": 1111,
+   "w": 70,
+   "h": 145,
+   "confidence": 0.546
+  }
+ ]
+}

@@ -1,0 +1,15 @@
+{
+ "cell_id": "elgar1-p99-sys0-s4-m1",
+ "detections": [
+  {
+   "id": "D0",
+   "smufl_name": "accidentalNatural",
+   "category": "structural",
+   "x": 107,
+   "y": 319,
+   "w": 106,
+   "h": 338,
+   "confidence": 1.0
+  }
+ ]
+}

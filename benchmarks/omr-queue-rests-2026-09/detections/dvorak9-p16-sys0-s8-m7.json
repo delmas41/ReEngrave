@@ -1,0 +1,35 @@
+{
+ "cell_id": "dvorak9-p16-sys0-s8-m7",
+ "detections": [
+  {
+   "id": "D0",
+   "smufl_name": "restWhole",
+   "category": "structural",
+   "x": 647,
+   "y": 619,
+   "w": 112,
+   "h": 58,
+   "confidence": 1.0
+  },
+  {
+   "id": "D1",
+   "smufl_name": "restWhole",
+   "category": "structural",
+   "x": 638,
+   "y": 1330,
+   "w": 130,
+   "h": 58,
+   "confidence": 0.619
+  },
+  {
+   "id": "D2",
+   "smufl_name": "restWhole",
+   "category": "structural",
+   "x": 643,
+   "y": 0,
+   "w": 121,
+   "h": 30,
+   "confidence": 0.498
+  }
+ ]
+}

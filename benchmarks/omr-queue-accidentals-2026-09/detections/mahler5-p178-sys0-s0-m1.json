@@ -1,0 +1,15 @@
+{
+ "cell_id": "mahler5-p178-sys0-s0-m1",
+ "detections": [
+  {
+   "id": "D0",
+   "smufl_name": "accidentalFlat",
+   "category": "structural",
+   "x": 851,
+   "y": 793,
+   "w": 81,
+   "h": 257,
+   "confidence": 1.0
+  }
+ ]
+}

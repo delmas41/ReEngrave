@@ -1,0 +1,35 @@
+{
+ "cell_id": "mahler5-p178-sys0-s1-m0",
+ "detections": [
+  {
+   "id": "D0",
+   "smufl_name": "accidentalSharp",
+   "category": "structural",
+   "x": 478,
+   "y": 665,
+   "w": 88,
+   "h": 194,
+   "confidence": 1.0
+  },
+  {
+   "id": "D1",
+   "smufl_name": "accidentalSharp",
+   "category": "structural",
+   "x": 710,
+   "y": 443,
+   "w": 61,
+   "h": 192,
+   "confidence": 1.0
+  },
+  {
+   "id": "D2",
+   "smufl_name": "accidentalFlat",
+   "category": "structural",
+   "x": 1001,
+   "y": 218,
+   "w": 71,
+   "h": 183,
+   "confidence": 1.0
+  }
+ ]
+}

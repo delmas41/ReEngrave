@@ -1,0 +1,15 @@
+{
+ "cell_id": "dvorak9-p12-sys0-s12-m3",
+ "detections": [
+  {
+   "id": "D0",
+   "smufl_name": "accidentalSharp",
+   "category": "structural",
+   "x": 77,
+   "y": 713,
+   "w": 100,
+   "h": 279,
+   "confidence": 1.0
+  }
+ ]
+}

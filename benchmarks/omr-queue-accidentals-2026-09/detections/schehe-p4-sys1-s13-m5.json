@@ -1,0 +1,25 @@
+{
+ "cell_id": "schehe-p4-sys1-s13-m5",
+ "detections": [
+  {
+   "id": "D0",
+   "smufl_name": "accidentalNatural",
+   "category": "structural",
+   "x": 88,
+   "y": 430,
+   "w": 126,
+   "h": 287,
+   "confidence": 1.0
+  },
+  {
+   "id": "D1",
+   "smufl_name": "accidentalNatural",
+   "category": "structural",
+   "x": 1377,
+   "y": 487,
+   "w": 122,
+   "h": 290,
+   "confidence": 1.0
+  }
+ ]
+}

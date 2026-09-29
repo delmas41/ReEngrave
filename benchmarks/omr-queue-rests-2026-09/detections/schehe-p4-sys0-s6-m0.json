@@ -1,0 +1,35 @@
+{
+ "cell_id": "schehe-p4-sys0-s6-m0",
+ "detections": [
+  {
+   "id": "D0",
+   "smufl_name": "rest8th",
+   "category": "structural",
+   "x": 45,
+   "y": 759,
+   "w": 83,
+   "h": 93,
+   "confidence": 0.635
+  },
+  {
+   "id": "D1",
+   "smufl_name": "restWhole",
+   "category": "structural",
+   "x": 1688,
+   "y": 444,
+   "w": 106,
+   "h": 58,
+   "confidence": 0.577
+  },
+  {
+   "id": "D2",
+   "smufl_name": "rest16th",
+   "category": "structural",
+   "x": 512,
+   "y": 344,
+   "w": 77,
+   "h": 198,
+   "confidence": 0.41
+  }
+ ]
+}

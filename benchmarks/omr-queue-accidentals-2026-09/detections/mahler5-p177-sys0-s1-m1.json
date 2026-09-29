@@ -1,0 +1,25 @@
+{
+ "cell_id": "mahler5-p177-sys0-s1-m1",
+ "detections": [
+  {
+   "id": "D0",
+   "smufl_name": "accidentalNatural",
+   "category": "structural",
+   "x": 1434,
+   "y": 351,
+   "w": 99,
+   "h": 338,
+   "confidence": 1.0
+  },
+  {
+   "id": "D1",
+   "smufl_name": "accidentalFlat",
+   "category": "structural",
+   "x": 962,
+   "y": 115,
+   "w": 112,
+   "h": 284,
+   "confidence": 1.0
+  }
+ ]
+}

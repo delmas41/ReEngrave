@@ -1,0 +1,25 @@
+{
+ "cell_id": "schehe-p3-sys0-s5-m1",
+ "detections": [
+  {
+   "id": "D0",
+   "smufl_name": "restQuarter",
+   "category": "structural",
+   "x": 1136,
+   "y": 406,
+   "w": 94,
+   "h": 294,
+   "confidence": 1.0
+  },
+  {
+   "id": "D1",
+   "smufl_name": "restQuarter",
+   "category": "structural",
+   "x": 1328,
+   "y": 412,
+   "w": 87,
+   "h": 288,
+   "confidence": 1.0
+  }
+ ]
+}

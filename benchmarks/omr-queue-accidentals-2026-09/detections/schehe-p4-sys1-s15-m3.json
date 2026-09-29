@@ -1,0 +1,35 @@
+{
+ "cell_id": "schehe-p4-sys1-s15-m3",
+ "detections": [
+  {
+   "id": "D0",
+   "smufl_name": "accidentalNatural",
+   "category": "structural",
+   "x": 64,
+   "y": 646,
+   "w": 113,
+   "h": 320,
+   "confidence": 1.0
+  },
+  {
+   "id": "D1",
+   "smufl_name": "accidentalFlat",
+   "category": "structural",
+   "x": 727,
+   "y": 193,
+   "w": 115,
+   "h": 203,
+   "confidence": 1.0
+  },
+  {
+   "id": "D2",
+   "smufl_name": "accidentalFlat",
+   "category": "structural",
+   "x": 404,
+   "y": 376,
+   "w": 113,
+   "h": 219,
+   "confidence": 1.0
+  }
+ ]
+}

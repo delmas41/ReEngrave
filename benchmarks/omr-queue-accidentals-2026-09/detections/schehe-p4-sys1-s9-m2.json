@@ -1,0 +1,15 @@
+{
+ "cell_id": "schehe-p4-sys1-s9-m2",
+ "detections": [
+  {
+   "id": "D0",
+   "smufl_name": "accidentalFlat",
+   "category": "structural",
+   "x": 46,
+   "y": 610,
+   "w": 142,
+   "h": 249,
+   "confidence": 1.0
+  }
+ ]
+}

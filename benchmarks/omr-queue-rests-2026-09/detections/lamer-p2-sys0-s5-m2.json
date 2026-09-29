@@ -1,0 +1,15 @@
+{
+ "cell_id": "lamer-p2-sys0-s5-m2",
+ "detections": [
+  {
+   "id": "D0",
+   "smufl_name": "rest16th",
+   "category": "structural",
+   "x": 1060,
+   "y": 947,
+   "w": 81,
+   "h": 137,
+   "confidence": 0.281
+  }
+ ]
+}

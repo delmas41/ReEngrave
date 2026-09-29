@@ -1,0 +1,15 @@
+{
+ "cell_id": "schehe-p3-sys0-s3-m4",
+ "detections": [
+  {
+   "id": "D0",
+   "smufl_name": "restWhole",
+   "category": "structural",
+   "x": 1495,
+   "y": 470,
+   "w": 254,
+   "h": 49,
+   "confidence": 0.367
+  }
+ ]
+}
