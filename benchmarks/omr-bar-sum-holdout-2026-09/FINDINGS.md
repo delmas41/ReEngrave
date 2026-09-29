@@ -905,3 +905,206 @@ Fast tier: **3,713 passed** (main's 3,701 + 12 new), 3 skipped
 - `tools/omr/staged/consequences.py`: `size_measure_rest` and
   `_left_the_bar`.
 - `tools/omr/tests/test_staged_measure_rest_left_the_bar.py`: the tests.
+
+## 16. ROADMAP 2.12l — a printed meter change's digits, boxed as noteheads (2026-09-29)
+
+PATH: STAGED. Branch `claude/meter-digit-2.12l`, off `origin/main` `23f4fa9e`
+(2.6f ownership-rung discount already in the tree). §15b named the cause;
+this builds the fix: (1) REFUSE the digit boxes as noteheads, in
+ADJUDICATE, backed by a cross-staff quorum; (2) FILE the refusal back as a
+witness the meter chain can see, value unread, never guessed.
+
+### CONVENTION ASSUMED / WHAT WOULD FALSIFY IT / NOT CONFIRMED
+
+A printed meter change sits at ONE x, just past a barline, on EVERY staff of
+the system (CLAUDE.md §10). Measured on the fixture (crops #1-#3 below,
+`probe`-free — cut straight off the re-decided record's own `bbox_page_px`):
+the two digits box as `noteheadWhole*`/`noteheadBlack*`, at nearly the SAME
+x (0.00-0.11 canonical staff spaces apart) and a narrow, SPECIFIC distance
+apart in y (0.42-0.86 spaces, centre to centre), both within 0-2.2 spaces of
+the cell's own left edge, on 13 of 14 staves. ⚠️ THE BRIEF'S OWN "~2 spaces
+tall" HEIGHT SIGNATURE DID NOT SURVIVE CONTACT WITH THE PLATE: the
+detector's box is drawn around the ROUNDED PART of each digit it pattern-
+matches to a hollow notehead template, not the numeral's full extent, and
+measures 0.94-1.94 spaces tall — statistically indistinguishable from a real
+notehead on this fixture. Height carries no weight in the shipped rule; the
+tight x-pairing, the narrow y-gap and the cross-staff repetition do all the
+work. WHAT WOULD FALSIFY IT: a crop showing a real, same-interval chord
+repeating at one x on most staves of a system (the brief's own named risk,
+guarded but not excluded by construction — see §16b). NOT CONFIRMED WITH
+SEAN.
+
+### §16a. The refusal (`notehead_precision.adjudicate_notehead_is_not_a_notehead`)
+
+New reason `is_a_meter_digit`. Two gates, both required, neither sufficient
+alone:
+
+1. `_meter_digit_pair_partner` — a second `notehead*` box on the SAME
+   staff's SAME cell, within `METER_DIGIT_PAIR_X_TOL_SPACES` (0.25) in x and
+   `METER_DIGIT_PAIR_Y_GAP_MIN/MAX_SPACES` (0.30-1.20) apart in y, both
+   within `METER_DIGIT_X_MAX_SPACES` (3.0) of the cell's own left edge.
+2. `_meter_digit_cross_staff_count` — the SAME stacked-pair test (not merely
+   "some notehead near the barline" — see §16b) on a QUORUM of the
+   system's OTHER staves at the same cell index (`_required_meter_digit_
+   quorum`, the same `max(2, round(0.5·n))` shape `rhythm._required_
+   corroboration` already uses, cited not imported).
+
+### §16b. A control that failed, and what it cost
+
+The first cross-staff test (`_meter_digit_cross_staff_count`) asked only
+"does this OTHER staff have SOME notehead-classed box near the barline?" —
+and on the actual fixture this fired on TWO cells (3 and 5) that print no
+meter change at all: a lone staff's ORDINARY first note of the bar, sitting
+near enough to a barline to look like half of nothing, borrowed the OTHER
+13 staves' real cell-1 pattern to clear its own quorum. `probe`-free
+measurement (`redecide2.py` in the files list) caught it: 35 raw hits, only
+30 of them at the one cell the plate actually prints a change at. Fixed by
+requiring the SAME stacked-pair test on the other staff's own cell
+(`_has_a_stacked_pair`), not merely "ink near x" — 35 → 30, cells 3 and 5
+gone, cell 1 (13 of 14 staves) unchanged. This is the control CLAUDE.md rule
+7 asks for, run in a state where it failed before being trusted where it
+passes.
+
+### §16c. The witness (`rhythm.py`)
+
+`_meter_digit_witness_cells(ev, total_staves)` — a SECOND control failure,
+found the same way. A naive version read `Q.NOTEHEAD_IS_NOT_A_NOTEHEAD`
+VERDICTS broadly (`scope=SELF_AND_DESCENDANTS` off the system) and broke
+`tools/omr/tests/test_stage_review_evidence.py` TWICE
+(`TestBelongsToAnotherStaff::test_an_owner_row_on_an_UNCONTESTED_glyph_
+REFUSES_IT_HERE`, `TestAConfirmedBoxIsFiledAndChangesNothing::test_it_
+reaches_the_FEEDBACK_FILE_and_is_HANDED_OVER_UNWEIGHED`): every verdict
+`ev.verdicts()` returns is marked `considered` by the calling decision
+(`Evidence._seen`), so `adjudicate_meter` ended up transitively citing a
+human's confirm/refuse row on a glyph SIX staff spaces from any barline, in
+a system printing no change at all — `basis_names_human` (the review
+tooling that answers "which decisions would a human's correction touch")
+reported `adjudicate_meter` for every notehead in the document, not the
+handful near a bar's own head. Fixed by finding candidates from
+OBSERVATIONS first (`Q.GLYPH_BOX`, `Q.CELL_STAFF_SPACE` — plain
+detector/geometry rows, inert for that tracking), filtered to the SAME
+near-barline x-window, and asking only the survivors' own verdict by EXACT
+subject — a handful of glyphs per system, never the population. Both tests
+pass again; `git stash`-verified against the un-narrowed version (2.12l-red-
+check / 2.12l-base-price tags, dropped after use).
+
+A THIRD bug, same family: the tail loop that files the witness into
+`declined_changes` originally skipped any cell already present in `by_cell`
+(built from raw `Q.METER_GLYPH` rows) — but a lone, unreadable stray
+detection (measured: staff 9 fires one `timeSig1` at cell 1, no stacked
+partner, on the Breitkopf fixture itself) puts a cell in `by_cell` without
+the main loop ever producing a `readings` entry for it, silently shadowing
+the far stronger 13-staff witness. Fixed by tracking `cells_with_a_
+candidate` (cells the main loop actually evaluated, i.e. `readings` was
+non-empty) and skipping on THAT set instead.
+
+Two uses, both value-free (CLAUDE.md rules 6 and 8):
+
+1. `_meter_changes` files the witness cell into `declined_changes` with
+   `declined_reason=meter_change_digits_misread`, `numerator`/`denominator`
+   both `None` — a witness, not a candidate. Never overrides a cell the main
+   loop actually evaluated.
+2. `_carry_meter` reads `src`'s own recorded witness back
+   (`_carry_source_digit_misread`, off `found.value` already in hand — no
+   second query) and, where the carry is refused by `src`'s own later bars,
+   relabels the generic `carry_outweighed_by_the_bars`/`carry_not_
+   corroborated` to `meter_change_digits_misread` — the SAME shape ROADMAP
+   2.12k already uses to label a return the bars proved but the reader
+   missed, applied to a different, specifically-known cause.
+
+### §16d. Priced on the fresh gather: base tree vs arm, re-decided in-process
+
+Fresh gather, Breitkopf `317803` pdf p1, `--no-surya` (OCR on), this
+worktree's own tree (`23f4fa9e` + this branch, `dirty: true` — the record's
+own provenance stamp). Base = `git stash` of the two production files only
+(tests and record kept); arm = this branch. Re-decided in-process
+(`RR.rebuild_gather` + `RR.run_stages`, the SAME technique 2.19 used), never
+re-gathered.
+
+| | value |
+|---|--:|
+| `is_a_meter_digit` refusals | 30 (13 of 14 staves at system/1/0 cell 1; staff 12 missed — a detection recall gap, not a shape miss) |
+| `system/1/0` `Q.METER` | unchanged: `voted`, 9/4 (the header misread, 2.12h's own subject) — **never overwritten by the witness** |
+| `system/1/0` `declined_changes` | +1 entry: `{from_cell: 1, numerator: None, denominator: None, declined_reason: "meter_change_digits_misread", staves_with_digit_witness: [0,1,2,3,4,5,6,7,8,9,10,11,13]}` |
+| `system/1/1` `Q.METER` | abstain reason **`carry_not_corroborated` → `meter_change_digits_misread`** (base → arm); outcome stays ABSTAINED, value stays unset |
+| `bars_held_out_sum` (2.8) | base 144 → arm **145**, of 169 bars-with-events |
+| bars released | **0** |
+| bars newly held | **1** (system/1/0 staff 8 cell 1 — crop #5) |
+| engraved control (`engraved-p0p2-20260928.record.json`) | `is_a_meter_digit` refusals: **0**; `meter_change_digits_misread` verdicts: **0** |
+
+**0 bars released, 1 newly held, and that is the honest number, not a
+regression.** Staff 8's cell-1 bar previously WROTE the two fake noteheads
+as real notes; their spurious duration happened to sum close enough to the
+carried (wrong) 9/4 that the bar read as "adds up" by coincidence. Refusing
+them removes that accidental agreement and the bar now correctly shows as
+NOT matching 9/4 — which it never was going to, since this is exactly the
+bar the plate changes to 6/8. This item's own scope (§ "The item") is
+narrower than releasing bars: refuse the fake notes, file the witness. What
+would actually release these bars is reading the meter VALUE at cell 1
+(§15f's item 1, ranked but explicitly out of this item's reach — rule 6
+forbids guessing "6/8" from the digit shape alone) — the witness now on the
+record is the tool a later lane needs to do that, traceable by `trace
+--subject system/1/1` down through `_carry_meter`'s own label rather than a
+bare, uninformative refusal.
+
+### §16e. Proof
+
+RED → GREEN, `tools/omr/tests/test_staged_meter_digit_witness.py` (17
+tests, new file): confirmed RED against the tree with the two production
+files stashed out (`git stash push -m "2.12l-red-check" -- <two files>`,
+verified, restored via `git stash apply <sha>` + `git stash drop` — never a
+bare `stash pop`) — 12 of 17 fail on `AttributeError` (the constants/
+functions do not exist), 5 pass as their own controls (a shape this item
+does not touch must stay untouched on BOTH trees). GREEN 17/17 after
+restore. Positive controls: a real two-note hollow chord on one staff alone
+is kept (`test_CONTROL_a_lone_chord_on_ONE_staff_is_kept`); a repeating
+tutti whole-note entrance with no stacked partner is kept
+(`test_CONTROL_tutti_whole_notes_with_no_partner_are_kept`); a repeating
+chord a THIRD apart (2.0 spaces, outside the digit pair's own window) is
+kept (`test_CONTROL_a_wide_repeated_chord_is_kept`). `pytest tools/omr/tests
+-m "not slow" -q`: **3,736 passed** (main's 3,719 + this file's 17), 3
+skipped, 0 failed — confirmed clean on `test_stage_review_evidence.py` and
+every existing meter/notehead-precision test file. `python3 -m tools.omr
+.staged.check`: **TOTAL 247**, unchanged (10 inventory, 67 wiring — both
+ONE LOWER than the broken intermediate state that had `Q.NOTEHEAD_IS_NOT_A_
+NOTEHEAD` declared and never read; closed by threading `total_staves`-
+shaped arguments the same way `_meter_changes` already does, never by
+reaching for the quantity one frame too deep).
+
+5 crops (`out/print/meter-digit-2.12l-*.png`, manifest `meter-digit-2.12l-
+manifest.json`, `VERDICT_none_yet: null`), cut from the fresh gather's own
+600 dpi render with the subject staff's own `Q.STAFF_LINES` drawn (green)
+and the subject box red-bracketed:
+
+- #1-#2: the refused "8" (staff 0, staff 8) — the "6" prints directly above
+  it in both crops, visibly a stacked time signature.
+- #3: staff 6's own refusal, wider window, for a THIRD staff of the 13.
+- #4: staff 12 — the one staff of 14 the pair test did NOT catch (a
+  detection recall gap: only one of the two digits boxed as a notehead at
+  all on this staff).
+- #5: staff 8's own bar, wide window — the "6/8" print and the bar's own
+  (now correctly unmatched) content, the one newly-held bar from §16d.
+
+### §16f. What contradicted this brief
+
+- The height signature ("~2 spaces tall") does not survive contact with the
+  plate — the detector boxes the digit's rounded PART, not its full extent,
+  and measures the same height as a real notehead. Position (tight x-pair,
+  narrow y-gap) and cross-staff repetition carry the whole claim instead.
+- A loose cross-staff test ("some notehead near x") is NOT safe — it fired
+  on two cells with no printed change at all, on the SAME fixture this item
+  was built against. Tightened to the same stacked-pair test, both ways.
+- Releasing bars was not this item's own effect: 0 released, 1 newly held.
+  The count going up by one, on a page that also just shipped the FIRST
+  correct labelling of WHY the next system's carry fails, is the honest
+  price of no longer writing two fake notes as real ones.
+
+### §16g. Files
+
+- `tools/omr/staged/adjudicators/notehead_precision.py`: `is_a_meter_digit`
+  and its module-level block comment.
+- `tools/omr/staged/adjudicators/rhythm.py`: `_meter_digit_witness_cells`,
+  `_carry_source_digit_misread`, `METER_CHANGE_DIGITS_MISREAD`, the
+  `_meter_changes`/`_carry_meter` wiring.
+- `tools/omr/tests/test_staged_meter_digit_witness.py`: the tests.
+- `out/print/meter-digit-2.12l-*.png` + manifest: the crops.

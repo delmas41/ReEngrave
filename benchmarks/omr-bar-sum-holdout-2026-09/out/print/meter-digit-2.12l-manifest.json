@@ -1,0 +1,32 @@
+[
+  {
+    "file": "meter-digit-2.12l-01-staff0-refused.png",
+    "subject": "glyph/1/0/0/1/17",
+    "kind": "is_a_meter_digit refusal",
+    "VERDICT_none_yet": null
+  },
+  {
+    "file": "meter-digit-2.12l-02-staff8-refused.png",
+    "subject": "glyph/1/0/8/1/11",
+    "kind": "is_a_meter_digit refusal",
+    "VERDICT_none_yet": null
+  },
+  {
+    "file": "meter-digit-2.12l-03-staff6-refused.png",
+    "subject": "glyph/1/0/6/1/9",
+    "kind": "is_a_meter_digit refusal, wider window",
+    "VERDICT_none_yet": null
+  },
+  {
+    "file": "meter-digit-2.12l-04-staff12-KEPT.png",
+    "subject": "glyph/1/0/12/1/0",
+    "kind": "staff 12 -- NOT refused (recall gap on this staff)",
+    "VERDICT_none_yet": null
+  },
+  {
+    "file": "meter-digit-2.12l-05-staff8-newly-held-bar.png",
+    "subject": "glyph/1/0/8/1/11",
+    "kind": "cell1/staff8, the ONE bar newly held after the fix (the fake notes no longer coincidentally sum to 9.0)",
+    "VERDICT_none_yet": null
+  }
+]
