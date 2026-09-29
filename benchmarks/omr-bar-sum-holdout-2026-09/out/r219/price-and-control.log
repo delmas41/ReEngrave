@@ -1,0 +1,23 @@
+== brahms
+held 156 (doubled 0) of 169; captured 156; control PASS; written {'arc_notes_reachable_at_a_stem': 532, 'tie_links_marked': 48, 'tie_links_crossing_a_barline': 
+held 144 (doubled 0) of 169; captured 144; control PASS; written {'arc_notes_reachable_at_a_stem': 532, 'tie_links_marked': 48, 'tie_links_crossing_a_barline': 
+  assessed 170  exact 170  SHORT 0  OVERFULL 0  unassessable 0
+  assessed 170  exact 170  SHORT 0  OVERFULL 0  unassessable 0
+== litolffp3
+held 0 (doubled 0) of 254; captured 0; control PASS; written {'arc_notes_reachable_at_a_stem': 277, 'slur_spans_marked': 20, 'tie_links_marked': 8, 'tie_links_c
+held 0 (doubled 0) of 254; captured 0; control PASS; written {'arc_notes_reachable_at_a_stem': 277, 'slur_spans_marked': 20, 'tie_links_marked': 8, 'tie_links_c
+  assessed 0  exact 0  SHORT 0  OVERFULL 0  unassessable 284
+INSTRUMENT DEAD: no bar could be assessed.
+  assessed 0  exact 0  SHORT 0  OVERFULL 0  unassessable 284
+INSTRUMENT DEAD: no bar could be assessed.
+== engraved
+held 38 (doubled 0) of 448; captured 38; control PASS; written {'arc_notes_reachable_at_a_stem': 310, 'tie_links_marked': 44, 'tie_links_crossing_a_barline': 44
+held 37 (doubled 0) of 448; captured 37; control PASS; written {'arc_notes_reachable_at_a_stem': 310, 'tie_links_marked': 44, 'tie_links_crossing_a_barline': 44
+  assessed 450  exact 450  SHORT 0  OVERFULL 0  unassessable 0
+  assessed 450  exact 450  SHORT 0  OVERFULL 0  unassessable 0
+== litolffp1p4
+held 300 (doubled 0) of 1015; captured 300; control PASS; written {'arc_notes_reachable_at_a_stem': 1262, 'tie_links_marked': 34, 'tie_chains_marked': 30, 'tie_
+held 270 (doubled 0) of 1015; captured 270; control PASS; written {'arc_notes_reachable_at_a_stem': 1262, 'tie_links_marked': 34, 'tie_chains_marked': 30, 'tie_
+  assessed 1183  exact 1183  SHORT 0  OVERFULL 0  unassessable 0
+  assessed 1183  exact 1183  SHORT 0  OVERFULL 0  unassessable 0
+ALLDONE

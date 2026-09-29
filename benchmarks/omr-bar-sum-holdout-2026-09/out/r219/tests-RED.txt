@@ -1,0 +1,6 @@
+=================================== FAILURES ===================================
+FAILED tools/omr/tests/test_staged_measure_rest_left_the_bar.py::TestWhatADecidedVerdictTookOutOfTheBarIsNotInIt::test_a_DUPLICATE_BOX_of_the_same_rest_LEFT_THE_BAR
+FAILED tools/omr/tests/test_staged_measure_rest_left_the_bar.py::TestWhatADecidedVerdictTookOutOfTheBarIsNotInIt::test_a_box_refused_as_NOT_A_NOTEHEAD_LEFT_THE_BAR
+FAILED tools/omr/tests/test_staged_measure_rest_left_the_bar.py::TestWhatADecidedVerdictTookOutOfTheBarIsNotInIt::test_a_head_OWNED_BY_ANOTHER_STAFF_LEFT_THE_BAR
+FAILED tools/omr/tests/test_staged_measure_rest_left_the_bar.py::TestWhatADecidedVerdictTookOutOfTheBarIsNotInIt::test_the_basis_NAMES_what_was_set_aside_LEFT_THE_BAR
+4 failed, 8 passed, 5 warnings in 0.11s

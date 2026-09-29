@@ -689,3 +689,219 @@ fixed before any of the above could be trusted — the same bug class
 CLAUDE.md already names four times over, found a fifth time here on the
 engraved control specifically because it is the one document clean enough
 to show 214 fake findings as 214, not as noise inside a real signal.
+
+## 15. ROADMAP 2.19 — why each held bar on Breitkopf p1 is held, after the 09-28/29 merges (2026-09-29)
+
+PATH: STAGED. Branch `claude/held-bars-2.19`, off `origin/main` `1983a9a2`
+(2.6c/2.6e ownership, 2.18/2.18b/2.18c durations, 3.2b ties and 2.15
+duplicate rests are all in the tree — checked with `git log --merges`, not
+with the ROADMAP lines, three of which still read "not merged").
+
+### CONVENTION ASSUMED / WHAT WOULD FALSIFY IT / NOT CONFIRMED
+
+CLAUDE.md §10: *a whole rest means the BAR whatever the meter*; a glyph box
+that a DECIDED verdict has refused (not a notehead, not a rest, owned by
+another staff) is not in the bar, which is exactly the rule
+`export._place_notes` already applies. A crop where a box set aside that way
+is actually a second note or rest of the bar would falsify it (crops #5–#7
+are that check). The printed meter used for diagnosis (9/8 at bar 8, 6/8
+from bar 9) was read off the page by eye (crops #1 and #3). It is never a
+pipeline input. NOT CONFIRMED with Sean.
+
+### §15a. The gather, and why the brief's "~67%" does not reproduce
+
+One fresh gather of pdf idx 1 on `1983a9a2`: clean tree, 600 dpi, scan
+weights, `--no-surya` (OCR/Tesseract ON, roster ON), 1.5 min. The brief's 67%
+came from 3.2c's gather. 2.18's gather was `--no-surya --no-ocr --no-roster`,
+and there system 1 had NO meter in force (103 bars unjudged). With OCR on,
+system 1's bars are judged against the meter the FILE carries into them, so
+this page holds **156 of 169 bars-with-events (92.3%)**, 71 of them judged
+by a carried meter. `probe/held_funnel_2_19.py` re-decides the record with
+the tree it sits in (`review.rerun`) and wraps `export._bar_holds_out` at run
+time, so the rule is not restated. Its control (bars it captured ==
+the report's `bars_held_out_sum`) passes, 156 = 156. Litolff pdf idx 3 was
+gathered alone as the MERGING control and is DEAD for this question: a
+single page carries no meter (254 of 254 bars `without_a_meter`;
+`bar_sum_check` reports "INSTRUMENT DEAD"). The Litolff control below is
+therefore the 4-page `_shared-records/beethoven5-p1-p4.record.json` (an
+09-11 gather), re-decided on this tree.
+
+### §15b. The fact that dominates everything: every held bar is judged against 9/4
+
+**All 156 held bars are judged against 9.0 quarters.** The page prints **9/8**
+at bar 8 (system 0's header) and a **6/8** change at bar 9 on every staff.
+System 1 is 6/8 by carry. `Q.METER` on system 0 is DECIDED 9/4 by vote
+(`share 1.0`, 10 staves). The header template reads **9/4 on all ten staves
+it reads** (score ~0.51, runner-up 6/4, margins 0.04–0.09), so the Breitkopf
+8 is being matched as a 4. The only 8 on the record is the detector's own
+`timeSig8` at the header (staves 6 and 8, conf 0.29 and 0.36), and it sits on
+staves where the template abstained. **Nothing reads** the bar-9 6/8 change.
+Its digits are detected as hollow noteheads (crops #3 and #4), and 23 of the
+26 held bars in cells 0–1 of system 0 carry such a "head". System 1's meter
+correctly ABSTAINS (`carry_not_corroborated`: its one assessable bar summed
+3.0 against 9/4). The FILE still carries 9/4 there (§2's `in_force`), so 2.8
+judges system 1 against it too. **This is a READER failure (the template
+reads the digit 8 as 4 on this plate) plus a DETECTOR failure (meter digits
+boxed as noteheads, no mid-system meter read). It is not a connection, and
+nothing is built for it here.**
+
+### §15c. The minimal-cause partition (`probe/classify_held_2_19.py`)
+
+A held bar is released under a fix set when every voice either IS the bar
+or sums exactly to the PRINTED meter. Without `M`, a voice landing on the
+wrong 9.0 is a wrong bar written, not a release. The fixes are SIMULATIONS:
+
+- `M`: the printed meter.
+- `W`: a lone, unmarked, dotless whole rest is the bar.
+- `H`: drop hollow heads at the printed meter's x.
+- `E`: drop a quarter rest within 60 units of the cell edge (a barline read
+  as a rest).
+- `V`: one voice (merge the streams).
+- `N`: restore narrowed heads with one of their own candidates.
+- `R`: restore `not_a_notehead` heads.
+- `A`: restore an abstained rest.
+- `D`: add or remove one dot on one event.
+- `S`: merge two events less than 40 units apart.
+- `B`: one note read one beam level off.
+
+The table gives each bar's smallest releasing set, ties grouped. It closes.
+
+| minimal set | bars (base) | what it is |
+|---|--:|---|
+| `W` | **32** | a lone whole rest that `size_measure_rest` did not mark (12 blocked by refused boxes in the cell, 20 on system 1 where the meter abstains) |
+| `M` | **26** | the reading is already right; only the meter is wrong |
+| `MV` | 8 | + one line split into two voices by stem direction alone |
+| `MB`, `MD\|MB`, `MD` | 9 | + one note a beam level or a dot off |
+| `MVB`, `MVN\|MVB`, `MVR\|MVB`, `MVNRD\|MVNRB` | 7 | + voice split and one more |
+| `ME`, `WE` | 5 | + a barline read as a quarter rest at the cell edge |
+| `MH`, `MHR`, `MHB`, `MHRD`, `MHVB`, `MHVNRB`, `MHR\|MHB\|MSB`, `MHN\|MHR\|MHB` | 9 | + the meter digits read as heads |
+| `MN`, `MN\|MB`, `MN\|MD\|MB`, `MND\|MNB` | 6 | + a narrowed head restored |
+| `MRB`, `MR\|MD\|MB`, `MDS\|MSB` | 3 | other pairs |
+| `none_of_these` | **51** | no modelled combination releases them: 36 over-full, 13 short, 2 mixed; 18 hold a narrowed head; 9 are bar 8 (9/8, eighths read as 32nds) and 7 are bar 9 |
+| **total** | **156** | |
+
+**Single fixes that release a bar outright:** `W` **32** and `M` **26**.
+Every other fix releases **0** alone, because every other repair also needs
+the meter. **Necessary fixes** (present in every minimal set of a releasable
+bar): `M` 71, `W` 34, `V` 17, `B` 13, `H` 8.
+
+### §15d. The top CONNECTION class, built: `size_measure_rest` counted boxes that had already left the bar
+
+The top class, `M`, is a reader and detector failure (§15b). The next class,
+`W`, is a connection. `consequences.size_measure_rest` (EVALUATE) fires only
+where the whole rest is the cell's ONE standing `Q.DURATION`. `_standing`
+returned a duration for every glyph box the cell was cut with, including
+boxes a DECIDED verdict had already taken out of the bar:
+
+- the barline, boxed as `noteheadBlack` and refused `too_narrow` (crop #5);
+- a second box on the same rest, refused `rest_is_a_duplicate_box` (#6);
+- the next staff's whole rest seen through the pad, which `glyph_owner`
+  DECIDED belongs to staff 8 (#7). EXPORT reports this one as
+  `rest_duration_abstained` because its duration check runs first.
+
+EXPORT writes none of these boxes, so the bar held one whole rest. The rule
+still declined to mark it, 2.8 summed it as 4.0 against the meter, and the
+bar was held out.
+
+**The fix (EVALUATE; it FOLLOWS):** `_left_the_bar` names the DECIDED verdict
+that removed a box: `Q.NOTEHEAD_IS_NOT_A_NOTEHEAD` True,
+`Q.REST_IS_NOT_A_REST` True, or `Q.GLYPH_OWNER` naming another staff through
+`adjudicate.is_relocated_copy` (imported, the same test EXPORT uses). Those
+boxes are set aside before the "only one" test. The removing verdicts join
+the new verdict's `basis`, and `detail.set_aside` lists the boxes, so the
+marking can be traced. Only a DECIDED removal counts. An abstained refusal, a
+narrowed head, an abstained rest of this staff, a head its own staff kept and
+an undecided meter all still block (rule 8). The new reads are declared to
+`evaluate.run_over` through `reads_beyond_cause`. No flag.
+
+Tests are in `tools/omr/tests/test_staged_measure_rest_left_the_bar.py`. They
+ran RED on the unrepaired tree first (`out/r219/tests-RED.txt`: 4 failed, 8
+passed; the 8 are the positive and negative controls, including a real head
+beside a refused twin) and are GREEN 12/12. No test reads source text.
+
+### §15e. Priced on the same record: base tree (`git archive HEAD`) vs arm, re-decided in-process
+
+| | Breitkopf p1 | engraved p0–p2 | Litolff p1–p4 (09-11 gather) | Litolff p3 alone |
+|---|--:|--:|--:|--:|
+| bars held (`bars_held_out_sum`) | **156 → 144** | 38 → 37 | **300 → 270** | 0 → 0 (no meter) |
+| released / newly held | 12 / 0 | 1 / 0 | 30 / 0 | 0 / 0 |
+| `measure_rests_read` | 11 → 23 | 214 → 215 | 278 → 308 | — |
+| `<note>` elements, notes, rests | unchanged (186; 8; 10) | unchanged | unchanged | unchanged |
+| `bar_does_not_add_up` rows | 856 → 844 | 47 → 46 | 794 → 764 | — |
+| 2.8 control `bar_sum_check.py`, base / arm | 170/170 exact / 170/170 | 450/450 / 450/450 | 1,183/1,183 / 1,183/1,183 | dead / dead |
+
+What was set aside in the released bars:
+
+- **Breitkopf:** `too_narrow` 5, duplicate box 2, both 1, a neighbour-staff
+  rest 4.
+- **Litolff:** owner elsewhere 8 (+3 combined with another), duplicate box 5,
+  `too_narrow` 4, `clipped_fragment` 4, `belongs_to_a_nearer_staff` 2 (+3
+  combined). Three Litolff bars hold a NARROWED head that `glyph_owner`
+  DECIDED belongs to staff 4. Checked on the record: set aside correctly.
+- **Engraved:** one release, P6 Clarinet 2 m.8, a whole rest beside a
+  `noteheadWholeOnLine` refused `clipped_fragment`. The Verovio truth
+  (`out/fixture/beethoven-sym5-mvt1-m1-24.musicxml`) has a whole-bar rest
+  there.
+
+Notes and rests written do not move on any document, because the rule only
+releases rest bars (its bound). **What it does NOT release:** the 20
+system-1 `W` bars (the meter abstains, so they need `M`) and every other bar
+on this page (all need `M`).
+
+### §15f. What is next, ranked by what it would release on this page
+
+1. **The meter reader** (`M`: necessary in 71 bars, releases 26 outright,
+   and gates every class except `W`). Two failures: the template reads the
+   Breitkopf 8 as a 4, and a system-wide mid-system meter change is read by
+   nothing while its digits are boxed as noteheads. This is a GATHER and
+   detector item, not a connection (crops #1–#4).
+2. **Voice split by stem direction alone** (`V`: necessary in 17 bars).
+   `voicing.split_events_into_voices` V1 makes two voices wherever an
+   up-stem and a down-stem appear anywhere in the bar, so one melodic line
+   crossing the middle line becomes two half-bars. This needs a convention
+   answer from Sean first (rule 3): does a bar with no two simultaneous,
+   opposite-stemmed events ever print two voices?
+3. **Meter digits read as heads** (`H`: 8). This goes away with item 1 if
+   the reader reads the change. Otherwise it needs a GATHER overlap test
+   against the meter's position.
+
+### §15g. Crops for Sean
+
+Eight crops, `out/print/held-2026-09-29-*.png`, with manifest
+`out/print/held-2026-09-29-manifest.json` (`VERDICT_none_yet: null`), cut by
+`probe/crop_held_2_19.py` from the PDF at 600 dpi. The staff each bar is
+filed on is a green band with its `Q.STAFF_LINES` drawn; a second staff (an
+owner) is blue; the bar's `Q.CELL_BOX` x-span is two red verticals; the
+subject boxes have red corners. The frame control
+(`crop_losers_2_6b._frame_ok`) passed on all eight.
+
+- #1–#2: the bar-8 9/8 read as a head.
+- #3–#4: the bar-9 6/8 read as heads.
+- #5–#7: released bars (barline junk, a duplicate box, staff 8's rest).
+- #8: a system-1 whole-rest bar still held because the meter abstains.
+
+### §15h. Gates
+
+Fast tier: **3,713 passed** (main's 3,701 + 12 new), 3 skipped
+(`out/r219/pytest-fast.txt`). `python3 -m tools.omr.staged.check`: **TOTAL
+247**, unchanged (`out/r219/staged-check.txt`).
+
+### §15i. What contradicted this brief
+
+- "~67% held" comes from a different gather configuration (§15a); this
+  gather holds 92.3%.
+- Litolff p3 on its own cannot control a bar-sum question: without a carried
+  meter nothing on it is judged.
+- The top cause is not one of the brief's (a)–(d). It is (e), it applies to
+  every bar, and it is a reader failure.
+
+### §15j. Files
+
+- `probe/held_funnel_2_19.py`: the dump and its control.
+- `probe/classify_held_2_19.py`: the partition.
+- `probe/crop_held_2_19.py`: the crops.
+- `out/r219/`: base and arm dumps for Breitkopf p1, both partitions, pricing,
+  the control log, tests RED and GREEN, and the check output.
+- `tools/omr/staged/consequences.py`: `size_measure_rest` and
+  `_left_the_bar`.
+- `tools/omr/tests/test_staged_measure_rest_left_the_bar.py`: the tests.

@@ -134,11 +134,14 @@ def _is_rest(v: Verdict) -> bool:
 
 @rule(consequence=Consequence.SIZE_MEASURE_REST,
       cause=Q.METER, effect=Q.DURATION, scope=Kind.CELL,
-      bound="Fires only on a bar whose ONLY standing duration is ONE rest, "
-            "whose glyph is `restWhole`, with no dots, and only where the "
-            "meter is DECIDED. Rewrites that one duration to the bar's "
-            "length and marks it. Adds no event, deletes none, and touches "
-            "no bar holding anything else.")
+      reads_beyond_cause=lambda log, subject, meter:
+          _size_measure_rest_also_reads(log, subject, meter),
+      bound="Fires only on a bar whose ONLY standing duration still IN the "
+            "bar (not taken out by a DECIDED not-a-notehead, not-a-rest or "
+            "another-staff verdict) is ONE rest, whose glyph is `restWhole`, "
+            "with no dots, and only where the meter is DECIDED. Rewrites "
+            "that one duration to the bar's length and marks it. Adds no "
+            "event, deletes none, and touches no bar holding anything else.")
 def size_measure_rest(log: Log, subject: Subject, meter: Verdict) -> List[Verdict]:
     """A whole-rest glyph means the BAR, not four quarters of silence.
 
@@ -176,26 +179,84 @@ def size_measure_rest(log: Log, subject: Subject, meter: Verdict) -> List[Verdic
         # `measure="yes"` for the same reason.
         return []
 
-    standing = _standing(log, subject, Q.DURATION)
-    if len(standing) != 1:
+    # ⚠️⚠️ ROADMAP 2.19: "ANYTHING ELSE" MEANS ANYTHING STILL IN THE BAR.
+    # `_standing` returns a duration for every glyph box the cell was cut
+    # with, including boxes a DECIDED verdict has already taken OUT of the bar
+    # -- a notehead box refused by the width floor, a second box on the very
+    # rest being sized (2.15), a head the contest gave to the next staff.
+    # EXPORT writes none of those, so the bar holds ONE whole rest; counting
+    # them here left it unmarked, 2.8 summed it as four quarters and held it
+    # out. Breitkopf p1: every whole-rest bar of system 0 (FINDINGS §15).
+    # Only a DECIDED removal counts: an abstained refusal, a narrowed head or
+    # an abstained rest is still something we could not rule out (rule 8).
+    set_aside, cleared_by = [], []
+    kept = []
+    for v in _standing(log, subject, Q.DURATION):
+        why = _left_the_bar(log, v.subject)
+        if why is None:
+            kept.append(v)
+        else:
+            set_aside.append(v.subject.to_key())
+            cleared_by.append(why.id)
+    if len(kept) != 1:
         return []
-    only = standing[0]
+    only = kept[0]
     if only.outcome is not Outcome.DECIDED or not _is_rest(only):
         return []
     if only.detail.get("rest") != "restWhole" or only.value.get("dots"):
         return []
 
     beats = float(num) * 4.0 / float(den)
+    detail = {**only.detail, "bar_beats": beats}
+    if set_aside:
+        detail["set_aside"] = set_aside
     out = Verdict(
         id=log._next_id("vrd"), subject=only.subject, quantity=Q.DURATION,
         outcome=Outcome.DECIDED,
         value={**only.value, "beats": beats, "written": beats,
                "measure_rest": True},
         decider="size_measure_rest", reason="whole_rest_means_the_bar",
-        considered=(only.id, meter.id), basis=(only.id, meter.id),
-        detail={**only.detail, "bar_beats": beats},
+        considered=(only.id, meter.id, *cleared_by),
+        basis=(only.id, meter.id, *cleared_by),
+        detail=detail,
         supersedes=only.id)
     return [log.record(out)]
+
+
+#: The DECIDED verdicts that take a glyph box out of its bar, each exactly as
+#: `export._place_notes` honours it: the box is not a notehead, the box is not
+#: a rest (2.15's duplicate among them), or the ink belongs to another staff.
+_LEAVES_THE_BAR = (Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, Q.REST_IS_NOT_A_REST)
+
+
+def _left_the_bar(log: Log, glyph: Subject) -> Optional[Verdict]:
+    """The DECIDED verdict that took this glyph out of its bar, else None."""
+    for q in _LEAVES_THE_BAR:
+        v = log.verdict(q, glyph)
+        if v is not None and v.outcome is Outcome.DECIDED and v.value is True:
+            return v
+    owner = log.verdict(Q.GLYPH_OWNER, glyph)
+    if owner is not None and owner.outcome is Outcome.DECIDED:
+        # ⚠️ IMPORTED, NOT RESTATED: the one test EXPORT applies to drop a
+        # contest's losing copy (`owned_by_another_staff`).
+        from .adjudicate import is_relocated_copy
+        if is_relocated_copy(glyph, owner.value):
+            return owner
+    return None
+
+
+def _size_measure_rest_also_reads(log: Log, subject: Subject,
+                                  meter: Verdict) -> List[str]:
+    """The removals `size_measure_rest` reads besides its cause (2.19),
+    declared for `evaluate.run_over`: a bar INFER or a later pass clears of
+    its last stray box has a new consequence and an unchanged meter."""
+    out: List[str] = []
+    for v in _standing(log, subject, Q.DURATION):
+        for q in (*_LEAVES_THE_BAR, Q.GLYPH_OWNER):
+            got = log.verdict(q, v.subject)
+            if got is not None:
+                out.append(got.id)
+    return out
 
 
 def _event_totals(log: Log, subject: Subject, notes, current) -> Optional[float]:

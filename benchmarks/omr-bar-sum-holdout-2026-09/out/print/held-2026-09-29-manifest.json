@@ -1,0 +1,201 @@
+[
+ {
+  "n": 1,
+  "file": "held-2026-09-29-01-meter-header-read-as-head-staff0.png",
+  "cell": "cell/1/0/0/0",
+  "measure_in_file": 1,
+  "part": "P1",
+  "staves_drawn": [
+   "staff/1/0/0"
+  ],
+  "subjects_bracketed": [
+   "glyph/1/0/0/0/67"
+  ],
+  "judged_quarters": 9.0,
+  "read_quarters": [
+   10.0
+  ],
+  "record_says": "HEADER (bar 8). Print: 9/8. Template read 9/4 on 10 staves (runner-up 6/4); a 'noteheadWhole' c4.0 event stands where the digits are.",
+  "frame_contrast": [
+   205.3
+  ],
+  "VERDICT_none_yet": null
+ },
+ {
+  "n": 2,
+  "file": "held-2026-09-29-02-meter-header-read-as-heads-staff1.png",
+  "cell": "cell/1/0/1/0",
+  "measure_in_file": 1,
+  "part": "P2",
+  "staves_drawn": [
+   "staff/1/0/1"
+  ],
+  "subjects_bracketed": [
+   "glyph/1/0/1/0/38",
+   "glyph/1/0/1/0/42",
+   "glyph/1/0/1/0/50",
+   "glyph/1/0/1/0/61"
+  ],
+  "judged_quarters": 9.0,
+  "read_quarters": [
+   5.0625
+  ],
+  "record_says": "HEADER (bar 8). Print: 9/8. Four 'noteheadWhole' heads, one c4.0 chord event, stand where the digits are.",
+  "frame_contrast": [
+   208.2
+  ],
+  "VERDICT_none_yet": null
+ },
+ {
+  "n": 3,
+  "file": "held-2026-09-29-03-meter-change-bar9-read-as-heads-staff0.png",
+  "cell": "cell/1/0/0/1",
+  "measure_in_file": 2,
+  "part": "P1",
+  "staves_drawn": [
+   "staff/1/0/0"
+  ],
+  "subjects_bracketed": [
+   "glyph/1/0/0/1/15",
+   "glyph/1/0/0/1/17",
+   "glyph/1/0/0/1/31"
+  ],
+  "judged_quarters": 9.0,
+  "read_quarters": [
+   9.5,
+   3.0
+  ],
+  "record_says": "BAR 9. Print: a 6/8 change on every staff. No meter reader fired here; three heads (c4.0 chord) stand where the digits are.",
+  "frame_contrast": [
+   205.3
+  ],
+  "VERDICT_none_yet": null
+ },
+ {
+  "n": 4,
+  "file": "held-2026-09-29-04-meter-change-bar9-read-as-heads-staff3.png",
+  "cell": "cell/1/0/3/1",
+  "measure_in_file": 2,
+  "part": "P4",
+  "staves_drawn": [
+   "staff/1/0/3"
+  ],
+  "subjects_bracketed": [
+   "glyph/1/0/3/1/24",
+   "glyph/1/0/3/1/25",
+   "glyph/1/0/3/1/33"
+  ],
+  "judged_quarters": 9.0,
+  "read_quarters": [
+   4.5
+  ],
+  "record_says": "BAR 9. Print: 6/8 change. Two 'noteheadWhole' heads (c2.0) stand where the digits are.",
+  "frame_contrast": [
+   201.1
+  ],
+  "VERDICT_none_yet": null
+ },
+ {
+  "n": 5,
+  "file": "held-2026-09-29-05-W-released-too-narrow-junk.png",
+  "cell": "cell/1/0/5/2",
+  "measure_in_file": 3,
+  "part": "P6",
+  "staves_drawn": [
+   "staff/1/0/5"
+  ],
+  "subjects_bracketed": [
+   "glyph/1/0/5/2/0",
+   "glyph/1/0/5/2/10",
+   "glyph/1/0/5/2/11",
+   "glyph/1/0/5/2/13",
+   "glyph/1/0/5/2/15",
+   "glyph/1/0/5/2/16",
+   "glyph/1/0/5/2/2",
+   "glyph/1/0/5/2/3",
+   "glyph/1/0/5/2/4",
+   "glyph/1/0/5/2/5",
+   "glyph/1/0/5/2/7",
+   "glyph/1/0/5/2/8"
+  ],
+  "judged_quarters": 9.0,
+  "read_quarters": [
+   4.0
+  ],
+  "record_says": "RELEASED by 2.19. One whole rest + 11 boxes refused not_a_notehead:too_narrow; size_measure_rest now marks it the bar.",
+  "frame_contrast": [
+   234.2
+  ],
+  "VERDICT_none_yet": null
+ },
+ {
+  "n": 6,
+  "file": "held-2026-09-29-06-W-released-duplicate-box.png",
+  "cell": "cell/1/0/1/4",
+  "measure_in_file": 5,
+  "part": "P2",
+  "staves_drawn": [
+   "staff/1/0/1"
+  ],
+  "subjects_bracketed": [
+   "glyph/1/0/1/4/2",
+   "glyph/1/0/1/4/3"
+  ],
+  "judged_quarters": 9.0,
+  "read_quarters": [
+   4.0
+  ],
+  "record_says": "RELEASED by 2.19. One whole rest + a second box on it refused rest_is_a_duplicate_box (2.15).",
+  "frame_contrast": [
+   208.2
+  ],
+  "VERDICT_none_yet": null
+ },
+ {
+  "n": 7,
+  "file": "held-2026-09-29-07-W-released-neighbour-staff-rest.png",
+  "cell": "cell/1/0/7/3",
+  "measure_in_file": 4,
+  "part": "P8",
+  "staves_drawn": [
+   "staff/1/0/7",
+   "staff/1/0/8"
+  ],
+  "subjects_bracketed": [
+   "glyph/1/0/7/3/0",
+   "glyph/1/0/7/3/1"
+  ],
+  "judged_quarters": 9.0,
+  "read_quarters": [
+   4.0
+  ],
+  "record_says": "RELEASED by 2.19. One whole rest + staff 8's whole rest seen through the pad (glyph_owner DECIDED staff/1/0/8, distance). BLUE = staff 8.",
+  "frame_contrast": [
+   242.4,
+   234.1
+  ],
+  "VERDICT_none_yet": null
+ },
+ {
+  "n": 8,
+  "file": "held-2026-09-29-08-W-still-held-system1-meter-abstained.png",
+  "cell": "cell/1/1/0/7",
+  "measure_in_file": 15,
+  "part": "P1",
+  "staves_drawn": [
+   "staff/1/1/0"
+  ],
+  "subjects_bracketed": [
+   "glyph/1/1/0/7/0"
+  ],
+  "judged_quarters": 9.0,
+  "read_quarters": [
+   4.0
+  ],
+  "record_says": "STILL HELD. A lone whole rest on system 1, where Q.METER abstains (carry_not_corroborated) so size_measure_rest never runs; the file carries 9/4 and 2.8 judges 4.0 against 9.0.",
+  "frame_contrast": [
+   186.9
+  ],
+  "VERDICT_none_yet": null
+ }
+]
