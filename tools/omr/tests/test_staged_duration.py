@@ -1028,6 +1028,78 @@ class TestANeighbourStaffsBeamThroughThePadIsNotThisNotes(unittest.TestCase):
         self.assertEqual(v.detail["beams_neighbour_staff"], 0)
 
 
+class TestRule8AppliesToTheNeighbourAndArcDiscounts(unittest.TestCase):
+    """ROADMAP 2.25b, applied to 2.18b's own RULE 8 (manager, before
+    merge): discounting every candidate stroke a STEMMED head had, as the
+    neighbour's beam or a decided arc's own ink, may not by itself turn a
+    marked note into an unmarked one -- NARROW between the head value and
+    one beam level instead of deciding the head value from an ABSENCE this
+    decision itself created."""
+
+    def test_neighbour_discount_that_empties_a_stemmed_head_narrows(self):
+        log = Log()
+        log.observe(R.staff(0, 0, 0), Q.STAFF_LINES,
+                    [950.0, 960.0, 970.0, 980.0, 990.0],
+                    reader=READERS.GEOMETRY, frame="page")
+        g = R.glyph(0, 0, 0, 0, 0)
+        log.observe(g, Q.NOTEHEAD_CLASS, "noteheadBlack",
+                    reader=READERS.DETECTOR, frame="cell:0", score=0.9)
+        log.observe(g, Q.GLYPH_BOX, ("noteheadBlack", 100, 90, 20, 16),
+                    reader=READERS.DETECTOR, frame="cell:0", score=0.9,
+                    bbox_page_px=[1100, 990, 1120, 1006])
+        gB = R.glyph(0, 0, 1, 0, 0)
+        log.observe(gB, Q.NOTEHEAD_CLASS, "noteheadBlack",
+                    reader=READERS.DETECTOR, frame="cell:0", score=0.9)
+        log.observe(gB, Q.GLYPH_BOX, ("noteheadBlack", 100, 20, 20, 16),
+                    reader=READERS.DETECTOR, frame="cell:0", score=0.9,
+                    bbox_page_px=[1100, 1070, 1120, 1086])
+        cellA = g.at(R.Kind.CELL)
+        # this head's ONLY stroke, far below the staff (discounted below)
+        log.observe(cellA, Q.BEAM_STROKE, (90, 150, 40, 4),
+                    reader=READERS.CV_LINES, frame="cell:0",
+                    x0=90, x1=130, y_center=152, image="no_staff",
+                    staff_lines_erased=True)
+        # this head's OWN stem -- attached to the head, but too short to
+        # reach the stroke, so the override does NOT protect it
+        log.observe(cellA, Q.STEM, (105, 80, 4, 20), reader=READERS.CV_LINES,
+                    frame="cell:0", x0=105, x1=109, y_center=90,
+                    image="no_staff", staff_lines_erased=True)
+        # the neighbour staff's own stem, which discounts the stroke above
+        cellB = R.cell(0, 0, 1, 0)
+        log.observe(cellB, Q.STEM, (90, -10, 4, 50), reader=READERS.CV_LINES,
+                    frame="cell:0", x0=90, x1=94, y_center=15,
+                    image="no_staff", staff_lines_erased=True)
+        adjudicate.run(log)
+        v = log.verdict(Q.DURATION, g)
+        self.assertEqual(v.outcome, Outcome.NARROWED)
+        self.assertEqual(v.reason, "beam_discounted_uncertain")
+        self.assertEqual({c.value["beats"] for c in v.candidates},
+                         {1.0, 0.5})
+        self.assertEqual(v.detail["beams_neighbour_staff"], 1)
+
+    def test_the_POSITIVE_control_another_real_beam_still_decides(self):
+        """One stroke is discounted (inside a decided arc's box), but this
+        head has ANOTHER real, undiscounted stroke -- so it still decides
+        normally, never reaching rule 8's guard at all."""
+        log = Log()
+        g = R.glyph(0, 0, 0, 0, 0)
+        log.observe(g, Q.ARC_BOX, "slur", reader=READERS.DETECTOR,
+                    frame="cell:0", score=0.8, x0=60, x1=140, y0=30, y1=50,
+                    x_center=100, y_center=40)
+        _beam(log, y=40, x0=60, x1=140)          # INSIDE the arc box
+        _beam(log, y=70, x0=60, x1=140)          # OUTSIDE it -- a real level
+        log.observe(g, Q.NOTEHEAD_CLASS, "noteheadBlack",
+                    reader=READERS.DETECTOR, frame="cell:0", score=0.9)
+        log.observe(g, Q.GLYPH_BOX, ("noteheadBlack", 135, 90, 20, 16),
+                    reader=READERS.DETECTOR, frame="cell:0", score=0.9)
+        _stem(log, x=135, y=38, h=60)
+        adjudicate.run(log)
+        v = log.verdict(Q.DURATION, g)
+        self.assertEqual(v.outcome, Outcome.DECIDED)
+        self.assertEqual(v.value["beats"], 0.5)
+        self.assertEqual(v.detail["beams_decided_arc"], 1)
+
+
 class TestAStrokeInsideADecidedArcIsThatArcNotABeam(unittest.TestCase):
     """ROADMAP 2.25b, class 2 (`arc_box`). A stroke inside a DECIDED
     `Q.ARC_KIND` glyph's box is that slur/tie's own ink, unless it joins
@@ -1043,6 +1115,10 @@ class TestAStrokeInsideADecidedArcIsThatArcNotABeam(unittest.TestCase):
                            y_center=(y0 + y1) / 2.0)
 
     def test_a_stroke_inside_a_decided_arc_box_does_not_count(self):
+        """This head's ONLY candidate stroke is discounted, and it has a
+        stem: ROADMAP 2.25b's own rule-8 guard (below) NARROWS between the
+        head value and one beam level rather than deciding the head value
+        outright from a discount that might have removed a real beam."""
         log = Log()
         self._arc(log)
         _beam(log, y=40, x0=60, x1=140)          # sits INSIDE the arc box
@@ -1054,8 +1130,10 @@ class TestAStrokeInsideADecidedArcIsThatArcNotABeam(unittest.TestCase):
         _stem(log, x=135, y=38, h=60)
         adjudicate.run(log)
         v = log.verdict(Q.DURATION, g)
-        self.assertEqual(v.outcome, Outcome.DECIDED)
-        self.assertEqual(v.value["beats"], 1.0)      # the stroke discounted
+        self.assertEqual(v.outcome, Outcome.NARROWED)
+        self.assertEqual(v.reason, "beam_discounted_uncertain")
+        self.assertEqual({c.value["beats"] for c in v.candidates},
+                         {1.0, 0.5})
         self.assertEqual(v.detail["beams_decided_arc"], 1)
         arc_kind = log.verdict(Q.ARC_KIND, R.glyph(0, 0, 0, 0, 900))
         self.assertEqual(arc_kind.outcome, Outcome.DECIDED)
@@ -1105,75 +1183,6 @@ class TestAStrokeInsideADecidedArcIsThatArcNotABeam(unittest.TestCase):
         self.assertEqual(v.value["beats"], 0.5)
         self.assertEqual(v.detail["beams_decided_arc"], 0)
 
-
-class TestAStrokeInsideAWedgeBoxIsTheHairpinNotABeam(unittest.TestCase):
-    """ROADMAP 2.25b, class 3 (`wedge_box`). A stroke inside an OBSERVED
-    `Q.WEDGE_BOX` is discounted unless it joins >= 2 of this cell's own
-    stems -- the manager's own positive control, same shape as the arc
-    class. `Q.WEDGE_ANCHOR` cannot gate this: it runs AFTER `duration` in
-    `adjudicate.ORDER`."""
-
-    def _wedge(self, log, *, x0=60, x1=140, y0=30, y1=50, gi=901,
-              cls="crescendo"):
-        g = R.glyph(0, 0, 0, 0, gi)
-        log.observe(g, Q.GLYPH_BOX, (cls, x0, y0, x1 - x0, y1 - y0),
-                    reader=READERS.DETECTOR, frame="cell:0", score=0.8)
-        return log.observe(g, Q.WEDGE_BOX, cls, reader=READERS.DETECTOR,
-                           frame="cell:0", score=0.8)
-
-    def test_a_stroke_inside_a_wedge_box_does_not_count(self):
-        log = Log()
-        self._wedge(log)
-        _beam(log, y=40, x0=60, x1=140)         # sits INSIDE the wedge box
-        g = R.glyph(0, 0, 0, 0, 0)
-        log.observe(g, Q.NOTEHEAD_CLASS, "noteheadBlack",
-                    reader=READERS.DETECTOR, frame="cell:0", score=0.9)
-        log.observe(g, Q.GLYPH_BOX, ("noteheadBlack", 135, 90, 20, 16),
-                    reader=READERS.DETECTOR, frame="cell:0", score=0.9)
-        _stem(log, x=135, y=38, h=60)
-        adjudicate.run(log)
-        v = log.verdict(Q.DURATION, g)
-        self.assertEqual(v.outcome, Outcome.DECIDED)
-        self.assertEqual(v.value["beats"], 1.0)     # the stroke discounted
-        self.assertEqual(v.detail["beams_inside_wedge"], 1)
-
-    def test_the_POSITIVE_control_a_real_beam_joining_TWO_stems_still_counts(
-            self):
-        log = Log()
-        self._wedge(log, x0=60, x1=200, y0=30, y1=50)
-        _beam(log, y=40, x0=60, x1=200)
-        g1 = R.glyph(0, 0, 0, 0, 0)
-        log.observe(g1, Q.NOTEHEAD_CLASS, "noteheadBlack",
-                    reader=READERS.DETECTOR, frame="cell:0", score=0.9)
-        log.observe(g1, Q.GLYPH_BOX, ("noteheadBlack", 65, 90, 20, 16),
-                    reader=READERS.DETECTOR, frame="cell:0", score=0.9)
-        _stem(log, x=65, y=38, h=60)
-        g2 = R.glyph(0, 0, 0, 0, 1)
-        log.observe(g2, Q.NOTEHEAD_CLASS, "noteheadBlack",
-                    reader=READERS.DETECTOR, frame="cell:0", score=0.9)
-        log.observe(g2, Q.GLYPH_BOX, ("noteheadBlack", 180, 90, 20, 16),
-                    reader=READERS.DETECTOR, frame="cell:0", score=0.9)
-        _stem(log, x=180, y=38, h=60)
-        adjudicate.run(log)
-        v1 = log.verdict(Q.DURATION, g1)
-        self.assertEqual(v1.outcome, Outcome.DECIDED)
-        self.assertEqual(v1.value["beats"], 0.5)    # the stroke KEPT
-        self.assertEqual(v1.detail["beams_inside_wedge"], 0)
-
-    def test_no_wedge_box_at_all_changes_nothing(self):
-        log = Log()
-        _beam(log, y=40, x0=60, x1=140)
-        g = R.glyph(0, 0, 0, 0, 0)
-        log.observe(g, Q.NOTEHEAD_CLASS, "noteheadBlack",
-                    reader=READERS.DETECTOR, frame="cell:0", score=0.9)
-        log.observe(g, Q.GLYPH_BOX, ("noteheadBlack", 135, 90, 20, 16),
-                    reader=READERS.DETECTOR, frame="cell:0", score=0.9)
-        _stem(log, x=135, y=38, h=60)
-        adjudicate.run(log)
-        v = log.verdict(Q.DURATION, g)
-        self.assertEqual(v.outcome, Outcome.DECIDED)
-        self.assertEqual(v.value["beats"], 0.5)
-        self.assertEqual(v.detail["beams_inside_wedge"], 0)
 
 
 class TestAFlagHangsFromItsStemWithinAMeasuredTolerance(unittest.TestCase):

@@ -1558,8 +1558,8 @@ benchmarks/omr-missing-notes-2026-09/out/print/beam-strokes-2.25-{litolff,
     brahms}-0{1..5,1..3}.png, and the two manifests
 ```
 
-### §13h. ROADMAP 2.25b -- the three named classes, as conceptual wiring
-(2026-09-29)
+### §13h. ROADMAP 2.25b -- two of the three named classes, as conceptual
+wiring, plus rule 8 (2026-09-29)
 
 PATH: STAGED. Branch `claude/beam-strokes-2.25b`, off `origin/main` `ae81a3e5`
 (2.25 merged). **Sean, mid-lane: no more pricing runs -- no gathers, no
@@ -1567,14 +1567,14 @@ base-vs-arm re-adjudications, no crop batches.** This section is built and
 verified to that instruction: the wiring exists, proved by microscopic
 tests, and is NOT priced against a real page. An earlier exploratory pass
 DID run real pricing on Brahms p1/Litolff p3 and eye-checked ~10 crops
-before that instruction landed -- the finding worth carrying forward
-without the artefacts themselves: on Brahms, the `wedge_box` connection's
-`>= 2 stems` override did not reliably distinguish a real down-stemmed
-beam sitting under a hairpin (CLAUDE.md SS10: a hairpin sits UNDER its
-staff, the same territory a down-stem's beam occupies) from the hairpin's
-own ink, and 2 of 2 wedge-tagged crops looked like a real beam wrongly
-discounted. That run is NOT reproduced here and this paragraph is not a
-finding -- it is a flag for whoever next prices this on a real page.
+before that instruction landed -- the finding it surfaced is why class 3
+below is NOT shipped: on Brahms, the `wedge_box` connection's `>= 2 stems`
+override did not reliably distinguish a real down-stemmed beam sitting
+under a hairpin (CLAUDE.md SS10: a hairpin sits UNDER its staff, the same
+territory a down-stem's beam occupies) from the hairpin's own ink, and 2
+of 2 wedge-tagged crops looked like a real beam wrongly discounted. That
+run is not reproduced here; the artefacts were discarded per Sean's
+instruction, and this paragraph is what is carried forward from it.
 
 **Built**, all in `tools/omr/staged/adjudicators/rhythm.py`:
 
@@ -1594,41 +1594,62 @@ finding -- it is a flag for whoever next prices this on a real page.
   `adjudicate.ORDER`) is that arc's ink, unless the stroke joins >= 2 of
   this cell's own `Q.STEM` rows (the manager's own positive control: a real
   beam spanning several stems still counts).
-- `_not_inside_a_wedge` (class 3, `wedge_box`): the same shape, against
-  `Q.WEDGE_BOX`. `Q.WEDGE_ANCHOR` cannot gate it -- it runs AFTER
-  `duration` in `adjudicate.ORDER`, and there is no per-family refusal for
-  a hairpin the way 3.4g built one for ledger/arc/etc -- so the OBSERVED
-  row itself is the strongest available fact, exactly as the docstring
-  says.
 
-All three run right after `_not_a_ledger_line`, before 2.18/2.18b's
-side/tolerance filtering, additive-safe (drop only). `Q.ARC_BOX`,
-`Q.ARC_KIND`, `Q.WEDGE_BOX` joined `Q.DURATION`'s `wants`/`composed_from`;
+**NOT built: class 3, `wedge_box`.** Taken OUT of the wiring before merge
+(Sean) for the reason above -- a wrongly dropped beam writes a wrong
+value, which is worse than the cases this class would have caught. The
+comment above `_flag_levels_table` (where `_not_inside_a_wedge` used to
+live) carries the reason forward; `Q.WEDGE_BOX` no longer joins
+`Q.DURATION`'s `wants`/`composed_from`. `Q.WEDGE_ANCHOR` could not have
+gated it anyway -- it runs AFTER `duration` in `adjudicate.ORDER`, and
+there is no per-family refusal for a hairpin the way 3.4g built one for
+ledger/arc/etc.
+
+Both surviving classes run right after `_not_a_ledger_line`, before
+2.18/2.18b's side/tolerance filtering, additive-safe (drop only).
+`Q.ARC_BOX`, `Q.ARC_KIND` joined `Q.DURATION`'s `wants`/`composed_from`;
 `Q.STEM` needed no new entry (a second SUBJECT of an already-declared
-quantity). `detail.beams_neighbour_staff`/`beams_decided_arc`/
-`beams_inside_wedge` carry each class's count.
+quantity). `detail.beams_neighbour_staff`/`beams_decided_arc` carry each
+class's count.
 
-**Tests, RED first.** `TestCellFrameRoundTrips` (2: the round trip, and the
-decline with no dual-frame row), `TestANeighbourStaffsBeamThroughThePadIsNo
-tThisNotes` (3: the fix, the OWN-STEM positive control, the no-neighbour-
-stem ADDITIVE control), `TestAStrokeInsideADecidedArcIsThatArcNotABeam` (3:
-the fix, the >=2-stems positive control, the no-arc ADDITIVE control),
-`TestAStrokeInsideAWedgeBoxIsTheHairpinNotABeam` (3: same shape) -- **11
-new tests total**. Run against the unrepaired (2.25-only) tree first via
-stash-and-restore of `rhythm.py` alone: **11 of 11 failed** (2 `KeyError`
-on a detail key that does not exist pre-2.25b, 9 on the fix/control
-assertions). All 11 pass on the repaired tree; one bug was caught and
-fixed in flight by this same process -- the neighbour override first
-compared a BEAM's id against a set of STEM ids (never equal by
-construction), found by the override's OWN positive-control test failing
-where it should have passed.
+**2.18b's rule 8, applied to both survivors (Sean, before merge).**
+Discounting every candidate stroke a STEMMED head had, as the neighbour's
+beam or a decided arc's own ink, may not by itself turn a marked note into
+an unmarked one -- the exact shape 2.18b's own `beyond_stem_kept_no_other_
+mark` guard already uses for `_beyond_own_stem`, applied to a different
+cause. `discount_removed_all_marks` is computed right after the two
+connections run (before 2.18/2.18b touch `kept` further): true only where
+this head had at least one candidate stroke, has NONE now, and one of
+these two connections (not an empty page) is why. Where that holds AND the
+head has its own stem AND no flag was found either, `adjudicate_duration`
+NARROWS between the head value and ONE beam level (reason
+`beam_discounted_uncertain`, same shape as 2.18c's `flag_ink_unread`)
+instead of deciding the head value from an absence the discount itself
+created -- never straight to a specific level, because the discount says
+nothing about HOW MANY levels the ink would have been.
+
+**Tests, RED first.** `TestCellFrameRoundTrips` (2), `TestANeighbourStaffsB
+eamThroughThePadIsNotThisNotes` (3: the fix, the OWN-STEM positive control,
+the no-neighbour-stem ADDITIVE control), `TestRule8AppliesToTheNeighbourAn
+dArcDiscounts` (2: the neighbour case narrows, the positive control -- a
+head with ANOTHER real, undiscounted beam still decides normally),
+`TestAStrokeInsideADecidedArcIsThatArcNotABeam` (3: the fix -- now
+NARROWED under rule 8, since that fixture's head carries a stem -- the
+>=2-stems positive control, the no-arc ADDITIVE control) -- **10 tests for
+this half of the item** (11 from the first 2.25b pass, minus 3 removed
+with the wedge class, plus 2 for rule 8). Run against the unrepaired
+(neighbour/arc built, no rule 8) tree via stash-and-restore of `rhythm.py`
+alone: the rule-8 case and the now-updated arc test **both failed** (the
+arc fixture's head has a stem, so it now exercises rule 8 too -- an
+existing assertion changed on purpose, not a new one dodged). All pass on
+the repaired tree.
 
 **Not measured, on purpose (Sean's instruction).** No real page was
 gathered or re-priced for this section; no `bar_sum_check`; no crops of a
-real subject. The three classes' real-page yield, and whether the wedge
-class in particular survives a print check, is unpriced and open.
+real subject. class 1/2's real-page yield with rule 8 applied is unpriced
+and open; class 3 is not shipped at all.
 
 **Gates.** `pytest tools/omr/tests -m "not slow" -q -p no:cacheprovider`:
-**3,808 passed, 3 skipped** (main's 3,797 + 11 new, 0 failed).
+**3,807 passed, 3 skipped** (main's 3,797 + 10 net new, 0 failed).
 `python3 -m tools.omr.staged.check`: **TOTAL 247, unchanged.**
 ```

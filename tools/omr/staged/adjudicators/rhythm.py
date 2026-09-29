@@ -625,67 +625,20 @@ def _not_a_decided_arc(ev: Evidence, cell, beams, stems):
     return kept, dropped
 
 
-def _not_inside_a_wedge(ev: Evidence, cell, beams, stems):
-    """`(kept, dropped)`. ROADMAP 2.25b, class 3 (`wedge_box`, 68 Brahms
-    heads, FINDINGS SS13).
-
-    ⚠️ `Q.WEDGE_ANCHOR` CANNOT GATE THIS -- IT RUNS AFTER `duration` IN
-    `adjudicate.ORDER`, so no verdict about a wedge exists yet when this
-    runs; there is also no per-family refusal for a hairpin the way 3.4g
-    built one for a ledger line or an arc (`family_precision.py` covers
-    ledger/accidental/rest/arpeggiato/arc/dynamic/articulation, not wedge).
-    The DECIDED fact available here is the row itself: `Q.WEDGE_BOX` is a
-    DETECTION (`gather_wedge_boxes`'s own two readers), not an
-    interpretation, so an OBSERVED row (state READ) is the strongest fact
-    this stage can ask for without reordering `adjudicate.ORDER` -- a
-    change out of this item's scope.
-
-    Same override as the arc class, and the SAME manager wording: *"a real
-    beam near a hairpin still counts"* when it joins >= 2 of this cell's
-    own stems.
-
-    Either reader's box, converted to this cell's canonical frame where it
-    is not already there (the DETECTOR reader shares its glyph subject with
-    a `Q.GLYPH_BOX` row and is already canonical; `cv_hairpins` carries only
-    `bbox_page_px` and goes through `_cell_frame`).
-    """
-    frame = None
-    wedges = []
-    boxes_by_key = {r.subject.to_key(): r for r in ev.rows(
-        Q.GLYPH_BOX, scope=Scope.SELF_AND_DESCENDANTS, subject=cell)}
-    for r in ev.rows(Q.WEDGE_BOX, scope=Scope.SELF_AND_DESCENDANTS,
-                     subject=cell):
-        gbox = boxes_by_key.get(r.subject.to_key())
-        if gbox is not None and isinstance(gbox.value, (list, tuple)) \
-                and len(gbox.value) >= 5:
-            v = gbox.value
-            wedges.append((float(v[1]), float(v[2]), float(v[3]),
-                          float(v[4])))
-            continue
-        page = (r.detail or {}).get("bbox_page_px")
-        if not page or len(page) != 4:
-            continue
-        if frame is None:
-            frame = _cell_frame(ev, cell)
-            if frame is None:
-                continue
-        px0, py0, px1, py1 = (float(x) for x in page)
-        wedges.append(_to_canonical(
-            (px0, py0, px1 - px0, py1 - py0), frame))
-    if not wedges:
-        return list(beams), []
-    kept, dropped = [], []
-    for b in beams:
-        box = _xywh(b)
-        if box is None:
-            kept.append(b)
-            continue
-        if any(_boxes_overlap(box, w) for w in wedges) \
-                and _joins_n_stems(box, stems) < 2:
-            dropped.append(b)
-        else:
-            kept.append(b)
-    return kept, dropped
+#: `wedge_box` (class 3, the hairpin) is NAMED, NOT BUILT -- ROADMAP 2.25b.
+#: An exploratory pass priced it on real Brahms/Litolff gathers and eye-
+#: checked crops before this decision was reverted: the `>= 2 stems`
+#: override (borrowed from the arc class, below) did not reliably
+#: separate a real down-stem beam from a hairpin's own ink, because
+#: CLAUDE.md §10's own convention -- "a hairpin sits UNDER its staff" --
+#: puts a hairpin in the SAME territory a down-stem's beam legitimately
+#: occupies; 2 of 2 wedge-tagged crops looked like a real beam wrongly
+#: discounted. A wrongly dropped beam WRITES A WRONG VALUE, which is worse
+#: than the narrowing this class would have prevented, so it stays out of
+#: `adjudicate_duration` (Sean, before merge). `Q.WEDGE_ANCHOR` also
+#: cannot gate it -- it runs AFTER `duration` in `adjudicate.ORDER` -- so
+#: there is no stronger fact to build this on without a bigger change.
+#: `benchmarks/omr-missing-notes-2026-09/FINDINGS.md` SS13h.
 
 
 #: `flag8thUp` -> 1 level, `flag16thDown` -> 2, and so on. DERIVED from
@@ -1278,20 +1231,21 @@ def _stem_tip_flag_ink(ev: Evidence, cell, own_stems, side: Optional[str]
     composed_from=(Q.BEAM_STROKE, Q.FLAG, Q.AUG_DOT, Q.DOT_ROLE,
                    Q.NOTEHEAD_CLASS, Q.STEM, Q.REST, Q.STAFF_LINES,
                    Q.STAFF_SPACING, Q.FLAG_IS_NOT_A_FLAG, Q.STEM_DIRECTION,
-                   Q.STEM_TIP_INK, Q.NOTEHEAD_INK, Q.ARC_BOX, Q.ARC_KIND,
-                   Q.WEDGE_BOX),
+                   Q.STEM_TIP_INK, Q.NOTEHEAD_INK, Q.ARC_BOX, Q.ARC_KIND),
     scope=Kind.GLYPH,
-    # ⚠️ `Q.ARC_BOX`/`Q.ARC_KIND`/`Q.WEDGE_BOX` JOIN AT ROADMAP 2.25b: a
-    # beam stroke standing inside a DECIDED slur/tie's own box, or inside a
-    # hairpin's, is discounted from this note's beam count
-    # (`_not_a_decided_arc`, `_not_inside_a_wedge`) unless it joins >= 2 of
-    # this cell's own stems -- so the OUTCOME can depend on facts about a
+    # ⚠️ `Q.ARC_BOX`/`Q.ARC_KIND` JOIN AT ROADMAP 2.25b: a beam stroke
+    # standing inside a DECIDED slur/tie's own box is discounted from this
+    # note's beam count (`_not_a_decided_arc`) unless it joins >= 2 of this
+    # cell's own stems -- so the OUTCOME can depend on facts about a
     # DIFFERENT glyph entirely, and hiding that from `wiring`/`trace` would
     # be exactly the anti-pattern `Q.STEM`'s own comment below names.
-    # `Q.STEM` itself is ALSO now read at the NEIGHBOURING staff's cell
-    # (`_not_the_neighbours_beam`), a second subject this same quantity
-    # reaches -- `composed_from` names the QUANTITY, not the subject, so no
-    # new entry is needed for that one.
+    # `Q.WEDGE_BOX` does NOT join: the hairpin class was named and NOT
+    # built (Sean, before merge -- see the comment above `_flag_levels_
+    # table`, where the removed `_not_inside_a_wedge` used to live).
+    # `Q.STEM` itself is ALSO now read at the NEIGHBOURING staff's
+    # cell (`_not_the_neighbours_beam`), a second subject this same
+    # quantity reaches -- `composed_from` names the QUANTITY, not the
+    # subject, so no new entry is needed for that one.
     # ⚠️ `Q.STEM_DIRECTION` JOINED `composed_from` AT ROADMAP 2.18. Under
     # 2.12e it was a `wants` only -- a flag's direction does not touch its
     # hook count, and zero durations moved. 2.18 makes it choose WHICH beam
@@ -1312,9 +1266,10 @@ def _stem_tip_flag_ink(ev: Evidence, cell, own_stems, side: Optional[str]
            Q.STEM, Q.TUPLET_RATIO, Q.GLYPH_BOX, Q.REST, Q.CELL_STAFF_SPACE,
            Q.STAFF_LINES, Q.STAFF_SPACING, Q.STEM_DIRECTION,
            Q.FLAG_IS_NOT_A_FLAG, Q.STEM_TIP_INK, Q.NOTEHEAD_INK,
-           Q.ARC_BOX, Q.ARC_KIND, Q.WEDGE_BOX),
+           Q.ARC_BOX, Q.ARC_KIND),
     reasons=("head_and_marks", "beams_ambiguous", "flags_disagree",
-             "flag_ink_unread", "head_fill_from_ink", "no_notehead",
+             "flag_ink_unread", "beam_discounted_uncertain",
+             "head_fill_from_ink", "no_notehead",
              "unknown_head", "rest_class", "unreadable_rest",
              "rest_slot_contradicts_class", "rest_stands_where_no_rest_hangs"),
     mode=Mode.ADDITIVE,
@@ -1399,15 +1354,27 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
     ledger_boxes = _ledger_line_glyph_boxes(ev, cell)
     kept, ledger_dropped = _not_a_ledger_line(kept, ledger_boxes)
     # ⚠️ ROADMAP 2.25b, SAME TIER: a stroke that is the NEIGHBOUR staff's own
-    # beam (through the cell's pad), a DECIDED slur/tie's own ink, or inside
-    # a hairpin -- each a CONNECTION to a fact already on the record about
-    # the OTHER object, never a guess from mere overlap (rule 6; FINDINGS
-    # SS13f). All three are additive-safe and run before 2.18/2.18b for the
-    # same reason the ledger-line drop does.
+    # beam (through the cell's pad) or a DECIDED slur/tie's own ink -- each a
+    # CONNECTION to a fact already on the record about the OTHER object,
+    # never a guess from mere overlap (rule 6; FINDINGS SS13f/SS13h). Both
+    # are additive-safe and run before 2.18/2.18b for the same reason the
+    # ledger-line drop does. (A third class, the hairpin, was named and NOT
+    # built -- see the comment above `_flag_levels_table`.)
+    before_2_25b = list(kept)
     kept, neighbour_dropped = _not_the_neighbours_beam(
         ev, cell, kept, stems, own_stems)
     kept, arc_dropped = _not_a_decided_arc(ev, cell, kept, stems)
-    kept, wedge_dropped = _not_inside_a_wedge(ev, cell, kept, stems)
+    # ⚠️⚠️ RULE 8, APPLIED TO 2.25b (manager, before merge): discounting a
+    # stroke as the neighbour's or a decided arc's own ink may not by
+    # itself turn a marked note into an unmarked one. Recorded here, before
+    # 2.18/2.18b touch `kept` further, and read again near the bottom of
+    # this function once flags are known -- a stemmed head that had SOME
+    # candidate stroke before this tier, has NONE after it, and these two
+    # rules (not an empty page) are why, is the population that guard
+    # covers; the SAME test 2.18b's own `beyond_stem_kept_no_other_mark`
+    # runs for a different cause.
+    discount_removed_all_marks = (bool(before_2_25b) and not kept
+                                  and bool(neighbour_dropped or arc_dropped))
     # ⚠️ ROADMAP 2.18: only strokes on the side this head's OWN stem points
     # to can be its beams (`_on_stem_side`). No own stem direction -> no side
     # -> every stroke stays, exactly as before.
@@ -1509,12 +1476,11 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
               "cv_beams": len(cv), "yolo_beams": len(yolo),
               "yolo_kept": (len(kept) + len(far_side) + len(beyond)
                            + len(ledger_dropped) + len(neighbour_dropped)
-                           + len(arc_dropped) + len(wedge_dropped)
+                           + len(arc_dropped)
                            - len(cv)),
               "beams_ledger_line": len(ledger_dropped),
               "beams_neighbour_staff": len(neighbour_dropped),
               "beams_decided_arc": len(arc_dropped),
-              "beams_inside_wedge": len(wedge_dropped),
               "beam_side": side, "beams_far_side": len(far_side),
               "beams_beyond_stem": len(beyond),
               "beyond_stem_kept_no_other_mark": beyond_guarded,
@@ -1573,6 +1539,33 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
                 support=2.0 if level == certain else 1.0))
         return Ruling.narrow(cands, "beams_ambiguous", used=tuple(used),
                              **shared)
+
+    # ⚠️⚠️ ROADMAP 2.25b, RULE 8 (manager, before merge). Reached only where
+    # this head has a STEM (a rest or an unstemmed head has no beam to lose)
+    # and `discount_removed_all_marks` fired above: the neighbour-staff or
+    # decided-arc connection discounted every candidate stroke this head
+    # had, and nothing else (no flag) stands over it. Deciding the head
+    # value outright there would convert *the ink we discounted might have
+    # been a real beam* into a silent quarter -- rule 8's own words. NARROW
+    # between the head value and ONE beam level instead, exactly the
+    # `flag_ink_unread` shape below: never straight to a specific count,
+    # because the discount says nothing about HOW MANY levels the ink
+    # would have been.
+    if (discount_removed_all_marks and own_stems and beam_evidence
+            == "none_over_this_note" and not flag_levels):
+        cands = []
+        for level in (0, 1):
+            b = base / (2 ** level) if level else base
+            t, add = b, b
+            for _ in range(n_dots):
+                add /= 2.0
+                t += add
+            cands.append(Candidate(
+                value={"beats": _scale(t, ratio, ev), "written": t,
+                       "dots": n_dots, "beam_levels": level},
+                support=2.0 if level == 1 else 1.0))
+        return Ruling.narrow(cands, "beam_discounted_uncertain",
+                             used=tuple(used), **shared)
 
     # ⚠️⚠️ ROADMAP 2.18c, RULE 8. Reached only where NOTHING over this head
     # was read as a beam or a flag (`beam_evidence == "none_over_this_note"`,
