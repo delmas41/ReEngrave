@@ -999,6 +999,14 @@ ORDER: Tuple[str, ...] = (
     # reason: its carriers are `Q.GLYPH_BOX` rows, so it needs no
     # verdict of any kind.
     Q.ORNAMENT_OWNER,
+    # ⚠️ ROADMAP 2.27d. BESIDE THE OTHER `Q.GLYPH_BOX`-domain owner
+    # decisions, and AFTER `Q.GROUP_SYMBOL`/`Q.STAFF_GROUP` (both decided
+    # far above, structure-first): each reads whether ITS OWN staff is one
+    # half of a DECIDED brace pair, which is the only fact either needs.
+    # Neither depends on ownership, rhythm or text, so placing them here
+    # rather than beside the export-side gap they name is free.
+    Q.PEDAL_OWNER,
+    Q.OTTAVA_OWNER,
     # rhythm
     # ⚠️ TUPLET BEFORE DURATION. `adjudicate_duration` reads the tuplet
     # verdict to scale its beats, so a tuplet decided afterwards would arrive

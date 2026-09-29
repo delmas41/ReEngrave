@@ -10,7 +10,7 @@ from __future__ import annotations
 from typing import Dict, List, Optional, Tuple
 
 from ..adjudicate import Checkable, Evidence, Mode, Ruling, Term, decision, tally
-from ..record import ABSTAIN, Kind, Q, Scope, State
+from ..record import ABSTAIN, Kind, Q, Scope, State, Subject
 
 # ─────────────────────────────────────────────────────────────────────────────
 # ⚠️ ASSUMED CONSTANTS. None of these is measured. See ASSUMPTIONS.md.
@@ -201,3 +201,62 @@ def adjudicate_group_symbol(ev: Evidence) -> Ruling:
                       used=tuple(v.id for v in named))
     return Ruling(value="bracket", reason="bracket",
                   used=tuple(v.id for v in named))
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# ROADMAP 2.27d — the grand-staff PAIR, as a fact other decisions can connect
+# to (rule 6: connect, never guess). One helper, shared by every consumer
+# that needs "is this staff one half of a decided piano/harp pair, and if so
+# which staff is the other half" -- `adjudicators/text.py` (a dynamic BETWEEN
+# the two staves belongs to the part), `adjudicators/rhythm.py` (a beam
+# crossing into the OTHER staff of the SAME part is not "the neighbour's
+# beam"), `adjudicators/ownership.py` (a pedal mark belongs to the pair, filed
+# on the lower staff). A second copy of this query in each module would be
+# the "derive it, don't re-list it" fault this project has already paid for.
+# ─────────────────────────────────────────────────────────────────────────────
+
+
+def grand_staff_partner_staff(ev: Evidence, home: str) -> Optional[str]:
+    """The OTHER staff of a DECIDED brace pair `home` belongs to, or `None`.
+
+    `home` is a `Kind.STAFF` subject key. Returns the partner's key only
+    when ALL of these already-decided facts hold, none of them re-derived:
+
+    1. `home`'s SYSTEM has a `Q.GROUP_SYMBOL` verdict DECIDED `"brace"`
+       (`adjudicate_group_symbol`, above -- a brace means the group's own
+       instrument family is `keyboard`/`harp`, `BRACE_FAMILIES`).
+    2. `home` itself has a DECIDED `Q.STAFF_GROUP` block id.
+    3. EXACTLY ONE other staff of the same system shares that block id.
+
+    Any other shape -- no brace decided anywhere in the system, `home`'s
+    own group undecided, a block of size 1 or >= 3 (an organ's pedal staff,
+    say) -- returns `None` rather than guessing which staff is meant.
+    Inert, by construction, on every orchestral system this project's
+    acceptance set contains: none of them ever decides `Q.GROUP_SYMBOL`
+    `"brace"` at all (`benchmarks/omr-owner-domain-2026-09/
+    PLACEMENT-CONVENTIONS.md`, "Rules safe to wire", item B).
+
+    ⚠️ `ev.verdict`/`ev.subjects` ARE THE CALLER'S OWN `Evidence`, so
+    `Q.GROUP_SYMBOL` and `Q.STAFF_GROUP` must be in the CALLER's `wants` --
+    this function declares nothing itself, exactly as `adjudicators.
+    ownership._owned_by_a_different_staff` (ROADMAP 2.27) reads `Q.
+    GLYPH_OWNER` through whichever decision calls it.
+    """
+    home_sub = home if isinstance(home, Subject) else Subject.from_key(home)
+    system_sub = home_sub.at(Kind.SYSTEM)
+    brace = ev.verdict(Q.GROUP_SYMBOL, subject=system_sub)
+    if brace is None or brace.value != "brace":
+        return None
+    own_group = ev.verdict(Q.STAFF_GROUP, subject=home_sub)
+    if own_group is None or own_group.value is None:
+        return None
+    partners: List[Subject] = []
+    for st in ev.subjects(Kind.STAFF):
+        if st == home_sub or st.at(Kind.SYSTEM) != system_sub:
+            continue
+        v = ev.verdict(Q.STAFF_GROUP, subject=st)
+        if v is not None and v.value == own_group.value:
+            partners.append(st)
+    if len(partners) != 1:
+        return None
+    return partners[0].to_key()

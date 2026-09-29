@@ -4957,6 +4957,38 @@ def _inferred_clefs(rec: Record) -> List[Dict[str, Any]]:
     return sorted(out, key=lambda r: r["staff"])
 
 
+def _grand_staff_family_gap(rec: Record) -> Dict[str, Any]:
+    """ROADMAP 2.27d. Pedal marks and octave brackets are OWNED
+    (`Q.PEDAL_OWNER`/`Q.OTTAVA_OWNER`, `adjudicators/ownership.py`) but
+    WRITTEN NOWHERE: no `<pedal>` or `<octave-shift>` emission exists on
+    this path (or the legacy one) -- see both quantities' own docstrings
+    in `record.py`. Counted BY NAME here, literally, rather than through
+    the dynamic per-family loops the rest of this module uses (`FAMILIES`,
+    `_family_refusals`'s `FAMILY_REFUSALS`) -- a quantity read only through
+    a loop variable is invisible to `reach --check`'s static scan (measured
+    on `arpeggiato_is_not_an_arpeggiato`, whose ONLY consumer is exactly
+    such a loop and which `reach` still reports UNREAD), and a genuinely
+    unconsumed decision is not what this pair is: it IS read, here, so the
+    export gap it names is visible in the coverage report on the day a
+    keyboard work enters the corpus, instead of invisible the way an
+    un-adjudicated `Q.GLYPH_BOX` class would be.
+    """
+    # ⚠️ TWO LITERAL CALLS, NOT A LOOP OVER A LIST OF TWO -- see the
+    # docstring above for why the literal argument is the point.
+    pedal_verdicts = rec.verdicts_of(Q.PEDAL_OWNER)
+    ottava_verdicts = rec.verdicts_of(Q.OTTAVA_OWNER)
+    pedal_decided = sum(1 for v in pedal_verdicts if v["outcome"] == "decided")
+    ottava_decided = sum(1 for v in ottava_verdicts if v["outcome"] == "decided")
+    return {
+        "pedal_owner": {"decided": pedal_decided,
+                        "abstained": len(pedal_verdicts) - pedal_decided,
+                        "written": 0},
+        "ottava_owner": {"decided": ottava_decided,
+                         "abstained": len(ottava_verdicts) - ottava_decided,
+                         "written": 0},
+    }
+
+
 def _family_refusals(rec: Record) -> Dict[str, Any]:
     """Every per-family refusal, by family and reason — ROADMAP 3.4g.
 
@@ -5376,6 +5408,10 @@ def coverage(result: Dict[str, Any],
         # counted by family and by reason, INCLUDING the two families whose
         # refusal reaches nothing else. See `_family_refusals`.
         "family_refusals": _family_refusals(rec),
+        # ⚠️ ROADMAP 2.27d. `Q.PEDAL_OWNER`/`Q.OTTAVA_OWNER` are ADJUDICATE
+        # decisions with no MusicXML emission yet -- see `_grand_staff_
+        # family_gap`'s own docstring.
+        "grand_staff_families": _grand_staff_family_gap(rec),
         # ⚠️ ROADMAP 2.10. One line per staff whose clef came from INFER,
         # with the tier it came from and what it bought. See
         # `_inferred_clefs`: it is NAMED rather than counted because Sean
