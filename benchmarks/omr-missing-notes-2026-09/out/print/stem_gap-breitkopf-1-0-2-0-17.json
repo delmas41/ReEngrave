@@ -1,0 +1,115 @@
+{
+  "subject": "glyph/1/0/2/0/17",
+  "cause": "duration_narrowed:beams_ambiguous / stem_gap",
+  "gap_kind": "FAR (1.95 notehead widths)",
+  "page": 1,
+  "system": 0,
+  "staff": 2,
+  "cell": 0,
+  "detail": {
+    "head": "noteheadBlackInSpace",
+    "beam_evidence": "read",
+    "cv_beams": 4,
+    "yolo_beams": 10,
+    "yolo_kept": 0,
+    "stems_attached": 0,
+    "beams_by_stem": 0,
+    "flags_attached": 0,
+    "flag_levels": 0,
+    "dots_attached": 0,
+    "staff_space": 46.75,
+    "levels_certain": 2,
+    "levels_possible": 3
+  },
+  "min_dist_notehead_widths": 1.9485294117647058,
+  "cell_stem_rows": [
+    {
+      "value": [
+        1054,
+        91,
+        12,
+        265
+      ],
+      "x0": 1054,
+      "x1": 1066
+    },
+    {
+      "value": [
+        1221,
+        91,
+        12,
+        282
+      ],
+      "x0": 1221,
+      "x1": 1233
+    },
+    {
+      "value": [
+        1386,
+        91,
+        12,
+        295
+      ],
+      "x0": 1386,
+      "x1": 1398
+    },
+    {
+      "value": [
+        1496,
+        91,
+        9,
+        268
+      ],
+      "x0": 1496,
+      "x1": 1505
+    },
+    {
+      "value": [
+        1811,
+        109,
+        11,
+        274
+      ],
+      "x0": 1811,
+      "x1": 1822
+    },
+    {
+      "value": [
+        1933,
+        125,
+        12,
+        281
+      ],
+      "x0": 1933,
+      "x1": 1945
+    },
+    {
+      "value": [
+        264,
+        174,
+        8,
+        134
+      ],
+      "x0": 264,
+      "x1": 272
+    },
+    {
+      "value": [
+        150,
+        249,
+        15,
+        176
+      ],
+      "x0": 150,
+      "x1": 165
+    }
+  ],
+  "bbox_page": [
+    1565.81787109375,
+    1123.1044921875,
+    1605.82763671875,
+    1155.46533203125
+  ],
+  "file": "stem_gap-breitkopf-1-0-2-0-17.png",
+  "VERDICT_none_yet": null
+}

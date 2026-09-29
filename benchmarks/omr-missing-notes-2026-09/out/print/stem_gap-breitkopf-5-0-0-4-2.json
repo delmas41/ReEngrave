@@ -1,0 +1,45 @@
+{
+  "subject": "glyph/5/0/0/4/2",
+  "cause": "duration_narrowed:beams_ambiguous / stem_gap",
+  "gap_kind": "FAR (1.41 notehead widths)",
+  "page": 5,
+  "system": 0,
+  "staff": 0,
+  "cell": 4,
+  "detail": {
+    "head": "noteheadBlackOnLine",
+    "beam_evidence": "read",
+    "cv_beams": 0,
+    "yolo_beams": 4,
+    "yolo_kept": 4,
+    "stems_attached": 0,
+    "beams_by_stem": 0,
+    "flags_attached": 0,
+    "flag_levels": 0,
+    "dots_attached": 0,
+    "staff_space": 93.0,
+    "levels_certain": 3,
+    "levels_possible": 4
+  },
+  "min_dist_notehead_widths": 1.4069767441860466,
+  "cell_stem_rows": [
+    {
+      "value": [
+        89,
+        1079,
+        24,
+        221
+      ],
+      "x0": 89,
+      "x1": 113
+    }
+  ],
+  "bbox_page": [
+    3196.8671875,
+    706.37890625,
+    3234.66015625,
+    740.36328125
+  ],
+  "file": "stem_gap-breitkopf-5-0-0-4-2.png",
+  "VERDICT_none_yet": null
+}

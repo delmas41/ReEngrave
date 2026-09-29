@@ -659,6 +659,117 @@ class TestANoteIsJoinedToItsBeamByItsSTEM(unittest.TestCase):
         self.assertEqual(v.value["beats"], 0.25)
 
 
+class TestABeamLiesOnTheStemSIDEOfItsHead(unittest.TestCase):
+    """ROADMAP 2.18. ⚠️⚠️ THE COLUMN TEST WAS BLIND IN Y. `_beam_levels`
+    counted every stroke whose x-range covered (CERTAIN) or nearly covered
+    (POSSIBLE) the head's centre, wherever it stood vertically -- so the
+    beam of the OTHER voice below a stem-up head, or the next staff's beam
+    in the cell's pad, counted as this note's. [C12]: a beam runs between
+    STEM ENDS, so a note's beam is on the side its stem points to. The
+    head's own stem direction (`Q.STEM_DIRECTION`, read off its own stem,
+    `stem_projection`) was decided three decisions earlier and read only by
+    `_flag_direction`. Measured on Breitkopf 317803 p1: 39 of the 104 heads
+    EXPORT refuses as `duration_narrowed` are narrowed ONLY by strokes on
+    the far side of their own read stem.
+    """
+
+    def _up_stemmed_last_note(self, log):
+        """A stem-UP head at the END of a group: the stroke above ends at 140,
+        the head spans 135-155 (centre 145), its stem 135-139 rises 38..98 and
+        JOINS the stroke at y=40. One beam level is read."""
+        _beam(log, y=40, x0=60, x1=140)
+        g = R.glyph(0, 0, 0, 0, 0)
+        log.observe(g, Q.NOTEHEAD_CLASS, "noteheadBlack",
+                    reader=READERS.DETECTOR, frame="cell:0", score=0.9)
+        log.observe(g, Q.GLYPH_BOX, ("noteheadBlack", 135, 90, 20, 16),
+                    reader=READERS.DETECTOR, frame="cell:0", score=0.9)
+        _stem(log, x=135, y=38, h=60)
+        return g
+
+    def test_a_POSSIBLE_stroke_BELOW_a_stem_up_head_is_not_its_beam(self):
+        log = Log()
+        g = self._up_stemmed_last_note(log)
+        # the other voice's beam, UNDER the head, ending 15 px short of its
+        # centre -- inside the one-width pad, so the column test said MAYBE
+        _beam(log, y=160, x0=40, x1=130)
+        adjudicate.run(log)
+        self.assertEqual(log.verdict(Q.STEM_DIRECTION, g).value, "up")
+        v = log.verdict(Q.DURATION, g)
+        self.assertEqual(v.outcome, Outcome.DECIDED)
+        self.assertEqual(v.value["beats"], 0.5)
+        self.assertEqual(v.detail["beams_far_side"], 1)
+        self.assertEqual(v.detail["beam_side"], "up")
+
+    def test_the_SAME_stroke_on_the_stem_side_still_narrows(self):
+        """⚠️ THE POSITIVE CONTROL. The identical stroke moved ABOVE the head
+        -- where a beamlet of this group could stand -- and not reached by
+        its stem stays a genuine MAYBE. Without it the test above passes for
+        free the moment `_beam_levels` stops counting possible strokes."""
+        log = Log()
+        g = self._up_stemmed_last_note(log)
+        _beam(log, y=20, x0=40, x1=130)       # above the head, stem 38..98
+        adjudicate.run(log)
+        v = log.verdict(Q.DURATION, g)
+        self.assertEqual(v.outcome, Outcome.NARROWED)
+        self.assertEqual(v.reason, "beams_ambiguous")
+        self.assertEqual(v.detail["beams_far_side"], 0)
+
+    def test_a_CERTAIN_stroke_under_a_stem_up_head_is_not_its_beam(self):
+        """The same fault on the CERTAIN side: a stroke below the head that
+        covers its column made an eighth a sixteenth outright."""
+        log = Log()
+        g = self._up_stemmed_last_note(log)
+        _beam(log, y=160, x0=40, x1=200)      # covers the centre, BELOW
+        adjudicate.run(log)
+        v = log.verdict(Q.DURATION, g)
+        self.assertEqual(v.outcome, Outcome.DECIDED)
+        self.assertEqual(v.value["beats"], 0.5)
+
+    def test_a_stem_DOWN_head_mirrors_it(self):
+        log = Log()
+        _beam(log, y=180, x0=60, x1=140)      # below: the head's own beam
+        _beam(log, y=20, x0=40, x1=130)       # above: somebody else's
+        g = R.glyph(0, 0, 0, 0, 0)
+        log.observe(g, Q.NOTEHEAD_CLASS, "noteheadBlack",
+                    reader=READERS.DETECTOR, frame="cell:0", score=0.9)
+        log.observe(g, Q.GLYPH_BOX, ("noteheadBlack", 135, 90, 20, 16),
+                    reader=READERS.DETECTOR, frame="cell:0", score=0.9)
+        _stem(log, x=135, y=100, h=84)        # 100..184, falls to y=180
+        adjudicate.run(log)
+        self.assertEqual(log.verdict(Q.STEM_DIRECTION, g).value, "down")
+        v = log.verdict(Q.DURATION, g)
+        self.assertEqual(v.outcome, Outcome.DECIDED)
+        self.assertEqual(v.value["beats"], 0.5)
+        self.assertEqual(v.detail["beams_far_side"], 1)
+
+    def test_NO_stem_of_its_own_means_NO_side_and_the_old_reading(self):
+        """⚠️ ADDITIVE. A head whose stem was not read has no side to use --
+        a borrowed (`beam_mate`) or abstained direction is not its own -- so
+        the column test stands exactly as before and the stroke below still
+        narrows it. `cannot tell` stays `cannot tell` (rule 8)."""
+        log = Log()
+        _beam(log, y=40, x0=60, x1=140)
+        _beam(log, y=160, x0=40, x1=130)
+        g = R.glyph(0, 0, 0, 0, 0)
+        log.observe(g, Q.NOTEHEAD_CLASS, "noteheadBlack",
+                    reader=READERS.DETECTOR, frame="cell:0", score=0.9)
+        log.observe(g, Q.GLYPH_BOX, ("noteheadBlack", 135, 90, 20, 16),
+                    reader=READERS.DETECTOR, frame="cell:0", score=0.9)
+        adjudicate.run(log)
+        v = log.verdict(Q.DURATION, g)
+        self.assertEqual(v.outcome, Outcome.NARROWED)
+        self.assertIsNone(v.detail["beam_side"])
+        self.assertEqual(v.detail["beams_far_side"], 0)
+
+    def test_the_direction_is_in_the_BASIS(self):
+        log = Log()
+        g = self._up_stemmed_last_note(log)
+        _beam(log, y=160, x0=40, x1=130)
+        adjudicate.run(log)
+        sd = log.verdict(Q.STEM_DIRECTION, g)
+        self.assertIn(sd.id, log.verdict(Q.DURATION, g).basis)
+
+
 class TestAMarkMustBeATTACHEDToItsNotehead(unittest.TestCase):
     """⚠️⚠️ `Q.FLAG` AND `Q.AUG_DOT` ARE GATHERED ON THE MARK'S OWN GLYPH
     SUBJECT AND WERE READ ON THE NOTEHEAD'S. Measured on a three-page engraved

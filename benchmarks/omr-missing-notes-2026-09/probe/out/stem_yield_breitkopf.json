@@ -1,0 +1,7792 @@
+{
+ "label": "breitkopf",
+ "record": "/Users/seanjohnson/Desktop/ReEngrave/library/_shared-records/brahms1-breitkopf-mvt1-whole-20260928.record.json",
+ "provenance": {
+  "commit": "c19cbca7b7339d74e255a26b80e7fc3a385d428e",
+  "dirty": true,
+  "settings": {
+   "env_overrides": {
+    "OMR_DIRECTION_TEXT_SCAN_GATE": "1",
+    "OMR_SURYA_KEEP_ALIVE": "0"
+   },
+   "args": {
+    "against": null,
+    "conf": 0.25,
+    "dpi": 600,
+    "imgsz": null,
+    "ink_rows": false,
+    "no_roster": false,
+    "no_weight_routing": false,
+    "ocr": true,
+    "pages": "0-26",
+    "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf",
+    "route_weights": true,
+    "sheet": null,
+    "surya": true,
+    "weights": "auto",
+    "work_id": null
+   }
+  }
+ },
+ "n_duration_verdicts": 33434,
+ "n_notehead_duration_verdicts": 24533,
+ "n_cells_with_any_stem_row": 5179,
+ "n_cells_with_any_beam_row": 4539,
+ "beamed_cells_total": 3886,
+ "beamed_cells_zero_stem_rows": 432,
+ "beamed_cells_zero_stem_pct": 11.1,
+ "stem_rows_per_beamed_cell_hist": {
+  "0": 432,
+  "1": 660,
+  "2": 915,
+  "3": 468,
+  "4": 496,
+  "5": 297,
+  "6": 236,
+  "7": 128,
+  "8": 95,
+  "9": 46,
+  "10": 40,
+  "11": 22,
+  "12": 27,
+  "13": 8,
+  "14": 5,
+  "15": 2,
+  "16": 4,
+  "17": 1,
+  "18": 2,
+  "19": 1,
+  "20": 1
+ },
+ "stems_attached_zero_total": 10561,
+ "stems_attached_zero_beamambig": 2102,
+ "of_stems_attached_zero__cell_has_no_stems_at_all": 1743,
+ "of_stems_attached_zero__cell_has_stems_not_joined": 8818,
+ "of_BEAMAMBIG_only__cell_has_no_stems_at_all": 432,
+ "of_BEAMAMBIG_only__cell_has_stems_not_joined": 1670,
+ "of_BEAMAMBIG_cell_has_stems__NEAR_within_1_notehead_width": 592,
+ "of_BEAMAMBIG_cell_has_stems__FAR_over_1_notehead_width": 1078,
+ "examples_cell_has_no_stems": [
+  {
+   "subject": "glyph/4/0/4/4/3",
+   "cell": "cell/4/0/4/4",
+   "detail": {
+    "head": "noteheadBlackInSpace",
+    "beam_evidence": "none_over_this_note",
+    "cv_beams": 0,
+    "yolo_beams": 1,
+    "yolo_kept": 1,
+    "stems_attached": 0,
+    "beams_by_stem": 0,
+    "flags_attached": 0,
+    "flag_levels": 0,
+    "dots_attached": 1,
+    "staff_space": 100.0,
+    "levels_certain": 0,
+    "levels_possible": 1
+   },
+   "reason": "beams_ambiguous",
+   "outcome": "narrowed",
+   "is_beamambig": true,
+   "bbox_page": [
+    2552.525,
+    1686.325,
+    2590.2,
+    1711.9
+   ]
+  },
+  {
+   "subject": "glyph/4/0/4/5/4",
+   "cell": "cell/4/0/4/5",
+   "detail": {
+    "head": "noteheadBlackInSpace",
+    "beam_evidence": "read",
+    "cv_beams": 0,
+    "yolo_beams": 2,
+    "yolo_kept": 2,
+    "stems_attached": 0,
+    "beams_by_stem": 0,
+    "flags_attached": 0,
+    "flag_levels": 0,
+    "dots_attached": 1,
+    "staff_space": 100.0,
+    "levels_certain": 1,
+    "levels_possible": 2
+   },
+   "reason": "beams_ambiguous",
+   "outcome": "narrowed",
+   "is_beamambig": true,
+   "bbox_page": [
+    2810.6,
+    1405.55,
+    2848.55,
+    1440.2
+   ]
+  },
+  {
+   "subject": "glyph/9/0/5/4/5",
+   "cell": "cell/9/0/5/4",
+   "detail": {
+    "head": "noteheadBlackInSpace",
+    "beam_evidence": "read",
+    "cv_beams": 0,
+    "yolo_beams": 4,
+    "yolo_kept": 4,
+    "stems_attached": 0,
+    "beams_by_stem": 0,
+    "flags_attached": 0,
+    "flag_levels": 0,
+    "dots_attached": 0,
+    "staff_space": 100.0,
+    "levels_certain": 3,
+    "levels_possible": 4
+   },
+   "reason": "beams_ambiguous",
+   "outcome": "narrowed",
+   "is_beamambig": true,
+   "bbox_page": [
+    3169.68,
+    1975.76,
+    3198.52,
+    1990.6
+   ]
+  },
+  {
+   "subject": "glyph/9/0/5/4/6",
+   "cell": "cell/9/0/5/4",
+   "detail": {
+    "head": "noteheadBlackInSpace",
+    "beam_evidence": "read",
+    "cv_beams": 0,
+    "yolo_beams": 4,
+    "yolo_kept": 4,
+    "stems_attached": 0,
+    "beams_by_stem": 0,
+    "flags_attached": 0,
+    "flag_levels": 0,
+    "dots_attached": 0,
+    "staff_space": 100.0,
+    "levels_certain": 3,
+    "levels_possible": 4
+   },
+   "reason": "beams_ambiguous",
+   "outcome": "narrowed",
+   "is_beamambig": true,
+   "bbox_page": [
+    3163.52,
+    1978.28,
+    3187.04,
+    1990.6
+   ]
+  },
+  {
+   "subject": "glyph/10/0/7/2/3",
+   "cell": "cell/10/0/7/2",
+   "detail": {
+    "head": "noteheadBlackOnLine",
+    "beam_evidence": "none_over_this_note",
+    "cv_beams": 0,
+    "yolo_beams": 1,
+    "yolo_kept": 1,
+    "stems_attached": 0,
+    "beams_by_stem": 0,
+    "flags_attached": 0,
+    "flag_levels": 0,
+    "dots_attached": 0,
+    "staff_space": 100.0,
+    "levels_certain": 0,
+    "levels_possible": 1
+   },
+   "reason": "beams_ambiguous",
+   "outcome": "narrowed",
+   "is_beamambig": true,
+   "bbox_page": [
+    2016.55,
+    2363.425,
+    2055.05,
+    2397.25
+   ]
+  },
+  {
+   "subject": "glyph/10/0/7/2/5",
+   "cell": "cell/10/0/7/2",
+   "detail": {
+    "head": "noteheadBlackOnLine",
+    "beam_evidence": "none_over_this_note",
+    "cv_beams": 0,
+    "yolo_beams": 1,
+    "yolo_kept": 1,
+    "stems_attached": 0,
+    "beams_by_stem": 0,
+    "flags_attached": 0,
+    "flag_levels": 0,
+    "dots_attached": 0,
+    "staff_space": 100.0,
+    "levels_certain": 0,
+    "levels_possible": 1
+   },
+   "reason": "beams_ambiguous",
+   "outcome": "narrowed",
+   "is_beamambig": true,
+   "bbox_page": [
+    2124.625,
+    2364.525,
+    2165.875,
+    2398.35
+   ]
+  },
+  {
+   "subject": "glyph/15/0/0/6/0",
+   "cell": "cell/15/0/0/6",
+   "detail": {
+    "head": "noteheadBlackInSpace",
+    "beam_evidence": "read",
+    "cv_beams": 0,
+    "yolo_beams": 3,
+    "yolo_kept": 3,
+    "stems_attached": 0,
+    "beams_by_stem": 0,
+    "flags_attached": 0,
+    "flag_levels": 0,
+    "dots_attached": 0,
+    "staff_space": 100.0,
+    "levels_certain": 1,
+    "levels_possible": 2
+   },
+   "reason": "beams_ambiguous",
+   "outcome": "narrowed",
+   "is_beamambig": true,
+   "bbox_page": [
+    4598.475,
+    613.3,
+    4605.9,
+    633.925
+   ]
+  },
+  {
+   "subject": "glyph/15/0/0/6/5",
+   "cell": "cell/15/0/0/6",
+   "detail": {
+    "head": "noteheadBlackInSpace",
+    "beam_evidence": "read",
+    "cv_beams": 0,
+    "yolo_beams": 3,
+    "yolo_kept": 3,
+    "stems_attached": 0,
+    "beams_by_stem": 0,
+    "flags_attached": 0,
+    "flag_levels": 0,
+    "dots_attached": 0,
+    "staff_space": 100.0,
+    "levels_certain": 1,
+    "levels_possible": 2
+   },
+   "reason": "beams_ambiguous",
+   "outcome": "narrowed",
+   "is_beamambig": true,
+   "bbox_page": [
+    4598.2,
+    641.075,
+    4605.9,
+    662.25
+   ]
+  },
+  {
+   "subject": "glyph/16/0/0/7/0",
+   "cell": "cell/16/0/0/7",
+   "detail": {
+    "head": "noteheadBlackOnLine",
+    "beam_evidence": "none_over_this_note",
+    "cv_beams": 0,
+    "yolo_beams": 1,
+    "yolo_kept": 1,
+    "stems_attached": 0,
+    "beams_by_stem": 0,
+    "flags_attached": 0,
+    "flag_levels": 0,
+    "dots_attached": 0,
+    "staff_space": 100.0,
+    "levels_certain": 0,
+    "levels_possible": 1
+   },
+   "reason": "beams_ambiguous",
+   "outcome": "narrowed",
+   "is_beamambig": true,
+   "bbox_page": [
+    3586.3,
+    673.1,
+    3625.625,
+    708.85
+   ]
+  },
+  {
+   "subject": "glyph/16/0/0/7/4",
+   "cell": "cell/16/0/0/7",
+   "detail": {
+    "head": "noteheadBlackOnLine",
+    "beam_evidence": "none_over_this_note",
+    "cv_beams": 0,
+    "yolo_beams": 1,
+    "yolo_kept": 1,
+    "stems_attached": 0,
+    "beams_by_stem": 0,
+    "flags_attached": 0,
+    "flag_levels": 0,
+    "dots_attached": 0,
+    "staff_space": 100.0,
+    "levels_certain": 0,
+    "levels_possible": 1
+   },
+   "reason": "beams_ambiguous",
+   "outcome": "narrowed",
+   "is_beamambig": true,
+   "bbox_page": [
+    3586.025,
+    703.625,
+    3627.0,
+    735.8
+   ]
+  },
+  {
+   "subject": "glyph/20/0/0/8/3",
+   "cell": "cell/20/0/0/8",
+   "detail": {
+    "head": "noteheadBlackInSpace",
+    "beam_evidence": "read",
+    "cv_beams": 0,
+    "yolo_beams": 5,
+    "yolo_kept": 5,
+    "stems_attached": 0,
+    "beams_by_stem": 0,
+    "flags_attached": 0,
+    "flag_levels": 0,
+    "dots_attached": 0,
+    "staff_space": 99.75,
+    "levels_certain": 3,
+    "levels_possible": 4
+   },
+   "reason": "beams_ambiguous",
+   "outcome": "narrowed",
+   "is_beamambig": true,
+   "bbox_page": [
+    5506.013671875,
+    607.67578125,
+    5514.0,
+    628.880859375
+   ]
+  },
+  {
+   "subject": "glyph/21/0/0/8/5",
+   "cell": "cell/21/0/0/8",
+   "detail": {
+    "head": "noteheadBlackInSpace",
+    "beam_evidence": "read",
+    "cv_beams": 0,
+    "yolo_beams": 3,
+    "yolo_kept": 3,
+    "stems_attached": 0,
+    "beams_by_stem": 0,
+    "flags_attached": 0,
+    "flag_levels": 0,
+    "dots_attached": 0,
+    "staff_space": 100.0,
+    "levels_certain": 1,
+    "levels_possible": 2
+   },
+   "reason": "beams_ambiguous",
+   "outcome": "narrowed",
+   "is_beamambig": true,
+   "bbox_page": [
+    4948.0,
+    617.1625,
+    4955.77,
+    634.09
+   ]
+  },
+  {
+   "subject": "glyph/21/0/0/8/7",
+   "cell": "cell/21/0/0/8",
+   "detail": {
+    "head": "noteheadBlackInSpace",
+    "beam_evidence": "read",
+    "cv_beams": 0,
+    "yolo_beams": 3,
+    "yolo_kept": 3,
+    "stems_attached": 0,
+    "beams_by_stem": 0,
+    "flags_attached": 0,
+    "flag_levels": 0,
+    "dots_attached": 0,
+    "staff_space": 100.0,
+    "levels_certain": 1,
+    "levels_possible": 2
+   },
+   "reason": "beams_ambiguous",
+   "outcome": "narrowed",
+   "is_beamambig": true,
+   "bbox_page": [
+    4948.0,
+    764.7925,
+    4955.77,
+    778.9449999999999
+   ]
+  }
+ ],
+ "examples_cell_has_stems_not_joined": [
+  {
+   "subject": "glyph/0/0/0/1/6",
+   "cell": "cell/0/0/0/1",
+   "detail": {
+    "head": "noteheadBlackInSpace",
+    "beam_evidence": "none_over_this_note",
+    "cv_beams": 0,
+    "yolo_beams": 2,
+    "yolo_kept": 2,
+    "stems_attached": 0,
+    "beams_by_stem": 0,
+    "flags_attached": 0,
+    "flag_levels": 0,
+    "dots_attached": 0,
+    "staff_space": 100.0,
+    "levels_certain": 0,
+    "levels_possible": 1
+   },
+   "reason": "beams_ambiguous",
+   "outcome": "narrowed",
+   "is_beamambig": true,
+   "head_box": [
+    1345.0,
+    494.0,
+    125.0,
+    113.0
+   ],
+   "min_dist_notehead_widths": 4.124,
+   "is_near": false,
+   "cell_stem_rows": [
+    {
+     "value": [
+      760,
+      324,
+      19,
+      254
+     ],
+     "x0": 760,
+     "x1": 779
+    },
+    {
+     "value": [
+      884,
+      479,
+      16,
+      449
+     ],
+     "x0": 884,
+     "x1": 900
+    }
+   ],
+   "bbox_page": [
+    2545.7625,
+    1550.315,
+    2586.075,
+    1586.7575
+   ]
+  },
+  {
+   "subject": "glyph/0/0/0/1/15",
+   "cell": "cell/0/0/0/1",
+   "detail": {
+    "head": "noteheadBlackInSpace",
+    "beam_evidence": "none_over_this_note",
+    "cv_beams": 0,
+    "yolo_beams": 2,
+    "yolo_kept": 2,
+    "stems_attached": 0,
+    "beams_by_stem": 0,
+    "flags_attached": 0,
+    "flag_levels": 0,
+    "dots_attached": 0,
+    "staff_space": 100.0,
+    "levels_certain": 0,
+    "levels_possible": 1
+   },
+   "reason": "beams_ambiguous",
+   "outcome": "narrowed",
+   "is_beamambig": true,
+   "head_box": [
+    1347.0,
+    607.0,
+    125.0,
+    95.0
+   ],
+   "min_dist_notehead_widths": 4.14,
+   "is_near": false,
+   "cell_stem_rows": [
+    {
+     "value": [
+      760,
+      324,
+      19,
+      254
+     ],
+     "x0": 760,
+     "x1": 779
+    },
+    {
+     "value": [
+      884,
+      479,
+      16,
+      449
+     ],
+     "x0": 884,
+     "x1": 900
+    }
+   ],
+   "bbox_page": [
+    2546.4075,
+    1586.7575,
+    2586.72,
+    1617.395
+   ]
+  },
+  {
+   "subject": "glyph/1/0/2/0/17",
+   "cell": "cell/1/0/2/0",
+   "detail": {
+    "head": "noteheadBlackInSpace",
+    "beam_evidence": "read",
+    "cv_beams": 4,
+    "yolo_beams": 10,
+    "yolo_kept": 0,
+    "stems_attached": 0,
+    "beams_by_stem": 0,
+    "flags_attached": 0,
+    "flag_levels": 0,
+    "dots_attached": 0,
+    "staff_space": 46.75,
+    "levels_certain": 2,
+    "levels_possible": 3
+   },
+   "reason": "beams_ambiguous",
+   "outcome": "narrowed",
+   "is_beamambig": true,
+   "head_box": [
+    1599.0,
+    318.0,
+    68.0,
+    55.0
+   ],
+   "min_dist_notehead_widths": 1.9485294117647058,
+   "is_near": false,
+   "cell_stem_rows": [
+    {
+     "value": [
+      1054,
+      91,
+      12,
+      265
+     ],
+     "x0": 1054,
+     "x1": 1066
+    },
+    {
+     "value": [
+      1221,
+      91,
+      12,
+      282
+     ],
+     "x0": 1221,
+     "x1": 1233
+    },
+    {
+     "value": [
+      1386,
+      91,
+      12,
+      295
+     ],
+     "x0": 1386,
+     "x1": 1398
+    },
+    {
+     "value": [
+      1496,
+      91,
+      9,
+      268
+     ],
+     "x0": 1496,
+     "x1": 1505
+    },
+    {
+     "value": [
+      1811,
+      109,
+      11,
+      274
+     ],
+     "x0": 1811,
+     "x1": 1822
+    },
+    {
+     "value": [
+      1933,
+      125,
+      12,
+      281
+     ],
+     "x0": 1933,
+     "x1": 1945
+    },
+    {
+     "value": [
+      264,
+      174,
+      8,
+      134
+     ],
+     "x0": 264,
+     "x1": 272
+    },
+    {
+     "value": [
+      150,
+      249,
+      15,
+      176
+     ],
+     "x0": 150,
+     "x1": 165
+    }
+   ],
+   "bbox_page": [
+    1565.81787109375,
+    1123.1044921875,
+    1605.82763671875,
+    1155.46533203125
+   ]
+  },
+  {
+   "subject": "glyph/1/0/2/0/18",
+   "cell": "cell/1/0/2/0",
+   "detail": {
+    "head": "noteheadBlackOnLine",
+    "beam_evidence": "read",
+    "cv_beams": 4,
+    "yolo_beams": 10,
+    "yolo_kept": 0,
+    "stems_attached": 0,
+    "beams_by_stem": 0,
+    "flags_attached": 0,
+    "flag_levels": 0,
+    "dots_attached": 0,
+    "staff_space": 46.75,
+    "levels_certain": 2,
+    "levels_possible": 3
+   },
+   "reason": "beams_ambiguous",
+   "outcome": "narrowed",
+   "is_beamambig": true,
+   "head_box": [
+    1598.0,
+    199.0,
+    68.0,
+    58.0
+   ],
+   "min_dist_notehead_widths": 1.9338235294117647,
+   "is_near": false,
+   "cell_stem_rows": [
+    {
+     "value": [
+      1054,
+      91,
+      12,
+      265
+     ],
+     "x0": 1054,
+     "x1": 1066
+    },
+    {
+     "value": [
+      1221,
+      91,
+      12,
+      282
+     ],
+     "x0": 1221,
+     "x1": 1233
+    },
+    {
+     "value": [
+      1386,
+      91,
+      12,
+      295
+     ],
+     "x0": 1386,
+     "x1": 1398
+    },
+    {
+     "value": [
+      1496,
+      91,
+      9,
+      268
+     ],
+     "x0": 1496,
+     "x1": 1505
+    },
+    {
+     "value": [
+      1811,
+      109,
+      11,
+      274
+     ],
+     "x0": 1811,
+     "x1": 1822
+    },
+    {
+     "value": [
+      1933,
+      125,
+      12,
+      281
+     ],
+     "x0": 1933,
+     "x1": 1945
+    },
+    {
+     "value": [
+      264,
+      174,
+      8,
+      134
+     ],
+     "x0": 264,
+     "x1": 272
+    },
+    {
+     "value": [
+      150,
+      249,
+      15,
+      176
+     ],
+     "x0": 150,
+     "x1": 165
+    }
+   ],
+   "bbox_page": [
+    1565.2294921875,
+    1053.08740234375,
+    1605.2392578125,
+    1087.21337890625
+   ]
+  },
+  {
+   "subject": "glyph/2/0/0/3/3",
+   "cell": "cell/2/0/0/3",
+   "detail": {
+    "head": "noteheadBlackInSpace",
+    "beam_evidence": "none_over_this_note",
+    "cv_beams": 0,
+    "yolo_beams": 2,
+    "yolo_kept": 2,
+    "stems_attached": 0,
+    "beams_by_stem": 0,
+    "flags_attached": 0,
+    "flag_levels": 0,
+    "dots_attached": 0,
+    "staff_space": 71.5,
+    "levels_certain": 0,
+    "levels_possible": 2
+   },
+   "reason": "beams_ambiguous",
+   "outcome": "narrowed",
+   "is_beamambig": true,
+   "head_box": [
+    1592.0,
+    191.0,
+    98.0,
+    88.0
+   ],
+   "min_dist_notehead_widths": 8.556122448979592,
+   "is_near": false,
+   "cell_stem_rows": [
+    {
+     "value": [
+      796,
+      83,
+      13,
+      184
+     ],
+     "x0": 796,
+     "x1": 809
+    },
+    {
+     "value": [
+      82,
+      175,
+      10,
+      210
+     ],
+     "x0": 82,
+     "x1": 92
+    }
+   ],
+   "bbox_page": [
+    3911.328125,
+    439.744140625,
+    3948.65234375,
+    473.259765625
+   ]
+  },
+  {
+   "subject": "glyph/2/0/0/3/14",
+   "cell": "cell/2/0/0/3",
+   "detail": {
+    "head": "noteheadBlackInSpace",
+    "beam_evidence": "none_over_this_note",
+    "cv_beams": 0,
+    "yolo_beams": 2,
+    "yolo_kept": 2,
+    "stems_attached": 0,
+    "beams_by_stem": 0,
+    "flags_attached": 0,
+    "flag_levels": 0,
+    "dots_attached": 0,
+    "staff_space": 71.5,
+    "levels_certain": 0,
+    "levels_possible": 2
+   },
+   "reason": "beams_ambiguous",
+   "outcome": "narrowed",
+   "is_beamambig": true,
+   "head_box": [
+    1591.0,
+    274.0,
+    101.0,
+    89.0
+   ],
+   "min_dist_notehead_widths": 8.306930693069306,
+   "is_near": false,
+   "cell_stem_rows": [
+    {
+     "value": [
+      796,
+      83,
+      13,
+      184
+     ],
+     "x0": 796,
+     "x1": 809
+    },
+    {
+     "value": [
+      82,
+      175,
+      10,
+      210
+     ],
+     "x0": 82,
+     "x1": 92
+    }
+   ],
+   "bbox_page": [
+    3910.947265625,
+    471.35546875,
+    3949.4140625,
+    505.251953125
+   ]
+  },
+  {
+   "subject": "glyph/3/0/0/0/5",
+   "cell": "cell/3/0/0/0",
+   "detail": {
+    "head": "noteheadBlackOnLine",
+    "beam_evidence": "none_over_this_note",
+    "cv_beams": 0,
+    "yolo_beams": 1,
+    "yolo_kept": 1,
+    "stems_attached": 0,
+    "beams_by_stem": 0,
+    "flags_attached": 0,
+    "flag_levels": 0,
+    "dots_attached": 1,
+    "staff_space": 78.25,
+    "levels_certain": 0,
+    "levels_possible": 1
+   },
+   "reason": "beams_ambiguous",
+   "outcome": "narrowed",
+   "is_beamambig": true,
+   "head_box": [
+    1623.0,
+    260.0,
+    116.0,
+    95.0
+   ],
+   "min_dist_notehead_widths": 9.241379310344827,
+   "is_near": false,
+   "cell_stem_rows": [
+    {
+     "value": [
+      206,
+      79,
+      6,
+      167
+     ],
+     "x0": 206,
+     "x1": 212
+    },
+    {
+     "value": [
+      513,
+      353,
+      17,
+      202
+     ],
+     "x0": 513,
+     "x1": 530
+    },
+    {
+     "value": [
+      426,
+      479,
+      17,
+      200
+     ],
+     "x0": 426,
+     "x1": 443
+    },
+    {
+     "value": [
+      601,
+      516,
+      16,
+      208
+     ],
+     "x0": 601,
+     "x1": 617
+    },
+    {
+     "value": [
+      254,
+      688,
+      8,
+      191
+     ],
+     "x0": 254,
+     "x1": 262
+    }
+   ],
+   "bbox_page": [
+    1220.13330078125,
+    449.294921875,
+    1261.31103515625,
+    483.01806640625
+   ]
+  },
+  {
+   "subject": "glyph/3/0/0/0/9",
+   "cell": "cell/3/0/0/0",
+   "detail": {
+    "head": "noteheadBlackOnLine",
+    "beam_evidence": "none_over_this_note",
+    "cv_beams": 0,
+    "yolo_beams": 1,
+    "yolo_kept": 1,
+    "stems_attached": 0,
+    "beams_by_stem": 0,
+    "flags_attached": 0,
+    "flag_levels": 0,
+    "dots_attached": 1,
+    "staff_space": 78.25,
+    "levels_certain": 0,
+    "levels_possible": 1
+   },
+   "reason": "beams_ambiguous",
+   "outcome": "narrowed",
+   "is_beamambig": true,
+   "head_box": [
+    1647.0,
+    347.0,
+    88.0,
+    85.0
+   ],
+   "min_dist_notehead_widths": 12.295454545454545,
+   "is_near": false,
+   "cell_stem_rows": [
+    {
+     "value": [
+      206,
+      79,
+      6,
+      167
+     ],
+     "x0": 206,
+     "x1": 212
+    },
+    {
+     "value": [
+      513,
+      353,
+      17,
+      202
+     ],
+     "x0": 513,
+     "x1": 530
+    },
+    {
+     "value": [
+      426,
+      479,
+      17,
+      200
+     ],
+     "x0": 426,
+     "x1": 443
+    },
+    {
+     "value": [
+      601,
+      516,
+      16,
+      208
+     ],
+     "x0": 601,
+     "x1": 617
+    },
+    {
+     "value": [
+      254,
+      688,
+      8,
+      191
+     ],
+     "x0": 254,
+     "x1": 262
+    }
+   ],
+   "bbox_page": [
+    1228.65283203125,
+    480.17822265625,
+    1259.89111328125,
+    510.3515625
+   ]
+  },
+  {
+   "subject": "glyph/5/0/0/0/7",
+   "cell": "cell/5/0/0/0",
+   "detail": {
+    "head": "noteheadBlackOnLine",
+    "beam_evidence": "none_over_this_note",
+    "cv_beams": 2,
+    "yolo_beams": 0,
+    "yolo_kept": 0,
+    "stems_attached": 0,
+    "beams_by_stem": 0,
+    "flags_attached": 0,
+    "flag_levels": 0,
+    "dots_attached": 0,
+    "staff_space": 69.75,
+    "levels_certain": 0,
+    "levels_possible": 2
+   },
+   "reason": "beams_ambiguous",
+   "outcome": "narrowed",
+   "is_beamambig": true,
+   "head_box": [
+    1521.0,
+    915.0,
+    43.0,
+    44.0
+   ],
+   "min_dist_notehead_widths": 1.4069767441860466,
+   "is_near": false,
+   "cell_stem_rows": [
+    {
+     "value": [
+      1473,
+      0,
+      18,
+      216
+     ],
+     "x0": 1473,
+     "x1": 1491
+    },
+    {
+     "value": [
+      1297,
+      32,
+      20,
+      187
+     ],
+     "x0": 1297,
+     "x1": 1317
+    },
+    {
+     "value": [
+      205,
+      60,
+      5,
+      149
+     ],
+     "x0": 205,
+     "x1": 210
+    },
+    {
+     "value": [
+      320,
+      63,
+      21,
+      146
+     ],
+     "x0": 320,
+     "x1": 341
+    },
+    {
+     "value": [
+      798,
+      129,
+      23,
+      460
+     ],
+     "x0": 798,
+     "x1": 821
+    },
+    {
+     "value": [
+      1389,
+      140,
+      20,
+      424
+     ],
+     "x0": 1389,
+     "x1": 1409
+    },
+    {
+     "value": [
+      484,
+      308,
+      20,
+      189
+     ],
+     "x0": 484,
+     "x1": 504
+    },
+    {
+     "value": [
+      269,
+      316,
+      13,
+      148
+     ],
+     "x0": 269,
+     "x1": 282
+    },
+    {
+     "value": [
+      402,
+      400,
+      18,
+      207
+     ],
+     "x0": 402,
+     "x1": 420
+    },
+    {
+     "value": [
+      563,
+      451,
+      18,
+      190
+     ],
+     "x0": 563,
+     "x1": 581
+    },
+    {
+     "value": [
+      144,
+      510,
+      25,
+      164
+     ],
+     "x0": 144,
+     "x1": 169
+    }
+   ],
+   "bbox_page": [
+    1235.88330078125,
+    725.86865234375,
+    1252.701171875,
+    743.07763671875
+   ]
+  },
+  {
+   "subject": "glyph/5/0/0/4/2",
+   "cell": "cell/5/0/0/4",
+   "detail": {
+    "head": "noteheadBlackOnLine",
+    "beam_evidence": "read",
+    "cv_beams": 0,
+    "yolo_beams": 4,
+    "yolo_kept": 4,
+    "stems_attached": 0,
+    "beams_by_stem": 0,
+    "flags_attached": 0,
+    "flag_levels": 0,
+    "dots_attached": 0,
+    "staff_space": 93.0,
+    "levels_certain": 3,
+    "levels_possible": 4
+   },
+   "reason": "beams_ambiguous",
+   "outcome": "narrowed",
+   "is_beamambig": true,
+   "head_box": [
+    218.0,
+    1155.0,
+    129.0,
+    116.0
+   ],
+   "min_dist_notehead_widths": 1.4069767441860466,
+   "is_near": false,
+   "cell_stem_rows": [
+    {
+     "value": [
+      89,
+      1079,
+      24,
+      221
+     ],
+     "x0": 89,
+     "x1": 113
+    }
+   ],
+   "bbox_page": [
+    3196.8671875,
+    706.37890625,
+    3234.66015625,
+    740.36328125
+   ]
+  },
+  {
+   "subject": "glyph/6/0/3/8/6",
+   "cell": "cell/6/0/3/8",
+   "detail": {
+    "head": "noteheadBlackInSpace",
+    "beam_evidence": "none_over_this_note",
+    "cv_beams": 0,
+    "yolo_beams": 2,
+    "yolo_kept": 2,
+    "stems_attached": 0,
+    "beams_by_stem": 0,
+    "flags_attached": 0,
+    "flag_levels": 0,
+    "dots_attached": 0,
+    "staff_space": 100.0,
+    "levels_certain": 0,
+    "levels_possible": 1
+   },
+   "reason": "beams_ambiguous",
+   "outcome": "narrowed",
+   "is_beamambig": true,
+   "head_box": [
+    0.0,
+    442.0,
+    33.0,
+    82.0
+   ],
+   "min_dist_notehead_widths": 3.3333333333333335,
+   "is_near": false,
+   "cell_stem_rows": [
+    {
+     "value": [
+      112,
+      524,
+      29,
+      411
+     ],
+     "x0": 112,
+     "x1": 141
+    },
+    {
+     "value": [
+      230,
+      524,
+      30,
+      244
+     ],
+     "x0": 230,
+     "x1": 260
+    }
+   ],
+   "bbox_page": [
+    4985.0,
+    1390.34,
+    4993.91,
+    1412.48
+   ]
+  },
+  {
+   "subject": "glyph/6/0/3/8/10",
+   "cell": "cell/6/0/3/8",
+   "detail": {
+    "head": "noteheadBlackInSpace",
+    "beam_evidence": "none_over_this_note",
+    "cv_beams": 0,
+    "yolo_beams": 2,
+    "yolo_kept": 2,
+    "stems_attached": 0,
+    "beams_by_stem": 0,
+    "flags_attached": 0,
+    "flag_levels": 0,
+    "dots_attached": 0,
+    "staff_space": 100.0,
+    "levels_certain": 0,
+    "levels_possible": 1
+   },
+   "reason": "beams_ambiguous",
+   "outcome": "narrowed",
+   "is_beamambig": true,
+   "head_box": [
+    0.0,
+    643.0,
+    35.0,
+    79.0
+   ],
+   "min_dist_notehead_widths": 3.1142857142857143,
+   "is_near": false,
+   "cell_stem_rows": [
+    {
+     "value": [
+      112,
+      524,
+      29,
+      411
+     ],
+     "x0": 112,
+     "x1": 141
+    },
+    {
+     "value": [
+      230,
+      524,
+      30,
+      244
+     ],
+     "x0": 230,
+     "x1": 260
+    }
+   ],
+   "bbox_page": [
+    4985.0,
+    1444.61,
+    4994.45,
+    1465.94
+   ]
+  },
+  {
+   "subject": "glyph/7/0/0/1/1",
+   "cell": "cell/7/0/0/1",
+   "detail": {
+    "head": "noteheadBlackInSpace",
+    "beam_evidence": "none_over_this_note",
+    "cv_beams": 0,
+    "yolo_beams": 1,
+    "yolo_kept": 1,
+    "stems_attached": 0,
+    "beams_by_stem": 0,
+    "flags_attached": 0,
+    "flag_levels": 0,
+    "dots_attached": 0,
+    "staff_space": 100.0,
+    "levels_certain": 0,
+    "levels_possible": 1
+   },
+   "reason": "beams_ambiguous",
+   "outcome": "narrowed",
+   "is_beamambig": true,
+   "head_box": [
+    1043.0,
+    532.0,
+    138.0,
+    127.0
+   ],
+   "min_dist_notehead_widths": 1.326086956521739,
+   "is_near": false,
+   "cell_stem_rows": [
+    {
+     "value": [
+      920,
+      409,
+      18,
+      269
+     ],
+     "x0": 920,
+     "x1": 938
+    },
+    {
+     "value": [
+      215,
+      692,
+      33,
+      233
+     ],
+     "x0": 215,
+     "x1": 248
+    }
+   ],
+   "bbox_page": [
+    1602.825,
+    581.3,
+    1640.775,
+    616.225
+   ]
+  },
+  {
+   "subject": "glyph/7/0/0/1/5",
+   "cell": "cell/7/0/0/1",
+   "detail": {
+    "head": "noteheadBlackInSpace",
+    "beam_evidence": "none_over_this_note",
+    "cv_beams": 0,
+    "yolo_beams": 1,
+    "yolo_kept": 1,
+    "stems_attached": 0,
+    "beams_by_stem": 0,
+    "flags_attached": 0,
+    "flag_levels": 0,
+    "dots_attached": 0,
+    "staff_space": 100.0,
+    "levels_certain": 0,
+    "levels_possible": 1
+   },
+   "reason": "beams_ambiguous",
+   "outcome": "narrowed",
+   "is_beamambig": true,
+   "head_box": [
+    1045.0,
+    647.0,
+    137.0,
+    101.0
+   ],
+   "min_dist_notehead_widths": 1.3467153284671534,
+   "is_near": false,
+   "cell_stem_rows": [
+    {
+     "value": [
+      920,
+      409,
+      18,
+      269
+     ],
+     "x0": 920,
+     "x1": 938
+    },
+    {
+     "value": [
+      215,
+      692,
+      33,
+      233
+     ],
+     "x0": 215,
+     "x1": 248
+    }
+   ],
+   "bbox_page": [
+    1603.375,
+    612.925,
+    1641.05,
+    640.7
+   ]
+  },
+  {
+   "subject": "glyph/8/0/1/2/10",
+   "cell": "cell/8/0/1/2",
+   "detail": {
+    "head": "noteheadBlackOnLine",
+    "beam_evidence": "none_over_this_note",
+    "cv_beams": 0,
+    "yolo_beams": 4,
+    "yolo_kept": 4,
+    "stems_attached": 0,
+    "beams_by_stem": 0,
+    "flags_attached": 0,
+    "flag_levels": 0,
+    "dots_attached": 0,
+    "staff_space": 100.0,
+    "levels_certain": 0,
+    "levels_possible": 1
+   },
+   "reason": "beams_ambiguous",
+   "outcome": "narrowed",
+   "is_beamambig": true,
+   "head_box": [
+    0.0,
+    0.0,
+    25.0,
+    85.0
+   ],
+   "min_dist_notehead_widths": 7.86,
+   "is_near": false,
+   "cell_stem_rows": [
+    {
+     "value": [
+      313,
+      142,
+      21,
+      323
+     ],
+     "x0": 313,
+     "x1": 334
+    },
+    {
+     "value": [
+      849,
+      198,
+      21,
+      305
+     ],
+     "x0": 849,
+     "x1": 870
+    },
+    {
+     "value": [
+      737,
+      651,
+      21,
+      386
+     ],
+     "x0": 737,
+     "x1": 758
+    },
+    {
+     "value": [
+      197,
+      703,
+      24,
+      369
+     ],
+     "x0": 197,
+     "x1": 221
+    }
+   ],
+   "bbox_page": [
+    1586.0,
+    742.0,
+    1593.125,
+    766.225
+   ]
+  },
+  {
+   "subject": "glyph/8/0/1/2/17",
+   "cell": "cell/8/0/1/2",
+   "detail": {
+    "head": "noteheadBlackOnLine",
+    "beam_evidence": "none_over_this_note",
+    "cv_beams": 0,
+    "yolo_beams": 4,
+    "yolo_kept": 4,
+    "stems_attached": 0,
+    "beams_by_stem": 0,
+    "flags_attached": 0,
+    "flag_levels": 0,
+    "dots_attached": 0,
+    "staff_space": 100.0,
+    "levels_certain": 0,
+    "levels_possible": 1
+   },
+   "reason": "beams_ambiguous",
+   "outcome": "narrowed",
+   "is_beamambig": true,
+   "head_box": [
+    0.0,
+    804.0,
+    32.0,
+    153.0
+   ],
+   "min_dist_notehead_widths": 6.03125,
+   "is_near": false,
+   "cell_stem_rows": [
+    {
+     "value": [
+      313,
+      142,
+      21,
+      323
+     ],
+     "x0": 313,
+     "x1": 334
+    },
+    {
+     "value": [
+      849,
+      198,
+      21,
+      305
+     ],
+     "x0": 849,
+     "x1": 870
+    },
+    {
+     "value": [
+      737,
+      651,
+      21,
+      386
+     ],
+     "x0": 737,
+     "x1": 758
+    },
+    {
+     "value": [
+      197,
+      703,
+      24,
+      369
+     ],
+     "x0": 197,
+     "x1": 221
+    }
+   ],
+   "bbox_page": [
+    1586.0,
+    971.14,
+    1595.12,
+    1014.745
+   ]
+  },
+  {
+   "subject": "glyph/11/0/0/1/0",
+   "cell": "cell/11/0/0/1",
+   "detail": {
+    "head": "noteheadBlackOnLine",
+    "beam_evidence": "read",
+    "cv_beams": 0,
+    "yolo_beams": 3,
+    "yolo_kept": 3,
+    "stems_attached": 0,
+    "beams_by_stem": 0,
+    "flags_attached": 0,
+    "flag_levels": 0,
+    "dots_attached": 0,
+    "staff_space": 100.0,
+    "levels_certain": 1,
+    "levels_possible": 2
+   },
+   "reason": "beams_ambiguous",
+   "outcome": "narrowed",
+   "is_beamambig": true,
+   "head_box": [
+    136.0,
+    1289.0,
+    140.0,
+    109.0
+   ],
+   "min_dist_notehead_widths": 4.707142857142857,
+   "is_near": false,
+   "cell_stem_rows": [
+    {
+     "value": [
+      854,
+      1136,
+      22,
+      245
+     ],
+     "x0": 854,
+     "x1": 876
+    }
+   ],
+   "bbox_page": [
+    1374.74,
+    784.6975,
+    1413.59,
+    814.9449999999999
+   ]
+  },
+  {
+   "subject": "glyph/11/0/0/1/2",
+   "cell": "cell/11/0/0/1",
+   "detail": {
+    "head": "noteheadBlackInSpace",
+    "beam_evidence": "read",
+    "cv_beams": 0,
+    "yolo_beams": 3,
+    "yolo_kept": 3,
+    "stems_attached": 0,
+    "beams_by_stem": 0,
+    "flags_attached": 0,
+    "flag_levels": 0,
+    "dots_attached": 0,
+    "staff_space": 100.0,
+    "levels_certain": 1,
+    "levels_possible": 2
+   },
+   "reason": "beams_ambiguous",
+   "outcome": "narrowed",
+   "is_beamambig": true,
+   "head_box": [
+    129.0,
+    185.0,
+    140.0,
+    122.0
+   ],
+   "min_dist_notehead_widths": 4.757142857142857,
+   "is_near": false,
+   "cell_stem_rows": [
+    {
+     "value": [
+      854,
+      1136,
+      22,
+      245
+     ],
+     "x0": 854,
+     "x1": 876
+    }
+   ],
+   "bbox_page": [
+    1372.7975,
+    478.3375,
+    1411.6475,
+    512.1925
+   ]
+  },
+  {
+   "subject": "glyph/12/0/1/2/3",
+   "cell": "cell/12/0/1/2",
+   "detail": {
+    "head": "noteheadBlackInSpace",
+    "beam_evidence": "none_over_this_note",
+    "cv_beams": 0,
+    "yolo_beams": 4,
+    "yolo_kept": 4,
+    "stems_attached": 0,
+    "beams_by_stem": 0,
+    "flags_attached": 0,
+    "flag_levels": 0,
+    "dots_attached": 0,
+    "staff_space": 100.0,
+    "levels_certain": 0,
+    "levels_possible": 4
+   },
+   "reason": "beams_ambiguous",
+   "outcome": "narrowed",
+   "is_beamambig": true,
+   "head_box": [
+    1259.0,
+    154.0,
+    27.0,
+    82.0
+   ],
+   "min_dist_notehead_widths": 42.111111111111114,
+   "is_near": false,
+   "cell_stem_rows": [
+    {
+     "value": [
+      119,
+      373,
+      33,
+      389
+     ],
+     "x0": 119,
+     "x1": 152
+    }
+   ],
+   "bbox_page": [
+    1874.3725,
+    676.735,
+    1881.865,
+    699.49
+   ]
+  },
+  {
+   "subject": "glyph/12/0/1/2/6",
+   "cell": "cell/12/0/1/2",
+   "detail": {
+    "head": "noteheadBlackInSpace",
+    "beam_evidence": "none_over_this_note",
+    "cv_beams": 0,
+    "yolo_beams": 4,
+    "yolo_kept": 4,
+    "stems_attached": 0,
+    "beams_by_stem": 0,
+    "flags_attached": 0,
+    "flag_levels": 0,
+    "dots_attached": 0,
+    "staff_space": 100.0,
+    "levels_certain": 0,
+    "levels_possible": 4
+   },
+   "reason": "beams_ambiguous",
+   "outcome": "narrowed",
+   "is_beamambig": true,
+   "head_box": [
+    1258.0,
+    275.0,
+    28.0,
+    73.0
+   ],
+   "min_dist_notehead_widths": 40.589285714285715,
+   "is_near": false,
+   "cell_stem_rows": [
+    {
+     "value": [
+      119,
+      373,
+      33,
+      389
+     ],
+     "x0": 119,
+     "x1": 152
+    }
+   ],
+   "bbox_page": [
+    1874.095,
+    710.3125,
+    1881.865,
+    730.5699999999999
+   ]
+  },
+  {
+   "subject": "glyph/13/0/0/0/2",
+   "cell": "cell/13/0/0/0",
+   "detail": {
+    "head": "noteheadBlackInSpace",
+    "beam_evidence": "none_over_this_note",
+    "cv_beams": 0,
+    "yolo_beams": 1,
+    "yolo_kept": 1,
+    "stems_attached": 0,
+    "beams_by_stem": 0,
+    "flags_attached": 0,
+    "flag_levels": 0,
+    "dots_attached": 1,
+    "staff_space": 80.25,
+    "levels_certain": 0,
+    "levels_possible": 1
+   },
+   "reason": "beams_ambiguous",
+   "outcome": "narrowed",
+   "is_beamambig": true,
+   "head_box": [
+    1507.0,
+    214.0,
+    113.0,
+    99.0
+   ],
+   "min_dist_notehead_widths": 7.650442477876106,
+   "is_near": false,
+   "cell_stem_rows": [
+    {
+     "value": [
+      391,
+      77,
+      9,
+      175
+     ],
+     "x0": 391,
+     "x1": 400
+    },
+    {
+     "value": [
+      596,
+      349,
+      14,
+      213
+     ],
+     "x0": 596,
+     "x1": 610
+    },
+    {
+     "value": [
+      494,
+      457,
+      17,
+      230
+     ],
+     "x0": 494,
+     "x1": 511
+    },
+    {
+     "value": [
+      689,
+      515,
+      20,
+      210
+     ],
+     "x0": 689,
+     "x1": 709
+    },
+    {
+     "value": [
+      301,
+      699,
+      9,
+      192
+     ],
+     "x0": 301,
+     "x1": 310
+    }
+   ],
+   "bbox_page": [
+    1163.5595703125,
+    467.353515625,
+    1202.29296875,
+    501.2880859375
+   ]
+  },
+  {
+   "subject": "glyph/13/0/0/0/3",
+   "cell": "cell/13/0/0/0",
+   "detail": {
+    "head": "noteheadBlackInSpace",
+    "beam_evidence": "none_over_this_note",
+    "cv_beams": 0,
+    "yolo_beams": 1,
+    "yolo_kept": 1,
+    "stems_attached": 0,
+    "beams_by_stem": 0,
+    "flags_attached": 0,
+    "flag_levels": 0,
+    "dots_attached": 1,
+    "staff_space": 80.25,
+    "levels_certain": 0,
+    "levels_possible": 1
+   },
+   "reason": "beams_ambiguous",
+   "outcome": "narrowed",
+   "is_beamambig": true,
+   "head_box": [
+    1513.0,
+    982.0,
+    105.0,
+    92.0
+   ],
+   "min_dist_notehead_widths": 8.252380952380953,
+   "is_near": false,
+   "cell_stem_rows": [
+    {
+     "value": [
+      391,
+      77,
+      9,
+      175
+     ],
+     "x0": 391,
+     "x1": 400
+    },
+    {
+     "value": [
+      596,
+      349,
+      14,
+      213
+     ],
+     "x0": 596,
+     "x1": 610
+    },
+    {
+     "value": [
+      494,
+      457,
+      17,
+      230
+     ],
+     "x0": 494,
+     "x1": 511
+    },
+    {
+     "value": [
+      689,
+      515,
+      20,
+      210
+     ],
+     "x0": 689,
+     "x1": 709
+    },
+    {
+     "value": [
+      301,
+      699,
+      9,
+      192
+     ],
+     "x0": 301,
+     "x1": 310
+    }
+   ],
+   "bbox_page": [
+    1165.6162109375,
+    730.603515625,
+    1201.607421875,
+    762.138671875
+   ]
+  },
+  {
+   "subject": "glyph/14/0/0/0/48",
+   "cell": "cell/14/0/0/0",
+   "detail": {
+    "head": "noteheadBlackInSpace",
+    "beam_evidence": "none_over_this_note",
+    "cv_beams": 1,
+    "yolo_beams": 3,
+    "yolo_kept": 1,
+    "stems_attached": 0,
+    "beams_by_stem": 0,
+    "flags_attached": 0,
+    "flag_levels": 0,
+    "dots_attached": 0,
+    "staff_space": 71.75,
+    "levels_certain": 0,
+    "levels_possible": 1
+   },
+   "reason": "beams_ambiguous",
+   "outcome": "narrowed",
+   "is_beamambig": true,
+   "head_box": [
+    2027.0,
+    745.0,
+    21.0,
+    49.0
+   ],
+   "min_dist_notehead_widths": 22.952380952380953,
+   "is_near": false,
+   "cell_stem_rows": [
+    {
+     "value": [
+      467,
+      84,
+      19,
+      164
+     ],
+     "x0": 467,
+     "x1": 486
+    },
+    {
+     "value": [
+      287,
+      92,
+      19,
+      146
+     ],
+     "x0": 287,
+     "x1": 306
+    },
+    {
+     "value": [
+      1456,
+      131,
+      19,
+      185
+     ],
+     "x0": 1456,
+     "x1": 1475
+    },
+    {
+     "value": [
+      1133,
+      144,
+      15,
+      250
+     ],
+     "x0": 1133,
+     "x1": 1148
+    },
+    {
+     "value": [
+      1341,
+      180,
+      19,
+      272
+     ],
+     "x0": 1341,
+     "x1": 1360
+    },
+    {
+     "value": [
+      1545,
+      227,
+      21,
+      386
+     ],
+     "x0": 1545,
+     "x1": 1566
+    },
+    {
+     "value": [
+      1415,
+      230,
+      18,
+      193
+     ],
+     "x0": 1415,
+     "x1": 1433
+    },
+    {
+     "value": [
+      483,
+      326,
+      21,
+      196
+     ],
+     "x0": 483,
+     "x1": 504
+    },
+    {
+     "value": [
+      259,
+      337,
+      13,
+      156
+     ],
+     "x0": 259,
+     "x1": 272
+    },
+    {
+     "value": [
+      1255,
+      373,
+      16,
+      253
+     ],
+     "x0": 1255,
+     "x1": 1271
+    },
+    {
+     "value": [
+      394,
+      431,
+      16,
+      208
+     ],
+     "x0": 394,
+     "x1": 410
+    },
+    {
+     "value": [
+      567,
+      475,
+      21,
+      193
+     ],
+     "x0": 567,
+     "x1": 588
+    },
+    {
+     "value": [
+      131,
+      532,
+      26,
+      173
+     ],
+     "x0": 131,
+     "x1": 157
+    },
+    {
+     "value": [
+      851,
+      694,
+      18,
+      154
+     ],
+     "x0": 851,
+     "x1": 869
+    },
+    {
+     "value": [
+      773,
+      715,
+      13,
+      164
+     ],
+     "x0": 773,
+     "x1": 786
+    },
+    {
+     "value": [
+      1456,
+      772,
+      19,
+      191
+     ],
+     "x0": 1456,
+     "x1": 1475
+    }
+   ],
+   "bbox_page": [
+    1420.95068359375,
+    655.55908203125,
+    1429.0,
+    674.3408203125
+   ]
+  },
+  {
+   "subject": "glyph/14/0/0/4/1",
+   "cell": "cell/14/0/0/4",
+   "detail": {
+    "head": "noteheadBlackInSpace",
+    "beam_evidence": "none_over_this_note",
+    "cv_beams": 1,
+    "yolo_beams": 1,
+    "yolo_kept": 0,
+    "stems_attached": 0,
+    "beams_by_stem": 0,
+    "flags_attached": 0,
+    "flag_levels": 0,
+    "dots_attached": 0,
+    "staff_space": 100.0,
+    "levels_certain": 0,
+    "levels_possible": 1
+   },
+   "reason": "beams_ambiguous",
+   "outcome": "narrowed",
+   "is_beamambig": true,
+   "head_box": [
+    853.0,
+    384.0,
+    142.0,
+    129.0
+   ],
+   "min_dist_notehead_widths": 1.778169014084507,
+   "is_near": false,
+   "cell_stem_rows": [
+    {
+     "value": [
+      1164,
+      205,
+      25,
+      604
+     ],
+     "x0": 1164,
+     "x1": 1189
+    },
+    {
+     "value": [
+      251,
+      314,
+      22,
+      502
+     ],
+     "x0": 251,
+     "x1": 273
+    },
+    {
+     "value": [
+      553,
+      361,
+      26,
+      466
+     ],
+     "x0": 553,
+     "x1": 579
+    }
+   ],
+   "bbox_page": [
+    2981.575,
+    475.6,
+    3020.625,
+    511.07500000000005
+   ]
+  },
+  {
+   "subject": "glyph/17/0/0/0/2",
+   "cell": "cell/17/0/0/0",
+   "detail": {
+    "head": "noteheadBlackInSpace",
+    "beam_evidence": "none_over_this_note",
+    "cv_beams": 0,
+    "yolo_beams": 1,
+    "yolo_kept": 1,
+    "stems_attached": 0,
+    "beams_by_stem": 0,
+    "flags_attached": 0,
+    "flag_levels": 0,
+    "dots_attached": 0,
+    "staff_space": 58.75,
+    "levels_certain": 0,
+    "levels_possible": 1
+   },
+   "reason": "beams_ambiguous",
+   "outcome": "narrowed",
+   "is_beamambig": true,
+   "head_box": [
+    1075.0,
+    748.0,
+    82.0,
+    69.0
+   ],
+   "min_dist_notehead_widths": 2.2865853658536586,
+   "is_near": false,
+   "cell_stem_rows": [
+    {
+     "value": [
+      193,
+      42,
+      7,
+      135
+     ],
+     "x0": 193,
+     "x1": 200
+    },
+    {
+     "value": [
+      377,
+      44,
+      22,
+      137
+     ],
+     "x0": 377,
+     "x1": 399
+    },
+    {
+     "value": [
+      1297,
+      220,
+      13,
+      299
+     ],
+     "x0": 1297,
+     "x1": 1310
+    },
+    {
+     "value": [
+      416,
+      247,
+      15,
+      156
+     ],
+     "x0": 416,
+     "x1": 431
+    },
+    {
+     "value": [
+      869,
+      264,
+      13,
+      270
+     ],
+     "x0": 869,
+     "x1": 882
+    },
+    {
+     "value": [
+      349,
+      326,
+      15,
+      171
+     ],
+     "x0": 349,
+     "x1": 364
+    },
+    {
+     "value": [
+      484,
+      369,
+      13,
+      156
+     ],
+     "x0": 484,
+     "x1": 497
+    },
+    {
+     "value": [
+      135,
+      433,
+      11,
+      120
+     ],
+     "x0": 135,
+     "x1": 146
+    },
+    {
+     "value": [
+      208,
+      440,
+      19,
+      211
+     ],
+     "x0": 208,
+     "x1": 227
+    }
+   ],
+   "bbox_page": [
+    1142.33154296875,
+    709.529296875,
+    1180.64892578125,
+    741.77197265625
+   ]
+  },
+  {
+   "subject": "glyph/17/0/0/0/6",
+   "cell": "cell/17/0/0/0",
+   "detail": {
+    "head": "noteheadBlackInSpace",
+    "beam_evidence": "none_over_this_note",
+    "cv_beams": 0,
+    "yolo_beams": 1,
+    "yolo_kept": 1,
+    "stems_attached": 0,
+    "beams_by_stem": 0,
+    "flags_attached": 0,
+    "flag_levels": 0,
+    "dots_attached": 0,
+    "staff_space": 58.75,
+    "levels_certain": 0,
+    "levels_possible": 1
+   },
+   "reason": "beams_ambiguous",
+   "outcome": "narrowed",
+   "is_beamambig": true,
+   "head_box": [
+    1073.0,
+    269.0,
+    84.0,
+    73.0
+   ],
+   "min_dist_notehead_widths": 2.244047619047619,
+   "is_near": false,
+   "cell_stem_rows": [
+    {
+     "value": [
+      193,
+      42,
+      7,
+      135
+     ],
+     "x0": 193,
+     "x1": 200
+    },
+    {
+     "value": [
+      377,
+      44,
+      22,
+      137
+     ],
+     "x0": 377,
+     "x1": 399
+    },
+    {
+     "value": [
+      1297,
+      220,
+      13,
+      299
+     ],
+     "x0": 1297,
+     "x1": 1310
+    },
+    {
+     "value": [
+      416,
+      247,
+      15,
+      156
+     ],
+     "x0": 416,
+     "x1": 431
+    },
+    {
+     "value": [
+      869,
+      264,
+      13,
+      270
+     ],
+     "x0": 869,
+     "x1": 882
+    },
+    {
+     "value": [
+      349,
+      326,
+      15,
+      171
+     ],
+     "x0": 349,
+     "x1": 364
+    },
+    {
+     "value": [
+      484,
+      369,
+      13,
+      156
+     ],
+     "x0": 484,
+     "x1": 497
+    },
+    {
+     "value": [
+      135,
+      433,
+      11,
+      120
+     ],
+     "x0": 135,
+     "x1": 146
+    },
+    {
+     "value": [
+      208,
+      440,
+      19,
+      211
+     ],
+     "x0": 208,
+     "x1": 227
+    }
+   ],
+   "bbox_page": [
+    1141.39697265625,
+    485.69970703125,
+    1180.64892578125,
+    519.8115234375
+   ]
+  },
+  {
+   "subject": "glyph/18/0/0/2/2",
+   "cell": "cell/18/0/0/2",
+   "detail": {
+    "head": "noteheadBlackOnLine",
+    "beam_evidence": "none_over_this_note",
+    "cv_beams": 0,
+    "yolo_beams": 2,
+    "yolo_kept": 2,
+    "stems_attached": 0,
+    "beams_by_stem": 0,
+    "flags_attached": 0,
+    "flag_levels": 0,
+    "dots_attached": 1,
+    "staff_space": 88.75,
+    "levels_certain": 0,
+    "levels_possible": 2
+   },
+   "reason": "beams_ambiguous",
+   "outcome": "narrowed",
+   "is_beamambig": true,
+   "head_box": [
+    133.0,
+    1085.0,
+    141.0,
+    104.0
+   ],
+   "min_dist_notehead_widths": 7.343971631205674,
+   "is_near": false,
+   "cell_stem_rows": [
+    {
+     "value": [
+      1223,
+      56,
+      32,
+      671
+     ],
+     "x0": 1223,
+     "x1": 1255
+    }
+   ],
+   "bbox_page": [
+    2352.23779296875,
+    702.41357421875,
+    2395.9560546875,
+    734.65966796875
+   ]
+  },
+  {
+   "subject": "glyph/18/0/0/2/3",
+   "cell": "cell/18/0/0/2",
+   "detail": {
+    "head": "noteheadBlackInSpace",
+    "beam_evidence": "none_over_this_note",
+    "cv_beams": 0,
+    "yolo_beams": 2,
+    "yolo_kept": 2,
+    "stems_attached": 0,
+    "beams_by_stem": 0,
+    "flags_attached": 0,
+    "flag_levels": 0,
+    "dots_attached": 1,
+    "staff_space": 88.75,
+    "levels_certain": 0,
+    "levels_possible": 2
+   },
+   "reason": "beams_ambiguous",
+   "outcome": "narrowed",
+   "is_beamambig": true,
+   "head_box": [
+    135.0,
+    66.0,
+    129.0,
+    114.0
+   ],
+   "min_dist_notehead_widths": 8.05813953488372,
+   "is_near": false,
+   "cell_stem_rows": [
+    {
+     "value": [
+      1223,
+      56,
+      32,
+      671
+     ],
+     "x0": 1223,
+     "x1": 1255
+    }
+   ],
+   "bbox_page": [
+    2352.85791015625,
+    386.4638671875,
+    2392.85546875,
+    421.810546875
+   ]
+  },
+  {
+   "subject": "glyph/19/0/0/1/20",
+   "cell": "cell/19/0/0/1",
+   "detail": {
+    "head": "noteheadBlackInSpace",
+    "beam_evidence": "none_over_this_note",
+    "cv_beams": 0,
+    "yolo_beams": 1,
+    "yolo_kept": 1,
+    "stems_attached": 0,
+    "beams_by_stem": 0,
+    "flags_attached": 0,
+    "flag_levels": 0,
+    "dots_attached": 0,
+    "staff_space": 100.0,
+    "levels_certain": 0,
+    "levels_possible": 1
+   },
+   "reason": "beams_ambiguous",
+   "outcome": "narrowed",
+   "is_beamambig": true,
+   "head_box": [
+    1601.0,
+    809.0,
+    32.0,
+    81.0
+   ],
+   "min_dist_notehead_widths": 18.625,
+   "is_near": false,
+   "cell_stem_rows": [
+    {
+     "value": [
+      1010,
+      123,
+      22,
+      693
+     ],
+     "x0": 1010,
+     "x1": 1032
+    }
+   ],
+   "bbox_page": [
+    1971.2725,
+    607.4525,
+    1979.9924999999998,
+    629.525
+   ]
+  },
+  {
+   "subject": "glyph/19/0/0/2/7",
+   "cell": "cell/19/0/0/2",
+   "detail": {
+    "head": "noteheadBlackInSpace",
+    "beam_evidence": "read",
+    "cv_beams": 0,
+    "yolo_beams": 7,
+    "yolo_kept": 7,
+    "stems_attached": 0,
+    "beams_by_stem": 0,
+    "flags_attached": 0,
+    "flag_levels": 0,
+    "dots_attached": 0,
+    "staff_space": 100.0,
+    "levels_certain": 2,
+    "levels_possible": 4
+   },
+   "reason": "beams_ambiguous",
+   "outcome": "narrowed",
+   "is_beamambig": true,
+   "head_box": [
+    182.0,
+    387.0,
+    123.0,
+    119.0
+   ],
+   "min_dist_notehead_widths": 4.272357723577236,
+   "is_near": false,
+   "cell_stem_rows": [
+    {
+     "value": [
+      760,
+      214,
+      18,
+      606
+     ],
+     "x0": 760,
+     "x1": 778
+    }
+   ],
+   "bbox_page": [
+    2029.595,
+    492.4575,
+    2063.1125,
+    524.885
+   ]
+  },
+  {
+   "subject": "glyph/20/0/2/7/5",
+   "cell": "cell/20/0/2/7",
+   "detail": {
+    "head": "noteheadBlackInSpace",
+    "beam_evidence": "none_over_this_note",
+    "cv_beams": 0,
+    "yolo_beams": 2,
+    "yolo_kept": 2,
+    "stems_attached": 0,
+    "beams_by_stem": 0,
+    "flags_attached": 0,
+    "flag_levels": 0,
+    "dots_attached": 1,
+    "staff_space": 100.0,
+    "levels_certain": 0,
+    "levels_possible": 2
+   },
+   "reason": "beams_ambiguous",
+   "outcome": "narrowed",
+   "is_beamambig": true,
+   "head_box": [
+    1044.0,
+    814.0,
+    135.0,
+    117.0
+   ],
+   "min_dist_notehead_widths": 7.266666666666667,
+   "is_near": false,
+   "cell_stem_rows": [
+    {
+     "value": [
+      125,
+      398,
+      11,
+      330
+     ],
+     "x0": 125,
+     "x1": 136
+    }
+   ],
+   "bbox_page": [
+    4742.49,
+    1124.815,
+    4779.2775,
+    1156.6975
+   ]
+  },
+  {
+   "subject": "glyph/22/0/1/7/8",
+   "cell": "cell/22/0/1/7",
+   "detail": {
+    "head": "noteheadBlackInSpace",
+    "beam_evidence": "read",
+    "cv_beams": 0,
+    "yolo_beams": 5,
+    "yolo_kept": 5,
+    "stems_attached": 0,
+    "beams_by_stem": 0,
+    "flags_attached": 0,
+    "flag_levels": 0,
+    "dots_attached": 1,
+    "staff_space": 100.0,
+    "levels_certain": 3,
+    "levels_possible": 4
+   },
+   "reason": "beams_ambiguous",
+   "outcome": "narrowed",
+   "is_beamambig": true,
+   "head_box": [
+    197.0,
+    692.0,
+    136.0,
+    98.0
+   ],
+   "min_dist_notehead_widths": 2.125,
+   "is_near": false,
+   "cell_stem_rows": [
+    {
+     "value": [
+      545,
+      495,
+      18,
+      267
+     ],
+     "x0": 545,
+     "x1": 563
+    },
+    {
+     "value": [
+      663,
+      661,
+      26,
+      483
+     ],
+     "x0": 663,
+     "x1": 689
+    }
+   ],
+   "bbox_page": [
+    3860.6675,
+    862.03,
+    3898.4075,
+    889.225
+   ]
+  },
+  {
+   "subject": "glyph/22/0/1/7/9",
+   "cell": "cell/22/0/1/7",
+   "detail": {
+    "head": "noteheadBlackInSpace",
+    "beam_evidence": "read",
+    "cv_beams": 0,
+    "yolo_beams": 5,
+    "yolo_kept": 5,
+    "stems_attached": 0,
+    "beams_by_stem": 0,
+    "flags_attached": 0,
+    "flag_levels": 0,
+    "dots_attached": 1,
+    "staff_space": 100.0,
+    "levels_certain": 3,
+    "levels_possible": 4
+   },
+   "reason": "beams_ambiguous",
+   "outcome": "narrowed",
+   "is_beamambig": true,
+   "head_box": [
+    198.0,
+    585.0,
+    141.0,
+    109.0
+   ],
+   "min_dist_notehead_widths": 2.024822695035461,
+   "is_near": false,
+   "cell_stem_rows": [
+    {
+     "value": [
+      545,
+      495,
+      18,
+      267
+     ],
+     "x0": 545,
+     "x1": 563
+    },
+    {
+     "value": [
+      663,
+      661,
+      26,
+      483
+     ],
+     "x0": 663,
+     "x1": 689
+    }
+   ],
+   "bbox_page": [
+    3860.945,
+    832.3375,
+    3900.0725,
+    862.585
+   ]
+  },
+  {
+   "subject": "glyph/23/0/0/2/1",
+   "cell": "cell/23/0/0/2",
+   "detail": {
+    "head": "noteheadBlackOnLine",
+    "beam_evidence": "none_over_this_note",
+    "cv_beams": 0,
+    "yolo_beams": 1,
+    "yolo_kept": 1,
+    "stems_attached": 0,
+    "beams_by_stem": 0,
+    "flags_attached": 0,
+    "flag_levels": 0,
+    "dots_attached": 1,
+    "staff_space": 100.0,
+    "levels_certain": 0,
+    "levels_possible": 1
+   },
+   "reason": "beams_ambiguous",
+   "outcome": "narrowed",
+   "is_beamambig": true,
+   "head_box": [
+    988.0,
+    1270.0,
+    153.0,
+    126.0
+   ],
+   "min_dist_notehead_widths": 1.2516339869281046,
+   "is_near": false,
+   "cell_stem_rows": [
+    {
+     "value": [
+      248,
+      641,
+      25,
+      310
+     ],
+     "x0": 248,
+     "x1": 273
+    },
+    {
+     "value": [
+      862,
+      1147,
+      22,
+      253
+     ],
+     "x0": 862,
+     "x1": 884
+    }
+   ],
+   "bbox_page": [
+    2146.7,
+    739.25,
+    2188.775,
+    773.9000000000001
+   ]
+  },
+  {
+   "subject": "glyph/23/0/0/2/2",
+   "cell": "cell/23/0/0/2",
+   "detail": {
+    "head": "noteheadBlackInSpace",
+    "beam_evidence": "none_over_this_note",
+    "cv_beams": 0,
+    "yolo_beams": 1,
+    "yolo_kept": 1,
+    "stems_attached": 0,
+    "beams_by_stem": 0,
+    "flags_attached": 0,
+    "flag_levels": 0,
+    "dots_attached": 1,
+    "staff_space": 100.0,
+    "levels_certain": 0,
+    "levels_possible": 1
+   },
+   "reason": "beams_ambiguous",
+   "outcome": "narrowed",
+   "is_beamambig": true,
+   "head_box": [
+    985.0,
+    164.0,
+    138.0,
+    118.0
+   ],
+   "min_dist_notehead_widths": 1.3115942028985508,
+   "is_near": false,
+   "cell_stem_rows": [
+    {
+     "value": [
+      248,
+      641,
+      25,
+      310
+     ],
+     "x0": 248,
+     "x1": 273
+    },
+    {
+     "value": [
+      862,
+      1147,
+      22,
+      253
+     ],
+     "x0": 862,
+     "x1": 884
+    }
+   ],
+   "bbox_page": [
+    2145.875,
+    435.1,
+    2183.825,
+    467.55
+   ]
+  },
+  {
+   "subject": "glyph/24/0/2/0/2",
+   "cell": "cell/24/0/2/0",
+   "detail": {
+    "head": "noteheadBlackOnLine",
+    "beam_evidence": "none_over_this_note",
+    "cv_beams": 0,
+    "yolo_beams": 2,
+    "yolo_kept": 2,
+    "stems_attached": 0,
+    "beams_by_stem": 0,
+    "flags_attached": 0,
+    "flag_levels": 0,
+    "dots_attached": 0,
+    "staff_space": 71.25,
+    "levels_certain": 0,
+    "levels_possible": 2
+   },
+   "reason": "beams_ambiguous",
+   "outcome": "narrowed",
+   "is_beamambig": true,
+   "head_box": [
+    1477.0,
+    160.0,
+    103.0,
+    92.0
+   ],
+   "min_dist_notehead_widths": 10.728155339805825,
+   "is_near": false,
+   "cell_stem_rows": [
+    {
+     "value": [
+      416,
+      269,
+      15,
+      210
+     ],
+     "x0": 416,
+     "x1": 431
+    }
+   ],
+   "bbox_page": [
+    1234.02001953125,
+    906.640625,
+    1273.701171875,
+    942.083984375
+   ]
+  },
+  {
+   "subject": "glyph/24/0/2/0/6",
+   "cell": "cell/24/0/2/0",
+   "detail": {
+    "head": "noteheadBlackInSpace",
+    "beam_evidence": "none_over_this_note",
+    "cv_beams": 0,
+    "yolo_beams": 2,
+    "yolo_kept": 2,
+    "stems_attached": 0,
+    "beams_by_stem": 0,
+    "flags_attached": 0,
+    "flag_levels": 0,
+    "dots_attached": 0,
+    "staff_space": 71.25,
+    "levels_certain": 0,
+    "levels_possible": 2
+   },
+   "reason": "beams_ambiguous",
+   "outcome": "narrowed",
+   "is_beamambig": true,
+   "head_box": [
+    1488.0,
+    362.0,
+    93.0,
+    64.0
+   ],
+   "min_dist_notehead_widths": 11.946236559139784,
+   "is_near": false,
+   "cell_stem_rows": [
+    {
+     "value": [
+      416,
+      269,
+      15,
+      210
+     ],
+     "x0": 416,
+     "x1": 431
+    }
+   ],
+   "bbox_page": [
+    1238.2578125,
+    984.4619140625,
+    1274.08642578125,
+    1009.1181640625
+   ]
+  },
+  {
+   "subject": "glyph/25/0/0/7/1",
+   "cell": "cell/25/0/0/7",
+   "detail": {
+    "head": "noteheadBlackInSpace",
+    "beam_evidence": "none_over_this_note",
+    "cv_beams": 0,
+    "yolo_beams": 1,
+    "yolo_kept": 1,
+    "stems_attached": 0,
+    "beams_by_stem": 0,
+    "flags_attached": 0,
+    "flag_levels": 0,
+    "dots_attached": 1,
+    "staff_space": 100.0,
+    "levels_certain": 0,
+    "levels_possible": 1
+   },
+   "reason": "beams_ambiguous",
+   "outcome": "narrowed",
+   "is_beamambig": true,
+   "head_box": [
+    934.0,
+    188.0,
+    137.0,
+    115.0
+   ],
+   "min_dist_notehead_widths": 1.4343065693430657,
+   "is_near": false,
+   "cell_stem_rows": [
+    {
+     "value": [
+      797,
+      183,
+      18,
+      262
+     ],
+     "x0": 797,
+     "x1": 815
+    },
+    {
+     "value": [
+      219,
+      667,
+      29,
+      229
+     ],
+     "x0": 219,
+     "x1": 248
+    }
+   ],
+   "bbox_page": [
+    4421.85,
+    388.7,
+    4459.525,
+    420.325
+   ]
+  },
+  {
+   "subject": "glyph/25/0/0/7/9",
+   "cell": "cell/25/0/0/7",
+   "detail": {
+    "head": "noteheadBlackInSpace",
+    "beam_evidence": "none_over_this_note",
+    "cv_beams": 0,
+    "yolo_beams": 1,
+    "yolo_kept": 1,
+    "stems_attached": 0,
+    "beams_by_stem": 0,
+    "flags_attached": 0,
+    "flag_levels": 0,
+    "dots_attached": 1,
+    "staff_space": 100.0,
+    "levels_certain": 0,
+    "levels_possible": 1
+   },
+   "reason": "beams_ambiguous",
+   "outcome": "narrowed",
+   "is_beamambig": true,
+   "head_box": [
+    925.0,
+    321.0,
+    146.0,
+    102.0
+   ],
+   "min_dist_notehead_widths": 1.3150684931506849,
+   "is_near": false,
+   "cell_stem_rows": [
+    {
+     "value": [
+      797,
+      183,
+      18,
+      262
+     ],
+     "x0": 797,
+     "x1": 815
+    },
+    {
+     "value": [
+      219,
+      667,
+      29,
+      229
+     ],
+     "x0": 219,
+     "x1": 248
+    }
+   ],
+   "bbox_page": [
+    4419.375,
+    425.275,
+    4459.525,
+    453.325
+   ]
+  },
+  {
+   "subject": "glyph/26/0/1/5/14",
+   "cell": "cell/26/0/1/5",
+   "detail": {
+    "head": "noteheadBlackOnLine",
+    "beam_evidence": "none_over_this_note",
+    "cv_beams": 0,
+    "yolo_beams": 1,
+    "yolo_kept": 1,
+    "stems_attached": 0,
+    "beams_by_stem": 0,
+    "flags_attached": 0,
+    "flag_levels": 0,
+    "dots_attached": 0,
+    "staff_space": 100.0,
+    "levels_certain": 0,
+    "levels_possible": 1
+   },
+   "reason": "beams_ambiguous",
+   "outcome": "narrowed",
+   "is_beamambig": true,
+   "head_box": [
+    0.0,
+    1115.0,
+    30.0,
+    85.0
+   ],
+   "min_dist_notehead_widths": 36.233333333333334,
+   "is_near": false,
+   "cell_stem_rows": [
+    {
+     "value": [
+      1095,
+      478,
+      14,
+      374
+     ],
+     "x0": 1095,
+     "x1": 1109
+    }
+   ],
+   "bbox_page": [
+    3481.0,
+    925.625,
+    3489.25,
+    949.0
+   ]
+  },
+  {
+   "subject": "glyph/26/0/1/5/16",
+   "cell": "cell/26/0/1/5",
+   "detail": {
+    "head": "noteheadBlackOnLine",
+    "beam_evidence": "none_over_this_note",
+    "cv_beams": 0,
+    "yolo_beams": 1,
+    "yolo_kept": 1,
+    "stems_attached": 0,
+    "beams_by_stem": 0,
+    "flags_attached": 0,
+    "flag_levels": 0,
+    "dots_attached": 0,
+    "staff_space": 100.0,
+    "levels_certain": 0,
+    "levels_possible": 1
+   },
+   "reason": "beams_ambiguous",
+   "outcome": "narrowed",
+   "is_beamambig": true,
+   "head_box": [
+    0.0,
+    699.0,
+    31.0,
+    82.0
+   ],
+   "min_dist_notehead_widths": 35.04838709677419,
+   "is_near": false,
+   "cell_stem_rows": [
+    {
+     "value": [
+      1095,
+      478,
+      14,
+      374
+     ],
+     "x0": 1095,
+     "x1": 1109
+    }
+   ],
+   "bbox_page": [
+    3481.0,
+    811.225,
+    3489.525,
+    833.775
+   ]
+  }
+ ],
+ "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf",
+ "examples": {
+  "stem_gap_far_or_empty": [
+   {
+    "subject": "glyph/4/0/4/4/3",
+    "cell": "cell/4/0/4/4",
+    "detail": {
+     "head": "noteheadBlackInSpace",
+     "beam_evidence": "none_over_this_note",
+     "cv_beams": 0,
+     "yolo_beams": 1,
+     "yolo_kept": 1,
+     "stems_attached": 0,
+     "beams_by_stem": 0,
+     "flags_attached": 0,
+     "flag_levels": 0,
+     "dots_attached": 1,
+     "staff_space": 100.0,
+     "levels_certain": 0,
+     "levels_possible": 1
+    },
+    "reason": "beams_ambiguous",
+    "outcome": "narrowed",
+    "is_beamambig": true,
+    "bbox_page": [
+     2552.525,
+     1686.325,
+     2590.2,
+     1711.9
+    ]
+   },
+   {
+    "subject": "glyph/4/0/4/5/4",
+    "cell": "cell/4/0/4/5",
+    "detail": {
+     "head": "noteheadBlackInSpace",
+     "beam_evidence": "read",
+     "cv_beams": 0,
+     "yolo_beams": 2,
+     "yolo_kept": 2,
+     "stems_attached": 0,
+     "beams_by_stem": 0,
+     "flags_attached": 0,
+     "flag_levels": 0,
+     "dots_attached": 1,
+     "staff_space": 100.0,
+     "levels_certain": 1,
+     "levels_possible": 2
+    },
+    "reason": "beams_ambiguous",
+    "outcome": "narrowed",
+    "is_beamambig": true,
+    "bbox_page": [
+     2810.6,
+     1405.55,
+     2848.55,
+     1440.2
+    ]
+   },
+   {
+    "subject": "glyph/9/0/5/4/5",
+    "cell": "cell/9/0/5/4",
+    "detail": {
+     "head": "noteheadBlackInSpace",
+     "beam_evidence": "read",
+     "cv_beams": 0,
+     "yolo_beams": 4,
+     "yolo_kept": 4,
+     "stems_attached": 0,
+     "beams_by_stem": 0,
+     "flags_attached": 0,
+     "flag_levels": 0,
+     "dots_attached": 0,
+     "staff_space": 100.0,
+     "levels_certain": 3,
+     "levels_possible": 4
+    },
+    "reason": "beams_ambiguous",
+    "outcome": "narrowed",
+    "is_beamambig": true,
+    "bbox_page": [
+     3169.68,
+     1975.76,
+     3198.52,
+     1990.6
+    ]
+   },
+   {
+    "subject": "glyph/9/0/5/4/6",
+    "cell": "cell/9/0/5/4",
+    "detail": {
+     "head": "noteheadBlackInSpace",
+     "beam_evidence": "read",
+     "cv_beams": 0,
+     "yolo_beams": 4,
+     "yolo_kept": 4,
+     "stems_attached": 0,
+     "beams_by_stem": 0,
+     "flags_attached": 0,
+     "flag_levels": 0,
+     "dots_attached": 0,
+     "staff_space": 100.0,
+     "levels_certain": 3,
+     "levels_possible": 4
+    },
+    "reason": "beams_ambiguous",
+    "outcome": "narrowed",
+    "is_beamambig": true,
+    "bbox_page": [
+     3163.52,
+     1978.28,
+     3187.04,
+     1990.6
+    ]
+   },
+   {
+    "subject": "glyph/10/0/7/2/3",
+    "cell": "cell/10/0/7/2",
+    "detail": {
+     "head": "noteheadBlackOnLine",
+     "beam_evidence": "none_over_this_note",
+     "cv_beams": 0,
+     "yolo_beams": 1,
+     "yolo_kept": 1,
+     "stems_attached": 0,
+     "beams_by_stem": 0,
+     "flags_attached": 0,
+     "flag_levels": 0,
+     "dots_attached": 0,
+     "staff_space": 100.0,
+     "levels_certain": 0,
+     "levels_possible": 1
+    },
+    "reason": "beams_ambiguous",
+    "outcome": "narrowed",
+    "is_beamambig": true,
+    "bbox_page": [
+     2016.55,
+     2363.425,
+     2055.05,
+     2397.25
+    ]
+   },
+   {
+    "subject": "glyph/10/0/7/2/5",
+    "cell": "cell/10/0/7/2",
+    "detail": {
+     "head": "noteheadBlackOnLine",
+     "beam_evidence": "none_over_this_note",
+     "cv_beams": 0,
+     "yolo_beams": 1,
+     "yolo_kept": 1,
+     "stems_attached": 0,
+     "beams_by_stem": 0,
+     "flags_attached": 0,
+     "flag_levels": 0,
+     "dots_attached": 0,
+     "staff_space": 100.0,
+     "levels_certain": 0,
+     "levels_possible": 1
+    },
+    "reason": "beams_ambiguous",
+    "outcome": "narrowed",
+    "is_beamambig": true,
+    "bbox_page": [
+     2124.625,
+     2364.525,
+     2165.875,
+     2398.35
+    ]
+   },
+   {
+    "subject": "glyph/15/0/0/6/0",
+    "cell": "cell/15/0/0/6",
+    "detail": {
+     "head": "noteheadBlackInSpace",
+     "beam_evidence": "read",
+     "cv_beams": 0,
+     "yolo_beams": 3,
+     "yolo_kept": 3,
+     "stems_attached": 0,
+     "beams_by_stem": 0,
+     "flags_attached": 0,
+     "flag_levels": 0,
+     "dots_attached": 0,
+     "staff_space": 100.0,
+     "levels_certain": 1,
+     "levels_possible": 2
+    },
+    "reason": "beams_ambiguous",
+    "outcome": "narrowed",
+    "is_beamambig": true,
+    "bbox_page": [
+     4598.475,
+     613.3,
+     4605.9,
+     633.925
+    ]
+   },
+   {
+    "subject": "glyph/15/0/0/6/5",
+    "cell": "cell/15/0/0/6",
+    "detail": {
+     "head": "noteheadBlackInSpace",
+     "beam_evidence": "read",
+     "cv_beams": 0,
+     "yolo_beams": 3,
+     "yolo_kept": 3,
+     "stems_attached": 0,
+     "beams_by_stem": 0,
+     "flags_attached": 0,
+     "flag_levels": 0,
+     "dots_attached": 0,
+     "staff_space": 100.0,
+     "levels_certain": 1,
+     "levels_possible": 2
+    },
+    "reason": "beams_ambiguous",
+    "outcome": "narrowed",
+    "is_beamambig": true,
+    "bbox_page": [
+     4598.2,
+     641.075,
+     4605.9,
+     662.25
+    ]
+   },
+   {
+    "subject": "glyph/16/0/0/7/0",
+    "cell": "cell/16/0/0/7",
+    "detail": {
+     "head": "noteheadBlackOnLine",
+     "beam_evidence": "none_over_this_note",
+     "cv_beams": 0,
+     "yolo_beams": 1,
+     "yolo_kept": 1,
+     "stems_attached": 0,
+     "beams_by_stem": 0,
+     "flags_attached": 0,
+     "flag_levels": 0,
+     "dots_attached": 0,
+     "staff_space": 100.0,
+     "levels_certain": 0,
+     "levels_possible": 1
+    },
+    "reason": "beams_ambiguous",
+    "outcome": "narrowed",
+    "is_beamambig": true,
+    "bbox_page": [
+     3586.3,
+     673.1,
+     3625.625,
+     708.85
+    ]
+   },
+   {
+    "subject": "glyph/16/0/0/7/4",
+    "cell": "cell/16/0/0/7",
+    "detail": {
+     "head": "noteheadBlackOnLine",
+     "beam_evidence": "none_over_this_note",
+     "cv_beams": 0,
+     "yolo_beams": 1,
+     "yolo_kept": 1,
+     "stems_attached": 0,
+     "beams_by_stem": 0,
+     "flags_attached": 0,
+     "flag_levels": 0,
+     "dots_attached": 0,
+     "staff_space": 100.0,
+     "levels_certain": 0,
+     "levels_possible": 1
+    },
+    "reason": "beams_ambiguous",
+    "outcome": "narrowed",
+    "is_beamambig": true,
+    "bbox_page": [
+     3586.025,
+     703.625,
+     3627.0,
+     735.8
+    ]
+   },
+   {
+    "subject": "glyph/20/0/0/8/3",
+    "cell": "cell/20/0/0/8",
+    "detail": {
+     "head": "noteheadBlackInSpace",
+     "beam_evidence": "read",
+     "cv_beams": 0,
+     "yolo_beams": 5,
+     "yolo_kept": 5,
+     "stems_attached": 0,
+     "beams_by_stem": 0,
+     "flags_attached": 0,
+     "flag_levels": 0,
+     "dots_attached": 0,
+     "staff_space": 99.75,
+     "levels_certain": 3,
+     "levels_possible": 4
+    },
+    "reason": "beams_ambiguous",
+    "outcome": "narrowed",
+    "is_beamambig": true,
+    "bbox_page": [
+     5506.013671875,
+     607.67578125,
+     5514.0,
+     628.880859375
+    ]
+   },
+   {
+    "subject": "glyph/21/0/0/8/5",
+    "cell": "cell/21/0/0/8",
+    "detail": {
+     "head": "noteheadBlackInSpace",
+     "beam_evidence": "read",
+     "cv_beams": 0,
+     "yolo_beams": 3,
+     "yolo_kept": 3,
+     "stems_attached": 0,
+     "beams_by_stem": 0,
+     "flags_attached": 0,
+     "flag_levels": 0,
+     "dots_attached": 0,
+     "staff_space": 100.0,
+     "levels_certain": 1,
+     "levels_possible": 2
+    },
+    "reason": "beams_ambiguous",
+    "outcome": "narrowed",
+    "is_beamambig": true,
+    "bbox_page": [
+     4948.0,
+     617.1625,
+     4955.77,
+     634.09
+    ]
+   },
+   {
+    "subject": "glyph/21/0/0/8/7",
+    "cell": "cell/21/0/0/8",
+    "detail": {
+     "head": "noteheadBlackInSpace",
+     "beam_evidence": "read",
+     "cv_beams": 0,
+     "yolo_beams": 3,
+     "yolo_kept": 3,
+     "stems_attached": 0,
+     "beams_by_stem": 0,
+     "flags_attached": 0,
+     "flag_levels": 0,
+     "dots_attached": 0,
+     "staff_space": 100.0,
+     "levels_certain": 1,
+     "levels_possible": 2
+    },
+    "reason": "beams_ambiguous",
+    "outcome": "narrowed",
+    "is_beamambig": true,
+    "bbox_page": [
+     4948.0,
+     764.7925,
+     4955.77,
+     778.9449999999999
+    ]
+   },
+   {
+    "subject": "glyph/0/0/0/1/6",
+    "cell": "cell/0/0/0/1",
+    "detail": {
+     "head": "noteheadBlackInSpace",
+     "beam_evidence": "none_over_this_note",
+     "cv_beams": 0,
+     "yolo_beams": 2,
+     "yolo_kept": 2,
+     "stems_attached": 0,
+     "beams_by_stem": 0,
+     "flags_attached": 0,
+     "flag_levels": 0,
+     "dots_attached": 0,
+     "staff_space": 100.0,
+     "levels_certain": 0,
+     "levels_possible": 1
+    },
+    "reason": "beams_ambiguous",
+    "outcome": "narrowed",
+    "is_beamambig": true,
+    "head_box": [
+     1345.0,
+     494.0,
+     125.0,
+     113.0
+    ],
+    "min_dist_notehead_widths": 4.124,
+    "is_near": false,
+    "cell_stem_rows": [
+     {
+      "value": [
+       760,
+       324,
+       19,
+       254
+      ],
+      "x0": 760,
+      "x1": 779
+     },
+     {
+      "value": [
+       884,
+       479,
+       16,
+       449
+      ],
+      "x0": 884,
+      "x1": 900
+     }
+    ],
+    "bbox_page": [
+     2545.7625,
+     1550.315,
+     2586.075,
+     1586.7575
+    ]
+   },
+   {
+    "subject": "glyph/0/0/0/1/15",
+    "cell": "cell/0/0/0/1",
+    "detail": {
+     "head": "noteheadBlackInSpace",
+     "beam_evidence": "none_over_this_note",
+     "cv_beams": 0,
+     "yolo_beams": 2,
+     "yolo_kept": 2,
+     "stems_attached": 0,
+     "beams_by_stem": 0,
+     "flags_attached": 0,
+     "flag_levels": 0,
+     "dots_attached": 0,
+     "staff_space": 100.0,
+     "levels_certain": 0,
+     "levels_possible": 1
+    },
+    "reason": "beams_ambiguous",
+    "outcome": "narrowed",
+    "is_beamambig": true,
+    "head_box": [
+     1347.0,
+     607.0,
+     125.0,
+     95.0
+    ],
+    "min_dist_notehead_widths": 4.14,
+    "is_near": false,
+    "cell_stem_rows": [
+     {
+      "value": [
+       760,
+       324,
+       19,
+       254
+      ],
+      "x0": 760,
+      "x1": 779
+     },
+     {
+      "value": [
+       884,
+       479,
+       16,
+       449
+      ],
+      "x0": 884,
+      "x1": 900
+     }
+    ],
+    "bbox_page": [
+     2546.4075,
+     1586.7575,
+     2586.72,
+     1617.395
+    ]
+   },
+   {
+    "subject": "glyph/1/0/2/0/17",
+    "cell": "cell/1/0/2/0",
+    "detail": {
+     "head": "noteheadBlackInSpace",
+     "beam_evidence": "read",
+     "cv_beams": 4,
+     "yolo_beams": 10,
+     "yolo_kept": 0,
+     "stems_attached": 0,
+     "beams_by_stem": 0,
+     "flags_attached": 0,
+     "flag_levels": 0,
+     "dots_attached": 0,
+     "staff_space": 46.75,
+     "levels_certain": 2,
+     "levels_possible": 3
+    },
+    "reason": "beams_ambiguous",
+    "outcome": "narrowed",
+    "is_beamambig": true,
+    "head_box": [
+     1599.0,
+     318.0,
+     68.0,
+     55.0
+    ],
+    "min_dist_notehead_widths": 1.9485294117647058,
+    "is_near": false,
+    "cell_stem_rows": [
+     {
+      "value": [
+       1054,
+       91,
+       12,
+       265
+      ],
+      "x0": 1054,
+      "x1": 1066
+     },
+     {
+      "value": [
+       1221,
+       91,
+       12,
+       282
+      ],
+      "x0": 1221,
+      "x1": 1233
+     },
+     {
+      "value": [
+       1386,
+       91,
+       12,
+       295
+      ],
+      "x0": 1386,
+      "x1": 1398
+     },
+     {
+      "value": [
+       1496,
+       91,
+       9,
+       268
+      ],
+      "x0": 1496,
+      "x1": 1505
+     },
+     {
+      "value": [
+       1811,
+       109,
+       11,
+       274
+      ],
+      "x0": 1811,
+      "x1": 1822
+     },
+     {
+      "value": [
+       1933,
+       125,
+       12,
+       281
+      ],
+      "x0": 1933,
+      "x1": 1945
+     },
+     {
+      "value": [
+       264,
+       174,
+       8,
+       134
+      ],
+      "x0": 264,
+      "x1": 272
+     },
+     {
+      "value": [
+       150,
+       249,
+       15,
+       176
+      ],
+      "x0": 150,
+      "x1": 165
+     }
+    ],
+    "bbox_page": [
+     1565.81787109375,
+     1123.1044921875,
+     1605.82763671875,
+     1155.46533203125
+    ]
+   },
+   {
+    "subject": "glyph/1/0/2/0/18",
+    "cell": "cell/1/0/2/0",
+    "detail": {
+     "head": "noteheadBlackOnLine",
+     "beam_evidence": "read",
+     "cv_beams": 4,
+     "yolo_beams": 10,
+     "yolo_kept": 0,
+     "stems_attached": 0,
+     "beams_by_stem": 0,
+     "flags_attached": 0,
+     "flag_levels": 0,
+     "dots_attached": 0,
+     "staff_space": 46.75,
+     "levels_certain": 2,
+     "levels_possible": 3
+    },
+    "reason": "beams_ambiguous",
+    "outcome": "narrowed",
+    "is_beamambig": true,
+    "head_box": [
+     1598.0,
+     199.0,
+     68.0,
+     58.0
+    ],
+    "min_dist_notehead_widths": 1.9338235294117647,
+    "is_near": false,
+    "cell_stem_rows": [
+     {
+      "value": [
+       1054,
+       91,
+       12,
+       265
+      ],
+      "x0": 1054,
+      "x1": 1066
+     },
+     {
+      "value": [
+       1221,
+       91,
+       12,
+       282
+      ],
+      "x0": 1221,
+      "x1": 1233
+     },
+     {
+      "value": [
+       1386,
+       91,
+       12,
+       295
+      ],
+      "x0": 1386,
+      "x1": 1398
+     },
+     {
+      "value": [
+       1496,
+       91,
+       9,
+       268
+      ],
+      "x0": 1496,
+      "x1": 1505
+     },
+     {
+      "value": [
+       1811,
+       109,
+       11,
+       274
+      ],
+      "x0": 1811,
+      "x1": 1822
+     },
+     {
+      "value": [
+       1933,
+       125,
+       12,
+       281
+      ],
+      "x0": 1933,
+      "x1": 1945
+     },
+     {
+      "value": [
+       264,
+       174,
+       8,
+       134
+      ],
+      "x0": 264,
+      "x1": 272
+     },
+     {
+      "value": [
+       150,
+       249,
+       15,
+       176
+      ],
+      "x0": 150,
+      "x1": 165
+     }
+    ],
+    "bbox_page": [
+     1565.2294921875,
+     1053.08740234375,
+     1605.2392578125,
+     1087.21337890625
+    ]
+   },
+   {
+    "subject": "glyph/2/0/0/3/3",
+    "cell": "cell/2/0/0/3",
+    "detail": {
+     "head": "noteheadBlackInSpace",
+     "beam_evidence": "none_over_this_note",
+     "cv_beams": 0,
+     "yolo_beams": 2,
+     "yolo_kept": 2,
+     "stems_attached": 0,
+     "beams_by_stem": 0,
+     "flags_attached": 0,
+     "flag_levels": 0,
+     "dots_attached": 0,
+     "staff_space": 71.5,
+     "levels_certain": 0,
+     "levels_possible": 2
+    },
+    "reason": "beams_ambiguous",
+    "outcome": "narrowed",
+    "is_beamambig": true,
+    "head_box": [
+     1592.0,
+     191.0,
+     98.0,
+     88.0
+    ],
+    "min_dist_notehead_widths": 8.556122448979592,
+    "is_near": false,
+    "cell_stem_rows": [
+     {
+      "value": [
+       796,
+       83,
+       13,
+       184
+      ],
+      "x0": 796,
+      "x1": 809
+     },
+     {
+      "value": [
+       82,
+       175,
+       10,
+       210
+      ],
+      "x0": 82,
+      "x1": 92
+     }
+    ],
+    "bbox_page": [
+     3911.328125,
+     439.744140625,
+     3948.65234375,
+     473.259765625
+    ]
+   },
+   {
+    "subject": "glyph/2/0/0/3/14",
+    "cell": "cell/2/0/0/3",
+    "detail": {
+     "head": "noteheadBlackInSpace",
+     "beam_evidence": "none_over_this_note",
+     "cv_beams": 0,
+     "yolo_beams": 2,
+     "yolo_kept": 2,
+     "stems_attached": 0,
+     "beams_by_stem": 0,
+     "flags_attached": 0,
+     "flag_levels": 0,
+     "dots_attached": 0,
+     "staff_space": 71.5,
+     "levels_certain": 0,
+     "levels_possible": 2
+    },
+    "reason": "beams_ambiguous",
+    "outcome": "narrowed",
+    "is_beamambig": true,
+    "head_box": [
+     1591.0,
+     274.0,
+     101.0,
+     89.0
+    ],
+    "min_dist_notehead_widths": 8.306930693069306,
+    "is_near": false,
+    "cell_stem_rows": [
+     {
+      "value": [
+       796,
+       83,
+       13,
+       184
+      ],
+      "x0": 796,
+      "x1": 809
+     },
+     {
+      "value": [
+       82,
+       175,
+       10,
+       210
+      ],
+      "x0": 82,
+      "x1": 92
+     }
+    ],
+    "bbox_page": [
+     3910.947265625,
+     471.35546875,
+     3949.4140625,
+     505.251953125
+    ]
+   },
+   {
+    "subject": "glyph/3/0/0/0/5",
+    "cell": "cell/3/0/0/0",
+    "detail": {
+     "head": "noteheadBlackOnLine",
+     "beam_evidence": "none_over_this_note",
+     "cv_beams": 0,
+     "yolo_beams": 1,
+     "yolo_kept": 1,
+     "stems_attached": 0,
+     "beams_by_stem": 0,
+     "flags_attached": 0,
+     "flag_levels": 0,
+     "dots_attached": 1,
+     "staff_space": 78.25,
+     "levels_certain": 0,
+     "levels_possible": 1
+    },
+    "reason": "beams_ambiguous",
+    "outcome": "narrowed",
+    "is_beamambig": true,
+    "head_box": [
+     1623.0,
+     260.0,
+     116.0,
+     95.0
+    ],
+    "min_dist_notehead_widths": 9.241379310344827,
+    "is_near": false,
+    "cell_stem_rows": [
+     {
+      "value": [
+       206,
+       79,
+       6,
+       167
+      ],
+      "x0": 206,
+      "x1": 212
+     },
+     {
+      "value": [
+       513,
+       353,
+       17,
+       202
+      ],
+      "x0": 513,
+      "x1": 530
+     },
+     {
+      "value": [
+       426,
+       479,
+       17,
+       200
+      ],
+      "x0": 426,
+      "x1": 443
+     },
+     {
+      "value": [
+       601,
+       516,
+       16,
+       208
+      ],
+      "x0": 601,
+      "x1": 617
+     },
+     {
+      "value": [
+       254,
+       688,
+       8,
+       191
+      ],
+      "x0": 254,
+      "x1": 262
+     }
+    ],
+    "bbox_page": [
+     1220.13330078125,
+     449.294921875,
+     1261.31103515625,
+     483.01806640625
+    ]
+   },
+   {
+    "subject": "glyph/3/0/0/0/9",
+    "cell": "cell/3/0/0/0",
+    "detail": {
+     "head": "noteheadBlackOnLine",
+     "beam_evidence": "none_over_this_note",
+     "cv_beams": 0,
+     "yolo_beams": 1,
+     "yolo_kept": 1,
+     "stems_attached": 0,
+     "beams_by_stem": 0,
+     "flags_attached": 0,
+     "flag_levels": 0,
+     "dots_attached": 1,
+     "staff_space": 78.25,
+     "levels_certain": 0,
+     "levels_possible": 1
+    },
+    "reason": "beams_ambiguous",
+    "outcome": "narrowed",
+    "is_beamambig": true,
+    "head_box": [
+     1647.0,
+     347.0,
+     88.0,
+     85.0
+    ],
+    "min_dist_notehead_widths": 12.295454545454545,
+    "is_near": false,
+    "cell_stem_rows": [
+     {
+      "value": [
+       206,
+       79,
+       6,
+       167
+      ],
+      "x0": 206,
+      "x1": 212
+     },
+     {
+      "value": [
+       513,
+       353,
+       17,
+       202
+      ],
+      "x0": 513,
+      "x1": 530
+     },
+     {
+      "value": [
+       426,
+       479,
+       17,
+       200
+      ],
+      "x0": 426,
+      "x1": 443
+     },
+     {
+      "value": [
+       601,
+       516,
+       16,
+       208
+      ],
+      "x0": 601,
+      "x1": 617
+     },
+     {
+      "value": [
+       254,
+       688,
+       8,
+       191
+      ],
+      "x0": 254,
+      "x1": 262
+     }
+    ],
+    "bbox_page": [
+     1228.65283203125,
+     480.17822265625,
+     1259.89111328125,
+     510.3515625
+    ]
+   },
+   {
+    "subject": "glyph/5/0/0/0/7",
+    "cell": "cell/5/0/0/0",
+    "detail": {
+     "head": "noteheadBlackOnLine",
+     "beam_evidence": "none_over_this_note",
+     "cv_beams": 2,
+     "yolo_beams": 0,
+     "yolo_kept": 0,
+     "stems_attached": 0,
+     "beams_by_stem": 0,
+     "flags_attached": 0,
+     "flag_levels": 0,
+     "dots_attached": 0,
+     "staff_space": 69.75,
+     "levels_certain": 0,
+     "levels_possible": 2
+    },
+    "reason": "beams_ambiguous",
+    "outcome": "narrowed",
+    "is_beamambig": true,
+    "head_box": [
+     1521.0,
+     915.0,
+     43.0,
+     44.0
+    ],
+    "min_dist_notehead_widths": 1.4069767441860466,
+    "is_near": false,
+    "cell_stem_rows": [
+     {
+      "value": [
+       1473,
+       0,
+       18,
+       216
+      ],
+      "x0": 1473,
+      "x1": 1491
+     },
+     {
+      "value": [
+       1297,
+       32,
+       20,
+       187
+      ],
+      "x0": 1297,
+      "x1": 1317
+     },
+     {
+      "value": [
+       205,
+       60,
+       5,
+       149
+      ],
+      "x0": 205,
+      "x1": 210
+     },
+     {
+      "value": [
+       320,
+       63,
+       21,
+       146
+      ],
+      "x0": 320,
+      "x1": 341
+     },
+     {
+      "value": [
+       798,
+       129,
+       23,
+       460
+      ],
+      "x0": 798,
+      "x1": 821
+     },
+     {
+      "value": [
+       1389,
+       140,
+       20,
+       424
+      ],
+      "x0": 1389,
+      "x1": 1409
+     },
+     {
+      "value": [
+       484,
+       308,
+       20,
+       189
+      ],
+      "x0": 484,
+      "x1": 504
+     },
+     {
+      "value": [
+       269,
+       316,
+       13,
+       148
+      ],
+      "x0": 269,
+      "x1": 282
+     },
+     {
+      "value": [
+       402,
+       400,
+       18,
+       207
+      ],
+      "x0": 402,
+      "x1": 420
+     },
+     {
+      "value": [
+       563,
+       451,
+       18,
+       190
+      ],
+      "x0": 563,
+      "x1": 581
+     },
+     {
+      "value": [
+       144,
+       510,
+       25,
+       164
+      ],
+      "x0": 144,
+      "x1": 169
+     }
+    ],
+    "bbox_page": [
+     1235.88330078125,
+     725.86865234375,
+     1252.701171875,
+     743.07763671875
+    ]
+   },
+   {
+    "subject": "glyph/5/0/0/4/2",
+    "cell": "cell/5/0/0/4",
+    "detail": {
+     "head": "noteheadBlackOnLine",
+     "beam_evidence": "read",
+     "cv_beams": 0,
+     "yolo_beams": 4,
+     "yolo_kept": 4,
+     "stems_attached": 0,
+     "beams_by_stem": 0,
+     "flags_attached": 0,
+     "flag_levels": 0,
+     "dots_attached": 0,
+     "staff_space": 93.0,
+     "levels_certain": 3,
+     "levels_possible": 4
+    },
+    "reason": "beams_ambiguous",
+    "outcome": "narrowed",
+    "is_beamambig": true,
+    "head_box": [
+     218.0,
+     1155.0,
+     129.0,
+     116.0
+    ],
+    "min_dist_notehead_widths": 1.4069767441860466,
+    "is_near": false,
+    "cell_stem_rows": [
+     {
+      "value": [
+       89,
+       1079,
+       24,
+       221
+      ],
+      "x0": 89,
+      "x1": 113
+     }
+    ],
+    "bbox_page": [
+     3196.8671875,
+     706.37890625,
+     3234.66015625,
+     740.36328125
+    ]
+   },
+   {
+    "subject": "glyph/6/0/3/8/6",
+    "cell": "cell/6/0/3/8",
+    "detail": {
+     "head": "noteheadBlackInSpace",
+     "beam_evidence": "none_over_this_note",
+     "cv_beams": 0,
+     "yolo_beams": 2,
+     "yolo_kept": 2,
+     "stems_attached": 0,
+     "beams_by_stem": 0,
+     "flags_attached": 0,
+     "flag_levels": 0,
+     "dots_attached": 0,
+     "staff_space": 100.0,
+     "levels_certain": 0,
+     "levels_possible": 1
+    },
+    "reason": "beams_ambiguous",
+    "outcome": "narrowed",
+    "is_beamambig": true,
+    "head_box": [
+     0.0,
+     442.0,
+     33.0,
+     82.0
+    ],
+    "min_dist_notehead_widths": 3.3333333333333335,
+    "is_near": false,
+    "cell_stem_rows": [
+     {
+      "value": [
+       112,
+       524,
+       29,
+       411
+      ],
+      "x0": 112,
+      "x1": 141
+     },
+     {
+      "value": [
+       230,
+       524,
+       30,
+       244
+      ],
+      "x0": 230,
+      "x1": 260
+     }
+    ],
+    "bbox_page": [
+     4985.0,
+     1390.34,
+     4993.91,
+     1412.48
+    ]
+   },
+   {
+    "subject": "glyph/6/0/3/8/10",
+    "cell": "cell/6/0/3/8",
+    "detail": {
+     "head": "noteheadBlackInSpace",
+     "beam_evidence": "none_over_this_note",
+     "cv_beams": 0,
+     "yolo_beams": 2,
+     "yolo_kept": 2,
+     "stems_attached": 0,
+     "beams_by_stem": 0,
+     "flags_attached": 0,
+     "flag_levels": 0,
+     "dots_attached": 0,
+     "staff_space": 100.0,
+     "levels_certain": 0,
+     "levels_possible": 1
+    },
+    "reason": "beams_ambiguous",
+    "outcome": "narrowed",
+    "is_beamambig": true,
+    "head_box": [
+     0.0,
+     643.0,
+     35.0,
+     79.0
+    ],
+    "min_dist_notehead_widths": 3.1142857142857143,
+    "is_near": false,
+    "cell_stem_rows": [
+     {
+      "value": [
+       112,
+       524,
+       29,
+       411
+      ],
+      "x0": 112,
+      "x1": 141
+     },
+     {
+      "value": [
+       230,
+       524,
+       30,
+       244
+      ],
+      "x0": 230,
+      "x1": 260
+     }
+    ],
+    "bbox_page": [
+     4985.0,
+     1444.61,
+     4994.45,
+     1465.94
+    ]
+   },
+   {
+    "subject": "glyph/7/0/0/1/1",
+    "cell": "cell/7/0/0/1",
+    "detail": {
+     "head": "noteheadBlackInSpace",
+     "beam_evidence": "none_over_this_note",
+     "cv_beams": 0,
+     "yolo_beams": 1,
+     "yolo_kept": 1,
+     "stems_attached": 0,
+     "beams_by_stem": 0,
+     "flags_attached": 0,
+     "flag_levels": 0,
+     "dots_attached": 0,
+     "staff_space": 100.0,
+     "levels_certain": 0,
+     "levels_possible": 1
+    },
+    "reason": "beams_ambiguous",
+    "outcome": "narrowed",
+    "is_beamambig": true,
+    "head_box": [
+     1043.0,
+     532.0,
+     138.0,
+     127.0
+    ],
+    "min_dist_notehead_widths": 1.326086956521739,
+    "is_near": false,
+    "cell_stem_rows": [
+     {
+      "value": [
+       920,
+       409,
+       18,
+       269
+      ],
+      "x0": 920,
+      "x1": 938
+     },
+     {
+      "value": [
+       215,
+       692,
+       33,
+       233
+      ],
+      "x0": 215,
+      "x1": 248
+     }
+    ],
+    "bbox_page": [
+     1602.825,
+     581.3,
+     1640.775,
+     616.225
+    ]
+   },
+   {
+    "subject": "glyph/7/0/0/1/5",
+    "cell": "cell/7/0/0/1",
+    "detail": {
+     "head": "noteheadBlackInSpace",
+     "beam_evidence": "none_over_this_note",
+     "cv_beams": 0,
+     "yolo_beams": 1,
+     "yolo_kept": 1,
+     "stems_attached": 0,
+     "beams_by_stem": 0,
+     "flags_attached": 0,
+     "flag_levels": 0,
+     "dots_attached": 0,
+     "staff_space": 100.0,
+     "levels_certain": 0,
+     "levels_possible": 1
+    },
+    "reason": "beams_ambiguous",
+    "outcome": "narrowed",
+    "is_beamambig": true,
+    "head_box": [
+     1045.0,
+     647.0,
+     137.0,
+     101.0
+    ],
+    "min_dist_notehead_widths": 1.3467153284671534,
+    "is_near": false,
+    "cell_stem_rows": [
+     {
+      "value": [
+       920,
+       409,
+       18,
+       269
+      ],
+      "x0": 920,
+      "x1": 938
+     },
+     {
+      "value": [
+       215,
+       692,
+       33,
+       233
+      ],
+      "x0": 215,
+      "x1": 248
+     }
+    ],
+    "bbox_page": [
+     1603.375,
+     612.925,
+     1641.05,
+     640.7
+    ]
+   },
+   {
+    "subject": "glyph/8/0/1/2/10",
+    "cell": "cell/8/0/1/2",
+    "detail": {
+     "head": "noteheadBlackOnLine",
+     "beam_evidence": "none_over_this_note",
+     "cv_beams": 0,
+     "yolo_beams": 4,
+     "yolo_kept": 4,
+     "stems_attached": 0,
+     "beams_by_stem": 0,
+     "flags_attached": 0,
+     "flag_levels": 0,
+     "dots_attached": 0,
+     "staff_space": 100.0,
+     "levels_certain": 0,
+     "levels_possible": 1
+    },
+    "reason": "beams_ambiguous",
+    "outcome": "narrowed",
+    "is_beamambig": true,
+    "head_box": [
+     0.0,
+     0.0,
+     25.0,
+     85.0
+    ],
+    "min_dist_notehead_widths": 7.86,
+    "is_near": false,
+    "cell_stem_rows": [
+     {
+      "value": [
+       313,
+       142,
+       21,
+       323
+      ],
+      "x0": 313,
+      "x1": 334
+     },
+     {
+      "value": [
+       849,
+       198,
+       21,
+       305
+      ],
+      "x0": 849,
+      "x1": 870
+     },
+     {
+      "value": [
+       737,
+       651,
+       21,
+       386
+      ],
+      "x0": 737,
+      "x1": 758
+     },
+     {
+      "value": [
+       197,
+       703,
+       24,
+       369
+      ],
+      "x0": 197,
+      "x1": 221
+     }
+    ],
+    "bbox_page": [
+     1586.0,
+     742.0,
+     1593.125,
+     766.225
+    ]
+   },
+   {
+    "subject": "glyph/8/0/1/2/17",
+    "cell": "cell/8/0/1/2",
+    "detail": {
+     "head": "noteheadBlackOnLine",
+     "beam_evidence": "none_over_this_note",
+     "cv_beams": 0,
+     "yolo_beams": 4,
+     "yolo_kept": 4,
+     "stems_attached": 0,
+     "beams_by_stem": 0,
+     "flags_attached": 0,
+     "flag_levels": 0,
+     "dots_attached": 0,
+     "staff_space": 100.0,
+     "levels_certain": 0,
+     "levels_possible": 1
+    },
+    "reason": "beams_ambiguous",
+    "outcome": "narrowed",
+    "is_beamambig": true,
+    "head_box": [
+     0.0,
+     804.0,
+     32.0,
+     153.0
+    ],
+    "min_dist_notehead_widths": 6.03125,
+    "is_near": false,
+    "cell_stem_rows": [
+     {
+      "value": [
+       313,
+       142,
+       21,
+       323
+      ],
+      "x0": 313,
+      "x1": 334
+     },
+     {
+      "value": [
+       849,
+       198,
+       21,
+       305
+      ],
+      "x0": 849,
+      "x1": 870
+     },
+     {
+      "value": [
+       737,
+       651,
+       21,
+       386
+      ],
+      "x0": 737,
+      "x1": 758
+     },
+     {
+      "value": [
+       197,
+       703,
+       24,
+       369
+      ],
+      "x0": 197,
+      "x1": 221
+     }
+    ],
+    "bbox_page": [
+     1586.0,
+     971.14,
+     1595.12,
+     1014.745
+    ]
+   },
+   {
+    "subject": "glyph/11/0/0/1/0",
+    "cell": "cell/11/0/0/1",
+    "detail": {
+     "head": "noteheadBlackOnLine",
+     "beam_evidence": "read",
+     "cv_beams": 0,
+     "yolo_beams": 3,
+     "yolo_kept": 3,
+     "stems_attached": 0,
+     "beams_by_stem": 0,
+     "flags_attached": 0,
+     "flag_levels": 0,
+     "dots_attached": 0,
+     "staff_space": 100.0,
+     "levels_certain": 1,
+     "levels_possible": 2
+    },
+    "reason": "beams_ambiguous",
+    "outcome": "narrowed",
+    "is_beamambig": true,
+    "head_box": [
+     136.0,
+     1289.0,
+     140.0,
+     109.0
+    ],
+    "min_dist_notehead_widths": 4.707142857142857,
+    "is_near": false,
+    "cell_stem_rows": [
+     {
+      "value": [
+       854,
+       1136,
+       22,
+       245
+      ],
+      "x0": 854,
+      "x1": 876
+     }
+    ],
+    "bbox_page": [
+     1374.74,
+     784.6975,
+     1413.59,
+     814.9449999999999
+    ]
+   },
+   {
+    "subject": "glyph/11/0/0/1/2",
+    "cell": "cell/11/0/0/1",
+    "detail": {
+     "head": "noteheadBlackInSpace",
+     "beam_evidence": "read",
+     "cv_beams": 0,
+     "yolo_beams": 3,
+     "yolo_kept": 3,
+     "stems_attached": 0,
+     "beams_by_stem": 0,
+     "flags_attached": 0,
+     "flag_levels": 0,
+     "dots_attached": 0,
+     "staff_space": 100.0,
+     "levels_certain": 1,
+     "levels_possible": 2
+    },
+    "reason": "beams_ambiguous",
+    "outcome": "narrowed",
+    "is_beamambig": true,
+    "head_box": [
+     129.0,
+     185.0,
+     140.0,
+     122.0
+    ],
+    "min_dist_notehead_widths": 4.757142857142857,
+    "is_near": false,
+    "cell_stem_rows": [
+     {
+      "value": [
+       854,
+       1136,
+       22,
+       245
+      ],
+      "x0": 854,
+      "x1": 876
+     }
+    ],
+    "bbox_page": [
+     1372.7975,
+     478.3375,
+     1411.6475,
+     512.1925
+    ]
+   },
+   {
+    "subject": "glyph/12/0/1/2/3",
+    "cell": "cell/12/0/1/2",
+    "detail": {
+     "head": "noteheadBlackInSpace",
+     "beam_evidence": "none_over_this_note",
+     "cv_beams": 0,
+     "yolo_beams": 4,
+     "yolo_kept": 4,
+     "stems_attached": 0,
+     "beams_by_stem": 0,
+     "flags_attached": 0,
+     "flag_levels": 0,
+     "dots_attached": 0,
+     "staff_space": 100.0,
+     "levels_certain": 0,
+     "levels_possible": 4
+    },
+    "reason": "beams_ambiguous",
+    "outcome": "narrowed",
+    "is_beamambig": true,
+    "head_box": [
+     1259.0,
+     154.0,
+     27.0,
+     82.0
+    ],
+    "min_dist_notehead_widths": 42.111111111111114,
+    "is_near": false,
+    "cell_stem_rows": [
+     {
+      "value": [
+       119,
+       373,
+       33,
+       389
+      ],
+      "x0": 119,
+      "x1": 152
+     }
+    ],
+    "bbox_page": [
+     1874.3725,
+     676.735,
+     1881.865,
+     699.49
+    ]
+   },
+   {
+    "subject": "glyph/12/0/1/2/6",
+    "cell": "cell/12/0/1/2",
+    "detail": {
+     "head": "noteheadBlackInSpace",
+     "beam_evidence": "none_over_this_note",
+     "cv_beams": 0,
+     "yolo_beams": 4,
+     "yolo_kept": 4,
+     "stems_attached": 0,
+     "beams_by_stem": 0,
+     "flags_attached": 0,
+     "flag_levels": 0,
+     "dots_attached": 0,
+     "staff_space": 100.0,
+     "levels_certain": 0,
+     "levels_possible": 4
+    },
+    "reason": "beams_ambiguous",
+    "outcome": "narrowed",
+    "is_beamambig": true,
+    "head_box": [
+     1258.0,
+     275.0,
+     28.0,
+     73.0
+    ],
+    "min_dist_notehead_widths": 40.589285714285715,
+    "is_near": false,
+    "cell_stem_rows": [
+     {
+      "value": [
+       119,
+       373,
+       33,
+       389
+      ],
+      "x0": 119,
+      "x1": 152
+     }
+    ],
+    "bbox_page": [
+     1874.095,
+     710.3125,
+     1881.865,
+     730.5699999999999
+    ]
+   },
+   {
+    "subject": "glyph/13/0/0/0/2",
+    "cell": "cell/13/0/0/0",
+    "detail": {
+     "head": "noteheadBlackInSpace",
+     "beam_evidence": "none_over_this_note",
+     "cv_beams": 0,
+     "yolo_beams": 1,
+     "yolo_kept": 1,
+     "stems_attached": 0,
+     "beams_by_stem": 0,
+     "flags_attached": 0,
+     "flag_levels": 0,
+     "dots_attached": 1,
+     "staff_space": 80.25,
+     "levels_certain": 0,
+     "levels_possible": 1
+    },
+    "reason": "beams_ambiguous",
+    "outcome": "narrowed",
+    "is_beamambig": true,
+    "head_box": [
+     1507.0,
+     214.0,
+     113.0,
+     99.0
+    ],
+    "min_dist_notehead_widths": 7.650442477876106,
+    "is_near": false,
+    "cell_stem_rows": [
+     {
+      "value": [
+       391,
+       77,
+       9,
+       175
+      ],
+      "x0": 391,
+      "x1": 400
+     },
+     {
+      "value": [
+       596,
+       349,
+       14,
+       213
+      ],
+      "x0": 596,
+      "x1": 610
+     },
+     {
+      "value": [
+       494,
+       457,
+       17,
+       230
+      ],
+      "x0": 494,
+      "x1": 511
+     },
+     {
+      "value": [
+       689,
+       515,
+       20,
+       210
+      ],
+      "x0": 689,
+      "x1": 709
+     },
+     {
+      "value": [
+       301,
+       699,
+       9,
+       192
+      ],
+      "x0": 301,
+      "x1": 310
+     }
+    ],
+    "bbox_page": [
+     1163.5595703125,
+     467.353515625,
+     1202.29296875,
+     501.2880859375
+    ]
+   },
+   {
+    "subject": "glyph/13/0/0/0/3",
+    "cell": "cell/13/0/0/0",
+    "detail": {
+     "head": "noteheadBlackInSpace",
+     "beam_evidence": "none_over_this_note",
+     "cv_beams": 0,
+     "yolo_beams": 1,
+     "yolo_kept": 1,
+     "stems_attached": 0,
+     "beams_by_stem": 0,
+     "flags_attached": 0,
+     "flag_levels": 0,
+     "dots_attached": 1,
+     "staff_space": 80.25,
+     "levels_certain": 0,
+     "levels_possible": 1
+    },
+    "reason": "beams_ambiguous",
+    "outcome": "narrowed",
+    "is_beamambig": true,
+    "head_box": [
+     1513.0,
+     982.0,
+     105.0,
+     92.0
+    ],
+    "min_dist_notehead_widths": 8.252380952380953,
+    "is_near": false,
+    "cell_stem_rows": [
+     {
+      "value": [
+       391,
+       77,
+       9,
+       175
+      ],
+      "x0": 391,
+      "x1": 400
+     },
+     {
+      "value": [
+       596,
+       349,
+       14,
+       213
+      ],
+      "x0": 596,
+      "x1": 610
+     },
+     {
+      "value": [
+       494,
+       457,
+       17,
+       230
+      ],
+      "x0": 494,
+      "x1": 511
+     },
+     {
+      "value": [
+       689,
+       515,
+       20,
+       210
+      ],
+      "x0": 689,
+      "x1": 709
+     },
+     {
+      "value": [
+       301,
+       699,
+       9,
+       192
+      ],
+      "x0": 301,
+      "x1": 310
+     }
+    ],
+    "bbox_page": [
+     1165.6162109375,
+     730.603515625,
+     1201.607421875,
+     762.138671875
+    ]
+   },
+   {
+    "subject": "glyph/14/0/0/0/48",
+    "cell": "cell/14/0/0/0",
+    "detail": {
+     "head": "noteheadBlackInSpace",
+     "beam_evidence": "none_over_this_note",
+     "cv_beams": 1,
+     "yolo_beams": 3,
+     "yolo_kept": 1,
+     "stems_attached": 0,
+     "beams_by_stem": 0,
+     "flags_attached": 0,
+     "flag_levels": 0,
+     "dots_attached": 0,
+     "staff_space": 71.75,
+     "levels_certain": 0,
+     "levels_possible": 1
+    },
+    "reason": "beams_ambiguous",
+    "outcome": "narrowed",
+    "is_beamambig": true,
+    "head_box": [
+     2027.0,
+     745.0,
+     21.0,
+     49.0
+    ],
+    "min_dist_notehead_widths": 22.952380952380953,
+    "is_near": false,
+    "cell_stem_rows": [
+     {
+      "value": [
+       467,
+       84,
+       19,
+       164
+      ],
+      "x0": 467,
+      "x1": 486
+     },
+     {
+      "value": [
+       287,
+       92,
+       19,
+       146
+      ],
+      "x0": 287,
+      "x1": 306
+     },
+     {
+      "value": [
+       1456,
+       131,
+       19,
+       185
+      ],
+      "x0": 1456,
+      "x1": 1475
+     },
+     {
+      "value": [
+       1133,
+       144,
+       15,
+       250
+      ],
+      "x0": 1133,
+      "x1": 1148
+     },
+     {
+      "value": [
+       1341,
+       180,
+       19,
+       272
+      ],
+      "x0": 1341,
+      "x1": 1360
+     },
+     {
+      "value": [
+       1545,
+       227,
+       21,
+       386
+      ],
+      "x0": 1545,
+      "x1": 1566
+     },
+     {
+      "value": [
+       1415,
+       230,
+       18,
+       193
+      ],
+      "x0": 1415,
+      "x1": 1433
+     },
+     {
+      "value": [
+       483,
+       326,
+       21,
+       196
+      ],
+      "x0": 483,
+      "x1": 504
+     },
+     {
+      "value": [
+       259,
+       337,
+       13,
+       156
+      ],
+      "x0": 259,
+      "x1": 272
+     },
+     {
+      "value": [
+       1255,
+       373,
+       16,
+       253
+      ],
+      "x0": 1255,
+      "x1": 1271
+     },
+     {
+      "value": [
+       394,
+       431,
+       16,
+       208
+      ],
+      "x0": 394,
+      "x1": 410
+     },
+     {
+      "value": [
+       567,
+       475,
+       21,
+       193
+      ],
+      "x0": 567,
+      "x1": 588
+     },
+     {
+      "value": [
+       131,
+       532,
+       26,
+       173
+      ],
+      "x0": 131,
+      "x1": 157
+     },
+     {
+      "value": [
+       851,
+       694,
+       18,
+       154
+      ],
+      "x0": 851,
+      "x1": 869
+     },
+     {
+      "value": [
+       773,
+       715,
+       13,
+       164
+      ],
+      "x0": 773,
+      "x1": 786
+     },
+     {
+      "value": [
+       1456,
+       772,
+       19,
+       191
+      ],
+      "x0": 1456,
+      "x1": 1475
+     }
+    ],
+    "bbox_page": [
+     1420.95068359375,
+     655.55908203125,
+     1429.0,
+     674.3408203125
+    ]
+   },
+   {
+    "subject": "glyph/14/0/0/4/1",
+    "cell": "cell/14/0/0/4",
+    "detail": {
+     "head": "noteheadBlackInSpace",
+     "beam_evidence": "none_over_this_note",
+     "cv_beams": 1,
+     "yolo_beams": 1,
+     "yolo_kept": 0,
+     "stems_attached": 0,
+     "beams_by_stem": 0,
+     "flags_attached": 0,
+     "flag_levels": 0,
+     "dots_attached": 0,
+     "staff_space": 100.0,
+     "levels_certain": 0,
+     "levels_possible": 1
+    },
+    "reason": "beams_ambiguous",
+    "outcome": "narrowed",
+    "is_beamambig": true,
+    "head_box": [
+     853.0,
+     384.0,
+     142.0,
+     129.0
+    ],
+    "min_dist_notehead_widths": 1.778169014084507,
+    "is_near": false,
+    "cell_stem_rows": [
+     {
+      "value": [
+       1164,
+       205,
+       25,
+       604
+      ],
+      "x0": 1164,
+      "x1": 1189
+     },
+     {
+      "value": [
+       251,
+       314,
+       22,
+       502
+      ],
+      "x0": 251,
+      "x1": 273
+     },
+     {
+      "value": [
+       553,
+       361,
+       26,
+       466
+      ],
+      "x0": 553,
+      "x1": 579
+     }
+    ],
+    "bbox_page": [
+     2981.575,
+     475.6,
+     3020.625,
+     511.07500000000005
+    ]
+   },
+   {
+    "subject": "glyph/17/0/0/0/2",
+    "cell": "cell/17/0/0/0",
+    "detail": {
+     "head": "noteheadBlackInSpace",
+     "beam_evidence": "none_over_this_note",
+     "cv_beams": 0,
+     "yolo_beams": 1,
+     "yolo_kept": 1,
+     "stems_attached": 0,
+     "beams_by_stem": 0,
+     "flags_attached": 0,
+     "flag_levels": 0,
+     "dots_attached": 0,
+     "staff_space": 58.75,
+     "levels_certain": 0,
+     "levels_possible": 1
+    },
+    "reason": "beams_ambiguous",
+    "outcome": "narrowed",
+    "is_beamambig": true,
+    "head_box": [
+     1075.0,
+     748.0,
+     82.0,
+     69.0
+    ],
+    "min_dist_notehead_widths": 2.2865853658536586,
+    "is_near": false,
+    "cell_stem_rows": [
+     {
+      "value": [
+       193,
+       42,
+       7,
+       135
+      ],
+      "x0": 193,
+      "x1": 200
+     },
+     {
+      "value": [
+       377,
+       44,
+       22,
+       137
+      ],
+      "x0": 377,
+      "x1": 399
+     },
+     {
+      "value": [
+       1297,
+       220,
+       13,
+       299
+      ],
+      "x0": 1297,
+      "x1": 1310
+     },
+     {
+      "value": [
+       416,
+       247,
+       15,
+       156
+      ],
+      "x0": 416,
+      "x1": 431
+     },
+     {
+      "value": [
+       869,
+       264,
+       13,
+       270
+      ],
+      "x0": 869,
+      "x1": 882
+     },
+     {
+      "value": [
+       349,
+       326,
+       15,
+       171
+      ],
+      "x0": 349,
+      "x1": 364
+     },
+     {
+      "value": [
+       484,
+       369,
+       13,
+       156
+      ],
+      "x0": 484,
+      "x1": 497
+     },
+     {
+      "value": [
+       135,
+       433,
+       11,
+       120
+      ],
+      "x0": 135,
+      "x1": 146
+     },
+     {
+      "value": [
+       208,
+       440,
+       19,
+       211
+      ],
+      "x0": 208,
+      "x1": 227
+     }
+    ],
+    "bbox_page": [
+     1142.33154296875,
+     709.529296875,
+     1180.64892578125,
+     741.77197265625
+    ]
+   },
+   {
+    "subject": "glyph/17/0/0/0/6",
+    "cell": "cell/17/0/0/0",
+    "detail": {
+     "head": "noteheadBlackInSpace",
+     "beam_evidence": "none_over_this_note",
+     "cv_beams": 0,
+     "yolo_beams": 1,
+     "yolo_kept": 1,
+     "stems_attached": 0,
+     "beams_by_stem": 0,
+     "flags_attached": 0,
+     "flag_levels": 0,
+     "dots_attached": 0,
+     "staff_space": 58.75,
+     "levels_certain": 0,
+     "levels_possible": 1
+    },
+    "reason": "beams_ambiguous",
+    "outcome": "narrowed",
+    "is_beamambig": true,
+    "head_box": [
+     1073.0,
+     269.0,
+     84.0,
+     73.0
+    ],
+    "min_dist_notehead_widths": 2.244047619047619,
+    "is_near": false,
+    "cell_stem_rows": [
+     {
+      "value": [
+       193,
+       42,
+       7,
+       135
+      ],
+      "x0": 193,
+      "x1": 200
+     },
+     {
+      "value": [
+       377,
+       44,
+       22,
+       137
+      ],
+      "x0": 377,
+      "x1": 399
+     },
+     {
+      "value": [
+       1297,
+       220,
+       13,
+       299
+      ],
+      "x0": 1297,
+      "x1": 1310
+     },
+     {
+      "value": [
+       416,
+       247,
+       15,
+       156
+      ],
+      "x0": 416,
+      "x1": 431
+     },
+     {
+      "value": [
+       869,
+       264,
+       13,
+       270
+      ],
+      "x0": 869,
+      "x1": 882
+     },
+     {
+      "value": [
+       349,
+       326,
+       15,
+       171
+      ],
+      "x0": 349,
+      "x1": 364
+     },
+     {
+      "value": [
+       484,
+       369,
+       13,
+       156
+      ],
+      "x0": 484,
+      "x1": 497
+     },
+     {
+      "value": [
+       135,
+       433,
+       11,
+       120
+      ],
+      "x0": 135,
+      "x1": 146
+     },
+     {
+      "value": [
+       208,
+       440,
+       19,
+       211
+      ],
+      "x0": 208,
+      "x1": 227
+     }
+    ],
+    "bbox_page": [
+     1141.39697265625,
+     485.69970703125,
+     1180.64892578125,
+     519.8115234375
+    ]
+   },
+   {
+    "subject": "glyph/18/0/0/2/2",
+    "cell": "cell/18/0/0/2",
+    "detail": {
+     "head": "noteheadBlackOnLine",
+     "beam_evidence": "none_over_this_note",
+     "cv_beams": 0,
+     "yolo_beams": 2,
+     "yolo_kept": 2,
+     "stems_attached": 0,
+     "beams_by_stem": 0,
+     "flags_attached": 0,
+     "flag_levels": 0,
+     "dots_attached": 1,
+     "staff_space": 88.75,
+     "levels_certain": 0,
+     "levels_possible": 2
+    },
+    "reason": "beams_ambiguous",
+    "outcome": "narrowed",
+    "is_beamambig": true,
+    "head_box": [
+     133.0,
+     1085.0,
+     141.0,
+     104.0
+    ],
+    "min_dist_notehead_widths": 7.343971631205674,
+    "is_near": false,
+    "cell_stem_rows": [
+     {
+      "value": [
+       1223,
+       56,
+       32,
+       671
+      ],
+      "x0": 1223,
+      "x1": 1255
+     }
+    ],
+    "bbox_page": [
+     2352.23779296875,
+     702.41357421875,
+     2395.9560546875,
+     734.65966796875
+    ]
+   },
+   {
+    "subject": "glyph/18/0/0/2/3",
+    "cell": "cell/18/0/0/2",
+    "detail": {
+     "head": "noteheadBlackInSpace",
+     "beam_evidence": "none_over_this_note",
+     "cv_beams": 0,
+     "yolo_beams": 2,
+     "yolo_kept": 2,
+     "stems_attached": 0,
+     "beams_by_stem": 0,
+     "flags_attached": 0,
+     "flag_levels": 0,
+     "dots_attached": 1,
+     "staff_space": 88.75,
+     "levels_certain": 0,
+     "levels_possible": 2
+    },
+    "reason": "beams_ambiguous",
+    "outcome": "narrowed",
+    "is_beamambig": true,
+    "head_box": [
+     135.0,
+     66.0,
+     129.0,
+     114.0
+    ],
+    "min_dist_notehead_widths": 8.05813953488372,
+    "is_near": false,
+    "cell_stem_rows": [
+     {
+      "value": [
+       1223,
+       56,
+       32,
+       671
+      ],
+      "x0": 1223,
+      "x1": 1255
+     }
+    ],
+    "bbox_page": [
+     2352.85791015625,
+     386.4638671875,
+     2392.85546875,
+     421.810546875
+    ]
+   },
+   {
+    "subject": "glyph/19/0/0/1/20",
+    "cell": "cell/19/0/0/1",
+    "detail": {
+     "head": "noteheadBlackInSpace",
+     "beam_evidence": "none_over_this_note",
+     "cv_beams": 0,
+     "yolo_beams": 1,
+     "yolo_kept": 1,
+     "stems_attached": 0,
+     "beams_by_stem": 0,
+     "flags_attached": 0,
+     "flag_levels": 0,
+     "dots_attached": 0,
+     "staff_space": 100.0,
+     "levels_certain": 0,
+     "levels_possible": 1
+    },
+    "reason": "beams_ambiguous",
+    "outcome": "narrowed",
+    "is_beamambig": true,
+    "head_box": [
+     1601.0,
+     809.0,
+     32.0,
+     81.0
+    ],
+    "min_dist_notehead_widths": 18.625,
+    "is_near": false,
+    "cell_stem_rows": [
+     {
+      "value": [
+       1010,
+       123,
+       22,
+       693
+      ],
+      "x0": 1010,
+      "x1": 1032
+     }
+    ],
+    "bbox_page": [
+     1971.2725,
+     607.4525,
+     1979.9924999999998,
+     629.525
+    ]
+   },
+   {
+    "subject": "glyph/19/0/0/2/7",
+    "cell": "cell/19/0/0/2",
+    "detail": {
+     "head": "noteheadBlackInSpace",
+     "beam_evidence": "read",
+     "cv_beams": 0,
+     "yolo_beams": 7,
+     "yolo_kept": 7,
+     "stems_attached": 0,
+     "beams_by_stem": 0,
+     "flags_attached": 0,
+     "flag_levels": 0,
+     "dots_attached": 0,
+     "staff_space": 100.0,
+     "levels_certain": 2,
+     "levels_possible": 4
+    },
+    "reason": "beams_ambiguous",
+    "outcome": "narrowed",
+    "is_beamambig": true,
+    "head_box": [
+     182.0,
+     387.0,
+     123.0,
+     119.0
+    ],
+    "min_dist_notehead_widths": 4.272357723577236,
+    "is_near": false,
+    "cell_stem_rows": [
+     {
+      "value": [
+       760,
+       214,
+       18,
+       606
+      ],
+      "x0": 760,
+      "x1": 778
+     }
+    ],
+    "bbox_page": [
+     2029.595,
+     492.4575,
+     2063.1125,
+     524.885
+    ]
+   },
+   {
+    "subject": "glyph/20/0/2/7/5",
+    "cell": "cell/20/0/2/7",
+    "detail": {
+     "head": "noteheadBlackInSpace",
+     "beam_evidence": "none_over_this_note",
+     "cv_beams": 0,
+     "yolo_beams": 2,
+     "yolo_kept": 2,
+     "stems_attached": 0,
+     "beams_by_stem": 0,
+     "flags_attached": 0,
+     "flag_levels": 0,
+     "dots_attached": 1,
+     "staff_space": 100.0,
+     "levels_certain": 0,
+     "levels_possible": 2
+    },
+    "reason": "beams_ambiguous",
+    "outcome": "narrowed",
+    "is_beamambig": true,
+    "head_box": [
+     1044.0,
+     814.0,
+     135.0,
+     117.0
+    ],
+    "min_dist_notehead_widths": 7.266666666666667,
+    "is_near": false,
+    "cell_stem_rows": [
+     {
+      "value": [
+       125,
+       398,
+       11,
+       330
+      ],
+      "x0": 125,
+      "x1": 136
+     }
+    ],
+    "bbox_page": [
+     4742.49,
+     1124.815,
+     4779.2775,
+     1156.6975
+    ]
+   },
+   {
+    "subject": "glyph/22/0/1/7/8",
+    "cell": "cell/22/0/1/7",
+    "detail": {
+     "head": "noteheadBlackInSpace",
+     "beam_evidence": "read",
+     "cv_beams": 0,
+     "yolo_beams": 5,
+     "yolo_kept": 5,
+     "stems_attached": 0,
+     "beams_by_stem": 0,
+     "flags_attached": 0,
+     "flag_levels": 0,
+     "dots_attached": 1,
+     "staff_space": 100.0,
+     "levels_certain": 3,
+     "levels_possible": 4
+    },
+    "reason": "beams_ambiguous",
+    "outcome": "narrowed",
+    "is_beamambig": true,
+    "head_box": [
+     197.0,
+     692.0,
+     136.0,
+     98.0
+    ],
+    "min_dist_notehead_widths": 2.125,
+    "is_near": false,
+    "cell_stem_rows": [
+     {
+      "value": [
+       545,
+       495,
+       18,
+       267
+      ],
+      "x0": 545,
+      "x1": 563
+     },
+     {
+      "value": [
+       663,
+       661,
+       26,
+       483
+      ],
+      "x0": 663,
+      "x1": 689
+     }
+    ],
+    "bbox_page": [
+     3860.6675,
+     862.03,
+     3898.4075,
+     889.225
+    ]
+   },
+   {
+    "subject": "glyph/22/0/1/7/9",
+    "cell": "cell/22/0/1/7",
+    "detail": {
+     "head": "noteheadBlackInSpace",
+     "beam_evidence": "read",
+     "cv_beams": 0,
+     "yolo_beams": 5,
+     "yolo_kept": 5,
+     "stems_attached": 0,
+     "beams_by_stem": 0,
+     "flags_attached": 0,
+     "flag_levels": 0,
+     "dots_attached": 1,
+     "staff_space": 100.0,
+     "levels_certain": 3,
+     "levels_possible": 4
+    },
+    "reason": "beams_ambiguous",
+    "outcome": "narrowed",
+    "is_beamambig": true,
+    "head_box": [
+     198.0,
+     585.0,
+     141.0,
+     109.0
+    ],
+    "min_dist_notehead_widths": 2.024822695035461,
+    "is_near": false,
+    "cell_stem_rows": [
+     {
+      "value": [
+       545,
+       495,
+       18,
+       267
+      ],
+      "x0": 545,
+      "x1": 563
+     },
+     {
+      "value": [
+       663,
+       661,
+       26,
+       483
+      ],
+      "x0": 663,
+      "x1": 689
+     }
+    ],
+    "bbox_page": [
+     3860.945,
+     832.3375,
+     3900.0725,
+     862.585
+    ]
+   },
+   {
+    "subject": "glyph/23/0/0/2/1",
+    "cell": "cell/23/0/0/2",
+    "detail": {
+     "head": "noteheadBlackOnLine",
+     "beam_evidence": "none_over_this_note",
+     "cv_beams": 0,
+     "yolo_beams": 1,
+     "yolo_kept": 1,
+     "stems_attached": 0,
+     "beams_by_stem": 0,
+     "flags_attached": 0,
+     "flag_levels": 0,
+     "dots_attached": 1,
+     "staff_space": 100.0,
+     "levels_certain": 0,
+     "levels_possible": 1
+    },
+    "reason": "beams_ambiguous",
+    "outcome": "narrowed",
+    "is_beamambig": true,
+    "head_box": [
+     988.0,
+     1270.0,
+     153.0,
+     126.0
+    ],
+    "min_dist_notehead_widths": 1.2516339869281046,
+    "is_near": false,
+    "cell_stem_rows": [
+     {
+      "value": [
+       248,
+       641,
+       25,
+       310
+      ],
+      "x0": 248,
+      "x1": 273
+     },
+     {
+      "value": [
+       862,
+       1147,
+       22,
+       253
+      ],
+      "x0": 862,
+      "x1": 884
+     }
+    ],
+    "bbox_page": [
+     2146.7,
+     739.25,
+     2188.775,
+     773.9000000000001
+    ]
+   },
+   {
+    "subject": "glyph/23/0/0/2/2",
+    "cell": "cell/23/0/0/2",
+    "detail": {
+     "head": "noteheadBlackInSpace",
+     "beam_evidence": "none_over_this_note",
+     "cv_beams": 0,
+     "yolo_beams": 1,
+     "yolo_kept": 1,
+     "stems_attached": 0,
+     "beams_by_stem": 0,
+     "flags_attached": 0,
+     "flag_levels": 0,
+     "dots_attached": 1,
+     "staff_space": 100.0,
+     "levels_certain": 0,
+     "levels_possible": 1
+    },
+    "reason": "beams_ambiguous",
+    "outcome": "narrowed",
+    "is_beamambig": true,
+    "head_box": [
+     985.0,
+     164.0,
+     138.0,
+     118.0
+    ],
+    "min_dist_notehead_widths": 1.3115942028985508,
+    "is_near": false,
+    "cell_stem_rows": [
+     {
+      "value": [
+       248,
+       641,
+       25,
+       310
+      ],
+      "x0": 248,
+      "x1": 273
+     },
+     {
+      "value": [
+       862,
+       1147,
+       22,
+       253
+      ],
+      "x0": 862,
+      "x1": 884
+     }
+    ],
+    "bbox_page": [
+     2145.875,
+     435.1,
+     2183.825,
+     467.55
+    ]
+   },
+   {
+    "subject": "glyph/24/0/2/0/2",
+    "cell": "cell/24/0/2/0",
+    "detail": {
+     "head": "noteheadBlackOnLine",
+     "beam_evidence": "none_over_this_note",
+     "cv_beams": 0,
+     "yolo_beams": 2,
+     "yolo_kept": 2,
+     "stems_attached": 0,
+     "beams_by_stem": 0,
+     "flags_attached": 0,
+     "flag_levels": 0,
+     "dots_attached": 0,
+     "staff_space": 71.25,
+     "levels_certain": 0,
+     "levels_possible": 2
+    },
+    "reason": "beams_ambiguous",
+    "outcome": "narrowed",
+    "is_beamambig": true,
+    "head_box": [
+     1477.0,
+     160.0,
+     103.0,
+     92.0
+    ],
+    "min_dist_notehead_widths": 10.728155339805825,
+    "is_near": false,
+    "cell_stem_rows": [
+     {
+      "value": [
+       416,
+       269,
+       15,
+       210
+      ],
+      "x0": 416,
+      "x1": 431
+     }
+    ],
+    "bbox_page": [
+     1234.02001953125,
+     906.640625,
+     1273.701171875,
+     942.083984375
+    ]
+   },
+   {
+    "subject": "glyph/24/0/2/0/6",
+    "cell": "cell/24/0/2/0",
+    "detail": {
+     "head": "noteheadBlackInSpace",
+     "beam_evidence": "none_over_this_note",
+     "cv_beams": 0,
+     "yolo_beams": 2,
+     "yolo_kept": 2,
+     "stems_attached": 0,
+     "beams_by_stem": 0,
+     "flags_attached": 0,
+     "flag_levels": 0,
+     "dots_attached": 0,
+     "staff_space": 71.25,
+     "levels_certain": 0,
+     "levels_possible": 2
+    },
+    "reason": "beams_ambiguous",
+    "outcome": "narrowed",
+    "is_beamambig": true,
+    "head_box": [
+     1488.0,
+     362.0,
+     93.0,
+     64.0
+    ],
+    "min_dist_notehead_widths": 11.946236559139784,
+    "is_near": false,
+    "cell_stem_rows": [
+     {
+      "value": [
+       416,
+       269,
+       15,
+       210
+      ],
+      "x0": 416,
+      "x1": 431
+     }
+    ],
+    "bbox_page": [
+     1238.2578125,
+     984.4619140625,
+     1274.08642578125,
+     1009.1181640625
+    ]
+   },
+   {
+    "subject": "glyph/25/0/0/7/1",
+    "cell": "cell/25/0/0/7",
+    "detail": {
+     "head": "noteheadBlackInSpace",
+     "beam_evidence": "none_over_this_note",
+     "cv_beams": 0,
+     "yolo_beams": 1,
+     "yolo_kept": 1,
+     "stems_attached": 0,
+     "beams_by_stem": 0,
+     "flags_attached": 0,
+     "flag_levels": 0,
+     "dots_attached": 1,
+     "staff_space": 100.0,
+     "levels_certain": 0,
+     "levels_possible": 1
+    },
+    "reason": "beams_ambiguous",
+    "outcome": "narrowed",
+    "is_beamambig": true,
+    "head_box": [
+     934.0,
+     188.0,
+     137.0,
+     115.0
+    ],
+    "min_dist_notehead_widths": 1.4343065693430657,
+    "is_near": false,
+    "cell_stem_rows": [
+     {
+      "value": [
+       797,
+       183,
+       18,
+       262
+      ],
+      "x0": 797,
+      "x1": 815
+     },
+     {
+      "value": [
+       219,
+       667,
+       29,
+       229
+      ],
+      "x0": 219,
+      "x1": 248
+     }
+    ],
+    "bbox_page": [
+     4421.85,
+     388.7,
+     4459.525,
+     420.325
+    ]
+   },
+   {
+    "subject": "glyph/25/0/0/7/9",
+    "cell": "cell/25/0/0/7",
+    "detail": {
+     "head": "noteheadBlackInSpace",
+     "beam_evidence": "none_over_this_note",
+     "cv_beams": 0,
+     "yolo_beams": 1,
+     "yolo_kept": 1,
+     "stems_attached": 0,
+     "beams_by_stem": 0,
+     "flags_attached": 0,
+     "flag_levels": 0,
+     "dots_attached": 1,
+     "staff_space": 100.0,
+     "levels_certain": 0,
+     "levels_possible": 1
+    },
+    "reason": "beams_ambiguous",
+    "outcome": "narrowed",
+    "is_beamambig": true,
+    "head_box": [
+     925.0,
+     321.0,
+     146.0,
+     102.0
+    ],
+    "min_dist_notehead_widths": 1.3150684931506849,
+    "is_near": false,
+    "cell_stem_rows": [
+     {
+      "value": [
+       797,
+       183,
+       18,
+       262
+      ],
+      "x0": 797,
+      "x1": 815
+     },
+     {
+      "value": [
+       219,
+       667,
+       29,
+       229
+      ],
+      "x0": 219,
+      "x1": 248
+     }
+    ],
+    "bbox_page": [
+     4419.375,
+     425.275,
+     4459.525,
+     453.325
+    ]
+   },
+   {
+    "subject": "glyph/26/0/1/5/14",
+    "cell": "cell/26/0/1/5",
+    "detail": {
+     "head": "noteheadBlackOnLine",
+     "beam_evidence": "none_over_this_note",
+     "cv_beams": 0,
+     "yolo_beams": 1,
+     "yolo_kept": 1,
+     "stems_attached": 0,
+     "beams_by_stem": 0,
+     "flags_attached": 0,
+     "flag_levels": 0,
+     "dots_attached": 0,
+     "staff_space": 100.0,
+     "levels_certain": 0,
+     "levels_possible": 1
+    },
+    "reason": "beams_ambiguous",
+    "outcome": "narrowed",
+    "is_beamambig": true,
+    "head_box": [
+     0.0,
+     1115.0,
+     30.0,
+     85.0
+    ],
+    "min_dist_notehead_widths": 36.233333333333334,
+    "is_near": false,
+    "cell_stem_rows": [
+     {
+      "value": [
+       1095,
+       478,
+       14,
+       374
+      ],
+      "x0": 1095,
+      "x1": 1109
+     }
+    ],
+    "bbox_page": [
+     3481.0,
+     925.625,
+     3489.25,
+     949.0
+    ]
+   },
+   {
+    "subject": "glyph/26/0/1/5/16",
+    "cell": "cell/26/0/1/5",
+    "detail": {
+     "head": "noteheadBlackOnLine",
+     "beam_evidence": "none_over_this_note",
+     "cv_beams": 0,
+     "yolo_beams": 1,
+     "yolo_kept": 1,
+     "stems_attached": 0,
+     "beams_by_stem": 0,
+     "flags_attached": 0,
+     "flag_levels": 0,
+     "dots_attached": 0,
+     "staff_space": 100.0,
+     "levels_certain": 0,
+     "levels_possible": 1
+    },
+    "reason": "beams_ambiguous",
+    "outcome": "narrowed",
+    "is_beamambig": true,
+    "head_box": [
+     0.0,
+     699.0,
+     31.0,
+     82.0
+    ],
+    "min_dist_notehead_widths": 35.04838709677419,
+    "is_near": false,
+    "cell_stem_rows": [
+     {
+      "value": [
+       1095,
+       478,
+       14,
+       374
+      ],
+      "x0": 1095,
+      "x1": 1109
+     }
+    ],
+    "bbox_page": [
+     3481.0,
+     811.225,
+     3489.525,
+     833.775
+    ]
+   }
+  ]
+ },
+ "geometry": {
+  "glyph/4/0/4/4/3": {
+   "page": 4,
+   "system": 0,
+   "staff": 4,
+   "cell": 4,
+   "staff_key": "staff/4/0/4",
+   "cell_key": "cell/4/0/4/4",
+   "staff_lines": [
+    1493,
+    1520,
+    1548,
+    1575,
+    1603
+   ],
+   "staff_spacing": 27.5,
+   "cell_box": [
+    2313.0,
+    1383.0,
+    2727.0,
+    1713.0
+   ]
+  },
+  "glyph/4/0/4/5/4": {
+   "page": 4,
+   "system": 0,
+   "staff": 4,
+   "cell": 5,
+   "staff_key": "staff/4/0/4",
+   "cell_key": "cell/4/0/4/5",
+   "staff_lines": [
+    1493,
+    1520,
+    1548,
+    1575,
+    1603
+   ],
+   "staff_spacing": 27.5,
+   "cell_box": [
+    2727.0,
+    1383.0,
+    3205.0,
+    1713.0
+   ]
+  },
+  "glyph/9/0/5/4/5": {
+   "page": 9,
+   "system": 0,
+   "staff": 5,
+   "cell": 4,
+   "staff_key": "staff/9/0/5",
+   "cell_key": "cell/9/0/5/4",
+   "staff_lines": [
+    1768,
+    1797,
+    1824,
+    1852,
+    1880
+   ],
+   "staff_spacing": 28.0,
+   "cell_box": [
+    2923.0,
+    1656.0,
+    3283.0,
+    1992.0
+   ]
+  },
+  "glyph/9/0/5/4/6": {
+   "page": 9,
+   "system": 0,
+   "staff": 5,
+   "cell": 4,
+   "staff_key": "staff/9/0/5",
+   "cell_key": "cell/9/0/5/4",
+   "staff_lines": [
+    1768,
+    1797,
+    1824,
+    1852,
+    1880
+   ],
+   "staff_spacing": 28.0,
+   "cell_box": [
+    2923.0,
+    1656.0,
+    3283.0,
+    1992.0
+   ]
+  },
+  "glyph/10/0/7/2/3": {
+   "page": 10,
+   "system": 0,
+   "staff": 7,
+   "cell": 2,
+   "staff_key": "staff/10/0/7",
+   "cell_key": "cell/10/0/7/2",
+   "staff_lines": [
+    2136,
+    2163,
+    2191,
+    2218,
+    2246
+   ],
+   "staff_spacing": 27.5,
+   "cell_box": [
+    1840.0,
+    2026.0,
+    2345.0,
+    2411.0
+   ]
+  },
+  "glyph/10/0/7/2/5": {
+   "page": 10,
+   "system": 0,
+   "staff": 7,
+   "cell": 2,
+   "staff_key": "staff/10/0/7",
+   "cell_key": "cell/10/0/7/2",
+   "staff_lines": [
+    2136,
+    2163,
+    2191,
+    2218,
+    2246
+   ],
+   "staff_spacing": 27.5,
+   "cell_box": [
+    1840.0,
+    2026.0,
+    2345.0,
+    2411.0
+   ]
+  },
+  "glyph/15/0/0/6/0": {
+   "page": 15,
+   "system": 0,
+   "staff": 0,
+   "cell": 6,
+   "staff_key": "staff/15/0/0",
+   "cell_key": "cell/15/0/0/6",
+   "staff_lines": [
+    555,
+    584,
+    610,
+    637,
+    665
+   ],
+   "staff_spacing": 27.5,
+   "cell_box": [
+    4090.0,
+    390.0,
+    4606.0,
+    775.0
+   ]
+  },
+  "glyph/15/0/0/6/5": {
+   "page": 15,
+   "system": 0,
+   "staff": 0,
+   "cell": 6,
+   "staff_key": "staff/15/0/0",
+   "cell_key": "cell/15/0/0/6",
+   "staff_lines": [
+    555,
+    584,
+    610,
+    637,
+    665
+   ],
+   "staff_spacing": 27.5,
+   "cell_box": [
+    4090.0,
+    390.0,
+    4606.0,
+    775.0
+   ]
+  },
+  "glyph/16/0/0/7/0": {
+   "page": 16,
+   "system": 0,
+   "staff": 0,
+   "cell": 7,
+   "staff_key": "staff/16/0/0",
+   "cell_key": "cell/16/0/0/7",
+   "staff_lines": [
+    529,
+    556,
+    583,
+    611,
+    639
+   ],
+   "staff_spacing": 27.5,
+   "cell_box": [
+    3539.0,
+    364.0,
+    3869.0,
+    749.0
+   ]
+  },
+  "glyph/16/0/0/7/4": {
+   "page": 16,
+   "system": 0,
+   "staff": 0,
+   "cell": 7,
+   "staff_key": "staff/16/0/0",
+   "cell_key": "cell/16/0/0/7",
+   "staff_lines": [
+    529,
+    556,
+    583,
+    611,
+    639
+   ],
+   "staff_spacing": 27.5,
+   "cell_box": [
+    3539.0,
+    364.0,
+    3869.0,
+    749.0
+   ]
+  },
+  "glyph/20/0/0/8/3": {
+   "page": 20,
+   "system": 0,
+   "staff": 0,
+   "cell": 8,
+   "staff_key": "staff/20/0/0",
+   "cell_key": "cell/20/0/0/8",
+   "staff_lines": [
+    543,
+    570,
+    598,
+    626,
+    653
+   ],
+   "staff_spacing": 27.5,
+   "cell_box": [
+    4950.0,
+    378.0,
+    5514.0,
+    763.0
+   ]
+  },
+  "glyph/21/0/0/8/5": {
+   "page": 21,
+   "system": 0,
+   "staff": 0,
+   "cell": 8,
+   "staff_key": "staff/21/0/0",
+   "cell_key": "cell/21/0/0/8",
+   "staff_lines": [
+    557,
+    585,
+    612,
+    639,
+    668
+   ],
+   "staff_spacing": 27.75,
+   "cell_box": [
+    4948.0,
+    391.0,
+    5510.0,
+    779.0
+   ]
+  },
+  "glyph/21/0/0/8/7": {
+   "page": 21,
+   "system": 0,
+   "staff": 0,
+   "cell": 8,
+   "staff_key": "staff/21/0/0",
+   "cell_key": "cell/21/0/0/8",
+   "staff_lines": [
+    557,
+    585,
+    612,
+    639,
+    668
+   ],
+   "staff_spacing": 27.75,
+   "cell_box": [
+    4948.0,
+    391.0,
+    5510.0,
+    779.0
+   ]
+  },
+  "glyph/0/0/0/1/6": {
+   "page": 0,
+   "system": 0,
+   "staff": 0,
+   "cell": 1,
+   "staff_key": "staff/0/0/0",
+   "cell_key": "cell/0/0/0/1",
+   "staff_lines": [
+    1584,
+    1617,
+    1647,
+    1680,
+    1713
+   ],
+   "staff_spacing": 32.25,
+   "cell_box": [
+    2112.0,
+    1391.0,
+    2671.0,
+    1906.0
+   ]
+  },
+  "glyph/0/0/0/1/15": {
+   "page": 0,
+   "system": 0,
+   "staff": 0,
+   "cell": 1,
+   "staff_key": "staff/0/0/0",
+   "cell_key": "cell/0/0/0/1",
+   "staff_lines": [
+    1584,
+    1617,
+    1647,
+    1680,
+    1713
+   ],
+   "staff_spacing": 32.25,
+   "cell_box": [
+    2112.0,
+    1391.0,
+    2671.0,
+    1906.0
+   ]
+  },
+  "glyph/1/0/2/0/17": {
+   "page": 1,
+   "system": 0,
+   "staff": 2,
+   "cell": 0,
+   "staff_key": "staff/1/0/2",
+   "cell_key": "cell/1/0/2/0",
+   "staff_lines": [
+    1046,
+    1073,
+    1101,
+    1128,
+    1156
+   ],
+   "staff_spacing": 27.5,
+   "cell_box": [
+    625.0,
+    936.0,
+    1830.0,
+    1321.0
+   ]
+  },
+  "glyph/1/0/2/0/18": {
+   "page": 1,
+   "system": 0,
+   "staff": 2,
+   "cell": 0,
+   "staff_key": "staff/1/0/2",
+   "cell_key": "cell/1/0/2/0",
+   "staff_lines": [
+    1046,
+    1073,
+    1101,
+    1128,
+    1156
+   ],
+   "staff_spacing": 27.5,
+   "cell_box": [
+    625.0,
+    936.0,
+    1830.0,
+    1321.0
+   ]
+  },
+  "glyph/2/0/0/3/3": {
+   "page": 2,
+   "system": 0,
+   "staff": 0,
+   "cell": 3,
+   "staff_key": "staff/2/0/0",
+   "cell_key": "cell/2/0/0/3",
+   "staff_lines": [
+    530,
+    557,
+    584,
+    611,
+    639
+   ],
+   "staff_spacing": 27.25,
+   "cell_box": [
+    3305.0,
+    367.0,
+    4085.0,
+    748.0
+   ]
+  },
+  "glyph/2/0/0/3/14": {
+   "page": 2,
+   "system": 0,
+   "staff": 0,
+   "cell": 3,
+   "staff_key": "staff/2/0/0",
+   "cell_key": "cell/2/0/0/3",
+   "staff_lines": [
+    530,
+    557,
+    584,
+    611,
+    639
+   ],
+   "staff_spacing": 27.25,
+   "cell_box": [
+    3305.0,
+    367.0,
+    4085.0,
+    748.0
+   ]
+  },
+  "glyph/3/0/0/0/5": {
+   "page": 3,
+   "system": 0,
+   "staff": 0,
+   "cell": 0,
+   "staff_key": "staff/3/0/0",
+   "cell_key": "cell/3/0/0/0",
+   "staff_lines": [
+    523,
+    551,
+    578,
+    606,
+    634
+   ],
+   "staff_spacing": 27.75,
+   "cell_box": [
+    644.0,
+    357.0,
+    1371.0,
+    745.0
+   ]
+  },
+  "glyph/3/0/0/0/9": {
+   "page": 3,
+   "system": 0,
+   "staff": 0,
+   "cell": 0,
+   "staff_key": "staff/3/0/0",
+   "cell_key": "cell/3/0/0/0",
+   "staff_lines": [
+    523,
+    551,
+    578,
+    606,
+    634
+   ],
+   "staff_spacing": 27.75,
+   "cell_box": [
+    644.0,
+    357.0,
+    1371.0,
+    745.0
+   ]
+  },
+  "glyph/5/0/0/0/7": {
+   "page": 5,
+   "system": 0,
+   "staff": 0,
+   "cell": 0,
+   "staff_key": "staff/5/0/0",
+   "cell_key": "cell/5/0/0/0",
+   "staff_lines": [
+    531,
+    558,
+    586,
+    612,
+    640
+   ],
+   "staff_spacing": 27.25,
+   "cell_box": [
+    641.0,
+    368.0,
+    1442.0,
+    749.0
+   ]
+  },
+  "glyph/5/0/0/4/2": {
+   "page": 5,
+   "system": 0,
+   "staff": 0,
+   "cell": 4,
+   "staff_key": "staff/5/0/0",
+   "cell_key": "cell/5/0/0/4",
+   "staff_lines": [
+    531,
+    558,
+    586,
+    612,
+    640
+   ],
+   "staff_spacing": 27.25,
+   "cell_box": [
+    3133.0,
+    368.0,
+    3733.0,
+    749.0
+   ]
+  },
+  "glyph/6/0/3/8/6": {
+   "page": 6,
+   "system": 0,
+   "staff": 3,
+   "cell": 8,
+   "staff_key": "staff/6/0/3",
+   "cell_key": "cell/6/0/3/8",
+   "staff_lines": [
+    1379,
+    1405,
+    1433,
+    1459,
+    1487
+   ],
+   "staff_spacing": 27.0,
+   "cell_box": [
+    4985.0,
+    1271.0,
+    5522.0,
+    1595.0
+   ]
+  },
+  "glyph/6/0/3/8/10": {
+   "page": 6,
+   "system": 0,
+   "staff": 3,
+   "cell": 8,
+   "staff_key": "staff/6/0/3",
+   "cell_key": "cell/6/0/3/8",
+   "staff_lines": [
+    1379,
+    1405,
+    1433,
+    1459,
+    1487
+   ],
+   "staff_spacing": 27.0,
+   "cell_box": [
+    4985.0,
+    1271.0,
+    5522.0,
+    1595.0
+   ]
+  },
+  "glyph/7/0/0/1/1": {
+   "page": 7,
+   "system": 0,
+   "staff": 0,
+   "cell": 1,
+   "staff_key": "staff/7/0/0",
+   "cell_key": "cell/7/0/0/1",
+   "staff_lines": [
+    600,
+    627,
+    655,
+    682,
+    710
+   ],
+   "staff_spacing": 27.5,
+   "cell_box": [
+    1316.0,
+    435.0,
+    1804.0,
+    820.0
+   ]
+  },
+  "glyph/7/0/0/1/5": {
+   "page": 7,
+   "system": 0,
+   "staff": 0,
+   "cell": 1,
+   "staff_key": "staff/7/0/0",
+   "cell_key": "cell/7/0/0/1",
+   "staff_lines": [
+    600,
+    627,
+    655,
+    682,
+    710
+   ],
+   "staff_spacing": 27.5,
+   "cell_box": [
+    1316.0,
+    435.0,
+    1804.0,
+    820.0
+   ]
+  },
+  "glyph/8/0/1/2/10": {
+   "page": 8,
+   "system": 0,
+   "staff": 1,
+   "cell": 2,
+   "staff_key": "staff/8/0/1",
+   "cell_key": "cell/8/0/1/2",
+   "staff_lines": [
+    913,
+    945,
+    968,
+    996,
+    1027
+   ],
+   "staff_spacing": 28.5,
+   "cell_box": [
+    1586.0,
+    742.0,
+    1990.0,
+    1141.0
+   ]
+  },
+  "glyph/8/0/1/2/17": {
+   "page": 8,
+   "system": 0,
+   "staff": 1,
+   "cell": 2,
+   "staff_key": "staff/8/0/1",
+   "cell_key": "cell/8/0/1/2",
+   "staff_lines": [
+    913,
+    945,
+    968,
+    996,
+    1027
+   ],
+   "staff_spacing": 28.5,
+   "cell_box": [
+    1586.0,
+    742.0,
+    1990.0,
+    1141.0
+   ]
+  },
+  "glyph/11/0/0/1/0": {
+   "page": 11,
+   "system": 0,
+   "staff": 0,
+   "cell": 1,
+   "staff_key": "staff/11/0/0",
+   "cell_key": "cell/11/0/0/1",
+   "staff_lines": [
+    593,
+    620,
+    649,
+    675,
+    704
+   ],
+   "staff_spacing": 27.75,
+   "cell_box": [
+    1337.0,
+    427.0,
+    1729.0,
+    815.0
+   ]
+  },
+  "glyph/11/0/0/1/2": {
+   "page": 11,
+   "system": 0,
+   "staff": 0,
+   "cell": 1,
+   "staff_key": "staff/11/0/0",
+   "cell_key": "cell/11/0/0/1",
+   "staff_lines": [
+    593,
+    620,
+    649,
+    675,
+    704
+   ],
+   "staff_spacing": 27.75,
+   "cell_box": [
+    1337.0,
+    427.0,
+    1729.0,
+    815.0
+   ]
+  },
+  "glyph/12/0/1/2/3": {
+   "page": 12,
+   "system": 0,
+   "staff": 1,
+   "cell": 2,
+   "staff_key": "staff/12/0/1",
+   "cell_key": "cell/12/0/1/2",
+   "staff_lines": [
+    745,
+    772,
+    800,
+    828,
+    856
+   ],
+   "staff_spacing": 27.75,
+   "cell_box": [
+    1525.0,
+    634.0,
+    1882.0,
+    967.0
+   ]
+  },
+  "glyph/12/0/1/2/6": {
+   "page": 12,
+   "system": 0,
+   "staff": 1,
+   "cell": 2,
+   "staff_key": "staff/12/0/1",
+   "cell_key": "cell/12/0/1/2",
+   "staff_lines": [
+    745,
+    772,
+    800,
+    828,
+    856
+   ],
+   "staff_spacing": 27.75,
+   "cell_box": [
+    1525.0,
+    634.0,
+    1882.0,
+    967.0
+   ]
+  },
+  "glyph/13/0/0/0/2": {
+   "page": 13,
+   "system": 0,
+   "staff": 0,
+   "cell": 0,
+   "staff_key": "staff/13/0/0",
+   "cell_key": "cell/13/0/0/0",
+   "staff_lines": [
+    559,
+    587,
+    613,
+    641,
+    669
+   ],
+   "staff_spacing": 27.5,
+   "cell_box": [
+    647.0,
+    394.0,
+    1349.0,
+    779.0
+   ]
+  },
+  "glyph/13/0/0/0/3": {
+   "page": 13,
+   "system": 0,
+   "staff": 0,
+   "cell": 0,
+   "staff_key": "staff/13/0/0",
+   "cell_key": "cell/13/0/0/0",
+   "staff_lines": [
+    559,
+    587,
+    613,
+    641,
+    669
+   ],
+   "staff_spacing": 27.5,
+   "cell_box": [
+    647.0,
+    394.0,
+    1349.0,
+    779.0
+   ]
+  },
+  "glyph/14/0/0/0/48": {
+   "page": 14,
+   "system": 0,
+   "staff": 0,
+   "cell": 0,
+   "staff_key": "staff/14/0/0",
+   "cell_key": "cell/14/0/0/0",
+   "staff_lines": [
+    535,
+    562,
+    589,
+    617,
+    645
+   ],
+   "staff_spacing": 27.5,
+   "cell_box": [
+    644.0,
+    370.0,
+    1429.0,
+    755.0
+   ]
+  },
+  "glyph/14/0/0/4/1": {
+   "page": 14,
+   "system": 0,
+   "staff": 0,
+   "cell": 4,
+   "staff_key": "staff/14/0/0",
+   "cell_key": "cell/14/0/0/4",
+   "staff_lines": [
+    535,
+    562,
+    589,
+    617,
+    645
+   ],
+   "staff_spacing": 27.5,
+   "cell_box": [
+    2747.0,
+    370.0,
+    3271.0,
+    755.0
+   ]
+  },
+  "glyph/17/0/0/0/2": {
+   "page": 17,
+   "system": 0,
+   "staff": 0,
+   "cell": 0,
+   "staff_key": "staff/17/0/0",
+   "cell_key": "cell/17/0/0/0",
+   "staff_lines": [
+    525,
+    553,
+    580,
+    607,
+    635
+   ],
+   "staff_spacing": 27.5,
+   "cell_box": [
+    640.0,
+    360.0,
+    1597.0,
+    745.0
+   ]
+  },
+  "glyph/17/0/0/0/6": {
+   "page": 17,
+   "system": 0,
+   "staff": 0,
+   "cell": 0,
+   "staff_key": "staff/17/0/0",
+   "cell_key": "cell/17/0/0/0",
+   "staff_lines": [
+    525,
+    553,
+    580,
+    607,
+    635
+   ],
+   "staff_spacing": 27.5,
+   "cell_box": [
+    640.0,
+    360.0,
+    1597.0,
+    745.0
+   ]
+  },
+  "glyph/18/0/0/2/2": {
+   "page": 18,
+   "system": 0,
+   "staff": 0,
+   "cell": 2,
+   "staff_key": "staff/18/0/0",
+   "cell_key": "cell/18/0/0/2",
+   "staff_lines": [
+    531,
+    559,
+    586,
+    613,
+    641
+   ],
+   "staff_spacing": 27.5,
+   "cell_box": [
+    2311.0,
+    366.0,
+    2946.0,
+    751.0
+   ]
+  },
+  "glyph/18/0/0/2/3": {
+   "page": 18,
+   "system": 0,
+   "staff": 0,
+   "cell": 2,
+   "staff_key": "staff/18/0/0",
+   "cell_key": "cell/18/0/0/2",
+   "staff_lines": [
+    531,
+    559,
+    586,
+    613,
+    641
+   ],
+   "staff_spacing": 27.5,
+   "cell_box": [
+    2311.0,
+    366.0,
+    2946.0,
+    751.0
+   ]
+  },
+  "glyph/19/0/0/1/20": {
+   "page": 19,
+   "system": 0,
+   "staff": 0,
+   "cell": 1,
+   "staff_key": "staff/19/0/0",
+   "cell_key": "cell/19/0/0/1",
+   "staff_lines": [
+    550,
+    577,
+    604,
+    631,
+    659
+   ],
+   "staff_spacing": 27.25,
+   "cell_box": [
+    1535.0,
+    387.0,
+    1980.0,
+    768.0
+   ]
+  },
+  "glyph/19/0/0/2/7": {
+   "page": 19,
+   "system": 0,
+   "staff": 0,
+   "cell": 2,
+   "staff_key": "staff/19/0/0",
+   "cell_key": "cell/19/0/0/2",
+   "staff_lines": [
+    550,
+    577,
+    604,
+    631,
+    659
+   ],
+   "staff_spacing": 27.25,
+   "cell_box": [
+    1980.0,
+    387.0,
+    2312.0,
+    768.0
+   ]
+  },
+  "glyph/20/0/2/7/5": {
+   "page": 20,
+   "system": 0,
+   "staff": 2,
+   "cell": 7,
+   "staff_key": "staff/20/0/2",
+   "cell_key": "cell/20/0/2/7",
+   "staff_lines": [
+    1012,
+    1039,
+    1066,
+    1093,
+    1121
+   ],
+   "staff_spacing": 27.25,
+   "cell_box": [
+    4458.0,
+    903.0,
+    4950.0,
+    1284.0
+   ]
+  },
+  "glyph/22/0/1/7/8": {
+   "page": 22,
+   "system": 0,
+   "staff": 1,
+   "cell": 7,
+   "staff_key": "staff/22/0/1",
+   "cell_key": "cell/22/0/1/7",
+   "staff_lines": [
+    836,
+    863,
+    890,
+    918,
+    947
+   ],
+   "staff_spacing": 27.75,
+   "cell_box": [
+    3806.0,
+    670.0,
+    4136.0,
+    1113.0
+   ]
+  },
+  "glyph/22/0/1/7/9": {
+   "page": 22,
+   "system": 0,
+   "staff": 1,
+   "cell": 7,
+   "staff_key": "staff/22/0/1",
+   "cell_key": "cell/22/0/1/7",
+   "staff_lines": [
+    836,
+    863,
+    890,
+    918,
+    947
+   ],
+   "staff_spacing": 27.75,
+   "cell_box": [
+    3806.0,
+    670.0,
+    4136.0,
+    1113.0
+   ]
+  },
+  "glyph/23/0/0/2/1": {
+   "page": 23,
+   "system": 0,
+   "staff": 0,
+   "cell": 2,
+   "staff_key": "staff/23/0/0",
+   "cell_key": "cell/23/0/0/2",
+   "staff_lines": [
+    555,
+    582,
+    609,
+    636,
+    665
+   ],
+   "staff_spacing": 27.5,
+   "cell_box": [
+    1875.0,
+    390.0,
+    2292.0,
+    775.0
+   ]
+  },
+  "glyph/23/0/0/2/2": {
+   "page": 23,
+   "system": 0,
+   "staff": 0,
+   "cell": 2,
+   "staff_key": "staff/23/0/0",
+   "cell_key": "cell/23/0/0/2",
+   "staff_lines": [
+    555,
+    582,
+    609,
+    636,
+    665
+   ],
+   "staff_spacing": 27.5,
+   "cell_box": [
+    1875.0,
+    390.0,
+    2292.0,
+    775.0
+   ]
+  },
+  "glyph/24/0/2/0/2": {
+   "page": 24,
+   "system": 0,
+   "staff": 2,
+   "cell": 0,
+   "staff_key": "staff/24/0/2",
+   "cell_key": "cell/24/0/2/0",
+   "staff_lines": [
+    955,
+    983,
+    1010,
+    1038,
+    1065
+   ],
+   "staff_spacing": 27.5,
+   "cell_box": [
+    665.0,
+    845.0,
+    1454.0,
+    1175.0
+   ]
+  },
+  "glyph/24/0/2/0/6": {
+   "page": 24,
+   "system": 0,
+   "staff": 2,
+   "cell": 0,
+   "staff_key": "staff/24/0/2",
+   "cell_key": "cell/24/0/2/0",
+   "staff_lines": [
+    955,
+    983,
+    1010,
+    1038,
+    1065
+   ],
+   "staff_spacing": 27.5,
+   "cell_box": [
+    665.0,
+    845.0,
+    1454.0,
+    1175.0
+   ]
+  },
+  "glyph/25/0/0/7/1": {
+   "page": 25,
+   "system": 0,
+   "staff": 0,
+   "cell": 7,
+   "staff_key": "staff/25/0/0",
+   "cell_key": "cell/25/0/0/7",
+   "staff_lines": [
+    502,
+    530,
+    557,
+    584,
+    612
+   ],
+   "staff_spacing": 27.5,
+   "cell_box": [
+    4165.0,
+    337.0,
+    4613.0,
+    722.0
+   ]
+  },
+  "glyph/25/0/0/7/9": {
+   "page": 25,
+   "system": 0,
+   "staff": 0,
+   "cell": 7,
+   "staff_key": "staff/25/0/0",
+   "cell_key": "cell/25/0/0/7",
+   "staff_lines": [
+    502,
+    530,
+    557,
+    584,
+    612
+   ],
+   "staff_spacing": 27.5,
+   "cell_box": [
+    4165.0,
+    337.0,
+    4613.0,
+    722.0
+   ]
+  },
+  "glyph/26/0/1/5/14": {
+   "page": 26,
+   "system": 0,
+   "staff": 1,
+   "cell": 5,
+   "staff_key": "staff/26/0/1",
+   "cell_key": "cell/26/0/1/5",
+   "staff_lines": [
+    729,
+    755,
+    783,
+    810,
+    839
+   ],
+   "staff_spacing": 27.5,
+   "cell_box": [
+    3481.0,
+    619.0,
+    3989.0,
+    949.0
+   ]
+  },
+  "glyph/26/0/1/5/16": {
+   "page": 26,
+   "system": 0,
+   "staff": 1,
+   "cell": 5,
+   "staff_key": "staff/26/0/1",
+   "cell_key": "cell/26/0/1/5",
+   "staff_lines": [
+    729,
+    755,
+    783,
+    810,
+    839
+   ],
+   "staff_spacing": 27.5,
+   "cell_box": [
+    3481.0,
+    619.0,
+    3989.0,
+    949.0
+   ]
+  }
+ }
+}

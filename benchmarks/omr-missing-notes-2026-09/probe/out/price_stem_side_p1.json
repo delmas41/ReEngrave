@@ -1,0 +1,2464 @@
+{
+ "off": {
+  "control_same": 12442,
+  "control_differ": 0,
+  "control_absent": 0,
+  "control_extra": 0,
+  "musicxml_identical": true,
+  "notes_in_file": 444,
+  "duration_outcomes": {
+   "decided:head_and_marks": 836,
+   "narrowed:beams_ambiguous": 161,
+   "decided:rest_class": 315,
+   "abstained:rest_stands_where_no_rest_hangs": 23,
+   "abstained:unreadable_rest": 1,
+   "decided:whole_rest_means_the_bar": 11,
+   "decided:meter_reconciliation": 2,
+   "decided:the_neighbours_name_this_gap": 9,
+   "decided:the_neighbours_run_to_the_same_barline": 7
+  },
+  "heads_with_a_far_side_stroke": 0,
+  "levels_certain": {
+   "0": 406,
+   "1": 331,
+   "2": 112,
+   "3": 94,
+   "4": 26,
+   "5": 10,
+   "6": 16,
+   "7": 2
+  },
+  "notes_not_written": {
+   "owned_by_another_staff": 47,
+   "duration_narrowed": 104,
+   "owner_not_read": 1,
+   "not_a_notehead:clipped_fragment": 26,
+   "not_a_notehead:too_narrow": 225,
+   "rest_duration_abstained": 19,
+   "written_value_fits_no_note": 14,
+   "not_a_rest:rest_is_a_duplicate_box": 36,
+   "not_a_notehead:belongs_to_a_nearer_staff": 7,
+   "ink_is_a_whole_rest": 2,
+   "bar_does_not_add_up": 528
+  },
+  "written": {
+   "notes": 224,
+   "rests": 123,
+   "beams": 167,
+   "beamed_events": 150,
+   "bars_held_out_sum": 85,
+   "notes_held_out_sum": 528,
+   "bars_with_events": 201,
+   "two_voice_bars": 11
+  },
+  "bars_held_by_sum": [
+   "1/0/0/0",
+   "1/0/0/1",
+   "1/0/0/2",
+   "1/0/0/3",
+   "1/0/0/4",
+   "1/0/0/5",
+   "1/0/0/6",
+   "1/0/1/0",
+   "1/0/1/1",
+   "1/0/1/2",
+   "1/0/1/3",
+   "1/0/1/4",
+   "1/0/1/5",
+   "1/0/1/6",
+   "1/0/10/0",
+   "1/0/10/1",
+   "1/0/10/2",
+   "1/0/10/3",
+   "1/0/10/4",
+   "1/0/10/5",
+   "1/0/10/6",
+   "1/0/11/0",
+   "1/0/11/1",
+   "1/0/11/2",
+   "1/0/11/3",
+   "1/0/11/4",
+   "1/0/11/5",
+   "1/0/11/6",
+   "1/0/12/0",
+   "1/0/12/2",
+   "1/0/12/3",
+   "1/0/12/4",
+   "1/0/12/5",
+   "1/0/12/6",
+   "1/0/13/0",
+   "1/0/13/1",
+   "1/0/13/2",
+   "1/0/13/3",
+   "1/0/13/4",
+   "1/0/13/5",
+   "1/0/13/6",
+   "1/0/2/0",
+   "1/0/2/1",
+   "1/0/2/2",
+   "1/0/2/3",
+   "1/0/2/5",
+   "1/0/2/6",
+   "1/0/3/0",
+   "1/0/3/1",
+   "1/0/3/2",
+   "1/0/3/3",
+   "1/0/3/4",
+   "1/0/3/5",
+   "1/0/3/6",
+   "1/0/4/0",
+   "1/0/4/1",
+   "1/0/4/2",
+   "1/0/4/3",
+   "1/0/4/4",
+   "1/0/4/5",
+   "1/0/5/0",
+   "1/0/5/1",
+   "1/0/5/2",
+   "1/0/5/3",
+   "1/0/5/5",
+   "1/0/6/0",
+   "1/0/6/1",
+   "1/0/6/2",
+   "1/0/6/4",
+   "1/0/7/0",
+   "1/0/7/1",
+   "1/0/7/2",
+   "1/0/7/3",
+   "1/0/7/4",
+   "1/0/7/5",
+   "1/0/7/6",
+   "1/0/8/0",
+   "1/0/8/3",
+   "1/0/9/0",
+   "1/0/9/1",
+   "1/0/9/2",
+   "1/0/9/3",
+   "1/0/9/4",
+   "1/0/9/5",
+   "1/0/9/6"
+  ],
+  "changed": [],
+  "changed_by_quantity": {}
+ },
+ "on": {
+  "control_same": 12347,
+  "control_differ": 95,
+  "control_absent": 0,
+  "control_extra": 0,
+  "musicxml_identical": false,
+  "notes_in_file": 455,
+  "duration_outcomes": {
+   "decided:head_and_marks": 876,
+   "narrowed:beams_ambiguous": 123,
+   "decided:rest_class": 315,
+   "abstained:rest_stands_where_no_rest_hangs": 23,
+   "abstained:unreadable_rest": 1,
+   "decided:whole_rest_means_the_bar": 11,
+   "decided:meter_reconciliation": 3,
+   "decided:the_neighbours_name_this_gap": 6,
+   "decided:the_neighbours_run_to_the_same_barline": 7
+  },
+  "heads_with_a_far_side_stroke": 254,
+  "levels_certain": {
+   "0": 437,
+   "1": 339,
+   "2": 103,
+   "3": 91,
+   "4": 22,
+   "5": 4,
+   "6": 3
+  },
+  "notes_not_written": {
+   "owned_by_another_staff": 47,
+   "duration_narrowed": 66,
+   "owner_not_read": 1,
+   "not_a_notehead:clipped_fragment": 26,
+   "not_a_notehead:too_narrow": 225,
+   "rest_duration_abstained": 19,
+   "not_a_rest:rest_is_a_duplicate_box": 36,
+   "not_a_notehead:belongs_to_a_nearer_staff": 7,
+   "written_value_fits_no_note": 1,
+   "ink_is_a_whole_rest": 2,
+   "bar_does_not_add_up": 568
+  },
+  "written": {
+   "notes": 235,
+   "rests": 123,
+   "beams": 161,
+   "beamed_events": 150,
+   "bars_held_out_sum": 85,
+   "notes_held_out_sum": 568,
+   "bars_with_events": 201,
+   "two_voice_bars": 11
+  },
+  "bars_held_by_sum": [
+   "1/0/0/0",
+   "1/0/0/1",
+   "1/0/0/2",
+   "1/0/0/3",
+   "1/0/0/4",
+   "1/0/0/5",
+   "1/0/0/6",
+   "1/0/1/0",
+   "1/0/1/1",
+   "1/0/1/2",
+   "1/0/1/3",
+   "1/0/1/4",
+   "1/0/1/5",
+   "1/0/1/6",
+   "1/0/10/0",
+   "1/0/10/1",
+   "1/0/10/2",
+   "1/0/10/3",
+   "1/0/10/4",
+   "1/0/10/5",
+   "1/0/10/6",
+   "1/0/11/0",
+   "1/0/11/1",
+   "1/0/11/2",
+   "1/0/11/3",
+   "1/0/11/4",
+   "1/0/11/5",
+   "1/0/11/6",
+   "1/0/12/0",
+   "1/0/12/2",
+   "1/0/12/3",
+   "1/0/12/4",
+   "1/0/12/5",
+   "1/0/12/6",
+   "1/0/13/0",
+   "1/0/13/1",
+   "1/0/13/2",
+   "1/0/13/3",
+   "1/0/13/4",
+   "1/0/13/5",
+   "1/0/13/6",
+   "1/0/2/0",
+   "1/0/2/1",
+   "1/0/2/2",
+   "1/0/2/3",
+   "1/0/2/5",
+   "1/0/2/6",
+   "1/0/3/0",
+   "1/0/3/1",
+   "1/0/3/2",
+   "1/0/3/3",
+   "1/0/3/4",
+   "1/0/3/5",
+   "1/0/3/6",
+   "1/0/4/0",
+   "1/0/4/1",
+   "1/0/4/2",
+   "1/0/4/3",
+   "1/0/4/4",
+   "1/0/4/5",
+   "1/0/5/0",
+   "1/0/5/1",
+   "1/0/5/2",
+   "1/0/5/3",
+   "1/0/5/5",
+   "1/0/6/0",
+   "1/0/6/1",
+   "1/0/6/2",
+   "1/0/6/4",
+   "1/0/7/0",
+   "1/0/7/1",
+   "1/0/7/2",
+   "1/0/7/3",
+   "1/0/7/4",
+   "1/0/7/5",
+   "1/0/7/6",
+   "1/0/8/0",
+   "1/0/8/3",
+   "1/0/9/0",
+   "1/0/9/1",
+   "1/0/9/2",
+   "1/0/9/3",
+   "1/0/9/4",
+   "1/0/9/5",
+   "1/0/9/6"
+  ],
+  "changed": [
+   {
+    "subject": "glyph/1/0/0/3/10",
+    "quantity": "duration",
+    "before": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.25,
+      "written": 0.25,
+      "dots": 0,
+      "beam_levels": 2
+     },
+     "reason": "head_and_marks"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 1.0,
+      "written": 1.0,
+      "dots": 0,
+      "beam_levels": 0
+     },
+     "reason": "head_and_marks",
+     "id": "vrd:026206"
+    }
+   },
+   {
+    "subject": "glyph/1/0/0/3/11",
+    "quantity": "duration",
+    "before": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.25,
+      "written": 0.25,
+      "dots": 0,
+      "beam_levels": 2
+     },
+     "reason": "head_and_marks"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 1.0,
+      "written": 1.0,
+      "dots": 0,
+      "beam_levels": 0
+     },
+     "reason": "head_and_marks",
+     "id": "vrd:026207"
+    }
+   },
+   {
+    "subject": "glyph/1/0/0/3/12",
+    "quantity": "duration",
+    "before": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.25,
+      "written": 0.25,
+      "dots": 0,
+      "beam_levels": 2
+     },
+     "reason": "head_and_marks"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 1.0,
+      "written": 1.0,
+      "dots": 0,
+      "beam_levels": 0
+     },
+     "reason": "head_and_marks",
+     "id": "vrd:026208"
+    }
+   },
+   {
+    "subject": "glyph/1/0/0/3/15",
+    "quantity": "duration",
+    "before": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.25,
+      "written": 0.25,
+      "dots": 0,
+      "beam_levels": 2
+     },
+     "reason": "head_and_marks"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.5,
+      "written": 0.5,
+      "dots": 0,
+      "beam_levels": 1
+     },
+     "reason": "head_and_marks",
+     "id": "vrd:026209"
+    }
+   },
+   {
+    "subject": "glyph/1/0/0/3/16",
+    "quantity": "duration",
+    "before": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.25,
+      "written": 0.25,
+      "dots": 0,
+      "beam_levels": 2
+     },
+     "reason": "head_and_marks"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.5,
+      "written": 0.5,
+      "dots": 0,
+      "beam_levels": 1
+     },
+     "reason": "head_and_marks",
+     "id": "vrd:026210"
+    }
+   },
+   {
+    "subject": "glyph/1/0/0/3/19",
+    "quantity": "duration",
+    "before": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.25,
+      "written": 0.25,
+      "dots": 0,
+      "beam_levels": 2
+     },
+     "reason": "head_and_marks"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 1.0,
+      "written": 1.0,
+      "dots": 0,
+      "beam_levels": 0
+     },
+     "reason": "head_and_marks",
+     "id": "vrd:026211"
+    }
+   },
+   {
+    "subject": "glyph/1/0/0/4/9",
+    "quantity": "duration",
+    "before": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.015625,
+      "written": 0.015625,
+      "dots": 0,
+      "beam_levels": 6
+     },
+     "reason": "head_and_marks"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.25,
+      "written": 0.25,
+      "dots": 0,
+      "beam_levels": 2
+     },
+     "reason": "head_and_marks",
+     "id": "vrd:026215"
+    }
+   },
+   {
+    "subject": "glyph/1/0/0/4/11",
+    "quantity": "duration",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.5,
+      "written": 0.5,
+      "dots": 0,
+      "beam_levels": 1
+     },
+     "reason": "head_and_marks",
+     "id": "vrd:026216"
+    }
+   },
+   {
+    "subject": "glyph/1/0/0/4/12",
+    "quantity": "duration",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.5,
+      "written": 0.5,
+      "dots": 0,
+      "beam_levels": 1
+     },
+     "reason": "head_and_marks",
+     "id": "vrd:026217"
+    }
+   },
+   {
+    "subject": "glyph/1/0/0/4/24",
+    "quantity": "duration",
+    "before": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.03125,
+      "written": 0.03125,
+      "dots": 0,
+      "beam_levels": 5
+     },
+     "reason": "head_and_marks"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.5,
+      "written": 0.5,
+      "dots": 0,
+      "beam_levels": 1
+     },
+     "reason": "head_and_marks",
+     "id": "vrd:026222"
+    }
+   },
+   {
+    "subject": "glyph/1/0/0/4/36",
+    "quantity": "duration",
+    "before": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.015625,
+      "written": 0.015625,
+      "dots": 0,
+      "beam_levels": 6
+     },
+     "reason": "head_and_marks"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.25,
+      "written": 0.25,
+      "dots": 0,
+      "beam_levels": 2
+     },
+     "reason": "head_and_marks",
+     "id": "vrd:026225"
+    }
+   },
+   {
+    "subject": "glyph/1/0/1/5/3",
+    "quantity": "duration",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 1.0,
+      "written": 1.0,
+      "dots": 0,
+      "beam_levels": 0
+     },
+     "reason": "head_and_marks",
+     "id": "vrd:026300"
+    }
+   },
+   {
+    "subject": "glyph/1/0/2/2/3",
+    "quantity": "duration",
+    "before": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.0625,
+      "written": 0.0625,
+      "dots": 0,
+      "beam_levels": 4
+     },
+     "reason": "head_and_marks"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.25,
+      "written": 0.25,
+      "dots": 0,
+      "beam_levels": 2
+     },
+     "reason": "head_and_marks",
+     "id": "vrd:026349"
+    }
+   },
+   {
+    "subject": "glyph/1/0/2/2/4",
+    "quantity": "duration",
+    "before": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.125,
+      "written": 0.125,
+      "dots": 0,
+      "beam_levels": 3
+     },
+     "reason": "head_and_marks"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.5,
+      "written": 0.5,
+      "dots": 0,
+      "beam_levels": 1
+     },
+     "reason": "head_and_marks",
+     "id": "vrd:026350"
+    }
+   },
+   {
+    "subject": "glyph/1/0/2/6/20",
+    "quantity": "duration",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 2.0,
+      "written": 2.0,
+      "dots": 0,
+      "beam_levels": 0
+     },
+     "reason": "head_and_marks",
+     "id": "vrd:026391"
+    }
+   },
+   {
+    "subject": "glyph/1/0/3/1/6",
+    "quantity": "duration",
+    "before": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.25,
+      "written": 0.25,
+      "dots": 0,
+      "beam_levels": 2
+     },
+     "reason": "head_and_marks"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 1.0,
+      "written": 1.0,
+      "dots": 0,
+      "beam_levels": 0
+     },
+     "reason": "head_and_marks",
+     "id": "vrd:026419"
+    }
+   },
+   {
+    "subject": "glyph/1/0/3/2/4",
+    "quantity": "duration",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.5,
+      "written": 0.5,
+      "dots": 0,
+      "beam_levels": 1
+     },
+     "reason": "head_and_marks",
+     "id": "vrd:026431"
+    }
+   },
+   {
+    "subject": "glyph/1/0/3/2/12",
+    "quantity": "duration",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 1.5,
+      "written": 1.5,
+      "dots": 1,
+      "beam_levels": 1
+     },
+     "reason": "head_and_marks",
+     "id": "vrd:026433"
+    }
+   },
+   {
+    "subject": "glyph/1/0/3/3/6",
+    "quantity": "duration",
+    "before": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.25,
+      "written": 0.25,
+      "dots": 0,
+      "beam_levels": 2
+     },
+     "reason": "head_and_marks"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 1.0,
+      "written": 1.0,
+      "dots": 0,
+      "beam_levels": 0
+     },
+     "reason": "head_and_marks",
+     "id": "vrd:026436"
+    }
+   },
+   {
+    "subject": "glyph/1/0/3/3/12",
+    "quantity": "duration",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.5,
+      "written": 0.5,
+      "dots": 0,
+      "beam_levels": 1
+     },
+     "reason": "head_and_marks",
+     "id": "vrd:026440"
+    }
+   },
+   {
+    "subject": "glyph/1/0/3/3/15",
+    "quantity": "duration",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.5,
+      "written": 0.5,
+      "dots": 0,
+      "beam_levels": 1
+     },
+     "reason": "head_and_marks",
+     "id": "vrd:026442"
+    }
+   },
+   {
+    "subject": "glyph/1/0/3/4/0",
+    "quantity": "duration",
+    "before": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.25,
+      "written": 0.25,
+      "dots": 0,
+      "beam_levels": 2
+     },
+     "reason": "head_and_marks"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.5,
+      "written": 0.5,
+      "dots": 0,
+      "beam_levels": 1
+     },
+     "reason": "head_and_marks",
+     "id": "vrd:026449"
+    }
+   },
+   {
+    "subject": "glyph/1/0/3/4/2",
+    "quantity": "duration",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.5,
+      "written": 0.5,
+      "dots": 0,
+      "beam_levels": 1
+     },
+     "reason": "head_and_marks",
+     "id": "vrd:026450"
+    }
+   },
+   {
+    "subject": "glyph/1/0/3/4/3",
+    "quantity": "duration",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.5,
+      "written": 0.5,
+      "dots": 0,
+      "beam_levels": 1
+     },
+     "reason": "head_and_marks",
+     "id": "vrd:026451"
+    }
+   },
+   {
+    "subject": "glyph/1/0/3/4/6",
+    "quantity": "duration",
+    "before": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.125,
+      "written": 0.125,
+      "dots": 0,
+      "beam_levels": 3
+     },
+     "reason": "head_and_marks"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.25,
+      "written": 0.25,
+      "dots": 0,
+      "beam_levels": 2
+     },
+     "reason": "head_and_marks",
+     "id": "vrd:026452"
+    }
+   },
+   {
+    "subject": "glyph/1/0/3/4/7",
+    "quantity": "duration",
+    "before": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.25,
+      "written": 0.25,
+      "dots": 0,
+      "beam_levels": 2
+     },
+     "reason": "head_and_marks"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.5,
+      "written": 0.5,
+      "dots": 0,
+      "beam_levels": 1
+     },
+     "reason": "head_and_marks",
+     "id": "vrd:026453"
+    }
+   },
+   {
+    "subject": "glyph/1/0/3/4/9",
+    "quantity": "duration",
+    "before": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.25,
+      "written": 0.25,
+      "dots": 0,
+      "beam_levels": 2
+     },
+     "reason": "head_and_marks"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.5,
+      "written": 0.5,
+      "dots": 0,
+      "beam_levels": 1
+     },
+     "reason": "head_and_marks",
+     "id": "vrd:026454"
+    }
+   },
+   {
+    "subject": "glyph/1/0/3/4/11",
+    "quantity": "duration",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.5,
+      "written": 0.5,
+      "dots": 0,
+      "beam_levels": 1
+     },
+     "reason": "head_and_marks",
+     "id": "vrd:026455"
+    }
+   },
+   {
+    "subject": "glyph/1/0/3/4/16",
+    "quantity": "duration",
+    "before": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.125,
+      "written": 0.125,
+      "dots": 0,
+      "beam_levels": 3
+     },
+     "reason": "head_and_marks"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.25,
+      "written": 0.25,
+      "dots": 0,
+      "beam_levels": 2
+     },
+     "reason": "head_and_marks",
+     "id": "vrd:026458"
+    }
+   },
+   {
+    "subject": "glyph/1/0/3/4/21",
+    "quantity": "duration",
+    "before": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.125,
+      "written": 0.125,
+      "dots": 0,
+      "beam_levels": 3
+     },
+     "reason": "head_and_marks"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.5,
+      "written": 0.5,
+      "dots": 0,
+      "beam_levels": 1
+     },
+     "reason": "head_and_marks",
+     "id": "vrd:026460"
+    }
+   },
+   {
+    "subject": "glyph/1/0/3/6/0",
+    "quantity": "duration",
+    "before": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.5,
+      "written": 0.5,
+      "dots": 0,
+      "beam_levels": 1
+     },
+     "reason": "head_and_marks"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 1.0,
+      "written": 1.0,
+      "dots": 0,
+      "beam_levels": 0
+     },
+     "reason": "head_and_marks",
+     "id": "vrd:026474"
+    }
+   },
+   {
+    "subject": "glyph/1/0/3/6/3",
+    "quantity": "duration",
+    "before": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.5,
+      "written": 0.5,
+      "dots": 0,
+      "beam_levels": 1
+     },
+     "reason": "head_and_marks"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 1.0,
+      "written": 1.0,
+      "dots": 0,
+      "beam_levels": 0
+     },
+     "reason": "head_and_marks",
+     "id": "vrd:026475"
+    }
+   },
+   {
+    "subject": "glyph/1/0/6/0/2",
+    "quantity": "duration",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.25,
+      "written": 0.25,
+      "dots": 0,
+      "beam_levels": 2
+     },
+     "reason": "head_and_marks",
+     "id": "vrd:026597"
+    }
+   },
+   {
+    "subject": "glyph/1/0/6/0/4",
+    "quantity": "duration",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 1.5,
+      "written": 1.5,
+      "dots": 1,
+      "beam_levels": 0
+     },
+     "reason": "head_and_marks",
+     "id": "vrd:026599"
+    }
+   },
+   {
+    "subject": "glyph/1/0/6/0/5",
+    "quantity": "duration",
+    "before": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.0625,
+      "written": 0.0625,
+      "dots": 0,
+      "beam_levels": 4
+     },
+     "reason": "head_and_marks"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.25,
+      "written": 0.25,
+      "dots": 0,
+      "beam_levels": 2
+     },
+     "reason": "head_and_marks",
+     "id": "vrd:026600"
+    }
+   },
+   {
+    "subject": "glyph/1/0/6/0/8",
+    "quantity": "duration",
+    "before": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.0625,
+      "written": 0.0625,
+      "dots": 0,
+      "beam_levels": 4
+     },
+     "reason": "head_and_marks"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.25,
+      "written": 0.25,
+      "dots": 0,
+      "beam_levels": 2
+     },
+     "reason": "head_and_marks",
+     "id": "vrd:026602"
+    }
+   },
+   {
+    "subject": "glyph/1/0/9/0/8",
+    "quantity": "duration",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.375,
+      "written": 0.375,
+      "dots": 1,
+      "beam_levels": 2
+     },
+     "reason": "head_and_marks",
+     "id": "vrd:026716"
+    }
+   },
+   {
+    "subject": "glyph/1/0/9/0/12",
+    "quantity": "duration",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.0625,
+      "written": 0.0625,
+      "dots": 0,
+      "beam_levels": 4
+     },
+     "reason": "head_and_marks",
+     "id": "vrd:026719"
+    }
+   },
+   {
+    "subject": "glyph/1/0/9/0/14",
+    "quantity": "duration",
+    "before": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.25,
+      "written": 0.25,
+      "dots": 0,
+      "beam_levels": 2
+     },
+     "reason": "head_and_marks"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 1.0,
+      "written": 1.0,
+      "dots": 0,
+      "beam_levels": 0
+     },
+     "reason": "head_and_marks",
+     "id": "vrd:026721"
+    }
+   },
+   {
+    "subject": "glyph/1/0/9/3/11",
+    "quantity": "duration",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.125,
+      "written": 0.125,
+      "dots": 0,
+      "beam_levels": 3
+     },
+     "reason": "head_and_marks",
+     "id": "vrd:026748"
+    }
+   },
+   {
+    "subject": "glyph/1/0/9/4/7",
+    "quantity": "duration",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.25,
+      "written": 0.25,
+      "dots": 0,
+      "beam_levels": 2
+     },
+     "reason": "head_and_marks",
+     "id": "vrd:026754"
+    }
+   },
+   {
+    "subject": "glyph/1/0/10/0/9",
+    "quantity": "duration",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 1.5,
+      "written": 1.5,
+      "dots": 1,
+      "beam_levels": 0
+     },
+     "reason": "head_and_marks",
+     "id": "vrd:026775"
+    }
+   },
+   {
+    "subject": "glyph/1/0/10/0/17",
+    "quantity": "duration",
+    "before": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.25,
+      "written": 0.25,
+      "dots": 0,
+      "beam_levels": 2
+     },
+     "reason": "head_and_marks"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.5,
+      "written": 0.5,
+      "dots": 0,
+      "beam_levels": 1
+     },
+     "reason": "head_and_marks",
+     "id": "vrd:026779"
+    }
+   },
+   {
+    "subject": "glyph/1/0/10/0/41",
+    "quantity": "duration",
+    "before": {
+     "outcome": "decided",
+     "value": {
+      "beats": 2.0,
+      "written": 2.0,
+      "dots": 0,
+      "beam_levels": 0
+     },
+     "reason": "head_and_marks"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 1.0,
+      "written": 1.0,
+      "dots": 0,
+      "beam_levels": 1,
+      "reconciled": true
+     },
+     "reason": "meter_reconciliation",
+     "id": "vrd:030646"
+    }
+   },
+   {
+    "subject": "glyph/1/0/10/3/4",
+    "quantity": "duration",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.25,
+      "written": 0.25,
+      "dots": 0,
+      "beam_levels": 2
+     },
+     "reason": "head_and_marks",
+     "id": "vrd:026807"
+    }
+   },
+   {
+    "subject": "glyph/1/0/10/3/13",
+    "quantity": "duration",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.5,
+      "written": 0.5,
+      "dots": 0,
+      "beam_levels": 1
+     },
+     "reason": "head_and_marks",
+     "id": "vrd:026810"
+    }
+   },
+   {
+    "subject": "glyph/1/0/10/4/11",
+    "quantity": "duration",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.25,
+      "written": 0.25,
+      "dots": 0,
+      "beam_levels": 2
+     },
+     "reason": "head_and_marks",
+     "id": "vrd:026816"
+    }
+   },
+   {
+    "subject": "glyph/1/0/11/0/4",
+    "quantity": "duration",
+    "before": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.015625,
+      "written": 0.015625,
+      "dots": 0,
+      "beam_levels": 6
+     },
+     "reason": "head_and_marks"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.125,
+      "written": 0.125,
+      "dots": 0,
+      "beam_levels": 3
+     },
+     "reason": "head_and_marks",
+     "id": "vrd:026840"
+    }
+   },
+   {
+    "subject": "glyph/1/0/11/0/6",
+    "quantity": "duration",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.0625,
+      "written": 0.0625,
+      "dots": 0,
+      "beam_levels": 4
+     },
+     "reason": "head_and_marks",
+     "id": "vrd:026841"
+    }
+   },
+   {
+    "subject": "glyph/1/0/11/0/10",
+    "quantity": "duration",
+    "before": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.015625,
+      "written": 0.015625,
+      "dots": 0,
+      "beam_levels": 6
+     },
+     "reason": "head_and_marks"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.25,
+      "written": 0.25,
+      "dots": 0,
+      "beam_levels": 2
+     },
+     "reason": "head_and_marks",
+     "id": "vrd:026843"
+    }
+   },
+   {
+    "subject": "glyph/1/0/11/0/11",
+    "quantity": "duration",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.125,
+      "written": 0.125,
+      "dots": 0,
+      "beam_levels": 3
+     },
+     "reason": "head_and_marks",
+     "id": "vrd:026844"
+    }
+   },
+   {
+    "subject": "glyph/1/0/11/0/12",
+    "quantity": "duration",
+    "before": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.015625,
+      "written": 0.015625,
+      "dots": 0,
+      "beam_levels": 6
+     },
+     "reason": "head_and_marks"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.0625,
+      "written": 0.0625,
+      "dots": 0,
+      "beam_levels": 4
+     },
+     "reason": "head_and_marks",
+     "id": "vrd:026845"
+    }
+   },
+   {
+    "subject": "glyph/1/0/11/0/13",
+    "quantity": "duration",
+    "before": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.015625,
+      "written": 0.015625,
+      "dots": 0,
+      "beam_levels": 6
+     },
+     "reason": "head_and_marks"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.25,
+      "written": 0.25,
+      "dots": 0,
+      "beam_levels": 2
+     },
+     "reason": "head_and_marks",
+     "id": "vrd:026846"
+    }
+   },
+   {
+    "subject": "glyph/1/0/11/0/14",
+    "quantity": "duration",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.125,
+      "written": 0.125,
+      "dots": 0,
+      "beam_levels": 3
+     },
+     "reason": "head_and_marks",
+     "id": "vrd:026847"
+    }
+   },
+   {
+    "subject": "glyph/1/0/11/0/16",
+    "quantity": "duration",
+    "before": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.015625,
+      "written": 0.015625,
+      "dots": 0,
+      "beam_levels": 6
+     },
+     "reason": "head_and_marks"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.125,
+      "written": 0.125,
+      "dots": 0,
+      "beam_levels": 3
+     },
+     "reason": "head_and_marks",
+     "id": "vrd:026848"
+    }
+   },
+   {
+    "subject": "glyph/1/0/11/0/18",
+    "quantity": "duration",
+    "before": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.015625,
+      "written": 0.015625,
+      "dots": 0,
+      "beam_levels": 6
+     },
+     "reason": "head_and_marks"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.0625,
+      "written": 0.0625,
+      "dots": 0,
+      "beam_levels": 4
+     },
+     "reason": "head_and_marks",
+     "id": "vrd:026850"
+    }
+   },
+   {
+    "subject": "glyph/1/0/11/0/19",
+    "quantity": "duration",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.25,
+      "written": 0.25,
+      "dots": 0,
+      "beam_levels": 2
+     },
+     "reason": "head_and_marks",
+     "id": "vrd:026851"
+    }
+   },
+   {
+    "subject": "glyph/1/0/11/0/21",
+    "quantity": "duration",
+    "before": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.0078125,
+      "written": 0.0078125,
+      "dots": 0,
+      "beam_levels": 7
+     },
+     "reason": "head_and_marks"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.125,
+      "written": 0.125,
+      "dots": 0,
+      "beam_levels": 3
+     },
+     "reason": "head_and_marks",
+     "id": "vrd:026853"
+    }
+   },
+   {
+    "subject": "glyph/1/0/11/0/22",
+    "quantity": "duration",
+    "before": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.015625,
+      "written": 0.015625,
+      "dots": 0,
+      "beam_levels": 6
+     },
+     "reason": "head_and_marks"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.125,
+      "written": 0.125,
+      "dots": 0,
+      "beam_levels": 3
+     },
+     "reason": "head_and_marks",
+     "id": "vrd:026854"
+    }
+   },
+   {
+    "subject": "glyph/1/0/11/0/28",
+    "quantity": "duration",
+    "before": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.015625,
+      "written": 0.015625,
+      "dots": 0,
+      "beam_levels": 6
+     },
+     "reason": "head_and_marks"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.125,
+      "written": 0.125,
+      "dots": 0,
+      "beam_levels": 3
+     },
+     "reason": "head_and_marks",
+     "id": "vrd:026855"
+    }
+   },
+   {
+    "subject": "glyph/1/0/11/0/32",
+    "quantity": "duration",
+    "before": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.0078125,
+      "written": 0.0078125,
+      "dots": 0,
+      "beam_levels": 7
+     },
+     "reason": "head_and_marks"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.0625,
+      "written": 0.0625,
+      "dots": 0,
+      "beam_levels": 4
+     },
+     "reason": "head_and_marks",
+     "id": "vrd:026856"
+    }
+   },
+   {
+    "subject": "glyph/1/0/11/0/33",
+    "quantity": "duration",
+    "before": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.015625,
+      "written": 0.015625,
+      "dots": 0,
+      "beam_levels": 6
+     },
+     "reason": "head_and_marks"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.0625,
+      "written": 0.0625,
+      "dots": 0,
+      "beam_levels": 4
+     },
+     "reason": "head_and_marks",
+     "id": "vrd:026857"
+    }
+   },
+   {
+    "subject": "glyph/1/0/11/3/5",
+    "quantity": "duration",
+    "before": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.125,
+      "written": 0.125,
+      "dots": 0,
+      "beam_levels": 3
+     },
+     "reason": "head_and_marks"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.25,
+      "written": 0.25,
+      "dots": 0,
+      "beam_levels": 2
+     },
+     "reason": "head_and_marks",
+     "id": "vrd:026878"
+    }
+   },
+   {
+    "subject": "glyph/1/0/11/4/2",
+    "quantity": "duration",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.25,
+      "written": 0.25,
+      "dots": 0,
+      "beam_levels": 2
+     },
+     "reason": "head_and_marks",
+     "id": "vrd:026883"
+    }
+   },
+   {
+    "subject": "glyph/1/0/12/0/11",
+    "quantity": "duration",
+    "before": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.25,
+      "written": 0.25,
+      "dots": 0,
+      "beam_levels": 2
+     },
+     "reason": "head_and_marks"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 1.0,
+      "written": 1.0,
+      "dots": 0,
+      "beam_levels": 0
+     },
+     "reason": "head_and_marks",
+     "id": "vrd:026909"
+    }
+   },
+   {
+    "subject": "glyph/1/0/12/5/0",
+    "quantity": "duration",
+    "before": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.5,
+      "written": 0.5,
+      "dots": 0,
+      "beam_levels": 1
+     },
+     "reason": "head_and_marks"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.25,
+      "written": 0.25,
+      "dots": 0,
+      "beam_levels": 2
+     },
+     "reason": "head_and_marks",
+     "id": "vrd:026945"
+    }
+   },
+   {
+    "subject": "glyph/1/0/13/3/18",
+    "quantity": "duration",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 2.0,
+      "written": 2.0,
+      "dots": 0,
+      "beam_levels": 0
+     },
+     "reason": "head_and_marks",
+     "id": "vrd:026994"
+    }
+   },
+   {
+    "subject": "glyph/1/1/3/0/10",
+    "quantity": "duration",
+    "before": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.125,
+      "written": 0.125,
+      "dots": 0,
+      "beam_levels": 3
+     },
+     "reason": "head_and_marks"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.25,
+      "written": 0.25,
+      "dots": 0,
+      "beam_levels": 2
+     },
+     "reason": "head_and_marks",
+     "id": "vrd:027127"
+    }
+   },
+   {
+    "subject": "glyph/1/1/3/1/0",
+    "quantity": "duration",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.5,
+      "written": 0.5,
+      "dots": 0,
+      "beam_levels": 1
+     },
+     "reason": "head_and_marks",
+     "id": "vrd:027133"
+    }
+   },
+   {
+    "subject": "glyph/1/1/3/1/27",
+    "quantity": "duration",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.5,
+      "written": 0.5,
+      "dots": 0,
+      "beam_levels": 1
+     },
+     "reason": "head_and_marks",
+     "id": "vrd:027141"
+    }
+   },
+   {
+    "subject": "glyph/1/1/3/1/31",
+    "quantity": "duration",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.5,
+      "written": 0.5,
+      "dots": 0,
+      "beam_levels": 1
+     },
+     "reason": "head_and_marks",
+     "id": "vrd:027142"
+    }
+   },
+   {
+    "subject": "glyph/1/1/3/3/2",
+    "quantity": "duration",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 1.0,
+      "written": 1.0,
+      "dots": 0,
+      "beam_levels": 0
+     },
+     "reason": "head_and_marks",
+     "id": "vrd:027157"
+    }
+   },
+   {
+    "subject": "glyph/1/1/8/0/9",
+    "quantity": "duration",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 1.0,
+      "written": 1.0,
+      "dots": 0,
+      "beam_levels": 0
+     },
+     "reason": "head_and_marks",
+     "id": "vrd:027290"
+    }
+   },
+   {
+    "subject": "glyph/1/1/8/0/11",
+    "quantity": "duration",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.5,
+      "written": 0.5,
+      "dots": 0,
+      "beam_levels": 1
+     },
+     "reason": "head_and_marks",
+     "id": "vrd:027291"
+    }
+   },
+   {
+    "subject": "glyph/1/1/8/0/12",
+    "quantity": "duration",
+    "before": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.25,
+      "written": 0.25,
+      "dots": 0,
+      "beam_levels": 2
+     },
+     "reason": "head_and_marks"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 1.0,
+      "written": 1.0,
+      "dots": 0,
+      "beam_levels": 0
+     },
+     "reason": "head_and_marks",
+     "id": "vrd:027292"
+    }
+   },
+   {
+    "subject": "glyph/1/1/8/2/12",
+    "quantity": "duration",
+    "before": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.25,
+      "written": 0.25,
+      "dots": 0,
+      "beam_levels": 2
+     },
+     "reason": "head_and_marks"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.5,
+      "written": 0.5,
+      "dots": 0,
+      "beam_levels": 1
+     },
+     "reason": "head_and_marks",
+     "id": "vrd:027304"
+    }
+   },
+   {
+    "subject": "glyph/1/1/8/6/4",
+    "quantity": "duration",
+    "before": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.75,
+      "written": 0.75,
+      "dots": 1,
+      "beam_levels": 1
+     },
+     "reason": "head_and_marks"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 1.5,
+      "written": 1.5,
+      "dots": 1,
+      "beam_levels": 0
+     },
+     "reason": "head_and_marks",
+     "id": "vrd:027328"
+    }
+   },
+   {
+    "subject": "glyph/1/1/9/1/5",
+    "quantity": "duration",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.5,
+      "written": 0.5,
+      "dots": 0,
+      "beam_levels": 1
+     },
+     "reason": "head_and_marks",
+     "id": "vrd:027341"
+    }
+   },
+   {
+    "subject": "glyph/1/1/9/1/23",
+    "quantity": "duration",
+    "before": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.25,
+      "written": 0.25,
+      "dots": 0,
+      "beam_levels": 2
+     },
+     "reason": "head_and_marks"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 1.0,
+      "written": 1.0,
+      "dots": 0,
+      "beam_levels": 0
+     },
+     "reason": "head_and_marks",
+     "id": "vrd:027344"
+    }
+   },
+   {
+    "subject": "glyph/1/1/9/2/7",
+    "quantity": "duration",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.5,
+      "written": 0.5,
+      "dots": 0,
+      "beam_levels": 1
+     },
+     "reason": "the_neighbours_run_to_the_same_barline",
+     "id": "vrd:030660"
+    }
+   },
+   {
+    "subject": "glyph/1/1/9/3/1",
+    "quantity": "duration",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.5,
+      "written": 0.5,
+      "dots": 0,
+      "beam_levels": 1
+     },
+     "reason": "head_and_marks",
+     "id": "vrd:027354"
+    }
+   },
+   {
+    "subject": "glyph/1/1/9/6/0",
+    "quantity": "duration",
+    "before": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.25,
+      "written": 0.25,
+      "dots": 0,
+      "beam_levels": 2
+     },
+     "reason": "head_and_marks"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.5,
+      "written": 0.5,
+      "dots": 0,
+      "beam_levels": 1
+     },
+     "reason": "head_and_marks",
+     "id": "vrd:027371"
+    }
+   },
+   {
+    "subject": "glyph/1/1/10/0/0",
+    "quantity": "duration",
+    "before": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.0625,
+      "written": 0.0625,
+      "dots": 0,
+      "beam_levels": 4
+     },
+     "reason": "head_and_marks"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.5,
+      "written": 0.5,
+      "dots": 0,
+      "beam_levels": 1
+     },
+     "reason": "head_and_marks",
+     "id": "vrd:027382"
+    }
+   },
+   {
+    "subject": "glyph/1/1/10/0/8",
+    "quantity": "duration",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.0625,
+      "written": 0.0625,
+      "dots": 0,
+      "beam_levels": 4
+     },
+     "reason": "head_and_marks",
+     "id": "vrd:027386"
+    }
+   },
+   {
+    "subject": "glyph/1/1/10/1/3",
+    "quantity": "duration",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.25,
+      "written": 0.25,
+      "dots": 0,
+      "beam_levels": 2
+     },
+     "reason": "head_and_marks",
+     "id": "vrd:027388"
+    }
+   },
+   {
+    "subject": "glyph/1/1/10/3/8",
+    "quantity": "duration",
+    "before": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.5,
+      "written": 0.5,
+      "dots": 0,
+      "beam_levels": 1
+     },
+     "reason": "the_neighbours_name_this_gap",
+     "id": "vrd:030651"
+    }
+   },
+   {
+    "subject": "glyph/1/1/10/6/4",
+    "quantity": "duration",
+    "before": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.25,
+      "written": 0.25,
+      "dots": 0,
+      "beam_levels": 2
+     },
+     "reason": "head_and_marks"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.5,
+      "written": 0.5,
+      "dots": 0,
+      "beam_levels": 1
+     },
+     "reason": "head_and_marks",
+     "id": "vrd:027414"
+    }
+   },
+   {
+    "subject": "glyph/1/1/10/7/1",
+    "quantity": "duration",
+    "before": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.25,
+      "written": 0.25,
+      "dots": 0,
+      "beam_levels": 2
+     },
+     "reason": "head_and_marks"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 1.0,
+      "written": 1.0,
+      "dots": 0,
+      "beam_levels": 0
+     },
+     "reason": "head_and_marks",
+     "id": "vrd:027416"
+    }
+   },
+   {
+    "subject": "glyph/1/1/11/7/4",
+    "quantity": "duration",
+    "before": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.5,
+      "written": 0.5,
+      "dots": 0,
+      "beam_levels": 1
+     },
+     "reason": "head_and_marks"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 1.0,
+      "written": 1.0,
+      "dots": 0,
+      "beam_levels": 0
+     },
+     "reason": "head_and_marks",
+     "id": "vrd:027469"
+    }
+   },
+   {
+    "subject": "glyph/1/1/12/3/3",
+    "quantity": "duration",
+    "before": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.25,
+      "written": 0.25,
+      "dots": 0,
+      "beam_levels": 2
+     },
+     "reason": "head_and_marks"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.5,
+      "written": 0.5,
+      "dots": 0,
+      "beam_levels": 1
+     },
+     "reason": "head_and_marks",
+     "id": "vrd:027502"
+    }
+   },
+   {
+    "subject": "glyph/1/1/9/1/1",
+    "quantity": "duration",
+    "before": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.5,
+      "written": 0.5,
+      "dots": 0,
+      "beam_levels": 1
+     },
+     "reason": "the_neighbours_name_this_gap"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.5,
+      "written": 0.5,
+      "dots": 0,
+      "beam_levels": 1
+     },
+     "reason": "head_and_marks",
+     "id": "vrd:027339"
+    }
+   },
+   {
+    "subject": "glyph/1/1/9/2/1",
+    "quantity": "duration",
+    "before": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.5,
+      "written": 0.5,
+      "dots": 0,
+      "beam_levels": 1
+     },
+     "reason": "the_neighbours_name_this_gap"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.5,
+      "written": 0.5,
+      "dots": 0,
+      "beam_levels": 1
+     },
+     "reason": "head_and_marks",
+     "id": "vrd:027348"
+    }
+   },
+   {
+    "subject": "glyph/1/1/9/4/5",
+    "quantity": "duration",
+    "before": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.5,
+      "written": 0.5,
+      "dots": 0,
+      "beam_levels": 1
+     },
+     "reason": "the_neighbours_name_this_gap"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.5,
+      "written": 0.5,
+      "dots": 0,
+      "beam_levels": 1
+     },
+     "reason": "head_and_marks",
+     "id": "vrd:027365"
+    }
+   },
+   {
+    "subject": "glyph/1/1/10/2/2",
+    "quantity": "duration",
+    "before": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.5,
+      "written": 0.5,
+      "dots": 0,
+      "beam_levels": 1
+     },
+     "reason": "the_neighbours_name_this_gap"
+    },
+    "after": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.5,
+      "written": 0.5,
+      "dots": 0,
+      "beam_levels": 1
+     },
+     "reason": "head_and_marks",
+     "id": "vrd:027395"
+    }
+   },
+   {
+    "subject": "glyph/1/1/9/6/1",
+    "quantity": "duration",
+    "before": {
+     "outcome": "decided",
+     "value": {
+      "beats": 0.75,
+      "written": 0.75,
+      "dots": 1,
+      "beam_levels": 1
+     },
+     "reason": "the_neighbours_run_to_the_same_barline"
+    },
+    "after": {
+     "outcome": "narrowed",
+     "value": null,
+     "reason": "beams_ambiguous",
+     "id": "vrd:027372"
+    }
+   }
+  ],
+  "changed_by_quantity": {
+   "duration": 95
+  }
+ }
+}
