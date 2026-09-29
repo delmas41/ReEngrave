@@ -1,11 +1,11 @@
 {
   "cell_id": "schehe-p4-sys0-s3-m0",
   "schema_version": 2,
-  "labeled_at_utc": "2026-09-29T22:30:03+00:00",
+  "labeled_at_utc": "2026-09-29T22:36:20+00:00",
   "detections": [
     {
       "id": "D0",
-      "verdict": null,
+      "verdict": "FP",
       "model_predicted_class": "restQuarter",
       "human_corrected_class": null,
       "model_predicted_category": "structural",

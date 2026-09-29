@@ -1,7 +1,7 @@
 {
   "cell_id": "schehe-p2-sys0-s10-m0",
   "schema_version": 2,
-  "labeled_at_utc": "2026-09-29T22:27:38+00:00",
+  "labeled_at_utc": "2026-09-29T22:36:04+00:00",
   "detections": [
     {
       "id": "D0",
@@ -39,7 +39,7 @@
     },
     {
       "id": "D2",
-      "verdict": null,
+      "verdict": "FP",
       "model_predicted_class": "restWhole",
       "human_corrected_class": null,
       "model_predicted_category": "structural",
@@ -56,7 +56,7 @@
     },
     {
       "id": "D3",
-      "verdict": null,
+      "verdict": "FP",
       "model_predicted_class": "restQuarter",
       "human_corrected_class": null,
       "model_predicted_category": "structural",
