@@ -663,3 +663,49 @@ label too"), which this fix wires; nothing else moved. No `library/`,
 `omr-weights/`, venv, or PDF path in any test file (grepped). 2.25 (beam
 counting, `rhythm.py`) untouched. `.claude/worktrees/redecide-a9bdec8a`
 untouched.
+
+### 6. ROADMAP 2.26b — the answer to §4's question, and a design that
+### needed correcting once it met real data
+
+Sean's answer (research, `HORN-CROOK-RESEARCH.md`, added to main
+alongside 2.26): yes, for Brahms 1/i, a bare crook always continues the
+braced Horn pair — because no other instrument in the movement is crooked
+in C or Es.
+
+**The first build of condition (b) asked the ROSTER for that "no other
+instrument" fact, and it is DEAD AT ZERO on every real record this repo
+holds.** Real Brahms's own catalog `InstrDetail` reads `"4 horns, 2
+trumpets, 3 trombones, timpani, strings"` — an instrument count, never a
+crook. A roster-corroboration design that requires crook data the catalog
+does not carry is correct in isolation and inert in practice; caught
+before merge, not after, and worth stating so the NEXT roster-shaped
+design checks what the catalog actually holds before shipping the check.
+
+**Corrected design.** Condition (b) is now read off the PLATE itself: does
+ANY labelled staff anywhere in the DOCUMENT (not only the reference
+system) attach this crook to a different instrument? This is deliberately
+named as **one inference from the engraver's own abbreviation
+convention** — *an abbreviation, once attached to an instrument anywhere
+in a piece, is not reused for a different one there* — and not as a
+second, independent witness: every row it reads is the same
+`Q.MARGIN_LABEL` source condition (a) already reads off the reference,
+merely widened to the whole document. Calling it a second witness would
+have been the exact fault CLAUDE.md §10 warns about (two witnesses off one
+raster falling silent together) dressed in different words. The ROSTER
+keeps a role, honestly reduced to what it can actually do: an OPTIONAL
+VETO, checked only where it happens to carry crook data at all (an
+enrichment `work_roster.py` does not populate today), never the source of
+the uniqueness claim.
+
+Tests (`tools/omr/tests/test_staged_bare_crook.py`, 12): the positive case
+with the roster SILENT (today's real shape — this is the case that must
+work on real data, not merely on a contrived roster); a THIRD system
+printing `"(C) Tr."` making crook `C` document-wide ambiguous (Horn and
+Trumpet both attested) → abstain; a roster that CONTRADICTS the
+document's own finding → abstain; a roster that AGREES → still places
+(the veto is not a requirement); plus the unchanged structural controls
+(no brace, wrong crook, full-lineup no-op). RED confirmed by reverting to
+the roster-required mechanism (3 of 12 fail, exactly the ones now
+asserting the real, roster-silent shape) → GREEN, 12/12. `pytest -m "not
+slow"`: 3,830 passed / 3 skipped, 0 failed. `check`: 247, status=ok. No
+record-scale run either time.
