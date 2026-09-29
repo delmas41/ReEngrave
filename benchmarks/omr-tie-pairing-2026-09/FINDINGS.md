@@ -843,3 +843,96 @@ window cannot be tightened on this evidence.
   heads, not covered); (4) drop a tie start whose stop's bar is held out;
   (5) the cross-system link (needs the part, i.e. extracting `build` out of
   `export.py`, chain FINDINGS §7 item 2).
+
+---
+
+# §3.2c — TIED CHORDS, THE STAFF-LINE "TIE", AND BREITKOPF (2026-09-29)
+
+Branch `claude/tie-chords-3.2c`, off `origin/main` `e0b0d777` (3.2b merged).
+STAGED. No gather; every figure is one saved record re-adjudicated by
+`probe/readjudicate_tie_pair.py`.
+
+## 3.2c.1 Tied chords — built, and it reaches NOTHING on either scan page
+
+CONVENTION (coordinator, from the engraving): a tied chord is drawn one arc
+per tied note, stacked, and arcs do not cross. `adjudicate_tie_pair` now
+decides `paired_in_a_chord` where a `more_than_one_pair` narrowing can be
+matched ONE-TO-ONE by vertical order. All four conditions must hold, else it
+keeps narrowing:
+
+1. the STACK — tie arcs of the same cell overlapping this one over half the
+   shorter x-span — has no two arcs within half a step
+   (`TIE_SAME_POSITION_MAX_SPACES`) of each other (two boxes of one arc are a
+   duplicate detection, not two tied notes);
+2. the pairs are counted over the WHOLE stack's y band, so every arc of the
+   stack sees the SAME pairs (found by a failing test: two arcs over three
+   tied heads, where the top arc saw two pairs and the bottom one three);
+3. as many pairs as arcs, at distinct positions, and the assigned pair is in
+   this arc's own candidate set;
+4. ⚠️ **the starts are ONE chord column and the stops another**
+   (`CHORD_X_TOLERANCE_HEAD_WIDTHS = 0.6`, restated from
+   `voicing.group_chords_in_measure`). **Added after the first cut's crops**:
+   without it the rule decided 6 arcs on Breitkopf p1, and of the 5 I looked
+   at (not a verdict) **3 were not ties at all** — #3 and #5 stacked slur
+   fragments at a barline, #2 two heads a note apart with notes between them
+   (`out/print/3.2c-tie-01..06.png`, manifest `note`). A stack of arcs over
+   heads that are not a chord is not a tied chord.
+
+Tests: 5 new (1 positive, 4 controls: two arcs at one position; two arcs over
+three pairs; starts not one column; a slur in the stack). The positive is RED
+on `e0b0d777`; the controls pass there by design (it narrowed everything).
+
+**Reach: 0 chord pairings on Litolff p3 (10 narrowed), 0 on Breitkopf p1 (51
+narrowed); engraved p0 unchanged (7 of 7 right).** The narrowings on these two
+pages are not tied chords; what they are is not established.
+
+## 3.2c.2 Crop 3 (a staff line read as a tie) — recorded, NO rule
+
+`glyph/3/0/6/6/2` on Litolff p3: detector `tie`, conf 0.39; box height 7.6 px
+against a staff-line thickness of 4.0 px (`Q.STAFF_SKEW.thickness_px`), centre
+2.7 px above the top line; `arc_kind`'s grammar RECORDED `says: slur`. The
+proposed refusal — *an arc shorter than a line is thick, lying on a line* —
+**does not separate it**: 3.2b crop #1 (C6, read as a real tie) is 9.6 px tall
+and 2.6 px above the same kind of line. On Breitkopf p1 no tie box is under
+1.4× a line's thickness, whole-bar or paired, and 14 paired arcs sit within an
+eighth of a space of a line. The grammar is no discriminator either: it says
+`slur` on real ties too (3.2b #1, #5). Nothing cheap FOLLOWS.
+What does refuse the SHAPE on Breitkopf is 3.2b's `spans_a_whole_bar`: **249
+of 524 tie boxes on p1 are EXACTLY the cell's width** (width/cell = 1.0 for
+every one), detections clipped at the cell edges, stacked at staff-line
+heights. On Litolff p3 the shape is 20 of 135.
+
+## 3.2c.3 Breitkopf — one page (pdf index 1, the count page)
+
+Record: the 2.6c/27b arm record (`…/27b/arm/brahms-arm.record.json`, 677 MB,
+loaded once, sliced to page 1; 15 s, 4.6 GB peak).
+`out/3.2c-breitkopf-p1.json`.
+
+| | base (exporter pairing) | arm (`Q.TIE_PAIR`) |
+|---|--:|--:|
+| tie arcs (`arc_kind`) | 524 | 524 |
+| links marked | 149 | 39 |
+| …joining one pitch / two pitches | 60 / 88 (+1 same step) | 39 / 0 |
+| `<tie type="start">` / `stop` in the file | 4 / 3 | **0 / 1** |
+| contradictions reported | — | 2 (1 pitch, 1 spelling) |
+| narrowed | — | 51 |
+
+`Q.TIE_PAIR`: 102 paired (→ 39 marked links after dedupe; 29 pairs lose an end
+before the file, 3 span two voices, 2 contradictions), 249
+`spans_a_whole_bar`, 51 narrowed, 38 `no_start_head`, 36
+`no_head_near_the_arc`, 22 `runs_off_the_system`, 13
+`enters_from_previous_system`, 9 `no_pair_at_one_position`, 4 `no_stop_head`.
+
+⚠️⚠️ **ON THIS PAGE THE FILE IS DECIDED BY ROADMAP 2.8, NOT BY THE PAIRING.**
+134 of 201 bars with events (67%) are held out as not adding up
+(`bars_held_out_sum`), so 39 marked links write 0 tie starts (base: 149 → 4).
+The arm's one `stop` without a `start` is the dangling-tie defect §3.2b.3
+named, seen from the other side (the start's bar held out). Neither file
+number says anything about ties until the bar sums do.
+
+## 3.2c.4 Next, ranked
+
+1. Drop both ends of a tie when either end's bar is held out (both documents
+   now show it, both directions).
+2. The 51 Breitkopf narrowings: look before building — they are not chords.
+3. Sean's verdicts on 3.2b's 8 crops and 3.2c's 8.

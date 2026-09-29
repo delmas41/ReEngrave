@@ -124,6 +124,7 @@ def _write_crop_cache(result, arm_rep, new, path):
             spacing[o["subject"]] = o["value"]
     home = {v["subject"]: (v.get("detail") or {}).get("home_staff")
             for v in new}
+    reason = {v["subject"]: v.get("reason") for v in new}
 
     def entry(kind, item):
         arcs = item.get("arcs") or []
@@ -132,6 +133,8 @@ def _write_crop_cache(result, arm_rep, new, path):
         return {"kind": kind, "start": item["start"], "stop": item["stop"],
                 "pitches": item.get("pitches") or [item.get("pitch")] * 2,
                 "arcs": arcs, "staff": staff,
+                "reasons": sorted({reason.get(a) for a in arcs
+                                   if reason.get(a)}),
                 "start_box": boxes.get(item["start"]),
                 "stop_box": boxes.get(item["stop"]),
                 "arc_boxes": [boxes.get(a) for a in arcs],
@@ -142,7 +145,12 @@ def _write_crop_cache(result, arm_rep, new, path):
              "linked": [entry("linked", t) for t in
                         arm_rep.get("tie_links") or ()],
              "contradictions": [entry(c["kind"], c) for c in
-                                arm_rep.get("tie_contradictions") or ()]}
+                                arm_rep.get("tie_contradictions") or ()],
+             # ⚠️ 3.2c: every chord pairing, marked or not -- a pair whose
+             # end a held-out bar swallowed is still a claim about the print.
+             "chord": [entry("chord", {**v["value"], "arcs": [v["subject"]],
+                                       "pitches": [None, None]})
+                       for v in new if v.get("reason") == "paired_in_a_chord"]}
     json.dump(cache, open(path, "w"), indent=1)
 
 
@@ -247,6 +255,10 @@ def main(argv=None):
         "base": {**_counts(base_xml),
                  "written": {k: v for k, v in sorted(
                      base_rep["written"].items()) if "tie" in k},
+                 "arcs_not_written_other": {
+                     k: v for k, v in sorted(
+                         base_rep["arcs_not_written"].items())
+                     if not k.startswith("tie")},
                  "tie_pairing": base_rep.get("tie_pairing")},
         "arm": {**_counts(arm_xml), "written": tie_w,
                 "tie_pairing": arm_rep.get("tie_pairing"),
@@ -254,6 +266,16 @@ def main(argv=None):
                     k: v for k, v in sorted(
                         arm_rep["arcs_not_written"].items())
                     if k.startswith("tie")},
+                # ⚠️ 3.2c: the NON-tie buckets too -- on Breitkopf p1 42
+                # marked links wrote 0 `<tie>`, and the reason is here
+                # (`arc_ends_in_one_chord`, the 2.8 bar-sum hold-out).
+                "arcs_not_written_other": {
+                    k: v for k, v in sorted(
+                        arm_rep["arcs_not_written"].items())
+                    if not k.startswith("tie")},
+                "bars_held_out_sum": {
+                    k: v for k, v in (arm_rep.get("bars_held_out_sum")
+                                      or {}).items() if k != "held"},
                 "tie_contradictions": arm_rep.get("tie_contradictions")},
         "decided_pairs": [
             {"arc": v["subject"], **v["value"],

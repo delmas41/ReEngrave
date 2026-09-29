@@ -218,6 +218,76 @@ class TestItNeverGuesses(unittest.TestCase):
         self.assertEqual(v.reason, "no_start_head")
 
 
+class TestATiedChord(unittest.TestCase):
+    """ROADMAP 3.2c. A tied chord is engraved ONE ARC PER TIED NOTE, stacked,
+    and arcs do not cross: where the stack and the pairs match one-to-one by
+    vertical order the matching FOLLOWS. Anything else keeps narrowing."""
+
+    def _chord(self, log, n=2):
+        heads = []
+        for i in range(n):
+            heads.append((_head(log, 0, 2 * i, 40.0, 100.0 + 10 * i),
+                          _head(log, 0, 2 * i + 1, 120.0, 100.0 + 10 * i)))
+        return heads
+
+    def test_two_arcs_two_pairs_pair_by_vertical_order(self):
+        log = Log()
+        _cells(log, 2)
+        (a0, b0), (a1, b1) = self._chord(log)
+        upper = _arc(log, 0, 5, 55.0, 115.0, y0=92.0, y1=97.0)
+        lower = _arc(log, 0, 6, 55.0, 115.0, y0=118.0, y1=124.0)
+        vu, vl = _decide(log, upper, lower)
+        self.assertEqual(vu.reason, "paired_in_a_chord")
+        self.assertEqual(vu.value, {"start": a0.to_key(), "stop": b0.to_key()})
+        self.assertEqual(vl.value, {"start": a1.to_key(), "stop": b1.to_key()})
+
+    def test_CONTROL_two_arcs_at_ONE_position_still_narrow(self):
+        """Two boxes of one arc (a duplicate detection) are not two tied
+        notes; which box is real is not something the stack can say."""
+        log = Log()
+        _cells(log, 2)
+        self._chord(log)
+        d1 = _arc(log, 0, 5, 55.0, 115.0, y0=103.0, y1=109.0)
+        d2 = _arc(log, 0, 6, 56.0, 114.0, y0=104.0, y1=110.0)
+        v1, v2 = _decide(log, d1, d2)
+        self.assertEqual((v1.outcome, v2.outcome),
+                         (Outcome.NARROWED, Outcome.NARROWED))
+
+    def test_CONTROL_two_arcs_three_pairs_is_not_one_to_one(self):
+        log = Log()
+        _cells(log, 2)
+        self._chord(log, n=3)
+        a = _arc(log, 0, 7, 55.0, 115.0, y0=92.0, y1=97.0)
+        b = _arc(log, 0, 8, 55.0, 115.0, y0=128.0, y1=134.0)
+        va, vb = _decide(log, a, b)
+        self.assertEqual((va.reason, vb.reason),
+                         ("more_than_one_pair", "more_than_one_pair"))
+
+    def test_CONTROL_starts_that_are_not_ONE_chord_still_narrow(self):
+        """Found on the Breitkopf p1 crops: two stacked arcs over heads a note
+        apart are not a tied chord."""
+        log = Log()
+        _cells(log, 2)
+        _head(log, 0, 0, 40.0, 100.0)
+        _head(log, 0, 1, 20.0, 110.0)            # another column
+        _head(log, 0, 2, 120.0, 100.0)
+        _head(log, 0, 3, 120.0, 110.0)
+        upper = _arc(log, 0, 5, 55.0, 115.0, y0=92.0, y1=97.0)
+        lower = _arc(log, 0, 6, 55.0, 115.0, y0=118.0, y1=124.0)
+        vu, vl = _decide(log, upper, lower)
+        self.assertEqual((vu.outcome, vl.outcome),
+                         (Outcome.NARROWED, Outcome.NARROWED))
+
+    def test_CONTROL_a_slur_in_the_stack_does_not_count(self):
+        log = Log()
+        _cells(log, 2)
+        self._chord(log)
+        tie = _arc(log, 0, 5, 55.0, 115.0, y0=92.0, y1=97.0)
+        _arc(log, 0, 6, 55.0, 115.0, y0=118.0, y1=124.0, cls="slur")
+        (v,) = _decide(log, tie)
+        self.assertEqual(v.outcome, Outcome.NARROWED)
+
+
 class TestTheSystemEdge(unittest.TestCase):
 
     def test_a_tie_running_off_the_system_abstains_and_says_so(self):

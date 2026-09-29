@@ -1468,7 +1468,8 @@ TIE_FLANK_MIN_DY_PX = 30.0
            Q.GLYPH_BOX, Q.GLYPH_OWNER, Q.NOTEHEAD_IS_NOT_A_NOTEHEAD,
            Q.CELL_BOX),
     subjects_from=Q.ARC_BOX,
-    reasons=("paired", "more_than_one_pair", "not_a_tie", "not_an_arc",
+    reasons=("paired", "paired_in_a_chord", "more_than_one_pair",
+             "not_a_tie", "not_an_arc",
              "no_page_frame", "no_start_head", "no_stop_head",
              "no_head_near_the_arc", "spans_a_whole_bar",
              "enters_from_previous_system", "runs_off_the_system",
@@ -1614,10 +1615,15 @@ def adjudicate_tie_pair(ev: Evidence) -> Ruling:
         return not (np_ is not None and np_.outcome is Outcome.DECIDED
                     and np_.value is True)
 
-    lefts, rights = [], []
-    for row, i, xc, yc, w, _h in heads:
-        if abs(yc - arc_yc) > y_tol:
-            continue
+    def collect(y_ok):
+        lefts, rights = [], []
+        for row, i, xc, yc, w, _h in heads:
+            if not y_ok(yc):
+                continue
+            _flank(row, i, xc, yc, w, lefts, rights)
+        return lefts, rights
+
+    def _flank(row, i, xc, yc, w, lefts, rights):
         reach = w * TIE_FLANK_MAX_DX_HEAD_WIDTHS
         inside = -w * TIE_FLANK_MAX_OVERLAP_HEAD_WIDTHS
         dxl = ax0 - xc
@@ -1633,6 +1639,8 @@ def adjudicate_tie_pair(ev: Evidence) -> Ruling:
                 dxr < reach or (cut_right and i == cell_index + 1)) \
                 and usable(row):
             rights.append((dxr, yc, row, i))
+
+    lefts, rights = collect(lambda yc: abs(yc - arc_yc) <= y_tol)
 
     counts = {"lefts": len(lefts), "rights": len(rights),
               "cut_left": cut_left, "cut_right": cut_right}
@@ -1672,19 +1680,23 @@ def adjudicate_tie_pair(ev: Evidence) -> Ruling:
     # candidate. That is forced, not preferred; what remains ambiguous (two
     # DIFFERENT positions each with a pair -- a tied chord -- or two heads at
     # one x) is NARROWED, never argmaxed.
-    pairs = []
-    for dxl, yl, rl, il in lefts:
-        for dxr, yr, rr, ir in rights:
-            if rl.subject == rr.subject or not one_position(yl, yr):
-                continue
-            if any(d < dxl for d, y, r, _i in lefts
-                   if r is not rl and one_position(y, yr)):
-                continue
-            if any(d < dxr for d, y, r, _i in rights
-                   if r is not rr and one_position(y, yl)):
-                continue
-            pairs.append(((dxl + dxr) / avg_h, abs(yl - yr) / avg_h,
-                          rl, rr, il, ir))
+    def pair_up(lefts, rights):
+        out = []
+        for dxl, yl, rl, il in lefts:
+            for dxr, yr, rr, ir in rights:
+                if rl.subject == rr.subject or not one_position(yl, yr):
+                    continue
+                if any(d < dxl for d, y, r, _i in lefts
+                       if r is not rl and one_position(y, yr)):
+                    continue
+                if any(d < dxr for d, y, r, _i in rights
+                       if r is not rr and one_position(y, yl)):
+                    continue
+                out.append(((dxl + dxr) / avg_h, abs(yl - yr) / avg_h,
+                            rl, rr, il, ir))
+        return out
+
+    pairs = pair_up(lefts, rights)
     if not pairs:
         nearest = min(((abs(yl - yr) / avg_h) for _a, yl, _b, _c in lefts
                        for _d, yr, _e, _f in rights), default=None)
@@ -1697,10 +1709,60 @@ def adjudicate_tie_pair(ev: Evidence) -> Ruling:
         return {"start": p[2].subject.to_key(), "stop": p[3].subject.to_key()}
 
     if len(pairs) > 1:
+        # ⚠️ ROADMAP 3.2c. A TIED CHORD IS ENGRAVED ONE ARC PER TIED NOTE,
+        # STACKED, and arcs do not cross -- so where this arc's stack and its
+        # candidate pairs match ONE-TO-ONE by vertical order, arc k's pair is
+        # pair k. That FOLLOWS; it is not a preference. Anything short of
+        # one-to-one (a missed arc, a duplicate box, two arcs or two pairs at
+        # one position) keeps the narrowing.
+        def yl_of(p):
+            return _head_yc(heads, p[2])
+
+        def yr_of(p):
+            return _head_yc(heads, p[3])
+
+        stack = _tie_stack(ev, arc, (ax0, ax1), avg_h, limit)
+        # ⚠️ THE CHORD'S PAIRS ARE TAKEN OVER THE WHOLE STACK'S y BAND, not
+        # this arc's alone, so every arc of the stack counts the SAME pairs:
+        # otherwise the top arc can see two pairs and the bottom one three,
+        # and a "one-to-one" match from one arc's view is not one from the
+        # other's (the test with two arcs and three tied heads found this).
+        chord = []
+        if stack is not None:
+            ys = [sy for sy, _id in stack]
+            chord = pair_up(*collect(
+                lambda yc: any(abs(yc - sy) <= y_tol for sy in ys)))
+        pair_ys = sorted((((yl_of(p) + yr_of(p)) / 2.0, p) for p in chord),
+                         key=lambda t: t[0])
+        distinct = all(b[0] - a[0] > limit * avg_h
+                       for a, b in zip(pair_ys, pair_ys[1:]))
+        own = {(p[2].id, p[3].id) for p in pairs}
+        # ⚠️ A TIED CHORD'S STARTS ARE ONE CHORD AND ITS STOPS ANOTHER --
+        # heads in one x column. Without this the Breitkopf p1 crops paired
+        # two stacked slur fragments with two heads a note apart and another
+        # two in between (3.2c FINDINGS): a stack of arcs over heads that are
+        # NOT a chord is not a tied chord, and keeps narrowing.
+        chordal = all(_one_column(heads, [p[j] for _y, p in pair_ys])
+                      for j in (2, 3)) if pair_ys else False
+        k = ([sid for _sy, sid in stack].index(arc.id)
+             if stack is not None else None)
+        if (stack is not None and len(stack) >= 2 and distinct and chordal
+                and len(stack) == len(pair_ys)
+                and (pair_ys[k][1][2].id, pair_ys[k][1][3].id) in own):
+            dx, dy, rl, rr, il, ir = pair_ys[k][1]
+            return Ruling(
+                value=value_of(pair_ys[k][1]), reason="paired_in_a_chord",
+                used=(arc.id, rl.id, rr.id) + tuple(
+                    s[1] for s in stack if s[1] != arc.id),
+                detail={**counts, "dy_spaces": round(dy, 3),
+                        "dx_spaces": round(dx, 3),
+                        "crosses_barline": il != ir, "home_staff": home,
+                        "chord_rank": k, "chord_arcs": len(stack)})
         return Ruling.narrow(
             [R.Candidate(value_of(p), -round(p[0], 3)) for p in pairs],
             "more_than_one_pair", used=(arc.id,), **counts,
-            pairs_at_one_position=len(pairs))
+            pairs_at_one_position=len(pairs),
+            stacked_tie_arcs=None if stack is None else len(stack))
     dx, dy, rl, rr, il, ir = pairs[0]
     return Ruling(
         value=value_of(pairs[0]), reason="paired",
@@ -1717,6 +1779,61 @@ def adjudicate_tie_pair(ev: Evidence) -> Ruling:
                     / avg_h, 3),
                 "crosses_barline": il != ir,
                 "home_staff": home})
+
+
+def _tie_stack(ev: Evidence, arc, span, avg_h: float, limit: float):
+    """`[(y_centre, row id)]` of the tie arcs STACKED with `arc`, top first,
+    or None when the stack is not a clean one-arc-per-position column.
+
+    A sibling is another arc of the same cell, decided `tie` and not refused,
+    overlapping this one over at least half the shorter x-span. ⚠️ Two arcs
+    within `limit` staff spaces of each other in y are two boxes at ONE
+    position (a duplicate detection -- Litolff p3 has six on one tie), not two
+    tied notes, and the stack is refused rather than de-duplicated: which box
+    is the real one is not something this can say.
+    """
+    x0, x1 = span
+    out = []
+    for row in ev.rows(Q.ARC_BOX, scope=Scope.SELF_AND_DESCENDANTS,
+                       subject=ev.subject.at(Kind.CELL)):
+        b = (row.detail or {}).get("bbox_page_px")
+        if not b or len(b) != 4:
+            continue
+        if row.id != arc.id:
+            k = ev.verdict(Q.ARC_KIND, subject=row.subject)
+            if k is None or k.outcome is not Outcome.DECIDED \
+                    or k.value != "tie":
+                continue
+            no = ev.verdict(Q.ARC_IS_NOT_AN_ARC, subject=row.subject)
+            if no is not None and no.outcome is Outcome.DECIDED \
+                    and no.value is True:
+                continue
+            ov = min(x1, float(b[2])) - max(x0, float(b[0]))
+            shorter = min(x1 - x0, float(b[2]) - float(b[0]))
+            if shorter <= 0 or ov < 0.5 * shorter:
+                continue
+        out.append(((float(b[1]) + float(b[3])) / 2.0, row.id))
+    out.sort()
+    if any(b[0] - a[0] <= limit * avg_h for a, b in zip(out, out[1:])):
+        return None
+    return out
+
+
+#: Two heads are ONE chord column when their x-centres lie within this many
+#: average head widths. RESTATED from `voicing.group_chords_in_measure`
+#: (`chord_x_tolerance = avg_w * 0.6`, inline there and shared with the
+#: frozen legacy exporter), so the tie's idea of a chord is the file's.
+CHORD_X_TOLERANCE_HEAD_WIDTHS = 0.6
+
+
+def _one_column(heads, rows) -> bool:
+    """Do these head rows stand in ONE x column (one chord)?"""
+    hs = [h for h in heads if any(h[0] is r for r in rows)]
+    if len(hs) < 2:
+        return False
+    tol = CHORD_X_TOLERANCE_HEAD_WIDTHS * sum(h[4] for h in hs) / len(hs)
+    xs = [h[2] for h in hs]
+    return max(xs) - min(xs) <= tol
 
 
 def _head_yc(heads, row) -> float:

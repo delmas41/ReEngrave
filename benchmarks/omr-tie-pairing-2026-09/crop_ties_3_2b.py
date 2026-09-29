@@ -20,9 +20,16 @@ and labelled E, every arc that named the pair is outlined ORANGE. Every
 manifest row carries `VERDICT_none_yet: null`.
 
     python3 benchmarks/omr-tie-pairing-2026-09/crop_ties_3_2b.py
+
+ROADMAP 3.2c reuses it for the Breitkopf chord pairings:
+
+    python3 benchmarks/omr-tie-pairing-2026-09/crop_ties_3_2b.py \
+        --cache out/3.2c-breitkopf-p1-crops-cache.json --pdf breitkopf \
+        --prefix 3.2c --pops chord:4
 """
 from __future__ import annotations
 
+import argparse
 import json
 import random
 import sys
@@ -41,14 +48,30 @@ sys.path.insert(0, str(REPO_ROOT / "benchmarks" / "omr-owner-domain-2026-09"))
 from crop_losers_2_6b import _frame_ok  # noqa: E402
 
 
-def _pdf() -> Path:
+PDFS = {
+    "litolff": ("editions/beethoven/symphony-5-op67/beethoven--symphony-5-"
+                "op67--henry-litolff-s-verlag-1870--imslp984073.pdf"),
+    "breitkopf": ("editions/brahms/symphony-1-op68/brahms--symphony-1-op68--"
+                  "breitkopf-hartel-brahms--imslp317803.pdf"),
+}
+
+
+def _pdf(which: str = "litolff") -> Path:
     from tools.library.score_library import library_root
-    return library_root() / (
-        "editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--"
-        "henry-litolff-s-verlag-1870--imslp984073.pdf")
+    return library_root() / PDFS[which]
 
 
-def main() -> int:
+def main(argv=None) -> int:
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--cache", default=str(CACHE.relative_to(HERE)))
+    ap.add_argument("--pdf", default="litolff", choices=sorted(PDFS))
+    ap.add_argument("--prefix", default="3.2b")
+    ap.add_argument("--pops", default=f"linked:{N_LINKED},"
+                                      f"contradictions:{N_CONTRA}")
+    a = ap.parse_args(argv)
+    cache_path = HERE / a.cache
+    pops = [(k, int(v)) for k, v in
+            (x.split(":") for x in a.pops.split(","))]
     import fitz
     import numpy as np
     from PIL import Image, ImageDraw, ImageFont
@@ -56,17 +79,17 @@ def main() -> int:
     sys.path.insert(0, str(REPO_ROOT))
     font = ImageFont.load_default(size=20)
     rng = random.Random(SEED)
-    cache = json.loads(CACHE.read_text())
-    linked = list(cache["linked"])
-    contra = list(cache["contradictions"])
-    rng.shuffle(linked)
-    print(f"population: linked={len(linked)} contradictions={len(contra)}")
-    if not linked and not contra:
+    cache = json.loads(cache_path.read_text())
+    pools = {k: list(cache.get(k) or ()) for k, _n in pops}
+    if "linked" in pools:
+        rng.shuffle(pools["linked"])
+    print("population:", {k: len(v) for k, v in pools.items()})
+    if not any(pools.values()):
         print("DEAD: nothing to crop")
         return 2
 
     OUT_DIR.mkdir(parents=True, exist_ok=True)
-    doc = fitz.open(str(_pdf()))
+    doc = fitz.open(str(_pdf(a.pdf)))
     pages = {}
 
     def get_page(p):
@@ -90,8 +113,9 @@ def main() -> int:
 
     manifest, refused = [], []
     n = 0
-    for kind, pool, want in (("linked", linked, N_LINKED),
-                             ("contradiction", contra, N_CONTRA)):
+    for kind, want in pops:
+        pool = pools[kind]
+        kind = {"contradictions": "contradiction"}.get(kind, kind)
         made = 0
         for item in pool:
             if made >= want:
@@ -110,7 +134,7 @@ def main() -> int:
                 continue
             n += 1
             made += 1
-            name = f"3.2b-tie-{n:02d}.png"
+            name = f"{a.prefix}-tie-{n:02d}.png"
             boxes = [item["start_box"], item["stop_box"]] + [
                 b for b in item["arc_boxes"] if b]
             xs = [b[0] for b in boxes] + [b[2] for b in boxes]
@@ -150,10 +174,12 @@ def main() -> int:
                         fill=(0, 90, 200), width=2)
                 y += sp * Z
                 k += 1
-            q = ("Q: is S~E ONE printed tie? (yes / it is a slur / "
-                 "wrong notes / not a tie at all)" if kind == "linked" else
-                 "Q: is S~E a printed tie? if yes, which pitch is misread "
-                 "(S / E)? if no, what is the arc?")
+            q = {"linked": "Q: is S~E ONE printed tie? (yes / it is a slur / "
+                           "wrong notes / not a tie at all)",
+                 "chord": "Q: CHORD -- is S~E the tie THIS orange arc draws "
+                          "(yes / it is another chord note's / not a tie)?",
+                 }.get(kind, "Q: is S~E a printed tie? if yes, which pitch "
+                             "is misread (S / E)? if no, what is the arc?")
             title = [
                 (f"{name}  {kind.upper()}  pdf idx {page}  staff "
                  f"{item['staff']} (GREEN)", (0, 0, 0)),
@@ -177,13 +203,12 @@ def main() -> int:
                 "stop_box": item["stop_box"],
                 "frame_contrast": round(contrast, 2),
                 "question": q[3:], "VERDICT_none_yet": None})
-    (OUT_DIR / "3.2b-manifest.json").write_text(json.dumps({
-        "roadmap_item": "3.2b",
-        "cache": str(CACHE.relative_to(REPO_ROOT)),
+    (OUT_DIR / f"{a.prefix}-manifest.json").write_text(json.dumps({
+        "roadmap_item": a.prefix,
+        "cache": str(cache_path.relative_to(REPO_ROOT)),
         "record_provenance": cache.get("record"),
         "dpi": DPI, "seed": SEED,
-        "population": {"linked": len(linked),
-                       "contradictions": len(contra)},
+        "population": {k: len(v) for k, v in pools.items()},
         "crops": manifest, "refused": refused}, indent=1))
     print(f"wrote {len(manifest)} crops, refused {len(refused)}")
     return 0
