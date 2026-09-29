@@ -71,6 +71,7 @@ from ..record import ABSTAIN, Kind, Outcome, Q, Scope
 from . import ownership as _ledger
 _OWN_LINE_MAX_SPACES = _ledger.OWN_LINE_MAX_SPACES
 cell_rungs = _ledger.cell_rungs
+cv_rungs = _ledger.cv_rungs           # ROADMAP 2.6d
 ladder_side = _ledger.ladder_side
 ledger_direction = _ledger.ledger_direction
 
@@ -536,7 +537,17 @@ def _belongs_to_a_nearer_staff(ev: Evidence, box_row, contested_by,
     x0, x1 = float(page_box[0]), float(page_box[2])
     cell = ev.subject.at(Kind.CELL)
     near_cell = R.cell(cell.page, cell.system, near[1].staff, cell.cell)
-    rungs = cell_rungs(ev, (cell, near_cell))
+    # ⚠️ ROADMAP 2.6d: `cv_rungs` is the SAME second reader `glyph_owner`
+    # merges in -- a step the detector drew no `ledgerLine` box on, read
+    # off the ink instead. One pool, so the two decisions cannot credit a
+    # rung differently. ⚠️ THE COUNT IS READ HERE TOO, DIRECTLY, and not
+    # only inside `cv_rungs` (an aliased cross-module call `inventory
+    # --check`'s AST walk does not follow, unlike the local helpers below
+    # it -- CLAUDE.md §4d's third blind spot, hit again): `signal` is where
+    # every fact this decision measured but did not act on already lives.
+    cv_rows = ev.rows(Q.LEDGER_RUNG_INK)
+    signal["cv_rung_ink_rows"] = len(cv_rows)
+    rungs = cell_rungs(ev, (cell, near_cell)) + cv_rungs(ev)
     filed_side = ladder_side(staff.to_key(), y, x0, x1, ys, sp, rungs)
     near_side = ladder_side(near[1].to_key(), y, x0, x1, geo[0], geo[1],
                             rungs)
@@ -698,15 +709,20 @@ def _human_not_a_symbol(ev: Evidence, detail: Dict[str, Any], *,
 
 @decision(
     quantity=Q.NOTEHEAD_IS_NOT_A_NOTEHEAD,
+    # ⚠️ ROADMAP 2.6d adds `Q.LEDGER_RUNG_INK`: `_belongs_to_a_nearer_staff`
+    # asks the same `ownership.ledger_direction` helper `glyph_owner` does,
+    # over the same merged (detector + CV) rung pool.
     composed_from=(Q.GLYPH_BOX, Q.CELL_BOX, Q.CELL_STAFF_SPACE,
                   Q.NOTEHEAD_STAFF_POSITION, Q.GLYPH_CONF, Q.CLEF_LOCATED,
                   Q.HUMAN_BOX_VERDICT, Q.LEDGER_IS_NOT_A_LEDGER,
-                  Q.GLYPH_BAND_DISTANCE, Q.STAFF_LINES, Q.STAFF_SPACING),
+                  Q.GLYPH_BAND_DISTANCE, Q.STAFF_LINES, Q.STAFF_SPACING,
+                  Q.LEDGER_RUNG_INK),
     scope=Kind.GLYPH,
     wants=(Q.GLYPH_BOX, Q.CELL_BOX, Q.CELL_STAFF_SPACE,
           Q.NOTEHEAD_STAFF_POSITION, Q.GLYPH_CONF, Q.CLEF_LOCATED,
           Q.HUMAN_BOX_VERDICT, Q.LEDGER_IS_NOT_A_LEDGER,
-          Q.GLYPH_BAND_DISTANCE, Q.STAFF_LINES, Q.STAFF_SPACING),
+          Q.GLYPH_BAND_DISTANCE, Q.STAFF_LINES, Q.STAFF_SPACING,
+          Q.LEDGER_RUNG_INK),
     subjects_from=Q.NOTEHEAD_CLASS,
     reasons=HUMAN_REFUSAL_REASONS + ("is_a_clef", "clipped_fragment",
                                      "too_narrow", "belongs_to_a_nearer_staff",

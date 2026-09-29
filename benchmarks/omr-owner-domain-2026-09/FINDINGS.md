@@ -1033,3 +1033,195 @@ Question: *GREEN / ORANGE / not a note — and are there ledger lines?*
   both decisions now read the ledger boxes directly, so nothing needed it.
 - CLAUDE.md §4c's list of EXPORT refusals does not yet name `owner_not_read`
   (left for whoever merges; this lane did not edit the spec).
+
+## §2.6d — a far head's ledger rungs are READ from the ink (CV), not only from the detector's boxes (2026-09-28/29, BUILT not merged)
+
+Branch `claude/ledger-cv-2.6d`. **Path: STAGED** (`gather.py`,
+`adjudicators/ownership.py`, `adjudicators/notehead_precision.py`,
+`record.py`, `capture.py`, `adjudicate.py`). Sean, via §2.6c.2's own close:
+*"a far note with no rungs found either way is a reading gap"* — 2.6c.2
+measured that gap at **389 Litolff / 266 Breitkopf** newly `far_no_rungs`
+contests on the saved 27b arm records, up to ~330 notes no longer written,
+and named the next lever as ledger RECALL: two of the eight crops it cut for
+Sean show printed ledger lines the detector never boxed. This builds that
+second reader.
+
+### CONVENTION ASSUMED / WHAT WOULD FALSIFY IT / NOT CONFIRMED
+
+The thresholds in `gather.py`'s `LEDGER_RUNG_INK_*` constants (header
+comments there, restated once): a printed rung is 1.5–2 head widths wide
+(`LEDGER_RUNG_INK_WIDTH_HEAD_MULT = 1.75`), its stroke as thick as the
+staff's own measured line (`Q.STAFF_SKEW.thickness_px`, `median_line_
+thickness_px` — see the bug below), a window at or above 0.55 ink counts as
+"inked" (`LEDGER_RUNG_INK_DENSE`), and a band one thickness further up and
+down must read under 0.35 or the stroke found is thick, not thin
+(`LEDGER_RUNG_INK_ADJACENT_MAX`). **NOT CONFIRMED against a print anywhere
+in this pass** — falsified by a print-adjudicated rung this test rejects, or
+a non-rung it accepts; the six crops below are the first look, not a
+verdict. The adjacent-band guard does NOT discriminate a slanted beam
+crossing the window at a shallow angle — flagged, not built.
+
+### What was built
+
+1. **`Q.LEDGER_RUNG_INK`** (`record.py`; `CLAIM.MEASUREMENT`, `capture.py`
+   graded `RELATION` beside `LEDGER_INK_UNDER`), one row per (head glyph,
+   candidate staff, step) — the SAME step arithmetic `_observe_ladder`
+   already walks (`LEDGER_ROUND_UP`, one space per step from the candidate's
+   outer line). `value` is whether a thin horizontal run was found; `detail`
+   carries the three window densities, the adjacent-band guard, the exact
+   page-pixel window (`window_page_px`), and `want_y_page` — enough to cut a
+   crop from later, with no re-gather.
+2. **`gather.ledger_rung_ink`** (pure function, canonical-pixel frame): three
+   bins at the tested y — CENTRE (over the head's own x-span), LEFT and
+   RIGHT (the overhang PAST the head's edges, the guard against a bare
+   stem, which never reaches past the head at all) — plus the adjacent-band
+   thickness guard. `gather._observe_ledger_rung_ink` does the frame
+   conversion (page px → the CANDIDATE's own cell's canonical px, inverting
+   `_page_box`'s arithmetic) and samples the candidate's own cell's
+   `image_no_staff` at the head's own measure index (falling back to the
+   head's own cell where the candidate's carries no raster) — the SAME pad-
+   reaches-the-neighbour fact `cell_rungs` already relies on (CLAUDE.md
+   §10). One abstain call site covers every raster/geometry failure
+   (`ABSTAIN.NO_MASK` / `NO_STAFF_GEOMETRY`), consolidated on purpose — see
+   the wiring accounting below.
+3. **`ownership.cv_rungs`**: reads `Q.LEDGER_RUNG_INK` rows on the contested
+   glyph where `value is True`, and turns each into a `Rung` (new field
+   `source: "detector" | "cv_ink"`) at the EXACT page window/y the GATHER
+   row already measured — no re-derivation, no re-matching. `_contest_
+   ledger_reading` (`glyph_owner`) and `_belongs_to_a_nearer_staff` (2.7b)
+   both now build their rung pool as `cell_rungs(...) + cv_rungs(ev)`: ONE
+   helper, two readers, merged before `ladder_side`'s own step-matching ever
+   runs — a step is credited if EITHER reader named it. `LadderSide` gained
+   `sources: {rung_key: "detector"|"cv_ink"}`, surfaced in `summary()`, so
+   `trace` can say which reader decided a step. `Q.LEDGER_RUNG_INK` joined
+   both decisions' `wants`/`composed_from` and `adjudicate.READINGS[Q.
+   GLYPH_OWNER]`; 2.7b's own module reads it directly too (`signal["cv_rung_
+   ink_rows"]`, informational) so the cross-module `cv_rungs(ev)` call — an
+   ALIASED import, invisible to `inventory`'s same-module AST walk — is not
+   the only literal mention of the quantity there (CLAUDE.md §4d's third
+   blind spot, hit and fixed the way §2.6c.2 fixed its own instance: at the
+   read, not the gap list).
+
+### A real bug the first real gather found
+
+`Staff.line_thickness_px` is `list[float] | None`, PER LINE top-to-bottom
+(`types.py:63`), not the scalar the first draft assumed reading it straight
+off `pws.staves` — `float()`ing it crashed the very first page gather
+(`TypeError: float() argument must be a string or a number, not 'list'`).
+Fixed to `median_line_thickness_px` (`types.py:73`), the derived scalar
+`measure_extractor.py:1390` already reuses for exactly this reason. Caught
+by RUNNING the pipeline, not by a test — the unit tests below used a fake
+staff/cell and never exercised the real attribute's shape; a lesson for
+whoever writes the next GATHER reader touching a `Staff` field this pass
+did not already read.
+
+### RED → GREEN
+
+`tools/omr/tests/test_staged_ledger_rung_ink.py` (26 tests, 4 parts: the
+pure measurement on synthetic rasters; GATHER integration on a fake cell;
+the ONE helper crediting a step from a `Q.LEDGER_RUNG_INK` row with no
+detector box anywhere; 2.7b asking the same helper). RED on `c2ab5f55`: 20
+of 22 fail (`gather.ledger_rung_ink`, `gather._observe_ledger_rung_ink`,
+`ownership.cv_rungs` do not exist there) — the 2 that pass are the negative-
+control fixtures kept on purpose (CLAUDE.md §6b: *"a refusal test needs a
+positive control in the same class, or it passes by refusing everything"*).
+Fast tier **3,606 passed**, 3 skipped (3,584 + 22 new; one apparent failure
+mid-session was `test_stem_notehead_gate`'s source-text assertion catching
+`gather.py` mid-edit — CLAUDE.md §6c's own warning, reproduced exactly, and
+gone on a clean rerun with no concurrent edits). `staged.check` **249 →
+252**: `wiring`'s "UNRESOLVED gather sites" bucket (a pre-existing, already-
+tolerated category — a Subject bound from a caller, unresolvable by static
+AST, the same shape `_observe_ladder`'s own `g` already sits in) grows by 3
+call sites (one consolidated abstain, one abstain, one observe inside the
+per-step loop) — `inventory`/`capture`/`gather_coverage`/`reach` unchanged
+at their pre-2.6d counts once `READERS.CV_LEDGER` was registered in
+`capture.READER_RASTER` and the cross-module `wants` blind spot above was
+fixed. **0 unaccounted, 0 stale** on every sub-check; every added finding
+sits in a category already on `KNOWN_GAPS`/registered vocabulary, none of
+them a new kind of gap.
+
+### The one-page base-vs-arm re-gather — REACH, not accuracy
+
+Both pages, `--no-surya` (2.7's own margin-label rungs never touch
+ownership): **Breitkopf 317803 pdf index 1** and, within budget,
+**Litolff 984073 pdf index 3**. Base = `c2ab5f55` in a separate worktree,
+same weights, same page, same flags.
+
+| | Breitkopf p2 (base → arm) | Litolff p4 (base → arm) |
+|---|---|---|
+| `Q.LEDGER_RUNG_INK` rows measured | n/a → 547 | n/a → 329 |
+| … `found=True` | n/a → **0** | n/a → **0** |
+| … abstained (`window off the raster`) | n/a → 147 | n/a → 0 |
+| `glyph_owner` `far_no_rungs` | 10 → **10** | 14 → **14** |
+| every other `decided`/`abstained` count | identical | identical |
+
+**REACH IS REAL AND THE COMPOUND TEST IS CONSERVATIVE, NOT DEAD.** 547 + 329
+= 876 windows were actually measured (not a population of zeros — centre
+density alone reaches 1.0 on 193 of the 547 Breitkopf rows), and every
+`far_no_rungs` count, every `glyph_owner` verdict and every downstream
+decided/abstained count on BOTH documents is BYTE-IDENTICAL base to arm: on
+these two specific pages the compound test never once said `found=True`, so
+nothing downstream had a new fact to read. This is the honest result, not a
+null run: reach is measured first (CLAUDE.md rule 5) and it reaches;
+accuracy on these two pages is exactly zero credits, which the six crops
+below explain rather than merely report.
+
+### Six crops for Sean (`out/print/2.6d-cv-{brahms,litolff}-0{1,2,4}.png`,
+`2.6d-cv-litolff-0{3,4,8}.png`)
+
+Not "heads the CV rungs newly decide" — there are none to show on these two
+pages — but the CLOSEST near-misses to `found=True` (`crop_cv_rung_2_6d.py`,
+banded style of `crop_far_no_rungs_2_6c.py`: the candidate staff shaded
+green, the head bracketed red, the EXACT tested window drawn as a dashed
+blue rectangle at the measured page position). Frame control reused from
+`crop_losers_2_6b._frame_ok` (0 refused of 8 attempted; every kept crop's
+staff passed intact AND failed shifted half a space).
+
+Looking at them: **brahms-01** and **brahms-02** are solid noteheads sitting
+on or beside a staff line (one beside a `pp`, one under a slur/beam) — all
+three of centre/left/right pass DENSE, and the adjacent-band guard correctly
+refuses them (a filled notehead is thick, not a thin rung, and the crop
+shows exactly that). **brahms-04** is a heavy horizontal band spanning the
+ENTIRE crop width just below a staff — almost certainly a print/scan
+artefact or a system rule, not a note-specific rung; the guard refuses it
+too. **litolff-03** and **litolff-08** are Litolff's own MERGING signature
+(CLAUDE.md §10): a note fused into a chord blob, or a note's own beam/flag
+ink, sitting where the window is centred — again the head's own ink, not a
+rung underneath it. **litolff-04**'s adjacent reading (0.356, barely over
+the 0.35 cap) is the closest thing to an open question here: dense ink
+directly under the staff that could be a rung fused with a neighbouring
+note's stem on a merging plate, or could be that neighbour's own ink with
+no rung at all — Sean's call, and the reason the manifests carry
+`VERDICT_none_yet: null` rather than a guess.
+
+**No case seen argues the guard is wrong.** Six for six, the ink the test
+rejected is demonstrably not a thin rung reaching past a head on both
+sides — which is evidence the mechanism is discriminating correctly on
+what little it has been shown, not evidence it is calibrated (CLAUDE.md
+rule 7: a control that never fails is not a control; here the guard fires
+on every real candidate offered and there is no positive case in this
+sample to check it does not ALSO fire on a genuine rung).
+
+### Not done / open
+
+- **Zero positive reach on real pages.** The two pages measured are not the
+  pages the motivating finding's crops came from (those were cut from
+  whole-movement 27b arm records, not pdf-index-1/-3 specifically) — a
+  whole-movement re-gather (needs two full re-gathers to price, CLAUDE.md
+  §4d) is the next test of whether the mechanism ever fires `True`
+  anywhere, and was not run here (Sean: build and wire, stop burning runs).
+- The adjacent-band guard is UNTESTED against a real slanted beam or a real
+  thin rung close beside dense chord ink — the six crops are all clear
+  negatives, not a discriminating pair.
+- `LEDGER_RUNG_INK_DENSE` / `_ADJACENT_MAX` / `_WIDTH_HEAD_MULT` are
+  argued, not measured — no crop here confirms a threshold value, only that
+  the compound test's overall behaviour (on this sample) matches what a
+  human would call "not a rung".
+- No GATHER change to `Q.GLYPH_LADDER`'s own anonymous count: `ladder_side`
+  and `cv_rungs` are the only readers of the merged pool; a fixture or an
+  old record with no page geometry still falls back to `ladder_side_from_
+  count`, which CV cannot reach (unchanged, by design).
+- `staged.check` TOTAL is 252, not ≤249 — see the RED→GREEN section above
+  for the accounting; every point of the increase is inside an existing,
+  already-tolerated `wiring` bucket, and none of `inventory`/`capture`/
+  `gather_coverage`/`reach` moved from their 2.6c.2 counts.

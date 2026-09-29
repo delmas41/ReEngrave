@@ -123,14 +123,18 @@ OWNER_NOT_READ_REASONS = ("far_no_rungs",)
     # (`ladder_side`) steps one staff space at a time off each candidate's
     # own outer line, and the `ledgerLine` boxes it walks are `Q.GLYPH_BOX`
     # rows of the head's cell and each candidate's same-index cell.
+    # ⚠️ ROADMAP 2.6d adds `Q.LEDGER_RUNG_INK`: a SECOND reader of the same
+    # ladder, for a step the detector drew no `ledgerLine` box on
+    # (`cv_rungs`).
     composed_from=(Q.GLYPH_BAND_DISTANCE, Q.GLYPH_LADDER, Q.INSTRUMENT, Q.CLEF,
                    Q.HUMAN_BOX_VERDICT, Q.LEDGER_IS_NOT_A_LEDGER, Q.GLYPH_BOX,
-                   Q.WEDGE_BOX, Q.STAFF_LINES, Q.STAFF_SPACING),
+                   Q.WEDGE_BOX, Q.STAFF_LINES, Q.STAFF_SPACING,
+                   Q.LEDGER_RUNG_INK),
     scope=Kind.GLYPH,
     wants=(Q.GLYPH_LADDER, Q.GLYPH_BAND_DISTANCE, Q.GLYPH_CONF,
            Q.NOTEHEAD_STAFF_POSITION, Q.INSTRUMENT, Q.CLEF,
            Q.HUMAN_BOX_VERDICT, Q.LEDGER_IS_NOT_A_LEDGER, Q.GLYPH_BOX,
-           Q.WEDGE_BOX, Q.STAFF_LINES, Q.STAFF_SPACING),
+           Q.WEDGE_BOX, Q.STAFF_LINES, Q.STAFF_SPACING, Q.LEDGER_RUNG_INK),
     reasons=("human_owner", "ledger_direction", "hairpin_separates",
              "far_no_rungs", "ladder", "range_veto", "distance", "no_contest",
              "no_evidence", "tied"),
@@ -397,6 +401,11 @@ class Rung:
     y: float
     refused: Optional[str] = None
     row_id: str = ""
+    #: ROADMAP 2.6d. `"detector"` (a boxed `ledgerLine`, `Q.GLYPH_BOX`) or
+    #: `"cv_ink"` (`Q.LEDGER_RUNG_INK`, a step the detector never boxed) --
+    #: two readers of the SAME fact, named so `trace` can say which one
+    #: spoke for a step.
+    source: str = "detector"
 
 
 @dataclass(frozen=True)
@@ -420,6 +429,10 @@ class LadderSide:
     refused: Tuple[Tuple[str, int], ...] = ()
     frame: str = "page"
     row_ids: Tuple[str, ...] = ()
+    #: ROADMAP 2.6d. `{rung key: "detector" | "cv_ink"}` for every rung
+    #: counted TOWARD this side (never the own line) -- so `trace` can say
+    #: which reader named a step that decided a contest.
+    sources: Tuple[Tuple[str, str], ...] = ()
 
     @property
     def missing(self) -> int:
@@ -449,6 +462,8 @@ class LadderSide:
             out["stands_on"] = self.stands_on
         if self.refused:
             out["refused"] = dict(self.refused)
+        if self.sources:
+            out["sources"] = dict(self.sources)
         return out
 
 
@@ -520,13 +535,15 @@ def ladder_side(staff: str, head_y: float, head_x0: float, head_x1: float,
     own = next((r for r in found
                 if abs(r.y - head_y) <= OWN_LINE_MAX_SPACES * sp), None)
     toward = tuple(r.key for r in found if r is not own)
+    sources = tuple((r.key, r.source) for r in found if r is not own)
     return LadderSide(
         staff=staff, expected=expected, found=len(found), toward=toward,
         n_toward=len(toward), stands_on=own.key if own else None,
         reach=abs(head_y - outer) / sp < LADDER_REACH_SPACES,
         reach_spaces=abs(head_y - outer) / sp,
         refused=tuple(sorted(refused.items())),
-        row_ids=tuple(r.row_id for r in found if r.row_id))
+        row_ids=tuple(r.row_id for r in found if r.row_id),
+        sources=sources)
 
 
 def ladder_side_from_count(staff: str, expected: int, found: int,
@@ -611,6 +628,35 @@ def cell_rungs(ev: Evidence, cells: Iterable[R.Subject],
     return list(out.values())
 
 
+def cv_rungs(ev: Evidence) -> List[Rung]:
+    """ROADMAP 2.6d. `Q.LEDGER_RUNG_INK` rows on THIS glyph (the contested
+    head, `ev.subject`) as `Rung`s -- the SECOND reader `cell_rungs` above
+    has none of, for a step the detector drew no `ledgerLine` box on.
+
+    Each found row already carries the exact window `gather.
+    _observe_ledger_rung_ink` tested, in PAGE pixels, so it needs no lookup
+    of its own: `ladder_side`'s step arithmetic will match it to the SAME
+    step the GATHER-side reader tested it at, by construction (the window is
+    centred on the head's own x-span, which is what the x-overlap test in
+    `ladder_side` asks for). A row the CV reader ABSTAINED on, or one that
+    tested and found nothing, contributes no `Rung` -- `cannot tell` and
+    `not there` are both silent here, exactly as a missing `ledgerLine` box
+    is silent to `cell_rungs`."""
+    out: List[Rung] = []
+    for row in ev.rows(Q.LEDGER_RUNG_INK):
+        if row.value is not True:
+            continue
+        d = row.detail or {}
+        win = d.get("window_page_px")
+        y = d.get("want_y_page")
+        if not win or len(win) != 4 or y is None:
+            continue
+        out.append(Rung(key=f"cv:{row.id}", x0=float(win[0]),
+                        x1=float(win[2]), y=float(y), refused=None,
+                        row_id=row.id, source="cv_ink"))
+    return out
+
+
 def staff_geometry(ev: Evidence, staff: R.Subject
                    ) -> Optional[Tuple[List[float], float, List[str]]]:
     """`(line ys, spacing, row ids)` in page pixels, or `None` -- DECLINED,
@@ -674,7 +720,13 @@ def _contest_ledger_reading(ev: Evidence, bands, ladders: Dict[str, Any]
                            me.cell) for k in cands]
                 named = [k for r in ladders.values()
                          for k in ((r.detail or {}).get("rungs") or ())]
-                rungs = cell_rungs(ev, list(dict.fromkeys(cells)), named)
+                # ⚠️ ROADMAP 2.6d: `cv_rungs` is the SECOND reader of this
+                # same fact -- a step the detector never boxed, read off the
+                # ink instead. One pool, both readers; `ladder_side`'s own
+                # step arithmetic decides which candidate and step a rung
+                # (of either source) speaks to.
+                rungs = (cell_rungs(ev, list(dict.fromkeys(cells)), named)
+                        + cv_rungs(ev))
             sides.append(ladder_side(cand_key, head[2], head[0], head[1],
                                      geo[0], geo[1], rungs))
         elif lad is None:

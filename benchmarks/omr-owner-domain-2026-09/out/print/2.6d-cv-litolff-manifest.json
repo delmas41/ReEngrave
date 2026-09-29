@@ -1,0 +1,331 @@
+{
+  "roadmap_item": "2.6d",
+  "record": "out/2.6d/arm-litolff/litolff-p3.json",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf",
+  "dpi": 600,
+  "population_ledger_rung_ink_rows": 329,
+  "credited_true": 0,
+  "crops": [
+    {
+      "n": 1,
+      "file": "2.6d-cv-litolff-01.png",
+      "subject": "glyph/3/0/7/6/4",
+      "page": 3,
+      "candidate": "staff/3/0/8",
+      "step": 1,
+      "found": false,
+      "measurement": {
+        "candidate": "staff/3/0/8",
+        "step": 1,
+        "want_y_page": 1627.5,
+        "window_page_px": [
+          1609.08,
+          1623.64,
+          1649.96,
+          1631.36
+        ],
+        "center": 0.7901,
+        "left": 0.7733,
+        "right": 0.82,
+        "adjacent": 0.5864
+      },
+      "head_page_box": [
+        1617.8,
+        1573.5,
+        1641.2,
+        1594.5
+      ],
+      "window_page_px": [
+        1609.1,
+        1623.6,
+        1650.0,
+        1631.4
+      ],
+      "frame_contrast": 175.5,
+      "frame_contrast_shifted_half_space": -161.8,
+      "question": "is there a printed ledger line inside the dashed blue window, thin, reaching past the head on both sides?",
+      "VERDICT_none_yet": null
+    },
+    {
+      "n": 2,
+      "file": "2.6d-cv-litolff-02.png",
+      "subject": "glyph/3/0/8/6/5",
+      "page": 3,
+      "candidate": "staff/3/0/8",
+      "step": 1,
+      "found": false,
+      "measurement": {
+        "candidate": "staff/3/0/8",
+        "step": 1,
+        "want_y_page": 1627.5,
+        "window_page_px": [
+          1608.7,
+          1623.64,
+          1651.55,
+          1631.36
+        ],
+        "center": 0.7916,
+        "left": 0.7661,
+        "right": 0.82,
+        "adjacent": 0.5855
+      },
+      "head_page_box": [
+        1617.9,
+        1581.0,
+        1642.4,
+        1594.2
+      ],
+      "window_page_px": [
+        1608.7,
+        1623.6,
+        1651.5,
+        1631.4
+      ],
+      "frame_contrast": 175.5,
+      "frame_contrast_shifted_half_space": -161.8,
+      "question": "is there a printed ledger line inside the dashed blue window, thin, reaching past the head on both sides?",
+      "VERDICT_none_yet": null
+    },
+    {
+      "n": 3,
+      "file": "2.6d-cv-litolff-03.png",
+      "subject": "glyph/3/0/7/6/2",
+      "page": 3,
+      "candidate": "staff/3/0/8",
+      "step": 4,
+      "found": false,
+      "measurement": {
+        "candidate": "staff/3/0/8",
+        "step": 4,
+        "want_y_page": 1581.0,
+        "window_page_px": [
+          1582.98,
+          1577.14,
+          1620.22,
+          1584.86
+        ],
+        "center": 1.0,
+        "left": 0.7271,
+        "right": 1.0,
+        "adjacent": 0.6225
+      },
+      "head_page_box": [
+        1591.0,
+        1573.7,
+        1612.2,
+        1594.6
+      ],
+      "window_page_px": [
+        1583.0,
+        1577.1,
+        1620.2,
+        1584.9
+      ],
+      "frame_contrast": 175.5,
+      "frame_contrast_shifted_half_space": -161.8,
+      "question": "is there a printed ledger line inside the dashed blue window, thin, reaching past the head on both sides?",
+      "VERDICT_none_yet": null
+    },
+    {
+      "n": 4,
+      "file": "2.6d-cv-litolff-04.png",
+      "subject": "glyph/3/0/8/6/12",
+      "page": 3,
+      "candidate": "staff/3/0/7",
+      "step": 1,
+      "found": false,
+      "measurement": {
+        "candidate": "staff/3/0/7",
+        "step": 1,
+        "want_y_page": 1566.0,
+        "window_page_px": [
+          1583.93,
+          1562.08,
+          1618.65,
+          1569.92
+        ],
+        "center": 0.7097,
+        "left": 0.6064,
+        "right": 0.6028,
+        "adjacent": 0.356
+      },
+      "head_page_box": [
+        1591.4,
+        1581.0,
+        1611.2,
+        1595.0
+      ],
+      "window_page_px": [
+        1583.9,
+        1562.1,
+        1618.7,
+        1569.9
+      ],
+      "frame_contrast": 184.7,
+      "frame_contrast_shifted_half_space": -170.1,
+      "question": "is there a printed ledger line inside the dashed blue window, thin, reaching past the head on both sides?",
+      "VERDICT_none_yet": null
+    },
+    {
+      "n": 5,
+      "file": "2.6d-cv-litolff-05.png",
+      "subject": "glyph/3/0/8/6/17",
+      "page": 3,
+      "candidate": "staff/3/0/7",
+      "step": 1,
+      "found": false,
+      "measurement": {
+        "candidate": "staff/3/0/7",
+        "step": 1,
+        "want_y_page": 1566.0,
+        "window_page_px": [
+          1583.88,
+          1562.08,
+          1618.87,
+          1569.92
+        ],
+        "center": 0.711,
+        "left": 0.6064,
+        "right": 0.5951,
+        "adjacent": 0.3544
+      },
+      "head_page_box": [
+        1591.4,
+        1581.0,
+        1611.4,
+        1594.8
+      ],
+      "window_page_px": [
+        1583.9,
+        1562.1,
+        1618.9,
+        1569.9
+      ],
+      "frame_contrast": 184.7,
+      "frame_contrast_shifted_half_space": -170.1,
+      "question": "is there a printed ledger line inside the dashed blue window, thin, reaching past the head on both sides?",
+      "VERDICT_none_yet": null
+    },
+    {
+      "n": 6,
+      "file": "2.6d-cv-litolff-06.png",
+      "subject": "glyph/3/0/7/6/2",
+      "page": 3,
+      "candidate": "staff/3/0/7",
+      "step": 2,
+      "found": false,
+      "measurement": {
+        "candidate": "staff/3/0/7",
+        "step": 2,
+        "want_y_page": 1582.0,
+        "window_page_px": [
+          1582.98,
+          1578.08,
+          1620.22,
+          1585.92
+        ],
+        "center": 0.9455,
+        "left": 0.5675,
+        "right": 0.7925,
+        "adjacent": 0.5498
+      },
+      "head_page_box": [
+        1591.0,
+        1573.7,
+        1612.2,
+        1594.6
+      ],
+      "window_page_px": [
+        1583.0,
+        1578.1,
+        1620.2,
+        1585.9
+      ],
+      "frame_contrast": 184.7,
+      "frame_contrast_shifted_half_space": -170.1,
+      "question": "is there a printed ledger line inside the dashed blue window, thin, reaching past the head on both sides?",
+      "VERDICT_none_yet": null
+    },
+    {
+      "n": 7,
+      "file": "2.6d-cv-litolff-07.png",
+      "subject": "glyph/3/0/8/6/2",
+      "page": 3,
+      "candidate": "staff/3/0/9",
+      "step": 4,
+      "found": false,
+      "measurement": {
+        "candidate": "staff/3/0/9",
+        "step": 4,
+        "want_y_page": 1737.0,
+        "window_page_px": [
+          1609.36,
+          1733.11,
+          1650.58,
+          1740.89
+        ],
+        "center": 1.0,
+        "left": 1.0,
+        "right": 0.4464,
+        "adjacent": 0.5114
+      },
+      "head_page_box": [
+        1618.2,
+        1728.1,
+        1641.8,
+        1749.3
+      ],
+      "window_page_px": [
+        1609.4,
+        1733.1,
+        1650.6,
+        1740.9
+      ],
+      "frame_contrast": 152.5,
+      "frame_contrast_shifted_half_space": -139.6,
+      "question": "is there a printed ledger line inside the dashed blue window, thin, reaching past the head on both sides?",
+      "VERDICT_none_yet": null
+    },
+    {
+      "n": 8,
+      "file": "2.6d-cv-litolff-08.png",
+      "subject": "glyph/3/0/7/4/3",
+      "page": 3,
+      "candidate": "staff/3/0/6",
+      "step": 6,
+      "found": false,
+      "measurement": {
+        "candidate": "staff/3/0/6",
+        "step": 6,
+        "want_y_page": 1457.5,
+        "window_page_px": [
+          1180.04,
+          1453.61,
+          1223.72,
+          1461.39
+        ],
+        "center": 0.9802,
+        "left": 0.3656,
+        "right": 0.5593,
+        "adjacent": 0.631
+      },
+      "head_page_box": [
+        1189.4,
+        1442.8,
+        1214.4,
+        1464.7
+      ],
+      "window_page_px": [
+        1180.0,
+        1453.6,
+        1223.7,
+        1461.4
+      ],
+      "frame_contrast": 185.8,
+      "frame_contrast_shifted_half_space": -162.9,
+      "question": "is there a printed ledger line inside the dashed blue window, thin, reaching past the head on both sides?",
+      "VERDICT_none_yet": null
+    }
+  ],
+  "refused": []
+}
