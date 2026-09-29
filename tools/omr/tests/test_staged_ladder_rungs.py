@@ -104,6 +104,17 @@ class TestARefusedRungIsDiscounted(unittest.TestCase):
         _band_distances(log)
         _named_ladder(log, [RUNG_REFUSED.to_key(), RUNG_KEPT.to_key()])
         _refused_ledger_box(log, RUNG_REFUSED)
+        # ⚠️ ROADMAP 2.6c. UPPER is 1.0 space from its own band, which a real
+        # gather would expect ONE rung for (`int(1.0 + LEDGER_ROUND_UP) ==
+        # 1`) -- so its ladder must be recorded as genuinely BROKEN here,
+        # not left absent. An absent row now reads as "no crossing was ever
+        # needed" (`_ledger_direction_winner`), which UPPER's own distance
+        # does not support; without this it would be mistaken for the
+        # ledger-direction case rather than the two-broken-ladders case this
+        # test is actually about.
+        log.observe(GLYPH, Q.GLYPH_LADDER, False, reader=READERS.DETECTOR,
+                    frame="page", candidate=UPPER.to_key(),
+                    expected=1, found=0, rungs=[])
         # RUNG_KEPT carries no row at all: the ledger decision never runs on
         # it, `ev.verdict` returns None, and nothing refused it -- kept.
         _run(log)
@@ -183,6 +194,13 @@ class TestAnOldRecordIsUnchanged(unittest.TestCase):
         log.observe(GLYPH, Q.GLYPH_LADDER, False, reader=READERS.DETECTOR,
                     frame="page", candidate=LOWER.to_key(),
                     expected=EXPECTED, found=0, rungs=[])
+        # ⚠️ ROADMAP 2.6c, same reasoning as `TestARefusedRungIsDiscounted`
+        # above: UPPER's own real (non-vacuous) broken ladder must be
+        # recorded so this stays the "both broken" case rather than reading
+        # as ledger-direction's "one clean, one broken".
+        log.observe(GLYPH, Q.GLYPH_LADDER, False, reader=READERS.DETECTOR,
+                    frame="page", candidate=UPPER.to_key(),
+                    expected=1, found=0, rungs=[])
         _run(log)
 
         v = log.verdict(Q.GLYPH_OWNER, GLYPH)

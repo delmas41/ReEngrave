@@ -119,8 +119,20 @@ class TestTheTiers(unittest.TestCase):
         """Two broken ladders are not evidence either way: a found rung can
         belong to the other staff's note exactly as a gap can. On the
         Beethoven bassoon pair the ghost's one rung WAS the real C4's own
-        ledger, and counting rungs beat the real note."""
+        ledger, and counting rungs beat the real note.
+
+        ⚠️ ROADMAP 2.6c: BOTH sides now carry a real, non-vacuous, broken
+        row -- UPPER's own was added here for that lane. Before 2.6c,
+        UPPER's absent row and LOWER's broken one were indistinguishable
+        (neither contributed a term either way), so the test passed with
+        only LOWER's row present; `_ledger_direction_winner` now reads
+        "no row at all" as a candidate needing no ledger crossing at
+        all, which UPPER -- at 1.0 space from its own band -- is not, so
+        its own broken ladder must be recorded rather than left absent."""
         log = _contested(with_identity=False)
+        log.observe(GLYPH, Q.GLYPH_LADDER, False, reader=READERS.DETECTOR,
+                    frame="page", candidate=UPPER.to_key(),
+                    expected=1, found=0)
         log.observe(GLYPH, Q.GLYPH_LADDER, False, reader=READERS.DETECTOR,
                     frame="page", candidate=LOWER.to_key(),
                     expected=3, found=1)
