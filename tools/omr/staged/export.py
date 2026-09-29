@@ -58,6 +58,13 @@ from typing import Any, Dict, List, Optional, Sequence, Tuple
 from .. import export as _legacy
 from ..voicing import group_chords_in_measure
 from . import adjudicate as A
+# ⚠️ Imported as a bare module name, not through the dotted module path:
+# `wiring.details` matches a detail key by bare substring, and a dot followed
+# by the module's first three letters reads as a consumer of
+# `Q.GLYPH_BAND_DISTANCE`'s home-staff flag that nothing is (CLAUDE.md §4d's
+# third blind spot).
+from .adjudicators import ownership as _ownership_rules
+_OWNER_NOT_READ_REASONS = _ownership_rules.OWNER_NOT_READ_REASONS
 from .adjudicators.rhythm import (METER_RETURN_MARK_CELL,
                                   METER_RETURN_NOT_READ_REASON)
 from .record import Q, meter_at
@@ -956,6 +963,17 @@ def _place_notes(rec: Record, runs: Dict[str, StaffRun],
             # `_dedupe_cross_staff_detections` achieves by DELETING the loser
             # rather than relocating it.
             _drop("owned_by_another_staff", s)
+            continue
+        own_v = rec.verdict(Q.GLYPH_OWNER, sub)
+        if (own_v and own_v.get("outcome") == "abstained"
+                and own_v.get("reason") in _OWNER_NOT_READ_REASONS):
+            # ⚠️⚠️ ROADMAP 2.6c. `is_relocated_copy(None)` is False, so an
+            # ABSTAINED owner used to fall through and be written on the staff
+            # its cell was cut from -- a guess at exactly the question the
+            # contest said it could not answer (CLAUDE.md rule 8). A far note
+            # with no ledger rung toward any staff (`far_no_rungs`) is a
+            # reading gap: COUNTED here, never written.
+            _drop("owner_not_read", s)
             continue
         home = _staff_key(s["page"] or 0, s["system"] or 0, s["staff"] or 0)
         if held_out and home in held_out:

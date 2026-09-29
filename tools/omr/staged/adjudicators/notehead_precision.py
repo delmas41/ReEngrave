@@ -64,6 +64,15 @@ from ... import transcribe as _legacy
 from ..adjudicate import Evidence, Mode, Ruling, decision
 from .. import record as R
 from ..record import ABSTAIN, Kind, Outcome, Q, Scope
+# ⚠️ ROADMAP 2.6c: the ONE ledger helper. Imported as a bare module name, not
+# through a dotted relative path: `wiring.details` matches detail keys by bare
+# substring, and a dot followed by the module's first three letters reads as
+# a consumer of `Q.GLYPH_BAND_DISTANCE`'s home-staff flag that nothing is.
+from . import ownership as _ledger
+_OWN_LINE_MAX_SPACES = _ledger.OWN_LINE_MAX_SPACES
+cell_rungs = _ledger.cell_rungs
+ladder_side = _ledger.ladder_side
+ledger_direction = _ledger.ledger_direction
 
 # ─────────────────────────────────────────────────────────────────────────────
 # Thresholds — IMPORTED from the legacy path, never restated, so the two
@@ -191,17 +200,18 @@ NEARER_STAFF_NEAR_MAX_SPACES = 2.75
 
 #: A kept rung this close to the head's own centre is the head's OWN ledger
 #: line (a note standing on a ledger line) and joins it to NO staff in
-#: particular — between two staves it could be a rung of either. Only a rung
-#: farther than this toward the filed staff is Sean's *"ledger lines close to
-#: the staff connecting the note conceptually to the staff"*.
+#: particular — between two staves it could be a rung of either.
 #:
 #: ⚠️ MEASURED on the Litolff arm (`probe/kept_rungs.py`): of 79 heads past
 #: both bands that the first cut KEPT on a rung, **43 were kept by a rung at
 #: 0.00-0.37 spaces from the head** (its own line; one of them the print
 #: check's own first kept crop, a note on a ledger above the staff BELOW it)
 #: and the rest stand at 0.63+ — the interval (0.37, 0.63) is empty, 0.5 is
-#: its middle.
-OWN_LEDGER_MAX_SPACES = 0.5
+#: its middle. ⚠️ ROADMAP 2.6c: the number now LIVES in
+#: `ownership.OWN_LINE_MAX_SPACES`, read by the one ledger helper both this
+#: rule and `glyph_owner` ask; this name is kept so nothing that cites it
+#: breaks.
+OWN_LEDGER_MAX_SPACES = _OWN_LINE_MAX_SPACES
 
 
 def _glyph_box_row(ev: Evidence):
@@ -446,13 +456,15 @@ def _belongs_to_a_nearer_staff(ev: Evidence, box_row, contested_by,
       2. another staff of the SAME system has a line within
          `NEARER_STAFF_NEAR_MAX_SPACES` of it, and is nearer than the filed
          one;
-      3. no KEPT ledger rung of the head's own cell stands between it and the
-         filed staff (3.4g-2's kept set: `ledger_is_not_a_ledger` not True —
-         the refusal VERDICTS are read, never the raw boxes, so a staff-line
-         fragment cannot vouch for the note); a rung is Sean's exception,
-         and the head's OWN ledger line (within `OWN_LEDGER_MAX_SPACES` of
-         its centre) is not one — it says the note stands on a ledger, not
-         whose;
+      3. the ledger lines do NOT name the filed staff: Sean's exception is a
+         LADDER from the filed staff that reaches the note, asked of
+         `ownership.ledger_direction` — the one helper `glyph_owner` asks
+         too (ROADMAP 2.6c) — over the KEPT rungs of the head's cell and the
+         near staff's same-index cell (3.4g-2's `ledger_is_not_a_ledger`
+         VERDICTS are read, never the raw boxes, so a staff-line fragment
+         cannot vouch for the note; the head's OWN ledger line says the note
+         stands on a ledger, not whose; one stray rung, such as a chord-
+         mate's own line, is not a ladder);
       4. the near staff does NOT hold a twin of this ink: a glyph carrying a
          `Q.GLYPH_BAND_DISTANCE` row that names the near staff is inside
          `glyph_owner`'s contest (ROADMAP 2.6), which decides who owns it and
@@ -508,39 +520,32 @@ def _belongs_to_a_nearer_staff(ev: Evidence, box_row, contested_by,
     if near[0] > NEARER_STAFF_NEAR_MAX_SPACES or near[0] >= filed:
         return None
 
-    # ── 3. a kept rung toward the filed staff is Sean's exception ──────────
-    edge = ys[0] if y < ys[0] else ys[-1]
-    lo, hi = (y, edge) if y < edge else (edge, y)
+    # ── 3. the ledger lines name the FILED staff: Sean's exception ─────────
+    # ⚠️⚠️ ROADMAP 2.6c (second half): ASKED OF THE ONE HELPER `glyph_owner`
+    # asks (`ownership.ledger_direction`), never re-derived here, so the two
+    # decisions cannot credit a rung differently. The first cut kept a head
+    # on ANY kept rung lying between it and the filed staff, and Sean's
+    # 2.7b.8 verdicts found that wrong three times in six: #4 and #22 were
+    # kept by a CHORD-MATE's own ledger (the near staff's second rung, beyond
+    # the head) with the filed staff's own inner rungs all absent; #10 (the
+    # `s` of *sempre*) by two real rungs of the filed staff that END 1.37
+    # spaces short of it. A rung now vouches for the filed staff only as part
+    # of a LADDER from that staff that reaches the note (FINDINGS §2.6c.2).
+    # Rungs are read from the head's cell AND the near staff's same-index
+    # cell -- one bar, both pads -- with their 3.4g-2 verdicts.
     x0, x1 = float(page_box[0]), float(page_box[2])
     cell = ev.subject.at(Kind.CELL)
-    kept: List[str] = []
-    refused: Dict[str, int] = {}
-    for r in ev.rows(Q.GLYPH_BOX, scope=Scope.SELF_AND_DESCENDANTS,
-                     subject=cell):
-        v = r.value
-        if not isinstance(v, (list, tuple)) or len(v) != 5 \
-                or str(v[0]) != "ledgerLine":
-            continue
-        lb = (r.detail or {}).get("bbox_page_px")
-        if not lb or len(lb) != 4:
-            continue
-        ly = (float(lb[1]) + float(lb[3])) / 2.0
-        if not (lo < ly < hi):
-            continue
-        if abs(ly - y) / sp <= OWN_LEDGER_MAX_SPACES:
-            continue                 # the head's own line joins no staff
-        if min(float(lb[2]), x1) - max(float(lb[0]), x0) <= 0.0:
-            continue
-        lv = ev.verdict(Q.LEDGER_IS_NOT_A_LEDGER, subject=r.subject)
-        if lv is not None and lv.outcome is Outcome.DECIDED \
-                and lv.value is True:
-            refused[str(lv.reason)] = refused.get(str(lv.reason), 0) + 1
-            continue
-        kept.append(r.subject.to_key())
-    signal["kept_rungs_toward_filed"] = len(kept)
-    if refused:
-        signal["refused_rungs_toward_filed"] = refused
-    if kept:
+    near_cell = R.cell(cell.page, cell.system, near[1].staff, cell.cell)
+    rungs = cell_rungs(ev, (cell, near_cell))
+    filed_side = ladder_side(staff.to_key(), y, x0, x1, ys, sp, rungs)
+    near_side = ladder_side(near[1].to_key(), y, x0, x1, geo[0], geo[1],
+                            rungs)
+    reading = ledger_direction((filed_side, near_side))
+    signal["ledger"] = reading.summary()
+    signal["kept_rungs_toward_filed"] = filed_side.n_toward
+    if filed_side.refused:
+        signal["refused_rungs_toward_filed"] = dict(filed_side.refused)
+    if reading.winner == staff.to_key():
         return None
 
     # ── 4. a twin on the near staff: `glyph_owner` decides, not this ───────

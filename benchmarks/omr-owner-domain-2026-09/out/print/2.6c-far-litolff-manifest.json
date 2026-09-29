@@ -1,0 +1,120 @@
+{
+  "roadmap_item": "2.6c (second half)",
+  "record": "/private/tmp/claude-501/-Users-seanjohnson-Desktop-ReEngrave--claude-worktrees-start-here-questions-7d5637/3707ff6b-4757-4644-b4c5-de906d20a7bb/scratchpad/27b/arm/litolff-arm.record.json",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf",
+  "dpi": 600,
+  "seed": 2026092826,
+  "population_far_no_rungs": 389,
+  "crops": [
+    {
+      "n": 1,
+      "file": "2.6c-far-litolff-01.png",
+      "subject": "glyph/4/1/6/5/0",
+      "page": 4,
+      "upper_staff": "staff/4/1/6",
+      "lower_staff": "staff/4/1/7",
+      "head_page_box": [
+        1233.4,
+        3079.8,
+        1256.8,
+        3101.1
+      ],
+      "frame_contrast": {
+        "staff/4/1/6": 197.1,
+        "staff/4/1/7": 172.6
+      },
+      "frame_contrast_shifted_half_space": {
+        "staff/4/1/6": -175.9,
+        "staff/4/1/7": -154.2
+      },
+      "question": "which staff: GREEN (upper) / ORANGE (lower) / not a note; and are there ledger lines toward either",
+      "VERDICT_none_yet": null
+    },
+    {
+      "n": 2,
+      "file": "2.6c-far-litolff-02.png",
+      "subject": "glyph/6/0/7/12/3",
+      "page": 6,
+      "upper_staff": "staff/6/0/7",
+      "lower_staff": "staff/6/0/8",
+      "head_page_box": [
+        2567.9,
+        1558.6,
+        2595.7,
+        1572.0
+      ],
+      "frame_contrast": {
+        "staff/6/0/7": 195.1,
+        "staff/6/0/8": 202.4
+      },
+      "frame_contrast_shifted_half_space": {
+        "staff/6/0/7": -172.6,
+        "staff/6/0/8": -180.3
+      },
+      "question": "which staff: GREEN (upper) / ORANGE (lower) / not a note; and are there ledger lines toward either",
+      "VERDICT_none_yet": null
+    },
+    {
+      "n": 3,
+      "file": "2.6c-far-litolff-03.png",
+      "subject": "glyph/5/0/2/6/1",
+      "page": 5,
+      "upper_staff": "staff/5/0/2",
+      "lower_staff": "staff/5/0/3",
+      "head_page_box": [
+        1397.0,
+        955.6,
+        1418.8,
+        975.6
+      ],
+      "frame_contrast": {
+        "staff/5/0/2": 198.7,
+        "staff/5/0/3": 202.9
+      },
+      "frame_contrast_shifted_half_space": {
+        "staff/5/0/2": -175.6,
+        "staff/5/0/3": -180.2
+      },
+      "question": "which staff: GREEN (upper) / ORANGE (lower) / not a note; and are there ledger lines toward either",
+      "VERDICT_none_yet": null
+    },
+    {
+      "n": 4,
+      "file": "2.6c-far-litolff-04.png",
+      "subject": "glyph/6/1/10/10/10",
+      "page": 6,
+      "upper_staff": "staff/6/1/9",
+      "lower_staff": "staff/6/1/10",
+      "head_page_box": [
+        2279.8,
+        3376.2,
+        2303.0,
+        3416.0
+      ],
+      "frame_contrast": {
+        "staff/6/1/9": 28.7,
+        "staff/6/1/10": 29.5
+      },
+      "frame_contrast_shifted_half_space": {
+        "staff/6/1/9": -20.7,
+        "staff/6/1/10": -26.3
+      },
+      "question": "which staff: GREEN (upper) / ORANGE (lower) / not a note; and are there ledger lines toward either",
+      "VERDICT_none_yet": null
+    }
+  ],
+  "refused": [
+    {
+      "subject": "glyph/7/0/0/7/0",
+      "why": "FRAME CONTROL FAILED",
+      "contrast": {
+        "staff/7/0/0": 4.0,
+        "staff/7/0/1": 12.0
+      },
+      "contrast_shifted": {
+        "staff/7/0/0": -3.4,
+        "staff/7/0/1": -8.9
+      }
+    }
+  ]
+}

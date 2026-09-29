@@ -1,0 +1,107 @@
+{
+  "roadmap_item": "2.6c (second half)",
+  "record": "/private/tmp/claude-501/-Users-seanjohnson-Desktop-ReEngrave--claude-worktrees-start-here-questions-7d5637/3707ff6b-4757-4644-b4c5-de906d20a7bb/scratchpad/27b/arm/brahms-arm.record.json",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf",
+  "dpi": 600,
+  "seed": 2026092826,
+  "population_far_no_rungs": 266,
+  "crops": [
+    {
+      "n": 1,
+      "file": "2.6c-far-breitkopf-01.png",
+      "subject": "glyph/17/0/0/0/9",
+      "page": 17,
+      "upper_staff": "staff/17/0/0",
+      "lower_staff": "staff/17/0/1",
+      "head_page_box": [
+        1242.3,
+        682.0,
+        1281.6,
+        714.7
+      ],
+      "frame_contrast": {
+        "staff/17/0/0": 145.0,
+        "staff/17/0/1": 147.6
+      },
+      "frame_contrast_shifted_half_space": {
+        "staff/17/0/0": -125.3,
+        "staff/17/0/1": -129.1
+      },
+      "question": "which staff: GREEN (upper) / ORANGE (lower) / not a note; and are there ledger lines toward either",
+      "VERDICT_none_yet": null
+    },
+    {
+      "n": 2,
+      "file": "2.6c-far-breitkopf-02.png",
+      "subject": "glyph/17/0/10/5/16",
+      "page": 17,
+      "upper_staff": "staff/17/0/10",
+      "lower_staff": "staff/17/0/11",
+      "head_page_box": [
+        4919.5,
+        2891.8,
+        4960.2,
+        2925.2
+      ],
+      "frame_contrast": {
+        "staff/17/0/10": 169.1,
+        "staff/17/0/11": 153.9
+      },
+      "frame_contrast_shifted_half_space": {
+        "staff/17/0/10": -144.9,
+        "staff/17/0/11": -133.7
+      },
+      "question": "which staff: GREEN (upper) / ORANGE (lower) / not a note; and are there ledger lines toward either",
+      "VERDICT_none_yet": null
+    },
+    {
+      "n": 3,
+      "file": "2.6c-far-breitkopf-03.png",
+      "subject": "glyph/22/1/6/10/2",
+      "page": 22,
+      "upper_staff": "staff/22/1/6",
+      "lower_staff": "staff/22/1/7",
+      "head_page_box": [
+        4315.2,
+        5944.2,
+        4353.6,
+        5978.5
+      ],
+      "frame_contrast": {
+        "staff/22/1/6": 221.4,
+        "staff/22/1/7": 232.3
+      },
+      "frame_contrast_shifted_half_space": {
+        "staff/22/1/6": -197.7,
+        "staff/22/1/7": -211.1
+      },
+      "question": "which staff: GREEN (upper) / ORANGE (lower) / not a note; and are there ledger lines toward either",
+      "VERDICT_none_yet": null
+    },
+    {
+      "n": 4,
+      "file": "2.6c-far-breitkopf-04.png",
+      "subject": "glyph/6/1/0/0/24",
+      "page": 6,
+      "upper_staff": "staff/6/1/0",
+      "lower_staff": "staff/6/1/1",
+      "head_page_box": [
+        646.6,
+        4278.5,
+        660.1,
+        4292.1
+      ],
+      "frame_contrast": {
+        "staff/6/1/0": 122.3,
+        "staff/6/1/1": 106.5
+      },
+      "frame_contrast_shifted_half_space": {
+        "staff/6/1/0": -107.2,
+        "staff/6/1/1": -81.8
+      },
+      "question": "which staff: GREEN (upper) / ORANGE (lower) / not a note; and are there ledger lines toward either",
+      "VERDICT_none_yet": null
+    }
+  ],
+  "refused": []
+}

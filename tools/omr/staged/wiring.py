@@ -365,13 +365,6 @@ KNOWN_GAPS: Dict[str, str] = {
         "contested/uncontested split. `adjudicate_glyph_owner` re-derives the "
         "same fact from the subject rather than reading it, so the two could "
         "disagree and nothing would say so."),
-    "DETAIL Q.GLYPH_LADDER.found": (
-        "how many ledger rungs were actually seen, against `expected`. The "
-        "VALUE is the boolean `found == expected`, so a consumer can weigh "
-        "'complete ladder' and cannot weigh 'three of four' — and the legacy "
-        "rule this is derived from is COMPLETENESS ONLY *because* counting "
-        "was measured worse (a ghost's one rung WAS the real note's own). "
-        "⚠️ Recorded so that refusal stays checkable, not so it is reversed."),
     "DETAIL Q.MARGIN_LABEL.y_center_px": (
         "where in the margin this label sits. The label→staff assignment "
         "happens inside the reader (`_assign`, on block centroids) and the "

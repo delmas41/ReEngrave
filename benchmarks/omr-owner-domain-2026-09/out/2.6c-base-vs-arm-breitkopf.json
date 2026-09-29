@@ -1,0 +1,45 @@
+{
+ "glyph_owner": {
+  "subjects": 24795,
+  "identical": 23170,
+  "changed": 1625,
+  "value_changed": 373,
+  "value_changed_by_reason": {
+   "distance->far_no_rungs": 219,
+   "distance->ledger_direction": 69,
+   "range_veto->far_no_rungs": 39,
+   "ledger_direction->ledger_direction": 14,
+   "tied->ledger_direction": 10,
+   "range_veto->ledger_direction": 8,
+   "ladder->ledger_direction": 6,
+   "ledger_direction->range_veto": 4,
+   "hairpin_separates->ledger_direction": 4
+  },
+  "transitions": {
+   "ledger_direction->ladder": 792,
+   "distance->ledger_direction": 381,
+   "distance->far_no_rungs": 219,
+   "range_veto->ledger_direction": 67,
+   "ledger_direction->hairpin_separates": 56,
+   "range_veto->far_no_rungs": 39,
+   "hairpin_separates->ledger_direction": 29,
+   "ledger_direction->ledger_direction": 14,
+   "tied->ledger_direction": 10,
+   "tied->far_no_rungs": 8,
+   "ladder->ledger_direction": 6,
+   "ledger_direction->range_veto": 4
+  }
+ },
+ "notehead_is_not_a_notehead": {
+  "subjects": 3006,
+  "identical": 2991,
+  "changed": 15,
+  "value_changed": 15,
+  "value_changed_by_reason": {
+   "notehead->belongs_to_a_nearer_staff": 15
+  },
+  "transitions": {
+   "notehead->belongs_to_a_nearer_staff": 15
+  }
+ }
+}

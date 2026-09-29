@@ -13,11 +13,14 @@ adjudication reads a frozen record.
 
 from __future__ import annotations
 
-from typing import Any, Dict, List, Optional, Tuple
+from collections import Counter
+from dataclasses import dataclass
+from typing import Any, Dict, Iterable, List, Optional, Sequence, Tuple
 
 from ... import transcribe as _legacy_articulation
 from ..adjudicate import Checkable, Evidence, Mode, Ruling, Term, decision, tally
 from .. import record as R
+from ..gather import LEDGER_ROUND_UP
 from ..record import ABSTAIN, Kind, Outcome, Q, Scope, State
 
 # ⚠️ ASSUMED WEIGHTS (A-OWN-1). Ordered to match the tiers the existing code
@@ -26,16 +29,80 @@ W_LADDER_COMPLETE = 4.0     # an unbroken run of ledger rungs
 W_RANGE_IMPOSSIBLE = -6.0   # a veto on the IMPOSSIBLE, never on the unlikely
 W_DISTANCE = 0.5            # the tie-break, and only that
 
-# ⚠️ ASSUMED WEIGHTS (A-OWN-3), ROADMAP 2.6c (Sean's two conventions,
-# DECISIONS 2026-09-28: "ledger lines name the owner"; "a hairpin sits under
-# its staff"). Sized so each is DECISIVE against the tiers the brief names it
-# ahead of, and ordered ledger > hairpin > range veto > distance --
-# `W_LEDGER_DIRECTION` exceeds `abs(W_RANGE_IMPOSSIBLE)` and
-# `W_HAIRPIN_SEPARATES` sits between the two, so a contest where a convention
-# and the range veto both fire is decided by the convention. Neither weight
-# is measured, same as A-OWN-1.
-W_LEDGER_DIRECTION = 8.0    # rungs toward one staff, none toward the other
+# ⚠️ ASSUMED WEIGHT (A-OWN-3), ROADMAP 2.6c (Sean, DECISIONS 2026-09-28: "a
+# hairpin sits under its staff"). Sized to be decisive against the range veto
+# alone (`7.0 > abs(W_RANGE_IMPOSSIBLE)`), not measured, same as A-OWN-1.
+#
+# ⚠️⚠️ THERE IS NO `W_LEDGER_DIRECTION` ANY MORE, AND THAT IS THE CHANGE.
+# 2.6c's first half made the ledger direction an ADDITIVE +8.0 term; Sean then
+# ruled it AUTHORITATIVE ("nearer to the staff is not always going to be right
+# but ledger lines will be"), so it is now a GATE ahead of every weight:
+# `ledger_direction` below returns before a single term is summed, and no
+# accumulation of hairpin + veto + distance can outvote it
+# (`test_staged_ledger_direction.TestTheHardGate` pins the case that did).
 W_HAIRPIN_SEPARATES = 7.0   # a hairpin sits under its own staff
+
+# ─────────────────────────────────────────────────────────────────────────────
+# ROADMAP 2.6c (second half) — WHICH STAFF DO THE RUNGS POINT TO, ANSWERED ONCE
+#
+# `ledger_direction` is the ONE helper both `glyph_owner` and 2.7b's
+# `notehead_precision._belongs_to_a_nearer_staff` ask, so the two decisions
+# cannot credit a rung differently. Its inputs are geometry every record
+# carries (the head's page box, each candidate staff's lines and spacing, the
+# `ledgerLine` boxes with their 3.4g-2 refusal verdicts); GATHER's anonymous
+# `Q.GLYPH_LADDER` count is the fallback only where that geometry is absent.
+#
+# CONVENTION (Sean, 2026-09-28, stated): the ledger lines between a far note
+# and a staff name its owner; nearness never overrides them; a far note with
+# no rungs either way is a reading gap. The three thresholds below are how a
+# LADDER is told from a stray rung, and they are NOT Sean's:
+#
+#   CONVENTION ASSUMED: a ledger ladder runs from the staff to the note and
+#     stops AT the note -- the note stands on its outermost rung or in the
+#     space just beyond it (`LADDER_REACH_SPACES`); the detector may miss ONE
+#     rung of a real ladder (`LADDER_MAX_MISSING`); a rung within half a space
+#     of the head is its own line and names no staff (`OWN_LINE_MAX_SPACES`).
+#   WHAT WOULD FALSIFY IT: a print-confirmed far note whose own ladder has two
+#     or more rungs missing, or ends a space or more short of it; or a
+#     chord-mate's own ledger that is contiguous with and reaches the head
+#     from the WRONG staff.
+#   NOT CONFIRMED by Sean. Measured on the six 2.7b.8 heads he adjudicated
+#     (FINDINGS §2.6c.2): his three G heads have 0 / 1 / 0 missing and reach
+#     0.78 / 0.06 / 0.03 spaces; the two wrongly-credited O heads have 2 and 4
+#     missing; the `s` of *sempre* (N) ends 1.37 spaces short.
+# ─────────────────────────────────────────────────────────────────────────────
+
+#: A kept rung this close to the head's own centre is the head's OWN ledger
+#: line: it says the note stands on a ledger, not whose. MOVED here from
+#: `notehead_precision.OWN_LEDGER_MAX_SPACES` (2.7b, measured there: of 79 far
+#: heads the first cut kept on a rung, 43 were kept by a rung 0.00-0.37 spaces
+#: from the head and the rest stood at 0.63+; 0.5 is the empty interval's
+#: middle), which now re-exports it -- one number, two readers.
+OWN_LINE_MAX_SPACES = 0.5
+#: GATHER's own grid tolerance (`gather._observe_ladder`: `abs(ry - want) <=
+#: spacing * 0.5`), so a rung this walk matches at step k is the rung GATHER
+#: would have counted there.
+RUNG_GRID_TOLERANCE_SPACES = 0.5
+#: A ladder may be ONE rung short and still be a ladder. Breitkopf brk-02
+#: (`glyph/9/0/11/0/1`, Sean: the filed staff) has rungs 2 and 3 and not 1.
+LADDER_MAX_MISSING = 1
+#: ... and must END at the note: the head within this many spaces of the
+#: outermost rung found (0 on the rung, 0.5 in the space beyond it; 1.0 would
+#: be the NEXT line, whose rung is then missing between them). Litolff #1
+#: (Sean: the filed staff) reaches at 0.78; the `s` at 1.37 does not.
+LADDER_REACH_SPACES = 1.0
+#: A contest is FAR -- and abstains `far_no_rungs` when no rung is found
+#: toward any candidate -- only where EVERY candidate needs at least this many
+#: rungs (GATHER's arithmetic: gap >= 1.75 spaces). A candidate needing 0 or 1
+#: is a near miss, a hint rather than a claim, and keeps today's tiers.
+FAR_MIN_RUNGS = 2
+
+#: `glyph_owner` abstentions that mean *we could not read whose this is*.
+#: EXPORT refuses such a head under `owner_not_read` rather than writing it on
+#: the staff it was cut from (CLAUDE.md rule 8: a fallback never converts
+#: "cannot tell" into an answer). `tied` is deliberately NOT here -- it
+#: predates this lane and its export behaviour is FINDINGS §2.6c.2's open item.
+OWNER_NOT_READ_REASONS = ("far_no_rungs",)
 
 
 @decision(
@@ -52,16 +119,21 @@ W_HAIRPIN_SEPARATES = 7.0   # a hairpin sits under its own staff
     # ⚠️ ROADMAP 2.6c adds `Q.GLYPH_BOX` (this glyph's own page box) and
     # `Q.WEDGE_BOX`/`Q.STAFF_LINES` (a candidate's hairpins and staff lines,
     # both read off ITS subject) for the hairpin-separator term.
+    # ⚠️ ROADMAP 2.6c (second half) adds `Q.STAFF_SPACING`: the ledger walk
+    # (`ladder_side`) steps one staff space at a time off each candidate's
+    # own outer line, and the `ledgerLine` boxes it walks are `Q.GLYPH_BOX`
+    # rows of the head's cell and each candidate's same-index cell.
     composed_from=(Q.GLYPH_BAND_DISTANCE, Q.GLYPH_LADDER, Q.INSTRUMENT, Q.CLEF,
                    Q.HUMAN_BOX_VERDICT, Q.LEDGER_IS_NOT_A_LEDGER, Q.GLYPH_BOX,
-                   Q.WEDGE_BOX, Q.STAFF_LINES),
+                   Q.WEDGE_BOX, Q.STAFF_LINES, Q.STAFF_SPACING),
     scope=Kind.GLYPH,
     wants=(Q.GLYPH_LADDER, Q.GLYPH_BAND_DISTANCE, Q.GLYPH_CONF,
            Q.NOTEHEAD_STAFF_POSITION, Q.INSTRUMENT, Q.CLEF,
            Q.HUMAN_BOX_VERDICT, Q.LEDGER_IS_NOT_A_LEDGER, Q.GLYPH_BOX,
-           Q.WEDGE_BOX, Q.STAFF_LINES),
-    reasons=("human_owner", "ledger_direction", "hairpin_separates", "ladder",
-             "range_veto", "distance", "no_contest", "no_evidence", "tied"),
+           Q.WEDGE_BOX, Q.STAFF_LINES, Q.STAFF_SPACING),
+    reasons=("human_owner", "ledger_direction", "hairpin_separates",
+             "far_no_rungs", "ladder", "range_veto", "distance", "no_contest",
+             "no_evidence", "tied"),
     mode=Mode.ADDITIVE,
     # ⚠️ The domain is the CONTESTED population. A glyph nobody disputes has
     # nothing to arbitrate, and a verdict per detection would bury 4,521 real
@@ -118,13 +190,19 @@ def adjudicate_glyph_owner(ev: Evidence) -> Ruling:
 
     ladders = {r.detail.get("candidate"): r for r in ev.rows(Q.GLYPH_LADDER)}
 
-    # ⚠️ ROADMAP 2.6c, Sean's ledger-direction convention (DECISIONS
-    # 2026-09-28). This is a COMPARISON across the whole contest -- "rungs
-    # toward one staff, none toward the other" cannot be answered by looking
-    # at one candidate at a time -- so, like `_human_owner`, it is settled
-    # once before the per-candidate loop rather than folded into one
-    # candidate's own terms.
-    ledger_winner, ledger_basis = _ledger_direction_winner(ev, bands, ladders)
+    # ⚠️⚠️ ROADMAP 2.6c (second half) — THE LEDGER LINES DECIDE, OUTRIGHT.
+    # Sean, 2026-09-28: *"Nearer to the staff is not always going to be right
+    # but ledger lines will be."* A COMPARISON across the whole contest
+    # ("rungs toward one staff, none toward the other"), settled once, before
+    # a single term is summed: where the rungs name one candidate this
+    # returns, and nothing after it -- hairpin, ladder weight, range veto,
+    # distance -- is ever consulted. `ledger_direction` is the SAME helper
+    # 2.7b's `belongs_to_a_nearer_staff` asks, so the two cannot disagree.
+    ledger = _contest_ledger_reading(ev, bands, ladders)
+    if ledger is not None and ledger.winner is not None:
+        return Ruling(value=ledger.winner, reason="ledger_direction",
+                      used=tuple(r.id for r in bands) + ledger.row_ids,
+                      detail={"ledger": ledger.summary()})
 
     # ⚠️ ROADMAP 2.6c, this glyph's own PAGE box. `Q.GLYPH_BAND_DISTANCE`
     # carries only the CANDIDATE-relative position (`position_in_candidate`),
@@ -135,6 +213,7 @@ def adjudicate_glyph_owner(ev: Evidence) -> Ruling:
     head_y = head_box.get("y_center_page") if head_box else None
 
     scored = []
+    hairpins = 0
     ladder_discounts: Dict[str, Tuple[str, ...]] = {}
     for row in bands:
         cand_key = row.detail.get("candidate")
@@ -142,15 +221,16 @@ def adjudicate_glyph_owner(ev: Evidence) -> Ruling:
             continue
         terms = []
 
-        # ── tier 0a: the ledger direction (2.6c, decisive) ──────────────────
-        if cand_key == ledger_winner:
-            terms.append(Term("ledger_direction", W_LEDGER_DIRECTION,
-                              (row.id,) + ledger_basis))
-
-        # ── tier 0b: a hairpin under this staff (2.6c, decisive) ────────────
+        # ── tier 0: a hairpin under this staff (2.6c, additive) ─────────────
+        # ⚠️ KEPT ADDITIVE, NOT A GATE (FINDINGS §2.6c.2): it can no longer
+        # override a ledger answer (that returned above), its 7.0 beats a
+        # lone range veto and any distance, and the one mix that outvotes it
+        # -- a veto on its side PLUS a rival's genuinely complete ladder --
+        # pits it against ledger evidence no crop has adjudicated.
         hairpin = _hairpin_separates(ev, cand_key, head_y)
         if hairpin is not None:
             terms.append(hairpin)
+            hairpins += 1
 
         # ── tier 1: the ledger ladder ───────────────────────────────────────
         lad = ladders.get(cand_key)
@@ -191,6 +271,16 @@ def adjudicate_glyph_owner(ev: Evidence) -> Ruling:
     if not scored:
         return Ruling.abstain("no_evidence")
 
+    # ⚠️⚠️ ROADMAP 2.6c (second half): A FAR NOTE WITH NO RUNGS EITHER WAY IS
+    # A READING GAP, NOT A DISTANCE TIE-BREAK (Sean, 2026-09-28). Every
+    # candidate needs `FAR_MIN_RUNGS` or more and not one rung was found
+    # toward any: the ladder that would name the owner was not read, and
+    # nearness may not stand in for it. A hairpin is a witness of its own
+    # and still speaks. EXPORT counts the head `owner_not_read`
+    # (`OWNER_NOT_READ_REASONS`) and never writes it at a guess.
+    if ledger is not None and ledger.word == "far_no_rungs" and not hairpins:
+        return Ruling.abstain("far_no_rungs", ledger=ledger.summary())
+
     scored.sort(key=lambda t: (-t[0], t[1]))
     top_score, top_key, top_terms, _d = scored[0]
     runner = scored[1][0] if len(scored) > 1 else None
@@ -211,15 +301,10 @@ def adjudicate_glyph_owner(ev: Evidence) -> Ruling:
         # to be a coin flip.
         return Ruling.abstain("tied")
 
-    # ⚠️ ROADMAP 2.6c: checked FIRST because either can carry a contest a
-    # genuinely complete ladder's own +4.0 cannot: `W_LADDER_COMPLETE` alone
-    # does not outweigh a range veto's -6.0, so `ledger_direction` can be the
-    # reason even where the winner's OWN ladder is genuinely (not vacuously)
-    # complete -- the winner still carries a `ladder_complete` term too, but
-    # the convention is what actually decided the contest.
-    if any(t.name == "ledger_direction" for t in top_terms):
-        reason = "ledger_direction"
-    elif any(t.name == "hairpin_separates" for t in top_terms):
+    # ⚠️ ROADMAP 2.6c: checked FIRST because it can carry a contest a
+    # genuinely complete ladder's own +4.0 cannot (`W_LADDER_COMPLETE` alone
+    # does not outweigh a range veto's -6.0).
+    if any(t.name == "hairpin_separates" for t in top_terms):
         reason = "hairpin_separates"
     elif any(t.name == "ladder_complete" for t in top_terms):
         reason = "ladder"
@@ -230,6 +315,9 @@ def adjudicate_glyph_owner(ev: Evidence) -> Ruling:
 
     detail = {"scores": {k: sc for sc, k, _t, _d2 in scored},
               "would_win_on_distance": by_distance[1]}
+    if ledger is not None:
+        # ⚠️ FOR `trace`: what the rungs said where they did not decide.
+        detail["ledger"] = ledger.summary()
     if ladder_discounts:
         # ⚠️ ROADMAP 2.14, FOR `trace`. Per candidate, the rung glyph keys a
         # refused `Q.LEDGER_IS_NOT_A_LEDGER` verdict removed from this
@@ -295,69 +383,313 @@ def _ladder_complete(ev: Evidence, lad_row) -> Tuple[bool, Tuple[str, ...]]:
     return kept == expected, tuple(discounted)
 
 
-def _ledger_direction_winner(
-    ev: Evidence, bands, ladders: Dict[str, Any],
-) -> Tuple[Optional[str], Tuple[str, ...]]:
-    """Sean's first convention (DECISIONS 2026-09-28): *"there have to be
-    ledger lines in between wherever that note is and the staff that it's
-    connected to"* — rungs toward one staff, none toward the other, decides
-    ahead of the range veto and distance.
+@dataclass(frozen=True)
+class Rung:
+    """One `ledgerLine` box in PAGE pixels, with its 3.4g-2 verdict.
 
-    Returns `(the winning candidate's staff key, the rungless rivals' basis
-    rows)`, or `(None, ())` if the contest does not speak this way.
+    `refused` is the refusal REASON where `ledger_is_not_a_ledger` DECIDED
+    `True` (a staff-line fragment, a barline...), else `None` -- an
+    ABSTAINED verdict, or none at all, keeps the rung (CLAUDE.md rule 8:
+    *cannot tell* may never become *not a rung*)."""
+    key: str
+    x0: float
+    x1: float
+    y: float
+    refused: Optional[str] = None
+    row_id: str = ""
 
-    ⚠️ NOT A RESTATEMENT OF `_ladder_complete`'S OWN TERM. That term credits a
-    candidate whose OWN ladder is a complete run of FOUND rungs. It is silent
-    whenever a candidate needs ZERO rungs to reach a staff at all --
-    `gather._observe_ladder` never even asks (`expected <= 0`, no
-    `Q.GLYPH_LADDER` row filed) -- because "nothing was required" is not the
-    same fact as "what was required was found". Sean's convention names that
-    silence too, read from the other side: a RIVAL who DOES need rungs and
-    has NONE of them is telling the contest "not this staff" as plainly as a
-    complete run tells it "this one". The 2026-09-23 precedent is the same
-    shape at a smaller radius (a note one space beyond a neighbour's outer
-    line is that staff's, on its OWN first ledger line, while the far
-    staff's three-rung ladder was never detected) -- there the near
-    candidate's own single rung WAS found, so the existing `ladder_complete`
-    term already decided it; here the near candidate needs no rung at all,
-    which is the gap this function closes.
 
-    ⚠️ "CLEAN" IS VACUOUS-OR-COMPLETE, ON PURPOSE, AND THIS DOES NOT DOUBLE
-    THE EXISTING TERM. A CANDIDATE WHOSE LADDER IS GENUINELY COMPLETE ALSO
-    QUALIFIES, because `W_LADDER_COMPLETE` (4.0) ALONE DOES NOT REACH "DECISIVE
-    AGAINST THE RANGE VETO" (-6.0) -- a genuinely laddered candidate can still
-    lose today (4.0 + -6.0 + a small distance edge for the rival is still a
-    net loss). This term's basis is the RIVAL's broken row, never the
-    candidate's own `ladder_complete` row, so the two terms share no row id,
-    land in no shared correlated group, and simply ADD when both apply to the
-    same winner -- which is correct, since a real rung toward it and the
-    rival's real absence are two independent facts, not one restated.
+@dataclass(frozen=True)
+class LadderSide:
+    """What the rungs say about ONE candidate staff.
 
-    ⚠️ SILENT WHENEVER MORE THAN ONE CANDIDATE IS CLEAN. That is what keeps
-    this from steamrolling a genuine reading elsewhere: if a rival is ALSO
-    clean (vacuous or its own complete run), "which one" is exactly the
-    question `adjudicate_glyph_owner`'s own `tied` reason exists for, and
-    this stays silent rather than guess.
+    `frame` is `page` when read off geometry, `count` when only GATHER's
+    anonymous `Q.GLYPH_LADDER` count was available (an old record, or a
+    fixture with no page box) -- then the own line cannot be told apart and
+    only a COMPLETE ladder points, exactly the pre-2.6c `ladder_complete`."""
+    staff: str
+    expected: int
+    found: int                          # kept rungs matched, own line included
+    toward: Tuple[str, ...] = ()        # found rungs that are NOT the own line
+    n_toward: int = 0
+    stands_on: Optional[str] = None     # the rung the head stands on
+    reach: bool = True
+    #: spaces from the head to the outermost rung found (or the staff's outer
+    #: line if none): what `reach` thresholds, kept for `trace`
+    reach_spaces: Optional[float] = None
+    refused: Tuple[Tuple[str, int], ...] = ()
+    frame: str = "page"
+    row_ids: Tuple[str, ...] = ()
+
+    @property
+    def missing(self) -> int:
+        return max(0, self.expected - self.found)
+
+    @property
+    def points(self) -> bool:
+        """Do the ledger lines join the note to THIS staff?
+
+        A note needing no rung at all (within 0.75 spaces of the band) is
+        joined by nearness the convention does not dispute. Otherwise: at
+        least one rung that is not the note's own line, no more than
+        `LADDER_MAX_MISSING` missing, and the ladder ENDS at the note."""
+        if self.expected <= 0:
+            return True
+        return (self.n_toward >= 1 and self.missing <= LADDER_MAX_MISSING
+                and self.reach)
+
+    def summary(self) -> Dict[str, Any]:
+        out: Dict[str, Any] = {
+            "expected": self.expected, "found": self.found,
+            "toward": self.n_toward, "missing": self.missing,
+            "reach": self.reach, "points": self.points, "frame": self.frame}
+        if self.reach_spaces is not None:
+            out["reach_spaces"] = round(self.reach_spaces, 3)
+        if self.stands_on:
+            out["stands_on"] = self.stands_on
+        if self.refused:
+            out["refused"] = dict(self.refused)
+        return out
+
+
+@dataclass(frozen=True)
+class LedgerReading:
+    """`ledger_direction`'s answer: a `winner` staff key, or `None` with
+    `word` saying why -- `silent` (not evidence either way) or
+    `far_no_rungs` (every candidate far, no rung toward any: a reading gap)."""
+    winner: Optional[str]
+    word: str
+    sides: Tuple[LadderSide, ...]
+
+    def summary(self) -> Dict[str, Any]:
+        return {"winner": self.winner, "word": self.word,
+                "sides": {s.staff: s.summary() for s in self.sides}}
+
+    @property
+    def row_ids(self) -> Tuple[str, ...]:
+        return tuple(dict.fromkeys(i for s in self.sides for i in s.row_ids))
+
+
+def ladder_side(staff: str, head_y: float, head_x0: float, head_x1: float,
+                line_ys: Sequence[float], spacing: float,
+                rungs: Iterable[Rung]) -> LadderSide:
+    """Walk the ladder from `staff`'s outer line toward the head, one step
+    per staff space, exactly as `gather._observe_ladder` does (same
+    `LEDGER_ROUND_UP`, same half-space grid tolerance, same x-overlap test)
+    -- but on NAMED, verdict-carrying rungs, so it can say which rung is the
+    head's own line and whether the ladder reaches it.
+
+    ⚠️ ONE RUNG PER STEP, NEAREST FIRST, KEPT BEFORE REFUSED. A refused box
+    at a step is reported (`refused`) and never counted; a physical rung
+    boxed in two cells is two boxes at one step and counts once.
     """
-    has_row: Dict[str, bool] = {}
-    complete: Dict[str, bool] = {}
-    for row in bands:
-        cand_key = row.detail.get("candidate")
-        if cand_key is None:
+    ys = [float(v) for v in line_ys]
+    sp = float(spacing)
+    top, bottom = min(ys), max(ys)
+    if top <= head_y <= bottom:
+        return LadderSide(staff=staff, expected=0, found=0)
+    above = head_y < top
+    edge = top if above else bottom
+    gap = (edge - head_y) if above else (head_y - edge)
+    expected = int(gap / sp + LEDGER_ROUND_UP)
+    if expected <= 0:
+        return LadderSide(staff=staff, expected=0, found=0)
+    tol = RUNG_GRID_TOLERANCE_SPACES * sp
+    pool = [r for r in rungs if r.x0 <= head_x1 and r.x1 >= head_x0]
+    used: set = set()
+    found: List[Rung] = []
+    refused: Counter = Counter()
+    outer = edge
+    for k in range(1, expected + 1):
+        want = edge - k * sp if above else edge + k * sp
+        here = [r for r in pool
+                if r.key not in used and abs(r.y - want) <= tol]
+        if not here:
             continue
-        lad = ladders.get(cand_key)
-        if lad is None:
-            has_row[cand_key] = False       # vacuous: no crossing was asked
-            complete[cand_key] = False
+        kept = [r for r in here if r.refused is None]
+        if kept:
+            best = min(kept, key=lambda r: abs(r.y - want))
+            # the same physical rung boxed in another cell is the same rung
+            used.update(x.key for x in here if abs(x.y - best.y) <= tol / 2)
+            found.append(best)
+            outer = best.y
         else:
-            has_row[cand_key] = True
-            complete[cand_key], _discounted = _ladder_complete(ev, lad)
+            for r in here:
+                used.add(r.key)
+                refused[str(r.refused)] += 1
+    own = next((r for r in found
+                if abs(r.y - head_y) <= OWN_LINE_MAX_SPACES * sp), None)
+    toward = tuple(r.key for r in found if r is not own)
+    return LadderSide(
+        staff=staff, expected=expected, found=len(found), toward=toward,
+        n_toward=len(toward), stands_on=own.key if own else None,
+        reach=abs(head_y - outer) / sp < LADDER_REACH_SPACES,
+        reach_spaces=abs(head_y - outer) / sp,
+        refused=tuple(sorted(refused.items())),
+        row_ids=tuple(r.row_id for r in found if r.row_id))
 
-    clean = [k for k in has_row if not has_row[k] or complete[k]]
-    broken = [ladders[k].id for k in has_row if has_row[k] and not complete[k]]
-    if len(clean) == 1 and broken:
-        return clean[0], tuple(broken)
-    return None, ()
+
+def ladder_side_from_count(staff: str, expected: int, found: int,
+                           row_ids: Tuple[str, ...] = ()) -> LadderSide:
+    """GATHER's anonymous count, where no geometry can be read. The own line
+    cannot be told apart, so only a COMPLETE ladder points (`reach` is
+    completeness) -- 2.6c's first-half `clean` reading, unchanged."""
+    expected = max(0, int(expected))
+    found = max(0, min(int(found), expected))
+    return LadderSide(staff=staff, expected=expected, found=found,
+                      n_toward=found, reach=(found >= expected),
+                      frame="count", row_ids=row_ids)
+
+
+def ledger_direction(sides: Sequence[LadderSide]) -> LedgerReading:
+    """Sean's convention (DECISIONS 2026-09-28): the ledger lines name the
+    owner -- *rungs toward one staff, none toward the other*.
+
+    `winner` is the ONE side the ledger lines join the note to, when no
+    other side's do. Two sides both joined (a vacuous near staff and a
+    complete ladder from the far one, say) is not evidence either way:
+    `silent`, and the caller's own tiers decide. Every side FAR
+    (`FAR_MIN_RUNGS`) with no rung toward any: `far_no_rungs`, a reading
+    gap the caller must not paper over with distance.
+    """
+    sides = tuple(sides)
+    if len(sides) < 2:
+        return LedgerReading(None, "silent", sides)
+    pointing = [s for s in sides if s.points]
+    if len(pointing) == 1:
+        return LedgerReading(pointing[0].staff, "points", sides)
+    if (not pointing and all(s.expected >= FAR_MIN_RUNGS for s in sides)
+            and all(s.n_toward == 0 for s in sides)):
+        return LedgerReading(None, "far_no_rungs", sides)
+    return LedgerReading(None, "silent", sides)
+
+
+def cell_rungs(ev: Evidence, cells: Iterable[R.Subject],
+               extra_keys: Iterable[str] = ()) -> List[Rung]:
+    """Every `ledgerLine` box with a PAGE frame in `cells` (and at the named
+    subjects `extra_keys`), with its refusal verdict.
+
+    ⚠️ THE SAME CELL INDEX ON EVERY STAFF IS THE SAME BAR (a cell index
+    restarts per system, CLAUDE.md §10), so the head's own cell plus each
+    candidate's same-index cell holds every rung a ladder between them can
+    have -- the pad that put the head in two cells put its rungs there too.
+    A box with no `bbox_page_px` is DECLINED, never placed at a guess."""
+    out: Dict[str, Rung] = {}
+
+    def _take(row) -> None:
+        v = row.value
+        if not isinstance(v, (list, tuple)) or not v \
+                or str(v[0]) != "ledgerLine":
+            return
+        lb = (row.detail or {}).get("bbox_page_px")
+        if not lb or len(lb) != 4:
+            return
+        key = row.subject.to_key()
+        if key in out:
+            return
+        lv = ev.verdict(Q.LEDGER_IS_NOT_A_LEDGER, subject=row.subject)
+        why = (str(lv.reason) if lv is not None
+               and lv.outcome is Outcome.DECIDED and lv.value is True
+               else None)
+        out[key] = Rung(key=key, x0=float(lb[0]), x1=float(lb[2]),
+                        y=(float(lb[1]) + float(lb[3])) / 2.0,
+                        refused=why, row_id=row.id)
+
+    for cell in cells:
+        for row in ev.rows(Q.GLYPH_BOX, scope=Scope.SELF_AND_DESCENDANTS,
+                           subject=cell):
+            _take(row)
+    for key in extra_keys:
+        try:
+            sub = R.Subject.from_key(key)
+        except ValueError:
+            continue
+        if sub.to_key() in out:
+            continue
+        for row in ev.rows(Q.GLYPH_BOX, subject=sub):
+            _take(row)
+    return list(out.values())
+
+
+def staff_geometry(ev: Evidence, staff: R.Subject
+                   ) -> Optional[Tuple[List[float], float, List[str]]]:
+    """`(line ys, spacing, row ids)` in page pixels, or `None` -- DECLINED,
+    never defaulted."""
+    lines = ev.rows(Q.STAFF_LINES, subject=staff)
+    spacing = ev.rows(Q.STAFF_SPACING, subject=staff)
+    if not lines or not spacing:
+        return None
+    try:
+        ys = sorted(float(v) for v in lines[-1].value)
+        sp = float(spacing[-1].value)
+    except (TypeError, ValueError):
+        return None
+    if len(ys) < 2 or sp <= 0:
+        return None
+    return ys, sp, [lines[-1].id, spacing[-1].id]
+
+
+def _contest_ledger_reading(ev: Evidence, bands, ladders: Dict[str, Any]
+                            ) -> Optional[LedgerReading]:
+    """The ledger reading for `glyph_owner`'s contest, or `None` where the
+    contested glyph is not a notehead (a ledger line joins a NOTE to a
+    staff; an accidental or a dynamic has no ladder to read).
+
+    Per candidate: off the page geometry where the head's page box and that
+    staff's lines are on the record (`ladder_side`; rungs from the head's
+    cell, each candidate's same-index cell, and every rung GATHER's own
+    ladder rows named); off GATHER's count otherwise
+    (`ladder_side_from_count`; a candidate with no `Q.GLYPH_LADDER` row is
+    one GATHER asked nothing of -- no crossing needed)."""
+    box_rows = ev.rows(Q.GLYPH_BOX)
+    box = box_rows[-1] if box_rows else None
+    if box is not None:
+        v = box.value
+        if not (isinstance(v, (list, tuple)) and v
+                and str(v[0]).startswith("notehead")):
+            return None
+    elif not ladders:
+        return None
+
+    head = None
+    if box is not None:
+        bb = (box.detail or {}).get("bbox_page_px")
+        if bb and len(bb) == 4:
+            head = (float(bb[0]), float(bb[2]),
+                    (float(bb[1]) + float(bb[3])) / 2.0)
+
+    cands = [r.detail.get("candidate") for r in bands
+             if r.detail.get("candidate") is not None]
+    rungs: Optional[List[Rung]] = None
+    sides: List[LadderSide] = []
+    for cand_key in cands:
+        geo = (staff_geometry(ev, R.Subject.from_key(cand_key))
+               if head is not None else None)
+        lad = ladders.get(cand_key)
+        if geo is not None:
+            if rungs is None:
+                me = ev.subject
+                cells = [me.at(Kind.CELL)] + [
+                    R.cell(me.page, me.system, R.Subject.from_key(k).staff,
+                           me.cell) for k in cands]
+                named = [k for r in ladders.values()
+                         for k in ((r.detail or {}).get("rungs") or ())]
+                rungs = cell_rungs(ev, list(dict.fromkeys(cells)), named)
+            sides.append(ladder_side(cand_key, head[2], head[0], head[1],
+                                     geo[0], geo[1], rungs))
+        elif lad is None:
+            sides.append(LadderSide(staff=cand_key, expected=0, found=0,
+                                    frame="count"))
+        else:
+            d = lad.detail or {}
+            complete, discounted = _ladder_complete(ev, lad)
+            exp = d.get("expected")
+            if not isinstance(exp, int):
+                exp, fnd = 1, (1 if complete else 0)
+            else:
+                fnd = int(d.get("found") or 0) - len(discounted)
+            sides.append(ladder_side_from_count(cand_key, exp, fnd, (lad.id,)))
+    return ledger_direction(sides)
 
 
 def _own_glyph_box(ev: Evidence) -> Optional[Dict[str, float]]:
