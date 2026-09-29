@@ -429,6 +429,218 @@ def _not_a_ledger_line(beams, ledger_boxes):
     return kept, dropped
 
 
+# ─────────────────────────────────────────────────────────────────────────────
+# ROADMAP 2.25b -- the three larger classes 2.25 named and did not build:
+# a stroke that belongs to the NEIGHBOUR staff through the cell's own pad, a
+# stroke that is a decided SLUR/TIE's own ink, and a stroke inside a hairpin.
+# All three need a page<->canonical conversion `Q.BEAM_STROKE` itself never
+# carries -- this is that ONE helper, used by all three, round-trip tested.
+# ─────────────────────────────────────────────────────────────────────────────
+
+
+def _cell_frame(ev: Evidence, cell) -> Optional[Tuple[float, float, float]]:
+    """`(origin_x, origin_y, up)` solving `page = origin + canonical / up`
+    for THIS cell -- the SAME affine `gather._page_box` computes forward
+    (`gather.py`: *"canonical cell coordinates -> page pixels"*), solved
+    backward from any ONE `Q.GLYPH_BOX` row in the cell that already
+    carries BOTH frames (its own `value` is canonical, its own
+    `detail.bbox_page_px` is page).
+
+    ⚠️ NOT A NEW QUANTITY. There is no persisted `upscale_factor` on a saved
+    record -- it is a runtime attribute of the GATHER-time cell object, not
+    written down -- so this recovers it from data the record already
+    carries twice over (the same box, in both frames), rather than
+    inventing one. `Q.CELL_BOX` is not needed either: ONE dual-frame box
+    fully determines the transform (two points fix an affine map with a
+    known, uniform scale -- `_upscale_to_canonical` resizes a cell by ONE
+    factor, never separate x/y ones).
+
+    ⚠️ DECLINED, NEVER GUESSED, where no such row exists in this cell
+    (CLAUDE.md rule 6; the same discipline `adjudicate_wedge_anchor`
+    states: *"a row without them abstains"*) -- every one of this item's
+    three new connections falls through to KEEPING the stroke where this
+    returns `None`, exactly as `_beyond_own_stem` does with no staff-space
+    unit.
+    """
+    for row in ev.rows(Q.GLYPH_BOX, scope=Scope.SELF_AND_DESCENDANTS,
+                       subject=cell):
+        v = row.value
+        d = row.detail or {}
+        page = d.get("bbox_page_px")
+        if not isinstance(v, (list, tuple)) or len(v) < 5 \
+                or not page or len(page) != 4:
+            continue
+        cx, cy, cw, ch = float(v[1]), float(v[2]), float(v[3]), float(v[4])
+        px0, py0, px1, py1 = (float(x) for x in page)
+        up = None
+        if px1 - px0 > 0:
+            up = cw / (px1 - px0)
+        elif py1 - py0 > 0:
+            up = ch / (py1 - py0)
+        if not up:
+            continue
+        return (px0 - cx / up, py0 - cy / up, up)
+    return None
+
+
+def _to_page(box, frame):
+    """Canonical `(x, y, w, h)` -> page pixels, through `_cell_frame`."""
+    ox, oy, up = frame
+    x, y, w, h = box
+    return (ox + x / up, oy + y / up, w / up, h / up)
+
+
+def _to_canonical(box, frame):
+    """Page-pixel `(x, y, w, h)` -> this cell's canonical, through
+    `_cell_frame` -- the exact inverse of `_to_page`."""
+    ox, oy, up = frame
+    x, y, w, h = box
+    return ((x - ox) * up, (y - oy) * up, w * up, h * up)
+
+
+def _joins_n_stems(box, stems) -> int:
+    """How many DIFFERENT `Q.STEM` boxes this stroke's box overlaps -- the
+    signature of a genuine beamed group (drawn to span several stems), used
+    below as the override that keeps a real beam even where it happens to
+    sit inside a slur's or a hairpin's own box."""
+    return sum(1 for s in stems if _xywh(s) and _boxes_overlap(_xywh(s), box))
+
+
+def _not_the_neighbours_beam(ev: Evidence, cell, beams, stems, own_stems):
+    """`(kept, dropped)`. ROADMAP 2.25b, class 1 (`other_staff_via_pad`,
+    150 Brahms / 7 Litolff heads, FINDINGS SS13).
+
+    ⚠️ THE DECIDED FACT IS A STEM, NOT A DISTANCE. A stroke lying beyond
+    THIS staff's own outer line (`Q.STAFF_LINES`, page frame) -- in the pad
+    the cell's own crop reaches into (CLAUDE.md SS10: "the measure cell is
+    padded 4 spaces... and reaches the next staff's ink") -- that ALSO
+    overlaps, in page pixels, a `Q.STEM` row filed on the NEIGHBOURING
+    staff's own SAME-cell subject ("or cells of the neighbouring staff",
+    the manager's own fallback -- an ownership CONTEST is not asked; the
+    stem merely being filed there is enough) is that staff's beam.
+
+    ⚠️ THE OVERRIDE (rule 6, never discount past a stronger fact): a stroke
+    ALSO reached by one of THIS head's own attached stems stays, whatever
+    else it touches -- a beam spanning a wide group can legitimately pass
+    near a neighbour's stem without being that neighbour's ink.
+
+    ⚠️ DECLINED, NEVER GUESSED, where this cell's or the neighbour cell's
+    own `_cell_frame` cannot be solved (no dual-frame glyph box in either)
+    -- the stroke stays, exactly as `_not_a_ledger_line` leaves every
+    stroke where the cell holds no boxed ledger line.
+    """
+    lines = ev.rows(Q.STAFF_LINES, scope=Scope.SELF_AND_ANCESTORS,
+                    subject=cell.at(Kind.STAFF))
+    frame = _cell_frame(ev, cell)
+    if not lines or not lines[-1].value or frame is None:
+        return list(beams), []
+    ys = [float(y) for y in lines[-1].value]
+    top, bottom = min(ys), max(ys)
+
+    neighbour_stems_page = []
+    for delta in (-1, 1):
+        st = cell.staff + delta if cell.staff is not None else None
+        if st is None or st < 0:
+            continue
+        ncell = Subject(Kind.CELL, page=cell.page, system=cell.system,
+                        staff=st, cell=cell.cell)
+        nframe = _cell_frame(ev, ncell)
+        if nframe is None:
+            continue
+        for s in ev.rows(Q.STEM, scope=Scope.EXACT, subject=ncell):
+            box = _xywh(s)
+            if box is not None:
+                neighbour_stems_page.append(_to_page(box, nframe))
+    if not neighbour_stems_page:
+        return list(beams), []
+
+    kept, dropped = [], []
+    for b in beams:
+        box = _xywh(b)
+        if box is None:
+            kept.append(b)
+            continue
+        # ⚠️ THE OVERRIDE IS A BOX TEST, NOT AN ID TEST -- `own_stems` are
+        # STEM rows and `b` is a BEAM row; the two never share an id. The
+        # question is whether THIS stroke is reached by one of this head's
+        # own attached stems, the same overlap test `_stem_joined` uses.
+        if any(sbox and _boxes_overlap(box, sbox)
+               for sbox in (_xywh(s) for s in own_stems)):
+            kept.append(b)
+            continue
+        page_box = _to_page(box, frame)
+        pyc = page_box[1] + page_box[3] / 2.0
+        beyond_outer = pyc < top or pyc > bottom
+        if beyond_outer and any(_boxes_overlap(page_box, nb)
+                                for nb in neighbour_stems_page):
+            dropped.append(b)
+        else:
+            kept.append(b)
+    return kept, dropped
+
+
+def _not_a_decided_arc(ev: Evidence, cell, beams, stems):
+    """`(kept, dropped)`. ROADMAP 2.25b, class 2 (`arc_box`, 139 Brahms
+    heads, FINDINGS SS13).
+
+    ⚠️ THE DECIDED FACT IS `Q.ARC_KIND`, NOT MERE OVERLAP WITH A BOX (rule
+    6). `adjudicate_arc_kind` runs before `duration` in `adjudicate.ORDER`,
+    so its verdict is already settled: an `Q.ARC_BOX` glyph this decision
+    reads must have DECIDED (`tie` or `slur`) before a stroke over it is
+    discounted -- an abstained or refused arc box (`Q.ARC_IS_NOT_AN_ARC`)
+    proves nothing about the ink and discounts nothing.
+
+    ⚠️ THE OVERRIDE, THE MANAGER'S OWN POSITIVE CONTROL: *"a real beam
+    overlapping a slur's box still counts when it joins >= 2 of this
+    staff's stems"* -- `_joins_n_stems`, over every `Q.STEM` filed in THIS
+    cell (not just this note's own), because a genuine beam is drawn to
+    span several stems and a slur's bounding box coincidentally covering
+    one is not evidence against that.
+    """
+    arcs = []
+    for r in ev.rows(Q.ARC_BOX, scope=Scope.SELF_AND_DESCENDANTS,
+                     subject=cell):
+        d = r.detail or {}
+        if not all(k in d for k in ("x0", "x1", "y0", "y1")):
+            continue
+        v = ev.verdict(Q.ARC_KIND, subject=r.subject)
+        if v is None or v.outcome is not Outcome.DECIDED:
+            continue
+        arcs.append((float(d["x0"]), float(d["y0"]),
+                    float(d["x1"]) - float(d["x0"]),
+                    float(d["y1"]) - float(d["y0"])))
+    if not arcs:
+        return list(beams), []
+    kept, dropped = [], []
+    for b in beams:
+        box = _xywh(b)
+        if box is None:
+            kept.append(b)
+            continue
+        if any(_boxes_overlap(box, a) for a in arcs) \
+                and _joins_n_stems(box, stems) < 2:
+            dropped.append(b)
+        else:
+            kept.append(b)
+    return kept, dropped
+
+
+#: `wedge_box` (class 3, the hairpin) is NAMED, NOT BUILT -- ROADMAP 2.25b.
+#: An exploratory pass priced it on real Brahms/Litolff gathers and eye-
+#: checked crops before this decision was reverted: the `>= 2 stems`
+#: override (borrowed from the arc class, below) did not reliably
+#: separate a real down-stem beam from a hairpin's own ink, because
+#: CLAUDE.md §10's own convention -- "a hairpin sits UNDER its staff" --
+#: puts a hairpin in the SAME territory a down-stem's beam legitimately
+#: occupies; 2 of 2 wedge-tagged crops looked like a real beam wrongly
+#: discounted. A wrongly dropped beam WRITES A WRONG VALUE, which is worse
+#: than the narrowing this class would have prevented, so it stays out of
+#: `adjudicate_duration` (Sean, before merge). `Q.WEDGE_ANCHOR` also
+#: cannot gate it -- it runs AFTER `duration` in `adjudicate.ORDER` -- so
+#: there is no stronger fact to build this on without a bigger change.
+#: `benchmarks/omr-missing-notes-2026-09/FINDINGS.md` SS13h.
+
+
 #: `flag8thUp` -> 1 level, `flag16thDown` -> 2, and so on. DERIVED from
 #: `rhythm._FLAG_DURATIONS` rather than restated, so the two cannot drift.
 #:
@@ -1019,8 +1231,21 @@ def _stem_tip_flag_ink(ev: Evidence, cell, own_stems, side: Optional[str]
     composed_from=(Q.BEAM_STROKE, Q.FLAG, Q.AUG_DOT, Q.DOT_ROLE,
                    Q.NOTEHEAD_CLASS, Q.STEM, Q.REST, Q.STAFF_LINES,
                    Q.STAFF_SPACING, Q.FLAG_IS_NOT_A_FLAG, Q.STEM_DIRECTION,
-                   Q.STEM_TIP_INK, Q.NOTEHEAD_INK),
+                   Q.STEM_TIP_INK, Q.NOTEHEAD_INK, Q.ARC_BOX, Q.ARC_KIND),
     scope=Kind.GLYPH,
+    # ⚠️ `Q.ARC_BOX`/`Q.ARC_KIND` JOIN AT ROADMAP 2.25b: a beam stroke
+    # standing inside a DECIDED slur/tie's own box is discounted from this
+    # note's beam count (`_not_a_decided_arc`) unless it joins >= 2 of this
+    # cell's own stems -- so the OUTCOME can depend on facts about a
+    # DIFFERENT glyph entirely, and hiding that from `wiring`/`trace` would
+    # be exactly the anti-pattern `Q.STEM`'s own comment below names.
+    # `Q.WEDGE_BOX` does NOT join: the hairpin class was named and NOT
+    # built (Sean, before merge -- see the comment above `_flag_levels_
+    # table`, where the removed `_not_inside_a_wedge` used to live).
+    # `Q.STEM` itself is ALSO now read at the NEIGHBOURING staff's
+    # cell (`_not_the_neighbours_beam`), a second subject this same
+    # quantity reaches -- `composed_from` names the QUANTITY, not the
+    # subject, so no new entry is needed for that one.
     # ⚠️ `Q.STEM_DIRECTION` JOINED `composed_from` AT ROADMAP 2.18. Under
     # 2.12e it was a `wants` only -- a flag's direction does not touch its
     # hook count, and zero durations moved. 2.18 makes it choose WHICH beam
@@ -1040,9 +1265,11 @@ def _stem_tip_flag_ink(ev: Evidence, cell, own_stems, side: Optional[str]
     wants=(Q.BEAM_STROKE, Q.FLAG, Q.AUG_DOT, Q.DOT_ROLE, Q.NOTEHEAD_CLASS,
            Q.STEM, Q.TUPLET_RATIO, Q.GLYPH_BOX, Q.REST, Q.CELL_STAFF_SPACE,
            Q.STAFF_LINES, Q.STAFF_SPACING, Q.STEM_DIRECTION,
-           Q.FLAG_IS_NOT_A_FLAG, Q.STEM_TIP_INK, Q.NOTEHEAD_INK),
+           Q.FLAG_IS_NOT_A_FLAG, Q.STEM_TIP_INK, Q.NOTEHEAD_INK,
+           Q.ARC_BOX, Q.ARC_KIND),
     reasons=("head_and_marks", "beams_ambiguous", "flags_disagree",
-             "flag_ink_unread", "head_fill_from_ink", "no_notehead",
+             "flag_ink_unread", "beam_discounted_uncertain",
+             "head_fill_from_ink", "no_notehead",
              "unknown_head", "rest_class", "unreadable_rest",
              "rest_slot_contradicts_class", "rest_stands_where_no_rest_hangs"),
     mode=Mode.ADDITIVE,
@@ -1102,15 +1329,6 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
 
     cell = ev.subject.at(Kind.CELL)
     kept, cv, yolo = _kept_beams(ev, cell)
-    # ⚠️ ROADMAP 2.25, FIRST: a stroke standing where a `ledgerLine` glyph is
-    # boxed in THIS cell is that ledger line, not a beam -- dropped before
-    # side/tolerance filtering ever sees it, so those steps (which reason
-    # about a NOTE's stem) work on a set that no longer holds ink that is
-    # not even a mark of duration at all. `used` gets nothing for the ones
-    # dropped: a stroke this decision refused to count is not evidence it
-    # composed from.
-    ledger_boxes = _ledger_line_glyph_boxes(ev, cell)
-    kept, ledger_dropped = _not_a_ledger_line(kept, ledger_boxes)
     # ⚠️ `Q.STEM` WAS DECLARED IN `wants` AND `composed_from` AND READ BY
     # NOTHING -- this project's own named anti-pattern, inside the decision
     # whose docstring calls the beam level its fragile input. The stems were
@@ -1121,6 +1339,42 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
     if box:
         hb = _xywh_head(box[-1].value)
         head_box = hb
+    # ⚠️ MOVED EARLY FOR ROADMAP 2.25b: `_not_the_neighbours_beam`'s own
+    # override (a stroke THIS head's own stem reaches stays, whatever else
+    # it touches) needs this head's attached stems before any filtering,
+    # not only after 2.18's side test. Reused below where 2.18/2.18b read it.
+    own_stems = _stems_on(head_box, stems) if head_box is not None else []
+    # ⚠️ ROADMAP 2.25, FIRST: a stroke standing where a `ledgerLine` glyph is
+    # boxed in THIS cell is that ledger line, not a beam -- dropped before
+    # side/tolerance filtering ever sees it, so those steps (which reason
+    # about a NOTE's stem) work on a set that no longer holds ink that is
+    # not even a mark of duration at all. `used` gets nothing for the ones
+    # dropped: a stroke this decision refused to count is not evidence it
+    # composed from.
+    ledger_boxes = _ledger_line_glyph_boxes(ev, cell)
+    kept, ledger_dropped = _not_a_ledger_line(kept, ledger_boxes)
+    # ⚠️ ROADMAP 2.25b, SAME TIER: a stroke that is the NEIGHBOUR staff's own
+    # beam (through the cell's pad) or a DECIDED slur/tie's own ink -- each a
+    # CONNECTION to a fact already on the record about the OTHER object,
+    # never a guess from mere overlap (rule 6; FINDINGS SS13f/SS13h). Both
+    # are additive-safe and run before 2.18/2.18b for the same reason the
+    # ledger-line drop does. (A third class, the hairpin, was named and NOT
+    # built -- see the comment above `_flag_levels_table`.)
+    before_2_25b = list(kept)
+    kept, neighbour_dropped = _not_the_neighbours_beam(
+        ev, cell, kept, stems, own_stems)
+    kept, arc_dropped = _not_a_decided_arc(ev, cell, kept, stems)
+    # ⚠️⚠️ RULE 8, APPLIED TO 2.25b (manager, before merge): discounting a
+    # stroke as the neighbour's or a decided arc's own ink may not by
+    # itself turn a marked note into an unmarked one. Recorded here, before
+    # 2.18/2.18b touch `kept` further, and read again near the bottom of
+    # this function once flags are known -- a stemmed head that had SOME
+    # candidate stroke before this tier, has NONE after it, and these two
+    # rules (not an empty page) are why, is the population that guard
+    # covers; the SAME test 2.18b's own `beyond_stem_kept_no_other_mark`
+    # runs for a different cause.
+    discount_removed_all_marks = (bool(before_2_25b) and not kept
+                                  and bool(neighbour_dropped or arc_dropped))
     # ⚠️ ROADMAP 2.18: only strokes on the side this head's OWN stem points
     # to can be its beams (`_on_stem_side`). No own stem direction -> no side
     # -> every stroke stays, exactly as before.
@@ -1133,7 +1387,6 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
     # (`_beyond_own_stem`) and the flag attachment; the beam join itself
     # stays at overlap (`_stem_joined`).
     tol = _join_tolerance(ev, cell)
-    own_stems = _stems_on(head_box, stems) if head_box is not None else []
     kept_all = kept
     kept, beyond = _beyond_own_stem(kept, stems, own_stems, side, tol)
     joined, attached = _stem_joined(kept, stems, head_box)
@@ -1222,8 +1475,12 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
     shared = {"head": str(head), "beam_evidence": beam_evidence,
               "cv_beams": len(cv), "yolo_beams": len(yolo),
               "yolo_kept": (len(kept) + len(far_side) + len(beyond)
-                           + len(ledger_dropped) - len(cv)),
+                           + len(ledger_dropped) + len(neighbour_dropped)
+                           + len(arc_dropped)
+                           - len(cv)),
               "beams_ledger_line": len(ledger_dropped),
+              "beams_neighbour_staff": len(neighbour_dropped),
+              "beams_decided_arc": len(arc_dropped),
               "beam_side": side, "beams_far_side": len(far_side),
               "beams_beyond_stem": len(beyond),
               "beyond_stem_kept_no_other_mark": beyond_guarded,
@@ -1282,6 +1539,33 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
                 support=2.0 if level == certain else 1.0))
         return Ruling.narrow(cands, "beams_ambiguous", used=tuple(used),
                              **shared)
+
+    # ⚠️⚠️ ROADMAP 2.25b, RULE 8 (manager, before merge). Reached only where
+    # this head has a STEM (a rest or an unstemmed head has no beam to lose)
+    # and `discount_removed_all_marks` fired above: the neighbour-staff or
+    # decided-arc connection discounted every candidate stroke this head
+    # had, and nothing else (no flag) stands over it. Deciding the head
+    # value outright there would convert *the ink we discounted might have
+    # been a real beam* into a silent quarter -- rule 8's own words. NARROW
+    # between the head value and ONE beam level instead, exactly the
+    # `flag_ink_unread` shape below: never straight to a specific count,
+    # because the discount says nothing about HOW MANY levels the ink
+    # would have been.
+    if (discount_removed_all_marks and own_stems and beam_evidence
+            == "none_over_this_note" and not flag_levels):
+        cands = []
+        for level in (0, 1):
+            b = base / (2 ** level) if level else base
+            t, add = b, b
+            for _ in range(n_dots):
+                add /= 2.0
+                t += add
+            cands.append(Candidate(
+                value={"beats": _scale(t, ratio, ev), "written": t,
+                       "dots": n_dots, "beam_levels": level},
+                support=2.0 if level == 1 else 1.0))
+        return Ruling.narrow(cands, "beam_discounted_uncertain",
+                             used=tuple(used), **shared)
 
     # ⚠️⚠️ ROADMAP 2.18c, RULE 8. Reached only where NOTHING over this head
     # was read as a beam or a flag (`beam_evidence == "none_over_this_note"`,
