@@ -388,3 +388,14 @@ Format: `YYYY-MM-DD · who · the decision · because · (pointer)`
   after the ownership wiring; (5) grace notes and fingerings inherit their
   target note's decided owner TOGETHER with the `dot_role` fix; (6) octave
   brackets occur both above (8va) and below (8vb) the staff
+- 2026-09-29 · Sean, answering the voice-split question
+  (`benchmarks/omr-voice-split-2026-09/QUESTION.md`, 8 crops) · **All 8 crops
+  are ONE voice.** The convention: (1) notes on the SAME beat with stems in
+  different directions are ALWAYS two voices; (2) two voices can also be NOT
+  lined up — a human knows them because each line on its own has a FULL
+  measure of durations and the two are spaced apart on the staff, one above
+  and one below; (3) a line whose durations add up to one measure as a single
+  line is one voice (*"those crops would obviously be 1 voice because the
+  measure math adds up to 1 measure"*) · the bar sum here is Sean's stated
+  witness for VOICE COUNT, not a meter check — where neither one line nor two
+  full, vertically separated lines add up, the voicing abstains (rule 8)
