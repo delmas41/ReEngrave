@@ -1,0 +1,79 @@
+{
+  "roadmap_item": "2.24",
+  "record": "benchmarks/omr-bar-sum-holdout-2026-09/out/r224/brahms-p1.record.json (fresh gather, pdf idx 1, this tree, --no-surya)",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf (machine-local, not under this worktree)",
+  "dpi": 600,
+  "crops": [
+    {
+      "n": "dot24-01",
+      "file": "dot24-01.png",
+      "subject": "glyph/1/0/2/5/18",
+      "staff": "staff/1/0/2",
+      "title": "#01 cell 1/0/2/5 (m.6 P3) -- dot glyph 18, DECIDED augmentation",
+      "question": "Paired to the InSpace head above (right of + level with it). Control: this is the window working.",
+      "frame_contrast": 154.99,
+      "VERDICT_none_yet": null
+    },
+    {
+      "n": "dot24-02",
+      "file": "dot24-02.png",
+      "subject": "glyph/1/0/2/5/31",
+      "staff": "staff/1/0/2",
+      "title": "#02 SAME cell -- dot glyph 31, ABSTAINED dot_role_ambiguous",
+      "question": "Q: is this an augmentation dot for the tied OnLine head above it, pushed low by the tie -- or is it the tie's own ink, misboxed as a dot?",
+      "frame_contrast": 154.99,
+      "VERDICT_none_yet": null
+    },
+    {
+      "n": "dot24-03",
+      "file": "dot24-03.png",
+      "subject": "glyph/1/0/10/3/32",
+      "staff": "staff/1/0/10",
+      "title": "#03 cell 1/0/10/3 (m.4 P11) -- dot glyph 32, ABSTAINED",
+      "question": "This sits just right of the direction word 'espr.' (arco below it), not beside any notehead -- the abbreviation's own period, boxed augmentationDot.",
+      "frame_contrast": 212.23,
+      "VERDICT_none_yet": null
+    },
+    {
+      "n": "dot24-04",
+      "file": "dot24-04.png",
+      "subject": "glyph/1/0/11/3/26",
+      "staff": "staff/1/0/11",
+      "title": "#04 cell 1/0/11/3 (m.4 P12) -- dot glyph 26, ABSTAINED, SAME pattern",
+      "question": "Second instance of #03's pattern one staff down -- the SAME 'espr.' label's period, systemic rather than one-off.",
+      "frame_contrast": 213.27,
+      "VERDICT_none_yet": null
+    },
+    {
+      "n": "dot24-05",
+      "file": "dot24-05.png",
+      "subject": "glyph/1/1/12/4/4",
+      "staff": "staff/1/1/12",
+      "title": "#05 cell 1/1/12/4 (m.12 P14) -- NO augmentationDot row anywhere in this cell",
+      "question": "classify_held_mvt_2_22.py names 'D' (add one dot) for this bar's 0.5q shortfall; the only refused glyph here is this ledgered notehead, refused not_a_notehead:too_narrow, with no computed duration -- D is a numeric coincidence, not a dot.",
+      "frame_contrast": 71.03,
+      "VERDICT_none_yet": null
+    },
+    {
+      "n": "dot24-06",
+      "file": "dot24-06.png",
+      "subject": "cell/1/0/3/3",
+      "staff": "staff/1/0/3",
+      "title": "#06 cell 1/0/3/3 (m.4 P4) -- NO augmentationDot row anywhere in this cell",
+      "question": "Another 'D'-named bar with zero dot ink gathered anywhere in it -- same coincidence as #05, different refusal family (duration_narrowed / not_a_notehead:too_narrow, both empty of candidates).",
+      "frame_contrast": 201.13,
+      "VERDICT_none_yet": null
+    },
+    {
+      "n": "dot24-07",
+      "file": "dot24-07.png",
+      "subject": "glyph/1/1/11/6/5",
+      "staff": "staff/1/1/11",
+      "title": "#07 cell 1/1/11/6 (m.14 P13) -- dot glyph 5, DECIDED augmentation (well-evidenced)",
+      "question": "classify's tied minimal set ('MDF') offers removing THIS decided dot as one way to hit the target sum; the companion voice's own head-fill (F) is the more likely real fix. Removing a DECIDED dot is not a repair.",
+      "frame_contrast": 67.86,
+      "VERDICT_none_yet": null
+    }
+  ],
+  "refused": []
+}
