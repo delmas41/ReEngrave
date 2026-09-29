@@ -71,6 +71,56 @@ _HEAD_BEATS = {
 DOT_ABOVE_NOTE_MAX_SPACES = 0.75
 DOT_BELOW_NOTE_MAX_SPACES = 0.25
 
+#: ROADMAP 2.23 -- `Q.NOTEHEAD_INK`'s `center` window must read at or below
+#: this to admit "hollow". Measured on the engraved fixture's own truth
+#: (`benchmarks/omr-head-fill-2026-09/FINDINGS.md` §1, 372 heads via the
+#: detector's own `noteheadHalf`/`noteheadBlack`/`noteheadWhole` class,
+#: which agrees with the truth at F1 0.951 on this fixture): every
+#: confirmed BLACK head reads `center == 1.0` (532/532); every confirmed
+#: HOLLOW HALF head reads `center <= 0.4486` (206/206) -- a clean gap with
+#: no overlap. `0.5` sits inside it with margin either way.
+HEAD_FILL_HOLLOW_CENTER_MAX = 0.5
+
+#: ROADMAP 2.23 -- the `ring` window must clear `center` by at least this
+#: much (same source, same 372 heads): every confirmed HOLLOW HALF head
+#: clears by >= 0.1294; every confirmed BLACK head's `ring` reads BELOW its
+#: own `center` (gap negative, since a filled head is dense everywhere).
+#: A head whose ring and centre read close together is not this rule's
+#: population either way -- DECLINED, not defaulted.
+#:
+#: ⚠️ KNOWN GAP, NOT A DEFECT OF THIS THRESHOLD: confirmed WHOLE heads on
+#: the same fixture also read `center == 1.0` (6/6, n small) -- a wide,
+#: short box's 30%-shrunk interior lands back on the ellipse's own ink
+#: rather than its hole. This test therefore CANNOT separate a genuine
+#: WHOLE head from BLACK by ink alone; it catches the HALF-read-as-BLACK
+#: population (which is what §17b's crops show) and abstains on the rest,
+#: never guessing (rule 6).
+HEAD_FILL_HOLLOW_RING_GAP_MIN = 0.1
+
+
+def _ink_reads_decisively_hollow(ink_detail: Dict[str, Any]) -> bool:
+    """`Q.NOTEHEAD_INK.detail` says the ink disagrees with a BLACK class --
+    ROADMAP 2.23. Either raster (`ink_raw`, off the UNERASED canonical
+    image; `ink_net`, off the staff-erased one) may carry the reading; a
+    real head is witnessed by whichever raster still shows it (the same
+    two-raster design `gather_notehead_ink`'s own docstring states), so
+    ONE of them reading decisively hollow is enough -- this function does
+    not require both to agree, only that at least one is decisive and
+    neither one's own `center`/`ring` pair is missing where it reads.
+    """
+    for key in ("ink_raw", "ink_net"):
+        reading = ink_detail.get(key)
+        if not isinstance(reading, dict):
+            continue
+        windows = reading.get("windows") or {}
+        center, ring = windows.get("center"), windows.get("ring")
+        if center is None or ring is None:
+            continue
+        if (center <= HEAD_FILL_HOLLOW_CENTER_MAX
+                and (ring - center) >= HEAD_FILL_HOLLOW_RING_GAP_MIN):
+            return True
+    return False
+
 
 def _kept_beams(ev: Evidence, cell):
     """CV strokes, plus the YOLO boxes no CV stroke already explains.
@@ -908,7 +958,7 @@ def _stem_tip_flag_ink(ev: Evidence, cell, own_stems, side: Optional[str]
     composed_from=(Q.BEAM_STROKE, Q.FLAG, Q.AUG_DOT, Q.DOT_ROLE,
                    Q.NOTEHEAD_CLASS, Q.STEM, Q.REST, Q.STAFF_LINES,
                    Q.STAFF_SPACING, Q.FLAG_IS_NOT_A_FLAG, Q.STEM_DIRECTION,
-                   Q.STEM_TIP_INK),
+                   Q.STEM_TIP_INK, Q.NOTEHEAD_INK),
     scope=Kind.GLYPH,
     # ⚠️ `Q.STEM_DIRECTION` JOINED `composed_from` AT ROADMAP 2.18. Under
     # 2.12e it was a `wants` only -- a flag's direction does not touch its
@@ -921,12 +971,17 @@ def _stem_tip_flag_ink(ev: Evidence, cell, own_stems, side: Optional[str]
     # its own stem's tip reads flag-shaped ink the detector never boxed
     # (`_stem_tip_flag_ink`), so the OUTCOME, not only the value, depends on
     # it.
+    # ⚠️ `Q.NOTEHEAD_INK` JOINS IT AT ROADMAP 2.23, same reason as
+    # `Q.STEM_TIP_INK`: a head that would otherwise DECIDE its head value
+    # NARROWS instead where the ink under its OWN box reads decisively
+    # hollow against the detector's BLACK class (`_ink_reads_decisively_
+    # hollow`).
     wants=(Q.BEAM_STROKE, Q.FLAG, Q.AUG_DOT, Q.DOT_ROLE, Q.NOTEHEAD_CLASS,
            Q.STEM, Q.TUPLET_RATIO, Q.GLYPH_BOX, Q.REST, Q.CELL_STAFF_SPACE,
            Q.STAFF_LINES, Q.STAFF_SPACING, Q.STEM_DIRECTION,
-           Q.FLAG_IS_NOT_A_FLAG, Q.STEM_TIP_INK),
+           Q.FLAG_IS_NOT_A_FLAG, Q.STEM_TIP_INK, Q.NOTEHEAD_INK),
     reasons=("head_and_marks", "beams_ambiguous", "flags_disagree",
-             "flag_ink_unread", "no_notehead",
+             "flag_ink_unread", "head_fill_from_ink", "no_notehead",
              "unknown_head", "rest_class", "unreadable_rest",
              "rest_slot_contradicts_class", "rest_stands_where_no_rest_hangs"),
     mode=Mode.ADDITIVE,
@@ -1190,6 +1245,67 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
                 support=2.0 if level == 1 else 1.0))
         return Ruling.narrow(cands, "flag_ink_unread", used=tuple(used),
                              **shared)
+
+    # ⚠️⚠️ ROADMAP 2.23. CONVENTION ASSUMED / WHAT WOULD FALSIFY IT / NOT
+    # CONFIRMED (nobody has been asked, CLAUDE.md rule 3): a hollow
+    # (half/whole) notehead's own interior stays near-empty even where its
+    # BORDER merges with neighbouring ink on a MERGING plate (CLAUDE.md
+    # §10), so `Q.NOTEHEAD_INK`'s `center` window stays decisively lighter
+    # than its `ring` window; a genuinely filled BLACK head shows the
+    # opposite. It would be falsified by a Sean-adjudicated crop where a
+    # confirmed BLACK head reads this way, or a confirmed HOLLOW head does
+    # not (`benchmarks/omr-head-fill-2026-09/FINDINGS.md`).
+    #
+    # Reached only where NOTHING else already narrowed or added a mark to
+    # this note (no flags, no ambiguous beams, no stem-tip flag ink) and the
+    # detector's own class says BLACK (a hollow head never carries a beam
+    # or a flag, so this is exactly the population `beam_evidence ==
+    # "none_over_this_note"` names). `benchmarks/omr-bar-sum-holdout-2026-09/
+    # FINDINGS.md` §17b: on Litolff 1/i this is the single biggest minimal-
+    # fix class over the whole movement's held bars (`F`, 300 bars, 405
+    # released as the sole fix).
+    #
+    # ⚠️ NEVER FLIPPED OUTRIGHT (rule 6: connect, never guess). Where the
+    # ink is decisive, NARROW between the head as the detector read it and
+    # BOTH hollow readings (half, whole) -- `reconcile_duration` (2.19,
+    # 2.22) is the only place that picks among them, and only where exactly
+    # one candidate lands the bar's own arithmetic exactly. Where the ink is
+    # not decisive, this note is unchanged -- a fallback never converts
+    # "cannot tell" into an answer (rule 8).
+    if beam_evidence == "none_over_this_note" and not flag_levels \
+            and not tip_ink and base == _HEAD_BEATS["noteheadBlack"]:
+        fill_row = None
+        ink_rows = ev.rows(Q.NOTEHEAD_INK)
+        if ink_rows:
+            fill_row = ink_rows[-1]
+        if fill_row is not None:
+            ink_detail = fill_row.detail or {}
+            if _ink_reads_decisively_hollow(ink_detail):
+                used.append(fill_row.id)
+                cands = []
+                for fill_base, name, support in (
+                        (base, "black", 1.0),
+                        (2.0, "half", 2.0),
+                        (4.0, "whole", 1.0)):
+                    t, add = fill_base, fill_base
+                    for _ in range(n_dots):
+                        add /= 2.0
+                        t += add
+                    cands.append(Candidate(
+                        value={"beats": _scale(t, ratio, ev), "written": t,
+                              "dots": n_dots, "beam_levels": 0,
+                              "head_fill": name},
+                        # ⚠️ SUPPORT, NOT PROBABILITY, same convention as
+                        # every other branch above: `half` outranks the
+                        # always-available detector reading because it is
+                        # the single-step misread §17b's own crops show
+                        # (a lone quarter-valued chord in a 2/4 bar); `whole`
+                        # is the rarer two-step misread and ranks with the
+                        # detector's own reading, not above it.
+                        support=support))
+                return Ruling.narrow(cands, "head_fill_from_ink",
+                                     used=tuple(used), **shared,
+                                     notehead_ink=ink_detail)
 
     return Ruling(value={"beats": scaled, "written": total,
                          "dots": n_dots, "beam_levels": levels},

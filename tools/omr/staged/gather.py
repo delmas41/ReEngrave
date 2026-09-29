@@ -2857,6 +2857,163 @@ def gather_ledger_ink(log: Log, cells: Sequence[Any],
                         ink_background_windows=m["background_windows"])
 
 
+#: The interior of a notehead's OWN box is shrunk by this fraction on every
+#: side to make the `center` window. Dense for a filled BLACK head; near-
+#: empty for a HOLLOW one (half/whole) by construction — which is exactly
+#: why `center` alone must never gate a refusal (`ring` is the hollow
+#: head's own witness). ROADMAP 2.23 (ported, GATHER half, from
+#: `claude/no-ink-head-2.6h`, commit `a8394476`).
+NOTEHEAD_INK_CENTER_SHRINK = 0.30
+
+
+def notehead_ink_under(img: Any, box: Tuple[float, float, float, float]
+                       ) -> Optional[Dict[str, Any]]:
+    """The ink fraction inside a notehead's OWN detected box, two ways.
+    ROADMAP 2.23 (ported, GATHER half only, from `claude/no-ink-head-2.6h`).
+
+    `img` is a cell raster with 0 = ink; `box` the glyph's own
+    `(x, y, w, h)` in THAT raster's frame (canonical, the exact box the
+    detector drew). ⚠️ NO STAFF-SPACE UNIT IS NEEDED — unlike
+    `ledger_ink_under`, which places OFFSET windows in staff spaces around a
+    rung, every window here is a FRACTION of the box's own area, scale-free
+    by construction. Returns `None` off the raster or a degenerate box —
+    declined, never defaulted.
+
+      `center`   ink fraction in the box's own interior, shrunk
+                 `NOTEHEAD_INK_CENTER_SHRINK` on every side — dense for a
+                 filled (BLACK) head, near-empty for a HOLLOW one.
+      `ring`     ink fraction in the band BETWEEN the interior and the full
+                 box — a hollow head's own border, present on both kinds,
+                 and this rule's positive control for one.
+      `best`     the larger of the two — the value GATHER files.
+
+    ⚠️ NOT A THIRD "densest row" WINDOW, DELIBERATELY — see `a8394476`'s
+    own docstring (this function's source): a single row's own ink fraction
+    reads FULL for any thin mark spanning the box's width, whether it is a
+    hollow head's cap or one page-wide staff/ledger line — the two are the
+    SAME single-row reading, and `ring` already keeps the hollow-head
+    positive control without that confusion.
+
+    A box with no ink AT ALL under it reads `best == 0.0` on every window —
+    a box standing on blank paper is exactly this record's claim, never a
+    lower number fitted to one document after the fact.
+    """
+    import numpy as np
+    if img is None or getattr(img, "ndim", 0) != 2:
+        return None
+    ink = (img == 0)
+    H, W = ink.shape
+    x, y, w, h = (float(v) for v in box)
+    x0 = max(0, int(round(x)))
+    y0 = max(0, int(round(y)))
+    x1 = min(W, int(round(x + w)))
+    y1 = min(H, int(round(y + h)))
+    if x1 <= x0 or y1 <= y0:
+        return None
+    region = ink[y0:y1, x0:x1]
+    if region.size == 0:
+        return None
+
+    def frac(arr) -> Optional[float]:
+        return float(arr.sum()) / float(arr.size) if arr.size else None
+
+    dx = int(round(NOTEHEAD_INK_CENTER_SHRINK * (x1 - x0)))
+    dy = int(round(NOTEHEAD_INK_CENTER_SHRINK * (y1 - y0)))
+    cx0, cx1 = x0 + dx, x1 - dx
+    cy0, cy1 = y0 + dy, y1 - dy
+    center: Optional[float] = None
+    ring: Optional[float] = None
+    if cx1 > cx0 and cy1 > cy0:
+        core = ink[cy0:cy1, cx0:cx1]
+        center = frac(core)
+        core_area = core.size
+        total_area = region.size
+        ring_area = total_area - core_area
+        if ring_area > 0:
+            ring = float(int(region.sum()) - int(core.sum())) / float(ring_area)
+    # ⚠️ TOO SHORT/NARROW FOR AN INTERIOR — the box's own dimension is under
+    # the shrink, so `center` and `ring` would degenerate to the same
+    # pixels: both stay `None` rather than faked.
+    windows = {"center": center, "ring": ring}
+    measured = {k: v for k, v in windows.items() if v is not None}
+    if not measured:
+        return None
+    best_key = max(measured, key=lambda k: measured[k])
+    return {
+        "best": round(measured[best_key], 4),
+        "best_window": best_key,
+        "windows": {k: (None if v is None else round(v, 4))
+                    for k, v in windows.items()},
+    }
+
+
+def gather_notehead_ink(log: Log, cells: Sequence[Any],
+                        local: Dict[int, Tuple[int, int]],
+                        detections: Dict[str, List[Any]]) -> None:
+    """`Q.NOTEHEAD_INK` on every notehead-classed glyph. ROADMAP 2.23
+    (ported, GATHER half only, from `claude/no-ink-head-2.6h`, `a8394476`).
+
+    ⚠️ THE WITNESS FOR THE HEAD'S OWN FILL, NOT ONLY WHETHER IT EXISTS.
+    `a8394476` built this measurement to ask "is there ink at all under this
+    box" (`no_ink_under_box`, refused as dead-at-zero and NOT ported here).
+    `benchmarks/omr-bar-sum-holdout-2026-09/FINDINGS.md` §17b asks a
+    different question of the SAME measurement: on Litolff 1/i the single
+    biggest minimal-fix class over the whole movement's held bars is `F`
+    (300 bars) — a hollow (half/whole) notehead read as BLACK on this
+    MERGING plate (CLAUDE.md §10). `rhythm.adjudicate_duration` reads this
+    row to NARROW a head's fill where the ink disagrees decisively with the
+    detector's class.
+
+    ⚠️ BOTH RASTERS, ON PURPOSE, AND NEITHER ONE ALONE IS SAFE:
+
+      - `cell.binary` — the UNERASED canonical raster (0 = ink, the SAME
+        side-channel `staff_line_removal.remove_staff_lines_from_cell`
+        reuses rather than re-binarizing) — is read because a REAL head
+        standing ON a staff line must not read as blank because the line
+        was erased.
+      - `cell.image_no_staff` — the ERASED raster `gather_ink`/
+        `gather_ledger_ink` already read — is the CHECK: staff-line pixels
+        ALONE, crossing an otherwise blank box, must not read as ink.
+
+    `detail["ink_raw"]`/`detail["ink_net"]` carry each `notehead_ink_under`
+    reading whole, never collapsed to one number.
+
+    ⚠️ NO STAFF UNIT NEEDED, so this reader never abstains
+    `no_staff_geometry` — only `no_mask` where BOTH rasters are missing.
+    """
+    for c in cells:
+        key = local.get(c.staff_index)
+        if key is None:
+            continue
+        sub = R.cell(c.page_index, key[0], key[1], c.measure_index)
+        dets = detections.get(sub.to_key(), ())
+        idx = [gi for gi, d in enumerate(dets)
+               if str(d.smufl_name).lower().startswith("notehead")]
+        if not idx:
+            continue
+        frame = frame_cell(c.measure_index)
+        raw_img = getattr(c, "binary", None)
+        net_img = getattr(c, "image_no_staff", None)
+        for gi in idx:
+            g = R.glyph(c.page_index, key[0], key[1], c.measure_index, gi)
+            d = dets[gi]
+            box = (d.x_canonical, d.y_canonical,
+                  d.width_canonical, d.height_canonical)
+            m_raw = notehead_ink_under(raw_img, box) \
+                if raw_img is not None else None
+            m_net = notehead_ink_under(net_img, box) \
+                if net_img is not None else None
+            if m_raw is None and m_net is None:
+                log.abstain(g, Q.NOTEHEAD_INK, reader=READERS.CV_NOTEHEAD_INK,
+                           frame=frame, reason=ABSTAIN.NO_MASK,
+                           note="cell carries no binary/image_no_staff")
+                continue
+            value = max(m["best"] for m in (m_raw, m_net) if m is not None)
+            log.observe(g, Q.NOTEHEAD_INK, round(value, 4),
+                       reader=READERS.CV_NOTEHEAD_INK, frame=frame,
+                       ink_raw=m_raw, ink_net=m_net)
+
+
 def gather_detector_beams(log: Log, detections: Dict[str, List[Any]]) -> None:
     """The DETECTOR's beam boxes, kept as rows beside the CV strokes.
 
@@ -5132,6 +5289,12 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
         # erased raster (and says so: `READERS.CV_INK`). The second witness
         # for Sean's `[C91]` -- see the function.
         gather_ledger_ink(log, cells, local, detections)
+        # ⚠️ ROADMAP 2.23 (ported, GATHER half, from `claude/no-ink-head-
+        # 2.6h`), BESIDE `gather_ledger_ink` for the same reason: the
+        # sibling witness for the notehead's OWN box rather than its rung,
+        # reading `cell.image_no_staff` in common with it and `cell.binary`
+        # besides.
+        gather_notehead_ink(log, cells, local, detections)
         gather_detector_beams(log, detections)
         gather_clef(log, cells, local, detections)
         gather_clef_locator(log, pws, cells, local, detections)

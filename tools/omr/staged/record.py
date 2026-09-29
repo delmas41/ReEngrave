@@ -626,6 +626,36 @@ class Q(_Vocab):
     #: their rungs. A MEASUREMENT, never a verdict: it names nothing.
     LEDGER_INK_UNDER = "ledger_ink_under"
 
+    #: ⚠️⚠️ ROADMAP 2.23 — A HEAD'S FILL (HOLLOW VS BLACK), READ FROM THE
+    #: INK, NOT ONLY FROM THE DETECTOR'S CLASS. One row per notehead-classed
+    #: glyph: the ink fraction INSIDE the detector's OWN box, two ways --
+    #: `center` (the interior, shrunk 30% every side: dense for a filled
+    #: BLACK head, near-empty for a HOLLOW one) and `ring` (the band between
+    #: the interior and the full box -- a hollow head's own border, present
+    #: on both kinds). `value` is the best of the two; `detail` carries
+    #: `ink_raw` (off `cell.binary`, the UNERASED canonical raster) and
+    #: `ink_net` (off `cell.image_no_staff`) each as its own `{best,
+    #: best_window, windows}`, never one number, because NEITHER raster
+    #: alone is safe -- a head standing ON a staff line must not read as
+    #: blank because the line was erased; staff-line pixels ALONE crossing
+    #: an otherwise blank box must not read as ink either. No staff-space
+    #: unit is needed -- every window is a FRACTION of the box's own area,
+    #: scale-free by construction.
+    #:
+    #: ⚠️ WHY IT EXISTS: `benchmarks/omr-bar-sum-holdout-2026-09/FINDINGS.md`
+    #: §17b -- on Litolff 1/i the single biggest minimal-fix class over the
+    #: whole movement's held bars is `F` (300 bars, 405 released as the sole
+    #: fix): "one note's head fill or stem misread", 278 of them a lone
+    #: quarter-valued chord in a 2/4 bar -- hollow heads merged black on
+    #: this MERGING plate (CLAUDE.md §10). This quantity is the GATHER
+    #: measurement `rhythm.adjudicate_duration` reads to NARROW a head's
+    #: fill where the ink disagrees with the detector's class, ported
+    #: (GATHER half only) from `claude/no-ink-head-2.6h` (`a8394476`) --
+    #: its own dead-at-zero refusal (`notehead_precision._no_ink_under_box`)
+    #: is NOT part of this port. A MEASUREMENT, never a verdict: it names
+    #: nothing.
+    NOTEHEAD_INK = "notehead_ink"
+
     # ── EVERY FAMILY'S OWN POSITION (measurements, scoreless) ───────────────
     #
     # ⚠️⚠️ ELEVEN FAMILIES HAD NO POSITION FACT AT ALL, and `capture.py`'s
@@ -1662,6 +1692,10 @@ CLAIMS: "dict[str, str]" = {
     #: erased raster -- a ruler reading, same reason as `LEDGER_INK_UNDER`;
     #: it says whether flag-shaped ink stands there, never that a flag does.
     "STEM_TIP_INK": CLAIM.MEASUREMENT,
+    #: ROADMAP 2.23: an ink fraction inside a notehead's OWN detected box, on
+    #: two rasters -- a ruler reading, same reason as `LEDGER_INK_UNDER`; it
+    #: says whether dark pixels stand there, never that the head is filled.
+    "NOTEHEAD_INK": CLAIM.MEASUREMENT,
 
     # ── relations between things already located ───────────────────────────
     #: ⚠️ A JUDGEMENT CALL, NAMED — MEASUREMENT and not COVERAGE, though
@@ -1956,6 +1990,16 @@ class READERS(_Vocab):
     #: because it asks a different question (is there flag-shaped ink AT
     #: THIS STEM'S TIP) with a different test from either.
     CV_STEM_TIP = "cv_stem_tip"              # gather: flag ink at a stem tip
+    #: `gather.gather_notehead_ink` -- ROADMAP 2.23 (ported, GATHER half
+    #: only, from `claude/no-ink-head-2.6h`). Reads TWO rasters: `cell.
+    #: image_no_staff` (shared with `CV_INK`/`CV_LEDGER`/`CV_STEM_TIP`) AND
+    #: `cell.binary` (the UNERASED canonical raster, which none of them
+    #: reads at all) -- so a row here is not fully one crop wearing another
+    #: name, and not fully an independent witness either. Its own reader
+    #: name because it asks a THIRD question (is there ink inside THIS
+    #: notehead's OWN box, on either raster) with a test neither of the
+    #: other three windowed-density readers runs.
+    CV_NOTEHEAD_INK = "cv_notehead_ink"      # gather: ink under a notehead box
     CV_HEADER = "cv_header"                  # header_ink
     TEMPLATE = "template"                    # symbol_library NCC matching
     GEOMETRY = "geometry"                    # staff_detector / measure_extractor

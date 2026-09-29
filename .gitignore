@@ -252,3 +252,9 @@ benchmarks/omr-family-refusals-2026-09/out/ledger-rows-*.json
 benchmarks/omr-family-refusals-2026-09/out/sean-viola-p3-after*/*.record.json
 benchmarks/omr-family-refusals-2026-09/out/sean-viola-p3-after*/feedback.json
 benchmarks/omr-family-refusals-2026-09/out/sean-viola-p3-after*/*.musicxml
+
+# ROADMAP 2.23 (`benchmarks/omr-head-fill-2026-09/`): the two re-gathered
+# records (engraved control, Litolff p6) are multi-MB intermediate GATHER
+# dumps, same reason as the clef-geometry/no-pitch entries above -- the
+# FINDINGS.md and the crops under out/print/ are the durable record.
+benchmarks/omr-head-fill-2026-09/out/records/

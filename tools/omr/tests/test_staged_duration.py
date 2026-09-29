@@ -499,6 +499,23 @@ def _stem_tip_ink(log, *, stem_row_id, end, found=True):
                        stem_row_id=stem_row_id, end=end)
 
 
+def _notehead_ink(log, g, *, center, ring, raster="ink_raw", best=None):
+    """One `Q.NOTEHEAD_INK` row -- ROADMAP 2.23. The real row shape:
+    `gather.gather_notehead_ink` files `detail["ink_raw"]`/`detail
+    ["ink_net"]`, each its own `{best, best_window, windows}` from
+    `gather.notehead_ink_under`. `raster` picks which of the two this test
+    carries; the other stays absent, exactly as a real cell missing one
+    raster would file it."""
+    reading = {"best": center if best is None else best,
+              "best_window": "center" if center >= ring else "ring",
+              "windows": {"center": center, "ring": ring}}
+    detail = {raster: reading}
+    value = max(center, ring)
+    return log.observe(g, Q.NOTEHEAD_INK, round(value, 4),
+                       reader=READERS.CV_NOTEHEAD_INK, frame="cell:0",
+                       **detail)
+
+
 class TestANoteIsJoinedToItsBeamByItsSTEM(unittest.TestCase):
     """⚠️⚠️ THE FAULT: a beam stroke runs from the FIRST stem it joins to the
     LAST, and a stem stands at the SIDE of its notehead -- so the OUTER note
@@ -1136,6 +1153,145 @@ class TestAStemTipWithUnreadFlagInkNarrowsInsteadOfDeciding(unittest.TestCase):
         adjudicate.run(log)
         v = log.verdict(Q.DURATION, g)
         self.assertNotEqual(v.outcome, Outcome.DECIDED)
+
+
+class TestAHeadsFillIsReadFromTheInkNotOnlyTheClass(unittest.TestCase):
+    """ROADMAP 2.23. `benchmarks/omr-bar-sum-holdout-2026-09/FINDINGS.md`
+    §17b: on a MERGING plate a hollow (half/whole) notehead can read BLACK
+    to the detector -- the single biggest minimal-fix class over Litolff
+    1/i's held bars (`F`, 300 bars). `Q.NOTEHEAD_INK`'s `ring` window is a
+    hollow head's own witness even where `center` disagrees with the
+    detector's BLACK class; where it is DECISIVE, NARROW between the head
+    as the detector read it and both hollow readings -- never flip it
+    outright (rule 6), and never where nothing narrowed it already.
+    """
+
+    def _plain_black_head(self, log, gi=0):
+        """A stemless-for-this-test BLACK-classed head with no beam and no
+        flag anywhere in the cell -- `beam_evidence` reads `"reader_
+        declined"` with no `Q.BEAM_STROKE` row at all, but that is fine:
+        the head-fill branch's own guard is `beam_evidence ==
+        "none_over_this_note"`, so a decoy beam elsewhere in the cell (as
+        `TestAStemTipWithUnreadFlagInkNarrowsInsteadOfDeciding` uses) puts
+        the reader in the right state without touching this head."""
+        _beam(log, y=2, x0=400, x1=460)           # decoy: state READ, far away
+        g = R.glyph(0, 0, 0, 0, gi)
+        log.observe(g, Q.NOTEHEAD_CLASS, "noteheadBlack",
+                    reader=READERS.DETECTOR, frame="cell:0", score=0.9)
+        log.observe(g, Q.GLYPH_BOX, ("noteheadBlack", 135, 90, 20, 16),
+                    reader=READERS.DETECTOR, frame="cell:0", score=0.9)
+        return g
+
+    def test_a_BLACK_head_with_decisively_HOLLOW_ink_NARROWS(self):
+        log = Log()
+        g = self._plain_black_head(log)
+        _notehead_ink(log, g, center=0.1, ring=0.55)
+        adjudicate.run(log)
+        v = log.verdict(Q.DURATION, g)
+        self.assertEqual(v.outcome, Outcome.NARROWED)
+        self.assertEqual(v.reason, "head_fill_from_ink")
+        beats = sorted(c.value["beats"] for c in v.candidates)
+        self.assertEqual(beats, [1.0, 2.0, 4.0])
+        fills = {c.value["beats"]: c.value["head_fill"] for c in v.candidates}
+        self.assertEqual(fills, {1.0: "black", 2.0: "half", 4.0: "whole"})
+
+    def test_POSITIVE_CONTROL_a_dense_centre_still_DECIDES_black(self):
+        """⚠️ THE CONTROL: the identical head, but the ink agrees with the
+        class -- a filled centre, as every confirmed BLACK head measured on
+        the engraved fixture reads (`center == 1.0`, 532/532)."""
+        log = Log()
+        g = self._plain_black_head(log)
+        _notehead_ink(log, g, center=1.0, ring=0.75)
+        adjudicate.run(log)
+        v = log.verdict(Q.DURATION, g)
+        self.assertEqual(v.outcome, Outcome.DECIDED)
+        self.assertEqual(v.value["beats"], 1.0)
+        self.assertEqual(v.reason, "head_and_marks")
+
+    def test_NO_NOTEHEAD_INK_ROW_AT_ALL_is_UNCHANGED(self):
+        """An OLDER record with no `Q.NOTEHEAD_INK` on it (rule 8: absence
+        is never read as "hollow")."""
+        log = Log()
+        g = self._plain_black_head(log)
+        adjudicate.run(log)
+        v = log.verdict(Q.DURATION, g)
+        self.assertEqual(v.outcome, Outcome.DECIDED)
+        self.assertEqual(v.value["beats"], 1.0)
+
+    def test_AMBIGUOUS_ink_that_does_not_clear_the_gap_is_UNCHANGED(self):
+        """Neither the centre nor the ring is decisive -- DECLINED, not
+        defaulted either way."""
+        log = Log()
+        g = self._plain_black_head(log)
+        _notehead_ink(log, g, center=0.6, ring=0.65)
+        adjudicate.run(log)
+        v = log.verdict(Q.DURATION, g)
+        self.assertEqual(v.outcome, Outcome.DECIDED)
+        self.assertEqual(v.value["beats"], 1.0)
+
+    def test_a_HOLLOW_classed_head_is_NOT_this_rules_population(self):
+        """The gate is `base == noteheadBlack's beats` -- a head the
+        detector already called HALF or WHOLE has nothing to narrow
+        between; ink rows on it (however filed) change nothing here."""
+        log = Log()
+        _beam(log, y=2, x0=400, x1=460)
+        g = R.glyph(0, 0, 0, 0, 0)
+        log.observe(g, Q.NOTEHEAD_CLASS, "noteheadHalf",
+                    reader=READERS.DETECTOR, frame="cell:0", score=0.9)
+        log.observe(g, Q.GLYPH_BOX, ("noteheadHalf", 135, 90, 20, 16),
+                    reader=READERS.DETECTOR, frame="cell:0", score=0.9)
+        _notehead_ink(log, g, center=0.1, ring=0.55)
+        adjudicate.run(log)
+        v = log.verdict(Q.DURATION, g)
+        self.assertEqual(v.outcome, Outcome.DECIDED)
+        self.assertEqual(v.value["beats"], 2.0)
+
+    def test_it_NEVER_FIRES_where_stem_tip_ink_ALREADY_narrowed(self):
+        """⚠️ ORDER: `flag_ink_unread` is tried first, and where it fires
+        `tip_ink` is truthy, so the head-fill branch's own `not tip_ink`
+        guard keeps the two from stacking two narrowings on one note."""
+        log = Log()
+        g = self._plain_black_head(log)
+        s = _stem(log, x=135, y=38, h=60)
+        _stem_tip_ink(log, stem_row_id=s.id, end="top", found=True)
+        _notehead_ink(log, g, center=0.1, ring=0.55)
+        adjudicate.run(log)
+        v = log.verdict(Q.DURATION, g)
+        self.assertEqual(v.outcome, Outcome.NARROWED)
+        self.assertEqual(v.reason, "flag_ink_unread")
+
+    def test_it_NEVER_DECIDES_STRAIGHT_TO_HALF(self):
+        """⚠️⚠️ CLAUDE.md rule 6: connect, never guess. A decisive ring/
+        centre gap says the head is hollow, not which of half or whole --
+        the outcome must stay NARROWED, never collapse to one DECIDED
+        value by itself."""
+        log = Log()
+        g = self._plain_black_head(log)
+        _notehead_ink(log, g, center=0.1, ring=0.55)
+        adjudicate.run(log)
+        v = log.verdict(Q.DURATION, g)
+        self.assertNotEqual(v.outcome, Outcome.DECIDED)
+
+    def test_the_ink_row_is_in_the_BASIS(self):
+        log = Log()
+        g = self._plain_black_head(log)
+        row = _notehead_ink(log, g, center=0.1, ring=0.55)
+        adjudicate.run(log)
+        v = log.verdict(Q.DURATION, g)
+        self.assertIn(row.id, v.basis)
+
+    def test_a_hollow_reading_off_EITHER_raster_alone_is_enough(self):
+        """⚠️ Neither raster alone is required to agree -- `ink_net` (the
+        staff-erased raster) reading decisively hollow is enough even where
+        `ink_raw` was never filed at all, same convention as `gather_
+        notehead_ink`'s own two-raster design."""
+        log = Log()
+        g = self._plain_black_head(log)
+        _notehead_ink(log, g, center=0.1, ring=0.55, raster="ink_net")
+        adjudicate.run(log)
+        v = log.verdict(Q.DURATION, g)
+        self.assertEqual(v.outcome, Outcome.NARROWED)
+        self.assertEqual(v.reason, "head_fill_from_ink")
 
 
 class TestAMarkMustBeATTACHEDToItsNotehead(unittest.TestCase):
