@@ -1,0 +1,17 @@
+== brahms: held 156->144 of 169; released 12 newly held 0
+   notes 8 -> 8  rests 10 -> 10  measure_rests 11 -> 23  <note> 186 -> 186
+   refusals changed {'bar_does_not_add_up': (856, 844)}
+   released by what was set aside: {('not_a_rest:rest_is_a_duplicate_box',): 2, ('not_a_notehead:too_narrow',): 5, ('rest_duration_abstained',): 4, ('not_a_notehead:too_narrow', 'not_a_rest:rest_is_a_duplicate_box'): 1}
+== engraved: held 38->37 of 448; released 1 newly held 0
+   notes 323 -> 323  rests 81 -> 81  measure_rests 214 -> 215  <note> 658 -> 658
+   refusals changed {'bar_does_not_add_up': (47, 46)}
+    (1, 0, 5, 0) {'measure': 8, 'part': 'P6', 'meter_carried_in_file': False} [4.0] 2.0 [('rest', 4.0, ['restWhole'])] [('glyph/1/0/5/0/4', 'not_a_notehead:clipped_fragment', 'noteheadWholeOnLine')]
+   released by what was set aside: {('not_a_notehead:clipped_fragment',): 1}
+== litolffp1p4: held 300->270 of 1015; released 30 newly held 0
+   notes 984 -> 984  rests 125 -> 125  measure_rests 278 -> 308  <note> 1855 -> 1855
+   refusals changed {'bar_does_not_add_up': (794, 764)}
+   released by what was set aside: {('not_a_notehead:clipped_fragment',): 4, ('not_a_notehead:too_narrow',): 4, ('not_a_rest:rest_is_a_duplicate_box',): 5, ('not_a_notehead:too_narrow', 'owned_by_another_staff'): 1, ('owned_by_another_staff',): 8, ('not_a_notehead:belongs_to_a_nearer_staff',): 2, ('not_a_notehead:belongs_to_a_nearer_staff', 'owned_by_another_staff'): 1, ('not_a_notehead:clipped_fragment', 'owned_by_another_staff'): 1, ('duration_narrowed',): 1, ('not_a_notehead:belongs_to_a_nearer_staff', 'not_a_notehead:clipped_fragment'): 1, ('duration_narrowed', 'not_a_notehead:belongs_to_a_nearer_staff'): 2}
+== litolffp3: held 0->0 of 254; released 0 newly held 0
+   notes 341 -> 341  rests 131 -> 131  measure_rests None -> None  <note> 502 -> 502
+   refusals changed {}
+   released by what was set aside: {}
