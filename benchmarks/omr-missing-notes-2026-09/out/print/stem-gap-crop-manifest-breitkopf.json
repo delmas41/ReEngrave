@@ -1,0 +1,913 @@
+{
+  "label": "stem_gap_breitkopf",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf",
+  "dpi": 600,
+  "record": "/Users/seanjohnson/Desktop/ReEngrave/library/_shared-records/brahms1-breitkopf-mvt1-whole-20260928.record.json",
+  "provenance": {
+    "commit": "c19cbca7b7339d74e255a26b80e7fc3a385d428e",
+    "dirty": true,
+    "settings": {
+      "env_overrides": {
+        "OMR_DIRECTION_TEXT_SCAN_GATE": "1",
+        "OMR_SURYA_KEEP_ALIVE": "0"
+      },
+      "args": {
+        "against": null,
+        "conf": 0.25,
+        "dpi": 600,
+        "imgsz": null,
+        "ink_rows": false,
+        "no_roster": false,
+        "no_weight_routing": false,
+        "ocr": true,
+        "pages": "0-26",
+        "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf",
+        "route_weights": true,
+        "sheet": null,
+        "surya": true,
+        "weights": "auto",
+        "work_id": null
+      }
+    }
+  },
+  "tiles": [
+    {
+      "subject": "glyph/0/0/0/1/6",
+      "cause": "duration_narrowed:beams_ambiguous / stem_gap",
+      "gap_kind": "FAR (4.12 notehead widths)",
+      "page": 0,
+      "system": 0,
+      "staff": 0,
+      "cell": 1,
+      "detail": {
+        "head": "noteheadBlackInSpace",
+        "beam_evidence": "none_over_this_note",
+        "cv_beams": 0,
+        "yolo_beams": 2,
+        "yolo_kept": 2,
+        "stems_attached": 0,
+        "beams_by_stem": 0,
+        "flags_attached": 0,
+        "flag_levels": 0,
+        "dots_attached": 0,
+        "staff_space": 100.0,
+        "levels_certain": 0,
+        "levels_possible": 1
+      },
+      "min_dist_notehead_widths": 4.124,
+      "cell_stem_rows": [
+        {
+          "value": [
+            760,
+            324,
+            19,
+            254
+          ],
+          "x0": 760,
+          "x1": 779
+        },
+        {
+          "value": [
+            884,
+            479,
+            16,
+            449
+          ],
+          "x0": 884,
+          "x1": 900
+        }
+      ],
+      "bbox_page": [
+        2545.7625,
+        1550.315,
+        2586.075,
+        1586.7575
+      ],
+      "file": "stem_gap-breitkopf-0-0-0-1-6.png",
+      "VERDICT_none_yet": null
+    },
+    {
+      "subject": "glyph/0/0/0/1/15",
+      "cause": "duration_narrowed:beams_ambiguous / stem_gap",
+      "gap_kind": "FAR (4.14 notehead widths)",
+      "page": 0,
+      "system": 0,
+      "staff": 0,
+      "cell": 1,
+      "detail": {
+        "head": "noteheadBlackInSpace",
+        "beam_evidence": "none_over_this_note",
+        "cv_beams": 0,
+        "yolo_beams": 2,
+        "yolo_kept": 2,
+        "stems_attached": 0,
+        "beams_by_stem": 0,
+        "flags_attached": 0,
+        "flag_levels": 0,
+        "dots_attached": 0,
+        "staff_space": 100.0,
+        "levels_certain": 0,
+        "levels_possible": 1
+      },
+      "min_dist_notehead_widths": 4.14,
+      "cell_stem_rows": [
+        {
+          "value": [
+            760,
+            324,
+            19,
+            254
+          ],
+          "x0": 760,
+          "x1": 779
+        },
+        {
+          "value": [
+            884,
+            479,
+            16,
+            449
+          ],
+          "x0": 884,
+          "x1": 900
+        }
+      ],
+      "bbox_page": [
+        2546.4075,
+        1586.7575,
+        2586.72,
+        1617.395
+      ],
+      "file": "stem_gap-breitkopf-0-0-0-1-15.png",
+      "VERDICT_none_yet": null
+    },
+    {
+      "subject": "glyph/1/0/2/0/17",
+      "cause": "duration_narrowed:beams_ambiguous / stem_gap",
+      "gap_kind": "FAR (1.95 notehead widths)",
+      "page": 1,
+      "system": 0,
+      "staff": 2,
+      "cell": 0,
+      "detail": {
+        "head": "noteheadBlackInSpace",
+        "beam_evidence": "read",
+        "cv_beams": 4,
+        "yolo_beams": 10,
+        "yolo_kept": 0,
+        "stems_attached": 0,
+        "beams_by_stem": 0,
+        "flags_attached": 0,
+        "flag_levels": 0,
+        "dots_attached": 0,
+        "staff_space": 46.75,
+        "levels_certain": 2,
+        "levels_possible": 3
+      },
+      "min_dist_notehead_widths": 1.9485294117647058,
+      "cell_stem_rows": [
+        {
+          "value": [
+            1054,
+            91,
+            12,
+            265
+          ],
+          "x0": 1054,
+          "x1": 1066
+        },
+        {
+          "value": [
+            1221,
+            91,
+            12,
+            282
+          ],
+          "x0": 1221,
+          "x1": 1233
+        },
+        {
+          "value": [
+            1386,
+            91,
+            12,
+            295
+          ],
+          "x0": 1386,
+          "x1": 1398
+        },
+        {
+          "value": [
+            1496,
+            91,
+            9,
+            268
+          ],
+          "x0": 1496,
+          "x1": 1505
+        },
+        {
+          "value": [
+            1811,
+            109,
+            11,
+            274
+          ],
+          "x0": 1811,
+          "x1": 1822
+        },
+        {
+          "value": [
+            1933,
+            125,
+            12,
+            281
+          ],
+          "x0": 1933,
+          "x1": 1945
+        },
+        {
+          "value": [
+            264,
+            174,
+            8,
+            134
+          ],
+          "x0": 264,
+          "x1": 272
+        },
+        {
+          "value": [
+            150,
+            249,
+            15,
+            176
+          ],
+          "x0": 150,
+          "x1": 165
+        }
+      ],
+      "bbox_page": [
+        1565.81787109375,
+        1123.1044921875,
+        1605.82763671875,
+        1155.46533203125
+      ],
+      "file": "stem_gap-breitkopf-1-0-2-0-17.png",
+      "VERDICT_none_yet": null
+    },
+    {
+      "subject": "glyph/1/0/2/0/18",
+      "cause": "duration_narrowed:beams_ambiguous / stem_gap",
+      "gap_kind": "FAR (1.93 notehead widths)",
+      "page": 1,
+      "system": 0,
+      "staff": 2,
+      "cell": 0,
+      "detail": {
+        "head": "noteheadBlackOnLine",
+        "beam_evidence": "read",
+        "cv_beams": 4,
+        "yolo_beams": 10,
+        "yolo_kept": 0,
+        "stems_attached": 0,
+        "beams_by_stem": 0,
+        "flags_attached": 0,
+        "flag_levels": 0,
+        "dots_attached": 0,
+        "staff_space": 46.75,
+        "levels_certain": 2,
+        "levels_possible": 3
+      },
+      "min_dist_notehead_widths": 1.9338235294117647,
+      "cell_stem_rows": [
+        {
+          "value": [
+            1054,
+            91,
+            12,
+            265
+          ],
+          "x0": 1054,
+          "x1": 1066
+        },
+        {
+          "value": [
+            1221,
+            91,
+            12,
+            282
+          ],
+          "x0": 1221,
+          "x1": 1233
+        },
+        {
+          "value": [
+            1386,
+            91,
+            12,
+            295
+          ],
+          "x0": 1386,
+          "x1": 1398
+        },
+        {
+          "value": [
+            1496,
+            91,
+            9,
+            268
+          ],
+          "x0": 1496,
+          "x1": 1505
+        },
+        {
+          "value": [
+            1811,
+            109,
+            11,
+            274
+          ],
+          "x0": 1811,
+          "x1": 1822
+        },
+        {
+          "value": [
+            1933,
+            125,
+            12,
+            281
+          ],
+          "x0": 1933,
+          "x1": 1945
+        },
+        {
+          "value": [
+            264,
+            174,
+            8,
+            134
+          ],
+          "x0": 264,
+          "x1": 272
+        },
+        {
+          "value": [
+            150,
+            249,
+            15,
+            176
+          ],
+          "x0": 150,
+          "x1": 165
+        }
+      ],
+      "bbox_page": [
+        1565.2294921875,
+        1053.08740234375,
+        1605.2392578125,
+        1087.21337890625
+      ],
+      "file": "stem_gap-breitkopf-1-0-2-0-18.png",
+      "VERDICT_none_yet": null
+    },
+    {
+      "subject": "glyph/2/0/0/3/3",
+      "cause": "duration_narrowed:beams_ambiguous / stem_gap",
+      "gap_kind": "FAR (8.56 notehead widths)",
+      "page": 2,
+      "system": 0,
+      "staff": 0,
+      "cell": 3,
+      "detail": {
+        "head": "noteheadBlackInSpace",
+        "beam_evidence": "none_over_this_note",
+        "cv_beams": 0,
+        "yolo_beams": 2,
+        "yolo_kept": 2,
+        "stems_attached": 0,
+        "beams_by_stem": 0,
+        "flags_attached": 0,
+        "flag_levels": 0,
+        "dots_attached": 0,
+        "staff_space": 71.5,
+        "levels_certain": 0,
+        "levels_possible": 2
+      },
+      "min_dist_notehead_widths": 8.556122448979592,
+      "cell_stem_rows": [
+        {
+          "value": [
+            796,
+            83,
+            13,
+            184
+          ],
+          "x0": 796,
+          "x1": 809
+        },
+        {
+          "value": [
+            82,
+            175,
+            10,
+            210
+          ],
+          "x0": 82,
+          "x1": 92
+        }
+      ],
+      "bbox_page": [
+        3911.328125,
+        439.744140625,
+        3948.65234375,
+        473.259765625
+      ],
+      "file": "stem_gap-breitkopf-2-0-0-3-3.png",
+      "VERDICT_none_yet": null
+    },
+    {
+      "subject": "glyph/2/0/0/3/14",
+      "cause": "duration_narrowed:beams_ambiguous / stem_gap",
+      "gap_kind": "FAR (8.31 notehead widths)",
+      "page": 2,
+      "system": 0,
+      "staff": 0,
+      "cell": 3,
+      "detail": {
+        "head": "noteheadBlackInSpace",
+        "beam_evidence": "none_over_this_note",
+        "cv_beams": 0,
+        "yolo_beams": 2,
+        "yolo_kept": 2,
+        "stems_attached": 0,
+        "beams_by_stem": 0,
+        "flags_attached": 0,
+        "flag_levels": 0,
+        "dots_attached": 0,
+        "staff_space": 71.5,
+        "levels_certain": 0,
+        "levels_possible": 2
+      },
+      "min_dist_notehead_widths": 8.306930693069306,
+      "cell_stem_rows": [
+        {
+          "value": [
+            796,
+            83,
+            13,
+            184
+          ],
+          "x0": 796,
+          "x1": 809
+        },
+        {
+          "value": [
+            82,
+            175,
+            10,
+            210
+          ],
+          "x0": 82,
+          "x1": 92
+        }
+      ],
+      "bbox_page": [
+        3910.947265625,
+        471.35546875,
+        3949.4140625,
+        505.251953125
+      ],
+      "file": "stem_gap-breitkopf-2-0-0-3-14.png",
+      "VERDICT_none_yet": null
+    },
+    {
+      "subject": "glyph/3/0/0/0/5",
+      "cause": "duration_narrowed:beams_ambiguous / stem_gap",
+      "gap_kind": "FAR (9.24 notehead widths)",
+      "page": 3,
+      "system": 0,
+      "staff": 0,
+      "cell": 0,
+      "detail": {
+        "head": "noteheadBlackOnLine",
+        "beam_evidence": "none_over_this_note",
+        "cv_beams": 0,
+        "yolo_beams": 1,
+        "yolo_kept": 1,
+        "stems_attached": 0,
+        "beams_by_stem": 0,
+        "flags_attached": 0,
+        "flag_levels": 0,
+        "dots_attached": 1,
+        "staff_space": 78.25,
+        "levels_certain": 0,
+        "levels_possible": 1
+      },
+      "min_dist_notehead_widths": 9.241379310344827,
+      "cell_stem_rows": [
+        {
+          "value": [
+            206,
+            79,
+            6,
+            167
+          ],
+          "x0": 206,
+          "x1": 212
+        },
+        {
+          "value": [
+            513,
+            353,
+            17,
+            202
+          ],
+          "x0": 513,
+          "x1": 530
+        },
+        {
+          "value": [
+            426,
+            479,
+            17,
+            200
+          ],
+          "x0": 426,
+          "x1": 443
+        },
+        {
+          "value": [
+            601,
+            516,
+            16,
+            208
+          ],
+          "x0": 601,
+          "x1": 617
+        },
+        {
+          "value": [
+            254,
+            688,
+            8,
+            191
+          ],
+          "x0": 254,
+          "x1": 262
+        }
+      ],
+      "bbox_page": [
+        1220.13330078125,
+        449.294921875,
+        1261.31103515625,
+        483.01806640625
+      ],
+      "file": "stem_gap-breitkopf-3-0-0-0-5.png",
+      "VERDICT_none_yet": null
+    },
+    {
+      "subject": "glyph/3/0/0/0/9",
+      "cause": "duration_narrowed:beams_ambiguous / stem_gap",
+      "gap_kind": "FAR (12.30 notehead widths)",
+      "page": 3,
+      "system": 0,
+      "staff": 0,
+      "cell": 0,
+      "detail": {
+        "head": "noteheadBlackOnLine",
+        "beam_evidence": "none_over_this_note",
+        "cv_beams": 0,
+        "yolo_beams": 1,
+        "yolo_kept": 1,
+        "stems_attached": 0,
+        "beams_by_stem": 0,
+        "flags_attached": 0,
+        "flag_levels": 0,
+        "dots_attached": 1,
+        "staff_space": 78.25,
+        "levels_certain": 0,
+        "levels_possible": 1
+      },
+      "min_dist_notehead_widths": 12.295454545454545,
+      "cell_stem_rows": [
+        {
+          "value": [
+            206,
+            79,
+            6,
+            167
+          ],
+          "x0": 206,
+          "x1": 212
+        },
+        {
+          "value": [
+            513,
+            353,
+            17,
+            202
+          ],
+          "x0": 513,
+          "x1": 530
+        },
+        {
+          "value": [
+            426,
+            479,
+            17,
+            200
+          ],
+          "x0": 426,
+          "x1": 443
+        },
+        {
+          "value": [
+            601,
+            516,
+            16,
+            208
+          ],
+          "x0": 601,
+          "x1": 617
+        },
+        {
+          "value": [
+            254,
+            688,
+            8,
+            191
+          ],
+          "x0": 254,
+          "x1": 262
+        }
+      ],
+      "bbox_page": [
+        1228.65283203125,
+        480.17822265625,
+        1259.89111328125,
+        510.3515625
+      ],
+      "file": "stem_gap-breitkopf-3-0-0-0-9.png",
+      "VERDICT_none_yet": null
+    },
+    {
+      "subject": "glyph/4/0/4/4/3",
+      "cause": "duration_narrowed:beams_ambiguous / stem_gap",
+      "gap_kind": "CELL_EMPTY",
+      "page": 4,
+      "system": 0,
+      "staff": 4,
+      "cell": 4,
+      "detail": {
+        "head": "noteheadBlackInSpace",
+        "beam_evidence": "none_over_this_note",
+        "cv_beams": 0,
+        "yolo_beams": 1,
+        "yolo_kept": 1,
+        "stems_attached": 0,
+        "beams_by_stem": 0,
+        "flags_attached": 0,
+        "flag_levels": 0,
+        "dots_attached": 1,
+        "staff_space": 100.0,
+        "levels_certain": 0,
+        "levels_possible": 1
+      },
+      "min_dist_notehead_widths": null,
+      "cell_stem_rows": null,
+      "bbox_page": [
+        2552.525,
+        1686.325,
+        2590.2,
+        1711.9
+      ],
+      "file": "stem_gap-breitkopf-4-0-4-4-3.png",
+      "VERDICT_none_yet": null
+    },
+    {
+      "subject": "glyph/4/0/4/5/4",
+      "cause": "duration_narrowed:beams_ambiguous / stem_gap",
+      "gap_kind": "CELL_EMPTY",
+      "page": 4,
+      "system": 0,
+      "staff": 4,
+      "cell": 5,
+      "detail": {
+        "head": "noteheadBlackInSpace",
+        "beam_evidence": "read",
+        "cv_beams": 0,
+        "yolo_beams": 2,
+        "yolo_kept": 2,
+        "stems_attached": 0,
+        "beams_by_stem": 0,
+        "flags_attached": 0,
+        "flag_levels": 0,
+        "dots_attached": 1,
+        "staff_space": 100.0,
+        "levels_certain": 1,
+        "levels_possible": 2
+      },
+      "min_dist_notehead_widths": null,
+      "cell_stem_rows": null,
+      "bbox_page": [
+        2810.6,
+        1405.55,
+        2848.55,
+        1440.2
+      ],
+      "file": "stem_gap-breitkopf-4-0-4-5-4.png",
+      "VERDICT_none_yet": null
+    },
+    {
+      "subject": "glyph/5/0/0/0/7",
+      "cause": "duration_narrowed:beams_ambiguous / stem_gap",
+      "gap_kind": "FAR (1.41 notehead widths)",
+      "page": 5,
+      "system": 0,
+      "staff": 0,
+      "cell": 0,
+      "detail": {
+        "head": "noteheadBlackOnLine",
+        "beam_evidence": "none_over_this_note",
+        "cv_beams": 2,
+        "yolo_beams": 0,
+        "yolo_kept": 0,
+        "stems_attached": 0,
+        "beams_by_stem": 0,
+        "flags_attached": 0,
+        "flag_levels": 0,
+        "dots_attached": 0,
+        "staff_space": 69.75,
+        "levels_certain": 0,
+        "levels_possible": 2
+      },
+      "min_dist_notehead_widths": 1.4069767441860466,
+      "cell_stem_rows": [
+        {
+          "value": [
+            1473,
+            0,
+            18,
+            216
+          ],
+          "x0": 1473,
+          "x1": 1491
+        },
+        {
+          "value": [
+            1297,
+            32,
+            20,
+            187
+          ],
+          "x0": 1297,
+          "x1": 1317
+        },
+        {
+          "value": [
+            205,
+            60,
+            5,
+            149
+          ],
+          "x0": 205,
+          "x1": 210
+        },
+        {
+          "value": [
+            320,
+            63,
+            21,
+            146
+          ],
+          "x0": 320,
+          "x1": 341
+        },
+        {
+          "value": [
+            798,
+            129,
+            23,
+            460
+          ],
+          "x0": 798,
+          "x1": 821
+        },
+        {
+          "value": [
+            1389,
+            140,
+            20,
+            424
+          ],
+          "x0": 1389,
+          "x1": 1409
+        },
+        {
+          "value": [
+            484,
+            308,
+            20,
+            189
+          ],
+          "x0": 484,
+          "x1": 504
+        },
+        {
+          "value": [
+            269,
+            316,
+            13,
+            148
+          ],
+          "x0": 269,
+          "x1": 282
+        },
+        {
+          "value": [
+            402,
+            400,
+            18,
+            207
+          ],
+          "x0": 402,
+          "x1": 420
+        },
+        {
+          "value": [
+            563,
+            451,
+            18,
+            190
+          ],
+          "x0": 563,
+          "x1": 581
+        },
+        {
+          "value": [
+            144,
+            510,
+            25,
+            164
+          ],
+          "x0": 144,
+          "x1": 169
+        }
+      ],
+      "bbox_page": [
+        1235.88330078125,
+        725.86865234375,
+        1252.701171875,
+        743.07763671875
+      ],
+      "file": "stem_gap-breitkopf-5-0-0-0-7.png",
+      "VERDICT_none_yet": null
+    },
+    {
+      "subject": "glyph/5/0/0/4/2",
+      "cause": "duration_narrowed:beams_ambiguous / stem_gap",
+      "gap_kind": "FAR (1.41 notehead widths)",
+      "page": 5,
+      "system": 0,
+      "staff": 0,
+      "cell": 4,
+      "detail": {
+        "head": "noteheadBlackOnLine",
+        "beam_evidence": "read",
+        "cv_beams": 0,
+        "yolo_beams": 4,
+        "yolo_kept": 4,
+        "stems_attached": 0,
+        "beams_by_stem": 0,
+        "flags_attached": 0,
+        "flag_levels": 0,
+        "dots_attached": 0,
+        "staff_space": 93.0,
+        "levels_certain": 3,
+        "levels_possible": 4
+      },
+      "min_dist_notehead_widths": 1.4069767441860466,
+      "cell_stem_rows": [
+        {
+          "value": [
+            89,
+            1079,
+            24,
+            221
+          ],
+          "x0": 89,
+          "x1": 113
+        }
+      ],
+      "bbox_page": [
+        3196.8671875,
+        706.37890625,
+        3234.66015625,
+        740.36328125
+      ],
+      "file": "stem_gap-breitkopf-5-0-0-4-2.png",
+      "VERDICT_none_yet": null
+    }
+  ]
+}

@@ -1,0 +1,649 @@
+{
+  "label": "stem_gap_litolff",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf",
+  "dpi": 600,
+  "record": "/Users/seanjohnson/Desktop/ReEngrave/library/_shared-records/beethoven5-litolff-mvt1-whole-20260928.record.json",
+  "provenance": {
+    "commit": "c19cbca7b7339d74e255a26b80e7fc3a385d428e",
+    "dirty": true,
+    "settings": {
+      "env_overrides": {
+        "OMR_DIRECTION_TEXT_SCAN_GATE": "1",
+        "OMR_SURYA_KEEP_ALIVE": "0"
+      },
+      "args": {
+        "against": null,
+        "conf": 0.25,
+        "dpi": 600,
+        "imgsz": null,
+        "ink_rows": false,
+        "no_roster": false,
+        "no_weight_routing": false,
+        "ocr": true,
+        "pages": "1-16",
+        "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf",
+        "route_weights": true,
+        "sheet": null,
+        "surya": true,
+        "weights": "auto",
+        "work_id": null
+      }
+    }
+  },
+  "tiles": [
+    {
+      "subject": "glyph/2/0/1/1/4",
+      "cause": "duration_narrowed:beams_ambiguous / stem_gap",
+      "gap_kind": "FAR (1.53 notehead widths)",
+      "page": 2,
+      "system": 0,
+      "staff": 1,
+      "cell": 1,
+      "detail": {
+        "head": "noteheadBlackOnLine",
+        "beam_evidence": "none_over_this_note",
+        "cv_beams": 1,
+        "yolo_beams": 0,
+        "yolo_kept": 0,
+        "stems_attached": 0,
+        "beams_by_stem": 0,
+        "flags_attached": 0,
+        "flag_levels": 0,
+        "dots_attached": 0,
+        "staff_space": 100.0,
+        "levels_certain": 0,
+        "levels_possible": 1
+      },
+      "min_dist_notehead_widths": 1.5273972602739727,
+      "cell_stem_rows": [
+        {
+          "value": [
+            267,
+            344,
+            44,
+            527
+          ],
+          "x0": 267,
+          "x1": 311
+        },
+        {
+          "value": [
+            559,
+            344,
+            44,
+            527
+          ],
+          "x0": 559,
+          "x1": 603
+        },
+        {
+          "value": [
+            248,
+            884,
+            13,
+            203
+          ],
+          "x0": 248,
+          "x1": 261
+        }
+      ],
+      "bbox_page": [
+        730.1325,
+        543.645,
+        753.1275,
+        566.01
+      ],
+      "file": "stem_gap-litolff-2-0-1-1-4.png",
+      "VERDICT_none_yet": null
+    },
+    {
+      "subject": "glyph/2/0/1/1/7",
+      "cause": "duration_narrowed:beams_ambiguous / stem_gap",
+      "gap_kind": "FAR (1.53 notehead widths)",
+      "page": 2,
+      "system": 0,
+      "staff": 1,
+      "cell": 1,
+      "detail": {
+        "head": "noteheadBlackOnLine",
+        "beam_evidence": "none_over_this_note",
+        "cv_beams": 1,
+        "yolo_beams": 0,
+        "yolo_kept": 0,
+        "stems_attached": 0,
+        "beams_by_stem": 0,
+        "flags_attached": 0,
+        "flag_levels": 0,
+        "dots_attached": 0,
+        "staff_space": 100.0,
+        "levels_certain": 0,
+        "levels_possible": 1
+      },
+      "min_dist_notehead_widths": 1.5337837837837838,
+      "cell_stem_rows": [
+        {
+          "value": [
+            267,
+            344,
+            44,
+            527
+          ],
+          "x0": 267,
+          "x1": 311
+        },
+        {
+          "value": [
+            559,
+            344,
+            44,
+            527
+          ],
+          "x0": 559,
+          "x1": 603
+        },
+        {
+          "value": [
+            248,
+            884,
+            13,
+            203
+          ],
+          "x0": 248,
+          "x1": 261
+        }
+      ],
+      "bbox_page": [
+        730.605,
+        562.3875,
+        753.915,
+        582.5475
+      ],
+      "file": "stem_gap-litolff-2-0-1-1-7.png",
+      "VERDICT_none_yet": null
+    },
+    {
+      "subject": "glyph/3/0/0/3/4",
+      "cause": "duration_narrowed:beams_ambiguous / stem_gap",
+      "gap_kind": "CELL_EMPTY",
+      "page": 3,
+      "system": 0,
+      "staff": 0,
+      "cell": 3,
+      "detail": {
+        "head": "noteheadBlackOnLine",
+        "beam_evidence": "none_over_this_note",
+        "cv_beams": 0,
+        "yolo_beams": 1,
+        "yolo_kept": 1,
+        "stems_attached": 0,
+        "beams_by_stem": 0,
+        "flags_attached": 0,
+        "flag_levels": 0,
+        "dots_attached": 0,
+        "staff_space": 100.0,
+        "levels_certain": 0,
+        "levels_possible": 1
+      },
+      "min_dist_notehead_widths": null,
+      "cell_stem_rows": null,
+      "bbox_page": [
+        1052.73,
+        489.525,
+        1068.075,
+        500.995
+      ],
+      "file": "stem_gap-litolff-3-0-0-3-4.png",
+      "VERDICT_none_yet": null
+    },
+    {
+      "subject": "glyph/3/0/0/6/1",
+      "cause": "duration_narrowed:beams_ambiguous / stem_gap",
+      "gap_kind": "CELL_EMPTY",
+      "page": 3,
+      "system": 0,
+      "staff": 0,
+      "cell": 6,
+      "detail": {
+        "head": "noteheadHalfInSpace",
+        "beam_evidence": "none_over_this_note",
+        "cv_beams": 0,
+        "yolo_beams": 1,
+        "yolo_kept": 1,
+        "stems_attached": 0,
+        "beams_by_stem": 0,
+        "flags_attached": 0,
+        "flag_levels": 0,
+        "dots_attached": 0,
+        "staff_space": 100.0,
+        "levels_certain": 0,
+        "levels_possible": 1
+      },
+      "min_dist_notehead_widths": null,
+      "cell_stem_rows": null,
+      "bbox_page": [
+        1534.8,
+        385.675,
+        1555.105,
+        403.035
+      ],
+      "file": "stem_gap-litolff-3-0-0-6-1.png",
+      "VERDICT_none_yet": null
+    },
+    {
+      "subject": "glyph/4/0/1/12/0",
+      "cause": "duration_narrowed:beams_ambiguous / stem_gap",
+      "gap_kind": "CELL_EMPTY",
+      "page": 4,
+      "system": 0,
+      "staff": 1,
+      "cell": 12,
+      "detail": {
+        "head": "noteheadBlackOnLine",
+        "beam_evidence": "none_over_this_note",
+        "cv_beams": 0,
+        "yolo_beams": 1,
+        "yolo_kept": 1,
+        "stems_attached": 0,
+        "beams_by_stem": 0,
+        "flags_attached": 0,
+        "flag_levels": 0,
+        "dots_attached": 0,
+        "staff_space": 100.0,
+        "levels_certain": 0,
+        "levels_possible": 1
+      },
+      "min_dist_notehead_widths": null,
+      "cell_stem_rows": null,
+      "bbox_page": [
+        2167.8775,
+        538.8625,
+        2194.3375,
+        559.9675
+      ],
+      "file": "stem_gap-litolff-4-0-1-12-0.png",
+      "VERDICT_none_yet": null
+    },
+    {
+      "subject": "glyph/4/0/1/12/4",
+      "cause": "duration_narrowed:beams_ambiguous / stem_gap",
+      "gap_kind": "CELL_EMPTY",
+      "page": 4,
+      "system": 0,
+      "staff": 1,
+      "cell": 12,
+      "detail": {
+        "head": "noteheadBlackOnLine",
+        "beam_evidence": "none_over_this_note",
+        "cv_beams": 0,
+        "yolo_beams": 1,
+        "yolo_kept": 1,
+        "stems_attached": 0,
+        "beams_by_stem": 0,
+        "flags_attached": 0,
+        "flag_levels": 0,
+        "dots_attached": 0,
+        "staff_space": 100.0,
+        "levels_certain": 0,
+        "levels_possible": 1
+      },
+      "min_dist_notehead_widths": null,
+      "cell_stem_rows": null,
+      "bbox_page": [
+        2168.5075,
+        557.7625,
+        2192.29,
+        579.1825
+      ],
+      "file": "stem_gap-litolff-4-0-1-12-4.png",
+      "VERDICT_none_yet": null
+    },
+    {
+      "subject": "glyph/5/0/0/11/2",
+      "cause": "duration_narrowed:beams_ambiguous / stem_gap",
+      "gap_kind": "CELL_EMPTY",
+      "page": 5,
+      "system": 0,
+      "staff": 0,
+      "cell": 11,
+      "detail": {
+        "head": "noteheadBlackInSpace",
+        "beam_evidence": "none_over_this_note",
+        "cv_beams": 0,
+        "yolo_beams": 2,
+        "yolo_kept": 2,
+        "stems_attached": 0,
+        "beams_by_stem": 0,
+        "flags_attached": 0,
+        "flag_levels": 0,
+        "dots_attached": 0,
+        "staff_space": 100.0,
+        "levels_certain": 0,
+        "levels_possible": 1
+      },
+      "min_dist_notehead_widths": null,
+      "cell_stem_rows": null,
+      "bbox_page": [
+        1922.0,
+        616.92,
+        1933.68,
+        627.0
+      ],
+      "file": "stem_gap-litolff-5-0-0-11-2.png",
+      "VERDICT_none_yet": null
+    },
+    {
+      "subject": "glyph/5/0/0/11/3",
+      "cause": "duration_narrowed:beams_ambiguous / stem_gap",
+      "gap_kind": "CELL_EMPTY",
+      "page": 5,
+      "system": 0,
+      "staff": 0,
+      "cell": 11,
+      "detail": {
+        "head": "noteheadBlackInSpace",
+        "beam_evidence": "none_over_this_note",
+        "cv_beams": 0,
+        "yolo_beams": 2,
+        "yolo_kept": 2,
+        "stems_attached": 0,
+        "beams_by_stem": 0,
+        "flags_attached": 0,
+        "flag_levels": 0,
+        "dots_attached": 0,
+        "staff_space": 100.0,
+        "levels_certain": 0,
+        "levels_possible": 1
+      },
+      "min_dist_notehead_widths": null,
+      "cell_stem_rows": null,
+      "bbox_page": [
+        1922.0,
+        592.44,
+        1933.2,
+        602.6800000000001
+      ],
+      "file": "stem_gap-litolff-5-0-0-11-3.png",
+      "VERDICT_none_yet": null
+    },
+    {
+      "subject": "glyph/6/0/2/8/0",
+      "cause": "duration_narrowed:beams_ambiguous / stem_gap",
+      "gap_kind": "FAR (3.30 notehead widths)",
+      "page": 6,
+      "system": 0,
+      "staff": 2,
+      "cell": 8,
+      "detail": {
+        "head": "noteheadBlackOnLine",
+        "beam_evidence": "none_over_this_note",
+        "cv_beams": 0,
+        "yolo_beams": 1,
+        "yolo_kept": 1,
+        "stems_attached": 0,
+        "beams_by_stem": 0,
+        "flags_attached": 0,
+        "flag_levels": 0,
+        "dots_attached": 0,
+        "staff_space": 100.0,
+        "levels_certain": 0,
+        "levels_possible": 1
+      },
+      "min_dist_notehead_widths": 3.2961783439490446,
+      "cell_stem_rows": [
+        {
+          "value": [
+            527,
+            401,
+            38,
+            623
+          ],
+          "x0": 527,
+          "x1": 565
+        }
+      ],
+      "bbox_page": [
+        1898.1375,
+        685.245,
+        1922.865,
+        707.925
+      ],
+      "file": "stem_gap-litolff-6-0-2-8-0.png",
+      "VERDICT_none_yet": null
+    },
+    {
+      "subject": "glyph/6/0/2/8/3",
+      "cause": "duration_narrowed:beams_ambiguous / stem_gap",
+      "gap_kind": "FAR (3.47 notehead widths)",
+      "page": 6,
+      "system": 0,
+      "staff": 2,
+      "cell": 8,
+      "detail": {
+        "head": "noteheadBlackOnLine",
+        "beam_evidence": "none_over_this_note",
+        "cv_beams": 0,
+        "yolo_beams": 1,
+        "yolo_kept": 1,
+        "stems_attached": 0,
+        "beams_by_stem": 0,
+        "flags_attached": 0,
+        "flag_levels": 0,
+        "dots_attached": 0,
+        "staff_space": 100.0,
+        "levels_certain": 0,
+        "levels_possible": 1
+      },
+      "min_dist_notehead_widths": 3.473684210526316,
+      "cell_stem_rows": [
+        {
+          "value": [
+            527,
+            401,
+            38,
+            623
+          ],
+          "x0": 527,
+          "x1": 565
+        }
+      ],
+      "bbox_page": [
+        1900.185,
+        699.735,
+        1924.125,
+        723.8325
+      ],
+      "file": "stem_gap-litolff-6-0-2-8-3.png",
+      "VERDICT_none_yet": null
+    },
+    {
+      "subject": "glyph/7/0/1/0/1",
+      "cause": "duration_narrowed:beams_ambiguous / stem_gap",
+      "gap_kind": "FAR (5.63 notehead widths)",
+      "page": 7,
+      "system": 0,
+      "staff": 1,
+      "cell": 0,
+      "detail": {
+        "head": "noteheadBlackInSpace",
+        "beam_evidence": "none_over_this_note",
+        "cv_beams": 0,
+        "yolo_beams": 1,
+        "yolo_kept": 1,
+        "stems_attached": 0,
+        "beams_by_stem": 0,
+        "flags_attached": 0,
+        "flag_levels": 0,
+        "dots_attached": 0,
+        "staff_space": 100.0,
+        "levels_certain": 0,
+        "levels_possible": 1
+      },
+      "min_dist_notehead_widths": 5.634328358208955,
+      "cell_stem_rows": [
+        {
+          "value": [
+            610,
+            217,
+            25,
+            261
+          ],
+          "x0": 610,
+          "x1": 635
+        },
+        {
+          "value": [
+            375,
+            224,
+            13,
+            241
+          ],
+          "x0": 375,
+          "x1": 388
+        },
+        {
+          "value": [
+            502,
+            338,
+            25,
+            330
+          ],
+          "x0": 502,
+          "x1": 527
+        },
+        {
+          "value": [
+            749,
+            414,
+            26,
+            261
+          ],
+          "x0": 749,
+          "x1": 775
+        },
+        {
+          "value": [
+            178,
+            440,
+            51,
+            323
+          ],
+          "x0": 178,
+          "x1": 229
+        },
+        {
+          "value": [
+            400,
+            535,
+            32,
+            228
+          ],
+          "x0": 400,
+          "x1": 432
+        }
+      ],
+      "bbox_page": [
+        567.375,
+        528.8525,
+        588.48,
+        548.54
+      ],
+      "file": "stem_gap-litolff-7-0-1-0-1.png",
+      "VERDICT_none_yet": null
+    },
+    {
+      "subject": "glyph/7/0/1/0/7",
+      "cause": "duration_narrowed:beams_ambiguous / stem_gap",
+      "gap_kind": "FAR (5.61 notehead widths)",
+      "page": 7,
+      "system": 0,
+      "staff": 1,
+      "cell": 0,
+      "detail": {
+        "head": "noteheadBlackInSpace",
+        "beam_evidence": "none_over_this_note",
+        "cv_beams": 0,
+        "yolo_beams": 1,
+        "yolo_kept": 1,
+        "stems_attached": 0,
+        "beams_by_stem": 0,
+        "flags_attached": 0,
+        "flag_levels": 0,
+        "dots_attached": 0,
+        "staff_space": 100.0,
+        "levels_certain": 0,
+        "levels_possible": 1
+      },
+      "min_dist_notehead_widths": 5.611111111111111,
+      "cell_stem_rows": [
+        {
+          "value": [
+            610,
+            217,
+            25,
+            261
+          ],
+          "x0": 610,
+          "x1": 635
+        },
+        {
+          "value": [
+            375,
+            224,
+            13,
+            241
+          ],
+          "x0": 375,
+          "x1": 388
+        },
+        {
+          "value": [
+            502,
+            338,
+            25,
+            330
+          ],
+          "x0": 502,
+          "x1": 527
+        },
+        {
+          "value": [
+            749,
+            414,
+            26,
+            261
+          ],
+          "x0": 749,
+          "x1": 775
+        },
+        {
+          "value": [
+            178,
+            440,
+            51,
+            323
+          ],
+          "x0": 178,
+          "x1": 229
+        },
+        {
+          "value": [
+            400,
+            535,
+            32,
+            228
+          ],
+          "x0": 400,
+          "x1": 432
+        }
+      ],
+      "bbox_page": [
+        567.69,
+        551.2175,
+        588.9525,
+        569.015
+      ],
+      "file": "stem_gap-litolff-7-0-1-0-7.png",
+      "VERDICT_none_yet": null
+    }
+  ]
+}

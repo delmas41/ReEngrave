@@ -1,0 +1,65 @@
+{
+  "subject": "glyph/2/0/1/1/4",
+  "cause": "duration_narrowed:beams_ambiguous / stem_gap",
+  "gap_kind": "FAR (1.53 notehead widths)",
+  "page": 2,
+  "system": 0,
+  "staff": 1,
+  "cell": 1,
+  "detail": {
+    "head": "noteheadBlackOnLine",
+    "beam_evidence": "none_over_this_note",
+    "cv_beams": 1,
+    "yolo_beams": 0,
+    "yolo_kept": 0,
+    "stems_attached": 0,
+    "beams_by_stem": 0,
+    "flags_attached": 0,
+    "flag_levels": 0,
+    "dots_attached": 0,
+    "staff_space": 100.0,
+    "levels_certain": 0,
+    "levels_possible": 1
+  },
+  "min_dist_notehead_widths": 1.5273972602739727,
+  "cell_stem_rows": [
+    {
+      "value": [
+        267,
+        344,
+        44,
+        527
+      ],
+      "x0": 267,
+      "x1": 311
+    },
+    {
+      "value": [
+        559,
+        344,
+        44,
+        527
+      ],
+      "x0": 559,
+      "x1": 603
+    },
+    {
+      "value": [
+        248,
+        884,
+        13,
+        203
+      ],
+      "x0": 248,
+      "x1": 261
+    }
+  ],
+  "bbox_page": [
+    730.1325,
+    543.645,
+    753.1275,
+    566.01
+  ],
+  "file": "stem_gap-litolff-2-0-1-1-4.png",
+  "VERDICT_none_yet": null
+}
