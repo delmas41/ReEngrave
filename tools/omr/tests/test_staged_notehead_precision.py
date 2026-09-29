@@ -293,6 +293,140 @@ class TestUnladdered(unittest.TestCase):
         self.assertFalse(NP.UNLADDERED_SHIPS)
 
 
+def _notehead_ink(log, gi, *, raw_best=None, net_best=None):
+    """A `Q.NOTEHEAD_INK` row, injected directly (as `gather_notehead_ink`
+    itself would file it) rather than built from a raster -- exactly the
+    precedent `test_staged_ledger_ink.py`'s `TestPartB` uses for
+    `Q.LEDGER_INK_UNDER`. `None` for either side means "GATHER declined to
+    measure that raster", never zero."""
+    g = R.glyph(0, 0, 0, 0, gi)
+    raw = (None if raw_best is None else
+          {"best": raw_best, "best_window": "center",
+           "windows": {"center": raw_best, "ring": raw_best}})
+    net = (None if net_best is None else
+          {"best": net_best, "best_window": "center",
+           "windows": {"center": net_best, "ring": net_best}})
+    sides = [v for v in (raw_best, net_best) if v is not None]
+    value = max(sides) if sides else 0.0
+    log.observe(g, Q.NOTEHEAD_INK, value, reader=READERS.CV_NOTEHEAD_INK,
+               frame="cell:0", ink_raw=raw, ink_net=net)
+    return g
+
+
+class TestNoInkUnderBox(unittest.TestCase):
+    """ROADMAP 2.6h -- `benchmarks/omr-owner-domain-2026-09/FINDINGS.md`
+    §2.6g: 4 of 14 Litolff `owner_not_read` crops stand over TRULY BLANK
+    PAPER. Refuse only where NEITHER raster shows ink under the box."""
+
+    def test_neither_raster_shows_ink_is_refused(self):
+        log = Log()
+        _cell_geometry(log)
+        g = _notehead(log, 0, pos_float=4.0)
+        _notehead_ink(log, 0, raw_best=0.0, net_best=0.0)
+        v = _verdict(_run(log), g)
+        self.assertEqual(v.outcome, Outcome.DECIDED)
+        self.assertIs(v.value, True)
+        self.assertEqual(v.reason, "no_ink_under_box")
+        self.assertEqual(v.detail["notehead_ink_raw"]["best"], 0.0)
+        self.assertEqual(v.detail["notehead_ink_net"]["best"], 0.0)
+
+    def test_ink_on_the_RAW_raster_alone_is_NOT_refused(self):
+        """⚠️ POSITIVE CONTROL: a head standing ON a staff line, where
+        erasure took its own ink down with the line -- protected by the
+        UNERASED reading alone."""
+        log = Log()
+        _cell_geometry(log)
+        g = _notehead(log, 0, pos_float=4.0)
+        _notehead_ink(log, 0, raw_best=0.5, net_best=0.0)
+        v = _verdict(_run(log), g)
+        self.assertIs(v.value, False)
+        self.assertEqual(v.reason, "notehead")
+
+    def test_ink_on_the_NET_raster_alone_is_NOT_refused(self):
+        """⚠️ POSITIVE CONTROL: staff-line pixels alone crossing an
+        otherwise blank box do not vouch for a real head on the UNERASED
+        side, but real ink beyond the line on the ERASED side does."""
+        log = Log()
+        _cell_geometry(log)
+        g = _notehead(log, 0, pos_float=4.0)
+        _notehead_ink(log, 0, raw_best=0.0, net_best=0.5)
+        v = _verdict(_run(log), g)
+        self.assertIs(v.value, False)
+        self.assertEqual(v.reason, "notehead")
+
+    def test_a_HOLLOW_head_reading_high_on_BOTH_is_NOT_refused(self):
+        log = Log()
+        _cell_geometry(log)
+        g = _notehead(log, 0, cls="noteheadHalfInSpace", pos_float=4.0)
+        _notehead_ink(log, 0, raw_best=0.42, net_best=0.42)
+        v = _verdict(_run(log), g)
+        self.assertIs(v.value, False)
+
+    def test_missing_the_quantity_entirely_does_not_refuse(self):
+        """No GATHER row at all (an older record, or a family this rung
+        never ran on): the rule contributes nothing, never a refusal."""
+        log = Log()
+        _cell_geometry(log)
+        g = _notehead(log, 0, pos_float=4.0)
+        v = _verdict(_run(log), g)
+        self.assertIs(v.value, False)
+        self.assertEqual(v.reason, "notehead")
+        self.assertNotIn("notehead_ink_signal", v.detail)
+
+    def test_ONE_raster_declined_does_not_refuse(self):
+        """⚠️ CLAUDE.md rule 8: an ABSTAINED raster is "we could not
+        measure this", never treated as zero. Only the RAW side measured;
+        the NET side is entirely absent (`None`, not `0.0`)."""
+        log = Log()
+        _cell_geometry(log)
+        g = _notehead(log, 0, pos_float=4.0)
+        _notehead_ink(log, 0, raw_best=0.0, net_best=None)
+        v = _verdict(_run(log), g)
+        self.assertIs(v.value, False)
+        self.assertEqual(v.reason, "notehead")
+
+    def test_the_signal_stays_on_the_record_when_it_does_not_fire(self):
+        log = Log()
+        _cell_geometry(log)
+        g = _notehead(log, 0, pos_float=4.0)
+        _notehead_ink(log, 0, raw_best=0.5, net_best=0.5)
+        v = _verdict(_run(log), g)
+        self.assertIs(v.value, False)
+        self.assertEqual(v.detail["notehead_ink_signal"]["notehead_ink_raw"]
+                        ["best"], 0.5)
+
+    def test_it_fires_WITHOUT_cell_staff_space(self):
+        """⚠️ BEFORE THE SPACING GUARD, same reason `is_a_clef` runs there:
+        this rule needs no unit at all. Without it every OTHER rule would
+        abstain `no_staff_geometry` -- this one still decides."""
+        log = Log()
+        _cell_geometry(log, spacing=None)
+        g = _notehead(log, 0, pos_float=4.0)
+        _notehead_ink(log, 0, raw_best=0.0, net_best=0.0)
+        v = _verdict(_run(log), g)
+        self.assertEqual(v.outcome, Outcome.DECIDED)
+        self.assertIs(v.value, True)
+        self.assertEqual(v.reason, "no_ink_under_box")
+
+    def test_the_decision_declares_the_witness(self):
+        spec = adjudicate.REGISTRY[Q.NOTEHEAD_IS_NOT_A_NOTEHEAD]
+        self.assertIn(Q.NOTEHEAD_INK, spec.wants)
+        self.assertIn("no_ink_under_box", spec.reasons)
+
+    def test_it_is_ordered_before_the_shape_rules(self):
+        """A box neither raster shows ink under is refused by NAME, not
+        by `too_narrow`/`clipped_fragment` reaching the same box first for
+        a shape reason that happens to be true of empty paper too."""
+        log = Log()
+        _cell_geometry(log)
+        g = _notehead(log, 0, cls="noteheadBlackInSpace", w_c=80.0,
+                     h_c=30.0, pos_float=4.0,
+                     page_box=[520.0, 1000.0, 560.0, 1010.0])
+        _notehead_ink(log, 0, raw_best=0.0, net_best=0.0)
+        v = _verdict(_run(log), g)
+        self.assertEqual(v.reason, "no_ink_under_box")
+
+
 class TestItAbstainsOnlyWhenTheUnitItselfIsMissing(unittest.TestCase):
 
     def test_no_cell_staff_space_ABSTAINS(self):

@@ -163,6 +163,77 @@ UNLADDERED_SHIPS = False
 _STAFF_BOTTOM_POSITION = 8.0
 
 # ─────────────────────────────────────────────────────────────────────────────
+# ROADMAP 2.6h — "a notehead box with no ink under it is not a notehead."
+#
+# `benchmarks/omr-owner-domain-2026-09/FINDINGS.md` §2.6g cropped 14 of
+# Litolff's 345 `owner_not_read` (`far_no_rungs`) heads: 4 read as isolated
+# blobs over TRULY BLANK PAPER (left AND right overhang ~=0.0 on BOTH sides
+# at every step, no ledger of any kind visible near the head). CLAUDE.md
+# §10 already names the mechanism at population scale (46 of 180 sampled
+# Litolff "notehead" boxes were not noteheads); "there is no ink" -> "not a
+# notehead" FOLLOWS, and does not need `glyph_owner`'s contest or a rung
+# search to say so.
+#
+# CONVENTION ASSUMED / WHAT WOULD FALSIFY IT / NOT CONFIRMED: a detector box
+# with no dark pixels under it, on EITHER of two independent rasters, names
+# no mark a human could read either — this was not put to Sean before
+# building (rule 5, "print before default": the floor is set FAR under the
+# shape of any real head — see `gather.notehead_ink_under`'s own two
+# windows and their positive controls below — and verified against a print
+# crop before landing, never the reverse). WHAT WOULD FALSIFY IT: a crop
+# showing a genuinely faint, broken-print or heavily-bled head whose ink
+# this floor still misses.
+# ─────────────────────────────────────────────────────────────────────────────
+
+#: A box refused `no_ink_under_box` must clear NEITHER raster's floor.
+#: ⚠️ SET FAR UNDER ANY REAL HEAD'S SHAPE, NOT AT A FITTED GAP — no corpus
+#: measurement of real-vs-blank was available to this lane (see the
+#: FINDINGS' own "Not done"); a black head's `center` and a hollow head's
+#: `ring` both measure well above 0.2 on the synthetic positive controls
+#: this module's tests exercise (`gather.notehead_ink_under`'s own tests:
+#: a filled head > 0.4, a 6px ring > 0.4), so 0.05 asks only for "some ink
+#: beyond scanner speckle", never for a fitted amount of it. Kept identical
+#: for both rasters on purpose: neither is more or less trustworthy a
+#: priori, and a future calibration pass should re-derive both together
+#: against a real print sample, not this one alone.
+NO_INK_RAW_FLOOR = 0.05
+NO_INK_NET_FLOOR = 0.05
+NO_INK_REASON = "no_ink_under_box"
+
+
+def _no_ink_under_box(ev: Evidence, detail: Dict[str, Any]) -> bool:
+    """ROADMAP 2.6h — refuse only where NEITHER raster shows ink under the
+    box at all.
+
+    ⚠️ REQUIRING **BOTH** BELOW FLOOR, NOT EITHER, IS THE SAFE DIRECTION.
+    `gather.gather_notehead_ink`'s own docstring: a real head standing ON a
+    staff line must not read as blank because the line was erased (so the
+    UNERASED `raw` reading alone can rescue it), and staff-line pixels
+    ALONE crossing an otherwise blank box must not read as ink (so the
+    ERASED `net` reading alone can rescue it too). A real head is therefore
+    protected by WHICHEVER raster still shows it; only a box neither raster
+    shows anything under is refused.
+
+    ⚠️ DECLINED WHERE EITHER READING IS ABSENT, never treated as zero — an
+    abstained raster is "we could not measure this", not "we measured no
+    ink", and CLAUDE.md rule 8 forbids that conversion.
+    """
+    rows = ev.rows(Q.NOTEHEAD_INK)
+    if not rows:
+        return False
+    d = rows[-1].detail or {}
+    raw, net = d.get("ink_raw"), d.get("ink_net")
+    detail["notehead_ink_raw"] = raw
+    detail["notehead_ink_net"] = net
+    if not isinstance(raw, dict) or not isinstance(net, dict):
+        return False
+    raw_best, net_best = raw.get("best"), net.get("best")
+    if raw_best is None or net_best is None:
+        return False
+    return raw_best < NO_INK_RAW_FLOOR and net_best < NO_INK_NET_FLOOR
+
+
+# ─────────────────────────────────────────────────────────────────────────────
 # ROADMAP 2.7b — `belongs_to_a_nearer_staff`, Sean's convention (2026-09-27):
 # *"notes should never be that far away from a staff unless there are ledger
 # lines close to the staff connecting the note conceptually to the staff."*
@@ -975,15 +1046,19 @@ def _human_not_a_symbol(ev: Evidence, detail: Dict[str, Any], *,
                   # ⚠️ ROADMAP 2.12l: the cross-staff quorum reads how many
                   # staves this system has, and nothing else this decision
                   # already declares carries that fact.
-                  Q.SYSTEM_STAFF_COUNT),
+                  Q.SYSTEM_STAFF_COUNT,
+                  # ⚠️ ROADMAP 2.6h: whether there is any ink at all under
+                  # the box, on two rasters.
+                  Q.NOTEHEAD_INK),
     scope=Kind.GLYPH,
     wants=(Q.GLYPH_BOX, Q.CELL_BOX, Q.CELL_STAFF_SPACE,
           Q.NOTEHEAD_STAFF_POSITION, Q.GLYPH_CONF, Q.CLEF_LOCATED,
           Q.HUMAN_BOX_VERDICT, Q.LEDGER_IS_NOT_A_LEDGER,
           Q.GLYPH_BAND_DISTANCE, Q.STAFF_LINES, Q.STAFF_SPACING,
-          Q.LEDGER_RUNG_INK, Q.SYSTEM_STAFF_COUNT),
+          Q.LEDGER_RUNG_INK, Q.SYSTEM_STAFF_COUNT, Q.NOTEHEAD_INK),
     subjects_from=Q.NOTEHEAD_CLASS,
-    reasons=HUMAN_REFUSAL_REASONS + ("is_a_clef", "clipped_fragment",
+    reasons=HUMAN_REFUSAL_REASONS + ("is_a_clef", NO_INK_REASON,
+                                     "clipped_fragment",
                                      "too_narrow", "belongs_to_a_nearer_staff",
                                      "is_a_meter_digit",
                                      "notehead",
@@ -1009,6 +1084,16 @@ def adjudicate_notehead_is_not_a_notehead(ev: Evidence) -> Ruling:
        read can never disagree. It runs before the measured rules because it
        is backed by a positive identification rather than by a shape that
        looks wrong, and after the human because a human looked at the print.
+
+    0b. `no_ink_under_box` (ROADMAP 2.6h) — NEITHER of two independent
+       rasters shows any dark pixel under the box at all: a detector
+       hallucination over blank paper (`benchmarks/omr-owner-domain-2026-09/
+       FINDINGS.md` §2.6g, 4 of 14 crops). Runs BEFORE the shape rules and
+       needs no staff-space unit — a box with no ink has no width or height
+       worth measuring — but AFTER `is_a_clef`, because a box the clef
+       locator already identified is a different, more specific claim than
+       "this is blank". See `_no_ink_under_box` for why BOTH rasters must
+       agree there is nothing before this fires.
 
     1. `clipped_fragment` — a sliver of ink flush against the cell's own crop
        boundary: a neighbouring staff's ink bleeding into this cell's
@@ -1096,11 +1181,35 @@ def adjudicate_notehead_is_not_a_notehead(ev: Evidence) -> Ruling:
                     "clef_frame": clef_row.frame,
                     "clef_symmetry": clef_row.score})
 
+    # ⚠️ ROADMAP 2.6h. BEFORE THE SPACING GUARD, for the same reason
+    # `is_a_clef` runs there: this rule needs no staff-space unit at all, so
+    # a cell missing `Q.CELL_STAFF_SPACE` must not lose it. AFTER
+    # `is_a_clef`: a box the clef locator has already identified is a more
+    # specific claim than "there is nothing here". Computed unconditionally
+    # (even where it does not fire) so the reading stays on the record —
+    # the same discipline `unladdered_signal`/`meter_digit_signal` follow
+    # below.
+    no_ink_detail: Dict[str, Any] = {}
+    no_ink_fires = _no_ink_under_box(ev, no_ink_detail)
+    if no_ink_fires:
+        # ⚠️ THE LITERAL, NOT `NO_INK_REASON`. `brakes.vocabulary_gap`'s AST
+        # walk reads the `reason=` slot's own text, not the variable a
+        # parser resolved it from — a computed reason unresolves the WHOLE
+        # MODULE for that check (see `_human_not_a_symbol`'s own comment on
+        # exactly this). `NO_INK_REASON` stays the one spelling both this
+        # site and the decorator's `reasons=` tuple cite, so they cannot
+        # drift; only the RETURN keeps its own copy of the string.
+        return Ruling(value=True, reason="no_ink_under_box",
+                      used=(box_row.id,),
+                      detail={"class": box_row.value[0], **no_ink_detail})
+
     spacing = _cell_staff_space(ev)
     if spacing is None:
         return Ruling.abstain(ABSTAIN.NO_STAFF_GEOMETRY)
 
     detail: Dict[str, Any] = {"class": box_row.value[0]}
+    if no_ink_detail:
+        detail["notehead_ink_signal"] = no_ink_detail
     used = [box_row.id]
 
     # ⚠️ COMPUTED UNCONDITIONALLY, BEFORE THE SHIPPED RULES RETURN, so the

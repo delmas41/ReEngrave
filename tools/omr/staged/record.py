@@ -626,6 +626,36 @@ class Q(_Vocab):
     #: their rungs. A MEASUREMENT, never a verdict: it names nothing.
     LEDGER_INK_UNDER = "ledger_ink_under"
 
+    #: ⚠️⚠️ ROADMAP 2.6h — "A NOTEHEAD BOX WITH NO INK UNDER IT IS NOT A
+    #: NOTEHEAD." One row per notehead-classed glyph: the ink fraction INSIDE
+    #: the detector's OWN box, two ways -- `center` (the interior, shrunk
+    #: 30% every side: dense for a filled BLACK head, near-empty for a
+    #: HOLLOW one) and `ring` (the band between the interior and the full
+    #: box -- a hollow head's own border, present on both kinds; a THIRD
+    #: "densest row" window was measured and dropped, see `gather.
+    #: notehead_ink_under`'s own docstring for why). `value` is the best of
+    #: the two; `detail` carries `ink_raw` (off `cell.binary`, the UNERASED
+    #: canonical raster) and `ink_net` (off `cell.image_no_staff`) each as
+    #: its own `{best, best_window, windows}`, never one number, because
+    #: NEITHER raster alone is safe -- see `gather.notehead_ink_under` and
+    #: `gather.gather_notehead_ink` for why the pair is load-bearing (a head
+    #: standing ON a staff line must not read as blank because the line was
+    #: erased; staff-line pixels ALONE crossing an otherwise blank box must
+    #: not read as ink either). No staff-space unit is needed -- every window
+    #: is a FRACTION of the box's own area, scale-free by construction.
+    #:
+    #: ⚠️ WHY IT EXISTS: `benchmarks/omr-owner-domain-2026-09/FINDINGS.md`
+    #: §2.6g -- 4 of 14 Litolff `owner_not_read` crops, read by eye, stand
+    #: over TRULY BLANK PAPER (left AND right overhang ~=0.0 on both sides;
+    #: no ledger of any kind visible near the head). CLAUDE.md §10 already
+    #: names the mechanism at population scale (46 of 180 sampled Litolff
+    #: "notehead" boxes were not noteheads); this is the GATHER measurement
+    #: `notehead_precision._no_ink_under_box` refuses the cheapest slice of
+    #: that population with, `no_ink_under_box`, before it ever reaches
+    #: `glyph_owner` and abstains `far_no_rungs`. A MEASUREMENT, never a
+    #: verdict: it names nothing.
+    NOTEHEAD_INK = "notehead_ink"
+
     # ── EVERY FAMILY'S OWN POSITION (measurements, scoreless) ───────────────
     #
     # ⚠️⚠️ ELEVEN FAMILIES HAD NO POSITION FACT AT ALL, and `capture.py`'s
@@ -1658,6 +1688,10 @@ CLAIMS: "dict[str, str]" = {
     #: ROADMAP 3.4g-3: an ink FRACTION under one ledger box -- a ruler
     #: reading off the erased raster, naming nothing.
     "LEDGER_INK_UNDER": CLAIM.MEASUREMENT,
+    #: ROADMAP 2.6h: an ink fraction inside a notehead's OWN detected box, on
+    #: two rasters -- a ruler reading, same reason as `LEDGER_INK_UNDER`; it
+    #: says whether dark pixels stand there, never that a note does.
+    "NOTEHEAD_INK": CLAIM.MEASUREMENT,
     #: ROADMAP 2.18c: a windowed ink density test at a stem's tip, off the
     #: erased raster -- a ruler reading, same reason as `LEDGER_INK_UNDER`;
     #: it says whether flag-shaped ink stands there, never that a flag does.
@@ -1956,6 +1990,16 @@ class READERS(_Vocab):
     #: because it asks a different question (is there flag-shaped ink AT
     #: THIS STEM'S TIP) with a different test from either.
     CV_STEM_TIP = "cv_stem_tip"              # gather: flag ink at a stem tip
+    #: `gather.gather_notehead_ink` -- ROADMAP 2.6h. Reads TWO rasters, and
+    #: is independent of `CV_INK`/`CV_LEDGER`/`CV_STEM_TIP` on only ONE of
+    #: them: `cell.image_no_staff` (the erased half, shared with all three)
+    #: AND `cell.binary` (the UNERASED canonical raster, which none of them
+    #: reads at all) -- so a row here is not fully one crop wearing another
+    #: name, and not fully an independent witness either. Its own reader
+    #: name because it asks a THIRD question (is there ink inside THIS
+    #: notehead's OWN box, on either raster) with a test neither of the
+    #: other three windowed-density readers runs.
+    CV_NOTEHEAD_INK = "cv_notehead_ink"      # gather: ink under a notehead box
     CV_HEADER = "cv_header"                  # header_ink
     TEMPLATE = "template"                    # symbol_library NCC matching
     GEOMETRY = "geometry"                    # staff_detector / measure_extractor

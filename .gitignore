@@ -222,6 +222,15 @@ benchmarks/omr-clef-geometry-2026-09/out/*.musicxml
 benchmarks/omr-owner-domain-2026-09/out/real-p*-*.json
 benchmarks/omr-owner-domain-2026-09/out/real-p*-*.log
 
+# ROADMAP 2.6h: the four one-page re-gathers priced against are 11-46 MB
+# each and reproducible in a few minutes from the exact commands in
+# FINDINGS.md §2.6h; the derived crop-data JSON beside them
+# (`no-ink-2.6h-crop-data.json`) is what the FINDINGS quote and is
+# committed. Crops (none this session — see FINDINGS' own "Not done") go
+# in `out/print/` because `benchmarks/**/crops/` above is excluded.
+benchmarks/omr-owner-domain-2026-09/out/2.6h/*.record.json
+benchmarks/omr-owner-domain-2026-09/out/2.6h/*.log
+
 # ROADMAP 3.4g (`benchmarks/omr-family-refusals-2026-09/`): `ledger-rows-*`
 # is a 5.7 MB per-box CACHE that `probe/ledger_geometry.py` writes so a
 # tolerance can be re-priced without re-loading 900 MB of record, and

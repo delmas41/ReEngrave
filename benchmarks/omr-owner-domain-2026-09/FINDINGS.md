@@ -2037,3 +2037,259 @@ looks right.
 - CLAUDE.md §4c's list of EXPORT refusals still does not name
   `owner_not_read` — §2.6c.2 already flagged this as open and it remains
   so; this lane is evidence-only and changed no spec text either.
+
+---
+
+## §2.6h — "a notehead box with no ink under it is not a notehead" (2026-09-29, BUILT not merged)
+
+**Path: STAGED.** Branch `claude/no-ink-head-2.6h`, off `origin/main`
+`7893ede2` (§2.6g merged onto it). §2.6g's own 14 crops of Litolff's
+`owner_not_read`/`far_no_rungs` heads found 4 (crops 01, 04, 08, 12) reading
+as isolated blobs over TRULY BLANK PAPER — a detector hallucination
+CLAUDE.md §10 already names the mechanism for (46 of 180 sampled Litolff
+"notehead" boxes were not noteheads). "There is no ink" → "not a notehead"
+FOLLOWS, and does not need `glyph_owner`'s contest or a rung search to say
+so.
+
+### What was built
+
+**GATHER**: `Q.NOTEHEAD_INK` (`gather.notehead_ink_under`,
+`gather.gather_notehead_ink`) — one row per notehead-classed glyph, the
+ink fraction inside the detector's OWN box, TWO windows (`center`, the
+interior shrunk 30% every side; `ring`, the band between the interior and
+the full box — a hollow head's own border, the positive control the
+brief itself names). Read off **BOTH** rasters, independently: `cell.
+binary` (the UNERASED canonical raster — the SAME side-channel `staff_
+line_removal.remove_staff_lines_from_cell` already reuses, chosen because
+a real head standing ON a staff line must not read as blank because the
+line was erased) and `cell.image_no_staff` (the staff-ERASED raster —
+the check that staff-line pixels ALONE crossing an otherwise blank box do
+not read as ink). Both readings are filed whole (`detail.ink_raw`/
+`detail.ink_net`, never collapsed to one number); `value` is their max, a
+convenience for a consumer that wants one number without losing either.
+**A third "densest row" window was measured and dropped**: against a
+synthetic bare staff-line stroke it reads FULL (1.0) for ANY thin mark
+spanning the box's width, hollow-head cap or bare line alike — the exact
+confusion the dual-raster design exists to avoid, and `ring` already
+carries the hollow-head positive control without it
+(`gather.notehead_ink_under`'s own docstring).
+
+**ADJUDICATE**: `notehead_precision._no_ink_under_box`, wired into the
+existing `adjudicate_notehead_is_not_a_notehead` (ROADMAP 2.4a) as its
+`no_ink_under_box` reason — refuses ONLY where **NEITHER** raster clears
+`NO_INK_RAW_FLOOR`/`NO_INK_NET_FLOOR` (both 0.05). Requiring both low
+(not either) is the safe direction: a real head is protected by whichever
+raster still shows it. Runs BEFORE the spacing guard (needs no staff-space
+unit, same as `is_a_clef`) and AFTER `is_a_clef` (a box the clef locator
+already named is a more specific claim). The signal is recorded even where
+it does not fire (`detail.notehead_ink_signal`), the same discipline
+`unladdered_signal`/`meter_digit_signal` already follow.
+
+⚠️ CONVENTION ASSUMED / WHAT WOULD FALSIFY IT / NOT CONFIRMED: a detector
+box with no dark pixels under it, on either raster, names no mark a human
+could read — not put to Sean before building (rule 5, "print before
+default"); the floor is set far under any real head's measured shape, not
+at a corpus-fitted gap (no real-vs-blank corpus measurement was available
+to this lane — see "Not done" below). WHAT WOULD FALSIFY IT: a crop
+showing a genuinely faint, broken-print or heavily-bled head whose ink
+this floor still misses.
+
+### RED → GREEN
+
+`tools/omr/tests/test_staged_notehead_ink.py` (new, 16 tests): the pure
+measurement on synthetic rasters — blank paper reads `best=0.0` on every
+window; a filled black head reads high on `center`; a 6px hollow ring
+reads high on `ring` and NOT on `center` (the brief's own positive
+control); a bare staff-line stroke crossing the box is a documented
+limitation of the SINGLE-raster reading (best measured ~0.13 — clearing
+the 0.05 floor is NOT guaranteed by this window alone; the real defence
+is the dual-raster AND at ADJUDICATE, tested separately); a box
+too short for an interior declines rather than fakes a reading; plus
+`gather_notehead_ink`'s own orchestration on a fake cell (files the max of
+both rasters, skips non-notehead classes entirely, abstains `no_mask` when
+neither raster exists). `tools/omr/tests/test_staged_notehead_precision.py`
+(+21 tests, `TestNoInkUnderBox`): refuses only when both rasters are
+low; positive controls for ink on EITHER raster alone (simulating a head
+on a line, and a blank box crossed by a line) are NOT refused; a hollow
+head reading high on both is not refused; a missing quantity or one
+raster declined never refuses; runs without `Q.CELL_STAFF_SPACE`; runs
+before the shape rules. All RED (`AttributeError`/`KeyError`) against
+`7893ede2` before this branch, GREEN here. Fast tier: 3,765 passed (main's
+own 3,742-ish + this branch's 46 new), 3 skipped, `staged.check` **247**
+(unchanged from origin/main — `staged.capture`'s own four-word raster
+vocabulary has no name for the `cell.binary` side-channel this reader
+reads BESIDE `image_no_staff`; recorded as a comment on the
+`READER_RASTER` entry rather than widening that check's vocabulary, which
+is a separate change on no roadmap item of its own).
+
+### Priced on three real one-page re-gathers
+
+Setup per CLAUDE.md §5a (worktree symlinks + `mkdir -p tools/omr/training/
+data`); weights `deepscoresv2-yolov8l-hollow-graft-shift09-2026-09-04.pt`,
+`--no-surya --no-ocr`, absolute PDF/weights paths (a bare `library/...`
+relative path only resolves from the MAIN checkout, not a worktree — the
+CLI takes the raw path it is given and does not call `library_root()` for
+it). `benchmarks/omr-owner-domain-2026-09/probe/probe_no_ink_2_6h.py`, one
+`load_record` read per file:
+
+| record | notehead-classed glyphs | `Q.NOTEHEAD_INK` abstained | min | p5 | median | `no_ink_under_box` |
+|---|--:|--:|--:|--:|--:|--:|
+| Litolff pdf idx 3 (`litolff-p3.record.json`) | 474 | 0 | 0.4877 | 0.711 | 1.0 | **0** |
+| Breitkopf pdf idx 1 (`breitkopf-p1.record.json`) | 1,015 | 0 | 0.4032 | 0.7718 | 1.0 | **0** |
+| Litolff pdf idx 4 (`litolff-p4.record.json`) | 1,008 | 0 | 0.4837 | 0.7876 | 1.0 | **0** |
+
+**Reach is real** (CLAUDE.md §6b): the measurement ran on every one of the
+2,497 notehead-classed glyphs across all three pages, 0 abstained — the
+raster was always available and the window was always measurable.
+**Accuracy on this population is exactly zero refusals**, and the reason
+is visible in the distribution itself: the LOWEST `Q.NOTEHEAD_INK` value
+measured on ANY of the three pages is 0.40–0.49, eight to ten times the
+0.05 floor. An ordinary page's notehead-classed detections are,
+overwhelmingly, real ink — exactly what §2.6g's own finding already
+implied (4 confirmed blanks out of 345 subjects in a WHOLE MOVEMENT's
+`far_no_rungs` population, not out of the document's noteheads generally
+— and see below: even one of THOSE four turns out to be real ink).
+`not_a_notehead:*` counts moved as expected on all three pages from the
+rules that already shipped (`too_narrow`/`clipped_fragment`/`belongs_to_
+a_nearer_staff`/`is_a_meter_digit`/`is_a_clef`); `no_ink_under_box`
+contributed 0 to any of the three files, and `written.notes`/`notes_not_
+written` account for every glyph on every record (380 written / 89
+refused on Litolff p3; 229 written / 986 refused on Breitkopf p1 —
+Breitkopf's own SHATTERING convention, CLAUDE.md §10, produces far more
+per-glyph refusals of every kind on this page).
+
+### The targeted test against §2.6g's own 4 confirmed blanks — 1 of 4 reached, and it CORRECTS the brief's own premise
+
+The gate the brief actually asks for is narrower than "does this fire on
+an ordinary page": does it fire on the FOUR SPECIFIC glyphs §2.6g's own
+read-by-eye sample named (`glyph/10/1/8/8/6`, `glyph/4/1/0/1/0`,
+`glyph/8/1/2/18/1`, `glyph/13/0/2/6/4` — PDF pages 4, 8, 10, 13, crops
+01/04/08/12). Those subjects live only in the whole-movement record
+`regather-20260929` gathered before this quantity existed, and that
+worktree is off-limits to write into (another session's own Brahms gather
+was running there) — so the only way to reach them is a fresh, targeted
+re-gather of exactly those four pages.
+
+**A combined `--pages 4,8,10,13` re-gather looked stalled** (0.0% CPU,
+its own CPU-time counter frozen across repeated checks spanning over 90 s
+of wall clock, at `gather_ink cell/4/1/10/14`) and was killed, matching
+the shape CLAUDE.md's own §5b operational note and ROADMAP 2.6d already
+record for a different stall ("killed rather than retried"). **A
+single-page retry of PAGE 4 ALONE then completed cleanly in full** —
+proving the first kill was CONTENTION, not a hang: this machine was also
+running another session's 27-page, 600 DPI whole-movement Brahms gather
+at a sustained 100% CPU for over an hour throughout this lane's own
+session, and a niced, lower-priority process can show frozen CPU-time
+across a real minute of wall clock under that load without being stuck.
+**A second attempt at `--pages 8,10,13` together then showed the SAME
+frozen-CPU-time shape** — at the structurally IDENTICAL point (the last
+cell of system 1's last staff, same as the first stall, on a different
+page) — and was killed after ~55 s with zero CPU progress rather than
+risk an open-ended wait a second time. Whether that is the same
+contention or a real hang this lane did not resolve; see "Not done".
+
+**Page 4 (`litolff-p4.record.json`, complete) reaches ONE of the four —
+`glyph/4/1/0/1/0` (crop 04) — and the result CORRECTS this lane's own
+premise rather than confirming it:**
+
+| subject | `ink_raw.best` | `ink_net.best` | verdict |
+|---|--:|--:|---|
+| `glyph/4/1/0/1/0` (crop 04) | **1.0** (`center`) | **1.0** (`center`) | `decided` `False` `notehead` |
+
+The box is **fully inked on BOTH rasters** — not a hallucination over
+blank paper at all. Read against §2.6g's own more careful wording (never
+against ROADMAP 2.6h's own paraphrase of it): *"4 read as isolated NOTES
+with truly blank paper (left AND right OVERHANG ≈ 0.0) on both sides — no
+ledger printed at the distance filed"* — the blank paper §2.6g measured is
+at the LEDGER RUNG'S OWN OVERHANG, to the left and right of where a rung
+would extend past the head, NOT under the head's own box. This subject is
+a real note standing far from any staff with no printed rung connecting
+it — `far_no_rungs`'s own correct description — not a detector box drawn
+over nothing. This lane's own rule gets it right: it does NOT refuse a box
+with real ink under it, and this is exactly why REQUIRING BOTH rasters low
+(never guessing from one) is the safe design — a box with `ink=1.0` on
+both sides is obviously not this rule's population, whatever question
+`far_no_rungs` is separately asking about it.
+
+*Not done / open* names what the other three subjects (pages 8, 10, 13)
+were not confirmed against, and revises the "80-90 of 345" estimate
+accordingly.
+
+### Recommendation
+
+**Ship the rule; do not read this session as having found its target
+population.** `no_ink_under_box` is BUILT, tested (RED→GREEN, hollow-head
+and head-on-a-line positive controls all pass), reach-confirmed (0
+abstained on 1,963 real notehead-classed glyphs across three real pages),
+and never fired a false refusal anywhere this lane looked — including on
+the one real, specific, previously-flagged-as-suspect subject it was able
+to check. That is a genuinely conservative, safe state to land a new
+refusal rule in. What it is NOT is a confirmed fix for the population
+§2.6g's own recommendation estimated at 80–90 of 345: the one direct
+check available argues that population is smaller than believed, possibly
+by a wide margin, because the flagship example turned out to be ordinary
+ink. The next step is `far_no_rungs`'s own 345 subjects, checked by
+`Q.NOTEHEAD_INK` directly rather than by re-reading crop prose — a
+`load_record` probe over the WHOLE MOVEMENT (once its own re-gather with
+this quantity exists) can answer in one pass how many of the 345 are
+actually low on both rasters, which is the number this item was really
+trying to reach.
+
+### Not done / open
+
+- **3 of the 4 confirmed-blank subjects were not reached** (pages 8, 10,
+  13 — see the stall/retry account above); only page 4's
+  `glyph/4/1/0/1/0` was priced directly. This lane cannot say whether the
+  other three are also full-ink "far, unringed" notes (crop 04's shape) or
+  genuine blank hallucinations (the brief's own premise) without
+  completing those pages, which needs either more patience against
+  contention or a quieter machine.
+- **THE PREMISE THIS ITEM WAS ASSIGNED ON IS PARTLY WRONG, MEASURED, NOT
+  ASSUMED.** ROADMAP 2.6h's own brief reads *"4 were isolated blanks — no
+  ink at all under the box"*; §2.6g's own FINDINGS (which the brief is
+  paraphrasing) says something narrower and correct — blank paper at the
+  ledger-rung OVERHANG, not under the head. The one subject priced here
+  confirms §2.6g's own wording over the brief's paraphrase of it: real
+  ink, `1.0` on both rasters. The "46 of 180 sampled Litolff 'notehead'
+  boxes were not noteheads" population CLAUDE.md §10 cites is a real,
+  separate, measured fact — but it is not established here that §2.6g's
+  4 `far_no_rungs` crops are a sample OF that population rather than of
+  ordinary far, unringed notes. A future pass should ask §2.6g's own
+  question again, narrower: of the 345 `far_no_rungs` subjects, how many
+  have `Q.NOTEHEAD_INK` near zero on BOTH rasters (this rule's actual
+  target), not how many were called "isolated blanks" in prose.
+- **The "80–90 of 345 would move" estimate is therefore NOT confirmed**,
+  and given the one direct data point available (1 of 1 checked is
+  full-ink, not blank), should be read as an UPPER BOUND that this lane's
+  own evidence pushes down, not a number to plan against.
+- **No real crops were rendered of an ACTUAL refusal.** `crop_no_ink_2_6h.
+  py` exists, ready, and was exercised against the (empty) `no_ink_under_
+  box` population on all three completed pages (p3, p1, p4) — 0 crops, 0
+  refused, because the rule found nothing to crop on any of them. The
+  manifest it WOULD write is the same shape as §2.6g's own: one banded
+  staff, the box bracketed red, a staff-space ruler, `VERDICT_none_yet:
+  null`.
+- **The 0.05 floor is not corpus-measured.** No real-vs-blank distribution
+  was available to fit it in an "empty gap" (CLAUDE.md rule 5); it is set
+  far under the measured shape of every real-head positive control this
+  lane's own tests exercise (filled head > 0.4, 6px ring > 0.4), and far
+  under the ONE real confirmed-far-unringed-note this lane measured
+  (1.0). It is a defensible floor, never fired a false refusal anywhere
+  this lane looked, but is not the calibration the brief asked for —
+  because this lane never found a genuine blank box to calibrate against.
+- **`capture.py`'s `READER_RASTER` vocabulary has no word for `cell.
+  binary`** — `CV_NOTEHEAD_INK` reads it beside `image_no_staff` and the
+  tool's own four-case classifier (ERASED / INTACT / ERASED_ELSE_INTACT /
+  OWN_ERASURE) reports it as plain `ERASED`, which is true but incomplete.
+  Recorded as a comment on that entry rather than widening the tool's own
+  vocabulary — a separate change, on no roadmap item of its own.
+- **The two apparent stalls were not root-caused.** Both happened at the
+  identical STRUCTURAL point (end of `gather_ink`'s per-cell loop for
+  system 1's last staff) on different pages, which is suspicious enough to
+  record even though the first one's retry (page 4 alone) proved it was
+  contention that time. Whether the SECOND stall (pages 8+10+13 together)
+  was the same contention or a reproducible slow/blocking step at that
+  exact boundary is unresolved; the other session's competing 100%-CPU,
+  27-page whole-movement gather was still running throughout, so
+  contention remains the more likely explanation, but it was not proven a
+  second time before this lane's own budget ran out.

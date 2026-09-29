@@ -1,0 +1,129 @@
+{
+  "roadmap_item": "2.6h",
+  "records": [
+    {
+      "label": "litolff-p3",
+      "path": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a821f6810cc4741b1/benchmarks/omr-owner-domain-2026-09/out/2.6h/litolff-p3.record.json",
+      "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf",
+      "status": "ok",
+      "load_seconds": 0.1,
+      "n_notehead_ink_rows": 474,
+      "notehead_is_not_a_notehead_by_reason": {
+        "too_narrow": 6,
+        "clipped_fragment": 17,
+        "is_a_clef": 2,
+        "belongs_to_a_nearer_staff": 1
+      },
+      "written_notes": 380,
+      "notes_not_written": {
+        "duration_narrowed": 37,
+        "not_a_notehead:too_narrow": 6,
+        "ink_is_a_whole_rest": 5,
+        "not_a_notehead:clipped_fragment": 17,
+        "not_a_rest:rest_is_a_duplicate_box": 2,
+        "owned_by_another_staff": 17,
+        "owner_not_read": 9,
+        "not_a_notehead:is_a_clef": 2,
+        "rest_duration_abstained": 6,
+        "not_a_notehead:belongs_to_a_nearer_staff": 1,
+        "rest_duration_narrowed": 1
+      },
+      "no_ink_under_box_rows": [],
+      "confirmed_blank_subjects": []
+    },
+    {
+      "label": "breitkopf-p1",
+      "path": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a821f6810cc4741b1/benchmarks/omr-owner-domain-2026-09/out/2.6h/breitkopf-p1.record.json",
+      "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf",
+      "status": "ok",
+      "load_seconds": 0.5,
+      "n_notehead_ink_rows": 1015,
+      "notehead_is_not_a_notehead_by_reason": {
+        "clipped_fragment": 26,
+        "is_a_meter_digit": 30,
+        "too_narrow": 225,
+        "belongs_to_a_nearer_staff": 7
+      },
+      "written_notes": 229,
+      "notes_not_written": {
+        "owned_by_another_staff": 45,
+        "duration_narrowed": 65,
+        "owner_not_read": 1,
+        "not_a_notehead:clipped_fragment": 26,
+        "not_a_notehead:is_a_meter_digit": 30,
+        "not_a_notehead:too_narrow": 225,
+        "rest_duration_abstained": 19,
+        "not_a_rest:rest_is_a_duplicate_box": 36,
+        "not_a_notehead:belongs_to_a_nearer_staff": 7,
+        "written_value_fits_no_note": 1,
+        "ink_is_a_whole_rest": 2,
+        "bar_does_not_add_up": 540
+      },
+      "no_ink_under_box_rows": [],
+      "confirmed_blank_subjects": []
+    },
+    {
+      "label": "litolff-p4",
+      "path": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a821f6810cc4741b1/benchmarks/omr-owner-domain-2026-09/out/2.6h/litolff-p4.record.json",
+      "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf",
+      "status": "ok",
+      "load_seconds": 0.4,
+      "n_notehead_ink_rows": 1008,
+      "notehead_is_not_a_notehead_by_reason": {
+        "too_narrow": 18,
+        "clipped_fragment": 30,
+        "belongs_to_a_nearer_staff": 11,
+        "is_a_clef": 4
+      },
+      "written_notes": 630,
+      "notes_not_written": {
+        "rest_duration_narrowed": 5,
+        "ink_is_a_whole_rest": 11,
+        "rest_duration_abstained": 5,
+        "duration_narrowed": 95,
+        "not_a_notehead:too_narrow": 18,
+        "not_a_notehead:clipped_fragment": 30,
+        "owned_by_another_staff": 98,
+        "owner_not_read": 41,
+        "not_a_notehead:belongs_to_a_nearer_staff": 11,
+        "no_pitch": 70,
+        "not_a_rest:rest_is_a_duplicate_box": 4,
+        "not_a_notehead:is_a_clef": 4
+      },
+      "no_ink_under_box_rows": [],
+      "confirmed_blank_subjects": [
+        {
+          "subject": "glyph/4/1/0/1/0",
+          "tag": "2.6g crop 04",
+          "notehead_ink_value": 1.0,
+          "notehead_ink_detail": {
+            "ink_raw": {
+              "best": 1.0,
+              "best_window": "center",
+              "windows": {
+                "center": 1.0,
+                "ring": 0.6498
+              }
+            },
+            "ink_net": {
+              "best": 1.0,
+              "best_window": "center",
+              "windows": {
+                "center": 1.0,
+                "ring": 0.6498
+              }
+            }
+          },
+          "verdict_outcome": "decided",
+          "verdict_value": false,
+          "verdict_reason": "notehead"
+        }
+      ]
+    },
+    {
+      "label": "litolff-p8-10-13",
+      "path": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a821f6810cc4741b1/benchmarks/omr-owner-domain-2026-09/out/2.6h/litolff-p8-10-13.record.json",
+      "status": "missing"
+    }
+  ]
+}
