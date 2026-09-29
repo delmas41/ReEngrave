@@ -15,7 +15,7 @@ from __future__ import annotations
 
 from collections import Counter
 from dataclasses import dataclass
-from typing import Any, Dict, Iterable, List, Optional, Sequence, Tuple
+from typing import Any, Dict, FrozenSet, Iterable, List, Optional, Sequence, Tuple
 
 from ... import transcribe as _legacy_articulation
 from ..adjudicate import Checkable, Evidence, Mode, Ruling, Term, decision, tally
@@ -96,6 +96,57 @@ LADDER_REACH_SPACES = 1.0
 #: rungs (GATHER's arithmetic: gap >= 1.75 spaces). A candidate needing 0 or 1
 #: is a near miss, a hint rather than a claim, and keeps today's tiers.
 FAR_MIN_RUNGS = 2
+
+# ─────────────────────────────────────────────────────────────────────────────
+# ROADMAP 2.6f -- A RUNG THAT IS ANOTHER CANDIDATE'S OWN STRUCTURE NEVER
+# COUNTS TOWARD A FARTHER ONE (Sean, via §2.6c.2/§2.6c.3: "if a ledger answer
+# disagrees with the print, the RUNG FINDING is wrong, not the rule")
+#
+# FINDINGS §2.6c.3 read all 9 Breitkopf `ledger_direction`/`range_veto`
+# reversals §2.6c.2 left unadjudicated by eye: 7 of 9 share one shape. The
+# note stands right at its NEAR candidate's own first ledger (`anchor_y` within
+# 0.003-0.111 spaces of `head_y` in all seven); every one also has a SECOND
+# real `ledgerLine` box exactly one more space out, on the far side of the
+# head from that near candidate -- §2.7b's own docstring already names this
+# shape for its OWN two prior instances (#4/#22, 2026-09-28): "a CHORD-MATE's
+# own ledger (the near staff's second rung, beyond the head)". The FAR
+# candidate's own multi-step walk (needing 2-3 steps from ITS OWN, much more
+# distant edge) reaches that same box too, inside `RUNG_GRID_TOLERANCE_SPACES`
+# (0.5 sp -- loose by construction, CLAUDE.md rule 5 and 2.6c.2's own six-head
+# fixture reach up to 0.42 sp on a genuine ladder), and because
+# `ledger_direction` is a HARD GATE, that one coincidental match decides the
+# whole contest before hairpin/ladder/range/distance are ever weighed.
+#
+# CONVENTION ASSUMED: a rung is toward the candidate whose OWN established
+# own-line it continues by an INTEGER number of staff spaces, not the
+# candidate whose independent, longer walk merely happens to also reach it.
+# Measured against the SAME rung: the near candidate's own-line-anchored
+# residual is 0.003-0.111 spaces (mean 0.041) on the seven; the far
+# candidate's own edge-anchored residual for the identical box is 0.015-0.39
+# spaces -- #1/#2 (0.36/0.39) are not reachable by simply tightening
+# `RUNG_GRID_TOLERANCE_SPACES`, which would also refuse real far-note ladders
+# elsewhere (2.6c.2's fixture needs up to 0.42). `OWN_STRUCTURE_TOLERANCE_
+# SPACES` below is set at 0.2 -- roughly double the worst of the seven
+# residuals (0.111) and still well inside the loosest false match (0.36) it
+# must catch, while leaving room the tightest TRUE far-ladder step measured
+# so far (0.42, 2.6c.2's fixture) does not fall inside.
+#
+# WHAT WOULD FALSIFY IT, AND WHAT ALREADY DID (repaired, not merely noted):
+# Litolff #14 (2.6c.2's own fixture, a positive control) is EXACTLY this
+# falsifying shape -- a COMPLETE 3-of-3 ladder from the true far staff whose
+# own outermost rung sits 0.08 px from a different, nearer candidate's
+# own-line. The guard added because of it: the check never fires on a side
+# that is ALREADY complete (`missing >= 1` required first) -- every one of
+# the seven §2.6c.3 candidates this lane fixes has `missing == 1`, so the
+# guard costs the fix nothing. What would STILL falsify it: an INCOMPLETE
+# far ladder (missing >= 1) whose one remaining `toward` rung is genuinely
+# its own, print-confirmed, yet also lands within 0.2 spaces of an integer
+# number of staff-spaces beyond a nearer candidate's own-line -- none of the
+# nine §2.6c.3 contests or the six §2.6c.2/2.7b.8 fixture heads is this; NOT
+# CONFIRMED beyond them. This check never compares a side against ITS OWN
+# `anchor_y` (a candidate that genuinely needs two rungs for THIS SAME note
+# keeps both -- the positive control this lane's tests pin).
+OWN_STRUCTURE_TOLERANCE_SPACES = 0.2
 
 #: `glyph_owner` abstentions that mean *we could not read whose this is*.
 #: EXPORT refuses such a head under `owner_not_read` rather than writing it on
@@ -444,6 +495,19 @@ class LadderSide:
     #: counted TOWARD this side (never the own line) -- so `trace` can say
     #: which reader named a step that decided a contest.
     sources: Tuple[Tuple[str, str], ...] = ()
+    #: ROADMAP 2.6f. This side's own staff spacing and the head's own line's
+    #: Y (page pixels), carried so a DIFFERENT side can ask "is this rung an
+    #: integer number of MY spaces beyond MY own line" without re-querying
+    #: geometry -- `None` unless `frame == "page"`.
+    spacing: Optional[float] = None
+    anchor_y: Optional[float] = None
+    #: ROADMAP 2.6f. `(rung key, y)` for every `toward` rung (own line
+    #: excluded), so a cross-candidate check can ask the same question
+    #: without redoing the walk.
+    toward_ys: Tuple[Tuple[str, float], ...] = ()
+    #: ROADMAP 2.6f. `toward` rungs this side's SECOND walk excluded because
+    #: another candidate's own-line explains them more precisely (`trace`).
+    discounted: Tuple[str, ...] = ()
 
     @property
     def missing(self) -> int:
@@ -475,6 +539,8 @@ class LadderSide:
             out["refused"] = dict(self.refused)
         if self.sources:
             out["sources"] = dict(self.sources)
+        if self.discounted:
+            out["discounted_own_structure"] = list(self.discounted)
         return out
 
 
@@ -498,7 +564,8 @@ class LedgerReading:
 
 def ladder_side(staff: str, head_y: float, head_x0: float, head_x1: float,
                 line_ys: Sequence[float], spacing: float,
-                rungs: Iterable[Rung]) -> LadderSide:
+                rungs: Iterable[Rung],
+                excluded_keys: FrozenSet[str] = frozenset()) -> LadderSide:
     """Walk the ladder from `staff`'s outer line toward the head, one step
     per staff space, exactly as `gather._observe_ladder` does (same
     `LEDGER_ROUND_UP`, same half-space grid tolerance, same x-overlap test)
@@ -508,6 +575,11 @@ def ladder_side(staff: str, head_y: float, head_x0: float, head_x1: float,
     ⚠️ ONE RUNG PER STEP, NEAREST FIRST, KEPT BEFORE REFUSED. A refused box
     at a step is reported (`refused`) and never counted; a physical rung
     boxed in two cells is two boxes at one step and counts once.
+
+    `excluded_keys` (ROADMAP 2.6f, `ladder_sides_with_discount`'s second
+    pass): rungs dropped from the pool entirely, as if the detector never
+    drew them -- a full re-walk, so `missing`/`reach`/`reach_spaces` all
+    recompute honestly rather than being patched after the fact.
     """
     ys = [float(v) for v in line_ys]
     sp = float(spacing)
@@ -521,7 +593,8 @@ def ladder_side(staff: str, head_y: float, head_x0: float, head_x1: float,
     if expected <= 0:
         return LadderSide(staff=staff, expected=0, found=0)
     tol = RUNG_GRID_TOLERANCE_SPACES * sp
-    pool = [r for r in rungs if r.x0 <= head_x1 and r.x1 >= head_x0]
+    pool = [r for r in rungs if r.x0 <= head_x1 and r.x1 >= head_x0
+            and r.key not in excluded_keys]
     used: set = set()
     found: List[Rung] = []
     refused: Counter = Counter()
@@ -547,6 +620,8 @@ def ladder_side(staff: str, head_y: float, head_x0: float, head_x1: float,
                 if abs(r.y - head_y) <= OWN_LINE_MAX_SPACES * sp), None)
     toward = tuple(r.key for r in found if r is not own)
     sources = tuple((r.key, r.source) for r in found if r is not own)
+    discounted = tuple(k for k in excluded_keys
+                       if any(r.key == k for r in rungs))
     return LadderSide(
         staff=staff, expected=expected, found=len(found), toward=toward,
         n_toward=len(toward), stands_on=own.key if own else None,
@@ -554,7 +629,9 @@ def ladder_side(staff: str, head_y: float, head_x0: float, head_x1: float,
         reach_spaces=abs(head_y - outer) / sp,
         refused=tuple(sorted(refused.items())),
         row_ids=tuple(r.row_id for r in found if r.row_id),
-        sources=sources)
+        sources=sources, spacing=sp, anchor_y=(own.y if own else None),
+        toward_ys=tuple((r.key, r.y) for r in found if r is not own),
+        discounted=discounted)
 
 
 def ladder_side_from_count(staff: str, expected: int, found: int,
@@ -567,6 +644,94 @@ def ladder_side_from_count(staff: str, expected: int, found: int,
     return LadderSide(staff=staff, expected=expected, found=found,
                       n_toward=found, reach=(found >= expected),
                       frame="count", row_ids=row_ids)
+
+
+def _shared_own_structure_exclusions(
+        sides: Sequence[LadderSide]) -> Dict[str, FrozenSet[str]]:
+    """ROADMAP 2.6f. Per candidate STAFF, which of its OWN `toward` rung
+    keys are better read as a DIFFERENT candidate's own ledger structure --
+    within `OWN_STRUCTURE_TOLERANCE_SPACES` of an INTEGER number of that
+    other candidate's own staff-spaces beyond ITS `anchor_y`.
+
+    Never checked against a side's own `anchor_y` (only `other.staff !=
+    s.staff`): a candidate that genuinely needs two rungs for THIS note
+    keeps both -- this is the exclusion set `ladder_sides_with_discount`
+    re-walks with, not a verdict on its own.
+
+    ⚠️ ONLY where `s` is not ALREADY complete (`s.missing >= 1`). Litolff
+    #14 (`test_staged_ledger_direction.py`, positive control) is the
+    falsifying case this guard exists for: staff/12/0/11's ladder is
+    COMPLETE (3 of 3, tight residuals) and its OWN outermost rung happens
+    to sit within 0.08 px of staff/12/0/10's own-line -- without this
+    guard the discount fires on staff/12/0/11's genuine 2nd/3rd rungs and
+    breaks a real far note. All seven §2.6c.3 candidates this lane fixes
+    have `missing == 1` (never 0) at the point of discount, so the guard
+    costs the fix nothing.
+    """
+    out: Dict[str, set] = {}
+    for s in sides:
+        if s.spacing is None or s.missing < 1:
+            continue
+        for key, y in s.toward_ys:
+            for other in sides:
+                if other.staff == s.staff or other.anchor_y is None \
+                        or other.spacing is None:
+                    continue
+                steps = abs(y - other.anchor_y) / other.spacing
+                k = round(steps)
+                if k < 1:
+                    continue
+                if abs(steps - k) <= OWN_STRUCTURE_TOLERANCE_SPACES:
+                    out.setdefault(s.staff, set()).add(key)
+                    break
+    return {staff: frozenset(keys) for staff, keys in out.items()}
+
+
+#: One build spec per candidate: the exact positional args `ladder_side`
+#: takes, before its trailing `excluded_keys`.
+LadderSpec = Tuple[str, float, float, float, Sequence[float], float,
+                   Sequence[Rung]]
+
+
+def ladder_sides_with_discount(specs: Sequence[LadderSpec]
+                               ) -> Tuple[LadderSide, ...]:
+    """Build one `LadderSide` per spec (`ladder_side(*spec)`), then re-walk
+    any side whose `toward` rung is §2.6f's shared-structure shape, with
+    that rung excluded.
+
+    `glyph_owner` and 2.7b's `belongs_to_a_nearer_staff` both call this
+    instead of `ladder_side` directly -- the SAME two-pass discount, so the
+    two decisions cannot discount a rung differently (the property 2.6c
+    itself was built to hold, ROADMAP 2.6c.2/§4c)."""
+    sides = tuple(ladder_side(*spec) for spec in specs)
+    excluded = _shared_own_structure_exclusions(sides)
+    if not excluded:
+        return sides
+    rebuilt = []
+    for spec, side in zip(specs, sides):
+        keys = excluded.get(spec[0])
+        if not keys:
+            rebuilt.append(side)
+            continue
+        # ⚠️ ROADMAP 2.6f: the SAME physical rung is routinely boxed TWICE --
+        # once per cell the pad reaches (`cell_rungs`'s own precedent) -- and
+        # the first walk's own dedup (`ladder_side`'s `used.update`, radius
+        # `tol / 2`) only picks ONE of the two as `best` to report. Excluding
+        # only that reported key leaves its physical twin, under a different
+        # subject id, still in the pool for the second walk to re-find at
+        # the SAME step -- widen the exclusion to every rung within the same
+        # dedup radius of each discounted rung's Y, not only its own key.
+        y_by_key = dict(side.toward_ys)
+        spacing = spec[5]
+        dedup_tol = RUNG_GRID_TOLERANCE_SPACES / 2.0 * spacing
+        full = set(keys)
+        for key in keys:
+            y = y_by_key.get(key)
+            if y is None:
+                continue
+            full.update(r.key for r in spec[6] if abs(r.y - y) <= dedup_tol)
+        rebuilt.append(ladder_side(*spec, excluded_keys=frozenset(full)))
+    return tuple(rebuilt)
 
 
 def ledger_direction(sides: Sequence[LadderSide]) -> LedgerReading:
@@ -718,7 +883,13 @@ def _contest_ledger_reading(ev: Evidence, bands, ladders: Dict[str, Any]
     cands = [r.detail.get("candidate") for r in bands
              if r.detail.get("candidate") is not None]
     rungs: Optional[List[Rung]] = None
-    sides: List[LadderSide] = []
+    # ⚠️ ROADMAP 2.6f: page-frame candidates are built TOGETHER via
+    # `ladder_sides_with_discount` (its second pass needs every side's
+    # `anchor_y` at once), so their specs are collected first and the
+    # anonymous-count sides are slotted back in afterward, in order.
+    sides: List[Optional[LadderSide]] = []
+    page_specs: List[LadderSpec] = []
+    page_positions: List[int] = []
     for cand_key in cands:
         geo = (staff_geometry(ev, R.Subject.from_key(cand_key))
                if head is not None else None)
@@ -738,8 +909,10 @@ def _contest_ledger_reading(ev: Evidence, bands, ladders: Dict[str, Any]
                 # (of either source) speaks to.
                 rungs = (cell_rungs(ev, list(dict.fromkeys(cells)), named)
                         + cv_rungs(ev))
-            sides.append(ladder_side(cand_key, head[2], head[0], head[1],
-                                     geo[0], geo[1], rungs))
+            page_positions.append(len(sides))
+            page_specs.append((cand_key, head[2], head[0], head[1],
+                               geo[0], geo[1], rungs))
+            sides.append(None)
         elif lad is None:
             sides.append(LadderSide(staff=cand_key, expected=0, found=0,
                                     frame="count"))
@@ -752,6 +925,10 @@ def _contest_ledger_reading(ev: Evidence, bands, ladders: Dict[str, Any]
             else:
                 fnd = int(d.get("found") or 0) - len(discounted)
             sides.append(ladder_side_from_count(cand_key, exp, fnd, (lad.id,)))
+    if page_specs:
+        for pos, built in zip(page_positions,
+                              ladder_sides_with_discount(page_specs)):
+            sides[pos] = built
     return ledger_direction(sides)
 
 

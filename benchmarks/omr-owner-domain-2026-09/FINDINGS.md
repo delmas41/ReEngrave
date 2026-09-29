@@ -1684,3 +1684,181 @@ shape entirely outside what a CV-ink calibration pass would ever see.
   `benchmarks/omr-owner-domain-2026-09/out/print/2.6c-reversal-*` and
   `crop_reversals_2_6c3.py`, on `claude/owner-reversals-2.6c`, NOT merged
   (evidence lane, no pipeline code changed).
+
+## §2.6f — a rung that is another candidate's own ledger structure never counts toward a farther one (2026-09-29, BUILT not merged)
+
+Branch `claude/own-rim-rung-2.6f`, off `origin/main` (`42cb4792`, §2.6c.3's
+own merge). **Path: STAGED** (`adjudicators/ownership.py`,
+`adjudicators/notehead_precision.py`). Sean, via §2.6c.2/§2.6c.3: *"if a
+ledger answer disagrees with the print, the RUNG FINDING is wrong, not the
+rule."* §2.6c.3 read all nine Breitkopf reversals by eye and found 9 of 9
+wrong; this lane fixes the mechanism behind seven of them (the two
+`range_veto` reversals are additive, untouched, and recorded only).
+
+### The mechanism, precisely (not "the same notehead's own ink" — corrected)
+
+§2.6c.3's own read called the false credit "the same notehead's own ink,
+double-boxed at its far rim." Re-examining the geometry for this lane (every
+credited rung's exact bbox, plus every OTHER notehead-classified `Q.GLYPH_
+BOX` filed in the same cell) found a more precise mechanism, matching
+§2.7b's own docstring for its prior two instances (#4/#22, 2026-09-28): a
+SEPARATE, real notehead (a chord-mate, or a later note the same stem
+serves) stands one space further from the note's own staff, and THAT
+note's own ledger is what the far candidate's longer walk picks up.
+Contest #1 (`glyph/10/1/0/1/1`): `glyph/10/1/1/1/2`, a second `notehead`
+box in the SAME cell, centres at y=4027.75 — 1.1 px from the credited
+rung's centre (4026.86) and 1.06 spaces from the contested note's own line
+(4056.1) — a chord a third or so above, sharing staff/10/1/1's second
+ledger. Whether the intervening mark is a chord-mate's ledger or (as
+contest #7's raw render shows, a stem passing through two short ledger
+dashes before the staff) some other same-staff structure does not change
+the fix: either way the rung is the NEAR candidate's, reachable from its
+own already-found own-line by an integer number of its own spaces, not the
+far candidate's.
+
+### What was built
+
+1. **`LadderSide` carries `spacing` and `anchor_y`** (the own-line's own Y,
+   renamed from an initial `own_y` — see the wiring false-positive below)
+   **and `toward_ys`** (`(rung key, Y)` for every non-own `toward` rung),
+   populated in `ladder_side` from data it already computes locally. A new
+   `discounted` field records what a second walk excluded, for `trace`.
+2. **`_shared_own_structure_exclusions(sides)`**: for every side `s` with
+   `s.missing >= 1`, for every `(key, y)` in `s.toward_ys`, checks every
+   OTHER side `other` (`other.staff != s.staff`, `other.anchor_y` set):
+   `steps = abs(y - other.anchor_y) / other.spacing`; if that is within
+   `OWN_STRUCTURE_TOLERANCE_SPACES` of a positive integer, `key` is
+   excluded from `s`. Never compares a side against its own `anchor_y` (a
+   candidate genuinely needing two rungs for THIS note keeps both) and
+   never fires on an already-COMPLETE side (`missing >= 1` required first
+   — the guard the falsifying case below forced in).
+3. **`ladder_sides_with_discount(specs)`**: builds every side once
+   (`ladder_side(*spec)`), computes the exclusion sets, and for any side
+   with something excluded, re-walks it (`ladder_side(*spec,
+   excluded_keys=...)`) with the excluded key AND every physical duplicate
+   of it (the same dedup radius `ladder_side` itself uses for a rung boxed
+   in two cells, CLAUDE.md §10) removed from the pool entirely — a full
+   re-walk, so `missing`/`reach`/`reach_spaces` all recompute honestly.
+   `glyph_owner` (`_contest_ledger_reading`) and 2.7b's
+   `belongs_to_a_nearer_staff` both call this instead of `ladder_side`
+   directly, so the two decisions cannot discount a rung differently — the
+   SAME property 2.6c itself was built to hold (ONE helper, ROADMAP
+   2.6c/§4c).
+4. **`OWN_STRUCTURE_TOLERANCE_SPACES = 0.2`**, CONVENTION ASSUMED / WHAT
+   WOULD FALSIFY IT header in `ownership.py`: measured against the SAME
+   rung, the near candidate's own-line-anchored residual is 0.003–0.111
+   spaces (mean 0.041) on the seven §2.6c.3 contests; the far candidate's
+   own edge-anchored residual for the identical box is 0.015–0.39 spaces —
+   tightening `RUNG_GRID_TOLERANCE_SPACES` (0.5) to catch #1/#2 (0.36/0.39)
+   would also refuse real far-note ladders elsewhere (2.6c.2's own fixture
+   reaches to 0.42). 0.2 sits roughly double the worst of the seven and
+   comfortably inside the loosest false match.
+
+### The falsifying case, found and repaired before merge (not a hypothetical)
+
+Running the existing `test_staged_ledger_direction.py`/`test_staged_nearer_
+staff.py` (47 tests, the six 2.7b.8 heads + hard-gate pin) against the
+first cut of this fix: **2 failed.** Litolff #14 (`glyph/12/0/11/14/1`,
+Sean's G, the FILED staff) — a genuine, COMPLETE 3-of-3 ladder from
+staff/12/0/11 — was wrongly discounted, because its own outermost rung
+sits 0.08 PIXELS from staff/12/0/10's own-line (two staves' grids are that
+close together on this page). Without a guard, the fix would have broken
+exactly the shape it exists to protect. **The repair**: `_shared_own_
+structure_exclusions` never fires on a side that is already `missing == 0`
+complete. Every one of the seven contests this lane fixes has `missing ==
+1` at the point of discount, so the guard costs the fix nothing — verified
+by re-running the full base-vs-arm comparison below AFTER the guard was
+added, not before.
+
+### RED → GREEN
+
+`tools/omr/tests/test_staged_shared_structure_2_6f.py` (new file, 6 tests):
+`extract_shared_structure_fixture_2_6f.py` cuts one head per contest from
+the Breitkopf 27b arm record (`shared_structure_2_6f.json`, following
+`extract_ledger_fixture_2_6c.py`'s exact shape) for the seven real-contest
+tests, plus four synthetic boundary tests exercising
+`_shared_own_structure_exclusions`/`ladder_sides_with_discount` directly:
+the measured shape discounted, the Litolff #14 shape (synthetic, real
+numbers) NOT discounted, a single-side genuine second ledger NOT
+discounted (the manager's positive control, literally), and a physical
+duplicate of a discounted rung ALSO excluded. RED verified by checking out
+`42cb4792`'s `ownership.py`/`notehead_precision.py` into the working tree
+(`git checkout 42cb4792 -- <2 files>`, restored via `git checkout HEAD --
+<2 files>` — no bare `git stash`, current work committed first): all 6 new
+tests fail (`ladder_sides_with_discount` does not exist), the existing 47
+pass unchanged on both trees. GREEN here: 53/53.
+
+### Re-run of the base-vs-arm comparison, Breitkopf AND Litolff
+
+Same method as §2.6c.3 (`readjudicate_owner_2_6c.py --dump` from an
+extracted `8100c9ff` tree and from this branch, over the SAME two 27b arm
+records, diffed subject-by-subject).
+
+**Breitkopf** (24,795 `glyph_owner` subjects): the `ledger_direction`→
+`ledger_direction` value-changed bucket (14 subjects, §2.6c.3's 7 contests)
+is **GONE** — every one reverts to base's winner, reason now `ladder`
+(the additive term wins once the false hard-gate credit is removed and the
+gate correctly goes silent). The `ledger_direction`→`range_veto` bucket (4
+subjects, 2 contests) is **UNCHANGED** — exactly as expected, this fix
+touches no additive term. Whole-document diff of this lane's OWN effect
+(today's main before vs. after, isolating 2.6f alone): **49 subjects
+changed** — 14 as above, 2 keep the SAME winner but relabel `ladder`→
+`ledger_direction` (a losing candidate's spurious rung was the only thing
+keeping the true winner off the hard gate; winner unchanged, verified), and
+**33 newly abstain `far_no_rungs`**. Sampled two of the 33
+(`glyph/10/0/7/2/2`/`glyph/10/0/8/2/2`): the identical shape recurring —
+both sides now show only their shared own-line (`toward=0` on both, one
+side's former "toward" rungs — 7 physical boxes — all discounted as the
+other side's own structure) — a reading gap Sean's own convention prefers
+over the guess this lane removed, not a lost correct answer.
+
+**Litolff** (6,013 subjects): §2.6c.2 already found ZERO `ledger_direction`
+reversal-shape subjects here (all 33 winner changes there are one-
+directional, `distance`/`ladder`→`ledger_direction`), and this lane
+confirms it stays that way — no NEW reversal shape, no regression. This
+lane's own effect (before/after, isolated): **3 subjects changed**, all
+newly abstaining `far_no_rungs`, same explained shape, sampled and
+confirmed benign.
+
+### A false positive was hit and fixed, not merely noted
+
+The first cut named the own-line field `own_y`. `pytest tools/omr/tests -m
+"not slow"` went RED: `staged.wiring --check` reported BROKEN (`DETAIL
+Q.GLYPH_BAND_DISTANCE.own`'s `KNOWN_GAPS` entry went STALE). CLAUDE.md
+§4d's third blind spot, hit a THIRD time in this exact file (2.6c.2 hit it
+on a bare module import, 2.6d on an unresolved GATHER site): `wiring`'s
+"who reads a key" scan matches a bare substring, and `other.own_y` contains
+the literal text `.own_y`, which contains `.own` — the tool read that as a
+consumer of the UNRELATED `Q.GLYPH_BAND_DISTANCE.own` detail key
+(`adjudicate_glyph_owner`'s own `own` boolean, a different fact entirely).
+Fixed at the name (`own_y` → `anchor_y`), not by touching `KNOWN_GAPS` —
+the module's own comment says why: *"a gap list naming a key is not a
+consumer of it."* `staged.wiring` returned to `open=67, status=ok`
+(identical to `origin/main`); `staged.check` TOTAL **247**, unchanged.
+
+### Gate
+
+Fast tier: **3,707 passed**, 3 skipped (main's 3,701 + this lane's 6 new).
+`staged.check` **247**, identical to `origin/main`. No `library/`/
+`omr-weights/`/venv path in any new test file (checked by grep before
+commit, per the 09-28 CLAUDE.md addition that a machine-local path in a
+test file's own TEXT — including a comment — makes the whole file slow).
+
+### Not done / open
+
+- No count of how many notes on the whole Breitkopf record carry a
+  notehead whose second-ledger structure could be miscredited this way —
+  this lane fixed the seven §2.6c.3 named it and confirmed 33 more of the
+  same shape exist, not the total population.
+- The two `range_veto` reversals (§2.6c.3 #8/#9) are RECORDED only, per
+  the brief — `range_veto`'s own written-range table was not inspected;
+  whether it is right to veto a note this close to its own staff's first
+  ledger is a separate, unmeasured question.
+- `OWN_STRUCTURE_TOLERANCE_SPACES` is argued from seven residuals on ONE
+  document (Breitkopf) — NOT CONFIRMED on Litolff (which has none of this
+  shape to measure it against) or engraved.
+- No print crop for this lane's own fix (an evidence lane, §2.6c.3, already
+  put the print in front of Sean for these exact seven contests before
+  this code existed); the 33 newly-abstaining Breitkopf subjects and the 3
+  Litolff ones were sampled and read from the record's own geometry, not
+  cropped against the page.
