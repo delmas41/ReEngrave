@@ -54,6 +54,30 @@ def _stem(log, x, y, w=3, h=60):
                 image="no_staff", staff_lines_erased=True)
 
 
+STAFF = R.staff(0, 0, 0)
+
+
+def _head_pf(log, gi, x, y, page_x, page_y=0.0, w=20, h=16):
+    """`_head`, plus a PAGE-frame box -- ROADMAP 2.21's own input. `page_x`
+    is independent of the canonical `x` so a fixture can hold the two heads
+    apart canonically (which is what makes `Q.EVENT` treat them as separate
+    events at all) while controlling, separately, whether they SOUND
+    TOGETHER on the page -- the fact 2.21's convention gates on."""
+    g = R.glyph(0, 0, 0, 0, gi)
+    log.observe(g, Q.NOTEHEAD_CLASS, "noteheadBlack", reader=READERS.DETECTOR,
+                frame="cell:0", score=0.9)
+    log.observe(g, Q.GLYPH_BOX, ("noteheadBlack", x, y, w, h),
+                reader=READERS.DETECTOR, frame="cell:0", score=0.9,
+                category="notehead",
+                bbox_page_px=[page_x, page_y, page_x + w, page_y + h])
+    return g
+
+
+def _spacing(log, staff=STAFF, px=10.0):
+    log.observe(staff, Q.STAFF_SPACING, px, reader=READERS.GEOMETRY,
+                frame="page")
+
+
 def _run(log, *order):
     log.freeze()
     adjudicate._ensure_decisions()
@@ -172,28 +196,87 @@ class TestTheVoiceSplit(unittest.TestCase):
         self.assertEqual(v.value["n_voices"], 1)
         self.assertEqual(v.value["rests_in_every_voice"], [])
 
-    def test_both_directions_at_different_x_are_TWO_voices(self):
+    def test_both_directions_at_different_x_with_NO_overlap_is_ONE_voice(self):
+        """⚠️⚠️ ROADMAP 2.21, CONVENTION ASSUMED (Sean asleep, question filed
+        `benchmarks/omr-voice-split-2026-09/QUESTION.md`, NOT YET CONFIRMED):
+        this is the naive rule's whole population on Breitkopf p1 (17 of 156
+        held bars) -- a single line whose stems flip crossing the middle
+        line, with the two "directions" never sounding together. Before
+        2.21 this fixture decided `two_voices`; that was the bug."""
         log = Log()
-        _head(log, 0, 90)
-        _head(log, 1, 300)
+        _spacing(log)
+        _head_pf(log, 0, 90, 0, page_x=90)      # up, page x ~100
+        _head_pf(log, 1, 300, 0, page_x=300)    # down, page x ~310 -- far
         _stem(log, 88, -60, h=64)               # up
         _stem(log, 298, 12, h=60)               # down
         v = _run(log).verdict(Q.VOICES, CELL)
-        self.assertEqual(v.reason, "two_voices")
+        self.assertIs(v.outcome, Outcome.DECIDED)
+        self.assertEqual(v.reason, "one_voice_no_overlap")
+        self.assertEqual(v.value["n_voices"], 1)
+        self.assertEqual(v.value["voices"], [[0, 1]])
+        self.assertEqual(v.detail["overlap"]["source"], "raw_page_x")
+
+    def test_both_directions_SHARING_AN_ONSET_are_TWO_voices(self):
+        """The positive control 2.21's brief asked for: two simultaneous
+        opposite-stem notes -- a real divisi -- stay two voices. Canonically
+        far apart (so `Q.EVENT` treats them as two separate events, whatever
+        the mechanism), but at the SAME page x -- the detector may box a
+        divisi's two heads at different canonical offsets within one
+        rescaled cell, and the page frame is the one that says they sound
+        together."""
+        log = Log()
+        _spacing(log)
+        _head_pf(log, 0, 90, 0, page_x=200)     # up
+        _head_pf(log, 1, 300, 120, page_x=200)  # down, same page x -- overlap
+        _stem(log, 88, -60, h=64)               # up
+        _stem(log, 298, 132, h=60)              # down
+        v = _run(log).verdict(Q.VOICES, CELL)
+        self.assertIs(v.outcome, Outcome.DECIDED)
+        self.assertEqual(v.reason, "two_voices_overlap_confirmed")
         self.assertEqual(v.value["voices"], [[0], [1]])
+        self.assertEqual(v.detail["overlap"]["source"], "raw_page_x")
+
+    def test_unread_onset_ABSTAINS_rather_than_picking_a_side(self):
+        """⚠️ RULE 8: "cannot tell" never becomes an answer. No page frame on
+        either head -- the record cannot say whether they overlap -- so this
+        must abstain, not silently keep the old two-voice answer or the new
+        one-voice answer."""
+        log = Log()
+        _head(log, 0, 90)                       # no page frame at all
+        _head(log, 1, 300)
+        _stem(log, 88, -60, h=64)                # up
+        _stem(log, 298, 12, h=60)                # down
+        v = _run(log).verdict(Q.VOICES, CELL)
+        self.assertIs(v.outcome, Outcome.ABSTAINED)
+        self.assertEqual(v.reason, "onset_unread")
+
+        log2 = Log()                             # positive control
+        _spacing(log2)
+        _head_pf(log2, 0, 90, 0, page_x=90)
+        _head_pf(log2, 1, 300, 0, page_x=300)
+        _stem(log2, 88, -60, h=64)
+        _stem(log2, 298, 12, h=60)
+        self.assertIs(_run(log2).verdict(Q.VOICES, CELL).outcome,
+                      Outcome.DECIDED)
 
     def test_a_REST_is_in_EVERY_voice_and_is_NAMED_as_such(self):
         """⚠️ THE ONE PLACE THE VALUE IS A COVER AND NOT A PARTITION. Each
         voice needs its own bar to sum, so `<rest>` is written once per voice
         — and a consumer counting glyphs would report the duplicate as a loss
-        unless the verdict says it is deliberate."""
+        unless the verdict says it is deliberate.
+
+        ⚠️ ROADMAP 2.21: the two heads need a page frame that OVERLAPS (a
+        genuine divisi), or this decides `one_voice_no_overlap` and the rest
+        never reaches a second stream to test."""
         log = Log()
-        _head(log, 0, 90)
-        _head(log, 1, 300)
+        _spacing(log)
+        _head_pf(log, 0, 90, 0, page_x=200)
+        _head_pf(log, 1, 300, 0, page_x=200)
         _rest(log, 2, 500)
         _stem(log, 88, -60, h=64)
         _stem(log, 298, 12, h=60)
         v = _run(log).verdict(Q.VOICES, CELL)
+        self.assertEqual(v.reason, "two_voices_overlap_confirmed")
         self.assertEqual(v.value["n_voices"], 2)
         self.assertIn(2, v.value["voices"][0])
         self.assertIn(2, v.value["voices"][1])

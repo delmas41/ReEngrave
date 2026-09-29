@@ -1029,17 +1029,31 @@ ORDER: Tuple[str, ...] = (
     # `export._events`, at serialisation time, so every stage before EXPORT
     # counted each chord member as a separate event.
     Q.EVENT,
-    # ⚠️ AFTER `EVENT`, because a voice is a stream OF events -- and it
-    # calls `voicing.split_events_into_voices` rather than restating the
-    # rule, so the staged and legacy paths cannot come to disagree about
-    # a file's `<backup>` arithmetic.
-    Q.VOICES,
     # ⚠️ AFTER `EVENT`, because it consumes that verdict rather than
     # re-clustering the glyphs: within-staff simultaneity is decided per
     # cell, and this groups those decisions across the staves of one
     # system. Answering the same question twice would let the two
     # answers disagree.
+    #
+    # ⚠️⚠️ ROADMAP 2.21, MOVED BEFORE `Q.VOICES`. Neither wanted the other
+    # until 2.21 gated the naive stem-direction split on the two directions
+    # SOUNDING TOGETHER, which reads `Q.ONSET_COLUMN` when it is decided --
+    # so ONE of the two orderings now has a real dependency and the OTHER
+    # (`ONSET_COLUMN` after `VOICES`, the order this file carried until
+    # today) would hand `adjudicate_voices` a `None` every run, the exact
+    # `inventory --check` fault `Q.WEDGE_ANCHOR`'s own comment below names.
+    # `Q.ONSET_COLUMN` wants only `Q.EVENT`, `Q.GLYPH_BOX`, `Q.STAFF_SPACING`
+    # -- never `Q.VOICES` -- so moving it earlier costs nothing.
     Q.ONSET_COLUMN,
+    # ⚠️ AFTER `EVENT` AND, SINCE ROADMAP 2.21, AFTER `ONSET_COLUMN` TOO: a
+    # voice is a stream OF events, and it calls
+    # `voicing.split_events_into_voices` rather than restating the rule, so
+    # the staged and legacy paths cannot come to disagree about a file's
+    # `<backup>` arithmetic. 2.21 added a second input, `Q.ONSET_COLUMN`,
+    # to gate that split's own candidate on whether the two directions ever
+    # SOUND TOGETHER (CONVENTION ASSUMED, `benchmarks/omr-voice-split-2026-09/
+    # QUESTION.md`, NOT YET CONFIRMED with Sean).
+    Q.VOICES,
     # ⚠️ ROADMAP 2.4c, AFTER `Q.ONSET_COLUMN` FOR THE SAME DEPENDENCY REASON
     # `Q.ONSET_COLUMN` ITSELF IS AFTER `Q.EVENT`: this decision reads the
     # column verdict rather than re-deriving cross-staff simultaneity, so it

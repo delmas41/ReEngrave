@@ -4810,26 +4810,143 @@ def adjudicate_notehead_is_a_whole_rest(ev: Evidence) -> Ruling:
                   used=tuple(used), detail=detail)
 
 
+def _event_page_x(ev: Evidence, cell: Subject, glyphs) -> Optional[float]:
+    """The PAGE-frame x centre of an event's glyphs, or `None`.
+
+    ⚠️ PAGE FRAME ONLY, NEVER THE CANONICAL x `Q.EVENT` SORTS BY. That frame
+    is rescaled PER CELL (CLAUDE.md SS10; `Q.ONSET_COLUMN`'s own history), so
+    comparing it to a tolerance measured in staff spaces would silently
+    compare two different units -- the exact fault `Q.ONSET_COLUMN`'s own
+    `_page_x_of` exists to avoid. `Q.GLYPH_BOX.detail.bbox_page_px` is that
+    same field.
+    """
+    xs = []
+    for g in glyphs:
+        sub = Subject(Kind.GLYPH, page=cell.page, system=cell.system,
+                      staff=cell.staff, cell=cell.cell, glyph=g)
+        for r in ev.rows(Q.GLYPH_BOX, subject=sub):
+            bp = (r.detail or {}).get("bbox_page_px")
+            if bp:
+                xs.append((float(bp[0]) + float(bp[2])) / 2.0)
+                break
+    return sum(xs) / len(xs) if xs else None
+
+
+def _voices_overlap_in_time(ev: Evidence, up_events, down_events
+                            ) -> Tuple[Optional[bool], Dict[str, Any]]:
+    """Does some up-stem event share an onset with some down-stem event.
+
+    CONVENTION ASSUMED (Sean, 2026-09-29, question filed and NOT YET
+    CONFIRMED -- `benchmarks/omr-voice-split-2026-09/QUESTION.md`; built
+    under CLAUDE.md rule 3's "if nobody can be asked" clause because Sean
+    was asleep): two stem directions in one bar are two VOICES only where
+    they SOUND TOGETHER -- some event of each direction shares an onset. A
+    single line whose stems merely flip crossing the middle line never has
+    that, and ROADMAP 2.19 found this is the naive rule's entire population
+    of 17 held bars on Breitkopf p1.
+
+    Returns `(True, detail)` (a shared onset was found), `(False, detail)`
+    (both directions have a page frame and NEITHER shares one), or
+    `(None, detail)` -- the record cannot say either way. Rule 8 forbids
+    turning `None` into an answer; the caller abstains rather than picking a
+    side.
+
+    ⚠️ PREFERS `Q.ONSET_COLUMN` WHEN IT IS DECIDED FOR THIS BAR -- the
+    system's own measured, corroborated column list -- and falls back to
+    THIS STAFF'S OWN page x under the SAME tolerance
+    (`ONSET_COLUMN_TOLERANCE_SPACES`) only where that decision has nothing
+    for this cell. The fallback needs no cross-staff corroboration: two of
+    ONE staff's own events at the same page x are simultaneous regardless of
+    what any other staff read. Neither path restates a new number.
+    """
+    cell = ev.subject
+    up_x = [x for x in (_event_page_x(ev, cell, e["_glyphs"])
+                        for e in up_events) if x is not None]
+    down_x = [x for x in (_event_page_x(ev, cell, e["_glyphs"])
+                          for e in down_events) if x is not None]
+    if not up_x or not down_x:
+        return None, {"why": "no_page_frame",
+                      "up_with_frame": len(up_x), "down_with_frame": len(down_x)}
+
+    staff_subj = cell.at(Kind.STAFF)
+    space = ev.rows(Q.STAFF_SPACING, scope=Scope.SELF_AND_ANCESTORS,
+                    subject=staff_subj)
+    sp = None
+    if space:
+        try:
+            sp = float(space[-1].value)
+        except (TypeError, ValueError):
+            sp = None
+    if not sp or sp <= 0:
+        return None, {"why": "no_staff_spacing"}
+    tol_px = sp * ONSET_COLUMN_TOLERANCE_SPACES
+
+    system_subj = cell.at(Kind.SYSTEM)
+    onset = ev.verdict(Q.ONSET_COLUMN, subject=system_subj)
+    if (onset is not None and onset.outcome is Outcome.DECIDED
+            and isinstance(onset.value, dict)):
+        bar = next((b for b in onset.value.get("bars", ())
+                   if b.get("measure") == cell.cell), None)
+        cols = [c["x_page"] for c in bar.get("columns", ())] if bar else []
+        if cols:
+            def _nearest(x):
+                best = min(cols, key=lambda c: abs(c - x))
+                return best if abs(best - x) <= tol_px else None
+            up_cols = {_nearest(x) for x in up_x} - {None}
+            down_cols = {_nearest(x) for x in down_x} - {None}
+            if up_cols and down_cols:
+                return bool(up_cols & down_cols), {
+                    "source": "onset_column",
+                    "tolerance_spaces": ONSET_COLUMN_TOLERANCE_SPACES,
+                    "up_columns": sorted(up_cols),
+                    "down_columns": sorted(down_cols)}
+
+    # Fallback: this staff's own page x, same tolerance, no cross-staff
+    # corroboration needed.
+    overlap = any(abs(u - d) <= tol_px for u in up_x for d in down_x)
+    return overlap, {"source": "raw_page_x",
+                     "tolerance_spaces": ONSET_COLUMN_TOLERANCE_SPACES,
+                     "up_x": [round(x, 1) for x in up_x],
+                     "down_x": [round(x, 1) for x in down_x]}
+
+
 @decision(
     quantity=Q.VOICES,
-    composed_from=(Q.STEM_DIRECTION, Q.EVENT),
+    composed_from=(Q.STEM_DIRECTION, Q.EVENT, Q.GLYPH_BOX, Q.STAFF_SPACING,
+                  Q.ONSET_COLUMN),
     scope=Kind.CELL,
-    wants=(Q.STEM_DIRECTION, Q.EVENT),
-    reasons=("one_voice", "two_voices", "nothing_to_split"),
+    wants=(Q.STEM_DIRECTION, Q.EVENT, Q.GLYPH_BOX, Q.STAFF_SPACING,
+          Q.ONSET_COLUMN),
+    reasons=("one_voice", "two_voices_overlap_confirmed",
+             "one_voice_no_overlap", "onset_unread", "nothing_to_split"),
     mode=Mode.ADDITIVE,
 )
 def adjudicate_voices(ev: Evidence) -> Ruling:
     """How many voice streams this bar holds, and which glyph is in each.
 
-    ⚠️ THE RULE IS `voicing.split_events_into_voices`'s AND IS CALLED, NOT
-    RESTATED: two streams only where BOTH directions appear, voice 1 taking
-    the stem-up events and the unknown-direction ones, voice 2 the stem-down,
-    and REST EVENTS APPEARING IN BOTH so each voice's bar can sum. Restating
-    that here is how the staged and legacy paths would come to disagree about
-    a file's `<backup>` arithmetic.
+    ⚠️ THE SPLIT ITSELF IS `voicing.split_events_into_voices`'s AND IS
+    CALLED, NOT RESTATED, when the two streams are actually used: voice 1
+    takes the stem-up events and the unknown-direction ones, voice 2 the
+    stem-down, and REST EVENTS APPEAR IN BOTH so each voice's bar can sum.
+    Restating that arithmetic here is how the staged and legacy paths would
+    come to disagree about a file's `<backup>`.
 
-    ⚠️ A COVER, NOT A PARTITION, because of that last clause. A rest is in
-    both streams and is written twice, so the exporter's note-accounting
+    ⚠️⚠️ BUT THE SPLIT'S OWN CANDIDATE IS NO LONGER TAKEN ON FAITH.
+    `voicing.split_events_into_voices` makes two voices wherever ANY event
+    reads stem-up and ANY other reads stem-down, with no test that they ever
+    SOUND TOGETHER -- ROADMAP 2.19 found this is exactly what happens to a
+    single melodic line whose stems flip crossing the middle line (17 of 156
+    held bars on Breitkopf p1, `benchmarks/omr-bar-sum-holdout-2026-09/
+    FINDINGS.md` SS15). `_voices_overlap_in_time` gates the candidate: two
+    voices are KEPT only where some event of each direction shares an
+    onset; where nothing shares one, the bar COLLAPSES to one voice (reason
+    `one_voice_no_overlap`); where the record cannot say either way, this
+    decision ABSTAINS (`onset_unread`) rather than picking a side (rule 8).
+    CONVENTION ASSUMED, asked of Sean and NOT YET CONFIRMED --
+    `benchmarks/omr-voice-split-2026-09/QUESTION.md`.
+
+    ⚠️ A COVER, NOT A PARTITION, because of the rest clause above. A rest is
+    in both streams and is written twice, so the exporter's note-accounting
     control has to know the duplicate is deliberate -- an equality that did
     not would raise `Unbalanced` for correct behaviour.
 
@@ -4884,11 +5001,44 @@ def adjudicate_voices(ev: Evidence) -> Ruling:
         events.append({"kind": kind, "x_position": float(e.get("x") or 0.0),
                        "stem_direction": direction, "_glyphs": glyphs})
 
-    streams = _legacy_voicing.split_events_into_voices(events)
-    voices = [sorted(g for e in s for g in e["_glyphs"]) for s in streams]
-    n = len(voices)
     rests = sorted(g for e in events if e["kind"] == "rest"
                    for g in e["_glyphs"])
+    up_events = [e for e in events if e["kind"] == "chord"
+                and e["stem_direction"] == "up"]
+    down_events = [e for e in events if e["kind"] == "chord"
+                  and e["stem_direction"] == "down"]
+
+    overlap_detail: Dict[str, Any] = {}
+    if not up_events or not down_events:
+        # ⚠️ NO CANDIDATE TO GATE. `split_events_into_voices` would return
+        # `[events]` here too (its own guard, restated nowhere) -- this is
+        # the ordinary one-voice bar, not the convention question.
+        streams = [events]
+        reason = "one_voice"
+    else:
+        overlap, overlap_detail = _voices_overlap_in_time(ev, up_events,
+                                                           down_events)
+        if overlap is None:
+            # ⚠️ RULE 8: "CANNOT TELL" NEVER BECOMES AN ANSWER. Not "keep
+            # today's split" (that would report a resolved DECIDED verdict
+            # for a question the record cannot answer) and not "one voice"
+            # either (that would just as quietly assert the OTHER answer).
+            # Abstaining is what keeps `Q.VOICES`'s own census honest about
+            # how much of the page this convention could even be tested on;
+            # `export._voice_split` already treats a non-decided verdict as
+            # one stream, so nothing downstream is left without a fallback.
+            return Ruling.abstain("onset_unread", **overlap_detail)
+        if overlap:
+            streams = _legacy_voicing.split_events_into_voices(events)
+            reason = "two_voices_overlap_confirmed"
+        else:
+            # CONVENTION ASSUMED (see docstring): no shared onset anywhere
+            # -- one line whose stems flip, not two voices.
+            streams = [events]
+            reason = "one_voice_no_overlap"
+
+    voices = [sorted(g for e in s for g in e["_glyphs"]) for s in streams]
+    n = len(voices)
     return Ruling(
         value={"n_voices": n, "voices": voices,
                # ⚠️ NAMED, because a rest in EVERY stream is the one place this
@@ -4896,7 +5046,7 @@ def adjudicate_voices(ev: Evidence) -> Ruling:
                # otherwise report a loss. Empty in the one-voice case, where
                # there is no duplication to declare.
                "rests_in_every_voice": rests if n > 1 else []},
-        reason="two_voices" if n > 1 else "one_voice",
+        reason=reason,
         used=(grouping.id,),
         detail={"n_events": len(events), "n_rests": len(rests),
-                "directions_read": read})
+                "directions_read": read, "overlap": overlap_detail})
