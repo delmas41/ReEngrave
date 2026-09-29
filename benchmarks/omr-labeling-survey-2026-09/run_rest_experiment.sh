@@ -31,7 +31,7 @@ SURVEY="benchmarks/omr-labeling-survey-2026-09"
 PROD_W="omr-weights/deepscoresv2-yolov8l-hollow-ft-2026-09-03.pt"
 CLASSES="tools/omr/training/deepscoresv2_208_classes.json"
 DEVICE="mps"
-export PYTHONPATH="$(pwd):$PYTHONPATH:$SURVEY"
+export PYTHONPATH="$(pwd):${PYTHONPATH:-}:$SURVEY"
 
 log() { echo "[$(date '+%Y-%m-%d %H:%M:%S')] $*"; }
 
