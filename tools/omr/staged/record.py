@@ -1004,6 +1004,16 @@ class Q(_Vocab):
     GLYPH_OWNER = "glyph_owner"
     ARC_OWNER = "arc_owner"
     ARC_KIND = "arc_kind"                    # tie | slur
+    #: ROADMAP 3.2b -- WHICH two noteheads one tie arc joins, filed on the
+    #: ARC: `{"start": glyph key, "stop": glyph key}`. Decided only where
+    #: exactly one flanking pair sits at ONE staff position; NARROWED where
+    #: several do; abstained otherwise (never the legacy nearest-in-x
+    #: fall-through). EXPORT writes `<tie>`/`<tied>` from this and nothing
+    #: else, so the record and the file cannot pair a tie two ways. It names
+    #: a LINK, never a chain: a chain is the links' union, counted by the
+    #: exporter over a part. See `adjudicators/ownership.adjudicate_tie_pair`
+    #: and `benchmarks/omr-tie-pairing-2026-09/FINDINGS.md` §3.2b.
+    TIE_PAIR = "tie_pair"
     #: Which way a notehead's STEM points -- up | down.
     #:
     #: ⚠️ IT BELONGS TO THE STEM AND IS FILED ON THE NOTEHEAD, which is not a
@@ -1758,6 +1768,7 @@ CLAIMS: "dict[str, str]" = {
     "HUMAN_VERDICT_STANCE": CLAIM.INTERPRETATION,
     "ARC_KIND": CLAIM.INTERPRETATION,
     "ARC_OWNER": CLAIM.INTERPRETATION,
+    "TIE_PAIR": CLAIM.INTERPRETATION,
     "ARTICULATION_OWNER": CLAIM.INTERPRETATION,
     "DOT_ROLE": CLAIM.INTERPRETATION,
     "ACCIDENTAL_OWNER": CLAIM.INTERPRETATION,

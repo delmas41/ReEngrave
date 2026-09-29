@@ -1,0 +1,206 @@
+{
+ "record": "benchmarks/omr-staged-engraved-2026-09/out/engraved-p0.record.json",
+ "seconds": 0.3,
+ "arc_kind_saved": {
+  "decided:tie": 22,
+  "decided:slur": 1
+ },
+ "tie_pair": {
+  "decided:paired": 13,
+  "abstained:runs_off_the_system": 5,
+  "abstained:no_head_near_the_arc": 4,
+  "abstained:not_a_tie": 1
+ },
+ "base": {
+  "tie_start": 1,
+  "tie_stop": 1,
+  "tied": 2,
+  "written": {
+   "tie_chains_marked": 1,
+   "tie_links_marked": 1,
+   "tie_spans_marked": 1,
+   "ties": 1
+  },
+  "tie_pairing": "exporter"
+ },
+ "arm": {
+  "tie_start": 7,
+  "tie_stop": 7,
+  "tied": 14,
+  "written": {
+   "tie_arcs_naming_an_already_named_pair": 6,
+   "tie_chains_marked": 7,
+   "tie_links_crossing_a_barline": 7,
+   "tie_links_marked": 7,
+   "tie_spans_marked": 7,
+   "ties": 7
+  },
+  "tie_pairing": "record",
+  "arcs_not_written": {
+   "tie_pair_no_head_near_the_arc": 4,
+   "tie_pair_runs_off_the_system": 5
+  },
+  "tie_contradictions": []
+ },
+ "decided_pairs": [
+  {
+   "arc": "glyph/0/0/4/3/2",
+   "start": "glyph/0/0/4/3/0",
+   "stop": "glyph/0/0/4/4/1",
+   "dy_spaces": 0.005,
+   "dx_spaces": 2.317,
+   "crosses_barline": true,
+   "arc_dy_spaces": 0.526
+  },
+  {
+   "arc": "glyph/0/0/4/4/3",
+   "start": "glyph/0/0/4/3/0",
+   "stop": "glyph/0/0/4/4/1",
+   "dy_spaces": 0.005,
+   "dx_spaces": 7.276,
+   "crosses_barline": true,
+   "arc_dy_spaces": 0.369
+  },
+  {
+   "arc": "glyph/0/0/5/3/2",
+   "start": "glyph/0/0/5/3/0",
+   "stop": "glyph/0/0/5/4/1",
+   "dy_spaces": 0.005,
+   "dx_spaces": 2.317,
+   "crosses_barline": true,
+   "arc_dy_spaces": 0.526
+  },
+  {
+   "arc": "glyph/0/0/5/4/3",
+   "start": "glyph/0/0/5/3/0",
+   "stop": "glyph/0/0/5/4/1",
+   "dy_spaces": 0.005,
+   "dx_spaces": 7.276,
+   "crosses_barline": true,
+   "arc_dy_spaces": 0.369
+  },
+  {
+   "arc": "glyph/0/0/13/3/2",
+   "start": "glyph/0/0/13/3/0",
+   "stop": "glyph/0/0/13/4/2",
+   "dy_spaces": 0.005,
+   "dx_spaces": 2.416,
+   "crosses_barline": true,
+   "arc_dy_spaces": 0.534
+  },
+  {
+   "arc": "glyph/0/0/13/4/3",
+   "start": "glyph/0/0/13/3/0",
+   "stop": "glyph/0/0/13/4/2",
+   "dy_spaces": 0.005,
+   "dx_spaces": 7.364,
+   "crosses_barline": true,
+   "arc_dy_spaces": 0.386
+  },
+  {
+   "arc": "glyph/0/0/14/3/3",
+   "start": "glyph/0/0/14/3/0",
+   "stop": "glyph/0/0/14/4/1",
+   "dy_spaces": 0.005,
+   "dx_spaces": 2.342,
+   "crosses_barline": true,
+   "arc_dy_spaces": 0.526
+  },
+  {
+   "arc": "glyph/0/0/14/4/4",
+   "start": "glyph/0/0/14/3/0",
+   "stop": "glyph/0/0/14/4/1",
+   "dy_spaces": 0.005,
+   "dx_spaces": 7.306,
+   "crosses_barline": true,
+   "arc_dy_spaces": 0.355
+  },
+  {
+   "arc": "glyph/0/0/15/3/3",
+   "start": "glyph/0/0/15/3/0",
+   "stop": "glyph/0/0/15/4/1",
+   "dy_spaces": 0.005,
+   "dx_spaces": 2.339,
+   "crosses_barline": true,
+   "arc_dy_spaces": 0.516
+  },
+  {
+   "arc": "glyph/0/0/15/4/3",
+   "start": "glyph/0/0/15/3/0",
+   "stop": "glyph/0/0/15/4/1",
+   "dy_spaces": 0.005,
+   "dx_spaces": 7.391,
+   "crosses_barline": true,
+   "arc_dy_spaces": 0.371
+  },
+  {
+   "arc": "glyph/0/0/16/3/3",
+   "start": "glyph/0/0/16/3/0",
+   "stop": "glyph/0/0/16/4/1",
+   "dy_spaces": 0.0,
+   "dx_spaces": 2.407,
+   "crosses_barline": true,
+   "arc_dy_spaces": 0.517
+  },
+  {
+   "arc": "glyph/0/0/16/4/3",
+   "start": "glyph/0/0/16/3/0",
+   "stop": "glyph/0/0/16/4/1",
+   "dy_spaces": 0.0,
+   "dx_spaces": 7.769,
+   "crosses_barline": true,
+   "arc_dy_spaces": 0.38
+  },
+  {
+   "arc": "glyph/0/0/17/3/2",
+   "start": "glyph/0/0/17/3/0",
+   "stop": "glyph/0/0/17/4/1",
+   "dy_spaces": 0.005,
+   "dx_spaces": 2.466,
+   "crosses_barline": true,
+   "arc_dy_spaces": 0.502
+  }
+ ],
+ "truth": {
+  "drawn": 11,
+  "written_pairs": 7,
+  "right": 7,
+  "wrong": 0,
+  "wrong_pairs": [],
+  "missed": 4,
+  "missed_symbols": [
+   {
+    "class": "tie",
+    "family": "tie",
+    "x": 398.375,
+    "y": 1426.125,
+    "w": 34.625,
+    "h": 14.5
+   },
+   {
+    "class": "tie",
+    "family": "tie",
+    "x": 398.375,
+    "y": 1651.125,
+    "w": 34.625,
+    "h": 14.5
+   },
+   {
+    "class": "tie",
+    "family": "tie",
+    "x": 398.375,
+    "y": 3386.875,
+    "w": 34.625,
+    "h": 14.375
+   },
+   {
+    "class": "tie",
+    "family": "tie",
+    "x": 398.375,
+    "y": 3676.125,
+    "w": 34.625,
+    "h": 14.5
+   }
+  ]
+ }
+}

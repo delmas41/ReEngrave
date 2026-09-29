@@ -1,12 +1,13 @@
 """The tie CHAIN: what the report can now say, and what it still cannot.
 
-⚠️⚠️ THIS FILE GUARDS AN ACCOUNTING CHANGE, NOT A READING ONE. `tied_to_next`
-and `tied_from_prev` are the last two entries in
-`gather_coverage.NO_VOCABULARY` and they STAY there: no `Q` names a tie chain,
-because a chain is a fact about a PART -- it crosses barlines and system
-breaks -- and the part is built inside `staged/export.build`, after
-`Q.PART_PARTITION` is read and after the record JSON has already been written.
-See `benchmarks/omr-staged-tie-chain-2026-09/FINDINGS.md`.
+⚠️⚠️ THIS FILE GUARDS AN ACCOUNTING CHANGE, NOT A READING ONE. No `Q` names
+a tie CHAIN, because a chain is a fact about a PART -- it crosses barlines and
+system breaks -- and the part is built inside `staged/export.build`. See
+`benchmarks/omr-staged-tie-chain-2026-09/FINDINGS.md`. ⚠️ Since ROADMAP 3.2b
+the record names each LINK (`Q.TIE_PAIR`, `test_staged_tie_pair.py`) and
+`tied_to_next` / `tied_from_prev` have left `NO_VOCABULARY`; these fixtures
+carry no `Q.TIE_PAIR` row, so they exercise the exporter's own pairing, which
+a record gathered before 3.2b still gets.
 
 What DID change is that the exporter now says what it did, in three ways the
 report could not express before:

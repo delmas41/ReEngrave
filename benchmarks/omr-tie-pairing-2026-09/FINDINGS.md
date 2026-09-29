@@ -672,3 +672,174 @@ which is the whole reason the anchor must be a whole expression; the arm is
 removed rather than left printing noise.
 
 Second run: **nine arms, all RED**, ARM 0 SURVIVED at 333 passed.
+
+---
+
+# §3.2b — THE STAGED PORT: `Q.TIE_PAIR` (2026-09-29)
+
+Branch `claude/tie-pairing-3.2b`, off `origin/main` `efe7eb66`. ROADMAP 3.2b.
+Path: **STAGED**. The legacy `transcribe._pair_ties_in_staff` (§5 above) is the
+reference reader and is untouched.
+
+CONVENTION (CLAUDE.md §10, measured in §5a): a tie's two heads are at ONE staff
+position, and a tie FLANKS them. ASSUMED / WHAT WOULD FALSIFY IT / NOT
+CONFIRMED: `TIE_FLANK_MAX_OVERLAP_HEAD_WIDTHS = 1.0` (below) — a Sean crop of a
+scan tie whose start head sits more than one width inside the box.
+
+## 3.2b.1 Reach first — the brief's premise was half wrong
+
+The brief said the staged MusicXML *"may write no `<tie>` at all"*. It did
+write ties — `staged/export._pair_arcs` has paired them since the arc-export
+landing — but with **SLUR COVERAGE** (`_paired_spans` → `_noteheads_under`,
+the heads UNDER an arc), which is the wrong question for a tie (it FLANKS its
+heads; `export._tie_flank_pair`'s own docstring says so). Measured on the two
+records, before (`base`, `tie_pairing: exporter`):
+
+| | engraved p0 (Verovio, exact truth) | Litolff `984073` p3 (count page) |
+|---|--:|--:|
+| arcs decided `tie` (`Q.ARC_KIND`) | 22 | 135 |
+| tie links the exporter marked | **1** | 37 |
+| …of those, two heads of ONE placed pitch | 1 | **13** |
+| …two DIFFERENT pitches | 0 | **24** |
+| `<tie type="start">` in the file | 1 | 27 |
+| tie symbols the page truth draws | 11 | — |
+
+(`probe/readjudicate_tie_pair.py`; the per-link pitch split is the exporter's
+own spans captured in one process. The 24 different-pitch ties on Litolff p3
+are 65% of what the base file ties, each one a tie between two notes.)
+
+## 3.2b.2 What was built, and in which stage
+
+* **ADJUDICATE, `adjudicate_tie_pair`** (`adjudicators/ownership.py`, after
+  `Q.ARC_KIND` / `Q.ARC_OWNER` / `Q.GLYPH_OWNER` in `ORDER`). Per tie arc,
+  `Q.TIE_PAIR = {"start": glyph, "stop": glyph}`. Not EVALUATE: which heads
+  flank an arc is a reading that can have zero or several answers, so it must
+  be able to abstain and narrow. The rule is the legacy one — heads within 3
+  widths outside each end, within 3 head heights of the arc, the pair at ONE
+  position (`TIE_SAME_POSITION_MAX_SPACES`, imported) — with the legacy's two
+  guesses turned into refusals: no same-position pair **abstains**
+  `no_pair_at_one_position` (legacy: nearest in x); several **narrow**
+  `more_than_one_pair` (legacy: nearest). Of two heads at the partner's
+  position on one side only the nearer is a candidate — a tie joins
+  CONSECUTIVE notes, so that is forced, not preferred.
+* Three additions the records forced, each found by a failing reading:
+  - **a barline-cut half** (arc end within `_SLUR_BOUNDARY_SPACES` of its bar's
+    edge, imported) searches the whole adjacent bar on that side — 6 of 13
+    engraved arcs abstained `no_start_head` without it; both halves now name
+    the same pair and EXPORT writes it once (`tie_arcs_naming_an_already_named_pair`);
+  - **a scan tie box begins OVER its start head** (Litolff: centres 0.37–0.54
+    widths inside) — `TIE_FLANK_MAX_OVERLAP_HEAD_WIDTHS = 1.0`, NOT swept;
+  - **an arc cut at BOTH edges of its bar abstains `spans_a_whole_bar`** — a tie
+    never crosses a whole bar. The first Litolff crop set paired two C3s a bar
+    apart through a `tie` box lying on a staff line; 20 of 135 Litolff p3 tie
+    boxes are this shape.
+* **System edges are named, never guessed across**: `runs_off_the_system` /
+  `enters_from_previous_system` when nothing on the staff follows / precedes
+  the arc in the system's last / first bar. `no_head_near_the_arc` when
+  neither side has a head — usually the TWIN of a tie filed on the next staff:
+  `arc_owner` asks which heads an arc COVERS, a tie covers none, so it never
+  moves one (5 engraved, 17 Litolff p3). ⚠️ That is an `arc_owner` gap for
+  ties, recorded here, not repaired.
+* **EXPORT** reads the record's pairs and nothing else (`_record_tie_pairs`,
+  `_record_tie_spans`), so the record and the file cannot pair a tie two ways
+  — the objection §3 of the chain FINDINGS raised against a record-side
+  pairing. A record with NO `Q.TIE_PAIR` row at all (every shared record
+  gathered before today) keeps the exporter's own pairing and the report says
+  which ran (`tie_pairing: record | exporter`). An ABSTAINED tie is never
+  paired by the exporter instead (tested: rule 8).
+* **The pitch check** (brief item 3): a named pair whose two placed pitches
+  differ after EVALUATE is not written and is REPORTED by its two heads
+  (`tie_contradictions`, `tie_pitch_contradiction`); same step with another
+  spelling counts apart (`tie_spelling_differs`). Across two voices:
+  `tie_ends_in_two_voices`. Every named pair that did not reach the file is
+  counted (`tie_end_not_in_file`, `tie_pair_<reason>`).
+* `gather_coverage`: `tied_to_next` / `tied_from_prev` → `TIE_PAIR`;
+  `NO_VOCABULARY` is now EMPTY. What closed is the LINK; the CHAIN is still
+  the exporter's count over a part, and a link across a SYSTEM BREAK is not
+  named (2 of 632 on Breitkopf in the chain FINDINGS) — said in the mapping's
+  own comment.
+
+## 3.2b.3 After — one saved record each, re-adjudicated, no re-gather
+
+`probe/readjudicate_tie_pair.py` rebuilds the record's own GATHER rows, injects
+the five upstream verdicts as saved, decides `Q.TIE_PAIR` on today's tree, and
+exports base and arm from the same record in one process.
+
+**Engraved p0** (`out/3.2b-engraved-p0.json`):
+
+| | base | arm |
+|---|--:|--:|
+| `<tie type="start">` | 1 | **7** |
+| written pairs RIGHT against the page truth | — | **7 of 7** |
+| WRONG | — | **0** |
+| drawn ties MISSED | — | 4 |
+
+`Q.TIE_PAIR`: 13 paired (7 unique + 6 second halves), 5 `runs_off_the_system`,
+4 `no_head_near_the_arc`, 1 `not_a_tie`. The 4 missed truth symbols are the
+system-break ties (Verovio's box for a tie crossing a system is the
+continuation stub at x≈398); the record abstains `runs_off_the_system` on the
+halves this page holds — the same four by count, NOT position-matched.
+Contradictions 0.
+
+**Litolff p3** (`out/3.2b-litolff-p3.json`):
+
+| | base | arm |
+|---|--:|--:|
+| `<tie type="start">` | 27 | **5** |
+| of the exporter's marked links, different pitches | 24 of 37 | **0** (by construction) |
+| contradictions reported | — | **3** |
+
+`Q.TIE_PAIR` over 135 tie arcs: 35 paired (19 unique pairs), 10 narrowed, 20
+`spans_a_whole_bar`, 19 `no_start_head`, 17 `no_head_near_the_arc`, 16
+`no_pair_at_one_position`, 9 `no_stop_head`, 7 `enters_from_previous_system`,
+2 `runs_off_the_system`. Of the 19 pairs: **11 never reach the file**
+(`tie_end_not_in_file` — 37 of 78 decided ends on this page are
+`duration_narrowed:beams_ambiguous`, the missing-notes funnel, not this
+decision), 3 contradictions, 5 written.
+
+⚠️⚠️ **THE SCAN FILE LOSES 22 `<tie>`s, AND THAT IS THE HONEST NUMBER.** 24 of
+the 37 links the base wrote joined two different pitches — not ties at all
+whatever the page prints — and **none of base's 13 same-pitch links is a pair
+the record names** (checked link by link), so they are pairs the coverage rule
+found under an arc, not pairs flanking one. Whether any of them is a printed
+tie is a question for the print; nothing here says the base's 13 are wrong.
+
+⚠️ **A dangling tie start** (5 starts, 4 stops in the arm file): link
+`glyph/3/0/0/3/7 → glyph/3/0/0/4/8` has its STOP in a bar ROADMAP 2.8 held out
+(bar sum), so the stop is never rendered. The base file has the same shape (27
+starts, 26 stops). Not repaired: the hold-out is decided at render time, after
+the pairing; it needs the pairing to be re-checked per rendered bar.
+
+## 3.2b.4 Crops — 8, for Sean (`out/print/3.2b-tie-0*.png`, manifest `3.2b-manifest.json`)
+
+`crop_ties_3_2b.py` reads only `out/3.2b-litolff-p3-crops-cache.json`; frame
+control on the home staff's own lines (can fail; 0 refused); START bracketed
+RED `S`, STOP MAGENTA `E`, every naming arc ORANGE, the staff GREEN. 5
+`linked` (every marked link on p3) + 3 `contradiction`. Every row
+`VERDICT_none_yet: null`.
+
+⚠️ **My own look, NOT a verdict:** #1, #2, #4, #5 read as printed ties on the
+bracketed notes; **#3 is not** — its `tie` box lies on the staff's top line
+(the same staff-line shape `spans_a_whole_bar` now refuses when it spans a
+bar; this one ends inside one). #6 and #8 look like one of the two pitches
+misread (#8: the E head's box sits low on the head); #7's naming arcs sit ~3
+spaces below its heads, so there the PAIR may be spurious rather than a pitch.
+Sean adjudicates.
+
+`arc_dy_spaces` (arc centre to its pair, recorded on every paired verdict):
+engraved 0.36–0.53; Litolff 0.04–2.95 with no gap — the legacy 3-head-height
+window cannot be tightened on this evidence.
+
+## 3.2b.5 Not established / next
+
+* Only 2 records, 2 pages; Breitkopf not run (the chain FINDINGS' 140/632
+  barline and 2 system-break links are its figures, not re-measured here).
+* The shared acceptance records carry no `Q.TIE_PAIR` until re-gathered or
+  re-adjudicated; `tools.omr.acceptance` exports existing verdicts, so its
+  files keep the exporter's pairing (reported as `tie_pairing: exporter`).
+* Next, ranked: (1) Sean's verdicts on the 8 crops; (2) resolve
+  `more_than_one_pair` for tied chords with one arc per member (a staff-level
+  assignment by y order — INFER, labelled); (3) `arc_owner` for ties (flanked
+  heads, not covered); (4) drop a tie start whose stop's bar is held out;
+  (5) the cross-system link (needs the part, i.e. extracting `build` out of
+  `export.py`, chain FINDINGS §7 item 2).

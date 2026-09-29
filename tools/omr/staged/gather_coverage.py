@@ -343,6 +343,20 @@ LEGACY_TO_Q: Dict[str, str] = {
     # tremolo detections over 34,115 -- so the record can now NAME this family
     # and the page still supplies none of it.
     "ornaments": "ORNAMENT_OWNER",
+    # ⚠️ CLOSED 2026-09-29 (ROADMAP 3.2b), AND WHAT CLOSED IS THE LINK, NOT
+    # THE CHAIN. `Q.TIE_PAIR` names the two heads one tie arc joins -- the
+    # `tied_to_next` head and the `tied_from_prev` head -- and EXPORT writes
+    # both flags from it and from nothing else. A chain is the union of its
+    # links and is still counted by the exporter over a part
+    # (`tie_chains_marked`). ⚠️ NOT reached: a link across a SYSTEM BREAK
+    # (the chain FINDINGS measured 2 of 632 on Breitkopf) -- the decision
+    # abstains `runs_off_the_system` / `enters_from_previous_system` there and
+    # the file writes no tie. Was in `NO_VOCABULARY` with an argued negative
+    # (`benchmarks/omr-staged-tie-chain-2026-09/FINDINGS.md` §3); its
+    # objection -- a second pairing that can disagree with the exporter's --
+    # is met by the exporter READING this one instead of pairing its own.
+    "tied_to_next": "TIE_PAIR",
+    "tied_from_prev": "TIE_PAIR",
     "direction_texts": "DIRECTION",
     "detections": "GLYPH_BOX",
     "bbox_page_px": "GLYPH_BOX",
@@ -381,23 +395,6 @@ LEGACY_TO_Q: Dict[str, str] = {
 #: neither table, and `test_gather_coverage.py` fails on an entry that has
 #: since grown a `Q`, the same contract `export_coverage.KNOWN_GAPS` holds.
 NO_VOCABULARY: Dict[str, str] = {
-    "tied_to_next": (
-        "tie state carried on the notehead, chained across barlines by "
-        "`transcribe._pair_ties_in_staff`. `Q.ARC_KIND` decides tie-vs-slur "
-        "for one arc; nothing names the CHAIN a tie makes between two events. "
-        "⚠️ MEASURED AND DELIBERATELY LEFT OPEN, 2026-09-10 -- a chain is a "
-        "fact about a PART (10 of 59 links cross a barline on Litolff "
-        "`984073` p1-3 and 140 of 632 on Breitkopf Brahms 1 p0-3; 2 cross a "
-        "SYSTEM BREAK), and the part is built inside `staged/export.build` "
-        "AFTER `Q.PART_PARTITION` is read and after `staged/__main__` has "
-        "already written the record JSON -- so EXPORT cannot contribute a "
-        "row and no stage below it has the part. A per-arc or per-staff-run "
-        "quantity would reach 630 of 632 links and would be a SECOND pairing "
-        "that can disagree with the exporter's, which is worse than the gap. "
-        "The exporter now REPORTS the chain instead "
-        "(`written.tie_links_marked` / `tie_chains_marked`). See "
-        "`benchmarks/omr-staged-tie-chain-2026-09/FINDINGS.md`."),
-    "tied_from_prev": "the other end of the same chain; see `tied_to_next`.",
 }
 
 
