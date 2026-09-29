@@ -340,3 +340,16 @@ Format: `YYYY-MM-DD · who · the decision · because · (pointer)`
   6/8 back today only because the bars weigh against carrying 9/8. Where the
   bars overturn a carried change, the switch must be LABELLED as an inferred
   unread return and the bar marked (→ ROADMAP 2.12k), never silent
+- 2026-09-28 · Sean, looking at the o26b ownership crops · **Two ownership
+  conventions: (1) the ledger lines name the owner — a note far from its
+  staff has ledger lines between it and the staff it belongs to, and none
+  between it and the other staff; (2) a hairpin always sits UNDER its staff,
+  so a note between a staff and the hairpin beneath it belongs to that
+  staff.** · *"there have to be ledger lines in between wherever that note is
+  and the staff that it's connected to … if the note is above the hairpin …
+  it belongs to the staff that's between the hairpin and that staff"* · both
+  should decide a contest BEFORE distance; on the f4168dfd Brahms record
+  2,046 of 3,590 dropped heads were decided by distance alone · the hairpin
+  is a witness from a different glyph family, not correlated with the
+  notehead reading (§10) · → ROADMAP 2.6c, which waits on Sean's o26b
+  verdicts

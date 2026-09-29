@@ -535,7 +535,12 @@ Each of these has cost at least one lane and is still true.
   on a conductor's page that reaches the next staff's ink; cross-staff
   ownership is a CONTEST resolved by `glyph_owner` (ladder completeness,
   then range, then distance), and a resolved contest DROPS the loser — it
-  never relocates it. Do not grow the pad.
+  never relocates it. Do not grow the pad. Two conventions settle a contest
+  before distance may (Sean, 2026-09-28): a note far from its staff has
+  ledger lines on the side TOWARD its own staff and none toward the other,
+  so the ledger lines name the owner; and a hairpin sits UNDER the staff it
+  belongs to, so a note between a staff and the hairpin beneath it belongs
+  to that staff.
 - **A cell index restarts per system**; key a bar on (page, system, cell).
 - **A canonical cell frame cannot answer a cross-staff question**; page
   pixels are carried beside it, DECLINED rather than defaulted.
