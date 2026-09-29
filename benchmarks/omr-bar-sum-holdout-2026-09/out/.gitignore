@@ -11,3 +11,10 @@
 #
 *.musicxml
 *.report.json
+
+# ROADMAP 2.24 (`r224/`): the fresh single-page record (45 MB) and its
+# held-bar dump/partition regenerate with one `tools.omr.staged` run plus
+# `held_funnel_mvt_2_22.py` / `classify_held_mvt_2_22.py` -- see FINDINGS §18a.
+r224/*.record.json
+r224/*.held.json
+r224/*-partition.json

@@ -1550,3 +1550,179 @@ Fast tier: **3,758 passed** (main's 3,748 + 10 new), 3 skipped
 - `tools/omr/staged/consequences.py`: `reconcile_duration`, `_is_rest`.
 - `tools/omr/tests/test_staged_reconcile_what_is_in_the_bar.py`, and the one
   renamed assertion in `test_staged_candidates.py`.
+
+## 18. ROADMAP 2.24 — the augmentation dot: why one dot is off in 578 Brahms
+bars (2026-09-29)
+
+PATH: STAGED. Branch `claude/aug-dot-2.24`, off `origin/main` `a9bdec8a`
+(2.22b merged). §17's own table (whole Brahms movement, `23f4fa9e`) names
+class `D` necessary in 477 of 4,200 held bars and a single-fix release of
+**578** — the brief this item was set to explain.
+
+### CONVENTION ASSUMED / WHAT WOULD FALSIFY IT / NOT CONFIRMED
+
+`_in_augmentation_window`'s asymmetric window (`DOT_ABOVE_NOTE_MAX_SPACES`
+0.75, `DOT_BELOW_NOTE_MAX_SPACES` 0.25, `rhythm.py:71-72`) is unchanged by
+this item: nothing measured here falsifies it, and one real case (§18b
+below) asks whether it should widen for a note immediately followed by a
+tie. NOT CONFIRMED with Sean; the question is filed in the new manifest,
+not answered here.
+
+### §18a. Setup and the fresh page
+
+Gathered Breitkopf Brahms 1/i pdf idx 1 fresh, this tree, `--no-surya`,
+scan weights (`deepscoresv2-yolov8l-hollow-graft-shift09-2026-09-04.pt`):
+`out/r224/brahms-p1.record.json` (94 s). `held_funnel_mvt_2_22.py` (phase
+`own`, no re-decide needed — the record is already on this tree): **145
+held bars of 169** (control PASS). 2.22's own classifier,
+`classify_held_mvt_2_22.py`, with `--truth '{"9": 4.5, "default": 3.0}'`
+(the dossier's 6/8-except-bar-9-at-9/8, same table §17a used):
+
+    single fix releases outright: {M: 25, W: 20}
+    necessary (in every minimal set): {M: 100, X: 30, W: 26, V: 18, G: 7,
+                                        B: 7, S: 3, N: 3, F: 2, D: 2, E: 1, R: 1}
+
+**⚠️ This page is not a clean sample: `M` (judge against the TRUE meter
+instead of the bar's own) is necessary in 100 of 145 held bars — the file's
+own `want_quarters` reads 9.0 on the great majority of them, against a true
+3.0 (or 4.5 at the printed change).** This is the SAME family §17a already
+named on 26 whole-movement bars (`meter_change_digits_misread` / a `9`
+misread) — this exact page prints the movement's one 6/8→9/8→6/8 change, so
+a single-page, no-prior-context gather amplifies it far past the
+whole-movement rate. `M` here is a diagnosis-only override (compare each
+bar's own voice sum to the TRUE meter), exactly as `T` already meant in
+§17's table — it does not add or remove anything from a voice, so a bar
+tied `M`+`D` is asking the identical question §17 asked, just on a record
+whose held population is dominated by an unrelated, already-tracked cause.
+
+`D` itself is necessary in only **2 of 145** held bars, and appears
+(necessary or tied) in **13** — the population actually available to
+diagnose on this page.
+
+### §18b. Every one of the 13 `D`-tied bars, read against `Q.AUG_DOT`/`Q.DOT_ROLE`
+
+`classify_held_mvt_2_22.py` proposes `D` from the bar's numeric residual
+alone — it never reads `Q.AUG_DOT` or `Q.DOT_ROLE` (§13's caution about this
+exact coincidence was written against a DIFFERENT, page-scale partition
+script; the movement-scale one this item was told to use has no such
+safeguard). Reading every one of the 13 bars' own dot evidence directly
+from the record:
+
+| bars | what is actually there |
+|--:|---|
+| 7 | **zero `Q.AUG_DOT` rows anywhere in the cell.** No dot ink was gathered at all; `D` is a pure numeric coincidence. |
+| 2 | one `Q.AUG_DOT` row, **ABSTAINED** `dot_role_ambiguous`, sitting beside the direction word `espr.` (`arco` beneath it), nowhere near a notehead. |
+| 1 | two rows: one **DECIDED** augmentation (correctly paired), one **ABSTAINED**, sitting ~0.6 staff spaces BELOW its own note, right where a tie begins. |
+| 1 | one row, **DECIDED** augmentation, well-evidenced (3 correlated observation groups) — removing it is one of several tied ways to hit the target sum; not a real fix. |
+| 2 | two rows, **both DECIDED** — not part of a bare `D`; folded into a 4-letter tie (`MVDF`) that is really about something else. |
+
+None of the 13 is the hypothesis this item was briefed to check first — a
+dot printed and detected, but discarded for sitting outside the window on a
+note where the level-vs-space-higher distinction (CLAUDE.md §10) should
+have mattered. Three concrete, checked mechanisms instead:
+
+**1. The classifier's own coincidence, 7 of 13 (the majority).** Two worked
+in full: `glyph/1/1/12/4` (m.12 P14) is short 0.5q; the cell's only refused
+glyph is a genuinely narrow notehead (page-px width 20.7 vs ~37.8 for this
+staff's normal heads) refused `not_a_notehead:too_narrow` with **no
+computed duration** — `classify`'s own `_extras` requires a decided/
+candidate duration to propose `R`, so it silently has nothing to offer and
+the search lands on `D` instead, purely because 0.5q happens to equal one
+dot's worth on an eighth. `glyph/1/0/3/3` (m.4 P4) is the same shape: zero
+`Q.AUG_DOT` rows, the residual explained by `duration_narrowed`/
+`not_a_notehead:too_narrow` refusals, `D` chosen only because `MNG`/`MSB`/
+`MDG`/`MDX`/`MBX` tie and `MSD` sorts first. Crops #05, #06.
+
+**2. The detector boxes a direction-word PERIOD as `augmentationDot`, 2 of
+13.** `glyph/1/0/10/3/32` and `glyph/1/0/11/3/26` are both small
+(page-px ~10x8 and ~8x8) isolated dots sitting just right of the direction
+word `espr.` ("espr" then, separately, a dot; `arco` printed beneath) on
+two DIFFERENT staves, at closely matching relative positions — text ink,
+not ink near any note. `adjudicate_dot_role` correctly abstains
+`dot_role_ambiguous` on both (neither window admits a target this far from
+every notehead/rest in the cell), so this is HARMLESS to the file — it only
+pollutes the diagnostic count. Crops #03, #04.
+
+**3. One real, ambiguous case: a genuine augmentation dot displaced BELOW
+its note, next to a tie, 1 of 13.** `glyph/1/0/2/5/31` (m.6 P3): the note
+(`noteheadBlackOnLine`) sits ON the staff's bottom line; its dot sits ~0.6
+staff spaces below that line (56.5 of 92 canonical units, confirmed against
+the page-pixel frame independently: 16.85 of ~27.5 px), immediately where a
+tie to the next note begins. The SAME cell's other dot
+(`glyph/1/0/2/5/18`) is correctly decided, LEVEL with its own (space) note,
+by the identical window. `_in_augmentation_window`'s asymmetric gate (0.75
+above / 0.25 below) is doing exactly the measured job it was built for; the
+open question is whether the PRINT has a real exception here (a dot pushed
+low to clear a tie beginning right at the notehead) or whether this box is
+the tie's own ink, misboxed as a dot. Crops #01 (control), #02 (the
+question).
+
+**4. A correctly DECIDED dot, swept into a tied minimal set by the search,
+1 of 13.** `glyph/1/1/11/6/5` (m.14 P13): well-evidenced (`used` cites 3
+rows, `right_of_and_level_with_a_head`), sits in the space below the top
+line for an in-space head — correct by the window and, on the crop, visibly
+right. `classify`'s tie (`MDF`) offers removing it as ONE of several ways
+to reach the target sum on a two-voice bar; the companion voice's own head
+fill (`F`) is the far more likely real fix. Crop #07.
+
+### §18c. No connection fix built
+
+Per the item's own escape valve: **this is not a connection fault, and the
+detector is not simply failing to box a printed dot** (case 3, the one bar
+where a real, printed-looking dot is genuinely rejected by the window, is a
+single ambiguous instance, not a pattern) — the DOMINANT causes (§18b
+classes 1 and 2, 9 of 13) are (a) an unrelated refusal family the
+diagnostic script cannot see because it never consults `Q.AUG_DOT`/
+`Q.DOT_ROLE`, and (b) the detector confusing a text period for a musical
+dot, which `adjudicate_dot_role` already renders harmless by abstaining.
+Neither calls for an ADJUDICATE/EVALUATE change; `tools/` is untouched by
+this item, and `pytest`/`check` run only as the landing sanity check (no
+code moved, figures are the base tree's own).
+
+**What this means for §17's 578-bar headline.** `classify_held_mvt_2_22.py`
+has the exact blind spot §13's caution warned about, generalised: on this
+page 7 of 13 (54%) of its `D` attributions have zero supporting dot
+evidence and a further 2 (15%) are a text speck the pipeline already
+discards. If this page's ratio holds at movement scale — untested here,
+NOT extrapolated as a number — a large share of the whole-movement 477/578
+figures would be the SAME coincidence rather than a dot-reading defect.
+Hardening `classify_held_mvt_2_22.py` to require a `D`-tied bar's cell to
+hold at least one `Q.AUG_DOT` row before naming `D` (the §13 script's own
+safeguard, never ported to the movement-scale one) is the recommended next
+step — a diagnostic-tool fix, not a pipeline one, so it is named here and
+left for whoever re-runs 2.22's own numbers rather than built inside this
+item's scope.
+
+**Asked, not built** (case 3, §18b): does a note immediately followed by a
+tie ever print its augmentation dot BELOW the line/space it would otherwise
+take — or is a low, isolated dot-shaped box beside a tie's start always the
+tie's own ink? Two crops (`out/print/dot24-01.png` control,
+`dot24-02.png` the case), manifest `out/print/dot-2.24-manifest.json`,
+`VERDICT_none_yet: null`.
+
+### §18d. Gates
+
+No `tools/` code changed. `python3 -m tools.omr.staged.check` on this tree:
+**TOTAL 247**, identical to `origin/main` (inventory 10, health 0, wiring
+67, gather_coverage 15, capture 18, reach 24, brakes 9, trace 3, conventions
+0, no_producer 0, export_coverage 0, accuracy_record 0, producers 0,
+source_text_tests 46, mutation_batteries_live 55) — expected, since nothing
+in `tools/` moved. `pytest tools/omr/tests -m "not slow" -q`: **3,770
+passed, 3 skipped** (716 s, slowed by other sessions' concurrent load on
+this machine) — main's own count exactly, 0 new tests, as expected with
+`tools/` untouched.
+
+### §18e. Files
+
+- `probe/dot_probe_2_24.py`: dumps `Q.AUG_DOT`/`Q.DOT_ROLE`/
+  `Q.NOTEHEAD_CLASS`/`Q.REST` for a list of cells, straight off
+  `record_io.load_record` — the one sanctioned reader.
+- `probe/quick_crop_2_24.py`: a single-region 600 dpi crop, scratch tool for
+  eyeballing a page-pixel bbox before committing a manifest crop.
+- `probe/crop_dots_2_24.py`: the 7 committed, frame-controlled, staff-banded
+  crops (`crop_losers_2_6b._frame_ok`'s precedent) + manifest.
+- `out/r224/brahms-p1.record.json` (45 MB, fresh gather, this tree) and its
+  `.held.json`/`-partition.json` siblings: regenerable, not committed
+  (`out/.gitignore`).
+- `out/print/dot24-0{1..7}.png`, `out/print/dot-2.24-manifest.json`:
+  committed.
