@@ -1,5 +1,6 @@
 """ROADMAP 2.26b — a BARE crook, no instrument word at all, placed by the
-braced neighbour it continues AND an independent roster witness.
+braced neighbour it continues AND the engraver's own document-wide
+abbreviation convention.
 
 ⚠️ THE SHAPE, MEASURED ON A REAL DOCUMENT (Brahms 1/i, Breitkopf 317803).
 Roadmap 2.26 answered `ambiguous_pairing` (a TIED name whose own text still
@@ -9,10 +10,19 @@ placing it needs an assumption about the PAGE (a bare crook always
 continues the braced neighbour above it) this repo had not asked Sean.
 Sean's answer, via `benchmarks/omr-staff-identity-2026-09/HORN-CROOK-
 RESEARCH.md`: yes for THIS movement, because nothing else in it is crooked
-in C or Es -- an answer that is conditional on there being no OTHER
-crooked family to confuse it with, which is exactly why the rule needs a
-SECOND witness (the roster) and not just the reference lineup's own text
-repeating itself.
+in C or Es.
+
+⚠️⚠️ THE FIRST CUT ASKED THE ROSTER FOR THAT "nothing else" FACT AND IT IS
+DEAD AT ZERO ON EVERY REAL RECORD THIS REPO HOLDS: the catalog's own
+`InstrDetail` says `"4 horns, 2 trumpets, ... timpani, strings"` — never a
+crook. What actually decides it is the PLATE's own convention: an
+abbreviation, once attached to an instrument anywhere in the piece, is not
+reused for a different one — checked against every labelled staff in the
+DOCUMENT (`_document_crook_owners`), not the reference alone. **This is an
+INFERENCE from the engraver's convention, not a second, independent
+witness** — every row it reads is the same `Q.MARGIN_LABEL` the reference
+match already reads, merely widened. The ROSTER, where it happens to carry
+crook data, is an OPTIONAL VETO on top of that inference, never its source.
 
 ⚠️ THE POSITIVE CONTROL IS IN THE SAME CLASS AS THE REFUSALS, for the same
 reason every other file in this family keeps one.
@@ -32,20 +42,21 @@ from tools.omr.staged.record import Log, Outcome, Q, READERS
 def _document(systems, roster=None, page=0):
     """Mirrors `test_staged_slot_crook.py`'s own `_document`, plus an
     OPTIONAL document-scoped `Q.ROSTER_ENTRY` row. `roster`, if given, is
-    the `"crooked"` map (`{instrument: [crook, ...]}`) -- the one field
-    `_roster_crook_owners` reads; every other roster field is filled with
-    a plausible, admissible (`source_kind: "catalog"`) minimum.
+    the `"crooked"` map (`{instrument: [crook, ...]}`) the OPTIONAL veto
+    reads (`_roster_contradicts`); every other roster field is filled with
+    a plausible, admissible (`source_kind: "catalog"`) minimum. Omitting
+    it entirely (the default) is the REAL, current shape of every roster
+    this repo has gathered.
 
     ⚠️ `OMR_SLOT_CONSTRAINTS=0` FOR THE DURATION OF THE BUILD, restored
     after. The constraint channels (`_apply_constraints`, order/family/
     clef) are a SEPARATE, earlier-roadmap mechanism this file is not
     testing, and left enabled they can independently narrow or decide an
-    unnamed staff before this rule ever runs on some shapes -- exactly the
-    ambiguity roadmap 2.26's own harness avoided by keeping its synthetic
-    references small. Isolating the flag here, rather than shrinking the
-    reference further, keeps the reference wide enough to hold the roadmap
-    2.26b shape (an INTERIOR bare-crook staff, never the trailing one
-    `_place_in_family_block` already owns).
+    unnamed staff before this rule ever runs on some shapes. Isolating the
+    flag here, rather than shrinking the reference further, keeps the
+    reference wide enough to hold the roadmap 2.26b shape (an INTERIOR
+    bare-crook staff, never the trailing one `_place_in_family_block`
+    already owns).
     """
     old = os.environ.get("OMR_SLOT_CONSTRAINTS")
     os.environ["OMR_SLOT_CONSTRAINTS"] = "0"
@@ -119,62 +130,73 @@ class TestBareCrook(unittest.TestCase):
 
 
 class TestTheDecision(unittest.TestCase):
-    def test_a_bare_crook_is_placed_ON_ITS_BRACE_WITH_A_CORROBORATING_ROSTER(self):
-        """⚠️ THE POSITIVE CASE. Real text off the real record, both
-        conditions satisfied: the reference brace repeats `Horn` with `Es`
-        among its crooks, and the roster names `Horn` alone for `Es`."""
-        log = _document([REFERENCE, SHORT_ES], roster={"Horn": ["C", "ES"]})
+    def test_the_real_Brahms_label_strings_place_Horn_Es(self):
+        """⚠️ THE POSITIVE CASE, roster SILENT (the real shape: real
+        Brahms's catalog names no crook at all). Placed from the plate's
+        own convention alone -- the reference brace repeats `Horn` with
+        `Es` among its crooks, and nothing else in the document attaches
+        `Es` to a different instrument."""
+        log = _document([REFERENCE, SHORT_ES])
         got = _slots(log, 1, 4)
         self.assertEqual(got[2], 2)   # slot 2 = "Hr. (Es)" in the reference
         v = _slot_verdict(log, 0, 1, 2)
         self.assertEqual(v.reason, "paired_by_bare_crook")
         self.assertEqual(v.detail["instrument"], "Horn")
-        self.assertEqual(v.detail["roster_owners"], ["Horn"])
+        self.assertEqual(v.detail["document_owners"], ["Horn"])
+
+    def test_roster_SILENT_still_places(self):
+        """Same as the positive case, restated: a roster present but with
+        no `"crooked"` field at all (an admissible `catalog` row that
+        simply has nothing to say) must not block the plate's own
+        evidence -- silence is not a veto."""
+        log = _document([REFERENCE, SHORT_ES], roster={})
+        v = _slot_verdict(log, 0, 1, 2)
+        self.assertEqual(v.reason, "paired_by_bare_crook")
 
     def test_the_OTHER_crook_picks_the_OTHER_slot(self):
-        log = _document([REFERENCE, SHORT_C], roster={"Horn": ["C", "ES"]})
+        log = _document([REFERENCE, SHORT_C])
         got = _slots(log, 1, 4)
         self.assertEqual(got[2], 1)   # slot 1 = "(C) Hr." in the reference
         v = _slot_verdict(log, 0, 1, 2)
         self.assertEqual(v.reason, "paired_by_bare_crook")
 
-    def test_NO_ROSTER_AT_ALL_still_abstains(self):
-        """⚠️⚠️ THE HONEST DEFAULT. Real Brahms's own catalog `InstrDetail`
-        names no crook at all (`HORN-CROOK-RESEARCH.md`) -- this rule is
-        DEAD AT ZERO on every roster this repo has gathered so far, and
-        must stay refused rather than fall back to the page alone."""
-        log = _document([REFERENCE, SHORT_ES], roster=None)
+    def test_a_document_where_C_labels_both_Horn_and_Trumpet_abstains(self):
+        """⚠️ THE CONTROL THIS REDESIGN EXISTS FOR. A THIRD system, anywhere
+        in the document, prints `"(C) Tr."` -- so `"C"` is attached to TWO
+        instruments across the plate's own labelled lineup, and the
+        engraver's convention this rule leans on is exactly the one THIS
+        document violates. Must refuse, not pick the reference's own
+        answer as though the rest of the document did not exist."""
+        third = ["Flauti", "(C) Tr.", "Fagotti"]
+        log = _document([REFERENCE, SHORT_C, third])
         v = _slot_verdict(log, 0, 1, 2)
         self.assertNotEqual(v.reason, "paired_by_bare_crook")
         self.assertIsNot(v.outcome, Outcome.DECIDED)
 
-    def test_A_ROSTER_WITH_TWO_FAMILIES_CROOKED_IN_THE_SAME_KEY_abstains(self):
-        """⚠️ CONTROL. The roster itself is ambiguous -- Horn AND Clarinet
-        both attested crooked in Es -- so the independent witness cannot
-        corroborate a single instrument and the rule must refuse, exactly
-        as `_forced_pairing` refuses a name the reference prints twice."""
-        log = _document([REFERENCE, SHORT_ES],
-                        roster={"Horn": ["ES"], "Clarinet": ["ES"]})
+    def test_a_roster_CONTRADICTING_the_document_abstains(self):
+        """⚠️ THE VETO, EXERCISED. The document's OWN labelled lineup
+        uniquely attaches `Es` to `Horn` -- (a) and the document check both
+        pass -- but the roster (where it happens to carry crook data at
+        all) names `Clarinet` for `Es` instead. The veto fires: a
+        contradiction from an admissible, independent-of-the-page source
+        outranks the plate's own convention."""
+        log = _document([REFERENCE, SHORT_ES], roster={"Clarinet": ["ES"]})
         v = _slot_verdict(log, 0, 1, 2)
         self.assertNotEqual(v.reason, "paired_by_bare_crook")
         self.assertIsNot(v.outcome, Outcome.DECIDED)
 
-    def test_A_ROSTER_WITH_TRUMPETS_AND_HORNS_IN_C_abstains(self):
-        """⚠️ CONTROL, the other crook. Horn AND Trumpet both attested
-        crooked in C -- the exact shape `HORN-CROOK-RESEARCH.md` names as
-        where the convention would break (\"two different transposing
-        families shared a crook name\")."""
-        log = _document([REFERENCE, SHORT_C],
-                        roster={"Horn": ["C"], "Trumpet": ["C"]})
+    def test_a_roster_that_AGREES_still_places(self):
+        """The mirror of the veto test: a roster that names the SAME
+        instrument for the crook is not a contradiction and must not block
+        what the document already established."""
+        log = _document([REFERENCE, SHORT_ES], roster={"Horn": ["C", "ES"]})
         v = _slot_verdict(log, 0, 1, 2)
-        self.assertNotEqual(v.reason, "paired_by_bare_crook")
-        self.assertIsNot(v.outcome, Outcome.DECIDED)
+        self.assertEqual(v.reason, "paired_by_bare_crook")
 
     def test_a_crook_the_reference_brace_never_carries_still_abstains(self):
-        """The roster corroborates `"D"` for Horn, but neither reference
-        slot of the Horn brace prints it -- (a) fails, refuse."""
-        log = _document([REFERENCE, ["Flauti", "(C) Hr.", "(D)", "Fagotti"]],
-                        roster={"Horn": ["C", "ES", "D"]})
+        """Neither reference slot of the Horn brace prints `"D"` -- (a)
+        fails, refuse, roster or not."""
+        log = _document([REFERENCE, ["Flauti", "(C) Hr.", "(D)", "Fagotti"]])
         v = _slot_verdict(log, 0, 1, 2)
         self.assertNotEqual(v.reason, "paired_by_bare_crook")
         self.assertIsNot(v.outcome, Outcome.DECIDED)
@@ -182,11 +204,9 @@ class TestTheDecision(unittest.TestCase):
     def test_a_single_crook_instrument_is_not_a_brace(self):
         """`Bassoon` (`Fagotti`) is not REPEATED in the reference, so it is
         not a braced pair and carries no crook to disambiguate at all --
-        matching its own bare crook by coincidence must not resolve, roster
-        or not."""
+        matching its own bare crook by coincidence must not resolve."""
         ref = ["Flauti", "(C) Hr.", "Hr. (Es)", "Fagotti (D)", "Oboi"]
-        log = _document([ref, ["Flauti", "(C) Hr.", "(D)", "Oboi"]],
-                        roster={"Bassoon": ["D"]})
+        log = _document([ref, ["Flauti", "(C) Hr.", "(D)", "Oboi"]])
         v = _slot_verdict(log, 0, 1, 2)
         self.assertNotEqual(v.reason, "paired_by_bare_crook")
         self.assertIsNot(v.outcome, Outcome.DECIDED)
@@ -194,7 +214,7 @@ class TestTheDecision(unittest.TestCase):
     def test_the_full_system_is_UNCHANGED(self):
         """The equal-count population never enters the short-system branch
         at all and must not move."""
-        log = _document([REFERENCE, REFERENCE], roster={"Horn": ["C", "ES"]})
+        log = _document([REFERENCE, REFERENCE])
         for s in (0, 1):
             self.assertEqual(_slots(log, s, len(REFERENCE)), [0, 1, 2, 3, 4])
 
