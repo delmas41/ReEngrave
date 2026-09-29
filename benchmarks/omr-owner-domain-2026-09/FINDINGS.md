@@ -1862,3 +1862,178 @@ test file's own TEXT — including a comment — makes the whole file slow).
   this code existed); the 33 newly-abstaining Breitkopf subjects and the 3
   Litolff ones were sampled and read from the record's own geometry, not
   cropped against the page.
+
+## §2.6g — the fresh whole-movement Litolff record's 345 `owner_not_read`: breakdown, 16 sampled, read by eye (evidence lane, no pipeline change, 2026-09-29)
+
+**Path: STAGED.** Branch `claude/owner-not-read-2.6g`, off `origin/main`
+`23f4fa9e` (§2.6c/2.6d/2.6e/2.6f all merged onto it). The record:
+`beethoven5-litolff-whole-movement-20260929T104646Z.record.json` (325 MB),
+gathered tonight in the `regather-20260929` worktree — read here ONLY
+through `tools.omr.staged.record_io.load_record`, ONCE, in
+`benchmarks/omr-owner-domain-2026-09/probe/probe_owner_not_read_2_6g.py`.
+That worktree's own files were not touched; a Brahms gather running there
+was left alone.
+
+### Method
+
+One `load_record`. In the same process, `export.Record.verdict` was
+wrapped (not modified — `export.py` is untouched by this lane) to capture
+every subject where the wrapped call returns an `abstained` verdict whose
+reason is in `ownership.OWNER_NOT_READ_REASONS` — the EXACT predicate
+`export.py:967-976` itself tests before calling `_drop("owner_not_read",
+s)` — while `to_musicxml` ran once, in-process, no re-gather. This
+reproduced the file's own count exactly: `report["notes_not_written"]
+["owner_not_read"] == 345 == len(captured)`.
+
+For each captured subject the probe read, from the SAME loaded record (no
+second file read): its own `Q.GLYPH_BAND_DISTANCE` rows (candidate staff +
+distance in spaces), its already-decided `Q.GLYPH_OWNER` verdict detail
+(the `ledger` summary `_contest_ledger_reading` filed at ADJUDICATE time —
+2.6c/2.6e are already IN this gather, so no readjudication was needed to
+see reason/detail), and its `Q.LEDGER_RUNG_INK` rows (2.6d's CV reader).
+
+**The twin.** A contest exists because `gather.gather_ownership_evidence`
+detects the SAME ink twice — once from each candidate staff's own padded
+cell — and files a `Q.GLYPH_BAND_DISTANCE`/`Q.GLYPH_OWNER` subject at EACH
+address (`gather.py:858-876`: same category, different staff, same
+system, IoU > `CONTEST_IOU` 0.3). The probe replays exactly that predicate
+over the record's own `Q.GLYPH_BOX` rows (not approximated, not a
+tolerance guessed for this lane) to find, for every captured subject, the
+other glyph subject GATHER paired it with, and reads THAT subject's own
+`Q.GLYPH_OWNER` verdict.
+
+### The breakdown
+
+345 captured, all reason `far_no_rungs` (0 `tied`, 0 `no_evidence` reach
+export on this record — different from the manifest record §2.6e
+measured, which held 101 `tied` and 0 `far_no_rungs`; a different, fresher
+gather, not a contradiction).
+
+**By rungs needed** (`expected`, the lower of the two candidate sides,
+since `far_no_rungs` requires every side to need ≥ `FAR_MIN_RUNGS`): 330 of
+345 need exactly **2** (the minimum by construction), 15 need 3. Per side
+(690 sides, 2 per subject): `{2: 405, 3: 204, 4: 33, 5: 45, 6: 3}`. **Every
+one of these 345 sits right at the boundary the rule itself draws** — none
+is a note failing on a distant, obviously-far ladder; all are the
+closest-to-the-line cases.
+
+**By distance** (own-staff candidate, half-space bins): `{2.0: 139, 2.5:
+64, 3.0: 40, 3.5: 66, 4.0: 3, 4.5: 7, 5.0: 12, 5.5: 14}` spaces from the
+band. Far-candidate side is a similar shape, slightly wider.
+
+**By CV reach** (`Q.LEDGER_RUNG_INK`, 2.6d): all 345 subjects have at
+least one row (1,797 total, 0 abstained — the raster was available and the
+reader ran everywhere); **0 of 1,797 read `found=True`**. This is the SAME
+zero §2.6d's own two-acceptance-page sample measured
+(`benchmarks/omr-owner-domain-2026-09/FINDINGS.md` §2.6d), now confirmed
+over the WHOLE movement's own `far_no_rungs` population, not just two
+pages — REACH is real (every window was actually sampled, not abstained
+past), ACCURACY on this specific population is exactly zero, on far more
+data than before.
+
+**By twin fate** (306 + 32 + 7 = 345, exactly):
+
+| twin fate | count | meaning |
+|---|--:|---|
+| `twin_also_owner_not_read` | 306 | both copies of the contest abstain; the note is written NOWHERE (153 distinct notes, since a contest's verdict is filed symmetrically on both subjects) |
+| `twin_decided_self` | 32 | the twin's OWN verdict is `decided`, naming the twin's own staff — so the note IS written, just not as this copy; the abstention here costs nothing |
+| `twin_decided_other` | 7 | the twin's own verdict is `decided` but names a THIRD staff — a three-way contest shape, not inspected further this lane |
+
+### 16 sampled, 14 crops, read by eye
+
+The brief asked to stratify by REASON; on this record that axis has one
+value (`far_no_rungs`), so the twin-fate breakdown above substitutes,
+proportioned 12 / 3 / 1 (seed `2026092916`). Crops
+(`benchmarks/omr-owner-domain-2026-09/probe/crop_owner_not_read_2_6g.py`,
+PDF-only, no second record read — the probe also dumped the crop-cutting
+geometry, CV windows and nearby detector `ledgerLine` boxes in the SAME
+one-read pass): banded like `crop_far_no_rungs_2_6c.py` (GREEN = upper
+candidate, ORANGE = lower, colour follows position), PLUS every nearby
+detector `ledgerLine` `Q.GLYPH_BOX` drawn as a thin cyan box and every
+`Q.LEDGER_RUNG_INK` window this contest tested drawn dashed blue and
+labelled with its four densities. Frame control reused from
+`crop_losers_2_6b._frame_ok`: **2 of 16 refused** (both staves' own lines
+did not clear the shifted-half-space control) — the control failing on
+real crops, not merely available to fail (CLAUDE.md rule 7). 14 rendered:
+`out/print/2.6g-owner-not-read-{01..14}.png` + manifest (`VERDICT_none_yet:
+null` per crop, question "UPPER (green) / LOWER (orange) / not a note --
+are there ledger lines either reader should have caught?"). This session's
+own read is kept separate
+(`out/print/2.6g-owner-not-read-session-read-2026-09-29.json`, precedent
+`session_read_2026_09_29` in §2.6d.3/§2.6c.3).
+
+**Tally: (a) 1, (b) 4, (c) 1, (d) 8** (of 14).
+
+- **(c), confirmed**: crop 05 (`glyph/2/0/2/1/7`) — the red bracket sits on
+  the `c` of a printed `cresc.`. Not a note. Exactly the shape §2.6c.2
+  already named for Litolff's `sempre` (`glyph/8/0/6/12/7`).
+- **(a), one candidate**: crop 10 (`glyph/10/0/7/1/2`) — center=0.719
+  (dense), right=0.508 (just under the 0.55 `DENSE` floor), adjacent=0.375
+  (just OVER the 0.35 ceiling): all three guards miss by a small margin in
+  the direction a real, slightly-thick or slightly-off-grid rung would
+  push them. The one crop in the sample where a real, missed rung is more
+  likely than not.
+- **(b), four**: crops 01, 04, 08, 12 — an isolated notehead-shaped blob
+  with the LEFT and RIGHT overhang densities reading ≈0.0 at every step
+  (truly blank paper on both sides, not merely "not dense enough"); no
+  ledger of any kind is visible near the head. Whether these are real
+  notes standing alone with nothing printed under them, or something else
+  entirely, was not settled by eye.
+- **(d), eight**: crops 02, 03, 06, 07, 09, 11, 13, 14 — dense or merged
+  passages (beamed runs, chords, slurred groups) where SOME window reads
+  one overhang side dense and the other not (e.g. crop 06: left=0.94,
+  right=0.16 at the same step) — the recurring one-sided-neighbour-ink
+  shape §2.6f/§2.6c.3 already built a rule around for the DETECTOR-boxed
+  case, seen here in the CV-ink measurement instead. None reads as a
+  clean, symmetric rung reaching past the head on both sides.
+
+**Headline: 0 of 14 crops show an unambiguous printed ledger line that
+both readers missed on evidence that was there to find.** The population
+sits, by construction, right at the `FAR_MIN_RUNGS` boundary (330 of 345
+need exactly 2), which is exactly where the ambiguity in this sample
+concentrates — not evidence the boundary is wrong, but evidence this is
+where a "did an engraver print one here" judgment call gets hard, on this
+edition's own MERGING convention (CLAUDE.md §10).
+
+### Recommendation
+
+**Do not loosen the CV or detector ledger thresholds.** The 2.6d reader
+ran everywhere on this population (1,797 windows, 0 abstained) and found
+nothing; the 14 read-by-eye crops give exactly one plausible near-miss
+(crop 10) and otherwise either confirm the abstention (a non-note, four
+genuinely blank-paper isolated heads) or land on ink this lane's own
+sibling findings (§2.6f, §2.6c.3) already attribute to a NEIGHBOUR's own
+structure, not an independent rung. `far_no_rungs` → `owner_not_read` is
+behaving exactly as designed (CLAUDE.md rule 8): abstaining rather than
+guessing, on a population that, read by eye, mostly does not contain the
+evidence a rung-finding fix could recover.
+
+The higher-yield next step this points at: **measure what fraction of the
+345 (or the broader `far_no_rungs` population) is a real, independent
+notehead at all**, in the shape of the measurement CLAUDE.md §10 already
+cites for this edition (46 of 180 sampled "notehead" boxes on Litolff were
+not noteheads) — not a ledger-rung change. If a similar rate holds here,
+on the order of 80–90 of the 345 would be better refused earlier, under a
+more specific `not_a_notehead:*` reason, than reaching `glyph_owner` and
+abstaining `far_no_rungs` at all. This is a detector-precision question on
+this population, not a rule question — the rule itself, on this sample,
+looks right.
+
+### Not done / open
+
+- The 8 inconclusive (d) crops were not re-cropped at higher zoom or
+  checked against a wider, unbanded render (§2.6d.2's own method for
+  exactly this kind of doubt) — budget (one record read, no gathers, no
+  code) did not extend to a second pass.
+- No population-wide notehead-precision count was run on the 345 (or the
+  full `far_no_rungs` set) — the recommendation above is argued from 14
+  crops, not measured at scale.
+- `twin_decided_other` (7 subjects, 1 sampled) was not looked at closely
+  as its own shape — a three-way contest is a different question from the
+  two-candidate case this lane otherwise reads.
+- The 2 frame-control refusals were not replaced with backups (would have
+  needed a second record read to pull their geometry; out of budget) —
+  reported as refused, not swept into the 14.
+- CLAUDE.md §4c's list of EXPORT refusals still does not name
+  `owner_not_read` — §2.6c.2 already flagged this as open and it remains
+  so; this lane is evidence-only and changed no spec text either.
