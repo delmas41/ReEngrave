@@ -1409,3 +1409,149 @@ from his verdict slot). ⚠️ Sample size: 12 of 38 credited rows on ONE page
 of ONE document — a clean result here is not a swept threshold, and the
 open items in §2.6d.2 (step 1's adjacent-guard miss, the own-line
 exclusion, untested slant/adjacent edge cases) all still stand.
+
+## §2.6e — `tied` (and `no_evidence`) were falling through to a WRITTEN guess, exactly the `far_no_rungs` shape 2.6c fixed (2026-09-29, BUILT not merged)
+
+Branch `claude/owner-tied-2.6e`. Answers §2.6c.2's open item, quoted there
+verbatim: *"`tied` is deliberately NOT here [in `OWNER_NOT_READ_REASONS`] --
+it predates this lane and its export behaviour is FINDINGS §2.6c.2's open
+item."* Cheap proof only (Sean, 2026-09-28: *"build and wire, stop burning
+runs on proof"*): unit tests RED→GREEN, one saved-record read, one
+in-process base-vs-arm export. No re-gathers.
+
+### The bug
+
+`adjudicate_glyph_owner` (`ownership.py`) abstains `tied` where two
+candidates score exactly equal (*"two equal-cost mappings that disagree
+carry literally zero information"*) and `no_evidence` where a contest's
+`Q.GLYPH_BAND_DISTANCE` rows all lack a `candidate` key (`if not scored`).
+`_place_notes` (`export.py`) reads the owner verdict with `rec.value(...)`,
+which returns `None` for ANY non-`decided` outcome, and
+`A.is_relocated_copy(sub, None)` is `False` by construction (it requires a
+`str` owner value) -- so before this change an abstained owner of ANY
+reason not in `OWNER_NOT_READ_REASONS` fell straight through to being
+WRITTEN on the staff its cell was cut from. `far_no_rungs` was closed
+2026-09-28 (§2.6c.2); `tied` and `no_evidence` were not.
+
+`tied` is the WORSE shape, not a milder version of the same one. A contest
+exists because a piece of ink is detected TWICE -- once from each staff's
+own cell (CLAUDE.md §10: the measure cell's padding reaches the neighbour's
+ink on a conductor's page) -- so a `tied` verdict is filed on BOTH of a
+contest's two subjects independently, symmetrically, by the same scoring.
+Before this fix BOTH subjects fell through the SAME guess and BOTH were
+written: not one wrong guess but the same printed note on two staves at
+once, on one stem-and-pitch each -- the exact failure `A.is_relocated_copy`'s
+own docstring exists to prevent (*"2 of the same note next to each other
+connected to the same stem"*), reopened for exactly the population `tied`
+names.
+
+### Measured on the real record
+
+One read, `record_io.load_record` on the acceptance manifest's own Litolff
+record (`library/_shared-records/beethoven5-litolff-mvt1-whole-20260928.
+record.json`, the file `benchmarks/acceptance/manifest.json` names for
+`beethoven5-litolff`):
+
+| `glyph_owner` outcome | reason | count |
+|---|---|---|
+| decided | (various) | 7,879 |
+| abstained | `tied` | 101 |
+| abstained | `no_evidence` | 0 |
+
+Every abstention on this record is `tied`; `no_evidence` never fires here
+(its precondition -- every row of a contest missing `detail["candidate"]`
+-- did not occur on this document). It is fixed anyway: it is reachable by
+construction (any future gather that leaves `candidate` unset on a
+contest's rows hits it), the fall-through it feeds is the byte-identical
+code path `tied` was just closed on, and CLAUDE.md rule 8 draws no
+exception for "rare."
+
+Of the 101 real `tied` subjects, read against the export report (below),
+only a handful ever reach the `glyph_owner` branch of `_place_notes` at all
+-- most are already excluded earlier in the function by an unrelated
+refusal (`no_pitch`, `duration_narrowed`, a notehead-precision filter) that
+this lane does not touch. This is the same shape §2.6c.2 measured for
+`far_no_rungs` and is not a new finding, restated here only because it is
+the reason the base/arm delta below is small relative to 101.
+
+### What was built
+
+One line, `ownership.OWNER_NOT_READ_REASONS = ("far_no_rungs", "tied",
+"no_evidence")` (previously `("far_no_rungs",)`). `export.py`'s
+`_OWNER_NOT_READ_REASONS = _ownership_rules.OWNER_NOT_READ_REASONS` and the
+`_drop("owner_not_read", s)` call site it feeds are UNTOUCHED -- both new
+reasons are absorbed by the exact mechanism 2.6c.2 built, which is why this
+is a one-line CONNECT (CLAUDE.md rule 6) and not a new mechanism. The
+comment above the tuple is rewritten to record why `tied`/`no_evidence` are
+now included instead of explaining why they were not.
+
+`Ruling.abstain("tied")`/`Ruling.abstain("no_evidence")` themselves are
+untouched -- the DECISION was already correct (CLAUDE.md rule 8: abstaining
+on a genuine tie is right); only the EXPORT behaviour after an abstention
+was wrong.
+
+### Tests, RED→GREEN (`tools/omr/tests/test_staged_ledger_direction.py`,
+`TestExportCountsAnUnreadOwner`)
+
+Run RED first against `ae776515` (this lane's base): `test_an_abstained_
+tied_owner_is_counted_not_written`, `test_a_tied_contests_BOTH_sides_are_
+dropped_not_both_written` and `test_an_abstained_no_evidence_owner_is_
+counted_not_written` all fail there (the abstained owner is written
+anyway, `owner_not_read` never appears in `notes_not_written`). Positive
+controls, passing on both trees: a `decided` `ledger_direction` owner (own
+staff) is still written once; a `no_contest` head (nothing to arbitrate) is
+unaffected. GREEN on this branch, 22/22 in the file.
+
+### Base vs arm, in-process, on the real Litolff record (no re-gather)
+
+`SX._OWNER_NOT_READ_REASONS` monkey-patched to the BASE tuple
+(`("far_no_rungs",)`) and to the ARM tuple (this branch's three), the
+already-loaded record `to_musicxml`'d once each (export alone, no gather;
+~18s/run on the whole movement):
+
+| | BASE (pre-2.6e) | ARM (2.6e) | delta |
+|---|---|---|---|
+| `written.notes` | 3,867 | 3,866 | −1 |
+| `notes_not_written["owner_not_read"]` | (absent, 0) | 8 | +8 |
+| `notes_not_written["bar_does_not_add_up"]` | 5,161 | 5,154 | −7 |
+| `notes_not_written_total` | 9,304 | 9,305 | +1 |
+| `written.notes + notes_not_written_total` | 13,171 | 13,171 | 0 (balanced, both trees) |
+| `status_census["unaccounted"]` | 0 | 0 | unchanged |
+
+The equality holds on both trees (rule 9's accounting control: every
+gathered notehead is written or counted). The distribution of the +1 is
+explained, not merely balanced: of the 8 subjects newly refused
+`owner_not_read`, 7 were previously miscounted downstream as
+`bar_does_not_add_up` (a bar whose sum the guessed duplicate had thrown
+off) and only 1 was actually being WRITTEN in BASE -- so removing 8 guesses
+fixes 7 bars' arithmetic and drops 1 real duplicate write, net −1 notes
+written. `owned_by_another_staff` (1,122) is unchanged on both trees, as
+expected -- that refusal fires on a `decided` owner naming another staff
+and this lane touches only abstentions.
+
+The accidental census (`_accidental_census`, ROADMAP 2.7) needs no code
+change: `unowned` is computed as a REMAINDER
+(`heads_owned - heads_contradicted - (applied - doubled_copies)`) against
+the render's own `applied` counter, not by enumerating refusal reasons, so
+a head an `accidental_owner` verdict decided but whose note `_place_notes`
+now refuses under `owner_not_read` (instead of writing it at a guess)
+already lands in `unowned` by the same arithmetic that covered
+`far_no_rungs` in 2.6c.2 -- verified by inspection, not by a new test, since
+the mechanism is unchanged and already exercised.
+
+### Engraved control
+
+`benchmarks/omr-staged-engraved-2026-09/out/engraved-p0.record.json`: **0
+`glyph_owner` abstentions of any reason** (22 `distance` + 4 `range_veto`,
+both `decided`). Base and arm exports are **byte-identical** (`xml_base ==
+xml_arm`, 73 notes written on both, `notes_not_written == {}` on both) --
+this lane cannot touch a document with no contested ink, and does not.
+
+### Proof budget spent
+
+Unit tests (RED→GREEN, 2 positive controls), one `record_io.load_record`
+read, one in-process base/arm export pair on the real record, one
+byte-identical check on the engraved control. No re-gather, no whole-work
+run, no new flag, no new benchmark directory, no new derived check --
+`OWNER_NOT_READ_REASONS` already existed and this widens its tuple by two
+strings the mechanism it feeds was already built to consume.

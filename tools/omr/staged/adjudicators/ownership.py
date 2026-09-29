@@ -100,9 +100,20 @@ FAR_MIN_RUNGS = 2
 #: `glyph_owner` abstentions that mean *we could not read whose this is*.
 #: EXPORT refuses such a head under `owner_not_read` rather than writing it on
 #: the staff it was cut from (CLAUDE.md rule 8: a fallback never converts
-#: "cannot tell" into an answer). `tied` is deliberately NOT here -- it
-#: predates this lane and its export behaviour is FINDINGS §2.6c.2's open item.
-OWNER_NOT_READ_REASONS = ("far_no_rungs",)
+#: "cannot tell" into an answer).
+#:
+#: ⚠️⚠️ ROADMAP 2.6e. `tied` (line ~306: two candidates score exactly equal)
+#: predated this lane and was deliberately left off -- FINDINGS
+#: §2.6c.2's open item. Left off, it was worse than `far_no_rungs` ever was:
+#: a contested head is detected TWICE, once from each staff's own cell, so
+#: BOTH of a `tied` contest's two subjects abstain independently and BOTH
+#: fell through `is_relocated_copy(None) == False` to be WRITTEN -- the same
+#: printed note on two staves, not one guess but two. `no_evidence` (line
+#: ~276, `if not scored`) is the same fall-through by the same construction
+#: and is fixed alongside it, though it was measured to occur zero times on
+#: the Litolff acceptance record (`benchmarks/omr-owner-domain-2026-09/
+#: FINDINGS.md` §2.6e) -- CLAUDE.md rule 8 draws no line at "rare".
+OWNER_NOT_READ_REASONS = ("far_no_rungs", "tied", "no_evidence")
 
 
 @decision(
