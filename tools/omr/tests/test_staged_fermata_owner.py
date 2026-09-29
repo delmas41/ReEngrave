@@ -24,6 +24,10 @@ from tools.omr.staged import record as R
 from tools.omr.staged.record import Log, Q, READERS
 
 
+HOME = R.staff(0, 0, 0)
+NEIGHBOUR = R.staff(0, 0, 1)
+
+
 def _carrier(log, gi, x, w=20.0, *, category="notehead", y=40.0,
              cls="noteheadBlackOnLine"):
     g = R.glyph(0, 0, 0, 0, gi)
@@ -31,6 +35,19 @@ def _carrier(log, gi, x, w=20.0, *, category="notehead", y=40.0,
                 reader=READERS.DETECTOR, frame="cell:0", score=0.9,
                 category=category)
     return g
+
+
+def _owned_by_the_neighbour(log, glyph, *, near=1.0, far=4.0):
+    """ROADMAP 2.27, the same composition `test_staged_dynamics._contest`
+    and `test_staged_articulation_owner._owned_by_the_neighbour` prove for
+    their own families: a real cross-staff contest `glyph_owner` DECIDES for
+    `NEIGHBOUR`."""
+    log.observe(glyph, Q.GLYPH_BAND_DISTANCE, far, reader=READERS.GEOMETRY,
+                frame="page", candidate=HOME.to_key(), own=True,
+                position_in_candidate=2.0)
+    log.observe(glyph, Q.GLYPH_BAND_DISTANCE, near, reader=READERS.GEOMETRY,
+                frame="page", candidate=NEIGHBOUR.to_key(), own=False,
+                position_in_candidate=2.0)
 
 
 def _mark(log, gi, x, *, w=14.0, cls="fermataAbove", y=0.0):
@@ -190,6 +207,45 @@ class TestTheVerdictIsStable(unittest.TestCase):
                 _carrier(log, gi, 100.0)
             seen.add(_decide(log).value)
         self.assertEqual(len(seen), 1, seen)
+
+
+class TestAPadCandidateOwnedByTheNeighbourIsNotThisStaffsToAttachTo(
+        unittest.TestCase):
+    """ROADMAP 2.27, the same connection as `articulation_owner`'s sibling
+    class. `_carrier` reads every `Q.GLYPH_BOX` row in the mark's own cell,
+    which on a conductor's page can include a notehead or rest `glyph_owner`
+    has already DECIDED belongs to the neighbour staff -- and before ROADMAP
+    2.27 this decision never read `Q.GLYPH_OWNER` to know it.
+
+    ⚠️ THE FIX. Remove the ownership filter and this goes RED."""
+
+    def test_the_only_carrier_owned_by_the_neighbour_is_not_attached(self):
+        log = Log()
+        _mark(log, 0, 100.0)
+        ghost = _carrier(log, 1, 100.0)
+        _owned_by_the_neighbour(log, ghost)
+        v = _decide(log)
+        self.assertEqual(v.outcome, "abstained")
+        self.assertEqual(v.reason, "owned_by_another_staff")
+        self.assertEqual(v.detail["n_candidates"], 1)
+
+        # ⚠️ POSITIVE CONTROL: identical page, minus the contest.
+        log2 = Log()
+        _mark(log2, 0, 100.0)
+        real = _carrier(log2, 1, 100.0)
+        v2 = _decide(log2)
+        self.assertEqual(v2.outcome, "decided")
+        self.assertEqual(v2.value, real.to_key())
+
+    def test_a_rest_carrier_beside_a_neighbours_ghost_is_still_found(self):
+        log = Log()
+        _mark(log, 0, 100.0)
+        ghost = _carrier(log, 1, 400.0)
+        _owned_by_the_neighbour(log, ghost)
+        real = _carrier(log, 2, 100.0, category="rest", cls="restWhole")
+        v = _decide(log)
+        self.assertEqual(v.outcome, "decided")
+        self.assertEqual(v.value, real.to_key())
 
 
 if __name__ == "__main__":

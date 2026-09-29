@@ -1905,14 +1905,53 @@ def _is_relocated_copy(subject, owner_value) -> bool:
     return is_relocated_copy(subject, owner_value)
 
 
+# ─────────────────────────────────────────────────────────────────────────────
+# ROADMAP 2.27 — a candidate `glyph_owner` has already handed to the
+# neighbour is not this staff's to attach a mark to.
+#
+# The measure cell is padded 4-6 staff spaces (CLAUDE.md §10) and on a
+# conductor's page that reaches the next staff's ink, so `articulation_
+# owner`, `fermata_owner` and `ornament_owner` each pick their carrier from
+# EVERY `Q.GLYPH_BOX` row in the mark's own cell -- including a notehead (or
+# rest) whose ink is really the neighbour staff's, caught in this cell's pad.
+# `adjudicate_glyph_owner` already asks "whose is this" for exactly that
+# population (`subjects_from=Q.GLYPH_BAND_DISTANCE`, the CONTESTED glyphs
+# only) and stamps a DECIDED verdict on it -- these three decisions simply
+# never read it (`grep GLYPH_OWNER` on their old `wants=` returned nothing).
+# That is CLAUDE.md's "value existed and nothing read it" class, not a new
+# rule: `adjudicate_dynamic` (`adjudicators/text.py`) already reads
+# `Q.GLYPH_OWNER` this same way for a margin-label letter, and this mirrors
+# its exact test (`owned_by` compared against `home`, an uncontested
+# candidate's missing verdict falling through unchanged).
+# ─────────────────────────────────────────────────────────────────────────────
+
+
+def _owned_by_a_different_staff(ev: Evidence, row: Any, home: str) -> bool:
+    """A DECIDED `Q.GLYPH_OWNER` verdict on this candidate names a staff
+    other than `home`.
+
+    NEVER relocates a glyph and never decides ownership from pad position
+    alone (CLAUDE.md §10) -- it only refuses to treat a candidate `glyph_
+    owner` has already DECIDED belongs elsewhere as if it were this staff's.
+    Only a DECIDED value moves a candidate out of consideration (CLAUDE.md
+    rule 6, connect never guess): a NARROWED or ABSTAINED ownership contest,
+    or a candidate never contested at all (no verdict, `owner is None`), is
+    left exactly as before -- `owned_by` then falls back to `home`, the same
+    fallback `adjudicate_dynamic` uses.
+    """
+    owner = ev.verdict(Q.GLYPH_OWNER, subject=row.subject)
+    owned_by = owner.value if owner is not None and owner.value else home
+    return owned_by != home
+
+
 @decision(
     quantity=Q.ARTICULATION_OWNER,
-    composed_from=(Q.ARTICULATION_MARK, Q.GLYPH_BOX),
+    composed_from=(Q.ARTICULATION_MARK, Q.GLYPH_BOX, Q.GLYPH_OWNER),
     scope=Kind.GLYPH,
-    wants=(Q.ARTICULATION_MARK, Q.GLYPH_BOX),
+    wants=(Q.ARTICULATION_MARK, Q.GLYPH_BOX, Q.GLYPH_OWNER),
     subjects_from=Q.ARTICULATION_MARK,
     reasons=("nearest_on_declared_side", "no_notehead", "no_side_declared",
-             "no_evidence"),
+             "no_evidence", "owned_by_another_staff"),
     mode=Mode.ADDITIVE,
 )
 def adjudicate_articulation_owner(ev: Evidence) -> Ruling:
@@ -1969,12 +2008,22 @@ def adjudicate_articulation_owner(ev: Evidence) -> Ruling:
     name, above = kind
 
     cell = ev.subject.at(Kind.CELL)
-    heads = [r for r in ev.rows(Q.GLYPH_BOX, scope=Scope.SELF_AND_DESCENDANTS,
-                                subject=cell)
-             if (r.detail or {}).get("category") == "notehead"
-             and isinstance(r.value, (list, tuple)) and len(r.value) >= 5]
-    if not heads:
+    home = ev.subject.at(Kind.STAFF).to_key()
+    all_heads = [r for r in ev.rows(Q.GLYPH_BOX, scope=Scope.SELF_AND_DESCENDANTS,
+                                    subject=cell)
+                 if (r.detail or {}).get("category") == "notehead"
+                 and isinstance(r.value, (list, tuple)) and len(r.value) >= 5]
+    if not all_heads:
         return Ruling.abstain("no_notehead", articulation=name)
+    # ⚠️ ROADMAP 2.27: a candidate `glyph_owner` already DECIDED belongs to
+    # the neighbour staff is dropped BEFORE the side/distance test ever sees
+    # it -- reported apart from `no_notehead` so a mark with nothing of its
+    # own in this cell can be told from one whose only candidates are the
+    # neighbour's ink.
+    heads = [r for r in all_heads if not _owned_by_a_different_staff(ev, r, home)]
+    if not heads:
+        return Ruling.abstain("owned_by_another_staff", articulation=name,
+                              n_candidates=len(all_heads))
 
     # ⚠️ THE MEDIAN NOTEHEAD WIDTH, exactly as the legacy pass takes it -- one
     # clipped or merged detection must not set the limit for the whole cell.
@@ -2606,12 +2655,12 @@ _FERMATA_CARRIERS = ("notehead", "rest")
 
 @decision(
     quantity=Q.FERMATA_OWNER,
-    composed_from=(Q.FERMATA_MARK, Q.GLYPH_BOX),
+    composed_from=(Q.FERMATA_MARK, Q.GLYPH_BOX, Q.GLYPH_OWNER),
     scope=Kind.GLYPH,
-    wants=(Q.FERMATA_MARK, Q.GLYPH_BOX),
+    wants=(Q.FERMATA_MARK, Q.GLYPH_BOX, Q.GLYPH_OWNER),
     subjects_from=Q.FERMATA_MARK,
     reasons=("contains_the_mark", "nearest_in_bar", "no_carrier",
-             "no_evidence"),
+             "no_evidence", "owned_by_another_staff"),
     mode=Mode.ADDITIVE,
 )
 def adjudicate_fermata_owner(ev: Evidence) -> Ruling:
@@ -2662,16 +2711,28 @@ def adjudicate_fermata_owner(ev: Evidence) -> Ruling:
     mark = marks[0]
 
     cell = ev.subject.at(Kind.CELL)
-    carriers = [r for r in ev.rows(Q.GLYPH_BOX, scope=Scope.SELF_AND_DESCENDANTS,
-                                   subject=cell)
-                if (r.detail or {}).get("category") in _FERMATA_CARRIERS
-                and isinstance(r.value, (list, tuple)) and len(r.value) >= 5]
-    if not carriers:
+    home = ev.subject.at(Kind.STAFF).to_key()
+    all_carriers = [r for r in ev.rows(Q.GLYPH_BOX,
+                                       scope=Scope.SELF_AND_DESCENDANTS,
+                                       subject=cell)
+                    if (r.detail or {}).get("category") in _FERMATA_CARRIERS
+                    and isinstance(r.value, (list, tuple)) and len(r.value) >= 5]
+    if not all_carriers:
         # ⚠️ A REAL POPULATION, NOT A DEFENSIVE BRANCH: 9 of the 46 cells
         # holding a fermata on Litolff `984073` p1-3 carry neither a notehead
         # nor a rest. The mark was read and there is nothing in that bar for it
         # to hang on, which is a gap in the READING and is reported as one.
         return Ruling.abstain("no_carrier", detector_class=str(mark.value))
+    # ⚠️ ROADMAP 2.27: the notehead-side sibling above says why this is
+    # dropped before the containment/nearest test, not folded into
+    # `no_carrier` -- a bar whose only ink is the neighbour staff's is not
+    # the same reading gap as a bar with nothing in it at all.
+    carriers = [r for r in all_carriers
+                if not _owned_by_a_different_staff(ev, r, home)]
+    if not carriers:
+        return Ruling.abstain("owned_by_another_staff",
+                              detector_class=str(mark.value),
+                              n_candidates=len(all_carriers))
 
     mx = (float(mark.detail.get("x0", 0.0))
           + float(mark.detail.get("x1", 0.0))) / 2.0
@@ -2715,12 +2776,12 @@ def adjudicate_fermata_owner(ev: Evidence) -> Ruling:
 
 @decision(
     quantity=Q.ORNAMENT_OWNER,
-    composed_from=(Q.ORNAMENT_MARK, Q.GLYPH_BOX),
+    composed_from=(Q.ORNAMENT_MARK, Q.GLYPH_BOX, Q.GLYPH_OWNER),
     scope=Kind.GLYPH,
-    wants=(Q.ORNAMENT_MARK, Q.GLYPH_BOX),
+    wants=(Q.ORNAMENT_MARK, Q.GLYPH_BOX, Q.GLYPH_OWNER),
     subjects_from=Q.ORNAMENT_MARK,
     reasons=("nearest_on_declared_side", "nearest_either_side", "no_notehead",
-             "no_evidence"),
+             "no_evidence", "owned_by_another_staff"),
     mode=Mode.ADDITIVE,
 )
 def adjudicate_ornament_owner(ev: Evidence) -> Ruling:
@@ -2767,12 +2828,19 @@ def adjudicate_ornament_owner(ev: Evidence) -> Ruling:
     side = detail.get("side")
 
     cell = ev.subject.at(Kind.CELL)
-    heads = [r for r in ev.rows(Q.GLYPH_BOX, scope=Scope.SELF_AND_DESCENDANTS,
-                                subject=cell)
-             if (r.detail or {}).get("category") == "notehead"
-             and isinstance(r.value, (list, tuple)) and len(r.value) >= 5]
-    if not heads:
+    home = ev.subject.at(Kind.STAFF).to_key()
+    all_heads = [r for r in ev.rows(Q.GLYPH_BOX, scope=Scope.SELF_AND_DESCENDANTS,
+                                    subject=cell)
+                 if (r.detail or {}).get("category") == "notehead"
+                 and isinstance(r.value, (list, tuple)) and len(r.value) >= 5]
+    if not all_heads:
         return Ruling.abstain("no_notehead", ornament=kind)
+    # ⚠️ ROADMAP 2.27, same connection as `articulation_owner`/`fermata_
+    # owner` above.
+    heads = [r for r in all_heads if not _owned_by_a_different_staff(ev, r, home)]
+    if not heads:
+        return Ruling.abstain("owned_by_another_staff", ornament=kind,
+                              n_candidates=len(all_heads))
 
     widths = sorted(float(h.value[3]) for h in heads)
     nh_width = widths[len(widths) // 2] or 1.0
