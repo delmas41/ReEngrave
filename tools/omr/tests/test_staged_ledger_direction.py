@@ -402,8 +402,8 @@ class TestExportCountsAnUnreadOwner(unittest.TestCase):
     # `adjudicate_glyph_owner` abstains `tied` where two candidates score
     # exactly equal (line ~306: "two equal-cost mappings that disagree carry
     # literally zero information"). Measured on the acceptance Litolff record
-    # (`library/_shared-records/beethoven5-litolff-mvt1-whole-20260928.
-    # record.json`, read once via `record_io.load_record`): 7,879 `decided`,
+    # (the acceptance manifest's Litolff whole-movement record of 2026-09-28,
+    # read once via `record_io.load_record`; FINDINGS §2.6e names the file): 7,879 `decided`,
     # 101 `abstained` and every one of them `tied` (`no_evidence` — the other
     # abstain reason this decision can emit, `line 276`, "not one row named a
     # candidate" — 0 occurrences on this record; its export path is IDENTICAL
