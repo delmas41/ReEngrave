@@ -1,0 +1,8662 @@
+{
+ "heads": [
+  {
+   "subject": "glyph/1/0/0/0/12",
+   "side": null,
+   "certain": 0,
+   "possible": 1,
+   "stems_attached": 0,
+   "reach_spaces": null,
+   "class": "C_no_stem_attached",
+   "labels": [
+    "no_side_no_stem"
+   ],
+   "export_refusal": "duration_narrowed",
+   "head_box": [
+    1437.0,
+    589.0,
+    70.0,
+    58.0
+   ],
+   "space": 46.25,
+   "strokes": [
+    {
+     "certain": false,
+     "reader": "cv_lines",
+     "dy_spaces": -3.51,
+     "step_in_own_staff": 7.72,
+     "box": [
+      1166.0,
+      442.0,
+      286.0,
+      27.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 2,
+     "stroke_stem_heads": {
+      "none": 3
+     }
+    }
+   ]
+  },
+  {
+   "subject": "glyph/1/0/0/0/21",
+   "side": null,
+   "certain": 0,
+   "possible": 1,
+   "stems_attached": 0,
+   "reach_spaces": null,
+   "class": "C_no_stem_attached",
+   "labels": [
+    "no_side_no_stem"
+   ],
+   "export_refusal": "duration_narrowed",
+   "head_box": [
+    997.0,
+    586.0,
+    67.0,
+    60.0
+   ],
+   "space": 46.25,
+   "strokes": [
+    {
+     "certain": false,
+     "reader": "cv_lines",
+     "dy_spaces": -3.56,
+     "step_in_own_staff": 7.55,
+     "box": [
+      609.0,
+      437.0,
+      404.0,
+      29.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 2,
+     "stroke_stem_heads": {
+      "none": 4
+     }
+    }
+   ]
+  },
+  {
+   "subject": "glyph/1/0/0/4/5",
+   "side": "down",
+   "certain": 1,
+   "possible": 2,
+   "stems_attached": 1,
+   "reach_spaces": 3.4,
+   "class": "E_stem_side_missed",
+   "labels": [
+    "stem_side_stem_misses_stroke"
+   ],
+   "export_refusal": "duration_narrowed",
+   "head_box": [
+    359.0,
+    434.0,
+    113.0,
+    91.0
+   ],
+   "space": 79.5,
+   "strokes": [
+    {
+     "certain": true,
+     "reader": "cv_lines",
+     "dy_spaces": 2.72,
+     "step_in_own_staff": 5.52,
+     "box": [
+      143.0,
+      668.0,
+      237.0,
+      56.0
+     ],
+     "label": "certain",
+     "stem_gap_x_spaces": 0.0,
+     "stem_gap_y_spaces": 0.0,
+     "past_stroke_end_widths": 0.314,
+     "stroke_stems": 2,
+     "stroke_stem_heads": {
+      "none": 2,
+      "self": 1
+     }
+    },
+    {
+     "certain": false,
+     "reader": "cv_lines",
+     "dy_spaces": 3.55,
+     "step_in_own_staff": 7.17,
+     "box": [
+      0.0,
+      747.0,
+      351.0,
+      29.0
+     ],
+     "label": "stem_side_stem_misses_stroke",
+     "stem_gap_x_spaces": 0.101,
+     "stem_gap_y_spaces": 0.0,
+     "past_stroke_end_widths": 0.571,
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    }
+   ]
+  },
+  {
+   "subject": "glyph/1/0/0/4/7",
+   "side": "down",
+   "certain": 1,
+   "possible": 2,
+   "stems_attached": 1,
+   "reach_spaces": 2.94,
+   "class": "E_stem_side_missed",
+   "labels": [
+    "stem_side_stem_misses_stroke"
+   ],
+   "export_refusal": "duration_narrowed",
+   "head_box": [
+    1737.0,
+    556.0,
+    108.0,
+    85.0
+   ],
+   "space": 79.5,
+   "strokes": [
+    {
+     "certain": true,
+     "reader": "cv_lines",
+     "dy_spaces": 2.26,
+     "step_in_own_staff": 7.6,
+     "box": [
+      1249.0,
+      743.0,
+      508.0,
+      71.0
+     ],
+     "label": "certain",
+     "stem_gap_x_spaces": 0.0,
+     "stem_gap_y_spaces": 0.0,
+     "past_stroke_end_widths": 0.315,
+     "stroke_stems": 2,
+     "stroke_stem_heads": {
+      "none": 1,
+      "self": 1
+     }
+    },
+    {
+     "certain": false,
+     "reader": "cv_lines",
+     "dy_spaces": 3.19,
+     "step_in_own_staff": 9.45,
+     "box": [
+      1246.0,
+      829.0,
+      476.0,
+      46.0
+     ],
+     "label": "stem_side_stem_misses_stroke",
+     "stem_gap_x_spaces": 0.214,
+     "stem_gap_y_spaces": 0.0,
+     "past_stroke_end_widths": 0.639,
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    }
+   ]
+  },
+  {
+   "subject": "glyph/1/0/0/4/13",
+   "side": null,
+   "certain": 3,
+   "possible": 5,
+   "stems_attached": 2,
+   "reach_spaces": null,
+   "class": "D_direction_not_own",
+   "labels": [
+    "no_side_stem_attached",
+    "no_side_stem_attached"
+   ],
+   "export_refusal": "duration_narrowed",
+   "head_box": [
+    1188.0,
+    347.0,
+    110.0,
+    98.0
+   ],
+   "space": 79.5,
+   "strokes": [
+    {
+     "certain": true,
+     "reader": "cv_lines",
+     "dy_spaces": -4.85,
+     "step_in_own_staff": -11.71,
+     "box": [
+      1039.0,
+      0.0,
+      598.0,
+      21.0
+     ],
+     "label": "no_side_stem_attached",
+     "stem_gap_x_spaces": 0.0,
+     "stem_gap_y_spaces": 0.843,
+     "past_stroke_end_widths": 0.0,
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    },
+    {
+     "certain": true,
+     "reader": "cv_lines",
+     "dy_spaces": -3.55,
+     "step_in_own_staff": -9.11,
+     "box": [
+      1182.0,
+      88.0,
+      668.0,
+      52.0
+     ],
+     "label": "no_side_stem_attached",
+     "stem_gap_x_spaces": 0.0,
+     "stem_gap_y_spaces": 0.0,
+     "past_stroke_end_widths": 0.0,
+     "stroke_stems": 3,
+     "stroke_stem_heads": {
+      "self": 1,
+      "none": 5
+     }
+    },
+    {
+     "certain": true,
+     "reader": "cv_lines",
+     "dy_spaces": 0.07,
+     "step_in_own_staff": -1.87,
+     "box": [
+      1077.0,
+      388.0,
+      248.0,
+      27.0
+     ],
+     "label": "no_side_stem_attached",
+     "stem_gap_x_spaces": 0.0,
+     "stem_gap_y_spaces": 0.0,
+     "past_stroke_end_widths": 0.0,
+     "stroke_stems": 1,
+     "stroke_stem_heads": {
+      "self": 1,
+      "none": 3
+     }
+    },
+    {
+     "certain": false,
+     "reader": "cv_lines",
+     "dy_spaces": 4.81,
+     "step_in_own_staff": 7.61,
+     "box": [
+      1249.0,
+      743.0,
+      508.0,
+      71.0
+     ],
+     "label": "no_side_stem_attached",
+     "stem_gap_x_spaces": 0.553,
+     "stem_gap_y_spaces": 0.138,
+     "past_stroke_end_widths": 0.055,
+     "stroke_stems": 2,
+     "stroke_stem_heads": {
+      "none": 2
+     }
+    },
+    {
+     "certain": false,
+     "reader": "cv_lines",
+     "dy_spaces": 5.74,
+     "step_in_own_staff": 9.46,
+     "box": [
+      1246.0,
+      829.0,
+      476.0,
+      46.0
+     ],
+     "label": "no_side_stem_attached",
+     "stem_gap_x_spaces": 0.516,
+     "stem_gap_y_spaces": 1.22,
+     "past_stroke_end_widths": 0.027,
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    }
+   ]
+  },
+  {
+   "subject": "glyph/1/0/0/4/15",
+   "side": "up",
+   "certain": 1,
+   "possible": 2,
+   "stems_attached": 1,
+   "reach_spaces": 0.33,
+   "class": "B_only_beyond_stem_tip",
+   "labels": [
+    "beyond_stem_tip"
+   ],
+   "export_refusal": "duration_narrowed",
+   "head_box": [
+    143.0,
+    344.0,
+    110.0,
+    106.0
+   ],
+   "space": 79.5,
+   "strokes": [
+    {
+     "certain": false,
+     "reader": "cv_lines",
+     "dy_spaces": 3.63,
+     "step_in_own_staff": -9.25,
+     "box": [
+      237.0,
+      85.0,
+      236.0,
+      47.0
+     ],
+     "label": "beyond_stem_tip",
+     "stem_gap_x_spaces": 0.956,
+     "stem_gap_y_spaces": 3.006,
+     "past_stroke_end_widths": 0.355,
+     "stroke_stems": 2,
+     "stroke_stem_heads": {
+      "none": 2
+     }
+    },
+    {
+     "certain": true,
+     "reader": "cv_lines",
+     "dy_spaces": 1.06,
+     "step_in_own_staff": -4.11,
+     "box": [
+      111.0,
+      304.0,
+      170.0,
+      17.0
+     ],
+     "label": "certain",
+     "stem_gap_x_spaces": 0.0,
+     "stem_gap_y_spaces": 0.629,
+     "past_stroke_end_widths": 0.0,
+     "stroke_stems": 1,
+     "stroke_stem_heads": {
+      "none": 1
+     }
+    }
+   ]
+  },
+  {
+   "subject": "glyph/1/0/0/4/33",
+   "side": null,
+   "certain": 3,
+   "possible": 5,
+   "stems_attached": 2,
+   "reach_spaces": null,
+   "class": "D_direction_not_own",
+   "labels": [
+    "no_side_stem_attached",
+    "no_side_stem_attached"
+   ],
+   "export_refusal": "duration_narrowed",
+   "head_box": [
+    1089.0,
+    299.0,
+    110.0,
+    104.0
+   ],
+   "space": 79.5,
+   "strokes": [
+    {
+     "certain": true,
+     "reader": "cv_lines",
+     "dy_spaces": -4.28,
+     "step_in_own_staff": -11.71,
+     "box": [
+      1039.0,
+      0.0,
+      598.0,
+      21.0
+     ],
+     "label": "no_side_stem_attached",
+     "stem_gap_x_spaces": 0.0,
+     "stem_gap_y_spaces": 0.843,
+     "past_stroke_end_widths": 0.0,
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    },
+    {
+     "certain": true,
+     "reader": "cv_lines",
+     "dy_spaces": -2.98,
+     "step_in_own_staff": -9.11,
+     "box": [
+      1182.0,
+      88.0,
+      668.0,
+      52.0
+     ],
+     "label": "no_side_stem_attached",
+     "stem_gap_x_spaces": 0.0,
+     "stem_gap_y_spaces": 0.0,
+     "past_stroke_end_widths": 0.345,
+     "stroke_stems": 3,
+     "stroke_stem_heads": {
+      "none": 5,
+      "self": 1
+     }
+    },
+    {
+     "certain": true,
+     "reader": "cv_lines",
+     "dy_spaces": 0.64,
+     "step_in_own_staff": -1.87,
+     "box": [
+      1077.0,
+      388.0,
+      248.0,
+      27.0
+     ],
+     "label": "no_side_stem_attached",
+     "stem_gap_x_spaces": 0.0,
+     "stem_gap_y_spaces": 0.0,
+     "past_stroke_end_widths": 0.0,
+     "stroke_stems": 1,
+     "stroke_stem_heads": {
+      "none": 3,
+      "self": 1
+     }
+    },
+    {
+     "certain": false,
+     "reader": "cv_lines",
+     "dy_spaces": 5.38,
+     "step_in_own_staff": 7.61,
+     "box": [
+      1249.0,
+      743.0,
+      508.0,
+      71.0
+     ],
+     "label": "no_side_stem_attached",
+     "stem_gap_x_spaces": 0.553,
+     "stem_gap_y_spaces": 0.138,
+     "past_stroke_end_widths": 0.955,
+     "stroke_stems": 2,
+     "stroke_stem_heads": {
+      "none": 2
+     }
+    },
+    {
+     "certain": false,
+     "reader": "cv_lines",
+     "dy_spaces": 6.3,
+     "step_in_own_staff": 9.46,
+     "box": [
+      1246.0,
+      829.0,
+      476.0,
+      46.0
+     ],
+     "label": "no_side_stem_attached",
+     "stem_gap_x_spaces": 0.516,
+     "stem_gap_y_spaces": 1.22,
+     "past_stroke_end_widths": 0.927,
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    }
+   ]
+  },
+  {
+   "subject": "glyph/1/0/0/4/35",
+   "side": "up",
+   "certain": 3,
+   "possible": 4,
+   "stems_attached": 1,
+   "reach_spaces": 3.96,
+   "class": "E_stem_side_missed",
+   "labels": [
+    "stem_side_stem_misses_stroke"
+   ],
+   "export_refusal": "duration_narrowed",
+   "head_box": [
+    144.0,
+    639.0,
+    213.0,
+    93.0
+   ],
+   "space": 79.5,
+   "strokes": [
+    {
+     "certain": true,
+     "reader": "cv_lines",
+     "dy_spaces": 7.26,
+     "step_in_own_staff": -9.26,
+     "box": [
+      237.0,
+      85.0,
+      236.0,
+      47.0
+     ],
+     "label": "beyond_stem_tip",
+     "stem_gap_x_spaces": 0.956,
+     "stem_gap_y_spaces": 3.006,
+     "past_stroke_end_widths": 0.0,
+     "stroke_stems": 2,
+     "stroke_stem_heads": {
+      "none": 2
+     }
+    },
+    {
+     "certain": true,
+     "reader": "cv_lines",
+     "dy_spaces": 4.69,
+     "step_in_own_staff": -4.13,
+     "box": [
+      111.0,
+      304.0,
+      170.0,
+      17.0
+     ],
+     "label": "certain",
+     "stem_gap_x_spaces": 0.0,
+     "stem_gap_y_spaces": 0.629,
+     "past_stroke_end_widths": 0.0,
+     "stroke_stems": 1,
+     "stroke_stem_heads": {
+      "none": 1
+     }
+    },
+    {
+     "certain": true,
+     "reader": "cv_lines",
+     "dy_spaces": 3.57,
+     "step_in_own_staff": -1.89,
+     "box": [
+      114.0,
+      388.0,
+      169.0,
+      27.0
+     ],
+     "label": "certain",
+     "stem_gap_x_spaces": 0.0,
+     "stem_gap_y_spaces": 0.0,
+     "past_stroke_end_widths": 0.0,
+     "stroke_stems": 1,
+     "stroke_stem_heads": {
+      "none": 1,
+      "self": 1
+     }
+    },
+    {
+     "certain": false,
+     "reader": "cv_lines",
+     "dy_spaces": 3.63,
+     "step_in_own_staff": -2.0,
+     "box": [
+      330.0,
+      388.0,
+      161.0,
+      18.0
+     ],
+     "label": "stem_side_stem_misses_stroke",
+     "stem_gap_x_spaces": 2.126,
+     "stem_gap_y_spaces": 0.0,
+     "past_stroke_end_widths": 0.373,
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    }
+   ]
+  },
+  {
+   "subject": "glyph/1/0/0/4/42",
+   "side": null,
+   "certain": 3,
+   "possible": 5,
+   "stems_attached": 2,
+   "reach_spaces": null,
+   "class": "D_direction_not_own",
+   "labels": [
+    "no_side_stem_attached",
+    "no_side_stem_attached"
+   ],
+   "export_refusal": "duration_narrowed",
+   "head_box": [
+    1086.0,
+    331.0,
+    110.0,
+    73.0
+   ],
+   "space": 79.5,
+   "strokes": [
+    {
+     "certain": true,
+     "reader": "cv_lines",
+     "dy_spaces": -4.49,
+     "step_in_own_staff": -11.72,
+     "box": [
+      1039.0,
+      0.0,
+      598.0,
+      21.0
+     ],
+     "label": "no_side_stem_attached",
+     "stem_gap_x_spaces": 0.0,
+     "stem_gap_y_spaces": 0.843,
+     "past_stroke_end_widths": 0.0,
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    },
+    {
+     "certain": true,
+     "reader": "cv_lines",
+     "dy_spaces": -3.19,
+     "step_in_own_staff": -9.12,
+     "box": [
+      1182.0,
+      88.0,
+      668.0,
+      52.0
+     ],
+     "label": "no_side_stem_attached",
+     "stem_gap_x_spaces": 0.0,
+     "stem_gap_y_spaces": 0.0,
+     "past_stroke_end_widths": 0.373,
+     "stroke_stems": 3,
+     "stroke_stem_heads": {
+      "none": 5,
+      "self": 1
+     }
+    },
+    {
+     "certain": true,
+     "reader": "cv_lines",
+     "dy_spaces": 0.43,
+     "step_in_own_staff": -1.89,
+     "box": [
+      1077.0,
+      388.0,
+      248.0,
+      27.0
+     ],
+     "label": "no_side_stem_attached",
+     "stem_gap_x_spaces": 0.0,
+     "stem_gap_y_spaces": 0.0,
+     "past_stroke_end_widths": 0.0,
+     "stroke_stems": 1,
+     "stroke_stem_heads": {
+      "none": 3,
+      "self": 1
+     }
+    },
+    {
+     "certain": false,
+     "reader": "cv_lines",
+     "dy_spaces": 5.17,
+     "step_in_own_staff": 7.6,
+     "box": [
+      1249.0,
+      743.0,
+      508.0,
+      71.0
+     ],
+     "label": "no_side_stem_attached",
+     "stem_gap_x_spaces": 0.553,
+     "stem_gap_y_spaces": 0.138,
+     "past_stroke_end_widths": 0.982,
+     "stroke_stems": 2,
+     "stroke_stem_heads": {
+      "none": 2
+     }
+    },
+    {
+     "certain": false,
+     "reader": "cv_lines",
+     "dy_spaces": 6.09,
+     "step_in_own_staff": 9.45,
+     "box": [
+      1246.0,
+      829.0,
+      476.0,
+      46.0
+     ],
+     "label": "no_side_stem_attached",
+     "stem_gap_x_spaces": 0.516,
+     "stem_gap_y_spaces": 1.22,
+     "past_stroke_end_widths": 0.955,
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    }
+   ]
+  },
+  {
+   "subject": "glyph/1/0/0/4/52",
+   "side": null,
+   "certain": 3,
+   "possible": 5,
+   "stems_attached": 2,
+   "reach_spaces": null,
+   "class": "D_direction_not_own",
+   "labels": [
+    "no_side_stem_attached",
+    "no_side_stem_attached"
+   ],
+   "export_refusal": "duration_narrowed",
+   "head_box": [
+    1090.0,
+    298.0,
+    107.0,
+    84.0
+   ],
+   "space": 79.5,
+   "strokes": [
+    {
+     "certain": true,
+     "reader": "cv_lines",
+     "dy_spaces": -4.14,
+     "step_in_own_staff": -11.71,
+     "box": [
+      1039.0,
+      0.0,
+      598.0,
+      21.0
+     ],
+     "label": "no_side_stem_attached",
+     "stem_gap_x_spaces": 0.0,
+     "stem_gap_y_spaces": 0.843,
+     "past_stroke_end_widths": 0.0,
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    },
+    {
+     "certain": true,
+     "reader": "cv_lines",
+     "dy_spaces": -2.84,
+     "step_in_own_staff": -9.11,
+     "box": [
+      1182.0,
+      88.0,
+      668.0,
+      52.0
+     ],
+     "label": "no_side_stem_attached",
+     "stem_gap_x_spaces": 0.0,
+     "stem_gap_y_spaces": 0.0,
+     "past_stroke_end_widths": 0.36,
+     "stroke_stems": 3,
+     "stroke_stem_heads": {
+      "none": 5,
+      "self": 1
+     }
+    },
+    {
+     "certain": true,
+     "reader": "cv_lines",
+     "dy_spaces": 0.77,
+     "step_in_own_staff": -1.87,
+     "box": [
+      1077.0,
+      388.0,
+      248.0,
+      27.0
+     ],
+     "label": "no_side_stem_attached",
+     "stem_gap_x_spaces": 0.0,
+     "stem_gap_y_spaces": 0.0,
+     "past_stroke_end_widths": 0.0,
+     "stroke_stems": 1,
+     "stroke_stem_heads": {
+      "none": 3,
+      "self": 1
+     }
+    },
+    {
+     "certain": false,
+     "reader": "cv_lines",
+     "dy_spaces": 5.52,
+     "step_in_own_staff": 7.61,
+     "box": [
+      1249.0,
+      743.0,
+      508.0,
+      71.0
+     ],
+     "label": "no_side_stem_attached",
+     "stem_gap_x_spaces": 0.553,
+     "stem_gap_y_spaces": 0.138,
+     "past_stroke_end_widths": 0.986,
+     "stroke_stems": 2,
+     "stroke_stem_heads": {
+      "none": 2
+     }
+    },
+    {
+     "certain": false,
+     "reader": "cv_lines",
+     "dy_spaces": 6.44,
+     "step_in_own_staff": 9.46,
+     "box": [
+      1246.0,
+      829.0,
+      476.0,
+      46.0
+     ],
+     "label": "no_side_stem_attached",
+     "stem_gap_x_spaces": 0.516,
+     "stem_gap_y_spaces": 1.22,
+     "past_stroke_end_widths": 0.958,
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    }
+   ]
+  },
+  {
+   "subject": "glyph/1/0/1/0/44",
+   "side": null,
+   "certain": 2,
+   "possible": 3,
+   "stems_attached": 0,
+   "reach_spaces": null,
+   "class": "C_no_stem_attached",
+   "labels": [
+    "no_side_no_stem"
+   ],
+   "export_refusal": "duration_narrowed",
+   "head_box": [
+    1015.0,
+    174.0,
+    50.0,
+    53.0
+   ],
+   "space": 46.25,
+   "strokes": [
+    {
+     "certain": false,
+     "reader": "cv_lines",
+     "dy_spaces": 3.46,
+     "step_in_own_staff": 7.7,
+     "box": [
+      614.0,
+      345.0,
+      396.0,
+      31.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 2,
+     "stroke_stem_heads": {
+      "own_staff": 1,
+      "none": 2
+     }
+    },
+    {
+     "certain": true,
+     "reader": "cv_lines",
+     "dy_spaces": 4.58,
+     "step_in_own_staff": 9.95,
+     "box": [
+      623.0,
+      404.0,
+      1293.0,
+      17.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    },
+    {
+     "certain": true,
+     "reader": "cv_lines",
+     "dy_spaces": 5.18,
+     "step_in_own_staff": 11.14,
+     "box": [
+      623.0,
+      423.0,
+      1293.0,
+      34.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    }
+   ]
+  },
+  {
+   "subject": "glyph/1/0/2/0/17",
+   "side": null,
+   "certain": 2,
+   "possible": 3,
+   "stems_attached": 0,
+   "reach_spaces": null,
+   "class": "C_no_stem_attached",
+   "labels": [
+    "no_side_no_stem"
+   ],
+   "export_refusal": "duration_narrowed",
+   "head_box": [
+    1599.0,
+    318.0,
+    68.0,
+    55.0
+   ],
+   "space": 46.75,
+   "strokes": [
+    {
+     "certain": true,
+     "reader": "cv_lines",
+     "dy_spaces": -6.7,
+     "step_in_own_staff": -6.25,
+     "box": [
+      624.0,
+      24.0,
+      1293.0,
+      17.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    },
+    {
+     "certain": true,
+     "reader": "cv_lines",
+     "dy_spaces": -6.11,
+     "step_in_own_staff": -5.07,
+     "box": [
+      624.0,
+      43.0,
+      1293.0,
+      34.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    },
+    {
+     "certain": false,
+     "reader": "cv_lines",
+     "dy_spaces": -4.8,
+     "step_in_own_staff": -2.46,
+     "box": [
+      1657.0,
+      97.0,
+      289.0,
+      48.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 2,
+     "stroke_stem_heads": {
+      "none": 5
+     }
+    }
+   ]
+  },
+  {
+   "subject": "glyph/1/0/2/0/18",
+   "side": null,
+   "certain": 2,
+   "possible": 3,
+   "stems_attached": 0,
+   "reach_spaces": null,
+   "class": "C_no_stem_attached",
+   "labels": [
+    "no_side_no_stem"
+   ],
+   "export_refusal": "duration_narrowed",
+   "head_box": [
+    1598.0,
+    199.0,
+    68.0,
+    58.0
+   ],
+   "space": 46.75,
+   "strokes": [
+    {
+     "certain": true,
+     "reader": "cv_lines",
+     "dy_spaces": -4.18,
+     "step_in_own_staff": -6.22,
+     "box": [
+      624.0,
+      24.0,
+      1293.0,
+      17.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    },
+    {
+     "certain": true,
+     "reader": "cv_lines",
+     "dy_spaces": -3.59,
+     "step_in_own_staff": -5.05,
+     "box": [
+      624.0,
+      43.0,
+      1293.0,
+      34.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    },
+    {
+     "certain": false,
+     "reader": "cv_lines",
+     "dy_spaces": -2.29,
+     "step_in_own_staff": -2.44,
+     "box": [
+      1657.0,
+      97.0,
+      289.0,
+      48.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 2,
+     "stroke_stem_heads": {
+      "none": 5
+     }
+    }
+   ]
+  },
+  {
+   "subject": "glyph/1/0/2/2/10",
+   "side": "up",
+   "certain": 2,
+   "possible": 3,
+   "stems_attached": 1,
+   "reach_spaces": 3.33,
+   "class": "E_stem_side_missed",
+   "labels": [
+    "stem_side_stem_misses_stroke"
+   ],
+   "export_refusal": "duration_narrowed",
+   "head_box": [
+    188.0,
+    526.0,
+    159.0,
+    117.0
+   ],
+   "space": 100.0,
+   "strokes": [
+    {
+     "certain": false,
+     "reader": "detector",
+     "dy_spaces": 1.32,
+     "step_in_own_staff": 1.17,
+     "box": [
+      2.0,
+      400.0,
+      234.0,
+      104.0
+     ],
+     "label": "stem_side_stem_misses_stroke",
+     "stem_gap_x_spaces": 0.88,
+     "stem_gap_y_spaces": 0.0,
+     "past_stroke_end_widths": 0.198,
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    },
+    {
+     "certain": true,
+     "reader": "detector",
+     "dy_spaces": 1.24,
+     "step_in_own_staff": 1.34,
+     "box": [
+      304.0,
+      418.0,
+      1609.0,
+      85.0
+     ],
+     "label": "certain",
+     "stem_gap_x_spaces": 0.0,
+     "stem_gap_y_spaces": 0.0,
+     "past_stroke_end_widths": 0.23,
+     "stroke_stems": 1,
+     "stroke_stem_heads": {
+      "self": 1
+     }
+    },
+    {
+     "certain": true,
+     "reader": "detector",
+     "dy_spaces": 1.86,
+     "step_in_own_staff": 0.09,
+     "box": [
+      0.0,
+      368.0,
+      1941.0,
+      60.0
+     ],
+     "label": "certain",
+     "stem_gap_x_spaces": 0.0,
+     "stem_gap_y_spaces": 0.0,
+     "past_stroke_end_widths": 0.0,
+     "stroke_stems": 1,
+     "stroke_stem_heads": {
+      "self": 1
+     }
+    }
+   ]
+  },
+  {
+   "subject": "glyph/1/0/2/2/15",
+   "side": null,
+   "certain": 1,
+   "possible": 4,
+   "stems_attached": 0,
+   "reach_spaces": null,
+   "class": "C_no_stem_attached",
+   "labels": [
+    "no_side_no_stem",
+    "no_side_no_stem",
+    "no_side_no_stem"
+   ],
+   "export_refusal": "not_a_notehead:too_narrow",
+   "head_box": [
+    1914.0,
+    1074.0,
+    35.0,
+    61.0
+   ],
+   "space": 100.0,
+   "strokes": [
+    {
+     "certain": false,
+     "reader": "detector",
+     "dy_spaces": -2.6,
+     "step_in_own_staff": 9.02,
+     "box": [
+      1009.0,
+      773.0,
+      912.0,
+      143.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    },
+    {
+     "certain": false,
+     "reader": "detector",
+     "dy_spaces": -6.44,
+     "step_in_own_staff": 1.34,
+     "box": [
+      304.0,
+      418.0,
+      1609.0,
+      85.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 1,
+     "stroke_stem_heads": {
+      "none": 1
+     }
+    },
+    {
+     "certain": true,
+     "reader": "detector",
+     "dy_spaces": -7.07,
+     "step_in_own_staff": 0.09,
+     "box": [
+      0.0,
+      368.0,
+      1941.0,
+      60.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 1,
+     "stroke_stem_heads": {
+      "none": 1
+     }
+    },
+    {
+     "certain": false,
+     "reader": "detector",
+     "dy_spaces": 2.01,
+     "step_in_own_staff": 18.24,
+     "box": [
+      342.0,
+      1248.0,
+      1586.0,
+      115.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 1,
+     "stroke_stem_heads": {}
+    }
+   ]
+  },
+  {
+   "subject": "glyph/1/0/2/2/19",
+   "side": null,
+   "certain": 1,
+   "possible": 4,
+   "stems_attached": 0,
+   "reach_spaces": null,
+   "class": "C_no_stem_attached",
+   "labels": [
+    "no_side_no_stem",
+    "no_side_no_stem",
+    "no_side_no_stem"
+   ],
+   "export_refusal": "not_a_notehead:too_narrow",
+   "head_box": [
+    1910.0,
+    591.0,
+    39.0,
+    88.0
+   ],
+   "space": 100.0,
+   "strokes": [
+    {
+     "certain": false,
+     "reader": "detector",
+     "dy_spaces": 2.1,
+     "step_in_own_staff": 9.03,
+     "box": [
+      1009.0,
+      773.0,
+      912.0,
+      143.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    },
+    {
+     "certain": false,
+     "reader": "detector",
+     "dy_spaces": -1.75,
+     "step_in_own_staff": 1.35,
+     "box": [
+      304.0,
+      418.0,
+      1609.0,
+      85.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 1,
+     "stroke_stem_heads": {
+      "none": 1
+     }
+    },
+    {
+     "certain": true,
+     "reader": "detector",
+     "dy_spaces": -2.37,
+     "step_in_own_staff": 0.1,
+     "box": [
+      0.0,
+      368.0,
+      1941.0,
+      60.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 1,
+     "stroke_stem_heads": {
+      "none": 1
+     }
+    },
+    {
+     "certain": false,
+     "reader": "detector",
+     "dy_spaces": 6.71,
+     "step_in_own_staff": 18.25,
+     "box": [
+      342.0,
+      1248.0,
+      1586.0,
+      115.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 1,
+     "stroke_stem_heads": {}
+    }
+   ]
+  },
+  {
+   "subject": "glyph/1/0/2/2/21",
+   "side": null,
+   "certain": 1,
+   "possible": 4,
+   "stems_attached": 0,
+   "reach_spaces": null,
+   "class": "C_no_stem_attached",
+   "labels": [
+    "no_side_no_stem",
+    "no_side_no_stem",
+    "no_side_no_stem"
+   ],
+   "export_refusal": "not_a_notehead:too_narrow",
+   "head_box": [
+    1913.0,
+    1037.0,
+    36.0,
+    52.0
+   ],
+   "space": 100.0,
+   "strokes": [
+    {
+     "certain": false,
+     "reader": "detector",
+     "dy_spaces": -2.19,
+     "step_in_own_staff": 9.03,
+     "box": [
+      1009.0,
+      773.0,
+      912.0,
+      143.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    },
+    {
+     "certain": false,
+     "reader": "detector",
+     "dy_spaces": -6.03,
+     "step_in_own_staff": 1.35,
+     "box": [
+      304.0,
+      418.0,
+      1609.0,
+      85.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 1,
+     "stroke_stem_heads": {
+      "none": 1
+     }
+    },
+    {
+     "certain": true,
+     "reader": "detector",
+     "dy_spaces": -6.65,
+     "step_in_own_staff": 0.1,
+     "box": [
+      0.0,
+      368.0,
+      1941.0,
+      60.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 1,
+     "stroke_stem_heads": {
+      "none": 1
+     }
+    },
+    {
+     "certain": false,
+     "reader": "detector",
+     "dy_spaces": 2.42,
+     "step_in_own_staff": 18.25,
+     "box": [
+      342.0,
+      1248.0,
+      1586.0,
+      115.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 1,
+     "stroke_stem_heads": {}
+    }
+   ]
+  },
+  {
+   "subject": "glyph/1/0/2/2/24",
+   "side": null,
+   "certain": 1,
+   "possible": 4,
+   "stems_attached": 0,
+   "reach_spaces": null,
+   "class": "C_no_stem_attached",
+   "labels": [
+    "no_side_no_stem",
+    "no_side_no_stem",
+    "no_side_no_stem"
+   ],
+   "export_refusal": "not_a_notehead:too_narrow",
+   "head_box": [
+    1910.0,
+    389.0,
+    39.0,
+    85.0
+   ],
+   "space": 100.0,
+   "strokes": [
+    {
+     "certain": false,
+     "reader": "detector",
+     "dy_spaces": 4.13,
+     "step_in_own_staff": 9.02,
+     "box": [
+      1009.0,
+      773.0,
+      912.0,
+      143.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    },
+    {
+     "certain": false,
+     "reader": "detector",
+     "dy_spaces": 0.29,
+     "step_in_own_staff": 1.34,
+     "box": [
+      304.0,
+      418.0,
+      1609.0,
+      85.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 1,
+     "stroke_stem_heads": {
+      "none": 1
+     }
+    },
+    {
+     "certain": true,
+     "reader": "detector",
+     "dy_spaces": -0.34,
+     "step_in_own_staff": 0.09,
+     "box": [
+      0.0,
+      368.0,
+      1941.0,
+      60.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 1,
+     "stroke_stem_heads": {
+      "none": 1
+     }
+    },
+    {
+     "certain": false,
+     "reader": "detector",
+     "dy_spaces": 8.74,
+     "step_in_own_staff": 18.24,
+     "box": [
+      342.0,
+      1248.0,
+      1586.0,
+      115.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 1,
+     "stroke_stem_heads": {}
+    }
+   ]
+  },
+  {
+   "subject": "glyph/1/0/2/6/6",
+   "side": null,
+   "certain": 0,
+   "possible": 1,
+   "stems_attached": 0,
+   "reach_spaces": null,
+   "class": "C_no_stem_attached",
+   "labels": [
+    "no_side_no_stem"
+   ],
+   "export_refusal": "not_a_notehead:clipped_fragment",
+   "head_box": [
+    190.0,
+    0.0,
+    125.0,
+    37.0
+   ],
+   "space": 92.0,
+   "strokes": [
+    {
+     "certain": false,
+     "reader": "detector",
+     "dy_spaces": 0.9,
+     "step_in_own_staff": -6.04,
+     "box": [
+      1.0,
+      42.0,
+      223.0,
+      119.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    }
+   ]
+  },
+  {
+   "subject": "glyph/1/0/2/6/18",
+   "side": "up",
+   "certain": 0,
+   "possible": 1,
+   "stems_attached": 1,
+   "reach_spaces": 3.03,
+   "class": "B_only_beyond_stem_tip",
+   "labels": [
+    "beyond_stem_tip"
+   ],
+   "export_refusal": "duration_narrowed",
+   "head_box": [
+    193.0,
+    1178.0,
+    143.0,
+    112.0
+   ],
+   "space": 92.0,
+   "strokes": [
+    {
+     "certain": false,
+     "reader": "detector",
+     "dy_spaces": 12.31,
+     "step_in_own_staff": -6.03,
+     "box": [
+      1.0,
+      42.0,
+      223.0,
+      119.0
+     ],
+     "label": "beyond_stem_tip",
+     "stem_gap_x_spaces": 1.065,
+     "stem_gap_y_spaces": 8.63,
+     "past_stroke_end_widths": 0.283,
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    }
+   ]
+  },
+  {
+   "subject": "glyph/1/0/2/6/22",
+   "side": null,
+   "certain": 0,
+   "possible": 1,
+   "stems_attached": 0,
+   "reach_spaces": null,
+   "class": "C_no_stem_attached",
+   "labels": [
+    "no_side_no_stem"
+   ],
+   "export_refusal": "not_a_notehead:clipped_fragment",
+   "head_box": [
+    189.0,
+    0.0,
+    126.0,
+    39.0
+   ],
+   "space": 92.0,
+   "strokes": [
+    {
+     "certain": false,
+     "reader": "detector",
+     "dy_spaces": 0.89,
+     "step_in_own_staff": -6.04,
+     "box": [
+      1.0,
+      42.0,
+      223.0,
+      119.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    }
+   ]
+  },
+  {
+   "subject": "glyph/1/0/3/1/31",
+   "side": null,
+   "certain": 1,
+   "possible": 2,
+   "stems_attached": 0,
+   "reach_spaces": null,
+   "class": "C_no_stem_attached",
+   "labels": [
+    "no_side_no_stem"
+   ],
+   "export_refusal": "not_a_notehead:too_narrow",
+   "head_box": [
+    2021.0,
+    829.0,
+    27.0,
+    74.0
+   ],
+   "space": 85.0,
+   "strokes": [
+    {
+     "certain": false,
+     "reader": "detector",
+     "dy_spaces": 0.12,
+     "step_in_own_staff": 8.69,
+     "box": [
+      1542.0,
+      822.0,
+      482.0,
+      109.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 1,
+     "stroke_stem_heads": {
+      "none": 1
+     }
+    },
+    {
+     "certain": true,
+     "reader": "detector",
+     "dy_spaces": 3.34,
+     "step_in_own_staff": 15.12,
+     "box": [
+      29.0,
+      1114.0,
+      2010.0,
+      71.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    }
+   ]
+  },
+  {
+   "subject": "glyph/1/0/3/3/9",
+   "side": null,
+   "certain": 3,
+   "possible": 4,
+   "stems_attached": 0,
+   "reach_spaces": null,
+   "class": "C_no_stem_attached",
+   "labels": [
+    "no_side_no_stem"
+   ],
+   "export_refusal": "duration_narrowed",
+   "head_box": [
+    1364.0,
+    482.0,
+    142.0,
+    126.0
+   ],
+   "space": 100.0,
+   "strokes": [
+    {
+     "certain": true,
+     "reader": "detector",
+     "dy_spaces": -3.15,
+     "step_in_own_staff": -7.37,
+     "box": [
+      1145.0,
+      182.0,
+      344.0,
+      95.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 1,
+     "stroke_stem_heads": {
+      "none": 1
+     }
+    },
+    {
+     "certain": true,
+     "reader": "detector",
+     "dy_spaces": 6.62,
+     "step_in_own_staff": 12.19,
+     "box": [
+      1029.0,
+      1168.0,
+      437.0,
+      79.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    },
+    {
+     "certain": false,
+     "reader": "detector",
+     "dy_spaces": 6.36,
+     "step_in_own_staff": 11.66,
+     "box": [
+      1025.0,
+      1152.0,
+      360.0,
+      58.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    },
+    {
+     "certain": true,
+     "reader": "detector",
+     "dy_spaces": 6.42,
+     "step_in_own_staff": 11.78,
+     "box": [
+      1027.0,
+      1153.0,
+      434.0,
+      68.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    }
+   ]
+  },
+  {
+   "subject": "glyph/1/0/3/3/11",
+   "side": "down",
+   "certain": 3,
+   "possible": 5,
+   "stems_attached": 1,
+   "reach_spaces": 3.5,
+   "class": "B_only_beyond_stem_tip",
+   "labels": [
+    "beyond_stem_tip",
+    "beyond_stem_tip"
+   ],
+   "export_refusal": "duration_narrowed",
+   "head_box": [
+    1021.0,
+    635.0,
+    144.0,
+    125.0
+   ],
+   "space": 100.0,
+   "strokes": [
+    {
+     "certain": false,
+     "reader": "detector",
+     "dy_spaces": 5.08,
+     "step_in_own_staff": 12.15,
+     "box": [
+      557.0,
+      1156.0,
+      435.0,
+      100.0
+     ],
+     "label": "beyond_stem_tip",
+     "stem_gap_x_spaces": 0.36,
+     "stem_gap_y_spaces": 1.09,
+     "past_stroke_end_widths": 0.701,
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    },
+    {
+     "certain": false,
+     "reader": "detector",
+     "dy_spaces": 4.76,
+     "step_in_own_staff": 11.51,
+     "box": [
+      557.0,
+      1148.0,
+      433.0,
+      52.0
+     ],
+     "label": "beyond_stem_tip",
+     "stem_gap_x_spaces": 0.38,
+     "stem_gap_y_spaces": 1.01,
+     "past_stroke_end_widths": 0.715,
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    },
+    {
+     "certain": true,
+     "reader": "detector",
+     "dy_spaces": 5.1,
+     "step_in_own_staff": 12.18,
+     "box": [
+      1029.0,
+      1168.0,
+      437.0,
+      79.0
+     ],
+     "label": "beyond_stem_tip",
+     "stem_gap_x_spaces": 0.0,
+     "stem_gap_y_spaces": 1.21,
+     "past_stroke_end_widths": 0.0,
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    },
+    {
+     "certain": true,
+     "reader": "detector",
+     "dy_spaces": 4.83,
+     "step_in_own_staff": 11.65,
+     "box": [
+      1025.0,
+      1152.0,
+      360.0,
+      58.0
+     ],
+     "label": "beyond_stem_tip",
+     "stem_gap_x_spaces": 0.0,
+     "stem_gap_y_spaces": 1.05,
+     "past_stroke_end_widths": 0.0,
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    },
+    {
+     "certain": true,
+     "reader": "detector",
+     "dy_spaces": 4.89,
+     "step_in_own_staff": 11.77,
+     "box": [
+      1027.0,
+      1153.0,
+      434.0,
+      68.0
+     ],
+     "label": "beyond_stem_tip",
+     "stem_gap_x_spaces": 0.0,
+     "stem_gap_y_spaces": 1.06,
+     "past_stroke_end_widths": 0.0,
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    }
+   ]
+  },
+  {
+   "subject": "glyph/1/0/3/3/17",
+   "side": null,
+   "certain": 3,
+   "possible": 4,
+   "stems_attached": 0,
+   "reach_spaces": null,
+   "class": "C_no_stem_attached",
+   "labels": [
+    "no_side_no_stem"
+   ],
+   "export_refusal": "duration_narrowed",
+   "head_box": [
+    1362.0,
+    597.0,
+    151.0,
+    111.0
+   ],
+   "space": 100.0,
+   "strokes": [
+    {
+     "certain": true,
+     "reader": "detector",
+     "dy_spaces": -4.23,
+     "step_in_own_staff": -7.38,
+     "box": [
+      1145.0,
+      182.0,
+      344.0,
+      95.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 1,
+     "stroke_stem_heads": {
+      "none": 1
+     }
+    },
+    {
+     "certain": true,
+     "reader": "detector",
+     "dy_spaces": 5.55,
+     "step_in_own_staff": 12.18,
+     "box": [
+      1029.0,
+      1168.0,
+      437.0,
+      79.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    },
+    {
+     "certain": false,
+     "reader": "detector",
+     "dy_spaces": 5.29,
+     "step_in_own_staff": 11.65,
+     "box": [
+      1025.0,
+      1152.0,
+      360.0,
+      58.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    },
+    {
+     "certain": true,
+     "reader": "detector",
+     "dy_spaces": 5.34,
+     "step_in_own_staff": 11.77,
+     "box": [
+      1027.0,
+      1153.0,
+      434.0,
+      68.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    }
+   ]
+  },
+  {
+   "subject": "glyph/1/0/3/3/39",
+   "side": null,
+   "certain": 0,
+   "possible": 4,
+   "stems_attached": 0,
+   "reach_spaces": null,
+   "class": "C_no_stem_attached",
+   "labels": [
+    "no_side_no_stem",
+    "no_side_no_stem",
+    "no_side_no_stem",
+    "no_side_no_stem"
+   ],
+   "export_refusal": "not_a_notehead:too_narrow",
+   "head_box": [
+    2013.0,
+    999.0,
+    34.0,
+    87.0
+   ],
+   "space": 100.0,
+   "strokes": [
+    {
+     "certain": false,
+     "reader": "detector",
+     "dy_spaces": 1.57,
+     "step_in_own_staff": 12.02,
+     "box": [
+      1646.0,
+      1147.0,
+      356.0,
+      105.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    },
+    {
+     "certain": false,
+     "reader": "detector",
+     "dy_spaces": 1.35,
+     "step_in_own_staff": 11.58,
+     "box": [
+      1646.0,
+      1147.0,
+      354.0,
+      61.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    },
+    {
+     "certain": false,
+     "reader": "detector",
+     "dy_spaces": 1.74,
+     "step_in_own_staff": 12.35,
+     "box": [
+      1649.0,
+      1180.0,
+      350.0,
+      72.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    },
+    {
+     "certain": false,
+     "reader": "detector",
+     "dy_spaces": 0.21,
+     "step_in_own_staff": 9.3,
+     "box": [
+      1698.0,
+      990.0,
+      326.0,
+      147.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    }
+   ]
+  },
+  {
+   "subject": "glyph/1/0/3/3/42",
+   "side": null,
+   "certain": 0,
+   "possible": 4,
+   "stems_attached": 0,
+   "reach_spaces": null,
+   "class": "C_no_stem_attached",
+   "labels": [
+    "no_side_no_stem",
+    "no_side_no_stem",
+    "no_side_no_stem",
+    "no_side_no_stem"
+   ],
+   "export_refusal": "not_a_notehead:too_narrow",
+   "head_box": [
+    2015.0,
+    908.0,
+    32.0,
+    69.0
+   ],
+   "space": 100.0,
+   "strokes": [
+    {
+     "certain": false,
+     "reader": "detector",
+     "dy_spaces": 2.57,
+     "step_in_own_staff": 12.02,
+     "box": [
+      1646.0,
+      1147.0,
+      356.0,
+      105.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    },
+    {
+     "certain": false,
+     "reader": "detector",
+     "dy_spaces": 2.35,
+     "step_in_own_staff": 11.58,
+     "box": [
+      1646.0,
+      1147.0,
+      354.0,
+      61.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    },
+    {
+     "certain": false,
+     "reader": "detector",
+     "dy_spaces": 2.73,
+     "step_in_own_staff": 12.35,
+     "box": [
+      1649.0,
+      1180.0,
+      350.0,
+      72.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    },
+    {
+     "certain": false,
+     "reader": "detector",
+     "dy_spaces": 1.21,
+     "step_in_own_staff": 9.3,
+     "box": [
+      1698.0,
+      990.0,
+      326.0,
+      147.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    }
+   ]
+  },
+  {
+   "subject": "glyph/1/0/3/4/12",
+   "side": null,
+   "certain": 1,
+   "possible": 2,
+   "stems_attached": 0,
+   "reach_spaces": null,
+   "class": "C_no_stem_attached",
+   "labels": [
+    "no_side_no_stem"
+   ],
+   "export_refusal": "duration_narrowed",
+   "head_box": [
+    1742.0,
+    637.0,
+    112.0,
+    84.0
+   ],
+   "space": 79.5,
+   "strokes": [
+    {
+     "certain": true,
+     "reader": "cv_lines",
+     "dy_spaces": -5.95,
+     "step_in_own_staff": -6.92,
+     "box": [
+      1202.0,
+      181.0,
+      657.0,
+      50.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 3,
+     "stroke_stem_heads": {
+      "none": 3
+     }
+    },
+    {
+     "certain": false,
+     "reader": "cv_lines",
+     "dy_spaces": 2.29,
+     "step_in_own_staff": 9.56,
+     "box": [
+      1103.0,
+      794.0,
+      660.0,
+      134.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 2,
+     "stroke_stem_heads": {
+      "none": 2
+     }
+    }
+   ]
+  },
+  {
+   "subject": "glyph/1/0/4/1/7",
+   "side": null,
+   "certain": 0,
+   "possible": 1,
+   "stems_attached": 0,
+   "reach_spaces": null,
+   "class": "C_no_stem_attached",
+   "labels": [
+    "no_side_no_stem"
+   ],
+   "export_refusal": "not_a_notehead:too_narrow",
+   "head_box": [
+    2024.0,
+    511.0,
+    24.0,
+    49.0
+   ],
+   "space": 85.75,
+   "strokes": [
+    {
+     "certain": false,
+     "reader": "detector",
+     "dy_spaces": -5.36,
+     "step_in_own_staff": -6.22,
+     "box": [
+      1522.0,
+      20.0,
+      505.0,
+      112.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 1,
+     "stroke_stem_heads": {}
+    }
+   ]
+  },
+  {
+   "subject": "glyph/1/0/4/1/8",
+   "side": null,
+   "certain": 0,
+   "possible": 1,
+   "stems_attached": 0,
+   "reach_spaces": null,
+   "class": "C_no_stem_attached",
+   "labels": [
+    "no_side_no_stem"
+   ],
+   "export_refusal": "not_a_notehead:too_narrow",
+   "head_box": [
+    2027.0,
+    678.0,
+    21.0,
+    56.0
+   ],
+   "space": 85.75,
+   "strokes": [
+    {
+     "certain": false,
+     "reader": "detector",
+     "dy_spaces": -7.35,
+     "step_in_own_staff": -6.2,
+     "box": [
+      1522.0,
+      20.0,
+      505.0,
+      112.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 1,
+     "stroke_stem_heads": {}
+    }
+   ]
+  },
+  {
+   "subject": "glyph/1/0/4/1/9",
+   "side": null,
+   "certain": 0,
+   "possible": 1,
+   "stems_attached": 0,
+   "reach_spaces": null,
+   "class": "C_no_stem_attached",
+   "labels": [
+    "no_side_no_stem"
+   ],
+   "export_refusal": "not_a_notehead:too_narrow",
+   "head_box": [
+    2027.0,
+    594.0,
+    21.0,
+    69.0
+   ],
+   "space": 85.75,
+   "strokes": [
+    {
+     "certain": false,
+     "reader": "detector",
+     "dy_spaces": -6.44,
+     "step_in_own_staff": -6.22,
+     "box": [
+      1522.0,
+      20.0,
+      505.0,
+      112.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 1,
+     "stroke_stem_heads": {}
+    }
+   ]
+  },
+  {
+   "subject": "glyph/1/0/4/1/11",
+   "side": null,
+   "certain": 0,
+   "possible": 1,
+   "stems_attached": 0,
+   "reach_spaces": null,
+   "class": "C_no_stem_attached",
+   "labels": [
+    "no_side_no_stem"
+   ],
+   "export_refusal": "not_a_notehead:too_narrow",
+   "head_box": [
+    2025.0,
+    350.0,
+    23.0,
+    61.0
+   ],
+   "space": 85.75,
+   "strokes": [
+    {
+     "certain": false,
+     "reader": "detector",
+     "dy_spaces": -3.55,
+     "step_in_own_staff": -6.22,
+     "box": [
+      1522.0,
+      20.0,
+      505.0,
+      112.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 1,
+     "stroke_stem_heads": {}
+    }
+   ]
+  },
+  {
+   "subject": "glyph/1/0/4/1/12",
+   "side": null,
+   "certain": 0,
+   "possible": 1,
+   "stems_attached": 0,
+   "reach_spaces": null,
+   "class": "C_no_stem_attached",
+   "labels": [
+    "no_side_no_stem"
+   ],
+   "export_refusal": "not_a_notehead:too_narrow",
+   "head_box": [
+    2026.0,
+    536.0,
+    22.0,
+    63.0
+   ],
+   "space": 85.75,
+   "strokes": [
+    {
+     "certain": false,
+     "reader": "detector",
+     "dy_spaces": -5.73,
+     "step_in_own_staff": -6.22,
+     "box": [
+      1522.0,
+      20.0,
+      505.0,
+      112.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 1,
+     "stroke_stem_heads": {}
+    }
+   ]
+  },
+  {
+   "subject": "glyph/1/0/4/1/19",
+   "side": null,
+   "certain": 0,
+   "possible": 1,
+   "stems_attached": 0,
+   "reach_spaces": null,
+   "class": "C_no_stem_attached",
+   "labels": [
+    "no_side_no_stem"
+   ],
+   "export_refusal": "not_a_notehead:too_narrow",
+   "head_box": [
+    2027.0,
+    610.0,
+    21.0,
+    76.0
+   ],
+   "space": 85.75,
+   "strokes": [
+    {
+     "certain": false,
+     "reader": "detector",
+     "dy_spaces": -6.67,
+     "step_in_own_staff": -6.2,
+     "box": [
+      1522.0,
+      20.0,
+      505.0,
+      112.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 1,
+     "stroke_stem_heads": {}
+    }
+   ]
+  },
+  {
+   "subject": "glyph/1/0/4/1/20",
+   "side": null,
+   "certain": 0,
+   "possible": 1,
+   "stems_attached": 0,
+   "reach_spaces": null,
+   "class": "C_no_stem_attached",
+   "labels": [
+    "no_side_no_stem"
+   ],
+   "export_refusal": "not_a_notehead:too_narrow",
+   "head_box": [
+    2026.0,
+    444.0,
+    22.0,
+    67.0
+   ],
+   "space": 85.75,
+   "strokes": [
+    {
+     "certain": false,
+     "reader": "detector",
+     "dy_spaces": -4.68,
+     "step_in_own_staff": -6.22,
+     "box": [
+      1522.0,
+      20.0,
+      505.0,
+      112.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 1,
+     "stroke_stem_heads": {}
+    }
+   ]
+  },
+  {
+   "subject": "glyph/1/0/4/2/3",
+   "side": "down",
+   "certain": 0,
+   "possible": 1,
+   "stems_attached": 1,
+   "reach_spaces": 3.06,
+   "class": "E_stem_side_missed",
+   "labels": [
+    "stem_side_stem_misses_stroke"
+   ],
+   "export_refusal": "not_a_notehead:clipped_fragment",
+   "head_box": [
+    1336.0,
+    1.0,
+    130.0,
+    58.0
+   ],
+   "space": 100.0,
+   "strokes": [
+    {
+     "certain": false,
+     "reader": "detector",
+     "dy_spaces": 0.94,
+     "step_in_own_staff": -5.53,
+     "box": [
+      1418.0,
+      68.0,
+      496.0,
+      111.0
+     ],
+     "label": "stem_side_stem_misses_stroke",
+     "stem_gap_x_spaces": 0.68,
+     "stem_gap_y_spaces": 0.0,
+     "past_stroke_end_widths": 0.131,
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    }
+   ]
+  },
+  {
+   "subject": "glyph/1/0/4/3/7",
+   "side": null,
+   "certain": 0,
+   "possible": 5,
+   "stems_attached": 0,
+   "reach_spaces": null,
+   "class": "C_no_stem_attached",
+   "labels": [
+    "no_side_no_stem",
+    "no_side_no_stem",
+    "no_side_no_stem",
+    "no_side_no_stem",
+    "no_side_no_stem"
+   ],
+   "export_refusal": "not_a_notehead:too_narrow",
+   "head_box": [
+    1997.0,
+    714.0,
+    32.0,
+    67.0
+   ],
+   "space": 100.0,
+   "strokes": [
+    {
+     "certain": false,
+     "reader": "detector",
+     "dy_spaces": -4.78,
+     "step_in_own_staff": -2.62,
+     "box": [
+      1639.0,
+      237.0,
+      343.0,
+      65.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    },
+    {
+     "certain": false,
+     "reader": "detector",
+     "dy_spaces": -5.2,
+     "step_in_own_staff": -3.46,
+     "box": [
+      1634.0,
+      202.0,
+      349.0,
+      51.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    },
+    {
+     "certain": false,
+     "reader": "detector",
+     "dy_spaces": -6.28,
+     "step_in_own_staff": -5.62,
+     "box": [
+      1687.0,
+      43.0,
+      319.0,
+      153.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    },
+    {
+     "certain": false,
+     "reader": "detector",
+     "dy_spaces": -4.91,
+     "step_in_own_staff": -2.87,
+     "box": [
+      1634.0,
+      210.0,
+      349.0,
+      94.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    },
+    {
+     "certain": false,
+     "reader": "detector",
+     "dy_spaces": -5.07,
+     "step_in_own_staff": -3.19,
+     "box": [
+      1632.0,
+      202.0,
+      352.0,
+      78.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    }
+   ]
+  },
+  {
+   "subject": "glyph/1/0/4/3/8",
+   "side": null,
+   "certain": 0,
+   "possible": 2,
+   "stems_attached": 0,
+   "reach_spaces": null,
+   "class": "C_no_stem_attached",
+   "labels": [
+    "no_side_no_stem",
+    "no_side_no_stem"
+   ],
+   "export_refusal": "not_a_notehead:too_narrow",
+   "head_box": [
+    1999.0,
+    504.0,
+    30.0,
+    53.0
+   ],
+   "space": 100.0,
+   "strokes": [
+    {
+     "certain": false,
+     "reader": "detector",
+     "dy_spaces": -4.11,
+     "step_in_own_staff": -5.62,
+     "box": [
+      1687.0,
+      43.0,
+      319.0,
+      153.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    },
+    {
+     "certain": false,
+     "reader": "detector",
+     "dy_spaces": -2.9,
+     "step_in_own_staff": -3.19,
+     "box": [
+      1632.0,
+      202.0,
+      352.0,
+      78.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    }
+   ]
+  },
+  {
+   "subject": "glyph/1/0/4/3/11",
+   "side": null,
+   "certain": 0,
+   "possible": 5,
+   "stems_attached": 0,
+   "reach_spaces": null,
+   "class": "C_no_stem_attached",
+   "labels": [
+    "no_side_no_stem",
+    "no_side_no_stem",
+    "no_side_no_stem",
+    "no_side_no_stem",
+    "no_side_no_stem"
+   ],
+   "export_refusal": "not_a_notehead:too_narrow",
+   "head_box": [
+    1995.0,
+    609.0,
+    34.0,
+    57.0
+   ],
+   "space": 100.0,
+   "strokes": [
+    {
+     "certain": false,
+     "reader": "detector",
+     "dy_spaces": -3.68,
+     "step_in_own_staff": -2.62,
+     "box": [
+      1639.0,
+      237.0,
+      343.0,
+      65.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    },
+    {
+     "certain": false,
+     "reader": "detector",
+     "dy_spaces": -4.1,
+     "step_in_own_staff": -3.46,
+     "box": [
+      1634.0,
+      202.0,
+      349.0,
+      51.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    },
+    {
+     "certain": false,
+     "reader": "detector",
+     "dy_spaces": -5.18,
+     "step_in_own_staff": -5.62,
+     "box": [
+      1687.0,
+      43.0,
+      319.0,
+      153.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    },
+    {
+     "certain": false,
+     "reader": "detector",
+     "dy_spaces": -3.81,
+     "step_in_own_staff": -2.87,
+     "box": [
+      1634.0,
+      210.0,
+      349.0,
+      94.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    },
+    {
+     "certain": false,
+     "reader": "detector",
+     "dy_spaces": -3.96,
+     "step_in_own_staff": -3.19,
+     "box": [
+      1632.0,
+      202.0,
+      352.0,
+      78.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    }
+   ]
+  },
+  {
+   "subject": "glyph/1/0/4/3/18",
+   "side": null,
+   "certain": 0,
+   "possible": 1,
+   "stems_attached": 0,
+   "reach_spaces": null,
+   "class": "C_no_stem_attached",
+   "labels": [
+    "no_side_no_stem"
+   ],
+   "export_refusal": "not_a_notehead:too_narrow",
+   "head_box": [
+    2000.0,
+    549.0,
+    29.0,
+    48.0
+   ],
+   "space": 100.0,
+   "strokes": [
+    {
+     "certain": false,
+     "reader": "detector",
+     "dy_spaces": -4.54,
+     "step_in_own_staff": -5.61,
+     "box": [
+      1687.0,
+      43.0,
+      319.0,
+      153.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    }
+   ]
+  },
+  {
+   "subject": "glyph/1/0/5/0/1",
+   "side": "up",
+   "certain": 1,
+   "possible": 3,
+   "stems_attached": 1,
+   "reach_spaces": 6.8,
+   "class": "E_stem_side_missed",
+   "labels": [
+    "stem_side_stem_misses_stroke",
+    "stem_side_stem_misses_stroke"
+   ],
+   "export_refusal": "duration_narrowed",
+   "head_box": [
+    1601.0,
+    550.0,
+    66.0,
+    60.0
+   ],
+   "space": 46.75,
+   "strokes": [
+    {
+     "certain": false,
+     "reader": "detector",
+     "dy_spaces": 4.28,
+     "step_in_own_staff": 8.26,
+     "box": [
+      678.0,
+      357.0,
+      950.0,
+      46.0
+     ],
+     "label": "stem_side_stem_misses_stroke",
+     "stem_gap_x_spaces": 0.663,
+     "stem_gap_y_spaces": 0.0,
+     "past_stroke_end_widths": 0.091,
+     "stroke_stems": 1,
+     "stroke_stem_heads": {
+      "none": 1,
+      "own_staff": 1
+     }
+    },
+    {
+     "certain": true,
+     "reader": "detector",
+     "dy_spaces": 4.47,
+     "step_in_own_staff": 7.87,
+     "box": [
+      673.0,
+      339.0,
+      986.0,
+      64.0
+     ],
+     "label": "certain",
+     "stem_gap_x_spaces": 0.0,
+     "stem_gap_y_spaces": 0.0,
+     "past_stroke_end_widths": 0.0,
+     "stroke_stems": 2,
+     "stroke_stem_heads": {
+      "none": 2,
+      "own_staff": 1,
+      "self": 1
+     }
+    },
+    {
+     "certain": false,
+     "reader": "detector",
+     "dy_spaces": 5.02,
+     "step_in_own_staff": 6.78,
+     "box": [
+      677.0,
+      302.0,
+      929.0,
+      87.0
+     ],
+     "label": "stem_side_stem_misses_stroke",
+     "stem_gap_x_spaces": 1.134,
+     "stem_gap_y_spaces": 0.0,
+     "past_stroke_end_widths": 0.424,
+     "stroke_stems": 1,
+     "stroke_stem_heads": {
+      "none": 1,
+      "own_staff": 1
+     }
+    }
+   ]
+  },
+  {
+   "subject": "glyph/1/0/5/0/7",
+   "side": "up",
+   "certain": 1,
+   "possible": 3,
+   "stems_attached": 1,
+   "reach_spaces": 3.38,
+   "class": "E_stem_side_missed",
+   "labels": [
+    "stem_side_stem_misses_stroke",
+    "stem_side_stem_misses_stroke"
+   ],
+   "export_refusal": "duration_narrowed",
+   "head_box": [
+    1601.0,
+    391.0,
+    68.0,
+    58.0
+   ],
+   "space": 46.75,
+   "strokes": [
+    {
+     "certain": false,
+     "reader": "detector",
+     "dy_spaces": 0.86,
+     "step_in_own_staff": 8.26,
+     "box": [
+      678.0,
+      357.0,
+      950.0,
+      46.0
+     ],
+     "label": "stem_side_stem_misses_stroke",
+     "stem_gap_x_spaces": 0.663,
+     "stem_gap_y_spaces": 0.0,
+     "past_stroke_end_widths": 0.103,
+     "stroke_stems": 1,
+     "stroke_stem_heads": {
+      "none": 1,
+      "own_staff": 1
+     }
+    },
+    {
+     "certain": true,
+     "reader": "detector",
+     "dy_spaces": 1.05,
+     "step_in_own_staff": 7.87,
+     "box": [
+      673.0,
+      339.0,
+      986.0,
+      64.0
+     ],
+     "label": "certain",
+     "stem_gap_x_spaces": 0.0,
+     "stem_gap_y_spaces": 0.0,
+     "past_stroke_end_widths": 0.0,
+     "stroke_stems": 2,
+     "stroke_stem_heads": {
+      "none": 1,
+      "own_staff": 1,
+      "other_staff": 1,
+      "self": 1
+     }
+    },
+    {
+     "certain": false,
+     "reader": "detector",
+     "dy_spaces": 1.59,
+     "step_in_own_staff": 6.78,
+     "box": [
+      677.0,
+      302.0,
+      929.0,
+      87.0
+     ],
+     "label": "stem_side_stem_misses_stroke",
+     "stem_gap_x_spaces": 1.134,
+     "stem_gap_y_spaces": 0.0,
+     "past_stroke_end_widths": 0.426,
+     "stroke_stems": 1,
+     "stroke_stem_heads": {
+      "none": 1,
+      "own_staff": 1
+     }
+    }
+   ]
+  },
+  {
+   "subject": "glyph/1/0/5/5/3",
+   "side": null,
+   "certain": 0,
+   "possible": 1,
+   "stems_attached": 0,
+   "reach_spaces": null,
+   "class": "C_no_stem_attached",
+   "labels": [
+    "no_side_no_stem"
+   ],
+   "export_refusal": "not_a_notehead:too_narrow",
+   "head_box": [
+    2021.0,
+    469.0,
+    27.0,
+    43.0
+   ],
+   "space": 92.0,
+   "strokes": [
+    {
+     "certain": false,
+     "reader": "detector",
+     "dy_spaces": -4.35,
+     "step_in_own_staff": -6.2,
+     "box": [
+      3.0,
+      64.0,
+      2031.0,
+      53.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    }
+   ]
+  },
+  {
+   "subject": "glyph/1/0/5/5/4",
+   "side": null,
+   "certain": 0,
+   "possible": 1,
+   "stems_attached": 0,
+   "reach_spaces": null,
+   "class": "C_no_stem_attached",
+   "labels": [
+    "no_side_no_stem"
+   ],
+   "export_refusal": "not_a_notehead:too_narrow",
+   "head_box": [
+    2021.0,
+    404.0,
+    27.0,
+    54.0
+   ],
+   "space": 92.0,
+   "strokes": [
+    {
+     "certain": false,
+     "reader": "detector",
+     "dy_spaces": -3.7,
+     "step_in_own_staff": -6.18,
+     "box": [
+      3.0,
+      64.0,
+      2031.0,
+      53.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    }
+   ]
+  },
+  {
+   "subject": "glyph/1/0/5/5/5",
+   "side": null,
+   "certain": 0,
+   "possible": 1,
+   "stems_attached": 0,
+   "reach_spaces": null,
+   "class": "C_no_stem_attached",
+   "labels": [
+    "no_side_no_stem"
+   ],
+   "export_refusal": "not_a_notehead:too_narrow",
+   "head_box": [
+    2021.0,
+    586.0,
+    27.0,
+    53.0
+   ],
+   "space": 92.0,
+   "strokes": [
+    {
+     "certain": false,
+     "reader": "detector",
+     "dy_spaces": -5.67,
+     "step_in_own_staff": -6.2,
+     "box": [
+      3.0,
+      64.0,
+      2031.0,
+      53.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    }
+   ]
+  },
+  {
+   "subject": "glyph/1/0/5/5/6",
+   "side": null,
+   "certain": 0,
+   "possible": 1,
+   "stems_attached": 0,
+   "reach_spaces": null,
+   "class": "C_no_stem_attached",
+   "labels": [
+    "no_side_no_stem"
+   ],
+   "export_refusal": "not_a_notehead:too_narrow",
+   "head_box": [
+    2022.0,
+    558.0,
+    26.0,
+    46.0
+   ],
+   "space": 92.0,
+   "strokes": [
+    {
+     "certain": false,
+     "reader": "detector",
+     "dy_spaces": -5.33,
+     "step_in_own_staff": -6.18,
+     "box": [
+      3.0,
+      64.0,
+      2031.0,
+      53.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    }
+   ]
+  },
+  {
+   "subject": "glyph/1/0/5/5/8",
+   "side": null,
+   "certain": 0,
+   "possible": 1,
+   "stems_attached": 0,
+   "reach_spaces": null,
+   "class": "C_no_stem_attached",
+   "labels": [
+    "no_side_no_stem"
+   ],
+   "export_refusal": "not_a_notehead:too_narrow",
+   "head_box": [
+    2022.0,
+    494.0,
+    26.0,
+    54.0
+   ],
+   "space": 92.0,
+   "strokes": [
+    {
+     "certain": false,
+     "reader": "detector",
+     "dy_spaces": -4.68,
+     "step_in_own_staff": -6.18,
+     "box": [
+      3.0,
+      64.0,
+      2031.0,
+      53.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    }
+   ]
+  },
+  {
+   "subject": "glyph/1/0/5/5/10",
+   "side": null,
+   "certain": 0,
+   "possible": 1,
+   "stems_attached": 0,
+   "reach_spaces": null,
+   "class": "C_no_stem_attached",
+   "labels": [
+    "no_side_no_stem"
+   ],
+   "export_refusal": "not_a_notehead:too_narrow",
+   "head_box": [
+    2021.0,
+    312.0,
+    27.0,
+    52.0
+   ],
+   "space": 92.0,
+   "strokes": [
+    {
+     "certain": false,
+     "reader": "detector",
+     "dy_spaces": -2.69,
+     "step_in_own_staff": -6.18,
+     "box": [
+      3.0,
+      64.0,
+      2031.0,
+      53.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    }
+   ]
+  },
+  {
+   "subject": "glyph/1/0/6/0/13",
+   "side": null,
+   "certain": 2,
+   "possible": 3,
+   "stems_attached": 2,
+   "reach_spaces": null,
+   "class": "D_direction_not_own",
+   "labels": [
+    "no_side_stem_attached"
+   ],
+   "export_refusal": "duration_narrowed",
+   "head_box": [
+    1879.0,
+    369.0,
+    69.0,
+    46.0
+   ],
+   "space": 46.25,
+   "strokes": [
+    {
+     "certain": false,
+     "reader": "cv_lines",
+     "dy_spaces": -4.37,
+     "step_in_own_staff": -3.76,
+     "box": [
+      1586.0,
+      179.0,
+      282.0,
+      22.0
+     ],
+     "label": "no_side_stem_attached",
+     "stem_gap_x_spaces": 0.259,
+     "stem_gap_y_spaces": 0.93,
+     "past_stroke_end_widths": 0.659,
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    },
+    {
+     "certain": true,
+     "reader": "cv_lines",
+     "dy_spaces": -3.34,
+     "step_in_own_staff": -1.71,
+     "box": [
+      1658.0,
+      211.0,
+      292.0,
+      53.0
+     ],
+     "label": "no_side_stem_attached",
+     "stem_gap_x_spaces": 0.0,
+     "stem_gap_y_spaces": 0.0,
+     "past_stroke_end_widths": 0.0,
+     "stroke_stems": 2,
+     "stroke_stem_heads": {
+      "none": 1,
+      "self": 1
+     }
+    },
+    {
+     "certain": true,
+     "reader": "cv_lines",
+     "dy_spaces": 4.24,
+     "step_in_own_staff": 13.45,
+     "box": [
+      1602.0,
+      557.0,
+      292.0,
+      62.0
+     ],
+     "label": "no_side_stem_attached",
+     "stem_gap_x_spaces": 0.0,
+     "stem_gap_y_spaces": 0.0,
+     "past_stroke_end_widths": 0.283,
+     "stroke_stems": 3,
+     "stroke_stem_heads": {
+      "self": 1,
+      "none": 2
+     }
+    }
+   ]
+  },
+  {
+   "subject": "glyph/1/0/6/0/15",
+   "side": "down",
+   "certain": 0,
+   "possible": 1,
+   "stems_attached": 1,
+   "reach_spaces": 3.02,
+   "class": "E_stem_side_missed",
+   "labels": [
+    "stem_side_stem_misses_stroke"
+   ],
+   "export_refusal": "duration_narrowed",
+   "head_box": [
+    1439.0,
+    481.0,
+    76.0,
+    53.0
+   ],
+   "space": 46.25,
+   "strokes": [
+    {
+     "certain": false,
+     "reader": "cv_lines",
+     "dy_spaces": 2.84,
+     "step_in_own_staff": 15.63,
+     "box": [
+      1534.0,
+      631.0,
+      261.0,
+      16.0
+     ],
+     "label": "stem_side_stem_misses_stroke",
+     "stem_gap_x_spaces": 1.708,
+     "stem_gap_y_spaces": 0.0,
+     "past_stroke_end_widths": 0.75,
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    }
+   ]
+  },
+  {
+   "subject": "glyph/1/0/7/0/14",
+   "side": "down",
+   "certain": 4,
+   "possible": 5,
+   "stems_attached": 1,
+   "reach_spaces": 1.73,
+   "class": "B_only_beyond_stem_tip",
+   "labels": [
+    "beyond_stem_tip"
+   ],
+   "export_refusal": "not_a_notehead:belongs_to_a_nearer_staff",
+   "head_box": [
+    1475.0,
+    0.0,
+    192.0,
+    59.0
+   ],
+   "space": 47.0,
+   "strokes": [
+    {
+     "certain": true,
+     "reader": "detector",
+     "dy_spaces": 2.66,
+     "step_in_own_staff": -1.49,
+     "box": [
+      1460.0,
+      136.0,
+      464.0,
+      37.0
+     ],
+     "label": "certain",
+     "stem_gap_x_spaces": 0.0,
+     "stem_gap_y_spaces": 0.532,
+     "past_stroke_end_widths": 0.0,
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    },
+    {
+     "certain": true,
+     "reader": "detector",
+     "dy_spaces": 0.86,
+     "step_in_own_staff": -5.09,
+     "box": [
+      1607.0,
+      32.0,
+      277.0,
+      76.0
+     ],
+     "label": "certain",
+     "stem_gap_x_spaces": 0.0,
+     "stem_gap_y_spaces": 0.0,
+     "past_stroke_end_widths": 0.188,
+     "stroke_stems": 1,
+     "stroke_stem_heads": {
+      "none": 2,
+      "self": 1
+     }
+    },
+    {
+     "certain": true,
+     "reader": "detector",
+     "dy_spaces": 1.62,
+     "step_in_own_staff": -3.57,
+     "box": [
+      1466.0,
+      70.0,
+      414.0,
+      71.0
+     ],
+     "label": "certain",
+     "stem_gap_x_spaces": 0.0,
+     "stem_gap_y_spaces": 0.0,
+     "past_stroke_end_widths": 0.0,
+     "stroke_stems": 1,
+     "stroke_stem_heads": {
+      "none": 2,
+      "self": 1
+     }
+    },
+    {
+     "certain": true,
+     "reader": "detector",
+     "dy_spaces": 0.51,
+     "step_in_own_staff": -5.79,
+     "box": [
+      1608.0,
+      17.0,
+      270.0,
+      73.0
+     ],
+     "label": "certain",
+     "stem_gap_x_spaces": 0.0,
+     "stem_gap_y_spaces": 0.0,
+     "past_stroke_end_widths": 0.193,
+     "stroke_stems": 1,
+     "stroke_stem_heads": {
+      "none": 2,
+      "self": 1
+     }
+    },
+    {
+     "certain": false,
+     "reader": "detector",
+     "dy_spaces": 9.33,
+     "step_in_own_staff": 11.85,
+     "box": [
+      1232.0,
+      457.0,
+      282.0,
+      22.0
+     ],
+     "label": "beyond_stem_tip",
+     "stem_gap_x_spaces": 1.979,
+     "stem_gap_y_spaces": 7.362,
+     "past_stroke_end_widths": 0.297,
+     "stroke_stems": 3,
+     "stroke_stem_heads": {}
+    }
+   ]
+  },
+  {
+   "subject": "glyph/1/0/8/0/2",
+   "side": null,
+   "certain": 0,
+   "possible": 1,
+   "stems_attached": 0,
+   "reach_spaces": null,
+   "class": "C_no_stem_attached",
+   "labels": [
+    "no_side_no_stem"
+   ],
+   "export_refusal": "duration_narrowed",
+   "head_box": [
+    1091.0,
+    480.0,
+    70.0,
+    58.0
+   ],
+   "space": 46.75,
+   "strokes": [
+    {
+     "certain": false,
+     "reader": "cv_lines",
+     "dy_spaces": -7.07,
+     "step_in_own_staff": -0.36,
+     "box": [
+      680.0,
+      163.0,
+      401.0,
+      31.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 3,
+     "stroke_stem_heads": {
+      "none": 3
+     }
+    }
+   ]
+  },
+  {
+   "subject": "glyph/1/0/8/0/7",
+   "side": null,
+   "certain": 0,
+   "possible": 1,
+   "stems_attached": 0,
+   "reach_spaces": null,
+   "class": "C_no_stem_attached",
+   "labels": [
+    "no_side_no_stem"
+   ],
+   "export_refusal": "duration_narrowed",
+   "head_box": [
+    618.0,
+    506.0,
+    64.0,
+    53.0
+   ],
+   "space": 46.75,
+   "strokes": [
+    {
+     "certain": false,
+     "reader": "cv_lines",
+     "dy_spaces": -7.57,
+     "step_in_own_staff": -0.39,
+     "box": [
+      680.0,
+      163.0,
+      401.0,
+      31.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 3,
+     "stroke_stem_heads": {
+      "none": 3
+     }
+    }
+   ]
+  },
+  {
+   "subject": "glyph/1/0/9/0/4",
+   "side": "down",
+   "certain": 4,
+   "possible": 5,
+   "stems_attached": 1,
+   "reach_spaces": 6.19,
+   "class": "E_stem_side_missed",
+   "labels": [
+    "stem_side_stem_misses_stroke"
+   ],
+   "export_refusal": "duration_narrowed",
+   "head_box": [
+    1091.0,
+    61.0,
+    69.0,
+    58.0
+   ],
+   "space": 46.5,
+   "strokes": [
+    {
+     "certain": false,
+     "reader": "cv_lines",
+     "dy_spaces": 1.04,
+     "step_in_own_staff": -2.0,
+     "box": [
+      999.0,
+      131.0,
+      87.0,
+      15.0
+     ],
+     "label": "stem_side_stem_misses_stroke",
+     "stem_gap_x_spaces": 0.194,
+     "stem_gap_y_spaces": 0.0,
+     "past_stroke_end_widths": 0.572,
+     "stroke_stems": 1,
+     "stroke_stem_heads": {
+      "own_staff": 1
+     }
+    },
+    {
+     "certain": true,
+     "reader": "cv_lines",
+     "dy_spaces": 1.05,
+     "step_in_own_staff": -1.98,
+     "box": [
+      1089.0,
+      133.0,
+      84.0,
+      12.0
+     ],
+     "label": "certain",
+     "stem_gap_x_spaces": 0.0,
+     "stem_gap_y_spaces": 0.0,
+     "past_stroke_end_widths": 0.0,
+     "stroke_stems": 1,
+     "stroke_stem_heads": {
+      "self": 1
+     }
+    },
+    {
+     "certain": true,
+     "reader": "cv_lines",
+     "dy_spaces": 5.04,
+     "step_in_own_staff": 6.0,
+     "box": [
+      620.0,
+      311.0,
+      486.0,
+      27.0
+     ],
+     "label": "certain",
+     "stem_gap_x_spaces": 0.0,
+     "stem_gap_y_spaces": 0.0,
+     "past_stroke_end_widths": 0.283,
+     "stroke_stems": 5,
+     "stroke_stem_heads": {
+      "self": 1,
+      "own_staff": 3,
+      "none": 1
+     }
+    },
+    {
+     "certain": true,
+     "reader": "cv_lines",
+     "dy_spaces": 5.86,
+     "step_in_own_staff": 7.63,
+     "box": [
+      620.0,
+      348.0,
+      490.0,
+      29.0
+     ],
+     "label": "certain",
+     "stem_gap_x_spaces": 0.0,
+     "stem_gap_y_spaces": 0.0,
+     "past_stroke_end_widths": 0.225,
+     "stroke_stems": 5,
+     "stroke_stem_heads": {
+      "self": 1,
+      "own_staff": 3,
+      "none": 1
+     }
+    },
+    {
+     "certain": true,
+     "reader": "cv_lines",
+     "dy_spaces": 6.87,
+     "step_in_own_staff": 9.66,
+     "box": [
+      630.0,
+      398.0,
+      1382.0,
+      23.0
+     ],
+     "label": "certain",
+     "stem_gap_x_spaces": 0.0,
+     "stem_gap_y_spaces": 0.43,
+     "past_stroke_end_widths": 0.0,
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    }
+   ]
+  },
+  {
+   "subject": "glyph/1/0/9/0/5",
+   "side": "down",
+   "certain": 4,
+   "possible": 5,
+   "stems_attached": 1,
+   "reach_spaces": 5.18,
+   "class": "E_stem_side_missed",
+   "labels": [
+    "stem_side_stem_misses_stroke"
+   ],
+   "export_refusal": "duration_narrowed",
+   "head_box": [
+    1006.0,
+    108.0,
+    74.0,
+    58.0
+   ],
+   "space": 46.5,
+   "strokes": [
+    {
+     "certain": true,
+     "reader": "cv_lines",
+     "dy_spaces": 0.03,
+     "step_in_own_staff": -2.0,
+     "box": [
+      999.0,
+      131.0,
+      87.0,
+      15.0
+     ],
+     "label": "certain",
+     "stem_gap_x_spaces": 0.0,
+     "stem_gap_y_spaces": 0.0,
+     "past_stroke_end_widths": 0.0,
+     "stroke_stems": 1,
+     "stroke_stem_heads": {
+      "self": 1
+     }
+    },
+    {
+     "certain": false,
+     "reader": "cv_lines",
+     "dy_spaces": 0.04,
+     "step_in_own_staff": -1.98,
+     "box": [
+      1089.0,
+      133.0,
+      84.0,
+      12.0
+     ],
+     "label": "stem_side_stem_misses_stroke",
+     "stem_gap_x_spaces": 1.484,
+     "stem_gap_y_spaces": 0.0,
+     "past_stroke_end_widths": 0.622,
+     "stroke_stems": 1,
+     "stroke_stem_heads": {
+      "own_staff": 1
+     }
+    },
+    {
+     "certain": true,
+     "reader": "cv_lines",
+     "dy_spaces": 4.03,
+     "step_in_own_staff": 6.0,
+     "box": [
+      620.0,
+      311.0,
+      486.0,
+      27.0
+     ],
+     "label": "certain",
+     "stem_gap_x_spaces": 0.0,
+     "stem_gap_y_spaces": 0.0,
+     "past_stroke_end_widths": 0.0,
+     "stroke_stems": 5,
+     "stroke_stem_heads": {
+      "own_staff": 3,
+      "self": 1,
+      "none": 1
+     }
+    },
+    {
+     "certain": true,
+     "reader": "cv_lines",
+     "dy_spaces": 4.85,
+     "step_in_own_staff": 7.63,
+     "box": [
+      620.0,
+      348.0,
+      490.0,
+      29.0
+     ],
+     "label": "certain",
+     "stem_gap_x_spaces": 0.0,
+     "stem_gap_y_spaces": 0.0,
+     "past_stroke_end_widths": 0.0,
+     "stroke_stems": 5,
+     "stroke_stem_heads": {
+      "own_staff": 3,
+      "self": 1,
+      "none": 1
+     }
+    },
+    {
+     "certain": true,
+     "reader": "cv_lines",
+     "dy_spaces": 5.86,
+     "step_in_own_staff": 9.66,
+     "box": [
+      630.0,
+      398.0,
+      1382.0,
+      23.0
+     ],
+     "label": "certain",
+     "stem_gap_x_spaces": 0.0,
+     "stem_gap_y_spaces": 0.43,
+     "past_stroke_end_widths": 0.0,
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    }
+   ]
+  },
+  {
+   "subject": "glyph/1/0/9/3/0",
+   "side": "down",
+   "certain": 1,
+   "possible": 3,
+   "stems_attached": 1,
+   "reach_spaces": 3.13,
+   "class": "E_stem_side_missed",
+   "labels": [
+    "stem_side_stem_misses_stroke",
+    "stem_side_stem_misses_stroke"
+   ],
+   "export_refusal": "duration_narrowed",
+   "head_box": [
+    1362.0,
+    533.0,
+    140.0,
+    123.0
+   ],
+   "space": 100.0,
+   "strokes": [
+    {
+     "certain": true,
+     "reader": "cv_lines",
+     "dy_spaces": 2.71,
+     "step_in_own_staff": 9.29,
+     "box": [
+      1040.0,
+      834.0,
+      352.0,
+      62.0
+     ],
+     "label": "certain",
+     "stem_gap_x_spaces": 0.0,
+     "stem_gap_y_spaces": 0.0,
+     "past_stroke_end_widths": 0.286,
+     "stroke_stems": 2,
+     "stroke_stem_heads": {
+      "none": 1,
+      "self": 1
+     }
+    },
+    {
+     "certain": false,
+     "reader": "cv_lines",
+     "dy_spaces": 3.38,
+     "step_in_own_staff": 10.65,
+     "box": [
+      1054.0,
+      922.0,
+      308.0,
+      22.0
+     ],
+     "label": "stem_side_stem_misses_stroke",
+     "stem_gap_x_spaces": 0.03,
+     "stem_gap_y_spaces": 0.14,
+     "past_stroke_end_widths": 0.5,
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    },
+    {
+     "certain": false,
+     "reader": "cv_lines",
+     "dy_spaces": 3.73,
+     "step_in_own_staff": 11.34,
+     "box": [
+      1054.0,
+      955.0,
+      364.0,
+      25.0
+     ],
+     "label": "stem_side_stem_misses_stroke",
+     "stem_gap_x_spaces": 0.0,
+     "stem_gap_y_spaces": 0.47,
+     "past_stroke_end_widths": 0.1,
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    }
+   ]
+  },
+  {
+   "subject": "glyph/1/0/9/4/3",
+   "side": "up",
+   "certain": 1,
+   "possible": 2,
+   "stems_attached": 1,
+   "reach_spaces": 5.64,
+   "class": "E_stem_side_missed",
+   "labels": [
+    "stem_side_stem_misses_stroke"
+   ],
+   "export_refusal": "duration_narrowed",
+   "head_box": [
+    1758.0,
+    584.0,
+    110.0,
+    97.0
+   ],
+   "space": 79.5,
+   "strokes": [
+    {
+     "certain": false,
+     "reader": "cv_lines",
+     "dy_spaces": 6.54,
+     "step_in_own_staff": -5.18,
+     "box": [
+      1153.0,
+      88.0,
+      586.0,
+      49.0
+     ],
+     "label": "stem_side_stem_misses_stroke",
+     "stem_gap_x_spaces": 1.472,
+     "stem_gap_y_spaces": 0.591,
+     "past_stroke_end_widths": 0.673,
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    },
+    {
+     "certain": true,
+     "reader": "cv_lines",
+     "dy_spaces": 5.33,
+     "step_in_own_staff": -2.75,
+     "box": [
+      1205.0,
+      184.0,
+      674.0,
+      50.0
+     ],
+     "label": "certain",
+     "stem_gap_x_spaces": 0.0,
+     "stem_gap_y_spaces": 0.0,
+     "past_stroke_end_widths": 0.0,
+     "stroke_stems": 3,
+     "stroke_stem_heads": {
+      "none": 2,
+      "self": 1
+     }
+    }
+   ]
+  },
+  {
+   "subject": "glyph/1/0/10/0/15",
+   "side": "up",
+   "certain": 0,
+   "possible": 2,
+   "stems_attached": 1,
+   "reach_spaces": 3.57,
+   "class": "BE_beyond_tip_and_missed",
+   "labels": [
+    "beyond_stem_tip",
+    "stem_side_stem_misses_stroke"
+   ],
+   "export_refusal": "duration_narrowed",
+   "head_box": [
+    1183.0,
+    327.0,
+    61.0,
+    52.0
+   ],
+   "space": 46.75,
+   "strokes": [
+    {
+     "certain": false,
+     "reader": "cv_lines",
+     "dy_spaces": 4.64,
+     "step_in_own_staff": -2.18,
+     "box": [
+      676.0,
+      114.0,
+      486.0,
+      44.0
+     ],
+     "label": "beyond_stem_tip",
+     "stem_gap_x_spaces": 1.647,
+     "stem_gap_y_spaces": 0.599,
+     "past_stroke_end_widths": 0.844,
+     "stroke_stems": 6,
+     "stroke_stem_heads": {
+      "none": 6
+     }
+    },
+    {
+     "certain": false,
+     "reader": "cv_lines",
+     "dy_spaces": 3.91,
+     "step_in_own_staff": -0.73,
+     "box": [
+      676.0,
+      148.0,
+      486.0,
+      44.0
+     ],
+     "label": "stem_side_stem_misses_stroke",
+     "stem_gap_x_spaces": 1.647,
+     "stem_gap_y_spaces": 0.0,
+     "past_stroke_end_widths": 0.844,
+     "stroke_stems": 6,
+     "stroke_stem_heads": {
+      "none": 6
+     }
+    }
+   ]
+  },
+  {
+   "subject": "glyph/1/0/10/3/3",
+   "side": null,
+   "certain": 6,
+   "possible": 7,
+   "stems_attached": 0,
+   "reach_spaces": null,
+   "class": "C_no_stem_attached",
+   "labels": [
+    "no_side_no_stem"
+   ],
+   "export_refusal": "duration_narrowed",
+   "head_box": [
+    1042.0,
+    695.0,
+    139.0,
+    109.0
+   ],
+   "space": 100.0,
+   "strokes": [
+    {
+     "certain": false,
+     "reader": "detector",
+     "dy_spaces": 3.17,
+     "step_in_own_staff": 13.33,
+     "box": [
+      576.0,
+      1019.0,
+      402.0,
+      96.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    },
+    {
+     "certain": true,
+     "reader": "detector",
+     "dy_spaces": -6.98,
+     "step_in_own_staff": -6.98,
+     "box": [
+      1045.0,
+      17.0,
+      329.0,
+      69.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    },
+    {
+     "certain": true,
+     "reader": "detector",
+     "dy_spaces": 3.19,
+     "step_in_own_staff": 13.35,
+     "box": [
+      1043.0,
+      1033.0,
+      415.0,
+      70.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    },
+    {
+     "certain": true,
+     "reader": "detector",
+     "dy_spaces": -3.52,
+     "step_in_own_staff": -0.06,
+     "box": [
+      1104.0,
+      364.0,
+      403.0,
+      67.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 1,
+     "stroke_stem_heads": {
+      "none": 1
+     }
+    },
+    {
+     "certain": true,
+     "reader": "detector",
+     "dy_spaces": 2.96,
+     "step_in_own_staff": 12.89,
+     "box": [
+      1046.0,
+      1013.0,
+      410.0,
+      64.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    },
+    {
+     "certain": true,
+     "reader": "detector",
+     "dy_spaces": 1.77,
+     "step_in_own_staff": 10.53,
+     "box": [
+      614.0,
+      832.0,
+      844.0,
+      190.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    },
+    {
+     "certain": true,
+     "reader": "detector",
+     "dy_spaces": -6.22,
+     "step_in_own_staff": -5.47,
+     "box": [
+      1043.0,
+      92.0,
+      351.0,
+      70.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    }
+   ]
+  },
+  {
+   "subject": "glyph/1/0/11/0/9",
+   "side": null,
+   "certain": 2,
+   "possible": 5,
+   "stems_attached": 0,
+   "reach_spaces": null,
+   "class": "C_no_stem_attached",
+   "labels": [
+    "no_side_no_stem",
+    "no_side_no_stem",
+    "no_side_no_stem"
+   ],
+   "export_refusal": "duration_narrowed",
+   "head_box": [
+    626.0,
+    302.0,
+    65.0,
+    55.0
+   ],
+   "space": 46.75,
+   "strokes": [
+    {
+     "certain": true,
+     "reader": "cv_lines",
+     "dy_spaces": -6.77,
+     "step_in_own_staff": -11.44,
+     "box": [
+      635.0,
+      0.0,
+      1358.0,
+      26.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    },
+    {
+     "certain": true,
+     "reader": "cv_lines",
+     "dy_spaces": -5.86,
+     "step_in_own_staff": -9.63,
+     "box": [
+      635.0,
+      31.0,
+      1358.0,
+      49.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    },
+    {
+     "certain": false,
+     "reader": "cv_lines",
+     "dy_spaces": -4.25,
+     "step_in_own_staff": -6.4,
+     "box": [
+      683.0,
+      97.0,
+      403.0,
+      68.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 3,
+     "stroke_stem_heads": {
+      "none": 3
+     }
+    },
+    {
+     "certain": false,
+     "reader": "cv_lines",
+     "dy_spaces": 4.93,
+     "step_in_own_staff": 11.96,
+     "box": [
+      669.0,
+      549.0,
+      1260.0,
+      22.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    },
+    {
+     "certain": false,
+     "reader": "cv_lines",
+     "dy_spaces": 5.48,
+     "step_in_own_staff": 13.05,
+     "box": [
+      669.0,
+      573.0,
+      1260.0,
+      25.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    }
+   ]
+  },
+  {
+   "subject": "glyph/1/0/11/0/20",
+   "side": null,
+   "certain": 6,
+   "possible": 7,
+   "stems_attached": 0,
+   "reach_spaces": null,
+   "class": "C_no_stem_attached",
+   "labels": [
+    "no_side_no_stem"
+   ],
+   "export_refusal": "duration_narrowed",
+   "head_box": [
+    1611.0,
+    179.0,
+    65.0,
+    52.0
+   ],
+   "space": 46.75,
+   "strokes": [
+    {
+     "certain": true,
+     "reader": "cv_lines",
+     "dy_spaces": -4.11,
+     "step_in_own_staff": -11.42,
+     "box": [
+      635.0,
+      0.0,
+      1358.0,
+      26.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    },
+    {
+     "certain": true,
+     "reader": "cv_lines",
+     "dy_spaces": -3.2,
+     "step_in_own_staff": -9.6,
+     "box": [
+      635.0,
+      31.0,
+      1358.0,
+      49.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    },
+    {
+     "certain": false,
+     "reader": "cv_lines",
+     "dy_spaces": -1.72,
+     "step_in_own_staff": -6.65,
+     "box": [
+      1670.0,
+      99.0,
+      289.0,
+      51.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 2,
+     "stroke_stem_heads": {
+      "none": 2
+     }
+    },
+    {
+     "certain": true,
+     "reader": "cv_lines",
+     "dy_spaces": 6.15,
+     "step_in_own_staff": 9.09,
+     "box": [
+      1613.0,
+      468.0,
+      290.0,
+      49.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 3,
+     "stroke_stem_heads": {
+      "none": 3
+     }
+    },
+    {
+     "certain": true,
+     "reader": "cv_lines",
+     "dy_spaces": 6.98,
+     "step_in_own_staff": 10.76,
+     "box": [
+      739.0,
+      517.0,
+      1108.0,
+      29.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    },
+    {
+     "certain": true,
+     "reader": "cv_lines",
+     "dy_spaces": 7.59,
+     "step_in_own_staff": 11.98,
+     "box": [
+      669.0,
+      549.0,
+      1260.0,
+      22.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    },
+    {
+     "certain": true,
+     "reader": "cv_lines",
+     "dy_spaces": 8.14,
+     "step_in_own_staff": 13.07,
+     "box": [
+      669.0,
+      573.0,
+      1260.0,
+      25.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    }
+   ]
+  },
+  {
+   "subject": "glyph/1/0/12/0/18",
+   "side": null,
+   "certain": 0,
+   "possible": 2,
+   "stems_attached": 0,
+   "reach_spaces": null,
+   "class": "C_no_stem_attached",
+   "labels": [
+    "no_side_no_stem",
+    "no_side_no_stem"
+   ],
+   "export_refusal": "duration_narrowed",
+   "head_box": [
+    1978.0,
+    216.0,
+    47.0,
+    36.0
+   ],
+   "space": 46.5,
+   "strokes": [
+    {
+     "certain": false,
+     "reader": "cv_lines",
+     "dy_spaces": 4.53,
+     "step_in_own_staff": 11.16,
+     "box": [
+      644.0,
+      432.0,
+      1353.0,
+      25.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    },
+    {
+     "certain": false,
+     "reader": "cv_lines",
+     "dy_spaces": 5.18,
+     "step_in_own_staff": 12.47,
+     "box": [
+      644.0,
+      459.0,
+      1353.0,
+      32.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    }
+   ]
+  },
+  {
+   "subject": "glyph/1/0/12/4/6",
+   "side": "down",
+   "certain": 1,
+   "possible": 2,
+   "stems_attached": 1,
+   "reach_spaces": 3.26,
+   "class": "E_stem_side_missed",
+   "labels": [
+    "stem_side_stem_misses_stroke"
+   ],
+   "export_refusal": "duration_narrowed",
+   "head_box": [
+    788.0,
+    431.0,
+    107.0,
+    96.0
+   ],
+   "space": 79.5,
+   "strokes": [
+    {
+     "certain": true,
+     "reader": "cv_lines",
+     "dy_spaces": 2.94,
+     "step_in_own_staff": 9.94,
+     "box": [
+      178.0,
+      688.0,
+      634.0,
+      50.0
+     ],
+     "label": "certain",
+     "stem_gap_x_spaces": 0.0,
+     "stem_gap_y_spaces": 0.0,
+     "past_stroke_end_widths": 0.276,
+     "stroke_stems": 2,
+     "stroke_stem_heads": {
+      "none": 1,
+      "self": 1
+     }
+    },
+    {
+     "certain": false,
+     "reader": "cv_lines",
+     "dy_spaces": 3.94,
+     "step_in_own_staff": 11.92,
+     "box": [
+      202.0,
+      770.0,
+      633.0,
+      44.0
+     ],
+     "label": "stem_side_stem_misses_stroke",
+     "stem_gap_x_spaces": 0.0,
+     "stem_gap_y_spaces": 0.403,
+     "past_stroke_end_widths": 0.061,
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    }
+   ]
+  },
+  {
+   "subject": "glyph/1/0/12/4/15",
+   "side": "down",
+   "certain": 2,
+   "possible": 3,
+   "stems_attached": 1,
+   "reach_spaces": 3.06,
+   "class": "E_stem_side_missed",
+   "labels": [
+    "stem_side_stem_misses_stroke"
+   ],
+   "export_refusal": "duration_narrowed",
+   "head_box": [
+    1776.0,
+    466.0,
+    112.0,
+    98.0
+   ],
+   "space": 79.5,
+   "strokes": [
+    {
+     "certain": true,
+     "reader": "cv_lines",
+     "dy_spaces": 2.49,
+     "step_in_own_staff": 9.94,
+     "box": [
+      1135.0,
+      674.0,
+      663.0,
+      78.0
+     ],
+     "label": "certain",
+     "stem_gap_x_spaces": 0.0,
+     "stem_gap_y_spaces": 0.0,
+     "past_stroke_end_widths": 0.304,
+     "stroke_stems": 3,
+     "stroke_stem_heads": {
+      "none": 2,
+      "self": 1
+     }
+    },
+    {
+     "certain": true,
+     "reader": "cv_lines",
+     "dy_spaces": 3.17,
+     "step_in_own_staff": 11.3,
+     "box": [
+      1141.0,
+      744.0,
+      668.0,
+      46.0
+     ],
+     "label": "certain",
+     "stem_gap_x_spaces": 0.0,
+     "stem_gap_y_spaces": 0.0,
+     "past_stroke_end_widths": 0.205,
+     "stroke_stems": 2,
+     "stroke_stem_heads": {
+      "none": 1,
+      "self": 1
+     }
+    },
+    {
+     "certain": false,
+     "reader": "cv_lines",
+     "dy_spaces": 3.65,
+     "step_in_own_staff": 12.25,
+     "box": [
+      1141.0,
+      793.0,
+      668.0,
+      24.0
+     ],
+     "label": "stem_side_stem_misses_stroke",
+     "stem_gap_x_spaces": 0.0,
+     "stem_gap_y_spaces": 0.44,
+     "past_stroke_end_widths": 0.205,
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    }
+   ]
+  },
+  {
+   "subject": "glyph/1/0/13/4/4",
+   "side": "down",
+   "certain": 1,
+   "possible": 2,
+   "stems_attached": 1,
+   "reach_spaces": 3.22,
+   "class": "E_stem_side_missed",
+   "labels": [
+    "stem_side_stem_misses_stroke"
+   ],
+   "export_refusal": "duration_narrowed",
+   "head_box": [
+    796.0,
+    431.0,
+    112.0,
+    95.0
+   ],
+   "space": 80.25,
+   "strokes": [
+    {
+     "certain": true,
+     "reader": "cv_lines",
+     "dy_spaces": 2.9,
+     "step_in_own_staff": 9.71,
+     "box": [
+      182.0,
+      686.0,
+      633.0,
+      50.0
+     ],
+     "label": "certain",
+     "stem_gap_x_spaces": 0.0,
+     "stem_gap_y_spaces": 0.0,
+     "past_stroke_end_widths": 0.33,
+     "stroke_stems": 2,
+     "stroke_stem_heads": {
+      "self": 1,
+      "none": 1
+     }
+    },
+    {
+     "certain": false,
+     "reader": "cv_lines",
+     "dy_spaces": 3.96,
+     "step_in_own_staff": 11.84,
+     "box": [
+      203.0,
+      782.0,
+      639.0,
+      29.0
+     ],
+     "label": "stem_side_stem_misses_stroke",
+     "stem_gap_x_spaces": 0.0,
+     "stem_gap_y_spaces": 0.561,
+     "past_stroke_end_widths": 0.089,
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    }
+   ]
+  },
+  {
+   "subject": "glyph/1/0/13/4/13",
+   "side": "down",
+   "certain": 1,
+   "possible": 3,
+   "stems_attached": 1,
+   "reach_spaces": 3.07,
+   "class": "E_stem_side_missed",
+   "labels": [
+    "stem_side_stem_misses_stroke",
+    "stem_side_stem_misses_stroke"
+   ],
+   "export_refusal": "duration_narrowed",
+   "head_box": [
+    1780.0,
+    473.0,
+    111.0,
+    87.0
+   ],
+   "space": 80.25,
+   "strokes": [
+    {
+     "certain": true,
+     "reader": "cv_lines",
+     "dy_spaces": 2.38,
+     "step_in_own_staff": 9.62,
+     "box": [
+      1139.0,
+      671.0,
+      665.0,
+      73.0
+     ],
+     "label": "certain",
+     "stem_gap_x_spaces": 0.0,
+     "stem_gap_y_spaces": 0.0,
+     "past_stroke_end_widths": 0.284,
+     "stroke_stems": 3,
+     "stroke_stem_heads": {
+      "none": 2,
+      "self": 1
+     }
+    },
+    {
+     "certain": false,
+     "reader": "cv_lines",
+     "dy_spaces": 3.4,
+     "step_in_own_staff": 11.66,
+     "box": [
+      1139.0,
+      768.0,
+      665.0,
+      43.0
+     ],
+     "label": "stem_side_stem_misses_stroke",
+     "stem_gap_x_spaces": 0.0,
+     "stem_gap_y_spaces": 0.062,
+     "past_stroke_end_widths": 0.284,
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    },
+    {
+     "certain": false,
+     "reader": "cv_lines",
+     "dy_spaces": 3.94,
+     "step_in_own_staff": 12.75,
+     "box": [
+      1139.0,
+      814.0,
+      665.0,
+      38.0
+     ],
+     "label": "stem_side_stem_misses_stroke",
+     "stem_gap_x_spaces": 0.0,
+     "stem_gap_y_spaces": 0.636,
+     "past_stroke_end_widths": 0.284,
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    }
+   ]
+  },
+  {
+   "subject": "glyph/1/1/2/1/3",
+   "side": null,
+   "certain": 2,
+   "possible": 3,
+   "stems_attached": 0,
+   "reach_spaces": null,
+   "class": "C_no_stem_attached",
+   "labels": [
+    "no_side_no_stem"
+   ],
+   "export_refusal": "not_a_notehead:too_narrow",
+   "head_box": [
+    2018.0,
+    830.0,
+    30.0,
+    60.0
+   ],
+   "space": 84.0,
+   "strokes": [
+    {
+     "certain": true,
+     "reader": "detector",
+     "dy_spaces": 2.8,
+     "step_in_own_staff": 18.06,
+     "box": [
+      1782.0,
+      1036.0,
+      265.0,
+      119.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    },
+    {
+     "certain": false,
+     "reader": "detector",
+     "dy_spaces": -9.86,
+     "step_in_own_staff": -7.26,
+     "box": [
+      14.0,
+      0.0,
+      2011.0,
+      64.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    },
+    {
+     "certain": true,
+     "reader": "detector",
+     "dy_spaces": 3.3,
+     "step_in_own_staff": 19.06,
+     "box": [
+      1846.0,
+      1098.0,
+      193.0,
+      79.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    }
+   ]
+  },
+  {
+   "subject": "glyph/1/1/2/1/4",
+   "side": null,
+   "certain": 2,
+   "possible": 3,
+   "stems_attached": 0,
+   "reach_spaces": null,
+   "class": "C_no_stem_attached",
+   "labels": [
+    "no_side_no_stem"
+   ],
+   "export_refusal": "not_a_notehead:clipped_fragment",
+   "head_box": [
+    2003.0,
+    0.0,
+    45.0,
+    38.0
+   ],
+   "space": 84.0,
+   "strokes": [
+    {
+     "certain": true,
+     "reader": "detector",
+     "dy_spaces": 12.82,
+     "step_in_own_staff": 18.06,
+     "box": [
+      1782.0,
+      1036.0,
+      265.0,
+      119.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    },
+    {
+     "certain": false,
+     "reader": "detector",
+     "dy_spaces": 0.15,
+     "step_in_own_staff": -7.26,
+     "box": [
+      14.0,
+      0.0,
+      2011.0,
+      64.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    },
+    {
+     "certain": true,
+     "reader": "detector",
+     "dy_spaces": 13.32,
+     "step_in_own_staff": 19.06,
+     "box": [
+      1846.0,
+      1098.0,
+      193.0,
+      79.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    }
+   ]
+  },
+  {
+   "subject": "glyph/1/1/2/1/5",
+   "side": null,
+   "certain": 2,
+   "possible": 3,
+   "stems_attached": 0,
+   "reach_spaces": null,
+   "class": "C_no_stem_attached",
+   "labels": [
+    "no_side_no_stem"
+   ],
+   "export_refusal": "not_a_notehead:too_narrow",
+   "head_box": [
+    2017.0,
+    782.0,
+    31.0,
+    60.0
+   ],
+   "space": 84.0,
+   "strokes": [
+    {
+     "certain": true,
+     "reader": "detector",
+     "dy_spaces": 3.38,
+     "step_in_own_staff": 18.06,
+     "box": [
+      1782.0,
+      1036.0,
+      265.0,
+      119.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    },
+    {
+     "certain": false,
+     "reader": "detector",
+     "dy_spaces": -9.29,
+     "step_in_own_staff": -7.26,
+     "box": [
+      14.0,
+      0.0,
+      2011.0,
+      64.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    },
+    {
+     "certain": true,
+     "reader": "detector",
+     "dy_spaces": 3.88,
+     "step_in_own_staff": 19.06,
+     "box": [
+      1846.0,
+      1098.0,
+      193.0,
+      79.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    }
+   ]
+  },
+  {
+   "subject": "glyph/1/1/2/1/7",
+   "side": null,
+   "certain": 2,
+   "possible": 3,
+   "stems_attached": 0,
+   "reach_spaces": null,
+   "class": "C_no_stem_attached",
+   "labels": [
+    "no_side_no_stem"
+   ],
+   "export_refusal": "not_a_notehead:too_narrow",
+   "head_box": [
+    2014.0,
+    757.0,
+    34.0,
+    71.0
+   ],
+   "space": 84.0,
+   "strokes": [
+    {
+     "certain": true,
+     "reader": "detector",
+     "dy_spaces": 3.61,
+     "step_in_own_staff": 18.05,
+     "box": [
+      1782.0,
+      1036.0,
+      265.0,
+      119.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    },
+    {
+     "certain": false,
+     "reader": "detector",
+     "dy_spaces": -9.05,
+     "step_in_own_staff": -7.27,
+     "box": [
+      14.0,
+      0.0,
+      2011.0,
+      64.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    },
+    {
+     "certain": true,
+     "reader": "detector",
+     "dy_spaces": 4.11,
+     "step_in_own_staff": 19.05,
+     "box": [
+      1846.0,
+      1098.0,
+      193.0,
+      79.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    }
+   ]
+  },
+  {
+   "subject": "glyph/1/1/2/1/11",
+   "side": null,
+   "certain": 2,
+   "possible": 3,
+   "stems_attached": 0,
+   "reach_spaces": null,
+   "class": "C_no_stem_attached",
+   "labels": [
+    "no_side_no_stem"
+   ],
+   "export_refusal": "not_a_notehead:too_narrow",
+   "head_box": [
+    2015.0,
+    21.0,
+    33.0,
+    63.0
+   ],
+   "space": 84.0,
+   "strokes": [
+    {
+     "certain": true,
+     "reader": "detector",
+     "dy_spaces": 12.42,
+     "step_in_own_staff": 18.05,
+     "box": [
+      1782.0,
+      1036.0,
+      265.0,
+      119.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    },
+    {
+     "certain": false,
+     "reader": "detector",
+     "dy_spaces": -0.24,
+     "step_in_own_staff": -7.27,
+     "box": [
+      14.0,
+      0.0,
+      2011.0,
+      64.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    },
+    {
+     "certain": true,
+     "reader": "detector",
+     "dy_spaces": 12.92,
+     "step_in_own_staff": 19.05,
+     "box": [
+      1846.0,
+      1098.0,
+      193.0,
+      79.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    }
+   ]
+  },
+  {
+   "subject": "glyph/1/1/2/1/15",
+   "side": null,
+   "certain": 2,
+   "possible": 3,
+   "stems_attached": 0,
+   "reach_spaces": null,
+   "class": "C_no_stem_attached",
+   "labels": [
+    "no_side_no_stem"
+   ],
+   "export_refusal": "not_a_notehead:too_narrow",
+   "head_box": [
+    2022.0,
+    934.0,
+    26.0,
+    45.0
+   ],
+   "space": 84.0,
+   "strokes": [
+    {
+     "certain": true,
+     "reader": "detector",
+     "dy_spaces": 1.65,
+     "step_in_own_staff": 18.05,
+     "box": [
+      1782.0,
+      1036.0,
+      265.0,
+      119.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    },
+    {
+     "certain": false,
+     "reader": "detector",
+     "dy_spaces": -11.01,
+     "step_in_own_staff": -7.27,
+     "box": [
+      14.0,
+      0.0,
+      2011.0,
+      64.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    },
+    {
+     "certain": true,
+     "reader": "detector",
+     "dy_spaces": 2.15,
+     "step_in_own_staff": 19.05,
+     "box": [
+      1846.0,
+      1098.0,
+      193.0,
+      79.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    }
+   ]
+  },
+  {
+   "subject": "glyph/1/1/2/1/16",
+   "side": null,
+   "certain": 2,
+   "possible": 3,
+   "stems_attached": 0,
+   "reach_spaces": null,
+   "class": "C_no_stem_attached",
+   "labels": [
+    "no_side_no_stem"
+   ],
+   "export_refusal": "not_a_notehead:too_narrow",
+   "head_box": [
+    2018.0,
+    660.0,
+    30.0,
+    64.0
+   ],
+   "space": 84.0,
+   "strokes": [
+    {
+     "certain": true,
+     "reader": "detector",
+     "dy_spaces": 4.8,
+     "step_in_own_staff": 18.06,
+     "box": [
+      1782.0,
+      1036.0,
+      265.0,
+      119.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    },
+    {
+     "certain": false,
+     "reader": "detector",
+     "dy_spaces": -7.86,
+     "step_in_own_staff": -7.26,
+     "box": [
+      14.0,
+      0.0,
+      2011.0,
+      64.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    },
+    {
+     "certain": true,
+     "reader": "detector",
+     "dy_spaces": 5.3,
+     "step_in_own_staff": 19.06,
+     "box": [
+      1846.0,
+      1098.0,
+      193.0,
+      79.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    }
+   ]
+  },
+  {
+   "subject": "glyph/1/1/2/2/2",
+   "side": null,
+   "certain": 1,
+   "possible": 2,
+   "stems_attached": 0,
+   "reach_spaces": null,
+   "class": "C_no_stem_attached",
+   "labels": [
+    "no_side_no_stem"
+   ],
+   "export_refusal": "not_a_notehead:too_narrow",
+   "head_box": [
+    2014.0,
+    434.0,
+    34.0,
+    47.0
+   ],
+   "space": 86.25,
+   "strokes": [
+    {
+     "certain": false,
+     "reader": "detector",
+     "dy_spaces": 7.84,
+     "step_in_own_staff": 18.27,
+     "box": [
+      1784.0,
+      1091.0,
+      246.0,
+      85.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    },
+    {
+     "certain": true,
+     "reader": "detector",
+     "dy_spaces": 7.1,
+     "step_in_own_staff": 16.8,
+     "box": [
+      1745.0,
+      1019.0,
+      294.0,
+      102.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    }
+   ]
+  },
+  {
+   "subject": "glyph/1/1/2/2/13",
+   "side": null,
+   "certain": 1,
+   "possible": 2,
+   "stems_attached": 0,
+   "reach_spaces": null,
+   "class": "C_no_stem_attached",
+   "labels": [
+    "no_side_no_stem"
+   ],
+   "export_refusal": "not_a_notehead:too_narrow",
+   "head_box": [
+    2015.0,
+    886.0,
+    33.0,
+    59.0
+   ],
+   "space": 86.25,
+   "strokes": [
+    {
+     "certain": false,
+     "reader": "detector",
+     "dy_spaces": 2.53,
+     "step_in_own_staff": 18.27,
+     "box": [
+      1784.0,
+      1091.0,
+      246.0,
+      85.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    },
+    {
+     "certain": true,
+     "reader": "detector",
+     "dy_spaces": 1.79,
+     "step_in_own_staff": 16.8,
+     "box": [
+      1745.0,
+      1019.0,
+      294.0,
+      102.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    }
+   ]
+  },
+  {
+   "subject": "glyph/1/1/2/2/14",
+   "side": null,
+   "certain": 1,
+   "possible": 2,
+   "stems_attached": 0,
+   "reach_spaces": null,
+   "class": "C_no_stem_attached",
+   "labels": [
+    "no_side_no_stem"
+   ],
+   "export_refusal": "not_a_notehead:too_narrow",
+   "head_box": [
+    2013.0,
+    806.0,
+    35.0,
+    63.0
+   ],
+   "space": 86.25,
+   "strokes": [
+    {
+     "certain": false,
+     "reader": "detector",
+     "dy_spaces": 3.43,
+     "step_in_own_staff": 18.27,
+     "box": [
+      1784.0,
+      1091.0,
+      246.0,
+      85.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    },
+    {
+     "certain": true,
+     "reader": "detector",
+     "dy_spaces": 2.7,
+     "step_in_own_staff": 16.8,
+     "box": [
+      1745.0,
+      1019.0,
+      294.0,
+      102.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    }
+   ]
+  },
+  {
+   "subject": "glyph/1/1/2/2/15",
+   "side": null,
+   "certain": 1,
+   "possible": 2,
+   "stems_attached": 0,
+   "reach_spaces": null,
+   "class": "C_no_stem_attached",
+   "labels": [
+    "no_side_no_stem"
+   ],
+   "export_refusal": "not_a_notehead:too_narrow",
+   "head_box": [
+    2013.0,
+    767.0,
+    35.0,
+    57.0
+   ],
+   "space": 86.25,
+   "strokes": [
+    {
+     "certain": false,
+     "reader": "detector",
+     "dy_spaces": 3.92,
+     "step_in_own_staff": 18.27,
+     "box": [
+      1784.0,
+      1091.0,
+      246.0,
+      85.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    },
+    {
+     "certain": true,
+     "reader": "detector",
+     "dy_spaces": 3.18,
+     "step_in_own_staff": 16.8,
+     "box": [
+      1745.0,
+      1019.0,
+      294.0,
+      102.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    }
+   ]
+  },
+  {
+   "subject": "glyph/1/1/2/2/16",
+   "side": null,
+   "certain": 1,
+   "possible": 2,
+   "stems_attached": 0,
+   "reach_spaces": null,
+   "class": "C_no_stem_attached",
+   "labels": [
+    "no_side_no_stem"
+   ],
+   "export_refusal": "not_a_notehead:too_narrow",
+   "head_box": [
+    2014.0,
+    843.0,
+    34.0,
+    55.0
+   ],
+   "space": 86.25,
+   "strokes": [
+    {
+     "certain": false,
+     "reader": "detector",
+     "dy_spaces": 3.05,
+     "step_in_own_staff": 18.27,
+     "box": [
+      1784.0,
+      1091.0,
+      246.0,
+      85.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    },
+    {
+     "certain": true,
+     "reader": "detector",
+     "dy_spaces": 2.31,
+     "step_in_own_staff": 16.8,
+     "box": [
+      1745.0,
+      1019.0,
+      294.0,
+      102.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    }
+   ]
+  },
+  {
+   "subject": "glyph/1/1/2/2/17",
+   "side": null,
+   "certain": 1,
+   "possible": 2,
+   "stems_attached": 0,
+   "reach_spaces": null,
+   "class": "C_no_stem_attached",
+   "labels": [
+    "no_side_no_stem"
+   ],
+   "export_refusal": "not_a_notehead:too_narrow",
+   "head_box": [
+    2017.0,
+    938.0,
+    31.0,
+    52.0
+   ],
+   "space": 86.25,
+   "strokes": [
+    {
+     "certain": false,
+     "reader": "detector",
+     "dy_spaces": 1.97,
+     "step_in_own_staff": 18.28,
+     "box": [
+      1784.0,
+      1091.0,
+      246.0,
+      85.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    },
+    {
+     "certain": true,
+     "reader": "detector",
+     "dy_spaces": 1.23,
+     "step_in_own_staff": 16.81,
+     "box": [
+      1745.0,
+      1019.0,
+      294.0,
+      102.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    }
+   ]
+  },
+  {
+   "subject": "glyph/1/1/2/3/4",
+   "side": null,
+   "certain": 1,
+   "possible": 2,
+   "stems_attached": 0,
+   "reach_spaces": null,
+   "class": "C_no_stem_attached",
+   "labels": [
+    "no_side_no_stem"
+   ],
+   "export_refusal": "duration_narrowed",
+   "head_box": [
+    1696.0,
+    1120.0,
+    129.0,
+    110.0
+   ],
+   "space": 91.0,
+   "strokes": [
+    {
+     "certain": false,
+     "reader": "detector",
+     "dy_spaces": -1.93,
+     "step_in_own_staff": 13.97,
+     "box": [
+      1781.0,
+      940.0,
+      267.0,
+      119.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    },
+    {
+     "certain": true,
+     "reader": "detector",
+     "dy_spaces": -12.52,
+     "step_in_own_staff": -7.21,
+     "box": [
+      6.0,
+      0.0,
+      2014.0,
+      72.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    }
+   ]
+  },
+  {
+   "subject": "glyph/1/1/2/3/10",
+   "side": null,
+   "certain": 1,
+   "possible": 2,
+   "stems_attached": 0,
+   "reach_spaces": null,
+   "class": "C_no_stem_attached",
+   "labels": [
+    "no_side_no_stem"
+   ],
+   "export_refusal": "not_a_notehead:too_narrow",
+   "head_box": [
+    2014.0,
+    1174.0,
+    34.0,
+    80.0
+   ],
+   "space": 91.0,
+   "strokes": [
+    {
+     "certain": true,
+     "reader": "detector",
+     "dy_spaces": -2.36,
+     "step_in_own_staff": 13.97,
+     "box": [
+      1781.0,
+      940.0,
+      267.0,
+      119.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    },
+    {
+     "certain": false,
+     "reader": "detector",
+     "dy_spaces": -12.95,
+     "step_in_own_staff": -7.21,
+     "box": [
+      6.0,
+      0.0,
+      2014.0,
+      72.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    }
+   ]
+  },
+  {
+   "subject": "glyph/1/1/2/3/15",
+   "side": null,
+   "certain": 1,
+   "possible": 2,
+   "stems_attached": 0,
+   "reach_spaces": null,
+   "class": "C_no_stem_attached",
+   "labels": [
+    "no_side_no_stem"
+   ],
+   "export_refusal": "not_a_notehead:too_narrow",
+   "head_box": [
+    2015.0,
+    1136.0,
+    33.0,
+    62.0
+   ],
+   "space": 91.0,
+   "strokes": [
+    {
+     "certain": true,
+     "reader": "detector",
+     "dy_spaces": -1.84,
+     "step_in_own_staff": 13.97,
+     "box": [
+      1781.0,
+      940.0,
+      267.0,
+      119.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    },
+    {
+     "certain": false,
+     "reader": "detector",
+     "dy_spaces": -12.43,
+     "step_in_own_staff": -7.21,
+     "box": [
+      6.0,
+      0.0,
+      2014.0,
+      72.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    }
+   ]
+  },
+  {
+   "subject": "glyph/1/1/3/0/3",
+   "side": "down",
+   "certain": 2,
+   "possible": 5,
+   "stems_attached": 1,
+   "reach_spaces": 3.4,
+   "class": "BE_beyond_tip_and_missed",
+   "labels": [
+    "stem_side_stem_misses_stroke",
+    "beyond_stem_tip",
+    "stem_side_stem_misses_stroke"
+   ],
+   "export_refusal": "duration_narrowed",
+   "head_box": [
+    1382.0,
+    425.0,
+    95.0,
+    81.0
+   ],
+   "space": 65.5,
+   "strokes": [
+    {
+     "certain": true,
+     "reader": "cv_lines",
+     "dy_spaces": 3.21,
+     "step_in_own_staff": 8.43,
+     "box": [
+      1386.0,
+      656.0,
+      237.0,
+      39.0
+     ],
+     "label": "certain",
+     "stem_gap_x_spaces": 0.0,
+     "stem_gap_y_spaces": 0.0,
+     "past_stroke_end_widths": 0.0,
+     "stroke_stems": 2,
+     "stroke_stem_heads": {
+      "self": 1,
+      "none": 1
+     }
+    },
+    {
+     "certain": true,
+     "reader": "cv_lines",
+     "dy_spaces": 4.31,
+     "step_in_own_staff": 10.64,
+     "box": [
+      1386.0,
+      737.0,
+      266.0,
+      22.0
+     ],
+     "label": "certain",
+     "stem_gap_x_spaces": 0.0,
+     "stem_gap_y_spaces": 0.748,
+     "past_stroke_end_widths": 0.0,
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    },
+    {
+     "certain": false,
+     "reader": "detector",
+     "dy_spaces": 4.27,
+     "step_in_own_staff": 10.56,
+     "box": [
+      1031.0,
+      725.0,
+      315.0,
+      41.0
+     ],
+     "label": "stem_side_stem_misses_stroke",
+     "stem_gap_x_spaces": 0.595,
+     "stem_gap_y_spaces": 0.565,
+     "past_stroke_end_widths": 0.879,
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    },
+    {
+     "certain": false,
+     "reader": "detector",
+     "dy_spaces": 4.56,
+     "step_in_own_staff": 11.13,
+     "box": [
+      1031.0,
+      735.0,
+      315.0,
+      58.0
+     ],
+     "label": "beyond_stem_tip",
+     "stem_gap_x_spaces": 0.595,
+     "stem_gap_y_spaces": 0.718,
+     "past_stroke_end_widths": 0.879,
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    },
+    {
+     "certain": false,
+     "reader": "detector",
+     "dy_spaces": 4.39,
+     "step_in_own_staff": 10.79,
+     "box": [
+      1031.0,
+      723.0,
+      315.0,
+      60.0
+     ],
+     "label": "stem_side_stem_misses_stroke",
+     "stem_gap_x_spaces": 0.595,
+     "stem_gap_y_spaces": 0.534,
+     "past_stroke_end_widths": 0.879,
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    }
+   ]
+  },
+  {
+   "subject": "glyph/1/1/3/4/1",
+   "side": "down",
+   "certain": 1,
+   "possible": 2,
+   "stems_attached": 1,
+   "reach_spaces": 4.01,
+   "class": "E_stem_side_missed",
+   "labels": [
+    "stem_side_stem_misses_stroke"
+   ],
+   "export_refusal": "duration_narrowed",
+   "head_box": [
+    191.0,
+    341.0,
+    139.0,
+    117.0
+   ],
+   "space": 95.5,
+   "strokes": [
+    {
+     "certain": true,
+     "reader": "cv_lines",
+     "dy_spaces": 3.77,
+     "step_in_own_staff": 4.18,
+     "box": [
+      193.0,
+      735.0,
+      293.0,
+      50.0
+     ],
+     "label": "certain",
+     "stem_gap_x_spaces": 0.0,
+     "stem_gap_y_spaces": 0.0,
+     "past_stroke_end_widths": 0.0,
+     "stroke_stems": 2,
+     "stroke_stem_heads": {
+      "self": 1,
+      "own_staff": 1
+     }
+    },
+    {
+     "certain": false,
+     "reader": "cv_lines",
+     "dy_spaces": 3.96,
+     "step_in_own_staff": 4.55,
+     "box": [
+      279.0,
+      746.0,
+      467.0,
+      64.0
+     ],
+     "label": "stem_side_stem_misses_stroke",
+     "stem_gap_x_spaces": 0.67,
+     "stem_gap_y_spaces": 0.0,
+     "past_stroke_end_widths": 0.133,
+     "stroke_stems": 2,
+     "stroke_stem_heads": {
+      "own_staff": 2
+     }
+    }
+   ]
+  },
+  {
+   "subject": "glyph/1/1/3/4/6",
+   "side": "down",
+   "certain": 0,
+   "possible": 1,
+   "stems_attached": 1,
+   "reach_spaces": 3.18,
+   "class": "E_stem_side_missed",
+   "labels": [
+    "stem_side_stem_misses_stroke"
+   ],
+   "export_refusal": "duration_narrowed",
+   "head_box": [
+    1579.0,
+    645.0,
+    130.0,
+    109.0
+   ],
+   "space": 95.5,
+   "strokes": [
+    {
+     "certain": false,
+     "reader": "cv_lines",
+     "dy_spaces": 2.3,
+     "step_in_own_staff": 7.51,
+     "box": [
+      985.0,
+      867.0,
+      532.0,
+      104.0
+     ],
+     "label": "stem_side_stem_misses_stroke",
+     "stem_gap_x_spaces": 0.712,
+     "stem_gap_y_spaces": 0.0,
+     "past_stroke_end_widths": 0.977,
+     "stroke_stems": 2,
+     "stroke_stem_heads": {
+      "none": 2
+     }
+    }
+   ]
+  },
+  {
+   "subject": "glyph/1/1/4/3/1",
+   "side": null,
+   "certain": 1,
+   "possible": 3,
+   "stems_attached": 0,
+   "reach_spaces": null,
+   "class": "C_no_stem_attached",
+   "labels": [
+    "no_side_no_stem",
+    "no_side_no_stem"
+   ],
+   "export_refusal": "not_a_notehead:too_narrow",
+   "head_box": [
+    2018.0,
+    347.0,
+    30.0,
+    58.0
+   ],
+   "space": 90.0,
+   "strokes": [
+    {
+     "certain": false,
+     "reader": "detector",
+     "dy_spaces": 2.9,
+     "step_in_own_staff": 6.13,
+     "box": [
+      5.0,
+      594.0,
+      2026.0,
+      86.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    },
+    {
+     "certain": true,
+     "reader": "detector",
+     "dy_spaces": 7.57,
+     "step_in_own_staff": 15.48,
+     "box": [
+      1.0,
+      1034.0,
+      2041.0,
+      47.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    },
+    {
+     "certain": false,
+     "reader": "detector",
+     "dy_spaces": -3.11,
+     "step_in_own_staff": -5.89,
+     "box": [
+      1818.0,
+      80.0,
+      207.0,
+      32.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    }
+   ]
+  },
+  {
+   "subject": "glyph/1/1/4/3/2",
+   "side": null,
+   "certain": 1,
+   "possible": 3,
+   "stems_attached": 0,
+   "reach_spaces": null,
+   "class": "C_no_stem_attached",
+   "labels": [
+    "no_side_no_stem",
+    "no_side_no_stem"
+   ],
+   "export_refusal": "not_a_notehead:too_narrow",
+   "head_box": [
+    2018.0,
+    298.0,
+    30.0,
+    54.0
+   ],
+   "space": 90.0,
+   "strokes": [
+    {
+     "certain": false,
+     "reader": "detector",
+     "dy_spaces": 3.47,
+     "step_in_own_staff": 6.13,
+     "box": [
+      5.0,
+      594.0,
+      2026.0,
+      86.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    },
+    {
+     "certain": true,
+     "reader": "detector",
+     "dy_spaces": 8.14,
+     "step_in_own_staff": 15.48,
+     "box": [
+      1.0,
+      1034.0,
+      2041.0,
+      47.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    },
+    {
+     "certain": false,
+     "reader": "detector",
+     "dy_spaces": -2.54,
+     "step_in_own_staff": -5.89,
+     "box": [
+      1818.0,
+      80.0,
+      207.0,
+      32.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    }
+   ]
+  },
+  {
+   "subject": "glyph/1/1/4/3/3",
+   "side": null,
+   "certain": 1,
+   "possible": 3,
+   "stems_attached": 0,
+   "reach_spaces": null,
+   "class": "C_no_stem_attached",
+   "labels": [
+    "no_side_no_stem",
+    "no_side_no_stem"
+   ],
+   "export_refusal": "not_a_notehead:too_narrow",
+   "head_box": [
+    2021.0,
+    255.0,
+    27.0,
+    54.0
+   ],
+   "space": 90.0,
+   "strokes": [
+    {
+     "certain": false,
+     "reader": "detector",
+     "dy_spaces": 3.94,
+     "step_in_own_staff": 6.13,
+     "box": [
+      5.0,
+      594.0,
+      2026.0,
+      86.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    },
+    {
+     "certain": true,
+     "reader": "detector",
+     "dy_spaces": 8.62,
+     "step_in_own_staff": 15.48,
+     "box": [
+      1.0,
+      1034.0,
+      2041.0,
+      47.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    },
+    {
+     "certain": false,
+     "reader": "detector",
+     "dy_spaces": -2.07,
+     "step_in_own_staff": -5.89,
+     "box": [
+      1818.0,
+      80.0,
+      207.0,
+      32.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    }
+   ]
+  },
+  {
+   "subject": "glyph/1/1/4/3/4",
+   "side": null,
+   "certain": 1,
+   "possible": 3,
+   "stems_attached": 0,
+   "reach_spaces": null,
+   "class": "C_no_stem_attached",
+   "labels": [
+    "no_side_no_stem",
+    "no_side_no_stem"
+   ],
+   "export_refusal": "not_a_notehead:too_narrow",
+   "head_box": [
+    2018.0,
+    166.0,
+    30.0,
+    54.0
+   ],
+   "space": 90.0,
+   "strokes": [
+    {
+     "certain": false,
+     "reader": "detector",
+     "dy_spaces": 4.93,
+     "step_in_own_staff": 6.13,
+     "box": [
+      5.0,
+      594.0,
+      2026.0,
+      86.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    },
+    {
+     "certain": true,
+     "reader": "detector",
+     "dy_spaces": 9.61,
+     "step_in_own_staff": 15.48,
+     "box": [
+      1.0,
+      1034.0,
+      2041.0,
+      47.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    },
+    {
+     "certain": false,
+     "reader": "detector",
+     "dy_spaces": -1.08,
+     "step_in_own_staff": -5.89,
+     "box": [
+      1818.0,
+      80.0,
+      207.0,
+      32.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    }
+   ]
+  },
+  {
+   "subject": "glyph/1/1/4/3/5",
+   "side": null,
+   "certain": 1,
+   "possible": 3,
+   "stems_attached": 0,
+   "reach_spaces": null,
+   "class": "C_no_stem_attached",
+   "labels": [
+    "no_side_no_stem",
+    "no_side_no_stem"
+   ],
+   "export_refusal": "not_a_notehead:too_narrow",
+   "head_box": [
+    2019.0,
+    403.0,
+    29.0,
+    46.0
+   ],
+   "space": 90.0,
+   "strokes": [
+    {
+     "certain": false,
+     "reader": "detector",
+     "dy_spaces": 2.34,
+     "step_in_own_staff": 6.13,
+     "box": [
+      5.0,
+      594.0,
+      2026.0,
+      86.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    },
+    {
+     "certain": true,
+     "reader": "detector",
+     "dy_spaces": 7.02,
+     "step_in_own_staff": 15.48,
+     "box": [
+      1.0,
+      1034.0,
+      2041.0,
+      47.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    },
+    {
+     "certain": false,
+     "reader": "detector",
+     "dy_spaces": -3.67,
+     "step_in_own_staff": -5.89,
+     "box": [
+      1818.0,
+      80.0,
+      207.0,
+      32.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    }
+   ]
+  },
+  {
+   "subject": "glyph/1/1/4/3/7",
+   "side": null,
+   "certain": 1,
+   "possible": 3,
+   "stems_attached": 0,
+   "reach_spaces": null,
+   "class": "C_no_stem_attached",
+   "labels": [
+    "no_side_no_stem",
+    "no_side_no_stem"
+   ],
+   "export_refusal": "not_a_notehead:too_narrow",
+   "head_box": [
+    2021.0,
+    636.0,
+    27.0,
+    46.0
+   ],
+   "space": 90.0,
+   "strokes": [
+    {
+     "certain": false,
+     "reader": "detector",
+     "dy_spaces": -0.24,
+     "step_in_own_staff": 6.13,
+     "box": [
+      5.0,
+      594.0,
+      2026.0,
+      86.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    },
+    {
+     "certain": true,
+     "reader": "detector",
+     "dy_spaces": 4.43,
+     "step_in_own_staff": 15.48,
+     "box": [
+      1.0,
+      1034.0,
+      2041.0,
+      47.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    },
+    {
+     "certain": false,
+     "reader": "detector",
+     "dy_spaces": -6.26,
+     "step_in_own_staff": -5.89,
+     "box": [
+      1818.0,
+      80.0,
+      207.0,
+      32.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    }
+   ]
+  },
+  {
+   "subject": "glyph/1/1/4/3/10",
+   "side": null,
+   "certain": 1,
+   "possible": 3,
+   "stems_attached": 0,
+   "reach_spaces": null,
+   "class": "C_no_stem_attached",
+   "labels": [
+    "no_side_no_stem",
+    "no_side_no_stem"
+   ],
+   "export_refusal": "not_a_notehead:too_narrow",
+   "head_box": [
+    2020.0,
+    714.0,
+    28.0,
+    55.0
+   ],
+   "space": 90.0,
+   "strokes": [
+    {
+     "certain": false,
+     "reader": "detector",
+     "dy_spaces": -1.16,
+     "step_in_own_staff": 6.12,
+     "box": [
+      5.0,
+      594.0,
+      2026.0,
+      86.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    },
+    {
+     "certain": true,
+     "reader": "detector",
+     "dy_spaces": 3.51,
+     "step_in_own_staff": 15.47,
+     "box": [
+      1.0,
+      1034.0,
+      2041.0,
+      47.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    },
+    {
+     "certain": false,
+     "reader": "detector",
+     "dy_spaces": -7.17,
+     "step_in_own_staff": -5.9,
+     "box": [
+      1818.0,
+      80.0,
+      207.0,
+      32.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    }
+   ]
+  },
+  {
+   "subject": "glyph/1/1/4/3/12",
+   "side": null,
+   "certain": 1,
+   "possible": 3,
+   "stems_attached": 0,
+   "reach_spaces": null,
+   "class": "C_no_stem_attached",
+   "labels": [
+    "no_side_no_stem",
+    "no_side_no_stem"
+   ],
+   "export_refusal": "not_a_notehead:too_narrow",
+   "head_box": [
+    2020.0,
+    3.0,
+    28.0,
+    92.0
+   ],
+   "space": 90.0,
+   "strokes": [
+    {
+     "certain": false,
+     "reader": "detector",
+     "dy_spaces": 6.53,
+     "step_in_own_staff": 6.13,
+     "box": [
+      5.0,
+      594.0,
+      2026.0,
+      86.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    },
+    {
+     "certain": true,
+     "reader": "detector",
+     "dy_spaces": 11.21,
+     "step_in_own_staff": 15.48,
+     "box": [
+      1.0,
+      1034.0,
+      2041.0,
+      47.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    },
+    {
+     "certain": false,
+     "reader": "detector",
+     "dy_spaces": 0.52,
+     "step_in_own_staff": -5.89,
+     "box": [
+      1818.0,
+      80.0,
+      207.0,
+      32.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    }
+   ]
+  },
+  {
+   "subject": "glyph/1/1/4/3/15",
+   "side": null,
+   "certain": 2,
+   "possible": 3,
+   "stems_attached": 0,
+   "reach_spaces": null,
+   "class": "C_no_stem_attached",
+   "labels": [
+    "no_side_no_stem"
+   ],
+   "export_refusal": "not_a_notehead:too_narrow",
+   "head_box": [
+    1737.0,
+    9.0,
+    73.0,
+    49.0
+   ],
+   "space": 90.0,
+   "strokes": [
+    {
+     "certain": true,
+     "reader": "detector",
+     "dy_spaces": 6.71,
+     "step_in_own_staff": 6.12,
+     "box": [
+      5.0,
+      594.0,
+      2026.0,
+      86.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    },
+    {
+     "certain": true,
+     "reader": "detector",
+     "dy_spaces": 11.38,
+     "step_in_own_staff": 15.47,
+     "box": [
+      1.0,
+      1034.0,
+      2041.0,
+      47.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    },
+    {
+     "certain": false,
+     "reader": "detector",
+     "dy_spaces": 0.69,
+     "step_in_own_staff": -5.9,
+     "box": [
+      1818.0,
+      80.0,
+      207.0,
+      32.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    }
+   ]
+  },
+  {
+   "subject": "glyph/1/1/4/3/17",
+   "side": null,
+   "certain": 1,
+   "possible": 3,
+   "stems_attached": 0,
+   "reach_spaces": null,
+   "class": "C_no_stem_attached",
+   "labels": [
+    "no_side_no_stem",
+    "no_side_no_stem"
+   ],
+   "export_refusal": "not_a_notehead:too_narrow",
+   "head_box": [
+    2016.0,
+    105.0,
+    32.0,
+    55.0
+   ],
+   "space": 90.0,
+   "strokes": [
+    {
+     "certain": false,
+     "reader": "detector",
+     "dy_spaces": 5.61,
+     "step_in_own_staff": 6.12,
+     "box": [
+      5.0,
+      594.0,
+      2026.0,
+      86.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    },
+    {
+     "certain": true,
+     "reader": "detector",
+     "dy_spaces": 10.28,
+     "step_in_own_staff": 15.47,
+     "box": [
+      1.0,
+      1034.0,
+      2041.0,
+      47.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    },
+    {
+     "certain": false,
+     "reader": "detector",
+     "dy_spaces": -0.41,
+     "step_in_own_staff": -5.9,
+     "box": [
+      1818.0,
+      80.0,
+      207.0,
+      32.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    }
+   ]
+  },
+  {
+   "subject": "glyph/1/1/4/3/20",
+   "side": null,
+   "certain": 1,
+   "possible": 3,
+   "stems_attached": 0,
+   "reach_spaces": null,
+   "class": "C_no_stem_attached",
+   "labels": [
+    "no_side_no_stem",
+    "no_side_no_stem"
+   ],
+   "export_refusal": "not_a_notehead:too_narrow",
+   "head_box": [
+    2020.0,
+    551.0,
+    28.0,
+    47.0
+   ],
+   "space": 90.0,
+   "strokes": [
+    {
+     "certain": false,
+     "reader": "detector",
+     "dy_spaces": 0.69,
+     "step_in_own_staff": 6.12,
+     "box": [
+      5.0,
+      594.0,
+      2026.0,
+      86.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    },
+    {
+     "certain": true,
+     "reader": "detector",
+     "dy_spaces": 5.37,
+     "step_in_own_staff": 15.47,
+     "box": [
+      1.0,
+      1034.0,
+      2041.0,
+      47.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    },
+    {
+     "certain": false,
+     "reader": "detector",
+     "dy_spaces": -5.32,
+     "step_in_own_staff": -5.9,
+     "box": [
+      1818.0,
+      80.0,
+      207.0,
+      32.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    }
+   ]
+  },
+  {
+   "subject": "glyph/1/1/7/7/3",
+   "side": "up",
+   "certain": 0,
+   "possible": 1,
+   "stems_attached": 1,
+   "reach_spaces": 3.46,
+   "class": "B_only_beyond_stem_tip",
+   "labels": [
+    "beyond_stem_tip"
+   ],
+   "export_refusal": "duration_narrowed",
+   "head_box": [
+    163.0,
+    683.0,
+    160.0,
+    123.0
+   ],
+   "space": 100.0,
+   "strokes": [
+    {
+     "certain": false,
+     "reader": "detector",
+     "dy_spaces": 6.83,
+     "step_in_own_staff": -5.59,
+     "box": [
+      255.0,
+      0.0,
+      1651.0,
+      124.0
+     ],
+     "label": "beyond_stem_tip",
+     "stem_gap_x_spaces": 0.0,
+     "stem_gap_y_spaces": 2.74,
+     "past_stroke_end_widths": 0.075,
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    }
+   ]
+  },
+  {
+   "subject": "glyph/1/1/9/1/8",
+   "side": "up",
+   "certain": 0,
+   "possible": 1,
+   "stems_attached": 1,
+   "reach_spaces": 3.33,
+   "class": "E_stem_side_missed",
+   "labels": [
+    "stem_side_stem_misses_stroke"
+   ],
+   "export_refusal": "duration_narrowed",
+   "head_box": [
+    185.0,
+    761.0,
+    115.0,
+    106.0
+   ],
+   "space": 83.25,
+   "strokes": [
+    {
+     "certain": false,
+     "reader": "cv_lines",
+     "dy_spaces": 3.67,
+     "step_in_own_staff": 4.05,
+     "box": [
+      316.0,
+      481.0,
+      303.0,
+      55.0
+     ],
+     "label": "stem_side_stem_misses_stroke",
+     "stem_gap_x_spaces": 0.144,
+     "stem_gap_y_spaces": 0.012,
+     "past_stroke_end_widths": 0.639,
+     "stroke_stems": 1,
+     "stroke_stem_heads": {
+      "none": 1
+     }
+    }
+   ]
+  },
+  {
+   "subject": "glyph/1/1/9/1/31",
+   "side": null,
+   "certain": 0,
+   "possible": 1,
+   "stems_attached": 0,
+   "reach_spaces": null,
+   "class": "C_no_stem_attached",
+   "labels": [
+    "no_side_no_stem"
+   ],
+   "export_refusal": "not_a_notehead:too_narrow",
+   "head_box": [
+    0.0,
+    699.0,
+    23.0,
+    76.0
+   ],
+   "space": 83.25,
+   "strokes": [
+    {
+     "certain": false,
+     "reader": "detector",
+     "dy_spaces": -8.62,
+     "step_in_own_staff": -7.7,
+     "box": [
+      22.0,
+      0.0,
+      147.0,
+      39.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    }
+   ]
+  },
+  {
+   "subject": "glyph/1/1/9/1/32",
+   "side": null,
+   "certain": 0,
+   "possible": 1,
+   "stems_attached": 0,
+   "reach_spaces": null,
+   "class": "C_no_stem_attached",
+   "labels": [
+    "no_side_no_stem"
+   ],
+   "export_refusal": "not_a_notehead:too_narrow",
+   "head_box": [
+    0.0,
+    290.0,
+    21.0,
+    52.0
+   ],
+   "space": 83.25,
+   "strokes": [
+    {
+     "certain": false,
+     "reader": "detector",
+     "dy_spaces": -3.56,
+     "step_in_own_staff": -7.7,
+     "box": [
+      22.0,
+      0.0,
+      147.0,
+      39.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    }
+   ]
+  },
+  {
+   "subject": "glyph/1/1/9/3/26",
+   "side": null,
+   "certain": 0,
+   "possible": 1,
+   "stems_attached": 0,
+   "reach_spaces": null,
+   "class": "C_no_stem_attached",
+   "labels": [
+    "no_side_no_stem"
+   ],
+   "export_refusal": "not_a_notehead:too_narrow",
+   "head_box": [
+    0.0,
+    734.0,
+    37.0,
+    85.0
+   ],
+   "space": 90.0,
+   "strokes": [
+    {
+     "certain": false,
+     "reader": "detector",
+     "dy_spaces": 1.08,
+     "step_in_own_staff": 11.39,
+     "box": [
+      38.0,
+      830.0,
+      184.0,
+      88.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    }
+   ]
+  },
+  {
+   "subject": "glyph/1/1/9/6/1",
+   "side": "up",
+   "certain": 0,
+   "possible": 1,
+   "stems_attached": 1,
+   "reach_spaces": 3.46,
+   "class": "B_only_beyond_stem_tip",
+   "labels": [
+    "beyond_stem_tip"
+   ],
+   "export_refusal": "duration_narrowed",
+   "head_box": [
+    988.0,
+    603.0,
+    142.0,
+    120.0
+   ],
+   "space": 100.0,
+   "strokes": [
+    {
+     "certain": false,
+     "reader": "detector",
+     "dy_spaces": 5.37,
+     "step_in_own_staff": -4.68,
+     "box": [
+      273.0,
+      0.0,
+      784.0,
+      252.0
+     ],
+     "label": "beyond_stem_tip",
+     "stem_gap_x_spaces": 0.59,
+     "stem_gap_y_spaces": 0.65,
+     "past_stroke_end_widths": 0.014,
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    }
+   ]
+  },
+  {
+   "subject": "glyph/1/1/9/6/3",
+   "side": "up",
+   "certain": 1,
+   "possible": 2,
+   "stems_attached": 1,
+   "reach_spaces": 4.25,
+   "class": "B_only_beyond_stem_tip",
+   "labels": [
+    "beyond_stem_tip"
+   ],
+   "export_refusal": "duration_narrowed",
+   "head_box": [
+    187.0,
+    965.0,
+    141.0,
+    114.0
+   ],
+   "space": 100.0,
+   "strokes": [
+    {
+     "certain": false,
+     "reader": "detector",
+     "dy_spaces": 8.96,
+     "step_in_own_staff": -4.68,
+     "box": [
+      273.0,
+      0.0,
+      784.0,
+      252.0
+     ],
+     "label": "beyond_stem_tip",
+     "stem_gap_x_spaces": 0.0,
+     "stem_gap_y_spaces": 3.45,
+     "past_stroke_end_widths": 0.11,
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    },
+    {
+     "certain": true,
+     "reader": "detector",
+     "dy_spaces": 0.93,
+     "step_in_own_staff": 11.39,
+     "box": [
+      257.0,
+      735.0,
+      848.0,
+      389.0
+     ],
+     "label": "certain",
+     "stem_gap_x_spaces": 0.0,
+     "stem_gap_y_spaces": 0.0,
+     "past_stroke_end_widths": 0.0,
+     "stroke_stems": 2,
+     "stroke_stem_heads": {
+      "none": 1,
+      "self": 1
+     }
+    }
+   ]
+  },
+  {
+   "subject": "glyph/1/1/9/6/4",
+   "side": null,
+   "certain": 0,
+   "possible": 2,
+   "stems_attached": 0,
+   "reach_spaces": null,
+   "class": "C_no_stem_attached",
+   "labels": [
+    "no_side_no_stem",
+    "no_side_no_stem"
+   ],
+   "export_refusal": "duration_narrowed",
+   "head_box": [
+    187.0,
+    85.0,
+    138.0,
+    118.0
+   ],
+   "space": 100.0,
+   "strokes": [
+    {
+     "certain": false,
+     "reader": "detector",
+     "dy_spaces": -0.18,
+     "step_in_own_staff": -4.68,
+     "box": [
+      273.0,
+      0.0,
+      784.0,
+      252.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    },
+    {
+     "certain": false,
+     "reader": "detector",
+     "dy_spaces": 7.86,
+     "step_in_own_staff": 11.39,
+     "box": [
+      257.0,
+      735.0,
+      848.0,
+      389.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 2,
+     "stroke_stem_heads": {
+      "none": 2
+     }
+    }
+   ]
+  },
+  {
+   "subject": "glyph/1/1/10/7/2",
+   "side": "up",
+   "certain": 1,
+   "possible": 2,
+   "stems_attached": 1,
+   "reach_spaces": 2.65,
+   "class": "E_stem_side_missed",
+   "labels": [
+    "stem_side_stem_misses_stroke"
+   ],
+   "export_refusal": "duration_narrowed",
+   "head_box": [
+    173.0,
+    376.0,
+    134.0,
+    121.0
+   ],
+   "space": 100.0,
+   "strokes": [
+    {
+     "certain": false,
+     "reader": "cv_lines",
+     "dy_spaces": 2.9,
+     "step_in_own_staff": -3.64,
+     "box": [
+      322.0,
+      116.0,
+      962.0,
+      61.0
+     ],
+     "label": "stem_side_stem_misses_stroke",
+     "stem_gap_x_spaces": 0.08,
+     "stem_gap_y_spaces": 0.0,
+     "past_stroke_end_widths": 0.612,
+     "stroke_stems": 2,
+     "stroke_stem_heads": {
+      "none": 2
+     }
+    },
+    {
+     "certain": true,
+     "reader": "cv_lines",
+     "dy_spaces": 2.35,
+     "step_in_own_staff": -2.53,
+     "box": [
+      297.0,
+      173.0,
+      544.0,
+      58.0
+     ],
+     "label": "certain",
+     "stem_gap_x_spaces": 0.0,
+     "stem_gap_y_spaces": 0.0,
+     "past_stroke_end_widths": 0.425,
+     "stroke_stems": 3,
+     "stroke_stem_heads": {
+      "self": 1,
+      "none": 2
+     }
+    }
+   ]
+  },
+  {
+   "subject": "glyph/1/1/11/0/15",
+   "side": null,
+   "certain": 0,
+   "possible": 1,
+   "stems_attached": 0,
+   "reach_spaces": null,
+   "class": "C_no_stem_attached",
+   "labels": [
+    "no_side_no_stem"
+   ],
+   "export_refusal": "duration_narrowed",
+   "head_box": [
+    1395.0,
+    0.0,
+    92.0,
+    50.0
+   ],
+   "space": 66.5,
+   "strokes": [
+    {
+     "certain": false,
+     "reader": "cv_lines",
+     "dy_spaces": 4.73,
+     "step_in_own_staff": 2.18,
+     "box": [
+      1479.0,
+      319.0,
+      425.0,
+      41.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 3,
+     "stroke_stem_heads": {
+      "own_staff": 3
+     }
+    }
+   ]
+  },
+  {
+   "subject": "glyph/1/1/11/0/22",
+   "side": null,
+   "certain": 0,
+   "possible": 1,
+   "stems_attached": 0,
+   "reach_spaces": null,
+   "class": "C_no_stem_attached",
+   "labels": [
+    "no_side_no_stem"
+   ],
+   "export_refusal": "duration_narrowed",
+   "head_box": [
+    1041.0,
+    0.0,
+    120.0,
+    52.0
+   ],
+   "space": 66.5,
+   "strokes": [
+    {
+     "certain": false,
+     "reader": "cv_lines",
+     "dy_spaces": 4.77,
+     "step_in_own_staff": 2.29,
+     "box": [
+      1129.0,
+      323.0,
+      186.0,
+      40.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 2,
+     "stroke_stem_heads": {
+      "own_staff": 2
+     }
+    }
+   ]
+  },
+  {
+   "subject": "glyph/1/1/11/1/23",
+   "side": null,
+   "certain": 0,
+   "possible": 2,
+   "stems_attached": 0,
+   "reach_spaces": null,
+   "class": "C_no_stem_attached",
+   "labels": [
+    "no_side_no_stem",
+    "no_side_no_stem"
+   ],
+   "export_refusal": "duration_narrowed",
+   "head_box": [
+    168.0,
+    0.0,
+    149.0,
+    58.0
+   ],
+   "space": 83.25,
+   "strokes": [
+    {
+     "certain": false,
+     "reader": "cv_lines",
+     "dy_spaces": 4.71,
+     "step_in_own_staff": 2.09,
+     "box": [
+      301.0,
+      395.0,
+      645.0,
+      52.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 3,
+     "stroke_stem_heads": {
+      "own_staff": 3
+     }
+    },
+    {
+     "certain": false,
+     "reader": "detector",
+     "dy_spaces": 0.97,
+     "step_in_own_staff": -5.39,
+     "box": [
+      18.0,
+      71.0,
+      195.0,
+      77.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    }
+   ]
+  },
+  {
+   "subject": "glyph/1/1/11/7/5",
+   "side": "up",
+   "certain": 1,
+   "possible": 2,
+   "stems_attached": 1,
+   "reach_spaces": 3.03,
+   "class": "E_stem_side_missed",
+   "labels": [
+    "stem_side_stem_misses_stroke"
+   ],
+   "export_refusal": "duration_narrowed",
+   "head_box": [
+    185.0,
+    430.0,
+    147.0,
+    108.0
+   ],
+   "space": 100.0,
+   "strokes": [
+    {
+     "certain": false,
+     "reader": "cv_lines",
+     "dy_spaces": 3.44,
+     "step_in_own_staff": -3.74,
+     "box": [
+      361.0,
+      111.0,
+      877.0,
+      58.0
+     ],
+     "label": "stem_side_stem_misses_stroke",
+     "stem_gap_x_spaces": 0.3,
+     "stem_gap_y_spaces": 0.12,
+     "past_stroke_end_widths": 0.697,
+     "stroke_stems": 0,
+     "stroke_stem_heads": {}
+    },
+    {
+     "certain": true,
+     "reader": "cv_lines",
+     "dy_spaces": 2.75,
+     "step_in_own_staff": -2.35,
+     "box": [
+      310.0,
+      180.0,
+      553.0,
+      59.0
+     ],
+     "label": "certain",
+     "stem_gap_x_spaces": 0.0,
+     "stem_gap_y_spaces": 0.0,
+     "past_stroke_end_widths": 0.35,
+     "stroke_stems": 3,
+     "stroke_stem_heads": {
+      "none": 2,
+      "self": 1
+     }
+    }
+   ]
+  },
+  {
+   "subject": "glyph/1/1/12/0/7",
+   "side": null,
+   "certain": 0,
+   "possible": 1,
+   "stems_attached": 0,
+   "reach_spaces": null,
+   "class": "C_no_stem_attached",
+   "labels": [
+    "no_side_no_stem"
+   ],
+   "export_refusal": "duration_narrowed",
+   "head_box": [
+    1392.0,
+    0.0,
+    98.0,
+    58.0
+   ],
+   "space": 67.25,
+   "strokes": [
+    {
+     "certain": false,
+     "reader": "cv_lines",
+     "dy_spaces": 4.63,
+     "step_in_own_staff": 2.13,
+     "box": [
+      1475.0,
+      321.0,
+      431.0,
+      39.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 3,
+     "stroke_stem_heads": {
+      "none": 3
+     }
+    }
+   ]
+  },
+  {
+   "subject": "glyph/1/1/12/0/12",
+   "side": null,
+   "certain": 0,
+   "possible": 1,
+   "stems_attached": 0,
+   "reach_spaces": null,
+   "class": "C_no_stem_attached",
+   "labels": [
+    "no_side_no_stem"
+   ],
+   "export_refusal": "duration_narrowed",
+   "head_box": [
+    1043.0,
+    0.0,
+    98.0,
+    62.0
+   ],
+   "space": 67.25,
+   "strokes": [
+    {
+     "certain": false,
+     "reader": "cv_lines",
+     "dy_spaces": 4.66,
+     "step_in_own_staff": 2.25,
+     "box": [
+      1123.0,
+      326.0,
+      191.0,
+      37.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 2,
+     "stroke_stem_heads": {
+      "none": 2
+     }
+    }
+   ]
+  },
+  {
+   "subject": "glyph/1/1/12/1/11",
+   "side": null,
+   "certain": 0,
+   "possible": 1,
+   "stems_attached": 0,
+   "reach_spaces": null,
+   "class": "C_no_stem_attached",
+   "labels": [
+    "no_side_no_stem"
+   ],
+   "export_refusal": "duration_narrowed",
+   "head_box": [
+    199.0,
+    0.0,
+    119.0,
+    72.0
+   ],
+   "space": 84.0,
+   "strokes": [
+    {
+     "certain": false,
+     "reader": "cv_lines",
+     "dy_spaces": 4.6,
+     "step_in_own_staff": 2.04,
+     "box": [
+      298.0,
+      398.0,
+      640.0,
+      49.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 3,
+     "stroke_stem_heads": {
+      "none": 3
+     }
+    }
+   ]
+  },
+  {
+   "subject": "glyph/1/1/12/1/13",
+   "side": null,
+   "certain": 0,
+   "possible": 1,
+   "stems_attached": 0,
+   "reach_spaces": null,
+   "class": "C_no_stem_attached",
+   "labels": [
+    "no_side_no_stem"
+   ],
+   "export_refusal": "duration_narrowed",
+   "head_box": [
+    198.0,
+    0.0,
+    120.0,
+    71.0
+   ],
+   "space": 84.0,
+   "strokes": [
+    {
+     "certain": false,
+     "reader": "cv_lines",
+     "dy_spaces": 4.61,
+     "step_in_own_staff": 2.02,
+     "box": [
+      298.0,
+      398.0,
+      640.0,
+      49.0
+     ],
+     "label": "no_side_no_stem",
+     "stroke_stems": 3,
+     "stroke_stem_heads": {
+      "none": 3
+     }
+    }
+   ]
+  }
+ ],
+ "missed_flag": [
+  {
+   "subject": "glyph/1/0/0/0/5",
+   "side": "down",
+   "value": 1.0,
+   "tips": [
+    [
+     1873.0,
+     496.0,
+     14.0,
+     false
+    ]
+   ],
+   "head_box": [
+    1873.0,
+    199.0,
+    71.0,
+    57.0
+   ],
+   "space": 46.25,
+   "boxes_at_tip": [
+    "staff",
+    "noteheadBlackInSpace",
+    "slur"
+   ],
+   "export_refusal": null
+  },
+  {
+   "subject": "glyph/1/0/0/0/10",
+   "side": "down",
+   "value": 1.0,
+   "tips": [
+    [
+     1600.0,
+     468.0,
+     13.0,
+     false
+    ]
+   ],
+   "head_box": [
+    1600.0,
+    153.0,
+    65.0,
+    59.0
+   ],
+   "space": 46.25,
+   "boxes_at_tip": [
+    "staff",
+    "tie",
+    "stem"
+   ],
+   "export_refusal": null
+  },
+  {
+   "subject": "glyph/1/0/0/0/24",
+   "side": "down",
+   "value": 1.0,
+   "tips": [
+    [
+     1753.0,
+     477.0,
+     13.0,
+     false
+    ]
+   ],
+   "head_box": [
+    1754.0,
+    173.0,
+    66.0,
+    56.0
+   ],
+   "space": 46.25,
+   "boxes_at_tip": [
+    "staff",
+    "noteheadBlackOnLine",
+    "ledgerLine"
+   ],
+   "export_refusal": null
+  },
+  {
+   "subject": "glyph/1/0/0/0/28",
+   "side": "down",
+   "value": 1.0,
+   "tips": [
+    [
+     1753.0,
+     477.0,
+     13.0,
+     false
+    ]
+   ],
+   "head_box": [
+    1751.0,
+    292.0,
+    69.0,
+    58.0
+   ],
+   "space": 46.25,
+   "boxes_at_tip": [
+    "staff",
+    "ledgerLine"
+   ],
+   "export_refusal": null
+  },
+  {
+   "subject": "glyph/1/0/0/0/31",
+   "side": "down",
+   "value": 1.0,
+   "tips": [
+    [
+     1873.0,
+     496.0,
+     14.0,
+     false
+    ]
+   ],
+   "head_box": [
+    1872.0,
+    315.0,
+    70.0,
+    55.0
+   ],
+   "space": 46.25,
+   "boxes_at_tip": [
+    "staff",
+    "slur"
+   ],
+   "export_refusal": null
+  },
+  {
+   "subject": "glyph/1/0/0/0/32",
+   "side": "down",
+   "value": 1.0,
+   "tips": [
+    [
+     1600.0,
+     468.0,
+     13.0,
+     false
+    ]
+   ],
+   "head_box": [
+    1595.0,
+    275.0,
+    73.0,
+    49.0
+   ],
+   "space": 46.25,
+   "boxes_at_tip": [
+    "staff",
+    "tie",
+    "stem"
+   ],
+   "export_refusal": null
+  },
+  {
+   "subject": "glyph/1/0/0/2/2",
+   "side": "up",
+   "value": 1.0,
+   "tips": [
+    [
+     1453.0,
+     207.0,
+     26.0,
+     true
+    ]
+   ],
+   "head_box": [
+    1327.0,
+    429.0,
+    147.0,
+    123.0
+   ],
+   "space": 100.0,
+   "boxes_at_tip": [
+    "slur",
+    "ledgerLine"
+   ],
+   "export_refusal": null
+  },
+  {
+   "subject": "glyph/1/0/0/2/19",
+   "side": "up",
+   "value": 1.0,
+   "tips": [
+    [
+     620.0,
+     0.0,
+     30.0,
+     true
+    ]
+   ],
+   "head_box": [
+    500.0,
+    174.0,
+    145.0,
+    101.0
+   ],
+   "space": 100.0,
+   "boxes_at_tip": [
+    "slur"
+   ],
+   "export_refusal": null
+  },
+  {
+   "subject": "glyph/1/0/0/3/10",
+   "side": "down",
+   "value": 1.0,
+   "tips": [
+    [
+     532.0,
+     864.0,
+     22.0,
+     false
+    ]
+   ],
+   "head_box": [
+    528.0,
+    444.0,
+    146.0,
+    115.0
+   ],
+   "space": 100.0,
+   "boxes_at_tip": [
+    "tie",
+    "slur",
+    "tie",
+    "tie",
+    "staff",
+    "tie"
+   ],
+   "export_refusal": null
+  },
+  {
+   "subject": "glyph/1/0/0/3/11",
+   "side": "up",
+   "value": 1.0,
+   "tips": [
+    [
+     1141.0,
+     64.0,
+     22.0,
+     true
+    ]
+   ],
+   "head_box": [
+    1015.0,
+    327.0,
+    149.0,
+    122.0
+   ],
+   "space": 100.0,
+   "boxes_at_tip": [
+    "beam",
+    "beam",
+    "accidentalFlat",
+    "slur"
+   ],
+   "export_refusal": null
+  },
+  {
+   "subject": "glyph/1/0/0/3/12",
+   "side": "down",
+   "value": 1.0,
+   "tips": [
+    [
+     1028.0,
+     838.0,
+     14.0,
+     false
+    ]
+   ],
+   "head_box": [
+    1016.0,
+    443.0,
+    151.0,
+    116.0
+   ],
+   "space": 100.0,
+   "boxes_at_tip": [
+    "accidentalFlat",
+    "beam",
+    "slur",
+    "tie",
+    "tie",
+    "staff",
+    "tie"
+   ],
+   "export_refusal": null
+  },
+  {
+   "subject": "glyph/1/0/0/3/19",
+   "side": "up",
+   "value": 1.0,
+   "tips": [
+    [
+     653.0,
+     101.0,
+     22.0,
+     true
+    ]
+   ],
+   "head_box": [
+    531.0,
+    332.0,
+    144.0,
+    119.0
+   ],
+   "space": 100.0,
+   "boxes_at_tip": [
+    "slur",
+    "slur",
+    "slur"
+   ],
+   "export_refusal": null
+  },
+  {
+   "subject": "glyph/1/0/0/6/2",
+   "side": "up",
+   "value": 1.0,
+   "tips": [
+    [
+     637.0,
+     139.0,
+     17.0,
+     true
+    ]
+   ],
+   "head_box": [
+    519.0,
+    343.0,
+    125.0,
+    113.0
+   ],
+   "space": 91.25,
+   "boxes_at_tip": [
+    "slur"
+   ],
+   "export_refusal": null
+  },
+  {
+   "subject": "glyph/1/0/0/6/5",
+   "side": "up",
+   "value": 1.0,
+   "tips": [
+    [
+     1479.0,
+     384.0,
+     16.0,
+     true
+    ]
+   ],
+   "head_box": [
+    1370.0,
+    591.0,
+    121.0,
+    105.0
+   ],
+   "space": 91.25,
+   "boxes_at_tip": [
+    "staff",
+    "slur"
+   ],
+   "export_refusal": null
+  },
+  {
+   "subject": "glyph/1/0/1/5/3",
+   "side": "up",
+   "value": 1.0,
+   "tips": [
+    [
+     1560.0,
+     426.0,
+     20.0,
+     true
+    ]
+   ],
+   "head_box": [
+    1450.0,
+    677.0,
+    124.0,
+    111.0
+   ],
+   "space": 91.25,
+   "boxes_at_tip": [
+    "arpeggiato",
+    "tie"
+   ],
+   "export_refusal": null
+  },
+  {
+   "subject": "glyph/1/0/1/5/6",
+   "side": "down",
+   "value": 1.0,
+   "tips": [
+    [
+     569.0,
+     885.0,
+     20.0,
+     false
+    ]
+   ],
+   "head_box": [
+    571.0,
+    404.0,
+    124.0,
+    111.0
+   ],
+   "space": 91.25,
+   "boxes_at_tip": [
+    "dynamicF",
+    "dynamicP"
+   ],
+   "export_refusal": null
+  },
+  {
+   "subject": "glyph/1/0/1/6/1",
+   "side": "up",
+   "value": 1.0,
+   "tips": [
+    [
+     1492.0,
+     457.0,
+     20.0,
+     true
+    ]
+   ],
+   "head_box": [
+    1384.0,
+    730.0,
+    123.0,
+    105.0
+   ],
+   "space": 91.25,
+   "boxes_at_tip": [
+    "staff"
+   ],
+   "export_refusal": null
+  },
+  {
+   "subject": "glyph/1/0/1/6/5",
+   "side": "down",
+   "value": 1.0,
+   "tips": [
+    [
+     520.0,
+     829.0,
+     20.0,
+     false
+    ]
+   ],
+   "head_box": [
+    524.0,
+    499.0,
+    131.0,
+    113.0
+   ],
+   "space": 91.25,
+   "boxes_at_tip": [
+    "staff"
+   ],
+   "export_refusal": null
+  },
+  {
+   "subject": "glyph/1/0/2/1/3",
+   "side": "down",
+   "value": 1.0,
+   "tips": [
+    [
+     1205.0,
+     1198.0,
+     22.0,
+     false
+    ]
+   ],
+   "head_box": [
+    1204.0,
+    947.0,
+    123.0,
+    101.0
+   ],
+   "space": 85.5,
+   "boxes_at_tip": [
+    "slur",
+    "restHalf",
+    "restQuarter",
+    "ledgerLine"
+   ],
+   "export_refusal": "owned_by_another_staff"
+  },
+  {
+   "subject": "glyph/1/0/2/1/4",
+   "side": "down",
+   "value": 1.0,
+   "tips": [
+    [
+     791.0,
+     1198.0,
+     16.0,
+     false
+    ]
+   ],
+   "head_box": [
+    792.0,
+    956.0,
+    116.0,
+    95.0
+   ],
+   "space": 85.5,
+   "boxes_at_tip": [
+    "slur",
+    "restHalf"
+   ],
+   "export_refusal": "owned_by_another_staff"
+  },
+  {
+   "subject": "glyph/1/0/2/1/11",
+   "side": "up",
+   "value": 1.0,
+   "tips": [
+    [
+     894.0,
+     240.0,
+     18.0,
+     true
+    ]
+   ],
+   "head_box": [
+    788.0,
+    452.0,
+    122.0,
+    105.0
+   ],
+   "space": 85.5,
+   "boxes_at_tip": [
+    "dynamicZ",
+    "dynamicP",
+    "tie",
+    "tie"
+   ],
+   "export_refusal": null
+  },
+  {
+   "subject": "glyph/1/0/2/1/15",
+   "side": "up",
+   "value": 1.0,
+   "tips": [
+    [
+     1311.0,
+     237.0,
+     22.0,
+     true
+    ]
+   ],
+   "head_box": [
+    1212.0,
+    454.0,
+    120.0,
+    101.0
+   ],
+   "space": 85.5,
+   "boxes_at_tip": [
+    "noteheadBlackOnLine",
+    "tie",
+    "tie"
+   ],
+   "export_refusal": null
+  },
+  {
+   "subject": "glyph/1/0/2/1/16",
+   "side": "up",
+   "value": 1.0,
+   "tips": [
+    [
+     579.0,
+     271.0,
+     19.0,
+     true
+    ]
+   ],
+   "head_box": [
+    476.0,
+    707.0,
+    114.0,
+    104.0
+   ],
+   "space": 85.5,
+   "boxes_at_tip": [
+    "dynamicF",
+    "noteheadBlackInSpace",
+    "arpeggiato",
+    "arpeggiato",
+    "dynamicP"
+   ],
+   "export_refusal": null
+  },
+  {
+   "subject": "glyph/1/0/2/1/21",
+   "side": "up",
+   "value": 1.0,
+   "tips": [
+    [
+     579.0,
+     271.0,
+     19.0,
+     true
+    ]
+   ],
+   "head_box": [
+    470.0,
+    503.0,
+    129.0,
+    98.0
+   ],
+   "space": 85.5,
+   "boxes_at_tip": [
+    "dynamicF",
+    "arpeggiato",
+    "arpeggiato",
+    "dynamicP"
+   ],
+   "export_refusal": null
+  },
+  {
+   "subject": "glyph/1/0/2/6/3",
+   "side": "up",
+   "value": 1.0,
+   "tips": [
+    [
+     637.0,
+     242.0,
+     17.0,
+     true
+    ]
+   ],
+   "head_box": [
+    523.0,
+    469.0,
+    128.0,
+    99.0
+   ],
+   "space": 92.0,
+   "boxes_at_tip": [
+    "staff",
+    "slur"
+   ],
+   "export_refusal": null
+  },
+  {
+   "subject": "glyph/1/0/2/6/8",
+   "side": "up",
+   "value": 1.5,
+   "tips": [
+    [
+     1093.0,
+     238.0,
+     20.0,
+     true
+    ]
+   ],
+   "head_box": [
+    983.0,
+    470.0,
+    131.0,
+    101.0
+   ],
+   "space": 92.0,
+   "boxes_at_tip": [
+    "staff",
+    "slur",
+    "augmentationDot",
+    "tie",
+    "tie"
+   ],
+   "export_refusal": null
+  },
+  {
+   "subject": "glyph/1/0/3/1/6",
+   "side": "up",
+   "value": 1.0,
+   "tips": [
+    [
+     1622.0,
+     219.0,
+     22.0,
+     true
+    ]
+   ],
+   "head_box": [
+    1517.0,
+    406.0,
+    122.0,
+    106.0
+   ],
+   "space": 85.0,
+   "boxes_at_tip": [
+    "slur"
+   ],
+   "export_refusal": null
+  },
+  {
+   "subject": "glyph/1/0/3/2/0",
+   "side": "down",
+   "value": 1.0,
+   "tips": [
+    [
+     507.0,
+     1051.0,
+     22.0,
+     false
+    ]
+   ],
+   "head_box": [
+    501.0,
+    632.0,
+    153.0,
+    127.0
+   ],
+   "space": 100.0,
+   "boxes_at_tip": [
+    "tie"
+   ],
+   "export_refusal": null
+  },
+  {
+   "subject": "glyph/1/0/3/2/6",
+   "side": "down",
+   "value": 1.0,
+   "tips": [
+    [
+     1339.0,
+     1282.0,
+     22.0,
+     false
+    ]
+   ],
+   "head_box": [
+    1335.0,
+    889.0,
+    151.0,
+    122.0
+   ],
+   "space": 100.0,
+   "boxes_at_tip": [
+    "tie",
+    "slur"
+   ],
+   "export_refusal": null
+  },
+  {
+   "subject": "glyph/1/0/3/3/6",
+   "side": "up",
+   "value": 1.0,
+   "tips": [
+    [
+     657.0,
+     178.0,
+     15.0,
+     true
+    ]
+   ],
+   "head_box": [
+    524.0,
+    432.0,
+    145.0,
+    122.0
+   ],
+   "space": 100.0,
+   "boxes_at_tip": [
+    "slur",
+    "tie"
+   ],
+   "export_refusal": null
+  },
+  {
+   "subject": "glyph/1/0/3/6/0",
+   "side": "down",
+   "value": 1.0,
+   "tips": [
+    [
+     523.0,
+     839.0,
+     21.0,
+     false
+    ]
+   ],
+   "head_box": [
+    521.0,
+    445.0,
+    127.0,
+    111.0
+   ],
+   "space": 91.5,
+   "boxes_at_tip": [
+    "staff",
+    "tie",
+    "tie"
+   ],
+   "export_refusal": null
+  },
+  {
+   "subject": "glyph/1/0/3/6/3",
+   "side": "down",
+   "value": 1.0,
+   "tips": [
+    [
+     1388.0,
+     1027.0,
+     14.0,
+     false
+    ]
+   ],
+   "head_box": [
+    1385.0,
+    673.0,
+    126.0,
+    113.0
+   ],
+   "space": 91.5,
+   "boxes_at_tip": [
+    "staff",
+    "tie",
+    "tie",
+    "tie"
+   ],
+   "export_refusal": null
+  },
+  {
+   "subject": "glyph/1/0/6/0/4",
+   "side": "up",
+   "value": 1.5,
+   "tips": [
+    [
+     1659.0,
+     0.0,
+     12.0,
+     true
+    ]
+   ],
+   "head_box": [
+    1602.0,
+    115.0,
+    65.0,
+    58.0
+   ],
+   "space": 46.25,
+   "boxes_at_tip": [
+    "augmentationDot",
+    "ledgerLine",
+    "ledgerLine"
+   ],
+   "export_refusal": null
+  },
+  {
+   "subject": "glyph/1/0/9/0/14",
+   "side": "up",
+   "value": 1.0,
+   "tips": [
+    [
+     1948.0,
+     107.0,
+     7.0,
+     true
+    ]
+   ],
+   "head_box": [
+    1913.0,
+    191.0,
+    41.0,
+    35.0
+   ],
+   "space": 46.5,
+   "boxes_at_tip": [
+    "slur",
+    "staff",
+    "beam",
+    "noteheadBlackOnLine",
+    "tie"
+   ],
+   "export_refusal": "not_a_notehead:too_narrow"
+  },
+  {
+   "subject": "glyph/1/0/9/5/1",
+   "side": "up",
+   "value": 1.0,
+   "tips": [
+    [
+     322.0,
+     443.0,
+     20.0,
+     true
+    ]
+   ],
+   "head_box": [
+    212.0,
+    727.0,
+    127.0,
+    102.0
+   ],
+   "space": 91.25,
+   "boxes_at_tip": [
+    "accidentalFlat",
+    "staff"
+   ],
+   "export_refusal": null
+  },
+  {
+   "subject": "glyph/1/0/10/0/9",
+   "side": "up",
+   "value": 1.5,
+   "tips": [
+    [
+     1666.0,
+     186.0,
+     10.0,
+     true
+    ]
+   ],
+   "head_box": [
+    1611.0,
+    329.0,
+    66.0,
+    52.0
+   ],
+   "space": 46.75,
+   "boxes_at_tip": [
+    "staff",
+    "tie"
+   ],
+   "export_refusal": null
+  },
+  {
+   "subject": "glyph/1/0/12/0/11",
+   "side": "up",
+   "value": 1.0,
+   "tips": [
+    [
+     1955.0,
+     147.0,
+     9.0,
+     true
+    ]
+   ],
+   "head_box": [
+    1922.0,
+    233.0,
+    41.0,
+    39.0
+   ],
+   "space": 46.5,
+   "boxes_at_tip": [
+    "beam",
+    "noteheadBlackOnLine",
+    "staff",
+    "beam",
+    "beam"
+   ],
+   "export_refusal": "not_a_notehead:too_narrow"
+  },
+  {
+   "subject": "glyph/1/1/3/1/11",
+   "side": "down",
+   "value": 1.0,
+   "tips": [
+    [
+     1124.0,
+     869.0,
+     18.0,
+     false
+    ]
+   ],
+   "head_box": [
+    1116.0,
+    567.0,
+    119.0,
+    96.0
+   ],
+   "space": 81.75,
+   "boxes_at_tip": [
+    "staff"
+   ],
+   "export_refusal": null
+  },
+  {
+   "subject": "glyph/1/1/3/2/1",
+   "side": "down",
+   "value": 1.0,
+   "tips": [
+    [
+     1145.0,
+     876.0,
+     16.0,
+     false
+    ]
+   ],
+   "head_box": [
+    1140.0,
+    529.0,
+    127.0,
+    108.0
+   ],
+   "space": 83.75,
+   "boxes_at_tip": [
+    "staff"
+   ],
+   "export_refusal": null
+  },
+  {
+   "subject": "glyph/1/1/3/4/23",
+   "side": "down",
+   "value": 1.0,
+   "tips": [
+    [
+     1892.0,
+     778.0,
+     42.0,
+     false
+    ]
+   ],
+   "head_box": [
+    1776.0,
+    560.0,
+    238.0,
+    125.0
+   ],
+   "space": 95.5,
+   "boxes_at_tip": [
+    "clefF",
+    "noteheadBlackInSpace",
+    "ledgerLine"
+   ],
+   "export_refusal": null
+  },
+  {
+   "subject": "glyph/1/1/8/0/9",
+   "side": "up",
+   "value": 1.0,
+   "tips": [
+    [
+     1884.0,
+     256.0,
+     12.0,
+     true
+    ]
+   ],
+   "head_box": [
+    1798.0,
+    461.0,
+    97.0,
+    75.0
+   ],
+   "space": 65.25,
+   "boxes_at_tip": [
+    "staff"
+   ],
+   "export_refusal": null
+  },
+  {
+   "subject": "glyph/1/1/8/0/12",
+   "side": "up",
+   "value": 1.0,
+   "tips": [
+    [
+     1123.0,
+     263.0,
+     12.0,
+     true
+    ]
+   ],
+   "head_box": [
+    1037.0,
+    464.0,
+    95.0,
+    77.0
+   ],
+   "space": 65.25,
+   "boxes_at_tip": [
+    "staff",
+    "arpeggiato"
+   ],
+   "export_refusal": null
+  },
+  {
+   "subject": "glyph/1/1/8/1/11",
+   "side": "up",
+   "value": 1.0,
+   "tips": [
+    [
+     904.0,
+     374.0,
+     21.0,
+     true
+    ]
+   ],
+   "head_box": [
+    801.0,
+    609.0,
+    123.0,
+    109.0
+   ],
+   "space": 81.75,
+   "boxes_at_tip": [
+    "staff",
+    "beam"
+   ],
+   "export_refusal": null
+  },
+  {
+   "subject": "glyph/1/1/8/3/4",
+   "side": "up",
+   "value": 1.5,
+   "tips": [
+    [
+     798.0,
+     269.0,
+     13.0,
+     true
+    ]
+   ],
+   "head_box": [
+    678.0,
+    520.0,
+    133.0,
+    103.0
+   ],
+   "space": 88.5,
+   "boxes_at_tip": [
+    "augmentationDot",
+    "tie",
+    "tie"
+   ],
+   "export_refusal": null
+  },
+  {
+   "subject": "glyph/1/1/8/3/8",
+   "side": "down",
+   "value": 1.0,
+   "tips": [
+    [
+     1843.0,
+     395.0,
+     10.0,
+     false
+    ],
+    [
+     1728.0,
+     577.0,
+     16.0,
+     false
+    ]
+   ],
+   "head_box": [
+    1726.0,
+    192.0,
+    126.0,
+    109.0
+   ],
+   "space": 88.5,
+   "boxes_at_tip": [
+    "tie",
+    "ledgerLine",
+    "tie",
+    "tie",
+    "tie",
+    "tie"
+   ],
+   "export_refusal": null
+  },
+  {
+   "subject": "glyph/1/1/8/6/4",
+   "side": "up",
+   "value": 1.5,
+   "tips": [
+    [
+     1129.0,
+     301.0,
+     22.0,
+     true
+    ]
+   ],
+   "head_box": [
+    1000.0,
+    593.0,
+    149.0,
+    125.0
+   ],
+   "space": 100.0,
+   "boxes_at_tip": [
+    "augmentationDot",
+    "staff"
+   ],
+   "export_refusal": null
+  },
+  {
+   "subject": "glyph/1/1/8/7/1",
+   "side": "up",
+   "value": 1.0,
+   "tips": [
+    [
+     1204.0,
+     327.0,
+     19.0,
+     true
+    ]
+   ],
+   "head_box": [
+    1078.0,
+    586.0,
+    146.0,
+    125.0
+   ],
+   "space": 100.0,
+   "boxes_at_tip": [
+    "staff"
+   ],
+   "export_refusal": null
+  },
+  {
+   "subject": "glyph/1/1/9/0/17",
+   "side": "up",
+   "value": 1.0,
+   "tips": [
+    [
+     834.0,
+     343.0,
+     15.0,
+     true
+    ]
+   ],
+   "head_box": [
+    758.0,
+    548.0,
+    90.0,
+    80.0
+   ],
+   "space": 66.75,
+   "boxes_at_tip": [
+    "staff"
+   ],
+   "export_refusal": null
+  },
+  {
+   "subject": "glyph/1/1/9/1/23",
+   "side": "up",
+   "value": 1.0,
+   "tips": [
+    [
+     904.0,
+     417.0,
+     18.0,
+     true
+    ]
+   ],
+   "head_box": [
+    801.0,
+    674.0,
+    119.0,
+    102.0
+   ],
+   "space": 83.25,
+   "boxes_at_tip": [
+    "restQuarter"
+   ],
+   "export_refusal": null
+  },
+  {
+   "subject": "glyph/1/1/9/3/9",
+   "side": "up",
+   "value": 1.0,
+   "tips": [
+    [
+     798.0,
+     408.0,
+     23.0,
+     true
+    ]
+   ],
+   "head_box": [
+    693.0,
+    672.0,
+    119.0,
+    111.0
+   ],
+   "space": 90.0,
+   "boxes_at_tip": [
+    "staff"
+   ],
+   "export_refusal": null
+  },
+  {
+   "subject": "glyph/1/1/9/7/4",
+   "side": "up",
+   "value": 1.0,
+   "tips": [
+    [
+     1200.0,
+     328.0,
+     18.0,
+     true
+    ]
+   ],
+   "head_box": [
+    1074.0,
+    587.0,
+    147.0,
+    123.0
+   ],
+   "space": 100.0,
+   "boxes_at_tip": [],
+   "export_refusal": null
+  },
+  {
+   "subject": "glyph/1/1/10/7/1",
+   "side": "down",
+   "value": 1.0,
+   "tips": [
+    [
+     1078.0,
+     683.0,
+     14.0,
+     false
+    ]
+   ],
+   "head_box": [
+    1072.0,
+    268.0,
+    133.0,
+    120.0
+   ],
+   "space": 100.0,
+   "boxes_at_tip": [],
+   "export_refusal": null
+  },
+  {
+   "subject": "glyph/1/1/11/7/4",
+   "side": "down",
+   "value": 1.0,
+   "tips": [
+    [
+     1097.0,
+     691.0,
+     19.0,
+     false
+    ]
+   ],
+   "head_box": [
+    1093.0,
+    304.0,
+    138.0,
+    104.0
+   ],
+   "space": 100.0,
+   "boxes_at_tip": [],
+   "export_refusal": null
+  }
+ ],
+ "notes_not_written": {
+  "owned_by_another_staff": 47,
+  "duration_narrowed": 56,
+  "owner_not_read": 1,
+  "not_a_notehead:clipped_fragment": 26,
+  "not_a_notehead:too_narrow": 225,
+  "rest_duration_abstained": 19,
+  "not_a_rest:rest_is_a_duplicate_box": 36,
+  "not_a_notehead:belongs_to_a_nearer_staff": 7,
+  "written_value_fits_no_note": 1,
+  "ink_is_a_whole_rest": 2,
+  "bar_does_not_add_up": 574
+ }
+}

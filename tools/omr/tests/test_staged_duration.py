@@ -770,6 +770,241 @@ class TestABeamLiesOnTheStemSIDEOfItsHead(unittest.TestCase):
         self.assertIn(sd.id, log.verdict(Q.DURATION, g).basis)
 
 
+class TestAFlagHangsFromItsStemWithinAMeasuredTolerance(unittest.TestCase):
+    """ROADMAP 2.18b, the missed-flag path. ⚠️⚠️ A FLAG AND ITS STEM DO NOT
+    TOUCH ON A SCAN. `_attached_flags` demanded box OVERLAP (zero tolerance,
+    measured on the ENGRAVED fixture). On Breitkopf 317803 p1 every detected
+    flag's nearest read stem is 0.00 (106), 0.01-0.32 (13) or 1.31+ (15)
+    spaces away -- nothing between 0.33 and 1.30 -- and the 13 were written
+    as QUARTERS with the flag's own box on the record.
+    `STEM_JOIN_TOLERANCE_SPACES` (0.8) lies in that empty interval, in units
+    of THIS cell's `Q.CELL_STAFF_SPACE`; without one, overlap as before.
+    """
+
+    def _stemmed(self, log, flag_x, space=True):
+        if space:
+            _staff_space(log)
+        g = _note(log, 0, "noteheadBlack", x=X)
+        _stem(log, x=X - 10, y=8, h=60)                 # 90..94
+        _flag(log, gi=50, cls="flag8thUp", x=flag_x, y=40)
+        return g
+
+    def test_a_flag_a_THIRD_of_a_space_off_the_stem_is_read(self):
+        log = Log()
+        g = self._stemmed(log, flag_x=X - 1)            # 5 px = 0.31 space
+        adjudicate.run(log)
+        v = log.verdict(Q.DURATION, g)
+        self.assertEqual(v.value["beats"], 0.5)
+        self.assertEqual(v.detail["flags_attached"], 1)
+
+    def test_a_flag_a_space_and_a_half_off_is_NOT_this_stems(self):
+        """⚠️ THE POSITIVE CONTROL: the same flag 24 px = 1.5 spaces off."""
+        log = Log()
+        g = self._stemmed(log, flag_x=X + 18)
+        adjudicate.run(log)
+        self.assertEqual(log.verdict(Q.DURATION, g).value["beats"], 1.0)
+
+    def test_WITHOUT_a_staff_space_the_flag_must_touch(self):
+        log = Log()
+        g = self._stemmed(log, flag_x=X - 1, space=False)
+        adjudicate.run(log)
+        self.assertEqual(log.verdict(Q.DURATION, g).value["beats"], 1.0)
+
+
+class TestFlagsThatDISAGREEOnTheirLevelNarrow(unittest.TestCase):
+    """ROADMAP 2.18b (manager decision, rule 8). ⚠️ Two flag boxes on one stem
+    are two readings of ONE glyph; where they name different levels (an
+    `flag8thUp` and a `flag16thUp` on one mark -- Breitkopf p1
+    `glyph/1/1/9/0/13`, Litolff idx 3 `glyph/3/0/7/3/5`) taking the MAX is
+    an argmax this stage may not make. The duration NARROWS to the levels
+    the flags name. A box an existing verdict refuses is not a reading and
+    does not vote.
+    """
+
+    def _stemmed(self, log):
+        g = _note(log, 0, "noteheadBlack", x=X)
+        _stem(log, x=X - 10, y=8, h=60)                 # 90..94
+        return g
+
+    def test_an_8th_and_a_16th_flag_on_one_stem_NARROW(self):
+        log = Log()
+        g = self._stemmed(log)
+        _flag(log, gi=50, cls="flag8thUp", x=X - 10, y=40)
+        _flag(log, gi=51, cls="flag16thUp", x=X - 10, y=38)
+        adjudicate.run(log)
+        v = log.verdict(Q.DURATION, g)
+        self.assertEqual(v.outcome, Outcome.NARROWED)
+        self.assertEqual(v.reason, "flags_disagree")
+        self.assertEqual(sorted(c.value["beats"] for c in v.candidates),
+                         [0.25, 0.5])
+
+    def test_two_AGREEING_flags_still_decide(self):
+        """⚠️ THE POSITIVE CONTROL: two boxes, one level -> one answer."""
+        log = Log()
+        g = self._stemmed(log)
+        _flag(log, gi=50, cls="flag8thUp", x=X - 10, y=40)
+        _flag(log, gi=51, cls="flag8thDown", x=X - 10, y=38)
+        adjudicate.run(log)
+        v = log.verdict(Q.DURATION, g)
+        self.assertEqual(v.outcome, Outcome.DECIDED)
+        self.assertEqual(v.value["beats"], 0.5)
+
+    def test_a_REFUSED_box_does_not_vote(self):
+        """The disagreeing 16th is refused by a verdict (here a human's
+        `not_a_symbol`): one reading is left, and it decides."""
+        log = Log()
+        g = self._stemmed(log)
+        _flag(log, gi=50, cls="flag8thUp", x=X - 10, y=40)
+        f16 = _flag(log, gi=51, cls="flag16thUp", x=X - 10, y=38)
+        log.observe(f16.subject, Q.HUMAN_BOX_VERDICT, "not_a_symbol",
+                    reader=READERS.SEAN, frame="review:box",
+                    sidecar="t.json", action="act-0001")
+        adjudicate.run(log)
+        v = log.verdict(Q.DURATION, g)
+        self.assertEqual(v.outcome, Outcome.DECIDED)
+        self.assertEqual(v.value["beats"], 0.5)
+
+
+class TestTheBEAMJoinIsNOTWidened(unittest.TestCase):
+    """ROADMAP 2.18b, class E -- MEASURED AND REFUSED, so this is a guard, not
+    a fix. A stem tip half a space short of a stroke over the group stays a
+    RANGE: on Breitkopf p1 the stem-to-stroke gaps run 0.00-0.80 spaces with
+    no empty interval, and a 0.8 tolerance priced on the frozen record turned
+    narrowed eighths into sixteenths (a stroke read twice by the CV rung then
+    counts twice). FINDINGS §11.
+    """
+
+    def test_a_stem_tip_HALF_A_SPACE_short_of_a_stroke_stays_a_RANGE(self):
+        log = Log()
+        _staff_space(log)
+        _beam(log, y=40, x0=60, x1=140)       # 40..44, stroke ends at 140
+        _stem(log, x=70, y=38, h=60)          # the group's other stem
+        g = R.glyph(0, 0, 0, 0, 0)
+        log.observe(g, Q.NOTEHEAD_CLASS, "noteheadBlack",
+                    reader=READERS.DETECTOR, frame="cell:0", score=0.9)
+        log.observe(g, Q.GLYPH_BOX, ("noteheadBlack", 135, 90, 20, 16),
+                    reader=READERS.DETECTOR, frame="cell:0", score=0.9)
+        _stem(log, x=135, y=52, h=46)         # tip 8 px = 0.5 space short
+        adjudicate.run(log)
+        v = log.verdict(Q.DURATION, g)
+        self.assertEqual(v.outcome, Outcome.NARROWED)
+        self.assertEqual(v.detail["beams_by_stem"], 0)
+        self.assertEqual(v.detail["beams_beyond_stem"], 0)
+
+
+class TestAStrokeBeyondTheStemTipThatJoinsNOStemIsNotThisNotes(unittest.TestCase):
+    """ROADMAP 2.18b, class B. ⚠️ A beam is drawn at the stem's END and runs
+    from the first stem it joins to the last (CLAUDE.md §10). A stroke past
+    the head's own read stem's tip by more than the join tolerance, which no
+    read stem in the cell reaches, joins nothing and is not this note's beam
+    -- on Breitkopf p1 these are the detector's `beam` boxes on hairpins and
+    slurs, and the next staff's beams through the pad. Measured: of the 18
+    heads EXPORT refused with such a stroke, every detector box among them
+    touched zero read stems.
+    """
+
+    def _up_head_with_one_beam(self, log):
+        """Stem 135-139 rising 38..98, joining the stroke at y=40."""
+        _staff_space(log)
+        _beam(log, y=40, x0=60, x1=200)
+        g = R.glyph(0, 0, 0, 0, 0)
+        log.observe(g, Q.NOTEHEAD_CLASS, "noteheadBlack",
+                    reader=READERS.DETECTOR, frame="cell:0", score=0.9)
+        log.observe(g, Q.GLYPH_BOX, ("noteheadBlack", 135, 90, 20, 16),
+                    reader=READERS.DETECTOR, frame="cell:0", score=0.9)
+        _stem(log, x=135, y=38, h=60)
+        return g
+
+    def test_a_CERTAIN_stroke_beyond_the_tip_joining_no_stem_is_dropped(self):
+        log = Log()
+        g = self._up_head_with_one_beam(log)
+        # a stroke 2 spaces above the tip that no read stem reaches (on the
+        # page: a hairpin the detector called `beam`; CV here only so the
+        # KEPT rule does not discard it before this rule is asked)
+        _beam(log, y=2, x0=100, x1=200)
+        adjudicate.run(log)
+        v = log.verdict(Q.DURATION, g)
+        self.assertEqual(v.value["beats"], 0.5)
+        self.assertEqual(v.detail["beams_beyond_stem"], 1)
+
+    def test_a_POSSIBLE_one_is_dropped_too_and_the_note_DECIDES(self):
+        log = Log()
+        g = self._up_head_with_one_beam(log)
+        _beam(log, y=2, x0=40, x1=130)
+        adjudicate.run(log)
+        v = log.verdict(Q.DURATION, g)
+        self.assertEqual(v.outcome, Outcome.DECIDED)
+        self.assertEqual(v.value["beats"], 0.5)
+
+    def test_a_stroke_that_ANOTHER_stem_reaches_is_kept(self):
+        """⚠️ THE POSITIVE CONTROL. The same stroke, now joined by a read
+        stem: it is somebody's beam -- possibly this note's, its own stem read
+        short -- so it keeps counting exactly as before."""
+        log = Log()
+        g = self._up_head_with_one_beam(log)
+        _beam(log, y=2, x0=100, x1=200)
+        _stem(log, x=180, y=0, h=90)
+        adjudicate.run(log)
+        v = log.verdict(Q.DURATION, g)
+        self.assertEqual(v.value["beats"], 0.25)
+        self.assertEqual(v.detail["beams_beyond_stem"], 0)
+
+    def _up_head_alone(self, log):
+        """A stem-up head (stem 38..98) with NOTHING on its stem."""
+        _staff_space(log)
+        g = R.glyph(0, 0, 0, 0, 0)
+        log.observe(g, Q.NOTEHEAD_CLASS, "noteheadBlack",
+                    reader=READERS.DETECTOR, frame="cell:0", score=0.9)
+        log.observe(g, Q.GLYPH_BOX, ("noteheadBlack", 135, 90, 20, 16),
+                    reader=READERS.DETECTOR, frame="cell:0", score=0.9)
+        _stem(log, x=135, y=38, h=60)
+        return g
+
+    def test_RULE_8_dropping_may_not_leave_the_note_UNMARKED(self):
+        """⚠️ Where the stroke past the tip is the only thing over the head
+        and its stem carries no beam and no flag, dropping it would decide
+        the note at its head value from ABSENCE -- on p1 half of such notes
+        print a flag or beam nothing read. The reading stays what it was."""
+        log = Log()
+        g = self._up_head_alone(log)
+        _beam(log, y=2, x0=40, x1=130)        # past the tip, only a MAYBE
+        adjudicate.run(log)
+        v = log.verdict(Q.DURATION, g)
+        self.assertEqual(v.outcome, Outcome.NARROWED)
+        self.assertTrue(v.detail["beyond_stem_kept_no_other_mark"])
+        self.assertEqual(v.detail["beams_beyond_stem"], 0)
+
+    def test_the_guard_stands_down_when_a_FLAG_marks_the_stem(self):
+        """⚠️ THE POSITIVE CONTROL: the same head and stroke, with a flag on
+        the stem -- the stroke goes and the flag decides the eighth."""
+        log = Log()
+        g = self._up_head_alone(log)
+        _beam(log, y=2, x0=40, x1=130)
+        _flag(log, gi=50, cls="flag8thUp", x=139, y=38)
+        adjudicate.run(log)
+        v = log.verdict(Q.DURATION, g)
+        self.assertEqual(v.outcome, Outcome.DECIDED)
+        self.assertEqual(v.value["beats"], 0.5)
+        self.assertEqual(v.detail["beam_evidence"], "flag")
+        self.assertFalse(v.detail["beyond_stem_kept_no_other_mark"])
+
+    def test_a_head_with_NO_stem_of_its_own_keeps_every_stroke(self):
+        """No stem read -> no tip -> no reach to test: the old reading."""
+        log = Log()
+        _staff_space(log)
+        _beam(log, y=40, x0=60, x1=200)
+        _beam(log, y=2, x0=100, x1=200)
+        g = R.glyph(0, 0, 0, 0, 0)
+        log.observe(g, Q.NOTEHEAD_CLASS, "noteheadBlack",
+                    reader=READERS.DETECTOR, frame="cell:0", score=0.9)
+        log.observe(g, Q.GLYPH_BOX, ("noteheadBlack", 135, 90, 20, 16),
+                    reader=READERS.DETECTOR, frame="cell:0", score=0.9)
+        adjudicate.run(log)
+        v = log.verdict(Q.DURATION, g)
+        self.assertEqual(v.value["beats"], 0.25)
+        self.assertEqual(v.detail["beams_beyond_stem"], 0)
+
+
 class TestAMarkMustBeATTACHEDToItsNotehead(unittest.TestCase):
     """⚠️⚠️ `Q.FLAG` AND `Q.AUG_DOT` ARE GATHERED ON THE MARK'S OWN GLYPH
     SUBJECT AND WERE READ ON THE NOTEHEAD'S. Measured on a three-page engraved

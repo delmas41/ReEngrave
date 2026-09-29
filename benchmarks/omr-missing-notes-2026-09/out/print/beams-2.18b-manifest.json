@@ -1,0 +1,248 @@
+{
+  "roadmap_item": "2.18b",
+  "record": "scratch base.record.json -- Breitkopf 317803 pdf p1, gathered on 6309396a, dirty False, --no-surya --no-ocr --no-roster; re-decided on this tree; not committed",
+  "dpi": 600,
+  "crops": [
+    {
+      "n": 1,
+      "file": "beams-2.18b-01.png",
+      "subject": "glyph/1/1/10/1/3",
+      "why_chosen": "B",
+      "stem_direction": "up",
+      "before_2_18b": {
+        "outcome": "decided",
+        "reason": "head_and_marks",
+        "beats": 0.25
+      },
+      "after_2_18b": {
+        "outcome": "decided",
+        "reason": "head_and_marks",
+        "beats": 0.5
+      },
+      "frame_contrast": 60.87,
+      "strokes_dropped_beyond_tip": 5,
+      "strokes_far_side": 3,
+      "strokes_kept": 2,
+      "flags_attached": 1,
+      "rule_8_guard": false,
+      "page_box": [
+        2053.6,
+        6620.5,
+        2091.8,
+        6652.2
+      ],
+      "question": "printed value of the bracketed note; is any RED-X stroke this note's beam",
+      "VERDICT_none_yet": null
+    },
+    {
+      "n": 2,
+      "file": "beams-2.18b-02.png",
+      "subject": "glyph/1/1/10/1/4",
+      "why_chosen": "B",
+      "stem_direction": "up",
+      "before_2_18b": {
+        "outcome": "narrowed",
+        "reason": "beams_ambiguous",
+        "beats": null
+      },
+      "after_2_18b": {
+        "outcome": "decided",
+        "reason": "head_and_marks",
+        "beats": 0.5
+      },
+      "frame_contrast": 60.87,
+      "strokes_dropped_beyond_tip": 5,
+      "strokes_far_side": 3,
+      "strokes_kept": 2,
+      "flags_attached": 0,
+      "rule_8_guard": false,
+      "page_box": [
+        1540.7,
+        6631.6,
+        1578.6,
+        6663.3
+      ],
+      "question": "printed value of the bracketed note; is any RED-X stroke this note's beam",
+      "VERDICT_none_yet": null
+    },
+    {
+      "n": 3,
+      "file": "beams-2.18b-03.png",
+      "subject": "glyph/1/1/11/1/0",
+      "why_chosen": "B",
+      "stem_direction": "up",
+      "before_2_18b": {
+        "outcome": "narrowed",
+        "reason": "beams_ambiguous",
+        "beats": null
+      },
+      "after_2_18b": {
+        "outcome": "decided",
+        "reason": "head_and_marks",
+        "beats": 0.5
+      },
+      "frame_contrast": 67.86,
+      "strokes_dropped_beyond_tip": 1,
+      "strokes_far_side": 0,
+      "strokes_kept": 2,
+      "flags_attached": 0,
+      "rule_8_guard": false,
+      "page_box": [
+        1543.7,
+        6848.2,
+        1582.2,
+        6880.8
+      ],
+      "question": "printed value of the bracketed note; is any RED-X stroke this note's beam",
+      "VERDICT_none_yet": null
+    },
+    {
+      "n": 4,
+      "file": "beams-2.18b-04.png",
+      "subject": "glyph/1/1/10/7/4",
+      "why_chosen": "B, still wrong",
+      "stem_direction": "up",
+      "before_2_18b": {
+        "outcome": "decided",
+        "reason": "head_and_marks",
+        "beats": 0.125
+      },
+      "after_2_18b": {
+        "outcome": "decided",
+        "reason": "head_and_marks",
+        "beats": 0.25
+      },
+      "frame_contrast": 60.87,
+      "strokes_dropped_beyond_tip": 1,
+      "strokes_far_side": 0,
+      "strokes_kept": 2,
+      "flags_attached": 0,
+      "rule_8_guard": false,
+      "page_box": [
+        5170.4,
+        6503.1,
+        5206.4,
+        6537.0
+      ],
+      "question": "printed value of the bracketed note; is any RED-X stroke this note's beam",
+      "VERDICT_none_yet": null
+    },
+    {
+      "n": 5,
+      "file": "beams-2.18b-05.png",
+      "subject": "glyph/1/1/9/7/5",
+      "why_chosen": "flag",
+      "stem_direction": "up",
+      "before_2_18b": {
+        "outcome": "decided",
+        "reason": "head_and_marks",
+        "beats": 1.0
+      },
+      "after_2_18b": {
+        "outcome": "decided",
+        "reason": "head_and_marks",
+        "beats": 0.5
+      },
+      "frame_contrast": 80.26,
+      "strokes_dropped_beyond_tip": 0,
+      "strokes_far_side": 0,
+      "strokes_kept": 1,
+      "flags_attached": 2,
+      "rule_8_guard": false,
+      "page_box": [
+        5395.7,
+        6304.9,
+        5432.8,
+        6338.2
+      ],
+      "question": "printed value of the bracketed note; is any RED-X stroke this note's beam",
+      "VERDICT_none_yet": null
+    },
+    {
+      "n": 6,
+      "file": "beams-2.18b-06.png",
+      "subject": "glyph/1/1/3/3/2",
+      "why_chosen": "flag",
+      "stem_direction": "down",
+      "before_2_18b": {
+        "outcome": "decided",
+        "reason": "head_and_marks",
+        "beats": 1.0
+      },
+      "after_2_18b": {
+        "outcome": "decided",
+        "reason": "head_and_marks",
+        "beats": 0.5
+      },
+      "frame_contrast": 100.13,
+      "strokes_dropped_beyond_tip": 0,
+      "strokes_far_side": 2,
+      "strokes_kept": 2,
+      "flags_attached": 1,
+      "rule_8_guard": false,
+      "page_box": [
+        3313.5,
+        4866.0,
+        3352.2,
+        4897.8
+      ],
+      "question": "printed value of the bracketed note; is any RED-X stroke this note's beam",
+      "VERDICT_none_yet": null
+    },
+    {
+      "n": 7,
+      "file": "beams-2.18b-07.png",
+      "subject": "glyph/1/1/9/0/13",
+      "why_chosen": "regression: flag class says 16th",
+      "stem_direction": "up",
+      "before_2_18b": {
+        "outcome": "narrowed",
+        "reason": "beams_ambiguous",
+        "beats": null
+      },
+      "after_2_18b": {
+        "outcome": "decided",
+        "reason": "head_and_marks",
+        "beats": 0.25
+      },
+      "frame_contrast": 80.26,
+      "strokes_dropped_beyond_tip": 3,
+      "strokes_far_side": 2,
+      "strokes_kept": 1,
+      "flags_attached": 2,
+      "rule_8_guard": false,
+      "page_box": [
+        1377.1,
+        6364.8,
+        1415.5,
+        6399.6
+      ],
+      "question": "printed value of the bracketed note; is any RED-X stroke this note's beam",
+      "VERDICT_none_yet": null
+    },
+    {
+      "n": 8,
+      "file": "beams-2.18b-08.png",
+      "subject": "glyph/1/0/3/3/11",
+      "why_chosen": "rule-8 guard kept it narrowed",
+      "stem_direction": "down",
+      "before_2_18b": null,
+      "after_2_18b": null,
+      "frame_contrast": 201.13,
+      "strokes_dropped_beyond_tip": 0,
+      "strokes_far_side": 3,
+      "strokes_kept": 9,
+      "flags_attached": 0,
+      "rule_8_guard": true,
+      "page_box": [
+        3302.2,
+        1368.0,
+        3341.5,
+        1402.1
+      ],
+      "question": "printed value of the bracketed note; is any RED-X stroke this note's beam",
+      "VERDICT_none_yet": null
+    }
+  ],
+  "refused": []
+}

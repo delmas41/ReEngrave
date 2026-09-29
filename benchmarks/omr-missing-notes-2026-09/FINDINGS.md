@@ -775,3 +775,272 @@ out/print/beams-2.18-0{1..8}.png, beams-2.18-manifest.json
 ```
 The p1 record itself (~24 MB) is not committed; it reproduces in ~85 s from
 the gather command in 10.1 on `6309396a`.
+
+## 11. ROADMAP 2.18b -- class B (strokes past the stem tip), class E (the stem misses a stroke), and the missed-flag path (2026-09-29)
+
+PATH: STAGED, ADJUDICATE. Same frozen Breitkopf p1 record as SS10, re-decided
+on the 2.18 tree (`63247979`) and on this one. Nothing re-gathered.
+
+### CONVENTION ASSUMED / WHAT WOULD FALSIFY IT / NOT CONFIRMED
+
+CLAUDE.md SS10: a beam is drawn at the stem's END and runs from the first
+stem it joins to the last; a flag hangs from the stem's end. So a stroke
+that lies past a head's own read stem tip and that no read stem reaches is
+not that note's beam; and a flag box a fraction of a space off a stem is
+that stem's flag. Falsified by a crop where a RED-X stroke (below) is the
+bracketed note's own beam, or where an ORANGE flag hangs from a different
+stem. NOT CONFIRMED with Sean.
+
+### 11.1 The population on the 2.18 tree
+
+`probe/beams_2_18b.py --off` (tolerance 0 is the 2.18 tree exactly; the
+control -- re-derived `(certain, possible)` equals every narrowed verdict --
+passes 123/123) classifies the **66** heads EXPORT counts as
+`duration_narrowed`:
+
+| class | n |
+|---|--:|
+| C no stem attached (2.17) | 23 |
+| E a stem-side stroke within reach that the stem does not touch | 20 |
+| B every possible-only stroke lies more than 1 space past the stem tip | 14 |
+| B+E both | 4 |
+| D the stem's direction is not its own (`beam_mate` / abstained) | 5 |
+
+### 11.2 Class B: what the strokes are, and the fix
+
+Every DETECTOR box among the B strokes touches **zero** read stems; they sit
+2-5.5 spaces above the head's own top line or 1.5-2.5 below its bottom line.
+On the overlays they are the detector's `beam` class on HAIRPINS and SLURS
+(`<`/`>` boxes, the slur arc under a group) and, through the pad, the next
+staff's strokes. The two CV B strokes that ARE reached by a read stem (one
+by 2, one by 6) belong to real groups -- in one the head's own stem was read
+as a 0.33-space fragment.
+
+The manager's second suggestion -- a stroke on the neighbouring staff's
+stems belongs there, by `Q.GLYPH_OWNER` -- has **zero reach** here: no B
+stroke touches a stem whose head ownership awards to another staff (the
+heads on those stems are uncontested). Not built.
+
+**Fix** (`rhythm._beyond_own_stem`): a stroke is not this note's when BOTH
+it lies past the tip of the head's own read stem by more than
+`STEM_JOIN_TOLERANCE_SPACES` (0.8 of the cell's own staff space) AND no read
+stem in the cell comes within that distance of it. The second half is the
+guard for a shattered stem read short: a real beam is reached by the other
+stems of its group. No own stem, no own direction, or no staff-space unit ->
+nothing is dropped.
+
+**And a rule-8 guard, added after pricing.** Built without it, the rule
+turned 8 notes in written bars into bare QUARTERS (the strokes were the only
+thing over the head, and once they went the stem carried nothing): by eye 3
+right, 3 wrong -- two of them printed eighths whose flag no reader read,
+which the spurious stroke had been standing in for -- and 2 unclear. Half
+wrong, against 10 of 69 (~1 in 7) across every stemmed head the page then
+wrote at its head value (the by-eye pass in 11.4, made before the guard). So
+where dropping would leave the head with no beam, no possible beam and no
+flag, the strokes stay and the reading stays what it was
+(`beyond_stem_kept_no_other_mark` on the verdict). Removing an unconnected
+stroke may make a note less wrong; it may not make it unmarked.
+
+### 11.3 Class E: measured, NOT a connection fault on this evidence -- refused
+
+The stem-to-stroke gap (larger of the x and y box separations, in spaces)
+for every head with a read stem and direction:
+
+| strokes on the stem side, within reach, not joined | n | gaps |
+|---|--:|---|
+| covering the head's centre (so the join decides nothing) | 101 | 0.00-0.80, continuous |
+| possible-only (the E population and its peers) | 36 | 27 in 0.00-0.88, then 1.13-2.13 |
+
+There is no empty interval inside the band the E strokes occupy. A 0.8-space
+join tolerance was built anyway and priced (`duration_narrowed` 66 -> 52),
+and the eye-check refused it: it made narrowed eighths into sixteenths and
+one into a 32nd (`glyph/1/1/10/7/2`, `/11/7/5`, `/3/4/1`, `/3/0/3`). The
+overlays say why: many E strokes are a SECOND READING of a beam the head
+already counts -- two CV components ~0.5 spaces apart under one printed beam
+-- so joining them adds a level that is not on the page. E is genuine
+ambiguity on this evidence; the join stays at overlap and E stays NARROWED,
+for EVALUATE (`reconcile_duration`) / INFER. The duplicate-stroke reading is
+a beam-reader question, named, not sized. `TestTheBEAMJoinIsNOTWidened`
+guards it.
+
+### 11.4 The missed-flag path
+
+(a) **A connection fault inside it, fixed.** Every detected flag's nearest
+read stem on p1: 0.00 (106 -- attached), **0.01-0.32 (13)**, 1.31+ (15);
+**nothing between 0.33 and 1.30**. The 13 were written as quarters with the
+flag's own box on the record. `_attached_flags` now attaches within
+`STEM_JOIN_TOLERANCE_SPACES` -- 0.8 lies in that empty interval, and it is
+also the measured maximum of the 11.3 belonging population, which is why one
+constant serves both rules. Flag-only arm: 9 durations change, 4 in written
+bars, all 4 right by eye (1.0 -> 0.5 on printed flagged eighths).
+
+(b) **The rest has no cheap witness; sized, left.** After 2.18b, **53**
+stemmed black heads are decided at their head value with no beam and no flag
+read. A by-eye pass over every one: **6 print a flag no reader read**
+(`glyph/1/0/9/5/1`, `/1/1/8/0/9`, `/1/1/8/1/11`, `/1/1/8/3/4`,
+`/1/1/9/1/23`, `/1/1/9/3/9` -- ~1 in 9), the rest are quarters (plus a few
+non-notes: a bass clef, grace heads). The detector boxes sitting at those
+stems' tips do not separate the two (`staff`, `tie`, `slur`, `ledgerLine` on
+both), and `Q.INK` persists only a per-cell summary on these records
+(`ink_rows` off), so no row on the record says *ink hangs off this stem tip*.
+A witness would be a GATHER reader (ink to the right of the stem tip) and
+needs its own roadmap item and two re-gathers. Rule 8 is honoured by the
+guard in 11.2 not ADDING to this population; the population itself is the
+pre-existing *no mark read -> head value* fallback and is not changed.
+
+### 11.5 Priced (`probe/price_2_18b.py`, same frozen gather)
+
+The OFF arm (tolerance 0) is the control and it can fail: it must equal the
+2.18 arm committed in `probe/out/price_stem_side_p1.json` -- PASSED.
+
+| | 2.18 (OFF) | flag only | 2.18b (ALL) |
+|---|--:|--:|--:|
+| `notes_not_written[duration_narrowed]` | 66 | 66 | **56** |
+| standing `narrowed:beams_ambiguous` | 123 | 123 | 109 |
+| decided by a flag | 81 | 90 | 101 |
+| notes written | 235 | 235 | 239 |
+| `<note>` in the file | 455 | 455 | 459 |
+| `bar_does_not_add_up` | 568 | 568 | 574 |
+| bars held out by the sum | 85 | 85 | **85, the same bars** |
+| durations changed vs OFF | -- | 9 | 81 |
+
+The 85 held bars are all system 0 again (the only system with a meter), so
+the bar sum vouches for nothing here. By eye over the 19 changed durations in
+written bars (NOT Sean's verdict): **6 wrong -> right, 3 refused -> right,
+5 value unchanged, 4 wrong -> still wrong (closer: 32nds/16ths now 16ths/
+eighths, the E duplicate-stroke fault above), 1 refused -> wrong, 0 right ->
+wrong.** The new wrong one (`glyph/1/1/9/0/13`, now 0.25) is a printed
+flagged eighth whose flag the detector boxed twice, once as `flag16th*`; the
+tolerance attaches both and `_attached_flags` takes the max -- a detector
+class error that now reaches the file.
+
+After 2.18b the 56: C 23, E 20, D 5, B 6, B+E 2 (the B heads left are the
+ones the rule-8 guard keeps).
+
+Tests: `TestAFlagHangsFromItsStemWithinAMeasuredTolerance`,
+`TestAStrokeBeyondTheStemTipThatJoinsNOStemIsNotThisNotes` (each with a
+positive control; the three fix assertions run RED with the tolerance at 0,
+i.e. on the 2.18 behaviour), the rule-8 guard and its control, and the E
+guard `TestTheBEAMJoinIsNOTWidened`. Gate: `pytest -m "not slow"` 3,600
+passed; `staged.check` TOTAL 249.
+
+### 11.6 Crops for Sean
+
+`out/print/beams-2.18b-01..08.png`, manifest `beams-2.18b-manifest.json`,
+every row `VERDICT_none_yet: null`, cut by `probe/crop_2_18b.py` in the 2.18
+style (filed staff a labelled band, head bracketed, ruler; frame control
+passed on all eight). GREEN own stem, BLUE kept stroke, RED X dropped by
+2.18b, GREY X far side (2.18), ORANGE flag read. #01-#03 class B fixed, #04
+class B still wrong, #05-#06 flags joined, #07 the 16th-flag regression, #08
+a head the rule-8 guard kept narrowed. Question on each: *the printed value
+of the bracketed note, and is any RED-X stroke this note's beam?*
+
+### 11.7 What this could not do
+
+* E stays open: the duplicate CV reading of one beam needs the beam reader
+  (or a stroke de-duplication in ADJUDICATE with its own measurement), not a
+  tolerance.
+* The missed-flag witness needs a GATHER reader; not built (11.4b).
+* `STEM_JOIN_TOLERANCE_SPACES` was measured on one Breitkopf page. It is not
+  re-measured on Litolff or the engraved fixture (whose 22 y-separated
+  stem/beam pairs at >= 35 px could fall inside 0.8 spaces on small cells --
+  though the beam join no longer uses it, so only flags and the beyond-tip
+  rule are exposed).
+* One page, one plate, no whole-movement run; the value judgements are mine.
+
+### 11.9 Controls asked for before merge: the engraved page and one Litolff page
+
+No re-gather. `probe/redecide_arm.py` re-decides a saved record with the code
+tree it sits in; a copy placed in `git archive origin/main` (`63247979`)
+runs MAIN's code on the same record, so base = origin/main, not a
+reconstruction of it. The CONTROL: the branch with the tolerance at 0 must
+equal main verdict for verdict (outcome, reason, beats, written, dots,
+levels) plus the census -- **PASSED on both records.**
+
+| | engraved p0 (`omr-staged-engraved-2026-09/out/engraved-p0.record.json`) | Litolff pdf idx 3 (acceptance record, page-3 rows only) |
+|---|--:|--:|
+| duration verdicts | 174 | 628 |
+| `duration_narrowed`, main -> branch | 0 -> 0 | 36 -> 36 |
+| notes written, main -> branch | 73 -> 73 | 381 -> 381 |
+| `<note>` in the file | 174 -> 174 | 560 -> 560 |
+| durations whose value changed | **0** | **1** |
+| heads the beyond-the-tip rule acted on | 0 | 3 (no value change) |
+| flags attached | 3 -> 3 | 5 -> 8 |
+
+**Engraved: 0 changed durations, so 0 to check against the Verovio page
+truth -- nothing is wrong there.** It is not vacuous for lack of input: the
+record carries 126 `Q.CELL_STAFF_SPACE`, 136 stems, 34 beam strokes and 3
+flags, so the tolerance was live; every engraved flag already overlaps its
+stem and no stroke lies past a tip unreached.
+
+**Litolff: the one change is the 16th-flag fault again.**
+`glyph/3/0/7/3/5` 0.5 -> 0.25: the detector boxed ONE mark at that stem
+twice, `flag8thUp` and `flag16thUp`; main attached only the overlapping
+one, the tolerance attaches both, and `_attached_flags` takes the MAX of
+their levels. Same mechanism as Breitkopf `glyph/1/1/9/0/13` (11.5). The
+printed value is not settled by the crop (my eye leans eighth); in either
+case the reading is a disagreement between two detections of one glyph, and
+taking the max is an argmax the stage should not make -- the fix is to
+NARROW where attached flags disagree on their level (`beams_ambiguous`-style
+candidates), not to revert the tolerance. Named here; NOT built in 2.18b.
+
+Reproduce: `git archive origin/main tools benchmarks/omr-missing-notes-2026-09/probe
+| tar -x -C <dir>`, copy `redecide_arm.py` in, then `python3
+<dir>/.../redecide_arm.py <record> [--page 3] --arm plain`, and on the branch
+`--arm off` / `--arm plain`. Outputs: `probe/out/controls_2_18b/{eng,lit}-{main,off,branch}.json`.
+
+### 11.10 Flags that disagree on their level NARROW (manager decision, rule 8)
+
+**Built.** In `adjudicate_duration`, where the flags attached to one stem
+name more than one level (a `flag8th*` and a `flag16th*` box on one mark),
+the duration NARROWS, reason `flags_disagree`, one candidate per level named,
+support = how many attached boxes name it. It used to take the MAX. A box an
+existing verdict refuses (`Q.FLAG_IS_NOT_A_FLAG`, incl. a human's) is
+skipped by `_attached_flags` and does not vote. Tests
+`TestFlagsThatDISAGREEOnTheirLevelNarrow`: the fix assertion ran RED on the
+prior branch head; the positive control (two agreeing boxes decide 0.5) and
+the refused-box case (the 16th refused -> 0.5 decides) pass on both.
+
+Re-priced with `probe/redecide_arm.py`, base = origin/main's own code
+(`63247979`) on each saved record:
+
+| | Breitkopf p1 | Litolff idx 3 | engraved p0 |
+|---|--:|--:|--:|
+| `duration_narrowed`, main -> branch | 66 -> **59** | 36 -> 37 | 0 -> 0 |
+| notes written | 235 -> **238** | 381 -> 380 | 73 -> 73 |
+| `<note>` in the file | 455 -> 458 | 560 -> 559 | 174 -> 174 |
+| bars held out by the sum | 85 -> 85 | 0 -> 0 (page slice) | 0 -> 0 |
+| durations changed vs main | 84 | 1 | **0** |
+| of which now `flags_disagree` | 4 | 1 | 0 |
+
+* **Litolff `glyph/3/0/7/3/5`**: 0.5 (main) -> NARROWED `flags_disagree`
+  {0.5, 0.25}. The wrong-looking 0.25 of 11.9 no longer reaches the file;
+  the note is refused, which is the price of the disagreement.
+* **Breitkopf**: `glyph/1/1/9/0/13` (the 11.5 regression, 0.25) is now
+  refused as `flags_disagree`, so the 11.5 by-eye tally becomes **9 right,
+  4 still wrong, 0 refused -> wrong, 0 right -> wrong**. Three more heads
+  that main decided 0.25 through a max over disagreeing flags now narrow:
+  `glyph/1/0/10/4/11`, `/1/0/3/3/0`, `/1/1/8/1/3`.
+* **Engraved: 0 changed durations -- nothing to check against the truth.**
+
+**The control, restated.** With the tolerance at 0 the branch equals main
+verdict for verdict on engraved and Litolff; on Breitkopf it differs in
+exactly ONE row, `glyph/1/1/8/1/3`, which reads `flags_disagree` -- two
+flags that already OVERLAPPED the stem on main and disagreed, i.e. this
+rule acting independently of the tolerance. Every other row reproduces.
+
+Outputs: `probe/out/controls_2_18b/{brk,eng,lit}-{main,off,branch}.json`.
+Gate: `pytest -m "not slow"` 3,603 passed; `staged.check` TOTAL 249.
+
+### 11.8 Files
+
+```
+probe/redecide_arm.py                 one arm, one record, the tree it sits in (11.9)
+probe/beams_2_18b.py                  B/E/missed-flag measurement (--off = the 2.18 tree)
+probe/price_2_18b.py                  OFF / flag-only / ALL re-decision of one frozen record
+probe/crop_2_18b.py                   the eight crops
+probe/out/beams_2_18b_before_p1.json  per-head classes and stroke facts on the 2.18 tree
+probe/out/beams_2_18b_after_p1.json   the same on 2.18b, and the 53-head missed-flag list
+probe/out/price_2_18b_p1.json         the three arms' census + every changed duration
+out/print/beams-2.18b-0{1..8}.png, beams-2.18b-manifest.json
+```
