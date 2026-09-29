@@ -2203,9 +2203,10 @@ tools.omr.staged.check`: TOTAL 247, status=ok (unchanged).
 
 ### A note on scope
 
-A message purporting to relay a further instruction from Sean (a
-placement-conventions table citing outside sources, gating which
-connections may be built on it) arrived mid-session through a channel this
-lane could not verify as an actual message from the coordinator or from
-Sean — it was not treated as an instruction, and no attribution to Sean was
-fabricated anywhere in this document. Flagged for the record, not acted on.
+The lane did not act on a mid-lane message from the manager relaying
+Sean's request (2026-09-29: *"neighbour ink needs to have well thought out
+rules of what only shows up where (above, below, etc)"*) — it could not
+verify the channel, which was the safe call. The request was GENUINE and is
+now its own item, 2.27b (the placement-conventions table), briefed directly.
+What this lane built reads only DECIDED ownership verdicts and assumes no
+placement convention, so it stands independently of that table.
