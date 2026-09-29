@@ -52,6 +52,21 @@ paired in ADJUDICATE, `Q.TIE_PAIR`). Evidence merged: missing-notes funnel,
 2.6h (dead at zero), **2.21 voice split — BUILT under CONVENTION ASSUMED on
 `claude/voice-split-2.21` `59250029`, held for Sean's answer.**
 
+**Landed the morning of 09-29** (fast tier 3,837, `check` 247): 2.22 + 2.22b
+(whole-movement held-bar funnel; `reconcile_duration` reads what is in the
+bar; a carried meter HOLDS where the bars are silent), 2.23 (head fill from
+the ink narrows), 2.24 (dot class diagnosed: mostly a classifier artefact),
+2.25/2.25b (strokes that are a ledger line, the neighbour's beam or inside a
+decided arc are not this note's beam; a bared stem NARROWS), 2.26/2.26b (the
+956 Brahms held-out heads are HORN staves: crook read off the label, bare
+`(Es)` placed via the document's own crook labels — research in
+`benchmarks/omr-staff-identity-2026-09/HORN-CROOK-RESEARCH.md`), 2.27 (three
+owners read a decided `glyph_owner`), provenance `dirty` fixed. Re-decided on
+`a9bdec8a` (before 2.23/2.25/2.26): Litolff notes **4,722**, held 1,522;
+Brahms notes **4,358**, held 4,145. **Process (Sean, DECISIONS 09-29): lanes
+prove wiring with microscopic tests, no pricing runs; machine-time nohup runs
+are fine.** Open: 2.27b placement-conventions table (doc, then Sean's answers).
+
 **Waiting on Sean — answer these first (one line each):**
 1. **The voice-split question**, `benchmarks/omr-voice-split-2026-09/QUESTION.md`
    (8 crops): when do opposite stems on one staff mean TWO voices, and when
