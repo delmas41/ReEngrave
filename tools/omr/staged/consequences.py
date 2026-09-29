@@ -129,7 +129,14 @@ def _standing(log: Log, subject: Subject, quantity: str) -> List[Verdict]:
 
 
 def _is_rest(v: Verdict) -> bool:
-    return bool(isinstance(v.value, dict) and v.value.get("is_rest"))
+    """⚠️ A NARROWED verdict has no `value`; its candidates say what it is
+    (2.22: without this a narrowed REST read as "not a rest", and the
+    re-reading loop that now offers every candidate of a narrowed note would
+    have re-read a rest -- the control test caught it)."""
+    if isinstance(v.value, dict):
+        return bool(v.value.get("is_rest"))
+    return any(isinstance(c.value, dict) and c.value.get("is_rest")
+               for c in (v.candidates or ()))
 
 
 @rule(consequence=Consequence.SIZE_MEASURE_REST,
@@ -298,7 +305,14 @@ def _event_totals(log: Log, subject: Subject, notes, current) -> Optional[float]
             "note. The corrected bar must land EXACTLY on the meter. The "
             "answer must be UNIQUE. Never adds, deletes or re-pitches a note. "
             "Tuplet members are excluded -- re-deriving a level would "
-            "silently drop the ratio.",
+            "silently drop the ratio. Sums only what is still IN the bar "
+            "(a DECIDED not-a-notehead, not-a-rest or another-staff verdict "
+            "sets a box aside), and a narrowed note's every candidate is a "
+            "re-reading.",
+      # ⚠️ 2.22: the removals it reads besides its cause, declared exactly as
+      # `size_measure_rest` declares the same ones (the same helper).
+      reads_beyond_cause=lambda log, subject, meter:
+          _size_measure_rest_also_reads(log, subject, meter),
       # ⚠️⚠️ THE PIPELINE'S ONE SANCTIONED LOOP, DECLARED. Since the meter
       # carry is corroborated by the bars, the meter now DEPENDS ON the very
       # durations this rule revises -- and the fixpoint guard refuses that by
@@ -338,13 +352,34 @@ def reconcile_duration(log: Log, subject: Subject, meter: Verdict) -> List[Verdi
         return []
     expected = float(num) * 4.0 / float(den)
 
-    notes = [v for v in _standing(log, subject, Q.DURATION)
-             if v.outcome in (Outcome.DECIDED, Outcome.NARROWED)]
+    # ⚠️⚠️ ROADMAP 2.22: "THE BAR" MEANS WHAT IS STILL IN IT -- 2.19's fault,
+    # found again in the second EVALUATE rule that sums a cell. `_standing`
+    # returns a duration for every box the cell was cut with, including boxes
+    # a DECIDED verdict already took OUT of the bar (not a notehead, not a
+    # rest, a contest's losing copy). EXPORT writes none of them, so summing
+    # them measured a bar nobody will write: on Litolff 1/i (whole movement)
+    # 48 held bars had exactly one landing once they were set aside, and
+    # none before. `_left_the_bar` is `size_measure_rest`'s own helper, and
+    # only a DECIDED removal counts (rule 8).
+    notes, set_aside, cleared_by = [], [], []
+    for v in _standing(log, subject, Q.DURATION):
+        if v.outcome not in (Outcome.DECIDED, Outcome.NARROWED):
+            continue
+        why = _left_the_bar(log, v.subject)
+        if why is None:
+            notes.append(v)
+        else:
+            set_aside.append(v.subject.to_key())
+            cleared_by.append(why.id)
     if not notes:
         return []
 
     # A narrowed note contributes its BEST-SUPPORTED reading to the running
-    # total -- the same reading the exporter would take today.
+    # total. ⚠️ That is NOT what the exporter does with it (2.22): EXPORT
+    # refuses to argmax a narrowing (`duration_narrowed`), so a bar that
+    # "already fits" only through a narrowed note's best candidate is a bar
+    # EXPORT writes without that note and then holds out. See the landing
+    # loop below.
     def _current(v: Verdict):
         if v.outcome is Outcome.DECIDED:
             return v.value
@@ -371,9 +406,22 @@ def reconcile_duration(log: Log, subject: Subject, meter: Verdict) -> List[Verdi
     if grouped is None:
         return []
     total = grouped
-    if abs(total - expected) < 1e-6:
-        return []                       # the bar already fits
+    fits = abs(total - expected) < 1e-6
+    if fits and not any(n.outcome is Outcome.NARROWED and not _is_rest(n)
+                        for n in notes):
+        return []                       # the bar already fits, all DECIDED
 
+    # ⚠️⚠️ ROADMAP 2.22: A NARROWED NOTE HAS NO READING OF ITS OWN, SO EVERY
+    # CANDIDATE IS A RE-READING -- INCLUDING THE ONE THE TOTAL USED. The old
+    # loop skipped the candidate sharing the current `beam_levels`, which is
+    # right for a DECIDED note (its own reading is not a repair) and wrong
+    # for a narrowed one: where the bar fits ONLY through that candidate, the
+    # meter has already chosen it, and the rule returned "already fits" and
+    # left the note NARROWED -- which EXPORT then refused, holding the bar
+    # (Litolff 1/i: 36 held bars whose only unwritten head is one narrowed
+    # note the meter settles). The bound is unchanged: one note, an exact
+    # landing, a UNIQUE answer -- two narrowed notes that both fit at their
+    # best candidate are two landings and the rule refuses.
     landings = []
     for note in notes:
         # ⚠️ A REST IS NOT RE-READ HERE, and the case is concrete rather than
@@ -392,7 +440,8 @@ def reconcile_duration(log: Log, subject: Subject, meter: Verdict) -> List[Verdi
         if float(now.get("beats") or 0.0) != float(now.get("written") or -1.0):
             continue
         for option in _admitted(note):
-            if option.get("beam_levels") == now.get("beam_levels"):
+            if note.outcome is Outcome.DECIDED \
+                    and option.get("beam_levels") == now.get("beam_levels"):
                 continue
             moved = total - float(now.get("beats") or 0.0) \
                 + float(option.get("beats") or 0.0)
@@ -406,12 +455,19 @@ def reconcile_duration(log: Log, subject: Subject, meter: Verdict) -> List[Verdi
         return []
 
     note, option = landings[0]
+    detail = {}
+    if set_aside:
+        detail["set_aside"] = set_aside
+    if fits:
+        detail["bar_fit_only_through_this_narrowing"] = True
     out = Verdict(
         id=log._next_id("vrd"), subject=note.subject, quantity=Q.DURATION,
         outcome=Outcome.DECIDED,
         value={**option, "reconciled": True},
         decider="reconcile_duration", reason="meter_reconciliation",
-        considered=(note.id, meter.id), basis=(note.id, meter.id),
+        considered=(note.id, meter.id, *cleared_by),
+        basis=(note.id, meter.id, *cleared_by),
+        detail=detail,
         supersedes=note.id,
         # ⚠️ MUST MATCH THIS RULE'S OWN `single_pass=` DECLARATION, and
         # `test_the_single_pass_flag_matches_its_rule` asserts that it does --

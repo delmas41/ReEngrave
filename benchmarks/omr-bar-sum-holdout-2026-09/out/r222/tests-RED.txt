@@ -1,0 +1,4 @@
+FAILED tools/omr/tests/test_staged_reconcile_what_is_in_the_bar.py::TestTheBarExportWillWrite::test_a_box_refused_NOT_A_NOTEHEAD_is_set_aside_RED
+FAILED tools/omr/tests/test_staged_reconcile_what_is_in_the_bar.py::TestTheBarExportWillWrite::test_a_contest_s_LOSING_COPY_is_set_aside_RED
+FAILED tools/omr/tests/test_staged_reconcile_what_is_in_the_bar.py::TestTheBarExportWillWrite::test_a_narrowing_the_meter_settles_is_DECIDED_RED
+3 failed, 7 passed, 5 warnings in 0.36s

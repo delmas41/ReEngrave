@@ -1,0 +1,8 @@
+[   14.1s] loaded
+[ 1392.6s] decided
+[ 1398.3s] exported, 1513 held
+[ 1398.4s] geometry written
+litolff held 1513
+ rule's own view: {'no_landing': 946, 'record_total_fits': 233, 'many_landings': 215, 'no_landing+two_voices': 53, 'record_total_fits+two_voices': 50, 'many_landings+two_voices': 16}
+ with left-the-bar set aside: {'no_landing': 974, 'many_landings': 211, 'kept_total_fits': 161, 'kept_total_fits+two_voices': 60, 'unique_landing': 48, 'no_landing+two_voices': 43, 'many_landings+two_voices': 14, 'unique_landing+two_voices': 2}
+[ 1398.7s] done

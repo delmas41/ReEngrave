@@ -1,0 +1,89 @@
+[    1.0s] loading /Users/seanjohnson/Desktop/ReEngrave/library/_shared-records/beethoven5-litolff-mvt1-whole-20260929.record.json
+[    6.5s] loaded
+[    6.5s] own: export
+[    9.8s] own: exported, 1576 held captured; indexing
+[   10.0s] own: held 1576 (doubled 78) of 4670; captured 1498; control PASS; -> benchmarks/omr-bar-sum-holdout-2026-09/out/r222/litolff-own.held.json
+[   11.1s] redecide: rebuild_gather
+[   19.0s] redecide: run_stages
+ADJUDICATE
+  adjudicate movement_spans: 1 verdicts so far
+  adjudicate system_membership: 32 verdicts so far
+  adjudicate staff_group: 363 verdicts so far
+  adjudicate measure_partition: 694 verdicts so far
+  adjudicate staff_ordinal: 1025 verdicts so far
+  adjudicate system_staff_count: 1056 verdicts so far
+  adjudicate instrument: 1387 verdicts so far
+  adjudicate slot_index: 1718 verdicts so far
+  adjudicate part_partition: 1719 verdicts so far
+  adjudicate group_symbol: 1750 verdicts so far
+  adjudicate clef: 2081 verdicts so far
+  adjudicate keysig_marker_is_not_a_marker: 2608 verdicts so far
+  adjudicate system_key: 2639 verdicts so far
+  adjudicate part_key: 2640 verdicts so far
+  adjudicate key_signature: 2971 verdicts so far
+  adjudicate ledger_is_not_a_ledger: 10588 verdicts so far
+  adjudicate notehead_is_not_a_notehead: 22220 verdicts so far
+  adjudicate accidental_is_not_an_accidental: 23751 verdicts so far
+  adjudicate rest_is_not_a_rest: 26649 verdicts so far
+  adjudicate arpeggiato_is_not_an_arpeggiato: 28620 verdicts so far
+  adjudicate arc_is_not_an_arc: 31276 verdicts so far
+  adjudicate dynamic_is_not_a_dynamic: 32852 verdicts so far
+  adjudicate articulation_is_not_an_articulation: 32870 verdicts so far
+  adjudicate flag_is_not_a_flag: 33123 verdicts so far
+  adjudicate tuplet_marker_is_not_a_marker: 33138 verdicts so far
+  adjudicate glyph_owner: 41118 verdicts so far
+  adjudicate arc_owner: 43774 verdicts so far
+  adjudicate arc_kind: 46430 verdicts so far
+  adjudicate tie_pair: 49086 verdicts so far
+  adjudicate dot_role: 49694 verdicts so far
+  adjudicate articulation_owner: 49712 verdicts so far
+  adjudicate accidental_owner: 51243 verdicts so far
+  adjudicate fermata_owner: 51423 verdicts so far
+  adjudicate ornament_owner: 51426 verdicts so far
+  adjudicate stem_direction: 63058 verdicts so far
+  adjudicate notehead_is_a_whole_rest: 74690 verdicts so far
+  adjudicate tuplet_ratio: 74704 verdicts so far
+  adjudicate duration: 89234 verdicts so far
+  adjudicate event: 94159 verdicts so far
+  adjudicate voices: 99429 verdicts so far
+  adjudicate onset_column: 99460 verdicts so far
+  adjudicate unread_mark: 104730 verdicts so far
+  adjudicate wedge_anchor: 104736 verdicts so far
+  adjudicate meter: 104767 verdicts so far
+  adjudicate dynamic: 110037 verdicts so far
+  adjudicate direction: 115307 verdicts so far
+  adjudicate printed_bar_number: 115338 verdicts so far
+GROUPS
+  groups meter_across_staves: 31 facts, 4 disagree
+  groups measure_count_across_staves: 31 facts, 0 disagree
+  groups instrument_across_systems: 60 facts, 0 disagree
+  groups clef_across_systems: 60 facts, 5 disagree
+  groups staff_group_across_systems: 60 facts, 0 disagree
+  groups key_signature_across_systems: 60 facts, 0 disagree
+EVALUATE
+  evaluate name_part: 200 fired so far
+  evaluate restate_pitch: 11123 fired so far
+  evaluate respell_accidental: 12137 fired so far
+  evaluate move_glyph: 15551 fired so far
+  evaluate apply_printed_accidental: 16204 fired so far
+  evaluate size_measure_rest: 17369 fired so far
+  evaluate reconcile_duration: 17612 fired so far
+INFER
+  infer collapse_duration_by_column: 11 inferred
+  infer collapse_duration_to_barline: 33 inferred
+  infer collapse_slot_index_to_family_block: 22 inferred
+  infer fill_clef_gap: 12 inferred
+  infer fill_part_key: 192 inferred
+EVALUATE (bounded, over the inferred values)
+  evaluate name_part: 0 fired so far
+  evaluate restate_pitch: 444 fired so far
+  evaluate respell_accidental: 3143 fired so far
+  evaluate move_glyph: 3308 fired so far
+  evaluate apply_printed_accidental: 3338 fired so far
+  evaluate size_measure_rest: 3338 fired so far
+  evaluate reconcile_duration: 3338 fired so far
+[ 1403.7s] redecide: stages done
+[ 1407.9s] redecided: export
+[ 1409.7s] redecided: exported, 1591 held captured; indexing
+[ 1409.9s] redecided: held 1591 (doubled 78) of 4726; captured 1513; control PASS; -> benchmarks/omr-bar-sum-holdout-2026-09/out/r222/litolff-redecided.held.json
+[ 1409.9s] done

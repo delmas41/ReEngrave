@@ -1,0 +1,19 @@
+{
+ "bars_held_out_sum": [
+  37,
+  37
+ ],
+ "of_bars_with_events": [
+  448,
+  448
+ ],
+ "released": 0,
+ "newly_held": 0,
+ "newly_held_cells": [],
+ "notes_in_file": [
+  658,
+  658
+ ],
+ "notes_not_written_changed": {},
+ "written_changed": {}
+}

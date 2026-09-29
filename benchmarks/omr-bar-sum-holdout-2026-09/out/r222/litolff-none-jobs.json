@@ -1,0 +1,211 @@
+[
+ {
+  "name": "unmodelled",
+  "cell": [
+   1,
+   0,
+   7,
+   1
+  ],
+  "subjects": [
+   "glyph/1/0/7/1/1"
+  ],
+  "measure_in_file": 2,
+  "part": "P8",
+  "judged_quarters": 2.0,
+  "voice_sums": [
+   0.5
+  ],
+  "minimal": null,
+  "says": "class none_of_these; judged 2.0q; voice sums [0.5]. READ: eighth(0.5@197)"
+ },
+ {
+  "name": "unmodelled",
+  "cell": [
+   2,
+   0,
+   4,
+   2
+  ],
+  "subjects": [
+   "glyph/2/0/4/2/4",
+   "glyph/2/0/4/2/14",
+   "glyph/2/0/4/2/0",
+   "glyph/2/0/4/2/8",
+   "glyph/2/0/4/2/5"
+  ],
+  "measure_in_file": 19,
+  "part": "P5",
+  "judged_quarters": 2.0,
+  "voice_sums": [
+   4.0
+  ],
+  "minimal": null,
+  "says": "class none_of_these; judged 2.0q; voice sums [4.0]. READ: quarter(1.0@217) quarter(1.0@427) quarter(1.0@876) quarter(1.0@1093)"
+ },
+ {
+  "name": "unmodelled",
+  "cell": [
+   3,
+   1,
+   7,
+   12
+  ],
+  "subjects": [
+   "glyph/3/1/7/12/3",
+   "glyph/3/1/7/12/0"
+  ],
+  "measure_in_file": 76,
+  "part": "P11",
+  "judged_quarters": 2.0,
+  "voice_sums": [
+   1.0
+  ],
+  "minimal": null,
+  "says": "class none_of_these; judged 2.0q; voice sums [1.0]. READ: eighth(0.5@241) eighth(0.5@714)"
+ },
+ {
+  "name": "unmodelled",
+  "cell": [
+   4,
+   1,
+   0,
+   13
+  ],
+  "subjects": [
+   "glyph/4/1/0/13/1",
+   "glyph/4/1/0/13/9"
+  ],
+  "measure_in_file": 110,
+  "part": "P1",
+  "judged_quarters": 2.0,
+  "voice_sums": [
+   0.3125
+  ],
+  "minimal": null,
+  "says": "class none_of_these; judged 2.0q; voice sums [0.3125]. READ: sixteenth(0.25@154) sixty_fourth(0.0625@872). REFUSED in cell: duration_narrowed"
+ },
+ {
+  "name": "unmodelled",
+  "cell": [
+   5,
+   1,
+   1,
+   11
+  ],
+  "subjects": [
+   "glyph/5/1/1/11/4",
+   "glyph/5/1/1/11/2"
+  ],
+  "measure_in_file": 139,
+  "part": "P4",
+  "judged_quarters": 2.0,
+  "voice_sums": [
+   0.5
+  ],
+  "minimal": null,
+  "says": "class none_of_these; judged 2.0q; voice sums [0.5]. READ: eighth(2.0@203)"
+ },
+ {
+  "name": "unmodelled",
+  "cell": [
+   6,
+   1,
+   2,
+   10
+  ],
+  "subjects": [
+   "glyph/6/1/2/10/10"
+  ],
+  "measure_in_file": 165,
+  "part": "P3",
+  "judged_quarters": 2.0,
+  "voice_sums": [
+   0.25
+  ],
+  "minimal": null,
+  "says": "class none_of_these; judged 2.0q; voice sums [0.25]. READ: sixteenth(0.25@745). REFUSED in cell: duration_narrowed, not_a_notehead:clipped_fragment"
+ },
+ {
+  "name": "unmodelled",
+  "cell": [
+   7,
+   0,
+   9,
+   4
+  ],
+  "subjects": [
+   "glyph/7/0/9/4/3"
+  ],
+  "measure_in_file": 171,
+  "part": "P10",
+  "judged_quarters": 2.0,
+  "voice_sums": [
+   0.5
+  ],
+  "minimal": null,
+  "says": "class none_of_these; judged 2.0q; voice sums [0.5]. READ: eighth(0.5@694)"
+ },
+ {
+  "name": "unmodelled",
+  "cell": [
+   8,
+   1,
+   1,
+   18
+  ],
+  "subjects": [
+   "glyph/8/1/1/18/10",
+   "glyph/8/1/1/18/13",
+   "glyph/8/1/1/18/4"
+  ],
+  "measure_in_file": 242,
+  "part": "P2",
+  "judged_quarters": 2.0,
+  "voice_sums": [
+   0.375
+  ],
+  "minimal": null,
+  "says": "class none_of_these; judged 2.0q; voice sums [0.375]. READ: sixteenth(0.25@187) thirty_second(0.125@858). REFUSED in cell: duration_narrowed"
+ },
+ {
+  "name": "unmodelled",
+  "cell": [
+   9,
+   1,
+   2,
+   6
+  ],
+  "subjects": [
+   "glyph/9/1/2/6/1"
+  ],
+  "measure_in_file": 263,
+  "part": "P3",
+  "judged_quarters": 2.0,
+  "voice_sums": [
+   1.0
+  ],
+  "minimal": null,
+  "says": "class none_of_these; judged 2.0q; voice sums [1.0]. READ: quarter(1.0@743)"
+ },
+ {
+  "name": "unmodelled",
+  "cell": [
+   10,
+   1,
+   2,
+   5
+  ],
+  "subjects": [
+   "glyph/10/1/2/5/3"
+  ],
+  "measure_in_file": 288,
+  "part": "P3",
+  "judged_quarters": 2.0,
+  "voice_sums": [
+   1.0
+  ],
+  "minimal": null,
+  "says": "class none_of_these; judged 2.0q; voice sums [1.0]. READ: quarter(1.0@341)"
+ }
+]

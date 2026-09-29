@@ -1108,3 +1108,344 @@ and the subject box red-bracketed:
   `_meter_changes`/`_carry_meter` wiring.
 - `tools/omr/tests/test_staged_meter_digit_witness.py`: the tests.
 - `out/print/meter-digit-2.12l-*.png` + manifest: the crops.
+
+## 17. ROADMAP 2.22 — what holds bars on the WHOLE movement (2026-09-29)
+
+PATH: STAGED. Branch `claude/held-bars-mvt-2.22`, off `origin/main`
+`baba1c76` (2.12l, 2.10b, 2.19 and 2.21's *question* are in the tree; 2.21's
+BUILT branch `claude/voice-split-2.21` is not, and is only simulated here).
+
+### CONVENTION ASSUMED / WHAT WOULD FALSIFY IT / NOT CONFIRMED
+
+The printed meter used for diagnosis is the dossier's
+(`data/dossiers/*.json` `meter_changes`): Beethoven 5/i 2/4 throughout,
+Brahms 1/i 6/8 except the one 9/8 bar (printed m. 8). It is a diagnosis
+table only, never a pipeline input. ⚠️ OUR file numbers the printed m. 8 as
+**9** (one bar too many before it), so the 9/8 bar is keyed by
+`page/system/cell` (`1/0/0`), not by measure number. The fix built (§17d)
+assumes no new convention: a narrowed note has no reading of its own, and
+the meter choosing among its candidates is `reconcile_duration`'s stated
+purpose. What would falsify it: a bar the fix releases whose narrowed note
+the print shows at a DIFFERENT candidate (none cropped yet). NOT CONFIRMED
+with Sean. The Brahms question (§17e) is his.
+
+### §17a. The records, and what was re-decided
+
+Both 09-29 whole-movement records were gathered on `23f4fa9e` and carry
+`dirty: true` in their own provenance: inputs, not baselines. Each was read
+through `record_io.load_record`. `probe/held_funnel_mvt_2_22.py` is 2.19's
+`held_funnel_2_19.py` at movement scale: it wraps `export._bar_holds_out`
+(the exporter's own rule) and its control is again bars captured ==
+`bars_held_out_sum` minus doubled copies. **PASS on every run below.**
+
+- **Litolff (325 MB)**: re-decided in-process on `baba1c76`
+  (`review.rerun`) in **23 min**, so 2.10b's clef collapse and 2.12l are in.
+  Held **1,591** of 4,726 bars-with-events (78 on a doubled staff, 1,513
+  locatable). The record's own verdicts gave 1,576 of 4,670: `no_pitch`
+  471 → 135 is 2.10b, and the newly written heads land 15 more bars that do
+  not add up.
+- **Brahms (1.4 GB)**: the re-decision was **killed at ~27 min of
+  `run_stages`** (Litolff's took 23 min, and Brahms is ~4x its size).
+  **Brahms figures below are the record's OWN verdicts (made on
+  `23f4fa9e`), exported with today's exporter**, so 2.12l's digit refusal is
+  NOT in them (crop #2 of §17c shows the 6/8 still boxed as heads). Held
+  **4,200 of 5,973** bars (15,110 heads held out).
+- Record loads: Litolff 3 (dump; `reconcile_why`; arm), Brahms 2 (dump;
+  crop geometry). That is more than the brief's "once": each later probe
+  asked a question the first could not have known to ask.
+
+**The meter's VALUE is right on every held bar of both movements** except
+the 9/8 bar: Litolff judges all 1,513 against 2/4, Brahms all 4,200 against
+6/8. 2.19's "the meter is wrong on every bar" was the single-page artefact
+the brief suspected. **The meter VERDICT is another matter.** On Brahms,
+3,058 of the 4,200 held bars sit on a system whose `Q.METER` ABSTAINS
+(`carry_not_corroborated` 2,705, i.e. fewer than two bars that three staves
+can sum; `carry_outweighed_by_the_bars` 263; `meter_return_not_read` 90),
+while the FILE carries 6/8 into it (§2's `in_force`). Both EVALUATE rules
+that could repair a bar (`size_measure_rest`, `reconcile_duration`) take
+`Q.METER` as their cause, so on those systems neither runs. Litolff's meter
+is DECIDED on every held bar's system.
+
+### §17b. The partition (`probe/classify_held_mvt_2_22.py`)
+
+This is 2.19's method: the minimal releasing fix set per bar, ties grouped,
+each bar reported under its most SPECIFIC tied set. It adds letters that
+one page did not need:
+
+- `O`: restore an `owner_not_read` head.
+- `P`: restore a `no_pitch` head.
+- `X`: drop ONE event (a spurious head, rest or duplicate that nothing
+  refused). It is structural too, so `WX` means "a whole rest plus one stray
+  box".
+- `G`: every flagged or beamed note of a voice one level off TOGETHER.
+- 2.19's `B` is split in two. `B` is a beam or flag level, with both values
+  a quarter or shorter. `F` is a head FILL or stem misread (quarter↔half,
+  half↔whole). `reconcile_duration` cannot reach `F` by construction:
+  `_admitted` never offers a level below 0.
+- `V` is 2.21's gate: merge the streams unless an up-stem chord and a
+  down-stem chord share an onset within 0.10 staff spaces of PAGE x. 2.21
+  prefers `Q.ONSET_COLUMN`; this simulation uses its fallback everywhere.
+- `H` is 2.12l's stacked-pair test WITHOUT its cross-staff quorum, so it is
+  an upper bound.
+
+The search stops at 4 letters. Both tables close.
+
+**Litolff 1/i, re-decided on `baba1c76` (1,513 locatable held bars):**
+
+| minimal set | bars | what it is |
+|---|--:|---|
+| `F` | **300** | one note's head fill or stem misread. 278 are a LONE quarter-valued chord in a 2/4 bar (crops `litolff-F-01..06`: hollow heads merged black on this MERGING plate) |
+| `none_of_these` | 178 | 70% SHORT; see §17c |
+| `X` | 155 | one spurious event (a rest, a stem, the neighbour's ink) |
+| `B` | 116 | one note a beam or flag level off |
+| `N` | 112 | one narrowed head, restored at a candidate |
+| `G` | 73 | a whole beam group one level off |
+| `V` | 64 | 2.21's voice merge |
+| `D` | 53 | one dot |
+| `WX` | 48 | a whole rest plus one stray box |
+| `R` | 46 | a `not_a_notehead` head restored (`too_narrow` 41) |
+| `W` | 44 | a lone whole rest not sized |
+| `A` | 32 | an abstained rest |
+| `WE` | 30 | a whole rest plus a barline read as a quarter rest |
+| `O` | 21 | an `owner_not_read` head |
+| 58 other combinations | 241 | |
+| **total** | **1,513** | |
+
+Single fixes that release a bar outright: `F` 405, `X` 253, `B` 223, `N`
+114, `G` 102, `D` 70, `V` 64, `R` 52, `W` 44, `A` 40, `O` 27, `S` 18, `E`
+15, `H` 11, `P` 6. Necessary fixes: `F` 298, `X` 282, `B` 132, `W` 110, `G`
+108, `V` 58. The record's own `23f4fa9e` verdicts rank the same way (`F`
+295, none 173, `X` 153, `N` 111, `B` 110, `G` 67, of 1,498).
+
+**Brahms 1/i, the record's own verdicts (4,200 held bars):**
+
+| minimal set | bars | what it is |
+|---|--:|---|
+| `W` | **706** | a lone whole rest not sized. **681 sit on a system whose meter abstains**, and 608 of those have nothing else in the bar (8 crops, §17e) |
+| `none_of_these` | 504 | 90% SHORT; see §17c |
+| `D` | 477 | one dot (6/8: dotted quarters) |
+| `N` | 281 | one narrowed head |
+| `V` | 234 | 2.21's merge. Its gate finds NO shared onset in 616 of the 672 two-stream held bars |
+| `X` | 229 | one spurious event |
+| `F` | 215 | one head fill or stem |
+| `B` | 176 | one beam or flag level |
+| `G` | 168 | a whole beam group one level off |
+| `WX` | 118 | a whole rest plus one stray box (crops show a neighbour's stem tip boxed `restWhole`) |
+| `R` | 78 | a `not_a_notehead` head (`too_narrow` is 210 of the R-set reasons) |
+| `VD` | 63 | |
+| `VB` | 51 | |
+| `DB` | 46 | |
+| 143 other combinations | 854 | |
+| **total** | **4,200** | |
+
+Single fixes that release a bar outright: `W` 706, `D` 578, `B` 514, `X`
+453, `F` 355, `N` 282, `V` 234, `G` 221, `R` 92, `S` 28, `A` 27, `E` 23,
+`H` 13, `O` 12. Necessary fixes: `W` 744, `X` 542, `V` 431, `D` 409, `F`
+382, `G` 326, `B` 258, `N` 203, and `M` (the 9/8 bar) 12.
+
+### §17c. The unmodelled remainder: 10 crops each
+
+The crops are `out/print/held-mvt-2026-09-29-{brahms,litolff}-unmodelled-*.png`,
+with manifests (`VERDICT_none_yet: null`). They were picked one per page
+across the movement by `probe/pick_jobs_2_22.py` and cut at 600 dpi by
+`probe/crop_held_mvt_2_22.py`, from geometry the probe saved, so no further
+record load was needed. The frame control is `crop_losers_2_6b._frame_ok`.
+**It REFUSED Litolff #3** (contrast −39), so there are 9 Litolff crops. The
+"trace" is the record's own reading in each caption: the voice events and
+the refusals in the cell. The readings below are mine, not Sean's.
+
+Brahms:
+
+- #1: heads above the staff on 3-ledger ladders, read as 16ths and 64ths.
+  The ledger strokes are counted as beams.
+- #2: the m. 9 bar. The printed 6/8 is boxed as heads (these own verdicts
+  predate 2.12l), and three eighth rests are read as quarter notes.
+- #3: a bar of 16ths read as 64ths throughout. Two hairpin lines and
+  another staff's beams are counted.
+- #4: two dotted quarters. One is read as a dotted 16th; the other is
+  narrowed.
+- #5: a lone whole rest, plus two flag tips of the staff below seen through
+  the pad.
+- #6: an eighth, two eighth rests and a dotted quarter. A rest is read as a
+  note, a rest is missed, and the dotted quarter is narrowed.
+- #7: two dotted-quarter chords read as a 32nd and a 16th (hairpins counted
+  as beams).
+- #8: two dotted-quarter chords read as a 16th plus a mis-valued 16th.
+- #9: two dotted quarters read as plain eighths. Both the level and the dot
+  are missed.
+- #10: a two-voice bar (stems both ways) read as ONE stream of five
+  quarters.
+
+Litolff:
+
+- #1: bar 2's fermata half note, read as an eighth.
+- #2: two quarter rests boxed as heads, plus a head of the staff below.
+- #4: ledger lines read as beams (16th, 64th), plus a narrowed head.
+- #5: a two-head half-note chord whose EVENT is 2.0 but is WRITTEN as an
+  eighth (see below).
+- #6: heavily merged ink; one 16th read.
+- #7: a tremolo, read as one eighth.
+- #8: an eighth and three beamed eighths, read as a 16th and a 32nd; two
+  heads narrowed.
+- #9: a quarter rest under a fermata, boxed as a notehead.
+- #10: a half note whose STEM is boxed as a quarter rest; its hollow head
+  below the staff is unboxed.
+
+**What the remainder is.** Compound faults, mostly of four kinds:
+
+1. Strokes that are not beams counted as beams (ledger lines, hairpins,
+   other staves' beams), leaving whole bars one or two levels short.
+2. Rests boxed as heads, and heads or stems boxed as rests.
+3. The neighbouring staff's ink seen through the cell pad, uncontested.
+4. A narrowed head beside another fault.
+
+None of these is a single connection.
+
+**A connection finding inside it, not built.** 93 Litolff and 231 Brahms
+held bars hold a CHORD whose members disagree about value. Typically it is
+one head boxed twice, as `noteheadBlack` and `noteheadHalf` (2.12g's role
+twins). The EVENT's `duration_beats` is the members' mode, but EXPORT writes
+the first head's `<type>` and sums THAT. If the written units were the
+event's, 54 Litolff and 41 Brahms bars would add up. Which member is right,
+though, is the reading question 2.12g exists for, so this is recorded, not
+built.
+
+### §17d. Built: `reconcile_duration` sums the bar EXPORT will write (EVALUATE; it FOLLOWS)
+
+`probe/reconcile_why_2_22.py` asked, for every Litolff held bar, what
+`reconcile_duration` saw there through its own helpers:
+
+| the rule's own view | bars | with 2.19's `_left_the_bar` set aside |
+|---|--:|--:|
+| no single re-reading lands | 999 | 1,017 |
+| more than one lands (refused, correctly) | 231 | 225 |
+| **the total ALREADY FITS the meter** | **283** | 221 |
+| exactly ONE re-reading lands | **0** | **50** |
+
+There were two disconnections from EXPORT. Both are closed in
+`consequences.py`:
+
+1. **It summed boxes that a DECIDED verdict had taken out of the bar.**
+   This is 2.19's fault again, in the second rule that sums a cell. The rule
+   now uses `_left_the_bar` (the same helper), cites the removing verdicts in
+   `basis` and `detail.set_aside`, and declares the removals through
+   `reads_beyond_cause` exactly as `size_measure_rest` does.
+2. **A bar that fitted only THROUGH a narrowed note's best candidate counted
+   as "already fits".** The note stayed NARROWED, EXPORT refused it
+   (`duration_narrowed`), and 2.8 held the bar. A narrowed note has no
+   reading of its own, so every candidate, including the one the total
+   used, is now a re-reading. The bound is unchanged: one note, an exact
+   landing, a UNIQUE answer. Two narrowed notes that both fit are two
+   landings, and the rule refuses. `detail.bar_fit_only_through_this_narrowing`
+   marks the case. Of the 221 set-aside "fits" bars, 37 hold exactly one
+   narrowed head and nothing else refused.
+
+A control failed first (rule 7). `_is_rest` read a NARROWED verdict's
+`value`, which is `None`, so a narrowed REST counted as not-a-rest and the
+widened loop re-read it. `test_a_narrowed_REST_is_still_not_re_read` caught
+it, and `_is_rest` now reads a narrowed verdict's candidates.
+
+One existing assertion changed on purpose. `test_staged_candidates.py`'s
+`test_a_bar_that_already_fits_is_left_alone` (2.0 plus a narrowed {1.0,
+0.5} in 3/4) is now `test_a_bar_that_fits_ONLY_through_the_narrowing_settles_it`,
+because the old behaviour is exactly the disconnection. An all-DECIDED bar
+that fits is still left alone (`test_staged_duration.py`, unchanged).
+
+**RED → GREEN.** `tools/omr/tests/test_staged_reconcile_what_is_in_the_bar.py`
+has 10 tests. On the unrepaired tree **3 failed and 7 passed**
+(`out/r222/tests-RED.txt`). The 7 are the controls: an all-decided bar that
+fits, the old repair, two narrowed notes that both fit, an ABSTAINED
+refusal, a head its own staff kept, no meter, and a narrowed rest. On the
+repaired tree all 10 pass.
+
+**Priced base (`git archive HEAD`) vs arm, otherwise the same tree,
+re-decided in-process** (`probe/run_arm_2_22.sh`, `probe/price_2_22.py`):
+
+| | held (2.8) | released / newly held | `<note>` | `duration_narrowed` | 2.8 control `bar_sum_check`, base / arm |
+|---|--:|--:|--:|--:|--:|
+| engraved p0–p2 (control) | 37 → 37 | 0 / 0 | 658 → 658 | — | 450/450 / 450/450 exact |
+| Litolff p1–p4 (09-11 record) | 270 → **260** | 10 / 0 | 1,855 → 1,878 | 152 → 138 | 1,183/1,183 / 1,183/1,183 |
+| Brahms p0–p3 (shared record) | 570 → **566** | 4 / 0 | 1,322 → 1,334 | 235 → 232 | 818/818 / 818/818 |
+| **Litolff 1/i whole movement** | 1,591 → **1,522** | **66 / 2** | 9,155 → 9,275 | 914 → 844 | 5,940/5,940 / 5,940/5,940 |
+
+Litolff p1–p4 also gains 6 bars-with-events (1,015 → 1,021): bars whose
+only heads were narrowed are now written, and they add up. On the whole
+Litolff movement (23 min per arm) bars-with-events rise 4,726 → 4,758 and
+written notes 4,521 → 4,722; `owned_by_another_staff` 989 → 982 and
+`owner_not_read` 362 → 369 move by a handful (a decided duration changes
+the events a contest sees). The 2 newly held bars: `14/0/9/8` is §17c's
+chord-member disagreement (the record's event is 0.5, so the bar fits and
+the rule decides; the file writes the first head's quarter and the bar is
+2.5), and `5/0/1/2` holds three eighths (1.5) beside refused heads. Neither
+was checked against the print. Brahms moves
+little because its meter abstains on most systems (§17a). That is §17e.
+
+### §17e. Asked, not built: does a carried meter HOLD where the bars cannot check it? (Brahms `W`, 608 bars)
+
+The top Brahms class is `W` (706). In 608 of those bars a lone whole rest
+stands with nothing else, on a system whose `Q.METER` abstains
+(`carry_not_corroborated` 504, `carry_outweighed_by_the_bars` 85,
+`meter_return_not_read` 19, across 34 systems). `size_measure_rest` needs a
+DECIDED meter ("no meter, no assertion"), yet the FILE writes 6/8 there
+anyway.
+
+`METER_CARRY_FLOOR` (2.0) with `W_METER_CARRIED` (1.0) means a carry needs
+at least one net agreeing bar, and `METER_CARRY_MIN_BARS` needs two
+assessable ones. That gate was measured against the *Andante* (an unseen
+movement start), before `--movements` (4.2) and before Sean's 09-28
+decision ("a change holds until a printed change back"). Whether that
+decision covers a system the bars cannot check is a convention question, so
+it is asked, not built (rule 3):
+
+> **Sean: on a system where no meter change is printed or read, does the
+> meter carried from the previous system HOLD even when too few bars can
+> check it (so a lone whole rest there is marked as the bar), or should it
+> stay unknown?**
+
+There are 8 banded crops, one per page across the movement:
+`out/print/held-mvt-2026-09-29-W-*.png`, with manifest
+`held-mvt-2026-09-29-W-manifest.json` (`question`, `answer_none_yet: null`,
+and `VERDICT_none_yet: null` per crop). The frame control passed on all 8.
+In my reading each shows one centred whole rest and nothing else in the
+bar. #4 is on a `carry_outweighed_by_the_bars` system; the other 7 are
+`carry_not_corroborated`. If the answer is yes, the upper bound is 608 bars
+released by `size_measure_rest` alone, and `reconcile_duration` (§17d)
+starts running on those 34 systems too.
+
+### §17f. Ranked next
+
+1. **Brahms: the meter-hold question (§17e).** 608 bars turn on one answer,
+   and it unblocks both EVALUATE rules on the systems of 3,058 held bars.
+2. **Litolff `F`** (300): merged hollow heads read black. This is a
+   READER/DETECTOR item (head fill on a MERGING plate), not a connection.
+3. **2.21's voice gate** (Brahms `V` 234 alone, necessary in 431): held for
+   Sean. The simulation says his answer moves more Brahms bars than anything
+   except `W`.
+4. **Strokes counted as beams** (`G` 168 and 73, plus much of the
+   remainder): ledger lines, hairpins and other staves' beams enter the beam
+   count.
+5. **Chord members that disagree** (§17c): 2.12g's twins, written by the
+   first head's type.
+
+### §17g. Gates
+
+Fast tier: **3,758 passed** (main's 3,748 + 10 new), 3 skipped
+(`out/r222/pytest-fast.txt`). `python3 -m tools.omr.staged.check`: **TOTAL
+247**, unchanged (`out/r222/staged-check.txt`).
+
+### §17h. Files
+
+- `probe/held_funnel_mvt_2_22.py`, `probe/classify_held_mvt_2_22.py`,
+  `probe/summarise_2_22.py`: the dump, the partition, the tables.
+- `probe/reconcile_why_2_22.py`: the rule's own view per held bar, plus crop
+  geometry (`--geometry-only`).
+- `probe/pick_jobs_2_22.py`, `probe/pick_w_jobs_2_22.py`,
+  `probe/crop_held_mvt_2_22.py`: the crops.
+- `probe/run_mvt_2_22.sh`, `run_why_2_22.sh`, `run_arm_2_22.sh`,
+  `price_2_22.py`: the unattended runs and the pricing.
+- `out/r222/`: summaries, partitions, pricing, logs, tests RED and GREEN,
+  and the check output. The held dumps, geometry and MusicXML (up to 11 MB
+  each) are regenerable and not committed.
+- `tools/omr/staged/consequences.py`: `reconcile_duration`, `_is_rest`.
+- `tools/omr/tests/test_staged_reconcile_what_is_in_the_bar.py`, and the one
+  renamed assertion in `test_staged_candidates.py`.
