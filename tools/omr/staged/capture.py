@@ -424,6 +424,15 @@ UNSCORED: Dict[str, Tuple[str, str, Any]] = {
         "argues cannot act as an independent witness.",
         None),
     "GLYPH_LADDER": (RELATION, "ledger rung completeness for a contest.", None),
+    "LEDGER_RUNG_INK": (
+        RELATION,
+        "ROADMAP 2.6d: a SECOND witness for one ladder STEP between a head "
+        "and a candidate staff — a windowed ink density test at the step's "
+        "expected y, off the staff-ERASED raster, where the detector drew "
+        "no `ledgerLine` box to ask `GLYPH_LADDER`'s question of. A "
+        "relation between the head, the candidate's geometry and the paper "
+        "between them; scoreless, same reason as `LEDGER_INK_UNDER`.",
+        None),
     "LEDGER_INK_UNDER": (
         RELATION,
         "ROADMAP 3.4g-3: the ink fraction in a notehead-sized window ON a "
@@ -544,6 +553,10 @@ READER_RASTER: Dict[str, Optional[Tuple[str, str]]] = {
     "CV_HAIRPINS": ("hairpin_detection.py", "detect_hairpins"),
     # ⚠️ In `gather.py` itself, not in a reader module.
     "CV_INK": ("staged/gather.py", "_ink_components"),
+    # ⚠️ ROADMAP 2.6d. Also `staged/gather.py`, not a reader module -- reads
+    # `image_no_staff` only, same as `CV_INK` (erase for the CV consumer,
+    # never the detector, CLAUDE.md §9).
+    "CV_LEDGER": ("staged/gather.py", "_observe_ledger_rung_ink"),
     # ⚠️ Reached as `key_signature_locator.locate_key_signature` ->
     # `header_ink.header_ink_mask`; the locator never touches a cell image.
     "CV_HEADER": ("header_ink.py", "header_ink_mask"),

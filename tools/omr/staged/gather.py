@@ -779,6 +779,16 @@ def gather_ownership_evidence(log: Log, pws: Any, cells: Sequence[Any],
     This writes the contest down instead of deciding it.
     """
     geom: Dict[str, Tuple[List[float], float]] = {}
+    # ⚠️ ROADMAP 2.6d: the staff's own measured line thickness, one dict
+    # entry per candidate. ⚠️⚠️ `Staff.line_thickness_px` (what `gather_
+    # geometry` files RAW under `Q.STAFF_SKEW.thickness_px`) is `list[float]
+    # | None`, PER LINE top-to-bottom (`types.py:63`) -- `float()`ing it
+    # crashed the first real gather this lane ran. `median_line_thickness_
+    # px` (`types.py:73`) is the derived SCALAR `measure_extractor.py:1390`
+    # already reuses for exactly this reason; read directly off `pws.staves`
+    # rather than back through the record (GATHER decides nothing and reads
+    # no verdict of its own).
+    thickness_by_key: Dict[str, Optional[float]] = {}
     for st in pws.staves:
         key = local.get(st.staff_index)
         if key is None:
@@ -788,6 +798,8 @@ def gather_ownership_evidence(log: Log, pws: Any, cells: Sequence[Any],
         sp = _spacing(st)
         if sp:
             geom[sub.to_key()] = ([float(y) for y in st.line_ys], float(sp))
+            thickness_by_key[sub.to_key()] = getattr(
+                st, "median_line_thickness_px", None)
 
     cell_by_key = {}
     for c in cells:
@@ -888,6 +900,9 @@ def gather_ownership_evidence(log: Log, pws: Any, cells: Sequence[Any],
             if det.smufl_name.startswith(_NOTEHEAD_PREFIX):
                 _observe_ladder(log, g, box, cand_key, line_ys, spacing,
                                 ledgers)
+                _observe_ledger_rung_ink(log, g, box, cand_key, line_ys,
+                                         spacing, cell_by_key,
+                                         thickness_by_key.get(cand_key))
 
 
 def _ledger_index(
@@ -961,6 +976,296 @@ def _observe_ladder(log: Log, g: Subject, box, cand_key: str,
                 reader=READERS.DETECTOR, frame=FRAME_PAGE,
                 candidate=cand_key, expected=expected, found=found,
                 rungs=rung_keys)
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# ROADMAP 2.6d -- ledger rungs the DETECTOR never boxed, read off the ink.
+#
+# `_observe_ladder` above counts a step as "found" only where a `ledgerLine`
+# box landed on it. 2.6c.2's own crops (`benchmarks/omr-owner-domain-2026-09/
+# FINDINGS.md` §2.6c.2) showed printed rungs in exactly that gap: on 2 of 8
+# `far_no_rungs` crops the ledger lines ARE on the page and the detector drew
+# no box at the step. This is a SECOND witness for the same fact --
+# `Q.LEDGER_RUNG_INK`, one row per (head, candidate, step) -- read off the
+# staff-erased raster the way `ledger_ink_under` already reads it for a
+# BOXED rung (CLAUDE.md §9: erase for the CV consumer, never the detector).
+# ─────────────────────────────────────────────────────────────────────────────
+
+#: CONVENTION ASSUMED / WHAT WOULD FALSIFY IT / NOT CONFIRMED (2.6d). A
+#: printed ledger line stands wider than the head it serves -- CLAUDE.md §10:
+#: "a notehead is ~1.3 staff spaces wide" -- so the window tested is a
+#: multiple of the HEAD's own measured width, not a fixed staff-space size:
+#: falsified by a print-confirmed rung narrower than 1.5 head widths, or a
+#: real gap (beam, stem, unrelated ink) this wide passing as one. NOT
+#: CONFIRMED -- argued from CLAUDE.md's own notehead-width finding, never
+#: measured against a ledger crop.
+LEDGER_RUNG_INK_WIDTH_HEAD_MULT = 1.75
+#: How far past the head's own edge, in HEAD WIDTHS, the CONTEXT window
+#: reaches (used for the crop/background bands, not the overhang test
+#: itself -- see `LEDGER_RUNG_INK_OVERHANG_TEST_FRAC` for why the two are
+#: no longer the same span).
+LEDGER_RUNG_INK_OVERHANG_HEAD_FRAC = 0.25
+#: ⚠️⚠️ ROADMAP 2.6d CALIBRATION (2026-09-29). The overhang test used to
+#: average density over the WHOLE span out to the context window's edge
+#: (`head_w * 0.375`) -- and on the one real printed rung this lane found
+#: on a positive-case re-gather (Breitkopf pdf idx 22, `glyph/22/1/6/10/2`
+#: toward `staff/22/1/6`, step 2: a notehead with a ledger line visibly
+#: crossing it, wings poking out both sides in the crop), that averaging
+#: is what missed it -- `left=0.5126` against the `DENSE` floor of 0.55,
+#: `right=0.6632` passing, on a rung whose wing is shorter than the window
+#: tested. A NARROWER band anchored right at the head's edge (this
+#: fraction of a head width, not the wider context span) tests where the
+#: wing actually is instead of diluting it with the blank paper beyond a
+#: short one. CONVENTION ASSUMED / WHAT WOULD FALSIFY IT / NOT CONFIRMED:
+#: 0.20 head widths is short enough to sit inside even a wing at the low
+#: end of CLAUDE.md's "1.5-2 head widths" convention (0.25-0.5 each side)
+#: without reaching the blank paper past a real one -- falsified by a
+#: confirmed rung whose wing is shorter than 0.20 head widths, or by a
+#: stem/serif this narrow a band now credits that the wider one refused.
+LEDGER_RUNG_INK_OVERHANG_TEST_FRAC = 0.20
+#: The thin band tested is the staff's own measured line thickness
+#: (`Q.STAFF_SKEW`'s `thickness_px`, read here off the same `line_
+#: thickness_px` attribute `gather_geometry` files it from -- one measurement,
+#: two readers), padded this many spaces each side, mirroring `LEDGER_INK_
+#: STROKE_PAD_SPACES`. NOT CONFIRMED: no staff on the two lanes' records
+#: abstained its thickness, so the fallback below is UNTESTED.
+LEDGER_RUNG_INK_THICKNESS_PAD_SPACES = 0.12
+#: Where a staff's own thickness was never traced (`Q.STAFF_SKEW` abstained):
+#: this fraction of a staff space stands in. CONVENTION ASSUMED, NOT
+#: CONFIRMED -- no crop this lane read needed the fallback.
+LEDGER_RUNG_INK_DEFAULT_THICKNESS_SPACES = 0.09
+#: A window at or above this ink fraction counts as "inked". NOT CONFIRMED
+#: against a print; falsified by a real rung whose window reads under this on
+#: a scan this bitonal (Litolff merges, Breitkopf shatters -- CLAUDE.md §10 --
+#: so one threshold serving both plates is itself an assumption).
+LEDGER_RUNG_INK_DENSE = 0.55
+#: The GUARD AGAINST A BEAM OR A THICK BLOB: the same x-range one thickness-
+#: band further up AND down must read BELOW this fraction, or the "thin"
+#: stroke found is really a tall one. Does NOT guard a slanted beam crossing
+#: at a shallow angle within the tested window -- NOT CONFIRMED, no crop
+#: adjudicated a beam false positive.
+LEDGER_RUNG_INK_ADJACENT_MAX = 0.35
+#: ⚠️⚠️ ROADMAP 2.6d CALIBRATION (2026-09-29), THE COST OF THE OVERHANG FIX.
+#: Narrowing the overhang test (above) to find a real short-wing rung ALSO
+#: newly credited a slanted BEAM crossing a head on a positive-case re-
+#: gather (Breitkopf pdf idx 22 -- `2.6d-cv-brk22-calibration-02/-03.png`):
+#: the beam's own slope carries its ink out of the fixed-x `ADJACENT` bands
+#: (the guard above tests the SAME x-range one thickness further up/down,
+#: and a sloped stroke is not there any more), so 40 of 40 `found=True`
+#: rows on that page needed a look and 2 were the same beam. A LEVEL guard:
+#: the ink-weighted row centroid of the LEFT band and of the RIGHT band
+#: must not differ by more than this fraction of the tested band's own
+#: half-height, or the "horizontal" run is rising/falling across the head
+#: -- exactly what a rung crossing perpendicular to a staff never does and
+#: a beam crossing it at an angle always does. CONVENTION ASSUMED / WHAT
+#: WOULD FALSIFY IT / NOT CONFIRMED: 0.6 clears the one real rung this lane
+#: measured (centroids essentially level) and rejects the one beam crop
+#: found by chance, not by a swept threshold -- falsified by a confirmed
+#: rung on a wandering/skewed staff line this narrow, or a shallow beam
+#: still passing. ⚠️ FIRST MEASURED AT 0.6 AND THAT DID NOT CLEAR THE BEAM
+#: (slant 11.3-12.1 against a half-height around 26.7, i.e. ~0.42-0.45 --
+#: comfortably under 0.6). Retuned to 0.2: still four times the real
+#: rung's own measured slant (1.0) and well under half the beam's, the
+#: only two data points this lane has.
+LEDGER_RUNG_INK_SLANT_MAX_HALF_H = 0.2
+
+
+def ledger_rung_ink(img: Any, head_x0: float, head_x1: float, y_center: float,
+                    space: float, thickness_px: Optional[float]
+                    ) -> Optional[Dict[str, Any]]:
+    """Is there a thin horizontal ink run at `y_center`, crossing the head's
+    `[head_x0, head_x1]` and reaching past it on BOTH sides? ROADMAP 2.6d --
+    the same fact a boxed `ledgerLine` witnesses for `Q.GLYPH_LADDER`, asked
+    here of the raster where the detector drew no box.
+
+    All of `head_x0`, `head_x1`, `y_center`, `space` and `thickness_px` are in
+    the SAME canonical pixels as `img` -- the caller's job, not this
+    function's; it does no frame conversion. `img` is the cell's staff-
+    ERASED raster, 0 = ink. Returns `None` -- declined, never defaulted --
+    where the window (or a comparison band) falls entirely off the raster.
+
+    Three bins at the tested y: CENTER (over the head's own x-span, must be
+    inked -- a rung passes under or over the notehead it serves), LEFT and
+    RIGHT (the overhang past the head's edges, both must be inked -- the
+    guard against the note's own STEM, which does not reach past the head).
+    ADJACENT (the same x-range one band above and below) must NOT also be
+    densely inked, or the stroke found is thick, not thin -- a partial guard
+    against a beam.
+    """
+    import numpy as np
+    if img is None or getattr(img, "ndim", 0) != 2 or not space \
+            or space <= 0:
+        return None
+    ink = (img == 0)
+    H, W = ink.shape
+    head_w = head_x1 - head_x0
+    if head_w <= 0:
+        return None
+    cx = (head_x0 + head_x1) / 2.0
+    overhang = LEDGER_RUNG_INK_OVERHANG_HEAD_FRAC * head_w
+    ww = max(head_w * LEDGER_RUNG_INK_WIDTH_HEAD_MULT, head_w + 2 * overhang)
+    thickness = float(thickness_px) if thickness_px else \
+        LEDGER_RUNG_INK_DEFAULT_THICKNESS_SPACES * space
+    pad = LEDGER_RUNG_INK_THICKNESS_PAD_SPACES * space
+    half_h = thickness / 2.0 + pad
+
+    def frac(x0: float, x1: float, y0: float, y1: float) -> Optional[float]:
+        ix0, ix1 = max(0, int(round(x0))), min(W, int(round(x1)))
+        iy0, iy1 = max(0, int(round(y0))), min(H, int(round(y1)))
+        if ix1 <= ix0 or iy1 <= iy0:
+            return None
+        region = ink[iy0:iy1, ix0:ix1]
+        return float(region.sum()) / float(region.size)
+
+    def row_centroid(x0: float, x1: float, y0: float, y1: float
+                     ) -> Optional[float]:
+        """The ink-weighted mean row (absolute y) in this band, or `None`
+        with nothing to weigh. ROADMAP 2.6d: the slant guard's own ruler --
+        a level rung's left and right bands centre on the SAME row; a
+        beam crossing at an angle does not."""
+        ix0, ix1 = max(0, int(round(x0))), min(W, int(round(x1)))
+        iy0, iy1 = max(0, int(round(y0))), min(H, int(round(y1)))
+        if ix1 <= ix0 or iy1 <= iy0:
+            return None
+        region = ink[iy0:iy1, ix0:ix1]
+        weights = region.sum(axis=1).astype(float)
+        total = weights.sum()
+        if total <= 0:
+            return None
+        rows = np.arange(iy0, iy1, dtype=float)
+        return float((rows * weights).sum() / total)
+
+    y0, y1 = y_center - half_h, y_center + half_h
+    center = frac(head_x0, head_x1, y0, y1)
+    # ⚠️ THE OVERHANG TEST IS A NARROW BAND AT THE EDGE, NOT THE WHOLE
+    # CONTEXT WINDOW -- see `LEDGER_RUNG_INK_OVERHANG_TEST_FRAC`'s comment.
+    overhang_w = LEDGER_RUNG_INK_OVERHANG_TEST_FRAC * head_w
+    left_x0, left_x1 = head_x0 - overhang_w, head_x0
+    right_x0, right_x1 = head_x1, head_x1 + overhang_w
+    left = frac(left_x0, left_x1, y0, y1)
+    right = frac(right_x0, right_x1, y0, y1)
+    if center is None or left is None or right is None:
+        return None
+    above = frac(cx - ww / 2.0, cx + ww / 2.0, y0 - 2 * half_h, y0)
+    below = frac(cx - ww / 2.0, cx + ww / 2.0, y1, y1 + 2 * half_h)
+    adjacent_vals = [v for v in (above, below) if v is not None]
+    adjacent = max(adjacent_vals) if adjacent_vals else None
+    # ⚠️ THE LEVEL GUARD -- see `LEDGER_RUNG_INK_SLANT_MAX_HALF_H`'s comment.
+    # A band with no ink to weigh (already failing DENSE) reports no slant;
+    # `extends` fails on the density test regardless, so this never turns a
+    # refusal into a guess in the other direction.
+    left_cy = row_centroid(left_x0, left_x1, y0, y1)
+    right_cy = row_centroid(right_x0, right_x1, y0, y1)
+    slant = (abs(left_cy - right_cy)
+            if left_cy is not None and right_cy is not None else None)
+    level = slant is None or slant <= LEDGER_RUNG_INK_SLANT_MAX_HALF_H * half_h
+    extends = (center >= LEDGER_RUNG_INK_DENSE
+              and left >= LEDGER_RUNG_INK_DENSE
+              and right >= LEDGER_RUNG_INK_DENSE
+              and (adjacent is None or adjacent <= LEDGER_RUNG_INK_ADJACENT_MAX)
+              and level)
+    return {
+        "found": bool(extends),
+        "center": round(center, 4), "left": round(left, 4),
+        "right": round(right, 4),
+        "slant": None if slant is None else round(slant, 3),
+        "adjacent": None if adjacent is None else round(adjacent, 4),
+        "window_canonical": [round(cx - ww / 2.0, 2), round(cx + ww / 2.0, 2),
+                             round(y0, 2), round(y1, 2)],
+    }
+
+
+def _observe_ledger_rung_ink(log: Log, g: Subject, box, cand_key: str,
+                             line_ys: Sequence[float], spacing: float,
+                             cell_by_key: Dict[Tuple[int, int, int, int], Any],
+                             thickness_px: Optional[float]) -> None:
+    """`Q.LEDGER_RUNG_INK` -- one row per (head glyph, `cand_key`, step).
+
+    ⚠️ THE SAME STEP ARITHMETIC AS `_observe_ladder` (same `LEDGER_ROUND_UP`,
+    same "one step per staff space" walk), so a step this reader tests is the
+    step the detector-box reader would have tested -- the two are the SAME
+    LADDER, read by two readers.
+
+    Samples the CANDIDATE's own cell at the head's own measure index (the
+    pad that put the head in the candidate's contest put its ink there too
+    -- CLAUDE.md §10), falling back to the head's OWN cell where the
+    candidate's carries no raster (a system's outermost staff, say). ABSTAINS
+    -- never guesses -- where neither cell has an erased raster or a staff
+    unit, or a step's window falls off the raster.
+    """
+    # ⚠️ RECONSTRUCTED, NOT PASSED THROUGH -- `wiring._SubjectKinds` resolves
+    # a subject's Kind from the CONSTRUCTOR EXPRESSION at the site
+    # (`R.glyph(...)`), never from a parameter's static type; every other
+    # gather site in this file rebuilds its own `g` the same way rather than
+    # accepting one from a caller (`gather.py:518,658,1244` etc.), which is
+    # what keeps THEIR `log.observe`/`log.abstain` calls resolved. This one
+    # line is the fix, not a workaround: every `g` below is the SAME subject,
+    # spelled so the static walk can tell.
+    g = R.glyph(g.page, g.system, g.staff, g.cell, g.glyph)
+    y = (box[1] + box[3]) / 2.0
+    top, bottom = min(line_ys), max(line_ys)
+    if top <= y <= bottom:
+        return                       # inside the staff: no ladder to have
+    above = y < top
+    edge = top if above else bottom
+    gap = (edge - y) if above else (y - edge)
+    expected = int(gap / spacing + LEDGER_ROUND_UP)
+    if expected <= 0:
+        return
+    cand = R.Subject.from_key(cand_key)
+    cell = cell_by_key.get((g.page, g.system, cand.staff, g.cell))
+    if cell is None or getattr(cell, "image_no_staff", None) is None:
+        cell = cell_by_key.get((g.page, g.system, g.staff, g.cell))
+    frame = FRAME_PAGE
+    # ⚠️ ONE ABSTAIN CALL SITE for every way the raster or its geometry can
+    # be missing -- `reason`/`note` are computed first so the caller's
+    # bound `g` (a runtime Subject, unresolvable by `wiring`'s static AST
+    # walk the same way `_observe_ladder`'s own `g` already is) is not
+    # multiplied into several distinct sites for one fact: *this cell
+    # cannot be read*.
+    img = getattr(cell, "image_no_staff", None) if cell is not None else None
+    cbox = getattr(cell, "bbox_page_px", None) if cell is not None else None
+    up = getattr(cell, "upscale_factor", None) if cell is not None else None
+    grid = _cell_grid(cell) if cell is not None else None
+    reason, note = None, None
+    if cell is None:
+        reason, note = ABSTAIN.NO_MASK, "no cell carries this ladder's ink"
+    elif img is None or getattr(img, "ndim", 0) != 2:
+        reason, note = ABSTAIN.NO_MASK, "cell carries no image_no_staff"
+    elif not cbox or len(cbox) != 4 or not up or grid is None:
+        reason = ABSTAIN.NO_STAFF_GEOMETRY
+        note = "no page box, upscale factor or cell grid"
+    if reason is not None:
+        log.abstain(g, Q.LEDGER_RUNG_INK, reader=READERS.CV_LEDGER,
+                    frame=frame, reason=reason, candidate=cand_key,
+                    note=note)
+        return
+    space_c = grid[1] * 2.0
+    hx0_c = (box[0] - cbox[0]) * up
+    hx1_c = (box[2] - cbox[0]) * up
+    thick_c = (float(thickness_px) * up) if thickness_px else None
+    for k in range(1, expected + 1):
+        want = (edge - k * spacing) if above else (edge + k * spacing)
+        want_c = (want - cbox[1]) * up
+        m = ledger_rung_ink(img, hx0_c, hx1_c, want_c, space_c, thick_c)
+        if m is None:
+            log.abstain(g, Q.LEDGER_RUNG_INK, reader=READERS.CV_LEDGER,
+                        frame=frame, reason=ABSTAIN.NO_STAFF_GEOMETRY,
+                        candidate=cand_key, step=k,
+                        note="window off the raster")
+            continue
+        found = m.pop("found")
+        win = m.pop("window_canonical")
+        wx0p = cbox[0] + win[0] / up
+        wx1p = cbox[0] + win[1] / up
+        wy0p = cbox[1] + win[2] / up
+        wy1p = cbox[1] + win[3] / up
+        log.observe(g, Q.LEDGER_RUNG_INK, found,
+                    reader=READERS.CV_LEDGER, frame=frame,
+                    candidate=cand_key, step=k, want_y_page=round(want, 2),
+                    window_page_px=[round(wx0p, 2), round(wy0p, 2),
+                                    round(wx1p, 2), round(wy1p, 2)],
+                    **m)
 
 
 # ─────────────────────────────────────────────────────────────────────────────

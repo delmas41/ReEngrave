@@ -1,0 +1,535 @@
+{
+  "roadmap_item": "2.6d",
+  "record": "out/2.6d-verify/p22-arm.json",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf",
+  "dpi": 600,
+  "population_ledger_rung_ink_rows": 12,
+  "credited_true": 12,
+  "crops": [
+    {
+      "n": 1,
+      "file": "2.6d-changed-01.png",
+      "subject": "glyph/22/0/7/8/2",
+      "page": 22,
+      "candidate": "staff/22/0/7",
+      "step": 1,
+      "found": true,
+      "measurement": {
+        "candidate": "staff/22/0/7",
+        "step": 1,
+        "want_y_page": 2768.0,
+        "window_page_px": [
+          4302.55,
+          2760.76,
+          4372.02,
+          2775.24
+        ],
+        "center": 0.7048,
+        "left": 0.5881,
+        "right": 0.7126,
+        "slant": 1.067,
+        "adjacent": 0.3315
+      },
+      "head_page_box": [
+        4317.4,
+        2779.1,
+        4357.1,
+        2814.2
+      ],
+      "window_page_px": [
+        4302.6,
+        2760.8,
+        4372.0,
+        2775.2
+      ],
+      "frame_contrast": 237.0,
+      "frame_contrast_shifted_half_space": -210.1,
+      "question": "is there a printed ledger line inside the dashed blue window, thin, reaching past the head on both sides?",
+      "VERDICT_none_yet": null,
+      "kind": "owner_verdict_changed",
+      "session_read_2026_09_29": "real"
+    },
+    {
+      "n": 2,
+      "file": "2.6d-changed-02.png",
+      "subject": "glyph/22/0/8/8/6",
+      "page": 22,
+      "candidate": "staff/22/0/7",
+      "step": 1,
+      "found": true,
+      "measurement": {
+        "candidate": "staff/22/0/7",
+        "step": 1,
+        "want_y_page": 2768.0,
+        "window_page_px": [
+          4302.99,
+          2760.76,
+          4368.06,
+          2775.24
+        ],
+        "center": 0.6789,
+        "left": 0.5919,
+        "right": 0.8567,
+        "slant": 1.017,
+        "adjacent": 0.3409
+      },
+      "head_page_box": [
+        4316.9,
+        2793.0,
+        4354.1,
+        2814.6
+      ],
+      "window_page_px": [
+        4303.0,
+        2760.8,
+        4368.1,
+        2775.2
+      ],
+      "frame_contrast": 237.0,
+      "frame_contrast_shifted_half_space": -210.1,
+      "question": "is there a printed ledger line inside the dashed blue window, thin, reaching past the head on both sides?",
+      "VERDICT_none_yet": null,
+      "kind": "owner_verdict_changed",
+      "session_read_2026_09_29": "real"
+    },
+    {
+      "n": 3,
+      "file": "2.6d-changed-03.png",
+      "subject": "glyph/22/1/9/8/4",
+      "page": 22,
+      "candidate": "staff/22/1/8",
+      "step": 1,
+      "found": true,
+      "measurement": {
+        "candidate": "staff/22/1/8",
+        "step": 1,
+        "want_y_page": 6538.5,
+        "window_page_px": [
+          3688.1,
+          6531.2,
+          3762.49,
+          6545.8
+        ],
+        "center": 0.7137,
+        "left": 0.5986,
+        "right": 0.7109,
+        "slant": 1.826,
+        "adjacent": 0.2836
+      },
+      "head_page_box": [
+        3704.0,
+        6538.7,
+        3746.6,
+        6570.6
+      ],
+      "window_page_px": [
+        3688.1,
+        6531.2,
+        3762.5,
+        6545.8
+      ],
+      "frame_contrast": 236.2,
+      "frame_contrast_shifted_half_space": -215.9,
+      "question": "is there a printed ledger line inside the dashed blue window, thin, reaching past the head on both sides?",
+      "VERDICT_none_yet": null,
+      "kind": "sample_of_38_unchanged",
+      "session_read_2026_09_29": "real"
+    },
+    {
+      "n": 4,
+      "file": "2.6d-changed-04.png",
+      "subject": "glyph/22/1/0/5/3",
+      "page": 22,
+      "candidate": "staff/22/1/1",
+      "step": 1,
+      "found": true,
+      "measurement": {
+        "candidate": "staff/22/1/1",
+        "step": 1,
+        "want_y_page": 4351.5,
+        "window_page_px": [
+          2747.4,
+          4344.2,
+          2812.96,
+          4358.8
+        ],
+        "center": 0.6829,
+        "left": 0.5926,
+        "right": 0.6111,
+        "slant": 0.453,
+        "adjacent": 0.3318
+      },
+      "head_page_box": [
+        2761.5,
+        4303.5,
+        2798.9,
+        4315.9
+      ],
+      "window_page_px": [
+        2747.4,
+        4344.2,
+        2813.0,
+        4358.8
+      ],
+      "frame_contrast": 239.2,
+      "frame_contrast_shifted_half_space": -214.9,
+      "question": "is there a printed ledger line inside the dashed blue window, thin, reaching past the head on both sides?",
+      "VERDICT_none_yet": null,
+      "kind": "sample_of_38_unchanged",
+      "session_read_2026_09_29": "real"
+    },
+    {
+      "n": 5,
+      "file": "2.6d-changed-05.png",
+      "subject": "glyph/22/0/1/4/8",
+      "page": 22,
+      "candidate": "staff/22/0/1",
+      "step": 1,
+      "found": true,
+      "measurement": {
+        "candidate": "staff/22/0/1",
+        "step": 1,
+        "want_y_page": 808.25,
+        "window_page_px": [
+          2657.82,
+          800.92,
+          2726.29,
+          815.58
+        ],
+        "center": 0.9751,
+        "left": 0.6004,
+        "right": 0.6833,
+        "slant": 3.646,
+        "adjacent": 0.318
+      },
+      "head_page_box": [
+        2672.5,
+        789.9,
+        2711.6,
+        824.8
+      ],
+      "window_page_px": [
+        2657.8,
+        800.9,
+        2726.3,
+        815.6
+      ],
+      "frame_contrast": 206.4,
+      "frame_contrast_shifted_half_space": -183.3,
+      "question": "is there a printed ledger line inside the dashed blue window, thin, reaching past the head on both sides?",
+      "VERDICT_none_yet": null,
+      "kind": "sample_of_38_unchanged",
+      "session_read_2026_09_29": "real"
+    },
+    {
+      "n": 6,
+      "file": "2.6d-changed-06.png",
+      "subject": "glyph/22/0/0/2/12",
+      "page": 22,
+      "candidate": "staff/22/0/1",
+      "step": 1,
+      "found": true,
+      "measurement": {
+        "candidate": "staff/22/0/1",
+        "step": 1,
+        "want_y_page": 808.25,
+        "window_page_px": [
+          1779.72,
+          800.92,
+          1856.45,
+          815.58
+        ],
+        "center": 0.9393,
+        "left": 0.6079,
+        "right": 0.7465,
+        "slant": 0.427,
+        "adjacent": 0.3289
+      },
+      "head_page_box": [
+        1796.2,
+        792.1,
+        1840.0,
+        804.9
+      ],
+      "window_page_px": [
+        1779.7,
+        800.9,
+        1856.5,
+        815.6
+      ],
+      "frame_contrast": 206.4,
+      "frame_contrast_shifted_half_space": -183.3,
+      "question": "is there a printed ledger line inside the dashed blue window, thin, reaching past the head on both sides?",
+      "VERDICT_none_yet": null,
+      "kind": "sample_of_38_unchanged",
+      "session_read_2026_09_29": "real"
+    },
+    {
+      "n": 7,
+      "file": "2.6d-changed-07.png",
+      "subject": "glyph/22/1/9/11/4",
+      "page": 22,
+      "candidate": "staff/22/1/9",
+      "step": 1,
+      "found": true,
+      "measurement": {
+        "candidate": "staff/22/1/9",
+        "step": 1,
+        "want_y_page": 6832.25,
+        "window_page_px": [
+          4903.85,
+          6824.98,
+          4973.0,
+          6839.52
+        ],
+        "center": 0.9733,
+        "left": 0.6999,
+        "right": 0.6367,
+        "slant": 0.055,
+        "adjacent": 0.3496
+      },
+      "head_page_box": [
+        4918.7,
+        6813.9,
+        4958.2,
+        6846.9
+      ],
+      "window_page_px": [
+        4903.9,
+        6825.0,
+        4973.0,
+        6839.5
+      ],
+      "frame_contrast": 230.6,
+      "frame_contrast_shifted_half_space": -207.8,
+      "question": "is there a printed ledger line inside the dashed blue window, thin, reaching past the head on both sides?",
+      "VERDICT_none_yet": null,
+      "kind": "sample_of_38_unchanged",
+      "session_read_2026_09_29": "real"
+    },
+    {
+      "n": 8,
+      "file": "2.6d-changed-08.png",
+      "subject": "glyph/22/1/9/1/2",
+      "page": 22,
+      "candidate": "staff/22/1/9",
+      "step": 1,
+      "found": true,
+      "measurement": {
+        "candidate": "staff/22/1/9",
+        "step": 1,
+        "want_y_page": 6832.25,
+        "window_page_px": [
+          1297.02,
+          6824.98,
+          1368.07,
+          6839.52
+        ],
+        "center": 0.971,
+        "left": 0.7321,
+        "right": 0.7025,
+        "slant": 0.767,
+        "adjacent": 0.3231
+      },
+      "head_page_box": [
+        1312.2,
+        6814.8,
+        1352.8,
+        6851.6
+      ],
+      "window_page_px": [
+        1297.0,
+        6825.0,
+        1368.1,
+        6839.5
+      ],
+      "frame_contrast": 230.6,
+      "frame_contrast_shifted_half_space": -207.8,
+      "question": "is there a printed ledger line inside the dashed blue window, thin, reaching past the head on both sides?",
+      "VERDICT_none_yet": null,
+      "kind": "sample_of_38_unchanged",
+      "session_read_2026_09_29": "real"
+    },
+    {
+      "n": 9,
+      "file": "2.6d-changed-09.png",
+      "subject": "glyph/22/1/9/10/0",
+      "page": 22,
+      "candidate": "staff/22/1/8",
+      "step": 1,
+      "found": true,
+      "measurement": {
+        "candidate": "staff/22/1/8",
+        "step": 1,
+        "want_y_page": 6538.5,
+        "window_page_px": [
+          4355.44,
+          6531.2,
+          4424.59,
+          6545.8
+        ],
+        "center": 0.9766,
+        "left": 0.7407,
+        "right": 0.6462,
+        "slant": 1.716,
+        "adjacent": 0.3455
+      },
+      "head_page_box": [
+        4370.3,
+        6533.0,
+        4409.8,
+        6557.5
+      ],
+      "window_page_px": [
+        4355.4,
+        6531.2,
+        4424.6,
+        6545.8
+      ],
+      "frame_contrast": 236.2,
+      "frame_contrast_shifted_half_space": -215.9,
+      "question": "is there a printed ledger line inside the dashed blue window, thin, reaching past the head on both sides?",
+      "VERDICT_none_yet": null,
+      "kind": "sample_of_38_unchanged",
+      "session_read_2026_09_29": "real_chord_touching"
+    },
+    {
+      "n": 10,
+      "file": "2.6d-changed-10.png",
+      "subject": "glyph/22/1/9/3/2",
+      "page": 22,
+      "candidate": "staff/22/1/9",
+      "step": 1,
+      "found": true,
+      "measurement": {
+        "candidate": "staff/22/1/9",
+        "step": 1,
+        "want_y_page": 6832.25,
+        "window_page_px": [
+          2014.55,
+          6824.98,
+          2082.27,
+          6839.52
+        ],
+        "center": 0.9747,
+        "left": 0.6852,
+        "right": 0.7652,
+        "slant": 0.776,
+        "adjacent": 0.3107
+      },
+      "head_page_box": [
+        2029.1,
+        6814.8,
+        2067.8,
+        6849.9
+      ],
+      "window_page_px": [
+        2014.5,
+        6825.0,
+        2082.3,
+        6839.5
+      ],
+      "frame_contrast": 230.6,
+      "frame_contrast_shifted_half_space": -207.8,
+      "question": "is there a printed ledger line inside the dashed blue window, thin, reaching past the head on both sides?",
+      "VERDICT_none_yet": null,
+      "kind": "sample_of_38_unchanged",
+      "session_read_2026_09_29": "real"
+    },
+    {
+      "n": 11,
+      "file": "2.6d-changed-11.png",
+      "subject": "glyph/22/1/8/12/1",
+      "page": 22,
+      "candidate": "staff/22/1/8",
+      "step": 1,
+      "found": true,
+      "measurement": {
+        "candidate": "staff/22/1/8",
+        "step": 1,
+        "want_y_page": 6538.5,
+        "window_page_px": [
+          5305.32,
+          6531.2,
+          5375.1,
+          6545.8
+        ],
+        "center": 0.9797,
+        "left": 0.6897,
+        "right": 0.7337,
+        "slant": 1.789,
+        "adjacent": 0.3313
+      },
+      "head_page_box": [
+        5320.3,
+        6521.2,
+        5360.1,
+        6557.8
+      ],
+      "window_page_px": [
+        5305.3,
+        6531.2,
+        5375.1,
+        6545.8
+      ],
+      "frame_contrast": 236.2,
+      "frame_contrast_shifted_half_space": -215.9,
+      "question": "is there a printed ledger line inside the dashed blue window, thin, reaching past the head on both sides?",
+      "VERDICT_none_yet": null,
+      "kind": "sample_of_38_unchanged",
+      "session_read_2026_09_29": "real_chord_touching"
+    },
+    {
+      "n": 12,
+      "file": "2.6d-changed-12.png",
+      "subject": "glyph/22/1/8/4/0",
+      "page": 22,
+      "candidate": "staff/22/1/8",
+      "step": 1,
+      "found": true,
+      "measurement": {
+        "candidate": "staff/22/1/8",
+        "step": 1,
+        "want_y_page": 6538.5,
+        "window_page_px": [
+          2382.68,
+          6531.2,
+          2448.12,
+          6545.8
+        ],
+        "center": 0.9833,
+        "left": 0.6235,
+        "right": 0.7353,
+        "slant": 0.347,
+        "adjacent": 0.345
+      },
+      "head_page_box": [
+        2396.7,
+        6522.0,
+        2434.1,
+        6558.0
+      ],
+      "window_page_px": [
+        2382.7,
+        6531.2,
+        2448.1,
+        6545.8
+      ],
+      "frame_contrast": 236.2,
+      "frame_contrast_shifted_half_space": -215.9,
+      "question": "is there a printed ledger line inside the dashed blue window, thin, reaching past the head on both sides?",
+      "VERDICT_none_yet": null,
+      "kind": "sample_of_38_unchanged",
+      "session_read_2026_09_29": "real"
+    }
+  ],
+  "refused": [],
+  "manager_check": {
+    "question": "because ledger_direction is a HARD gate, does a false CV rung ever decide a verdict outright",
+    "owner_changed_count": 2,
+    "nearer_staff_changed_count": 0,
+    "cv_true_total_on_page": 38,
+    "sample_unchanged_count": 10,
+    "session_read_summary": "12 of 12 crops (2 changed-verdict + 10 random unchanged) show a real printed ledger line; 0 false. Two (09, 11) are dense chords where the wing touches a neighbouring note but the ledger itself is visible; the rest are unambiguous."
+  }
+}

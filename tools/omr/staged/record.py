@@ -368,6 +368,18 @@ class Q(_Vocab):
     GLYPH_BOX = "glyph_box"                  # class + bbox, one row per detection
     GLYPH_CONF = "glyph_conf"                # the detector's own score
     GLYPH_BAND_DISTANCE = "glyph_band_distance"   # to each candidate staff
+    #: ROADMAP 2.6d. A ledger rung `Q.GLYPH_LADDER` counts from a BOXED
+    #: `ledgerLine` -- but the detector does not always draw that box, and
+    #: 2.6c.2's own crops showed printed rungs it never boxed. One row per
+    #: (head glyph, candidate staff, step): a thin horizontal ink run at the
+    #: step's expected y, crossing the head's x-span and reaching past it on
+    #: both sides, read off the staff-erased raster (CLAUDE.md §9) -- the
+    #: SAME fact a boxed `ledgerLine` witnesses, from a SECOND reader
+    #: (`READERS.CV_LEDGER`). `value` is whether the run was found; `detail`
+    #: carries the three window densities, the adjacent-band guard and the
+    #: page window, so a crop can be cut from it. ABSTAINS, never defaults,
+    #: where the raster or the staff unit is missing.
+    LEDGER_RUNG_INK = "ledger_rung_ink"
     GLYPH_LADDER = "glyph_ladder"            # ledger rung completeness
     NOTEHEAD_STAFF_POSITION = "notehead_staff_position"   # pos_float, CLEF-FREE
     #: The PRINTED in-bar accidental's own staff position, CLEF-FREE, on the
@@ -1617,6 +1629,12 @@ CLAIMS: "dict[str, str]" = {
     #: Whether an unbroken run of ledger rungs JOINS a notehead to a staff. It
     #: names nothing; it says one thing reaches another.
     "GLYPH_LADDER": CLAIM.COVERAGE,
+    #: ROADMAP 2.6d: a ruler reading of the erased raster at ONE step
+    #: between a head and a candidate staff -- is there ink, shaped like a
+    #: rung, at this y. It asserts no identity and no ownership, same as
+    #: `LEDGER_INK_UNDER`; what would make it wrong is the ruler (the window,
+    #: the thickness assumed) or the raster, never what the ink IS.
+    "LEDGER_RUNG_INK": CLAIM.MEASUREMENT,
 
     # ── the family POSITION facts: rulers on their own ink ─────────────────
     "NOTEHEAD_STAFF_POSITION": CLAIM.MEASUREMENT,
@@ -1876,6 +1894,14 @@ class READERS(_Vocab):
     #: the `CV_HAIRPINS` case one line up, where the two rungs read different
     #: images and the independence is real.
     CV_INK = "cv_ink"                        # gather_ink: connected components
+    #: `gather._observe_ledger_rung_ink` -- ROADMAP 2.6d. Reads the SAME
+    #: staff-erased raster `CV_INK` and `CV_LINES` read (`image_no_staff`),
+    #: so it is NOT independent of either, for the reason `CV_INK`'s own
+    #: entry states: two rows off one crop are one signal. It is its own
+    #: reader name because it answers a different question (is there a
+    #: horizontal rung at THIS expected step) with a different test
+    #: (a windowed density ruler, not components or morphology).
+    CV_LEDGER = "cv_ledger"                  # gather_ownership_evidence: rung ink
     CV_HEADER = "cv_header"                  # header_ink
     TEMPLATE = "template"                    # symbol_library NCC matching
     GEOMETRY = "geometry"                    # staff_detector / measure_extractor
