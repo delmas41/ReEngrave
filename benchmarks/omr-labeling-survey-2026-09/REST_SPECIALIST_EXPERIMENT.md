@@ -111,6 +111,26 @@ Reads: `rest_experiment_results.json` (per-arm, per-epoch precision/recall),
 `rest_experiment_results.json` (the deployable-graft number), and the crop
 sheets above.
 
+## Known rig quirk (observed during the actual run, 2026-09-29)
+
+Every arm's training crashes on the LAST batch of the 5th (last) epoch with
+`RuntimeError: Trying to create tensor with negative dimension -1: [5, -1, 5]`
+inside `ultralytics/utils/loss.py`'s target-preprocessing (`get_assigned_targets_and_loss`
+-> `preprocess`), triggered by the final PARTIAL batch (batch size 5, not 16 --
+none of these corpora's train-image counts divide evenly by 16). This is an
+ultralytics/MPS library issue, not a property of any specific corpus arm --
+arm A hit it first and reproduced identically on arm B. The driver's
+`|| log "!! TRAINING FAILED"` guard (added after this was first hit) catches
+it and moves on to the next arm rather than aborting the whole run.
+
+**Effect: every arm ends up with epoch0.pt through epoch3.pt (4 of the
+planned 5 checkpoints), missing only the LAST one (epoch4.pt).** This does
+NOT block the experiment's decision table -- `epoch0` is round 6's own
+primary reference point (least-collapsed, what its "e0" columns report) and
+is what gets grafted for the composability check. The per-epoch trajectory
+in `rest_experiment_results.json` will simply have 4 points instead of 5 for
+every arm, which is still enough to see whether a collapse is monotone.
+
 ## What this does NOT do
 
 - Does not touch `omr-weights/` or `data/user-labeled/` — every corpus is
