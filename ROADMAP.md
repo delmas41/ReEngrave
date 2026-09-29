@@ -91,7 +91,7 @@ revert, labelled; (2) markers → ANSWERED: one word, 'unread', for every reason
    2026-09-28 (`claude/owner-crops-2.6b`, pushed): 20 losers stratified by
    deciding term (`distance`/`ladder`/`range_veto`) × direction, + 4 kept
    twins, contact sheet at `out/print/o26b-contact-sheet.png`. 2.12k waits on
-   Sean's verdicts (`out/print/o26b-manifest.json`, `VERDICT_none_yet`).**
+   Sean's verdicts (`out/print/o26b-manifest.json`, `VERDICT_none_yet`).** Re-measured on `f4168dfd`: 3,590 heads lost (distance 2,046 / ladder 1,395 / range 149; upper lost 2,162, lower 1,428) — the '6,008' was the pre-meter-fix record.
 4. **IN FLIGHT since 2026-09-28 17:17 on `bc17f9ce`**: the whole-work gate for 4.1/4.2/4.2b — `python3 -m tools.reengrave import beethoven--symphony-5 --edition 984073 --yes` with movements DETECTED (no `--movements`), from `.claude/worktrees/wholework-bc17f9ce` (driver `../wholework-bc17f9ce.sh`, log `../wholework-bc17f9ce.log`, run log `out-wholework.log`, files in `out/beethoven--symphony-5/`). Gate: four movements, four MusicXML + four PDFs, split at pdf pages 17 / 32 / 44 (4.2b's candidate spec, read off renders).
 5. Then 2.13 (printed bar number), 3.2 (port the legacy-only list), 3.3's
    default flip on acceptance parity.
