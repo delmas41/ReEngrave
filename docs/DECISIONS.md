@@ -376,3 +376,15 @@ Format: `YYYY-MM-DD · who · the decision · because · (pointer)`
   time if it doesnt cost context or tokens"* — so long runs are FINE as
   unattended nohup scripts that write a small summary file; what is
   forbidden is an AGENT waiting on, reading, or iterating over a run
+- 2026-09-29 · Sean, answering 2.27b's six placement questions
+  (`benchmarks/omr-owner-domain-2026-09/PLACEMENT-CONVENTIONS.md`) · (1)
+  displaced rests in multi-voice staves DO occur in this orchestral corpus —
+  wire them; (2) the grand-staff rows (pedal marks, between-staff dynamics,
+  cross-staff beaming) — BUILD anyway, though no keyboard/harp work is in the
+  acceptance set; (3) bowing marks — *"I don't see bowing marks very often,
+  don't know the rules"* → research, don't guess (ASSUMED stays unbuilt);
+  (4) *"all text should be categorized, and tempo markings, titles,
+  composers' names should all be wired, but low priority"* → a roadmap item,
+  after the ownership wiring; (5) grace notes and fingerings inherit their
+  target note's decided owner TOGETHER with the `dot_role` fix; (6) octave
+  brackets occur both above (8va) and below (8vb) the staff
