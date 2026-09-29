@@ -516,9 +516,15 @@ class TestTheMeterCarry(unittest.TestCase):
                     decider="t", reason="x_clustered"))
         self._run(log, on=True)
         v = log.verdict(Q.METER, dst)
-        # the rests match 4/4 EXACTLY, and must still corroborate nothing
-        self.assertIs(v.outcome, Outcome.ABSTAINED)
+        # the rests match 4/4 EXACTLY, and must still corroborate nothing:
+        # the bars stay SILENT (no agreeing bar is counted). ⚠️ ROADMAP 2.22b
+        # (Sean 2026-09-28, "a change holds until a printed change back"):
+        # silence no longer refuses the carry -- it holds UNCONTESTED, and
+        # the record still says no bar confirmed it.
+        self.assertIs(v.outcome, Outcome.DECIDED)
+        self.assertEqual(v.reason, rhythm_mod.METER_CARRIED_UNCONTESTED)
         self.assertEqual(v.detail["state"], "too_few_assessable_bars")
+        self.assertEqual(v.detail["bars_agree"], 0)
 
     def test_the_BARS_outweigh_the_carry_and_the_carry_never_outweighs_them(self):
         """⚠️ SEAN'S ORDERING, MADE STRUCTURAL RATHER THAN TUNED.
@@ -539,7 +545,9 @@ class TestTheMeterCarry(unittest.TestCase):
                         rhythm_mod.METER_CARRY_FLOOR,
                         "two contradicting bars must sink any carry")
         self.assertLess(carry, rhythm_mod.METER_CARRY_FLOOR,
-                        "a carry with NOTHING to check against must not stand")
+                        "a carry with NOTHING to check against must not "
+                        "stand on SUPPORT (2.22b: it holds only as "
+                        "`carried_uncontested`, labelled apart)")
         self.assertGreaterEqual(against, rhythm_mod.W_METER_BAR_FITS * 0.5,
                                 "a contradicting bar may not be a rounding "
                                 "error next to an agreeing one")
@@ -564,15 +572,20 @@ class TestTheMeterCarry(unittest.TestCase):
         self.assertTrue(d["bar_lengths_seen"])
         self.assertIn(1.5, [float(k) for k in d["bar_lengths_seen"]])
 
-    def test_a_page_that_cannot_corroborate_does_not_carry(self):
-        """⚠️ NOT "carry anyway". A carry is only as good as its
-        corroboration, and a page with no assessable bar is exactly the page
-        where a movement may have started unseen. Abstaining is the status
-        quo; carrying unverified is the hazard."""
+    def test_a_page_that_cannot_corroborate_carries_UNCONTESTED(self):
+        """⚠️ CHANGED BY ROADMAP 2.22b (was `..._does_not_carry`). The old
+        rationale -- "a page with no assessable bar is exactly the page where
+        a movement may have started unseen" -- predates `--movements` (4.2,
+        a carry never crosses a declared boundary) and Sean's 2026-09-28
+        decision that a meter holds until a change is printed. Silent bars
+        are no vote: the carry holds, labelled apart from a corroborated
+        `carried` so a reader can tell the two apart."""
         log, _src, dst = self._log(bars=False)
         self._run(log, on=True)
         v = log.verdict(Q.METER, dst)
-        self.assertIs(v.outcome, Outcome.ABSTAINED)
+        self.assertIs(v.outcome, Outcome.DECIDED)
+        self.assertEqual(v.reason, rhythm_mod.METER_CARRIED_UNCONTESTED)
+        self.assertNotEqual(v.reason, "carried")
         self.assertEqual(v.detail["state"], "too_few_assessable_bars")
 
     def test_a_carried_meter_is_never_labelled_voted(self):
