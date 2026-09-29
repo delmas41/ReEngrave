@@ -1,0 +1,660 @@
+{
+  "roadmap_item": "2.6g",
+  "record": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/regather-20260929/benchmarks/acceptance/out/beethoven5-litolff/beethoven5-litolff-whole-movement-20260929T104646Z.record.json",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a41eb74347750ea9c/library/editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf",
+  "dpi": 600,
+  "seed": 2026092916,
+  "targets": {
+    "twin_also_owner_not_read": 12,
+    "twin_decided_self": 3,
+    "twin_decided_other": 1
+  },
+  "crops": [
+    {
+      "n": 1,
+      "file": "2.6g-owner-not-read-01.png",
+      "subject": "glyph/10/1/8/8/6",
+      "twin": "glyph/10/1/7/8/5",
+      "twin_status": "twin_also_owner_not_read",
+      "page": 10,
+      "upper_staff": "staff/10/1/7",
+      "lower_staff": "staff/10/1/8",
+      "ledger_sides": {
+        "staff/10/1/7": {
+          "expected": 2,
+          "found": 0,
+          "toward": 0,
+          "missing": 2,
+          "reach": false,
+          "points": false,
+          "frame": "page",
+          "reach_spaces": 2.296
+        },
+        "staff/10/1/8": {
+          "expected": 3,
+          "found": 0,
+          "toward": 0,
+          "missing": 3,
+          "reach": false,
+          "points": false,
+          "frame": "page",
+          "reach_spaces": 3.115
+        }
+      },
+      "n_detector_ledger_boxes_nearby": 50,
+      "n_cv_windows_tested": 5,
+      "frame_contrast": {
+        "staff/10/1/7": 191.1,
+        "staff/10/1/8": 146.2
+      },
+      "frame_contrast_shifted_half_space": {
+        "staff/10/1/7": -169.9,
+        "staff/10/1/8": -131.1
+      },
+      "question": "UPPER (green) / LOWER (orange) / not a note -- are there ledger lines either reader should have caught?",
+      "VERDICT_none_yet": null
+    },
+    {
+      "n": 2,
+      "file": "2.6g-owner-not-read-02.png",
+      "subject": "glyph/10/1/10/0/1",
+      "twin": "glyph/10/1/9/0/4",
+      "twin_status": "twin_also_owner_not_read",
+      "page": 10,
+      "upper_staff": "staff/10/1/9",
+      "lower_staff": "staff/10/1/10",
+      "ledger_sides": {
+        "staff/10/1/10": {
+          "expected": 3,
+          "found": 0,
+          "toward": 0,
+          "missing": 3,
+          "reach": false,
+          "points": false,
+          "frame": "page",
+          "reach_spaces": 3.485
+        },
+        "staff/10/1/9": {
+          "expected": 2,
+          "found": 0,
+          "toward": 0,
+          "missing": 2,
+          "reach": false,
+          "points": false,
+          "frame": "page",
+          "reach_spaces": 1.793
+        }
+      },
+      "n_detector_ledger_boxes_nearby": 40,
+      "n_cv_windows_tested": 5,
+      "frame_contrast": {
+        "staff/10/1/9": 166.9,
+        "staff/10/1/10": 127.1
+      },
+      "frame_contrast_shifted_half_space": {
+        "staff/10/1/9": -146.2,
+        "staff/10/1/10": -107.8
+      },
+      "question": "UPPER (green) / LOWER (orange) / not a note -- are there ledger lines either reader should have caught?",
+      "VERDICT_none_yet": null
+    },
+    {
+      "n": 3,
+      "file": "2.6g-owner-not-read-03.png",
+      "subject": "glyph/11/1/10/15/1",
+      "twin": "glyph/11/1/9/15/1",
+      "twin_status": "twin_also_owner_not_read",
+      "page": 11,
+      "upper_staff": "staff/11/1/9",
+      "lower_staff": "staff/11/1/10",
+      "ledger_sides": {
+        "staff/11/1/10": {
+          "expected": 2,
+          "found": 0,
+          "toward": 0,
+          "missing": 2,
+          "reach": false,
+          "points": false,
+          "frame": "page",
+          "reach_spaces": 1.758
+        },
+        "staff/11/1/9": {
+          "expected": 5,
+          "found": 0,
+          "toward": 0,
+          "missing": 5,
+          "reach": false,
+          "points": false,
+          "frame": "page",
+          "reach_spaces": 5.416
+        }
+      },
+      "n_detector_ledger_boxes_nearby": 36,
+      "n_cv_windows_tested": 7,
+      "frame_contrast": {
+        "staff/11/1/9": 223.3,
+        "staff/11/1/10": 219.2
+      },
+      "frame_contrast_shifted_half_space": {
+        "staff/11/1/9": -201.3,
+        "staff/11/1/10": -197.0
+      },
+      "question": "UPPER (green) / LOWER (orange) / not a note -- are there ledger lines either reader should have caught?",
+      "VERDICT_none_yet": null
+    },
+    {
+      "n": 4,
+      "file": "2.6g-owner-not-read-04.png",
+      "subject": "glyph/4/1/0/1/0",
+      "twin": "glyph/4/1/1/1/0",
+      "twin_status": "twin_also_owner_not_read",
+      "page": 4,
+      "upper_staff": "staff/4/1/0",
+      "lower_staff": "staff/4/1/1",
+      "ledger_sides": {
+        "staff/4/1/0": {
+          "expected": 3,
+          "found": 1,
+          "toward": 0,
+          "missing": 2,
+          "reach": true,
+          "points": false,
+          "frame": "page",
+          "reach_spaces": 0.003,
+          "stands_on": "glyph/4/1/1/1/3"
+        },
+        "staff/4/1/1": {
+          "expected": 2,
+          "found": 1,
+          "toward": 0,
+          "missing": 1,
+          "reach": true,
+          "points": false,
+          "frame": "page",
+          "reach_spaces": 0.003,
+          "stands_on": "glyph/4/1/1/1/3"
+        }
+      },
+      "n_detector_ledger_boxes_nearby": 65,
+      "n_cv_windows_tested": 5,
+      "frame_contrast": {
+        "staff/4/1/0": 172.9,
+        "staff/4/1/1": 175.5
+      },
+      "frame_contrast_shifted_half_space": {
+        "staff/4/1/0": -162.9,
+        "staff/4/1/1": -160.7
+      },
+      "question": "UPPER (green) / LOWER (orange) / not a note -- are there ledger lines either reader should have caught?",
+      "VERDICT_none_yet": null
+    },
+    {
+      "n": 5,
+      "file": "2.6g-owner-not-read-05.png",
+      "subject": "glyph/2/0/2/1/8",
+      "twin": "glyph/2/0/3/1/7",
+      "twin_status": "twin_also_owner_not_read",
+      "page": 2,
+      "upper_staff": "staff/2/0/2",
+      "lower_staff": "staff/2/0/3",
+      "ledger_sides": {
+        "staff/2/0/2": {
+          "expected": 2,
+          "found": 0,
+          "toward": 0,
+          "missing": 2,
+          "reach": false,
+          "points": false,
+          "frame": "page",
+          "reach_spaces": 2.295
+        },
+        "staff/2/0/3": {
+          "expected": 4,
+          "found": 0,
+          "toward": 0,
+          "missing": 4,
+          "reach": false,
+          "points": false,
+          "frame": "page",
+          "reach_spaces": 4.372
+        }
+      },
+      "n_detector_ledger_boxes_nearby": 112,
+      "n_cv_windows_tested": 6,
+      "frame_contrast": {
+        "staff/2/0/2": 117.5,
+        "staff/2/0/3": 71.4
+      },
+      "frame_contrast_shifted_half_space": {
+        "staff/2/0/2": -114.0,
+        "staff/2/0/3": -72.4
+      },
+      "question": "UPPER (green) / LOWER (orange) / not a note -- are there ledger lines either reader should have caught?",
+      "VERDICT_none_yet": null
+    },
+    {
+      "n": 6,
+      "file": "2.6g-owner-not-read-06.png",
+      "subject": "glyph/7/0/2/6/2",
+      "twin": "glyph/7/0/3/6/0",
+      "twin_status": "twin_also_owner_not_read",
+      "page": 7,
+      "upper_staff": "staff/7/0/2",
+      "lower_staff": "staff/7/0/3",
+      "ledger_sides": {
+        "staff/7/0/2": {
+          "expected": 3,
+          "found": 0,
+          "toward": 0,
+          "missing": 3,
+          "reach": false,
+          "points": false,
+          "frame": "page",
+          "reach_spaces": 3.45
+        },
+        "staff/7/0/3": {
+          "expected": 2,
+          "found": 0,
+          "toward": 0,
+          "missing": 2,
+          "reach": false,
+          "points": false,
+          "frame": "page",
+          "reach_spaces": 2.041
+        }
+      },
+      "n_detector_ledger_boxes_nearby": 92,
+      "n_cv_windows_tested": 5,
+      "frame_contrast": {
+        "staff/7/0/2": 65.0,
+        "staff/7/0/3": 143.4
+      },
+      "frame_contrast_shifted_half_space": {
+        "staff/7/0/2": -51.6,
+        "staff/7/0/3": -127.7
+      },
+      "question": "UPPER (green) / LOWER (orange) / not a note -- are there ledger lines either reader should have caught?",
+      "VERDICT_none_yet": null
+    },
+    {
+      "n": 7,
+      "file": "2.6g-owner-not-read-07.png",
+      "subject": "glyph/8/1/7/3/2",
+      "twin": "glyph/8/1/8/3/3",
+      "twin_status": "twin_also_owner_not_read",
+      "page": 8,
+      "upper_staff": "staff/8/1/7",
+      "lower_staff": "staff/8/1/8",
+      "ledger_sides": {
+        "staff/8/1/7": {
+          "expected": 2,
+          "found": 0,
+          "toward": 0,
+          "missing": 2,
+          "reach": false,
+          "points": false,
+          "frame": "page",
+          "reach_spaces": 1.945
+        },
+        "staff/8/1/8": {
+          "expected": 4,
+          "found": 0,
+          "toward": 0,
+          "missing": 4,
+          "reach": false,
+          "points": false,
+          "frame": "page",
+          "reach_spaces": 3.868
+        }
+      },
+      "n_detector_ledger_boxes_nearby": 137,
+      "n_cv_windows_tested": 6,
+      "frame_contrast": {
+        "staff/8/1/7": 44.1,
+        "staff/8/1/8": 49.0
+      },
+      "frame_contrast_shifted_half_space": {
+        "staff/8/1/7": -34.0,
+        "staff/8/1/8": -34.6
+      },
+      "question": "UPPER (green) / LOWER (orange) / not a note -- are there ledger lines either reader should have caught?",
+      "VERDICT_none_yet": null
+    },
+    {
+      "n": 8,
+      "file": "2.6g-owner-not-read-08.png",
+      "subject": "glyph/8/1/2/18/1",
+      "twin": "glyph/8/1/1/18/0",
+      "twin_status": "twin_also_owner_not_read",
+      "page": 8,
+      "upper_staff": "staff/8/1/1",
+      "lower_staff": "staff/8/1/2",
+      "ledger_sides": {
+        "staff/8/1/1": {
+          "expected": 3,
+          "found": 0,
+          "toward": 0,
+          "missing": 3,
+          "reach": false,
+          "points": false,
+          "frame": "page",
+          "reach_spaces": 3.451
+        },
+        "staff/8/1/2": {
+          "expected": 2,
+          "found": 0,
+          "toward": 0,
+          "missing": 2,
+          "reach": false,
+          "points": false,
+          "frame": "page",
+          "reach_spaces": 2.04
+        }
+      },
+      "n_detector_ledger_boxes_nearby": 56,
+      "n_cv_windows_tested": 5,
+      "frame_contrast": {
+        "staff/8/1/1": 96.8,
+        "staff/8/1/2": 167.6
+      },
+      "frame_contrast_shifted_half_space": {
+        "staff/8/1/1": -86.6,
+        "staff/8/1/2": -148.6
+      },
+      "question": "UPPER (green) / LOWER (orange) / not a note -- are there ledger lines either reader should have caught?",
+      "VERDICT_none_yet": null
+    },
+    {
+      "n": 9,
+      "file": "2.6g-owner-not-read-09.png",
+      "subject": "glyph/10/1/10/8/3",
+      "twin": "glyph/10/1/9/8/6",
+      "twin_status": "twin_also_owner_not_read",
+      "page": 10,
+      "upper_staff": "staff/10/1/9",
+      "lower_staff": "staff/10/1/10",
+      "ledger_sides": {
+        "staff/10/1/10": {
+          "expected": 2,
+          "found": 0,
+          "toward": 0,
+          "missing": 2,
+          "reach": false,
+          "points": false,
+          "frame": "page",
+          "reach_spaces": 2.04
+        },
+        "staff/10/1/9": {
+          "expected": 3,
+          "found": 0,
+          "toward": 0,
+          "missing": 3,
+          "reach": false,
+          "points": false,
+          "frame": "page",
+          "reach_spaces": 3.261
+        }
+      },
+      "n_detector_ledger_boxes_nearby": 51,
+      "n_cv_windows_tested": 5,
+      "frame_contrast": {
+        "staff/10/1/9": 166.9,
+        "staff/10/1/10": 127.1
+      },
+      "frame_contrast_shifted_half_space": {
+        "staff/10/1/9": -146.2,
+        "staff/10/1/10": -107.8
+      },
+      "question": "UPPER (green) / LOWER (orange) / not a note -- are there ledger lines either reader should have caught?",
+      "VERDICT_none_yet": null
+    },
+    {
+      "n": 10,
+      "file": "2.6g-owner-not-read-10.png",
+      "subject": "glyph/10/0/7/1/2",
+      "twin": "glyph/10/0/8/1/5",
+      "twin_status": "twin_also_owner_not_read",
+      "page": 10,
+      "upper_staff": "staff/10/0/7",
+      "lower_staff": "staff/10/0/8",
+      "ledger_sides": {
+        "staff/10/0/7": {
+          "expected": 2,
+          "found": 1,
+          "toward": 0,
+          "missing": 1,
+          "reach": true,
+          "points": false,
+          "frame": "page",
+          "reach_spaces": 0.064,
+          "stands_on": "glyph/10/0/8/1/18"
+        },
+        "staff/10/0/8": {
+          "expected": 3,
+          "found": 1,
+          "toward": 0,
+          "missing": 2,
+          "reach": true,
+          "points": false,
+          "frame": "page",
+          "reach_spaces": 0.064,
+          "stands_on": "glyph/10/0/8/1/18"
+        }
+      },
+      "n_detector_ledger_boxes_nearby": 11,
+      "n_cv_windows_tested": 5,
+      "frame_contrast": {
+        "staff/10/0/7": 162.4,
+        "staff/10/0/8": 201.5
+      },
+      "frame_contrast_shifted_half_space": {
+        "staff/10/0/7": -148.7,
+        "staff/10/0/8": -182.5
+      },
+      "question": "UPPER (green) / LOWER (orange) / not a note -- are there ledger lines either reader should have caught?",
+      "VERDICT_none_yet": null
+    },
+    {
+      "n": 11,
+      "file": "2.6g-owner-not-read-11.png",
+      "subject": "glyph/10/1/10/0/6",
+      "twin": "glyph/10/1/9/0/3",
+      "twin_status": "twin_decided_self",
+      "page": 10,
+      "upper_staff": "staff/10/1/9",
+      "lower_staff": "staff/10/1/10",
+      "ledger_sides": {
+        "staff/10/1/10": {
+          "expected": 3,
+          "found": 0,
+          "toward": 0,
+          "missing": 3,
+          "reach": false,
+          "points": false,
+          "frame": "page",
+          "reach_spaces": 3.48
+        },
+        "staff/10/1/9": {
+          "expected": 2,
+          "found": 0,
+          "toward": 0,
+          "missing": 2,
+          "reach": false,
+          "points": false,
+          "frame": "page",
+          "reach_spaces": 1.798
+        }
+      },
+      "n_detector_ledger_boxes_nearby": 33,
+      "n_cv_windows_tested": 5,
+      "frame_contrast": {
+        "staff/10/1/9": 166.9,
+        "staff/10/1/10": 127.1
+      },
+      "frame_contrast_shifted_half_space": {
+        "staff/10/1/9": -146.2,
+        "staff/10/1/10": -107.8
+      },
+      "question": "UPPER (green) / LOWER (orange) / not a note -- are there ledger lines either reader should have caught?",
+      "VERDICT_none_yet": null
+    },
+    {
+      "n": 12,
+      "file": "2.6g-owner-not-read-12.png",
+      "subject": "glyph/13/0/2/6/4",
+      "twin": "glyph/13/0/3/6/2",
+      "twin_status": "twin_decided_self",
+      "page": 13,
+      "upper_staff": "staff/13/0/2",
+      "lower_staff": "staff/13/0/3",
+      "ledger_sides": {
+        "staff/13/0/2": {
+          "expected": 5,
+          "found": 0,
+          "toward": 0,
+          "missing": 5,
+          "reach": false,
+          "points": false,
+          "frame": "page",
+          "reach_spaces": 5.635
+        },
+        "staff/13/0/3": {
+          "expected": 2,
+          "found": 0,
+          "toward": 0,
+          "missing": 2,
+          "reach": false,
+          "points": false,
+          "frame": "page",
+          "reach_spaces": 1.984
+        }
+      },
+      "n_detector_ledger_boxes_nearby": 139,
+      "n_cv_windows_tested": 7,
+      "frame_contrast": {
+        "staff/13/0/2": 175.2,
+        "staff/13/0/3": 118.9
+      },
+      "frame_contrast_shifted_half_space": {
+        "staff/13/0/2": -156.7,
+        "staff/13/0/3": -112.2
+      },
+      "question": "UPPER (green) / LOWER (orange) / not a note -- are there ledger lines either reader should have caught?",
+      "VERDICT_none_yet": null
+    },
+    {
+      "n": 13,
+      "file": "2.6g-owner-not-read-13.png",
+      "subject": "glyph/4/1/6/5/6",
+      "twin": "glyph/4/1/7/5/7",
+      "twin_status": "twin_decided_self",
+      "page": 4,
+      "upper_staff": "staff/4/1/6",
+      "lower_staff": "staff/4/1/7",
+      "ledger_sides": {
+        "staff/4/1/6": {
+          "expected": 3,
+          "found": 0,
+          "toward": 0,
+          "missing": 3,
+          "reach": false,
+          "points": false,
+          "frame": "page",
+          "reach_spaces": 3.61
+        },
+        "staff/4/1/7": {
+          "expected": 2,
+          "found": 0,
+          "toward": 0,
+          "missing": 2,
+          "reach": false,
+          "points": false,
+          "frame": "page",
+          "reach_spaces": 1.946
+        }
+      },
+      "n_detector_ledger_boxes_nearby": 138,
+      "n_cv_windows_tested": 5,
+      "frame_contrast": {
+        "staff/4/1/6": 197.1,
+        "staff/4/1/7": 172.6
+      },
+      "frame_contrast_shifted_half_space": {
+        "staff/4/1/6": -175.9,
+        "staff/4/1/7": -154.2
+      },
+      "question": "UPPER (green) / LOWER (orange) / not a note -- are there ledger lines either reader should have caught?",
+      "VERDICT_none_yet": null
+    },
+    {
+      "n": 14,
+      "file": "2.6g-owner-not-read-14.png",
+      "subject": "glyph/4/1/7/3/2",
+      "twin": "glyph/4/1/8/3/3",
+      "twin_status": "twin_decided_other",
+      "page": 4,
+      "upper_staff": "staff/4/1/7",
+      "lower_staff": "staff/4/1/8",
+      "ledger_sides": {
+        "staff/4/1/7": {
+          "expected": 2,
+          "found": 0,
+          "toward": 0,
+          "missing": 2,
+          "reach": false,
+          "points": false,
+          "frame": "page",
+          "reach_spaces": 1.77
+        },
+        "staff/4/1/8": {
+          "expected": 2,
+          "found": 0,
+          "toward": 0,
+          "missing": 2,
+          "reach": false,
+          "points": false,
+          "frame": "page",
+          "reach_spaces": 2.543
+        }
+      },
+      "n_detector_ledger_boxes_nearby": 111,
+      "n_cv_windows_tested": 4,
+      "frame_contrast": {
+        "staff/4/1/7": 172.6,
+        "staff/4/1/8": 177.3
+      },
+      "frame_contrast_shifted_half_space": {
+        "staff/4/1/7": -154.2,
+        "staff/4/1/8": -157.9
+      },
+      "question": "UPPER (green) / LOWER (orange) / not a note -- are there ledger lines either reader should have caught?",
+      "VERDICT_none_yet": null
+    }
+  ],
+  "refused": [
+    {
+      "subject": "glyph/4/0/6/12/12",
+      "why": "FRAME CONTROL FAILED",
+      "contrast": {
+        "staff/4/0/5": -80.8,
+        "staff/4/0/6": -40.5
+      },
+      "contrast_shifted": {
+        "staff/4/0/5": 88.7,
+        "staff/4/0/6": 52.5
+      }
+    },
+    {
+      "subject": "glyph/9/1/8/3/0",
+      "why": "FRAME CONTROL FAILED",
+      "contrast": {
+        "staff/9/1/7": 0.8,
+        "staff/9/1/8": 9.6
+      },
+      "contrast_shifted": {
+        "staff/9/1/7": 10.9,
+        "staff/9/1/8": 3.3
+      }
+    }
+  ]
+}
