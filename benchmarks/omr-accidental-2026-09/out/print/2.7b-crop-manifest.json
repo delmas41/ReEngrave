@@ -1,504 +1,526 @@
 {
-  "question": "belongs_to_a_nearer_staff (ROADMAP 2.7b)",
-  "refused_requested": 12,
-  "kept_requested": 4,
-  "seed": 277,
-  "dpi": 600,
-  "arms": [
-    "litolff=/private/tmp/claude-501/-Users-seanjohnson-Desktop-ReEngrave--claude-worktrees-start-here-questions-7d5637/3707ff6b-4757-4644-b4c5-de906d20a7bb/scratchpad/27b/arm/litolff-arm.record.json=/Users/seanjohnson/Desktop/ReEngrave/library/editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf"
-  ],
-  "excluded_already_adjudicated": [
-    "glyph/3/0/8/2/3",
-    "glyph/3/0/8/6/12",
-    "glyph/3/0/8/7/1",
-    "glyph/3/0/9/2/6",
-    "glyph/3/0/9/6/8",
-    "glyph/3/0/9/7/5"
-  ],
-  "crops": [
-    {
-      "file": "2.7b-01.png",
-      "question": "Which staff does the BLUE notehead belong to: the GREEN (filed) staff, the ORANGE (nearest other) staff, or is it not a note?",
-      "document": "litolff",
-      "notehead": "glyph/16/1/7/14/0",
-      "detector_class": "noteheadBlackInSpace",
-      "filed_staff": "staff/16/1/7",
-      "near_staff": "staff/16/1/8",
-      "head_page_box": [
-        2525.6,
-        3193.1,
-        2547.5,
-        3215.5
-      ],
-      "frame_contrast": {
-        "filed": 183.38,
-        "near": 195.25
-      },
-      "reading": {
-        "kind": "kept",
-        "reason": "notehead",
-        "signal": {
-          "filed_spaces": 3.132,
-          "near_staff": "staff/16/1/8",
-          "near_spaces": 2.265,
-          "kept_rungs_toward_filed": 2
-        }
-      },
-      "VERDICT_none_yet": null
-    },
-    {
-      "file": "2.7b-02.png",
-      "question": "Which staff does the BLUE notehead belong to: the GREEN (filed) staff, the ORANGE (nearest other) staff, or is it not a note?",
-      "document": "litolff",
-      "notehead": "glyph/7/0/9/12/2",
-      "detector_class": "noteheadBlackOnLine",
-      "filed_staff": "staff/7/0/9",
-      "near_staff": "staff/7/0/10",
-      "head_page_box": [
-        1968.6,
-        1810.8,
-        1995.6,
-        1821.0
-      ],
-      "frame_contrast": {
-        "filed": 204.11,
-        "near": 203.86
-      },
-      "reading": {
-        "kind": "refused",
-        "reason": "belongs_to_a_nearer_staff",
-        "signal": {
-          "filed_spaces": 3.675,
-          "near_staff": "staff/7/0/10",
-          "near_spaces": 0.325,
-          "kept_rungs_toward_filed": 0
-        }
-      },
-      "VERDICT_none_yet": null
-    },
-    {
-      "file": "2.7b-03.png",
-      "question": "Which staff does the BLUE notehead belong to: the GREEN (filed) staff, the ORANGE (nearest other) staff, or is it not a note?",
-      "document": "litolff",
-      "notehead": "glyph/14/1/2/12/2",
-      "detector_class": "noteheadHalfInSpace",
-      "filed_staff": "staff/14/1/2",
-      "near_staff": "staff/14/1/3",
-      "head_page_box": [
-        2171.1,
-        2585.8,
-        2194.4,
-        2599.0
-      ],
-      "frame_contrast": {
-        "filed": 201.88,
-        "near": 209.08
-      },
-      "reading": {
-        "kind": "refused",
-        "reason": "belongs_to_a_nearer_staff",
-        "signal": {
-          "filed_spaces": 3.58,
-          "near_staff": "staff/14/1/3",
-          "near_spaces": 0.476,
-          "kept_rungs_toward_filed": 0
-        }
-      },
-      "VERDICT_none_yet": null
-    },
-    {
-      "file": "2.7b-04.png",
-      "question": "Which staff does the BLUE notehead belong to: the GREEN (filed) staff, the ORANGE (nearest other) staff, or is it not a note?",
-      "document": "litolff",
-      "notehead": "glyph/10/1/2/12/6",
-      "detector_class": "noteheadBlackOnLine",
-      "filed_staff": "staff/10/1/2",
-      "near_staff": "staff/10/1/3",
-      "head_page_box": [
-        2385.1,
-        2492.6,
-        2416.1,
-        2503.0
-      ],
-      "frame_contrast": {
-        "filed": 212.14,
-        "near": 189.11
-      },
-      "reading": {
-        "kind": "kept",
-        "reason": "notehead",
-        "signal": {
-          "filed_spaces": 3.67,
-          "near_staff": "staff/10/1/3",
-          "near_spaces": 0.965,
-          "kept_rungs_toward_filed": 1
-        }
-      },
-      "VERDICT_none_yet": null
-    },
-    {
-      "file": "2.7b-05.png",
-      "question": "Which staff does the BLUE notehead belong to: the GREEN (filed) staff, the ORANGE (nearest other) staff, or is it not a note?",
-      "document": "litolff",
-      "notehead": "glyph/3/1/1/14/5",
-      "detector_class": "noteheadHalfInSpace",
-      "filed_staff": "staff/3/1/1",
-      "near_staff": "staff/3/1/2",
-      "head_page_box": [
-        2172.7,
-        2592.0,
-        2198.8,
-        2611.9
-      ],
-      "frame_contrast": {
-        "filed": 115.79,
-        "near": 55.12
-      },
-      "reading": {
-        "kind": "refused",
-        "reason": "belongs_to_a_nearer_staff",
-        "signal": {
-          "filed_spaces": 3.362,
-          "near_staff": "staff/3/1/2",
-          "near_spaces": 2.197,
-          "kept_rungs_toward_filed": 0
-        }
-      },
-      "VERDICT_none_yet": null
-    },
-    {
-      "file": "2.7b-06.png",
-      "question": "Which staff does the BLUE notehead belong to: the GREEN (filed) staff, the ORANGE (nearest other) staff, or is it not a note?",
-      "document": "litolff",
-      "notehead": "glyph/5/0/0/1/6",
-      "detector_class": "noteheadBlackOnLine",
-      "filed_staff": "staff/5/0/0",
-      "near_staff": "staff/5/0/1",
-      "head_page_box": [
-        788.6,
-        615.6,
-        808.0,
-        627.0
-      ],
-      "frame_contrast": {
-        "filed": 213.86,
-        "near": 208.24
-      },
-      "reading": {
-        "kind": "refused",
-        "reason": "belongs_to_a_nearer_staff",
-        "signal": {
-          "filed_spaces": 5.645,
-          "near_staff": "staff/5/0/1",
-          "near_spaces": 1.012,
-          "kept_rungs_toward_filed": 0
-        }
-      },
-      "VERDICT_none_yet": null
-    },
-    {
-      "file": "2.7b-07.png",
-      "question": "Which staff does the BLUE notehead belong to: the GREEN (filed) staff, the ORANGE (nearest other) staff, or is it not a note?",
-      "document": "litolff",
-      "notehead": "glyph/10/1/6/10/2",
-      "detector_class": "noteheadHalfOnLine",
-      "filed_staff": "staff/10/1/6",
-      "near_staff": "staff/10/1/5",
-      "head_page_box": [
-        2063.0,
-        2872.0,
-        2089.0,
-        2891.2
-      ],
-      "frame_contrast": {
-        "filed": 213.49,
-        "near": 206.41
-      },
-      "reading": {
-        "kind": "refused",
-        "reason": "belongs_to_a_nearer_staff",
-        "signal": {
-          "filed_spaces": 3.39,
-          "near_staff": "staff/10/1/5",
-          "near_spaces": 1.118,
-          "kept_rungs_toward_filed": 0
-        }
-      },
-      "VERDICT_none_yet": null
-    },
-    {
-      "file": "2.7b-08.png",
-      "question": "Which staff does the BLUE notehead belong to: the GREEN (filed) staff, the ORANGE (nearest other) staff, or is it not a note?",
-      "document": "litolff",
-      "notehead": "glyph/9/0/0/0/13",
-      "detector_class": "noteheadBlackInSpace",
-      "filed_staff": "staff/9/0/0",
-      "near_staff": "staff/9/0/1",
-      "head_page_box": [
-        575.7,
-        523.8,
-        601.7,
-        537.4
-      ],
-      "frame_contrast": {
-        "filed": 33.84,
-        "near": 102.63
-      },
-      "reading": {
-        "kind": "refused",
-        "reason": "belongs_to_a_nearer_staff",
-        "signal": {
-          "filed_spaces": 3.532,
-          "near_staff": "staff/9/0/1",
-          "near_spaces": 1.573,
-          "kept_rungs_toward_filed": 0
-        }
-      },
-      "VERDICT_none_yet": null
-    },
-    {
-      "file": "2.7b-09.png",
-      "question": "Which staff does the BLUE notehead belong to: the GREEN (filed) staff, the ORANGE (nearest other) staff, or is it not a note?",
-      "document": "litolff",
-      "notehead": "glyph/2/0/9/10/1",
-      "detector_class": "noteheadBlackInSpace",
-      "filed_staff": "staff/2/0/9",
-      "near_staff": "staff/2/0/8",
-      "head_page_box": [
-        1817.6,
-        1670.0,
-        1841.5,
-        1682.0
-      ],
-      "frame_contrast": {
-        "filed": 188.97,
-        "near": 186.02
-      },
-      "reading": {
-        "kind": "refused",
-        "reason": "belongs_to_a_nearer_staff",
-        "signal": {
-          "filed_spaces": 3.625,
-          "near_staff": "staff/2/0/8",
-          "near_spaces": 1.688,
-          "kept_rungs_toward_filed": 0
-        }
-      },
-      "VERDICT_none_yet": null
-    },
-    {
-      "file": "2.7b-10.png",
-      "question": "Which staff does the BLUE notehead belong to: the GREEN (filed) staff, the ORANGE (nearest other) staff, or is it not a note?",
-      "document": "litolff",
-      "notehead": "glyph/8/0/6/12/7",
-      "detector_class": "noteheadHalfInSpace",
-      "filed_staff": "staff/8/0/6",
-      "near_staff": "staff/8/0/7",
-      "head_page_box": [
-        1626.3,
-        1443.8,
-        1646.4,
-        1458.0
-      ],
-      "frame_contrast": {
-        "filed": 112.56,
-        "near": 206.67
-      },
-      "reading": {
-        "kind": "kept",
-        "reason": "notehead",
-        "signal": {
-          "filed_spaces": 3.55,
-          "near_staff": "staff/8/0/7",
-          "near_spaces": 1.974,
-          "kept_rungs_toward_filed": 1,
-          "refused_rungs_toward_filed": {
-            "on_a_staff_line": 1
-          }
-        }
-      },
-      "VERDICT_none_yet": null
-    },
-    {
-      "file": "2.7b-11.png",
-      "question": "Which staff does the BLUE notehead belong to: the GREEN (filed) staff, the ORANGE (nearest other) staff, or is it not a note?",
-      "document": "litolff",
-      "notehead": "glyph/13/0/9/13/7",
-      "detector_class": "noteheadBlackInSpace",
-      "filed_staff": "staff/13/0/9",
-      "near_staff": "staff/13/0/10",
-      "head_page_box": [
-        2386.3,
-        1830.9,
-        2407.2,
-        1841.0
-      ],
-      "frame_contrast": {
-        "filed": 206.74,
-        "near": 157.22
-      },
-      "reading": {
-        "kind": "refused",
-        "reason": "belongs_to_a_nearer_staff",
-        "signal": {
-          "filed_spaces": 3.68,
-          "near_staff": "staff/13/0/10",
-          "near_spaces": 0.0,
-          "kept_rungs_toward_filed": 0
-        }
-      },
-      "VERDICT_none_yet": null
-    },
-    {
-      "file": "2.7b-12.png",
-      "question": "Which staff does the BLUE notehead belong to: the GREEN (filed) staff, the ORANGE (nearest other) staff, or is it not a note?",
-      "document": "litolff",
-      "notehead": "glyph/4/1/2/0/1",
-      "detector_class": "noteheadBlackInSpace",
-      "filed_staff": "staff/4/1/2",
-      "near_staff": "staff/4/1/3",
-      "head_page_box": [
-        514.8,
-        2562.7,
-        536.4,
-        2577.0
-      ],
-      "frame_contrast": {
-        "filed": 158.56,
-        "near": 121.16
-      },
-      "reading": {
-        "kind": "refused",
-        "reason": "belongs_to_a_nearer_staff",
-        "signal": {
-          "filed_spaces": 3.545,
-          "near_staff": "staff/4/1/3",
-          "near_spaces": 0.772,
-          "kept_rungs_toward_filed": 0
-        }
-      },
-      "VERDICT_none_yet": null
-    },
-    {
-      "file": "2.7b-13.png",
-      "question": "Which staff does the BLUE notehead belong to: the GREEN (filed) staff, the ORANGE (nearest other) staff, or is it not a note?",
-      "document": "litolff",
-      "notehead": "glyph/1/0/9/14/8",
-      "detector_class": "noteheadBlackOnLine",
-      "filed_staff": "staff/1/0/9",
-      "near_staff": "staff/1/0/10",
-      "head_page_box": [
-        2338.0,
-        2883.7,
-        2368.6,
-        2894.9
-      ],
-      "frame_contrast": {
-        "filed": 185.92,
-        "near": 201.98
-      },
-      "reading": {
-        "kind": "refused",
-        "reason": "belongs_to_a_nearer_staff",
-        "signal": {
-          "filed_spaces": 5.607,
-          "near_staff": "staff/1/0/10",
-          "near_spaces": 1.631,
-          "kept_rungs_toward_filed": 0
-        }
-      },
-      "VERDICT_none_yet": null
-    },
-    {
-      "file": "2.7b-14.png",
-      "question": "Which staff does the BLUE notehead belong to: the GREEN (filed) staff, the ORANGE (nearest other) staff, or is it not a note?",
-      "document": "litolff",
-      "notehead": "glyph/12/0/11/14/1",
-      "detector_class": "noteheadBlackOnLine",
-      "filed_staff": "staff/12/0/11",
-      "near_staff": "staff/12/0/10",
-      "head_page_box": [
-        2467.1,
-        1852.3,
-        2491.4,
-        1872.9
-      ],
-      "frame_contrast": {
-        "filed": 214.74,
-        "near": 150.59
-      },
-      "reading": {
-        "kind": "kept",
-        "reason": "notehead",
-        "signal": {
-          "filed_spaces": 3.135,
-          "near_staff": "staff/12/0/10",
-          "near_spaces": 1.055,
-          "kept_rungs_toward_filed": 2
-        }
-      },
-      "VERDICT_none_yet": null
-    },
-    {
-      "file": "2.7b-15.png",
-      "question": "Which staff does the BLUE notehead belong to: the GREEN (filed) staff, the ORANGE (nearest other) staff, or is it not a note?",
-      "document": "litolff",
-      "notehead": "glyph/12/1/5/0/15",
-      "detector_class": "noteheadBlackOnLine",
-      "filed_staff": "staff/12/1/5",
-      "near_staff": "staff/12/1/6",
-      "head_page_box": [
-        725.0,
-        2949.0,
-        746.3,
-        2961.8
-      ],
-      "frame_contrast": {
-        "filed": 138.94,
-        "near": 106.56
-      },
-      "reading": {
-        "kind": "refused",
-        "reason": "belongs_to_a_nearer_staff",
-        "signal": {
-          "filed_spaces": 3.587,
-          "near_staff": "staff/12/1/6",
-          "near_spaces": 0.975,
-          "kept_rungs_toward_filed": 0
-        }
-      },
-      "VERDICT_none_yet": null
-    },
-    {
-      "file": "2.7b-16.png",
-      "question": "Which staff does the BLUE notehead belong to: the GREEN (filed) staff, the ORANGE (nearest other) staff, or is it not a note?",
-      "document": "litolff",
-      "notehead": "glyph/6/0/7/11/1",
-      "detector_class": "noteheadBlackOnLine",
-      "filed_staff": "staff/6/0/7",
-      "near_staff": "staff/6/0/8",
-      "head_page_box": [
-        2391.1,
-        1558.9,
-        2427.0,
-        1572.0
-      ],
-      "frame_contrast": {
-        "filed": 195.14,
-        "near": 202.35
-      },
-      "reading": {
-        "kind": "refused",
-        "reason": "belongs_to_a_nearer_staff",
-        "signal": {
-          "filed_spaces": 3.585,
-          "near_staff": "staff/6/0/8",
-          "near_spaces": 1.748,
-          "kept_rungs_toward_filed": 0
-        }
-      },
-      "VERDICT_none_yet": null
+ "question": "belongs_to_a_nearer_staff (ROADMAP 2.7b)",
+ "refused_requested": 12,
+ "kept_requested": 4,
+ "seed": 277,
+ "dpi": 600,
+ "arms": [
+  "litolff=/private/tmp/claude-501/-Users-seanjohnson-Desktop-ReEngrave--claude-worktrees-start-here-questions-7d5637/3707ff6b-4757-4644-b4c5-de906d20a7bb/scratchpad/27b/arm/litolff-arm.record.json=/Users/seanjohnson/Desktop/ReEngrave/library/editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf"
+ ],
+ "excluded_already_adjudicated": [
+  "glyph/3/0/8/2/3",
+  "glyph/3/0/8/6/12",
+  "glyph/3/0/8/7/1",
+  "glyph/3/0/9/2/6",
+  "glyph/3/0/9/6/8",
+  "glyph/3/0/9/7/5"
+ ],
+ "crops": [
+  {
+   "file": "2.7b-01.png",
+   "question": "Which staff does the BLUE notehead belong to: the GREEN (filed) staff, the ORANGE (nearest other) staff, or is it not a note?",
+   "document": "litolff",
+   "notehead": "glyph/16/1/7/14/0",
+   "detector_class": "noteheadBlackInSpace",
+   "filed_staff": "staff/16/1/7",
+   "near_staff": "staff/16/1/8",
+   "head_page_box": [
+    2525.6,
+    3193.1,
+    2547.5,
+    3215.5
+   ],
+   "frame_contrast": {
+    "filed": 183.38,
+    "near": 195.25
+   },
+   "reading": {
+    "kind": "kept",
+    "reason": "notehead",
+    "signal": {
+     "filed_spaces": 3.132,
+     "near_staff": "staff/16/1/8",
+     "near_spaces": 2.265,
+     "kept_rungs_toward_filed": 2
     }
-  ],
-  "refused": []
+   },
+   "sheet_n": 1,
+   "VERDICT_sean": "belongs_to_filed_staff"
+  },
+  {
+   "file": "2.7b-02.png",
+   "question": "Which staff does the BLUE notehead belong to: the GREEN (filed) staff, the ORANGE (nearest other) staff, or is it not a note?",
+   "document": "litolff",
+   "notehead": "glyph/7/0/9/12/2",
+   "detector_class": "noteheadBlackOnLine",
+   "filed_staff": "staff/7/0/9",
+   "near_staff": "staff/7/0/10",
+   "head_page_box": [
+    1968.6,
+    1810.8,
+    1995.6,
+    1821.0
+   ],
+   "frame_contrast": {
+    "filed": 204.11,
+    "near": 203.86
+   },
+   "reading": {
+    "kind": "refused",
+    "reason": "belongs_to_a_nearer_staff",
+    "signal": {
+     "filed_spaces": 3.675,
+     "near_staff": "staff/7/0/10",
+     "near_spaces": 0.325,
+     "kept_rungs_toward_filed": 0
+    }
+   },
+   "sheet_n": 2,
+   "VERDICT_sean": "belongs_to_the_nearer_staff"
+  },
+  {
+   "file": "2.7b-03.png",
+   "question": "Which staff does the BLUE notehead belong to: the GREEN (filed) staff, the ORANGE (nearest other) staff, or is it not a note?",
+   "document": "litolff",
+   "notehead": "glyph/14/1/2/12/2",
+   "detector_class": "noteheadHalfInSpace",
+   "filed_staff": "staff/14/1/2",
+   "near_staff": "staff/14/1/3",
+   "head_page_box": [
+    2171.1,
+    2585.8,
+    2194.4,
+    2599.0
+   ],
+   "frame_contrast": {
+    "filed": 201.88,
+    "near": 209.08
+   },
+   "reading": {
+    "kind": "refused",
+    "reason": "belongs_to_a_nearer_staff",
+    "signal": {
+     "filed_spaces": 3.58,
+     "near_staff": "staff/14/1/3",
+     "near_spaces": 0.476,
+     "kept_rungs_toward_filed": 0
+    }
+   },
+   "sheet_n": 3,
+   "VERDICT_sean": "belongs_to_the_nearer_staff"
+  },
+  {
+   "file": "2.7b-04.png",
+   "question": "Which staff does the BLUE notehead belong to: the GREEN (filed) staff, the ORANGE (nearest other) staff, or is it not a note?",
+   "document": "litolff",
+   "notehead": "glyph/10/1/2/12/6",
+   "detector_class": "noteheadBlackOnLine",
+   "filed_staff": "staff/10/1/2",
+   "near_staff": "staff/10/1/3",
+   "head_page_box": [
+    2385.1,
+    2492.6,
+    2416.1,
+    2503.0
+   ],
+   "frame_contrast": {
+    "filed": 212.14,
+    "near": 189.11
+   },
+   "reading": {
+    "kind": "kept",
+    "reason": "notehead",
+    "signal": {
+     "filed_spaces": 3.67,
+     "near_staff": "staff/10/1/3",
+     "near_spaces": 0.965,
+     "kept_rungs_toward_filed": 1
+    }
+   },
+   "sheet_n": 4,
+   "VERDICT_sean": "belongs_to_the_nearer_staff"
+  },
+  {
+   "file": "2.7b-05.png",
+   "question": "Which staff does the BLUE notehead belong to: the GREEN (filed) staff, the ORANGE (nearest other) staff, or is it not a note?",
+   "document": "litolff",
+   "notehead": "glyph/3/1/1/14/5",
+   "detector_class": "noteheadHalfInSpace",
+   "filed_staff": "staff/3/1/1",
+   "near_staff": "staff/3/1/2",
+   "head_page_box": [
+    2172.7,
+    2592.0,
+    2198.8,
+    2611.9
+   ],
+   "frame_contrast": {
+    "filed": 115.79,
+    "near": 55.12
+   },
+   "reading": {
+    "kind": "refused",
+    "reason": "belongs_to_a_nearer_staff",
+    "signal": {
+     "filed_spaces": 3.362,
+     "near_staff": "staff/3/1/2",
+     "near_spaces": 2.197,
+     "kept_rungs_toward_filed": 0
+    }
+   },
+   "sheet_n": 5,
+   "VERDICT_sean": "belongs_to_the_nearer_staff"
+  },
+  {
+   "file": "2.7b-06.png",
+   "question": "Which staff does the BLUE notehead belong to: the GREEN (filed) staff, the ORANGE (nearest other) staff, or is it not a note?",
+   "document": "litolff",
+   "notehead": "glyph/5/0/0/1/6",
+   "detector_class": "noteheadBlackOnLine",
+   "filed_staff": "staff/5/0/0",
+   "near_staff": "staff/5/0/1",
+   "head_page_box": [
+    788.6,
+    615.6,
+    808.0,
+    627.0
+   ],
+   "frame_contrast": {
+    "filed": 213.86,
+    "near": 208.24
+   },
+   "reading": {
+    "kind": "refused",
+    "reason": "belongs_to_a_nearer_staff",
+    "signal": {
+     "filed_spaces": 5.645,
+     "near_staff": "staff/5/0/1",
+     "near_spaces": 1.012,
+     "kept_rungs_toward_filed": 0
+    }
+   },
+   "sheet_n": 6,
+   "VERDICT_sean": "belongs_to_the_nearer_staff"
+  },
+  {
+   "file": "2.7b-07.png",
+   "question": "Which staff does the BLUE notehead belong to: the GREEN (filed) staff, the ORANGE (nearest other) staff, or is it not a note?",
+   "document": "litolff",
+   "notehead": "glyph/10/1/6/10/2",
+   "detector_class": "noteheadHalfOnLine",
+   "filed_staff": "staff/10/1/6",
+   "near_staff": "staff/10/1/5",
+   "head_page_box": [
+    2063.0,
+    2872.0,
+    2089.0,
+    2891.2
+   ],
+   "frame_contrast": {
+    "filed": 213.49,
+    "near": 206.41
+   },
+   "reading": {
+    "kind": "refused",
+    "reason": "belongs_to_a_nearer_staff",
+    "signal": {
+     "filed_spaces": 3.39,
+     "near_staff": "staff/10/1/5",
+     "near_spaces": 1.118,
+     "kept_rungs_toward_filed": 0
+    }
+   },
+   "sheet_n": 7,
+   "VERDICT_sean": "belongs_to_the_nearer_staff"
+  },
+  {
+   "file": "2.7b-08.png",
+   "question": "Which staff does the BLUE notehead belong to: the GREEN (filed) staff, the ORANGE (nearest other) staff, or is it not a note?",
+   "document": "litolff",
+   "notehead": "glyph/9/0/0/0/13",
+   "detector_class": "noteheadBlackInSpace",
+   "filed_staff": "staff/9/0/0",
+   "near_staff": "staff/9/0/1",
+   "head_page_box": [
+    575.7,
+    523.8,
+    601.7,
+    537.4
+   ],
+   "frame_contrast": {
+    "filed": 33.84,
+    "near": 102.63
+   },
+   "reading": {
+    "kind": "refused",
+    "reason": "belongs_to_a_nearer_staff",
+    "signal": {
+     "filed_spaces": 3.532,
+     "near_staff": "staff/9/0/1",
+     "near_spaces": 1.573,
+     "kept_rungs_toward_filed": 0
+    }
+   },
+   "sheet_n": 8,
+   "VERDICT_sean": "belongs_to_the_nearer_staff"
+  },
+  {
+   "file": "2.7b-09.png",
+   "question": "Which staff does the BLUE notehead belong to: the GREEN (filed) staff, the ORANGE (nearest other) staff, or is it not a note?",
+   "document": "litolff",
+   "notehead": "glyph/2/0/9/10/1",
+   "detector_class": "noteheadBlackInSpace",
+   "filed_staff": "staff/2/0/9",
+   "near_staff": "staff/2/0/8",
+   "head_page_box": [
+    1817.6,
+    1670.0,
+    1841.5,
+    1682.0
+   ],
+   "frame_contrast": {
+    "filed": 188.97,
+    "near": 186.02
+   },
+   "reading": {
+    "kind": "refused",
+    "reason": "belongs_to_a_nearer_staff",
+    "signal": {
+     "filed_spaces": 3.625,
+     "near_staff": "staff/2/0/8",
+     "near_spaces": 1.688,
+     "kept_rungs_toward_filed": 0
+    }
+   },
+   "sheet_n": 9,
+   "VERDICT_sean": "belongs_to_the_nearer_staff"
+  },
+  {
+   "file": "2.7b-10.png",
+   "question": "Which staff does the BLUE notehead belong to: the GREEN (filed) staff, the ORANGE (nearest other) staff, or is it not a note?",
+   "document": "litolff",
+   "notehead": "glyph/8/0/6/12/7",
+   "detector_class": "noteheadHalfInSpace",
+   "filed_staff": "staff/8/0/6",
+   "near_staff": "staff/8/0/7",
+   "head_page_box": [
+    1626.3,
+    1443.8,
+    1646.4,
+    1458.0
+   ],
+   "frame_contrast": {
+    "filed": 112.56,
+    "near": 206.67
+   },
+   "reading": {
+    "kind": "kept",
+    "reason": "notehead",
+    "signal": {
+     "filed_spaces": 3.55,
+     "near_staff": "staff/8/0/7",
+     "near_spaces": 1.974,
+     "kept_rungs_toward_filed": 1,
+     "refused_rungs_toward_filed": {
+      "on_a_staff_line": 1
+     }
+    }
+   },
+   "sheet_n": 10,
+   "VERDICT_sean": "not_a_note"
+  },
+  {
+   "file": "2.7b-11.png",
+   "question": "Which staff does the BLUE notehead belong to: the GREEN (filed) staff, the ORANGE (nearest other) staff, or is it not a note?",
+   "document": "litolff",
+   "notehead": "glyph/13/0/9/13/7",
+   "detector_class": "noteheadBlackInSpace",
+   "filed_staff": "staff/13/0/9",
+   "near_staff": "staff/13/0/10",
+   "head_page_box": [
+    2386.3,
+    1830.9,
+    2407.2,
+    1841.0
+   ],
+   "frame_contrast": {
+    "filed": 206.74,
+    "near": 157.22
+   },
+   "reading": {
+    "kind": "refused",
+    "reason": "belongs_to_a_nearer_staff",
+    "signal": {
+     "filed_spaces": 3.68,
+     "near_staff": "staff/13/0/10",
+     "near_spaces": 0.0,
+     "kept_rungs_toward_filed": 0
+    }
+   },
+   "sheet_n": 11,
+   "VERDICT_sean": "belongs_to_the_nearer_staff",
+   "VERDICT_note": "Sean: small box, can't tell whether it is trying to get the half note \u2014 but O"
+  },
+  {
+   "file": "2.7b-12.png",
+   "question": "Which staff does the BLUE notehead belong to: the GREEN (filed) staff, the ORANGE (nearest other) staff, or is it not a note?",
+   "document": "litolff",
+   "notehead": "glyph/4/1/2/0/1",
+   "detector_class": "noteheadBlackInSpace",
+   "filed_staff": "staff/4/1/2",
+   "near_staff": "staff/4/1/3",
+   "head_page_box": [
+    514.8,
+    2562.7,
+    536.4,
+    2577.0
+   ],
+   "frame_contrast": {
+    "filed": 158.56,
+    "near": 121.16
+   },
+   "reading": {
+    "kind": "refused",
+    "reason": "belongs_to_a_nearer_staff",
+    "signal": {
+     "filed_spaces": 3.545,
+     "near_staff": "staff/4/1/3",
+     "near_spaces": 0.772,
+     "kept_rungs_toward_filed": 0
+    }
+   },
+   "sheet_n": 12,
+   "VERDICT_sean": "belongs_to_the_nearer_staff"
+  },
+  {
+   "file": "2.7b-13.png",
+   "question": "Which staff does the BLUE notehead belong to: the GREEN (filed) staff, the ORANGE (nearest other) staff, or is it not a note?",
+   "document": "litolff",
+   "notehead": "glyph/1/0/9/14/8",
+   "detector_class": "noteheadBlackOnLine",
+   "filed_staff": "staff/1/0/9",
+   "near_staff": "staff/1/0/10",
+   "head_page_box": [
+    2338.0,
+    2883.7,
+    2368.6,
+    2894.9
+   ],
+   "frame_contrast": {
+    "filed": 185.92,
+    "near": 201.98
+   },
+   "reading": {
+    "kind": "refused",
+    "reason": "belongs_to_a_nearer_staff",
+    "signal": {
+     "filed_spaces": 5.607,
+     "near_staff": "staff/1/0/10",
+     "near_spaces": 1.631,
+     "kept_rungs_toward_filed": 0
+    }
+   },
+   "sheet_n": 13,
+   "VERDICT_sean": "belongs_to_the_nearer_staff"
+  },
+  {
+   "file": "2.7b-14.png",
+   "question": "Which staff does the BLUE notehead belong to: the GREEN (filed) staff, the ORANGE (nearest other) staff, or is it not a note?",
+   "document": "litolff",
+   "notehead": "glyph/12/0/11/14/1",
+   "detector_class": "noteheadBlackOnLine",
+   "filed_staff": "staff/12/0/11",
+   "near_staff": "staff/12/0/10",
+   "head_page_box": [
+    2467.1,
+    1852.3,
+    2491.4,
+    1872.9
+   ],
+   "frame_contrast": {
+    "filed": 214.74,
+    "near": 150.59
+   },
+   "reading": {
+    "kind": "kept",
+    "reason": "notehead",
+    "signal": {
+     "filed_spaces": 3.135,
+     "near_staff": "staff/12/0/10",
+     "near_spaces": 1.055,
+     "kept_rungs_toward_filed": 2
+    }
+   },
+   "sheet_n": 14,
+   "VERDICT_sean": "belongs_to_filed_staff"
+  },
+  {
+   "file": "2.7b-15.png",
+   "question": "Which staff does the BLUE notehead belong to: the GREEN (filed) staff, the ORANGE (nearest other) staff, or is it not a note?",
+   "document": "litolff",
+   "notehead": "glyph/12/1/5/0/15",
+   "detector_class": "noteheadBlackOnLine",
+   "filed_staff": "staff/12/1/5",
+   "near_staff": "staff/12/1/6",
+   "head_page_box": [
+    725.0,
+    2949.0,
+    746.3,
+    2961.8
+   ],
+   "frame_contrast": {
+    "filed": 138.94,
+    "near": 106.56
+   },
+   "reading": {
+    "kind": "refused",
+    "reason": "belongs_to_a_nearer_staff",
+    "signal": {
+     "filed_spaces": 3.587,
+     "near_staff": "staff/12/1/6",
+     "near_spaces": 0.975,
+     "kept_rungs_toward_filed": 0
+    }
+   },
+   "sheet_n": 15,
+   "VERDICT_sean": "belongs_to_the_nearer_staff"
+  },
+  {
+   "file": "2.7b-16.png",
+   "question": "Which staff does the BLUE notehead belong to: the GREEN (filed) staff, the ORANGE (nearest other) staff, or is it not a note?",
+   "document": "litolff",
+   "notehead": "glyph/6/0/7/11/1",
+   "detector_class": "noteheadBlackOnLine",
+   "filed_staff": "staff/6/0/7",
+   "near_staff": "staff/6/0/8",
+   "head_page_box": [
+    2391.1,
+    1558.9,
+    2427.0,
+    1572.0
+   ],
+   "frame_contrast": {
+    "filed": 195.14,
+    "near": 202.35
+   },
+   "reading": {
+    "kind": "refused",
+    "reason": "belongs_to_a_nearer_staff",
+    "signal": {
+     "filed_spaces": 3.585,
+     "near_staff": "staff/6/0/8",
+     "near_spaces": 1.748,
+     "kept_rungs_toward_filed": 0
+    }
+   },
+   "sheet_n": 16,
+   "VERDICT_sean": "belongs_to_the_nearer_staff"
+  }
+ ],
+ "refused": [],
+ "verdicts": {
+  "by": "Sean",
+  "date": "2026-09-28",
+  "raw": "1 G 2-9 O 10 N 11 O (small box) 12-13 O 14 G 15-17 O 18 G 19-24 O"
+ }
 }

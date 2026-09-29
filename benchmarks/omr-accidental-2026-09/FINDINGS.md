@@ -115,3 +115,24 @@ Litolff: 293 refused, 61 fewer `<note>` — most refused heads were already held
 - The accidental of a head `glyph_owner` awards elsewhere still abstains `no_candidate` on the cut-from staff, and nothing puts it on the winner's twin (the twin staff's own accidental box does that, if detected) — 2.7 pinned the re-pair behaviour for `owned_by_another_staff`; changing it is its own item.
 - 36 Litolff heads past both bands are kept by a real rung toward the filed staff; rung recall is the known weak witness, and a kept rung that is really the other staff's is not examined beyond the four kept crops.
 - Tests: `tools/omr/tests/test_staged_nearer_staff.py` (24) on `fixtures/nearer_staff_litolff_p3.json` (the measured geometry of all 25 adjudicated heads, `probe/extract_nearer_fixture.py`). RED first: 11 failed / 8 passed against a5f7cf58; 3 more (run, class, mixed) failed against d6a06308; the own-line test failed against 96abccff.
+
+### §2.7b.8 — Sean's verdicts on the 24 recoloured crops (2026-09-28)
+
+Raw: `1 G 2-9 O 10 N 11 O 12-13 O 14 G 15-17 O 18 G 19-24 O` (sheet #01–16 =
+Litolff `2.7b-01..16`, #17–24 = Breitkopf `2.7b-brk-01..08`; verdicts written
+into both manifests). Against the hidden key:
+
+| the rule | Sean | n | reading |
+|---|---|--:|---|
+| refused (`belongs_to_a_nearer_staff`) | O | **18 / 18** | every refusal right; no real note lost |
+| kept (a rung toward the filed staff) | G | 3 | right |
+| kept | O | **2** (#4 `glyph/10/1/2/12/6`, #22 `glyph/4/1/2/8/31`) | missed — belongs to the nearer staff |
+| kept | N | 1 (#10 `glyph/8/0/6/12/7`) | not a note |
+
+**The refusal is sound; the rung EXCEPTION is not** — 3 of 6 heads it kept
+were wrong. A rung credited as "toward the filed staff" for a head that
+belongs to the other staff is the ledger-direction question of Sean's
+convention (DECISIONS 2026-09-28: the ledger lines lie between a note and
+ITS staff) → handed to 2.6c as RED cases. Sean also noted the colours swap
+above/below between crops: colour follows ROLE (filed vs nearer), so green is
+on top when the filed staff is the upper one; labels carry it.
