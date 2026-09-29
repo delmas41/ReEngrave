@@ -1726,3 +1726,144 @@ this machine) — main's own count exactly, 0 new tests, as expected with
   (`out/.gitignore`).
 - `out/print/dot24-0{1..7}.png`, `out/print/dot-2.24-manifest.json`:
   committed.
+
+## 19. ROADMAP 2.30 — the spurious EXTRA event nothing refused (2026-09-29)
+
+PATH: STAGED. Branch `claude/extra-event-2.30`, off `origin/main` `8c652d89`.
+Per Sean's process decision (relayed 09-29): conceptual wiring, microscopic
+RED→GREEN fixtures only, from already-committed FINDINGS text and probe
+output — no gather, no record-scale run, no crop batch, no pricing.
+
+### §19a. What the extra events ARE, ranked by what the evidence supports
+
+§17's whole-movement funnel (class `X`, "drop ONE event... that nothing
+refused") does not itself say what family or geometry the dropped event
+is — it is a SIMULATION letter, blind to cause. The only per-bar readings
+of what `X` (and its neighbours) actually contain are §17c's 19 unmodelled
+crops and §15d/§14's already-CLOSED classes. Sorted by how many independent
+crops support each:
+
+1. **Same-family duplicate box (ink boxed twice by the SHATTERING plate,
+   one class).** DIRECTLY MEASURED, not just crop-observed: ROADMAP 2.15
+   (§14) put a number on it for RESTS — Litolff 111, Brahms 882 refused
+   duplicate boxes, 8 crop-confirmed, IoU 0.03–0.71 for a real same-class
+   pair with a clean gap to 0. **Structural fact, not a new measurement:
+   `notehead_precision.py` (noteheads) had NO equivalent check** — its own
+   `reasons=` tuple before this item was `is_a_clef, clipped_fragment,
+   too_narrow, belongs_to_a_nearer_staff, is_a_meter_digit, notehead`, no
+   duplicate-box reason anywhere, while `family_precision.py` (rests) has
+   carried one since 2.15. CLAUDE.md §10's SHATTERING-plate fact is stated
+   about ink in general, not about rests specifically, and a notehead is
+   the most common filled black mark on the page — "the value existed [the
+   IoU floor 2.15 measured] and nothing read it [for noteheads]." Strongest
+   evidence of the ranked list, because it is a code-comparison fact, not
+   an inference from a caption.
+2. **Neighbouring staff's ink surviving into the bar sum after a DECIDED
+   removal.** MEASURED AND ALREADY CLOSED by 2.19/2.22 (§15d, §17d):
+   `size_measure_rest` and `reconcile_duration` were summing boxes a
+   DECIDED verdict (`too_narrow`, `rest_is_a_duplicate_box`,
+   `owned_by_another_staff`) had already taken out of the bar. Not
+   reopened here — named so it is not mistaken for a live gap.
+3. **A rest read as a head, and vice versa (single mis-boxing, no second
+   box to compare against).** THIN EVIDENCE: 3 of 19 §17c captions
+   ("two quarter rests boxed as heads... a quarter rest under a fermata,
+   boxed as a notehead... a rest is read as a note") describe this, but
+   each caption names ONE box of one wrong class, not two overlapping
+   boxes — there is nothing on the record to CONNECT (no duplicate ink,
+   no ownership contest, no ledger absence); telling a rest's shape from a
+   notehead's would need new measured geometry, which is a GATHER-adjacent
+   classification question, not an ADJUDICATE connection. NOT BUILT, and
+   not the same class as class 1.
+4. **A barline fragment, staff-line fragment, dynamic letter, tie/slur end
+   or staccato dot boxed as a head.** NO SUPPORTING CROP in this
+   benchmark's evidence at all — these are the work order's own
+   brainstormed candidates (CLAUDE.md §10's "a third of Breitkopf's
+   stemless heads are barlines" is about the ALREADY-SHIPPED `too_narrow`/
+   `clipped_fragment` population, not a gap in it). THINNEST evidence of
+   the list; no connection attempted.
+5. **Cross-family duplicate (a rest box and a notehead box on ONE mark).**
+   NOT OBSERVED anywhere in §14's or §17c's crops — every duplicate-box
+   crop 2.15 confirmed is same-family (rest/rest); every "rest read as a
+   head" caption (class 3) describes a single box, not a pair. Plausible
+   by analogy to class 1, but building it would be a GUESS. Asked, not
+   built — see §19c.
+
+### §19b. Built: `notehead_precision.adjudicate_notehead_is_not_a_notehead` grows a duplicate-box rule (class 1)
+
+CONVENTION ESTABLISHED (cites, does not restate, ROADMAP 2.15's own
+measurement): two `Q.GLYPH_BOX` boxes in one cell with IoU at or above
+`REST_DUPLICATE_IOU_MIN` (0.02) are one physical mark read twice, whichever
+family the detector called them. `notehead_precision.py` grows
+`_notehead_duplicate_box_refusal` (helpers `_notehead_box_iou`,
+`_notehead_duplicate_priority`, `_cell_notehead_boxes`, constant
+`NOTEHEAD_DUPLICATE_IOU_MIN = 0.02`, cited not imported — `family_precision`
+already imports FROM `notehead_precision`, so the reverse import would
+cycle) — the SAME geometry and threshold 2.15 measured and shipped for
+rests, restated rather than reused across the module boundary for that
+reason, with a test pinning the two constants equal so they cannot drift
+apart. New reason `notehead_is_a_duplicate_box`, run in
+`adjudicate_notehead_is_not_a_notehead` right after `too_narrow` (a shape
+question, GATHER-only facts, no dependency on decision order) and before
+the meter-digit / ownership rules (which ask what the ink MEANS).
+
+**Deliberately SAME-CLASS ONLY**, unlike 2.15's rest rule (which also
+refuses a DIFFERENT-class rest pair). A different-class notehead pair
+(`noteheadBlack` vs `noteheadHalf`) is §17c's "2.12g's role twins" — a
+chord member's VALUE disagreement, explicitly "recorded, not built" there
+because which member is right is 2.12g's own open question. Refusing both
+here, as 2.15 does for a class-disagreeing rest, would discard a real note
+rather than settle a "cannot tell" (a rest's class disagreement leaves no
+value worth protecting; a notehead's does). `test_overlapping_DIFFERENT_
+class_boxes_are_left_alone` pins this scope decision.
+
+**Zero further wiring needed downstream, by construction, not by
+edit**: `consequences._LEAVES_THE_BAR` already reads
+`Q.NOTEHEAD_IS_NOT_A_NOTEHEAD` generically (any DECIDED `True`, any
+reason), so `size_measure_rest`/`reconcile_duration` (2.19/2.22) already
+exclude a duplicate-refused box from the bar sum with no new code; and
+`export.py`'s accounting already buckets every notehead refusal as
+`not_a_notehead:<reason>` (`export.py:826`), so the new reason surfaces in
+`status_census` as `not_a_notehead:notehead_is_a_duplicate_box` with no
+export-side change. This is the same "connect, don't restate" shape 2.15's
+own rest rule had with `export._place_notes`.
+
+**RED → GREEN.** `tools/omr/tests/test_staged_notehead_duplicate_box.py`,
+4 tests. RED confirmed by swapping in `origin/main`'s
+`notehead_precision.py` (not `git checkout` on the dirty file — copied
+aside and restored): **2 of 4 fail** (the refusal itself, and the
+constant-pin test); the 2 CONTROLS (no-overlap pair both kept; a
+different-class pair left alone — proving the SAME-class restriction is a
+choice, not an accident of the fixture) pass on both trees, unchanged.
+GREEN: 4/4 after restoring the edit.
+
+### §19c. Asked, not built: the cross-family question (class 5)
+
+**Sean: where a rest-class box and a notehead-class box in one cell
+overlap at 2.15's measured IoU floor, is that the same one-mark-boxed-
+twice mechanism (refuse both, CLAUDE.md rule 8), or does it need its own
+measurement?** CONVENTION ASSUMED / WHAT WOULD FALSIFY IT / NOT CONFIRMED:
+no crop in this benchmark's evidence shows a rest box and a notehead box
+overlapping on one mark; §17c's "rest read as a head" captions are single
+mis-boxings with no second box to compare against, so they would NOT be
+caught by this mechanism even if the question were answered yes. A future
+gather that finds such a pair, or a crop that does not, settles it either
+way. Not built here — see `notehead_precision.py`'s own module docstring
+for the same question stated beside the code it would change.
+
+### §19d. Gates
+
+`tools/omr/tests/test_staged_notehead_duplicate_box.py`: 4/4 passed in
+isolation. Fast tier: `python3 -m pytest tools/omr/tests -m "not slow" -q
+-p no:cacheprovider`: **3,877 passed, 3 skipped** (base `8c652d89`'s 3,873 +
+4 new, 0 failed). `python3 -m tools.omr.staged.check`: **TOTAL 245**,
+unchanged — confirmed by swapping in the base module (copy-aside/restore,
+never `git checkout` on the dirty tree) and re-running `check` on it
+directly: 245 both ways. No gather, no crop, no pricing, per Sean's
+2026-09-29 process decision for this item.
+
+### §19e. Files
+
+- `tools/omr/staged/adjudicators/notehead_precision.py`: the new rule,
+  its helpers, and the module/decision docstrings (§19a's ranking, §19c's
+  question).
+- `tools/omr/tests/test_staged_notehead_duplicate_box.py`: the tests.
