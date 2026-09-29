@@ -189,7 +189,7 @@ answer, never invents a value, supersedes visibly.
 renderers (`_mxl_*`) over its own positions. The accounting control is an
 EQUALITY — every gathered notehead is written or counted under a named
 refusal (`duration_narrowed`, `no_pitch`, `staff_not_identified`,
-`owned_by_another_staff`, `ink_is_a_whole_rest`) — and `to_musicxml` RAISES
+`owned_by_another_staff`, `owner_not_read`, `ink_is_a_whole_rest`) — and `to_musicxml` RAISES
 `Unbalanced` rather than returning a flag. A staff the join could not name is
 held out of the file and counted (`OMR_HOLD_OUT_UNIDENTIFIED`). A bar we read
 nothing in exports as a measure rest with `measure="yes"` withheld, because
