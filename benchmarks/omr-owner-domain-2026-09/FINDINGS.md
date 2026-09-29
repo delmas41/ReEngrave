@@ -641,3 +641,31 @@ answers "did the OWNERSHIP decision also keep the twin," never "is the twin
 actually a real, correctly-read note" — that is exactly what crops 21–24 ask
 Sean. This pass does not touch `glyph_owner`, `is_relocated_copy`, or any
 other code; it reads one record and cuts crops.
+
+### §2.6b.v — Sean's verdicts on the 24 crops (2026-09-28)
+
+Raw: `1-3 R 4 ink 5-16 R 17 no red box 18 R 19-24 W`.
+
+| deciding term | crops | right staff dropped | wrong staff dropped | not a note | unadjudicated |
+|---|---|--:|--:|--:|--:|
+| distance | #1–9 | 8 | 0 | 1 (#4, ink) | 0 |
+| ladder | #10–16 | 7 | 0 | 0 | 0 |
+| range_veto | #17–20 | 1 | **2** (#19, #20) | 0 | 1 (#17: box 9 px wide, ~0.2 spaces — too small to see; almost surely not a head) |
+
+**16 of 19 adjudicated losers were dropped correctly.** The four kept twins
+(#21–24, twins of #01/#06/#11/#14) are on the right staff, and each sits on
+the SAME ink as its loser (page boxes coincide to a few px): the contest is
+mostly de-duplicating one printed head detected from both cells, not losing
+notes. ⚠️ **#21–24 were first rendered with REVERSED band labels** (the
+winner crops passed the kept staff as `own_key`, painted "BLUE - lost");
+Sean's "W" on them therefore reads "belongs to the blue-labelled staff" =
+the staff that actually kept it, consistent with his R on the four losers.
+Fixed (`lost_key`) and re-rendered.
+
+**Consequences.** (1) The 3,590 `owned_by_another_staff` drops are NOT the
+main source of Brahms's missing notes; the funnel's `missing_events` bucket
+needs its other causes next (`duration_narrowed:beams_ambiguous` was the
+second refusal). (2) `range_veto` is the weak term — 2 of 3 wrong on a
+population of 149 — which is exactly where Sean's two conventions (ledger
+lines name the owner; a hairpin sits under its staff; DECISIONS 2026-09-28)
+should decide instead → 2.6c, narrowed to the range-veto population.

@@ -149,7 +149,7 @@ def main() -> int:
         return pages[p], frames[p]
 
     def make_crop(subject, own_key, win_key, bbox, *, bracket_label,
-                  title_lines, out_name):
+                  title_lines, out_name, lost_key=None):
         """One crop: BOTH staves drawn, subject bracketed. Returns the
         manifest-ready contrast pair, or None (with a refusal reason) if the
         frame control fails."""
@@ -185,9 +185,16 @@ def main() -> int:
         overlay = Image.new("RGBA", crop.size, (0, 0, 0, 0))
         od = ImageDraw.Draw(overlay)
         big = ImageFont.load_default(size=max(30, int(sp_own * Z * 0.8)))
+        # ⚠️ BUG FOUND BY SEAN'S ANSWERS, 2026-09-28: the WINNER crops pass
+        # `own_key` = the staff that KEPT the note, and this block painted
+        # `own_lines` as "BLUE - lost" -- so on #21-24 the labels were
+        # reversed. The band colours now follow the CONTEST (which staff
+        # lost, which won), never the argument order.
+        lost_lines = lines_of.get(lost_key) if lost_key else own_lines
+        won_lines = win_lines if lost_key is None else own_lines
         for lines_, rgb, label in (
-                (win_lines, (0, 170, 60), "GREEN - won"),
-                (own_lines, (30, 90, 255), "BLUE - lost")):
+                (won_lines, (0, 170, 60), "GREEN - won"),
+                (lost_lines, (30, 90, 255), "BLUE - lost")):
             top = (min(lines_) - cy0) * Z
             bot = (max(lines_) - cy0) * Z
             od.rectangle([0, top, crop.width, bot], fill=rgb + (60,))
@@ -331,7 +338,8 @@ def main() -> int:
         ]
         contrast, why = make_crop(
             twin_sub, l["winning_staff"], l["own_staff"], twin_bbox,
-            bracket_label="winner", title_lines=title, out_name=f"{name}.png")
+            bracket_label="winner", title_lines=title, out_name=f"{name}.png",
+            lost_key=l["own_staff"])
         if contrast is None:
             n -= 1
             refused.append({"subject": twin_sub, "why": why})
