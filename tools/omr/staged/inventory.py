@@ -349,6 +349,45 @@ def _legacy_for(fn: Any, mods: List[str]) -> Dict[str, List[str]]:
     }
 
 
+def _sibling_helpers(fn_path: "pathlib.Path") -> Dict[str, ast.FunctionDef]:
+    """Functions defined in ANOTHER `adjudicators/` module this file imports
+    via `from . import X [as alias]` -- ROADMAP 2.27c.
+
+    ⚠️ ONE HOP, KEYED `"alias.name"`. `_never_read`'s own depth-3 walk was
+    same-module only, so `rhythm.py` calling `ownership._owned_by_a_
+    different_staff` (the sibling-import shape `notehead_precision.py`
+    already established: `from . import ownership as _ledger`) reported
+    `dot_role`/`duration` declaring `Q.GLYPH_OWNER` and never reading it --
+    a TOOL BLIND SPOT, not an inert declaration: the SAME helper, called
+    from INSIDE `ownership.py` for `articulation_owner`/`fermata_owner`/
+    `ornament_owner`, was already found fine there. This does not chase the
+    call further than one module away; a helper that itself calls a THIRD
+    module's helper is not followed.
+    """
+    try:
+        tree = ast.parse(fn_path.read_text())
+    except (OSError, SyntaxError):                            # noqa: BLE001
+        return {}
+    aliases: Dict[str, str] = {}
+    for node in ast.walk(tree):
+        if isinstance(node, ast.ImportFrom) and node.level == 1:
+            for alias in node.names:
+                aliases[alias.asname or alias.name] = alias.name
+    out: Dict[str, ast.FunctionDef] = {}
+    for alias, modname in aliases.items():
+        sib = fn_path.parent / f"{modname}.py"
+        if not sib.exists():
+            continue
+        try:
+            smod = ast.parse(sib.read_text())
+        except (OSError, SyntaxError):                        # noqa: BLE001
+            continue
+        for n in ast.walk(smod):
+            if isinstance(n, ast.FunctionDef):
+                out[f"{alias}.{n.name}"] = n
+    return out
+
+
 def _never_read(spec) -> List[str]:
     """`wants` entries whose `Q.` name appears nowhere in the decision's body.
 
@@ -376,9 +415,12 @@ def _never_read(spec) -> List[str]:
     # a check that looked only at the decision body reported six decisions
     # reading nothing they declared, which is a measure of code STYLE, not of
     # inertness. Followed to depth 3 within the decision's own module.
-    mod = ast.parse(pathlib.Path(inspect.getfile(spec.fn)).read_text())
+    fn_path = pathlib.Path(inspect.getfile(spec.fn))
+    mod = ast.parse(fn_path.read_text())
     helpers = {n.name: n for n in ast.walk(mod)
                if isinstance(n, ast.FunctionDef)}
+    # ⚠️ ROADMAP 2.27c: sibling-module helpers, one hop, same rule as above.
+    sibling = _sibling_helpers(fn_path)
     names: Set[str] = set()
     seen: Set[str] = set()
     frontier = [fn]
@@ -400,6 +442,13 @@ def _never_read(spec) -> List[str]:
                         if called in helpers and called not in seen:
                             seen.add(called)
                             nxt.append(helpers[called])
+                        elif (isinstance(f, ast.Attribute)
+                              and isinstance(f.value, ast.Name)):
+                            qualified = f"{f.value.id}.{f.attr}"
+                            if (qualified in sibling
+                                    and qualified not in seen):
+                                seen.add(qualified)
+                                nxt.append(sibling[qualified])
         frontier = nxt
         if not frontier:
             break

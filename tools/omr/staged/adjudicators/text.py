@@ -6,7 +6,7 @@ from typing import Any, Dict, List, Optional, Tuple
 
 from ..adjudicate import (Candidate, Checkable, Evidence, Mode, Ruling,
                           decision, is_relocated_copy)
-from ..record import ABSTAIN, Kind, Q, Scope, State
+from ..record import ABSTAIN, Kind, Q, Scope, State, Subject
 
 
 #: The 17 words MusicXML has a `<dynamics>` child element for. Anything else a
@@ -15,6 +15,40 @@ DYNAMIC_WORDS = frozenset({
     "p", "pp", "ppp", "pppp", "f", "ff", "fff", "ffff",
     "mp", "mf", "sf", "sfz", "fp", "rf", "rfz", "sfp", "fz",
 })
+
+#: ROADMAP 2.27c, registry `[C46 + L53]`
+#: (`benchmarks/omr-owner-domain-2026-09/PLACEMENT-CONVENTIONS.md`'s
+#: Dynamics-letters row). `Q.DYNAMIC_BAND_POSITION` is staff spaces BELOW
+#: the HOME cell's own staff's bottom line (`gather._band_offset_spaces`;
+#: negative means above the bottom line). Measured over 1246 letters on 18
+#: pages of 9 publishers: 73% sit in their OWN staff's band (this project's
+#: own dynamics-band study puts that population at +0.0 to +5.6 spaces) and
+#: 24% sit in the band of the staff IMMEDIATELY ABOVE home -- "distance
+#: exactly 1, no exceptions" -- with a measured EMPTY interval between the
+#: two populations of (-3.04, -0.52) spaces (`capture.py`'s own
+#: "UNREAD-POSITION Q.DYNAMIC_BAND_POSITION" note). A reading at or above
+#: `DYNAMIC_OWN_BAND_MIN_SPACES` is this staff's own; one at or below
+#: `DYNAMIC_ABOVE_BAND_MAX_SPACES` is decisively the staff above's; the gap
+#: between the two is left exactly where it already stood (CLAUDE.md rule
+#: 8, a fallback never turns "cannot tell" into an answer).
+DYNAMIC_OWN_BAND_MIN_SPACES = -0.52
+DYNAMIC_ABOVE_BAND_MAX_SPACES = -3.04
+
+
+def _staff_above(subject: Subject) -> Optional[str]:
+    """The key of the staff immediately above `subject`'s own staff, in the
+    SAME system, or None where there is no staff above (the top staff of a
+    system) or the subject carries no staff at all.
+
+    ⚠️ Staff ordinals run top-to-bottom within a system (CLAUDE.md's own
+    "staff is the index WITHIN ITS SYSTEM" -- `record.Subject`'s docstring),
+    so "immediately above" is `staff - 1`, never a page-wide index.
+    """
+    staff_sub = subject.at(Kind.STAFF)
+    if staff_sub is None or staff_sub.staff is None or staff_sub.staff <= 0:
+        return None
+    return Subject(Kind.STAFF, page=staff_sub.page, system=staff_sub.system,
+                   staff=staff_sub.staff - 1).to_key()
 
 
 def _letter_of(row: Any) -> Optional[str]:
@@ -43,10 +77,11 @@ def _geometry(row: Any) -> Optional[Tuple[float, float, float]]:
 @decision(
     quantity=Q.DYNAMIC,
     checkable=Checkable.UNCHECKABLE,
-    composed_from=(Q.DYNAMIC_LETTER, Q.GLYPH_OWNER,
+    composed_from=(Q.DYNAMIC_LETTER, Q.GLYPH_OWNER, Q.DYNAMIC_BAND_POSITION,
                    Q.DYNAMIC_IS_NOT_A_DYNAMIC),
     scope=Kind.CELL,
-    wants=(Q.DYNAMIC_LETTER, Q.GLYPH_OWNER, Q.DYNAMIC_IS_NOT_A_DYNAMIC),
+    wants=(Q.DYNAMIC_LETTER, Q.GLYPH_OWNER, Q.DYNAMIC_BAND_POSITION,
+           Q.DYNAMIC_IS_NOT_A_DYNAMIC),
     # ⚠️ The subjects are the cells `Q.DYNAMIC_LETTER` speaks about --
     # OBSERVATIONS AND ABSTENTIONS ALIKE, because `subjects_for` reads
     # `log.all_rows()` and an abstention is a row. That is what makes this
@@ -100,6 +135,26 @@ def adjudicate_dynamic(ev: Evidence) -> Ruling:
     elsewhere and owned here is dropped as this staff's own duplicate. The two
     drops are reported apart (`letters_moved_out`,
     `letters_dropped_as_duplicate`) because only the second is redundant.
+
+    ⚠️⚠️ ROADMAP 2.27c: `Q.GLYPH_OWNER` NAMES NOTHING FOR THE UNTWINNED CASE,
+    AND `Q.DYNAMIC_BAND_POSITION` IS WHAT SPEAKS THERE. `glyph_owner` only
+    ever sees the CONTESTED population (`subjects_from=Q.GLYPH_BAND_
+    DISTANCE`); a letter whose twin was never independently re-detected in
+    the neighbour's own cell reaches this decision as `owner is None`, and
+    the code above falls back to `home` unchanged -- which is right for the
+    73% that really are home's own, and wrong for the 24% that are not.
+    `Q.DYNAMIC_BAND_POSITION` is a SEPARATE, independently-scored reading
+    (`READERS.GEOMETRY`, promoted rather than folded into the letter's own
+    detector term -- CLAUDE.md's `correlated_groups` rule: "a second witness
+    needs its own quantity and its own reader") of exactly the offset the
+    band study measured. Only where `Q.GLYPH_OWNER` gave no decisive answer
+    is it consulted, and only its own DECISIVE zone moves anything: a
+    reading at or below `DYNAMIC_ABOVE_BAND_MAX_SPACES` reassigns `owned_by`
+    to the staff immediately above home; the gap between the two measured
+    populations, and a home staff with no staff above it, are left exactly
+    as `home` already had them. This never overrides a `Q.GLYPH_OWNER`
+    verdict that IS decided -- that query runs first and, where it names a
+    staff, `owned_by` already differs from `home` before this is reached.
 
     ⚠️ **THE ASSEMBLY RULE IS DELIBERATELY THE EXPORTER'S, UNCHANGED**, so
     that the only difference between this and the shipped path is the
@@ -163,10 +218,33 @@ def adjudicate_dynamic(ev: Evidence) -> Ruling:
         owner = ev.verdict(Q.GLYPH_OWNER, subject=row.subject)
         owned_by = (owner.value if owner is not None and owner.value
                     else home)
+        # ⚠️ ROADMAP 2.27c: only where ownership gave NO decisive answer
+        # (owned_by fell back to home, above) does the band position get a
+        # say, and only in its own DECISIVE zone -- see the docstring.
+        moved_by_band = False
+        if owned_by == home:
+            band_rows = ev.rows(Q.DYNAMIC_BAND_POSITION, subject=row.subject)
+            if band_rows:
+                offset = float(band_rows[-1].value)
+                if offset <= DYNAMIC_ABOVE_BAND_MAX_SPACES:
+                    above = _staff_above(row.subject)
+                    if above is not None:
+                        owned_by = above
+                        moved_by_band = True
         if owned_by != mine:
             moved_out += (home == mine)
             continue
-        if is_relocated_copy(row.subject, owned_by):
+        # ⚠️ A BAND-POSITION RESCUE IS NEVER A DUPLICATE. `is_relocated_copy`
+        # assumes `owned_by` came from `Q.GLYPH_OWNER`, whose domain is the
+        # CONTESTED population -- a decided verdict naming another staff
+        # exists only because that staff's own cell independently detected
+        # the SAME ink, so `mine` already holds a twin and the copy this
+        # `row` names must be dropped. A band-position rescue fires only
+        # where `owned_by == home` (owner undecided/absent, i.e. UNCONTESTED
+        # by construction) -- there is no twin on `mine` to be a duplicate
+        # of, so skipping the check here is not a special case of the rule,
+        # it is the rule's own premise not holding.
+        if not moved_by_band and is_relocated_copy(row.subject, owned_by):
             # ⚠️⚠️ A LETTER WHOSE HOME IS ANOTHER STAFF IS A SECOND COPY, NOT
             # A RESCUE, AND THE DOCSTRING ABOVE USED TO CLAIM OTHERWISE.
             # `glyph_owner` speaks only about the CONTESTED population

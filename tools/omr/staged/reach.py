@@ -256,14 +256,17 @@ KNOWN_GAPS: Dict[str, str] = {
         "different `y_center` values — no width, height, x or half test — and "
         "is how one barline broken into two fragments became the Litolff p.62 "
         "`3/4` this project cited for weeks."),
-    Q.DYNAMIC_BAND_POSITION: (
-        "⚠️ OPEN BY DESIGN — producer only, and PROMOTED rather than "
-        "invented: the number was already on `Q.DYNAMIC_LETTER` as a detail "
-        "of a SCORED row. FIRST CONSUMER: `adjudicate_glyph_owner`, which "
-        "resolves a contested letter by DISTANCE — a quantity this repo has "
-        "already measured being a coin flip (5-62 px) — where the band says "
-        "24% of letters stand in the band of the staff immediately above, "
-        "distance exactly 1, no exceptions."),
+    # ⚠️ ROADMAP 2.27c: `Q.DYNAMIC_BAND_POSITION` LEFT THIS LIST HERE.
+    # `adjudicate_dynamic` now reads it (gated on `Q.GLYPH_OWNER` leaving a
+    # letter's ownership undecided, and on its own decisive zone -- see
+    # `adjudicators/text.py`'s docstring), and THIS module's own measurement
+    # -- unlike `capture.KNOWN_GAPS`'s sibling entry, which stays: that
+    # check's AST walk never resolves the quantity's GATHER site at all,
+    # a different blind spot -- reports it LIVE. Leaving the entry made
+    # `reach --check` fail on a STALE GAP, which is the check doing its job;
+    # `test_staged_positions.py::test_reach_accounts_for_every_one_as_an_
+    # OPEN_finding`'s own docstring records why this one, and only this one
+    # of the ten, is now asserted ABSENT rather than present.
     Q.WEDGE_BAND_POSITION: (
         "⚠️ OPEN BY DESIGN — producer only, PROMOTED for the CV rung and "
         "MEASURED for the detector rung, which never carried one. FIRST "

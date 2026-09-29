@@ -664,19 +664,36 @@ class TestEveryPositionQuantityIsRegistered(unittest.TestCase):
                 self.assertIn(fam, E.FAMILIES, f"{name} -> {fam}")
 
     def test_reach_accounts_for_every_one_as_an_OPEN_finding(self):
-        """⚠️ THE TEN POSITIONS ARE `OPEN BY DESIGN` — producers whose first
-        consumer deliberately has not landed, so that the reach measurement is
-        not circular. Each entry names that consumer, because *UNREAD and
-        unremarked* is how `Q.STEM` stayed unread through three discoveries."""
+        """⚠️ NINE OF THE TEN POSITIONS ARE STILL `OPEN BY DESIGN` —
+        producers whose first consumer deliberately has not landed, so that
+        the reach measurement is not circular. Each entry names that
+        consumer, because *UNREAD and unremarked* is how `Q.STEM` stayed
+        unread through three discoveries.
+
+        ⚠️ ROADMAP 2.27c: `Q.DYNAMIC_BAND_POSITION` LEFT THIS LIST. Its
+        consumer landed (`adjudicate_dynamic`, gated on `Q.GLYPH_OWNER`
+        leaving a letter's ownership undecided — see `adjudicators/text.py`'s
+        docstring), and `reach.py`'s own measurement now reports it LIVE, not
+        merely declared: leaving the entry in `reach.KNOWN_GAPS` at that point
+        made `reach --check` fail with a STALE-GAP finding, which is the
+        check working, not a bug to suppress by re-adding the entry. This is
+        an asymmetry with `capture.KNOWN_GAPS`'s OWN "UNREAD-POSITION Q.
+        DYNAMIC_BAND_POSITION" entry, which DOES stay: that check's `by_q`
+        never resolves this quantity's GATHER site at all (`gather_band_
+        positions` observes it through a local variable, `quantity =
+        Q.DYNAMIC_BAND_POSITION`, not a literal `Q.X` at the `log.observe`
+        call site that check's AST walk scans for) — a different tool with a
+        different, still-live blind spot on the SAME quantity."""
         from tools.omr.staged import reach
         for q in (Q.REST_POSITION, Q.ARC_POSITION, Q.ARTICULATION_POSITION,
                   Q.FERMATA_POSITION, Q.ORNAMENT_POSITION,
                   Q.TUPLET_MARKER_POSITION, Q.METER_GLYPH_POSITION,
-                  Q.DYNAMIC_BAND_POSITION, Q.WEDGE_BAND_POSITION,
-                  Q.DIRECTION_BAND_POSITION):
+                  Q.WEDGE_BAND_POSITION, Q.DIRECTION_BAND_POSITION):
             self.assertIn(q, reach.KNOWN_GAPS, q)
             self.assertIn("OPEN BY DESIGN", reach.KNOWN_GAPS[q], q)
             self.assertIn("CONSUMER", reach.KNOWN_GAPS[q], q)
+        self.assertNotIn(Q.DYNAMIC_BAND_POSITION, reach.KNOWN_GAPS,
+                         "graduated 2.27c -- see this test's own docstring")
 
     def test_the_refusal_row_is_accounted_for_as_a_DIFFERENT_kind(self):
         """⚠️ AND `CELL_POSITION_BASIS` IS NOT ONE OF THEM — asserted apart,

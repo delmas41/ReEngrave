@@ -742,14 +742,23 @@ KNOWN_GAPS: Dict[str, str] = {
         "neighbour 11`) because it is reconstructed per-document from the "
         "detector's boxes instead of read once from the grid."),
     "UNREAD-POSITION Q.DYNAMIC_BAND_POSITION": (
-        "PROMOTED out of the unusable place and not yet read. `benchmarks/"
-        "omr-dynamics-band-2026-09` reports 73% of letters in their own "
-        "staff's band and 24% in the band of the staff immediately ABOVE, "
-        "distance exactly 1, no exceptions, with a measured empty interval "
-        "(-3.04..-0.52 spaces). The number was always computed; what it "
-        "lacked was a row of its own, so `correlated_groups` folded it into "
-        "the glyph's detector term. It now has one. `adjudicate_dynamic` "
-        "still does not read it."),
+        "PROMOTED out of the unusable place. `benchmarks/omr-dynamics-"
+        "band-2026-09` reports 73% of letters in their own staff's band and "
+        "24% in the band of the staff immediately ABOVE, distance exactly "
+        "1, no exceptions, with a measured empty interval (-3.04..-0.52 "
+        "spaces). ⚠️⚠️ ROADMAP 2.27c: `adjudicate_dynamic` NOW READS IT "
+        "(only where `Q.GLYPH_OWNER` left the letter on its own home staff, "
+        "and only in the decisive zone -- see `adjudicators/text.py`'s "
+        "docstring). This entry does NOT leave, because this check's OWN "
+        "`by_q` never contains it to begin with: `gather_band_positions` "
+        "observes it through `_observe_band(log, g, quantity, core, ...)` "
+        "where `quantity` is a local variable (`quantity = Q.DYNAMIC_BAND_"
+        "POSITION`, assigned one line above the call), not a literal `Q.X` "
+        "argument at the `log.observe` call site this module's own reader-"
+        "detection AST walk scans for. So `family in _families_of(q)` and "
+        "`q not in reads` finds it unread on the OBSERVE side no matter what "
+        "`adjudicate_dynamic`'s `wants` declares -- the identical blind spot "
+        "`reach.KNOWN_GAPS`'s own entry for this quantity now names."),
     "UNREAD-POSITION Q.DIRECTION_BAND_POSITION": (
         "the only one of the eleven that is genuinely NEW rather than "
         "promoted or measured-from-a-box-already-on-the-record — this family "

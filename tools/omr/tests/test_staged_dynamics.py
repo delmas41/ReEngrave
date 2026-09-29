@@ -42,6 +42,14 @@ def _letter(log, glyph, letter, x0, x1, *, y=100.0, bottom=90.0, spacing=10.0):
         band_offset_spaces=(y - bottom) / spacing, in_hairpin_band=True)
 
 
+def _band(log, glyph, offset):
+    """One `Q.DYNAMIC_BAND_POSITION` row, promoted exactly as `positions.
+    gather_band_positions` files it -- an independent reading, on the SAME
+    glyph subject a `Q.DYNAMIC_LETTER` row names."""
+    return log.observe(glyph, Q.DYNAMIC_BAND_POSITION, float(offset),
+                       reader=READERS.GEOMETRY, frame=G.FRAME_PAGE)
+
+
 def _contest(log, glyph, *, winner, loser, near=1.0, far=4.0):
     """A real cross-staff contest, so `Q.GLYPH_OWNER` is DECIDED by the real
     adjudicator rather than stubbed. ⚠️ Stubbing it would have tested this
@@ -161,6 +169,116 @@ class TestOwnershipResolvesTheContest(unittest.TestCase):
         v = log.verdict(Q.DYNAMIC, R.cell(0, 0, 0, 0))
         self.assertEqual(v.value, ["p"])
         self.assertEqual(v.detail["letters_dropped_as_duplicate"], 0)
+
+
+class TestBandPositionRescuesAnUntwinnedLetter(unittest.TestCase):
+    """ROADMAP 2.27c, registry `[C46 + L53]`. `Q.GLYPH_OWNER` only ever sees
+    the CONTESTED population -- a letter that never got an independent twin
+    in the neighbour's own cell reaches `adjudicate_dynamic` as `owner is
+    None`, and falls back to `home` unchanged. `Q.DYNAMIC_BAND_POSITION` is
+    the SEPARATE, promoted reading that can speak for exactly that 24%
+    (measured empty interval -3.04..-0.52 spaces, `capture.py`'s own
+    "UNREAD-POSITION Q.DYNAMIC_BAND_POSITION" note).
+
+    ⚠️ THE FIX. Remove the `Q.DYNAMIC_BAND_POSITION` read from `adjudicate_
+    dynamic` (or the `owned_by = above` line) and
+    `test_a_decisively_ABOVE_reading_moves_an_uncontested_letter` goes RED --
+    the letter stays on `LOWER`, exactly the 24% miss the band study
+    measured.
+    """
+
+    def test_a_decisively_ABOVE_reading_moves_an_uncontested_letter(self):
+        """A letter home is `LOWER` (gathered there because the padded cell
+        reached up into `UPPER`'s own air), but never independently
+        re-detected in `UPPER`'s own cell -- so `Q.GLYPH_OWNER` never saw a
+        contest at all. Its band offset, measured against `LOWER`'s own
+        bottom line, is decisively in the "staff immediately above"
+        population."""
+        log = Log()
+        g = R.glyph(0, 0, 1, 0, 0)          # home = LOWER
+        _letter(log, g, "f", 100.0, 110.0)
+        _band(log, g, -4.0)                 # <= DYNAMIC_ABOVE_BAND_MAX_SPACES
+        # ⚠️ `subjects_from=Q.DYNAMIC_LETTER`: UPPER's own cell needs a
+        # `Q.DYNAMIC_LETTER` row of ITS OWN (an abstention counts, per
+        # `gather_dynamic_letters`'s own "EVERY CELL GETS A ROW") or the
+        # decision never runs there at all and a letter ownership moves onto
+        # it is silently lost -- exactly the fault that docstring names.
+        log.abstain(R.cell(0, 0, 0, 0), Q.DYNAMIC_LETTER,
+                    reader=READERS.DETECTOR, frame="cell:0",
+                    reason=ABSTAIN.NO_GLYPH_OF_THIS_KIND)
+        log.freeze()
+        adjudicate.run(log)
+        self.assertIsNone(log.verdict(Q.GLYPH_OWNER, g))   # never contested
+
+        moved = log.verdict(Q.DYNAMIC, R.cell(0, 0, 1, 0))   # LOWER's own bar
+        self.assertEqual(moved.value, [])
+        self.assertEqual(moved.detail["letters_moved_out"], 1)
+
+        rescued = log.verdict(Q.DYNAMIC, R.cell(0, 0, 0, 0))  # UPPER's bar
+        self.assertEqual(rescued.value, ["f"])
+
+    def test_POSITIVE_CONTROL_an_OWN_BAND_reading_stays_put(self):
+        """The mirror -- a reading decisively in home's OWN band never
+        moves anything, so the fix above is not just abstaining its way to
+        a pass."""
+        log = Log()
+        g = R.glyph(0, 0, 1, 0, 0)
+        _letter(log, g, "f", 100.0, 110.0)
+        _band(log, g, 0.5)                  # own band, per gather.py's own
+        log.abstain(R.cell(0, 0, 0, 0), Q.DYNAMIC_LETTER,  # +0.0..+5.6 range
+                    reader=READERS.DETECTOR, frame="cell:0",
+                    reason=ABSTAIN.NO_GLYPH_OF_THIS_KIND)
+        log.freeze()
+        adjudicate.run(log)
+
+        home = log.verdict(Q.DYNAMIC, R.cell(0, 0, 1, 0))
+        self.assertEqual(home.value, ["f"])
+        above = log.verdict(Q.DYNAMIC, R.cell(0, 0, 0, 0))
+        self.assertEqual(above.value, [])
+
+    def test_NEGATIVE_CONTROL_the_measured_empty_gap_is_left_UNCHANGED(self):
+        """A reading strictly between the two measured populations decides
+        nothing new -- CLAUDE.md rule 8, a fallback never turns "cannot
+        tell" into an answer. It stays exactly where `home` already put it,
+        the same "unchanged" outcome as a letter with no band row at all."""
+        log = Log()
+        g = R.glyph(0, 0, 1, 0, 0)
+        _letter(log, g, "f", 100.0, 110.0)
+        _band(log, g, -1.5)                 # inside (-3.04, -0.52)
+        log.abstain(R.cell(0, 0, 0, 0), Q.DYNAMIC_LETTER,
+                    reader=READERS.DETECTOR, frame="cell:0",
+                    reason=ABSTAIN.NO_GLYPH_OF_THIS_KIND)
+        log.freeze()
+        adjudicate.run(log)
+
+        home = log.verdict(Q.DYNAMIC, R.cell(0, 0, 1, 0))
+        self.assertEqual(home.value, ["f"])
+        above = log.verdict(Q.DYNAMIC, R.cell(0, 0, 0, 0))
+        self.assertEqual(above.value, [])
+
+    def test_a_DECIDED_contest_is_never_overridden_by_the_band(self):
+        """A band row that would otherwise say "own band" cannot pull a
+        letter back from a staff `Q.GLYPH_OWNER` has already, genuinely,
+        decided it belongs to -- the ownership query runs FIRST, and this
+        code path is only reached when it left `owned_by == home`."""
+        log = Log()
+        g_upper = R.glyph(0, 0, 0, 0, 0)
+        g_lower = R.glyph(0, 0, 1, 0, 0)
+        _letter(log, g_upper, "p", 100.0, 110.0)
+        _letter(log, g_lower, "p", 100.0, 110.0)
+        _contest(log, g_upper, winner=LOWER, loser=UPPER)
+        _contest(log, g_lower, winner=LOWER, loser=UPPER)
+        # A band row that, read alone, says "clearly LOWER's own" -- and it
+        # must not matter, because ownership already decided LOWER either
+        # way here.
+        _band(log, g_lower, 0.5)
+        log.freeze()
+        adjudicate.run(log)
+        self.assertEqual(log.verdict(Q.GLYPH_OWNER, g_lower).value,
+                         LOWER.to_key())
+        v = log.verdict(Q.DYNAMIC, R.cell(0, 0, 1, 0))
+        self.assertEqual(v.value, ["p"])
+        self.assertEqual(v.detail["letters"], 1)
 
 
 class TestSilenceIsNotAnAnswer(unittest.TestCase):

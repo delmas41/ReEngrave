@@ -677,8 +677,8 @@ lane's scope, named in "Rules safe to wire").
 
 Only rows above that are SEAN-CONFIRMED or clearly ESTABLISHED, and
 DECISIVE (not a mere hint) for the specific question "a mark sits in the
-pad between staff A and staff B — which one is it." Two are already wired
-and kept here as precedent; three are not.
+pad between staff A and staff B — which one is it." Four are wired and
+kept here as precedent; one is not.
 
 ### Already wired (precedent, not a pending action)
 1. **Ledger lines are authoritative** (`glyph_owner`'s `ledger_direction`
@@ -689,22 +689,28 @@ and kept here as precedent; three are not.
    `glyph_owner` verdict is not this mark's to attach to**
    (`_owned_by_a_different_staff`, 2.27) — feeds `articulation_owner`,
    `fermata_owner`, `ornament_owner`.
+4. **A. The dynamic-letter band rule** (`[C46 + L53]`) — **WIRED 2026-09-29,
+   ROADMAP 2.27c**, branch `claude/placement-wiring-2.27c`. Feeds
+   `adjudicate_dynamic`: only where `Q.GLYPH_OWNER` left a letter
+   uncontested (`owned_by == home`) is `Q.DYNAMIC_BAND_POSITION` consulted,
+   and only in its measured decisive zone (≤ -3.04 spaces; the empty gap to
+   -0.52 and a home staff with no staff above it are left unchanged, never
+   guessed). Proved by 4 RED→GREEN fixtures
+   (`test_staged_dynamics.py::TestBandPositionRescuesAnUntwinnedLetter`);
+   see FINDINGS §2.27c.
+5. **C. `dot_role` and `_attached_dots` get the same `owned_by_another_
+   staff` gate as 2.27** (`[C50 + L31]`) — **WIRED 2026-09-29, ROADMAP
+   2.27c**, branch `claude/placement-wiring-2.27c`. Feeds `adjudicate_
+   dot_role` and `_attached_dots` (inside `adjudicate_duration`), both
+   filtered through 2.27's own `ownership._owned_by_a_different_staff` via
+   a sibling-module import; `_attached_dots` keeps its OWN candidate
+   eligible regardless of that candidate's ownership verdict, since
+   duration is asked once per note and travels with the glyph. Proved by 6
+   RED→GREEN fixtures (`test_staged_dot_role.py`); see FINDINGS §2.27c,
+   which also records a real `inventory --check` cross-module blind spot
+   this item found and fixed rather than documented around.
 
 ### Not yet wired — proposed
-
-**A. The dynamic-letter band rule** (`[C46 + L53]`, MEASURED HERE, 73%/24%
-split with a 2.5-space empty gap between populations) → feeds
-`adjudicate_dynamic` (`Q.DYNAMIC_BAND_POSITION` already exists, unread).
-- Test 1: a `dynamicF` box whose y sits 0.5 spaces below staff N's bottom
-  line reads as staff N's, even though staff N's own cell padding put the
-  detection in staff (N−1)'s measure crop.
-- Test 2: a `dynamicP` box whose y sits 5.5 spaces below staff N's bottom
-  line (i.e., roughly 1 staff-distance further, in staff N+1's own band)
-  reads as staff N+1's, not staff N's, even though it was detected inside
-  staff N's cell.
-- Test 3 (negative control): a `dynamicF` box sitting exactly in the
-  middle of the pad, further than either band's own +0.3/−6.0 window,
-  ABSTAINS rather than picking the nearer one by raw distance.
 
 **B. Grand-staff dynamics are BOTH, not nearer** (`[L54]`) → feeds
 `adjudicate_dynamic`, gated on a DECIDED brace verdict naming a
@@ -716,16 +722,6 @@ piano/harp-shaped pair.
   (e.g. two horn staves) is untouched by this rule and falls through to
   rule A.
 
-**C. `dot_role` gets the same `owned_by_another_staff` gate as 2.27**
-(mechanical parity, not a new convention — `[C50 + L31]` plus the 2.27
-precedent) → feeds `dot_role` / `adjudicate_duration`'s dot pairing.
-- Test 1: a dotted head on staff A and a bare head on staff B, both
-  candidates for a stray `augmentationDot` in the pad, where `glyph_owner`
-  has already DECIDED the nearer-looking candidate belongs to staff B —
-  the dot is not attached to staff B's head.
-- Test 2 (positive control, matches 2.27's own): an uncontested dot with
-  only one candidate in reach is unaffected by the new filter.
-
 ---
 
 ## Questions for Sean
@@ -735,7 +731,11 @@ Every ASSUMED row above that matters to the gap question, one line each.
 1. Displaced rests in multi-voice bars (Rests row) — does the acceptance
    corpus (Beethoven 5, Brahms 1, Litolff, Breitkopf) contain any true
    multi-voice single staves with off-centre rests, or is this moot for
-   the orchestral corpus? (yes it occurs / no, park it)
+   the orchestral corpus? (yes it occurs / no, park it) — **ANSWERED
+   2026-09-29: "yes it occurs" — WIRED, ROADMAP 2.27c** (`adjudicate_
+   voices`, gated on the staff's own middle line, ≥1.5 steps displacement;
+   CONVENTION ASSUMED for the threshold itself, not the convention Sean
+   confirmed). See FINDINGS §2.27c.
 2. Grand-staff exceptions (pedal marks, between-staff dynamics, cross-
    staff beaming) — none of the four acceptance documents is a keyboard or
    harp part. Should these three rows be parked entirely until a keyboard
@@ -756,7 +756,12 @@ Every ASSUMED row above that matters to the gap question, one line each.
    search) — same mechanical fix as 2.27/`dot_role`. Worth building
    alongside `dot_role`'s fix (item C above) in one pass, or should each
    family get its own adjudication and its own crops first? (batch them /
-   one at a time)
+   one at a time) — **ANSWERED 2026-09-29: "batch them" — attempted,
+   ROADMAP 2.27c, NOT BUILT.** There is no `Q.GRACE_NOTE*`/`Q.FINGERING*`
+   quantity or adjudicator anywhere in the staged pipeline to wire the gate
+   INTO (confirmed by grep); unlike `dot_role`, this is not a wiring
+   question but a missing decision, a GATHER-side item of its own. See
+   FINDINGS §2.27c.
 6. Ottava bracket side (above staff = 8va, below = 8vb) — ASSUMED by
    analogy to hairpins/dynamics (above/below convention exists for
    *something* in this position); no source was found confirming it
