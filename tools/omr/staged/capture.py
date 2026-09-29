@@ -450,6 +450,15 @@ UNSCORED: Dict[str, Tuple[str, str, Any]] = {
         "relation between a located `Q.STEM` row and the paper beside it. "
         "Scoreless, same reason as `LEDGER_RUNG_INK`.",
         None),
+    "NOTEHEAD_INK": (
+        RELATION,
+        "ROADMAP 2.23 (ported, GATHER half, from claude/no-ink-head-2.6h): "
+        "the ink fraction inside a notehead's OWN detected box, two ways "
+        "(centre, ring), read off BOTH the UNERASED canonical raster and "
+        "the staff-ERASED one — a relation between a located notehead box "
+        "and the paper directly under it. Scoreless because it is a ruler "
+        "reading, not a naming.",
+        None),
 
     # ── ink with no class ───────────────────────────────────────────────────
     "INK": (
@@ -569,6 +578,21 @@ READER_RASTER: Dict[str, Optional[Tuple[str, str]]] = {
     # ⚠️ ROADMAP 2.18c. Also `staged/gather.py` -- reads `image_no_staff`
     # only, same reason `CV_LEDGER` does.
     "CV_STEM_TIP": ("staged/gather.py", "_observe_stem_tip_ink"),
+    # ⚠️ ROADMAP 2.23 (ported from `claude/no-ink-head-2.6h`, GATHER half
+    # only). Also `staged/gather.py`, and `_raster_of`'s FOUR-WORD
+    # vocabulary (ERASED / INTACT / ERASED_ELSE_INTACT / OWN_ERASURE) has no
+    # word for what this reader actually does: it reads `cell.binary` — the
+    # UNERASED, pre-erasure CANONICAL raster `staff_line_removal` itself
+    # reuses via the same side-channel attribute, a THIRD raster distinct
+    # from BOTH `.image` (intact page-frame RGB, never resized to canonical
+    # before this) and `.image_no_staff` — AS WELL AS `image_no_staff`. The
+    # walk sees `image_no_staff` via `getattr` and nothing named `image`, so
+    # it derives ERASED, which is not a lie (that raster IS read) but is not
+    # the whole claim either. Recorded here rather than silently accepted:
+    # widening `_raster_of` to a fifth word is a separate change, on no
+    # roadmap item, and this reader's own two-raster design is spelled out
+    # in full on `Q.NOTEHEAD_INK`'s own docstring and `gather_notehead_ink`.
+    "CV_NOTEHEAD_INK": ("staged/gather.py", "gather_notehead_ink"),
     # ⚠️ Reached as `key_signature_locator.locate_key_signature` ->
     # `header_ink.header_ink_mask`; the locator never touches a cell image.
     "CV_HEADER": ("header_ink.py", "header_ink_mask"),

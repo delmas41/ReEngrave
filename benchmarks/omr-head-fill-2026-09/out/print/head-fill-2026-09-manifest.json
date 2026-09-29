@@ -1,0 +1,56 @@
+[
+ {
+  "n": 1,
+  "subject": "glyph/6/1/9/2/9",
+  "file": "head-fill-2026-09-01.png",
+  "frame_contrast": 28.66,
+  "frame_ok": true,
+  "caption": "NARROWED head_fill_from_ink -- ink decisively hollow, no marks read; stayed narrowed (system's Q.METER abstains, S17a -- orthogonal, pre-existing gap, not this rule's fault)",
+  "VERDICT_none_yet": null
+ },
+ {
+  "n": 2,
+  "subject": "glyph/6/0/3/8/19",
+  "file": "head-fill-2026-09-02.png",
+  "frame_contrast": -84.18,
+  "frame_ok": false,
+  "caption": "PROTECTED: ink reads decisively hollow too, but beam_evidence=='read' (a genuine 8th note, beam present) -- the marks-gate correctly keeps this OUT of the rule's population",
+  "VERDICT_none_yet": null
+ },
+ {
+  "n": 3,
+  "subject": "glyph/6/1/11/5/3",
+  "file": "head-fill-2026-09-03.png",
+  "frame_contrast": 29.1,
+  "frame_ok": true,
+  "caption": "PROTECTED: same as above -- genuinely beamed (beats=0.5), ink's false-positive hollow reading is safely ignored",
+  "VERDICT_none_yet": null
+ },
+ {
+  "n": 4,
+  "subject": "glyph/6/0/0/9/1",
+  "file": "head-fill-2026-09-04.png",
+  "frame_contrast": -99.75,
+  "frame_ok": false,
+  "caption": "PROTECTED: ink reads decisively hollow, but beam_evidence=='reader_declined' (beam reader never ran on this cell) -- gate requires 'ran and found nothing', not 'declined'",
+  "VERDICT_none_yet": null
+ },
+ {
+  "n": 5,
+  "subject": "glyph/6/1/1/0/8",
+  "file": "head-fill-2026-09-05.png",
+  "frame_contrast": 110.58,
+  "frame_ok": true,
+  "caption": "PROTECTED: same as above -- reader_declined",
+  "VERDICT_none_yet": null
+ },
+ {
+  "n": 6,
+  "subject": "glyph/6/0/8/3/4",
+  "file": "head-fill-2026-09-06.png",
+  "frame_contrast": 202.35,
+  "frame_ok": true,
+  "caption": "The original S17b `F`-06 crop's BLACK member (m145): ink_net centre 0.60, just ABOVE the 0.5 threshold -- correctly does NOT narrow (rule 8: not decisive, left alone)",
+  "VERDICT_none_yet": null
+ }
+]
