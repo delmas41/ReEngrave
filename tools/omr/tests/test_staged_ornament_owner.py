@@ -45,6 +45,22 @@ def _rest(log, gi, x, y=40.0):
     return g
 
 
+HOME = R.staff(0, 0, 0)
+NEIGHBOUR = R.staff(0, 0, 1)
+
+
+def _owned_by_the_neighbour(log, glyph, *, near=1.0, far=4.0):
+    """ROADMAP 2.27, the same composition proved for `articulation_owner`
+    and `fermata_owner`: a real cross-staff contest `glyph_owner` DECIDES
+    for `NEIGHBOUR`."""
+    log.observe(glyph, Q.GLYPH_BAND_DISTANCE, far, reader=READERS.GEOMETRY,
+                frame="page", candidate=HOME.to_key(), own=True,
+                position_in_candidate=2.0)
+    log.observe(glyph, Q.GLYPH_BAND_DISTANCE, near, reader=READERS.GEOMETRY,
+                frame="page", candidate=NEIGHBOUR.to_key(), own=False,
+                position_in_candidate=2.0)
+
+
 def _mark(log, gi, x, cls="ornamentTrill", y=0.0, w=14.0):
     g = R.glyph(0, 0, 0, 0, gi)
     kind = gather._ornament_kind(cls)
@@ -205,6 +221,42 @@ class TestTheRefusals(unittest.TestCase):
         log = Log()
         _mark(log, 0, 100.0)
         self.assertEqual(_decide(log).reason, "no_notehead")
+
+
+class TestAPadCandidateOwnedByTheNeighbourIsNotThisStaffsToAttachTo(
+        unittest.TestCase):
+    """ROADMAP 2.27, the same connection as `articulation_owner`'s and
+    `fermata_owner`'s sibling classes.
+
+    ⚠️ THE FIX. Remove the ownership filter and this goes RED."""
+
+    def test_the_only_notehead_owned_by_the_neighbour_is_not_attached(self):
+        log = Log()
+        _mark(log, 0, 100.0, y=0.0)
+        ghost = _head(log, 1, 97.0)
+        _owned_by_the_neighbour(log, ghost)
+        v = _decide(log)
+        self.assertEqual(v.outcome, "abstained")
+        self.assertEqual(v.reason, "owned_by_another_staff")
+        self.assertEqual(v.detail["n_candidates"], 1)
+
+        # ⚠️ POSITIVE CONTROL: identical page, minus the contest.
+        log2 = Log()
+        _mark(log2, 0, 100.0, y=0.0)
+        real = _head(log2, 1, 97.0)
+        v2 = _decide(log2)
+        self.assertIs(v2.outcome, Outcome.DECIDED)
+        self.assertEqual(v2.value, real.to_key())
+
+    def test_a_real_notehead_beside_a_neighbours_ghost_is_still_found(self):
+        log = Log()
+        _mark(log, 0, 100.0, y=0.0)
+        ghost = _head(log, 1, 400.0)
+        _owned_by_the_neighbour(log, ghost)
+        real = _head(log, 2, 97.0)
+        v = _decide(log)
+        self.assertIs(v.outcome, Outcome.DECIDED)
+        self.assertEqual(v.value, real.to_key())
 
 
 if __name__ == "__main__":

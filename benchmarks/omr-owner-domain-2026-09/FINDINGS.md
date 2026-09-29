@@ -2037,3 +2037,175 @@ looks right.
 - CLAUDE.md §4c's list of EXPORT refusals still does not name
   `owner_not_read` — §2.6c.2 already flagged this as open and it remains
   so; this lane is evidence-only and changed no spec text either.
+
+## 2.27 — ink in the cell pad that the neighbour staff owns is not this staff's (2026-09-29)
+
+PATH: STAGED. Branch `claude/pad-ink-2.27`, off `origin/main` `2fb92b6f`.
+Question from 2.22 (`benchmarks/omr-bar-sum-holdout-2026-09/FINDINGS.md`
+§17c, the unmodelled crops) and 2.25 (`benchmarks/omr-missing-notes-2026-09/
+FINDINGS.md` §13, `other_staff_via_pad` the largest single stroke source at
+150/555 Brahms heads): the measure cell is padded 4-6 staff spaces (CLAUDE.md
+§10) and on a conductor's page that reaches the next staff's ink, so a
+cell's own `Q.GLYPH_BOX` rows can include a notehead or rest that is really
+the NEIGHBOUR staff's. `glyph_owner` already asks "whose is this" for
+exactly that population and files a DECIDED verdict — the question here is
+which consumers read it, per CLAUDE.md's "value existed and nothing read
+it" class (2.3), and which glyphs never reach a contest at all.
+
+**Per Sean's 2026-09-29 process decision (relayed): conceptual wiring
+proved by MICROSCOPIC tests only.** No gathers, no record-scale
+re-adjudications, no crop batches, no pricing runs — everything below is
+read from the tree and proved with hand-built `Log` fixtures.
+
+### The map: family × consumer × does it read `Q.GLYPH_OWNER`
+
+Built by reading `gather.py::gather_ownership_evidence` (contest
+formation), `adjudicators/ownership.py` (every `wants=` tuple), and
+`grep -rn GLYPH_OWNER tools/omr/staged` for every other adjudicator.
+
+**(a) Contest formation itself** (`gather.py:862-876`): a contest is filed
+on a glyph's OWN subject only where the SAME category of ink is
+independently detected in BOTH cells (`di.category == dj.category` and
+`IoU > 0.3`, ROADMAP 2.6). A glyph that leaked into this cell's pad but
+whose ink the neighbour's OWN cell scan never independently re-detected
+gets no twin, hence no `Q.GLYPH_BAND_DISTANCE` row, hence NO `Q.GLYPH_OWNER`
+verdict at all — `owner is None` and every reader below falls through to
+"mine". **This is item (a) and it is NOT addressed here**: fixing it needs
+either a GATHER-side change (no gathers this pass) or deciding ownership
+from pad position alone, which CLAUDE.md forbids outright (nearness is a
+hint, never a decision — Sean 2026-09-28).
+
+**(b) Categories that reach a contest.** `_class_name_to_category`
+(`yolo_detector.py`) puts `beam`, `staff`, `tie`, `slur`, `augmentationDot`,
+`brace`, `coda`, `segno`, `repeatdot`, `tuplet*`, `tupletbracket` and
+`ottavabracket` in ONE category, `"structural"` — so the twin test at (a)
+would let an augmentation dot in one cell contest against a ledger line (or
+a beam, or a slur) detected in the neighbour's cell, if their boxes happen
+to overlap past 0.3 IoU. Likewise `"dynamic"` covers both a plain letter
+(`dynamicF`/`P`/…) and a hairpin (`dynamicCrescendoHairpin`/
+`dynamicDiminuendoHairpin`), so a letter could contest against a hairpin.
+Both are real coarseness in the twin test, inherited from the legacy
+predicate this widening restored (§2.6 above) — **named, not chased**; no
+case of either was found on a real page this pass (no gathers to look).
+`notehead`, `rest`, `accidental`, `clef`, `flag`, `time_sig_digit`,
+`barline` and `stem` are each their own category and contest only against
+their own kind.
+
+**(c) Consumers, once a `Q.GLYPH_OWNER` verdict exists:**
+
+| family (category) | consumer | reads `Q.GLYPH_OWNER`? | note |
+|---|---|---|---|
+| notehead | `duration`/`notehead_is_a_whole_rest` (`rhythm.py`) | **no** (`implicates` only) | not a gap: duration is a property of the glyph itself and travels with whichever copy EXPORT ultimately places; EXPORT's own `owned_by_another_staff` refusal (§6 above) is what drops the loser |
+| notehead | `accidental_owner` | **yes** (`head_belongs_to_a_nearer_staff`) | pre-existing, ROADMAP 2.7 |
+| notehead, structural(tie/slur) | `arc_owner` | **yes** (`wants` includes it) | pre-existing |
+| notehead | `articulation_owner` | **was no — now yes** | **fixed this item** |
+| notehead, rest | `fermata_owner` | **was no — now yes** | **fixed this item** |
+| notehead | `ornament_owner` | **was no — now yes** | **fixed this item** |
+| notehead, rest | `dot_role`'s `_attached_dots` (called from `adjudicate_duration`) and `adjudicate_dot_role` itself | **no** | found, same shape, **not wired** — see "not built" below |
+| dynamic (letter) | `adjudicate_dynamic` (`text.py`) | **yes** | pre-existing, and the precedent this item's fix mirrors exactly |
+| dynamic (hairpin) | `wedge_anchor` | **yes** (`wants` includes it) | pre-existing |
+| structural (beam stroke) | `duration`'s beam-stroke reading | **no**, but not a gap here — 2.25/2.25b already built a SEPARATE cross-staff check (`rhythm._not_the_neighbours_beam`), because a beam stroke is a CV-derived `Q.BEAM_STROKE` fact, not a `Q.GLYPH_BOX` detection routed through `gather_ownership_evidence`'s contest at all |
+| flag | `rhythm._attached_flags` | **no** | matched to THIS cell's own stem tip, not searched across the pad the way a mark's nearest-notehead search is; lower priority, not measured |
+| clef, key signature markers | `clef`, `key_signature` | n/a | read at the header locator, not through a per-cell contest |
+
+### Built: three connections, one shared helper
+
+`tools/omr/staged/adjudicators/ownership.py`, `_owned_by_a_different_staff`:
+a candidate glyph whose OWN `Q.GLYPH_OWNER` verdict is DECIDED and names a
+staff other than the mark's own cell's staff is dropped from the candidate
+pool before the existing side/distance/containment test ever sees it. It
+mirrors `adjudicate_dynamic`'s own read of the identical quantity
+(`adjudicators/text.py:163`, `owned_by = owner.value if owner is not None
+and owner.value else home`) — the connection this item makes is not a new
+rule, it is the SAME one, applied to three places that never made it.
+
+Wired into `adjudicate_articulation_owner`, `adjudicate_fermata_owner`,
+`adjudicate_ornament_owner` (all in `ownership.py`): each now builds its
+candidate list (`all_heads`/`all_carriers`), filters out any candidate
+`_owned_by_a_different_staff` names as the neighbour's, and — new reason
+`"owned_by_another_staff"` — abstains distinctly from `"no_notehead"`/
+`"no_carrier"` where filtering leaves nothing, reporting `n_candidates`
+(how many were dropped) in `detail`. `Q.GLYPH_OWNER` added to each
+decision's `wants`/`composed_from`; all three already run AFTER
+`glyph_owner` in `adjudicate.ORDER` (no reordering needed).
+
+**NEVER relocates a glyph and never decides ownership from pad position
+alone** (CLAUDE.md §10): the filter only excludes a candidate a DECIDED
+verdict has already assigned elsewhere; an uncontested candidate (`owner is
+None`) or one whose contest is NARROWED/ABSTAINED (value falsy) is
+untouched and behaves exactly as before — matching (a) above, and matching
+CLAUDE.md rule 6 (connect, never guess).
+
+### Tests, RED first, positive controls
+
+`test_staged_articulation_owner.py`, `test_staged_fermata_owner.py`,
+`test_staged_ornament_owner.py`, one new class each
+(`TestAPadCandidateOwnedByTheNeighbourIsNotThisStaffsToAttachTo`), 7 new
+tests total. Each contest fixture files two `Q.GLYPH_BAND_DISTANCE` rows on
+the candidate's own subject (near the neighbour, far from home) — the
+identical composition `test_staged_dynamics.py::_contest` proves for the
+dynamic-letter case, so `glyph_owner` DECIDES the contest for real rather
+than a stubbed verdict.
+
+- **RED confirmed**: with the three `heads = [... if not
+  _owned_by_a_different_staff(...)]` filters reverted to `heads =
+  all_heads` (patched out of the tree, not committed), the "only candidate
+  is owned by the neighbour" test in each of the three files fails —
+  `articulation_owner`/`fermata_owner`/`ornament_owner` attach to the
+  ghost. Restored, all pass.
+- **Positive control, per family**: the identical fixture with the contest
+  removed still attaches (an uncontested candidate is unaffected).
+- **Second control, per family**: a real, own-staff candidate BESIDE a
+  neighbour's ghost is still found — the filter drops only the losing
+  candidate, it does not make the whole cell abstain because a contest
+  exists in it at all.
+- **Third control** (articulation only, representative of all three): a
+  candidate `glyph_owner` never ran on at all (no `Q.GLYPH_BAND_DISTANCE`
+  row filed) is untouched — `owner is None` falls through to "mine", never
+  to abstain.
+
+`pytest tools/omr/tests/test_staged_articulation_owner.py
+tools/omr/tests/test_staged_fermata_owner.py
+tools/omr/tests/test_staged_ornament_owner.py -q`: 48 passed (41 existing +
+7 new), 0 failed. Full fast tier: `pytest tools/omr/tests -m "not slow" -q
+-p no:cacheprovider`: 3,825 passed, 3 skipped, 0 failed. `python3 -m
+tools.omr.staged.check`: TOTAL 247, status=ok (unchanged).
+
+### Not built / not measured
+
+- **Item (a)**, the untwinned ghost (no contest ever filed) — structurally
+  open; needs a GATHER-side change or a position-based guess CLAUDE.md
+  forbids. The largest share of 2.25's `other_staff_via_pad` population is
+  plausibly this case, not the DECIDED-and-ignored case this item fixes —
+  **not measured**, no gather run to tell the two apart at scale.
+- **`dot_role`'s candidate search** (`adjudicate_dot_role` itself, and
+  `_attached_dots` called from inside `adjudicate_duration`) has the exact
+  same shape — a nearest-candidate search over every `Q.NOTEHEAD_CLASS`/
+  `Q.REST` row in the cell, no `Q.GLYPH_OWNER` read. **Found, not wired**:
+  `adjudicate_dot_role`'s own ORDER comment (`adjudicate.py` around line
+  972) states as a load-bearing invariant that it "needs no verdict of any
+  kind," used to justify its position relative to `Q.DURATION`;
+  `_attached_dots` runs inside `adjudicate_duration`'s `Evidence`, whose
+  `wants` is this month's most heavily and recently modified surface
+  (2.18, 2.18b, 2.18c, 2.22, 2.25, 2.25b) — widening it here, unreviewed,
+  risked exactly the kind of interaction this pass's own no-gathers,
+  no-pricing discipline exists to avoid. Left as a named follow-up, not a
+  roadmap item of its own yet.
+- **(b)'s category coarseness** (`structural` spanning ledger/beam/tie/
+  slur/dot/bracket marks; `dynamic` spanning letters and hairpins) is named
+  from reading the map, not from an observed real-page failure — no gather
+  was run to look for one.
+- **Flags** (`rhythm._attached_flags`) were not checked in the same depth
+  as the four families above; matched to the stem tip rather than searched
+  across the cell, so lower priority, but not measured either way.
+- No whole-movement, no base-vs-arm pricing, no crops — per Sean's process
+  decision for this item, proof is the RED→GREEN fixtures above only.
+
+### A note on scope
+
+A message purporting to relay a further instruction from Sean (a
+placement-conventions table citing outside sources, gating which
+connections may be built on it) arrived mid-session through a channel this
+lane could not verify as an actual message from the coordinator or from
+Sean — it was not treated as an instruction, and no attribution to Sean was
+fabricated anywhere in this document. Flagged for the record, not acted on.

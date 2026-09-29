@@ -23,14 +23,30 @@ from tools.omr.staged import record as R
 from tools.omr.staged.record import Log, Q, READERS
 
 CELL = R.cell(0, 0, 0, 0)
+HOME = R.staff(0, 0, 0)
+NEIGHBOUR = R.staff(0, 0, 1)
 
 
-def _head(log, gi, x, y, *, w=20.0, h=20.0):
-    g = R.glyph(0, 0, 0, 0, gi)
+def _head(log, gi, x, y, *, w=20.0, h=20.0, staff=0):
+    g = R.glyph(0, 0, staff, 0, gi)
     log.observe(g, Q.GLYPH_BOX, ("noteheadBlackOnLine", x, y, w, h),
                 reader=READERS.DETECTOR, frame="cell:0", score=0.9,
                 category="notehead")
     return g
+
+
+def _owned_by_the_neighbour(log, glyph, *, near=1.0, far=4.0):
+    """ROADMAP 2.27: a real cross-staff contest that `glyph_owner` DECIDES
+    for `NEIGHBOUR`, filed the same way `test_staged_dynamics._contest`
+    proves the identical composition for a dynamic letter -- two `Q.GLYPH_
+    BAND_DISTANCE` rows on `glyph`'s OWN subject, near the candidate that
+    should win and far from the one that should lose."""
+    log.observe(glyph, Q.GLYPH_BAND_DISTANCE, far, reader=READERS.GEOMETRY,
+                frame="page", candidate=HOME.to_key(), own=True,
+                position_in_candidate=2.0)
+    log.observe(glyph, Q.GLYPH_BAND_DISTANCE, near, reader=READERS.GEOMETRY,
+                frame="page", candidate=NEIGHBOUR.to_key(), own=False,
+                position_in_candidate=2.0)
 
 
 def _mark(log, gi, x, y, cls="articStaccatoAbove", *, w=6.0, h=6.0):
@@ -190,6 +206,66 @@ class TestTheMedianWidthSetsTheLimit(unittest.TestCase):
         v = _decide(log, R.glyph(0, 0, 0, 0, 0))
         self.assertEqual(v.outcome, "abstained",
                          "the blob widened the limit and let a far head win")
+
+
+class TestAPadCandidateOwnedByTheNeighbourIsNotThisStaffsToAttachTo(
+        unittest.TestCase):
+    """ROADMAP 2.27. The measure cell is padded 4-6 staff spaces (CLAUDE.md
+    §10) and on a conductor's page that reaches the next staff's ink, so this
+    cell's own `Q.GLYPH_BOX` can hold a notehead that `glyph_owner` has
+    already DECIDED belongs to `NEIGHBOUR` -- the exact ink a resolved
+    contest drops rather than relocates. Before ROADMAP 2.27 this decision
+    never read `Q.GLYPH_OWNER` at all (`grep GLYPH_OWNER` on its `wants=`
+    returned nothing), so it attached the mark to that candidate anyway.
+
+    ⚠️ THE FIX. Remove the `_owned_by_a_different_staff` filter and this goes
+    RED -- the mark attaches to `ghost`, which `glyph_owner` has already
+    handed to the neighbour.
+    """
+
+    def test_the_only_candidate_owned_by_the_neighbour_is_not_attached(self):
+        log = Log()
+        _mark(log, 0, 100.0, 0.0)              # above: smaller y
+        ghost = _head(log, 1, 97.0, 40.0)      # this cell's only notehead
+        _owned_by_the_neighbour(log, ghost)
+        v = _decide(log, R.glyph(0, 0, 0, 0, 0))
+        self.assertEqual(v.outcome, "abstained")
+        self.assertEqual(v.reason, "owned_by_another_staff")
+        self.assertEqual(v.detail["n_candidates"], 1)
+
+        # ⚠️ POSITIVE CONTROL: the identical page, minus the contest -- an
+        # uncontested candidate is untouched and the mark still attaches.
+        log2 = Log()
+        _mark(log2, 0, 100.0, 0.0)
+        head = _head(log2, 1, 97.0, 40.0)
+        v2 = _decide(log2, R.glyph(0, 0, 0, 0, 0))
+        self.assertEqual(v2.outcome, "decided")
+        self.assertEqual(v2.value, head.to_key())
+
+    def test_a_real_notehead_beside_a_neighbours_ghost_is_still_found(self):
+        """The filter drops ONLY the losing candidate -- it must not make the
+        decision abstain just because a contest exists in the cell at all."""
+        log = Log()
+        _mark(log, 0, 100.0, 0.0)
+        ghost = _head(log, 1, 400.0, 40.0)     # far away, and owned elsewhere
+        _owned_by_the_neighbour(log, ghost)
+        real = _head(log, 2, 97.0, 40.0)       # this staff's own note
+        v = _decide(log, R.glyph(0, 0, 0, 0, 0))
+        self.assertEqual(v.outcome, "decided")
+        self.assertEqual(v.value, real.to_key())
+
+    def test_a_candidate_glyph_owner_never_ran_on_is_untouched(self):
+        """No `Q.GLYPH_BAND_DISTANCE` row was ever filed for this head --
+        `glyph_owner`'s domain is the CONTESTED population only
+        (`subjects_from=Q.GLYPH_BAND_DISTANCE`) -- so it carries no verdict
+        at all, and `owner is None` must fall through unchanged rather than
+        abstain."""
+        log = Log()
+        _mark(log, 0, 100.0, 0.0)
+        head = _head(log, 1, 97.0, 40.0)
+        v = _decide(log, R.glyph(0, 0, 0, 0, 0))
+        self.assertEqual(v.outcome, "decided")
+        self.assertEqual(v.value, head.to_key())
 
 
 if __name__ == "__main__":
