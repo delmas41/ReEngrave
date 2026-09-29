@@ -363,3 +363,12 @@ Format: `YYYY-MM-DD · who · the decision · because · (pointer)`
   to the wrong head, a wrong direction), never a reason to prefer nearness;
   a far note with no rungs found either way is a reading gap and abstains ·
   2.7b's 18/18 nearer-staff refusals stand as results, not as the principle
+- 2026-09-29 · Sean · **Work through the wiring conceptually, proved by
+  MICROSCOPIC tests — not pricing runs.** A lane states the connection or
+  convention in a paragraph and proves it with small RED→GREEN tests built
+  from a handful of real rows (a fixture of the actual observations/verdicts
+  for 2–3 real subjects) plus a positive control. No gathers, no base-vs-arm
+  re-adjudications, no crop batches per change · *"our process spends too
+  much time and context on pricing runs"* · tightens 2026-09-28's "build and
+  wire": the one-record read and the crops are no longer the default proof;
+  a whole-movement number is taken rarely, as a nohup script, never by a lane
